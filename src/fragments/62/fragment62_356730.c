@@ -236,6 +236,13 @@ s32 func_8436C62C(void) {
                               (j * 4) + (k + 10), (j * 4) + (k + 1), 0);                                      \
     }
 
+// Near miss: only the hoisted 0x06000000 differs — target keeps it in s4 (the LAST of the 8
+// loop-carried values to get a register), ours puts it in t3 (first), rotating every other
+// register by one. Round-3 dead ends: mirroring gSP2Triangles with the G_TRI2 constant as the
+// right operand of the or (IDO reassociates it back to first), folding it in via a separate
+// `w0 |=` read-modify-write (fused back), hand-rolled word packing with the constant last
+// (flag moves but loop structure blows up: frame 0x50 -> 0x98). Target seems to allocate the
+// flag last as if its first use is the final `or` of w0's packing.
 #ifdef NON_MATCHING
 Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3) {
     s32 i;

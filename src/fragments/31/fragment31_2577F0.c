@@ -15,7 +15,13 @@ static Gfx D_81004170[] = {
 static s16 D_81004B60;
 
 // Only differs by one temp register: the redundant "& 0xFF" makes the lbu land in t8 instead of t7,
-// but dropping it shifts every later temp register.
+// but dropping it rotates every later temp one position (first body temp t9 vs target t6, uniform).
+// Round-3 extra dead ends: & 0xFFF CSE-masks on temp_t2/t3/t4 (folded entirely, no temp consumed),
+// inlining temp_t2/t3/t4 into the gDPSetTileSize args (much worse), `0 ==` operand order, ternary
+// `(x == 0) ? 1 : 0`, `(u8)`/`(s32)` casts on condition, `if (1) {}` inside the body, moving the temp
+// assignments after gSPDisplayList, reordering t4/t2/t3, `&& temp_v0 == temp_v0`, `(u8)` on the
+// func_800325B4 return. Need: lbu in t7 with TWO hidden t-temps (t8,t9) between the bnez and the
+// first macro temp; the mask supplies the t7 slot but only one of the two hidden temps.
 #ifdef NON_MATCHING
 void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
     s16 temp_t3;
