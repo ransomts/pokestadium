@@ -806,11 +806,6 @@ void func_80034348(ModelSegment*, ModelVertex*);
 #pragma GLOBAL_ASM("asm/us/nonmatchings/33FE0/func_80034348.s")
 #endif
 
-#ifdef NON_MATCHING
-// Only s-reg assignment differs: target keeps `vertices` in s3 across the calls, copies it to a
-// fresh cursor in s1 right before the loop, and uses s3 for the remap cursor (spA0 spilled), i in s2.
-// Reusing temp_fs0-2 for the sums fixed all float regs. A separate `var_s1 = vertices` cursor gets
-// the s-regs closer but spills `vertices` and perturbs the pre-loop float temps (fs0-3 used).
 void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     f32 x0, y0, z0;
     f32 temp_fs0, temp_fs1, temp_fs2;
@@ -832,17 +827,15 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     s16* spA0;
     s16 temp_s6;
     s16* temp_v0;
-    s16* var_s3;
     s32 i;
     s32 temp_s0;
     PosBlend* temp_v0_2;
     s32 pad2[1];
     ModelVertex* vtx;
-    
+
     temp_s6 = segment->vertexCount;
     spA0 = Memmap_GetSegmentVaddr(segment->remapSegment);
     temp_v0 = Memmap_GetSegmentVaddr(segment->tableSegment);
-    vtx = vertices;
     x0 = xf->x0;
     y0 = xf->y0;
     z0 = xf->z0;
@@ -869,9 +862,10 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     sp130 = sp154 - sp178;
     sp12C = sp150 - sp174;
     sp128 = sp14C - sp170;
+    vtx = vertices;
 
     for (i = 0; i < temp_s6; i++) {
-        temp_s0 = *spA0;
+        temp_s0 = spA0[i];
         if (func_800336F8(temp_v0, temp_s0) != 0) {
             temp_v0_2 = &vtx->position;
             if (temp_s0 == i) {
@@ -892,14 +886,9 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
                 }
             }
         }
-        spA0++;
         vtx++;
     }
 }
-#else
-void func_80034824(ModelSegment*, StadiumTransform*, s32, ModelVertex*);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/33FE0/func_80034824.s")
-#endif
 
 void func_80034B28(StadiumModel* model) {
     ModelSegment* segment;
