@@ -21,24 +21,28 @@ typedef struct TextureState {
     /* 0x18 */ Gfx* gfx;
 } TextureState; // size = 0x1C
 
-#ifdef NON_MATCHING
 void func_81002830(Gfx* gfx, unk_arg1_func_81002830* arg1) {
-    s16 temp_v0;
+    s32 var_a5;
+    unk_arg1_func_81002830* ptr;
+    s32 var_a4;
     s32 var_a3;
+    s16 temp_v0;
+
+    var_a4 = 1;
     if (D_8006F09C->unk_01C == 0) {
+        ptr = arg1;
         var_a3 = D_800AF7AE;
-        temp_v0 = 0x4000 - (arg1->unk_00 * var_a3);
-        if (1) {}
-        gDPLoadTextureBlock(gfx++, arg1->unk_04[var_a3 & 0x7], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        temp_v0 = 0x4000 - (ptr->unk_00 * var_a3);
+        if (var_a4) {}
+        var_a4 = var_a3;
+        var_a3 = 32;
+        gDPLoadTextureBlock(gfx++, ptr->unk_04[var_a4 & 0x7], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, var_a3, 0, G_TX_NOMIRROR | G_TX_WRAP,
                     G_TX_NOMIRROR | G_TX_CLAMP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
-        gDPSetTileSize(gfx++, 0, temp_v0, 0, ((temp_v0 + 63) << 2), 124);
+        var_a5 = 0;
+        gDPSetTileSize(gfx++, var_a5, temp_v0, var_a5, ((temp_v0 + 63) << 2), 124);
     }
     gSPEndDisplayList(gfx++);
 }
-#else
-void func_81002830(s32, s32);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/31/fragment31_257AF0/func_81002830.s")
-#endif
 
 void func_81002968(s32 arg0, unk_arg1_func_81002968* arg1) {
     s32 temp_v0;

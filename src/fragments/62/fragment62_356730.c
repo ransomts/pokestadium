@@ -236,7 +236,7 @@ s32 func_8436C62C(void) {
                               (j * 4) + (k + 10), (j * 4) + (k + 1), 0);                                      \
     }
 
-// Near miss: only the hoisted 0x06000000 differs — target keeps it in s4 (the LAST of the 8
+// Near miss: only the hoisted 0x06000000 differs - target keeps it in s4 (the LAST of the 8
 // loop-carried values to get a register), ours puts it in t3 (first), rotating every other
 // register by one. Round-3 dead ends: mirroring gSP2Triangles with the G_TRI2 constant as the
 // right operand of the or (IDO reassociates it back to first), folding it in via a separate
