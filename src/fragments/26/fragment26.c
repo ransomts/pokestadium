@@ -229,9 +229,13 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
+// Register allocation differs: sp34/sp88 should be computed after the first scissor word and kept on the stack,
+// with the row counter (y) spilled to the stack in the outer loop.
 void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 sp88;
     s32 sp34;
+    s32 x;
+    s32 y;
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -248,19 +252,15 @@ void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     sp88 = arg1 + arg3;
     sp34 = arg0 + arg2;
 
-    while (arg1 < sp88) {
-        while (arg0 < sp34) {
+    for (y = arg1; y < sp88; y += 0x20) {
+        for (x = arg0; x < sp34; x += 0x20) {
             gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 0x20) << 2, (arg1 + 0x20) << 2,
+            gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 0x20) << 2, (y + 0x20) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0200, 0x0200);
-
-            arg0 += 0x20;
             arg4 += 0x200;
         }
-
-        arg1 += 0x20;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -1844,7 +1844,6 @@ s32 func_88507018(unk_func_8821421C_038_034* arg0) {
     return 0;
 }
 
-#ifdef NON_MATCHING
 s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     s16 temp_v0_2;
     s32 temp_a0;
@@ -1873,10 +1872,10 @@ s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     }
 
     gDPPipeSync(gDisplayListHead++);
-    gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, 0, (arg2 + temp_lo) * 4.0f, 0x0A00, arg2 * 4.0f);
+    gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, 0, arg2 * 4.0f, 0x0A00, (arg2 + temp_lo) * 4.0f);
 
-    var_s0 = arg0->unk_58 / arg0->unk_00.unk_3E;
     var_s2 = arg2 - (arg0->unk_58 % arg0->unk_00.unk_3E);
+    var_s0 = arg0->unk_58 / arg0->unk_00.unk_3E;
     temp_s5 = (((arg0->unk_58 + temp_lo) - 1) / arg0->unk_00.unk_3E) + 1;
 
     while (var_s0 < temp_s5) {
@@ -1903,9 +1902,6 @@ s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 640, 480);
     return 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/26/fragment26/func_8850734C.s")
-#endif
 
 s32 func_885075BC(unk_func_8821421C_038_034* arg0, Controller* arg1) {
     s32 temp_t0;
@@ -2664,6 +2660,7 @@ void func_8850B254(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
 }
 
 #ifdef NON_MATCHING
+// Only the stack slots of two spilled temporaries reused by the last rectangle differ (0x10/0xC instead of 8/0x10).
 s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
     s32 h = 8;
     s32 w = 8;

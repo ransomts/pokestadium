@@ -807,6 +807,8 @@ void func_80034348(ModelSegment*, ModelVertex*);
 #endif
 
 #ifdef NON_MATCHING
+// Remaining diffs: the original keeps `vertices` in s3 and spills spA0 to the stack (here it is the other way
+// round), and the base.xyz / sum float temps are colored differently in the loop.
 void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     f32 x0, y0, z0;
     f32 temp_fs0, temp_fs1, temp_fs2;
@@ -833,10 +835,12 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     s32 temp_s0;
     PosBlend* temp_v0_2;
     s32 pad2[1];
+    ModelVertex* vtx;
     
     temp_s6 = segment->vertexCount;
     spA0 = Memmap_GetSegmentVaddr(segment->remapSegment);
     temp_v0 = Memmap_GetSegmentVaddr(segment->tableSegment);
+    vtx = vertices;
     x0 = xf->x0;
     y0 = xf->y0;
     z0 = xf->z0;
@@ -854,7 +858,6 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     guMtxXFMF(mtx->mf, temp_fs0, temp_fs1, temp_fs2, &sp16C, &sp168, &sp164);
     guMtxXFMF(mtx->mf, temp_fs3, temp_fs4, temp_fs5, &sp160, &sp15C, &sp158);
     guMtxXFMF(mtx->mf, sp184, sp180, sp17C, &sp154, &sp150, &sp14C);
-    var_s3 = spA0;
     sp148 = sp16C - sp178;
     sp144 = sp168 - sp174;
     sp140 = sp164 - sp170;
@@ -866,14 +869,14 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     sp128 = sp14C - sp170;
 
     for (i = 0; i < temp_s6; i++) {
-        temp_s0 = *var_s3;
+        temp_s0 = *spA0;
         if (func_800336F8(temp_v0, temp_s0) != 0) {
-            temp_v0_2 = &vertices->position;
+            temp_v0_2 = &vtx->position;
             if (temp_s0 == i) {
                 if (index == temp_v0_2->nextIndex) {
-                    w0 = vertices->cmd.weights[index].w0;
-                    w1 = vertices->cmd.weights[index].w1;
-                    w2 = vertices->cmd.weights[index].w2;
+                    w0 = vtx->cmd.weights[index].w0;
+                    w1 = vtx->cmd.weights[index].w1;
+                    w2 = vtx->cmd.weights[index].w2;
                     sumX = (w0 * sp148) + sp178 + (w1 * sp13C) + (w2 * sp130);
                     sumY = (w0 * sp144) + sp174 + (w1 * sp138) + (w2 * sp12C);
                     sumZ = (w0 * sp140) + sp170 + (w1 * sp134) + (w2 * sp128);
@@ -887,8 +890,8 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
                 }
             }
         }
-        var_s3++;
-        vertices++;
+        spA0++;
+        vtx++;
     }
 }
 #else
@@ -915,6 +918,8 @@ void func_80034B28(StadiumModel* model) {
 }
 
 #ifdef NON_MATCHING
+// Remaining diffs: s1/s3 are swapped between the remap pointer and `vertices` before the loop, and the x/y/z
+// float temps in the loop are colored differently (fa1/ft4/ft5 in the original).
 void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     s32 pad0[5];
     f32 sp180;
@@ -944,8 +949,8 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
     f32 w0, w1, w2, x, y, z, temp_fv0;
     s32 pad2[4];
     s16 spCA;
-    s32 pad3[1];
     s16* spC0;
+    ModelVertex* var_s0;
     MtxF* mtx;
     f32 temp_fs0, temp_fs1, temp_fs2;
     s16 temp_s1_2;
@@ -955,19 +960,17 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
     s32 i;
     s16* var_s3;
     PosBlend* temp_v0_2;
-    // ModelVertex* var_s0;
 
     temp_v0 = Memmap_GetSegmentVaddr(modelSegment);
     spCA = temp_v0->vertexCount;
-    temp_s1 = Memmap_GetSegmentVaddr(temp_v0->remapSegment);
+    var_s3 = temp_s1 = Memmap_GetSegmentVaddr(temp_v0->remapSegment);
     spC0 = Memmap_GetSegmentVaddr(temp_v0->tableSegment);
     mtx = xf->mtx;
     guMtxXFMF(mtx->mf, xf->x0, xf->y0, xf->z0, &sp180, &sp17C, &sp178);
     guMtxXFMF(mtx->mf, xf->x1, xf->y1, xf->z1, &sp174, &sp170, &sp16C);
     guMtxXFMF(mtx->mf, xf->x2, xf->y2, xf->z2, &sp168, &sp164, &sp160);
     guMtxXFMF(mtx->mf, xf->x3, xf->y3, xf->z3, &sp15C, &sp158, &sp154);
-    // var_s0 = vertices;
-    var_s3 = temp_s1;
+    var_s0 = vertices;
     sp150 = sp174 - sp180;
     sp14C = sp170 - sp17C;
     sp148 = sp16C - sp178;
@@ -980,29 +983,28 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
     for (i = 0; i < spCA; i++) {
         temp_s1_2 = *var_s3;
         if ((func_800336F8(spC0, temp_s1_2) != 0) && (temp_s1_2 == i)) {
-            temp_fs0 = vertices->position.base.x;
-            temp_fs1 = vertices->position.base.y;
-            temp_fs2 = vertices->position.base.z;
-            temp_s1_3 = 1 << index;
+            temp_fs0 = var_s0->position.base.x;
+            temp_fs1 = var_s0->position.base.y;
+            temp_fs2 = var_s0->position.base.z;
             temp_fv0 = func_80033568(temp_fs0, temp_fs1, temp_fs2, sp180, sp17C, sp178, sp174, sp170, sp16C, &sp104, &sp100, &spFC);
-            temp_v0_2 = &vertices->position;
+            temp_v0_2 = &var_s0->position;
             if ((temp_fv0 > 0.0f) && (temp_fv0 < xf->maxDist)) {
-                w0 = vertices->cmd.weights[index].w0;
-                w1 = vertices->cmd.weights[index].w1;
-                w2 = vertices->cmd.weights[index].w2;
+                w0 = var_s0->cmd.weights[index].w0;
+                w1 = var_s0->cmd.weights[index].w1;
+                w2 = var_s0->cmd.weights[index].w2;
                 x = (w0 * sp150) + sp180 + (w1 * sp144) + (w2 * sp138);
                 y = (w0 * sp14C) + sp17C + (w1 * sp140) + (w2 * sp134);
                 z = (w0 * sp148) + sp178 + (w1 * sp13C) + (w2 * sp130);
-                temp_v0_2->disabled |= temp_s1_3;
+                temp_v0_2->disabled |= (1 << index);
                 temp_v0_2->offset.x = (x - temp_fs0) * one;
                 temp_v0_2->offset.y = (y - temp_fs1) * one;
                 temp_v0_2->offset.z = (z - temp_fs2) * one;
             } else {
-                temp_v0_2->disabled &= ~temp_s1_3;
+                temp_v0_2->disabled &= ~(1 << index);
             }
         }
         var_s3++;
-        vertices++;
+        var_s0++;
     }
 }
 #else

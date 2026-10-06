@@ -258,6 +258,8 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
     }
 }
 
+// Remaining differences: float registers for the unk_040.unk_08/unk_0C truncations in case 2/3,
+// and the induction-variable increment order and one spill slot (0x50 vs 0x4C) in the case 5/6 loop.
 #ifdef NON_MATCHING
 void func_86800B38(void) {
     s32 pad1;
@@ -350,7 +352,8 @@ void func_86800B38(void) {
             sp9C = func_8001F5B0(0, 0, func_8002D7C0(NULL, 0, D_87806330, 0x36));
             sp98 = func_8001F5B0(0, 0, func_8002D7C0(NULL, 0, D_87806330, i + 0x36));
 
-            func_8001F1E8((((pad1 * 60) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
+            var_v0 = 60;
+            func_8001F1E8((((var_v0 * pad1) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
                           func_8002D7C0(NULL, 0, D_87806330, i + 0x36));
         }
     }

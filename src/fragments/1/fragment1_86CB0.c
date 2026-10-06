@@ -497,7 +497,9 @@ u16 func_81207C5C_Empty(void) {
 }
 
 #ifdef NON_MATCHING
-// Matching but won't generate correct checksum
+// Codegen matches, but only with D_8120EB6C as an in-function static (an extern global changes register
+// allocation). D_8120EB6C lives in .data in the middle of this file's data (which also contains the large
+// sample tables up to D_8122869C), so that data would have to be migrated into C for this to link correctly.
 u16 func_81207DF8(void) {
     static s32 D_8120EB6C;
     u16 temp_v0;
@@ -1048,15 +1050,18 @@ u8 func_81208F9C(u16 arg0) {
 }
 
 #ifdef NON_MATCHING
+// The empty -1 branch should be a plain `b` (here `if (bufPtr) {}` leaves a beqzl), *bufPtr should load into v1,
+// and the final store to D_812346F4 should reuse the v1 base instead of lui at.
 s32 func_81209078(void) {
     u32 aiLen;
     s32 pad1;
     s32 idx;
     s32 pad2[2];
     s16* buf;
-    s32 pad3[2];
+    s32 pad3;
     s16* len;
     s16** bufPtr;
+    s16* p;
 
     D_812346C8++;
     D_812346D0 ^= 1;
@@ -1070,11 +1075,12 @@ s32 func_81209078(void) {
         if (*len != 0) {
             bufPtr = &D_812346E0[idx];
             if (osGbSetNextBuffer(*bufPtr, *len * 4) == -1) {
-                do {
-                } while (0);
+                if (bufPtr) {}
             } else {
-                D_8122C790 = (*bufPtr)[*len * 2 - 2];
-                D_8122C792 = (*bufPtr)[*len * 2 - 1];
+                p = *bufPtr;
+                p += *len * 2;
+                D_8122C790 = p[-2];
+                D_8122C792 = p[-1];
             }
         }
     }
@@ -1103,8 +1109,8 @@ s32 func_81209078(void) {
         func_81209374(*len, buf);
     }
     osWritebackDCache(buf, *len * 4);
-    D_812346F4 = osGetCount() * (D_812346C8 + D_812346F4);
-    D_812346F4 += (*bufPtr)[D_812346C8 & 0xFF];
+    D_812346F4 = osGetCount() * (D_812346F4 + D_812346C8);
+    D_812346F4 = (*bufPtr)[D_812346C8 & 0xFF] + D_812346F4;
     return 0;
 }
 #else
@@ -1121,18 +1127,20 @@ void func_81209368(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
+// D_8122869C is an in-function static: IDO keeps it in a register across the loop and stores it back on every
+// loop exit only because no other code can access it. It is the last word of this file's .data (after the large
+// sample tables), so that data would need to be migrated into C to link correctly. With the static, only a
+// t6-t9 register rotation in the loop body still differs.
 void func_81209374(s32 numSamples, s16* out) {
+    static u32 D_8122869C;
     s32 i;
     s8* mainData;
     s8* altData;
-    s32 mainEnd;
-    s32 altEnd;
-    u32 vol;
     s32 a;
     s32 b;
-    s16* p;
+    s32 mainEnd;
+    s32 altEnd;
 
-    p = out;
     mainData = NULL;
     altData = NULL;
     if (D_8120EB7C.id != 0) {
@@ -1142,7 +1150,6 @@ void func_81209374(s32 numSamples, s16* out) {
         D_8120EB7C.id = 0;
         D_8122869C = 0x400;
     }
-    vol = D_8122869C;
     if (D_8120EB84.id != 0) {
         mainData = D_81228654[D_8120EB84.id];
         mainEnd = D_81228678[D_8120EB84.id];
@@ -1170,15 +1177,15 @@ void func_81209374(s32 numSamples, s16* out) {
                 altData = NULL;
                 b = 0;
             } else {
-                b = (s32)(altData[D_8120EB8C.pos++] * vol) / 1024;
+                b = altData[D_8120EB8C.pos++];
+                b = (s32)(b * D_8122869C) / 1024;
             }
         } else {
             b = 0;
         }
-        p[i * 2 + 0] = (a + b) << 6;
-        p[i * 2 + 1] = (a - b) << 6;
+        out[i * 2 + 0] = (a + b) << 6;
+        out[i * 2 + 1] = (a - b) << 6;
     }
-    D_8122869C = vol;
 }
 #else
 void func_81209374(s32 numSamples, s16* out);

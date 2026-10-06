@@ -68,7 +68,7 @@ typedef struct unk_D_800FCB48 {
     /* 0x70 */ s32 unk_70;
     /* 0x74 */ s32 unk_74;
     /* 0x78 */ u32 unk_78;
-    /* 0x7C */ s32 unk_7C;
+    /* 0x7C */ u32 unk_7C;
     /* 0x80 */ s32 unk_80;
 } unk_D_800FCB48; // size = 0x84
 
@@ -296,7 +296,7 @@ extern u8 D_800FCCBC[2];
 extern u8 D_800FCCBE[2];
 extern u8 D_800FCCC0[2];
 extern u8 D_800FCCC2[2];
-extern s8 D_800FCCC4[2];
+extern u8 D_800FCCC4[2];
 extern u8 D_800FCCC6[2];
 extern u8 D_800FCCC8[2];
 extern u8 D_800FCCCA[2];
@@ -1191,7 +1191,6 @@ void func_8003F624(u32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_8003F660(s32 arg0) {
     u32 mask;
     u32 sp40;
@@ -1206,7 +1205,6 @@ void func_8003F660(s32 arg0) {
     u8 sp34;
     u8 pad2;
     u8 sp32;
-
 
     sp3A = 0;
     sp39 = 0;
@@ -1260,9 +1258,9 @@ void func_8003F660(s32 arg0) {
         case 0x6B:
         case 0x6C:
             D_800FCB48[temp_s0].unk_24++;
-            ((u16*)D_800FCB48[temp_s0].unk_00)[D_800FCB48[temp_s0].unk_24 & 0xF] = D_800FCB18[temp_s0]->unk_0C;
+            D_800FCB48[temp_s0].unk_00[D_800FCB48[temp_s0].unk_24 & 0xF] = D_800FCB18[temp_s0]->unk_0C;
             mask = osSetIntMask(1);
-            D_800FCCA2 = (u8) sp3C;
+            D_800FCCA2 = sp3C;
             osSetIntMask(mask);
             break;
         case 0x6E:
@@ -1270,7 +1268,7 @@ void func_8003F660(s32 arg0) {
         case 0x9E:
         case 0xAB:
             mask = osSetIntMask(1);
-            D_800FCCA2 = (u8) sp3C;
+            D_800FCCA2 = sp3C;
             osSetIntMask(mask);
             break;
         case 0x0:
@@ -1292,7 +1290,7 @@ void func_8003F660(s32 arg0) {
         case 0x6:
             if (D_800FCB48[temp_s0].unk_7C == 1) {
                 func_80041C70(0x19F);
-            } else if (D_800FCB48[temp_s0].unk_7C >= 4U) {
+            } else if (D_800FCB48[temp_s0].unk_7C >= 4) {
                 func_80041C70(0x164);
             } else {
                 func_80041C70(0x163);
@@ -1379,12 +1377,12 @@ void func_8003F660(s32 arg0) {
             func_800367A0(0x16, D_80078400, 0);
             return;
         case 0x12:
-            if (((unk_D_800FCB48*)&D_800FCCCA[temp_s0])->unk_00[0] == 0) {
+            if (D_800FCCCA[temp_s0] == 0) {
                 func_80041C70(0x18C);
             } else {
                 func_80041C70(0x18E);
             }
-            ((unk_D_800FCB48*)&D_800FCCCA[temp_s0])->unk_00[0] ^= 1;
+            D_800FCCCA[temp_s0] ^= 1;
             D_80078544 = 0;
             func_800367A0(0x16, D_80078400, 0);
             return;
@@ -1506,7 +1504,7 @@ void func_8003F660(s32 arg0) {
             if (D_800FCCD2[temp_s0 ^ 1] != 0) {
                 func_800420C0(&D_80077F50);
             } else {
-                if ((D_800783D4 != 0) || ((D_80078390[temp_s0 ^ 1] == 1) && ((s32)D_800FCB18[temp_s0 ^ 1]->unk_0C < 0x13))) {
+                if ((D_800783D4 != 0) || ((D_80078390[temp_s0 ^ 1] == 1) && (D_800FCB18[temp_s0 ^ 1]->unk_0C < 0x13))) {
                     func_800420C0(&D_80077F1C);
                     func_800367A0(0x16, D_80078400, 0);
                 } else {
@@ -1608,13 +1606,13 @@ void func_8003F660(s32 arg0) {
         case 0xB0:
             func_80041C70(0x167);
             D_800FCB48[temp_s0].unk_24++;
-            ((u16*)D_800FCB48[temp_s0].unk_00)[D_800FCB48[temp_s0].unk_24 & 0xF] = ((unk_D_800FCB18*)D_800FCB18[temp_s0])->unk_0C;
+            D_800FCB48[temp_s0].unk_00[D_800FCB48[temp_s0].unk_24 & 0xF] = D_800FCB18[temp_s0]->unk_0C;
             D_80078544 = 0;
             return;
         case 0xB1:
             func_80041C70(0x166);
             D_800FCB48[temp_s0].unk_24++;
-            ((u16*)D_800FCB48[temp_s0].unk_00)[D_800FCB48[temp_s0].unk_24 & 0xF] = ((unk_D_800FCB18*)D_800FCB18[temp_s0])->unk_0C;
+            D_800FCB48[temp_s0].unk_00[D_800FCB48[temp_s0].unk_24 & 0xF] = D_800FCB18[temp_s0]->unk_0C;
             D_80078544 = 0;
             return;
         case 0xB3:
@@ -1645,12 +1643,12 @@ void func_8003F660(s32 arg0) {
         case 0x4:
             sp32 = 1;
             break;
-        default: 
+        default:
             break;
         }
     }
     D_80078544 = 0;
-    
+
     if (sp34 != 0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
@@ -1684,13 +1682,13 @@ void func_8003F660(s32 arg0) {
         osSetIntMask(mask);
         D_800783E8 = 1;
         if (sp39 != 0) {
-            if ((u32) D_800FCCA4 < 0xAU) {
-                if ((D_800FCB18[temp_s0]->unk_0C > 0) && ((s32)D_800FCB18[temp_s0 ^ 1]->unk_0C >= 0xB)) {
+            if (D_800FCCA4 < 0xA) {
+                if ((D_800FCB18[temp_s0]->unk_0C > 0) && (D_800FCB18[temp_s0 ^ 1]->unk_0C >= 0xB)) {
                     func_800420C0(&D_80077EF0);
                 } else {
                     func_800420C0(&D_80077F04);
                 }
-            } else if ((u32) D_800783CC < 2U) {
+            } else if (D_800783CC < 2) {
                 func_80041C70(0x68);
                 func_800367A0(0x16, D_80078400, 0);
             } else {
@@ -1701,8 +1699,8 @@ void func_8003F660(s32 arg0) {
                 }
                 func_800367A0(0x16, D_80078400, 0);
             }
-        } else if ((u32) D_800FCCA4 < 0xAU) {
-            if (((s32)D_800FCB18[temp_s0]->unk_0C > 0) && ((s32)D_800FCB18[temp_s0 ^ 1]->unk_0C >= 0xB)) {
+        } else if (D_800FCCA4 < 0xA) {
+            if ((D_800FCB18[temp_s0]->unk_0C > 0) && (D_800FCB18[temp_s0 ^ 1]->unk_0C >= 0xB)) {
                 func_800420C0(&D_80077EF0);
             } else {
                 func_800420C0(&D_80077F04);
@@ -1726,7 +1724,7 @@ void func_8003F660(s32 arg0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
         osSetIntMask(mask);
-        if ((u32) D_800FCCA4 >= 0x29U) {
+        if (D_800FCCA4 >= 0x29) {
             func_800420C0(&D_80077EF8);
             func_800367A0(0x16, D_80078400, 0);
         } else if ((D_800FCB18[0]->unk_0C > 0) && (D_800FCB18[1]->unk_0C > 0)) {
@@ -1739,22 +1737,19 @@ void func_8003F660(s32 arg0) {
         if (D_800FCCA4 >= 0x29) {
             func_800420C0(&D_80077E98);
             func_800367A0(0x16, D_80078400, 0);
-        }else if (D_800FCCA4 >= 6) {
-            if (( D_800FCB18[0]->unk_0C > 0) && ((s32) D_800FCB18[1]->unk_0C > 0)) {
+        } else if (D_800FCCA4 >= 6) {
+            if ((D_800FCB18[0]->unk_0C > 0) && (D_800FCB18[1]->unk_0C > 0)) {
                 func_800420C0(&D_80077EA4);
             } else {
                 func_800420C0(&D_80077F60);
             }
-        }else if (((s32) D_800FCB18[0]->unk_0C > 0) && ((s32) D_800FCB18[1]->unk_0C > 0)) {
+        } else if ((D_800FCB18[0]->unk_0C > 0) && (D_800FCB18[1]->unk_0C > 0)) {
             func_800420C0(&D_80077EB4);
         } else {
             func_800420C0(&D_80077F04);
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/3D140_2/func_8003F660.s")
-#endif
 
 void func_80040A70(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
@@ -2317,19 +2312,29 @@ void func_800420F0_empty() {
     
 }
 
-#ifdef NON_MATCHING
 u32 func_80042158(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
-    s32 side;
-    u8* entry;
-    u8 type;
-    u8 power;
-    u8 conv0;
+    u32 power;
+    f32 atk;
+    f32 def;
+    f32 base;
+    f32 dmg;
+    f32 prevA;
+    f32 hpA;
+    f32 mulA;
+    f32 prevB;
+    f32 hpB;
+    f32 mulB;
+    u8 mode;
+    f32 status;
     u8 conv1;
-    f32 f0;
-    f32 f2;
-    f32 f12;
-    f32 f14;
-    f32 sp50;
+    u8 conv2;
+    u8 conv0;
+    u8 type;
+    f32 eff2;
+    f32 stab;
+    u8* entry;
+    u32 ret;
+    s32 side;
 
     if ((arg0 == 0) || (arg0 >= 0xA6)) {
         arg0 = 1;
@@ -2343,20 +2348,19 @@ u32 func_80042158(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
         return 0;
     }
 
-    entry = &D_800780B4[(arg0 * 3) - 3];
+    entry = &D_800780B4[(arg0 - 1) * 3];
     conv0 = func_80042850(entry[2]);
-
     type = entry[0];
     power = entry[1];
 
     switch (type) {
-        case 7:
-            return (u32)-1;
+        case 0x26:
+            return -1;
 
-        case 8:
+        case 0x28:
             return arg2->unk_28 / 2;
 
-        case 0xD:
+        case 0x29:
             switch (arg0) {
                 case 0x31:
                     return 0x14;
@@ -2367,129 +2371,154 @@ u32 func_80042158(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
                 case 0x65:
                     return arg1->unk_26;
                 case 0x95:
-                    return (u32)((f32)arg1->unk_26 * 1.5f);
+                    return (u32)arg1->unk_26 * 1.5f;
                 default:
                     return 0;
             }
 
-        case 0x22:
-            if (entry == D_800781E0) {
-                return (u32)-5;
+        case 0x7:
+            return -3;
+
+        case 0x9:
+        case 0xA:
+        case 0xB:
+        case 0xD:
+        case 0xF:
+        case 0x18:
+        case 0x19:
+        case 0x1A:
+        case 0x2E:
+        case 0x2F:
+        case 0x32:
+        case 0x33:
+        case 0x34:
+        case 0x35:
+        case 0x38:
+        case 0x39:
+        case 0x40:
+        case 0x41:
+        case 0x4F:
+        case 0x52:
+        case 0x53:
+        case 0x55:
+            return -5;
+
+        case 0x12:
+        case 0x13:
+        case 0x14:
+        case 0x16:
+        case 0x20:
+        case 0x31:
+        case 0x3B:
+        case 0x42:
+        case 0x43:
+        case 0x54:
+        case 0x56:
+            return -4;
+
+        case 0x1C:
+            if (D_800781E0 == &D_800780B4[arg0 * 3]) {
+                return -5;
             }
-            return (u32)-4;
+            return -4;
     }
 
-    if (entry == D_80078180) {
-        return (u32)-2;
+    if (D_80078180 == &D_800780B4[arg0 * 3]) {
+        return -2;
     }
 
     if (arg1->unk_2A != 0) {
-        f2 = arg1->unk_2A;
+        atk = (u32)arg1->unk_2A;
     } else {
-        f2 = 1.0f;
+        atk = 1.0f;
     }
 
     if (arg2->unk_2C != 0) {
-        f0 = arg2->unk_2C;
+        def = (u32)arg2->unk_2C;
     } else {
-        f0 = 1.0f;
+        def = 1.0f;
     }
 
-    sp50 = ((((f32)(((arg1->unk_26 * 2) / 5) + 2) * (f32)power) * f2) / f0);
+    base = (f32)(((arg1->unk_26 * 2) / 5) + 2) * power * atk / def / 50.0f;
 
     conv1 = func_80042850(arg2->unk_16[6]);
-    {
-        u8 conv2;
-        u8 mode;
+    conv2 = func_80042850(arg2->unk_16[7]);
 
-        conv2 = func_80042850(arg2->unk_16[7]);
+    mode = D_800782A4[conv0 * 15 + conv1];
+    switch (mode) {
+        case 1:
+            mulB = 0.0f;
+            break;
+        case 2:
+            mulB = 0.5f;
+            break;
+        case 3:
+            mulB = 2.0f;
+            break;
+        default:
+            mulB = 1.0f;
+    }
 
-        mode = D_800782A4[(conv1 * 0xF) + conv2];
-        if (mode == 1) {
-            f12 = 0.0f;
-        } else if (mode == 2) {
-            f12 = 0.5f;
-        } else if (mode == 3) {
-            f12 = 2.0f;
-        } else {
-            f12 = 1.0f;
-        }
-
-        mode = D_800782A4[(conv1 * 0xF) + conv0];
-        if (mode == 1) {
-            f2 = 0.0f;
-        } else if (mode == 2) {
-            f2 = 0.5f;
-        } else if (mode == 3) {
-            f2 = 2.0f;
-        } else {
-            f2 = 1.0f;
-        }
+    mode = D_800782A4[conv0 * 15 + conv2];
+    switch (mode) {
+        case 1:
+            eff2 = 0.0f;
+            break;
+        case 2:
+            eff2 = 0.5f;
+            break;
+        case 3:
+            eff2 = 2.0f;
+            break;
+        default:
+            eff2 = 1.0f;
     }
 
     if ((arg1->unk_16[6] == entry[2]) || (arg1->unk_16[7] == entry[2])) {
-        f0 = 1.5f;
+        stab = 1.5f;
     } else {
-        f0 = 1.0f;
+        stab = 1.0f;
     }
 
-    {
-        unk_D_800FCB48* hist;
-        f32 prev;
-        f32 cur;
-        f32 mulA;
-        f32 mulB;
-        u8 flags;
-        u32 ret;
+    dmg = base * mulB * eff2 * stab;
 
-        hist = &D_800FCB48[side ^ 1];
-        prev = hist->unk_00[hist->unk_24 & 0xF];
-        if (prev == 0.0f) {
-            prev = 1.0f;
-        }
-        cur = arg2->unk_28;
-
-        if (D_80078390[side] == 1) {
-            mulA = D_8007CB80;
-        } else {
-            mulA = 1.0f;
-        }
-
-        hist = &D_800FCB48[side];
-        f14 = hist->unk_00[hist->unk_24 & 0xF];
-        if (f14 == 0.0f) {
-            f14 = 1.0f;
-        }
-        f12 = arg1->unk_28;
-
-        if (D_80078390[side ^ 1] == 1) {
-            mulB = D_8007CB84;
-        } else {
-            mulB = 1.0f;
-        }
-
-        flags = arg2->unk_15;
-        if (flags & 0x20) {
-            f14 = D_8007CB88;
-        } else if (flags & 7) {
-            f14 = D_8007CB8C;
-        } else {
-            f14 = 1.0f;
-        }
-
-        ret = (u32)(((((cur / prev) * D_8007CB90) + 1.0f) * sp50 * f2 * f0) *
-                    ((((f12 / hist->unk_00[D_800FCB48[side].unk_24 & 0xF]) * D_8007CB90) + 1.0f)) *
-                    mulA * mulB * f14);
-
-        if (ret >= 0x8000) {
-            return 0x7FFF;
-        }
-        return ret;
+    prevA = (u32)D_800FCB48[side ^ 1].unk_00[D_800FCB48[side ^ 1].unk_24 & 0xF];
+    if (prevA == 0) {
+        prevA = 1;
     }
+    hpA = (u32)arg2->unk_28;
+    if (D_80078390[side ^ 1] == 1) {
+        mulA = 1.1f;
+    } else {
+        mulA = 1.0f;
+    }
+
+    prevB = (u32)D_800FCB48[side].unk_00[D_800FCB48[side].unk_24 & 0xF];
+    if (prevB == 0) {
+        prevB = 1;
+    }
+    hpB = (u32)arg1->unk_28;
+    if (D_80078390[side] == 1) {
+        mulB = 1.1f;
+    } else {
+        mulB = 1.0f;
+    }
+
+    if (arg2->unk_15 & 0x20) {
+        status = 1.2f;
+    } else if (arg2->unk_15 & 7) {
+        status = 1.1f;
+    } else {
+        status = 1.0f;
+    }
+
+    ret = (((hpA / prevA) * 0.01f) + 1) * dmg * (1 + ((hpB / prevB) * 0.01f)) * mulA * mulB * status;
+
+    if (ret >= 0x8000) {
+        ret = 0x7FFF;
+    }
+    return ret;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/3D140_2/func_80042158.s")
-#endif
 
 s32 func_80042850(u8 arg0) {
     switch (arg0) {

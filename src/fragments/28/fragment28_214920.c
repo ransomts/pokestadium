@@ -785,10 +785,12 @@ void func_888031FC(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_54->unk_00.unk_00);
 }
 
-#ifdef NON_MATCHING
 s32 func_88803614(void) {
     s32 var_s0;
-    u16 var_s2 = 1;
+    s32 var_s2;
+    s32 var_s5;
+
+    var_s5 = var_s2 = 1;
 
     ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_2C, 0);
     ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_30, 0);
@@ -834,12 +836,10 @@ s32 func_88803614(void) {
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
         func_80007778();
+        var_s5 = var_s2;
     }
-    return var_s2;
+    return var_s5;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/28/fragment28_214920/func_88803614.s")
-#endif
 
 s32 func_888038E0(void) {
     s32 var_s0;

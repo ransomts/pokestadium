@@ -1281,6 +1281,8 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
     return sp18;
 }
 
+// Rewritten from the asm; logic should be equivalent. Still differs in register allocation
+// (arg3 & 1 is kept instead of (arg3 & 1) * 8, temp_s7 gets spilled) and stack layout.
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
@@ -1300,18 +1302,18 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
         },
     };
 
-    s32 i;
     Color_RGBA8 spBC;
+    s32 var_s1;
+    s32 x;
+    s32 var_s6;
+    s32 temp_s7;
     s32 spA8;
+    s32 color;
+    s32 var_s4;
+    unk_func_8830867C_02C* temp_s5;
+    Color_RGBA8* temp_v1;
     s32 sp58;
     s32 sp50;
-    s32 var_s1;
-    s32 temp_a0;
-    s32 temp_a0_2;
-    s32 temp_a3;
-    s32 temp_s7;
-    s32 var_s6;
-    unk_func_8830867C_02C* temp_s5;
 
     temp_s5 = arg5->unk_70;
     if (temp_s5->unk_0AC->unk_2C->unk_30 & 2) {
@@ -1325,35 +1327,37 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
-    temp_a3 = ((D_883171D0[arg3 & 1].r << 8) & 0xF800) | ((D_883171D0[arg3 & 1].g << 3) & 0x7C0) |
-              ((D_883171D0[arg3 & 1].b >> 2) & 0x3E) | 1;
-    gDPPipeSync(gDisplayListHead++);
-    gDPSetFillColor(gDisplayListHead++, (temp_a3 << 0x10) | temp_a3);
+    temp_v1 = ((Color_RGBA8(*)[2])D_883171D0)[arg3 & 1];
+    // clang-format off
+    color = ((temp_v1[0].r << 8) & 0xF800) | ((temp_v1[0].g << 3) & 0x7C0) | ((temp_v1[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    // clang-format on
+    gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + 0x25, arg1 + 0x13);
 
-    temp_a0 = ((D_883171D0[(arg3 & 1) + 1].r << 8) & 0xF800) | ((D_883171D0[(arg3 & 1) + 1].g << 3) & 0x7C0) |
-              ((D_883171D0[(arg3 & 1) + 1].b >> 2) & 0x3E) | 1;
-    gDPPipeSync(gDisplayListHead++);
-    gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
+    temp_s7 = var_s1 + arg0;
+
+    // clang-format off
+    color = ((temp_v1[1].r << 8) & 0xF800) | ((temp_v1[1].g << 3) & 0x7C0) | ((temp_v1[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    // clang-format on
+    gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
     gDPFillRectangle(gDisplayListHead++, arg0 + 0x26, arg1, arg0 + 0x81, arg1 + 0x13);
 
-    sp50 = arg0 + 0x84;
     var_s6 = temp_s5->unk_CD4[temp_s5->unk_CD0];
 
-    for (i = arg0 + 0x84; i < var_s1 + arg0; i++) {
-        temp_a0_2 = ((D_883172CC[arg3 & 1][var_s6 & 1].r << 8) & 0xF800) |
-                    ((D_883172CC[arg3 & 1][var_s6 & 1].g << 3) & 0x7C0) |
-                    ((D_883172CC[arg3 & 1][var_s6 & 1].b >> 2) & 0x3E) | 1;
-        gDPPipeSync(gDisplayListHead++);
-        gDPSetFillColor(gDisplayListHead++, (temp_a0_2 << 0x10) | temp_a0_2);
-        gDPFillRectangle(gDisplayListHead++, sp50, arg1, (temp_s5->unk_0DC->unk_00[i] + sp50) - 1, arg1 + 0x13);
+    sp50 = arg0 + 0x84;
+    for (x = sp50; x < temp_s7; var_s6++) {
+        // clang-format off
+        color = ((D_883172CC[arg3 & 1][var_s6 & 1].r << 8) & 0xF800) | ((D_883172CC[arg3 & 1][var_s6 & 1].g << 3) & 0x7C0) | ((D_883172CC[arg3 & 1][var_s6 & 1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        // clang-format on
+        gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
+        gDPFillRectangle(gDisplayListHead++, x, arg1, (((s32*)temp_s5->unk_0DC)[var_s6] + x) - 1, arg1 + 0x13);
 
-        sp50 += temp_s5->unk_0DC->unk_00[i];
-        var_s6++;
+        x += ((s32*)temp_s5->unk_0DC)[var_s6];
     }
 
     if (arg2 != NULL) {
-        func_8002E8E4(arg0 + 6, arg1 + 4, arg3 + 1, 3);
+        x = sp50;
+        func_8002E8E4(arg0 + 6, sp58 = arg1 + 4, arg3 + 1, 3);
         spBC = D_883172C0[func_883047CC(temp_s5, arg2)];
         if (arg4 & 4) {
             spBC.a = 0x4D;
@@ -1366,85 +1370,86 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
         spA8 = (0x5C - func_8001F5B0(0, 0, "WWWWWWWWWW")) / 2;
 
         if ((arg2->unk_08 <= 0) || (arg2->unk_08 >= 0x98)) {
-            func_8001F1E8(arg0 + spA8 + 0x26, arg1 + 2, "?????");
+            var_s4 = arg1 + 2;
+            func_8001F1E8(arg0 + spA8 + 0x26, var_s4, "?????");
         } else {
-            func_8001F1E8(arg0 + spA8 + 0x26, arg1 + 2, func_8002D7C0(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
+            var_s4 = arg1 + 2;
+            func_8001F1E8(arg0 + spA8 + 0x26, var_s4, func_8002D7C0(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
         }
 
         func_8001F444();
 
         var_s6 = temp_s5->unk_CD4[temp_s5->unk_CD0];
 
-        for (i = sp50; i < var_s1 + arg0; i++) {
+        for (; x < temp_s7; var_s6++) {
             switch (var_s6) {
                 case 0:
-                    func_88304608(sp50 + spA8, arg1 + 2, arg2->unk_40, 0);
+                    func_88304608(x + spA8, var_s4, arg2->unk_38, 0);
                     break;
 
                 case 1:
-                    func_8002E8E4(sp50 + 4, arg1 + 4, arg2->unk_16, 5);
+                    func_8002E8E4(x + 4, sp58, (u16)arg2->unk_16, 5);
                     break;
 
                 case 2:
-                    func_88304608(sp50 + ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "WWWWWWW")) / 2), arg1 + 2,
+                    func_88304608(x + ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "WWWWWWW")) / 2), var_s4,
                                   arg2->unk_43, 0);
                     break;
 
                 case 3:
-                    func_883045C0(sp50, arg1, temp_s5->unk_0DC->unk_00[i], arg2);
+                    func_883045C0(x, arg1, ((s32*)temp_s5->unk_0DC)[var_s6], arg2);
                     break;
 
                 case 4:
                 case 5:
-                    func_88304350(sp50, arg1 + 2, temp_s5->unk_0DC->unk_00[i], &arg2->unk_08, var_s6 - 4);
+                    func_88304350(x, var_s4, ((s32*)temp_s5->unk_0DC)[var_s6], &arg2->unk_08, var_s6 - 4);
                     break;
 
                 case 6:
                 case 7:
                 case 8:
                 case 9:
-                    func_88304490(sp50, arg1 + 2, temp_s5->unk_0DC->unk_00[i], &arg2->unk_08, var_s6 - 6);
+                    func_88304490(x, var_s4, ((s32*)temp_s5->unk_0DC)[var_s6], &arg2->unk_08, var_s6 - 6);
                     break;
 
                 case 10:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_2C, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", arg2->unk_2C, &arg2->unk_08);
                     break;
 
                 case 11:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_36, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", (u16)arg2->unk_2E, &arg2->unk_08);
                     break;
 
                 case 12:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_30, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", (u16)arg2->unk_30, &arg2->unk_08);
                     break;
 
                 case 13:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_32, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", (u16)arg2->unk_32, &arg2->unk_08);
                     break;
 
                 case 14:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_34, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", (u16)arg2->unk_34, &arg2->unk_08);
                     break;
 
                 case 15:
-                    func_88304718(sp50 + (temp_s5->unk_0DC->unk_00[i] -
-                                          ((temp_s5->unk_0DC->unk_00[i] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  arg1 + 2, "%3d", arg2->unk_36, &arg2->unk_08);
+                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
+                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
+                                  var_s4, "%3d", (u16)arg2->unk_36, &arg2->unk_08);
                     break;
             }
 
-            var_s6++;
-            sp50 += temp_s5->unk_0DC->unk_00[i];
+            x += ((s32*)temp_s5->unk_0DC)[var_s6];
         }
     }
 }

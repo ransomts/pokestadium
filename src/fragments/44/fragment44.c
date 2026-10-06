@@ -303,13 +303,11 @@ void func_83500D9C(s32 arg0, s32 arg1, s32 arg2) {
     func_8001C330((arg0 + arg2) - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
 }
 
-#ifdef NON_MATCHING
 void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     s32 temp_s1;
     s32 temp_v1;
     char* temp_v0;
-    s32 pad;
-    s32 tmp;
+    UNUSED s32 pad[2];
     char sp30[4];
 
     func_8001F3F4();
@@ -320,8 +318,7 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
 
     temp_v0 = func_83402374(0x3A);
 
-    tmp = func_8001F5B0(0, 0, temp_v0);
-    temp_v1 = ((-func_8001F5B0(0, 0, "99/99") - tmp) + 0xDF) / 2;
+    temp_v1 = (0xDF - (func_8001F5B0(0, 0, temp_v0) + func_8001F5B0(0, 0, "99/99"))) / 2;
     temp_s1 = temp_v1 + 0x133;
 
     func_8001F1E8((arg1 + temp_v1) + 0x133, arg2 + 0x108, temp_v0);
@@ -339,9 +336,6 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     func_8001F4C4();
     func_8001F444();
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/44/fragment44/func_83500FE8.s")
-#endif
 
 void func_83501204(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
@@ -448,6 +442,7 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
     *arg3 = var_ft4;
 }
 
+// Only differs in the stack slot of x (0xA4 vs 0x90).
 #ifdef NON_MATCHING
 void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
@@ -462,9 +457,9 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
     s32 spE8;
     s32 temp_fv1_3;
     s32 temp_fv0_3;
-    s32 pad;
     s32 var_t0;
     s32 tmp2;
+    s32 x;
 
     sp100 = arg4;
     temp_ft0 = arg3;
@@ -484,15 +479,16 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
     gSPDisplayList(gDisplayListHead++, D_8006F498);
 
     tmp2 = (temp_ft8 - spF4) / 2;
+    x = arg1 + tmp2;
 
-    func_8001C604((arg1 + tmp2) + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
-    func_83401728(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
+    func_8001C604(x + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
+    func_83401728(x, arg2 + spE8, spF4, temp_ft3, 2);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
 
     for (i = 0; i < sp100; i += tmp) {
-        var_t0 = CLAMP_MAX(tmp, sp100 - i);
+        var_t0 = (sp100 - i < tmp) ? sp100 - i : tmp;
         a = 1024.0f / arg5;
 
         temp_fv0_3 = ROUND_MAX((var_t0 * arg5) + 0.4f);
@@ -502,7 +498,7 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
                            temp_ft0, var_t0 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(arg1 + tmp2, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
+        func_8001C330(x, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
     }
 }
 #else

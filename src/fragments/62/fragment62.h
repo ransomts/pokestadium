@@ -3182,7 +3182,7 @@ s32 func_8437F85C(unk_D_843C60A4* arg0, s32* arg1, s32 arg2, unk_func_8437F85C_a
 void func_8437FB14(unk_D_843C60A4* arg0, u8* arg1, s32 arg2);
 s32 func_8437FC10(unk_D_843C60A4* arg0);
 s32 func_8437FCCC(unk_D_800FCB18* arg0);
-s32 func_8437FD74(unk_D_843C60A4* arg0, s32* arg1, s32* arg2, u8 arg3);
+s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3);
 s32 func_84380164(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, u8* arg3, s32* arg4);
 s32 func_843804F4(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, u8* arg3, s32 arg4);
 void func_84380598(void);

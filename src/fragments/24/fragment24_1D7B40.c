@@ -2440,12 +2440,11 @@ void func_88310808(unk_func_8830867C_040_05C* arg0, unk_func_8830867C_040* arg1)
     arg0->unk_24 = arg1;
 }
 
-#ifdef NON_MATCHING
 s32 func_88310854(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
     s32 var_t2;
     s32 i;
     unk_func_8830867C_040_05C* var_a0;
-    unk_func_88205880_A030* ptr;
+    UNUSED s32 pad;
     u8* ptr2;
 
     var_t2 = 0;
@@ -2500,12 +2499,11 @@ s32 func_88310854(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
                 } else {
                     if (arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].unk_04 != NULL) {
                         arg0->unk_24->unk_64->unk_00
-                            .unk_34[D_88317360[arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].unk_04[0]]] &= ~2;
+                            .unk_34[D_88317360[arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].unk_04[0] - 1]] &= ~2;
                     }
                     arg0->unk_24->unk_64->unk_00.unk_34[arg0->unk_24->unk_64->unk_00.unk_38] |= 2;
 
-                    ptr = arg0->unk_24->unk_64->unk_00.unk_2C;
-                    ptr2 = ptr->unk_00[arg0->unk_24->unk_64->unk_00.unk_38];
+                    ptr2 = ((unk_func_88205880_A030*)arg0->unk_24->unk_64->unk_00.unk_2C)->unk_00[arg0->unk_24->unk_64->unk_00.unk_38];
                     arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].unk_04 = ptr2;
 
                     func_8830FA20(arg0->unk_24, arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].unk_00,
@@ -2525,9 +2523,6 @@ s32 func_88310854(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
     }
     return var_t2;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/24/fragment24_1D7B40/func_88310854.s")
-#endif
 
 void func_88310B70(unk_func_88310B70* arg0, s32 arg1, s32 arg2, unk_func_8830867C_04C_030* arg3, MemoryPool* arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88310B70));

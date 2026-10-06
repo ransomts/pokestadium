@@ -353,6 +353,7 @@ void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2)
 }
 
 #ifdef NON_MATCHING
+// Only the stack slots of three spilled temps differ (sp68 * 4 vs. the D_6E910 rom address pair)
 void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     s16 sp6E;
     s32 sp68;
@@ -362,7 +363,6 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     unk_func_80026268_arg0* ptr;
     unk_D_8438FF70* ptr2;
     u32 tmp;
-    s32 var_a2;
 
     sp68 = func_84307F00(arg0);
     sp66 = arg0->unk_000.unk_01A - 1;
@@ -1238,6 +1238,7 @@ void func_84304F54(unk_D_84390010* arg0) {
 }
 
 #ifdef NON_MATCHING
+// Only the stack slots of two spilled temps differ (target has an extra unused temp slot at 0x20)
 void func_8430506C(unk_D_84390010* arg0) {
     unk_D_8438E7B0* ptr;
     s32 sp48;

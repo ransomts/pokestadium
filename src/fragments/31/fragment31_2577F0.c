@@ -14,6 +14,8 @@ static Gfx D_81004170[] = {
 // .bss
 static s16 D_81004B60;
 
+// Only differs by one temp register: the redundant "& 0xFF" makes the lbu land in t8 instead of t7,
+// but dropping it shifts every later temp register.
 #ifdef NON_MATCHING
 void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
     s16 temp_t3;
@@ -27,27 +29,13 @@ void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
         temp_t3 = 0x4000 - (D_81004B60 >> 4);
         temp_t4 = 0x4000 - (D_81004B60 >> 3);
 
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = D_81004170;    }
-        
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFD10001F;    _gfx->words.w1 = addresses->segments[0];    }  \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF5101000;    _gfx->words.w1 = 0x07014050;    }              \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xE6000000;    _gfx->words.w1 = 0;    }                       \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF4000000;    _gfx->words.w1 = 0x0707C07C;    }              \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xE7000000;    _gfx->words.w1 = 0;    }                       \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF5101000;    _gfx->words.w1 = 0x14050;    }                 \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF2000000;    _gfx->words.w1 = 0x7C07C;    }
-        
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = (((temp_t2 & 0xFFF) << 0xC) | 0xF2000000 | (temp_t3 & 0xFFF));    _gfx->words.w1 = ((((temp_t2 + 0x1F) & 0xFFF) << 0xC) | ((temp_t3 + 0x1F) & 0xFFF));    }
-        
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFD10001F;    _gfx->words.w1 = addresses->segments[1];    }  \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF5101100;    _gfx->words.w1 = 0x07014050;    }              \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xE6000000;    _gfx->words.w1 = 0;    }                       \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF4000000;    _gfx->words.w1 = 0x0707C07C;    }              \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xE7000000;    _gfx->words.w1 = 0;    }                       \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF5101100;    _gfx->words.w1 = 0x01014050;    }              \
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF2000000;    _gfx->words.w1 = 0x0107C07C;    }
-
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = (((temp_t3 & 0xFFF) << 0xC) | 0xF2000000 | (temp_t4 & 0xFFF));    _gfx->words.w1 = (((temp_t3 & 0xFFF) << 0xC) | 0x01000000 | ((temp_t4 + 0x1F) & 0xFFF));    }
+        gSPDisplayList(gfx++, D_81004170);
+        gDPLoadTextureTile(gfx++, addresses->segments[0], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, 0, temp_t2, temp_t3, temp_t2 + 31, temp_t3 + 31);
+        gDPLoadMultiTile(gfx++, addresses->segments[1], 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetTileSize(gfx++, 1, temp_t3, temp_t4, temp_t3, temp_t4 + 31);
 
         if (D_800AF7B0[temp_v0 & 1] == 0) {
             if (func_800325AC() == 0) {

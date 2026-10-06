@@ -812,26 +812,23 @@ void func_83301D74(void) {
     func_83301998(D_833032A0, 0, D_833032A4 - D_833032A0, 0x1E0, &sp80, &sp7C);
 }
 
-#ifdef NON_MATCHING
 void func_83302068(unk_D_83407B38* arg0) {
-    s32 sp8C;
-    s32 sp78;
-    s32 sp74;
-    s32 sp68;
-    s32 sp64;
-    s16 temp_fp;
-    s16 temp_s4;
-    s16 temp_s5;
+    s32 temp_fp;
+    s32 temp_s4;
+    s32 temp_s5;
     s32 temp_s0;
+    s32 sp8C;
     s32 var_s6;
     unk_func_80031270* temp_s1;
     s32 i;
     s32 j;
+    s32 sp78;
+    s32 sp74;
+    UNUSED s32 pad[2];
+    s32 sp68;
+    s32 sp64;
     s32 tmp1;
     s32 tmp2;
-    s32 tmp3;
-    s32 tmp4;
-    s32 new_var3;
 
     temp_fp = D_8330325C[D_83407AE4];
     temp_s4 = D_83303264[D_83407AE4];
@@ -863,19 +860,18 @@ void func_83302068(unk_D_83407B38* arg0) {
         temp_s1 = arg0->unk_B0;
         if ((func_800317D8(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
-                func_83401818((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * (j % 2)),
-                              (temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * (j / 2)), temp_s1->unk_04, temp_s1->unk_06);
+                tmp1 = j % 2;
+                tmp2 = j / 2;
+                func_83401818((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
+                              (temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2), temp_s1->unk_04, temp_s1->unk_06);
 
-                func_834018C0(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * (j % 2))) - 0x10,
-                              ((temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * (j / 2))) - 0x10, temp_s1->unk_04,
+                func_834018C0(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
+                              ((temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2)) - 0x10, temp_s1->unk_04,
                               temp_s1->unk_06, 8, 1);
             }
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/42/fragment42/func_83302068.s")
-#endif
 
 void func_833023D8(unk_D_83407B38* arg0) {
     unk_func_80031270* temp_s0;

@@ -1550,25 +1550,20 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
 #pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/16/fragment16_158A00/func_86A013C8.s")
 #endif
 
-#ifdef NON_MATCHING
 void func_86A01490(void) {
-    static u32 D_86A0621C;
-    s32 temp_v0 = D_800A62E0.unk_A34;
+    u32 v0 = D_800A62E0.unk_A34;
 
     if (D_86A06212 == 0) {
         D_86A06212 = 1;
-    } else if ((u32) D_86A0621C < (u32) temp_v0) {
-        D_86A06210 = temp_v0 - D_86A0621C;
+    } else if (D_86A0621C < v0) {
+        D_86A06210 = v0 - D_86A0621C;
     } else {
-        temp_v0++;
-        temp_v0--;
-        D_86A06210 = temp_v0 - D_86A0621C;
+        // Counter wrapped around
+        D_86A06210 = (v0 + 0xFFFFFFFFLL + 1) - D_86A0621C;
     }
-    D_86A0621C = temp_v0;
+
+    D_86A0621C = v0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/16/fragment16_158A00/func_86A01490.s")
-#endif
 
 void func_86A014F0(void) {
     u8 var_a1;

@@ -712,7 +712,6 @@ void func_84370B44(unk_D_84390010* arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_84370B7C(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp28;
     unk_D_800FCB18* sp24;
@@ -762,8 +761,8 @@ void func_84370B7C(unk_D_84390010* arg0) {
     for (i = 0; i < 4; i++) {
         if (sp34->unk_09[i] == 0) {
             for (j = i; j < 4; j++) {
-                sp34->unk_09[j] = sp24->unk_32[j] = 0;
-                sp24->unk_1F[j] = 0;
+                sp24->unk_32[j] = 0;
+                sp24->unk_1F[j] = sp34->unk_09[j] = 0;
             }
             break;
         }
@@ -789,9 +788,6 @@ void func_84370B7C(unk_D_84390010* arg0) {
     for (i = 0; i < 8; i++) { sp24->unk_5C[i] = 7; }
     // clang-format on
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_359F90/func_84370B7C.s")
-#endif
 
 s32 func_84370E30(unk_D_84390010* arg0) {
     if (arg0->unk_724->unk_01C[arg0->unk_654.unk_18 - 1].unk_02 != 0) {
@@ -1455,6 +1451,10 @@ s32 func_84371DCC(void) {
 }
 
 #ifdef NON_MATCHING
+// Rodata now matches; IDO caches &D_843C5238 in s0 here while the target reloads it with lui each time.
+static const char D_8438DC00[] = "%d";
+static const char D_8438DC04[] = " SpAttackTbl6\n";
+
 void func_84372670(void) {
     char sp2C[8];
 
@@ -1587,7 +1587,7 @@ void func_84372670(void) {
                         goto case_6;
                     }
                     D_843C5238->unk_4C &= ~4;
-                    sprintf(sp2C, "%d", D_843C5238->unk_54);
+                    sprintf(sp2C, D_8438DC00, D_843C5238->unk_54);
                     func_8002D600(2, D_843C5238->unk_54);
                     func_843179F4(D_843901A0->unk_3C8, 4);
                     D_84390240.unk_00->unk_1A = 1;

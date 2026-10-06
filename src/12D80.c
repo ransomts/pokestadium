@@ -564,24 +564,17 @@ void func_80013C1C(GraphNode* arg0) {
     gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, arg->unk_1C);
 }
 
-#ifdef NON_MATCHING
 void func_80013D34(GraphNode* arg0) {
     unk_D_86002F34_alt4* arg = (unk_D_86002F34_alt4*)arg0;
-    Lights7* lights;
-    unk_D_86002F34_alt1* new_var;
     Light* light;
     Ambient* temp_a4;
 
     if (D_8006F090->unk_1C >= 7) {
-        // light = &lights->l[D_8006F090->unk_1C];
         return;
     }
 
-    new_var = D_8006F090;
-    lights = new_var->lights;
-    temp_a4 = &lights->a;
-
-    light = &lights->l[D_8006F090->unk_1C];
+    light = &D_8006F090->lights->l[D_8006F090->unk_1C];
+    temp_a4 = &D_8006F090->lights->a;
 
     *(u32*)light->l.col = arg->unk_18.rgba;
     *(u32*)light->l.colc = arg->unk_18.rgba;
@@ -607,9 +600,6 @@ void func_80013D34(GraphNode* arg0) {
 
     D_8006F090->unk_1C++;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/12D80/func_80013D34.s")
-#endif
 
 void func_80013F7C(UNUSED GraphNode* arg0) {
 }

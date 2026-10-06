@@ -1388,89 +1388,77 @@ void func_82501B04(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_82501B18(unk_D_8250A228* arg0, s16 arg1) {
-    unk_D_8250A228* tmp;
     s32 var_v0;
-    s32 tt[1];
     s32 i;
 
-    while (true) {
-        arg0->unk_02 = arg1;
+    arg0->unk_02 = arg1;
 
-        if ((arg0 == NULL) || (arg0->unk_00 == 0)) {
+    if ((arg0 == NULL) || (arg0->unk_00 == 0)) {
+        return;
+    }
+
+    var_v0 = 0;
+
+    switch (arg0->unk_02) {
+        case 1:
+            arg0->unk_06 |= 1;
+            arg0->unk_08 = 0xA;
+            arg0->unk_3C.unk_01 |= 1;
+            arg0->unk_0E[0] = 0xFF;
+            arg0->unk_0E[1] = 0xFF;
+            arg0->unk_0E[2] = 0xFF;
+            arg0->unk_0E[3] = 0xFF;
+
+            if (arg0->unk_34 != NULL) {
+                var_v0 = 1;
+            }
+
+            if ((arg0->unk_00 == 4) && (D_8780FA48 == -1)) {
+                arg0->unk_06 |= 2;
+            }
             break;
-        }
 
-        var_v0 = 0;
-
-        switch (arg0->unk_02) {
-            case 1:
-                arg0->unk_06 |= 1;
-                arg0->unk_08 = 0xA;
-                arg0->unk_3C.unk_01 |= 1;
-
-                // clang-format off
-                for (i = 0; i < 4; i++) {                    arg0->unk_0E[i] = 0xFF;                }
-                // clang-format on
-
-                if (arg0->unk_34 != NULL) {
-                    var_v0 = 1;
-                }
-
-                if ((arg0->unk_00 == 4) && (D_8780FA48 == -1)) {
-                    arg0->unk_06 |= 2;
-                }
-                break;
-
-            case 3:
-                arg0->unk_08 = 0xA;
-                if (arg0->unk_34 != NULL) {
-                    var_v0 = 1;
-                }
-                break;
-
-            case 5:
-                arg0->unk_08 = 0xA;
-                arg0->unk_0C = D_8250A288.unk_06;
-
-                for (i = 0; i < 4; i++) {
-                    arg0->unk_0E[i] = 0xFF;
-                }
-
-                if (arg0->unk_34 != NULL) {
-                    var_v0 = 1;
-                }
-                break;
-
-            case 8:
-                arg0->unk_08 = 0xA;
-                if (arg0->unk_34 != NULL) {
-                    var_v0 = 1;
-                }
-                break;
-
-            case 7:
-                arg0->unk_08 = 0xA;
-                if (arg0->unk_34 != NULL) {
-                    var_v0 = 1;
-                }
-                arg0->unk_3C.unk_01 |= 1;
-                break;
-        }
-
-        if (var_v0 == 0) {
+        case 3:
+            arg0->unk_08 = 0xA;
+            if (arg0->unk_34 != NULL) {
+                var_v0 = 1;
+            }
             break;
-        }
 
-        tt[0] = arg0->unk_34;
-        arg1 = arg0->unk_02;
-        arg0 = tt[0];
+        case 5:
+            arg0->unk_08 = 0xA;
+            arg0->unk_0C = D_8250A288.unk_06;
+
+            for (i = 0; i < 4; i++) {
+                arg0->unk_0E[i] = 0xFF;
+            }
+
+            if (arg0->unk_34 != NULL) {
+                var_v0 = 1;
+            }
+            break;
+
+        case 8:
+            arg0->unk_08 = 0xA;
+            if (arg0->unk_34 != NULL) {
+                var_v0 = 1;
+            }
+            break;
+
+        case 7:
+            arg0->unk_08 = 0xA;
+            if (arg0->unk_34 != NULL) {
+                var_v0 = 1;
+            }
+            arg0->unk_3C.unk_01 |= 1;
+            break;
+    }
+
+    if (var_v0 != 0) {
+        func_82501B18(arg0->unk_34, arg0->unk_02);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/39/fragment39_27BCC0/func_82501B18.s")
-#endif
 
 void func_82501C88(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
     if (arg2 != 0) {
@@ -1814,13 +1802,18 @@ void func_825024C4(s16 arg0, s16 arg1) {
 }
 
 #ifdef NON_MATCHING
+// Stack frame matches; sp30 lands in v1 instead of a2, sp18/sp38 reloads use swapped regs,
+// and the D_8780FA48 copy should have its own slot at sp+0x44 instead of reusing sp40.
 void func_8250281C(void) {
     u32 var_a2_2;
     s32 sp40;
+    s32 pad3C;
     s32 sp38;
-    s32 sp18;
+    s32 pad34;
     s32 sp30 = 0;
     s32 sp2C = 0;
+    s32 pad[4];
+    s32 sp18;
     s32 tmp;
 
     switch (D_8250A26C) {

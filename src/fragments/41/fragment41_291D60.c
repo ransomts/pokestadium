@@ -630,6 +630,8 @@ void func_82F0BE7C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     func_8002053C(arg0, arg1, arg2, arg3, &sp24, &sp20);
 }
 
+// The (u32)(u64) cast burns t2-t5 so the later temp registers line up, but the lh then lands in t2
+// instead of a1 (the only remaining difference).
 #ifdef NON_MATCHING
 void func_82F0BEF8(unk_D_82F210E0* arg0) {
     static s16 D_82F13F88 = 0;
@@ -669,7 +671,7 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
             // func_8002D600(1, (((((((((tmp) & 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF) &
             // 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF) &
             // 0xFFFFFFFFFFFFFFFF) & 0xFFFFFFFFFFFFFFFF);
-            func_8002D600(1, sp20.unk_02 + 1);
+            func_8002D600(1, (u32)(u64)(sp20.unk_02 + 1));
             func_8001F1E8(0xB0, 0x90, func_8002D7C0(sp38, sizeof(sp38), D_82F13B70, 0x20));
             func_8001F4C4();
             break;

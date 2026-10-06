@@ -11,6 +11,7 @@
 #include "src/20470.h"
 #include "src/6BC0.h"
 #include "src/6A40.h"
+#include "src/5580.h"
 
 u32 D_878064F0[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x000100DD, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD,
@@ -1250,7 +1251,8 @@ static s16 D_8780FCAA;
 static u8 D_8780FCAC[4];
 static u8 D_8780FCB0[4];
 static char pad_D_8780FCB4[0x4];
-static u16 D_8780FCB8[16];
+static u16 D_8780FCB8[10];
+static u16 D_8780FCCC[3];
 
 typedef struct unk_D_8780FCD8 {
     /* 0x00 */ s16 unk_00;
@@ -1339,26 +1341,22 @@ void func_87802E1C(void) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_87802E58(void) {
     static u32 D_8780FE38;
 
-    u32 v0 = D_800A6CF4.unk_20;
+    u32 v0 = D_800A62E0.unk_A34;
 
     if (D_8780FCA1 == 0) {
         D_8780FCA1 = 1;
     } else if (D_8780FE38 < v0) {
         D_8780FCA0 = v0 - D_8780FE38;
     } else {
-        D_8780FCA0 = v0 - D_8780FE38;
+        // Counter wrapped around
+        D_8780FCA0 = (v0 + 0xFFFFFFFFLL + 1) - D_8780FE38;
     }
 
     D_8780FE38 = v0;
 }
-#else
-static u32 D_8780FE38;
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/2/fragment2_2/func_87802E58.s")
-#endif
 
 void func_87802EB8(s16 arg0) {
     switch (arg0) {
@@ -1613,26 +1611,24 @@ void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s1
     }
 }
 
-#ifdef NON_MATCHING
 void func_87803EAC(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 arg5, u8 arg6) {
-    s32 sp68 = arg5 * arg6;
-    Vtx* temp_fp = func_80005F5C(sizeof(Vtx) * sp68);
-    u8 i;
     u8 j;
+    u8 i;
+    Vtx* temp_fp = func_80005F5C(sizeof(Vtx) * (arg5 * arg6));
 
     for (i = 0; i < arg6; i++) {
         for (j = 0; j < arg5; j++) {
-            func_8001E680(&temp_fp[(arg5 * i) + j], D_8780FCB8[j] - arg3, D_8780FCB8[10 + j] - arg4, 0,
-                          D_8780FCB8[i] * 32, D_8780FCB8[10 + j] * 32, 0xFF, 0xFF, 0xFF, 0xFF);
+            func_8001E680(&temp_fp[(arg5 * i) + j], D_8780FCB8[j] - arg3, D_8780FCCC[i] - arg4, 0,
+                          D_8780FCB8[j] * 32, D_8780FCCC[i] * 32, 0xFF, 0xFF, 0xFF, 0xFF);
         }
     }
 
-    gSPVertex(gDisplayListHead++, temp_fp, sp68, 0);
+    gSPVertex(gDisplayListHead++, temp_fp, arg5 * arg6, 0);
 
     for (i = 0; i < arg6 - 1; i++) {
         for (j = 0; j < arg5 - 1; j++) {
             gDPLoadTextureTile(gDisplayListHead++, arg0, G_IM_FMT_RGBA, G_IM_SIZ_32b, arg1, 0, D_8780FCB8[j],
-                               D_8780FCB8[10 + i], D_8780FCB8[j + 1], D_8780FCB8[10 + i + 1], 0,
+                               D_8780FCCC[i], D_8780FCB8[j + 1], D_8780FCCC[i + 1], 0,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                G_TX_NOLOD, G_TX_NOLOD);
 
@@ -1641,11 +1637,10 @@ void func_87803EAC(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/2/fragment2_2/func_87803EAC.s")
-#endif
 
 #ifdef NON_MATCHING
+// In the final loop, var_s4 should be copied (s3) at the top of each iteration rather than after the first
+// func_8001E680 call, which swaps s3/s4 usage.
 typedef struct Vtx4 {
     /* 0x00 */ Vtx vtx1;
     /* 0x10 */ Vtx vtx2;
@@ -1698,14 +1693,14 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCB8[7] = 0xCB;
         D_8780FCB8[8] = 0xE8;
 
-        D_8780FCB8[10 + 0] = 0;
-        D_8780FCB8[10 + 1] = 0x1F;
-        D_8780FCB8[10 + 2] = 0x3D;
+        D_8780FCCC[0] = 0;
+        D_8780FCCC[1] = 0x1F;
+        D_8780FCCC[2] = 0x3D;
 
         func_87803EAC(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 3);
 
-        D_8780FCB8[10 + 0] = 0x3D;
-        D_8780FCB8[10 + 1] = 0x5C;
+        D_8780FCCC[0] = 0x3D;
+        D_8780FCCC[1] = 0x5C;
 
         func_87803EAC(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 2);
     } else if (temp_s2 == 0) {
@@ -1720,9 +1715,9 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCB8[5] = 0x96;
         D_8780FCB8[6] = 0xB4;
 
-        D_8780FCB8[10 + 0] = 0;
-        D_8780FCB8[10 + 1] = 0x1A;
-        D_8780FCB8[10 + 2] = 0x34;
+        D_8780FCCC[0] = 0;
+        D_8780FCCC[1] = 0x1A;
+        D_8780FCCC[2] = 0x34;
 
         func_87803EAC(&D_3016E80, 0xB4, 0x34, 0x5A, 0x1A, 7, 3);
     } else {
@@ -1740,9 +1735,9 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCB8[3] = 0x66;
         D_8780FCB8[4] = 0x88;
 
-        D_8780FCB8[10 + 0] = 0;
-        D_8780FCB8[10 + 1] = 0x1A;
-        D_8780FCB8[10 + 2] = 0x34;
+        D_8780FCCC[0] = 0;
+        D_8780FCCC[1] = 0x1A;
+        D_8780FCCC[2] = 0x34;
 
         func_87803EAC(&D_3010000, 0x88, 0x34, 0x23, 0x1A, 5, 3);
 
@@ -1783,7 +1778,7 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
 
                 if (var_s4 != 3) {
                     spA4[var_s4 + 1] = spA4[var_s4] + 0x36;
-                    var_s4++;
+                    var_s4 += 1;
                 }
             }
         }
