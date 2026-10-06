@@ -807,8 +807,10 @@ void func_80034348(ModelSegment*, ModelVertex*);
 #endif
 
 #ifdef NON_MATCHING
-// Remaining diffs: the original keeps `vertices` in s3 and spills spA0 to the stack (here it is the other way
-// round), and the base.xyz / sum float temps are colored differently in the loop.
+// Only s-reg assignment differs: target keeps `vertices` in s3 across the calls, copies it to a
+// fresh cursor in s1 right before the loop, and uses s3 for the remap cursor (spA0 spilled), i in s2.
+// Reusing temp_fs0-2 for the sums fixed all float regs. A separate `var_s1 = vertices` cursor gets
+// the s-regs closer but spills `vertices` and perturbs the pre-loop float temps (fs0-3 used).
 void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     f32 x0, y0, z0;
     f32 temp_fs0, temp_fs1, temp_fs2;
@@ -826,7 +828,7 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
     f32 w0, w1, w2;
     f32 bx, by, bz;
     s32 pad1[24];
-    f32 sumX, sumY, sumZ;
+    UNUSED f32 sumX, sumY, sumZ;
     s16* spA0;
     s16 temp_s6;
     s16* temp_v0;
@@ -877,16 +879,16 @@ void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, Model
                     w0 = vtx->cmd.weights[index].w0;
                     w1 = vtx->cmd.weights[index].w1;
                     w2 = vtx->cmd.weights[index].w2;
-                    sumX = (w0 * sp148) + sp178 + (w1 * sp13C) + (w2 * sp130);
-                    sumY = (w0 * sp144) + sp174 + (w1 * sp138) + (w2 * sp12C);
-                    sumZ = (w0 * sp140) + sp170 + (w1 * sp134) + (w2 * sp128);
+                    temp_fs0 = (w0 * sp148) + sp178 + (w1 * sp13C) + (w2 * sp130);
+                    temp_fs1 = (w0 * sp144) + sp174 + (w1 * sp138) + (w2 * sp12C);
+                    temp_fs2 = (w0 * sp140) + sp170 + (w1 * sp134) + (w2 * sp128);
                     bx = temp_v0_2->base.x;
                     by = temp_v0_2->base.y;
                     bz = temp_v0_2->base.z;
                     temp_v0_2->disabled |= (1 << index);
-                    temp_v0_2->offset.x = sumX - bx;
-                    temp_v0_2->offset.y = sumY - by;
-                    temp_v0_2->offset.z = sumZ - bz;
+                    temp_v0_2->offset.x = temp_fs0 - bx;
+                    temp_v0_2->offset.y = temp_fs1 - by;
+                    temp_v0_2->offset.z = temp_fs2 - bz;
                 }
             }
         }
@@ -918,8 +920,9 @@ void func_80034B28(StadiumModel* model) {
 }
 
 #ifdef NON_MATCHING
-// Remaining diffs: s1/s3 are swapped between the remap pointer and `vertices` before the loop, and the x/y/z
-// float temps in the loop are colored differently (fa1/ft4/ft5 in the original).
+// Same s-reg issue as func_80034824 (target: vertices s3 -> loop cursor s0, remap s1 -> cursor s3),
+// plus loop x/y/z land in ft4/ft5/fa1 instead of fa1/ft4/ft5. A separate vertex cursor variable
+// fixes the move pattern but perturbs pre-loop float temps (worse overall); indexed loops are worse.
 void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     s32 pad0[5];
     f32 sp180;

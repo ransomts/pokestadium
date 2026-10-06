@@ -1,0 +1,75 @@
+# IDO 7.1 matching tricks learned in round 1 (Pokemon Stadium decomp)
+
+All of these produced actual matches or big score drops in this codebase.
+
+## Recognising what the original source looked like
+- **`addiu rX, rY, 0` before a subtract = 64-bit math.** Timer wraparound was
+  `D = (v0 + 0xFFFFFFFFLL + 1) - prev;` (matched func_87802E58 and func_86A01490).
+- **`while(1)` loop ending with a stack spill of the next pointer = self-recursive tail call**
+  (func_82501B18: `return func_82501B18(arg0->unk_34, arg0->unk_02);`).
+- **In-function `static` changes codegen:** IDO knows nothing else aliases it, so it keeps the
+  value/address in a register across loops and stores back at each exit, and skips address CSE.
+  If register alloc / loop-exit stores around one global won't line up, try making it a function
+  static (func_81209374, func_81207DF8, func_86A013C8). Caveat: function statics are placed in
+  bss/data at an unpredictable spot; that can break the layout. The data/bss may then need to be
+  migrated into C (or a section split) for the match to link.
+- **m2c `spXX` names are often spilled CSE temps, not variables.** Inline the expression back;
+  this shrinks locals and moves spill slots to the right place (func_87803EAC, func_83500FE8).
+- **Conversely, a value spilled into the compiler-temp area may be a CSE'd expression** — writing
+  e.g. `var = cond ? 1 : 0;` and using `(1 << var)` in two loops reproduced a single spill.
+- **Consecutive stack slots stored/reloaded around calls (spF8, spFC, sp100…) = a local array.**
+- **Back-to-back `sw`/`lw` of the same slot in a leaf function = local array (`f32 tmp[N]`)**, not volatile.
+- **Ascending-order byte stores = hand-written stores**; IDO emits `for`-loop stores descending.
+- **Separate `%hi/%lo(sym+0x14)` bases = separate array symbol** in the original. Watch 8-byte
+  alignment of static arrays >= 8 bytes when splitting (D_8780FCCC had to be `[3]`).
+- **`%hi(sym+off)` constants per iteration rather than base+offset = index loop**, not pointer walk.
+- **`bgez` + 0x4F800000 fixup on int->float = source had a `(u32)` value/cast.**
+- **Passing structs by value**: floats stored to arg home slots + reads at 0x38.. = by-value
+  `Vec3f`/`Vec3s` args (func_86B09F64).
+
+## Stack layout
+- Every declared local gets a home slot (even unused / register-only ones), top-down in
+  declaration order with natural alignment; s16/u8 locals pack. Compiler spill temps go *below*
+  all named locals (from 0x18 up / just below the lowest stack-homed local).
+- Fix frame size / offsets by deleting m2c's unused junk locals, reordering declarations, adding
+  `UNUSED s32 pad;` / `pad[N]` at the right position. `pad[N]` steps can be 16-byte periodic.
+- Each `gDisplayListHead++`-style gfx macro has a block-scoped `_g` that takes a slot.
+- Spill-temp slot *order* among themselves isn't controlled by declaration order — that remained
+  unsolved in several functions (func_8430506C, func_84302658, func_838043F8, func_8850B2D4).
+  Ideas not yet tried much: changing which sub-expressions are temps vs named, splitting/merging
+  blocks, `if (1) {}` / empty statements, changing loop forms, different variable scoping.
+
+## Registers / scheduling
+- Reusing one local for several unrelated values can unify register choice (func_80049A60).
+- Statement order of independent assignments swaps registers (func_80013D34).
+- Inline ternary vs temp flips operand order of `and`/`multu`; to get a constant first in a
+  `multu`, put it in a variable assigned just before the use.
+- `(u32)(u64)expr` casts consume ~4 hidden temps and shift the round-robin t-register rotation
+  (t6-t9, t0-t5). Add/remove such casts to rotate temps (func_82F0BEF8).
+- Reading back a just-stored u8 field gives an extra `andi 0xFF`.
+- `x += 1` vs `x++` on u8 changed register allocation. `j != 8` gives `bne`; `j < 8U` gives `sltiu`.
+- Swapping which loop variable (i vs j) a loop uses changes reg + spill assignment.
+- Integer literals in float context aren't merged with float literals (`1` vs `1.0f`); the same
+  constant with different types isn't shared — fix field/extern types (u32 vs s32, u8 vs s8).
+- Switch: `default:` placed last with no `break` gave the target block order.
+- Odd no-op lines in existing drafts (`if (1) {}`, `if ((a && a) && a) {}`) can be load-bearing;
+  test before removing.
+- Writing the struct / float constants as plain literals moves them into the function's
+  late_rodata; if the rodata lives in asm, keep them `extern`.
+- Recursion: `var_s5 = var_s2 = 1;` init + `var_s5 = var_s2;` at loop end pattern (func_88803614).
+
+## Tooling gotchas
+- Repo-root `diff.py` is broken on Python 3.12; use `tools/asm-differ/diff.py -o <func> -s --format plain`.
+- diff.py score 0 is NOT proof: it treats `sym+off` relocation differences as equal. Always confirm
+  the full `make` prints `build/pokestadium-us.z64: OK`.
+- Permuter: always pass `--stack-diffs` (otherwise stack-only diffs score 0). The generated
+  `nonmatchings/<f>/compile.sh` has the wrong arg order for tools/preprocess.sh; fix with
+  `sed -i 's/-O2 "$INPUT" -o "$OUTPUT"/-O2 -o "$OUTPUT" "$INPUT"/' nonmatchings/<f>/compile.sh`
+  (the bad order also leaves a stray file named `-I`). pycparser mangles `sizeof(char) * 0x80`.
+  Kill with `pkill -f "permuter[.]py nonmatchings/<func>"` (plain pattern kills your own shell).
+- Faster than full make: `make build/src/<path>.o` (~6s) then diff, batch-testing variants with a script.
+- `src/4A3E0.c` has a struct missing a `;` (`char unk2D[0x13]`) — m2ctx/permuter need it added in their copy.
+- When grepping build output for errors, ignore `cfe: Warning` lines.
+- Sandbox: `source .venv/bin/activate` / inline `PATH=` may be refused. What worked:
+  `env PATH=<MAIN>/.venv/bin:/usr/local/bin:/usr/bin:/bin make -j2 PYTHON=<MAIN>/.venv/bin/python3`,
+  or symlink the worktree's `.venv` to MAIN's (it's gitignored).

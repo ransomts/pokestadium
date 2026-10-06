@@ -261,6 +261,8 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
 // Remaining differences: float registers for the unk_040.unk_08/unk_0C truncations in case 2/3,
 // and the induction-variable increment order and one spill slot (0x50 vs 0x4C) in the case 5/6 loop.
 #ifdef NON_MATCHING
+// Score 81: only case 5/6 differs. The &spC4[i] spill temp sits at 0x4c (target 0x50), and the
+// induction-variable increment order is wrong (D_86807558 ptr s1 should be incremented last).
 void func_86800B38(void) {
     s32 pad1;
     s32 pad2;
@@ -345,6 +347,7 @@ void func_86800B38(void) {
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
 
+        var_v0 = 60;
         for (i = 0; i < 8; i++) {
             pad1 = i % 4;
             if (pad1) {}
@@ -352,7 +355,6 @@ void func_86800B38(void) {
             sp9C = func_8001F5B0(0, 0, func_8002D7C0(NULL, 0, D_87806330, 0x36));
             sp98 = func_8001F5B0(0, 0, func_8002D7C0(NULL, 0, D_87806330, i + 0x36));
 
-            var_v0 = 60;
             func_8001F1E8((((var_v0 * pad1) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
                           func_8002D7C0(NULL, 0, D_87806330, i + 0x36));
         }
@@ -370,8 +372,6 @@ void func_86800B38(void) {
             if (D_8680753E == 0) {
                 func_8001EBE0(4, 0);
                 for (i = 0; i < 4; i++) {
-                    f32 v;
-
                     if ((D_86807558[i].unk_040.unk_00 != 0) && (D_86807558[i].unk_040.unk_00 != 1)) {
                         if ((i / 2) != 0) {
                             var_s7 = -0x14;
@@ -395,8 +395,7 @@ void func_86800B38(void) {
                             func_8001F36C(spD8[0].r, spD8[0].g, spD8[0].b, D_86807558[i].unk_040.unk_18);
                         }
 
-                        v = D_86807558[i].unk_040.unk_08;
-                        func_8001F1E8(D_86806D78[i] + var_s7 + (s16)v,
+                        func_8001F1E8((s16)D_86807558[i].unk_040.unk_08 + (D_86806D78[i] + var_s7),
                                       (D_86806D80[i] + var_s4) - (s16)D_86807558[i].unk_040.unk_0C, "x%d",
                                       D_86807558[i].unk_03E);
                     }
@@ -409,6 +408,7 @@ void func_86800B38(void) {
             func_8001EBE0(4, 0);
 
             for (i = 0; i < 4; i++) {
+                unk_D_86807558* ptr = &D_86807558[i];
                 char sp78[16];
 
                 spD0[0] = spB4;
@@ -429,8 +429,8 @@ void func_86800B38(void) {
                     var_s4 = 0x1E;
                 }
 
-                if ((D_86807558[i].unk_028 == 1) && (D_86807558[i].unk_01C == D_86807558[i].unk_018) &&
-                    (D_86807558[i].unk_018 > 0)) {
+                if ((ptr->unk_028 == 1) && (ptr->unk_018 == ptr->unk_01C) &&
+                    (ptr->unk_018 > 0)) {
                     func_868005A8(&spD8, &D_86806F50, 3, 4, 0);
                     func_8001F324(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
                     func_868005A8(&spD8, &D_86806F5C, 3, 4, 0);
@@ -440,7 +440,7 @@ void func_86800B38(void) {
                     func_8001F36C(spB8[i + 4].r, spB8[i + 4].g, spB8[i + 4].b, 0xFF);
                 }
 
-                func_8002D600(6, D_86807558[i].unk_01C);
+                func_8002D600(6, ptr->unk_01C);
                 func_8001F1E8(D_86806D78[i] + var_s7, D_86806D80[i] + var_s4,
                               func_8002D7C0(&sp78, 0x20, D_87806330, 0x5E));
             }
