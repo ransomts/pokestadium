@@ -2661,6 +2661,14 @@ void func_8850B254(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
 
 #ifdef NON_MATCHING
 // Only the stack slots of two spilled temporaries reused by the last rectangle differ (0x10/0xC instead of 8/0x10).
+// The two temps are rect 1's lry ((arg2 + 1) << 2 & 0xFFF, t8) and ulx << 12 ((arg1 - 7), t6), reused by
+// the last rectangle's w1. Target: lry at 8, ulx at 0x10, nothing visible at 0xC; ours: lry 0x10, ulx 0xC.
+// Round 6 dead ends (no change to the slot order): commuting operands ((1 + arg1), (-7 + arg2)) anywhere;
+// (u32)/(s16) casts or * 4 on the last rect's ulx/uly (most shrink the frame, i.e. drop a temp);
+// w/h type u32/s16/u16/u8/s8 (16-bit types drop the frame to 0xF8), h/w order, h = w = 8, w = h;
+// literal 8 in any one LoadTextureBlock; color declared at function level; extra pad local (shifts both
+// slots down 4, order kept); permuter's (w = arg2 + 1) in the last rect (16, only rotates the reload regs).
+// if (1) {} at any blank line perturbs the scheduling of the whole function (no good).
 s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
     s32 h = 8;
     s32 w = 8;

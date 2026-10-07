@@ -717,6 +717,18 @@ void func_82F043A4(s16 arg0, s16 arg1, s16 arg2) {
 }
 
 #ifdef NON_MATCHING
+// Score 318, 7 diff lines: the hoisted &D_8006F630 / &D_8006F518 spills are at 0x54/0x58 (target 0x50/0x54),
+// and at the loop end the target stores sp68 (0x68) before spF8 (ours: spF8 first, sp68 in the delay slot).
+// Round 6 findings: dropping the named sp68 and writing (s16)(spEE * spF8) at every use, with an unused
+// `s32 pad3;` in its place, fixes BOTH (spills 0x50/0x54, loop-end order) - the strength-reduced induction
+// temp is what the target stores at the loop end - but that temp always lands one slot BELOW sp64
+// (ind 0x64, sp64 0x68; target ind 0x68, sp64 0x64). A named local always sits above that temp; tried
+// sp64 at function level (any position), in a nested block, pad before/after, pad[N] resizing.
+// Unused locals in any block are placed ABOVE the used ones (pad3 after sp64 still goes on top).
+// Dead ends: inlining sp64 (arg0->unk_0CA8[var_s2].) moves var_s2 to the stack (209 lines); for loop,
+// do-while, swapped increments, sp68 = sp68 + spEE, sp68 at function level (moves the zero-init before the
+// blezl guard), s16 sp68 (frame 0xF8), (s16) cast in the init, inlining temp_s3/temp_lo, the permuter's
+// do { } while (0) and 1 ^ 0 (no change here).
 void func_82F04604(unk_D_82F144D0* arg0) {
     static s16 D_82F13C0C[] = { 0x34, 0x148 };
 
