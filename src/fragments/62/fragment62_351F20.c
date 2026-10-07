@@ -27,6 +27,19 @@ static Vtx D_84389810[] = {
 };
 
 #ifdef NON_MATCHING
+// Score 85 (was 229). Stack layout now matches; only the fa0/ft4 swap remains (a3_z should be in fa0,
+// 2*a3_y in ft4, and both sp128 loads in ft4 not ft5).
+// Round 6 finding: the six spilled values (sp8C..sp78 at 0x8C..0x78) are uopt temps whose slot order
+// follows the first occurrence of their expressions; the target's 3 never-stored slots below them are
+// temps that occur LATER (probably the a3_x/y/z * 2.0f CSEs). The dead early copy of the six 1.2/0.2
+// expressions right after a3_z (overwritten below) reproduces that order; it is a fake - the real
+// source probably computed them before the vertex writes in some way that keeps the late schedule.
+// Moving the six real assignments earlier (anywhere from before a3_x to after tmp1) wrecks the schedule
+// (4600-9400). Dead copy must be full expressions (plain `sp8C = a1_x;` does nothing), all six.
+// `if (a3_z) {}` (or `if (sp128) {}`, `if (a3_x) {}`) still required; tmp1 hack worth 25.
+// Dead ends this round for the swap: sp128 * arg4 operand order, named 2*a3 temps, extra tmpN for any
+// v8/v9 component, (a3_y + a3_y), moving the if, reordering the dead copies, indexed vertex writes
+// (1466), loop forms of the copy loop, named call-arg temps, block-scoped pads.
 Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     s32 i;
     Vtx* sp1E8;
@@ -96,6 +109,12 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     a3_x = arg4 * sp130;
     a3_y = arg4 * sp12C;
     a3_z = arg4 * sp128;
+    sp8C = (-a2_x * 0.2f) + (a1_x * 1.2f);
+    sp88 = (-a2_y * 0.2f) + (a1_y * 1.2f);
+    sp84 = (-a2_z * 0.2f) + (a1_z * 1.2f);
+    sp80 = (a2_x * 1.2f) - (a1_x * 0.2f);
+    sp7C = (a2_y * 1.2f) - (a1_y * 0.2f);
+    sp78 = (a2_z * 1.2f) - (a1_z * 0.2f);
 
     temp_v1 = sp1E8;
 
