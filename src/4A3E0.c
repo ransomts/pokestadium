@@ -29,20 +29,20 @@ typedef struct unk_D_800FCFD8 {
     /* 0x04 */ u8 unk_28;
 } unk_D_800FCFD8; // size = 0x2C
 
+// Game Boy sound channel 2 (square) state.
 typedef struct unk_D_800FCF90 {
-    /* 0x00 */ u32 unk_00;
-    /* 0x00 */ s16 unk_04;
-    /* 0x00 */ s16 unk_06;
-    /* 0x00 */ u32 unk_08;
-    /* 0x00 */ u32 unk_0C;
-    /* 0x00 */ s16 unk_10;
-    /* 0x00 */ s16 unk_12;
-    /* 0x00 */ s16 unk_14;
-    /* 0x00 */ u8 unk_16;
-    /* 0x00 */ u32 unk_18;
-    /* 0x00 */ u32 unk_1C;
-    /* 0x00 */ u32 unk_20;
-    /* 0x24 */ u8 unk_24;
+    /* 0x00 */ u32 unk_00; // sample clock
+    /* 0x04 */ s16 unk_04; // volume
+    /* 0x06 */ s16 unk_06; // volume step
+    /* 0x08 */ u32 unk_08; // envelope period
+    /* 0x0C */ u32 unk_0C; // next envelope step
+    /* 0x10 */ u16 unk_10[2]; // duty half-period lengths
+    /* 0x14 */ s16 unk_14;
+    /* 0x16 */ u8 unk_16; // duty phase
+    /* 0x18 */ u32 unk_18; // next phase flip
+    /* 0x1C */ u32 unk_1C; // period
+    /* 0x20 */ u32 unk_20; // length end
+    /* 0x24 */ u8 unk_24; // active
 } unk_D_800FCF90; // size = 0x28
 
 typedef struct unk_D_800FCFB8 {
@@ -51,22 +51,22 @@ typedef struct unk_D_800FCFB8 {
     /* 0x1C */ u8 unk_1C;
 } unk_D_800FCFB8; // size = 0x20
 
+// Game Boy sound channel 1 (square with sweep) state.
 typedef struct unk_D_800FCF60 {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u32 unk_04;
-    /* 0x08 */ u32 unk_08;
-    /* 0x0C */ s16 unk_0C;
-    /* 0x0E */ s16 unk_0E;
-    /* 0x10 */ u32 unk_10;
-    /* 0x14 */ s32 unk_14;
-    /* 0x18 */ s16 unk_18;
-    /* 0x1A */ s16 unk_1A;
-    /* 0xCA */ s16 unk_1C;
-    /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ u32 unk_20;
-    /* 0x24 */ u32 unk_24;
-    /* 0x28 */ u32 unk_28;
-    /* 0x2C */ u8 unk_2C;
+    /* 0x00 */ u32 unk_00; // sample clock
+    /* 0x04 */ u16 unk_04; // frequency
+    /* 0x08 */ u32 unk_08; // sweep period
+    /* 0x0C */ s16 unk_0C; // volume
+    /* 0x0E */ s16 unk_0E; // volume step
+    /* 0x10 */ u32 unk_10; // envelope period
+    /* 0x14 */ u32 unk_14; // next envelope step
+    /* 0x18 */ u16 unk_18[2]; // duty half-period lengths
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ u8 unk_1E; // duty phase
+    /* 0x20 */ u32 unk_20; // next phase flip
+    /* 0x24 */ u32 unk_24; // period
+    /* 0x28 */ u32 unk_28; // length end
+    /* 0x2C */ u8 unk_2C; // active
 } unk_D_800FCF60; // size = 0x30
 
 // .bss
