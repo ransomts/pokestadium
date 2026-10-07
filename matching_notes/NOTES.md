@@ -25,7 +25,12 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `dd conv=swab`. The Rev 1 / Rev 2 / EU ROMs in Downloads are the wrong versions.
 - `.venv/` (gitignored) has requirements.txt + m2c + diff deps. `tools/permuter/` (gitignored) is
   decomp-permuter. `binutils-mips-linux-gnu` is installed system-wide.
-- Build: `env PATH=$PWD/.venv/bin:$PATH make -j8` → must print `build/pokestadium-us.z64: OK`.
+- **Palmetto (RHEL8, no sudo):** system python3 is 3.6 -> venv built with `python3.12 -m venv .venv`
+  (+ `pip install -r requirements.txt m2c cxxfilt python-Levenshtein ansiwrap pycparser toml`).
+  MIPS binutils 2.42 built from source into `~/local/bin` (`configure --target=mips-linux-gnu
+  --prefix=$HOME/local`); fd.sh puts `$HOME/local/bin` on PATH. Set up 2026-10-07 via
+  `make setup && make extract && make diff-init` (skip `make init`: its distclean is unnecessary).
+- Build: `env PATH=$PWD/.venv/bin:$HOME/local/bin:$PATH make -j8` → must print `build/pokestadium-us.z64: OK`.
 - Diff: repo-root `diff.py` is broken on Python 3.12 → use `tools/asm-differ/diff.py -o <func> -s --format plain`
   or `matching_notes/fd.sh`.
 - `progress.py -v us` counts a function as undecompiled while `asm/us/nonmatchings/.../<func>.s`
@@ -189,3 +194,9 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   func_86803C6C, func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850,
   func_88305F28, func_88807D04, func_80012870 (one store scheduled 1 instr early), func_80034348,
   func_80041A98.
+
+## Handoff (2026-10-07)
+Work plan for the next rounds is in `PLAN.md` (tiers, agent protocol, Palmetto hardware recipe).
+Cluster helpers: `palmetto_job.sh` (sbatch: stage repo to /local_scratch, verify build, run
+permuter farm on tier-1 functions) and `permuter_farm.sh` (parallel permuter runs re-seeded from
+the current drafts, best candidates synced to /scratch/$USER/permuter_best).
