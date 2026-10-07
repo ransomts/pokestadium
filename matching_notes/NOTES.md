@@ -135,7 +135,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   being shared with the gDPSetEnvColor constant); cases 1/2/4 compute sp38 in ONE expression
   (`sp38 = X * 0x58 + 0xBA;`); `if (1) {}` after case 5's sp38 keeps sp30 in a2; `D_8780FA48 += 0;`
   in case 2 still required. Dead ends: dropping inner `break;`s, changing sp30's type.
-- **func_86A01CF0** (bd46d36): the `D_86A03C98` reference was really `D_86A03D40[arg5][arg6 - 6]`
+- **func_86A01CF0** (bd46d36; written by a now-dead duplicate of agent 6, see process lessons): the `D_86A03C98` reference was really `D_86A03D40[arg5][arg6 - 6]`
   (splat named the -0xA8 address after the preceding symbol); with the right index both register
   hacks disappear. Lesson: a negative-offset access to a splat-named symbol is probably an indexed
   access into the NEXT symbol.
@@ -145,7 +145,17 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   form found that matches; the well-defined `j = var_s4++` version scores 1248.
 - Also this round: func_80034BD4, func_86B09F64 (entries above).
 
-### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
+### func_80044EA4 (45720, score 396 after round 5; was 6744) — structure SOLVED, two diffs remain
+- Round 5 (agent 6, commits on match-round-1): `(j << 1)` instead of `j * 2` in both store indices
+  (IDO made `j*2` an induction variable; the target recomputes it per unrolled step - this was the
+  meaning of the permuter's `u8 new_var` hint; 6744 -> 1886); `sample * D_800FCF00[i]` operand order
+  (1071); `u32 i` stops the constant 2 living in v1 (716); `if (*p == 2) continue;` lets the skip
+  path bypass the i/p reloads (396).
+- Remaining: the D_800FCED8[i] spill is at 0x40 but should be at 0x44 (one extra compiler temp slot
+  between p and the spill; a pad local after p fixes the position but grows the frame to 0x88), and
+  `if (D_800FCED0 != 0)` in case 0 compiles to `beqzl` where the target has `beqz` with `lui at` in
+  the delay slot. Dead ends for both are in the draft's // comment.
+- Earlier history:
 - The draft was fundamentally wrong: the target's inner loop is MONO→STEREO duplication — per j:
   `temp = (s16)((D_800FCF00[i] * D_800FCEE0[i][(base + j) % 2560]) >> 7);` then TWO stores:
   `unk_000[(F38 + j*2 + 1) % 2208] = temp; unk_000[(F38 + j*2) % 2208] = temp;` (+1 store first).
