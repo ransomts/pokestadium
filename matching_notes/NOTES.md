@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (40 as of 2026-10-07 after round 6; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (39 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -154,6 +154,18 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `spA4[var_s4 + 1] = spA4[var_s4++] + 0x36;` (-> 0). That line is unsequenced in C but is the only
   form found that matches; the well-defined `j = var_s4++` version scores 1248.
 - Also this round: func_80034BD4, func_86B09F64 (entries above).
+
+### Round 7 matches (2026-10-07, 15 Opus 5.5 agents; tier 4 structural, with siblings/accessmap/digest tools)
+- **func_80045FF0** (f0ab161; 960 instr, no draft existed; matched in ~5 min of agent time): it is the
+  per-frame bitstream decoder of the speech codec (func_80045780 in 45720.c calls it per 160-sample
+  frame). LSB-first bit reader over a 0x400-word ring at `arg0+0x1598` (read as `((u32*)...)[]`, the
+  header's 8-byte-stride DMA struct type kept), position in unk_25BC; a 1 bit starts a silence run
+  (4 bits + 1 frames, unk_18C -> `bzero(out, 0x140)`), a 0 bit a voiced run (7 bits + 1, unk_18A ->
+  8 header fields of 6,6,5,5,4,4,3,3 bits, 4 subframes of 7,2,2,6 bits + 13 x 3 bits, then
+  func_80045C78; same layout func_80045D60 unpacks). Written as a `READ_BITS(dst, n)` macro used 77
+  times; locals `i, left, bits, pad[2]`... the 1-bit flag is read into the otherwise-unused loop
+  counter `i` (puts the flag in t3 and the constant in a0). Lesson: skipping m2c and writing the
+  obvious source for a repetitive pattern matched in 4 cycles; the oracles cannot run without a draft.
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
 - **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
@@ -362,7 +374,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_80033D44** (33FE0): writes the transform struct with fields shifted by one — the struct type
   is probably wrong.
 - Not yet attempted seriously: func_8437B0CC (3345 instr), func_84362084 (1597), func_8120572C (1449),
-  func_80045FF0 (960), func_810010BC (964), func_88805AEC (945), func_88203ED8, func_88201488,
+  func_810010BC (964), func_88805AEC (945), func_88203ED8, func_88201488,
   func_86803C6C, func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850,
   func_88305F28, func_88807D04, func_80012870 (one store scheduled 1 instr early), func_80034348,
   func_80041A98.
