@@ -2,15 +2,11 @@
 #include "src/4B940.h"
 #include "src/373A0.h"
 
-typedef struct unk_D_800FD008 {
-    /* 0x00 */ u16 unk_00[20];
-    /* 0x28 */ u8 unk_28;
-    /* 0x29 */ u8 unk_29;
-    /* 0x2A */ u8 unk_2A;
-    /* 0x2B */ char unk2B[1];
-    /* 0x2C */ u8 unk_2C;
-    /* 0x2D */ char unk2D[0x13];
-} unk_D_800FD008; // size = 0x40
+// Game Boy sound registers NR10..NR52 (0xFF10 + index), each a {value, dirty} byte pair.
+typedef struct GbSoundReg {
+    /* 0x00 */ u8 value;
+    /* 0x01 */ u8 dirty;
+} GbSoundReg; // size = 0x2
 
 typedef struct unk_D_800FD068 {
     /* 0x00 */ u8* unk_00;
@@ -79,7 +75,7 @@ unk_D_800FCF90 D_800FCF90;
 unk_D_800FCFB8 D_800FCFB8;
 unk_D_800FCFD8 D_800FCFD8;
 u32 D_800FD004;
-unk_D_800FD008 D_800FD008;
+GbSoundReg D_800FD008[0x20];
 u8 D_800FD048[32];
 unk_D_800FD068 D_800FD068[199];
 u8 D_800FD6A0[8];
@@ -107,7 +103,7 @@ void func_800497E0(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
 }
 
 void func_8004980C(u16 arg0, u8 arg1, u16 arg2) {
-    D_800FD068[D_800FD6AC].unk_00 = (u8*)&D_800FD008.unk_00[(arg0 & 0xFF) - 0x10];
+    D_800FD068[D_800FD6AC].unk_00 = &D_800FD008[(arg0 & 0xFF) - 0x10].value;
     D_800FD068[D_800FD6AC].unk_04 = arg1;
     D_800FD068[D_800FD6AC].unk_06 = arg2 + 1;
     D_800FD6A0[arg0 & 0xFF] = arg1;
@@ -127,11 +123,11 @@ void func_800498A8(u32 arg0, u8 arg1, u32 arg2) {
     D_800FD004 = arg0 >> 1;
     D_800FD6E4 = 1048576.0f / (f32) D_800FD004;
 
-    p = (u8*) &D_800FD008;
+    p = (u8*) D_800FD008;
     for (i = 0; i < 48; i++) {
        p[i * 2 + 1] = 1;
     }
-    p = (u8*) &D_800FD008;
+    p = (u8*) D_800FD008;
     p[0x00] = 8;
     p[0x02] = 0;
     p[0x04] = 0;
@@ -218,18 +214,18 @@ void func_80049A60(u32 arg0) {
             func_80049D5C(var_s4);
         }
 
-        if (D_800FD008.unk_2C & 0x80) {
-            if (D_800FD008.unk_29 != 0) {
-                D_800FD6E0 = D_800FD008.unk_28 & 7;
-                D_800FD6E1 = (D_800FD008.unk_28 & 0x70) >> 4;
-                D_800FD008.unk_29 = 0;
+        if (D_800FD008[0x16].value & 0x80) {
+            if (D_800FD008[0x14].dirty != 0) {
+                D_800FD6E0 = D_800FD008[0x14].value & 7;
+                D_800FD6E1 = (D_800FD008[0x14].value & 0x70) >> 4;
+                D_800FD008[0x14].dirty = 0;
             }
 
             sp4C[0] = func_80049DF0();
             sp4C[1] = func_8004A474();
             sp4C[3] = func_8004A89C();
 
-            tmp2 = D_800FD008.unk_2A;
+            tmp2 = D_800FD008[0x15].value;
             var_a0 = ((u32)((sp4C[0] & ((tmp2 & 1) ? -1 : 0)) + (sp4C[1] & ((tmp2 & 2) ? -1 : 0)) +
                             (sp4C[3] & ((tmp2 & 8) ? -1 : 0))) >>
                       5) *
@@ -293,14 +289,6 @@ extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
 extern f32 D_8007D4D4;
 
-typedef struct GbSoundReg {
-    /* 0x00 */ u8 value;
-    /* 0x01 */ u8 dirty;
-} GbSoundReg; // size = 0x2
-
-#define GB_SOUND_REGS ((GbSoundReg*)&D_800FD008)
-#define GB_REG(offset) (((u8*)&D_800FD008)[offset])
-
 s16 func_8004A89C(void) {
     s32 changed;
     s32 i;
@@ -316,14 +304,14 @@ s16 func_8004A89C(void) {
 
     changed = 0;
     for (i = 0x10; i < 0x14; i++) {
-        if (GB_SOUND_REGS[i].dirty != 0) {
+        if (D_800FD008[i].dirty != 0) {
             changed = 1;
-            GB_SOUND_REGS[i].dirty = 0;
+            D_800FD008[i].dirty = 0;
         }
     }
 
     if (changed) {
-        idx = GB_REG(0x24);
+        idx = D_800FD008[0x12].value;
         entry = &D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)];
         sample = entry->unk_00;
         if (sample == 0xFF) {
@@ -342,20 +330,20 @@ s16 func_8004A89C(void) {
 
         D_800FCFD8.unk_08 = 0;
         D_800FCFD8.unk_10 = 0.0f;
-        nr = GB_REG(0x22);
+        nr = D_800FD008[0x11].value;
         dir = nr & 8;
         if (!dir && !(nr & 0xF0)) {
             D_800FCFD8.unk_28 = 0;
-            D_800FD008.unk_2C &= ~8;
+            D_800FD008[0x16].value &= ~8;
             return 0;
         }
         if (dir && !(nr & 0xF0) && !(nr & 7)) {
             D_800FCFD8.unk_28 = 0;
-            D_800FD008.unk_2C &= ~8;
+            D_800FD008[0x16].value &= ~8;
             return 0;
         }
 
-        flags = GB_REG(0x26);
+        flags = D_800FD008[0x13].value;
         if (flags & 0x80) {
             D_800FCFD8.unk_00 = 0;
             D_800FCFD8.unk_28 = 1;
@@ -376,11 +364,11 @@ s16 func_8004A89C(void) {
                 D_800FCFD8.unk_18 = 0.0f;
             }
             if (flags & 0x40) {
-                D_800FCFD8.unk_24 = (0x40 - (GB_REG(0x20) & 0x3F)) * D_800FD004;
+                D_800FCFD8.unk_24 = (0x40 - (D_800FD008[0x10].value & 0x3F)) * D_800FD004;
             } else {
                 D_800FCFD8.unk_24 = -1;
             }
-            GB_REG(0x26) = flags & ~0x80;
+            D_800FD008[0x13].value = flags & ~0x80;
         }
         if (D_800FCFD8.unk_28 == 0) {
             return 0;
@@ -392,7 +380,7 @@ s16 func_8004A89C(void) {
     pos = D_800FCFD8.unk_00;
     if (D_800FCFD8.unk_24 < pos) {
         D_800FCFD8.unk_28 = 0;
-        D_800FD008.unk_2C &= ~8;
+        D_800FD008[0x16].value &= ~8;
         return 0;
     }
 
@@ -411,7 +399,7 @@ s16 func_8004A89C(void) {
         }
     }
 
-    if (!(GB_REG(0x22) & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
+    if (!(D_800FD008[0x11].value & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
         D_800FCFD8.unk_28 = 0;
         return 0;
     }
