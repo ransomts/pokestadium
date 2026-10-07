@@ -945,6 +945,17 @@ f32 func_86803BC4(s16 arg0, s32 arg1) {
     return ret;
 }
 
+// func_86803C6C: score 5033 -> 2375 (round 7, agent-9).
+// Wins: (1) compute `tmp = SQ(unk_074.x) + SQ(unk_074.z)` BEFORE `if (unk_060 == 0)` (target does the
+// muls before the branch). (2) Spell the sp58 threshold `1e-6f` instead of `0.000001f`: uopt then stops
+// sharing its constant register with the ABS_NORMALIZED literals and the late_rodata entries line up
+// (target has 7x 1e-6 before 1e-4).
+// Remaining: (a) one ugen temp missing between L1003 (andi t2) and the `unk_060 == 2` reload (target t4,
+// ours t3) - shifts every later t-reg by one. Tried: (u16) casts on func_878001E8/COSS index, `% 16`,
+// `-= 1`, `< 1`, if (1) {} pads, case 1/default, sin/cos order - none consume a temp (COSS(x & 0xFFFF)
+// consumes too many). (b) FP regalloc / 0.0f rematerialisation (mtc1 zero per ABS branch) in the
+// unk_074 normalisation and the -0.95/0.3 block. `? 0 :` (int zero) in unk_074.y ABS gave 2100 but looks
+// unnatural; not kept. Good permuter candidate from here.
 #ifdef NON_MATCHING
 void func_86803C6C(unk_D_86807558* arg0) {
     s32 pad;
@@ -1049,7 +1060,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
     sp58.x = ABS_NORMALIZED(sp58.x);
     sp58.z = ABS_NORMALIZED(sp58.z);
 
-    if ((SQ(sp58.x) + SQ(sp58.z)) <= 0.000001f) {
+    if ((SQ(sp58.x) + SQ(sp58.z)) <= 1e-6f) {
         sp58.x = sp58.z = 0.0f;
     } else {
         if (((sp64.x * sp58.x) + (sp64.z * sp58.z)) >= 0.0f) {
@@ -1073,8 +1084,9 @@ void func_86803C6C(unk_D_86807558* arg0) {
     arg0->unk_074.y = ABS_NORMALIZED(arg0->unk_074.y);
     arg0->unk_074.z = ABS_NORMALIZED(arg0->unk_074.z);
 
+    tmp = SQ(arg0->unk_074.x) + SQ(arg0->unk_074.z);
     if (arg0->unk_060 == 0) {
-        if ((SQ(arg0->unk_074.x) + SQ(arg0->unk_074.z)) < 0.25f) {
+        if (tmp < 0.25f) {
             if (arg0->unk_0C0 == 1) {
                 arg0->unk_0C0 = 0;
                 arg0->unk_0C8 = 1.0f;
