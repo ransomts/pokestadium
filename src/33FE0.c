@@ -908,10 +908,6 @@ void func_80034B28(StadiumModel* model) {
     func_800359FC(segment, mvtx, model, 1.0f);
 }
 
-#ifdef NON_MATCHING
-// Same s-reg issue as func_80034824 (target: vertices s3 -> loop cursor s0, remap s1 -> cursor s3),
-// plus loop x/y/z land in ft4/ft5/fa1 instead of fa1/ft4/ft5. A separate vertex cursor variable
-// fixes the move pattern but perturbs pre-loop float temps (worse overall); indexed loops are worse.
 void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     s32 pad0[5];
     f32 sp180;
@@ -941,28 +937,25 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
     f32 w0, w1, w2, x, y, z, temp_fv0;
     s32 pad2[4];
     s16 spCA;
+    s16* temp_s1;
     s16* spC0;
     ModelVertex* var_s0;
     MtxF* mtx;
     f32 temp_fs0, temp_fs1, temp_fs2;
     s16 temp_s1_2;
-    s16* temp_s1;
     ModelSegment* temp_v0;
-    s32 temp_s1_3;
     s32 i;
-    s16* var_s3;
     PosBlend* temp_v0_2;
 
     temp_v0 = Memmap_GetSegmentVaddr(modelSegment);
     spCA = temp_v0->vertexCount;
-    var_s3 = temp_s1 = Memmap_GetSegmentVaddr(temp_v0->remapSegment);
+    temp_s1 = Memmap_GetSegmentVaddr(temp_v0->remapSegment);
     spC0 = Memmap_GetSegmentVaddr(temp_v0->tableSegment);
     mtx = xf->mtx;
     guMtxXFMF(mtx->mf, xf->x0, xf->y0, xf->z0, &sp180, &sp17C, &sp178);
     guMtxXFMF(mtx->mf, xf->x1, xf->y1, xf->z1, &sp174, &sp170, &sp16C);
     guMtxXFMF(mtx->mf, xf->x2, xf->y2, xf->z2, &sp168, &sp164, &sp160);
     guMtxXFMF(mtx->mf, xf->x3, xf->y3, xf->z3, &sp15C, &sp158, &sp154);
-    var_s0 = vertices;
     sp150 = sp174 - sp180;
     sp14C = sp170 - sp17C;
     sp148 = sp16C - sp178;
@@ -972,8 +965,9 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
     sp138 = sp15C - sp180;
     sp134 = sp158 - sp17C;
     sp130 = sp154 - sp178;
+    var_s0 = vertices;
     for (i = 0; i < spCA; i++) {
-        temp_s1_2 = *var_s3;
+        temp_s1_2 = temp_s1[i];
         if ((func_800336F8(spC0, temp_s1_2) != 0) && (temp_s1_2 == i)) {
             temp_fs0 = var_s0->position.base.x;
             temp_fs1 = var_s0->position.base.y;
@@ -981,9 +975,11 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
             temp_fv0 = func_80033568(temp_fs0, temp_fs1, temp_fs2, sp180, sp17C, sp178, sp174, sp170, sp16C, &sp104, &sp100, &spFC);
             temp_v0_2 = &var_s0->position;
             if ((temp_fv0 > 0.0f) && (temp_fv0 < xf->maxDist)) {
-                w0 = var_s0->cmd.weights[index].w0;
-                w1 = var_s0->cmd.weights[index].w1;
-                w2 = var_s0->cmd.weights[index].w2;
+                ModelBlendWeight* wt = &var_s0->cmd.weights[index];
+
+                w0 = wt->w0;
+                w1 = wt->w1;
+                w2 = wt->w2;
                 x = (w0 * sp150) + sp180 + (w1 * sp144) + (w2 * sp138);
                 y = (w0 * sp14C) + sp17C + (w1 * sp140) + (w2 * sp134);
                 z = (w0 * sp148) + sp178 + (w1 * sp13C) + (w2 * sp130);
@@ -995,14 +991,9 @@ void func_80034BD4(u32 modelSegment, StadiumTransform* xf, s32 index, ModelVerte
                 temp_v0_2->disabled &= ~(1 << index);
             }
         }
-        var_s3++;
         var_s0++;
     }
 }
-#else
-void func_80034BD4(u32, StadiumTransform*, s32, ModelVertex*);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/33FE0/func_80034BD4.s")
-#endif
 
 void func_80034F68(MtxF* mtx, Vec3f* out, s16 (*in)[3]) {
     f32 sp34;
