@@ -153,7 +153,11 @@ salloc --partition=interact --account=cuuser_cpsc_ads_s27 \
 ```
 
 - Unattended: `sbatch matching_notes/palmetto_job.sh` (3-day `work1` job; it stages the repo to
-  `/local_scratch`, launches the permuter farm, and leaves a ready tree for agents).
+  node-local disk, launches the permuter farm, and leaves a ready tree for agents).
+- **Phased instead of one 3-day job:** `sbatch --time=06:00:00 --export=ALL,FARM_PHASES=4
+  matching_notes/palmetto_job.sh` runs four 6-hour jobs back to back. Each phase re-seeds from the
+  saved candidates, so the chain is lossless; the farm duration defaults to the time limit minus
+  30 min. Short jobs also start sooner and are less exposed to preemption.
 
 Why not more than one node: nothing here communicates across nodes, and a single Genoa node
 already offers more permuter workers than there are candidate functions times a sensible per-

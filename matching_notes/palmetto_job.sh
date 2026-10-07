@@ -16,7 +16,11 @@
 # `salloc` with the same resources (see PLAN.md section 2) and run the steps by hand.
 # QoS normal is preemptable (PreemptType=preempt/qos, mode REQUEUE): on preemption Slurm requeues
 # the job, which re-stages and re-seeds from /scratch/$USER/permuter_best. Logs append across restarts.
-# Shorter run: sbatch --time=1-00:00:00 --export=ALL,FARM_HOURS=22 matching_notes/palmetto_job.sh
+# Phased runs (no 3-day job needed): the saved candidates are the checkpoint and every start
+# re-seeds from them, so chain short jobs. FARM_HOURS defaults to the job's time limit minus 30 min;
+# FARM_PHASES=N makes the job resubmit itself N-1 more times with the same resources and time limit:
+#   sbatch --time=06:00:00 --export=ALL,FARM_PHASES=4 matching_notes/palmetto_job.sh   # 4 x 6 h
+# Stop the chain early with `scancel` (the queued successor is submitted only at the end of each phase).
 set -eu
 SRC_REPO=${SRC_REPO:-$HOME/Code/pokestadium}
 STAGE=${TMPDIR:-/tmp}/pokestadium
@@ -63,7 +67,22 @@ if j >= 0:
 EOF
 done
 WORKERS=$(( SLURM_CPUS_PER_TASK / ${#FUNCS[@]} ))
-bash "$STAGE/matching_notes/permuter_farm.sh" "$STAGE" "$WORKERS" "${FARM_HOURS:-70}" "${FUNCS[@]}"
+# Farm duration: explicit FARM_HOURS, else the job's time limit minus 30 min (staging + final sync).
+LIMIT=$(squeue -h -j "$SLURM_JOB_ID" -o %l)          # D-HH:MM:SS or HH:MM:SS
+if [ -z "${FARM_HOURS:-}" ]; then
+  FARM_HOURS=$(python3 -c "
+import sys; t=sys.argv[1]; d=0
+if '-' in t: d,t=t.split('-'); d=int(d)
+h,m,s=(list(map(int,t.split(':')))+[0,0])[:3]
+print(max(0.5, round(d*24+h+m/60-0.5,2)))" "$LIMIT")
+fi
+echo "farm hours: $FARM_HOURS (job limit $LIMIT), phases left: ${FARM_PHASES:-1}"
+bash "$STAGE/matching_notes/permuter_farm.sh" "$STAGE" "$WORKERS" "$FARM_HOURS" "${FUNCS[@]}"
+# Chain the next phase (same script, same #SBATCH resources, same time limit).
+if [ "${FARM_PHASES:-1}" -gt 1 ]; then
+  next=$(sbatch --time="$LIMIT" --export=ALL,FARM_PHASES=$((FARM_PHASES-1)),FARM_HOURS="$FARM_HOURS" "$SRC_REPO/matching_notes/palmetto_job.sh" | tail -1)
+  echo "next phase: $next"
+fi
 # Undo the #if 1 edits so the staged tree is clean for agents / cherry-picks.
 (cd "$STAGE" && git checkout -- src/)
 echo "done: $(date)"
