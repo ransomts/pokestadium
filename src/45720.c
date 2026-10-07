@@ -105,20 +105,6 @@ void func_80044E80(s32 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-// Score 396 (diff.py; was 6744). Round-5 wins: `(j << 1)` instead of `j * 2` in both store
-// indices (IDO strength-reduces j*2 into an induction var, target recomputes (j+k)<<1 per
-// unrolled step); `sample * D_800FCF00[i]` operand order; `u32 i` (stops the constant 2 being
-// CSE'd into v1); `if (*p == 2) continue;` (the skip path bypasses the i/p reloads).
-// Remaining (only 2 things):
-// - D_800FCED8[i] spill at 0x40, target 0x44: we have ONE extra compiler temp slot between p
-//   (0x5c) and the spill (target distance 0x18, ours 0x1c). Adding a pad local after p puts the
-//   spill at the right relative spot but grows the frame to 0x88; block-scoped temp_v0_9 adds a
-//   slot too. Killing case 1's func_80045A68 or bzero moves the spill to 0x44 (and the beqz below)
-//   but wrecks regalloc. Dead ends: *p -> D_800FCEF0[i] at any single site, statement reorders in
-//   the ==2 / ==4 branches, new_var for D_800FCED8[i], temp_a2 rewrites, (u32)(u64) casts, s32 temp.
-// - case 0: `if (D_800FCED0 != 0)` gives beqzl + lw in the likely slot; target has beqz with
-//   `lui at` in the delay slot. `== 1` gives bne; casts, `> 0`, else{}, reorders don't help.
 void func_80044EA4(void) {
     u32 j;
     u32 var_s7;
@@ -127,12 +113,9 @@ void func_80044EA4(void) {
     s16 temp;
     s32 temp_v0_9;
     UNUSED s32 pad;
-    UNUSED s32 pad2;
-    u8* p;
 
-    p = D_800FCEF0;
-    for (i = 0; i < 2; i++, p++) {
-        if (*p == 2) {
+    for (i = 0; i < 2; i++) {
+        if (D_800FCEF0[i] == 2) {
             continue;
         }
 
@@ -155,13 +138,13 @@ void func_80044EA4(void) {
             D_800FCED0 = 1;
             D_800FCF20[i] = 0;
         } else {
-            if ((*p != 0) && (*p != 3) && ((u8) D_800FCED8[i]->unk_25D1 == 4)) {
+            if ((D_800FCEF0[i] != 0) && (D_800FCEF0[i] != 3) && ((u8) D_800FCED8[i]->unk_25D1 == 4)) {
                 if (D_800FCF20[i] == 0) {
                     func_80045A68(D_800FCED8[i]);
                     D_800FCF20[i] = 1;
                 }
                 D_800FCED0 = 0;
-                *p = 2;
+                D_800FCEF0[i] = 2;
                 bzero(D_800FCEE0[i], 0x1400);
                 bzero(D_800FCF28[i], 0x1140);
             }
@@ -180,14 +163,14 @@ void func_80044EA4(void) {
         D_800FCF38[i] %= 2208;
         osWritebackDCache(D_800FCF28[i], 0x1140);
 
-        switch (*p) {
+        switch (D_800FCEF0[i]) {
             case 2:
             case 4:
                 break;
 
             case 0:
                 func_800456D0(D_800FCED8[i], D_800FCEF8[i], func_800455DC);
-                *p = 4;
+                D_800FCEF0[i] = 4;
                 if (D_800FCED0 != 0) {
                     D_800FCED0 = 0;
                 }
@@ -203,7 +186,7 @@ void func_80044EA4(void) {
             case 3:
                 D_800FCF10[i]--;
                 if (D_800FCF10[i] == 0) {
-                    *p = 0;
+                    D_800FCEF0[i] = 0;
                 }
                 break;
 
@@ -211,7 +194,7 @@ void func_80044EA4(void) {
                 temp_v0_9 = D_800FCF00[i] - D_800FCF1C[i];
                 if (temp_v0_9 <= 0) {
                     D_800FCF00[i] = 0;
-                    *p = 1;
+                    D_800FCEF0[i] = 1;
                 } else {
                     D_800FCF00[i] = temp_v0_9;
                 }
@@ -219,9 +202,6 @@ void func_80044EA4(void) {
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/45720/func_80044EA4.s")
-#endif
 
 void func_800455DC(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     OSIoMesg sp48;
