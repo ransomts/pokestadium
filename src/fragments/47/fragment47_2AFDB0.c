@@ -699,6 +699,21 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 }
 
 #ifdef NON_MATCHING
+// Score 8 (was 56). Only diff: the CSE temp X = temp_s2_2 + 0x24 (saved at the first
+// func_83803F34 call, reloaded in the second block-3 loop) is at sp+0x48, target sp+0x4c.
+// Stack model (verified): named locals top-down from 0xd0 in declaration order (incl. each gfx
+// macro's _g); compiler temps bottom-up from 0x48; 8-byte alignment hole goes at 0x48.
+// Target = 27 named words (sp80 at 0x80 fixes 19 above it, so block 4 has `s32 pad;` not
+// pad[2]) + 6 temp slots [0x60,0x5c,0x58,0x54,(0x50 unused),X=0x4c] + hole at 0x48.
+// The unused slot comes from a constant-valued local that is live across the
+// func_800060E0 call and used in X's expression (copy-propagated late, slot left behind).
+// `i = 0x24; ... temp_s2_2 + i` gives TWO unused slots (X lands at 0x48). A new local
+// `s32 new_var = 0x24;` used in X, the second func_83803F34 AND loop 1 gives exactly ONE
+// (temps right, score 12) but adds a named word above sp80 (sp80 -> 0x7c). The 7 names used in
+// block 3 (ptr, i, spC4, spC0, var_s2, var_s0, temp_s2_2) all seem required; removing ptr gives
+// s5 for &D_838067F0. Dead ends: ptr-> vs D_838067F0. per line, inline temp_s2_2 / var_s0,
+// nested scope for new_var (still allocated in source order), constant var in block 4,
+// operand-order and s16 casts in block 3, `if (1) {}` after each call.
 void func_838043F8(s32 arg0) {
     unk_D_838067F0* ptr = &D_838067F0;
     s32 i;
@@ -739,8 +754,9 @@ void func_838043F8(s32 arg0) {
             var_s0 = -0x194;
         }
 
+        i = 0x24;
         func_800060E0(&gDisplayListHead, spC4 + 0x24, spC0 + 4, 0x18C, 0x124);
-        func_83803F34(temp_s2_2 + 0x24, spC0 + 4, ptr->unk_0160->unk_268C);
+        func_83803F34(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C);
         func_83803F34((var_s0 + temp_s2_2) + 0x24, spC0 + 4, ptr->unk_0160);
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -767,7 +783,7 @@ void func_838043F8(s32 arg0) {
         func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
     } else if (ptr->unk_0000 == 4) {
         s32 sp80 = spC0 - ((ptr->unk_002C * 0x2C) / 4);
-        s32 pad[2];
+        s32 pad;
 
         func_83803F34(spC4 + 0x24, spC0 + 4, ptr->unk_0160);
         func_800060E0(&gDisplayListHead, spC4 + 0x24, spC0 + 0x20, 0x18C, 0x108);
