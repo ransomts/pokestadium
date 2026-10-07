@@ -22,10 +22,7 @@ typedef void (*ThreadEntries)(unk_func_8820BE14*);
 typedef struct unk_D_88217D10 {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
-    /* 0x08 */ u8 unk_08;
-    /* 0x09 */ u8 unk_09;
-    /* 0x0A */ u8 unk_0A;
-    /* 0x0B */ u8 unk_0B;
+    /* 0x08 */ u8 unk_08[4];
 } unk_D_88217D10; // size = 0xC
 
 typedef struct unk_D_88217E40 {
@@ -85,8 +82,6 @@ static char** D_88224FB4;
 static char** D_88224FB8;
 static char** D_88224FBC;
 
-// Only regalloc differs: target uses a0 for i, a2 for var_a2 and v1 for the cached unk_00.unk_00
-#ifdef NON_MATCHING
 static unk_D_88217D10 D_88217D10[2][9] = {
     {
         { 1, 0x87, 0x21, 0x2D, 0, 0 },
@@ -117,10 +112,12 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     s32 var_a2;
     unk_D_88217D10* var_v0;
     unk_D_88217D10* temp_a1;
+    s32 var_a2_copy;
+    s32 j;
 
     bzero(arg0, sizeof(unk_func_80026268_arg0));
 
-    arg0->unk_00.unk_00 = func_8002816C();
+    arg0->unk_00.unk_00 = func_8002816C() & 0xFF;
     var_a2 = func_80024F68(func_80029080());
     i = 0;
     if (var_a2 == 7) {
@@ -130,6 +127,7 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     }
 
     var_v0 = temp_a1 = D_88217D10[var_a2];
+    var_a2_copy = var_a2; // fake copy; keeps var_a2 out of v1
     for (; i < 9; i++, var_v0++) {
         if (var_v0->unk_00 == arg0->unk_00.unk_00) {
             break;
@@ -138,14 +136,13 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
 
     if (i == 9) {
         i = 0;
-        var_v0 = D_88217D10[var_a2];
+        var_v0 = D_88217D10[var_a2_copy];
     }
 
     arg0->unk_10 = var_v0->unk_04;
-    arg0->unk_09[0] = temp_a1[i].unk_08;
-    arg0->unk_09[1] = temp_a1[i].unk_09;
-    arg0->unk_09[2] = temp_a1[i].unk_0A;
-    arg0->unk_09[3] = temp_a1[i].unk_0B;
+    for (j = 0; j < 4; j++) {
+        arg0->unk_09[j] = temp_a1[i].unk_08[j];
+    }
 
     arg0->unk_0E = 0x7D0;
     arg0->unk_14 = 0;
@@ -154,7 +151,7 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     arg0->unk_1A = 0;
     arg0->unk_1C = 0;
 
-    arg0->unk_1E = guRandom();
+    arg0->unk_1E = guRandom() & 0xFFFF;
 
     arg0->unk_06 = D_80070FA0[arg0->unk_00.unk_00 - 1].unk_06;
     arg0->unk_07 = D_80070FA0[arg0->unk_00.unk_00 - 1].unk_07;
@@ -178,33 +175,6 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     arg0->unk_53 = 0;
     arg0->unk_25 = 0;
 }
-#else
-static unk_D_88217D10 D_88217D10[2][9] = {
-    {
-        { 1, 0x87, 0x21, 0x2D, 0, 0 },
-        { 4, 0x87, 0xA, 0x2D, 0, 0 },
-        { 7, 0x87, 0x21, 0x27, 0, 0 },
-        { 0x6A, 0x1F40, 0x18, 0x60, 0, 0 },
-        { 0x6B, 0x1F40, 4, 0x61, 0, 0 },
-        { 0x85, 0x3D09, 0x21, 0x1C, 0, 0 },
-        { 0x8A, 0x1F40, 0x37, 0x6E, 0, 0 },
-        { 0x8C, 0x1F40, 0xA, 0x6A, 0, 0 },
-        { 0x36, 0xD2F, 0xA, 0x85, 0, 0 },
-    },
-    {
-        { 1, 0x87, 0x21, 0x2D, 0, 0 },
-        { 4, 0x87, 0xA, 0x2D, 0, 0 },
-        { 7, 0x87, 0x21, 0x27, 0, 0 },
-        { 0x6A, 0x1F40, 0x18, 0x60, 0, 0 },
-        { 0x6B, 0x1F40, 4, 0x61, 0, 0 },
-        { 0x85, 0x3D09, 0x21, 0x27, 0, 0 },
-        { 0x8A, 0x1F40, 0x37, 0x6E, 0, 0 },
-        { 0x8C, 0x1F40, 0xA, 0x6A, 0, 0 },
-        { 0x36, 0xD2F, 0xA, 0x85, 0, 0 },
-    },
-};
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/23/fragment23_1AE680/func_88206110.s")
-#endif
 
 s32 func_882062E4(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 sp1C = 0;
