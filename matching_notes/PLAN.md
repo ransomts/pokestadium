@@ -141,12 +141,12 @@ Roles: 1 **integrator** (the parent session) + N **matchers** (8-16) + the permu
    `asm/us/nonmatchings/**/<matched>.s` for anything matched since the last `make init`, re-run
    `progress.py -v us`, record the number in NOTES.md.
 3. Create worktrees **based on `match-round-1`** (never master):
-   `git worktree add /local_scratch/$USER/wt/agent-<k> match-round-1` then
-   `MAIN=<staged repo> matching_notes/agent_setup.sh /local_scratch/$USER/wt/agent-<k>`.
+   `git worktree add $TMPDIR/wt/agent-<k> match-round-1` then
+   `MAIN=<staged repo> matching_notes/agent_setup.sh $TMPDIR/wt/agent-<k>`.
    Verify `git log -1` in each worktree shows the match-round-1 head.
 4. Start the permuter farm (Section 5) on tier-1 functions with the remaining cores.
 5. Hand each matcher 2-3 functions from the same tier plus the prompt in Section 4.3. Give each
-   its own scratch dir (`/local_scratch/$USER/scratch/agent-<k>`).
+   its own scratch dir (`$TMPDIR/scratch/agent-<k>`).
 
 ### Integrator, during/after the round
 - Every ~hour: in each worktree `git log match-round-1..HEAD`; cherry-pick match commits onto
@@ -156,7 +156,7 @@ Roles: 1 **integrator** (the parent session) + N **matchers** (8-16) + the permu
   (`git worktree remove --force`) and `nonmatchings/` output (~1 GB per long run) at the end.
 
 ### Matcher rules (put these verbatim in every agent prompt)
-1. `pwd` first; you must be inside your worktree `/local_scratch/.../agent-<k>`. If a resumed
+1. `pwd` first; you must be inside your worktree `$TMPDIR/wt/agent-<k>`. If a resumed
    session dropped you into the main repo, `cd` back before touching anything.
 2. Read `matching_notes/NOTES.md` entry and the `//` comment in the function's `#ifdef
    NON_MATCHING` draft before changing code. Do not retry listed dead ends.
@@ -186,7 +186,7 @@ inherit the parent's model. Reserve Fable for tier-4 structural functions that r
 ### 4.3 Agent prompt template
 ```
 You are matching Pokemon Stadium (N64, IDO 7.1) functions to the original ROM.
-Worktree: /local_scratch/<user>/wt/agent-<k>   (run pwd; cd there if not)
+Worktree: $TMPDIR/wt/agent-<k>   (run pwd; cd there if not)
 Main repo (for .venv, asm, permuter): <staged repo>
 Your functions, in order: func_A (src/x.c), func_B (src/y.c)
 Read matching_notes/PLAN.md section 4, matching_notes/IDO_TRICKS.md, and the NOTES.md entries

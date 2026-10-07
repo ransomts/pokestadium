@@ -6,13 +6,13 @@
 # - <repo> must be a full checkout with .venv, asm/, tools/permuter (symlinks are fine).
 # - Each function's #ifdef NON_MATCHING draft must be enabled with a bare `#if 1` in <repo>
 #   before calling (import.py reads the function body from the C file as compiled).
-# - Work dir: $FARM_DIR (default /local_scratch/$USER/permuter). Improved candidates land in
+# - Work dir: $FARM_DIR (default $TMPDIR/permuter, the job-private local SSD). Improved candidates land in
 #   $FARM_DIR/nonmatchings/<func>/output-<score>-<n>/source.c and are rsynced to
 #   $SAVE_DIR (default /scratch/$USER/permuter_best) every 10 minutes and at the end.
 # - Judge candidates with matching_notes/fd.sh, not the permuter score (statics inflate it).
 set -u
 REPO=$(readlink -f "$1"); WORKERS=$2; HOURS=$3; shift 3
-FARM_DIR=${FARM_DIR:-/local_scratch/$USER/permuter}
+FARM_DIR=${FARM_DIR:-${TMPDIR:-/tmp}/permuter}
 SAVE_DIR=${SAVE_DIR:-/scratch/$USER/permuter_best}
 PY="$REPO/.venv/bin/python3"
 export PATH="$REPO/.venv/bin:$HOME/local/bin:/usr/local/bin:/usr/bin:/bin"
@@ -34,7 +34,7 @@ for spec in "$@"; do
     rm -f "nonmatchings/$func/-I"
     echo "starting $func with $WORKERS workers"
     timeout "${HOURS}h" "$PY" "$REPO/tools/permuter/permuter.py" "nonmatchings/$func" \
-        --stack-diffs --best-only --stop-on-zero --no-context-output -j"$WORKERS" \
+        --stack-diffs --best-only --stop-on-zero --no-context-output --quiet -j"$WORKERS" \
         > "nonmatchings/$func.log" 2>&1 &
     pids+=($!)
 done
@@ -51,6 +51,7 @@ sync_best() {
 while kill -0 "${pids[@]}" 2>/dev/null; do sleep 600; sync_best; done
 sync_best
 echo "farm done; best candidates in $SAVE_DIR"
+shopt -s nullglob
 for d in nonmatchings/*/; do
     f=$(basename "$d"); best=$(ls -d "$d"output-* 2>/dev/null | sed 's/.*output-//' | sort -t- -k1,1n | head -1)
     echo "$f best=${best:-none}"

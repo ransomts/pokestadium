@@ -11,15 +11,16 @@
 # permuter farm on the tier-1 functions, and leave a ready tree for Claude Code agents.
 # Edit FUNCS below (func:src pairs) before submitting. For a supervised session use
 # `salloc` with the same resources (see PLAN.md section 2) and run the steps by hand.
+# Shorter run: sbatch --time=1-00:00:00 --export=ALL,FARM_HOURS=22 matching_notes/palmetto_job.sh
 set -eu
 SRC_REPO=${SRC_REPO:-$HOME/Code/pokestadium}
-STAGE=/local_scratch/$USER/pokestadium
+STAGE=${TMPDIR:-/tmp}/pokestadium
 export PATH="$HOME/local/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 echo "node: $(hostname)  cpus: $SLURM_CPUS_PER_TASK  start: $(date)"
 mkdir -p "$(dirname "$STAGE")"
 # Stage: everything the build needs, including gitignored inputs (venv, asm, permuter, roms).
-rsync -a --delete --exclude 'nonmatchings/' --exclude '.claude/worktrees/' "$SRC_REPO/" "$STAGE/"
+rsync -a --delete --exclude '/nonmatchings/' --exclude '.claude/worktrees/' "$SRC_REPO/" "$STAGE/"
 cd "$STAGE"
 find build -exec touch {} + 2>/dev/null || true
 
@@ -51,7 +52,7 @@ if j >= 0:
 EOF
 done
 WORKERS=$(( SLURM_CPUS_PER_TASK / ${#FUNCS[@]} ))
-bash "$STAGE/matching_notes/permuter_farm.sh" "$STAGE" "$WORKERS" 70 "${FUNCS[@]}"
+bash "$STAGE/matching_notes/permuter_farm.sh" "$STAGE" "$WORKERS" "${FARM_HOURS:-70}" "${FUNCS[@]}"
 # Undo the #if 1 edits so the staged tree is clean for agents / cherry-picks.
 (cd "$STAGE" && git checkout -- src/)
 echo "done: $(date)"
