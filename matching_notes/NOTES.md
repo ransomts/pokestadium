@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (46 as of 2026-10-07 after 8 round-5 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (45 as of 2026-10-07 after 9 round-5 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -139,6 +139,10 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   (splat named the -0xA8 address after the preceding symbol); with the right index both register
   hacks disappear. Lesson: a negative-offset access to a splat-named symbol is probably an indexed
   access into the NEXT symbol.
+- **func_87804320** (agent 5): `spAC` is a plain `Vtx*` indexed as `&spAC[var_s4 * 4 + k]` instead of the
+  `Vtx4` struct (275 -> 150; moves the s3 copy to the loop top), and the loop tail is
+  `spA4[var_s4 + 1] = spA4[var_s4++] + 0x36;` (-> 0). That line is unsequenced in C but is the only
+  form found that matches; the well-defined `j = var_s4++` version scores 1248.
 - Also this round: func_80034BD4, func_86B09F64 (entries above).
 
 ### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
@@ -175,9 +179,15 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   j/k/l/m for unk_04[i]; `unk_01[i] > unk_04[i]`; ~9 else-branch m-loop rewrites; reordering the arg2 sum;
   sibling-style ternaries (350, only with the `&&` line kept). Untried: var_s0 at the top and n at the
   bottom of the frame combined with removing spBF.
-- **func_84372670** (lui reload vs cached address; round 5 got the draft 4308 -> 2860 by `p = &D_843C5238`,
-  which kills the s0 address caching - see bc54bcf and the draft comment), **func_87804320** (score 275):
-  see draft comments.
+- **func_84372670** (frag62_359F90, 4308 -> 2860 in round 5, bc54bcf): only the `unk_4F` loop back-edge
+  (`goto case_6`) makes IDO cache &D_843C5238 in s0 (a `return` there drops s0, ~1700); for/do/while
+  with `continue` compile identically (uopt works from the CFG). s0 only goes away when the 4C test, the
+  4F decrement and the 4F test ALL stop using the plain expression - `unk_D_800FCB18** p = &D_843C5238;`
+  does that and also gives the target frame (0x38, sp2C at 0x2C), so the original likely had one more
+  pointer-sized local. Remaining: the switch copy is in v1 (target a1) and the 4C-test pointer is not
+  CSE'd with the later `unk_01 == 0` / `4C &= ~4` accesses. Dead ends: volatile cast; local
+  `ptr = D_843C5238` (copy-propagated); named temp for the case-6 switch; dead `if (0)` debug print;
+  `if (1) {}` inserts; making D_843C5238 extern.
 
 ### Near misses — stack layout
 - **func_8430506C** (frag62_2EC3C0, score 16): named locals identical; target has ONE extra compiler
