@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (52 as of 2026-10-07 after round 5's first two matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (46 as of 2026-10-07 after 8 round-5 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -61,6 +61,14 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   the checksum build for everyone. Clean up worktrees (`git worktree remove`) and `nonmatchings/`
   (permuter output, ~1 GB per long run) when done.
 - Give each agent its own scratch subfolder (they overwrote each other's helper scripts).
+- **Shared `asm/` symlink:** agent worktrees symlink the main repo's `asm/`, so deleting a matched
+  function's `nonmatchings/*.s` breaks the full `make` in every OTHER worktree whose source still has
+  that GLOBAL_ASM. During a round, leave the `.s` files alone (progress.py will undercount) and delete
+  them all once the round is merged. Agent 1 regenerated deleted ones with splat into a scratch dir
+  (`.claude/worktrees/agent-1/scratch_agent/split`) - that copy was verified byte-identical.
+- **Session restarts leave zombie agents:** after a Claude Code restart on a new node, the old node's
+  agents kept running and editing the same worktrees as the resumed ones. Cancel the old interactive
+  job before resuming agents.
 - Insight beat brute force: every round-1 win came from recognising the original source shape
   (64-bit math, recursion, function statics, CSE temps, arrays). The permuter almost never closed a
   gap; it is only worth long runs on pure register-allocation near misses (candidate for the Palmetto
@@ -104,6 +112,35 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   and `UNUSED s32 pad[2];` as the first local for the 0x28 frame. The draft's `temp[10]` hack was
   the problem. Lesson: before fighting FPU regalloc, look for a known SM64/libultra equivalent.
 
+### Round 5 matches (2026-10-07, Opus 5.5 agents in worktrees, 2 functions each)
+- **func_81002530** (01670a4): drop the redundant `& 0xFF` from the condition and write
+  `temp_t3 = 0x4000 - (u16)(D_81004B60 >> 4);`. The `(u16)` cast uses one hidden temp AFTER the lbu
+  instead of before it, so the lbu lands in t7 and the body temps rotate back. `(s16)` uses two temps
+  and overshoots; the result is stored to an s16 anyway.
+- **func_81003A54** (e30dad4): make temp_t0 `u8` (was u32) - that removes the whole `(u32)(u64)` chain
+  hack and gives `t0` + `move a3,t0`; `pad[3]` -> `pad[4]` to keep the 0x50 frame; texture address as
+  `D_3000000 + ((sp4D & 0xF) << 4) + ((((sp4D & 0xF0) >> 4) << 4) * 256)` (hidden temp between the
+  andi and the sra). `(row * 16) << 8` also matches; `<< 0xC` and `* 16 * 256` give 840.
+- **func_8436C6A4** (46967b9): the TRIANGLES macro's j<2 / k<4 nested loops were ONE loop of 8:
+  `for (j = 0; j < 8; j++) gSP2Triangles(arg0++, j, j+9, j+1, 0, j+9, j+10, j+1, 0);` - IDO unrolls
+  it by 4 and 0x06000000 lands in s4. Lesson: a 2-iteration outer loop around a 4x-unrolled body
+  means a single loop of 8 in the source.
+- **func_88206110** (9e7a76e): `arg0->unk_00.unk_00 = func_8002816C() & 0xFF;` (returns 9 bits; same
+  idiom in fragment17) and `arg0->unk_1E = guRandom() & 0xFFFF;` - each mask burns one hidden temp,
+  fixing the t-register offset through the whole function; the 4-byte copy is `u8 unk_08[4]` in
+  unk_D_88217D10 plus `for (j = 0; j < 4; j++) arg0->unk_09[j] = temp_a1[i].unk_08[j];` (fully
+  unrolled). One fake copy `var_a2_copy = var_a2;` in the not-found reset is still needed.
+- **func_8250281C** (a2d8938): reuse `var_a2_2` (u32, first declared) for the D_8780FA48 copy so it
+  lands at sp+0x44 (a new local grows the frame); pass `-1 - (s32)var_a2_2` (the cast stops the -1
+  being shared with the gDPSetEnvColor constant); cases 1/2/4 compute sp38 in ONE expression
+  (`sp38 = X * 0x58 + 0xBA;`); `if (1) {}` after case 5's sp38 keeps sp30 in a2; `D_8780FA48 += 0;`
+  in case 2 still required. Dead ends: dropping inner `break;`s, changing sp30's type.
+- **func_86A01CF0** (bd46d36): the `D_86A03C98` reference was really `D_86A03D40[arg5][arg6 - 6]`
+  (splat named the -0xA8 address after the preceding symbol); with the right index both register
+  hacks disappear. Lesson: a negative-offset access to a splat-named symbol is probably an indexed
+  access into the NEXT symbol.
+- Also this round: func_80034BD4, func_86B09F64 (entries above).
+
 ### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
 - The draft was fundamentally wrong: the target's inner loop is MONO→STEREO duplication — per j:
   `temp = (s16)((D_800FCF00[i] * D_800FCEE0[i][(base + j) % 2560]) >> 7);` then TWO stores:
@@ -127,25 +164,20 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 ## Per-function state and dead ends (most promising first)
 
 ### Near misses — register allocation only
-- **func_81002530** (frag31_2577F0, score 10): only `lbu` → t8 vs target t7. Target needs lbu in t7 then
-  two hidden temps (t8,t9) after it. Dead ends: `!x`, `<1`, `<=0`, `|0`, `<<0`, `+0`, every
-  (u8/u16/s8/s16/(u32)(u64)) cast placement, double masks, `%256`, `==0U`, raw pointer reads, temp var;
-  round 3: dropping the mask fixes the lbu but rotates ALL body temps by one (uniform t6→t9 shift).
-  Refined goal: the mask supplies the t7 slot but only one of two post-branch hidden temps.
-- **func_81003A54** (frag31_258080, score 110): default-case region 2 t-slots behind, tail 1 behind,
-  and temp_t0 lands in a3 (target: t0 + `move a3,t0`). The `(u32)(u64)`-chain LENGTH is a rotation
-  knob: 3 layers = 110 (best), 2 layers fixes the default case but breaks the tail (280), 0 = 210,
-  4-5 = worse. Inlining `D_800AF770[var_v0]` per-case prevents the CSE (per-case reloads); inlining
-  var_v0 changes the frame. The two regions need different temp counts — a single knob can't fix both.
-- **func_8436C6A4** (frag62_356730): hoisted 0x06000000 should be in s4 (ours t3, rotating all 8
-  loop-carried values). Round-3 dead ends in the draft's // comment: or-chain operand order (IDO
-  reassociates), `w0 |=` read-modify-write (fused), hand-rolled packing (flag moves but structure
-  blows up). Target allocates the G_TRI2 constant LAST among loop-carried values.
-- **func_8437FD74** (frag62_361050): compare regs v1/a2 vs v0/v1; `if ((arg2 && arg2) && arg2) {}` is
-  load-bearing. arg1 is `u8*` (header fixed).
-- **func_88206110** (frag23_1AE680): regalloc only; ~20k permuter iters failed.
-- **func_8250281C**, **func_84372670** (lui reload vs cached address), **func_87804320** (score 275),
-  **func_86A01CF0**: see draft comments.
+- **func_8437FD74** (frag62_361050, score 350): compare regs v1/a2 vs v0/v1; `if ((arg2 && arg2) && arg2) {}`
+  is load-bearing (changing the number of `&&` gives 1300-3900). arg1 is `u8*`. Round 5 findings: i spills
+  to 0xbf and j to 0xbe, so `spBF` is not a real local; `sp5C` is the compiler temp for the `temp_v0_2 - 2`
+  bound, not a local; removing `u8 pad` changes nothing. The min result (target a1, ours s0) is a separate
+  s32 `n = var_s2; if (var_a0_3 < var_s2) n = var_a0_3;` (u8/u16 add a mask). Any extra s32 local grows
+  the frame 0xc0 -> 0xc8; the only 0xc0 layout found is `i j k l m spBA, two u8s, s32 n, sp94 sp90 sp78
+  spBF sp76, two u8s, s32 var_s0` with sp5C inlined and pad removed - that fixes the min code but inlining
+  sp5C swaps v0/v1 at the unk_04/unk_01 compare (score 880). Dead ends: reusing temp_v0_2/var_a0_3/var_s2/
+  j/k/l/m for unk_04[i]; `unk_01[i] > unk_04[i]`; ~9 else-branch m-loop rewrites; reordering the arg2 sum;
+  sibling-style ternaries (350, only with the `&&` line kept). Untried: var_s0 at the top and n at the
+  bottom of the frame combined with removing spBF.
+- **func_84372670** (lui reload vs cached address; round 5 got the draft 4308 -> 2860 by `p = &D_843C5238`,
+  which kills the s0 address caching - see bc54bcf and the draft comment), **func_87804320** (score 275):
+  see draft comments.
 
 ### Near misses — stack layout
 - **func_8430506C** (frag62_2EC3C0, score 16): named locals identical; target has ONE extra compiler
