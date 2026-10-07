@@ -1451,12 +1451,23 @@ s32 func_84371DCC(void) {
 }
 
 #ifdef NON_MATCHING
-// Rodata now matches; IDO caches &D_843C5238 in s0 here while the target reloads it with lui each time.
+// Score 4308 -> 2860 (round 1, agent-5). The s0 caching of &D_843C5238 is caused ONLY by the
+// unk_4F loop (goto case_6): replacing that back-edge with return removes s0 and leaves ~1700.
+// Structured loops (for/do/while+continue) instead of goto: identical output, so uopt uses the CFG.
+// Removing any single D_843C5238 use does not drop s0; it disappears only when all three of the
+// 4C-test / 4F-decrement / 4F-test accesses are not the plain expression. Accessing them through
+// p = &D_843C5238 (below) kills s0 AND gives the target frame (0x38, sp2C at 0x2C), so the
+// original probably had one more pointer-sized named local. Remaining diffs: switch copy in v1 vs
+// a1 (target), and the 4C-test pointer is not CSEd with the later unk_01==0 / 4C&=~4 accesses.
+// Dead ends: volatile cast of D_843C5238, local ptr = D_843C5238 copy (copy-propagated, s0 stays),
+// named temp for the case-6 switch, dead if(0) debug print with " SpAttackTbl6", if (1) {} inserts,
+// making D_843C5238 extern instead of defined here.
 static const char D_8438DC00[] = "%d";
 static const char D_8438DC04[] = " SpAttackTbl6\n";
 
 void func_84372670(void) {
     char sp2C[8];
+    unk_D_800FCB18** p = &D_843C5238;
 
     if (D_843C5238->unk_5A != 0xFF) {
         D_843C4DA4 = 0;
@@ -1581,9 +1592,9 @@ void func_84372670(void) {
 
                 func_84370F40();
 
-                if (D_843C5238->unk_4C & 4) {
-                    D_843C5238->unk_4F -= 1;
-                    if (D_843C5238->unk_4F != 0) {
+                if ((*p)->unk_4C & 4) {
+                    (*p)->unk_4F -= 1;
+                    if ((*p)->unk_4F != 0) {
                         goto case_6;
                     }
                     D_843C5238->unk_4C &= ~4;
