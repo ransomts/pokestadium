@@ -273,8 +273,8 @@ extern u8 D_800FCB30[2];
 extern u8 D_800FCB38[2][8];
 extern unk_D_800FCB48 D_800FCB48[2];
 extern s32 D_800FCC50[20];
-extern s8 D_800FCCA0;
-extern s8 D_800FCCA1;
+extern u8 D_800FCCA0;
+extern u8 D_800FCCA1;
 extern u8 D_800FCCA2;
 extern u32 D_800FCCA4;
 extern s32 D_800FCCA8;
@@ -2129,7 +2129,6 @@ void func_800416BC(void) {
     }
 }
 
-#ifdef NON_MATCHING
 void func_80041A98(void) {
     s32 i;
     s32 j;
@@ -2142,8 +2141,7 @@ void func_80041A98(void) {
     }
     D_8007839C[0] = 0;
     D_8007839C[1] = 0;
-    *(volatile u8*)&D_800FCCA1 = 0;
-    D_800FCCA0 = 0;
+    D_800FCCA0 = D_800FCCA1 = 0;
     D_800FCCA2 = 0;
     D_800FCCA4 = 0;
     D_800FCCAC = 0;
@@ -2179,9 +2177,6 @@ void func_80041A98(void) {
         D_800FCCD6[i] = 0;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/3D140_2/func_80041A98.s")
-#endif
 
 void func_80041C70(u32 arg0) {
     OSIntMask mask;
