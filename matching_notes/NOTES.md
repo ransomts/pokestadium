@@ -221,10 +221,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `if (1) {}` inserts; making D_843C5238 extern.
 
 ### Near misses — stack layout
-- **func_8430506C** (frag62_2EC3C0, score 16): named locals identical; target has ONE extra compiler
-  temp allocated between the `&D_84390010[sp40]` temp and the `sp40*4` temp. Find the sub-expression
-  (CSE or call result) in that range. Dead ends: removing ptr2 (big regalloc change), inlining sp28,
-  assigning sp28 later, decl swaps.
 - **func_84367660** (frag62_351F20, score 229): fa0/ft4 swapped for a3_z vs 2*a3_y; six spill temps at
   0x80..0x6C vs target 0x8C..0x78 — target has 3 extra never-stored spill temps. Pads don't move them.
   Untried: name `arg4*sp130` etc. before the gfx macros; reorder gSPDisplayList/gDPSetEnvColor vs a3_*
@@ -246,7 +242,22 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   computed before the `func_82F022DC` call while var_s2 stays in s2. Dead ends: inlining sp64 (var_s2
   spills, 209 lines); for/do-while/swapped increments; function-level sp68; `s16 sp68`; inlining
   temp_s3/temp_lo. Observed: unused locals in any block get slots above the used ones.
-- **func_84302658**, **func_838043F8**, **func_83501718**: spill-slot ordering / one slot off; see draft comments. Lesson from
+- **func_8430506C** (frag62_2EC3C0, score 16, 4 stack lines): compiler temps sit right below the lowest
+  named local, assigned top-down in a fixed order (sp28 value, sp40*4, &D_84390010[sp40]); moving the
+  `sp28 =` assignment does not reorder them. Target: 9 named slots (0x2C..0x4C) + 4 temps (0x28, 0x24,
+  an unused one at 0x20, 0x1C); draft: 10 named + 3 temps. Dropping pad2 (ptr2 moved into its place)
+  gives identical code at frame 0x48, so the original has one fewer local and one extra never-stored
+  temp. `sp40 = !func_84307F00(arg0);` or `!(x & 1) != 0` adds such a temp (frame back to 0x50) but it
+  always takes the TOP slot (0x28) wherever it appears; the missing temp must be created at regalloc
+  time and ordered between sp40*4 and the D address. Round-6 dead ends in the draft comment (6c8de07).
+- **func_84302658** (frag62_2EC3C0, 11 lines, permuter base 64): target slot order var_a1 (0x2C),
+  var_a1+0x20 (0x28), sp68*4 (0x24), &D_84384578[sp68] (0x20); draft has sp68*4 first. Best found
+  (11 -> 7 lines, NOT committed as code): pass `arg0->unk_000.unk_01A * 0` as the 4th arg of the
+  D_84384570 call only, AND `tmp = (u32)_70D3A0_ROM_START;` at the top used as `tmp + (...)` in the
+  two D_80075BD0 lines, the else-branch D_6E910 line and the ptr2->unk_10 line (also removes the
+  `(tmp = 2)` hack) -> order [a1, sp68*4, a2], only a2 and sp68*4 still swapped. Dead ends in the
+  draft comment (662a5cc).
+- **func_838043F8**, **func_83501718**: spill-slot ordering / one slot off; see draft comments. Lesson from
   func_82F10BB4's match: frame too big with identical offsets ⇒ too many named locals — turn an
   induction variable `v += k` into `base + i*k` (IDO strength-reduces it back).
 
