@@ -284,7 +284,25 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   two D_80075BD0 lines, the else-branch D_6E910 line and the ptr2->unk_10 line (also removes the
   `(tmp = 2)` hack) -> order [a1, sp68*4, a2], only a2 and sp68*4 still swapped. Dead ends in the
   draft comment (662a5cc).
-- **func_838043F8**, **func_83501718**: spill-slot ordering / one slot off; see draft comments. Lesson from
+- **func_838043F8** (frag47, 56 -> 8 in round 6, e6e5825): named locals take slots top-down in
+  declaration order (including each gfx macro's `_g`); compiler temps go from 0x48 upward with the
+  8-byte alignment hole at 0x48. Target has 27 named words (block 4 has `s32 pad;`, not `pad[2]`) and
+  one never-used temp slot (0x50) from a constant local live across the `func_800060E0` call and used
+  in `temp_s2_2 + 0x24` (the farm's `new_var = 0x24` hint). The score-8 draft is a HACK (`i = 0x24;`
+  before the call -> two unused slots, X at 0x48 not 0x4c). A real `new_var = 0x24` used in X, the
+  second func_83803F34 call and loop 1 gives exactly one unused slot and the right temps (score 12,
+  saved as `matching_notes/func_838043F8_newvar_12.c`) but adds a named word above sp80 (-> 0x7c).
+  Dead ends: `ptr->` as `D_838067F0.`; inlining temp_s2_2/var_s0; new_var in a nested scope (slots
+  still follow source order); constant local in block 4; operand order; s16 casts; `if (1) {}`.
+  Dropping `ptr` puts &D_838067F0 in s5 not s0.
+- **func_83501718** (frag44, score 60, bbbfc04): the 0xa4 slot is the compiler temp for `arg1 + tmp2`,
+  not x's slot. Draft and target have the same 7 unused temp slots in a different order: in the target
+  five of them are allocated BEFORE x (x at 0x90), in the draft after (x at 0xa4). The `ROUND_MAX`
+  ternaries look responsible (replacing one pre-loop ROUND_MAX with a plain value moves x's slot).
+  Dead ends: x in a nested block anywhere; inlining x/tmp2; moving `a = 1024.0f / arg5`, `tmp = 0xC`
+  or the x/tmp2/spE8 statements; tmp2/x decl order; operand order; (s16) casts; a loop copy of x.
+  `tmp` and `temp_ft0` are real copies. Reference: matched func_8340144C (frag43) is a simpler
+  version of the same loop. The farm's output-51 had the same body as base.c (no hint). spill-slot ordering / one slot off; see draft comments. Lesson from
   func_82F10BB4's match: frame too big with identical offsets ⇒ too many named locals — turn an
   induction variable `v += k` into `base + i*k` (IDO strength-reduces it back).
 
