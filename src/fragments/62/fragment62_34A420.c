@@ -868,7 +868,7 @@ Gfx* func_84362084(Gfx* arg0) {
                 vtx = func_80005F5C(sizeof(Vtx) * 40);
                 sp1B4->unk_01C = vtx;
 
-                for (j = 0; j < 20; j++, var_s2++) {
+                for (j = 0; j < 20; j++) {
                     func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                     vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
@@ -889,6 +889,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     vtx->v.tc[0] = (j * 8) << 5;
                     vtx->v.tc[1] = 0x200;
                     vtx++;
+                    var_s2++;
                 }
                 break;
 
@@ -896,7 +897,7 @@ Gfx* func_84362084(Gfx* arg0) {
                 vtx = func_80005F5C(sizeof(Vtx) * 60);
                 sp1B4->unk_01C = vtx;
 
-                for (j = 0; j < 20; j++, var_s2++) {
+                for (j = 0; j < 20; j++) {
                     func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                     vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
@@ -935,6 +936,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     vtx->v.cn[2] = 0;
                     vtx->v.cn[3] = var_s2->unk_04;
                     vtx++;
+                    var_s2++;
                 }
                 break;
 
@@ -942,7 +944,7 @@ Gfx* func_84362084(Gfx* arg0) {
                 vtx = func_80005F5C(sizeof(Vtx) * 60);
                 sp1B4->unk_01C = vtx;
 
-                for (j = 0; j < 20; j++, var_s2++) {
+                for (j = 0; j < 20; j++) {
                     func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                     vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
@@ -981,6 +983,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     vtx->v.cn[2] = sp1B4->unk_00A.b;
                     vtx->v.cn[3] = var_s2->unk_04;
                     vtx++;
+                    var_s2++;
                 }
                 break;
 
