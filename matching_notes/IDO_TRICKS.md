@@ -32,6 +32,24 @@ All of these produced actual matches or big score drops in this codebase.
 - **Passing structs by value**: floats stored to arg home slots + reads at 0x38.. = by-value
   `Vec3f`/`Vec3s` args (func_86B09F64).
 
+- **Straight-line runs of gfx macros may be an unrolled loop.** IDO unrolls small loops 4x (with
+  peeling); the tells are a loop counter still stored (`j = 1`) or `j*2` left unfolded, and a frame
+  too big from the macros' `_g` slots (func_84362084: `for (j = 0; j < 5; j++) gSP2Triangles(...)`).
+- **Literal spelling matters for rodata/register sharing:** `1e-6f` vs `0.000001f` changed which
+  constants shared a register and reordered late_rodata (func_86803C6C). `M_PI` vs `M_PI_F` in a
+  double expression gives identical asm but a different ROM ((double)(float)pi) - only the full
+  `make` catches it (func_84362084).
+- **Chained assignment keeps an address alive:** `A = B = 0;` re-reads B, so `&B` has two uses and
+  stays in a register (func_80041A98); a volatile store + plain store does not.
+- **Float vector init with DOUBLE literals** (`-1.0`, `0.0`) keeps all three multiplies of a dot
+  product; with `0.0f` uopt folds the x*0 terms (func_80033D44).
+- **A callee's parameter type decides constant sharing:** two calls passing the same constant as
+  `u32` and `s32` stop IDO CSE'ing it into an s-register (func_88209B54).
+- **Case label ORDER inside one `case a: case b: case c:` group** changes where a reload lands and
+  can rotate every t-register after it (func_810010BC).
+- **A struct-array loop pointer that m2c types as `&arr[i]` may really be `(u8*)arr + 4`:** check with
+  accessmap.py --draft; the symptom is every store one field late (func_80033D44).
+
 ## Stack layout
 - Every declared local gets a home slot (even unused / register-only ones), top-down in
   declaration order with natural alignment; s16/u8 locals pack. Compiler spill temps go *below*
@@ -72,6 +90,9 @@ All of these produced actual matches or big score drops in this codebase.
 - Recursion: `var_s5 = var_s2 = 1;` init + `var_s5 = var_s2;` at loop end pattern (func_88803614).
 
 ## Tooling gotchas
+- `fd.sh` grep for the score: diff.py prints `CURRENT (N)`, not `Score`; fixed 2026-10-07. diff.py
+  also caps the diff at 1000 lines, so very bad drafts show a too-low score (func_84362084: 11867
+  shown vs 65017 real) - use `--max-lines` or a full diff for big drafts.
 - Repo-root `diff.py` is broken on Python 3.12; use `tools/asm-differ/diff.py -o <func> -s --format plain`.
 - diff.py score 0 is NOT proof: it treats `sym+off` relocation differences as equal. Always confirm
   the full `make` prints `build/pokestadium-us.z64: OK`.

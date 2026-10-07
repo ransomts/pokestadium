@@ -10,4 +10,4 @@ o=build/${1%.c}.o
 env PATH="$REPO/.venv/bin:$HOME/local/bin:/usr/local/bin:/usr/bin:/bin" make "$o" PYTHON="$REPO/.venv/bin/python3" 2>&1 \
     | grep -v "cfe: Warning" | grep -E "rror" | head
 "$REPO/.venv/bin/python3" -W ignore tools/asm-differ/diff.py -o "$2" -s --format plain > /tmp/fd_last_"$2".txt 2>&1
-grep -E "Score|^\S*\s*[0-9a-f]+:\s.*\s(r|i|s|<|>|\|)\s" /tmp/fd_last_"$2".txt | head -"${3:-40}"
+grep -E "Score|CURRENT \(|^\S*\s*[0-9a-f]+:\s.*\s(r|i|s|<|>|\|)\s" /tmp/fd_last_"$2".txt | head -"${3:-40}"

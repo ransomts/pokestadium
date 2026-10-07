@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (36 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (32 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -203,6 +203,89 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   (ours j in s2, ptr2 in a0); s0/s2 swapped in the first three loops, var_s1 in s0; the
   `unk_30.unk_00/unk_02` halfword store order; FRAGMENT_LOAD relocs name different (probably aliased)
   symbols. ~40 dead ends in the draft comment. Regalloc-only now -> permuter farm from this draft.
+
+- **func_84362084** (1559 instr, 65017 -> 0 over 9 commits; fd.sh showed 11867 because diff.py caps at
+  1000 lines): the straight-line `gSP2Triangles` runs were LOOPS IDO unrolled 4x - case 6/7
+  `for (j = 0; j < 5; j++) gSP2Triangles(arg0++, j, j+6, j+1, 0, j+1, j+6, j+7, 0);` (one peeled
+  iteration + 4x unroll leaves `j = 1` stored and `v0 = j*2` unfolded), case 2/4 `j < 14` (2 peeled +
+  3-trip loop) - 65017 -> 9911 and frame 0x210 -> 0x1c8; case-8 strips `u8 idx = j * 3`; outer loop
+  `if (unk_000 == 1) { ... } sp1B4++;` with only `i++` in the for-increment instead of `continue`
+  (4642 -> 1402); `var_s2++` as the LAST body statement in the 2-3-vertex loops; final case-8 block
+  as a one-case `switch (sp1B4->unk_008) { case 8: ... break; }` instead of `if` (1280 -> 0: D_84389290
+  address in a3, t-regs, and the sp1B4 reload per iteration). `M_PI` -> `M_PI_F` in two double
+  expressions: diff.py scored 0 either way but the ROM differed ((double)(float)pi) - only the full
+  make caught it. No sibling (0.14), no bisect switch helped.
+- **func_885065E0** (391 instr, 5850 -> 0): the weak sibling func_8850C3B8 (same file) is the same
+  function with renamed fields; the row/column cursors are `sp4C`/`sp50` themselves (no var_t1/var_a3
+  copies); decl order `sp5C, sp58, sp54, sp50, sp4C, sp48, i, j, temp_v0_3, sp24, var_t4` with var_t4
+  LAST (frame 0x70 -> 0x60); in the 0x100/0x200 cases `j` is the OUTER counter (1695 -> 835); comma
+  initialisers `for (i = 0, sp4C = sp54; ...)` (-> 685); the 0x400 compare is `if (sp4C + 1 == sp48)`.
+- **func_88305F28** (391 instr, 612 -> 0): delete the fake `if ((!arg0) && (!arg0)) {}` (it split a
+  basic block and pushed unk_0AC into a1 not t0); `spD8` indexed with `arg0->unk_034->unk_00.unk_38`
+  directly and spD0 assigned after it (spD0 spills where assigned); `sp34` was a compiler temp
+  (`&spD8->unk_08` / `spD8 + spC0`) -> write `spD8->unk_08.unk_09[spC0]` + `UNUSED s32 pad;`;
+  `if (1) {}` at the top of the else of `if (spC0 < 4)` fixed the beqz delay slot.
+- **func_80041A98** (118 instr): `D_800FCCA0 = D_800FCCA1 = 0;` (chained) instead of a volatile store
+  + plain store, and both externs u8 not s8: the chained form re-reads the inner variable so
+  `&D_800FCCA1` has two uses and uopt keeps the address in a0 (fixing the a0/a1 swap in the last
+  loop); s8 leaves a real `sb` reload. Remaining diff.py lines are `D_800FCB48` vs `D_800FCB38+0x10`
+  (same address).
+
+### Round 7 drafts improved / mapped (no match yet)
+- **func_80033D44** (33FE0, 8071 -> 80, 84edf49): accessmap was right - stores were one field late;
+  `StadiumTransform.unk_00` is `s16 unk_00; s16 pad02;` (target writes it with `sh`; 33FE0.h);
+  plain `xf->field = argN` stores; the spD8/spD4/spD0 vector must be initialised with DOUBLE literals
+  (`-1.0`, `0.0`): with `0.0f` uopt folds the x*0 terms of the dot product to one multiply (confirmed
+  in a standalone IDO test); normalise dx/dy/dz in place; `len != 0.0f`; locals ordered to the target
+  stack map; `s32 pad[2]` last. Remaining: s2/s3 swapped (target idx in s2, i in s3) - 15 dead ends in
+  the draft comment -> farm.
+- **func_80034348** (33FE0, 3485 -> 2905, 74b3a64): frame, first loop and start of the triangle loop
+  match; left: FPU regalloc in the cross product - the target saves fs3 but never uses it, so every
+  later float reg is shifted by one (probably a named local like ax/cx given fs3 then spilled).
+  Target stack map: i 0xF4, ax 0xF0 (spilled), cx 0xD8 (spilled), ia/ib/ic 0xBE/BC/BA, remap 0x84,
+  temps 0x58 (c.y-b.y), 0x5C (b.z-a.z), 0x60 (c.z-b.z) = nine named coordinates + nx/ny/nz/len with
+  edges inline. Dead ends: clean rewrite in that form 9500-11000 (spills ay/az/nx); pointer loads
+  13193; nx before ny ~3600; inlined edge terms 3280-5172.
+- **func_88500A74** (frag26, 3031 -> 2991, cd5c312): locals `sp34, y, x, sp88` give the exact target
+  stack layout; left: the two sums (`arg0+arg2`, `arg1+arg3`) go to t8/v0 and spill immediately in
+  the target (freeing s2/s3 for gfx constants, s1 for the scissor `_g`), ours s4/s2 with earlier adds.
+  ~12 dead ends in the draft comment; no bisect switch -> farm.
+- **func_88304850** (frag24, 5776 -> 3777, bb62be5): stack layout now exact: sp50 (`arg0 + 0x84`) and
+  sp58 (`arg1 + 4`) were compiler temps (`pad[2]` keeps 0xC0); `temp_v1 = D_883172CC[arg3 & 1]`
+  hoisted before the first loop (shares `(arg3 & 1) << 3`); `var_s4 = arg1 + 2` assigned inside the
+  func_8001F1E8 argument list; cases 2/10-15 compute the text offset into a variable. Left:
+  first-half regalloc (gDisplayListHead in t0, colours a3/a0, s1=var_s1 s2=arg2 s3=x, `arg0+0x84`
+  spilled to 0x50 vs our s0, late `li a3,3`/`lui ra,0xF600`) -> farm with --stack-diffs.
+- **func_86803C6C** (frag14, 5033 -> 2375, 8c13980): hoist `tmp = SQ(unk_074.x) + SQ(unk_074.z)`
+  before `if (unk_060 == 0)`; spell the threshold `1e-6f` not `0.000001f` (otherwise uopt shares the
+  constant's register with the ABS_NORMALIZED literals; late_rodata then lines up: seven 1e-6 before
+  1e-4). Left: one more integer temp in L1003-1011 (every later t-reg off by one) and `mtc1 zero`
+  per ABS_NORMALIZED branch in the target -> farm.
+- **func_80012870** (12D80, 60, one line, 3ebfc8f): the as1 scheduler places `sw t8(0xFF),0x24(sp)`
+  one slot before `sra a2` instead of after; registers, FPU code and pre-scheduling order are all
+  identical; ~35 variants and every bisect switch failed -> farm (as1 scheduling).
+- **func_88807D04** (frag28, 705, 6 lines, 6c9fbad): `cc -S` order already equals the target, so the
+  whole diff is as1 cross-block scheduling (only as1-noxbb changes it): as1 hoists two `lui %hi`
+  above the `bltz` and puts `addu s0` in the jal delay slot where the target has `sll s4,s1,2`.
+  Near misses `!= -1` (530, wrong branch) and `if (1) { temp_s0 = ...; }` (350). ~30 dead ends -> farm.
+- **func_88805AEC** (frag28, 14747, frame 0x230 vs 0x228): structure right incl. the switch default
+  precomputing the join rectangle; diff is regalloc/spills everywhere: target keeps arg2 in t4 for
+  the whole function (we reload 8x), arg5 in v1, stores arg1+arg3 to 0x44 and reloads at once,
+  arg2+arg4 to 0x30 at first use after the D_888236A0 block. Sweep of tmp/tmp2 inlining and pads
+  all worse (table in the draft comment).
+- **func_86905734** (frag15, 1952 unchanged; twin func_86905F24 shape already in place): all diffs are
+  in the 8 corner-coordinate lines (FPU reg choice + which subexpressions go to stack temps). Target
+  temps: (f32)arg1 at 0x64 (then spilled to 0x30), -h*sin 0x60, (f32)arg2 0x5C, h*cos 0x58, h*sin
+  0x54, (f32)h 0x50, cos*-arg4 0x3C (h = arg3/2); in regs: cos, sin, (f32)-h, (f32)-arg4, -h*cos,
+  sin*-arg4. Using arg1/arg2 directly + pad[4] = 2552; all 66 a1/a2 local pairings tried; named h/-h/
+  -arg4/cos/sin >= 4000; operand swaps identical -> farm with --stack-diffs.
+- **func_8130337C** (frag33, 13923, 166/553 identical): the pipesync constant 0xE7000000 lives in the
+  draft's s3 for the whole function; the target has it in v1 for the first two pipesyncs only,
+  reloads it fresh in both loops, and holds it in s2 only between the switch and loop 2; loop 2
+  keeps only E45E8000/3E8000/FD100000(fp)/F5100000(ra) in regs with all six counters in s-regs.
+  `if (0)` probes removing loop 1 / loop 2 / the switch / the first pipesync all still keep E7 in a
+  register, so the source shape differs somewhere unfound. No corpus function keeps E7 in v1.
+- **func_8820BE14**: see Round 7 matches section (1755).
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
 - **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
@@ -402,8 +485,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   player); D_800FD008 = {value, dirty} byte-pair sound regs. 8004A89C has a draft (~170/256 diff);
   the other two are sibling channel functions with no draft. File has a struct missing `;`
   (`char unk2D[0x13]`) that breaks m2ctx/permuter parsing.
-- **func_80033D44** (33FE0): writes the transform struct with fields shifted by one — the struct type
-  is probably wrong.
 - Not yet attempted seriously: func_8437B0CC (3345 instr), func_84362084 (1597), func_8120572C (1449),
    func_88805AEC (945), func_88203ED8, func_88201488,
   func_86803C6C, func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850,
