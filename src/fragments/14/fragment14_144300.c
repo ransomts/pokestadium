@@ -258,19 +258,13 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
     }
 }
 
-// Remaining differences: float registers for the unk_040.unk_08/unk_0C truncations in case 2/3,
-// and the induction-variable increment order and one spill slot (0x50 vs 0x4C) in the case 5/6 loop.
-#ifdef NON_MATCHING
-// Score 81: only case 5/6 differs. The &spC4[i] spill temp sits at 0x4c (target 0x50), and the
-// induction-variable increment order is wrong (D_86807558 ptr s1 should be incremented last).
 void func_86800B38(void) {
     s32 pad1;
     s32 pad2;
     s32 i;
     Color_RGB8 spD8[4];
     Color_RGB8 spD0[2];
-    Color_RGB8 spC4[4];
-    Color_RGB8 spB8[4];
+    Color_RGB8 spB8[2][4];
     Color_RGB8 spB4 = D_86806F40;
     s32 var_v0;
 
@@ -363,6 +357,7 @@ void func_86800B38(void) {
     switch (D_8680750C) {
         s32 var_s4;
         s32 var_s7;
+        unk_D_86807558* ptr;
 
         case 4:
             break;
@@ -371,8 +366,8 @@ void func_86800B38(void) {
         case 3:
             if (D_8680753E == 0) {
                 func_8001EBE0(4, 0);
-                for (i = 0; i < 4; i++) {
-                    if ((D_86807558[i].unk_040.unk_00 != 0) && (D_86807558[i].unk_040.unk_00 != 1)) {
+                for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
+                    if ((ptr->unk_040.unk_00 != 0) && (ptr->unk_040.unk_00 != 1)) {
                         if ((i / 2) != 0) {
                             var_s7 = -0x14;
                         } else {
@@ -385,19 +380,19 @@ void func_86800B38(void) {
                             var_s4 = 0x1E;
                         }
 
-                        if (D_86807558[i].unk_03E < 5) {
-                            func_8001F324(0xFF, 0xFF, 0xFF, D_86807558[i].unk_040.unk_18);
+                        if (ptr->unk_03E < 5) {
+                            func_8001F324(0xFF, 0xFF, 0xFF, ptr->unk_040.unk_18);
                             func_8001F36C(D_86806F44[i].r, D_86806F44[i].g, D_86806F44[i].b,
-                                          D_86807558[i].unk_040.unk_18);
+                                          ptr->unk_040.unk_18);
                         } else {
                             func_868005A8(spD8, D_86806F68, 4, 4, 0);
-                            func_8001F324(spD8[0].r, spD8[0].g, spD8[0].b, D_86807558[i].unk_040.unk_18);
-                            func_8001F36C(spD8[0].r, spD8[0].g, spD8[0].b, D_86807558[i].unk_040.unk_18);
+                            func_8001F324(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
+                            func_8001F36C(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
 
-                        func_8001F1E8((s16)D_86807558[i].unk_040.unk_08 + (D_86806D78[i] + var_s7),
-                                      (D_86806D80[i] + var_s4) - (s16)D_86807558[i].unk_040.unk_0C, "x%d",
-                                      D_86807558[i].unk_03E);
+                        func_8001F1E8((s16)ptr->unk_040.unk_08 + (D_86806D78[i] + var_s7),
+                                      (D_86806D80[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
+                                      ptr->unk_03E);
                     }
                 }
             }
@@ -407,15 +402,14 @@ void func_86800B38(void) {
         case 6:
             func_8001EBE0(4, 0);
 
-            for (i = 0; i < 4; i++) {
-                unk_D_86807558* ptr = &D_86807558[i];
+            for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
                 char sp78[16];
 
                 spD0[0] = spB4;
                 spD0[1] = D_86806F44[i];
 
-                func_868005A8(&spB8[i], spD0, 2, 0x1E, 0);
-                func_868005A8(&spC4[i], spD0, 2, 0x1E, 1);
+                func_868005A8(&spB8[0][i], spD0, 2, 0x1E, 0);
+                func_868005A8(&spB8[1][i], spD0, 2, 0x1E, 1);
 
                 if ((i / 2) != 0) {
                     var_s7 = -0x32;
@@ -436,8 +430,8 @@ void func_86800B38(void) {
                     func_868005A8(&spD8, &D_86806F5C, 3, 4, 0);
                     func_8001F36C(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
                 } else {
-                    func_8001F324(spB8[i].r, spB8[i].g, spB8[i].b, 0xFF);
-                    func_8001F36C(spB8[i + 4].r, spB8[i + 4].g, spB8[i + 4].b, 0xFF);
+                    func_8001F324(spB8[0][i].r, spB8[0][i].g, spB8[0][i].b, 0xFF);
+                    func_8001F36C(spB8[1][i].r, spB8[1][i].g, spB8[1][i].b, 0xFF);
                 }
 
                 func_8002D600(6, ptr->unk_01C);
@@ -470,9 +464,6 @@ void func_86800B38(void) {
         func_87801F48(0, 0x19, 0xA6);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/14/fragment14_144300/func_86800B38.s")
-#endif
 
 void func_86801644(void) {
     func_800079C4();
