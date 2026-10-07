@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (38 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (37 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -176,6 +176,19 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   stores also fixes the regs but reorders the stores. The two "contrived" temps (`temp_s1 = 0x10000`,
   twice-reloaded temp_s0_8) are real - removing either breaks the else branch. Lesson: a constant
   CSE'd into an s-register can mean a callee's prototype used a different int type.
+
+- **func_810010BC** (965 instr, 13345 -> 0 in ~1 h, three commits): arg2 is really `DisplayListAddresses*`
+  (fragment31.h: `segments[2]`, `textures[]`; same type func_81002530 uses) and the texture is
+  `arg2->textures[arg1->misc / 2]`; the hand-expanded texture loads are `gDPLoadTextureBlock_4b(gfx++,
+  tex, G_IM_FMT_I, 32, 32, ...)` and, for case 0x86/0x90, `gDPLoadTextureBlock(..., G_IM_FMT_IA,
+  G_IM_SIZ_16b, 32, 32, ...)` (13345 -> 8305); raw words were gSPMatrix(PUSH|LOAD|MODELVIEW),
+  gSPPopMatrix, gDPSetPrimColor; the second switch needs a LOCAL copy of D_8006F09C (else reloaded
+  after every store) and `position.y += k * var->unk_030.y` before `misc++`; an `f32 temp_f` (in
+  pad2's place) holds `D_810040DC[misc % 12]` for the three scale stores (the chained `a = b = c =`
+  form adds 8 bytes of stack); CASE LABEL ORDER `case 0x92: case 0x4D: case 0x4E:` moved the arg2
+  reload to the right case and fixed the whole t-rotation (1850 -> 85); the last v0/v1 swap: one
+  function-scope `var_v0 = D_8006F09C` assigned twice (before the 0xFE guScale if, and again inside
+  `if (func_800325AC() == 0)`). Oracles found none of this: all of it was source shape.
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
 - **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
@@ -383,7 +396,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_80033D44** (33FE0): writes the transform struct with fields shifted by one — the struct type
   is probably wrong.
 - Not yet attempted seriously: func_8437B0CC (3345 instr), func_84362084 (1597), func_8120572C (1449),
-  func_810010BC (964), func_88805AEC (945), func_88203ED8, func_88201488,
+   func_88805AEC (945), func_88203ED8, func_88201488,
   func_86803C6C, func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850,
   func_88305F28, func_88807D04, func_80012870 (one store scheduled 1 instr early), func_80034348,
   func_80041A98.
