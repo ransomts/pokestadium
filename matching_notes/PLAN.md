@@ -96,6 +96,20 @@ Everything below already works on the login/interactive nodes under `~/Code/poke
 - Diff one function: `matching_notes/fd.sh src/<file>.c func_XXXXXXXX` (uses
   `tools/asm-differ/diff.py`; the repo-root `diff.py` is broken on 3.12).
 - Batch variants: `matching_notes/var.py src/<file>.c func_X specfile` (see `scratch/*.spec`).
+- **Corpus lookup** (`matching_notes/corpus.py`, built 2026-10-07): an index of all 7396 matched
+  functions' asm paired with their C, with per-instruction C line numbers from the objects' debug
+  info. `corpus.py build` (20 s, writes build/corpus/index.json, 26 MB; rebuild after each round),
+  `corpus.py near FUNC --draft` (compiles the draft in a scratch copy, finds each diff region, shows
+  the draft C line that emitted it and matched functions containing the same idiom with THEIR C),
+  `corpus.py search '<regex over normalized asm>' --c` (e.g. `'beqzl .*\n.*lui'`), `corpus.py show
+  FUNC`, `corpus.py selftest`. Register classes are normalized (t/s/a/v/f); end immediates with `$`.
+- **Pass bisection** (`matching_notes/ido_bisect.py`, built 2026-10-07): rebuilds a draft with each of
+  ~30 IDO optimizer switches (uopt/ugen/as1, e.g. `-Wo,-nordstore`, `-Wo,-no_const_in_reg`,
+  `-Wo,-doassoc`, `-Wb,-nobopt`) in a scratch mirror and tables which diff lines vanish/appear per
+  switch, with stack slot maps. `ido_bisect.py src/<file>.c func_X` (~45 s), `--only <switch>` for the
+  full diff, `--list` for the catalogue. IDO has no standalone CSE/strength-reduction switch; the
+  address-in-register switches (`nordstore`, `nokpicopt`, `no_const_in_reg`) are the useful probes
+  for stray temps, `doassoc` for FPU/arith grouping, as1 switches for scheduling and branch-likely.
 - Permuter: `tools/permuter/` (decomp-permuter, gitignored, upstream 059609d). On a fresh clone apply
   `matching_notes/permuter_sizeof_prec.patch` (fixes `sizeof(T) * N` being parsed as a cast; delete
   `perm_pycparser/yacctab.py` afterwards so PLY regenerates it). Import + run via
@@ -212,9 +226,13 @@ Roles: 1 **integrator** (the parent session) + N **matchers** (8-16) + the permu
    session dropped you into the main repo, `cd` back before touching anything.
 2. Read `matching_notes/NOTES.md` entry and the `//` comment in the function's `#ifdef
    NON_MATCHING` draft before changing code. Do not retry listed dead ends.
-3. Loop: enable the draft with a bare `#if 1` (no trailing comment), `matching_notes/fd.sh
-   src/<file>.c func_X`, read only the differing lines, hypothesise what the *original source*
-   looked like (IDO_TRICKS.md), edit, repeat. Use `var.py` with a spec file to test 5-20 textual
+3. Before guessing, run the two oracles once and write their verdicts into your notes:
+   `.venv/bin/python3 matching_notes/corpus.py near func_X --draft --c` (which C line emits each
+   diff, and how matched siblings wrote the same idiom) and
+   `.venv/bin/python3 matching_notes/ido_bisect.py src/<file>.c func_X` (which optimizer pass owns
+   each diff line). Then loop: enable the draft with a bare `#if 1` (no trailing comment),
+   `matching_notes/fd.sh src/<file>.c func_X`, read only the differing lines, hypothesise what the
+   *original source* looked like (IDO_TRICKS.md), edit, repeat. Use `var.py` with a spec file to test 5-20 textual
    variants per build. Bisect perturbations with `if (0)` chunks.
 4. ASCII only in `src/` comments (the EUC-JP preprocess step dies on `—`).
 5. When the diff is empty: make the C unconditional (delete the `#pragma GLOBAL_ASM` line and the
@@ -243,7 +261,8 @@ Worktree: $TMPDIR/wt/agent-<k>   (run pwd; cd there if not)
 Main repo (for .venv, asm, permuter): <staged repo>
 Your functions, in order: func_A (src/x.c), func_B (src/y.c)
 Read matching_notes/PLAN.md section 4, matching_notes/IDO_TRICKS.md, and the NOTES.md entries
-for your functions before editing. Follow the matcher rules exactly. Commit each match in the
+for your functions before editing. Run corpus.py near --draft and ido_bisect.py on each function
+before your first edit and keep their verdicts in your scratch notes. Follow the matcher rules exactly. Commit each match in the
 worktree and report the hash. If you give up on a function, record the dead ends in its //
 comment and commit that too.
 ```
