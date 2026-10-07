@@ -59,15 +59,6 @@ FUNCS=(
   func_80012870:src/12D80.c
   func_88807D04:src/fragments/28/fragment28_2190D0.c
 )
-  func_8437FD74:src/fragments/62/fragment62_361050.c
-  func_84367660:src/fragments/62/fragment62_351F20.c
-  func_838043F8:src/fragments/47/fragment47_2AFDB0.c
-  func_8430506C:src/fragments/62/fragment62_2EC3C0.c
-  func_84302658:src/fragments/62/fragment62_2EC3C0.c
-  func_83501718:src/fragments/44/fragment44.c
-  func_8850B2D4:src/fragments/26/fragment26.c
-  func_82F04604:src/fragments/41/fragment41_289240.c
-)
 # FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" replaces the list (e.g. a small side job).
 [ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"
 for spec in "${FUNCS[@]}"; do
