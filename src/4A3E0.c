@@ -273,9 +273,379 @@ void func_80049D5C(u16 arg0) {
     }
 }
 
-#pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_80049DF0.s")
+#ifdef NON_MATCHING
+// Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
+// Hand-written (no m2c). Score 3565 over the whole function (diff.py without -s and with func_8004A474 left as
+// GLOBAL_ASM; fd.sh's -s stops at the first jr ra and shows only ~185). Wins: `default:` last with no break,
+// nr11 kept as an s32 local (also reused for the swept frequency: target t1, needs bgez), one u32 temp for
+// duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first `if (f >= 0x800 || f < 0) goto skip`,
+// `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores (lets IDO keep -1 in a3).
+// Remaining: sweep block regalloc (D_800FD004 in t0 instead of v0, nr11 in v0 instead of t1), a stray
+// `move t7,a0` before the freq expression, NR11/NR12 rereads via fresh lui (target) vs a0/v0, NR12
+// kill-test delay slots. Dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types
+// (no change), explicit casts (u16)/(s32) on the freq high bits.
+s16 func_80049DF0(void) {
+    s32 changed;
+    s32 i;
+    u32 nr14;
+    u32 nr12;
+    s32 nr11;
+    u32 duty;
+    u8 phase;
+    u32 pos;
+    s32 dir;
+    s16 value;
 
+    changed = 0;
+    for (i = 0; i < 5; i++) {
+        if (D_800FD008[i].dirty != 0) {
+            changed = 1;
+            D_800FD008[i].dirty = 0;
+        }
+    }
+
+    if (changed) {
+        nr14 = D_800FD008[4].value;
+        D_800FCF60.unk_04 = D_800FD008[3].value | ((u8)(nr14 & 7) << 8);
+        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
+        nr11 = D_800FD008[1].value;
+        duty = (nr11 & 0xC0) >> 6;
+        switch (duty) {
+            case 0:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                phase = 1;
+                break;
+            case 1:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 2;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                phase = 0;
+                break;
+            case 2:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 1;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                phase = 0;
+                break;
+            case 3:
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 >> 2;
+                if (D_800FCF60.unk_18[0] < 0x40) {
+                    D_800FCF60.unk_18[0] = 0x40;
+                }
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 - D_800FCF60.unk_18[0];
+                phase = 1;
+                break;
+            default:
+                D_800FCF60.unk_18[1] = 0;
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
+                phase = 1;
+        }
+
+        duty = D_800FD008[2].value;
+        dir = duty & 8;
+        if (!dir && !(duty & 0xF0)) {
+            D_800FCF60.unk_2C = 0;
+            D_800FD008[0x16].value &= ~1;
+            return 0;
+        }
+        if (dir && !(duty & 0xF0) && !(duty & 7)) {
+            D_800FCF60.unk_2C = 0;
+            D_800FD008[0x16].value &= ~1;
+            return 0;
+        }
+
+        if (nr14 & 0x80) {
+            D_800FCF60.unk_00 = 0;
+            D_800FCF60.unk_2C = 1;
+            D_800FCF60.unk_1E = phase;
+            D_800FCF60.unk_1C = 0;
+            D_800FCF60.unk_20 = 0;
+            D_800FCF60.unk_0C = (duty & 0xF0) << 7;
+            if (duty & 7) {
+                if (dir) {
+                    D_800FCF60.unk_0E = 0x800;
+                } else {
+                    D_800FCF60.unk_0E = -0x800;
+                }
+                D_800FCF60.unk_14 = D_800FCF60.unk_10 = (duty & 7) * D_800FD004;
+            } else {
+                D_800FCF60.unk_0E = 0;
+                D_800FCF60.unk_10 = -1;
+                D_800FCF60.unk_14 = -1;
+            }
+            D_800FCF60.unk_08 = (((D_800FD008[0].value & 0x70) >> 4) * D_800FD004) >> 1;
+            if (D_800FCF60.unk_08 == 0) {
+                D_800FCF60.unk_08 = -1;
+            }
+            if (nr14 & 0x40) {
+                D_800FCF60.unk_28 = ((0x40 - (nr11 & 0x3F)) * D_800FD004) >> 2;
+            } else {
+                D_800FCF60.unk_28 = -1;
+            }
+            D_800FD008[4].value = nr14 & ~0x80;
+        }
+        if (D_800FCF60.unk_2C == 0) {
+            return 0;
+        }
+    } else if (D_800FCF60.unk_2C == 0) {
+        return 0;
+    }
+
+    if (D_800FCF60.unk_28 < D_800FCF60.unk_00) {
+        D_800FCF60.unk_2C = 0;
+        D_800FD008[0x16].value &= ~1;
+        return 0;
+    }
+
+    if ((D_800FCF60.unk_08 - (D_800FCF60.unk_00 % D_800FCF60.unk_08)) <= 0x40) {
+        duty = D_800FD008[0].value;
+        if (!(duty & 8)) {
+            nr11 = (u16)(D_800FCF60.unk_04 + (D_800FCF60.unk_04 >> (duty & 7)));
+            if (nr11 >= 0x800) {
+                D_800FCF60.unk_2C = 0;
+                D_800FD008[0x16].value &= ~1;
+                return 0;
+            }
+            D_800FCF60.unk_04 = nr11;
+        } else {
+            nr11 = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
+            if (nr11 >= 0x800 || nr11 < 0) {
+                goto skip;
+            } else {
+                D_800FCF60.unk_04 = nr11;
+            }
+        }
+        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
+        duty = (D_800FD008[1].value & 0xC0) >> 6;
+        switch (duty) {
+            case 0:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                break;
+            case 1:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 2;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                break;
+            case 2:
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 1;
+                if (D_800FCF60.unk_18[1] < 0x40) {
+                    D_800FCF60.unk_18[1] = 0x40;
+                }
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                break;
+            case 3:
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 >> 2;
+                if (D_800FCF60.unk_18[0] < 0x40) {
+                    D_800FCF60.unk_18[0] = 0x40;
+                }
+                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 - D_800FCF60.unk_18[0];
+                break;
+            default:
+                D_800FCF60.unk_18[1] = 0;
+                D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
+        }
+    }
+skip:
+    dir = D_800FD008[2].value & 8;
+    if (D_800FCF60.unk_14 < D_800FCF60.unk_00) {
+        D_800FCF60.unk_0C += D_800FCF60.unk_0E;
+        D_800FCF60.unk_14 += D_800FCF60.unk_10;
+    }
+    while (D_800FCF60.unk_20 < D_800FCF60.unk_00) {
+        D_800FCF60.unk_1E ^= 1;
+        D_800FCF60.unk_20 += D_800FCF60.unk_18[D_800FCF60.unk_1E];
+    }
+
+    if (!dir && (D_800FCF60.unk_0C < 0)) {
+        D_800FCF60.unk_2C = 0;
+        return 0;
+    }
+
+    if ((u16)D_800FCF60.unk_0C > 0x7800) {
+        D_800FCF60.unk_0C = 0x7800;
+        D_800FCF60.unk_0E = 0;
+        D_800FCF60.unk_14 = -1;
+    }
+
+    value = D_800FCF60.unk_0C;
+    if (D_800FCF60.unk_1E == 0) {
+        value = -value;
+    }
+    D_800FCF60.unk_00 = D_800FCF60.unk_00 + 0x40;
+    return value;
+}
+#else
+#pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_80049DF0.s")
+#endif
+
+#ifdef NON_MATCHING
+// Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
+// Hand-written (no m2c). Score 1420 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
+// fd.sh -s and ido_bisect both report 0 because they stop at the first jr ra). Wins: `(u8)(nr24 & 7) << 8`,
+// NR21 read twice (no local) so duty lives in a2 and NR21 in a3. Remaining: t-register rotation offset by
+// one from the trigger block on (andi t7 vs t4), 0x800 not hoisted into t3 at the top, NR22 & 8 read via
+// a0 base instead of a fresh lui into t1 after the length check, clamp block -1 / lh order.
+// Dead ends: explicit 4 if-statements for the dirty flags (4685), duty s32, nr21 u32, decl reordering.
+s16 func_8004A474(void) {
+    s32 changed;
+    s32 i;
+    u32 nr24;
+    u32 duty;
+    s32 nr21;
+    u8 phase;
+    u32 pos;
+    s32 dir;
+    s16 value;
+
+    changed = 0;
+    for (i = 6; i < 10; i++) {
+        if (D_800FD008[i].dirty != 0) {
+            changed = 1;
+            D_800FD008[i].dirty = 0;
+        }
+    }
+
+    if (changed) {
+        nr24 = D_800FD008[9].value;
+        D_800FCF90.unk_1C = ((0x800 - (D_800FD008[8].value | ((u8)(nr24 & 7) << 8))) * D_800FD004) >> 11;
+        duty = (D_800FD008[6].value & 0xC0) >> 6;
+        switch (duty) {
+            case 0:
+                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 3;
+                if (D_800FCF90.unk_10[1] < 0x40) {
+                    D_800FCF90.unk_10[1] = 0x40;
+                }
+                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                phase = 1;
+                break;
+            case 1:
+                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 2;
+                if (D_800FCF90.unk_10[1] < 0x40) {
+                    D_800FCF90.unk_10[1] = 0x40;
+                }
+                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                phase = 0;
+                break;
+            case 2:
+                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 1;
+                if (D_800FCF90.unk_10[1] < 0x40) {
+                    D_800FCF90.unk_10[1] = 0x40;
+                }
+                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                phase = 0;
+                break;
+            case 3:
+                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C >> 2;
+                if (D_800FCF90.unk_10[0] < 0x40) {
+                    D_800FCF90.unk_10[0] = 0x40;
+                }
+                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C - D_800FCF90.unk_10[0];
+                phase = 1;
+                break;
+            default:
+                D_800FCF90.unk_10[1] = 0;
+                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C;
+                phase = 1;
+        }
+
+        duty = D_800FD008[7].value;
+        dir = duty & 8;
+        if (!dir && !(duty & 0xF0)) {
+            D_800FCF90.unk_24 = 0;
+            D_800FD008[0x16].value &= ~2;
+            return 0;
+        }
+        if (dir && !(duty & 0xF0) && !(duty & 7)) {
+            D_800FCF90.unk_24 = 0;
+            D_800FD008[0x16].value &= ~2;
+            return 0;
+        }
+
+        if (nr24 & 0x80) {
+            D_800FCF90.unk_00 = 0;
+            D_800FCF90.unk_24 = 1;
+            D_800FCF90.unk_16 = phase;
+            D_800FCF90.unk_14 = 0;
+            D_800FCF90.unk_18 = 0;
+            D_800FCF90.unk_04 = (duty & 0xF0) << 7;
+            if (duty & 7) {
+                if (dir) {
+                    D_800FCF90.unk_06 = 0x800;
+                } else {
+                    D_800FCF90.unk_06 = -0x800;
+                }
+                D_800FCF90.unk_0C = D_800FCF90.unk_08 = (duty & 7) * D_800FD004;
+            } else {
+                D_800FCF90.unk_06 = 0;
+                D_800FCF90.unk_08 = -1;
+                D_800FCF90.unk_0C = -1;
+            }
+            if (nr24 & 0x40) {
+                D_800FCF90.unk_20 = ((0x40 - (D_800FD008[6].value & 0x3F)) * D_800FD004) >> 2;
+            } else {
+                D_800FCF90.unk_20 = -1;
+            }
+            D_800FD008[9].value = nr24 & ~0x80;
+        }
+        if (D_800FCF90.unk_24 == 0) {
+            return 0;
+        }
+    } else if (D_800FCF90.unk_24 == 0) {
+        return 0;
+    }
+
+    pos = D_800FCF90.unk_00;
+    if (D_800FCF90.unk_20 < pos) {
+        D_800FCF90.unk_24 = 0;
+        D_800FD008[0x16].value &= ~2;
+        return 0;
+    }
+
+    dir = D_800FD008[7].value & 8;
+    if (D_800FCF90.unk_0C < pos) {
+        D_800FCF90.unk_04 += D_800FCF90.unk_06;
+        D_800FCF90.unk_0C += D_800FCF90.unk_08;
+    }
+    while (D_800FCF90.unk_18 <= pos) {
+        D_800FCF90.unk_16 ^= 1;
+        D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
+    }
+
+    if (!dir && (D_800FCF90.unk_04 < 0)) {
+        D_800FCF90.unk_24 = 0;
+        return 0;
+    }
+
+    if ((u16)D_800FCF90.unk_04 > 0x7800) {
+        D_800FCF90.unk_04 = 0x7800;
+        D_800FCF90.unk_06 = 0;
+        D_800FCF90.unk_0C = -1;
+    }
+
+    value = D_800FCF90.unk_04;
+    if (D_800FCF90.unk_16 == 0) {
+        value = -value;
+    }
+    D_800FCF90.unk_00 = pos + 0x40;
+    return value;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_8004A474.s")
+#endif
 
 #ifdef NON_MATCHING
 // Score 3355 (was 5415). Wins: `unk_10 = 0` (int literal) stops IDO sharing one 0.0f register across the
