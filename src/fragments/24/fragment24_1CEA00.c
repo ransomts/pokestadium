@@ -1281,8 +1281,24 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
     return sp18;
 }
 
-// Rewritten from the asm; logic should be equivalent. Still differs in register allocation
-// (arg3 & 1 is kept instead of (arg3 & 1) * 8, temp_s7 gets spilled) and stack layout.
+// Score 5776 -> 3777 (round 7). Stack layout now matches. Confirmed shapes:
+// - sp50/sp58 were not variables: 0x50 (arg0 + 0x84) and 0x58 (arg1 + 4) are compiler CSE temps,
+//   pad[2] keeps the frame at 0xC0.
+// - D_883172CC[arg3 & 1] must be hoisted into temp_v1 before the first loop so that (arg3 & 1) << 3
+//   is CSE'd (target keeps it in s0, used for both D_883171D0 and D_883172CC rows).
+// - var_s4 is assigned inside the func_8001F1E8 argument list (target computes arg1 + 2 after the
+//   nested func_8002D7C0 call).
+// - cases 2 and 10-15 compute the x offset into a variable first (t0 in target, `x + var` operand
+//   order); reusing `color` for it works, a separate variable gives the same code.
+// Remaining diffs are global register allocation in the first half: target has
+// gDisplayListHead address in t0, color webs in a3 / a0, s1 = var_s1, s2 = arg2, s3 = x, arg0 + 0x84
+// spilled to 0x50 (ours keeps it in s0 and spills temp_s7 to 0x48), li a3,3 / lui ra,0xF600 issued
+// in block 2. Target also reads arg0 into s6 for (arg0 + 0x25, temp_s7) but reloads arg0 for the
+// FillRectangle w1 words. Dead ends: x/var_s6/temp_s7 = arg0 copies (copy-propagated, identical),
+// ternary for var_s1, s16 var_s1, (arg3 & 1) * 2 indexing of a 1D D_883171D0, 2D cast lvalue,
+// temp_s7 as an inline expression (worse), separate temp var for the case offsets (identical).
+// Moving `temp_s7 = var_s1 + arg0;` after the var_s6 load scores 3453 but adds stray spills.
+// Good permuter candidate from this state.
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
@@ -1312,8 +1328,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
     s32 var_s4;
     unk_func_8830867C_02C* temp_s5;
     Color_RGBA8* temp_v1;
-    s32 sp58;
-    s32 sp50;
+    UNUSED s32 pad[2];
 
     temp_s5 = arg5->unk_70;
     if (temp_s5->unk_0AC->unk_2C->unk_30 & 2) {
@@ -1344,10 +1359,10 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
 
     var_s6 = temp_s5->unk_CD4[temp_s5->unk_CD0];
 
-    sp50 = arg0 + 0x84;
-    for (x = sp50; x < temp_s7; var_s6++) {
+    temp_v1 = D_883172CC[arg3 & 1];
+    for (x = arg0 + 0x84; x < temp_s7; var_s6++) {
         // clang-format off
-        color = ((D_883172CC[arg3 & 1][var_s6 & 1].r << 8) & 0xF800) | ((D_883172CC[arg3 & 1][var_s6 & 1].g << 3) & 0x7C0) | ((D_883172CC[arg3 & 1][var_s6 & 1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        color = ((temp_v1[var_s6 & 1].r << 8) & 0xF800) | ((temp_v1[var_s6 & 1].g << 3) & 0x7C0) | ((temp_v1[var_s6 & 1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
         gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
         gDPFillRectangle(gDisplayListHead++, x, arg1, (((s32*)temp_s5->unk_0DC)[var_s6] + x) - 1, arg1 + 0x13);
@@ -1356,8 +1371,8 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
     }
 
     if (arg2 != NULL) {
-        x = sp50;
-        func_8002E8E4(arg0 + 6, sp58 = arg1 + 4, arg3 + 1, 3);
+        x = arg0 + 0x84;
+        func_8002E8E4(arg0 + 6, arg1 + 4, arg3 + 1, 3);
         spBC = D_883172C0[func_883047CC(temp_s5, arg2)];
         if (arg4 & 4) {
             spBC.a = 0x4D;
@@ -1370,11 +1385,9 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
         spA8 = (0x5C - func_8001F5B0(0, 0, "WWWWWWWWWW")) / 2;
 
         if ((arg2->unk_08 <= 0) || (arg2->unk_08 >= 0x98)) {
-            var_s4 = arg1 + 2;
-            func_8001F1E8(arg0 + spA8 + 0x26, var_s4, "?????");
+            func_8001F1E8(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, "?????");
         } else {
-            var_s4 = arg1 + 2;
-            func_8001F1E8(arg0 + spA8 + 0x26, var_s4, func_8002D7C0(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
+            func_8001F1E8(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, func_8002D7C0(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
         }
 
         func_8001F444();
@@ -1388,12 +1401,12 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
                     break;
 
                 case 1:
-                    func_8002E8E4(x + 4, sp58, (u16)arg2->unk_16, 5);
+                    func_8002E8E4(x + 4, arg1 + 4, (u16)arg2->unk_16, 5);
                     break;
 
                 case 2:
-                    func_88304608(x + ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "WWWWWWW")) / 2), var_s4,
-                                  arg2->unk_43, 0);
+                    color = (((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "WWWWWWW")) / 2;
+                    func_88304608(x + color, var_s4, arg2->unk_43, 0);
                     break;
 
                 case 3:
@@ -1413,39 +1426,33 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
                     break;
 
                 case 10:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", arg2->unk_2C, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", arg2->unk_2C, &arg2->unk_08);
                     break;
 
                 case 11:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", (u16)arg2->unk_2E, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_2E, &arg2->unk_08);
                     break;
 
                 case 12:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", (u16)arg2->unk_30, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_30, &arg2->unk_08);
                     break;
 
                 case 13:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", (u16)arg2->unk_32, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_32, &arg2->unk_08);
                     break;
 
                 case 14:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", (u16)arg2->unk_34, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_34, &arg2->unk_08);
                     break;
 
                 case 15:
-                    func_88304718(x + (((s32*)temp_s5->unk_0DC)[var_s6] -
-                                       ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2)),
-                                  var_s4, "%3d", (u16)arg2->unk_36, &arg2->unk_08);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_36, &arg2->unk_08);
                     break;
             }
 
