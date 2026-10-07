@@ -545,11 +545,10 @@ void func_86100B48(void) {
 void func_86100C28(void) {
 }
 
-#ifdef NON_MATCHING
 void func_86100C30(s32 arg0) {
     s32 i;
-    UNUSED unk_D_86104B5C sp60 = D_86104B60;
-    UNUSED unk_D_86104B5C sp5C = D_86104B5C;
+    UNUSED unk_D_86104B5C sp60 = D_86104B5C;
+    UNUSED unk_D_86104B5C sp5C = D_86104B60;
 
     if (arg0 != 0) {
 
@@ -663,16 +662,14 @@ void func_86100C30(s32 arg0) {
     func_8001F444();
 
     if (arg0 == 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        // D_800A7420 is gDisplayListHead under its second name (see variables.h).
+        gSPDisplayList(D_800A7420++, D_8006F518);
 
         func_87801C8C(0x56, 0xAC, D_86104A1C);
         func_87801824(0x74, 0xC6, D_861049F4);
         func_87801F48(2, 0x19, 0xA6);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/7/fragment7/func_86100C30.s")
-#endif
 
 void func_86101434(void) {
     s32 i;
