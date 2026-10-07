@@ -41,44 +41,30 @@ void func_86B09EF0(MtxF* arg0, f32 arg1) {
     arg0->mf[2][2] *= arg1;
 }
 
-#ifdef NON_MATCHING
-// Stack frame and instruction mix match; FPU register allocation of the six sin/cos values differs.
 void func_86B09F64(MtxF* arg0, Vec3f arg1, Vec3s arg2) {
-    f32 temp[10];
+    UNUSED s32 pad[2];
     f32 sx = SINS(arg2.x);
+    f32 cx = COSS(arg2.x);
     f32 sy = SINS(arg2.y);
-    f32 cy;
-    f32 cz;
-    f32 cx;
-    f32 sz;
+    f32 cy = COSS(arg2.y);
+    f32 sz = SINS(arg2.z);
+    f32 cz = COSS(arg2.z);
 
-    temp[0] = sx * sy;
-    cy = COSS(arg2.y);
-    cz = COSS(arg2.z);
-    cx = COSS(arg2.x);
-    sz = SINS(arg2.z);
-
-    arg0->mf[0][0] = (cy * cz) + (temp[0] * sz);
-    arg0->mf[1][0] = (-cy * sz) + (temp[0] * cz);
+    arg0->mf[0][0] = (cy * cz) + (sx * sy * sz);
+    arg0->mf[1][0] = (-cy * sz) + (sx * sy * cz);
     arg0->mf[2][0] = cx * sy;
     arg0->mf[3][0] = arg1.x;
 
     arg0->mf[0][1] = cx * sz;
-    arg0->mf[2][1] = -sx;
     arg0->mf[1][1] = cx * cz;
+    arg0->mf[2][1] = -sx;
     arg0->mf[3][1] = arg1.y;
 
-    temp[0] = sx * cy;
-    arg0->mf[0][2] = (-sy * cz) + (temp[0] * sz);
-    arg0->mf[1][2] = (sy * sz) + (temp[0] * cz);
+    arg0->mf[0][2] = (-sy * cz) + (sx * cy * sz);
+    arg0->mf[1][2] = (sy * sz) + (sx * cy * cz);
     arg0->mf[2][2] = cx * cy;
     arg0->mf[3][2] = arg1.z;
 
-    arg0->mf[0][3] = 0.0f;
-    arg0->mf[1][3] = 0.0f;
-    arg0->mf[2][3] = 0.0f;
+    arg0->mf[0][3] = arg0->mf[1][3] = arg0->mf[2][3] = 0.0f;
     arg0->mf[3][3] = 1.0f;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/17/fragment17_169510/func_86B09F64.s")
-#endif
