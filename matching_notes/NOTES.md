@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (30 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (29 as of 2026-10-07 after round 7; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -26,6 +26,18 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   drafts improved: func_8437FD74 350 -> 90, func_84367660 229 -> 85, func_838043F8 56 -> 8,
   func_84302658 11 -> 7 lines (uncommitted idea in notes). Code 94.33% -> 94.79%, 40 functions left.
   Farm restarted (job list = the 8 open tier-1/2 functions).
+- Round 7 (2026-10-07 evening, 15 Opus agents on all 26 tier-4 functions, ~3 h incl. a rate-limit
+  interruption at 17:00 that killed 4 agents mid-work, all resumed): **11 matched** (func_80045FF0,
+  func_88209B54, func_810010BC, func_88216000, func_84362084, func_885065E0, func_80041A98,
+  func_88305F28, func_88203ED8, func_88201488, func_8120572C - three of them 960-1600 instructions,
+  two with no prior draft), 13 drafts improved or mapped (func_80033D44 8071 -> 80, func_8437B0CC
+  55319 -> 13175, func_86803C6C 5033 -> 2375, func_88304850 5776 -> 3777, func_8820BE14 3156 ->
+  1755, GB APU trio typed + drafted, ...). Code 94.79% -> **96.40%**, **29 functions left**. New
+  tools used for the first time: siblings (decisive for func_88216000, func_885065E0, func_88203ED8),
+  accessmap (func_80033D44), ido_bisect (func_88209B54), transplant. Farm restarted on 16 functions
+  (job 16792584, 6 x 12 h phases). Lessons: understanding the function beats the decompiler for
+  repetitive code (three giants matched by hand-written C); diff.py `-s` false zeros; m2c was never
+  installed (the venv's `m2c` is an unrelated package).
 - Nearly every remaining function already has an `#ifdef NON_MATCHING` draft with a `//` comment
   saying what still differs. Trust those comments over this list if they disagree.
 
@@ -245,6 +257,22 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `(arg0 - 2) + arg5->unk_3C` for the add order; the four same-colour border rects split into three
   blocks each re-declaring `u32 color = GPACK(...)` (rect 1 | rects 2+3 | rect 4) to reproduce the
   recompute of `(color<<16)|color`; `pad[2]`.
+
+- **func_8120572C** (1436 instr, no draft existed; 5624 -> 0 over 7 commits, hand-written, no m2c):
+  Transfer Pak / GB emulator control switch. `case 1` first; the shared exit block (`stop:`/`reset:`)
+  INSIDE the switch after case 6; case 5 `goto case2` on a failed checksum; inner switches
+  `i = emu->unk_548E; switch (i)` with `case 1: default:` first and `switch (D_8122C4E2)` listing
+  case 2 before case 1; a `btn` local holding `emu->unk_53F6`, reassigned from it inside the 0x2000
+  block (partial reload); `D_8122C4F0 = -0x40` after the `D_8122C4E4 < D_8122C4E6` check; frame 0x48
+  only with the struct pointer kept IN THE PARAMETER (`#define emu ((unk_D_8122B2C0*) arg0)` +
+  `arg0 = (s32)(&D_8122B2C0)[arg0];`, `#undef` after - a commented shape hack; a separate local
+  pushes the frame to 0x50); ROM-header bounds `< 8U` / `< 5U`; unk_5394/unk_5398 as ternaries in the
+  `== 0xFF` block (last scheduling diff); the 0x100-entry 549C fill as a `while`; abs as
+  `(F0 <= 0) ? -F0 : F0`; chained `[0] = [1] = [2] = [3] = 0xFF`. Shared-file changes: global.h
+  `unk_D_8122B2C0` filler split into named fields (unk_53A4..unk_5490), `unk_53FC` u8 -> s8 (target
+  `lb`); fragment1_7F9A0.c `unk_D_8122B1E8` gained unk_28/unk_2C/unk_40..unk_58. Remaining diff.py
+  line is `SP_STATUS_REG` symbol vs constant (same bytes). Oracles did not help (456/1436 identical
+  at the first draft; no bisect switch); fd-style diffs + a variant script did it.
 
 ### Round 7 drafts improved / mapped (no match yet)
 - **func_80033D44** (33FE0, 8071 -> 80, 84edf49): accessmap was right - stores were one field late;

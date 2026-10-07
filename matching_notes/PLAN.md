@@ -11,12 +11,12 @@ protocol, and the cluster recipe.
 |---|---|
 | Code matched (`progress.py -v us`, "all") | 94.79% (was 93.13% when matching rounds began, 93.95% this morning) |
 | Functions still `#pragma GLOBAL_ASM` | 40 (Appendix A has the original 54; rounds 5-6 matched 14) |
-| Drafts | 37 of the 40 have an `#ifdef NON_MATCHING` draft with a `//` state comment; 3 have none (func_8120572C, func_80045FF0, func_80049DF0/func_8004A474 share a file with one draft) |
+| Drafts | all 29 have an `#ifdef NON_MATCHING` draft with a `//` state comment and a NOTES entry |
 | Parked | func_860005B8 + func_86100C30: byte-identical only via a linker alias, branch `round6-gfxhead-alias`, owner decision pending |
 | ROM | builds byte-identical (`make` -> `OK`) on `match-round-1` (local branch, never pushed) |
 | Data still in asm (`asm/us/data/**/*.s`) | 184 files, 2.3 MB, mostly one .data + one .rodata stub per fragment; fragments/1 has 12 |
 | Hand-written asm by design | `boot`, `entry`, `libleo/bootstrap` (yaml `asm`/`hasm` segments) - not "undecompiled" |
-| Permuter farm | job 16781081, 8 open tier-2 functions, 3-day limit, candidates in `/scratch/$USER/permuter_best` |
+| Permuter farm | job 16792584 chain (6 x 12 h), 16 regalloc-only functions; add func_8004A474 at the next restart; candidates in `/scratch/$USER/permuter_best` |
 | Tooling (2026-10-07) | corpus.py (idiom search, near, siblings), accessmap.py, symcheck.py, ido_bisect.py, round.sh; permuter `sizeof` parse fix (patch + PR draft) |
 
 What rounds 5-6 taught (see NOTES.md and IDO_TRICKS.md): the remaining code falls into three kinds
@@ -30,7 +30,7 @@ and this is where every big win came from. (3) Data/bss layout: needs data migra
 | Phase | Scope | Who | Wall time (est.) | Exit criterion |
 |---|---|---|---|---|
 | A (now) | farm on the 8 open tier-2 functions; owner decides the alias pair | farm job + owner | runs 3 days unattended | candidates validated with fd.sh, or farm stopped |
-| B | round 7-9: tier 4 structural functions (26) in subsystem groups | 8 Opus agents/round, 3.5 h time-box | 3 rounds, ~1 day each incl. integration | <= 10 functions left, all with a precise "what is wrong" model |
+| B | tier 4 structural functions: round 7 matched 11 of 26; rounds 8-9 on the 15 left (7 are regalloc-only -> farm first) | 8-15 Opus agents/round | 2 more rounds | <= 10 functions left, all with a precise "what is wrong" model |
 | C | tier 3 data-layout blockers (4) + the fragment1/16 data migration they need | 2 agents, long session | 1 round | 4 functions matched or proven to need upstream changes |
 | D | Layer 2: migrate the 184 asm data files to C | 4-6 Sonnet agents, mechanical, build gate | 1-2 days | `asm/us/data` empty, ROM OK |
 | E | finish: scaffolding removal, squash/rebase, PR to master, upstream permuter PR, final docs | 1 agent + owner | half a day | PR open, `progress.py` 100% code |
@@ -212,7 +212,12 @@ symbol). Parked on `round6-gfxhead-alias`; see decision 1.
 
 **Tier 3 -- data/bss layout.** func_86A013C8, func_81207DF8, func_81209374, func_81209078. Phase C.
 
-**Tier 4 -- large / structural.** 26 functions, Phase B groups above.
+**Tier 4 -- large / structural.** 15 left after round 7. Regalloc-only (farm first): func_80033D44 (80),
+func_88500A74 (2991), func_88304850 (3777), func_86905734 (1952), func_8820BE14 (1755),
+func_86803C6C (2375), func_80012870 (60, as1 scheduling), func_88807D04 (705, as1 scheduling),
+func_8004A474 (1420). Source-shape work left: func_8437B0CC (13175, case 0x2 block + frame),
+func_88805AEC (14747), func_8130337C (13923, E7 constant lifetime), func_80034348 (2905, fs3 ghost
+local), func_80049DF0 (3565), func_8004A89C (3355).
 
 ## 4. Agent protocol (one round)
 
