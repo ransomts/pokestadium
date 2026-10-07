@@ -106,6 +106,19 @@ void func_80044E80(s32 arg0) {
 }
 
 #ifdef NON_MATCHING
+// Score 396 (diff.py; was 6744). Round-5 wins: `(j << 1)` instead of `j * 2` in both store
+// indices (IDO strength-reduces j*2 into an induction var, target recomputes (j+k)<<1 per
+// unrolled step); `sample * D_800FCF00[i]` operand order; `u32 i` (stops the constant 2 being
+// CSE'd into v1); `if (*p == 2) continue;` (the skip path bypasses the i/p reloads).
+// Remaining (only 2 things):
+// - D_800FCED8[i] spill at 0x40, target 0x44: we have ONE extra compiler temp slot between p
+//   (0x5c) and the spill (target distance 0x18, ours 0x1c). Adding a pad local after p puts the
+//   spill at the right relative spot but grows the frame to 0x88; block-scoped temp_v0_9 adds a
+//   slot too. Killing case 1's func_80045A68 or bzero moves the spill to 0x44 (and the beqz below)
+//   but wrecks regalloc. Dead ends: *p -> D_800FCEF0[i] at any single site, statement reorders in
+//   the ==2 / ==4 branches, new_var for D_800FCED8[i], temp_a2 rewrites, (u32)(u64) casts, s32 temp.
+// - case 0: `if (D_800FCED0 != 0)` gives beqzl + lw in the likely slot; target has beqz with
+//   `lui at` in the delay slot. `== 1` gives bne; casts, `> 0`, else{}, reorders don't help.
 void func_80044EA4(void) {
     u32 j;
     u32 var_s7;
