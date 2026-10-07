@@ -9,8 +9,8 @@ protocol, and the cluster recipe.
 
 | Item | State |
 |---|---|
-| Code matched (`progress.py -v us`, "all") | 94.33% after round 5 (was 93.95% at start of 2026-10-07) |
-| Functions still `#pragma GLOBAL_ASM` | 45 (Appendix A lists the original 54; round 5 matched 9 tier-1 functions) |
+| Code matched (`progress.py -v us`, "all") | 94.79% after round 6 (was 93.95% at start of 2026-10-07) |
+| Functions still `#pragma GLOBAL_ASM` | 40 (Appendix A lists the original 54; rounds 5-6 matched 14) |
 | ROM | builds byte-identical (`make` prints `build/pokestadium-us.z64: OK`) |
 | Data still in asm (`asm/us/data/**/*.s`) | 184 files, not yet migrated to C |
 | `boot.o` | 0% -- verify whether it is hand-written asm (then it is not "undecompiled") |
@@ -104,19 +104,21 @@ run the long-shot permuter on tier-3 functions too.
 
 Tiers below are from NOTES.md; sizes are instruction counts from the `.s` files (Appendix A).
 
-**Tier 1 -- regalloc-only near misses.** Round 5 matched 9 of the 12. Left: func_8437FD74 (350,
-frame fully mapped, see NOTES + `func_8437FD74_best495.c`), func_84372670 (2860, s0 caching
-understood), func_80044EA4 (396, one spill slot + one branch-likely). Next round: one agent each,
-starting from the NOTES entries, not from scratch.
+**Tier 1 -- regalloc-only near misses.** Rounds 5-6 matched 11 of 12. Left: func_8437FD74 (90, one
+reload register; see NOTES).
 
-**Tier 2 -- stack-layout near misses (agent insight; permuter with `--stack-diffs`).** 10
-functions. func_8430506C (16), func_8003DB84 (18), func_84367660 (229), func_86800B38 (81),
-func_84302658, func_838043F8, func_83501718, func_8850B2D4, func_882111F8, func_82F04604.
+**Tier 2 -- stack-layout near misses.** Round 6 matched 3 of 10 (func_8003DB84, func_882111F8,
+func_86800B38). Left: func_838043F8 (8), func_8430506C (16), func_84367660 (85, regalloc only now),
+func_83501718 (60), func_8850B2D4 (84), func_84302658 (7 lines), func_82F04604 (318, partial fix
+known). Each has a precise slot model in NOTES; the open question in most is one compiler temp
+whose creation point we cannot yet steer. Read IDO_TRICKS "slot order follows first appearance".
 Shared trick that worked before: frame too big with identical offsets => too many named locals;
 turn `v += k` induction vars into `base + i*k`.
 
-**Tier 2b -- shared gDisplayListHead-in-register pattern.** func_860005B8, func_86100C30. One
-agent, both functions: the fix is in the *top* block's accesses, not the end block (see NOTES).
+**Tier 2b -- shared gDisplayListHead-in-register pattern.** func_860005B8, func_86100C30. ROOT
+CAUSE FOUND in round 6 (one register range per global symbol); a byte-identical match exists on
+branch `round6-gfxhead-alias` but needs a linker alias (second name for gDisplayListHead). Owner
+decision pending; not counted as matched.
 
 **Tier 3 -- blocked on data/bss layout.** func_86A013C8 (code identical, static lands at wrong
 bss offset), func_81207DF8, func_81209374 (need mid-.data static), func_81209078. Needs the

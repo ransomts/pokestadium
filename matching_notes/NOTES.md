@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (40 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (40 as of 2026-10-07 after round 6; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -20,6 +20,12 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   func_8250281C, func_86A01CF0, func_87804320), func_80044EA4 6744 -> 396, func_84372670 4308 -> 2860,
   func_8437FD74 unchanged at 350 (mapped). Code 93.95% -> 94.33%. A 24-function permuter farm
   (jobs 16777856 + 16777947, 3-day limit) is running alongside; check `matching_notes/farm_status.sh`.
+- Round 6 (2026-10-07, 8 Opus agents, tier 2 + survivors, ~1.5 h): **5 matched** (func_8003DB84,
+  func_882111F8, func_80044EA4, func_86800B38, func_84372670), 2 solved only via a linker alias and
+  PARKED on branch `round6-gfxhead-alias` pending the owner's decision (func_860005B8, func_86100C30),
+  drafts improved: func_8437FD74 350 -> 90, func_84367660 229 -> 85, func_838043F8 56 -> 8,
+  func_84302658 11 -> 7 lines (uncommitted idea in notes). Code 94.33% -> 94.79%, 40 functions left.
+  Farm restarted (job list = the 8 open tier-1/2 functions).
 - Nearly every remaining function already has an `#ifdef NON_MATCHING` draft with a `//` comment
   saying what still differs. Trust those comments over this list if they disagree.
 
