@@ -847,17 +847,14 @@ Gfx* func_84362084(Gfx* arg0) {
     static f32 D_843892EC[] = { 1.0f, 1.73205f, 1.0f, 0.0f, 0.0f };
 
     s32 i;
-    s32 j;
     s32 x;
+    s32 j;
     s32 y;
-    u8 sp1BC;
     unk_D_84398F50* sp1B4;
-    Vec3f sp1A0;
     unk_D_84398F50_048* var_s2;
     Vtx* vtx;
+    Vec3f sp1A0;
 
-    sp1BC = 1;
-    if (sp1BC) {}
     sp1B4 = D_84398F50;
 
     for (i = 0; i < 10; i++, sp1B4++) {
@@ -1102,14 +1099,8 @@ Gfx* func_84362084(Gfx* arg0) {
                     gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                     gSPSetGeometryMode(arg0++, G_CULL_FRONT);
                     gSPVertex(arg0++, vtx, 12, 0);
-                    gSP2Triangles(arg0++, 0, 6, 1, 0, 1, 6, 7, 0);
-
-                    for (j = 0; j < 1; j++) {
-                        u8 idx = j * 1 + 1;
-                        gSP2Triangles(arg0++, idx + 0, idx + 6, idx + 1, 0, idx + 1, idx + 6, idx + 7, 0);
-                        gSP2Triangles(arg0++, idx + 1, idx + 7, idx + 2, 0, idx + 2, idx + 7, idx + 8, 0);
-                        gSP2Triangles(arg0++, idx + 2, idx + 8, idx + 3, 0, idx + 3, idx + 8, idx + 9, 0);
-                        gSP2Triangles(arg0++, idx + 3, idx + 9, idx + 4, 0, idx + 4, idx + 9, idx + 10, 0);
+                    for (j = 0; j < 5; j++) {
+                        gSP2Triangles(arg0++, j, j + 6, j + 1, 0, j + 1, j + 6, j + 7, 0);
                     }
 
                     gSP2Triangles(arg0++, 5, 11, 0, 0, 0, 11, 6, 0);
@@ -1120,18 +1111,8 @@ Gfx* func_84362084(Gfx* arg0) {
                 case 4:
                     gSPDisplayList(arg0++, D_84389290);
                     gSPVertex(arg0++, vtx, 30, 0);
-                    gSP2Triangles(arg0++, 0, 15, 1, 0, 15, 16, 1, 0);
-                    gSP2Triangles(arg0++, 1, 16, 2, 0, 16, 17, 2, 0);
-
-                    for (j = 0; j < 3; j++) {
-                        gSP2Triangles(arg0++, 2 + j * 4, 17 + j * 4, 3 + j * 4, 0, 17 + j * 4, 18 + j * 4, 3 + j * 4,
-                                      0);
-                        gSP2Triangles(arg0++, 3 + j * 4, 18 + j * 4, 4 + j * 4, 0, 18 + j * 4, 19 + j * 4, 4 + j * 4,
-                                      0);
-                        gSP2Triangles(arg0++, 4 + j * 4, 19 + j * 4, 5 + j * 4, 0, 19 + j * 4, 20 + j * 4, 5 + j * 4,
-                                      0);
-                        gSP2Triangles(arg0++, 5 + j * 4, 20 + j * 4, 6 + j * 4, 0, 20 + j * 4, 21 + j * 4, 6 + j * 4,
-                                      0);
+                    for (j = 0; j < 14; j++) {
+                        gSP2Triangles(arg0++, j, j + 15, j + 1, 0, j + 15, j + 16, j + 1, 0);
                     }
 
                     gSP2Triangles(arg0++, 14, 29, 0, 0, 29, 15, 0, 0);
@@ -1184,14 +1165,8 @@ Gfx* func_84362084(Gfx* arg0) {
                     gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                     gSPSetGeometryMode(arg0++, G_CULL_BACK);
                     gSPVertex(arg0++, vtx, 12, 0);
-                    gSP2Triangles(arg0++, 0, 6, 1, 0, 1, 6, 7, 0);
-
-                    for (j = 1; j < 2; j++) {
-                        s32 idx = j * 4;
-                        gSP2Triangles(arg0++, idx + 0, idx + 6, idx + 1, 0, idx + 1, idx + 6, idx + 7, 0);
-                        gSP2Triangles(arg0++, idx + 1, idx + 7, idx + 2, 0, idx + 2, idx + 7, idx + 8, 0);
-                        gSP2Triangles(arg0++, idx + 2, idx + 8, idx + 3, 0, idx + 3, idx + 8, idx + 9, 0);
-                        gSP2Triangles(arg0++, idx + 3, idx + 9, idx + 4, 0, idx + 4, idx + 9, idx + 10, 0);
+                    for (j = 0; j < 5; j++) {
+                        gSP2Triangles(arg0++, j, j + 6, j + 1, 0, j + 1, j + 6, j + 7, 0);
                     }
 
                     gSP2Triangles(arg0++, 5, 11, 0, 0, 0, 11, 6, 0);
