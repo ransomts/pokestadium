@@ -66,6 +66,9 @@ All of these produced actual matches or big score drops in this codebase.
   test before removing.
 - Writing the struct / float constants as plain literals moves them into the function's
   late_rodata; if the rodata lives in asm, keep them `extern`.
+- **A global's address cached in an s-register because of a goto loop** disappears if that loop gets a
+  second entry (retarget the back-edge to an equivalent label inside another case) - uopt then stops
+  treating it as a loop (func_84372670).
 - Recursion: `var_s5 = var_s2 = 1;` init + `var_s5 = var_s2;` at loop end pattern (func_88803614).
 
 ## Tooling gotchas

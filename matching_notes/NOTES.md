@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (41 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (40 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -161,6 +161,14 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   the &spC4 spill (0x50) at once. Scope matters: function-scope ptr 1100-1400; only in case 5/6 1304;
   also in the function's first loop breaks it. Cleanup: `Color_RGB8 spB8[2][4]` replaces the
   out-of-bounds `spB8[i + 4]`; `if (pad1) {}` still needed.
+- **func_84372670** (agent 7): the unk_4F retry jump no longer targets `case_6` directly but a new
+  label `loop_4F:` inside case 5, after `switch (unk_01) { case 7: break; }` and just before its
+  `goto case_6;` (same behaviour). The back-edge now forms a loop with TWO entries, so uopt stops
+  treating it as a loop and no longer caches `&D_843C5238` in s0; plain `D_843C5238->` accesses then
+  give the target's v1 CSE and `beqzl` exactly. The `p = &D_843C5238` hack is gone; `UNUSED s32 pad;`
+  before sp2C for the 0x38 frame. fd.sh shows 10 = `D_80072AFE` vs `D_80072B00-0x2` (same address),
+  ROM OK. Retargeting the back-edge to `case_5` also drops s0 but branches wrong (1705). Lesson: an
+  s-register-cached global address caused by a goto loop goes away if the loop gets a second entry.
 - **func_882111F8** (e9ec242): delete the named pointer locals sp20/sp1C and index directly
   (`sp30 = ptr[arg1]; sp2C = ptr[arg2]; ... ptr[arg1] = sp2C; ptr[arg2] = sp30;`) with one
   `UNUSED s32 pad;` after var_v1 for the 0x38 frame; the CSE'd addresses become the 0x20/0x1C
@@ -226,15 +234,15 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `&&` operands and can sit anywhere before the sp94 loop; from that loop on our temps run one ahead
   of the target's (t9 vs t8), apparently because the no-op allocates a temp that emits no code.
   More dead ends in the draft's // comment (567dd19).
-- **func_84372670** (frag62_359F90, 4308 -> 2860 in round 5, bc54bcf): only the `unk_4F` loop back-edge
-  (`goto case_6`) makes IDO cache &D_843C5238 in s0 (a `return` there drops s0, ~1700); for/do/while
-  with `continue` compile identically (uopt works from the CFG). s0 only goes away when the 4C test, the
-  4F decrement and the 4F test ALL stop using the plain expression - `unk_D_800FCB18** p = &D_843C5238;`
-  does that and also gives the target frame (0x38, sp2C at 0x2C), so the original likely had one more
-  pointer-sized local. Remaining: the switch copy is in v1 (target a1) and the 4C-test pointer is not
-  CSE'd with the later `unk_01 == 0` / `4C &= ~4` accesses. Dead ends: volatile cast; local
-  `ptr = D_843C5238` (copy-propagated); named temp for the case-6 switch; dead `if (0)` debug print;
-  `if (1) {}` inserts; making D_843C5238 extern.
+  **Round 6 (agent 7): 350 -> 90** (b40b3ad, dddb096). Separate `s32 n` for the min result (in a1),
+  its input reusing `j` (permuter output-230 hint), frame stays 0xc0 (layout in the draft comment);
+  the else-branch copy loop uses `j` not `m`; `if (sp5C != 3) continue;` followed by `if (1) { body }`
+  fixes the unk_04/unk_01 compare regs (bare block 305); the arg2 `&&` no-op moved from inside
+  `if (i)` to just before `sp5C = ...` fixes the sp94-loop temps; `if (1) {}` at the top of the
+  innermost loop places the i spill (0xbf). Remaining (90): the innermost-loop arg2 reload goes to v1
+  (target t2) and t-regs run one ahead between the compare and that reload - single root cause left.
+  Dead ends: all six sum orders, no-op elsewhere or as 2/4-term chains, switch for `== 3`, other sp5C
+  types, sp5C as k/l/temp_v0_2/var_s2, copy-loop rewrites. Re-seed the farm from this draft.
 
 ### Near misses — stack layout
 - **func_84367660** (frag62_351F20, 229 -> 85 in round 6, d221a56): stack layout now matches (six spills
