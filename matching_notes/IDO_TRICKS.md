@@ -65,7 +65,11 @@ All of these produced actual matches or big score drops in this codebase.
 - Permuter: always pass `--stack-diffs` (otherwise stack-only diffs score 0). The generated
   `nonmatchings/<f>/compile.sh` has the wrong arg order for tools/preprocess.sh; fix with
   `sed -i 's/-O2 "$INPUT" -o "$OUTPUT"/-O2 -o "$OUTPUT" "$INPUT"/' nonmatchings/<f>/compile.sh`
-  (the bad order also leaves a stray file named `-I`). pycparser mangles `sizeof(char) * 0x80`.
+  (the bad order also leaves a stray file named `-I`). The permuter's pycparser fork mangles
+  `sizeof(T) * N` into `sizeof((T) (*N))`; fixed by `matching_notes/permuter_sizeof_prec.patch`
+  (apply with `git -C tools/permuter apply ../../matching_notes/permuter_sizeof_prec.patch`, then
+  `rm tools/permuter/perm_pycparser/yacctab.py` so the tables regenerate). permuter_farm.sh also
+  repairs the pattern in base.c as a fallback.
   Kill with `pkill -f "permuter[.]py nonmatchings/<func>"` (plain pattern kills your own shell).
 - Faster than full make: `make build/src/<path>.o` (~6s) then diff, batch-testing variants with a script.
 - `src/4A3E0.c` has a struct missing a `;` (`char unk2D[0x13]`) — m2ctx/permuter need it added in their copy.

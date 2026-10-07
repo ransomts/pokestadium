@@ -36,8 +36,10 @@ Everything below already works on the login/interactive nodes under `~/Code/poke
 - Diff one function: `matching_notes/fd.sh src/<file>.c func_XXXXXXXX` (uses
   `tools/asm-differ/diff.py`; the repo-root `diff.py` is broken on 3.12).
 - Batch variants: `matching_notes/var.py src/<file>.c func_X specfile` (see `scratch/*.spec`).
-- Permuter: `tools/permuter/` (decomp-permuter, gitignored). Import + run via
-  `matching_notes/permuter_farm.sh` (new, Section 5).
+- Permuter: `tools/permuter/` (decomp-permuter, gitignored, upstream 059609d). On a fresh clone apply
+  `matching_notes/permuter_sizeof_prec.patch` (fixes `sizeof(T) * N` being parsed as a cast; delete
+  `perm_pycparser/yacctab.py` afterwards so PLY regenerates it). Import + run via
+  `matching_notes/permuter_farm.sh` (Section 5).
 - Outbound internet from compute nodes works (api.anthropic.com answers). `claude` CLI 2.1.292 is
   in `~/.local/bin`. `~/.claude` lives on shared home, so auth persists across nodes.
 - Filesystems: `~` is NFS (slow for many small files). `/local_scratch` (= `$TMPDIR` = `/tmp`,
@@ -213,7 +215,16 @@ draft; delete the function's save dir to forget it). QoS `normal` is preemptable
 sbatch script requeues, appends logs, and the restart re-seeds automatically. Candidates saved
 by older runs with `--no-context-output` need `farm_splice.py` before they can seed.
 
-Sizing: 16 workers per function; 8 tier-1 functions = 128 cores. Permuter scores are inflated by
+Sizing (measured 2026-10-07): a shared 96-core Genoa allocation delivered ~480 it/s in total
+whether run as 6 functions x 16 workers or 24 x 4; the cost is process spawning (four IDO
+stages + objdump per iteration, ~30% system time), not compile CPU. So use ~4 workers per
+function, cover as many functions as possible, and add nodes rather than cores to go faster.
+Per-worker rate was ~2x higher on a lightly loaded node than on one shared with other heavy
+jobs; consider `--exclusive` on an idle 112-core Sapphire Rapids node. A function whose draft
+contains `sizeof(T) * N` is auto-repaired after import (pycparser mangles it); other base.c
+compile failures show up as a log with no `base score` line - check `farm_status.sh` after the
+first sync. Side jobs for a few functions:
+`sbatch --job-name=pokestadium-side --cpus-per-task=8 --mem=16G --export=ALL,FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" matching_notes/palmetto_job.sh`. Permuter scores are inflated by
 a constant when the file has statics; judge candidates with `fd.sh`, not the permuter number.
 Kill one run with `pkill -f "permuter[.]py nonmatchings/<func>"`.
 

@@ -1,0 +1,38 @@
+diff --git a/perm_pycparser/c_parser.py b/perm_pycparser/c_parser.py
+index e4eadee..6cd4929 100644
+--- a/perm_pycparser/c_parser.py
++++ b/perm_pycparser/c_parser.py
+@@ -522,7 +522,10 @@ class CParser(PLYParser):
+         ('left', 'GT', 'GE', 'LT', 'LE'),
+         ('left', 'RSHIFT', 'LSHIFT'),
+         ('left', 'PLUS', 'MINUS'),
+-        ('left', 'TIMES', 'DIVIDE', 'MOD')
++        ('left', 'TIMES', 'DIVIDE', 'MOD'),
++        # Pseudo-token: lets `sizeof(type)` reduce before a following binary
++        # operator is shifted as the start of a cast operand (`(T) *x`).
++        ('right', 'SIZEOF_TYPE')
+     )
+ 
+     ##
+@@ -1860,12 +1863,18 @@ class CParser(PLYParser):
+ 
+     def p_unary_expression_3(self, p):
+         """ unary_expression    : SIZEOF unary_expression
+-                                | SIZEOF LPAREN type_name RPAREN
+-                                | _ALIGNOF LPAREN type_name RPAREN
+         """
++        p[0] = c_ast.UnaryOp(p[1], p[2], self._token_coord(p, 1))
++
++    def p_unary_expression_4(self, p):
++        """ unary_expression    : SIZEOF LPAREN type_name RPAREN %prec SIZEOF_TYPE
++                                | _ALIGNOF LPAREN type_name RPAREN %prec SIZEOF_TYPE
++        """
++        # Without the %prec, `sizeof(T) * 1` parses as `sizeof((T) (*1))` because
++        # this grammar folds cast_expression into unary_expression.
+         p[0] = c_ast.UnaryOp(
+             p[1].replace("__alignof", "_Alignof").replace("__", ""),
+-            p[2] if len(p) == 3 else p[3],
++            p[3],
+             self._token_coord(p, 1))
+ 
+     def p_unary_operator(self, p):
