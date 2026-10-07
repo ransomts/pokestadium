@@ -2294,12 +2294,12 @@ void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
 
 s32 func_8120572C(s32);
 #ifdef NON_MATCHING
-// Hand-written draft (no m2c available in this environment). Score 185 (from 5624).
+// Hand-written draft (no m2c available in this environment). Score 140 (from 5624).
 // target asm block by block; gotos stand in for the shared exit / swap blocks.
 s32 func_8120572C(s32 arg0) {
     unk_D_8122B2C0* emu = (&D_8122B2C0)[arg0];
-    s32 pad;
     s32 btn;
+    u8 v;
     s32 i;
 
     switch (D_8122C4DC) {
@@ -2348,13 +2348,13 @@ s32 func_8120572C(s32 arg0) {
                         emu->unk_5DD0 = 8;
                         emu->unk_53F6 &= 0xDFF7;
                     } else {
-                        btn = emu->unk_5DD0;
-                        if (((btn == 0) || (emu->unk_5DC9 != 2)) && (D_8122C4F7 != 0xE) && (D_8122C4F7 != 0xF)) {
+                        v = emu->unk_5DD0;
+                        if (((v == 0) || (emu->unk_5DC9 != 2)) && (D_8122C4F7 != 0xE) && (D_8122C4F7 != 0xF)) {
                             emu->unk_5DC7 = 7;
                             osSendMesg(&D_8122C4C0, emu, 1);
                         } else {
-                            if (btn != 0) {
-                                emu->unk_5DD0 = btn - 1;
+                            if (v != 0) {
+                                emu->unk_5DD0 = v - 1;
                                 if (emu->unk_5DD0 == 0) {
                                     emu->unk_5DC7 = 4;
                                     osSendMesg(&D_8122C4C0, emu, 1);
