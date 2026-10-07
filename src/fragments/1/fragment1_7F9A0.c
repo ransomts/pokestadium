@@ -2294,12 +2294,13 @@ void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
 
 s32 func_8120572C(s32);
 #ifdef NON_MATCHING
-// Hand-written draft (no m2c available in this environment). Score 4326 (from 5624).
+// Hand-written draft (no m2c available in this environment). Score 816 (from 5624).
 // target asm block by block; gotos stand in for the shared exit / swap blocks.
 s32 func_8120572C(s32 arg0) {
     unk_D_8122B2C0* emu = (&D_8122B2C0)[arg0];
     s32 i;
     u8 v;
+    u16 btn;
 
     switch (D_8122C4DC) {
         case 1:
@@ -2311,8 +2312,9 @@ s32 func_8120572C(s32 arg0) {
 
         case 0xFF:
             osViBlack(0);
-            for (i = 0; i < 0x100; i++) {
-                emu->unk_549C[i] = 0xFF;
+            i = 0;
+            while (i < 0x100) {
+                emu->unk_549C[i++] = 0xFF;
             }
             for (i = 0; i < 0x10; i++) {
                 emu->unk_559C[i] = 0xFF;
@@ -2403,8 +2405,8 @@ s32 func_8120572C(s32 arg0) {
             emu->unk_5D70[0] = 0;
             emu->unk_5DC7 = 1;
             emu->gbAddress = 0;
-            emu->transferSize = 0x4000;
             emu->transferBuffer = emu->unk_53BC;
+            emu->transferSize = 0x4000;
             osSendMesg(&D_8122C4C0, emu, 1);
             D_8122C4DC = 3;
             osViBlack(0);
@@ -2447,8 +2449,8 @@ s32 func_8120572C(s32 arg0) {
                     emu->transferSize = emu->unk_5398 - emu->gbAddress;
                     D_8122C4DC = 4;
                 } else {
-                    emu->unk_5DC7 = 1;
                     emu->transferBuffer += 0x4000;
+                    emu->unk_5DC7 = 1;
                 }
                 osSendMesg(&D_8122C4C0, emu, 1);
             }
@@ -2649,17 +2651,20 @@ reset:
         }
     }
     if ((D_8122C4F7 == 0) && (emu->unk_5DD0 == 0)) {
-        if ((emu->unk_53F6 & 0x2000) && (D_8122C4F0 == 0x40) && (D_8122C4E3 != 0) && (D_8122C4E2 != 0)) {
+        btn = emu->unk_53F6;
+        if ((btn & 0x2000) && (D_8122C4F0 == 0x40) && (D_8122C4E3 != 0) && (D_8122C4E2 != 0)) {
             D_8122C4E6 = D_8122C4E5 + 1;
             D_8122C4F0 = -0x40;
             if (D_8122C4E4 < D_8122C4E6) {
                 D_8122C4E6 = 0;
             }
+            btn = emu->unk_53F6;
         }
-        if (emu->unk_53F6 & 1) {
-            switch (emu->unk_548E) {
-                default:
+        if (btn & 1) {
+            i = emu->unk_548E;
+            switch (i) {
                 case 1:
+                default:
                     if (D_8122C4E2 != 0) {
                         i = 2;
                     } else {
@@ -2699,11 +2704,7 @@ reset:
             D_8122C4E5 = D_8122C4E6;
         }
     }
-    if (D_8122C4F0 > 0) {
-        emu->unk_53FC = D_8122C4F0;
-    } else {
-        emu->unk_53FC = -D_8122C4F0;
-    }
+    emu->unk_53FC = (D_8122C4F0 <= 0) ? -D_8122C4F0 : D_8122C4F0;
     if ((D_8122C4F7 == 0) && (emu->unk_53FD < 0x40)) {
         emu->unk_53FD++;
     }
