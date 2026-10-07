@@ -39,6 +39,8 @@ All of these produced actual matches or big score drops in this codebase.
   constants shared a register and reordered late_rodata (func_86803C6C). `M_PI` vs `M_PI_F` in a
   double expression gives identical asm but a different ROM ((double)(float)pi) - only the full
   `make` catches it (func_84362084).
+- **Loop bound `i < NU` (unsigned) keeps a plain counter compared with `sltiu`;** with a signed bound
+  IDO replaces the counter by a pointer or `i*4` (func_88203ED8; fragment23_1AE680.c already uses `j < 8U`).
 - **Chained assignment keeps an address alive:** `A = B = 0;` re-reads B, so `&B` has two uses and
   stays in a register (func_80041A98); a volatile store + plain store does not.
 - **Float vector init with DOUBLE literals** (`-1.0`, `0.0`) keeps all three multiplies of a dot

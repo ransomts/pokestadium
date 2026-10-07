@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (32 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (30 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -230,6 +230,21 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `&D_800FCCA1` has two uses and uopt keeps the address in a0 (fixing the a0/a1 swap in the last
   loop); s8 leaves a real `sb` reload. Remaining diff.py lines are `D_800FCB48` vs `D_800FCB38+0x10`
   (same address).
+
+- **func_88203ED8** (825 instr, 4159 -> 0): the sibling func_882121E0's first-loop shape -
+  `arg0->unk_44[j]` and `D_88217C6C[j].field` indexed directly (call args in the right order,
+  target's `move a0,v0` appears); loop test `j < 5U` with `s32 j` (unsigned compare gives `sltiu`
+  and keeps a plain counter; `j < 5` makes IDO swap the counter for a pointer or j*4; u32 j spills);
+  the unrolled unk_18 loop reuses j, the string loop needs its own `x` (`li 5; bne`);
+  `temp->unk_44 = temp->unk_44;` between the unk_30 and unk_34 stores as in the sibling;
+  `UNUSED s32 pad[6]` at the top of the locals and `pad2[4]` at the bottom.
+- **func_88201488** (582 instr, 5805 -> 0): raw Gfx word stores rewritten as macros (style of
+  func_88214A58 / func_886002A8): a 40x40 RGBA16 block from `arg2->unk_08` and an 8x10 IA8 block from
+  `D_4006A08` (now `u8[]`); arg2 retyped as a new struct whose field 0 points to the old type with the
+  texture at offset 8 (old struct gained `unk_30`, the string); fill rects 1/2 need
+  `(arg0 - 2) + arg5->unk_3C` for the add order; the four same-colour border rects split into three
+  blocks each re-declaring `u32 color = GPACK(...)` (rect 1 | rects 2+3 | rect 4) to reproduce the
+  recompute of `(color<<16)|color`; `pad[2]`.
 
 ### Round 7 drafts improved / mapped (no match yet)
 - **func_80033D44** (33FE0, 8071 -> 80, 84edf49): accessmap was right - stores were one field late;
