@@ -303,7 +303,6 @@ void func_81000E78(unk_D_810047E0* arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
     Mtx* sp294;
     Mtx sp250;
@@ -317,15 +316,18 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     f32 sp104;
     f32 sp100;
     f32 spFC;
+    unk_D_86002F58_004_000* var_v0;
 
     sp294 = func_80005F5C(0x40);
     func_80031EF4(&sp14C, &D_8006F088->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
-    if (D_8006F09C->unk_0A6 == 0xFE) {
-        guScale(&sp250, D_8006F09C->unk_030.x * arg1->scale.x * 0.1f, D_8006F09C->unk_030.y * arg1->scale.y * 0.1f, D_8006F09C->unk_030.z * arg1->scale.z * 0.1f);
+    var_v0 = D_8006F09C;
+    if (var_v0->unk_0A6 == 0xFE) {
+        guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     } else {
-        guScale(&sp250, D_8006F09C->unk_030.x * arg1->scale.x * 0.1f, D_8006F09C->unk_030.y * arg1->scale.y * 0.1f, D_8006F09C->unk_030.z * arg1->scale.z * 0.1f);
+        guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     }
+
     if (D_8006F09C->unk_0A6 == 0xFF) {
         if ((D_8006F09C->unk_01A == 0x5C) || (D_8006F09C->unk_01A == 0x6D) || (D_8006F09C->unk_01A == 0x6E)) {
             func_8000ED4C(&sp10C, func_800123D4(0));
@@ -392,7 +394,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     gSPDisplayList(gfx++, arg2->segments[1]);
     gSPPopMatrix(gfx++, G_MTX_MODELVIEW);
     if (func_800325AC() == 0) {
-        unk_D_86002F58_004_000* var_v0 = D_8006F09C;
+        var_v0 = D_8006F09C;
 
         switch (var_v0->unk_01A) {
         case 0x6D:
@@ -486,10 +488,6 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     D_81004B50 += 1;
     return gfx;
 }
-#else
-Gfx* func_810010BC(Gfx*, unk_D_810047E0*, DisplayListAddresses*, s16);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/31/fragment31_2558B0/func_810010BC.s")
-#endif
 
 Gfx* func_81001D80(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
     s32 i;
