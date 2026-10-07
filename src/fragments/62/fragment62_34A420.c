@@ -1066,6 +1066,9 @@ Gfx* func_84362084(Gfx* arg0) {
                     }
                 }
                 break;
+
+            default:
+                break;
         }
 
         vtx = sp1B4->unk_01C;
