@@ -5,21 +5,81 @@ Written 2026-10-07 on Palmetto (node2044, branch `match-round-1`). Read this fil
 files are the ground truth for per-function details; this file is the work breakdown, the agent
 protocol, and the cluster recipe.
 
-## 0. Where the project stands
+## 0. Where the project stands (2026-10-07, end of round 6)
 
 | Item | State |
 |---|---|
-| Code matched (`progress.py -v us`, "all") | 94.79% after round 6 (was 93.95% at start of 2026-10-07) |
-| Functions still `#pragma GLOBAL_ASM` | 40 (Appendix A lists the original 54; rounds 5-6 matched 14) |
-| ROM | builds byte-identical (`make` prints `build/pokestadium-us.z64: OK`) |
-| Data still in asm (`asm/us/data/**/*.s`) | 184 files, not yet migrated to C |
-| `boot.o` | 0% -- verify whether it is hand-written asm (then it is not "undecompiled") |
-| Uncommitted | `matching_notes/NOTES.md`, `matching_notes/fd.sh` (Palmetto PATH fixes), `.claude/`, `scratch/` |
+| Code matched (`progress.py -v us`, "all") | 94.79% (was 93.13% when matching rounds began, 93.95% this morning) |
+| Functions still `#pragma GLOBAL_ASM` | 40 (Appendix A has the original 54; rounds 5-6 matched 14) |
+| Drafts | 37 of the 40 have an `#ifdef NON_MATCHING` draft with a `//` state comment; 3 have none (func_8120572C, func_80045FF0, func_80049DF0/func_8004A474 share a file with one draft) |
+| Parked | func_860005B8 + func_86100C30: byte-identical only via a linker alias, branch `round6-gfxhead-alias`, owner decision pending |
+| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1` (local branch, never pushed) |
+| Data still in asm (`asm/us/data/**/*.s`) | 184 files, 2.3 MB, mostly one .data + one .rodata stub per fragment; fragments/1 has 12 |
+| Hand-written asm by design | `boot`, `entry`, `libleo/bootstrap` (yaml `asm`/`hasm` segments) - not "undecompiled" |
+| Permuter farm | job 16781081, 8 open tier-2 functions, 3-day limit, candidates in `/scratch/$USER/permuter_best` |
+| Tooling debt | decomp-permuter `sizeof(T) * N` parse bug fixed locally (patch + PR draft in this folder) |
 
-"Finishing" has two layers. Layer 1 is matching the 54 functions (what every prior round worked
-on). Layer 2 is data migration (asm/us/data -> C) and cleanup so the repo is a complete source
-tree. Layer 2 is mechanical and large; start it only once Layer 1 is down to the handful of
-functions blocked on data layout, because migrating data is also the fix for those.
+What rounds 5-6 taught (see NOTES.md and IDO_TRICKS.md): the remaining code falls into three kinds
+of problem, and each needs a different tool. (1) One compiler temp whose creation point we cannot
+steer: brute force (farm) + occasional insight. (2) A wrong premise in the draft - wrong struct
+type, wrong symbol, a cursor local the compiler owned, a nested loop that was one loop: insight only,
+and this is where every big win came from. (3) Data/bss layout: needs data migration, not matching.
+
+## Roadmap
+
+| Phase | Scope | Who | Wall time (est.) | Exit criterion |
+|---|---|---|---|---|
+| A (now) | farm on the 8 open tier-2 functions; owner decides the alias pair | farm job + owner | runs 3 days unattended | candidates validated with fd.sh, or farm stopped |
+| B | round 7-9: tier 4 structural functions (26) in subsystem groups | 8 Opus agents/round, 3.5 h time-box | 3 rounds, ~1 day each incl. integration | <= 10 functions left, all with a precise "what is wrong" model |
+| C | tier 3 data-layout blockers (4) + the fragment1/16 data migration they need | 2 agents, long session | 1 round | 4 functions matched or proven to need upstream changes |
+| D | Layer 2: migrate the 184 asm data files to C | 4-6 Sonnet agents, mechanical, build gate | 1-2 days | `asm/us/data` empty, ROM OK |
+| E | finish: scaffolding removal, squash/rebase, PR to master, upstream permuter PR, final docs | 1 agent + owner | half a day | PR open, `progress.py` 100% code |
+
+Rounds 5-6 ran 12-15 functions per round with 6-8 agents and matched 9 and 5. Tier 4 functions are
+bigger and need real reverse engineering, so expect 3-6 matches per round, not 9.
+
+### Phase B detail: tier-4 groups (one agent per row unless noted)
+| Group | Functions (instr) | Notes |
+|---|---|---|
+| GB APU emulator, `src/4A3E0.c` | func_80049DF0 (417), func_8004A474 (266), func_8004A89C (256, draft ~170/256) | Transfer Pak Game Boy sound; D_800FD008 = {value, dirty} byte pairs. Fix the struct missing `;` (`char unk2D[0x13]`) first. One agent, 3.5 h, write the two missing drafts from the matched one. |
+| Model/vertex, `src/33FE0.c` | func_80033D44 (326, struct type probably wrong - fields shifted by one), func_80034348 (311) | Siblings func_80034824/func_80034BD4 matched this week - reuse their shapes and the file's structs. |
+| fragment23 cluster | func_88209B54 (1190), func_8820BE14 (447), func_88216000 (629), func_88203ED8 (825), func_88201488 (582) | 3 agents: {88209B54}, {8820BE14, 88216000}, {88203ED8, 88201488}. 88216000's load-block DXT is computed at runtime -> a custom/expanded texture-load macro; find it in the file's other matched functions. |
+| fragment24 + 26 | func_88304850 (590), func_88305F28 (391); func_885065E0 (391), func_88500A74 (240) | 2 agents, one per fragment (shared helpers inside each). |
+| fragment28 | func_88805AEC (945), func_88807D04 (275) | 1 agent. |
+| Singles | func_86803C6C (639), func_86905734 (508), func_8130337C (553), func_80041A98 (118), func_80012870 (60: one store scheduled early) | 2 agents: {86803C6C, 80041A98, 80012870}, {86905734, 8130337C}. |
+| Giants | func_8437B0CC (3346), func_84362084 (1598), func_8120572C (1450, no draft), func_810010BC (965), func_80045FF0 (960, no draft) | One agent each, full 3.5 h, deliverable may be "structure right, score X" + draft. Consider a Fable agent only for 8437B0CC if two Opus passes stall. |
+
+### Phase C detail: data-layout blockers
+- func_86A013C8 (frag16_158A00): code byte-identical with an in-function static; IDO places it at
+  bss 0x90/0x94, target 0xA8. Do the `cc -S` experiment (read `.lcomm/.comm` order) to learn the
+  rule, then either reorder statics or migrate the file's bss to C.
+- func_81207DF8, func_81209374, func_81209078 (frag1_86CB0): match with a mid-.data static;
+  D_8120EB94 is not 16-aligned, so the split means migrating ~100 KB of sample data to C with
+  `tools/data2c.py`. This is the first real Phase D task; do it here and reuse the recipe.
+
+### Phase D detail: data migration recipe (mechanical, cheap model is fine)
+1. Pick a fragment; `ls asm/us/data/fragments/N/` (usually `*.data.s` + `*.rodata.s`).
+2. Generate C with `tools/data2c.py` / `tools/print_decls.py`; place at the right spot in the C
+   file (order = address order); rodata literals go next to the functions that use them.
+3. Change the yaml segment from `.data`/`.rodata` asm to the C file; `make extract`-free rebuild;
+   `make` must print `OK`. Commit per fragment.
+4. Gate for an agent: never commit unless `OK`; never touch src/ of a function another agent owns.
+Start with fragments/1 (12 files, biggest) only after Phase C has done its sample-data part.
+
+### Phase E detail: definition of done
+- `grep -rn GLOBAL_ASM src` is empty (or lists only owner-accepted exceptions with a comment).
+- `asm/us/data` empty; `asm/us/nonmatchings` empty; `#ifdef NON_MATCHING` scaffolding gone.
+- `make clean && make -j` -> `OK`; `progress.py -v us` code 100%.
+- `match-round-1` rebased/squashed onto `master` and pushed; PR opened.
+- decomp-permuter PR filed from `UPSTREAM_PR_permuter_sizeof.md`.
+- NOTES.md trimmed to lessons (IDO_TRICKS.md) + a short history.
+
+### Decisions the owner must make
+1. The gDisplayListHead linker alias (two functions). Recommendation: keep parked; revisit if Phase D
+   reveals how the original declared the variable in overlays.
+2. Model per phase: Opus 5.5 for matching (proven, 2.5x cheaper than Fable), Sonnet 5.5 for Phase D
+   (mechanical, build-gated), Fable only for a stalled giant. The integrator session can be Opus too.
+3. Whether to accept "unsequenced but matching" C (func_87804320's loop tail) or mark such lines.
 
 ## 1. Environment recipe (Palmetto, RHEL8, no sudo)
 
@@ -100,39 +160,23 @@ already offers more permuter workers than there are candidate functions times a 
 function worker count (8 functions x 16 workers = 128). A second node only helps if you want to
 run the long-shot permuter on tier-3 functions too.
 
-## 3. Work breakdown (Layer 1: the 54 functions)
+## 3. Function state by tier (details live in NOTES.md)
 
-Tiers below are from NOTES.md; sizes are instruction counts from the `.s` files (Appendix A).
+**Tier 1 -- regalloc-only.** 11 of 12 matched. Left: func_8437FD74 (90; one reload register in the
+innermost loop; farm re-seeded from the 90 draft).
 
-**Tier 1 -- regalloc-only near misses.** Rounds 5-6 matched 11 of 12. Left: func_8437FD74 (90, one
-reload register; see NOTES).
+**Tier 2 -- stack layout.** 3 of 10 matched. Left: func_838043F8 (8), func_8430506C (16),
+func_84367660 (85, regalloc only), func_83501718 (60), func_8850B2D4 (84), func_84302658 (7 lines),
+func_82F04604 (318, partial fix known). Each has a precise slot model in NOTES; the open question in
+most is one compiler temp whose creation point we cannot steer. Farm first; one agent pass per
+round on the two best candidates only.
 
-**Tier 2 -- stack-layout near misses.** Round 6 matched 3 of 10 (func_8003DB84, func_882111F8,
-func_86800B38). Left: func_838043F8 (8), func_8430506C (16), func_84367660 (85, regalloc only now),
-func_83501718 (60), func_8850B2D4 (84), func_84302658 (7 lines), func_82F04604 (318, partial fix
-known). Each has a precise slot model in NOTES; the open question in most is one compiler temp
-whose creation point we cannot yet steer. Read IDO_TRICKS "slot order follows first appearance".
-Shared trick that worked before: frame too big with identical offsets => too many named locals;
-turn `v += k` induction vars into `base + i*k`.
+**Tier 2b -- gDisplayListHead pair.** Root cause known (one address register range per global
+symbol). Parked on `round6-gfxhead-alias`; see decision 1.
 
-**Tier 2b -- shared gDisplayListHead-in-register pattern.** func_860005B8, func_86100C30. ROOT
-CAUSE FOUND in round 6 (one register range per global symbol); a byte-identical match exists on
-branch `round6-gfxhead-alias` but needs a linker alias (second name for gDisplayListHead). Owner
-decision pending; not counted as matched.
+**Tier 3 -- data/bss layout.** func_86A013C8, func_81207DF8, func_81209374, func_81209078. Phase C.
 
-**Tier 3 -- blocked on data/bss layout.** func_86A013C8 (code identical, static lands at wrong
-bss offset), func_81207DF8, func_81209374 (need mid-.data static), func_81209078. Needs the
-`cc -S` investigation of `.lcomm/.comm` ordering and/or migrating ~100 KB of sample data in
-`fragment1_86CB0` to C. This is where Layer 2 (data migration) starts paying off.
-
-**Tier 4 -- large / structural (one dedicated agent each, long session).**
-func_88216000 (629, custom load-block macro), func_88209B54 (1190), func_8820BE14 (447),
-func_8004A89C / func_80049DF0 / func_8004A474 (Game Boy APU emulator in `src/4A3E0.c`; fix the
-missing `;` in the struct first), func_80033D44 (struct type wrong, fields shifted by one),
-func_8437B0CC (3346, largest), func_84362084 (1598), func_8120572C (1450), func_810010BC (965),
-func_80045FF0 (960), func_88805AEC (945), func_88203ED8, func_88201488, func_86803C6C,
-func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850, func_88305F28,
-func_88807D04, func_80034348, func_80041A98, func_80012870 (60 instr, one store scheduled early).
+**Tier 4 -- large / structural.** 26 functions, Phase B groups above.
 
 ## 4. Agent protocol (one round)
 
@@ -159,7 +203,8 @@ Roles: 1 **integrator** (the parent session) + N **matchers** (8-16) + the permu
   (`git worktree remove --force`) and `nonmatchings/` output (~1 GB per long run) at the end.
 
 ### Matcher rules (put these verbatim in every agent prompt)
-1. `pwd` first; you must be inside your worktree `$TMPDIR/wt/agent-<k>`. If a resumed
+1. `pwd` first; you must be inside your worktree (`.claude/worktrees/agent-<k>` under the main repo,
+   which survives job restarts, or `$TMPDIR/wt/agent-<k>` on a staged node). If a resumed
    session dropped you into the main repo, `cd` back before touching anything.
 2. Read `matching_notes/NOTES.md` entry and the `//` comment in the function's `#ifdef
    NON_MATCHING` draft before changing code. Do not retry listed dead ends.
@@ -168,10 +213,11 @@ Roles: 1 **integrator** (the parent session) + N **matchers** (8-16) + the permu
    looked like (IDO_TRICKS.md), edit, repeat. Use `var.py` with a spec file to test 5-20 textual
    variants per build. Bisect perturbations with `if (0)` chunks.
 4. ASCII only in `src/` comments (the EUC-JP preprocess step dies on `—`).
-5. When the diff is empty: restore `#ifdef NON_MATCHING` -> delete the `#pragma GLOBAL_ASM` and
-   the `#ifdef`, delete `asm/us/nonmatchings/.../func_X.s`, run the full `make` in your worktree
-   (must print `OK`), then `git commit -am "Match func_X"`. Report the commit hash. Never leave
-   `#if 1` in a committed file.
+5. When the diff is empty: make the C unconditional (delete the `#pragma GLOBAL_ASM` line and the
+   `#ifdef NON_MATCHING`/`#else`/`#endif` wrapper), run the full `make` in your worktree (must
+   print `OK`), then `git commit -am "Match func_X"`. Report the commit hash. Never leave `#if 1`
+   in a committed file. NEVER delete anything under `asm/` - it is a symlink shared with every
+   other worktree; the integrator removes stale `.s` files after the round.
 6. Write helper scripts with the Write tool into your own scratch dir and run them by absolute
    path; the sandbox refuses `$VAR` paths, heredocs, `source`, and long `&&` chains.
 7. If the permuter is appropriate (pure regalloc near miss), hand the function to the integrator
@@ -229,19 +275,19 @@ first sync. Side jobs for a few functions:
 a constant when the file has statics; judge candidates with `fd.sh`, not the permuter number.
 Kill one run with `pkill -f "permuter[.]py nonmatchings/<func>"`.
 
-## 6. Layer 2: data migration and completion checklist
+## 6. Integration and hygiene (every round)
+1. Integrator cherry-picks each agent's commits in the order the agent gives (a match commit may sit
+   on an intermediate commit - pick both or the cherry-pick conflicts).
+2. Full `make` after every pick; `grep -c "#if 1"` on touched files must be 0.
+3. Do NOT delete `asm/us/nonmatchings/*.s` while agents run (shared symlink); delete all stale ones
+   at round end: files present but no longer named by any GLOBAL_ASM.
+4. Write every winning shape and every dead end into NOTES.md the same day; move generalisable rules
+   to IDO_TRICKS.md.
+5. Remove worktrees, keep any unmerged work on a named branch, update the farm list, resubmit.
+6. Before resuming agents after a Claude Code restart, `scancel` the old interactive job - its
+   agents keep running and edit the same worktrees.
 
-Start when tier 1-2 are exhausted or when working tier 3.
-
-1. For each `asm/us/data/**/*.s` (184 files): identify the owning C file, generate C with
-   `tools/data2c.py` / `tools/print_decls.py`, move it in, re-split the yaml if needed, rebuild.
-   Start with `fragment1_86CB0` and `fragment16_158A00` because they unblock tier 3.
-2. Confirm `boot.o`/`entry.o` are hand-written asm and mark them as such in the yaml/progress.
-3. Remove `#ifdef NON_MATCHING` scaffolding and `pad_*` splat filler where real symbols exist.
-4. Final gates: `make clean && make -j` -> `OK`; `progress.py -v us` code at 100%; no files in
-   `asm/us/nonmatchings`; push `match-round-1` and open the PR to `master`.
-
-## Appendix A: remaining functions (instruction counts)
+## Appendix A: the 54 functions open at the start of 2026-10-07 (instruction counts; 14 since matched)
 
 ```
  3346 func_8437B0CC  fragments/62/fragment62_361050   tier 4
