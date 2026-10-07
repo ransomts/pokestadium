@@ -3256,26 +3256,7 @@ void func_86A01BEC(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Score 1275 (diff.py). Round-5 notes:
-// - `unk_02 + unk_00` (not `unk_00 + unk_02`) in the 3D40 0xFFFF0000 case fixes that addu (1285 -> 1275).
-// - Remaining: target loads arg6 into ugen temp t6 for the first compare + first D_86A03170 index,
-//   copies it to v1 (`move v1,t6`) for the rest, and RELOADS arg6 from 0x23(sp) in the second
-//   D_86A03170 block (v1 then holds the row pointer). Ours keeps arg6 in v1 everywhere with a t0
-//   copy for the compares, so every t-reg after that is shifted by one.
-// - `D_86A03170[(u32)arg5]` (or `arg5 & 0xFFFFFFFFu`, `arg5 ^ 0`) in the FIRST block = 1060
-//   (hidden-temp hack, permuter's find); fixes the pointer reg but not the reload.
-// - Dead ends: a `temp_v1 = &D_86A03170[arg5][arg6]` row pointer is identical (1275) if `if (1) {}`
-//   stays, but becomes multu (much worse) without it; pointer for 3D40 = 2400; local copy of arg6
-//   (u8/s32/s16) in any subset of compares/indices (u8 collapses, others worse); casts on arg6 per
-//   block; &arg6 / volatile (11k+); `if (1) {}` at any other line (only the current spot works,
-//   it stops IDO hoisting `li 0x1c` + multu); `arg6 = arg6;`, `{}`, `;` in its place;
-//   `*arg1 =` in the first block; swapping the D_86A06220/2 stores.
 void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, unk_D_86002F34_00C* arg3, u16 arg4, s8 arg5, u8 arg6) {
-    unk_D_86A03170* temp_v1;
-
-    if (!arg4) {}
-
     D_86A0625C = arg1;
     D_86A06254 = arg3;
     D_86A06220 = 0;
@@ -3284,11 +3265,10 @@ void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, unk_D_86002F34_00C* arg3, u1
     if (arg6 < 6) {
         *D_86A0625C = D_86A03170[arg5][arg6].unk_00;
     } else if (arg6 < 9) {
-        *D_86A0625C = D_86A03C98[arg5][arg6].unk_00;
+        *D_86A0625C = D_86A03D40[arg5][arg6 - 6].unk_00;
     }
 
     if (arg6 < 6) {
-        if (1) {}
         if (D_86A03170[arg5][arg6].unk_04 == 1) {
             if (D_86A03170[arg5][arg6].unk_00 < D_86A03170[arg5][arg6].unk_02) {
                 D_86A06258 = (D_86A03170[arg5][arg6].unk_02 - D_86A03170[arg5][arg6].unk_00) / arg4;
@@ -3312,35 +3292,32 @@ void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, unk_D_86002F34_00C* arg3, u1
         D_86A06254->unk_24.near = D_86A03170[arg5][arg6].unk_14;
         D_86A06254->unk_24.far = D_86A03170[arg5][arg6].unk_18;
     } else if (arg6 < 9) {
-        if (D_86A03D40[arg5 - 2][arg6].unk_04 == 1) {
-            if (D_86A03D40[arg5 - 2][arg6].unk_00 < D_86A03D40[arg5 - 2][arg6].unk_02) {
-                D_86A06258 = (s32)(D_86A03D40[arg5 - 2][arg6].unk_02 - D_86A03D40[arg5 - 2][arg6].unk_00) / arg4;
+        if (D_86A03D40[arg5][arg6 - 6].unk_04 == 1) {
+            if (D_86A03D40[arg5][arg6 - 6].unk_00 < D_86A03D40[arg5][arg6 - 6].unk_02) {
+                D_86A06258 = (s32)(D_86A03D40[arg5][arg6 - 6].unk_02 - D_86A03D40[arg5][arg6 - 6].unk_00) / arg4;
             } else {
                 D_86A06258 =
-                    (s32)((D_86A03D40[arg5 - 2][arg6].unk_02 - D_86A03D40[arg5 - 2][arg6].unk_00) + 0x10000) / arg4;
+                    (s32)((D_86A03D40[arg5][arg6 - 6].unk_02 - D_86A03D40[arg5][arg6 - 6].unk_00) + 0x10000) / arg4;
             }
-        } else if (D_86A03D40[arg5 - 2][arg6].unk_00 < D_86A03D40[arg5 - 2][arg6].unk_02) {
+        } else if (D_86A03D40[arg5][arg6 - 6].unk_00 < D_86A03D40[arg5][arg6 - 6].unk_02) {
             D_86A06258 =
-                (s32)(D_86A03D40[arg5 - 2][arg6].unk_02 + D_86A03D40[arg5 - 2][arg6].unk_00 + 0xFFFF0000) / arg4;
+                (s32)(D_86A03D40[arg5][arg6 - 6].unk_02 + D_86A03D40[arg5][arg6 - 6].unk_00 + 0xFFFF0000) / arg4;
         } else {
-            D_86A06258 = (s32)(D_86A03D40[arg5 - 2][arg6].unk_02 - D_86A03D40[arg5 - 2][arg6].unk_00) / arg4;
+            D_86A06258 = (s32)(D_86A03D40[arg5][arg6 - 6].unk_02 - D_86A03D40[arg5][arg6 - 6].unk_00) / arg4;
         }
 
-        *arg0 = D_86A03D40[arg5 - 2][arg6].unk_06;
-        *arg2 = D_86A03D40[arg5 - 2][arg6].unk_08;
+        *arg0 = D_86A03D40[arg5][arg6 - 6].unk_06;
+        *arg2 = D_86A03D40[arg5][arg6 - 6].unk_08;
 
         D_86A06248.x = 0.0f;
-        D_86A06248.y = D_86A03D40[arg5 - 2][arg6].unk_10;
+        D_86A06248.y = D_86A03D40[arg5][arg6 - 6].unk_10;
         D_86A06248.z = 0.0f;
 
-        D_86A06254->unk_24.fovy = D_86A03D40[arg5 - 2][arg6].unk_0C;
-        D_86A06254->unk_24.near = D_86A03D40[arg5 - 2][arg6].unk_14;
-        D_86A06254->unk_24.far = D_86A03D40[arg5 - 2][arg6].unk_18;
+        D_86A06254->unk_24.fovy = D_86A03D40[arg5][arg6 - 6].unk_0C;
+        D_86A06254->unk_24.near = D_86A03D40[arg5][arg6 - 6].unk_14;
+        D_86A06254->unk_24.far = D_86A03D40[arg5][arg6 - 6].unk_18;
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/16/fragment16_15A2B0/func_86A01CF0.s")
-#endif
 
 void func_86A02164(void) {
     if (D_86A06220 < D_86A06222) {
