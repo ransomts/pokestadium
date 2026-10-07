@@ -2294,13 +2294,14 @@ void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
 
 s32 func_8120572C(s32);
 #ifdef NON_MATCHING
-// Hand-written draft (no m2c available in this environment). Score 140 (from 5624).
+// Hand-written draft (no m2c available in this environment). Only diff left: scheduling of `li 0x8000` vs `lui D_8120DD0C` in the D_8122C4DC == 0xFF header block (6a18/6a20). emu has to live in arg0 (no stack slot) for the frame to be 0x48.
 // target asm block by block; gotos stand in for the shared exit / swap blocks.
 s32 func_8120572C(s32 arg0) {
-    unk_D_8122B2C0* emu = (&D_8122B2C0)[arg0];
+#define emu ((unk_D_8122B2C0*) arg0)
     s32 btn;
-    u8 v;
     s32 i;
+
+    arg0 = (s32) (&D_8122B2C0)[arg0];
 
     switch (D_8122C4DC) {
         case 1:
@@ -2348,13 +2349,12 @@ s32 func_8120572C(s32 arg0) {
                         emu->unk_5DD0 = 8;
                         emu->unk_53F6 &= 0xDFF7;
                     } else {
-                        v = emu->unk_5DD0;
-                        if (((v == 0) || (emu->unk_5DC9 != 2)) && (D_8122C4F7 != 0xE) && (D_8122C4F7 != 0xF)) {
+                        if (((emu->unk_5DD0 == 0) || (emu->unk_5DC9 != 2)) && (D_8122C4F7 != 0xE) && (D_8122C4F7 != 0xF)) {
                             emu->unk_5DC7 = 7;
                             osSendMesg(&D_8122C4C0, emu, 1);
                         } else {
-                            if (v != 0) {
-                                emu->unk_5DD0 = v - 1;
+                            if (emu->unk_5DD0 != 0) {
+                                emu->unk_5DD0 = emu->unk_5DD0 - 1;
                                 if (emu->unk_5DD0 == 0) {
                                     emu->unk_5DC7 = 4;
                                     osSendMesg(&D_8122C4C0, emu, 1);
@@ -2770,6 +2770,7 @@ reset:
     return 0;
 
 }
+#undef emu
 #else
 #pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/1/fragment1_7F9A0/func_8120572C.s")
 #endif
