@@ -1239,6 +1239,20 @@ void func_84304F54(unk_D_84390010* arg0) {
 
 #ifdef NON_MATCHING
 // Only the stack slots of two spilled temps differ (target has an extra unused temp slot at 0x20)
+// Round 6 (agent 1): slot model. Compiler temps sit directly below the lowest named slot,
+// allocated top-down in the fixed order [sp28 value, sp40*4 (v1), &D_84390010[sp40]]; the
+// order does NOT follow where sp28 is assigned in the source. Target = 9 named slots
+// (0x2C..0x4C) + 4 temps (0x28 sp28val, 0x24 v1, 0x20 unused X, 0x1C Daddr); this draft
+// has 10 named + 3 temps. Removing any one named slot (e.g. pad2, with ptr2 moved into
+// its slot) gives frame 0x48 with identical code, so the original has one less local and
+// one more never-stored temp. A never-stored temp can be made with "sp40 = !func_84307F00(arg0);" or
+// "!(x & 1) != 0" (ugen boolean temp) - with 9 named that restores frame 0x50 with
+// identical code, BUT such temps always take the TOP slot (0x28), wherever they occur in
+// the source, so sp28val/v1 stay one slot low (same 4-line diff). X must be a late
+// (regalloc-phase) temp ordered between v1 and Daddr. Dead ends (no new temp or worse):
+// "!!", "== 1", "!= 0" on the call results, "!(a || b)" forms, ptr reuse for the A80/B20/
+// unk_000[sp48] lines, sp30 reuse for the D_84390010[sp40] uses, (*(D_84390010+sp40)),
+// unk_000+sp48, sp48 initialiser, nested ifs, if(1){} after the unk_4C4 store.
 void func_8430506C(unk_D_84390010* arg0) {
     unk_D_8438E7B0* ptr;
     s32 sp48;
