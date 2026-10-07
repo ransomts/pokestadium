@@ -52,6 +52,8 @@ for spec in "$@"; do
     # preprocess.sh needs -o before the input (see IDO_TRICKS.md).
     sed -i 's/-O2 "$INPUT" -o "$OUTPUT"/-O2 -o "$OUTPUT" "$INPUT"/' "nonmatchings/$func/compile.sh"
     rm -f "nonmatchings/$func/-I"
+    # pycparser mangles `sizeof(T) * N` into `sizeof((T) (*N))`, which IDO rejects. Undo it.
+    sed -i -E 's/sizeof\(\(([A-Za-z_][A-Za-z0-9_ ]*)\) \(\*([0-9A-Fa-fx]+)\)\)/(\2 * sizeof(\1))/g' "nonmatchings/$func/base.c"
     seed=$( [ "$RESEED" != 0 ] && best_saved "$func" )
     if [ -n "$seed" ]; then
         cp "nonmatchings/$func/base.c" "nonmatchings/$func/base.draft.c"

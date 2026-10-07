@@ -65,6 +65,8 @@ FUNCS=(
   func_860005B8:src/fragments/6/fragment6.c
   func_86100C30:src/fragments/7/fragment7.c
 )
+# FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" replaces the list (e.g. a small side job).
+[ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"
 for spec in "${FUNCS[@]}"; do
   f=${spec%%:*}; s=${spec#*:}
   "$STAGE/.venv/bin/python3" - "$s" "$f" <<'EOF'
