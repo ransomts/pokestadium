@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (43 as of 2026-10-07 after round 5 + first round-6 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (42 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -161,7 +161,17 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   spill temps. Lesson: register-held pointer locals spilled one slot too low are CSE'd index
   expressions in the original, not named locals.
 
-### func_80044EA4 (45720, score 396 after round 5; was 6744) — structure SOLVED, two diffs remain
+### func_80044EA4 — MATCHED (round 6, agent 8; was 24743 at project start, 6744 -> 396 -> 0)
+- The `u8* p` cursor local was the whole remaining problem. The original indexes `D_800FCEF0[i]`
+  directly at every site (the `== 2` continue, the `!= 0 && != 3` test, the 2/4/0/1 stores and
+  `switch (D_800FCEF0[i])`); IDO strength-reduces that into its OWN stepping pointer - a compiler
+  temp, which is what lives at 0x5c. Drop `p` and one pad (8 named locals): the pointer lands at
+  0x5c, the D_800FCED8[i] spill moves to 0x44, AND the case-0 `beqzl` becomes `beqz` - both diffs
+  had this one cause. Lesson (also in IDO_TRICKS): a pointer in a stack slot right below the named
+  locals may be the compiler's own strength-reduced pointer; write plain `arr[i]` and drop a pad.
+- History of what got the structure right is below (still useful for the sibling audio code).
+
+### func_80044EA4 history (45720; structure SOLVED in round 3, regalloc in rounds 5-6)
 - Round 5 (agent 6, commits on match-round-1): `(j << 1)` instead of `j * 2` in both store indices
   (IDO made `j*2` an induction variable; the target recomputes it per unrolled step - this was the
   meaning of the permuter's `u8 new_var` hint; 6744 -> 1886); `sample * D_800FCF00[i]` operand order

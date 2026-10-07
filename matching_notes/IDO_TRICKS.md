@@ -17,6 +17,9 @@ All of these produced actual matches or big score drops in this codebase.
   this shrinks locals and moves spill slots to the right place (func_87803EAC, func_83500FE8).
 - **Conversely, a value spilled into the compiler-temp area may be a CSE'd expression** — writing
   e.g. `var = cond ? 1 : 0;` and using `(1 << var)` in two loops reproduced a single spill.
+- **A pointer living in a stack slot just below the named locals may be IDO's own strength-reduced
+  pointer** for `arr[i]` indexing (func_80044EA4). Don't declare a cursor local: write plain `arr[i]`
+  everywhere and drop a pad so the compiler temp takes that slot.
 - **Consecutive stack slots stored/reloaded around calls (spF8, spFC, sp100…) = a local array.**
 - **Back-to-back `sw`/`lw` of the same slot in a leaf function = local array (`f32 tmp[N]`)**, not volatile.
 - **Ascending-order byte stores = hand-written stores**; IDO emits `for`-loop stores descending.
