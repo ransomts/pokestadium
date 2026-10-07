@@ -239,6 +239,24 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 }
 
 #ifdef NON_MATCHING
+// func_86905734: score 1952 (diff.py), frame 0x108 matches. Twin of func_86905F24 (matched) with
+// (+-arg3/2, -arg4) corners instead of (+-12, 56). All remaining diffs are in the corner math:
+// FPU regalloc + compiler-temp slots, everything after func_8001E6E8 is only temp-slot offsets.
+// Target shape (from asm): (f32)arg1 is a uopt MEMORY temp at sp+0x64 (stored, reloaded, then
+// spilled to 0x30), so the source most likely used arg1/arg2 directly (no a1/a2 copy). Memory
+// temps: 0x64 (f32)arg1, 0x60 -h*sin, 0x5C (f32)arg2, 0x58 h*cos, 0x54 h*sin, 0x50 (f32)h,
+// 0x3C cos*-arg4; register temps: cos fv0, sin fv1, (f32)-h fa0, (f32)-arg4 ft4, -h*cos fa1,
+// sin*-arg4 ft5. Slots 0x38 and 0x40-0x4C unused.
+// Dead ends (round 7):
+//  - arg1/arg2 used directly + pad[4] (frame ok): score 2552, 61 diff lines; gets the arg1 memory
+//    temp right but -h*cos becomes a memory temp and cos*-arg4 a register (swapped vs target),
+//    temps land 0x10 too low (0x3C..0x54).
+//  - commutative operand order / add order in any line: IDO normalizes, identical code.
+//  - named f32 locals for any 1-2 of the 12 subexpressions (66 pairs tried, a1/a2 assigned to
+//    cos/sin/-h/-arg4/products/arg1/arg2): best is this draft (a1=arg1, a2=arg2), 1952.
+//  - s32 w = arg3/2 (or -(arg3/2)), f32 x/y for -h/-arg4, c/s for COSS/SINS: 4000+.
+//  - mixing a1 and arg1 per line: copy-propagated, identical to the a1 draft.
+// Looks like a temp-priority problem; candidate for the permuter farm (use --stack-diffs).
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
