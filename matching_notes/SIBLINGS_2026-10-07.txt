@@ -1,0 +1,244 @@
+
+(5.6s)
+siblings of func_80012870  asm/us/nonmatchings/12D80/func_80012870.s (unmatched)  [60 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.255  0.10   0.45   0.20   16       func_81400C80                  src/fragments/34/fragment34_261F90.c:578     4 insns: q 12-15 ~ s 5-8 C L579-579  weak
+
+====================================================================================================
+siblings of func_80033D44  asm/us/nonmatchings/33FE0/func_80033D44.s (unmatched)  [324 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.298  0.20   0.36   0.25   193      func_80034824                  src/33FE0.c:809                              14 insns: q 306-319 ~ s 177-190 C L891-891  weak
+
+====================================================================================================
+siblings of func_80034348  asm/us/nonmatchings/33FE0/func_80034348.s (unmatched)  [311 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.182  0.10   0.24   0.16   149      func_863009FC                  src/fragments/9/fragment9.c:301              10 insns: q 2-11 ~ s 5-14 C L301-301  
+
+====================================================================================================
+siblings of func_80041A98  asm/us/nonmatchings/3D140_2/func_80041A98.s (unmatched)  [118 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.245  0.16   0.29   0.22   64       func_82505FE0                  src/fragments/39/fragment39_281C40.c:13      8 insns: q 61-68 ~ s 22-29 C L24-27  weak
+
+====================================================================================================
+siblings of func_80045FF0  asm/us/nonmatchings/46680/func_80045FF0.s (unmatched)  [960 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.030  0.01   0.04   0.03   349      func_82F01A70                  src/fragments/41/fragment41_289240.c:168     4 insns: q 118-121 ~ s 34-37 C L196-197  
+
+====================================================================================================
+siblings of func_80049DF0  asm/us/nonmatchings/4A3E0/func_80049DF0.s (unmatched)  [417 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.065  0.03   0.09   0.06   187      func_81207774                  src/fragments/1/fragment1_86CB0.c:271        3 insns: q 231-233 ~ s 134-136 C L327-327  
+
+====================================================================================================
+siblings of func_8004A474  asm/us/nonmatchings/4A3E0/func_8004A474.s (unmatched)  [266 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.066  0.03   0.09   0.07   101      func_81207C5C                  src/fragments/1/fragment1_86CB0.c:434        2 insns: q 149-150 ~ s 13-14 C L444-445  
+
+====================================================================================================
+siblings of func_8004A89C  asm/us/nonmatchings/4A3E0/func_8004A89C.s (unmatched)  [256 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.084  0.04   0.12   0.09   101      func_86A0240C                  src/fragments/16/fragment16_15AD80.c:13      5 insns: q 103-107 ~ s 37-41 C L21-21  
+
+====================================================================================================
+siblings of func_8120572C  asm/us/nonmatchings/fragments/1/fragment1_7F9A0/func_8120572C.s (unmatched)  [1436 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.105  0.05   0.15   0.03   537      func_812033F4                  src/fragments/1/fragment1_7F9A0.c:1398       7 insns: q 487-493 ~ s 523-529 C L1567-1568  
+
+====================================================================================================
+siblings of func_81207DF8  asm/us/nonmatchings/fragments/1/fragment1_86CB0/func_81207DF8.s (unmatched)  [157 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.368  0.31   0.40   0.42   127      func_81207A60                  src/fragments/1/fragment1_86CB0.c:363        11 insns: q 85-95 ~ s 69-79 C L397-399  possible
+
+====================================================================================================
+siblings of func_81209078  asm/us/nonmatchings/fragments/1/fragment1_86CB0/func_81209078.s (unmatched)  [185 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.176  0.07   0.26   0.16   59       func_82F0763C                  src/fragments/41/fragment41_28ED00.c:367     9 insns: q 23-31 ~ s 16-24 C L369-369  
+
+====================================================================================================
+siblings of func_81209374  asm/us/nonmatchings/fragments/1/fragment1_86CB0/func_81209374.s (unmatched)  [197 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.088  0.03   0.13   0.06   69       func_84306470                  src/fragments/62/fragment62_2EC3C0.c:1771    4 insns: q 33-36 ~ s 42-45 C L1782-1782  
+
+====================================================================================================
+siblings of func_86803C6C  asm/us/nonmatchings/fragments/14/fragment14_1462A0/func_86803C6C.s (unmatched)  [626 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.315  0.16   0.42   0.07   266      func_86802204                  src/fragments/14/fragment14_1462A0.c:148     12 insns: q 248-259 ~ s 77-88 C L156-157  possible
+
+====================================================================================================
+siblings of func_86905734  asm/us/nonmatchings/fragments/15/fragment15_150AC0/func_86905734.s (unmatched)  [508 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.773  0.75   0.78   0.81   488      func_86905F24                  src/fragments/15/fragment15_150AC0.c:324     152 insns: q 356-507 ~ s 336-487 C L371-397  STRONG
+
+====================================================================================================
+siblings of func_86A013C8  asm/us/nonmatchings/fragments/16/fragment16_158A00/func_86A013C8.s (unmatched)  [50 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.142  0.06   0.20   0.32   23       func_800429D0                  src/435D0.c:61                               3 insns: q 26-28 ~ s 12-14 C L64-66  
+
+====================================================================================================
+siblings of func_88201488  asm/us/nonmatchings/fragments/23/fragment23_1A9780/func_88201488.s (unmatched)  [582 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.421  0.22   0.56   0.34   268      func_886002A8                  src/fragments/27/fragment27.c:97             18 insns: q 376-393 ~ s 117-134 C L109-112  possible
+
+====================================================================================================
+siblings of func_88203ED8  asm/us/nonmatchings/fragments/23/fragment23_1A9780/func_88203ED8.s (unmatched)  [820 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.484  0.54   0.38   0.53   1191     func_882121E0                  src/fragments/23/fragment23_1B4EA0.c:2080    57 insns: q 48-104 ~ s 99-155 C L2255-2264  STRONG
+
+====================================================================================================
+siblings of func_88209B54  asm/us/nonmatchings/fragments/23/fragment23_1AE680/func_88209B54.s (unmatched)  [1190 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.527  0.38   0.61   0.35   784      func_8820F3B8                  src/fragments/23/fragment23_1B4EA0.c:898     32 insns: q 93-124 ~ s 85-116 C L988-992  STRONG
+
+====================================================================================================
+siblings of func_8820BE14  asm/us/nonmatchings/fragments/23/fragment23_1AE680/func_8820BE14.s (unmatched)  [447 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.310  0.14   0.44   0.18   175      func_88200C44                  src/fragments/23/fragment23_1A8800.c:208     17 insns: q 229-245 ~ s 43-59 C L226-226  possible
+
+====================================================================================================
+siblings of func_88216000  asm/us/nonmatchings/fragments/23/fragment23_1BCF10/func_88216000.s (unmatched)  [629 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.997  1.00   1.00   1.00   628      func_88507DBC                  src/fragments/26/fragment26.c:2144           426 insns: q 0-425 ~ s 0-425 C L2144-2186  STRONG
+
+====================================================================================================
+siblings of func_88304850  asm/us/nonmatchings/fragments/24/fragment24_1CEA00/func_88304850.s (unmatched)  [543 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.195  0.13   0.23   0.22   331      func_883013AC                  src/fragments/24/fragment24_1CEA00.c:336     4 insns: q 61-64 ~ s 34-37 C L348-348  
+
+====================================================================================================
+siblings of func_88305F28  asm/us/nonmatchings/fragments/24/fragment24_1CEA00/func_88305F28.s (unmatched)  [391 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.351  0.20   0.45   0.27   181      func_88305520                  src/fragments/24/fragment24_1CEA00.c:1601    22 insns: q 112-133 ~ s 108-129 C L1648-1654  possible
+
+====================================================================================================
+siblings of func_88500A74  asm/us/nonmatchings/fragments/26/fragment26/func_88500A74.s (unmatched)  [240 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.570  0.42   0.65   0.55   174      func_8001D924                  src/1CF30.c:118                              22 insns: q 129-150 ~ s 83-104 C L132-137  STRONG
+
+====================================================================================================
+siblings of func_885065E0  asm/us/nonmatchings/fragments/26/fragment26/func_885065E0.s (unmatched)  [391 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.245  0.22   0.26   0.28   339      func_8850C3B8                  src/fragments/26/fragment26.c:2979           11 insns: q 41-51 ~ s 38-48 C L3004-3008  weak
+
+====================================================================================================
+siblings of func_8850B2D4  asm/us/nonmatchings/fragments/26/fragment26/func_8850B2D4.s (unmatched)  [624 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.530  0.39   0.60   0.19   422      func_8850ABBC                  src/fragments/26/fragment26.c:2608           17 insns: q 130-146 ~ s 375-391 C L2643-2645  STRONG
+
+====================================================================================================
+siblings of func_88805AEC  asm/us/nonmatchings/fragments/28/fragment28_2190D0/func_88805AEC.s (unmatched)  [945 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.145  0.06   0.21   0.09   300      func_84366560                  src/fragments/62/fragment62_3502D0.c:305     10 insns: q 328-337 ~ s 47-56 C L328-328  
+
+====================================================================================================
+siblings of func_88807D04  asm/us/nonmatchings/fragments/28/fragment28_2190D0/func_88807D04.s (unmatched)  [266 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.225  0.09   0.33   0.18   92       func_841022C0                  src/fragments/59/fragment59.c:1014           13 insns: q 79-91 ~ s 17-29 C L1022-1023  weak
+
+====================================================================================================
+siblings of func_810010BC  asm/us/nonmatchings/fragments/31/fragment31_2558B0/func_810010BC.s (unmatched)  [817 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.148  0.07   0.20   0.08   300      func_84366560                  src/fragments/62/fragment62_3502D0.c:305     5 insns: q 572-576 ~ s 281-285 C L354-354  
+
+====================================================================================================
+siblings of func_8130337C  asm/us/nonmatchings/fragments/33/fragment33/func_8130337C.s (unmatched)  [553 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.342  0.18   0.45   0.25   242      func_87A009F0                  src/fragments/4/fragment4.c:187              12 insns: q 18-29 ~ s 18-29 C L192-194  possible
+
+====================================================================================================
+siblings of func_82F04604  asm/us/nonmatchings/fragments/41/fragment41_289240/func_82F04604.s (unmatched)  [628 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.190  0.09   0.26   0.16   241      func_83501BE4                  src/fragments/44/fragment44.c:520            11 insns: q 410-420 ~ s 75-85 C L536-536  
+
+====================================================================================================
+siblings of func_83501718  asm/us/nonmatchings/fragments/44/fragment44/func_83501718.s (unmatched)  [307 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.328  0.20   0.41   0.32   162      func_834018C0                  src/fragments/43/fragment43_2A1B50.c:426     11 insns: q 142-152 ~ s 36-46 C L436-438  possible
+
+====================================================================================================
+siblings of func_838043F8  asm/us/nonmatchings/fragments/47/fragment47_2AFDB0/func_838043F8.s (unmatched)  [558 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.407  0.42   0.38   0.59   619      func_84209340                  src/fragments/61/fragment61_2DFB60.c:256     49 insns: q 208-256 ~ s 227-275 C L297-297  possible
+
+====================================================================================================
+siblings of func_860005B8  asm/us/nonmatchings/fragments/6/fragment6/func_860005B8.s (unmatched)  [406 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.550  0.37   0.65   0.44   242      func_86E02308                  src/fragments/20/fragment20.c:1604           23 insns: q 275-297 ~ s 210-232 C L1637-1640  STRONG
+
+====================================================================================================
+siblings of func_84302658  asm/us/nonmatchings/fragments/62/fragment62_2EC3C0/func_84302658.s (unmatched)  [222 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.130  0.06   0.39   0.09   39       func_843025BC                  src/fragments/62/fragment62_2EC3C0.c:345     6 insns: q 117-122 ~ s 3-8 C L350-350  
+
+====================================================================================================
+siblings of func_8430506C  asm/us/nonmatchings/fragments/62/fragment62_2EC3C0/func_8430506C.s (unmatched)  [149 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.399  0.40   0.40   0.58   159      func_843037CC                  src/fragments/62/fragment62_2EC3C0.c:755     28 insns: q 121-148 ~ s 131-158 C L801-808  possible
+
+====================================================================================================
+siblings of func_84362084  asm/us/nonmatchings/fragments/62/fragment62_34A420/func_84362084.s (unmatched)  [1559 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.164  0.06   0.26   0.08   413      func_8435D24C                  src/fragments/62/fragment62_347330.c:375     10 insns: q 325-334 ~ s 282-291 C L485-492  
+
+====================================================================================================
+siblings of func_84367660  asm/us/nonmatchings/fragments/62/fragment62_351F20/func_84367660.s (unmatched)  [404 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.172  0.07   0.26   0.09   116      func_87A00098                  src/fragments/4/fragment4.c:96               9 insns: q 385-393 ~ s 104-112 C L113-115  
+
+====================================================================================================
+siblings of func_8437B0CC  asm/us/nonmatchings/fragments/62/fragment62_361050/func_8437B0CC.s (unmatched)  [3258 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.128  0.07   0.16   0.05   1493     func_843794CC                  src/fragments/62/fragment62_361050.c:1487    4 insns: q 2173-2176 ~ s 685-688 C L1713-1713  
+
+====================================================================================================
+siblings of func_8437FD74  asm/us/nonmatchings/fragments/62/fragment62_361050/func_8437FD74.s (unmatched)  [252 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.135  0.10   0.15   0.21   180      func_84380870                  src/fragments/62/fragment62_361050.c:4631    12 insns: q 0-11 ~ s 0-11 C L4631-4631  
+
+====================================================================================================
+siblings of func_86100C30  asm/us/nonmatchings/fragments/7/fragment7/func_86100C30.s (unmatched)  [513 insns]
+   score  q-in-s s-in-q align  insns    sibling                        file:line                                    most distinctive common norm run
+   0.495  0.26   0.66   0.30   207      func_86F01904                  src/fragments/21/fragment21.c:2232           18 insns: q 171-188 ~ s 96-113 C L2251-2254  STRONG
+
+====================================================================================================
+SUMMARY: best matched sibling per unmatched function (STRONG >= 0.45, possible >= 0.30, weak >= 0.22)
+   function         insns  best sibling                   insns  score  q-in-s s-in-q 
+   func_88216000      629  func_88507DBC                    628  0.997  1.00   1.00   STRONG
+   func_86905734      508  func_86905F24                    488  0.773  0.75   0.78   STRONG
+   func_88500A74      240  func_8001D924                    174  0.570  0.42   0.65   STRONG
+   func_860005B8      406  func_86E02308                    242  0.550  0.37   0.65   STRONG
+   func_8850B2D4      624  func_8850ABBC                    422  0.530  0.39   0.60   STRONG
+   func_88209B54     1190  func_8820F3B8                    784  0.527  0.38   0.61   STRONG
+   func_86100C30      513  func_86F01904                    207  0.495  0.26   0.66   STRONG
+   func_88203ED8      820  func_882121E0                   1191  0.484  0.54   0.38   STRONG
+   func_88201488      582  func_886002A8                    268  0.421  0.22   0.56   possible
+   func_838043F8      558  func_84209340                    619  0.407  0.42   0.38   possible
+   func_8430506C      149  func_843037CC                    159  0.399  0.40   0.40   possible
+   func_81207DF8      157  func_81207A60                    127  0.368  0.31   0.40   possible
+   func_88305F28      391  func_88305520                    181  0.351  0.20   0.45   possible
+   func_8130337C      553  func_87A009F0                    242  0.342  0.18   0.45   possible
+   func_83501718      307  func_834018C0                    162  0.328  0.20   0.41   possible
+   func_86803C6C      626  func_86802204                    266  0.315  0.16   0.42   possible
+   func_8820BE14      447  func_88200C44                    175  0.310  0.14   0.44   possible
+   func_80033D44      324  func_80034824                    193  0.298  0.20   0.36   weak
+   func_80012870       60  func_81400C80                     16  0.255  0.10   0.45   weak
+   func_885065E0      391  func_8850C3B8                    339  0.245  0.22   0.26   weak
+   func_80041A98      118  func_82505FE0                     64  0.245  0.16   0.29   weak
+   func_88807D04      266  func_841022C0                     92  0.225  0.09   0.33   weak
+   func_88304850      543  func_883013AC                    331  0.195  0.13   0.23   
+   func_82F04604      628  func_83501BE4                    241  0.190  0.09   0.26   
+   func_80034348      311  func_863009FC                    149  0.182  0.10   0.24   
+   func_81209078      185  func_82F0763C                     59  0.176  0.07   0.26   
+   func_84367660      404  func_87A00098                    116  0.172  0.07   0.26   
+   func_84362084     1559  func_8435D24C                    413  0.164  0.06   0.26   
+   func_810010BC      817  func_84366560                    300  0.148  0.07   0.20   
+   func_88805AEC      945  func_84366560                    300  0.145  0.06   0.21   
+   func_86A013C8       50  func_800429D0                     23  0.142  0.06   0.20   
+   func_8437FD74      252  func_84380870                    180  0.135  0.10   0.15   
+   func_84302658      222  func_843025BC                     39  0.130  0.06   0.39   
+   func_8437B0CC     3258  func_843794CC                   1493  0.128  0.07   0.16   
+   func_8120572C     1436  func_812033F4                    537  0.105  0.05   0.15   
+   func_81209374      197  func_84306470                     69  0.088  0.03   0.13   
+   func_8004A89C      256  func_86A0240C                    101  0.084  0.04   0.12   
+   func_8004A474      266  func_81207C5C                    101  0.066  0.03   0.09   
+   func_80049DF0      417  func_81207774                    187  0.065  0.03   0.09   
+   func_80045FF0      960  func_82F01A70                    349  0.030  0.01   0.04   

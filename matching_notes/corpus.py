@@ -19,6 +19,24 @@ USAGE (run from anywhere; python is the repo venv):
                                                               # (copy under build/corpus/draft) and diff it
   $PY matching_notes/corpus.py show func_84301B00            # one function: asm + C side by side
   $PY matching_notes/corpus.py norm path/to/func.s           # print a .s file in normalized form
+  $PY matching_notes/corpus.py siblings func_83501718        # whole-function look-alikes (matched corpus)
+  $PY matching_notes/corpus.py siblings func_80034BD4 --c --limit 3   # (matched FUNC works too)
+  $PY matching_notes/corpus.py siblings --all-unmatched --limit 3     # one block per GLOBAL_ASM function
+                                                                      # + summary table at the end
+
+SIBLINGS: whole-function similarity of FUNC (unmatched: asm/us/nonmatchings/**/FUNC.s; matched: the
+  index) against every matched function. Features = multiset of norm-form 1-, 2- and 3-instruction
+  n-grams, each weighted by IDF over the matched corpus (common prologue/epilogue/nop grams count
+  ~0; rare constants such as `lui at, 0xfd10` count a lot). shared = sum of w*min(count_q, count_s).
+    q-in-s = shared/W(FUNC)   (how much of FUNC the sibling contains)
+    s-in-q = shared/W(sib)    (how much of the sibling FUNC contains)
+    score  = shared/min(W) * (min(W)/max(W))**0.3
+  so a same-size twin scores ~ its overlap, and a function contained in a 2x bigger (or smaller)
+  one keeps ~80% of it. Measured: twins func_80034824/func_80034BD4 score 0.48; scores >= 0.45 are
+  "strong", 0.30-0.45 "possible", below ~0.25 is mostly shared idioms. Also printed: the longest
+  common norm run (insn ranges in both, with the sibling's C lines) and `aligned` = the fraction of
+  FUNC's insns in difflib's alignment with the sibling. The n-gram postings are precomputed into
+  build/corpus/siblings.json (by `build`, or lazily on first use when stale).
 
 FORMS (what PATTERN is matched against; one instruction per line):
   raw   (--raw)  : `lw a0, %lo(D_84385380)(a0)`, `beqzl t6, .L11c`, `jal func_8432C68C`
@@ -661,6 +679,10 @@ def cmd_build(args):
     missing = [f["name"] for f in functions if f["matched"] and not f["c"]]
     if missing:
         print("  matched functions without C body located: %d (e.g. %s)" % (len(missing), ", ".join(missing[:5])))
+    t3 = time.time()
+    build_siblings({"meta": meta, "functions": functions})
+    print("built %s  (%.1fs, %d bytes)" % (os.path.relpath(SIB_INDEX, REPO), time.time() - t3,
+                                          os.path.getsize(SIB_INDEX)))
 
 
 def load_index():
@@ -1153,6 +1175,191 @@ def cmd_near(args):
 
 
 # --------------------------------------------------------------------------------------
+# siblings
+# --------------------------------------------------------------------------------------
+
+SIB_INDEX = os.path.join(CORPUS_DIR, "siblings.json")
+SIB_VERSION = 1
+SIB_NGRAMS = (1, 2, 3)
+SIB_ALPHA = 0.3
+SIB_FLOOR = 4.0
+SIB_STRONG, SIB_POSSIBLE, SIB_WEAK = 0.45, 0.30, 0.22
+
+
+def sib_features(norm):
+    """norm lines -> Counter of hashed 1..3-gram keys (stable across runs)."""
+    import hashlib
+    c = collections.Counter()
+    for n in SIB_NGRAMS:
+        for k in range(len(norm) - n + 1):
+            key = ("%d|" % n + "\n".join(norm[k:k + n])).encode()
+            c[hashlib.blake2b(key, digest_size=6).hexdigest()] += 1
+    return c
+
+
+def build_siblings(idx):
+    """Postings {gram: [fi, count, fi, count, ...]} over matched functions + per-function weights."""
+    fns = idx["functions"]
+    feats = [sib_features(f["norm"]) for f in fns]
+    post = collections.defaultdict(list)
+    for fi, (f, c) in enumerate(zip(fns, feats)):
+        if f["matched"]:
+            for g, v in c.items():
+                post[g].append(fi)
+                post[g].append(v)
+    m = sum(1 for f in fns if f["matched"])
+    idf_max = math.log(m + 1)
+    weight = []
+    for c in feats:
+        weight.append(round(sum(v * math.log((m + 1) / (len(post.get(g, ())) // 2 + 1)) for g, v in c.items()), 4))
+    data = {"version": SIB_VERSION, "index_built": idx["meta"]["built"], "matched": m,
+            "idf_max": idf_max, "weight": weight, "post": post}
+    tmp = SIB_INDEX + ".tmp"
+    with open(tmp, "w") as fp:
+        json.dump(data, fp, separators=(",", ":"))
+    os.replace(tmp, SIB_INDEX)
+    return data
+
+
+def load_siblings(idx):
+    if os.path.isfile(SIB_INDEX):
+        with open(SIB_INDEX) as fp:
+            data = json.load(fp)
+        if data.get("version") == SIB_VERSION and data.get("index_built") == idx["meta"]["built"]:
+            return data
+    print("(building %s ...)" % os.path.relpath(SIB_INDEX, REPO), file=sys.stderr)
+    return build_siblings(idx)
+
+
+def sib_rank(qnorm, data, fns, skip=-1, any_cc=False):
+    """-> [(score, fi, shared, q-in-s, s-in-q)] best first."""
+    m = data["matched"]
+    post, weight = data["post"], data["weight"]
+    shared = collections.defaultdict(float)
+    wq = 0.0
+    for g, v in sib_features(qnorm).items():
+        pl = post.get(g)
+        if not pl:
+            wq += v * math.log(m + 1)
+            continue
+        w = math.log((m + 1) / (len(pl) // 2 + 1))
+        wq += v * w
+        for k in range(0, len(pl), 2):
+            shared[pl[k]] += w * min(v, pl[k + 1])
+    out = []
+    for fi, s in shared.items():
+        if fi == skip or (fns[fi].get("cc") and not any_cc):
+            continue
+        wc = weight[fi]
+        lo, hi = min(wq, wc), max(wq, wc)
+        if lo <= 0:
+            continue
+        # containment credit only down to 1/SIB_FLOOR of the bigger side: a 9-insn helper fully
+        # contained in a 120-insn function is an idiom, not a sibling
+        out.append((s / max(lo, hi / SIB_FLOOR) * (lo / hi) ** SIB_ALPHA, fi, s, s / wq, s / wc))
+    out.sort(key=lambda r: (-r[0], len(fns[r[1]]["norm"])))
+    return out
+
+
+def sib_query(func, idx, name2i):
+    """FUNC -> (norm lines, location string, index of FUNC in idx or -1)."""
+    fi = name2i.get(func, -1)
+    tpath = find_target_asm(func)
+    if fi >= 0 and idx["functions"][fi]["matched"]:
+        f = idx["functions"][fi]
+        return f["norm"], "%s:%d (matched)" % (f["file"], f["line"]), fi
+    if tpath:
+        _, raw = parse_splat(tpath, func)
+        if raw:
+            return [normalize(r) for r in raw], os.path.relpath(tpath, REPO) + " (unmatched)", fi
+    if fi >= 0:
+        f = idx["functions"][fi]
+        return f["norm"], "%s (unmatched, from build .o)" % f["file"], fi
+    sys.exit("%s: not in the index and no asm/us/nonmatchings/**/%s.s" % (func, func))
+
+
+def sib_label(score):
+    return "STRONG" if score >= SIB_STRONG else ("possible" if score >= SIB_POSSIBLE else
+                                                 ("weak" if score >= SIB_WEAK else ""))
+
+
+def sib_block(func, idx, data, name2i, args, out=print):
+    """Print one siblings block; return the ranked list."""
+    fns = idx["functions"]
+    qnorm, where, qi = sib_query(func, idx, name2i)
+    ranked = [r for r in sib_rank(qnorm, data, fns, skip=qi, any_cc=args.any_cc) if r[0] >= args.min_score]
+    m = data["matched"]
+
+    def line_w(x):
+        return math.log((m + 1) / (len(data["post"].get(next(iter(sib_features([x]))), ())) // 2 + 1))
+
+    out("siblings of %s  %s  [%d insns]" % (func, where, len(qnorm)))
+    if not ranked:
+        out("   (no matched function shares any weighted n-gram above --min-score)")
+        return ranked, len(qnorm)
+    out("   %-5s  %-6s %-6s %-6s %-7s  %-30s %-44s %s" % ("score", "q-in-s", "s-in-q", "align", "insns", "sibling",
+                                                       "file:line", "most distinctive common norm run"))
+    for score, fi, _s, cq, cs in ranked[:args.limit]:
+        f = fns[fi]
+        sm = difflib.SequenceMatcher(None, qnorm, f["norm"], autojunk=False)
+        blocks = [blk for blk in sm.get_matching_blocks() if blk.size]
+        aligned = sum(blk.size for blk in blocks) / max(1, len(qnorm))
+        # most distinctive aligned run (IDF-weighted), so a shared epilogue does not win on length
+        a, b, n = max(blocks, key=lambda blk: sum(line_w(x) for x in qnorm[blk.a:blk.a + blk.size])) \
+            if blocks else (0, 0, 0)
+        srcs = [x for x in f["src"][b:b + n] if x]
+        cl = (" C L%d-%d" % (min(srcs), max(srcs))) if srcs else ""
+        out("   %.3f  %-6.2f %-6.2f %-6.2f %-7d  %-30s %-44s %d insns: q %d-%d ~ s %d-%d%s  %s" % (
+            score, cq, cs, aligned, len(f["norm"]), f["name"], "%s:%d" % (f["file"], f["line"]), n,
+            a, a + n - 1, b, b + n - 1, cl, sib_label(score)))
+    if args.c:
+        for score, fi, _s, _cq, _cs in ranked[:args.limit]:
+            f = fns[fi]
+            out("")
+            out("   == %s  (score %.3f)" % (f["name"], score))
+            show_c(f, out=lambda s: out("   " + s))
+    return ranked, len(qnorm)
+
+
+def cmd_siblings(args):
+    t0 = time.time()
+    idx = load_index()
+    data = load_siblings(idx)
+    fns = idx["functions"]
+    name2i = {}
+    for i, f in enumerate(fns):
+        name2i.setdefault(f["name"], i)
+    if args.all_unmatched:
+        names = [f["name"] for f in fns if not f["matched"]]
+    elif args.func:
+        names = [args.func]
+    else:
+        sys.exit("give FUNC or --all-unmatched")
+    summary = []
+    for k, func in enumerate(names):
+        if k:
+            print()
+            print("=" * 100)
+        ranked, qn = sib_block(func, idx, data, name2i, args)
+        summary.append((func, qn, ranked[0] if ranked else None))
+    if args.all_unmatched:
+        print()
+        print("=" * 100)
+        print("SUMMARY: best matched sibling per unmatched function (STRONG >= %.2f, possible >= %.2f, weak >= %.2f)"
+              % (SIB_STRONG, SIB_POSSIBLE, SIB_WEAK))
+        print("   %-16s %5s  %-30s %5s  %-6s %-6s %-6s %s" % ("function", "insns", "best sibling", "insns", "score",
+                                                           "q-in-s", "s-in-q", ""))
+        for func, qn, best in sorted(summary, key=lambda r: -(r[2][0] if r[2] else 0)):
+            if best:
+                f = fns[best[1]]
+                print("   %-16s %5d  %-30s %5d  %-6.3f %-6.2f %-6.2f %s" % (func, qn, f["name"], len(f["norm"]),
+                                                                    best[0], best[3], best[4], sib_label(best[0])))
+            else:
+                print("   %-16s %5d  -" % (func, qn))
+    print("\n(%.1fs)" % (time.time() - t0), file=sys.stderr)
+
+
+# --------------------------------------------------------------------------------------
 # misc commands
 # --------------------------------------------------------------------------------------
 
@@ -1251,6 +1458,16 @@ def main():
     p.add_argument("--stack", action="store_true", help="also look up stack-offset-only regions")
     p.add_argument("--c", action="store_true", help="print whole C bodies (default: only the C lines hit)")
     p.set_defaults(fn=cmd_near)
+
+    p = sub.add_parser("siblings", help="whole-function look-alikes of FUNC among the matched functions")
+    p.add_argument("func", nargs="?")
+    p.add_argument("--all-unmatched", action="store_true",
+                   help="one block per unmatched (GLOBAL_ASM) function, then a summary table")
+    p.add_argument("--limit", type=int, default=8, help="siblings per function (default 8)")
+    p.add_argument("--min-score", type=float, default=0.0, help="hide siblings scoring below this")
+    p.add_argument("--c", action="store_true", help="print each sibling's C body")
+    p.add_argument("--any-cc", action="store_true", help="also use files built with IDO 5.3 / -O0 / other per-file flags")
+    p.set_defaults(fn=cmd_siblings)
 
     p = sub.add_parser("show", help="print one indexed function with C line annotations")
     p.add_argument("func")
