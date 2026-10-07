@@ -23,10 +23,18 @@ typedef struct unk_D_8122B1E8 {
   /* 0x1C */ char unk1C[0x4];
   /* 0x20 */ s32 unk_20;
   /* 0x24 */ s32 unk_24;
-  /* 0x28 */ char unk28[0x10];
+  /* 0x28 */ s32 unk_28;
+  /* 0x2C */ s32 unk_2C;
+  /* 0x30 */ char unk30[0x8];
   /* 0x38 */ s32 unk_38;
   /* 0x3C */ s32 unk_3C;
-  /* 0x40 */ char unk40[0x1C];
+  /* 0x40 */ s32 unk_40;
+  /* 0x44 */ s32 unk_44;
+  /* 0x48 */ s32 unk_48;
+  /* 0x4C */ s32 unk_4C;
+  /* 0x50 */ s32 unk_50;
+  /* 0x54 */ s32 unk_54;
+  /* 0x58 */ s32 unk_58;
   /* 0x5C */ u32 unk_5C;
   /* 0x60 */ char unk60[0x8];
 } unk_D_8122B1E8; // size = 0x68
@@ -2264,8 +2272,513 @@ void func_81204A84(s32 arg0) {
     }
 }
 
+extern u8 D_8122C4E6;
+extern u8 D_8122C4F6;
+extern u8 D_8122C4F9;
+extern s32 D_8122C4EC;
+extern u8 D_812297C0[];
+extern u8 D_8122A1A4[];
+extern u8 D_8122A260[];
+extern u8 D_8122ACA0[];
+extern u8 D_8120DD80[];
+extern u8 D_8120DF0C[];
+extern u8 D_8120E098[];
+extern u8 D_8120E224[];
+extern u8 D_8120E250[];
+extern s32 D_8120D90C[];
+extern s32 D_8120DD0C[];
+extern s32 D_8120DD2C[];
+u8 func_81208F9C(u16);
+s32 func_81209EB4(unk_D_8122B2C0*, s32);
+void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
+
 s32 func_8120572C(s32);
+#ifdef NON_MATCHING
+// Hand-written first draft (no m2c available in this environment). Control flow follows the
+// target asm block by block; gotos stand in for the shared exit / swap blocks.
+s32 func_8120572C(s32 arg0) {
+    unk_D_8122B2C0* emu = (&D_8122B2C0)[arg0];
+    s32 i;
+    u32 count;
+    u16 buttons;
+    s32 hi;
+    s32 lo;
+    u8 v;
+    u8* hdr;
+    unk_D_8122B1E8* task;
+    s32 fb;
+
+    switch (D_8122C4DC) {
+        case 0xFF:
+            osViBlack(0);
+            for (i = 0; i < 0x100; i++) {
+                emu->unk_549C[i] = 0xFF;
+            }
+            for (i = 0; i < 0x10; i++) {
+                emu->unk_559C[i] = 0xFF;
+            }
+            D_8122B1E8[D_8122B2B8].unk_3C = 0x1010;
+            D_8122B1E8[D_8122B2B8].unk_38 = D_8122B2E0;
+        case 0:
+            if (emu->unk_5DC8 == 0) {
+                Cont_StartReadInputs();
+                i = 0;
+                if (emu->unk_5DC9 == 2) {
+                    count = emu->unk_5398 >> 8;
+                    for (; i < count; i++) {
+                        if ((emu->unk_5A2C[i] < 2) && (emu->unk_582C[i] == 0)) {
+                            _bcopy((u8*) emu + (i << 8) + 0x12DF0, D_8122C540, 0x100);
+                            emu->gbAddress = i << 8;
+                            emu->unk_5A2C[i] = 1;
+                            i = 0xFFFF;
+                            break;
+                        }
+                    }
+                }
+                Cont_ReadInputs();
+                buttons = gPlayer1Controller->buttonDown;
+                emu->unk_53F2 = (buttons & 0xCFFF) | ((buttons & D_8122C4F4) ? 0x2000 : 0) |
+                                ((buttons & D_8122C4F2) ? 0x1000 : 0);
+                emu->unk_53F6 = gPlayer1Controller->buttonPressed;
+                if (emu->unk_5DCA != 0) {
+                    if (i == 0xFFFF) {
+                        emu->unk_5DC7 = 5;
+                        osSendMesg(&D_8122C4C0, emu, 1);
+                        emu->unk_5DD0 = 8;
+                        emu->unk_53F6 &= 0xDFF7;
+                    } else {
+                        v = emu->unk_5DD0;
+                        if (((v == 0) || (emu->unk_5DC9 != 2)) && (D_8122C4F7 != 0xE) && (D_8122C4F7 != 0xF)) {
+                            emu->unk_5DC7 = 7;
+                            osSendMesg(&D_8122C4C0, emu, 1);
+                        } else {
+                            if (v != 0) {
+                                emu->unk_5DD0 = v - 1;
+                                if (emu->unk_5DD0 == 0) {
+                                    emu->unk_5DC7 = 4;
+                                    osSendMesg(&D_8122C4C0, emu, 1);
+                                }
+                            }
+                            emu->unk_53F6 &= 0xDFF7;
+                        }
+                    }
+                }
+            }
+            if (emu->unk_5DC9 == 2) {
+                if (emu->unk_5DD0 != 0) {
+                    D_8122B2E8 ^= 1;
+                    D_8122C4E7++;
+                    if (D_8122C4E7 >= 11) {
+                        D_8122C4E7 = 0;
+                    }
+                    func_812020C0((u16*) ((u8*) D_8122B2D8[D_8122B2E8] + 0x9C), emu->unk_5DD0, D_8122C4E7);
+                    D_8122B1E8[D_8122B2B8].unk_3C = 0x1010;
+                    D_8122B1E8[D_8122B2B8].unk_38 = (s32) D_8122B2D8[D_8122B2E8];
+                } else {
+                    D_8122B2E8 ^= 1;
+                    if (!(D_8122C4E8 & (1 << D_8122B2E8))) {
+                        D_8122C4E8 |= (1 << D_8122B2E8);
+                        func_81202210(D_8122B2E8, 1);
+                    }
+                    D_8122B1E8[D_8122B2B8].unk_3C = 0x1010;
+                    D_8122B1E8[D_8122B2B8].unk_38 = D_8122B2E0;
+                }
+            }
+            break;
+
+        case 1:
+            if (D_8122B2FC == 4) {
+                D_8122B2FC = 3;
+                goto reset;
+            }
+            goto stop;
+
+        case 2:
+        case2:
+            if (emu->unk_5DC8 != 0) {
+                return 0;
+            }
+            if (emu->unk_5DCA == 0) {
+                D_8122B2FC = 1;
+                goto stop;
+            }
+            if (emu->unk_5DC4 == 0) {
+                emu->unk_5DC7 = 8;
+                emu->unk_5DA0 = 0;
+                osSendMesg(&D_8122C4C0, emu, 1);
+                return 0;
+            }
+            emu->unk_5D70[0] = 0;
+            emu->unk_5DC7 = 1;
+            emu->gbAddress = 0;
+            emu->transferSize = 0x4000;
+            emu->transferBuffer = emu->unk_53BC;
+            osSendMesg(&D_8122C4C0, emu, 1);
+            D_8122C4DC = 3;
+            osViBlack(0);
+            goto swap;
+
+        case 3:
+            if ((emu->unk_5DC8 == 0) && (emu->unk_5DCA != 0)) {
+                emu->unk_549C[emu->gbAddress >> 14] = 0xFF;
+                emu->gbAddress += 0x4000;
+                if (emu->gbAddress == 0x100000) {
+                    emu->unk_5D70[0] -= (emu->unk_5C5C.sum / 256) + (emu->unk_5C5C.sum & 0xFF);
+                    if (emu->unk_5C5C.sum != (u16) emu->unk_5D70[0]) {
+                        D_8122B2FC = 1;
+                        goto stop;
+                    }
+                    if (((u8*) emu->unk_53BC)[0x143] & 0x80) {
+                        emu->unk_5485 = 0;
+                    } else {
+                        emu->unk_5485 = 1;
+                    }
+                    hdr = emu->unk_53BC;
+                    emu->unk_5390 = D_8120D90C[hdr[0x147]];
+                    if (hdr[0x148] < 8) {
+                        emu->unk_5394 = D_8120DD0C[hdr[0x148]];
+                    } else {
+                        emu->unk_5394 = 0x8000;
+                    }
+                    if (hdr[0x149] < 5) {
+                        emu->unk_5398 = D_8120DD2C[hdr[0x149]];
+                    } else {
+                        emu->unk_5398 = 0;
+                    }
+                    func_81209870(emu);
+                    emu->unk_5DC7 = 2;
+                    if (emu->unk_5DC5 != 0) {
+                        emu->gbAddress = 0x500;
+                    } else {
+                        emu->gbAddress = 0;
+                    }
+                    emu->transferBuffer = (u8*) emu + emu->gbAddress + 0x12DF0;
+                    emu->transferSize = emu->unk_5398 - emu->gbAddress;
+                    D_8122C4DC = 4;
+                } else {
+                    emu->unk_5DC7 = 1;
+                    emu->transferBuffer += 0x4000;
+                }
+                osSendMesg(&D_8122C4C0, emu, 1);
+            }
+            goto swap;
+
+        case 4:
+            if ((emu->unk_5DC8 == 0) && (emu->unk_5DCA != 0)) {
+                emu->unk_559C[3] = emu->unk_559C[2] = emu->unk_559C[1] = emu->unk_559C[0] = 0xFF;
+                emu->unk_5DD0 = 1;
+                func_81203304();
+                if (osTvType == OS_TV_PAL) {
+                    func_8120334C(25);
+                    osViSetYScale(0.833f);
+                }
+                osViSetXScale(0.888f);
+                D_8122C4DC = 0;
+            }
+        swap:
+            if (emu->unk_5DCA == 0) {
+                D_8122B2FC = 1;
+                goto stop;
+            }
+            if ((D_8122C4DC != 0) &&
+                (func_81202FCC((s32) D_8122C758[D_8122B2B8], (&D_8122B1E0)[D_8122B2B8]->img_p) != 0)) {
+                osWritebackDCacheAll();
+                osViSwapBuffer((&D_8122B1E0)[D_8122B2B8]->img_p);
+                D_8122B2B8 ^= 1;
+            }
+            return 0;
+
+        case 5:
+            if (emu->unk_5DC8 != 0) {
+                return 0;
+            }
+            if (emu->unk_5DCA == 0) {
+                D_8122B2FC = 1;
+                goto stop;
+            }
+            if (emu->unk_5DC4 == 0) {
+                emu->unk_5DC7 = 8;
+                emu->unk_5DA0 = 0;
+                osSendMesg(&D_8122C4C0, emu, 1);
+                return 0;
+            }
+            emu->unk_5D70[0] = 0;
+            emu->unk_5DC7 = 6;
+            emu->unk_5D70[2] = 0;
+            switch (emu->unk_5DC5) {
+                case 1:
+                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x91E6) ||
+                        (emu->unk_5DA4[1] != 0x80) || (emu->unk_5DA4[2] != 0x7F) || (emu->unk_5DA4[3] != 0xAB) ||
+                        (emu->unk_5DA4[4] != 0xA8)) {
+                        goto case2;
+                    }
+                    emu->unk_5D70[1] = (u32) D_8120DD80;
+                    emu->unk_5D70[3] = 0;
+                    emu->unk_5D70[2] = (u32) D_8120E224;
+                    emu->unk_5DC6 = 1;
+                    bzero((u8*) emu->unk_53BC + 0xB4000, 0x4C000);
+                    for (i = 0x2D; i < 0x40; i++) {
+                        emu->unk_549C[i] = 0xFF;
+                    }
+                    break;
+                case 3:
+                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x9D0A) ||
+                        (emu->unk_5DA4[1] != 0x80) || (emu->unk_5DA4[2] != 0x7F) || (emu->unk_5DA4[3] != 0xAB) ||
+                        (emu->unk_5DA4[4] != 0xA8)) {
+                        goto case2;
+                    }
+                    emu->unk_5D70[1] = (u32) D_8120DF0C;
+                    emu->unk_5D70[3] = 0;
+                    emu->unk_5D70[2] = (u32) D_8120E224;
+                    emu->unk_5DC6 = 0;
+                    bzero((u8*) emu->unk_53BC + 0xB4000, 0x4C000);
+                    for (i = 0x2D; i < 0x40; i++) {
+                        emu->unk_549C[i] = 0xFF;
+                    }
+                    break;
+                case 4:
+                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x47C) ||
+                        (emu->unk_5DA4[1] != 0x8F) || (emu->unk_5DA4[2] != 0x91) || (emu->unk_5DA4[3] != 0x84) ||
+                        (emu->unk_5DA4[4] != 0x92)) {
+                        goto case2;
+                    }
+                    emu->unk_5D70[1] = (u32) D_8120E098;
+                    emu->unk_5D70[3] = 0xD938;
+                    emu->unk_5D70[2] = (u32) D_8120E250;
+                    emu->unk_5DC6 = 0;
+                    bzero((u8*) emu->unk_53BC + 0xEC000, 0x4000);
+                    emu->unk_549C[0x3B] = 0xFF;
+                    break;
+                default:
+                    goto case2;
+            }
+            func_81203304();
+            osViSwapBuffer((&D_8122B1E0)[D_8122B2B8]->img_p);
+            D_8122B2B8 ^= 1;
+            osViBlack(0);
+            osViSetXScale(0.888f);
+            osSendMesg(&D_8122C4C0, emu, 1);
+            if (osTvType == OS_TV_PAL) {
+                func_8120334C(25);
+                osViSetYScale(0.833f);
+            }
+            D_8122C4E8 = 0;
+            func_81202210(0, 0);
+            func_81202210(1, 0);
+            if (D_8122C4E2 == 0) {
+                D_8122C4F9 = 2;
+            } else {
+                D_8122C4F9 = 0x20;
+            }
+            D_8122C4DC = 6;
+
+        case 6:
+            if (emu->unk_5DC8 != 0) {
+                D_8122B2E8 ^= 1;
+                D_8122C4E7++;
+                if (D_8122C4E7 >= 11) {
+                    D_8122C4E7 = 0;
+                }
+                func_812020C0((u16*) ((u8*) D_8122B2D8[D_8122B2E8] + 0x9C), 0, D_8122C4E7);
+                if ((D_8122C4F9 >= 3) && (D_8122C4F9 < 0x20)) {
+                    D_8122C4F9++;
+                }
+                D_8122B1E8[D_8122B2B8].unk_3C = (D_8122C4F9 / 2) | 0x1000;
+                D_8122B1E8[D_8122B2B8].unk_38 = (s32) D_8122B2D8[D_8122B2E8];
+            } else {
+                D_8122B1E8[D_8122B2B8].unk_3C = 0x1010;
+                D_8122B1E8[D_8122B2B8].unk_38 = D_8122B2E0;
+                if ((emu->unk_5DC7 == 0) && (emu->unk_5DCA != 0)) {
+                    D_8122C4DC = 0;
+                }
+            }
+            if (emu->unk_5DCA == 0) {
+                D_8122B2FC = 1;
+                goto stop;
+            }
+            if ((D_8122C4F6 == 0) && (emu->unk_549C[0] != 0) && (emu->unk_549C[1] != 0) &&
+                (emu->unk_559C[0] != 0) && (emu->unk_559C[1] != 0) && (emu->unk_559C[2] != 0) &&
+                (emu->unk_559C[3] != 0) && (emu->unk_53E8 == 0x100)) {
+                if (D_8122C4E2 == 0) {
+                    D_8122C4F9 = 3;
+                }
+                D_8122C4F6 = 1;
+                func_81203C58(emu);
+                if (((u8*) emu->unk_53BC)[0x143] & 0x80) {
+                    emu->unk_5485 = 0;
+                } else {
+                    emu->unk_5485 = 1;
+                }
+                emu->unk_5390 = D_8120D90C[((u8*) emu->unk_53BC)[0x147]];
+                emu->unk_5394 = 0x100000;
+                func_81209870(emu);
+            }
+            break;
+    }
+
+    emu->unk_00[0x126] = func_81208F9C(0xFF26);
+    func_8120735C(emu->unk_00[0x14D] >> 7);
+    emu->unk_53C0 = 0;
+    emu->unk_5490 = emu->unk_548E;
+    if (D_8122C4F7 == 0) {
+        D_8122C4EC = func_81209EB4(emu, emu->unk_548E * 154);
+    } else if (D_8122B2F0 != 0) {
+        while (!(IO_READ(SP_STATUS_REG) & 0x400)) {}
+        IO_WRITE(SP_STATUS_REG, 0x8000);
+    }
+    func_81203F3C(emu);
+    if ((D_8122C4E3 == 0) && (emu->unk_5404 != 0)) {
+        func_812096A0(emu, D_8122B2C8[0]);
+        D_8122C4E3 = 1;
+        if (D_8122C4E2 == 0) {
+            D_8122C4E6 = 0;
+            D_8122C4F0 = -0x40;
+        }
+    }
+    if ((D_8122C4F7 == 0) && (emu->unk_5DD0 == 0)) {
+        if ((emu->unk_53F6 & 0x2000) && (D_8122C4F0 == 0x40) && (D_8122C4E3 != 0) && (D_8122C4E2 != 0)) {
+            D_8122C4E6 = D_8122C4E5 + 1;
+            D_8122C4F0 = -0x40;
+            if (D_8122C4E4 < D_8122C4E6) {
+                D_8122C4E6 = 0;
+            }
+        }
+        if (emu->unk_53F6 & 1) {
+            switch (emu->unk_548E) {
+                case 2:
+                    i = 4;
+                    if (D_8122C4E2 == 2) {
+                        D_8122C4FC = 1;
+                    } else {
+                        i = 1;
+                    }
+                    break;
+                case 4:
+                    D_8122C4FC = 3;
+                    i = 1;
+                    break;
+                case 1:
+                default:
+                    if (D_8122C4E2 != 0) {
+                        i = 2;
+                    } else {
+                        i = 1;
+                    }
+                    break;
+            }
+            if (i != emu->unk_548E) {
+                emu->unk_548E = i;
+                if (D_8122C4E2 == 1) {
+                    func_812015EC((u16*) (D_8122B2E0 + 0x5DA), (u16*) (D_8122C748 + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                } else if (D_8122C4E2 == 2) {
+                    func_812015EC((u16*) (D_8122B2E0 + 0x5D4), (u16*) (D_8122C748 + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                    func_812015EC((u16*) (D_8122B2E0 + 0x5E4), (u16*) (D_8122C748 + ((i == 4) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                }
+            }
+        }
+    }
+    if (D_8122C4F0 != 0x40) {
+        D_8122C4F0++;
+        if (D_8122C4F0 == 0) {
+            D_8122C4E5 = D_8122C4E6;
+        }
+    }
+    if (D_8122C4F0 > 0) {
+        emu->unk_53FC = D_8122C4F0;
+    } else {
+        emu->unk_53FC = -D_8122C4F0;
+    }
+    if ((D_8122C4F7 == 0) && (emu->unk_53FD < 0x40)) {
+        emu->unk_53FD++;
+    }
+    if ((D_8122C4DC == 0xFF) && (D_8122C4F6 == 0) && (emu->unk_53E8 == 0x100)) {
+        D_8122C4F6 = 1;
+        hdr = emu->unk_53BC;
+        emu->unk_5390 = D_8120D90C[hdr[0x147]];
+        if (hdr[0x148] < 8) {
+            emu->unk_5394 = D_8120DD0C[hdr[0x148]];
+        } else {
+            emu->unk_5394 = 0x8000;
+        }
+        if (hdr[0x149] < 5) {
+            emu->unk_5398 = D_8120DD2C[hdr[0x149]];
+        } else {
+            emu->unk_5398 = 0;
+        }
+        func_81209870(emu);
+    }
+    if ((emu->unk_5DC8 != 0) && (emu->unk_5DC7 == 7)) {
+        while ((emu->unk_5DC8 != 0) && (emu->unk_5DCA != 0) && (emu->unk_5DC7 != 0)) {}
+    }
+    if (emu->unk_5DCA == 0) {
+        D_8122B2FC = 1;
+        goto stop;
+    }
+    if (emu->unk_548D != 0) {
+        D_8122B2FC = 3;
+        goto stop;
+    }
+    if (D_8122C4F7 == 0x10) {
+        goto stop;
+    }
+    if (emu->unk_5485 != 0) {
+        task = &D_8122B1E8[D_8122B2B8];
+        task->unk_28 = (s32) D_8122A260;
+        task->unk_2C = D_8122ACA0 - D_8122A260;
+    } else {
+        task = &D_8122B1E8[D_8122B2B8];
+        task->unk_28 = (s32) D_812297C0;
+        task->unk_2C = D_8122A1A4 - D_812297C0;
+    }
+    task->unk_40 = (s32) emu->unk_53B4;
+    task->unk_48 = (s32) (&D_8122B1E0)[D_8122B2B8]->img_p;
+    task->unk_4C = (s32) D_8122B2EC;
+    task->unk_50 = emu->unk_53A4;
+    task->unk_54 = (emu->unk_53FE << 24) | emu->unk_539C;
+    task->unk_58 = (s32) D_8122B2C8[D_8122C4E5];
+    task->unk_5C = (emu->unk_53FC << 24) | (emu->unk_53FD << 16) | (emu->unk_53EE << 6) | emu->unk_53F0;
+    if (D_8122B2F0 != 0) {
+        osRecvMesg(&D_8122B1E8[D_8122B2B8 ^ 1].queue, NULL, 1);
+        func_81204A84((&D_8122B1E0)[D_8122B2B8 ^ 1]->img_p);
+    }
+    if (D_800A62E0.unk_A38 == 0) {
+        osWritebackDCacheAll();
+        osViSwapBuffer((&D_8122B1E0)[D_8122B2B8 ^ 1]->img_p);
+        if (emu->unk_53A4 != 0) {
+            emu->unk_5388 = 0;
+            func_800053B4((UnkStruct80001380*) &D_8122B1E8[D_8122B2B8], 0);
+        }
+        D_8122B2B8 ^= 1;
+        D_8122B2F0 = 1;
+    } else {
+        D_8122B2F0 = 0;
+    }
+    return 0;
+
+stop:
+    while (emu->unk_5DC8 != 0) {}
+    if (emu->unk_5DCA != 0) {
+        emu->unk_5DC7 = 4;
+        osSendMesg(&D_8122C4C0, emu, 1);
+        while ((emu->unk_5DCA != 0) && ((emu->unk_5DC8 != 0) || (emu->unk_5DC7 != 0))) {}
+    }
+    while (emu->unk_5DC8 != 0) {}
+    osSendMesg(&D_8122C4C0, NULL, 1);
+    while (D_8122C4E0 != 0) {}
+reset:
+    if (osTvType == OS_TV_PAL) {
+        osViSetYScale(1.0f);
+        func_8120334C(25);
+    }
+    osViSetXScale(1.0f);
+    osViBlack(1);
+    D_8122C4FC = 4;
+    func_8120334C(40);
+    return -1;
+}
+#else
 #pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/1/fragment1_7F9A0/func_8120572C.s")
+#endif
 
 void func_81206D9C(unk_D_800AA660* arg0) {
   D_8122C4FC = 0;
