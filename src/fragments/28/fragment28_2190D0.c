@@ -3546,6 +3546,17 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
     return arg0;
 }
 
+// func_88805AEC: score 14747 (fd.sh), frame 0x230 vs target 0x228. Structure matches the
+// target (switch default path PRE-computes the (tmp - arg3 + 8) rect for the join; all
+// branch targets line up); the diff is register allocation / spill-slot assignment.
+// Target facts: arg2 is loaded once into t4 and kept in a register for the whole function
+// (arg1 reloaded 7x from its home, arg5 kept in v1 and reloaded at block exits, 6 loads);
+// arg1+arg3 is computed, stored to 0x44 and immediately reloaded (t6 -> t1), likewise
+// arg2+arg4 stored to 0x30 right where it is first used (after the D_888236A0 load
+// block). Target temp slots: 0x20, 0x30-0x44. Draft reloads arg2 8x.
+// Sweep (inline tmp / inline tmp2 / tmp2 assigned late / pad[0..4]) scores:
+// best is this draft (14747); tmp2 assigned late 14783; inline tmp2 only 14905;
+// inline both 16007 (frame right with pad[3], arg2 still reloaded); inline tmp only 16881+.
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     UNUSED s32 sp44;
@@ -4086,6 +4097,19 @@ s32 func_88807AC0(void) {
     return 0;
 }
 
+// func_88807D04: score 705, 6 diff lines, all as1 scheduling in the block after
+// `if (D_88826564[i] >= 0)` (temp_s0 compute). Draft hoists `lui %hi(D_8882651C)` and
+// `lui %hi(D_88826CF0)` above the bltz (into the lh stall) and puts `addu s0` in the
+// jal delay slot; target hoists nothing and puts `sll s4,s1,2` (i*4 for the table switch)
+// there. ido_bisect: only as1-noxbb moves it (160). cc -S (ugen) order already equals the
+// target order, so uopt output is right; as1 cross-bb hoisting is the whole diff.
+// Dead ends (all 705 unless noted): temp_s0 declared outer/inner, `idx` temp (s32/s16,
+// worse 3276+), `D_88826CF0 + x - 1`, `&D_88826CF0[x] - 1`, s16 temp for D_88826564[i],
+// `< 0 continue`, `< 0 {} else`, goto next, labels, do{}while(0), if(1){} / if(i){} /
+// if(temp_s0){} at several spots, `> -1`, u32 i, s16 i (worse), merging case 1/2 (worse),
+// dropping `case 3:` (worse). `!= -1` gives 530 (only the branch differs). Wrapping the
+// assignment as `if (1) { temp_s0 = ...; }` gives 350 (s4 + one lui hoisted above bltz).
+// Candidate for the permuter farm (scheduling-only).
 #ifdef NON_MATCHING
 void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6) {
     s32 i;
