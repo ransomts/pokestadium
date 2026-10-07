@@ -249,7 +249,7 @@ void func_81000E78(unk_D_810047E0* arg0) {
             break;
         case 3:
                 var_v0 = 0;
-                var_v1 = &D_81003FE0[temp_a0].unk_00; 
+                var_v1 = &D_81003FE0[temp_a0].unk_00;
                 do {
                     if (var_a1 == var_v1[2]) {
                         func_8100080C(arg0);
@@ -346,14 +346,14 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
         guMtxCatL(&sp250, &sp210, sp294);
     }
     guMtxCatL(&sp1D0, sp294, sp294);
-    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = sp294;    }
+    gSPMatrix(gfx++, sp294, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(gfx++, arg2->segments[0]);
-    switch (D_8006F09C->unk_01A) {                              
-    case 0x6D:                                      
-    case 0x6E:                                      
+    switch (D_8006F09C->unk_01A) {
+    case 0x6D:
+    case 0x6E:
         gDPLoadTextureBlock_4b(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) (((0xC8 - (arg1->misc * 0xD)) & 0xFF) | 0x0A000000);    }
+        gDPSetPrimColor(gfx++, 0, 0, 0x0A, 0x00, 0x00, 0xC8 - (arg1->misc * 0xD));
         break;
     case 0x5C:
         gDPLoadTextureBlock_4b(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -362,41 +362,41 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
         if (arg1->misc < 0xA) {
             gDPSetPrimColor(gfx++, 0, 0, 0x64, 0x46, 0x82, 0xFF);
         } else {
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) (((0x28F - (arg1->misc * 0x28)) & 0xFF) | 0x64468200);    }
+            gDPSetPrimColor(gfx++, 0, 0, 0x64, 0x46, 0x82, 0x28F - (arg1->misc * 0x28));
         }
         break;
-    case 0x4D:                                      
-    case 0x4E:                                      
-    case 0x92:                                      
+    case 0x92:
+    case 0x4D:
+    case 0x4E:
         gDPLoadTextureBlock_4b(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) (((0xFA - (arg1->misc * 3)) & 0xFF) | 0xFFFF0000);    }
+        gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0x00, 0xFA - (arg1->misc * 3));
         break;
-    case 0x86:                                      
-    case 0x90:                                      
+    case 0x86:
+    case 0x90:
         gDPLoadTextureBlock(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         if (arg1->misc < 4) {
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) ((((arg1->misc * 0x14) + 0xB4) & 0xFF) | ~0xFF);    }
+            gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0xFF, (arg1->misc * 0x14) + 0xB4);
         } else {
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) (((0x122 - (arg1->misc * 0xA)) & 0xFF) | ~0xFF);    }
+            gDPSetPrimColor(gfx++, 0, 0, 0xFF, 0xFF, 0xFF, 0x122 - (arg1->misc * 0xA));
         }
         break;
-    default:                                        
+    default:
         gDPLoadTextureBlock_4b(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFA000000;    _gfx->words.w1 = (s32) (((0xC8 - (arg1->misc * 0xD)) & 0xFF) | 0x0A000000);    }
+        gDPSetPrimColor(gfx++, 0, 0, 0x0A, 0x00, 0x00, 0xC8 - (arg1->misc * 0xD));
         break;
     }
     gSPDisplayList(gfx++, arg2->segments[1]);
-    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
+    gSPPopMatrix(gfx++, G_MTX_MODELVIEW);
     if (func_800325AC() == 0) {
         unk_D_86002F58_004_000* var_v0 = D_8006F09C;
 
-        switch (var_v0->unk_01A) {                          
-        case 0x6D:                                  
-        case 0x6E:                                  
+        switch (var_v0->unk_01A) {
+        case 0x6D:
+        case 0x6E:
             if (var_v0->unk_0A6 != 0xFF) {
                 arg1->position.y += 0.5f * var_v0->unk_030.y;
                 arg1->misc++;
@@ -408,7 +408,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 }
             }
             break;
-        case 0x5C:                                  
+        case 0x5C:
             if (var_v0->unk_0A6 == 0xFF) {
                 arg1->misc += 2;
             } else {
@@ -418,7 +418,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        case 0x92:                                  
+        case 0x92:
             arg1->position.y += 1.5f * var_v0->unk_030.y;
             arg1->misc++;
             arg1->scale.x += 0.005f;
@@ -428,7 +428,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        case 0x4D:                                  
+        case 0x4D:
             arg1->position.y += 0.75f * var_v0->unk_030.y;
             arg1->misc++;
             arg1->scale.x += 0.005f;
@@ -438,7 +438,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        case 0x4E:                                  
+        case 0x4E:
             arg1->position.y += var_v0->unk_030.y;
             arg1->misc++;
             arg1->scale.x += 0.005f;
@@ -448,7 +448,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        case 0x90:                                  
+        case 0x90:
             arg1->position.y -= 0.5f * var_v0->unk_030.y;
             arg1->misc++;
             temp_f = D_810040DC[arg1->misc % 12];
@@ -459,7 +459,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        case 0x86:                                  
+        case 0x86:
             arg1->misc++;
             temp_f = D_810040DC[arg1->misc % 12];
             arg1->scale.x = temp_f;
@@ -469,7 +469,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
                 arg1->active = 0;
             }
             break;
-        default:                                    
+        default:
             arg1->misc++;
             if (arg1->misc >= 0x10) {
                 arg1->active = 0;
@@ -514,7 +514,7 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
     s16 temp_v0_2;
     unk_D_810047E0* temp_a1_2;
     s32 temp_a1;
-    Gfx* gfx;    
+    Gfx* gfx;
     s32 var_a3;
     s32 i;
     u8 temp_v1;
@@ -633,7 +633,7 @@ void func_81002174(u8* arg0) {
         if (var_t0) {}
         if (var_t1) {}
         if (var_t2) {}
-        
+
         *arg0++ = (((var_v0 & 0xFF & 0xFF) & 0x80) | (var_a0 & 0x7F));
         *arg0++ = var_a1 & 0xFF;
         *arg0++ = (var_a1 >> 8) & 0xFF;
@@ -703,8 +703,8 @@ void func_81002260(unk_arg0_func_81002260* arg0, u8* arg1) {
         default:
             var_fv0 = 1.0f;
             break;
-        }        
-        
+        }
+
         var_v1->scale.x = var_fv0;
         var_v1->scale.y = var_fv0;
         var_v1->scale.z = var_fv0;
