@@ -227,28 +227,10 @@ s32 func_8436C62C(void) {
     return 0;
 }
 
-#define TRIANGLES(gfx)                                                                                        \
-    {                                                                                                         \
-        s32 j, k;                                                                                             \
-        for (j = 0; j < 2; j++)                                                                               \
-            for (k = 0; k < 4; k++)                                                                           \
-                gSP2Triangles(gfx++, (j * 4) + k, (j * 4) + (k + 9), (j * 4) + (k + 1), 0, (j * 4) + (k + 9), \
-                              (j * 4) + (k + 10), (j * 4) + (k + 1), 0);                                      \
-    }
-
-// Near miss: only the hoisted 0x06000000 differs - target keeps it in s4 (the LAST of the 8
-// loop-carried values to get a register), ours puts it in t3 (first), rotating every other
-// register by one. Round-3 dead ends: mirroring gSP2Triangles with the G_TRI2 constant as the
-// right operand of the or (IDO reassociates it back to first), folding it in via a separate
-// `w0 |=` read-modify-write (fused back), hand-rolled word packing with the constant last
-// (flag moves but loop structure blows up: frame 0x50 -> 0x98). Target seems to allocate the
-// flag last as if its first use is the final `or` of w0's packing.
-#ifdef NON_MATCHING
 Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3) {
     s32 i;
     s32 j;
     Vtx* sp44;
-    s32 k;
     unk_D_84389CE0* temp_v0;
     unk_D_84389CE0* temp_v1;
     u8 a1;
@@ -290,15 +272,14 @@ Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3) {
     sp44 = arg1->unk_018;
     for (i = 0; i < 9; i++) {
         gSPVertex(arg0++, sp44, 18, 0);
-        TRIANGLES(arg0);
+        for (j = 0; j < 8; j++) {
+            gSP2Triangles(arg0++, j, j + 9, j + 1, 0, j + 9, j + 10, j + 1, 0);
+        }
         sp44 += 9;
     }
 
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_356730/func_8436C6A4.s")
-#endif
 
 Gfx* func_8436CB60(Gfx* arg0, unk_D_843C2C00* arg1) {
     unk_D_843C2C00_064* ptr;
