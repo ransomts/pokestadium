@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (39 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (38 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -166,6 +166,16 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   times; locals `i, left, bits, pad[2]`... the 1-bit flag is read into the otherwise-unused loop
   counter `i` (puts the flag in t3 and the constant in a0). Lesson: skipping m2c and writing the
   obvious source for a repetitive pattern matched in 4 cycles; the oracles cannot run without a draft.
+
+- **func_88209B54** (1190 instr, 580 -> 0): (1) the 0x30000 constant cached in s1 - ido_bisect showed
+  `-Wo,-no_const_in_reg` removed those lines, i.e. uopt CSE'd the constant across two calls; the fix is
+  in a CALLEE's prototype: `func_88217018`'s 3rd parameter is `s32` not `u32` (fragment23.h and its
+  definition in fragment23_1BCF10.c; its sibling func_88217060 already took s32), so the two calls pass
+  the constant as different types and IDO stops sharing it. (2) arg1/arg2 swapped s-regs: a fake
+  `if (arg1) {}` as the first statement (commented as fake) gives arg1 s0; swapping the two unk_10
+  stores also fixes the regs but reorders the stores. The two "contrived" temps (`temp_s1 = 0x10000`,
+  twice-reloaded temp_s0_8) are real - removing either breaks the else branch. Lesson: a constant
+  CSE'd into an s-register can mean a callee's prototype used a different int type.
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
 - **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
@@ -365,7 +375,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   0x148); first load-block's DXT computed at runtime (`div (t2+0x7FF), t0`, t0=t2=1, t1=0x3F) ⇒
   width/size came through variables (custom/expanded load-block macro). `_g` of SetTextureImage and
   SetTile spilled to sp104/sp100.
-- **func_88209B54** (~580): arg1/arg2 swapped s-regs; 0x30000 cached in s1; two contrived temps.
 - **func_8820BE14** (~3156): func_8850068C addr should stay in s4; adjacent s16 stores order.
 - **func_8004A89C / func_80049DF0 / func_8004A474** (4A3E0): Game Boy APU emulator (Transfer Pak GB
   player); D_800FD008 = {value, dirty} byte-pair sound regs. 8004A89C has a draft (~170/256 diff);
