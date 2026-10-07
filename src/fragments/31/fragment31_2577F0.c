@@ -14,15 +14,6 @@ static Gfx D_81004170[] = {
 // .bss
 static s16 D_81004B60;
 
-// Only differs by one temp register: the redundant "& 0xFF" makes the lbu land in t8 instead of t7,
-// but dropping it rotates every later temp one position (first body temp t9 vs target t6, uniform).
-// Round-3 extra dead ends: & 0xFFF CSE-masks on temp_t2/t3/t4 (folded entirely, no temp consumed),
-// inlining temp_t2/t3/t4 into the gDPSetTileSize args (much worse), `0 ==` operand order, ternary
-// `(x == 0) ? 1 : 0`, `(u8)`/`(s32)` casts on condition, `if (1) {}` inside the body, moving the temp
-// assignments after gSPDisplayList, reordering t4/t2/t3, `&& temp_v0 == temp_v0`, `(u8)` on the
-// func_800325B4 return. Need: lbu in t7 with TWO hidden t-temps (t8,t9) between the bnez and the
-// first macro temp; the mask supplies the t7 slot but only one of the two hidden temps.
-#ifdef NON_MATCHING
 void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
     s16 temp_t3;
     s16 temp_t4;
@@ -30,9 +21,9 @@ void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
     u8 temp_v0;
 
     temp_v0 = func_800325B4();
-    if ((D_8006F09C->unk_01C & 0xFF) == 0) {
+    if (D_8006F09C->unk_01C == 0) {
         temp_t2 = (D_81004B60 >> 4);
-        temp_t3 = 0x4000 - (D_81004B60 >> 4);
+        temp_t3 = 0x4000 - (u16)(D_81004B60 >> 4);
         temp_t4 = 0x4000 - (D_81004B60 >> 3);
 
         gSPDisplayList(gfx++, D_81004170);
@@ -51,10 +42,6 @@ void func_81002530(Gfx* gfx, DisplayListAddresses* addresses) {
     }
     gSPEndDisplayList(gfx++);
 }
-#else
-void func_81002530(Gfx*, DisplayListAddresses*);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/31/fragment31_2577F0/func_81002530.s")
-#endif
 
 void func_810027E0(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
