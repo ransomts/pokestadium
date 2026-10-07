@@ -35,22 +35,12 @@ grep -q OK <(env PATH="$STAGE/.venv/bin:$PATH" make PYTHON="$STAGE/.venv/bin/pyt
 
 # Permuter farm: tier 1 + 2 near misses. Enable each draft with a bare `#if 1` in the staged
 # copy only (never commit that). The permuter's main process caps each function at ~80 it/s
-# regardless of workers, so spread cores thin: 4 workers x 24 funcs = 96 cores.
+# regardless of workers, so spread cores thin: 6 workers x 15 funcs = 90 cores.
 FUNCS=(
-  # tier 1: regalloc-only near misses
-  func_81002530:src/fragments/31/fragment31_2577F0.c
-  func_81003A54:src/fragments/31/fragment31_258080.c
-  func_8436C6A4:src/fragments/62/fragment62_356730.c
+  # round 6 (2026-10-07): the 15 still-unmatched tier 1/2/2b functions
   func_8437FD74:src/fragments/62/fragment62_361050.c
-  func_88206110:src/fragments/23/fragment23_1AE680.c
-  func_80034BD4:src/33FE0.c
-  func_86B09F64:src/fragments/17/fragment17_169510.c
-  func_8250281C:src/fragments/39/fragment39_27BCC0.c
   func_84372670:src/fragments/62/fragment62_359F90.c
-  func_87804320:src/fragments/2/fragment2_2.c
-  func_86A01CF0:src/fragments/16/fragment16_15A2B0.c
   func_80044EA4:src/45720.c
-  # tier 2: stack-layout near misses
   func_8430506C:src/fragments/62/fragment62_2EC3C0.c
   func_8003DB84:src/3D140_2.c
   func_84367660:src/fragments/62/fragment62_351F20.c
@@ -61,7 +51,6 @@ FUNCS=(
   func_8850B2D4:src/fragments/26/fragment26.c
   func_882111F8:src/fragments/23/fragment23_1B4EA0.c
   func_82F04604:src/fragments/41/fragment41_289240.c
-  # tier 2b: gDisplayListHead-in-register pair
   func_860005B8:src/fragments/6/fragment6.c
   func_86100C30:src/fragments/7/fragment7.c
 )
