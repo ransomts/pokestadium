@@ -9,7 +9,7 @@ typedef struct unk_D_800FD008 {
     /* 0x2A */ u8 unk_2A;
     /* 0x2B */ char unk2B[1];
     /* 0x2C */ u8 unk_2C;
-    /* 0x2D */ char unk2D[0x13]
+    /* 0x2D */ char unk2D[0x13];
 } unk_D_800FD008; // size = 0x40
 
 typedef struct unk_D_800FD068 {
