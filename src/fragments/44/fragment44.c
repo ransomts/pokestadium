@@ -443,6 +443,18 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
 }
 
 // Only differs in the stack slot of x (0xA4 vs 0x90).
+// Round 6 findings: 0xa4 is NOT x's named home; x is copy-propagated and the spilled value is
+// the CSE temp of arg1 + tmp2 (temp area 0x80..0xab, allocated top-down). The target has the
+// same 7 unused temp slots as this draft, but in a different order: target
+// [0xa8..0x94 unused, x=0x90, (s16)x=0x8c, 0x88 unused, 0x84, 0x80], draft
+// [0xa8 unused, x=0xa4, 0xa0..0x90 unused, (s16)x=0x8c, ...]. So in the target five vanished
+// temps are allocated BEFORE x. The ROUND_MAX ternaries are involved: replacing one pre-loop
+// ROUND_MAX by a plain value moves x's slot. x's slot did not move with any of: x as block-scoped
+// local (any position), inlining x/tmp2, moving `a = 1024.0f / arg5`, moving `tmp = 0xC` or the
+// x/tmp2/spE8 statements, declaration order of tmp2/x, operand order, (s16) casts, using a
+// temp copy for the loop's x. Removing tmp (literal 0xC) or temp_ft0 (use arg3) changes the
+// code a lot; both copies are real. The farm's output-51 is identical to base.c.
+// Sibling func_8340144C (fragment43) is a matched simpler version of the loop.
 #ifdef NON_MATCHING
 void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
