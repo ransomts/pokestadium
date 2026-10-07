@@ -3,7 +3,9 @@
 # Resets the worktree to match-round-1 and links/copies the gitignored build inputs
 # (baserom, .venv, asm, permuter, yaml) plus a private copy of build/.
 set -e
-MAIN=/mnt/b410f78a-9927-453b-b3b6-4b3910634741/Code/pokestadium
+# MAIN = the main checkout (holds the gitignored inputs). Defaults to the checkout that owns
+# this repo's .git, so it works from any clone/machine; override with MAIN=/path agent_setup.sh ...
+MAIN=${MAIN:-$(dirname "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)")}
 cd "$1"
 git reset --hard match-round-1
 echo "HEAD is now:"; git log --oneline -1

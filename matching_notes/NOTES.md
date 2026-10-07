@@ -8,12 +8,14 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (54 as of 2026-10-07; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
   matched so far (func_81002830, func_80034824) + func_80044EA4 draft rewritten from scratch
-  (24743 → 6744; see its entry below).
+  (24743 → 6744; see its entry below). Round 4 (overnight 2026-10-06/07, GLM model in 9 worktree
+  agents): 1 match (func_82F0BEF8, found uncommitted in a leftover worktree), nothing else usable.
+  Work is moving to the Palmetto cluster with Opus/Fable.
 - Nearly every remaining function already has an `#ifdef NON_MATCHING` draft with a `//` comment
   saying what still differs. Trust those comments over this list if they disagree.
 
@@ -48,6 +50,11 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - Agents in worktrees: the sandbox refuses Bash with `$VAR` paths, heredocs, `source`, long `&&`
   chains. Have them write scripts with the Write tool and call by absolute path; call
   `<MAIN>/.venv/bin/python3` directly.
+- **Agents must commit their own matches** (`git commit` in the worktree, then cherry-pick to
+  match-round-1). Round 4 left its only match uncommitted in a worktree that was nearly deleted.
+  Never leave `#if 1` (forced-on NON_MATCHING drafts) in src/ outside a scratch worktree - it breaks
+  the checksum build for everyone. Clean up worktrees (`git worktree remove`) and `nonmatchings/`
+  (permuter output, ~1 GB per long run) when done.
 - Give each agent its own scratch subfolder (they overwrote each other's helper scripts).
 - Insight beat brute force: every round-1 win came from recognising the original source shape
   (64-bit math, recursion, function statics, CSE temps, arrays). The permuter almost never closed a
@@ -72,6 +79,11 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   index the remap table directly (`spA0[i]`, no `spA0++` walk), keep `vertices` itself as the
   loop pointer. Combined with temp_fs0-2 reuse from round 1. Likely applies to siblings.
 
+### func_82F0BEF8 — MATCHED (round 4, a5dc305). Winning shape:
+- Drop the `(u32)(u64)` on `func_8002D600`'s argument and instead put `(u32)(u64)` on BOTH
+  `func_8002D7C0(...)` return values passed to `func_8001F1E8` (cases 0 and 1). Same hidden-temp
+  trick as before, applied to the call results rather than the argument.
+
 ### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
 - The draft was fundamentally wrong: the target's inner loop is MONO→STEREO duplication — per j:
   `temp = (s16)((D_800FCF00[i] * D_800FCEE0[i][(base + j) % 2560]) >> 7);` then TWO stores:
@@ -84,8 +96,13 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - Remaining: systematic one-slot rotations — mine {s1=FCF20, s2=FCF38, s3=FCF28, s4=2208, s5=j}
   vs target {s1=j, s2=FCF20, s3=FCF38, s4=FCF28, s5=2208}; the FCED8[i] CSE temp at 0x40 vs
   0x44 (mine has one extra temp slot); and a one-step t-lag. j's decl position and `!=` vs `<`
-  loop bound don't change it; a while-loop form kills the unroll (much worse). Permuter running
-  in nonmatchings/func_80044EA4/ (seeded from this source).
+  loop bound don't change it; a while-loop form kills the unroll (much worse).
+- Permuter (14 h, 6 workers, seeded from the in-tree draft) best = 3201 (permuter score), saved
+  as `matching_notes/func_80044EA4_permuter_3201.c` (full permuter source.c - re-seed from it).
+  Its key change: inside the inner loop, `unsigned char new_var = j;` and index both stores with
+  `new_var * 2`. That truncates j to u8, which is probably NOT the real source (j can exceed 255) -
+  treat it as a hint about which temp/register the target wants for `j*2`, then find a
+  semantically valid form.
 
 ## Per-function state and dead ends (most promising first)
 
@@ -95,10 +112,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   (u8/u16/s8/s16/(u32)(u64)) cast placement, double masks, `%256`, `==0U`, raw pointer reads, temp var;
   round 3: dropping the mask fixes the lbu but rotates ALL body temps by one (uniform t6→t9 shift).
   Refined goal: the mask supplies the t7 slot but only one of two post-branch hidden temps.
-- **func_82F0BEF8** (frag41_291D60, score 10): `(u32)(u64)(sp20.unk_02 + 1)` supplies the 4 hidden temps
-  but then the `lh` lands in t2 not a1. Dead ends: all cast variants, `& 0xFFFFFFFF`, u64/s64 temps,
-  casting other args/return; permuter 4800 iters stuck at 10. Untried: case-2 code from a macro/inline
-  helper, different switch/if structure.
 - **func_81003A54** (frag31_258080, score 110): default-case region 2 t-slots behind, tail 1 behind,
   and temp_t0 lands in a3 (target: t0 + `move a3,t0`). The `(u32)(u64)`-chain LENGTH is a rotation
   knob: 3 layers = 110 (best), 2 layers fixes the default case but breaks the tail (280), 0 = 210,
