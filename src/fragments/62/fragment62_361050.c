@@ -2188,7 +2188,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     s32 var_s0_4;
     s32 var_s1;
     s32 var_s2;
-    s32 var_s5;
+    u8 var_s5;
     s32 var_v1_6;
     s32 var_v1_4;
     s32 var_v1_5;
@@ -2235,10 +2235,8 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     temp_fp = &arg0->unk_14[arg0->unk_10];
     temp_s4 = &arg1->unk_14[arg1->unk_10];
 
+    temp_s6 = &temp_fp->unk_12;
     for (i = 0; i < arg2; i++) {
-        temp_s6 = &temp_fp->unk_12;
-        if (temp_s6) {}
-
         spFC = 0;
         spF8 = 0;
 
