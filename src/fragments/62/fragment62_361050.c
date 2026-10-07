@@ -4296,6 +4296,24 @@ s32 func_8437FCCC(unk_D_800FCB18* arg0) {
 
 #ifdef NON_MATCHING
 // Stack layout matches; remaining diffs are register allocation (unk_04/unk_01 compare, min result in s0 vs a1)
+// Score 350. Round-4 findings:
+// - spBF is not a real slot: 0xbf is i's spill (j spills to 0xbe). sp5C is m2c's name for the
+//   compiler temp at 0x5c (the temp_v0_2 - 2 bound). Removing `u8 pad` changes nothing.
+// - The min must be a separate s32 (target a1, no andi), NOT var_s0. Target asm is
+//   `move a1,v0` hoisted above `li a0,1`, then `beqz; nop; b; move a1,a0`, i.e. if/else with the
+//   else-assignment hoisted. Any extra s32/s16 local grows the frame to 0xc8 unless the u8s are
+//   rearranged: e.g. top i j k l m spBA + 2 u8 + `s32 n`, bottom sp94 sp90 sp78 <u8> sp76 + 2 u8 +
+//   `s32 var_s0` (drop pad and spBF; frame stays 0xc0; order of register-only u8s is irrelevant).
+//   With that layout `n = var_s2; var_a0_3 = 1; ...; if (var_a0_3 < var_s2) n = var_a0_3;`
+//   puts n in a1 (score 495: var_a0_3 still v1 not a0, the `b` is missing); plain if/else gives n
+//   in v1 (805), `n = var_s2; if (...)` at the end 595.
+// - The unk_04/unk_01 compare (v1/a2 vs v0/v1) and the else-branch m loop (v0/v1 swapped) did not
+//   move with: reusing temp_v0_2/var_a0_3/var_s2/j/k/l/m/pad for unk_04[i], `sp5C == 3`,
+//   reversing the compare, 9 m-loop rewrites, other loop counters for the sp94 init, ternaries.
+// - Our t-reg rotation is one ahead of the target from the sp94 loop on (t9 vs t8), apparently a
+//   phantom temp from the arg2 no-op. The no-op only needs arg2 as the FIRST of exactly three
+//   && operands (the others can be anything) and can sit anywhere between the loop head and the
+//   sp94 loop; chains of other lengths are all much worse.
 s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
     u8 i;
     u8 j;
