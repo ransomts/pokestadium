@@ -1705,23 +1705,15 @@ s32 func_882111C0(unk_func_8821421C_02C_06C_02C_060_02C_000* arg0, unk_func_8821
     return var_a2;
 }
 
-#ifdef NON_MATCHING
 void func_882111F8(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
     unk_func_8821421C_02C_06C_02C_060_02C_000* ptr = arg0->unk_00.unk_2C->unk_00;
     unk_func_8821421C_02C_06C_02C_060_02C_000 sp30;
     unk_func_8821421C_02C_06C_02C_060_02C_000 sp2C;
     s32 var_v1;
-    unk_func_8821421C_02C_06C_02C_060_02C_000* sp20;
-    unk_func_8821421C_02C_06C_02C_060_02C_000* sp1C;
+    UNUSED s32 pad;
 
-    sp20 = ptr;
-    sp1C = ptr;
-
-    sp20 += arg1;
-    sp1C += arg2;
-
-    sp30 = *sp20;
-    sp2C = *sp1C;
+    sp30 = ptr[arg1];
+    sp2C = ptr[arg2];
 
     if ((func_8002F264(sp30.unk_00) == 0) && (sp30.unk_00 == sp2C.unk_00)) {
         var_v1 = func_882111C0(&sp30, &sp2C);
@@ -1729,8 +1721,8 @@ void func_882111F8(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
         var_v1 = 1;
     }
 
-    *sp20 = sp2C;
-    *sp1C = sp30;
+    ptr[arg1] = sp2C;
+    ptr[arg2] = sp30;
 
     if (var_v1 == 0) {
         func_88210E98(arg0, arg1);
@@ -1738,10 +1730,6 @@ void func_882111F8(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
 
     *arg0->unk_88 = 1;
 }
-#else
-void func_882111F8(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/23/fragment23_1B4EA0/func_882111F8.s")
-#endif
 
 void func_882112E4(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_02C_038* arg1) {
     unk_func_8821421C_02C_06C_02C_060_02C_000* temp_v0 = arg0->unk_00.unk_2C->unk_00;
