@@ -2293,9 +2293,7 @@ s32 func_81209EB4(unk_D_8122B2C0*, s32);
 void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
 
 s32 func_8120572C(s32);
-#ifdef NON_MATCHING
-// Hand-written draft (no m2c available in this environment). Only diff left: scheduling of `li 0x8000` vs `lui D_8120DD0C` in the D_8122C4DC == 0xFF header block (6a18/6a20). emu has to live in arg0 (no stack slot) for the frame to be 0x48.
-// target asm block by block; gotos stand in for the shared exit / swap blocks.
+// emu must live in arg0: a separate pointer local takes a stack slot and the frame grows to 0x50.
 s32 func_8120572C(s32 arg0) {
 #define emu ((unk_D_8122B2C0*) arg0)
     s32 btn;
@@ -2711,16 +2709,8 @@ reset:
     if ((D_8122C4DC == 0xFF) && (D_8122C4F6 == 0) && (emu->unk_53E8 == 0x100)) {
         D_8122C4F6 = 1;
         emu->unk_5390 = D_8120D90C[((u8*) emu->unk_53BC)[0x147]];
-        if (((u8*) emu->unk_53BC)[0x148] < 8U) {
-            emu->unk_5394 = D_8120DD0C[((u8*) emu->unk_53BC)[0x148]];
-        } else {
-            emu->unk_5394 = 0x8000;
-        }
-        if (((u8*) emu->unk_53BC)[0x149] < 5U) {
-            emu->unk_5398 = D_8120DD2C[((u8*) emu->unk_53BC)[0x149]];
-        } else {
-            emu->unk_5398 = 0;
-        }
+        emu->unk_5394 = (((u8*) emu->unk_53BC)[0x148] < 8U) ? D_8120DD0C[((u8*) emu->unk_53BC)[0x148]] : 0x8000;
+        emu->unk_5398 = (((u8*) emu->unk_53BC)[0x149] < 5U) ? D_8120DD2C[((u8*) emu->unk_53BC)[0x149]] : 0;
         func_81209870(emu);
     }
     if ((emu->unk_5DC8 != 0) && (emu->unk_5DC7 == 7)) {
@@ -2771,9 +2761,6 @@ reset:
 
 }
 #undef emu
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/1/fragment1_7F9A0/func_8120572C.s")
-#endif
 
 void func_81206D9C(unk_D_800AA660* arg0) {
   D_8122C4FC = 0;
