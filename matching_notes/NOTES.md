@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (45 as of 2026-10-07 after 9 round-5 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (43 as of 2026-10-07 after round 5 + first round-6 matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -149,6 +149,18 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   form found that matches; the well-defined `j = var_s4++` version scores 1248.
 - Also this round: func_80034BD4, func_86B09F64 (entries above).
 
+### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
+- **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
+  definition in 3D140.c) - that removes one hidden temp and moves the a0 spill from 0x18 to 0x1C.
+  Came straight from the permuter's score-10 candidate. fd.sh still shows `D_800FCC50` vs
+  `D_800FCB48+0x108`: same address, ROM matches. Lesson: with an exactly-full frame, the SIGNEDNESS
+  of a global can shift compiler temp slots without touching locals.
+- **func_882111F8** (e9ec242): delete the named pointer locals sp20/sp1C and index directly
+  (`sp30 = ptr[arg1]; sp2C = ptr[arg2]; ... ptr[arg1] = sp2C; ptr[arg2] = sp30;`) with one
+  `UNUSED s32 pad;` after var_v1 for the 0x38 frame; the CSE'd addresses become the 0x20/0x1C
+  spill temps. Lesson: register-held pointer locals spilled one slot too low are CSE'd index
+  expressions in the original, not named locals.
+
 ### func_80044EA4 (45720, score 396 after round 5; was 6744) — structure SOLVED, two diffs remain
 - Round 5 (agent 6, commits on match-round-1): `(j << 1)` instead of `j * 2` in both store indices
   (IDO made `j*2` an induction variable; the target recomputes it per unrolled step - this was the
@@ -213,8 +225,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   temp allocated between the `&D_84390010[sp40]` temp and the `sp40*4` temp. Find the sub-expression
   (CSE or call result) in that range. Dead ends: removing ptr2 (big regalloc change), inlining sp28,
   assigning sp28 later, decl swaps.
-- **func_8003DB84** (3D140_2, score 18): frame 0x48 is exactly full — any extra local (even `s8`) →
-  0x50. Fix must come from temps, not locals. Dead ends: removing i, local order, type changes.
 - **func_84367660** (frag62_351F20, score 229): fa0/ft4 swapped for a3_z vs 2*a3_y; six spill temps at
   0x80..0x6C vs target 0x8C..0x78 — target has 3 extra never-stored spill temps. Pads don't move them.
   Untried: name `arg4*sp130` etc. before the gfx macros; reorder gSPDisplayList/gDPSetEnvColor vs a3_*
@@ -222,7 +232,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_86800B38** (frag14_144300, score 81): `&spC4[i]` spill at 0x4c vs 0x50 (one extra hidden temp)
   and loop-increment order in case 5/6. `if (pad1) {}` load-bearing. Untried: `Color_RGB8 [2][4]`
   for spB8/spC4, scope of var_s4/var_s7.
-- **func_84302658**, **func_838043F8**, **func_83501718**, **func_8850B2D4**, **func_882111F8**,
+- **func_84302658**, **func_838043F8**, **func_83501718**, **func_8850B2D4**,
   **func_82F04604**: spill-slot ordering / one slot off; see draft comments. Lesson from
   func_82F10BB4's match: frame too big with identical offsets ⇒ too many named locals — turn an
   induction variable `v += k` into `base + i*k` (IDO strength-reduces it back).
