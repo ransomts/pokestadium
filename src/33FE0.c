@@ -525,8 +525,24 @@ void func_80033D1C(StadiumModel* model, MtxF* mtx) {
     func_800357F4(model);
 }
 
+// Score 80 (fd.sh): only diff is a callee-saved swap - target has idx in s2 and i in s3, we get
+// them the other way round (pure regalloc; permuter candidate). Found with accessmap.py:
+// StadiumTransform.unk_00 is s16 (sh), the old draft wrote every field one late.
+// Things that mattered: d (spD8/D4/D0) initialised with double literals (-1.0 / 0.0) so uopt does
+// not fold the dot product's x*0 terms (with 0.0f it folds to one mul; an f32[3] array keeps the
+// muls but spills wrong); normalise dx/dy/dz in place; len compared with 0.0f; locals ordered to
+// the target stack map, s32 pad[2] at the end for the 0x150 frame.
+// Dead ends for the s2/s3 swap: swapping idx/i declarations, s32 idx (drops the sll/sra), split
+// unk_02 read/increment through an s32 temp, i = 0 hoisted (anywhere), while loop, (s32) or
+// reversed loop compare, ++i, wt as weights + idx or computed before the call, all-direct
+// mvtx->cmd.weights[idx] stores (or only the last two), xf removed, mvtx init moved earlier.
 #ifdef NON_MATCHING
 void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, MtxF* arg9) {
+    f32 len;
+    f32 x2;
+    f32 y2;
+    f32 z2;
+    f32 x3;
     f32 sp138;
     f32 sp134;
     f32 sp130;
@@ -541,106 +557,96 @@ void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, 
     f32 sp10C;
     f32 sp108;
     f32 sp104;
+    f32 x;
+    f32 y;
+    f32 z;
     f32 spF4;
     f32 spF0;
     f32 spEC;
-    f32 spE8;
-    f32 spE4;
-    f32 spE0;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
     f32 spD8;
     f32 spD4;
     f32 spD0;
     f32 spCC;
     f32 spC8;
     f32 spC4;
-    f32 temp_fs0;
-    f32 temp_fs0_2;
-    f32 temp_fs1;
-    f32 temp_fs1_2;
-    f32 temp_fs2;
-    f32 temp_fs2_3;
-    f32 temp_fs3_2;
-    f32 temp_fv0;
-    f32 temp_fv0_2;
-    f32 var_fs0_2;
-    f32 var_fs1_2;
-    f32 var_fs2;
-    s16 temp_v1;
+    s16 idx;
     s32 i;
     ModelSegment* segment;
-    ModelBlendWeight* temp_s1;
-    StadiumTransform* temp_v0;
-    StadiumTransform* temp_v1_2;
+    ModelBlendWeight* wt;
+    StadiumTransform* xf;
     ModelVertex* mvtx;
+    s32 pad[2];
 
     segment = Memmap_GetSegmentVaddr(model->modelSegment);
-    temp_v1 = model->unk_02;
-    model->unk_02 = (s16) (temp_v1 + 1);
-    temp_fs0 = arg6 - arg3;
-    temp_fs1 = arg7 - arg4;
-    temp_fs2 = arg8 - arg5;
-    temp_fv0 = sqrtf((temp_fs0 * temp_fs0) + (temp_fs1 * temp_fs1) + (temp_fs2 * temp_fs2));
-    if (temp_fv0 != 0.0f) {
-        spD8 = -1.0f;
-        spD4 = 0.0f;
-        spD0 = 0.0f;
-        spE8 = temp_fs0 / temp_fv0;
-        spE4 = temp_fs1 / temp_fv0;
-        spE0 = temp_fs2 / temp_fv0;
-        if (0.9f < func_8003342C((spE8 * -1.0f) + (spE4 * 0.0f) + (spE0 * 0.0f))) {
+    idx = model->unk_02++;
+    dx = arg6 - arg3;
+    dy = arg7 - arg4;
+    dz = arg8 - arg5;
+    len = sqrtf((dx * dx) + (dy * dy) + (dz * dz));
+    if (len != 0.0f) {
+        spD8 = -1.0;
+        spD4 = 0.0;
+        spD0 = 0.0;
+        dx = dx / len;
+        dy = dy / len;
+        dz = dz / len;
+        if (0.9f < func_8003342C((dx * spD8) + (dy * spD4) + (dz * spD0))) {
             spD4 = 1.0f;
             spD8 = 0.0f;
             spD0 = 0.0f;
-            if (0.9f < func_8003342C(spE4)) {
+            if (0.9f < func_8003342C(dy)) {
                 spD0 = 1.0f;
                 spD4 = 0.0f;
             }
         }
-        func_80033450(spE8, spE4, spE0, spD8, spD4, spD0, &spCC, &spC8, &spC4);
-        temp_fs0_2 = arg3 + spCC;
-        temp_fs1_2 = arg4 + spC8;
-        temp_fs2_3 = arg5 + spC4;
-        func_80033450(spE8, spE4, spE0, spCC, spC8, spC4, &spCC, &spC8, &spC4);
-        temp_fs3_2 = arg3 + spCC;
-        temp_v0 = &model->transforms[temp_v1];
+        func_80033450(dx, dy, dz, spD8, spD4, spD0, &spCC, &spC8, &spC4);
+        x2 = arg3 + spCC;
+        y2 = arg4 + spC8;
+        z2 = arg5 + spC4;
+        func_80033450(dx, dy, dz, spCC, spC8, spC4, &spCC, &spC8, &spC4);
+        x3 = arg3 + spCC;
         sp138 = arg4 + spC8;
-        temp_v1_2 = temp_v0 + 4;
         sp134 = arg5 + spC4;
-        temp_v0->maxDist = arg1;
-        temp_v0->x0 = arg2;
-        temp_v0->y0 = arg3;
-        temp_v0->z0 = arg4;
-        temp_v0->x1 = arg5;
-        temp_v0->y1 = arg6;
-        temp_v0->z1 = arg7;
-        temp_v0->x2 = arg8;
-        temp_v0->y2 = temp_fs0_2;
-        temp_v0->z2 = temp_fs1_2;
-        temp_v0->x3 = temp_fs2_3;
-        temp_v0->y3 = temp_fs3_2;
-        temp_v1_2->y3 = sp138;
-        temp_v1_2->mtx = arg9;
-        temp_v1_2->z3 = sp134;
+        xf = &model->transforms[idx];
+        xf->unk_00 = arg1;
+        xf->maxDist = arg2;
+        xf->x0 = arg3;
+        xf->y0 = arg4;
+        xf->z0 = arg5;
+        xf->x1 = arg6;
+        xf->y1 = arg7;
+        xf->z1 = arg8;
+        xf->x2 = x2;
+        xf->y2 = y2;
+        xf->z2 = z2;
+        xf->x3 = x3;
+        xf->y3 = sp138;
+        xf->z3 = sp134;
+        xf->mtx = arg9;
         guMtxXFMF(arg9->mf, arg3, arg4, arg5, &sp130, &sp12C, &sp128);
         guMtxXFMF(arg9->mf, arg6, arg7, arg8, &sp124, &sp120, &sp11C);
-        guMtxXFMF(arg9->mf, temp_fs0_2, temp_fs1_2, temp_fs2_3, &sp118, &sp114, &sp110);
-        guMtxXFMF(arg9->mf, temp_fs3_2, sp138, sp134, &sp10C, &sp108, &sp104);
+        guMtxXFMF(arg9->mf, x2, y2, z2, &sp118, &sp114, &sp110);
+        guMtxXFMF(arg9->mf, x3, sp138, sp134, &sp10C, &sp108, &sp104);
         mvtx = &model->mvtx;
-        for(i = 0; i < segment->vertexCount; i++) {
-            var_fs0_2 = mvtx->position.base.x;
-            var_fs1_2 = mvtx->position.base.y;
-            var_fs2 = mvtx->position.base.z;
-            temp_fv0_2 = func_80033568(var_fs0_2, var_fs1_2, var_fs2, sp130, sp12C, sp128, sp124, sp120, sp11C, &spF4, &spF0, &spEC);
-            temp_s1 = &mvtx->cmd.weights[temp_v1];
-            if (temp_fv0_2 > 0.0f) {
-                var_fs0_2 = (((var_fs0_2 - spF4) * arg2) / temp_fv0_2) + spF4;
-                var_fs1_2 = (((var_fs1_2 - spF0) * arg2) / temp_fv0_2) + spF0;
-                var_fs2 = (((var_fs2 - spEC) * arg2) / temp_fv0_2) + spEC;
+        for (i = 0; i < segment->vertexCount; i++) {
+            x = mvtx->position.base.x;
+            y = mvtx->position.base.y;
+            z = mvtx->position.base.z;
+            dist = func_80033568(x, y, z, sp130, sp12C, sp128, sp124, sp120, sp11C, &spF4, &spF0, &spEC);
+            wt = &mvtx->cmd.weights[idx];
+            if (dist > 0.0f) {
+                x = (((x - spF4) * arg2) / dist) + spF4;
+                y = (((y - spF0) * arg2) / dist) + spF0;
+                z = (((z - spEC) * arg2) / dist) + spEC;
             }
-            temp_s1->w0 = func_800334C0(var_fs0_2, var_fs1_2, var_fs2, sp130, sp12C, sp128, sp124, sp120, sp11C);
-            temp_s1->w1 = func_800334C0(var_fs0_2, var_fs1_2, var_fs2, sp130, sp12C, sp128, sp118, sp114, sp110);
-            temp_s1->w2 = func_800334C0(var_fs0_2, var_fs1_2, var_fs2, sp130, sp12C, sp128, sp10C, sp108, sp104);
-            temp_s1->dist = temp_fv0_2;
+            wt->w0 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp124, sp120, sp11C);
+            wt->w1 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp118, sp114, sp110);
+            wt->w2 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp10C, sp108, sp104);
+            wt->dist = dist;
             mvtx++;
         }
     }
