@@ -119,4 +119,99 @@ s32 func_80045D60(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045D60* arg1, s3
     return 0;
 }
 
-#pragma GLOBAL_ASM("asm/us/nonmatchings/46680/func_80045FF0.s")
+/*
+ * Read n bits (LSB first) from the 0x400-word ring buffer at arg0->unk_1598.
+ * bits = current word shifted down, left = bits remaining in it, pos = bit
+ * position of the current word (low 5 bits are stale once a refill happened).
+ */
+#define READ_BITS(dst, n)                                         \
+    if (left > (n)) {                                             \
+        dst = bits & ((1 << (n)) - 1);                            \
+        bits >>= (n);                                             \
+        left -= (n);                                              \
+    } else {                                                      \
+        dst = bits & ((1 << left) - 1);                           \
+        pos += 32;                                                \
+        bits = ((u32*)arg0->unk_1598)[(pos >> 5) & 0x3FF];        \
+        if (left != (n)) {                                        \
+            dst |= (bits & ((1 << ((n) - left)) - 1)) << left;    \
+        }                                                         \
+        bits >>= (n) - left;                                      \
+        left += 32 - (n);                                         \
+    }
+
+// Speech/voice frame decoder: called once per 160-sample (0x140-byte) output
+// frame by func_80045780 (src/45720.c). Bitstream layout:
+//  - if no run is active: 1 bit; 1 => silence run of (4 bits + 1) frames
+//    (unk_18C), 0 => voiced run of (7 bits + 1) frames (unk_18A).
+//  - silence frame: zero the output buffer.
+//  - voiced frame: 8 header fields (6,6,5,5,4,4,3,3 bits) then 4 subframes of
+//    (7,2,2,6 bits + 13 x 3 bits), same layout func_80045D60 unpacks from
+//    bytes, then synthesised by func_80045C78.
+// The stored position is (word-aligned pos) + (32 - left).
+s32 func_80045FF0(unk_D_800FCED8* arg0, void* arg1) {
+    unk_arg1_func_80045A80 header;
+    s16 spE0[4];
+    s16 spD8[4];
+    s16 spD0[4];
+    s16 spC8[4];
+    AnimBlock19 sp60[4];
+    s32 i;
+    s32 left;
+    u32 bits;
+    s32 pos;
+    UNUSED s32 pad[2]; // matches the frame; probably two locals removed from the original
+
+    pos = arg0->unk_25BC;
+    bits = ((u32*)arg0->unk_1598)[(pos >> 5) & 0x3FF] >> (pos & 0x1F);
+    left = 32 - (pos & 0x1F);
+
+    if ((arg0->unk_0000.unk_18A == 0) && (arg0->unk_0000.unk_18C == 0)) {
+        READ_BITS(i, 1);
+        if (i) {
+            READ_BITS(arg0->unk_0000.unk_18C, 4);
+            arg0->unk_0000.unk_18C++;
+        } else {
+            READ_BITS(arg0->unk_0000.unk_18A, 7);
+            arg0->unk_0000.unk_18A++;
+        }
+    }
+
+    if (arg0->unk_0000.unk_18C != 0) {
+        bzero(arg1, 0x140);
+        arg0->unk_0000.unk_18C--;
+    } else {
+        READ_BITS(header.unk0, 6);
+        READ_BITS(header.unk2, 6);
+        READ_BITS(header.unk4, 5);
+        READ_BITS(header.unk6, 5);
+        READ_BITS(header.unk8, 4);
+        READ_BITS(header.unkA, 4);
+        READ_BITS(header.unkC, 3);
+        READ_BITS(header.unkE, 3);
+        for (i = 0; i < 4; i++) {
+            READ_BITS(spE0[i], 7);
+            READ_BITS(spD0[i], 2);
+            READ_BITS(spD8[i], 2);
+            READ_BITS(spC8[i], 6);
+            READ_BITS(sp60[i].xRotA, 3);
+            READ_BITS(sp60[i].xRotB, 3);
+            READ_BITS(sp60[i].flag0, 3);
+            READ_BITS(sp60[i].yRotA, 3);
+            READ_BITS(sp60[i].yRotB, 3);
+            READ_BITS(sp60[i].flag1, 3);
+            READ_BITS(sp60[i].zRotA, 3);
+            READ_BITS(sp60[i].zRotB, 3);
+            READ_BITS(sp60[i].flag2, 3);
+            READ_BITS(sp60[i].unkA, 3);
+            READ_BITS(sp60[i].unkB, 3);
+            READ_BITS(sp60[i].unkC, 3);
+            READ_BITS(sp60[i].unkD, 3);
+        }
+        arg0->unk_0000.unk_18A--;
+        func_80045C78((unk_arg0_func_80045A80*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
+    }
+
+    arg0->unk_25BC = (pos & ~0x1F) - left + 32;
+    return 0;
+}
