@@ -39,9 +39,26 @@ grep -q OK <(env PATH="$STAGE/.venv/bin:$PATH" make PYTHON="$STAGE/.venv/bin/pyt
 
 # Permuter farm: tier 1 + 2 near misses. Enable each draft with a bare `#if 1` in the staged
 # copy only (never commit that). The permuter's main process caps each function at ~80 it/s
-# regardless of workers, so spread cores thin: 12 workers x 8 funcs = 96 cores.
+# regardless of workers, so spread cores thin: 6 workers x 16 funcs = 96 cores.
 FUNCS=(
-  # after round 6 (2026-10-07): the 8 open tier 1/2 functions (gDisplayListHead pair excluded: symbol issue)
+  # 2026-10-07 evening: tier 1/2 leftovers + round-7 regalloc-only drafts handed to the farm
+  func_8437FD74:src/fragments/62/fragment62_361050.c
+  func_84367660:src/fragments/62/fragment62_351F20.c
+  func_838043F8:src/fragments/47/fragment47_2AFDB0.c
+  func_8430506C:src/fragments/62/fragment62_2EC3C0.c
+  func_84302658:src/fragments/62/fragment62_2EC3C0.c
+  func_83501718:src/fragments/44/fragment44.c
+  func_8850B2D4:src/fragments/26/fragment26.c
+  func_82F04604:src/fragments/41/fragment41_289240.c
+  func_80033D44:src/33FE0.c
+  func_88500A74:src/fragments/26/fragment26.c
+  func_88304850:src/fragments/24/fragment24_1CEA00.c
+  func_86905734:src/fragments/15/fragment15_150AC0.c
+  func_8820BE14:src/fragments/23/fragment23_1AE680.c
+  func_86803C6C:src/fragments/14/fragment14_1462A0.c
+  func_80012870:src/12D80.c
+  func_88807D04:src/fragments/28/fragment28_2190D0.c
+)
   func_8437FD74:src/fragments/62/fragment62_361050.c
   func_84367660:src/fragments/62/fragment62_351F20.c
   func_838043F8:src/fragments/47/fragment47_2AFDB0.c
