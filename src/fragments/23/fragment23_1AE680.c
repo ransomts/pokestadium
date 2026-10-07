@@ -1368,8 +1368,6 @@ s32 func_88209AF0(unk_func_8820BE14_06C* arg0) {
     return 0;
 }
 
-// Remaining diffs: arg1/arg2 get swapped s-registers, and 0x30000 gets CSE'd into s1 in the arg3 != NULL branch
-#ifdef NON_MATCHING
 static Color_RGBA8 D_88217E90 = { 0x6C, 0x6C, 0x7E, 0xFF };
 static Color_RGBA8 D_88217E94 = { 0x50, 0x50, 0x86, 0xFF };
 static Color_RGBA8 D_88217E98 = { 0x79, 0x79, 0xCB, 0xFF };
@@ -1513,6 +1511,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     unk_func_8820BE14_06C* temp_s0_8;
     s32 var_v0;
 
+    if (arg1) {} // fake: makes arg1 take s0 ahead of arg2
     arg0->unk_8C = arg4;
     arg0->unk_80 = arg8;
 
@@ -1788,120 +1787,6 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     arg0->unk_88->unk_30 = D_88217FB8;
     arg0->unk_88->unk_44 = arg0->unk_88->unk_44;
 }
-#else
-static Color_RGBA8 D_88217E90 = { 0x6C, 0x6C, 0x7E, 0xFF };
-static Color_RGBA8 D_88217E94 = { 0x50, 0x50, 0x86, 0xFF };
-static Color_RGBA8 D_88217E98 = { 0x79, 0x79, 0xCB, 0xFF };
-static Color_RGBA8 D_88217E9C = { 0x40, 0x40, 0x6C, 0xFF };
-static Color_RGBA8 D_88217EA0 = { 0x6A, 0x6A, 0xB2, 0xFF };
-static unk_D_88217EA4 D_88217EA4[] = {
-    {
-        219,
-        40,
-        54,
-        42,
-        D_8821E100,
-        0x30,
-        0x0000,
-        D_882181E8,
-        1,
-        1,
-    },
-    {
-        279,
-        40,
-        54,
-        42,
-        D_8821E100,
-        0x30,
-        0x0000,
-        D_882181E8,
-        0,
-        3,
-    },
-    {
-        219,
-        88,
-        54,
-        42,
-        D_88218FD0,
-        0x30,
-        0x0000,
-        D_882181B8,
-        0,
-        3,
-    },
-    {
-        279,
-        88,
-        54,
-        42,
-        D_8821B868,
-        0x30,
-        0x0000,
-        D_882181D0,
-        1,
-        1,
-    },
-    {
-        219,
-        136,
-        54,
-        42,
-        D_8821AAE0,
-        0x30,
-        0x0000,
-        D_882181C8,
-        0,
-        1,
-    },
-    {
-        279,
-        136,
-        54,
-        42,
-        D_88219D58,
-        0x30,
-        0x0000,
-        D_882181C0,
-        1,
-        1,
-    },
-    {
-        219,
-        184,
-        54,
-        42,
-        D_88218248,
-        0x30,
-        0x0000,
-        D_882181B0,
-        0,
-        3,
-    },
-    {
-        279,
-        184,
-        54,
-        42,
-        D_8821D378,
-        0x30,
-        0x0000,
-        D_882181E0,
-        1,
-        1,
-    },
-};
-static Color_RGBA8 D_88217F84 = { 0xFF, 0xFF, 0x00, 0xFF };
-static Color_RGBA8 D_88217F88 = { 0x2D, 0x1A, 0x41, 0xFF };
-static Color_RGBA8 D_88217F8C = { 0x6F, 0x5F, 0x7F, 0xFF };
-static Color_RGBA8* D_88217F90[] = {
-    D_88218228, D_88218228, D_882181F0, D_88218210, D_88218200, D_88218208, D_882181F8, D_88218220,
-};
-static Color_RGBA8* D_88217FB0[] = { D_882181F8, D_882181F8 };
-static Color_RGBA8 D_88217FB8 = { 0xF0, 0xF0, 0xF0, 0xFF };
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/23/fragment23_1AE680/func_88209B54.s")
-#endif
 
 s32 func_8820ADEC(unk_func_8820BE14_02C* arg0) {
     switch (arg0->unk_74->unk_00.unk_1C) {

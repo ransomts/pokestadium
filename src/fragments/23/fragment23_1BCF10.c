@@ -613,7 +613,7 @@ void func_88216F18(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     }
 }
 
-void func_88217018(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, u32 arg2) {
+void func_88217018(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
     arg0->unk_88 = &arg1->unk_00;
     arg0->unk_8C = arg2;
     ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0, &arg1->unk_04);
