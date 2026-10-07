@@ -92,6 +92,11 @@ All of these produced actual matches or big score drops in this codebase.
 - Recursion: `var_s5 = var_s2 = 1;` init + `var_s5 = var_s2;` at loop end pattern (func_88803614).
 
 ## Tooling gotchas
+- **diff.py `-s` stops at the first `jr ra`**: for functions with early returns fd.sh and ido_bisect
+  under-report (a 0 can be a false match). Score such functions without `-s`, with the following
+  function left as GLOBAL_ASM so the diff does not run on (4A3E0.c GB channel functions).
+- **include/macros.h `CLAMP_MAX`/`CLAMP_MIN` return the LARGER/SMALLER value**, the opposite of their
+  names; matched code using them is correct but reads backwards (func_8437B0CC uses ternaries).
 - `fd.sh` grep for the score: diff.py prints `CURRENT (N)`, not `Score`; fixed 2026-10-07. diff.py
   also caps the diff at 1000 lines, so very bad drafts show a too-low score (func_84362084: 11867
   shown vs 65017 real) - use `--max-lines` or a full diff for big drafts.

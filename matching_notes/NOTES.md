@@ -300,6 +300,37 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   keeps only E45E8000/3E8000/FD100000(fp)/F5100000(ra) in regs with all six counters in s-regs.
   `if (0)` probes removing loop 1 / loop 2 / the switch / the first pipesync all still keep E7 in a
   register, so the source shape differs somewhere unfound. No corpus function keeps E7 in v1.
+- **GB APU trio, src/4A3E0.c** (agent 1, five commits, no match): the struct's missing `;` is fixed
+  (7294c7c); `D_800FD008` is now `GbSoundReg D_800FD008[0x20]` = `{u8 value; u8 dirty;}` per register
+  (NR10..NR52 = 0xFF10+index; matched users func_8004980C/800498A8/80049A60 re-indexed, ROM unchanged);
+  D_800FCF60 (channel 1, 0x30 bytes) and D_800FCF90 (channel 2, 0x28) have real layouts from the asm
+  (`u16 unk_04` frequency, `u16 unk_18[2]`/`unk_10[2]` duty half-periods, u8 phase at 0x1E/0x16).
+  Scores (measured WITHOUT diff.py's `-s`, which stops at the first `jr ra` and under-reports these
+  early-return functions - fd.sh showed ~185 for func_80049DF0 and ido_bisect showed 0 for
+  func_8004A474): func_8004A89C channel 4 noise 5415 -> 3355 (integer literal `unk_10 = 0` stops a
+  single 0.0f register; read unk_04 and `NR42 & 8` into locals before the unk_20 test; take
+  `&D_800FC6CC[sample]` after the value load; left: unk_0C store addressing/order, trigger-block order,
+  NR42 reread); func_80049DF0 channel 1 square+sweep new draft 3565 (`default:` last with no break,
+  one temp reused for duty/NR12/NR10, s32 NR11 local reused for the swept frequency,
+  `(u8)(nr14 & 7) << 8`, fail-first range test, `unk_14 = unk_10 = x` then separate -1 stores; left:
+  sweep-block regalloc); func_8004A474 channel 2 square new draft 1420 (same shape minus sweep,
+  `(u8)(nr24 & 7) << 8`, NR21 read twice; left: one-step temp offset from the trigger block on, 0x800
+  not kept in a register, NR22 read via a base register) -> farm candidate.
+- **func_8437B0CC** (frag62_361050, 3346 instr, 55319 -> 13175 full-diff score with `--max-size 20000`;
+  fd.sh under-reports): removed ~120 unused m2c locals (frame 0x260 -> 0x120); **`CLAMP_MAX`/`CLAMP_MIN`
+  in include/macros.h are INVERTED** (`CLAMP_MAX(x,max)` returns the larger value) - the draft used
+  explicit ternaries instead (6 other files use the macros; they match because the names are
+  misleading, not wrong); m2c spXX copies (sp50/54/5C/64/68/6C/70) are compiler temps, written
+  inline; unk_09/unk_0F u8; decls in target stack order; `var_s5` u8 and `temp_s6 = &temp_fp->unk_12`
+  hoisted out of the loop (s5/s6/s7 right); dropped `!= (spB6 * 0)`; case 0x9C goto-condition as one
+  `if`; case 0x19 reads `temp_s6->unk_15` once for both switches. Target stack: every local has a slot
+  0x107 (i) down to 0x84 in decl order; spills below in 0x50-0x80 (copied unk_09/0A/0F, the arg2
+  bound, `unk_0A*0x11`, `unk_0B*0x14`). Left: frame 0x110 vs 0x108 (15 spill slots vs 13, shifting
+  every local by 8 = ~250 stack lines); case 0x2 `unk_00 == 0x5C` block (target keeps unk_0A in s5
+  across the first call via 0x68 and spills spBA to 0x64; we spill spB7 and reload unk_0A); end-of-loop
+  clamps (t5/t9 swapped for unk_01/sp58 - visible in every break's delay slot; unk_06/unk_08 in s2/t1
+  reversed); case 0x19 missing `move v1,v0` after the 0/8 compares; prologue arg2 load order. NOT a
+  permuter candidate yet: case 0x2 and the frame need source changes. Dead ends in the draft comment.
 - **func_8820BE14**: see Round 7 matches section (1755).
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
@@ -496,10 +527,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_81209078** (score ~320): empty `-1` branch should be plain `b`, one v0/v1, final store base.
 
 ### Large / far off (need real work)
-- **func_8004A89C / func_80049DF0 / func_8004A474** (4A3E0): Game Boy APU emulator (Transfer Pak GB
-  player); D_800FD008 = {value, dirty} byte-pair sound regs. 8004A89C has a draft (~170/256 diff);
-  the other two are sibling channel functions with no draft. File has a struct missing `;`
-  (`char unk2D[0x13]`) that breaks m2ctx/permuter parsing.
 - Not yet attempted seriously: func_8437B0CC (3345 instr), func_84362084 (1597), func_8120572C (1449),
    func_88805AEC (945), func_88203ED8, func_88201488,
   func_86803C6C, func_86905734, func_8130337C, func_885065E0, func_88500A74, func_88304850,
