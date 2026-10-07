@@ -1801,9 +1801,6 @@ void func_825024C4(s16 arg0, s16 arg1) {
     func_82500804();
 }
 
-#ifdef NON_MATCHING
-// Stack frame matches; sp30 lands in v1 instead of a2, sp18/sp38 reloads use swapped regs,
-// and the D_8780FA48 copy should have its own slot at sp+0x44 instead of reusing sp40.
 void func_8250281C(void) {
     u32 var_a2_2;
     s32 sp40;
@@ -1822,8 +1819,7 @@ void func_8250281C(void) {
             if (func_82501CBC(D_8250A228[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x8C;
-                sp38 = D_8250A288.unk_00 * 0x58;
-                sp38 += 0xBA;
+                sp38 = D_8250A288.unk_00 * 0x58 + 0xBA;
                 break;
             }
             break;
@@ -1834,8 +1830,7 @@ void func_8250281C(void) {
             if (func_82501CBC(D_8250A230[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x96;
-                sp38 = D_8250A288.unk_02 * 0x62;
-                sp38 += 0xBA;
+                sp38 = D_8250A288.unk_02 * 0x62 + 0xBA;
                 break;
             }
             break;
@@ -1854,8 +1849,7 @@ void func_8250281C(void) {
             if (D_8250A2A0.unk_00 == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
-                sp38 = ((D_82508AF0 & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18);
-                sp38 += 0xA4;
+                sp38 = ((D_82508AF0 & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
                 break;
             }
             break;
@@ -1867,6 +1861,7 @@ void func_8250281C(void) {
                 sp2C = 1;
                 sp40 = ((D_8250A288.unk_06 % 3) * 0x60) + 0xA5;
                 sp38 = ((D_8250A288.unk_06 / 3) * 0x60) + 0xAA;
+                if (1) {}
                 break;
             }
             break;
@@ -1886,20 +1881,17 @@ void func_8250281C(void) {
             gSPDisplayList(gDisplayListHead++, D_8006F518);
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-            sp40 = D_8780FA48;
-            if (D_8780FA30[sp40] == 0) {
-                func_87801644(sp40, sp18 - 0x20, sp38 - 2, 1.0f);
+            var_a2_2 = D_8780FA48;
+            if (D_8780FA30[var_a2_2] == 0) {
+                func_87801644(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             } else {
-                func_87801644(-1 - sp40, sp18 - 0x20, sp38 - 2, 1.0f);
+                func_87801644(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             }
 
             gSPDisplayList(gDisplayListHead++, D_8006F630);
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/39/fragment39_27BCC0/func_8250281C.s")
-#endif
 
 void func_82502BB0(void) {
     s32 i;
