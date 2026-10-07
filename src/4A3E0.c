@@ -278,8 +278,14 @@ void func_80049D5C(u16 arg0) {
 #pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_8004A474.s")
 
 #ifdef NON_MATCHING
-// Mostly regalloc differences; also IDO here hoists/CSEs the 0.0f and -1 constants and uses an %lo(at) store
-// for unk_0C where the original rematerializes them per use.
+// Score 3355 (was 5415). Wins: `unk_10 = 0` (int literal) stops IDO sharing one 0.0f register across the
+// function (target does mtc1 zero per use); reading unk_04 + NR42&8 into locals before the unk_20 test and
+// taking &D_800FC6CC[sample] after the value load reproduces the target's early lbu / late pointer.
+// Remaining: unk_0C store uses %lo(at) instead of 0xc(v1) and is scheduled too early; li 1 / D_8007D4D0
+// load order in the trigger block; NR42 reread via t0 base instead of fresh lui (target bnezl a1);
+// unk_20 = -1 / unk_14 reload order in the 0.75 clamp. Dead ends (all worse or equal): other 0/0.0f
+// literal mixes, nr as full byte or `dir`, NR42 read before pos, u8* access, &= 0xF7, checking
+// entry->unk_00 == 0xFF directly, ternary +0x10, comma-expr unk_0C, D_800FC6CC[sample] in the call.
 typedef struct unk_D_80078A60 {
     /* 0x00 */ u8 unk_00;
     /* 0x04 */ f32 unk_04;
@@ -293,6 +299,7 @@ s16 func_8004A89C(void) {
     s32 changed;
     s32 i;
     unk_D_80078A60* entry;
+    unk_D_800FC6CC* ent2;
     u8 sample;
     u32 nr;
     u8 idx;
@@ -329,7 +336,7 @@ s16 func_8004A89C(void) {
         }
 
         D_800FCFD8.unk_08 = 0;
-        D_800FCFD8.unk_10 = 0.0f;
+        D_800FCFD8.unk_10 = 0;
         nr = D_800FD008[0x11].value;
         dir = nr & 8;
         if (!dir && !(nr & 0xF0)) {
@@ -384,22 +391,25 @@ s16 func_8004A89C(void) {
         return 0;
     }
 
+    sample = D_800FCFD8.unk_04;
+    nr = D_800FD008[0x11].value & 8;
     if (D_800FCFD8.unk_20 < pos) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
 
-    D_800FCFD8.unk_10 += 1.0f;
     value = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
+    ent2 = &D_800FC6CC[sample];
+    D_800FCFD8.unk_10 += 1.0f;
     if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
         D_800FCFD8.unk_08++;
         D_800FCFD8.unk_10 -= D_800FCFD8.unk_0C;
-        if (D_800FCFD8.unk_08 >= (D_800FC6CC[D_800FCFD8.unk_04].unk_04 >> 1)) {
+        if (D_800FCFD8.unk_08 >= (ent2->unk_04 >> 1)) {
             D_800FCFD8.unk_08 = 0;
         }
     }
 
-    if (!(D_800FD008[0x11].value & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
+    if (!nr && (D_800FCFD8.unk_14 < 0.0f)) {
         D_800FCFD8.unk_28 = 0;
         return 0;
     }
