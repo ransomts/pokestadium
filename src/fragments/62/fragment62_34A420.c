@@ -854,7 +854,6 @@ Gfx* func_84362084(Gfx* arg0) {
     unk_D_84398F50_048* var_s2;
     Vtx* vtx;
     Vec3f sp1A0;
-    s32 pad;
 
     sp1B4 = D_84398F50;
 
