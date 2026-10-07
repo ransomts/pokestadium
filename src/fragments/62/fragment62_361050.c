@@ -2175,6 +2175,26 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
+// func_8437B0CC: full-diff score 13175 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// Structure and s-register assignment match. Frame layout model (verified): every named local
+// gets a home slot top-down (i 0x107 ... pad84 0x84); spilled CSE temps / split register vars go
+// below, in 0x50..0x80 (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
+// unk_0A*0x11 0x54, unk_0B*0x14 0x50). The m2c spXX copies were such temps: write them inline.
+// Remaining regions:
+// - frame 0x110 vs 0x108: draft allocates 15 temp slots (0x50..0x8B), target 13; all named slots
+//   are +8 because of that (most of the ~250 stack diffs). Temp slot order also differs.
+// - case 0x2 (unk_00 == 0x5C block): target keeps spB7 in s0 (var_s0 copy, matched) but CSEs the
+//   unk_0A value (spill 0x68 -> reload into s5) and spBA (spill 0x64); draft CSEs spB7 into v1/0x68
+//   and reloads unk_0A from its slot. Dead ends: var_s5/var_v1_6 = temp_t0 copies, operand order
+//   flips, one combined expression, using spB7 directly (34173!).
+// - end-of-loop clamps: target unk_01 -> t5, sp58 -> t9 (draft swapped; `sp58 + unk_01` gets the
+//   regs but reorders the loads -> worse); unk_06 result lives in t1 (saved at 0xC0 around calls),
+//   unk_08 in s2; draft has them the other way round. Every `break` delay slot shows the t5/t9 diff.
+// - case 0x19 switch: target copies the switch value v0 -> v1 after the 0/8 compares (missing).
+// - prologue: arg2 load scheduled first instead of after unk_0D (scheduling only).
+// - remaining ~1200 'r' lines are t-register rotation following from the above.
+// Dead ends: declaration order never changes regalloc; sp58/temp_t0/sp78 as s32 (worse, frame
+// 0x118); s16/f32 var_s5; temp_s6 macro (worse); `j = 0` hoisting (IDO already does it).
 #ifdef NON_MATCHING
 void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func_843794CC* arg3, u8 arg4) {
     u8 i;
