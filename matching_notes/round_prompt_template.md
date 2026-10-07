@@ -10,7 +10,7 @@ before your first edit and keep their verdicts in your scratch notes. Follow the
 worktree and report the hash. If you give up on a function, record the dead ends in its //
 comment and commit that too.
 
-Step zero for EACH function, before any edit (write both verdicts into {{SCRATCH}}/notes.md):
+{{DIGESTS}}Step zero for EACH function, before any edit (write both verdicts into {{SCRATCH}}/notes.md):
 {{ORACLES}}
 
 When you finish, report ALL your commit hashes in order (`git log --oneline {{BASE}}..HEAD`).

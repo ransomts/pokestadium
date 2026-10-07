@@ -10,12 +10,15 @@
 # Env: ROUND_BASE (default match-round-1) = the branch agents start from and picks land on.
 #      ROUND_MAIN (default: the main checkout) = the checkout that integrates/builds; agent
 #      worktrees go under $ROUND_MAIN/.claude/worktrees.
+#      ROUND_DIGEST=0 (start: no DIGEST_<func>.md), ROUND_DIGEST_FULL=1 (digest.py without --fast,
+#      i.e. with the ido_bisect default set), ROUND_DIGEST_JOBS (default 4 parallel digests).
 set -u
 
 usage() {
     cat <<'EOF'
 usage: matching_notes/round.sh <command> [options]
 env:   ROUND_BASE=<branch>  (default match-round-1)   ROUND_MAIN=<checkout> (default: main checkout)
+       ROUND_DIGEST=0 | ROUND_DIGEST_FULL=1 | ROUND_DIGEST_JOBS=<n>   (start: oracle digests, below)
 
   start [--force] <assignments-file>
       One line per agent:  agent-k: func_A[@score]:src/a.c func_B[@score]:src/b.c ...
@@ -24,6 +27,11 @@ env:   ROUND_BASE=<branch>  (default match-round-1)   ROUND_MAIN=<checkout> (def
       PROMPT.md (matching_notes/round_prompt_template.md + matcher rules from PLAN.md + each
       function's NOTES.md entries and score). Refuses if any worktree already exists (--force
       removes it first, discarding its work) or the main checkout has uncommitted tracked changes.
+      Then, per function, digest.py FUNC --src SRC --repo <worktree> --out <worktree>/DIGEST_FUNC.md
+      (one-page summary of the five oracles; PROMPT.md tells the agent to read it before step
+      zero), $ROUND_DIGEST_JOBS (default 4) at a time in the background, --fast unless
+      ROUND_DIGEST_FULL=1; ROUND_DIGEST=0 skips digests. A failed digest only prints a WARNING
+      (log: <worktree>/scratch_agent/digest_FUNC.log).
 
   status
       Per worktree: HEAD, commits in $ROUND_BASE..HEAD, modified tracked files, and whether the
@@ -118,6 +126,39 @@ report_progress() {
 }
 
 # ---------------------------------------------------------------- start
+DIGEST=$SCRIPT_DIR/digest.py
+digests_enabled() { [ "${ROUND_DIGEST:-1}" != 0 ] && [ -f "$DIGEST" ]; }
+
+# digest_one <agent> <worktree> <func> <src> <score>: runs in the background; never fails start.
+digest_one() {
+    local agent=$1 wt=$2 func=$3 src=$4 score=$5 log rc t0
+    log=$wt/scratch_agent/digest_$func.log
+    local args=("$func" --src "$src" --repo "$wt" --out "$wt/DIGEST_$func.md")
+    [ "${ROUND_DIGEST_FULL:-0}" = 1 ] || args+=(--fast)
+    [ -n "$score" ] && args+=(--score "$score")
+    t0=$SECONDS
+    "$PY" "$DIGEST" "${args[@]}" >"$log" 2>&1
+    rc=$?
+    if [ $rc -eq 0 ] && [ -s "$wt/DIGEST_$func.md" ]; then
+        info "$agent: wrote DIGEST_$func.md ($(wc -l <"$wt/DIGEST_$func.md") lines, $((SECONDS - t0)) s)"
+    else
+        info "WARNING: $agent: digest.py failed for $func (exit $rc, log $log); the agent will run the oracles by hand"
+    fi
+}
+
+# start_digests <agent> <worktree> SPEC...: one background digest per function, at most
+# $ROUND_DIGEST_JOBS running at once.
+start_digests() {
+    local agent=$1 wt=$2 spec func src score
+    shift 2
+    for spec in "$@"; do
+        func=${spec%%:*}; src=${spec#*:}; score=
+        case $func in *@*) score=${func#*@}; func=${func%@*} ;; esac
+        while [ "$(jobs -rp | wc -l)" -ge "${ROUND_DIGEST_JOBS:-4}" ]; do wait -n; done
+        digest_one "$agent" "$wt" "$func" "$src" "$score" &
+    done
+}
+
 cmd_start() {
     local force=0 file=""
     while [ $# -gt 0 ]; do
@@ -172,12 +213,23 @@ cmd_start() {
             run git -C "$wt" reset --hard "$BASE"
         fi
         run mkdir -p "$wt/scratch_agent"
+        local dflag=()
+        digests_enabled && dflag=(--digests)
         # shellcheck disable=SC2086
-        "$PY" "$HELPER" prompt --agent "$agent" --worktree "$wt" --main "$MAIN" --base "$BASE" $specs \
+        "$PY" "$HELPER" prompt --agent "$agent" --worktree "$wt" --main "$MAIN" --base "$BASE" "${dflag[@]}" $specs \
             >"$wt/PROMPT.md" || die "prompt generation failed for $agent"
         info "wrote $wt/PROMPT.md ($(wc -l <"$wt/PROMPT.md") lines)"
         info "HEAD: $(git -C "$wt" log --oneline -1)"
+        if digests_enabled; then
+            info "digests: started in the background ($( [ "${ROUND_DIGEST_FULL:-0}" = 1 ] && echo full || echo --fast))"
+            # shellcheck disable=SC2086
+            start_digests "$agent" "$wt" $specs
+        fi
     done <<<"$parsed"
+    if digests_enabled; then
+        say "waiting for the oracle digests"
+        wait
+    fi
     say "done. Launch each agent in its worktree with PROMPT.md as the prompt, e.g."
     info "cd $WT_ROOT/<agent-k> && claude --model claude-opus-5-5 \"\$(cat PROMPT.md)\""
 }

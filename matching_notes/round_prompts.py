@@ -4,8 +4,9 @@
   round_prompts.py parse <assignments-file>
       Validate an assignments file and print one line per agent: "agent-k<TAB>spec spec ...".
       Line format: `agent-k: func_A[@score]:src/a.c func_B[@score]:src/b.c ...` (# comments ok).
-  round_prompts.py prompt --agent agent-k --worktree W --main M --base B SPEC...
+  round_prompts.py prompt --agent agent-k --worktree W --main M --base B [--digests] SPEC...
       Print the filled PROMPT.md for one agent (template: matching_notes/round_prompt_template.md).
+      --digests: tell the agent to read W/DIGEST_<func>.md (written by digest.py at round start).
   round_prompts.py notes func_X
       Print the NOTES.md blocks (bullet / ### section / paragraph) that mention func_X.
   round_prompts.py open [--plain]
@@ -229,12 +230,25 @@ def cmd_prompt(args):
         f"  .venv/bin/python3 matching_notes/corpus.py near {f} --draft --c\n"
         f"  .venv/bin/python3 matching_notes/ido_bisect.py {src} {f}"
         for f, _, src in parsed)
+    digests = ""
+    if args.digests:
+        names = ", ".join(f"DIGEST_{f}.md" for f, _, _ in parsed)
+        digests = (
+            f"BEFORE step zero, read {names} in your worktree root: one page per function summarising\n"
+            f"all five oracles (corpus.py siblings, near --draft, accessmap, symcheck, ido_bisect) as run on\n"
+            f"the draft at round start; full outputs and the exact commands are in DIGEST_<func>.md.d/.\n"
+            f"It replaces your first oracle pass (copy its verdicts into your notes; if it says `fast`,\n"
+            f"ido_bisect was not run - run it when the diff is register/temp-shaped), NOT the loop: still\n"
+            f"run `corpus.py near FUNC --draft --c` yourself after each significant edit. A missing DIGEST\n"
+            f"file means its generation failed - then run the step-zero commands by hand. Never commit\n"
+            f"DIGEST files.\n\n")
     sections = []
     for i, (f, score, src) in enumerate(parsed, 1):
         draft = "yes (`#ifdef NON_MATCHING` block above the GLOBAL_ASM)" if has_draft(src, f) else \
             "NO draft yet - write one (start from m2c output)"
         sections.append(
             f"### {i}. {f} ({src})\n"
+            + (f"- Oracle digest: DIGEST_{f}.md (read first)\n" if args.digests else "") +
             f"- Current score (fd.sh): {score if score is not None else 'unknown - run fd.sh first'}\n"
             f"- Draft in tree: {draft}\n"
             f"- Score check: `matching_notes/fd.sh {src} {f}` (after enabling the draft with a bare `#if 1`)\n"
@@ -244,7 +258,7 @@ def cmd_prompt(args):
         "WORKTREE": args.worktree, "MAIN": args.main, "BASE": args.base,
         "SCRATCH": os.path.join(args.worktree, "scratch_agent"), "FUNC_LIST": func_list,
         "ORACLES": oracles, "MATCHER_RULES": matcher_rules(), "FUNCTIONS": "\n".join(sections),
-        "AGENT": args.agent,
+        "AGENT": args.agent, "DIGESTS": digests,
     }
     out = re.sub(r"\{\{(\w+)\}\}", lambda m: subs.get(m.group(1), m.group(0)), tpl)
     left = re.findall(r"\{\{\w+\}\}", out)
@@ -279,6 +293,7 @@ def main():
     p = sub.add_parser("prompt")
     for a in ("--agent", "--worktree", "--main", "--base"):
         p.add_argument(a, required=True)
+    p.add_argument("--digests", action="store_true", help="mention the DIGEST_<func>.md files")
     p.add_argument("specs", nargs="+"); p.set_defaults(fn=cmd_prompt)
     p = sub.add_parser("notes"); p.add_argument("func"); p.set_defaults(fn=cmd_notes)
     p = sub.add_parser("open"); p.add_argument("--plain", action="store_true"); p.set_defaults(fn=cmd_open)
