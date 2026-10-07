@@ -4295,20 +4295,25 @@ s32 func_8437FCCC(unk_D_800FCB18* arg0) {
 }
 
 #ifdef NON_MATCHING
-// Score 210 after round 6 (was 350). Round-6 findings (agent 7):
+// Score 90 after round 6 (was 350). Round-6 findings (agent 7), in the order they helped:
 // - The min result is a separate `s32 n` (now in a1 like the target) and the min input reuses `j`
 //   (permuter hint; var_a0_3 is gone). Frame stays 0xc0 with i j k l m spBA + 2 u8 + n on top and
 //   sp94 sp90 sp78 spBF sp76 + 2 u8 + var_s0 below; order of the register-only u8s is irrelevant.
 // - The else-branch copy loop uses `j`, not a separate m (fixes its v0/v1 swap; m is now unused but
-//   its slot is needed).
-// - The two `if (1) {}` (after the unk_04 < unk_01 test and at the top of the innermost loop) put
-//   the `sb t1,0xbf(sp)` i-spill in the right place (permuter found do{}while(0) + a goto label).
-// - Remaining: sp5C (unk_04[i]) lands in v1 and unk_01[i] in a2 (target v0/v1), which also hoists
-//   `move v0,zero` above the compare; t-regs are one ahead from the sp94 loop (the arg2 no-op burns
-//   a temp); the innermost-loop arg2 reload is v1 instead of t2. Dropping sp5C fixes the compare
-//   regs but i stops being register-allocated (2760). Dead ends this round: switch for `== 3`,
-//   sp5C types (s32/u16/s16/u32), sp5C holding unk_01[i] (235), moving the arg2 no-op after the
-//   sp94 loop or into the compares (2000+), other sum orders, sp76 = 1 before the copy loop.
+//   its slot is needed). sp5C can equally be `j` (same output).
+// - `if (sp5C != 3) continue;` at the top of the then-branch (instead of wrapping the body in
+//   `if (unk_04[i] == 3) { ...; continue; }`) fixes the unk_04/unk_01 compare registers (v0/v1).
+//   The body is then wrapped in `if (1) {` (a bare block is 305). Testing unk_04[i] again instead
+//   of sp5C gives 190 (unk_04 in a1).
+// - The arg2 no-op moved out of `if (i)` to just before `sp5C = ...` fixes the sp94 loop temps.
+// - `if (1) {}` at the top of the innermost loop puts the `sb t1,0xbf(sp)` i-spill in place
+//   (removing it: 305).
+// - Remaining (90): t-regs one ahead between the compare and the arg2 reload (temp_v0_2 - 2 in t3,
+//   target t2), and the innermost-loop arg2 reload `lw v1,0xc8(sp)` (target t2), which re-syncs
+//   the rotation. Without the no-op everything matches up to the reload and is one behind after
+//   it, so the reload register is the real root cause. Dead ends: all six sum orders, the no-op
+//   in the then-branch / k / l / innermost loop, `&&` chains of 2 or 4, switch for `== 3`, sp5C
+//   types, sp5C as k/l/temp_v0_2/var_s2, copy-loop rewrites (while, swapped operands, m/k/l).
 // Older findings (rounds 4-5):
 // Score 350. Round-4 findings:
 // - spBF is not a real slot: 0xbf is i's spill (j spills to 0xbe). sp5C is m2c's name for the
@@ -4357,7 +4362,6 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
         }
 
         if (i) {
-            if ((arg2 && arg2) && arg2) {}
             var_a3 = arg0->unk_01[0];
         } else {
             var_a3 = 0;
@@ -4367,11 +4371,14 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
             sp94[j] = 0x80000002;
         }
 
+        if ((arg2 && arg2) && arg2) {}
         sp5C = arg0->unk_04[i];
 
         if (sp5C < arg0->unk_01[i]) {
-            if (1) {}
-            if (arg0->unk_04[i] == 3) {
+            if (sp5C != 3) {
+                continue;
+            }
+            if (1) {
                 var_s2 = 0;
                 temp_v0_2 = arg0->unk_01[i] + var_a3;
 
@@ -4426,7 +4433,6 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
                     func_8437FB14(arg0, arg1, arg3);
                     sp76 = 1;
                 }
-                continue;
             }
         } else {
             for (j = 0; j < arg0->unk_01[i]; j++) {
