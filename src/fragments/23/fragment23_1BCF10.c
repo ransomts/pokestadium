@@ -327,73 +327,60 @@ s32 func_88215D18(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3)
     return 0;
 }
 
-#ifdef NON_MATCHING
-void func_88216000(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
+s32 func_88216000(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
     s32 sp12C;
-    Gfx* sp104;
-    Gfx* sp100;
-    s32 spC;
     s32 temp_s0;
-    s32 temp_t3;
-    s32 temp_t4;
-    s32 temp_t4_2;
-    s32 var_t5;
-    unk_func_8820BE14_06C* temp_v0;
-    unk_func_8820BE14_06C* temp_v0_2;
-    void* temp_v1_42;
-    unk_func_8820BE14_02C_038_02C* ptr = arg0->unk_00.unk_2C;
+    s32 w = 8;
+    s32 h = 16;
 
-    sp12C = ptr->unk_3E * ptr->unk_4A;
-
-    temp_s0 = ((arg0->unk_00.unk_00.unk_14.unk_00 / 2) + arg1) - 9;
+    sp12C = arg0->unk_2C->unk_00.unk_3E * arg0->unk_2C->unk_00.unk_4A;
+    temp_s0 = ((arg0->unk_00.unk_14.unk_00 / 2) + arg1) - 9;
 
     gDPPipeSync(gDisplayListHead++);
-
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_40022E0, G_IM_FMT_I, G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(gDisplayListHead++, D_40022E0, G_IM_FMT_I, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->unk_00.unk_00.unk_14.unk_00 + arg1) << 2,
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->unk_00.unk_14.unk_00 + arg1) << 2,
                         (arg2 + 0x10) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPPipeSync(gDisplayListHead++);
-
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    spC = (arg2 * 4) & 0xFFF;
-    if (arg0->unk_00.unk_30 == 0) {
-        gDPLoadTextureBlock(gDisplayListHead++, (ptr->unk_58 > 0) ? D_4002368 : D_4002D88, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                            20, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+    if (arg0->unk_30 == 0) {
+        gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_2C->unk_58 > 0) ? D_4002368 : D_4002D88, G_IM_FMT_RGBA,
+                            G_IM_SIZ_16b, 20, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, temp_s0 << 2, arg2 << 2, (temp_s0 + 0x11) << 2, (arg2 + 0xF) << 2,
                             G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-        gDPLoadTextureBlock(gDisplayListHead++, (ptr->unk_58 > 0) ? D_4002878 : D_4003298, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                            20, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_2C->unk_58 > 0) ? D_4002878 : D_4003298, G_IM_FMT_RGBA,
+                            G_IM_SIZ_16b, 20, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (temp_s0 - 0x1C) << 2, arg2 << 2, (temp_s0 - 9) << 2, (arg2 + 0xF) << 2,
                             G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
     } else {
-        var_t5 = 0;
-        if ((ptr->unk_2C != NULL) && ((ptr->unk_58 + sp12C) < (ptr->unk_3E * (ptr->unk_2C->unk_08 + 1)))) {
+        s32 var_t5 = 0;
+
+        if ((arg0->unk_2C->unk_00.unk_2C != NULL) &&
+            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->unk_00.unk_3E * (arg0->unk_2C->unk_00.unk_2C->unk_08 + 1)))) {
             var_t5 = 1;
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_t5 != 0 ? D_40025F0 : D_4003010, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20,
+        gDPLoadTextureBlock(gDisplayListHead++, (var_t5 != 0) ? D_40025F0 : D_4003010, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20,
                             16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, temp_s0 << 2, arg2 << 2, (temp_s0 + 0x11) << 2, (arg2 + 0xF) << 2,
                             G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_t5 != 0 ? D_4002B00 : D_4003520, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20,
+        gDPLoadTextureBlock(gDisplayListHead++, (var_t5 != 0) ? D_4002B00 : D_4003520, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20,
                             16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (temp_s0 + 0x1A) << 2, arg2 << 2, (temp_s0 + 0x2D) << 2,
@@ -401,12 +388,9 @@ void func_88216000(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
     }
 
     gDPPipeSync(gDisplayListHead++);
-
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
+    return 0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/23/fragment23_1BCF10/func_88216000.s")
-#endif
 
 s32 func_882169D4(unk_func_8820BE14_02C_038* arg0, Controller* arg1) {
     s32 sp24 = arg0->unk_00.unk_38;

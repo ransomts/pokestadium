@@ -696,7 +696,7 @@ void func_88215974(unk_func_88200FA0_030_030* arg0, s32 arg1);
 void func_882159AC(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1);
 s32 func_882159BC(unk_func_8820BE14_02C_038* arg0);
 s32 func_88215D18(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_88216000(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2);
+s32 func_88216000(unk_func_88507D4C* arg0, s32 arg1, s32 arg2);
 s32 func_882169D4(unk_func_8820BE14_02C_038* arg0, Controller* arg1);
 void func_88216F18(unk_func_8820BE14_02C_038* arg0, s32 arg1);
 void func_88217018(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2);
