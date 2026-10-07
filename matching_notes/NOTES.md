@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (37 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (36 as of 2026-10-07, round 7 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -189,6 +189,20 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   reload to the right case and fixed the whole t-rotation (1850 -> 85); the last v0/v1 swap: one
   function-scope `var_v0 = D_8006F09C` assigned twice (before the 0xFE guScale if, and again inside
   `if (func_800325AC() == 0)`). Oracles found none of this: all of it was source shape.
+
+- **func_88216000** (629 instr, 18415 -> 0): it is the matched func_88507DBC (fragment26.c) copied
+  verbatim except `(arg0->unk_2C->unk_00.unk_2C->unk_08 + 1)` - the one extra `addiu`. Signature
+  `s32 func_88216000(unk_func_88507D4C* arg0, s32 arg1, s32 arg2)` (fragment23.h prototype updated).
+  Found by `corpus.py siblings` (0.997) and confirmed by `transplant.py`; the "custom load-block
+  macro" theory in the old notes was wrong - the DXT was computed at runtime because the twin does so.
+- **func_8820BE14** (447 instr, 3156 -> 1755, draft 92b38a1): root cause - the target uses SEVEN
+  callee-saved regs (s0-s6), keeping `ptr2` (`&var_s4_2->unk_04`) in s0 in the inner loops, so the
+  func_8850068C address gets s4 instead of a spill to 0x54(sp). `j = 0;` hoisted above the
+  `func_882062E4` call with `for (; j < count; j++)` makes j live across the call and take the 7th
+  register (u32 j gives 2365). Remaining: target strength-reduces j (v0 = j*4) and keeps ptr2 in s0
+  (ours j in s2, ptr2 in a0); s0/s2 swapped in the first three loops, var_s1 in s0; the
+  `unk_30.unk_00/unk_02` halfword store order; FRAGMENT_LOAD relocs name different (probably aliased)
+  symbols. ~40 dead ends in the draft comment. Regalloc-only now -> permuter farm from this draft.
 
 ### Round 6 matches (2026-10-07, 8 Opus 5.5 agents; tier 2 stack-layout + survivors)
 - **func_8003DB84** (3051084): declare `D_800FCB28` as `u32` (was s32; extern in 3D140_2.c and the
@@ -384,11 +398,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_81209078** (score ~320): empty `-1` branch should be plain `b`, one v0/v1, final store base.
 
 ### Large / far off (need real work)
-- **func_88216000** (frag23_1BCF10, 18415): structure right. Target saves only s0 (frame 0x130 vs
-  0x148); first load-block's DXT computed at runtime (`div (t2+0x7FF), t0`, t0=t2=1, t1=0x3F) ⇒
-  width/size came through variables (custom/expanded load-block macro). `_g` of SetTextureImage and
-  SetTile spilled to sp104/sp100.
-- **func_8820BE14** (~3156): func_8850068C addr should stay in s4; adjacent s16 stores order.
 - **func_8004A89C / func_80049DF0 / func_8004A474** (4A3E0): Game Boy APU emulator (Transfer Pak GB
   player); D_800FD008 = {value, dirty} byte-pair sound regs. 8004A89C has a draft (~170/256 diff);
   the other two are sibling channel functions with no draft. File has a struct missing `;`
