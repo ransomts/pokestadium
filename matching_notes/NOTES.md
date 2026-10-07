@@ -15,7 +15,11 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   matched so far (func_81002830, func_80034824) + func_80044EA4 draft rewritten from scratch
   (24743 → 6744; see its entry below). Round 4 (overnight 2026-10-06/07, GLM model in 9 worktree
   agents): 1 match (func_82F0BEF8, found uncommitted in a leftover worktree), nothing else usable.
-  Work is moving to the Palmetto cluster with Opus/Fable.
+  Round 5 (2026-10-07, Palmetto, 6 Opus 5.5 agents x 2 tier-1 functions, ~1 h wall): **9 matched**
+  (func_80034BD4, func_86B09F64, func_81002530, func_81003A54, func_8436C6A4, func_88206110,
+  func_8250281C, func_86A01CF0, func_87804320), func_80044EA4 6744 -> 396, func_84372670 4308 -> 2860,
+  func_8437FD74 unchanged at 350 (mapped). Code 93.95% -> 94.33%. A 24-function permuter farm
+  (jobs 16777856 + 16777947, 3-day limit) is running alongside; check `matching_notes/farm_status.sh`.
 - Nearly every remaining function already has an `#ifdef NON_MATCHING` draft with a `//` comment
   saying what still differs. Trust those comments over this list if they disagree.
 
@@ -187,8 +191,13 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   spBF sp76, two u8s, s32 var_s0` with sp5C inlined and pad removed - that fixes the min code but inlining
   sp5C swaps v0/v1 at the unk_04/unk_01 compare (score 880). Dead ends: reusing temp_v0_2/var_a0_3/var_s2/
   j/k/l/m for unk_04[i]; `unk_01[i] > unk_04[i]`; ~9 else-branch m-loop rewrites; reordering the arg2 sum;
-  sibling-style ternaries (350, only with the `&&` line kept). Untried: var_s0 at the top and n at the
-  bottom of the frame combined with removing spBF.
+  sibling-style ternaries (350, only with the `&&` line kept). The var_s0-top / n-bottom / no-spBF
+  layout was then tried (agent 3, second pass): it puts n in a1 like the target but scores 495
+  (var_a0_3 stays in v1 not a0, target's `b` missing; plain if/else 805) - that file is saved as
+  `matching_notes/func_8437FD74_best495.c`. The arg2 no-op needs arg2 as the first of exactly three
+  `&&` operands and can sit anywhere before the sp94 loop; from that loop on our temps run one ahead
+  of the target's (t9 vs t8), apparently because the no-op allocates a temp that emits no code.
+  More dead ends in the draft's // comment (567dd19).
 - **func_84372670** (frag62_359F90, 4308 -> 2860 in round 5, bc54bcf): only the `unk_4F` loop back-edge
   (`goto case_6`) makes IDO cache &D_843C5238 in s0 (a `return` there drops s0, ~1700); for/do/while
   with `continue` compile identically (uopt works from the CFG). s0 only goes away when the 4C test, the
