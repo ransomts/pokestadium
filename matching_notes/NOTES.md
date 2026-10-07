@@ -1,14 +1,19 @@
 # Matching session notes (for the next AI session)
 
-Last updated 2026-10-06. Branch `match-round-1` (local only, not pushed). Companion files in this
-folder: `IDO_TRICKS.md` (every IDO 7.1 trick that produced a match — read it first), `fd.sh`
-(build one object + diff one function), `var.py` (batch-test text variants of a function).
+Last updated 2026-10-07 (round 3). Branch `match-round-1` (local only, not pushed). Companion files
+in this folder: `IDO_TRICKS.md` (every IDO 7.1 trick that produced a match — read it first), `fd.sh`
+(build one object + diff one function), `var.py` (batch-test text variants of a function),
+`agent_setup.sh <worktree>` (one-time setup for parallel agent worktrees: resets to match-round-1,
+symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
-- Code decompiled: 93.13% at start → **93.84%** after round 1 (+round-2 merge). 57 functions remain
-  as `#pragma GLOBAL_ASM` (list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical (`make` → `OK`).
+- Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
+  remain as `#pragma GLOBAL_ASM` (list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
-  (func_82F10BB4) + 2 drafts improved.
+  (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
+  matched so far (func_81002830, func_80034824) + func_80044EA4 draft rewritten from scratch
+  (24743 → 6744; see its entry below).
 - Nearly every remaining function already has an `#ifdef NON_MATCHING` draft with a `//` comment
   saying what still differs. Trust those comments over this list if they disagree.
 
@@ -26,6 +31,16 @@ folder: `IDO_TRICKS.md` (every IDO 7.1 trick that produced a match — read it f
   `make init`) before reading progress.
 
 ## Process lessons (important)
+- **Resumed agents lose their worktree cwd** (after a session restart, SendMessage-resume may run
+  them with cwd = the main repo). They then edit main instead of their worktree. Tell every resumed
+  agent to run `pwd` and re-cd to `.claude/worktrees/agent-<id>` before continuing.
+- **fd.sh writes a shared /tmp/fd_last_<func>.txt** — an agent running fd.sh for the same function
+  in another tree overwrites your copy. Judge fd.sh by its stdout, not by re-reading the /tmp file.
+- **No em-dashes (—) or other non-ASCII in src/ comments**: preprocess.sh converts UTF-8→EUC-JP and
+  iconv fails on U+2014 (breaks the whole file's build). Use ASCII `-` or `->`.
+- Permuter import: `./.venv/bin/python3 tools/permuter/import.py src/<file>.c asm/us/nonmatchings/<ovl>/<func>.s`
+  then fix compile.sh arg order (`-O2 -o "$OUTPUT" "$INPUT"`), run
+  `./.venv/bin/python3 tools/permuter/permuter.py nonmatchings/<func> --stack-diffs -jN`.
 - **Worktree base bug:** round-2 agents spawned with `isolation: worktree` were based on `master`
   (6995f32), NOT on `match-round-1`, so they worked on stale round-0 drafts. That largely explains the
   weak round 2. Next time either merge the branch first, or tell agents to
@@ -44,27 +59,61 @@ folder: `IDO_TRICKS.md` (every IDO 7.1 trick that produced a match — read it f
 - Quick bisection trick: disable chunks of a function with `if (0)` and watch only the target lines
   to find which part of the code is perturbing them.
 
+### func_81002830 — MATCHED (round 3, agent). Winning shape (see final source):
+- `ptr = arg1;` as FIRST statement inside the if; `var_a4 = 1;` before it; a flag-conditioned empty
+  `if (var_a4) {}` replacing `if (1) {}`; copy the global value out (`var_a4 = var_a3`) and REUSE
+  var_a3 as the macro height arg. Makes IDO split arg1 across a1 (param) + a2 (copy) and puts
+  D_800AF7AE's address+value in a3 so the gfx `_g` temps rotate from t0. Permuter lesson:
+  RE-SEED the permuter from the current best source, not the original draft (run 1 from the 165
+  draft only reached 30 in 45 min; re-imported 30-source hit 0 within minutes).
+
+### func_80034824 — MATCHED (round 3, agent). Winning shape:
+- DELAY the cursor assignment (`vtx = vertices;`) until after the last pre-loop computation,
+  index the remap table directly (`spA0[i]`, no `spA0++` walk), keep `vertices` itself as the
+  loop pointer. Combined with temp_fs0-2 reuse from round 1. Likely applies to siblings.
+
+### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
+- The draft was fundamentally wrong: the target's inner loop is MONO→STEREO duplication — per j:
+  `temp = (s16)((D_800FCF00[i] * D_800FCEE0[i][(base + j) % 2560]) >> 7);` then TWO stores:
+  `unk_000[(F38 + j*2 + 1) % 2208] = temp; unk_000[(F38 + j*2) % 2208] = temp;` (+1 store first).
+- Keys that got the structure right: `u32 D_800FCF38[2]` (divu not div — signed % blocked the 4x
+  unroll), `(u8)` cast on unk_25D1 reads (lbu), a `u8* p` cursor LOCAL for D_800FCEF0 (`*p`
+  everywhere, `p++` in the for-increment; slot 0x5c), `UNUSED` pads to place i at slot 0x70 and
+  frame 0x80 (9 locals: 3 before i, p 9th), all array accesses written out per use (no caching
+  locals — IDO CSEs the addresses into s-regs).
+- Remaining: systematic one-slot rotations — mine {s1=FCF20, s2=FCF38, s3=FCF28, s4=2208, s5=j}
+  vs target {s1=j, s2=FCF20, s3=FCF38, s4=FCF28, s5=2208}; the FCED8[i] CSE temp at 0x40 vs
+  0x44 (mine has one extra temp slot); and a one-step t-lag. j's decl position and `!=` vs `<`
+  loop bound don't change it; a while-loop form kills the unroll (much worse). Permuter running
+  in nonmatchings/func_80044EA4/ (seeded from this source).
+
 ## Per-function state and dead ends (most promising first)
 
 ### Near misses — register allocation only
 - **func_81002530** (frag31_2577F0, score 10): only `lbu` → t8 vs target t7. Target needs lbu in t7 then
   two hidden temps (t8,t9) after it. Dead ends: `!x`, `<1`, `<=0`, `|0`, `<<0`, `+0`, every
-  (u8/u16/s8/s16/(u32)(u64)) cast placement, double masks, `%256`, `==0U`, raw pointer reads, temp var.
+  (u8/u16/s8/s16/(u32)(u64)) cast placement, double masks, `%256`, `==0U`, raw pointer reads, temp var;
+  round 3: dropping the mask fixes the lbu but rotates ALL body temps by one (uniform t6→t9 shift).
+  Refined goal: the mask supplies the t7 slot but only one of two post-branch hidden temps.
 - **func_82F0BEF8** (frag41_291D60, score 10): `(u32)(u64)(sp20.unk_02 + 1)` supplies the 4 hidden temps
   but then the `lh` lands in t2 not a1. Dead ends: all cast variants, `& 0xFFFFFFFF`, u64/s64 temps,
   casting other args/return; permuter 4800 iters stuck at 10. Untried: case-2 code from a macro/inline
   helper, different switch/if structure.
-- **func_81003A54** (frag31_258080): same instructions, temp-register rotation only. Not worked in round 2.
-- **func_81002830** (frag31_257AF0, score 165): target D_800AF7AE in a3, first gfx copy in t0. `if (1) {}`
-  is load-bearing (removing → 3160). Dead ends: s16 var, decl order, operand swaps, hoisting multiply.
-- **func_8436C6A4** (frag62_356730): hoisted 0x06000000 should be in s4. Not worked in round 2.
+- **func_81003A54** (frag31_258080, score 110): default-case region 2 t-slots behind, tail 1 behind,
+  and temp_t0 lands in a3 (target: t0 + `move a3,t0`). The `(u32)(u64)`-chain LENGTH is a rotation
+  knob: 3 layers = 110 (best), 2 layers fixes the default case but breaks the tail (280), 0 = 210,
+  4-5 = worse. Inlining `D_800AF770[var_v0]` per-case prevents the CSE (per-case reloads); inlining
+  var_v0 changes the frame. The two regions need different temp counts — a single knob can't fix both.
+- **func_8436C6A4** (frag62_356730): hoisted 0x06000000 should be in s4 (ours t3, rotating all 8
+  loop-carried values). Round-3 dead ends in the draft's // comment: or-chain operand order (IDO
+  reassociates), `w0 |=` read-modify-write (fused), hand-rolled packing (flag moves but structure
+  blows up). Target allocates the G_TRI2 constant LAST among loop-carried values.
 - **func_8437FD74** (frag62_361050): compare regs v1/a2 vs v0/v1; `if ((arg2 && arg2) && arg2) {}` is
   load-bearing. arg1 is `u8*` (header fixed).
 - **func_88206110** (frag23_1AE680): regalloc only; ~20k permuter iters failed.
-- **func_80034824 / func_80034BD4** (33FE0): float regs fixed by reusing temp_fs0-2 for the sums
-  (original used few float locals) + round-1 `vtx` cursor copy → 10 diff lines. Remaining: s-reg
-  assignment of vertices/remap cursor/i. A separate vertex cursor var fixes the moves but perturbs
-  pre-loop float temps (worse). Apply the same temp reuse to 80034BD4's loop x/y/z (untried).
+- **func_80034BD4** (33FE0): sibling of the matched func_80034824 — apply its winning shape: delayed
+  `vtx = vertices;` assignment (after the last pre-loop use), `spA0[i]` indexing instead of pointer
+  walk, temp_fs0-2 reuse for the sums.
 - **func_86B09F64** (frag17): by-value (MtxF*, Vec3f, Vec3s); only FPU regs of six sin/cos differ.
 - **func_8250281C**, **func_84372670** (lui reload vs cached address), **func_87804320** (score 275),
   **func_86A01CF0**: see draft comments.
@@ -110,11 +159,6 @@ folder: `IDO_TRICKS.md` (every IDO 7.1 trick that produced a match — read it f
 - **func_81209078** (score ~320): empty `-1` branch should be plain `b`, one v0/v1, final store base.
 
 ### Large / far off (need real work)
-- **func_80044EA4** (45720): draft inner loop is wrong. Target: per iteration
-  `t = (D_800FCF00[i] * D_800FCEE0[i][(u32)(base + j) % 2560]) >> 7;` then
-  `unk_000[(F38 + j*2 + 1) % 2208] = t; unk_000[(F38 + j*2) % 2208] = t;` with
-  `base = D_800FCED8[i]->unk_25C8 - var_s7`, unsigned math; IDO unrolls 4x (write a plain loop).
-  Frame 0x80; i spilled 0x70, &D_800FCEF0[i] 0x5c, &D_800FCED8[i] 0x44.
 - **func_88216000** (frag23_1BCF10, 18415): structure right. Target saves only s0 (frame 0x130 vs
   0x148); first load-block's DXT computed at runtime (`div (t2+0x7FF), t0`, t0=t2=1, t1=0x3F) ⇒
   width/size came through variables (custom/expanded load-block macro). `_g` of SetTextureImage and
