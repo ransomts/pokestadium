@@ -35,24 +35,17 @@ grep -q OK <(env PATH="$STAGE/.venv/bin:$PATH" make PYTHON="$STAGE/.venv/bin/pyt
 
 # Permuter farm: tier 1 + 2 near misses. Enable each draft with a bare `#if 1` in the staged
 # copy only (never commit that). The permuter's main process caps each function at ~80 it/s
-# regardless of workers, so spread cores thin: 6 workers x 15 funcs = 90 cores.
+# regardless of workers, so spread cores thin: 12 workers x 8 funcs = 96 cores.
 FUNCS=(
-  # round 6 (2026-10-07): the 15 still-unmatched tier 1/2/2b functions
+  # after round 6 (2026-10-07): the 8 open tier 1/2 functions (gDisplayListHead pair excluded: symbol issue)
   func_8437FD74:src/fragments/62/fragment62_361050.c
-  func_84372670:src/fragments/62/fragment62_359F90.c
-  func_80044EA4:src/45720.c
-  func_8430506C:src/fragments/62/fragment62_2EC3C0.c
-  func_8003DB84:src/3D140_2.c
   func_84367660:src/fragments/62/fragment62_351F20.c
-  func_86800B38:src/fragments/14/fragment14_144300.c
-  func_84302658:src/fragments/62/fragment62_2EC3C0.c
   func_838043F8:src/fragments/47/fragment47_2AFDB0.c
+  func_8430506C:src/fragments/62/fragment62_2EC3C0.c
+  func_84302658:src/fragments/62/fragment62_2EC3C0.c
   func_83501718:src/fragments/44/fragment44.c
   func_8850B2D4:src/fragments/26/fragment26.c
-  func_882111F8:src/fragments/23/fragment23_1B4EA0.c
   func_82F04604:src/fragments/41/fragment41_289240.c
-  func_860005B8:src/fragments/6/fragment6.c
-  func_86100C30:src/fragments/7/fragment7.c
 )
 # FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" replaces the list (e.g. a small side job).
 [ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"
