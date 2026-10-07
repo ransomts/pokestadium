@@ -268,7 +268,7 @@ extern u32 dmaBufferLen;
 extern OSPiHandle* D_800FCB08[4];
 // s32 D_800FCB0C[3];
 extern unk_D_800FCB18* D_800FCB18[4];
-extern s32 D_800FCB28[2];
+extern u32 D_800FCB28[2];
 extern u8 D_800FCB30[2];
 extern u8 D_800FCB38[2][8];
 extern unk_D_800FCB48 D_800FCB48[2];
@@ -497,8 +497,6 @@ void func_8003D918(u32 arg0, u32 arg1) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only a spill slot differs: target uses 0x1C(sp), this compiles to 0x18(sp)
 void func_8003DB84(s32 arg0) {
     s8 var_t0;
     s8 var_t2;
@@ -896,9 +894,6 @@ void func_8003DB84(s32 arg0) {
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/3D140_2/func_8003DB84.s")
-#endif
 
 void func_8003EB40(s32 arg0, unk_D_800FCB18* arg1) {
     u8 pad;
