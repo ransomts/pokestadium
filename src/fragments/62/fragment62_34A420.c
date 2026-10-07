@@ -854,6 +854,7 @@ Gfx* func_84362084(Gfx* arg0) {
     unk_D_84398F50_048* var_s2;
     Vtx* vtx;
     Vec3f sp1A0;
+    s32 pad;
 
     sp1B4 = D_84398F50;
 
@@ -862,8 +863,7 @@ Gfx* func_84362084(Gfx* arg0) {
             continue;
         }
 
-        var_s2 = &sp1B4->unk_048[0];
-        if (var_s2) {}
+        var_s2 = sp1B4->unk_048;
 
         switch (sp1B4->unk_008) {
             case 0:
