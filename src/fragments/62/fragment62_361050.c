@@ -2929,7 +2929,8 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
 
                 if (arg4) {
                     var_s0 = 0;
-                    switch (temp_s6->unk_15) {
+                    var_v1_5 = temp_s6->unk_15;
+                    switch (var_v1_5) {
                         case 0x0:
                             break;
 
@@ -2957,7 +2958,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
 
                     if (temp_s3->unk_15 != 0) {
                         var_s0 = 1;
-                        switch (temp_s6->unk_15) {
+                        switch (var_v1_5) {
                             case 8:
                                 var_s1 -= spB7 * 2;
                                 if (temp_s6->unk_4E & 1) {
