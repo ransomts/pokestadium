@@ -692,6 +692,17 @@ void func_80034254(StadiumModel* model) {
     }
 }
 
+// Score 2905 (fd.sh; was 3485). Frame and everything up to the a.y load match; the rest is float
+// register allocation in the cross product (target: bx=fs4, e1y=fs5, e1z=fs1, e2z=fs0, nx=fs2,
+// a.y/a.z in fa0/fa1; fs3 is saved but never used, so a phantom fs3 live range - probably a
+// spilled named local such as ax/cx - pushes everything up one register).
+// Target stack map: i 0xF4, ax 0xF0 (spilled), cx 0xD8 (spilled), ia/ib/ic 0xBE/BC/BA, remap 0x84,
+// compiler temps 0x58 (c.y-b.y), 0x5C (b.z-a.z), 0x60 (c.z-b.z). That fits nine named coordinates
+// ax..cz at 0xF0..0xD0 plus nx/ny/nz/len at 0xCC..0xC0 with inline-expression edges.
+// Dead ends: clean rewrite with all nine coords named + inline cross product (score ~9500-11000,
+// spills ay/az/nx and extra temps); Vec3f* / ModelVertex* pointers with direct loads (13193);
+// *index++ / index += 3 at loop end; computing nx before ny (worse, ~3600); inlining e1x/e2x
+// (3280-5172).
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
@@ -762,14 +773,12 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         temp_fs1 = temp_fv1 - temp_v0->position.base.z;
         temp_a0_2 = &vertices[spBA];
         spD8 = temp_a0_2->position.base.x;
-        sp5C = temp_fs1;
         temp_fs0 = temp_a0_2->position.base.z - temp_fv1;
         sp58 = temp_a0_2->position.base.y - temp_fv0;
-        sp60 = temp_fs0;
-        temp_fa1 = spD8 - temp_fs4;
         temp_ft4 = temp_fs4 - spF0;
-        var_fs0 = (sp5C * temp_fa1) - (temp_ft4 * sp60);
-        var_fs2 = (temp_fs5 * sp60) - (temp_fs1 * sp58);
+        temp_fa1 = spD8 - temp_fs4;
+        var_fs0 = (temp_fs1 * temp_fa1) - (temp_ft4 * temp_fs0);
+        var_fs2 = (temp_fs5 * temp_fs0) - (temp_fs1 * sp58);
         var_fs1 = (temp_ft4 * sp58) - (temp_fs5 * temp_fa1);
         temp_fv0_3 = sqrtf((var_fs2 * var_fs2) + (var_fs0 * var_fs0) + (var_fs1 * var_fs1));
         if ((s32) temp_fv0_3 > 0) {
