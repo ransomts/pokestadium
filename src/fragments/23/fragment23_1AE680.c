@@ -2249,8 +2249,20 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
     return var_s1;
 }
 
-// Remaining diffs: target keeps the func_8850068C address in s4 instead of spilling it, and the unk_30 stores are
-// scheduled in a different order
+// Score 3156 -> 1755 by hoisting `j = 0;` above the func_882062E4 call (j then crosses the call, uses a 7th
+// s-reg, and the func_8850068C address gets a register instead of a stack spill, as in the target).
+// Root cause of the original diff: the target uses 7 s-regs; ptr2 (&var_s4_2->unk_04) lives in s0 in the inner
+// loops, so the func_8850068C CSE temp gets s4 for free. With 6 s-regs IDO spills that temp to the stack.
+// Remaining diffs: in the target j is strength-reduced (v0 = j*4) and ptr2 sits in s0; here j sits in s2 and
+// ptr2 in a0. The first three loops also swap s0/s2 (pointer vs i*16) and var_s1 is s0 instead of s1.
+// The unk_30.unk_00/unk_02 sh order is still swapped (target li 0x38 first but stores 0x32 first).
+// Also: target FRAGMENT_LOAD relocs are D_88600000/fragment28_ROM_START vs fragment27_TEXT_START/
+// fragment27_relocs_ROM_END here (probably aliases; check at link time).
+// Dead ends (no gain or worse): ptr2 assigned before the call, ptr2->unk_08 = count, no ptr2 (folds to lw 4(s1)),
+// one pointer instead of var_s4/var_s4_2, ptr[i] indexing (8 s-regs), reusing temp_s0/temp_s0_4/temp_s1/temp_s2/
+// spC4/spA0 for ptr2 (IDO splits webs), block-scoped p, while/do-while inner loops, i/j swapped, j for the first
+// loops, j as u32 (2365: j not strength-reduced), j as s16/u16/s8, count u32/s16, all 6 orders of the three
+// unk_30 stores (and moving them before FRAGMENT_LOAD), j = 0 at other spots (after the call = no change).
 #ifdef NON_MATCHING
 void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4, s32 arg5, char** arg6,
                    char** arg7, char** arg8, char** arg9, char** argA, char** argB) {
@@ -2317,11 +2329,12 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     var_s4_2 = var_s4 = arg0->unk_6C.unk_00;
     for (i = 0; i < 1; i++, var_s4_2++, var_s4++) {
+        j = 0;
         count = func_882062E4(var_s1, 6, 0x20, spB4, i);
         var_s4_2->unk_04.unk_08 = count;
 
         ptr2 = &var_s4_2->unk_04;
-        for (j = 0; j < count; j++) {
+        for (; j < count; j++) {
             ptr2->unk_00[j] = var_s1++;
         }
 
@@ -2330,11 +2343,12 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     var_s4_2 = var_s4 = arg0->unk_7C.unk_00;
     for (i = 0; i < 12; i++, var_s4_2++, var_s4++) {
+        j = 0;
         count = func_882062E4(var_s1, 20, 0x21, spB4, i);
         var_s4_2->unk_04.unk_08 = count;
 
         ptr2 = &var_s4_2->unk_04;
-        for (j = 0; j < count; j++) {
+        for (; j < count; j++) {
             ptr2->unk_00[j] = var_s1++;
         }
 
@@ -2343,11 +2357,12 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     var_s4_2 = var_s4 = arg0->unk_8C.unk_00;
     for (i = 0; i < 12; i++, var_s4_2++, var_s4++) {
+        j = 0;
         count = func_882062E4(var_s1, 20, 0x11, 0, i);
         var_s4_2->unk_04.unk_08 = count;
 
         ptr2 = &var_s4_2->unk_04;
-        for (j = 0; j < count; j++) {
+        for (; j < count; j++) {
             ptr2->unk_00[j] = var_s1++;
         }
 
