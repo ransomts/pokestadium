@@ -238,6 +238,21 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   induction variable `v += k` into `base + i*k` (IDO strength-reduces it back).
 
 ### Shared pattern: gDisplayListHead in a register (frag6 func_860005B8, frag7 func_86100C30)
+- **Round 6 (agent 6): ROOT CAUSE FOUND, match needs a linker alias - DECISION PENDING.** IDO keeps
+  one register range per global SYMBOL. Because the top block uses `gDisplayListHead`, the end
+  block's uses belong to the same range, which gets split for the top block and dropped. An end
+  block that uses a DIFFERENT symbol gets its own range and compiles exactly like the target
+  (`lui/addiu a3` before the `bnez`, then `lw v1,0(a3)` / `sw 0(a3)`); confirmed in a standalone IDO
+  test and in both functions. No C form of the same symbol does it (casts/puns, `&head[0]`,
+  block-scope extern, local `Gfx** p` in any placement; `(*(Gfx* volatile*)&gDisplayListHead)++`
+  gives the shape but regs t5/v0). The agent's match adds `extern Gfx* D_800A7420;` plus
+  `D_800A7420 = gDisplayListHead;` in undefined_syms.ld and uses the alias in the end blocks; ROM
+  byte-identical. The repo has no other symbol aliases, so this is kept on branch
+  `round6-gfxhead-alias` (commits 7c03eb6, 204a7de) and NOT merged until the owner decides.
+  Also found: frag7's two UNUSED struct copies used the wrong source symbols
+  (`sp60 = D_86104B5C; sp5C = D_86104B60;` is right; the old form differed by 2 ROM bytes).
+  gDisplayListHead is a standalone bss at 0x800A7420 (first symbol of 6A40), used by 114 files, so a
+  struct-field access through another base is not an available explanation.
 - Final `if (arg0 == 0) { gSPDisplayList(gDisplayListHead++, ...) }` — target hoists
   `&gDisplayListHead` into a3. Bisection proved the end block compiles right on its own; it only goes
   wrong because the EARLIER `if (arg0 != 0) { gSPDisplayList; gDPSetEnvColor; loop; gSPDisplayList }`
