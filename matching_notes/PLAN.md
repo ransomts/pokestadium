@@ -17,7 +17,7 @@ protocol, and the cluster recipe.
 | Data still in asm (`asm/us/data/**/*.s`) | 184 files, 2.3 MB, mostly one .data + one .rodata stub per fragment; fragments/1 has 12 |
 | Hand-written asm by design | `boot`, `entry`, `libleo/bootstrap` (yaml `asm`/`hasm` segments) - not "undecompiled" |
 | Permuter farm | job 16781081, 8 open tier-2 functions, 3-day limit, candidates in `/scratch/$USER/permuter_best` |
-| Tooling debt | decomp-permuter `sizeof(T) * N` parse bug fixed locally (patch + PR draft in this folder) |
+| Tooling (2026-10-07) | corpus.py (idiom search, near, siblings), accessmap.py, symcheck.py, ido_bisect.py, round.sh; permuter `sizeof` parse fix (patch + PR draft) |
 
 What rounds 5-6 taught (see NOTES.md and IDO_TRICKS.md): the remaining code falls into three kinds
 of problem, and each needs a different tool. (1) One compiler temp whose creation point we cannot
@@ -103,6 +103,24 @@ Everything below already works on the login/interactive nodes under `~/Code/poke
   the draft C line that emitted it and matched functions containing the same idiom with THEIR C),
   `corpus.py search '<regex over normalized asm>' --c` (e.g. `'beqzl .*\n.*lui'`), `corpus.py show
   FUNC`, `corpus.py selftest`. Register classes are normalized (t/s/a/v/f); end immediates with `$`.
+- **Siblings** (`corpus.py siblings FUNC`, `--all-unmatched`): weighted n-gram similarity of an unmatched
+  function to every matched one; STRONG >= 0.45 means a matched function contains most of it.
+  Table for the current 40 saved as `matching_notes/SIBLINGS_2026-10-07.txt` (func_88216000 is a
+  0.997 copy of func_88507DBC; func_86905734 0.77 of func_86905F24; six more STRONG).
+- **Access map** (`matching_notes/accessmap.py FUNC [--base a0] [--struct NAME] [--draft]`): per-base
+  tables of every memory access in the TARGET asm (offset, stride, width, sign, R/W, value origin),
+  overlaid on a declared struct with NO-FIELD/WIDTH/SIGN verdicts and a shift test; `--draft`
+  compiles the draft and diffs target-vs-draft accesses ("DRAFT STORES SHIFTED BY +4"). Run it first
+  on any draft suspected of a wrong struct or wrong field width.
+- **Symbol check** (`matching_notes/symcheck.py FUNC | --all`): flags references that are really
+  offsets into a neighbouring symbol (negative addends, past-the-end, `alias`), with suggested
+  rewrites like `D_86A03D40[i][j - 6]`; `--all` is clean on the current 40, so run it on NEW drafts
+  (e.g. the four no-draft functions once drafted) and after any symbol/yaml change.
+- **Round driver** (`matching_notes/round.sh start|status|integrate|finish|farm-list`): worktrees +
+  PROMPT.md per agent from `round_prompt_template.md` (matcher rules pulled live from this file,
+  NOTES entries per function), integration in commit order with `#if 1` and build gates, stale-.s
+  cleanup only when no worktree remains, parking of unmerged work. Assignments file format:
+  `agent-k: func_A@score:src/a.c func_B:src/b.c`.
 - **Pass bisection** (`matching_notes/ido_bisect.py`, built 2026-10-07): rebuilds a draft with each of
   ~30 IDO optimizer switches (uopt/ugen/as1, e.g. `-Wo,-nordstore`, `-Wo,-no_const_in_reg`,
   `-Wo,-doassoc`, `-Wb,-nobopt`) in a scratch mirror and tables which diff lines vanish/appear per
