@@ -858,9 +858,7 @@ Gfx* func_84362084(Gfx* arg0) {
     sp1B4 = D_84398F50;
 
     for (i = 0; i < 10; i++, sp1B4++) {
-        if (sp1B4->unk_000 != 1) {
-            continue;
-        }
+        if (sp1B4->unk_000 == 1) {
 
         var_s2 = sp1B4->unk_048;
 
@@ -1202,6 +1200,7 @@ Gfx* func_84362084(Gfx* arg0) {
             gSP1Triangle(arg0++, 8, 7, 6, 0);
         }
         arg0 = func_8436EDE8(sp1B4->unk_002, arg0);
+    }
     }
 
     return arg0;
