@@ -1,0 +1,16 @@
+# Round 7 (2026-10-07): tier 4 structural functions, grouped by subsystem (PLAN.md Phase B)
+agent-1: func_8004A89C@170:src/4A3E0.c func_80049DF0:src/4A3E0.c func_8004A474:src/4A3E0.c
+agent-2: func_80033D44:src/33FE0.c func_80034348:src/33FE0.c
+agent-3: func_88209B54@580:src/fragments/23/fragment23_1AE680.c
+agent-4: func_88216000@18415:src/fragments/23/fragment23_1BCF10.c func_8820BE14@3156:src/fragments/23/fragment23_1AE680.c
+agent-5: func_88203ED8:src/fragments/23/fragment23_1A9780.c func_88201488:src/fragments/23/fragment23_1A9780.c
+agent-6: func_88304850:src/fragments/24/fragment24_1CEA00.c func_88305F28:src/fragments/24/fragment24_1CEA00.c
+agent-7: func_885065E0:src/fragments/26/fragment26.c func_88500A74:src/fragments/26/fragment26.c
+agent-8: func_88805AEC:src/fragments/28/fragment28_2190D0.c func_88807D04:src/fragments/28/fragment28_2190D0.c
+agent-9: func_86803C6C:src/fragments/14/fragment14_1462A0.c func_80041A98:src/3D140_2.c func_80012870:src/12D80.c
+agent-10: func_86905734:src/fragments/15/fragment15_150AC0.c func_8130337C:src/fragments/33/fragment33.c
+agent-11: func_8437B0CC:src/fragments/62/fragment62_361050.c
+agent-12: func_84362084:src/fragments/62/fragment62_34A420.c
+agent-13: func_8120572C:src/fragments/1/fragment1_7F9A0.c
+agent-14: func_810010BC:src/fragments/31/fragment31_2558B0.c
+agent-15: func_80045FF0:src/46680.c
