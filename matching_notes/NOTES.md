@@ -232,8 +232,21 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_86800B38** (frag14_144300, score 81): `&spC4[i]` spill at 0x4c vs 0x50 (one extra hidden temp)
   and loop-increment order in case 5/6. `if (pad1) {}` load-bearing. Untried: `Color_RGB8 [2][4]`
   for spB8/spC4, scope of var_s4/var_s7.
-- **func_84302658**, **func_838043F8**, **func_83501718**, **func_8850B2D4**,
-  **func_82F04604**: spill-slot ordering / one slot off; see draft comments. Lesson from
+- **func_8850B2D4** (frag26, score 84, 4 stack lines): two spilled temps, the first rectangle's lry
+  `(arg2+1)<<2 & 0xFFF` and its ulx<<12, reused by the last rectangle; target has lry at 8 and ulx at
+  0x10 (nothing at 0xC), ours lry 0x10 / ulx 0xC. Round 6 dead ends: commuting operands; (u32)/(s16)
+  casts or `* 4` on coords; every w/h type (16-bit -> 0xF8 frame), order, init; literal 8 in one
+  LoadTextureBlock; function-level `color`; `if (1) {}` anywhere (reschedules everything); the farm's
+  `(w = arg2 + 1)` (rotates reload regs only). A pad moves both slots but keeps the order.
+- **func_82F04604** (frag41, score 318, 7 lines): partial fix NOT committed - delete named `sp68`,
+  write `(s16)(spEE * spF8)` at every use, add an unused `s32 pad3;` in the block: that puts the
+  `&D_8006F630`/`&D_8006F518` spills at 0x50/0x54 and orders the loop-end stores right, but the
+  strength-reduced induction temp then sits one slot below `sp64` (target: above) -> 10 stack-only
+  lines. No placement of the `sp64` decl fixes it. Next lead: make `sp64` a compiler temp still
+  computed before the `func_82F022DC` call while var_s2 stays in s2. Dead ends: inlining sp64 (var_s2
+  spills, 209 lines); for/do-while/swapped increments; function-level sp68; `s16 sp68`; inlining
+  temp_s3/temp_lo. Observed: unused locals in any block get slots above the used ones.
+- **func_84302658**, **func_838043F8**, **func_83501718**: spill-slot ordering / one slot off; see draft comments. Lesson from
   func_82F10BB4's match: frame too big with identical offsets ⇒ too many named locals — turn an
   induction variable `v += k` into `base + i*k` (IDO strength-reduces it back).
 
