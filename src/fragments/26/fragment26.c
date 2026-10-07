@@ -1463,24 +1463,22 @@ s32 func_88506438(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2) {
 }
 
 #ifdef NON_MATCHING
+// Score 1695 (was 5850). Frame/stack now match: the cursors are sp4C/sp50 themselves (no var_t1/var_a3
+// copies), var_t4 must be the last decl (0x34). Remaining: register numbering off by one everywhere and
+// the 0x400 case compares sp4C + 1 == sp48 (IDO reuses the else-branch increment) where the target
+// compares sp4C == sp48 - 1 against the loop bound register.
 s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
-    s32 i;
-    s32 j;
     s32 sp5C;
     s32 sp58;
     s32 sp54;
     s32 sp50;
     s32 sp4C;
     s32 sp48;
-    s32 sp24;
-    s32 var_a3;
-    s32 var_t1_2;
-    s32 var_v0_2;
+    s32 i;
+    s32 j;
     s32 temp_v0_3;
-    s32 temp_v1;
-    s32 var_t1;
+    s32 sp24;
     s32 var_t4;
-    s32 var_v0;
 
     var_t4 = 0;
     sp5C = 0;
@@ -1492,34 +1490,20 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
     sp54 = arg0->unk_38 / arg0->unk_48;
     sp24 = func_8001F750() & 0xFFFF;
 
-    // if (0) {}
-
     if (sp24 == 0x800) {
-        var_t1 = sp54;
+        sp4C = sp54;
 
         for (i = 0; i < sp48 - 1; i++) {
-            var_a3 = arg0->unk_4C;
+            sp50 = arg0->unk_4C;
+            sp4C = ((sp4C == 0) ? sp48 : sp4C) - 1;
 
-            if (var_t1 == 0) {
-                var_v0 = sp48;
-            } else {
-                var_v0 = var_t1;
-            }
-
-            var_t1 = var_v0 - 1;
             for (j = 0; j < arg0->unk_48; j++) {
-                temp_v0_3 = (arg0->unk_48 * var_t1) + var_a3;
+                temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
                 if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
-
-                if (var_a3 == 0) {
-                    var_v0_2 = arg0->unk_48;
-                } else {
-                    var_v0_2 = var_a3;
-                }
-                var_a3 = var_v0_2 - 1;
+                sp50 = ((sp50 == 0) ? arg0->unk_48 : sp50) - 1;
             }
 
             if (var_t4 != 0) {
@@ -1527,37 +1511,29 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (sp54 < var_t1))) {
+        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (sp54 < sp4C))) {
             sp5C = 8;
             var_t4 = 0;
         }
-        sp4C = var_t1;
-        sp50 = var_a3;
     } else if (sp24 == 0x400) {
-        var_t1 = sp54;
+        sp4C = sp54;
 
         for (i = 0; i < sp48 - 1; i++) {
-            var_a3 = arg0->unk_4C;
+            sp50 = arg0->unk_4C;
 
-            if (var_t1 == sp48 - 1) {
-                var_t1 = 0;
+            if (sp4C == sp48 - 1) {
+                sp4C = 0;
             } else {
-                var_t1++;
+                sp4C++;
             }
 
             for (j = 0; j < arg0->unk_48; j++) {
-                temp_v0_3 = (arg0->unk_48 * var_t1) + var_a3;
+                temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
                 if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
-
-                if (var_a3 == 0) {
-                    var_v0_2 = arg0->unk_48;
-                } else {
-                    var_v0_2 = var_a3;
-                }
-                var_a3 = var_v0_2 - 1;
+                sp50 = ((sp50 == 0) ? arg0->unk_48 : sp50) - 1;
             }
 
             if (var_t4 != 0) {
@@ -1565,38 +1541,29 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (var_t1 < sp54))) {
+        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (sp4C < sp54))) {
             sp5C = 8;
             var_t4 = 0;
         }
-        sp4C = var_t1;
-        sp50 = var_a3;
     } else if (sp24 == 0x100) {
-        var_t1 = sp54;
-        var_a3 = sp58;
+        sp50 = sp58;
 
         for (i = 0; i < arg0->unk_48 - 1; i++) {
-            var_t1_2 = arg0->unk_4E;
+            sp4C = arg0->unk_4E;
 
-            if (var_a3 == arg0->unk_48 - 1) {
-                var_a3 = 0;
+            if (sp50 == arg0->unk_48 - 1) {
+                sp50 = 0;
             } else {
-                var_a3++;
+                sp50++;
             }
 
             for (j = 0; j < sp48; j++) {
-                temp_v0_3 = (arg0->unk_48 * var_t1_2) + var_a3;
+                temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
                 if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
-
-                if (var_t1_2 == 0) {
-                    var_v0_2 = sp48;
-                } else {
-                    var_v0_2 = var_t1_2;
-                }
-                var_t1_2 = var_v0_2 - 1;
+                sp4C = ((sp4C == 0) ? sp48 : sp4C) - 1;
             }
 
             if (var_t4 != 0) {
@@ -1604,40 +1571,24 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (var_a3 < sp58))) {
+        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (sp50 < sp58))) {
             sp5C = 8;
             var_t4 = 0;
         }
-
-        sp50 = var_a3;
-        sp4C = var_t1_2;
     } else if (sp24 == 0x200) {
-        var_t1 = sp54;
-        var_a3 = sp58;
+        sp50 = sp58;
 
         for (i = 0; i < arg0->unk_48 - 1; i++) {
-            var_t1_2 = arg0->unk_4E;
+            sp4C = arg0->unk_4E;
+            sp50 = ((sp50 == 0) ? arg0->unk_48 : sp50) - 1;
 
-            if (var_a3 == 0) {
-                var_v0 = arg0->unk_48;
-            } else {
-                var_v0 = var_a3;
-            }
-
-            var_a3 = var_v0 - 1;
             for (j = 0; j < sp48; j++) {
-                temp_v0_3 = (arg0->unk_48 * var_t1_2) + var_a3;
+                temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
                 if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
-
-                if (var_t1_2 == 0) {
-                    var_v0_2 = sp48;
-                } else {
-                    var_v0_2 = var_t1_2;
-                }
-                var_t1_2 = var_v0_2 - 1;
+                sp4C = ((sp4C == 0) ? sp48 : sp4C) - 1;
             }
 
             if (var_t4 != 0) {
@@ -1645,13 +1596,10 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (sp58 < var_a3))) {
+        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (sp58 < sp50))) {
             sp5C = 8;
             var_t4 = 0;
         }
-
-        sp4C = var_t1_2;
-        sp50 = var_a3;
     }
 
     if (var_t4 != 0) {
