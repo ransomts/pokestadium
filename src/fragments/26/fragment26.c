@@ -229,13 +229,20 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
 }
 
 #ifdef NON_MATCHING
-// Register allocation differs: sp34/sp88 should be computed after the first scissor word and kept on the stack,
-// with the row counter (y) spilled to the stack in the outer loop.
+// Score 2991 (was 3031). Stack layout now matches the target exactly (sp88 at 0x88, y at 0x90, CSE temp
+// arg0+arg2 at 0x34, arg0 spilled to its home 0x98); needs 4 decls in this order - dropping sp34 shrinks
+// the frame to 0x40. Remaining diff is pure register allocation: target colours the two sums with
+// temporaries (t8/v0, spilled right away) so the gfx constants get s2/s3 and the scissor _g lives in s1;
+// ours gives the sums s4/s2 and hoists the addu's. Tried, no change (identical code): gDPSetScissor
+// instead of ScissorFrac, u8* arg4, swapped sp88/sp34 statements, decl order of x/sp34, reversed
+// compares, for-init forms, y = arg1 before loop. Worse: sums assigned before the scissor (7047),
+// scissor using the vars (3549), loop bounds as expressions (3549/3919), sp34 recomputed in outer
+// loop (3091), if (1) {} in loops (5326/6149), assignment-in-argument (3664). Good permuter candidate.
 void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    s32 sp88;
     s32 sp34;
-    s32 x;
     s32 y;
+    s32 x;
+    s32 sp88;
 
     gDPPipeSync(gDisplayListHead++);
 
