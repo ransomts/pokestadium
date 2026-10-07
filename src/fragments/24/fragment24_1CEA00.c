@@ -1864,7 +1864,6 @@ void func_88305DF4(unk_func_8830867C_02C* arg0, Controller* arg1) {
     arg0->unk_02C->unk_2C = 0xB;
 }
 
-#ifdef NON_MATCHING
 void func_88305F28(unk_func_8830867C_02C* arg0) {
     unk_func_8830867C_04C_030_02C_000_000* spDC;
     unk_func_8830867C_02C_0CC_000* spD8;
@@ -1884,11 +1883,11 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
     char* sp48;
     char* sp44;
     s32 sp40;
-    unk_func_8830867C_02C_0CC_000_008* sp34;
+    UNUSED s32 pad;
 
     spDC = arg0->unk_0AC->unk_30->unk_2C->unk_00->unk_00[arg0->unk_0AC->unk_30->unk_38];
+    spD8 = arg0->unk_034->unk_00.unk_2C->unk_00[arg0->unk_034->unk_00.unk_38];
     spD0 = arg0->unk_034->unk_00.unk_38;
-    spD8 = arg0->unk_034->unk_00.unk_2C->unk_00[spD0];
     spCC = spD0 - (arg0->unk_034->unk_58 / arg0->unk_034->unk_00.unk_3E);
 
     if (spDC->unk_08 >= 0x64) {
@@ -1896,11 +1895,10 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         if (spC0 < 4) {
             func_88305C7C(&spD8->unk_08, spC0);
             spBC = -1;
-            sp34 = (u8*)spD8 + spC0;
         } else {
+            if (1) {}
             spC0 = arg0->unk_0AC->unk_78->unk_30->unk_38;
-            sp34 = (u8*)spD8 + spC0;
-            spBC = sp34->unk_11;
+            spBC = spD8->unk_08.unk_09[spC0];
         }
         func_88305CDC(spD8, spDC, spC0);
 
@@ -1911,7 +1909,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         spC8.unk_00 = (arg0->unk_0DC->unk_18 * spC0) + 0x84;
         spC8.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
-        func_88314920(arg0->unk_0BC, spBC, sp34->unk_11, spC8);
+        func_88314920(arg0->unk_0BC, spBC, spD8->unk_08.unk_09[spC0], spC8);
         func_88303520(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(func_8850CF00))(arg0->unk_0B8, gPlayer1Controller);
         func_88305270(arg0);
@@ -1921,7 +1919,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
             ((func88507C0C)Memmap_GetFragmentVaddr(func_88507C0C))(arg0->unk_034, spD0, spCC);
             func_8002D5D4(0x1A, spD8->unk_38);
             func_8002D5D4(0x1D, func_8002D7C0(NULL, 0, D_8831A4CC, spBC - 1));
-            func_8002D5D4(0x1E, func_8002D7C0(NULL, 0, D_8831A4CC, sp34->unk_11 - 1));
+            func_8002D5D4(0x1E, func_8002D7C0(NULL, 0, D_8831A4CC, spD8->unk_08.unk_09[spC0] - 1));
             func_8002D7C0(arg0->unk_CCC->unk_40, 0x140, D_8831A4C4, 0x5D);
             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_090, arg0->unk_CCC, 0, 0);
             ((func8850A3CC)Memmap_GetFragmentVaddr(func_8850A3CC))(arg0->unk_090, gPlayer1Controller);
@@ -1930,7 +1928,6 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         }
     } else if (spDC->unk_08 >= 0x32) {
         spB4 = arg0->unk_0AC->unk_78->unk_30->unk_38;
-        if ((!arg0) && (!arg0)) {}
         func_88305BC4(spD8, spDC, spB4, &spB0, &spAC);
 
         temp_v0_4 = ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C));
@@ -1977,9 +1974,6 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
     }
     func_88316F98(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/24/fragment24_1CEA00/func_88305F28.s")
-#endif
 
 s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
     char* sp28[6];
