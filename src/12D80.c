@@ -250,6 +250,13 @@ void func_80012768(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     }
 }
 
+// func_80012870: score 60, one diff: as1 schedules `sw t8(0xFF), 0x24(sp)` one slot before
+// `sra a2` (target: after). Registers, float code and pre-as1 dependencies are identical, so this is
+// pure as1 list-scheduling order. ido_bisect: no flag fixes it. Dead ends (round 7, all same 1-line
+// diff or worse): s32 tmp (worse), tmp inline as (s16) casts, swap tmp1/tmp2 order, tmp += arg,
+// arg2 + tmp1 (worse), arg2 += tmp / arg4 reuse / s16 x = tmp + arg2 (much worse), `<< 5`, 0x20,
+// (s16) casts on args, 0xFFFF, (u8)-1, 255, u8 alpha local, s32 -1 local, &arg0[0], (f32) casts,
+// pads, if (1) {} in several spots, s32/u32 idx (worse), chained/inline sin/cos. Permuter candidate.
 #ifdef NON_MATCHING
 void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6,
                    s16 arg7) {
