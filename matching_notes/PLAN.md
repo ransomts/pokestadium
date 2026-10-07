@@ -202,6 +202,17 @@ function from the *current* draft (so always re-seed from the best known source 
 compile.sh arg order, and runs one permuter per function with `--stack-diffs -j<workers>` under
 `/local_scratch`, syncing `best/` to `/scratch/$USER/permuter_best/<func>/` every 10 min.
 
+Observability: `matching_notes/farm_status.sh` (any node) prints per function the base score,
+best saved score, candidate count, last improvement time and the latest STATUS snapshot
+(iterations, errors, it/s; one per 5 min in `<func>.log`). Job stdout: `/scratch/$USER/pokestadium_<jobid>.out`.
+
+Checkpoint/restart: the search is memoryless, so the saved best candidates ARE the checkpoint.
+They sync to `/scratch/$USER/permuter_best/<func>/` every 10 min and on SIGTERM. A new farm run
+re-seeds each function from its lowest-scoring saved candidate (`RESEED=0` to start from the
+draft; delete the function's save dir to forget it). QoS `normal` is preemptable (requeue); the
+sbatch script requeues, appends logs, and the restart re-seeds automatically. Candidates saved
+by older runs with `--no-context-output` need `farm_splice.py` before they can seed.
+
 Sizing: 16 workers per function; 8 tier-1 functions = 128 cores. Permuter scores are inflated by
 a constant when the file has statics; judge candidates with `fd.sh`, not the permuter number.
 Kill one run with `pkill -f "permuter[.]py nonmatchings/<func>"`.

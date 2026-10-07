@@ -5,12 +5,17 @@
 #SBATCH --constraint="cpu_gen_genoa|cpu_gen_sapphirerapids"
 #SBATCH --nodes=1 --ntasks=1 --cpus-per-task=96 --mem=128G
 #SBATCH --time=3-00:00:00
+#SBATCH --requeue
+#SBATCH --open-mode=append
+#SBATCH --signal=B:TERM@120
 #SBATCH --output=/scratch/%u/pokestadium_%j.out
 #
 # Unattended Palmetto job: stage the repo to node-local SSD, verify the build, run the
 # permuter farm on the tier-1 functions, and leave a ready tree for Claude Code agents.
 # Edit FUNCS below (func:src pairs) before submitting. For a supervised session use
 # `salloc` with the same resources (see PLAN.md section 2) and run the steps by hand.
+# QoS normal is preemptable (PreemptType=preempt/qos, mode REQUEUE): on preemption Slurm requeues
+# the job, which re-stages and re-seeds from /scratch/$USER/permuter_best. Logs append across restarts.
 # Shorter run: sbatch --time=1-00:00:00 --export=ALL,FARM_HOURS=22 matching_notes/palmetto_job.sh
 set -eu
 SRC_REPO=${SRC_REPO:-$HOME/Code/pokestadium}

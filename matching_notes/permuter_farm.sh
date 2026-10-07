@@ -77,7 +77,10 @@ sync_best() {
     touch "$SAVE_DIR"
 }
 any_alive() { for p in "${pids[@]}"; do kill -0 "$p" 2>/dev/null && return 0; done; return 1; }
-while any_alive; do sleep "$SYNC_SECS"; sync_best; done
+# Preemption / scancel / time limit: Slurm sends TERM (KillWait 30 s before KILL). Sync what we have.
+on_term() { echo "$(date '+%F %T') TERM received, final sync"; kill "${pids[@]}" 2>/dev/null; sync_best; exit 143; }
+trap on_term TERM INT HUP
+while any_alive; do sleep "$SYNC_SECS" & wait $!; any_alive && sync_best; done
 sync_best
 echo "farm done; best candidates in $SAVE_DIR"
 bash "$HERE/farm_status.sh" "$SAVE_DIR"
