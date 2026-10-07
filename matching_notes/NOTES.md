@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (42 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (41 as of 2026-10-07, round 6 in progress; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -155,6 +155,12 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   Came straight from the permuter's score-10 candidate. fd.sh still shows `D_800FCC50` vs
   `D_800FCB48+0x108`: same address, ROM matches. Lesson: with an exactly-full frame, the SIGNEDNESS
   of a global can shift compiler temp slots without touching locals.
+- **func_86800B38** (b921a5a): ONE pointer `unk_D_86807558* ptr;` declared at switch scope next to
+  var_s4/var_s7, used as `for (i = 0, ptr = D_86807558; i < 4; i++, ptr++)` in BOTH the case 2/3 loop
+  and the case 5/6 loop (all `D_86807558[i].` in case 2/3 -> `ptr->`). Fixes the increment order and
+  the &spC4 spill (0x50) at once. Scope matters: function-scope ptr 1100-1400; only in case 5/6 1304;
+  also in the function's first loop breaks it. Cleanup: `Color_RGB8 spB8[2][4]` replaces the
+  out-of-bounds `spB8[i + 4]`; `if (pad1) {}` still needed.
 - **func_882111F8** (e9ec242): delete the named pointer locals sp20/sp1C and index directly
   (`sp30 = ptr[arg1]; sp2C = ptr[arg2]; ... ptr[arg1] = sp2C; ptr[arg2] = sp30;`) with one
   `UNUSED s32 pad;` after var_v1 for the 0x38 frame; the CSE'd addresses become the 0x20/0x1C
@@ -231,13 +237,16 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `if (1) {}` inserts; making D_843C5238 extern.
 
 ### Near misses — stack layout
-- **func_84367660** (frag62_351F20, score 229): fa0/ft4 swapped for a3_z vs 2*a3_y; six spill temps at
-  0x80..0x6C vs target 0x8C..0x78 — target has 3 extra never-stored spill temps. Pads don't move them.
-  Untried: name `arg4*sp130` etc. before the gfx macros; reorder gSPDisplayList/gDPSetEnvColor vs a3_*
-  computation; indexed vertex writes.
-- **func_86800B38** (frag14_144300, score 81): `&spC4[i]` spill at 0x4c vs 0x50 (one extra hidden temp)
-  and loop-increment order in case 5/6. `if (pad1) {}` load-bearing. Untried: `Color_RGB8 [2][4]`
-  for spB8/spC4, scope of var_s4/var_s7.
+- **func_84367660** (frag62_351F20, 229 -> 85 in round 6, d221a56): stack layout now matches (six spills
+  at 0x8C..0x78) but via a FAKE: a dead early copy of the six 1.2/0.2 expressions right after
+  `a3_z = arg4 * sp128;` (from the farm's 205 hint). This shows compiler-temp slot order follows where
+  each expression FIRST APPEARS in the source; the target's 3 never-stored slots sit below them, so
+  those temps (probably the `a3_* * 2.0f` subexpressions) first appear later. Moving the six real
+  assignments earlier wrecks the schedule (4600-9400). Remaining: pure regalloc - a3_z in fa0, 2*a3_y
+  in ft4, both sp128 loads to ft4 not ft5. `if (a3_z) {}` still required; tmp1 hack worth 25. Dead
+  ends: `sp128 * arg4` order, named 2*a3 temps / `(a3_y + a3_y)`, extra tmpN for vertex 8/9, moving
+  the if, reordering the dead copies, indexed vertex writes (1466), loop forms, named temps for the
+  func_80031A94 args, block-scoped pads. Good permuter candidate (re-seed from the 85 draft).
 - **func_8850B2D4** (frag26, score 84, 4 stack lines): two spilled temps, the first rectangle's lry
   `(arg2+1)<<2 & 0xFFF` and its ulx<<12, reused by the last rectangle; target has lry at 8 and ulx at
   0x10 (nothing at 0xC), ours lry 0x10 / ulx 0xC. Round 6 dead ends: commuting operands; (u32)/(s16)

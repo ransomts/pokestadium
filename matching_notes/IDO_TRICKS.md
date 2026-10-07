@@ -39,6 +39,11 @@ All of these produced actual matches or big score drops in this codebase.
 - Fix frame size / offsets by deleting m2c's unused junk locals, reordering declarations, adding
   `UNUSED s32 pad;` / `pad[N]` at the right position. `pad[N]` steps can be 16-byte periodic.
 - Each `gDisplayListHead++`-style gfx macro has a block-scoped `_g` that takes a slot.
+- **Compiler-temp slot order follows where each expression FIRST APPEARS in the source**, not where
+  the code is emitted (func_84367660: a dead early copy of six expressions moved their slots).
+- **One pointer loop variable shared by two loops in different switch cases**
+  (`for (i = 0, ptr = X; ...; i++, ptr++)`) reorders the bottom-of-loop increments and frees a hidden
+  temp slot (func_86800B38); its declaration scope (switch vs function) changes the result a lot.
 - Spill-temp slot *order* among themselves isn't controlled by declaration order — that remained
   unsolved in several functions (func_8430506C, func_84302658, func_838043F8, func_8850B2D4).
   Ideas not yet tried much: changing which sub-expressions are temps vs named, splitting/merging
