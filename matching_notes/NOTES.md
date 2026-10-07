@@ -8,7 +8,7 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 
 ## Status
 - Code decompiled: 93.13% at start → **93.84%** after round 1 → **93.9x%** after round 3. 55 functions
-  remain as `#pragma GLOBAL_ASM` (54 as of 2026-10-07; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
+  remain as `#pragma GLOBAL_ASM` (52 as of 2026-10-07 after round 5's first two matches; list: `grep -rn GLOBAL_ASM src`). ROM builds byte-identical
   (`make` → `OK`).
 - Round 1 (8 parallel agents, ~1 h): 15 matched. Round 2 (8 agents, ~12 min, stopped early): 1 matched
   (func_82F10BB4) + 2 drafts improved. Round 3 (8 parallel fork agents in worktrees + parent): 2
@@ -89,6 +89,21 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   `func_8002D7C0(...)` return values passed to `func_8001F1E8` (cases 0 and 1). Same hidden-temp
   trick as before, applied to the call results rather than the argument.
 
+### func_80034BD4 — MATCHED (round 5, Opus agent, c31b4e2). Winning shape:
+- func_80034824's shape (direct `temp_s1[i]` remap indexing, no pointer walk, `var_s0 = vertices;`
+  delayed until just before the loop) fixed the integer s-regs; dropping the unused locals and
+  moving the `s16* temp_s1` decl between spCA and spC0 fixed the frame; the loop's x/y/z FPU regs
+  needed a block-scoped `ModelBlendWeight* wt = &var_s0->cmd.weights[index];` with `w0 = wt->w0;`
+  etc. instead of indexing `weights[index]` three times (30 -> 0).
+- Trap: a first-match text replace of `f32 w0, w1, w2;` in 33FE0.c hits func_80034824 first.
+
+### func_86B09F64 — MATCHED (round 5, Opus agent, 8c69b81). Winning shape:
+- It is SM64's `mtxf_rotate_zxy_and_translate` with by-value args: declare `sx, cx, sy, cy, sz, cz`
+  in that order, each set directly from SINS/COSS; write `sx * sy * sz` and `sx * cy * cz` inline
+  (IDO CSEs and spills to 0(sp) itself); `mf[0][3] = mf[1][3] = mf[2][3] = 0.0f; mf[3][3] = 1.0f;`
+  and `UNUSED s32 pad[2];` as the first local for the 0x28 frame. The draft's `temp[10]` hack was
+  the problem. Lesson: before fighting FPU regalloc, look for a known SM64/libultra equivalent.
+
 ### func_80044EA4 (45720, score 6744, parent WIP in tree) — structure SOLVED, regalloc remains
 - The draft was fundamentally wrong: the target's inner loop is MONO→STEREO duplication — per j:
   `temp = (s16)((D_800FCF00[i] * D_800FCEE0[i][(base + j) % 2560]) >> 7);` then TWO stores:
@@ -129,10 +144,6 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_8437FD74** (frag62_361050): compare regs v1/a2 vs v0/v1; `if ((arg2 && arg2) && arg2) {}` is
   load-bearing. arg1 is `u8*` (header fixed).
 - **func_88206110** (frag23_1AE680): regalloc only; ~20k permuter iters failed.
-- **func_80034BD4** (33FE0): sibling of the matched func_80034824 — apply its winning shape: delayed
-  `vtx = vertices;` assignment (after the last pre-loop use), `spA0[i]` indexing instead of pointer
-  walk, temp_fs0-2 reuse for the sums.
-- **func_86B09F64** (frag17): by-value (MtxF*, Vec3f, Vec3s); only FPU regs of six sin/cos differ.
 - **func_8250281C**, **func_84372670** (lui reload vs cached address), **func_87804320** (score 275),
   **func_86A01CF0**: see draft comments.
 

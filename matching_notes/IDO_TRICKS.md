@@ -24,6 +24,8 @@ All of these produced actual matches or big score drops in this codebase.
   alignment of static arrays >= 8 bytes when splitting (D_8780FCCC had to be `[3]`).
 - **`%hi(sym+off)` constants per iteration rather than base+offset = index loop**, not pointer walk.
 - **`bgez` + 0x4F800000 fixup on int->float = source had a `(u32)` value/cast.**
+- **Check for a known SM64 / libultra equivalent first.** func_86B09F64 was `mtxf_rotate_zxy_and_translate`;
+  writing it the SM64 way matched every FPU register at once where the m2c-shaped draft never would.
 - **Passing structs by value**: floats stored to arg home slots + reads at 0x38.. = by-value
   `Vec3f`/`Vec3s` args (func_86B09F64).
 
