@@ -606,24 +606,21 @@ def apply(path):
             q = "const " if const else ""
             stem = f"{l['name']}_tail" if l.get("folded") else f"pad_{l['name']}"
             e = Emit(l)
-            a = a0 = l["vram"] + l["size"]
             stop = l["vram"] + l["span"]
+            a = (end + 3) & ~3  # IDO starts every data object on a 4-byte boundary, zero-filling the slack
+            if any(ROM[l["rom"] + l["size"]:l["rom"] + (min(a, stop) - l["vram"])]):
+                print(f"REFUSING: {l['name']}: nonzero bytes in the alignment slack after it")
+                return 2
             if l.get("folded"):
                 text += f"  // tail holds {', '.join(l['folded'])} (linker-defined symbols)"
-            i = 0
-            while a < stop:
-                if a % 4 == 0 and stop - a >= 4:
-                    n = (stop - a) // 4
-                    vals = ", ".join(e.scalar("u32", a + 4 * j) for j in range(n))
-                    text += f"\nstatic {q}u32 {stem}_{i}[{n}] = {{ {vals} }};"
-                    a += 4 * n
-                elif a % 2 == 0 and stop - a >= 2:
-                    text += f"\nstatic {q}u16 {stem}_{i} = {e.scalar('u16', a)};"
-                    a += 2
-                else:
-                    text += f"\nstatic {q}u8 {stem}_{i} = {e.scalar('u8', a)};"
-                    a += 1
-                i += 1
+            if stop - a >= 4:
+                n = (stop - a) // 4
+                vals = ", ".join(e.scalar("u32", a + 4 * j) for j in range(n))
+                text += f"\nstatic {q}u32 {stem}[{n}] = {{ {vals} }};"
+                a += 4 * n
+            if a < stop and any(ROM[l["rom"] + (a - l["vram"]):l["rom"] + l["span"]]):
+                print(f"REFUSING: {l['name']}: unaligned nonzero tail")
+                return 2
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
     for l in res["labels"]:
