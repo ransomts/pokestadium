@@ -563,6 +563,19 @@ def apply(path):
         if probs:
             print(f"REFUSING: {l['name']}: {probs}")
             return 2
+        # zero gap up to the next label: an explicit pad array (upstream style, e.g. src/20470.c),
+        # unless it is just the 16-byte alignment that ends the owner's section anyway
+        gap = (l["span"] or 0) - (l["size"] or 0)
+        labs = res["labels"]
+        k = labs.index(l)
+        run_end = k + 1 == len(labs) or labs[k + 1]["owner"] != l["owner"]
+        end = l["vram"] + l["size"]
+        if gap > 0 and not (run_end and l["vram"] + l["span"] == (end + 15) & ~15):
+            if any(ROM[l["rom"] + l["size"]:l["rom"] + l["span"]]):
+                print(f"REFUSING: {l['name']}: nonzero bytes after its declared size")
+                return 2
+            q = "const " if const else ""
+            text += f"\nstatic {q}u8 pad_{l['name']}[0x{gap:X}] = {{ 0 }};"
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
     for l in res["labels"]:
