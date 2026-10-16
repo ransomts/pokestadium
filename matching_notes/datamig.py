@@ -430,6 +430,7 @@ def plan(path, quiet=False):
             p_["span"] += x["span"] or 0
             p_["relocs"].update(x["relocs"])
             p_.setdefault("folded", []).append(x["name"])
+            p_.setdefault("folded_at", []).append((x["name"], x["vram"] - p_["vram"]))
             p_["users"] = sorted(set(p_["users"]) | set(x["users"]))
             if not p_["owner"] and x["owner"]:
                 p_["owner"], p_["why"] = x["owner"], f"via folded {x['name']}"
@@ -722,6 +723,14 @@ def apply(path):
         changed.add(hit)
     for f in changed:
         f.write_text("\n".join(files[f]) + "\n")
+    # folded fields are no C object: give the linker their address (asm-only users get no splat entry)
+    ld = SYMS.parent / "undefined_syms.ld"
+    have = ld.read_text()
+    add = [f"{n} = 0x{l['vram'] + off:08X};" for l in res["labels"] for n, off in l.get("folded_at", [])
+           if not re.search(r"^%s\s*=" % re.escape(n), have, re.M)]
+    if add:
+        ld.write_text(have.rstrip("\n") + "\n" + "\n".join(add) + "\n")
+        print(f"undefined_syms.ld: +{len(add)} folded symbol(s)")
     print("yaml + symbol_addrs updated; now: make extract && make  (phased_job.sh does this)")
     return 0
 
