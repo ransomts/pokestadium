@@ -74,7 +74,7 @@ if j >= 0:
     open(path, "w").write(t)
 EOF
 done
-WORKERS=$(( SLURM_CPUS_PER_TASK / ${#FUNCS[@]} ))
+WORKERS=$(( SLURM_CPUS_PER_TASK / (${#FUNCS[@]} * ${COPIES:-1}) ))  # COPIES: independent runs per function
 # Farm duration: explicit FARM_HOURS, else the job's time limit minus 30 min (staging + final sync).
 LIMIT=$(squeue -h -j "$SLURM_JOB_ID" -o %l)          # D-HH:MM:SS or HH:MM:SS
 if [ -z "${FARM_HOURS:-}" ]; then

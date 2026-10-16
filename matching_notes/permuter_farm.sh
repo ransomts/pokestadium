@@ -15,6 +15,10 @@
 # - Observability: each <func>.log has timestamped improvement lines plus a STATUS snapshot
 #   every $SNAP_SECS (300) with iterations, errors and it/s. Summarise with farm_status.sh.
 # - Judge candidates with matching_notes/fd.sh, not the permuter score (statics inflate it).
+# - COPIES=N (default 1) runs N independent permuters per function (<func>, <func>__c2, ...), each
+#   with <workers_per_func> workers. One permuter's main process caps at ~80 it/s however many
+#   workers it has, so independent copies are how throughput scales. Re-seeding uses the best
+#   candidate across all copies.
 set -u
 REPO=$(readlink -f "$1"); WORKERS=$2; HOURS=$3; shift 3
 FARM_DIR=${FARM_DIR:-${TMPDIR:-/tmp}/permuter}
@@ -22,6 +26,7 @@ SAVE_DIR=${SAVE_DIR:-/scratch/$USER/permuter_best}
 SYNC_SECS=${SYNC_SECS:-600}
 SNAP_SECS=${SNAP_SECS:-300}
 RESEED=${RESEED:-1}
+COPIES=${COPIES:-1}
 HERE=$(cd "$(dirname "$0")" && pwd)
 PY="$REPO/.venv/bin/python3"
 export PATH="$REPO/.venv/bin:$HOME/local/bin:/usr/local/bin:/usr/bin:/bin"
@@ -33,7 +38,7 @@ shopt -s nullglob
 
 best_saved() {  # print path of the lowest-scoring saved source.c for $1, if any
     local best= bestv=
-    for s in "$SAVE_DIR/$1"/output-*/score.txt; do
+    for s in "$SAVE_DIR/$1"/output-*/score.txt "$SAVE_DIR/$1"__c*/output-*/score.txt; do
         v=$(cat "$s")
         if [ -z "$bestv" ] || [ "$v" -lt "$bestv" ]; then bestv=$v; best=${s%score.txt}source.c; fi
     done
@@ -60,11 +65,15 @@ for spec in "$@"; do
         cp "$seed" "nonmatchings/$func/base.c"
         echo "$func: re-seeded from $seed"
     fi
-    echo "starting $func with $WORKERS workers"
-    ( timeout "${HOURS}h" "$PY" "$REPO/tools/permuter/permuter.py" "nonmatchings/$func" \
-          --stack-diffs --best-only --stop-on-zero -j"$WORKERS" 2>&1 \
-      | "$PY" "$HERE/farm_logfilter.py" "$SNAP_SECS" > "nonmatchings/$func.log" ) &
-    pids+=($!)
+    for k in $(seq 1 "$COPIES"); do
+        run=$func; [ "$k" -gt 1 ] && run=${func}__c$k
+        [ "$k" -gt 1 ] && { rm -rf "nonmatchings/$run"; cp -r "nonmatchings/$func" "nonmatchings/$run"; }
+        echo "starting $run with $WORKERS workers"
+        ( timeout "${HOURS}h" "$PY" "$REPO/tools/permuter/permuter.py" "nonmatchings/$run" \
+              --stack-diffs --best-only --stop-on-zero -j"$WORKERS" 2>&1 \
+          | "$PY" "$HERE/farm_logfilter.py" "$SNAP_SECS" > "nonmatchings/$run.log" ) &
+        pids+=($!)
+    done
 done
 [ ${#pids[@]} -eq 0 ] && { echo "nothing started"; exit 1; }
 
