@@ -66,12 +66,14 @@ try_one() {  # $1 = asm data file (repo-relative)
 export -f try_one; export STAGE OUT PER
 printf '%s\n' "$@" | xargs -P "$PAR" -I{} bash -c 'try_one {}' | tee -a "$OUT/summary.txt"
 
-# All passing patches together (they can still collide: same owner file, adjacent yaml lines).
+# All passing targets together: re-run datamig in sequence on the base (patches made against the same
+# base collide on symbol_addrs.txt / undefined_syms.ld appends, and --3way leaves conflict markers).
 cd "$STAGE/base" || exit 1
 n=0
 for p in "$OUT"/*.patch; do
   [ -e "$p" ] || continue
-  if git apply --3way "$p" >/dev/null 2>&1; then n=$((n + 1)); else echo "combine: $(basename "$p") does not apply on top of the others" | tee -a "$OUT/summary.txt"; fi
+  t=$(grep -m1 -oE "^asm/us/data/[^:]+\.s" "${p%.patch}.log")
+  if .venv/bin/python3 matching_notes/datamig.py apply "$t" >> "$OUT/combined_apply.log" 2>&1; then n=$((n + 1)); else echo "combine: $t refused on top of the others" | tee -a "$OUT/summary.txt"; fi
 done
 if [ "$n" -gt 0 ]; then
   git diff HEAD > "$OUT/combined.patch"
