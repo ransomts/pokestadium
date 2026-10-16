@@ -550,9 +550,14 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
   the `.lcomm`/`.comm` directive order. The `pad_*` arrays in the file are splat filler, not original
   vars. D_86A06210/11 can't become static (extern in fragment16.h, used by 15A2B0.c).
   Don't break func_86A01490 (matched via file-scope D_86A0621C).
-- **func_81207DF8**, **func_81209374** (frag1_86CB0): match only with an in-function static that sits
-  mid-.data; D_8120EB94 isn't 16-aligned, so a split means migrating ~100KB of sample data to C.
-- **func_81209078** (score ~320): empty `-1` branch should be plain `b`, one v0/v1, final store base.
+- **func_81207DF8**: MATCHED 2026-10-16 after the fragment1_data_8E3E0 migration. Recipe: the in-function
+  static is initialized (`static s32 D_8120EB6C = 0;` -> .data, not .bss) and IDO emits function statics
+  in source order with the file's other data, so the data after its slot is defined below the function.
+- **func_81209374** (frag1_86CB0, 225): same recipe puts `static u32 D_8122869C = 0` in its real slot (the
+  #else branch defines the global for the asm build). Left: t6-t9 rotation from the numSamples reload in the
+  unrolled loop remainder; 10 loop-shape variants did not move it. Farm.
+- **func_81209078** (320): `if (bufPtr) {}` is load-bearing (removing it ~4000). `+=` on the last
+  D_812346F4 store fixes the base register but swaps addu operands (330). Dead ends in the draft comment. Farm.
 
 ### Large / far off (need real work)
 - Not yet attempted seriously: func_8437B0CC (3345 instr), func_84362084 (1597), func_8120572C (1449),

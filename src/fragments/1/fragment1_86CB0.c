@@ -1078,6 +1078,9 @@ u8 func_81208F9C(u16 arg0) {
 #ifdef NON_MATCHING
 // The empty -1 branch should be a plain `b` (here `if (bufPtr) {}` leaves a beqzl), *bufPtr should load into v1,
 // and the final store to D_812346F4 should reuse the v1 base instead of lui at.
+// Dead ends 2026-10-16: dropping `if (bufPtr) {}` or using != -1 (~4000); p = *bufPtr + *len * 2 or
+// &(*bufPtr)[..] (630, v1 becomes t4); `+=` for the last store fixes the base but swaps the addu operands
+// (330); a s32* to D_812346F4 or `*=` (1400-1900). Permuter candidate.
 s32 func_81209078(void) {
     u32 aiLen;
     s32 pad1;
@@ -1154,9 +1157,10 @@ void func_81209368(s32 arg0) {
 
 #ifdef NON_MATCHING
 // D_8122869C is an in-function static: IDO keeps it in a register across the loop and stores it back on every
-// loop exit only because no other code can access it. It is the last word of this file's .data (after the large
-// sample tables), so that data would need to be migrated into C to link correctly. With the static, only a
-// t6-t9 register rotation in the loop body still differs.
+// loop exit only because no other code can access it. Initialized (= 0) it lands in its real .data slot, the
+// last word of this file's data. Only a t6-t9 rotation remains, starting at the numSamples reload in the
+// unrolled loop's remainder (0x2134); loop-shape variants (pointer out++, 2*i, u32 i, !=, casts, *64,
+// declaration order) do not move it. Permuter candidate.
 void func_81209374(s32 numSamples, s16* out) {
     static u32 D_8122869C = 0;
     s32 i;
