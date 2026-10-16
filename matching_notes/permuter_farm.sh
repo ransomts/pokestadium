@@ -23,7 +23,7 @@ set -u
 REPO=$(readlink -f "$1"); WORKERS=$2; HOURS=$3; shift 3
 FARM_DIR=${FARM_DIR:-${TMPDIR:-/tmp}/permuter}
 SAVE_DIR=${SAVE_DIR:-/scratch/$USER/permuter_best}
-SYNC_SECS=${SYNC_SECS:-600}
+SYNC_SECS=${SYNC_SECS:-120}  # cheap; scancel did not trigger the TERM sync (2026-10-16), so sync often
 SNAP_SECS=${SNAP_SECS:-300}
 RESEED=${RESEED:-1}
 COPIES=${COPIES:-1}
@@ -64,6 +64,20 @@ for spec in "$@"; do
         cp "nonmatchings/$func/base.c" "nonmatchings/$func/base.draft.c"
         cp "$seed" "nonmatchings/$func/base.c"
         echo "$func: re-seeded from $seed"
+    fi
+    # Big initialized global arrays (e.g. migrated sample data) are re-parsed by IDO on every
+    # candidate but only the function's code is scored: turn them into externs. 2.5x more
+    # iterations on func_81209374 (290 KB -> 4 KB base.c), same base score. STRIP_DATA=0 disables.
+    if [ "${STRIP_DATA:-1}" != 0 ]; then
+        "$PY" - "nonmatchings/$func/base.c" <<'PYEOF'
+import re, sys
+p = sys.argv[1]; t = open(p).read(); out = []
+for line in t.split("\n"):
+    m = re.match(r"^((?:[A-Za-z_]\w*\s+)+\**\s*\w+\s*(?:\[[^\]]*\])+)\s*=\s*\{.*\};\s*$", line)
+    out.append("extern " + m.group(1) + ";" if m and len(line) > 1000 and not line.startswith("static") else line)
+open(p, "w").write("\n".join(out))
+print(f"{p}: {len(t)} -> {len(chr(10).join(out))} bytes")
+PYEOF
     fi
     for k in $(seq 1 "$COPIES"); do
         run=$func; [ "$k" -gt 1 ] && run=${func}__c$k
