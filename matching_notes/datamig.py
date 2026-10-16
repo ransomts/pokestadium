@@ -574,8 +574,16 @@ def apply(path):
             if any(ROM[l["rom"] + l["size"]:l["rom"] + l["span"]]):
                 print(f"REFUSING: {l['name']}: nonzero bytes after its declared size")
                 return 2
+            # IDO over-aligns big u8 arrays (a u8[0x38] went to the next 16): pad with s32 like
+            # upstream, with u8 lead-in/tail only for the unaligned bytes
             q = "const " if const else ""
-            text += f"\nstatic {q}u8 pad_{l['name']}[0x{gap:X}] = {{ 0 }};"
+            a0 = l["vram"] + l["size"]
+            lead = (-a0) % 4 if gap >= 4 else gap
+            words = (gap - lead) // 4
+            tail = gap - lead - words * 4
+            for sfx, ty, n in (("", "u8", lead), ("_w" if lead else "", "s32", words), ("_t", "u8", tail)):
+                if n:
+                    text += f"\nstatic {q}{ty} pad_{l['name']}{sfx}[{n}] = {{ 0 }};"
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
     for l in res["labels"]:
