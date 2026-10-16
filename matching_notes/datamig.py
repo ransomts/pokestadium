@@ -505,7 +505,9 @@ def plan(path, quiet=False):
             tail = ROM[l["rom"] + size:l["rom"] + span] if size < span else b""
             if size > span:
                 verdict = f"decl size 0x{size:X} > span 0x{span:X}"
-            elif any(tail) and not l.get("folded"):
+            elif any(tail) and (not l.get("folded") or dims or
+                                any(ROM[l["rom"] + size:l["rom"] + ((size + 3) & ~3)])):
+                # (a folded tail is fine, but not one that starts inside the 4-byte alignment slack)
                 # e.g. extern T x[5] for a 16-entry table; fix_short_arrays() grows dim 0.
                 verdict = f"decl size 0x{size:X} < span 0x{span:X} (nonzero tail)"
         res["labels"].append(dict(l, size=size, type=ty, dims=dims, decl=d, verdict=verdict,
@@ -544,6 +546,52 @@ def fix_short_arrays(res):
             l["dims"] = [n] + l["dims"][1:]
             l["size"] = n * per
             l["verdict"] = "ok (array grown to %d)" % n
+        elif "nonzero tail" in l["verdict"] and not l["dims"] and l["type"] and \
+                base_type(l["type"]) in SCALARS and address_only(l["name"]):
+            # A scalar placeholder (`extern u16 D_X;`) on a longer object that C only ever takes the
+            # address of (e.g. length-prefixed u16 lists passed as &D_X): retype it to an array.
+            # `&D_X` -> `D_X` gives the same address constant, so codegen does not change.
+            per = l["size"]
+            n = l["span"] // per
+            while n > 1 and not any(ROM[l["rom"] + (n - 1) * per:l["rom"] + n * per]) and \
+                    ((n - 1) * per + 3) & ~3 == l["span"]:
+                n -= 1  # trailing zeros that IDO's 4-byte object alignment re-creates anyway
+            l["dims"], l["size"], l["retype"] = [n], n * per, True
+            l["verdict"] = "ok (retyped to %s[%d])" % (base_type(l["type"]), n)
+
+
+def address_only(name):
+    """True if every C use of name (drafts included: gcc's check compiles them) is `&name`."""
+    rx = re.compile(r"\b%s\b" % re.escape(name))
+    for f, t in sources().items():
+        if not f.endswith(".c"):
+            continue
+        for line in t.split("\n"):
+            if not rx.search(line) or re.match(r"\s*(extern\b|//)", line):
+                continue
+            if len(rx.findall(line)) != len(re.findall(r"&\s*%s\b" % re.escape(name), line)):
+                return False
+    return True
+
+
+def retype_uses(l, src):
+    """Rewrite every extern of a retyped label to its array type and `&NAME` to `NAME`."""
+    dims = "".join(f"[{x}]" for x in l["dims"])
+    rx = re.compile(r"^(\s*extern\s+[^;]*?)\b%s\b\s*;" % re.escape(l["name"]), re.M)
+    for f in list(src):
+        t = src[f]
+        if l["name"] not in t:
+            continue
+        n = rx.sub(lambda m: f"{m.group(1)}{l['name']}{dims};", t)
+        if f.endswith(".c"):
+            n = re.sub(r"&\s*%s\b" % re.escape(l["name"]), l["name"], n)
+        if n != t:
+            src[f] = n
+            Path(f).write_text(n)
+            if l["decl"] and l["decl"][0] == f:
+                l["decl"] = l["decl"][:6] + (rx.search(n).group(0).strip() if rx.search(n) else l["decl"][6],) \
+                    + l["decl"][7:]
+            print(f"retyped {l['name']}{dims} in {f}")
 
 
 def definition(l, const):
@@ -624,16 +672,19 @@ def apply(path):
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
     for l in res["labels"]:
+        if l.get("retype"):
+            retype_uses(l, src)
+    for l in res["labels"]:
         if "grown" not in l["verdict"]:
             continue
         dims = "".join(f"[{x}]" for x in l["dims"])
-        for f, _ln, _k, _ty, _dims, is_ext, text in find_decl(l["name"]):
+        for f, _ln, _k, _ty, _dims, is_ext, text, *_ in find_decl(l["name"]):
             if is_ext:
                 new = re.sub(r"\b(%s)\s*(\[[^\]]*\])+" % re.escape(l["name"]), r"\g<1>" + dims, text)
                 src[f] = src[f].replace(text, new)
                 Path(f).write_text(src[f])
                 if l["decl"] and text == l["decl"][6]:
-                    l["decl"] = l["decl"][:6] + (new,)
+                    l["decl"] = l["decl"][:6] + (new,) + l["decl"][7:]
                 print(f"resized extern {l['name']}{dims} in {f}")
     for l in inline:
         f = l["users"][0]
