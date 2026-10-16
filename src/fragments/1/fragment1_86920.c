@@ -23,7 +23,6 @@ extern s32 D_812286EC;
 extern s32 D_812286F0;
 
 // .rodata
-extern f32 D_8122AF70;
 
 // .bss
 extern u64 D_81231450[0x640];
@@ -102,7 +101,7 @@ void func_812070A0(void) {
             ++var_v0_2;
         } while ((s32) var_v1 >= 0);
     }
-    D_812346D8 = D_8122AF70;
+    D_812346D8 = 16.713f;
     D_812346DC = 0x3C;
     do {} while (0);
     D_81234690.unk_02 = 0xBB80;

@@ -3,9 +3,23 @@
 #include "libleo/internal.h"
 #include "PR/leo.h"
 
-extern void (*D_80079520[5])(void);
+void leoInquiry(void);
+void leoTest_unit_rdy(void);
+void leoRezero(void);
+void leoRead(void);
+void leoWrite(void);
+void leoSeek(void);
+void leoStart_stop(void);
+void leoRd_capacity(void);
+void leoTranslate(void);
+void leoMode_sel(void);
+void leoReadDiskId(void);
+void leoReadTimer(void);
+void leoSetTimer(void);
+void leoClr_reset(void);
 
-extern LEOCmdRead leo_sys_read_cmd;
+void (*D_80079520[16])(void) = { NULL, &leoClr_queue, &leoInquiry, &leoTest_unit_rdy, &leoRezero, &leoRead, &leoWrite, &leoSeek, &leoStart_stop, &leoRd_capacity, &leoTranslate, &leoMode_sel, &leoReadDiskId, &leoReadTimer, &leoSetTimer, &leoClr_reset };
+LEOCmdRead leo_sys_read_cmd = { { 5, 0, 0, 0, 0, 0, 0, 0, NULL }, 0xC, 1, NULL, 0 };
 
 // D_8007DA40
 const u8 leo_sys_form_lbas[] = { 0, 1, 8, 9, 0, 0, 0, 0 }; // EXTRA 0 IS A HACK

@@ -375,7 +375,8 @@
     - [0x79C70, .data, 4F410]
     - [0x79F70, .data, libnaudio/n_drvrNew]
     - [0x7A100, .data, libnaudio/n_reverb]
-    - [0x7A110, data, rom_data_7A110]
+    - [0x7A110, .data, libleo/leofunc]
+    - [0x7A120, .data, libleo/leocmdex]
 
     # libleo
     - [0x7A180, .data, libleo/driverominit]
@@ -616,7 +617,7 @@
     - [0xA9140,  rodata, fragments/1/fragment1_rodata_A9140]
     - [0xA9BE0,  rodata, fragments/1/fragment1_rodata_A9BE0]
     - [0xAA6D0,  .rodata, fragments/1/fragment1_7F9A0]
-    - [0xAA8F0,  rodata, fragments/1/fragment1_rodata_AA8F0]
+    - [0xAA8F0, .rodata, fragments/1/fragment1_86920]
     - [0xAA900,  rodata, fragments/1/fragment1_rodata_AA900]
     - [0xAAA20,  .rodata, fragments/1/fragment1_86CB0]
 

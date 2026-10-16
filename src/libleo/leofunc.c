@@ -2,6 +2,9 @@
 #include "libleo/internal.h"
 #include "PR/os_message.h"
 
+s32 __leoResetCalled = 0;
+s32 __leoQueuesCreated = 0;
+
 const u8 LEO_ZERO_MESG[] = { 0 };
 
 OSMesgQueue LEOpost_que;
