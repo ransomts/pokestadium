@@ -49,7 +49,7 @@ def parse_s(path):
             section = s.split()[1].rstrip(",").strip('"')
         m = LABEL.match(s)
         if m:
-            cur = {"name": m.group(1), "rom": None, "vram": None, "relocs": {}}
+            cur = {"name": m.group(1), "rom": None, "vram": None, "relocs": {}, "dirs": set()}
             labels.append(cur)
             continue
         m = ITEM.search(s)
@@ -57,6 +57,7 @@ def parse_s(path):
             rom, vram, d, arg = int(m.group(1), 16), int(m.group(2), 16), m.group(3), m.group(4).strip()
             if cur["rom"] is None:
                 cur["rom"], cur["vram"] = rom, vram
+            cur["dirs"].add(d)
             if d == "word":
                 r = SYMREF.match(arg)
                 if r:
@@ -97,24 +98,27 @@ def code_order(lines, idx):
         end += 1
     order = {}
     for i in range(start, end + 1):
-        m = re.match(r"^\s*-\s*\[\s*0x[0-9A-Fa-f]+\s*,\s*(c|hasm|asm)\s*(?:,\s*([\w/.]+))?", lines[i])
-        if m and m.group(2):
-            order.setdefault("src/" + m.group(2) + ".c", len(order))
+        m = re.match(r"^\s*-\s*\[\s*(0x[0-9A-Fa-f]+)\s*,\s*(c|hasm|asm)\s*(?:,\s*([\w/.]+))?", lines[i])
+        if m:  # unnamed entries are named after their rom address by splat
+            name = m.group(3) or "%X" % int(m.group(1), 16)
+            order.setdefault("src/" + name + ".c", len(order))
     return order, start, end
 
 
-def neighbours(lines, idx, sect, start, end):
-    """C files whose .data/.rodata section sits just before / after the entry."""
+def neighbours(lines, idx, sect, start, end, order=None):
+    """Nearest C files (in `order`) whose .data/.rodata section sits before / after the entry;
+    asm data blobs in between are skipped, they only widen the window."""
     pat = re.compile(r"^\s*-\s*\[\s*0x[0-9A-Fa-f]+\s*,\s*\.?(%s)\s*,\s*([\w/]+)" % sect)
+    ok = lambda f: order is None or f in order
     prev = nxt = None
     for i in range(idx - 1, start, -1):
         m = pat.match(lines[i])
-        if m:
+        if m and ok("src/" + m.group(2) + ".c"):
             prev = "src/" + m.group(2) + ".c"
             break
     for i in range(idx + 1, end + 1):
         m = pat.match(lines[i])
-        if m:
+        if m and ok("src/" + m.group(2) + ".c"):
             nxt = "src/" + m.group(2) + ".c"
             break
     return prev, nxt
@@ -137,8 +141,22 @@ DECL = r"^\s*(extern\s+)?((?:const\s+|volatile\s+|static\s+)*[A-Za-z_][\w ]*?[\s
 FPDECL = r"^\s*(extern\s+)?([A-Za-z_][\w ]*?)\(\s*\*\s*%s\s*((?:\[[^\]]*\])*)\s*\)\s*(\([^;]*\))\s*;"
 
 
+_DRAFTS = {}
+
+
+def in_draft(f, t, pos):
+    """True if pos lies in an `#ifdef NON_MATCHING` branch (a draft, not compiled in the real build)."""
+    if f not in _DRAFTS:
+        spans = []
+        for m in re.finditer(r"^#ifdef NON_MATCHING\b.*$", t, re.M):
+            e = re.compile(r"^#(else|endif)\b", re.M).search(t, m.end())
+            spans.append((m.start(), e.start() if e else len(t)))
+        _DRAFTS[f] = spans
+    return any(a <= pos < b for a, b in _DRAFTS[f])
+
+
 def find_decl(name):
-    """-> list of (file, lineno, kind, type, dims, is_extern, text)."""
+    """-> list of (file, lineno, kind, type, dims, is_extern, text); definitions in drafts are skipped."""
     out = []
     rx = re.compile(DECL % re.escape(name), re.M)
     fx = re.compile(FPDECL % re.escape(name), re.M)
@@ -148,6 +166,8 @@ def find_decl(name):
         for m in rx.finditer(t):
             ty = " ".join(m.group(2).replace("*", " * ").split()).replace(" *", "*")
             if ty.split()[0] in ("return", "goto", "case", "else", "if"):
+                continue
+            if not m.group(1) and in_draft(f, t, m.start()):
                 continue
             out.append((f, t.count("\n", 0, m.start()) + 1, "var", ty, m.group(3), bool(m.group(1)), m.group(0).strip()))
         for m in fx.finditer(t):
@@ -268,6 +288,95 @@ class Emit:
         return "{ " + ", ".join(parts) + " }"
 
 
+_ASM_CACHE = None
+
+
+def asm_users(name):
+    """C files whose GLOBAL_ASM functions (asm/us/nonmatchings/<file>/<func>.s) reference name."""
+    global _ASM_CACHE
+    if _ASM_CACHE is None:
+        _ASM_CACHE = {}
+        base = Path("asm/us/nonmatchings")
+        for p in base.rglob("*.s") if base.exists() else []:
+            src = "src/" + str(p.parent.relative_to(base)) + ".c"
+            _ASM_CACHE[src] = _ASM_CACHE.get(src, "") + p.read_text(errors="replace")
+    rx = re.compile(r"\b%s\b" % re.escape(name))
+    return sorted(f for f, t in _ASM_CACHE.items() if rx.search(t))
+
+
+def infer_type(l, span, rodata):
+    """Type from the spimdisasm directives when no C declaration exists: (type, dims, size)."""
+    d = l["dirs"]
+    arr = lambda n: [n] if (n != 1 or rodata) else []  # const scalars land in .data: keep arrays
+    if d == {"float"} and span % 4 == 0:
+        return "f32", arr(span // 4), span
+    if d == {"double"} and span % 8 == 0:
+        return "f64", arr(span // 8), span
+    if span % 4 == 0 and l["vram"] % 4 == 0 and (d <= {"word", "float", "double"} or l["relocs"]):
+        return "u32", arr(span // 4), span
+    if l["relocs"]:
+        return None, [], None
+    if d == {"half"} and span % 2 == 0:
+        return "u16", arr(span // 2), span
+    return "u8", [span], span
+
+
+def resolve_orphans(labs):
+    """Give owners to labels nobody in C names: pointer targets, then runs between owned labels."""
+    changed = True
+    while changed:  # a label pointed to only by data labels of one owner joins that owner
+        changed = False
+        for l in labs:
+            if l["owner"]:
+                continue
+            refs = {m["owner"] for m in labs if m is not l and any(s == l["name"] for s, _ in m["relocs"].values())}
+            if len(refs) == 1 and None not in refs:
+                l["owner"], l["why"] = refs.pop(), "pointed to by its data"
+                changed = True
+    i = 0
+    while i < len(labs):
+        if labs[i]["owner"]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < len(labs) and not labs[j + 1]["owner"]:
+            j += 1
+        a = labs[i - 1]["owner"] if i > 0 else None
+        b = labs[j + 1]["owner"] if j + 1 < len(labs) else None
+        fits = lambda k, o: not labs[k]["cands"] or o in labs[k]["cands"]
+        if not a and not b:
+            # nothing anchors the run: take the candidate allowed everywhere and used most (ties: later
+            # file). Any such choice gives the same bytes; it is a guess about the original file.
+            pool = [c for k in range(i, j + 1) for c in labs[k]["cands"]]
+            ok = [c for c in dict.fromkeys(pool) if all(fits(k, c) for k in range(i, j + 1))]
+            if ok:
+                best = max(ok, key=lambda c: (pool.count(c), ok.index(c)))
+                for k in range(i, j + 1):
+                    labs[k]["owner"], labs[k]["why"] = best, "guess: shared by all users"
+                i = j + 1
+                continue
+        if a and (a == b or not b) and all(fits(k, a) for k in range(i, j + 1)):
+            for k in range(i, j + 1):
+                labs[k]["owner"], labs[k]["why"] = a, "inferred: run after its data"
+        elif b and not a and all(fits(k, b) for k in range(i, j + 1)):
+            for k in range(i, j + 1):
+                labs[k]["owner"], labs[k]["why"] = b, "inferred: run before its data"
+        elif a and b and a != b:
+            # each C file's section starts 16-aligned: the split is a 16-aligned label start, with every
+            # label before it allowed in a and every label after it allowed in b
+            vram = lambda k: labs[k]["vram"] if k <= j else labs[j + 1]["vram"]
+            cands = [k for k in range(i, j + 2) if vram(k) % 16 == 0
+                     and all(fits(x, a) for x in range(i, k)) and all(fits(x, b) for x in range(k, j + 1))]
+            if len(cands) == 1:
+                for k in range(i, j + 1):
+                    o = a if k < cands[0] else b
+                    labs[k]["owner"], labs[k]["why"] = o, "inferred: 16-aligned split"
+            else:
+                for k in range(i, j + 1):
+                    labs[k]["why"] = f"between {a} and {b}: {len(cands)} possible splits"
+        i = j + 1
+
+
 def plan(path, quiet=False):
     sect, labels = parse_s(path)
     stem = str(Path(path).relative_to("asm/us/data").with_suffix("")).rsplit(".", 1)[0]
@@ -279,17 +388,18 @@ def plan(path, quiet=False):
     end_rom = segment_bounds(lines, idx)
     order, s0, s1 = code_order(lines, idx)
     kind = sect.lstrip(".")
-    prev, nxt = neighbours(lines, idx, kind, s0, s1)
+    prev, nxt = neighbours(lines, idx, kind, s0, s1, order)
     lo = order.get(prev, -1) if prev else -1
     hi = order.get(nxt, 10 ** 9) if nxt else 10 ** 9
     res.update(prev=prev, next=nxt)
+    labs = []
     for i, l in enumerate(labels):
         nrom = labels[i + 1]["rom"] if i + 1 < len(labels) else end_rom
         span = (nrom - l["rom"]) if nrom else None
         decls = find_decl(l["name"])
         defs = [d for d in decls if not d[5]]
         ext = [d for d in decls if d[5]]
-        us = users(l["name"])
+        us = sorted(set(users(l["name"])) | set(asm_users(l["name"])))
         owner, why = None, ""
         if defs:
             owner, why = defs[0][0], "already defined"
@@ -303,6 +413,31 @@ def plan(path, quiet=False):
                 why = f"{len(us)} users"
         else:
             why = "no C user"
+        cands = sorted({u for u in us if lo < order.get(u, -2) < hi}, key=order.get) if not owner else []
+        labs.append(dict(l, span=span, decls=decls, ext=ext, users=us, owner=owner, why=why, cands=cands))
+    # spimdisasm splits an array at every field the code touches (D_80070F84 PokemonStats[] ->
+    # D_80070F8A, D_80070F8B, ...). An unsized array absorbs the following labels nobody names.
+    referenced = {s for x in labs for s, _ in x["relocs"].values()}
+    k = 0
+    while k < len(labs):
+        l = labs[k]
+        d = (l["ext"] or l["decls"] or [None])[0]
+        if d and d[2] == "var" and dims_of(d[4])[:1] == [None]:
+            j = k
+            while j + 1 < len(labs) and not labs[j + 1]["users"] and labs[j + 1]["name"] not in referenced \
+                    and not find_decl(labs[j + 1]["name"]):
+                j += 1
+            if j > k:
+                for x in labs[k + 1:j + 1]:
+                    l["relocs"].update(x["relocs"])
+                    l["dirs"] |= x["dirs"]
+                l["span"] = sum(x["span"] or 0 for x in labs[k:j + 1])
+                l["absorbed"] = [x["name"] for x in labs[k + 1:j + 1]]
+                del labs[k + 1:j + 1]
+        k += 1
+    resolve_orphans([x for x in labs])
+    for l in labs:
+        span, decls, ext, owner = l["span"], l.pop("decls"), l.pop("ext"), l["owner"]
         d = (ext or decls or [None])[0]
         ty, dims, size = None, [], None
         if d:
@@ -317,12 +452,19 @@ def plan(path, quiet=False):
                 inner = es
                 for x in dims[1:]:
                     inner *= x
-                dims = [span // inner] + dims[1:]
-                size = dims[0] * inner
+                n = span // inner
+                while n and not any(ROM[l["rom"] + (n - 1) * inner:l["rom"] + n * inner]) and span - (n - 1) * inner < 16:
+                    n -= 1  # trailing section padding is not an element
+                dims = [n] + dims[1:]
+                size = n * inner
+        elif span:
+            ty, dims, size = infer_type(l, span, kind == "rodata")
         verdict = "ok"
-        if owner and owner not in order:
+        if not owner:
+            verdict = l["why"]
+        elif owner not in order:
             verdict = "owner not in this segment"
-        elif owner and not (lo < order[owner] < hi):
+        elif not (lo < order[owner] < hi):
             verdict = f"owner out of link order ({prev} < ? < {nxt})"
         if size is None:
             verdict = "type size unknown" if verdict == "ok" else verdict
@@ -333,8 +475,8 @@ def plan(path, quiet=False):
             elif any(tail):
                 # e.g. extern T x[5] for a 16-entry table; fix_short_arrays() grows dim 0.
                 verdict = f"decl size 0x{size:X} < span 0x{span:X} (nonzero tail)"
-        res["labels"].append(dict(l, span=span, size=size, type=ty, dims=dims, decl=d, users=us, owner=owner,
-                                  why=why, verdict=verdict, fnargs=(d[3] if d and d[2] == "fnptr" else None),
+        res["labels"].append(dict(l, size=size, type=ty, dims=dims, decl=d, verdict=verdict,
+                                  fnargs=(d[3] if d and d[2] == "fnptr" else None),
                                   fnsig=(re.search(r"\)\s*(\([^;]*\))\s*;", d[6]).group(1) if d and d[2] == "fnptr" else None)))
     # Owners must appear in non-decreasing link order through the file.
     seq = [order.get(l["owner"], -1) for l in res["labels"] if l["owner"]]
