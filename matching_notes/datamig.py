@@ -60,7 +60,10 @@ def parse_s(path):
             cur["dirs"].add(d)
             if d == "word":
                 r = SYMREF.match(arg)
-                if r:
+                raw = struct.unpack(">I", ROM[rom:rom + 4])[0]
+                # spimdisasm also symbolizes sample words that merely look like addresses
+                # (D_102, D_5000000); only KSEG0 values are real pointers
+                if r and 0x80000000 <= raw < 0xA0000000:
                     cur["relocs"][vram] = (r.group(1), int(r.group(2) or "0", 0))
     labels = [l for l in labels if l["rom"] is not None]
     return section, labels
@@ -218,13 +221,16 @@ def type_size(ty):
 
 
 class Emit:
+    arrays = set()  # symbols defined as arrays in the current batch: referenced by bare name
+
     def __init__(self, lab):
         self.lab, self.relocs, self.problems = lab, lab["relocs"], []
 
     def ptr(self, vram):
         if vram in self.relocs:
             sym, add = self.relocs[vram]
-            return f"&{sym}" if add == 0 else f"(void*)((u8*)&{sym} + 0x{add:X})"
+            ref = f"(void*){sym}" if sym in Emit.arrays else f"&{sym}"
+            return ref if add == 0 else f"(void*)((u8*){ref} + 0x{add:X})"
         v = struct.unpack(">I", ROM[self.rom(vram):self.rom(vram) + 4])[0]
         return "NULL" if v == 0 else f"(void*)0x{v:08X}"
 
@@ -537,6 +543,7 @@ def apply(path):
         return 2
     const = res["section"] == ".rodata"
     by_owner, inline = {}, []
+    Emit.arrays = {l["name"] for l in res["labels"] if l["dims"]}
     nonmatch = "\n".join(p.read_text(errors="replace") for p in Path("asm/us/nonmatchings").rglob("*.s")) \
         if Path("asm/us/nonmatchings").exists() else ""
     for l in res["labels"]:
@@ -558,6 +565,18 @@ def apply(path):
             return 2
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
+    for l in res["labels"]:
+        if "grown" not in l["verdict"]:
+            continue
+        dims = "".join(f"[{x}]" for x in l["dims"])
+        for f, _ln, _k, _ty, _dims, is_ext, text in find_decl(l["name"]):
+            if is_ext:
+                new = re.sub(r"\b(%s)\s*(\[[^\]]*\])+" % re.escape(l["name"]), r"\g<1>" + dims, text)
+                src[f] = src[f].replace(text, new)
+                Path(f).write_text(src[f])
+                if l["decl"] and text == l["decl"][6]:
+                    l["decl"] = l["decl"][:6] + (new,)
+                print(f"resized extern {l['name']}{dims} in {f}")
     for l in inline:
         f = l["users"][0]
         txt = src[f]
@@ -570,20 +589,28 @@ def apply(path):
     for owner, items in by_owner.items():
         t = src[owner]
         block, pos = [], None
+        defined = {l["name"]: l for l, _ in items}
         for l, text in items:
             block.append(text)
-            # drop the owner's own extern (headers keep theirs; extern + definition are compatible);
-            # the block goes where the first such extern was, so local typedefs are already declared
+            # keep the owner's externs (extern + later definition is fine) and put the block after the
+            # last of them: every type they use is declared there, and earlier uses still see a decl
             if l["decl"] and l["decl"][0] == owner and l["decl"][5]:
                 i = t.find(l["decl"][6] + "\n")
                 if i >= 0:
-                    t = t[:i] + t[i + len(l["decl"][6]) + 1:]
-                    pos = i if pos is None else min(pos, i)
-        # forward-declare referenced symbols the owner cannot see (gcc's syntax check rejects them)
-        fwd = []
+                    e = i + len(l["decl"][6]) + 1
+                    pos = e if pos is None else max(pos, e)
+        # forward-declare referenced symbols the owner cannot see (gcc's syntax check rejects them);
+        # symbols of this batch defined later than their first use get a decl of their real type
+        fwd, seen = [], set()
         for l, _ in items:
+            seen.add(l["name"])
             for sym, _a in l["relocs"].values():
-                if sym in fwd or re.search(r"\b%s\b" % re.escape(sym), t):
+                if sym in fwd or (sym in defined and sym in seen):
+                    continue
+                if sym in defined:
+                    fwd.append(sym)
+                    continue
+                if re.search(r"\b%s\b" % re.escape(sym), t):
                     continue
                 hdr = any(re.search(r"\b%s\s*\(" % re.escape(sym), x) or
                           re.search(r"extern[^;]*\b%s\b" % re.escape(sym), x)
@@ -592,6 +619,13 @@ def apply(path):
                     fwd.append(sym)
         decls = []
         for sym in fwd:
+            if sym in defined:
+                d = defined[sym]
+                if d["type"] == "fnptr":
+                    decls.append(f"extern {d['decl'][3]} (*{sym}{''.join(f'[{x}]' for x in d['dims'])}){d['fnsig']};")
+                else:
+                    decls.append(f"extern {base_type(d['type'])} {sym}{''.join(f'[{x}]' for x in d['dims'])};")
+                continue
             isfn = any(re.search(r"^[\w*][\w\s*]*\b%s\s*\([^;]*\)\s*\{" % re.escape(sym), x, re.M)
                        for f, x in src.items() if f.endswith(".c"))
             decls.append(f"void {sym}(void);" if isfn else f"extern u8 {sym}[];")
@@ -602,6 +636,8 @@ def apply(path):
             incs = list(re.finditer(r"^#include .*\n", t, re.M))
             pos = incs[-1].end() if incs else 0
             ins = "\n" + ins + "\n"
+        else:
+            ins = "\n" + ins
         t = t[:pos] + ins + t[pos:]
         t = re.sub(r"\n{3,}", "\n\n", t)
         Path(owner).write_text(t)
