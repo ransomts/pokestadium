@@ -170,10 +170,12 @@ def find_decl(name):
             ty = " ".join(m.group(2).replace("*", " * ").split()).replace(" *", "*")
             if ty.split()[0] in ("return", "goto", "case", "else", "if"):
                 continue
-            if not m.group(1) and in_draft(f, t, m.start()):
+            if in_draft(f, t, m.start()):  # drafts are not compiled: their types/decls do not exist
                 continue
             out.append((f, t.count("\n", 0, m.start()) + 1, "var", ty, m.group(3), bool(m.group(1)), m.group(0).strip()))
         for m in fx.finditer(t):
+            if in_draft(f, t, m.start()):
+                continue
             out.append((f, t.count("\n", 0, m.start()) + 1, "fnptr", m.group(2).strip(), m.group(3), bool(m.group(1)),
                         m.group(0).strip()))
     return out
