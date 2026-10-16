@@ -58,8 +58,10 @@ bigger and need real reverse engineering, so expect 3-6 matches per round, not 9
   `tools/data2c.py`. This is the first real Phase D task; do it here and reuse the recipe.
 
 ### Phase D detail: data migration (prototype 2026-10-16: datamig.py + phased_job.sh)
-Real scope: **28 files** after 2026-10-16 (the "184" count included 153 fragment header/reloc
-binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0.
+Real scope: **27 files** after 2026-10-16 (the "184" count included 153 fragment header/reloc
+binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0,
+fragment1_data_8E3E0 (103 KB GB audio state + samples: the mid-.data static D_8120EB6C that the
+tier-3 functions in fragment1_86CB0 need is now real C data).
 1. `.venv/bin/python3 matching_notes/datamig.py survey` (~1 min) lists every file, READY or not;
    `plan <file.s>` shows per label: span, declared type/size, C users, proposed owner, link-order check.
 2. `datamig.py apply <file.s>` writes the definitions (values from the baserom, pointers by symbol
@@ -76,6 +78,21 @@ Rules learned:
   (datamig does this). A named `const f32 x = ...;` lands in IDO's .data and breaks the match.
 - Extern arrays declared too short (`extern void (*D_80079520[5])(void)` for a 16-entry table)
   are grown to the label span automatically.
+- Labels with no C user are resolved automatically: users inside GLOBAL_ASM functions count
+  (asm/us/nonmatchings/<file>/), pointer targets join the owner of the table that points at them,
+  unowned runs join the owner on their side, and a run between two owners splits at the only
+  16-aligned label that fits (each C file's .data starts 16-aligned). Labels used by several files
+  are constrained to those files; a run nobody anchors goes to the file used most (a guess, same bytes).
+- IDO starts every data object on a 4-byte boundary. A label at an unaligned address is a field of
+  the previous object: datamig folds it in, keeps its value in a `<prev>_tail` array, and gives the
+  linker its address in undefined_syms.ld. Zero gaps beyond the 4-byte slack become
+  `static s32 pad_D_X[n]` (upstream style); sub-word pad objects are impossible.
+- gcc's syntax check compiles the NON_MATCHING drafts: definitions must match draft declarations.
+  When only a draft declares a symbol, datamig uses the draft type and hoists the draft's typedef
+  above the `#ifdef NON_MATCHING`.
+- spimdisasm symbolizes sample words that look like addresses (D_102, D_5000000): only KSEG0 values
+  are treated as pointers.
+- `survey` READY is optimistic (apply can still refuse: GLOBAL_ASM literals, nonzero slack bytes).
 What blocks the remaining files (needs an agent, not the script): labels with no C user (only
 referenced from other data or GLOBAL_ASM; owner = surrounding owner, decided by hand), externs with
 the wrong type (`extern u16` on a 12-byte object: real type must be worked out from the users), and
