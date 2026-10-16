@@ -57,14 +57,29 @@ bigger and need real reverse engineering, so expect 3-6 matches per round, not 9
   D_8120EB94 is not 16-aligned, so the split means migrating ~100 KB of sample data to C with
   `tools/data2c.py`. This is the first real Phase D task; do it here and reuse the recipe.
 
-### Phase D detail: data migration recipe (mechanical, cheap model is fine)
-1. Pick a fragment; `ls asm/us/data/fragments/N/` (usually `*.data.s` + `*.rodata.s`).
-2. Generate C with `tools/data2c.py` / `tools/print_decls.py`; place at the right spot in the C
-   file (order = address order); rodata literals go next to the functions that use them.
-3. Change the yaml segment from `.data`/`.rodata` asm to the C file; `make extract`-free rebuild;
-   `make` must print `OK`. Commit per fragment.
-4. Gate for an agent: never commit unless `OK`; never touch src/ of a function another agent owns.
-Start with fragments/1 (12 files, biggest) only after Phase C has done its sample-data part.
+### Phase D detail: data migration (prototype 2026-10-16: datamig.py + phased_job.sh)
+Real scope: **28 files** after 2026-10-16 (the "184" count included 153 fragment header/reloc
+binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0.
+1. `.venv/bin/python3 matching_notes/datamig.py survey` (~1 min) lists every file, READY or not;
+   `plan <file.s>` shows per label: span, declared type/size, C users, proposed owner, link-order check.
+2. `datamig.py apply <file.s>` writes the definitions (values from the baserom, pointers by symbol
+   from the .s, struct layouts from tools/data2c.py), forward-declares referenced symbols, rewrites the
+   yaml line(s) to `.data/.rodata, <owner>` and marks the symbols `defined:true size:N` in whichever
+   symbol_addrs*.txt already lists them (a second entry is a splat error).
+3. Gate on a compute node, never in the main repo (`make extract` regenerates the shared asm/):
+   `sbatch --chdir=$PWD/scratch/phased matching_notes/phased_job.sh <file.s> ...` (no args = all).
+   It builds the base, tries each file in its own copy, then all passing patches together, and prints
+   `git apply scratch/phased/<job>/combined.patch`. About 1 min per file on 32 cores.
+   After applying, run `make extract` once in the main repo.
+Rules learned:
+- A `.rodata` float/double in the ROM is an anonymous literal: inline the value at its single use
+  (datamig does this). A named `const f32 x = ...;` lands in IDO's .data and breaks the match.
+- Extern arrays declared too short (`extern void (*D_80079520[5])(void)` for a 16-entry table)
+  are grown to the label span automatically.
+What blocks the remaining files (needs an agent, not the script): labels with no C user (only
+referenced from other data or GLOBAL_ASM; owner = surrounding owner, decided by hand), externs with
+the wrong type (`extern u16` on a 12-byte object: real type must be worked out from the users), and
+owners that already have a .data/.rodata entry (definitions must be merged in address order).
 
 ### Phase E detail: definition of done
 - `grep -rn GLOBAL_ASM src` is empty (or lists only owner-accepted exceptions with a comment).
