@@ -617,7 +617,7 @@ typedef struct unk_D_8122B2C0 {
     /* 0x05DCF */ u8 unk_5DCF;
     /* 0x05DD0 */ u8 unk_5DD0;
     /* 0x05DD1 */ u8 unk05DD1[0x15287];
-  } unk_D_8122B2C0; // size = 0x1B058
+} unk_D_8122B2C0; // size = 0x1B058
 
 extern s16 D_80075E40[];
 

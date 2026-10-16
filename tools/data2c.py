@@ -79,6 +79,7 @@ def calc_struct_sizes():
             if testMe:
                 print(member)
             size = 0
+            member["type"] = " ".join(w for w in member["type"].split() if w not in ("volatile", "const"))
             if member["type"] in STRUCTS:
                 if "size" in STRUCTS[member["type"]]:
                     rounding = STRUCTS[member["type"]]["round"]
@@ -103,8 +104,7 @@ def calc_struct_sizes():
 
                 exit()
             else:
-                print(f"What type? {member['type']}")
-                exit()
+                raise KeyError(member["type"])
 
             max_rounding = max(max_rounding, rounding)
             num_entries = 1
@@ -139,7 +139,12 @@ def calc_struct_sizes():
         #print(struct_name)
         #print(struct_data)
         #print()
-        calc_size(struct_name, struct_data["data"])
+        try:
+            if "size" not in struct_data:
+                calc_size(struct_name, struct_data["data"])
+        except (KeyError, RecursionError) as e:
+            # Unknown member type: leave this struct unsized instead of aborting the whole run.
+            struct_data["bad"] = str(e)
         #print(f"####")
         #print(f"Type {struct_name} has size 0x{STRUCTS[struct_name]['size']:X} and rounding {STRUCTS[struct_name]['round']:X}")
         #print(STRUCTS[struct_name]["data"])
