@@ -421,6 +421,20 @@ def plan(path, quiet=False):
             why = "no C user"
         cands = sorted({u for u in us if lo < order.get(u, -2) < hi}, key=order.get) if not owner else []
         labs.append(dict(l, span=span, decls=decls, ext=ext, users=us, owner=owner, why=why, cands=cands))
+    # IDO aligns every data object to 4: a label at an unaligned address is a field of the previous
+    # object. Fold it in; its symbol stays linker-defined (symbol_addrs without defined:true).
+    k = 1
+    while k < len(labs):
+        if labs[k]["vram"] % 4 and labs[k - 1]["span"] is not None:
+            p_, x = labs[k - 1], labs.pop(k)
+            p_["span"] += x["span"] or 0
+            p_["relocs"].update(x["relocs"])
+            p_.setdefault("folded", []).append(x["name"])
+            p_["users"] = sorted(set(p_["users"]) | set(x["users"]))
+            if not p_["owner"] and x["owner"]:
+                p_["owner"], p_["why"] = x["owner"], f"via folded {x['name']}"
+            continue
+        k += 1
     # spimdisasm splits an array at every field the code touches (D_80070F84 PokemonStats[] ->
     # D_80070F8A, D_80070F8B, ...). An unsized array absorbs the following labels nobody names.
     referenced = {s for x in labs for s, _ in x["relocs"].values()}
@@ -458,9 +472,7 @@ def plan(path, quiet=False):
                 inner = es
                 for x in dims[1:]:
                     inner *= x
-                n = span // inner
-                while n and not any(ROM[l["rom"] + (n - 1) * inner:l["rom"] + n * inner]) and span - (n - 1) * inner < 16:
-                    n -= 1  # trailing section padding is not an element
+                n = span // inner  # an unsized array owns its zeros; IDO pads arrays to 4 anyway
                 dims = [n] + dims[1:]
                 size = n * inner
         elif span:
@@ -478,7 +490,7 @@ def plan(path, quiet=False):
             tail = ROM[l["rom"] + size:l["rom"] + span] if size < span else b""
             if size > span:
                 verdict = f"decl size 0x{size:X} > span 0x{span:X}"
-            elif any(tail):
+            elif any(tail) and not l.get("folded"):
                 # e.g. extern T x[5] for a 16-entry table; fix_short_arrays() grows dim 0.
                 verdict = f"decl size 0x{size:X} < span 0x{span:X} (nonzero tail)"
         res["labels"].append(dict(l, size=size, type=ty, dims=dims, decl=d, verdict=verdict,
@@ -571,19 +583,32 @@ def apply(path):
         run_end = k + 1 == len(labs) or labs[k + 1]["owner"] != l["owner"]
         end = l["vram"] + l["size"]
         if gap > 0 and not (run_end and l["vram"] + l["span"] == (end + 15) & ~15):
-            if any(ROM[l["rom"] + l["size"]:l["rom"] + l["span"]]):
+            if any(ROM[l["rom"] + l["size"]:l["rom"] + l["span"]]) and not l.get("folded"):
                 print(f"REFUSING: {l['name']}: nonzero bytes after its declared size")
                 return 2
-            # IDO over-aligns big u8 arrays (a u8[0x38] went to the next 16): pad with s32 like
-            # upstream, with u8 lead-in/tail only for the unaligned bytes
+            # zero gaps are pads (upstream pad_D_ style); folded fields keep their values as a tail.
+            # IDO aligns every array to 4, so sub-word pieces are scalars (aligned to their own size).
             q = "const " if const else ""
-            a0 = l["vram"] + l["size"]
-            lead = (-a0) % 4 if gap >= 4 else gap
-            words = (gap - lead) // 4
-            tail = gap - lead - words * 4
-            for sfx, ty, n in (("", "u8", lead), ("_w" if lead else "", "s32", words), ("_t", "u8", tail)):
-                if n:
-                    text += f"\nstatic {q}{ty} pad_{l['name']}{sfx}[{n}] = {{ 0 }};"
+            stem = f"{l['name']}_tail" if l.get("folded") else f"pad_{l['name']}"
+            e = Emit(l)
+            a = a0 = l["vram"] + l["size"]
+            stop = l["vram"] + l["span"]
+            if l.get("folded"):
+                text += f"  // tail holds {', '.join(l['folded'])} (linker-defined symbols)"
+            i = 0
+            while a < stop:
+                if a % 4 == 0 and stop - a >= 4:
+                    n = (stop - a) // 4
+                    vals = ", ".join(e.scalar("u32", a + 4 * j) for j in range(n))
+                    text += f"\nstatic {q}u32 {stem}_{i}[{n}] = {{ {vals} }};"
+                    a += 4 * n
+                elif a % 2 == 0 and stop - a >= 2:
+                    text += f"\nstatic {q}u16 {stem}_{i} = {e.scalar('u16', a)};"
+                    a += 2
+                else:
+                    text += f"\nstatic {q}u8 {stem}_{i} = {e.scalar('u8', a)};"
+                    a += 1
+                i += 1
         by_owner.setdefault(l["owner"], []).append((l, text))
     src = sources()
     for l in res["labels"]:
