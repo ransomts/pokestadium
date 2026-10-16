@@ -170,14 +170,17 @@ def find_decl(name):
             ty = " ".join(m.group(2).replace("*", " * ").split()).replace(" *", "*")
             if ty.split()[0] in ("return", "goto", "case", "else", "if"):
                 continue
-            if in_draft(f, t, m.start()):  # drafts are not compiled: their types/decls do not exist
+            dr = in_draft(f, t, m.start())  # drafts: not in the IDO build, but gcc's check compiles them
+            if dr and not m.group(1):
                 continue
-            out.append((f, t.count("\n", 0, m.start()) + 1, "var", ty, m.group(3), bool(m.group(1)), m.group(0).strip()))
+            out.append((f, t.count("\n", 0, m.start()) + 1, "var", ty, m.group(3), bool(m.group(1)), m.group(0).strip(),
+                        dr))
         for m in fx.finditer(t):
-            if in_draft(f, t, m.start()):
+            dr = in_draft(f, t, m.start())
+            if dr and not m.group(1):
                 continue
             out.append((f, t.count("\n", 0, m.start()) + 1, "fnptr", m.group(2).strip(), m.group(3), bool(m.group(1)),
-                        m.group(0).strip()))
+                        m.group(0).strip(), dr))
     return out
 
 
@@ -444,7 +447,7 @@ def plan(path, quiet=False):
     k = 0
     while k < len(labs):
         l = labs[k]
-        d = (l["ext"] or l["decls"] or [None])[0]
+        d = ([x for x in (l["ext"] or l["decls"]) if not x[7]] or l["ext"] or l["decls"] or [None])[0]
         if d and d[2] == "var" and dims_of(d[4])[:1] == [None]:
             j = k
             while j + 1 < len(labs) and not labs[j + 1]["users"] and labs[j + 1]["name"] not in referenced \
@@ -461,7 +464,16 @@ def plan(path, quiet=False):
     resolve_orphans([x for x in labs])
     for l in labs:
         span, decls, ext, owner = l["span"], l.pop("decls"), l.pop("ext"), l["owner"]
-        d = (ext or decls or [None])[0]
+        real = [x for x in (ext or decls) if not x[7]]
+        d = (real or ext or decls or [None])[0]
+        if d and d[7]:
+            # only a draft declares it: use the draft's type (gcc's check compiles drafts) and hoist the
+            # draft's own typedef of that type out of the draft so the real build can see it
+            tname = base_type(d[3]).rstrip("*")
+            ft = sources()[d[0]]
+            m = re.search(r"^typedef (struct|union) \w*\s*\{[^{}]*^\}\s*%s\s*;[^\n]*\n" % re.escape(tname), ft, re.M)
+            if m and in_draft(d[0], ft, m.start()):
+                l["hoist"] = (d[0], m.group(0))
         ty, dims, size = None, [], None
         if d:
             ty = "fnptr" if d[2] == "fnptr" else d[3]
@@ -639,8 +651,20 @@ def apply(path):
         t = src[owner]
         block, pos = [], None
         defined = {l["name"]: l for l, _ in items}
+        for l, _ in items:
+            if l.get("hoist") and l["hoist"][0] == owner and l["hoist"][1] in t:
+                td = l["hoist"][1]
+                i = t.index(td)
+                j = t.rfind("#ifdef NON_MATCHING", 0, i)
+                t = t[:i] + t[i + len(td):]
+                t = t[:j] + td + "\n" + t[j:]
+                hp = j + len(td) + 1
+                pos = hp if pos is None else max(pos, hp)
+                print(f"hoisted typedef of {l['name']} out of its draft in {owner}")
         for l, text in items:
             block.append(text)
+            if l["decl"] and l["decl"][7]:
+                continue  # never put the definition inside a draft
             # keep the owner's externs (extern + later definition is fine) and put the block after the
             # last of them: every type they use is declared there, and earlier uses still see a decl
             if l["decl"] and l["decl"][0] == owner and l["decl"][5]:
