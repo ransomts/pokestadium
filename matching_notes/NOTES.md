@@ -556,6 +556,8 @@ symlinks .venv/asm/expected/permuter/yaml/baserom.z64, private build/ copy).
 - **func_81209374** (frag1_86CB0, 225): same recipe puts `static u32 D_8122869C = 0` in its real slot (the
   #else branch defines the global for the asm build). Left: t6-t9 rotation from the numSamples reload in the
   unrolled loop remainder; 10 loop-shape variants did not move it. Farm.
+  Farm 2026-10-16: `(unsigned long long)` (or s64/u64) cast on the `out[i * 2 + 1]` store -> 65 (verified with
+  fd.sh via matching_notes/try_candidate.py); s32/u32/s16/s8/long casts, sum/diff temps, swapped stores do not.
 - **func_81209078** (320): `if (bufPtr) {}` is load-bearing (removing it ~4000). `+=` on the last
   D_812346F4 store fixes the base register but swaps addu operands (330). Dead ends in the draft comment. Farm.
 
