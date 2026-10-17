@@ -51,7 +51,7 @@ try_one() {  # $1 = asm data file (repo-relative)
   if ! .venv/bin/python3 matching_notes/datamig.py apply "$t" > "$log" 2>&1; then
     echo "REFUSED $t"; rm -rf "$W"; return
   fi
-  git diff > "$OUT/$stem.patch"
+  git add -A src include yamls linker_scripts; git diff --cached > "$OUT/$stem.patch"
   local t0=$SECONDS
   { make extract && make -j"$PER"; } >> "$log" 2>&1
   if tail -1 "$log" | grep -q ': OK'; then
@@ -76,7 +76,7 @@ for p in "$OUT"/*.patch; do
   if .venv/bin/python3 matching_notes/datamig.py apply "$t" >> "$OUT/combined_apply.log" 2>&1; then n=$((n + 1)); else echo "combine: $t refused on top of the others" | tee -a "$OUT/summary.txt"; fi
 done
 if [ "$n" -gt 0 ]; then
-  git diff HEAD > "$OUT/combined.patch"
+  git add -A src include yamls linker_scripts; git diff --cached HEAD > "$OUT/combined.patch"
   (make extract >/dev/null 2>&1 && make -j"$CPUS" 2>&1) > "$OUT/combined_build.log"
   if tail -1 "$OUT/combined_build.log" | grep -q ': OK'; then
     echo "combined ($n patches): OK -> apply with: git apply $OUT/combined.patch" | tee -a "$OUT/summary.txt"

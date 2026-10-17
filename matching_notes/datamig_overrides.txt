@@ -10,9 +10,21 @@ fake D_8006FEE8
 # D_80070F84 = (u8*)D_80070FA0 - 0x1C: 1-based PokemonStats view of the 0x17-byte table at D_80070FA0;
 # its address is D_8006FF00[151] (Mew).
 fake D_80070F84
-# Sits between 22630's tables; 232C0.c uses it through an extern.
-owner D_80072B00 src/22630.c
-# Item names, 165 x "skill", "No"...: literals of 22630's tables in rom_data_71BA1.
+# rom_data_71BA1 is four data-only translation units (each .data and .rodata section ends in zero
+# padding to 16 bytes: 0x80071D50, 0x80071E10, 0x80072B00, 0x80073230 in .data; 0x8007B620,
+# 0x8007BB50, 0x8007C0A0 in .rodata), linked between 20470 and 225A0; 232C0's data follows.
+newfile src/data_71BA0.c after src/20470.c include "22630.h"
+newfile src/data_72950.c after src/data_71BA0.c include "22630.h"
+newfile src/data_72A10.c after src/data_72950.c include "22630.h"
+newfile src/data_73700.c after src/data_72A10.c include "22630.h"
+owner D_80070FA0 src/data_71BA0.c
+owner D_80071D50 src/data_72950.c
+owner D_80071E10 src/data_72A10.c
+owner D_80072B00 src/data_73700.c
+owner D_80072EE0 src/data_73700.c
+owner D_80073030 src/data_73700.c
+owner D_80073130 src/data_73700.c
+# Type names ("No"...), 165 x "skill", item names: literals of the tables in rom_data_71BA1.
 inline-rodata asm/us/data/rom_rodata_7C1C0.rodata.s
 inline-rodata asm/us/data/rom_rodata_7C220.rodata.s
 inline-rodata asm/us/data/rom_rodata_7C750.rodata.s

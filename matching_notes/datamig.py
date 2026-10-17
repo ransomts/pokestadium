@@ -37,6 +37,7 @@ def load_overrides():
     that point at them: written inline, the file's yaml entry merges into the owner's .rodata)."""
     fake, owner, inl = set(), {}, []
     labels = {}  # name -> (vram, type, dims string)
+    newfiles = []  # (path, after-path, [includes]) data-only C files that do not exist yet
     if OVERRIDES.exists():
         for line in OVERRIDES.read_text().splitlines():
             w = line.split("#", 1)[0].split()
@@ -48,12 +49,14 @@ def load_overrides():
                 owner[w[1]] = w[2]
             elif w[0] == "inline-rodata":
                 inl += w[1:]
+            elif w[0] == "newfile":  # newfile src/x.c after src/y.c [include "h.h" ...]
+                newfiles.append((w[1], w[3], [x for x in w[5:]] if len(w) > 5 else []))
             elif w[0] == "label":  # label 0xVRAM NAME TYPE [dims]: a table spimdisasm did not label
                 labels[w[2]] = (int(w[1], 16), w[3], w[4] if len(w) > 4 else "")
-    return fake, owner, inl, labels
+    return fake, owner, inl, labels, newfiles
 
 
-FAKE, OWNER_OVERRIDE, INLINE_RODATA, LABEL_OVERRIDE = load_overrides()
+FAKE, OWNER_OVERRIDE, INLINE_RODATA, LABEL_OVERRIDE, NEW_FILES = load_overrides()
 
 ITEM = re.compile(r"/\* ([0-9A-F]+) ([0-9A-F]{8})(?: [0-9A-F]+)? \*/ \.(\w+)\s*(.*)")
 LABEL = re.compile(r"^(?:dlabel|glabel|jlabel)\s+(\w+)")
@@ -131,6 +134,9 @@ def code_order(lines, idx):
         if m:  # unnamed entries are named after their rom address by splat
             name = m.group(3) or "%X" % int(m.group(1), 16)
             order.setdefault("src/" + name + ".c", len(order))
+    for k, (f, after, _inc) in enumerate(NEW_FILES):
+        if after in order and f not in order:
+            order[f] = order[after] + 0.001 * (k + 1)
     return order, start, end
 
 
@@ -208,6 +214,11 @@ def find_decl(name):
             out.append((f, t.count("\n", 0, m.start()) + 1, "fnptr", m.group(2).strip(), m.group(3), bool(m.group(1)),
                         m.group(0).strip(), dr))
     return out
+
+
+def new_file_text(f):
+    inc = next((i for nf, _a, i in NEW_FILES if nf == f), [])
+    return "".join(f"#include {x}\n" for x in ['"global.h"'] + inc)
 
 
 def users(name):
@@ -296,7 +307,7 @@ class Emit:
             if lo <= v < hi:
                 r = rlo + (v - lo)
                 raw = ROM[r:ROM.index(b"\0", r)]
-                Emit.used.append((v, len(raw) + 1))
+                Emit.used.append((v, len(raw) + 1, self.lab.get("owner")))
                 return c_string(raw)
         if vram not in self.relocs and v in Emit.label_at:
             self.relocs[vram] = (Emit.label_at[v], 0)
@@ -440,6 +451,10 @@ def resolve_orphans(labs):
         elif b and not a and all(fits(k, b) for k in range(i, j + 1)):
             for k in range(i, j + 1):
                 labs[k]["owner"], labs[k]["why"] = b, "inferred: run before its data"
+        elif a and b and a != b and labs[j + 1]["why"] == "override" and labs[j + 1]["vram"] % 16 == 0:
+            # an `owner` override on the right anchor marks where its file starts: the run is the left's
+            for k in range(i, j + 1):
+                labs[k]["owner"], labs[k]["why"] = a, "inferred: run after its data"
         elif a and b and a != b:
             # each C file's section starts 16-aligned: the split is a 16-aligned label start, with every
             # label before it allowed in a and every label after it allowed in b
@@ -826,6 +841,12 @@ def apply(path):
         Path(f).write_text(txt)
         print(f"inlined {l['name']} = {l['inline']} at {n} use(s) in {f}")
     for owner, items in by_owner.items():
+        if owner not in src:
+            if not any(owner == nf for nf, _a, _i in NEW_FILES):
+                print(f"REFUSING: owner {owner} does not exist")
+                return 2
+            src[owner] = new_file_text(owner)
+            print(f"created data-only file {owner}")
         t = src[owner]
         block, pos = [], None
         defined = {l["name"]: l for l, _ in items}
@@ -940,22 +961,27 @@ def apply(path):
         Path(owner).write_text(t)
         print(f"wrote {len(items)} definition(s) into {owner}")
     # inlined literals must re-create each INLINE_RODATA blob exactly: emitted in address order,
-    # one per string, each padded to 4 (IDO's order for literals in data initializers)
-    merged = []
+    # one per string, each padded to 4 (IDO's order for literals in data initializers); the blob may
+    # end in zeros (its file's .rodata section padding)
+    merged = []  # (file, owner)
     for lo, hi, rlo, f in Emit.ranges:
-        got = sorted(u for u in Emit.used if lo <= u[0] < hi)
+        got = [u for u in Emit.used if lo <= u[0] < hi]
         if not got:
             continue
         a = lo
-        for v, n in [u for u in Emit.used if lo <= u[0] < hi]:
+        for v, n, own in got:
             if v != a:
                 print(f"REFUSING: literals of {f} not contiguous in emission order at {v:08X} (expected {a:08X})")
                 return 2
             a = v + ((n + 3) & ~3)
         if any(ROM[rlo + (a - lo):rlo + (hi - lo)]):
-            print(f"REFUSING: {f} has bytes after its last referenced literal ({a:08X})")
+            print(f"REFUSING: {f} has non-zero bytes after its last referenced literal ({a:08X})")
             return 2
-        merged.append(f)
+        owners_f = {own for _v, _n, own in got}
+        if len(owners_f) != 1:
+            print(f"REFUSING: literals of {f} come from several owners {owners_f}")
+            return 2
+        merged.append((f, owners_f.pop()))
     # yaml: one entry per owner run
     idx, yrom, lines = yaml_entry(res["stem"])
     indent = re.match(r"^(\s*)", lines[idx]).group(1)
@@ -966,27 +992,21 @@ def apply(path):
             new.append(f"{indent}- [0x{l['rom']:X}, .{kind}, {l['owner'][4:-2]}]")
             last = l["owner"]
     lines[idx:idx + 1] = new
-    # merged literal blobs: drop their entries; the owner's .rodata entry starts at the first one
-    if merged:
-        starts = []
-        for f in merged:
-            stem = str(Path(f).relative_to("asm/us/data").with_suffix("")).rsplit(".", 1)[0]
-            pat = re.compile(r"^\s*-\s*\[\s*(0x[0-9A-Fa-f]+)\s*,\s*rodata\s*,\s*%s\s*\]" % re.escape(stem))
-            k = next(i for i, x in enumerate(lines) if pat.match(x))
-            starts.append((int(pat.match(lines[k]).group(1), 16), k))
-        ks = sorted(k for _, k in starts)
-        if ks != list(range(ks[0], ks[0] + len(ks))):
-            print("REFUSING: merged rodata entries are not adjacent in the yaml")
-            return 2
-        nxt = re.compile(r"^(\s*-\s*\[\s*)0x[0-9A-Fa-f]+(\s*,\s*\.rodata\s*,\s*([\w/]+)\s*\].*)$")
-        m = nxt.match(lines[ks[-1] + 1])
-        owners = {l["owner"] for l in res["labels"]}
-        if not m or "src/" + m.group(3) + ".c" not in owners:
-            print(f"REFUSING: the entry after the merged rodata is not an owner's .rodata: {lines[ks[-1] + 1].strip()}")
-            return 2
-        lines[ks[-1] + 1] = m.group(1) + "0x%X" % min(s for s, _ in starts) + m.group(2)
-        del lines[ks[0]:ks[-1] + 1]
-        print(f"merged {len(merged)} rodata file(s) into .rodata of {m.group(3)} (now starts at 0x{min(s for s, _ in starts):X})")
+    # merged literal blobs: each entry becomes `.rodata, <owner>`; if the owner's .rodata entry
+    # follows directly, the blob just extends it (its start moves up)
+    for f, own in merged:
+        stem = str(Path(f).relative_to("asm/us/data").with_suffix("")).rsplit(".", 1)[0]
+        pat = re.compile(r"^(\s*-\s*\[\s*)(0x[0-9A-Fa-f]+)(\s*,\s*)rodata(\s*,\s*)%s(\s*\].*)$" % re.escape(stem))
+        k = next(i for i, x in enumerate(lines) if pat.match(x))
+        m = pat.match(lines[k])
+        nxt = re.match(r"^(\s*-\s*\[\s*)0x[0-9A-Fa-f]+(\s*,\s*\.rodata\s*,\s*%s\s*\].*)$" % re.escape(own[4:-2]),
+                       lines[k + 1]) if k + 1 < len(lines) else None
+        if nxt:
+            lines[k + 1] = nxt.group(1) + m.group(2) + nxt.group(2)
+            del lines[k]
+        else:
+            lines[k] = f"{m.group(1)}{m.group(2)}{m.group(3)}.rodata{m.group(4)}{own[4:-2]}{m.group(5)}"
+        print(f"rodata {stem} -> .rodata of {own[4:-2]}")
     YAML.write_text("\n".join(lines) + "\n")
     # symbol_addrs: mark as defined so splat stops emitting them as undefined symbols. Edit the
     # entry in whichever symbol_addrs*.txt already has it (a second entry is a splat error).
