@@ -95,7 +95,7 @@ void func_83400020(void) {
     func_834021C8(&D_83407B08);
     func_834021C8(&D_83407B10);
     func_834021C8(&D_83407B18.unk_00);
-    func_8002FF20();
+    Cam_ResetUnkF90();
     func_83401D68(&D_83407B38, 0x3C, 0x2D, 0x10, 4, 0, 0, D_83407AC0, 0x10, 0);
 }
 
@@ -503,7 +503,7 @@ void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     }
 
     if (arg9 != 0) {
-        func_8002FF00();
+        Cam_CallInit318B8();
     }
 
     for (i = 0; i < 36; i++) {

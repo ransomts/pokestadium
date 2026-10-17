@@ -103,7 +103,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
         D_8FA00A28 = ASSET_LOAD2(stadium_models, 1, 1);
         temp_s0 = func_80019760(5);
-        func_8002FF20();
+        Cam_ResetUnkF90();
         D_8FA00A00 = func_80031270(0x280, 0x1E0, D_8FA00A2C->unk_18[0], NULL, temp_s0, D_8FA00A28, sp60);
     }
 

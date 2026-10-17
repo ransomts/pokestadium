@@ -233,3 +233,9 @@ func_80012870	Graph_MakeRotatedVertex	b12		writes one Vtx at a rotated UV offset
 func_80012960	Graph_MakeInterpOctagon	b12		GfxAlloc's 8 Vtx interpolating the octagon corners by the fade progress (unk_0A/unk_08) between the two rects	applied@238c8e6
 func_80013330	Graph_VisitVisibleChildren	b12		walks the child ring calling each visible node's callback then its type handler from the D_8006F0A4 vtable	applied@238c8e6
 func_800133D8	Graph_VisitNodePre	b12		calls the first child (pre-order) then Graph_VisitVisibleChildren - the pre-pass traversal	applied@238c8e6
+func_8002FF2C	Cam_GetMode	b13		reads the camera mode bits (unk_6C >> 2 & 3) from the active camera object unk_18	applied@c1fbe27
+func_8002FF3C	Cam_GetFov	b13		returns the FOV entry (table indexed by unk_6C bit 1) for the active camera	applied@c1fbe27
+func_8002FF7C	Cam_GetUnk6CHigh	b13		extracts bits 4-7 of the camera's unk_6C field	applied@c1fbe27
+func_8002FF8C	Cam_GetActive	b13		selects the camera object by mode (0 -> D_80075F80, 2/5 -> D_80075F84) and returns its mode via Cam_GetMode	applied@c1fbe27	pending
+func_8002FF20	Cam_ResetUnkF90	b13		clears the D_80075F90 flag	applied@c1fbe27
+func_8002FF00	Cam_CallInit318B8	b13		forwards to func_800318B8 (the camera controller tick)	applied@c1fbe27

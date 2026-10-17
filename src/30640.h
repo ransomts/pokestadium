@@ -134,8 +134,8 @@ typedef struct unk_D_83407B38 {
 extern unk_D_83407B00 D_83407B30;
 
 void func_8002FA40(void);
-void func_8002FF00(void);
-void func_8002FF20(void);
+void Cam_CallInit318B8(void);
+void Cam_ResetUnkF90(void);
 void func_8003107C(unk_D_83402EE0_070*, unk_func_80026268_arg0*);
 void func_80031140(unk_func_80026268_arg0*, unk_D_83407AC8*);
 unk_func_80031270* func_80031270(s16, s16, unk_D_80068BB0*, unk_D_80068BB0*, unk_D_86002F58_004_000_010*, BinArchive*, unk_D_83403C60*);

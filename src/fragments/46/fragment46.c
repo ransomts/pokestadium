@@ -23,7 +23,7 @@ void func_83700020(void) {
 
     D_837004C0 = 0;
     sp28 = func_80019760(1);
-    func_8002FF00();
+    Cam_CallInit318B8();
     D_837004B0 = func_80031270(0x280, 0x1E0, NULL, D_837004C8->unk_18[0], sp28, D_837004C4, func_834006A0(1));
 }
 

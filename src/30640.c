@@ -252,19 +252,19 @@ void func_8002FA40(void) {
     main_pool_pop_state('SNPM');
 }
 
-void func_8002FF00(void) {
+void Cam_CallInit318B8(void) {
     func_800318B8();
 }
 
-void func_8002FF20(void) {
+void Cam_ResetUnkF90(void) {
     D_80075F90 = 0;
 }
 
-s32 func_8002FF2C(unk_D_83403C60* arg0) {
+s32 Cam_GetMode(unk_D_83403C60* arg0) {
     return ((s32) arg0->unk_6C >> 2) & 3;
 }
 
-f32 func_8002FF3C(unk_D_83403C60* arg0) {
+f32 Cam_GetFov(unk_D_83403C60* arg0) {
     s32 index;
     f32* table;
     index = ((s32) arg0->unk_6C >> 1) & 1;
@@ -272,13 +272,13 @@ f32 func_8002FF3C(unk_D_83403C60* arg0) {
     return table[index];
 }
 
-u32 func_8002FF7C(unk_D_83403C60* arg0) {
+u32 Cam_GetUnk6CHigh(unk_D_83403C60* arg0) {
     u8 v1 = arg0->unk_6C;
     v1 = v1 >> 4;
     return v1 & 0xF;
 }
 
-s32 func_8002FF8C(s32 arg0) {
+s32 Cam_GetActive(s32 arg0) {
     unk_func_80031270* var_a1;
     UNUSED unk_func_80031270* sp1C;
 
@@ -296,7 +296,7 @@ s32 func_8002FF8C(s32 arg0) {
     }
     sp1C = var_a1;
     if (func_800317D8(var_a1) != 0) {
-        return func_8002FF2C(var_a1->unk_18);
+        return Cam_GetMode(var_a1->unk_18);
     }
     return 0;
 }
@@ -308,7 +308,7 @@ s32 func_80030010(s32 arg0, unk_D_86002F34_00C* arg1) {
     if (arg0 == 2) {
         src = (unk_D_83403C60_050_00C*)((u8*)D_80075F84->unk_18 + 0x50);
         func_80011DAC(arg1, 0, 0, D_80075F84->unk_04, D_80075F84->unk_06);
-        func_80011E68(arg1, func_8002FF3C(D_80075F84->unk_18), 20.0f, 10000.0f);
+        func_80011E68(arg1, Cam_GetFov(D_80075F84->unk_18), 20.0f, 10000.0f);
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[0] = src[0];
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[1] = src[1];
         pad = 0;
@@ -317,7 +317,7 @@ s32 func_80030010(s32 arg0, unk_D_86002F34_00C* arg1) {
 }
 
 s32 func_800300CC(s32 arg0, unk_D_86002F34_00C* arg1) {
-    if (func_8002FF8C(arg0) != 0) {
+    if (Cam_GetActive(arg0) != 0) {
         if (arg0 == 2) {
             func_80011DAC(arg1, 0, 0, D_80075F84->unk_04, D_80075F84->unk_06);
             func_80011E68(arg1, 45.0f, 20.0f, 8000.0f);
@@ -430,7 +430,7 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
     s32 i;
     char* sp16C;
 
-    temp_v0 = func_8002FF8C(arg0);
+    temp_v0 = Cam_GetActive(arg0);
     if ((temp_v0 != 0) && (arg0 == 2)) {
         sp16C = (char*)((u8*)D_80075F84->unk_18 + 0x73);
         D_80075F9C = MeasureTextWidth(0x10, 0, sp16C);
@@ -671,7 +671,7 @@ void func_800314BC(unk_func_80031270* arg0) {
     GraphNode_AllocInit(0, arg0->unk_28);
     GraphNode_AllocInit(0, arg0->unk_2C);
     GraphNode_AllocInit(0, arg0->unk_30);
-    sp20 = BinArchive_GetFile(arg0->unk_14, D_8007616C[func_8002FF7C(arg0->unk_18)]);
+    sp20 = BinArchive_GetFile(arg0->unk_14, D_8007616C[Cam_GetUnk6CHigh(arg0->unk_18)]);
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
     temp_v0 = sp20(0, 0);
     if (temp_v0 != NULL) {
