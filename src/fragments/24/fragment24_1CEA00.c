@@ -1327,6 +1327,14 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // Target shape notes: s6 holds arg0 only for rect1's lrx and temp_s7 (addu s7 is scheduled inside rect1's
 // w1); rect1's w1 reloads arg0/arg1 (t2/t1) and rect2 reuses those; arg0 + 0x84 is a memory temp at 0x50
 // (x = s3 is recomputed from it), temp_s7 stays in s7 the whole function.
+// Round 8 fourth pass (agent-16): 3364 -> 2834 with `if (temp_s7) {}` right BEFORE `temp_s7 = ...` (an
+// uninitialised read: temp_s7's live range then reaches back to the function entry). Effect: rect2 gets its
+// own arg0 load (like the target's t2) and the constant 3 is no longer held in a3 from block 3. Fake, but
+// it says temp_s7's range (or something live across the top) is longer in the target. Same `if` at other
+// statement positions (3364-4940), with other variables (var_s1/var_s6/x/arg0/color: up to 4875), and
+// real early defs of temp_s7 (`temp_s7 = arg0; ... temp_s7 += var_s1;`, `s32 temp_s7 = 0`: copy-propagated,
+// 3364) do not reproduce it. Empty-if block boundaries before `var_s6 = temp_s5->unk_CD4[...]` (any
+// variable): 3364 -> 3054 alone, no gain on top of 2834.
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
@@ -1379,6 +1387,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, var_s6 + 0x25, arg1 + 0x13);
 
+    if (temp_s7) {}
     temp_s7 = var_s1 + var_s6;
 
     // clang-format off
