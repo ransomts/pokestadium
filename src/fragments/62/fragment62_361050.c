@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 8639 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 8349 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2190,6 +2190,8 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
 // with no slot left for a tmp7 it reuses var_v1_4 (9074 -> 8919).
 // Prologue matches with the field reads in the order 09 0E 0A 0B 0C 0D 0F 10 (8919 -> 8639).
+// The unk_08 clamp result reuses var_v1_6 (the case 0x39 flag): spC0 then lives in t1 (spilled to
+// 0xC0) and the unk_08 value in s2, as in the target (8639 -> 8349).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
 // gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
 // below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
@@ -3476,7 +3478,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
 
         var_s0_4 = ((temp_s7->unk_01 + sp58) > 0xFF) ? 0xFF : (temp_s7->unk_01 + sp58);
         spC0 = ((temp_s7->unk_06 - sp58) < 0) ? 0 : (temp_s7->unk_06 - sp58);
-        var_s2 = ((temp_s7->unk_08 - sp58) < 0) ? 0 : (temp_s7->unk_08 - sp58);
+        var_v1_6 = ((temp_s7->unk_08 - sp58) < 0) ? 0 : (temp_s7->unk_08 - sp58);
 
         if ((temp_s4->unk_03 != 0) && (sp9C->unk_03 < 2) && (temp_s7->unk_0C < 0xFF)) {
             var_s0_4 *= ((func_843767E4(3) * 0x55) / 255.0f);
@@ -3488,7 +3490,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
 
         temp_s7->unk_01 = var_s0_4;
         temp_s7->unk_06 = spC0;
-        temp_s7->unk_08 = var_s2;
+        temp_s7->unk_08 = var_v1_6;
 
         if (((temp_s7->unk_03 >= 0x12) && (temp_s7->unk_03 < 0x1A)) ||
             ((temp_s7->unk_03 >= 0x3A) && (temp_s7->unk_03 < 0x42))) {
@@ -3525,7 +3527,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
         var_v1_4 = temp_s7->unk_20 * (spB5 * 0x14);
 
         temp_s7->unk_28 = (((((tmp1 + tmp6 + tmp3) * (var_s0_4 / 255.0f)) + tmp2) - (tmp4 * (spC0 / 255.0f))) - tmp5) -
-                          (var_v1_4 * (var_s2 / 255.0f));
+                          (var_v1_4 * (var_v1_6 / 255.0f));
 
         if (arg4) {
             if (!(D_843C5564->unk_00 & 0x30)) {
