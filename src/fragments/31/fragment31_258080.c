@@ -254,7 +254,7 @@ void func_81003A54(Gfx* gfx) {
         break;
     default:
         {
-        sp34 = func_8002D7C0(0, 0, D_8267E760, temp_t0);
+        sp34 = GetMessageString(0, 0, D_8267E760, temp_t0);
         sprintf(D_81004BB8, "%s     ", sp34);
         temp_v1 = D_81004BB0 - 3;
         sp4D = func_8001E730((u8) D_81004BB8[temp_v1]);

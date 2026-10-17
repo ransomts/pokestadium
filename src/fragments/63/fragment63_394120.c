@@ -130,11 +130,11 @@ void func_84B00280(void) {
 }
 
 char* func_84B0037C(s32 arg0) {
-    return func_8002D7C0(NULL, 0, D_84B26678, arg0);
+    return GetMessageString(NULL, 0, D_84B26678, arg0);
 }
 
 char* func_84B003AC(char* arg0, s32 arg1, u32 arg2) {
-    return func_8002D7C0(arg0, arg1, D_84B26678, arg2);
+    return GetMessageString(arg0, arg1, D_84B26678, arg2);
 }
 
 s32 func_84B003D4(s32 arg0, unk_D_86002F34_alt8* arg1) {
@@ -1226,7 +1226,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_3000000, common_menu0_ui, 0);
 
     func_8002D510();
-    D_84B26678 = func_8002D5AC(0x1B);
+    D_84B26678 = GetMessageBank(0x1B);
     func_8001B058();
 
     D_84B1A598.unk_B408 = func_800044F4(0x898000, NULL, 1, 1);

@@ -18,7 +18,7 @@ void func_8002D510(void) {
     }
 }
 
-char** func_8002D5AC(s32 file_number) {
+char** GetMessageBank(s32 file_number) {
     return (char**)func_8000484C(D_800AF740, file_number);
 }
 
@@ -34,7 +34,7 @@ void func_8002D600(u32 arg0, u32 arg1) {
     }
 }
 
-void func_8002D628(char* arg0, u32 arg1, s8* arg2) {
+void DecompressString(char* arg0, u32 arg1, s8* arg2) {
     u32 i;
     s32 var_s2;
     s32 temp_v0;
@@ -100,7 +100,7 @@ end:
     *arg0++ = '\x00';
 }
 
-char* func_8002D7C0(char* arg0, s32 arg1, char** arg2, u32 file_number) {
+char* GetMessageString(char* arg0, s32 arg1, char** arg2, u32 file_number) {
     char* sp1C;
     char* sp18 = (u32)arg2 + (u32)arg2[file_number + 1];
 
@@ -108,13 +108,13 @@ char* func_8002D7C0(char* arg0, s32 arg1, char** arg2, u32 file_number) {
         sp1C = sp18;
     } else {
         sp1C = arg0;
-        func_8002D628(arg0, arg1, sp18);
+        DecompressString(arg0, arg1, sp18);
     }
 
     return sp1C;
 }
 
-s32 func_8002D80C(s8* arg0) {
+s32 CountTextLines(s8* arg0) {
     s32 last_chr = 0;
     s32 line_count = 0;
     s32 chr = *arg0++;

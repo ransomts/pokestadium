@@ -740,18 +740,18 @@ void func_84101210(s16 arg0) {
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
         func_8001F324(0xFF, 0xFF, 0x64, 0xFF);
-        func_8001F1E8(0x48, 0x160, func_8002D7C0(NULL, 0, D_84103440, D_84103CC8));
-        func_8001F1E8(0x18C, 0x160, func_8002D7C0(NULL, 0, D_84103440, 0xC));
-        func_8001F1E8(func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, D_84103440, 0xC)) + 0x190, 0x160, "%d~%d",
+        func_8001F1E8(0x48, 0x160, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
+        func_8001F1E8(0x18C, 0x160, GetMessageString(NULL, 0, D_84103440, 0xC));
+        func_8001F1E8(func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_84103440, 0xC)) + 0x190, 0x160, "%d~%d",
                       D_84102528[D_84103CC8][0], D_84102528[D_84103CC8][1]);
         func_8001EBE0(8, 0);
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001F3B4(0x18);
-        func_8001F1E8(0x48, 0x182, func_8002D7C0(NULL, 0, D_84103440, D_84103CC8 + 6));
+        func_8001F1E8(0x48, 0x182, GetMessageString(NULL, 0, D_84103440, D_84103CC8 + 6));
         func_8001F444();
 
         if (D_800AE540.unk_11F2 == 1) {
-            temp_v0 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, D_84103440, D_84103CC8));
+            temp_v0 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
 
@@ -1004,8 +1004,8 @@ s32 func_84102210(void) {
         s16 tmp = D_84102438[D_84103CC8];
 
         func_8002B5EC(tmp, D_84102444[D_84103CC8], 0);
-        func_8002B840(0, func_8002B700(0, 0, "1P", func_8002311C(1)));
-        func_8002B840(1, func_8002B700(-1, 0, "COM", func_8002311C(3)));
+        func_8002B840(0, RegisterPlayer(0, 0, "1P", func_8002311C(1)));
+        func_8002B840(1, RegisterPlayer(-1, 0, "COM", func_8002311C(3)));
         var_v1 = 1;
     }
     return var_v1;
@@ -1023,7 +1023,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, stadium_select_ui, 0);
     func_8002D510();
-    D_84103440 = func_8002D5AC(0x13);
+    D_84103440 = GetMessageBank(0x13);
     D_84103450 = func_8001E490();
 
     D_84103444 = ASSET_LOAD2(backgrounds, 1, 1);

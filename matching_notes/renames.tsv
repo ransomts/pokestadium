@@ -23,3 +23,8 @@ func_80022338	CalculatePokemonStats	a1		recalculates level (via CalculateLevelFr
 func_8002240C	CalcStatModifierForValue	a1		inverse of CalculateStatValue in the statModifier argument: smallest odd modifier whose stat exceeds the target	applied@a677abc
 D_80072B00	gMoveBattleData	a1	unk_D_80072B00:MoveBattleData	165-entry move battle table (6 bytes: type/accuracy/power); power at unk_05 (func_80022734), type at unk_03 (fragment62 comparisons)	applied@a677abc
 D_80072338	gMoveStrings	a1		unk_D_80072338:MoveStrings	applied@a677abc	pending
+func_8002D5AC	GetMessageBank	a2		returns the string bank (char**) by file id via the D_800AF740 lookup table; every message call starts here	applied@7564043
+func_8002D7C0	GetMessageString	a2		buf/bufSize/bank/stringId: indexes bank[stringId+1] (yay0-style offsets), returns the direct pointer when buf==NULL else decompresses into buf (767+ call sites)	applied@7564043
+func_8002D628	DecompressString	a2		the string expander: state-machine run/window decompressor called by GetMessageString with a bounded destination (arg1 = buffer size)	applied@7564043
+func_8002D80C	CountTextLines	a2		counts lines: iterates chars counting '\n', adds one if the last char is not a newline	applied@7564043
+func_8002B700	RegisterPlayer	a2		allocates a free player slot (4 entries, D_800AE540.unk_0004), binds gControllers[arg0] or the COM state for arg0==-1; called with "1P"/"COM" display names from the lobby flows (29BA0, fragments 38/58/59)	applied@7564043

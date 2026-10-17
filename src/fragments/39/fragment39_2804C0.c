@@ -189,8 +189,8 @@ void func_825053B4(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
 void func_825054F4(void) {
     UNUSED s32 pad;
     unk_D_8250A480* ptr = &D_8250A480;
-    char* sp2C = func_8002D7C0(NULL, 0, ptr->unk_14, 0);
-    char* sp28 = func_8002D7C0(NULL, 0, ptr->unk_14, 1);
+    char* sp2C = GetMessageString(NULL, 0, ptr->unk_14, 0);
+    char* sp28 = GetMessageString(NULL, 0, ptr->unk_14, 1);
 
     if (ptr->unk_00 != 0) {
         func_82504BB4(ptr->unk_04, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
@@ -217,7 +217,7 @@ void func_82505720(char** arg0) {
     D_8250A498.unk_14 = arg0;
 
     for (i = 0; i < 9; i++) {
-        D_8250A4B0[i] = func_8002D7C0(NULL, 0, arg0, i + 7);
+        D_8250A4B0[i] = GetMessageString(NULL, 0, arg0, i + 7);
     }
 }
 
@@ -321,7 +321,7 @@ void func_82505C10(void) {
     unk_D_8250A498* ptr = &D_8250A498;
     char* sp3C;
     s16 tmp;
-    char* sp34 = func_8002D7C0(NULL, 0, ptr->unk_14, 0x10);
+    char* sp34 = GetMessageString(NULL, 0, ptr->unk_14, 0x10);
 
     if (ptr->unk_00 != 0) {
         if (ptr->unk_10 == ptr->unk_12) {

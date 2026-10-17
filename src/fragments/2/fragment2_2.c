@@ -1310,14 +1310,14 @@ void func_878029C0(void) {
     D_8780FE01 = 0;
     D_8780FE00 = 0xC;
 
-    D_8780FE08[0] = D_8780FE28[0] = func_8002D7C0(NULL, 0, D_87806330, 0x51);
+    D_8780FE08[0] = D_8780FE28[0] = GetMessageString(NULL, 0, D_87806330, 0x51);
 
-    D_8780FE08[1] = func_8002D7C0(NULL, 0, D_87806330, 0x52);
+    D_8780FE08[1] = GetMessageString(NULL, 0, D_87806330, 0x52);
 
-    D_8780FE08[2] = D_8780FE18[2] = D_8780FE28[1] = func_8002D7C0(NULL, 0, D_87806330, 0x53);
+    D_8780FE08[2] = D_8780FE18[2] = D_8780FE28[1] = GetMessageString(NULL, 0, D_87806330, 0x53);
 
-    D_8780FE18[0] = func_8002D7C0(NULL, 0, D_87806330, 0x54);
-    D_8780FE18[1] = func_8002D7C0(NULL, 0, D_87806330, 0x55);
+    D_8780FE18[0] = GetMessageString(NULL, 0, D_87806330, 0x54);
+    D_8780FE18[1] = GetMessageString(NULL, 0, D_87806330, 0x55);
 
     func_8001EBE0(4, 0);
 
@@ -1846,10 +1846,10 @@ void func_87804AD0(s16 arg0) {
         char sp8C[0x60];
         char* var_s0_3;
 
-        var_s0_3 = func_8002D7C0(sp8C, 0x60, D_87806330, 0x13);
+        var_s0_3 = GetMessageString(sp8C, 0x60, D_87806330, 0x13);
 
         if ((D_8780FA30[0] + D_8780FA30[1] + D_8780FA30[2] + D_8780FA30[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, func_8002D7C0(NULL, 0, D_87806330, D_8780F9B0[D_8780FA38]));
+            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, D_87806330, D_8780F9B0[D_8780FA38]));
             var_s0_3 = sp8C;
         }
 
@@ -2208,10 +2208,10 @@ s32 func_87804FD4(void) {
         }
 
         if (D_8780FC6C != 0) {
-            sp60 = func_8002D7C0(0, 0, D_87806330, 0x57);
-            sp5C = func_8002D7C0(0, 0, D_87806330, 0x58);
-            sp44 = func_8002D80C(sp60);
-            tmp = func_8002D80C(sp5C);
+            sp60 = GetMessageString(0, 0, D_87806330, 0x57);
+            sp5C = GetMessageString(0, 0, D_87806330, 0x58);
+            sp44 = CountTextLines(sp60);
+            tmp = CountTextLines(sp5C);
             tmp = sp44 + tmp;
             temp_t0 = tmp * 0x10;
             temp_t0 += tmp * 2;
@@ -2271,8 +2271,8 @@ s32 func_87804FD4(void) {
             func_8001EBE0(0x10, 0);
             func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
             func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-            func_8001F1E8(0xA0 - (func_878013D4(NULL, func_8002D7C0(0, 0, D_87806330, 0x56)) / 2), 0x6C,
-                          func_8002D7C0(0, 0, D_87806330, 0x56));
+            func_8001F1E8(0xA0 - (func_878013D4(NULL, GetMessageString(0, 0, D_87806330, 0x56)) / 2), 0x6C,
+                          GetMessageString(0, 0, D_87806330, 0x56));
             func_8001F4C4();
             func_8001F444();
         }

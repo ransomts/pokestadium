@@ -270,7 +270,7 @@ s32 func_843085E0(unk_D_84390010* arg0, UNUSED s32 arg1) {
 }
 
 char* func_843085F0(unk_D_84390010* arg0) {
-    return func_8002D7C0(NULL, 0, D_843900B8, arg0->unk_654.unk_38.unk_5A - 1);
+    return GetMessageString(NULL, 0, D_843900B8, arg0->unk_654.unk_38.unk_5A - 1);
 }
 
 u8* func_8430862C(unk_D_84390010* arg0) {

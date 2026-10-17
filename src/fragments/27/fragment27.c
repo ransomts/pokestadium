@@ -121,8 +121,8 @@ s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(D_88605AC0.r, D_88605AC0.g, D_88605AC0.b, D_88605AC0.a);
-    func_8001F1E8(arg1 + 0x2C, arg2 + 6, func_8002D7C0(NULL, 0, D_8861C510, 0));
-    func_8001F1E8(arg1 + 0x118, arg2 + 6, func_8002D7C0(NULL, 0, D_8861C510, 1));
+    func_8001F1E8(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 0));
+    func_8001F1E8(arg1 + 0x118, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 1));
     func_8001F444();
     return 0;
 }
@@ -155,7 +155,7 @@ s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(D_88605AC4.r, D_88605AC4.g, D_88605AC4.b, D_88605AC4.a);
-    func_8001F1E8(arg1 + 0x2C, arg2 + 6, func_8002D7C0(NULL, 0, D_8861C510, 2));
+    func_8001F1E8(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 2));
     func_8001F444();
     return 0;
 }
@@ -191,7 +191,7 @@ s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(D_88605AC8.r, D_88605AC8.g, D_88605AC8.b, D_88605AC8.a);
-    func_8001F1E8(arg1 + 0x2C, arg2 + 6, func_8002D7C0(NULL, 0, D_8861C510, 3));
+    func_8001F1E8(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 3));
     func_8001F444();
     return 0;
 }
@@ -299,7 +299,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
         func_8001F3F4();
         func_8001F324(sp68->unk_04.r, sp68->unk_04.g, sp68->unk_04.b, sp68->unk_04.a);
         func_8001EBE0(8, 0);
-        func_8001F1E8(arg1 + 0x16, arg2, func_8002D7C0(NULL, 0, D_8861C518, sp6C->unk_00[0] - 1));
+        func_8001F1E8(arg1 + 0x16, arg2, GetMessageString(NULL, 0, D_8861C518, sp6C->unk_00[0] - 1));
         func_8001F444();
     } else {
         unk_D_88400138* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(0);
@@ -442,8 +442,8 @@ s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
     char* sp34;
     char* sp30;
 
-    sp34 = func_8002D7C0(NULL, 0, D_8861C510, 0x15);
-    sp30 = func_8002D7C0(NULL, 0, D_8861C510, 0x16);
+    sp34 = GetMessageString(NULL, 0, D_8861C510, 0x15);
+    sp30 = GetMessageString(NULL, 0, D_8861C510, 0x16);
 
     if (arg0->unk_2C == NULL) {
         return 0;
@@ -464,7 +464,7 @@ s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
         func_8001F1E8(arg1 + 0x9B, arg2 + 6, "%s%d", sp34, arg0->unk_2C->unk_24);
         func_8001EBE0(8, 0);
         func_8001F1E8(arg1 + 0x11E, arg2 + 0xA, "%s%03d", sp30, arg0->unk_2C->unk_00.unk_00);
-        func_8001F1E8(arg1 + 0x1A0, arg2 + 0xA, func_8002D7C0(NULL, 0, D_8861C514, arg0->unk_2C->unk_00.unk_00 - 1));
+        func_8001F1E8(arg1 + 0x1A0, arg2 + 0xA, GetMessageString(NULL, 0, D_8861C514, arg0->unk_2C->unk_00.unk_00 - 1));
     }
     func_8001F444();
     return 0;
@@ -500,7 +500,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F324(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
-    temp_v0 = func_8002D7C0(NULL, 0, D_8861C510, 7);
+    temp_v0 = GetMessageString(NULL, 0, D_8861C510, 7);
     tmp = func_8001F5B0(8, 0, temp_v0) + func_8001F5B0(8, 0, "1/WWWWWWWW2/WWWWWWWW");
     var_s4 = ((arg0->unk_00.unk_14.unk_00 - tmp) - 0xA) / 2;
     func_8001F1E8(arg1 + var_s4, arg2 + 4, temp_v0);
@@ -529,7 +529,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
                 func_8001F1E8(arg1 + var_s4, arg2 + 4, sp50);
                 func_8001F324(sp68.r, sp68.g, sp68.b, sp68.a);
                 func_8001F1E8(func_8001F5B0(0, 0, sp50) + arg1 + var_s4, arg2 + 4,
-                              func_8002D7C0(NULL, 0, D_8861C51C, temp_v0_3->unk_00));
+                              GetMessageString(NULL, 0, D_8861C51C, temp_v0_3->unk_00));
                 var_s4 += func_8001F5B0(0, 0, "1/WWWWWWWW") + 0xA;
             }
         }
@@ -571,11 +571,11 @@ s32 func_88602198(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F324(D_88605AF8.r, D_88605AF8.g, D_88605AF8.b, D_88605AF8.a);
-    func_8001F1E8(sp54 + 4, arg2 + 4, func_8002D7C0(NULL, 0, D_8861C510, 8));
-    func_8001F1E8(sp54 + 4, arg2 + 0x2A, func_8002D7C0(NULL, 0, D_8861C510, 9));
-    func_8001F1E8(sp54 + 4, arg2 + 0x40, func_8002D7C0(NULL, 0, D_8861C510, 0xA));
-    func_8001F1E8(sp54 + 4, arg2 + 0x56, func_8002D7C0(NULL, 0, D_8861C510, 0xB));
-    func_8001F1E8(sp54 + 4, arg2 + 0x6C, func_8002D7C0(NULL, 0, D_8861C510, 0xC));
+    func_8001F1E8(sp54 + 4, arg2 + 4, GetMessageString(NULL, 0, D_8861C510, 8));
+    func_8001F1E8(sp54 + 4, arg2 + 0x2A, GetMessageString(NULL, 0, D_8861C510, 9));
+    func_8001F1E8(sp54 + 4, arg2 + 0x40, GetMessageString(NULL, 0, D_8861C510, 0xA));
+    func_8001F1E8(sp54 + 4, arg2 + 0x56, GetMessageString(NULL, 0, D_8861C510, 0xB));
+    func_8001F1E8(sp54 + 4, arg2 + 0x6C, GetMessageString(NULL, 0, D_8861C510, 0xC));
 
     if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
         sp50 = func_8001F5B0(0, 0, D_88605AFC);
@@ -819,13 +819,13 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F324(D_88605B44.r, D_88605B44.g, D_88605B44.b, D_88605B44.a);
-    sp70 = func_8002D7C0(NULL, 0, D_8861C510, 0xD);
+    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xD);
     func_8001F1E8(arg1 + 0x18, arg2 + 0x2C, sp70);
     func_8001F1E8(func_8001F5B0(0, 0, sp70) + arg1 + 0x18, arg2 + 0x2C, "%05d", arg0->unk_2C->unk_0E);
-    sp70 = func_8002D7C0(NULL, 0, D_8861C510, 0xE);
+    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xE);
     func_8001F1E8(arg1 + 0x18, arg2 + 0x44, sp70);
     func_8001F1E8(func_8001F5B0(0, 0, sp70) + arg1 + 0x18, arg2 + 0x44, (char*)arg0->unk_2C->unk_3B);
-    sp70 = func_8002D7C0(NULL, 0, D_8861C510, 0xF);
+    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xF);
     func_8001F1E8(arg1 + 0xE8, arg2 + 0x2C, sp70);
     func_8001F1E8(func_8001F5B0(0, 0, sp70) + arg1 + 0xE8, arg2 + 0x2C, "%d", arg0->unk_2C->unk_10);
 
@@ -836,16 +836,16 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
         s32 sp44;
 
         func_8002D600(6, (char*)(func_88600020(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
-        func_8002D7C0(sp48, sizeof(sp48), D_8861C510, 0x10);
+        GetMessageString(sp48, sizeof(sp48), D_8861C510, 0x10);
         sp44 = func_8001F5B0(0, 0, sp48);
         func_8001F1E8(arg1 + 0xE8, arg2 + 0x44, sp48);
-        func_8001F1E8(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", func_8002D7C0(NULL, 0, D_8861C510, 0x15), sp6C);
-        sp70 = func_8002D7C0(NULL, 0, D_8861C510, 0x11);
+        func_8001F1E8(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", GetMessageString(NULL, 0, D_8861C510, 0x15), sp6C);
+        sp70 = GetMessageString(NULL, 0, D_8861C510, 0x11);
         func_8001F1E8(arg1 + 0x18, arg2 + 8, sp70);
         sp74 = ((func8840007C)Util_ConvertAddrToVirtAddr((uintptr_t)func_8840007C))(arg0->unk_2C);
         func_8001F324(sp74->unk_04.r, sp74->unk_04.g, sp74->unk_04.b, sp74->unk_04.a);
         func_8001F1E8(func_8001F5B0(0, 0, sp70) + arg1 + 0x18, arg2 + 8,
-                      func_8002D7C0(NULL, 0, D_8861C524, sp74->unk_00));
+                      GetMessageString(NULL, 0, D_8861C524, sp74->unk_00));
     }
 
     func_8001F444();
@@ -931,11 +931,11 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     func_8001F3F4();
     func_8001EBE0(4, 0);
     func_8001F324(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
-    sp128 = func_8002D7C0(NULL, 0, D_8861C510, 0x12);
+    sp128 = GetMessageString(NULL, 0, D_8861C510, 0x12);
     func_8001F1E8(sp13C + 0x90, sp138 + 8, sp128);
-    sp124 = func_8002D7C0(NULL, 0, D_8861C510, 0x13);
+    sp124 = GetMessageString(NULL, 0, D_8861C510, 0x13);
     func_8001F1E8(sp13C + 0xE, sp138 + 0x1C, sp124);
-    sp120 = func_8002D7C0(NULL, 0, D_8861C510, 0x14);
+    sp120 = GetMessageString(NULL, 0, D_8861C510, 0x14);
     func_8001F1E8(sp13C + 0x90, sp138 + 0x1C, sp120);
 
     if (sp130 == NULL) {
@@ -953,12 +953,12 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
         sp38 = ((((sp130->unk_04 * 0x64) / 255) + 2) / 5) * 5;
         func_8001F324(sp12C->unk_04.r, sp12C->unk_04.g, sp12C->unk_04.b, sp12C->unk_04.a);
         func_8001EBE0(8, 0);
-        func_8001F1E8(sp13C + 8, sp138 + 4, func_8002D7C0(NULL, 0, D_8861C518, sp134->unk_00[0] - 1));
+        func_8001F1E8(sp13C + 8, sp138 + 4, GetMessageString(NULL, 0, D_8861C518, sp134->unk_00[0] - 1));
         func_8001EBE0(4, 0);
         func_8001F1E8(func_8001F5B0(0, 0, sp128) + sp13C + 0x90, sp138 + 8, " %s",
-                      func_8002D7C0(NULL, 0, D_8861C51C, sp12C->unk_00));
+                      GetMessageString(NULL, 0, D_8861C51C, sp12C->unk_00));
         func_8001F3B4(0x12);
-        func_8001F1E8(sp13C + 0xE, sp138 + 0x3A, func_8002D7C0(NULL, 0, D_8861C528, sp134->unk_00[0] - 1));
+        func_8001F1E8(sp13C + 0xE, sp138 + 0x3A, GetMessageString(NULL, 0, D_8861C528, sp134->unk_00[0] - 1));
         func_8001F324(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
         func_8001EBE0(4, 0);
 
@@ -1179,7 +1179,7 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp6C->unk_00);
 
     sp68 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp68, 0x14, 5, func_8002D7C0(NULL, 0, D_8861C510, 4), 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp68, 0x14, 5, GetMessageString(NULL, 0, D_8861C510, 4), 0x10);
     sp68->unk_30 = (0, D_88605B6C);
     sp68->unk_44 = sp68->unk_44;
     sp68->unk_34 = (0, D_88605B70);
@@ -1187,13 +1187,13 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, func_8002D7C0(NULL, 0, D_8861C510, 5), D_88605B74, D_88605B78, arg5);
+    func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, D_8861C510, 5), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[0] = &sp64->unk_00;
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, func_8002D7C0(NULL, 0, D_8861C510, 6), D_88605B74, D_88605B78, arg5);
+    func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, D_8861C510, 6), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[1] = &sp64->unk_00;

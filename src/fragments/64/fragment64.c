@@ -117,8 +117,8 @@ void func_84800020(void) {
     func_8001EBE0(8, 0);
     func_8001F1E8(0x5A, 0x1AA, "*");
     func_8001F1E8(0x149, 0x1AA, "*");
-    func_8001F1E8(0x91, 0x1A8, func_8002D7C0(NULL, 0, D_84803790, 2));
-    func_8001F1E8(0x180, 0x1A8, func_8002D7C0(NULL, 0, D_84803790, 3));
+    func_8001F1E8(0x91, 0x1A8, GetMessageString(NULL, 0, D_84803790, 2));
+    func_8001F1E8(0x180, 0x1A8, GetMessageString(NULL, 0, D_84803790, 3));
     func_8001F444();
 }
 
@@ -146,9 +146,9 @@ void func_84800184(void) {
     func_8001F324(0xA5, 0xDE, 0x8C, 0xFF);
 
     if ((D_84816420->unk_0001 == 0) || (D_84816420->unk_0001 == 8)) {
-        var_v0 = func_8002D7C0(NULL, 0, D_84803790, 1);
+        var_v0 = GetMessageString(NULL, 0, D_84803790, 1);
     } else {
-        var_v0 = func_8002D7C0(NULL, 0, D_84803790, 0);
+        var_v0 = GetMessageString(NULL, 0, D_84803790, 0);
     }
 
     for (i = 0; i < 16; i++) {
@@ -397,7 +397,7 @@ void func_84800D08(unk_D_848037A0* arg0) {
         if ((arg0->unk_0009 != 0) && (temp_v0_4 != 0)) {
             func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         }
-        func_8001F1E8(temp_s1_2, temp_s2_3 + 0x14, "%s%d", func_8002D7C0(NULL, 0, D_84803794, 0x15),
+        func_8001F1E8(temp_s1_2, temp_s2_3 + 0x14, "%s%d", GetMessageString(NULL, 0, D_84803794, 0x15),
                       arg0->unk_0018[i].unk_24);
     }
 
@@ -448,9 +448,9 @@ void func_84801340(unk_D_848037A0* arg0) {
 
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
-        func_8001F1E8(var_s1 + 0x1F, var_s2 + 0xB, func_8002D7C0(NULL, 0, D_84803790, 4));
-        func_8001F1E8(var_s1 + 0x4F, var_s2 + 0x30, func_8002D7C0(NULL, 0, D_84803790, 5));
-        func_8001F1E8(var_s1 + 0xAF, var_s2 + 0x30, func_8002D7C0(NULL, 0, D_84803790, 6));
+        func_8001F1E8(var_s1 + 0x1F, var_s2 + 0xB, GetMessageString(NULL, 0, D_84803790, 4));
+        func_8001F1E8(var_s1 + 0x4F, var_s2 + 0x30, GetMessageString(NULL, 0, D_84803790, 5));
+        func_8001F1E8(var_s1 + 0xAF, var_s2 + 0x30, GetMessageString(NULL, 0, D_84803790, 6));
         func_8001F444();
         arg0->unk_0007 = 2;
     } else {
@@ -467,9 +467,9 @@ void func_84801340(unk_D_848037A0* arg0) {
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F1E8(var_s1 + 0x50, var_s2 + 0x14, func_8002D7C0(NULL, 0, D_84803790, 4));
-        func_8001F1E8(var_s1 + 0x80, var_s2 + 0x3C, func_8002D7C0(NULL, 0, D_84803790, 5));
-        func_8001F1E8(var_s1 + 0xE0, var_s2 + 0x3C, func_8002D7C0(NULL, 0, D_84803790, 6));
+        func_8001F1E8(var_s1 + 0x50, var_s2 + 0x14, GetMessageString(NULL, 0, D_84803790, 4));
+        func_8001F1E8(var_s1 + 0x80, var_s2 + 0x3C, GetMessageString(NULL, 0, D_84803790, 5));
+        func_8001F1E8(var_s1 + 0xE0, var_s2 + 0x3C, GetMessageString(NULL, 0, D_84803790, 6));
         func_8001F444();
     }
 }
@@ -509,7 +509,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         func_8001F324(0xFF, 0x63, 0x63, 0xFF);
         func_8001F3B4(0x25);
         func_8002D600(3, sp2C);
-        func_8001F1E8(sp34 + 0x10, sp30 + 0xB, func_8002D7C0(sp38, sizeof(sp38), D_84803790, 7));
+        func_8001F1E8(sp34 + 0x10, sp30 + 0xB, GetMessageString(sp38, sizeof(sp38), D_84803790, 7));
         func_8001F444();
         arg0->unk_0007 = 2;
     } else {
@@ -523,7 +523,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         func_8001F324(0xFF, 0x63, 0x63, 0xFF);
         func_8001F3B4(0x28);
         func_8002D600(3, sp2C);
-        func_8001F1E8(sp34 + 0x50, sp30 + 0x14, func_8002D7C0(NULL, 0, D_84803790, 7));
+        func_8001F1E8(sp34 + 0x50, sp30 + 0x14, GetMessageString(NULL, 0, D_84803790, 7));
         func_8001F444();
     }
 }
@@ -549,7 +549,7 @@ void func_84801800(unk_D_848037A0* arg0) {
         func_8001EBE0(0x20, 0);
         func_8001F470();
         func_8001F36C(0x1C, 0x74, 0xFF, 0xFF);
-        temp_v0 = func_8002D7C0(NULL, 0, D_84803790, 8);
+        temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
         func_8001F1E8((sp3C - (func_8001F5B0(0x20, 0, temp_v0) / 2)) + 0xAF, sp38 + 0x19, temp_v0);
         func_8001F4C4();
         func_8001F444();
@@ -579,7 +579,7 @@ void func_84801800(unk_D_848037A0* arg0) {
         func_8001F470();
         func_8001F324(0xFF, 0xFF, 0xFF, sp34);
         func_8001F36C(0x1C, 0x74, 0xFF, sp34);
-        temp_v0 = func_8002D7C0(NULL, 0, D_84803790, 8);
+        temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
         func_8001F1E8((sp3C - (func_8001F5B0(0x20, 0, temp_v0) / 2)) + 0xEB, sp38 + 0x25, temp_v0);
         func_8001F4C4();
         func_8001F444();
@@ -611,30 +611,30 @@ void func_84801A88(unk_D_848037A0* arg0) {
     func_8001F3F4();
     func_8001EBE0(4, 0);
     func_8001F1E8(temp_fp + 0x32, sp7C + 7, arg0->unk_0018[temp_s1].unk_30);
-    func_8001F1E8(temp_fp + 0x32, sp7C + 0x1B, "%s", func_8002D7C0(NULL, 0, D_84803794, 8));
-    func_8001F1E8(temp_fp + 0xBE, sp7C + 7, func_8002D7C0(NULL, 0, D_84803790, 9));
-    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x1B, func_8002D7C0(NULL, 0, D_84803790, 0xA));
-    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x2F, func_8002D7C0(NULL, 0, D_84803790, 0xB));
-    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x43, func_8002D7C0(NULL, 0, D_84803790, 0xC));
-    func_8001F1E8(temp_fp + 0x32, sp7C + 0x2F, func_8002D7C0(NULL, 0, D_84803790, 0xD));
+    func_8001F1E8(temp_fp + 0x32, sp7C + 0x1B, "%s", GetMessageString(NULL, 0, D_84803794, 8));
+    func_8001F1E8(temp_fp + 0xBE, sp7C + 7, GetMessageString(NULL, 0, D_84803790, 9));
+    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x1B, GetMessageString(NULL, 0, D_84803790, 0xA));
+    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x2F, GetMessageString(NULL, 0, D_84803790, 0xB));
+    func_8001F1E8(temp_fp + 0xBE, sp7C + 0x43, GetMessageString(NULL, 0, D_84803790, 0xC));
+    func_8001F1E8(temp_fp + 0x32, sp7C + 0x2F, GetMessageString(NULL, 0, D_84803790, 0xD));
 
     if (sp78->unk_06 != sp78->unk_07) {
-        func_8001F1E8(temp_fp + 0x32, sp7C + 0x43, func_8002D7C0(NULL, 0, D_84803790, 0xE));
+        func_8001F1E8(temp_fp + 0x32, sp7C + 0x43, GetMessageString(NULL, 0, D_84803790, 0xE));
     }
 
     idx = func_800219FC(sp78->unk_06);
     func_8001F324(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-    func_8001F1E8(temp_fp + 0x7A, sp7C + 0x2F, func_8002D7C0(NULL, 0, D_8480378C, func_800219FC(sp78->unk_06)));
+    func_8001F1E8(temp_fp + 0x7A, sp7C + 0x2F, GetMessageString(NULL, 0, D_8480378C, func_800219FC(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
         idx = func_800219FC(sp78->unk_07);
         func_8001F324(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-        func_8001F1E8(temp_fp + 0x7A, sp7C + 0x43, func_8002D7C0(NULL, 0, D_8480378C, func_800219FC(sp78->unk_07)));
+        func_8001F1E8(temp_fp + 0x7A, sp7C + 0x43, GetMessageString(NULL, 0, D_8480378C, func_800219FC(sp78->unk_07)));
     }
 
     func_8001EBE0(4, 0);
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(temp_fp + 0x8C, sp7C + 7, "%s%d", func_8002D7C0(NULL, 0, D_84803794, 0x15),
+    func_8001F1E8(temp_fp + 0x8C, sp7C + 7, "%s%d", GetMessageString(NULL, 0, D_84803794, 0x15),
                   arg0->unk_0018[temp_s1].unk_24);
     func_8001F1E8(temp_fp + 0x52, sp7C + 0x1B, "%3d", sp78->unk_26);
     func_8001F1E8(temp_fp + 0xFA, sp7C + 7, "%3d", sp78->unk_28);
@@ -649,7 +649,7 @@ void func_84801A88(unk_D_848037A0* arg0) {
         temp_v1 = &D_848035FC[gMoveStrings[sp78->unk_09[i] - 1].unk_01];
         func_8001EBE0(4, 0);
         func_8001F324(temp_v1->unk_00.r, temp_v1->unk_00.g, temp_v1->unk_00.b, 0xFF);
-        func_8001F1E8(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, func_8002D7C0(NULL, 0, D_84803788, sp78->unk_09[i] - 1));
+        func_8001F1E8(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, GetMessageString(NULL, 0, D_84803788, sp78->unk_09[i] - 1));
         func_8001EBE0(4, 0);
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001F1E8(temp_fp + 0x1B3, (i * 0x14) + sp7C + 7, "%2d", sp78->unk_20[i] & 0x3F);
@@ -1267,10 +1267,10 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    D_84803788 = func_8002D5AC(0x25);
-    D_8480378C = func_8002D5AC(0x26);
-    D_84803790 = func_8002D5AC(0x12);
-    D_84803794 = func_8002D5AC(6);
+    D_84803788 = GetMessageBank(0x25);
+    D_8480378C = GetMessageBank(0x26);
+    D_84803790 = GetMessageBank(0x12);
+    D_84803794 = GetMessageBank(6);
 
     func_84803110(&D_800AE540);
     func_8000D1F0(7);

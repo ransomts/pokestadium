@@ -3169,36 +3169,36 @@ void func_86C03608(void) {
     func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-    func_8001F1E8(0xA0 - (func_878013D4(D_86C12000, func_8002D7C0(NULL, 0, D_87806330, 0x3E)) / 2), 0x20,
-                  func_8002D7C0(NULL, 0, D_87806330, 0x3E));
+    func_8001F1E8(0xA0 - (func_878013D4(D_86C12000, GetMessageString(NULL, 0, D_87806330, 0x3E)) / 2), 0x20,
+                  GetMessageString(NULL, 0, D_87806330, 0x3E));
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(0x28, 0x34, func_8002D7C0(NULL, 0, D_87806330, 0x3F));
-    func_8001F1E8(0x28, 0x58, func_8002D7C0(NULL, 0, D_87806330, 0x40));
-    func_8001F1E8(0x28, 0x70, func_8002D7C0(NULL, 0, D_87806330, 0x41));
+    func_8001F1E8(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x3F));
+    func_8001F1E8(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x40));
+    func_8001F1E8(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x41));
     func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
     func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-    func_87801290(&sp38, &sp34, func_8002D7C0(NULL, 0, D_87806330, 0x3F), func_8002D7C0(NULL, 0, D_87806330, 0x61),
+    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x3F), GetMessageString(NULL, 0, D_87806330, 0x61),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, func_8002D7C0(NULL, 0, D_87806330, 0x61));
-    func_87801290(&sp38, &sp34, func_8002D7C0(NULL, 0, D_87806330, 0x3F), func_8002D7C0(NULL, 0, D_87806330, 0x62),
+    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x61));
+    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x3F), GetMessageString(NULL, 0, D_87806330, 0x62),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, func_8002D7C0(NULL, 0, D_87806330, 0x62));
-    func_87801290(&sp38, &sp34, func_8002D7C0(NULL, 0, D_87806330, 0x41), func_8002D7C0(NULL, 0, D_87806330, 0x62),
+    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x62));
+    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x41), GetMessageString(NULL, 0, D_87806330, 0x62),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x70, func_8002D7C0(NULL, 0, D_87806330, 0x62));
-    func_8001F1E8(0x8B, 0xC8, func_8002D7C0(NULL, 0, D_87806330, 0x5C));
-    func_8001F1E8(0x75, 0xB0, func_8002D7C0(NULL, 0, D_87806330, 0x5C));
-    func_8001F1E8(0xE5, 0xB0, func_8002D7C0(NULL, 0, D_87806330, 0x5C));
+    func_8001F1E8(sp38 + 0x28, sp34 + 0x70, GetMessageString(NULL, 0, D_87806330, 0x62));
+    func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    func_8001F1E8(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    func_8001F1E8(0xE5, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
     func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
     func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-    func_8001F1E8(0x8C, 0xB0, func_8002D7C0(NULL, 0, D_87806330, 0x42));
+    func_8001F1E8(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x42));
     func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
     func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-    func_8001F1E8(0xFC, 0xB0, func_8002D7C0(NULL, 0, D_87806330, 0x43));
+    func_8001F1E8(0xFC, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x43));
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-    func_8001F1E8(0xA2, 0xC8, func_8002D7C0(NULL, 0, D_87806330, 0x14));
+    func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
     func_8001F4C4();
     func_8001F444();
 }
@@ -3236,7 +3236,7 @@ void func_86C03AB8(void) {
 void miniEkansDrawCountdown(void) {
     func_8001F324(0xFF, 0xC8, 0x32, 0xFF);                               // set color
     func_8001EBE0(8, 0);                                                 // set style
-    func_8001F1E8(0x80, 0x14, func_8002D7C0(NULL, 0, D_87806330, 0x5D)); // TIME text
+    func_8001F1E8(0x80, 0x14, GetMessageString(NULL, 0, D_87806330, 0x5D)); // TIME text
     func_8001F1E8(0xAA, 0x14, "%d", miniEkansCountdown);
 }
 

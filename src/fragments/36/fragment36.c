@@ -116,18 +116,18 @@ void func_821002F8(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = func_8001F5B0(4, 0, func_8002D7C0(NULL, 0, D_82100EA0, 0));
+        sp24 = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_82100EA0, 0));
         temp_s0 = 0x50 - D_82100DC8;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
         func_8001F3F4();
         func_8001EBE0(4, 0);
-        func_8001F1E8(temp_s0, 0xB3, func_8002D7C0(NULL, 0, D_82100EA0, 0));
+        func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
 
         temp_s0 += sp24 + 30;
         if (temp_s0 < 0x140) {
-            func_8001F1E8(temp_s0, 0xB3, func_8002D7C0(NULL, 0, D_82100EA0, 0));
+            func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
         }
 
         func_8001F444();
@@ -380,7 +380,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     func_8001E94C(6, 0);
     func_82100B98();
     func_8002D510();
-    D_82100EA0 = func_8002D5AC(0x14);
+    D_82100EA0 = GetMessageBank(0x14);
     func_8004FE00(D_82100EBC);
     func_82100AB8();
     sp24 = func_821009B4();

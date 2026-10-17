@@ -56,9 +56,9 @@ void func_82B0029C(void) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(0x6A, 0x2C, func_8002D7C0(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    func_8001F1E8(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
     func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(0x68, 0x2A, func_8002D7C0(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    func_8001F1E8(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
     func_8001F444();
 }
 
@@ -121,9 +121,9 @@ void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
 void func_82B00994(s16 arg0) {
     UNUSED s32 pad;
 
-    func_82B00814(0x50, 0x180, arg0 * 6, func_8002D7C0(NULL, 0, D_82B01140, 4));
-    func_82B00814(0xF4, 0x180, arg0 * 6, func_8002D7C0(NULL, 0, D_82B01140, 5));
-    func_82B00814(0x198, 0x180, arg0 * 6, func_8002D7C0(NULL, 0, D_82B01140, 6));
+    func_82B00814(0x50, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 4));
+    func_82B00814(0xF4, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 5));
+    func_82B00814(0x198, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 6));
 }
 
 s32 func_82B00A50(void) {
@@ -259,7 +259,7 @@ s32 func_82B00E84(void) {
     func_82B00DD0(&sp1C);
     func_8002D510();
 
-    D_82B01140 = func_8002D5AC(0x18);
+    D_82B01140 = GetMessageBank(0x18);
     D_82B0114C = 0;
 
     if (D_800AE540.unk_0000 == 7) {

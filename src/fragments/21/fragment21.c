@@ -2242,26 +2242,26 @@ void func_86F01904(void) {
     func_8001F3B4(0xC);
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-    func_8001F1E8(0xA0 - (func_878013D4(D_86F0D264, func_8002D7C0(NULL, 0, D_87806330, 0x4A)) / 2), 0x20,
-                  func_8002D7C0(NULL, 0, D_87806330, 0x4A));
+    func_8001F1E8(0xA0 - (func_878013D4(D_86F0D264, GetMessageString(NULL, 0, D_87806330, 0x4A)) / 2), 0x20,
+                  GetMessageString(NULL, 0, D_87806330, 0x4A));
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(0x28, 0x34, func_8002D7C0(NULL, 0, D_87806330, 0x4B));
-    func_8001F1E8(0x28, 0x58, func_8002D7C0(NULL, 0, D_87806330, 0x4C));
-    func_8001F1E8(0x28, 0x70, func_8002D7C0(NULL, 0, D_87806330, 0x4D));
+    func_8001F1E8(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x4B));
+    func_8001F1E8(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x4C));
+    func_8001F1E8(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x4D));
     func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
     func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-    func_87801290(&sp38, &sp34, func_8002D7C0(NULL, 0, D_87806330, 0x4B), func_8002D7C0(NULL, 0, D_87806330, 0x63),
+    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x4B), GetMessageString(NULL, 0, D_87806330, 0x63),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, func_8002D7C0(NULL, 0, D_87806330, 0x63));
-    func_8001F1E8(0xB8, 0xB2, func_8002D7C0(NULL, 0, D_87806330, 0x5C));
-    func_8001F1E8(0x8B, 0xC8, func_8002D7C0(NULL, 0, D_87806330, 0x5C));
+    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x63));
+    func_8001F1E8(0xB8, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
     func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
     func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-    func_8001F1E8(0xCF, 0xB2, func_8002D7C0(NULL, 0, D_87806330, 0x4E));
+    func_8001F1E8(0xCF, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x4E));
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-    func_8001F1E8(0xA2, 0xC8, func_8002D7C0(NULL, 0, D_87806330, 0x14));
+    func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
     func_8001F4C4();
     func_8001EBE0(4, -2);
     func_8001F444();

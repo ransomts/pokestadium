@@ -2424,7 +2424,7 @@ void func_8850A10C(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s
     }
 
     if (arg2 == 0) {
-        arg2 = func_8002D80C(arg1->unk_40);
+        arg2 = CountTextLines(arg1->unk_40);
     }
 
     temp_v1 = arg0->unk_38->unk_00[arg0->unk_38->unk_50].unk_02;

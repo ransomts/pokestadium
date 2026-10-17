@@ -3964,7 +3964,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     s32 j;
     s32 idx;
 
-    spF4 = func_8002D7C0(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
+    spF4 = GetMessageString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
     func_88807090();
     func_80015348();
     func_800079C4();
@@ -3973,7 +3973,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     func_8001EBE0(1, 0);
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     func_8002D5D4(0x19, D_88826A60);
-    temp_v0 = func_8002D7C0(spD0, 0x20, D_88826A3C, 4);
+    temp_v0 = GetMessageString(spD0, 0x20, D_88826A3C, 4);
     func_8001F1E8(0x23, 0x17, temp_v0);
     D_88826CC8 = func_8001F5B0(0, 0, temp_v0) + 0xA;
     D_88826CB2 = 0;
@@ -3981,14 +3981,14 @@ s32 func_8880725C(UNUSED u8 arg0) {
     D_88826CCE = 0;
     D_88826CD0 = 0;
     if (D_88826A54 == 1) {
-        sprintf(D_88826A88[0].unk_00, "%s", func_8002D7C0(NULL, 0, D_88826A3C, 7));
+        sprintf(D_88826A88[0].unk_00, "%s", GetMessageString(NULL, 0, D_88826A3C, 7));
         D_88826CB2 = func_8001F5B0(0, 0, D_88826A88[0].unk_00) + 0x1E;
         func_8001F1E8(0xAF - (D_88826CB2 / 2), 0x7D, "%s", D_88826A88[0].unk_00);
     } else {
         if (D_88826A4C == 0) {
             temp_s0 = D_8882651C[D_88826A4E];
             temp_s0--;
-            func_8001F1E8(0xCB, 0xD5, " %s", func_8002D7C0(NULL, 0, D_88826A3C, 5));
+            func_8001F1E8(0xCB, 0xD5, " %s", GetMessageString(NULL, 0, D_88826A3C, 5));
             if (D_88826A52 == 1) {
                 unk_D_88826CF0* ptr = &D_88826CF0[temp_s0];
 
@@ -4004,7 +4004,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
                             temp_s4 = temp_s2->unk_04;
 
                             spB4 = func_888071C8(temp_s2->unk_06);
-                            temp_s0_2 = func_8002D7C0(NULL, 0, D_88826A3C, ptr->unk_18[i] + 0x38);
+                            temp_s0_2 = GetMessageString(NULL, 0, D_88826A3C, ptr->unk_18[i] + 0x38);
                             if (D_88826CC6 == 1) {
                                 if (temp_s1 == temp_s4) {
                                     if (tmp >= 2) {
@@ -4028,7 +4028,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
                                     sprintf(D_88826A88[i].unk_4B, "%s  %d%%  ", &D_88825B60, temp_s2->unk_06);
                                 }
                             } else {
-                                sprintf(sp94, "%s", func_8002D7C0(NULL, 0, D_88826A3C, spB4 + 0xB));
+                                sprintf(sp94, "%s", GetMessageString(NULL, 0, D_88826A3C, spB4 + 0xB));
                                 if (temp_s1 == temp_s4) {
                                     sprintf(D_88826A88[i].unk_2D, "%s", temp_s0_2);
                                     sprintf(D_88826A88[i].unk_3C, "%s %2d", D_88826CE0, temp_s1);
@@ -4093,7 +4093,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
                 }
             }
         } else {
-            func_8001F1E8(0x65, 0xB8, " %s", func_8002D7C0(NULL, 0, D_88826A3C, 6));
+            func_8001F1E8(0x65, 0xB8, " %s", GetMessageString(NULL, 0, D_88826A3C, 6));
         }
 
         if ((D_88826A80 == 0) || (D_88826A4E == D_88826A50)) {
@@ -4231,8 +4231,8 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   D_88826A3C = arg6;
   D_88826A58 = arg0 - 1;
   sprintf(D_88826A60, "%s", arg5);
-  D_88826CE0 = func_8002D7C0(0, 0, D_88826A3C, 9);
-  D_88826CE4 = func_8002D7C0(0, 0, D_88826A3C, 0x37);
+  D_88826CE0 = GetMessageString(0, 0, D_88826A3C, 9);
+  D_88826CE4 = GetMessageString(0, 0, D_88826A3C, 0x37);
   D_88826CD4 = main_pool_alloc(0x3200, 0);
   func_88803BCC(D_88826CD4, arg0);
   func_80004258((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);

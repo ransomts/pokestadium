@@ -231,8 +231,8 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
     s32 var_t0;
     s32 sp80;
 
-    sp8C[0] = func_8002D7C0(NULL, 0, D_82F13B70, 0x12);
-    sp8C[1] = func_8002D7C0(NULL, 0, D_82F13B70, 0x13);
+    sp8C[0] = GetMessageString(NULL, 0, D_82F13B70, 0x12);
+    sp8C[1] = GetMessageString(NULL, 0, D_82F13B70, 0x13);
     sp11C = arg0->unk_14;
     func_82F022DC(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
 
@@ -301,10 +301,10 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         func_8001EBE0(0x10, 0);
         func_8001F1E8(arg0->unk_04 + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
         func_8001EBE0(0x10, 0);
-        func_8001F1E8(arg0->unk_04 + 0xA0, arg0->unk_06 + 6, "%s%d", func_8002D7C0(NULL, 0, D_82F13B74, 0x15),
+        func_8001F1E8(arg0->unk_04 + 0xA0, arg0->unk_06 + 6, "%s%d", GetMessageString(NULL, 0, D_82F13B74, 0x15),
                       sp11C->unk_24);
         func_8001EBE0(8, 0);
-        func_8001F1E8(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", func_8002D7C0(NULL, 0, D_82F13B74, 0x16),
+        func_8001F1E8(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", GetMessageString(NULL, 0, D_82F13B74, 0x16),
                       sp11C->unk_00.unk_00);
         func_8001EBE0(8, 0);
         func_8001F1E8(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, func_82F00020(sp11C->unk_00.unk_00));
@@ -313,7 +313,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         temp_s1_2 = func_800219FC(sp11C->unk_07);
 
         func_8001EBE0(8, 0);
-        func_8001F1E8(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, func_8002D7C0(NULL, 0, D_82F13B70, 0xC));
+        func_8001F1E8(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, GetMessageString(NULL, 0, D_82F13B70, 0xC));
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001F1E8(arg0->unk_04 + 0x120, arg0->unk_06 + 0x28, "1/");
         func_8001F324(D_80071D88[temp_s0].color.r, D_80071D88[temp_s0].color.g, D_80071D88[temp_s0].color.b, 0xFF);
@@ -329,7 +329,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001EBE0(8, 0);
-        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x44, func_8002D7C0(NULL, 0, D_82F13B74, 8));
+        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x44, GetMessageString(NULL, 0, D_82F13B74, 8));
         func_8001EBE0(8, 0);
         sprintf(sp94, "%d", sp11C->unk_26);
         func_8001F1E8((arg0->unk_04 - func_8001F5B0(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
@@ -341,10 +341,10 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         sprintf(sp94, "%d", sp11C->unk_02);
         func_8001F1E8((arg0->unk_04 + temp_s1_3) - func_8001F5B0(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
         func_8001EBE0(8, 0);
-        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x6A, func_8002D7C0(NULL, 0, D_82F13B70, 0xD));
-        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x80, func_8002D7C0(NULL, 0, D_82F13B70, 0xE));
-        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x96, func_8002D7C0(NULL, 0, D_82F13B70, 0xF));
-        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0xAC, func_8002D7C0(NULL, 0, D_82F13B70, 0x10));
+        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x6A, GetMessageString(NULL, 0, D_82F13B70, 0xD));
+        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x80, GetMessageString(NULL, 0, D_82F13B70, 0xE));
+        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0x96, GetMessageString(NULL, 0, D_82F13B70, 0xF));
+        func_8001F1E8(arg0->unk_04 + 0x144, arg0->unk_06 + 0xAC, GetMessageString(NULL, 0, D_82F13B70, 0x10));
         func_8001EBE0(8, 0);
 
         sprintf(sp94, "%d", sp11C->unk_28);
@@ -386,7 +386,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
             func_8001EBE0(0x10, 0);
             func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(arg0->unk_04 + 0x10, arg0->unk_06 + 0x12A, func_8002D7C0(NULL, 0, D_82F13B70, 0x11));
+            func_8001F1E8(arg0->unk_04 + 0x10, arg0->unk_06 + 0x12A, GetMessageString(NULL, 0, D_82F13B70, 0x11));
 
             for (i = 0; i < 2; i++) {
                 func_8001F1E8(arg0->unk_04 + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);

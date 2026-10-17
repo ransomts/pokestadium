@@ -104,7 +104,7 @@ static s16 D_83003B54[] = {
 };
 
 char* func_83000020(s32 arg0) {
-    return func_8002D7C0(NULL, 0, D_830039C4, arg0 - 1);
+    return GetMessageString(NULL, 0, D_830039C4, arg0 - 1);
 }
 
 void func_83000058(void) {
@@ -505,7 +505,7 @@ void func_83000A30(void) {
 
             func_8001F324(0, 0, 0, 0xFF);
             func_8002D5D4(0x26, D_83003C98);
-            temp_v0_21 = func_8002D7C0(sp48, sizeof(sp48), D_830039C0, 0);
+            temp_v0_21 = GetMessageString(sp48, sizeof(sp48), D_830039C0, 0);
             func_8001F1E8(0x6A, temp_s1 + 4, temp_v0_21);
             func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
             func_8001F1E8(0x68, temp_s1 + 2, temp_v0_21);
@@ -571,13 +571,13 @@ void func_830015EC(s16 arg0, s16 arg1) {
     if (D_83003C9C != NULL) {
         if (D_83003C9C != D_83003CBC) {
             func_8002D5D4(0x27, D_83003C9C);
-            func_8001F1E8(arg0 + 0x10, arg1 + 4, func_8002D7C0(sp48, sizeof(sp48), D_830039C0, 1));
+            func_8001F1E8(arg0 + 0x10, arg1 + 4, GetMessageString(sp48, sizeof(sp48), D_830039C0, 1));
         } else {
             func_8001F1E8(arg0 + 0x10, arg1 + 4, D_83003C9C);
         }
     }
 
-    func_8001F1E8(arg0 + 0x30, arg1 + 0x134, func_8002D7C0(NULL, 0, D_830039C0, 2));
+    func_8001F1E8(arg0 + 0x30, arg1 + 0x134, GetMessageString(NULL, 0, D_830039C0, 2));
     func_8001EBE0(8, 0);
 
     for (i = 0; i < D_83003CA4; i++) {
@@ -662,7 +662,7 @@ void func_83001B64(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        D_83003CE0.unk_00[i] = func_8002D7C0(NULL, 0, D_830039C0, i + 4);
+        D_83003CE0.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, i + 4);
     }
 
     D_83003CE0.unk_74 = D_83003CE0.unk_00[2];
@@ -671,10 +671,10 @@ void func_83001B64(void) {
     D_83003CE0.unk_80 = D_83003CE0.unk_00[15];
     D_83003CE0.unk_84 = D_83003CE0.unk_00[22];
     D_83003CE0.unk_88 = D_83003CE0.unk_00[27];
-    D_83003CE0.unk_8C = func_8002D7C0(NULL, 0, D_830039C0, 0x21);
+    D_83003CE0.unk_8C = GetMessageString(NULL, 0, D_830039C0, 0x21);
     D_83003CE0.unk_90 = D_83003CE0.unk_00[20];
     D_83003CE0.unk_94 = D_83003CE0.unk_00[4];
-    D_83003CE0.unk_98 = func_8002D7C0(NULL, 0, D_830039C0, 0x22);
+    D_83003CE0.unk_98 = GetMessageString(NULL, 0, D_830039C0, 0x22);
 }
 
 void func_83001C4C(void) {
@@ -692,7 +692,7 @@ void func_83001C4C(void) {
                 break;
 
             default:
-                D_83003DE0.unk_00[i] = func_8002D7C0(NULL, 0, D_830039C0, var_s2 + 0x23);
+                D_83003DE0.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, var_s2 + 0x23);
                 var_s2++;
                 break;
         }
@@ -723,18 +723,18 @@ void func_83001CF8(void) {
     func_83001B64();
     func_83001C4C();
 
-    D_83003CA8 = func_8002D7C0(NULL, 0, D_830039C0, 0x46);
-    D_83003CAC = func_8002D7C0(NULL, 0, D_830039C0, 0x45);
-    D_83003CB0 = func_8002D7C0(NULL, 0, D_830039C0, 0x49);
-    D_83003CB4 = func_8002D7C0(NULL, 0, D_830039C0, 0x47);
-    D_83003CB8 = func_8002D7C0(NULL, 0, D_830039C0, 0x48);
-    D_83003CBC = func_8002D7C0(NULL, 0, D_830039C0, 0x4A);
-    D_83003CC0 = func_8002D7C0(NULL, 0, D_830039C0, 0x4D);
-    D_83003CC4 = func_8002D7C0(NULL, 0, D_830039C0, 0x4C);
-    D_83003CC8 = func_8002D7C0(NULL, 0, D_830039C0, 0x4B);
-    D_83003CCC = func_8002D7C0(NULL, 0, D_830039C0, 0x4E);
-    D_83003CD0 = func_8002D7C0(NULL, 0, D_830039C0, 0x4F);
-    D_83003CD4 = func_8002D7C0(NULL, 0, D_830039C0, 0x50);
+    D_83003CA8 = GetMessageString(NULL, 0, D_830039C0, 0x46);
+    D_83003CAC = GetMessageString(NULL, 0, D_830039C0, 0x45);
+    D_83003CB0 = GetMessageString(NULL, 0, D_830039C0, 0x49);
+    D_83003CB4 = GetMessageString(NULL, 0, D_830039C0, 0x47);
+    D_83003CB8 = GetMessageString(NULL, 0, D_830039C0, 0x48);
+    D_83003CBC = GetMessageString(NULL, 0, D_830039C0, 0x4A);
+    D_83003CC0 = GetMessageString(NULL, 0, D_830039C0, 0x4D);
+    D_83003CC4 = GetMessageString(NULL, 0, D_830039C0, 0x4C);
+    D_83003CC8 = GetMessageString(NULL, 0, D_830039C0, 0x4B);
+    D_83003CCC = GetMessageString(NULL, 0, D_830039C0, 0x4E);
+    D_83003CD0 = GetMessageString(NULL, 0, D_830039C0, 0x4F);
+    D_83003CD4 = GetMessageString(NULL, 0, D_830039C0, 0x50);
 
     D_83003CD8 = D_83003CB4;
     D_83003CDC = D_83003CB8;
@@ -813,8 +813,8 @@ s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_83000058();
     func_8001B058();
     func_8002D510();
-    D_830039C0 = func_8002D5AC(0x20);
-    D_830039C4 = func_8002D5AC(0x24);
+    D_830039C0 = GetMessageBank(0x20);
+    D_830039C4 = GetMessageBank(0x24);
     func_80007754();
     func_830020D0();
     func_8000771C();

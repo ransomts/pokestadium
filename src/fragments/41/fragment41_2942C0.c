@@ -729,7 +729,7 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
     if (sp40 != NULL) {
         func_8002D5D4(0x21, sp40);
         func_8002D5D4(0x22, sp3C);
-        sp38 = func_8002D7C0(sp44, 0x80, D_82F13B70, 0x19);
+        sp38 = GetMessageString(sp44, 0x80, D_82F13B70, 0x19);
     }
 
     if ((sp44[0] != '\x00') && ((arg0->unk_04 != 0x210) || (arg0->unk_06 != 0))) {

@@ -63,15 +63,15 @@ static unk_D_82F13B78 D_82F13B78[2] = {
 static u16 D_82F13B88 = 0;
 
 char* func_82F00020(s32 arg0) {
-    return func_8002D7C0(NULL, 0, D_82F144C4, arg0 - 1);
+    return GetMessageString(NULL, 0, D_82F144C4, arg0 - 1);
 }
 
 char* func_82F00058(s32 arg0) {
-    return func_8002D7C0(NULL, 0, D_82F144C8, arg0 - 1);
+    return GetMessageString(NULL, 0, D_82F144C8, arg0 - 1);
 }
 
 char* func_82F00090(s32 arg0) {
-    return func_8002D7C0(NULL, 0, D_82F144CC, func_800219FC(arg0));
+    return GetMessageString(NULL, 0, D_82F144CC, func_800219FC(arg0));
 }
 
 void func_82F000C8(s16 arg0) {
@@ -320,12 +320,12 @@ void func_82F00960(void) {
 void func_82F00968(void) {
     func_8001BB20();
     func_8002D510();
-    D_82F13B70 = func_8002D5AC(0x21);
-    D_82F13B74 = func_8002D5AC(6);
-    D_82F144C4 = func_8002D5AC(0x24);
-    D_82F144C8 = func_8002D5AC(0x25);
-    D_82F144CC = func_8002D5AC(0x26);
-    D_82F13B78[0].unk_04 = func_8002D7C0(NULL, 0, D_82F13B70, 0);
+    D_82F13B70 = GetMessageBank(0x21);
+    D_82F13B74 = GetMessageBank(6);
+    D_82F144C4 = GetMessageBank(0x24);
+    D_82F144C8 = GetMessageBank(0x25);
+    D_82F144CC = GetMessageBank(0x26);
+    D_82F13B78[0].unk_04 = GetMessageString(NULL, 0, D_82F13B70, 0);
     D_82F14428 = 0;
     func_82F0036C();
     D_82F14424 = 0;

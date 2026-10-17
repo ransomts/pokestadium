@@ -362,12 +362,12 @@ s32 func_80022F24(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
 }
 
 void func_80023068(void) {
-    char** sp1C = func_8002D5AC(0x11);
+    char** sp1C = GetMessageBank(0x11);
 
-    HAL_Strcpy(D_800AC890[0], func_8002D7C0(NULL, 0, sp1C, 0));
-    HAL_Strcpy(D_800AC890[1], func_8002D7C0(NULL, 0, sp1C, 1));
-    HAL_Strcpy(D_800AC890[2], func_8002D7C0(NULL, 0, sp1C, 2));
-    HAL_Strcpy(D_800AC890[3], func_8002D7C0(NULL, 0, sp1C, 3));
+    HAL_Strcpy(D_800AC890[0], GetMessageString(NULL, 0, sp1C, 0));
+    HAL_Strcpy(D_800AC890[1], GetMessageString(NULL, 0, sp1C, 1));
+    HAL_Strcpy(D_800AC890[2], GetMessageString(NULL, 0, sp1C, 2));
+    HAL_Strcpy(D_800AC890[3], GetMessageString(NULL, 0, sp1C, 3));
 }
 
 char* func_8002311C(s32 arg0) {

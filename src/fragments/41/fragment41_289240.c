@@ -407,10 +407,10 @@ void func_82F02544(s16 arg0, s16 arg1, s16 arg2) {
     func_8001EBE0(8, 0);
 
     if (arg0 == 0) {
-        var_v0 = func_8002D7C0(NULL, 0, D_82F13B70, 0xA);
+        var_v0 = GetMessageString(NULL, 0, D_82F13B70, 0xA);
     } else {
         func_8002D600(1, arg0);
-        var_v0 = func_8002D7C0(sp64, ARRAY_COUNT(sp64), D_82F13B70, 0xB);
+        var_v0 = GetMessageString(sp64, ARRAY_COUNT(sp64), D_82F13B70, 0xB);
     }
 
     func_8001F1E8((arg1 - (func_8001F5B0(0, 0, var_v0) / 2)) + 0xDC, arg2 + 4, var_v0);

@@ -1544,10 +1544,10 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
 
     sp2C = func_86A018C0();
     func_8002D510();
-    D_86A06218 = func_8002D5AC(0x2D);
+    D_86A06218 = GetMessageBank(0x2D);
 
     for (i = 0, ptr = D_86A02750; i < sp2C; i++, ptr++) {
-        ptr->unk_04[0] = func_8002D7C0(NULL, 0, D_86A06218, i);
+        ptr->unk_04[0] = GetMessageString(NULL, 0, D_86A06218, i);
     }
 
     D_86A06210 = arg0;

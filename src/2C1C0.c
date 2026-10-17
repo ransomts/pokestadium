@@ -73,7 +73,7 @@ void func_8002B6BC(void) {
     D_800AE540.unk_11F3 = 0;
 }
 
-unk_D_800AE540_0004* func_8002B700(s32 arg0, s16 arg1, char* arg2, char* arg3) {
+unk_D_800AE540_0004* RegisterPlayer(s32 arg0, s16 arg1, char* arg2, char* arg3) {
     s32 i;
     unk_D_800AE540_0874* sp20;
     unk_D_800AE540_0004* sp1C = NULL;
@@ -212,8 +212,8 @@ void func_8002BA34(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     func_8002B5EC(0x10, arg0, arg1);
 
-    spD0 = func_8002B700(0, 0, func_8002311C(1), func_8002311C(2));
-    spCC = func_8002B700(1, 0, func_8002311C(1), func_8002311C(2));
+    spD0 = RegisterPlayer(0, 0, func_8002311C(1), func_8002311C(2));
+    spCC = RegisterPlayer(1, 0, func_8002311C(1), func_8002311C(2));
 
     func_8002B888(spD0, func_8002B924(&sp78, arg2, spD6));
     func_8002B888(spCC, func_8002B924(&sp24, arg3, spD6));
@@ -232,7 +232,7 @@ void func_8002BB7C(s32 arg0, s32 arg1, s32 arg2) {
     func_80023AF8(arg2);
     func_800251B0(arg2, &sp34);
 
-    temp_s4 = func_8002B700(arg1, 0, &sp34, func_8002311C(1));
+    temp_s4 = RegisterPlayer(arg1, 0, &sp34, func_8002311C(1));
     temp_v0 = func_80022C28(0x20, arg2, 0, 0);
 
     if (temp_v0 != NULL) {
@@ -502,11 +502,11 @@ void func_8002C394(s16 arg0) {
     func_8002B5EC(9, 6, 0);
 
     if (arg0 == 1) {
-        func_8002B840(0, func_8002B700(0, 0, "1P", func_8002311C(1)));
-        func_8002B840(1, func_8002B700(-1, 0, "COM", func_8002311C(3)));
+        func_8002B840(0, RegisterPlayer(0, 0, "1P", func_8002311C(1)));
+        func_8002B840(1, RegisterPlayer(-1, 0, "COM", func_8002311C(3)));
     } else {
-        func_8002B840(0, func_8002B700(0, 0, "1P", func_8002311C(1)));
-        func_8002B840(1, func_8002B700(1, 0, "2P", func_8002311C(1)));
+        func_8002B840(0, RegisterPlayer(0, 0, "1P", func_8002311C(1)));
+        func_8002B840(1, RegisterPlayer(1, 0, "2P", func_8002311C(1)));
     }
 
     if (D_80075684 == 0) {
@@ -561,8 +561,8 @@ s32 func_8002C5E8(void) {
         tmp = sp250.unk_0E;
 
         func_80021B5C(sp44, sp250.unk_10);
-        func_8002B840(0, func_8002B700(0, tmp, sp44, sp44));
-        func_8002B840(1, func_8002B700(-1, tmp, "COM", func_8002311C(3)));
+        func_8002B840(0, RegisterPlayer(0, tmp, sp44, sp44));
+        func_8002B840(1, RegisterPlayer(-1, tmp, "COM", func_8002311C(3)));
 
         for (i = 0; i < temp_v0; i++) {
             func_8002B888(D_800AE540.unk_1194[0].unk_08[0], &sp58[i]);

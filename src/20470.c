@@ -662,10 +662,10 @@ void func_80021270(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void func_80021920(void) {
-    char** temp_s2 = func_8002D5AC(0x24);
+    char** temp_s2 = GetMessageBank(0x24);
     s32 i;
 
     for (i = 0; i < 151; i++) {
-        HAL_Strcpy(D_8006FF00[i].name, func_8002D7C0(NULL, 0, temp_s2, i));
+        HAL_Strcpy(D_8006FF00[i].name, GetMessageString(NULL, 0, temp_s2, i));
     }
 }

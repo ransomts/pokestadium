@@ -375,7 +375,7 @@ void func_83003484(void) {
         func_8002D600(3, ptr->unk_06);
         {
             char sp4C[64];
-            func_8001F1E8(spA6 + 0x2C, spA4 + 8, func_8002D7C0(sp4C, sizeof(sp4C), D_830039C0, 3));
+            func_8001F1E8(spA6 + 0x2C, spA4 + 8, GetMessageString(sp4C, sizeof(sp4C), D_830039C0, 3));
         }
         func_8001F444();
 

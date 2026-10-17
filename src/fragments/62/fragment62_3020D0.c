@@ -100,12 +100,12 @@ void func_843179F4(s8* arg0, s8 arg1) {
 
     if (tmp >= 0x80) {
         if ((tmp - 0x80) >= 0xB) {
-            func_8002D7C0(arg0 + 1, 0x40, D_843900B0, tmp - 0x48);
+            GetMessageString(arg0 + 1, 0x40, D_843900B0, tmp - 0x48);
         } else {
-            func_8002D7C0(arg0 + 1, 0x40, D_843900B0, tmp - 0x49);
+            GetMessageString(arg0 + 1, 0x40, D_843900B0, tmp - 0x49);
         }
     } else {
-        func_8002D7C0(arg0 + 1, 0x40, D_843900B0, D_84385BC0[arg1]);
+        GetMessageString(arg0 + 1, 0x40, D_843900B0, D_84385BC0[arg1]);
     }
 }
 
@@ -500,8 +500,8 @@ void func_84318640(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 13:
-            temp_s1 = func_8001F5B0(1, 0, func_8002D7C0(NULL, 0, D_843900B0, 0xA4)) / 2;
-            func_84315BC0(func_8002D7C0(NULL, 0, D_843900B0, 0xA4), 0xA1 - temp_s1, 0x71);
+            temp_s1 = func_8001F5B0(1, 0, GetMessageString(NULL, 0, D_843900B0, 0xA4)) / 2;
+            func_84315BC0(GetMessageString(NULL, 0, D_843900B0, 0xA4), 0xA1 - temp_s1, 0x71);
             break;
 
         case 14:
@@ -699,7 +699,7 @@ void func_84319408(unk_D_84390010* arg0, s32 arg1) {
     D_843901A0->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
     arg0->unk_8C4.unk_00 = 1;
     func_8002D5D4(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
-    func_8002D7C0(arg0->unk_8C4.unk_48, 0x40, D_843900B0, arg1);
+    GetMessageString(arg0->unk_8C4.unk_48, 0x40, D_843900B0, arg1);
 }
 
 void func_843194A0(unk_D_84390010* arg0) {

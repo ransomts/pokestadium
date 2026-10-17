@@ -496,7 +496,7 @@ void func_822022C8(s32 arg0) {
         func_8001F3F4();
         func_8001EBE0(8, 0);
         func_8001F3B4(0x18);
-        func_8001F1E8(0x5B, 0x182, func_8002D7C0(NULL, 0, D_822030F0, D_822031D8));
+        func_8001F1E8(0x5B, 0x182, GetMessageString(NULL, 0, D_822030F0, D_822031D8));
         func_8001F444();
     }
 }
@@ -815,7 +815,7 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     func_8002D510();
-    D_822030F0 = func_8002D5AC(0x17);
+    D_822030F0 = GetMessageBank(0x17);
     func_80028AFC(2);
     func_80027F24(&D_822031E8);
     func_80027FA0(&D_822031E0, D_800AE540.unk_11F2);

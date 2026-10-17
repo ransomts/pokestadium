@@ -92,7 +92,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
 
     var_s1 = 0;
     for (i = 0; i < 6; i++) {
-        temp_v0 = func_8001F5B0(D_88901178[i].unk_04, 0, func_8002D7C0(NULL, 0, arg4, D_88901178[i].unk_00));
+        temp_v0 = func_8001F5B0(D_88901178[i].unk_04, 0, GetMessageString(NULL, 0, arg4, D_88901178[i].unk_00));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -100,10 +100,10 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     var_s1 += 0x10;
 
     func_8002CBC0(&arg0->unk_34, 3, arg5);
-    func_8002CC2C(&arg0->unk_34, func_8002D7C0(NULL, 0, arg4, 3), 0);
-    func_8002CC2C(&arg0->unk_34, func_8002D7C0(NULL, 0, arg4, 4), 1);
+    func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 3), 0);
+    func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 4), 1);
     if (arg1 == 0) {
-        func_8002CC2C(&arg0->unk_34, func_8002D7C0(NULL, 0, arg4, 5), 2);
+        func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 5), 2);
     }
     sp7C = (arg0->unk_34.unk_08 * 0x1C) + 0x38;
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_889000C4));
@@ -131,17 +131,17 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&temp_s0->unk_00.unk_00, &arg0->unk_40->unk_00.unk_00);
 
     temp_s0_2 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_2, 8, 0, func_8002D7C0(NULL, 0, arg4, 0), 8);
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_2, 8, 0, GetMessageString(NULL, 0, arg4, 0), 8);
     temp_s0_2->unk_3C = 0x18;
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_40, &temp_s0_2->unk_00);
 
     temp_s0_3 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_3, 8, 0, func_8002D7C0(NULL, 0, arg4, 1), 8);
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_3, 8, 0, GetMessageString(NULL, 0, arg4, 1), 8);
     temp_s0_3->unk_3C = 0x18;
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_40, &temp_s0_3->unk_00);
 
     temp_s0_4 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    sp60 = func_8002D7C0(NULL, 0, arg4, 2);
+    sp60 = GetMessageString(NULL, 0, arg4, 2);
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_4, (var_s1 - func_8001F5B0(0x10, 0, sp60)) / 2, 0xA,
                                                            sp60, 0x10);
     temp_s0_4->unk_30 = (0, D_889011B0);
@@ -310,9 +310,9 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp50->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     sp4C = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, arg1, 6));
+    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 6));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp4C, (0x1A0 - sp54) / 2, 0x30,
-                                                           func_8002D7C0(NULL, 0, arg1, 6), 0x10);
+                                                           GetMessageString(NULL, 0, arg1, 6), 0x10);
     sp4C->unk_30 = (0, D_889011C8);
     sp4C->unk_44 = sp4C->unk_44;
     sp4C->unk_34 = (0, D_889011CC);
@@ -328,9 +328,9 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp48->unk_00);
 
     sp44 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, arg1, 7));
+    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 7));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp44, (0x1A0 - sp54) / 2, 0x30,
-                                                           func_8002D7C0(NULL, 0, arg1, 7), 0x10);
+                                                           GetMessageString(NULL, 0, arg1, 7), 0x10);
     sp44->unk_30 = (0, D_889011C8);
     sp44->unk_44 = sp44->unk_44;
     sp44->unk_34 = (0, D_889011CC);
@@ -338,20 +338,20 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp44->unk_00);
 
     sp40 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, arg1, 8));
+    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 8));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp40, (0x1A0 - sp54) / 2, 0xC,
-                                                           func_8002D7C0(NULL, 0, arg1, 8), 0x10);
+                                                           GetMessageString(NULL, 0, arg1, 8), 0x10);
     sp40->unk_3C = 0x1C;
     sp40->unk_30 = (0, D_889011C8);
     sp40->unk_44 = sp40->unk_44;
     sp40->unk_34 = (0, D_889011CC);
     sp40->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp40->unk_00);
-    sp54 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, arg1, 9));
+    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 9));
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_34, (0x1A0 - sp54) / 2, 0x78,
-                                                           func_8002D7C0(NULL, 0, arg1, 9), 0x10);
+                                                           GetMessageString(NULL, 0, arg1, 9), 0x10);
     arg0->unk_34->unk_3C = 0x24;
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_34->unk_00.unk_00);
 

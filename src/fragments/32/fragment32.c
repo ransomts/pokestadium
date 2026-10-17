@@ -50,7 +50,7 @@ void func_811002D4(s32 arg0) {
     func_8001F3F4();
     func_8001EBE0(2, 0);
     func_8001F3B4(0x10);
-    func_8001F1E8(0x52, 0x21, func_8002D7C0(NULL, 0, D_81100938, arg0 - 1));
+    func_8001F1E8(0x52, 0x21, GetMessageString(NULL, 0, D_81100938, arg0 - 1));
     func_8001F444();
 }
 
@@ -115,7 +115,7 @@ void func_811007F8(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, transfer_pak_error_ui, 0);
     func_8002D510();
-    D_81100938 = func_8002D5AC(0xD);
+    D_81100938 = GetMessageBank(0xD);
     func_80007678(temp_s0);
 
     while (true) {

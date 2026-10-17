@@ -615,8 +615,8 @@ void func_86907B78(void) {
         if (D_8690B350.unk_0E >= 0x1F) {
             func_8001F3F4();
             func_8001EBE0(4, 0);
-            sp3C = func_8001F5B0(4, 0, func_8002D7C0(NULL, 0, D_8690A678, 0));
-            sp38 = func_8002D7C0(NULL, 0, D_8690A678, 0);
+            sp3C = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_8690A678, 0));
+            sp38 = GetMessageString(NULL, 0, D_8690A678, 0);
             func_8001F1E8((D_8690B350.unk_08 - (sp3C / 2)) + (D_8690B350.unk_0C / 2), D_8690B350.unk_0A - 8, sp38);
             func_8001F444();
         }

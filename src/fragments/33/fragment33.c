@@ -228,19 +228,19 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
     if ((arg0 == D_81304000) && (D_81304650 == 1)) {
         switch (func_81300314(arg0)) {
             case 1:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, func_8002D7C0(NULL, 0, D_81304658, 0xE));
+                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xE));
                 break;
 
             case 2:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, func_8002D7C0(NULL, 0, D_81304658, 0xF));
+                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xF));
                 break;
 
             case 3:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, func_8002D7C0(NULL, 0, D_81304658, 0x10));
+                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x10));
                 break;
 
             case 4:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, func_8002D7C0(NULL, 0, D_81304658, 0x11));
+                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x11));
                 break;
         }
     }
@@ -452,8 +452,8 @@ void func_81301E8C(void) {
         func_81301668(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
-        func_8001F1E8(0x132 - (func_8001F5B0(0, 0, func_8002D7C0(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
-                      func_8002D7C0(NULL, 0, D_81304658, 0x12));
+        func_8001F1E8(0x132 - (func_8001F5B0(0, 0, GetMessageString(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
+                      GetMessageString(NULL, 0, D_81304658, 0x12));
         func_8001F444();
         func_813003B4(0, 0x38, 0x2E);
         func_813003B4(1, 0xBC, 0x2E);
@@ -467,7 +467,7 @@ void func_81301E8C(void) {
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
         func_8001F3B4(0x1C);
-        func_8001F1E8(0x5A, 0x15A, func_8002D7C0(NULL, 0, D_81304658, 0x13));
+        func_8001F1E8(0x5A, 0x15A, GetMessageString(NULL, 0, D_81304658, 0x13));
         func_8001F444();
     }
     D_81303CB0 += 0xB80;
@@ -816,7 +816,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
     func_81302548();
     func_81302630();
     func_8002D510();
-    D_81304658 = func_8002D5AC(0x1F);
+    D_81304658 = GetMessageBank(0x1F);
     func_81302DD8();
     D_81304654 = func_813001C0();
 

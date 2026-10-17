@@ -806,7 +806,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
         func_8001F3F4();
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001EBE0(0x10, 0);
-        func_8001F1E8(temp_s4->unk_00 + 0x5A, temp_s4->unk_02 + 8, func_8002D7C0(NULL, 0, D_82F13B70, 1));
+        func_8001F1E8(temp_s4->unk_00 + 0x5A, temp_s4->unk_02 + 8, GetMessageString(NULL, 0, D_82F13B70, 1));
 
         for (i = 0; i < 2; i++) {
             if (D_82F210D8[i] != -1) {
@@ -922,7 +922,7 @@ void func_82F0917C(unk_D_82F20A40* arg0) {
         func_8001F3F4();
         func_8001EBE0(0x10, 0);
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        temp_v0 = func_8002D7C0(NULL, 0, D_82F13B70, 2);
+        temp_v0 = GetMessageString(NULL, 0, D_82F13B70, 2);
         func_8001F1E8((temp_s1->unk_00 - (func_8001F5B0(0, 0, temp_v0) / 2)) + 0x108, temp_s1->unk_02 + 8, temp_v0);
         func_8001F444();
     }
@@ -951,13 +951,13 @@ void func_82F09284(unk_D_82F20A40* arg0) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    temp_v0 = func_8002D7C0(NULL, 0, D_82F13B70, 3);
+    temp_v0 = GetMessageString(NULL, 0, D_82F13B70, 3);
     tmp = (temp_s3->unk_00 - (func_8001F5B0(0, 0, temp_v0) / 2)) + 0x74;
     func_8001F1E8(tmp, temp_s3->unk_02 + 0x10, temp_v0);
 
     for (i = 0; i < 2; i++) {
-        sp4C[0] = func_8002D7C0(NULL, 0, D_82F13B70, 4);
-        sp4C[1] = func_8002D7C0(NULL, 0, D_82F13B70, 5);
+        sp4C[0] = GetMessageString(NULL, 0, D_82F13B70, 4);
+        sp4C[1] = GetMessageString(NULL, 0, D_82F13B70, 5);
         if (i != D_82F210D4) {
             func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
@@ -999,25 +999,25 @@ void func_82F094B4(unk_D_82F20A40* arg0) {
 
             switch (arg0->unk_04) {
                 case 1:
-                    sp48 = func_8002D7C0(NULL, 0, D_82F13B70, 6);
+                    sp48 = GetMessageString(NULL, 0, D_82F13B70, 6);
                     func_8001F1E8((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (func_8001F5B0(0, 0, sp48) / 2),
                                   temp_s0->unk_02 + 0x10, sp48);
                     break;
 
                 case 2:
-                    sp48 = func_8002D7C0(NULL, 0, D_82F13B70, 7);
+                    sp48 = GetMessageString(NULL, 0, D_82F13B70, 7);
                     func_8001F1E8((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (func_8001F5B0(0, 0, sp48) / 2),
                                   temp_s0->unk_02 + 0x10, sp48);
                     break;
 
                 case 3:
-                    sp48 = func_8002D7C0(NULL, 0, D_82F13B70, 8);
+                    sp48 = GetMessageString(NULL, 0, D_82F13B70, 8);
                     func_8001F1E8((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (func_8001F5B0(0, 0, sp48) / 2),
                                   temp_s0->unk_02 + 0x10, sp48);
                     break;
 
                 case 4:
-                    sp48 = func_8002D7C0(NULL, 0, D_82F13B70, 9);
+                    sp48 = GetMessageString(NULL, 0, D_82F13B70, 9);
                     func_8001F1E8((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (func_8001F5B0(0, 0, sp48) / 2),
                                   temp_s0->unk_02 + 0x10, sp48);
                     break;

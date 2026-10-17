@@ -1927,13 +1927,13 @@ void func_82502C78(void) {
     char* sp6C[3];
     char* sp5C[4];
 
-    sp6C[0] = func_8002D7C0(NULL, 0, D_8250A47C, 4);
-    sp6C[1] = func_8002D7C0(NULL, 0, D_8250A47C, 5);
-    sp6C[2] = func_8002D7C0(NULL, 0, D_8250A47C, 6);
-    sp5C[0] = func_8002D7C0(NULL, 0, D_8250A47C, 3);
-    sp5C[1] = func_8002D7C0(NULL, 0, D_8250A47C, 4);
-    sp5C[2] = func_8002D7C0(NULL, 0, D_8250A47C, 5);
-    sp5C[3] = func_8002D7C0(NULL, 0, D_8250A47C, 6);
+    sp6C[0] = GetMessageString(NULL, 0, D_8250A47C, 4);
+    sp6C[1] = GetMessageString(NULL, 0, D_8250A47C, 5);
+    sp6C[2] = GetMessageString(NULL, 0, D_8250A47C, 6);
+    sp5C[0] = GetMessageString(NULL, 0, D_8250A47C, 3);
+    sp5C[1] = GetMessageString(NULL, 0, D_8250A47C, 4);
+    sp5C[2] = GetMessageString(NULL, 0, D_8250A47C, 5);
+    sp5C[3] = GetMessageString(NULL, 0, D_8250A47C, 6);
 
     if (D_8250A2A0.unk_00 != 0) {
         func_8002053C(D_8250A2A0.unk_08, D_8250A2A0.unk_0A, D_8250A2A0.unk_0C, D_8250A2A0.unk_0E, &sp80, &sp7C);
@@ -1941,8 +1941,8 @@ void func_82502C78(void) {
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
             func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x140 - (func_878013D4(D_8250A304, func_8002D7C0(NULL, 0, D_8250A47C, 2)) / 2),
-                          D_8250A2A0.unk_0A + 0x18, func_8002D7C0(NULL, 0, D_8250A47C, 2));
+            func_8001F1E8(0x140 - (func_878013D4(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
+                          D_8250A2A0.unk_0A + 0x18, GetMessageString(NULL, 0, D_8250A47C, 2));
 
             if (D_82508AF0 & 1) {
                 var_s4 = 4;

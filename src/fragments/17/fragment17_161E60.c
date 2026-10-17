@@ -942,11 +942,11 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
     func_8001F3F4();
     func_8001EBE0(2, 0);
     func_8001F3B4(0x10);
-    func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-    func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, 0xA5);
+    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+    GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, 0xA5);
     func_8001F1E8((arg0 - (func_8001F5B0(2, 0, D_86B0F7C8) / 2)) + 0x5A, arg1 + 5, D_86B0F7C8);
-    func_8001F1E8(arg0 + 0x28, arg1 + 0x19, func_8002D7C0(NULL, 0, D_86B0EBD0, 0xA2));
-    func_8001F1E8(arg0 + 0x69, arg1 + 0x19, func_8002D7C0(NULL, 0, D_86B0EBD0, 0xA3));
+    func_8001F1E8(arg0 + 0x28, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA2));
+    func_8001F1E8(arg0 + 0x69, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA3));
     func_8001F444();
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -993,10 +993,10 @@ void func_86B03048(void) {
     switch (D_86B0EBE0->unk_00) {
         case 0:
             if (D_800AE540.unk_0000 == 0x1A) {
-                sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, 0x96));
+                sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
-                func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-                func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB70);
+                func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB70);
             }
 
             D_86B0EBE0->unk_04 = 0;
@@ -1035,8 +1035,8 @@ void func_86B03048(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-                    func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB74);
+                    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                    GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB74);
                     D_86B0EBE0->unk_00++;
                 }
             }
@@ -1054,7 +1054,7 @@ void func_86B03048(void) {
                 for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                 // clang-format on
 
-                sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, D_86B0DB78));
+                sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB78));
                 func_8004E810(D_86B0EBDC->unk_2EC, 2);
                 func_8001BD04(&D_86B0EBDC->unk_170, *D_86B0F648);
                 D_86B0EBE0->unk_00++;
@@ -1083,10 +1083,10 @@ void func_86B034AC(void) {
     switch (D_86B0EBE0->unk_00) {
         case 0:
             if (D_800AE540.unk_0000 == 0x1A) {
-                sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, 0x96));
+                sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
-                func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-                func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB7C);
+                func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB7C);
             }
             D_86B0EBE0->unk_04 = 0;
             D_86B0EBE0->unk_08 = 0xB4;
@@ -1124,7 +1124,7 @@ void func_86B034AC(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, D_86B0DB80));
+                    sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB80));
                     D_86B0EBE0->unk_00++;
                 }
             }
@@ -1142,7 +1142,7 @@ void func_86B034AC(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, D_86B0DB84));
+                    sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB84));
                     D_86B0EBE0->unk_00++;
                 }
             }
@@ -1160,9 +1160,9 @@ void func_86B034AC(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    func_8002D5D4(0x20, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
-                    func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-                    func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB88);
+                    func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
+                    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                    GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB88);
                     D_86B0EBE0->unk_00++;
                 }
             }
@@ -1197,7 +1197,7 @@ void func_86B034AC(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    sprintf(D_86B0F7C8, func_8002D7C0(NULL, 0, D_86B0EBD0, D_86B0DB90));
+                    sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB90));
                     D_86B0EBE0->unk_00++;
                 }
             }
@@ -1382,9 +1382,9 @@ void func_86B04500(void) {
             func_80048B90(2);
             D_86B0EBE0->unk_00 = 6;
             func_86B02F34();
-            func_8002D5D4(0x20, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
-            func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-            func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB8C);
+            func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
+            func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+            GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB8C);
             func_8001BD04(&D_86B0EBDC->unk_170, *D_86B0F648);
             func_8004E810(D_86B0EBDC->unk_2EC, 2);
         }
@@ -1393,8 +1393,8 @@ void func_86B04500(void) {
             func_80048B90(3);
             D_86B0EBE0->unk_00 = 7;
             func_86B02F34();
-            func_8002D5D4(0x1F, func_8002D7C0(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
-            func_8002D7C0(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB94);
+            func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+            GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB94);
             func_80017454(&D_86B0EBDC->unk_008, -1);
         }
     }
@@ -1651,8 +1651,8 @@ s32 func_86B04FB0(void) {
 
     func_8002D510();
 
-    D_86B0EBD0 = func_8002D5AC(0x1E);
-    D_86B0EBD4 = func_8002D5AC(0x24);
+    D_86B0EBD0 = GetMessageBank(0x1E);
+    D_86B0EBD4 = GetMessageBank(0x24);
 
     func_86B04EBC();
     func_80007678(sp24);

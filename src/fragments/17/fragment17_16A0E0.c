@@ -184,9 +184,9 @@ void func_86B0B184(void) {
     switch (D_86B10BE0.unk_00) {
         case 0x0:
             if (D_800AE540.unk_0000 == 0x16) {
-                sprintf(D_86B109C8, func_8002D7C0(NULL, 0, D_86B10840, 0x91));
+                sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x91));
             } else {
-                sprintf(D_86B109C8, func_8002D7C0(NULL, 0, D_86B10840, 0x93));
+                sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x93));
             }
 
             D_86B10BE0.unk_04 = 0;
@@ -224,9 +224,9 @@ void func_86B0B184(void) {
 
             if (D_86B10BE0.unk_08++ == 0x3C) {
                 if (D_800AE540.unk_0000 == 0x16) {
-                    sprintf(D_86B109C8, func_8002D7C0(NULL, 0, D_86B10840, 0x92));
+                    sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x92));
                 } else {
-                    sprintf(D_86B109C8, func_8002D7C0(NULL, 0, D_86B10840, 0x94));
+                    sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x94));
                 }
 
                 D_86B10BE0.unk_04 = 0;
@@ -430,7 +430,7 @@ s32 func_86B0BA18(void) {
     FRAGMENT_LOAD(fragment31);
 
     func_8002D510();
-    D_86B10840 = func_8002D5AC(0x1E);
+    D_86B10840 = GetMessageBank(0x1E);
 
     if (D_800AE540.unk_0000 == 0x16) {
         D_86B109BC = ASSET_LOAD2(backgrounds, 1, 1);

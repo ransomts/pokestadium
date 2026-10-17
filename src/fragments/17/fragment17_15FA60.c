@@ -543,7 +543,7 @@ s32 func_86B01190(void) {
     }
 
     func_8002D510();
-    D_86B0E5E0 = func_8002D5AC(0x14);
+    D_86B0E5E0 = GetMessageBank(0x14);
     func_86B0111C();
     func_80007754();
     func_86B0107C();

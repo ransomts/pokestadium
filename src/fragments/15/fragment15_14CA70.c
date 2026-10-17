@@ -808,7 +808,7 @@ void func_86901384(void) {
                 for (i = 0; i < 255; i++) { D_8690B3D0[i] = 0; }
                 // clang-format on
 
-                sprintf(D_8690B4D0, func_8002D7C0(NULL, 0, D_8690A678, D_86908A90[D_8690B5F4]));
+                sprintf(D_8690B4D0, GetMessageString(NULL, 0, D_8690A678, D_86908A90[D_8690B5F4]));
                 D_8690B3C0.unk_00++;
                 break;
 
@@ -1144,7 +1144,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     func_8002D510();
-    D_8690A678 = func_8002D5AC(0x2B);
+    D_8690A678 = GetMessageBank(0x2B);
     func_86902004(arg0);
     func_80007678(sp24);
     func_86901B28();

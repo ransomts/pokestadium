@@ -92,7 +92,7 @@ void func_82C00658(s16 arg0, s32 arg1) {
 
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            sp40 = func_8002D7C0(NULL, 0, D_82C01660, 4);
+            sp40 = GetMessageString(NULL, 0, D_82C01660, 4);
             func_8001F1E8(0x140 - (func_8001F5B0(0x10, 0, sp40) / 2), sp2C + 0xA, sp40);
 
             if (D_82C01664 == 0) {
@@ -102,8 +102,8 @@ void func_82C00658(s16 arg0, s32 arg1) {
             }
 
             func_8001F324(0xFF, 0xFF, var_a2, 0xFF);
-            func_8001F1E8(0xBB, sp2C + 0x31, func_8002D7C0(NULL, 0, D_82C01660, 5));
-            sp40 = func_8002D7C0(NULL, 0, D_82C01660, (D_82C01666 & 1) != 0);
+            func_8001F1E8(0xBB, sp2C + 0x31, GetMessageString(NULL, 0, D_82C01660, 5));
+            sp40 = GetMessageString(NULL, 0, D_82C01660, (D_82C01666 & 1) != 0);
             func_8001F1E8(0x1A4 - (func_8001F5B0(0x10, 0, sp40) / 2), sp2C + 0x31, sp40);
 
             if (D_82C01664 == 1) {
@@ -113,8 +113,8 @@ void func_82C00658(s16 arg0, s32 arg1) {
             }
 
             func_8001F324(0xFF, 0xFF, var_a2, 0xFF);
-            func_8001F1E8(0xBB, sp2C + 0x51, func_8002D7C0(NULL, 0, D_82C01660, 6));
-            sp40 = func_8002D7C0(NULL, 0, D_82C01660, ((D_82C01666 & 2) != 0) + 2);
+            func_8001F1E8(0xBB, sp2C + 0x51, GetMessageString(NULL, 0, D_82C01660, 6));
+            sp40 = GetMessageString(NULL, 0, D_82C01660, ((D_82C01666 & 2) != 0) + 2);
             func_8001F1E8(0x1A4 - (func_8001F5B0(0x10, 0, sp40) / 2), sp2C + 0x51, sp40);
 
             if (D_82C01664 == 2) {
@@ -124,7 +124,7 @@ void func_82C00658(s16 arg0, s32 arg1) {
             }
 
             func_8001F324(0xFF, 0xFF, var_a2, 0xFF);
-            func_8001F1E8(0xBB, sp2C + 0x71, func_8002D7C0(NULL, 0, D_82C01660, 7));
+            func_8001F1E8(0xBB, sp2C + 0x71, GetMessageString(NULL, 0, D_82C01660, 7));
 
             if (D_82C01664 == 3) {
                 var_a2 = 0;
@@ -133,7 +133,7 @@ void func_82C00658(s16 arg0, s32 arg1) {
             }
 
             func_8001F324(0xFF, 0xFF, var_a2, 0xFF);
-            func_8001F1E8(0xBB, sp2C + 0x91, func_8002D7C0(NULL, 0, D_82C01660, 8));
+            func_8001F1E8(0xBB, sp2C + 0x91, GetMessageString(NULL, 0, D_82C01660, 8));
             func_8001F444();
         }
     }
@@ -155,16 +155,16 @@ void func_82C00AA4(s32 arg0, s32 arg1, s32 arg2) {
 
             if (arg0 == 0) {
                 func_8001F3B4(0x1C);
-                func_8001F1E8(0x63, sp24 + 0xC, func_8002D7C0(NULL, 0, D_82C01660, 9));
+                func_8001F1E8(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 9));
             } else {
                 func_8001F3B4(0x1C);
-                func_8001F1E8(0x63, sp24 + 0xC, func_8002D7C0(NULL, 0, D_82C01660, 0xA));
+                func_8001F1E8(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 0xA));
             }
 
             func_8001F324(0xFF, 0xFF, (arg1 == 0) ? 0 : 0xFF, 0xFF);
-            func_8001F1E8(0x141, sp24 + 0x48, func_8002D7C0(NULL, 0, D_82C01660, 0xB));
+            func_8001F1E8(0x141, sp24 + 0x48, GetMessageString(NULL, 0, D_82C01660, 0xB));
             func_8001F324(0xFF, 0xFF, (arg1 == 1) ? 0 : 0xFF, 0xFF);
-            func_8001F1E8(0x141, sp24 + 0x64, func_8002D7C0(NULL, 0, D_82C01660, 0xC));
+            func_8001F1E8(0x141, sp24 + 0x64, GetMessageString(NULL, 0, D_82C01660, 0xC));
             func_8001F444();
         }
     }
@@ -181,7 +181,7 @@ void func_82C00CB4(s32 arg0) {
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
             func_8001F324(0xFF, 0xFF, 0x64, 0xFF);
-            func_8001F1E8(0x9B, sp24 + 0x18, func_8002D7C0(NULL, 0, D_82C01660, 0xD));
+            func_8001F1E8(0x9B, sp24 + 0x18, GetMessageString(NULL, 0, D_82C01660, 0xD));
             func_8001F444();
         }
     }
@@ -422,7 +422,7 @@ s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     func_8002D510();
-    D_82C01660 = func_8002D5AC(0x15);
+    D_82C01660 = GetMessageBank(0x15);
     func_80028BE4();
     func_80028070(&D_82C01666);
     D_82C01664 = 0;

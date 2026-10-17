@@ -2111,11 +2111,11 @@ void func_84307220(unk_D_800AE540_1194* arg0) {
 
     func_8002D510();
 
-    D_843900B0 = func_8002D5AC(0x1E);
-    D_843900B4 = func_8002D5AC(0x24);
-    D_843900B8 = func_8002D5AC(0x25);
-    D_843900BC = func_8002D5AC(0x29);
-    D_843900C0 = func_8002D5AC(0x14);
+    D_843900B0 = GetMessageBank(0x1E);
+    D_843900B4 = GetMessageBank(0x24);
+    D_843900B8 = GetMessageBank(0x25);
+    D_843900BC = GetMessageBank(0x29);
+    D_843900C0 = GetMessageBank(0x14);
 
     for (i = 0; i < 7; i++) {
         D_84390068[i].unk_04 = D_84385380;

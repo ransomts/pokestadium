@@ -1217,9 +1217,9 @@ void func_82D0194C(s32 arg0) {
         if (arg0 == 10) {
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            sp30 = func_8002D7C0(NULL, 0, D_82D0AB9C, 0x1D);
+            sp30 = GetMessageString(NULL, 0, D_82D0AB9C, 0x1D);
             func_8001F1E8(0x8C - (func_8001F5B0(0x10, 0, sp30) / 2), 0x2C, sp30);
-            sp30 = func_8002D7C0(NULL, 0, D_82D0AB9C, 0x1E);
+            sp30 = GetMessageString(NULL, 0, D_82D0AB9C, 0x1E);
             func_8001F1E8(0x8C - (func_8001F5B0(0x10, 0, sp30) / 2), 0x48, sp30);
             func_8001F444();
         }
@@ -1378,9 +1378,9 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
         }
     } else {
         func_8001EBE0(4, 0);
-        sp40 = func_8002D7C0(NULL, 0, D_82D0AB9C, 0x1D);
+        sp40 = GetMessageString(NULL, 0, D_82D0AB9C, 0x1D);
         func_8001F1E8(0x40 - (func_8001F5B0(4, 0, sp40) / 2), 0x24, sp40);
-        sp40 = func_8002D7C0(NULL, 0, D_82D0AB9C, 0x1F);
+        sp40 = GetMessageString(NULL, 0, D_82D0AB9C, 0x1F);
         func_8001F1E8(0x40 - (func_8001F5B0(4, 0, sp40) / 2), 0x38, sp40);
     }
 
@@ -1390,15 +1390,15 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
 
         switch (arg2) {
             case 20:
-                func_8001F1E8(0xE, 0x70, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x20));
+                func_8001F1E8(0xE, 0x70, GetMessageString(NULL, 0, D_82D0AB9C, 0x20));
                 break;
 
             case 19:
-                func_8001F1E8(0xE, 0x70, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x21));
+                func_8001F1E8(0xE, 0x70, GetMessageString(NULL, 0, D_82D0AB9C, 0x21));
                 break;
 
             case 21:
-                func_8001F1E8(0xE, 0x70, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x22));
+                func_8001F1E8(0xE, 0x70, GetMessageString(NULL, 0, D_82D0AB9C, 0x22));
                 break;
         }
     }
@@ -1462,7 +1462,7 @@ void func_82D029E0(void) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F3B4(0x1C);
-    func_8001F1E8(0x6E, 8, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x23));
+    func_8001F1E8(0x6E, 8, GetMessageString(NULL, 0, D_82D0AB9C, 0x23));
     func_8001F444();
 }
 
@@ -1479,7 +1479,7 @@ void func_82D02D94(void) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    sp28 = func_8002D7C0(NULL, 0, D_82D0AB9C, 0x24);
+    sp28 = GetMessageString(NULL, 0, D_82D0AB9C, 0x24);
     sp2C = func_8001F5B0(0x10, 0, sp28);
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
@@ -1687,12 +1687,12 @@ void func_82D03BCC(s16 arg0, s16 arg1) {
             func_8001EBE0(0x10, 0);
             func_8001F324(0xFF, 0xFF, 0x64, 0xFF);
             func_8001F3B4(0x1A);
-            func_8001F1E8(0x9B, sp24 + 0xC, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x25));
-            func_8001F1E8(0x9B, sp24 + 0x44, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x26));
+            func_8001F1E8(0x9B, sp24 + 0xC, GetMessageString(NULL, 0, D_82D0AB9C, 0x25));
+            func_8001F1E8(0x9B, sp24 + 0x44, GetMessageString(NULL, 0, D_82D0AB9C, 0x26));
             func_8001F324(0xFF, 0xFF, ((arg1 * 0x1C) == 0) ? 0 : 0xFF, 0xFF);
-            func_8001F1E8(0x163, sp24 + 0x48, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x27));
+            func_8001F1E8(0x163, sp24 + 0x48, GetMessageString(NULL, 0, D_82D0AB9C, 0x27));
             func_8001F324(0xFF, 0xFF, ((arg1 * 0x1C) == 0x1C) ? 0 : 0xFF, 0xFF);
-            func_8001F1E8(0x163, sp24 + 0x64, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x28));
+            func_8001F1E8(0x163, sp24 + 0x64, GetMessageString(NULL, 0, D_82D0AB9C, 0x28));
             func_8001F444();
         }
     }
@@ -1715,52 +1715,52 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
             }
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            func_8001F1E8(0x99, temp_s0 + 0xD, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x29));
-            func_8001F1E8(0x99, temp_s0 + 0xA5, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x2A));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 0, arg1, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x2B));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 1, arg1, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x2C));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 2, arg1, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x2D));
+            func_8001F1E8(0x99, temp_s0 + 0xD, GetMessageString(NULL, 0, D_82D0AB9C, 0x29));
+            func_8001F1E8(0x99, temp_s0 + 0xA5, GetMessageString(NULL, 0, D_82D0AB9C, 0x2A));
+            func_82D03B40(0xC5, temp_s0 + 0xC7, 0, arg1, GetMessageString(NULL, 0, D_82D0AB9C, 0x2B));
+            func_82D03B40(0xC5, temp_s0 + 0xC7, 1, arg1, GetMessageString(NULL, 0, D_82D0AB9C, 0x2C));
+            func_82D03B40(0xC5, temp_s0 + 0xC7, 2, arg1, GetMessageString(NULL, 0, D_82D0AB9C, 0x2D));
             func_8001F324(0xFF, 0x64, 0x64, 0xFF);
 
             if (arg2->unk_00 == 7) {
-                func_8001F1E8(0xA9, temp_s0 + 0x2D, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
-                func_8001F1E8(0xA9, temp_s0 + 0x4B, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_01 + 0x13));
+                func_8001F1E8(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
+                func_8001F1E8(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_01 + 0x13));
 
                 if (arg2->unk_01 < 8) {
                     if (arg2->unk_02 < 4) {
                         func_8002D600(1, arg2->unk_02);
-                        func_8001F1E8(0xA9, temp_s0 + 0x69, func_8002D7C0(sp50, sizeof(sp50), D_82D0AB9C, 0x2E));
+                        func_8001F1E8(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), D_82D0AB9C, 0x2E));
                     } else {
-                        func_8001F1E8(0xA9, temp_s0 + 0x69, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x2F));
+                        func_8001F1E8(0xA9, temp_s0 + 0x69, GetMessageString(NULL, 0, D_82D0AB9C, 0x2F));
                     }
                 } else {
                     func_8002D600(1, arg2->unk_02);
-                    func_8001F1E8(0xA9, temp_s0 + 0x69, func_8002D7C0(sp50, sizeof(sp50), D_82D0AB9C, 0x30));
+                    func_8001F1E8(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), D_82D0AB9C, 0x30));
                 }
             } else if ((arg2->unk_00 == 3) || (arg2->unk_00 == 6)) {
-                func_8001F1E8(0xA9, temp_s0 + 0x2D, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
-                func_8001F1E8(0xA9, temp_s0 + 0x4B, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_01 + 7));
-                func_8001F1E8(0xA9, temp_s0 + 0x69, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_02 + 0xA));
+                func_8001F1E8(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
+                func_8001F1E8(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_01 + 7));
+                func_8001F1E8(0xA9, temp_s0 + 0x69, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_02 + 0xA));
             } else {
-                func_8001F1E8(0xA9, temp_s0 + 0x2D, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
-                func_8001F1E8(0xA9, temp_s0 + 0x4B, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_02 + 0xA));
+                func_8001F1E8(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
+                func_8001F1E8(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_02 + 0xA));
             }
 
             if (arg2->unk_00 != 7) {
                 func_8001EBE0(8, 0);
                 func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
                 func_8002D600(1, arg2->unk_04);
-                func_8001F1E8(0x12D, temp_s0 + 0x85, func_8002D7C0(&sp50, 0x100, D_82D0AB9C, 0x31));
+                func_8001F1E8(0x12D, temp_s0 + 0x85, GetMessageString(&sp50, 0x100, D_82D0AB9C, 0x31));
             }
 
             func_8001EBE0(8, 0);
             func_8001F324(0xFF, 0xFF, 0, 0xFF);
             func_8001F3B4(0x1A);
-            func_8001F1E8(0xA1, temp_s0 + 0x124, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x32));
+            func_8001F1E8(0xA1, temp_s0 + 0x124, GetMessageString(NULL, 0, D_82D0AB9C, 0x32));
             func_8001F444();
 
             if (arg2->unk_03 == 1) {
-                s32 temp_v0_3 = func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
+                s32 temp_v0_3 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
 
                 gSPDisplayList(gDisplayListHead++, D_8006F518);
 
@@ -1963,11 +1963,11 @@ void func_82D04904(unk_D_82D0ABD0* arg0) {
             func_8001F3B4(0x1C);
 
             if (arg0->unk_08 != 0) {
-                func_8001F1E8(sp4A + 0x76, temp_s0 + 0x18, func_8002D7C0(NULL, 0, D_82D0AB9C, arg0->unk_08 + 0x32));
+                func_8001F1E8(sp4A + 0x76, temp_s0 + 0x18, GetMessageString(NULL, 0, D_82D0AB9C, arg0->unk_08 + 0x32));
             }
 
             if (arg0->unk_0A != 0) {
-                func_8001F1E8(sp4A + 0x76, temp_s0 + 0x5A, func_8002D7C0(NULL, 0, D_82D0AB9C, arg0->unk_0A + 0x32));
+                func_8001F1E8(sp4A + 0x76, temp_s0 + 0x5A, GetMessageString(NULL, 0, D_82D0AB9C, arg0->unk_0A + 0x32));
             }
 
             func_8001F444();
@@ -2181,14 +2181,14 @@ void func_82D04FA0(s32 arg0, s32 arg1) {
 
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            tmp = (func_8001F5B0(0x10, 0, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3B)));
-            func_8001F1E8(0x140 - tmp / 2, 0x36, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3B));
+            tmp = (func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_82D0AB9C, 0x3B)));
+            func_8001F1E8(0x140 - tmp / 2, 0x36, GetMessageString(NULL, 0, D_82D0AB9C, 0x3B));
 
             if (D_82D0AB90.unk_00 == 0x1F8) {
                 func_8001EBE0(8, 0);
                 func_8001F324(0xFF, 0xFF, 0xFF, sp48);
-                func_8001F1E8(0x1D6, 0x2D, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3C));
-                func_8001F1E8(0x1D6, 0x43, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3D));
+                func_8001F1E8(0x1D6, 0x2D, GetMessageString(NULL, 0, D_82D0AB9C, 0x3C));
+                func_8001F1E8(0x1D6, 0x43, GetMessageString(NULL, 0, D_82D0AB9C, 0x3D));
             }
 
             func_8001F444();
@@ -2221,9 +2221,9 @@ void func_82D05258(s32 arg0, s32 arg1) {
             func_8001EBE0(0x10, 0);
             func_8001F3B4(0x1C);
             if (D_82D0ABA4 == 0) {
-                func_8001F1E8(0x50, 0x15E, func_8002D7C0(NULL, 0, D_82D0AB9C, D_82D09F14[D_82D06FA0]));
+                func_8001F1E8(0x50, 0x15E, GetMessageString(NULL, 0, D_82D0AB9C, D_82D09F14[D_82D06FA0]));
             } else {
-                func_8001F1E8(0x50, 0x15E, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x46));
+                func_8001F1E8(0x50, 0x15E, GetMessageString(NULL, 0, D_82D0AB9C, 0x46));
             }
             func_8001F444();
         }
@@ -2339,9 +2339,9 @@ unk_D_80068BB0* func_82D0580C(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
     func_8001F3F4();
-    temp_s0 = func_8001F5B0(8, 0, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3E));
+    temp_s0 = func_8001F5B0(8, 0, GetMessageString(NULL, 0, D_82D0AB9C, 0x3E));
     func_8001EBE0(8, 0);
-    func_8001F1E8(0x54 - (temp_s0 / 2), 0x74, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3E));
+    func_8001F1E8(0x54 - (temp_s0 / 2), 0x74, GetMessageString(NULL, 0, D_82D0AB9C, 0x3E));
     func_8001F444();
 
     return sp3C;
@@ -2367,7 +2367,7 @@ unk_D_80068BB0* func_82D05A5C(void) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F3B4(0x16);
-    func_8001F1E8(0x50, 0x17, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x3F));
+    func_8001F1E8(0x50, 0x17, GetMessageString(NULL, 0, D_82D0AB9C, 0x3F));
     func_8001F444();
 
     return sp34;
@@ -2393,7 +2393,7 @@ unk_D_80068BB0* func_82D05BE0(void) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F3B4(0x16);
-    func_8001F1E8(0x50, 0x17, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x40));
+    func_8001F1E8(0x50, 0x17, GetMessageString(NULL, 0, D_82D0AB9C, 0x40));
     func_8001F444();
 
     return sp34;
@@ -2419,7 +2419,7 @@ unk_D_80068BB0* func_82D05D64(void) {
     func_8001F3F4();
     func_8001EBE0(8, 0);
     func_8001F3B4(0x16);
-    func_8001F1E8(0x40, 0x14, func_8002D7C0(NULL, 0, D_82D0AB9C, 0x44));
+    func_8001F1E8(0x40, 0x14, GetMessageString(NULL, 0, D_82D0AB9C, 0x44));
     func_8001F444();
 
     return sp34;
@@ -2456,11 +2456,11 @@ void func_82D06014(void) {
     D_82D0ABE0[0] = func_82D0580C(0);
     D_82D0ABE0[7] = func_82D0580C(1);
     D_82D0ABE0[1] = func_82D05BE0();
-    D_82D0ABE0[2] = func_82D05EE8(func_8002D7C0(NULL, 0, D_82D0AB9C, 0x41), 0x1E, 0x64, 0x1E);
+    D_82D0ABE0[2] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x41), 0x1E, 0x64, 0x1E);
     D_82D0ABE0[3] = func_82D05D64();
     D_82D0ABE0[4] = func_82D05A5C();
-    D_82D0ABE0[5] = func_82D05EE8(func_8002D7C0(NULL, 0, D_82D0AB9C, 0x42), 0x1E, 0x64, 0x1E);
-    D_82D0ABE0[6] = func_82D05EE8(func_8002D7C0(NULL, 0, D_82D0AB9C, 0x43), 0x1E, 0x64, 0x1E);
+    D_82D0ABE0[5] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x42), 0x1E, 0x64, 0x1E);
+    D_82D0ABE0[6] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x43), 0x1E, 0x64, 0x1E);
 
     func_8001BC34(&D_82D09FF8[0], 0, 0, D_82D0AC00);
     func_8001BC34(&D_82D09FF8[1], 0, 0, D_82D0AC04);
@@ -2811,7 +2811,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
 
     func_82D06B98();
     func_8002D510();
-    D_82D0AB9C = func_8002D5AC(0xE);
+    D_82D0AB9C = GetMessageBank(0xE);
     func_8000D1F0(0x28);
     func_80007678(sp54);
 

@@ -876,7 +876,7 @@ void func_843759F4(void) {
         } while (temp_v0 == 0);
 
         D_843C5238->unk_1F[sp24->unk_0C] = temp_v0;
-        func_8002D5D4(0x1E, func_8002D7C0(NULL, 0, D_843900B8, D_843C523C->unk_1F[var_t0] - 1));
+        func_8002D5D4(0x1E, GetMessageString(NULL, 0, D_843900B8, D_843C523C->unk_1F[var_t0] - 1));
         func_843179F4(D_843901A0->unk_088, -0x40);
         return;
     }
@@ -921,7 +921,7 @@ void func_84375C60(void) {
             temp_v1 = (func_8436F6D8() & 7) + 1;
             D_843C523C->unk_52 = (sp24 * 0x10) + temp_v1;
             D_843C523C->unk_57 = D_843C523C->unk_1F[sp24];
-            func_8002D5D4(0x1E, func_8002D7C0(NULL, 0, D_843900B8, D_843C523C->unk_57 - 1));
+            func_8002D5D4(0x1E, GetMessageString(NULL, 0, D_843900B8, D_843C523C->unk_57 - 1));
             func_843179F4(D_843901A0->unk_088, -0x3B);
             return;
         }

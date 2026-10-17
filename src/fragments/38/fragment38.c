@@ -331,9 +331,9 @@ void func_82301A10(void) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(0x6A, 0x2C, func_8002D7C0(NULL, 0, D_82305A20, 8));
+    func_8001F1E8(0x6A, 0x2C, GetMessageString(NULL, 0, D_82305A20, 8));
     func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(0x68, 0x2A, func_8002D7C0(NULL, 0, D_82305A20, 8));
+    func_8001F1E8(0x68, 0x2A, GetMessageString(NULL, 0, D_82305A20, 8));
     func_8001F444();
 }
 
@@ -353,7 +353,7 @@ void func_82301B0C(unk_D_82305A30* arg0) {
             func_8001EBE0(8, 0);
             func_8001F3B4(0x18);
             func_8001F1E8(tmp2 + 0x20, sp3A + 8,
-                          func_8002D7C0(NULL, 0, D_82305A20, D_82305A50[D_82305A28.unk_02].unk_18));
+                          GetMessageString(NULL, 0, D_82305A20, D_82305A50[D_82305A28.unk_02].unk_18));
             func_8001F444();
         }
     }
@@ -428,7 +428,7 @@ void func_82301CC4(unk_D_82305A50* arg0) {
             func_8001F1E8(temp_s1 + 0x34, sp3C, arg0->unk_10);
             func_8001EBE0(4, 0);
             func_8001F324(0x92, 0xC1, 0xFF, 0xFF);
-            sprintf(sp44, "%s%d~%d", func_8002D7C0(NULL, 0, D_82305A24, 0x15), arg0->unk_14, arg0->unk_16);
+            sprintf(sp44, "%s%d~%d", GetMessageString(NULL, 0, D_82305A24, 0x15), arg0->unk_14, arg0->unk_16);
             func_8001F1E8((temp_s1 - (s16)func_8001F5B0(4, 0, sp44)) + 0xEA, temp_s2 + 0x20, sp44);
         } else {
             func_8001EBE0(8, 0);
@@ -539,7 +539,7 @@ void func_823023F8(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
         func_8001F324(0xFF, 0xFF, 0, sp3E);
         func_8001F3B4(0x20);
         func_8002D600(3, D_8230597C[arg0->unk_0004 - 1].unk_04);
-        func_8001F1E8(arg1 + 0x88, arg2 + 0x14, func_8002D7C0(sp40, 0x100, D_82305A20, 9));
+        func_8001F1E8(arg1 + 0x88, arg2 + 0x14, GetMessageString(sp40, 0x100, D_82305A20, 9));
         func_8001F444();
         arg0->unk_0010 += 0x300;
     }
@@ -598,7 +598,7 @@ void func_823025B8(unk_D_82305AF8* arg0) {
         for (i = 0; i < 6; i++) {
             tmp3 = D_823059B0[i] + sp58 + 0x2C;
             tmp4 = D_823059BC[i] + sp56 + 0x17;
-            func_8001F1E8(tmp3, tmp4, "%s%d", func_8002D7C0(NULL, 0, D_82305A24, 0x15), arg0->unk_0020[i].unk_24);
+            func_8001F1E8(tmp3, tmp4, "%s%d", GetMessageString(NULL, 0, D_82305A24, 0x15), arg0->unk_0020[i].unk_24);
         }
 
         func_8001F444();
@@ -772,7 +772,7 @@ void func_82302E6C(unk_D_82305A30* arg0) {
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
             func_8001F324(0xFF, 0x50, 0x64, 0xFF);
-            func_8001F1E8(0x90, sp58 + 0xE, func_8002D7C0(NULL, 0, D_82305A20, 0xA));
+            func_8001F1E8(0x90, sp58 + 0xE, GetMessageString(NULL, 0, D_82305A20, 0xA));
             func_8001F444();
         } else {
             gSPDisplayList(gDisplayListHead++, D_8006F630);
@@ -878,11 +878,11 @@ void func_823034AC(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
         func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
     }
 
-    func_8001F1E8(arg0->unk_08 + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, func_8002D7C0(NULL, 0, D_82305A20, arg2));
+    func_8001F1E8(arg0->unk_08 + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, GetMessageString(NULL, 0, D_82305A20, arg2));
 
     if (arg3 >= 0) {
         func_8002D600(2, arg4);
-        func_8002D7C0(sp30, sizeof(sp30), D_82305A20, arg3);
+        GetMessageString(sp30, sizeof(sp30), D_82305A20, arg3);
         func_8001F1E8((arg0->unk_08 - (func_8001F5B0(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
                       arg4);
     }
@@ -965,7 +965,7 @@ void func_8230391C(unk_D_82305A40* arg0) {
 
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            sp54 = func_8002D7C0(NULL, 0, D_82305A20, 0xB);
+            sp54 = GetMessageString(NULL, 0, D_82305A20, 0xB);
             func_8001F1E8((temp_s2 - (func_8001F5B0(0x10, 0, sp54) / 2)) + 0xDF, temp_s1 + 0xA, sp54);
 
             if (arg0->unk_01 == 1) {
@@ -1375,7 +1375,7 @@ void func_82304BEC(unk_func_80026268_arg0* arg0, s16 arg1) {
 
 void func_82304C7C(unk_D_82305AF8* arg0) {
     s16 i;
-    unk_D_800AE540_0004* temp_s4 = func_8002B700(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, func_8002311C(1));
+    unk_D_800AE540_0004* temp_s4 = RegisterPlayer(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, func_8002311C(1));
 
     for (i = 0; i < 6; i++) {
         func_82304BEC(&arg0->unk_0020[i], arg0->unk_0001);
@@ -1594,16 +1594,16 @@ void func_82305370(unk_D_82305A28* arg0, s16 arg1) {
     func_82302A6C(&D_82305AF8[0], 0x40, 0x5C, 0);
     func_82302A6C(&D_82305AF8[1], 0x40, 0xF8, 1);
 
-    func_823020B4(&D_82305A50[0], 0x44, 0x84, D_3028E00, func_8002D7C0(NULL, 0, D_82305A20, 0x15), 3, 0);
-    func_823020B4(&D_82305A50[1], 0x144, 0x84, D_3029A80, func_8002D7C0(NULL, 0, D_82305A20, 0x18), 4, 1);
-    func_823020B4(&D_82305A50[2], 0x44, 0xC8, D_302A700, func_8002D7C0(NULL, 0, D_82305A20, 0x1A), 6, 5);
-    func_823020B4(&D_82305A50[3], 0x144, 0xC8, D_302B380, func_8002D7C0(NULL, 0, D_82305A20, 0x19), 5, 3);
-    func_823020B4(&D_82305A50[4], 0x44, 0x10C, NULL, func_8002D7C0(NULL, 0, D_82305A20, 0x1B), 0, 6);
-    func_823020B4(&D_82305A50[5], 0x144, 0x10C, NULL, func_8002D7C0(NULL, 0, D_82305A20, 0x1C), 0, 7);
+    func_823020B4(&D_82305A50[0], 0x44, 0x84, D_3028E00, GetMessageString(NULL, 0, D_82305A20, 0x15), 3, 0);
+    func_823020B4(&D_82305A50[1], 0x144, 0x84, D_3029A80, GetMessageString(NULL, 0, D_82305A20, 0x18), 4, 1);
+    func_823020B4(&D_82305A50[2], 0x44, 0xC8, D_302A700, GetMessageString(NULL, 0, D_82305A20, 0x1A), 6, 5);
+    func_823020B4(&D_82305A50[3], 0x144, 0xC8, D_302B380, GetMessageString(NULL, 0, D_82305A20, 0x19), 5, 3);
+    func_823020B4(&D_82305A50[4], 0x44, 0x10C, NULL, GetMessageString(NULL, 0, D_82305A20, 0x1B), 0, 6);
+    func_823020B4(&D_82305A50[5], 0x144, 0x10C, NULL, GetMessageString(NULL, 0, D_82305A20, 0x1C), 0, 7);
 
-    func_82303478(&D_8230F528[0], 0x50, 0x181, func_8002D7C0(NULL, 0, D_82305A20, 0x1D));
-    func_82303478(&D_8230F528[1], 0xF4, 0x181, func_8002D7C0(NULL, 0, D_82305A20, 0x1E));
-    func_82303478(&D_8230F528[2], 0x198, 0x181, func_8002D7C0(NULL, 0, D_82305A20, 0x1F));
+    func_82303478(&D_8230F528[0], 0x50, 0x181, GetMessageString(NULL, 0, D_82305A20, 0x1D));
+    func_82303478(&D_8230F528[1], 0xF4, 0x181, GetMessageString(NULL, 0, D_82305A20, 0x1E));
+    func_82303478(&D_8230F528[2], 0x198, 0x181, GetMessageString(NULL, 0, D_82305A20, 0x1F));
 
     if (arg1 == -1) {
         for (i = 2; i >= 0; i--) {
@@ -1648,8 +1648,8 @@ s32 func_823057E4(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80005E40(0x10000, 0);
     func_80007678(func_80007444(1, 0, 2, 0, 2, 1));
     func_8002D510();
-    D_82305A20 = func_8002D5AC(0x10);
-    D_82305A24 = func_8002D5AC(6);
+    D_82305A20 = GetMessageBank(0x10);
+    D_82305A24 = GetMessageBank(6);
 
     while (temp_v0 == STATE_EVENT_BATTLE) {
         temp_v0 = func_823056C4();

@@ -184,9 +184,9 @@ void func_840003A8(void) {
     func_8001F3F4();
     func_8001EBE0(0x10, 0);
     func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(0x6A, 0x2C, func_8002D7C0(NULL, 0, D_84002D00, 0));
+    func_8001F1E8(0x6A, 0x2C, GetMessageString(NULL, 0, D_84002D00, 0));
     func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(0x68, 0x2A, func_8002D7C0(NULL, 0, D_84002D00, 0));
+    func_8001F1E8(0x68, 0x2A, GetMessageString(NULL, 0, D_84002D00, 0));
     func_8001F444();
 }
 
@@ -370,7 +370,7 @@ void func_840012B4(void) {
         func_8001F324(0x78, 0x78, 0xC8, 0xFF);
     }
 
-    func_8001F1E8(0x64, 0x5A, func_8002D7C0(NULL, 0, D_84002D00, 1));
+    func_8001F1E8(0x64, 0x5A, GetMessageString(NULL, 0, D_84002D00, 1));
     func_8001F444();
 
     if (D_84002D16 == 1) {
@@ -514,22 +514,22 @@ void func_84001AE0(void) {
     func_8400094C(0x64, 0x10C, 0x1B0, 0x84, 0, 0, 0, 0xFF);
     func_8001F3F4();
     func_8001EBE0(8, 0);
-    func_84001A1C(0x94, 0x114, 0, func_8002D7C0(NULL, 0, D_84002D00, 2));
-    func_84001A1C(0x94, 0x114, 1, func_8002D7C0(NULL, 0, D_84002D00, 3));
-    func_84001A1C(0x94, 0x114, 2, func_8002D7C0(NULL, 0, D_84002D00, 6));
-    func_84001A1C(0x94, 0x114, 3, func_8002D7C0(NULL, 0, D_84002D00, 7));
-    func_84001A1C(0x94, 0x114, 4, func_8002D7C0(NULL, 0, D_84002D00, 8));
+    func_84001A1C(0x94, 0x114, 0, GetMessageString(NULL, 0, D_84002D00, 2));
+    func_84001A1C(0x94, 0x114, 1, GetMessageString(NULL, 0, D_84002D00, 3));
+    func_84001A1C(0x94, 0x114, 2, GetMessageString(NULL, 0, D_84002D00, 6));
+    func_84001A1C(0x94, 0x114, 3, GetMessageString(NULL, 0, D_84002D00, 7));
+    func_84001A1C(0x94, 0x114, 4, GetMessageString(NULL, 0, D_84002D00, 8));
     func_8001EBE0(4, 0);
 
-    sprintf(sp2C, "%s1~100", func_8002D7C0(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, D_84002D04, 0x15));
     func_84001A1C(0x1AE, 0x118, 0, sp2C);
-    sprintf(sp2C, "%s50~55", func_8002D7C0(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s50~55", GetMessageString(NULL, 0, D_84002D04, 0x15));
     func_84001A1C(0x1AE, 0x118, 1, sp2C);
-    sprintf(sp2C, "%s25~30", func_8002D7C0(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s25~30", GetMessageString(NULL, 0, D_84002D04, 0x15));
     func_84001A1C(0x1AE, 0x118, 2, sp2C);
-    sprintf(sp2C, "%s15~20", func_8002D7C0(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s15~20", GetMessageString(NULL, 0, D_84002D04, 0x15));
     func_84001A1C(0x1AE, 0x118, 3, sp2C);
-    sprintf(sp2C, "%s1~100", func_8002D7C0(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, D_84002D04, 0x15));
     func_84001A1C(0x1AE, 0x118, 4, sp2C);
 
     func_8001EBE0(0x10, 0);
@@ -540,7 +540,7 @@ void func_84001AE0(void) {
         func_8001F324(0x78, 0x78, 0xC8, 0xFF);
     }
 
-    func_8001F1E8(0x64, 0xF4, func_8002D7C0(NULL, 0, D_84002D00, 9));
+    func_8001F1E8(0x64, 0xF4, GetMessageString(NULL, 0, D_84002D00, 9));
     func_8001F444();
 
     if (D_84002D16 == 3) {
@@ -595,10 +595,10 @@ void func_84001FC0(void) {
             func_80020928(D_84002D28.unk_00 + 0xC, D_84002D28.unk_02 + (D_84002D28.unk_08 * 0x1C) + 0x2B);
             func_8001F3F4();
             func_8001EBE0(0x10, 0);
-            func_8001F1E8(D_84002D28.unk_00 + 0x30, D_84002D28.unk_02 + 0xB, func_8002D7C0(NULL, 0, D_84002D00, 0xA));
-            func_84001F2C(0, func_8002D7C0(NULL, 0, D_84002D00, 0xB));
-            func_84001F2C(1, func_8002D7C0(NULL, 0, D_84002D00, 0xC));
-            func_84001F2C(2, func_8002D7C0(NULL, 0, D_84002D00, 0xD));
+            func_8001F1E8(D_84002D28.unk_00 + 0x30, D_84002D28.unk_02 + 0xB, GetMessageString(NULL, 0, D_84002D00, 0xA));
+            func_84001F2C(0, GetMessageString(NULL, 0, D_84002D00, 0xB));
+            func_84001F2C(1, GetMessageString(NULL, 0, D_84002D00, 0xC));
+            func_84001F2C(2, GetMessageString(NULL, 0, D_84002D00, 0xD));
             func_8001F444();
         }
     }
@@ -742,13 +742,13 @@ void func_840026D8(void) {
     for (i = 0; i < 4; i++) {
         if (D_84002BE8[D_84002D18.unk_00].unk_00 & (1 << i)) {
             sprintf(sp44, "%dP", i + 1);
-            func_8002B840(0, func_8002B700(i, 0, sp44, func_8002311C(1)));
+            func_8002B840(0, RegisterPlayer(i, 0, sp44, func_8002311C(1)));
         }
     }
 
     if (D_84002D18.unk_02 == 3) {
         D_800AE540.unk_11EC = D_84002BE4;
-        temp_v0 = func_8002B700(-1, 0, "COM", func_8002311C(3));
+        temp_v0 = RegisterPlayer(-1, 0, "COM", func_8002311C(3));
         func_8002B840(1, temp_v0);
         if (D_84002D18.unk_00 == 3) {
             temp_v0->unk_001 = 2;
@@ -759,7 +759,7 @@ void func_840026D8(void) {
         for (i = 0; i < 4; i++) {
             if (D_84002BE8[D_84002D18.unk_02 + 4].unk_00 & (1 << i)) {
                 sprintf(sp44, "%dP", i + 1);
-                func_8002B840(1, func_8002B700(i, 0, sp44, func_8002311C(1)));
+                func_8002B840(1, RegisterPlayer(i, 0, sp44, func_8002311C(1)));
             }
         }
     }
@@ -832,8 +832,8 @@ s32 func_84002A84(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     func_8002D510();
-    D_84002D00 = func_8002D5AC(0xF);
-    D_84002D04 = func_8002D5AC(6);
+    D_84002D00 = GetMessageBank(0xF);
+    D_84002D04 = GetMessageBank(6);
     D_84002D08 = ASSET_LOAD2(backgrounds, 1, 1);
     D_84002D0C = func_8000484C(D_84002D08, 6);
     D_84002D14 = Cont_GetControllerBits();
