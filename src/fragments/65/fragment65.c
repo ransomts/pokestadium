@@ -159,20 +159,20 @@ void func_84A008A8(void) {
             } else {
                 temp_v0 = D_84A02F00[D_84A030E0].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    func_8002D5D4(0x24, GetMessageString(NULL, 0, D_84A03134, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, D_84A03134, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    func_8002D5D4(0x24, GetMessageString(NULL, 0, D_84A03130, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, D_84A03130, temp_v0));
                 } else {
-                    func_8002D5D4(0x24, " ");
+                    MessageBank_SetPointer_0x14_0x2A(0x24, " ");
                 }
 
                 temp_v0 = D_84A02F00[D_84A030E0 + 1].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    func_8002D5D4(0x29, GetMessageString(NULL, 0, D_84A03134, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, D_84A03134, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    func_8002D5D4(0x29, GetMessageString(NULL, 0, D_84A03130, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, D_84A03130, temp_v0));
                 } else {
-                    func_8002D5D4(0x29, " ");
+                    MessageBank_SetPointer_0x14_0x2A(0x29, " ");
                 }
                 Text_Print(0x88, sp3A + 0x10, GetMessageString(sp40, sizeof(sp40), D_84A03130, 0xE));
             }
@@ -866,7 +866,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
     Text_Init(0x3C, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_ui, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_84A03130 = GetMessageBank(0x19);
     D_84A03134 = GetMessageBank(0x22);
     func_80028AFC(2);

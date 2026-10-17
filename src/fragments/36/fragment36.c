@@ -379,7 +379,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     func_80027FA0(&D_82100EA8, 0);
     Text_Init(6, 0);
     func_82100B98();
-    func_8002D510();
+    MessageBank_Init();
     D_82100EA0 = GetMessageBank(0x14);
     func_8004FE00(D_82100EBC);
     func_82100AB8();

@@ -429,7 +429,7 @@ s32 func_86B0BA18(void) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_8002D510();
+    MessageBank_Init();
     D_86B10840 = GetMessageBank(0x1E);
 
     if (gBattleContext.unk_0000 == 0x16) {

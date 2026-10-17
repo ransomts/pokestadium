@@ -92,8 +92,8 @@ ALSeqFile* D_800FC6F4;
 ALSeqFile* D_800FC6F8;
 File2SubHeader2* D_800FC6FC;
 ALSeqFile* D_800FC700;
-ALSeqFile* D_800FC704;
-ALSeqFile* D_800FC708;
+ALSeqFile* gAudioSeqBank;
+ALSeqFile* gAudioSeqBuffer;
 s32 pad_D_800FC70C;
 s32 pad_D_800FC710;
 ALSeqFile* D_800FC714;
@@ -649,29 +649,29 @@ s32 func_800373D8(void) {
     func_8004ADB0(D_800FC6E0[4], sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
 
-    D_800FC704 = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC6E0[4], D_800FC704, 4 + (num_files * sizeof(ALSeqData)));
-    alSeqFileNew(D_800FC704, D_800FC6E0[4]);
+    gAudioSeqBank = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
+    func_8004ADB0(D_800FC6E0[4], gAudioSeqBank, 4 + (num_files * sizeof(ALSeqData)));
+    alSeqFileNew(gAudioSeqBank, D_800FC6E0[4]);
 
     D_800FC6C0[0] = alHeapAlloc(audio_heap, 1, 0x44C);
     D_800FC6C0[1] = alHeapAlloc(audio_heap, 1, 0x44C);
     D_800FC6C0[2] = alHeapAlloc(audio_heap, 1, 0x44C);
 
     // load the fourth archive's first seq, at 0x197C1FC
-    func_8004ADB0(D_800FC704->seqArray[0].offset, sp78, 4 + 4);
+    func_8004ADB0(gAudioSeqBank->seqArray[0].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
-    D_800FC708 = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC704->seqArray[0].offset, D_800FC708, 4 + (num_files * sizeof(ALSeqData)));
-    alSeqFileNew(D_800FC708, D_800FC704->seqArray[0].offset);
+    gAudioSeqBuffer = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
+    func_8004ADB0(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 4 + (num_files * sizeof(ALSeqData)));
+    alSeqFileNew(gAudioSeqBuffer, gAudioSeqBank->seqArray[0].offset);
 
-    D_80079364 = 0;
+    gAudioSeqLoadPending = 0;
 
     // load the fourth archive's third seq at 0x1A2AD20
-    func_8004ADB0(D_800FC704->seqArray[2].offset, sp78, 4 + 4);
+    func_8004ADB0(gAudioSeqBank->seqArray[2].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
     D_800FC714 = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC704->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
-    alSeqFileNew(D_800FC714, D_800FC704->seqArray[2].offset);
+    func_8004ADB0(gAudioSeqBank->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
+    alSeqFileNew(D_800FC714, gAudioSeqBank->seqArray[2].offset);
 
     D_800FC6D8 = alHeapAlloc(audio_heap, 0xB80, 2);
 

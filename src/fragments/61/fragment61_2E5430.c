@@ -34,7 +34,7 @@ s32 func_8420DBA0(unk_D_84229EB0_00024* arg0) {
             func_80022F24(&arg0->unk_0000[i].unk_004.unk_00.unk_00, 1, temp_s3);
         }
 
-        func_80022D8C(temp_s3);
+        CommitAndFreeGbsBlock(temp_s3);
         func_800286D8();
         ret = 1;
     }
@@ -410,12 +410,12 @@ s32 func_8420F204(unk_D_84229EB0_00024* arg0, s16 arg1) {
         arg0->unk_0000[i].raw = 0;
     }
 
-    temp_v0 = func_80022C28(0x10, 0, arg1, 0);
+    temp_v0 = CreateGbsBlock(0x10, 0, arg1, 0);
     if (temp_v0 != NULL) {
         for (i = 0; i < 6; i++) {
             var_s4 += func_80022E18(&arg0->unk_0000[i].unk_004, 1, temp_v0);
         }
-        func_80022D8C(temp_v0);
+        CommitAndFreeGbsBlock(temp_v0);
         arg0->unk_4D10 = GbsGetBlockStatusField(0x10, arg1);
         GbsGetBlockString(0x10, arg1, arg0->unk_4D12);
     }

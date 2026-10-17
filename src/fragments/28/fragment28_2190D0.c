@@ -3972,7 +3972,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     Text_ResetState();
     Text_SetFont(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8002D5D4(0x19, D_88826A60);
+    MessageBank_SetPointer_0x14_0x2A(0x19, D_88826A60);
     temp_v0 = GetMessageString(spD0, 0x20, D_88826A3C, 4);
     Text_Print(0x23, 0x17, temp_v0);
     D_88826CC8 = MeasureTextWidth(0, 0, temp_v0) + 0xA;

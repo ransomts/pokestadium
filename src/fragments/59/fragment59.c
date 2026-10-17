@@ -1022,7 +1022,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, stadium_select_ui, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_84103440 = GetMessageBank(0x13);
     D_84103450 = AllocateTileMapVertices();
 

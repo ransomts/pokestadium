@@ -95,8 +95,8 @@ extern ALSeqFile* D_800FC6F4;
 extern ALSeqFile* D_800FC6F8;
 extern File2SubHeader2* D_800FC6FC;
 extern ALSeqFile* D_800FC700;
-extern ALSeqFile* D_800FC704;
-extern ALSeqFile* D_800FC708;
+extern ALSeqFile* gAudioSeqBank;
+extern ALSeqFile* gAudioSeqBuffer;
 extern ALSeqFile* D_800FC714;
 extern u32* D_800FC798;
 

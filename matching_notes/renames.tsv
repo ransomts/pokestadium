@@ -542,3 +542,137 @@ unk_D_800FCED8	GbAudioChannelState	w1		Structure used by the speech decoder, con
 unk_arg1_func_80045A80	AnimHeader	w1		Header structure holding eight 16?bit fields that are scaled and stored into the double?buffer in func_80045A80	applied@530bfe4
 unk_arg0_func_80045A80	AnimProcessor	w1		State object with a large buffer and two animation headers, used as a double?buffer for animation data	applied@530bfe4
 unk_arg1_func_80045D60	AnimPackedData	w1		Packed 7?byte source format for animation data that is unpacked in func_80045D60	applied@530bfe4
+func_81002490	Fragment_BuildDisplayList	w2		Builds a display list for a fragment, conditionally adding segment 0 then always adding segment 1 and terminating it with gSPEndDisplayList.	applied@c896a2a
+func_810024E4	Fragment_InitDisplayList	w2		Initializes a fragment's display list when arg0 equals 2 by allocating 0x50 bytes with GfxAlloc and invoking Fragment_BuildDisplayList.	applied@c896a2a
+func_81400020	SetBits	w2		Uses |= to set bits in a flag variable.	applied@c896a2a
+func_81400030	ClearBits	w2		Uses &= ~mask to clear bits in a flag variable.	applied@c896a2a
+func_81400044	ToggleBits	w2		Uses ^= to toggle bits in a flag variable.	applied@c896a2a
+func_81400054	IsBitSet	w2		Returns 1 if (*arg0 & mask) is non?zero, i.e., bit is set.	applied@c896a2a
+func_81400074	IsBitClear	w2		Returns 1 if (*arg0 & mask) is zero, i.e., bit is clear.	applied@c896a2a
+func_81400094	ApproachFloatUp	w2		Increments a float toward a target and returns 1 when target reached.	applied@c896a2a
+func_8140012C	ApproachIntUp	w2		Increments an int toward a target and clamps when reached.	applied@c896a2a
+func_8140015C	ApproachIntDown	w2		Decrements an int toward a target and clamps when reached.	applied@c896a2a
+func_8140043C	ApproachS8	w2		Adjusts an s8 value toward a target using a signed step, handling both directions.	applied@c896a2a
+func_814004D8	ApproachU8	w2		Adjusts a u8 value toward a target using a step, handling both directions.	applied@c896a2a
+func_814006CC	ApproachS32	w2		Adjusts a s32 value toward a target with signed step, handling both directions.	applied@c896a2a
+func_81400760	ApproachF32	w2		Adjusts a f32 value toward a target with signed step, handling both directions.	applied@c896a2a
+func_8140082C	BounceFloat	w2		Adds velocity to a float, clamps to bounds and reverses velocity on limit hit.	applied@c896a2a
+func_81400930	Vec3f_Copy	w2		Copies x, y, z components from one Vec3f to another.	applied@c896a2a
+func_814009D0	Vec3f_Dot	w2		Computes dot product of two Vec3f vectors.	applied@c896a2a
+func_81400A10	IsWithinRadius2D	w2		Checks if 2?D distance squared between points is ? radius?.	applied@c896a2a
+func_81400A78	RandomMod	w2		Returns (guRandom()+seed)%mod, handling mod==0 case.	applied@c896a2a
+func_81400B00	RandomRangeSigned	w2		Generates a random integer in range [-arg0, arg0).	applied@c896a2a
+func_81400C1C	Vec3f_ToAngles	w2		Stores three atan2 results converting a Vec3f direction to Euler angles.	applied@c896a2a
+func_82F000C8	InitProgressBarRect	w2		sets rectangle coordinates used later for FillRectangle to draw a progress bar	applied@c896a2a
+func_82F00138	ResetProgressBar	w2		initializes progress bar state by setting timer to -1 and calling InitProgressBarRect(0)	applied@c896a2a
+func_82F00164	UpdateProgressBar	w2		decrements timer, draws filled rectangle using progress bar dimensions each frame when active	applied@c896a2a
+func_82F00284	InitTextBox	w2		allocates and zeroes the global text box struct and pointer	applied@c896a2a
+func_82F002BC	SetTextBox	w2		stores position, size and string pointer into the global text box struct	applied@c896a2a
+func_82F0036C	ClearMessageList	w2		sets the current message list pointer to NULL	applied@c896a2a
+func_82F00378	LoadNextMessageEntry	w2		advances to next entry in a message list and initializes the text box with its data	applied@c896a2a
+func_82F003F8	IsMessageEntryEmpty	w2		returns 1 when the current message entry's string pointer is NULL	applied@c896a2a
+func_82F00424	UpdateTextBox	w2		handles input timing, advances characters and manages text box state each frame	applied@c896a2a
+func_82F00524	GetTextBoxState	w2		returns 2 if text box finished, 1 if active, otherwise 0	applied@c896a2a
+func_82F00568	DrawTextBox	w2		resets text state, sets colors, measures width and prints the current or partial string	applied@c896a2a
+func_82F00704	PollControllerInputs	w2		starts and reads controller inputs then calls func_8001F730 to process them	applied@c896a2a
+func_82F00734	UpdateControllerInfo	w2		fills the global controller info array with button states, stick values and connection bits for up to four controllers	applied@c896a2a
+func_82F00838	SwapPlayerSelections	w2		exchanges selection data between the two players and calls func_82F051B8 afterwards	applied@c896a2a
+func_82F00968	InitFragment41	w2		loads message banks, initializes globals, and calls various subsystem init functions for this fragment	applied@c896a2a
+func_82F00A58	RenderFragment41Frame	w2		begins a display list, updates progress bar, draws UI elements and advances the stage each frame	applied@c896a2a
+D_80078EE0	gPlayerVolumeDelta	w2		Used as per?player volume adjustments in func_8004BFC0 and func_8004C17C where arg1 indexes player slots.	applied@c896a2a
+D_80078EF0	gPlayerPitchDelta	w2		Used as per?player pitch adjustments in func_8004BFC0 and func_8004C17C for the same player index.	applied@c896a2a
+D_80078F00	gPlayerSoundHandles	w2		Array of sound handles indexed by player (arg1) and set in func_8004BFC0 and func_8004C17C.	applied@c896a2a
+D_80078F20	gAmbientSoundHandle	w2		Static handle set in func_8004C6DC after starting a sound effect (case 0x5000B).	applied@c896a2a
+D_80078F24	gMenuVolumeDelta	w2		Volume delta table used in func_8004C8B4 for menu?related sound IDs.	applied@c896a2a
+D_80078F34	gMenuPitchDelta	w2		Pitch delta table used alongside gMenuVolumeDelta in func_8004C8B4.	applied@c896a2a
+D_80078F44	gMenuLoopHandle	w2		Handle stored when playing menu loop sound (case 0x60005) in func_8004C8B4.	applied@c896a2a
+D_80078F48	gMenuPrevHandle	w2		Handle updated for the most recent menu sound in func_8004C8B4.	applied@c896a2a
+D_80078F4C	gBattleCryCycle	w2		Cycle counter (0?2) used in func_8004CA7C to select different trainer cry IDs.	applied@c896a2a
+D_80078F54	gCryVolumeDelta	w2		Volume delta table used in func_8004CCD8 for Pok?mon cry sound effects (case 0x80001).	applied@c896a2a
+D_80078F64	gCryPitchDelta	w2		Pitch delta table used in the same function for fine?tuning cry pitch.	applied@c896a2a
+D_80078F74	gCryHandles	w2		Array of sound handles for active Pok?mon cries, set in func_8004CCD8 case 0x80001.	applied@c896a2a
+D_80078F84	gCrySpecialHandle1	w2		Handle used for special cry case 0x80003 in func_8004CCD8.	applied@c896a2a
+D_80078F88	gCrySpecialHandle2	w2		Handle used for special cry case 0x80004 in func_8004CCD8.	applied@c896a2a
+D_80078F9C	gRngSeedA	w2		First RNG seed word set by func_8004CC20 and used in func_8004CC34.	applied@c896a2a
+D_80078FA0	gRngSeedB	w2		Second RNG seed word set by func_8004CC20 and used in func_8004CC34.	applied@c896a2a
+D_80078FA4	gCryModCounter	w2		Counter (0?2) used in func_8004CCD8 case 0x80005 to vary pitch scaling.	applied@c896a2a
+D_80078FA8	gBattleMusicHandle	w2		Handle stored for battle music in func_8004D1B0 for cases 0x9000D?0x90011.	applied@c896a2a
+D_80079070	gAudioChannelConfigTable	w2		Used as D_80079070[arg0-1].unk_03 and .unk_04 to supply parameters for Audio_StartChannel, indicating a table of audio channel configurations	applied@c896a2a
+D_80079364	gAudioSeqLoadPending	w2		Checked for value 1 to trigger loading a sequence file before playing, indicating a pending sequence load flag	applied@c896a2a
+func_8004E810	Audio_PlaySequence	w2		Selects a sequence index and mode, then calls Audio_StartChannel with the chosen offset, acting as the central routine to play audio sequences	applied@c896a2a
+func_8004EBC8	Audio_PlaySequenceMode4	w2		Simply calls func_8004E810 with mode 4, serving as a convenience wrapper for that specific playback mode	applied@c896a2a
+unk_D_80079070	AudioChannelConfig	w2		Struct type of entries in D_80079070, representing per?channel configuration values used when starting audio	applied@c896a2a
+D_800FC704	gAudioSeqBank	w2		Dereferenced as D_800FC704->seqArray[0].offset to obtain sequence offsets, indicating it stores the audio sequence bank	applied@c896a2a
+D_800FC708	gAudioSeqBuffer	w2		Passed to func_8004ADB0 and alSeqFileNew as a destination for loading sequence data, showing it is a buffer for audio sequences	applied@c896a2a
+D_80078400	gAudioEffectId	w2		Provided as second argument to func_800367A0 which likely triggers a sound effect, suggesting it holds an effect identifier	applied@c896a2a
+func_80048060	PlayMoveSoundEffect	w2		Implements loading, remapping and playing a move?sound sequence based on move ID and parameters, so it is the core move?sound playback routine	applied@c896a2a
+func_80048464	UpdateSoundDurationScale	w2		Checks if the stored duration?scale byte is non?zero and applies it to the current sound via MusSetDurationScale, thus updating the sound?s duration scale	applied@c896a2a
+D_80078A10	gMoveSoundCache	w2		Used as a 3?element cache of recent move?sound IDs (arg2) and searched to find a slot, indicating it stores move sound IDs	applied@c896a2a
+D_80078A14	gMoveSoundCachePos	w2		Incremented each time a new slot is needed and modulo?3 used to pick slot, so it tracks the next cache index for move sounds	applied@c896a2a
+D_80078A18	gCurrentSoundHandle	w2		Stores the handle returned by MusStartSoundEffect and later passed to MusSetDurationScale, thus representing the current sound handle	applied@c896a2a
+D_80078A1C	gSoundDurationScale	w2		Array where element 0 holds a scale factor written from a sound entry and later used in MusSetDurationScale, so it holds the current sound duration scale	applied@c896a2a
+D_80078A20	gSpecialMoveSoundFlag	w2		Byte array where element 0 is set to 1 for special move IDs (0x2D,0x2E) when flag is true, acting as a flag for special move sound handling	applied@c896a2a
+D_80078A30	gLastSfxHandle	w2		Stores the handle returned by MusStartSoundEffect for the most recent sound effect and is returned by PlaySoundEffect	applied@c896a2a
+D_80078A34	gSfxHandle_1	w2		Handle for sound effect ID 0x1, set when that effect is started and later used with MusSetDurationScale	applied@c896a2a
+D_80078A3C	gSfxHandle_2	w2		Handle for sound effect ID 0x2, set when that effect is started and later used with MusSetDurationScale	applied@c896a2a
+D_80078A38	gSfxHandle_3	w2		Handle for sound effect ID 0x3, set when that effect is started and later used with MusSetDurationScale	applied@c896a2a
+D_80078A40	gSfxHandle_4	w2		Handle for sound effect ID 0x4, set when that effect is started and later used with MusSetDurationScale	applied@c896a2a
+D_80078A44	gSfxHandle_8	w2		Handle for sound effect ID 0x8, set when that effect is started and later used with MusSetDurationScale	applied@c896a2a
+D_80078A48	gSfxHandle_44	w2		Handle for sound effect IDs 0x2C (44) and 0x2D (45), set when those effects are started and used with MusSetDurationScale	applied@c896a2a
+D_80078A4C	gSfxHandle_46	w2		Handle for sound effect ID 0x2E (46), set when that effect is started and used with MusSetDurationScale	applied@c896a2a
+D_80078A50	gSfx3CCooldown	w2		Counter used to throttle repeated playback of sound effect 0x3C, incremented and reset in the special case block	applied@c896a2a
+func_8004DDA4	PlayBackgroundMusic	w2		Function called with music IDs 0x01000001 and 0x01000002 to start background music, indicating it initiates BGM playback	applied@c896a2a
+D_800AF740	gMessageBankArchive	w2		gMessageBankArchive holds the BinArchive loaded from textdata_ROM_START for message data retrieval	applied@c896a2a
+D_800AF744	gMessageBankFiles	w2		gMessageBankFiles is the global array of char* indexing each message file in the archive by file number	applied@c896a2a
+func_8002D510	MessageBank_Init	w2		Initializes the message bank by loading the text data archive and allocating the pointer array for messages	applied@c896a2a
+func_8002D5D4	MessageBank_SetPointer_0x14_0x2A	w2		Sets a message pointer for file numbers 0x14?0x2A (20?41) in the global message bank array	applied@c896a2a
+func_8002D600	MessageBank_SetPointer_1_9	w2		Sets a message pointer for file numbers 1?9 in the global message bank array	applied@c896a2a
+func_800033B0	ReadU16BE	w2		Reads two big?endian bytes from a buffer and returns a 16?bit value, typical for reading a u16 from memory	applied@c896a2a
+func_800033C8	JpegParseHeaders	w2		Parses JPEG stream markers and fills fields such as quantization_table, huffman_table, start_of_frame and start_of_scan in the info struct	applied@c896a2a
+func_80003558	JpegTaskSetup	w2		Configures an RSP task for JPEG decoding, setting ucode pointers, data pointers and the yield buffer	applied@c896a2a
+func_80003608	JpegDecoder_InitFromInfo	w2		Initialises a JpegDecoder structure from the parsed JPEG info, copying mode, huffman tables and other flags	applied@c896a2a
+func_80003648	JpegTaskParams_Init	w2		Initialises the task?parameter struct with pointers to quantisation tables and buffer addresses for the JPEG task	applied@c896a2a
+func_80003860	JpegMessageQueueInit	w2		Creates the OSMesgQueue used by JPEG decoding DMA operations (D_800A62C0)	applied@c896a2a
+func_80003964	DmaCopyAsyncLoop	w2		Performs DMA copies in 0x1000?byte chunks, looping until the remaining length is zero and synchronising with osRecvMesg on D_800A62C0	applied@c896a2a
+func_80003A14	DmaCopyAsyncBlock	w2		Copies 0x80?byte blocks in a loop, using func_8000100C and synchronising with osRecvMesg, typical for texture block transfers	applied@c896a2a
+func_80003B30	DmaCopyAsyncRange	w2		Generic DMA copy loop handling arbitrary start/end ranges, using func_80000E80 and message queue synchronization	applied@c896a2a
+func_80003BE0	DmaCopyAsyncAlt	w2		Similar DMA loop but calls func_80000F0C, indicating a different transfer type or source/destination configuration	applied@c896a2a
+func_80003C80	JpegDecompressPres	w2		Decompresses PRES?JPEG data into the main memory pool, allocating, decoding and optionally reallocating the buffer	applied@c896a2a
+func_80003D18	SzpDecompressToPool	w2		Decompresses SZP?compressed data into a newly allocated pool block and frees the source address	applied@c896a2a
+func_80003D64	PoolCopyFromRom	w2		Copies data from ROM to a newly allocated pool block using Util_Memcpy and frees the original ROM buffer	applied@c896a2a
+func_80003DC4	Asset_LoadFromRomSegment	w2		Loads an asset from a ROM segment, detecting magic strings ('PERS?SZP', 'PRESJPEG') and delegating to appropriate decompression functions	applied@c896a2a
+func_80003F54	LbaLoadToPool	w2		Loads data from a CD LBA range into a memory pool, handling PERS?SZP, PRES?JPEG or raw data based on the magic header	applied@c896a2a
+func_80004098	LbaRange_Init	w2		Initialises an LBA range struct with start address and length fields derived from the provided start and end offsets	applied@c896a2a
+func_800040EC	LbaRange_Set	w2		Sets up an LBA range struct for a specific offset and size, converting between LBA and byte addresses as needed	applied@c896a2a
+D_800A60C0	gJpegYieldBuffer	w2		Static 0x200?byte buffer used as the yield_data_ptr for the JPEG RSP task, providing temporary storage during decoding	applied@c896a2a
+func_80021B5C	DecodeGen1StringToBuffer	w2		Wrapper that forwards its arguments to DecodeGen1String, used for decoding Gen?1 strings into a buffer	applied@c896a2a
+func_80021C20	EncodeGen1StringToBuffer	w2		Wrapper that forwards its arguments to EncodeGen1String, used for encoding Gen?1 strings from a buffer	applied@c896a2a
+func_80021C40	DecodeGen1StringFromRawBuffer	w2		Copies a 10?byte raw buffer, appends 'P', then calls DecodeGen1String to decode a Gen?1 string	applied@c896a2a
+func_80021C80	StrCopy	w2		Simple wrapper around HAL_Strcpy that returns the destination pointer	applied@c896a2a
+func_80022A38	GetPokemonBaseStat	w2		Returns a value from D_80073267 indexed by Pok?mon ID (1?151), indicating a base?stat table.	applied@c896a2a
+func_80022A60	GetPokemonFormId	w2		Returns a value from D_800732FF indexed by ID, with out?of?range IDs yielding 152, suggesting a form identifier table.	applied@c896a2a
+func_80022A88	GetPokemonMoveData	w2		Returns a byte from D_800733BF indexed by argument, used for move?related lookups.	applied@c896a2a
+func_80022A98	GetPokemonEvolutionData	w2		Returns a byte from D_80073457 indexed by argument, used for evolution information.	applied@c896a2a
+func_80022AA8	GetPokemonEggGroup	w2		Returns D_800734EF[arg]?+?1 (or 0 for arg?=?0), matching the egg?group mapping in Pok?mon data.	applied@c896a2a
+func_80022ACC	GetPokemonGrowthRate	w2		Returns D_80073597[arg]?+?1 (or 0 for arg?=?0), matching the growth?rate table in Pok?mon data.	applied@c896a2a
+func_80022C28	CreateGbsBlock	w2		Allocates a unk_80022C28_ret struct, stores parameters and calls init functions based on block type.	applied@c896a2a
+func_80022D24	InvalidateAndFreeGbsBlock	w2		Invalidates a GBS bank block if needed and frees the allocated struct.	applied@c896a2a
+func_80022D8C	CommitAndFreeGbsBlock	w2		Commits a GBS bank block if needed and frees the allocated struct.	applied@c896a2a
+func_80023230	ValidateChecksum	w2		Scans a buffer for a leading 'P', sums bytes up to a pointer, and checks if the low byte equals 0xFF.	applied@c896a2a
+func_800232A0	ComputeChecksum	w2		Sums bytes in a range and stores 0xFF minus the low byte at the end pointer.	applied@c896a2a
+func_80023324	DetectPokemonRom	w2		Reads ROM header, checks country code?=?1 and title ?POKEMON?RED/GREEN/BLUE/YELLOW?, returning a ROM type constant.	applied@c896a2a
+D_800AC890	gNameSlots	w2		Static 4?0x20 char array filled by LoadNameSlots from message bank 0x11.	applied@c896a2a
+D_800AC910	gPlayerSaveData	w2		Global array indexed by player ID, holding flags, pointers to DAT/BOX blocks and other save?related fields.	applied@c896a2a
+D_800ACA70	gActivePlayerMask	w2		Bitmask of active players, set/checked throughout player?load functions.	applied@c896a2a
+D_800ACA74	gControllerPortMask	w2		Low byte of value returned by func_8000AA7C, stored as a per?player controller port mask.	applied@c896a2a
+func_878029C0	ResultScreen_Init	w2		ResultScreen_Init is called at the start of this module to initialise all UI state, load strings and set up the viewport for the result screen.	applied@c896a2a
+func_87802E1C	ResetSelectionState	w2		ResetSelectionState clears the selection flag arrays D_8780FC54 and D_8780FC58, resetting UI selection state.	applied@c896a2a
+func_87802E58	UpdateDeltaTime	w2		UpdateDeltaTime computes the elapsed frame time (D_8780FCA0) from the global frame counter, used for time?based animations.	applied@c896a2a
+func_87802EB8	SetResultFlag	w2		SetResultFlag sets UI flags D_8780FC44 or D_8780FC92 based on the argument, signalling a request to start a new result phase.	applied@c896a2a
+func_87802F00	IncrementPlayerScore	w2		IncrementPlayerScore increments the score counter D_8780FA40 for the given player index and marks the player as active for UI updates.	applied@c896a2a
+func_87802F4C	CheckScoreThreshold	w2		CheckScoreThreshold scans all players and sets D_8780FC4C when any player reaches the score threshold D_8780FA3A.	applied@c896a2a
+func_87802FA0	IsSpecialWinCondition	w2		IsSpecialWinCondition evaluates a complex set of conditions (player scores, flags, etc.) and returns true when a special win condition is met.	applied@c896a2a
+func_8780304C	FindLowestScorers	w2		FindLowestScorers determines the minimum score among players, flags the lowest?scoring players (D_8780FC80) and stores their indices (D_8780FC88).	applied@c896a2a
+func_87803118	GetCurrentOptionCount	w2		GetCurrentOptionCount returns the number of selectable options for the current UI state based on flags such as D_8780FC4C and D_8780FC92.	applied@c896a2a
+func_87803280	CreateScaledTranslationMatrix	w2		CreateScaledTranslationMatrix builds a transformation matrix that applies independent X/Y/Z scaling and translation, used for positioning 3?D UI elements.	applied@c896a2a
+func_87803368	RenderScoreCubes	w2		RenderScoreCubes renders the rotating score cubes for each player, applying per?cube rotation and position based on D_8780FCD8 state.	applied@c896a2a

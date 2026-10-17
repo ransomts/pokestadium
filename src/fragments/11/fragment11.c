@@ -338,7 +338,7 @@ void func_86500904(void) {
 
         if ((D_8650AB28->unk_010 >= D_8650AB28->unk_012) && (var_s4 == D_8650AB28->unk_010)) {
             D_8650AB28->unk_00C = 1;
-            func_87802F00(i);
+            IncrementPlayerScore(i);
 
             D_87B000D4++;
 
@@ -587,7 +587,7 @@ void func_865013D4(s32 arg0) {
                         break;
 
                     case 0xC3:
-                        func_87802EB8(1);
+                        SetResultFlag(1);
                         break;
                 }
             }
@@ -612,7 +612,7 @@ void func_86501668(void) {
                 var_s2 = 0;
             } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
-                func_87802EB8(2);
+                SetResultFlag(2);
                 D_87B000D0 = 1;
                 return;
             }
@@ -815,7 +815,7 @@ void func_86501AAC(void) {
     func_86502848();
     func_865019E4();
     func_87802528();
-    func_878029C0();
+    ResultScreen_Init();
     func_87801684(0, 0, NULL);
     func_87801754(0, 0, NULL);
 }
@@ -843,7 +843,7 @@ void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    func_87803118();
+    GetCurrentOptionCount();
 }
 
 static s32 pad_D_86502E98 = 0;

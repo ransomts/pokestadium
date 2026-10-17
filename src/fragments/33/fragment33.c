@@ -566,7 +566,7 @@ void func_81302548(void) {
 
     for (i = 0; i < 4; i++) {
         func_80025040(i, &sp48);
-        func_80021B5C(D_81303FA8[i].unk_08, sp48.unk_02);
+        DecodeGen1StringToBuffer(D_81303FA8[i].unk_08, sp48.unk_02);
         D_81303FA8[i].unk_06 = sp48.unk_00;
         D_81303FA8[i].unk_01 = func_80024F68(i);
         D_81303FA8[i].unk_00 = func_80024F00(i);
@@ -815,7 +815,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
     SpriteAssets_Load();
     func_81302548();
     func_81302630();
-    func_8002D510();
+    MessageBank_Init();
     D_81304658 = GetMessageBank(0x1F);
     func_81302DD8();
     D_81304654 = func_813001C0();

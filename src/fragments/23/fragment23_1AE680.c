@@ -180,10 +180,10 @@ s32 func_882062E4(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg
     s32 sp1C = 0;
     unk_func_80022C28_ret* sp18;
 
-    sp18 = func_80022C28(arg2, arg3, arg4, 0);
+    sp18 = CreateGbsBlock(arg2, arg3, arg4, 0);
     if (sp18 != NULL) {
         sp1C = func_80022E18(arg0, arg1, sp18);
-        func_80022D8C(sp18);
+        CommitAndFreeGbsBlock(sp18);
     }
     return sp1C;
 }
@@ -1882,7 +1882,7 @@ s32 func_8820B178(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3)
         return 0;
     }
 
-    temp_v0 = func_80022C28(arg1, arg2, arg3, 0);
+    temp_v0 = CreateGbsBlock(arg1, arg2, arg3, 0);
     if (temp_v0 == NULL) {
         return 0;
     }
@@ -1906,7 +1906,7 @@ s32 func_8820B178(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3)
         }
     }
 
-    func_80022D8C(temp_v0);
+    CommitAndFreeGbsBlock(temp_v0);
 
     return sp90;
 }
@@ -1957,16 +1957,16 @@ void func_8820B3C0(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038* arg3
     unk_func_80022C28_ret* temp_s3;
 
     sp28 = arg3->unk_00;
-    temp_s3 = func_80022C28(arg0, arg1, arg2, 1);
+    temp_s3 = CreateGbsBlock(arg0, arg1, arg2, 1);
 
     for (i = 0; i < arg3->unk_08; i++) {
         func_80022F24(sp28[i], 1, temp_s3);
     }
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
-        func_80022D24(temp_s3);
+        InvalidateAndFreeGbsBlock(temp_s3);
     } else {
-        func_80022D8C(temp_s3);
+        CommitAndFreeGbsBlock(temp_s3);
     }
 }
 
@@ -2231,7 +2231,7 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
             sprintf(&sp30[strlen(sp30)], " %d", sp50 + 1);
         }
 
-        func_8002D5D4(0x25, &sp30);
+        MessageBank_SetPointer_0x14_0x2A(0x25, &sp30);
         GetMessageString(arg0->unk_00.unk_24->unk_88->unk_40, 0x80, D_88224FB4, 0x11);
 
         ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_00.unk_24->unk_80, arg0->unk_00.unk_24->unk_88,
@@ -2505,7 +2505,7 @@ void func_8820C700(unk_D_800AC870* arg0, s32 arg1) {
     if (arg1 == 1) {
         func_80028AFC(2);
     }
-    func_8002D510();
+    MessageBank_Init();
 
     D_88224FB0 = GetMessageBank(0x2A);
     D_88224FB4 = GetMessageBank(2);

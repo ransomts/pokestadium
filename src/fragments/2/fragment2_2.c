@@ -1273,7 +1273,7 @@ static u16 D_8780FE32;
 static u16 D_8780FE34;
 static u16 D_8780FE36;
 
-void func_878029C0(void) {
+void ResultScreen_Init(void) {
     u8 i;
     u8 j;
 
@@ -1332,7 +1332,7 @@ void func_878029C0(void) {
     func_80028AFC(2);
 }
 
-void func_87802E1C(void) {
+void ResetSelectionState(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1341,7 +1341,7 @@ void func_87802E1C(void) {
     }
 }
 
-void func_87802E58(void) {
+void UpdateDeltaTime(void) {
     static u32 D_8780FE38;
 
     u32 v0 = D_800A62E0.unk_A34;
@@ -1358,7 +1358,7 @@ void func_87802E58(void) {
     D_8780FE38 = v0;
 }
 
-void func_87802EB8(s16 arg0) {
+void SetResultFlag(s16 arg0) {
     switch (arg0) {
         case 1:
             D_8780FC44 = 1;
@@ -1370,7 +1370,7 @@ void func_87802EB8(s16 arg0) {
     }
 }
 
-void func_87802F00(s32 arg0) {
+void IncrementPlayerScore(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 4)) {
         D_8780FA40[arg0]++;
         D_8780FC50[arg0] = 1;
@@ -1378,7 +1378,7 @@ void func_87802F00(s32 arg0) {
     }
 }
 
-void func_87802F4C(void) {
+void CheckScoreThreshold(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1389,7 +1389,7 @@ void func_87802F4C(void) {
     }
 }
 
-s32 func_87802FA0(void) {
+s32 IsSpecialWinCondition(void) {
     if ((D_8780FA2A == 1) && (D_8780FA3A >= 5) && (D_8780FA38 == 2) && (D_8780FA30[0] == 0) && (D_8780FA30[1] == 1) &&
         (D_8780FA30[2] == 1) && (D_8780FA30[3] == 1) && (*D_8780FC58 == 5) && !(D_8780FA28 & 1)) {
         return 1;
@@ -1397,7 +1397,7 @@ s32 func_87802FA0(void) {
     return 0;
 }
 
-void func_8780304C(void) {
+void FindLowestScorers(void) {
     u8 i;
     s8 var_v0 = 9;
 
@@ -1422,7 +1422,7 @@ void func_8780304C(void) {
     D_8780FA48 = D_8780FC88[0];
 }
 
-s32 func_87803118(void) {
+s32 GetCurrentOptionCount(void) {
     s32 sp1C;
 
     if (D_8780FE01 != 0) {
@@ -1453,7 +1453,7 @@ void func_87803200(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
     func_8780118C(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
 }
 
-void func_87803280(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
+void CreateScaledTranslationMatrix(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
                    f32 argA) {
     MtxF sp20;
 
@@ -1478,7 +1478,7 @@ void func_87803280(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, 
     guMtxF2L(sp20.mf, arg0);
 }
 
-void func_87803368(s16 arg0) {
+void RenderScoreCubes(s16 arg0) {
     u8 i;
     u8 j;
     u8 x;
@@ -1555,7 +1555,7 @@ void func_87803368(s16 arg0) {
                 }
             }
 
-            func_87803280(spC8, 0.2f, 0.2f, 0.2f, D_8780FCD8[i][j].unk_04, 0.0f, 1.0f, 0.0f,
+            CreateScaledTranslationMatrix(spC8, 0.2f, 0.2f, 0.2f, D_8780FCD8[i][j].unk_04, 0.0f, 1.0f, 0.0f,
                           (D_8780FCD8[i][j].unk_00 + arg0) - 0xA0, 0x78 - D_8780FCD8[i][j].unk_02, 0.0f);
 
             gSPMatrix(gDisplayListHead++, (u32)spC8++ & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1584,7 +1584,7 @@ void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s1
 
     guOrtho(spC8, -sp64, 0x140 - sp64, 0xF0 - sp5C, -sp5C, -2.0f, 2.0f, 1.0f);
 
-    func_87803280(spC4, arg8, arg9, argA, argB, argC, argD, argE, 0.0f, 0.0f, 0.0f);
+    CreateScaledTranslationMatrix(spC4, arg8, arg9, argA, argB, argC, argD, argE, 0.0f, 0.0f, 0.0f);
 
     gSPDisplayList(gDisplayListHead++, D_8780EBA0);
 
@@ -1840,7 +1840,7 @@ void func_87804AD0(s16 arg0) {
     Text_BeginRender();
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
-    func_8002D600(1, D_8780FA3A);
+    MessageBank_SetPointer_1_9(1, D_8780FA3A);
 
     {
         char sp8C[0x60];
@@ -1890,7 +1890,7 @@ s32 func_87804FD4(void) {
         sp66 = 1;
     }
 
-    func_87802E58();
+    UpdateDeltaTime();
 
     switch (D_8780FC40) {
         case 0:
@@ -1968,13 +1968,13 @@ s32 func_87804FD4(void) {
                     D_8780FC40 = 2;
                     D_8780FC64 = 1;
                     D_8780FCAA = 0x190;
-                    func_87802F4C();
+                    CheckScoreThreshold();
                     if (D_8780FC4C != 0) {
                         D_8780FC5D = 2;
                     } else {
                         D_8780FC5D = 3;
                     }
-                    func_8780304C();
+                    FindLowestScorers();
                 }
             }
             break;
@@ -2008,7 +2008,7 @@ s32 func_87804FD4(void) {
                         if (D_8780FC6C == 0) {
                             if (D_8780FC9C->buttonPressed & 0x8000) {
                                 PlaySoundEffect(4);
-                                if (func_87802FA0() != 0) {
+                                if (IsSpecialWinCondition() != 0) {
                                     func_8004B1CC(0x13);
                                     D_8780FC6C = 1;
                                     D_8780FE44 = 0xB4;
@@ -2178,7 +2178,7 @@ s32 func_87804FD4(void) {
             }
 
             func_87804AD0(D_8780FCAA);
-            func_87803368(D_8780FCAA);
+            RenderScoreCubes(D_8780FCAA);
         }
 
         if (D_8780FC68 != 0) {

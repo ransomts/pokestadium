@@ -24,7 +24,7 @@ void func_83800020(s32 arg0) {
     D_83805650 = arg0;
     D_83805668 = -1;
     D_83805660 = -1;
-    func_8002D510();
+    MessageBank_Init();
     func_83402340();
     func_83800EFC();
     func_8380252C(0x68, 0x8A, D_8380565C);

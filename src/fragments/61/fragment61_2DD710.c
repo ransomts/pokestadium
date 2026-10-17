@@ -206,7 +206,7 @@ s32 func_84206990(unk_D_84211B50* arg0) {
             func_80022F24(&arg0->unk_0030[i].unk_004.unk_00.unk_00, 1, temp_s3);
         }
 
-        func_80022D8C(temp_s3);
+        CommitAndFreeGbsBlock(temp_s3);
         func_800286D8();
         var_s0 = 1;
     }

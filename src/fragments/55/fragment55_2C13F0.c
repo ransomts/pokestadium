@@ -372,7 +372,7 @@ void func_83003484(void) {
         Text_ResetState();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetFont(8, 0);
-        func_8002D600(3, ptr->unk_06);
+        MessageBank_SetPointer_1_9(3, ptr->unk_06);
         {
             char sp4C[64];
             Text_Print(spA6 + 0x2C, spA4 + 8, GetMessageString(sp4C, sizeof(sp4C), D_830039C0, 3));

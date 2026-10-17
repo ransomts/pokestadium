@@ -901,9 +901,9 @@ void func_84321698(unk_D_86002F34_00C* arg0) {
         func_8431F500(D_84390010[!D_84390240.unk_00->unk_2C], arg0, 3);
 
         if (func_84307B60(D_84390010[!D_84390240.unk_00->unk_2C]) != 0) {
-            func_8004E810(0xC8, 1);
+            Audio_PlaySequence(0xC8, 1);
         } else {
-            func_8004E810(D_84390010[!D_84390240.unk_00->unk_2C]->unk_000.unk_01A, 1);
+            Audio_PlaySequence(D_84390010[!D_84390240.unk_00->unk_2C]->unk_000.unk_01A, 1);
         }
     }
 }

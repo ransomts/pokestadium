@@ -8,7 +8,7 @@ void func_8433E650(unk_D_8140E720* arg0) {
     func_81408CA0(arg0, 2.5f);
     func_8140B938(arg0, 0.065789476f);
     func_8140AD8C(arg0, 0.0f);
-    sp28.x = func_81400B00(0x5000);
+    sp28.x = RandomRangeSigned(0x5000);
     sp28.y = sp24 * (0x10000 / arg0->unk_AA);
     sp28.z = 0;
     func_8140A4F0(arg0, sp28);
@@ -88,7 +88,7 @@ void func_8433E950(unk_D_8140E720* arg0) {
     s16 sp2C = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.05f);
-    func_8140A270(arg0, func_81400A78(0x10000), func_81400A78(0x10000), 0);
+    func_8140A270(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
     func_8140AD8C(arg0, 1.2f);
     func_8140D5A0(arg0, sp2E);
     func_8140BCA8(arg0, sp2C * 1);
@@ -137,7 +137,7 @@ void func_8433EB0C(unk_D_8140E720* arg0) {
     func_8140C038(arg0);
     sp2C = func_8140C058(arg0);
     func_8140B938(arg0, 0.175f);
-    func_8140A270(arg0, func_81400A78(0x10000), func_81400A78(0x10000), 0);
+    func_8140A270(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
     func_8140D5A0(arg0, sp2C);
     func_8140BC20(arg0, 0x80);
     func_814081BC(arg0);
@@ -220,7 +220,7 @@ void func_8433EE10(unk_D_8140E720* arg0) {
     s16 sp30 = func_8140C058(arg0);
     s16 sp2E = func_8140C040(arg0);
 
-    func_8140A270(arg0, func_81400A78(0x10000), func_81400A78(0x10000), 0);
+    func_8140A270(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
     func_8140B938(arg0, 0.01f);
     func_8140D5A0(arg0, sp30);
 

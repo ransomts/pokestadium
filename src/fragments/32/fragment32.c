@@ -114,7 +114,7 @@ void func_811007F8(s32 arg0, s32 arg1) {
     Text_Init(6, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, transfer_pak_error_ui, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_81100938 = GetMessageBank(0xD);
     Stage_Set(temp_s0);
 

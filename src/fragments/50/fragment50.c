@@ -2059,7 +2059,7 @@ void func_8260125C(void) {
         UNUSED s32 pad3[1];
 
         Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
-        func_8002D600(3, D_8267E4EA);
+        MessageBank_SetPointer_1_9(3, D_8267E4EA);
         Text_Print(0xBE, 0xC2, "%s", GetMessageString(sp38, 0x20, D_8267E75C, 5));
         Text_Print(0x2A, 0xC3, "%s", GetMessageString(NULL, 0, D_8267E75C, 6));
     } else if ((D_8267E4E8 == 1) && (D_82608542 == 0) && (D_82608552 == 2) && (D_82608550 == 5)) {
@@ -2716,7 +2716,7 @@ s32 func_82603D20(s32 arg0, s32 arg1) {
 
     func_80028AFC(2);
     func_82603924();
-    func_8002D510();
+    MessageBank_Init();
     D_8267E75C = GetMessageBank(0x1F);
     D_8267E760 = GetMessageBank(0x24);
     Stage_Set(sp24);

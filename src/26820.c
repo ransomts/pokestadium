@@ -190,8 +190,8 @@ void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_00
     arg0->unk_25 = 0;
 
     _bcopy(arg1->unk_2C, arg0->unk_46, 0xB);
-    func_80021C40(arg0->unk_30, arg1->unk_21);
-    func_80021C40(arg0->unk_3B, arg1->unk_2C);
+    DecodeGen1StringFromRawBuffer(arg0->unk_30, arg1->unk_21);
+    DecodeGen1StringFromRawBuffer(arg0->unk_3B, arg1->unk_2C);
 }
 
 void Mon_WriteToSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
@@ -1031,7 +1031,7 @@ s32 func_800284B4(s16 arg0) {
 
         var_s0 = 0;
         sp38 = arg0 << 7;
-        while (func_80003A14((u8*)gGbsSaveBanks[arg0].unk_04.unk1, sp38, temp_s5, 1) == -1) {
+        while (DmaCopyAsyncBlock((u8*)gGbsSaveBanks[arg0].unk_04.unk1, sp38, temp_s5, 1) == -1) {
             var_s0++;
             if (var_s0 == 4) {
                 return -1;
@@ -1049,7 +1049,7 @@ s32 func_800284B4(s16 arg0) {
         sp38 = arg0 << 7;
         sp38 += 0x200;
         var_s0 = 0;
-        while (func_80003A14((u8*)gGbsSaveBanks[arg0].unk_08.unk1, sp38, temp_s5, 1) == -1) {
+        while (DmaCopyAsyncBlock((u8*)gGbsSaveBanks[arg0].unk_08.unk1, sp38, temp_s5, 1) == -1) {
             var_s0++;
             if (var_s0 == 4) {
                 return 0;
@@ -1085,8 +1085,8 @@ s32 func_8002873C(s16 arg0, u32 arg1) {
             bzero(sp28, arg1 * 2);
             gGbsSaveBanks[arg0].unk_04.unk1 = sp28;
             gGbsSaveBanks[arg0].unk_08.unk1 = sp28 + arg1;
-            func_80003A14(sp28, arg0 << 7, arg1 >> 7, 0);
-            func_80003A14(gGbsSaveBanks[arg0].unk_08.unk1, (arg0 << 7) + 0x200, arg1 >> 7, 0);
+            DmaCopyAsyncBlock(sp28, arg0 << 7, arg1 >> 7, 0);
+            DmaCopyAsyncBlock(gGbsSaveBanks[arg0].unk_08.unk1, (arg0 << 7) + 0x200, arg1 >> 7, 0);
             sp2C = 1;
         }
     }

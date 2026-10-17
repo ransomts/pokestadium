@@ -538,7 +538,7 @@ void func_823023F8(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, sp3E);
         Text_SetLineHeight(0x20);
-        func_8002D600(3, D_8230597C[arg0->unk_0004 - 1].unk_04);
+        MessageBank_SetPointer_1_9(3, D_8230597C[arg0->unk_0004 - 1].unk_04);
         Text_Print(arg1 + 0x88, arg2 + 0x14, GetMessageString(sp40, 0x100, D_82305A20, 9));
         Text_SetupDL();
         arg0->unk_0010 += 0x300;
@@ -881,7 +881,7 @@ void func_823034AC(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     Text_Print(arg0->unk_08 + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, GetMessageString(NULL, 0, D_82305A20, arg2));
 
     if (arg3 >= 0) {
-        func_8002D600(2, arg4);
+        MessageBank_SetPointer_1_9(2, arg4);
         GetMessageString(sp30, sizeof(sp30), D_82305A20, arg3);
         Text_Print((arg0->unk_08 - (MeasureTextWidth(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
                       arg4);
@@ -1647,7 +1647,7 @@ s32 func_823057E4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x10000, 0);
     Stage_Set(Stage_Create(1, 0, 2, 0, 2, 1));
-    func_8002D510();
+    MessageBank_Init();
     D_82305A20 = GetMessageBank(0x10);
     D_82305A24 = GetMessageBank(6);
 

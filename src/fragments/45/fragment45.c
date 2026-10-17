@@ -679,11 +679,11 @@ void func_8360296C(s32 arg0, s32 arg1) {
     s32 sp20;
     s32 sp1C;
 
-    func_8002D600(2, 0x63);
+    MessageBank_SetPointer_1_9(2, 0x63);
     sp24 = func_834023A4(sp28, 0x100, 0x20);
     sp20 = MeasureTextWidth(8, 0, sp24) / 2;
     func_83601314((arg0 - sp20) - 0x26, arg1 - 4, D_836032BC);
-    func_8002D600(2, D_836033B8 - D_836033B4);
+    MessageBank_SetPointer_1_9(2, D_836033B8 - D_836033B4);
 
     sp24 = func_834023A4(sp28, 0x100, 0x20);
     sp1C = MeasureTextWidth(8, 0, sp24);
@@ -896,7 +896,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
 
     func_8001987C();
     D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
-    func_8002D510();
+    MessageBank_Init();
     func_83402340();
     func_8360086C(arg0);
     Stage_Set(sp24);

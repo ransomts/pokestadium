@@ -39,19 +39,19 @@ s32 D_8140E72C;
 s32 D_8140E730;
 s32 D_8140E734;
 
-void func_81400020(s32* arg0, s32 arg1) {
+void SetBits(s32* arg0, s32 arg1) {
     *arg0 |= arg1;
 }
 
-void func_81400030(s32* arg0, s32 arg1) {
+void ClearBits(s32* arg0, s32 arg1) {
     *arg0 &= ~arg1;
 }
 
-void func_81400044(s32* arg0, s32 arg1) {
+void ToggleBits(s32* arg0, s32 arg1) {
     *arg0 ^= arg1;
 }
 
-s32 func_81400054(s32* arg0, s32 arg1) {
+s32 IsBitSet(s32* arg0, s32 arg1) {
     s32 var_v1 = 0;
 
     if (*arg0 & arg1) {
@@ -60,7 +60,7 @@ s32 func_81400054(s32* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_81400074(s32* arg0, s32 arg1) {
+s32 IsBitClear(s32* arg0, s32 arg1) {
     s32 var_v1 = 0;
 
     if (!(*arg0 & arg1)) {
@@ -69,7 +69,7 @@ s32 func_81400074(s32* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_81400094(f32* arg0, f32 arg1, f32 arg2) {
+s32 ApproachFloatUp(f32* arg0, f32 arg1, f32 arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -95,7 +95,7 @@ s32 func_814000E0(f32* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140012C(s32* arg0, s32 arg1, s32 arg2) {
+s32 ApproachIntUp(s32* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -108,7 +108,7 @@ s32 func_8140012C(s32* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_8140015C(s32* arg0, s32 arg1, s32 arg2) {
+s32 ApproachIntDown(s32* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -253,7 +253,7 @@ s32 func_814003F4(s16* arg0, s16 arg1, s16* arg2) {
     return var_v1;
 }
 
-s32 func_8140043C(s8* arg0, s8 arg1, s8 arg2) {
+s32 ApproachS8(s8* arg0, s8 arg1, s8 arg2) {
     s32 var_v1 = 0;
     s32 var_a3 = *arg0;
 
@@ -287,7 +287,7 @@ s32 func_8140043C(s8* arg0, s8 arg1, s8 arg2) {
     return var_v1;
 }
 
-s32 func_814004D8(u8* arg0, u8 arg1, u8 arg2) {
+s32 ApproachU8(u8* arg0, u8 arg1, u8 arg2) {
     s32 var_v1 = 0;
     s32 var_a3 = *arg0;
 
@@ -386,7 +386,7 @@ s32 func_814005EC(s16* arg0, s16 arg1, s16 arg2) {
     return var_v1;
 }
 
-s32 func_814006CC(s32* arg0, s32 arg1, s32 arg2) {
+s32 ApproachS32(s32* arg0, s32 arg1, s32 arg2) {
     s32 temp_v0 = *arg0;
     s32 var_v1 = 0;
 
@@ -419,7 +419,7 @@ s32 func_814006CC(s32* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_81400760(f32* arg0, f32 arg1, f32 arg2) {
+s32 ApproachF32(f32* arg0, f32 arg1, f32 arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -451,7 +451,7 @@ s32 func_81400760(f32* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-void func_8140082C(f32* arg0, f32 arg1, f32 arg2, f32* arg3) {
+void BounceFloat(f32* arg0, f32 arg1, f32 arg2, f32* arg3) {
     *arg0 += *arg3;
 
     if (*arg3 >= 0.0f) {
@@ -478,7 +478,7 @@ void func_814008B0(s16* arg0, s16 arg1, s16 arg2, s16* arg3) {
     }
 }
 
-void func_81400930(Vec3f* arg0, Vec3f* arg1) {
+void Vec3f_Copy(Vec3f* arg0, Vec3f* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
@@ -502,11 +502,11 @@ void func_8140099C(Vec3s* arg0, Vec3s* arg1) {
     arg0->z += arg1->z;
 }
 
-f32 func_814009D0(Vec3f arg0, Vec3f arg1) {
+f32 Vec3f_Dot(Vec3f arg0, Vec3f arg1) {
     return (arg0.x * arg1.x) + (arg0.y * arg1.y) + (arg0.z * arg1.z);
 }
 
-s32 func_81400A10(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+s32 IsWithinRadius2D(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     s32 var_v1 = 0;
 
     if ((SQ(arg2 - arg0) + SQ(arg3 - arg1)) <= SQ(arg4)) {
@@ -519,7 +519,7 @@ void func_81400A60(void) {
     D_8140E710++;
 }
 
-u32 func_81400A78(s32 arg0) {
+u32 RandomMod(s32 arg0) {
     u32 temp_a0 = guRandom() + D_8140E710;
     u32 var_v1;
 
@@ -532,19 +532,19 @@ u32 func_81400A78(s32 arg0) {
 }
 
 s32 func_81400ADC(s32 arg0, s32 arg1) {
-    return func_81400A78(arg0) + arg1;
+    return RandomMod(arg0) + arg1;
 }
 
-s32 func_81400B00(s32 arg0) {
-    return func_81400A78(arg0 * 2) - arg0;
+s32 RandomRangeSigned(s32 arg0) {
+    return RandomMod(arg0 * 2) - arg0;
 }
 
 s32 func_81400B28(s32 arg0, s32 arg1) {
-    return func_81400B00(arg0) + arg1;
+    return RandomRangeSigned(arg0) + arg1;
 }
 
 s32 func_81400B4C(s32 arg0, s32 arg1) {
-    s32 temp_v0 = func_81400B00(arg0);
+    s32 temp_v0 = RandomRangeSigned(arg0);
 
     if (temp_v0 >= 0) {
         temp_v0 += arg1;
@@ -569,7 +569,7 @@ s16 func_81400BEC(Vec3f arg0) {
     return MathUtil_Atan2s(arg0.x, arg0.y);
 }
 
-void func_81400C1C(Vec3s* arg0, Vec3f arg1) {
+void Vec3f_ToAngles(Vec3s* arg0, Vec3f arg1) {
     arg0->x = MathUtil_Atan2s(arg1.y, arg1.z);
     arg0->y = MathUtil_Atan2s(arg1.z, arg1.x);
     arg0->z = MathUtil_Atan2s(arg1.x, arg1.y);
@@ -667,8 +667,8 @@ Vec3f* func_814010D8(Vec3f* arg0, f32 arg1) {
     sp2C.y = 0.0f;
     sp2C.z = arg1;
 
-    sp24.x = func_81400A78(0x10000);
-    sp24.y = func_81400A78(0x10000);
+    sp24.x = RandomMod(0x10000);
+    sp24.y = RandomMod(0x10000);
 
     func_81400DC0(arg0, sp2C, sp24);
     return arg0;

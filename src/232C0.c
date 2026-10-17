@@ -21,10 +21,10 @@ typedef struct unk_func_800228F0_sp24 {
 extern u8 D_80073267[];
 extern u8 D_800732FF[];
 
-static char D_800AC890[4][0x20];
-static unk_D_800AC910 D_800AC910[4];
-static u32 D_800ACA70;
-static u8 D_800ACA74;
+static char gNameSlots[4][0x20];
+static unk_D_800AC910 gPlayerSaveData[4];
+static u32 gActivePlayerMask;
+static u8 gControllerPortMask;
 static u8 D_800ACA75;
 static unk_D_800AC910_050 D_800ACA78;
 static u8 D_800ADA38[0xAA8]; // unreferenced bss
@@ -84,8 +84,8 @@ s32 func_800228F0(unk_func_800228F0* arg0, u16 arg1) {
         arg0->unk_00 = sp24.unk_00;
         arg0->unk_01 = sp24.unk_01;
         arg0->unk_02 = sp24.unk_02;
-        func_80021C40(arg0->unk_04, &sp24.unk_04[0]);
-        func_80021C40(arg0->unk_14, &sp24.unk_04[0xB]);
+        DecodeGen1StringFromRawBuffer(arg0->unk_04, &sp24.unk_04[0]);
+        DecodeGen1StringFromRawBuffer(arg0->unk_14, &sp24.unk_04[0xB]);
         var_v1 = 1;
     }
     return var_v1;
@@ -116,7 +116,7 @@ u8 func_80022A28(s32 arg0) {
     return D_80073230[arg0];
 }
 
-u8 func_80022A38(s32 arg0) {
+u8 GetPokemonBaseStat(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 151)) {
         return 0;
     }
@@ -124,7 +124,7 @@ u8 func_80022A38(s32 arg0) {
     return D_80073267[arg0];
 }
 
-s32 func_80022A60(s32 arg0) {
+s32 GetPokemonFormId(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 190)) {
         return 152;
     }
@@ -132,19 +132,19 @@ s32 func_80022A60(s32 arg0) {
     return D_800732FF[arg0];
 }
 
-u8 func_80022A88(s32 arg0) {
+u8 GetPokemonMoveData(s32 arg0) {
     extern u8 D_800733BF[];
 
     return D_800733BF[arg0];
 }
 
-u8 func_80022A98(s32 arg0) {
+u8 GetPokemonEvolutionData(s32 arg0) {
     extern u8 D_80073457[];
 
     return D_80073457[arg0];
 }
 
-s32 func_80022AA8(s32 arg0) {
+s32 GetPokemonEggGroup(s32 arg0) {
     extern u8 D_800734EF[];
 
     if (arg0 == 0) {
@@ -153,7 +153,7 @@ s32 func_80022AA8(s32 arg0) {
     return D_800734EF[arg0] + 1;
 }
 
-s32 func_80022ACC(s32 arg0) {
+s32 GetPokemonGrowthRate(s32 arg0) {
     extern u8 D_80073597[];
 
     if (arg0 == 0) {
@@ -197,7 +197,7 @@ void func_80022B88(unk_func_80022C28_ret* arg0) {
     }
 }
 
-unk_func_80022C28_ret* func_80022C28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+unk_func_80022C28_ret* CreateGbsBlock(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     unk_func_80022C28_ret* sp1C;
 
     sp1C = Util_Malloc(sizeof(unk_func_80022C28_ret));
@@ -227,14 +227,14 @@ unk_func_80022C28_ret* func_80022CC0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, cha
     unk_func_80022C28_ret* temp_v0;
     unk_func_80022C28_ret* var_v1;
 
-    sp24 = func_80022C28(arg0, arg1, arg2, 1);
+    sp24 = CreateGbsBlock(arg0, arg1, arg2, 1);
     if ((sp24 != NULL) && (arg0 & 0xF0)) {
         GbsSetBlockStringAndValue(arg0, arg2, arg3, arg4, arg5);
     }
     return sp24;
 }
 
-s32 func_80022D24(unk_func_80022C28_ret* arg0) {
+s32 InvalidateAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
@@ -247,7 +247,7 @@ s32 func_80022D24(unk_func_80022C28_ret* arg0) {
     return sp1C;
 }
 
-s32 func_80022D8C(unk_func_80022C28_ret* arg0) {
+s32 CommitAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
@@ -364,14 +364,14 @@ s32 func_80022F24(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
 void LoadNameSlots(void) {
     char** sp1C = GetMessageBank(0x11);
 
-    HAL_Strcpy(D_800AC890[0], GetMessageString(NULL, 0, sp1C, 0));
-    HAL_Strcpy(D_800AC890[1], GetMessageString(NULL, 0, sp1C, 1));
-    HAL_Strcpy(D_800AC890[2], GetMessageString(NULL, 0, sp1C, 2));
-    HAL_Strcpy(D_800AC890[3], GetMessageString(NULL, 0, sp1C, 3));
+    HAL_Strcpy(gNameSlots[0], GetMessageString(NULL, 0, sp1C, 0));
+    HAL_Strcpy(gNameSlots[1], GetMessageString(NULL, 0, sp1C, 1));
+    HAL_Strcpy(gNameSlots[2], GetMessageString(NULL, 0, sp1C, 2));
+    HAL_Strcpy(gNameSlots[3], GetMessageString(NULL, 0, sp1C, 3));
 }
 
 char* GetNameSlot(s32 arg0) {
-    return D_800AC890[arg0];
+    return gNameSlots[arg0];
 }
 
 s32 func_80023130(u8* arg0) {
@@ -386,7 +386,7 @@ s32 func_80023130(u8* arg0) {
     return 0;
 }
 
-s32 func_80023230(u8* arg0, u8* arg1) {
+s32 ValidateChecksum(u8* arg0, u8* arg1) {
     s32 sp1C = 0;
     s32 sp18 = 0;
 
@@ -400,7 +400,7 @@ s32 func_80023230(u8* arg0, u8* arg1) {
     return sp1C;
 }
 
-void func_800232A0(u8* arg0, u8* arg1) {
+void ComputeChecksum(u8* arg0, u8* arg1) {
     s32 var_v0 = 0;
 
     while (arg0 < arg1) {
@@ -422,7 +422,7 @@ s32 func_800232D0(u8* arg0, s32 arg1) {
     return 1;
 }
 
-s8 func_80023324(s32 arg0) {
+s8 DetectPokemonRom(s32 arg0) {
     // Only part of the rom header,
     // osGbpakReadId reads from 0x100 but this reads from 0x120
     typedef struct RomHeader {
@@ -469,8 +469,8 @@ s32 func_800233F4(s32 arg0) {
     s32 sp18 = 0;
 
     if ((func_8000AEBC(arg0, &D_800ACA78, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-        (func_80023230(&D_800ACA78.unk_018, &D_800ACA78.unk_FA0.unk_03) != 0)) {
-        sp18 = D_800ACA78.unk_FA0.unk_03 == D_800AC910[arg0].unk_04;
+        (ValidateChecksum(&D_800ACA78.unk_018, &D_800ACA78.unk_FA0.unk_03) != 0)) {
+        sp18 = D_800ACA78.unk_FA0.unk_03 == gPlayerSaveData[arg0].unk_04;
     }
     return sp18;
 }
@@ -478,19 +478,19 @@ s32 func_800233F4(s32 arg0) {
 s32 func_80023480(s32 arg0) {
     s32 i;
     s32 sp30;
-    unk_D_800AC910_050* temp_s4 = D_800AC910[arg0].unk_50;
+    unk_D_800AC910_050* temp_s4 = gPlayerSaveData[arg0].unk_50;
 
     sp30 = NULL;
 
     if (func_8000AEBC(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
         for (i = 0; i < 3; i++) {
-            sp30 = func_80023230(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
+            sp30 = ValidateChecksum(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
             if (sp30 != 0) {
-                if (D_800AC910[arg0].unk_00 & 0x20) {
-                    D_800AC910[arg0].unk_04 = temp_s4->unk_FA0.unk_03;
-                    D_800AC910[arg0].unk_00 = D_800AC910[arg0].unk_00 & ~0x20;
+                if (gPlayerSaveData[arg0].unk_00 & 0x20) {
+                    gPlayerSaveData[arg0].unk_04 = temp_s4->unk_FA0.unk_03;
+                    gPlayerSaveData[arg0].unk_00 = gPlayerSaveData[arg0].unk_00 & ~0x20;
                 } else {
-                    sp30 = D_800AC910[arg0].unk_04 == temp_s4->unk_FA0.unk_03;
+                    sp30 = gPlayerSaveData[arg0].unk_04 == temp_s4->unk_FA0.unk_03;
                 }
                 return sp30;
             }
@@ -503,10 +503,10 @@ s32 func_80023480(s32 arg0) {
 s32 func_80023574(s32 arg0) {
     s32 i;
     unk_D_800AC910* temp_s3;
-    unk_D_800AC910_050* temp_s1 = D_800AC910[arg0].unk_50;
+    unk_D_800AC910_050* temp_s1 = gPlayerSaveData[arg0].unk_50;
 
-    func_800232A0(temp_s1->unk_018, &temp_s1->unk_FA0.unk_03);
-    D_800AC910[arg0].unk_04 = temp_s1->unk_FA0.unk_03;
+    ComputeChecksum(temp_s1->unk_018, &temp_s1->unk_FA0.unk_03);
+    gPlayerSaveData[arg0].unk_04 = temp_s1->unk_FA0.unk_03;
 
     for (i = 0; i < 4; i++) {
         if ((func_8000AF40(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
@@ -519,10 +519,10 @@ s32 func_80023574(s32 arg0) {
 }
 
 s32 func_80023658(s32 arg0) {
-    unk_D_800AC910_050* temp_s3 = D_800AC910[arg0].unk_50;
+    unk_D_800AC910_050* temp_s3 = gPlayerSaveData[arg0].unk_50;
     s32 i;
 
-    func_800232A0(&temp_s3->unk_018, &temp_s3->unk_FA0.unk_03);
+    ComputeChecksum(&temp_s3->unk_018, &temp_s3->unk_FA0.unk_03);
     temp_s3->unk_FA0.unk_03 ^= 0xFF;
 
     for (i = 0; i < 4; i++) {
@@ -537,14 +537,14 @@ s32 func_80023658(s32 arg0) {
 
 s32 func_80023740(s32 arg0, s32 arg1) {
     UNUSED s32 pad[2];
-    unk_D_800AC910_054_000_000* sp1C = &D_800AC910[arg0].unk_54->unk_0000[arg1];
+    unk_D_800AC910_054_000_000* sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[arg1];
 
     return func_8000AEBC(arg0, sp1C, (arg1 == 0) ? 0x4000 : 0x6000, 0x1A60) == 0;
 }
 
 s32 func_800237C8(s32 arg0, s32 arg1) {
     s32 var_v0;
-    unk_D_800AC910_054_000* temp_s2 = &D_800AC910[arg0].unk_54->unk_0000[arg1];
+    unk_D_800AC910_054_000* temp_s2 = &gPlayerSaveData[arg0].unk_54->unk_0000[arg1];
     s32 i;
 
     if (arg1 == 0) {
@@ -568,12 +568,12 @@ void func_800238D8(UNUSED MainPoolBlock* arg0, u32 arg1) {
     unk_D_800AC910* ptr;
 
     if ((arg1 >= 'DAT0') && (arg1 < 'DAT4')) {
-        ptr = D_800AC910 + (arg1 - 'DAT0');
+        ptr = gPlayerSaveData + (arg1 - 'DAT0');
 
         ptr->unk_50 = NULL;
         ptr->unk_00 &= ~0x9;
     } else if ((arg1 >= 'BOX0') && (arg1 < 'BOX4')) {
-        ptr = D_800AC910 + (arg1 - 'BOX0');
+        ptr = gPlayerSaveData + (arg1 - 'BOX0');
 
         ptr->unk_54 = NULL;
         ptr->unk_00 &= ~0x12;
@@ -584,13 +584,13 @@ void func_80023990(s32 arg0) {
     extern u8 D_80073640[12];
 
     s32 i;
-    s32 temp_t1 = D_800AC910[arg0].unk_50->unk_08A;
+    s32 temp_t1 = gPlayerSaveData[arg0].unk_50->unk_08A;
 
-    D_800AC910[arg0].unk_00 &= ~0x4000;
+    gPlayerSaveData[arg0].unk_00 &= ~0x4000;
 
     for (i = 0; i < 12; i++) {
         if (D_80073640[i] == temp_t1) {
-            D_800AC910[arg0].unk_00 |= 0x4000;
+            gPlayerSaveData[arg0].unk_00 |= 0x4000;
             break;
         }
     }
@@ -600,15 +600,15 @@ s32 func_80023A04(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
-    if (D_800AC910[arg0].unk_00 & 1) {
+    if (gPlayerSaveData[arg0].unk_00 & 1) {
         return 1;
     }
 
-    D_800AC910[arg0].unk_50 = main_pool_alloc_with_func(0xFC0, 0, arg0 + 'DAT0', func_800238D8);
+    gPlayerSaveData[arg0].unk_50 = main_pool_alloc_with_func(0xFC0, 0, arg0 + 'DAT0', func_800238D8);
 
-    if (D_800AC910[arg0].unk_50 != NULL) {
-        D_800AC910[arg0].unk_00 |= 1;
-        if (func_8000A798(arg0, &sp2F, D_800AC910[arg0].unk_19) == 0) {
+    if (gPlayerSaveData[arg0].unk_50 != NULL) {
+        gPlayerSaveData[arg0].unk_00 |= 1;
+        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
@@ -618,7 +618,7 @@ s32 func_80023A04(s32 arg0) {
         }
 
         if (sp28 == 0) {
-            main_pool_try_free(D_800AC910[arg0].unk_50);
+            main_pool_try_free(gPlayerSaveData[arg0].unk_50);
         }
     }
 
@@ -628,7 +628,7 @@ s32 func_80023A04(s32 arg0) {
 s32 func_80023AF8(s32 arg0) {
     s32 sp1C = 0;
 
-    if (((1 << arg0) & D_800ACA70) && (D_800AC910[arg0].unk_03 == 0)) {
+    if (((1 << arg0) & gActivePlayerMask) && (gPlayerSaveData[arg0].unk_03 == 0)) {
         sp1C = func_80023A04(arg0);
         if (sp1C == 0) {
             func_8002B274(arg0, 2);
@@ -645,20 +645,20 @@ s32 func_80023B7C(s32 arg0) {
 
     sp2C = 0;
 
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return 0;
     }
 
-    if (D_800AC910[arg0].unk_00 & 2) {
+    if (gPlayerSaveData[arg0].unk_00 & 2) {
         return 1;
     }
 
-    D_800AC910[arg0].unk_54 = main_pool_alloc_with_func(sizeof(unk_D_800AC910_054), 0, arg0 + 'BOX0', func_800238D8);
+    gPlayerSaveData[arg0].unk_54 = main_pool_alloc_with_func(sizeof(unk_D_800AC910_054), 0, arg0 + 'BOX0', func_800238D8);
 
-    if (D_800AC910[arg0].unk_54 != NULL) {
-        D_800AC910[arg0].unk_00 |= 2;
+    if (gPlayerSaveData[arg0].unk_54 != NULL) {
+        gPlayerSaveData[arg0].unk_00 |= 2;
         if (func_8002513C(arg0) > 0) {
-            if (func_8000A798(arg0, &sp37, D_800AC910[arg0].unk_19) == 0) {
+            if (func_8000A798(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
                 func_8002B274(arg0, 2);
             }
 
@@ -671,14 +671,14 @@ s32 func_80023B7C(s32 arg0) {
             }
 
             if (sp2C == 0) {
-                main_pool_try_free(D_800AC910[arg0].unk_54);
+                main_pool_try_free(gPlayerSaveData[arg0].unk_54);
             }
         } else {
-            HAL_Memset(D_800AC910[arg0].unk_54, 0xFF, sizeof(unk_D_800AC910_054));
+            HAL_Memset(gPlayerSaveData[arg0].unk_54, 0xFF, sizeof(unk_D_800AC910_054));
 
             for (i = 0; i < 6; i++) {
-                D_800AC910[arg0].unk_54->unk_0000[0].unk_0000[i].unk_000.unk_000 = 0;
-                D_800AC910[arg0].unk_54->unk_0000[1].unk_0000[i].unk_000.unk_000 = 0;
+                gPlayerSaveData[arg0].unk_54->unk_0000[0].unk_0000[i].unk_000.unk_000 = 0;
+                gPlayerSaveData[arg0].unk_54->unk_0000[1].unk_0000[i].unk_000.unk_000 = 0;
             }
 
             sp2C = 1;
@@ -691,9 +691,9 @@ s32 func_80023D60(s32 arg0) {
     u8 sp2F;
     s32 temp_s1 = 0;
 
-    if ((1 << arg0) & D_800ACA70) {
-        if (D_800AC910[arg0].unk_03 == 0) {
-            if (func_8000A798(arg0, &sp2F, D_800AC910[arg0].unk_19) == 0) {
+    if ((1 << arg0) & gActivePlayerMask) {
+        if (gPlayerSaveData[arg0].unk_03 == 0) {
+            if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
                 func_8002B274(arg0, 2);
             }
 
@@ -740,8 +740,8 @@ s32 func_80023E34(s32 arg0) {
         case 3:
             if (func_8000AD68(arg0) != 0) {
                 sp24 = 3;
-                if (func_80023324(arg0) == D_800AC910[arg0].unk_02) {
-                    if (func_8000AE28(arg0, D_800AC910[arg0].unk_19) != 0) {
+                if (DetectPokemonRom(arg0) == gPlayerSaveData[arg0].unk_02) {
+                    if (func_8000AE28(arg0, gPlayerSaveData[arg0].unk_19) != 0) {
                         sp24 = 2;
                     }
                 }
@@ -753,30 +753,30 @@ s32 func_80023E34(s32 arg0) {
 }
 
 void func_80023F78(s32 arg0) {
-    D_800AC910[arg0].unk_00 &= ~0x7000;
+    gPlayerSaveData[arg0].unk_00 &= ~0x7000;
 
     if (func_80023A04(arg0) != 0) {
         func_80024FB0(arg0);
         func_80023990(arg0);
-        D_800AC910[arg0].unk_05 = D_800AC910[arg0].unk_50->unk_9AC.unk_000;
+        gPlayerSaveData[arg0].unk_05 = gPlayerSaveData[arg0].unk_50->unk_9AC.unk_000;
 
-        if (D_800AC910[arg0].unk_50->unk_477 & 0x20) {
-            D_800AC910[arg0].unk_00 |= 0x2000;
+        if (gPlayerSaveData[arg0].unk_50->unk_477 & 0x20) {
+            gPlayerSaveData[arg0].unk_00 |= 0x2000;
         }
 
-        if (D_800AC910[arg0].unk_50->unk_51D & 1) {
-            D_800AC910[arg0].unk_00 |= 0x1000;
+        if (gPlayerSaveData[arg0].unk_50->unk_51D & 1) {
+            gPlayerSaveData[arg0].unk_00 |= 0x1000;
         }
 
-        D_800AC910[arg0].unk_03 = 0;
+        gPlayerSaveData[arg0].unk_03 = 0;
     } else {
-        D_800AC910[arg0].unk_03 = 3;
+        gPlayerSaveData[arg0].unk_03 = 3;
     }
 }
 
 void func_80024040(s32 arg0) {
-    if ((1 << arg0) & D_800ACA70) {
-        D_800AC910[arg0].unk_00 |= 0x20;
+    if ((1 << arg0) & gActivePlayerMask) {
+        gPlayerSaveData[arg0].unk_00 |= 0x20;
         func_80023F78(arg0);
     }
 }
@@ -786,12 +786,12 @@ s32 func_800240A0(void) {
     s32 j;
     s32 temp_v0 = func_8000AA7C();
 
-    D_800ACA74 = temp_v0 & 0xFF;
+    gControllerPortMask = temp_v0 & 0xFF;
     D_800ACA75 = (temp_v0 >> 0x10) & 0xFF;
-    D_800ACA70 = 0;
+    gActivePlayerMask = 0;
 
     for (i = 0; i < 4; i++) {
-        unk_D_800AC910* var_s0 = &D_800AC910[i];
+        unk_D_800AC910* var_s0 = &gPlayerSaveData[i];
         u64* temp;
 
         var_s0->unk_00 = 0x20;
@@ -807,9 +807,9 @@ s32 func_800240A0(void) {
 
         if (D_800ACA75 & (1 << i)) {
             var_s0->unk_03 = 2;
-            var_s0->unk_02 = func_80023324(i);
+            var_s0->unk_02 = DetectPokemonRom(i);
             if (var_s0->unk_02) {
-                D_800ACA70 |= (1 << i);
+                gActivePlayerMask |= (1 << i);
                 if (func_8000A6D8(i, var_s0->unk_19) == 0) {
                     func_8002B274(i, 2);
                 }
@@ -819,18 +819,18 @@ s32 func_800240A0(void) {
         }
     }
 
-    if (D_800ACA74 != 0) {
-        func_8000B318(D_800ACA70);
+    if (gControllerPortMask != 0) {
+        func_8000B318(gActivePlayerMask);
     }
 
-    return D_800ACA70;
+    return gActivePlayerMask;
 }
 
 void func_80024208(s32 arg0) {
-    u16 temp_v0 = ReadBE16(&D_800AC910[arg0].unk_50->unk_2CC);
+    u16 temp_v0 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC);
 
     if (!(temp_v0 & 0x8000)) {
-        WriteBE16(&D_800AC910[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
+        WriteBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
     }
 }
 
@@ -838,8 +838,8 @@ s32 func_80024270(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
-    if (D_800AC910[arg0].unk_00 & 2) {
-        if (func_8000A798(arg0, &sp2F, D_800AC910[arg0].unk_19) == 0) {
+    if (gPlayerSaveData[arg0].unk_00 & 2) {
+        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
@@ -857,8 +857,8 @@ s32 func_8002431C(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
-    if (D_800AC910[arg0].unk_00 & 1) {
-        if (func_8000A798(arg0, &sp2F, D_800AC910[arg0].unk_19) == 0) {
+    if (gPlayerSaveData[arg0].unk_00 & 1) {
+        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
@@ -867,7 +867,7 @@ s32 func_8002431C(s32 arg0) {
 
         if (sp28 != 0) {
             func_80024FB0(arg0);
-            D_800AC910[arg0].unk_05 = D_800AC910[arg0].unk_50->unk_9AC.unk_000;
+            gPlayerSaveData[arg0].unk_05 = gPlayerSaveData[arg0].unk_50->unk_9AC.unk_000;
         }
     }
     return sp28;
@@ -877,7 +877,7 @@ s32 func_800243D8(s32 arg0) {
     u8 sp2F;
     s32 sp28;
 
-    if (func_8000A798(arg0, &sp2F, D_800AC910[arg0].unk_19) == 0) {
+    if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
         func_8002B274(arg0, 2);
     }
 
@@ -897,7 +897,7 @@ s32 func_800243D8(s32 arg0) {
 void func_8002447C(s32 arg0) {
     u8 sp27;
 
-    if (func_8000A798(arg0, &sp27, D_800AC910[arg0].unk_19) == 0) {
+    if (func_8000A798(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
         func_8002B274(arg0, 2);
     }
 
@@ -918,18 +918,18 @@ unk_D_800AC910_050_B40_000* func_80024528(s32 arg0, s32 arg1) {
 
     if (temp_v0 > 0) {
         if (arg1 == (temp_v0 - 1)) {
-            sp1C = &D_800AC910[arg0].unk_50[0].unk_B40;
+            sp1C = &gPlayerSaveData[arg0].unk_50[0].unk_B40;
         } else if (arg1 < 6) {
-            sp1C = &D_800AC910[arg0].unk_54->unk_0000[0].unk_0000[arg1].unk_000;
+            sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[0].unk_0000[arg1].unk_000;
         } else {
-            sp1C = &D_800AC910[arg0].unk_54->unk_0000[0].unk_0000[arg1].unk_014;
+            sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[0].unk_0000[arg1].unk_014;
         }
     }
     return sp1C;
 }
 
 void func_80024624(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050_9AC* ptr2 = &D_800AC910[arg1].unk_50->unk_9AC;
+    unk_D_800AC910_050_9AC* ptr2 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     func_80021E90(arg0, &ptr2->unk_008[arg2]);
     CalculatePokemonStats(arg0);
@@ -939,12 +939,12 @@ void func_80024624(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2) {
     arg0->unk_25 = 0;
 
     _bcopy(ptr2->unk_110[arg2], arg0->unk_46, 0xB);
-    func_80021C40(arg0->unk_30, ptr2->unk_152[arg2]);
-    func_80021C40(arg0->unk_3B, ptr2->unk_110[arg2]);
+    DecodeGen1StringFromRawBuffer(arg0->unk_30, ptr2->unk_152[arg2]);
+    DecodeGen1StringFromRawBuffer(arg0->unk_3B, ptr2->unk_110[arg2]);
 }
 
 void func_800246F8(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050_9AC* sp24 = &D_800AC910[arg1].unk_50->unk_9AC;
+    unk_D_800AC910_050_9AC* sp24 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     func_80022010(arg0, &sp24->unk_008[arg2]);
     EncodeGen1String(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
@@ -964,8 +964,8 @@ void func_800247C4(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2, s32 arg3) {
         arg0->unk_25 = 0;
 
         _bcopy(sp2C->unk_2AA[arg3], arg0->unk_46, 0xB);
-        func_80021C40(arg0->unk_30, sp2C->unk_386[arg3]);
-        func_80021C40(arg0->unk_3B, sp2C->unk_2AA[arg3]);
+        DecodeGen1StringFromRawBuffer(arg0->unk_30, sp2C->unk_386[arg3]);
+        DecodeGen1StringFromRawBuffer(arg0->unk_3B, sp2C->unk_2AA[arg3]);
     }
 }
 
@@ -975,7 +975,7 @@ void func_80024884(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (sp2C != NULL) {
         arg0->unk_000[0].unk_04 = arg0->unk_000[0].unk_24;
         func_80021F04(arg0->unk_000, &sp2C->unk_016[arg3]);
-        func_80021C20(sp2C->unk_386[arg3], arg0->unk_000[0].unk_30);
+        EncodeGen1StringToBuffer(sp2C->unk_386[arg3], arg0->unk_000[0].unk_30);
         _bcopy(arg0->unk_000[0].unk_46, sp2C->unk_2AA[arg3], 0xB);
         sp2C->unk_000.unk_001[arg3] = sp2C->unk_016[arg3].unk_00;
     }
@@ -1046,7 +1046,7 @@ s32 func_800249FC(s32 arg0) {
 
 s32 func_80024A48(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
-    unk_D_800AC910_050* ptr = D_800AC910[arg1].unk_50;
+    unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
 
     switch (arg0) {
         case 32:
@@ -1069,7 +1069,7 @@ s32 func_80024A48(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void func_80024AE0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050* sp1C = D_800AC910[arg1].unk_50;
+    unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
 
     if (arg3 < func_80024A48(arg0, arg1, arg2)) {
         switch (arg0) {
@@ -1096,7 +1096,7 @@ void func_80024AE0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void func_80024BC4(s32 arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050* sp1C = D_800AC910[arg1].unk_50;
+    unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
     s32 sp18 = func_80024A48(arg0, arg1, arg2);
 
     if (sp18 < func_800249B0(arg0)) {
@@ -1129,7 +1129,7 @@ s32 func_80024CB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_80026268_arg0
     s32 sp1C = 0;
 
     if (arg3 < func_80024A48(arg0, arg1, arg2)) {
-        unk_D_800AC910_050* temp_v0 = D_800AC910[arg1].unk_50;
+        unk_D_800AC910_050* temp_v0 = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
@@ -1159,7 +1159,7 @@ s32 func_80024DAC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0
     s32 sp24 = func_80024A48(arg0, arg1, arg2);
 
     if ((arg3 < sp24) || ((arg3 == sp24) && (arg3 < sp28))) {
-        unk_D_800AC910_050* ptr = D_800AC910[arg1].unk_50;
+        unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
@@ -1189,17 +1189,17 @@ s32 func_80024DAC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0
 }
 
 s32 func_80024EF4(void) {
-    return D_800ACA70;
+    return gActivePlayerMask;
 }
 
 s32 func_80024F00(s32 arg0) {
-    return D_800AC910[arg0].unk_03;
+    return gPlayerSaveData[arg0].unk_03;
 }
 
 s32 func_80024F24(s32 arg0) {
     s32 temp_v0 = 1 << arg0;
 
-    if (!(D_800ACA74 & temp_v0)) {
+    if (!(gControllerPortMask & temp_v0)) {
         return 1;
     }
 
@@ -1211,26 +1211,26 @@ s32 func_80024F24(s32 arg0) {
 }
 
 s32 func_80024F68(s32 arg0) {
-    return D_800AC910[arg0].unk_02;
+    return gPlayerSaveData[arg0].unk_02;
 }
 
 s32 func_80024F8C(s32 arg0) {
-    return D_800AC910[arg0].unk_05;
+    return gPlayerSaveData[arg0].unk_05;
 }
 
 s32 func_80024FB0(s32 arg0) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return 0;
     }
 
-    D_800AC910[arg0].unk_40.unk_00 = ReadBE16(&D_800AC910[arg0].unk_50->unk_085);
-    _bcopy(&D_800AC910[arg0].unk_50->unk_018, &D_800AC910[arg0].unk_40.unk_02, 0xB);
-    bzero(D_800AC910[arg0].unk_40.unk_0D, 3);
+    gPlayerSaveData[arg0].unk_40.unk_00 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_085);
+    _bcopy(&gPlayerSaveData[arg0].unk_50->unk_018, &gPlayerSaveData[arg0].unk_40.unk_02, 0xB);
+    bzero(gPlayerSaveData[arg0].unk_40.unk_0D, 3);
     return 1;
 }
 
 void func_80025040(s32 arg0, unk_D_800AC910_040* arg1) {
-    u64* ptr = &D_800AC910[arg0].unk_40;
+    u64* ptr = &gPlayerSaveData[arg0].unk_40;
     u64* ptr2 = arg1;
 
     *ptr2++ = *ptr++;
@@ -1238,15 +1238,15 @@ void func_80025040(s32 arg0, unk_D_800AC910_040* arg1) {
 }
 
 s32 func_80025084(s32 arg0) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return -1;
     }
-    return ReadBE16(&D_800AC910[arg0].unk_50->unk_085);
+    return ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_085);
 }
 
 void func_800250E0(s32 arg0, u16 arg1) {
-    if (D_800AC910[arg0].unk_00 & 1) {
-        WriteBE16(&D_800AC910[arg0].unk_50->unk_085, arg1);
+    if (gPlayerSaveData[arg0].unk_00 & 1) {
+        WriteBE16(&gPlayerSaveData[arg0].unk_50->unk_085, arg1);
     }
 }
 
@@ -1254,8 +1254,8 @@ s32 func_8002513C(s32 arg0) {
     s32 temp_a0;
     s32 phi_v1 = -1;
 
-    if (D_800AC910[arg0].unk_00 & 1) {
-        temp_a0 = ReadBE16(&D_800AC910[arg0].unk_50->unk_2CC) >> 8;
+    if (gPlayerSaveData[arg0].unk_00 & 1) {
+        temp_a0 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC) >> 8;
         if (temp_a0 & 0x80) {
             phi_v1 = (temp_a0 & 0x7F) + 1;
         } else {
@@ -1266,62 +1266,62 @@ s32 func_8002513C(s32 arg0) {
 }
 
 char* func_800251B0(s32 arg0, char* arg1) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return func_80021C40(arg1, &D_800AC910[arg0].unk_50->unk_018);
+    return DecodeGen1StringFromRawBuffer(arg1, &gPlayerSaveData[arg0].unk_50->unk_018);
 }
 
 char* func_80025210(s32 arg0, char* arg1) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return EncodeGen1String(&D_800AC910[arg0].unk_50->unk_018, arg1);
+    return EncodeGen1String(&gPlayerSaveData[arg0].unk_50->unk_018, arg1);
 }
 
 char* func_8002526C(s32 arg0, char* arg1) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return func_80021C40(arg1, &D_800AC910[arg0].unk_50->unk_076);
+    return DecodeGen1StringFromRawBuffer(arg1, &gPlayerSaveData[arg0].unk_50->unk_076);
 }
 
 char* func_800252CC(s32 arg0, char* arg1) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return EncodeGen1String(&D_800AC910[arg0].unk_50->unk_076, arg1);
+    return EncodeGen1String(&gPlayerSaveData[arg0].unk_50->unk_076, arg1);
 }
 
 s32 func_80025328(s32 arg0) {
-    if (!(D_800AC910[arg0].unk_00 & 1)) {
+    if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return -1;
     }
-    return D_800AC910[arg0].unk_50->unk_441;
+    return gPlayerSaveData[arg0].unk_50->unk_441;
 }
 
 s32 func_80025370(s32 arg0) {
-    return (D_800AC910[arg0].unk_00 & 0x4000) != 0;
+    return (gPlayerSaveData[arg0].unk_00 & 0x4000) != 0;
 }
 
 s32 func_8002539C(s32 arg0) {
-    return (D_800AC910[arg0].unk_00 & 0x2000) != 0;
+    return (gPlayerSaveData[arg0].unk_00 & 0x2000) != 0;
 }
 
 s32 func_800253C8(s32 arg0) {
-    return (D_800AC910[arg0].unk_00 & 0x1000) != 0;
+    return (gPlayerSaveData[arg0].unk_00 & 0x1000) != 0;
 }
 
 s32 func_800253F4(s32 arg0, func_800253F4_arg1* arg1) {
-    s32 temp_v1 = (D_800AC910[arg0].unk_00 & 1) != 0;
+    s32 temp_v1 = (gPlayerSaveData[arg0].unk_00 & 1) != 0;
 
     if (temp_v1 != 0) {
-        arg1->unk_000 = D_800AC910[arg0].unk_02;
-        arg1->unk_001 = D_800AC910[arg0].unk_04;
-        arg1->unk_002 = D_800AC910[arg0].unk_40.unk_00;
+        arg1->unk_000 = gPlayerSaveData[arg0].unk_02;
+        arg1->unk_001 = gPlayerSaveData[arg0].unk_04;
+        arg1->unk_002 = gPlayerSaveData[arg0].unk_40.unk_00;
 
-        _bcopy(D_800AC910[arg0].unk_40.unk_02, arg1->unk_004, sizeof(arg1->unk_004));
-        _bcopy(&D_800AC910[arg0].unk_50->unk_9AC, (u8*)arg1 + 0xF, sizeof(unk_D_800AC910_050_9AC));
+        _bcopy(gPlayerSaveData[arg0].unk_40.unk_02, arg1->unk_004, sizeof(arg1->unk_004));
+        _bcopy(&gPlayerSaveData[arg0].unk_50->unk_9AC, (u8*)arg1 + 0xF, sizeof(unk_D_800AC910_050_9AC));
     }
     return temp_v1;
 }
@@ -1331,7 +1331,7 @@ void func_80025498(char* arg0, s32 arg1, u8* arg2) {
     s32 h;
 
     while (arg1-- > 0) {
-        temp_v0 = func_80022A60(*arg2++);
+        temp_v0 = GetPokemonFormId(*arg2++);
         if (0x98 != temp_v0) {
             temp_v0++;
             temp_v0--;
@@ -1343,7 +1343,7 @@ void func_80025498(char* arg0, s32 arg1, u8* arg2) {
 }
 
 void func_80025540(s32 arg0) {
-    unk_D_800AC910* ptr = &D_800AC910[arg0];
+    unk_D_800AC910* ptr = &gPlayerSaveData[arg0];
     unk_D_800AC910_050* temp_s0 = ptr->unk_50;
     u8* ptr6 = ptr->unk_06;
     unk_D_800AC910_054_000* ptr541 = &ptr->unk_54->unk_0000[0];
@@ -1370,14 +1370,14 @@ s32 func_8002564C(s32 arg0, s32 arg1) {
     u8* ptr36;
 
     if ((arg1 > 0) && (arg1 < 0x98)) {
-        ptr23 = D_800AC910[arg0].unk_50->unk_023;
-        ptr36 = D_800AC910[arg0].unk_50->unk_036;
+        ptr23 = gPlayerSaveData[arg0].unk_50->unk_023;
+        ptr36 = gPlayerSaveData[arg0].unk_50->unk_036;
 
         temp_t1 = (arg1 - 1) / 8;
         temp_t2 = (arg1 - 1) % 8;
 
         return ((ptr23[temp_t1] >> temp_t2) & 1) + ((ptr36[temp_t1] >> temp_t2) & 1) +
-               ((D_800AC910[arg0].unk_06[temp_t1] >> temp_t2) & 1);
+               ((gPlayerSaveData[arg0].unk_06[temp_t1] >> temp_t2) & 1);
     }
     return 0;
 }
@@ -1390,9 +1390,9 @@ void func_800256F4(s32 arg0, s32 arg1, s32 arg2) {
     u8* temp_v1;
 
     if ((arg1 > 0) && (arg1 < 0x98)) {
-        temp_v0 = D_800AC910[arg0].unk_50->unk_023;
-        temp_a3 = D_800AC910[arg0].unk_50->unk_036;
-        temp_v1 = &D_800AC910[arg0].unk_06;
+        temp_v0 = gPlayerSaveData[arg0].unk_50->unk_023;
+        temp_a3 = gPlayerSaveData[arg0].unk_50->unk_036;
+        temp_v1 = &gPlayerSaveData[arg0].unk_06;
 
         var_a2 = (arg1 - 1) / 8;
         var_a3 = (arg1 - 1) % 8;
@@ -1422,7 +1422,7 @@ s32 func_80025840(s32 arg0) {
     s32 temp_v1 = 0;
 
     for (i = 0; i < 0x97; i++) {
-        temp_v1 += (D_800AC910[arg0].unk_50->unk_036[i / 8] >> (i % 8)) & 1;
+        temp_v1 += (gPlayerSaveData[arg0].unk_50->unk_036[i / 8] >> (i % 8)) & 1;
     }
 
     return temp_v1;
@@ -1433,7 +1433,7 @@ s32 func_80025988(s32 arg0) {
     s32 temp_v1 = 0;
 
     for (i = 0; i < 0x97; i++) {
-        temp_v1 += (D_800AC910[arg0].unk_50->unk_023[i / 8] >> (i % 8)) & 1;
+        temp_v1 += (gPlayerSaveData[arg0].unk_50->unk_023[i / 8] >> (i % 8)) & 1;
     }
 
     return temp_v1;
@@ -1444,7 +1444,7 @@ s32 func_80025AD0(s32 arg0) {
     s32 temp_v1 = 0;
 
     for (i = 0; i < 0x97; i++) {
-        temp_v1 += (D_800AC910[arg0].unk_06[i / 8] >> (i % 8)) & 1;
+        temp_v1 += (gPlayerSaveData[arg0].unk_06[i / 8] >> (i % 8)) & 1;
     }
 
     return temp_v1;

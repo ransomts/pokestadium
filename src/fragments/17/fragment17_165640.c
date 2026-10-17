@@ -234,9 +234,9 @@ void func_86B05E18(void) {
     sp1C = (u32)_70D3A0_ROM_START +
            (((D_86B0FA78->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
 
-    func_80003B30(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
-    func_80003B30(&D_86B10660, sp1C, sp1C + sizeof(unk_70D3A0), 0);
-    func_80003B30(&D_86B10670, sp24, sp24 + sizeof(unk_D_70B10), 0);
+    DmaCopyAsyncRange(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(&D_86B10660, sp1C, sp1C + sizeof(unk_70D3A0), 0);
+    DmaCopyAsyncRange(&D_86B10670, sp24, sp24 + sizeof(unk_D_70B10), 0);
 }
 
 void func_86B05EE8(void) {

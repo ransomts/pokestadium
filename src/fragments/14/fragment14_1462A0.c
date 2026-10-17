@@ -1505,7 +1505,7 @@ void func_868051E0(void) {
     for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
         ptr->unk_002 |= 8;
         if ((ptr->unk_028 == 1) && (ptr->unk_018 > 0)) {
-            func_87802F00(i);
+            IncrementPlayerScore(i);
         }
     }
 }

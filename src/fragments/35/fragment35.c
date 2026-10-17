@@ -77,7 +77,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp2C);
     func_80006C04(1);
     Stage_AdvanceUntil(3, func_820002B4);
-    func_8002D510();
+    MessageBank_Init();
     LoadNameSlots();
     func_80021920();
     func_80028070(&sp2A);

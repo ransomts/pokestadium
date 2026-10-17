@@ -211,7 +211,7 @@ extern s16 D_800783F0;
 extern s16 D_800783F4;
 extern s16 D_800783F8;
 extern u8 D_800783FC;
-extern u8 D_80078400;
+extern u8 gAudioEffectId;
 extern u32 D_80078404;
 extern s32 D_80078408;
 extern u8 D_8007840C;
@@ -354,7 +354,7 @@ s16 D_800783F0 = 0;
 s16 D_800783F4 = 0;
 s16 D_800783F8 = 0;
 u8 D_800783FC = 1;
-u8 D_80078400 = 1;
+u8 gAudioEffectId = 1;
 u32 D_80078404 = 0;
 s32 D_80078408 = 0;
 u8 D_8007840C = 0;
@@ -585,7 +585,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
             if (arg0 < 9) {
                 var_a0 = D_80078410[arg1][arg0];
                 D_800783FC = 1;
-                D_80078400 = 1;
+                gAudioEffectId = 1;
             } else {
                 return;
             }
@@ -593,7 +593,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
             if ((arg0 < 0x21) && (arg0 != 0)) {
                 var_a0 = D_800784EA[(arg0 - 1) / 8][(arg0 - 1) % 8];
                 D_800783FC = 1;
-                D_80078400 = 0;
+                gAudioEffectId = 0;
             } else {
                 return;
             }
@@ -601,7 +601,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
             if (arg0 < 6) {
                 var_a0 = D_80078446[arg1][arg0];
                 D_800783FC = 1;
-                D_80078400 = 0;
+                gAudioEffectId = 0;
             } else {
                 return;
             }
@@ -609,27 +609,27 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
             if (arg1 == 0xE) {
                 var_a0 = 0x49;
                 D_800783FC = 1;
-                D_80078400 = 2;
+                gAudioEffectId = 2;
             } else if (arg1 == 0xF) {
                 var_a0 = 0;
                 D_800783FC = 0;
-                D_80078400 = 0;
+                gAudioEffectId = 0;
                 arg0 = 1;
             } else {
                 if (arg1 == 0x10) {
                     var_a0 = 0x48;
-                    D_80078400 = 1;
+                    gAudioEffectId = 1;
                     arg0 = 1;
                 } else {
                     var_a0 = 0;
-                    D_80078400 = 1;
+                    gAudioEffectId = 1;
                 }
                 D_800783FC = 1;
             }
         }
 
         if ((arg0 == 0) && (sp1B == 0)) {
-            D_80078400 = 2;
+            gAudioEffectId = 2;
         }
 
         if (var_a0 != 0) {
@@ -664,7 +664,7 @@ void AudioFrameUpdate(s32 arg0) {
         D_800783E8 = 0;
         D_800783EC = 0;
         D_800FCCA4 = 0;
-        func_800367A0(0x5A, D_80078400, 0);
+        func_800367A0(0x5A, gAudioEffectId, 0);
 
         if ((gAudioInfoPtr[0] == NULL) || (gAudioInfoPtr[1] == NULL)) {
             return;
@@ -742,7 +742,7 @@ void AudioFrameUpdate(s32 arg0) {
             if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) >= 0x5B) &&
                 ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) >= 0x5B)) {
                 func_800420C0(D_80077E68);
-            } else if (D_80078400 == 0) {
+            } else if (gAudioEffectId == 0) {
                 func_800420C0(D_80077E78);
             } else {
                 func_800420C0(D_80077DF0);
@@ -897,7 +897,7 @@ void AudioFrameUpdate(s32 arg0) {
                     break;
 
                 default:
-                    if (D_80078400 == 0) {
+                    if (gAudioEffectId == 0) {
                         func_800420C0(D_80077E78);
                     } else {
                         func_800420C0(D_80077DF0);
@@ -991,7 +991,7 @@ void AudioFrameUpdate(s32 arg0) {
             }
         }
 
-        if (D_80078400 == 0) {
+        if (gAudioEffectId == 0) {
             func_800420C0(D_80077E78);
         } else {
             func_800420C0(D_80077DF0);
@@ -1231,7 +1231,7 @@ void RemovePlayer(u32 arg0) {
     if (gAudioInfoPtr[0] == 0 || gAudioInfoPtr[1] == 0) {
         return;
     }
-    func_800367A0(0x16, D_80078400, 0);
+    func_800367A0(0x16, gAudioEffectId, 0);
     if (D_800783D8 != 0) {
         func_80041C70(0xC3);
         D_800783D8 = 0;
@@ -1421,7 +1421,7 @@ void func_8003F660(s32 arg0) {
             func_80041C70(0x165);
             gCommandQueueCount = 0;
             D_800FCCBE[temp_s0] = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0x6:
             if (gHPHistory[temp_s0].unk_7C == 1) {
@@ -1435,7 +1435,7 @@ void func_8003F660(s32 arg0) {
             gHPHistory[temp_s0].unk_7C = 0;
             D_800FCCBC[temp_s0] = 0;
             D_800FCCB4 = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0xB:
             func_80041C70(0x17B);
@@ -1510,7 +1510,7 @@ void func_8003F660(s32 arg0) {
                 D_800FCCC4[temp_s0] = 1;
             }
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0x12:
             if (D_800FCCCA[temp_s0] == 0) {
@@ -1520,7 +1520,7 @@ void func_8003F660(s32 arg0) {
             }
             D_800FCCCA[temp_s0] ^= 1;
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0x71:
         case 0x77:
@@ -1642,7 +1642,7 @@ void func_8003F660(s32 arg0) {
             } else {
                 if ((D_800783D4 != 0) || ((D_80078390[temp_s0 ^ 1] == 1) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C < 0x13))) {
                     func_800420C0(D_80077F1C);
-                    func_800367A0(0x16, D_80078400, 0);
+                    func_800367A0(0x16, gAudioEffectId, 0);
                 } else {
                     func_800420C0(D_80077F0C);
                 }
@@ -1701,12 +1701,12 @@ void func_8003F660(s32 arg0) {
         case 0x97:
             func_800420F0(0x18A, D_80078098, &D_800FCCCE[temp_s0]);
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0x98:
             func_800420F0(0x18B, D_800780A0, &D_800FCCD0[temp_s0]);
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0x2B:
             func_80041C70(0x76);
@@ -1719,7 +1719,7 @@ void func_8003F660(s32 arg0) {
         case 0xBB:
             func_80041C70(0x189);
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             D_800783D0 = 1;
             return;
         case 0x68:
@@ -1754,7 +1754,7 @@ void func_8003F660(s32 arg0) {
         case 0xB3:
             func_80041C70(0x188);
             gCommandQueueCount = 0;
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
             return;
         case 0xA8:
             func_80041C70(0x197);
@@ -1791,7 +1791,7 @@ void func_8003F660(s32 arg0) {
         osSetIntMask(mask);
         func_80041C70(0x79);
         D_800FCCB3 = 1;
-        func_800367A0(0x16, D_80078400, 0);
+        func_800367A0(0x16, gAudioEffectId, 0);
     } else if (sp36 != 0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
@@ -1804,14 +1804,14 @@ void func_8003F660(s32 arg0) {
         gHPHistory[temp_s0].unk_7C = 1;
         D_800FCCCC[temp_s0] = 1;
         D_800FCCB4 = 1;
-        func_800367A0(0x16, D_80078400, 0);
+        func_800367A0(0x16, gAudioEffectId, 0);
     } else if (sp37 != 0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
         osSetIntMask(mask);
         D_800783E8 = 1;
         func_80041C70(0x77);
-        func_800367A0(0x16, D_80078400, 0);
+        func_800367A0(0x16, gAudioEffectId, 0);
     } else if (sp3A != 0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
@@ -1826,14 +1826,14 @@ void func_8003F660(s32 arg0) {
                 }
             } else if (D_800783CC < 2) {
                 func_80041C70(0x68);
-                func_800367A0(0x16, D_80078400, 0);
+                func_800367A0(0x16, gAudioEffectId, 0);
             } else {
                 if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (D_80078390[temp_s0 ^ 1] >= 2)) {
                     func_800420C0(D_80077F58);
                 } else {
                     func_800420C0(D_80077EE4);
                 }
-                func_800367A0(0x16, D_80078400, 0);
+                func_800367A0(0x16, gAudioEffectId, 0);
             }
         } else if (D_800FCCA4 < 0xA) {
             if ((gAudioInfoPtr[temp_s0]->unk_0C > 0) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C >= 0xB)) {
@@ -1843,7 +1843,7 @@ void func_8003F660(s32 arg0) {
             }
         } else {
             func_800420C0(D_80077EC0);
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
         }
     } else if (sp39 != 0) {
         mask = osSetIntMask(1);
@@ -1855,24 +1855,24 @@ void func_8003F660(s32 arg0) {
         } else {
             func_800420C0(D_80077ECC);
         }
-        func_800367A0(0x16, D_80078400, 0);
+        func_800367A0(0x16, gAudioEffectId, 0);
     } else if (sp38 != 0) {
         mask = osSetIntMask(1);
         D_800FCCA2 = 0;
         osSetIntMask(mask);
         if (D_800FCCA4 >= 0x29) {
             func_800420C0(D_80077EF8);
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
         } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
             func_800420C0(D_80077ED8);
         } else {
             func_800420C0(D_80077F04);
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
         }
     } else if ((sp32 != 0) && (D_800FCCA4 != 0)) {
         if (D_800FCCA4 >= 0x29) {
             func_800420C0(D_80077E98);
-            func_800367A0(0x16, D_80078400, 0);
+            func_800367A0(0x16, gAudioEffectId, 0);
         } else if (D_800FCCA4 >= 6) {
             if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
                 func_800420C0(D_80077EA4);
@@ -1962,7 +1962,7 @@ void func_80040A70(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
             osSetIntMask(temp_v0);
 
             if (D_800FCCA4 >= 0x29) {
-                func_800367A0(0x16, D_80078400, 0);
+                func_800367A0(0x16, gAudioEffectId, 0);
             }
             break;
 
@@ -2171,7 +2171,7 @@ void func_800414B8(s32 arg0) {
 void func_8004153C(void) {
     if (D_80078E80 == 0) {
         func_8004B1CC(0x3D);
-        func_800367A0(0x16, D_80078400, 0);
+        func_800367A0(0x16, gAudioEffectId, 0);
         if (D_80078404 == 0xC) {
             if (!(D_80078408 & 3) && (*D_80078390 != 0)) {
                 func_80041C70(0xCA);
@@ -2201,7 +2201,7 @@ void func_8004153C(void) {
 }
 
 void func_80041688(void) {
-    func_800367A0(0x16, D_80078400, 0);
+    func_800367A0(0x16, gAudioEffectId, 0);
     func_80041C70(0x1A2);
 }
 
@@ -2227,7 +2227,7 @@ void func_800416BC(void) {
         } else if ((D_800783C8 >= 0x641) && (D_800783C0 == 1)) {
             func_80041C70(0x249);
             if (D_800783C4 == 0) {
-                func_800367A0(0x5B, D_80078400, 0);
+                func_800367A0(0x5B, gAudioEffectId, 0);
                 D_800783C4 = 1;
             }
             D_800783C0 = 2;

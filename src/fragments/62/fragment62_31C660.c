@@ -281,8 +281,8 @@ void func_84332604(unk_D_8140E720* arg0) {
 }
 
 void func_843326EC(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, D_8140E538[func_81400A78(6)]);
-    func_8140BEEC(arg0, D_8140E538[func_81400A78(6)]);
+    func_8140D530(arg0, D_8140E538[RandomMod(6)]);
+    func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
     func_8140BC20(arg0, arg0->unk_CD);
 
     if (arg0->unk_AA == 0) {
@@ -303,7 +303,7 @@ void func_843327B8(unk_D_8140E720* arg0) {
             func_8140D7C8(arg0, arg0->unk_CF, arg0->unk_AA);
             if (func_8140BDAC(arg0) != 0) {
                 func_8140BCA8(arg0, 0xFF / arg0->unk_AA);
-                func_8140BEEC(arg0, D_8140E538[func_81400A78(6)]);
+                func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
             }
             GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;

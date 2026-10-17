@@ -207,7 +207,7 @@ void func_800019C8(void) {
     D_80083CA0.unk_A8A = 0;
     D_80083CA0.unk_9E0 = FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
     Gfx_SetFrameFillColor(1);
-    func_80003B30(&D_80084760, 0xB0000B70, 0xB0000C70, 0);
+    DmaCopyAsyncRange(&D_80084760, 0xB0000B70, 0xB0000C70, 0);
 }
 
 /**

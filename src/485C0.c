@@ -180,7 +180,7 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
     if ((arg0 >= 0xA6U) && (arg0 != 0xA6)) {
         return 0;
     }
-    func_80048464();
+    UpdateSoundDurationScale();
 
     if (arg0 == 0xA6) {
         sound = arg2;
@@ -353,10 +353,10 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
             break;
         case 0x2D:
         case 0x2E:
-            if (D_80078A20[0] == 0) {
-                func_8004E810(arg1, 0);
+            if (gSpecialMoveSoundFlag[0] == 0) {
+                Audio_PlaySequence(arg1, 0);
             }
-            D_80078A20[0] = 0;
+            gSpecialMoveSoundFlag[0] = 0;
             break;
         case 0x9C:
             break;

@@ -508,7 +508,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
         Text_SetLineHeight(0x25);
-        func_8002D600(3, sp2C);
+        MessageBank_SetPointer_1_9(3, sp2C);
         Text_Print(sp34 + 0x10, sp30 + 0xB, GetMessageString(sp38, sizeof(sp38), D_84803790, 7));
         Text_SetupDL();
         arg0->unk_0007 = 2;
@@ -522,7 +522,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
         Text_SetLineHeight(0x28);
-        func_8002D600(3, sp2C);
+        MessageBank_SetPointer_1_9(3, sp2C);
         Text_Print(sp34 + 0x50, sp30 + 0x14, GetMessageString(NULL, 0, D_84803790, 7));
         Text_SetupDL();
     }
@@ -1257,7 +1257,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
 
     Gfx_InitBuffers(0x10000, 0);
     sp24 = Stage_Create(1, 1, 2, 0, 2, 1);
-    func_8002D510();
+    MessageBank_Init();
     Text_Init(0x3C, 0);
     SpriteAssets_Load();
     D_84803780 = ASSET_LOAD2(backgrounds, 1, 1);

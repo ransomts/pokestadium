@@ -152,8 +152,8 @@ void func_84317BDC(void) {
     }
 
     if ((sp18->unk_44.unk_00 == 0x76) || (sp18->unk_44.unk_00 == 0x77)) {
-        func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp1C) {
             case 0:
@@ -177,8 +177,8 @@ void func_84317BDC(void) {
                 break;
         }
     } else {
-        func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp1C) {
             case 0:
@@ -221,8 +221,8 @@ void func_84317EDC(void) {
         sp24 = 4;
     }
 
-    func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+    MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
     switch (sp24) {
         case 0:
@@ -273,8 +273,8 @@ void func_843180AC(void) {
 
         sp24->unk_5A = tmp;
 
-        func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -300,8 +300,8 @@ void func_843180AC(void) {
 
         sp24->unk_5A = 0x76;
 
-        func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -325,8 +325,8 @@ void func_843180AC(void) {
                 break;
         }
     } else {
-        func_8002D5D4(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_8002D5D4(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -698,7 +698,7 @@ void func_843193F4(unk_D_84390010* arg0) {
 void func_84319408(unk_D_84390010* arg0, s32 arg1) {
     D_843901A0->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
     arg0->unk_8C4.unk_00 = 1;
-    func_8002D5D4(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
+    MessageBank_SetPointer_0x14_0x2A(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
     GetMessageString(arg0->unk_8C4.unk_48, 0x40, D_843900B0, arg1);
 }
 

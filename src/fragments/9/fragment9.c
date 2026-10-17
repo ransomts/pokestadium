@@ -512,7 +512,7 @@ void func_86301168(void) {
 
 void func_863011C8(void) {
     D_86301724 = 4;
-    func_87802EB8(1);
+    SetResultFlag(1);
 
     while (D_8780FC96 == 0) {
         func_8630011C();
@@ -591,7 +591,7 @@ void func_86301474(UNUSED s32 arg0, UNUSED s32 arg1) {
     Fragment_Load((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_86301234();
-    func_878029C0();
+    ResultScreen_Init();
     Stage_Set(sp24);
 
     if (func_86300764() != -1) {
@@ -608,7 +608,7 @@ void func_86301474(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    func_87803118();
+    GetCurrentOptionCount();
 }
 
 void func_863015EC(void) {

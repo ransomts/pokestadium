@@ -4,33 +4,33 @@
 
 #define D_800AF740_NUM_FILES 42
 
-static BinArchive* D_800AF740;
-static char** D_800AF744;
+static BinArchive* gMessageBankArchive;
+static char** gMessageBankFiles;
 
-void func_8002D510(void) {
+void MessageBank_Init(void) {
     s32 i;
 
-    D_800AF740 = Asset_Load2(textdata_ROM_START, NULL, 1, 0);
-    D_800AF744 = main_pool_alloc(D_800AF740_NUM_FILES * sizeof(char*), 0);
+    gMessageBankArchive = Asset_Load2(textdata_ROM_START, NULL, 1, 0);
+    gMessageBankFiles = main_pool_alloc(D_800AF740_NUM_FILES * sizeof(char*), 0);
 
     for (i = 0; i < D_800AF740_NUM_FILES; i++) {
-        D_800AF744[i] = NULL;
+        gMessageBankFiles[i] = NULL;
     }
 }
 
 char** GetMessageBank(s32 file_number) {
-    return (char**)BinArchive_GetFile(D_800AF740, file_number);
+    return (char**)BinArchive_GetFile(gMessageBankArchive, file_number);
 }
 
-void func_8002D5D4(u32 arg0, u32 arg1) {
+void MessageBank_SetPointer_0x14_0x2A(u32 arg0, u32 arg1) {
     if ((arg0 >= 0x14) && (arg0 < 0x2A)) {
-        D_800AF744[arg0] = (char*)arg1;
+        gMessageBankFiles[arg0] = (char*)arg1;
     }
 }
 
-void func_8002D600(u32 arg0, u32 arg1) {
+void MessageBank_SetPointer_1_9(u32 arg0, u32 arg1) {
     if ((arg0 != 0) && (arg0 < 0xA)) {
-        D_800AF744[arg0] = (char*)arg1;
+        gMessageBankFiles[arg0] = (char*)arg1;
     }
 }
 
@@ -63,15 +63,15 @@ void DecompressString(char* arg0, u32 arg1, s8* arg2) {
                     temp_v0 -= '0';
                     temp_v0 = (*arg2++ + (temp_v0 * 10)) - '0';
                     if ((temp_v0 > 0) && (temp_v0 < 10)) {
-                        sprintf(sp58, "%d", D_800AF744[temp_v0]);
+                        sprintf(sp58, "%d", gMessageBankFiles[temp_v0]);
                         var_s4 = sp58;
                         var_s2 = 1;
                         continue;
                     }
 
                     if ((temp_v0 >= 0x14) && (temp_v0 < 0x2A)) {
-                        if (D_800AF744[temp_v0] != NULL) {
-                            var_s4 = D_800AF744[temp_v0];
+                        if (gMessageBankFiles[temp_v0] != NULL) {
+                            var_s4 = gMessageBankFiles[temp_v0];
                             var_s2 = 1;
                         }
                         continue;

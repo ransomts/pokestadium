@@ -835,7 +835,7 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
         char sp48[32];
         s32 sp44;
 
-        func_8002D600(6, (char*)(func_88600020(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
+        MessageBank_SetPointer_1_9(6, (char*)(func_88600020(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
         GetMessageString(sp48, sizeof(sp48), D_8861C510, 0x10);
         sp44 = MeasureTextWidth(0, 0, sp48);
         Text_Print(arg1 + 0xE8, arg2 + 0x44, sp48);

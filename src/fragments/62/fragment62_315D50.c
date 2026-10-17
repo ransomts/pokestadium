@@ -4201,9 +4201,9 @@ void func_8432B4F0(void) {
 
 void func_8432B510(unk_D_84390010* arg0, s16 arg1) {
     if (func_84307B60(arg0) != 0) {
-        func_8004E810(0xC8, 2);
+        Audio_PlaySequence(0xC8, 2);
     } else {
-        func_8004E810(arg1, 2);
+        Audio_PlaySequence(arg1, 2);
     }
 }
 
@@ -5060,8 +5060,8 @@ void func_8432CFCC(unk_D_86002F34_00C* arg0) {
     D_8140E6B4 = &D_8140E628.unk_10;
 
     Matrix_Copy(&D_8140E6B4->unk_00, &arg0->unk_60.mtxf);
-    func_81400930(&D_8140E6B4->unk_40, &arg0->unk_60.eye);
-    func_81400930(&D_8140E6B4->unk_4C, &arg0->unk_60.at);
+    Vec3f_Copy(&D_8140E6B4->unk_40, &arg0->unk_60.eye);
+    Vec3f_Copy(&D_8140E6B4->unk_4C, &arg0->unk_60.at);
     func_8432D468(&D_8140E6B4->unk_70, &D_8140E6B4->unk_72);
     func_8432D398(&D_8140E6B4->unk_76, &D_8140E6B4->unk_78);
     func_81400F44(&D_8140E6B4->unk_58, D_8140E6B4->unk_40, D_8140E6B4->unk_4C);

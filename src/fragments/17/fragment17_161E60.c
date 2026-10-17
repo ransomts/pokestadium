@@ -846,7 +846,7 @@ void func_86B026C0(void) {
     D_86B0EBDC->unk_170.unk_000.unk_01 &= ~1;
 
     temp_a1 = _70D3A0_ROM_START + (D_80075BD0[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
-    func_80003B30(D_86B0EBE8, temp_a1, temp_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(D_86B0EBE8, temp_a1, temp_a1 + 0xBC0, 0);
     D_86B0EBDC->unk_308 = 0;
     func_87903600();
 }
@@ -942,7 +942,7 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
-    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
     GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, 0xA5);
     Text_Print((arg0 - (MeasureTextWidth(2, 0, D_86B0F7C8) / 2)) + 0x5A, arg1 + 5, D_86B0F7C8);
     Text_Print(arg0 + 0x28, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA2));
@@ -995,7 +995,7 @@ void func_86B03048(void) {
             if (gBattleContext.unk_0000 == 0x1A) {
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
-                func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
                 GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB70);
             }
 
@@ -1035,7 +1035,7 @@ void func_86B03048(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
                     GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB74);
                     D_86B0EBE0->unk_00++;
                 }
@@ -1055,7 +1055,7 @@ void func_86B03048(void) {
                 // clang-format on
 
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB78));
-                func_8004E810(D_86B0EBDC->unk_2EC, 2);
+                Audio_PlaySequence(D_86B0EBDC->unk_2EC, 2);
                 GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *D_86B0F648);
                 D_86B0EBE0->unk_00++;
             }
@@ -1085,7 +1085,7 @@ void func_86B034AC(void) {
             if (gBattleContext.unk_0000 == 0x1A) {
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
-                func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
                 GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB7C);
             }
             D_86B0EBE0->unk_04 = 0;
@@ -1160,8 +1160,8 @@ void func_86B034AC(void) {
                     for (i = 0; i < 255; i++) { D_86B0F8C8[i] = 0; }
                     // clang-format on
 
-                    func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
-                    func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+                    MessageBank_SetPointer_0x14_0x2A(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
+                    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
                     GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB88);
                     D_86B0EBE0->unk_00++;
                 }
@@ -1382,18 +1382,18 @@ void func_86B04500(void) {
             PlaySoundEffect(2);
             D_86B0EBE0->unk_00 = 6;
             func_86B02F34();
-            func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
-            func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+            MessageBank_SetPointer_0x14_0x2A(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
+            MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB8C);
             GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *D_86B0F648);
-            func_8004E810(D_86B0EBDC->unk_2EC, 2);
+            Audio_PlaySequence(D_86B0EBDC->unk_2EC, 2);
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 0)) {
             PlaySoundEffect(3);
             D_86B0EBE0->unk_00 = 7;
             func_86B02F34();
-            func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
+            MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB94);
             func_80017454(&D_86B0EBDC->unk_008, -1);
         }
@@ -1649,7 +1649,7 @@ s32 func_86B04FB0(void) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    func_8002D510();
+    MessageBank_Init();
 
     D_86B0EBD0 = GetMessageBank(0x1E);
     D_86B0EBD4 = GetMessageBank(0x24);

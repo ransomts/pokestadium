@@ -2281,7 +2281,7 @@ void func_825039AC(void) {
                         D_8780FA40[i] = 0;
                     }
 
-                    func_87802E1C();
+                    ResetSelectionState();
                     D_8250A26C = 5;
                     func_82501B18(D_8250A238, 3);
                     PlaySoundEffect(0xE);

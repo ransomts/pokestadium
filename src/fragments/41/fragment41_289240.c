@@ -25,16 +25,16 @@ s16 func_82F01390(unk_D_82F144D0* arg0, s16 arg1) {
 
     sp34->unk_000 = 0;
     if (arg1 == 0) {
-        var_v0 = func_80022C28(0x20, arg0->unk_000E, 0, 0);
+        var_v0 = CreateGbsBlock(0x20, arg0->unk_000E, 0, 0);
     } else {
-        var_v0 = func_80022C28(0x21, arg0->unk_000E, arg1 - 1, 0);
+        var_v0 = CreateGbsBlock(0x21, arg0->unk_000E, arg1 - 1, 0);
     }
 
     if (var_v0 != NULL) {
         while (func_80022E18(&sp3C, 1, var_v0) == 1) {
             sp34->unk_00C[sp34->unk_000++] = sp3C;
         }
-        func_80022D8C(var_v0);
+        CommitAndFreeGbsBlock(var_v0);
     }
     return sp34->unk_000;
 }
@@ -409,7 +409,7 @@ void func_82F02544(s16 arg0, s16 arg1, s16 arg2) {
     if (arg0 == 0) {
         var_v0 = GetMessageString(NULL, 0, D_82F13B70, 0xA);
     } else {
-        func_8002D600(1, arg0);
+        MessageBank_SetPointer_1_9(1, arg0);
         var_v0 = GetMessageString(sp64, ARRAY_COUNT(sp64), D_82F13B70, 0xB);
     }
 

@@ -95,7 +95,7 @@ Fragment* func_80018F20(MainPoolState* arg0, s32 start, s32 end, PERSSZP* arg3, 
     Fragment* var_v1 = NULL;
 
     if (arg4 >= size) {
-        func_80003B30(arg3, start, end, 0);
+        DmaCopyAsyncRange(arg3, start, end, 0);
 
         if (((u32*)arg3->magic)[0] == 'PERS' && (((u32*)arg3->magic)[1] == '-SZP')) {
             var_v1 = Fragment_LoadPersSzp(arg0, arg3, arg3);
@@ -149,7 +149,7 @@ Fragment* Fragment_LoadFromArchive(MainPoolState* arg0, BinArchive* arg1, BinArc
 Fragment* Fragment_LoadFromArchive2(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
     unk_func_800041C0 sp1C;
 
-    func_800040EC(&sp1C, arg1->unk_04, arg2->offset, arg2->size);
+    LbaRange_Set(&sp1C, arg1->unk_04, arg2->offset, arg2->size);
     return Fragment_LoadCompressed(arg0, &sp1C, arg3, arg4);
 }
 

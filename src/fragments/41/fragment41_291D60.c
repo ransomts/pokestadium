@@ -16,13 +16,13 @@ s32 func_82F09EB0(unk_func_82F00838_sp30* arg0) {
     s32 var_v1;
 
     if (arg0->unk_04 == 0) {
-        sp24 = func_80022C28(0x20, arg0->unk_02, 0, 1);
+        sp24 = CreateGbsBlock(0x20, arg0->unk_02, 0, 1);
     } else {
-        sp24 = func_80022C28(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
+        sp24 = CreateGbsBlock(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
     }
 
     func_80022F24(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
-    func_80022D8C(sp24);
+    CommitAndFreeGbsBlock(sp24);
 
     var_v1 = func_80024270(arg0->unk_02);
     if (var_v1 != 0) {
@@ -665,7 +665,7 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
             Text_BeginRender();
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            func_8002D600(1, sp20.unk_02 + 1);
+            MessageBank_SetPointer_1_9(1, sp20.unk_02 + 1);
             Text_Print(0xB0, 0x90, (u32)(u64) GetMessageString(sp38, sizeof(sp38), D_82F13B70, 0x20));
             Text_EndRender();
             break;

@@ -74,7 +74,7 @@ char* func_82F00090(s32 arg0) {
     return GetMessageString(NULL, 0, D_82F144CC, func_800219FC(arg0));
 }
 
-void func_82F000C8(s16 arg0) {
+void InitProgressBarRect(s16 arg0) {
     unk_D_82F144B0* ptr = &D_82F144B0;
 
     switch (arg0) {
@@ -94,12 +94,12 @@ void func_82F000C8(s16 arg0) {
     }
 }
 
-void func_82F00138(void) {
+void ResetProgressBar(void) {
     D_82F144B0.unk_00 = -1;
-    func_82F000C8(0);
+    InitProgressBarRect(0);
 }
 
-void func_82F00164(void) {
+void UpdateProgressBar(void) {
     unk_D_82F144B0* ptr = &D_82F144B0;
 
     if ((ptr->unk_00 != 0) && (func_82F0FDCC() != 0)) {
@@ -114,7 +114,7 @@ void func_82F00164(void) {
     }
 }
 
-void func_82F00284(void) {
+void InitTextBox(void) {
     D_82F1444C = &D_82F14438;
     D_82F14438.unk_00 = 0;
     D_82F14438.unk_02 = 0;
@@ -126,7 +126,7 @@ void func_82F00284(void) {
     D_82F14438.unk_10 = NULL;
 }
 
-void func_82F002BC(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
+void SetTextBox(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
     s8* ptr;
 
     D_82F1444C->unk_00 = 0;
@@ -153,11 +153,11 @@ void func_82F002BC(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
     D_82F1444C->unk_10 = arg2;
 }
 
-void func_82F0036C(void) {
+void ClearMessageList(void) {
     D_82F14430 = NULL;
 }
 
-void func_82F00378(unk_D_82F13B78* arg0, s32 arg1) {
+void LoadNextMessageEntry(unk_D_82F13B78* arg0, s32 arg1) {
     if (arg0 != D_82F14430) {
         D_82F1442C = 0;
     }
@@ -167,12 +167,12 @@ void func_82F00378(unk_D_82F13B78* arg0, s32 arg1) {
     if (NULL != arg0) {
         unk_D_82F13B78* ptr = &arg0[D_82F1442C];
 
-        func_82F002BC(ptr->unk_00, ptr->unk_02, ptr->unk_04, arg1);
+        SetTextBox(ptr->unk_00, ptr->unk_02, ptr->unk_04, arg1);
         D_82F1442C++;
     }
 }
 
-s32 func_82F003F8(unk_D_82F13B78* arg0) {
+s32 IsMessageEntryEmpty(unk_D_82F13B78* arg0) {
     unk_D_82F13B78* ptr = &arg0[D_82F1442C];
     s32 var_v1 = 0;
 
@@ -182,7 +182,7 @@ s32 func_82F003F8(unk_D_82F13B78* arg0) {
     return var_v1;
 }
 
-void func_82F00424(void) {
+void UpdateTextBox(void) {
     u8 tmp;
 
     if ((D_82F1444C->unk_10 != 0) && (D_82F1444C->unk_00 >= 0)) {
@@ -211,7 +211,7 @@ void func_82F00424(void) {
     }
 }
 
-s32 func_82F00524(void) {
+s32 GetTextBoxState(void) {
     s32 var_v1 = 0;
 
     if (D_82F1444C->unk_10 != NULL) {
@@ -225,7 +225,7 @@ s32 func_82F00524(void) {
     return var_v1;
 }
 
-void func_82F00568(void) {
+void DrawTextBox(void) {
     s32 i;
     s32 temp_t0;
     s8 sp38[0x100];
@@ -267,13 +267,13 @@ void func_82F00568(void) {
     }
 }
 
-void func_82F00704(void) {
+void PollControllerInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
 }
 
-void func_82F00734(void) {
+void UpdateControllerInfo(void) {
     UNUSED s32 pad;
     unk_D_82F14450* ptr;
     unk_D_800AC910_040 sp40;
@@ -285,7 +285,7 @@ void func_82F00734(void) {
     for (i = 0, ptr = &D_82F14450[0]; i < 4; i++, ptr++) {
         func_80025040(i, &sp40);
         func_80023AF8(i);
-        func_80021B5C(ptr->unk_08, sp40.unk_02);
+        DecodeGen1StringToBuffer(ptr->unk_08, sp40.unk_02);
         ptr->unk_06 = sp40.unk_00;
         ptr->unk_01 = func_80024F68(i);
         ptr->unk_00 = func_80024F00(i);
@@ -298,7 +298,7 @@ void func_82F00734(void) {
     main_pool_pop_state('info');
 }
 
-void func_82F00838(void) {
+void SwapPlayerSelections(void) {
     s32 i;
     unk_func_82F00838_sp30_00C sp50;
     unk_func_82F00838_sp30 sp30[2];
@@ -317,9 +317,9 @@ void func_82F00838(void) {
 void func_82F00960(void) {
 }
 
-void func_82F00968(void) {
+void InitFragment41(void) {
     Graph_InitRoots();
-    func_8002D510();
+    MessageBank_Init();
     D_82F13B70 = GetMessageBank(0x21);
     D_82F13B74 = GetMessageBank(6);
     D_82F144C4 = GetMessageBank(0x24);
@@ -327,26 +327,26 @@ void func_82F00968(void) {
     D_82F144CC = GetMessageBank(0x26);
     D_82F13B78[0].unk_04 = GetMessageString(NULL, 0, D_82F13B70, 0);
     D_82F14428 = 0;
-    func_82F0036C();
+    ClearMessageList();
     D_82F14424 = 0;
     D_82F144A8 = 0;
     D_82F144BC = 0;
-    func_82F00138();
-    func_82F00284();
+    ResetProgressBar();
+    InitTextBox();
     func_82F13278();
-    func_82F00734();
+    UpdateControllerInfo();
     func_82F09C6C();
     func_82F04FD4();
     func_82F0C190();
 }
 
-void func_82F00A58(void) {
+void RenderFragment41Frame(void) {
     Stage_BeginDisplayList();
-    func_82F00164();
+    UpdateProgressBar();
     if (func_82F0FDCC() != 0) {
         func_82F13414();
     }
-    func_82F00568();
+    DrawTextBox();
     func_82F09E30();
     func_82F05110();
     func_82F0C320();
@@ -359,13 +359,13 @@ void func_82F00AC8(s32 arg0) {
 
     switch (D_82F14428) {
         case 1:
-            func_82F0036C();
-            func_82F00378(D_82F13B78, 0);
+            ClearMessageList();
+            LoadNextMessageEntry(D_82F13B78, 0);
             break;
 
         case 2:
             func_82F07958();
-            func_82F002BC(0, 0, 0, 0);
+            SetTextBox(0, 0, 0, 0);
             break;
 
         case 4:
@@ -389,7 +389,7 @@ void func_82F00AC8(s32 arg0) {
             break;
 
         case 7:
-            func_82F000C8(0);
+            InitProgressBarRect(0);
             func_80006CB4(0xF);
             func_8004B9C4(0xF);
             break;
@@ -404,8 +404,8 @@ void func_82F00C14(s16 arg0) {
 
 void func_82F00C50(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (func_82F003F8(D_82F13B78) == 0) {
-            func_82F00378(D_82F13B78, 0);
+        if (IsMessageEntryEmpty(D_82F13B78) == 0) {
+            LoadNextMessageEntry(D_82F13B78, 0);
         } else {
             func_82F00AC8(2);
         }
@@ -418,7 +418,7 @@ void func_82F00C50(void) {
 }
 
 void func_82F00CE0(void) {
-    func_82F000C8(1);
+    InitProgressBarRect(1);
     if (func_82F07A74() == 0) {
         if (func_82F07A54(1) == -1) {
             func_82F00AC8(7);
@@ -429,7 +429,7 @@ void func_82F00CE0(void) {
 }
 
 void func_82F00D3C(void) {
-    func_82F000C8(0);
+    InitProgressBarRect(0);
 
     switch (D_82F144AA) {
         case 1:
@@ -460,7 +460,7 @@ void func_82F00D3C(void) {
 
         case 21:
             if (func_82F13964(8) != 0) {
-                func_82F00838();
+                SwapPlayerSelections();
                 func_82F00C14(0xC);
             }
             break;
@@ -496,7 +496,7 @@ void func_82F00E88(void) {
             D_82F144A8 ^= 1;
         } else {
             if (D_82F144A8 == 0) {
-                func_82F002BC(0, 0, NULL, 0);
+                SetTextBox(0, 0, NULL, 0);
                 func_82F00C14(4);
                 return;
             }
@@ -507,7 +507,7 @@ void func_82F00E88(void) {
 }
 
 void func_82F00F3C(void) {
-    func_82F000C8(1);
+    InitProgressBarRect(1);
 
     if (func_82F0C16C() == 2) {
         if (D_82F144B0.unk_00 == -1) {
@@ -527,7 +527,7 @@ void func_82F00F3C(void) {
 }
 
 void func_82F00FD8(void) {
-    func_82F000C8(1);
+    InitProgressBarRect(1);
 
     if (func_82F0C16C() == 2) {
         if (D_82F144B0.unk_00 == -1) {
@@ -604,14 +604,14 @@ void func_82F01180(void) {
 
     do {
         if (D_82F144C0 != 0) {
-            func_82F00704();
+            PollControllerInputs();
         }
-        func_82F00424();
+        UpdateTextBox();
         func_82F09D2C();
         func_82F0504C();
         func_82F0C254();
         func_82F132D0();
-        func_82F00A58();
+        RenderFragment41Frame();
         D_82F14424++;
     } while (func_82F0109C() != 0);
 }
@@ -632,7 +632,7 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
 
     func_8001987C();
     SpriteAssets_Load();
-    func_82F00968();
+    InitFragment41();
     Stage_Set(sp24);
     func_82F01180();
     Stage_AdvanceN(2);

@@ -1220,7 +1220,7 @@ void miniRockStateMachine(MiniActor* rock) {
             break;
 
         case 0x64:
-            if (func_814004D8(&rock->unk_000.unk_01D, 0, 0x40) != 0) {
+            if (ApproachU8(&rock->unk_000.unk_01D, 0, 0x40) != 0) {
                 func_86E01414(rock);
             }
             break;
@@ -1417,7 +1417,7 @@ s32 func_86E01B08(void) {
                     miniMetapodPtr->unk_2AA = 1;
                     miniMetapodPtr->unk_2A6 = 1;
                     var_t3 = 1;
-                    func_87802F00(i);
+                    IncrementPlayerScore(i);
                     break;
                 }
                 miniMetapodPtr++;
@@ -1554,7 +1554,7 @@ void miniMetapodMinigameStateMachine(void) {
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
                 func_86E01E34();
-                func_87802EB8(1);
+                SetResultFlag(1);
                 minigameState++;
             }
             break;
@@ -1730,7 +1730,7 @@ void miniMetapodTutoScreenControls(void) {
             func_86E001A0(0xB, 0);
         } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
             func_86E001A0(0xD, 0);
-            func_87802EB8(2);
+            SetResultFlag(2);
         }
     }
 }
@@ -1890,5 +1890,5 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    return func_87803118();
+    return GetCurrentOptionCount();
 }

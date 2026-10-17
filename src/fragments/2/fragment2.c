@@ -37,7 +37,7 @@ s16 D_8780FA50[9];
 s16 D_8780FA68[4];
 
 void func_87800020(void) {
-    func_8002D510();
+    MessageBank_Init();
     D_87806330 = GetMessageBank(0x1D);
     D_8780FA24 = GetMessageBank(0x14);
 }

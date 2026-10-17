@@ -3244,7 +3244,7 @@ void func_88312108(unk_func_8830867C_04C* arg0) {
 
     if (arg0->unk_88 != NULL) {
         sp1C = 0x4D;
-        func_8002D5D4(0x19, GetMessageString(NULL, 0, D_8831A4D0, arg0->unk_88->unk_00.unk_00 - 1));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetMessageString(NULL, 0, D_8831A4D0, arg0->unk_88->unk_00.unk_00 - 1));
     } else {
         sp1C = 0x4E;
     }
@@ -3824,7 +3824,7 @@ void func_883139E8(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2) {
     char sp18[32];
 
     func_88313950(sp18, arg1, arg2);
-    func_8002D5D4(0x25, sp18);
+    MessageBank_SetPointer_0x14_0x2A(0x25, sp18);
     GetMessageString(arg0->unk_50, 0x80, D_8831A4C4, 0x3A);
 }
 

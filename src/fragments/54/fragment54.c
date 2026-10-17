@@ -257,7 +257,7 @@ s32 func_82B00E84(void) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     func_82B00DD0(&sp1C);
-    func_8002D510();
+    MessageBank_Init();
 
     D_82B01140 = GetMessageBank(0x18);
     D_82B0114C = 0;

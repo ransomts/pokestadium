@@ -6317,7 +6317,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     sp28 = ASSET_LOAD(0, fragment29_misc_3, 0);
 
     sp2C = mem_pool_try_init(0x8000, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_888267A0 = GetMessageBank(8);
     D_888267A4 = GetMessageBank(0x24);
     D_888267A8 = GetMessageBank(0xA);

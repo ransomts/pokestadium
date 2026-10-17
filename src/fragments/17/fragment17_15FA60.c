@@ -542,7 +542,7 @@ s32 func_86B01190(void) {
         D_86B0E5E8 = BinArchive_GetFile(D_86B0E5E4, 0);
     }
 
-    func_8002D510();
+    MessageBank_Init();
     D_86B0E5E0 = GetMessageBank(0x14);
     func_86B0111C();
     func_80007754();

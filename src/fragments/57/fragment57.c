@@ -1728,13 +1728,13 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
 
                 if (arg2->unk_01 < 8) {
                     if (arg2->unk_02 < 4) {
-                        func_8002D600(1, arg2->unk_02);
+                        MessageBank_SetPointer_1_9(1, arg2->unk_02);
                         Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), D_82D0AB9C, 0x2E));
                     } else {
                         Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(NULL, 0, D_82D0AB9C, 0x2F));
                     }
                 } else {
-                    func_8002D600(1, arg2->unk_02);
+                    MessageBank_SetPointer_1_9(1, arg2->unk_02);
                     Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), D_82D0AB9C, 0x30));
                 }
             } else if ((arg2->unk_00 == 3) || (arg2->unk_00 == 6)) {
@@ -1749,7 +1749,7 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
             if (arg2->unk_00 != 7) {
                 Text_SetFont(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                func_8002D600(1, arg2->unk_04);
+                MessageBank_SetPointer_1_9(1, arg2->unk_04);
                 Text_Print(0x12D, temp_s0 + 0x85, GetMessageString(&sp50, 0x100, D_82D0AB9C, 0x31));
             }
 
@@ -2810,7 +2810,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
 
     func_82D06B98();
-    func_8002D510();
+    MessageBank_Init();
     D_82D0AB9C = GetMessageBank(0xE);
     func_8000D1F0(0x28);
     Stage_Set(sp54);

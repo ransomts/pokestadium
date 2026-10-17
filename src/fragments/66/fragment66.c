@@ -92,9 +92,9 @@ s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
     var_s3 = 0;
 
     if (arg1 == 0) {
-        var_v0 = func_80022C28(0x20, arg0, 0, 0);
+        var_v0 = CreateGbsBlock(0x20, arg0, 0, 0);
     } else {
-        var_v0 = func_80022C28(0x21, arg0, arg1 - 1, 0);
+        var_v0 = CreateGbsBlock(0x21, arg0, arg1 - 1, 0);
     }
 
     if (var_v0 != NULL) {
@@ -109,7 +109,7 @@ s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
             }
             var_s3++;
         }
-        func_80022D8C(var_v0);
+        CommitAndFreeGbsBlock(var_v0);
     }
 
     if (sp34 != 0) {
@@ -496,7 +496,7 @@ void func_83200FF8(void) {
 void func_832010BC(void) {
     GraphNode_TriggerAction(D_83202028, 0xA);
     GraphNode_TriggerSound(D_83202028, 7);
-    func_80048060(0, 0x39, 0x19, 0);
+    PlayMoveSoundEffect(0, 0x39, 0x19, 0);
     D_83201F50 = 1;
     func_8000D1F0(0x4A);
     func_83200934(GetMessageString(NULL, 0, D_83202020, 0xF));
@@ -579,7 +579,7 @@ s32 func_83201450(void) {
                     D_83201F54 = 0;
                     func_800479C0(0x85, 0x19, 0);
                     func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xB), 1);
-                    func_8002D5D4(0x1D, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[spAC] - 1));
+                    MessageBank_SetPointer_0x14_0x2A(0x1D, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[spAC] - 1));
                     GetMessageString(sp2C, sizeof(sp2C), D_83202020, 0xC);
                     func_8000D278(0x3C);
                     func_83200934(sp2C);
@@ -648,14 +648,14 @@ void func_832018DC(void) {
     unk_func_80022C28_ret* var_v0;
 
     if (D_832027C8.unk_01 == 0) {
-        var_v0 = func_80022C28(0x20, D_832027C8.unk_00, 0, 2);
+        var_v0 = CreateGbsBlock(0x20, D_832027C8.unk_00, 0, 2);
     } else {
-        var_v0 = func_80022C28(0x21, D_832027C8.unk_00, D_832027C8.unk_01 - 1, 2);
+        var_v0 = CreateGbsBlock(0x21, D_832027C8.unk_00, D_832027C8.unk_01 - 1, 2);
     }
 
     func_80022DF4(var_v0, D_832027C8.unk_02);
     func_80022F24(&D_832027C8.unk_04, 1, var_v0);
-    func_80022D8C(var_v0);
+    CommitAndFreeGbsBlock(var_v0);
     func_832016F4(0);
     func_832016F4(0);
     func_8002447C(D_832027C8.unk_00);
@@ -684,7 +684,7 @@ void func_832018DC(void) {
 void func_83201A18(s32 arg0) {
     s32 i;
 
-    func_8004E810(0x19, 0);
+    Audio_PlaySequence(0x19, 0);
     func_83200934(GetMessageString(NULL, 0, D_83202020, 0xE));
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xE), 1);
 
@@ -767,7 +767,7 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
         Fragment_Load(FRAGMENT_ID(_798CD0), _798CD0_ROM_START, _798CD0_ROM_END);
         ASSET_LOAD(D_1000000, common_menu1_ui, 0);
 
-        func_8002D510();
+        MessageBank_Init();
         D_8320201C = GetMessageBank(0x25);
         D_83202020 = GetMessageBank(0x1C);
         func_8001987C();

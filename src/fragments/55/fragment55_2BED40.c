@@ -504,7 +504,7 @@ void func_83000A30(void) {
             char* temp_v0_21;
 
             Text_SetEnvColor(0, 0, 0, 0xFF);
-            func_8002D5D4(0x26, D_83003C98);
+            MessageBank_SetPointer_0x14_0x2A(0x26, D_83003C98);
             temp_v0_21 = GetMessageString(sp48, sizeof(sp48), D_830039C0, 0);
             Text_Print(0x6A, temp_s1 + 4, temp_v0_21);
             Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
@@ -570,7 +570,7 @@ void func_830015EC(s16 arg0, s16 arg1) {
 
     if (D_83003C9C != NULL) {
         if (D_83003C9C != D_83003CBC) {
-            func_8002D5D4(0x27, D_83003C9C);
+            MessageBank_SetPointer_0x14_0x2A(0x27, D_83003C9C);
             Text_Print(arg0 + 0x10, arg1 + 4, GetMessageString(sp48, sizeof(sp48), D_830039C0, 1));
         } else {
             Text_Print(arg0 + 0x10, arg1 + 4, D_83003C9C);
@@ -812,7 +812,7 @@ s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     func_83000058();
     SpriteAssets_Load();
-    func_8002D510();
+    MessageBank_Init();
     D_830039C0 = GetMessageBank(0x20);
     D_830039C4 = GetMessageBank(0x24);
     func_80007754();

@@ -48,7 +48,7 @@ char* DecodeGen1String(char* arg0, char* arg1) {
     return sp34;
 }
 
-void func_80021B5C(char* arg0, char* arg1) {
+void DecodeGen1StringToBuffer(char* arg0, char* arg1) {
     DecodeGen1String(arg0, arg1);
 }
 
@@ -71,11 +71,11 @@ char* EncodeGen1String(char* arg0, char* arg1) {
     return sp1C;
 }
 
-char* func_80021C20(char* arg0, char* arg1) {
+char* EncodeGen1StringToBuffer(char* arg0, char* arg1) {
     return EncodeGen1String(arg0, arg1);
 }
 
-char* func_80021C40(char* arg0, char* arg1) {
+char* DecodeGen1StringFromRawBuffer(char* arg0, char* arg1) {
     char sp1C[11];
 
     _bcopy(arg1, sp1C, 0xA);
@@ -85,13 +85,13 @@ char* func_80021C40(char* arg0, char* arg1) {
     return DecodeGen1String(arg0, sp1C);
 }
 
-char* func_80021C80(char* arg0, char* arg1) {
+char* StrCopy(char* arg0, char* arg1) {
     HAL_Strcpy(arg0, arg1);
     return arg0;
 }
 
 char* GetSpeciesName(char* arg0, s32 arg1) {
-    func_80021C80(arg0, (char*)*(u32*)D_8006FEE8[arg1]);
+    StrCopy(arg0, (char*)*(u32*)D_8006FEE8[arg1]);
     return arg0;
 }
 
@@ -118,7 +118,7 @@ char* GetItemName(s32 arg0, char* arg1) {
 }
 
 void func_80021D9C(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
-    arg0->unk_00.unk_00 = func_80022A60(arg1->unk_00);
+    arg0->unk_00.unk_00 = GetPokemonFormId(arg1->unk_00);
     arg0->unk_00.unk_01 = arg1->unk_00;
     arg0->unk_02 = ReadBE16(arg1->unk_01);
 
@@ -152,8 +152,8 @@ void func_80021E90(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg
 }
 
 void func_80021F04(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
-    if (func_80022A38(arg0->unk_00.unk_00) & 0xFF) {
-        arg1->unk_00 = func_80022A38(arg0->unk_00.unk_00);
+    if (GetPokemonBaseStat(arg0->unk_00.unk_00) & 0xFF) {
+        arg1->unk_00 = GetPokemonBaseStat(arg0->unk_00.unk_00);
     } else {
         arg1->unk_00 = arg0->unk_00.unk_01;
     }

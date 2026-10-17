@@ -1478,7 +1478,7 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
         }
     }
 
-    func_80003B30((u32)(D_8122B2F4 + 0xC5C0), (u32)D_102BA0, ((u32)fragment2_ROM_START + 1) & ~1, 0);
+    DmaCopyAsyncRange((u32)(D_8122B2F4 + 0xC5C0), (u32)D_102BA0, ((u32)fragment2_ROM_START + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)D_8122B2F4 + 0xC5C0), D_8122B2F4);
     D_8122C748 = D_8122B2F4;
     D_8122B2F4 += 0xC5C0;
@@ -1493,7 +1493,7 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
     }
 
     func_812070A0();
-    func_80003B30((u32)(D_8122B2F4 + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
+    DmaCopyAsyncRange((u32)(D_8122B2F4 + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)D_8122B2F4 + 0x80000), D_8122B2F4);
     GbAudio_SetNoiseTable((unk_D_8122B2F8*)D_8122B2F4);
     GbAudio_SetMode(0);
@@ -1524,16 +1524,16 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
 
     switch (D_8122C4E2) {
         case 2:
-            func_80003B30((u32)D_8122B2C8[0], (u32)D_FDE40, ((u32)D_102BA0_END + 1) & ~1, 0);
+            DmaCopyAsyncRange((u32)D_8122B2C8[0], (u32)D_FDE40, ((u32)D_102BA0_END + 1) & ~1, 0);
             Yay0_Decompress(D_8122B2C8[0], D_8122B2C8[2]);
             /* fallthrough */
         case 1:
-            func_80003B30((u32)D_8122B2C8[0], (u32)D_F5450, ((u32)D_FDE40 + 1) & ~1, 0);
+            DmaCopyAsyncRange((u32)D_8122B2C8[0], (u32)D_F5450, ((u32)D_FDE40 + 1) & ~1, 0);
             Yay0_Decompress(D_8122B2C8[0], D_8122B2C8[1]);
             break;
         case 0:
         default:
-            func_80003B30((u32)D_8122B2C8[0], (u32)D_F4920, ((u32)D_F5450 + 1) & ~1, 0);
+            DmaCopyAsyncRange((u32)D_8122B2C8[0], (u32)D_F4920, ((u32)D_F5450 + 1) & ~1, 0);
             Yay0_Decompress(D_8122B2C8[0], D_8122B2C8[1]);
             break;
     }
@@ -1593,13 +1593,13 @@ void func_81203C58(unk_D_8122B2C0* arg0) {
         do {
             bank = *list & 0xFF;
             count = *list / 256;
-            func_80003B30((u32) arg0->unk_53BC + 0xEC000, rom, list[1] + rom, 0);
+            DmaCopyAsyncRange((u32) arg0->unk_53BC + 0xEC000, rom, list[1] + rom, 0);
             rom += list[1];
             list += 2;
             Yay0_Decompress((void*) ((u32) arg0->unk_53BC + 0xEC000), (void*) ((u32) arg0->unk_53BC + (bank << 14)));
             for (i = 0; i < count; i++) {
                 if (i + 1 >= arg0->unk_5DC6) {
-                    func_80003B30((u32) arg0->unk_53BC + 0xF0000, rom, *list + rom, 0);
+                    DmaCopyAsyncRange((u32) arg0->unk_53BC + 0xF0000, rom, *list + rom, 0);
                     Yay0_Decompress((void*) ((u32) arg0->unk_53BC + 0xF0000), (void*) ((u32) arg0->unk_53BC + 0xEC000));
                     src = (u8*) ((u32) arg0->unk_53BC + 0xEC000);
                     dst = (u8*) ((u32) arg0->unk_53BC + (bank << 14));

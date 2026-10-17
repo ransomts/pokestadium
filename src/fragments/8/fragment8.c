@@ -543,7 +543,7 @@ s32 func_862011E8(void) {
 
             if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
-                func_87802EB8(2);
+                SetResultFlag(2);
                 return -1;
             }
         }
@@ -598,7 +598,7 @@ void func_862013C0(void) {
             }
 
             func_8004B154();
-            func_87802EB8(2);
+            SetResultFlag(2);
         }
 
         func_86200620();
@@ -1026,7 +1026,7 @@ void func_862023F8(void) {
                 }
 
                 if (D_86204704 >= 0x1E0) {
-                    func_87802EB8(2);
+                    SetResultFlag(2);
                     spA4 = 0;
                 }
             }
@@ -1141,7 +1141,7 @@ void func_862023F8(void) {
         temp_s1 = &D_86203E50[i];
 
         if ((temp_s1->unk_19E > 0) && (temp_s1->unk_1B2 == 0)) {
-            func_87802F00(i);
+            IncrementPlayerScore(i);
             D_86204708++;
             temp_s1->unk_1C8 = 1;
             if (temp_s1->unk_002 == 0) {
@@ -1201,7 +1201,7 @@ void func_86202D5C(void) {
         func_86200EC4(D_86203E48);
     }
 
-    func_87802EB8(1);
+    SetResultFlag(1);
     D_86203E48 = 3;
 
     for (i = 0; i < 120; i++) {
@@ -1398,7 +1398,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     Fragment_Load((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_862030D0();
-    func_878029C0();
+    ResultScreen_Init();
     Stage_Set(sp24);
     func_86203380();
 
@@ -1425,5 +1425,5 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    func_87803118();
+    GetCurrentOptionCount();
 }

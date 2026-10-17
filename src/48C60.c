@@ -6,13 +6,13 @@
 #include "libnumus/player.h"
 
 // .data
-u8 D_80078A10[3] = { 0xFF, 0xFF, 0xFF };
-u32 D_80078A14 = 0;
-s32 D_80078A18 = 0;
-u8 D_80078A1C[4] = { 0 };
-u8 D_80078A20[16] = { 0 };
+u8 gMoveSoundCache[3] = { 0xFF, 0xFF, 0xFF };
+u32 gMoveSoundCachePos = 0;
+s32 gCurrentSoundHandle = 0;
+u8 gSoundDurationScale[4] = { 0 };
+u8 gSpecialMoveSoundFlag[16] = { 0 };
 
-s32 func_80048060(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     u32 i;
     u32 temp_v0;
     u32 slot;
@@ -25,8 +25,8 @@ s32 func_80048060(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     u8 flag;
 
     flag = 0;
-    D_80078A20[0] = 0;
-    MusSetDurationScale(D_80078A18, 0xA);
+    gSpecialMoveSoundFlag[0] = 0;
+    MusSetDurationScale(gCurrentSoundHandle, 0xA);
 
     if (arg2 == 0xC8) {
         flag = 1;
@@ -44,15 +44,15 @@ s32 func_80048060(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     }
 
     for (i = 0; i < 3; i++) {
-        if (arg2 == D_80078A10[i]) {
+        if (arg2 == gMoveSoundCache[i]) {
             slot = i;
             goto found;
         }
     }
 
-    slot = D_80078A14 % 3;
-    D_80078A14++;
-    D_80078A10[slot] = arg2;
+    slot = gMoveSoundCachePos % 3;
+    gMoveSoundCachePos++;
+    gMoveSoundCache[slot] = arg2;
     if (flag) {
         arg2 = 0x97;
     }
@@ -105,7 +105,7 @@ found:
     var_a0 = D_800FC6C0[slot]->entries;
     entry = &(var_a0 + arg1)->unk0[size];
     arg2 = entry[0];
-    D_80078A1C[0] = entry[1];
+    gSoundDurationScale[0] = entry[1];
 
 block_38:
     seq = D_800FC6B0[slot];
@@ -115,20 +115,20 @@ block_38:
     }
     if (flag) {
         if ((arg1 == 0x2D) || (arg1 == 0x2E)) {
-            D_80078A20[0] = 1;
+            gSpecialMoveSoundFlag[0] = 1;
         }
         if (arg2 != 0) {
-            func_8004E810(arg2, 0xA);
+            Audio_PlaySequence(arg2, 0xA);
         }
         return 0;
     }
     temp_v0 = MusStartSoundEffect(D_800FC6AC, seq, arg2, 0x80, 0x80, -1);
-    D_80078A18 = temp_v0;
+    gCurrentSoundHandle = temp_v0;
     return temp_v0;
 }
 
-void func_80048464(void) {
-  if (D_80078A1C[0] != 0) {
-      MusSetDurationScale(D_80078A18, (s32)D_80078A1C[0]);
+void UpdateSoundDurationScale(void) {
+  if (gSoundDurationScale[0] != 0) {
+      MusSetDurationScale(gCurrentSoundHandle, (s32)gSoundDurationScale[0]);
   }
 }

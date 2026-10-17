@@ -7,19 +7,19 @@
 #include "src/373A0.h"
 #include "src/50860.h"
 
-static s32 D_80078EE0[4] = {
+static s32 gPlayerVolumeDelta[4] = {
     0xFFFFFF9C,
     0xFFFFFFD8,
     0x00000028,
     0x00000064,
 };
-static s32 D_80078EF0[4] = {
+static s32 gPlayerPitchDelta[4] = {
     0xFFFFFFFD,
     0xFFFFFFFE,
     0xFFFFFFFE,
     0xFFFFFFFE,
 };
-static s32 D_80078F00[8] = {
+static s32 gPlayerSoundHandles[8] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
@@ -95,40 +95,40 @@ s32 func_8004C17C(s32 arg0, s32 arg1, s32 arg2) {
         case 0x30003:
             sp38 = 0x50;
             if (arg2 >= 0) {
-                if (MusHandleAsk(D_80078F00[arg1]) == 0) {
-                    var_fv0 += D_80078EF0[arg1];
-                    var_v0 += D_80078EE0[arg1];
+                if (MusHandleAsk(gPlayerSoundHandles[arg1]) == 0) {
+                    var_fv0 += gPlayerPitchDelta[arg1];
+                    var_v0 += gPlayerVolumeDelta[arg1];
                     break;
                 }
 
                 if ((arg2 >= 0) && (arg2 < 0x14)) {
-                    var_fv0 += D_80078EF0[arg1];
+                    var_fv0 += gPlayerPitchDelta[arg1];
                     var_fv0 += 0.5f * arg2;
 
-                    MusSetFrequencyOffset(D_80078F00[arg1], var_fv0);
+                    MusSetFrequencyOffset(gPlayerSoundHandles[arg1], var_fv0);
                     return 0;
                 }
 
                 if (arg2 >= 0x14) {
-                    var_fv0 += D_80078EF0[arg1];
+                    var_fv0 += gPlayerPitchDelta[arg1];
                     var_fv0 += (0, 0.5f) * 22.5;
 
-                    MusSetFrequencyOffset(D_80078F00[arg1], var_fv0);
+                    MusSetFrequencyOffset(gPlayerSoundHandles[arg1], var_fv0);
                     return 0;
                 }
-            } else if (MusHandleAsk(D_80078F00[arg1]) == 0) {
+            } else if (MusHandleAsk(gPlayerSoundHandles[arg1]) == 0) {
                 return 0;
             } else {
-                MusSetDurationScale(D_80078F00[arg1], 0xA);
+                MusSetDurationScale(gPlayerSoundHandles[arg1], 0xA);
                 return 0;
             }
 
         case 0x30004:
-            MusSetDurationScale(D_80078F00[0], 0x14);
-            MusSetDurationScale(D_80078F00[1], 0x14);
-            MusSetDurationScale(D_80078F00[2], 0x14);
-            MusSetDurationScale(D_80078F00[3], 0x14);
-            var_v0 += D_80078EE0[arg1];
+            MusSetDurationScale(gPlayerSoundHandles[0], 0x14);
+            MusSetDurationScale(gPlayerSoundHandles[1], 0x14);
+            MusSetDurationScale(gPlayerSoundHandles[2], 0x14);
+            MusSetDurationScale(gPlayerSoundHandles[3], 0x14);
+            var_v0 += gPlayerVolumeDelta[arg1];
             break;
 
         case 0x30001:
@@ -142,7 +142,7 @@ s32 func_8004C17C(s32 arg0, s32 arg1, s32 arg2) {
     sp44 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, arg0 & 0xFFFF, sp38, var_v0, -1);
     MusSetFrequencyOffset(sp44, var_fv0);
     if (arg0 == 0x30003) {
-        D_80078F00[arg1] = sp44;
+        gPlayerSoundHandles[arg1] = sp44;
     }
     return sp44;
 }
@@ -195,7 +195,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
                 var_a3 = 0x80;
                 arg1 = 1;
             }
-            MusSetDurationScale(D_80078F00[arg1 + 3], 0x14);
+            MusSetDurationScale(gPlayerSoundHandles[arg1 + 3], 0x14);
             var_v1 = func_8004C454(arg1, arg2);
             var_fv0 = (4 - arg1) * 0.5f;
             break;
@@ -235,7 +235,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
     MusSetFrequencyOffset(sp3C, var_fv0);
 
     if (arg0 == 0x40004) {
-        D_80078F00[arg1 + 3] = sp3C;
+        gPlayerSoundHandles[arg1 + 3] = sp3C;
     }
 
     return sp3C;
@@ -245,7 +245,7 @@ void func_8004C6CC(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
 s32 func_8004C6DC(s32 arg0, s32 arg1, s32 arg2) {
-    static s32 D_80078F20 = 0x00000000;
+    static s32 gAmbientSoundHandle = 0x00000000;
 
     s32 sp34;
     UNUSED s32 pad;
@@ -277,7 +277,7 @@ s32 func_8004C6DC(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x5000B:
-            MusSetDurationScale(D_80078F20, 1);
+            MusSetDurationScale(gAmbientSoundHandle, 1);
             var_v0 = 0x80;
             var_a3 = 0x80;
             var_fv0 = 0.0f;
@@ -293,7 +293,7 @@ s32 func_8004C6DC(s32 arg0, s32 arg1, s32 arg2) {
 
     sp34 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, arg0 & 0xFFFF, var_a3, var_v0, -1);
     MusSetFrequencyOffset(sp34, var_fv0);
-    D_80078F20 = sp34;
+    gAmbientSoundHandle = sp34;
     return sp34;
 }
 
@@ -301,20 +301,20 @@ void func_8004C8A4(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
 s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
-    static s32 D_80078F24[4] = {
+    static s32 gMenuVolumeDelta[4] = {
         0xFFFFFF88,
         0xFFFFFFC4,
         0x0000003C,
         0x00000078,
     };
-    static f32 D_80078F34[4] = {
+    static f32 gMenuPitchDelta[4] = {
         -1,
         -0.5,
         0,
         0.5,
     };
-    static s32 D_80078F44 = 0x00000000;
-    static s32 D_80078F48 = 0x00000000;
+    static s32 gMenuLoopHandle = 0x00000000;
+    static s32 gMenuPrevHandle = 0x00000000;
 
     s32 sp34;
     UNUSED s32 pad;
@@ -333,8 +333,8 @@ s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 
     switch (arg0) {
         case 0x60003:
-            sp20 += D_80078F34[arg1];
-            var_v1 = D_80078F24[arg1] + 0x7F;
+            sp20 += gMenuPitchDelta[arg1];
+            var_v1 = gMenuVolumeDelta[arg1] + 0x7F;
         case 0x60001:
         case 0x60002:
         case 0x60006:
@@ -345,23 +345,23 @@ s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
             break;
 
         case 0x60004:
-            var_v1 = D_80078F24[arg1] + 0x7F;
+            var_v1 = gMenuVolumeDelta[arg1] + 0x7F;
             sp28 = 0x70;
             break;
 
         case 0x60005:
-            if (MusHandleAsk(D_80078F48) != 0) {
+            if (MusHandleAsk(gMenuPrevHandle) != 0) {
                 return 0;
             }
             var_v1 = 0x7F;
-            if (MusHandleAsk(D_80078F44) != 0) {
+            if (MusHandleAsk(gMenuLoopHandle) != 0) {
                 return 0;
             }
             break;
 
         case 0x60007:
             var_v1 = 0x7F;
-            if (MusHandleAsk(D_80078F48) != 0) {
+            if (MusHandleAsk(gMenuPrevHandle) != 0) {
                 arg0 = 0x60008;
             }
             break;
@@ -372,11 +372,11 @@ s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 
     sp34 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, arg0 & 0xFFFF, sp28, var_v1, -1);
     if (arg0 == 0x60005) {
-        if (MusHandleAsk(D_80078F44) == 0) {
-            D_80078F44 = sp34;
+        if (MusHandleAsk(gMenuLoopHandle) == 0) {
+            gMenuLoopHandle = sp34;
         }
     }
-    D_80078F48 = sp34;
+    gMenuPrevHandle = sp34;
     MusSetFrequencyOffset(sp34, sp20);
     return sp34;
 }
@@ -384,7 +384,7 @@ s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 void func_8004CA6C(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-static u8 D_80078F4C = 0;
+static u8 gBattleCryCycle = 0;
 
 s32 func_8004CA7C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     s32 sp44;
@@ -429,7 +429,7 @@ s32 func_8004CA7C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
             break;
 
         case 0x70001:
-            switch (D_80078F4C) {
+            switch (gBattleCryCycle) {
                 case 0:
                     var_a2 = 1;
                     break;
@@ -444,15 +444,15 @@ s32 func_8004CA7C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
             }
             var_a3 = 0x70;
 
-            D_80078F4C++;
-            if (D_80078F4C >= 3) {
-                D_80078F4C = 0;
+            gBattleCryCycle++;
+            if (gBattleCryCycle >= 3) {
+                gBattleCryCycle = 0;
             }
             var_v0 = 0x80;
             break;
 
         case 0x70002:
-            D_80078F4C = 0;
+            gBattleCryCycle = 0;
             var_a3 = 0x70;
             var_v0 = 0x80;
             break;
@@ -469,30 +469,30 @@ s32 func_8004CA7C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 void func_8004CC10(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-static s32 D_80078F54[4] = {
+static s32 gCryVolumeDelta[4] = {
     0xFFFFFF88,
     0xFFFFFFC4,
     0x0000003C,
     0x00000078,
 };
 
-static f32 D_80078F64[4] = {
+static f32 gCryPitchDelta[4] = {
     0.0f,
     0.1000000015f,
     -0.1000000015f,
     0.200000003f,
 };
 
-static s32 D_80078F74[4] = {
+static s32 gCryHandles[4] = {
     0x00000000,
     0x00000000,
     0x00000000,
     0x00000000,
 };
 
-static s32 D_80078F84 = 0x00000000;
+static s32 gCrySpecialHandle1 = 0x00000000;
 
-static s32 D_80078F88 = 0x00000000;
+static s32 gCrySpecialHandle2 = 0x00000000;
 
 static s32 D_80078F8C[4] = {
     0x00000000,
@@ -501,24 +501,24 @@ static s32 D_80078F8C[4] = {
     0x00000000,
 };
 
-static s32 D_80078F9C = 0x00003039;
-static u32 D_80078FA0 = 0x00001A85;
+static s32 gRngSeedA = 0x00003039;
+static u32 gRngSeedB = 0x00001A85;
 
 void func_8004CC20(s32 arg0, u32 arg1) {
-    D_80078F9C = arg0;
-    D_80078FA0 = arg1;
+    gRngSeedA = arg0;
+    gRngSeedB = arg1;
 }
 
 u32 func_8004CC34(void) {
-    D_80078F9C = (D_80078F9C * 0x41C64E6D) + 0x3039;
+    gRngSeedA = (gRngSeedA * 0x41C64E6D) + 0x3039;
 
-    if (D_80078FA0 & 1) {
-        D_80078FA0 ^= 0x11020;
+    if (gRngSeedB & 1) {
+        gRngSeedB ^= 0x11020;
     }
 
-    D_80078FA0 >>= 1;
+    gRngSeedB >>= 1;
 
-    return D_80078F9C ^ D_80078FA0;
+    return gRngSeedA ^ gRngSeedB;
 }
 
 f32 func_8004CC94(void) {
@@ -526,7 +526,7 @@ f32 func_8004CC94(void) {
 }
 
 s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
-    static u32 D_80078FA4 = 0;
+    static u32 gCryModCounter = 0;
 
     s32 sp44;
     UNUSED s32 pad;
@@ -549,9 +549,9 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
 
     switch (arg0) {
         case 0x80001:
-            sp3C += D_80078F54[arg1];
+            sp3C += gCryVolumeDelta[arg1];
             sp38 = 0x40;
-            var_fv1 += D_80078F64[arg1];
+            var_fv1 += gCryPitchDelta[arg1];
             switch (arg2) {
                 case 0:
                     break;
@@ -561,22 +561,22 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
 
                 case 2:
                     var_fv1 += 0.5;
-                    MusSetFrequencyOffset(D_80078F74[arg1], var_fv1);
+                    MusSetFrequencyOffset(gCryHandles[arg1], var_fv1);
                     return 0;
 
                 case 3:
                     var_fv1 += 1.0;
-                    MusSetFrequencyOffset(D_80078F74[arg1], var_fv1);
+                    MusSetFrequencyOffset(gCryHandles[arg1], var_fv1);
                     return 0;
 
                 case 4:
                     var_fv1 += 2.0;
-                    MusSetFrequencyOffset(D_80078F74[arg1], var_fv1);
-                    MusSetVolumeScale(D_80078F74[arg1], 0x58);
+                    MusSetFrequencyOffset(gCryHandles[arg1], var_fv1);
+                    MusSetVolumeScale(gCryHandles[arg1], 0x58);
                     return 0;
 
                 case 5:
-                    MusSetDurationScale(D_80078F74[arg1], 3);
+                    MusSetDurationScale(gCryHandles[arg1], 3);
 
                 default:
                     return 0;
@@ -588,8 +588,8 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
                 return 0;
             }
 
-            sp3C += D_80078F54[arg1];
-            var_fv1 += D_80078F64[arg1];
+            sp3C += gCryVolumeDelta[arg1];
+            var_fv1 += gCryPitchDelta[arg1];
 
             switch (arg2) {
                 case 1:
@@ -619,7 +619,7 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80003:
-            if (MusHandleAsk(D_80078F84) != 0) {
+            if (MusHandleAsk(gCrySpecialHandle1) != 0) {
                 return 0;
             }
             func_8004FC60(1, 1);
@@ -630,11 +630,11 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80005:
-            var_fv1 += (f32)D_80078FA4 * 2.0;
-            if (D_80078FA4 < 2) {
-                D_80078FA4 += 1;
-            } else if (D_80078FA4 >= 2) {
-                D_80078FA4 = 0;
+            var_fv1 += (f32)gCryModCounter * 2.0;
+            if (gCryModCounter < 2) {
+                gCryModCounter += 1;
+            } else if (gCryModCounter >= 2) {
+                gCryModCounter = 0;
             }
             break;
 
@@ -654,7 +654,7 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
 
     switch (arg0) {
         case 0x80001:
-            D_80078F74[arg1] = sp44;
+            gCryHandles[arg1] = sp44;
             break;
 
         case 0x80002:
@@ -662,10 +662,10 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80003:
-            D_80078F84 = sp44;
+            gCrySpecialHandle1 = sp44;
 
         case 0x80004:
-            D_80078F88 = sp44;
+            gCrySpecialHandle2 = sp44;
             break;
     }
 
@@ -675,11 +675,11 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
 
 void func_8004D16C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     if (arg0 == 0x80001) {
-        MusSetDurationScale(D_80078F74[arg1], 0xA);
+        MusSetDurationScale(gCryHandles[arg1], 0xA);
     }
 }
 
-s32 D_80078FA8 = 0;
+s32 gBattleMusicHandle = 0;
 
 s32 func_8004D1B0(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     static s32 D_80078FAC = 0;
@@ -759,7 +759,7 @@ s32 func_8004D1B0(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
         case 0x9000F:
         case 0x90010:
         case 0x90011:
-            D_80078FA8 = sp3C;
+            gBattleMusicHandle = sp3C;
             break;
     }
 
@@ -1134,7 +1134,7 @@ void func_8004DC8C(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_8004DDA4(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     UNUSED s32 pad[4];
     s32 var_v0;
     s32 sp2C;

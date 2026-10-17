@@ -339,7 +339,7 @@ void func_8430245C(unk_D_84390010* arg0) {
 void func_8430255C(u8 arg0, u32 arg1) {
     u32 temp_a1 = (u32)_70D3A0_ROM_START + ((u32)&D_72780[arg0 - 1] & 0xFFFFFF);
 
-    func_80003B30(arg1, temp_a1, temp_a1 + 0x20, 0);
+    DmaCopyAsyncRange(arg1, temp_a1, temp_a1 + 0x20, 0);
 }
 
 void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2) {
@@ -347,9 +347,9 @@ void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2)
     u32 temp_a1;
 
     temp_a1 = (u32)_70D3A0_ROM_START + ((u32)&D_72780[arg0] & 0xFFFFFF);
-    func_80003B30(arg1, temp_a1, temp_a1 + 0x20, 0);
+    DmaCopyAsyncRange(arg1, temp_a1, temp_a1 + 0x20, 0);
     temp_a1 = (u32)_70D3A0_ROM_START + ((u32)&D_73A60[arg0] & 0xFFFFFF);
-    func_80003B30(arg2, temp_a1, temp_a1 + 0x20, 0);
+    DmaCopyAsyncRange(arg2, temp_a1, temp_a1 + 0x20, 0);
 }
 
 void func_84302658(unk_D_84390010* arg0, s32 arg1) {
@@ -375,31 +375,31 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     if ((arg0->unk_000.unk_01A == 0x19) && (ptr->unk_52 & 0x80)) {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)D_80075BD0[152] & 0xFFFFFF);
     }
-    func_80003B30(D_84384570[sp68], var_a1, var_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(D_84384570[sp68], var_a1, var_a1 + 0xBC0, 0);
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-    func_80003B30(D_84384580[sp68], var_a1, var_a1 + 0x20, 0);
+    DmaCopyAsyncRange(D_84384580[sp68], var_a1, var_a1 + 0x20, 0);
 
     if (sp68 == 1) {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        func_80003B30(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
+        DmaCopyAsyncRange(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
 
         ptr2 = D_84384578[sp68];
         if (ptr2->unk_10 != 0xFF) {
             sp6E = ptr2->unk_10;
 
             var_a1 = ((u32)_70D3A0_ROM_START) + (((u32)(D_6E910 + ((ptr2->unk_10 - (tmp = 2)) * 0x20))) & 0xFFFFFF);
-            func_80003B30(ptr2, var_a1, var_a1 + 0x20, 0);
+            DmaCopyAsyncRange(ptr2, var_a1, var_a1 + 0x20, 0);
 
             D_84384578[sp68]->unk_10 = sp6E;
         }
     } else {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        func_80003B30(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
+        DmaCopyAsyncRange(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
     }
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70B10 + (sp66 * 0x20)) & 0xFFFFFF);
-    func_80003B30(&D_84390048, var_a1, var_a1 + 0x20, 0);
+    DmaCopyAsyncRange(&D_84390048, var_a1, var_a1 + 0x20, 0);
 
     func_8430C1E4(&arg0->unk_448.unk_24.unk_00, &D_84390048.unk_00);
     func_8430C1E4(&arg0->unk_448.unk_24.unk_0C, &D_84390048.unk_0C);
@@ -412,10 +412,10 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     arg0->unk_448.unk_24.unk_0C.x *= arg0->unk_4B0;
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70110 + (sp66 << 4)) & 0xFFFFFF);
-    func_80003B30(&D_84390028[sp68], var_a1, var_a1 + 0x10, 0);
+    DmaCopyAsyncRange(&D_84390028[sp68], var_a1, var_a1 + 0x10, 0);
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_71E10 + (sp66 * 0x10)) & 0xFFFFFF);
-    func_80003B30(D_84384588[sp68], var_a1, var_a1 + 0x10, 0);
+    DmaCopyAsyncRange(D_84384588[sp68], var_a1, var_a1 + 0x10, 0);
 
     func_843025BC(sp66, &arg0->unk_94C, &arg0->unk_9AC);
 
@@ -466,10 +466,10 @@ void func_84302A78(unk_D_84390010* arg0) {
 
         if (func_84307B60(arg0) != 0) {
             tmp = func_84307F00(arg0);
-            func_80048060(tmp, sp24->unk_5A, 0xC8, 0);
+            PlayMoveSoundEffect(tmp, sp24->unk_5A, 0xC8, 0);
         } else {
             tmp = func_84307F00(arg0);
-            func_80048060(tmp, sp24->unk_5A, sp2A + 1, 0);
+            PlayMoveSoundEffect(tmp, sp24->unk_5A, sp2A + 1, 0);
         }
 
         if ((sp20->unk_34 & 0x4000) && ((sp2A == 0x32) || (sp2A == 0x31))) {
@@ -773,11 +773,11 @@ void func_843037CC(unk_D_84390010* arg0) {
         }
 
         if ((D_843C4DEC >= 0xB) && (func_84307B60(D_84390010[sp40]) != 0)) {
-            func_8004E810(0xC8, 6);
+            Audio_PlaySequence(0xC8, 6);
         }
 
         if ((D_843C4DEC == 0xA) && (func_84307B60(D_84390010[sp40]) != 0)) {
-            func_8004E810(0xC8, 5);
+            Audio_PlaySequence(0xC8, 5);
         }
 
         if ((D_843C4DA4 == 0) && (sp28->unk_5A == 0x49)) {
@@ -916,14 +916,14 @@ void func_84303ECC(unk_D_84390010* arg0) {
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1A);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1A);
             } else {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1A);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1A);
             }
         } else if (func_84307B60(arg0) != 0) {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xA);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xA);
         } else {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xA);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xA);
         }
     }
 }
@@ -956,23 +956,23 @@ void func_84304210(unk_D_84390010* arg0) {
         D_84390068[D_843900A0].unk_04 = D_84385380;
     } else if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
         if (arg0->unk_000.unk_01A >= 0x98) {
-            func_8004E810(sp24->unk_BC, 3);
+            Audio_PlaySequence(sp24->unk_BC, 3);
         } else if (func_84307B60(arg0) != 0) {
-            func_8004E810(0xC8, 3);
+            Audio_PlaySequence(0xC8, 3);
         } else {
-            func_8004E810(arg0->unk_000.unk_01A, 3);
+            Audio_PlaySequence(arg0->unk_000.unk_01A, 3);
         }
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
         } else if (func_84307B60(arg0) != 0) {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
         D_84390068[D_843900A0].unk_04 = D_84385380;
     }
@@ -991,23 +991,23 @@ void func_843043FC(unk_D_84390010* arg0) {
     if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
         sp24 = &arg0->unk_654;
         if (arg0->unk_000.unk_01A >= 0x98) {
-            func_8004E810(sp24->unk_BC, 4);
+            Audio_PlaySequence(sp24->unk_BC, 4);
         } else if (func_84307B60(arg0) != 0) {
-            func_8004E810(0xC8, 4);
+            Audio_PlaySequence(0xC8, 4);
         } else {
-            func_8004E810(arg0->unk_000.unk_01A, 4);
+            Audio_PlaySequence(arg0->unk_000.unk_01A, 4);
         }
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
-                func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
+                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
         } else if (func_84307B60(arg0) != 0) {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
-            func_80048060(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
+            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
 
         D_84390068[D_843900A0].unk_04 = D_84385380;
@@ -2109,7 +2109,7 @@ void func_843071B8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2) {
 void func_84307220(unk_D_800AE540_1194* arg0) {
     s32 i;
 
-    func_8002D510();
+    MessageBank_Init();
 
     D_843900B0 = GetMessageBank(0x1E);
     D_843900B4 = GetMessageBank(0x24);

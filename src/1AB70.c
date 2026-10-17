@@ -446,7 +446,7 @@ void func_8001B088(u16* arg0, s32 arg1) {
     if ((arg1 > 0) && (arg1 < 0x99)) {
         temp_v1 = gAssetManager.unk_A04.unk_10;
         temp_a1 = temp_v1->unk_04 + temp_v1[arg1].raw;
-        func_80003B30(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
+        DmaCopyAsyncRange(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
     }
 }
 

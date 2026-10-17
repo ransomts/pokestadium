@@ -421,7 +421,7 @@ s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    func_8002D510();
+    MessageBank_Init();
     D_82C01660 = GetMessageBank(0x15);
     func_80028BE4();
     func_80028070(&D_82C01666);

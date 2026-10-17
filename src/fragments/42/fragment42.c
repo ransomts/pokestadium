@@ -1256,7 +1256,7 @@ void func_83302FD8(s32 arg0, s32 arg1) {
 
     func_8001987C();
     D_8330339C = ASSET_LOAD2(stadium_models, 1, 1);
-    func_8002D510();
+    MessageBank_Init();
     func_83402340();
     func_833017BC(arg0, arg1);
     Stage_Set(sp24);

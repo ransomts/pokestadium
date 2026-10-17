@@ -233,7 +233,7 @@ void Battle_LoadTeamFromSaveSlot(s32 arg0, s32 arg1, s32 arg2) {
     func_800251B0(arg2, &sp34);
 
     temp_s4 = RegisterPlayer(arg1, 0, &sp34, GetNameSlot(1));
-    temp_v0 = func_80022C28(0x20, arg2, 0, 0);
+    temp_v0 = CreateGbsBlock(0x20, arg2, 0, 0);
 
     if (temp_v0 != NULL) {
         for (i = 0; i < 6; i++) {
@@ -244,7 +244,7 @@ void Battle_LoadTeamFromSaveSlot(s32 arg0, s32 arg1, s32 arg2) {
             Battle_AddPartyMon(temp_s4, &sp48);
         }
 
-        func_80022D8C(temp_v0);
+        CommitAndFreeGbsBlock(temp_v0);
     }
 
     Battle_RegisterPlayerEntry(arg0, temp_s4);
@@ -536,7 +536,7 @@ void Battle_PackStateForSave(void) {
     sp20.unk_0E = gBattleContext.unk_1194[0].unk_08[0]->unk_018;
 
     _bcopy(gBattleContext.unk_11E4[0], &sp20.unk_05, 8);
-    func_80021C20(&sp20.unk_10, &gBattleContext.unk_1194[0].unk_08[0]->unk_008);
+    EncodeGen1StringToBuffer(&sp20.unk_10, &gBattleContext.unk_1194[0].unk_08[0]->unk_008);
     func_800281D4(&sp20, sp1C->unk_028, sp1C->unk_002);
     GbsCommitBankBlock(0x15, 0);
 }
@@ -560,7 +560,7 @@ s32 Battle_LoadStateFromSave(void) {
         gBattleContext.unk_11F0 = sp250.unk_0D;
         tmp = sp250.unk_0E;
 
-        func_80021B5C(sp44, sp250.unk_10);
+        DecodeGen1StringToBuffer(sp44, sp250.unk_10);
         Battle_RegisterPlayerEntry(0, RegisterPlayer(0, tmp, sp44, sp44));
         Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, tmp, "COM", GetNameSlot(3)));
 

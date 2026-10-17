@@ -57,7 +57,7 @@ void func_8432D6B0(unk_D_8140E724* arg0) {
 
 void func_8432D6C8(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 arg4) {
     while (arg0 != NULL) {
-        func_81400930(&arg0->unk_68, &arg1);
+        Vec3f_Copy(&arg0->unk_68, &arg1);
         func_8140094C(&arg0->unk_94, &arg2);
         arg0->unk_08 = arg3;
         arg0->unk_0C = arg4;
@@ -84,10 +84,10 @@ void func_8432D76C(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_D_8140E7
 
     func_8140BED8(arg0, arg4);
 
-    func_81400930(&arg0->unk_38, &arg1->unk_38);
-    func_81400930(&arg0->unk_50, &arg1->unk_50);
-    func_81400930(&arg0->unk_68, &arg1->unk_68);
-    func_81400930(&arg0->unk_7C, &arg1->unk_7C);
+    Vec3f_Copy(&arg0->unk_38, &arg1->unk_38);
+    Vec3f_Copy(&arg0->unk_50, &arg1->unk_50);
+    Vec3f_Copy(&arg0->unk_68, &arg1->unk_68);
+    Vec3f_Copy(&arg0->unk_7C, &arg1->unk_7C);
     func_8140094C(&arg0->unk_94, &arg1->unk_94);
     func_8140094C(&arg0->unk_9A, &arg1->unk_9A);
 
@@ -910,7 +910,7 @@ unk_D_8140E720* func_8432FD70(Vec3f arg0, u8 arg1) {
     unk_D_8140E720* sp1C = func_81407B3C();
 
     if ((u32)sp1C != -1) {
-        func_81400930(&sp1C->unk_68, &arg0);
+        Vec3f_Copy(&sp1C->unk_68, &arg0);
         func_8433010C(sp1C, arg1);
         sp1C->unk_10 = D_843902EC;
         sp1C->unk_14 = NULL;

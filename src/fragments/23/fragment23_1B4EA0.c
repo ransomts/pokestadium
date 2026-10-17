@@ -35,10 +35,10 @@ static char** D_88224FC8;
 static char** D_88224FCC;
 
 void func_8820C930(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3) {
-    unk_func_80022C28_ret* sp1C = func_80022C28(arg0, arg1, arg2, 0);
+    unk_func_80022C28_ret* sp1C = CreateGbsBlock(arg0, arg1, arg2, 0);
 
     arg3->unk_08 = func_80022E18(arg3->unk_00, arg3->unk_04, sp1C);
-    func_80022D8C(sp1C);
+    CommitAndFreeGbsBlock(sp1C);
 }
 
 void func_8820C97C(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3, s32 arg4, char* arg5, s32 arg6) {
@@ -48,15 +48,15 @@ void func_8820C97C(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3, s3
         if (1) {}
         sp2C = func_80022CC0(arg0, arg1, arg2, arg4, arg5, arg6);
     } else {
-        sp2C = func_80022C28(arg0, arg1, arg2, 1);
+        sp2C = CreateGbsBlock(arg0, arg1, arg2, 1);
     }
 
     func_80022F24(arg3->unk_00, arg3->unk_08, sp2C);
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
-        func_80022D24(sp2C);
+        InvalidateAndFreeGbsBlock(sp2C);
     } else {
-        func_80022D8C(sp2C);
+        CommitAndFreeGbsBlock(sp2C);
     }
 }
 
@@ -2227,7 +2227,7 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     spE8 = mem_pool_alloc(argB, sizeof(spE8_func_882121E0));
     temp_s1 = mem_pool_alloc(argB, sizeof(char) * 40);
 
-    func_8002D5D4(0x15, func_800251B0(temp_s0, spDC));
+    MessageBank_SetPointer_0x14_0x2A(0x15, func_800251B0(temp_s0, spDC));
 
     spE8->unk_00[1] = GetMessageString(temp_s1, sizeof(char) * 40, D_88224FC4, 0xF);
     spE8->unk_00[0] = GetMessageString(NULL, 0, D_88224FC4, 0xE);
@@ -2599,7 +2599,7 @@ s32 func_882137B4(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 arg3) {
         return 0;
     }
 
-    temp_v0 = func_80022C28(arg1, arg2, arg3, 0);
+    temp_v0 = CreateGbsBlock(arg1, arg2, arg3, 0);
     if (temp_v0 == NULL) {
         return 0;
     }
@@ -2620,7 +2620,7 @@ s32 func_882137B4(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
     }
 
-    func_80022D8C(temp_v0);
+    CommitAndFreeGbsBlock(temp_v0);
     return sp40;
 }
 
@@ -3011,7 +3011,7 @@ void func_8821483C(UNUSED unk_D_800AC870* arg0) {
     sp2C = main_pool_alloc(0x10000, 0);
     sp34 = mem_pool_try_init(0x10000, 0);
 
-    func_8002D510();
+    MessageBank_Init();
 
     D_88224FC0 = GetMessageBank(0x2A);
     D_88224FC4 = GetMessageBank(3);

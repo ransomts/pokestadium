@@ -211,7 +211,7 @@ extern s16 D_800783F0;
 extern s16 D_800783F4;
 extern s16 D_800783F8;
 extern u8 D_800783FC;
-extern u8 D_80078400;
+extern u8 gAudioEffectId;
 extern u32 D_80078404;
 extern s32 D_80078408;
 extern u8 D_8007840C;

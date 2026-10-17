@@ -63,7 +63,7 @@ s32 func_8004B1CC(s32 arg0) {
         D_80078E70 = 0;
         MusSetDurationScale(D_80078ECC, 1);
         D_80078ED0 = 0;
-        D_80078ECC = func_8004DDA4(0x01000003, 0, 0);
+        D_80078ECC = PlayBackgroundMusic(0x01000003, 0, 0);
         arg0 = 0x28;
         D_80078ED0 = 2;
     } else if (arg0 == 0x28) {
@@ -77,7 +77,7 @@ s32 func_8004B1CC(s32 arg0) {
         D_80078E70 = 0;
         MusSetDurationScale(D_80078ECC, 1);
         D_80078ED0 = 0;
-        D_80078ECC = func_8004DDA4(0x01000003, 0, 0);
+        D_80078ECC = PlayBackgroundMusic(0x01000003, 0, 0);
         MusSetVolumeScale(D_80078ECC, 0);
         D_80078ED0 = 1;
     } else {
@@ -496,7 +496,7 @@ void func_8004B9C4(s32 arg0) {
     MusSetDurationScale(D_80078ECC, arg0);
     D_80078ED0 = 0;
     D_8007840C = 0;
-    MusSetDurationScale(D_80078FA8, arg0);
+    MusSetDurationScale(gBattleMusicHandle, arg0);
     Audio_SetPaused(0);
     AudioFrameUpdate(0);
 

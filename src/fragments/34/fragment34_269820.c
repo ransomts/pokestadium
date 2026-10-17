@@ -117,7 +117,7 @@ unk_D_8140E720* func_81407BE4(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E
     if ((u32)sp1C != -1) {
         sp1C->unk_28 = arg0;
 
-        func_81400930(&sp1C->unk_68, &arg1);
+        Vec3f_Copy(&sp1C->unk_68, &arg1);
         func_8140094C(&sp1C->unk_94, &arg2);
 
         sp1C->unk_08 = arg3;
@@ -715,31 +715,31 @@ void func_814091B4(unk_D_8140E720* arg0, Vec3f arg1) {
 }
 
 void func_81409248(unk_D_8140E720* arg0, s32 arg1) {
-    arg0->unk_38.x = func_81400B00(arg1) * D_8140E628.unk_00.y;
+    arg0->unk_38.x = RandomRangeSigned(arg1) * D_8140E628.unk_00.y;
 }
 
 void func_81409288(unk_D_8140E720* arg0, s32 arg1) {
-    arg0->unk_38.y = func_81400B00(arg1) * D_8140E628.unk_00.y;
+    arg0->unk_38.y = RandomRangeSigned(arg1) * D_8140E628.unk_00.y;
 }
 
 void func_814092C8(unk_D_8140E720* arg0, s32 arg1) {
-    arg0->unk_38.z = func_81400B00(arg1) * D_8140E628.unk_00.y;
+    arg0->unk_38.z = RandomRangeSigned(arg1) * D_8140E628.unk_00.y;
 }
 
 void func_81409308(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.x = (func_81400B00(arg1) * D_8140E628.unk_00.y) + arg2;
+    arg0->unk_38.x = (RandomRangeSigned(arg1) * D_8140E628.unk_00.y) + arg2;
 }
 
 void func_8140935C(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.y = (func_81400B00(arg1) * D_8140E628.unk_00.y) + arg2;
+    arg0->unk_38.y = (RandomRangeSigned(arg1) * D_8140E628.unk_00.y) + arg2;
 }
 
 void func_814093B0(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.z = (func_81400B00(arg1) * D_8140E628.unk_00.y) + arg2;
+    arg0->unk_38.z = (RandomRangeSigned(arg1) * D_8140E628.unk_00.y) + arg2;
 }
 
 void func_81409404(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    f32 temp_fv0 = func_81400B00(arg1);
+    f32 temp_fv0 = RandomRangeSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
         arg0->unk_38.x = (temp_fv0 + arg2) * D_8140E628.unk_00.y;
@@ -749,7 +749,7 @@ void func_81409404(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_8140948C(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    f32 temp_fv0 = func_81400B00(arg1);
+    f32 temp_fv0 = RandomRangeSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
         arg0->unk_38.y = (temp_fv0 + arg2) * D_8140E628.unk_00.y;
@@ -759,7 +759,7 @@ void func_8140948C(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_81409514(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    f32 temp_fv0 = func_81400B00(arg1);
+    f32 temp_fv0 = RandomRangeSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
         arg0->unk_38.z = (temp_fv0 + arg2) * D_8140E628.unk_00.y;
@@ -771,9 +771,9 @@ void func_81409514(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
 void func_8140959C(unk_D_8140E720* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp18;
 
-    sp18.x = func_81400B00(arg1);
-    sp18.y = func_81400B00(arg2);
-    sp18.z = func_81400B00(arg3);
+    sp18.x = RandomRangeSigned(arg1);
+    sp18.y = RandomRangeSigned(arg2);
+    sp18.z = RandomRangeSigned(arg3);
 
     arg0->unk_38.x = sp18.x * D_8140E628.unk_00.y;
     arg0->unk_38.y = sp18.y * D_8140E628.unk_00.y;
@@ -783,9 +783,9 @@ void func_8140959C(unk_D_8140E720* arg0, s32 arg1, s32 arg2, s32 arg3) {
 void func_81409634(unk_D_8140E720* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp1C;
 
-    sp1C.x = func_81400A78(arg1);
-    sp1C.y = func_81400A78(arg2);
-    sp1C.z = func_81400A78(arg3);
+    sp1C.x = RandomMod(arg1);
+    sp1C.y = RandomMod(arg2);
+    sp1C.z = RandomMod(arg3);
 
     arg0->unk_38.x = sp1C.x * D_8140E628.unk_00.y;
     arg0->unk_38.y = sp1C.y * D_8140E628.unk_00.y;
@@ -796,8 +796,8 @@ void func_81409708(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     Vec3f sp2C;
     Vec3f sp20;
 
-    sp2C.x = func_81400B00(arg1);
-    sp2C.y = func_81400B00(arg2);
+    sp2C.x = RandomRangeSigned(arg1);
+    sp2C.y = RandomRangeSigned(arg2);
     sp2C.z = 0.0f;
 
     func_81400D00(&sp20, sp2C, arg0->unk_94);
@@ -810,9 +810,9 @@ void func_81409708(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
 void func_814097D8(unk_D_8140E720* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp24;
 
-    sp24.x = func_81400B00(arg1);
-    sp24.y = func_81400B00(arg2);
-    sp24.z = func_81400B00(arg3);
+    sp24.x = RandomRangeSigned(arg1);
+    sp24.y = RandomRangeSigned(arg2);
+    sp24.z = RandomRangeSigned(arg3);
 
     arg0->unk_38.x += sp24.x * D_8140E628.unk_00.y;
     arg0->unk_38.y += sp24.y * D_8140E628.unk_00.y;
@@ -884,15 +884,15 @@ void func_81409AB8(unk_D_8140E720* arg0, f32 arg1) {
 }
 
 s32 func_81409AD8(unk_D_8140E720* arg0, f32 arg1) {
-    return func_81400760(&arg0->unk_50.x, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.x);
+    return ApproachF32(&arg0->unk_50.x, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.x);
 }
 
 s32 func_81409B18(unk_D_8140E720* arg0, f32 arg1) {
-    return func_81400760(&arg0->unk_50.y, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.y);
+    return ApproachF32(&arg0->unk_50.y, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.y);
 }
 
 s32 func_81409B58(unk_D_8140E720* arg0, f32 arg1) {
-    return func_81400760(&arg0->unk_50.z, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.z);
+    return ApproachF32(&arg0->unk_50.z, arg1 * D_8140E628.unk_00.y, arg0->unk_5C.z);
 }
 
 void func_81409B98(unk_D_8140E720* arg0) {
@@ -1066,7 +1066,7 @@ void func_8140A0AC(unk_D_8140E720* arg0, f32 arg1) {
 }
 
 s32 func_8140A0C4(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_5C.y, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_5C.y, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 f32 func_8140A108(f32 arg0) {
@@ -1083,15 +1083,15 @@ void func_8140A11C(unk_D_8140E720* arg0, Vec3f arg1) {
     sp24 = arg1.z - arg0->unk_38.z;
 
     if (!(temp_fa0 <= 0.01f) || !(temp_fa0 >= -0.01f)) {
-        func_81400760(&arg0->unk_38.x, arg1.x, func_8140A108(temp_fa0));
+        ApproachF32(&arg0->unk_38.x, arg1.x, func_8140A108(temp_fa0));
     }
 
     if (!(sp20 <= 0.01f) || !(sp20 >= -0.01f)) {
-        func_81400760(&arg0->unk_38.y, arg1.y, func_8140A108(sp20));
+        ApproachF32(&arg0->unk_38.y, arg1.y, func_8140A108(sp20));
     }
 
     if (!(sp24 <= 0.01f) || !(sp24 >= -0.01f)) {
-        func_81400760(&arg0->unk_38.z, arg1.z, func_8140A108(sp24));
+        ApproachF32(&arg0->unk_38.z, arg1.z, func_8140A108(sp24));
     }
 }
 
@@ -1329,17 +1329,17 @@ s32 func_8140A844(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_8140A878(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
-    func_8140A578(arg0, func_81400B00(arg1));
-    func_8140A594(arg0, func_81400B00(arg2));
+    func_8140A578(arg0, RandomRangeSigned(arg1));
+    func_8140A594(arg0, RandomRangeSigned(arg2));
 }
 
 void func_8140A8C8(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     func_8140A578(arg0, func_81400B28(arg1, 0x8000));
-    func_8140A594(arg0, func_81400B00(arg2));
+    func_8140A594(arg0, RandomRangeSigned(arg2));
 }
 
 void func_8140A91C(unk_D_8140E720* arg0, s32 arg1) {
-    func_8140A594(arg0, func_81400B00(arg1));
+    func_8140A594(arg0, RandomRangeSigned(arg1));
 }
 
 void func_8140A950(unk_D_8140E720* arg0, s32 arg1) {
@@ -1347,7 +1347,7 @@ void func_8140A950(unk_D_8140E720* arg0, s32 arg1) {
 }
 
 void func_8140A988(unk_D_8140E720* arg0) {
-    func_8140A578(arg0, func_81400B00(0x10000));
+    func_8140A578(arg0, RandomRangeSigned(0x10000));
     func_8140A594(arg0, 0x4000);
 }
 
@@ -1394,15 +1394,15 @@ void func_8140ADA4(unk_D_8140E720* arg0, f32 arg1) {
 }
 
 s32 func_8140ADBC(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 s32 func_8140AE00(unk_D_8140E720* arg0, f32 arg1) {
-    return func_81400760(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg0->unk_78);
+    return ApproachF32(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg0->unk_78);
 }
 
 s32 func_8140AE40(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_78, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_78, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 void func_8140AE84(unk_D_8140E720* arg0, Vec3f arg1) {
@@ -1520,7 +1520,7 @@ void func_8140B14C(unk_D_8140E720* arg0, f32 arg1) {
 }
 
 s32 func_8140B180(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_7C.y, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_7C.y, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 void func_8140B1C4(unk_D_8140E720* arg0) {
@@ -1656,7 +1656,7 @@ void func_8140B974(unk_D_8140E720* arg0, f32 arg1) {
 }
 
 s32 func_8140B98C(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_1C, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_1C, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 s32 func_8140B9D0(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
@@ -1669,7 +1669,7 @@ s32 func_8140B9D0(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
 }
 
 s32 func_8140BA1C(unk_D_8140E720* arg0) {
-    return func_81400760(&arg0->unk_1C, arg0->unk_20, arg0->unk_24);
+    return ApproachF32(&arg0->unk_1C, arg0->unk_20, arg0->unk_24);
 }
 
 s32 func_8140BA48(unk_D_8140E720* arg0) {
@@ -1682,7 +1682,7 @@ s32 func_8140BA48(unk_D_8140E720* arg0) {
 }
 
 s32 func_8140BA84(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
-    return func_81400760(&arg0->unk_20, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
+    return ApproachF32(&arg0->unk_20, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
 void func_8140BAC8(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
@@ -1692,15 +1692,15 @@ void func_8140BAC8(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
 }
 
 s32 func_8140BAE4(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->prim_r, arg1, arg2);
+    return ApproachU8(&arg0->prim_r, arg1, arg2);
 }
 
 s32 func_8140BB14(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->prim_g, arg1, arg2);
+    return ApproachU8(&arg0->prim_g, arg1, arg2);
 }
 
 s32 func_8140BB44(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->prim_b, arg1, arg2);
+    return ApproachU8(&arg0->prim_b, arg1, arg2);
 }
 
 void func_8140BB74(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
@@ -1710,15 +1710,15 @@ void func_8140BB74(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
 }
 
 s32 func_8140BB90(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->env_r, arg1, arg2);
+    return ApproachU8(&arg0->env_r, arg1, arg2);
 }
 
 s32 func_8140BBC0(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->env_b, arg1, arg2);
+    return ApproachU8(&arg0->env_b, arg1, arg2);
 }
 
 s32 func_8140BBF0(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->env_g, arg1, arg2);
+    return ApproachU8(&arg0->env_g, arg1, arg2);
 }
 
 void func_8140BC20(unk_D_8140E720* arg0, u8 arg1) {
@@ -1726,7 +1726,7 @@ void func_8140BC20(unk_D_8140E720* arg0, u8 arg1) {
 }
 
 s32 func_8140BC2C(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {
-    return func_814004D8(&arg0->prim_a, arg1, arg2);
+    return ApproachU8(&arg0->prim_a, arg1, arg2);
 }
 
 s32 func_8140BC5C(unk_D_8140E720* arg0, u8 arg1, u8 arg2) {

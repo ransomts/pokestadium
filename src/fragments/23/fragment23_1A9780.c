@@ -51,14 +51,14 @@ void func_88201210(unk_func_88205880_00D0* arg0) {
 }
 
 void func_88201294(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
-    unk_func_80022C28_ret* sp1C = func_80022C28(arg0, arg1, arg2, 1);
+    unk_func_80022C28_ret* sp1C = CreateGbsBlock(arg0, arg1, arg2, 1);
 
     func_80022F24(arg3, arg3->unk_690, sp1C);
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
-        func_80022D24(sp1C);
+        InvalidateAndFreeGbsBlock(sp1C);
     } else {
-        func_80022D8C(sp1C);
+        CommitAndFreeGbsBlock(sp1C);
     }
 }
 
@@ -66,12 +66,12 @@ s32 func_8820130C(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s3
     s32 sp1C;
     unk_func_80022C28_ret* sp18;
 
-    sp18 = func_80022C28(arg0, arg1, arg2, 0);
+    sp18 = CreateGbsBlock(arg0, arg1, arg2, 0);
     if (sp18 == 0) {
         return 0;
     }
     sp1C = func_80022E18(&arg3->unk_000, arg4, sp18);
-    func_80022D8C(sp18);
+    CommitAndFreeGbsBlock(sp18);
     return sp1C;
 }
 
@@ -1194,7 +1194,7 @@ void func_88204DC0(unk_func_88203ED8_064* arg0, unk_func_88203ED8* arg1) {
 u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     u32 sp90 = 0;
-    unk_func_80022C28_ret* temp_v0 = func_80022C28(arg1, arg2, arg3, 0);
+    unk_func_80022C28_ret* temp_v0 = CreateGbsBlock(arg1, arg2, arg3, 0);
     unk_func_80026268_arg0* var_s1;
     unk_func_80026268_arg0 sp34;
 
@@ -1212,7 +1212,7 @@ u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
     }
 
-    func_80022D8C(temp_v0);
+    CommitAndFreeGbsBlock(temp_v0);
     return sp90;
 }
 
@@ -1654,7 +1654,7 @@ void func_88205F1C(unk_D_800AC870* arg0) {
     SpriteAssets_Load();
     sp64 = main_pool_alloc(0x1000, 0);
     sp6C = mem_pool_try_init(0x10000, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_88224FA0 = GetMessageBank(0x2A);
     D_88224FA4 = GetMessageBank(4);
     sp5C = GetMessageBank(7);

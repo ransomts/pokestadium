@@ -4,17 +4,17 @@
 #include "src/4B940.h"
 #include "src/3D140.h"
 
-extern u8 D_80078400;
+extern u8 gAudioEffectId;
 
-typedef struct unk_D_80079070 {
+typedef struct AudioChannelConfig {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 unk_04;
-} unk_D_80079070; // size = 0x5
+} AudioChannelConfig; // size = 0x5
 
-static unk_D_80079070 D_80079070[151] = {
+static AudioChannelConfig gAudioChannelConfigTable[151] = {
     {
         0x01,
         0x01,
@@ -1074,9 +1074,9 @@ static unk_D_80079070 D_80079070[151] = {
     },
 };
 
-u8 D_80079364 = 0;
+u8 gAudioSeqLoadPending = 0;
 
-void func_8004E810(u32 arg0, u32 arg1) {
+void Audio_PlaySequence(u32 arg0, u32 arg1) {
     UNUSED s32 pad[2];
     u32 sp24;
     u32 var_a3;
@@ -1090,10 +1090,10 @@ void func_8004E810(u32 arg0, u32 arg1) {
         return;
     }
 
-    if (D_80079364 == 1) {
-        func_8004ADB0(D_800FC704->seqArray[0].offset, D_800FC708, 0x4BC);
-        alSeqFileNew(D_800FC708, D_800FC704->seqArray[0].offset);
-        D_80079364 = 0;
+    if (gAudioSeqLoadPending == 1) {
+        func_8004ADB0(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 0x4BC);
+        alSeqFileNew(gAudioSeqBuffer, gAudioSeqBank->seqArray[0].offset);
+        gAudioSeqLoadPending = 0;
     }
 
     switch (arg1) {
@@ -1125,7 +1125,7 @@ void func_8004E810(u32 arg0, u32 arg1) {
                 arg0 = 0x9D;
                 var_a3 = 0x3C;
             } else {
-                var_a3 = D_80079070[arg0 - 1].unk_03;
+                var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x30;
             break;
@@ -1135,10 +1135,10 @@ void func_8004E810(u32 arg0, u32 arg1) {
                 arg0 = 0x9D;
                 var_a3 = 0x3C;
             } else {
-                var_a3 = D_80079070[arg0 - 1].unk_03;
+                var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x60;
-            func_800367A0(0x15, D_80078400, 0);
+            func_800367A0(0x15, gAudioEffectId, 0);
             break;
 
         case 4:
@@ -1146,10 +1146,10 @@ void func_8004E810(u32 arg0, u32 arg1) {
                 arg0 = 0x9C;
                 var_a3 = 0x32;
             } else {
-                var_a3 = D_80079070[arg0 - 1].unk_03;
+                var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x70;
-            func_800367A0(0x15, D_80078400, 0);
+            func_800367A0(0x15, gAudioEffectId, 0);
             break;
 
         case 5:
@@ -1180,7 +1180,7 @@ void func_8004E810(u32 arg0, u32 arg1) {
                 sp24 = 0x70;
             } else {
                 sp24 = 0x60;
-                var_a3 = D_80079070[arg0 - 1].unk_04;
+                var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_04;
             }
             break;
 
@@ -1235,9 +1235,9 @@ void func_8004E810(u32 arg0, u32 arg1) {
             break;
     }
 
-    Audio_StartChannel(0, D_800FC708->seqArray[arg0 - 1].offset, sp24, var_a3);
+    Audio_StartChannel(0, gAudioSeqBuffer->seqArray[arg0 - 1].offset, sp24, var_a3);
 }
 
-void func_8004EBC8(u32 arg0) {
-    func_8004E810(arg0, 4);
+void Audio_PlaySequenceMode4(u32 arg0) {
+    Audio_PlaySequence(arg0, 4);
 }

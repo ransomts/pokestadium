@@ -325,7 +325,7 @@ void func_8420448C(void) {
         tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
         Text_Print(0xC0 - tmp, 0xF6, temp_v0);
         Text_SetEnvColor(0xFF, 0xBA, 0xCC, 0xFF);
-        func_8002D600(2, D_8423E578);
+        MessageBank_SetPointer_1_9(2, D_8423E578);
         temp_v0 = func_84200190(sp20, sizeof(sp20), 0xF);
         tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
         Text_Print(0xC0 - tmp, 0x10E, temp_v0);

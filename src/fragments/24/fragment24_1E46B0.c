@@ -765,7 +765,7 @@ void func_883166A0(unk_func_8830867C_02C_144* arg0) {
         var_s3 = var_s5->unk_0C;
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
-            temp_v0 = func_80022C28(var_s5->unk_00, var_s5->unk_04, j, 0);
+            temp_v0 = CreateGbsBlock(var_s5->unk_00, var_s5->unk_04, j, 0);
             var_s1 = 0;
 
             if (temp_v0 != NULL) {
@@ -783,7 +783,7 @@ void func_883166A0(unk_func_8830867C_02C_144* arg0) {
                     var_s1++;
                 }
 
-                func_80022D8C(temp_v0);
+                CommitAndFreeGbsBlock(temp_v0);
             }
 
             var_s3->unk_10.unk_08 = var_s1;
@@ -856,7 +856,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
             if (var_s3->unk_0C != 0) {
-                temp_v0 = func_80022C28(var_s5->unk_00, var_s5->unk_04, j, 0);
+                temp_v0 = CreateGbsBlock(var_s5->unk_00, var_s5->unk_04, j, 0);
                 if (temp_v0 == NULL) {
                     continue;
                 }
@@ -878,7 +878,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
                         }
                     }
                 }
-                func_80022D8C(temp_v0);
+                CommitAndFreeGbsBlock(temp_v0);
             }
         }
     }
@@ -907,7 +907,7 @@ void func_88316A58(unk_func_8830867C_02C_144* arg0, s32 arg1) {
         for (j = 0; j < var_s2->unk_14; j++, var_s4++) {
             if (var_s4->unk_0C != 0) {
                 var_s0 = var_s4->unk_10.unk_00;
-                temp_s3 = func_80022C28(var_s2->unk_00, var_s2->unk_04, j, 1);
+                temp_s3 = CreateGbsBlock(var_s2->unk_00, var_s2->unk_04, j, 1);
 
                 for (x = 0; x < var_s4->unk_10.unk_08; x++, var_s0++) {
                     func_80022F24(&var_s0->unk_00->unk_08, 1, temp_s3);
@@ -921,9 +921,9 @@ void func_88316A58(unk_func_8830867C_02C_144* arg0, s32 arg1) {
 
                 tmp = var_s2->unk_00;
                 if ((tmp == 0x10) || (tmp == 0x11) || (tmp == 0x12)) {
-                    func_80022D24(temp_s3);
+                    InvalidateAndFreeGbsBlock(temp_s3);
                 } else {
-                    func_80022D8C(temp_s3);
+                    CommitAndFreeGbsBlock(temp_s3);
                 }
 
                 if (1) {}
@@ -979,17 +979,17 @@ void func_88316BEC(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
 void func_88316D5C(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24;
 
-    sp24 = func_80022C28(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
+    sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
     arg0->unk_14 = func_80022E18(arg0->unk_0C, arg0->unk_10, sp24);
-    func_80022D8C(sp24);
+    CommitAndFreeGbsBlock(sp24);
     arg0->unk_08 = 0;
 }
 
 void func_88316DB8(unk_func_8830867C_02C_154* arg0) {
-    unk_func_80022C28_ret* sp24 = func_80022C28(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
+    unk_func_80022C28_ret* sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
 
     func_80022F24(arg0->unk_0C, arg0->unk_14, sp24);
-    func_80022D8C(sp24);
+    CommitAndFreeGbsBlock(sp24);
     arg0->unk_08 = 0;
 }
 

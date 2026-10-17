@@ -406,7 +406,7 @@ void func_8420D370(unk_D_84211704* arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetLineHeight(0x1C);
-    func_8002D600(2, arg1);
+    MessageBank_SetPointer_1_9(2, arg1);
     sp20 = func_84200190(sp28, sizeof(sp28), 0x27);
     tmp = ((arg0->unk_04 - MeasureTextWidth(0, 0, sp20)) / 2);
     Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, sp20);

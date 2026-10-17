@@ -2130,7 +2130,7 @@ void func_86C00F70(MiniActor* compEkans) {
     sp3C.x = tempDiglett->totalPos.x - compEkans->totalPos.x;
     sp3C.z = tempDiglett->totalPos.z - compEkans->totalPos.z;
 
-    compEkans->unk_222 = func_86C00668(compEkans, func_81400BBC(sp3C) + func_81400B00(sp36) + 0x8000);
+    compEkans->unk_222 = func_86C00668(compEkans, func_81400BBC(sp3C) + RandomRangeSigned(sp36) + 0x8000);
     compEkans->ySpinSpeed = func_878001E8(sp32) + sp34;
 }
 
@@ -2187,19 +2187,19 @@ s16 func_86C01408(void) {
 
     switch (miniDifficulty) {
         case 0:
-            sp1E = func_81400A78(0x14) + 0x12;
+            sp1E = RandomMod(0x14) + 0x12;
             break;
 
         case 1:
-            sp1E = func_81400A78(0xA) + 0xF;
+            sp1E = RandomMod(0xA) + 0xF;
             break;
 
         case 2:
-            sp1E = func_81400A78(0xA) + 0xA;
+            sp1E = RandomMod(0xA) + 0xA;
             break;
 
         case 3:
-            sp1E = func_81400A78(0xA) + 8;
+            sp1E = RandomMod(0xA) + 8;
             break;
     }
 
@@ -2211,19 +2211,19 @@ s16 func_86C014A0(void) {
 
     switch (miniDifficulty) {
         case 0:
-            sp1E = func_81400A78(0x14) + 0xC;
+            sp1E = RandomMod(0x14) + 0xC;
             break;
 
         case 1:
-            sp1E = func_81400A78(0xF) + 0xA;
+            sp1E = RandomMod(0xF) + 0xA;
             break;
 
         case 2:
-            sp1E = func_81400A78(0xA) + 0xA;
+            sp1E = RandomMod(0xA) + 0xA;
             break;
 
         case 3:
-            sp1E = func_81400A78(8) + 5;
+            sp1E = RandomMod(8) + 5;
             break;
     }
 
@@ -2261,7 +2261,7 @@ void miniEkansCompControls(MiniActor* compEkans) {
             break;
 
         case 4: //	comp launch (only y speed)
-            if (func_81400760(&compEkans->launchForce, compEkans->stickMagnitude1, 8.0f) != 0) {
+            if (ApproachF32(&compEkans->launchForce, compEkans->stickMagnitude1, 8.0f) != 0) {
                 compEkans->position_2.z = compEkans->position_2.x = 0.0f;
                 compEkans->stickMagnitude1 = 0;
                 compEkans->mainState = 1;
@@ -2476,8 +2476,8 @@ void func_86C01D2C(MiniActor* ekans, s32 nPlayer) {
 
 void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
     if (ekans->midAirState == 3) {
-        func_81400760(&ekans->position_1.x, ekans->closestDiglettPos.x, ekans->dist2DiglettLevelX);
-        func_81400760(&ekans->position_1.z, ekans->closestDiglettPos.z, ekans->dist2DiglettLevelZ);
+        ApproachF32(&ekans->position_1.x, ekans->closestDiglettPos.x, ekans->dist2DiglettLevelX);
+        ApproachF32(&ekans->position_1.z, ekans->closestDiglettPos.z, ekans->dist2DiglettLevelZ);
     }
 
     if (ekans->unk_298 != 0) {
@@ -2548,8 +2548,8 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
 
 void func_86C021FC(MiniActor* ekans) {
     if (ekans->stickMagnitude1 > 5.0f) {
-        func_81400760(&ekans->position_2.x, (-SINS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
-        func_81400760(&ekans->position_2.z, (-COSS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
+        ApproachF32(&ekans->position_2.x, (-SINS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
+        ApproachF32(&ekans->position_2.z, (-COSS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
     } else {
         ekans->position_2.x = 0.0f;
         ekans->position_2.z = 0.0f;
@@ -2602,14 +2602,14 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             break;
 
         case 0x5: //	reapearing animation
-            if (func_81400760(&ekans->position_2.y, 10.0f, 4.0f) != 0) {
+            if (ApproachF32(&ekans->position_2.y, 10.0f, 4.0f) != 0) {
                 ekans->mainState = 0;
             }
             break;
 
         case 0x64: //	start win animation
-            func_81400760(&ekans->position_2.x, 0.0f, 4.0f);
-            func_81400760(&ekans->position_2.z, 0.0f, 4.0f);
+            ApproachF32(&ekans->position_2.x, 0.0f, 4.0f);
+            ApproachF32(&ekans->position_2.z, 0.0f, 4.0f);
             if (func_81400550(&ekans->yRot_2, -0x8000, 0x400) != 0) {
                 ekans->mainState++;
                 GraphNode_TriggerAction(&ekans->unk_000, 2);
@@ -3011,7 +3011,7 @@ void func_86C03128(void) {
         ekans = miniEkanses;
         for (i = 0; i < 4; i++, ekans++) {
             if (var_s2 == ekans->ekansScore) {
-                func_87802F00(i);
+                IncrementPlayerScore(i);
                 ekans->isWinner = 1;
                 ekans->mainState = 0x64;
             }
@@ -3102,7 +3102,7 @@ void miniEkansMinigameStateMachine(void) {
             }
             if ((func_86C030EC() != 0) && (miniInputLockTimer == 0)) {
                 func_86C03128();
-                func_87802EB8(1);
+                SetResultFlag(1);
                 func_87903294();
                 minigameState++;
             }
@@ -3377,7 +3377,7 @@ void miniEkansTutoScreenControls(void) {
         if ((miniDebugMode == false) && (func_80007604() == 0)) {
             if (ekansMinigameCountdownStarted) {
                 if ((gPlayer1Controller->buttonPressed != 0) || (miniEkansCountdown == 0x28)) {
-                    func_87802EB8(2); //	D_8780FC92 = 1
+                    SetResultFlag(2); //	D_8780FC92 = 1
                 }
             } else if (miniShowHUB == false) {
                 if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
@@ -3387,7 +3387,7 @@ void miniEkansTutoScreenControls(void) {
                     func_86C00368(0x10, 0);
                 } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
                     func_86C00368(0x11, 0);
-                    func_87802EB8(2); //	D_8780FC92 = 1
+                    SetResultFlag(2); //	D_8780FC92 = 1
                 }
             }
         }
@@ -3517,5 +3517,5 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    return func_87803118();
+    return GetCurrentOptionCount();
 }

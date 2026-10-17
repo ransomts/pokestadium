@@ -5,15 +5,15 @@
 #include "src/373A0.h"
 #include "src/50A00.h"
 
-static s32 D_80078A30 = 0;
-static s32 D_80078A34 = 0;
-static s32 D_80078A38 = 0;
-static s32 D_80078A3C = 0;
-static s32 D_80078A40 = 0;
-static s32 D_80078A44 = 0;
-static s32 D_80078A48 = 0;
-static s32 D_80078A4C = 0;
-static u8 D_80078A50 = 0;
+static s32 gLastSfxHandle = 0;
+static s32 gSfxHandle_1 = 0;
+static s32 gSfxHandle_3 = 0;
+static s32 gSfxHandle_2 = 0;
+static s32 gSfxHandle_4 = 0;
+static s32 gSfxHandle_8 = 0;
+static s32 gSfxHandle_44 = 0;
+static s32 gSfxHandle_46 = 0;
+static u8 gSfx3CCooldown = 0;
 
 s32 PlaySoundEffect(u32 arg0) {
     u32 temp_v0_3;
@@ -36,9 +36,9 @@ s32 PlaySoundEffect(u32 arg0) {
         if (!(D_800FC820 & 0x80000000)) {
             return 0;
         }
-        D_80078A30 = MusStartSoundEffect(D_800FF9C0, D_800FC688, 0xF, 0x70, 0x80, -1);
+        gLastSfxHandle = MusStartSoundEffect(D_800FF9C0, D_800FC688, 0xF, 0x70, 0x80, -1);
         MusSetDurationScale(D_80078E70, 0x28);
-        return D_80078A30;
+        return gLastSfxHandle;
     }
 
     if (arg0 == 0x30) {
@@ -46,14 +46,14 @@ s32 PlaySoundEffect(u32 arg0) {
     }
 
     if (arg0 == 0x3C) {
-        if (D_80078A50 != 0) {
-            D_80078A50++;
-            if (D_80078A50 > 0) {
-                D_80078A50 = 0;
+        if (gSfx3CCooldown != 0) {
+            gSfx3CCooldown++;
+            if (gSfx3CCooldown > 0) {
+                gSfx3CCooldown = 0;
             }
             return 0;
         }
-        D_80078A50++;
+        gSfx3CCooldown++;
         if (1) {}
         arg0 = 5;
         sp24 = -12.0f;
@@ -62,7 +62,7 @@ s32 PlaySoundEffect(u32 arg0) {
 
     switch (arg0) {
         case 0x1:
-            MusSetDurationScale(D_80078A34, 1);
+            MusSetDurationScale(gSfxHandle_1, 1);
             break;
 
         case 0x5:
@@ -101,32 +101,32 @@ s32 PlaySoundEffect(u32 arg0) {
             break;
 
         case 0x2:
-            MusSetDurationScale(D_80078A3C, 1);
+            MusSetDurationScale(gSfxHandle_2, 1);
             break;
 
         case 0x3:
-            MusSetDurationScale(D_80078A38, 1);
+            MusSetDurationScale(gSfxHandle_3, 1);
             break;
 
         case 0x4:
-            MusSetDurationScale(D_80078A40, 0x14);
+            MusSetDurationScale(gSfxHandle_4, 0x14);
             break;
 
         case 0x8:
-            MusSetDurationScale(D_80078A44, 2);
+            MusSetDurationScale(gSfxHandle_8, 2);
             break;
 
         case 0x2C:
-            MusSetDurationScale(D_80078A48, 2);
+            MusSetDurationScale(gSfxHandle_44, 2);
             sp28 = 0xA0;
             break;
 
         case 0x2D:
-            MusSetDurationScale(D_80078A48, 2);
+            MusSetDurationScale(gSfxHandle_44, 2);
             break;
 
         case 0x2E:
-            MusSetDurationScale(D_80078A4C, 2);
+            MusSetDurationScale(gSfxHandle_46, 2);
             break;
 
         case 0xA:
@@ -148,51 +148,51 @@ s32 PlaySoundEffect(u32 arg0) {
             break;
 
         case 0x32:
-            D_80078A30 = func_8004DDA4(0x01000001, 0, 0);
-            return D_80078A30;
+            gLastSfxHandle = PlayBackgroundMusic(0x01000001, 0, 0);
+            return gLastSfxHandle;
 
         case 0x33:
-            D_80078A30 = func_8004DDA4(0x01000002, 0, 0);
-            return D_80078A30;
+            gLastSfxHandle = PlayBackgroundMusic(0x01000002, 0, 0);
+            return gLastSfxHandle;
 
         default:
             return 0;
     }
 
-    D_80078A30 = MusStartSoundEffect(D_800FC68C, D_800FC688, arg0, sp28, 0x80, -1);
+    gLastSfxHandle = MusStartSoundEffect(D_800FC68C, D_800FC688, arg0, sp28, 0x80, -1);
     if (sp24 != 0.0f) {
-        MusSetFrequencyOffset(D_80078A30, sp24);
+        MusSetFrequencyOffset(gLastSfxHandle, sp24);
     }
 
     switch (arg0) {
         case 1:
-            D_80078A34 = D_80078A30;
+            gSfxHandle_1 = gLastSfxHandle;
             break;
 
         case 2:
-            D_80078A3C = D_80078A30;
+            gSfxHandle_2 = gLastSfxHandle;
             break;
 
         case 3:
-            D_80078A38 = D_80078A30;
+            gSfxHandle_3 = gLastSfxHandle;
             break;
 
         case 4:
-            D_80078A40 = D_80078A30;
+            gSfxHandle_4 = gLastSfxHandle;
             break;
 
         case 8:
-            D_80078A44 = D_80078A30;
+            gSfxHandle_8 = gLastSfxHandle;
             break;
 
         case 44:
-            D_80078A48 = D_80078A30;
+            gSfxHandle_44 = gLastSfxHandle;
             break;
 
         case 45:
-            D_80078A4C = D_80078A30;
+            gSfxHandle_46 = gLastSfxHandle;
             break;
     }
 
-    return D_80078A30;
+    return gLastSfxHandle;
 }

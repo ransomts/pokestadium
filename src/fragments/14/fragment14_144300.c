@@ -434,7 +434,7 @@ void func_86800B38(void) {
                     Text_SetPrimColor(spB8[1][i].r, spB8[1][i].g, spB8[1][i].b, 0xFF);
                 }
 
-                func_8002D600(6, ptr->unk_01C);
+                MessageBank_SetPointer_1_9(6, ptr->unk_01C);
                 Text_Print(D_86806D78[i] + var_s7, D_86806D80[i] + var_s4,
                               GetMessageString(&sp78, 0x20, D_87806330, 0x5E));
             }
@@ -513,7 +513,7 @@ void func_86801700(void) {
             D_86807540 = 0x1E;
             func_80006CB4(D_86807540);
             func_86800020(D_86807540 / 2);
-            func_87802EB8(2);
+            SetResultFlag(2);
         }
     }
 }
@@ -602,7 +602,7 @@ s32 func_86801884(void) {
                     D_86807540 = 0x1E;
                     func_80006CB4(D_86807540);
                     func_86800020(D_86807540 / 2);
-                    func_87802EB8(2);
+                    SetResultFlag(2);
                 }
             }
             break;
@@ -631,7 +631,7 @@ s32 func_86801884(void) {
             if ((var_a0 != 0) && (D_8780FC94 == 0)) {
                 D_8680750C = 6;
                 func_86805108(0xF, 5);
-                func_87802EB8(1);
+                SetResultFlag(1);
             }
             break;
 
@@ -705,7 +705,7 @@ void func_86801D48(void) {
 
     func_86805BD4();
     func_87901620();
-    func_878029C0();
+    ResultScreen_Init();
 
     D_8680750C = 0;
     if (D_8680753E == 0) {
@@ -746,5 +746,5 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    func_87803118();
+    GetCurrentOptionCount();
 }

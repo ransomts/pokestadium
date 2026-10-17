@@ -321,7 +321,7 @@ void func_87900854(void) {
     D_87903DD0 = 0;
     D_87906072 = 0;
 
-    func_878029C0();
+    ResultScreen_Init();
     func_87802528();
 
     D_879060C4[0] = ptr[0];

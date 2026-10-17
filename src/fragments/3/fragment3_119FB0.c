@@ -108,7 +108,7 @@ void func_87901958(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2) {
         while (arg0 != NULL) {
             arg0->unk_28 = arg1->unk_00;
 
-            func_81400930(&arg0->unk_68, &arg1->unk_04);
+            Vec3f_Copy(&arg0->unk_68, &arg1->unk_04);
             func_8140094C(&arg0->unk_94, &arg1->unk_10);
 
             arg0->unk_AC = arg2++;
@@ -224,14 +224,14 @@ void func_87901DA0(unk_D_8140E720* arg0) {
 
     func_8140BAC8(arg0, 0xC8, 0xAA, 0x64);
     func_8140BB74(arg0, 0x3A, 0x18, 0x18);
-    func_8140B938(arg0, (func_81400A78(0xA) * 0.03f) + 0.15f);
+    func_8140B938(arg0, (RandomMod(0xA) * 0.03f) + 0.15f);
 
-    sp28.x = func_81400B00(0x400) - 0x3000;
-    sp28.y = (func_81400B00(0x400) + (sp26 << 0xD)) - 0x3000;
+    sp28.x = RandomRangeSigned(0x400) - 0x3000;
+    sp28.y = (RandomRangeSigned(0x400) + (sp26 << 0xD)) - 0x3000;
     sp28.z = 0;
 
     func_8140A4F0(arg0, sp28);
-    func_8140AD8C(arg0, (func_81400A78(0xA) * 0.3f) + 6.0f);
+    func_8140AD8C(arg0, (RandomMod(0xA) * 0.3f) + 6.0f);
     func_8140B2B4(arg0);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
@@ -258,7 +258,7 @@ void func_87901F04(unk_D_8140E720* arg0) {
 
 void func_87901FA0(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.25f);
-    func_8140A594(arg0, func_81400A78(0x10000));
+    func_8140A594(arg0, RandomMod(0x10000));
     func_8140AD8C(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
     func_8140AF24(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     func_8140D5A0(arg0, 0xA);
@@ -295,7 +295,7 @@ void func_87902068(unk_D_8140E720* arg0) {
 
 void func_8790215C(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.25f);
-    func_8140A594(arg0, func_81400A78(0x10000));
+    func_8140A594(arg0, RandomMod(0x10000));
     func_8140AD8C(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 2.0f);
     func_8140AF24(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     func_8140D5A0(arg0, 0xA);
@@ -333,7 +333,7 @@ void func_87902224(unk_D_8140E720* arg0) {
 void func_87902318(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.5f);
     func_8140959C(arg0, 3, 0, 3);
-    func_8140A594(arg0, func_81400A78(0x10000));
+    func_8140A594(arg0, RandomMod(0x10000));
     func_8140AD8C(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 3.0f);
     func_8140AF24(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
     func_8140D5A0(arg0, 0xA);
@@ -375,12 +375,12 @@ void func_879024DC(unk_D_8140E720* arg0) {
     func_8140BB74(arg0, 0x3A, 0x18, 0x18);
     func_8140B938(arg0, (MathUtil_Random_ZeroOne() * 0.1f) + 0.1f);
 
-    sp28.x = func_81400B00(0x800) - 0x3800;
-    sp28.y = func_81400B00(0x1000) + 0x8000;
+    sp28.x = RandomRangeSigned(0x800) - 0x3800;
+    sp28.y = RandomRangeSigned(0x1000) + 0x8000;
     sp28.z = 0;
 
     func_8140A4F0(arg0, sp28);
-    func_8140AD8C(arg0, (func_81400A78(0xA) * 0.3f) + 6.0f);
+    func_8140AD8C(arg0, (RandomMod(0xA) * 0.3f) + 6.0f);
     func_8140B2B4(arg0);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
@@ -416,8 +416,8 @@ void func_879026D8(unk_D_8140E720* arg0) {
 
     func_8140C040(arg0);
 
-    sp28.x = func_81400A78(0x10000);
-    sp28.y = func_81400A78(0x10000);
+    sp28.x = RandomMod(0x10000);
+    sp28.y = RandomMod(0x10000);
     sp28.z = 0;
 
     func_8140A24C(arg0, sp28);
@@ -474,8 +474,8 @@ void func_879028E0(unk_D_8140E720* arg0) {
     Vec3s sp28;
     s16 sp26 = func_8140C038(arg0);
 
-    sp28.x = func_81400A78(0x10000);
-    sp28.y = func_81400A78(0x10000);
+    sp28.x = RandomMod(0x10000);
+    sp28.y = RandomMod(0x10000);
     sp28.z = 0;
 
     func_8140A24C(arg0, sp28);
@@ -535,14 +535,14 @@ void func_87902AE0(unk_D_8140E720* arg0) {
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
     func_8140B938(arg0, (MathUtil_Random_ZeroOne() * 0.2f) + 0.3f);
 
-    sp30.x = func_81400B00(0x1800) - 0x3000;
-    sp30.y = func_81400B00(0x10000);
+    sp30.x = RandomRangeSigned(0x1800) - 0x3000;
+    sp30.y = RandomRangeSigned(0x10000);
     sp30.z = 0;
 
     func_8140A4F0(arg0, sp30);
 
-    func_81408E18(arg0, func_81400B00(0xA) * 0.1f, func_81400A78(0xA) * 0.25f, func_81400B00(0xA) * 0.1f);
-    func_8140AD8C(arg0, (func_81400A78(5) * 0.35f) + 4.0f);
+    func_81408E18(arg0, RandomRangeSigned(0xA) * 0.1f, RandomMod(0xA) * 0.25f, RandomRangeSigned(0xA) * 0.1f);
+    func_8140AD8C(arg0, (RandomMod(5) * 0.35f) + 4.0f);
     func_8140B2B4(arg0);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);

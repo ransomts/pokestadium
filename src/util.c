@@ -14,7 +14,7 @@ u32 gExpansionRAMStart = FALSE;
 
 MainPool** gMainPool;
 
-void func_80003860(void);
+void JpegMessageQueueInit(void);
 s32 func_80007A58(void);
 
 /**
@@ -68,7 +68,7 @@ void Util_InitMainPools(void) {
         main_pool_init(&gPool, POOL_END_4MB);
         gExpansionRAMStart = 0;
     }
-    func_80003860();
+    JpegMessageQueueInit();
     gMainPool = mem_pool_try_init(0x10000, 0);
 }
 

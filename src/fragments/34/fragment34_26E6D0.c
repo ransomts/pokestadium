@@ -275,11 +275,11 @@ void func_8140D708(unk_D_8140E720* arg0, s16 arg1) {
 }
 
 void func_8140D750(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, D_8140E548[(func_81400A78(5) & 0xFF)]);
+    func_8140D530(arg0, D_8140E548[(RandomMod(5) & 0xFF)]);
 }
 
 void func_8140D78C(unk_D_8140E720* arg0) {
-    func_8140D568(arg0, D_8140E548[func_81400A78(5) & 0xFF]);
+    func_8140D568(arg0, D_8140E548[RandomMod(5) & 0xFF]);
 }
 
 s32 func_8140D7C8(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {

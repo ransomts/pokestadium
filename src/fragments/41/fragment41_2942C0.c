@@ -408,7 +408,7 @@ s32 func_82F0D64C(s16 arg0, s8* arg1) {
     char sp20[64];
 
     sp64 = 1;
-    func_80021C80(sp20, func_82F00020(arg0));
+    StrCopy(sp20, func_82F00020(arg0));
 
     var_v1 = sp20;
     while (*var_v1 != '\x00') {
@@ -433,7 +433,7 @@ void func_82F0D6D0(s16 arg0, unk_func_80026268_arg0* arg1) {
 
     if (sp2E != 0) {
         if (func_82F0D64C(sp2E, arg1->unk_30) != 0) {
-            func_80021C80(arg1->unk_30, func_82F00020(arg1->unk_00.unk_00));
+            StrCopy(arg1->unk_30, func_82F00020(arg1->unk_00.unk_00));
         }
         CalculatePokemonStats(arg1);
         func_800256F4(arg0, arg1->unk_00.unk_00, 3);
@@ -727,8 +727,8 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
     }
 
     if (sp40 != NULL) {
-        func_8002D5D4(0x21, sp40);
-        func_8002D5D4(0x22, sp3C);
+        MessageBank_SetPointer_0x14_0x2A(0x21, sp40);
+        MessageBank_SetPointer_0x14_0x2A(0x22, sp3C);
         sp38 = GetMessageString(sp44, 0x80, D_82F13B70, 0x19);
     }
 
@@ -1940,7 +1940,7 @@ void func_82F13414(void) {
     }
 
     if (ptr->unk_0C & 1) {
-        if (func_82F00524() == 1) {
+        if (GetTextBoxState() == 1) {
             tmp1 = D_82F14424 & 3;
             sp83 = (tmp1 * 0xFF) / 3u;
             if (D_82F14424 & 4) {

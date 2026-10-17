@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern s32 D_80078FA8;
+extern s32 gBattleMusicHandle;
 extern u32 D_80079014;
 
 s32 func_8004BFC0(s32 arg0, s32 arg1, s32 arg2);
@@ -31,7 +31,7 @@ void func_8004D848(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 s32 func_8004D858(s32 arg0, u32 arg1);
 s32 func_8004D9B0(s32 arg0, s32 arg1, s32 arg2);
 void func_8004DC8C(s32 arg0, s32 arg1, s32 arg2);
-s32 func_8004DDA4(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
+s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 s32 func_8004DF94(s32 arg0, s32 arg1, s32 arg2);
 s32 func_8004E304(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 

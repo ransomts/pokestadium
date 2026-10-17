@@ -1225,7 +1225,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, badge_ui, 0);
     ASSET_LOAD(D_3000000, common_menu0_ui, 0);
 
-    func_8002D510();
+    MessageBank_Init();
     D_84B26678 = GetMessageBank(0x1B);
     SpriteAssets_Load();
 

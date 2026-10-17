@@ -301,7 +301,7 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
     sp2C = main_pool_alloc(0x1000, 0);
     sp34 = mem_pool_try_init(0x8000, 0);
 
-    func_8002D510();
+    MessageBank_Init();
     D_88224F90 = GetMessageBank(0x2A);
     D_88224F94 = GetMessageBank(1);
 

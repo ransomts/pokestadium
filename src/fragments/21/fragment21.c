@@ -1766,19 +1766,19 @@ void sandshrewHumanControls(MiniActor* sandshrew) {
 void sandshrewCompControls(MiniActor* arg0) {
     switch (miniDifficulty) {
         case 0:
-            arg0->diggingAccel2 = (func_81400A78(0xA) * 0.1f) + 3.0f;
+            arg0->diggingAccel2 = (RandomMod(0xA) * 0.1f) + 3.0f;
             break;
 
         case 1:
-            arg0->diggingAccel2 = (func_81400A78(0x14) * 0.15f) + 5.0f;
+            arg0->diggingAccel2 = (RandomMod(0x14) * 0.15f) + 5.0f;
             break;
 
         case 2:
-            arg0->diggingAccel2 = (func_81400A78(0x14) * 0.17f) + 6.0f;
+            arg0->diggingAccel2 = (RandomMod(0x14) * 0.17f) + 6.0f;
             break;
 
         case 3:
-            arg0->diggingAccel2 = (func_81400A78(0x12) * 0.2f) + 6.4f;
+            arg0->diggingAccel2 = (RandomMod(0x12) * 0.2f) + 6.4f;
             break;
     }
 
@@ -2079,8 +2079,8 @@ void func_86F013B8(void) {
             break;
 
         case 2:
-            func_81400760(&D_8790607C, 250.0f, 1.0f);
-            func_81400760(&D_87906088.y, 34.0f, 1.8f);
+            ApproachF32(&D_8790607C, 250.0f, 1.0f);
+            ApproachF32(&D_87906088.y, 34.0f, 1.8f);
             func_81400550(&D_87906076, 0x600, 0xCC);
             func_81400550(&miniHudTransparency, 0, 0x30);
             break;
@@ -2133,7 +2133,7 @@ s32 func_86F014F8(void) {
             miniSandshrewPtr->mainState = 0x64;
             miniSandshrewGeiserPtr->mainState = 1;
             func_86F00188(5, i);
-            func_87802F00(i);
+            IncrementPlayerScore(i);
         }
         miniSandshrewPtr++;
         miniSandshrewGeiserPtr++;
@@ -2208,7 +2208,7 @@ void func_86F0174C(void) {
         case 5:
             miniInputLockTimer--;
             if (miniInputLockTimer == 0) {
-                func_87802EB8(1);
+                SetResultFlag(1);
                 func_87903294();
                 func_86F00188(0xC, 0xB4);
                 minigameState++;
@@ -2398,7 +2398,7 @@ void func_86F0204C(void) {
                 func_86F00188(7, 0);
             } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
                 func_86F00188(8, 0);
-                func_87802EB8(2);
+                SetResultFlag(2);
             }
         }
 
@@ -2531,5 +2531,5 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('MINI');
 
-    return func_87803118();
+    return GetCurrentOptionCount();
 }

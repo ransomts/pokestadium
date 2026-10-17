@@ -21,9 +21,9 @@ void func_82A00020(s32 arg0) {
     unk_func_80022C28_ret* temp_v0;
 
     if (func_80023AF8(arg0) != 0) {
-        temp_v0 = func_80022C28(0x20, arg0, 0, 0);
+        temp_v0 = CreateGbsBlock(0x20, arg0, 0, 0);
         D_82A00360 = func_80022E18(D_82A00378, 6, temp_v0);
-        func_80022D8C(temp_v0);
+        CommitAndFreeGbsBlock(temp_v0);
     }
 
     for (i = 0; i < D_82A00360; i++) {

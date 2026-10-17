@@ -69,7 +69,7 @@ static u8 D_8438B0F4[] = { 0x27, 0x2B };
 void func_84376790(s32 arg0, u32 arg1) {
     u32 temp_a1 = (u32)_7820E0_ROM_START + arg0 * 0x48;
 
-    func_80003B30(arg1, temp_a1, temp_a1 + 0x48, 0);
+    DmaCopyAsyncRange(arg1, temp_a1, temp_a1 + 0x48, 0);
 }
 
 void func_843767DC(void) {

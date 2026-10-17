@@ -7,11 +7,11 @@ void func_8433CC10(unk_D_8140E720* arg0) {
 
     func_8140C038(arg0);
     func_8140B938(arg0, 0.05f);
-    sp2C.x = func_81400A78(0x8000) - 0x4000;
-    sp2C.y = func_81400A78(0x10000);
-    sp2C.z = func_81400A78(0x800) - 0x400;
+    sp2C.x = RandomMod(0x8000) - 0x4000;
+    sp2C.y = RandomMod(0x10000);
+    sp2C.z = RandomMod(0x800) - 0x400;
     func_8140A4F0(arg0, sp2C);
-    func_8140910C(arg0, func_81400A78(0xA));
+    func_8140910C(arg0, RandomMod(0xA));
     func_8140A578(arg0, 0x4000);
     func_8140D5A0(arg0, func_8140C058(arg0));
     func_814081BC(arg0);
@@ -114,7 +114,7 @@ void func_8433CFA8(unk_D_8140E720* arg0) {
     func_81408CA0(arg0, 15.0f);
     func_8140B938(arg0, 0.1f);
     func_8140AD8C(arg0, 0.0f);
-    sp28.x = 0x4000 - func_81400A78(0x8000);
+    sp28.x = 0x4000 - RandomMod(0x8000);
     sp28.y = sp2E << 0xD;
     sp28.z = 0;
     func_8140A4F0(arg0, sp28);
@@ -160,7 +160,7 @@ void func_8433D154(unk_D_8140E720* arg0) {
     func_81408CA0(arg0, 15.0f);
     func_8140B938(arg0, 0.1f);
     func_8140AD8C(arg0, MathUtil_Random_ZeroOne());
-    sp28.x = 0x3000 - func_81400A78(0x6000);
+    sp28.x = 0x3000 - RandomMod(0x6000);
     sp28.y = sp2E << 0xD;
     sp28.z = 0;
     func_8140A4F0(arg0, sp28);
@@ -207,7 +207,7 @@ void func_8433D308(unk_D_8140E720* arg0) {
     func_8140AD8C(arg0, 0.0f);
     sp28.x = -0x4000;
     sp28.y = 0;
-    sp28.z = (func_81400A78(0x10) << 0xB) - 0x4000;
+    sp28.z = (RandomMod(0x10) << 0xB) - 0x4000;
     func_8140A4F0(arg0, sp28);
     func_8140D5A0(arg0, func_8140C058(arg0));
     func_814081BC(arg0);
@@ -246,7 +246,7 @@ void func_8433D460(unk_D_8140E720* arg0) {
     func_8140AD8C(arg0, MathUtil_Random_ZeroOne() * 4.0f);
     sp2C.x = -0x4000;
     sp2C.y = 0;
-    sp2C.z = (func_81400A78(0x10) << 0xB) - 0x4000;
+    sp2C.z = (RandomMod(0x10) << 0xB) - 0x4000;
     func_8140A4F0(arg0, sp2C);
     func_8140D5A0(arg0, func_8140C058(arg0));
     func_814081BC(arg0);
@@ -288,7 +288,7 @@ void func_8433D604(unk_D_8140E720* arg0) {
     func_8140AD8C(arg0, 0.0f);
     sp2C.x = -0x4000;
     sp2C.y = 0;
-    sp2C.z = (func_81400A78(0x10) << 0xB) - 0x4000;
+    sp2C.z = (RandomMod(0x10) << 0xB) - 0x4000;
     func_8140A4F0(arg0, sp2C);
     func_8140910C(arg0, 150.0f);
     func_8140A334(arg0);
@@ -376,9 +376,9 @@ void func_8433D90C(unk_D_8140E720* arg0) {
     sp28.y = 0;
     sp28.z = -0x8000;
     func_8140A4F0(arg0, sp28);
-    sp30.x = func_81400A78(0x64) + -50.0f;
+    sp30.x = RandomMod(0x64) + -50.0f;
     sp30.y = 200.0f;
-    sp30.z = func_81400A78(0x64) + -50.0f;
+    sp30.z = RandomMod(0x64) + -50.0f;
     func_81408D78(arg0, sp30);
     func_8140D5A0(arg0, func_8140C058(arg0));
     func_814081BC(arg0);
@@ -415,9 +415,9 @@ void func_8433DAF8(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
     func_8140B95C(arg0, 2.0f);
     func_8140B974(arg0, 0.1f);
-    sp28.x = -0x1000 - func_81400A78(0x6000);
-    sp28.y = func_81400A78(0x10000);
-    sp28.z = func_81400A78(0x800) - 0x400;
+    sp28.x = -0x1000 - RandomMod(0x6000);
+    sp28.y = RandomMod(0x10000);
+    sp28.z = RandomMod(0x800) - 0x400;
     func_8140A4F0(arg0, sp28);
     func_8140910C(arg0, 200.0f);
     func_8140A578(arg0, -0x4000);

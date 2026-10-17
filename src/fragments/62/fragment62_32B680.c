@@ -1692,7 +1692,7 @@ void func_84344698(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.5f);
     func_8140AD8C(arg0, 4.5f);
-    func_8140A52C(arg0, func_81400B28(0x800, -0x3800), func_81400B00(0x1400), 0);
+    func_8140A52C(arg0, func_81400B28(0x800, -0x3800), RandomRangeSigned(0x1400), 0);
     func_8140BCA8(arg0, sp2E * 2);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -1709,7 +1709,7 @@ void func_84344734(unk_D_8140E720* arg0) {
                 arg0->unk_14 = func_8432CB68(arg0);
                 func_8432CE00(arg0->unk_14, 0x9F);
                 func_81408328(arg0);
-                func_8140BCA8(arg0, func_81400A78(3));
+                func_8140BCA8(arg0, RandomMod(3));
             }
             break;
 
@@ -1750,7 +1750,7 @@ void func_843448D8(unk_D_8140E720* arg0) {
     if (arg0->unk_14 != NULL) {
         func_8432CD70(arg0->unk_14, 0x2B, 0x2C);
         func_8140B938(arg0, 0.25f);
-        func_8140A2B8(arg0, func_81400A78(0x10000));
+        func_8140A2B8(arg0, RandomMod(0x10000));
         func_84344888(arg0);
         func_814081BC(arg0);
     } else {
@@ -1761,7 +1761,7 @@ void func_843448D8(unk_D_8140E720* arg0) {
 void func_8434495C(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8140BCA8(arg0, func_81400A78(0x18));
+            func_8140BCA8(arg0, RandomMod(0x18));
             func_814081BC(arg0);
             break;
 
@@ -1865,7 +1865,7 @@ void func_84344E20(unk_D_8140E720* arg0) {
     func_8140B974(arg0, 0.02f);
     func_8140959C(arg0, 5, 0xF, 0xF);
     func_81408E90(arg0, 10.0f);
-    func_8140AD8C(arg0, (func_81400A78(0xA) * 0.5f) + 8.0f);
+    func_8140AD8C(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     func_8140D5A0(arg0, sp22);
     func_8140BC20(arg0, 0xC8);
     func_8140BF4C(arg0, 4);
@@ -2766,7 +2766,7 @@ void func_843476D8(unk_D_8140E720* arg0) {
     func_8140D5A0(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0xC8);
     func_814083E8(arg0, 1);
-    func_8140A2CC(arg0, func_81400A78(0x10000));
+    func_8140A2CC(arg0, RandomMod(0x10000));
     func_814081BC(arg0);
 }
 
@@ -2802,8 +2802,8 @@ void func_843477F8(unk_D_8140E720* arg0) {
     func_8140959C(arg0, 5, 5, 5);
     func_8140B938(arg0, 1.5f);
     func_8140AD8C(arg0, 1.5f);
-    sp2C.x = func_81400A78(0x2000) - 0x1000;
-    sp2C.y = func_81400A78(0x10000);
+    sp2C.x = RandomMod(0x2000) - 0x1000;
+    sp2C.y = RandomMod(0x10000);
     sp2C.z = 0;
     func_8140A4F0(arg0, sp2C);
     func_8140A5CC(arg0, sp2C.x, sp2C.y);
@@ -2856,7 +2856,7 @@ void func_84347A20(unk_D_8140E720* arg0) {
     func_8140C040(arg0);
     func_8140B938(arg0, 1.0f);
     func_8140959C(arg0, 0xF, 0xF, 0x14);
-    func_8140AD8C(arg0, (func_81400A78(0x32) * 0.02f) + 1.0f);
+    func_8140AD8C(arg0, (RandomMod(0x32) * 0.02f) + 1.0f);
     func_8140D5A0(arg0, sp24);
     func_8140BC20(arg0, 0x80);
     func_81408348(arg0);
@@ -3048,7 +3048,7 @@ void func_84348194(unk_D_8140E720* arg0) {
     func_8140B974(arg0, 0.02f);
     func_8140959C(arg0, 5, 0xF, 0xF);
     func_81408E90(arg0, 10.0f);
-    func_8140AD8C(arg0, (func_81400A78(0xA) * 0.5f) + 8.0f);
+    func_8140AD8C(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     func_8140D530(arg0, 0x19);
     func_8140D568(arg0, 0x19);
     func_8140BC20(arg0, 0xC8);
@@ -3103,7 +3103,7 @@ void func_843483D4(unk_D_8140E720* arg0) {
     func_8140959C(arg0, 0xA, 0, 0xF);
     func_81408ED0(arg0, 10.0f);
     func_81408E90(arg0, 5.0f);
-    func_8140AD8C(arg0, (func_81400A78(0xA) * 0.5f) + 8.0f);
+    func_8140AD8C(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     func_8140D5A0(arg0, sp22);
     func_8140BC20(arg0, 0xB4);
     func_8140BF4C(arg0, 4);

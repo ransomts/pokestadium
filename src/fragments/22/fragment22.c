@@ -3100,7 +3100,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     sp40 = ASSET_LOAD(0, fragment29_misc_2, 0);
 
     func_80028AFC(2);
-    func_8002D510();
+    MessageBank_Init();
     D_88016CF0 = GetMessageBank(0x2A);
     D_88016CF4 = GetMessageBank(0);
 

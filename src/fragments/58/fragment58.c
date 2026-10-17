@@ -831,7 +831,7 @@ s32 func_84002A84(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, order_select_ui, 0);
-    func_8002D510();
+    MessageBank_Init();
     D_84002D00 = GetMessageBank(0xF);
     D_84002D04 = GetMessageBank(6);
     D_84002D08 = ASSET_LOAD2(backgrounds, 1, 1);

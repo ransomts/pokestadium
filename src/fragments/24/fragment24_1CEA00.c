@@ -760,7 +760,7 @@ s32 func_88302E04(unk_func_88302D98* arg0, s32 arg1, s32 arg2) {
     s32 spE8;
     s32 spE4;
 
-    func_8002D600(1, arg0->unk_2C->unk_CD0 + 1);
+    MessageBank_SetPointer_1_9(1, arg0->unk_2C->unk_CD0 + 1);
     GetMessageString(spF0, 0x20, D_8831A4C4, 2);
     Text_ResetState();
     Text_SetEnvColor(D_88317218.r, D_88317218.g, D_88317218.b, D_88317218.a);
@@ -1719,11 +1719,11 @@ void func_88305520(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* a
     sp70 = func_883054DC(arg0->unk_034->unk_00.unk_2C, sp74);
     if (sp70 == -1) {
         ((func88507C0C)Memmap_GetFragmentVaddr(func_88507C0C))(arg0->unk_034, sp90, sp8C);
-        func_8002D5D4(0x1A, arg1->unk_38);
+        MessageBank_SetPointer_0x14_0x2A(0x1A, arg1->unk_38);
         func_88313950(sp50, sp80 >> 0x10, sp80 & 0xFFFF);
-        func_8002D5D4(0x25, sp50);
+        MessageBank_SetPointer_0x14_0x2A(0x25, sp50);
         func_88313950(sp30, sp88, sp84);
-        func_8002D5D4(0x28, sp30);
+        MessageBank_SetPointer_0x14_0x2A(0x28, sp30);
         GetMessageString(arg0->unk_CCC->unk_40, 0x140, D_8831A4C4, 0x5C);
         ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_090, arg0->unk_CCC, 0, 0);
         ((func8850A3CC)Memmap_GetFragmentVaddr(func_8850A3CC))(arg0->unk_090, arg2);
@@ -1985,9 +1985,9 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         spD4 = func_883054DC(arg0->unk_034->unk_00.unk_2C, spD8);
         if (spD4 == -1) {
             ((func88507C0C)Memmap_GetFragmentVaddr(func_88507C0C))(arg0->unk_034, spD0, spCC);
-            func_8002D5D4(0x1A, spD8->unk_38);
-            func_8002D5D4(0x1D, GetMessageString(NULL, 0, D_8831A4CC, spBC - 1));
-            func_8002D5D4(0x1E, GetMessageString(NULL, 0, D_8831A4CC, spD8->unk_08.unk_09[spC0] - 1));
+            MessageBank_SetPointer_0x14_0x2A(0x1A, spD8->unk_38);
+            MessageBank_SetPointer_0x14_0x2A(0x1D, GetMessageString(NULL, 0, D_8831A4CC, spBC - 1));
+            MessageBank_SetPointer_0x14_0x2A(0x1E, GetMessageString(NULL, 0, D_8831A4CC, spD8->unk_08.unk_09[spC0] - 1));
             GetMessageString(arg0->unk_CCC->unk_40, 0x140, D_8831A4C4, 0x5D);
             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_090, arg0->unk_CCC, 0, 0);
             ((func8850A3CC)Memmap_GetFragmentVaddr(func_8850A3CC))(arg0->unk_090, gPlayer1Controller);
@@ -2030,9 +2030,9 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         spD4 = func_883054DC(arg0->unk_034->unk_00.unk_2C, spD8);
         if (spD4 == -1) {
             ((func88507C0C)Memmap_GetFragmentVaddr(func_88507C0C))(arg0->unk_034, spD0, spCC);
-            func_8002D5D4(0x1A, spD8->unk_38);
-            func_8002D600(2, sp48);
-            func_8002D600(3, sp44);
+            MessageBank_SetPointer_0x14_0x2A(0x1A, spD8->unk_38);
+            MessageBank_SetPointer_1_9(2, sp48);
+            MessageBank_SetPointer_1_9(3, sp44);
             GetMessageString(arg0->unk_CCC->unk_40, 0x140, D_8831A4C4, 0x5E);
             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_090, arg0->unk_CCC, 0, 0);
             ((func8850A3CC)Memmap_GetFragmentVaddr(func_8850A3CC))(arg0->unk_090, gPlayer1Controller);
@@ -2138,7 +2138,7 @@ s32 func_8830681C(unk_func_8830867C_02C* arg0, Controller* arg1) {
         sp38 = 0x23;
     }
 
-    func_8002D5D4(0x19, GetMessageString(NULL, 0, D_8831A4D0, sp3C->unk_08.unk_00 - 1));
+    MessageBank_SetPointer_0x14_0x2A(0x19, GetMessageString(NULL, 0, D_8831A4D0, sp3C->unk_08.unk_00 - 1));
     GetMessageString(D_8831A500, 0x20, D_8831A4C4, sp38);
 
     sp44[0] = D_8831A500;
@@ -3229,7 +3229,7 @@ s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment25);
     FRAGMENT_LOAD(fragment29);
 
-    func_8002D510();
+    MessageBank_Init();
 
     D_8831A4C0 = GetMessageBank(0x2A);
     D_8831A4CC = GetMessageBank(0x25);

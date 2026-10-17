@@ -404,8 +404,8 @@ void func_86900188(void) {
         sp1C = sp20 + sizeof(unk_70D3A0);
     }
 
-    func_80003B30(&D_8690A718->unk_00, temp_a1, temp_a1 + 0xBC0, 0);
-    func_80003B30(&D_8690B2F8, sp20, sp1C, 0);
+    DmaCopyAsyncRange(&D_8690A718->unk_00, temp_a1, temp_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(&D_8690B2F8, sp20, sp1C, 0);
 }
 
 unk_D_86002F58_004_000_010_024* func_86900244(unk_func_80026268_arg0* arg0) {
@@ -1143,7 +1143,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     func_80027FA0(&D_8690B378, 0);
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
-    func_8002D510();
+    MessageBank_Init();
     D_8690A678 = GetMessageBank(0x2B);
     func_86902004(arg0);
     Stage_Set(sp24);

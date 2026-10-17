@@ -51,16 +51,16 @@ s32 func_83802548(unk_D_838067F0* arg0, s32 arg1) {
 
     if (arg0->unk_0018 < 4) {
         if (arg1 == 0) {
-            var_v0 = func_80022C28(0x20, arg0->unk_0018, 0, 0);
+            var_v0 = CreateGbsBlock(0x20, arg0->unk_0018, 0, 0);
         } else {
-            var_v0 = func_80022C28(0x21, arg0->unk_0018, arg1 - 1, 0);
+            var_v0 = CreateGbsBlock(0x21, arg0->unk_0018, arg1 - 1, 0);
         }
 
         if (var_v0 != NULL) {
             while (func_80022E18(sp48, 1, var_v0) == 1) {
                 ptr->unk_02[ptr->unk_00++] = i++;
             }
-            func_80022D8C(var_v0);
+            CommitAndFreeGbsBlock(var_v0);
         }
     }
     return ptr->unk_00;
@@ -108,9 +108,9 @@ s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
 
         if (arg0->unk_0018 < 4) {
             if (arg0->unk_001C == 0) {
-                var_v0 = func_80022C28(0x20, arg0->unk_0018, 0, 0);
+                var_v0 = CreateGbsBlock(0x20, arg0->unk_0018, 0, 0);
             } else {
-                var_v0 = func_80022C28(0x21, arg0->unk_0018, arg0->unk_001C - 1, 0);
+                var_v0 = CreateGbsBlock(0x21, arg0->unk_0018, arg0->unk_001C - 1, 0);
             }
 
             if (var_v0 != NULL) {
@@ -123,7 +123,7 @@ s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
                     }
                 }
 
-                func_80022D8C(var_v0);
+                CommitAndFreeGbsBlock(var_v0);
             }
         }
     } else if (arg3 != NULL) {
@@ -654,7 +654,7 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
             break;
 
         default:
-            func_8002D600(2, arg2->unk_2692);
+            MessageBank_SetPointer_1_9(2, arg2->unk_2692);
             var_v0 = func_834023A4(&sp60, 0x100, 0x43);
             break;
     }

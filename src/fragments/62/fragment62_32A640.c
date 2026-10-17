@@ -39,9 +39,9 @@ void func_8433FE80(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.2f);
     func_8140AF24(arg0, 1.0f);
-    func_8140A2A4(arg0, func_81400A78(0x10000));
-    func_8140A2CC(arg0, func_81400A78(0x10000));
-    func_8140A3D8(arg0, func_81400A78(0x10000));
+    func_8140A2A4(arg0, RandomMod(0x10000));
+    func_8140A2CC(arg0, RandomMod(0x10000));
+    func_8140A3D8(arg0, RandomMod(0x10000));
     func_8140AD8C(arg0, 5.0f);
     func_8140BCA8(arg0, sp26 * 4);
     func_81408348(arg0);
@@ -100,7 +100,7 @@ void func_843400BC(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.5f);
     func_8140AD8C(arg0, 10.0f);
-    func_8140A52C(arg0, func_81400B00(0x1000), func_81400B00(0x1000), 0);
+    func_8140A52C(arg0, RandomRangeSigned(0x1000), RandomRangeSigned(0x1000), 0);
     func_8140BCA8(arg0, sp2E * 4);
     func_8140D530(arg0, 0x24);
     func_8140D568(arg0, 0x24);
@@ -139,16 +139,16 @@ void func_84340230(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.12f);
-    func_8140AF24(arg0, (func_81400A78(0x14) * 0.02f) + 0.25f);
-    func_8140A2A4(arg0, func_81400A78(0x10000));
-    func_8140A2CC(arg0, func_81400A78(0x10000));
+    func_8140AF24(arg0, (RandomMod(0x14) * 0.02f) + 0.25f);
+    func_8140A2A4(arg0, RandomMod(0x10000));
+    func_8140A2CC(arg0, RandomMod(0x10000));
     func_8140AD8C(arg0, 5.0f);
-    func_8140BF4C(arg0, func_81400A78(0x800) + 0xC00);
+    func_8140BF4C(arg0, RandomMod(0x800) + 0xC00);
     func_8140A3C4(arg0, func_81400B4C(0x800, 0x300));
     func_8140BFEC(arg0, func_81400B4C(0x800, 0x300));
-    func_8140A3D8(arg0, func_81400A78(0x10000));
+    func_8140A3D8(arg0, RandomMod(0x10000));
     func_8140A3EC(arg0, func_81400B4C(0x800, 0x300));
-    func_81408E90(arg0, func_81400A78(0x1E));
+    func_81408E90(arg0, RandomMod(0x1E));
     func_8140BCA8(arg0, sp26 * 2);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -164,7 +164,7 @@ void func_843403D8(unk_D_8140E720* arg0) {
             if (func_8140BDD0(arg0) != 0) {
                 func_81408328(arg0);
                 func_81408A1C(arg0);
-                func_8140BCA8(arg0, func_81400A78(0xA) + 0x1E);
+                func_8140BCA8(arg0, RandomMod(0xA) + 0x1E);
             }
             break;
 
@@ -185,7 +185,7 @@ void func_843403D8(unk_D_8140E720* arg0) {
                 arg0->unk_38.z += arg0->unk_50.z;
                 arg0->unk_50.z = 0;
                 func_81408A68(arg0);
-                arg0->unk_7C.y = -((func_81400A78(8) * 0.1f) + 0.5f);
+                arg0->unk_7C.y = -((RandomMod(8) * 0.1f) + 0.5f);
             }
             break;
 
@@ -236,26 +236,26 @@ void func_84340690(unk_D_8140E720* arg0) {
     switch (sp24) {
         case 0:
             func_8140B938(arg0, 0.12f);
-            arg0->unk_5C.y = -((func_81400A78(0xA) * 0.1f) + 0.5f);
-            func_81408E90(arg0, func_81400A78(0x28) + 0x1E);
+            arg0->unk_5C.y = -((RandomMod(0xA) * 0.1f) + 0.5f);
+            func_81408E90(arg0, RandomMod(0x28) + 0x1E);
             func_81409404(arg0, 0x1E, 0);
             func_81409514(arg0, 0x1E, 0);
             break;
 
         case 1:
             func_8140B938(arg0, 0.2f);
-            arg0->unk_5C.y = -((func_81400A78(4) * 0.1f) + 0.2f);
-            func_81408E90(arg0, func_81400B00(0x14) + 0x1E);
+            arg0->unk_5C.y = -((RandomMod(4) * 0.1f) + 0.2f);
+            func_81408E90(arg0, RandomRangeSigned(0x14) + 0x1E);
             func_81409404(arg0, 0xF, 5);
             func_81409514(arg0, 0x14, 5);
             break;
     }
 
-    func_8140A2A4(arg0, func_81400A78(0x10000));
-    func_8140A2CC(arg0, func_81400A78(0x10000));
-    func_8140AD8C(arg0, func_81400A78(0x14) + 15.0f);
-    func_8140BF4C(arg0, func_81400A78(0x300) + 0x400);
-    func_8140A3D8(arg0, func_81400A78(0x10000));
+    func_8140A2A4(arg0, RandomMod(0x10000));
+    func_8140A2CC(arg0, RandomMod(0x10000));
+    func_8140AD8C(arg0, RandomMod(0x14) + 15.0f);
+    func_8140BF4C(arg0, RandomMod(0x300) + 0x400);
+    func_8140A3D8(arg0, RandomMod(0x10000));
     func_8140A3C4(arg0, func_81400B4C(0x800, 0x400));
     func_8140A3EC(arg0, func_81400B4C(0x800, 0x400));
     func_8140BCA8(arg0, sp26 * 2);
@@ -277,11 +277,11 @@ void func_84340940(unk_D_8140E720* arg0) {
                 func_81408A1C(arg0);
                 switch (sp26) {
                     case 0:
-                        func_8140BCA8(arg0, func_81400A78(0x1E) + 0x32);
+                        func_8140BCA8(arg0, RandomMod(0x1E) + 0x32);
                         break;
 
                     case 1:
-                        func_8140BCA8(arg0, func_81400A78(0x1E) + 0x64);
+                        func_8140BCA8(arg0, RandomMod(0x1E) + 0x64);
                         break;
                 }
             }

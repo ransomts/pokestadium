@@ -1093,7 +1093,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     FRAGMENT_LOAD(fragment31);
     func_8001987C();
-    func_8002D510();
+    MessageBank_Init();
 
     D_84211B3C = GetMessageBank(0x24);
     D_84211B40 = GetMessageBank(0x25);
