@@ -1,0 +1,10 @@
+# Round 8 (2026-10-16 night): everything open except the gDisplayListHead alias pair (owner decision)
+# and func_81209078/func_81209374 (on the permuter farm). One agent per file group.
+agent-1: func_8004A89C:src/4A3E0.c func_80049DF0:src/4A3E0.c func_8004A474:src/4A3E0.c
+agent-2: func_80033D44@80:src/33FE0.c func_80034348@2905:src/33FE0.c func_80012870@60:src/12D80.c
+agent-3: func_8437B0CC@13175:src/fragments/62/fragment62_361050.c func_8437FD74@90:src/fragments/62/fragment62_361050.c
+agent-4: func_84367660@85:src/fragments/62/fragment62_351F20.c func_84302658:src/fragments/62/fragment62_2EC3C0.c func_8430506C@16:src/fragments/62/fragment62_2EC3C0.c
+agent-5: func_88805AEC@14747:src/fragments/28/fragment28_2190D0.c func_88807D04@705:src/fragments/28/fragment28_2190D0.c
+agent-6: func_88500A74@2991:src/fragments/26/fragment26.c func_8850B2D4@84:src/fragments/26/fragment26.c func_88304850@3777:src/fragments/24/fragment24_1CEA00.c
+agent-7: func_86803C6C@2375:src/fragments/14/fragment14_1462A0.c func_86905734@1952:src/fragments/15/fragment15_150AC0.c func_86A013C8:src/fragments/16/fragment16_158A00.c
+agent-8: func_8130337C@13923:src/fragments/33/fragment33.c func_838043F8@8:src/fragments/47/fragment47_2AFDB0.c func_82F04604@318:src/fragments/41/fragment41_289240.c func_83501718@60:src/fragments/44/fragment44.c func_8820BE14@1755:src/fragments/23/fragment23_1AE680.c
