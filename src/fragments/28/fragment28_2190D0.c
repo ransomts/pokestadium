@@ -3604,6 +3604,13 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // tmp at 0x44 but tmp2 no longer spilled), writing (arg1 + arg3) for (tmp) on any single rect line
 // (4687-10647), moving `y5 = arg2` (7415-8175), tmp2 after the first rect or after strlen (4695-7447),
 // empty-if sweep with arg5/y5/arg2 at every top-level statement (nothing below 4612).
+// Round 9 F1 (farm w1/2177, real 3093 uncapped): the load-bearing edit is an empty-if boundary
+// `if (!arg1) {}` AFTER the gSPTextureRectangle inside the arg6==1 block (the (arg1+2)/(y5+7) rect,
+// just before gDPSetPrimColor 255,255,255): 4600 -> 3063 (fd.sh -s; 3093 without -s). The candidate's
+// other two edits (split `tmp = arg1; tmp = tmp + arg3;` and a `(0, 0)` comma in the else-branch rect's
+// G_TX_RENDERTILE arg) change nothing on their own. The arg1 boundary splits the arg6 block so the
+// trailing gDPSetPrimColor args are sunk separately; the remaining diff is still the frame +8 (0x230 vs
+// 0x228) and the arg5-not-in-v1 rotation. Re-seed the farm from this.
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
@@ -3697,6 +3704,7 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
                             G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(arg0++, (arg1 + 2) << 2, (y5 + 7) << 2, ((tmp)-2) << 2, (tmp2 - 2) << 2, G_TX_RENDERTILE,
                             0, 0, 0x0400, 0x0400);
+        if (!arg1) {}
         gDPSetPrimColor(arg0++, 0xFF, 0xFF, 255, 255, 255, 200);
     }
 
