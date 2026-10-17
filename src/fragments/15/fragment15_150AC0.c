@@ -280,6 +280,8 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // (`(-h * SINS) + (COSS * -arg4)`) gives frame 0x108 and every memory temp in its target slot except
 // -h*sin/arg2 (0x5C/0x60, target 0x60/0x5C); operand order inside the products has no effect. The
 // term-order swap is NOT identical code once a1/a2 are used (it changes CSE discovery order).
+// 1529 -> 1386: spF0[0] grouped as `(-h * SINS) + ((COSS * -arg4) + a2)` (uopt reassociates it;
+// only ugen register choice + the -h*sin/arg2 slot swap remain).
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
@@ -298,7 +300,7 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     a2 = arg2;
 
     spF8[0] = ((-(arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
-    spF0[0] = ((-(arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
+    spF0[0] = (-(arg3 / 2) * SINS(arg5)) + ((COSS(arg5) * -arg4) + a2);
     spF8[1] = (((arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
     spF0[1] = (((arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
     spF8[2] = (-(arg3 / 2) * COSS(arg5)) + a1;
