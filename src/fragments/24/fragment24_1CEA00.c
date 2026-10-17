@@ -1335,6 +1335,18 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // real early defs of temp_s7 (`temp_s7 = arg0; ... temp_s7 += var_s1;`, `s32 temp_s7 = 0`: copy-propagated,
 // 3364) do not reproduce it. Empty-if block boundaries before `var_s6 = temp_s5->unk_CD4[...]` (any
 // variable): 3364 -> 3054 alone, no gain on top of 2834.
+// Model (agent-16): the target splits arg0's loads into three groups {rect1 lrx, temp_s7} = s6,
+// {rect1 ulx, rect2 lrx/ulx} = t2, {x0 = arg0 + 0x84} = v0 (spilled to 0x50); ours puts rect1 ulx with s6.
+// Placing `var_s6 = arg0`, temp_s7 or the uninit if anywhere else does not reproduce it. gDLH register:
+// the target gets t0 because the constant 3 already holds a3 and a0-a2 are busy; at 3364 const 3 is in a3
+// but gDLH takes a0; at 2834 const 3 is not held in a register at all and gDLH takes a3.
+// More dead ends at 2834: empty-if sweep (temp_s7/var_s1/x/var_s4/var_s6/arg0/color/temp_v1 at every
+// top-level statement: best 2818), declaration reordering (2834-2947), `x = arg0 + 0x84` as an early
+// statement (4099-8023), loop-2 for-init `x = arg0 + 0x84` (2973), loop limits as an inline
+// `var_s1 + arg0` expression (4030+), `var_s6 = (&arg0)[0]` (address taken: rect1 ulx gets its own load
+// like the target, but the frame shrinks to 0xb8: 5192), `arg0 = var_s6;` (emits a store, 4291), s16/u32
+// var_s6 or casts on the rect1 operands. Farm d1-d3 candidates (2415 in tree) are not equivalent C
+// (frame 0xc8, `color + color` in cases 11-15).
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
