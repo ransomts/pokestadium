@@ -455,6 +455,13 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
 // temp copy for the loop's x. Removing tmp (literal 0xC) or temp_ft0 (use arg3) changes the
 // code a lot; both copies are real. The farm's output-51 is identical to base.c.
 // Sibling func_8340144C (fragment43) is a matched simpler version of the loop.
+// Round 8 (the trick that matched func_838043F8/func_82F04604: an unused temp slot is reserved
+// where a CSE'd expression FIRST appears, even in a dead assignment like `i = a + b;`): dead
+// `i = <expr>;` before tmp2 for 1024.0f / arg5, spF4 + 4, temp_ft3 + 4, sp100 - i, i * temp_ft0,
+// temp_ft0 - 1, (s16)arg1, arg1 + arg2 change nothing; `i = arg2 + spE8;` adds a slot (frame 0x118,
+// x 0xa0). Removing a loop ROUND_MAX puts x at 0x90 but shifts named slots. An explicit guard +
+// do-while / while loop, reordering the four pre-loop ROUND_MAX lines or sp100/temp_ft0/tmp, or
+// moving the early return first: no change to x's slot.
 #ifdef NON_MATCHING
 void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
