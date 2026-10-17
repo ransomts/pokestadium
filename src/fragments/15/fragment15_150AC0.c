@@ -238,86 +238,9 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-#ifdef NON_MATCHING
-// func_86905734: score 1952 (diff.py), frame 0x108 matches. Twin of func_86905F24 (matched) with
-// (+-arg3/2, -arg4) corners instead of (+-12, 56). All remaining diffs are in the corner math:
-// FPU regalloc + compiler-temp slots, everything after func_8001E6E8 is only temp-slot offsets.
-// Target shape (from asm): (f32)arg1 is a uopt MEMORY temp at sp+0x64 (stored, reloaded, then
-// spilled to 0x30), so the source most likely used arg1/arg2 directly (no a1/a2 copy). Memory
-// temps: 0x64 (f32)arg1, 0x60 -h*sin, 0x5C (f32)arg2, 0x58 h*cos, 0x54 h*sin, 0x50 (f32)h,
-// 0x3C cos*-arg4; register temps: cos fv0, sin fv1, (f32)-h fa0, (f32)-arg4 ft4, -h*cos fa1,
-// sin*-arg4 ft5. Slots 0x38 and 0x40-0x4C unused.
-// Dead ends (round 7):
-//  - arg1/arg2 used directly + pad[4] (frame ok): score 2552, 61 diff lines; gets the arg1 memory
-//    temp right but -h*cos becomes a memory temp and cos*-arg4 a register (swapped vs target),
-//    temps land 0x10 too low (0x3C..0x54).
-//  - commutative operand order / add order in any line: IDO normalizes, identical code.
-//  - named f32 locals for any 1-2 of the 12 subexpressions (66 pairs tried, a1/a2 assigned to
-//    cos/sin/-h/-arg4/products/arg1/arg2): best is this draft (a1=arg1, a2=arg2), 1952.
-//  - s32 w = arg3/2 (or -(arg3/2)), f32 x/y for -h/-arg4, c/s for COSS/SINS: 4000+.
-//  - mixing a1 and arg1 per line: copy-propagated, identical to the a1 draft.
-// Looks like a temp-priority problem; candidate for the permuter farm (use --stack-diffs).
-// Round 8 (agent-7): stack accounting. Target: named locals 0x68..0x107 (0xF8..0xE0 used, 0x100-0x107
-// and the gfx _g homes unused), temp area 0x30..0x67 = 14 slots (memory temps 0x50-0x64, spills
-// 0x30/0x34/0x3C, 0x38 and 0x40-0x4C never touched). This draft: named block 0x10 bigger (the four
-// sp64/sp60/sp5C/tmp1 slots) and temp area 0x10 smaller, so every temp is 0x10 low. Dropping the four
-// named (arg1/arg2 direct) gives frame 0xF8 (3330): the target has 4 more (unused) temp slots that we
-// do not generate. Statement order changes the temp count (all spF8 lines first: frame 0xE8, 8915);
-// block-scoped f32 x0/x1/y0/c/s: frame 0x118, 6024. Farm best (output-1298) wraps the gfx code in
-// do/while (1427 in fd.sh), no insight into the corner math. Full rotation for corners 2/3
-// (`- SINS * 0.0f`, `COSS * 0.0f +`) folds away: identical code, no extra temp slots.
-// Round 8 pass 2 (agent-12): the twin func_86905F24 (matched, same tail) also has 4 allocated but
-// unused temp slots (0x38-0x44) below its 2 memory temps, so the extra slots come from the corner
-// math, not the gfx tail. Using arg1/arg2 directly (a1/a2 declared, unused; frame 0xF8, 3330) gives
-// the target memory-temp ORDER (arg1, -h*sin, arg2, h*cos, h*sin, (f32)h) but makes -h*cos a memory
-// temp where the target spills cos*-arg4 instead. New dead ends: every 8-byte set of named locals
-// above spF8 from {f32 a1/a2, s32/s16/f32 w=arg3/2, f32 mw=-(arg3/2), s32 h=arg4, s32/f32 y=-arg4,
-// f32 c/s, s32 idx, u16 ang}: frames 0xE8-0x100, never 0x108 (best 2230 = f32 a1 + s32 h, frame
-// 0x100, same code as this draft); dead `a1 = E1; a2 = E2;` at the top for 67 pairs of cos/sin/h/
-// -h/-arg4/arg1/arg2/products: no gain; 10 statement orders of the 8 corner lines: all worse (frame
-// changes with order, 0xE8-0x100).
-// 1952 -> 1529: the twin's a1/a2 form with the two spF0 product terms written sin-term first
-// (`(-h * SINS) + (COSS * -arg4)`) gives frame 0x108 and every memory temp in its target slot except
-// -h*sin/arg2 (0x5C/0x60, target 0x60/0x5C); operand order inside the products has no effect. The
-// term-order swap is NOT identical code once a1/a2 are used (it changes CSE discovery order).
-// 1529 -> 1386: spF0[0] grouped as `(-h * SINS) + ((COSS * -arg4) + a2)` (uopt reassociates it;
-// only ugen register choice + the -h*sin/arg2 slot swap remain).
-// What is left (seen with `cc -S`): uopt's FPR colouring now equals the target (-h f12, cos f0,
-// -h*cos f14, sin f2, -arg4 f16, sin*-arg4 f18), as do the memory temps. Remaining: (1) target ugen
-// has 2 more int temp allocations before -h (its t-reg rotation is shifted: -h t8, arg4 t9, -arg4 t6,
-// arg1 t0, arg2 t1), (2) the target reloads (f32)arg1/(f32)arg2 from their temp slots after the
-// store, (3) slot order -h*sin 0x60 / arg2 0x5C. The 4 extra temp slots (frame 0x108) appear only
-// when -h*SINS is written before COSS*-arg4 in spF0[0]. Tried without gain: every grouping/order of
-// the three addends of spF0[0]/spF0[1] and of spF8[0]/spF8[1], product operand swaps (only spF8[0]'s
-// first product matters, swapping it is worse), a1/a2 assignment placement (any non-uniform use of a1
-// or a2 turns them into real variables, frame 0xF8), dead stores to a1/a2, casts on h/-arg4/arg5
-// index, statement order of corners 2/3, the twin's literal style (trig first in products).
-// Round 8 pass 4 (agent-15), cc -S view: ugen int temps rotate t6,t7,t8,t9 (ours: -h t6, arg4 t7, -arg4
-// t8, arg1 t9). The target's -h t8 / arg4 t9 / -arg4 t6 is exactly what we get when the (f32)arg1 and
-// (f32)arg2 conversions are emitted FIRST (blocking a1/a2 copy propagation with `arg1 = arg2 = 0;`
-// after `a2 = arg2;` gives that rotation, but a1/a2 then become register variables with home stores,
-// frame 0xF0, 4557). The target also reloads (f32)arg1 from 0x64 into a different FPR right after the
-// store, i.e. its def and first use are separate ugen statements. So the target seems to evaluate the
-// two conversions as temps before the corner math, but every way tried to get that sinks them into
-// the first use: goto-label block boundary anywhere between `a1 = arg1` and the corners (2446-8285,
-// uopt still sinks across the boundary), a1/a2 assigned before the last call (frame changes, still
-// sunk), block-scoped a1/a2 with or without blocking (1758/4325, homes at 0xCC), redundant
-// `a1 = arg1;` re-assignments between corner lines (3906 or identical), dead stores `spF8[0] = a1;`
-// (removed, identical), a1-first trees `(a1 + P) - Q` (converts a1 first but changes the FP ops,
-// 3136-3494), `(P - Q) - -a1` 2311, named s32/s16/f32 h = arg3/2 6456+. Farm q3 output-1501 (1231 in
-// fd.sh) only wins through the gfx comma trick's stack-offset noise, not the corner math.
-// Round 9 F1 (farm w3/1625, real 1355): four edits together, all required: (1) `f32 cos2` declared
-// after a2, `cos2 = COSS(arg5);` between spF8[0] and spF0[0], used only in spF0[0]'s product;
-// (2) `s16 w2` declared first, `w2 = arg3;` before the first func_8001E680, used for the second
-// call's `w2 << 5`; (3) empty-if boundary `if (!spF0) {}` after gDPSetTexturePersp(G_TP_NONE);
-// (4) decl order `s16 w2; f32 a1; f32 a2; f32 cos2;`. 1386 -> 1355 (any subset is 2022-2137; the
-// boundary alone with w2 is 2022). Remaining: the t-register rotation and the (f32)arg1/(f32)arg2
-// reloads (see cc -S notes above). Beware stale .o on NFS: always rm the .o before scoring.
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
-    s16 w2;
-    f32 a1;
-    f32 a2;
-    f32 cos2;
+    s32 a1;
+    s32 a2;
     s16 spF8[4];
     s16 spF0[4];
     unk_D_80068BB0* spEC;
@@ -333,8 +256,7 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     a2 = arg2;
 
     spF8[0] = ((-(arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
-    cos2 = COSS(arg5);
-    spF0[0] = (-(arg3 / 2) * SINS(arg5)) + ((cos2 * -arg4) + a2);
+    spF0[0] = ((-(arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
     spF8[1] = (((arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
     spF0[1] = (((arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
     spF8[2] = (-(arg3 / 2) * COSS(arg5)) + a1;
@@ -347,9 +269,8 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPViewport(gDisplayListHead++, (u32)spE0 & 0x1FFFFFFF);
 
     guOrtho(spE4, 0.5f, spEC->width - 0.5f, spEC->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    w2 = arg3;
     func_8001E680(&spE8[0], spF8[0], spF0[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spE8[1], spF8[1], spF0[1], -1, w2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    func_8001E680(&spE8[1], spF8[1], spF0[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
     func_8001E680(&spE8[2], spF8[2], spF0[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
     func_8001E680(&spE8[3], spF8[3], spF0[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
@@ -366,7 +287,6 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_FOG | G_LIGHTING);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
-    if (!spF0) {}
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetCombineLERP(gDisplayListHead++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0,
                       COMBINED, 0, 0, 0, COMBINED);
@@ -387,10 +307,6 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
 
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
-#else
-void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/15/fragment15_150AC0/func_86905734.s")
-#endif
 
 void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
