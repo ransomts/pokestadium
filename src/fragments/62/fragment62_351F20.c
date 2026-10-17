@@ -40,6 +40,19 @@ static Vtx D_84389810[] = {
 // Dead ends this round for the swap: sp128 * arg4 operand order, named 2*a3 temps, extra tmpN for any
 // v8/v9 component, (a3_y + a3_y), moving the if, reordering the dead copies, indexed vertex writes
 // (1466), loop forms of the copy loop, named call-arg temps, block-scoped pads.
+// Round 8 (agent 4) model: a3_x/y/z, 2*a3_x/y/z and the sp128 reloads are colored by uopt
+// first-fit over [f0, f2, f12, f14, f16, f18] in priority order. The target colors a3_z before
+// 2*a3_x and 2*a3_y (a3_z=f12, then f14/f16/f18); here 2*a3_y and 2*a3_x win (f12/f14) and a3_z
+// gets f16. Evidence: "if (a3_y) {}" right before guTranslate lowers a3_y below a3_z (a3_z -> f2).
+// Changing where ranges END does not change the order (statement permutations inside vertex
+// blocks, v9 x/y/z order, dropping tmp1). New dead ends: a fresh variable for the late a3_x, y
+// or z (it is colored callee-saved, fs0, 5600-9200); moving "if (a3_z) {}" before the a3_y/a3_z
+// assignments or after v0/v1/v2/v3 (5700-13500; after tmp1 is identical); a second if on
+// a3_x/y/z before/after guTranslate (120-695); if (sp84/sp78/sp128) there (identical);
+// (a3_z + a3_z), 2.0f * a3_z, "* 2", "* 2.0" forms; sp130 *= arg4 forms (1390); permuting the
+// x/y/z lines of any vertex (105-666); dead tmp2 copies of 2*a3_z / v2.z / v6.z after a3_z, the
+// if or tmp1; inlining the six 1.2/0.2 expressions (no sp8C..sp78, pad4[13]): 279, the spills
+// land 3 slots low and the v2/v3 adds flip operands. Farm: 750k iterations, best 85.
 Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     s32 i;
     Vtx* sp1E8;
