@@ -83,9 +83,9 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     GbsGetPlayerMoney(&sp2A);
 
     if (sp2A & 1) {
-        func_8004AF24(1);
+        Music_SetPanMode(1);
     } else {
-        func_8004AF24(0);
+        Music_SetPanMode(0);
     }
 
     if (sp2A & 2) {

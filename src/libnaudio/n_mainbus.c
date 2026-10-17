@@ -55,12 +55,12 @@ Acmd* n_alMainBusPull(s32 sampleOffset, Acmd* p) {
     if (gAudioProcessChannelsFlag != 0) {
         for (i = 0; i < 2; i++) {
             aClearBuffer(ptr++, 0x7C0, 0x2E0);
-            n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(D_800FCF28[i]->unk_000 + D_800FCF30[i]));
-            n_aLoadBuffer(ptr++, 0x170, 0x930, osVirtualToPhysical(D_800FCF28[i]->unk_000 + D_800FCF30[i]));
+            n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(gAudioChannelBuffer[i]->unk_000 + gAudioChannelReadPos[i]));
+            n_aLoadBuffer(ptr++, 0x170, 0x930, osVirtualToPhysical(gAudioChannelBuffer[i]->unk_000 + gAudioChannelReadPos[i]));
 
-            D_800FCF30[i] += 0xB8;
-            if (D_800FCF30[i] >= 0x8A0) {
-                D_800FCF30[i] = 0;
+            gAudioChannelReadPos[i] += 0xB8;
+            if (gAudioChannelReadPos[i] >= 0x8A0) {
+                gAudioChannelReadPos[i] = 0;
             }
 
             aMix(ptr++, 0, 0x7fff, N_AL_AUX_L_OUT, N_AL_MAIN_L_OUT);

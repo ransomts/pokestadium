@@ -895,11 +895,11 @@ typedef struct TextObject {
 
 extern Gfx gPrefDL_Fill[];
 
-extern s32 D_80078E60;
-extern s32 D_80078E64;
-extern s32 D_80078E68;
+extern s32 gMusicChannel2MasterVolume;
+extern s32 gMusicChannel1MasterVolume;
+extern s32 gMusicTransitionSfxId;
 extern u8 D_8007840C;
-extern s32 D_80078E70;
+extern s32 gMusicHandle;
 extern s32 D_80078ECC;
 extern u8 D_80078ED0;
 extern u8 D_80078390[];
@@ -909,7 +909,7 @@ extern s32 D_80078E74;
 extern u8 D_80078E78;
 extern u8 D_80078E7C;
 extern u8 D_80078E80;
-extern s32 D_80078EC8;
+extern s32 gMusicFadeDuration;
 extern s32 D_80078ED4;
 extern s32 D_80078ED8;
 extern s32 D_80078EDC;

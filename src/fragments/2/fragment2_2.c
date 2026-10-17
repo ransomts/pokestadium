@@ -1431,7 +1431,7 @@ s32 GetCurrentOptionCount(void) {
         } else {
             sp1C = 4;
         }
-        func_8004AF44(4);
+        Music_HandleStateChange(4);
         D_8780FE01 = 0;
     } else if (D_8780FC92 != 0) {
         sp1C = 1;
@@ -1918,33 +1918,33 @@ s32 func_87804FD4(void) {
             } else if (D_8780FC92 == 0) {
                 if (D_8780FC94 != 0) {
                     if ((D_8780FC9C->buttonPressed & 0x800) || ((sp67 == 1) && (D_8780FC9A == 0))) {
-                        func_8004AF44(2);
+                        Music_HandleStateChange(2);
                         D_8780FC5C--;
                         if (D_8780FC5C < 0) {
                             D_8780FC5C = D_8780FC5D - 1;
                         }
                     } else if ((D_8780FC9C->buttonPressed & 0x400) || ((sp66 == 1) && (D_8780FC9B == 0))) {
-                        func_8004AF44(2);
+                        Music_HandleStateChange(2);
                         D_8780FC5C++;
                         if (D_8780FC5C >= D_8780FC5D) {
                             D_8780FC5C = 0;
                         }
                     } else if (D_8780FC9C->buttonPressed & 0x8000) {
                         if (D_8780FC5C == 0) {
-                            func_8004AF44(0);
+                            Music_HandleStateChange(0);
                             D_8780FC94 = 0;
                         } else if (D_8780FC5C == 1) {
-                            func_8004AF44(3);
+                            Music_HandleStateChange(3);
                             D_8780FC92 = 1;
                             D_8780FE01 = 1;
                         }
                     } else if (D_8780FC9C->buttonPressed & 0x1000) {
-                        func_8004AF44(0);
+                        Music_HandleStateChange(0);
                         D_8780FC94 = 0;
                         D_8780FC5C = 0;
                     }
                 } else if ((Fragment2_1_GetResult() == -2) && (D_8780FC9C->buttonPressed & 0x1000)) {
-                    func_8004AF44(1);
+                    Music_HandleStateChange(1);
                     D_8780FC94 = 1;
                     D_8780FC5D = 2;
                 }
@@ -1997,7 +1997,7 @@ s32 func_87804FD4(void) {
                     }
                 }
 
-                if ((D_8780FC4C == 0) || ((D_8780FC4C == 1) && (D_8780FCA6 == 0) && (func_800484C0(2) == 0))) {
+                if ((D_8780FC4C == 0) || ((D_8780FC4C == 1) && (D_8780FCA6 == 0) && (Music_GetState(2) == 0))) {
                     for (i = 0; i < 4; i++) {
                         if (D_8780FDFC[i] == 1) {
                             break;

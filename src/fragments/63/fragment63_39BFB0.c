@@ -572,7 +572,7 @@ void func_84B08858(unk_D_84B25A58* arg0, s32 arg1) {
             if (arg1 == temp_s5->unk_01C[j].unk_25) {
                 temp_v0 = (i * 3) + j;
                 arg0->unk_2C[temp_v0] = 1;
-                func_8004DF94(0x0110000B, temp_v0 + 1, 0);
+                PlayUISfx(0x0110000B, temp_v0 + 1, 0);
             }
         }
     }
@@ -594,7 +594,7 @@ void func_84B08954(unk_D_84B25A58* arg0, s32 arg1) {
                     if (arg1 == temp_s5->unk_01C[x].unk_25) {
                         temp_v0 = (i * 6) + (j * 3) + x;
                         arg0->unk_2C[temp_v0] = 1;
-                        func_8004DF94(0x0110000B, temp_v0 + 1, 1);
+                        PlayUISfx(0x0110000B, temp_v0 + 1, 1);
                     }
                 }
             }
@@ -704,7 +704,7 @@ void func_84B091A0(unk_D_84B25A58* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
-        func_8004DF94(0x01100009, 0, 0);
+        PlayUISfx(0x01100009, 0, 0);
     }
 
     if (arg1 < 0xB) {
@@ -724,7 +724,7 @@ void func_84B09268(unk_D_84B25A58* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
-        func_8004DF94(0x01100009, 0, 0);
+        PlayUISfx(0x01100009, 0, 0);
     }
 
     if (arg1 < 0xB) {
@@ -745,7 +745,7 @@ void func_84B09268(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B09354(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x0110000A, 0, 0);
+        PlayUISfx(0x0110000A, 0, 0);
     }
 
     if (arg1 < 0x1A) {
@@ -759,7 +759,7 @@ void func_84B09354(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B09444(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x0110000A, 0, 0);
+        PlayUISfx(0x0110000A, 0, 0);
     }
 
     if (arg1 < 0x1A) {
@@ -773,7 +773,7 @@ void func_84B09444(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B09534(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x0110000A, 0, 0);
+        PlayUISfx(0x0110000A, 0, 0);
     }
 
     if (arg1 < 0x15) {
@@ -787,7 +787,7 @@ void func_84B09534(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B0962C(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x0110000A, 0, 0);
+        PlayUISfx(0x0110000A, 0, 0);
     }
 
     if (arg1 < 0x15) {

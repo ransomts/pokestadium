@@ -588,7 +588,7 @@ void func_84B01DBC(void) {
     }
 
     func_84B0D9D8(&D_84B26640.unk_00, &gBattleGraphics.unk_0008[0x1A]);
-    func_8004DF94(0x01100013, 0, 0);
+    PlayUISfx(0x01100013, 0, 0);
 
     while (D_84B25A58.unk_00 != 0) {
         func_84B01AA0();
@@ -640,7 +640,7 @@ void func_84B0204C(void) {
         GraphNode_Reset(&gBattleGraphics.unk_0008[i]);
     }
 
-    func_8004DF94(0x01100017, 0, 0);
+    PlayUISfx(0x01100017, 0, 0);
 
     for (j = 0; j < 16; j++) {
         Game_UpdateInputs();
@@ -770,7 +770,7 @@ s32 func_84B02474(void) {
     }
 
     func_84B01C2C();
-    func_8004DF94(0x0110000F, 0, 0);
+    PlayUISfx(0x0110000F, 0, 0);
     func_84B0F950(&D_84B26640.unk_1C, 9);
     func_84B0F950(&D_84B26640.unk_28, 5);
 
@@ -796,7 +796,7 @@ s32 func_84B02474(void) {
 
     func_84B0D718(&D_84B26080);
     func_84B0D718(&D_84B25AC0);
-    func_8004DF94(0x0110000D, 0, 0);
+    PlayUISfx(0x0110000D, 0, 0);
     func_84B0204C();
     func_84B021FC();
 
@@ -812,7 +812,7 @@ s32 func_84B025D0(void) {
 
     func_84B0D718(&D_84B26080);
     func_84B0D718(&D_84B25AC0);
-    func_8004DF94(0x0110000D, 0, 0);
+    PlayUISfx(0x0110000D, 0, 0);
     func_84B0204C();
     func_84B021FC();
 
@@ -956,7 +956,7 @@ s32 func_84B02984(void) {
             }
 
             func_84B0D718(&D_84B25AC0);
-            func_8004DF94(0x0110000D, 0, 0);
+            PlayUISfx(0x0110000D, 0, 0);
             func_84B0204C();
             func_8000D278(0x10);
 
@@ -973,13 +973,13 @@ s32 func_84B02984(void) {
             sp24 = 3;
         } else if (func_84B022A0() == 1) {
             func_84B0D718(&D_84B25AC0);
-            func_8004DF94(0x0110000D, 0, 0);
+            PlayUISfx(0x0110000D, 0, 0);
             func_84B0204C();
             func_84B021FC();
             gBattleContext.unk_11F6 |= 0x41;
         } else {
             func_84B0D718(&D_84B25AC0);
-            func_8004DF94(0x0110000D, 0, 0);
+            PlayUISfx(0x0110000D, 0, 0);
             func_84B0204C();
             func_8000D278(0x50);
             gBattleContext.unk_0003++;
@@ -1039,7 +1039,7 @@ s32 func_84B02C40(void) {
         GbsSyncBank(2);
         func_84B0D718(&D_84B26080);
         func_84B0D718(&D_84B25AC0);
-        func_8004DF94(0x0110000D, 0, 0);
+        PlayUISfx(0x0110000D, 0, 0);
         func_84B0204C();
         func_84B021FC();
         gBattleContext.unk_11F6 |= 5;
@@ -1064,7 +1064,7 @@ s32 func_84B02C40(void) {
 
         func_84B0D718(&D_84B26080);
         func_84B0D718(&D_84B25AC0);
-        func_8004DF94(0x0110000D, 0, 0);
+        PlayUISfx(0x0110000D, 0, 0);
         func_84B0204C();
         func_84B021FC();
     }

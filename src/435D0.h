@@ -5,15 +5,15 @@
 #include "src/373A0.h"
 
 void Audio_ProcessMusic(void);
-void func_80042A2C(u8 arg0);
+void Audio_SelectTrack(u8 arg0);
 s32 Music_PlayTrack(u16 arg0);
-void func_80042B8C(u32 arg0);
-void func_80042D90(u32 arg0);
-u8 func_80042F20(u32 arg0);
-u8 func_800430AC(u32 arg0);
-u8 func_80043134(u32 arg0);
+void Audio_ProcessChannel(u32 arg0);
+void Audio_ProcessCommand(u32 arg0);
+u8 Audio_Command_End(u32 arg0);
+u8 Audio_Command_SetAddress(u32 arg0);
+u8 Audio_Command_Jump(u32 arg0);
 u8 func_800431DC(u32 arg0);
-u8 func_800431FC(u32 arg0);
+u8 Audio_Command_SetEnvelope(u32 arg0);
 u8 func_8004327C(u32 arg0);
 u8 func_80043330(u32 arg0);
 u8 func_80043364(u32 arg0);

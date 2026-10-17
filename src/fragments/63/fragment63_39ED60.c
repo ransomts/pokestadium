@@ -224,7 +224,7 @@ void func_84B0B05C(unk_D_84B25A90* arg0) {
     s32 i;
 
     if (arg0->unk_01 == 0) {
-        func_8004DF94(0x0110000D, 0, 0);
+        PlayUISfx(0x0110000D, 0, 0);
     }
 
     arg0->unk_01++;
@@ -281,7 +281,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
 
     if (var_s3 < gBattleContext.unk_0003 - 1) {
         if ((arg0->unk_01 % var_a0) == 0) {
-            func_8004DF94(0x0110000E, var_s3 + 1, 0);
+            PlayUISfx(0x0110000E, var_s3 + 1, 0);
             GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;
@@ -293,7 +293,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
         }
     } else if (var_s3 == gBattleContext.unk_0003 - 1) {
         if (var_a1 == (arg0->unk_01 - (var_s3 * var_a0))) {
-            func_8004DF94(0x0110000F, 0, 0);
+            PlayUISfx(0x0110000F, 0, 0);
             GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;

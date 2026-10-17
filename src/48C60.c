@@ -57,25 +57,25 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         arg2 = 0x97;
     }
     arg2--;
-    if (arg2 < (D_800FC6FC->num_files - 1)) {
-        romAddr = ((u32*)D_800FC6FC)[arg2 + 3];
-        size = ((u32*)D_800FC6FC)[arg2 + 4] - romAddr;
+    if (arg2 < (gMoveSoundArchive->num_files - 1)) {
+        romAddr = ((u32*)gMoveSoundArchive)[arg2 + 3];
+        size = ((u32*)gMoveSoundArchive)[arg2 + 4] - romAddr;
     } else {
-        romAddr = ((u32*)D_800FC6FC)[arg2 + 3];
-        size = D_800FC6E8->seqArray[3].offset - romAddr;
+        romAddr = ((u32*)gMoveSoundArchive)[arg2 + 3];
+        size = gMoveSoundSeqInfo->seqArray[3].offset - romAddr;
     }
-    func_8004ADB0(romAddr, D_800FC6DC, size);
-    func_80050B40(D_800FC6DC, D_800FC6B0[slot], 0x3E8);
-    RemapBankPointers(D_800FC6B0[slot]);
+    func_8004ADB0(romAddr, gMoveSoundTempBuffer, size);
+    DecompressData(gMoveSoundTempBuffer, gMoveSoundBankData[slot], 0x3E8);
+    RemapBankPointers(gMoveSoundBankData[slot]);
     if (flag) {
         arg2 = 0x97;
     }
-    size = D_800FC700->seqArray[arg2].len;
+    size = gMoveSoundSeqTable->seqArray[arg2].len;
     if (size & 1) {
         size++;
     }
-    func_8004ADB0((u32)D_800FC700->seqArray[arg2].offset, D_800FC6DC, size);
-    func_80050B40(D_800FC6DC, gMoveSoundTables[slot], 0x44C);
+    func_8004ADB0((u32)gMoveSoundSeqTable->seqArray[arg2].offset, gMoveSoundTempBuffer, size);
+    DecompressData(gMoveSoundTempBuffer, gMoveSoundTables[slot], 0x44C);
 
 found:
     switch (arg3) {
@@ -108,7 +108,7 @@ found:
     gSoundDurationScale[0] = entry[1];
 
 block_38:
-    seq = D_800FC6B0[slot];
+    seq = gMoveSoundBankData[slot];
     temp_v0 = *seq;
     if (!flag && (arg2 >= temp_v0)) {
         return 0;
@@ -122,7 +122,7 @@ block_38:
         }
         return 0;
     }
-    temp_v0 = MusStartSoundEffect(D_800FC6AC, seq, arg2, 0x80, 0x80, -1);
+    temp_v0 = MusStartSoundEffect(gMoveSoundBankBase, seq, arg2, 0x80, 0x80, -1);
     gCurrentSoundHandle = temp_v0;
     return temp_v0;
 }

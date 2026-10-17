@@ -3,11 +3,11 @@
 #include "src/libnumus/player.h"
 #include "src/3D140.h"
 
-s32 D_80078E60 = 0;
-s32 D_80078E64 = 0;
-s32 D_80078E68 = 0;
+s32 gMusicChannel2MasterVolume = 0;
+s32 gMusicChannel1MasterVolume = 0;
+s32 gMusicTransitionSfxId = 0;
 
-void func_8004AE90(s32 arg0, u32 arg1) {
+void Music_SetMasterVolumeLevel(s32 arg0, u32 arg1) {
     s32 var_a1;
 
     switch (arg1) {
@@ -41,35 +41,35 @@ void func_8004AE90(s32 arg0, u32 arg1) {
     }
 
     if (arg0 & 1) {
-        D_80078E64 = var_a1;
+        gMusicChannel1MasterVolume = var_a1;
     }
 
     if (arg0 & 2) {
-        D_80078E60 = var_a1;
+        gMusicChannel2MasterVolume = var_a1;
     }
 
     MusSetMasterVolume(arg0, var_a1);
 }
 
-void func_8004AF24(s32 arg0) {
+void Music_SetPanMode(s32 arg0) {
     MusSetPanMode(arg0);
 }
 
-void func_8004AF44(u32 arg0) {
+void Music_HandleStateChange(u32 arg0) {
     switch (arg0) {
         case 1:
-            MusSetDurationScale(D_80078E68, 3);
-            MusSetMasterVolume(2, D_80078E60 >> 1);
-            MusSetMasterVolume(1, D_80078E64 / 3);
-            D_80078E68 = PlaySoundEffect(0x23);
-            MusSetVolumeScale(D_80078E68, 0xFF);
+            MusSetDurationScale(gMusicTransitionSfxId, 3);
+            MusSetMasterVolume(2, gMusicChannel2MasterVolume >> 1);
+            MusSetMasterVolume(1, gMusicChannel1MasterVolume / 3);
+            gMusicTransitionSfxId = PlaySoundEffect(0x23);
+            MusSetVolumeScale(gMusicTransitionSfxId, 0xFF);
             break;
 
         case 0:
-            MusSetDurationScale(D_80078E68, 3);
-            MusSetMasterVolume(2, D_80078E60);
-            MusSetMasterVolume(1, D_80078E64);
-            D_80078E68 = PlaySoundEffect(0x24);
+            MusSetDurationScale(gMusicTransitionSfxId, 3);
+            MusSetMasterVolume(2, gMusicChannel2MasterVolume);
+            MusSetMasterVolume(1, gMusicChannel1MasterVolume);
+            gMusicTransitionSfxId = PlaySoundEffect(0x24);
             break;
 
         case 2:
@@ -81,14 +81,14 @@ void func_8004AF44(u32 arg0) {
             break;
 
         case 4:
-            MusSetDurationScale(D_80078E68, 3);
-            MusSetMasterVolume(2, D_80078E60);
-            MusSetMasterVolume(1, D_80078E64);
+            MusSetDurationScale(gMusicTransitionSfxId, 3);
+            MusSetMasterVolume(2, gMusicChannel2MasterVolume);
+            MusSetMasterVolume(1, gMusicChannel1MasterVolume);
             break;
     }
 }
 
-void func_8004B094(u32 arg0) {
+void Music_StartVolumeFade(u32 arg0) {
     u32 temp_v0;
 
     if (arg0 == 0) {
@@ -97,8 +97,8 @@ void func_8004B094(u32 arg0) {
 
     temp_v0 = osSetIntMask(1);
 
-    gMusicChannel2Volume = D_80078E60;
-    gMusicChannel1Volume = D_80078E64;
+    gMusicChannel2Volume = gMusicChannel2MasterVolume;
+    gMusicChannel1Volume = gMusicChannel1MasterVolume;
     gMusicChannel2Step = gMusicChannel2Volume / arg0;
     gMusicChannel1Step = gMusicChannel1Volume / arg0;
     mus_sound_effect_blocked = 1;
@@ -106,7 +106,7 @@ void func_8004B094(u32 arg0) {
     osSetIntMask(temp_v0);
 }
 
-void func_8004B154(void) {
+void Music_EndVolumeFade(void) {
     u32 temp_v0 = osSetIntMask(1);
 
     mus_sound_effect_blocked = 0;
@@ -115,6 +115,6 @@ void func_8004B154(void) {
 
     osSetIntMask(temp_v0);
 
-    MusSetMasterVolume(2, D_80078E60);
-    MusSetMasterVolume(1, D_80078E64);
+    MusSetMasterVolume(2, gMusicChannel2MasterVolume);
+    MusSetMasterVolume(1, gMusicChannel1MasterVolume);
 }

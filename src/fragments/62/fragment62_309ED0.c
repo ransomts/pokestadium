@@ -569,7 +569,7 @@ void func_843208B0(void) {
 
     if (D_84390240.unk_00->unk_34 == 0) {
         func_84301F80(D_84390010[D_84390240.unk_00->unk_2C]);
-        func_80048014();
+        ResetSoundDurations();
         func_8431F680();
 
         sp24 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654.unk_38;
@@ -599,7 +599,7 @@ void func_843208B0(void) {
         sp20 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654.unk_38;
 
         func_84301F80(D_84390010[D_84390240.unk_00->unk_2C]);
-        func_80048014();
+        ResetSoundDurations();
         func_8431F680();
 
         D_84390240.unk_00->unk_20 = 0;
@@ -621,7 +621,7 @@ s32 func_84320A8C(void) {
 
     if (((temp_v0->unk_4D & 0x80) || (temp_v0->unk_15 & 0x18)) && ((temp_v0->unk_5A & 0xF0) == 0xF0)) {
         func_84301F80(D_84390010[D_84390240.unk_00->unk_2C]);
-        func_80048014();
+        ResetSoundDurations();
         func_8431F680();
         func_8432079C(3);
         D_84390240.unk_00->unk_20 = 0;
@@ -635,14 +635,14 @@ s32 func_84320A8C(void) {
 void func_84320B48(void) {
     if ((D_84390240.unk_00->unk_34 == 0) && ((D_84390200->unk_654.unk_38.unk_5A & 0xF0) != 0xF0)) {
         func_84301F80(D_84390010[D_84390240.unk_00->unk_2C]);
-        func_80048014();
+        ResetSoundDurations();
         func_8431F680();
         func_8432079C(3);
         D_84390240.unk_00->unk_20 = 0;
         D_84390240.unk_00->unk_14 = 0;
     } else if (func_84320A8C() == 0) {
         func_84301F80(D_84390010[D_84390240.unk_00->unk_2C]);
-        func_80048014();
+        ResetSoundDurations();
         func_8431F680();
         D_84390240.unk_00->unk_20 = 0;
         D_84390240.unk_00->unk_14 = 0;
@@ -883,7 +883,7 @@ s32 func_84321594(unk_D_84390010* arg0) {
 void func_84321698(unk_D_86002F34_00C* arg0) {
     if (func_8431F690(D_84390010[!D_84390240.unk_00->unk_2C]) == 0) {
         func_84306200(D_84390010[!D_84390240.unk_00->unk_2C], 0x1800);
-        func_80048014();
+        ResetSoundDurations();
         func_8432E9D8(2);
         func_8431AE5C();
         RemovePlayer(func_84308D98(D_84390010[!D_84390240.unk_00->unk_2C]));
@@ -940,7 +940,7 @@ void func_84321860(unk_D_86002F34_00C* arg0) {
 void func_84321A40(unk_D_86002F34_00C* arg0) {
     func_8431CEF0(arg0, D_84390010[!D_84390240.unk_00->unk_2C], 1);
     if (func_8431ADAC(0x19) != 0) {
-        func_80048014();
+        ResetSoundDurations();
         D_84390240.unk_00->unk_20++;
     }
 }
@@ -999,7 +999,7 @@ void func_84321B54(unk_D_86002F34_00C* arg0) {
         } else {
             func_84321208(arg0);
         }
-        func_80048014();
+        ResetSoundDurations();
     }
 }
 
@@ -1146,7 +1146,7 @@ void func_84322284(UNUSED unk_D_86002F34_00C* arg0) {
         } else {
             D_84390240.unk_00->unk_40 = D_84390240.unk_00->unk_2C + 1;
         }
-        func_80048014();
+        ResetSoundDurations();
     }
 }
 
@@ -1626,7 +1626,7 @@ void func_843235F4(unk_D_86002F34_00C* arg0) {
                     D_84390240.unk_00->unk_3C++;
                 } else {
                     func_84305760(D_84390010[D_84390240.unk_00->unk_2C], 0x13);
-                    func_80048014();
+                    ResetSoundDurations();
                     func_8432E9D8(1);
                     D_84390240.unk_00->unk_3C = 0;
                 }
@@ -1638,7 +1638,7 @@ void func_843235F4(unk_D_86002F34_00C* arg0) {
             func_8431AE5C();
             func_8431FF18();
             D_84390240.unk_00->unk_48 = 0;
-            func_80048014();
+            ResetSoundDurations();
             func_843234A0(arg0);
             break;
     }
@@ -2012,7 +2012,7 @@ void func_84324414(unk_D_86002F34_00C* arg0) {
         case 1:
             func_8431C71C(arg0, D_84390200);
             if (func_8431ADAC(sp1C) != 0) {
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(1);
                 D_84390240.unk_00->unk_3C = 0;
             }
@@ -2344,7 +2344,7 @@ void func_843251D4(unk_D_86002F34_00C* arg0) {
         case 2:
             if (func_8431F7B0(D_84390200) == 0) {
                 func_8432E9D8(1);
-                func_80048014();
+                ResetSoundDurations();
                 func_8431F500(D_84390200, arg0, func_8430C414(2));
                 func_84305760(D_84390204, 4);
                 func_8431AE5C();
@@ -2377,7 +2377,7 @@ void func_843251D4(unk_D_86002F34_00C* arg0) {
             if ((D_84390224 == 1) && (D_84390220 == 1)) {
                 if (sp1C->unk_0C != 0) {
                     func_8432E9D8(1);
-                    func_80048014();
+                    ResetSoundDurations();
                     func_8431F420(D_84390204, arg0, 3);
                     D_84390240.unk_00->unk_20++;
                 } else {
@@ -2958,7 +2958,7 @@ void func_84326E84(unk_D_86002F34_00C* arg0) {
         case 1:
             if (func_8431F690(D_84390010[D_84390240.unk_00->unk_2C]) == 0) {
                 func_843087F8(D_84390204);
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(1);
                 func_8431F194(arg0, D_84390010[D_84390240.unk_00->unk_2C]);
                 func_84305760(D_84390010[D_84390240.unk_00->unk_2C], 0xD);
@@ -3051,7 +3051,7 @@ void func_8432734C(unk_D_86002F34_00C* arg0) {
         case 1:
             if (func_8431F690(D_84390010[D_84390240.unk_00->unk_2C]) == 0) {
                 func_843087F8(D_84390204);
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(1);
                 func_8432C7A0(9, D_84390204);
                 func_8431AE5C();
@@ -3098,7 +3098,7 @@ void func_843275F8(unk_D_86002F34_00C* arg0) {
             func_843066E0(D_84390204);
             if (func_8431F690(D_84390010[D_84390240.unk_00->unk_2C]) == 0) {
                 func_843087F8(D_84390204);
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(1);
                 func_8431AE5C();
                 func_8432C6C4(3, D_84390200);
@@ -3136,7 +3136,7 @@ void func_84327720(unk_D_86002F34_00C* arg0) {
         case 1:
             if (func_8431F690(D_84390010[D_84390240.unk_00->unk_2C]) == 0) {
                 func_843087F8(D_84390204);
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(1);
                 func_8431F194(arg0, D_84390010[D_84390240.unk_00->unk_2C]);
                 func_84305760(D_84390010[D_84390240.unk_00->unk_2C], 0xD);
@@ -3222,7 +3222,7 @@ void func_84327B90(unk_D_86002F34_00C* arg0) {
 
         case 1:
             func_843087F8(D_84390204);
-            func_80048014();
+            ResetSoundDurations();
             func_8432E9D8(1);
             func_8431EF54(arg0, D_84390010[D_84390240.unk_00->unk_2C]);
             func_84305760(D_84390010[D_84390240.unk_00->unk_2C], 0xD);
@@ -3339,7 +3339,7 @@ void func_84327DC0(unk_D_86002F34_00C* arg0) {
         case 7:
             func_8431C750(arg0, temp_s0);
             if (func_84305BD8(temp_s0, 0x3C) != 0) {
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(2);
                 func_8431AE5C();
                 Vec3f_Set(&temp_s0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
@@ -3440,7 +3440,7 @@ void func_84328250(unk_D_86002F34_00C* arg0) {
                 if ((sp2C->unk_5A & 0xF0) == 0xF0) {
                     sp2C->unk_5A = 0xA5;
                 }
-                func_80048014();
+                ResetSoundDurations();
                 func_8432E9D8(2);
                 func_8431AE5C();
                 Vec3f_Set(&temp_s0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);

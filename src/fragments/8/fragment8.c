@@ -584,7 +584,7 @@ void func_862013C0(void) {
             ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed |
               gPlayer3Controller->buttonPressed | (gPlayer4Controller->buttonPressed != 0)) != 0)) {
             func_80006CB4(0x1E);
-            func_8004B094(0x1E);
+            Music_StartVolumeFade(0x1E);
             D_86204700 = 0;
 
             for (i = 0; i < 30; i++) {
@@ -592,12 +592,12 @@ void func_862013C0(void) {
                 func_86200EC4(D_86203E48);
             }
 
-            while (func_800484E0() != 0) {
+            while (Audio_CalcLoadScore() != 0) {
                 func_86200620();
                 func_86200EC4(D_86203E48);
             }
 
-            func_8004B154();
+            Music_EndVolumeFade();
             SetResultFlag(2);
         }
 
@@ -1022,7 +1022,7 @@ void func_862023F8(void) {
 
                 if (D_86204704 == 0x1C2) {
                     func_80006CB4(0x1E);
-                    func_8004B094(0x1E);
+                    Music_StartVolumeFade(0x1E);
                 }
 
                 if (D_86204704 >= 0x1E0) {
@@ -1218,11 +1218,11 @@ void func_86202D5C(void) {
 }
 
 void func_86202EE4(void) {
-    while (func_800484E0() != 0) {
+    while (Audio_CalcLoadScore() != 0) {
         func_862004D8();
         func_86200EC4(D_86203E48);
     }
-    func_8004B154();
+    Music_EndVolumeFade();
 }
 
 void func_86202F3C(void) {

@@ -56,7 +56,7 @@ void AnimHeader_ProcessScaled(AnimProcessor* arg0, AnimHeader* arg1, s32 arg2, s
     temp_v0_2->unkC = (s16) (((s32) ((((arg1->unkC - 4) << 0xA) * 0x7ADE) + 0x0147936C) >> 0xF) * 2);
     temp_v0_2->unkE = (s16) (((s32) ((((arg1->unkE - 4) << 0xA) * 0x740C) + 0x040D6B40) >> 0xF) * 2);
 
-    func_80048904((s32)arg0, arg2, arg3);
+    AnimProcessor_FinishFrame((s32)arg0, arg2, arg3);
     arg0->unk188 ^= 1;
 }
 
@@ -65,8 +65,8 @@ void AnimFrame_ProcessSubframes(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2
     s16 sp44[40];
     
     for (i = 0; i < 4; i++) {
-        func_80048590(*arg5, *arg4, arg6, sp44);
-        func_80048684(arg0, *arg2, *arg3, sp44);
+        AnimBlock_DecodeSubframe(*arg5, *arg4, arg6, sp44);
+        AnimProcessor_ApplySubframe(arg0, *arg2, *arg3, sp44);
         arg5++;
         arg3++;
         arg2++;

@@ -296,7 +296,7 @@ void func_82C01054(void) {
     GbsClearAndCommitBlock(0x17, 0);
     GbsSyncAllBanks();
     gBattleContext.unk_11F2 = 0;
-    func_8004AF24(0);
+    Music_SetPanMode(0);
     SetAudioActiveFlag(1);
     gPrefToggleFlags = 0;
 }
@@ -311,9 +311,9 @@ void func_82C0115C(u16 arg0) {
     if (sp24 != 0) {
         if (sp24 & 1) {
             if (arg0 & 1) {
-                func_8004AF24(1);
+                Music_SetPanMode(1);
             } else {
-                func_8004AF24(0);
+                Music_SetPanMode(0);
             }
         }
 

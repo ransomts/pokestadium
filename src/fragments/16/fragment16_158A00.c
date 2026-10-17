@@ -1402,8 +1402,8 @@ unk_D_86A03014 D_86A03014[29] = {
 void func_86A00C90(void) {
     u8 i;
 
-    func_8004FC60(1, 0x78);
-    func_8004FC60(2, 0x78);
+    Audio_SetVolumeFadeAndDuration(1, 0x78);
+    Audio_SetVolumeFadeAndDuration(2, 0x78);
     func_80006CB4(0x78);
 
     for (i = 0; i < 120; i++) {

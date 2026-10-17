@@ -709,7 +709,7 @@ s32 func_84B06F60(unk_D_84B25A28* arg0, s16 arg1) {
     }
 
     if (arg1 == 0) {
-        func_8004DF94(0x01100006, 0, 0);
+        PlayUISfx(0x01100006, 0, 0);
     }
 
     if (sp24 >= arg1) {
@@ -734,11 +734,11 @@ void func_84B07058(unk_D_84B25A28* arg0, s16 arg1) {
 
 s32 func_84B070EC(unk_D_84B25A28* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x01100007, 0, 0);
+        PlayUISfx(0x01100007, 0, 0);
     }
 
     if (arg1 == 0x15) {
-        func_8004DF94(0x01100008, 0, 0);
+        PlayUISfx(0x01100008, 0, 0);
     }
 
     if (arg1 < 0x14) {
@@ -755,11 +755,11 @@ s32 func_84B070EC(unk_D_84B25A28* arg0, s16 arg1) {
 
 s32 func_84B071C0(unk_D_84B25A28* arg0, s16 arg1) {
     if (arg1 == 0) {
-        func_8004DF94(0x01100007, 0, 0);
+        PlayUISfx(0x01100007, 0, 0);
     }
 
     if (arg1 == 0x11) {
-        func_8004DF94(0x01100008, 0, 0);
+        PlayUISfx(0x01100008, 0, 0);
     }
 
     if (arg1 < 0x10) {

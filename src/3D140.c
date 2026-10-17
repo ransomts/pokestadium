@@ -648,7 +648,7 @@ void Audio_StartMusicFade(s32 arg0) {
 void Audio_MusicFadeUpdate(void) {
     switch (gMusicFadeState[0]) {
         case 1:
-            MusSetupVolumeFade(D_80078E70, 0x50, 0x18, 3);
+            MusSetupVolumeFade(gMusicHandle, 0x50, 0x18, 3);
             Music_PlayTrack(gMusicFadeTargetTrack);
             gMusicFadeState[0]++;
             gMusicFadeTimer = 0;
@@ -672,7 +672,7 @@ void Audio_MusicFadeUpdate(void) {
 
         case 4:
             if (gMusicFadeTimer == 0) {
-                MusSetupVolumeFade(D_80078E70, 0x18, 0x50, 0x14);
+                MusSetupVolumeFade(gMusicHandle, 0x18, 0x50, 0x14);
             }
 
             if (gMusicFadeTimer >= 0x1F) {

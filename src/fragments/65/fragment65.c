@@ -736,7 +736,7 @@ s32 func_84A02898(void) {
     s16 i;
 
     if (gBattleContext.unk_0002 == 7) {
-        func_8004DF94(0x01100015, 0, 0);
+        PlayUISfx(0x01100015, 0, 0);
         D_84A030F0 = 5;
     }
 

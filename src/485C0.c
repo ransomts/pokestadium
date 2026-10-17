@@ -10,9 +10,9 @@ typedef struct {
     /* 0x02 */ u8 unk_02;  // animation variant; only Charizard (6) sets it
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 unk_04;
-} unk_D_80078700;  // size = 0x05
+} PokemonAnimDataEntry;  // size = 0x05
 
-unk_D_80078700 D_80078700[151] = {
+PokemonAnimDataEntry gPokemonAnimData[151] = {
     /*   1 */ { 0x01, 0x01, 0x00, 0x52, 0x04 },
     /*   2 */ { 0x01, 0x01, 0x00, 0x58, 0x36 },
     /*   3 */ { 0x02, 0x02, 0x00, 0x1A, 0x3C },
@@ -166,10 +166,10 @@ unk_D_80078700 D_80078700[151] = {
     /* 151 */ { 0x00, 0x00, 0x00, 0x82, 0x00 },
 };
 
-s32 D_800789F4 = 0;
-s32 D_800789F8 = 0;
-u8 D_800789FC = 0;
-u8 D_80078A00[16] = { 0 };
+s32 gPrevSoundHandle = 0;
+s32 gActiveSoundHandle = 0;
+u8 gBankRemapIndex = 0;
+u8 gSoundEffectFlag[16] = { 0 };
 
 s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
     u32 sound;
@@ -189,9 +189,9 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
 
     switch (arg2) {
     case 4:
-        if (MusHandleAsk(D_800789F4) != 0) {
-            MusSetDurationScale(D_800789F4, 0x14);
-            D_800789F4 = 0;
+        if (MusHandleAsk(gPrevSoundHandle) != 0) {
+            MusSetDurationScale(gPrevSoundHandle, 0x14);
+            gPrevSoundHandle = 0;
         }
         if ((arg0 == 0xD) || (arg0 == 0x13) || (arg0 == 0x4C) || (arg0 == 0x5B) || (arg0 == 0x82) || (arg0 == 0x8F)) {
             sound = 4;
@@ -201,15 +201,15 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         break;
 
     case 0:
-        if (MusHandleAsk(D_800789F4) != 0) {
-            MusSetDurationScale(D_800789F4, 0x14);
-            D_800789F4 = 0;
+        if (MusHandleAsk(gPrevSoundHandle) != 0) {
+            MusSetDurationScale(gPrevSoundHandle, 0x14);
+            gPrevSoundHandle = 0;
         }
         switch (arg0) {
         case 0x35:
         case 0x52:
         case 0x53:
-            if (D_80078700[arg1 - 1].unk_02 == 1) {
+            if (gPokemonAnimData[arg1 - 1].unk_02 == 1) {
                 sound = 0;
             } else {
                 sound = 4;
@@ -222,7 +222,7 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         default:
             sound = 0;
         }
-        D_80078A00[0] = 0;
+        gSoundEffectFlag[0] = 0;
         break;
 
     case 1:
@@ -231,15 +231,15 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         case 0x3D: case 0x3E: case 0x3F: case 0x47: case 0x48: case 0x4B: case 0x50:
         case 0x51: case 0x52: case 0x66: case 0x6D: case 0x7E: case 0x84: case 0x86:
         case 0x89: case 0x8A: case 0x8D: case 0xA0:
-            if (MusHandleAsk(D_800789F4) != 0) {
-                MusSetDurationScale(D_800789F4, 0x3C);
-                D_800789F4 = 0;
+            if (MusHandleAsk(gPrevSoundHandle) != 0) {
+                MusSetDurationScale(gPrevSoundHandle, 0x3C);
+                gPrevSoundHandle = 0;
                 sound = 1;
                 break;
             default:
-                if (MusHandleAsk(D_800789F4) != 0) {
-                    MusSetDurationScale(D_800789F4, 2);
-                    D_800789F4 = 0;
+                if (MusHandleAsk(gPrevSoundHandle) != 0) {
+                    MusSetDurationScale(gPrevSoundHandle, 2);
+                    gPrevSoundHandle = 0;
                 }
             }
         case 0xB: case 0xC: case 0xD: case 0x10: case 0x12: case 0x2F: case 0x39:
@@ -253,9 +253,9 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         break;
 
     case 2:
-        if (MusHandleAsk(D_800789F4) != 0) {
-            MusSetDurationScale(D_800789F4, 0x14);
-            D_800789F4 = 0;
+        if (MusHandleAsk(gPrevSoundHandle) != 0) {
+            MusSetDurationScale(gPrevSoundHandle, 0x14);
+            gPrevSoundHandle = 0;
         }
         switch (arg0) {
         case 0xE: case 0x36: case 0x4A: case 0x60: case 0x61: case 0x66: case 0x68:
@@ -271,7 +271,7 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         case 0x35:
         case 0x52:
         case 0x53:
-            if (D_80078700[arg1 - 1].unk_02== 1) {
+            if (gPokemonAnimData[arg1 - 1].unk_02== 1) {
                 sound = 0;
             } else {
                 sound = 4;
@@ -281,18 +281,18 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
             sound = 0;
             break;
         }
-        D_80078A00[0] = 0;
+        gSoundEffectFlag[0] = 0;
         break;
 
     case 3:
-        if (MusHandleAsk(D_800789F4) != 0) {
-            MusSetDurationScale(D_800789F4, 0x14);
-            D_800789F4 = 0;
+        if (MusHandleAsk(gPrevSoundHandle) != 0) {
+            MusSetDurationScale(gPrevSoundHandle, 0x14);
+            gPrevSoundHandle = 0;
         }
         if (arg0 == 0x9A) {
             sound = 3;
-            if (D_80078A00[0] == 0) {
-                D_80078A00[0] = 1;
+            if (gSoundEffectFlag[0] == 0) {
+                gSoundEffectFlag[0] = 1;
             } else {
                 sound = 0;
             }
@@ -309,9 +309,9 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         case 0x8B: case 0x8E: case 0x93: case 0x94: case 0x99:
             return 0;
         default:
-            if (MusHandleAsk(D_800789F4) != 0) {
-                MusSetDurationScale(D_800789F4, 0x3C);
-                D_800789F4 = 0;
+            if (MusHandleAsk(gPrevSoundHandle) != 0) {
+                MusSetDurationScale(gPrevSoundHandle, 0x3C);
+                gPrevSoundHandle = 0;
             }
             return 0;
         }
@@ -324,8 +324,8 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         return 0;
     }
 
-    D_800789FC++;
-    D_800789FC %= 3;
+    gBankRemapIndex++;
+    gBankRemapIndex %= 3;
 
     arg0--;
     if (arg0 < (D_800FC6F0->num_files - 1)) {
@@ -333,18 +333,18 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
         size = ((u32*)D_800FC6F0)[arg0 + 4] - romAddr;
     } else {
         romAddr = ((u32*)D_800FC6F0)[arg0 + 3];
-        size = D_800FC6E8->seqArray[2].offset - romAddr;
+        size = gMoveSoundSeqInfo->seqArray[2].offset - romAddr;
     }
-    func_8004ADB0(romAddr, D_800FC6DC, size);
-    func_80050B40(D_800FC6DC, D_800FC698[D_800789FC], 0x258);
-    RemapBankPointers((bank_remap_descriptor_t*)D_800FC698[D_800789FC]);
-    result = MusStartSoundEffect((SoundBank*)D_800FC690, D_800FC698[D_800789FC], sound + 1, 0x70, 0x80, -1);
+    func_8004ADB0(romAddr, gMoveSoundTempBuffer, size);
+    DecompressData(gMoveSoundTempBuffer, D_800FC698[gBankRemapIndex], 0x258);
+    RemapBankPointers((bank_remap_descriptor_t*)D_800FC698[gBankRemapIndex]);
+    result = MusStartSoundEffect((SoundBank*)D_800FC690, D_800FC698[gBankRemapIndex], sound + 1, 0x70, 0x80, -1);
 
     if (arg2 != 0xFF) {
-        D_800789F8 = result;
+        gActiveSoundHandle = result;
     }
     if ((arg2 == 0) || (arg2 == 2) || (arg2 == 3) || (arg2 == 4)) {
-        D_800789F4 = D_800789F8;
+        gPrevSoundHandle = gActiveSoundHandle;
     }
     if ((arg2 == 0) || (arg2 == 2)) {
         switch (arg0 + 1) {
@@ -364,9 +364,9 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
     }
 }
 
-void func_80048014(void) {
-  MusSetDurationScale(D_800789F8, 0x5A);
-  MusSetDurationScale(D_800789F4, 0x5A);
-  D_800789F8 = 0;
-  D_800789F4 = 0;
+void ResetSoundDurations(void) {
+  MusSetDurationScale(gActiveSoundHandle, 0x5A);
+  MusSetDurationScale(gPrevSoundHandle, 0x5A);
+  gActiveSoundHandle = 0;
+  gPrevSoundHandle = 0;
 }

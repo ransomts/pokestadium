@@ -5,31 +5,31 @@
 #include "src/50860.h"
 #include "src/373A0.h"
 
-u8* D_800FF9C0;
+u8* gSfxBankSpecial;
 
-s32 func_8004FE00(u8* arg0) {
+s32 Audio_LoadBankAndSong(u8* arg0) {
     UNUSED s32 pad[2];
     u8* sp1C;
 
-    func_8004FCD8(1);
-    D_800FF9C0 = arg0;
-    sp1C = D_800FF9C0 + 0x4120;
+    Audio_ResetAndSetFade(1);
+    gSfxBankSpecial = arg0;
+    sp1C = gSfxBankSpecial + 0x4120;
 
     if (1) {}
 
-    func_8004ADB0(D_800FC6E4->offset1, D_800FC6DC, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
-    func_80050B40(D_800FC6DC, D_800FF9C0, 0x4120);
+    func_8004ADB0(D_800FC6E4->offset1, gMoveSoundTempBuffer, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
+    DecompressData(gMoveSoundTempBuffer, gSfxBankSpecial, 0x4120);
     func_8004ADB0(D_800FC6E4->wave_tables_offset, sp1C, D_800FC6E4->files[0] - D_800FC6E4->wave_tables_offset);
-    MusBankInitialize(D_800FF9C0, sp1C);
+    MusBankInitialize(gSfxBankSpecial, sp1C);
     gAudioDMAFlags |= 0x80000000;
-    func_8004ADB0(D_800FC6E4->files[0], D_800FC6DC, D_800FC6E4->files[1] - D_800FC6E4->files[0]);
-    func_80050B40(D_800FC6DC, D_800FC680, 0x98D8);
-    D_80078E70 = MusLoadSong(D_800FF9C0, D_800FC680);
-    MusSetVolumeScale(D_80078E70, 0x70);
+    func_8004ADB0(D_800FC6E4->files[0], gMoveSoundTempBuffer, D_800FC6E4->files[1] - D_800FC6E4->files[0]);
+    DecompressData(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
+    gMusicHandle = MusLoadSong(gSfxBankSpecial, D_800FC680);
+    MusSetVolumeScale(gMusicHandle, 0x70);
 
-    return D_80078E70;
+    return gMusicHandle;
 }
 
-void func_8004FF20(void) {
+void Audio_ClearBankDMAFlag(void) {
     gAudioDMAFlags &= ~0x80000000;
 }

@@ -3,7 +3,7 @@
 #include "libnumus/player.h"
 #include "3D140.h"
 
-void func_8004FC60(s32 arg0, u32 arg1) {
+void Audio_SetVolumeFadeAndDuration(s32 arg0, u32 arg1) {
     s32 i;
 
     if (arg0 & 4) {
@@ -15,22 +15,22 @@ void func_8004FC60(s32 arg0, u32 arg1) {
     MusSetAllChannelsDuration(arg0, arg1);
 }
 
-void func_8004FCD8(s32 arg0) {
+void Audio_ResetAndSetFade(s32 arg0) {
     s32 i;
 
     D_8007840C = 0;
     AudioFrameUpdate(0);
-    func_8004FC60(3, arg0);
+    Audio_SetVolumeFadeAndDuration(3, arg0);
 
     for (i = 0; i < 2; i++) {
         Audio_SetVolumeFade(i, arg0);
     }
 }
 
-void func_8004FD44(void) {
-    func_8004FCD8(1);
+void Audio_FadeAllChannelsDefault(void) {
+    Audio_ResetAndSetFade(1);
 }
 
-void func_8004FD64(s32 arg0) {
-    func_8004FCD8(arg0);
+void Audio_FadeAllChannels(s32 arg0) {
+    Audio_ResetAndSetFade(arg0);
 }

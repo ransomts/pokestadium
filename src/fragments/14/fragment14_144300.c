@@ -108,10 +108,10 @@ static s16 D_86807540;
 
 void func_86800020(s32 arg0) {
     if (D_8680753E == 0) {
-        func_8004FC60(1, arg0);
-        func_8004FC60(2, arg0);
+        Audio_SetVolumeFadeAndDuration(1, arg0);
+        Audio_SetVolumeFadeAndDuration(2, arg0);
     } else {
-        func_8004B094(arg0);
+        Music_StartVolumeFade(arg0);
     }
 }
 
@@ -571,7 +571,7 @@ s32 UpdateSushiGoRoundState(void) {
         case 2:
             temp_v0 = Fragment2_1_GetResult();
             if ((temp_v0 >= 0) && (temp_v0 < 4)) {
-                func_8004D9B0(D_86806F74[temp_v0], 0, 0);
+                PlaySoundByCategory(D_86806F74[temp_v0], 0, 0);
             } else if (temp_v0 == -2) {
                 D_8680750C = 3;
                 func_86805108(0xF, 3);
@@ -584,7 +584,7 @@ s32 UpdateSushiGoRoundState(void) {
                 D_86807510--;
                 if (((D_86807510 % 30) == 0) && (D_8680753E == 0)) {
                     if (((D_86807510 / 30) > 0) && ((D_86807510 / 30) < 6)) {
-                        func_8004D9B0(0x50002, 0, 0);
+                        PlaySoundByCategory(0x50002, 0, 0);
                     }
                 }
             }
@@ -596,7 +596,7 @@ s32 UpdateSushiGoRoundState(void) {
                     func_86805108(0xF, 2);
                     func_86806964(2);
                     func_8004B9C4(0xA);
-                    func_8004D9B0(0x50004, 0, 0);
+                    PlaySoundByCategory(0x50004, 0, 0);
                 } else {
                     D_8680750C = 7;
                     D_86807540 = 0x1E;
@@ -649,9 +649,9 @@ s32 UpdateSushiGoRoundState(void) {
                 D_86807540--;
             }
 
-            if ((D_86807540 <= 0) && (func_800484E0() == 0)) {
+            if ((D_86807540 <= 0) && (Audio_CalcLoadScore() == 0)) {
                 sp1C = 1;
-                func_8004B154();
+                Music_EndVolumeFade();
             }
             break;
     }

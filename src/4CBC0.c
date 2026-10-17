@@ -23,7 +23,7 @@ static s32 gPlayerSoundHandles[8] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-s32 func_8004BFC0(s32 arg0, s32 arg1, s32 arg2) {
+s32 Player_PlaySoundEffect(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp34;
     UNUSED s32 pad[3];
     f32 var_fv0;
@@ -80,7 +80,7 @@ s32 func_8004BFC0(s32 arg0, s32 arg1, s32 arg2) {
 void func_8004C16C(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004C17C(s32 arg0, s32 arg1, s32 arg2) {
+s32 Player_HandleSfx(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp44;
     UNUSED s32 pad[2];
     u32 sp38;
@@ -150,7 +150,7 @@ s32 func_8004C17C(s32 arg0, s32 arg1, s32 arg2) {
 void func_8004C444(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004C454(u32 arg0, u32 arg1) {
+s32 Player_CalcVolume(u32 arg0, u32 arg1) {
     s32 ret;
 
     if ((arg0 == 0) || (arg0 >= 5)) {
@@ -182,7 +182,7 @@ s32 func_8004C454(u32 arg0, u32 arg1) {
     return ret;
 }
 
-s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
+s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp3C;
     UNUSED s32 pad;
     s32 var_v1 = 0x80;
@@ -196,7 +196,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 1;
             }
             MusSetDurationScale(gPlayerSoundHandles[arg1 + 3], 0x14);
-            var_v1 = func_8004C454(arg1, arg2);
+            var_v1 = Player_CalcVolume(arg1, arg2);
             var_fv0 = (4 - arg1) * 0.5f;
             break;
 
@@ -206,7 +206,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 <= 0) || (arg1 >= 5)) {
                 arg1 = 1;
             }
-            var_v1 = func_8004C454(arg1, arg2);
+            var_v1 = Player_CalcVolume(arg1, arg2);
             var_a3 = 0x80;
             var_fv0 = (4 - arg1) * 0.5f;
             break;
@@ -219,7 +219,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 <= 0) || (arg1 >= 5)) {
                 arg1 = 1;
             }
-            var_v1 = func_8004C454(arg1, arg2);
+            var_v1 = Player_CalcVolume(arg1, arg2);
             var_a3 = 0xC0;
             var_fv0 = 0.0f;
             break;
@@ -244,7 +244,7 @@ s32 func_8004C4FC(s32 arg0, s32 arg1, s32 arg2) {
 void func_8004C6CC(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004C6DC(s32 arg0, s32 arg1, s32 arg2) {
+s32 PlayAmbientSound(s32 arg0, s32 arg1, s32 arg2) {
     static s32 gAmbientSoundHandle = 0x00000000;
 
     s32 sp34;
@@ -300,7 +300,7 @@ s32 func_8004C6DC(s32 arg0, s32 arg1, s32 arg2) {
 void func_8004C8A4(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004C8B4(s32 arg0, s32 arg1, UNUSED s32 arg2) {
+s32 Menu_PlaySfx(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     static s32 gMenuVolumeDelta[4] = {
         0xFFFFFF88,
         0xFFFFFFC4,
@@ -386,7 +386,7 @@ void func_8004CA6C(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 
 static u8 gBattleCryCycle = 0;
 
-s32 func_8004CA7C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
+s32 PlayBattleCry(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     s32 sp44;
     s32 var_a2;
     s32 var_a3;
@@ -494,7 +494,7 @@ static s32 gCrySpecialHandle1 = 0x00000000;
 
 static s32 gCrySpecialHandle2 = 0x00000000;
 
-static s32 D_80078F8C[4] = {
+static s32 gCrySpecialHandles[4] = {
     0x00000000,
     0x00000000,
     0x00000000,
@@ -525,7 +525,7 @@ f32 func_8004CC94(void) {
     return (f32)func_8004CC34() / -1u;
 }
 
-s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
+s32 PlayPokemonCry(s32 arg0, s32 arg1, s32 arg2) {
     static u32 gCryModCounter = 0;
 
     s32 sp44;
@@ -584,7 +584,7 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80002:
-            if (MusHandleAsk(D_80078F8C[arg1]) != 0) {
+            if (MusHandleAsk(gCrySpecialHandles[arg1]) != 0) {
                 return 0;
             }
 
@@ -622,11 +622,11 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             if (MusHandleAsk(gCrySpecialHandle1) != 0) {
                 return 0;
             }
-            func_8004FC60(1, 1);
+            Audio_SetVolumeFadeAndDuration(1, 1);
             break;
 
         case 0x80004:
-            func_8004FC60(1, 1);
+            Audio_SetVolumeFadeAndDuration(1, 1);
             break;
 
         case 0x80005:
@@ -639,7 +639,7 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80006:
-            func_8004FC60(1, 2);
+            Audio_SetVolumeFadeAndDuration(1, 2);
             break;
 
         case 0x80007:
@@ -658,7 +658,7 @@ s32 func_8004CCD8(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80002:
-            D_80078F8C[arg1] = sp44;
+            gCrySpecialHandles[arg1] = sp44;
             break;
 
         case 0x80003:
@@ -681,7 +681,7 @@ void func_8004D16C(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 
 s32 gBattleMusicHandle = 0;
 
-s32 func_8004D1B0(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     static s32 D_80078FAC = 0;
 
     s32 sp3C;
@@ -769,7 +769,7 @@ s32 func_8004D1B0(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 void func_8004D3A0(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004D3B0(s32 arg0, s32 arg1, s32 arg2) {
+s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2) {
     static s32 D_80078FB0[4] = {
         0xFFFFFF88,
         0xFFFFFFD8,
@@ -916,7 +916,7 @@ s32 func_8004D3B0(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0xA000E:
-            func_8004FC60(1, 5);
+            Audio_SetVolumeFadeAndDuration(1, 5);
             var_a3 = 0x80;
             var_t0 = 0x7F;
             var_fv0 = 0.0f;
@@ -990,7 +990,7 @@ s32 func_8004D858(s32 arg0, u32 arg1) {
         MusSetDurationScale(D_80079010, 0xA);
     }
 
-    temp_v0 = MusStartSoundEffect(D_800FC68C, D_800FC688, arg0, 0x80, 0x80, -1);
+    temp_v0 = MusStartSoundEffect(gSfxBankStandard, gSfxTable, arg0, 0x80, 0x80, -1);
     switch (arg0) {
         case 18:
             D_80079008 = temp_v0;
@@ -1011,7 +1011,7 @@ s32 func_8004D858(s32 arg0, u32 arg1) {
 u32 D_80079014 = 0xFFFFFFFF;
 static s32 D_80079018 = 0x00000000;
 
-s32 func_8004D9B0(s32 arg0, s32 arg1, s32 arg2) {
+s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[5];
     s32 var_v0;
     u32 sp24;
@@ -1040,11 +1040,11 @@ s32 func_8004D9B0(s32 arg0, s32 arg1, s32 arg2) {
 
         func_8004ADB0(sp24, (u32)D_800FC798, 0xC);
         Audio_AddBaseToOffsets((u32)D_800FC798, sp24, 3);
-        func_8004ADB0(D_800FC798[0], D_800FC6DC, D_800FC798[1] - D_800FC798[0]);
-        func_80050B40(D_800FC6DC, gAudioSfxInstBank, 0xBB8);
+        func_8004ADB0(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        func_8004ADB0(D_800FC798[1], D_800FC6DC, D_800FC798[2] - D_800FC798[1]);
-        func_80050B40(D_800FC6DC, gAudioSfxBank, 0x1388);
+        func_8004ADB0(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1052,39 +1052,39 @@ s32 func_8004D9B0(s32 arg0, s32 arg1, s32 arg2) {
 
     switch (temp_v1) {
         case 0x20000:
-            var_v0 = func_8004BFC0(arg0, arg1, arg2);
+            var_v0 = Player_PlaySoundEffect(arg0, arg1, arg2);
             break;
 
         case 0x30000:
-            var_v0 = func_8004C17C(arg0, arg1, arg2);
+            var_v0 = Player_HandleSfx(arg0, arg1, arg2);
             break;
 
         case 0x40000:
-            var_v0 = func_8004C4FC(arg0, arg1, arg2);
+            var_v0 = Player_PlaySpecialSfx(arg0, arg1, arg2);
             break;
 
         case 0x50000:
-            var_v0 = func_8004C6DC(arg0, arg1, arg2);
+            var_v0 = PlayAmbientSound(arg0, arg1, arg2);
             break;
 
         case 0x60000:
-            var_v0 = func_8004C8B4(arg0, arg1, arg2);
+            var_v0 = Menu_PlaySfx(arg0, arg1, arg2);
             break;
 
         case 0x70000:
-            var_v0 = func_8004CA7C(arg0, arg1, arg2);
+            var_v0 = PlayBattleCry(arg0, arg1, arg2);
             break;
 
         case 0x80000:
-            var_v0 = func_8004CCD8(arg0, arg1, arg2);
+            var_v0 = PlayPokemonCry(arg0, arg1, arg2);
             break;
 
         case 0x90000:
-            var_v0 = func_8004D1B0(arg0, arg1, arg2);
+            var_v0 = PlayBattleMusic(arg0, arg1, arg2);
             break;
 
         case 0xA0000:
-            var_v0 = func_8004D3B0(arg0, arg1, arg2);
+            var_v0 = PlayStadiumSfx(arg0, arg1, arg2);
             break;
 
         default:
@@ -1094,7 +1094,7 @@ s32 func_8004D9B0(s32 arg0, s32 arg1, s32 arg2) {
     D_80079018 = var_v0;
 }
 
-void func_8004DC8C(s32 arg0, s32 arg1, s32 arg2) {
+void StopSoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
     switch (arg0 & 0xFFFF0000) {
         case 0x20000:
             func_8004C16C(arg0, arg1, arg2);
@@ -1150,12 +1150,12 @@ s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
         func_8004ADB0(sp34, &D_800FC798[0], 0xC);
         Audio_AddBaseToOffsets(D_800FC798, sp34, 3);
         sp34 = D_800FC798[1] - D_800FC798[0];
-        func_8004ADB0(D_800FC798[0], D_800FC6DC, sp34);
-        func_80050B40(D_800FC6DC, gAudioSfxInstBank, 0xBB8);
+        func_8004ADB0(D_800FC798[0], gMoveSoundTempBuffer, sp34);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
         sp34 = D_800FC798[2] - D_800FC798[1];
-        func_8004ADB0(D_800FC798[1], D_800FC6DC, sp34);
-        func_80050B40(D_800FC6DC, gAudioSfxBank, 0x1388);
+        func_8004ADB0(D_800FC798[1], gMoveSoundTempBuffer, sp34);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1181,7 +1181,7 @@ s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     D_80079018 = var_v0;
 }
 
-s32 func_8004DF94(s32 arg0, s32 arg1, s32 arg2) {
+s32 PlayUISfx(s32 arg0, s32 arg1, s32 arg2) {
     static s32 D_8007901C = 0x00000000;
     static s32 D_80079020 = 0x00000000;
     static s32 D_80079024 = 0x00000000;
@@ -1214,11 +1214,11 @@ s32 func_8004DF94(s32 arg0, s32 arg1, s32 arg2) {
 
         func_8004ADB0(sp2C, (u32)D_800FC798, 0xC);
         Audio_AddBaseToOffsets((u32)D_800FC798, sp2C, 3);
-        func_8004ADB0(D_800FC798[0], D_800FC6DC, D_800FC798[1] - D_800FC798[0]);
-        func_80050B40(D_800FC6DC, gAudioSfxInstBank, 0xBB8);
+        func_8004ADB0(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        func_8004ADB0(D_800FC798[1], D_800FC6DC, D_800FC798[2] - D_800FC798[1]);
-        func_80050B40(D_800FC6DC, gAudioSfxBank, 0x1388);
+        func_8004ADB0(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1322,7 +1322,7 @@ s32 func_8004DF94(s32 arg0, s32 arg1, s32 arg2) {
     D_80079018 = temp_v0_2;
 }
 
-s32 func_8004E304(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     static s32 D_8007904C = 0x00000000;
     static s32 D_80079050 = 0x00000000;
     static s32 D_80079054 = 0x00000000;
@@ -1344,11 +1344,11 @@ s32 func_8004E304(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 
         func_8004ADB0(sp3C, (u32)D_800FC798, 0xC);
         Audio_AddBaseToOffsets((u32)D_800FC798, sp3C, 3);
-        func_8004ADB0(D_800FC798[0], D_800FC6DC, D_800FC798[1] - D_800FC798[0]);
-        func_80050B40(D_800FC6DC, gAudioSfxInstBank, 0xBB8);
+        func_8004ADB0(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        func_8004ADB0(D_800FC798[1], D_800FC6DC, D_800FC798[2] - D_800FC798[1]);
-        func_80050B40(D_800FC6DC, gAudioSfxBank, 0x1388);
+        func_8004ADB0(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 

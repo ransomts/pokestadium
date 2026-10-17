@@ -4,15 +4,15 @@
 #include "src/3D140.h"
 #include "src/373A0.h"
 
-void func_800484A0(s32 arg0) {
+void Music_RequestHandle(s32 arg0) {
     MusHandleAsk(arg0);
 }
 
-s32 func_800484C0(s32 arg0) {
+s32 Music_GetState(s32 arg0) {
     return MusAsk(arg0);
 }
 
-s32 func_800484E0(void) {
+s32 Audio_CalcLoadScore(void) {
     s32 i;
     s32 temp_v0;
     s32 var_s1;
@@ -36,10 +36,10 @@ s32 func_800484E0(void) {
     return var_s1;
 }
 
-s32 func_80048574(void) {
+s32 Audio_GetFreeVoiceCount(void) {
     return mus_free_voices_count;
 }
 
-s32 func_80048580(void) {
+s32 Audio_GetReleasingVoiceCount(void) {
     return mus_releasing_voices_count;
 }

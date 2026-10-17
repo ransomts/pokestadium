@@ -270,7 +270,7 @@ s32 func_82100958(void) {
     s32 sp1C = 0;
 
     if (D_82100E7C >= 0x259) {
-        if (func_800484E0() == 0) {
+        if (Audio_CalcLoadScore() == 0) {
             sp1C = 1;
         }
     } else {
@@ -381,13 +381,13 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     func_82100B98();
     MessageBank_Init();
     D_82100EA0 = GetMessageBank(0x14);
-    func_8004FE00(D_82100EBC);
+    Audio_LoadBankAndSong(D_82100EBC);
     func_82100AB8();
     sp24 = func_821009B4();
     func_82100B1C(sp24);
     Stage_Destroy();
     func_8000D2B4(0);
-    func_8004FF20();
+    Audio_ClearBankDMAFlag();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('TITL');

@@ -170,7 +170,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
         } else {
             D_83503FC0 = 2;
             D_835040D8 = 0;
-            func_8004E304(0x0120000C, 0, 0);
+            PlayResultScreenSfx(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         if (arg0->unk_04 == -1) {

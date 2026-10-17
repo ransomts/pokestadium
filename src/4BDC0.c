@@ -20,14 +20,14 @@ extern u8 D_80078EAB;
 extern u8 D_80078EB3;
 extern u8 D_80078EBC[9];
 
-s32 D_80078E70 = 0;
+s32 gMusicHandle = 0;
 s32 D_80078E74 = 112;
 u8 D_80078E78 = 0;
 u8 D_80078E7C = 0;
 u8 D_80078E80 = 0;  // tail holds D_80078E83, D_80078E8B, D_80078E93, D_80078E9B, D_80078EA3, D_80078EAB, D_80078EB3 (linker-defined symbols)
 static u32 D_80078E80_tail[14] = { 0x2020203, 0x3030405, 0x23232325, 0x2525250E, 0x23232325, 0x25250E0D, 0x6060637, 0x37373B39, 0x3434342F, 0x2F2F2E35, 0xB0B0B0C, 0xC0C0C12, 0xB0B0B0C, 0xC0C1236 };
 u8 D_80078EBC[9] = { 0x22, 0x22, 0x22, 0x24, 0x24, 0x24, 0x24, 0x24, 0x26 };  // tail holds D_80078EBF (linker-defined symbols)
-s32 D_80078EC8 = -1;
+s32 gMusicFadeDuration = -1;
 s32 D_80078ECC = 0;
 u8 D_80078ED0 = 0;
 s32 D_80078ED4 = 0;
@@ -36,7 +36,7 @@ s32 D_80078EDC = 0;
 extern u8 D_80078EBF;
 
 void func_8004B1C0(s32 arg0) {
-    D_80078EC8 = arg0;
+    gMusicFadeDuration = arg0;
 }
 
 s32 func_8004B1CC(s32 arg0) {
@@ -60,7 +60,7 @@ s32 func_8004B1CC(s32 arg0) {
             return 0;
         }
         MusStopAllSongs();
-        D_80078E70 = 0;
+        gMusicHandle = 0;
         MusSetDurationScale(D_80078ECC, 1);
         D_80078ED0 = 0;
         D_80078ECC = PlayBackgroundMusic(0x01000003, 0, 0);
@@ -74,7 +74,7 @@ s32 func_8004B1CC(s32 arg0) {
             return 0;
         }
         MusStopAllSongs();
-        D_80078E70 = 0;
+        gMusicHandle = 0;
         MusSetDurationScale(D_80078ECC, 1);
         D_80078ED0 = 0;
         D_80078ECC = PlayBackgroundMusic(0x01000003, 0, 0);
@@ -82,7 +82,7 @@ s32 func_8004B1CC(s32 arg0) {
         D_80078ED0 = 1;
     } else {
         MusStopAllSongs();
-        D_80078E70 = 0;
+        gMusicHandle = 0;
         MusSetDurationScale(D_80078ECC, 1);
         D_80078ED0 = 0;
     }
@@ -187,12 +187,12 @@ s32 func_8004B1CC(s32 arg0) {
 
         case 0x1A:
             sp20 = 0x60;
-            func_8004B154();
+            Music_EndVolumeFade();
             break;
 
         case 0x1B:
             sp20 = 0x58;
-            func_8004B154();
+            Music_EndVolumeFade();
             break;
 
         case 0x2C:
@@ -314,12 +314,12 @@ s32 func_8004B1CC(s32 arg0) {
         case 0x3A:
             sp20 = 0x68;
             ProcessMenuSelection(0, 0xF);
-            func_8004DF94(0x01100016, 0, 0);
+            PlayUISfx(0x01100016, 0, 0);
             break;
 
         case 0x48:
             ProcessMenuSelection(0, 0xF);
-            func_8004DF94(0x01100016, 0, 0);
+            PlayUISfx(0x01100016, 0, 0);
             sp20 = 0x70;
             break;
 
@@ -461,27 +461,27 @@ s32 func_8004B1CC(s32 arg0) {
         return 0;
     }
 
-    func_8004ADB0(D_800FC6E4->files[sp2C], D_800FC6DC, var_a2);
-    func_80050B40(D_800FC6DC, D_800FC680, 0x98D8);
+    func_8004ADB0(D_800FC6E4->files[sp2C], gMoveSoundTempBuffer, var_a2);
+    DecompressData(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
 
-    if (D_80078EC8 <= 0) {
-        D_80078E70 = MusLoadSong(D_800FC684, D_800FC680);
+    if (gMusicFadeDuration <= 0) {
+        gMusicHandle = MusLoadSong(D_800FC684, D_800FC680);
     } else {
-        D_80078E70 = MusLoadSongWithFade(D_800FC684, D_800FC680, D_80078EC8 ^ 0);
+        gMusicHandle = MusLoadSongWithFade(D_800FC684, D_800FC680, gMusicFadeDuration ^ 0);
     }
 
-    D_80078EC8 = -1;
-    MusSetVolumeScale(D_80078E70, sp20);
+    gMusicFadeDuration = -1;
+    MusSetVolumeScale(gMusicHandle, sp20);
 
     if (sp1C != 0x80) {
-        MusSetTempoScale(D_80078E70, sp1C);
+        MusSetTempoScale(gMusicHandle, sp1C);
     }
 
     if (arg0 == 0x1D) {
-        D_800FF9B0 = D_80078E70;
+        D_800FF9B0 = gMusicHandle;
     }
 
-    return D_80078E70;
+    return gMusicHandle;
 }
 
 void func_8004B9C4(s32 arg0) {
@@ -491,8 +491,8 @@ void func_8004B9C4(s32 arg0) {
         arg0 = 1;
     }
 
-    MusSetDurationScale(D_80078E70, arg0);
-    D_80078EC8 = -1;
+    MusSetDurationScale(gMusicHandle, arg0);
+    gMusicFadeDuration = -1;
     MusSetDurationScale(D_80078ECC, arg0);
     D_80078ED0 = 0;
     D_8007840C = 0;
@@ -643,23 +643,23 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
 
             switch (arg1) {
                 case 0:
-                    func_8004D9B0(0x9000D, 0, 0);
+                    PlaySoundByCategory(0x9000D, 0, 0);
                     break;
 
                 case 1:
-                    func_8004D9B0(0x9000E, 0, 0);
+                    PlaySoundByCategory(0x9000E, 0, 0);
                     break;
 
                 case 2:
-                    func_8004D9B0(0x9000F, 0, 0);
+                    PlaySoundByCategory(0x9000F, 0, 0);
                     break;
 
                 case 3:
-                    func_8004D9B0(0x90010, 0, 0);
+                    PlaySoundByCategory(0x90010, 0, 0);
                     break;
 
                 case 4:
-                    func_8004D9B0(0x90011, 0, 0);
+                    PlaySoundByCategory(0x90011, 0, 0);
                     break;
             }
 

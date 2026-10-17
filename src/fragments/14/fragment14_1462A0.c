@@ -475,7 +475,7 @@ void func_86802E18(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_006 = 0x1E;
             arg0->unk_074.z = 0.0f;
             arg0->unk_074.x = 0.0f;
-            func_8004D9B0(0x50008, arg0->unk_000 + 1, func_86802D28(arg0));
+            PlaySoundByCategory(0x50008, arg0->unk_000 + 1, func_86802D28(arg0));
             arg0->unk_0C0 = 2;
             arg0->unk_0C8 = 1.0f;
             break;
@@ -485,7 +485,7 @@ void func_86802E18(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_0C0 = 7;
             arg0->unk_0DC = 0;
             arg0->unk_0C8 = 1.0f;
-            func_8004D9B0(0x50009, arg0->unk_000 + 1, func_86802D28(arg0));
+            PlaySoundByCategory(0x50009, arg0->unk_000 + 1, func_86802D28(arg0));
             break;
 
         case 3:
@@ -493,7 +493,7 @@ void func_86802E18(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_0C0 = 7;
             arg0->unk_0DC = 0;
             arg0->unk_0C8 = 1.0f;
-            func_8004D9B0(0x5000A, arg0->unk_000 + 1, func_86802D28(arg0));
+            PlaySoundByCategory(0x5000A, arg0->unk_000 + 1, func_86802D28(arg0));
             break;
 
         case 4:
@@ -1546,12 +1546,12 @@ void func_86805518(unk_D_86807558* arg0) {
         arg0->unk_020 = 0;
         arg0->unk_002 &= ~8;
         if (D_86808448 == arg0->unk_000) {
-            func_8004D9B0(0x5000C, 0, 0);
+            PlaySoundByCategory(0x5000C, 0, 0);
         }
     } else if ((arg0->unk_01C - arg0->unk_024) >= 0xA) {
         arg0->unk_024 = arg0->unk_01C;
         if (D_86808448 == arg0->unk_000) {
-            func_8004D9B0(0x5000B, 0, 0);
+            PlaySoundByCategory(0x5000B, 0, 0);
         }
     }
 }

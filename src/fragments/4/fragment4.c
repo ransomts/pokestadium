@@ -251,7 +251,7 @@ s32 func_87A010D4(s32 arg0, s32 arg1, s32 arg2) {
     s32 ret = 0;
 
     if (D_8780FC92 == 0) {
-        ret = func_8004D9B0(arg0, arg1, arg2);
+        ret = PlaySoundByCategory(arg0, arg1, arg2);
     }
 
     return ret;

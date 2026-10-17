@@ -1266,3 +1266,82 @@ func_800049AC	RspTaskYield	w6		Invoked after starting the task to yield control,
 func_80000F80	PiStartDma	w6		Used in DmaCopyAsyncLoop to initiate an asynchronous DMA transfer with a message queue	applied@5d9b86a
 func_8000100C	PiReadRom	w6		Called in DmaCopyAsyncBlock to read a ROM block asynchronously via DMA	applied@5d9b86a
 func_80000F0C	PiStartDmaCopy	w6		Used in DmaCopyAsyncAlt for a generic DMA copy operation with a message queue	applied@5d9b86a
+func_80042A2C	Audio_SelectTrack	w7		sets current track ID and routes to appropriate handler based on range checks (0xFF, out?of?range, or normal)	applied@892328f
+func_80042B8C	Audio_ProcessChannel	w7		called per active channel in Audio_ProcessMusic; handles envelope, flags and timer decrement logic	applied@892328f
+func_80042D90	Audio_ProcessCommand	w7		loops reading command bytes via func_80044180 and dispatches to specific command handlers	applied@892328f
+func_80042F20	Audio_Command_End	w7		handles command 0xFF, clears flags, resets pointers and may stop playback for certain channels	applied@892328f
+func_800430AC	Audio_Command_SetAddress	w7		reads two bytes, forms a 16?bit address, updates stream pointer and sets flag bit 0x2	applied@892328f
+func_80043134	Audio_Command_Jump	w7		reads a byte offset, updates stream pointer to a new location within the track data	applied@892328f
+func_800431FC	Audio_Command_SetEnvelope	w7		reads envelope parameters and stores them in D_800FCD70 (envelope struct) for the channel	applied@892328f
+D_800FCEF0	gAudioChannelState	w7		Used as a per?channel state flag with values 0,2,3,4,5,1 that drives the processing state machine in Audio_ProcessChannels	applied@892328f
+D_800FCEF8	gAudioChannelDmaStart	w7		Stores the first argument of Audio_StartChannel and is later passed to AudioChannel_Init as the DMA start address	applied@892328f
+D_800FCF00	gAudioChannelVolume	w7		Represents the current volume multiplier; it is mixed into samples and modified by Audio_SetVolumeFade	applied@892328f
+D_800FCF08	gAudioChannelTargetVolume	w7		Receives the second argument of Audio_StartChannel (clamped to 0x80) and is copied to gAudioChannelVolume when a channel starts	applied@892328f
+D_800FCF10	gAudioChannelLoopCount	w7		Receives the fourth argument of Audio_StartChannel and is decremented each frame until zero to control looping	applied@892328f
+D_800FCF1C	gAudioChannelVolumeFadeStep	w7		Calculated in Audio_SetVolumeFade as current volume divided by fade time, used to decrement volume each tick	applied@892328f
+D_800FCF20	gAudioChannelStopFlag	w7		Set to 0 on init, changed to 1 after AudioChannel_Stop to prevent repeated stop calls	applied@892328f
+D_800FCF28	gAudioChannelBuffer	w7		Allocated as a 0x1140?byte buffer for each channel, cleared with bzero and written back before DMA	applied@892328f
+D_800FCF30	gAudioChannelReadPos	w7		Compared with gAudioChannelWritePos to decide which chunk size to use, indicating the read index in the ring buffer	applied@892328f
+D_800FCF38	gAudioChannelWritePos	w7		Incremented by var_s7*2 each frame, wrapped modulo 2208, and used as the write index for the audio sample buffer	applied@892328f
+D_800FCF40	gAudioDmaQueue	w7		Created with osCreateMesgQueue and used as the completion queue for DMA operations in Audio_DmaTransfer	applied@892328f
+D_800FCF58	gAudioDmaMsg	w7		Serves as the message storage for gAudioDmaQueue during DMA synchronization	applied@892328f
+func_80048590	AnimBlock_DecodeSubframe	w7		Called with two s16 values, an AnimBlock19 pointer and an output buffer, indicating it decodes those values into subframe animation data	applied@892328f
+func_80048684	AnimProcessor_ApplySubframe	w7		Called with the AnimProcessor pointer, two s16 parameters and the decoded buffer, suggesting it applies the subframe data to the processor's state	applied@892328f
+func_80048904	AnimProcessor_FinishFrame	w7		Invoked after scaling the animation header and before toggling the processor's double?buffer index, implying it finalises the current animation frame for the processor	applied@892328f
+func_80048014	ResetSoundDurations	w7		Resets the duration scaling of the two active sound handles and clears them to zero	applied@892328f
+D_80078700	gPokemonAnimData	w7		Array of 151 structs indexed by Pok?mon ID, used to check the animation variant field (unk_02) for Charizard and others	applied@892328f
+unk_D_80078700	PokemonAnimDataEntry	w7		Structure holding per?Pok?mon animation parameters (including variant) referenced by gPokemonAnimData	applied@892328f
+D_800789F4	gPrevSoundHandle	w7		Stores the handle of the previously played sound effect so its duration scale can be adjusted before playing a new one	applied@892328f
+D_800789F8	gActiveSoundHandle	w7		Receives the handle returned by MusStartSoundEffect and is later used for duration scaling and resetting	applied@892328f
+D_800789FC	gBankRemapIndex	w7		Counter (mod?3) used to select which bank remap descriptor to use when loading sound data	applied@892328f
+D_80078A00	gSoundEffectFlag	w7		Flag array (currently only index?0) used to prevent replaying the same special move sound effect multiple times	applied@892328f
+func_80050B40	DecompressData	w7		decompresses data from source buffer D_800FC6DC to destination (used with D_800FC6B0[slot] and gMoveSoundTables[slot])	applied@892328f
+D_800FC6FC	gMoveSoundArchive	w7		struct with a .num_files field accessed to get the count of move?sound files	applied@892328f
+D_800FC6DC	gMoveSoundTempBuffer	w7		temporary RAM buffer used as destination for RomCopy and source for DecompressData	applied@892328f
+D_800FC6B0	gMoveSoundBankData	w7		array of pointers to per?slot move?sound bank data, passed to RemapBankPointers and used as sequence pointer	applied@892328f
+D_800FC6E8	gMoveSoundSeqInfo	w7		struct containing seqArray with offsets, used when calculating size for the last file entry	applied@892328f
+D_800FC700	gMoveSoundSeqTable	w7		struct with seqArray entries providing length and offset for each move?sound sequence	applied@892328f
+D_800FC6AC	gMoveSoundBankBase	w7		pointer passed to MusStartSoundEffect as the sound bank base address	applied@892328f
+func_800484A0	Music_RequestHandle	w7		calls MusHandleAsk with the same argument, indicating a wrapper to request a music handle	applied@892328f
+func_800484C0	Music_GetState	w7		returns the result of MusAsk, likely exposing the current music state	applied@892328f
+func_800484E0	Audio_CalcLoadScore	w7		calculates a load metric from used voices, active channels and music enable flag	applied@892328f
+func_80048574	Audio_GetFreeVoiceCount	w7		returns mus_free_voices_count, the number of free audio voices	applied@892328f
+func_80048580	Audio_GetReleasingVoiceCount	w7		returns mus_releasing_voices_count, the number of voices being released	applied@892328f
+D_800FF9C0	gSfxBankSpecial	w7		D_800FF9C0 is passed as the first argument to MusStartSoundEffect only for the special case arg0 == 0xF, indicating it points to a special SFX data bank	applied@892328f
+D_800FC688	gSfxTable	w7		D_800FC688 is used as the second argument to MusStartSoundEffect in both special and generic cases, suggesting it is a table of SFX parameters or indices	applied@892328f
+D_80078E70	gMusicHandle	w7		D_80078E70 is supplied to MusSetDurationScale after starting a sound effect for arg0 == 0xF, implying it stores a handle to the currently playing music track	applied@892328f
+D_800FC68C	gSfxBankStandard	w7		D_800FC68C is the first argument to MusStartSoundEffect for normal SFX playback, indicating it is the standard SFX data bank pointer	applied@892328f
+func_8004AD40	Rom_SelectDevice	w7		chooses ROM source (drive for arg0==1, otherwise cart) and stores the handle in gRomPiHandle	applied@892328f
+D_800FF990	gRomDmaQueue	w7		OSMesgQueue used for DMA completion messages in Rom_DmaRead	applied@892328f
+D_800FF9A8	gRomPiHandle	w7		OSPiHandle* set by Rom_SelectDevice to the drive or cart ROM handle	applied@892328f
+D_800FF9AC	gRomDmaMsg	w7		OSMesg placed in the RomDmaQueue for synchronization of DMA operations	applied@892328f
+func_8004AE90	Music_SetMasterVolumeLevel	w7		Uses MusSetMasterVolume and stores the chosen level in D_80078E60/D_80078E64 based on arg1 mapping, indicating it sets a master volume level.	applied@892328f
+func_8004AF24	Music_SetPanMode	w7		Simply forwards its argument to MusSetPanMode, so it sets the audio pan mode.	applied@892328f
+func_8004AF44	Music_HandleStateChange	w7		Adjusts duration/volume scales, plays specific sound effects (0x23, 0x24, 0x21) and stores the effect ID in D_80078E68, indicating it handles music state changes.	applied@892328f
+func_8004B094	Music_StartVolumeFade	w7		Initialises per?channel volume step values (gMusicChannel*Step) from stored master volumes and blocks sound effects, showing it starts a volume fade.	applied@892328f
+func_8004B154	Music_EndVolumeFade	w7		Resets channel volumes to zero, unblocks sound effects, and restores master volumes, indicating it ends a volume fade.	applied@892328f
+D_80078E60	gMusicChannel2MasterVolume	w7		Used as the stored master volume for channel?2 and written to gMusicChannel2Volume in func_8004B094.	applied@892328f
+D_80078E64	gMusicChannel1MasterVolume	w7		Used as the stored master volume for channel?1 and written to gMusicChannel1Volume in func_8004B094.	applied@892328f
+D_80078E68	gMusicTransitionSfxId	w7		Holds the ID returned by PlaySoundEffect and is later used with MusSetDurationScale and MusSetVolumeScale, indicating it tracks a transition sound effect.	applied@892328f
+D_80078EC8	gMusicFadeDuration	w7		Assigned in func_8004B1C0 and later used to decide between MusLoadSong and MusLoadSongWithFade, showing it holds the fade duration for music transitions.	applied@892328f
+func_8004BFC0	Player_PlaySoundEffect	w7		Handles player sound IDs 0x20003?0x20008, adjusts volume/pitch and calls MusStartSoundEffect, indicating it plays player SFX	applied@892328f
+func_8004C17C	Player_HandleSfx	w7		Processes sound IDs 0x30001?0x30004, manipulates player sound handles and starts a sound effect, so it handles player SFX control	applied@892328f
+func_8004C454	Player_CalcVolume	w7		Calculates a volume value from arg0/arg1 using the same formulas as player sound functions, thus it is the player volume calculator	applied@892328f
+func_8004C4FC	Player_PlaySpecialSfx	w7		Uses sound IDs 0x40001?0x40007, sets duration on player handles +3 and starts a sound, indicating a special player SFX routine	applied@892328f
+func_8004C6DC	PlayAmbientSound	w7		Switches on 0x5000x IDs, sets ambient parameters and starts a sound effect, so it plays ambient sounds	applied@892328f
+func_8004C8B4	Menu_PlaySfx	w7		Handles 0x6000x IDs, uses menu volume/pitch tables and starts a sound, therefore it plays menu SFX	applied@892328f
+func_8004CA7C	PlayBattleCry	w7		Processes 0x7000x IDs, uses a battle?cry cycle and starts a sound, so it plays battle cries	applied@892328f
+func_8004CCD8	PlayPokemonCry	w7		Handles 0x8000x IDs, applies cry volume/pitch tables and starts a sound, thus it plays Pok?mon cries	applied@892328f
+func_8004D1B0	PlayBattleMusic	w7		Handles 0x9000x IDs, manipulates gBattleMusicHandle and starts a sound, indicating battle music playback	applied@892328f
+func_8004D3B0	PlayStadiumSfx	w7		Processes 0xA000x IDs, uses several D_ arrays for volume/pitch calculations before starting a sound, so it plays stadium sound effects	applied@892328f
+func_8004D9B0	PlaySoundByCategory	w7		Dispatches based on the high 16 bits (0x20000?0xA0000) to the appropriate category functions, acting as a generic sound?by?category player	applied@892328f
+func_8004DC8C	StopSoundByCategory	w7		Calls the corresponding empty stop functions based on the high 16 bits, serving as a generic sound stop dispatcher	applied@892328f
+func_8004DF94	PlayUISfx	w7		Handles 0x110000x IDs, uses D_800790* tables for volume/duration, and starts a sound, indicating UI sound effect playback	applied@892328f
+func_8004E304	PlayResultScreenSfx	w7		Handles 0x120000x IDs, manipulates D_800790* handles for result screen events and starts sounds, so it plays result?screen SFX	applied@892328f
+D_80078F8C	gCrySpecialHandles	w7		Array of 4 handles used in PlayPokemonCry case 0x80002 for special cry playback, thus it stores special cry handles	applied@892328f
+func_8004FC60	Audio_SetVolumeFadeAndDuration	w7		sets volume fade for both channels when flag 4 is set then calls MusSetAllChannelsDuration with the same arguments	applied@892328f
+func_8004FCD8	Audio_ResetAndSetFade	w7		clears D_8007840C, calls AudioFrameUpdate, then invokes Audio_SetVolumeFadeAndDuration and sets per?channel fade for both channels	applied@892328f
+func_8004FD44	Audio_FadeAllChannelsDefault	w7		calls Audio_ResetAndSetFade with a constant argument 1 to apply a default fade level	applied@892328f
+func_8004FD64	Audio_FadeAllChannels	w7		forwards its argument to Audio_ResetAndSetFade to set a custom fade level for all audio channels	applied@892328f
+func_8004FE00	Audio_LoadBankAndSong	w7		Loads audio bank data, initializes wave tables and loads a song, returning its handle	applied@892328f
+func_8004FF20	Audio_ClearBankDMAFlag	w7		Clears the high bit of gAudioDMAFlags after bank loading	applied@892328f

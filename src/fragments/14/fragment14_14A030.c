@@ -297,7 +297,7 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
 
         if (arg3->unk_006 >= 2) {
             if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (D_86807510 >= 0x3D)) {
-                func_8004D9B0(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
+                PlaySoundByCategory(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
             }
         }
     }
@@ -340,7 +340,7 @@ void func_868063C4(unk_D_86808808* arg0) {
                 arg0->unk_006++;
                 if (gSushiFirstSpawnFlag == 0) {
                     gSushiFirstSpawnFlag = 1;
-                    func_8004D9B0(0x50003, 0, 0);
+                    PlaySoundByCategory(0x50003, 0, 0);
                     func_8004B1CC(0x17);
                 }
                 func_868061E8(1, sp24, -1, arg0);

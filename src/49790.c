@@ -25,19 +25,19 @@ s32 PlaySoundEffect(u32 arg0) {
     sp24 = 0.0f;
 
     if (temp_v0_3 == 0x01200000) {
-        return func_8004E304(arg0, 0, 0);
+        return PlayResultScreenSfx(arg0, 0, 0);
     }
 
     if (temp_v0_3 == 0x01100000) {
-        return func_8004DF94(arg0, 0, 0);
+        return PlayUISfx(arg0, 0, 0);
     }
 
     if (arg0 == 0xF) {
         if (!(gAudioDMAFlags & 0x80000000)) {
             return 0;
         }
-        gLastSfxHandle = MusStartSoundEffect(D_800FF9C0, D_800FC688, 0xF, 0x70, 0x80, -1);
-        MusSetDurationScale(D_80078E70, 0x28);
+        gLastSfxHandle = MusStartSoundEffect(gSfxBankSpecial, gSfxTable, 0xF, 0x70, 0x80, -1);
+        MusSetDurationScale(gMusicHandle, 0x28);
         return gLastSfxHandle;
     }
 
@@ -159,7 +159,7 @@ s32 PlaySoundEffect(u32 arg0) {
             return 0;
     }
 
-    gLastSfxHandle = MusStartSoundEffect(D_800FC68C, D_800FC688, arg0, sp28, 0x80, -1);
+    gLastSfxHandle = MusStartSoundEffect(gSfxBankStandard, gSfxTable, arg0, sp28, 0x80, -1);
     if (sp24 != 0.0f) {
         MusSetFrequencyOffset(gLastSfxHandle, sp24);
     }

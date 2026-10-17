@@ -304,7 +304,7 @@ void func_86400860(UNUSED s32 arg0) {
                 if (D_864052C8->unk_015 == 0) {
                     D_864052C8->unk_015 = 1;
                     if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
-                        func_8004D9B0(0x70005, i + 1, 0);
+                        PlaySoundByCategory(0x70005, i + 1, 0);
                     }
                 }
                 D_864052C8->unk_190->unk_28 = temp_fs0;
@@ -312,7 +312,7 @@ void func_86400860(UNUSED s32 arg0) {
                 if (D_864052C8->unk_015 == 0) {
                     D_864052C8->unk_015 = 1;
                     if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
-                        func_8004D9B0(0x70006, i + 1, 0);
+                        PlaySoundByCategory(0x70006, i + 1, 0);
                     }
                 }
                 D_864052C8->unk_190->unk_28 = temp_fs0;
@@ -331,7 +331,7 @@ void func_86400860(UNUSED s32 arg0) {
                     case 20:
                         D_864052C8->unk_190->unk_28 = temp_fs0;
                         if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
-                            func_8004D9B0(0x70004, i + 1, 0);
+                            PlaySoundByCategory(0x70004, i + 1, 0);
                         }
                         break;
 
@@ -453,7 +453,7 @@ void func_86400EB4(void) {
         }
 
         if (D_864052CC->unk_16C != D_864052CC->unk_16D) {
-            func_8004D9B0(0x70003, 1 - D_864052CC->unk_16C, 0);
+            PlaySoundByCategory(0x70003, 1 - D_864052CC->unk_16C, 0);
 
             for (i = 0; i < 4; i++) {
                 D_864052C8 = &D_86404778[i];
@@ -490,7 +490,7 @@ void func_86400EB4(void) {
                     if (D_864052D4 != 0) {
                         if (D_864052C8->unk_014 == 0) {
                             if (D_864029C8 == 0) {
-                                func_8004D9B0(0x70009, 0, 0);
+                                PlaySoundByCategory(0x70009, 0, 0);
                                 D_864029C8 = 1;
                             }
 
@@ -724,7 +724,7 @@ void func_86401B3C(void) {
                     if (i == 3) {
                         Fragment2_1_SetStartFlag(1);
                     }
-                    func_8004D9B0(0x70001, 0, 0);
+                    PlaySoundByCategory(0x70001, 0, 0);
                 }
             }
 
@@ -747,7 +747,7 @@ void func_86401D1C(void) {
     s32 var_s2 = 1;
 
     if (D_8780FC92 == 0) {
-        func_8004D9B0(0x70002, 0, 0);
+        PlaySoundByCategory(0x70002, 0, 0);
         func_87B00020();
         func_86400BE8(2);
         func_86400860(2);
@@ -775,7 +775,7 @@ void func_86401D1C(void) {
                     }
                 } else if (D_864029E0 == 0x1E) {
                     if (D_8780FC94 == 0) {
-                        func_8004D9B0(0x70003, 1, 0);
+                        PlaySoundByCategory(0x70003, 1, 0);
                         D_864029E0++;
                     }
                     Anim_SetChannelBase(&D_864052CC->unk_004, 1);
@@ -798,8 +798,8 @@ void func_86401D1C(void) {
 void func_86401EEC(void) {
     u8 i;
 
-    func_8004FC60(1, 0x1E);
-    func_8004FC60(2, 0x1E);
+    Audio_SetVolumeFadeAndDuration(1, 0x1E);
+    Audio_SetVolumeFadeAndDuration(2, 0x1E);
     func_80006CB4(0x1E);
 
     for (i = 0; i < 30; i++) {

@@ -63,12 +63,12 @@ void Audio_ProcessMusic(void) {
 
     for (i = 0; i < 8; i++) {
         if (D_800FCD48[i] != 0) {
-            func_80042B8C(i);
+            Audio_ProcessChannel(i);
         }
     }
 }
 
-void func_80042A2C(u8 arg0) {
+void Audio_SelectTrack(u8 arg0) {
     D_800FCEB4 = arg0;
     if (arg0 == 0xFF) {
         func_8004473C();
@@ -109,11 +109,11 @@ s32 Music_PlayTrack(u16 arg0) {
     return 1;
 }
 
-void func_80042B8C(u32 arg0) {
+void Audio_ProcessChannel(u32 arg0) {
     if (D_800FCD50[arg0] < 2) {
         D_800FCD70[arg0].unk_03 = D_800FCD70[arg0].unk_04;
         D_800FCD58[arg0] &= (u8)~0x30;
-        func_80042D90(arg0);
+        Audio_ProcessCommand(arg0);
         return;
     }
 
@@ -164,7 +164,7 @@ void func_80042B8C(u32 arg0) {
     }
 }
 
-void func_80042D90(u32 arg0) {
+void Audio_ProcessCommand(u32 arg0) {
     u32 var_v0;
     u8 temp_v0;
 
@@ -172,19 +172,19 @@ void func_80042D90(u32 arg0) {
         temp_v0 = func_80044180(arg0);
         switch (temp_v0) {
             case 0xFF:
-                var_v0 = func_80042F20(arg0);
+                var_v0 = Audio_Command_End(arg0);
                 break;
             case 0xFD:
-                var_v0 = func_800430AC(arg0);
+                var_v0 = Audio_Command_SetAddress(arg0);
                 break;
             case 0xFE:
-                var_v0 = func_80043134(arg0);
+                var_v0 = Audio_Command_Jump(arg0);
                 break;
             case 0xE8:
                 var_v0 = func_800431DC(arg0);
                 break;
             case 0xEA:
-                var_v0 = func_800431FC(arg0);
+                var_v0 = Audio_Command_SetEnvelope(arg0);
                 break;
             case 0xEB:
                 var_v0 = func_8004327C(arg0);
@@ -230,7 +230,7 @@ void func_80042D90(u32 arg0) {
     } while (!var_v0 ^ 0);
 }
 
-u8 func_80042F20(u32 arg0) {
+u8 Audio_Command_End(u32 arg0) {
     if (D_800FCD58[arg0] & 2) {
         D_800FCD58[arg0] &= ~2;
         D_800FCE68[arg0] = D_800FCE48[arg0];
@@ -265,7 +265,7 @@ u8 func_80042F20(u32 arg0) {
     return 1;
 }
 
-u8 func_800430AC(u32 arg0) {
+u8 Audio_Command_SetAddress(u32 arg0) {
     u8 sp1F;
     u8 temp_v0;
     s32 tmp;
@@ -280,7 +280,7 @@ u8 func_800430AC(u32 arg0) {
     return 0;
 }
 
-u8 func_80043134(u32 arg0) {
+u8 Audio_Command_Jump(u32 arg0) {
     u8 sp27;
     u8 sp26;
     u32 temp_v0 = func_80044180(arg0);
@@ -307,7 +307,7 @@ u8 func_800431DC(u32 arg0) {
     return 0;
 }
 
-u8 func_800431FC(u32 arg0) {
+u8 Audio_Command_SetEnvelope(u32 arg0) {
     u8 temp_a0;
     u8 temp_a1;
     u8 temp_v0;
@@ -382,7 +382,7 @@ u8 func_8004340C(u32 arg0) {
 }
 
 u8 func_80043434(u32 arg0) {
-    func_80042A2C(func_80044180(arg0));
+    Audio_SelectTrack(func_80044180(arg0));
     if (D_800FCD68 == 0) {
         D_800FCD68 = D_800FCD48[7];
         D_800FCD48[7] = 0;
@@ -491,7 +491,7 @@ u8 func_800437A0(u32 arg0, u8 arg1) {
         }
 
         if (D_800FCD68 == 0) {
-            func_80042A2C(D_800FCEB4);
+            Audio_SelectTrack(D_800FCEB4);
         }
     }
 

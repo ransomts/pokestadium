@@ -372,7 +372,7 @@ void func_86B065C4(void) {
 
     if (D_86B0FA40 == 0) {
         D_86B0FA40 = 1;
-        func_8004DF94(0x0110000F, 0, 0);
+        PlayUISfx(0x0110000F, 0, 0);
     }
 
     if (D_86B0FA78->unk_178 & 1) {
@@ -611,7 +611,7 @@ s32 func_86B06FFC(void) {
             if (func_86B06440() != 0) {
                 D_86B0FA78->unk_178 = 0;
                 D_86B0FA50->unk_90 = 0;
-                func_8004DF94(0x01100002, 0, 0);
+                PlayUISfx(0x01100002, 0, 0);
                 D_86B0FA40 = 0;
                 D_86B0FA78->unk_16C++;
             }

@@ -3,10 +3,10 @@
 
 #include "global.h"
 
-void func_800484A0(s32 arg0);
-s32 func_800484C0(s32 arg0);
-s32 func_800484E0(void);
-s32 func_80048574(void);
-s32 func_80048580(void);
+void Music_RequestHandle(s32 arg0);
+s32 Music_GetState(s32 arg0);
+s32 Audio_CalcLoadScore(void);
+s32 Audio_GetFreeVoiceCount(void);
+s32 Audio_GetReleasingVoiceCount(void);
 
 #endif // _490A0_H_

@@ -1691,23 +1691,23 @@ void func_86C00110(s16 arg0, s16 arg1) {
             break;
 
         case 18:
-            func_8004FC60(1, arg1);
-            func_8004FC60(2, arg1);
+            Audio_SetVolumeFadeAndDuration(1, arg1);
+            Audio_SetVolumeFadeAndDuration(2, arg1);
             D_8790604A = 1;
             break;
 
         case 19:
-            func_8004B094(arg1);
+            Music_StartVolumeFade(arg1);
             break;
 
         case 20:
-            func_8004B154();
+            Music_EndVolumeFade();
             break;
     }
 
     if (var_s0 != 0) {
         D_87903DBC++;
-        func_8004D9B0(var_s0, isGold, sp2C);
+        PlaySoundByCategory(var_s0, isGold, sp2C);
     }
 }
 
@@ -3431,7 +3431,7 @@ void ekansMinigameUpdate(void) {
         func_86C040B4(2);
     }
 
-    while (func_800484E0() != 0) {}
+    while (Audio_CalcLoadScore() != 0) {}
 
     func_86C00368(0x14, 0);
 }

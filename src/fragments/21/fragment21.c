@@ -1560,27 +1560,27 @@ void func_86F00020(s16 arg0, s16 arg1) {
             break;
 
         case 9:
-            func_8004FC60(1, arg1);
-            func_8004FC60(2, arg1);
+            Audio_SetVolumeFadeAndDuration(1, arg1);
+            Audio_SetVolumeFadeAndDuration(2, arg1);
             D_8790604A = 1;
             break;
 
         case 10:
-            func_8004B094(arg1);
+            Music_StartVolumeFade(arg1);
             break;
 
         case 11:
-            func_8004B154();
+            Music_EndVolumeFade();
             break;
 
         case 12:
-            func_8004FC60(1, arg1);
+            Audio_SetVolumeFadeAndDuration(1, arg1);
             break;
     }
 
     if (var_s0 != 0) {
         D_87903DBC++;
-        func_8004D9B0(var_s0, sp30, sp2C);
+        PlaySoundByCategory(var_s0, sp30, sp2C);
     }
 }
 
@@ -2445,7 +2445,7 @@ void func_86F02230(void) {
         func_86F01F58(2);
     }
 
-    while (func_800484E0() != 0) {}
+    while (Audio_CalcLoadScore() != 0) {}
 
     func_86F00188(0xB, 0);
 }

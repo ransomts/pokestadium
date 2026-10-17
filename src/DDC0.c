@@ -66,13 +66,13 @@ s32 func_8000D2B4(s32 arg0) {
     s32 retvar = 0;
 
     if (arg0 != 0) {
-        func_8004FCD8(2);
+        Audio_ResetAndSetFade(2);
     }
-    while (func_800484E0() != 0) {
+    while (Audio_CalcLoadScore() != 0) {
         if (retvar < 1000000) {
             retvar++;
         } else if (retvar == 1000000) {
-            func_8004FD44();
+            Audio_FadeAllChannelsDefault();
             retvar++;
         }
     }
@@ -80,7 +80,7 @@ s32 func_8000D2B4(s32 arg0) {
 }
 
 void func_8000D338(void) {
-    func_8004FD64(0x10);
+    Audio_FadeAllChannels(0x10);
 }
 
 void func_8000D358(void) {
@@ -105,8 +105,8 @@ void func_8000D3A8(void* unused) {
     osSendMesg(&D_800A83A8[0].queue, (void*)'DONE', 0);
     osSendMesg(&D_800A83A8[1].queue, (void*)'DONE', 0);
     Audio_Initialize();
-    func_8004AF24(0);
-    func_8004AE90(3, 4);
+    Music_SetPanMode(0);
+    Music_SetMasterVolumeLevel(3, 4);
 
     // thread loop
     while (1) {
