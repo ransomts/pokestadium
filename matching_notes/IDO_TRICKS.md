@@ -150,3 +150,18 @@ to an earlier line and fixed a one-store scheduling diff. Verified by editing ug
 - A comma expression can reorder two adjacent stores (func_8820BE14).
 - A "phantom" saved FPR (saved, never used) can be a named float whose register move as1 forwarded away
   (func_80034348: len in fs3).
+
+## uopt copy propagation and live-range identity (2026-10-17, agent-13: func_8004A474, func_84367660)
+- `x = <expr of register variables>` is copy-propagated: x's uses become a CSE temp of the expression and
+  x itself disappears (so a later reuse of x is a separate range with its own register). To keep x a real
+  variable, redefine one operand between the def and a use with code that compiles to nothing (a re-read
+  of a CSE'd load, `duty = D_800FD008[7].value;`, or a dead store to a dead parameter, `arg4 = 0.0f;`).
+  Loads through memory (`p[0xE] & 8`) are not propagated.
+- One variable = one live range over every region where it is live (not split into webs). A variable
+  reused early (e.g. `a3_z = arg3->z` for call args, then `a3_z = arg4 * sp128`) inherits interference
+  from the early block, including precoloured argument registers f12/f14; use a separate local early.
+- Interference is block-granular: two ranges live in the same basic block interfere even if their
+  instruction ranges do not overlap. An empty `if (x) {}` is a block boundary.
+- Expression temps are coloured in first-appearance order of their expressions (dead copies count).
+- Use `matching_notes/ccs.py` (pre-as1 registers; add `-Isrc/fragments/NN` for fragments) to see the
+  real uopt choice: as1 renames/forwards registers, so final asm can hide a `mov.s` from a temp.
