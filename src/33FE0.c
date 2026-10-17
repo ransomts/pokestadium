@@ -738,6 +738,32 @@ void func_80034254(StadiumModel* model) {
 // if-block change nothing.
 // Still differs (60): vertex pointer temps, target (vertices+ia) v0, +ib v1, +ic a0; ours +ia v1,
 // +ib a0, +ic v0 (the ic pointer lives in one block, so it outranks the two that span the boundary).
+// Round 9 integrator dead ends (all on this 60 draft, scores without -s):
+// - no-op redefinitions `ia = ia; ib = ib;` after the boundary: NO code change at all (ugen drops
+//   self-assignments; an early var.py run scored a false 0 from a stale .o - var.py now force-rebuilds).
+// - dead reloads of ANY vertex float in the len>0 block (ia/ib/ic, any count): still 60 (the reloads
+//   are eliminated pre-uopt-allocation, so they never extend pointer ranges).
+// - boundary moved anywhere later (after ay/by/bz/az/ic-read): 1179-4631 (FPR colours break; the
+//   boundary must sit right after bx). Boundary after ax or inside the ia group: same.
+// - ax/bx loads moved after the boundary (reads stay in A): 11222 (frame collapses to 0xc8, s-regs
+//   disappear - the boundary placement controls the callee-saved structure).
+// - vertex-grouped loads (ax,ay,az | bx,by,bz | cx,cy,cz) with the boundary after az/bz/none or
+//   after ay: 2153-4985 (FPR colours break).
+// - ic read + cx load moved before the boundary: 8363/1326 (index-read folding breaks).
+// - within-B permutations (az first, cy/cz early, ic loads before by/bz): 80-1507.
+// - index reads `remap[*index++]` written as index[0]/[1]/[2] + index += 3 style or all three
+//   up-front: 1060+ (folding changes).
+// - address spellings per vertex group ((vertices+i)-> vs vertices[i]. vs (&vertices[i])->,
+//   26 combos, agent-2's gen4): 70-90 (array forms swap the addu operand order: `addu v0,s1,t5`
+//   instead of `t5,s1`; the target uses the pointer form's operand order for all three).
+// - bz merged into len (farm x3/133 candidate idea): 124.
+// MODEL: uopt allocates the three pointer temps in the order (ic, ia, ib) regardless of statement
+// order, spellings, reloads, or death order - the single-block ic-ptr always ranks above the two
+// spanning pointers. The target's (ia, ib, ic) needs a source where all three rank equal (discovery
+// tie-break), but every arrangement that does that (vertex grouping / early cx) breaks the FPR
+// colours that the interleaved order + boundary-after-bx provides. The colouring and the pointer
+// priority seem to be in direct conflict; next lead: a struct/tail-change that alters what
+// 'single block' means for the pointer temps (e.g. -Wo,-doassoc grouping of the address math).
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
