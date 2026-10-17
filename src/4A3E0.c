@@ -503,12 +503,18 @@ skip:
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
-// Hand-written (no m2c). Score 1420 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
-// fd.sh -s and ido_bisect both report 0 because they stop at the first jr ra). Wins: `(u8)(nr24 & 7) << 8`,
-// NR21 read twice (no local) so duty lives in a2 and NR21 in a3. Remaining: t-register rotation offset by
-// one from the trigger block on (andi t7 vs t4), 0x800 not hoisted into t3 at the top, NR22 & 8 read via
-// a0 base instead of a fresh lui into t1 after the length check, clamp block -1 / lh order.
-// Dead ends: explicit 4 if-statements for the dirty flags (4685), duty s32, nr21 u32, decl reordering.
+// Hand-written (no m2c). Score 980 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
+// fd.sh -s and ido_bisect both report 0 because they stop at the first jr ra; was 1420). Wins:
+// `(u8)(nr24 & 7) << 8`, NR21 read twice (no local) so duty lives in a2 and NR21 in a3; round 8: NR22 & 8
+// read inline in the final `!(NR22 & 8) && unk_04 < 0` test (no dir local in the tail) -> fresh lui load
+// hoisted to the right block like the target (1420 -> 980).
+// Remaining: t-register rotation offset by one from the trigger block on (andi t7 vs t4; target seems to
+// keep t4 busy there), the tail NR22 `andi 8` sits at the use (target: in the unk_0C beqz delay slot,
+// result kept in t1 = trigger dir's register), unk_0C/unk_18 values in a0 vs v0, phase a2 vs a0.
+// Dead ends: explicit 4 if-statements for the dirty flags (4685), duty s32, nr21 u32, decl reordering;
+// NR22&8 into dir before/after the unk_0C test or before the while (1000-1420, a0-based load), `dir = NR22`
+// + `dir & 8` (1755), u8/u32/s16/u16 dir, `(x & 8) != 0`, both dir and inline NR22 test (1900);
+// deleting any of the trigger stores does not free t7 for the `& 0xF0` (only dropping unk_24 = 1 shifts it).
 s16 func_8004A474(void) {
     s32 changed;
     s32 i;
@@ -624,7 +630,6 @@ s16 func_8004A474(void) {
         return 0;
     }
 
-    dir = D_800FD008[7].value & 8;
     if (D_800FCF90.unk_0C < pos) {
         D_800FCF90.unk_04 += D_800FCF90.unk_06;
         D_800FCF90.unk_0C += D_800FCF90.unk_08;
@@ -634,7 +639,7 @@ s16 func_8004A474(void) {
         D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
     }
 
-    if (!dir && (D_800FCF90.unk_04 < 0)) {
+    if (!(D_800FD008[7].value & 8) && (D_800FCF90.unk_04 < 0)) {
         D_800FCF90.unk_24 = 0;
         return 0;
     }
