@@ -862,24 +862,8 @@ void func_8130306C(u8* arg0) {
     gDisplayListHead = gfx;
 }
 
-#ifdef NON_MATCHING
-// func_8130337C: score 13923 (diff.py), 166/553 identical. Instruction stream and block structure
-// already match closely (loop 1 is identical apart from regs); the diff is register allocation of
-// hoisted constants / induction variables:
-//  - target keeps 0xE7000000 (pipesync) in v1 only for the first two explicit syncs (the sync
-//    inside gDPLoadTextureBlock_4b already re-lui's it), re-lui's it every time in loop 1 and
-//    loop 2, and holds it in s2 only between the switch and loop 2. The draft hoists it into s3
-//    for the whole function, which shifts every other register.
-//  - loop 2 in the target hoists only E45E8000/3E8000/FD100000(fp)/F5100000(ra) and keeps all six
-//    IVs (s1,s4,s5,s6,s7 + s0 = s5<<2) in s-regs, so ugen gets v1,a0-a3,t0-t5 for the gfx temps.
-//    The draft hoists E7, 07080200, 077FF040, 001FC03C too and puts the IVs in t2-t5.
-// Dead ends (round 7): gSPClearGeometryMode(G_ZBUFFER - 1) for the SetGeometryMode(0) line (as in
-// func_87A009F0), decl order, separate j for loop 2, i != 8, s32 sp30 / pointer arithmetic,
-// index forms of &sp30[...], inline pipesync with (s32) constant: all identical or worse.
-// if (0) probes: E7 stays hoisted in a register even with loop 1, loop 2, the switch or the
-// first sync removed, so the draft's E7 priority is robust - the original must differ in some
-// way that shrinks/raises register pressure (no matched function holds E7 in v1).
-// ido_bisect: no single switch gets close (no_const_in_reg 18516, nokpicopt 14408).
+// The nine texture strips are one 9-iteration loop: IDO unrolls it by 2 (one peeled iteration, then
+// four iterations of two copies), which is what made the target look like a hand-written 4-pass loop.
 void func_8130337C(void) {
     Gfx* gfx = gDisplayListHead;
     u8* sp30;
@@ -934,27 +918,13 @@ void func_8130337C(void) {
                      AA_EN | CVG_DST_CLAMP | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL | FORCE_BL | G_RM_NOOP2);
     gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_DECALRGBA);
 
-    gDPPipeSync(gfx++);
-
-    gDPLoadTextureBlock(gfx++, &sp30[0], G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gfx++, 0x03E8, 0x0334, 0x05E8, 0x0374, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 9; i++) {
         gDPPipeSync(gfx++);
 
-        gDPLoadTextureBlock(gfx++, &sp30[0x1000 + (i * 0x2000)], G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0,
+        gDPLoadTextureBlock(gfx++, &sp30[i * 0x1000], G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gfx++, 0x03E8, (0xDD + (i * 0x20)) << 2, 0x05E8, (0xED + (i * 0x20)) << 2, G_TX_RENDERTILE,
-                            0, 0, 0x0400, 0x0400);
-
-        gDPPipeSync(gfx++);
-
-        gDPLoadTextureBlock(gfx++, &sp30[0x2000 + (i * 0x2000)], G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0,
-                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
-        gSPTextureRectangle(gfx++, 0x03E8, (0xED + (i * 0x20)) << 2, 0x05E8, (0xFD + (i * 0x20)) << 2, G_TX_RENDERTILE,
+        gSPTextureRectangle(gfx++, 0x03E8, (0xCD + (i * 0x10)) << 2, 0x05E8, (0xDD + (i * 0x10)) << 2, G_TX_RENDERTILE,
                             0, 0, 0x0400, 0x0400);
     }
 
@@ -964,6 +934,3 @@ void func_8130337C(void) {
 
     gDisplayListHead = gfx;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/33/fragment33/func_8130337C.s")
-#endif
