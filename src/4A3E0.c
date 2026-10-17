@@ -736,7 +736,8 @@ s16 func_8004A89C(void) {
     if (value) {
         idx = D_800FD008[0x12].value;
         col = (idx & 0xF0) >> 4;
-        if (idx) {}
+        value = idx;
+        if (value) {}
         idx = D_800FD008[0x12].value;
         sample = D_80078A60[idx & 7][col].unk_00;
         if (sample == 0xFF) {

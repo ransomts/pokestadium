@@ -38,6 +38,10 @@ for vi, variant in enumerate(open(spec).read().split("=====\n")):
     if not ok:
         continue
     open(path, "w").write(s)
+    os.utime(path, None)  # NFS: make the rewrite visible to make NOW
+    obj = os.path.join(REPO, "build", f[:-2] + ".o")
+    if os.path.exists(obj):
+        os.remove(obj)  # NFS stale-object trap: never trust a cached .o (see IDO_TRICKS)
     print("=== variant", vi, variant.strip().splitlines()[0][:60], flush=True)
     subprocess.run([FD, f, func, lines])
     if "--keep" not in sys.argv:
