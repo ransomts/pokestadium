@@ -1138,7 +1138,7 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
                 var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x60;
-            func_800367A0(0x15, gAudioEffectId, 0);
+            Audio_PlaySoundEffect(0x15, gAudioEffectId, 0);
             break;
 
         case 4:
@@ -1149,7 +1149,7 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
                 var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x70;
-            func_800367A0(0x15, gAudioEffectId, 0);
+            Audio_PlaySoundEffect(0x15, gAudioEffectId, 0);
             break;
 
         case 5:

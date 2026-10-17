@@ -189,7 +189,7 @@ void ProcessPokemonSelection(unk_D_800AE540_1194* arg0) {
             }
         }
         if (!(arg0->unk_10->unk_00 & 4)) {
-            while (func_80001C90() == 0) {}
+            while (RspTaskYielded() == 0) {}
         }
         AssetManager_RequestLoad(arg0->unk_10, (u16) sp2A, sp2C);
         arg0->unk_00 |= 0x40;

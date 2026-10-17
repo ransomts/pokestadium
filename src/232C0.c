@@ -271,7 +271,7 @@ s32 func_80022DF4(unk_func_80022C28_ret* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_80022E18(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
+s32 GbsBlock_ReadPokemon(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     s32 var_s3;
     s32 var_s4;
     s32 var_v1;
@@ -625,7 +625,7 @@ s32 func_80023A04(s32 arg0) {
     return sp28;
 }
 
-s32 func_80023AF8(s32 arg0) {
+s32 SaveSlot_Load(s32 arg0) {
     s32 sp1C = 0;
 
     if (((1 << arg0) & gActivePlayerMask) && (gPlayerSaveData[arg0].unk_03 == 0)) {
@@ -697,7 +697,7 @@ s32 func_80023D60(s32 arg0) {
                 func_8002B274(arg0, 2);
             }
 
-            temp_s1 = func_80023AF8(arg0);
+            temp_s1 = SaveSlot_Load(arg0);
             temp_s1 &= func_80023B7C(arg0);
 
             if (func_8000A888(arg0, sp2F) == 0) {
@@ -1265,7 +1265,7 @@ s32 func_8002513C(s32 arg0) {
     return phi_v1;
 }
 
-char* func_800251B0(s32 arg0, char* arg1) {
+char* SaveSlot_GetTrainerName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }

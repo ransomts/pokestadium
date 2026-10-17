@@ -57,7 +57,7 @@ s32 func_83802548(unk_D_838067F0* arg0, s32 arg1) {
         }
 
         if (var_v0 != NULL) {
-            while (func_80022E18(sp48, 1, var_v0) == 1) {
+            while (GbsBlock_ReadPokemon(sp48, 1, var_v0) == 1) {
                 ptr->unk_02[ptr->unk_00++] = i++;
             }
             CommitAndFreeGbsBlock(var_v0);
@@ -118,7 +118,7 @@ s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
                 for (j = 0; j < 3; j++) {
                     if (i < temp_s3->unk_00) {
                         if (func_80022DF4(var_v0, temp_s3->unk_02[i++]) != 0) {
-                            var_s4 += func_80022E18(&arg1->unk_0000[j].unk_004, 1, var_v0);
+                            var_s4 += GbsBlock_ReadPokemon(&arg1->unk_0000[j].unk_004, 1, var_v0);
                         }
                     }
                 }

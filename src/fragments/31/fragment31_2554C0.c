@@ -67,12 +67,12 @@ void func_81000420(s32 arg0, DisplayListState* state) {
     DisplayListAddresses* addresses;
     u8 temp_v1;
 
-    temp_v1 = func_800325B4();
+    temp_v1 = GraphRoot_GetCurrentModelSlot();
     if (arg0 == 2) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x140);
         state->gfx = gfx;
-        func_81000330(gfx, addresses, ((D_800AF7B0[temp_v1 & 1] * 3) + D_81003FD0) % 8);
+        func_81000330(gfx, addresses, ((gModelUpdateFlag[temp_v1 & 1] * 3) + D_81003FD0) % 8);
         D_81003FD0 += 1;
     }
 }

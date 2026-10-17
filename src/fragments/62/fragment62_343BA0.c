@@ -139,7 +139,7 @@ void func_84359490(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* a
 
     if (sp24 == 0.0f || sp20 == 0.0f || sp1C == 0.0f) {}
 
-    func_80031B04(&sp24, &sp20, &sp1C);
+    Math_NormalizeVector(&sp24, &sp20, &sp1C);
 
     *arg0 = sp3C;
     *arg1 = sp38;
@@ -179,7 +179,7 @@ void func_84359564(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* a
 
     if (sp24 == 0.0f || sp20 == 0.0f || sp1C == 0.0f) {}
 
-    func_80031B04(&sp24, &sp20, &sp1C);
+    Math_NormalizeVector(&sp24, &sp20, &sp1C);
 
     *arg0 = sp3C;
     *arg1 = sp38;
@@ -731,7 +731,7 @@ s32 func_8435AE08(void) {
         sp4C = (((D_84392580 % 3) * M_PI_F) / 3.0) + 0.5235987901687622;
         sp54 = (f64)__sinf(sp4C);
         sp50 = (f64)__cosf(sp4C);
-        func_80031B04(&sp58, &sp54, &sp50);
+        Math_NormalizeVector(&sp58, &sp54, &sp50);
         sp54 *= 20.0;
         sp50 *= 20.0;
         sp58 = 10.0f;

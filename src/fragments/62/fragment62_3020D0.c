@@ -651,11 +651,11 @@ void func_843190A8(s16 arg0, s16 arg1) {
                 }
             } else {
                 if (temp_s0->unk_04 == 0xE) {
-                    func_8003F660(func_84308D98(D_84390010[temp_s0->unk_0C]));
+                    ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
                     func_84318640(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
                 } else if (func_84315EC0(temp_s0, arg0, arg1) != 0) {
-                    func_8003F660(func_84308D98(D_84390010[temp_s0->unk_0C]));
+                    ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
                     func_84318640(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
                 }

@@ -29,7 +29,7 @@ static Vtx D_84389810[] = {
 // Matching notes: uopt colours with block-granular interference (the empty `if (a3_z) {}` is the block
 // boundary between the a3 setup and the vertex writes; the dead first copy of the six 1.2/0.2 expressions
 // fixes the spill-slot order). The early arg3->z must not share a3_z's variable (tmp3): otherwise a3_z's
-// range includes the func_80031A94 argument block, where f12/f14 are precoloured, and it cannot get f12.
+// range includes the Math_CrossProductComponents argument block, where f12/f14 are precoloured, and it cannot get f12.
 // `arg4 = 0.0f` (dead) stops uopt copy-propagating `arg4 * sp128` into the if, which would otherwise
 // create a separate f12 temp in front of the a3_z variable. tmp1/tmp2 must not appear before the vertex
 // writes (the 2*a3 temps are coloured in first-appearance order).
@@ -90,9 +90,9 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     a3_y = arg3->y;
     tmp3 = arg3->z;
 
-    func_80031A94(a2_x - a1_x, a2_y - a1_y, a2_z - a1_z, a1_x - a3_x, a1_y - a3_y, a1_z - tmp3, &sp130, &sp12C, &sp128);
+    Math_CrossProductComponents(a2_x - a1_x, a2_y - a1_y, a2_z - a1_z, a1_x - a3_x, a1_y - a3_y, a1_z - tmp3, &sp130, &sp12C, &sp128);
     if ((SQ(sp130) + SQ(sp12C) + SQ(sp128)) > 0.0f) {
-        func_80031B04(&sp130, &sp12C, &sp128);
+        Math_NormalizeVector(&sp130, &sp12C, &sp128);
     }
 
     gSPDisplayList(arg0++, D_84389780);

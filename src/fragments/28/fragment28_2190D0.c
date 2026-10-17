@@ -3417,7 +3417,7 @@ void func_88804EC8(void) {
     var_s1 = D_88826CE8;
 
     Matrix_LookAtBetween(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
-    func_80031EF4(&sp124, &temp_s2->unk_60.mtxf);
+    Camera_CopyMatrixF(&sp124, &temp_s2->unk_60.mtxf);
     guMtxF2L(sp124.mf, &spE0);
 
     gSPDisplayList(temp_v0++, D_88825248);
@@ -3842,9 +3842,9 @@ void func_88806F20(Vec3f* arg0, Vec3f* arg1) {
     sp28 = arg1->y - arg0->y;
     sp24 = arg1->z - arg0->z;
 
-    sp20 = func_80031A6C(sp2C);
-    sp1C = func_80031A6C(sp28);
-    temp_fv0 = func_80031A6C(sp24);
+    sp20 = Math_AbsF(sp2C);
+    sp1C = Math_AbsF(sp28);
+    temp_fv0 = Math_AbsF(sp24);
     if (sp20 < 1.0f) {
         arg0->x = arg1->x;
     } else {

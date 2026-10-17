@@ -309,7 +309,7 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
     if (arg0->unk_03 >= 0) {
         temp_s0 = &arg0->unk_08[arg0->unk_03];
         if (temp_s0->unk_00 & 4) {
-            while (func_80001C90() == 0) {}
+            while (RspTaskYielded() == 0) {}
             SpriteImage_Transform(temp_s0->unk_0C, temp_s0->unk_10);
             temp_s0->unk_00 &= ~4;
         }
@@ -318,8 +318,8 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s1];
         if (temp_s1->unk_00 & 1) {
-            if (func_80001C90() == 0) {
-                do { } while (func_80001C90() == 0); }
+            if (RspTaskYielded() == 0) {
+                do { } while (RspTaskYielded() == 0); }
 
             sp48.raw = 0;
             if (temp_s1->unk_00 & 2) {
@@ -367,7 +367,7 @@ s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s0];
         if (temp_s1->unk_00 & 1) {
-            while (func_80001C90() == 0) {}
+            while (RspTaskYielded() == 0) {}
             
             if (temp_s1->unk_00 & 2) {
                 AssetManager_RequestLoad(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);

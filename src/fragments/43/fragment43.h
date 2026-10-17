@@ -58,7 +58,7 @@ s32 func_834002E4(unk_D_83406EB0* arg0);
 s32 func_83400304(unk_D_83403C60* arg0, unk_D_83403C60* arg1, s32 arg2);
 s32 func_83400334(void);
 s32 func_83400410(s32 arg0, s32 arg1);
-void func_8340051C(void);
+void Gallery_Terminate(void);
 void func_83400524(void);
 void func_83400570(unk_D_83403C60* arg0);
 void func_83400590(unk_D_83403C60* arg0, unk_D_83403C60* arg1);

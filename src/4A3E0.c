@@ -98,7 +98,7 @@ void func_80049A60(u32);
 void func_8004AC9C();
 void func_8004ACD0();
 
-void func_800497E0(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
+void Audio_PlayMusicBuffer(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
     func_80049A60(arg2);
 }
 
@@ -116,7 +116,7 @@ u8 func_80049890(u16 arg0) {
     return D_800FD6A0[arg0 & 0xFF];
 }
 
-void func_800498A8(u32 arg0, u8 arg1, u32 arg2) {
+void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     u32 temp_t3;
     u8* p;
     s32 i;

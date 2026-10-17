@@ -316,7 +316,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
 
     for (i = 0; i < 4; i++, var_fp++) {
         if (var_fp->unk_000 == 1) {
-            if (func_800325AC() == 0) {
+            if (ModelPhase_IsIdle() == 0) {
                 var_fp->unk_064.unk_00 += var_fp->unk_064.unk_04;
                 var_fp->unk_064.unk_02 += var_fp->unk_064.unk_06;
                 var_fp->unk_070.unk_00 += var_fp->unk_070.unk_04;

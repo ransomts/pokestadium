@@ -952,7 +952,7 @@ void func_84321AAC(unk_D_86002F34_00C* arg0) {
 
     if (func_8431ADAC(5) != 0) {
         func_8432E9D8(1);
-        func_80037234(3, 0);
+        Audio_SetSfxDurationScale(3, 0);
 
         if (temp_s0->unk_2D != 0x12) {
             temp_s0->unk_2D = 0x10;
@@ -2975,7 +2975,7 @@ void func_84326E84(unk_D_86002F34_00C* arg0) {
                     D_84390240.unk_00->unk_20 += 1;
                 } else {
                     func_843184E4(5);
-                    func_800367A0(0x22, 0, 0);
+                    Audio_PlaySoundEffect(0x22, 0, 0);
                     sp24->unk_0C = sp24->unk_10;
                     sp20->unk_0C = sp20->unk_10;
                     func_8432C7A0(0xA, D_84390204);
@@ -2998,7 +2998,7 @@ void func_84326E84(unk_D_86002F34_00C* arg0) {
                     D_84390240.unk_00->unk_2C = !D_84390240.unk_00->unk_2C;
                 } else if (sp24->unk_4D & 0x80) {
                     func_8431AE5C();
-                    func_800367A0(0x22, 0, 0);
+                    Audio_PlaySoundEffect(0x22, 0, 0);
                     sp24->unk_0C = sp24->unk_10;
                     sp20->unk_0C = sp20->unk_10;
                     func_8432C7A0(0xA, D_84390204);
@@ -3102,7 +3102,7 @@ void func_843275F8(unk_D_86002F34_00C* arg0) {
                 func_8432E9D8(1);
                 func_8431AE5C();
                 func_8432C6C4(3, D_84390200);
-                func_800367A0(0x23, 0, 0);
+                Audio_PlaySoundEffect(0x23, 0, 0);
                 func_8431F194(arg0, D_84390200);
                 func_843184E4(7);
                 D_84390240.unk_00->unk_20 += 1;
@@ -3172,7 +3172,7 @@ void func_84327720(unk_D_86002F34_00C* arg0) {
                     func_8431FF3C(arg0, 5);
                     D_84390240.unk_00->unk_2C = !D_84390240.unk_00->unk_2C;
                 } else if (sp24->unk_4D & 0x80) {
-                    func_800367A0(0x22, 0, 0);
+                    Audio_PlaySoundEffect(0x22, 0, 0);
                     sp24->unk_0C = sp24->unk_10;
                     sp20->unk_0C = sp20->unk_10;
                     func_8432C7A0(0xA, D_84390204);
@@ -3319,7 +3319,7 @@ void func_84327DC0(unk_D_86002F34_00C* arg0) {
                 func_84307748(temp_s0);
                 D_843900A8[D_84390240.unk_00->unk_2C] = temp_s0->unk_654.unk_38.unk_0C;
                 func_8432C68C(3, temp_s0, temp_s0, 0xFF, 0xFF);
-                func_800367A0(2, 0, 0);
+                Audio_PlaySoundEffect(2, 0, 0);
                 func_84308A04(temp_s0, sp34->unk_2C);
                 arg0->unk_24.fovy = 40.0f;
                 func_843184E4(0xC);
@@ -3417,7 +3417,7 @@ void func_84328250(unk_D_86002F34_00C* arg0) {
                 func_8430920C(temp_s0);
                 func_84307748(temp_s0);
                 D_843900A8[func_84307F00(temp_s0)] = temp_s0->unk_654.unk_38.unk_0C;
-                func_800367A0(2, 0, 0);
+                Audio_PlaySoundEffect(2, 0, 0);
                 func_84308A04(temp_s0, sp3C->unk_2C);
                 func_8431AE5C();
                 func_8432C68C(3, temp_s0, temp_s0, 0xFF, 0xFF);

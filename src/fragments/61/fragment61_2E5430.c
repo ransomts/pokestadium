@@ -413,7 +413,7 @@ s32 func_8420F204(unk_D_84229EB0_00024* arg0, s16 arg1) {
     temp_v0 = CreateGbsBlock(0x10, 0, arg1, 0);
     if (temp_v0 != NULL) {
         for (i = 0; i < 6; i++) {
-            var_s4 += func_80022E18(&arg0->unk_0000[i].unk_004, 1, temp_v0);
+            var_s4 += GbsBlock_ReadPokemon(&arg0->unk_0000[i].unk_004, 1, temp_v0);
         }
         CommitAndFreeGbsBlock(temp_v0);
         arg0->unk_4D10 = GbsGetBlockStatusField(0x10, arg1);

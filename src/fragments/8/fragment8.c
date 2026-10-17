@@ -174,7 +174,7 @@ void func_86200034(void) {
     s32 i;
     UNUSED s32 pad2[1];
 
-    func_80031EF4(&spDC, &D_86203E3C->unk_60.mtxf);
+    Camera_CopyMatrixF(&spDC, &D_86203E3C->unk_60.mtxf);
     guMtxF2L(spDC.mf, &sp98);
 
     for (i = 0; i < 4; i++) {

@@ -76,9 +76,9 @@ s32 func_80004D20(UnkStruct80083CA0_2*);
 void func_800052B4(void);
 void func_80005328(unk_D_800AA660*);
 void func_80004980(UnkStruct80001380* arg0);
-void func_800049AC(UnkStruct80001380* arg0);
+void RspTaskYield(UnkStruct80001380* arg0);
 void func_80005370(unk_D_800AA660* arg0);
-void func_800053B4(UnkStruct80001380* arg0, s32 arg1);
+void RspTaskStart(UnkStruct80001380* arg0, s32 arg1);
 
 
 #endif // _5580_H_

@@ -925,8 +925,8 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
     unk_func_88503298* sp50;
 
     func_88302C7C(arg0, argF);
-    func_8002CBC0(&arg0->unk_03C, 0x1E6, argF);
-    func_8002CBC0(&arg0->unk_0CC, 0x1E6, argF);
+    PtrList_Init(&arg0->unk_03C, 0x1E6, argF);
+    PtrList_Init(&arg0->unk_0CC, 0x1E6, argF);
     func_883166A0(&arg0->unk_144);
 
     arg0->unk_0DC = D_8831721C;
@@ -934,7 +934,7 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
     func_883167CC(&arg0->unk_03C, &arg0->unk_144);
     func_88302BB4(arg0, argF);
 
-    func_8002CBC0(&arg0->unk_C48, 0xAA, argF);
+    PtrList_Init(&arg0->unk_C48, 0xAA, argF);
     func_88316F98(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
 
     arg0->unk_08C = arg4;
@@ -1601,37 +1601,37 @@ void func_88305270(unk_func_8830867C_02C* arg0) {
 
     if (arg0->unk_C54.unk_04 != 0) {
         if (arg0->unk_C54.unk_04 & 1) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316214, &arg0->unk_C54.unk_08);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316214, &arg0->unk_C54.unk_08);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 2) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316240, &arg0->unk_C54.unk_1C);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316240, &arg0->unk_C54.unk_1C);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 4) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316304, &arg0->unk_C54.unk_24);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316304, &arg0->unk_C54.unk_24);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 8) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163A4, &arg0->unk_C54.unk_10);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163A4, &arg0->unk_C54.unk_10);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 0x10) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163B8, &arg0->unk_C54.unk_14);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163B8, &arg0->unk_C54.unk_14);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 0x20) {
-            func_8002D1AC(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316480, &arg0->unk_C54.unk_2C);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316480, &arg0->unk_C54.unk_2C);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
     }
 
-    func_8002D180(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+    PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
 }
 
 s32 func_88305458(unk_func_8830867C_02C* arg0) {
@@ -1746,13 +1746,13 @@ void func_88305830(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* a
     unk_func_8830867C_02C_0CC_000_000* temp_s0 = &ptr[arg2].unk_0C[arg3];
     unk_func_8830867C_02C_0CC_000_000* sp24 = arg1->unk_00;
 
-    func_8002CC80(&sp24->unk_10, arg1->unk_04);
+    PtrArray_RemoveAt(&sp24->unk_10, arg1->unk_04);
     func_883057F4(sp24);
 
     arg1->unk_00 = &temp_s0->unk_00;
     arg1->unk_04 = temp_s0->unk_10.unk_08;
 
-    func_8002CC2C(&temp_s0->unk_10, arg1, temp_s0->unk_10.unk_08);
+    PtrList_Insert(&temp_s0->unk_10, arg1, temp_s0->unk_10.unk_08);
 
     sp24->unk_0C = 1;
     temp_s0->unk_0C = 1;
@@ -2083,7 +2083,7 @@ s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
         case 1:
             func_883050CC(arg0);
             func_88305268(arg0, 0x11);
-            func_8002D180(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0->unk_034, 0);
             sp24 = 0;
             break;
@@ -2091,7 +2091,7 @@ s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
         case 2:
             func_883050CC(arg0);
             func_88305268(arg0, 0x12);
-            func_8002D180(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0->unk_034, 0);
             sp24 = 0;
             break;
@@ -2379,7 +2379,7 @@ s32 func_88306C70(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 
 
             func_883050CC(arg0);
             func_88305268(arg0, sp50);
-            func_8002D180(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0->unk_034, 0);
             var_s0 = 0;
             break;
@@ -2413,7 +2413,7 @@ s32 func_88306C70(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 
 
             func_883050CC(arg0);
             func_88305268(arg0, sp50);
-            func_8002D180(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
 
             ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0->unk_034, 0);
             var_s0 = 0;

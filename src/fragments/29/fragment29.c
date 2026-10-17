@@ -99,11 +99,11 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     }
     var_s1 += 0x10;
 
-    func_8002CBC0(&arg0->unk_34, 3, arg5);
-    func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 3), 0);
-    func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 4), 1);
+    PtrList_Init(&arg0->unk_34, 3, arg5);
+    PtrList_Insert(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 3), 0);
+    PtrList_Insert(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 4), 1);
     if (arg1 == 0) {
-        func_8002CC2C(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 5), 2);
+        PtrList_Insert(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 5), 2);
     }
     sp7C = (arg0->unk_34.unk_08 * 0x1C) + 0x38;
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_889000C4));

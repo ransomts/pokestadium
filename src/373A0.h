@@ -69,18 +69,18 @@ typedef struct {
     /* 0x10 */ MoveSoundEntry entries[1];
 } MoveSoundTable;
 
-extern u8 D_800B32A0[0x493E0];
+extern u8 gAudioHeap[0x493E0];
 extern u32* D_800FC680;
 extern u8* D_800FC684;
 extern u8* D_800FC688;
 extern u8* D_800FC68C;
 extern u8* D_800FC690;
 extern u8* D_800FC698[3];
-extern u8* D_800FC6A4;
-extern u8* D_800FC6A8;
+extern u8* gAudioSfxBank;
+extern u8* gAudioSfxInstBank;
 extern u8* D_800FC6AC;
 extern u8* D_800FC6B0[3];
-extern MoveSoundTable* D_800FC6C0[3];
+extern MoveSoundTable* gMoveSoundTables[3];
 extern unk_D_800FC6CC* D_800FC6CC;
 extern u8* D_800FC6D0;
 extern unk_D_800FC6D4* D_800FC6D4;
@@ -100,11 +100,11 @@ extern ALSeqFile* gAudioSeqBuffer;
 extern ALSeqFile* D_800FC714;
 extern u32* D_800FC798;
 
-s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2);
-s32 func_80037234(s32 arg0, u32 arg1);
+s32 Audio_PlaySoundEffect(u32 arg0, s32 arg1, s32 arg2);
+s32 Audio_SetSfxDurationScale(s32 arg0, u32 arg1);
 void func_8003733C(void);
-void func_80037340(void* arg0);
-void func_80037360(u32* arg0, u32 arg1, s32 arg2);
-s32 func_800373D8(void);
+void Audio_BuildTask(void* arg0);
+void Audio_AddBaseToOffsets(u32* arg0, u32 arg1, s32 arg2);
+s32 Audio_Initialize(void);
 
 #endif // _373A0_H_

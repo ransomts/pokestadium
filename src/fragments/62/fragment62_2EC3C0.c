@@ -371,9 +371,9 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
     tmp = var_a1 + 0x20;
 
-    var_a1 = (u32)_70D3A0_ROM_START + ((u32)D_80075BD0[sp66] & 0xFFFFFF);
+    var_a1 = (u32)_70D3A0_ROM_START + ((u32)gStageRomOffsets[sp66] & 0xFFFFFF);
     if ((arg0->unk_000.unk_01A == 0x19) && (ptr->unk_52 & 0x80)) {
-        var_a1 = (u32)_70D3A0_ROM_START + ((u32)D_80075BD0[152] & 0xFFFFFF);
+        var_a1 = (u32)_70D3A0_ROM_START + ((u32)gStageRomOffsets[152] & 0xFFFFFF);
     }
     DmaCopyAsyncRange(D_84384570[sp68], var_a1, var_a1 + 0xBC0, 0);
 
@@ -441,7 +441,7 @@ void func_843029D0(unk_D_84390010* arg0) {
         arg0->unk_720->unk_00 &= ~0x90;
         func_8430920C(arg0);
         func_84307748(arg0);
-        func_800367A0(2, 0, 0);
+        Audio_PlaySoundEffect(2, 0, 0);
         D_84390068[D_843900A0].unk_04 = D_84385380;
         func_84305760(arg0, 0x12);
     }
@@ -587,7 +587,7 @@ void func_8430305C(unk_D_84390010* arg0) {
                  (sp18 == 0x85) || (sp18 == 0x97) || (sp18 == 0x9F)) &&
                 (D_843C4E45 == 1)) {
                 func_8432C6C4(3, arg0);
-                func_800367A0(0x23, 0, 0);
+                Audio_PlaySoundEffect(0x23, 0, 0);
             }
             D_84390068[D_843900A0].unk_04 = D_84385380;
         }
@@ -1023,7 +1023,7 @@ void func_843045DC(unk_D_84390010* arg0) {
         arg0->unk_720->unk_02 = arg0->unk_654.unk_38.unk_0B;
         arg0->unk_4C4 = 0;
         func_84301B48(arg0, D_84385384[sp24].unk_24);
-        func_800367A0(3, 0, 0);
+        Audio_PlaySoundEffect(3, 0, 0);
         arg0->unk_720->unk_04 = &arg0->unk_720->unk_08[temp_v1->unk_2B]->unk_01C[temp_v1->unk_18];
         D_84390068[D_843900A0].unk_04 = D_84385380;
     }
@@ -1035,7 +1035,7 @@ void func_843046BC(unk_D_84390010* arg0) {
         s32 idx = arg0->unk_4C0;
 
         func_84301B48(arg0, D_84385384[idx].unk_24);
-        func_800367A0(3, 0, 0);
+        Audio_PlaySoundEffect(3, 0, 0);
         D_84390068[D_843900A0].unk_04 = D_84385380;
     }
 }
@@ -1050,7 +1050,7 @@ void func_84304758(unk_D_84390010* arg0) {
 
         func_8430920C(arg0);
         func_84307748(arg0);
-        func_800367A0(2, 0, 0);
+        Audio_PlaySoundEffect(2, 0, 0);
 
         D_84390068[D_843900A0].unk_04 = D_84385380;
 
@@ -1200,7 +1200,7 @@ void func_84304D84(unk_D_84390010* arg0) {
                 } else {
                     func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
                 }
-                func_800367A0(3, 0, 0);
+                Audio_PlaySoundEffect(3, 0, 0);
                 D_84390068[D_843900A0].unk_04 = D_84385380;
             }
         } else if ((sp24 <= 0) || (sp24 == arg0->unk_4C4)) {
@@ -1209,7 +1209,7 @@ void func_84304D84(unk_D_84390010* arg0) {
             } else {
                 func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
             }
-            func_800367A0(3, 0, 0);
+            Audio_PlaySoundEffect(3, 0, 0);
             D_84390068[D_843900A0].unk_04 = D_84385380;
         }
     }
@@ -1231,7 +1231,7 @@ void func_84304F54(unk_D_84390010* arg0) {
         } else {
             func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
         }
-        func_800367A0(3, 0, 0);
+        Audio_PlaySoundEffect(3, 0, 0);
         D_84390068[D_843900A0].unk_04 = D_84385380;
     }
 }

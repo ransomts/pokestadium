@@ -33,7 +33,7 @@ s32 PlaySoundEffect(u32 arg0) {
     }
 
     if (arg0 == 0xF) {
-        if (!(D_800FC820 & 0x80000000)) {
+        if (!(gAudioDMAFlags & 0x80000000)) {
             return 0;
         }
         gLastSfxHandle = MusStartSoundEffect(D_800FF9C0, D_800FC688, 0xF, 0x70, 0x80, -1);

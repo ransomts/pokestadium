@@ -182,7 +182,7 @@ s32 func_882062E4(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg
 
     sp18 = CreateGbsBlock(arg2, arg3, arg4, 0);
     if (sp18 != NULL) {
-        sp1C = func_80022E18(arg0, arg1, sp18);
+        sp1C = GbsBlock_ReadPokemon(arg0, arg1, sp18);
         CommitAndFreeGbsBlock(sp18);
     }
     return sp1C;
@@ -556,7 +556,7 @@ void func_88207354(s32 arg0, s32 arg1, unk_func_88205880_00D0* arg2, s32 arg3, s
 
     if (arg2 != 0) {
         if (arg4 & 2) {
-            spD4 = func_8002D444(D_88217E18, 1.4f);
+            spD4 = Color_ScaleRGB(D_88217E18, 1.4f);
         } else {
             spD4 = *(Color_RGBA8 *)&D_88217E18;
         }
@@ -611,7 +611,7 @@ void func_88207354(s32 arg0, s32 arg1, unk_func_88205880_00D0* arg2, s32 arg3, s
             }
             return;
         }
-        spD4 = func_8002D444(D_88217E18, 0.8f);
+        spD4 = Color_ScaleRGB(D_88217E18, 0.8f);
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
         gDPSetRenderMode(gDisplayListHead++, 0, 0);
@@ -1897,7 +1897,7 @@ s32 func_8820B178(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3)
 
         for (i = 0; i < arg0->unk_04.unk_08; i++, var_s1++) {
             bzero(&sp34, sizeof(unk_func_80026268_arg0));
-            func_80022E18(&sp34, 1, temp_v0);
+            GbsBlock_ReadPokemon(&sp34, 1, temp_v0);
             if (bcmp(&sp34, *var_s1, sizeof(unk_func_80026268_arg0)) != 0) {
                 arg0->unk_00 = 1;
                 sp90 = 1;
@@ -2295,19 +2295,19 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     arg0->unk_6C.unk_08 = 1;
     ptr = arg0->unk_6C.unk_00;
     for (i = 0; i < 1; i++) {
-        func_8002CBC0(&ptr[i].unk_04, 6, arg4);
+        PtrList_Init(&ptr[i].unk_04, 6, arg4);
     }
 
     arg0->unk_7C.unk_08 = 12;
     ptr = arg0->unk_7C.unk_00;
     for (i = 0; i < 12; i++) {
-        func_8002CBC0(&ptr[i].unk_04, 20, arg4);
+        PtrList_Init(&ptr[i].unk_04, 20, arg4);
     }
 
     arg0->unk_8C.unk_08 = 12;
     ptr = arg0->unk_8C.unk_00;
     for (i = 0; i < 12; i++) {
-        func_8002CBC0(&ptr[i].unk_04, 20, arg4);
+        PtrList_Init(&ptr[i].unk_04, 20, arg4);
     }
 
     if (func_8002513C(spB4) == 0) {
@@ -2361,7 +2361,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         func_88206110(temp_v0_5);
 
         spA0 = mem_pool_alloc(arg4, sizeof(unk_func_8820BE14_06C_000));
-        func_8002CBC0(&spA0->unk_04, 1, arg4);
+        PtrList_Init(&spA0->unk_04, 1, arg4);
 
         spA0->unk_04.unk_08 = 1;
         *spA0->unk_04.unk_00 = temp_v0_5;

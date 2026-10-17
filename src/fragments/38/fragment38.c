@@ -647,7 +647,7 @@ void func_82302A6C(unk_D_82305AF8* arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->unk_000C = arg1;
     arg0->unk_000E = arg2;
     arg0->unk_0012 = func_80025084(arg3);
-    func_800251B0(arg3, arg0->unk_0014);
+    SaveSlot_GetTrainerName(arg3, arg0->unk_0014);
 
     for (i = 0; i < 6; i++) {
         func_80024CB0(0x20, arg3, 0, i, &arg0->unk_0020[i]);
@@ -1626,8 +1626,8 @@ s16 func_823056C4(void) {
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
 
     SpriteAssets_Load();
-    func_80023AF8(0);
-    func_80023AF8(1);
+    SaveSlot_Load(0);
+    SaveSlot_Load(1);
     func_80007754();
     func_82305370(&D_82305A28, D_823059CC);
     func_8230527C(&D_82305A28);

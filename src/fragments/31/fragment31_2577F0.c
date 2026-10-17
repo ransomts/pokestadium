@@ -20,7 +20,7 @@ void Fragment31_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
     s16 temp_t2;
     u8 temp_v0;
 
-    temp_v0 = func_800325B4();
+    temp_v0 = GraphRoot_GetCurrentModelSlot();
     if (gDefaultGraphRoot->unk_01C == 0) {
         temp_t2 = (gFragment31ScrollOffset >> 4);
         temp_t3 = 0x4000 - (u16)(gFragment31ScrollOffset >> 4);
@@ -34,8 +34,8 @@ void Fragment31_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, 1, temp_t3, temp_t4, temp_t3, temp_t4 + 31);
 
-        if (D_800AF7B0[temp_v0 & 1] == 0) {
-            if (func_800325AC() == 0) {
+        if (gModelUpdateFlag[temp_v0 & 1] == 0) {
+            if (ModelPhase_IsIdle() == 0) {
                 gFragment31ScrollOffset--;
             }
         }

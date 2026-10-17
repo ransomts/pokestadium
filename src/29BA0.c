@@ -1051,7 +1051,7 @@ void Game_RunVsMewtwo(void) {
 }
 
 void Game_RunKidsClub(void) {
-    func_8002F2A0();
+    KidsClub_MainLoop();
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
@@ -1285,7 +1285,7 @@ void func_8002B180(void) {
     main_pool_push_state('STAD');
 
     Battle_StartRentalBattle(1, 0, 2, 0);
-    func_800367A0(0xA0, 0xA, 0);
+    Audio_PlaySoundEffect(0xA0, 0xA, 0);
 
     FRAGMENT_LOAD(fragment34);
     FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
@@ -1299,7 +1299,7 @@ void func_8002B244(void) {
 }
 
 void func_8002B24C(void) {
-    func_8002F2A0();
+    KidsClub_MainLoop();
     gCurrentGameState = STATE_TITLE_SCREEN;
 }
 

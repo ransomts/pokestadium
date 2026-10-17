@@ -2055,13 +2055,13 @@ void func_88507C0C(unk_func_8830867C_02C_034* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_88507CC4(unk_func_8820BE14_02C_038* arg0, unk_func_88205880_00D0* arg1) {
-    func_8002CC2C(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
+    PtrList_Insert(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
 }
 
 void func_88507CEC(unk_func_8820BE14_02C_038* arg0) {
     s32 var_a1;
 
-    func_8002CC80(arg0->unk_00.unk_2C, arg0->unk_00.unk_38);
+    PtrArray_RemoveAt(arg0->unk_00.unk_2C, arg0->unk_00.unk_38);
     var_a1 = arg0->unk_00.unk_38;
     if ((var_a1 >= arg0->unk_00.unk_2C->unk_08) && (var_a1 > 0)) {
         var_a1 = arg0->unk_00.unk_2C->unk_08 - 1;
@@ -2309,7 +2309,7 @@ void func_88509A2C(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* 
         } else {
             arg0->unk_30 = 0;
             arg0->unk_38 = func_80025084(arg3);
-            func_800251B0(arg3, arg0->unk_40);
+            SaveSlot_GetTrainerName(arg3, arg0->unk_40);
         }
         arg0->unk_34 = GetMoveTargetType(func_80024F68(arg3));
     }

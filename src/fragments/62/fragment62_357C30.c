@@ -133,9 +133,9 @@ void func_8436D920(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UN
     sp68 = arg1->y;
     sp64 = arg1->z;
 
-    func_80031A94(sp6C, sp68, sp64, sp60, sp5C, sp58, &sp54, &sp50, &sp4C);
+    Math_CrossProductComponents(sp6C, sp68, sp64, sp60, sp5C, sp58, &sp54, &sp50, &sp4C);
 
-    func_80031B04(&sp54, &sp50, &sp4C);
+    Math_NormalizeVector(&sp54, &sp50, &sp4C);
 
     switch (arg0) {
         case 0:

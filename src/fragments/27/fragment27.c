@@ -393,7 +393,7 @@ s32 func_8860192C(unk_func_88205880_0098_008_040_06C* arg0) {
     sp28[0] = sp34;
     sp28[1] = -sp30;
 
-    func_8002D3F0(sp28);
+    Vector2_Normalize(sp28);
 
     temp_fa0 = (arg0->unk_2C * sp38) + sp1C;
     temp_fa1 = (sp1C + temp_fa0) * arg0->unk_2C * 0.5f;

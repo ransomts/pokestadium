@@ -58,7 +58,7 @@ void func_80001380(UnkStruct80001380* arg0) {
 void func_80001444(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
     arg0->task.t.data_ptr = (void*)(uintptr_t)arg1->unk_04;
     arg0->task.t.data_size = arg1->unk_08;
-    func_800053B4(arg0, arg2);
+    RspTaskStart(arg0, arg2);
 }
 
 void Vi_SetMode(s8 arg0, s8 arg1) {
@@ -103,7 +103,7 @@ void func_800015A8(void) {
     s32 sp20 = 0;
 
     if (D_80083CA0.unk_A9C.unk_04 != 0) {
-        func_800049AC(&D_80083CA0.unk_A20);
+        RspTaskYield(&D_80083CA0.unk_A20);
     }
 
     if ((D_80083CA0.unk_A8C.unk_04 != 0) && (D_80083CA0.unk_AAC.unk_0C != D_80083CA0.unk_A8C.unk_0C) &&
@@ -272,7 +272,7 @@ void func_80001C64(void) {
     Vi_SetMode((s8)D_80083CA0.unk_AAC.unk_01, (s8)D_80083CA0.unk_AAC.unk_02);
 }
 
-s32 func_80001C90(void) {
+s32 RspTaskYielded(void) {
     s32 result = 1;
 
     if (D_80083CA0.unk_A9C.unk_04 != 0) {

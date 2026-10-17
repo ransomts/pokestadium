@@ -921,11 +921,11 @@ typedef struct unk_D_800A6CF4 {
 extern unk_D_800A6CF4 D_800A6CF4;
 extern u8 D_15C0000[];
 
-extern Mtx D_8006F010;
+extern Mtx gCamProjectionMatrix;
 extern u32 D_1003E78[];
 extern u32 D_304F120[];
 
-extern s32 D_800FC820;
+extern s32 gAudioDMAFlags;
 
 extern OSViMode D_800795C0;
 extern u8 D_ADC80[];

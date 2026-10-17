@@ -9,7 +9,7 @@ void func_81002CE0(Gfx* gfx) {
 
     angle = gDefaultGraphRoot->unk_0A6 & 3;
     mtx = (Mtx*)GfxAlloc(0x40);
-    guRotate(mtx, D_800AF788[angle], 1.0f, 0.0f, 0.0f);
+    guRotate(mtx, gHpWheelDigitOffsetHundreds[angle], 1.0f, 0.0f, 0.0f);
     gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPEndDisplayList(gfx++);
 }

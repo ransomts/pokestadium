@@ -23,7 +23,7 @@ s32 func_80000E80(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
     return temp_v0 == NULL;
 }
 
-s32 func_80000F0C(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 PiStartDmaCopy(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -38,7 +38,7 @@ s32 func_80000F0C(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
     return temp_v0 == NULL;
 }
 
-s32 func_80000F80(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+s32 PiStartDma(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -57,7 +57,7 @@ s32 func_80000F80(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
     return temp_v0 == NULL;
 }
 
-s32 func_8000100C(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
+s32 PiReadRom(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);

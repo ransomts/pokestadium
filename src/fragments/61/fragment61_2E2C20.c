@@ -492,7 +492,7 @@ s32 func_8420C6D8(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_
         return 0;
     }
 
-    while (func_80001C90() == 0) {}
+    while (RspTaskYielded() == 0) {}
 
     func_8001B2D8(arg0->unk_28, &arg3->unk_004, 0x108D);
     arg0->unk_2C = arg3;

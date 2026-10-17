@@ -361,7 +361,7 @@ void func_84B0EF14(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp48;
     s32 temp_v0;
 
-    func_80028320(&sp50, NULL);
+    DecodeBattleSaveData(&sp50, NULL);
     Gfx_DrawPanel(arg1->unk_00 + 0x10, arg1->unk_02 + 0x14, 0xA8, 0x3C, 0, 0, 0, 0xFF);
     Gfx_DrawPanel(arg1->unk_00 + 0x10, arg1->unk_02 + 0x60, 0xA8, 0x22, 0, 0, 0, 0xFF);
     func_84B0DB30(arg0, arg1->unk_00 + 0x14, arg1->unk_02 + 0x64);

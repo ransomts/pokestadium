@@ -98,7 +98,7 @@ s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (var_v0 != NULL) {
-        while (func_80022E18(&ptr->unk_00.unk_00, 1, var_v0) == 1) {
+        while (GbsBlock_ReadPokemon(&ptr->unk_00.unk_00, 1, var_v0) == 1) {
             if (func_832000A0(ptr, 1, 0x64, 0x20) != 0) {
                 if (!arg2--) {
                     if (ptr->unk_00.unk_00 == 0x19) {

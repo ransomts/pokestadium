@@ -131,7 +131,7 @@ s32 List_Set(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     return 0;
 }
 
-s32 func_8002CB58(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
+s32 S16List_RemoveAt(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
     s16* var_a2;
     s32 var_a3;
     s16* var_v1;
@@ -155,23 +155,23 @@ s32 func_8002CB58(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8002CBB0(unk_func_88205880_A030* arg0, void** arg1, s32 arg2, s32 arg3) {
+void PtrArray_Init(unk_func_88205880_A030* arg0, void** arg1, s32 arg2, s32 arg3) {
     arg0->unk_00 = arg1;
     arg0->unk_04 = arg2;
     arg0->unk_08 = arg3;
 }
 
-void func_8002CBC0(unk_func_88200FA0_030_038* arg0, s32 arg1, MemoryPool* arg2) {
+void PtrList_Init(unk_func_88200FA0_030_038* arg0, s32 arg1, MemoryPool* arg2) {
     arg0->unk_00 = mem_pool_alloc(arg2, arg1 * 4);
     arg0->unk_04 = arg1;
     arg0->unk_08 = 0;
 }
 
-void func_8002CC04(unk_func_88200FA0_030_038* arg0, MemoryPool* arg1) {
+void PtrList_Free(unk_func_88200FA0_030_038* arg0, MemoryPool* arg1) {
     mem_pool_free(arg1, arg0->unk_00);
 }
 
-void func_8002CC2C(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
+void PtrList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
     s32 var_t1;
     unk_func_88205880_00D0** var_t0;
     unk_func_88205880_00D0** var_v0;
@@ -189,7 +189,7 @@ void func_8002CC2C(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
     arg0->unk_08++;
 }
 
-void func_8002CC80(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
+void PtrArray_RemoveAt(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
     s32 var_a2;
     unk_func_8830867C_02C_0CC_000** var_v0;
     unk_func_8830867C_02C_0CC_000** var_v1;
@@ -353,11 +353,11 @@ void Util_QuickSort(void** base, s32 n, s32 (*cmp)(s32, s32)) {
     }
 }
 
-void func_8002D180(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
+void PtrArray_Sort(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
     Util_QuickSort(arg0->unk_00, arg0->unk_08, arg1);
 }
 
-void func_8002D1AC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
+void PtrArray_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
                    s32 (*arg2)(unk_func_8830867C_02C_0CC_000*, s32*), s32* arg3) {
     s32 var_s2;
     unk_func_8830867C_02C_0CC_000** var_s0;
@@ -378,7 +378,7 @@ void func_8002D1AC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* a
     arg1->unk_08 = ((s32)var_s1 - (s32)arg1->unk_00) >> 2;
 }
 
-s32 func_8002D248(u16* a0, u16* a1) {
+s32 U16String_Compare(u16* a0, u16* a1) {
     u16* arg0 = a0;
     u16* arg1 = a1;
     s32 tmpa;
@@ -402,7 +402,7 @@ s32 func_8002D248(u16* a0, u16* a1) {
     return 0;
 }
 
-static u16 D_80075690[0x100] = {
+static u16 gByteToTileIdTable[0x100] = {
     0,      0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
     0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
     0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x7000, 0x7100, 0x7200, 0xFFFF, 0xFFFF, 0x7500, 0x7600, 0x7700, 0x7800, 0x7900,
@@ -424,7 +424,7 @@ static u16 D_80075690[0x100] = {
     0x5515, 0xFFFF, 0xFFFF, 0xFFFF,
 };
 
-void func_8002D28C(u16* arg0, u8* a1) {
+void ByteString_ToU16Table(u16* arg0, u8* a1) {
     u8 temp_v1;
     u8* arg1 = a1;
 
@@ -432,26 +432,26 @@ void func_8002D28C(u16* arg0, u8* a1) {
         temp_v1 = *arg1++;
         switch (temp_v1) {
             case 0xDF:
-                *arg0++ = D_80075690[temp_v1];
-                *arg0++ = D_80075690[temp_v1];
+                *arg0++ = gByteToTileIdTable[temp_v1];
+                *arg0++ = gByteToTileIdTable[temp_v1];
                 continue;
 
             case 0xBC:
-                *arg0++ = D_80075690[0x50] + 4;
-                *arg0++ = D_80075690[0x4B] + 4;
+                *arg0++ = gByteToTileIdTable[0x50] + 4;
+                *arg0++ = gByteToTileIdTable[0x4B] + 4;
                 continue;
 
             case 0xBD:
-                *arg0++ = D_80075690[0x4D] + 4;
-                *arg0++ = D_80075690[0x4E] + 4;
+                *arg0++ = gByteToTileIdTable[0x4D] + 4;
+                *arg0++ = gByteToTileIdTable[0x4E] + 4;
                 continue;
         }
-        *arg0++ = D_80075690[temp_v1];
+        *arg0++ = gByteToTileIdTable[temp_v1];
     } while (temp_v1 != 0);
 }
 
-s32 func_8002D348(u8* arg0, u8* arg1) {
-    static u16 D_80075890[3] = { 0xFF00, 0xFFFC, 0xFFFF };
+s32 StringCompare_WithMask(u8* arg0, u8* arg1) {
+    static u16 gStringCompareMasks[3] = { 0xFF00, 0xFFFC, 0xFFFF };
 
     u16 sp74[22];
     u16 sp48[22];
@@ -462,16 +462,16 @@ s32 func_8002D348(u8* arg0, u8* arg1) {
     u16* var_v1;
     s32 i;
 
-    func_8002D28C(&sp74, arg0);
-    func_8002D28C(&sp48, arg1);
+    ByteString_ToU16Table(&sp74, arg0);
+    ByteString_ToU16Table(&sp48, arg1);
 
     for (i = 0; i < 3; i++) {
         var_v1 = sp74;
         var_a0 = sp48;
 
         while (true) {
-            temp_a1 = D_80075890[i] & *var_v1++;
-            temp_a2 = D_80075890[i] & *var_a0++;
+            temp_a1 = gStringCompareMasks[i] & *var_v1++;
+            temp_a2 = gStringCompareMasks[i] & *var_a0++;
             temp_a3 = temp_a1 - temp_a2;
 
             if (temp_a3 != 0) {
@@ -487,14 +487,14 @@ s32 func_8002D348(u8* arg0, u8* arg1) {
     return 0;
 }
 
-void func_8002D3F0(f32* arg0) {
+void Vector2_Normalize(f32* arg0) {
     f32 temp_fv0_2 = sqrtf(SQ(arg0[1]) + SQ(arg0[0]));
 
     arg0[0] /= temp_fv0_2;
     arg0[1] /= temp_fv0_2;
 }
 
-Color_RGBA8 func_8002D444(Color_RGBA8 arg0, f32 arg2) {
+Color_RGBA8 Color_ScaleRGB(Color_RGBA8 arg0, f32 arg2) {
     Color_RGBA8 sp14;
     s32 var_a0;
     s32 var_a1;

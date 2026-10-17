@@ -70,7 +70,7 @@ s32 func_8820130C(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s3
     if (sp18 == 0) {
         return 0;
     }
-    sp1C = func_80022E18(&arg3->unk_000, arg4, sp18);
+    sp1C = GbsBlock_ReadPokemon(&arg3->unk_000, arg4, sp18);
     CommitAndFreeGbsBlock(sp18);
     return sp1C;
 }
@@ -356,7 +356,7 @@ void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     Text_Print(((arg1 + sp24) - MeasureTextWidth(0, 0, sp28)) + 0x1C, arg2 + 4, sp28);
     Text_SetupDL();
     if (arg0->unk_690 > 0) {
-        DrawTextureRectFromInfo(&D_800758E0, arg1, arg2 + 2);
+        DrawTextureRectFromInfo(&gMenuTextureInfo_Default, arg1, arg2 + 2);
     }
 }
 
@@ -759,7 +759,7 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     s32 pad2[2];
 
     if (arg4 & 2) {
-        sp8C = func_8002D444(D_88217C50, 1.4f);
+        sp8C = Color_ScaleRGB(D_88217C50, 1.4f);
     } else {
         sp8C = *(Color_RGBA8 *)&D_88217C50;
     }
@@ -1205,7 +1205,7 @@ u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     var_s1 = arg0->unk_000;
     for (i = 0; i < arg0->unk_690; i++, var_s1++) {
         bzero(&sp34, sizeof(unk_func_80026268_arg0));
-        func_80022E18(&sp34, 1, temp_v0);
+        GbsBlock_ReadPokemon(&sp34, 1, temp_v0);
         if (bcmp(&sp34, var_s1, sizeof(unk_func_80026268_arg0)) != 0) {
             sp90 = 1;
             break;
@@ -1540,8 +1540,8 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
         arg0->unk_A000[i] = &arg0->unk_5050[i];
     }
 
-    func_8002CBB0(&arg0->unk_A030[0], arg0->unk_9FD0, 0xC, 0xC);
-    func_8002CBB0(&arg0->unk_A030[1], arg0->unk_A000, 0xC, 0xC);
+    PtrArray_Init(&arg0->unk_A030[0], arg0->unk_9FD0, 0xC, 0xC);
+    PtrArray_Init(&arg0->unk_A030[1], arg0->unk_A000, 0xC, 0xC);
 
     sp7C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
     ((func885031E8)Memmap_GetFragmentVaddr(func_885031E8))(sp7C, 0, 0, 0x280, 0x1E0);

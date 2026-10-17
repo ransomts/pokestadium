@@ -154,7 +154,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
         Stage_Advance();
 
-        while (func_80001C90() == 0) {}
+        while (RspTaskYielded() == 0) {}
 
         osViBlack(0);
         func_80001CC8();

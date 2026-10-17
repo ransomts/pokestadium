@@ -432,7 +432,7 @@ s32 func_84209DB8(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
                 for (j = 0; j < 3; j++) {
                     if (i < temp_s5->unk_00) {
                         if (func_80022DF4(var_v0, temp_s5->unk_02[i++]) != 0) {
-                            var_s3 += func_80022E18(&arg1->unk_0000[j].unk_004.unk_00.unk_00, 1, var_v0);
+                            var_s3 += GbsBlock_ReadPokemon(&arg1->unk_0000[j].unk_004.unk_00.unk_00, 1, var_v0);
                         }
                     }
                 }
@@ -805,7 +805,7 @@ s32 func_8420ACA8(unk_D_842168A0* arg0, s16 arg1, s16 arg2) {
         }
 
         if (var_v0 != NULL) {
-            while (func_80022E18(&sp50, 1, var_v0) == 1) {
+            while (GbsBlock_ReadPokemon(&sp50, 1, var_v0) == 1) {
                 switch (arg2) {
                     case 0:
                         var_s0 = func_8420AC00(&sp50, 1, 0x64, 0x20);

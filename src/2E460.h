@@ -66,10 +66,10 @@ typedef struct unk_D_8007596C {
     /* 0x02 */ u16 unk_02;
 } unk_D_8007596C; // size = 0x4
 
-extern unk_func_88500020 D_800758E0;
-extern unk_func_88500020 D_800758F0[];
-extern unk_D_8007596C D_8007596C[];
-extern s32 D_80075BD0[];
+extern unk_func_88500020 gMenuTextureInfo_Default;
+extern unk_func_88500020 gMenuTextureInfo_Alternates[];
+extern unk_D_8007596C gMenuItemCoords[];
+extern s32 gStageRomOffsets[];
 
 void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1);
 void DrawTextureRectFromInfo(unk_func_88500020* arg0, s32 arg1, s32 a2);
@@ -98,7 +98,7 @@ void ControllerMsgQueue_SendAndRead(OSMesg arg0);
 void ControllerMsgQueue_Flush(void);
 void ControllerMsgQueue_Recv(OSMesg arg0);
 void Game_RunPokemonLab(void);
-s32 func_8002F1C0(s32 arg0);
-s32 func_8002F264(s32 arg0);
+s32 IsStageIdSpecial(s32 arg0);
+s32 IsStageSpecial(s32 arg0);
 
 #endif // _2E460_H_

@@ -229,15 +229,15 @@ void Battle_LoadTeamFromSaveSlot(s32 arg0, s32 arg1, s32 arg2) {
     unk_D_800AE540_0004* temp_s4;
     char sp34[11];
 
-    func_80023AF8(arg2);
-    func_800251B0(arg2, &sp34);
+    SaveSlot_Load(arg2);
+    SaveSlot_GetTrainerName(arg2, &sp34);
 
     temp_s4 = RegisterPlayer(arg1, 0, &sp34, GetNameSlot(1));
     temp_v0 = CreateGbsBlock(0x20, arg2, 0, 0);
 
     if (temp_v0 != NULL) {
         for (i = 0; i < 6; i++) {
-            if (func_80022E18(&sp48, 1, temp_v0) == 0) {
+            if (GbsBlock_ReadPokemon(&sp48, 1, temp_v0) == 0) {
                 break;
             }
 
@@ -537,7 +537,7 @@ void Battle_PackStateForSave(void) {
 
     _bcopy(gBattleContext.unk_11E4[0], &sp20.unk_05, 8);
     EncodeGen1StringToBuffer(&sp20.unk_10, &gBattleContext.unk_1194[0].unk_08[0]->unk_008);
-    func_800281D4(&sp20, sp1C->unk_028, sp1C->unk_002);
+    EncodeBattleSaveData(&sp20, sp1C->unk_028, sp1C->unk_002);
     GbsCommitBankBlock(0x15, 0);
 }
 
@@ -549,7 +549,7 @@ s32 Battle_LoadStateFromSave(void) {
     s32 temp_v0;
     u16 tmp;
 
-    temp_v0 = func_80028320(&sp250, sp58);
+    temp_v0 = DecodeBattleSaveData(&sp250, sp58);
     if (temp_v0 != -1) {
         Battle_Init(sp250.unk_00, sp250.unk_00, sp250.unk_01);
 

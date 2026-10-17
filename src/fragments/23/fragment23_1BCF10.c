@@ -80,7 +80,7 @@ s32 func_88214A58(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
         gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
         // clang-format off
-        temp_a0 = RGBA5551(func_8002D444(arg0->unk_3A, 1.4f).r, func_8002D444(arg0->unk_3A, 1.4f).g, func_8002D444(arg0->unk_3A, 1.4f).b, 1); gDPPipeSync(gDisplayListHead++);
+        temp_a0 = RGBA5551(Color_ScaleRGB(arg0->unk_3A, 1.4f).r, Color_ScaleRGB(arg0->unk_3A, 1.4f).g, Color_ScaleRGB(arg0->unk_3A, 1.4f).b, 1); gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
@@ -692,7 +692,7 @@ s32 func_88217460(unk_func_882173EC* arg0) {
     sp28[0] = sp34;
     sp28[1] = -sp30;
 
-    func_8002D3F0(sp28);
+    Vector2_Normalize(sp28);
 
     sp24 = (arg0->unk_2C * sp38) + sp1C;
 

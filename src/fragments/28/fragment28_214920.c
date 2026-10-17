@@ -241,14 +241,14 @@ void func_88800E20(unk_func_888044BC_038_02C* arg0, s32 arg1, s32 arg2, s32 arg3
         sp40[i] = &D_8006FF00[i];
     }
 
-    func_8002CBB0(&arg0->unk_70, sp40, 151, 151);
+    PtrArray_Init(&arg0->unk_70, sp40, 151, 151);
 
     sp3C = mem_pool_alloc(arg5, sizeof(unk_D_8006FF00*) * 151);
     for (i = 0; i < 151; i++) {
         sp3C[D_88808150[i]] = &D_8006FF00[i];
     }
 
-    func_8002CBB0(&arg0->unk_7C, sp3C, 151, 151);
+    PtrArray_Init(&arg0->unk_7C, sp3C, 151, 151);
 
     ((func88506F1C)Memmap_GetFragmentVaddr(func_88506F1C))(&arg0->unk_00, &arg0->unk_70, arg5);
 
@@ -342,7 +342,7 @@ void func_888018E0(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
 
 void func_8880193C(unk_func_888044BC_03C_02C* arg0, s32 arg1) {
     arg0->unk_2C = func_80025084(arg1);
-    func_800251B0(arg1, arg0->unk_30);
+    SaveSlot_GetTrainerName(arg1, arg0->unk_30);
     arg0->unk_3C = func_80025840(arg1);
     arg0->unk_40 = func_80025988(arg1);
     arg0->unk_44 = func_80025AD0(arg1);
@@ -495,11 +495,11 @@ void func_8880231C(unk_func_888044BC_040* arg0, s32 arg1, s32 arg2, MemoryPool* 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_888044BC_040_030));
     func_88801DB8(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp58->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
-    func_8002CBC0(&arg0->unk_38, 4, arg3);
-    func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 3), 0);
-    func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 4), 1);
-    func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 5), 2);
-    func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 6), 3);
+    PtrList_Init(&arg0->unk_38, 4, arg3);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 3), 0);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 4), 1);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 5), 2);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 6), 3);
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_88200FA0_030_030));
     ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_34, 0x154, 4, func_88802238, 0x70, 0x18, 4, 1,
@@ -585,8 +585,8 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     Text_Print(arg1 + sp44, arg2 + 0x64, sp4C);
     Text_Print(arg1 + sp44, arg2 + 0x7C, sp48);
     if (func_8002564C(D_88826938, sp54->unk_00) >= 2) {
-        func_88802624(arg1 + sp44, arg2 + 0x64, D_8007596C[sp54->unk_00].unk_00);
-        func_888026D8(arg1 + sp44, arg2 + 0x7C, D_8007596C[sp54->unk_00].unk_02);
+        func_88802624(arg1 + sp44, arg2 + 0x64, gMenuItemCoords[sp54->unk_00].unk_00);
+        func_888026D8(arg1 + sp44, arg2 + 0x7C, gMenuItemCoords[sp54->unk_00].unk_02);
     } else {
         sprintf(sp34, "?%s??", GetMessageString(NULL, 0, D_888267A0, 0x11));
         Text_Print((arg1 + sp44) - MeasureTextWidth(0, 0, sp34), arg2 + 0x64, sp34);

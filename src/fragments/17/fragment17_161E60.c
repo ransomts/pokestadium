@@ -845,7 +845,7 @@ void func_86B026C0(void) {
     D_86B0EBDC->unk_008.unk_000.unk_02 &= ~0x20;
     D_86B0EBDC->unk_170.unk_000.unk_01 &= ~1;
 
-    temp_a1 = _70D3A0_ROM_START + (D_80075BD0[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
+    temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
     DmaCopyAsyncRange(D_86B0EBE8, temp_a1, temp_a1 + 0xBC0, 0);
     D_86B0EBDC->unk_308 = 0;
     func_87903600();

@@ -21,7 +21,7 @@ void Sched_RunFrames(s32 arg0);
 void func_80001C1C(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7);
 s32 func_80001C58(void);
 void func_80001C64(void);
-s32 func_80001C90(void);
+s32 RspTaskYielded(void);
 void func_80001CB8(void);
 void func_80001CC8(void);
 

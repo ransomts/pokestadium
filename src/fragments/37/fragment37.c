@@ -674,7 +674,7 @@ void func_82202850(void) {
     gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
     gSPViewport(gDisplayListHead++, (u32)&D_822030F8 & 0x1FFFFFFF);
     gSPMatrix(gDisplayListHead++, (u32)&D_82203108 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, (u32)&D_8006F010 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, (u32)&gCamProjectionMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 }
 
 void func_82202980(s16 arg0) {

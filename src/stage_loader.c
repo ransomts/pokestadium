@@ -485,7 +485,7 @@ void Stage_Destroy(void) {
 }
 
 void func_8000771C(void) {
-    while (func_80001C90() == 0) {}
+    while (RspTaskYielded() == 0) {}
 }
 
 void func_80007754(void) {

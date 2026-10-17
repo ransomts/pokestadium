@@ -365,7 +365,7 @@ void Graph_RenderNode(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1
         gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
         gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
         gSPMatrix(gDisplayListHead++, (u32)arg1->mtx & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-        gSPMatrix(gDisplayListHead++, (u32)&D_8006F010 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(gDisplayListHead++, (u32)&gCamProjectionMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if ((arg0->unk_00 == 1) || (arg0->unk_00 == 2) || (arg0->unk_00 == 3)) {
             Graph_DrawColoredQuad(arg0, arg1);
@@ -799,9 +799,9 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
             func_80016344(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
 
             if ((gCurrentTextureNode->unk_18 < 0) && (arg->unk_01A > 0)) {
-                func_80032670(arg->unk_0A6, arg->unk_01A);
+                ModelPhase_Advance(arg->unk_0A6, arg->unk_01A);
                 Graph_VisitVisibleChildren(arg0);
-                func_80032738(arg->unk_0A6, arg->unk_01A);
+                ModelPhase_UpdateStatus(arg->unk_0A6, arg->unk_01A);
             } else {
                 Graph_VisitVisibleChildren(arg0);
             }

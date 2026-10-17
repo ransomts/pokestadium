@@ -145,13 +145,13 @@ void func_84364C50(s32 arg0, s32 arg1) {
         sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
         sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
         sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
-        func_80031B04(&sp60, &sp5C, &sp58);
+        Math_NormalizeVector(&sp60, &sp5C, &sp58);
         sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
         sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
         sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
-        func_80031B04(&sp54, &sp50, &sp4C);
-        func_80031A94(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        func_80031B04(&sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp54, &sp50, &sp4C);
+        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -162,13 +162,13 @@ void func_84364C50(s32 arg0, s32 arg1) {
         sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
         sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
         sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
-        func_80031B04(&sp60, &sp5C, &sp58);
+        Math_NormalizeVector(&sp60, &sp5C, &sp58);
         sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
         sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
         sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
-        func_80031B04(&sp54, &sp50, &sp4C);
-        func_80031A94(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        func_80031B04(&sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp54, &sp50, &sp4C);
+        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -179,13 +179,13 @@ void func_84364C50(s32 arg0, s32 arg1) {
         sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
         sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
         sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
-        func_80031B04(&sp60, &sp5C, &sp58);
+        Math_NormalizeVector(&sp60, &sp5C, &sp58);
         sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
         sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
         sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
-        func_80031B04(&sp54, &sp50, &sp4C);
-        func_80031A94(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        func_80031B04(&sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp54, &sp50, &sp4C);
+        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -196,13 +196,13 @@ void func_84364C50(s32 arg0, s32 arg1) {
         sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
         sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
         sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
-        func_80031B04(&sp60, &sp5C, &sp58);
+        Math_NormalizeVector(&sp60, &sp5C, &sp58);
         sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
         sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
         sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
-        func_80031B04(&sp54, &sp50, &sp4C);
-        func_80031A94(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        func_80031B04(&sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp54, &sp50, &sp4C);
+        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Math_NormalizeVector(&sp78, &sp74, &sp70);
         sp84 -= sp78;
         sp80 -= sp74;
         sp7C -= sp70;
@@ -213,7 +213,7 @@ void func_84364C50(s32 arg0, s32 arg1) {
         if ((sp84 == 0.0) && (sp80 == 0.0) && (sp7C == 0.0)) {
             sp80 = 1.0f;
         } else {
-            func_80031B04(&sp84, &sp80, &sp7C);
+            Math_NormalizeVector(&sp84, &sp80, &sp7C);
         }
         D_8439E680.unk_0014[arg0][arg1].unk_0C = sp84;
         D_8439E680.unk_0014[arg0][arg1].unk_10 = sp80;
@@ -320,7 +320,7 @@ void func_84365434(void) {
     sp64 = tmp5 - tmp2;
     sp60 = tmp6 - tmp3;
 
-    func_80031B04(&sp68, &sp64, &sp60);
+    Math_NormalizeVector(&sp68, &sp64, &sp60);
 
     temp_fv0 = sp5C / 30.0f;
     temp_fv1 = (140.0f * sp68) / temp_fv0;

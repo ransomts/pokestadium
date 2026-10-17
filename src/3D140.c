@@ -80,11 +80,11 @@ typedef struct unk_D_80078548 {
 // .data
 extern u8 gMusicEnabled[];// = { 0, 0, 0, 0 };
 extern f32 gMusicVolume;// = 0.8000000119f;
-extern u8 D_80077D98[];// = { 0, 0, 0, 0 };
+extern u8 gAudioProcessChannelsFlag[];// = { 0, 0, 0, 0 };
 extern u8 gMusicFadeState[];// = { 0, 0, 0, 0 };
 extern u16 gMusicFadeTargetTrack;
 extern u32 gMusicFadeTimer;
-extern u8 D_80077DA8;
+extern u8 gAudioPausedFlag;
 extern s32 gAudioUnitReady;
 extern u32 audFrameCt;
 extern u32 nextDMA;
@@ -98,8 +98,8 @@ extern u8 mus_fade_target_volume;
 extern f32 mus_fade_step_rate;
 extern f32 gMusicChannel2Volume;
 extern f32 gMusicChannel2Step;
-extern f32 D_80077DDC;
-extern f32 D_80077DE0;
+extern f32 gMusicChannel1Volume;
+extern f32 gMusicChannel1Step;
 extern u8 mus_sound_effect_blocked;
 
 extern u16 D_80077DF0[];
@@ -215,13 +215,13 @@ extern u8 gAudioEffectId;
 extern u32 D_80078404;
 extern s32 D_80078408;
 extern u8 D_8007840C;
-extern u16 D_80078410[17][9];
+extern u16 MenuSelectionSoundTable[17][9];
 extern u16 D_80078446[1][9];
 extern u16 D_800784EA[1][9];
 extern u32 gCommandQueueCount;
-extern unk_D_80078548 D_80078548[];
-extern u8 D_80078554[];
-extern u8 D_80078568[];
+extern unk_D_80078548 AudioCommandMap[];
+extern u8 AudioEffectTriggerIds[];
+extern u8 AudioEffectSecondaryIds[];
 
 // .rodata
 
@@ -248,10 +248,10 @@ extern f32 D_8007CB8C;
 extern f32 D_8007CB90;
 
 // .bss
-s32 D_800FC820;
-s8 D_800FC824;
-u8 D_800FC825;
-s32 D_800FC828;
+s32 gAudioDMAFlags;
+s8 gMusicFadeStepActive;
+u8 gAudioUnitReadyCode;
+s32 gAudioUnitReadyStatus;
 AMAudioMgr __am;
 AMDMAState dmaState;
 s32 minFrameSize;
@@ -259,7 +259,7 @@ u32 frameSize;
 s32 maxFrameSize;
 s32 maxRSPCmds;
 s32 gAudioOutputRate;
-s32 D_800FCAD8;
+s32 gAudioMaxVoices;
 OSMesgQueue audDMAMessageQ;
 AMDMABuffer* dmaBuffs;
 OSIoMesg* audDMAIOMesgBuf;
@@ -311,9 +311,9 @@ u32 D_800FCCF0[10];
 u8 D_800FCD18[0x28];
 
 // function prototypes
-void func_800420F0(u16, u16*, u8*);
-u32 func_80042158(u32, unk_D_800FCB18*, unk_D_800FCB18*);
-s32 func_80042850(u8);
+void PlaySoundEffectOrQueue(u16, u16*, u8*);
+u32 CalculateMoveDamage(u32, unk_D_800FCB18*, unk_D_800FCB18*);
+s32 GetTypeIndex(u8);
 ALDMAproc __amDmaNew(AMDMAState** state);
 
 void amCreateAudioMgr(ALSynConfig* c, amConfig* amc, u32 num_dma_buffers, s32 arg3, s32 arg4) {
@@ -372,8 +372,8 @@ void amCreateAudioMgr(ALSynConfig* c, amConfig* amc, u32 num_dma_buffers, s32 ar
     osCreateMesgQueue(&audDMAMessageQ, audDMAMessageBuf, num_dma_buffers << 1);
 
     gAudioOutputRate = c->outputRate;
-    D_800FCAD8 = c->maxVVoices;
-    D_800FC824 = 0;
+    gAudioMaxVoices = c->maxVVoices;
+    gMusicFadeStepActive = 0;
 
     Audio_Init(c->heap, minFrameSize, maxFrameSize);
 }
@@ -388,7 +388,7 @@ s32 __amDMA(s32 addr, s32 len, void* state) {
     OSPiHandle* sp2C;
     s32 buffEnd;
 
-    if (D_800FC820 & 0x80000000) {
+    if (gAudioDMAFlags & 0x80000000) {
         return osVirtualToPhysical(addr);
     }
 
@@ -468,7 +468,7 @@ OSTask* AudioTask_Build(OSTask* arg0) {
     audioPtr = osVirtualToPhysical(info->data);
     samplesLeft = HW_REG(AI_LEN_REG, u32) >> 2;
 
-    if ((D_80077DA8 == 0) && (lastInfo != NULL)) {
+    if ((gAudioPausedFlag == 0) && (lastInfo != NULL)) {
         osAiSetNextBuffer(lastInfo->data, lastInfo->frameSamples << 2);
     }
 
@@ -483,7 +483,7 @@ OSTask* AudioTask_Build(OSTask* arg0) {
     __clearAudioDMA();
 
     if (gAudioUnitReady != 0) {
-        D_800FC828 = LeoTestUnitReady(&D_800FC825);
+        gAudioUnitReadyStatus = LeoTestUnitReady(&gAudioUnitReadyCode);
     }
 
     cmdp = alAudioFrame(__am.ACMDList[curAcmdList], &cmdLen, audioPtr, info->frameSamples);
@@ -513,17 +513,17 @@ OSTask* AudioTask_Build(OSTask* arg0) {
     }
 
     if (gMusicEnabled[0] != 0) {
-        func_800429D0();
+        Audio_ProcessMusic();
         if (lastInfo != NULL) {
-            func_800497E0(lastInfo->data, 0, ((audFrameCt % 3) == 0) ? 0x216 : 0x215, 0);
+            Audio_PlayMusicBuffer(lastInfo->data, 0, ((audFrameCt % 3) == 0) ? 0x216 : 0x215, 0);
         }
     }
 
-    if (D_80077D98[0] != 0) {
+    if (gAudioProcessChannelsFlag[0] != 0) {
         Audio_ProcessChannels();
     }
 
-    func_800416BC();
+    Audio_UpdateEffects();
 
     if (mus_active_fade_handle != 0) {
         mus_fade_start_volume += mus_fade_step_rate;
@@ -553,16 +553,16 @@ OSTask* AudioTask_Build(OSTask* arg0) {
         MusSetMasterVolume(2, gMusicChannel2Volume);
     }
 
-    if (D_80077DDC != 0.0f) {
-        D_80077DDC -= D_80077DE0;
-        if (D_80077DDC <= 0) {
-            D_80077DDC = 0.0f;
+    if (gMusicChannel1Volume != 0.0f) {
+        gMusicChannel1Volume -= gMusicChannel1Step;
+        if (gMusicChannel1Volume <= 0) {
+            gMusicChannel1Volume = 0.0f;
             MusSetAllChannelsDuration(1, 1);
         }
-        MusSetMasterVolume(1, D_80077DDC);
+        MusSetMasterVolume(1, gMusicChannel1Volume);
     }
 
-    if (D_80077DA8 != 0) {
+    if (gAudioPausedFlag != 0) {
         sp38.t.data_size = 0;
     }
 
@@ -625,7 +625,7 @@ void __clearAudioDMA(void) {
 void Audio_SetMusicEnabled(s32 arg0) {
     const f32 D_8007C7C0 = 0.8000000119f;
     if (arg0 != 0) {
-        func_800498A8(0x7D00, 0x78, 0x640);
+        Audio_LoadMusicTrack(0x7D00, 0x78, 0x640);
         gMusicEnabled[0] = 1;
         gMusicVolume = D_8007C7C0;
         return;
@@ -635,13 +635,13 @@ void Audio_SetMusicEnabled(s32 arg0) {
 
 void Audio_StartMusicFade(s32 arg0) {
     if (gMusicEnabled[0] == 0) {
-        func_800498A8(0x7D00, 0x78, 0x320);
+        Audio_LoadMusicTrack(0x7D00, 0x78, 0x320);
         gMusicEnabled[0] = 1;
         gMusicFadeState[0] = 1;
         gMusicVolume = 0.0f;
         gMusicFadeTargetTrack = arg0;
         gMusicFadeTimer = 0;
-        D_800FC824 = 0;
+        gMusicFadeStepActive = 0;
     }
 }
 
@@ -649,7 +649,7 @@ void Audio_MusicFadeUpdate(void) {
     switch (gMusicFadeState[0]) {
         case 1:
             MusSetupVolumeFade(D_80078E70, 0x50, 0x18, 3);
-            func_80042AB0(gMusicFadeTargetTrack);
+            Music_PlayTrack(gMusicFadeTargetTrack);
             gMusicFadeState[0]++;
             gMusicFadeTimer = 0;
             break;
@@ -659,12 +659,12 @@ void Audio_MusicFadeUpdate(void) {
             if (gMusicFadeTimer >= 2) {
                 gMusicFadeTimer = 0;
                 gMusicFadeState[0]++;
-                D_800FC824 = 1;
+                gMusicFadeStepActive = 1;
             }
             break;
 
         case 3:
-            if (func_800449F8() == 0) {
+            if (Music_FadeStepComplete() == 0) {
                 gMusicFadeState[0]++;
                 gMusicFadeTimer = 0;
             }
@@ -685,7 +685,7 @@ void Audio_MusicFadeUpdate(void) {
         case 5:
             gMusicFadeState[0] = 0;
             gMusicEnabled[0] = 0;
-            D_800FC824 = 0;
+            gMusicFadeStepActive = 0;
             break;
     }
 }
@@ -696,15 +696,15 @@ s32 Audio_IsMusicEnabled(void) {
 
 s32 Audio_SetPauseState(s32 arg0) {
     if (arg0 == 0) {
-        if (mus_free_voices_count != D_800FCAD8) {
+        if (mus_free_voices_count != gAudioMaxVoices) {
             return 0;
         }
-        D_80077DA8 = 1;
+        gAudioPausedFlag = 1;
     } else {
         osAiSetFrequency(gAudioOutputRate);
         lastInfo = NULL;
         dmaState.initialized = 0;
-        D_80077DA8 = 0;
+        gAudioPausedFlag = 0;
     }
     return 1;
 }
@@ -714,8 +714,8 @@ s32 Audio_GetUnitReadyStatus(u8* arg0) {
         *arg0 = 7;
         return 8;
     }
-    *arg0 = D_800FC825;
-    return D_800FC828;
+    *arg0 = gAudioUnitReadyCode;
+    return gAudioUnitReadyStatus;
 }
 
 void Audio_SetUnitReadyFlag(s32 arg0) {

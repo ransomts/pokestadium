@@ -952,7 +952,7 @@ void func_8002817C(u8 arg0, u8 arg1) {
     }
 }
 
-void func_800281D4(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1, s32 arg2) {
+void EncodeBattleSaveData(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1, s32 arg2) {
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;
 
@@ -971,7 +971,7 @@ void func_800281D4(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1, s32 ar
     }
 }
 
-s32 func_80028320(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1) {
+s32 DecodeBattleSaveData(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1) {
     s16 var_s5 = -1;
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;

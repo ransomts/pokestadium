@@ -71,7 +71,7 @@ void Model_ConcatCameraMatrix(u8 index) {
     MtxF sp1C;
 
     temp_a1 = &gModelMtxBuffers[index];
-    func_80031EF4(&sp1C, &gCurrentCameraNode->unk_60.mtxf);
+    Camera_CopyMatrixF(&sp1C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxCatF(sp1C.mf, temp_a1->mf, temp_a1->mf);
 }
 
@@ -89,7 +89,7 @@ void Model_ApplyScaleAndTranslation(u8 index) {
     
     temp_a0 = &gModelMtxBuffers[index].mtx;
     
-    func_80032034(temp_a0, &sp2C);
+    Matrix_GetScaleVector(temp_a0, &sp2C);
     guScaleF(sp38.mf, sp2C.x, sp2C.y, sp2C.z);
     guMtxXFMF(temp_a0->mf, 0.0f, 0.0f, 0.0f, &spC0, &spBC, &spB8);
     guTranslateF(sp78.mf, spC0, spBC, spB8);
@@ -133,7 +133,7 @@ void Model_DrawCurrent(void) {
     u8 index;
     s32 mode;
 
-    mode = func_800325B4();
+    mode = GraphRoot_GetCurrentModelSlot();
     index = (u8)mode;
     if (mode < 2) {
         Model_CopyCurrentToBuffer(index);
@@ -141,10 +141,10 @@ void Model_DrawCurrent(void) {
         Model_ConcatCameraMatrix(index);
 
         if (gDefaultGraphRoot->unk_01A == 0x92) {
-            func_80033B2C(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
+            Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
             return;
         }
-        func_80033B2C(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gNormalModelSegment);
+        Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gNormalModelSegment);
     }
 }
 
@@ -152,13 +152,13 @@ void Model_DrawIfReady(void) {
     u8 index;
     s32 mode;
 
-    mode = func_800325B4();
+    mode = GraphRoot_GetCurrentModelSlot();
     index = (u8)mode;
-    if ((mode < 2) && (func_800325AC() == 0) && (gModelPhase[index] >= 2)) {
+    if ((mode < 2) && (ModelPhase_IsIdle() == 0) && (gModelPhase[index] >= 2)) {
         Model_CopyCurrentToBuffer(index);
         Model_ApplyScaleAndTranslation(index);
         Model_ConcatCameraMatrix(index);
-        func_800361C4(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, &gModelMtxBuffers[index].mtx);
+        Model_DrawPrepared(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, &gModelMtxBuffers[index].mtx);
     }
 }
 
@@ -181,10 +181,10 @@ Gfx* Model_DrawSegment(Gfx* gfx) {
     } else {
         segment = (ModelSegment *)&gNormalModelSegment;
     }
-    func_80031EF4(&modelMtx, &gCurrentCameraNode->unk_60.mtxf);
+    Camera_CopyMatrixF(&modelMtx, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&modelMtx.mf[0], &tempMtx);
     Matrix_Copy(&tempCatMtx, Matrix_GetRelative(0));
-    func_80032034(&tempCatMtx, &scale);
+    Matrix_GetScaleVector(&tempCatMtx, &scale);
     guScaleF(&scaleMtx.mf[0], scale.x, scale.y, scale.z);
     guMtxXFMF(&tempCatMtx.mf[0], 0.0f, 0.0f, 0.0f, &translate.z, &translate.y, &translate.x);
     guTranslateF(&translateMtx.mf[0], translate.z, translate.y, translate.x);
@@ -206,7 +206,7 @@ Gfx* Model_RenderStateMachine(Gfx* gfx) {
     Vtx* vtx;
     s16* var_v1;
 
-    mode = func_800325B4();
+    mode = GraphRoot_GetCurrentModelSlot();
     if ((mode == 0xFF) || (mode == 0xFE)) {
         return Model_DrawSegment(gfx);
     }
@@ -218,7 +218,7 @@ Gfx* Model_RenderStateMachine(Gfx* gfx) {
         if (gModelPhase[mode] >= 2) {
             GfxAlloc(0xA0);
             gfx = Model_SetRenderColors(gfx);
-            var_v1 = &D_800AF7B0[mode & 1];
+            var_v1 = &gModelUpdateFlag[mode & 1];
             {
                 ModelSegment* segment = (ModelSegment*)(&gStadiumModelSlots[mode][*var_v1].model.unkSegment);
                 {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDB060038;    _gfx->words.w1 = (s32) segment->vertexSegment;    }
@@ -231,19 +231,19 @@ Gfx* Model_RenderStateMachine(Gfx* gfx) {
     }
     switch (gModelPhase[mode]) {
         default:
-            var_v1 = &D_800AF7B0[mode & 1];
+            var_v1 = &gModelUpdateFlag[mode & 1];
             break;
         case 1:
             Model_DrawCurrent();
-            var_v1 = &D_800AF7B0[mode & 1];
+            var_v1 = &gModelUpdateFlag[mode & 1];
             break;
         case 2:
         case 3:
             vtx = GfxAlloc(0xA0);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &gIdentityMtx;    }
             gfx = Model_SetRenderColors(gfx);
-            var_v1 = &D_800AF7B0[mode & 1];
-            gfx = func_800366A4(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
+            var_v1 = &gModelUpdateFlag[mode & 1];
+            gfx = Model_DrawWithVertexBuffer(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gModelSetupDL;    }
             break;

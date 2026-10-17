@@ -2797,7 +2797,7 @@ reset:
         osViSwapBuffer((&D_8122B1E0)[D_8122B2B8 ^ 1]->img_p);
         if (emu->unk_53A4 != 0) {
             emu->unk_5388 = 0;
-            func_800053B4((UnkStruct80001380*) &D_8122B1E8[D_8122B2B8], 0);
+            RspTaskStart((UnkStruct80001380*) &D_8122B1E8[D_8122B2B8], 0);
         }
         D_8122B2B8 ^= 1;
         D_8122B2F0 = 1;

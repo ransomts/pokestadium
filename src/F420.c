@@ -2,7 +2,7 @@
 #include "src/29BA0.h"
 #include "src/math_util.h"
 
-Mtx D_8006F010 = { {
+Mtx gCamProjectionMatrix = { {
     {
         0x00010000,
         0x00000000,

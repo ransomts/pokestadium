@@ -22,8 +22,8 @@
 
 // This function appears to be different than the stock n_alMainBusPull.
 
-extern u8 D_800FC824;
-extern u8 D_80077D98;
+extern u8 gMusicFadeStepActive;
+extern u8 gAudioProcessChannelsFlag;
 extern s16* D_800FC6D8;
 extern u32 D_800FD6F0;
 
@@ -38,7 +38,7 @@ Acmd* n_alMainBusPull(s32 sampleOffset, Acmd* p) {
     aMix(ptr++, 0, 0x7fff, N_AL_AUX_L_OUT, N_AL_MAIN_L_OUT);
     aMix(ptr++, 0, 0x7fff, N_AL_AUX_R_OUT, N_AL_MAIN_R_OUT);
 
-    if (D_800FC824 != 0) {
+    if (gMusicFadeStepActive != 0) {
         aClearBuffer(ptr++, 0x7C0, 0x2E0);
         n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(&D_800FC6D8[D_800FD6F0]));
         n_aLoadBuffer(ptr++, 0x170, 0x930, osVirtualToPhysical(&D_800FC6D8[D_800FD6F0]));
@@ -52,7 +52,7 @@ Acmd* n_alMainBusPull(s32 sampleOffset, Acmd* p) {
         aClearBuffer(ptr++, 0x7C0, 0x2E0);
     }
 
-    if (D_80077D98 != 0) {
+    if (gAudioProcessChannelsFlag != 0) {
         for (i = 0; i < 2; i++) {
             aClearBuffer(ptr++, 0x7C0, 0x2E0);
             n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(D_800FCF28[i]->unk_000 + D_800FCF30[i]));

@@ -50,7 +50,7 @@ extern FramebufferImage* gCamFramebuffer;
 extern s32 gCamTexWidth;
 extern s32 gCamTexHeight;
 extern s32 gCamTextWidth;
-extern u32 D_80075FA0[];
+extern u32 gCamGeoLayoutCmdTable[];
 extern u32 gCamGeoLayoutIndices[];
 extern unk_D_800761B0 gCamQuadVertices[12];
 
@@ -71,7 +71,7 @@ FramebufferImage* gCamFramebuffer = NULL;
 s32 gCamTexWidth = 200;
 s32 gCamTexHeight = 43;
 s32 gCamTextWidth = 0;
-u32 D_80075FA0[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Cam_SetupCameraParams, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Cam_SetActiveCameraParams, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Cam_GetCameraAngles, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Cam_GetCameraAnglesInverse, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Cam_SetActiveNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Cam_SetupDefaultCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
+u32 gCamGeoLayoutCmdTable[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Cam_SetupCameraParams, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Cam_SetActiveCameraParams, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Cam_GetCameraAngles, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Cam_GetCameraAnglesInverse, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Cam_SetActiveNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Cam_SetupDefaultCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
 u32 gCamGeoLayoutIndices[17] = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x11, 0 };
 unk_D_800761B0 gCamQuadVertices[12] = { { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 } };
 extern f64 D_8007C538;
@@ -84,7 +84,7 @@ extern f64 D_8007C568;
 extern f64 D_8007C570;
 
 void Cam_ClearActive2(void);
-void func_8340051C(void);
+void Gallery_Terminate(void);
 
 void Gallery_Run(void) {
     s32 var_s6;
@@ -247,7 +247,7 @@ void Gallery_Run(void) {
 
     } while (var_s6 != 0);
 
-    ((ret_func_80004454)Util_ConvertAddrToVirtAddr(func_8340051C))();
+    ((ret_func_80004454)Util_ConvertAddrToVirtAddr(Gallery_Terminate))();
 
     main_pool_pop_state('SNPM');
 }
@@ -483,7 +483,7 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
         gDPSetRenderMode(gDisplayListHead++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
-        gSPMatrix(gDisplayListHead++, &D_8006F010, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(gDisplayListHead++, &gCamProjectionMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPVertex(gDisplayListHead++, gCamQuadVertices, 12, 0);
         for (i = 0; i < 10; i += 2) {
             gDPLoadMultiTile(gDisplayListHead++, gCamFramebuffer->img_p, 0, 0, G_IM_FMT_RGBA, G_IM_SIZ_16b, gCamTexWidth, gCamTexHeight, 0, i * 5, gCamTexWidth - 1, (i + 2) * 5 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -535,7 +535,7 @@ void Cam_ProcessGeoLayout(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 a
 
     sp18 = state_pool_try_init(main_pool_get_available(), 0);
     gCamPrimary = arg0;
-    arg0->unk_1C = process_geo_layout(sp18, D_80075FA0);
+    arg0->unk_1C = process_geo_layout(sp18, gCamGeoLayoutCmdTable);
     gCamPrimary = NULL;
     mem_pool_resize_block(sp18);
 }
@@ -830,20 +830,20 @@ void Matrix_BillboardBetween(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     *mtx = spF0;
 }
 
-f32 func_80031A6C(f32 arg0) {
+f32 Math_AbsF(f32 arg0) {
     if (arg0 < 0.0) {
         arg0 = -arg0;
     }
     return arg0;
 }
 
-void func_80031A94(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32* arg6, f32* arg7, f32* arg8) {
+void Math_CrossProductComponents(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32* arg6, f32* arg7, f32* arg8) {
     *arg6 = (arg1 * arg5) - (arg2 * arg4);
     *arg7 = (arg2 * arg3) - (arg0 * arg5);
     *arg8 = (arg0 * arg4) - (arg1 * arg3);
 }
 
-void func_80031B04(f32* arg0, f32* arg1, f32* arg2) {
+void Math_NormalizeVector(f32* arg0, f32* arg1, f32* arg2) {
     f32 temp_fv1;
     f32 temp_fa1;
     f32 temp_ft4;
@@ -923,7 +923,7 @@ void func_80031C6C(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f
     *mtx = spB8;
 }
 
-void func_80031DF8(
+void Math_ClosestPointOnLineSegment(
     f32 px, f32 py, f32 pz,
     f32 ax, f32 ay, f32 az,
     f32 bx, f32 by, f32 bz,
@@ -960,7 +960,7 @@ void func_80031DF8(
     *outZ = az + (t * dz);
 }
 
-void func_80031EF4(MtxF* arg0, MtxF* arg1) {
+void Camera_CopyMatrixF(MtxF* arg0, MtxF* arg1) {
     f32 sp24 = sqrtf(SQ(arg1->mf[0][0]) + SQ(arg1->mf[0][1]) + SQ(arg1->mf[0][2]));
     f32 sp20 = sqrtf(SQ(arg1->mf[1][0]) + SQ(arg1->mf[1][1]) + SQ(arg1->mf[1][2]));
     f32 sp1C = sqrtf(SQ(arg1->mf[2][0]) + SQ(arg1->mf[2][1]) + SQ(arg1->mf[2][2]));
@@ -986,7 +986,7 @@ void func_80031EF4(MtxF* arg0, MtxF* arg1) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_80032034(MtxF* arg0, Vec3f* arg1) {
+void Matrix_GetScaleVector(MtxF* arg0, Vec3f* arg1) {
     f32 temp_fa1;
     f32 temp_fv0;
     f32 temp_fv1;

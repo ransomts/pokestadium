@@ -31,7 +31,7 @@ s16 func_82F01390(unk_D_82F144D0* arg0, s16 arg1) {
     }
 
     if (var_v0 != NULL) {
-        while (func_80022E18(&sp3C, 1, var_v0) == 1) {
+        while (GbsBlock_ReadPokemon(&sp3C, 1, var_v0) == 1) {
             sp34->unk_00C[sp34->unk_000++] = sp3C;
         }
         CommitAndFreeGbsBlock(var_v0);

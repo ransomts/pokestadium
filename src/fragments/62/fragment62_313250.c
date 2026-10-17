@@ -26,7 +26,7 @@ void func_84328A70(UNUSED unk_D_86002F34_00C* arg0) {
         D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
         D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
         func_84308654(D_84390010[0], 1, 0);
-        func_800367A0(1, 0xFE, 0);
+        Audio_PlaySoundEffect(1, 0xFE, 0);
         func_8432C68C(8, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
         D_84390240.unk_00->unk_20 += 1;
     }
@@ -37,7 +37,7 @@ void func_84328B30(UNUSED unk_D_86002F34_00C* arg0) {
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     if (D_84390010[0]->unk_4EC.unk_024.y == 0.0f) {
         func_8432B808();
-        func_800367A0(1, 1, 0);
+        Audio_PlaySoundEffect(1, 1, 0);
         func_84308654(D_84390010[1], 1, 0);
         func_8432C68C(0xA, D_84390010[1], D_84390010[1], 0xFF, 0xFF);
         D_84390240.unk_00->unk_20 += 1;
@@ -72,7 +72,7 @@ void func_84328D70(unk_D_86002F34_00C* arg0) {
     func_8431BB80(arg0, sp2C, D_84390240.unk_00->unk_56, 0x4000, D_84390240.unk_00->unk_84, 0.0f);
 
     if ((D_84390240.unk_00->unk_56 >= 0x2E) && (D_84390010[0]->unk_4EC.unk_024.y == 2.5f)) {
-        func_800367A0(2, 0, 0);
+        Audio_PlaySoundEffect(2, 0, 0);
         D_84390010[0]->unk_4EC.unk_000.unk_02 |= 0x20;
         D_84390240.unk_00->unk_20 += 1;
     }
@@ -131,7 +131,7 @@ void func_84329164(unk_D_86002F34_00C* arg0) {
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
     D_84390010[1]->unk_728.unk_000.unk_000.unk_01 |= 1;
     func_843074A0(D_84390010[1]);
-    func_800367A0(2, 0, 0);
+    Audio_PlaySoundEffect(2, 0, 0);
     func_8432C68C(3, D_84390010[1], D_84390010[1], 0xFF, 0xFF);
     func_8431AE5C();
     D_84390010[1]->unk_000.unk_000.unk_01 |= 1;

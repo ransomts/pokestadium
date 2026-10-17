@@ -4,24 +4,24 @@
 #include "global.h"
 
 extern u8 D_800AF770[8];
-extern s16 D_800AF778[4];
-extern s16 D_800AF780[4];
-extern s16 D_800AF788[4];
-extern s16 D_800AF790[4];
-extern s16 D_800AF798[4];
-extern s16 D_800AF7A0[4];
+extern s16 gHpWheelDigitOffsetOnes[4];
+extern s16 gHpWheelDigitOffsetTens[4];
+extern s16 gHpWheelDigitOffsetHundreds[4];
+extern s16 gHpWheelDigitOffsetOnesSmooth[4];
+extern s16 gHpWheelDigitOffsetTensSmooth[4];
+extern s16 gHpWheelDigitOffsetHundredsSmooth[4];
 extern s16 D_800AF7AE;
-extern s16 D_800AF7B0[2];
+extern s16 gModelUpdateFlag[2];
 
 void HpWheel_SetDigits(u8 arg0, s16 arg1);
 void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1);
-void func_80032570(void);
-s32 func_800325AC(void);
-u8 func_800325B4(void);
+void AnimationFrame_StallCheck(void);
+s32 ModelPhase_IsIdle(void);
+u8 GraphRoot_GetCurrentModelSlot(void);
 s16 func_800325E0(void);
 void GraphNode_EnableTransform(unk_D_86002F58_004_000* arg0);
-void func_80032670(u32 arg0, u32 arg1);
-void func_80032738(u32 arg0, u32 arg1);
+void ModelPhase_Advance(u32 arg0, u32 arg1);
+void ModelPhase_UpdateStatus(u32 arg0, u32 arg1);
 void Gfx_SetCombineRaw(Gfx*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
 #endif // _32D10_H_

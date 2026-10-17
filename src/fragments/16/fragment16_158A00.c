@@ -139,7 +139,7 @@ void func_86A000B4(s8 arg0, u8 arg1) {
     u32* temp_v0;
     unk_D_8690A610_018* temp_v0_4;
 
-    while (func_80001C90() == 0) {}
+    while (RspTaskYielded() == 0) {}
 
     GraphNode_AllocInit(NULL, &D_86A06190);
     GraphNode_AllocInit(NULL, &D_86A061A8);

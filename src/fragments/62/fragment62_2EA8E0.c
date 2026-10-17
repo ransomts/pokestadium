@@ -330,7 +330,7 @@ s32 func_84300E88(s32 arg0) {
     s32 sp1C;
 
     Gfx_FinishFrame();
-    func_80032570();
+    AnimationFrame_StallCheck();
     func_84307394(2, D_8438E798);
     func_84307A50(2, &D_8438E598, &D_8438E688);
     sp1C = func_8432AEE4(2, &D_8438E440);
@@ -362,7 +362,7 @@ s32 func_84300FBC(s32 arg0) {
     if ((arg0 == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         sp1C = func_84300E88(arg0);
     } else {
-        func_80032570();
+        AnimationFrame_StallCheck();
         Stage_BeginDisplayList();
         func_84300340();
         Graph_SetTextureState(D_8438E784);

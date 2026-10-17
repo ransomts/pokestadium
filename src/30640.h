@@ -145,11 +145,11 @@ s32 Cam_FindActiveIndex(unk_func_80031270**, s32);
 unk_func_80031270* Cam_GetCurrent(void);
 void Cam_ClearActive2(void);
 s32 IsMonIndexDisplayable(unk_D_83403C60*);
-f32 func_80031A6C(f32);
-void func_80031A94(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
-void func_80031B04(f32*, f32*, f32*);
+f32 Math_AbsF(f32);
+void Math_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
+void Math_NormalizeVector(f32*, f32*, f32*);
 void func_80031C6C(Mtx*, f32, f32, f32, f32, f32, f32);
-void func_80031EF4(MtxF*, MtxF*);
-void func_80032034(MtxF* arg0, Vec3f* arg1);
+void Camera_CopyMatrixF(MtxF*, MtxF*);
+void Matrix_GetScaleVector(MtxF* arg0, Vec3f* arg1);
 
 #endif // _30640_H_

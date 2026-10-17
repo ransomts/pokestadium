@@ -1153,3 +1153,116 @@ func_800286D8	GbsSyncAllBanks	w5		Loops over all four banks, calling GbsSyncBank
 func_8002873C	GbsAllocateBank	w5		Allocates memory for a GBS bank if not present, sets up active and backup pointers, and initiates DMA copies	applied@510e057
 func_80028AFC	GbsEnsureBankLoaded	w5		Ensures a bank is loaded; if not, calls the appropriate GbsInitBankX function based on the bank index	applied@510e057
 D_80073650	gGbsBankSizeTable	w5		Static array of bank sizes (0x3700, 0x3700, 0x3F80, 0x3880) used by GbsSyncBank to determine copy lengths	applied@510e057
+D_8006FF00	gSpeciesDisplayTable	s1	unk_D_8006FF00:SpeciesDisplayParams	per-species display table, 152 rows x 0x1C at 0x8006FF00 (size 0x10A0 exact): pmname model-name buffer ptr, scale unk_02/100.0f in SpriteDisplay_SetScaleTable, flags unk_0C, packed angles unk_14; ends exactly at 0x80070FA0 where the 0x17-stride gSpeciesBaseStats begins - ROM-verified, disjoint tables	pending
+unk_D_80070F84	SpeciesStats	s1		true 0x17-stride row type of gSpeciesBaseStats (id, hp, atk, def, spe, spc, type1, type2, catch, exp, misc[13]) - verified against canonical Gen-1 base stats byte-for-byte for 40 species; old name echoes the fake alias D_80070F84 (= gSpeciesBaseStats - 0x1C)	pending
+func_80023AF8	SaveSlot_Load	w6		Called before reading a save slot's trainer name, indicating it loads the slot data	applied@5d9b86a
+func_800251B0	SaveSlot_GetTrainerName	w6		Receives a slot index and buffer to copy the trainer name, so it retrieves the name	applied@5d9b86a
+func_80022E18	GbsBlock_ReadPokemon	w6		Used to read a Pokemon struct from a GBS block during team loading	applied@5d9b86a
+func_800281D4	EncodeBattleSaveData	w6		Encodes battle state into a save block before committing it	applied@5d9b86a
+func_80028320	DecodeBattleSaveData	w6		Decodes saved battle state and returns the number of party Pokemon loaded	applied@5d9b86a
+func_8002CB58	S16List_RemoveAt	w6		removes an element at a given index from a list of s16 values stored in arg0->unk_00 and shifts remaining entries	applied@5d9b86a
+func_8002CBB0	PtrArray_Init	w6		initializes a pointer?array struct by setting its data pointer, capacity (unk_04) and count (unk_08)	applied@5d9b86a
+func_8002CBC0	PtrList_Init	w6		allocates memory for a list of pointers (4?bytes each) and sets element count to zero	applied@5d9b86a
+func_8002CC04	PtrList_Free	w6		frees the memory allocated for the pointer list stored in arg0->unk_00	applied@5d9b86a
+func_8002CC2C	PtrList_Insert	w6		inserts a pointer into the list at a given index, shifting later elements to make room	applied@5d9b86a
+func_8002CC80	PtrArray_RemoveAt	w6		removes a pointer at a given index from the array and shifts later elements left	applied@5d9b86a
+func_8002D180	PtrArray_Sort	w6		sorts the pointer array using Util_QuickSort with a provided comparator	applied@5d9b86a
+func_8002D1AC	PtrArray_Filter	w6		copies elements that satisfy a predicate into another pointer array and updates its count	applied@5d9b86a
+func_8002D248	U16String_Compare	w6		compares two null?terminated u16 strings element?wise and returns the first difference	applied@5d9b86a
+func_8002D28C	ByteString_ToU16Table	w6		translates a byte string into a u16 buffer using the lookup table D_80075690, handling special cases	applied@5d9b86a
+func_8002D348	StringCompare_WithMask	w6		compares two byte strings after converting them to u16 via the lookup table and applying three mask patterns from D_80075890	applied@5d9b86a
+func_8002D3F0	Vector2_Normalize	w6		normalizes a 2?component float vector by dividing each component by its length	applied@5d9b86a
+func_8002D444	Color_ScaleRGB	w6		scales the RGB channels of a Color_RGBA8 by a float factor, clamping to 0xFF and preserving alpha	applied@5d9b86a
+D_80075690	gByteToTileIdTable	w6		256?entry lookup table mapping input bytes to u16 values used by func_8002D28C for string decoding	applied@5d9b86a
+D_80075890	gStringCompareMasks	w6		three?element mask array used by func_8002D348 to compare encoded strings under different bit masks	applied@5d9b86a
+func_8002F1C0	IsStageIdSpecial	w6		Contains a static array of IDs and returns 1 when the argument matches any entry, serving as a special?stage ID check.	applied@5d9b86a
+func_8002F264	IsStageSpecial	w6		Calls func_8002F1C0 and returns its result, acting as a wrapper to test if a stage ID is special.	applied@5d9b86a
+D_800758A0	gMenuGrayColors	w6		Static array of two identical gray Color_RGBA8 values, likely used for menu background or text shading.	applied@5d9b86a
+D_800758E0	gMenuTextureInfo_Default	w6		Struct of four fields with width/height 0x14 and a texture pointer D_4001C90, matching the texture info pattern used for menu graphics.	applied@5d9b86a
+D_800758F0	gMenuTextureInfo_Alternates	w6		Array of two similar structs with varying dimensions and texture pointers (D_4001FB8, D_4006AB8), representing alternate menu texture descriptors.	applied@5d9b86a
+D_8007596C	gMenuItemCoords	w6		Array of pairs of 16?bit values, typical of (x,y) coordinate tables for UI elements such as menu items.	applied@5d9b86a
+D_80075BD0	gStageRomOffsets	w6		Sequentially increasing 32?bit values resembling ROM offsets, likely indexing stage data locations.	applied@5d9b86a
+func_8002F2A0	KidsClub_MainLoop	w6		KidsClub minigame manager loads UI asset and runs fragment?based minigames based on sp60 values	applied@5d9b86a
+func_8340051C	Gallery_Terminate	w6		Called after the Gallery_Run loop to finalize the gallery mode, indicating it ends the gallery session	applied@5d9b86a
+func_80031A6C	Math_AbsF	w6		Returns the absolute value of a float, matching its implementation of negating negative inputs	applied@5d9b86a
+func_80031A94	Math_CrossProductComponents	w6		Computes the three scalar components of a cross product from two 3?component vectors, as seen by the formulae used	applied@5d9b86a
+func_80031B04	Math_NormalizeVector	w6		Normalizes three float components in?place, dividing each by the vector length calculated from them	applied@5d9b86a
+func_80031DF8	Math_ClosestPointOnLineSegment	w6		Calculates the closest point on a line segment to a given point, evident from the parametric projection formula used	applied@5d9b86a
+D_80075FA0	gCamGeoLayoutCmdTable	w6		Used as the command list passed to process_geo_layout for camera geometry, indicating it stores geo?layout commands	applied@5d9b86a
+D_8006F010	gCamProjectionMatrix	w6		Referenced in Cam_RenderView when loading the matrix for rendering the camera quad, suggesting it is the projection matrix	applied@5d9b86a
+D_800AF778	gHpWheelDigitOffsetOnes	w6		Array indexed by digit position in HpWheel_SetDigits to store the Y?offset for the ones digit	applied@5d9b86a
+D_800AF780	gHpWheelDigitOffsetTens	w6		Array used in HpWheel_SetDigits for the tens digit offset	applied@5d9b86a
+D_800AF788	gHpWheelDigitOffsetHundreds	w6		Array used in HpWheel_SetDigits for the hundreds digit offset	applied@5d9b86a
+D_800AF790	gHpWheelDigitOffsetOnesSmooth	w6		Array indexed in HpWheel_SetDigitsSmooth for the ones digit offset during smooth animation	applied@5d9b86a
+D_800AF798	gHpWheelDigitOffsetTensSmooth	w6		Array used in HpWheel_SetDigitsSmooth for the tens digit offset during smooth animation	applied@5d9b86a
+D_800AF7A0	gHpWheelDigitOffsetHundredsSmooth	w6		Array used in HpWheel_SetDigitsSmooth for the hundreds digit offset during smooth animation	applied@5d9b86a
+D_800AF7A8	gPrevAnimationFrame	w6		Stored previous gAnimationFrame value in func_80032570	applied@5d9b86a
+D_800AF7AC	gAnimationFrameUnchangedFlag	w6		Flag set to 1 when the animation frame did not change between calls in func_80032570	applied@5d9b86a
+D_800AF7B0	gModelUpdateFlag	w6		Per?model flag cleared at start of func_80032670 and consulted in func_80032738	applied@5d9b86a
+D_800AF7B4	gModelReadyFlag	w6		Per?model status flag written in func_80032738 based on D_800AF7B0	applied@5d9b86a
+func_80032570	AnimationFrame_StallCheck	w6		Updates D_800AF7AC based on whether gAnimationFrame equals the previous frame, thus checking for a stalled animation	applied@5d9b86a
+func_800325B4	GraphRoot_GetCurrentModelSlot	w6		Returns the byte at gDefaultGraphRoot->unk_0A6, likely the current model slot index	applied@5d9b86a
+func_80032670	ModelPhase_Advance	w6		Advances gModelPhase for a model when arg0<2 and arg1 is a valid non?zero phase value, acting as a model phase state machine	applied@5d9b86a
+func_80032738	ModelPhase_UpdateStatus	w6		Increments D_800AF7AE when func_800325AC reports idle and sets D_800AF7B4 based on D_800AF7B0, updating model status flags	applied@5d9b86a
+func_800325AC	ModelPhase_IsIdle	w6		Always returns 0; used in func_80032738 as a placeholder idle check for the model phase	applied@5d9b86a
+func_80031EF4	Camera_CopyMatrixF	w6		Copies the current camera node's matrix into a destination MtxF as seen in Model_ConcatCameraMatrix where it is called with &gCurrentCameraNode->unk_60.mtxf	applied@5d9b86a
+func_80032034	Matrix_GetScaleVector	w6		Extracts a scale vector from a matrix, used in Model_ApplyScaleAndTranslation to obtain sp2C.x/y/z for scaling	applied@5d9b86a
+func_80033B2C	Model_DrawWithSegment	w6		Renders a stadium model using texture data and a matrix segment, invoked in Model_DrawCurrent with gSpecialModelSegment or gNormalModelSegment	applied@5d9b86a
+func_800361C4	Model_DrawPrepared	w6		Draws a prepared stadium model using its matrix buffer, called in Model_DrawIfReady after transformations are applied	applied@5d9b86a
+func_800366A4	Model_DrawWithVertexBuffer	w6		Draws a model using a supplied vertex buffer, seen in Model_RenderStateMachine where it receives a Vtx* from GfxAlloc	applied@5d9b86a
+D_800762F0	gEmptyDisplayList	w6		Contains only gsSPEndDisplayList(), serving as an empty display?list placeholder.	applied@5d9b86a
+D_800762F8	gMarkerTriangleVtx	w6		Array of three vertices forming a simple triangle used by the marker display list.	applied@5d9b86a
+D_80076328	gPlaceholderTexture4b	w6		8?byte intensity texture (4?4, 4?bpp) loaded in the marker display list, acting as a placeholder texture.	applied@5d9b86a
+D_80076330	gMarkerTriangleDL	w6		Display list that sets render state, loads the placeholder texture, and draws the triangle vertices, i.e., a marker triangle DL.	applied@5d9b86a
+func_80033230	Util_BusyWait8x2	w6		Executes a double loop of 8?2 empty iterations, likely a short busy?wait delay.	applied@5d9b86a
+func_80033264	Util_NoOp	w6		Runs a loop whose inner condition never succeeds, effectively a no?operation stub.	applied@5d9b86a
+func_80033284	Gfx_DrawMarkerTriangle	w6		Creates a scaled, translated matrix, sets primitive color, and renders the marker triangle display list, drawing a colored scaled triangle at a given position.	applied@5d9b86a
+func_800367A0	Audio_PlaySoundEffect	w6		Selects and starts a sound effect based on an ID and parameters, calling MusStartSoundEffect throughout the function	applied@5d9b86a
+func_80037234	Audio_SetSfxDurationScale	w6		Adjusts the duration scale of currently playing sound handles for various sound categories using MusSetDurationScale	applied@5d9b86a
+func_80037340	Audio_BuildTask	w6		Wraps AudioTask_Build to construct an audio task from the provided argument	applied@5d9b86a
+func_80037360	Audio_AddBaseToOffsets	w6		Adds a base address to each element of an array, used to convert ROM-relative offsets to absolute addresses in the audio loader	applied@5d9b86a
+func_800373D8	Audio_Initialize	w6		Initializes the audio system, configures musConfig, allocates the audio heap, and loads/compresses all audio archives	applied@5d9b86a
+D_80077970	gMenuSfxTable	w6		Lookup table consulted in cases 0x33 and 0x32 to map menu indices to sound?effect categories	applied@5d9b86a
+D_80077C64	gSfxHandle_MenuSelect	w6		Handle for the menu?selection sound effect, set in case 0x0 of Audio_PlaySoundEffect	applied@5d9b86a
+D_80077C68	gSfxHandle_MenuConfirm	w6		Handle for the menu?confirm sound effect, set in case 0x4 of Audio_PlaySoundEffect	applied@5d9b86a
+D_80077C6C	gSfxHandle_BackgroundMusic	w6		Handle for a looping background music track, used in cases 0x2 and 0x3 of Audio_PlaySoundEffect	applied@5d9b86a
+D_80077C74	gSfxHandle_SpecialA	w6		Handle for a special sound effect triggered in case 0x5A of Audio_PlaySoundEffect	applied@5d9b86a
+D_80077C78	gSfxHandle_SpecialB	w6		Handle for a special sound effect triggered in case 0x5B of Audio_PlaySoundEffect	applied@5d9b86a
+D_800B32A0	gAudioHeap	w6		300?KB buffer used as the audio heap for all subsequent alHeapAlloc allocations	applied@5d9b86a
+D_800FC6A4	gAudioSfxBank	w6		Pointer to the primary sound?effect bank passed to MusStartSoundEffect throughout the audio code	applied@5d9b86a
+D_800FC6A8	gAudioSfxInstBank	w6		Pointer to the secondary instrument bank used alongside gAudioSfxBank for sound?effect playback	applied@5d9b86a
+D_800FC6C0	gMoveSoundTables	w6		Array of three MoveSoundTable pointers, likely containing per?move sound data for the battle system	applied@5d9b86a
+func_800429D0	Audio_ProcessMusic	w6		Called each audio frame when music is enabled, likely processes music playback buffers.	applied@5d9b86a
+func_800497E0	Audio_PlayMusicBuffer	w6		Invoked with the last audio buffer and constants 0x215/0x216, suggesting it queues a music buffer for playback.	applied@5d9b86a
+func_800498A8	Audio_LoadMusicTrack	w6		Used in Audio_SetMusicEnabled and Audio_StartMusicFade with track ID and size parameters, indicating it loads a music track.	applied@5d9b86a
+func_80042AB0	Music_PlayTrack	w6		Called during music fade start with gMusicFadeTargetTrack, implying it starts playing the selected track.	applied@5d9b86a
+func_800449F8	Music_FadeStepComplete	w6		Checked in MusicFadeUpdate case 3 to determine if a fade step has finished.	applied@5d9b86a
+func_800416BC	Audio_UpdateEffects	w6		Executed at the end of AudioTask_Build after channel processing, likely updates audio effects.	applied@5d9b86a
+D_80077D98	gAudioProcessChannelsFlag	w6		Non?zero value triggers Audio_ProcessChannels() each frame, acting as a processing flag.	applied@5d9b86a
+D_80077DA8	gAudioPausedFlag	w6		Set when pausing audio and later used to skip audio task data, representing a pause flag.	applied@5d9b86a
+D_80077DDC	gMusicChannel1Volume	w6		Used as the current volume for music channel?1, decreased each frame during fade.	applied@5d9b86a
+D_80077DE0	gMusicChannel1Step	w6		Subtracted from gMusicChannel1Volume each frame, representing the volume step for channel?1.	applied@5d9b86a
+D_800FC824	gMusicFadeStepActive	w6		Manipulated in Audio_SetMusicEnabled, Audio_StartMusicFade and MusicFadeUpdate to indicate active fade steps.	applied@5d9b86a
+D_800FC828	gAudioUnitReadyStatus	w6		Stores the return value of LeoTestUnitReady, representing the audio unit ready status.	applied@5d9b86a
+D_800FC825	gAudioUnitReadyCode	w6		Passed by address to LeoTestUnitReady, likely a status code for the audio unit.	applied@5d9b86a
+D_800FCAD8	gAudioMaxVoices	w6		Assigned from ALSynConfig->maxVVoices, indicating the maximum number of audio voices.	applied@5d9b86a
+D_800FC820	gAudioDMAFlags	w6		Bitmask checked for the high bit before DMA address translation, serving as DMA configuration flags.	applied@5d9b86a
+func_800420F0	PlaySoundEffectOrQueue	w6		Used to play a sound effect directly or queue a fallback list based on a counter (calls in ProcessMenuSelection and many command cases).	applied@5d9b86a
+func_80042158	CalculateMoveDamage	w6		Computes damage for a move using power, types and stats; called from func_80040A70 during move handling.	applied@5d9b86a
+func_80042850	GetTypeIndex	w6		Maps raw type IDs to internal indices via a switch; used in damage calculation to look up type effectiveness.	applied@5d9b86a
+func_800428FC	EnqueueAudioCommand	w6		Simple wrapper that forwards its argument to func_80041C70, which adds an audio command to the queue.	applied@5d9b86a
+func_8003F660	ProcessAudioCommandQueue	w6		Iterates over D_800FCCF0 command queue and triggers audio actions based on command IDs.	applied@5d9b86a
+func_80040A70	HandleMoveEvent	w6		Processes move-related events with a switch on arg3, updating HP history and queuing audio effects.	applied@5d9b86a
+func_80041A98	ResetAudioState	w6		Clears numerous audio?related buffers and flags at the start of a frame (zeroes arrays, counters, and flags).	applied@5d9b86a
+func_80041C70	AudioQueueAdd	w6		Adds a non?zero audio command to D_800783A4 circular buffer when audio is active and enabled.	applied@5d9b86a
+func_80041CEC	AudioQueueRemoveLast	w6		Removes the most recent audio command from the circular buffer when audio is active.	applied@5d9b86a
+D_80078548	AudioCommandMap	w6		Array of struct {u8 unk_00; u8 unk_01;} indexed in func_80040A70 to map command IDs to audio actions.	applied@5d9b86a
+D_80078554	AudioEffectTriggerIds	w6		List of u8 IDs checked in func_80040A70 case 0/2 to determine if a move should trigger a specific audio effect.	applied@5d9b86a
+D_80078568	AudioEffectSecondaryIds	w6		Second list of u8 IDs used in func_80040A70 to flag additional audio effect handling.	applied@5d9b86a
+D_80078410	MenuSelectionSoundTable	w6		2?dimensional array indexed by menu page and selection in ProcessMenuSelection to retrieve sound IDs.	applied@5d9b86a
+func_80001C90	RspTaskYielded	w6		Loop waits for non?zero after task setup, indicating a yield?status check	applied@5d9b86a
+func_800053B4	RspTaskStart	w6		Called after JpegTaskSetup to begin the RSP task, matching osSpTaskStart semantics	applied@5d9b86a
+func_800049AC	RspTaskYield	w6		Invoked after starting the task to yield control, analogous to osSpTaskYield	applied@5d9b86a
+func_80000F80	PiStartDma	w6		Used in DmaCopyAsyncLoop to initiate an asynchronous DMA transfer with a message queue	applied@5d9b86a
+func_8000100C	PiReadRom	w6		Called in DmaCopyAsyncBlock to read a ROM block asynchronously via DMA	applied@5d9b86a
+func_80000F0C	PiStartDmaCopy	w6		Used in DmaCopyAsyncAlt for a generic DMA copy operation with a message queue	applied@5d9b86a

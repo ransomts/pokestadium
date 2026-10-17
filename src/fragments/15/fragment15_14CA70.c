@@ -394,7 +394,7 @@ void SetGlobalRGBA(u8 arg0, u8 arg1, u8 arg2) {
 
 void LoadStageDataDMA(void) {
     UNUSED s32 pad[2];
-    u8* temp_a1 = (u32)_70D3A0_ROM_START + (D_80075BD0[D_8690A69C->unk_16C - 1] & 0xFFFFFF);
+    u8* temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[D_8690A69C->unk_16C - 1] & 0xFFFFFF);
     u8* sp20 = (u32)_70D3A0_ROM_START +
                (((D_8690A69C->unk_16C * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
     u8* sp1C = sp20 + sizeof(unk_70D3A0);
@@ -447,7 +447,7 @@ void Stage_Init(void) {
 }
 
 void func_86900410(void) {
-    while (func_80001C90() == 0) {}
+    while (RspTaskYielded() == 0) {}
 
     GraphNode_AllocInit(NULL, &D_8690A630);
     GraphNode_AllocInit(NULL, &D_8690A648);

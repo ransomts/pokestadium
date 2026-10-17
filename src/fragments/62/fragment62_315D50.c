@@ -4211,7 +4211,7 @@ void func_8432B554(unk_D_84390010* arg0) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
     func_84307C04(arg0);
-    func_800367A0(0x33, sp1E, 0);
+    Audio_PlaySoundEffect(0x33, sp1E, 0);
 }
 
 void func_8432B588(unk_D_84390010* arg0) {
@@ -4220,7 +4220,7 @@ void func_8432B588(unk_D_84390010* arg0) {
 
 void func_8432B5B8(unk_D_84390010* arg0, unk_D_800FCB18* arg1, s32 arg2) {
     func_800479C0(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
-    func_80040A70(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
+    HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
 }
 
 void func_8432B604(void) {
@@ -4598,23 +4598,23 @@ void func_8432BF88(unk_D_84390010* arg0, s32 arg1) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
     if ((func_84307B60(arg0) != 0) && (arg1 == 0x32)) {
-        func_800367A0(0x32, 0xC8, 0);
+        Audio_PlaySoundEffect(0x32, 0xC8, 0);
     } else if (arg1 == 0x14) {
-        func_800367A0(0x14, 0, 0);
+        Audio_PlaySoundEffect(0x14, 0, 0);
     } else if (arg1 == 0x12) {
-        func_800367A0(0x12, 0, 0);
+        Audio_PlaySoundEffect(0x12, 0, 0);
     } else if (arg1 == 0x32) {
-        func_800367A0(0x32, sp1E, 0);
+        Audio_PlaySoundEffect(0x32, sp1E, 0);
     } else if (arg1 == 0x21) {
-        func_800367A0(0x21, 0, 0);
+        Audio_PlaySoundEffect(0x21, 0, 0);
     } else if (arg1 == 0x13) {
-        func_800367A0(0x13, 0, 0);
+        Audio_PlaySoundEffect(0x13, 0, 0);
     } else if (arg1 == 0x1E) {
-        func_800367A0(0x1E, 0, 0);
+        Audio_PlaySoundEffect(0x1E, 0, 0);
     } else if (arg1 == 0x1F) {
-        func_800367A0(0x1F, 0, 0);
+        Audio_PlaySoundEffect(0x1F, 0, 0);
     } else if (arg1 == 0x20) {
-        func_800367A0(0x20, 0, 0);
+        Audio_PlaySoundEffect(0x20, 0, 0);
     }
 }
 

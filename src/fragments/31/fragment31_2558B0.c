@@ -319,7 +319,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     unk_D_86002F58_004_000* var_v0;
 
     sp294 = GfxAlloc(0x40);
-    func_80031EF4(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
+    Camera_CopyMatrixF(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
     var_v0 = gDefaultGraphRoot;
     if (var_v0->unk_0A6 == 0xFE) {
@@ -393,7 +393,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     }
     gSPDisplayList(gfx++, arg2->segments[1]);
     gSPPopMatrix(gfx++, G_MTX_MODELVIEW);
-    if (func_800325AC() == 0) {
+    if (ModelPhase_IsIdle() == 0) {
         var_v0 = gDefaultGraphRoot;
 
         switch (var_v0->unk_01A) {

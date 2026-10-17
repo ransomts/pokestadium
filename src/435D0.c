@@ -58,7 +58,7 @@ static u8 D_800785B0 = 0;
 static u8 D_800785B4 = 0;
 static u8 D_800785B8 = 0xFF;
 
-void func_800429D0(void) {
+void Audio_ProcessMusic(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -79,11 +79,11 @@ void func_80042A2C(u8 arg0) {
     }
 }
 
-s32 func_80042AB0(u16 arg0) {
+s32 Music_PlayTrack(u16 arg0) {
     s32 a;
     s32 offset;
 
-    if (func_800449F8() != 0) {
+    if (Music_FadeStepComplete() != 0) {
         return 0;
     }
 
@@ -926,7 +926,7 @@ void func_800448B4(u8 arg0) {
     }
 }
 
-s32 func_800449F8(void) {
+s32 Music_FadeStepComplete(void) {
     s32 ret = 0;
     s32 i;
 

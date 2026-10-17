@@ -4,9 +4,9 @@
 #include "global.h"
 #include "src/373A0.h"
 
-void func_800429D0(void);
+void Audio_ProcessMusic(void);
 void func_80042A2C(u8 arg0);
-s32 func_80042AB0(u16 arg0);
+s32 Music_PlayTrack(u16 arg0);
 void func_80042B8C(u32 arg0);
 void func_80042D90(u32 arg0);
 u8 func_80042F20(u32 arg0);
@@ -46,7 +46,7 @@ void func_80044278(u8 arg0);
 void func_80044568(u8 arg0);
 void func_8004473C(void);
 void func_800448B4(u8 arg0);
-s32 func_800449F8(void);
+s32 Music_FadeStepComplete(void);
 void func_80044A50(unk_D_800FC6D4* arg0);
 
 #endif // _435D0_H_

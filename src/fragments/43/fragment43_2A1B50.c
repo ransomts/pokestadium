@@ -186,7 +186,7 @@ s32 func_83400410(s32 arg0, s32 arg1) {
     return sp28;
 }
 
-void func_8340051C(void) {
+void Gallery_Terminate(void) {
 }
 
 void func_83400524(void) {

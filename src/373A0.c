@@ -17,7 +17,7 @@ typedef struct unk_D_80077970 {
     /* 0x04 */ u8 unk_04;
 } unk_D_80077970; // size = 0x5
 
-static unk_D_80077970 D_80077970[151] = {
+static unk_D_80077970 gMenuSfxTable[151] = {
     { 1, 1, 0, 0x52, 4 },    { 1, 1, 0, 0x58, 0x36 }, { 2, 2, 0, 0x1A, 0x3C }, { 1, 1, 0, 0, 0 },
     { 1, 1, 0, 0x54, 0x3C }, { 2, 2, 1, 0x2E, 0xA },  { 1, 1, 0, 0x5C, 0 },    { 1, 1, 0, 0x44, 0x52 },
     { 2, 2, 0, 0x22, 0x36 }, { 1, 1, 0, 0x98, 0 },    { 1, 1, 0, 0x32, 0xA4 }, { 1, 1, 0, 0, 0 },
@@ -58,14 +58,14 @@ static unk_D_80077970 D_80077970[151] = {
     { 2, 1, 0, 0x6C, 0 },    { 2, 1, 0, 0x64, 0xA },  { 0, 0, 0, 0x82, 0 },
 };
 
-static s32 D_80077C64 = 0;
-static s32 D_80077C68 = 0;
-static s32 D_80077C6C = 0;
+static s32 gSfxHandle_MenuSelect = 0;
+static s32 gSfxHandle_MenuConfirm = 0;
+static s32 gSfxHandle_BackgroundMusic = 0;
 static s32 D_80077C70 = 0;
-static s32 D_80077C74 = 0;
-static s32 D_80077C78 = 0;
+static s32 gSfxHandle_SpecialA = 0;
+static s32 gSfxHandle_SpecialB = 0;
 
-u8 D_800B32A0[0x493E0];
+u8 gAudioHeap[0x493E0];
 u32* D_800FC680;
 u8* D_800FC684;
 u8* D_800FC688;
@@ -73,11 +73,11 @@ u8* D_800FC68C;
 u8* D_800FC690;
 u8 pad_D_800FC694[4];
 u8* D_800FC698[3];
-u8* D_800FC6A4;
-u8* D_800FC6A8;
+u8* gAudioSfxBank;
+u8* gAudioSfxInstBank;
 u8* D_800FC6AC;
 u8* D_800FC6B0[3];
-MoveSoundTable* D_800FC6C0[3];
+MoveSoundTable* gMoveSoundTables[3];
 unk_D_800FC6CC* D_800FC6CC;
 u8* D_800FC6D0;
 unk_D_800FC6D4* D_800FC6D4;
@@ -100,7 +100,7 @@ ALSeqFile* D_800FC714;
 u8 pad_D_800FC718[0x80];
 u32* D_800FC798;
 
-s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlaySoundEffect(u32 arg0, s32 arg1, s32 arg2) {
     static s32 D_80077C7C = 0;
 
     UNUSED s32 pad;
@@ -118,20 +118,20 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
     if (sp20 != D_80079014) {
         sp40 = D_800FC6F4->seqArray[0].offset;
         func_8004ADB0(sp40, D_800FC798, 0xC);
-        func_80037360(D_800FC798, sp40, 3);
+        Audio_AddBaseToOffsets(D_800FC798, sp40, 3);
         func_8004ADB0(D_800FC798[0], D_800FC6DC, D_800FC798[1] - D_800FC798[0]);
-        func_80050B40(D_800FC6DC, D_800FC6A8, 0xBB8);
-        RemapBankPointers(D_800FC6A8);
+        func_80050B40(D_800FC6DC, gAudioSfxInstBank, 0xBB8);
+        RemapBankPointers(gAudioSfxInstBank);
         func_8004ADB0(D_800FC798[1], D_800FC6DC, D_800FC798[2] - D_800FC798[1]);
-        func_80050B40(D_800FC6DC, D_800FC6A4, 0x1388);
-        MusBankInitialize(D_800FC6A4, D_800FC798[2]);
+        func_80050B40(D_800FC6DC, gAudioSfxBank, 0x1388);
+        MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
     D_80079014 = sp20;
 
     switch (arg0) {
         case 0x0:
-            if (MusHandleAsk(D_80077C64) != 0) {
+            if (MusHandleAsk(gSfxHandle_MenuSelect) != 0) {
                 return 0;
             }
 
@@ -148,8 +148,8 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                     return 0;
             }
 
-            D_80077C64 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0x70, 0x80, -1);
-            sp2C = D_80077C64;
+            gSfxHandle_MenuSelect = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0x70, 0x80, -1);
+            sp2C = gSfxHandle_MenuSelect;
             break;
 
         case 0x1:
@@ -166,20 +166,20 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
             if (var_v0 > 0xFE) {
                 var_v0 = 0xFE;
             }
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 3, 0x80, var_v0, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 3, 0x80, var_v0, -1);
             break;
 
         case 0x2:
-            if (MusHandleAsk(D_80077C6C) != 0) {
-                MusSetDurationScale(D_80077C6C, 0x14);
-                D_80077C6C = 0;
+            if (MusHandleAsk(gSfxHandle_BackgroundMusic) != 0) {
+                MusSetDurationScale(gSfxHandle_BackgroundMusic, 0x14);
+                gSfxHandle_BackgroundMusic = 0;
             }
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 4, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 4, 0x80, 0x80, -1);
             break;
 
         case 0x3:
-            D_80077C6C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 5, 0x80, 0x80, -1);
-            sp2C = D_80077C6C;
+            gSfxHandle_BackgroundMusic = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 5, 0x80, 0x80, -1);
+            sp2C = gSfxHandle_BackgroundMusic;
             break;
 
         case 0x4:
@@ -194,16 +194,16 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 default:
                     return 0;
             }
-            D_80077C68 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0x80, 0x80, -1);
-            sp2C = D_80077C68;
+            gSfxHandle_MenuConfirm = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0x80, 0x80, -1);
+            sp2C = gSfxHandle_MenuConfirm;
             break;
 
         case 0x6:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 6, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
             break;
 
         case 0x7:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 7, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 7, 0x80, 0x80, -1);
             break;
 
         case 0x8:
@@ -220,16 +220,16 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 0;
             }
 
-            switch (D_80077970[arg1].unk_00) {
+            switch (gMenuSfxTable[arg1].unk_00) {
                 case 0:
                     return 0;
 
                 case 1:
-                    sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 7, 0x80, 0x80, -1);
+                    sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 7, 0x80, 0x80, -1);
                     break;
 
                 case 2:
-                    sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 6, 0x80, 0x80, -1);
+                    sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
                     break;
 
                 default:
@@ -239,7 +239,7 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
 
         case 0x32:
             if (arg1 == 0xC8) {
-                return MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0x20, 0x80, 0x80, -1);
+                return MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0x20, 0x80, 0x80, -1);
             }
 
             if (arg1 >= 0x98) {
@@ -252,35 +252,35 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 0;
             }
 
-            switch (D_80077970[arg1].unk_01) {
+            switch (gMenuSfxTable[arg1].unk_01) {
                 case 0:
-                    sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xB, 0x80, 0x80, -1);
+                    sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xB, 0x80, 0x80, -1);
                     break;
 
                 case 1:
-                    sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xA, 0x80, 0x80, -1);
+                    sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xA, 0x80, 0x80, -1);
                     break;
 
                 case 2:
-                    sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 9, 0x80, 0x80, -1);
+                    sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 9, 0x80, 0x80, -1);
                     break;
             }
             break;
 
         case 0x12:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xC, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xC, 0x80, 0x80, -1);
             break;
 
         case 0x13:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xD, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xD, 0x80, 0x80, -1);
             break;
 
         case 0x14:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xE, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xE, 0x80, 0x80, -1);
             break;
 
         case 0x28:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0xF, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xF, 0x80, 0x80, -1);
             break;
 
         case 0x5A:
@@ -297,7 +297,7 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                     return 0;
             }
 
-            D_80077C74 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0x80, 0x80, -1);
+            gSfxHandle_SpecialA = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0x80, 0x80, -1);
             break;
 
         case 0x5B:
@@ -311,7 +311,7 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 default:
                     return 0;
             }
-            D_80077C78 = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0x14, 0x80, 0x80, -1);
+            gSfxHandle_SpecialB = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0x14, 0x80, 0x80, -1);
             break;
 
         case 0x15:
@@ -327,7 +327,7 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 default:
                     return 0;
             }
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0x80, 0x80, 0x80);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0x80, 0x80, 0x80);
             break;
 
         case 0x16:
@@ -348,13 +348,13 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 D_80077C7C = 0;
                 sp2C = D_80077C7C;
             } else {
-                D_80077C7C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0x80, 0x80, 0x80);
+                D_80077C7C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0x80, 0x80, 0x80);
                 sp2C = D_80077C7C;
             }
             break;
 
         case 0x3C:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0x18, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0x18, 0x80, 0x80, -1);
             break;
 
         case 0x3D:
@@ -379,7 +379,7 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
                 default:
                     return 0;
             }
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, sp38, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, sp38, 0x80, -1);
             break;
 
         case 0x3E:
@@ -392,11 +392,11 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
             } else {
                 return 0;
             }
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, sp34, 0xFF, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp34, 0xFF, 0x80, -1);
             break;
 
         case 0x3F:
-            sp2C = MusStartSoundEffect(D_800FC6A4, D_800FC6A8, 0x1F, 0x80, 0x80, -1);
+            sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0x1F, 0x80, 0x80, -1);
             break;
 
         case 0x1E:
@@ -430,26 +430,26 @@ s32 func_800367A0(u32 arg0, s32 arg1, s32 arg2) {
     return sp2C;
 }
 
-s32 func_80037234(s32 arg0, u32 arg1) {
+s32 Audio_SetSfxDurationScale(s32 arg0, u32 arg1) {
     switch (arg0) {
         case 0x0:
             if (arg1 == 0) {
                 arg1 = 1;
             }
-            MusSetDurationScale(D_80077C64, arg1);
-            D_80077C64 = 0;
+            MusSetDurationScale(gSfxHandle_MenuSelect, arg1);
+            gSfxHandle_MenuSelect = 0;
             break;
 
         case 0x4:
             if (arg1 == 0) {
                 arg1 = 1;
             }
-            MusSetDurationScale(D_80077C68, arg1);
+            MusSetDurationScale(gSfxHandle_MenuConfirm, arg1);
             break;
 
         case 0x3:
-            MusSetDurationScale(D_80077C6C, 0x3C);
-            D_80077C6C = 0;
+            MusSetDurationScale(gSfxHandle_BackgroundMusic, 0x3C);
+            gSfxHandle_BackgroundMusic = 0;
             break;
 
         case 0xA1:
@@ -458,13 +458,13 @@ s32 func_80037234(s32 arg0, u32 arg1) {
             break;
 
         case 0x5A:
-            MusSetDurationScale(D_80077C74, 0x5A);
-            D_80077C74 = 0;
+            MusSetDurationScale(gSfxHandle_SpecialA, 0x5A);
+            gSfxHandle_SpecialA = 0;
             break;
 
         case 0x5B:
-            MusSetDurationScale(D_80077C78, 0x5A);
-            D_80077C78 = 0;
+            MusSetDurationScale(gSfxHandle_SpecialB, 0x5A);
+            gSfxHandle_SpecialB = 0;
             break;
 
         default:
@@ -477,11 +477,11 @@ s32 func_80037234(s32 arg0, u32 arg1) {
 void func_8003733C(void) {
 }
 
-void func_80037340(void* arg0) {
+void Audio_BuildTask(void* arg0) {
     AudioTask_Build(arg0);
 }
 
-void func_80037360(u32* arg0, u32 arg1, s32 arg2) {
+void Audio_AddBaseToOffsets(u32* arg0, u32 arg1, s32 arg2) {
     u32 i;
 
     for (i = 0; i < arg2; i++, arg0++) {
@@ -491,7 +491,7 @@ void func_80037360(u32* arg0, u32 arg1, s32 arg2) {
 
 #define AUDIO_HEAP_SIZE 300000
 
-s32 func_800373D8(void) {
+s32 Audio_Initialize(void) {
     s32 i;
     FileHeaders* sp78;
     UNUSED s32 pad[3];
@@ -501,7 +501,7 @@ s32 func_800373D8(void) {
     config.channels = 0x18;
     config.vvoices = 0x34;
     config.pvoices = 0x18;
-    config.heap = D_800B32A0;
+    config.heap = gAudioHeap;
     config.heap_length = AUDIO_HEAP_SIZE;
     config.syn_updates = 0x100;
     config.syn_output_rate = 32000;
@@ -522,7 +522,7 @@ s32 func_800373D8(void) {
     func_8004ADB0(&D_15C0000, D_800FC6E0, sizeof(u8*) * 7);
     // Add the address 0x15C0000 to every offset (besides the first which is the total size)
     // to make absolute offsets.
-    func_80037360(&D_800FC6E0[1], &D_15C0000, 6);
+    Audio_AddBaseToOffsets(&D_800FC6E0[1], &D_15C0000, 6);
     sp78 = D_800FC798;
     // Copy data from the offset at 0x15C0004 into sp78, a sub-header for this "archive,"
     // specifying the size of the header and number of files etc. Header at 0x15C0020
@@ -534,9 +534,9 @@ s32 func_800373D8(void) {
     func_8004ADB0(D_800FC6E0[1], D_800FC6E4, 0xC + (num_files * 4));
     // Update just the first 2 pointers from the header,
     // pointer to first file, and pointer to N64 wave tables.
-    func_80037360(&D_800FC6E4->offset1, D_800FC6E0[1], 2);
+    Audio_AddBaseToOffsets(&D_800FC6E4->offset1, D_800FC6E0[1], 2);
     // Make absolute all the offsets after the header, for the archive files at 0x15C002C
-    func_80037360(D_800FC6E4->files, D_800FC6E0[1], num_files);
+    Audio_AddBaseToOffsets(D_800FC6E4->files, D_800FC6E0[1], num_files);
     // Copy the first file into D_800FC6DC. What is this?
     // Yay0 compressed at 0x15C0160
     func_8004ADB0(D_800FC6E4->offset1, D_800FC6DC, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
@@ -565,7 +565,7 @@ s32 func_800373D8(void) {
     // Read the first archive sub header from 0x16F2804, into D_800FC6EC
     D_800FC6EC = alHeapAlloc(audio_heap, 3, 4);
     func_8004ADB0(D_800FC6E8->seqArray[0].offset, D_800FC6EC, sizeof(File2SubHeader1));
-    func_80037360(D_800FC6EC, D_800FC6E8->seqArray[0].offset, sizeof(File2SubHeader1) / sizeof(u32));
+    Audio_AddBaseToOffsets(D_800FC6EC, D_800FC6E8->seqArray[0].offset, sizeof(File2SubHeader1) / sizeof(u32));
 
     // Read the first file from the sub header into D_800FC6DC (0x16F2814)
     func_8004ADB0(D_800FC6EC->offset1, D_800FC6DC, D_800FC6EC->offset2 - D_800FC6EC->offset1);
@@ -589,7 +589,7 @@ s32 func_800373D8(void) {
 
     D_800FC6F0 = alHeapAlloc(audio_heap, 4, (sizeof(File2SubHeader2) / sizeof(u32)) + num_files);
     func_8004ADB0(D_800FC6E8->seqArray[1].offset, D_800FC6F0, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
-    func_80037360(&D_800FC6F0->offset1, D_800FC6E8->seqArray[1].offset, num_files + 2);
+    Audio_AddBaseToOffsets(&D_800FC6F0->offset1, D_800FC6E8->seqArray[1].offset, num_files + 2);
     func_8004ADB0(D_800FC6F0->offset1, D_800FC6DC, D_800FC6F0->wave_tables_offset - D_800FC6F0->offset1);
     // Decompress the yay0 file into D_800FC688
     D_800FC690 = alHeapAlloc(audio_heap, 1, 0x2EE0);
@@ -607,7 +607,7 @@ s32 func_800373D8(void) {
 
     D_800FC6FC = alHeapAlloc(audio_heap, 4, num_files + 3);
     func_8004ADB0(D_800FC6E8->seqArray[2].offset, D_800FC6FC, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
-    func_80037360(&D_800FC6FC->offset1, D_800FC6E8->seqArray[2].offset, num_files + 2);
+    Audio_AddBaseToOffsets(&D_800FC6FC->offset1, D_800FC6E8->seqArray[2].offset, num_files + 2);
     func_8004ADB0(D_800FC6FC->offset1, D_800FC6DC, D_800FC6FC->wave_tables_offset - D_800FC6FC->offset1);
     D_800FC6AC = alHeapAlloc(audio_heap, 1, 0x9C4);
     // Decompress
@@ -634,8 +634,8 @@ s32 func_800373D8(void) {
     func_8004ADB0(D_800FC6F4->seqArray[1].offset, D_800FC6F8, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(D_800FC6F8, D_800FC6F4->seqArray[1].offset);
 
-    D_800FC6A4 = alHeapAlloc(audio_heap, 1, 0x1388);
-    D_800FC6A8 = alHeapAlloc(audio_heap, 1, 0xBB8);
+    gAudioSfxBank = alHeapAlloc(audio_heap, 1, 0x1388);
+    gAudioSfxInstBank = alHeapAlloc(audio_heap, 1, 0xBB8);
 
     // load third archive from the main list, archive is at 0x1978820
     func_8004ADB0(D_800FC6E0[3], sp78, 4 + 4);
@@ -653,9 +653,9 @@ s32 func_800373D8(void) {
     func_8004ADB0(D_800FC6E0[4], gAudioSeqBank, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(gAudioSeqBank, D_800FC6E0[4]);
 
-    D_800FC6C0[0] = alHeapAlloc(audio_heap, 1, 0x44C);
-    D_800FC6C0[1] = alHeapAlloc(audio_heap, 1, 0x44C);
-    D_800FC6C0[2] = alHeapAlloc(audio_heap, 1, 0x44C);
+    gMoveSoundTables[0] = alHeapAlloc(audio_heap, 1, 0x44C);
+    gMoveSoundTables[1] = alHeapAlloc(audio_heap, 1, 0x44C);
+    gMoveSoundTables[2] = alHeapAlloc(audio_heap, 1, 0x44C);
 
     // load the fourth archive's first seq, at 0x197C1FC
     func_8004ADB0(gAudioSeqBank->seqArray[0].offset, sp78, 4 + 4);
@@ -692,7 +692,7 @@ s32 func_800373D8(void) {
     func_8004AE90(2, 2);
     func_8004AE90(1, 3);
 
-    D_800FC820 = 0;
+    gAudioDMAFlags = 0;
 
     return audio_heap->cur - audio_heap->base;
 }

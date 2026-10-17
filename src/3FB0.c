@@ -169,7 +169,7 @@ s32 JpegDecodePres(u32 addr, s32 arg1, u8* arg2) {
     JpegTaskParams_Init(&sp90, &sp200, &sp300);
     JpegTaskSetup(&sp318, &sp90);
 
-    while (func_80001C90() == 0) {}
+    while (RspTaskYielded() == 0) {}
 
     for (i = 0; i < sp300.height; i += 16) {
         for (j = 0; j < sp300.width; j += 16) {
@@ -182,9 +182,9 @@ s32 JpegDecodePres(u32 addr, s32 arg1, u8* arg2) {
             }
 
             sp90.unk_00 = addr & 0x1FFFFFFF;
-            func_800053B4(&sp318, 1);
+            RspTaskStart(&sp318, 1);
             var_s4 = 1;
-            func_800049AC(&sp318);
+            RspTaskYield(&sp318);
 
             addr += 0x200;
             var_s2 += 0x200;
@@ -234,7 +234,7 @@ void DmaCopyAsyncLoop(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
             var_s0 = arg2;
         }
 
-        func_80000F80(arg3, arg0, arg1, var_s0, mesq, 0);
+        PiStartDma(arg3, arg0, arg1, var_s0, mesq, 0);
         osRecvMesg(mesq, NULL, 1);
 
         arg0 += var_s0;
@@ -247,7 +247,7 @@ s32 DmaCopyAsyncBlock(u8* arg0, s16 arg1, s16 arg2, s32 arg3) {
     OSMesgQueue* mesq = &D_800A62C0;
 
     for (; arg2 > 0;) {
-        func_8000100C(arg3, arg0, arg1, mesq, 0);
+        PiReadRom(arg3, arg0, arg1, mesq, 0);
         osRecvMesg(mesq, &sp44, 1);
 
         if ((arg3 == 1) && (func_8000CFB0(arg1) != 0)) {
@@ -298,7 +298,7 @@ void DmaCopyAsyncAlt(u8* arg0, u8* arg1, u8* arg2) {
             var_s0 = var_s1;
         }
 
-        func_80000F0C(arg0, arg1, var_s0, mesq, 0);
+        PiStartDmaCopy(arg0, arg1, var_s0, mesq, 0);
         osRecvMesg(mesq, NULL, 1);
 
         arg0 += var_s0;

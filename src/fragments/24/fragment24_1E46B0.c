@@ -523,7 +523,7 @@ s32 func_883160DC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0;
     s32 ret;
 
-    var_v0 = func_8002D348(&arg0->unk_43, &arg1->unk_43);
+    var_v0 = StringCompare_WithMask(&arg0->unk_43, &arg1->unk_43);
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
@@ -536,7 +536,7 @@ s32 func_88316128(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0;
     s32 ret;
 
-    var_v0 = func_8002D348(&arg0->unk_38, &arg1->unk_38);
+    var_v0 = StringCompare_WithMask(&arg0->unk_38, &arg1->unk_38);
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
@@ -740,7 +740,7 @@ void func_883164C0(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPo
         for (j = 0; j < arg1; j++) { var_s2[j] = &var_s3[j]; }
         // clang-format on
 
-        func_8002CBB0(&var_s1[i].unk_10, var_s2, arg1, 0);
+        PtrArray_Init(&var_s1[i].unk_10, var_s2, arg1, 0);
 
         var_s2 += arg1;
         var_s3 += arg1;
@@ -772,7 +772,7 @@ void func_883166A0(unk_func_8830867C_02C_144* arg0) {
                 var_s0 = var_s3->unk_10.unk_00;
 
                 while (true) {
-                    if (func_80022E18(&var_s0->unk_00->unk_08, 1, temp_v0) == 0) {
+                    if (GbsBlock_ReadPokemon(&var_s0->unk_00->unk_08, 1, temp_v0) == 0) {
                         break;
                     }
 
@@ -870,7 +870,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
 
                     for (x = 0; x < var_s3->unk_10.unk_08; x++, var_s0++) {
                         bzero(&sp4C, sizeof(unk_func_80026268_arg0));
-                        func_80022E18(&sp4C, 1, temp_v0);
+                        GbsBlock_ReadPokemon(&sp4C, 1, temp_v0);
                         if (bcmp(&sp4C, &var_s0->unk_00->unk_08, sizeof(unk_func_80026268_arg0)) != 0) {
                             var_s3->unk_0C = 1;
                             var_s7 |= func_88316874(var_s5->unk_00);
@@ -980,7 +980,7 @@ void func_88316D5C(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24;
 
     sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
-    arg0->unk_14 = func_80022E18(arg0->unk_0C, arg0->unk_10, sp24);
+    arg0->unk_14 = GbsBlock_ReadPokemon(arg0->unk_0C, arg0->unk_10, sp24);
     CommitAndFreeGbsBlock(sp24);
     arg0->unk_08 = 0;
 }
@@ -1054,7 +1054,7 @@ void func_88316F98(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* a
     var_s6 = arg0->unk_00;
     var_s4 = arg2;
     var_s1 = arg1;
-    func_8002CBB0(arg0, var_s6, arg4, 0);
+    PtrArray_Init(arg0, var_s6, arg4, 0);
 
     for (i = 0; i < arg3; i++, var_s4++) {
         if (var_s4->unk_04 != 0) {
@@ -1096,14 +1096,14 @@ void func_88316F98(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* a
     }
 
     arg0->unk_08 = ((s32)var_s1 - (s32)arg1) >> 4;
-    func_8002D180(arg0, func_88316F68);
+    PtrArray_Sort(arg0, func_88316F68);
 }
 
 void func_88317144(unk_func_8830867C_04C_030_02C_000* arg0) {
-    if ((func_8002F264(arg0->unk_00[0]->unk_00) != 0) || (arg0->unk_00[0]->unk_01 < 2)) {
+    if ((IsStageSpecial(arg0->unk_00[0]->unk_00) != 0) || (arg0->unk_00[0]->unk_01 < 2)) {
         s32 tmp = arg0->unk_00[1]->unk_0C.unk_00;
 
-        func_8002CB58(&arg0->unk_00[1]->unk_0C, ((s32)arg0->unk_00[0] - tmp) >> 1);
+        S16List_RemoveAt(&arg0->unk_00[1]->unk_0C, ((s32)arg0->unk_00[0] - tmp) >> 1);
     } else {
         arg0->unk_00[0]->unk_01--;
     }

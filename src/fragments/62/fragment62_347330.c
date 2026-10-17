@@ -699,7 +699,7 @@ void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
     sp80 = spA0 - spAC;
     sp7C = spA4 - spA8;
 
-    func_80031B04(&sp84, &sp80, &sp7C);
+    Math_NormalizeVector(&sp84, &sp80, &sp7C);
 
     sp44 = (sp4C * TWO_PI) / 720.0;
     sp40 = sp8C + arg1;
@@ -715,13 +715,13 @@ void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
         var_fs0 = 0.0f;
     }
 
-    var_fs0 = func_80031A6C(var_fs0);
+    var_fs0 = Math_AbsF(var_fs0);
     sp94 = spB4->unk_24.aspect * var_fs0 * sp48 * 1.2f;
 
-    func_80031A94(sp84, sp80, sp7C, sp78, sp74, sp70, &sp68, &sp64, &sp60);
-    func_80031A94(sp84, sp80, sp7C, sp68, sp64, sp60, &sp5C, &sp58, &sp54);
-    func_80031B04(&sp68, &sp64, &sp60);
-    func_80031B04(&sp5C, &sp58, &sp54);
+    Math_CrossProductComponents(sp84, sp80, sp7C, sp78, sp74, sp70, &sp68, &sp64, &sp60);
+    Math_CrossProductComponents(sp84, sp80, sp7C, sp68, sp64, sp60, &sp5C, &sp58, &sp54);
+    Math_NormalizeVector(&sp68, &sp64, &sp60);
+    Math_NormalizeVector(&sp5C, &sp58, &sp54);
 
     arg0->unk_0C = sp68 * sp94;
     arg0->unk_10 = sp64 * sp94;
@@ -798,7 +798,7 @@ f32 func_8435E158(f32 arg0, f32 arg1, f32* arg2) {
     temp_fa1 = sp94 - arg1;
 
     if ((SQ(temp_fv0) + SQ(temp_fv1)) <= (SQ(temp_fa0) + SQ(temp_fa1))) {
-        func_80031A94(spB4 - spC0, spB0 - spBC, spAC - spB8, spA8 - spC0, spA4 - spBC, spA0 - spB8, &sp54, &sp50,
+        Math_CrossProductComponents(spB4 - spC0, spB0 - spBC, spAC - spB8, spA8 - spC0, spA4 - spBC, spA0 - spB8, &sp54, &sp50,
                       &sp4C);
         if (sp50 != 0.0) {
             spC4 = spBC - ((((arg0 - spC0) * sp54) + (sp4C * (arg1 - spB8))) / sp50);
@@ -806,7 +806,7 @@ f32 func_8435E158(f32 arg0, f32 arg1, f32* arg2) {
             spC4 = (spBC + spB0 + spA4) / 3.0;
         }
     } else {
-        func_80031A94(spB4 - sp9C, spB0 - sp98, spAC - sp94, spA8 - sp9C, spA4 - sp98, spA0 - sp94, &sp54, &sp50,
+        Math_CrossProductComponents(spB4 - sp9C, spB0 - sp98, spAC - sp94, spA8 - sp9C, spA4 - sp98, spA0 - sp94, &sp54, &sp50,
                       &sp4C);
         if (sp50 != 0.0) {
             spC4 = sp98 - ((((arg0 - sp9C) * sp54) + (sp4C * (arg1 - sp94))) / sp50);

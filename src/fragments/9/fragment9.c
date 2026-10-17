@@ -398,7 +398,7 @@ void func_86300C50(s32 arg0) {
                 }
 
                 D_86301D44->unk_16C.x = temp_a2 * 0.1f;
-            } else if (func_80031A6C(D_86301D44->unk_178) > 50.0f) {
+            } else if (Math_AbsF(D_86301D44->unk_178) > 50.0f) {
                 D_86301D44->unk_000 = 1;
                 D_86301D44->unk_16C.y = 2.0f;
                 D_86301D44->unk_16C.x = D_86301D44->unk_178 * 0.05f;

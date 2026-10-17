@@ -464,7 +464,7 @@ void func_800338D8(StadiumModel* model, MtxF* mtx) {
     }
 }
 
-void func_80033B2C(StadiumModel* model, void* arg1,  void* arg2, void* arg3) {
+void Model_DrawWithSegment(StadiumModel* model, void* arg1,  void* arg2, void* arg3) {
     f32 sp4C;
     f32 sp48;
     f32 sp44;
@@ -1552,7 +1552,7 @@ void func_80035FA8(ModelSegment* segment, ModelVertex* vertices) {
     }
 }
 
-void func_800361C4(StadiumModel* model, MtxF* mtx) {
+void Model_DrawPrepared(StadiumModel* model, MtxF* mtx) {
     s32 var_s0;
     s32 var_v1;
 
@@ -1655,7 +1655,7 @@ void func_8003658C(StadiumModel* model, Vtx* vtxBuf) {
     }
 }
 
-Gfx* func_800366A4(Gfx* gfx, StadiumModel* model, Vtx* vtxBuf) {
+Gfx* Model_DrawWithVertexBuffer(Gfx* gfx, StadiumModel* model, Vtx* vtxBuf) {
     ModelSegment* segment;
 
     segment = Memmap_GetSegmentVaddr(model->modelSegment);

@@ -13,7 +13,7 @@
 static OSMesgQueue gControllerMsgQueue;
 static s32 gControllerMsg;
 
-static Color_RGBA8 D_800758A0[] = {
+static Color_RGBA8 gMenuGrayColors[] = {
     { 0xF0, 0xF0, 0xF0, 0xFF },
     { 0xE1, 0xE1, 0xE1, 0xFF },
 };
@@ -23,14 +23,14 @@ static u32 gDigitTextureIds[] = {
     D_04001B58, D_04001BC0, D_04001C28, 0x10,       0x10,       0x10,       D_4001010,
 };
 
-unk_func_88500020 D_800758E0 = {
+unk_func_88500020 gMenuTextureInfo_Default = {
     0x00000014,
     0x00000014,
     0x00000014,
     D_4001C90,
 };
 
-unk_func_88500020 D_800758F0[] = {
+unk_func_88500020 gMenuTextureInfo_Alternates[] = {
     {
         0x00000014,
         0x00000014,
@@ -51,7 +51,7 @@ void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1) {
     } else {
         arg0->unk_00 = 0;
         arg0->unk_08 = func_80025084(arg1);
-        func_800251B0(arg1, &arg0[1]);
+        SaveSlot_GetTrainerName(arg1, &arg0[1]);
     }
     arg0->unk_04 = func_80024F68(arg1);
 }
@@ -572,7 +572,7 @@ void Game_RunPokemonLab(void) {
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-s32 func_8002F1C0(s32 arg0) {
+s32 IsStageIdSpecial(s32 arg0) {
     static u8 D_80075950[] = {
         5,    6,    8,    9,    0x1F, 0x29, 0x2A, 0x2B, 0x2D, 0x30, 0x3F, 0x40, 0x45,
         0x46, 0x47, 0x48, 0x49, 0x4A, 0x4C, 0x4D, 0x4E, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
@@ -589,16 +589,16 @@ s32 func_8002F1C0(s32 arg0) {
     return 0;
 }
 
-s32 func_8002F264(s32 arg0) {
+s32 IsStageSpecial(s32 arg0) {
     s32 sp1C = 0;
 
-    if (func_8002F1C0(arg0) != 0) {
+    if (IsStageIdSpecial(arg0) != 0) {
         sp1C = 1;
     }
     return sp1C;
 }
 
-unk_D_8007596C D_8007596C[] = {
+unk_D_8007596C gMenuItemCoords[] = {
     { 0x0000, 0x0000 }, { 0x00CC, 0x0096 }, { 0x012F, 0x0122 }, { 0x025F, 0x08A2 }, { 0x00C8, 0x00BE },
     { 0x0133, 0x01A4 }, { 0x01FB, 0x07D0 }, { 0x006C, 0x00C8 }, { 0x012F, 0x01F4 }, { 0x01F7, 0x0762 },
     { 0x0064, 0x003C }, { 0x00CC, 0x00DC }, { 0x0133, 0x02C6 }, { 0x0064, 0x0046 }, { 0x00C8, 0x00DC },
@@ -632,7 +632,7 @@ unk_D_8007596C D_8007596C[] = {
     { 0x025F, 0x0A82 }, { 0x0068, 0x005A }, { 0, 0 },
 };
 
-s32 D_80075BD0[] = {
+s32 gStageRomOffsets[] = {
     0x00000000, 0x00000B90, 0x00001720, 0x000022B0, 0x00002E40, 0x000039D0, 0x00004560, 0x000050F0, 0x00005C80,
     0x00006810, 0x000073A0, 0x00007F30, 0x00008AC0, 0x00009650, 0x0000A1E0, 0x0000AD70, 0x0000B900, 0x0000C490,
     0x0000D020, 0x0000DBB0, 0x0000E740, 0x0000F2D0, 0x0000FE60, 0x000109F0, 0x00011580, 0x00012110, 0x00012CA0,

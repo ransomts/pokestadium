@@ -349,7 +349,7 @@ s32 func_800479C0(u32 arg0, s32 arg1, u32 arg2) {
     if ((arg2 == 0) || (arg2 == 2)) {
         switch (arg0 + 1) {
         case 0x85:
-            func_800367A0(0x28, 0, 0);
+            Audio_PlaySoundEffect(0x28, 0, 0);
             break;
         case 0x2D:
         case 0x2E:

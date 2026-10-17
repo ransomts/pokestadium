@@ -21,7 +21,7 @@ s32 func_8004FE00(u8* arg0) {
     func_80050B40(D_800FC6DC, D_800FF9C0, 0x4120);
     func_8004ADB0(D_800FC6E4->wave_tables_offset, sp1C, D_800FC6E4->files[0] - D_800FC6E4->wave_tables_offset);
     MusBankInitialize(D_800FF9C0, sp1C);
-    D_800FC820 |= 0x80000000;
+    gAudioDMAFlags |= 0x80000000;
     func_8004ADB0(D_800FC6E4->files[0], D_800FC6DC, D_800FC6E4->files[1] - D_800FC6E4->files[0]);
     func_80050B40(D_800FC6DC, D_800FC680, 0x98D8);
     D_80078E70 = MusLoadSong(D_800FF9C0, D_800FC680);
@@ -31,5 +31,5 @@ s32 func_8004FE00(u8* arg0) {
 }
 
 void func_8004FF20(void) {
-    D_800FC820 &= ~0x80000000;
+    gAudioDMAFlags &= ~0x80000000;
 }

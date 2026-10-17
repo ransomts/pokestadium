@@ -11,7 +11,7 @@ void func_80004980(UnkStruct80001380* arg0) {
     arg0->unk_1E = 0;
 }
 
-void func_800049AC(UnkStruct80001380* arg0) {
+void RspTaskYield(UnkStruct80001380* arg0) {
     void* sp1C;
 
     osRecvMesg(&arg0->queue, &sp1C, 1);
@@ -368,7 +368,7 @@ void func_80005370(unk_D_800AA660* arg0) {
     }
 }
 
-void func_800053B4(UnkStruct80001380* arg0, s32 arg1) {
+void RspTaskStart(UnkStruct80001380* arg0, s32 arg1) {
     if (arg0 != NULL) {
         func_80004980(arg0);
 

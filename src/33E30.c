@@ -3,36 +3,36 @@
 #include "src/6A40.h"
 #include "src/12D80.h"
 
-static Gfx D_800762F0[] = {
+static Gfx gEmptyDisplayList[] = {
     gsSPEndDisplayList(),
 };
 
-static Vtx D_800762F8[] = {
+static Vtx gMarkerTriangleVtx[] = {
     VTX(0, 0, 0, 0, 0, 0x88, 0x00, 0x00, 0x80),
     VTX(-5, 15, 0, 0, 0, 0x88, 0x00, 0x00, 0x80),
     VTX(5, 15, 0, 0, 0, 0x88, 0x00, 0x00, 0x80),
 };
 
-static u8 D_80076328[] = {
+static u8 gPlaceholderTexture4b[] = {
     0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,
 };
 
-static Gfx D_80076330[] = {
+static Gfx gMarkerTriangleDL[] = {
     gsDPPipeSync(),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                           G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA),
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
-    gsDPLoadTextureBlock_4b(D_80076328, G_IM_FMT_I, 4, 4, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 2, 2,
+    gsDPLoadTextureBlock_4b(gPlaceholderTexture4b, G_IM_FMT_I, 4, 4, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 2, 2,
                             G_TX_NOLOD, G_TX_NOLOD),
     gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
-    gsSPVertex(D_800762F8, 3, 0),
+    gsSPVertex(gMarkerTriangleVtx, 3, 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSPEndDisplayList(),
 };
 
-void func_80033230(s32 arg0) {
+void Util_BusyWait8x2(s32 arg0) {
     s32 i;
     s32 j;
 
@@ -41,7 +41,7 @@ void func_80033230(s32 arg0) {
     }
 }
 
-void func_80033264(s32 arg0) {
+void Util_NoOp(s32 arg0) {
     s32 i;
     s32 j;
 
@@ -50,7 +50,7 @@ void func_80033264(s32 arg0) {
     }
 }
 
-Gfx* func_80033284(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f32 arg6) {
+Gfx* Gfx_DrawMarkerTriangle(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f32 arg6) {
     f32 sp144;
     f32 sp140;
     f32 sp13C;
@@ -65,7 +65,7 @@ Gfx* func_80033284(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f
     sp140 = arg1->y;
     sp13C = arg1->z;
 
-    func_80031EF4(&sp34, &gCurrentCameraNode->unk_60.mtxf);
+    Camera_CopyMatrixF(&sp34, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&sp34, &sp78);
     guScale(&spB8, arg6, arg6, arg6);
     guTranslate(&spF8, sp144, sp140, sp13C);
@@ -75,7 +75,7 @@ Gfx* func_80033284(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f
 
     gSPMatrix(arg0++, sp138, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(arg0++, 0, 0, arg2, arg3, arg4, arg5);
-    gSPDisplayList(arg0++, D_80076330);
+    gSPDisplayList(arg0++, gMarkerTriangleDL);
     gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
 
     return arg0;

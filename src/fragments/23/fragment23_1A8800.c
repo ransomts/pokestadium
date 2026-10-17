@@ -111,10 +111,10 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     temp_s1->unk_3C = 0x1C;
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp6C, temp_s1);
 
-    func_8002CBC0(&arg0->unk_38, 4, arg4);
+    PtrList_Init(&arg0->unk_38, 4, arg4);
 
     for (i = 0; i < 4; i++) {
-        func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[i]), i);
+        PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[i]), i);
     }
 
     temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_885012A4));

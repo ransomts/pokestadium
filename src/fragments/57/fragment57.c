@@ -2820,7 +2820,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
     }
 
     if (sp4C != 0) {
-        if (func_80028320(&sp28, NULL) == -1) {
+        if (DecodeBattleSaveData(&sp28, NULL) == -1) {
             D_82D0ABA8 = 0;
         } else {
             D_82D0ABA8 = 1;

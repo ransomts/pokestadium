@@ -75,7 +75,7 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         size++;
     }
     func_8004ADB0((u32)D_800FC700->seqArray[arg2].offset, D_800FC6DC, size);
-    func_80050B40(D_800FC6DC, D_800FC6C0[slot], 0x44C);
+    func_80050B40(D_800FC6DC, gMoveSoundTables[slot], 0x44C);
 
 found:
     switch (arg3) {
@@ -102,7 +102,7 @@ found:
     if (arg3 == 0xB) {
         arg1 = 0;
     }
-    var_a0 = D_800FC6C0[slot]->entries;
+    var_a0 = gMoveSoundTables[slot]->entries;
     entry = &(var_a0 + arg1)->unk0[size];
     arg2 = entry[0];
     gSoundDurationScale[0] = entry[1];

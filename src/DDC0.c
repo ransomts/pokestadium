@@ -104,7 +104,7 @@ void func_8000D3A8(void* unused) {
     osCreateMesgQueue(&D_800A83A8[1].queue, &D_800A83A8[1].mesg, 1);
     osSendMesg(&D_800A83A8[0].queue, (void*)'DONE', 0);
     osSendMesg(&D_800A83A8[1].queue, (void*)'DONE', 0);
-    func_800373D8();
+    Audio_Initialize();
     func_8004AF24(0);
     func_8004AE90(3, 4);
 
@@ -113,8 +113,8 @@ void func_8000D3A8(void* unused) {
         func_80004CF4(&D_800A8480.thread);
         profiler_log_thread4_time();
         if ((D_800A83A0 != 0) && (D_800A62E0.unk_A38 < 0x15)) {
-            func_80037340(&D_800A83A8[D_800A8478].task);
-            func_800053B4(&D_800A83A8[D_800A8478], 0);
+            Audio_BuildTask(&D_800A83A8[D_800A8478].task);
+            RspTaskStart(&D_800A83A8[D_800A8478], 0);
         }
         D_800A8478 ^= 1;
         profiler_log_thread4_time();
