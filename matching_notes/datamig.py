@@ -134,8 +134,8 @@ def sources():
     global _SRC_CACHE
     if _SRC_CACHE is None:
         _SRC_CACHE = {}
-        for p in list(Path("src").rglob("*.c")) + list(Path("include").rglob("*.h")) + \
-                list(Path("src").rglob("*.h")):
+        for p in sorted(list(Path("src").rglob("*.c")) + list(Path("include").rglob("*.h")) +
+                        list(Path("src").rglob("*.h"))):  # sorted: choices must not follow filesystem order
             _SRC_CACHE[str(p)] = p.read_text(encoding="utf-8", errors="replace")
     return _SRC_CACHE
 
@@ -711,15 +711,14 @@ def apply(path):
                 print(f"hoisted typedef of {l['name']} out of its draft in {owner}")
         for l, text in items:
             block.append(text)
-            if l["decl"] and l["decl"][7]:
-                continue  # never put the definition inside a draft
             # keep the owner's externs (extern + later definition is fine) and put the block after the
-            # last of them: every type they use is declared there, and earlier uses still see a decl
-            if l["decl"] and l["decl"][0] == owner and l["decl"][5]:
-                i = t.find(l["decl"][6] + "\n")
-                if i >= 0:
-                    e = i + len(l["decl"][6]) + 1
-                    pos = e if pos is None else max(pos, e)
+            # last of them: every type they use is declared there, and earlier uses still see a decl.
+            # Search the owner itself (l["decl"] may be another file's: source order is filesystem order)
+            # and never inside a draft.
+            for m in re.finditer(r"^[ \t]*extern\b[^;\n]*\b%s\b[^;\n]*;[^\n]*\n" % re.escape(l["name"]), t, re.M):
+                if not in_draft(owner + "#placement", t, m.start()):
+                    pos = m.end() if pos is None else max(pos, m.end())
+                    break
         # forward-declare referenced symbols the owner cannot see (gcc's syntax check rejects them);
         # symbols of this batch defined later than their first use get a decl of their real type
         fwd, seen = [], set()
