@@ -1,0 +1,8 @@
+# Round 9 assignments: one agent per file group, six open functions.
+# Scores are fd.sh without -s (uncapped), after the round-9 F1 harvest.
+agent-1: func_8004A89C@320:src/4A3E0.c
+agent-2: func_80034348@390:src/33FE0.c
+agent-3: func_86905734@1355:src/fragments/15/fragment15_150AC0.c
+agent-4: func_88304850@1716:src/fragments/24/fragment24_1CEA00.c
+agent-5: func_88805AEC@3093:src/fragments/28/fragment28_2190D0.c
+agent-6: func_8437B0CC@7809:src/fragments/62/fragment62_361050.c
