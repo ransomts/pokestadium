@@ -716,19 +716,9 @@ void func_82F043A4(s16 arg0, s16 arg1, s16 arg2) {
     func_8001F444();
 }
 
-#ifdef NON_MATCHING
-// Score 318, 7 diff lines: the hoisted &D_8006F630 / &D_8006F518 spills are at 0x54/0x58 (target 0x50/0x54),
-// and at the loop end the target stores sp68 (0x68) before spF8 (ours: spF8 first, sp68 in the delay slot).
-// Round 6 findings: dropping the named sp68 and writing (s16)(spEE * spF8) at every use, with an unused
-// `s32 pad3;` in its place, fixes BOTH (spills 0x50/0x54, loop-end order) - the strength-reduced induction
-// temp is what the target stores at the loop end - but that temp always lands one slot BELOW sp64
-// (ind 0x64, sp64 0x68; target ind 0x68, sp64 0x64). A named local always sits above that temp; tried
-// sp64 at function level (any position), in a nested block, pad before/after, pad[N] resizing.
-// Unused locals in any block are placed ABOVE the used ones (pad3 after sp64 still goes on top).
-// Dead ends: inlining sp64 (arg0->unk_0CA8[var_s2].) moves var_s2 to the stack (209 lines); for loop,
-// do-while, swapped increments, sp68 = sp68 + spEE, sp68 at function level (moves the zero-init before the
-// blezl guard), s16 sp68 (frame 0xF8), (s16) cast in the init, inlining temp_s3/temp_lo, the permuter's
-// do { } while (0) and 1 ^ 0 (no change here).
+// The (s16)(spEE * spF8) uses are strength-reduced into the stack temp at 0x68; the unused named
+// initialised copy makes that product appear before sp64 (so the temp takes the slot above the
+// sp64 spill), and the explicit guard + do-while gives the target's loop-end store order.
 void func_82F04604(unk_D_82F144D0* arg0) {
     static s16 D_82F13C0C[] = { 0x34, 0x148 };
 
@@ -770,127 +760,128 @@ void func_82F04604(unk_D_82F144D0* arg0) {
     }
 
     spF8 = 0;
-    while (spF8 < spF4) {
-        s32 sp68 = spEE * spF8;
-        unk_D_82F144D0_0CA8* sp64;
+    if (spF8 < spF4) {
+        do {
+            s32 unused = spEE * spF8;
+            unk_D_82F144D0_0CA8* sp64;
 
-        if (spF8 == 0) {
-            var_s2 = arg0->unk_0010;
-            spE8 = arg0->unk_0016;
-        } else {
-            var_s2 = arg0->unk_0012;
-            spE8 = arg0->unk_0016 ^ 1;
-        }
-
-        sp64 = &arg0->unk_0CA8[var_s2];
-        func_82F022DC((s16)sp68 + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
-
-        if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
-            unk_func_82F00838_sp30_00C* ptr;
-
-            func_82F02544(var_s2, (s16)sp68 + arg0->unk_0004, arg0->unk_0006);
-
-            if (spF4 == 2) {
-                gSPDisplayList(gDisplayListHead++, D_8006F498);
+            if (spF8 == 0) {
+                var_s2 = arg0->unk_0010;
+                spE8 = arg0->unk_0016;
             } else {
-                gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+                var_s2 = arg0->unk_0012;
+                spE8 = arg0->unk_0016 ^ 1;
             }
 
-            for (i = 0; i < 20; i++) {
-                idx1 = i / 5;
-                idx2 = i % 5;
+            sp64 = &arg0->unk_0CA8[var_s2];
+            func_82F022DC((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
 
-                func_82F029FC((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58), arg0->unk_0006 + (idx1 * 0x3C) + 0x1C,
-                              spF4 - 1);
-            }
+            if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
+                unk_func_82F00838_sp30_00C* ptr;
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
-            gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+                func_82F02544(var_s2, (s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006);
 
-            for (i = 0; i < sp64->unk_000; i++) {
-                ptr = &sp64->unk_00C[i];
-                idx1 = i / 5;
-                idx2 = i % 5;
-
-                func_8001CADC((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58) + 4, arg0->unk_0006 + (idx1 * 0x3C) + 0x3B, 8,
-                              0xA, D_302F690, 8, 0);
-
-                if ((ptr->unk_00 <= 0) || (ptr->unk_00 >= 0x98)) {
-                    var_v0 = 1;
+                if (spF4 == 2) {
+                    gSPDisplayList(gDisplayListHead++, D_8006F498);
                 } else {
-                    var_v0 = 0;
+                    gSPDisplayList(gDisplayListHead++, D_8006F4C0);
                 }
 
-                if (var_v0 == 0) {
-                    func_82F02B5C((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58) + 0xE,
-                                  arg0->unk_0006 + (idx1 * 0x3C) + 0x39, ptr->unk_24);
-                }
-            }
+                for (i = 0; i < 20; i++) {
+                    idx1 = i / 5;
+                    idx2 = i % 5;
 
-            func_8001F3F4();
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001EBE0(2, 0);
-
-            for (i = 0; i < sp64->unk_000; i++) {
-                ptr = &sp64->unk_00C[i];
-                idx1 = i / 5;
-                idx2 = i % 5;
-
-                if ((ptr->unk_00 <= 0) || (ptr->unk_00 >= 0x98)) {
-                    var_v0 = 1;
-                } else {
-                    var_v0 = 0;
+                    func_82F029FC((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58), arg0->unk_0006 + (idx1 * 0x3C) + 0x1C,
+                                  spF4 - 1);
                 }
 
-                if (var_v0 == 0) {
-                    continue;
+                gSPDisplayList(gDisplayListHead++, D_8006F518);
+                gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+
+                for (i = 0; i < sp64->unk_000; i++) {
+                    ptr = &sp64->unk_00C[i];
+                    idx1 = i / 5;
+                    idx2 = i % 5;
+
+                    func_8001CADC((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58) + 4, arg0->unk_0006 + (idx1 * 0x3C) + 0x3B, 8,
+                                  0xA, D_302F690, 8, 0);
+
+                    if ((ptr->unk_00 <= 0) || (ptr->unk_00 >= 0x98)) {
+                        var_v0 = 1;
+                    } else {
+                        var_v0 = 0;
+                    }
+
+                    if (var_v0 == 0) {
+                        func_82F02B5C((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58) + 0xE,
+                                      arg0->unk_0006 + (idx1 * 0x3C) + 0x39, ptr->unk_24);
+                    }
                 }
 
-                func_8001F1E8((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58) + 0xE, arg0->unk_0006 + (idx1 * 0x3C) + 0x3A,
-                              "??");
+                func_8001F3F4();
+                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                func_8001EBE0(2, 0);
+
+                for (i = 0; i < sp64->unk_000; i++) {
+                    ptr = &sp64->unk_00C[i];
+                    idx1 = i / 5;
+                    idx2 = i % 5;
+
+                    if ((ptr->unk_00 <= 0) || (ptr->unk_00 >= 0x98)) {
+                        var_v0 = 1;
+                    } else {
+                        var_v0 = 0;
+                    }
+
+                    if (var_v0 == 0) {
+                        continue;
+                    }
+
+                    func_8001F1E8((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58) + 0xE, arg0->unk_0006 + (idx1 * 0x3C) + 0x3A,
+                                  "??");
+                }
+
+                func_8001F444();
+                func_8001F3F4();
+                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                func_8001EBE0(4, 0);
+
+                for (i = 0; i < sp64->unk_000; i++) {
+                    ptr = &sp64->unk_00C[i];
+                    idx1 = i / 5;
+                    idx2 = i % 5;
+
+                    func_8001F1E8((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58) + 5, arg0->unk_0006 + (idx1 * 0x3C) + 0x46,
+                                  ptr->unk_30);
+                }
+
+                func_8001F444();
+
+                gSPDisplayList(gDisplayListHead++, D_8006F518);
+
+                for (i = 0; i < sp64->unk_000; i++) {
+                    idx1 = i / 5;
+                    idx2 = i % 5;
+
+                    func_8001C6AC((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58) + 0x2C, arg0->unk_0006 + (idx1 * 0x3C) + 0x1F,
+                                  0x28, 0x28, func_82F014E4(D_82F20A00, spE8, i), 0x28, 0);
+                }
+
+                if (arg0->unk_0000 == 2) {
+                    temp_s3 = (arg0->unk_0004 + (arg0->unk_001C * 0x58));
+                    temp_lo = (arg0->unk_0006 + (arg0->unk_001E * 0x3C) + 0x1C);
+
+                    temp_t0 = arg0->unk_0004 + (arg0->unk_0018 * 0x58);
+                    temp_t1 = arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x1C;
+
+                    func_82F02CE8(temp_t0 - (((temp_t0 - temp_s3) * arg0->unk_000C) / 4),
+                                  temp_t1 - (((temp_t1 - temp_lo) * arg0->unk_000C) / 4), 0x58, 0x3C);
+                }
+
+                gSPDisplayList(gDisplayListHead++, D_8006F630);
             }
-
-            func_8001F444();
-            func_8001F3F4();
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001EBE0(4, 0);
-
-            for (i = 0; i < sp64->unk_000; i++) {
-                ptr = &sp64->unk_00C[i];
-                idx1 = i / 5;
-                idx2 = i % 5;
-
-                func_8001F1E8((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58) + 5, arg0->unk_0006 + (idx1 * 0x3C) + 0x46,
-                              ptr->unk_30);
-            }
-
-            func_8001F444();
-
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
-
-            for (i = 0; i < sp64->unk_000; i++) {
-                idx1 = i / 5;
-                idx2 = i % 5;
-
-                func_8001C6AC((s16)sp68 + arg0->unk_0004 + (idx2 * 0x58) + 0x2C, arg0->unk_0006 + (idx1 * 0x3C) + 0x1F,
-                              0x28, 0x28, func_82F014E4(D_82F20A00, spE8, i), 0x28, 0);
-            }
-
-            if (arg0->unk_0000 == 2) {
-                temp_s3 = (arg0->unk_0004 + (arg0->unk_001C * 0x58));
-                temp_lo = (arg0->unk_0006 + (arg0->unk_001E * 0x3C) + 0x1C);
-
-                temp_t0 = arg0->unk_0004 + (arg0->unk_0018 * 0x58);
-                temp_t1 = arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x1C;
-
-                func_82F02CE8(temp_t0 - (((temp_t0 - temp_s3) * arg0->unk_000C) / 4),
-                              temp_t1 - (((temp_t1 - temp_lo) * arg0->unk_000C) / 4), 0x58, 0x3C);
-            }
-
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
-        }
-        spF8++;
-        sp68 += spEE;
+            spF8++;
+        } while (spF8 < spF4);
     }
 
     if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
@@ -908,10 +899,6 @@ void func_82F04604(unk_D_82F144D0* arg0) {
         func_82F043A4(D_82F20A04, D_82F13C0C[D_82F20A04], 0x20);
     }
 }
-#else
-static s16 D_82F13C0C[] = { 0x34, 0x148 };
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/41/fragment41_289240/func_82F04604.s")
-#endif
 
 void func_82F04FD4(void) {
     unk_D_82F144D0* ptr;
