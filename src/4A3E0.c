@@ -284,8 +284,21 @@ void func_80049D5C(u16 arg0) {
 // the goto path AND before `skip:` (not after it), and `duty = (p[2] & 0xC0) >> 6` in both the increase
 // and the decrease path (after the unk_04 store), with the switch on duty after unk_24; (4) the decrease
 // path is a plain `if (bad) { dir = ...; goto skip; } unk_04 = freq; duty = ...;` (no else / else if (1)).
-// The leftover move: uopt colours the `duty & 8` temp t3 and dir t2; as1 does not fold the move here
-// (it does in func_8004A474, same uopt output shape). Older notes follow.
+// The leftover move: uopt emits `and $11,$8,8; move $10,$11; bne $11` (ccs.py) with the `duty & 8` temp in
+// the GLOBAL register t3 ($11, not one of ugen's local ring t7/t8/t6/t9/t4/t5), exactly like func_8004A474,
+// where as1's global pass folds the move. Here as1 refuses because of the `unk_00 % unk_08` remu: its
+// divide-by-zero `break` makes every register's reaching value live, so t3's def cannot be renamed to t2.
+// Verified by assembling the ugen listing with as0 + as1 WITHOUT -noglobal (cc on a .s adds -noglobal, so
+// test with tools/ido/linux/7.1/as0 and as1 directly): remu -> addu, a `li $11,0` before the remu, or the
+// temp moved to $15 each give the target `andi t2,t0,8`. So the original's uopt output put that temp in a
+// ring register or a register written before the remu on every path (v0/a0/t7), or had no temp at all.
+// No-gain spellings at 110 (all still `and $11` + move): reload elsewhere (after the 2nd test, in the
+// trigger, as the condition's assignment: 115-1075), `dir = duty; dir &= 8`, `dir = (duty = NR12) & 8`,
+// `!(dir = duty & 8)` in the test, nested ifs, label/goto/do-while/for-break/`if (dir) {}` between the
+// def and the test, `(s32)`/`8U`/`(u8)` casts (215), `register`, decl order, dir type, nr12 for the sweep's
+// NR10, `duty = duty`/`|= 0`/`(u8)duty`/`p[4]` reloads (110-2460), dropping the reload with any local for the
+// tail value (phase 260, others 475-5250). Farm candidate (pure register choice of one temp).
+// Older notes follow.
 // Hand-written (no m2c). Score 975 over the whole function (diff.py without -s and with func_8004A474 left as
 // GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
 // one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
@@ -718,6 +731,16 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
 // col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
 // pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
+// Round 8 pass 4 (agent-14), no score gain but two structural leads (see func_80049DF0's notes):
+// (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
+// every later ring temp by the target's offset. `u16 col = (idx & 0xF0) >> 4` alone is copy-propagated
+// away (expression of a register variable); `col = ...; if (idx) {} idx = D_800FD008[0x12].value;` (block
+// boundary + no-code redefinition of idx) keeps it real: the whole top block then matches except col/row
+// colours swapped (col a3, row ptr a2; target a2/a3): 960. u32/s32/s16/u8 col 1065-1250, an ent pointer
+// local, col read from D_800FD008 (2275-2620) worse. (b) on top of (a), `p = (u8*)D_800FD008` + tail
+// `dir = p[0x22] & 8` + reload `nr = D_800FD008[0x11].value` between the kill tests makes dir ONE shared
+// variable with the target's tail shape (lui/lbu/andi into dir): 1045, but dir lands in a2 and flags in a1
+// (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
