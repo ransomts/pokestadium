@@ -198,3 +198,13 @@ ROM: as1 breaks scheduling ties by .loc line numbers (see the func_80012870 less
 reflow that changes line attribution can reorder instructions. Permuter-formatted functions can
 only be tidied in ways that keep each statement on its original line (or verified with a full make
 after every single-statement change).
+
+## u64 perturbations: placement dominates form (2026-10-17, func_8437B0CC)
+The `& 0xFFFFFFFFFFFFFFFFu` mask / `(unsigned long long)` cast family (a forced u64 temp that
+shifts ugen's allocation) is placement-sensitive far more than form-sensitive: the same test written
+with a cast, `!= 0`, or `== 0` instead of the mask can differ by 5000 lines (the cast optimizes
+away entirely - only the mask forces the temp), and a mask that is load-bearing at one site
+(case-0x1/0x20 unk_4D: 5479 vs 7809) regresses at five sibling sites (5879-9244). The farm found
+two working placements by search (the unk_4D mask, then a cast on an sp103 array index - the
+second made the first removable, 5479 -> 4724). Sweep sites, don't reason about them; expect
+interaction effects between multiple perturbations.
