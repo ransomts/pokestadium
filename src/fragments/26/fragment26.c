@@ -238,6 +238,16 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
 // compares, for-init forms, y = arg1 before loop. Worse: sums assigned before the scissor (7047),
 // scissor using the vars (3549), loop bounds as expressions (3549/3919), sp34 recomputed in outer
 // loop (3091), if (1) {} in loops (5326/6149), assignment-in-argument (3664). Good permuter candidate.
+// Round 8 (agent-6): without a compiler temp the frame collapses to 0x40 (the _g slots only exist because
+// the arg0+arg2 temp at 0x34 is numbered after every local), so the temp must stay. In the target the sums
+// are evaluated inside the scissor in t8/v0 (t8 stored straight to 0x34, never in an s-reg; v0 also feeds
+// the y guard and sp88's home) and the scissor _g gets s1; ours gives the sums s4/s2 and _g v0. Dead ends
+// (identical or worse): s16/u16 params (callee then sign-extends), commuted sums in the scissor and/or
+// statements, u32 sp34/sp88, sp34 declared in a block / in the outer loop / in a for-init, while and
+// do-while loops, arg4 += in the for-increment, sp88 > y, x = arg0 / y = arg1 used by the scissor and
+// arg2 += arg0 (both drop the temp: frame 0x40), sp34 = arg2; sp34 += arg0, const locals for 0x20 or
+// a "+ k" (k = 0) on the sums (frame grows, same regs), sp88 assigned before the scissor and used by it (2802
+// but the temp moves to 0x30).
 void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 sp34;
     s32 y;

@@ -1299,6 +1299,16 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // temp_s7 as an inline expression (worse), separate temp var for the case offsets (identical).
 // Moving `temp_s7 = var_s1 + arg0;` after the var_s6 load scores 3453 but adds stray spills.
 // Good permuter candidate from this state.
+// Round 8 (agent-6) dead ends (all 3777 or worse): a separate (s32/u32/u8*) copy of arg0 for rect1's lrx and
+// temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
+// webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
+// commuting any arg0 + K / arg1 + K / var_s1 + arg0; var_s6 load vs temp_v1 order; x = arg0 + 0x84 before
+// var_s6 load, after func_8002E8E4, after func_8001F444 or in the second for-init; var_s1 if/else after
+// PipeSync (5453); constant locals in place of pad (h = 0x14 / 0x13 on the heights: 5744; w = 0x26: 4857;
+// w = 0x5C for rect2 lrx/spA8: 3772; w = 0x84: 4791).
+// Target shape notes: s6 holds arg0 only for rect1's lrx and temp_s7 (addu s7 is scheduled inside rect1's
+// w1); rect1's w1 reloads arg0/arg1 (t2/t1) and rect2 reuses those; arg0 + 0x84 is a memory temp at 0x50
+// (x = s3 is recomputed from it), temp_s7 stays in s7 the whole function.
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
