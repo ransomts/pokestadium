@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 8919 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 8639 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2189,6 +2189,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // bug: with unk_0B == 0x84 but !(unk_4E & 8) the target breaks (else-break added; `!= 0x84`).
 // The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
 // with no slot left for a tmp7 it reuses var_v1_4 (9074 -> 8919).
+// Prologue matches with the field reads in the order 09 0E 0A 0B 0C 0D 0F 10 (8919 -> 8639).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
 // gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
 // below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
@@ -2203,7 +2204,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 //   regs but reorders the loads -> worse); unk_06 result lives in t1 (saved at 0xC0 around calls),
 //   unk_08 in s2; draft has them the other way round. Every `break` delay slot shows the t5/t9 diff.
 // - case 0x19 switch: target copies the switch value v0 -> v1 after the 0/8 compares (missing).
-// - prologue: arg2 load scheduled first instead of after unk_0D (scheduling only).
+// - prologue: fixed (read order).
 // - remaining ~1200 'r' lines are t-register rotation following from the above.
 // Dead ends: declaration order never changes regalloc; sp58/temp_t0/sp78 as s32 (worse, frame
 // 0x118); s16/f32 var_s5; temp_s6 macro (worse); `j = 0` hoisting (IDO already does it).
@@ -2253,14 +2254,14 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     s32 tmp6;
     f32 sp8C;
 
-    spBA = D_843C5564->unk_0E;
     sp58 = D_843C5564->unk_09;
-    spB7 = D_843C5564->unk_0C;
+    spBA = D_843C5564->unk_0E;
     temp_t0 = D_843C5564->unk_0A;
     spB5 = D_843C5564->unk_0B;
+    spB7 = D_843C5564->unk_0C;
     spB6 = D_843C5564->unk_0D;
-    spB4 = D_843C5564->unk_10;
     sp78 = D_843C5564->unk_0F;
+    spB4 = D_843C5564->unk_10;
 
     temp_fp = &arg0->unk_14[arg0->unk_10];
     temp_s4 = &arg1->unk_14[arg1->unk_10];
