@@ -292,9 +292,13 @@ void func_80049D5C(u16 arg0) {
 // test instead 1540-2220, inline 2255. `} else if (1) { unk_04 = freq; }` in the decrement path (farm
 // candidate k2; makes the bgez non-likely like the target): 1145 -> 975.
 // Remaining: the sweep switch value lands in a0 (target t0, which it was before the (u8) cast); at skip the
-// NR12 load is a1 and `& 8` goes to v0 (target: both t2, the trigger dir's register). Older notes: the `goto skip` path loads NR12 via v0 and puts dir in
-// a1 (target: dir in t2 loaded in place, lui t2 hoisted into the decrement path), phase a2 vs a1, unk_14
-// a2 vs v0. Dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types (no change),
+// NR12 load is a1 and `& 8` goes to v0 (target: both t2, the trigger dir's register; looks like the
+// target keeps one register per variable, see func_8004A89C). Round-8 dead ends: renaming any local
+// pair (merge sweep over changed/i/nr14/nr12/nr11/freq/duty/phase/pos/dir/value: none better), single
+// (u8) casts on duty/nr14/nr11/changed/freq uses, swapping any adjacent statements, a variable index
+// or u8* pointer for the NR12/NR10/NR11 reads (A474's trick; no gain here, p at the top 2700),
+// `else if` spellings other than `if (1)`, NR12&8 into dir/nr12/phase (1260) or duty/nr11/nr14/freq.
+// Older dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types (no change),
 // explicit casts (u16)/(s32) on the freq high bits, other spellings of the NR13|NR14 expression
 // ((u16), (s32), *256, unk_04 + ..., u8 nr14), freq stored in i/changed (worse) or dir (3195 at the time,
 // breaks the loop pointer regs), nr11 u32 (3040) / u8 / u16 (2640), switch on the expression without
@@ -540,6 +544,10 @@ skip:
 // + `dir & 8` (1755), u8/u32/s16/u16 dir, `(x & 8) != 0`, both dir and inline NR22 test (1900);
 // deleting trigger stores; `(u8)`/`(s32)` casts or a dir local with casts on the tail NR22 read (690-1275);
 // kill-path spellings (`= x & ~2`, `&= 0xFD`, u8* access, store order: no change); `register` dir.
+// At 30, also no gain: renaming any local pair (merge sweep), renaming the trigger's dir to
+// changed/nr21/i/value with any tail local, u8/u16/s8/s16 tail locals (845-1320), the tail value
+// assigned before pos or the kill test (1270-1385), field reads instead of pos, trigger NR22/NR24
+// reads through p (140-280). With dir as the tail local it lands in v0 (150), not t1.
 s16 func_8004A474(void) {
     s32 changed;
     s32 i;
