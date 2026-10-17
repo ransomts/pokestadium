@@ -720,3 +720,23 @@ consolidation decision); func_80022734 (unknown tier semantics); the 19840.c Fra
 family (Tier B: needs per-function call-graph evidence).
 Next: Tier B (per-fragment-group sweeps, 50-100 symbols/batch, call graphs + accessmap), then
 Tier C (struct fields + locals via dotted-path rows).
+
+## F6 Tier B (2026-10-17 ~13:15)
+Tier A closed at 108 renames (a1-a10); Tier B ran 12 more gated batches (b1-b12, 120 symbols;
+228 total applied, ledger matching_notes/renames.tsv). Clusters named this wave: the 2D
+sprite/clip library (Gfx_DrawTextureRect/FillRect/DrawSprite* family, gClipRect, Text_DrawGlyph),
+fragment loaders (Fragment_LoadPersSzp/PresJpeg/Raw/FromArchive* + JpegDecodePres/SzpDecompress),
+GB-save block system (Gbs* family + gGbsSaveBanks + Mon_InitFromSaveEntry/WriteToSaveEntry),
+game-state handlers (Game_Run* for all 13 dispatcher states + Game_GoToTitle/Game_UpdateInputs),
+sticker station (IsStickerStationConnected + command RW), mon-info UI helpers + menu scroll,
+matrix stack (Matrix_ResetStack/PushMultiply/PushScale/GetRelative/GetAbsolute + the F420 math
+library: Identity/Multiply/Scale/ConvertToMtx/FromSRT/LookAt*/Decompose), graph nodes
+(Init/SetCallback/AllocInit/AddChild/RemoveChild/GetNthChild, roots, traversal, quad/scale
+rendering), the List container library (List_Init/Append/Insert/RemoveAt/GetCopy/Set), stage
+lifecycle (Stage_BeginDisplayList/GetFrameBuffer/ClearScreen/Destroy), Vec3f constructors,
+mem_pool_resize_block. Gates never tripped a revert in Tier B; two tool fixes: C-statics
+unconditionally excluded from the map check (b3), and the earlier header/no-op fixes.
+expected/ refreshed at both wave ends (byte-identical each time - renames are ROM-neutral).
+Remaining for the next session: Tier B continuation (30640/3D camera, 2E460 remainder,
+per-fragment sweeps 50-100/batch with call graphs), then Tier C (struct fields + locals via
+dotted-path rows).
