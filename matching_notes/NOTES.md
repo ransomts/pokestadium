@@ -854,3 +854,33 @@ The deep path for seeing allocation decisions is reversing the ucode/ugen format
 research project, not an evening. Practical oracles stay: asm-differ on the .o, and the
 manual pipeline above (kept at /tmp/opencode/uoptprobe/run_uopt.sh while it lasts) lets you
 byte-diff uopt/ugen outputs across source variants as a pre-assembler equivalence check.
+
+## F6 agent waves (2026-10-17 ~14:00-18:00): 1026 renames total
+After Tier A (108) + Tier B (120), two parallelization changes took the total to 1026:
+(1) gptoss-120b researcher agents via the RCD gateway (matching_notes/rename_agent.py): each
+reads one source file and emits ledger proposal rows (old, new, batch, also, justification);
+the integrator merges fragments, dedupes, preflights, applies and gates - agents never write
+the repo. (2) MERGED BATCHES: one apply/gate cycle per wave regardless of symbol count
+(w1: 105, w2: 134, w3: 176, w4: 179) - the gate cost is per-batch, so wave shape is the
+throughput lever (wave p was 11 tiny batches for 204; waves w are one gate for 100-180).
+Waves: p1-p11 (204, main-segment files), w1 (105: 3D140_2/26820/1C720/2FEA0/6BC0/37370/
+1CF30/46680), w2 (134: 4CBC0/4F410/48C60/49790/2E110/3FB0/22630/232C0 + first fragments),
+w3 (176: fragments 2,3,10,11,13,14,15,17,23,31,34,37,39,44,47,55), w4 (179: fragments
+2,3,11,14,15,17,23,31,34,40,42,45,48,56,59,63).
+Agent-output quality controls that mattered: justification >= 15 chars or dropped; dedupe by
+old AND new across waves; mis-prefixed func_/D_ rows re-prefixed (agents confuse D_80078FXX
+variables with functions); collision-with-applied rows dropped by preflight; asset-VRAM anchors
+(D_[0-9A-F]000xxx, e.g. D_3000000, D_2000B40) and dual-source symbols (defined in BOTH
+symbol_addrs.txt and linker_scripts/us/undefined_syms.ld, e.g. D_30242C0) are OUT OF SCOPE -
+renaming them needs undefined_syms.ld edits, which the spec's never-touch list forbids; the
+gate caught both classes (map check) and auto-reverted, which is the system working.
+Tool fixes this session: is_c_static + c_definition_count match function-local statics and
+multi-dim arrays; field-row struct-prefix protection (farm closure); also-column single-name
+fold; terminal ledger rows skipped.
+Farm (aa-tag) kept grinding throughout: 88805AEC candidate adopted 2337 -> 1844 (e28cc3d);
+80034348 permuter-best 40 (real 40 vs draft 60 - NOT better, permuter scale for this file is
+its own; cand_score gate held it out); 8004A89C 290 real = worse than 300; 88304850 1666
+(worse than 1716); 8437B0CC 4572 (worse than 4724). Only 88805AEC's adopted.
+F6 totals: 1026 renames applied, 22 gated commits + 13 agent-wave commits, ROM byte-identical
+after every batch, progress 97.9197% throughout. Next session: wave 5+ on the remaining
+~5,700 referenced placeholder symbols (fragment files are the bulk), Tier C struct fields.
