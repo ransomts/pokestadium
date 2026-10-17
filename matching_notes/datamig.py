@@ -28,6 +28,32 @@ ROM = (ROOT / "baseroms/us/baserom.z64").read_bytes()
 YAML = ROOT / "yamls/us/rom.yaml"
 SYMS = ROOT / "linker_scripts/us/symbol_addrs.txt"
 SKIP_NAMES = ("_header.s", "_reloc.s")
+OVERRIDES = ROOT / "matching_notes" / "datamig_overrides.txt"
+
+
+def load_overrides():
+    """datamig_overrides.txt: `fake D_X` (a fake offset symbol: fold it, keep it linker-defined),
+    `owner D_X src/file.c`, `inline-rodata asm/us/data/x.rodata.s` (string literals of the tables
+    that point at them: written inline, the file's yaml entry merges into the owner's .rodata)."""
+    fake, owner, inl = set(), {}, []
+    labels = {}  # name -> (vram, type, dims string)
+    if OVERRIDES.exists():
+        for line in OVERRIDES.read_text().splitlines():
+            w = line.split("#", 1)[0].split()
+            if not w:
+                continue
+            if w[0] == "fake":
+                fake.update(w[1:])
+            elif w[0] == "owner":
+                owner[w[1]] = w[2]
+            elif w[0] == "inline-rodata":
+                inl += w[1:]
+            elif w[0] == "label":  # label 0xVRAM NAME TYPE [dims]: a table spimdisasm did not label
+                labels[w[2]] = (int(w[1], 16), w[3], w[4] if len(w) > 4 else "")
+    return fake, owner, inl, labels
+
+
+FAKE, OWNER_OVERRIDE, INLINE_RODATA, LABEL_OVERRIDE = load_overrides()
 
 ITEM = re.compile(r"/\* ([0-9A-F]+) ([0-9A-F]{8})(?: [0-9A-F]+)? \*/ \.(\w+)\s*(.*)")
 LABEL = re.compile(r"^(?:dlabel|glabel|jlabel)\s+(\w+)")
@@ -225,13 +251,55 @@ def type_size(ty):
     return None
 
 
+def inline_ranges():
+    """[(vram_lo, vram_hi, rom_lo, path)] of the INLINE_RODATA files."""
+    out = []
+    for f in INLINE_RODATA:
+        if not Path(f).exists():
+            continue
+        _sect, labs = parse_s(f)
+        stem = str(Path(f).relative_to("asm/us/data").with_suffix("")).rsplit(".", 1)[0]
+        idx, yrom, lines = yaml_entry(stem)
+        if idx is None or not labs:
+            continue
+        end = segment_bounds(lines, idx)
+        out.append((labs[0]["vram"], labs[0]["vram"] + (end - labs[0]["rom"]), labs[0]["rom"], f))
+    return out
+
+
+def c_string(raw):
+    """C literal for raw (EUC-JP) bytes: readable UTF-8 when it round-trips, octal escapes otherwise."""
+    try:
+        s = raw.decode("euc_jp")
+        ok = s.encode("euc_jp") == raw and all(c.isprintable() for c in s)
+    except UnicodeDecodeError:
+        ok = False
+    if ok:
+        body = s.replace("\\", "\\\\").replace('"', '\\"').replace("??", "?\\?")
+    else:
+        body = "".join(chr(b) if 0x20 <= b < 0x7F and chr(b) not in '"\\?' else "\\%03o" % b for b in raw)
+    return '"' + body + '"'
+
+
 class Emit:
     arrays = set()  # symbols defined as arrays in the current batch: referenced by bare name
+    ranges = []     # inline_ranges() for the current apply
+    used = []       # (vram, nbytes) of each inlined literal, in emission order
+    label_at = {}   # vram -> name of the labels of the current file (raw pointers -> symbols)
 
     def __init__(self, lab):
         self.lab, self.relocs, self.problems = lab, lab["relocs"], []
 
     def ptr(self, vram):
+        v = struct.unpack(">I", ROM[self.rom(vram):self.rom(vram) + 4])[0]
+        for lo, hi, rlo, _f in Emit.ranges:
+            if lo <= v < hi:
+                r = rlo + (v - lo)
+                raw = ROM[r:ROM.index(b"\0", r)]
+                Emit.used.append((v, len(raw) + 1))
+                return c_string(raw)
+        if vram not in self.relocs and v in Emit.label_at:
+            self.relocs[vram] = (Emit.label_at[v], 0)
         if vram in self.relocs:
             sym, add = self.relocs[vram]
             ref = f"(void*){sym}" if sym in Emit.arrays else f"&{sym}"
@@ -397,12 +465,30 @@ def plan(path, quiet=False):
         res["blockers"].append("no yaml entry")
         return res
     end_rom = segment_bounds(lines, idx)
+    # synthesized labels (override `label`): split the containing label, moving its later relocs
+    for name, (vram, _ty, _dims) in LABEL_OVERRIDE.items():
+        if not labels or not (labels[0]["vram"] < vram < labels[0]["vram"] + (end_rom - labels[0]["rom"])):
+            continue  # not in this file
+        host = [l for l in labels if l["vram"] < vram]
+        if not host or name in {l["name"] for l in labels}:
+            continue
+        h = host[-1]
+        nxt = labels[labels.index(h) + 1] if labels.index(h) + 1 < len(labels) else None
+        if nxt and nxt["vram"] <= vram:
+            continue
+        new = {"name": name, "rom": h["rom"] + (vram - h["vram"]), "vram": vram, "dirs": set(h["dirs"]),
+               "relocs": {v: r for v, r in h["relocs"].items() if v >= vram}}
+        h["relocs"] = {v: r for v, r in h["relocs"].items() if v < vram}
+        labels.insert(labels.index(h) + 1, new)
     order, s0, s1 = code_order(lines, idx)
     kind = sect.lstrip(".")
     prev, nxt = neighbours(lines, idx, kind, s0, s1, order)
-    lo = order.get(prev, -1) if prev else -1
+    # the previous entry may be the same owner's section (an earlier migration): data continues it
+    cont = bool(prev) and re.match(r"^\s*-\s*\[\s*0x[0-9A-Fa-f]+\s*,\s*\.%s\s*,\s*%s\s*\]" % (
+        kind, re.escape(prev[4:-2])), lines[idx - 1]) is not None
+    lo = order.get(prev, -1) - (1 if cont else 0) if prev else -1
     hi = order.get(nxt, 10 ** 9) if nxt else 10 ** 9
-    res.update(prev=prev, next=nxt)
+    res.update(prev=prev, next=nxt, cont=cont)
     labs = []
     for i, l in enumerate(labels):
         nrom = labels[i + 1]["rom"] if i + 1 < len(labels) else end_rom
@@ -410,9 +496,14 @@ def plan(path, quiet=False):
         decls = find_decl(l["name"])
         defs = [d for d in decls if not d[5]]
         ext = [d for d in decls if d[5]]
-        us = sorted(set(users(l["name"])) | set(asm_users(l["name"])))
+        us_all = sorted(set(users(l["name"])) | set(asm_users(l["name"])))
+        # only files linked between the neighbouring data can own it (a fragment never owns
+        # main-segment data; a later file in the same segment cannot either)
+        us = [u for u in us_all if lo < order.get(u, -2) < hi]
         owner, why = None, ""
-        if defs:
+        if l["name"] in OWNER_OVERRIDE:
+            owner, why = OWNER_OVERRIDE[l["name"]], "override"
+        elif defs:
             owner, why = defs[0][0], "already defined"
         elif len(us) == 1:
             owner, why = us[0], "only user"
@@ -425,12 +516,12 @@ def plan(path, quiet=False):
         else:
             why = "no C user"
         cands = sorted({u for u in us if lo < order.get(u, -2) < hi}, key=order.get) if not owner else []
-        labs.append(dict(l, span=span, decls=decls, ext=ext, users=us, owner=owner, why=why, cands=cands))
+        labs.append(dict(l, span=span, decls=decls, ext=ext, users=us_all, owner=owner, why=why, cands=cands))
     # IDO aligns every data object to 4: a label at an unaligned address is a field of the previous
     # object. Fold it in; its symbol stays linker-defined (symbol_addrs without defined:true).
     k = 1
     while k < len(labs):
-        if labs[k]["vram"] % 4 and labs[k - 1]["span"] is not None:
+        if (labs[k]["vram"] % 4 or labs[k]["name"] in FAKE) and labs[k - 1]["span"] is not None:
             p_, x = labs[k - 1], labs.pop(k)
             p_["span"] += x["span"] or 0
             p_["relocs"].update(x["relocs"])
@@ -444,16 +535,31 @@ def plan(path, quiet=False):
     # spimdisasm splits an array at every field the code touches (D_80070F84 PokemonStats[] ->
     # D_80070F8A, D_80070F8B, ...). An unsized array absorbs the following labels nobody names.
     referenced = {s for x in labs for s, _ in x["relocs"].values()}
+    # spimdisasm leaves pointers inside byte-typed tables unsymbolized: a label whose address appears
+    # as an aligned word anywhere in this file counts as referenced too (conservative: stops absorption)
+    if labs:
+        a0, a1 = labs[0]["rom"], labs[-1]["rom"] + (labs[-1]["span"] or 0)
+        words = {struct.unpack_from(">I", ROM, o)[0] for o in range(a0 & ~3, a1, 4)}
+        referenced |= {x["name"] for x in labs if x["vram"] in words}
     k = 0
     while k < len(labs):
         l = labs[k]
         d = (sorted((x for x in (l["ext"] or l["decls"]) if not x[7]), key=lambda x: "[]" in x[4].replace(" ", ""))
              or l["ext"] or l["decls"] or [None])[0]
-        if d and d[2] == "var" and dims_of(d[4])[:1] == [None]:
-            j = k
+        want = None  # declared size, when the declaration is longer than the label's span
+        if d and d[2] == "var":
+            dd, es = dims_of(d[4]), type_size(d[3])
+            if es and dd and all(isinstance(x, int) for x in dd):
+                want = es
+                for x in dd:
+                    want *= x
+        if d and d[2] == "var" and (dims_of(d[4])[:1] == [None] or (want and l["span"] and want > l["span"])):
+            j, got = k, l["span"] or 0
             while j + 1 < len(labs) and not labs[j + 1]["users"] and labs[j + 1]["name"] not in referenced \
-                    and not find_decl(labs[j + 1]["name"]):
+                    and not find_decl(labs[j + 1]["name"]) and labs[j + 1]["name"] not in LABEL_OVERRIDE \
+                    and (want is None or got < want):
                 j += 1
+                got += labs[j]["span"] or 0
             if j > k:
                 for x in labs[k + 1:j + 1]:
                     l["relocs"].update(x["relocs"])
@@ -478,6 +584,13 @@ def plan(path, quiet=False):
             if m and in_draft(d[0], ft, m.start()):
                 l["hoist"] = (d[0], m.group(0))
         ty, dims, size = None, [], None
+        if l["name"] in LABEL_OVERRIDE:
+            _v, oty, odims = LABEL_OVERRIDE[l["name"]]
+            d = None
+            ty, dims = oty, dims_of(odims)
+            size = type_size(ty)
+            for x in dims:
+                size = size * x if size else None
         if d:
             ty = "fnptr" if d[2] == "fnptr" else d[3]
             dims = dims_of(d[4])
@@ -493,7 +606,7 @@ def plan(path, quiet=False):
                 n = span // inner  # an unsized array owns its zeros; IDO pads arrays to 4 anyway
                 dims = [n] + dims[1:]
                 size = n * inner
-        elif span:
+        elif span and ty is None:
             ty, dims, size = infer_type(l, span, kind == "rodata")
         verdict = "ok"
         if not owner:
@@ -521,6 +634,8 @@ def plan(path, quiet=False):
     if seq != sorted(seq):
         res["blockers"].append("owners interleave in link order (data needs a different split)")
     for o in {l["owner"] for l in res["labels"] if l["owner"]}:
+        if cont and o == prev:
+            continue
         if re.search(r"\[\s*0x[0-9A-Fa-f]+\s*,\s*\.%s\s*,\s*%s\s*\]" % (kind, re.escape(o[4:-2])), "\n".join(lines)):
             res["blockers"].append(f"{o} already has a .{kind} entry: defs must merge into its existing data")
     if not quiet:
@@ -608,7 +723,13 @@ def definition(l, const):
         ty = l["type"]
         if const and "const" not in ty:
             ty = "const " + ty
-        text = f"{ty} {l['name']}{dims} = {e.value(l['type'], l['dims'], l['vram'])};"
+        raw = ROM[l["rom"]:l["rom"] + l["size"]] if l["size"] else b""
+        text_part = raw.rstrip(b"\0")
+        if base_type(ty) in ("u8", "s8", "char") and len(l["dims"]) == 1 and text_part and \
+                all(0x20 <= b < 0x7F for b in text_part) and len(text_part) < l["size"] and not l["relocs"]:
+            text = f"{ty} {l['name']}{dims} = {c_string(text_part)};"
+        else:
+            text = f"{ty} {l['name']}{dims} = {e.value(l['type'], l['dims'], l['vram'])};"
     return text, e.problems
 
 
@@ -622,6 +743,11 @@ def apply(path):
     const = res["section"] == ".rodata"
     by_owner, inline = {}, []
     Emit.arrays = {l["name"] for l in res["labels"] if l["dims"]}
+    Emit.ranges, Emit.used = inline_ranges(), []
+    Emit.label_at = {l["vram"]: l["name"] for l in res["labels"]}
+    for l in res["labels"]:
+        for n, off in l.get("folded_at", []):
+            Emit.label_at[l["vram"] + off] = n
     nonmatch = "\n".join(p.read_text(errors="replace") for p in Path("asm/us/nonmatchings").rglob("*.s")) \
         if Path("asm/us/nonmatchings").exists() else ""
     for l in res["labels"]:
@@ -722,6 +848,12 @@ def apply(path):
                 if not in_draft(owner + "#placement", t, m.start()):
                     pos = m.end() if pos is None else max(pos, m.end())
                     break
+        # data must stay in address order: go after this owner's definitions of lower addresses
+        # (an earlier migration of the same owner, e.g. 703E0 before 71BA1)
+        first = min(l["vram"] for l, _ in items)
+        for m in re.finditer(r"^(?!extern\b)[^\n;]*\b(?:pad_)?D_([0-9A-F]{8})\b[^\n]*=[^\n]*;[^\n]*\n", t, re.M):
+            if int(m.group(1), 16) < first and not in_draft(owner + "#placement", t, m.start()):
+                pos = m.end() if pos is None else max(pos, m.end())
         # forward-declare referenced symbols the owner cannot see (gcc's syntax check rejects them);
         # symbols of this batch defined later than their first use get a decl of their real type
         fwd, seen = [], set()
@@ -765,16 +897,54 @@ def apply(path):
         t = re.sub(r"\n{3,}", "\n\n", t)
         Path(owner).write_text(t)
         print(f"wrote {len(items)} definition(s) into {owner}")
+    # inlined literals must re-create each INLINE_RODATA blob exactly: emitted in address order,
+    # one per string, each padded to 4 (IDO's order for literals in data initializers)
+    merged = []
+    for lo, hi, rlo, f in Emit.ranges:
+        got = sorted(u for u in Emit.used if lo <= u[0] < hi)
+        if not got:
+            continue
+        a = lo
+        for v, n in [u for u in Emit.used if lo <= u[0] < hi]:
+            if v != a:
+                print(f"REFUSING: literals of {f} not contiguous in emission order at {v:08X} (expected {a:08X})")
+                return 2
+            a = v + ((n + 3) & ~3)
+        if any(ROM[rlo + (a - lo):rlo + (hi - lo)]):
+            print(f"REFUSING: {f} has bytes after its last referenced literal ({a:08X})")
+            return 2
+        merged.append(f)
     # yaml: one entry per owner run
     idx, yrom, lines = yaml_entry(res["stem"])
     indent = re.match(r"^(\s*)", lines[idx]).group(1)
     kind = res["section"].lstrip(".")
-    new, last = [], None
+    new, last = [], (res["prev"] if res.get("cont") else None)
     for l in res["labels"]:
         if l["owner"] != last:
             new.append(f"{indent}- [0x{l['rom']:X}, .{kind}, {l['owner'][4:-2]}]")
             last = l["owner"]
     lines[idx:idx + 1] = new
+    # merged literal blobs: drop their entries; the owner's .rodata entry starts at the first one
+    if merged:
+        starts = []
+        for f in merged:
+            stem = str(Path(f).relative_to("asm/us/data").with_suffix("")).rsplit(".", 1)[0]
+            pat = re.compile(r"^\s*-\s*\[\s*(0x[0-9A-Fa-f]+)\s*,\s*rodata\s*,\s*%s\s*\]" % re.escape(stem))
+            k = next(i for i, x in enumerate(lines) if pat.match(x))
+            starts.append((int(pat.match(lines[k]).group(1), 16), k))
+        ks = sorted(k for _, k in starts)
+        if ks != list(range(ks[0], ks[0] + len(ks))):
+            print("REFUSING: merged rodata entries are not adjacent in the yaml")
+            return 2
+        nxt = re.compile(r"^(\s*-\s*\[\s*)0x[0-9A-Fa-f]+(\s*,\s*\.rodata\s*,\s*([\w/]+)\s*\].*)$")
+        m = nxt.match(lines[ks[-1] + 1])
+        owners = {l["owner"] for l in res["labels"]}
+        if not m or "src/" + m.group(3) + ".c" not in owners:
+            print(f"REFUSING: the entry after the merged rodata is not an owner's .rodata: {lines[ks[-1] + 1].strip()}")
+            return 2
+        lines[ks[-1] + 1] = m.group(1) + "0x%X" % min(s for s, _ in starts) + m.group(2)
+        del lines[ks[0]:ks[-1] + 1]
+        print(f"merged {len(merged)} rodata file(s) into .rodata of {m.group(3)} (now starts at 0x{min(s for s, _ in starts):X})")
     YAML.write_text("\n".join(lines) + "\n")
     # symbol_addrs: mark as defined so splat stops emitting them as undefined symbols. Edit the
     # entry in whichever symbol_addrs*.txt already has it (a second entry is a splat error).

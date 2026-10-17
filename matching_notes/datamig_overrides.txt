@@ -1,0 +1,21 @@
+# datamig.py overrides: facts the tool cannot infer. One directive per line.
+#   fake NAME              fake offset symbol: fold into the previous object, keep it linker-defined
+#   owner NAME src/x.c     owner of one label (the rest follows from the run rules)
+#   inline-rodata FILE.s   string literals of the tables that point at them (inlined, yaml merged)
+
+# 22630.c (registered Pokemon stats), 2026-10-16
+# D_8006FEE8 = (u8*)D_8006FF00 - 0x18: 1-based view of the 0x1C-byte species table (name at +4);
+# its address is the "pmname_151" array.
+fake D_8006FEE8
+# D_80070F84 = (u8*)D_80070FA0 - 0x1C: 1-based PokemonStats view of the 0x17-byte table at D_80070FA0;
+# its address is D_8006FF00[151] (Mew).
+fake D_80070F84
+# Sits between 22630's tables; 232C0.c uses it through an extern.
+owner D_80072B00 src/22630.c
+# Item names, 165 x "skill", "No"...: literals of 22630's tables in rom_data_71BA1.
+inline-rodata asm/us/data/rom_rodata_7C1C0.rodata.s
+inline-rodata asm/us/data/rom_rodata_7C220.rodata.s
+inline-rodata asm/us/data/rom_rodata_7C750.rodata.s
+# The {type_name, color} table that the 23 strings of 7C1C0 belong to ("No", ...); spimdisasm left it
+# inside D_80070FA0. D_80071D88 (used by fragments) points 7 entries into it and stays linker-defined.
+label 0x80071D50 D_80071D50 unk_D_80071D88 [23]
