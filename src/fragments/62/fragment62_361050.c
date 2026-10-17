@@ -2175,13 +2175,15 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 7849 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 7809 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8 pass 4 (agent-17): func_843783CC returns u8, not s32 (its own code is identical). With the
 // s32 return, uopt copy-propagated `var_s0 = spB7` into the first multiply (spB7's load temp stayed
 // live across the call in v1/0x68); a u8-returning call (any of them: experiment with
 // func_843776FC/func_843779C8 there) makes the multiply use s0 and spB7's temp is v0 everywhere,
 // as in the target (7934 -> 7849). Still open in the 0x5C block: the target keeps a temp_t0 copy
 // in s5 (sw t8,0x68 before the first call, lw s5,0x68 after); see below.
+// Case 0x19: the five temp_s6->unk_5C[n] adjustments are `var_s1 += (x * m) - c;` (target
+// addu s1,s1,t; `var_s1 = (var_s1 + x * m) - c` gave addu s1,t,s1): 7849 -> 7809.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -3059,27 +3061,27 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
                     }
 
                     if (temp_s6->unk_5C[0] != 7) {
-                        var_s1 = (var_s1 + (temp_s6->unk_5C[0] * 6)) - 0x2A;
+                        var_s1 += (temp_s6->unk_5C[0] * 6) - 0x2A;
                         var_s0 = 1;
                     }
 
                     if (temp_s6->unk_5C[1] != 7) {
-                        var_s1 = (var_s1 + (temp_s6->unk_5C[1] * 6)) - 0x2A;
+                        var_s1 += (temp_s6->unk_5C[1] * 6) - 0x2A;
                         var_s0 = 1;
                     }
 
                     if (temp_s6->unk_5C[2] != 7) {
-                        var_s1 = (var_s1 + (temp_s6->unk_5C[2] * 3)) - 0x15;
+                        var_s1 += (temp_s6->unk_5C[2] * 3) - 0x15;
                         var_s0 = 1;
                     }
 
                     if (temp_s6->unk_5C[3] != 7) {
-                        var_s1 = (var_s1 + (temp_s6->unk_5C[3] * 7)) - 0x31;
+                        var_s1 += (temp_s6->unk_5C[3] * 7) - 0x31;
                         var_s0 = 1;
                     }
 
                     if (temp_s6->unk_5C[5] != 7) {
-                        var_s1 = (var_s1 + (temp_s6->unk_5C[4] * 7)) - 0x31;
+                        var_s1 += (temp_s6->unk_5C[4] * 7) - 0x31;
                         var_s0 = 1;
                     }
 
