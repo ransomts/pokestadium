@@ -729,6 +729,15 @@ void func_80034254(StadiumModel* model) {
 // Still differs (130): only the coordinate colours. Target ay f12 az f14 by f0 bz f2 cy f16 cz f18
 // and vertex pointers ia v0 ib v1 ic a0; ours ay f16 az f2 by f18 bz f0 cy f12 cz f14, ia v1 ib a0
 // ic v0 (uopt colouring order).
+// 130 -> 60: the by2 copy and the nz split are no longer needed. uopt colours in priority order,
+// roughly refs / blocks spanned, ties in variable order: by/bz (3 refs) > ay/az > cy/cz all in ONE
+// block gives exactly the target f0 f2 / f12 f14 / f16 f18, while ax/bx must span the boundary too
+// (bx then falls to fs4, ax uncoloured). So the block boundary goes right after the bx load and every
+// other coordinate load follows it. All floats now match. Without the boundary 6145, without the
+// cz reload 180, without the cx reload 1627, without both 4314; extra dead ax/bx/ay/by reloads in the
+// if-block change nothing.
+// Still differs (60): vertex pointer temps, target (vertices+ia) v0, +ib v1, +ic a0; ours +ia v1,
+// +ib a0, +ic v0 (the ic pointer lives in one block, so it outranks the two that span the boundary).
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
@@ -763,22 +772,20 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     for (i = 0; i < triangleCount; i++) {
         ia = remap[*index++];
         ax = (vertices + ia)->position.base.x;
-        ay = (vertices + ia)->position.base.y;
         ib = remap[*index++];
         bx = (vertices + ib)->position.base.x;
-        by = (vertices + ib)->position.base.y;
         if (0) {}
+        ay = (vertices + ia)->position.base.y;
+        by = (vertices + ib)->position.base.y;
         bz = (vertices + ib)->position.base.z;
         az = (vertices + ia)->position.base.z;
         ic = remap[*index++];
         cx = (vertices + ic)->position.base.x;
         cy = (vertices + ic)->position.base.y;
         cz = (vertices + ic)->position.base.z;
-        by2 = by;
-        nx = ((by2 - ay) * (cz - bz)) - ((bz - az) * (cy - by2));
+        nx = ((by - ay) * (cz - bz)) - ((bz - az) * (cy - by));
         ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
-        nz = (by2 - ay) * (cx - bx);
-        nz = ((bx - ax) * (cy - by2)) - nz;
+        nz = ((bx - ax) * (cy - by)) - ((by - ay) * (cx - bx));
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
         if ((s32) len > 0) {
             len = 120.0f / len;
