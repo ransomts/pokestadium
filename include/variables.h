@@ -51,6 +51,12 @@ typedef enum {
 extern u8 gPool[];
 
 extern Gfx* gDisplayListHead;
+/*
+ * Second name for gDisplayListHead (same address, aliased in undefined_syms.ld). Some fragment
+ * code reached the display list head under another symbol: IDO only keeps the address of a
+ * global in a register per symbol, so func_860005B8 and func_86100C30 need it to match.
+ */
+extern Gfx* D_800A7420;
 extern u64 _binary_assets_us_F3DEX2_bin_start[];
 
 extern f32 gSineTable[];

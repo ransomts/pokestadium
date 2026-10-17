@@ -306,7 +306,6 @@ void func_86000564(void) {
     func_80010354(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
 }
 
-#ifdef NON_MATCHING
 void func_860005B8(s32 arg0) {
     s32 i;
     UNUSED u8 sp68[] = {
@@ -414,26 +413,13 @@ void func_860005B8(s32 arg0) {
     func_8001F444();
 
     if (arg0 == 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        // D_800A7420 is gDisplayListHead under its second name (see variables.h).
+        gSPDisplayList(D_800A7420++, D_8006F518);
         func_87801684(0x74, 0xB0, D_86002AC8);
         func_87801824(0x74, 0xC6, D_86002AF0);
         func_87801F48(2, 0x19, 0xA6);
     }
 }
-#else
-static u8 D_86002B84[] = {
-    0,
-    0,
-    30,
-};
-static u8 D_86002B88[] = {
-    0,
-    0,
-    150,
-};
-void func_860005B8(s32 arg0);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/6/fragment6/func_860005B8.s")
-#endif
 
 static Gfx D_86002B90[] = {
     gsSPEndDisplayList(),
