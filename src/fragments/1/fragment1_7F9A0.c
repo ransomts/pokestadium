@@ -1397,10 +1397,10 @@ void func_8120241C(void);
 void func_812070A0(void);
 void func_8120735C(s32);
 void func_81208C08(u16, u8, u16);
-void func_81208D7C(void);
-void func_81208E28(unk_D_8122B2F8*);
+void GbAudio_Reset(void);
+void GbAudio_SetNoiseTable(unk_D_8122B2F8*);
 void func_81208F94(void);
-void func_8120935C(s32);
+void GbAudio_SetMode(s32);
 
 void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16 (*arg5)[6][0x640]) {
     unk_D_8122B2C0* emu;
@@ -1495,10 +1495,10 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
     func_812070A0();
     func_80003B30((u32)(D_8122B2F4 + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)D_8122B2F4 + 0x80000), D_8122B2F4);
-    func_81208E28((unk_D_8122B2F8*)D_8122B2F4);
-    func_8120935C(0);
+    GbAudio_SetNoiseTable((unk_D_8122B2F8*)D_8122B2F4);
+    GbAudio_SetMode(0);
     func_8120735C(0);
-    func_81208D7C();
+    GbAudio_Reset();
     func_81208C08(0xFF26, 0, 0);
     func_81208C08(0xFF26, 0x8F, 0x10);
     func_81208C08(0xFF24, 0x77, 0x20);
@@ -1641,8 +1641,8 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
         case 11:
             D_8122C4F7 = 0x15;
         block_9:
-            func_8120935C(1);
-            func_81209368(1);
+            GbAudio_SetMode(1);
+            GbAudio_PlayStream(1);
 
             D_8122C4FA.unk_00 = (D_8122C4F2 == 0x20)   ? 1
                                 : (D_8122C4F2 == 0x10) ? 2
@@ -1662,16 +1662,16 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
             return;
         default:
             if ((D_8122C4F7 == 0x12) || (D_8122C4F7 == 0x13) || (D_8122C4F7 == 0x14) || (D_8122C4F7 == 0x15)) {
-                func_81209368(1);
-                func_8120935C(0);
+                GbAudio_PlayStream(1);
+                GbAudio_SetMode(0);
                 D_8122C4F7 = 0;
                 return;
             }
             if (D_8122C4F7 == 0) {
                 if ((gPlayer1Controller->buttonPressed & 8) && (arg0->unk_5DD0 == 0) && (D_8122C4F0 == 0x40)) {
                     arg0->unk_53FD = 0x40;
-                    func_8120935C(1);
-                    func_81209368(1);
+                    GbAudio_SetMode(1);
+                    GbAudio_PlayStream(1);
                     D_8122C4F7 = 1;
                 }
                 return;
@@ -1690,13 +1690,13 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                             }
                             if (gPlayer1Controller->buttonPressed & 0x800) {
                             set_3:
-                                func_81209368(7);
+                                GbAudio_PlayStream(7);
                                 D_8122C4F7 = 3;
                                 return;
                             }
                             if (gPlayer1Controller->buttonPressed & 0x400) {
                             set_2:
-                                func_81209368(7);
+                                GbAudio_PlayStream(7);
                                 D_8122C4F7 = 2;
                                 return;
                             }
@@ -1706,15 +1706,15 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                         if (gPlayer1Controller->buttonDown == 0) {
                             func_81203E30();
                             arg0->unk_53FD = 0x40;
-                            func_81209368(1);
-                            func_8120935C(0);
+                            GbAudio_PlayStream(1);
+                            GbAudio_SetMode(0);
                             D_8122C4F7 = 0;
                         }
                         break;
                     case 2:
                         if (gPlayer1Controller->buttonPressed & 0x800) {
                         set_1:
-                            func_81209368(7);
+                            GbAudio_PlayStream(7);
                             D_8122C4F7 = 1;
                             return;
                         }
@@ -1722,7 +1722,7 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                             goto set_3;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x9000) {
-                            func_81209368(2);
+                            GbAudio_PlayStream(2);
                             D_8122C4F7 = 4;
                             return;
                         }
@@ -1738,7 +1738,7 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                             goto set_1;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x9000) {
-                            func_81209368(6);
+                            GbAudio_PlayStream(6);
                             D_8122C4F7 = 6;
                             return;
                         }
@@ -1749,12 +1749,12 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                     case 4:
                     case 5:
                         if (gPlayer1Controller->buttonPressed & 0x4000) {
-                            func_81209368(8);
+                            GbAudio_PlayStream(8);
                             D_8122C4F7 = 2;
                             return;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x300) {
-                            func_81209368(5);
+                            GbAudio_PlayStream(5);
                             D_8122C4F7 = D_8122C4F7 == 4 ? 5 : 4;
                             return;
                         }
@@ -1771,11 +1771,11 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                             back_to_3:
-                                func_81209368(8);
+                                GbAudio_PlayStream(8);
                                 D_8122C4F7 = 3;
                                 return;
                             case 0x8000:
-                                func_81209368(6);
+                                GbAudio_PlayStream(6);
                                 D_8122C774 = (s32) D_8122C4FA.unk_00;
                                 D_8122C4F8 = 0;
                                 D_8122C4F7 = 7;
@@ -1796,11 +1796,11 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 var_v0 = 4;
                             block_96:
                                 if (D_8122C4FA.unk_01 == var_v0) {
-                                    func_81209368(3);
+                                    GbAudio_PlayStream(3);
                                     return;
                                 }
                                 D_8122C4FA.unk_00 = var_v0;
-                                func_81209368(6);
+                                GbAudio_PlayStream(6);
                                 if (D_8122C4F7 == 8) {
                                     D_8122C4F7 = 9;
                                     return;
@@ -1808,7 +1808,7 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 break;
                             case 0x400:
                             case 0x800:
-                                func_81209368(7);
+                                GbAudio_PlayStream(7);
                                 D_8122C4F7 = 0xA;
                                 return;
                         }
@@ -1818,7 +1818,7 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                             case 0x4000:
                                 goto back_to_3;
                             case 0x8000:
-                                func_81209368(6);
+                                GbAudio_PlayStream(6);
                                 D_8122C4F8 = 0;
                                 D_8122C774 = (s32) D_8122C4FA.unk_01;
                                 D_8122C4F7 = 0xB;
@@ -1839,11 +1839,11 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 var_v0_2 = 4;
                             block_119:
                                 if (D_8122C4FA.unk_00 == var_v0_2) {
-                                    func_81209368(3);
+                                    GbAudio_PlayStream(3);
                                     return;
                                 }
                                 D_8122C4FA.unk_01 = var_v0_2;
-                                func_81209368(6);
+                                GbAudio_PlayStream(6);
                                 if (D_8122C4F7 == 0xC) {
                                     D_8122C4F7 = 0xD;
                                     return;
@@ -1851,7 +1851,7 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 break;
                             case 0x400:
                             case 0x800:
-                                func_81209368(7);
+                                GbAudio_PlayStream(7);
                                 D_8122C4F7 = 6;
                                 return;
                         }
@@ -1871,15 +1871,15 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                     case 8:
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
-                                func_81209368(8);
+                                GbAudio_PlayStream(8);
                                 D_8122C4FA.unk_00 = D_8122C774;
                                 D_8122C4F7 = 9;
                                 return;
                             case 0x8000:
                                 if (D_8122C4FA.unk_00 == D_8122C4FA.unk_01) {
-                                    func_81209368(3);
+                                    GbAudio_PlayStream(3);
                                 } else {
-                                    func_81209368(6);
+                                    GbAudio_PlayStream(6);
                                     D_8122C4F7 = 9;
                                 }
                                 return;
@@ -1888,14 +1888,14 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 if ((D_8122C4FA.unk_00 < 0) || (D_8122C4FA.unk_00 >= 5)) {
                                     D_8122C4FA.unk_00 = 0U;
                                 }
-                                func_81209368(5);
+                                GbAudio_PlayStream(5);
                                 return;
                             case 0x100:
                                 D_8122C4FA.unk_00++;
                                 if (D_8122C4FA.unk_00 >= 5) {
                                     D_8122C4FA.unk_00 = 4U;
                                 }
-                                func_81209368(5);
+                                GbAudio_PlayStream(5);
                                 return;
                             case 0x1000:
                                 var_v0 = 0;
@@ -1917,15 +1917,15 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                     case 12:
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
-                                func_81209368(8);
+                                GbAudio_PlayStream(8);
                                 D_8122C4FA.unk_01 = D_8122C774;
                                 D_8122C4F7 = 0xD;
                                 return;
                             case 0x8000:
                                 if (D_8122C4FA.unk_00 == D_8122C4FA.unk_01) {
-                                    func_81209368(3);
+                                    GbAudio_PlayStream(3);
                                 } else {
-                                    func_81209368(6);
+                                    GbAudio_PlayStream(6);
                                     D_8122C4F7 = 0xD;
                                 }
                                 return;
@@ -1934,14 +1934,14 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                                 if ((D_8122C4FA.unk_01 < 0) || (D_8122C4FA.unk_01 >= 5)) {
                                     D_8122C4FA.unk_01 = 0U;
                                 }
-                                func_81209368(5);
+                                GbAudio_PlayStream(5);
                                 return;
                             case 0x100:
                                 D_8122C4FA.unk_01++;
                                 if (D_8122C4FA.unk_01 >= 5) {
                                     D_8122C4FA.unk_01 = 4U;
                                 }
-                                func_81209368(5);
+                                GbAudio_PlayStream(5);
                                 return;
                             case 0x1000:
                                 var_v0_2 = 0;
@@ -1987,9 +1987,9 @@ void func_81203F3C(unk_D_8122B2C0* arg0) {
                         D_8122C4F7 = 0x10;
                         /* fallthrough */
                     case 16:
-                        func_81209368(1);
-                        func_8120935C(0);
-                        func_81208D7C();
+                        GbAudio_PlayStream(1);
+                        GbAudio_SetMode(0);
+                        GbAudio_Reset();
                         break;
                 }
             }
@@ -2335,7 +2335,7 @@ u8 D_8120E8A8[24] = { 0x80, 0x2C, 0x7A, 0xA, 0xA, 0xE, 0x42, 0x75, 0x74, 0x74, 0
 u8 D_8120E8C0[24] = { 0x80, 0x64, 0x3C, 0xC, 8, 0xF, 0x55, 0x6E, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x53, 0x41, 0x56, 0x45, 0x2E, 0, 0, 0 };
 u8 D_8120E8D8[128] = { 0x80, 0x28, 0x78, 0xC, 7, 0x10, 0x4C, 0x65, 0x61, 0x76, 0x69, 0x6E, 0x67, 0x20, 0x79, 0x6F, 0x75, 0x72, 0x20, 0x4E, 0x36, 0x34, 0x80, 0xCC, 0x78, 0xC, 7, 8, 0x2C, 0x20, 0x64, 0x65, 0x74, 0x61, 0x63, 0x68, 0x80, 0x91, 0x78, 0xC, 0xB, 9, 0x74, 0x75, 0x72, 0x6E, 0x65, 0x64, 0x20, 0x4F, 0x4E, 0x80, 0x28, 0x8C, 0xC, 7, 0x24, 0x74, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x2C, 0x20, 0x63, 0x6C, 0x65, 0x61, 0x6E, 0x20, 0x74, 0x68, 0x65, 0x20, 0x63, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x6F, 0x72, 0x80, 0x28, 0xA0, 0xC, 7, 0x19, 0x73, 0x65, 0x63, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x61, 0x6E, 0x64, 0x20, 0x72, 0x65, 0x2D, 0x61, 0x74, 0x74, 0x61, 0x63, 0x68, 0x20, 0x69, 0x74, 0x2E, 0, 0, 0, 0 };
 u8 D_8120E958[248] = { 0x80, 0x32, 0x32, 0xC, 8, 0x20, 0x54, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x20, 0x6F, 0x72, 0x20, 0x74, 0x68, 0x65, 0x20, 0x64, 0x61, 0x74, 0x61, 0x20, 0x68, 0x61, 0x73, 0x20, 0x80, 0x32, 0x40, 0xC, 8, 0xD, 0x62, 0x65, 0x65, 0x6E, 0x20, 0x63, 0x68, 0x61, 0x6E, 0x67, 0x65, 0x64, 0x2E, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x43, 0x6C, 0x65, 0x61, 0x72, 0x20, 0x57, 0x6F, 0x72, 0x6B, 0x61, 0x72, 0x65, 0x61, 0x20, 0x25, 0x78, 0x20, 0x2D, 0x25, 0x78, 0x20, 0x73, 0x69, 0x7A, 0x65, 0x20, 0x25, 0x78, 0x20, 0xA, 0, 0x48, 0x65, 0x61, 0x70, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-u8 func_81208F9C(u16);
+u8 GbAudio_ReadReg(u16);
 s32 func_81209EB4(unk_D_8122B2C0*, s32);
 void func_812096A0(unk_D_8122B2C0*, unk_D_8122B2F8*);
 
@@ -2676,7 +2676,7 @@ reset:
 
     }
 
-    emu->unk_00[0x126] = func_81208F9C(0xFF26);
+    emu->unk_00[0x126] = GbAudio_ReadReg(0xFF26);
     func_8120735C(emu->unk_00[0x14D] >> 7);
     emu->unk_53C0 = 0;
     emu->unk_5490 = emu->unk_548E;
@@ -2832,7 +2832,7 @@ void func_81206E64(unk_D_800AA660* arg0) {
 
   if (D_8122C4FC == 0) {
       if ((D_8122C4DC == 0) || (D_8122C4DC == 6)) {
-          func_81209078();
+          GbAudio_Update();
       }
   } else if (D_8122C4FC == 1) {
       D_8122C4FC = 2;
@@ -2843,6 +2843,6 @@ void func_81206E64(unk_D_800AA660* arg0) {
 
 void func_81206F38(UNUSED unk_D_800AA664* arg0) {
   if ((D_800A62E0.unk_A38 == 0) && (D_8122C4FC == 2) && ((D_8122C4DC == 0) || (D_8122C4DC == 6))) {
-      func_81209078();
+      GbAudio_Update();
   }
 }

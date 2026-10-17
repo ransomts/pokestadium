@@ -39,3 +39,16 @@ func_80021A30	ReadBE16	a3		(arg0[0] << 8) | arg0[1] - big-endian 16-bit read fro
 func_80021A48	ReadBE24	a3		(arg0[0] << 0x10) | (arg0[1] << 8) | arg0[2] - big-endian 24-bit read	applied@73ff805
 func_80021A68	WriteBE16	a3		arg0[0] = arg1 >> 8; arg0[1] = arg1 - big-endian 16-bit write	applied@73ff805
 func_80021A78	WriteBE24	a3		big-endian 24-bit write (three bytes, high first)	applied@73ff805
+func_81208D7C	GbAudio_Reset	a4		zeroes GB APU regs 0x50..0x10 via GbAudio_WriteReg, clears the four channel states, creates the D_8122EEB0 message queue	applied@8021bf6
+func_81208E28	GbAudio_SetNoiseTable	a4		sets D_8122C794 (the noise channel sample table read by duty case 6) then resets the APU	applied@8021bf6
+D_8122C794	gGbAudioNoiseTable	a4		bss u8* noise sample table, indexed by the noise duty lookup (D_8122C794[arg1 + D_8122EE98] & 0x7F)	applied@8021bf6
+func_81208F9C	GbAudio_ReadReg	a4		read side of GbAudio_WriteReg: 0xFF26/NR52 returns channel-enable bits assembled from the four channel states	applied@8021bf6
+func_81208828	GbAudio_MixChannels	a4		the APU mix loop: drains gGbApuWriteQueue, steps sq1/sq2/wave/noise, mixes L/R with GB_APU_REGS volumes into out	applied@8021bf6
+func_81209374	GbAudio_RenderStream	a4		stream renderer: rotates the queued/main/alt GbAudioStream chain, reads D_81228654[id] data + D_81228678[id] lengths, mixes main+alt	applied@8021bf6
+func_81209368	GbAudio_PlayStream	a4		queues a stream id into D_8120EB7C.id (picked up by GbAudio_RenderStream's rotation)	applied@8021bf6
+func_8120935C	GbAudio_SetMode	a4		sets D_8120EB78: 0 = GB APU mixing (GbAudio_MixChannels), 1 = stream playback (GbAudio_RenderStream)	applied@8021bf6
+D_8120EB78	gGbAudioMode	a4		audio mode flag dispatched in the AI callback (0 = APU mix, 1 = stream render)	applied@8021bf6
+D_8120EB7C	gGbAudioStreamQueued	a4		GbAudioStream {id,pos} waiting to start (id set by GbAudio_PlayStream, consumed by the rotation)	applied@8021bf6
+D_8120EB84	gGbAudioStreamMain	a4		main playing GbAudioStream (becomes the rotation target with pos reset)	applied@8021bf6
+D_8120EB8C	gGbAudioStreamAlt	a4		alt/fading GbAudioStream (previous main, kept for the two-stream mix)	applied@8021bf6
+func_81209078	GbAudio_Update	a4		AI-frame driver: triple-buffers via osGbSetNextBuffer, dispatches GbAudio_MixChannels or GbAudio_RenderStream by gGbAudioMode, writeback + timing	applied@8021bf6

@@ -7,7 +7,7 @@
 void func_81206D9C(unk_D_800AA660*);
 void func_81206E64(unk_D_800AA660*);
 void func_81206F38(unk_D_800AA664*);
-void func_81209078();
+void GbAudio_Update();
 void func_81209870(unk_D_8122B2C0*); 
 s32 osGbSetNextBuffer(void*, s32);
 
