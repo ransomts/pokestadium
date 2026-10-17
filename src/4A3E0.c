@@ -275,16 +275,17 @@ void func_80049D5C(u16 arg0) {
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
-// Hand-written (no m2c). Score 2530 over the whole function (diff.py without -s and with func_8004A474 left as
+// Hand-written (no m2c). Score 1520 over the whole function (diff.py without -s and with func_8004A474 left as
 // GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
 // one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
 // `if (f >= 0x800 || f < 0) goto skip`, `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores
 // (keeps -1 in a3). Round 8: the swept frequency is its own s32 local `freq` (sharing nr11 put
 // D_800FD004 in t0 and nr11 in v0); BOTH switches written `duty = (D_800FD008[1].value & 0xC0) >> 6`
 // with `nr11 = D_800FD008[1].value` (s32) read AFTER it in the trigger: uopt then computes the sweep
-// switch value in each predecessor like the target (3565 -> 2530).
-// Remaining: a stray `move t7,a0` before `(u8)(nr14 & 7)` that shifts the t-register rotation in the
-// trigger block; `li 0x40` scheduling in case 1; the `goto skip` path loads NR12 via v0 and puts dir in
+// switch value in each predecessor like the target (3565 -> 2530). `unk_0C = ((u8)duty & 0xF0) << 7` (the
+// cast's andi 0xFF is folded by as1 but consumes a temp: the whole trigger block now matches, incl. the old
+// stray `move t7,a0`; same trick as func_8004A474) and `(unk_04 >> shift) + unk_04` (addu order): 1520.
+// Remaining: the sweep switch value lands in a0 (target t0, which it was before the (u8) cast); the `goto skip` path loads NR12 via v0 and puts dir in
 // a1 (target: dir in t2 loaded in place, lui t2 hoisted into the decrement path), phase a2 vs a1, unk_14
 // a2 vs v0. Dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types (no change),
 // explicit casts (u16)/(s32) on the freq high bits, other spellings of the NR13|NR14 expression
@@ -377,7 +378,7 @@ s16 func_80049DF0(void) {
             D_800FCF60.unk_1E = phase;
             D_800FCF60.unk_1C = 0;
             D_800FCF60.unk_20 = 0;
-            D_800FCF60.unk_0C = (duty & 0xF0) << 7;
+            D_800FCF60.unk_0C = ((u8)duty & 0xF0) << 7;
             if (duty & 7) {
                 if (dir) {
                     D_800FCF60.unk_0E = 0x800;
@@ -417,7 +418,7 @@ s16 func_80049DF0(void) {
     if ((D_800FCF60.unk_08 - (D_800FCF60.unk_00 % D_800FCF60.unk_08)) <= 0x40) {
         duty = D_800FD008[0].value;
         if (!(duty & 8)) {
-            freq = (u16)(D_800FCF60.unk_04 + (D_800FCF60.unk_04 >> (duty & 7)));
+            freq = (u16)((D_800FCF60.unk_04 >> (duty & 7)) + D_800FCF60.unk_04);
             if (freq >= 0x800) {
                 D_800FCF60.unk_2C = 0;
                 D_800FD008[0x16].value &= ~1;
