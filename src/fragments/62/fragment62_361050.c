@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 8349 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 8309 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2192,6 +2192,10 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // Prologue matches with the field reads in the order 09 0E 0A 0B 0C 0D 0F 10 (8919 -> 8639).
 // The unk_08 clamp result reuses var_v1_6 (the case 0x39 flag): spC0 then lives in t1 (spilled to
 // 0xC0) and the unk_08 value in s2, as in the target (8639 -> 8349).
+// var_s5 is s32 and holds the unk_0A copy for the last two uses in the 0x5C block (`var_s5 =
+// temp_t0;` just before the multiply): it now lives in s5 like the target (8349 -> 8309), but the
+// target captures it before the first call (sw 0x68, lw s5 after the call). Putting the copy at
+// the top of the block colours it s6 (11434); right after the first call: s6 (8843).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
 // gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
 // below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
@@ -2244,7 +2248,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     s32 var_s0_4;
     s32 var_s1;
     s32 var_s2;
-    u8 var_s5;
+    s32 var_s5;
     s32 var_v1_6;
     s32 var_v1_4;
     s32 var_v1_5;
@@ -2370,10 +2374,11 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
                             var_s1 += (var_s0 * func_843783CC(arg1));
                             var_s1 += (var_s0 * func_843779C8(temp_fp, temp_s4, 2, &sp104));
                             var_s1 += (var_s0 * func_843779C8(temp_fp, temp_s4, 0xE, &sp104));
-                            var_s1 -= ((temp_t0 * func_843779C8(temp_fp, temp_s4, 0, &sp104)) / 2);
+                            var_s5 = temp_t0;
+                            var_s1 -= ((var_s5 * func_843779C8(temp_fp, temp_s4, 0, &sp104)) / 2);
                             var_s1 += (spBA * func_843776FC(temp_fp, temp_fp, 0x49));
                             if (func_8437ACB0(arg3, i, arg2, 0xB2) != 0) {
-                                var_s1 -= temp_t0;
+                                var_s1 -= var_s5;
                             }
                         }
 
