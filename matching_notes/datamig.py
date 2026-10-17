@@ -447,7 +447,8 @@ def plan(path, quiet=False):
     k = 0
     while k < len(labs):
         l = labs[k]
-        d = ([x for x in (l["ext"] or l["decls"]) if not x[7]] or l["ext"] or l["decls"] or [None])[0]
+        d = (sorted((x for x in (l["ext"] or l["decls"]) if not x[7]), key=lambda x: "[]" in x[4].replace(" ", ""))
+             or l["ext"] or l["decls"] or [None])[0]
         if d and d[2] == "var" and dims_of(d[4])[:1] == [None]:
             j = k
             while j + 1 < len(labs) and not labs[j + 1]["users"] and labs[j + 1]["name"] not in referenced \
@@ -464,8 +465,10 @@ def plan(path, quiet=False):
     resolve_orphans([x for x in labs])
     for l in labs:
         span, decls, ext, owner = l["span"], l.pop("decls"), l.pop("ext"), l["owner"]
-        real = [x for x in (ext or decls) if not x[7]]
-        d = (real or ext or decls or [None])[0]
+        # prefer the owner's own declaration, then a sized one: headers often say `T x[];`
+        rank = lambda x: (x[0] != owner, "[]" in x[4].replace(" ", ""), x[0])
+        real = sorted((x for x in (ext or decls) if not x[7]), key=rank)
+        d = (real or sorted(ext or decls, key=rank) or [None])[0]
         if d and d[7]:
             # only a draft declares it: use the draft's type (gcc's check compiles drafts) and hoist the
             # draft's own typedef of that type out of the draft so the real build can see it
