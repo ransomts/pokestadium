@@ -1,6 +1,6 @@
 old	new	batch	also	justification	status
 func_81207DF8	func_81207DF8	t1		no-op test row (rename_spec test 1)	noop
-func_81207DF8	tmp_RenameRoundTrip	t2		round-trip test (rename_spec test 2)	pending
+func_81207DF8	tmp_RenameRoundTrip	t2		round-trip test (rename_spec test 2); verified then reverted; func_81207DF8 itself renamed in t3	tested
 func_81207DF8	GbAudio_StepNoiseChannel	t3		noise channel step: called as `noise = ...` beside the sq1/sq2/wave steppers, gated by GB_APU_REGS.noiseLeft/noiseRight	applied
 D_8122C888	gGbAudioNoiseChannel	t3	unk_func_81208D7C:GbAudioChannel	noise channel state: one of the four 0x50-byte channel structs (D_8122C798/C7E8/C838/C888) stepped by the sq1/sq2/wave/noise functions	applied
 unk_func_81208D7C	GbAudioChannel	t3b		shared type of the four GB APU channel states (D_8122C798/C7E8/C838/C888); fields are envelope/timer/frequency per channel	applied
