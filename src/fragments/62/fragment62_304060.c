@@ -337,7 +337,7 @@ void func_8431A1C8(unk_D_86002F34_00C* arg0) {
         }
     }
     arg0->unk_24.fovy = D_843859E0[var_v1].unk_0C;
-    func_8000E88C(&arg0->unk_60.at, 0.0f, 10.0f, 0.0f);
+    Vec3f_Set(&arg0->unk_60.at, 0.0f, 10.0f, 0.0f);
     func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, D_843859E0[var_v1].unk_04, D_843859E0[var_v1].unk_08,
                   D_843859E0[var_v1].unk_0A);
     D_84390240.unk_00->unk_20++;
@@ -372,7 +372,7 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
         tmp2 = (D_84384580[arg1]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[var_v1].z;
         tmp1 = ((D_84384580[arg1]->unk_00.z + D_84384C30[var_v1].y) * temp_s0->unk_4B0) + temp_s0->unk_000.unk_024.x;
 
-        func_8000E88C(&arg0->unk_60.at, tmp1, tmp2, temp_s0->unk_000.unk_024.z);
+        Vec3f_Set(&arg0->unk_60.at, tmp1, tmp2, temp_s0->unk_000.unk_024.z);
 
         tmp1 = D_84384580[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[var_v1].x;
         tmp4 = D_84384580[D_84390240.unk_00->unk_2C]->unk_0C;

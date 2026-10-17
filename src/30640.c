@@ -537,7 +537,7 @@ void func_80031204(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
     D_80075F80 = arg0;
     arg0->unk_1C = process_geo_layout(sp18, D_80075FA0);
     D_80075F80 = NULL;
-    func_80002D60(sp18);
+    mem_pool_resize_block(sp18);
 }
 
 unk_func_80031270* func_80031270(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80068BB0* arg3,
@@ -639,7 +639,7 @@ void func_80031390(unk_func_80031270* arg0) {
 
     temp_s1 = (unk_D_83403C60_raw*)arg0->unk_18;
     func_80031140(&sp30, &temp_s1->unk_70);
-    func_8000E88C(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
+    Vec3f_Set(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
     arg0->unk_20->unk_0A6 = 0xFE;
     sp94 = sp30.unk_00.unk_00;
     if (sp30.unk_00.unk_00 == 0x99) {
@@ -686,7 +686,7 @@ void func_800314BC(unk_func_80031270* arg0) {
         GraphNode_AddChild(arg0->unk_30, process_geo_layout(sp24, temp_v0_3));
     }
     arg0->unk_34 = sp20(2, 0);
-    func_80002D60(sp24);
+    mem_pool_resize_block(sp24);
     temp_v0_4 = sp20(4, 0);
     if (temp_v0_4 == NULL) {
         temp_v1 = arg0->unk_24;

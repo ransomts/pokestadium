@@ -38,7 +38,7 @@ void func_80019F84(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
 
     arg0->unk_0C = process_geo_layout(sp20, D_8006F350);
     arg0->unk_10 = D_800ABE10.unk_A04.unk_0C;
-    func_80002D60(sp20);
+    mem_pool_resize_block(sp20);
     sp24 = arg0->unk_0C->unk_0C;
     func_80011DAC(sp24, 0, 0, arg1, arg2);
     func_80011E68(sp24, 30.0f, 100.0f, 12800.0f);
@@ -235,7 +235,7 @@ void func_8001A714(unk_func_8001A024* arg0, s32 arg1) {
     func_8000E990(&arg0->unk_10->unk_024, &sp38);
     arg0->unk_10->unk_000.unk_02 &= ~0x40;
     arg0->unk_10->unk_000.unk_02 |= 0x80;
-    func_8000E88C(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
+    Vec3f_Set(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
     func_80010354(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
     func_80015348();
@@ -483,7 +483,7 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
     arg0->unk_20 = process_geo_layout(sp24, D_8006F3E0);
     arg0->unk_24 = D_800AC830;
-    func_80002D60(sp24);
+    mem_pool_resize_block(sp24);
     func_80011DAC(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
     func_80011E68(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
@@ -649,7 +649,7 @@ void func_8001B778(unk_func_8001B1FC* arg0) {
         }
     }
 
-    func_8000E88C(&D_800AC830->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
+    Vec3f_Set(&D_800AC830->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
 }
 
 void func_8001B834(unk_func_8001B1FC* arg0) {

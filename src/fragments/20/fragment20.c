@@ -1688,7 +1688,7 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
 }
 
 void func_86E02880(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
@@ -1818,15 +1818,15 @@ void func_86E02C5C(void) {
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_87906050 = process_geo_layout(temp_v0, D_86E04B34);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (i = 0; i < 4; i++) {
-        func_8001BB58(&miniMetapods[i].unk_000);
+        Graph_AddToRootList0(&miniMetapods[i].unk_000);
     }
 
     for (i = 0; i < 20; i++) {
-        func_8001BB58(&miniMetapodRocks[i].unk_000);
+        Graph_AddToRootList0(&miniMetapodRocks[i].unk_000);
     }
 
     func_8001987C();
@@ -1884,7 +1884,7 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
     metapodMinigameInit();
     func_86E02A64(); //	tutorial screen ?
     func_86E02BB0();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC(); //	main_pool_try_free(D_800AC870);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 

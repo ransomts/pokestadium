@@ -654,7 +654,7 @@ void func_84002388(void) {
 }
 
 void func_840023B8(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     if (D_84002BE0 > 0) {
         func_84000698(0x4C, 0x54, 0x1E8, 0x150);
         D_84002BE0 -= 1;
@@ -673,7 +673,7 @@ void func_84002430(void) {
 
         for (i = 0; i < 10; i++) {
             Game_UpdateInputs();
-            func_800079C4();
+            Stage_BeginDisplayList();
             func_8001D924(D_84002D0C);
             Stage_Advance();
         }
@@ -687,7 +687,7 @@ void func_840024B0(void) {
 
     while (func_80007604() != 1) {
         Game_UpdateInputs();
-        func_800079C4();
+        Stage_BeginDisplayList();
         func_8001D924(D_84002D0C);
         Stage_Advance();
     }
@@ -703,7 +703,7 @@ void func_8400253C(void) {
 
     for (i = 0x10; i < 0x170; i += 0x20) {
         func_84002388();
-        func_800079C4();
+        Stage_BeginDisplayList();
         func_8001D924(D_84002D0C);
         func_840003A8();
         tmp = i;
@@ -718,7 +718,7 @@ void func_840025FC(void) {
 
     for (i = 9; i >= 0; i--) {
         func_84002388();
-        func_800079C4();
+        Stage_BeginDisplayList();
         func_8001D924(D_84002D0C);
         func_840003A8();
         func_84000698(0x4C, (s16)((0x16C - (s16)(0xE + i * 0x23)) / 2) + 0x54, 0x1E8, 0xE + i * 0x23);
@@ -726,7 +726,7 @@ void func_840025FC(void) {
     }
 
     for (i = 0; i < 2; i++) {
-        func_800079C4();
+        Stage_BeginDisplayList();
         func_8001D924(D_84002D0C);
         Stage_Advance();
     }

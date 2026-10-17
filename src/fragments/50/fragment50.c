@@ -2082,7 +2082,7 @@ void func_8260125C(void) {
 }
 
 void func_82602294(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 0x2A9);
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015094(D_82607418);
@@ -2112,7 +2112,7 @@ void func_82602300(s16 arg0) {
     }
 
     temp_s0->unk_008.unk_000.unk_02 &= ~0x40;
-    func_8000E88C(&temp_s0->unk_008.unk_030, temp_s1->unk_00, temp_s1->unk_00, temp_s1->unk_00);
+    Vec3f_Set(&temp_s0->unk_008.unk_030, temp_s1->unk_00, temp_s1->unk_00, temp_s1->unk_00);
 
     temp_fs0 = (tmp * 6.283f) / 65536.0f;
     temp_s0->unk_008.unk_024.x =
@@ -2605,8 +2605,8 @@ void func_82603924(void) {
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_82607418 = process_geo_layout(temp_v0, &D_82607228);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
     func_8001987C();
     func_8001B058();
 
@@ -2633,7 +2633,7 @@ void func_82603924(void) {
     temp_s0 = func_80019D18(0xB7);
 
     ptr = &D_82608268;
-    func_8001BB58(&D_82608268);
+    Graph_AddToRootList0(&D_82608268);
     func_8001BC34(&D_82608268, 0, 0xB7, temp_s0->unk_08->unk_00[0]);
 
     ptr->unk_000.unk_02 &= ~0x40;
@@ -2650,7 +2650,7 @@ void func_82603924(void) {
 
     temp_s0 = func_80019D18(0xB7);
     ptr = &D_826083D0;
-    func_8001BB58(&D_826083D0);
+    Graph_AddToRootList0(&D_826083D0);
     func_8001BC34(&D_826083D0, 0, 0xB7, temp_s0->unk_08->unk_00[1]);
 
     ptr->unk_000.unk_02 &= ~0x40;
@@ -2666,7 +2666,7 @@ void func_82603924(void) {
     ptr->unk_040.unk_0C = 0;
 
     for (j = 0; j < 5; j++) {
-        func_8001BB58(&D_82607420[j].unk_008);
+        Graph_AddToRootList0(&D_82607420[j].unk_008);
     }
 
     D_8260741C = func_80019760(9);
@@ -2682,7 +2682,7 @@ void func_82603924(void) {
     }
 
     for (i = 0; i < 5; i++) {
-        func_8001BB58(&D_82607B60[i]);
+        Graph_AddToRootList0(&D_82607B60[i]);
     }
 
     D_82608538 = func_80019D18(0xB6);
@@ -2721,7 +2721,7 @@ s32 func_82603D20(s32 arg0, s32 arg1) {
     D_8267E760 = GetMessageBank(0x24);
     Stage_Set(sp24);
     func_8260365C();
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('VICH');

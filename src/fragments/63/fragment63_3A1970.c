@@ -120,7 +120,7 @@ void func_84B0D878(unk_D_84B26640_010* arg0) {
     if (arg0->unk_01 == 8) {
         arg0->unk_00 = 0;
     }
-    func_8000E88C(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+    Vec3f_Set(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
 }
 
 void func_84B0D8F0(unk_D_84B26640_010* arg0) {
@@ -129,7 +129,7 @@ void func_84B0D8F0(unk_D_84B26640_010* arg0) {
         arg0->unk_00 = 0;
         func_8001BCF0(arg0->unk_04);
     } else {
-        func_8000E88C(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+        Vec3f_Set(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
     }
 }
 
@@ -156,11 +156,11 @@ void func_84B0D9D8(unk_D_84B26640_010* arg0, unk_D_86002F58_004_000* arg1) {
     func_8001BC34(arg1, 1, 0, arg0->unk_08);
     arg0->unk_04->unk_000.unk_14 = arg0;
     if (arg0->unk_02 == 0) {
-        func_8000E88C(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);
+        Vec3f_Set(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);
     } else {
-        func_8000E88C(&arg0->unk_04->unk_024, -96.0f, 80.0f, -288.0f);
+        Vec3f_Set(&arg0->unk_04->unk_024, -96.0f, 80.0f, -288.0f);
     }
-    func_8000E88C(&arg0->unk_04->unk_030, 0.1f, 0.1f, 0.1f);
+    Vec3f_Set(&arg0->unk_04->unk_030, 0.1f, 0.1f, 0.1f);
 }
 
 void func_84B0DA90(unk_D_84B26640_010* arg0) {
@@ -181,5 +181,5 @@ void func_84B0DAA4(unk_D_84B26640_010* arg0, u8 arg1) {
     } else {
         arg0->unk_08 = process_geo_layout(sp2C, D_84B17528);
     }
-    func_80002D60(sp2C);
+    mem_pool_resize_block(sp2C);
 }

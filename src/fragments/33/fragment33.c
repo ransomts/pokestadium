@@ -541,7 +541,7 @@ void func_81302498(void) {
 }
 
 void func_813024C8(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     if (gCurrentGameState == 0x25) {
         func_8130306C(D_81303FA0);
     } else {
@@ -747,8 +747,8 @@ void func_81302C20(void) {
         temp_s1 = D_81303F48[i];
         ptr = &D_81304008[temp_s1].unk_028;
 
-        func_8001BB58(ptr);
-        func_8000E88C(&ptr->unk_024, ((temp_s1 * 0x84) + 0x7A) - 320.0f, 64.0f, -579.0f);
+        Graph_AddToRootList0(ptr);
+        Vec3f_Set(&ptr->unk_024, ((temp_s1 * 0x84) + 0x7A) - 320.0f, 64.0f, -579.0f);
         D_81304008[temp_s1].unk_002 = temp_s1;
         D_81304008[temp_s1].unk_000 = 0;
 
@@ -787,8 +787,8 @@ void func_81302DD8(void) {
 
     D_8130464C = process_geo_layout(sp1C, &D_81303CB4);
     D_81304648 = process_geo_layout(sp1C, &D_81303EC0);
-    func_80002D60(sp1C);
-    func_8001BB20();
+    mem_pool_resize_block(sp1C);
+    Graph_InitRoots();
     func_81302C20();
     D_81304650 = 1;
 }
@@ -824,7 +824,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
 
     Stage_Set(sp24);
     sp20 = func_81302A70(arg0);
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('GBSL');

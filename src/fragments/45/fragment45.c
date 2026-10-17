@@ -747,7 +747,7 @@ void func_83602C14(void) {
     f32 sp18;
 
     func_83402210(&D_83603300, &sp28, &sp24, D_83603300.unk_00);
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_83602458();
     func_836009A4(0, 0x4F, 0x280, 1);
     func_836009A4(0, 0x151, 0x280, 0);
@@ -901,7 +901,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     func_8360086C(arg0);
     Stage_Set(sp24);
     func_83602F4C();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

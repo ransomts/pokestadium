@@ -1018,7 +1018,7 @@ void func_83503770(void) {
     f32 var_fv1;
 
     func_83402210(&D_83503FC8, &sp30, &sp2C, D_83503FC8.unk_00);
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_835024FC();
     func_835023F0(0x1E, 0x2A, &D_83503FC8);
     if (D_83504080 != 0) {
@@ -1219,7 +1219,7 @@ void func_83503C9C(s32 arg0, s32 arg1) {
     func_8350057C(arg0, arg1);
     Stage_Set(sp24);
     func_83503B2C();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

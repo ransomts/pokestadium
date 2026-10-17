@@ -635,7 +635,7 @@ void func_80014124(GraphNode* arg0) {
     Vec3s sp24;
 
     if (D_8006F09C->unk_000.unk_02 & 2) {
-        func_8000E88C(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
+        Vec3f_Set(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
         func_8000EB70(&sp24, 0, D_8006F09C->unk_01E.y, 0);
         Matrix_RotateTranslate(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
 
@@ -948,11 +948,11 @@ void func_80014D70(GraphNode* arg0) {
         func_80014CB8(0x64);
     }
 
-    func_8000E88C(&sp9C, sp3C->mf[3][0], sp3C->mf[3][1] + arg->unk_1E, sp3C->mf[3][2]);
+    Vec3f_Set(&sp9C, sp3C->mf[3][0], sp3C->mf[3][1] + arg->unk_1E, sp3C->mf[3][2]);
     sp9C.y = 0.0f;
 
     if (D_8006F09C->unk_000.unk_02 & 0x40) {
-        func_8000E88C(&sp90, 0.0f, 1.0f, 0.0f);
+        Vec3f_Set(&sp90, 0.0f, 1.0f, 0.0f);
         Matrix_GetScale(sp3C, &sp84);
 
         sp80 = 1.0f - ((sp3C->mf[3][1] - sp9C.y) / 1000.0f);

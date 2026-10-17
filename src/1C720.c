@@ -15,12 +15,12 @@
 struct unk_D_86002F58_004_000_000 D_800AC840;
 struct unk_D_86002F58_004_000_000 D_800AC858;
 
-void func_8001BB20(void) {
+void Graph_InitRoots(void) {
     GraphNode_AllocInit(0, &D_800AC840);
     GraphNode_AllocInit(0, &D_800AC858);
 }
 
-void func_8001BB58(unk_D_86002F58_004_000* arg0) {
+void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0) {
     func_80011938(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
     GraphNode_AddChild(&D_800AC840, &arg0->unk_000);
     arg0->unk_0A6 = 0;

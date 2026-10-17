@@ -1013,7 +1013,7 @@ void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
     Vec3f sp30;
     Vec3f sp24;
 
-    func_8000E88C(&sp3C, SINS(arg3), 0.0f, COSS(arg3));
+    Vec3f_Set(&sp3C, SINS(arg3), 0.0f, COSS(arg3));
     func_8000EAF4(&arg1);
     func_8000EA84(&sp30, &arg1, &sp3C);
     func_8000EAF4(&sp30);

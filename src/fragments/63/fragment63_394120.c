@@ -146,8 +146,8 @@ s32 func_84B003D4(s32 arg0, unk_D_86002F34_alt8* arg1) {
 
 void func_84B00404(unk_D_86002F58_004_000* arg0) {
     func_8001BCF0(arg0);
-    func_8000E88C(&arg0->unk_024, 0.0f, 0.0f, 0.0f);
-    func_8000E88C(&arg0->unk_030, 1.0f, 1.0f, 1.0f);
+    Vec3f_Set(&arg0->unk_024, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&arg0->unk_030, 1.0f, 1.0f, 1.0f);
     func_8000EB70(&arg0->unk_01E, 0, 0, 0);
 }
 
@@ -317,7 +317,7 @@ void func_84B01474(s16 arg0) {
 }
 
 void func_84B014DC(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_80015094(D_84B1A598.unk_0004);
     func_84B0F464(&D_84B26640.unk_1C);
@@ -1191,16 +1191,16 @@ void func_84B03064(void) {
         D_84B1A598.unk_0001 = 1;
     }
 
-    func_8001BB20();
+    Graph_InitRoots();
 
     for (i = 0, ptr2 = &D_84B1A598.unk_0008[0]; i < 128; ptr2++, i++) {
-        func_8001BB58(ptr2);
+        Graph_AddToRootList0(ptr2);
         D_84B1A598.unk_0008[i].unk_0A6 = i;
     }
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_84B1A598.unk_0004 = process_geo_layout(temp_v0, &D_84B0FB20);
-    func_80002D60(temp_v0);
+    mem_pool_resize_block(temp_v0);
 
     ptr = D_84B1A598.unk_0004->unk_0C;
     ptr->unk_24.near = 10.0f;
@@ -1259,7 +1259,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
         main_pool_pop_state('eye0');
     }
 
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

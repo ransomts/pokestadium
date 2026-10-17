@@ -225,7 +225,7 @@ void func_82F07004(s16 arg0) {
     for (i = 0; i < D_82F210D0; i++, var_s0++) {
         unk_D_86002F58_004_000* ptr = &var_s0->unk_028;
 
-        func_8001BB58(ptr);
+        Graph_AddToRootList0(ptr);
         func_8001BC34(ptr, 0, 0, D_82F210CC);
         ptr->unk_000.unk_14 = i;
         ptr->unk_000.unk_01 &= ~1;
@@ -426,7 +426,7 @@ void func_82F077E0(void) {
         if (var_s0->unk_000 != 0) {
             unk_D_86002F58_004_000* ptr = &var_s0->unk_028;
 
-            func_8000E88C(&ptr->unk_024, var_s0->unk_006 - 320.0f, 240.0f - var_s0->unk_008, -579.0f);
+            Vec3f_Set(&ptr->unk_024, var_s0->unk_006 - 320.0f, 240.0f - var_s0->unk_008, -579.0f);
             ptr->unk_01E.z = var_s0->unk_012;
             ptr->unk_01D = var_s0->unk_014;
             ptr->unk_030.x = var_s0->unk_01C * var_s0->unk_018;
@@ -1093,7 +1093,7 @@ void func_82F09C6C(void) {
 
     D_82F210C8 = process_geo_layout(sp1C, D_82F13E8C);
     D_82F210CC = process_geo_layout(sp1C, D_82F13E58);
-    func_80002D60(sp1C);
+    mem_pool_resize_block(sp1C);
 
     D_82F20A40.unk_00 = 0;
     D_82F20A40.unk_02 = 0;

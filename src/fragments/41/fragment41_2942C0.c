@@ -1798,7 +1798,7 @@ void func_82F12614(void) {
 
     gDPPipeSync(gDisplayListHead++);
 
-    func_800079C4();
+    Stage_BeginDisplayList();
 }
 
 void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {

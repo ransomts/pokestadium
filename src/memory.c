@@ -135,7 +135,7 @@ void* state_pool_try_init(u32 size, s32 side) {
     return ptr;
 }
 
-void func_80002D60(struct MemoryBlock* block) {
+void mem_pool_resize_block(struct MemoryBlock* block) {
     s32 size = ALIGN16(block->size + 0x10);
 
     main_pool_realloc(block, size);

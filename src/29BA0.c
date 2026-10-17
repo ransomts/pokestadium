@@ -758,7 +758,7 @@ void func_800296E0(void) {
                                           D_800AE520.arg0, D_800AE520.arg1);
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('DBUG');
@@ -825,7 +825,7 @@ s16 func_80029984(s16 arg0) {
         }
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');
@@ -927,7 +927,7 @@ s32 func_80029E78(s16 arg0) {
         }
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
     main_pool_pop_state('FREE');
 
@@ -998,7 +998,7 @@ s16 func_8002A260(s16 arg0) {
         }
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');
@@ -1147,7 +1147,7 @@ s16 func_8002A8A0(s16 arg0, s16 arg1) {
         arg1 = 0;
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');

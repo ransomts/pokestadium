@@ -103,7 +103,7 @@ s32 func_843000C0(s32 arg0, unk_D_86002F34_alt18* arg1) {
 
 s32 func_8430012C(s32 arg0, unk_D_86002F58_004_000* arg1) {
     if (arg0 == 2) {
-        func_8000E88C(&arg1->unk_030, D_8438E7A8, D_8438E7A8, D_8438E7A8);
+        Vec3f_Set(&arg1->unk_030, D_8438E7A8, D_8438E7A8, D_8438E7A8);
         arg1->unk_03C.rgba = D_8438E7A4.rgba;
     }
     return 0;
@@ -337,7 +337,7 @@ s32 func_84300E88(s32 arg0) {
     func_8432D0D8(2, &D_8438E440);
     func_84300750(D_8438E788, D_8438E790);
     func_84300750(D_8438E78C, D_8438E794);
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_84300340();
     func_80015094(D_8438E784);
     func_84307394(5, D_8438E798);
@@ -363,7 +363,7 @@ s32 func_84300FBC(s32 arg0) {
         sp1C = func_84300E88(arg0);
     } else {
         func_80032570();
-        func_800079C4();
+        Stage_BeginDisplayList();
         func_84300340();
         func_80015094(D_8438E784);
         func_84307394(5, D_8438E798);
@@ -559,7 +559,7 @@ void func_84301430(Stage* arg0) {
     GraphNode_AllocInit(NULL, &D_8438E568);
     GraphNode_AllocInit(NULL, &D_8438E580);
     func_80011E68(&D_8438E440, 30.0f, 192.0f, 24576.0f);
-    func_8001BB20();
+    Graph_InitRoots();
     func_84307394(0, D_8438E798);
     func_84307A50(0, &D_8438E598, &D_8438E688);
     func_8432AEE4(0, &D_8438E440);
@@ -585,7 +585,7 @@ void func_84301430(Stage* arg0) {
         GraphNode_AddChild(&D_8438E580, process_geo_layout(sp44, temp_v0_4));
     }
 
-    func_80002D60(sp44);
+    mem_pool_resize_block(sp44);
 
     temp_v0_7 = sp3C(4, 0);
     if (temp_v0_7 == NULL) {
@@ -625,7 +625,7 @@ s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
     Stage_AdvanceN(1);
     func_800078D4(func_843010EC, 0x20, 0x10);
     Stage_AdvanceN(2);
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('BATL');

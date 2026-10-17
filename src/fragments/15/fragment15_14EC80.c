@@ -58,7 +58,7 @@ void func_86902334(void) {
 
     D_8690B610 = 0.0f;
 
-    func_8000E88C(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
+    Vec3f_Set(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
 }
 
 void func_869024B4(void) {
@@ -110,7 +110,7 @@ void func_869025BC(void) {
     D_8690A710->unk_008 = 40.0f;
     D_8690B610 = 0.0f;
 
-    func_8000E88C(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
+    Vec3f_Set(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
 }
 
 s32 func_8690274C(void) {
@@ -149,11 +149,11 @@ void func_86902890(s16 arg0) {
     Vec3f sp38;
     UNUSED s32 pad2;
 
-    func_8000E88C(&sp38, 0, 0.0f, 0.0f);
+    Vec3f_Set(&sp38, 0, 0.0f, 0.0f);
     Matrix_Decompose(&sp38, &D_87906054->unk_60.eye, &D_8690B60C, &D_8690B608, &D_8690B60A);
-    func_8000E88C(&sp50, D_87906054->unk_60.at.x, 0.0f, D_87906054->unk_60.at.z);
+    Vec3f_Set(&sp50, D_87906054->unk_60.at.x, 0.0f, D_87906054->unk_60.at.z);
     func_8000EB70(&sp68, 0, D_8690B60A + arg0, 0);
-    func_8000E88C(&sp5C, D_8690A710->unk_004 * 4.0f, 0.0f, 0.0f);
+    Vec3f_Set(&sp5C, D_8690A710->unk_004 * 4.0f, 0.0f, 0.0f);
     Matrix_RotateTranslateScale(&sp70, &D_87906054->unk_60.at, &sp68);
     func_86902814(&sp5C, &sp70);
 
@@ -246,7 +246,7 @@ void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
         sp3C = (((2 * sp6C) * sp68) - (2 * arg2.x)) - ((2 * arg2.z) * sp6C);
 
         if (SQ(sp3C) < ((4 * sp38) * sp54)) {
-            func_8000E88C(arg1, arg0->x, arg0->y, arg0->z);
+            Vec3f_Set(arg1, arg0->x, arg0->y, arg0->z);
             return;
         }
 
@@ -286,8 +286,8 @@ void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
         }
     }
 
-    func_8000E88C(arg0, arg1->x, arg1->y, arg1->z);
-    func_8000E88C(arg1, sp7C.x, sp7C.y, sp7C.z);
+    Vec3f_Set(arg0, arg1->x, arg1->y, arg1->z);
+    Vec3f_Set(arg1, sp7C.x, sp7C.y, sp7C.z);
     Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
@@ -339,7 +339,7 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
 
     tmp.y = arg0->y;
 
-    func_8000E88C(arg1, tmp.x, tmp.y, tmp.z);
+    Vec3f_Set(arg1, tmp.x, tmp.y, tmp.z);
     Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
@@ -453,7 +453,7 @@ void func_86903D80(void) {
     f32 mag;
 
     if (D_8690B390.stickMag != 0.0f) {
-        func_8000E88C(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
+        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
         if (D_8690B390.stickY >= 0.0f) {
             mag = -(D_8690B390.stickMag / 6.0f);
             func_80010354(&D_87906054->unk_60.eye, &sp38, mag, D_8690B600, D_8690B602);
@@ -463,7 +463,7 @@ void func_86903D80(void) {
         }
         D_8690B604 = func_86902230(D_87906054->unk_60.at, sp38);
         func_869035F4(&sp44, &sp38);
-        func_8000E88C(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 
     if (D_8690B390.buttonDown & 0x200) {
@@ -475,10 +475,10 @@ void func_86903D80(void) {
     }
 
     if (D_8690B390.buttonDown & 0x300) {
-        func_8000E88C(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
+        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
         func_80010354(&D_87906054->unk_60.at, &sp38, D_8690B604, D_8690B600, D_8690B602);
         func_86903888(&sp44, &sp38, 1);
-        func_8000E88C(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 
     if (D_8690B390.buttonDown & 0x800) {
@@ -490,9 +490,9 @@ void func_86903D80(void) {
     }
 
     if (D_8690B390.buttonDown & 0xC00) {
-        func_8000E88C(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
+        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
         func_80010354(&D_87906054->unk_60.at, &sp38, D_8690B604, D_8690B600, D_8690B602);
         func_86903888(&sp44, &sp38, 0);
-        func_8000E88C(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 }

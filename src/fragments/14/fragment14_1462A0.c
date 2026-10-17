@@ -357,8 +357,8 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_0E2 = 0;
 
     sp24 = &arg0->unk_0E4;
-    func_8001BB58(sp24);
-    func_8001BB58(&arg0->unk_24C);
+    Graph_AddToRootList0(sp24);
+    Graph_AddToRootList0(&arg0->unk_24C);
 
     arg0->unk_24C.unk_000.unk_14 = arg0->unk_000;
 
@@ -1652,7 +1652,7 @@ void func_86805858(s32 arg0) {
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_86808474 = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &D_86807078);
-    func_80002D60(temp_v0);
+    mem_pool_resize_block(temp_v0);
     D_8680847A = 0;
     D_8680847E = 4 - D_8780FA2C;
     D_8680847C = func_878001E8(D_8680847E);

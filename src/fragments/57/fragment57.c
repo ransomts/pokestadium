@@ -1507,7 +1507,7 @@ void func_82D02ED0(s32 arg0, s16 arg1) {
         D_82D09FF8[i].unk_01E.x = temp_lo;
     }
 
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82D00088();
     func_82D01AB4(arg1);
     func_80015094(D_82D09FF0);
@@ -1529,12 +1529,12 @@ void func_82D02FB8(void) {
     func_8001BC34(&D_82D09FF8[4], 0, 0, D_82D0ABB0);
     func_82D02D94();
     func_8001BC34(&D_82D09FF8[5], 0, 0, D_82D0ABB4);
-    func_8000E88C(&D_82D09FF8->unk_024, -204.0f, 104.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[1].unk_024, -68.0f, 104.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[2].unk_024, 68.0f, 104.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[3].unk_024, 204.0f, 104.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[4].unk_024, -268.0f, -158.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[5].unk_024, 144.0f, 162.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8->unk_024, -204.0f, 104.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[1].unk_024, -68.0f, 104.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[2].unk_024, 68.0f, 104.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[3].unk_024, 204.0f, 104.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[4].unk_024, -268.0f, -158.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[5].unk_024, 144.0f, 162.0f, -579.0f);
 }
 
 void func_82D03120(void) {
@@ -1773,7 +1773,7 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
 }
 
 void func_82D043CC(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s16 arg3, s16 arg4) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82D00088();
     func_82D03DC0(arg0, arg1, arg2, arg3 == 0);
     func_82D03BCC(arg3, arg4);
@@ -2291,7 +2291,7 @@ void func_82D053F4(s32 arg0, s32 arg1) {
         sp30 = 1;
     }
 
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82D00088();
     func_80015094(D_82D09FF0);
     func_82D04FA0(arg0, sp30);
@@ -2469,13 +2469,13 @@ void func_82D06014(void) {
     func_8001BC34(&D_82D09FF8[4], 0, 0, D_82D0AC04);
     func_8001BC34(&D_82D09FF8[5], 0, 0, D_82D0AC08);
     func_8001BC34(&D_82D09FF8[6], 0, 0, D_82D0AC08);
-    func_8000E88C(&D_82D09FF8[0].unk_024, -84.0f, 48.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[1].unk_024, 100.0f, 18.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[3].unk_024, -84.0f, -64.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[2].unk_024, 100.0f, -64.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[4].unk_024, -268.0f, 18.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[5].unk_024, -268.0f, -4.0f, -579.0f);
-    func_8000E88C(&D_82D09FF8[6].unk_024, -268.0f, -56.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[0].unk_024, -84.0f, 48.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[1].unk_024, 100.0f, 18.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[3].unk_024, -84.0f, -64.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[2].unk_024, 100.0f, -64.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[4].unk_024, -268.0f, 18.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[5].unk_024, -268.0f, -4.0f, -579.0f);
+    Vec3f_Set(&D_82D09FF8[6].unk_024, -268.0f, -56.0f, -579.0f);
 
     for (i = 0; i < 6; i++) {
         D_82D09FF8[i].unk_01E.x = 0;
@@ -2769,11 +2769,11 @@ void func_82D06B98(void) {
     D_82D0AC04 = process_geo_layout(temp_v0, &D_82D09B38);
     D_82D0AC08 = process_geo_layout(temp_v0, &D_82D09EB8);
 
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (i = 0, var_s1 = &D_82D09FF8[0]; i < 8; var_s1++, i++) {
-        func_8001BB58(var_s1);
+        Graph_AddToRootList0(var_s1);
         D_82D09FF8[i].unk_000.unk_14 = i;
     }
 
@@ -2834,7 +2834,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
         }
     }
 
-    func_800076C0();
+    Stage_Destroy();
 
     if (D_800AE540.unk_11F2 != sp53) {
         if (D_800AE540.unk_11F2 == 0) {

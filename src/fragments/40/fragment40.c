@@ -225,7 +225,7 @@ void func_8310024C(unk_D_83101F00* arg0) {
                 }
             }
 
-            func_8000E88C(&arg0->unk_000.unk_030, var_fv1, var_fv1, var_fv1);
+            Vec3f_Set(&arg0->unk_000.unk_030, var_fv1, var_fv1, var_fv1);
             break;
 
         case 0:
@@ -475,7 +475,7 @@ void func_831010E0(unk_D_83101F00* arg0, s16 arg1) {
                 arg0->unk_17A = ptr->unk_10;
                 arg0->unk_17C = ptr->unk_12;
 
-                func_8000E88C(&arg0->unk_000.unk_030, ptr->unk_04, ptr->unk_04, ptr->unk_04);
+                Vec3f_Set(&arg0->unk_000.unk_030, ptr->unk_04, ptr->unk_04, ptr->unk_04);
                 break;
         }
     }
@@ -519,7 +519,7 @@ void func_83101608(void) {
 }
 
 void func_83101674(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8310102C();
     func_80015094(D_83101EF4);
     if (D_83101EEC != 0) {
@@ -596,13 +596,13 @@ void func_83101870(void) {
     D_83101EF8 = process_geo_layout(temp_v0, D_83101D08);
     D_83101EFC = process_geo_layout(temp_v0, D_83101DE8);
 
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (i = 0; i < 2; i++) {
         ptr = &D_83101F00[i];
 
-        func_8001BB58(&ptr->unk_000);
+        Graph_AddToRootList0(&ptr->unk_000);
 
         ptr->unk_172 = ptr->unk_174 = ptr->unk_176 = 0;
         ptr->unk_178 = ptr->unk_17A = ptr->unk_17C = 0;
@@ -616,16 +616,16 @@ void func_83101870(void) {
 
         switch (i) {
             case 0:
-                func_8000E88C(&ptr->unk_000.unk_024, -520.0f, 44.0f, -579.0f);
-                func_8000E88C(&ptr->unk_000.unk_030, 2.0f, 2.0f, 2.0f);
+                Vec3f_Set(&ptr->unk_000.unk_024, -520.0f, 44.0f, -579.0f);
+                Vec3f_Set(&ptr->unk_000.unk_030, 2.0f, 2.0f, 2.0f);
                 func_8001BC34(&ptr->unk_000, 0, 0, D_83101EF8);
                 ptr->unk_168 = 1;
                 D_83102210 = ptr;
                 break;
 
             case 1:
-                func_8000E88C(&ptr->unk_000.unk_024, 0.0, -24.0f, -579.0f);
-                func_8000E88C(&ptr->unk_000.unk_030, 0.0f, 0.0f, 0.0f);
+                Vec3f_Set(&ptr->unk_000.unk_024, 0.0, -24.0f, -579.0f);
+                Vec3f_Set(&ptr->unk_000.unk_030, 0.0f, 0.0f, 0.0f);
                 func_8001BC34(&ptr->unk_000, 0, 0, D_83101EFC);
                 ptr->unk_168 = 2;
                 D_83102214 = ptr;
@@ -652,7 +652,7 @@ s32 func_83101A98(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_83101818();
     Stage_AdvanceN(2);
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

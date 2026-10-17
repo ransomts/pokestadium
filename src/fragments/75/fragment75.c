@@ -21,7 +21,7 @@ static u8 D_8FA009F0[] = {
 static unk_func_80031270* D_8FA00A00 = NULL;
 
 void func_8FA00020(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -176,7 +176,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     }
 
     func_80001CC8();
-    func_800076C0();
+    Stage_Destroy();
 
     main_pool_pop_state('SEAL');
 

@@ -678,7 +678,7 @@ s32 func_88802F10(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
     // clang-format on
     sp58.unk_0C = func_8001B9D4(D_88826920);
 
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -832,7 +832,7 @@ s32 func_88803614(void) {
 
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
         func_80015348();
-        func_800079C4();
+        Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
         Stage_Advance();
@@ -904,7 +904,7 @@ s32 func_888038E0(void) {
 
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
         func_80015348();
-        func_800079C4();
+        Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
         Stage_Advance();
@@ -6136,7 +6136,7 @@ s32 func_88803C74(void) {
             PlaySoundEffect(2);
         }
         func_80015348();
-        func_800079C4();
+        Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
         Stage_Advance();
@@ -6153,7 +6153,7 @@ s32 func_88803ECC(void) {
     func_8003D2B8(func_88801030(D_88826940->unk_38->unk_2C) + 1);
 
     while (func_8003D494() != 0) {
-        func_800079C4();
+        Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
         Stage_Advance();
@@ -6163,7 +6163,7 @@ s32 func_88803ECC(void) {
 
 s32 func_88803FB0(u8 arg0) {
     D_88826940->unk_34->unk_2C = -1;
-    func_800079C4();
+    Stage_BeginDisplayList();
     ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
     ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
     return 0;
@@ -6219,7 +6219,7 @@ s32 func_88804190(void) {
 
 s32 func_88804218(u8 arg0) {
     D_88826940->unk_34->unk_2C = -1;
-    func_800079C4();
+    Stage_BeginDisplayList();
     ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(&D_88826940->unk_00);
     ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(&D_88826940->unk_00, 0, 0);
     return 0;
@@ -6332,7 +6332,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_88826940 = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));
     func_888031FC(D_88826940, 0, 0, sp28, sp2C);
     func_80007754();
-    func_8001BB20();
+    Graph_InitRoots();
     func_80006C6C(8);
     Stage_AdvanceUntil(8, func_88804218);
     func_88804288();

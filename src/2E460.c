@@ -548,7 +548,7 @@ void Game_RunPokemonLab(void) {
                                            D_800AE520.arg0, D_800AE520.arg1);
             }
 
-            func_800076C0();
+            Stage_Destroy();
             Gfx_FreeBuffers();
 
             main_pool_pop_state('PLAB');

@@ -36,8 +36,8 @@ void func_86B0A0B0(void) {
 
 void func_86B0A0B8(void) {
     D_86B10820 = D_86B106B4->unk_0C;
-    func_8000E88C(&D_86B10820->unk_60.at, 0.0f, 0.0f, 0.0f);
-    func_8000E88C(&D_86B10820->unk_60.eye, 0.0f, 0.0f, 200.0f);
+    Vec3f_Set(&D_86B10820->unk_60.at, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&D_86B10820->unk_60.eye, 0.0f, 0.0f, 200.0f);
     D_86B10820->unk_24.near = 16.0f;
     D_86B10820->unk_24.far = 32768.0f;
     D_86B10820->unk_24.fovy = 45.0f;
@@ -74,7 +74,7 @@ void func_86B0A18C(u8* arg0) {
 }
 
 void func_86B0A30C(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_86B0A18C(D_86B10828);
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
@@ -123,16 +123,16 @@ void func_86B0A47C(void) {
 
     D_86B106B4 = process_geo_layout(sp1C, &D_86B0E250);
 
-    func_80002D60(sp1C);
-    func_8001BB20();
+    mem_pool_resize_block(sp1C);
+    Graph_InitRoots();
     func_86B0A0B8();
-    func_8001BB58(&D_86B106B8);
+    Graph_AddToRootList0(&D_86B106B8);
     func_8001987C();
 
     D_86B106B0 = func_80019D18(0xD6);
     func_8001BC34(&D_86B106B8, 0, 0xD6, D_86B106B0->unk_08->unk_00[0]);
     func_8001BD04(&D_86B106B8, 1);
-    func_8000E88C(&D_86B106B8.unk_024, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&D_86B106B8.unk_024, 0.0f, 0.0f, 0.0f);
     D_86B1082C = 0;
 }
 
@@ -165,7 +165,7 @@ s32 func_86B0A554(void) {
     func_86B0A47C();
     Stage_Set(sp24);
     func_86B0A414();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

@@ -207,3 +207,13 @@ func_80012094	GraphNode_AddChild	b9		inserts arg1 into arg0's circular child lis
 func_800120DC	GraphNode_RemoveChild	b9		unlinks arg1 from the doubly-linked sibling list and fixes the parent's child head (sole child -> NULL)	applied@ba40d34
 func_80012120	GraphNode_GetNthChild	b9		walks the sibling ring arg1 steps from the first child	applied@ba40d34
 func_80011088	GraphNodeAlt_AllocInitParent	b9		state-pool alloc of the alt2 node type with the parent set then Init(1)	applied@ba40d34
+func_800079C4	Stage_BeginDisplayList	b10		targets gDisplayListHead at the current stage's active framebuffer (Gfx_SetupFrameBuffer + 1CYCLE)	applied@c6bf036
+func_800076C0	Stage_Destroy	b10		flushes the stage: clear fill, final submit (Sched_SendFrame of D_800A7450), waits, runs 2 blank frames, NULLs gCurrentStage	applied@c6bf036
+func_80007304	Stage_ClearScreen	b10		renders the clear-fill rectangle over the stage bounds with the stage's fill colour then swaps to 1CYCLE	applied@c6bf036
+func_80007A2C	Stage_GetFrameBuffer	b10		returns the current stage's active unk_D_80068BB0 framebuffer descriptor (NULL if no stage)	applied@c6bf036
+func_80002D60	mem_pool_resize_block	b10		grows a MainPoolBlock in place (ALIGN16(size+0x10)) and stores the new payload size in block->next	applied@c6bf036
+func_8000E88C	Vec3f_Set	b10		arg0 = (x, y, z); returns arg0 - the Vec3f constructor used in 46 files	applied@c6bf036
+func_8000E8B0	Vec3f_Add	b10		arg0 += arg1 componentwise	applied@c6bf036
+func_8000E8E8	Vec3f_Sum	b10		arg0 = arg1 + arg2 componentwise	applied@c6bf036
+func_8001BB20	Graph_InitRoots	b10		allocates the two static root graph nodes D_800AC840/D_800AC858 (the two master scene lists)	applied@c6bf036
+func_8001BB58	Graph_AddToRootList0	b10		initialises the 004_000 node and adds it under root D_800AC840 (with the master matrices D_8006F050/F05C/F064)	applied@c6bf036

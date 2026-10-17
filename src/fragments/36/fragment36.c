@@ -163,7 +163,7 @@ void func_8210046C(u8* arg0) {
 }
 
 void func_821005EC(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8210046C(D_82100EB4);
     if ((Cont_GetControllerBits() & 1) && (D_82100EC8 != 0)) {
         func_821000C4(0x6E, 0xAF);
@@ -385,7 +385,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     func_82100AB8();
     sp24 = func_821009B4();
     func_82100B1C(sp24);
-    func_800076C0();
+    Stage_Destroy();
     func_8000D2B4(0);
     func_8004FF20();
     Gfx_FreeBuffers();

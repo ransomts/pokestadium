@@ -3059,7 +3059,7 @@ void func_88002580(unk_func_88001300* arg0) {
     func885008C4 func1;
     func88500828 func2;
 
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     func1 = Memmap_GetFragmentVaddr((u32)func_885008C4);
     func1(arg0);

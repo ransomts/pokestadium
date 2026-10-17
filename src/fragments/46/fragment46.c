@@ -33,7 +33,7 @@ void func_83700090(void) {
 void func_83700098(void) {
     static s16 D_837004B4 = 0;
 
-    func_800079C4();
+    Stage_BeginDisplayList();
     if (D_837004B0->unk_00 == 2) {
         func_834018C0(D_837004B0->unk_08->img_p, 0, 0, D_837004B0->unk_04, D_837004B0->unk_06, 1, 0);
     }
@@ -132,7 +132,7 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_83700020();
     Stage_Set(sp24);
     func_8370026C();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

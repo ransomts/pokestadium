@@ -74,7 +74,7 @@ void *mem_pool_alloc(MemoryPool* node, s32 size);
 
 void mem_pool_free(MemoryPool* pool, void* addr);
 void *state_pool_try_init(u32 size, s32 side);
-void func_80002D60(struct MemoryBlock* block);
+void mem_pool_resize_block(struct MemoryBlock* block);
 void* state_pool_init(struct MainPoolState* block, s32 size);
 void* state_pool_alloc_aligned(struct MainPoolState* state, s32 arg1, s32 arg2);
 void state_pool_resize(struct MainPoolState* state, s32 size);

@@ -380,8 +380,8 @@ void func_8000725C(void) {
     }
 }
 
-void func_80007304(void) {
-    func_800079C4();
+void Stage_ClearScreen(void) {
+    Stage_BeginDisplayList();
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -473,9 +473,9 @@ void Stage_Set(Stage* arg0) {
     func_80007234();
 }
 
-void func_800076C0(void) {
+void Stage_Destroy(void) {
     if (gCurrentStage != NULL) {
-        func_80007304();
+        Stage_ClearScreen();
         func_8000725C();
         Sched_SendFrame(&D_800A7450);
         Sched_WaitFrame();
@@ -501,7 +501,7 @@ s32 Stage_Advance(void) {
 
 void Stage_AdvanceN(s32 arg0) {
     while (arg0-- > 0) {
-        func_80007304();
+        Stage_ClearScreen();
         func_8000725C();
         Sched_SendFrame(&D_800A7450);
         Sched_WaitFrame();
@@ -561,7 +561,7 @@ void func_80007990(u16 arg0) {
     }
 }
 
-void func_800079C4(void) {
+void Stage_BeginDisplayList(void) {
     if (gCurrentStage != NULL) {
         Gfx_SetupFrameBuffer(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
 
@@ -569,7 +569,7 @@ void func_800079C4(void) {
     }
 }
 
-unk_D_80068BB0* func_80007A2C(void) {
+unk_D_80068BB0* Stage_GetFrameBuffer(void) {
     unk_D_80068BB0* ret = NULL;
 
     if (gCurrentStage != NULL) {

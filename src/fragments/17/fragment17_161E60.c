@@ -818,7 +818,7 @@ void func_86B026C0(void) {
 
     main_pool_push_state('MONS');
 
-    func_8001BB58(&D_86B0EBDC->unk_008);
+    Graph_AddToRootList0(&D_86B0EBDC->unk_008);
     func_8001987C();
 
     D_86B0EBDC->unk_000 = func_80019D18(0xD3);
@@ -826,7 +826,7 @@ void func_86B026C0(void) {
 
     func_8001BC34(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
     func_8001BD04(&D_86B0EBDC->unk_008, 0);
-    func_8001BB58(&D_86B0EBDC->unk_170);
+    Graph_AddToRootList0(&D_86B0EBDC->unk_170);
     func_8001987C();
 
     D_86B0EBDC->unk_004 = func_80019D18(D_86B0EBDC->unk_2EC);
@@ -897,7 +897,7 @@ void func_86B02A78(void) {
     D_86B0EBCA = 0;
     D_86B0EBCC = 120.0f;
 
-    func_8000E88C(&D_86B0EBC4->unk_60.at, 0.0f, 132.5f, -225.0f);
+    Vec3f_Set(&D_86B0EBC4->unk_60.at, 0.0f, 132.5f, -225.0f);
     func_80010354(&D_86B0EBC4->unk_60.at, &D_86B0EBC4->unk_60.eye, D_86B0EBCC, D_86B0EBC8, D_86B0EBCA);
 
     D_86B0EBC4->unk_24.near = 10.0f;
@@ -1477,8 +1477,8 @@ s32 func_86B04944(void) {
 
         case 4:
             if (D_86B0EBDC->unk_2E4++ >= 0x1E) {
-                func_8000E88C(&D_86B0EBC4->unk_60.at, 0.0f, 90.0f, 0.0f);
-                func_8000E88C(&D_86B0EBC4->unk_60.eye, 0.0f, 80.0f, 90.0f);
+                Vec3f_Set(&D_86B0EBC4->unk_60.at, 0.0f, 90.0f, 0.0f);
+                Vec3f_Set(&D_86B0EBC4->unk_60.eye, 0.0f, 80.0f, 90.0f);
 
                 if (D_86B0EBDC->unk_2E4 == 0x1F) {
                     func_879037D0(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
@@ -1551,7 +1551,7 @@ void func_86B04C9C(void) {
 }
 
 void func_86B04CF4(UNUSED s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_80015348();
     func_80015094(D_86B0EBC0);
@@ -1613,8 +1613,8 @@ void func_86B04EBC(void) {
 
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_86B0EBC0 = process_geo_layout(sp1C, &D_86B0DC5C);
-    func_80002D60(sp1C);
-    func_8001BB20();
+    mem_pool_resize_block(sp1C);
+    Graph_InitRoots();
 
     D_86B0EBE0 = main_pool_alloc(0x20, 0);
     bzero(D_86B0EBE0, 0x20);
@@ -1659,7 +1659,7 @@ s32 func_86B04FB0(void) {
     func_86B04D48();
     func_86B04D98();
     func_86B04DF0();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
     main_pool_pop_state('DEMO');

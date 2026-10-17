@@ -1115,7 +1115,7 @@ void func_82303FE8(void) {
 void func_82304224(s16 arg0) {
     s16 i;
 
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82303FE8();
     func_82301A10();
     func_82301B0C(&D_82305A30);
@@ -1658,7 +1658,7 @@ s32 func_823057E4(UNUSED s32 arg0, UNUSED s32 arg1) {
         }
     }
 
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('EBTL');

@@ -22,8 +22,8 @@ typedef struct unk_func_8001C248 {
     /* 0x024 */ s32* unk_024;
 } unk_func_8001C248; // size >= 0x28
 
-void func_8001BB20(void);
-void func_8001BB58(unk_D_86002F58_004_000* arg0);
+void Graph_InitRoots(void);
+void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0);
 void func_8001BBC8(unk_D_86002F58_004_000* arg0);
 void func_8001BC34(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
 void func_8001BCF0(unk_D_86002F58_004_000* arg0);

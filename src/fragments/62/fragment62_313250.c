@@ -14,8 +14,8 @@ void func_84328990(unk_D_86002F34_00C* arg0) {
     arg0->unk_24.fovy = 40.0f;
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-    func_8000E88C(&arg0->unk_60.at, 0.0f, 75.0f, 0.0f);
-    func_8000E88C(&arg0->unk_60.eye, -1.79f, 0.075f, 155.2f);
+    Vec3f_Set(&arg0->unk_60.at, 0.0f, 75.0f, 0.0f);
+    Vec3f_Set(&arg0->unk_60.eye, -1.79f, 0.075f, 155.2f);
     D_84390240.unk_00->unk_54 = 1;
     func_8432BBC0();
     D_84390240.unk_00->unk_20 += 1;
@@ -54,7 +54,7 @@ void func_84328BF0(unk_D_86002F34_00C* arg0) {
         arg0->unk_24.fovy = 30.0f;
         func_84308654(D_84390010[0], 2, 0);
         func_8432C68C(0xB, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
-        func_8000E88C(&sp3C, -150.0f, 5.0f, 0.0f);
+        Vec3f_Set(&sp3C, -150.0f, 5.0f, 0.0f);
         func_8431BAB4(D_84390010[0], arg0, sp3C, 0, 0, 0.0f, 0.0f);
         func_8431BB80(arg0, sp3C, D_84390240.unk_00->unk_56 = 0x71C, 0x4000, D_84390240.unk_00->unk_84 = 300.0f, 0.0f);
         D_84390240.unk_00->unk_20 += 1;
@@ -64,7 +64,7 @@ void func_84328BF0(unk_D_86002F34_00C* arg0) {
 void func_84328D70(unk_D_86002F34_00C* arg0) {
     Vec3f sp2C;
 
-    func_8000E88C(&sp2C, -150.0f, 5.0f, 0.0f);
+    Vec3f_Set(&sp2C, -150.0f, 5.0f, 0.0f);
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     func_8430C718(&D_84390240.unk_00->unk_84, 40.0f, 0.1f);

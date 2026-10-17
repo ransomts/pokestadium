@@ -102,7 +102,7 @@ void func_87802528(void) {
     D_8780FAC8.unk_000.unk_02 |= 8;
 
     GraphNode_AddChild(&D_8780FAC8.unk_000, &D_8780FC30->unk_00);
-    func_80002D60(sp1C);
+    mem_pool_resize_block(sp1C);
 }
 
 void func_878025D0(void) {

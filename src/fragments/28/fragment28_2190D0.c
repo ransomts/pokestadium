@@ -3967,7 +3967,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     spF4 = GetMessageString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
     func_88807090();
     func_80015348();
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_80015094(D_88826A44);
     Text_ResetState();
     Text_SetFont(1, 0);

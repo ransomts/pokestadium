@@ -1802,18 +1802,18 @@ void func_843066E0(unk_D_84390010* arg0) {
         case 16:
             func_84308654(arg0, 0, 0);
             if (arg0->unk_654.unk_38.unk_56 == 0) {
-                func_8000E88C(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+                Vec3f_Set(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
             } else {
-                func_8000E88C(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
+                Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
             }
             break;
 
         case 12:
             func_84308654(arg0, 0, 0);
             if (arg0->unk_654.unk_38.unk_56 == 0) {
-                func_8000E88C(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+                Vec3f_Set(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
             } else {
-                func_8000E88C(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
+                Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
             }
             break;
 
@@ -1825,7 +1825,7 @@ void func_843066E0(unk_D_84390010* arg0) {
 
         case 9:
             func_84308654(arg0, 0, 0);
-            func_8000E88C(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
+            Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
             func_843096EC(arg0);
             break;
 
@@ -1945,7 +1945,7 @@ void func_84306C8C(unk_D_84390010* arg0) {
     func_84307F00(arg0);
     sp24 = func_843085C4(arg0, 0);
     sp22 = func_843085E0(arg0, 0);
-    func_8001BB58(&arg0->unk_000);
+    Graph_AddToRootList0(&arg0->unk_000);
 
     if (arg0 == D_84390010[0]) {
         arg0->unk_000.unk_0A6 = 0;
@@ -1981,7 +1981,7 @@ void func_84306DA8(unk_D_84390010* arg0) {
 
     sp28 = func_843085C4(arg0, 0);
     sp26 = func_843085E0(arg0, 0);
-    func_8001BB58(&ptr->unk_000);
+    Graph_AddToRootList0(&ptr->unk_000);
 
     if (arg0 == D_84390010[0]) {
         ptr->unk_000.unk_0A6 = -1;
@@ -1994,7 +1994,7 @@ void func_84306DA8(unk_D_84390010* arg0) {
     func_8001BD04(&ptr->unk_000, 0);
     func_80017464(&ptr->unk_000, 0);
     ptr->unk_000.unk_000.unk_02 &= ~0x40;
-    func_8000E88C(&ptr->unk_000.unk_024, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&ptr->unk_000.unk_024, 0.0f, 0.0f, 0.0f);
 }
 
 void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
@@ -2009,7 +2009,7 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
     for (i = 0; i < 2; i++) {
         ptr = &arg0->unk_168[i];
 
-        func_8001BB58(ptr);
+        Graph_AddToRootList0(ptr);
 
         if (arg0 == D_84390010[0]) {
             ptr->unk_000.unk_0A6 = 0xFF;
@@ -2036,7 +2036,7 @@ void func_84306FB8(unk_D_84390010* arg0) {
     unk_D_86002F58_004_000* ptr = &arg0->unk_4EC;
     unk_D_86002F58_004_000_004* sp20 = arg0->unk_720->unk_18;
 
-    func_8001BB58(ptr);
+    Graph_AddToRootList0(ptr);
     ptr->unk_0A6 = 0xFF;
     func_8001BC34(ptr, 0, 0x9A, sp20);
     func_8001BD04(ptr, 0);
@@ -2045,9 +2045,9 @@ void func_84306FB8(unk_D_84390010* arg0) {
     ptr->unk_000.unk_01 &= ~1;
 
     if (arg0 == D_84390010[0]) {
-        func_8000E88C(&ptr->unk_024, -50.0f, 2.0f, 0.0f);
+        Vec3f_Set(&ptr->unk_024, -50.0f, 2.0f, 0.0f);
     } else {
-        func_8000E88C(&ptr->unk_024, 50.0f, 2.0f, 0.0f);
+        Vec3f_Set(&ptr->unk_024, 50.0f, 2.0f, 0.0f);
     }
 }
 
@@ -2101,8 +2101,8 @@ void func_84307078(unk_D_800AE540_1194* arg0) {
 }
 
 void func_843071B8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_8000E88C(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
-    func_8000E88C(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     arg1->unk_4B0 = arg2;
 }
 

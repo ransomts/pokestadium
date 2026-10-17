@@ -3325,7 +3325,7 @@ void func_86C03ED4(void) {
 }
 
 void func_86C040B4(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
@@ -3442,19 +3442,19 @@ void func_86C044B4(void) {
     s32 i;
 
     D_87906050 = process_geo_layout(temp_v0, D_86C0E0D0);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (i = 0; i < 4; i++) {
-        func_8001BB58(&miniEkanses[i].unk_000);
+        Graph_AddToRootList0(&miniEkanses[i].unk_000);
     }
 
     for (i = 0; i < 9; i++) {
-        func_8001BB58(&miniDigletts[i].unk_000);
+        Graph_AddToRootList0(&miniDigletts[i].unk_000);
     }
 
     for (i = 0; i < 9; i++) {
-        func_8001BB58(&miniDiglettHoles[i].unk_000);
+        Graph_AddToRootList0(&miniDiglettHoles[i].unk_000);
     }
 
     func_8001987C();
@@ -3511,7 +3511,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     initEkansMinigameAssets();
     miniEkansTutoScreenControls();
     ekansMinigameUpdate();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC(); //	main_pool_try_free(D_800AC870);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 

@@ -723,8 +723,8 @@ void func_8420594C(void) {
         if (D_84210DA0[i].unk_00 != 0) {
             func_8001BC34(D_8423D408[0] + i, 0, 0, D_8423E4E8[i]);
             func_8001BC34(D_8423D408[1] + i, 0, 0, D_8423E500);
-            func_8000E88C(&D_8423D408[0][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xF0 - D_84210DA0[i].unk_04, -579.f);
-            func_8000E88C(&D_8423D408[1][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xE4 - D_84210DA0[i].unk_04,
+            Vec3f_Set(&D_8423D408[0][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xF0 - D_84210DA0[i].unk_04, -579.f);
+            Vec3f_Set(&D_8423D408[1][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xE4 - D_84210DA0[i].unk_04,
                           -579.0f);
             D_8423D408[1][i].unk_01D = 0xB4;
         }
@@ -770,12 +770,12 @@ s32 func_84205C18(s16 arg0) {
     D_8423E4E8[5] = process_geo_layout(temp_v0, D_84211430);
     D_8423E500 = process_geo_layout(temp_v0, D_84211510);
 
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     var_s2 = &D_8423D408[0][0];
     for (i = 0; i < 12; var_s2++, i++) {
-        func_8001BB58(var_s2);
+        Graph_AddToRootList0(var_s2);
         D_8423D408[0][i].unk_000.unk_14 = i;
     }
 

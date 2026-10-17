@@ -59,7 +59,7 @@ Vec3f* func_8000E868(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     return arg0;
 }
 
-Vec3f* func_8000E88C(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
+Vec3f* Vec3f_Set(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -67,7 +67,7 @@ Vec3f* func_8000E88C(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     return arg0;
 }
 
-Vec3f* func_8000E8B0(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vec3f_Add(Vec3f* arg0, Vec3f* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
@@ -75,7 +75,7 @@ Vec3f* func_8000E8B0(Vec3f* arg0, Vec3f* arg1) {
     return arg0;
 }
 
-Vec3f* func_8000E8E8(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
+Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     arg0->x = arg1->x + arg2->x;
     arg0->y = arg1->y + arg2->y;
     arg0->z = arg1->z + arg2->z;
@@ -489,7 +489,7 @@ void Matrix_LookAtYaw(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     Vec3f leftDir;
     Vec3f forwardDir;
 
-    func_8000E88C(&lateralDir, SINS(yaw), 0, COSS(yaw));
+    Vec3f_Set(&lateralDir, SINS(yaw), 0, COSS(yaw));
     func_8000EAF4(upDir);
 
     func_8000EA84(&leftDir, upDir, &lateralDir);

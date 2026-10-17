@@ -781,19 +781,19 @@ void func_84B040AC(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
-        func_8000E88C(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
-        func_8000E88C(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
+        Vec3f_Set(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
+        Vec3f_Set(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
         if (sp24 >= 0xF000) {
-            func_8000E88C(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
-            func_8000E88C(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
+            Vec3f_Set(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
+            Vec3f_Set(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
         }
     } else if (arg1 < 0x1F) {
         f32 sp2C = (SINS((arg1 << 0xD) + 0xFFFE0000) * ((0x12C - (arg1 * 0xA)) / 1000.0f)) + 1.0f;
 
-        func_8000E88C(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
     }
 }
 
@@ -827,20 +827,20 @@ void func_84B04364(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
-        func_8000E88C(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
-        func_8000E88C(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
+        Vec3f_Set(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
+        Vec3f_Set(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
 
         if (sp24 >= 0xECCD) {
-            func_8000E88C(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
-            func_8000E88C(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
+            Vec3f_Set(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
+            Vec3f_Set(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
         }
     } else if (arg1 < 0x1C) {
         f32 sp2C = (SINS((arg1 << 0xD) + 0xFFFE6000) * ((0x10E - (arg1 * 0xA)) / 1000.0f)) + 1.0f;
 
-        func_8000E88C(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
-        func_8000E88C(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_Set(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
     }
 }
 
@@ -961,7 +961,7 @@ void func_84B04A7C(unk_D_84B259A8* arg0) {
 
 void func_84B04AE4(unk_D_84B259A8* arg0, s16 arg1, s16 arg2) {
     func_8001BC34(arg0->unk_20, 0, 0, arg0->unk_24);
-    func_8000E88C(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
+    Vec3f_Set(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
 }
 
 void func_84B04B5C(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -978,8 +978,8 @@ void func_84B04B5C(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     func_8001BC34(&arg0->unk_20[temp_s0], sp2C, 0, arg0->unk_28);
     func_8001BC34(&arg0->unk_20[temp_s0 + 1], sp2C, 0, arg0->unk_2C);
-    func_8000E88C(&arg0->unk_20[temp_s0].unk_024, arg2, arg3, -289.0f);
-    func_8000E88C(&arg0->unk_20[temp_s0 + 1].unk_024, arg2, arg3, -289.0f);
+    Vec3f_Set(&arg0->unk_20[temp_s0].unk_024, arg2, arg3, -289.0f);
+    Vec3f_Set(&arg0->unk_20[temp_s0 + 1].unk_024, arg2, arg3, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_s0].unk_01D = 0xFF;
@@ -1001,7 +1001,7 @@ void func_84B04CCC(unk_D_84B259A8* arg0, s16 arg1) {
     }
 
     func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_30);
-    func_8000E88C(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1021,7 +1021,7 @@ void func_84B04DB0(unk_D_84B259A8* arg0, s16 arg1) {
     }
 
     func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_38);
-    func_8000E88C(&arg0->unk_20[temp_v1].unk_024, 320.0f, 0.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, 320.0f, 0.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1041,7 +1041,7 @@ void func_84B04E94(unk_D_84B259A8* arg0, s16 arg1) {
     }
 
     func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_34);
-    func_8000E88C(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1216,7 +1216,7 @@ void func_84B053F4(unk_D_84B259A8* arg0) {
     } else {
         arg0->unk_30 = process_geo_layout(temp_v0, D_84B10BE8);
     }
-    func_80002D60(temp_v0);
+    mem_pool_resize_block(temp_v0);
 }
 
 void func_84B055B8(unk_D_86002F34* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
@@ -1511,14 +1511,14 @@ void func_84B06364(unk_D_84B259E8* arg0, unk_D_86002F58_004_000* arg1, s16 arg2)
     if (arg2 == 0) {
         for (i = 4; i < 8; i++) {
             func_8001BC34(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            func_8000E88C(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
             arg0->unk_08[i].unk_000.unk_14 = (s32)arg0;
         }
         arg0->unk_00 = 1;
     } else {
         for (i = 12, var_s2 = -0x60; i < 16; i++) {
             func_8001BC34(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            func_8000E88C(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
             arg0->unk_08[i].unk_01E.x = -0x8000;
             var_s2 += 0x40;
             arg0->unk_08[i].unk_000.unk_14 = arg0;
@@ -1679,6 +1679,6 @@ void func_84B06A54(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
         arg0->unk_0C = process_geo_layout(temp_v0, D_84B11640);
     }
 
-    func_80002D60(temp_v0);
+    mem_pool_resize_block(temp_v0);
     func_84B067B4(arg0, arg1, arg2);
 }

@@ -134,7 +134,7 @@ void func_84800184(void) {
 
     var_s4 = 0x30 - (D_8480379A % 24);
     var_s2 = D_8480379A / 24;
-    sp58 = func_80007A2C();
+    sp58 = Stage_GetFrameBuffer();
     sp54 = D_8480367C;
     sp50 = D_84803680;
     func_8002053C(0x228, 0x20, 0x2E, 0x186, &sp54, &sp50);
@@ -1089,7 +1089,7 @@ s32 func_84802C40(s32 arg0) {
     func_8001F730();
     func_84802350();
     func_80015348();
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     if (D_84803798 != 0) {
         func_84800020();
@@ -1276,7 +1276,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     func_8000D1F0(7);
     Stage_Set(sp24);
     func_800078D4(func_84802C40, 8, 8);
-    func_800076C0();
+    Stage_Destroy();
     func_84802E18();
     func_8001E9CC();
     Gfx_FreeBuffers();

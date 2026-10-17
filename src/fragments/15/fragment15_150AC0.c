@@ -195,8 +195,8 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 
     func_8000EB70(&spD8, 0, 0, D_8690B360.unk_06);
 
-    func_8000E88C(&spCC, (f32)arg1 + (arg3 / 2), (f32)arg2 + arg4, 0.0f);
-    func_8000E88C(&spC0, 1.0f, 1.0f, 1.0f);
+    Vec3f_Set(&spCC, (f32)arg1 + (arg3 / 2), (f32)arg2 + arg4, 0.0f);
+    Vec3f_Set(&spC0, 1.0f, 1.0f, 1.0f);
     Matrix_RotateTranslate(spA8, &spCC, &spD8);
     Matrix_Scale(spA8, spA8, &spC0);
     Matrix_ConvertToMtx(spB0, spA8);

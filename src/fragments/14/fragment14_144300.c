@@ -466,7 +466,7 @@ void func_86800B38(void) {
 }
 
 void func_86801644(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
     if (D_8780FC94 == 0) {
@@ -691,8 +691,8 @@ void func_86801D48(void) {
     sp18 = state_pool_try_init(main_pool_get_available(), 0);
     D_86807500 = (GraphNode*)process_geo_layout(sp18, &D_86806CD0);
 
-    func_80002D60(sp18);
-    func_8001BB20();
+    mem_pool_resize_block(sp18);
+    Graph_InitRoots();
     func_8001987C();
     func_87802528();
     func_86806A50();
@@ -740,7 +740,7 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
     func_86801D48();
     Stage_Set(sp24);
     func_86801CA8();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

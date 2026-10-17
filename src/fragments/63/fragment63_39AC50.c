@@ -888,30 +888,30 @@ void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1) {
 }
 
 void func_84B07848(unk_D_84B25A28* arg0) {
-    func_8000E88C(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[2].unk_024, -32.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[3].unk_024, 32.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[4].unk_024, 96.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[5].unk_024, -96.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[6].unk_024, -32.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[7].unk_024, 32.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[2].unk_024, -32.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[3].unk_024, 32.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[4].unk_024, 96.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[5].unk_024, -96.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[6].unk_024, -32.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[7].unk_024, 32.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
 
     arg0->unk_04[1].unk_000.unk_01 &= ~1;
     arg0->unk_04[8].unk_000.unk_01 &= ~1;
 }
 
 void func_84B07978(unk_D_84B25A28* arg0) {
-    func_8000E88C(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[1].unk_024, -40.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[2].unk_024, 8.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[3].unk_024, 56.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[4].unk_024, 104.0f, 96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[5].unk_024, -104.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[6].unk_024, -56.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[7].unk_024, -8.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[8].unk_024, 40.0f, -96.0f, -289.0f);
-    func_8000E88C(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[1].unk_024, -40.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[2].unk_024, 8.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[3].unk_024, 56.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[4].unk_024, 104.0f, 96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[5].unk_024, -104.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[6].unk_024, -56.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[7].unk_024, -8.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[8].unk_024, 40.0f, -96.0f, -289.0f);
+    Vec3f_Set(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
 }
 
 s32 func_84B07AB8(unk_D_84B25A28* arg0, unk_D_86002F58_004_000* arg1) {
@@ -951,7 +951,7 @@ s32 func_84B07AB8(unk_D_84B25A28* arg0, unk_D_86002F58_004_000* arg1) {
         func_8001BC34(&arg0->unk_04[8], 1, 0, arg0->unk_10);
         func_8001BC34(&arg0->unk_04[9], 1, 0, arg0->unk_18);
         func_8001BC34(&arg0->unk_04[10], 3, 0, arg0->unk_1C);
-        func_8000E88C(&arg0->unk_04[10].unk_024, 0.0f, 0.0f, 1000.0f);
+        Vec3f_Set(&arg0->unk_04[10].unk_024, 0.0f, 0.0f, 1000.0f);
 
         if (arg0->unk_02 == 1) {
             func_84B07978(arg0);
@@ -996,5 +996,5 @@ void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1) {
     arg0->unk_18 = process_geo_layout(temp_s1, D_84B14234);
     arg0->unk_1C = process_geo_layout(temp_s1, D_84B13FC8);
 
-    func_80002D60(temp_s1);
+    mem_pool_resize_block(temp_s1);
 }

@@ -932,8 +932,8 @@ void func_82500804(void) {
     D_8250A308.unk_16A = 0;
     D_8250A308.unk_16E = 0;
     D_8250A308.unk_170 = 0;
-    func_8001BB58(&D_8250A308.unk_000);
-    func_8000E88C(&D_8250A308.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
+    Graph_AddToRootList0(&D_8250A308.unk_000);
+    Vec3f_Set(&D_8250A308.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
     func_8001BC34(&D_8250A308.unk_000, 0, 0, D_8250A284);
     ptr->unk_01 &= ~1;
 }
@@ -1330,7 +1330,7 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
     temp_v0->unk_00 = arg0;
     temp_v0->unk_02 = 0;
     temp_v0->unk_04 = arg1;
-    func_8001BB58(temp_s1);
+    Graph_AddToRootList0(temp_s1);
     temp_s1->unk_1E = -0x4000;
     func_8001BC34(temp_s1, 0, 0, arg2);
     temp_s1->unk_01 &= ~1;
@@ -1338,7 +1338,7 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
     switch (temp_v0->unk_00) {
         case 1:
             temp_v0->unk_38 = NULL;
-            func_8000E88C(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 88.0f) + 196.0f), -579.0f);
+            Vec3f_Set(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 88.0f) + 196.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             break;
 
@@ -1349,21 +1349,21 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
             } else {
                 temp_v0->unk_38 = NULL;
             }
-            func_8000E88C(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 98.0f) + 190.0f), -579.0f);
+            Vec3f_Set(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 98.0f) + 190.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             break;
 
         case 3:
             temp_v0->unk_38 = func_80006314(0, 2, 0x12C, 0x50, 1);
             temp_v0->unk_06 |= 1;
-            func_8000E88C(&temp_s1->unk_24, -150.0f, 0.0f, -579.0f);
+            Vec3f_Set(&temp_s1->unk_24, -150.0f, 0.0f, -579.0f);
             break;
 
         case 4:
             temp_v0->unk_38 = NULL;
             temp_v0->unk_0C = temp_v0->unk_04;
             temp_v0->unk_0A = temp_v0->unk_04;
-            func_8000E88C(&temp_s1->unk_24, (((arg1 % 3) * 96.0f) + 224.0f) - 320.0f,
+            Vec3f_Set(&temp_s1->unk_24, (((arg1 % 3) * 96.0f) + 224.0f) - 320.0f,
                           240.0f - (((arg1 / 3) * 96.0f) + 156.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             temp_s1->unk_30.x = temp_s1->unk_30.y = temp_s1->unk_30.z = 1.2f;
@@ -1971,7 +1971,7 @@ void func_82502C78(void) {
 
 void func_82502F44(void) {
     func_82502BB0();
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8001D924(D_8250A268);
     func_80015094(D_8250A270);
     func_825054F4();
@@ -2627,8 +2627,8 @@ void func_825045C0(void) {
     D_8250A27C = process_geo_layout(temp_v0, D_825085A0);
     D_8250A280 = process_geo_layout(temp_v0, D_825086F8);
     D_8250A284 = process_geo_layout(temp_v0, D_825087D8);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
     func_82500C98();
 }
 
@@ -2653,7 +2653,7 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_82504370(arg0, arg1);
     Stage_AdvanceN(2);
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

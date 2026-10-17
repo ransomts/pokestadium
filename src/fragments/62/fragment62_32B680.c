@@ -1044,7 +1044,7 @@ void func_84343064(unk_D_8140E720* arg0, s16 arg1) {
         func_8432CD70(arg0->unk_14, 0x21, 0x22);
         func_8140B938(arg0, 0.2f);
         func_84342D48(arg0);
-        func_8000E88C(&sp24, (arg1 * 5.0f * 2) + -10.0f, 5.0f, 10.0f);
+        Vec3f_Set(&sp24, (arg1 * 5.0f * 2) + -10.0f, 5.0f, 10.0f);
         func_814091B4(arg0, sp24);
 
         switch (arg1) {

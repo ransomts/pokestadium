@@ -657,7 +657,7 @@ void func_86401544(s32 arg0) {
 }
 
 void func_86401A9C(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
@@ -838,7 +838,7 @@ void func_8640203C(void) {
         GraphNode_AddChild(&D_800AC840, &D_864052C8->unk_190->unk_00);
     }
 
-    func_80002D60(temp_s5);
+    mem_pool_resize_block(temp_s5);
 }
 
 void func_86402130(void) {
@@ -848,12 +848,12 @@ void func_86402130(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_87B000E8 = process_geo_layout(temp_v0, D_8640290C);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
     func_8001987C();
     D_87B000E4 = func_80019D18(0xC7);
     D_864052D0 = &D_86404070;
-    func_8001BB58(D_864052D0);
+    Graph_AddToRootList0(D_864052D0);
     func_8001BC34(D_864052D0, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
     func_8001BD04(D_864052D0, 0);
     func_80017464(D_864052D0, 0);
@@ -863,7 +863,7 @@ void func_86402130(void) {
         D_864052C8 = &D_86404778[i];
         D_864052D0 = &D_864052C8->unk_028;
 
-        func_8001BB58(D_864052D0);
+        Graph_AddToRootList0(D_864052D0);
         func_8001BC34(D_864052D0, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
         D_864052C8->unk_004 = 0;
         func_8001BD04(D_864052D0, D_864052C8->unk_004);
@@ -901,7 +901,7 @@ void func_86402130(void) {
     D_87B000E4 = func_80019D18(0xC3);
     D_864052CC = &D_86405158;
     D_864052D0 = &D_864052CC->unk_004;
-    func_8001BB58(D_864052D0);
+    Graph_AddToRootList0(D_864052D0);
     func_8001BC34(D_864052D0, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
 
     D_864052CC->unk_001 = D_864052CC->unk_000 = 0;
@@ -922,7 +922,7 @@ void func_86402130(void) {
     for (i = 0; i < 4; i++) {
         D_864052D0 = &D_864041D8[i];
 
-        func_8001BB58(D_864052D0);
+        Graph_AddToRootList0(D_864052D0);
         func_8001BC34(D_864052D0, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
         func_8001BD04(D_864052D0, 0);
         func_80017464(D_864052D0, D_864052D0->unk_040.unk_04->unk_0A);
@@ -958,7 +958,7 @@ void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_86401B3C();
     func_86401D1C();
     func_86401EEC();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

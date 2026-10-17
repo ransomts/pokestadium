@@ -383,11 +383,11 @@ void func_83800EFC(void) {
     D_83805678[4] = process_geo_layout(temp_s1, D_83805378);
     D_83805678[5] = process_geo_layout(temp_s1, D_83805118);
     D_83805690 = process_geo_layout(temp_s1, D_83805458);
-    func_80002D60(temp_s1);
-    func_8001BB20();
+    mem_pool_resize_block(temp_s1);
+    Graph_InitRoots();
 
     for (i = 0, ptr = &D_83805698[0][0]; i < 12; ptr++, i++) {
-        func_8001BB58(ptr);
+        Graph_AddToRootList0(ptr);
         D_83805698[0][i].unk_000.unk_14 = i;
     }
 
@@ -402,9 +402,9 @@ void func_8380101C(void) {
         if (D_8380548C[i].unk_00 != 0) {
             func_8001BC34(D_83805698[0] + i, 0, 0, D_83805678[i]);
             func_8001BC34(D_83805698[1] + i, 0, 0, D_83805690);
-            func_8000E88C(&D_83805698[0][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xF0 - D_8380548C[i].unk_04,
+            Vec3f_Set(&D_83805698[0][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xF0 - D_8380548C[i].unk_04,
                           -579.0f);
-            func_8000E88C(&D_83805698[1][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xE4 - D_8380548C[i].unk_04,
+            Vec3f_Set(&D_83805698[1][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xE4 - D_8380548C[i].unk_04,
                           -579.0f);
             D_83805698[1][i].unk_01D = 0xB4;
         }

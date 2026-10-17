@@ -1884,8 +1884,8 @@ void func_84373570(unk_D_84390010* arg0) {
     D_843C523C = ptr2;
 
     func_8436FA80(arg0);
-    func_8000E88C(&arg0->unk_448.unk_00, 0.0f, 0.0f, 0.0f);
-    func_8000E88C(&arg0->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&arg0->unk_448.unk_00, 0.0f, 0.0f, 0.0f);
+    Vec3f_Set(&arg0->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     func_84370B7C(arg0);
 
     if (arg0 == D_84390010[0]) {

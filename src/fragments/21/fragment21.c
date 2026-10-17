@@ -2343,7 +2343,7 @@ static u32 D_86F0B170[] = {
 };
 
 void func_86F01F58(s32 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
@@ -2456,19 +2456,19 @@ void func_86F02320(void) {
     unk_D_86002F30* temp_s1;
 
     D_87906050 = process_geo_layout(temp_v0, D_86F0B004);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (i = 0; i < 4; i++) {
-        func_8001BB58(&miniSandshrews[i].unk_000);
+        Graph_AddToRootList0(&miniSandshrews[i].unk_000);
     }
 
     for (i = 0; i < 4; i++) {
-        func_8001BB58(&miniSandshrewHoles[i].unk_000);
+        Graph_AddToRootList0(&miniSandshrewHoles[i].unk_000);
     }
 
     for (i = 0; i < 4; i++) {
-        func_8001BB58(&miniSandshrewGeisers[i].unk_000);
+        Graph_AddToRootList0(&miniSandshrewGeisers[i].unk_000);
     }
 
     func_8001987C();
@@ -2525,7 +2525,7 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     sandshrewMinigameInit();
     func_86F0204C(); //	tutorial screen ?
     func_86F02230();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC(); //	main_pool_try_free(D_800AC870);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 

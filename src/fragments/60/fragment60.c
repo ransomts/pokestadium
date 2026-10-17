@@ -261,7 +261,7 @@ s32 func_82E0036C(s32 arg0, unk_func_80011B94* arg1) {
 }
 
 void func_82E0045C(s32 arg0, s32 arg1) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8001D924(D_82E019B4);
     func_80015094(D_82E019B8);
 
@@ -341,19 +341,19 @@ void func_82E00A54(void) {
         D_82E019C8[i].unk_01E.y = -0x5000;
     }
 
-    func_8000E88C(&D_82E019C8[0].unk_024, 0.0f, 162.0f, -579.0f);
-    func_8000E88C(&D_82E019C8[1].unk_024, 0.0f, 54.0f, -579.0f);
-    func_8000E88C(&D_82E019C8[2].unk_024, 0.0f, -54.0f, -579.0f);
-    func_8000E88C(&D_82E019C8[3].unk_024, 0.0f, -162.0f, -579.0f);
+    Vec3f_Set(&D_82E019C8[0].unk_024, 0.0f, 162.0f, -579.0f);
+    Vec3f_Set(&D_82E019C8[1].unk_024, 0.0f, 54.0f, -579.0f);
+    Vec3f_Set(&D_82E019C8[2].unk_024, 0.0f, -54.0f, -579.0f);
+    Vec3f_Set(&D_82E019C8[3].unk_024, 0.0f, -162.0f, -579.0f);
 
     for (var_s2 = &D_82E01F68[0], i = 0; i < 3; i++, var_s2++) {
         func_8001BC34(var_s2, 0, 0, D_82E019C0);
         D_82E01F68[i].unk_01E.y = -0x5000;
     }
 
-    func_8000E88C(&D_82E01F68[0].unk_024, 0.0f, 108.0f, -579.0f);
-    func_8000E88C(&D_82E01F68[1].unk_024, 0.0f, 0, -579.0f);
-    func_8000E88C(&D_82E01F68[2].unk_024, 0.0f, -108.0f, -579.0f);
+    Vec3f_Set(&D_82E01F68[0].unk_024, 0.0f, 108.0f, -579.0f);
+    Vec3f_Set(&D_82E01F68[1].unk_024, 0.0f, 0, -579.0f);
+    Vec3f_Set(&D_82E01F68[2].unk_024, 0.0f, -108.0f, -579.0f);
 }
 
 s32 func_82E00BDC(void) {
@@ -423,16 +423,16 @@ void func_82E00E2C(void) {
     D_82E019B8 = process_geo_layout(temp_v0, &D_82E01110);
     D_82E019BC = process_geo_layout(temp_v0, &D_82E01800);
     D_82E019C0 = process_geo_layout(temp_v0, &D_82E01960);
-    func_80002D60(temp_v0);
-    func_8001BB20();
+    mem_pool_resize_block(temp_v0);
+    Graph_InitRoots();
 
     for (var_s2 = &D_82E019C8[0], i = 0; i < 4; var_s2++, i++) {
-        func_8001BB58(var_s2);
+        Graph_AddToRootList0(var_s2);
         D_82E019C8[i].unk_000.unk_14 = i;
     }
 
     for (var_s2 = &D_82E01F68[0], i = 0; i < 3; var_s2++, i++) {
-        func_8001BB58(var_s2);
+        Graph_AddToRootList0(var_s2);
         D_82E01F68[i].unk_000.unk_14 = i;
     }
 }

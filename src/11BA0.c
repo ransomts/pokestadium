@@ -503,9 +503,9 @@ void func_80011EB4(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     sp28 *= temp_fv1_2;
     sp24 *= temp_fv1_2;
 
-    func_8000E88C(&sp1C->eye, arg1, arg2, arg3);
-    func_8000E88C(&sp1C->at, arg4, arg5, arg6);
-    func_8000E88C(&sp1C->up, SINS(arg7) * sp24, COSS(arg7), -SINS(arg7) * sp28);
+    Vec3f_Set(&sp1C->eye, arg1, arg2, arg3);
+    Vec3f_Set(&sp1C->at, arg4, arg5, arg6);
+    Vec3f_Set(&sp1C->up, SINS(arg7) * sp24, COSS(arg7), -SINS(arg7) * sp28);
 }
 
 void func_80011FC8(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5) {

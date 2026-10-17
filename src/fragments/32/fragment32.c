@@ -94,7 +94,7 @@ void func_81100368(s32 arg0) {
 }
 
 s32 func_811007AC(u8 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_81100020(0x55, 0x70, 0x88);
     func_811002D4(D_81100934);
     func_81100368(D_81100930);

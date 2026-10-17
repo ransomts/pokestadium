@@ -190,7 +190,7 @@ void func_86805F94(unk_D_86808808* arg0, s32 arg1) {
     arg0->unk_008 = 0;
 
     func_86805D50(arg0->unk_000, &arg0->unk_00C);
-    func_8001BB58(&sp1C->unk_000);
+    Graph_AddToRootList0(&sp1C->unk_000);
 
     sp1C->unk_030.x = sp1C->unk_030.y = sp1C->unk_030.z = 2.0f;
 }
@@ -534,7 +534,7 @@ void func_86806A50(void) {
         GraphNode_AddChild(&D_800AC840, var_s0->unk_40);
     }
 
-    func_80002D60(temp_s2);
+    mem_pool_resize_block(temp_s2);
 }
 
 void func_86806BF0(void) {

@@ -300,7 +300,7 @@ void func_86B0B4D0(u8* arg0) {
 }
 
 void func_86B0B650(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_86B0B4D0(D_86B109C0);
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
@@ -391,13 +391,13 @@ void func_86B0B8DC(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_86B10848 = process_geo_layout(temp_v0, &D_86B0E374);
-    func_80002D60(temp_v0);
+    mem_pool_resize_block(temp_v0);
 
-    func_8001BB20();
+    Graph_InitRoots();
     func_86B0A750();
     func_86B0A7F8();
     func_86B0B024();
-    func_8001BB58(&D_86B10850);
+    Graph_AddToRootList0(&D_86B10850);
     func_8001987C();
 
     if (D_800AE540.unk_0000 == 0x16) {
@@ -413,7 +413,7 @@ void func_86B0B8DC(void) {
     D_86B10850.unk_000.unk_02 &= ~0x20;
     D_86B10850.unk_000.unk_01 &= ~1;
 
-    func_8000E88C(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);
+    Vec3f_Set(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);
 }
 
 s32 func_86B0BA18(void) {
@@ -443,7 +443,7 @@ s32 func_86B0BA18(void) {
     func_86B0B8DC();
     Stage_Set(sp24);
     func_86B0B810();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

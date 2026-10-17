@@ -37,7 +37,7 @@ void func_82000020(void) {
 }
 
 s32 func_820002B4(UNUSED u8 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_82000020();
 
@@ -100,7 +100,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_820002F0(sp30);
     func_80006C04(0x10);
     Stage_AdvanceUntil(0x10, func_820002B4);
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('LOGO');

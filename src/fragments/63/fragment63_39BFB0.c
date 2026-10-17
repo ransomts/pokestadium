@@ -612,12 +612,12 @@ void func_84B08A90(unk_D_84B25A58* arg0) {
 
     for (i = 1; i < 4; i++) {
         arg0->unk_04[i].unk_01E.y = 0x5800;
-        func_8000E88C(&arg0->unk_04[i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
         arg0->unk_04[4 + i].unk_01E.y = -0x5800;
-        func_8000E88C(&arg0->unk_04[4 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[4 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
@@ -631,11 +631,11 @@ void func_84B08BFC(unk_D_84B25A58* arg0) {
     }
 
     for (i = 1; i < 4; i++) {
-        func_8000E88C(&arg0->unk_04[8 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[8 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
-        func_8000E88C(&arg0->unk_04[12 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[12 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
@@ -651,8 +651,8 @@ void func_84B08D54(unk_D_84B25A58* arg0) {
         arg0->unk_04[15 + i].unk_01E.y = 0x5800;
         arg0->unk_04[18 + i].unk_01E.y = 0x5800;
 
-        func_8000E88C(&arg0->unk_04[15 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
-        func_8000E88C(&arg0->unk_04[18 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[15 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[18 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
@@ -664,8 +664,8 @@ void func_84B08D54(unk_D_84B25A58* arg0) {
         arg0->unk_04[22 + i].unk_01E.y = -0x5800;
         arg0->unk_04[25 + i].unk_01E.y = -0x5800;
 
-        func_8000E88C(&arg0->unk_04[22 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
-        func_8000E88C(&arg0->unk_04[25 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[22 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[25 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
@@ -682,8 +682,8 @@ void func_84B08F7C(unk_D_84B25A58* arg0) {
         arg0->unk_04[27 + i].unk_01E.y = -0x8000;
         arg0->unk_04[30 + i].unk_01E.y = -0x8000;
 
-        func_8000E88C(&arg0->unk_04[27 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
-        func_8000E88C(&arg0->unk_04[30 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[27 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[30 + i].unk_024, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
@@ -695,8 +695,8 @@ void func_84B08F7C(unk_D_84B25A58* arg0) {
         arg0->unk_04[34 + i].unk_01E.y = -0x8000;
         arg0->unk_04[37 + i].unk_01E.y = -0x8000;
 
-        func_8000E88C(&arg0->unk_04[34 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
-        func_8000E88C(&arg0->unk_04[37 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[34 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[37 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
@@ -910,7 +910,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
                 func_8001BC34(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
             }
             arg0->unk_04[1 + i].unk_000.unk_14 = arg0;
-            func_8000E88C(&arg0->unk_04[1 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_04[1 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
@@ -920,7 +920,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
                 func_8001BC34(&arg0->unk_04[9 + i], 0, 0, arg0->unk_14);
             }
             arg0->unk_04[9 + i].unk_000.unk_14 = arg0;
-            func_8000E88C(&arg0->unk_04[9 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_04[9 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
@@ -930,7 +930,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
                 func_8001BC34(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
             }
             arg0->unk_04[4 + i].unk_000.unk_14 = arg0;
-            func_8000E88C(&arg0->unk_04[4 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_04[4 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
@@ -940,7 +940,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
                 func_8001BC34(&arg0->unk_04[12 + i], 0, 0, arg0->unk_14);
             }
             arg0->unk_04[12 + i].unk_000.unk_14 = arg0;
-            func_8000E88C(&arg0->unk_04[12 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+            Vec3f_Set(&arg0->unk_04[12 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
         }
 
         for (i = 16; i < 40; i++) {
@@ -1113,8 +1113,8 @@ s32 func_84B0A634(unk_D_84B25A58* arg0, unk_D_86002F58_004_000* arg1) {
         arg0->unk_04[0].unk_01E.y = 0x5800;
         arg0->unk_04[7].unk_01E.y = -0x5800;
 
-        func_8000E88C(&arg0->unk_04[0].unk_024, -96.0f, 48.0f, -289.0f);
-        func_8000E88C(&arg0->unk_04[7].unk_024, 96.0f, -48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 48.0f, -289.0f);
+        Vec3f_Set(&arg0->unk_04[7].unk_024, 96.0f, -48.0f, -289.0f);
         func_8001BC34(&arg0->unk_04[0], 0, 0, arg0->unk_18);
         func_8001BC34(&arg0->unk_04[7], 0, 0, arg0->unk_18);
 
@@ -1219,7 +1219,7 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
     }
 
     arg0->unk_18 = process_geo_layout(sp2C, D_84B14DC8);
-    func_80002D60(sp2C);
+    mem_pool_resize_block(sp2C);
 
     if (arg0->unk_02 == 1) {
         func_84B0A82C(arg0);

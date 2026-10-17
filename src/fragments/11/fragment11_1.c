@@ -1254,7 +1254,7 @@ void func_86502848(void) {
         GraphNode_AddChild(&D_800AC840, &D_8650AB28->unk_17C->unk_00);
     }
 
-    func_80002D60(temp_s5);
+    mem_pool_resize_block(temp_s5);
 
     for (i = 0; i < 4; i++) {
         D_8650AD70 = &D_8650AB30[i];

@@ -35,7 +35,7 @@ s32 func_82A000F0(u8 arg0) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001ABAC(D_82A00374, 0);
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     return 0;
 }
@@ -77,7 +77,7 @@ s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
     func_80028AFC(2);
     Stage_Set(sp24);
     Stage_AdvanceUntil(8, func_82A000F0);
-    func_800076C0();
+    Stage_Destroy();
     func_82A00144(arg1);
     Gfx_FreeBuffers();
 

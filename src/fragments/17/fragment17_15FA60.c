@@ -142,7 +142,7 @@ void func_86B00258(void) {
 }
 
 void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
-    func_8001BB58(&arg0->unk_004);
+    Graph_AddToRootList0(&arg0->unk_004);
 
     arg0->unk_000 = func_80019D18(arg1->unk_0C);
 
@@ -471,7 +471,7 @@ void func_86B01004(void) {
 }
 
 void func_86B0100C(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_80015348();
     func_86B007EC();
@@ -514,8 +514,8 @@ void func_86B0111C(void) {
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_86B0E5D0 = process_geo_layout(sp1C, &D_86B0BBF8);
 
-    func_80002D60(sp1C);
-    func_8001BB20();
+    mem_pool_resize_block(sp1C);
+    Graph_InitRoots();
     func_8001987C();
     func_86B00B14();
 

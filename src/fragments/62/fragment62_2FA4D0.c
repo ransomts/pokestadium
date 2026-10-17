@@ -1544,8 +1544,8 @@ void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     arg0->unk_08 = 0;
     arg0->unk_10 = 0;
-    func_8000E88C(&sp40, arg1, arg2, 0.0f);
-    func_8000E88C(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
+    Vec3f_Set(&sp40, arg1, arg2, 0.0f);
+    Vec3f_Set(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
     Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
     func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
@@ -1557,7 +1557,7 @@ s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 
-    func_8000E88C(&sp28, arg1, arg2, 0.0f);
+    Vec3f_Set(&sp28, arg1, arg2, 0.0f);
     arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
     func_80010354(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315C28(arg0, arg1, arg2, sp34);
@@ -1582,8 +1582,8 @@ void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     arg0->unk_08 = 0;
     arg0->unk_10 = 0;
-    func_8000E88C(&sp40, arg1, arg2, 0.0f);
-    func_8000E88C(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
+    Vec3f_Set(&sp40, arg1, arg2, 0.0f);
+    Vec3f_Set(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
     Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
     func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
@@ -1595,7 +1595,7 @@ s32 func_843161F8(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 
-    func_8000E88C(&sp28, arg1, arg2, 0.0f);
+    Vec3f_Set(&sp28, arg1, arg2, 0.0f);
     arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
     func_80010354(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315FAC(arg0, arg1, arg2, sp34);

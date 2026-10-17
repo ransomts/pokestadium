@@ -103,7 +103,7 @@ void func_83900180(void) {
 }
 
 void func_839002B8(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_8001D924(D_839026F8);
     func_83900180();
     Stage_Advance();
@@ -207,7 +207,7 @@ s32 func_839004F4(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_839004B4();
     func_839000E4();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

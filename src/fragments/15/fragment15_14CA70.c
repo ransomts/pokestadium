@@ -429,7 +429,7 @@ void func_869002AC(void) {
     D_8690A700 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_00 - 6;
     D_8690A704 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_01 - 6;
 
-    func_8001BB58(&D_8690A69C->unk_004);
+    Graph_AddToRootList0(&D_8690A69C->unk_004);
     func_8001987C();
 
     if (D_8690A69C->unk_16C == 153) {
@@ -483,7 +483,7 @@ void func_86900484(s32 arg0) {
     }
 
     D_8690A688 = sp18(2, 0);
-    func_80002D60(sp1C);
+    mem_pool_resize_block(sp1C);
 
     temp_v1 = sp18(4, 0);
     if (temp_v1 == NULL) {
@@ -509,8 +509,8 @@ void func_8690060C(void) {
     func_86900110(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     D_87906050 = process_geo_layout(sp2C, &D_86908ABC);
-    func_80002D60(sp2C);
-    func_8001BB20();
+    mem_pool_resize_block(sp2C);
+    Graph_InitRoots();
 }
 
 void func_869006DC(f32* arg0, f32* arg1, s16* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s16 arg7) {
@@ -648,9 +648,9 @@ void func_86900DE0(void) {
         PlaySoundEffect(0x2C);
         D_8690B340 = 0xA;
         if (D_8690A70C != 1) {
-            func_8000E88C(&D_83402EE0[D_8690B344].unk_50, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y,
+            Vec3f_Set(&D_83402EE0[D_8690B344].unk_50, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y,
                           D_87906054->unk_60.eye.z);
-            func_8000E88C(&D_83402EE0[D_8690B344].unk_5C, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y,
+            Vec3f_Set(&D_83402EE0[D_8690B344].unk_5C, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y,
                           D_87906054->unk_60.at.z);
             D_83402EE0[D_8690B344].unk_6C = 0;
 
@@ -981,7 +981,7 @@ s32 func_869019BC(void) {
 }
 
 void func_86901A44(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     if ((D_8690A688 == -1) || (D_8690A688 == 0)) {
         func_8000699C(&gDisplayListHead, 1);
@@ -1150,7 +1150,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     func_86901B28();
     func_86901ECC();
     func_86901FB4();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

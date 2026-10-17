@@ -486,7 +486,7 @@ void func_84A01DAC(void) {
 }
 
 void func_84A01EE0(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
 
     if (D_84A030E0 < 9) {
         if (D_84A030F0 == 0) {

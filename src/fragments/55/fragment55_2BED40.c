@@ -634,7 +634,7 @@ void func_830017C0(void) {
 }
 
 void func_83001A9C(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     if (D_83003C90 != 0) {
         if (D_800AE540.unk_0000 == 0xA) {
             func_830007F4();

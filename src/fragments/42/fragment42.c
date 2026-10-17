@@ -723,7 +723,7 @@ void func_833017BC(s32 arg0, s32 arg1) {
 
     func_83400524();
     func_8330032C();
-    func_8001BB20();
+    Graph_InitRoots();
     sp30 = func_80019760(5);
     func_83401D68(&D_833032E8, 0x3C, 0x2D, 4, 2, sp30, D_8330339C, D_83407ABC, 4, 1);
     func_83402298(&D_83407B38, sp30, D_8330339C);
@@ -955,7 +955,7 @@ void func_8330277C(void) {
     UNUSED s32 pad;
     unk_D_83407B38* sp18 = func_83300300();
 
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_83301D74();
     func_833013C4(0xD5, 0x24, D_833032E0);
     func_83302068(sp18);
@@ -1261,7 +1261,7 @@ void func_83302FD8(s32 arg0, s32 arg1) {
     func_833017BC(arg0, arg1);
     Stage_Set(sp24);
     func_83302E6C();
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

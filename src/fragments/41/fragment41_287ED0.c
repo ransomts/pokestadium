@@ -318,7 +318,7 @@ void func_82F00960(void) {
 }
 
 void func_82F00968(void) {
-    func_8001BB20();
+    Graph_InitRoots();
     func_8002D510();
     D_82F13B70 = GetMessageBank(0x21);
     D_82F13B74 = GetMessageBank(6);
@@ -341,7 +341,7 @@ void func_82F00968(void) {
 }
 
 void func_82F00A58(void) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82F00164();
     if (func_82F0FDCC() != 0) {
         func_82F13414();
@@ -636,7 +636,7 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_82F01180();
     Stage_AdvanceN(2);
-    func_800076C0();
+    Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 

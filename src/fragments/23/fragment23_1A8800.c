@@ -254,7 +254,7 @@ s32 func_88200F00(unk_func_88200FA0* arg0) {
     s32 sp34 = 0;
 
     while (sp34 == 0) {
-        func_800079C4();
+        Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(arg0);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(arg0, 0, 0);
         Stage_Advance();

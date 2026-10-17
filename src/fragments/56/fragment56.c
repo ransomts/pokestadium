@@ -188,7 +188,7 @@ void func_82C00CB4(s32 arg0) {
 }
 
 void func_82C00D98(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82C00020();
     func_82C00658(arg0, arg1 == 0);
 
@@ -428,7 +428,7 @@ s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_82C01664 = 0;
     Stage_Set(sp24);
     func_82C012FC();
-    func_800076C0();
+    Stage_Destroy();
     func_800286D8();
     Gfx_FreeBuffers();
 

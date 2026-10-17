@@ -678,7 +678,7 @@ void func_82202850(void) {
 }
 
 void func_82202980(s16 arg0) {
-    func_800079C4();
+    Stage_BeginDisplayList();
     func_82202850();
 
     if (D_82202FA0 == 0) {
@@ -829,7 +829,7 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_82202AFC();
     func_82202B60();
-    func_800076C0();
+    Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('LAND');

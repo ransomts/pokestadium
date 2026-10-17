@@ -477,7 +477,7 @@ unk_D_86002F30* func_80019D18(s32 arg0) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
         sp24 = func_80019328(sp20, sp2C, sp28);
-        func_80002D60(sp20);
+        mem_pool_resize_block(sp20);
     }
 
     return sp24;
@@ -494,7 +494,7 @@ unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         func_8001BEE8(&sp28, arg0);
         sp24 = func_80019328(sp20, sp2C, sp28);
-        func_80002D60(sp20);
+        mem_pool_resize_block(sp20);
     }
     return sp24;
 }
@@ -511,7 +511,7 @@ s32 func_80019E18(s32 arg0, s32 arg1) {
         sp28.raw = 0;
         sp28.unk_00 = arg1 * 64;
         sp24 = func_80019328(sp20, sp2C, sp28);
-        func_80002D60(sp20);
+        mem_pool_resize_block(sp20);
     }
     return sp24;
 }
@@ -527,7 +527,7 @@ arg1_func_80019420* func_80019EA0(s32 arg0) {
         sp1C = state_pool_try_init(main_pool_get_available(), 0);
         sp20 = sp24->data;
         func_80019420(sp1C, sp20);
-        func_80002D60(sp1C);
+        mem_pool_resize_block(sp1C);
     }
     return sp20;
 }
