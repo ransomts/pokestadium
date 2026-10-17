@@ -369,8 +369,8 @@ D_80077DD4	gMusicChannel2Volume	p5		used for gradual volume reduction of music c
 D_80077DD8	gMusicChannel2Step	p5		subtracted from D_80077DD4 each frame to implement the fade step for channel?2	applied@f4ef3d1
 D_800FCAD4	gAudioOutputRate	p5		initialized from ALSynConfig->outputRate and later used to restore AI frequency when unpausing	applied@f4ef3d1
 D_800FCB08	gAudioPiHandle	p5		stores the OSPiHandle returned by osCartRomInit for DMA operations in __amDMA	applied@f4ef3d1
-D_800ABCC0	gAnimChannels	p6		global array holds two animation channel structs used by Anim_Get* functions	pending
-D_800ABCF0	gCurrentAnimChannelIdx	p6		global index tracks the currently active animation channel (set to -1 on reset)	pending
+D_800ABCC0	gAnimChannels	p6		global array holds two animation channel structs used by Anim_Get* functions	applied@4c34287
+D_800ABCF0	gCurrentAnimChannelIdx	p6		global index tracks the currently active animation channel (set to -1 on reset)	applied@4c34287
 func_8002D860	MenuScroll_Init	p7		initializes menu scroll struct using list functions and sets current index	pending
 func_8002D8C8	DrawTextureRectFromInfo	p7		loads texture from struct and draws a rectangle on screen	pending
 func_8002DCB8	MenuScroll_ProcessInputLR	p7		handles left/right input (0x800/0x400) for menu scrolling	pending

@@ -8,8 +8,8 @@ typedef struct unk_func_80016B30_arg0 {
     /* 0x06 */ s16 unk_06;
 } unk_func_80016B30_arg0; // size = 0x8
 
-static unk_D_800ABCC0 D_800ABCC0[2];
-static s32 D_800ABCF0;
+static unk_D_800ABCC0 gAnimChannels[2];
+static s32 gCurrentAnimChannelIdx;
 
 f32 Anim_GetScalar(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 ret;
@@ -254,7 +254,7 @@ s32 func_80016FBC(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
 }
 
 void func_80017080(void) {
-    D_800ABCF0 = -1;
+    gCurrentAnimChannelIdx = -1;
 }
 
 void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
@@ -263,9 +263,9 @@ void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
 
     temp_s1 = arg0->unk_04;
 
-    D_800ABCF0++;
-    if (D_800ABCF0 < 2) {
-        temp_s0 = &D_800ABCC0[D_800ABCF0];
+    gCurrentAnimChannelIdx++;
+    if (gCurrentAnimChannelIdx < 2) {
+        temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
         if (arg0->unk_04 != NULL) {
             if (arg2 != 0) {
                 arg0->unk_08 = func_80016FBC(arg0, arg1);
@@ -292,14 +292,14 @@ void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
 }
 
 void func_80017188(void) {
-    if (D_800ABCF0 >= 0) {
-        D_800ABCF0--;
+    if (gCurrentAnimChannelIdx >= 0) {
+        gCurrentAnimChannelIdx--;
     }
 }
 
 void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
-    if ((D_800ABCF0 >= 0) && (D_800ABCF0 < 2)) {
-        unk_D_800ABCC0* temp_s0 = &D_800ABCC0[D_800ABCF0];
+    if ((gCurrentAnimChannelIdx >= 0) && (gCurrentAnimChannelIdx < 2)) {
+        unk_D_800ABCC0* temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
 
         if ((temp_s0->unk_00 == 1) && (arg3 >= 0) && (arg3 + 2 < temp_s0->unk_04->unk_08)) {
             if (temp_s0->unk_01 & 8) {
