@@ -525,18 +525,6 @@ void func_80033D1C(StadiumModel* model, MtxF* mtx) {
     func_800357F4(model);
 }
 
-// Score 80 (fd.sh): only diff is a callee-saved swap - target has idx in s2 and i in s3, we get
-// them the other way round (pure regalloc; permuter candidate). Found with accessmap.py:
-// StadiumTransform.unk_00 is s16 (sh), the old draft wrote every field one late.
-// Things that mattered: d (spD8/D4/D0) initialised with double literals (-1.0 / 0.0) so uopt does
-// not fold the dot product's x*0 terms (with 0.0f it folds to one mul; an f32[3] array keeps the
-// muls but spills wrong); normalise dx/dy/dz in place; len compared with 0.0f; locals ordered to
-// the target stack map, s32 pad[2] at the end for the 0x150 frame.
-// Dead ends for the s2/s3 swap: swapping idx/i declarations, s32 idx (drops the sll/sra), split
-// unk_02 read/increment through an s32 temp, i = 0 hoisted (anywhere), while loop, (s32) or
-// reversed loop compare, ++i, wt as weights + idx or computed before the call, all-direct
-// mvtx->cmd.weights[idx] stores (or only the last two), xf removed, mvtx init moved earlier.
-#ifdef NON_MATCHING
 void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, MtxF* arg9) {
     f32 len;
     f32 x2;
@@ -637,12 +625,12 @@ void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, 
             y = mvtx->position.base.y;
             z = mvtx->position.base.z;
             dist = func_80033568(x, y, z, sp130, sp12C, sp128, sp124, sp120, sp11C, &spF4, &spF0, &spEC);
-            wt = &mvtx->cmd.weights[idx];
             if (dist > 0.0f) {
                 x = (((x - spF4) * arg2) / dist) + spF4;
                 y = (((y - spF0) * arg2) / dist) + spF0;
                 z = (((z - spEC) * arg2) / dist) + spEC;
             }
+            wt = &mvtx->cmd.weights[idx];
             wt->w0 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp124, sp120, sp11C);
             wt->w1 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp118, sp114, sp110);
             wt->w2 = func_800334C0(x, y, z, sp130, sp12C, sp128, sp10C, sp108, sp104);
@@ -651,9 +639,6 @@ void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, 
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/33FE0/func_80033D44.s")
-#endif
 
 void func_80034254(StadiumModel* model) {
     u32 pad[2];
