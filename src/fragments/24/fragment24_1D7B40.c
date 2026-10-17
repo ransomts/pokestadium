@@ -123,7 +123,7 @@ void func_883094CC(unk_func_8830867C_04C_078* arg0, unk_func_80026268_arg0* arg1
         arg0->unk_44[i].unk_04 = arg1->unk_20[i];
     }
 
-    func_8002C740(&arg0->unk_34, arg0->unk_44, 8, 4, temp_v0);
+    SubList_Init(&arg0->unk_34, arg0->unk_44, 8, 4, temp_v0);
     ((func885063B8)Memmap_GetFragmentVaddr(func_885063B8))(arg0->unk_30, &arg0->unk_34);
     ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0->unk_30, sp34);
 }
@@ -1882,7 +1882,7 @@ void func_8830E504(unk_func_8830867C_03C* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(spA0, temp_s0_2);
     arg0->unk_50->unk_1C = temp_s0_2;
 
-    func_8002C740(&arg0->unk_D0, arg0->unk_58, 8, 0xF, 0xF);
+    SubList_Init(&arg0->unk_D0, arg0->unk_58, 8, 0xF, 0xF);
 
     for (i = 0; i < 15; i++) {
         arg0->unk_58[i].unk_00 = D_883174C8[i];

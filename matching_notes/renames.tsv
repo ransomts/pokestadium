@@ -217,3 +217,11 @@ func_8000E8B0	Vec3f_Add	b10		arg0 += arg1 componentwise	applied@c6bf036
 func_8000E8E8	Vec3f_Sum	b10		arg0 = arg1 + arg2 componentwise	applied@c6bf036
 func_8001BB20	Graph_InitRoots	b10		allocates the two static root graph nodes D_800AC840/D_800AC858 (the two master scene lists)	applied@c6bf036
 func_8001BB58	Graph_AddToRootList0	b10		initialises the 004_000 node and adds it under root D_800AC840 (with the master matrices D_8006F050/F05C/F064)	applied@c6bf036
+func_8002C758	List_Init	b11		allocates elem_size*capacity from the MemoryPool and zeroes count (the container is {data, capacity, count, elemSize})	applied@41211de
+func_8002C7AC	List_Free	b11		frees the list's element storage from its MemoryPool	applied@41211de
+func_8002C7D4	List_Append	b11		copies one element to position count and increments (1 = full)	applied@41211de
+func_8002C88C	List_Insert	b11		shifts elements up by one stride and writes the new element at index arg2 (1 = full or bad index)	applied@41211de
+func_8002C990	List_RemoveAt	b11		removes the element at arg1 by shifting the tail down one stride (1 = bad index)	applied@41211de
+func_8002CA00	List_GetCopy	b11		copies the element at arg2 out to a1 (1 = bad index)	applied@41211de
+func_8002CAAC	List_Set	b11		overwrites the element at arg2 from a1 (1 = bad index)	applied@41211de
+func_8002C740	SubList_Init	b11		initialises the smaller {data, elemSize, capacity, count} view struct (no pool; used for static/stack lists)	applied@41211de

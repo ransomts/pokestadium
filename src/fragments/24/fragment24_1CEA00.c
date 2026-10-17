@@ -723,24 +723,24 @@ void func_88302C7C(unk_func_8830867C_02C* arg0, MemoryPool* arg1) {
     arg0->unk_0E4[0].unk_04 = func_80029080();
     arg0->unk_0E4[0].unk_08 = 0;
     arg0->unk_0E4[0].unk_1C = 6;
-    func_8002C758(&arg0->unk_0E4[0].unk_0C, 0x1C, 1, arg1);
+    List_Init(&arg0->unk_0E4[0].unk_0C, 0x1C, 1, arg1);
     func_883164C0(&arg0->unk_0E4[0], 6, 1, arg1);
 
     arg0->unk_0E4[1].unk_00 = 0x21;
     arg0->unk_0E4[1].unk_04 = arg0->unk_0E4[0].unk_04;
     arg0->unk_0E4[1].unk_08 = 1;
     arg0->unk_0E4[1].unk_1C = 0x14;
-    func_8002C758(&arg0->unk_0E4[1].unk_0C, 0x1C, 0xC, arg1);
+    List_Init(&arg0->unk_0E4[1].unk_0C, 0x1C, 0xC, arg1);
     func_883164C0(&arg0->unk_0E4[1], 0x14, 0, arg1);
 
     arg0->unk_0E4[2].unk_00 = 0x11;
     arg0->unk_0E4[2].unk_04 = 0;
     arg0->unk_0E4[2].unk_08 = 2;
     arg0->unk_0E4[2].unk_1C = 0x14;
-    func_8002C758(&arg0->unk_0E4[2].unk_0C, 0x1C, 0xC, arg1);
+    List_Init(&arg0->unk_0E4[2].unk_0C, 0x1C, 0xC, arg1);
     func_883164C0(&arg0->unk_0E4[2], 0x14, 0, arg1);
 
-    func_8002C740(&arg0->unk_144, arg0->unk_0E4, 0x20, 3, 3);
+    SubList_Init(&arg0->unk_144, arg0->unk_0E4, 0x20, 3, 3);
 }
 
 void func_88302D98(unk_func_88302D98* arg0, s32 arg1, s32 arg2, unk_func_8830867C_02C* arg3) {

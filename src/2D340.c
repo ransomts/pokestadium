@@ -1,24 +1,24 @@
 #include "2D340.h"
 
-void func_8002C740(unk_func_88201DA0_038* arg0, unk_func_88201DA0_034* arg1, s32 arg2, s32 arg3, s32 arg4) {
+void SubList_Init(unk_func_88201DA0_038* arg0, unk_func_88201DA0_034* arg1, s32 arg2, s32 arg3, s32 arg4) {
     arg0->unk_00 = arg1;
     arg0->unk_0C = arg2;
     arg0->unk_04 = arg3;
     arg0->unk_08 = arg4;
 }
 
-void func_8002C758(unk_func_8820BE14_06C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void List_Init(unk_func_8820BE14_06C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     arg0->unk_00 = mem_pool_alloc(arg3, arg1 * arg2);
     arg0->unk_0C = arg1;
     arg0->unk_04 = arg2;
     arg0->unk_08 = 0;
 }
 
-void func_8002C7AC(unk_func_8820BE14_06C* arg0, MemoryPool* arg1) {
+void List_Free(unk_func_8820BE14_06C* arg0, MemoryPool* arg1) {
     mem_pool_free(arg1, arg0->unk_00);
 }
 
-s32 func_8002C7D4(unk_func_8820BE14_06C* arg0, s8* a1) {
+s32 List_Append(unk_func_8820BE14_06C* arg0, s8* a1) {
     s8* var_v0;
     s32 i;
     s8* arg1;
@@ -38,7 +38,7 @@ s32 func_8002C7D4(unk_func_8820BE14_06C* arg0, s8* a1) {
     return 0;
 }
 
-s32 func_8002C88C(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
+s32 List_Insert(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
     s32 var_t1;
     s8* var_t0;
     s8* var_v1;
@@ -69,7 +69,7 @@ s32 func_8002C88C(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
     return 0;
 }
 
-s32 func_8002C990(unk_func_8820BE14_06C* arg0, s32 arg1) {
+s32 List_RemoveAt(unk_func_8820BE14_06C* arg0, s32 arg1) {
     s32 var_t0;
     s8* var_a3;
     s8* var_v1;
@@ -93,7 +93,7 @@ s32 func_8002C990(unk_func_8820BE14_06C* arg0, s32 arg1) {
     return 0;
 }
 
-s32 func_8002CA00(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
+s32 List_GetCopy(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     s8* var_v0;
     s32 i;
     s8* arg1;
@@ -112,7 +112,7 @@ s32 func_8002CA00(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     return 0;
 }
 
-s32 func_8002CAAC(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
+s32 List_Set(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     s8* var_v0;
     s32 i;
     s8* arg1;

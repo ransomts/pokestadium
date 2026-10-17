@@ -969,7 +969,7 @@ void func_8820F3B8(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_func_880
     // clang-format on
     arg0->unk_60 = 0;
 
-    func_8002C758(&arg0->unk_64, 2, 0x64, arg5);
+    List_Init(&arg0->unk_64, 2, 0x64, arg5);
     arg0->unk_48 = arg4;
 
     arg0->unk_4C = mem_pool_alloc(arg5, sizeof(unk_func_8821421C_038_04C));
@@ -1142,7 +1142,7 @@ void func_8820F3B8(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_func_880
 }
 
 void func_8820FFF8(unk_func_8821421C_038* arg0, unk_func_8821421C_07C* arg1) {
-    func_8002C740(&arg0->unk_50, arg1, 0x14, 4, 4);
+    SubList_Init(&arg0->unk_50, arg1, 0x14, 4, 4);
 
     ((func88506F50)Memmap_GetFragmentVaddr(func_88506F50))(arg0->unk_34, &arg0->unk_50);
 }
@@ -1590,13 +1590,13 @@ s32 func_88210DF4(s32 arg0, unk_func_8820BE14_06C* arg1) {
 }
 
 void func_88210E70(unk_func_8820BE14_02C_038* arg0, u8* arg1) {
-    func_8002C88C(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
+    List_Insert(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
 }
 
 void func_88210E98(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     s32 sp1C = arg0->unk_00.unk_38;
 
-    func_8002C990(arg0->unk_00.unk_2C, arg1);
+    List_RemoveAt(arg0->unk_00.unk_2C, arg1);
 
     if (arg1 < sp1C) {
         sp1C--;
@@ -1611,7 +1611,7 @@ void func_88210F00(unk_func_8820BE14_02C_038* arg0) {
     s32 var_a1;
 
     sp1C = arg0->unk_00.unk_38;
-    func_8002C990(arg0->unk_00.unk_2C, sp1C);
+    List_RemoveAt(arg0->unk_00.unk_2C, sp1C);
     if ((sp1C > 0) && (sp1C >= arg0->unk_00.unk_2C->unk_08)) {
         sp1C -= 1;
     }
@@ -1638,7 +1638,7 @@ void func_88210F74(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
         do {
             if (arg1 == var_s2[0]) {
                 arg2 += var_s2[1];
-                func_8002C990(temp_s4, i);
+                List_RemoveAt(temp_s4, i);
                 if (i < var_s3) {
                     var_s3--;
                 }
@@ -1659,7 +1659,7 @@ void func_88210F74(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
         }
         arg2 -= var_v0;
         sp44.unk_01 = var_v0;
-        func_8002C88C(temp_s4, &sp44, var_s3++);
+        List_Insert(temp_s4, &sp44, var_s3++);
     }
 
     ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0, var_s3 - 1);
@@ -2912,9 +2912,9 @@ void func_8821421C(unk_func_8821421C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
         arg0->unk_3C[i].unk_00 = 0;
     }
 
-    func_8002C758(&arg0->unk_3C[0].unk_04, 2, 0x14, arg3);
-    func_8002C758(&arg0->unk_3C[1].unk_04, 2, 0x32, arg3);
-    func_8002C758(&arg0->unk_3C[2].unk_04, 2, 0x64, arg3);
+    List_Init(&arg0->unk_3C[0].unk_04, 2, 0x14, arg3);
+    List_Init(&arg0->unk_3C[1].unk_04, 2, 0x32, arg3);
+    List_Init(&arg0->unk_3C[2].unk_04, 2, 0x64, arg3);
 
     func_8820C930(0x23, sp84, 0, &arg0->unk_3C[0].unk_04);
     func_8820C930(0x22, sp84, 0, &arg0->unk_3C[1].unk_04);

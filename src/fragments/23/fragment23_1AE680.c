@@ -392,7 +392,7 @@ void func_88206C4C(unk_func_8820BE14_02C_078* arg0, s32 arg1, s32 arg2, s32 arg3
 
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00, arg0->unk_2C);
 
-    func_8002C740(&arg0->unk_38, arg4, 0x10, 3, 3);
+    SubList_Init(&arg0->unk_38, arg4, 0x10, 3, 3);
 
     arg0->unk_30 = mem_pool_alloc(arg6, sizeof(unk_func_88200FA0_030_030));
     ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 0, func_8820660C, sp48, 0x1C, 3, 1, arg6);
@@ -2288,9 +2288,9 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     var_s1 = mem_pool_alloc(arg4, sizeof(unk_func_882062E4) * (6 + (12 * 20) * 2));
     bzero(var_s1, sizeof(unk_func_882062E4) * (6 + (12 * 20) * 2));
 
-    func_8002C758(&arg0->unk_6C, 0x10, 1, arg4);
-    func_8002C758(&arg0->unk_7C, 0x10, 12, arg4);
-    func_8002C758(&arg0->unk_8C, 0x10, 12, arg4);
+    List_Init(&arg0->unk_6C, 0x10, 1, arg4);
+    List_Init(&arg0->unk_7C, 0x10, 12, arg4);
+    List_Init(&arg0->unk_8C, 0x10, 12, arg4);
 
     arg0->unk_6C.unk_08 = 1;
     ptr = arg0->unk_6C.unk_00;

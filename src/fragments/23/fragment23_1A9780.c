@@ -282,7 +282,7 @@ void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 ar
         func_8001B0DC(&arg0->unk_34[i].unk_008, 0, ptr);
     }
 
-    func_8002C740(&arg0->unk_38, arg0->unk_34, 0xC88, 0x14, arg1->unk_690);
+    SubList_Init(&arg0->unk_38, arg0->unk_34, 0xC88, 0x14, arg1->unk_690);
 
     ((func885063B8)Memmap_GetFragmentVaddr(func_885063B8))(arg0->unk_30, &arg0->unk_38);
 

@@ -133,10 +133,10 @@ typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
 typedef s32 (*func_func_8002D1AC)(unk_func_8830867C_02C_0CC_000*, s32*);
 typedef s32 (*unk_D_8831A1F8)(s32, s32);
 
-void func_8002C740(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);
-void func_8002C758(unk_func_8820BE14_06C*, s32, s32, MemoryPool*);
-s32 func_8002C88C(unk_func_8820BE14_06C*, s8*, s32);
-s32 func_8002C990(unk_func_8820BE14_06C*, s32);
+void SubList_Init(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);
+void List_Init(unk_func_8820BE14_06C*, s32, s32, MemoryPool*);
+s32 List_Insert(unk_func_8820BE14_06C*, s8*, s32);
+s32 List_RemoveAt(unk_func_8820BE14_06C*, s32);
 s32 func_8002CB58(unk_func_8830867C_04C_030_02C_000_000_00C*, s32);
 void func_8002CBB0(unk_func_88205880_A030*, void**, s32, s32);
 void func_8002CBC0(unk_func_88200FA0_030_038*, s32, MemoryPool*);
