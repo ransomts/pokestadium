@@ -4192,45 +4192,8 @@ s32 func_8437FCCC(unk_D_800FCB18* arg0) {
     return var_a2;
 }
 
-#ifdef NON_MATCHING
-// Score 90 after round 6 (was 350). Round-6 findings (agent 7), in the order they helped:
-// - The min result is a separate `s32 n` (now in a1 like the target) and the min input reuses `j`
-//   (permuter hint; var_a0_3 is gone). Frame stays 0xc0 with i j k l m spBA + 2 u8 + n on top and
-//   sp94 sp90 sp78 spBF sp76 + 2 u8 + var_s0 below; order of the register-only u8s is irrelevant.
-// - The else-branch copy loop uses `j`, not a separate m (fixes its v0/v1 swap; m is now unused but
-//   its slot is needed). sp5C can equally be `j` (same output).
-// - `if (sp5C != 3) continue;` at the top of the then-branch (instead of wrapping the body in
-//   `if (unk_04[i] == 3) { ...; continue; }`) fixes the unk_04/unk_01 compare registers (v0/v1).
-//   The body is then wrapped in `if (1) {` (a bare block is 305). Testing unk_04[i] again instead
-//   of sp5C gives 190 (unk_04 in a1).
-// - The arg2 no-op moved out of `if (i)` to just before `sp5C = ...` fixes the sp94 loop temps.
-// - `if (1) {}` at the top of the innermost loop puts the `sb t1,0xbf(sp)` i-spill in place
-//   (removing it: 305).
-// - Remaining (90): t-regs one ahead between the compare and the arg2 reload (temp_v0_2 - 2 in t3,
-//   target t2), and the innermost-loop arg2 reload `lw v1,0xc8(sp)` (target t2), which re-syncs
-//   the rotation. Without the no-op everything matches up to the reload and is one behind after
-//   it, so the reload register is the real root cause. Dead ends: all six sum orders, the no-op
-//   in the then-branch / k / l / innermost loop, `&&` chains of 2 or 4, switch for `== 3`, sp5C
-//   types, sp5C as k/l/temp_v0_2/var_s2, copy-loop rewrites (while, swapped operands, m/k/l).
-// Older findings (rounds 4-5):
-// Score 350. Round-4 findings:
-// - spBF is not a real slot: 0xbf is i's spill (j spills to 0xbe). sp5C is m2c's name for the
-//   compiler temp at 0x5c (the temp_v0_2 - 2 bound). Removing `u8 pad` changes nothing.
-// - The min must be a separate s32 (target a1, no andi), NOT var_s0. Target asm is
-//   `move a1,v0` hoisted above `li a0,1`, then `beqz; nop; b; move a1,a0`, i.e. if/else with the
-//   else-assignment hoisted. Any extra s32/s16 local grows the frame to 0xc8 unless the u8s are
-//   rearranged: e.g. top i j k l m spBA + 2 u8 + `s32 n`, bottom sp94 sp90 sp78 <u8> sp76 + 2 u8 +
-//   `s32 var_s0` (drop pad and spBF; frame stays 0xc0; order of register-only u8s is irrelevant).
-//   With that layout `n = var_s2; var_a0_3 = 1; ...; if (var_a0_3 < var_s2) n = var_a0_3;`
-//   puts n in a1 (score 495: var_a0_3 still v1 not a0, the `b` is missing); plain if/else gives n
-//   in v1 (805), `n = var_s2; if (...)` at the end 595.
-// - The unk_04/unk_01 compare (v1/a2 vs v0/v1) and the else-branch m loop (v0/v1 swapped) did not
-//   move with: reusing temp_v0_2/var_a0_3/var_s2/j/k/l/m/pad for unk_04[i], `sp5C == 3`,
-//   reversing the compare, 9 m-loop rewrites, other loop counters for the sp94 init, ternaries.
-// - Our t-reg rotation is one ahead of the target from the sp94 loop on (t9 vs t8), apparently a
-//   phantom temp from the arg2 no-op. The no-op only needs arg2 as the FIRST of exactly three
-//   && operands (the others can be anything) and can sit anywhere between the loop head and the
-//   sp94 loop; chains of other lengths are all much worse.
+// sp78 holds up to 8 picked triples (u8[3] rows, the same layout as func_8437F85C's arg3); indexing
+// it as a 2D array (rather than &sp78[spBF * 3]) is what settled the last register choices.
 s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
     u8 i;
     u8 j;
@@ -4243,7 +4206,7 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
     s32 n;
     s32 sp94[8];
     u8 sp90[3];
-    u8 sp78[0x18];
+    u8 sp78[8][3];
     u8 spBF;
     u8 sp76;
     u8 var_a3;
@@ -4269,7 +4232,6 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
             sp94[j] = 0x80000002;
         }
 
-        if ((arg2 && arg2) && arg2) {}
         sp5C = arg0->unk_04[i];
 
         if (sp5C < arg0->unk_01[i]) {
@@ -4283,8 +4245,8 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
                 for (j = var_a3; j < temp_v0_2 - 2; j++) {
                     for (k = j + 1; k < temp_v0_2 - 1; k++) {
                         for (l = k + 1; l < temp_v0_2; l++) {
-                            if (1) {}
                             var_s0 = arg2[j] + arg2[k] + arg2[l];
+                            if (1) {}
 
                             sp90[0] = j;
                             sp90[1] = k;
@@ -4294,7 +4256,7 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
                                 var_s0 -= fabsf(var_s0) * 0.2;
                             }
 
-                            if (func_8437F85C(arg0, sp94, var_s0, sp78, sp90, 3, arg3) != 0) {
+                            if (func_8437F85C(arg0, sp94, var_s0, (unk_func_8437F85C_arg3*)sp78, sp90, 3, arg3) != 0) {
                                 sp76 = 1;
                                 var_s2++;
                                 if (var_s2 >= 9) {
@@ -4326,7 +4288,7 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
                     }
 
                     spBF = func_843767E4(n - 1);
-                    _bcopy(&sp78[spBF * 3], &arg1[spBA], 3);
+                    _bcopy(sp78[spBF], &arg1[spBA], 3);
                 } else {
                     func_8437FB14(arg0, arg1, arg3);
                     sp76 = 1;
@@ -4342,9 +4304,6 @@ s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3) {
 
     return sp76;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_361050/func_8437FD74.s")
-#endif
 
 s32 func_84380164(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, u8* arg3, s32* arg4) {
     u8 i;
