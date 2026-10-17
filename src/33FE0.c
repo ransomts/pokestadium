@@ -718,16 +718,28 @@ void func_80034254(StadiumModel* model) {
 // the reload 3844, the reload alone 6761, an added `if (!len) {}` at the first counter store 390.
 // Still differs: az fs0 vs fa1, cy/cz fa1/ft4 vs ft4/ft5, cz-bz f24 / bz-az f26 vs f20/f22, nx/ny/nz
 // colours, and the phantom len (fs3) save/restore. Re-seed the farm from this.
+// Round 9 agent-2: 390 -> 130. (1) by2's slot: declare it after ia/ib/ic and drop one pad1 word
+// (frame 0xF8, every slot matches). (2) Target loads ay (0x68) right after ax and az (0x6C) after the
+// block boundary (fa0/fa1): swap the two loads (250). (3) The phantom fs3 is the nx CSE temp: cc -S
+// showed `sub.s $f24..; mov.s $f26,$f24` and `nx *= len` reading the temp f24 (copy-propagated into
+// the if-block; ny/nz are not because the dead cx reload redefines their operand), so as1 could not
+// fold the mov. A dead reload of any nx operand in the if-block (cz/cy/ay/az/bz/by, before or after
+// the cx reload; all 130, `by2 = by;` there 250) makes nx a real variable, as1 renames the temp away
+// and only the fs3 save remains, as in the target.
+// Still differs (130): only the coordinate colours. Target ay f12 az f14 by f0 bz f2 cy f16 cz f18
+// and vertex pointers ia v0 ib v1 ic a0; ours ay f16 az f2 by f18 bz f0 cy f12 cz f14, ia v1 ib a0
+// ic v0 (uopt colouring order).
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 ax;
     f32 ay;
     f32 az, bx, by, bz, cx, cy, cz;
-    f32 nx, by2, ny, nz;
+    f32 nx, ny, nz;
     f32 len;
     s16 ia, ib, ic;
-    s32 pad1[10];
+    f32 by2;
+    s32 pad1[9];
     f32 count;
     s16* index;
     s16* remap;
@@ -751,13 +763,13 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     for (i = 0; i < triangleCount; i++) {
         ia = remap[*index++];
         ax = (vertices + ia)->position.base.x;
-        az = (vertices + ia)->position.base.z;
+        ay = (vertices + ia)->position.base.y;
         ib = remap[*index++];
         bx = (vertices + ib)->position.base.x;
         by = (vertices + ib)->position.base.y;
         if (0) {}
         bz = (vertices + ib)->position.base.z;
-        ay = (vertices + ia)->position.base.y;
+        az = (vertices + ia)->position.base.z;
         ic = remap[*index++];
         cx = (vertices + ic)->position.base.x;
         cy = (vertices + ic)->position.base.y;
@@ -771,6 +783,7 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         if ((s32) len > 0) {
             len = 120.0f / len;
             cx = (vertices + ic)->position.base.x;
+            cz = (vertices + ic)->position.base.z;
             nx *= len;
             ny *= len;
             nz *= len;
