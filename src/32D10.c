@@ -19,13 +19,13 @@ s16 D_800AF7AE;
 s16 D_800AF7B0[2];
 s16 D_800AF7B4[2];
 
-void func_80032110(u8 arg0, s16 arg1) {
+void HpWheel_SetDigits(u8 arg0, s16 arg1) {
     D_800AF778[arg0] = 0x167 - ((arg1 % 10) * 0x24);
     D_800AF780[arg0] = 0x167 - (((arg1 / 10) % 10) * 0x24);
     D_800AF788[arg0] = 0x167 - (((arg1 / 100) % 10) * 0x24);
 }
 
-void func_80032244(u8 arg0, s16 arg1) {
+void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1) {
     s16 tmp;
     s16 tmp2;
 
@@ -193,6 +193,6 @@ void func_80032738(u32 arg0, u32 arg1) {
     }
 }
 
-void func_800327CC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, s32 arg11, s32 arg12, s32 arg13, s32 arg14, s32 arg15, s32 arg16) {
+void Gfx_SetCombineRaw(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, s32 arg11, s32 arg12, s32 arg13, s32 arg14, s32 arg15, s32 arg16) {
     gDPSetCombine(arg0++, GCCc0w0(arg1, arg3, arg5, arg7) | GCCc1w0(arg9, arg11), GCCc0w1(arg2, arg4, arg6, arg8) | GCCc1w1(arg10, arg13, arg15, arg12, arg14, arg16));
 }

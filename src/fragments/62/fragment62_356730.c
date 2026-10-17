@@ -359,7 +359,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
 
             gSPDisplayList(arg0++, D_84389C70);
 
-            func_800327CC(
+            Gfx_SetCombineRaw(
                 arg0++, var_fp->unk_024.unk_00, var_fp->unk_024.unk_04, var_fp->unk_024.unk_08, var_fp->unk_024.unk_0C,
                 var_fp->unk_024.unk_10, var_fp->unk_024.unk_14, var_fp->unk_024.unk_18, var_fp->unk_024.unk_1C,
                 var_fp->unk_044.unk_00, var_fp->unk_044.unk_04, var_fp->unk_044.unk_08, var_fp->unk_044.unk_0C,

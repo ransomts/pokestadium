@@ -71,7 +71,7 @@ s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
     FRAGMENT_LOAD(fragment31);
 
     D_82A00370 = func_80019760(1);
-    D_82A00374 = func_8001A024(D_82A00370, 6, 0x28, 0x28);
+    D_82A00374 = SpriteDisplay_Alloc(D_82A00370, 6, 0x28, 0x28);
     func_8001987C();
     func_82A00020(arg0);
     func_80028AFC(2);

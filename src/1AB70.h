@@ -74,11 +74,11 @@ typedef struct unk_D_84B25A28 {
     /* 0x2C */ char unk2C[0x4];
 } unk_D_84B25A28; // size = 0x30
 
-unk_func_8001A024* func_8001A024(unk_D_86002F58_004_000_010*, s16, s16, s16);
+unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010*, s16, s16, s16);
 void func_8001A1D0(unk_func_8001A024*, unk_D_86002F58_004_000_010*, unk_D_80068BB0*);
 void func_8001A250(unk_func_8001A024*, unk_D_8006FF00*);
-void func_8001A258(unk_func_8001A024*);
-void func_8001A324(unk_func_8001A024*, s32, s32, u16);
+void SpriteDisplay_Clear(unk_func_8001A024*);
+void SpriteDisplay_SetupSlot(unk_func_8001A024*, s32, s32, u16);
 void func_8001A46C(unk_func_8001A024*, s32, unk_func_80026268_arg0*, u16);
 s32 func_8001AA18(unk_func_8001A024*, s32);
 s32 func_8001ABAC(unk_func_8001A024*, s32);

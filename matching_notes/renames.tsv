@@ -239,3 +239,9 @@ func_8002FF7C	Cam_GetUnk6CHigh	b13		extracts bits 4-7 of the camera's unk_6C fie
 func_8002FF8C	Cam_GetActive	b13		selects the camera object by mode (0 -> D_80075F80, 2/5 -> D_80075F84) and returns its mode via Cam_GetMode	applied@c1fbe27	pending
 func_8002FF20	Cam_ResetUnkF90	b13		clears the D_80075F90 flag	applied@c1fbe27
 func_8002FF00	Cam_CallInit318B8	b13		forwards to func_800318B8 (the camera controller tick)	applied@c1fbe27
+func_80032110	HpWheel_SetDigits	b14		positions the 3 HP digits on the circular dial: 0x167 - (digit * 0x24) per %10//10//100 place (32D10.c, fragment 6 GB tower HUD)	applied@9f9a004
+func_80032244	HpWheel_SetDigitsSmooth	b14		same digit placement plus shortest-path wraparound correction (+/-6 per step, mod 0x168) so the wheel spins the short way	applied@9f9a004
+func_800327CC	Gfx_SetCombineRaw	b14		17-arg raw gDPSetCombine wrapper (GCCc0w0/GCc1w0 word packing)	applied@9f9a004
+func_8001A024	SpriteDisplay_Alloc	b14		allocates the display manager: N image slots (each with own unk_D_80068BB0 framebuffer), parent node, anim table	applied@9f9a004
+func_8001A258	SpriteDisplay_Clear	b14		clears all slots: frees the node, zeroes every slot flag and bzeroes each image buffer	applied@9f9a004
+func_8001A324	SpriteDisplay_SetupSlot	b14		zeroes slot arg1's image and sets its mon index (1..0x97), starting frame, framerate (unk_18[mon-1].unk_02/100) and x offset (-0xE38 or table-relative)	applied@9f9a004

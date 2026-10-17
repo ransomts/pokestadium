@@ -919,9 +919,9 @@ void func_88803BCC(u8* arg0, s32 arg1) {
     void* sp18;
 
     main_pool_push_state('ICON');
-    sp1C = func_8001A024(D_8882692C, 1, 0x50, 0x50);
+    sp1C = SpriteDisplay_Alloc(D_8882692C, 1, 0x50, 0x50);
     sp18 = func_8001AFD8(sp1C, 0);
-    func_8001A324(sp1C, 0, arg1, 0x9530);
+    SpriteDisplay_SetupSlot(sp1C, 0, arg1, 0x9530);
     func_8001ABAC(sp1C, 0);
     Stage_AdvanceN(2);
     osInvalDCache(sp18, 0x3200);

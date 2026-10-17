@@ -44,7 +44,7 @@ void func_80019F84(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
     func_80011E68(sp24, 30.0f, 100.0f, 12800.0f);
 }
 
-unk_func_8001A024* func_8001A024(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3) {
+unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 var_s0;
     unk_D_80068BB0* temp_a1;
     s32 i;
@@ -94,7 +94,7 @@ void func_8001A250(unk_func_8001A024* arg0, unk_D_8006FF00* arg1) {
     arg0->unk_18 = arg1;
 }
 
-void func_8001A258(unk_func_8001A024* arg0) {
+void SpriteDisplay_Clear(unk_func_8001A024* arg0) {
     // s32 var_s0;
     s32 i;
     u16 w;
@@ -122,7 +122,7 @@ void func_8001A258(unk_func_8001A024* arg0) {
     }
 }
 
-void func_8001A324(unk_func_8001A024* arg0, s32 arg1, s32 arg2, u16 arg3) {
+void SpriteDisplay_SetupSlot(unk_func_8001A024* arg0, s32 arg1, s32 arg2, u16 arg3) {
     s32 w;
     s32 h;
 

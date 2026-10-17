@@ -840,7 +840,7 @@ void func_860017C0(s32 arg0) {
         }
 
         if (D_8780FC94 != 1) {
-            func_80032244(arg0, D_86003B64->unk_16A);
+            HpWheel_SetDigitsSmooth(arg0, D_86003B64->unk_16A);
         }
 
         if (D_86003B5C->unk_188 > 0) {
@@ -1169,7 +1169,7 @@ void func_86002440(void) {
         D_86003B64->unk_168 = 0;
         D_86003B64->unk_16A = 0;
         D_86003B64->unk_16C = 0;
-        func_80032110(i, 0);
+        HpWheel_SetDigits(i, 0);
         D_86003B64->unk_000.unk_0A6 = i;
         func_8001BD04(&D_86003B60->unk_000, 0);
         func_800173CC(&D_86003B60->unk_000);

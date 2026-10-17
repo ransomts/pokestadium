@@ -1046,11 +1046,11 @@ void func_84B0A244(unk_D_84B25A58* arg0) {
     func_8001A1D0(arg0->unk_1C, temp_s0, func_80006314(0, 2, 0x80, 0xC0, 1));
 
     for (count = 0, i = 0; i < D_800AE540.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
     }
 
     for (count = 3, i = 0; i < D_800AE540.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
     }
 }
 
@@ -1063,22 +1063,22 @@ void func_84B0A36C(unk_D_84B25A58* arg0) {
     func_8001A1D0(arg0->unk_1C, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < D_800AE540.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
     }
 
     for (count = 6, i = 0; i < D_800AE540.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
     }
 
     if (D_800AE540.unk_1194[0].unk_08[1] != NULL) {
         for (count = 3, i = 0; i < D_800AE540.unk_1194[0].unk_08[1]->unk_002; count++, i++) {
-            func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[1]->unk_01C[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[0].unk_08[1]->unk_01C[i].unk_00.unk_00, 0);
         }
     }
 
     if (D_800AE540.unk_1194[1].unk_08[1] != NULL) {
         for (count = 9, i = 0; i < D_800AE540.unk_1194[1].unk_08[1]->unk_002; count++, i++) {
-            func_8001A324(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[1]->unk_01C[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, D_800AE540.unk_1194[1].unk_08[1]->unk_01C[i].unk_00.unk_00, 0);
         }
     }
 }
@@ -1198,10 +1198,10 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
     }
 
     if (arg0->unk_02 == 1) {
-        arg0->unk_1C = func_8001A024(NULL, 0xC, 0x80, 0x60);
+        arg0->unk_1C = SpriteDisplay_Alloc(NULL, 0xC, 0x80, 0x60);
         arg0->unk_20 = ALIGN64((u32)main_pool_alloc(0x9640, 0));
     } else {
-        arg0->unk_1C = func_8001A024(NULL, 6, 0x80, 0xC0);
+        arg0->unk_1C = SpriteDisplay_Alloc(NULL, 6, 0x80, 0xC0);
         arg0->unk_20 = ALIGN64((u32)main_pool_alloc(0x4B40, 0));
     }
 
