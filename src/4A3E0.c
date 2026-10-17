@@ -731,7 +731,9 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
 // col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
 // pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
-// Round 8 pass 4 (agent-14): 955 -> 810 = (a) + (b) below + the call index written `D_800FC6CC[D_800FCFD8.unk_04 & 0xFF]`
+// Round 8 pass 4 (agent-14): 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
+// in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
+// (a) + (b) below + the call index written `D_800FC6CC[D_800FCFD8.unk_04 & 0xFF]`
 // (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
 // (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see func_80049DF0's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
@@ -814,7 +816,7 @@ s16 func_8004A89C(void) {
         if (flags & 0x80) {
             D_800FCFD8.unk_00 = 0;
             D_800FCFD8.unk_28 = 1;
-            D_800FCFD8.unk_14 = (nr & 0xF0) * D_8007D4D0;
+            D_800FCFD8.unk_14 = (u8)(nr & 0xF0) * D_8007D4D0;
             if ((nr & 7) != 0) {
                 if (dir) {
                     D_800FCFD8.unk_18 = D_8007D4D0;
@@ -828,8 +830,7 @@ s16 func_8004A89C(void) {
                 D_800FCFD8.unk_18 = 0.0f;
             }
             if (flags & 0x40) {
-                sample = D_800FD008[0x10].value;
-                D_800FCFD8.unk_24 = (0x40 - (sample & 0x3F)) * D_800FD004;
+                D_800FCFD8.unk_24 = (0x40 - (D_800FD008[0x10].value & 0x3F)) * D_800FD004;
             } else {
                 D_800FCFD8.unk_24 = -1;
             }
