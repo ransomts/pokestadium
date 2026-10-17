@@ -292,6 +292,20 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // first product matters, swapping it is worse), a1/a2 assignment placement (any non-uniform use of a1
 // or a2 turns them into real variables, frame 0xF8), dead stores to a1/a2, casts on h/-arg4/arg5
 // index, statement order of corners 2/3, the twin's literal style (trig first in products).
+// Round 8 pass 4 (agent-15), cc -S view: ugen int temps rotate t6,t7,t8,t9 (ours: -h t6, arg4 t7, -arg4
+// t8, arg1 t9). The target's -h t8 / arg4 t9 / -arg4 t6 is exactly what we get when the (f32)arg1 and
+// (f32)arg2 conversions are emitted FIRST (blocking a1/a2 copy propagation with `arg1 = arg2 = 0;`
+// after `a2 = arg2;` gives that rotation, but a1/a2 then become register variables with home stores,
+// frame 0xF0, 4557). The target also reloads (f32)arg1 from 0x64 into a different FPR right after the
+// store, i.e. its def and first use are separate ugen statements. So the target seems to evaluate the
+// two conversions as temps before the corner math, but every way tried to get that sinks them into
+// the first use: goto-label block boundary anywhere between `a1 = arg1` and the corners (2446-8285,
+// uopt still sinks across the boundary), a1/a2 assigned before the last call (frame changes, still
+// sunk), block-scoped a1/a2 with or without blocking (1758/4325, homes at 0xCC), redundant
+// `a1 = arg1;` re-assignments between corner lines (3906 or identical), dead stores `spF8[0] = a1;`
+// (removed, identical), a1-first trees `(a1 + P) - Q` (converts a1 first but changes the FP ops,
+// 3136-3494), `(P - Q) - -a1` 2311, named s32/s16/f32 h = arg3/2 6456+. Farm q3 output-1501 (1231 in
+// fd.sh) only wins through the gfx comma trick's stack-offset noise, not the corner math.
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
