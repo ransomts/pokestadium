@@ -1075,19 +1075,13 @@ u8 func_81208F9C(u16 arg0) {
   return D_811FEB60[arg0 & 0xFFFF];
 }
 
-#ifdef NON_MATCHING
-// The empty -1 branch should be a plain `b` (here `if (bufPtr) {}` leaves a beqzl), *bufPtr should load into v1,
-// and the final store to D_812346F4 should reuse the v1 base instead of lui at.
-// Dead ends 2026-10-16: dropping `if (bufPtr) {}` or using != -1 (~4000); p = *bufPtr + *len * 2 or
-// &(*bufPtr)[..] (630, v1 becomes t4); `+=` for the last store fixes the base but swaps the addu operands
-// (330); a s32* to D_812346F4 or `*=` (1400-1900). Permuter candidate.
 s32 func_81209078(void) {
     u32 aiLen;
     s32 pad1;
     s32 idx;
     s32 pad2[2];
     s16* buf;
-    s32 pad3;
+    s16* q;
     s16* len;
     s16** bufPtr;
     s16* p;
@@ -1098,6 +1092,9 @@ s32 func_81209078(void) {
     D_812346D4 %= 3;
     idx = (D_812346D4 + 2) % 3;
     aiLen = osAiGetLength() >> 2;
+    // Fake: buf aliasing D_812346F4 (read once below) keeps &D_812346F4 in v1 for the final stores, and
+    // `if (bufPtr) {}` / `if (!p) {}` shape the -1 branch; all three are load-bearing (farm candidate x16).
+    buf = (s16*)&D_812346F4;
 
     if (D_812346FC < 16) {
         len = &D_812346EC[idx];
@@ -1107,10 +1104,13 @@ s32 func_81209078(void) {
                 if (bufPtr) {}
             } else {
                 p = *bufPtr;
-                p += *len * 2;
-                D_8122C790 = p[-2];
-                D_8122C792 = p[-1];
+                if (*buf) {}
+                q = p;
+                q += *len * 2;
+                D_8122C790 = q[-2];
+                D_8122C792 = q[-1];
             }
+            if (!p) {}
         }
     }
 
@@ -1142,10 +1142,6 @@ s32 func_81209078(void) {
     D_812346F4 = (*bufPtr)[D_812346C8 & 0xFF] + D_812346F4;
     return 0;
 }
-#else
-s32 func_81209078(void);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/1/fragment1_86CB0/func_81209078.s")
-#endif
 
 void func_8120935C(s32 arg0) {
   D_8120EB78 = arg0;
