@@ -308,11 +308,16 @@ def preflight(rows, protected, named, allow_applied_skip=True):
             errors.append(f"{tag}: {r.new!r} already defined in a symbol_addrs file")
         if r.also:
             for pair in r.also.split(","):
-                a, b = pair.split(":")
+                if ":" not in pair:
+                    errors.append(f"{tag}: malformed also-pair {pair!r} (need old:new)")
+                    continue
+                a, b = pair.split(":", 1)
                 if sa_definitions(b.strip()) or b.strip() in named:
                     errors.append(f"{tag}: also-pair target {b.strip()!r} already named/defined")
                 if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", b.strip()):
                     errors.append(f"{tag}: also-pair target {b.strip()!r} is not a valid identifier")
+                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", a.strip()):
+                    errors.append(f"{tag}: also-pair source {a.strip()!r} is not a valid identifier")
         m = re.fullmatch(r"func_([0-9A-Fa-f]{8})", r.old)
         if m:
             if len(defs) == 1 and not re.search(r"0[xX]" + m.group(1), defs[0][2], re.I):

@@ -170,6 +170,12 @@ def fixup(rows, facts, batch, log):
         if new in seen_new:
             log(f"  drop {old} -> {new}: duplicate new within wave")
             continue
+        # also column: keep only well-formed old:new pairs
+        if also:
+            pairs = [p.strip() for p in also.split(",") if ":" in p]
+            pairs = [p for p in pairs
+                     if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*", p)]
+            also = ",".join(pairs)
         seen_old.add(old)
         seen_new.add(new)
         kept.append((old, new, batch, also, just))
@@ -220,7 +226,15 @@ def run_wave(qwave, args, facts):
     log(f"=== wave {qwave} (batch {batch}): {len(files)} files ===")
     t0 = time.time()
 
-    # 1. agents
+    # 1. agents (skip files that already produced a non-empty .tsv in an earlier attempt)
+    def agent_outfile(f):
+        return os.path.join(wdir, f"{batch}_{os.path.basename(f)}.tsv")
+
+    todo = [f for f in files
+            if not (os.path.exists(agent_outfile(f)) and os.path.getsize(agent_outfile(f)) > 0)]
+    if len(todo) < len(files):
+        log(f"  reusing {len(files) - len(todo)} agent result(s) from an earlier attempt")
+
     def run_agent(f):
         cmd = [PY, os.path.join(HERE, "rename_agent.py"), "--file", f,
                "--batch", batch, "--model", args.model, "--max", str(args.max),
@@ -233,7 +247,7 @@ def run_wave(qwave, args, facts):
 
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency) as ex:
-        futs = [ex.submit(run_agent, f) for f in files]
+        futs = [ex.submit(run_agent, f) for f in todo]
         for fut in concurrent.futures.as_completed(futs):
             f, rc, tail = fut.result()
             results.append((f, rc))

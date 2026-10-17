@@ -56,7 +56,7 @@ The justification must be one sentence with the evidence, ASCII characters only.
 """
 
 
-def call_model(model, system, user, temperature=0.2, max_tokens=4096):
+def call_model(model, system, user, temperature=0.2, max_tokens=4096, retries=2):
     key = open(KEY_PATH).read().strip()
     body = json.dumps({
         "model": model,
@@ -68,9 +68,20 @@ def call_model(model, system, user, temperature=0.2, max_tokens=4096):
     req = urllib.request.Request(GATEWAY, data=body, method="POST",
                                  headers={"Authorization": "Bearer " + key,
                                           "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=300) as r:
-        data = json.load(r)
-    return data["choices"][0]["message"]["content"]
+    last_err = None
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=300) as r:
+                data = json.load(r)
+            content = data["choices"][0]["message"]["content"]
+            if content is None:
+                finish = data["choices"][0].get("finish_reason", "?")
+                last_err = f"model returned no content (finish_reason={finish})"
+                continue
+            return content
+        except Exception as e:  # noqa: BLE001 - retry any transport/API hiccup
+            last_err = f"{type(e).__name__}: {e}"
+    raise RuntimeError(f"gateway call failed after {retries} attempts: {last_err}")
 
 
 def main():
