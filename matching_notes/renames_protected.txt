@@ -1,0 +1,9 @@
+# Hard-refused renames (rename.py reads this; one symbol per line; # comments allowed)
+# Round-9 open functions (until they match - their .s and GLOBAL_ASM must stay stable):
+func_8004A89C
+func_80034348
+func_8437B0CC
+func_88304850
+func_88805AEC
+# NOTE: already-named symbols (non-func_/non-D_ entries of symbol_addrs*.txt) are protected by
+# construction in rename.py's pre-flight; this file only lists the extra hard refusals.
