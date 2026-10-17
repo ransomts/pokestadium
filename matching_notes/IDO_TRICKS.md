@@ -118,3 +118,18 @@ All of these produced actual matches or big score drops in this codebase.
 - Sandbox: `source .venv/bin/activate` / inline `PATH=` may be refused. What worked:
   `env PATH=<MAIN>/.venv/bin:/usr/local/bin:/usr/bin:/bin make -j2 PYTHON=<MAIN>/.venv/bin/python3`,
   or symlink the worktree's `.venv` to MAIN's (it's gitignored).
+
+## Spill-slot order follows when a common subexpression is found (2026-10-16, func_8850B2D4)
+Two temps that IDO spills get stack slots in the order their common subexpressions are discovered.
+An expression that only becomes identical to another after a constant local is propagated (write it
+with the draft's `w`/`h` locals instead of the literal) is found later and so gets the later slot:
+swapping the two spill slots of func_8850B2D4 came from writing `((arg2 - 7) + h) << 2`.
+
+## Data layout facts (2026-10-16, Phase D)
+- IDO puts every data object on a 4-byte boundary; a label at an unaligned address is a field.
+- .data/.rodata are emitted in source order, initialized function statics included (`static T x = 0;`
+  -> .data at its source position; no initializer -> .bss).
+- String literals from data initializers go to .rodata in source order, one copy per use, each padded
+  to 4. A file's sections end padded to 16, so a zero gap ending on a 16-byte boundary is a file edge.
+- A named `const` scalar goes to .data; a .rodata float in the ROM is an anonymous literal.
+

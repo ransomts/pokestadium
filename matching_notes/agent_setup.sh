@@ -12,7 +12,8 @@ echo "HEAD is now:"; git log --oneline -1
 ln -s "$MAIN/.venv" .venv
 ln -s "$MAIN/asm" asm
 ln -s "$MAIN/tools/permuter" tools/permuter
-ln -s "$MAIN/pokestadium-us.yaml" poketadium-us.yaml
+ln -s "$MAIN/pokestadium-us.yaml" pokestadium-us.yaml
+ln -s "$MAIN/assets" assets
 ln -s "$MAIN/baseroms/us/baserom.z64" baseroms/us/baserom.z64
 ln -s "$MAIN/expected" expected
 cp -r "$MAIN/build" build
