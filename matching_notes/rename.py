@@ -440,6 +440,32 @@ class Rewriter:
         self.mvs.append((old_path, new_path))
 
 
+_MAP_SPAN_CACHE = None
+
+
+def map_symbol_span(name):
+    """(addr, size) for `name` from build/pokestadium-us.map; size = gap to the next
+    symbol address. None if absent. C-defined globals (no symbol_addrs entry, no dlabel)
+    need a symbol_addrs entry after renaming, or every `make extract` re-derives the
+    old placeholder name via spimdisasm auto-creation (fragment relocs etc.)."""
+    global _MAP_SPAN_CACHE
+    if _MAP_SPAN_CACHE is None:
+        _MAP_SPAN_CACHE = {}
+        mp = os.path.join(REPO, "build/pokestadium-us.map")
+        if os.path.exists(mp):
+            entries = []
+            for line in open(mp, errors="replace"):
+                m = re.match(r"^\s+(0x[0-9a-fA-F]+)\s+([A-Za-z_][A-Za-z0-9_.]*)\s*$", line)
+                if m:
+                    entries.append((int(m.group(1), 16), m.group(2)))
+            for i, (addr, sym) in enumerate(entries):
+                if sym in _MAP_SPAN_CACHE:
+                    continue
+                nxt = next((a for a, _s in entries[i + 1:] if a > addr), None)
+                _MAP_SPAN_CACHE[sym] = (addr, (nxt - addr) if nxt else 4)
+    return _MAP_SPAN_CACHE.get(name)
+
+
 def do_rewrites(rows, files):
     rw = Rewriter()
     for r in rows:
@@ -462,6 +488,10 @@ def do_rewrites(rows, files):
             if info:
                 _f, addr, size = info
                 rw.add_sa_entry(r.new, addr, size)
+            elif not is_typedef_row(r):
+                span = map_symbol_span(r.old)
+                if span:
+                    rw.add_sa_entry(r.new, span[0], span[1])
         sp = s_path_for(r.old)
         if sp and os.path.exists(sp):
             rw.move_s(sp, os.path.join(os.path.dirname(sp), r.new + ".s"))
