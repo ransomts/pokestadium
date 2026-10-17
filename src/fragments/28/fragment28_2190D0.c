@@ -3582,7 +3582,8 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // memory variable) and later reassigns that local (`y5 = y5 - 5;`), which stops uopt from
 // copy-propagating it back into arg2 (a never-reassigned copy is folded into arg2 -> s1). Later
 // arg2 offsets are written relative to the new y5 (y5 + 8 == arg2 + 3; uopt refolds them onto t4):
-// 12907 -> 5546, frame still 0x230 vs 0x228.
+// 12907 -> 5546, frame still 0x230 vs 0x228. Writing case 0s (y5 + 8) as (arg2 + 3): 5131. Writing more
+// later offsets on arg2 (arg6 block, case 1) makes uopt promote arg2 to s1 and fold the copy (9.5k-11k).
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
@@ -3696,12 +3697,12 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
         case 0:
             gDPLoadTextureBlock(arg0++, D_88823838, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP,
                                 G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(arg0++, arg1 << 2, y5 << 2, (arg1 + 0x2E) << 2, (y5 + 8) << 2,
+            gSPTextureRectangle(arg0++, arg1 << 2, y5 << 2, (arg1 + 0x2E) << 2, (arg2 + 3) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
             gDPLoadTextureBlock(arg0++, D_888238C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 8, 0, G_TX_MIRROR | G_TX_CLAMP,
                                 G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, y5 << 2, (arg1 + 0x3E) << 2, (y5 + 8) << 2,
+            gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, y5 << 2, (arg1 + 0x3E) << 2, (arg2 + 3) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
             break;
     }
