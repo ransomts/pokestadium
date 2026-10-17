@@ -386,7 +386,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     sp24 = func_821009B4();
     func_82100B1C(sp24);
     Stage_Destroy();
-    func_8000D2B4(0);
+    Audio_WaitForLoadAndFade(0);
     Audio_ClearBankDMAFlag();
     Gfx_FreeBuffers();
 

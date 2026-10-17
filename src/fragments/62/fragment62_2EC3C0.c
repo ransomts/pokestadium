@@ -1838,7 +1838,7 @@ void func_843066E0(unk_D_84390010* arg0) {
             func_84308654(arg0, 0, 0);
             func_843096EC(arg0);
             func_84307C5C(arg0);
-            func_8000EB70(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
+            Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
             break;
 
         case 4:
@@ -1863,7 +1863,7 @@ void func_84306914(unk_D_84390010* arg0) {
         func_84306200(arg0, 0x100);
     }
 
-    temp_s1->unk_2E = func_8001046C(temp_s1->unk_2E, 0, 0x1E, 0x1E);
+    temp_s1->unk_2E = Math_ApproachS32(temp_s1->unk_2E, 0, 0x1E, 0x1E);
     if (temp_s1->unk_2E != 0) {
         GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, temp_s1->unk_2E);
     }

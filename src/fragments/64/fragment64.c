@@ -1108,7 +1108,7 @@ s32 func_84802C40(s32 arg0) {
         if (var_s2 == D_8480379C) {
             sp30 = 1;
             func_80007990(0xFFFF);
-            func_8000D278(0x10);
+            Music_StopTrack(0x10);
         }
 
         if (D_84803798 > 0) {
@@ -1273,7 +1273,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     D_84803794 = GetMessageBank(6);
 
     func_84803110(&gBattleContext);
-    func_8000D1F0(7);
+    Music_ChangeTrack(7);
     Stage_Set(sp24);
     func_800078D4(func_84802C40, 8, 8);
     Stage_Destroy();

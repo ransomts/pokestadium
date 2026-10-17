@@ -34,7 +34,7 @@ Vec3s gSpriteAnimUpdateFunc = { 0, 0, 0 };
 Vec3f gRootNodeScale = { 1.0f, 1.0f, 1.0f };
 u16 D_8006F070[] = { 1, 1, 1 };
 
-Color_RGBA8* func_8000E820(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
+Color_RGBA8* GfxColor_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
     arg0->r = r;
     arg0->g = g;
     arg0->b = b;
@@ -51,7 +51,7 @@ Color_RGBA8* GfxColor_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 a
     return arg0;
 }
 
-Vec3f* func_8000E868(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
+Vec3f* Vec3f_SetXYZ(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -83,7 +83,7 @@ Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     return arg0;
 }
 
-Vec3f* func_8000E920(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vec3f_Subtract(Vec3f* arg0, Vec3f* arg1) {
     arg0->x -= arg1->x;
     arg0->y -= arg1->y;
     arg0->z -= arg1->z;
@@ -115,7 +115,7 @@ Vec3f* func_8000E9D4(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
     return arg0;
 }
 
-Vec3f* func_8000EA84(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
+Vec3f* Vec3f_CrossProduct(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     arg0->x = (arg1->y * arg2->z) - (arg2->y * arg1->z);
     arg0->y = (arg1->z * arg2->x) - (arg2->z * arg1->x);
     arg0->z = (arg1->x * arg2->y) - (arg2->x * arg1->y);
@@ -123,7 +123,7 @@ Vec3f* func_8000EA84(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     return arg0;
 }
 
-Vec3f* func_8000EAF4(Vec3f* arg0) {
+Vec3f* Vec3f_Normalize(Vec3f* arg0) {
     f32 temp_fv1_2 = 1.0f / sqrtf(SQ(arg0->x) + SQ(arg0->y) + SQ(arg0->z));
 
     arg0->x *= temp_fv1_2;
@@ -133,7 +133,7 @@ Vec3f* func_8000EAF4(Vec3f* arg0) {
     return arg0;
 }
 
-Vec3s* func_8000EB70(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
+Vec3s* Vec3s_Set(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -141,7 +141,7 @@ Vec3s* func_8000EB70(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
-Vec3s* func_8000EBA8(Vec3s* arg0, Vec3s* arg1) {
+Vec3s* Vec3s_Add(Vec3s* arg0, Vec3s* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
@@ -149,7 +149,7 @@ Vec3s* func_8000EBA8(Vec3s* arg0, Vec3s* arg1) {
     return arg0;
 }
 
-Vec3s* func_8000EBE0(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
+Vec3s* Vec3s_Sum(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     arg0->x = arg1->x + arg2->x;
     arg0->y = arg1->y + arg2->y;
     arg0->z = arg1->z + arg2->z;
@@ -157,7 +157,7 @@ Vec3s* func_8000EBE0(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     return arg0;
 }
 
-Vec3s* func_8000EC18(Vec3s* arg0, Vec3s* arg1) {
+Vec3s* Vec3s_Subtract(Vec3s* arg0, Vec3s* arg1) {
     arg0->x -= arg1->x;
     arg0->y -= arg1->y;
     arg0->z -= arg1->z;
@@ -173,7 +173,7 @@ Vec3s* func_8000EC50(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     return arg0;
 }
 
-Vec3s* func_8000EC88(Vec3s* arg0, Vec3f* arg1) {
+Vec3s* Vec3s_FromVec3f_Round(Vec3s* arg0, Vec3f* arg1) {
     arg0->x = ROUND_MAX(arg1->x);
     arg0->y = ROUND_MAX(arg1->y);
     arg0->z = ROUND_MAX(arg1->z);
@@ -490,13 +490,13 @@ void Matrix_LookAtYaw(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     Vec3f forwardDir;
 
     Vec3f_Set(&lateralDir, SINS(yaw), 0, COSS(yaw));
-    func_8000EAF4(upDir);
+    Vec3f_Normalize(upDir);
 
-    func_8000EA84(&leftDir, upDir, &lateralDir);
-    func_8000EAF4(&leftDir);
+    Vec3f_CrossProduct(&leftDir, upDir, &lateralDir);
+    Vec3f_Normalize(&leftDir);
 
-    func_8000EA84(&forwardDir, &leftDir, upDir);
-    func_8000EAF4(&forwardDir);
+    Vec3f_CrossProduct(&forwardDir, &leftDir, upDir);
+    Vec3f_Normalize(&forwardDir);
 
     dest->mf[0][0] = leftDir.x;
     dest->mf[0][1] = leftDir.y;
@@ -630,7 +630,7 @@ void Camera_SetViewParameters(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 y
     to->z = from->z + (dist * COSS(pitch) * COSS(yaw));
 }
 
-s16 func_800103F0(s16 current, s16 target, s16 inc) {
+s16 Math_ApproachS16(s16 current, s16 target, s16 inc) {
     s16 temp_v0 = target - current;
 
     if (temp_v0 < 0) {
@@ -648,7 +648,7 @@ s16 func_800103F0(s16 current, s16 target, s16 inc) {
     return target - temp_v0;
 }
 
-s32 func_8001046C(s32 current, s32 target, s32 inc, s32 dec) {
+s32 Math_ApproachS32(s32 current, s32 target, s32 inc, s32 dec) {
     //! If target is close to the max or min s32, then it's possible to overflow
     // past it without stopping.
 
@@ -666,7 +666,7 @@ s32 func_8001046C(s32 current, s32 target, s32 inc, s32 dec) {
     return current;
 }
 
-f32 func_800104AC(f32 current, f32 target, f32 inc, f32 dec) {
+f32 Math_ApproachF32(f32 current, f32 target, f32 inc, f32 dec) {
     if (current < target) {
         current += inc;
         if (current > target) {
@@ -694,7 +694,7 @@ s16 func_80010500(s16* arg0, s32 arg1, s32 arg2) {
     return spC.y;
 }
 
-void func_80010570(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
+void RGB_ToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
     f32 temp_ft4;
     f32 var_ft5;
     f32 var_fv0;
@@ -755,11 +755,11 @@ void func_80010570(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
 }
 
 void func_80010720(Color_RGBA8_u32 arg0, Vec3f* arg1) {
-    func_80010570((s32)arg0.r / 255.0f, (s32)arg0.g / 255.0f, (s32)arg0.b / 255.0f, arg1);
+    RGB_ToHSV((s32)arg0.r / 255.0f, (s32)arg0.g / 255.0f, (s32)arg0.b / 255.0f, arg1);
 }
 
 void func_80010780(u16 arg0, Vec3f* arg1) {
-    func_80010570(((arg0 & 0xF800) >> 0xB) / 31.0f, ((arg0 & 0x7C0) >> 6) / 31.0f, ((arg0 & 0x3E) >> 1) / 31.0f, arg1);
+    RGB_ToHSV(((arg0 & 0xF800) >> 0xB) / 31.0f, ((arg0 & 0x7C0) >> 6) / 31.0f, ((arg0 & 0x3E) >> 1) / 31.0f, arg1);
 }
 
 f32 func_800107F0(f32 arg0, f32 arg1, f32 arg2) {
@@ -786,7 +786,7 @@ f32 func_800107F0(f32 arg0, f32 arg1, f32 arg2) {
     return ret;
 }
 
-void func_80010930(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3) {
+void HSV_ToRGB(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3) {
     f32 sp24;
     f32 sp20;
     f32 temp_ft4;
@@ -837,7 +837,7 @@ u16 func_80010B20(Vec3f* arg0) {
     s32 var_a1;
     s32 var_v1;
 
-    func_80010930(&sp2C, &sp28, &sp24, arg0);
+    HSV_ToRGB(&sp2C, &sp28, &sp24, arg0);
 
     var_a1 = (sp2C * 31.0f) + 0.5f;
     if (var_a1 >= 0x20) {
@@ -866,7 +866,7 @@ Color_RGBA8_u32* func_80010BD4(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2) {
     s32 var_v1;
     Color_RGBA8_u32 sp1C;
 
-    func_80010930(&sp34, &sp30, &sp2C, arg1);
+    HSV_ToRGB(&sp34, &sp30, &sp2C, arg1);
 
     var_a1 = (sp34 * 255.0f) + 0.5f;
     if (var_a1 >= 0x100) {

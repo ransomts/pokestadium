@@ -133,7 +133,7 @@ s32 func_80000904(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg sp20;
 
     osInvalDCache(arg0->vaddr, 0x80);
-    func_8000D0B4(&sp20, 0, arg0->unk1C, arg0->vaddr, 1, &D_80083BD0.queue2);
+    Flash_ReadArray(&sp20, 0, arg0->unk1C, arg0->vaddr, 1, &D_80083BD0.queue2);
     osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
     return 0;
 }
@@ -142,7 +142,7 @@ s32 func_80000974(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg sp20;
     UNUSED s32 pad;
 
-    func_8000CEE4(&sp20, 0, arg0->vaddr, &D_80083BD0.queue2);
+    Flash_WriteBuffer(&sp20, 0, arg0->vaddr, &D_80083BD0.queue2);
     osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
     return 0;
 }
@@ -200,7 +200,7 @@ void thread20_rsp(UNUSED void* arg) {
     OSMesg var_v0;
 
     func_800005C0();
-    func_8000C8F8();
+    Flash_Init();
 
     while (true) {
         osRecvMesg(&D_80083BD0.queue1, (void*)&sp2C, OS_MESG_BLOCK);

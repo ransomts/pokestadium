@@ -1590,7 +1590,7 @@ s32 func_82D03174(void) {
         }
     } else {
         PlaySoundEffect(3);
-        func_8000D278(0x10);
+        Music_StopTrack(0x10);
         func_80007990(0xFFFF);
         func_80006CB4(8);
         while (func_80007604() != 1) {
@@ -1895,7 +1895,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
 
     if (var_s1 == 0) {
         Battle_LoadStateFromSave();
-        func_8000D278(0x10);
+        Music_StopTrack(0x10);
         func_80007990(1);
         func_80006CB4(8);
 
@@ -2720,9 +2720,9 @@ s16 func_82D067A0(void) {
     }
 
     if (D_82D06FA0 == 0) {
-        func_8000D23C(0x50);
+        Music_SetTrack(0x50);
     } else if (D_82D06FA0 != 2) {
-        func_8000D278(0x10);
+        Music_StopTrack(0x10);
     }
 
     if ((D_82D0ABA8 == 0) || (D_82D06FA0 != 0)) {
@@ -2812,7 +2812,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
     func_82D06B98();
     MessageBank_Init();
     D_82D0AB9C = GetMessageBank(0xE);
-    func_8000D1F0(0x28);
+    Music_ChangeTrack(0x28);
     Stage_Set(sp54);
 
     if (arg1 != 0) {

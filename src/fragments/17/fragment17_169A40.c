@@ -105,7 +105,7 @@ void func_86B0A414(void) {
     s32 var_s0 = 1;
 
     func_80006C6C(0xC);
-    func_8000D1F0(0x30);
+    Music_ChangeTrack(0x30);
 
     while (var_s0 != 0) {
         func_86B0A15C();

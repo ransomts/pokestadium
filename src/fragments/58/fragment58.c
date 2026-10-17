@@ -177,8 +177,8 @@ void func_840003A8(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
-    func_8000E820(&sp2C, 0x64, 0x64, 0xC8);
-    func_8000E820(&sp28, 0x28, 0x28, 0x8C);
+    GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
+    GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_84000200(0x48, 0x28, 0x208, &sp2C, &sp28);
     func_84000020(0x30, 0x20);
     Text_ResetState();
@@ -681,7 +681,7 @@ void func_84002430(void) {
 }
 
 void func_840024B0(void) {
-    func_8000D278(0x10);
+    Music_StopTrack(0x10);
     func_80007990(0xFFFF);
     func_80006CB4(8);
 
@@ -777,7 +777,7 @@ void func_840026D8(void) {
 
 s32 func_84002914(void) {
     D_84002D16 = 0;
-    func_8000D1F0(0x2D);
+    Music_ChangeTrack(0x2D);
     func_840019A4();
     func_84001F1C();
     func_840021CC();

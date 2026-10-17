@@ -100,12 +100,12 @@ void func_8000559C(void) {
  */
 void SoftReset_Thread(void* unused) {
     __osSetFpcCsr(0x01000C01);
-    func_80005328(&D_800A6D20);
+    ThreadList_Add(&D_800A6D20);
 
     // thread loop
     while (1) {
-        func_80004CF4(&D_800A6D20.thread); // hangs here until gets a soft reset.
-        if (D_800A62E0.unk_A38 == 0) {
+        MessageQueue_Recv(&D_800A6D20.thread); // hangs here until gets a soft reset.
+        if (gRspTaskManager.unk_A38 == 0) {
             continue;
         }
 
@@ -140,7 +140,7 @@ void SoftReset_Thread(void* unused) {
  * Create the soft reset effect thread.
  */
 void SoftReset_CreateThread(void) {
-    func_80004CC0(&D_800A6D20.thread, 2, 1);
+    MessageQueue_Create(&D_800A6D20.thread, 2, 1);
     D_800A6D20.gSoftResetLineNum = 0;
     osCreateThread(&D_800A6D20.thread, THREAD_ID_RESET, SoftReset_Thread, NULL, &gSoftResetLineNum, THREAD_PRI_RESET);
     osStartThread(&D_800A6D20.thread);

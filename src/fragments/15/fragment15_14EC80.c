@@ -122,7 +122,7 @@ s32 Camera_ToggleFOV(void) {
         }
     }
 
-    gMiniCameraPtr->unk_24.fovy = func_800104AC(gMiniCameraPtr->unk_24.fovy, gCameraParams->unk_008, 1.5f, 1.5f);
+    gMiniCameraPtr->unk_24.fovy = Math_ApproachF32(gMiniCameraPtr->unk_24.fovy, gCameraParams->unk_008, 1.5f, 1.5f);
 
     if (gMiniCameraPtr->unk_24.fovy == gCameraParams->unk_008) {
         return 0;
@@ -152,7 +152,7 @@ void Camera_RotateAroundTarget(s16 arg0) {
     Vec3f_Set(&sp38, 0, 0.0f, 0.0f);
     Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &D_8690B608, &D_8690B60A);
     Vec3f_Set(&sp50, gMiniCameraPtr->unk_60.at.x, 0.0f, gMiniCameraPtr->unk_60.at.z);
-    func_8000EB70(&sp68, 0, D_8690B60A + arg0, 0);
+    Vec3s_Set(&sp68, 0, D_8690B60A + arg0, 0);
     Vec3f_Set(&sp5C, gCameraParams->unk_004 * 4.0f, 0.0f, 0.0f);
     Matrix_RotateTranslateScale(&sp70, &gMiniCameraPtr->unk_60.at, &sp68);
     TransformVec3fByMtxF(&sp5C, &sp70);
@@ -176,9 +176,9 @@ void Camera_RotateAroundTarget(s16 arg0) {
 void Camera_UpdateSpeedFactor(void) {
     if (((gControllerInput.buttonDown & 8) | (gControllerInput.buttonDown & 4) | (gControllerInput.buttonDown & 2) |
          (gControllerInput.buttonDown & 1)) != 0) {
-        gCameraParams->unk_004 = func_800104AC(gCameraParams->unk_004, 1.0f, 0.2f, 0.2f);
+        gCameraParams->unk_004 = Math_ApproachF32(gCameraParams->unk_004, 1.0f, 0.2f, 0.2f);
     } else {
-        gCameraParams->unk_004 = func_800104AC(gCameraParams->unk_004, 0.0f, 0.2f, 0.2f);
+        gCameraParams->unk_004 = Math_ApproachF32(gCameraParams->unk_004, 0.0f, 0.2f, 0.2f);
     }
 
     if ((gControllerInput.buttonDown & 8) && (gMiniCameraPtr->unk_60.at.y < 300.0f)) {

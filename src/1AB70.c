@@ -621,7 +621,7 @@ void func_8001B6C8(unk_func_8001B1FC* arg0) {
     if (temp_lo < var_a2) {
         var_a2 = temp_lo;
     }
-    sp18->x = func_800103F0(sp18->x, 0, var_a2);
+    sp18->x = Math_ApproachS16(sp18->x, 0, var_a2);
 }
 
 void func_8001B778(unk_func_8001B1FC* arg0) {

@@ -296,8 +296,8 @@ void func_84201D6C(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
-    func_8000E820(&sp2C, 0x64, 0x64, 0xC8);
-    func_8000E820(&sp28, 0x28, 0x28, 0x8C);
+    GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
+    GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_84201BC4(0x48, 0x28, 0x208, &sp2C, &sp28);
     func_8420192C(0x30, 0x20);
     Text_ResetState();
@@ -445,16 +445,16 @@ void func_842024DC(s16 arg0, s16 arg1) {
     }
 
     if (arg0 == 0) {
-        func_8000E820(&sp34, 0x64, 0x64, 0xC8);
-        func_8000E820(&sp30, 0x28, 0x28, 0x8C);
+        GfxColor_SetRGB(&sp34, 0x64, 0x64, 0xC8);
+        GfxColor_SetRGB(&sp30, 0x28, 0x28, 0x8C);
         func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
         func_8420192C(0x30, 0x20);
         if (var_t0 != 0) {
             func_84201AD4(0x1AE, 0x26, arg1);
         }
     } else {
-        func_8000E820(&sp34, 0xB4, 0x5A, 0xA0);
-        func_8000E820(&sp30, 0x78, 0x28, 0x64);
+        GfxColor_SetRGB(&sp34, 0xB4, 0x5A, 0xA0);
+        GfxColor_SetRGB(&sp30, 0x78, 0x28, 0x64);
         func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
         func_84201A00(0x30, 0x20);
     }
@@ -689,7 +689,7 @@ void func_8420305C(s32 arg0) {
     s32 i;
 
     func_80007990(1);
-    func_8000D278(0x10);
+    Music_StopTrack(0x10);
     func_80006CB4(8);
 
     for (i = 0; i < 8; i++) {
@@ -744,19 +744,19 @@ s32 func_84203210(void) {
 
     switch (gBattleContext.unk_0000) {
         case 0:
-            func_8000D1F0(0x2D);
+            Music_ChangeTrack(0x2D);
             break;
 
         case 7:
-            func_8000D1F0(0x2B);
+            Music_ChangeTrack(0x2B);
             break;
 
         case 8:
-            func_8000D1F0(0x30);
+            Music_ChangeTrack(0x30);
             break;
 
         default:
-            func_8000D1F0(0x15);
+            Music_ChangeTrack(0x15);
             break;
     }
 
@@ -826,19 +826,19 @@ s32 func_842034E4(void) {
 
     switch (gBattleContext.unk_0000) {
         case 0:
-            func_8000D1F0(0x2D);
+            Music_ChangeTrack(0x2D);
             break;
 
         case 7:
-            func_8000D1F0(0x2B);
+            Music_ChangeTrack(0x2B);
             break;
 
         case 8:
-            func_8000D1F0(0x30);
+            Music_ChangeTrack(0x30);
             break;
 
         default:
-            func_8000D1F0(0x15);
+            Music_ChangeTrack(0x15);
             break;
     }
 

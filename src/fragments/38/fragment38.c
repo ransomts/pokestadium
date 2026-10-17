@@ -324,8 +324,8 @@ void func_82301A10(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
-    func_8000E820(&sp2C, 0x64, 0x64, 0xC8);
-    func_8000E820(&sp28, 0x28, 0x28, 0x8C);
+    GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
+    GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_82301868(0x48, 0x28, 0x208, &sp2C, &sp28);
     func_82301794(0x30, 0x20);
     Text_ResetState();
@@ -1214,7 +1214,7 @@ void func_823045D8(unk_D_82305A28* arg0) {
     s16 i;
     s16 j;
 
-    func_8000D1F0(0x2D);
+    Music_ChangeTrack(0x2D);
     func_80006C6C(8);
 
     for (i = 0; i < 6; i++) {
@@ -1252,7 +1252,7 @@ void func_823046C8(unk_D_82305A28* arg0) {
         func_82304224(-1);
     }
 
-    func_8000D278(0x10);
+    Music_StopTrack(0x10);
     func_80007990(0xFFFF);
     func_80006CB4(8);
 
@@ -1411,7 +1411,7 @@ void func_82304D30(unk_D_82305A28* arg0) {
         func_82304224(-1);
     }
 
-    func_8000D278(0x10);
+    Music_StopTrack(0x10);
     func_80007990(0xFFFF);
     func_80006CB4(8);
 

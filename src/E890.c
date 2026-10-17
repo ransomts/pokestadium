@@ -2,12 +2,12 @@
 #include "PR/leo.h"
 #include "src/dma.h"
 
-unk_D_800AA680 D_800AA680;
-static unk_D_800AA690 D_800AA690;
-static OSMesgQueue D_800AA698;
-static OSMesg D_800AA6B0;
+unk_D_800AA680 gBootIDData;
+static unk_D_800AA690 gBootState;
+static OSMesgQueue gBootMsgQueue;
+static OSMesg gBootMsgBuffer;
 
-s32 func_8000DC90(void) {
+s32 Boot_ValidateAndCopy(void) {
     static char D_8006F000[] = "P2J";
     static char D_8006F004[] = "01";
 
@@ -39,116 +39,116 @@ s32 func_8000DC90(void) {
     return 0;
 }
 
-s32 func_8000DD68(unk_D_800AA680* arg0) {
+s32 BootID_StoreIfValid(unk_D_800AA680* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_00 == 'POKE') {
         var_v1 = 1;
-        D_800AA680 = *arg0;
+        gBootIDData = *arg0;
     }
 
     return var_v1;
 }
 
 s32 func_8000DDB0(void) {
-    func_80001124(&D_800AA698, 0);
-    D_800AA690.unk_00 = 3;
+    func_80001124(&gBootMsgQueue, 0);
+    gBootState.unk_00 = 3;
     return 0;
 }
 
 s32 func_8000DDE4(void) {
-    func_8000123C(&D_800AA698, 0);
-    D_800AA690.unk_00 = 5;
+    func_8000123C(&gBootMsgQueue, 0);
+    gBootState.unk_00 = 5;
     return 0;
 }
 
-s32 func_8000DE18(unk_D_800AA680* arg0) {
-    func_80001098(0, arg0, 0x230, 1, &D_800AA698, 1);
-    D_800AA690.unk_04 = 0;
-    D_800AA690.unk_02 = 0;
-    D_800AA690.unk_00 = 7;
+s32 Boot_DMAReadHeader(unk_D_800AA680* arg0) {
+    func_80001098(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
+    gBootState.unk_04 = 0;
+    gBootState.unk_02 = 0;
+    gBootState.unk_00 = 7;
     return 0;
 }
 
-s32 func_8000DE70(void) {
-    func_80001098(0, D_800AA680.unk_08, D_800AA680.unk_04, D_800AA680.unk_06, &D_800AA698, 1);
-    D_800AA690.unk_04 = 0;
-    D_800AA690.unk_02 = 0;
-    D_800AA690.unk_00 = 9;
+s32 Boot_DMAReadData(void) {
+    func_80001098(0, gBootIDData.unk_08, gBootIDData.unk_04, gBootIDData.unk_06, &gBootMsgQueue, 1);
+    gBootState.unk_04 = 0;
+    gBootState.unk_02 = 0;
+    gBootState.unk_00 = 9;
     return 0;
 }
 
-s32 func_8000DED0(void) {
+s32 Boot_ProcessMessage(void) {
     s32 sp1C;
 
-    if (osRecvMesg(&D_800AA698, &sp1C, 0) != -1) {
+    if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             case 0:
-                switch (func_8000DC90()) {
+                switch (Boot_ValidateAndCopy()) {
                     case 0:
-                        D_800AA690.unk_04 = sp1C;
-                        D_800AA690.unk_02 = 0;
-                        D_800AA690.unk_00 = 6;
+                        gBootState.unk_04 = sp1C;
+                        gBootState.unk_02 = 0;
+                        gBootState.unk_00 = 6;
                         break;
 
                     case 1:
-                        D_800AA690.unk_04 = sp1C;
-                        D_800AA690.unk_02 = 5;
-                        D_800AA690.unk_00 = 4;
+                        gBootState.unk_04 = sp1C;
+                        gBootState.unk_02 = 5;
+                        gBootState.unk_00 = 4;
                         break;
 
                     case 2:
-                        D_800AA690.unk_02 = 4;
-                        D_800AA690.unk_00 = 4;
-                        D_800AA690.unk_04 = 0x2C;
+                        gBootState.unk_02 = 4;
+                        gBootState.unk_00 = 4;
+                        gBootState.unk_04 = 0x2C;
                         break;
                 }
                 break;
 
             case 42:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 35:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 49:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 2;
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 2:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 3;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 3;
+                gBootState.unk_00 = 4;
                 break;
 
             case 11:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
 
             case 34:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
 
             case 43:
-                if (D_800AA690.unk_06++ >= 0x1F) {
-                    D_800AA690.unk_02 = 1;
+                if (gBootState.unk_06++ >= 0x1F) {
+                    gBootState.unk_02 = 1;
                 }
                 LeoResetClear();
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             default:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
         }
 
@@ -158,45 +158,45 @@ s32 func_8000DED0(void) {
     return 0;
 }
 
-s32 func_8000E0EC(void) {
+s32 Boot_ProcessMessageStage2(void) {
     s32 sp1C;
 
-    if (osRecvMesg(&D_800AA698, &sp1C, 0) != -1) {
+    if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             default:
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 1;
-                D_800AA690.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 1;
+                gBootState.unk_04 = sp1C;
                 break;
 
             case 0:
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_00 = 4;
                 break;
 
             case 35:
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_00 = 4;
                 break;
 
             case 2:
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_00 = 4;
                 break;
 
             case 42:
-                D_800AA690.unk_04 = 0;
-                D_800AA690.unk_02 = 0;
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_04 = 0;
+                gBootState.unk_02 = 0;
+                gBootState.unk_00 = 2;
                 break;
 
             case 47:
-                D_800AA690.unk_04 = 0;
-                D_800AA690.unk_02 = 0;
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_04 = 0;
+                gBootState.unk_02 = 0;
+                gBootState.unk_00 = 2;
                 break;
 
             case 34:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 1;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 1;
                 break;
         }
         return 1;
@@ -205,55 +205,55 @@ s32 func_8000E0EC(void) {
     return 0;
 }
 
-s32 func_8000E21C(unk_D_800AA680* arg0) {
+s32 Boot_ProcessMessageWithID(unk_D_800AA680* arg0) {
     s32 sp24;
     UNUSED s32 pad;
 
-    if (osRecvMesg(&D_800AA698, &sp24, 0) != -1) {
+    if (osRecvMesg(&gBootMsgQueue, &sp24, 0) != -1) {
         switch (sp24) {
             case 0:
-                if (func_8000DD68(arg0) != 0) {
-                    D_800AA690.unk_00 = 8;
+                if (BootID_StoreIfValid(arg0) != 0) {
+                    gBootState.unk_00 = 8;
                 } else {
-                    D_800AA690.unk_02 = 5;
-                    D_800AA690.unk_00 = 4;
+                    gBootState.unk_02 = 5;
+                    gBootState.unk_00 = 4;
                 }
                 break;
 
             case 0x23:
-                D_800AA690.unk_00 = 8;
+                gBootState.unk_00 = 8;
                 break;
 
             case 0x2A:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 0x2F:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 0x31:
-                D_800AA690.unk_04 = sp24;
-                D_800AA690.unk_02 = 2;
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_04 = sp24;
+                gBootState.unk_02 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 2:
-                D_800AA690.unk_04 = sp24;
-                D_800AA690.unk_02 = 3;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp24;
+                gBootState.unk_02 = 3;
+                gBootState.unk_00 = 4;
                 break;
 
             case 0x22:
-                D_800AA690.unk_04 = sp24;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp24;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
 
             default:
-                D_800AA690.unk_04 = sp24;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp24;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
         }
         return 1;
@@ -262,49 +262,49 @@ s32 func_8000E21C(unk_D_800AA680* arg0) {
     return 0;
 }
 
-s32 func_8000E3B4(void) {
+s32 Boot_ProcessMessageStage3(void) {
     s32 sp1C;
 
-    if (osRecvMesg(&D_800AA698, &sp1C, 0) != -1) {
+    if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             case 0:
-                D_800AA690.unk_00 = 0xA;
+                gBootState.unk_00 = 0xA;
                 break;
 
             case 0x23:
-                D_800AA690.unk_00 = 8;
+                gBootState.unk_00 = 8;
                 break;
 
             case 0x2A:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 0x2F:
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 0x31:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 2;
-                D_800AA690.unk_00 = 2;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 2;
+                gBootState.unk_00 = 2;
                 break;
 
             case 2:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 3;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 3;
+                gBootState.unk_00 = 4;
                 break;
 
             case 0x22:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
 
             default:
-                D_800AA690.unk_04 = sp1C;
-                D_800AA690.unk_02 = 1;
-                D_800AA690.unk_00 = 4;
+                gBootState.unk_04 = sp1C;
+                gBootState.unk_02 = 1;
+                gBootState.unk_00 = 4;
                 break;
         }
         return 1;
@@ -313,7 +313,7 @@ s32 func_8000E3B4(void) {
     return 0;
 }
 
-s32 func_8000E51C(void) {
+s32 Boot_CheckUnitReady(void) {
     UNUSED s32 pad;
     u8 sp23;
     s32 temp_v0 = LeoTestUnitReady(&sp23);
@@ -325,20 +325,20 @@ s32 func_8000E51C(void) {
             break;
 
         default:
-            D_800AA690.unk_04 = temp_v0;
-            D_800AA690.unk_02 = 1;
+            gBootState.unk_04 = temp_v0;
+            gBootState.unk_02 = 1;
             break;
 
         case 42:
-            D_800AA690.unk_04 = 0;
-            D_800AA690.unk_02 = 0;
-            D_800AA690.unk_00 = 2;
+            gBootState.unk_04 = 0;
+            gBootState.unk_02 = 0;
+            gBootState.unk_00 = 2;
             break;
 
         case 47:
-            D_800AA690.unk_04 = 0;
-            D_800AA690.unk_02 = 0;
-            D_800AA690.unk_00 = 2;
+            gBootState.unk_04 = 0;
+            gBootState.unk_02 = 0;
+            gBootState.unk_00 = 2;
             break;
     }
     return 0;
@@ -347,18 +347,18 @@ s32 func_8000E51C(void) {
 void func_8000E5B4(void) {
 }
 
-s32 func_8000E5BC(unk_D_800AA680* arg0) {
+s32 Boot_MainLoop(unk_D_800AA680* arg0) {
     s32 sp24 = 1;
 
     if (func_800012F8() != 0) {
         while (sp24 != 0) {
-            switch (D_800AA690.unk_00) {
+            switch (gBootState.unk_00) {
                 case 0:
                     sp24 = 0;
                     break;
 
                 case 1:
-                    sp24 = func_8000E51C();
+                    sp24 = Boot_CheckUnitReady();
                     break;
 
                 case 2:
@@ -366,7 +366,7 @@ s32 func_8000E5BC(unk_D_800AA680* arg0) {
                     break;
 
                 case 3:
-                    sp24 = func_8000DED0();
+                    sp24 = Boot_ProcessMessage();
                     break;
 
                 case 4:
@@ -374,23 +374,23 @@ s32 func_8000E5BC(unk_D_800AA680* arg0) {
                     break;
 
                 case 5:
-                    sp24 = func_8000E0EC();
+                    sp24 = Boot_ProcessMessageStage2();
                     break;
 
                 case 6:
-                    sp24 = func_8000DE18(arg0);
+                    sp24 = Boot_DMAReadHeader(arg0);
                     break;
 
                 case 7:
-                    sp24 = func_8000E21C(arg0);
+                    sp24 = Boot_ProcessMessageWithID(arg0);
                     break;
 
                 case 8:
-                    sp24 = func_8000DE70();
+                    sp24 = Boot_DMAReadData();
                     break;
 
                 case 9:
-                    sp24 = func_8000E3B4();
+                    sp24 = Boot_ProcessMessageStage3();
                     break;
 
                 case 10:
@@ -400,39 +400,39 @@ s32 func_8000E5BC(unk_D_800AA680* arg0) {
         }
     }
 
-    return (D_800AA690.unk_00 << 0x10) | (D_800AA690.unk_02 << 8) | D_800AA690.unk_04;
+    return (gBootState.unk_00 << 0x10) | (gBootState.unk_02 << 8) | gBootState.unk_04;
 }
 
-s32 func_8000E6EC(void) {
+s32 Boot_Init(void) {
     s32 sp1C = func_800012F8();
 
     if (sp1C != 0) {
-        D_800AA690.unk_00 = 2;
+        gBootState.unk_00 = 2;
     } else {
-        D_800AA690.unk_00 = 0;
+        gBootState.unk_00 = 0;
     }
 
-    D_800AA690.unk_04 = 0;
-    D_800AA690.unk_02 = 0;
-    D_800AA690.unk_06 = 0;
+    gBootState.unk_04 = 0;
+    gBootState.unk_02 = 0;
+    gBootState.unk_06 = 0;
 
-    osCreateMesgQueue(&D_800AA698, &D_800AA6B0, 1);
+    osCreateMesgQueue(&gBootMsgQueue, &gBootMsgBuffer, 1);
     return sp1C;
 }
 
 void func_8000E760(void) {
-    s32 tmp = D_800AA690.unk_00;
+    s32 tmp = gBootState.unk_00;
 
     if (tmp == 3) {
-        osRecvMesg(&D_800AA698, NULL, 1);
-        D_800AA690.unk_00 = 2;
+        osRecvMesg(&gBootMsgQueue, NULL, 1);
+        gBootState.unk_00 = 2;
     } else {
         switch (tmp) {
             case 5:
             case 7:
             case 9:
-                osRecvMesg(&D_800AA698, NULL, 1);
-                D_800AA690.unk_00 = 4;
+                osRecvMesg(&gBootMsgQueue, NULL, 1);
+                gBootState.unk_00 = 4;
                 break;
         }
     }
@@ -440,8 +440,8 @@ void func_8000E760(void) {
 
 void func_8000E7E4(void) {
     if (func_800012F8() != 0) {
-        D_800AA690.unk_00 = 2;
-        D_800AA690.unk_04 = 0;
-        D_800AA690.unk_02 = 0;
+        gBootState.unk_00 = 2;
+        gBootState.unk_04 = 0;
+        gBootState.unk_02 = 0;
     }
 }

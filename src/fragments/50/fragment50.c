@@ -2519,7 +2519,7 @@ void func_8260365C(void) {
         D_8267E754 = 0xA0;
         D_82608544 = 1;
     } else {
-        func_8000D1F0(0xF);
+        Music_ChangeTrack(0xF);
     }
 
     while (func_80007604() != 0) {

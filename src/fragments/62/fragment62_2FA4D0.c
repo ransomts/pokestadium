@@ -1558,7 +1558,7 @@ s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp28;
 
     Vec3f_Set(&sp28, arg1, arg2, 0.0f);
-    arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
+    arg0->unk_24 = Math_ApproachF32(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
     Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315C28(arg0, arg1, arg2, sp34);
 
@@ -1596,7 +1596,7 @@ s32 func_843161F8(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp28;
 
     Vec3f_Set(&sp28, arg1, arg2, 0.0f);
-    arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
+    arg0->unk_24 = Math_ApproachF32(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
     Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315FAC(arg0, arg1, arg2, sp34);
 
@@ -1737,7 +1737,7 @@ void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
 }
 
 void func_84317004(void) {
-    D_84390190.x = func_800104AC(D_84390190.x, 52.0f, 80.0f, 80.0f);
+    D_84390190.x = Math_ApproachF32(D_84390190.x, 52.0f, 80.0f, 80.0f);
     func_84316A1C(D_3000470, D_84390190.x, D_84390190.y, 0x6C, 0x20, 0xD8, 0x20, 0, 0, 0x6C, 0x20, 0x6B, 0);
     func_84316A1C(D_3000470, (s32)D_84390190.x + 0x6C, D_84390190.y, 0x6C, 0x20, 0xD8, 0x20, 0x6C, 0, 0xD8, 0x20, 0xD7,
                   0x6C);

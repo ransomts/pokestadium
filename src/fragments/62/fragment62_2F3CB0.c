@@ -26,7 +26,7 @@ void func_84309448(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg
     sp54 = arg1->unk_49C;
     sp50 = arg1->unk_498;
     sp4C = 18.0f;
-    arg1->unk_498 = func_800104AC(sp50, arg2, arg3, arg3);
+    arg1->unk_498 = Math_ApproachF32(sp50, arg2, arg3, arg3);
 
     var_fa0 = arg1->unk_498;
     if (arg2 <= var_fa0) {
@@ -64,7 +64,7 @@ void func_843095A4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, 
     sp54 = arg1->unk_49C;
     sp50 = arg1->unk_498;
     sp4C = 20.0f;
-    arg1->unk_498 = func_800104AC(sp50, arg2, arg3, arg3);
+    arg1->unk_498 = Math_ApproachF32(sp50, arg2, arg3, arg3);
 
     var_fa0 = arg1->unk_498;
     if (arg2 <= var_fa0) {
@@ -119,9 +119,9 @@ void func_84309874(unk_D_84390010* arg0) {
     f32 sp4C[] = { 0.3f, -0.4f, -0.2f, 0.4f }; // D_8438461C
 
     for (i = 0; i < 2; i++) {
-        arg0->unk_168[i].unk_000.unk_01D = func_8001046C(arg0->unk_168[i].unk_000.unk_01D, 0x3C, 5, 5);
-        arg0->unk_168[i].unk_16C = func_8001046C(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
-        arg0->unk_168[i].unk_16C = func_8001046C(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
+        arg0->unk_168[i].unk_000.unk_01D = Math_ApproachS32(arg0->unk_168[i].unk_000.unk_01D, 0x3C, 5, 5);
+        arg0->unk_168[i].unk_16C = Math_ApproachS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
+        arg0->unk_168[i].unk_16C = Math_ApproachS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
         arg0->unk_168[i].unk_16A += arg0->unk_168[i].unk_16C;
 
         tmp = SINS(arg0->unk_168[i].unk_16A) * (func_84308598(arg0) * sp4C[i]);
@@ -157,7 +157,7 @@ s32 func_84309B0C(unk_D_84390010* arg0) {
     for (i = 0; i < 2; i++) {
         func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
 
-        temp_fv0_2 = func_800104AC(arg0->unk_168[i].unk_000.unk_030.x, 0.8f, sp5C[i], sp5C[i]);
+        temp_fv0_2 = Math_ApproachF32(arg0->unk_168[i].unk_000.unk_030.x, 0.8f, sp5C[i], sp5C[i]);
         arg0->unk_168[i].unk_000.unk_030.x = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.y = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.z = temp_fv0_2;
@@ -379,7 +379,7 @@ void func_8430A5D4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430A618(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    arg1->unk_4A6 = func_8001046C(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
+    arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
 
     if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
         arg1->unk_4C0 += 1;
@@ -440,7 +440,7 @@ void func_8430A828(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430A848(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    arg1->unk_4A6 = func_8001046C(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
+    arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
 
     if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
         arg1->unk_4C0 += 1;
@@ -475,7 +475,7 @@ void func_8430A8DC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_8430C718(&arg0->unk_000.unk_024.y, -(func_84308548(arg1) * sp30), sp2C);
 
     if (arg0->unk_000.unk_024.y <= -(func_84308548(arg1) * sp34)) {
-        func_8000EB70(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
+        Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
         func_84309F0C(arg1);
         func_843096EC(arg1);
     }
@@ -502,7 +502,7 @@ void func_8430AA84(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4C0 = 0;
     arg1->unk_4A0 = 0.0f;
     func_84307C5C(arg1);
-    func_8000EB70(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
+    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
     func_84309C50(arg1);
     arg1->unk_4B8++;
 }
@@ -540,7 +540,7 @@ void func_8430ABF0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
     if (arg1->unk_4A0 <= 0.5f) {
         func_84307C5C(arg1);
-        func_8000EB70(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
+        Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
         func_84309F0C(arg1);
         func_843096EC(arg1);
     }
@@ -565,7 +565,7 @@ void func_8430AD7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_84309780(arg1);
     arg1->unk_4AC = 0;
     func_84307C5C(arg1);
-    func_8000EB70(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
+    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
     arg1->unk_4B8++;
 }
 
@@ -594,7 +594,7 @@ void func_8430AE90(unk_D_84390010* arg0) {
     unk_D_86002F34_00C* sp18 = D_84390240.unk_00->unk_DC;
 
     func_84307C5C(arg0);
-    func_8000EB70(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
+    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
     Vec3f_Set(&sp18->unk_60.up, 0.0f, 1.0f, 0.0f);
     func_84309F0C(arg0);
 }
@@ -606,7 +606,7 @@ void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4C0 = 0;
     arg1->unk_4A0 = 0.0f;
     func_84307C5C(arg1);
-    func_8000EB70(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
+    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
     arg1->unk_4B8++;
 }
 
@@ -668,7 +668,7 @@ void func_8430B158(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 void func_8430B1B8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     f32 temp_fv0;
 
-    temp_fv0 = func_800104AC(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
+    temp_fv0 = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
     arg0->unk_000.unk_030.x = temp_fv0;
     arg0->unk_000.unk_030.y = temp_fv0;
     arg0->unk_000.unk_030.z = temp_fv0;
@@ -697,9 +697,9 @@ void func_8430B298(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430B2AC(unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
-    arg0->unk_000.unk_030.x = func_800104AC(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
-    arg0->unk_000.unk_030.y = func_800104AC(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
-    arg0->unk_000.unk_030.z = func_800104AC(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.x = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.y = Math_ApproachF32(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.z = Math_ApproachF32(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
 
     if (arg0->unk_000.unk_030.y <= 0.1) {
         Vec3f_Set(&arg0->unk_000.unk_030, 0.001f, 0.001f, 0.001f);
@@ -819,7 +819,7 @@ void func_8430B734(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4A8 += 0xCCC;
     sp22 = arg1->unk_4A8;
 
-    arg1->unk_4A0 = func_800104AC(arg1->unk_4A0, 0.0f, 0.02f, 0.02f);
+    arg1->unk_4A0 = Math_ApproachF32(arg1->unk_4A0, 0.0f, 0.02f, 0.02f);
 
     if (sp22 > 0) {
         sp22 *= -1;

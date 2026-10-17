@@ -308,7 +308,7 @@ s32 func_8431FCCC(unk_D_84390010* arg0) {
 
     temp_fs0 = temp_s1->unk_28 / 90.0f;
     sp30 = func_84307F00(arg0);
-    D_843900A8[sp30] = func_800104AC(D_843900A8[func_84307F00(arg0)], temp_s1->unk_0C, temp_fs0, temp_fs0);
+    D_843900A8[sp30] = Math_ApproachF32(D_843900A8[func_84307F00(arg0)], temp_s1->unk_0C, temp_fs0, temp_fs0);
     temp_s2->unk_02 = D_843900A8[func_84307F00(arg0)];
     if (temp_s2->unk_02 == temp_s1->unk_0C) {
         temp_fs0 = D_843900A8[func_84307F00(arg0)] - temp_s2->unk_02;

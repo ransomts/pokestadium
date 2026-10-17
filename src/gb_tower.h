@@ -21,6 +21,6 @@ s32 func_8000B048(s32 arg0, u8* arg1, u16 arg2, u16 arg3);
 int func_8000B0CC(s32 arg0, s32 arg1);
 s32 func_8000B1C4(s32 arg0, u8* arg1, s32 arg2, s32 arg3);
 u8 func_8000B318(u8 arg0);
-void func_8000B330(void);
+void Cont_FinishRead(void);
 
 #endif /* _SRC_GB_TOWER_H_ */

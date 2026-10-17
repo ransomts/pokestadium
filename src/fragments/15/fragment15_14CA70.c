@@ -813,7 +813,7 @@ void func_86901384(void) {
                 break;
 
             case 0x1:
-                D_8690B3C0.unk_0C = func_8001046C(D_8690B3C0.unk_0C, 0x23, 0xA, 0xA);
+                D_8690B3C0.unk_0C = Math_ApproachS32(D_8690B3C0.unk_0C, 0x23, 0xA, 0xA);
                 if (D_8690B3C0.unk_0C == 0x23) {
                     D_8690B3C0.unk_00++;
                 }
@@ -840,7 +840,7 @@ s32 func_86901558(void) {
         D_8690B360.unk_02 -= 3;
     }
 
-    D_8690B360.unk_00 = func_8001046C(D_8690B360.unk_00, 0, 2, 2);
+    D_8690B360.unk_00 = Math_ApproachS32(D_8690B360.unk_00, 0, 2, 2);
 
     if (D_8690B340) {
         D_8690B340--;
@@ -912,16 +912,16 @@ s32 func_8690172C(void) {
         }
     }
 
-    D_8690B360.unk_00 = func_8001046C(D_8690B360.unk_00, 0, 0xF, 0xF);
+    D_8690B360.unk_00 = Math_ApproachS32(D_8690B360.unk_00, 0, 0xF, 0xF);
     return 0;
 }
 
 s32 func_869017D0(void) {
     D_8690B360.unk_02 += 4;
-    D_8690B360.unk_04 = func_8001046C(D_8690B360.unk_04, 0x30, 0xA, 0xA);
+    D_8690B360.unk_04 = Math_ApproachS32(D_8690B360.unk_04, 0x30, 0xA, 0xA);
 
     if (D_8690B360.unk_04 >= 0x30) {
-        D_8690B360.unk_08 = func_8001046C(D_8690B360.unk_08, 0, 0xC8, 0xC8);
+        D_8690B360.unk_08 = Math_ApproachS32(D_8690B360.unk_08, 0, 0xC8, 0xC8);
         D_8690B360.unk_0A -= 0x31C7;
         D_8690B360.unk_06 = SINS(D_8690B360.unk_0A) * D_8690B360.unk_08;
         if (D_8690B360.unk_08 == 0) {
@@ -933,7 +933,7 @@ s32 func_869017D0(void) {
 }
 
 s32 func_869018A0(void) {
-    D_8690B350.unk_04 = func_8001046C(D_8690B350.unk_04, 0x50, 0xA, 0xA);
+    D_8690B350.unk_04 = Math_ApproachS32(D_8690B350.unk_04, 0x50, 0xA, 0xA);
     if (D_8690B350.unk_04 == 0x50) {
         D_8690B350.unk_0C = 0xAA;
         D_8690B350.unk_0E = 0xA;
@@ -947,7 +947,7 @@ s32 func_869018A0(void) {
 }
 
 s32 func_8690193C(void) {
-    D_8690B350.unk_0E = func_8001046C(D_8690B350.unk_0E, 0x32, 0xA, 0xA);
+    D_8690B350.unk_0E = Math_ApproachS32(D_8690B350.unk_0E, 0x32, 0xA, 0xA);
 
     if (D_8690B350.unk_0E == 0x32) {
         D_8690B350.unk_00++;
@@ -1030,15 +1030,15 @@ void func_86901B28(void) {
 
     while (true) {
         func_86900B6C();
-        var_s3 = func_8001046C(var_s3, 0x46, 0xA, 0xA);
-        D_8690B308.unk_00[0] = func_8001046C(D_8690B308.unk_00[0], 0xA0, 0xA, 0xA);
-        D_8690B308.unk_00[4] = func_8001046C(D_8690B308.unk_00[4], 0x24, 0xA, 0xA);
-        D_8690B308.unk_00[1] = func_8001046C(D_8690B308.unk_00[1], 0x120, 0xA, 0xA);
-        D_8690B308.unk_00[5] = func_8001046C(D_8690B308.unk_00[5], 0x78, 0xA, 0xA);
-        D_8690B308.unk_00[2] = func_8001046C(D_8690B308.unk_00[2], 0xA0, 0xA, 0xA);
-        D_8690B308.unk_00[6] = func_8001046C(D_8690B308.unk_00[6], 0xCC, 0xA, 0xA);
-        D_8690B308.unk_00[3] = func_8001046C(D_8690B308.unk_00[3], 0x20, 0xA, 0xA);
-        D_8690B308.unk_00[7] = func_8001046C(D_8690B308.unk_00[7], 0x78, 0xA, 0xA);
+        var_s3 = Math_ApproachS32(var_s3, 0x46, 0xA, 0xA);
+        D_8690B308.unk_00[0] = Math_ApproachS32(D_8690B308.unk_00[0], 0xA0, 0xA, 0xA);
+        D_8690B308.unk_00[4] = Math_ApproachS32(D_8690B308.unk_00[4], 0x24, 0xA, 0xA);
+        D_8690B308.unk_00[1] = Math_ApproachS32(D_8690B308.unk_00[1], 0x120, 0xA, 0xA);
+        D_8690B308.unk_00[5] = Math_ApproachS32(D_8690B308.unk_00[5], 0x78, 0xA, 0xA);
+        D_8690B308.unk_00[2] = Math_ApproachS32(D_8690B308.unk_00[2], 0xA0, 0xA, 0xA);
+        D_8690B308.unk_00[6] = Math_ApproachS32(D_8690B308.unk_00[6], 0xCC, 0xA, 0xA);
+        D_8690B308.unk_00[3] = Math_ApproachS32(D_8690B308.unk_00[3], 0x20, 0xA, 0xA);
+        D_8690B308.unk_00[7] = Math_ApproachS32(D_8690B308.unk_00[7], 0x78, 0xA, 0xA);
 
         if (var_s3 < 0x3D) {
             func_86900B04(&D_8690B308.unk_10, &D_8690B308.unk_20, D_8690B308.unk_30 + 0x8000, 0xA);

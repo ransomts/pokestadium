@@ -927,7 +927,7 @@ extern u32 D_304F120[];
 
 extern s32 gAudioDMAFlags;
 
-extern OSViMode D_800795C0;
+extern OSViMode gViMode;
 extern u8 D_ADC80[];
 extern u8 D_F4130[];
 extern u8 D_F4920[];

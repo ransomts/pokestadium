@@ -302,7 +302,7 @@ void func_8001829C(void) {
     unk_D_800ABE00_cmd1B* cmd = (unk_D_800ABE00_cmd1B*)gGeoLayoutCommand;
 
     GraphNode_SetPositionFromVec3s(&sp24, &cmd->unk_0A);
-    func_8000EB70(&sp30, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
+    Vec3s_Set(&sp30, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
     func_80017AC4(TransformNode_Create(gGraphNodePool, NULL, &sp24, &sp30));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1B);
@@ -364,7 +364,7 @@ void func_80018600(void) {
     sp28.y = cmd->unk_12 / 100.0f;
     sp28.z = cmd->unk_14 / 100.0f;
 
-    func_8000EB70(&sp40, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
+    Vec3s_Set(&sp40, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
     tmp = func_80011938(gGraphNodePool, NULL, cmd->unk_02, &sp34, &sp40, &sp28);
     func_80017AC4(tmp);
 
@@ -378,7 +378,7 @@ void func_8001878C(void) {
     unk_D_800ABE00_cmd20* cmd = (unk_D_800ABE00_cmd20*)gGeoLayoutCommand;
 
     GraphNode_SetPositionFromVec3s(&sp34, &cmd->unk_0A);
-    func_8000EB70(&sp2C, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
+    Vec3s_Set(&sp2C, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
     tmp = func_80011ABC(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_10, &sp34, &sp2C);
     func_80017AC4(tmp);
 

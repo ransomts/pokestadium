@@ -263,7 +263,7 @@ s32 DmaCopyAsyncBlock(u8* arg0, s16 arg1, s16 arg2, s32 arg3) {
 }
 
 s32 func_80003B04(s16 arg0) {
-    return func_8000CDB8(arg0 << 7);
+    return Flash_EraseSector(arg0 << 7);
 }
 
 void DmaCopyAsyncRange(u32 arg0, u32 arg1, u32 arg2, s32 arg3) {

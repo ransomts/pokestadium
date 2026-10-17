@@ -131,7 +131,7 @@ s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     Camera_SetViewParameters(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
     Matrix_Decompose(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
 
-    arg1->unk_04.unk_68 = func_800104AC(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
+    arg1->unk_04.unk_68 = Math_ApproachF32(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
 
     Camera_SetViewParameters(&sp58, &temp_s2->unk_60.at, arg1->unk_04.unk_68, sp3A, sp38);
     Camera_SetViewParameters(&temp_s2->unk_60.at, &temp_s2->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);

@@ -18,7 +18,7 @@ typedef struct unk_D_800A62E0 {
     /* 0x9B0 */ u8 stack[64];
     /* 0x9F0 */ OSMesgQueue queue;
     /* 0xA08 */ u64 time;
-    /* 0xA10 */ unk_D_800AA660* unk_A10;
+    /* 0xA10 */ GbEmuState* unk_A10;
     /* 0xA14 */ UnkStruct80001380* unk_A14;
     /* 0xA18 */ UnkStruct80001380* unk_A18;
     /* 0xA1C */ UnkStruct80001380* unk_A1C;
@@ -68,16 +68,16 @@ typedef struct UnkStruct80083CA0_2 {
     /* 0xABC */ char unkABC[0x4];
 } UnkStruct80083CA0_2; // size = 0xAC0
 
-extern unk_D_800A62E0 D_800A62E0;
+extern unk_D_800A62E0 gRspTaskManager;
 
-void func_80004CC0(UnkStruct80083CA0_2*, s32, s32);
-s32 func_80004CF4(UnkStruct80083CA0_2*);
-s32 func_80004D20(UnkStruct80083CA0_2*);
-void func_800052B4(void);
-void func_80005328(unk_D_800AA660*);
-void func_80004980(UnkStruct80001380* arg0);
+void MessageQueue_Create(UnkStruct80083CA0_2*, s32, s32);
+s32 MessageQueue_Recv(UnkStruct80083CA0_2*);
+s32 MessageQueue_TryRecv(UnkStruct80083CA0_2*);
+void RspTask_ManagerInit(void);
+void ThreadList_Add(GbEmuState*);
+void RspTask_Reset(UnkStruct80001380* arg0);
 void RspTaskYield(UnkStruct80001380* arg0);
-void func_80005370(unk_D_800AA660* arg0);
+void ThreadList_Remove(GbEmuState* arg0);
 void RspTaskStart(UnkStruct80001380* arg0, s32 arg1);
 
 

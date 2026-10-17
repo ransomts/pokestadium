@@ -1,6 +1,6 @@
 #include "global.h"
 
-OSViMode D_800795C0 = {
+OSViMode gViMode = {
     0x2A,
     { 0x320E, 0x140, 0x04541E3A, 0x271, 0x00170C69, 0x0C6F0C6D, 0x00800300, 0x200, 0 },
     {

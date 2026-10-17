@@ -148,7 +148,7 @@ void GraphNode_Reset(unk_D_86002F58_004_000* arg0) {
     GraphNode_ClearCallback(arg0);
     Vec3f_Set(&arg0->unk_024, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg0->unk_030, 1.0f, 1.0f, 1.0f);
-    func_8000EB70(&arg0->unk_01E, 0, 0, 0);
+    Vec3s_Set(&arg0->unk_01E, 0, 0, 0);
 }
 
 void func_84B00478(void) {
@@ -339,7 +339,7 @@ s32 Battle_MainLoop(void) {
     Battle_InitializeFromMode();
     func_84B07CF8(&D_84B25A28, gBattleGraphics.unk_0004->unk_0C);
     func_84B07758(&D_84B25A28, gBattleGraphics.unk_B40C);
-    func_8000D1F0(0x31);
+    Music_ChangeTrack(0x31);
 
     for (i = 0; i < 16; i++) {
         func_84B01538();
@@ -361,7 +361,7 @@ s32 Battle_MainLoop(void) {
         func_84B01538();
     }
 
-    func_8000D278(0x20);
+    Music_StopTrack(0x20);
     func_80007990(1);
     func_80006CB4(0x10);
 
@@ -419,7 +419,7 @@ s32 func_84B017AC(void) {
 
     func_84B04F78(&D_84B259A8, &gBattleGraphics.unk_0008[0x10]);
     func_84B06364(&D_84B259E8, gBattleGraphics.unk_0008, 0);
-    func_8000D1F0(0x33);
+    Music_ChangeTrack(0x33);
 
     for (i = 0; i < var_s1; i++) {
         func_84B016F4();
@@ -440,7 +440,7 @@ s32 func_84B017AC(void) {
         func_84B016F4();
     }
 
-    func_8000D278(0x20);
+    Music_StopTrack(0x20);
     func_80007990(1);
     func_80006CB4(0x10);
 
@@ -541,12 +541,12 @@ void func_84B01C2C(void) {
 
     if (gBattleContext.unk_1194[1].unk_08[0]->unk_000 & 2) {
         if (gBattleContext.unk_1194[0].unk_1C == 1) {
-            func_8000D1F0(0x32);
+            Music_ChangeTrack(0x32);
         } else {
-            func_8000D1F0(0x45);
+            Music_ChangeTrack(0x45);
         }
     } else {
-        func_8000D1F0(0x32);
+        Music_ChangeTrack(0x32);
     }
 
     func_80006C6C(8);
@@ -576,7 +576,7 @@ void func_84B01DBC(void) {
         func_84B01AA0();
     }
 
-    func_8000D1F0(0x32);
+    Music_ChangeTrack(0x32);
     func_80006C6C(8);
 
     while (func_84B0A634(&D_84B25A58, gBattleGraphics.unk_0008) == 0) {
@@ -663,7 +663,7 @@ void func_84B0204C(void) {
 void func_84B02188(void) {
     s32 i;
 
-    func_8000D278(0x3C);
+    Music_StopTrack(0x3C);
 
     for (i = 0; i < 16; i++) {
         Game_UpdateInputs();
@@ -676,7 +676,7 @@ void func_84B02188(void) {
 void func_84B021FC(void) {
     s32 i;
 
-    func_8000D278(0x3C);
+    Music_StopTrack(0x3C);
     func_80007990(1);
     func_80006CB4(0x10);
 
@@ -871,7 +871,7 @@ s32 func_84B02654(void) {
             gBattleContext.unk_11F6 |= 0x41;
         } else {
             func_84B0204C();
-            func_8000D278(0x50);
+            Music_StopTrack(0x50);
             gBattleContext.unk_0003++;
             sp2C = 1;
         }
@@ -958,7 +958,7 @@ s32 func_84B02984(void) {
             func_84B0D718(&D_84B25AC0);
             PlayUISfx(0x0110000D, 0, 0);
             func_84B0204C();
-            func_8000D278(0x10);
+            Music_StopTrack(0x10);
 
             gBattleContext.unk_11F6 |= 1;
             if (gBattleContext.unk_0002 == 8) {
@@ -981,7 +981,7 @@ s32 func_84B02984(void) {
             func_84B0D718(&D_84B25AC0);
             PlayUISfx(0x0110000D, 0, 0);
             func_84B0204C();
-            func_8000D278(0x50);
+            Music_StopTrack(0x50);
             gBattleContext.unk_0003++;
             sp24 = 1;
         }
@@ -1155,7 +1155,7 @@ s32 func_84B02F60(void) {
 
     func_84B05728(&D_84B259A8);
     func_84B050AC(&D_84B259A8, &gBattleGraphics.unk_0008[0x10]);
-    func_8000D1F0(0x3F);
+    Music_ChangeTrack(0x3F);
 
     for (i = 0; i < var_s1; i++) {
         Game_UpdateInputs();

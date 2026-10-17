@@ -401,7 +401,7 @@ void func_86B065C4(void) {
 }
 
 void func_86B06960(void) {
-    D_86B0FA78->unk_180 = func_800104AC(D_86B0FA78->unk_180, 100.0f, 2.0f, 2.0f);
+    D_86B0FA78->unk_180 = Math_ApproachF32(D_86B0FA78->unk_180, 100.0f, 2.0f, 2.0f);
     func_86B05DA0(D_86B0FA78->unk_180, D_86B0FA78->unk_180, D_86B0FA78->unk_180);
 }
 
@@ -643,7 +643,7 @@ s32 func_86B06FFC(void) {
                 D_86B0FA78->unk_178 = 0x64;
             }
 
-            D_86B0FA64 = func_8001046C(D_86B0FA64, 0x3C, 1, 1);
+            D_86B0FA64 = Math_ApproachS32(D_86B0FA64, 0x3C, 1, 1);
             D_86B0FA68 += D_86B0FA64;
             Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, D_86B0FA6C, D_86B0FA66, D_86B0FA68);
             break;
@@ -665,7 +665,7 @@ s32 func_86B07450(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
 
     sp20 = arg0->unk_A4;
 
-    temp_fv0 = func_800104AC(sp20, 0.0f, 0.0f, 0.0f);
+    temp_fv0 = Math_ApproachF32(sp20, 0.0f, 0.0f, 0.0f);
     arg0->unk_A4 = temp_fv0;
     if (temp_fv0 >= 0.0f) {
         temp_fv0 = 0;
@@ -733,22 +733,22 @@ void func_86B075EC(void) {
                 }
 
                 if (D_86B0FA58->unk_84 != 0) {
-                    D_86B0FA54->unk_B0.unk_00 = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_00 = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_00, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_00,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_0C, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_0C);
-                    D_86B0FA54->unk_B0.unk_02 = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_02 = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_02, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_02,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_0E, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_0E);
-                    D_86B0FA54->unk_B0.unk_04 = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_04 = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_04, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_04,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_10, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_10);
-                    D_86B0FA54->unk_B0.unk_06 = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_06 = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_06, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_06,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_12, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_12);
-                    D_86B0FA54->unk_B0.unk_08 = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_08 = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_08, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_08,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_14, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_14);
-                    D_86B0FA54->unk_B0.unk_0A = func_8001046C(
+                    D_86B0FA54->unk_B0.unk_0A = Math_ApproachS32(
                         D_86B0FA54->unk_B0.unk_0A, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_0A,
                         D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_16, D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_16);
                     if ((D_86B0FA54->unk_B0.unk_00 == D_86B0DCE0[D_86B0FA54->unk_88 + 1].unk_00) &&

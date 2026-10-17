@@ -636,7 +636,7 @@ void LayerNode_Process(GraphNode* arg0) {
 
     if (gDefaultGraphRoot->unk_000.unk_02 & 2) {
         Vec3f_Set(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
-        func_8000EB70(&sp24, 0, gDefaultGraphRoot->unk_01E.y, 0);
+        Vec3s_Set(&sp24, 0, gDefaultGraphRoot->unk_01E.y, 0);
         Matrix_RotateTranslate(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
 
         D_800AA8C8.unk_10A0++;

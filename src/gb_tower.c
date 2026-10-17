@@ -351,7 +351,7 @@ u8 func_8000B318(u8 arg0) {
     return temp_v0;
 }
 
-void func_8000B330(void) {
+void Cont_FinishRead(void) {
     u8 sp1F;
     static s32 D_800697D0 = 0; // .data
 

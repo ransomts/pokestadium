@@ -49,8 +49,8 @@ void func_82B0029C(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
-    func_8000E820(&sp2C, 0x64, 0x64, 0xC8);
-    func_8000E820(&sp28, 0x28, 0x28, 0x8C);
+    GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
+    GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_82B000F4(0x48, 0x28, 0x208, &sp2C, &sp28);
     func_82B00020(0x30, 0x20);
     Text_ResetState();
@@ -176,7 +176,7 @@ void func_82B00BC8(void) {
 
 void func_82B00C24(void) {
     if ((gBattleContext.unk_0000 == 7) || (gBattleContext.unk_0000 == 8)) {
-        func_8000D278(0x10);
+        Music_StopTrack(0x10);
     }
 
     func_80007990(0xFFFF);
@@ -264,9 +264,9 @@ s32 func_82B00E84(void) {
 
     if (gBattleContext.unk_0000 == 7) {
         if (sp1C.unk_04 < 8) {
-            func_8000D1F0(0x2A);
+            Music_ChangeTrack(0x2A);
         } else {
-            func_8000D1F0(0x27);
+            Music_ChangeTrack(0x27);
         }
     }
 

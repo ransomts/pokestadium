@@ -121,13 +121,13 @@ void func_843077B0(unk_D_84390010* arg0, s32 arg1) {
             arg0->unk_728.unk_18C = 2;
             func_800328D0(0);
         }
-        arg0->unk_728.unk_168->unk_1C = func_8001046C(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
     } else {
         if ((arg0->unk_728.unk_168->unk_1C == 0x15F) && !(arg0->unk_654.unk_34 & 0x800)) {
             func_843074A0(arg0);
         }
 
-        arg0->unk_728.unk_168->unk_1C = func_8001046C(arg0->unk_728.unk_168->unk_1C, 0x103, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x103, arg1, arg1);
 
         if ((func_800328D8(1) != 0) && (arg0->unk_728.unk_18C == 0)) {
             arg0->unk_728.unk_18C = 2;
@@ -139,14 +139,14 @@ void func_843077B0(unk_D_84390010* arg0, s32 arg1) {
 void func_843078F4(unk_D_84390010* arg0, s32 arg1) {
     if (arg0->unk_728.unk_178 == 1) {
         arg0->unk_728.unk_18C = 0;
-        arg0->unk_728.unk_168->unk_1C = func_8001046C(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == -0x48) {
             arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;
         }
     } else {
         arg0->unk_728.unk_18C = 0;
-        arg0->unk_728.unk_168->unk_1C = func_8001046C(arg0->unk_728.unk_168->unk_1C, 0x15F, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x15F, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == 0x15F) {
             arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;

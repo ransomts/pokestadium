@@ -221,7 +221,7 @@ void Gfx_DrawTileMap16x16(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32
     temp_s2 = GfxAlloc(0x10);
     temp_s1 = Gfx_GetCurrentFramebuffer();
 
-    func_8000EB70(&spCC, 0, 0, arg2);
+    Vec3s_Set(&spCC, 0, 0, arg2);
     Vec3f_Set(&spC0, arg0, arg1, 0.0f);
     Vec3f_Set(&spB4, arg3, arg3, 1.0f);
     Matrix_RotateTranslate(temp_s0, &spC0, &spCC);

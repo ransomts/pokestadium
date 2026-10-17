@@ -203,7 +203,7 @@ void func_86B0B184(void) {
             break;
 
         case 0x1:
-            D_86B10BE0.unk_10 = func_8001046C(D_86B10BE0.unk_10, 0x28, 8, 8);
+            D_86B10BE0.unk_10 = Math_ApproachS32(D_86B10BE0.unk_10, 0x28, 8, 8);
             if (D_86B10BE0.unk_10 == 0x28) {
                 D_86B10BE0.unk_00++;
             }
@@ -258,7 +258,7 @@ void func_86B0B184(void) {
             break;
 
         case 0xFF:
-            D_86B10BE0.unk_10 = func_8001046C(D_86B10BE0.unk_10, 0, 8, 8);
+            D_86B10BE0.unk_10 = Math_ApproachS32(D_86B10BE0.unk_10, 0, 8, 8);
             if (D_86B10BE0.unk_10 >= 0xB) {
                 func_86B0B0B4();
             }

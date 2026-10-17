@@ -372,7 +372,7 @@ s32 func_86B00C34(void) {
     }
 
     if (D_86B0E5D4->unk_04.unk_48 == 1) {
-        D_86B0EBB0 = func_8001046C(D_86B0EBB0, 0xFF, 0x1E, 0x1E);
+        D_86B0EBB0 = Math_ApproachS32(D_86B0EBB0, 0xFF, 0x1E, 0x1E);
         if (D_86B0EBB0 == 0xFF) {
             return 1;
         }

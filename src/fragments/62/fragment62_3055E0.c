@@ -565,7 +565,7 @@ void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         if (func_84307AE0(arg1->unk_000.unk_01A, sp2C, sizeof(sp2C)) != 0) {
             sp44 = sp38;
         } else {
-            sp44 = func_800104AC(sp44, sp38, 30.0f, 5.0f);
+            sp44 = Math_ApproachF32(sp44, sp38, 30.0f, 5.0f);
         }
     } else {
         var_fv0_2 = D_84390240.unk_00->unk_70 - sp44;
@@ -574,7 +574,7 @@ void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         }
 
         if (sp44 < sp38) {
-            sp44 = func_800104AC(sp44, D_84390240.unk_00->unk_70, var_fv0_2 * 0.4f, var_fv0_2 * 0.08f);
+            sp44 = Math_ApproachF32(sp44, D_84390240.unk_00->unk_70, var_fv0_2 * 0.4f, var_fv0_2 * 0.08f);
         }
     }
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
@@ -692,7 +692,7 @@ void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431AED8(arg1, &sp58);
     Camera_SetViewParameters(&sp58, &sp4C, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     Matrix_Decompose(&sp34, &sp4C, &sp30, &sp2A, &sp28);
-    D_84390240.unk_00->unk_94.z = func_800104AC(D_84390240.unk_00->unk_94.z, 0.8f, 0.05f, 0.05f);
+    D_84390240.unk_00->unk_94.z = Math_ApproachF32(D_84390240.unk_00->unk_94.z, 0.8f, 0.05f, 0.05f);
     Camera_SetViewParameters(&sp34, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
 }
 

@@ -1345,3 +1345,114 @@ func_8004FD44	Audio_FadeAllChannelsDefault	w7		calls Audio_ResetAndSetFade with 
 func_8004FD64	Audio_FadeAllChannels	w7		forwards its argument to Audio_ResetAndSetFade to set a custom fade level for all audio channels	applied@892328f
 func_8004FE00	Audio_LoadBankAndSong	w7		Loads audio bank data, initializes wave tables and loads a song, returning its handle	applied@892328f
 func_8004FF20	Audio_ClearBankDMAFlag	w7		Clears the high bit of gAudioDMAFlags after bank loading	applied@892328f
+func_80004980	RspTask_Reset	w8		Resets arg0->unk_1C and unk_1E after cache writeback and is called before starting a task in RspTaskStart	applied@b3b6010
+func_800049D4	RspTask_Start	w8		Loads and starts the SP task, updates state and logs profiling for audio and graphics tasks	applied@b3b6010
+func_80004AB4	RspTask_Yield	w8		Calls osSpTaskYield when task type is 1 or 4 and state is 1, indicating yielding the task	applied@b3b6010
+func_80004B0C	RspTask_CheckCompletion	w8		Checks if the task has yielded, logs completion, and sends 'DONE' messages for various task types	applied@b3b6010
+func_80004C68	RspTask_Finish	w8		Logs RDP completion and sends 'DONE' when task state is 3, marking finalization	applied@b3b6010
+func_80004CC0	MessageQueue_Create	w8		Initializes a message queue in the struct by setting unk_1DC and calling osCreateMesgQueue	applied@b3b6010
+func_80004CF4	MessageQueue_Recv	w8		Receives a message from the queue with osRecvMesg and returns it	applied@b3b6010
+func_80004D20	MessageQueue_TryRecv	w8		Returns a message if the queue has one, otherwise returns the 'NULL' constant, implementing non?blocking receive	applied@b3b6010
+func_80004D64	RspTask_PromotePending	w8		Moves pending task pointers from unk_A20 to unk_A18 and from unk_A24 to unk_A1C when slots are empty	applied@b3b6010
+func_80004DBC	ThreadList_SendMessage	w8		Iterates over the global linked list D_800A62E0.unk_A10 and sends the given message to each thread's queue1	applied@b3b6010
+func_80004E60	RspTask_StartValidated	w8		Starts a task via func_800049D4 and returns NULL if the start fails, acting as a validated start	applied@b3b6010
+func_80004E94	RspTask_EnsureCurrent	w8		If no current task is active, starts the pending task D_800A62E0.unk_A1C	applied@b3b6010
+func_80004ED0	RspTask_YieldCurrent	w8		Calls RspTask_Yield on the current active task if it exists	applied@b3b6010
+func_80004F70	RspTask_Update	w8		Called each VBlank to update timers, handle pre?NMI, promote pending tasks and send a VTRE message	applied@b3b6010
+func_80005084	RspTask_HandleCompletion	w8		Processes a completed task, clears flags, and queues the next appropriate task based on its type	applied@b3b6010
+func_80005148	RspTask_GfxFinalize	w8		Calls RspTask_Finish on the current graphics task and clears it when finished	applied@b3b6010
+func_80005194	RspTask_MainThread	w8		Main thread loop that receives events and dispatches to RspTask_Update, RspTask_HandleCompletion, etc.	applied@b3b6010
+func_800052B4	RspTask_ManagerInit	w8		Initializes the global task manager struct, creates and starts the main RSP task thread	applied@b3b6010
+func_80005328	ThreadList_Add	w8		Adds a thread struct to the global linked list D_800A62E0.unk_A10, linking it at the end	applied@b3b6010
+func_80005370	ThreadList_Remove	w8		Removes a thread struct from the global linked list D_800A62E0.unk_A10 by unlinking it	applied@b3b6010
+D_800A62E0	gRspTaskManager	w8		Global struct holding task queues, thread, time and pointers like unk_A10 and unk_A14 used for RSP task management	applied@b3b6010
+func_80005F9C	Gfx_GetRemainingDLSize	w8		Returns the number of bytes remaining in the current display?list buffer by subtracting the head pointer from the buffer end pointer.	applied@b3b6010
+D_800697E0	gStickerStationInitFlag	w8		Used as a single?element flag array to remember that the sticker station has been successfully detected (set to 1 after verification)	applied@b3b6010
+D_800A82B0	gStickerStationEepromBuf	w8		Static 31?byte buffer used for all EEPROM reads and writes to controller 3 when communicating with the sticker station	applied@b3b6010
+D_800A82CF	gStickerStationCommand	w8		Stores the command byte read from or written to the sticker station EEPROM (compared against 0xFE, 0x85, 0x08)	applied@b3b6010
+func_8000C870	Flash_ReInitHandle	w8		Initializes a OSPiHandle with latency, pulse, page size, rel duration and start address as seen in the assignments to D_800A8320 fields.	applied@b3b6010
+func_8000C8F8	Flash_Init	w8		Creates the flash message queue and sets up D_800A8320 as a DEVICE_TYPE_FLASH handle, matching the osFlashInit behavior.	applied@b3b6010
+func_8000CA4C	Flash_ReadStatus	w8		Writes FLASH_CMD_STATUS then reads back a byte into the output pointer, typical of a status read routine.	applied@b3b6010
+func_8000CB18	Flash_ReadId	w8		Calls Flash_ReadStatus then issues FLASH_CMD_ID and DMA reads two u32 values into D_800A82E0, returning type and maker.	applied@b3b6010
+func_8000CC30	Flash_ClearStatus	w8		Writes FLASH_CMD_STATUS and then zeroes the base address, clearing the flash status register.	applied@b3b6010
+func_8000CC9C	Flash_EraseChip	w8		Sends CHIP_ERASE and EXECUTE_ERASE commands, polls until BUSY clears, then checks status bits for success.	applied@b3b6010
+func_8000CDB8	Flash_EraseSector	w8		Sends SECTOR_ERASE combined with arg, executes erase, polls BUSY, and validates status bits similar to Chip erase.	applied@b3b6010
+func_8000CEE4	Flash_WriteBuffer	w8		Configures an OSIoMesg for PAGE_PROGRAM with given priority, dram address and queue, then starts a DMA write.	applied@b3b6010
+func_8000D0B4	Flash_ReadArray	w8		Sets up an OSIoMesg for READ_ARRAY, computes device address using gFlashBlockSize, and starts a DMA read.	applied@b3b6010
+D_800A82E0	gFlashID	w8		Static u32 array used to store flash ID values read via DMA in Flash_ReadId.	applied@b3b6010
+D_800A82F0	gFlashMsg	w8		OSIoMesg struct used for flash DMA operations, populated in Flash_ReadId.	applied@b3b6010
+D_800A8308	gFlashMessageQ	w8		OSMesgQueue created for flash message handling in Flash_Init.	applied@b3b6010
+D_800A8320	gFlashHandle	w8		Global OSPiHandle representing the flash device, initialized in Flash_Init and reinitialized in Flash_ReInitHandle.	applied@b3b6010
+D_800A8394	gFlashMsgBuf	w8		Single-element OSMesg buffer used as the message queue storage for flash operations.	applied@b3b6010
+D_800A8398	gFlashBlockSize	w8		Set to 0x40 or 0x80 based on flash maker and used as a multiplier for device addresses in Flash_ReadArray.	applied@b3b6010
+func_8000D1F0	Music_ChangeTrack	w8		Music_ChangeTrack changes the current music by stopping any playing track and starting the new ID, matching its use of func_8004B9C4 and func_8004B1CC	applied@b3b6010
+func_8000D23C	Music_SetTrack	w8		Music_SetTrack sets the current music ID without stopping the previous one, as seen by its direct call to func_8004B1CC and update of D_800A847C	applied@b3b6010
+func_8000D278	Music_StopTrack	w8		Music_StopTrack stops the current music and resets the ID, evidenced by its call to func_8004B9C4 and setting D_800A847C to -1	applied@b3b6010
+func_8000D1E0	Music_ClearCurrentId	w8		Music_ClearCurrentId resets D_800A847C to -1, clearing the current music identifier	applied@b3b6010
+func_8000D2B4	Audio_WaitForLoadAndFade	w8		Audio_WaitForLoadAndFade loops while Audio_CalcLoadScore is non?zero, optionally resets fade, and triggers Audio_FadeAllChannelsDefault before returning a counter	applied@b3b6010
+func_8000D338	Audio_FadeAllChannelsFast	w8		Audio_FadeAllChannelsFast calls Audio_FadeAllChannels(0x10) to quickly fade all channels	applied@b3b6010
+func_8000D358	Audio_Unpause	w8		Audio_Unpause clears D_800A83A0 and calls Audio_SetPauseState(0), unpausing audio processing	applied@b3b6010
+func_8000D380	Audio_Pause	w8		Audio_Pause sets Audio_SetPauseState(1) and marks D_800A83A0, pausing audio processing	applied@b3b6010
+func_8000D3A8	Audio_ThreadMain	w8		Audio_ThreadMain is passed to osCreateThread as the audio thread entry and contains the perpetual audio task loop	applied@b3b6010
+func_8000D564	Audio_CreateThread	w8		Audio_CreateThread creates and starts the audio thread via osCreateThread and osStartThread	applied@b3b6010
+D_800A83A0	gAudioThreadEnabled	w8		D_800A83A0 is set to 0 or 1 together with Audio_SetPauseState and checked before building audio tasks, flagging whether the audio thread is enabled	applied@b3b6010
+D_800A847C	gCurrentMusicId	w8		D_800A847C stores the current music ID, being compared to requested IDs and updated after play/stop calls (func_8004B1CC/func_8004B9C4)	applied@b3b6010
+D_800A8478	gAudioTaskBufferIndex	w8		D_800A8478 toggles between 0 and 1 each loop and indexes D_800A83A8 for audio task submission, serving as the double?buffer index for audio tasks	applied@b3b6010
+D_800A8480	gAudioThreadData	w8		D_800A8480 contains an OSThread and is used in osCreateThread/osStartThread, representing the audio thread's data structure	applied@b3b6010
+D_800A83A8	gAudioMessageQueues	w8		D_800A83A8[0/1] hold queues, messages and tasks used by the audio thread, thus the array represents the audio message queues	applied@b3b6010
+unk_D_800AA660	GbEmuState	w8		The struct holds font pointers, a message queue and thread used by the GB emulator	applied@b3b6010
+unk_D_800AA664	GbEmuThreadInfo	w8		The struct contains a thread field and is allocated for the GB emulator's auxiliary thread	applied@b3b6010
+D_800AA660	gGbEmuState	w8		Global pointer to the GB emulator main state allocated in GbEmu_Create	applied@b3b6010
+D_800AA664	gGbEmuThreadInfo	w8		Global pointer to the GB emulator thread info allocated alongside the main state	applied@b3b6010
+D_800AA668	gGbEmuThreadId	w8		Char storing the thread identifier returned by func_8000B318 during GbEmu_Create	applied@b3b6010
+func_8000D5C0	GbAudio_ThreadMain	w8		Thread function that initializes and repeatedly calls audio processing func_81206F38 for the GB audio subsystem	applied@b3b6010
+func_8000D678	GbEmu_ThreadMain	w8		Thread function that runs the main GB emulator loop, invoking func_81206E64 each frame	applied@b3b6010
+func_8000D738	GbEmu_Create	w8		Sets up GB emulator state, loads fonts, creates threads and starts them, identified by pool tag 'GBEM'	applied@b3b6010
+func_8000D8A8	GbEmu_RecvMessage	w8		Receives a message from the GB emulator's internal message queue and returns it	applied@b3b6010
+func_8000D8DC	GbEmu_Shutdown	w8		Restores saved state, stops video, destroys threads and frees GB emulator resources	applied@b3b6010
+D_800AA680	gBootIDData	w8		global struct holds the boot ID data copied from the cartridge, as seen in func_8000DD68 where it stores arg0 when arg0->unk_00 == 'POKE'	applied@b3b6010
+D_800AA690	gBootState	w8		static struct tracks the boot state machine with fields unk_00, unk_02, unk_04, unk_06 used throughout the file	applied@b3b6010
+D_800AA698	gBootMsgQueue	w8		OSMesgQueue used for boot communication, created in func_8000E6EC and referenced in many message handlers	applied@b3b6010
+D_800AA6B0	gBootMsgBuffer	w8		OSMesg buffer for the boot message queue, passed to osCreateMesgQueue	applied@b3b6010
+func_8000DC90	Boot_ValidateAndCopy	w8		validates the LEODiskID fields and copies them to leoBootID, returning status codes	applied@b3b6010
+func_8000DD68	BootID_StoreIfValid	w8		stores the incoming boot ID into the global if its signature equals 'POKE'	applied@b3b6010
+func_8000DE18	Boot_DMAReadHeader	w8		starts a DMA read of 0x230 bytes from the provided boot ID struct, then sets state 7	applied@b3b6010
+func_8000DE70	Boot_DMAReadData	w8		starts a DMA read using fields from the stored boot ID, then sets state 9	applied@b3b6010
+func_8000DED0	Boot_ProcessMessage	w8		receives messages from the boot queue and updates the boot state machine based on message IDs	applied@b3b6010
+func_8000E0EC	Boot_ProcessMessageStage2	w8		handles a second set of boot messages, adjusting state and result fields	applied@b3b6010
+func_8000E21C	Boot_ProcessMessageWithID	w8		processes boot messages that also involve a boot ID argument, updating state accordingly	applied@b3b6010
+func_8000E3B4	Boot_ProcessMessageStage3	w8		processes a third set of boot messages, similar to func_8000E21C but for a different state range	applied@b3b6010
+func_8000E51C	Boot_CheckUnitReady	w8		calls LeoTestUnitReady and sets boot state based on the unit readiness result	applied@b3b6010
+func_8000E5BC	Boot_MainLoop	w8		main boot loop that dispatches to state handlers until completion	applied@b3b6010
+func_8000E6EC	Boot_Init	w8		initializes the boot system, creates the message queue and sets the initial state	applied@b3b6010
+func_8000E820	GfxColor_SetRGB	w8		Sets r,g,b fields of a Color_RGBA8, matching typical RGB setter usage	applied@b3b6010
+func_8000E868	Vec3f_SetXYZ	w8		Sets x,y,z of a Vec3f, identical to Vec3f_Set semantics	applied@b3b6010
+func_8000E920	Vec3f_Subtract	w8		Subtracts second vector from first vector component?wise	applied@b3b6010
+func_8000EA84	Vec3f_CrossProduct	w8		Computes cross product of two Vec3f vectors	applied@b3b6010
+func_8000EAF4	Vec3f_Normalize	w8		Normalizes a Vec3f to unit length	applied@b3b6010
+func_8000EB70	Vec3s_Set	w8		Sets x,y,z of a Vec3s from three s16 values	applied@b3b6010
+func_8000EBA8	Vec3s_Add	w8		Adds second Vec3s to first Vec3s component?wise	applied@b3b6010
+func_8000EBE0	Vec3s_Sum	w8		Sums two Vec3s into a destination Vec3s	applied@b3b6010
+func_8000EC18	Vec3s_Subtract	w8		Subtracts second Vec3s from first Vec3s component?wise	applied@b3b6010
+func_8000EC88	Vec3s_FromVec3f_Round	w8		Converts a Vec3f to Vec3s by rounding each component	applied@b3b6010
+func_800103F0	Math_ApproachS16	w8		Approaches target s16 by increment/decrement steps	applied@b3b6010
+func_8001046C	Math_ApproachS32	w8		Approaches target s32 with separate inc/dec values	applied@b3b6010
+func_800104AC	Math_ApproachF32	w8		Approaches target f32 with separate inc/dec values	applied@b3b6010
+func_80010570	RGB_ToHSV	w8		Converts normalized RGB floats to HSV stored in a Vec3f	applied@b3b6010
+func_80010930	HSV_ToRGB	w8		Converts HSV Vec3f to three RGB float components, clamping and handling hue wrap	applied@b3b6010
+func_8000B330	Cont_FinishRead	w8		Called after controller data is read and analog sticks are adjusted, likely finalizes input processing for the frame	applied@b3b6010
+D_80071D50	gTypeColors	w8		array of 23 entries mapping two?letter Pok?mon type abbreviations to RGB color values used for type display	applied@b3b6010
+unk_D_80071D88	TypeColorEntry	w8		struct holding a 2?char type abbreviation, an RGB triple and a filler byte, used by the type?color table	applied@b3b6010
+D_80071E10	gMoveName_1	w8		used as the string for move ID 1 in the gMoveStrings table	applied@b3b6010
+D_80071E18	gMoveName_2	w8		used as the string for move ID 2 in the gMoveStrings table	applied@b3b6010
+D_80071E20	gMoveName_3	w8		used as the string for move ID 3 in the gMoveStrings table	applied@b3b6010
+D_80071E28	gMoveName_4	w8		used as the string for move ID 4 in the gMoveStrings table	applied@b3b6010
+D_80071E30	gMoveName_5	w8		used as the string for move ID 5 in the gMoveStrings table	applied@b3b6010
+D_80071E38	gMoveName_6	w8		used as the string for move ID 6 in the gMoveStrings table	applied@b3b6010
+D_80071E40	gMoveName_7	w8		used as the string for move ID 7 in the gMoveStrings table	applied@b3b6010
+D_80071E48	gMoveName_8	w8		used as the string for move ID 8 in the gMoveStrings table	applied@b3b6010
+D_80071E50	gMoveName_9	w8		used as the string for move ID 9 in the gMoveStrings table	applied@b3b6010
+D_80071E58	gMoveName_10	w8		used as the string for move ID 10 in the gMoveStrings table	applied@b3b6010
+D_80072330	gCommentString	w8		contains the ASCII string "comment" used as a placeholder literal	applied@b3b6010
+D_80072AF4	gZeroBuffer12	w8		12?byte zero?filled buffer likely used as a placeholder or padding	applied@b3b6010
+D_800795C0	gViMode	w8		OSViMode configuration struct for the game's video output settings	applied@b3b6010

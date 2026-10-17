@@ -530,7 +530,7 @@ s32 func_822023A4(void) {
         PlaySoundEffect(0x16);
         var_t1 = 3;
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
-        func_8000D23C(0x28);
+        Music_SetTrack(0x28);
         PlaySoundEffect(3);
         var_t1 = 4;
     } else if (gPlayer1Controller->buttonPressed & 0x800) {
@@ -595,11 +595,11 @@ s32 func_8220263C(void) {
     } else {
         D_82203160->unk_06 = 0;
         if (D_822031D8 == 3) {
-            func_8000D278(0x20);
+            Music_StopTrack(0x20);
             var_v1 = 6;
         } else {
             if (D_822031D8 != 7) {
-                func_8000D278(0x28);
+                Music_StopTrack(0x28);
             }
             var_v1 = 5;
         }
@@ -721,7 +721,7 @@ s32 func_82202A6C(void) {
 
 void func_82202AFC(void) {
     InitParticleTrail(D_822031D8);
-    func_8000D1F0(0x50);
+    Music_ChangeTrack(0x50);
     func_80006C6C(0xA);
 
     while (func_80007604() != 0) {

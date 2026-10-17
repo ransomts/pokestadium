@@ -489,7 +489,7 @@ void func_83200FF8(void) {
     D_83201F50 = 1;
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x46);
     func_80006C04(0x1E);
-    func_8000D278(0x3C);
+    Music_StopTrack(0x3C);
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x1E);
 }
 
@@ -498,7 +498,7 @@ void func_832010BC(void) {
     GraphNode_TriggerSound(D_83202028, 7);
     PlayMoveSoundEffect(0, 0x39, 0x19, 0);
     D_83201F50 = 1;
-    func_8000D1F0(0x4A);
+    Music_ChangeTrack(0x4A);
     func_83200934(GetMessageString(NULL, 0, D_83202020, 0xF));
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xF), 0x98);
     func_80006C04(0x1E);
@@ -581,7 +581,7 @@ s32 func_83201450(void) {
                     func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xB), 1);
                     MessageBank_SetPointer_0x14_0x2A(0x1D, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[spAC] - 1));
                     GetMessageString(sp2C, sizeof(sp2C), D_83202020, 0xC);
-                    func_8000D278(0x3C);
+                    Music_StopTrack(0x3C);
                     func_83200934(sp2C);
                     func_8320084C(sp2C, 1);
                     func_83200934(GetMessageString(NULL, 0, D_83202020, 0xD));
@@ -600,7 +600,7 @@ s32 func_83201450(void) {
         }
     }
 
-    func_8000D278(0x3C);
+    Music_StopTrack(0x3C);
     return temp_v0;
 }
 
@@ -704,7 +704,7 @@ void func_83201A18(s32 arg0) {
 void func_83201B60(void) {
     s32 temp_v0;
 
-    func_8000D1F0(0x49);
+    Music_ChangeTrack(0x49);
     Stage_AdvanceN(2);
     func_80006C04(0x28);
     Stage_AdvanceUntil(0xA, func_8320058C);

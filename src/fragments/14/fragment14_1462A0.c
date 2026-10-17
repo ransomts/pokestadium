@@ -1743,7 +1743,7 @@ void func_86805AF0(unk_D_86808498* arg0) {
     sp20.x = 0.0f;
     sp20.y = 1.0f;
     sp20.z = 0.0f;
-    func_8000EA84(&arg0->unk_2C, &sp20, &arg0->unk_20);
+    Vec3f_CrossProduct(&arg0->unk_2C, &sp20, &arg0->unk_20);
 }
 
 void func_86805BD4(void) {

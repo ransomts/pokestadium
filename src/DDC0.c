@@ -16,11 +16,11 @@ typedef struct unk_D_800A8480 {
   /* 0x01B0 */ char unk01B0[0x2030];
 } unk_D_800A8480; // size = 0x21E0
 
-static s32 D_800A83A0;
-static UnkStruct80001380 D_800A83A8[2];
-static s32 D_800A8478;
-static s32 D_800A847C;
-static unk_D_800A8480 D_800A8480;
+static s32 gAudioThreadEnabled;
+static UnkStruct80001380 gAudioMessageQueues[2];
+static s32 gAudioTaskBufferIndex;
+static s32 gCurrentMusicId;
+static unk_D_800A8480 gAudioThreadData;
 
 void func_8000D1C0(void) {
 }
@@ -34,35 +34,35 @@ void func_8000D1D0(void) {
 void func_8000D1D8(void) {
 }
 
-void func_8000D1E0(void) {
-    D_800A847C = -1;
+void Music_ClearCurrentId(void) {
+    gCurrentMusicId = -1;
 }
 
-void func_8000D1F0(s32 arg0) {
-    if (arg0 != D_800A847C) {
-        if (D_800A847C >= 0) {
+void Music_ChangeTrack(s32 arg0) {
+    if (arg0 != gCurrentMusicId) {
+        if (gCurrentMusicId >= 0) {
             func_8004B9C4(0);
         }
         func_8004B1CC(arg0);
-        D_800A847C = arg0;
+        gCurrentMusicId = arg0;
     }
 }
 
-void func_8000D23C(s32 arg0) {
-    if (arg0 != D_800A847C) {
+void Music_SetTrack(s32 arg0) {
+    if (arg0 != gCurrentMusicId) {
         func_8004B1CC(arg0);
-        D_800A847C = arg0;
+        gCurrentMusicId = arg0;
     }
 }
 
-void func_8000D278(s32 arg0) {
-    if (D_800A847C >= 0) {
+void Music_StopTrack(s32 arg0) {
+    if (gCurrentMusicId >= 0) {
         func_8004B9C4(arg0);
-        D_800A847C = -1;
+        gCurrentMusicId = -1;
     }
 }
 
-s32 func_8000D2B4(s32 arg0) {
+s32 Audio_WaitForLoadAndFade(s32 arg0) {
     s32 retvar = 0;
 
     if (arg0 != 0) {
@@ -79,49 +79,49 @@ s32 func_8000D2B4(s32 arg0) {
     return retvar;
 }
 
-void func_8000D338(void) {
+void Audio_FadeAllChannelsFast(void) {
     Audio_FadeAllChannels(0x10);
 }
 
-void func_8000D358(void) {
-    D_800A83A0 = 0;
+void Audio_Unpause(void) {
+    gAudioThreadEnabled = 0;
     Audio_SetPauseState(0);
 }
 
-void func_8000D380(void) {
+void Audio_Pause(void) {
     Audio_SetPauseState(1);
-    D_800A83A0 = 1;
+    gAudioThreadEnabled = 1;
 }
 
-void func_8000D3A8(void* unused) {
+void Audio_ThreadMain(void* unused) {
     __osSetFpcCsr(0x01000C01);
-    func_80004CC0(&D_800A8480.thread, 1, 1);
-    func_80005328(&D_800A8480.thread);
-    D_800A83A0 = 1;
-    D_800A847C = -1;
-    D_800A8478 = 0;
-    osCreateMesgQueue(&D_800A83A8[0].queue, &D_800A83A8[0].mesg, 1);
-    osCreateMesgQueue(&D_800A83A8[1].queue, &D_800A83A8[1].mesg, 1);
-    osSendMesg(&D_800A83A8[0].queue, (void*)'DONE', 0);
-    osSendMesg(&D_800A83A8[1].queue, (void*)'DONE', 0);
+    MessageQueue_Create(&gAudioThreadData.thread, 1, 1);
+    ThreadList_Add(&gAudioThreadData.thread);
+    gAudioThreadEnabled = 1;
+    gCurrentMusicId = -1;
+    gAudioTaskBufferIndex = 0;
+    osCreateMesgQueue(&gAudioMessageQueues[0].queue, &gAudioMessageQueues[0].mesg, 1);
+    osCreateMesgQueue(&gAudioMessageQueues[1].queue, &gAudioMessageQueues[1].mesg, 1);
+    osSendMesg(&gAudioMessageQueues[0].queue, (void*)'DONE', 0);
+    osSendMesg(&gAudioMessageQueues[1].queue, (void*)'DONE', 0);
     Audio_Initialize();
     Music_SetPanMode(0);
     Music_SetMasterVolumeLevel(3, 4);
 
     // thread loop
     while (1) {
-        func_80004CF4(&D_800A8480.thread);
+        MessageQueue_Recv(&gAudioThreadData.thread);
         profiler_log_thread4_time();
-        if ((D_800A83A0 != 0) && (D_800A62E0.unk_A38 < 0x15)) {
-            Audio_BuildTask(&D_800A83A8[D_800A8478].task);
-            RspTaskStart(&D_800A83A8[D_800A8478], 0);
+        if ((gAudioThreadEnabled != 0) && (gRspTaskManager.unk_A38 < 0x15)) {
+            Audio_BuildTask(&gAudioMessageQueues[gAudioTaskBufferIndex].task);
+            RspTaskStart(&gAudioMessageQueues[gAudioTaskBufferIndex], 0);
         }
-        D_800A8478 ^= 1;
+        gAudioTaskBufferIndex ^= 1;
         profiler_log_thread4_time();
     }
 }
 
-void func_8000D564(void) {
-    osCreateThread(&D_800A8480.thread, 4, func_8000D3A8, NULL, &D_800AA660, 0x50);
-    osStartThread(&D_800A8480.thread);
+void Audio_CreateThread(void) {
+    osCreateThread(&gAudioThreadData.thread, 4, Audio_ThreadMain, NULL, &gGbEmuState, 0x50);
+    osStartThread(&gAudioThreadData.thread);
 }

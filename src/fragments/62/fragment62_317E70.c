@@ -131,7 +131,7 @@ unk_D_8140E720* func_8432D9BC(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
     if ((u32)temp_v0 != -1) {
         Vec3f_Set(&temp_v0->unk_38, arg0, arg1, 0.0f);
         func_81408AF0(temp_v0);
-        func_8000EB70(&temp_v0->unk_94, arg2, arg2, arg2);
+        Vec3s_Set(&temp_v0->unk_94, arg2, arg2, arg2);
         temp_v0->unk_1C = arg3;
         Particle_SetFlag(temp_v0, 0x108);
     }

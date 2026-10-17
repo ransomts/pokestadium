@@ -113,11 +113,11 @@ void func_800015A8(void) {
     }
 
     for (i = 1; i < D_80083CA0.unk_AAC.unk_00; i++) {
-        func_80004CF4(&D_80083CA0);
+        MessageQueue_Recv(&D_80083CA0);
     }
 
     while (D_80083CA0.unk_1C0.validCount > 0) {
-        func_80004D20(&D_80083CA0);
+        MessageQueue_TryRecv(&D_80083CA0);
     }
 
     if (D_80083CA0.unk_A9C.unk_0C != NULL) {
@@ -149,27 +149,27 @@ void func_800015A8(void) {
     D_80083CA0.unk_AAC = D_80083CA0.unk_A9C;
     D_80083CA0.unk_A9C = D_80083CA0.unk_A8C;
     profiler_log_thread5_time(THREAD5_END);
-    func_80004CF4(&D_80083CA0);
+    MessageQueue_Recv(&D_80083CA0);
 }
 
 void func_800017E4(void) {
-    func_80004CF4(&D_80083CA0);
+    MessageQueue_Recv(&D_80083CA0);
     while (D_80083CA0.unk_1C0.validCount > 0) {
-        func_80004D20(&D_80083CA0);
+        MessageQueue_TryRecv(&D_80083CA0);
     }
-    func_80004CF4(&D_80083CA0);
+    MessageQueue_Recv(&D_80083CA0);
 }
 
 void func_8000183C(UNUSED void* arg) {
     __osSetFpcCsr(0x01000C01);
     func_80001C1C(&D_80083CA0.unk_AAC, 0, 1, 2, 0xFF, 0, 0, 0);
     func_80001C1C(&D_80083CA0.unk_A9C, 0, 1, 2, 0xFF, 0, 0, 0);
-    func_80004CC0(&D_80083CA0.thread, 0, 4);
-    func_80005328(&D_80083CA0);
+    MessageQueue_Create(&D_80083CA0.thread, 0, 4);
+    ThreadList_Add(&D_80083CA0);
     func_80001380(&D_80083CA0.unk_A20);
     while (1) {
         void* sp4C;
-        if (D_800A62E0.unk_A38 > 0) {
+        if (gRspTaskManager.unk_A38 > 0) {
             func_800017E4();
             continue;
         }

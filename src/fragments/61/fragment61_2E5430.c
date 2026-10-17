@@ -87,9 +87,9 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
         }
     } else {
         if (arg3->unk_4D1E == arg0->unk_0000D) {
-            func_8000E820(&sp8C, 0x64, 0x64, 0xC8);
+            GfxColor_SetRGB(&sp8C, 0x64, 0x64, 0xC8);
         } else {
-            func_8000E820(&sp8C, 0x3C, 0x3C, 0xC8);
+            GfxColor_SetRGB(&sp8C, 0x3C, 0x3C, 0xC8);
         }
         func_84200420(arg1, arg2, 0x74, 0x58, sp8C.r, sp8C.g, sp8C.b, 0xFF);
 

@@ -1423,7 +1423,7 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
 
     switch (osTvType) {
         case OS_TV_PAL:
-            osViSetMode(&D_800795C0);
+            osViSetMode(&gViMode);
             break;
         case OS_TV_MPAL:
             osViSetMode(&osViModeMpalLpn1);
@@ -2792,7 +2792,7 @@ reset:
         osRecvMesg(&D_8122B1E8[D_8122B2B8 ^ 1].queue, NULL, 1);
         func_81204A84((&D_8122B1E0)[D_8122B2B8 ^ 1]->img_p);
     }
-    if (D_800A62E0.unk_A38 == 0) {
+    if (gRspTaskManager.unk_A38 == 0) {
         osWritebackDCacheAll();
         osViSwapBuffer((&D_8122B1E0)[D_8122B2B8 ^ 1]->img_p);
         if (emu->unk_53A4 != 0) {
@@ -2809,7 +2809,7 @@ reset:
 }
 #undef emu
 
-void func_81206D9C(unk_D_800AA660* arg0) {
+void func_81206D9C(GbEmuState* arg0) {
   D_8122C4FC = 0;
   D_8122C4E2 = arg0->unk_2204.unk_02;
   if ((D_8122C4E2 < 0) || (D_8122C4E2 >= 3)) {
@@ -2823,7 +2823,7 @@ void func_81206D9C(unk_D_800AA660* arg0) {
   func_812033F4(0, func_80029080(), 5, 0x50, &gSIEventMesgQueue, arg0->unk_2204.unk_04);
 }
 
-void func_81206E64(unk_D_800AA660* arg0) {
+void func_81206E64(GbEmuState* arg0) {
   if (func_8120572C(0) != 0) {
       arg0->unk_2204.unk_00 = ((D_8122C4FA.unk_01 - 1) & 0xFF) | (D_8122C4FA.unk_00 << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
@@ -2841,8 +2841,8 @@ void func_81206E64(unk_D_800AA660* arg0) {
   }
 }
 
-void func_81206F38(UNUSED unk_D_800AA664* arg0) {
-  if ((D_800A62E0.unk_A38 == 0) && (D_8122C4FC == 2) && ((D_8122C4DC == 0) || (D_8122C4DC == 6))) {
+void func_81206F38(UNUSED GbEmuThreadInfo* arg0) {
+  if ((gRspTaskManager.unk_A38 == 0) && (D_8122C4FC == 2) && ((D_8122C4DC == 0) || (D_8122C4DC == 6))) {
       GbAudio_Update();
   }
 }

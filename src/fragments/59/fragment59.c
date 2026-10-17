@@ -925,7 +925,7 @@ void func_84101EC8(void) {
     s16 i;
     s16 temp_v0;
 
-    func_8000D1F0(0x15);
+    Music_ChangeTrack(0x15);
     func_84101BFC();
     gSelectedMenuIndex = 0;
     func_80006C6C(0xA);
@@ -967,7 +967,7 @@ void func_84101EC8(void) {
         func_841014E4(0, 0, 1.0f);
     } else {
         func_80007990(0xFFFF);
-        func_8000D278(0x14);
+        Music_StopTrack(0x14);
         func_80006CB4(0xA);
         while (func_80007604() != 1) {
             Game_UpdateInputs();

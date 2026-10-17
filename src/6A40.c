@@ -58,6 +58,6 @@ void* GfxAlloc(s32 arg0) {
     return ret;
 }
 
-s32 func_80005F9C(void) {
+s32 Gfx_GetRemainingDLSize(void) {
     return gDLBuffers.unk8 - (uintptr_t)gDisplayListHead;
 }

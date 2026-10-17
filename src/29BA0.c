@@ -734,9 +734,9 @@ void Game_RunTitleScreen(void) {
 }
 
 void func_800296AC(void) {
-    func_8000D2B4(1);
+    Audio_WaitForLoadAndFade(1);
     Sched_RunFrames(2);
-    LeoBootGame(D_800AA680.unk_08);
+    LeoBootGame(gBootIDData.unk_08);
 }
 
 void func_800296E0(void) {
@@ -1075,21 +1075,21 @@ void Game_RunGbTower(void) {
     main_pool_push_state('EMU0');
 
     if ((FRAGMENT_LOAD_AND_CALL(fragment33, 0, 0) == 0) && (D_80075674 >= 0) && (D_80075674 < 4)) {
-        func_8000D278(4);
-        func_8000D2B4(1);
+        Music_StopTrack(4);
+        Audio_WaitForLoadAndFade(1);
         Sched_RunFrames(2);
-        func_8000D358();
+        Audio_Unpause();
 
         sp2C.unk_04 = main_pool_alloc(sizeof(*sp2C.unk_04), 0);
 
         FRAGMENT_LOAD_AND_CALL(fragment53, D_80075674, &sp2C);
-        func_8000D738(&sp2C);
+        GbEmu_Create(&sp2C);
 
-        sp34 = func_8000D8A8();
+        sp34 = GbEmu_RecvMessage();
 
-        func_8000D8DC(&sp2C);
+        GbEmu_Shutdown(&sp2C);
         Sched_RunFrames(2);
-        func_8000D380();
+        Audio_Pause();
 
         if (sp34 != 0) {
             func_8002B274(D_80075674, sp34);
@@ -1306,7 +1306,7 @@ void func_8002B24C(void) {
 void func_8002B274(s32 arg0, s32 arg1) {
     osViBlack(1);
     func_8000A924();
-    func_8000D338();
+    Audio_FadeAllChannelsFast();
     func_8002B310();
     Gfx_SetFrameFillColor(1);
     func_80001C64();

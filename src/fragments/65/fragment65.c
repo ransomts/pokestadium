@@ -655,7 +655,7 @@ s32 func_84A02580(void) {
     main_pool_push_state('itro');
 
     func_84A02304();
-    func_8000D278(8);
+    Music_StopTrack(8);
 
     for (i = 3; i >= 0; i--) {
         D_84A030E8 = i << 6;
@@ -663,7 +663,7 @@ s32 func_84A02580(void) {
         func_84A01EE0();
     }
 
-    func_8000D1F0(0x2B);
+    Music_ChangeTrack(0x2B);
     if (D_84A030E0 == 0xB) {
         func_84A02434(0, 0, 6, -0x40);
     } else {
@@ -703,7 +703,7 @@ s32 func_84A02580(void) {
     } else {
         PlaySoundEffect(3);
         var_s1 = 2;
-        func_8000D278(0x12);
+        Music_StopTrack(0x12);
         if (D_84A030E0 == 0xB) {
             func_84A02434(0, 0, 6, 0x40);
         } else {
@@ -715,9 +715,9 @@ s32 func_84A02580(void) {
         func_84A02410();
 
         if (D_84A03180.unk_04 < 8) {
-            func_8000D1F0(0x2A);
+            Music_ChangeTrack(0x2A);
         } else {
-            func_8000D1F0(0x27);
+            Music_ChangeTrack(0x27);
         }
 
         for (i = 1; i < 5; i++) {
@@ -881,9 +881,9 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
 
     sp1E = func_84A02B70(arg0);
     if (D_84A03180.unk_04 < 8) {
-        func_8000D1F0(0x2A);
+        Music_ChangeTrack(0x2A);
     } else {
-        func_8000D1F0(0x27);
+        Music_ChangeTrack(0x27);
     }
 
     sp1E = func_84A02A34(sp1E);

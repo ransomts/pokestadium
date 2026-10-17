@@ -1559,7 +1559,7 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
 u32 D_86A0621C;
 
 void func_86A01490(void) {
-    u32 v0 = D_800A62E0.unk_A34;
+    u32 v0 = gRspTaskManager.unk_A34;
 
     if (D_86A06212 == 0) {
         D_86A06212 = 1;

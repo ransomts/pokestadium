@@ -634,7 +634,7 @@ Vec3f* func_81400F44(Vec3f* arg0, Vec3f arg1, Vec3f arg2) {
     arg0->y = arg2.y - arg1.y;
     arg0->z = arg2.z - arg1.z;
 
-    func_8000EAF4(arg0);
+    Vec3f_Normalize(arg0);
 
     return arg0;
 }
@@ -1014,11 +1014,11 @@ void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
     Vec3f sp24;
 
     Vec3f_Set(&sp3C, SINS(arg3), 0.0f, COSS(arg3));
-    func_8000EAF4(&arg1);
-    func_8000EA84(&sp30, &arg1, &sp3C);
-    func_8000EAF4(&sp30);
-    func_8000EA84(&sp24, &sp30, &arg1);
-    func_8000EAF4(&sp24);
+    Vec3f_Normalize(&arg1);
+    Vec3f_CrossProduct(&sp30, &arg1, &sp3C);
+    Vec3f_Normalize(&sp30);
+    Vec3f_CrossProduct(&sp24, &sp30, &arg1);
+    Vec3f_Normalize(&sp24);
 
     arg0->mf[0][0] = sp30.x * arg4;
     arg0->mf[0][1] = sp30.y * arg4;
