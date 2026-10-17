@@ -3564,6 +3564,19 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // Dropping the unused sp44 local then gave 12907 (frame still 0x230 vs 0x228).
 // Target arg4 (0x238) is NOT kept in a register (2 loads) while ours keeps it in a3; ours
 // still reloads arg2 instead of holding it in t4.
+// Slot evidence says tmp/tmp2 were NOT named locals: target 0x44 = arg1+arg3 and 0x30 =
+// arg2+arg4 sit in the compiler-temp area (top temp slot), and the matched sibling
+// func_8880123C (fragment28_214920.c) writes `(arg0 + arg2)` inline. Writing both inline
+// (+ `UNUSED s32 pad[3]` after temp_v0, + y5) gives frame 0x228 and every temp slot exactly
+// target-8 (target has 2 more never-stored temps at 0x24-0x2C), score 15173: arg2 still
+// reloaded 7x, tmp gets t5 in the first block (target: never in a register), arg4 gets a3.
+// Findings: arg2 is not register-allocated at all in our builds, even in cut-down
+// versions (only first rect + first switch + one later use of arg2 -> 4 loads); a toy
+// function with the same shape keeps it. -Wo,-no_const_in_reg makes the cut-down version
+// keep arg2, not the full one. No single-statement removal, `register`, if/else->switch,
+// `if (1) {}` at any top-level position, s16 y5, copying arg2 to a local (-> s1, frame
+// grows) changes the full version's 7 arg2 loads. y5 with a 2nd def in case 1 (target uses
+// t0 for both (arg2-5)<<2 and (arg2-0xC)<<2): 13109-13562.
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
