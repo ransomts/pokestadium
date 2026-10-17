@@ -179,7 +179,7 @@ typedef struct GbApuWrite {
 } GbApuWrite; // size = 0x4
 
 extern GbApuWrite D_8122C8D8[];
-void func_81209374(s32 arg0, s16* arg1);
+void func_81209374(s32 numSamples, s16 out[][2]);
 extern s32 D_8122EE98;
 extern unk_D_8122EEA8 D_8122EEA8;
 extern OSMesgQueue D_8122EEB0;
@@ -1135,7 +1135,7 @@ s32 func_81209078(void) {
     if (D_8120EB78 == 0) {
         func_81208828(*len, buf);
     } else {
-        func_81209374(*len, buf);
+        func_81209374(*len, (s16(*)[2])buf);
     }
     osWritebackDCache(buf, *len * 4);
     D_812346F4 = osGetCount() * (D_812346F4 + D_812346C8);
@@ -1151,13 +1151,9 @@ void func_81209368(s32 arg0) {
   D_8120EB7C.id = arg0;
 }
 
-#ifdef NON_MATCHING
-// D_8122869C is an in-function static: IDO keeps it in a register across the loop and stores it back on every
-// loop exit only because no other code can access it. Initialized (= 0) it lands in its real .data slot, the
-// last word of this file's data. Only a t6-t9 rotation remains, starting at the numSamples reload in the
-// unrolled loop's remainder (0x2134); loop-shape variants (pointer out++, 2*i, u32 i, !=, casts, *64,
-// declaration order) do not move it. Permuter candidate.
-void func_81209374(s32 numSamples, s16* out) {
+void func_81209374(s32 numSamples, s16 out[][2]) {
+    // In-function static (initialized, so it keeps its .data slot): IDO keeps it in a register
+    // across the loop and stores it back at each exit. out is an array of stereo frames.
     static u32 D_8122869C = 0;
     s32 i;
     s8* mainData;
@@ -1209,14 +1205,9 @@ void func_81209374(s32 numSamples, s16* out) {
         } else {
             b = 0;
         }
-        out[i * 2 + 0] = (a + b) << 6;
-        out[i * 2 + 1] = (a - b) << 6;
+        out[i][0] = (a + b) << 6;
+        out[i][1] = (a - b) << 6;
     }
 }
-#else
-u32 D_8122869C = 0;
-void func_81209374(s32 numSamples, s16* out);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/1/fragment1_86CB0/func_81209374.s")
-#endif
 void func_81209688(UNUSED s32 arg0) {
 }
