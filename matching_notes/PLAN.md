@@ -61,7 +61,8 @@ bigger and need real reverse engineering, so expect 3-6 matches per round, not 9
 Real scope: **27 files** after 2026-10-16 (the "184" count included 153 fragment header/reloc
 binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0,
 fragment1_data_8E3E0 (103 KB GB audio state + samples: the mid-.data static D_8120EB6C that the
-tier-3 functions in fragment1_86CB0 need is now real C data).
+tier-3 functions in fragment1_86CB0 need is now real C data; func_81207DF8 matched from it),
+4A3E0 (GB APU tables) and rom_data_78990 (3D140 audio tables). 24 files left.
 1. `.venv/bin/python3 matching_notes/datamig.py survey` (~1 min) lists every file, READY or not;
    `plan <file.s>` shows per label: span, declared type/size, C users, proposed owner, link-order check.
 2. `datamig.py apply <file.s>` writes the definitions (values from the baserom, pointers by symbol
@@ -92,6 +93,12 @@ Rules learned:
   above the `#ifdef NON_MATCHING`.
 - spimdisasm symbolizes sample words that look like addresses (D_102, D_5000000): only KSEG0 values
   are treated as pointers.
+- Type repair, automated: a scalar placeholder (`extern u16 D_X;`) on a longer object that C only ever
+  takes the address of (all uses `&D_X`, drafts included) is retyped to an array and `&D_X` -> `D_X`
+  (same address constant). Covered 35 length-prefixed u16/u8 lists in 78990 and the u8[9] table in 4BDC0.
+  Declared arrays that are too short are grown (D_80078410 [1][9] -> [17][9]).
+- Definitions go after the owner's own extern; declarations are ranked owner > sized > unsized, and
+  sources are walked in sorted order (placement once depended on filesystem order and differed by node).
 - `survey` READY is optimistic (apply can still refuse: GLOBAL_ASM literals, nonzero slack bytes).
 What blocks the remaining files (needs an agent, not the script): labels with no C user (only
 referenced from other data or GLOBAL_ASM; owner = surrounding owner, decided by hand), externs with
