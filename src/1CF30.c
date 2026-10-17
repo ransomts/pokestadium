@@ -225,8 +225,8 @@ void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) 
     func_8000E88C(&spC0, arg0, arg1, 0.0f);
     func_8000E88C(&spB4, arg3, arg3, 1.0f);
     func_8000F2C4(temp_s0, &spC0, &spCC);
-    func_8000FDE4(temp_s0, temp_s0, &spB4);
-    func_80010090(temp_s3, temp_s0);
+    Matrix_Scale(temp_s0, temp_s0, &spB4);
+    Matrix_ConvertToMtx(temp_s3, temp_s0);
     SetViewport(temp_s2, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)temp_s2 & 0x1FFFFFFF);

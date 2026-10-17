@@ -130,8 +130,8 @@ void func_8100080C(unk_D_810047E0* arg0) {
     f32 var_fs0;
 
     var_s1 = 0xA;
-    guMtxXFMF(func_800123D4(-1)->mf, 0, 0, 0, &sp90.x, &sp90.y, &sp90.z);
-    guMtxXFMF(func_800123D4(0)->mf, 0, 0, 0, &sp84.x, &sp84.y, &sp84.z);
+    guMtxXFMF(Matrix_GetRelative(-1)->mf, 0, 0, 0, &sp90.x, &sp90.y, &sp90.z);
+    guMtxXFMF(Matrix_GetRelative(0)->mf, 0, 0, 0, &sp84.x, &sp84.y, &sp84.z);
     sp60 = D_8006F09C->unk_030.x;
     sp5C = D_8006F09C->unk_030.y;
     sp58 = D_8006F09C->unk_030.z;
@@ -330,7 +330,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
 
     if (D_8006F09C->unk_0A6 == 0xFF) {
         if ((D_8006F09C->unk_01A == 0x5C) || (D_8006F09C->unk_01A == 0x6D) || (D_8006F09C->unk_01A == 0x6E)) {
-            func_8000ED4C(&sp10C, func_800123D4(0));
+            func_8000ED4C(&sp10C, Matrix_GetRelative(0));
             guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
             guTranslate(&sp190, spFC, sp100, sp104);
             guMtxCatL(&sp250, &sp190, sp294);
@@ -339,7 +339,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
             guMtxCatL(&sp250, &sp210, sp294);
         }
     } else if (D_8006F09C->unk_01A == 0x5C) {
-        func_8000ED4C(&sp10C, func_800123D4(0));
+        func_8000ED4C(&sp10C, Matrix_GetRelative(0));
         guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
         guTranslate(&sp190, spFC, sp100, sp104);
         guMtxCatL(&sp250, &sp190, sp294);

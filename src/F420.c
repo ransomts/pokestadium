@@ -193,7 +193,7 @@ void func_8000ED4C(MtxF* dest, MtxF* src) {
     }
 }
 
-void func_8000ED98(MtxF* arg0) {
+void Matrix_Identity(MtxF* arg0) {
     s32 i;
     f32* dest;
     // These loops must be one line to match on -O2
@@ -208,7 +208,7 @@ void func_8000ED98(MtxF* arg0) {
 }
 
 void func_8000EDD8(MtxF* arg0, Vec3f* arg1) {
-    func_8000ED98(arg0);
+    Matrix_Identity(arg0);
 
     arg0->mf[3][0] = arg1->x;
     arg0->mf[3][1] = arg1->y;
@@ -519,7 +519,7 @@ void func_8000FA94(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     dest->mf[3][3] = 1.0f;
 }
 
-void func_8000FBB0(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
+void Matrix_Multiply(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
     f32 entry0;
     f32 entry1;
     f32 entry2;
@@ -560,7 +560,7 @@ void func_8000FBB0(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_8000FDE4(MtxF* dest, MtxF* mtx, Vec3f* s) {
+void Matrix_Scale(MtxF* dest, MtxF* mtx, Vec3f* s) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -590,7 +590,7 @@ void func_8000FFB8(MtxF* arg0, Vec3s* arg1) {
 #define GET_HIGH_S16_OF_32(var) (((s16*)&(var))[0])
 #define GET_LOW_S16_OF_32(var) (((s16*)&(var))[1])
 
-void func_80010090(MtxF* dest, MtxF* src) {
+void Matrix_ConvertToMtx(MtxF* dest, MtxF* src) {
     s32 asFixedPoint;
     s32 i;
     s16* a3 = (s16*)dest;      // all integer parts stored in first 16 bytes
@@ -610,8 +610,8 @@ void func_80010228(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4
 
     func_8000F88C(&sp60, arg4, arg5, arg1, 1.0f);
     func_8000F2C4(&sp20, &D_8006F050, arg2);
-    func_8000FBB0(&sp20, &sp20, &sp60);
-    func_8000FDE4(arg0, &sp20, arg3);
+    Matrix_Multiply(&sp20, &sp20, &sp60);
+    Matrix_Scale(arg0, &sp20, arg3);
 }
 
 void func_800102A4(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {

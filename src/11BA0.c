@@ -367,7 +367,7 @@ unk_D_86002F34_alt8* func_80011A3C(MainPoolState* arg0, unk_D_86002F34_alt8* arg
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
         if (arg4 == NULL) {
-            func_8000ED98(&arg1->unk_1C);
+            Matrix_Identity(&arg1->unk_1C);
         } else {
             func_8000ED4C(&arg1->unk_1C, arg4);
         }

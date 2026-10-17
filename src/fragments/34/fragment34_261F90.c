@@ -727,7 +727,7 @@ void func_8140138C(void) {
 
 void func_81401394(MtxF* arg0) {
     if (D_8140E624 < 0x16C) {
-        func_80010090(&D_8140E620->unk_0000[D_8140E624], arg0);
+        Matrix_ConvertToMtx(&D_8140E620->unk_0000[D_8140E624], arg0);
 
         gSPMatrix(gDisplayListHead++, (u32)&D_8140E620->unk_0000[D_8140E624] & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

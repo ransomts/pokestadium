@@ -175,3 +175,14 @@ func_8002DD64	MenuScroll_HandleLeftRight	b6		reads the menu direction and hands 
 func_8002DD98	MenuScroll_Adjust	b6		left/right adjust of a list index with wraparound across arg->unk_08 entries, beep on each move (PlaySoundEffect(1))	applied@f84e6a6
 func_8002DE44	MenuScroll_HandleInput	b6		reads the menu direction then MenuScroll_Adjust (same family shape)	applied@f84e6a6
 func_8002EE1C	GetMonBankField	b6		dispatches bank 32-35 to func_80024A48 and bank 16-18 to func_800275E0 - the per-bank mon-data accessor front end	applied@f84e6a6
+func_80012180	Matrix_ResetStack	b7		resets the matrix stack to level 0 with an identity matrix (func_8000ED98 = identity init) and a GfxAlloc'd output Mtx	applied@c9fb301
+func_800121C8	Matrix_SetIdentityAtCurrent	b7		same identity init at the current stack level, new output Mtx	applied@c9fb301
+func_80012230	Matrix_SetCurrent	b7		copies arg into the current stack level (func_8000ED4C copy) + fresh output Mtx	applied@c9fb301
+func_800122B4	Matrix_PushMultiply	b7		advances the stack level and multiplies the new level by arg (func_8000FBB0 = matrix multiply)	applied@c9fb301
+func_80012344	Matrix_PushScale	b7		advances the stack level and scales the new level by the Vec3f (func_8000FDE4 = per-row scale multiply)	applied@c9fb301
+func_800123D4	Matrix_GetRelative	b7		returns the MtxF n levels above the current one (arg <= 0), else NULL	applied@c9fb301
+func_80012400	Matrix_GetAbsolute	b7		returns stack level n's MtxF (0..0x1F), else NULL	applied@c9fb301
+func_8000ED98	Matrix_Identity	b7		zeroes the MtxF and sets the 1.0 diagonal (identity init)	applied@c9fb301
+func_8000FBB0	Matrix_Multiply	b7		full 4x4 float matrix multiply (dest = a * b)	applied@c9fb301
+func_8000FDE4	Matrix_Scale	b7		multiplies the matrix's rows by the Vec3f scale components	applied@c9fb301
+func_80010090	Matrix_ConvertToMtx	b7		float MtxF -> fixed-point Mtx conversion (integer parts in the first 16 bytes, fractions in the last)	applied@c9fb301

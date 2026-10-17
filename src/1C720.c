@@ -35,7 +35,7 @@ void func_8001BBC8(unk_D_86002F58_004_000* arg0) {
 
 void func_8001BC34(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
     func_80012094(&arg0->unk_000, arg3);
-    func_8000ED98(&arg0->unk_060);
+    Matrix_Identity(&arg0->unk_060);
     arg0->unk_018 = arg1;
     arg0->unk_01A = arg2;
 

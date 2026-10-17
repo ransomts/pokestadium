@@ -119,54 +119,54 @@ static unk_D_800ABB28 D_800ABB28[10];
 static unk_D_800ABB28* D_800ABCB8;
 static s32 D_800ABCBC;
 
-void func_80012180(void) {
+void Matrix_ResetStack(void) {
     D_800AA8C8.unk_10A0 = 0;
     D_800AA8C8.unk_1080[0] = 0;
-    func_8000ED98(&D_800AA8C8.unk_0000[0]);
+    Matrix_Identity(&D_800AA8C8.unk_0000[0]);
     D_800AA8C8.unk_1000[0] = GfxAlloc(sizeof(Mtx) * 1);
-    func_80010090(D_800AA8C8.unk_1000[0], D_800AA8C8.unk_0000);
+    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[0], D_800AA8C8.unk_0000);
 }
 
-void func_800121C8(void) {
+void Matrix_SetIdentityAtCurrent(void) {
     D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
     D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    func_80010090(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
 }
 
-void func_80012230(MtxF* arg0) {
+void Matrix_SetCurrent(MtxF* arg0) {
     func_8000ED4C(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], arg0);
     D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
     D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    func_80010090(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
 }
 
-void func_800122B4(MtxF* arg0) {
+void Matrix_PushMultiply(MtxF* arg0) {
     MtxF* temp_a0;
 
     D_800AA8C8.unk_10A0++;
     temp_a0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
 
-    func_8000FBB0(&temp_a0[0], arg0, &temp_a0[-1]);
+    Matrix_Multiply(&temp_a0[0], arg0, &temp_a0[-1]);
     D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
     D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    func_80010090(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
 }
 
-void func_80012344(Vec3f* arg0) {
+void Matrix_PushScale(Vec3f* arg0) {
     MtxF* temp_a0;
 
     D_800AA8C8.unk_10A0++;
     temp_a0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
 
-    func_8000FDE4(&temp_a0[0], &temp_a0[-1], arg0);
+    Matrix_Scale(&temp_a0[0], &temp_a0[-1], arg0);
 
     D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
     D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
 
-    func_80010090(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
 }
 
-MtxF* func_800123D4(s32 arg0) {
+MtxF* Matrix_GetRelative(s32 arg0) {
     MtxF* var_v1 = NULL;
 
     if (arg0 <= 0) {
@@ -176,7 +176,7 @@ MtxF* func_800123D4(s32 arg0) {
     return var_v1;
 }
 
-MtxF* func_80012400(s32 arg0) {
+MtxF* Matrix_GetAbsolute(s32 arg0) {
     MtxF* var_v1 = NULL;
 
     if ((arg0 >= 0) && (arg0 < 0x20)) {
@@ -441,7 +441,7 @@ void func_80013464(GraphNode* arg0) {
     guPerspective(sp48->mtx, &sp48->perspNorm, sp48->fovy, sp48->aspect, sp48->near, sp48->far, sp48->scale);
     guLookAtReflectF(&temp_s1->mtxf, temp_s1->lookat, temp_s1->eye.x, temp_s1->eye.y, temp_s1->eye.z, temp_s1->at.x,
                      temp_s1->at.y, temp_s1->at.z, temp_s1->up.x, temp_s1->up.y, temp_s1->up.z);
-    func_80010090(temp_s1->p_mtxf, &temp_s1->mtxf);
+    Matrix_ConvertToMtx(temp_s1->p_mtxf, &temp_s1->mtxf);
 
     D_8006F088 = arg;
     if ((arg->unk_CC.unk_00 != 1) && (arg->unk_00.unk_0C != NULL)) {
@@ -478,7 +478,7 @@ void func_8001378C(GraphNode* arg0) {
 
         func_80017080();
         func_800175D8();
-        func_80012180();
+        Matrix_ResetStack();
         func_80012428();
 
         gSPMatrix(gDisplayListHead++, (u32)D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] & 0x1FFFFFFF,
@@ -641,7 +641,7 @@ void func_80014124(GraphNode* arg0) {
 
         D_800AA8C8.unk_10A0++;
 
-        func_800121C8();
+        Matrix_SetIdentityAtCurrent();
         func_800160E0(0, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
         func_80016274(D_1002590, 1);
 
@@ -687,7 +687,7 @@ void func_80014334(GraphNode* arg0) {
     unk_D_86002F34_alt5* arg = (unk_D_86002F34_alt5*)arg0;
 
     func_8000F2C4(&sp20, &arg->unk_18, &arg->unk_24);
-    func_800122B4(&sp20);
+    Matrix_PushMultiply(&sp20);
     func_80013330(arg0);
 
     D_800AA8C8.unk_10A0--;
@@ -696,7 +696,7 @@ void func_80014334(GraphNode* arg0) {
 void func_80014384(GraphNode* arg0) {
     unk_D_86002F34_alt5* arg = (unk_D_86002F34_alt5*)arg0;
 
-    func_80012344(&arg->unk_18);
+    Matrix_PushScale(&arg->unk_18);
     func_80013330(arg0);
 
     D_800AA8C8.unk_10A0--;
@@ -720,10 +720,10 @@ void func_800143C0(GraphNode* arg0) {
     if (arg->unk_31 & 2) {
         func_80010228(&sp38, &sp84, &sp90, &sp78, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         D_800AA8C8.unk_10A0++;
-        func_80012230(&sp38);
+        Matrix_SetCurrent(&sp38);
     } else if (arg->unk_31 & 1) {
         func_8000F5A8(&sp38, &sp84, &sp90, &sp78);
-        func_800122B4(&sp38);
+        Matrix_PushMultiply(&sp38);
     } else {
         func_8000F730(&sp38, &sp84, &sp90, &D_800AB970.unk_000[D_800AB970.unk_180]);
 
@@ -731,15 +731,15 @@ void func_800143C0(GraphNode* arg0) {
 
         func_80012458(&sp78);
         if (D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0 - 1] == 1) {
-            func_8000FBB0(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
+            Matrix_Multiply(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
                           &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 31]);
         } else {
-            func_8000FBB0(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
+            Matrix_Multiply(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
                           &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 - 1]);
         }
-        func_8000FDE4(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32],
+        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32],
                       &D_800AB970.unk_000[D_800AB970.unk_180]);
-        func_800121C8();
+        Matrix_SetIdentityAtCurrent();
         D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 1;
         sp30 = 1;
     }
@@ -776,24 +776,24 @@ void func_80014690(GraphNode* arg0) {
         func_800175E8(&arg->unk_054, D_8006F084, (arg->unk_000.unk_02 & 0x20) != 0);
 
         if (arg->unk_000.unk_02 & 0x10) {
-            func_8000FBB0(&sp38, &arg->unk_060, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &arg->unk_060, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         } else if (arg->unk_000.unk_02 & 8) {
             func_8000F88C(&sp38, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_024,
                           1.0f);
         } else if (arg->unk_000.unk_02 & 0x80) {
             func_8000F3FC(&sp38, &arg->unk_024, &arg->unk_01E);
-            func_8000FBB0(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         } else {
             func_8000F2C4(&sp38, &arg->unk_024, &arg->unk_01E);
-            func_8000FBB0(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         }
 
-        func_8000FDE4(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp38, &arg->unk_030);
+        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp38, &arg->unk_030);
 
         if (!(arg->unk_000.unk_02 & 4)) {
             D_800AA8C8.unk_10A0++;
 
-            func_800121C8();
+            Matrix_SetIdentityAtCurrent();
             D_8006F09C = arg0;
 
             func_80016344(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
@@ -820,7 +820,7 @@ void func_80014690(GraphNode* arg0) {
 void func_800148D8(GraphNode* arg0) {
     unk_D_86002F34_alt8* arg = (unk_D_86002F34_alt8*)arg0;
 
-    func_800122B4(&arg->unk_1C);
+    Matrix_PushMultiply(&arg->unk_1C);
 
     if ((arg->unk_18 != NULL) || (arg->unk_00.unk_10 != NULL)) {
         func_800160E0(arg->unk_00.unk_03, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
@@ -840,7 +840,7 @@ void func_80014980(GraphNode* arg0) {
     func_8000F88C(&sp30, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_1C,
                   arg->unk_28);
     D_800AA8C8.unk_10A0++;
-    func_80012230(&sp30);
+    Matrix_SetCurrent(&sp30);
 
     if ((arg->unk_18 != NULL) || (arg->unk_00.unk_10 != NULL)) {
         func_800160E0(arg->unk_00.unk_03, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
@@ -967,10 +967,10 @@ void func_80014D70(GraphNode* arg0) {
         sp84.x *= (arg->unk_1A / 100.0f) * sp80;
         sp84.z *= (arg->unk_1C / 100.0f) * sp80;
         func_8000FA94(&sp40, &sp90, &sp9C, D_8006F09C->unk_01E.y);
-        func_8000FDE4(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp40, &sp84);
+        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp40, &sp84);
 
         D_800AA8C8.unk_10A0++;
-        func_800121C8();
+        Matrix_SetIdentityAtCurrent();
 
         if (arg->unk_18 == 0) {
             gSPBranchList(&temp_s1[1], Util_ConvertAddrToVirtAddr(D_1002480));
