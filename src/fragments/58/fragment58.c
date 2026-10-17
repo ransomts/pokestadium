@@ -737,19 +737,19 @@ void func_840026D8(void) {
     unk_D_800AE540_0004* temp_v0;
     s32 i;
 
-    func_8002B5EC(0, D_84002C98[D_84002D20], 0);
+    Battle_Init(0, D_84002C98[D_84002D20], 0);
 
     for (i = 0; i < 4; i++) {
         if (D_84002BE8[D_84002D18.unk_00].unk_00 & (1 << i)) {
             sprintf(sp44, "%dP", i + 1);
-            func_8002B840(0, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
+            Battle_RegisterPlayerEntry(0, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
         }
     }
 
     if (D_84002D18.unk_02 == 3) {
         D_800AE540.unk_11EC = D_84002BE4;
         temp_v0 = RegisterPlayer(-1, 0, "COM", GetNameSlot(3));
-        func_8002B840(1, temp_v0);
+        Battle_RegisterPlayerEntry(1, temp_v0);
         if (D_84002D18.unk_00 == 3) {
             temp_v0->unk_001 = 2;
         } else {
@@ -759,7 +759,7 @@ void func_840026D8(void) {
         for (i = 0; i < 4; i++) {
             if (D_84002BE8[D_84002D18.unk_02 + 4].unk_00 & (1 << i)) {
                 sprintf(sp44, "%dP", i + 1);
-                func_8002B840(1, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
+                Battle_RegisterPlayerEntry(1, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
             }
         }
     }

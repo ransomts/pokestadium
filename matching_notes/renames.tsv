@@ -254,3 +254,10 @@ func_800167B4	Anim_GetRotation	b16		rotation channel (unk_06 * 0x10), direct or 
 func_80016848	Anim_GetPosition	b16		position channel with the 4-bit flag variant (unk_08 direct/interpolated) and table fallback	applied@f8657e3
 func_800171A8	Anim_GetTransformTriple	b16		reads position + rotation + scale triples for three consecutive channel indices from the active D_800ABCC0 animation into Vec3f/Vec3s/Vec3f outputs	applied@f8657e3
 func_800196DC	Sched_InitThreads	b16		creates the scheduler message queues (unk_9D0 8-deep, unk_9EC 1-deep) and starts thread 7 (func_80019600, prio 0xA); called from Game_Thread before the state loop	applied@f8657e3
+func_8002B5C0	Battle_ResetSideState	b17		zeroes one side's battle-state block (unk_1194[i]): team list pointers, cursor, both player slots	applied@9d5069f
+func_8002B5EC	Battle_Init	b17		battle-state init: resets both sides, stores rule/mode/arg2 into D_800AE540, clears the party arrays and win flags - the battle system entry from Game_RunFreeBattle & friends	applied@9d5069f
+func_8002B840	Battle_RegisterPlayerEntry	b17		appends a mon-team entry (unk_D_800AE540_0004) to side arg0's two-slot pointer list (unk_1194[arg0].unk_08[idx])	applied@9d5069f
+func_8002B888	Battle_AddPartyMon	b17		copies the mon struct into side slot arg0's party list (unk_01C[6] + mirrored unk_028) and bumps both counts	applied@9d5069f
+func_8002BD60	Battle_PickRandomMon	b17		picks an unrepeating random team index (MathUtil_Random16 with an osGetCount entropy stir, skipping already-chosen indices) for CPU team selection	applied@9d5069f
+func_8002BE70	Battle_GetMaxPartyLevel	b17		returns the highest level (unk_24) among side 0's party mons	applied@9d5069f
+func_8002BEC8	Battle_SetPartyLevel	b17		sets every party mon's level on side 1 (>= 0x33 only): recalculates experience/stats/HP via CalculateExperienceAtLevel/CalculatePokemonStats and syncs the mirror list	applied@9d5069f

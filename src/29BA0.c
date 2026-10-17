@@ -1009,9 +1009,9 @@ void Game_RunVsMewtwo(void) {
     s16 sp4E = 1;
 
     func_800290E4(0x18);
-    func_8002B5EC(8, 8, 0);
-    func_8002B840(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
-    func_8002B840(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
+    Battle_Init(8, 8, 0);
+    Battle_RegisterPlayerEntry(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
+    Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
 
     while ((sp4E > 0) && (sp4E < 3)) {
         sp4E = func_8002A260(sp4E);
@@ -1160,9 +1160,9 @@ void Game_RunGymLeaderCastle(void) {
     s16 sp4C = 0;
 
     if (!(D_800AE540.unk_11F5 & 1)) {
-        func_8002B5EC(7, 7, 0);
-        func_8002B840(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
-        func_8002B840(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
+        Battle_Init(7, 7, 0);
+        Battle_RegisterPlayerEntry(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
+        Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
     }
 
     while ((sp4E > 0) && (sp4E < 4)) {

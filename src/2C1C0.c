@@ -12,7 +12,7 @@
 u8 D_80075680[3] = { 1, 15, 30 };
 static s16 D_80075684 = 0;
 
-void func_8002B5C0(unk_D_800AE540_1194* arg0) {
+void Battle_ResetSideState(unk_D_800AE540_1194* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = 0;
@@ -25,12 +25,12 @@ void func_8002B5C0(unk_D_800AE540_1194* arg0) {
     arg0->unk_1E = 0;
 }
 
-void func_8002B5EC(s32 arg0, s32 arg1, s32 arg2) {
+void Battle_Init(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     s32 j;
 
-    func_8002B5C0(&D_800AE540.unk_1194[0]);
-    func_8002B5C0(&D_800AE540.unk_1194[1]);
+    Battle_ResetSideState(&D_800AE540.unk_1194[0]);
+    Battle_ResetSideState(&D_800AE540.unk_1194[1]);
 
     D_800AE540.unk_0000 = arg0;
     D_800AE540.unk_0001 = arg1;
@@ -112,7 +112,7 @@ unk_D_800AE540_0004* RegisterPlayer(s32 arg0, s16 arg1, char* arg2, char* arg3) 
     return sp1C;
 }
 
-void func_8002B840(s32 arg0, unk_D_800AE540_0004* arg1) {
+void Battle_RegisterPlayerEntry(s32 arg0, unk_D_800AE540_0004* arg1) {
     unk_D_800AE540_1194* temp_v0 = &D_800AE540.unk_1194[arg0];
     u8 idx = temp_v0->unk_01;
 
@@ -122,7 +122,7 @@ void func_8002B840(s32 arg0, unk_D_800AE540_0004* arg1) {
     }
 }
 
-void func_8002B888(unk_D_800AE540_0004* arg0, unk_func_80026268_arg0* arg1) {
+void Battle_AddPartyMon(unk_D_800AE540_0004* arg0, unk_func_80026268_arg0* arg1) {
     unk_D_800AE540_0874* ptr = arg0->unk_214;
     s32 tmp = arg0->unk_002;
 
@@ -210,16 +210,16 @@ void func_8002BA34(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             break;
     }
 
-    func_8002B5EC(0x10, arg0, arg1);
+    Battle_Init(0x10, arg0, arg1);
 
     spD0 = RegisterPlayer(0, 0, GetNameSlot(1), GetNameSlot(2));
     spCC = RegisterPlayer(1, 0, GetNameSlot(1), GetNameSlot(2));
 
-    func_8002B888(spD0, func_8002B924(&sp78, arg2, spD6));
-    func_8002B888(spCC, func_8002B924(&sp24, arg3, spD6));
+    Battle_AddPartyMon(spD0, func_8002B924(&sp78, arg2, spD6));
+    Battle_AddPartyMon(spCC, func_8002B924(&sp24, arg3, spD6));
 
-    func_8002B840(0, spD0);
-    func_8002B840(1, spCC);
+    Battle_RegisterPlayerEntry(0, spD0);
+    Battle_RegisterPlayerEntry(1, spCC);
 }
 
 void func_8002BB7C(s32 arg0, s32 arg1, s32 arg2) {
@@ -241,19 +241,19 @@ void func_8002BB7C(s32 arg0, s32 arg1, s32 arg2) {
                 break;
             }
 
-            func_8002B888(temp_s4, &sp48);
+            Battle_AddPartyMon(temp_s4, &sp48);
         }
 
         func_80022D8C(temp_v0);
     }
 
-    func_8002B840(arg0, temp_s4);
+    Battle_RegisterPlayerEntry(arg0, temp_s4);
 }
 
 void func_8002BC64(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     main_pool_push_state('RIVL');
 
-    func_8002B5EC(0, 3, 0);
+    Battle_Init(0, 3, 0);
 
     if (arg0 > 0) {
         func_8002BB7C(0, arg0 - 1, arg0 - 1);
@@ -286,7 +286,7 @@ s32 func_8002BD14(s32 arg0) {
     return 0;
 }
 
-s32 func_8002BD60(s32 arg0) {
+s32 Battle_PickRandomMon(s32 arg0) {
     s32 var_s0;
     s32 var_s1;
     s32 sp24;
@@ -322,7 +322,7 @@ s32 func_8002BD60(s32 arg0) {
     return var_s0;
 }
 
-s16 func_8002BE70(void) {
+s16 Battle_GetMaxPartyLevel(void) {
     s16 i;
     s16 var_v1 = 0;
     unk_func_80026268_arg0* var_v0;
@@ -338,7 +338,7 @@ s16 func_8002BE70(void) {
     return var_v1;
 }
 
-void func_8002BEC8(s16 arg0) {
+void Battle_SetPartyLevel(s16 arg0) {
     s16 i;
     unk_func_80026268_arg0* var_s0;
     unk_func_80026268_arg0* var_s1;
@@ -402,7 +402,7 @@ void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     temp_s3->unk_002 = 0;
 
     for (i = 0; i < temp_s2->unk_36; i++) {
-        func_8002B888(temp_s3, &temp_s2->unk_38[i]);
+        Battle_AddPartyMon(temp_s3, &temp_s2->unk_38[i]);
     }
 
     HAL_Strcpy(temp_s3->unk_008, temp_s2->unk_00);
@@ -412,7 +412,7 @@ void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     temp_s3->unk_214->unk_003 = (temp_s2->unk_34 >> 8) & 0xFF;
 
     if (arg3 != 0) {
-        func_8002BEC8(func_8002BE70());
+        Battle_SetPartyLevel(Battle_GetMaxPartyLevel());
     }
 }
 
@@ -421,7 +421,7 @@ void func_8002C128(void) {
     s16 sp24 = D_800AE540.unk_0002;
 
     if ((D_800AE540.unk_0000 == 2) && (D_800AE540.unk_11F2 != 0)) {
-        var_s0 = func_8002BD60(8);
+        var_s0 = Battle_PickRandomMon(8);
     } else if ((D_800AE540.unk_0000 == 7) && (sp24 == 9)) {
         switch (D_800AE540.unk_11F0) {
             case 0x1:
@@ -499,14 +499,14 @@ void func_8002C394(s16 arg0) {
     main_pool_push_state('RIVL');
 
     D_800AF738 = Asset_Load2(0x898000, NULL, 1, 0);
-    func_8002B5EC(9, 6, 0);
+    Battle_Init(9, 6, 0);
 
     if (arg0 == 1) {
-        func_8002B840(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
-        func_8002B840(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
+        Battle_RegisterPlayerEntry(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
+        Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
     } else {
-        func_8002B840(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
-        func_8002B840(1, RegisterPlayer(1, 0, "2P", GetNameSlot(1)));
+        Battle_RegisterPlayerEntry(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
+        Battle_RegisterPlayerEntry(1, RegisterPlayer(1, 0, "2P", GetNameSlot(1)));
     }
 
     if (D_80075684 == 0) {
@@ -551,7 +551,7 @@ s32 func_8002C5E8(void) {
 
     temp_v0 = func_80028320(&sp250, sp58);
     if (temp_v0 != -1) {
-        func_8002B5EC(sp250.unk_00, sp250.unk_00, sp250.unk_01);
+        Battle_Init(sp250.unk_00, sp250.unk_00, sp250.unk_01);
 
         _bcopy(sp250.unk_05, D_800AE540.unk_11E4[0], 8);
         D_800AE540.unk_0003 = sp250.unk_02;
@@ -561,11 +561,11 @@ s32 func_8002C5E8(void) {
         tmp = sp250.unk_0E;
 
         func_80021B5C(sp44, sp250.unk_10);
-        func_8002B840(0, RegisterPlayer(0, tmp, sp44, sp44));
-        func_8002B840(1, RegisterPlayer(-1, tmp, "COM", GetNameSlot(3)));
+        Battle_RegisterPlayerEntry(0, RegisterPlayer(0, tmp, sp44, sp44));
+        Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, tmp, "COM", GetNameSlot(3)));
 
         for (i = 0; i < temp_v0; i++) {
-            func_8002B888(D_800AE540.unk_1194[0].unk_08[0], &sp58[i]);
+            Battle_AddPartyMon(D_800AE540.unk_1194[0].unk_08[0], &sp58[i]);
         }
 
         D_800AE540.unk_11F5 |= 3;

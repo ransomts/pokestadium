@@ -1379,17 +1379,17 @@ void func_82304C7C(unk_D_82305AF8* arg0) {
 
     for (i = 0; i < 6; i++) {
         func_82304BEC(&arg0->unk_0020[i], arg0->unk_0001);
-        func_8002B888(temp_s4, &arg0->unk_0020[i]);
+        Battle_AddPartyMon(temp_s4, &arg0->unk_0020[i]);
     }
 
-    func_8002B840(arg0->unk_0001, temp_s4);
+    Battle_RegisterPlayerEntry(arg0->unk_0001, temp_s4);
 }
 
 void func_82304D30(unk_D_82305A28* arg0) {
     s16 i;
     s16 j;
 
-    func_8002B5EC(0xA, D_82305920[arg0->unk_02].unk_08, 0);
+    Battle_Init(0xA, D_82305920[arg0->unk_02].unk_08, 0);
     func_82304C7C(&D_82305AF8[0]);
     func_82304C7C(&D_82305AF8[1]);
 
@@ -1510,7 +1510,7 @@ void func_8230519C(unk_D_82305A28* arg0) {
     s16 i;
     s16 j;
 
-    func_8002B5EC(0xA, D_82305920[arg0->unk_02].unk_08, 0);
+    Battle_Init(0xA, D_82305920[arg0->unk_02].unk_08, 0);
 
     D_82305AF8[0].unk_0000 = 3;
     D_82305AF8[1].unk_0000 = 3;

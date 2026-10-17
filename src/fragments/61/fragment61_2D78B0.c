@@ -664,7 +664,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
             HAL_Strcpy(arg0->unk_04->unk_214->unk_014, sp34->unk_4D12);
 
             for (i = 0; i < temp_s3; i++) {
-                func_8002B888(arg0->unk_04, &sp34->unk_0000[i].unk_004);
+                Battle_AddPartyMon(arg0->unk_04, &sp34->unk_0000[i].unk_004);
             }
             var_s0 = 1;
         }
@@ -677,7 +677,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
 
         if (D_84211B50.unk_0006 > 0) {
             for (i = 0; i < D_84211B50.unk_0006; i++) {
-                func_8002B888(arg0->unk_04, &D_84211B50.unk_0030[i].unk_004);
+                Battle_AddPartyMon(arg0->unk_04, &D_84211B50.unk_0030[i].unk_004);
             }
             var_s0 = 1;
         }
