@@ -275,7 +275,7 @@ void func_80049D5C(u16 arg0) {
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
-// Hand-written (no m2c). Score 1145 over the whole function (diff.py without -s and with func_8004A474 left as
+// Hand-written (no m2c). Score 975 over the whole function (diff.py without -s and with func_8004A474 left as
 // GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
 // one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
 // `if (f >= 0x800 || f < 0) goto skip`, `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores
@@ -289,7 +289,8 @@ void func_80049D5C(u16 arg0) {
 // lui hoisted into the decrement path like the target, and unk_14/unk_20/phase/value regs match (1250).
 // Other locals for it: dir 1520, nr12 1520, duty 1820, nr11 1855, nr14 1900, freq 2225, i 6630. Moving
 // `changed = NR12 & 8` from skip to just before the while (as in func_8004A474): 1145; at the final
-// test instead 1540-2220, inline 2255.
+// test instead 1540-2220, inline 2255. `} else if (1) { unk_04 = freq; }` in the decrement path (farm
+// candidate k2; makes the bgez non-likely like the target): 1145 -> 975.
 // Remaining: the sweep switch value lands in a0 (target t0, which it was before the (u8) cast); at skip the
 // NR12 load is a1 and `& 8` goes to v0 (target: both t2, the trigger dir's register). Older notes: the `goto skip` path loads NR12 via v0 and puts dir in
 // a1 (target: dir in t2 loaded in place, lui t2 hoisted into the decrement path), phase a2 vs a1, unk_14
@@ -435,7 +436,7 @@ s16 func_80049DF0(void) {
             freq = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
             if (freq >= 0x800 || freq < 0) {
                 goto skip;
-            } else {
+            } else if (1) {
                 D_800FCF60.unk_04 = freq;
             }
         }
