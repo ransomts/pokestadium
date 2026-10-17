@@ -2497,7 +2497,7 @@ void func_8820C700(unk_D_800AC870* arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment25);
 
-    func_8001B058();
+    SpriteAssets_Load();
 
     sp54 = main_pool_alloc(0x10000, 0);
     sp5C = mem_pool_try_init(0x18000, 0);

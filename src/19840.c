@@ -18,7 +18,7 @@ typedef struct ret_func_unk_D_800ABE10 {
 } ret_func_unk_D_800ABE10;
 
 // .bss
-unk_D_800ABE10 D_800ABE10;
+unk_D_800ABE10 gAssetManager;
 
 void func_80018C40(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
     s32 i;
@@ -120,8 +120,8 @@ Fragment* Fragment_LoadCompressed(MainPoolState* arg0, unk_func_800041C0* arg1, 
     if (arg3 >= sp3C) {
         temp_s1 = arg1->unk_04 + (u8*)arg2;
 
-        func_80001098(0, arg2, arg1->unk_00, arg1->unk_02, &D_800ABE10.unk_9EC, 0);
-        osRecvMesg(&D_800ABE10.unk_9EC, NULL, 1);
+        func_80001098(0, arg2, arg1->unk_00, arg1->unk_02, &gAssetManager.unk_9EC, 0);
+        osRecvMesg(&gAssetManager.unk_9EC, NULL, 1);
 
         if (((u32*)temp_s1->magic)[0] == 'PERS' && (((u32*)temp_s1->magic)[1] == '-SZP')) {
             sp38 = Fragment_LoadPersSzp(arg0, arg2, temp_s1);
@@ -222,7 +222,7 @@ void func_80019484(unk_func_80019600* arg0) {
     Fragment* sp24;
 
     sp28 = state_pool_init(arg0->pool, arg0->size);
-    sp24 = Fragment_LoadFromFile(sp28, D_800ABE10.unk_A04.unk_00, arg0->unk_02, D_800ABE10.unk_A04.unk_08, 0x28000);
+    sp24 = Fragment_LoadFromFile(sp28, gAssetManager.unk_A04.unk_00, arg0->unk_02, gAssetManager.unk_A04.unk_08, 0x28000);
 
     if (sp24 != NULL) {
         arg0->unk_08 = func_80019328(sp28, sp24, arg0->unk_18);
@@ -246,7 +246,7 @@ void func_80019514(unk_func_80019600* arg0) {
     var_s0 = arg0->unk_0C;
 
     while (*var_s0 != -1) {
-        temp_v0 = Fragment_LoadFromFile(temp_s3, D_800ABE10.unk_A04.unk_04, *var_s0, D_800ABE10.unk_A04.unk_08, 0x28000);
+        temp_v0 = Fragment_LoadFromFile(temp_s3, gAssetManager.unk_A04.unk_04, *var_s0, gAssetManager.unk_A04.unk_08, 0x28000);
         if (temp_v0 == NULL) {
             break;
         }
@@ -267,7 +267,7 @@ void func_80019600(UNUSED void* arg0) {
     __osSetFpcCsr(0x01000C01);
 
     while (true) {
-        osRecvMesg(&D_800ABE10.unk_9D0, &sp34, 1);
+        osRecvMesg(&gAssetManager.unk_9D0, &sp34, 1);
 
         switch (sp34->unk_00) {
             case 1:
@@ -286,10 +286,10 @@ void func_80019600(UNUSED void* arg0) {
 }
 
 void Sched_InitThreads(void) {
-    osCreateMesgQueue(&D_800ABE10.unk_9D0, &D_800ABE10.unk_9B0, 8);
-    osCreateMesgQueue(&D_800ABE10.unk_9EC, &D_800ABE10.unk_9E8, 1);
-    osCreateThread(&D_800ABE10.unk_000, 7, func_80019600, NULL, &D_800ABE10.unk_9B0, 0xA);
-    osStartThread(&D_800ABE10.unk_000);
+    osCreateMesgQueue(&gAssetManager.unk_9D0, &gAssetManager.unk_9B0, 8);
+    osCreateMesgQueue(&gAssetManager.unk_9EC, &gAssetManager.unk_9E8, 1);
+    osCreateThread(&gAssetManager.unk_000, 7, func_80019600, NULL, &gAssetManager.unk_9B0, 0xA);
+    osStartThread(&gAssetManager.unk_000);
 }
 
 unk_D_86002F58_004_000_010* func_80019760(u32 arg0) {
@@ -326,9 +326,9 @@ unk_D_86002F58_004_000_010* func_80019760(u32 arg0) {
 }
 
 void func_8001987C(void) {
-    D_800ABE10.unk_A04.unk_00 = Asset_Load2(0x920000, NULL, 1, 1);
-    D_800ABE10.unk_A04.unk_04 = Asset_Load2(0x8CC000, NULL, 1, 1);
-    D_800ABE10.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
+    gAssetManager.unk_A04.unk_00 = Asset_Load2(0x920000, NULL, 1, 1);
+    gAssetManager.unk_A04.unk_04 = Asset_Load2(0x8CC000, NULL, 1, 1);
+    gAssetManager.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
 }
 
 s32 func_800198E4(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
@@ -357,7 +357,7 @@ s32 func_800198E4(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8
             if ((arg0->unk_24 != NULL) && (arg0->unk_24->unk_00 == arg1) && (arg0->unk_2C.raw == sp18->unk_18.raw)) {
                 osSendMesg(sp18->unk_04, sp18, 1);
             } else {
-                osSendMesg(&D_800ABE10.unk_9D0, sp18, 1);
+                osSendMesg(&gAssetManager.unk_9D0, sp18, 1);
             }
 
             arg0->unk_01 |= 1;
@@ -391,7 +391,7 @@ s32 func_80019A7C(unk_D_86002F58_004_000_010* arg0, s32 arg1, s32 arg2) {
             temp_v0->unk_10 = arg0->unk_18;
             temp_v0->unk_14 = 0x18000;
 
-            osSendMesg(&D_800ABE10.unk_9D0, temp_v0, 1);
+            osSendMesg(&gAssetManager.unk_9D0, temp_v0, 1);
 
             sp1C = 1;
             arg0->unk_01 |= 2;
@@ -472,7 +472,7 @@ unk_D_86002F30* func_80019D18(s32 arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
@@ -489,7 +489,7 @@ unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         func_8001BEE8(&sp28, arg0);
@@ -505,7 +505,7 @@ s32 func_80019E18(s32 arg0, s32 arg1) {
     s32 sp24 = 0;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
@@ -522,7 +522,7 @@ arg1_func_80019420* func_80019EA0(s32 arg0) {
     MemoryBlock* sp1C;
 
     sp20 = NULL;
-    sp24 = BinArchive_GetFile(D_800ABE10.unk_A04.unk_04, arg0);
+    sp24 = BinArchive_GetFile(gAssetManager.unk_A04.unk_04, arg0);
     if (sp24 != NULL) {
         sp1C = state_pool_try_init(main_pool_get_available(), 0);
         sp20 = sp24->data;

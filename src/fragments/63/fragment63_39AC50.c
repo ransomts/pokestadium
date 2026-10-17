@@ -99,7 +99,7 @@ s32 func_84B06B50(s32 arg0, unk_func_80011B94* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
 
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)func_8001AFD8(temp_a3->unk_20, var_a1) & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)SpriteDisplay_GetImagePtr(temp_a3->unk_20, var_a1) & 0x1FFFFFFF);
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(sp30) & 0x1FFFFFFF);
     }
     return 0;
@@ -125,7 +125,7 @@ s32 func_84B06C7C(s32 arg0, unk_func_80011B94* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
 
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)func_8001AFD8(temp_a3->unk_20, var_a1) & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)SpriteDisplay_GetImagePtr(temp_a3->unk_20, var_a1) & 0x1FFFFFFF);
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(sp30) & 0x1FFFFFFF);
     }
     return 0;
@@ -803,7 +803,7 @@ void func_84B07294(unk_D_84B25A28* arg0) {
 }
 
 void func_84B07370(unk_D_84B25A28* arg0) {
-    func_8001AA18(arg0->unk_20, 0);
+    SpriteDisplay_TryAdvance(arg0->unk_20, 0);
 
     arg0->unk_01++;
     if ((arg0->unk_01 >= 0x1E) && (func_8001B010(arg0->unk_20) != 0)) {
@@ -830,7 +830,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
     unk_D_86002F58_004_000_010* temp_s0;
 
     temp_s0 = func_80019760(5);
-    func_8001A1D0(arg0->unk_20, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_20, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
@@ -846,7 +846,7 @@ void func_84B07560(unk_D_84B25A28* arg0) {
     s32 count;
     unk_D_86002F58_004_000_010* tmp = func_80019760(5);
 
-    func_8001A1D0(arg0->unk_20, tmp, func_80006314(0, 2, 0x60, 0x40, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_20, tmp, func_80006314(0, 2, 0x60, 0x40, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
@@ -981,7 +981,7 @@ void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1) {
     } else {
         arg0->unk_20 = SpriteDisplay_Alloc(NULL, 0xC, 0x80, 0x60);
     }
-    func_8001A250(arg0->unk_20, D_84B17620);
+    SpriteDisplay_SetScaleTable(arg0->unk_20, D_84B17620);
 
     temp_s1 = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {

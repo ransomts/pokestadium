@@ -812,7 +812,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     func_8001987C();
-    func_8001B058();
+    SpriteAssets_Load();
     func_81302548();
     func_81302630();
     func_8002D510();

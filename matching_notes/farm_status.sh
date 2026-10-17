@@ -18,4 +18,4 @@ for d in "$SAVE_DIR"/*/; do
 done
 echo
 echo "Synced at: $(stat -c %y "$SAVE_DIR" 2>/dev/null | cut -c1-19)   (farm syncs every \$SYNC_SECS, default 600)"
-squeue -u "$USER" -h -n pokestadium-match -o "job %i %T %M on %N" 2>/dev/null
+squeue -u "$USER" -h -o "job %i %j %T %M on %N" 2>/dev/null

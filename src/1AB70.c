@@ -12,21 +12,21 @@
 #include "src/geo_layout.h"
 #include "src/memory.h"
 
-static unk_D_86002F58_004_000* D_800AC830;
-static s32 D_800AC834;
+static unk_D_86002F58_004_000* gCameraNode;
+static s32 gDebugMode;
 
-s32 func_8001B140(s32, GraphNode*);
+s32 SetCurrentCameraNode(s32, GraphNode*);
 s32 func_80019F70(s32, GraphNode*);
 
 s32 func_80019F70(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
-        D_800ABE10.unk_A04.unk_0C = arg1;
+        gAssetManager.unk_A04.unk_0C = arg1;
     }
     return 0;
 }
 
-void func_80019F84(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
-    static u32 D_8006F350[] = {
+void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
+    static u32 sSpriteGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x00300030, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D0019, 0xFFFFFF32, 0x14000000, 0xFFD300CD, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
@@ -36,8 +36,8 @@ void func_80019F84(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
     unk_D_86002F34_00C* sp24;
     MemoryBlock* sp20 = state_pool_try_init(main_pool_get_available(), 0);
 
-    arg0->unk_0C = process_geo_layout(sp20, D_8006F350);
-    arg0->unk_10 = D_800ABE10.unk_A04.unk_0C;
+    arg0->unk_0C = process_geo_layout(sp20, sSpriteGeoLayoutCommands);
+    arg0->unk_10 = gAssetManager.unk_A04.unk_0C;
     mem_pool_resize_block(sp20);
     sp24 = arg0->unk_0C->unk_0C;
     func_80011DAC(sp24, 0, 0, arg1, arg2);
@@ -74,12 +74,12 @@ unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg
             }
         }
 
-        func_80019F84(temp_v0, arg2, arg3);
+        SpriteDisplay_InitGeoLayout(temp_v0, arg2, arg3);
     }
     return temp_v0;
 }
 
-void func_8001A1D0(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, unk_D_80068BB0* arg2) {
+void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, unk_D_80068BB0* arg2) {
     s32 i;
 
     arg0->unk_04 = arg1;
@@ -90,7 +90,7 @@ void func_8001A1D0(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, un
     }
 }
 
-void func_8001A250(unk_func_8001A024* arg0, unk_D_8006FF00* arg1) {
+void SpriteDisplay_SetScaleTable(unk_func_8001A024* arg0, unk_D_8006FF00* arg1) {
     arg0->unk_18 = arg1;
 }
 
@@ -149,7 +149,7 @@ void SpriteDisplay_SetupSlot(unk_func_8001A024* arg0, s32 arg1, s32 arg2, u16 ar
     }
 }
 
-void func_8001A46C(unk_func_8001A024* arg0, s32 arg1, unk_func_80026268_arg0* arg2, u16 arg3) { // or u16 arg3
+void SpriteDisplay_ConfigSlotWithAnim(unk_func_8001A024* arg0, s32 arg1, unk_func_80026268_arg0* arg2, u16 arg3) { // or u16 arg3
     s32 w;
     s32 h;
 
@@ -179,7 +179,7 @@ void func_8001A46C(unk_func_8001A024* arg0, s32 arg1, unk_func_80026268_arg0* ar
     }
 }
 
-void func_8001A654(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
+void U16Buffer_Transform(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     s32 cond;
     s32 arg1 = a1;
 
@@ -198,13 +198,13 @@ void func_8001A654(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     // clang-format on
 }
 
-void func_8001A6D4(unk_D_80068BB0* arg0, arg1_func_80010CA8 arg1) {
+void SpriteImage_Transform(unk_D_80068BB0* arg0, arg1_func_80010CA8 arg1) {
     s32 size = arg0->width * arg0->height;
 
-    func_8001A654(arg0->img_p, size, arg1);
+    U16Buffer_Transform(arg0->img_p, size, arg1);
 }
 
-void func_8001A714(unk_func_8001A024* arg0, s32 arg1) {
+void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     Vec3s sp38;
     unk_D_86002F34_00C* sp34;
     unk_func_8001A024_008* temp_s1;
@@ -246,7 +246,7 @@ void func_8001A714(unk_func_8001A024* arg0, s32 arg1) {
     func_80015094(arg0->unk_0C);
 }
 
-s32 func_8001AA18(unk_func_8001A024* arg0, s32 arg1) {
+s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
     s32 i;
     s32 var_v0;
     s32 sp24;
@@ -264,7 +264,7 @@ s32 func_8001AA18(unk_func_8001A024* arg0, s32 arg1) {
         if (var_v0 != 0) {
             arg0->unk_00 &= 0xFFFE;
             arg0->unk_08[sp20].unk_00 &= 0xFFFE;
-            func_8001A714(arg0, sp20);
+            SpriteDisplay_RenderSlot(arg0, sp20);
             arg0->unk_03 = sp20;
             sp24 = sp20;
             arg0->unk_02++;
@@ -310,7 +310,7 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
         temp_s0 = &arg0->unk_08[arg0->unk_03];
         if (temp_s0->unk_00 & 4) {
             while (func_80001C90() == 0) {}
-            func_8001A6D4(temp_s0->unk_0C, temp_s0->unk_10);
+            SpriteImage_Transform(temp_s0->unk_0C, temp_s0->unk_10);
             temp_s0->unk_00 &= ~4;
         }
     }
@@ -333,7 +333,7 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
 
             func_80019CA8(arg0->unk_04);
             arg0->unk_08[var_s1].unk_00 &= ~1;
-            func_8001A714(arg0, var_s1);
+            SpriteDisplay_RenderSlot(arg0, var_s1);
             sp44 = var_s1;
             arg0->unk_02 = var_s1;
             arg0->unk_03 = var_s1;
@@ -376,7 +376,7 @@ s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
             }
             func_80019CA8(arg0->unk_04);
             arg0->unk_08[var_s0].unk_00 &= ~1;
-            func_8001A714(arg0, var_s0);
+            SpriteDisplay_RenderSlot(arg0, var_s0);
             arg0->unk_02 = var_s0;
             var_a2 = var_s0;
             arg0->unk_02++;
@@ -395,7 +395,7 @@ s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
     return var_a2;
 }
 
-void func_8001AEEC(unk_func_8001A024* arg0, s32 arg1) {
+void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) {
     s32 i;
 
     if (arg1 == arg0->unk_03) {
@@ -415,7 +415,7 @@ void func_8001AEEC(unk_func_8001A024* arg0, s32 arg1) {
     }
 }
 
-u8* func_8001AFD8(unk_func_8001A024* arg0, s32 arg1) {
+u8* SpriteDisplay_GetImagePtr(unk_func_8001A024* arg0, s32 arg1) {
     u8* image;
     image = NULL;
     if (arg1 < (s32)arg0->unk_01) {
@@ -435,8 +435,8 @@ s32 func_8001B010(unk_func_8001A024* arg0) {
     return 1;
 }
 
-void func_8001B058(void) {
-    D_800ABE10.unk_A04.unk_10 = Asset_Load2(0x820000, NULL, 1, 1);
+void SpriteAssets_Load(void) {
+    gAssetManager.unk_A04.unk_10 = Asset_Load2(0x820000, NULL, 1, 1);
 }
 
 void func_8001B088(u16* arg0, s32 arg1) {
@@ -444,7 +444,7 @@ void func_8001B088(u16* arg0, s32 arg1) {
     u8* temp_a1;
 
     if ((arg1 > 0) && (arg1 < 0x99)) {
-        temp_v1 = D_800ABE10.unk_A04.unk_10;
+        temp_v1 = gAssetManager.unk_A04.unk_10;
         temp_a1 = temp_v1->unk_04 + temp_v1[arg1].raw;
         func_80003B30(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
     }
@@ -460,12 +460,12 @@ void func_8001B0DC(u16* arg0, s32 arg1, unk_func_80026268_arg0* arg2) {
 
     func_8001BEE8(&sp1C, arg2);
     func_8001B088(arg0, arg2->unk_00.unk_00);
-    func_8001A654(arg0, 0x640, sp1C);
+    U16Buffer_Transform(arg0, 0x640, sp1C);
 }
 
-s32 func_8001B140(s32 arg0, GraphNode* arg1) {
+s32 SetCurrentCameraNode(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
-        D_800AC830 = arg1;
+        gCameraNode = arg1;
     }
     return 0;
 }
@@ -475,14 +475,14 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x010000E0, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x14000000, 0xFFD30087, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
-        func_8001B140, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
+        SetCurrentCameraNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
     };
     MemoryBlock* sp24;
     MemoryBlock* temp_v0;
 
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
     arg0->unk_20 = process_geo_layout(sp24, D_8006F3E0);
-    arg0->unk_24 = D_800AC830;
+    arg0->unk_24 = gCameraNode;
     mem_pool_resize_block(sp24);
     func_80011DAC(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
     func_80011E68(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
@@ -649,7 +649,7 @@ void func_8001B778(unk_func_8001B1FC* arg0) {
         }
     }
 
-    Vec3f_Set(&D_800AC830->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
+    Vec3f_Set(&gCameraNode->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
 }
 
 void func_8001B834(unk_func_8001B1FC* arg0) {
@@ -691,11 +691,11 @@ u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
     func_80015348();
     func_80015094(arg0->unk_20);
 
-    if (D_800AC834 > 0) {
+    if (gDebugMode > 0) {
         Text_ResetState();
         Text_SetFont(8, -4);
 
-        switch (D_800AC834) {
+        switch (gDebugMode) {
             case 1:
                 Text_Print(0, 0x64, "S:%5.2f  H:%4d", arg0->unk_18, (s32)arg0->unk_24->unk_024.y);
                 break;

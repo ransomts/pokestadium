@@ -631,7 +631,7 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     func_8001987C();
-    func_8001B058();
+    SpriteAssets_Load();
     func_82F00968();
     Stage_Set(sp24);
     func_82F01180();

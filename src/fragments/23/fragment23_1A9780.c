@@ -1651,7 +1651,7 @@ void func_88205F1C(unk_D_800AC870* arg0) {
 
     FRAGMENT_LOAD(fragment25);
 
-    func_8001B058();
+    SpriteAssets_Load();
     sp64 = main_pool_alloc(0x1000, 0);
     sp6C = mem_pool_try_init(0x10000, 0);
     func_8002D510();

@@ -811,7 +811,7 @@ s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_04000000, rental_rules_ui, 0);
 
     func_83000058();
-    func_8001B058();
+    SpriteAssets_Load();
     func_8002D510();
     D_830039C0 = GetMessageBank(0x20);
     D_830039C4 = GetMessageBank(0x24);

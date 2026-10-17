@@ -1625,7 +1625,7 @@ s16 func_823056C4(void) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
 
-    func_8001B058();
+    SpriteAssets_Load();
     func_80023AF8(0);
     func_80023AF8(1);
     func_80007754();

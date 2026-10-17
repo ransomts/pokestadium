@@ -2608,7 +2608,7 @@ void func_82603924(void) {
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     func_8001987C();
-    func_8001B058();
+    SpriteAssets_Load();
 
     for (i = 0; i < 151; i++) {
         func_8001B0DC(D_82608568[i], i + 1, NULL);

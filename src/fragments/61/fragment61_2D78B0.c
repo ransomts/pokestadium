@@ -1105,7 +1105,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     func_80028C48(gBattleContext.unk_0001);
     func_80028EB8();
     func_84203D74();
-    func_8001B058();
+    SpriteAssets_Load();
     func_84203C90();
     func_80007754();
 

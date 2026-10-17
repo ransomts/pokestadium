@@ -75,17 +75,17 @@ typedef struct unk_D_84B25A28 {
 } unk_D_84B25A28; // size = 0x30
 
 unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010*, s16, s16, s16);
-void func_8001A1D0(unk_func_8001A024*, unk_D_86002F58_004_000_010*, unk_D_80068BB0*);
-void func_8001A250(unk_func_8001A024*, unk_D_8006FF00*);
+void SpriteDisplay_SetDepthBuffer(unk_func_8001A024*, unk_D_86002F58_004_000_010*, unk_D_80068BB0*);
+void SpriteDisplay_SetScaleTable(unk_func_8001A024*, unk_D_8006FF00*);
 void SpriteDisplay_Clear(unk_func_8001A024*);
 void SpriteDisplay_SetupSlot(unk_func_8001A024*, s32, s32, u16);
-void func_8001A46C(unk_func_8001A024*, s32, unk_func_80026268_arg0*, u16);
-s32 func_8001AA18(unk_func_8001A024*, s32);
+void SpriteDisplay_ConfigSlotWithAnim(unk_func_8001A024*, s32, unk_func_80026268_arg0*, u16);
+s32 SpriteDisplay_TryAdvance(unk_func_8001A024*, s32);
 s32 func_8001ABAC(unk_func_8001A024*, s32);
 s32 func_8001AD90(unk_func_8001A024*, s32);
-u8* func_8001AFD8(unk_func_8001A024*, s32);
+u8* SpriteDisplay_GetImagePtr(unk_func_8001A024*, s32);
 s32 func_8001B010(unk_func_8001A024*);
-void func_8001B058(void);
+void SpriteAssets_Load(void);
 void func_8001B0DC(u16*, s32, unk_func_80026268_arg0*);
 unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010*, s16, s16, s16, s16, s16, s16, u8*);
 void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 arg2);

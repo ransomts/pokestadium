@@ -1227,7 +1227,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
 
     func_8002D510();
     D_84B26678 = GetMessageBank(0x1B);
-    func_8001B058();
+    SpriteAssets_Load();
 
     D_84B1A598.unk_B408 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84B1A598.unk_B40C = ASSET_LOAD2(battle_portraits, 1, 1);

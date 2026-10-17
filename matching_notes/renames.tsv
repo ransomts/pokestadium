@@ -335,22 +335,22 @@ D_800FCED8	gAudioChannel	p3		Array of two audio channel structs used throughout 
 D_800FCEE0	gAudioSampleData	p3		Pointer into each channel struct (+0x198) used as source sample buffer	applied@191ea4e
 D_800FCEE8	gAudioChunkSizeLarge	p3		Half of the first size argument passed to Audio_Init, used as large DMA chunk size	applied@191ea4e
 D_800FCEEC	gAudioChunkSizeSmall	p3		Half of the second size argument passed to Audio_Init, used as small DMA chunk size	applied@191ea4e
-func_80019F84	SpriteDisplay_InitGeoLayout	p4		called after SpriteDisplay_Alloc to process a static geo layout command array and initialize the sprite display geometry	pending
-func_8001A1D0	SpriteDisplay_SetDepthBuffer	p4		sets each slot's depth buffer via func_80006414, indicating it configures depth for the sprite display	pending
-func_8001A250	SpriteDisplay_SetScaleTable	p4		assigns arg1 to arg0->unk_18, which is later used as a scaling table for sprite slots	pending
-func_8001A46C	SpriteDisplay_ConfigSlotWithAnim	p4		configures a sprite slot using an animation struct (arg2) and sets animation-specific fields	pending
-func_8001A654	U16Buffer_Transform	p4		iterates over a u16 buffer applying a function pointer arg2, indicating a generic buffer transformation	pending
-func_8001A6D4	SpriteImage_Transform	p4		calls func_8001A654 on a sprite image's pixel buffer, applying a transform to the image data	pending
-func_8001A714	SpriteDisplay_RenderSlot	p4		renders a sprite slot, sets up camera, framebuffer and draws the sprite using Gfx functions	pending
-func_8001AA18	SpriteDisplay_TryAdvance	p4		attempts to advance to the next ready sprite slot, handling callbacks and rendering the slot	pending
-func_8001AEEC	SpriteDisplay_SetCurrentSlotFramebuffer	p4		sets up the framebuffer for the currently active sprite slot when arg1 matches arg0->unk_03	pending
-func_8001AFD8	SpriteDisplay_GetImagePtr	p4		returns the image pointer of a sprite slot's depth buffer, used for direct pixel access	pending
-func_8001B058	SpriteAssets_Load	p4		loads asset archive into D_800ABE10.unk_A04.unk_10 via Asset_Load2, indicating a sprite asset loader	pending
-func_8001B140	SetCurrentCameraNode	p4		sets D_800AC830 to the provided GraphNode when arg0 is zero, likely storing the current camera node	pending
-D_800AC830	gCameraNode	p4		used as a GraphNode pointer for camera positioning in func_8001B9D4, indicating it stores the current camera node	pending
-D_800AC834	gDebugMode	p4		controls debug text output in func_8001B9D4, selecting which debug info to print	pending
-D_800ABE10	gAssetManager	p4		holds .unk_A04.unk_0C and .unk_A04.unk_10 used for asset loading and callbacks throughout the file	pending
-D_8006F350	sSpriteGeoLayoutCommands	p4		static array of geo layout commands passed to process_geo_layout for sprite display initialization	pending
+func_80019F84	SpriteDisplay_InitGeoLayout	p4		called after SpriteDisplay_Alloc to process a static geo layout command array and initialize the sprite display geometry	applied@a89a80b
+func_8001A1D0	SpriteDisplay_SetDepthBuffer	p4		sets each slot's depth buffer via func_80006414, indicating it configures depth for the sprite display	applied@a89a80b
+func_8001A250	SpriteDisplay_SetScaleTable	p4		assigns arg1 to arg0->unk_18, which is later used as a scaling table for sprite slots	applied@a89a80b
+func_8001A46C	SpriteDisplay_ConfigSlotWithAnim	p4		configures a sprite slot using an animation struct (arg2) and sets animation-specific fields	applied@a89a80b
+func_8001A654	U16Buffer_Transform	p4		iterates over a u16 buffer applying a function pointer arg2, indicating a generic buffer transformation	applied@a89a80b
+func_8001A6D4	SpriteImage_Transform	p4		calls func_8001A654 on a sprite image's pixel buffer, applying a transform to the image data	applied@a89a80b
+func_8001A714	SpriteDisplay_RenderSlot	p4		renders a sprite slot, sets up camera, framebuffer and draws the sprite using Gfx functions	applied@a89a80b
+func_8001AA18	SpriteDisplay_TryAdvance	p4		attempts to advance to the next ready sprite slot, handling callbacks and rendering the slot	applied@a89a80b
+func_8001AEEC	SpriteDisplay_SetCurrentSlotFramebuffer	p4		sets up the framebuffer for the currently active sprite slot when arg1 matches arg0->unk_03	applied@a89a80b
+func_8001AFD8	SpriteDisplay_GetImagePtr	p4		returns the image pointer of a sprite slot's depth buffer, used for direct pixel access	applied@a89a80b
+func_8001B058	SpriteAssets_Load	p4		loads asset archive into D_800ABE10.unk_A04.unk_10 via Asset_Load2, indicating a sprite asset loader	applied@a89a80b
+func_8001B140	SetCurrentCameraNode	p4		sets D_800AC830 to the provided GraphNode when arg0 is zero, likely storing the current camera node	applied@a89a80b
+D_800AC830	gCameraNode	p4		used as a GraphNode pointer for camera positioning in func_8001B9D4, indicating it stores the current camera node	applied@a89a80b
+D_800AC834	gDebugMode	p4		controls debug text output in func_8001B9D4, selecting which debug info to print	applied@a89a80b
+D_800ABE10	gAssetManager	p4		holds .unk_A04.unk_0C and .unk_A04.unk_10 used for asset loading and callbacks throughout the file	applied@a89a80b
+D_8006F350	sSpriteGeoLayoutCommands	p4		static array of geo layout commands passed to process_geo_layout for sprite display initialization	applied@a89a80b
 func_8003CADC	AudioTask_Build	p5		constructs an OSTask for audio playback using __am audio manager structures and ACMD lists	applied@f4ef3d1
 func_8003D264	Audio_SetMusicEnabled	p5		sets D_80077D90 flag and D_80077D94 volume to enable or disable music playback	applied@f4ef3d1
 func_8003D2B8	Audio_StartMusicFade	p5		initialises music fade state (D_80077D9C) and stores target track in D_80077DA0	applied@f4ef3d1

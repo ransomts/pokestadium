@@ -265,7 +265,7 @@ s32 func_83800730(s32 arg0, s32 arg1) {
     D_83805658 = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
     D_8380565C = BinArchive_GetFile(Asset_Load2(0x898000, NULL, 1, 0), 0x1A);
 
-    func_8001B058();
+    SpriteAssets_Load();
     func_83800020(arg0);
     Stage_Set(sp24);
     func_83800640();

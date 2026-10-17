@@ -552,10 +552,11 @@ def c_definition_count(sym):
 
 
 def is_c_static(sym):
-    """True if `sym` has a `static` file-scope C definition (never in the linker map)."""
+    """True if `sym` has a `static` C definition (file- or function-scope, any array dims).
+    Such symbols never appear in the linker map, so the gate's map check skips them."""
     pat = re.compile(
-        r"^static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
-        r"\s*(\[[^\]]*\])?\s*[;=]", re.M)
+        r"^\s*static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
+        r"((\[[^\]]*\])*)\s*[;=]", re.M)
     for f in rewrite_files():
         if f.endswith(".c") and pat.search(open(f, errors="replace").read()):
             return True

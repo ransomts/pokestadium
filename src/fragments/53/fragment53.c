@@ -27,7 +27,7 @@ void func_82A00020(s32 arg0) {
     }
 
     for (i = 0; i < D_82A00360; i++) {
-        func_8001A46C(D_82A00374, i, &D_82A00378[i], 1);
+        SpriteDisplay_ConfigSlotWithAnim(D_82A00374, i, &D_82A00378[i], 1);
     }
 }
 
@@ -51,7 +51,7 @@ void func_82A00144(UnkInputStruct8000D738* arg0) {
     arg0->unk_03 = D_82A00360;
 
     for (i = 0; i < D_82A00360; i++, var_s1++) {
-        _bcopy(func_8001AFD8(D_82A00374, i), var_s1, sizeof(var_s1[0]));
+        _bcopy(SpriteDisplay_GetImagePtr(D_82A00374, i), var_s1, sizeof(var_s1[0]));
     }
 
     if (D_82A00360 < 6) {

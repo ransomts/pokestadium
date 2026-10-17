@@ -37,32 +37,25 @@ find build -exec touch {} + 2>/dev/null || true
 env PATH="$STAGE/.venv/bin:$PATH" make -j"$SLURM_CPUS_PER_TASK" PYTHON="$STAGE/.venv/bin/python3" 2>&1 | tail -3
 grep -q OK <(env PATH="$STAGE/.venv/bin:$PATH" make PYTHON="$STAGE/.venv/bin/python3" 2>&1 | tail -1) || { echo "BUILD NOT OK"; exit 1; }
 
-# Permuter farm: tier 1 + 2 near misses. Enable each draft with a bare `#if 1` in the staged
-# copy only (never commit that). The permuter's main process caps each function at ~80 it/s
-# regardless of workers, so spread cores thin: 6 workers x 16 funcs = 96 cores.
+# Permuter farm: open near misses. Enable each draft with a bare `#if 1` in the staged
+# copy only (never commit that). Spec is func:src[:workers[:copies]]: the permuter's main
+# process caps each function at ~80 it/s regardless of workers, so scale by adding copies
+# (independent permuters), not workers — small/fast functions want many copies x 2-3 workers,
+# slow-compiling giants want few copies x 5-6 workers. Fields left off default to the
+# WORKERS computed below and $COPIES. Several jobs may farm the same or different lists
+# sharing permuter_best: give each a distinct RUN_TAG, e.g.
+#   sbatch --job-name=farm-a --export=ALL,RUN_TAG=fa,FUNCS_OVERRIDE="..." matching_notes/palmetto_job.sh
+# Mid-run re-seed (permuter_farm.sh) merges their best candidates automatically.
 FUNCS=(
-  # 2026-10-07 evening: tier 1/2 leftovers + round-7 regalloc-only drafts handed to the farm
-  func_8437FD74:src/fragments/62/fragment62_361050.c
-  func_84367660:src/fragments/62/fragment62_351F20.c
-  func_838043F8:src/fragments/47/fragment47_2AFDB0.c
-  func_8430506C:src/fragments/62/fragment62_2EC3C0.c
-  func_84302658:src/fragments/62/fragment62_2EC3C0.c
-  func_83501718:src/fragments/44/fragment44.c
-  func_8850B2D4:src/fragments/26/fragment26.c
-  func_82F04604:src/fragments/41/fragment41_289240.c
-  func_80033D44:src/33FE0.c
-  func_88500A74:src/fragments/26/fragment26.c
-  func_88304850:src/fragments/24/fragment24_1CEA00.c
-  func_86905734:src/fragments/15/fragment15_150AC0.c
-  func_8820BE14:src/fragments/23/fragment23_1AE680.c
-  func_86803C6C:src/fragments/14/fragment14_1462A0.c
-  func_80012870:src/12D80.c
-  func_88807D04:src/fragments/28/fragment28_2190D0.c
+  # 2026-10-17 farm10 default (single node; live submissions use FUNCS_OVERRIDE per node)
+  func_8437B0CC:src/fragments/62/fragment62_361050.c:5:6
+  func_88805AEC:src/fragments/28/fragment28_2190D0.c:5:6
+  func_88304850:src/fragments/24/fragment24_1CEA00.c:4:6
 )
 # FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" replaces the list (e.g. a small side job).
 [ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"
 for spec in "${FUNCS[@]}"; do
-  f=${spec%%:*}; s=${spec#*:}
+  IFS=: read -r f s _ <<< "$spec"
   "$STAGE/.venv/bin/python3" - "$s" "$f" <<'EOF'
 import re, sys
 path, func = sys.argv[1:3]
@@ -74,7 +67,8 @@ if j >= 0:
     open(path, "w").write(t)
 EOF
 done
-WORKERS=$(( SLURM_CPUS_PER_TASK / (${#FUNCS[@]} * ${COPIES:-1}) ))  # COPIES: independent runs per function
+# Default workers for FUNCS entries without an explicit :W (see the FUNCS comment above).
+WORKERS=$(( SLURM_CPUS_PER_TASK / (${#FUNCS[@]} * ${COPIES:-1}) ))
 # Farm duration: explicit FARM_HOURS, else the job's time limit minus 30 min (staging + final sync).
 LIMIT=$(squeue -h -j "$SLURM_JOB_ID" -o %l)          # D-HH:MM:SS or HH:MM:SS
 if [ -z "${FARM_HOURS:-}" ]; then

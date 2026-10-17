@@ -1259,7 +1259,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     sp24 = Stage_Create(1, 1, 2, 0, 2, 1);
     func_8002D510();
     Text_Init(0x3C, 0);
-    func_8001B058();
+    SpriteAssets_Load();
     D_84803780 = ASSET_LOAD2(backgrounds, 1, 1);
     D_84803784 = BinArchive_GetFile(D_84803780, 5);
 

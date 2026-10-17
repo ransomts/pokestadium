@@ -48,7 +48,7 @@ typedef struct unk_D_800ABE10 {
     /* 0xA04 */ unk_D_800ABE10_A04 unk_A04;
 } unk_D_800ABE10; // size >= 0xA18
 
-extern unk_D_800ABE10 D_800ABE10;
+extern unk_D_800ABE10 gAssetManager;
 
 void func_80018C40(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1);
 Fragment* Fragment_LoadPresJpeg(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2);
