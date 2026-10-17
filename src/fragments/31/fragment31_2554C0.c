@@ -52,9 +52,9 @@ void func_810002DC(s32 arg0, DisplayListState* state) {
 
 Gfx* func_81000330(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gDPLoadTextureBlock(gfx++, addresses->textures[index], G_IM_FMT_IA, G_IM_SIZ_8b, 32, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    func_80032D28();
+    Model_DrawIfReady();
     {
-        Gfx* gfx2 = func_80032F94(gfx);
+        Gfx* gfx2 = Model_RenderStateMachine(gfx);
         gSPSetGeometryMode(gfx2++, 0x00020000);
         gSPEndDisplayList(gfx2++);
         return gfx2;

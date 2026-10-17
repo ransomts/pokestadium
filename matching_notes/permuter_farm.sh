@@ -76,6 +76,10 @@ score_of() {  # print the lowest score.txt under $1/output-*/, empty if there is
     echo "$bestv"
 }
 
+seed_score() {  # $1 = a candidate's source.c; its score.txt sits in the same dir
+    cat "$(dirname "$1")/score.txt" 2>/dev/null
+}
+
 start_run() {  # $1=run $2=workers: launch one permuter for the run, until END_AT
     local run=$1 secs
     secs=$(( END_AT - $(date +%s) )); [ "$secs" -lt 60 ] && secs=60
@@ -100,7 +104,7 @@ reseed_restart() {  # $1=run $2=best source.c: restart the run seeded from $2
     kill_run "$run"
     rm -rf "nonmatchings/$run"/output-*  # stale (already synced to SAVE_DIR) and would mask the new seed
     cp "$src" "nonmatchings/$run/base.c"
-    seedv[$run]=$(score_of "$(dirname "$src")")
+    seedv[$run]=$(seed_score "$src")
     start_run "$run" "${run_workers[$run]}"
 }
 
@@ -117,7 +121,7 @@ reseed_check() {  # after a sync: restart copies trailing their function's globa
         own=$(score_of "nonmatchings/$run"); [ -n "$own" ] || own=${seedv[$run]:-}
         [ -n "$own" ] || continue
         gsrc=$(best_saved "$func"); [ -n "$gsrc" ] || continue
-        gscore=$(score_of "$(dirname "$gsrc")")
+        gscore=$(seed_score "$gsrc")
         [ -n "$gscore" ] || continue
         if [ "$gscore" -eq 0 ] && [ "$own" -ne 0 ]; then
             echo "$(date '+%F %T') $func matched elsewhere (score 0), stopping $run"
@@ -169,7 +173,7 @@ open(p, "w").write("\n".join(out))
 print(f"{p}: {len(t)} -> {len(chr(10).join(out))} bytes")
 PYEOF
     fi
-    sv=$([ -n "${seed:-}" ] && score_of "$(dirname "$seed")")
+    sv=$([ -n "${seed:-}" ] && seed_score "$seed")
     for k in $(seq 1 "$c"); do
         run=$func; [ "$k" -gt 1 ] && run=${func}__c$k
         [ -n "$RUN_TAG" ] && run=${func}__${RUN_TAG}$k

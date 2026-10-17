@@ -25,17 +25,17 @@ typedef struct {
     MtxF mtx[16];   // 16 (0x10) × 0x40 = 0x400
 } MtxBuffer; // size = 0x400
 
-extern s32 D_80076270[16];
-extern Gfx D_800762B0[3];
-extern Gfx D_800762C8[];
+extern s32 gIdentityMtx[16];
+extern Gfx gModelSetupDL[3];
+extern Gfx gModelRenderDL[];
 
-s32 D_80076270[16] = { 65536, 0, 1, 0, 0, 65536, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
-Gfx D_800762B0[3] = { { { 0xE3000A01, 0x100000 } }, { { 0xE7000000, 0 } }, { { 0xDF000000, 0 } } };
-Gfx D_800762C8[5] = { { { 0xD9FDFFFF, 0 } }, { { 0xE7000000, 0 } }, { { 0xFC309680, 0x5F1AFFFF } }, { { 0xE3001001, 0 } }, { { 0xDF000000, 0 } } };
-extern u32 D_800777A8[];
-extern u32 D_80077950[];
+s32 gIdentityMtx[16] = { 65536, 0, 1, 0, 0, 65536, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+Gfx gModelSetupDL[3] = { { { 0xE3000A01, 0x100000 } }, { { 0xE7000000, 0 } }, { { 0xDF000000, 0 } } };
+Gfx gModelRenderDL[5] = { { { 0xD9FDFFFF, 0 } }, { { 0xE7000000, 0 } }, { { 0xFC309680, 0x5F1AFFFF } }, { { 0xE3001001, 0 } }, { { 0xDF000000, 0 } } };
+extern u32 gNormalModelSegment[];
+extern u32 gSpecialModelSegment[];
 
-// extern Gfx D_800762C8[] = {
+// extern Gfx gModelRenderDL[] = {
 //     gsSPSetGeometryMode(0x00FDFFFF),
 //     gsDPPipeSync(),
 //     gsDPSetCombineLERP(
@@ -48,10 +48,10 @@ extern u32 D_80077950[];
 //     gsSPEndDisplayList(),
 // };
 
-s16 D_800AF7C0[4];
-static MtxBuffer D_800AF7C8[2];
-static StadiumModelSlot D_800AFFC8[2][3];
-static unk_D_800B2EA8 D_800B2EA8[1];
+s16 gModelPhase[4];
+static MtxBuffer gModelMtxBuffers[2];
+static StadiumModelSlot gStadiumModelSlots[2][3];
+static unk_D_800B2EA8 gModelTextureData[1];
 
 void func_800328D0(s32 arg0) {
 
@@ -61,21 +61,21 @@ s32 func_800328D8(UNUSED s32 arg0) {
     return 1;
 }
 
-void func_800328E4(u8 arg0) {
-    Matrix_Copy(D_800AF7C8[arg0].mtx, Matrix_GetRelative(0));
-    Matrix_Copy(D_800AF7C8[arg0].mtx[1].mf, Matrix_GetRelative(-1));
+void Model_CopyCurrentToBuffer(u8 arg0) {
+    Matrix_Copy(gModelMtxBuffers[arg0].mtx, Matrix_GetRelative(0));
+    Matrix_Copy(gModelMtxBuffers[arg0].mtx[1].mf, Matrix_GetRelative(-1));
 }
 
-void func_80032940(u8 index) {
+void Model_ConcatCameraMatrix(u8 index) {
     MtxF* temp_a1;
     MtxF sp1C;
 
-    temp_a1 = &D_800AF7C8[index];
+    temp_a1 = &gModelMtxBuffers[index];
     func_80031EF4(&sp1C, &D_8006F088->unk_60.mtxf);
     guMtxCatF(sp1C.mf, temp_a1->mf, temp_a1->mf);
 }
 
-void func_80032990(u8 index) {
+void Model_ApplyScaleAndTranslation(u8 index) {
     MtxF* temp_a0;
     
     s32 pad[2];
@@ -87,7 +87,7 @@ void func_80032990(u8 index) {
     MtxF sp38;
     Vec3f sp2C;
     
-    temp_a0 = &D_800AF7C8[index].mtx;
+    temp_a0 = &gModelMtxBuffers[index].mtx;
     
     func_80032034(temp_a0, &sp2C);
     guScaleF(sp38.mf, sp2C.x, sp2C.y, sp2C.z);
@@ -96,31 +96,31 @@ void func_80032990(u8 index) {
     guMtxCatF(sp38.mf, sp78.mf, temp_a0->mf);
 }
 
-void func_80032A34(s32 arg0) {
+void ModelSlot_Reset(s32 arg0) {
     s32 i;
-    StadiumModelSlot* slot = &D_800AFFC8[arg0];
+    StadiumModelSlot* slot = &gStadiumModelSlots[arg0];
 
     for (i = 0; i < 3; i++) {
         slot[i].model.unk_00 = 0;
     }
 }
 
-Gfx* func_80032A7C(Gfx* gfx) {
+Gfx* Model_SetRenderColors(Gfx* gfx) {
     u8 temp_v0 = D_8006F09C->unk_01D;
 
     switch (D_8006F09C->unk_01A) {
         case 0x92:
-            gSPDisplayList(gfx++, D_800762C8);
+            gSPDisplayList(gfx++, gModelRenderDL);
             gDPSetPrimColor(gfx++, 0, temp_v0, 255, 255, 255, 200);
             gDPSetEnvColor(gfx++, 255, 32, 0, 0);
             break;
         case 0x7E:
-            gSPDisplayList(gfx++, D_800762C8);
+            gSPDisplayList(gfx++, gModelRenderDL);
             gDPSetPrimColor(gfx++, 0, temp_v0, 255, 255, 5, 255);
             gDPSetEnvColor(gfx++, 255, 32, 0, 0);
             break;
         default:
-            gSPDisplayList(gfx++, D_800762C8);
+            gSPDisplayList(gfx++, gModelRenderDL);
             gDPSetPrimColor(gfx++, 0, temp_v0, 255, 255, 255, 255);
             gDPSetEnvColor(gfx++, 180 - (D_8006F084 % 8) * 10, 32, 0, 0);
             break;
@@ -129,40 +129,40 @@ Gfx* func_80032A7C(Gfx* gfx) {
     return gfx;
 }
 
-void func_80032BD4(void) {
+void Model_DrawCurrent(void) {
     u8 index;
     s32 mode;
 
     mode = func_800325B4();
     index = (u8)mode;
     if (mode < 2) {
-        func_800328E4(index);
-        func_80032990(index);
-        func_80032940(index);
+        Model_CopyCurrentToBuffer(index);
+        Model_ApplyScaleAndTranslation(index);
+        Model_ConcatCameraMatrix(index);
 
         if (D_8006F09C->unk_01A == 0x92) {
-            func_80033B2C(&D_800AFFC8[index][D_800AF7B0[index & 1]].model, D_800B2EA8, D_800AF7C8[index].mtx, &D_80077950);
+            func_80033B2C(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
             return;
         }
-        func_80033B2C(&D_800AFFC8[index][D_800AF7B0[index & 1]].model, D_800B2EA8, D_800AF7C8[index].mtx, &D_800777A8);
+        func_80033B2C(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gNormalModelSegment);
     }
 }
 
-void func_80032D28(void) {
+void Model_DrawIfReady(void) {
     u8 index;
     s32 mode;
 
     mode = func_800325B4();
     index = (u8)mode;
-    if ((mode < 2) && (func_800325AC() == 0) && (D_800AF7C0[index] >= 2)) {
-        func_800328E4(index);
-        func_80032990(index);
-        func_80032940(index);
-        func_800361C4(&D_800AFFC8[index][D_800AF7B0[index & 1]].model, &D_800AF7C8[index].mtx);
+    if ((mode < 2) && (func_800325AC() == 0) && (gModelPhase[index] >= 2)) {
+        Model_CopyCurrentToBuffer(index);
+        Model_ApplyScaleAndTranslation(index);
+        Model_ConcatCameraMatrix(index);
+        func_800361C4(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, &gModelMtxBuffers[index].mtx);
     }
 }
 
-Gfx* func_80032E00(Gfx* gfx) {
+Gfx* Model_DrawSegment(Gfx* gfx) {
     ModelSegment* segment;
     s32 pad[1];
     MtxF modelMtx;     // sp1E8
@@ -177,9 +177,9 @@ Gfx* func_80032E00(Gfx* gfx) {
     Vec3f translate;
 
     if (D_8006F09C->unk_01A == 0x92) {
-        segment = (ModelSegment *)&D_80077950;
+        segment = (ModelSegment *)&gSpecialModelSegment;
     } else {
-        segment = (ModelSegment *)&D_800777A8;
+        segment = (ModelSegment *)&gNormalModelSegment;
     }
     func_80031EF4(&modelMtx, &D_8006F088->unk_60.mtxf);
     guMtxF2L(&modelMtx.mf[0], &tempMtx);
@@ -193,59 +193,59 @@ Gfx* func_80032E00(Gfx* gfx) {
     guMtxF2L(&tempCatMtx.mf[0], mtxL);
     guMtxCatL(&tempMtx, mtxL, mtxL);
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = mtxL;    }
-    gfx = func_80032A7C(gfx);
+    gfx = Model_SetRenderColors(gfx);
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDB060038;    _gfx->words.w1 = (s32) segment->vertexSegment;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = (s32) segment->displayList;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
-    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &D_800762B0;    }
+    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gModelSetupDL;    }
     return gfx;
 }
 
-Gfx* func_80032F94(Gfx* gfx) {
+Gfx* Model_RenderStateMachine(Gfx* gfx) {
     u8 mode;
     Vtx* vtx;
     s16* var_v1;
 
     mode = func_800325B4();
     if ((mode == 0xFF) || (mode == 0xFE)) {
-        return func_80032E00(gfx);
+        return Model_DrawSegment(gfx);
     }
     if (mode >= 4) {
         return gfx;
     }
     if (mode >= 2) {
         mode &= 1;
-        if (D_800AF7C0[mode] >= 2) {
+        if (gModelPhase[mode] >= 2) {
             GfxAlloc(0xA0);
-            gfx = func_80032A7C(gfx);
+            gfx = Model_SetRenderColors(gfx);
             var_v1 = &D_800AF7B0[mode & 1];
             {
-                ModelSegment* segment = (ModelSegment*)(&D_800AFFC8[mode][*var_v1].model.unkSegment);
+                ModelSegment* segment = (ModelSegment*)(&gStadiumModelSlots[mode][*var_v1].model.unkSegment);
                 {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDB060038;    _gfx->words.w1 = (s32) segment->vertexSegment;    }
                 {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = (s32) segment->displayList;    }
-                {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &D_800762B0;    }
+                {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gModelSetupDL;    }
             }
             *var_v1 += 1;
         }
         return gfx;
     }
-    switch (D_800AF7C0[mode]) {
+    switch (gModelPhase[mode]) {
         default:
             var_v1 = &D_800AF7B0[mode & 1];
             break;
         case 1:
-            func_80032BD4();
+            Model_DrawCurrent();
             var_v1 = &D_800AF7B0[mode & 1];
             break;
         case 2:
         case 3:
             vtx = GfxAlloc(0xA0);
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &D_80076270;    }
-            gfx = func_80032A7C(gfx);
+            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &gIdentityMtx;    }
+            gfx = Model_SetRenderColors(gfx);
             var_v1 = &D_800AF7B0[mode & 1];
-            gfx = func_800366A4(gfx, &D_800AFFC8[mode][*var_v1].model, vtx);
+            gfx = func_800366A4(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &D_800762B0;    }
+            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gModelSetupDL;    }
             break;
     }
     *var_v1 += 1;

@@ -145,8 +145,8 @@ void func_8003260C(unk_D_86002F58_004_000* arg0) {
     D_800AF7AE = 0;
 
     if (unk1A < 0x98) {
-        D_800AF7C0[idx & 1] = 0;
-        func_80032A34(idx & 1);
+        gModelPhase[idx & 1] = 0;
+        ModelSlot_Reset(idx & 1);
         func = Util_ConvertAddrToVirtAddr(func_810007A8);
         func(arg0);
     }
@@ -160,18 +160,18 @@ void func_80032670(u32 arg0, u32 arg1) {
     func();
 
     if ((arg0 < 2) && (arg1 != 0) && (arg1 < 0x98)) {
-        switch (D_800AF7C0[arg0]) {
+        switch (gModelPhase[arg0]) {
             default:
-                D_800AF7C0[arg0] = 1;
+                gModelPhase[arg0] = 1;
                 return;
             case 0:
-                D_800AF7C0[arg0] = 1;
+                gModelPhase[arg0] = 1;
                 return;
             case 1:
-                D_800AF7C0[arg0] = 2;
+                gModelPhase[arg0] = 2;
                 return;
             case 2:
-                D_800AF7C0[arg0] = 3;
+                gModelPhase[arg0] = 3;
                 break;
             case 3:
                 break;

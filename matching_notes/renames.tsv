@@ -390,24 +390,24 @@ D_800AF768	gControllerMsg	p7		static s32 buffer passed to osCreateMesgQueue for 
 D_800758A8	gDigitTextureIds	p7		array of texture IDs used to draw digit characters in number rendering functions	applied@02824c8
 D_80075910	gMoveTargetTypeTable	p7		lookup table mapping move indices to target type values used by GetMoveTargetType	applied@02824c8
 D_80075940	gFadeGrayColor	p7		gray color constant used as target in FadeColorTowardGray	applied@02824c8
-D_80076270	gIdentityMtx	p8		Identity matrix (65536 = 1.0) used as default transform in rendering paths.	pending
-D_800762B0	gModelSetupDL	p8		Three?command display list that sets geometry mode, pipe sync and combine, used before drawing models.	pending
-D_800762C8	gModelRenderDL	p8		Five?command display list that sets geometry mode, pipe sync, combine, alpha compare and ends, used for model rendering.	pending
-D_800777A8	gNormalModelSegment	p8		Default model segment pointer selected when unk_01A is not 0x92.	pending
-D_80077950	gSpecialModelSegment	p8		Special model segment pointer selected when unk_01A equals 0x92.	pending
-D_800AF7C0	gModelPhase	p8		Array indexed by mode that drives the rendering state machine (values 0?3 control different draw paths).	pending
-D_800AF7C8	gModelMtxBuffers	p8		Per?index matrix buffers storing copied and transformed matrices for each mode.	pending
-D_800AFFC8	gStadiumModelSlots	p8		2?3 array of StadiumModelSlot structures holding models for each player side and slot.	pending
-D_800B2EA8	gModelTextureData	p8		Opaque data block passed to the model?drawing routine, likely texture or material information.	pending
-func_800328E4	Model_CopyCurrentToBuffer	p8		Copies the current relative matrix into gModelMtxBuffers[index] for later use.	pending
-func_80032940	Model_ConcatCameraMatrix	p8		Concatenates the camera matrix (from D_8006F088) onto the stored matrix buffer for the given index.	pending
-func_80032990	Model_ApplyScaleAndTranslation	p8		Extracts scale from a vector, builds scale and translation matrices, and combines them into the buffer matrix.	pending
-func_80032A34	ModelSlot_Reset	p8		Iterates over the three slots of a StadiumModelSlot array and clears the model's unknown field to zero.	pending
-func_80032A7C	Model_SetRenderColors	p8		Sets primitive and environment colors based on D_8006F09C->unk_01A before rendering a model.	pending
-func_80032BD4	Model_DrawCurrent	p8		Selects the current model slot, prepares matrices, and draws the model using the appropriate segment (special or normal).	pending
-func_80032D28	Model_DrawIfReady	p8		Draws the model only when func_800325AC() returns 0 and the phase counter is ?2, using a different draw routine.	pending
-func_80032E00	Model_DrawSegment	p8		Builds a full transformation matrix, loads it, and issues commands to draw the selected model segment.	pending
-func_80032F94	Model_RenderStateMachine	p8		Dispatches rendering based on the current mode and phase, handling special cases, animation steps, and default drawing.	pending
+D_80076270	gIdentityMtx	p8		Identity matrix (65536 = 1.0) used as default transform in rendering paths.	applied@4bb3e72
+D_800762B0	gModelSetupDL	p8		Three?command display list that sets geometry mode, pipe sync and combine, used before drawing models.	applied@4bb3e72
+D_800762C8	gModelRenderDL	p8		Five?command display list that sets geometry mode, pipe sync, combine, alpha compare and ends, used for model rendering.	applied@4bb3e72
+D_800777A8	gNormalModelSegment	p8		Default model segment pointer selected when unk_01A is not 0x92.	applied@4bb3e72
+D_80077950	gSpecialModelSegment	p8		Special model segment pointer selected when unk_01A equals 0x92.	applied@4bb3e72
+D_800AF7C0	gModelPhase	p8		Array indexed by mode that drives the rendering state machine (values 0?3 control different draw paths).	applied@4bb3e72
+D_800AF7C8	gModelMtxBuffers	p8		Per?index matrix buffers storing copied and transformed matrices for each mode.	applied@4bb3e72
+D_800AFFC8	gStadiumModelSlots	p8		2?3 array of StadiumModelSlot structures holding models for each player side and slot.	applied@4bb3e72
+D_800B2EA8	gModelTextureData	p8		Opaque data block passed to the model?drawing routine, likely texture or material information.	applied@4bb3e72
+func_800328E4	Model_CopyCurrentToBuffer	p8		Copies the current relative matrix into gModelMtxBuffers[index] for later use.	applied@4bb3e72
+func_80032940	Model_ConcatCameraMatrix	p8		Concatenates the camera matrix (from D_8006F088) onto the stored matrix buffer for the given index.	applied@4bb3e72
+func_80032990	Model_ApplyScaleAndTranslation	p8		Extracts scale from a vector, builds scale and translation matrices, and combines them into the buffer matrix.	applied@4bb3e72
+func_80032A34	ModelSlot_Reset	p8		Iterates over the three slots of a StadiumModelSlot array and clears the model's unknown field to zero.	applied@4bb3e72
+func_80032A7C	Model_SetRenderColors	p8		Sets primitive and environment colors based on D_8006F09C->unk_01A before rendering a model.	applied@4bb3e72
+func_80032BD4	Model_DrawCurrent	p8		Selects the current model slot, prepares matrices, and draws the model using the appropriate segment (special or normal).	applied@4bb3e72
+func_80032D28	Model_DrawIfReady	p8		Draws the model only when func_800325AC() returns 0 and the phase counter is ?2, using a different draw routine.	applied@4bb3e72
+func_80032E00	Model_DrawSegment	p8		Builds a full transformation matrix, loads it, and issues commands to draw the selected model segment.	applied@4bb3e72
+func_80032F94	Model_RenderStateMachine	p8		Dispatches rendering based on the current mode and phase, handling special cases, animation steps, and default drawing.	applied@4bb3e72
 func_80030010	Cam_SetupCameraParams	p9		Uses Cam_GetFov and copies camera struct fields to configure a camera, indicating it sets up camera parameters	pending
 func_800300CC	Cam_SetupDefaultCamera	p9		Sets a default FOV of 45.0f for the active camera, indicating default camera setup	pending
 func_8003013C	Cam_GetCameraAngles	p9		Decomposes the camera matrix and stores angle offsets in the output struct, suggesting it retrieves camera angles	pending
