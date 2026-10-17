@@ -2204,6 +2204,20 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 //   0x64 and reloaded for `spBA * func_843776FC(..)`, is the same shape), i.e. the original
 //   produced a CSE temp holding temp_t0's value for the `/ 2` multiply and the `-= ` in the
 //   if; not reproduced yet.
+// - Closest shapes found (not kept): `var_s5 = +temp_t0;` (also `temp_t0 - 0`, `temp_t0 | 0`)
+//   at the block top blocks the propagation and gives X = s5 with a spill before the first call
+//   and `lw s5` after it, exactly the target's shape, and moves temp_t0's slot to 0x6c and sp78's
+//   to 0x78 as in the target - but X is reloaded with its own `lbu 0x6f` (the u8 narrowing)
+//   instead of reusing the word reload `lw t8,0x6c` that feeds temp_t0 * 2, and the frame grows
+//   to 0x110 (10105). With the same def before the 0x5C test and `var_s5 * 2` after the block,
+//   the *2 shares X's load (lbu, 12419). A word-typed X (s32 named, function or block scope)
+//   shares the `lw t8` load but is a memory variable at its own home 0x88 (frame 0x110, 11673).
+//   So the target's X is word-loaded like an int, spilled to the temp area like a u8/temp, and
+//   register-allocated after the first call: try an int-typed expression temp next (e.g. a
+//   value CSE'd between the in-block uses and the post-block `temp_t0 * 2`).
+// - Both remaining structural diffs (X here, the case 0x19 `move v1,v0`) are copies the target
+//   keeps and we propagate. Not an -Olimit effect: below the threshold uopt skips the whole
+//   function (289909), any limit >= 1500 is identical to the default.
 // - Case 0x19 first switch: copy `move v1,v0` still missing; nested `default: switch`, an
 //   if/else chain, and switching on temp_s6->unk_15 / reusing var_v1_4/var_v1_6/var_s2/spC0
 //   for the switch value were all worse or did not create the copy.
