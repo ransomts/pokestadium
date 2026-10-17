@@ -390,7 +390,7 @@
     - [0x7A1B0, .data, libleo/cjcreateleomanager]
 
     # fragment1?
-    - [0x7A1C0, data, rom_data_7A1C0]
+    - [0x7A1C0, .data, data_7A1C0]
 
     # libultra
     - [0x7A210, lib, libultra, piacs,          .data]
