@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 7989 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 7934 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2190,7 +2190,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
 // with no slot left for a tmp7 it reuses a spare s32 (now var_s2; 9074 -> 8919).
 // Prologue matches with the field reads in the order 09 0E 0A 0B 0C 0D 0F 10 (8919 -> 8639).
-// The unk_08 clamp result reuses var_v1_6 (the case 0x39 flag): spC0 then lives in t1 (spilled to
+// The unk_08 clamp result is var_v1_6 (case 0x39 flag is var_v1_4: v1): spC0 then lives in t1 (spilled to
 // 0xC0) and the unk_08 value in s2, as in the target (8639 -> 8349).
 // The unk_0A copy for the last two uses in the 0x5C block (`spC0 = temp_t0;` just before the
 // multiply) and var_s2 for the unk_20 product (8349 -> 8029). var_s5 must stay u8: as s32 it
@@ -3299,12 +3299,12 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
                 if (((temp_s3->unk_4E & 8) != 0) || (temp_s3->unk_0B == 0x84)) {
                     if ((temp_s3->unk_4E & 8) != 0) {
                         if (temp_s3 == D_843C60B8) {
-                            var_v1_6 = D_84390010[0]->unk_654.unk_BE != 0x84;
+                            var_v1_4 = D_84390010[0]->unk_654.unk_BE != 0x84;
                         } else {
-                            var_v1_6 = D_84390010[1]->unk_654.unk_BE != 0x84;
+                            var_v1_4 = D_84390010[1]->unk_654.unk_BE != 0x84;
                         }
 
-                        if (var_v1_6 == 0) {
+                        if (var_v1_4 == 0) {
                             break;
                         }
                     } else {
