@@ -3150,7 +3150,7 @@ u8 func_84377FA4(unk_D_843C60AC* arg0, unk_D_843C60A4* arg1, u8* arg2, u8 arg3, 
 s32 func_843780FC(u8 arg0, u8 arg1);
 u8 func_84378140(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1);
 u8 func_8437828C(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1);
-s32 func_843783CC(unk_D_843C60A4* arg0);
+u8 func_843783CC(unk_D_843C60A4* arg0);
 void func_84378474(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_800AE540_0004* arg2, unk_D_843C5568* arg3, s32 arg4);
 void func_84378578(unk_D_843C60AC* arg0, u8 arg1);
 u16 func_8437865C(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2);
