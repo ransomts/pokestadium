@@ -1347,6 +1347,14 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // like the target, but the frame shrinks to 0xb8: 5192), `arg0 = var_s6;` (emits a store, 4291), s16/u32
 // var_s6 or casts on the rect1 operands. Farm d1-d3 candidates (2415 in tree) are not equivalent C
 // (frame 0xc8, `color + color` in cases 11-15).
+// Round 9 F1 (farm w1/1676, real 1716): hoisting `x0 = arg0 + 0x84` into a named local declared
+// between `color` and `var_s4`, assigned BEFORE the `var_s6 = temp_s5->unk_CD4[...]` load and used as
+// both for-inits (`x = x0`) and the second-block reassignment: 2834 -> 1716. This is the "x0 spills
+// to 0x50" prediction: x0 now spills to 0x50 like the target and the switch's t-register rotation
+// fixed itself. The candidate's other edit (case 10 statements on one source line) changes nothing.
+// The decl POSITION matters: `s32 x0;` after temp_s7 (before spA8) or the assignment right before the
+// for (after the var_s6 load) scores 3011. Remaining: gDLH still not t0 / colour webs in a3/a0 vs
+// t-regs, and the arg0 load groups. Re-seed the farm from this.
 #ifdef NON_MATCHING
 void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
@@ -1373,6 +1381,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     s32 temp_s7;
     s32 spA8;
     s32 color;
+    s32 x0;
     s32 var_s4;
     unk_func_8830867C_02C* temp_s5;
     Color_RGBA8* temp_v1;
@@ -1408,10 +1417,11 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
     gDPFillRectangle(gDisplayListHead++, arg0 + 0x26, arg1, arg0 + 0x81, arg1 + 0x13);
 
+    x0 = arg0 + 0x84;
     var_s6 = temp_s5->unk_CD4[temp_s5->unk_CD0];
 
     temp_v1 = D_883172CC[arg3 & 1];
-    for (x = arg0 + 0x84; x < temp_s7; var_s6++) {
+    for (x = x0; x < temp_s7; var_s6++) {
         // clang-format off
         color = ((temp_v1[var_s6 & 1].r << 8) & 0xF800) | ((temp_v1[var_s6 & 1].g << 3) & 0x7C0) | ((temp_v1[var_s6 & 1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
@@ -1422,7 +1432,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     }
 
     if (arg2 != NULL) {
-        x = arg0 + 0x84;
+        x = x0;
         func_8002E8E4(arg0 + 6, arg1 + 4, arg3 + 1, 3);
         spBC = D_883172C0[func_883047CC(temp_s5, arg2)];
         if (arg4 & 4) {
