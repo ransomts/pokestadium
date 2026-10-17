@@ -1,12 +1,12 @@
 #include "45720.h"
 
-u8 D_800785F0 = 0;
+u8 gAudioPaused = 0;
 
-s32 D_800FCED0;
-unk_D_800FCED8* D_800FCED8[2];
-s16* D_800FCEE0[2];
-u32 D_800FCEE8;
-u32 D_800FCEEC;
+s32 gAudioTransferPending;
+unk_D_800FCED8* gAudioChannel[2];
+s16* gAudioSampleData[2];
+u32 gAudioChunkSizeLarge;
+u32 gAudioChunkSizeSmall;
 u8 D_800FCEF0[2];
 s32 D_800FCEF8[2];
 u32 D_800FCF00[2];
@@ -22,38 +22,38 @@ u32 D_800FCF38[2];
 OSMesgQueue D_800FCF40;
 OSMesg D_800FCF58;
 
-void func_80044B20(ALHeap* arg0, u32 arg1, u32 arg2) {
+void Audio_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
     s32 i;
 
-    D_800FCEE8 = arg1 >> 1;
-    D_800FCEEC = arg2 >> 1;
+    gAudioChunkSizeLarge = arg1 >> 1;
+    gAudioChunkSizeSmall = arg2 >> 1;
 
     for (i = 0; i < 2; i++) {
-        D_800FCED8[i] = alHeapDBAlloc(NULL, 0, arg0, 1, sizeof(unk_D_800FCED8));
+        gAudioChannel[i] = alHeapDBAlloc(NULL, 0, arg0, 1, sizeof(unk_D_800FCED8));
         D_800FCF28[i] = alHeapDBAlloc(NULL, 0, arg0, sizeof(*D_800FCF28[0]) / 2, 2);
 
-        D_800FCEE0[i] = (u32)D_800FCED8[i] + 0x198;
+        gAudioSampleData[i] = (u32)gAudioChannel[i] + 0x198;
         D_800FCF30[i] = 0;
         D_800FCF38[i] = 0x400;
         D_800FCEF0[i] = 2;
 
         bzero(D_800FCF28[i], 0x1140);
-        bzero(D_800FCEE0[i], 0x1400);
+        bzero(gAudioSampleData[i], 0x1400);
 
-        func_800456D0(D_800FCED8[i], 0, 0);
+        AudioChannel_Init(gAudioChannel[i], 0, 0);
         D_800FCF20[i] = 0;
     }
 
     D_800FCF24 = osCartRomInit();
     osCreateMesgQueue(&D_800FCF40, &D_800FCF58, 1);
-    D_800FCED0 = 0;
-    D_800785F0 = 0;
+    gAudioTransferPending = 0;
+    gAudioPaused = 0;
 }
 
-void func_80044CBC(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+void Audio_StartChannel(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     u32 temp_a0;
 
-    if ((arg0 < 2) && (D_800785F0 == 0)) {
+    if ((arg0 < 2) && (gAudioPaused == 0)) {
         if (arg2 >= 0x81) {
             arg2 = 0x80;
         }
@@ -73,7 +73,7 @@ void func_80044CBC(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     }
 }
 
-void func_80044D78(u32 arg0, u32 arg1) {
+void Audio_SetVolumeFade(u32 arg0, u32 arg1) {
     u32 temp_a0;
 
     if (arg0 < 2) {
@@ -90,22 +90,22 @@ void func_80044D78(u32 arg0, u32 arg1) {
     }
 }
 
-s32 func_80044E54(u32 arg0) {
+s32 Audio_IsChannelActive(u32 arg0) {
     if (D_800FCEF0[arg0] == 2) {
         return 0;
     }
     return 1;
 }
 
-void func_80044E80(s32 arg0) {
+void Audio_SetPaused(s32 arg0) {
     if (arg0 != 0) {
-        D_800785F0 = 0;
+        gAudioPaused = 0;
     } else {
-        D_800785F0 = 1;
+        gAudioPaused = 1;
     }
 }
 
-void func_80044EA4(void) {
+void Audio_ProcessChannels(void) {
     u32 j;
     u32 var_s7;
     u32 temp_a2;
@@ -120,41 +120,41 @@ void func_80044EA4(void) {
         }
 
         if (D_800FCF30[i] < D_800FCF38[i]) {
-            if ((D_800FCF38[i] - D_800FCF30[i]) < D_800FCEEC) {
-                var_s7 = D_800FCEEC;
+            if ((D_800FCF38[i] - D_800FCF30[i]) < gAudioChunkSizeSmall) {
+                var_s7 = gAudioChunkSizeSmall;
             } else {
-                var_s7 = D_800FCEE8;
+                var_s7 = gAudioChunkSizeLarge;
             }
-        } else if ((0x8A0 - D_800FCEEC) < (D_800FCF30[i] - D_800FCF38[i])) {
-            var_s7 = D_800FCEEC;
+        } else if ((0x8A0 - gAudioChunkSizeSmall) < (D_800FCF30[i] - D_800FCF38[i])) {
+            var_s7 = gAudioChunkSizeSmall;
         } else {
-            var_s7 = D_800FCEE8;
+            var_s7 = gAudioChunkSizeLarge;
         }
 
-        func_80045780(D_800FCED8[i]);
-        if ((u8) D_800FCED8[i]->unk_25D1 == 2) {
+        AudioChannel_Update(gAudioChannel[i]);
+        if ((u8) gAudioChannel[i]->unk_25D1 == 2) {
             osWritebackDCache(D_800FCF28[i], 0x1140);
-            func_80045A48(D_800FCED8[i]);
-            D_800FCED0 = 1;
+            AudioChannel_StartPlayback(gAudioChannel[i]);
+            gAudioTransferPending = 1;
             D_800FCF20[i] = 0;
         } else {
-            if ((D_800FCEF0[i] != 0) && (D_800FCEF0[i] != 3) && ((u8) D_800FCED8[i]->unk_25D1 == 4)) {
+            if ((D_800FCEF0[i] != 0) && (D_800FCEF0[i] != 3) && ((u8) gAudioChannel[i]->unk_25D1 == 4)) {
                 if (D_800FCF20[i] == 0) {
-                    func_80045A68(D_800FCED8[i]);
+                    AudioChannel_Stop(gAudioChannel[i]);
                     D_800FCF20[i] = 1;
                 }
-                D_800FCED0 = 0;
+                gAudioTransferPending = 0;
                 D_800FCEF0[i] = 2;
-                bzero(D_800FCEE0[i], 0x1400);
+                bzero(gAudioSampleData[i], 0x1400);
                 bzero(D_800FCF28[i], 0x1140);
             }
         }
 
-        func_800459E0(D_800FCED8[i], var_s7);
+        AudioChannel_Consume(gAudioChannel[i], var_s7);
 
-        temp_a2 = D_800FCED8[i]->unk_25C8 - var_s7;
+        temp_a2 = gAudioChannel[i]->unk_25C8 - var_s7;
         for (j = 0; j < var_s7; j++) {
-            temp = (D_800FCEE0[i][(temp_a2 + j) % 2560] * D_800FCF00[i]) >> 7;
+            temp = (gAudioSampleData[i][(temp_a2 + j) % 2560] * D_800FCF00[i]) >> 7;
             D_800FCF28[i]->unk_000[(D_800FCF38[i] + (j << 1) + 1) % 2208] = temp;
             D_800FCF28[i]->unk_000[(D_800FCF38[i] + (j << 1)) % 2208] = temp;
         }
@@ -169,17 +169,17 @@ void func_80044EA4(void) {
                 break;
 
             case 0:
-                func_800456D0(D_800FCED8[i], D_800FCEF8[i], func_800455DC);
+                AudioChannel_Init(gAudioChannel[i], D_800FCEF8[i], Audio_DmaTransfer);
                 D_800FCEF0[i] = 4;
-                if (D_800FCED0 != 0) {
-                    D_800FCED0 = 0;
+                if (gAudioTransferPending != 0) {
+                    gAudioTransferPending = 0;
                 }
                 D_800FCF00[i] = D_800FCF08[i];
                 break;
 
             case 1:
-                func_80045A68(D_800FCED8[i]);
-                bzero(D_800FCEE0[i], 0x1400);
+                AudioChannel_Stop(gAudioChannel[i]);
+                bzero(gAudioSampleData[i], 0x1400);
                 D_800FCF20[i] = 1;
                 break;
 
@@ -203,7 +203,7 @@ void func_80044EA4(void) {
     }
 }
 
-void func_800455DC(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
+void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     OSIoMesg sp48;
     u32 var_s1;
     u32 var_s2;
@@ -237,7 +237,7 @@ void func_800455DC(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     osSendMesg(arg3, NULL, 1);
 }
 
-void func_800456D0(unk_D_800FCED8* arg0, s32 arg1, s32 arg2) {
+void AudioChannel_Init(unk_D_800FCED8* arg0, s32 arg1, s32 arg2) {
     bzero(&arg0->unk_0000, sizeof(unk_D_800FCED8_0000));
 
     arg0->unk_0000.unk_166 = 0x28;
@@ -262,7 +262,7 @@ void func_800456D0(unk_D_800FCED8* arg0, s32 arg1, s32 arg2) {
     arg0->unk_25D2 = 2;
 }
 
-void func_80045780(unk_D_800FCED8* arg0) {
+void AudioChannel_Update(unk_D_800FCED8* arg0) {
     s32 var_a2;
     s32 var_s2;
     u32 var_v1;
@@ -320,7 +320,7 @@ void func_80045780(unk_D_800FCED8* arg0) {
     }
 }
 
-u32 func_800459E0(unk_D_800FCED8* arg0, u32 arg1) {
+u32 AudioChannel_Consume(unk_D_800FCED8* arg0, u32 arg1) {
     u32 temp_v0;
     u32 var_a2;
 
@@ -341,12 +341,12 @@ u32 func_800459E0(unk_D_800FCED8* arg0, u32 arg1) {
     return 0;
 }
 
-void func_80045A48(unk_D_800FCED8* arg0) {
+void AudioChannel_StartPlayback(unk_D_800FCED8* arg0) {
     if (arg0->unk_25D1 == 2) {
         arg0->unk_25D1 = 3;
     }
 }
 
-void func_80045A68(unk_D_800FCED8* arg0) {
+void AudioChannel_Stop(unk_D_800FCED8* arg0) {
     arg0->unk_25D1 = 4;
 }

@@ -141,7 +141,7 @@ s32 func_80045D60(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045D60* arg1, s3
     }
 
 // Speech/voice frame decoder: called once per 160-sample (0x140-byte) output
-// frame by func_80045780 (src/45720.c). Bitstream layout:
+// frame by AudioChannel_Update (src/45720.c). Bitstream layout:
 //  - if no run is active: 1 bit; 1 => silence run of (4 bits + 1) frames
 //    (unk_18C), 0 => voiced run of (7 bits + 1) frames (unk_18A).
 //  - silence frame: zero the output buffer.

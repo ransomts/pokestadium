@@ -8,7 +8,7 @@ void func_8004FC60(s32 arg0, u32 arg1) {
 
     if (arg0 & 4) {
         for (i = 0; i < 2; i++) {
-            func_80044D78(i, arg1);
+            Audio_SetVolumeFade(i, arg1);
         }
         arg0 &= ~4;
     }
@@ -23,7 +23,7 @@ void func_8004FCD8(s32 arg0) {
     func_8004FC60(3, arg0);
 
     for (i = 0; i < 2; i++) {
-        func_80044D78(i, arg0);
+        Audio_SetVolumeFade(i, arg0);
     }
 }
 

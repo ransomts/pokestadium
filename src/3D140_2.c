@@ -1029,7 +1029,7 @@ void func_8003DB84(s32 arg0) {
     D_800783E4 = 0;
 
     if ((D_800FCB18[0] != NULL) && (D_800FCB18[1] != NULL) && (D_8007840C != 0) &&
-        (D_800FCB18[0]->unk_0C != 0) && (D_800FCB18[1]->unk_0C != 0) && (func_80044E54(1) == 0)) {
+        (D_800FCB18[0]->unk_0C != 0) && (D_800FCB18[1]->unk_0C != 0) && (Audio_IsChannelActive(1) == 0)) {
         if ((osGetTime() % 2) == 0) {
             func_800420C0(D_800780A8);
         }
@@ -2067,7 +2067,7 @@ void func_80040A70(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
                             } else {
                                 func_800420C0(D_80077F7C);
                             }
-                        } else if (func_80044E54(1) == 0) {
+                        } else if (Audio_IsChannelActive(1) == 0) {
                             if (D_800783CC == 1) {
                                 if (D_800FCCAE == 2) {
                                     func_800420C0(D_80077FAC);
@@ -2114,7 +2114,7 @@ void func_80040A70(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
                             } else {
                                 func_800420C0(D_80077F7C);
                             }
-                        } else if (func_80044E54(1) == 0) {
+                        } else if (Audio_IsChannelActive(1) == 0) {
                             if (D_800783CC == 1) {
                                 if (D_800FCCAE == 2) {
                                     func_800420C0(D_80077FAC);
@@ -2208,10 +2208,10 @@ void func_80041688(void) {
 void func_800416BC(void) {
     u8* seq;
 
-    if ((D_800783B4 < D_800783B8) && (D_80078388 != 0) && (func_80044E54(1) == 0)) {
+    if ((D_800783B4 < D_800783B8) && (D_80078388 != 0) && (Audio_IsChannelActive(1) == 0)) {
         if (D_800783A4[D_800783B4 & 3] != 0) {
             seq = D_800FC714->seqArray[D_800783A4[D_800783B4 & 3] - 1].offset;
-            func_80044CBC(1, seq, 0x7E, 0);
+            Audio_StartChannel(1, seq, 0x7E, 0);
         }
         D_800783B4++;
     }

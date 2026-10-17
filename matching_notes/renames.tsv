@@ -317,24 +317,24 @@ D_800AF738	gBattleArchive	p2		Pointer to the loaded binary archive containing pa
 D_80070FA0	gSpeciesBaseStats	p2		Array indexed by species ID (arg1?1) providing base stat fields (unk_06, unk_07) used when initializing a Pok?mon?s data	applied@272a37c
 D_80075680	gBattleTimerLimits	p2		Static array of three timer thresholds (1,?15,?30) likely used for battle time?limit settings	applied@272a37c
 D_80075684	gBattleToggleFlag	p2		Static flag toggled (XOR?1) each call to Battle_StartVersusMode to alternate which side receives which party data	applied@272a37c
-func_80044B20	Audio_Init	p3		Initializes audio streaming buffers and DMA queue, called at startup with heap and size parameters	pending
-func_80044CBC	Audio_StartChannel	p3		Starts playback on a channel, setting state flags and volume, guarded by D_800785F0	pending
-func_80044D78	Audio_SetVolumeFade	p3		Configures a volume fade by computing a step and setting channel state to 5 or 1	pending
-func_80044E54	Audio_IsChannelActive	p3		Returns 0 when channel state equals 2 (idle), otherwise 1, indicating activity	pending
-func_80044E80	Audio_SetPaused	p3		Toggles global pause flag D_800785F0 based on argument	pending
-func_80044EA4	Audio_ProcessChannels	p3		Main per?frame loop that updates DMA, mixes samples and advances channel state machines	pending
-func_800455DC	Audio_DmaTransfer	p3		Performs chunked DMA from ROM to RAM using OSPi, updating message queue and cache	pending
-func_800456D0	AudioChannel_Init	p3		Initializes an audio channel struct, zeroing fields and setting callback and state	pending
-func_80045780	AudioChannel_Update	p3		Advances channel state machine, handling DMA completion, buffer refill and playback progression	pending
-func_800459E0	AudioChannel_Consume	p3		Consumes requested bytes from the channel buffer when in state 3, updating pointers	pending
-func_80045A48	AudioChannel_StartPlayback	p3		Transitions channel state from 2 to 3, indicating playback should begin	pending
-func_80045A68	AudioChannel_Stop	p3		Sets channel state to 4, marking it as stopped	pending
-D_800785F0	gAudioPaused	p3		Global flag toggled by Audio_SetPaused; 1 means audio is paused	pending
-D_800FCED0	gAudioTransferPending	p3		Flag set to 1 when a DMA writeback occurs and cleared after processing	pending
-D_800FCED8	gAudioChannel	p3		Array of two audio channel structs used throughout the module	pending
-D_800FCEE0	gAudioSampleData	p3		Pointer into each channel struct (+0x198) used as source sample buffer	pending
-D_800FCEE8	gAudioChunkSizeLarge	p3		Half of the first size argument passed to Audio_Init, used as large DMA chunk size	pending
-D_800FCEEC	gAudioChunkSizeSmall	p3		Half of the second size argument passed to Audio_Init, used as small DMA chunk size	pending
+func_80044B20	Audio_Init	p3		Initializes audio streaming buffers and DMA queue, called at startup with heap and size parameters	applied@191ea4e
+func_80044CBC	Audio_StartChannel	p3		Starts playback on a channel, setting state flags and volume, guarded by D_800785F0	applied@191ea4e
+func_80044D78	Audio_SetVolumeFade	p3		Configures a volume fade by computing a step and setting channel state to 5 or 1	applied@191ea4e
+func_80044E54	Audio_IsChannelActive	p3		Returns 0 when channel state equals 2 (idle), otherwise 1, indicating activity	applied@191ea4e
+func_80044E80	Audio_SetPaused	p3		Toggles global pause flag D_800785F0 based on argument	applied@191ea4e
+func_80044EA4	Audio_ProcessChannels	p3		Main per?frame loop that updates DMA, mixes samples and advances channel state machines	applied@191ea4e
+func_800455DC	Audio_DmaTransfer	p3		Performs chunked DMA from ROM to RAM using OSPi, updating message queue and cache	applied@191ea4e
+func_800456D0	AudioChannel_Init	p3		Initializes an audio channel struct, zeroing fields and setting callback and state	applied@191ea4e
+func_80045780	AudioChannel_Update	p3		Advances channel state machine, handling DMA completion, buffer refill and playback progression	applied@191ea4e
+func_800459E0	AudioChannel_Consume	p3		Consumes requested bytes from the channel buffer when in state 3, updating pointers	applied@191ea4e
+func_80045A48	AudioChannel_StartPlayback	p3		Transitions channel state from 2 to 3, indicating playback should begin	applied@191ea4e
+func_80045A68	AudioChannel_Stop	p3		Sets channel state to 4, marking it as stopped	applied@191ea4e
+D_800785F0	gAudioPaused	p3		Global flag toggled by Audio_SetPaused; 1 means audio is paused	applied@191ea4e
+D_800FCED0	gAudioTransferPending	p3		Flag set to 1 when a DMA writeback occurs and cleared after processing	applied@191ea4e
+D_800FCED8	gAudioChannel	p3		Array of two audio channel structs used throughout the module	applied@191ea4e
+D_800FCEE0	gAudioSampleData	p3		Pointer into each channel struct (+0x198) used as source sample buffer	applied@191ea4e
+D_800FCEE8	gAudioChunkSizeLarge	p3		Half of the first size argument passed to Audio_Init, used as large DMA chunk size	applied@191ea4e
+D_800FCEEC	gAudioChunkSizeSmall	p3		Half of the second size argument passed to Audio_Init, used as small DMA chunk size	applied@191ea4e
 func_80019F84	SpriteDisplay_InitGeoLayout	p4		called after SpriteDisplay_Alloc to process a static geo layout command array and initialize the sprite display geometry	pending
 func_8001A1D0	SpriteDisplay_SetDepthBuffer	p4		sets each slot's depth buffer via func_80006414, indicating it configures depth for the sprite display	pending
 func_8001A250	SpriteDisplay_SetScaleTable	p4		assigns arg1 to arg0->unk_18, which is later used as a scaling table for sprite slots	pending

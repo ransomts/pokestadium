@@ -375,7 +375,7 @@ void amCreateAudioMgr(ALSynConfig* c, amConfig* amc, u32 num_dma_buffers, s32 ar
     D_800FCAD8 = c->maxVVoices;
     D_800FC824 = 0;
 
-    func_80044B20(c->heap, minFrameSize, maxFrameSize);
+    Audio_Init(c->heap, minFrameSize, maxFrameSize);
 }
 
 s32 __amDMA(s32 addr, s32 len, void* state) {
@@ -520,7 +520,7 @@ OSTask* func_8003CADC(OSTask* arg0) {
     }
 
     if (D_80077D98[0] != 0) {
-        func_80044EA4();
+        Audio_ProcessChannels();
     }
 
     func_800416BC();

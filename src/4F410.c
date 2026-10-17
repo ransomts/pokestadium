@@ -1235,7 +1235,7 @@ void func_8004E810(u32 arg0, u32 arg1) {
             break;
     }
 
-    func_80044CBC(0, D_800FC708->seqArray[arg0 - 1].offset, sp24, var_a3);
+    Audio_StartChannel(0, D_800FC708->seqArray[arg0 - 1].offset, sp24, var_a3);
 }
 
 void func_8004EBC8(u32 arg0) {

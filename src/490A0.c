@@ -23,7 +23,7 @@ s32 func_800484E0(void) {
     }
 
     for (i = 0; i < 2; i++) {
-        if (func_80044E54(i) != 0) {
+        if (Audio_IsChannelActive(i) != 0) {
             var_s1 += 100;
         }
     }

@@ -48,7 +48,7 @@ s32 func_8004B1CC(s32 arg0) {
 
     sp20 = arg0;
     sp1C = 0x80;
-    func_80044E80(1);
+    Audio_SetPaused(1);
     MusSetVoicePriority(1);
     D_800FF9B4 = arg0;
     if (arg0 == 0x50) {
@@ -497,12 +497,12 @@ void func_8004B9C4(s32 arg0) {
     D_80078ED0 = 0;
     D_8007840C = 0;
     MusSetDurationScale(D_80078FA8, arg0);
-    func_80044E80(0);
+    Audio_SetPaused(0);
     func_8003DB84(0);
 
     if (D_800FF9B4 != 0x50) {
         for (i = 0; i < 2; i++) {
-            func_80044D78(i, arg0);
+            Audio_SetVolumeFade(i, arg0);
         }
     }
 }
