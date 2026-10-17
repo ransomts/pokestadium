@@ -1,63 +1,65 @@
 # Plan to finish the Pokemon Stadium (US) decomp -- handoff for AI agents
 
-Written 2026-10-07 on Palmetto (node2044, branch `match-round-1`). Read this file first, then
-`NOTES.md` (per-function state, process lessons) and `IDO_TRICKS.md` (what has worked). Those two
-files are the ground truth for per-function details; this file is the work breakdown, the agent
-protocol, and the cluster recipe.
+Rewritten 2026-10-17 06:30 after round 8 (branch `match-round-1`). Read this file first, then
+`NOTES.md` (per-function state and history; the "Round 8" sections are the latest) and
+`IDO_TRICKS.md` (what has worked; the end of the file has round 8's compiler lessons). Each open
+function's `#ifdef NON_MATCHING` draft has a `//` comment with the model of what still differs and
+every dead end: read it before touching the function.
 
-## 0. Where the project stands (2026-10-07, end of round 6)
+## 0. Where the project stands (2026-10-17 morning)
 
 | Item | State |
 |---|---|
-| Code matched (`progress.py -v us`, "all") | 94.79% (was 93.13% when matching rounds began, 93.95% this morning) |
-| Functions still `#pragma GLOBAL_ASM` | 40 (Appendix A has the original 54; rounds 5-6 matched 14) |
-| Drafts | all 29 have an `#ifdef NON_MATCHING` draft with a `//` state comment and a NOTES entry |
-| Parked | func_860005B8 + func_86100C30: byte-identical only via a linker alias, branch `round6-gfxhead-alias`, owner decision pending |
-| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1` (local branch, never pushed) |
-| Data still in asm (`asm/us/data/**/*.s`) | 184 files, 2.3 MB, mostly one .data + one .rodata stub per fragment; fragments/1 has 12 |
-| Hand-written asm by design | `boot`, `entry`, `libleo/bootstrap` (yaml `asm`/`hasm` segments) - not "undecompiled" |
-| Permuter farm | job 16792584 chain (6 x 12 h), 16 regalloc-only functions; add func_8004A474 at the next restart; candidates in `/scratch/$USER/permuter_best` |
-| Tooling (2026-10-07) | corpus.py (idiom search, near, siblings), accessmap.py, symcheck.py, ido_bisect.py, round.sh; permuter `sizeof` parse fix (patch + PR draft) |
+| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, 280 commits ahead of `master`, never pushed |
+| Upstream | `origin/master` unchanged since 2026-10-03 (#283); open upstream PRs #284 (audio tools), #282 (progress.py stops counting hand-written asm) |
+| Code (`progress.py -v us`, all) | 96.60% (93.13% when matching began; 96.40% before round 8) |
+| `#pragma GLOBAL_ASM` left | 9 = 6 open + 3 parked (list in section 3) |
+| Parked (owner decision) | func_860005B8 + func_86100C30 (linker alias, branch `round6-gfxhead-alias`); func_86A013C8 (unused-label symbol padding, branch `round8-86A013C8-labels`) |
+| Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; open: 7E0D0, 7D110, 7A1C0, unk_bin_7F670 (Phase D section) |
+| Farm (running) | Slurm 17512644 (tag v: func_8004A89C, func_80034348) and 17512996 (tag w: func_86905734, func_88304850, func_88805AEC), both end ~14:45 on 10-17; candidates in `/scratch/$USER/permuter_best/<func>__<tag><k>/` |
+| Tools | datamig.py + phased_job.sh (data migration with sbatch build gate), adopt_candidate.py / try_candidate.py (permuter candidates), ccs.py (IDO `cc -S` for one function: uopt's registers before as1), corpus.py, accessmap.py, symcheck.py, ido_bisect.py, var.py, fd.sh |
 
-What rounds 5-6 taught (see NOTES.md and IDO_TRICKS.md): the remaining code falls into three kinds
-of problem, and each needs a different tool. (1) One compiler temp whose creation point we cannot
-steer: brute force (farm) + occasional insight. (2) A wrong premise in the draft - wrong struct
-type, wrong symbol, a cursor local the compiler owned, a nested loop that was one loop: insight only,
-and this is where every big win came from. (3) Data/bss layout: needs data migration, not matching.
+Round 8 (night of 10-16, 17 Opus agents in four passes + farm) matched 20 functions; see NOTES.md.
+What finally cracked the hard register-allocation cases was a model of uopt, not brute force:
+uopt copy-propagates assignments built only from register variables, so one source variable becomes
+several live ranges; a dead redefinition or a separate early local blocks that (IDO_TRICKS.md end).
+`ccs.py` shows uopt's choices directly and is the fastest way to test a hypothesis.
 
-## Roadmap
+## Finish roadmap
 
-| Phase | Scope | Who | Wall time (est.) | Exit criterion |
-|---|---|---|---|---|
-| A (now) | farm on the 8 open tier-2 functions; owner decides the alias pair | farm job + owner | runs 3 days unattended | candidates validated with fd.sh, or farm stopped |
-| B | tier 4 structural functions: round 7 matched 11 of 26; rounds 8-9 on the 15 left (7 are regalloc-only -> farm first) | 8-15 Opus agents/round | 2 more rounds | <= 10 functions left, all with a precise "what is wrong" model |
-| C | tier 3 data-layout blockers (4) + the fragment1/16 data migration they need | 2 agents, long session | 1 round | 4 functions matched or proven to need upstream changes |
-| D | Layer 2: migrate the 184 asm data files to C | 4-6 Sonnet agents, mechanical, build gate | 1-2 days | `asm/us/data` empty, ROM OK |
-| E | finish: scaffolding removal, squash/rebase, PR to master, upstream permuter PR, final docs | 1 agent + owner | half a day | PR open, `progress.py` 100% code |
+| Step | Scope | Who | Exit criterion |
+|---|---|---|---|
+| F1 harvest (first hour) | Check the farm for every open function; adopt zeros; splice the best candidates into the drafts when they are plausible C; re-check 7E0D0 now that 2 of 3 GB APU functions match | integrator alone | farm candidates triaged; drafts at their best known score |
+| F2 round 9 | The 6 open functions (table in section 3), one agent per file group, applying the uopt model with ccs.py | 4-6 Opus agents + farm | each matched, or a draft whose comment names the exact remaining copy/colouring difference |
+| F3 owner decisions | Alias pair, func_86A013C8 labels; accept (merge the branch) or keep GLOBAL_ASM with a comment | owner | decided |
+| F4 data leftovers | 7E0D0 (literals of the GB APU functions), 7D110, 7A1C0, unk_bin_7F670 | integrator or 1 agent | migrated or documented as by-design |
+| F5 upstream | Tidy, rebase onto `origin/master`, split into PRs, file the permuter PR | integrator + owner approval for every push | PRs open |
 
-Rounds 5-6 ran 12-15 functions per round with 6-8 agents and matched 9 and 5. Tier 4 functions are
-bigger and need real reverse engineering, so expect 3-6 matches per round, not 9.
+### F2 detail: the six open functions
+| Function (file) | Draft | Farm best (permuter score, unverified) | What is left (details in the draft comment) |
+|---|---|---|---|
+| func_8004A89C (src/4A3E0.c) | 345 | 320 (v1) | colouring among a0-a3 at the top (idx/row/sample) and a tail `move t5,a0`; siblings matched with the `dir[1]` array and pointer-read tricks |
+| func_80034348 (src/33FE0.c) | 705 | 390 (v2) | float colouring in the triangle loop; the fs3 "phantom" is `len`; agent-15's basic-block-boundary approach got 2582 -> 705 |
+| func_86905734 (src/fragments/15/fragment15_150AC0.c) | 1386 | 1298 (i1, older) | ugen makes 2 fewer int temps before -h (t-register shift), two reloads of (f32)arg1/arg2, one swapped slot pair |
+| func_88304850 (src/fragments/24/fragment24_1CEA00.c) | 2834 | 1676 (w1) | arg0 split into three register groups, gDisplayListHead should be t0, x0 = arg0+0x84 should spill to 0x50 (fixes a switch-wide t-register rotation) |
+| func_88805AEC (src/fragments/28/fragment28_2190D0.c) | 4600 | 2177 (w1) | one extra compiler temp (frame 0x230 vs 0x228), (arg2-5)<<2 should live in t0, arg5 in v1 |
+| func_8437B0CC (src/fragments/62/fragment62_361050.c) | 7809 | none | two copies the target keeps and we propagate: the case-2 0x5C-block copy X (spilled before the first call, reloaded into s5) and `move v1,v0` in case 0x19; everything else follows. Consider a Fable agent here (decision 2) |
+Scores: diff.py WITHOUT `-s` (fd.sh's `-s` under-reports early-return functions); farm numbers are the
+permuter's own scale and must be checked with try_candidate.py. Farm candidates often reach a lower
+score with nonsense edits (`if (1)`, `x*0`, u64 casts); take the idea, write it as plausible C.
 
-### Phase B detail: tier-4 groups (one agent per row unless noted)
-| Group | Functions (instr) | Notes |
-|---|---|---|
-| GB APU emulator, `src/4A3E0.c` | func_80049DF0 (417), func_8004A474 (266), func_8004A89C (256, draft ~170/256) | Transfer Pak Game Boy sound; D_800FD008 = {value, dirty} byte pairs. Fix the struct missing `;` (`char unk2D[0x13]`) first. One agent, 3.5 h, write the two missing drafts from the matched one. |
-| Model/vertex, `src/33FE0.c` | func_80033D44 (326, struct type probably wrong - fields shifted by one), func_80034348 (311) | Siblings func_80034824/func_80034BD4 matched this week - reuse their shapes and the file's structs. |
-| fragment23 cluster | func_88209B54 (1190), func_8820BE14 (447), func_88216000 (629), func_88203ED8 (825), func_88201488 (582) | 3 agents: {88209B54}, {8820BE14, 88216000}, {88203ED8, 88201488}. 88216000's load-block DXT is computed at runtime -> a custom/expanded texture-load macro; find it in the file's other matched functions. |
-| fragment24 + 26 | func_88304850 (590), func_88305F28 (391); func_885065E0 (391), func_88500A74 (240) | 2 agents, one per fragment (shared helpers inside each). |
-| fragment28 | func_88805AEC (945), func_88807D04 (275) | 1 agent. |
-| Singles | func_86803C6C (639), func_86905734 (508), func_8130337C (553), func_80041A98 (118), func_80012870 (60: one store scheduled early) | 2 agents: {86803C6C, 80041A98, 80012870}, {86905734, 8130337C}. |
-| Giants | func_8437B0CC (3346), func_84362084 (1598), func_8120572C (1450, no draft), func_810010BC (965), func_80045FF0 (960, no draft) | One agent each, full 3.5 h, deliverable may be "structure right, score X" + draft. Consider a Fable agent only for 8437B0CC if two Opus passes stall. |
+### F5 detail: getting the work upstream
+1. `git fetch origin`; rebase or merge `match-round-1` onto `origin/master`, resolve conflicts, `make` -> OK.
+2. Tidy: functions adopted verbatim from permuter output (func_838043F8, func_88500A74, func_88807D04)
+   are in pycparser formatting; reformat to repo style and re-check with the full make. Remove
+   `// FAKE?` hacks where a cleaner equivalent is known. No `#if 1`, no NON_MATCHING drafts for matched code.
+3. Decide what goes upstream: src/ include/ yamls/ linker_scripts/ tools/data2c.py changes yes;
+   `matching_notes/` probably not (ask the owner).
+4. Split into reviewable PRs in the upstream style (one per fragment or subsystem for matches, one per
+   data cluster for migrations), each building OK on its own. Draft them; the owner pushes or approves
+   each push. File the decomp-permuter `sizeof` PR from `UPSTREAM_PR_permuter_sizeof.md`.
 
-### Phase C detail: data-layout blockers
-- func_86A013C8 (frag16_158A00): code byte-identical with an in-function static; IDO places it at
-  bss 0x90/0x94, target 0xA8. Do the `cc -S` experiment (read `.lcomm/.comm` order) to learn the
-  rule, then either reorder statics or migrate the file's bss to C.
-- func_81207DF8, func_81209374, func_81209078 (frag1_86CB0): match with a mid-.data static;
-  D_8120EB94 is not 16-aligned, so the split means migrating ~100 KB of sample data to C with
-  `tools/data2c.py`. This is the first real Phase D task; do it here and reuse the recipe.
-
-### Phase D detail: data migration (prototype 2026-10-16: datamig.py + phased_job.sh)
+### Data migration reference (datamig.py + phased_job.sh; Phase D, 2026-10-16)
 Real scope: **27 files** after 2026-10-16 (the "184" count included 153 fragment header/reloc
 binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0,
 fragment1_data_8E3E0 (103 KB GB audio state + samples: the mid-.data static D_8120EB6C that the
@@ -126,20 +128,18 @@ referenced from other data or GLOBAL_ASM; owner = surrounding owner, decided by 
 the wrong type (`extern u16` on a 12-byte object: real type must be worked out from the users), and
 owners that already have a .data/.rodata entry (definitions must be merged in address order).
 
-### Phase E detail: definition of done
-- `grep -rn GLOBAL_ASM src` is empty (or lists only owner-accepted exceptions with a comment).
-- `asm/us/data` empty; `asm/us/nonmatchings` empty; `#ifdef NON_MATCHING` scaffolding gone.
-- `make clean && make -j` -> `OK`; `progress.py -v us` code 100%.
-- `match-round-1` rebased/squashed onto `master` and pushed; PR opened.
-- decomp-permuter PR filed from `UPSTREAM_PR_permuter_sizeof.md`.
-- NOTES.md trimmed to lessons (IDO_TRICKS.md) + a short history.
+### Definition of done
+- `grep -rn "pragma GLOBAL_ASM" src` empty, or only owner-accepted exceptions with a comment.
+- `asm/us/data` holds only by-design binaries (documented above); no `#ifdef NON_MATCHING` drafts left.
+- `make clean && make -j` -> `OK`; `progress.py -v us` code 100% (with upstream #282's counting).
+- Work merged or PRs open upstream; permuter PR filed; NOTES.md trimmed to lessons + short history.
 
 ### Decisions the owner must make
-1. The gDisplayListHead linker alias (two functions). Recommendation: keep parked; revisit if Phase D
-   reveals how the original declared the variable in overlays.
-2. Model per phase: Opus 5.5 for matching (proven, 2.5x cheaper than Fable), Sonnet 5.5 for Phase D
-   (mechanical, build-gated), Fable only for a stalled giant. The integrator session can be Opus too.
-3. Whether to accept "unsequenced but matching" C (func_87804320's loop tail) or mark such lines.
+1. The gDisplayListHead linker alias (branch `round6-gfxhead-alias`, two functions).
+2. func_86A013C8 via eight unused labels (branch `round8-86A013C8-labels`).
+3. Model for a stalled giant: Opus 5.5 by default; Fable only for func_8437B0CC if round 9 stalls.
+4. Whether `matching_notes/` and the helper scripts go upstream, and how to split the PRs.
+5. Whether to accept fake-but-load-bearing C (`if (x) {}` boundaries, dead assignments) marked `// FAKE?`.
 
 ## 1. Environment recipe (Palmetto, RHEL8, no sudo)
 
@@ -256,28 +256,11 @@ already offers more permuter workers than there are candidate functions times a 
 function worker count (8 functions x 16 workers = 128). A second node only helps if you want to
 run the long-shot permuter on tier-3 functions too.
 
-## 3. Function state by tier (details live in NOTES.md)
+## 3. Function state (2026-10-17)
 
-**Tier 1 -- regalloc-only.** 11 of 12 matched. Left: func_8437FD74 (90; one reload register in the
-innermost loop; farm re-seeded from the 90 draft).
-
-**Tier 2 -- stack layout.** 3 of 10 matched. Left: func_838043F8 (8), func_8430506C (16),
-func_84367660 (85, regalloc only), func_83501718 (60), func_8850B2D4 (84), func_84302658 (7 lines),
-func_82F04604 (318, partial fix known). Each has a precise slot model in NOTES; the open question in
-most is one compiler temp whose creation point we cannot steer. Farm first; one agent pass per
-round on the two best candidates only.
-
-**Tier 2b -- gDisplayListHead pair.** Root cause known (one address register range per global
-symbol). Parked on `round6-gfxhead-alias`; see decision 1.
-
-**Tier 3 -- data/bss layout.** func_86A013C8, func_81207DF8, func_81209374, func_81209078. Phase C.
-
-**Tier 4 -- large / structural.** 15 left after round 7. Regalloc-only (farm first): func_80033D44 (80),
-func_88500A74 (2991), func_88304850 (3777), func_86905734 (1952), func_8820BE14 (1755),
-func_86803C6C (2375), func_80012870 (60, as1 scheduling), func_88807D04 (705, as1 scheduling),
-func_8004A474 (1420). Source-shape work left: func_8437B0CC (13175, case 0x2 block + frame),
-func_88805AEC (14747), func_8130337C (13923, E7 constant lifetime), func_80034348 (2905, fs3 ghost
-local), func_80049DF0 (3565), func_8004A89C (3355).
+Open: the six in the F2 table above. Parked: func_860005B8, func_86100C30, func_86A013C8 (section 0).
+All other functions match. Per-function history is in NOTES.md; the current truth is each draft's
+`//` comment.
 
 ## 4. Agent protocol (one round)
 
@@ -338,6 +321,13 @@ medium). Subagents spawned with the Agent tool accept `model: "opus"`, but `fork
 inherit the parent's model. Reserve Fable for tier-4 structural functions that resisted earlier rounds.
 
 ### 4.3 Agent prompt template
+Since round 8 the prompt is: `matching_notes/round_setup.md` (worktree setup, private asm copy,
+lessons) + a short per-round paragraph (pass number, farm candidates, deadline) + the output of
+`round_prompts.py prompt --agent agent-k --worktree "(your current working directory; see SETUP)"
+--main <repo> --base match-round-1 func_X@score:src/x.c ...`. Agents are launched with the Agent tool
+(`isolation: worktree`); they commit on `worktree-agent-*` branches; the integrator cherry-picks with
+`git log --cherry-pick --right-only match-round-1...<branch>` and runs the full make after each pick.
+Older template:
 ```
 You are matching Pokemon Stadium (N64, IDO 7.1) functions to the original ROM.
 Worktree: $TMPDIR/wt/agent-<k>   (run pwd; cd there if not)
@@ -392,6 +382,18 @@ Kill one run with `pkill -f "permuter[.]py nonmatchings/<func>"`.
 5. Remove worktrees, keep any unmerged work on a named branch, update the farm list, resubmit.
 6. Before resuming agents after a Claude Code restart, `scancel` the old interactive job - its
    agents keep running and edit the same worktrees.
+
+### Round 8 process lessons
+- Before every round, scan `/scratch/$USER/permuter_best` for score-0 outputs of open functions and run
+  `adopt_candidate.py` on them: four real matches sat there unadopted for up to ten days.
+- fd.sh uses `diff.py -s`, which gives false zeros and under-reports early-return functions; score
+  those without `-s`, and count a match only after the full make prints OK.
+- Agents work in Agent-tool worktrees with a private `asm/` copy (round_setup.md), so the integrator can
+  run `make extract` in the main repo during a round. Pass job IDs to agents only after reading them
+  from sbatch's output.
+- When the API usage limit stops agents, they keep their worktree state: resume them with SendMessage
+  after the reset rather than starting new ones.
+- phased_job.sh stages the committed HEAD, so the working tree can hold experiments while it queues.
 
 ## Appendix A: the 54 functions open at the start of 2026-10-07 (instruction counts; 14 since matched)
 
