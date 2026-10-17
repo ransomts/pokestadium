@@ -633,3 +633,11 @@ round6-gfxhead-alias, undefined_syms conflict resolved by keeping both sides + D
 ACCEPT func_86A013C8 via the eight unused labels (merged round8-86A013C8-labels); ROM stayed
 byte-identical (ed1378bc), 9 -> 6 GLOBAL_ASM, code 96.60% -> 96.78%. FAKE-but-load-bearing C
 (`if (x) {}`, dead reloads): try to clean FIRST, only accept if no clean form is found this round.
+
+## Round 9 matches
+- func_86905734 MATCHED (agent-3, 8e1aad4): the two arg copies were s32, not f32
+  (`s32 a1 = arg1; s32 a2 = arg2;` - uopt keeps the int values in t0/t1 and converts once into the
+  0x64/0x5C memory temps), and spF0[0] is the natural rotation `((-h * SINS) + (COSS * -arg4)) + a2`.
+  Starts from the round-8 1386 shape; the round-9 F1 farm edits (w2/cos2/empty-if, 1355) grew the
+  frame to 0x110 and were reverted. LESSON: a wrong-type local copy can be closer than every
+  regalloc trick - check whether a copied variable's TYPE matches how the target uses it.
