@@ -306,9 +306,18 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // (removed, identical), a1-first trees `(a1 + P) - Q` (converts a1 first but changes the FP ops,
 // 3136-3494), `(P - Q) - -a1` 2311, named s32/s16/f32 h = arg3/2 6456+. Farm q3 output-1501 (1231 in
 // fd.sh) only wins through the gfx comma trick's stack-offset noise, not the corner math.
+// Round 9 F1 (farm w3/1625, real 1355): four edits together, all required: (1) `f32 cos2` declared
+// after a2, `cos2 = COSS(arg5);` between spF8[0] and spF0[0], used only in spF0[0]'s product;
+// (2) `s16 w2` declared first, `w2 = arg3;` before the first func_8001E680, used for the second
+// call's `w2 << 5`; (3) empty-if boundary `if (!spF0) {}` after gDPSetTexturePersp(G_TP_NONE);
+// (4) decl order `s16 w2; f32 a1; f32 a2; f32 cos2;`. 1386 -> 1355 (any subset is 2022-2137; the
+// boundary alone with w2 is 2022). Remaining: the t-register rotation and the (f32)arg1/(f32)arg2
+// reloads (see cc -S notes above). Beware stale .o on NFS: always rm the .o before scoring.
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
+    s16 w2;
     f32 a1;
     f32 a2;
+    f32 cos2;
     s16 spF8[4];
     s16 spF0[4];
     unk_D_80068BB0* spEC;
@@ -324,7 +333,8 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     a2 = arg2;
 
     spF8[0] = ((-(arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
-    spF0[0] = (-(arg3 / 2) * SINS(arg5)) + ((COSS(arg5) * -arg4) + a2);
+    cos2 = COSS(arg5);
+    spF0[0] = (-(arg3 / 2) * SINS(arg5)) + ((cos2 * -arg4) + a2);
     spF8[1] = (((arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
     spF0[1] = (((arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
     spF8[2] = (-(arg3 / 2) * COSS(arg5)) + a1;
@@ -337,8 +347,9 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPViewport(gDisplayListHead++, (u32)spE0 & 0x1FFFFFFF);
 
     guOrtho(spE4, 0.5f, spEC->width - 0.5f, spEC->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
+    w2 = arg3;
     func_8001E680(&spE8[0], spF8[0], spF0[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spE8[1], spF8[1], spF0[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    func_8001E680(&spE8[1], spF8[1], spF0[1], -1, w2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
     func_8001E680(&spE8[2], spF8[2], spF0[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
     func_8001E680(&spE8[3], spF8[3], spF0[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
@@ -355,6 +366,7 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_FOG | G_LIGHTING);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
+    if (!spF0) {}
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetCombineLERP(gDisplayListHead++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0,
                       COMBINED, 0, 0, 0, COMBINED);
