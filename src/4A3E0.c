@@ -513,41 +513,12 @@ skip:
 #pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_80049DF0.s")
 #endif
 
-#ifdef NON_MATCHING
 // Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
-// Hand-written (no m2c). Score 30 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
-// fd.sh -s and ido_bisect both report 0 because they stop at the first jr ra; was 1420). Wins:
-// `(u8)(nr24 & 7) << 8`, NR21 read twice (no local) so duty lives in a2 and NR21 in a3; round 8: NR22 & 8
-// read inline in the final `!(NR22 & 8) && unk_04 < 0` test (no dir local in the tail) -> fresh lui load
-// hoisted to the right block like the target (1420 -> 980); `((u8)duty & 0xF0) << 7` for unk_04: the cast's
-// andi 0xFF is folded away by as1 but still consumes the temp register, which realigns every t-register
-// of the trigger block with the target (980 -> 690; the trigger block now matches). Then the tail
-// `duty = NR22 & 8` before the unk_0C test, tested as `!duty`: every tail register except that one now
-// matches (690 -> 670). Better: `changed = NR22 & 8` AFTER the env-step if, just before the while (the
-// loop flag reused; tested `!changed`): uopt hoists the NR22 load with a fresh lui up to the unk_0C test
-// block like the target (670 -> 540). Same spot with duty/dir/nr24: 640, nr21 4545; at the final test
-// instead: 1000-1040.
-// Remaining (540): the hoisted load lands in a0 and the `& 8` stays in the loop-guard block into v0
-// (target: load and andi both in t1 inside the unk_0C test block).
-// 30: farm candidate (func_8004A474__g1 output-30-1) showed the trick: read NR22 through a NON-constant
-// index or pointer (`D_800FD008[v].value` with v = 7, or `p = (u8*)D_800FD008; ... p[0xE]`) so uopt does
-// not fold it into the a0 base CSE: `duty = p[0xE] & 8` before the unk_0C test gives the fresh lui and
-// the andi in the beqz delay slot. Plain constant spellings ((u8*)D_800FD008)[0xE], (&D_800FD008[7])->value,
-// etc. all fold (670). Remaining: that value is in a2 (target t1); with dir/changed it takes v0 (150),
-// nr24 150, phase 595, value 1285, i ~4000. Older notes:
-// Remaining: that tail value lives in a2 and is loaded via the a0 base (target: fresh lui into t1, the
-// trigger dir's register; bnezl t1 at the final test). A new local or `dir` there gives 790-1420 (it then
-// takes v0 and shifts unk_0C/phase/value); the inline `!(NR22 & 8)` (690) gets the fresh lui but leaves the
-// andi at the use. nr21/nr24/changed/i/phase for that value: 790-5265.
-// Dead ends: explicit 4 if-statements for the dirty flags (4685), duty s32, nr21 u32, decl reordering;
-// NR22&8 into dir before/after the unk_0C test or before the while (1000-1420, a0-based load), `dir = NR22`
-// + `dir & 8` (1755), u8/u32/s16/u16 dir, `(x & 8) != 0`, both dir and inline NR22 test (1900);
-// deleting trigger stores; `(u8)`/`(s32)` casts or a dir local with casts on the tail NR22 read (690-1275);
-// kill-path spellings (`= x & ~2`, `&= 0xFD`, u8* access, store order: no change); `register` dir.
-// At 30, also no gain: renaming any local pair (merge sweep), renaming the trigger's dir to
-// changed/nr21/i/value with any tail local, u8/u16/s8/s16 tail locals (845-1320), the tail value
-// assigned before pos or the kill test (1270-1385), field reads instead of pos, trigger NR22/NR24
-// reads through p (140-280). With dir as the tail local it lands in v0 (150), not t1.
+// Matching notes: NR22 is read through p (a pointer local) in the tail so uopt does not fold it into the
+// a0-based CSE; `dir` must be one real variable shared by the trigger and the tail (so it gets t1 in both).
+// `dir = duty & 8` alone is copy-propagated away (its uses become a `duty & 8` temp and the tail dir is
+// then colored separately into v0); the redundant `duty = D_800FD008[7].value` between the two kill
+// tests redefines duty (no code: the load is CSE'd) and so blocks that propagation.
 s16 func_8004A474(void) {
     s32 changed;
     s32 i;
@@ -619,6 +590,7 @@ s16 func_8004A474(void) {
             D_800FD008[0x16].value &= ~2;
             return 0;
         }
+        duty = D_800FD008[7].value;
         if (dir && !(duty & 0xF0) && !(duty & 7)) {
             D_800FCF90.unk_24 = 0;
             D_800FD008[0x16].value &= ~2;
@@ -665,7 +637,7 @@ s16 func_8004A474(void) {
         return 0;
     }
 
-    duty = p[0xE] & 8;
+    dir = p[0xE] & 8;
     if (D_800FCF90.unk_0C < pos) {
         D_800FCF90.unk_04 += D_800FCF90.unk_06;
         D_800FCF90.unk_0C += D_800FCF90.unk_08;
@@ -675,7 +647,7 @@ s16 func_8004A474(void) {
         D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
     }
 
-    if (!duty && (D_800FCF90.unk_04 < 0)) {
+    if (!dir && (D_800FCF90.unk_04 < 0)) {
         D_800FCF90.unk_24 = 0;
         return 0;
     }
@@ -693,9 +665,6 @@ s16 func_8004A474(void) {
     D_800FCF90.unk_00 = pos + 0x40;
     return value;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_8004A474.s")
-#endif
 
 typedef struct unk_D_80078A60 {
     /* 0x00 */ u8 unk_00;
