@@ -228,7 +228,6 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-#ifdef NON_MATCHING
 // Score 2991 (was 3031). Stack layout now matches the target exactly (sp88 at 0x88, y at 0x90, CSE temp
 // arg0+arg2 at 0x34, arg0 spilled to its home 0x98); needs 4 decls in this order - dropping sp34 shrinks
 // the frame to 0x40. Remaining diff is pure register allocation: target colours the two sums with
@@ -248,44 +247,38 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
 // arg2 += arg0 (both drop the temp: frame 0x40), sp34 = arg2; sp34 += arg0, const locals for 0x20 or
 // a "+ k" (k = 0) on the sums (frame grows, same regs), sp88 assigned before the scissor and used by it (2802
 // but the temp moves to 0x30).
-void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    s32 sp34;
-    s32 y;
-    s32 x;
-    s32 sp88;
-
-    gDPPipeSync(gDisplayListHead++);
-
-    gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
-    gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-    gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
-    gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
-    gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-
-    gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, arg0 * 4.0f, arg1 * 4.0f, (arg0 + arg2) * 4.0f,
-                      (arg1 + arg3) * 4.0f);
-
-    sp88 = arg1 + arg3;
-    sp34 = arg0 + arg2;
-
-    for (y = arg1; y < sp88; y += 0x20) {
-        for (x = arg0; x < sp34; x += 0x20) {
-            gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0,
-                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 0x20) << 2, (y + 0x20) << 2,
-                                G_TX_RENDERTILE, 0, 0, 0x0200, 0x0200);
-            arg4 += 0x200;
-        }
+void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
+{
+  s32 sp34;
+  s32 y;
+  s32 x;
+  s32 sp88;
+  y += 0;
+  gDPPipeSync(gDisplayListHead++);
+  gDPSetCycleType(gDisplayListHead++, 0 << 20);
+  gDPSetRenderMode(gDisplayListHead++, (((((0 | 0x4000) | 0) | (0 << 30)) | (3 << 26)) | (0 << 22)) | (2 << 18), (((((0 | 0x4000) | 0) | (0 << 28)) | (3 << 24)) | (0 << 20)) | (2 << 16));
+  gDPSetTexturePersp(gDisplayListHead++, 0 << 19);
+  gDPSetTextureFilter(gDisplayListHead++, 0 << 12);
+  x = arg1 + arg3;
+  gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+  gDPSetRenderMode(gDisplayListHead++, (((((0 | 0x4000) | 0) | (0 << 30)) | (3 << 26)) | (0 << 22)) | (2 << 18), (((((0 | 0x4000) | 0) | (0 << 28)) | (3 << 24)) | (0 << 20)) | (2 << 16));
+  gDPSetScissorFrac(gDisplayListHead++, 0, arg0 * 4.0f, arg1 * 4.0f, (arg0 + arg2) * 4.0f, (arg1 + arg3) * 4.0f);
+  sp88 = x;
+  sp34 = arg0 + arg2;
+  for (y = arg1; y < sp88; y += 0x20)
+  {
+    for (x = arg0; x < sp34; x += 0x20)
+    {
+      gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+      gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 0x20) << 2, ((((((((((y + 0x20) << 2) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu, G_TX_RENDERTILE, 0, 0, 0x0200, 0x0200);
+      arg4 += 0x200;
     }
 
-    gDPPipeSync(gDisplayListHead++);
-    gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 640, 480);
+  }
+
+  gDPPipeSync(gDisplayListHead++);
+  gDPSetScissor(gDisplayListHead++, 0, 0, 0, 640, 480);
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/26/fragment26/func_88500A74.s")
-#endif
 
 void func_88500E34(unk_func_88500E34* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88500E34));
