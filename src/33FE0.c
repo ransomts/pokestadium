@@ -677,7 +677,8 @@ void func_80034254(StadiumModel* model) {
     }
 }
 
-// Score 2760 (fd.sh; was 2905, 3485). Integer side (index/remap/ia/ib/ic and the whole first and
+// Score 2582 (fd.sh; was 2760, 2905, 3485; agent-12: count/index/remap decl order fixes the remap
+// spill slot 0x84, `(vertices + ia)->` gives the target addu operand order). Integer side (index/remap/ia/ib/ic and the whole first and
 // last loops) now matches: the index reads are `remap[*index++]` x3 (uopt folds them into one +6).
 // Left: float register allocation in the triangle loop. Pre-as1 view (cc -S, see below) of what the
 // target must have been, from its final code:
@@ -707,9 +708,9 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     f32 len;
     s16 ia, ib, ic;
     s32 pad1[10];
-    s16* remap;
     f32 count;
     s16* index;
+    s16* remap;
     s16 triangleCount;
     s16 vertexCount;
     ModelVertex* vtx;
@@ -729,19 +730,19 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     }
     for (i = 0; i < triangleCount; i++) {
         ia = remap[*index++];
-        ax = vertices[ia].position.base.x;
-        az = vertices[ia].position.base.z;
+        ax = (vertices + ia)->position.base.x;
+        az = (vertices + ia)->position.base.z;
         ib = remap[*index++];
-        bx = vertices[ib].position.base.x;
-        by = vertices[ib].position.base.y;
-        bz = vertices[ib].position.base.z;
+        bx = (vertices + ib)->position.base.x;
+        by = (vertices + ib)->position.base.y;
+        bz = (vertices + ib)->position.base.z;
         ic = remap[*index++];
-        cx = vertices[ic].position.base.x;
-        cy = vertices[ic].position.base.y;
-        cz = vertices[ic].position.base.z;
-        nx = ((by - vertices[ia].position.base.y) * (cz - bz)) - ((bz - az) * (cy - by));
+        cx = (vertices + ic)->position.base.x;
+        cy = (vertices + ic)->position.base.y;
+        cz = (vertices + ic)->position.base.z;
+        nx = ((by - (vertices + ia)->position.base.y) * (cz - bz)) - ((bz - az) * (cy - by));
         ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
-        nz = ((bx - ax) * (cy - by)) - ((by - vertices[ia].position.base.y) * (cx - bx));
+        nz = ((bx - ax) * (cy - by)) - ((by - (vertices + ia)->position.base.y) * (cx - bx));
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
         if ((s32) len > 0) {
             len = 120.0f / len;
