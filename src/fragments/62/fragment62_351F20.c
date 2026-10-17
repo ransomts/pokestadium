@@ -26,49 +26,13 @@ static Vtx D_84389810[] = {
     VTX(0, -20, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0x00),   VTX(30, -20, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0x00),
 };
 
-#ifdef NON_MATCHING
-// Score 85 (was 229). Stack layout now matches; only the fa0/ft4 swap remains (a3_z should be in fa0,
-// 2*a3_y in ft4, and both sp128 loads in ft4 not ft5).
-// Round 6 finding: the six spilled values (sp8C..sp78 at 0x8C..0x78) are uopt temps whose slot order
-// follows the first occurrence of their expressions; the target's 3 never-stored slots below them are
-// temps that occur LATER (probably the a3_x/y/z * 2.0f CSEs). The dead early copy of the six 1.2/0.2
-// expressions right after a3_z (overwritten below) reproduces that order; it is a fake - the real
-// source probably computed them before the vertex writes in some way that keeps the late schedule.
-// Moving the six real assignments earlier (anywhere from before a3_x to after tmp1) wrecks the schedule
-// (4600-9400). Dead copy must be full expressions (plain `sp8C = a1_x;` does nothing), all six.
-// `if (a3_z) {}` (or `if (sp128) {}`, `if (a3_x) {}`) still required; tmp1 hack worth 25.
-// Dead ends this round for the swap: sp128 * arg4 operand order, named 2*a3 temps, extra tmpN for any
-// v8/v9 component, (a3_y + a3_y), moving the if, reordering the dead copies, indexed vertex writes
-// (1466), loop forms of the copy loop, named call-arg temps, block-scoped pads.
-// Round 8 (agent 4) model: a3_x/y/z, 2*a3_x/y/z and the sp128 reloads are colored by uopt
-// first-fit over [f0, f2, f12, f14, f16, f18] in priority order. The target colors a3_z before
-// 2*a3_x and 2*a3_y (a3_z=f12, then f14/f16/f18); here 2*a3_y and 2*a3_x win (f12/f14) and a3_z
-// gets f16. Evidence: "if (a3_y) {}" right before guTranslate lowers a3_y below a3_z (a3_z -> f2).
-// Changing where ranges END does not change the order (statement permutations inside vertex
-// blocks, v9 x/y/z order, dropping tmp1). New dead ends: a fresh variable for the late a3_x, y
-// or z (it is colored callee-saved, fs0, 5600-9200); moving "if (a3_z) {}" before the a3_y/a3_z
-// assignments or after v0/v1/v2/v3 (5700-13500; after tmp1 is identical); a second if on
-// a3_x/y/z before/after guTranslate (120-695); if (sp84/sp78/sp128) there (identical);
-// (a3_z + a3_z), 2.0f * a3_z, "* 2", "* 2.0" forms; sp130 *= arg4 forms (1390); permuting the
-// x/y/z lines of any vertex (105-666); dead tmp2 copies of 2*a3_z / v2.z / v6.z after a3_z, the
-// if or tmp1; inlining the six 1.2/0.2 expressions (no sp8C..sp78, pad4[13]): 279, the spills
-// land 3 slots low and the v2/v3 adds flip operands. Farm: 750k iterations, best 85.
-// Round 8 pass 2 (agent 10): the empty if is a uopt block boundary, not just an a3_z use.
-// With no boundary the code is wrecked (9805); "goto lbl; lbl:", "do { ... } while (0)" and
-// "if (1) { ... }" around the vertex code give 105 (arg4 -> f12, sp128 -> f14). A second
-// boundary anywhere (another if, or a goto after any vertex block) is 8500-12500, so there is
-// exactly one, at this position (moving it before the dead copies, a3_x, a3_y or a3_z:
-// 4500-12800). Conditions: a3_x/y/z, a3_z != 0 / < 0, sp128, arg4 * sp128, (a3_z, a3_z) = 85;
-// arg4, temp_v1, sp1E8, a1_x, a2_x, arg0/3/5, tmp1 = 105; anything else worse.
-// The register choice is consistent with Chow block-granular colouring (B2 = up to the if,
-// B3 = vertex writes): target order a3_x, a3_y, a3_z (f12), arg4 (f14), then sp128 (f16; its
-// B1 SQ load and B2 load are one candidate, so it shares a3_z's B2), 2*a3_x f14,
-// 2*a3_y f16, 2*a3_z f18. Here 2*a3_y and 2*a3_x are coloured before a3_z.
-// New dead ends (all 85 or worse): a3_z double/self/dead defs, tmp2 = a3_z copies, a3_z
-// declared first/last, permutations of the a3 decls, a3 assignment orders (148-231),
-// tmp2 = arg4 scale (1065), a3_z via tmp3, a3_* inlined as arg4 * spXXX (10000+), tmp1 or
-// tmp2 (2*a3_x) moved before the if, fake ifs in B1 or before guTranslate, named b_x/y/z for
-// 2*a3 (the 3 never-stored temps are not the 2*a3 CSEs: they survive that).
+// Matching notes: uopt colours with block-granular interference (the empty `if (a3_z) {}` is the block
+// boundary between the a3 setup and the vertex writes; the dead first copy of the six 1.2/0.2 expressions
+// fixes the spill-slot order). The early arg3->z must not share a3_z's variable (tmp3): otherwise a3_z's
+// range includes the func_80031A94 argument block, where f12/f14 are precoloured, and it cannot get f12.
+// `arg4 = 0.0f` (dead) stops uopt copy-propagating `arg4 * sp128` into the if, which would otherwise
+// create a separate f12 temp in front of the a3_z variable. tmp1/tmp2 must not appear before the vertex
+// writes (the 2*a3 temps are coloured in first-appearance order).
 Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     s32 i;
     Vtx* sp1E8;
@@ -124,9 +88,9 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     a2_z = arg2->z;
     a3_x = arg3->x;
     a3_y = arg3->y;
-    a3_z = arg3->z;
+    tmp3 = arg3->z;
 
-    func_80031A94(a2_x - a1_x, a2_y - a1_y, a2_z - a1_z, a1_x - a3_x, a1_y - a3_y, a1_z - a3_z, &sp130, &sp12C, &sp128);
+    func_80031A94(a2_x - a1_x, a2_y - a1_y, a2_z - a1_z, a1_x - a3_x, a1_y - a3_y, a1_z - tmp3, &sp130, &sp12C, &sp128);
     if ((SQ(sp130) + SQ(sp12C) + SQ(sp128)) > 0.0f) {
         func_80031B04(&sp130, &sp12C, &sp128);
     }
@@ -138,6 +102,7 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     a3_x = arg4 * sp130;
     a3_y = arg4 * sp12C;
     a3_z = arg4 * sp128;
+    arg4 = 0.0f;
     sp8C = (-a2_x * 0.2f) + (a1_x * 1.2f);
     sp88 = (-a2_y * 0.2f) + (a1_y * 1.2f);
     sp84 = (-a2_z * 0.2f) + (a1_z * 1.2f);
@@ -148,8 +113,6 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     temp_v1 = sp1E8;
 
     if (a3_z) {}
-
-    tmp1 = a2_y - a3_y * 2.0f;
 
     temp_v1->v.ob[0] = a3_x * 2.0f + a1_x;
     temp_v1->v.ob[1] = a3_y * 2.0f + a1_y;
@@ -205,7 +168,7 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     temp_v1++;
 
     temp_v1->v.ob[0] = a2_x - a3_x * 2.0f;
-    temp_v1->v.ob[1] = tmp1;
+    temp_v1->v.ob[1] = a2_y - a3_y * 2.0f;
     temp_v1->v.ob[2] = a2_z - a3_z * 2.0f;
     temp_v1++;
 
@@ -222,6 +185,3 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
 
     return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_351F20/func_84367660.s")
-#endif
