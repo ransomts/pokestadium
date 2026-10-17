@@ -163,5 +163,5 @@ to an earlier line and fixed a one-store scheduling diff. Verified by editing ug
 - Interference is block-granular: two ranges live in the same basic block interfere even if their
   instruction ranges do not overlap. An empty `if (x) {}` is a block boundary.
 - Expression temps are coloured in first-appearance order of their expressions (dead copies count).
-- Use `matching_notes/ccs.py` (pre-as1 registers; add `-Isrc/fragments/NN` for fragments) to see the
+- Use `matching_notes/ccs.py` (pre-as1 registers; it now adds -I<source dir> for fragment headers) to see the
   real uopt choice: as1 renames/forwards registers, so final asm can hide a `mov.s` from a temp.

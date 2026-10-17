@@ -16,7 +16,7 @@ flags = ("-c -G 0 -non_shared -Xcpluscomm -nostdinc -Wab,-r4300_mul -DVERSION_US
          "-Ilib/ultralib/include/ido -Iinclude/ -woff 624,649,838,712,516,513,596,564,594 -mips2 -EB "
          "-D_MIPS_SZLONG=32 -DNDEBUG -D_FINALROM -DN_MICRO -DF3DEX_GBI_2 -DBUILD_VERSION=VERSION_I_P "
          "-DLANGUAGE_C -D_LANGUAGE_C -DNON_MATCHING -O2").split()
-extra = sys.argv[3:] if len(sys.argv) > 3 else []
+extra = ["-I" + os.path.dirname(src)] + (sys.argv[3:] if len(sys.argv) > 3 else [])
 p = subprocess.run([os.path.join(REPO, "tools/ido/linux/7.1/cc"), "-S"] + flags + extra + [out],
                    cwd=REPO, capture_output=True, text=True)
 errs = [l for l in (p.stdout + p.stderr).splitlines() if "Warning" not in l and l.strip()]
