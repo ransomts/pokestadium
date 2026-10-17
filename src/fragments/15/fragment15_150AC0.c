@@ -282,6 +282,16 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // term-order swap is NOT identical code once a1/a2 are used (it changes CSE discovery order).
 // 1529 -> 1386: spF0[0] grouped as `(-h * SINS) + ((COSS * -arg4) + a2)` (uopt reassociates it;
 // only ugen register choice + the -h*sin/arg2 slot swap remain).
+// What is left (seen with `cc -S`): uopt's FPR colouring now equals the target (-h f12, cos f0,
+// -h*cos f14, sin f2, -arg4 f16, sin*-arg4 f18), as do the memory temps. Remaining: (1) target ugen
+// has 2 more int temp allocations before -h (its t-reg rotation is shifted: -h t8, arg4 t9, -arg4 t6,
+// arg1 t0, arg2 t1), (2) the target reloads (f32)arg1/(f32)arg2 from their temp slots after the
+// store, (3) slot order -h*sin 0x60 / arg2 0x5C. The 4 extra temp slots (frame 0x108) appear only
+// when -h*SINS is written before COSS*-arg4 in spF0[0]. Tried without gain: every grouping/order of
+// the three addends of spF0[0]/spF0[1] and of spF8[0]/spF8[1], product operand swaps (only spF8[0]'s
+// first product matters, swapping it is worse), a1/a2 assignment placement (any non-uniform use of a1
+// or a2 turns them into real variables, frame 0xF8), dead stores to a1/a2, casts on h/-arg4/arg5
+// index, statement order of corners 2/3, the twin's literal style (trig first in products).
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
