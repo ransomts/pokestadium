@@ -742,13 +742,13 @@ void func_840026D8(void) {
     for (i = 0; i < 4; i++) {
         if (D_84002BE8[D_84002D18.unk_00].unk_00 & (1 << i)) {
             sprintf(sp44, "%dP", i + 1);
-            func_8002B840(0, RegisterPlayer(i, 0, sp44, func_8002311C(1)));
+            func_8002B840(0, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
         }
     }
 
     if (D_84002D18.unk_02 == 3) {
         D_800AE540.unk_11EC = D_84002BE4;
-        temp_v0 = RegisterPlayer(-1, 0, "COM", func_8002311C(3));
+        temp_v0 = RegisterPlayer(-1, 0, "COM", GetNameSlot(3));
         func_8002B840(1, temp_v0);
         if (D_84002D18.unk_00 == 3) {
             temp_v0->unk_001 = 2;
@@ -759,7 +759,7 @@ void func_840026D8(void) {
         for (i = 0; i < 4; i++) {
             if (D_84002BE8[D_84002D18.unk_02 + 4].unk_00 & (1 << i)) {
                 sprintf(sp44, "%dP", i + 1);
-                func_8002B840(1, RegisterPlayer(i, 0, sp44, func_8002311C(1)));
+                func_8002B840(1, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
             }
         }
     }

@@ -211,17 +211,17 @@ typedef struct unk_D_800AC910 {
     /* 0x54 */ unk_D_800AC910_054* unk_54;
 } unk_D_800AC910; // size = 0x58
 
-u16 func_80021A30(u8* arg0);
-u32 func_80021A48(u8* arg0);
-void func_80021A68(u8* arg0, s32 arg1);
-void func_80021A78(u8* arg0, s32 arg1);
-char* func_80021A90(char* arg0, char* arg1);
+u16 ReadBE16(u8* arg0);
+u32 ReadBE24(u8* arg0);
+void WriteBE16(u8* arg0, s32 arg1);
+void WriteBE24(u8* arg0, s32 arg1);
+char* DecodeGen1String(char* arg0, char* arg1);
 void func_80021B5C(char* arg0, char* arg1);
-char* func_80021B7C(char* arg0, char* arg1);
+char* EncodeGen1String(char* arg0, char* arg1);
 char* func_80021C20(char* arg0, char* arg1);
 char* func_80021C40(char* arg0, char* arg1);
 char* func_80021C80(char* arg0, char* arg1);
-char* func_80021CA4(char* arg0, s32 arg1);
+char* GetSpeciesName(char* arg0, s32 arg1);
 char* GetItemName(s32 arg0, char* arg1);
 void func_80021D9C(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
 void func_80021E90(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg1);

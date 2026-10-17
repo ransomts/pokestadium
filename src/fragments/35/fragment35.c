@@ -78,7 +78,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80006C04(1);
     func_80007820(3, func_820002B4);
     func_8002D510();
-    func_80023068();
+    LoadNameSlots();
     func_80021920();
     func_80028070(&sp2A);
 

@@ -1004,8 +1004,8 @@ s32 func_84102210(void) {
         s16 tmp = D_84102438[D_84103CC8];
 
         func_8002B5EC(tmp, D_84102444[D_84103CC8], 0);
-        func_8002B840(0, RegisterPlayer(0, 0, "1P", func_8002311C(1)));
-        func_8002B840(1, RegisterPlayer(-1, 0, "COM", func_8002311C(3)));
+        func_8002B840(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
+        func_8002B840(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
         var_v1 = 1;
     }
     return var_v1;

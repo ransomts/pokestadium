@@ -71,7 +71,7 @@ void func_800228B0(unk_func_80026268_arg0* arg0) {
     UNUSED s32 pad;
     char sp18[11];
 
-    func_80021B7C(&sp18, &arg0->unk_3B);
+    EncodeGen1String(&sp18, &arg0->unk_3B);
     _bcopy(&sp18, arg0->unk_46, 0xB);
 }
 
@@ -101,8 +101,8 @@ void func_80022978(unk_func_80026268_arg0* arg0, s16 arg1, u8 arg2) {
     }
     sp24.unk_01 = arg0->unk_24;
     sp24.unk_02 = arg0->unk_0E;
-    func_80021B7C(sp24.unk_04, arg0->unk_30);
-    func_80021B7C(sp24.unk_0F, arg0->unk_3B);
+    EncodeGen1String(sp24.unk_04, arg0->unk_30);
+    EncodeGen1String(sp24.unk_0F, arg0->unk_3B);
     func_80027C24(0x13, 0, arg0->unk_00.unk_00 - 1, &sp24);
 }
 
@@ -361,7 +361,7 @@ s32 func_80022F24(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     return var_s5;
 }
 
-void func_80023068(void) {
+void LoadNameSlots(void) {
     char** sp1C = GetMessageBank(0x11);
 
     HAL_Strcpy(D_800AC890[0], GetMessageString(NULL, 0, sp1C, 0));
@@ -370,7 +370,7 @@ void func_80023068(void) {
     HAL_Strcpy(D_800AC890[3], GetMessageString(NULL, 0, sp1C, 3));
 }
 
-char* func_8002311C(s32 arg0) {
+char* GetNameSlot(s32 arg0) {
     return D_800AC890[arg0];
 }
 
@@ -827,10 +827,10 @@ s32 func_800240A0(void) {
 }
 
 void func_80024208(s32 arg0) {
-    u16 temp_v0 = func_80021A30(&D_800AC910[arg0].unk_50->unk_2CC);
+    u16 temp_v0 = ReadBE16(&D_800AC910[arg0].unk_50->unk_2CC);
 
     if (!(temp_v0 & 0x8000)) {
-        func_80021A68(&D_800AC910[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
+        WriteBE16(&D_800AC910[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
     }
 }
 
@@ -947,7 +947,7 @@ void func_800246F8(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* sp24 = &D_800AC910[arg1].unk_50->unk_9AC;
 
     func_80022010(arg0, &sp24->unk_008[arg2]);
-    func_80021B7C(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
+    EncodeGen1String(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
     _bcopy(arg0->unk_000[0].unk_46, sp24->unk_110[arg2], 0xB);
     sp24->unk_001[arg2] = sp24->unk_008[arg2].unk_00.unk_00;
 }
@@ -1223,7 +1223,7 @@ s32 func_80024FB0(s32 arg0) {
         return 0;
     }
 
-    D_800AC910[arg0].unk_40.unk_00 = func_80021A30(&D_800AC910[arg0].unk_50->unk_085);
+    D_800AC910[arg0].unk_40.unk_00 = ReadBE16(&D_800AC910[arg0].unk_50->unk_085);
     _bcopy(&D_800AC910[arg0].unk_50->unk_018, &D_800AC910[arg0].unk_40.unk_02, 0xB);
     bzero(D_800AC910[arg0].unk_40.unk_0D, 3);
     return 1;
@@ -1241,12 +1241,12 @@ s32 func_80025084(s32 arg0) {
     if (!(D_800AC910[arg0].unk_00 & 1)) {
         return -1;
     }
-    return func_80021A30(&D_800AC910[arg0].unk_50->unk_085);
+    return ReadBE16(&D_800AC910[arg0].unk_50->unk_085);
 }
 
 void func_800250E0(s32 arg0, u16 arg1) {
     if (D_800AC910[arg0].unk_00 & 1) {
-        func_80021A68(&D_800AC910[arg0].unk_50->unk_085, arg1);
+        WriteBE16(&D_800AC910[arg0].unk_50->unk_085, arg1);
     }
 }
 
@@ -1255,7 +1255,7 @@ s32 func_8002513C(s32 arg0) {
     s32 phi_v1 = -1;
 
     if (D_800AC910[arg0].unk_00 & 1) {
-        temp_a0 = func_80021A30(&D_800AC910[arg0].unk_50->unk_2CC) >> 8;
+        temp_a0 = ReadBE16(&D_800AC910[arg0].unk_50->unk_2CC) >> 8;
         if (temp_a0 & 0x80) {
             phi_v1 = (temp_a0 & 0x7F) + 1;
         } else {
@@ -1276,7 +1276,7 @@ char* func_80025210(s32 arg0, char* arg1) {
     if (!(D_800AC910[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return func_80021B7C(&D_800AC910[arg0].unk_50->unk_018, arg1);
+    return EncodeGen1String(&D_800AC910[arg0].unk_50->unk_018, arg1);
 }
 
 char* func_8002526C(s32 arg0, char* arg1) {
@@ -1290,7 +1290,7 @@ char* func_800252CC(s32 arg0, char* arg1) {
     if (!(D_800AC910[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return func_80021B7C(&D_800AC910[arg0].unk_50->unk_076, arg1);
+    return EncodeGen1String(&D_800AC910[arg0].unk_50->unk_076, arg1);
 }
 
 s32 func_80025328(s32 arg0) {

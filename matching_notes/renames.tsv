@@ -28,3 +28,14 @@ func_8002D7C0	GetMessageString	a2		buf/bufSize/bank/stringId: indexes bank[strin
 func_8002D628	DecompressString	a2		the string expander: state-machine run/window decompressor called by GetMessageString with a bounded destination (arg1 = buffer size)	applied@7564043
 func_8002D80C	CountTextLines	a2		counts lines: iterates chars counting '\n', adds one if the last char is not a newline	applied@7564043
 func_8002B700	RegisterPlayer	a2		allocates a free player slot (4 entries, D_800AE540.unk_0004), binds gControllers[arg0] or the COM state for arg0==-1; called with "1P"/"COM" display names from the lobby flows (29BA0, fragments 38/58/59)	applied@7564043
+func_80021CA4	GetSpeciesName	a3		copies the species name pointer from the D_8006FEE8 view of the species table (strcpy passthrough of *(char**)entry)	applied@73ff805
+func_80021A90	DecodeGen1String	a3		converts a Gen-1 'P'-terminated string to NUL-terminated display text via D_80073030, expanding ']' placeholder to name slot 1	applied@73ff805
+func_80021B7C	EncodeGen1String	a3		reverse conversion: display text to Gen-1 charset via D_80073130 with 'P' terminator; stored into mon name fields (11 bytes)	applied@73ff805
+D_80073030	gGen1DecodeTable	a3		0x100-byte codepage: Gen-1 charset byte -> N64 font code (used by DecodeGen1String)	applied@73ff805
+D_80073130	gGen1EncodeTable	a3		0x100-byte reverse codepage: display code -> Gen-1 charset (used by EncodeGen1String)	applied@73ff805
+func_80023068	LoadNameSlots	a3		loads the four 0x20 name-slot strings from message bank 0x11 into D_800AC890 (static, 232C0.c)	applied@73ff805
+func_8002311C	GetNameSlot	a3		returns D_800AC890[arg0]; slot 1 backs the ']' placeholder in DecodeGen1String, slots used with "1P"/"COM" labels	applied@73ff805
+func_80021A30	ReadBE16	a3		(arg0[0] << 8) | arg0[1] - big-endian 16-bit read from GB save byte arrays	applied@73ff805
+func_80021A48	ReadBE24	a3		(arg0[0] << 0x10) | (arg0[1] << 8) | arg0[2] - big-endian 24-bit read	applied@73ff805
+func_80021A68	WriteBE16	a3		arg0[0] = arg1 >> 8; arg0[1] = arg1 - big-endian 16-bit write	applied@73ff805
+func_80021A78	WriteBE24	a3		big-endian 24-bit write (three bytes, high first)	applied@73ff805
