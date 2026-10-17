@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 8029 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 7989 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2197,6 +2197,8 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // takes the copy into s5 like the target but loses the `move s2,s5` copies in case 0x34. The
 // target captures the copy before the first call (sw 0x68, lw s5 after the call); a copy at the
 // top of the block colours it s6 (11434), right after the first call s6 (8843).
+// Case 0x9C tail: m2c's `(unk_15 != 8) && (unk_15 != 0x10) && (unk_15 == 0x40)` is a switch (case 8 / 0x10:
+// break; case 0x40: ...), which puts unk_15 in v1 like the target (8029 -> 7989).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
 // gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
 // below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
@@ -3256,12 +3258,17 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
                                         var_s1 += spB6 * 7;
                                     }
                                 }
-                                if ((temp_s6->unk_15 != 8) && (temp_s6->unk_15 != 0x10) && (temp_s6->unk_15 == 0x40)) {
-                                    var_s1 += spB6 * 6;
-                                    if ((func_843779C8(temp_fp, temp_s4, 1, &sp104) == 2) &&
-                                        (temp_s6->unk_2E < temp_s3->unk_2E)) {
-                                        var_s1 += spB6 * 7;
-                                    }
+                                switch (temp_s6->unk_15) {
+                                    case 8:
+                                    case 0x10:
+                                        break;
+                                    case 0x40:
+                                        var_s1 += spB6 * 6;
+                                        if ((func_843779C8(temp_fp, temp_s4, 1, &sp104) == 2) &&
+                                            (temp_s6->unk_2E < temp_s3->unk_2E)) {
+                                            var_s1 += spB6 * 7;
+                                        }
+                                        break;
                                 }
 
                                 if (temp_s7->unk_14 >= 0x81) {
