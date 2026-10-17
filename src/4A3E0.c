@@ -275,21 +275,30 @@ void func_80049D5C(u16 arg0) {
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
-// Hand-written (no m2c). Score 3565 over the whole function (diff.py without -s and with func_8004A474 left as
-// GLOBAL_ASM; fd.sh's -s stops at the first jr ra and shows only ~185). Wins: `default:` last with no break,
-// nr11 kept as an s32 local (also reused for the swept frequency: target t1, needs bgez), one u32 temp for
-// duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first `if (f >= 0x800 || f < 0) goto skip`,
-// `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores (lets IDO keep -1 in a3).
-// Remaining: sweep block regalloc (D_800FD004 in t0 instead of v0, nr11 in v0 instead of t1), a stray
-// `move t7,a0` before the freq expression, NR11/NR12 rereads via fresh lui (target) vs a0/v0, NR12
-// kill-test delay slots. Dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types
-// (no change), explicit casts (u16)/(s32) on the freq high bits.
+// Hand-written (no m2c). Score 2530 over the whole function (diff.py without -s and with func_8004A474 left as
+// GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
+// one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
+// `if (f >= 0x800 || f < 0) goto skip`, `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores
+// (keeps -1 in a3). Round 8: the swept frequency is its own s32 local `freq` (sharing nr11 put
+// D_800FD004 in t0 and nr11 in v0); BOTH switches written `duty = (D_800FD008[1].value & 0xC0) >> 6`
+// with `nr11 = D_800FD008[1].value` (s32) read AFTER it in the trigger: uopt then computes the sweep
+// switch value in each predecessor like the target (3565 -> 2530).
+// Remaining: a stray `move t7,a0` before `(u8)(nr14 & 7)` that shifts the t-register rotation in the
+// trigger block; `li 0x40` scheduling in case 1; the `goto skip` path loads NR12 via v0 and puts dir in
+// a1 (target: dir in t2 loaded in place, lui t2 hoisted into the decrement path), phase a2 vs a1, unk_14
+// a2 vs v0. Dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types (no change),
+// explicit casts (u16)/(s32) on the freq high bits, other spellings of the NR13|NR14 expression
+// ((u16), (s32), *256, unk_04 + ..., u8 nr14), freq stored in i/changed (worse) or dir (3195 at the time,
+// breaks the loop pointer regs), nr11 u32 (3040) / u8 / u16 (2640), switch on the expression without
+// duty, `duty = NR11; duty = ...`, NR12&8 at skip: into nr12/duty/freq/nr11 or inline (all worse),
+// `dir = NR12; dir &= 8` (no change).
 s16 func_80049DF0(void) {
     s32 changed;
     s32 i;
     u32 nr14;
     u32 nr12;
     s32 nr11;
+    s32 freq;
     u32 duty;
     u8 phase;
     u32 pos;
@@ -308,8 +317,8 @@ s16 func_80049DF0(void) {
         nr14 = D_800FD008[4].value;
         D_800FCF60.unk_04 = D_800FD008[3].value | ((u8)(nr14 & 7) << 8);
         D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
+        duty = (D_800FD008[1].value & 0xC0) >> 6;
         nr11 = D_800FD008[1].value;
-        duty = (nr11 & 0xC0) >> 6;
         switch (duty) {
             case 0:
                 D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
@@ -408,19 +417,19 @@ s16 func_80049DF0(void) {
     if ((D_800FCF60.unk_08 - (D_800FCF60.unk_00 % D_800FCF60.unk_08)) <= 0x40) {
         duty = D_800FD008[0].value;
         if (!(duty & 8)) {
-            nr11 = (u16)(D_800FCF60.unk_04 + (D_800FCF60.unk_04 >> (duty & 7)));
-            if (nr11 >= 0x800) {
+            freq = (u16)(D_800FCF60.unk_04 + (D_800FCF60.unk_04 >> (duty & 7)));
+            if (freq >= 0x800) {
                 D_800FCF60.unk_2C = 0;
                 D_800FD008[0x16].value &= ~1;
                 return 0;
             }
-            D_800FCF60.unk_04 = nr11;
+            D_800FCF60.unk_04 = freq;
         } else {
-            nr11 = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
-            if (nr11 >= 0x800 || nr11 < 0) {
+            freq = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
+            if (freq >= 0x800 || freq < 0) {
                 goto skip;
             } else {
-                D_800FCF60.unk_04 = nr11;
+                D_800FCF60.unk_04 = freq;
             }
         }
         D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
