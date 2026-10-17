@@ -580,3 +580,18 @@ the current drafts, best candidates synced to /scratch/$USER/permuter_best).
   needed ~7+ extra symbols before the function, supplied there by eight unused labels in func_86A00ED8.
   No code change, but the labels are a stand-in. Same kind of decision as the gDisplayListHead alias pair.
 
+## Round 8 (2026-10-16 night, 12 Opus agents in two passes + farm + Phase D)
+Code 96.40% -> 96.60% (progress.py). 29 -> 12 functions open. Matched and integrated (ROM OK):
+func_81207DF8, func_80033D44, func_8850B2D4, func_8437FD74, func_838043F8, func_88500A74 (the last
+three were permuter zeros from 10-07/10-10 that were never adopted: always scan permuter_best for
+zeros, matching_notes/adopt_candidate.py), func_82F04604, func_8130337C, func_81209078, func_8820BE14,
+func_84302658, func_80012870, func_86803C6C, func_83501718, func_88807D04, func_81209374,
+func_8430506C. Parked on branches: func_86A013C8 (round8-86A013C8-labels), the gDisplayListHead pair.
+Open, all register allocation with drafts much closer (scores without -s):
+func_8004A474 30 (one register: tail value a2 vs t1), func_84367660 85, func_8004A89C 955,
+func_80049DF0 975, func_86905734 1386, func_80034348 2582, func_88304850 3364, func_88805AEC 4687,
+func_8437B0CC 7934. Each draft's // comment has the model of what still differs and the dead ends.
+Farm (tags p2 GB APU, q 86905734, r 88805AEC/88304850, s 84367660, j 80034348) keeps running.
+Tools added: adopt_candidate.py, try_candidate.py, ccs.py (cc -S for one function), datamig.py,
+phased_job.sh; agent_setup.sh now links assets/.
+
