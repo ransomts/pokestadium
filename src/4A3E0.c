@@ -273,61 +273,13 @@ void func_80049D5C(u16 arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 // Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
-// Round 8 pass 4 (agent-14): 975 -> 110 (only diff: trigger `andi t3,t0,8` + `move t2,t3` vs target
-// `andi t2,t0,8`). Wins, all from func_8004A474's match: (1) `dir` is ONE variable shared by the trigger and
-// the tail (target t2 in both), kept real by the redundant `duty = D_800FD008[2].value` between the kill
-// tests; (2) NR12/NR11 reads in the sweep go through `p = (u8*)D_800FD008` so uopt emits them as fresh
-// lui/%lo loads straight into the variable (p[4] & 8 -> lbu t2; andi t2,t2) instead of extending the a1
-// base range; (3) the target computes dir and duty in EACH predecessor: `dir = p[4] & 8` is written in
-// the goto path AND before `skip:` (not after it), and `duty = (p[2] & 0xC0) >> 6` in both the increase
-// and the decrease path (after the unk_04 store), with the switch on duty after unk_24; (4) the decrease
-// path is a plain `if (bad) { dir = ...; goto skip; } unk_04 = freq; duty = ...;` (no else / else if (1)).
-// The leftover move: uopt emits `and $11,$8,8; move $10,$11; bne $11` (ccs.py) with the `duty & 8` temp in
-// the GLOBAL register t3 ($11, not one of ugen's local ring t7/t8/t6/t9/t4/t5), exactly like func_8004A474,
-// where as1's global pass folds the move. Here as1 refuses because of the `unk_00 % unk_08` remu: its
-// divide-by-zero `break` makes every register's reaching value live, so t3's def cannot be renamed to t2.
-// Verified by assembling the ugen listing with as0 + as1 WITHOUT -noglobal (cc on a .s adds -noglobal, so
-// test with tools/ido/linux/7.1/as0 and as1 directly): remu -> addu, a `li $11,0` before the remu, or the
-// temp moved to $15 each give the target `andi t2,t0,8`. So the original's uopt output put that temp in a
-// ring register or a register written before the remu on every path (v0/a0/t7), or had no temp at all.
-// No-gain spellings at 110 (all still `and $11` + move): reload elsewhere (after the 2nd test, in the
-// trigger, as the condition's assignment: 115-1075), `dir = duty; dir &= 8`, `dir = (duty = NR12) & 8`,
-// `!(dir = duty & 8)` in the test, nested ifs, label/goto/do-while/for-break/`if (dir) {}` between the
-// def and the test, `(s32)`/`8U`/`(u8)` casts (215), `register`, decl order, dir type, nr12 for the sweep's
-// NR10, `duty = duty`/`|= 0`/`(u8)duty`/`p[4]` reloads (110-2460), dropping the reload with any local for the
-// tail value (phase 260, others 475-5250). Farm candidate (pure register choice of one temp).
-// Older notes follow.
-// Hand-written (no m2c). Score 975 over the whole function (diff.py without -s and with func_8004A474 left as
-// GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
-// one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
-// `if (f >= 0x800 || f < 0) goto skip`, `unk_14 = unk_10 = x` (stores 0x10 first) and separate -1 stores
-// (keeps -1 in a3). Round 8: the swept frequency is its own s32 local `freq` (sharing nr11 put
-// D_800FD004 in t0 and nr11 in v0); BOTH switches written `duty = (D_800FD008[1].value & 0xC0) >> 6`
-// with `nr11 = D_800FD008[1].value` (s32) read AFTER it in the trigger: uopt then computes the sweep
-// switch value in each predecessor like the target (3565 -> 2530). `unk_0C = ((u8)duty & 0xF0) << 7` (the
-// cast's andi 0xFF is folded by as1 but consumes a temp: the whole trigger block now matches, incl. the old
-// stray `move t7,a0`; same trick as func_8004A474) and `(unk_04 >> shift) + unk_04` (addu order): 1520.
-// `skip: changed = NR12 & 8` (the loop flag reused; tested `!changed`): NR12 is now loaded in place with its
-// lui hoisted into the decrement path like the target, and unk_14/unk_20/phase/value regs match (1250).
-// Other locals for it: dir 1520, nr12 1520, duty 1820, nr11 1855, nr14 1900, freq 2225, i 6630. Moving
-// `changed = NR12 & 8` from skip to just before the while (as in func_8004A474): 1145; at the final
-// test instead 1540-2220, inline 2255. `} else if (1) { unk_04 = freq; }` in the decrement path (farm
-// candidate k2; makes the bgez non-likely like the target): 1145 -> 975.
-// Remaining: the sweep switch value lands in a0 (target t0, which it was before the (u8) cast); at skip the
-// NR12 load is a1 and `& 8` goes to v0 (target: both t2, the trigger dir's register; looks like the
-// target keeps one register per variable, see func_8004A89C). Round-8 dead ends: renaming any local
-// pair (merge sweep over changed/i/nr14/nr12/nr11/freq/duty/phase/pos/dir/value: none better), single
-// (u8) casts on duty/nr14/nr11/changed/freq uses, swapping any adjacent statements, a variable index
-// or u8* pointer for the NR12/NR10/NR11 reads (A474's trick; no gain here, p at the top 2700),
-// `else if` spellings other than `if (1)`, NR12&8 into dir/nr12/phase (1260) or duty/nr11/nr14/freq.
-// Older dead ends: pos as direct field reads everywhere (worse), u32<->s32 field types (no change),
-// explicit casts (u16)/(s32) on the freq high bits, other spellings of the NR13|NR14 expression
-// ((u16), (s32), *256, unk_04 + ..., u8 nr14), freq stored in i/changed (worse) or dir (3195 at the time,
-// breaks the loop pointer regs), nr11 u32 (3040) / u8 / u16 (2640), switch on the expression without
-// duty, `duty = NR11; duty = ...`, NR12&8 at skip: into nr12/duty/freq/nr11 or inline (all worse),
-// `dir = NR12; dir &= 8` (no change).
+// Matching notes: `dir` is ONE variable shared by the trigger and the tail (t2 in both), declared as a
+// one-element array: as a plain s32 uopt computes `duty & 8` into a global temp (t3) and copies it to dir,
+// and as1 cannot fold that move because the remu's divide-by-zero break keeps t3 live (permuter farm,
+// job t). NR12/NR11 in the sweep are read through `p = (u8*)D_800FD008` (fresh lui loads straight into
+// the variable instead of the a1 base); dir and duty are assigned in each predecessor (goto path and
+// before `skip:`; both sweep directions); `(u8)duty & 0xF0` for unk_0C; `default:` last with no break.
 s16 func_80049DF0(void) {
     s32 changed;
     s32 i;
@@ -338,7 +290,7 @@ s16 func_80049DF0(void) {
     u32 duty;
     u8 phase;
     u32 pos;
-    s32 dir;
+    s32 dir[1];
     s16 value;
     u8* p;
 
@@ -397,14 +349,13 @@ s16 func_80049DF0(void) {
         }
 
         duty = D_800FD008[2].value;
-        dir = duty & 8;
-        if (!dir && !(duty & 0xF0)) {
+        dir[0] = duty & 8;
+        if (!dir[0] && !(duty & 0xF0)) {
             D_800FCF60.unk_2C = 0;
             D_800FD008[0x16].value &= ~1;
             return 0;
         }
-        duty = D_800FD008[2].value;
-        if (dir && !(duty & 0xF0) && !(duty & 7)) {
+        if (dir[0] && !(duty & 0xF0) && !(duty & 7)) {
             D_800FCF60.unk_2C = 0;
             D_800FD008[0x16].value &= ~1;
             return 0;
@@ -418,7 +369,7 @@ s16 func_80049DF0(void) {
             D_800FCF60.unk_20 = 0;
             D_800FCF60.unk_0C = ((u8)duty & 0xF0) << 7;
             if (duty & 7) {
-                if (dir) {
+                if (dir[0]) {
                     D_800FCF60.unk_0E = 0x800;
                 } else {
                     D_800FCF60.unk_0E = -0x800;
@@ -467,7 +418,7 @@ s16 func_80049DF0(void) {
         } else {
             freq = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
             if (freq >= 0x800 || freq < 0) {
-                dir = p[4] & 8;
+                dir[0] = p[4] & 8;
                 goto skip;
             }
             D_800FCF60.unk_04 = freq;
@@ -508,7 +459,7 @@ s16 func_80049DF0(void) {
                 D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
         }
     }
-    dir = p[4] & 8;
+    dir[0] = p[4] & 8;
 skip:
     if (D_800FCF60.unk_14 < D_800FCF60.unk_00) {
         D_800FCF60.unk_0C += D_800FCF60.unk_0E;
@@ -519,7 +470,7 @@ skip:
         D_800FCF60.unk_20 += D_800FCF60.unk_18[D_800FCF60.unk_1E];
     }
 
-    if (!dir && (D_800FCF60.unk_0C < 0)) {
+    if (!dir[0] && (D_800FCF60.unk_0C < 0)) {
         D_800FCF60.unk_2C = 0;
         return 0;
     }
@@ -537,9 +488,6 @@ skip:
     D_800FCF60.unk_00 = D_800FCF60.unk_00 + 0x40;
     return value;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_80049DF0.s")
-#endif
 
 // Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
 // Matching notes: NR22 is read through p (a pointer local) in the tail so uopt does not fold it into the
