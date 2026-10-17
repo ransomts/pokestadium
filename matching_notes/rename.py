@@ -238,7 +238,7 @@ def preflight(rows, protected, named, allow_applied_skip=True):
     seen_old, seen_new = {}, {}
     for r in rows:
         tag = f"ledger:{r.lineno} ({r.old})"
-        if allow_applied_skip and r.status.startswith("applied"):
+        if allow_applied_skip and (r.status.startswith("applied") or r.status in ("tested", "noop")):
             continue
         if r.old == r.new:
             if r.status != "noop":
