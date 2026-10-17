@@ -519,7 +519,7 @@ void func_84A01EE0(void) {
     func_84A00B44();
     func_84A00E98();
     func_84A008A8();
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_84A02074(void) {
@@ -551,10 +551,10 @@ s32 func_84A0207C(void) {
                             var_s3 = 3;
                         }
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-                        func_80048B90(2);
+                        PlaySoundEffect(2);
                         var_s3 = 3;
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-                        func_80048B90(3);
+                        PlaySoundEffect(3);
                         if (temp_s0->unk_00 >= 0xA) {
                             D_84A030E0 = 9;
                             D_84A030E4 = 3;
@@ -572,7 +572,7 @@ s32 func_84A0207C(void) {
                     }
 
                     if ((var_s1 >= 0) && (D_84A02F00[var_s1].unk_01 != 0)) {
-                        func_80048B90(1);
+                        PlaySoundEffect(1);
                         D_84A030E0 = var_s1;
                         D_84A030E4 = 3;
                     }
@@ -688,7 +688,7 @@ s32 func_84A02580(void) {
     }
 
     if (var_s1_2 == 1) {
-        func_80048B90(0x1C);
+        PlaySoundEffect(0x1C);
         var_s1 = 0;
         if (D_84A030E0 == 0xB) {
             func_84A02434(0, 0, 6, -0x40);
@@ -701,7 +701,7 @@ s32 func_84A02580(void) {
         func_84A02410();
         func_84A01EE0();
     } else {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         var_s1 = 2;
         func_8000D278(0x12);
         if (D_84A030E0 == 0xB) {
@@ -751,7 +751,7 @@ s32 func_84A02898(void) {
         func_84A01EE0();
     } while (!BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B));
 
-    func_80048B90(0x01100011);
+    PlaySoundEffect(0x01100011);
 
     if (D_800AE540.unk_0002 == 8) {
         D_84A02F00[11].unk_01 = 0x3C;
@@ -863,7 +863,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('PNLV');
 
-    func_8001E94C(0x3C, 0);
+    Text_Init(0x3C, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_ui, 0);
     func_8002D510();

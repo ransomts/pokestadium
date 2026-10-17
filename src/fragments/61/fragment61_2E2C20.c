@@ -386,21 +386,21 @@ void func_8420C368(unk_D_8423D3A8* arg0) {
 
     if (BTN_IS_PRESSED(cont, BTN_A)) {
         if (arg0->unk_01 == 0) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
         } else if (arg0->unk_02 == 0) {
-            func_80048B90(0x22);
+            PlaySoundEffect(0x22);
         } else {
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
         arg0->unk_04 = 0;
         arg0->unk_00 = 3;
     } else if (BTN_IS_PRESSED(cont, BTN_B)) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         arg0->unk_04 = 0;
         arg0->unk_02 = 1;
         arg0->unk_00 = 3;
     } else if (BTN_IS_PRESSED(cont, BTN_DUP | BTN_DDOWN) && (arg0->unk_01 != 0)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         arg0->unk_02 ^= 1;
     }
 

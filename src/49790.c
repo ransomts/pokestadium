@@ -15,7 +15,7 @@ static s32 D_80078A48 = 0;
 static s32 D_80078A4C = 0;
 static u8 D_80078A50 = 0;
 
-s32 func_80048B90(u32 arg0) {
+s32 PlaySoundEffect(u32 arg0) {
     u32 temp_v0_3;
     s32 sp28;
     f32 sp24;
@@ -144,7 +144,7 @@ s32 func_80048B90(u32 arg0) {
 
         case 0x2A:
         case 0x2B:
-            func_80048B90(0x1B);
+            PlaySoundEffect(0x1B);
             break;
 
         case 0x32:

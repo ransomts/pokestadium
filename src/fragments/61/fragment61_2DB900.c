@@ -442,7 +442,7 @@ void func_84204B50(void) {
         for (i = 0; i < 4; i++) {
             if (D_84210DA0[var_v1].unk_00 != 0) {
                 D_8423E568 = var_v1;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
             var_v1 = (var_v1 + var_a0) & 3;
@@ -459,7 +459,7 @@ void func_84204BF8(void) {
         for (i = 0; i < 2; i++) {
             if (D_84210DA0[var_v0].unk_00 != 0) {
                 D_8423E568 = var_v0;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
             var_v0 ^= 1;
@@ -474,13 +474,13 @@ void func_84204C9C(void) {
         for (i = D_8423E568 - 1; i >= 0; i--) {
             if (D_84210DA0[i].unk_00 != 0) {
                 D_8423E568 = i;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
         }
     } else if ((D_8423E568 == 5) && (D_84210DA0[4].unk_00 != 0)) {
         D_8423E568 = 4;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -491,13 +491,13 @@ void func_84204D5C(void) {
         for (i = D_8423E568 + 1; i < 4; i++) {
             if (D_84210DA0[i].unk_00 != 0) {
                 D_8423E568 = i;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
         }
     } else if (D_8423E568 == 4) {
         D_8423E568 = 5;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -506,15 +506,15 @@ void func_84204E0C(void) {
 
     if (BTN_IS_PRESSED(D_8423E570, BTN_A)) {
         if (D_84210DA0[D_8423E568].unk_01 == 0) {
-            func_80048B90(0x01100012);
+            PlaySoundEffect(0x01100012);
             D_8423E56C = 4;
         } else {
-            func_80048B90(8);
+            PlaySoundEffect(8);
             D_8423E56C = 6;
         }
     } else if ((D_8423E57C != 0) && (BTN_IS_PRESSED(D_8423E570, BTN_B))) {
         D_8423E56C = 5;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     } else if (BTN_IS_PRESSED(D_8423E570, BTN_DUP)) {
         func_84204B50();
     } else if (BTN_IS_PRESSED(D_8423E570, BTN_DDOWN)) {

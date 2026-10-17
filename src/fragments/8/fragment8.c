@@ -495,7 +495,7 @@ void func_86200EC4(s32 arg0) {
         func_8780005C();
     }
 
-    func_80007778();
+    Stage_Advance();
     D_86203E46++;
 }
 
@@ -503,7 +503,7 @@ s32 func_862011E8(void) {
     s32 i;
     s32 var_s1_3;
 
-    func_800077B4(0xA);
+    Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
 
     for (i = 0; i < 4; i++) {
@@ -542,7 +542,7 @@ s32 func_862011E8(void) {
             }
 
             if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 func_87802EB8(2);
                 return -1;
             }
@@ -1375,7 +1375,7 @@ void func_86203380(void) {
 }
 
 void func_8620369C(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     if (arg0 == 1) {
         D_86204718 = 1;
@@ -1386,10 +1386,10 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x10000, 0);
+    Gfx_InitBuffers(0x10000, 0);
 
-    sp24 = func_80007444(0, 0, 3, 1, 2, 1);
-    D_86204714 = func_8001E94C(0x16, 0);
+    sp24 = Stage_Create(0, 0, 3, 1, 2, 1);
+    D_86204714 = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_04000000, run_rattata_run_flag_gfx, 0);
@@ -1399,7 +1399,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     func_862030D0();
     func_878029C0();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86203380();
 
     if (func_862011E8() != -1) {
@@ -1421,7 +1421,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

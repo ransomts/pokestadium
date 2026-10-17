@@ -10,54 +10,54 @@ typedef struct UnkStruct800A7428 {
 } UnkStruct800A7428; // size = 0x12
 
 Gfx* gDisplayListHead;
-UnkStruct800A7428 D_800A7428;
+UnkStruct800A7428 gDLBuffers;
 unk_D_800A7440 D_800A7440;
 
-void func_80005EDC(void);
+void Gfx_SwapDisplayList(void);
 
-void func_80005E40(u32 arg0, s32 arg1) {
-    D_800A7428.unk10 = 0;
-    D_800A7428.unkC = arg0;
-    D_800A7428.unk0 = main_pool_alloc_with_func(arg0, arg1, 'DYN0', NULL);
-    D_800A7428.unk4 = main_pool_alloc_with_func(arg0, arg1, 'DYN1', NULL);
-    func_80005EDC();
+void Gfx_InitBuffers(u32 arg0, s32 arg1) {
+    gDLBuffers.unk10 = 0;
+    gDLBuffers.unkC = arg0;
+    gDLBuffers.unk0 = main_pool_alloc_with_func(arg0, arg1, 'DYN0', NULL);
+    gDLBuffers.unk4 = main_pool_alloc_with_func(arg0, arg1, 'DYN1', NULL);
+    Gfx_SwapDisplayList();
 }
 
-void func_80005EAC(void) {
-    main_pool_try_free(D_800A7428.unk4);
-    main_pool_try_free(D_800A7428.unk0);
+void Gfx_FreeBuffers(void) {
+    main_pool_try_free(gDLBuffers.unk4);
+    main_pool_try_free(gDLBuffers.unk0);
 }
 
-void func_80005EDC(void) {
-    s32* temp_v0 = (s32*)&D_800A7428;
+void Gfx_SwapDisplayList(void) {
+    s32* temp_v0 = (s32*)&gDLBuffers;
 
-    D_800A7428.unk10 ^= 1;
-    temp_v0 += D_800A7428.unk10;
+    gDLBuffers.unk10 ^= 1;
+    temp_v0 += gDLBuffers.unk10;
 
-    D_800A7428.unk8 = *temp_v0 + D_800A7428.unkC;
+    gDLBuffers.unk8 = *temp_v0 + gDLBuffers.unkC;
     gDisplayListHead = *temp_v0;
 }
 
-void func_80005F1C(Gfx** arg0, Gfx** arg1) {
-    s32* ptr = (s32*)&D_800A7428;
-    *arg1 = (Gfx*)((uintptr_t)gDisplayListHead - ptr[D_800A7428.unk10]);
-    *arg0 = (Gfx*)(ptr[D_800A7428.unk10]);
+void Gfx_GetCurrentDL(Gfx** arg0, Gfx** arg1) {
+    s32* ptr = (s32*)&gDLBuffers;
+    *arg1 = (Gfx*)((uintptr_t)gDisplayListHead - ptr[gDLBuffers.unk10]);
+    *arg0 = (Gfx*)(ptr[gDLBuffers.unk10]);
 }
 
-void* func_80005F5C(s32 arg0) {
+void* GfxAlloc(s32 arg0) {
     u32 temp_v0;
     u32 ret;
 
     arg0 = ALIGN8(arg0);
-    temp_v0 = (D_800A7428.unk8 - arg0);
+    temp_v0 = (gDLBuffers.unk8 - arg0);
     ret = NULL;
     if (temp_v0 >= (uintptr_t)gDisplayListHead) {
-        D_800A7428.unk8 = temp_v0;
+        gDLBuffers.unk8 = temp_v0;
         ret = temp_v0;
     }
     return ret;
 }
 
 s32 func_80005F9C(void) {
-    return D_800A7428.unk8 - (uintptr_t)gDisplayListHead;
+    return gDLBuffers.unk8 - (uintptr_t)gDisplayListHead;
 }

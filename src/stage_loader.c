@@ -171,7 +171,7 @@ static u32 D_80068CB0[] = {
 };
 
 static unk_D_800A7450 D_800A7450;
-static unk_func_80007444* D_800A7464;
+static Stage* gCurrentStage;
 static Mtx D_800A7468;
 static char pad_D_800A74A8[0x8];
 static Gfx* D_800A74B0;
@@ -185,31 +185,31 @@ void func_800069F0(void) {
     u8 b;
     u8 g;
     u8 r;
-    unk_func_80007444* v0 = D_800A7464;
+    Stage* v0 = gCurrentStage;
 
-    if (D_800A7464->unk_11 == 0) {
+    if (gCurrentStage->unk_11 == 0) {
         return;
     }
 
-    r = RGBA16_GET_R(D_800A7464->unk_14);
-    g = RGBA16_GET_G(D_800A7464->unk_14);
-    b = RGBA16_GET_B(D_800A7464->unk_14);
+    r = RGBA16_GET_R(gCurrentStage->unk_14);
+    g = RGBA16_GET_G(gCurrentStage->unk_14);
+    b = RGBA16_GET_B(gCurrentStage->unk_14);
 
     r = (r << 3) | (r >> 2);
     g = (g << 3) | (g >> 2);
     b = (b << 3) | (b >> 2);
 
-    switch (D_800A7464->unk_11) {
+    switch (gCurrentStage->unk_11) {
         case 1:
             a = 255;
             break;
 
         case 2:
-            a = (255 - ((D_800A7464->unk_13 * 255) / D_800A7464->unk_12));
+            a = (255 - ((gCurrentStage->unk_13 * 255) / gCurrentStage->unk_12));
             break;
 
         case 3:
-            a = ((D_800A7464->unk_13 * 255) / D_800A7464->unk_12);
+            a = ((gCurrentStage->unk_13 * 255) / gCurrentStage->unk_12);
             break;
     }
 
@@ -218,16 +218,16 @@ void func_800069F0(void) {
         gSPDisplayList(gDisplayListHead++, D_80068C68);
     }
 
-    if (D_800A7464->unk_11 == 1) {
+    if (gCurrentStage->unk_11 == 1) {
         return;
     }
 
-    D_800A7464->unk_13++;
-    if (D_800A7464->unk_13 == D_800A7464->unk_12) {
-        if (D_800A7464->unk_11 == 2) {
-            D_800A7464->unk_11 = 0;
+    gCurrentStage->unk_13++;
+    if (gCurrentStage->unk_13 == gCurrentStage->unk_12) {
+        if (gCurrentStage->unk_11 == 2) {
+            gCurrentStage->unk_11 = 0;
         } else {
-            D_800A7464->unk_11 = 1;
+            gCurrentStage->unk_11 = 1;
         }
     }
 }
@@ -235,16 +235,16 @@ void func_800069F0(void) {
 s32 func_80006C04(s32 arg0) {
     s32 ret = 0;
 
-    if ((D_800A7464 != NULL) && ((D_800A7464->unk_11 == 1) || (D_800A7464->unk_11 == 0))) {
-        if (D_800A7464->unk_11 == 1) {
-            D_800A7464->unk_11 = 2;
+    if ((gCurrentStage != NULL) && ((gCurrentStage->unk_11 == 1) || (gCurrentStage->unk_11 == 0))) {
+        if (gCurrentStage->unk_11 == 1) {
+            gCurrentStage->unk_11 = 2;
         } else {
-            D_800A7464->unk_11 = 3;
+            gCurrentStage->unk_11 = 3;
         }
 
         ret = 1;
-        D_800A7464->unk_13 = 0;
-        D_800A7464->unk_12 = arg0;
+        gCurrentStage->unk_13 = 0;
+        gCurrentStage->unk_12 = arg0;
     }
 
     return ret;
@@ -253,7 +253,7 @@ s32 func_80006C04(s32 arg0) {
 s32 func_80006C6C(s32 arg0) {
     s32 ret = 0;
 
-    if ((D_800A7464 != NULL) && (D_800A7464->unk_11 == 1)) {
+    if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 1)) {
         ret = func_80006C04(arg0);
     }
 
@@ -263,7 +263,7 @@ s32 func_80006C6C(s32 arg0) {
 s32 func_80006CB4(s32 arg0) {
     s32 ret = 0;
 
-    if ((D_800A7464 != NULL) && (D_800A7464->unk_11 == 0)) {
+    if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 0)) {
         ret = func_80006C04(arg0);
     }
 
@@ -271,10 +271,10 @@ s32 func_80006CB4(s32 arg0) {
 }
 
 void func_80006CF8(s32 arg0) {
-    if (D_800A7464 != NULL) {
-        D_800A7464->unk_11 = arg0;
-        D_800A7464->unk_13 = 0;
-        D_800A7464->unk_12 = 0;
+    if (gCurrentStage != NULL) {
+        gCurrentStage->unk_11 = arg0;
+        gCurrentStage->unk_13 = 0;
+        gCurrentStage->unk_12 = 0;
     }
 }
 
@@ -288,7 +288,7 @@ void func_80006D28(u32 arg0, u32 arg1) {
     }
 }
 
-void func_80006D50(void) {
+void Gfx_SetDefaultState(void) {
     gDPPipeSync(gDisplayListHead++);
     gDPPipelineMode(gDisplayListHead++, G_PM_1PRIMITIVE);
     gDPSetTextureLOD(gDisplayListHead++, G_TL_TILE);
@@ -314,31 +314,31 @@ void func_80006F34(void) {
     gSPTexture(gDisplayListHead++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_80006F98(void) {
+void Gfx_BeginFrame(void) {
     func_80006450();
     Memmap_SetSegmentMap(0, 0x80000000, osMemSize);
     Memmap_SetSegments(&gDisplayListHead);
-    func_80006D50();
+    Gfx_SetDefaultState();
     func_80006F34();
 }
 
 void func_80006FE8(void) {
-    func_80006498(&gDisplayListHead, D_800A7464->unk_18[D_800A7464->unk_16]);
+    func_80006498(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
     guOrtho(&D_800A7468, 0.0f, 320.0f, 0.0f, 240.0f, -2.0f, 2.0f, 1.0f);
-    func_80006D50();
+    Gfx_SetDefaultState();
     func_80006F34();
 
     gSPMatrix(gDisplayListHead++, (u32)&D_80068BC8 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gDisplayListHead++, (u32)&D_800A7468 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
 
-    if (D_800A7464->unk_0C == 1) {
+    if (gCurrentStage->unk_0C == 1) {
         gSPViewport(gDisplayListHead++, (u32)&D_80068C18 & 0x1FFFFFFF);
     } else {
         gSPViewport(gDisplayListHead++, (u32)&D_80068C08 & 0x1FFFFFFF);
     }
 
-    func_800060E0(&gDisplayListHead, 0, 0, D_800A7464->unk_00, D_800A7464->unk_02);
+    func_800060E0(&gDisplayListHead, 0, 0, gCurrentStage->unk_00, gCurrentStage->unk_02);
     func_800069F0();
 
     if (gShowCPUProfiler != 0) {
@@ -358,25 +358,25 @@ void func_80006FE8(void) {
     gDPFullSync(gDisplayListHead++);
     gSPEndDisplayList(gDisplayListHead++);
 
-    func_80005F5C(0);
+    GfxAlloc(0);
 }
 
 void func_80007234(void) {
-    func_80005EDC();
-    func_80006F98();
+    Gfx_SwapDisplayList();
+    Gfx_BeginFrame();
 }
 
 void func_8000725C(void) {
     func_80006FE8();
-    D_800A7450.unk_00 = D_800A7464->unk_10;
-    D_800A7450.unk_01 = D_800A7464->unk_0C;
-    D_800A7450.unk_02 = D_800A7464->unk_0D;
-    D_800A7450.unk_03 = D_800A7464->unk_16;
-    D_800A7450.unk_0C = D_800A7464->unk_18[D_800A7464->unk_16];
-    func_80005F1C(&D_800A7450.unk_04, &D_800A7450.unk_08);
-    D_800A7464->unk_16++;
-    if (D_800A7464->unk_16 == D_800A7464->unk_0E) {
-        D_800A7464->unk_16 = 0;
+    D_800A7450.unk_00 = gCurrentStage->unk_10;
+    D_800A7450.unk_01 = gCurrentStage->unk_0C;
+    D_800A7450.unk_02 = gCurrentStage->unk_0D;
+    D_800A7450.unk_03 = gCurrentStage->unk_16;
+    D_800A7450.unk_0C = gCurrentStage->unk_18[gCurrentStage->unk_16];
+    Gfx_GetCurrentDL(&D_800A7450.unk_04, &D_800A7450.unk_08);
+    gCurrentStage->unk_16++;
+    if (gCurrentStage->unk_16 == gCurrentStage->unk_0E) {
+        gCurrentStage->unk_16 = 0;
     }
 }
 
@@ -386,15 +386,15 @@ void func_80007304(void) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
-    gDPSetFillColor(gDisplayListHead++, (D_800A7464->unk_14 << 0x10) | D_800A7464->unk_14);
-    gDPFillRectangle(gDisplayListHead++, D_800A7464->unk_04, D_800A7464->unk_08, D_800A7464->unk_06,
-                     D_800A7464->unk_0A);
+    gDPSetFillColor(gDisplayListHead++, (gCurrentStage->unk_14 << 0x10) | gCurrentStage->unk_14);
+    gDPFillRectangle(gDisplayListHead++, gCurrentStage->unk_04, gCurrentStage->unk_08, gCurrentStage->unk_06,
+                     gCurrentStage->unk_0A);
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
 }
 
-unk_func_80007444* func_80007444(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5) {
-    unk_func_80007444* temp_v0 = main_pool_alloc(sizeof(unk_func_80007444), 0);
+Stage* Stage_Create(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5) {
+    Stage* temp_v0 = main_pool_alloc(sizeof(Stage), 0);
 
     if (temp_v0 != NULL) {
         if (arg0 == 1) {
@@ -442,31 +442,31 @@ unk_func_80007444* func_80007444(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s3
     return temp_v0;
 }
 
-unk_func_80007444* func_800075F8(void) {
-    return D_800A7464;
+Stage* func_800075F8(void) {
+    return gCurrentStage;
 }
 
 s32 func_80007604(void) {
-    return D_800A7464->unk_11;
+    return gCurrentStage->unk_11;
 }
 
-void func_80007614(unk_func_80007444* arg0) {
-    arg0->unk_11 = D_800A7464->unk_11;
-    arg0->unk_12 = D_800A7464->unk_12;
-    arg0->unk_13 = D_800A7464->unk_13;
-    arg0->unk_14 = D_800A7464->unk_14;
+void func_80007614(Stage* arg0) {
+    arg0->unk_11 = gCurrentStage->unk_11;
+    arg0->unk_12 = gCurrentStage->unk_12;
+    arg0->unk_13 = gCurrentStage->unk_13;
+    arg0->unk_14 = gCurrentStage->unk_14;
 
-    if (D_800A7464->unk_16 < arg0->unk_0E) {
-        arg0->unk_16 = D_800A7464->unk_16;
+    if (gCurrentStage->unk_16 < arg0->unk_0E) {
+        arg0->unk_16 = gCurrentStage->unk_16;
     } else {
         arg0->unk_16 = 0;
     }
 
-    D_800A7464 = arg0;
+    gCurrentStage = arg0;
 }
 
-void func_80007678(unk_func_80007444* arg0) {
-    D_800A7464 = arg0;
+void Stage_Set(Stage* arg0) {
+    gCurrentStage = arg0;
     func_80001BA8(NULL);
     func_80001B7C();
     func_80001AD4(arg0->unk_14);
@@ -474,13 +474,13 @@ void func_80007678(unk_func_80007444* arg0) {
 }
 
 void func_800076C0(void) {
-    if (D_800A7464 != NULL) {
+    if (gCurrentStage != NULL) {
         func_80007304();
         func_8000725C();
         func_80001BA8(&D_800A7450);
         func_80001B7C();
         func_80001BD4(2);
-        D_800A7464 = NULL;
+        gCurrentStage = NULL;
     }
 }
 
@@ -492,14 +492,14 @@ void func_80007754(void) {
     Memmap_SetSegments(&gDisplayListHead);
 }
 
-s32 func_80007778(void) {
+s32 Stage_Advance(void) {
     func_8000725C();
     func_80001BA8(&D_800A7450);
     func_80001B7C();
     func_80007234();
 }
 
-void func_800077B4(s32 arg0) {
+void Stage_AdvanceN(s32 arg0) {
     while (arg0-- > 0) {
         func_80007304();
         func_8000725C();
@@ -509,18 +509,18 @@ void func_800077B4(s32 arg0) {
     }
 }
 
-s32 func_80007820(u32 arg0, s32 (*arg1)(u8)) {
+s32 Stage_AdvanceUntil(u32 arg0, s32 (*arg1)(u8)) {
     s32 var_s1 = 0;
 
     if (arg0 == 0) {
         while (var_s1 == 0) {
-            var_s1 = arg1(D_800A7464->unk_11);
-            func_80007778();
+            var_s1 = arg1(gCurrentStage->unk_11);
+            Stage_Advance();
         }
     } else {
         while (arg0-- > 0) {
-            var_s1 = arg1(D_800A7464->unk_11);
-            func_80007778();
+            var_s1 = arg1(gCurrentStage->unk_11);
+            Stage_Advance();
             if (var_s1 != 0) {
                 break;
             }
@@ -539,31 +539,31 @@ s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
     func_80006C6C(arg1);
 
     while (var_s0 != 0) {
-        temp_v0 = arg0(D_800A7464->unk_11);
+        temp_v0 = arg0(gCurrentStage->unk_11);
         if (var_s2 == 0) {
             if (temp_v0 != 0) {
                 var_s2 = temp_v0;
                 func_80006CB4(arg2);
             }
-        } else if (D_800A7464->unk_11 == 1) {
+        } else if (gCurrentStage->unk_11 == 1) {
             var_s0 = 0;
         }
-        func_80007778();
+        Stage_Advance();
     }
 
     return var_s2;
 }
 
 void func_80007990(u16 arg0) {
-    if (D_800A7464 != NULL) {
-        D_800A7464->unk_14 = arg0;
+    if (gCurrentStage != NULL) {
+        gCurrentStage->unk_14 = arg0;
         func_80001AD4(arg0);
     }
 }
 
 void func_800079C4(void) {
-    if (D_800A7464 != NULL) {
-        func_80006498(&gDisplayListHead, D_800A7464->unk_18[D_800A7464->unk_16]);
+    if (gCurrentStage != NULL) {
+        func_80006498(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
 
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
     }
@@ -572,8 +572,8 @@ void func_800079C4(void) {
 unk_D_80068BB0* func_80007A2C(void) {
     unk_D_80068BB0* ret = NULL;
 
-    if (D_800A7464 != NULL) {
-        ret = D_800A7464->unk_18[D_800A7464->unk_16];
+    if (gCurrentStage != NULL) {
+        ret = gCurrentStage->unk_18[gCurrentStage->unk_16];
     }
 
     return ret;
@@ -582,8 +582,8 @@ unk_D_80068BB0* func_80007A2C(void) {
 s32 func_80007A58(void) {
     s32 ret = 0;
 
-    if (D_800A7464 != NULL) {
-        ret = D_800A7464->unk_0C == 1;
+    if (gCurrentStage != NULL) {
+        ret = gCurrentStage->unk_0C == 1;
     }
 
     return ret;

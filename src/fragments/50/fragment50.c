@@ -2087,7 +2087,7 @@ void func_82602294(void) {
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015094(D_82607418);
     func_8260125C();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_82602300(s16 arg0) {
@@ -2212,14 +2212,14 @@ void func_826028D4(void) {
 }
 
 void func_82602A18(void) {
-    func_80048B90(2);
+    PlaySoundEffect(2);
     D_82608542 = 1;
 }
 
 void func_82602A40(void) {
     s32 i;
 
-    func_80048B90(2);
+    PlaySoundEffect(2);
     D_82608544 = 1;
     D_8267E4F4 = 0;
 
@@ -2229,12 +2229,12 @@ void func_82602A40(void) {
 }
 
 void func_82602AB0(void) {
-    func_80048B90(3);
+    PlaySoundEffect(3);
     D_82608544 = 0;
 }
 
 void func_82602AD4(void) {
-    func_80048B90(3);
+    PlaySoundEffect(3);
     D_82608542 = 0;
     D_82608544 = 0;
 }
@@ -2243,7 +2243,7 @@ void func_82602B00(s32 arg0) {
     if ((D_82608542 != 0) || (D_82608544 != 0)) {
         func_82602AD4();
     } else {
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
     D_8260854C = 0;
     D_8260854E = 5;
@@ -2305,7 +2305,7 @@ s32 func_82602B60(s16* arg0) {
         if (D_82608542 == 0) {
             if (D_82608544 == 0) {
                 *arg0 = 0;
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 return 1;
             }
         }
@@ -2510,7 +2510,7 @@ void func_8260365C(void) {
 
     D_82608552 = tmp;
 
-    func_800077B4(0xA);
+    Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
     func_82600020();
 
@@ -2700,15 +2700,15 @@ void func_82603924(void) {
 }
 
 s32 func_82603D20(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     D_8267E750 = 0;
 
     main_pool_push_state('VICH');
 
-    func_80005E40(0x20000, 0);
-    sp24 = func_80007444(0, 1, 2, 1, 3, 1);
-    func_8001E94C(0xE, 0);
+    Gfx_InitBuffers(0x20000, 0);
+    sp24 = Stage_Create(0, 1, 2, 1, 3, 1);
+    Text_Init(0xE, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, victory_palace_plate_text, 0);
@@ -2719,10 +2719,10 @@ s32 func_82603D20(s32 arg0, s32 arg1) {
     func_8002D510();
     D_8267E75C = GetMessageBank(0x1F);
     D_8267E760 = GetMessageBank(0x24);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_8260365C();
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('VICH');
 

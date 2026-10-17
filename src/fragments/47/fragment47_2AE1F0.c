@@ -464,7 +464,7 @@ void func_83801398(void) {
         for (i = 0; i < 4; i++) {
             if (D_8380548C[var_v1].unk_00 != 0) {
                 D_838067E0 = var_v1;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
             var_v1 = (var_v1 + var_a0) & 3;
@@ -482,7 +482,7 @@ void func_8380142C(void) {
         for (i = 0; i < 2; i++) {
             if (D_8380548C[var_v0].unk_00 != 0) {
                 D_838067E0 = var_v0;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
             var_v0 ^= 1;
@@ -497,13 +497,13 @@ void func_838014B8(void) {
         for (i = D_838067E0 - 1; i >= 0; i--) {
             if (D_8380548C[i].unk_00 != 0) {
                 D_838067E0 = i;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
         }
     } else if (D_838067E0 == 5) {
         D_838067E0 = 4;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -514,13 +514,13 @@ void func_83801554(void) {
         for (i = D_838067E0 + 1; i < 4; i++) {
             if (D_8380548C[i].unk_00 != 0) {
                 D_838067E0 = i;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 break;
             }
         }
     } else if (D_838067E0 == 4) {
         D_838067E0 = 5;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -529,15 +529,15 @@ void func_838015F4(void) {
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         if (D_8380548C[D_838067E0].unk_01 == 0) {
-            func_80048B90(0x01100012);
+            PlaySoundEffect(0x01100012);
             D_838067D8 = 4;
         } else {
-            func_80048B90(8);
+            PlaySoundEffect(8);
             D_838067D8 = 6;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         D_838067D8 = 5;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         func_83801398();
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {

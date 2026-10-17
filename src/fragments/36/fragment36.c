@@ -170,7 +170,7 @@ void func_821005EC(void) {
     }
     func_821002F8();
     func_82100028(0x64, 0x50);
-    func_80007778();
+    Stage_Advance();
 }
 
 static u8 D_82100DCC[] = {
@@ -300,7 +300,7 @@ s32 func_821009B4(void) {
         func_800290B4();
 
         if ((gPlayer1Controller->buttonPressed & 0x9000) && (D_82100EC8 != 0)) {
-            func_80048B90(0xF);
+            PlaySoundEffect(0xF);
             var_s0 = func_82100054();
         } else if (func_82100958() != 0) {
             var_s0 = func_82100844();
@@ -369,15 +369,15 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     if (func_800075F8() == NULL) {
         main_pool_push_state('TITL');
 
-        func_80005E40(0x10000, 0);
-        func_80007678(func_80007444(0, 1, 3, 1, 2, 1));
+        Gfx_InitBuffers(0x10000, 0);
+        Stage_Set(Stage_Create(0, 1, 3, 1, 2, 1));
     } else {
         func_80007754();
     }
 
     func_80028AFC(2);
     func_80027FA0(&D_82100EA8, 0);
-    func_8001E94C(6, 0);
+    Text_Init(6, 0);
     func_82100B98();
     func_8002D510();
     D_82100EA0 = GetMessageBank(0x14);
@@ -388,7 +388,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     func_800076C0();
     func_8000D2B4(0);
     func_8004FF20();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('TITL');
     return sp24;

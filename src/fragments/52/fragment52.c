@@ -61,7 +61,7 @@ void func_828001D0(void) {
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
     func_80015094(D_82800534);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_82800238(void) {
@@ -86,7 +86,7 @@ void func_82800238(void) {
         func_828001D0();
     }
 
-    func_800077B4(2);
+    Stage_AdvanceN(2);
 }
 
 void func_828002E4(void) {
@@ -103,13 +103,13 @@ void func_828002E4(void) {
 }
 
 s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MTWO');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(6, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
@@ -118,11 +118,11 @@ s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_828006A4 = func_8000484C(D_828006A0, 2);
 
     func_828002E4();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_82800238();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MTWO');
 

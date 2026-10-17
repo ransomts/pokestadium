@@ -194,7 +194,7 @@ s32 func_88200B60(unk_func_88200FA0_030* arg0, Controller* arg1) {
                 var_s0 = 0x80000003;
                 var_s1 = 1;
             } else if (arg1->buttonPressed & 0x8000) {
-                func_80048B90(0x1C);
+                PlaySoundEffect(0x1C);
                 var_s0 = 1;
                 var_s1 = arg0->unk_30->unk_38 + 2;
             }
@@ -257,7 +257,7 @@ s32 func_88200F00(unk_func_88200FA0* arg0) {
         func_800079C4();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(arg0);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(arg0, 0, 0);
-        func_80007778();
+        Stage_Advance();
         func_8002EF18(&sp34);
     }
     return sp34;

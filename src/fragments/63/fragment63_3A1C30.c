@@ -506,32 +506,32 @@ void func_84B0F6C4(unk_D_84B2665C* arg0) {
         tmp = sp24->unk_10 >> (arg0->unk_04 * 3);
         switch (tmp & 7) {
             case 1:
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 break;
 
             case 2:
-                func_80048B90(2);
+                PlaySoundEffect(2);
                 break;
 
             case 3:
-                func_80048B90(0x1C);
+                PlaySoundEffect(0x1C);
                 break;
 
             case 4:
-                func_80048B90(0x20);
+                PlaySoundEffect(0x20);
                 break;
 
             case 5:
-                func_80048B90(0x1D);
+                PlaySoundEffect(0x1D);
                 break;
 
             case 6:
-                func_80048B90(0x21);
+                PlaySoundEffect(0x21);
                 break;
         }
         arg0->unk_00 = 2;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         do {
             arg0->unk_04--;
             if (arg0->unk_04 < 0) {
@@ -539,7 +539,7 @@ void func_84B0F6C4(unk_D_84B2665C* arg0) {
             }
         } while (!(sp24->unk_0E & (1 << arg0->unk_04)));
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         do {
             arg0->unk_04++;
             if (sp22 < arg0->unk_04) {
@@ -591,7 +591,7 @@ void func_84B0F950(unk_D_84B2665C* arg0, s16 arg1) {
 
     ptr->unk_0E = -1;
 
-    func_80048B90(4);
+    PlaySoundEffect(4);
 
     if (arg1 - 1 == 2) {
         if (D_800AE540.unk_11F3 == 0) {

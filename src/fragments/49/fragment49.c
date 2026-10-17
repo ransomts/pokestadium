@@ -106,7 +106,7 @@ void func_83A00754(void) {
 
     func_800079C4();
     func_83A00068(0, 0);
-    func_80007778();
+    Stage_Advance();
 
     if (D_83A00B7C >= 0) {
         main_pool_pop_state('mksl');
@@ -149,7 +149,7 @@ s32 func_83A00880(void) {
 
             if ((D_83A00B7C == -1) && (func_83A00858() != 0)) {
                 D_83A00B70 = 2;
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 func_80006CB4(8);
             }
             break;
@@ -175,7 +175,7 @@ void func_83A009C0(void) {
 void func_83A009C8(void) {
     func_80006498(&gDisplayListHead, D_83A00B80);
     func_800065B4(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
-    func_80007778();
+    Stage_Advance();
     func_80006C6C(8);
     do {
         func_83A00990();
@@ -184,21 +184,21 @@ void func_83A009C8(void) {
 }
 
 s32 func_83A00A4C(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('BNVW');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(8, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(8, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     D_83A00B74 = ASSET_LOAD2(backgrounds, 1, 1);
     func_83A00020();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_83A009C8();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('BNVW');
 

@@ -142,7 +142,7 @@ void func_82F01530(s32 arg0, s16 arg1) {
         }
     }
 
-    func_80048B90(4);
+    PlaySoundEffect(4);
 }
 
 s32 func_82F018F8(void) {
@@ -222,7 +222,7 @@ void func_82F01A70(unk_D_82F144D0* arg0) {
 
     if ((arg0->unk_0018 != arg0->unk_001C) || (arg0->unk_001A != arg0->unk_001E)) {
         arg0->unk_000C = 4;
-        func_80048B90(1);
+        PlaySoundEffect(1);
         return;
     }
 
@@ -242,7 +242,7 @@ void func_82F01A70(unk_D_82F144D0* arg0) {
             arg0->unk_0002 = 0xA;
             func_82F052F0(arg0, temp_a1, arg0->unk_0004 + (arg0->unk_0018 * 0x58) + 0x2C,
                           arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x3A);
-            func_80048B90(2);
+            PlaySoundEffect(2);
         } else {
             goto block_25;
         }
@@ -251,7 +251,7 @@ void func_82F01A70(unk_D_82F144D0* arg0) {
         if (BTN_IS_PRESSED(controller, BTN_B)) {
             arg0->unk_0000 = 5;
             arg0->unk_000C = 0xA;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         } else if (BTN_IS_PRESSED(controller, BTN_R) && (temp_a2->unk_008 != NULL)) {
             arg0->unk_0000 = 3;
             arg0->unk_000C = 0xA;
@@ -299,7 +299,7 @@ void func_82F01A70(unk_D_82F144D0* arg0) {
     }
 
     if (arg0->unk_0000 == 3) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
     }
 }
 

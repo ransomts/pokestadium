@@ -61,7 +61,7 @@ void func_8004AF44(u32 arg0) {
             MusSetDurationScale(D_80078E68, 3);
             MusSetMasterVolume(2, D_80078E60 >> 1);
             MusSetMasterVolume(1, D_80078E64 / 3);
-            D_80078E68 = func_80048B90(0x23);
+            D_80078E68 = PlaySoundEffect(0x23);
             MusSetVolumeScale(D_80078E68, 0xFF);
             break;
 
@@ -69,15 +69,15 @@ void func_8004AF44(u32 arg0) {
             MusSetDurationScale(D_80078E68, 3);
             MusSetMasterVolume(2, D_80078E60);
             MusSetMasterVolume(1, D_80078E64);
-            D_80078E68 = func_80048B90(0x24);
+            D_80078E68 = PlaySoundEffect(0x24);
             break;
 
         case 2:
-            MusSetVolumeScale(func_80048B90(1), 0xFF);
+            MusSetVolumeScale(PlaySoundEffect(1), 0xFF);
             break;
 
         case 3:
-            MusSetVolumeScale(func_80048B90(0x21), 0xFF);
+            MusSetVolumeScale(PlaySoundEffect(0x21), 0xFF);
             break;
 
         case 4:

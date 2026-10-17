@@ -306,7 +306,7 @@ void func_86B0B650(void) {
     func_80015348();
     func_80015094(D_86B10848);
     func_86B0B184();
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_86B0B6C0(void) {
@@ -384,7 +384,7 @@ void func_86B0B810(void) {
         func_86B0B650();
     }
 
-    func_800077B4(2);
+    Stage_AdvanceN(2);
 }
 
 void func_86B0B8DC(void) {
@@ -417,13 +417,13 @@ void func_86B0B8DC(void) {
 }
 
 s32 func_86B0BA18(void) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('GBOY');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(2, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(2, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
@@ -441,11 +441,11 @@ s32 func_86B0BA18(void) {
     }
 
     func_86B0B8DC();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86B0B810();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('GBOY');
 

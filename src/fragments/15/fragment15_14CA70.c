@@ -645,7 +645,7 @@ void func_86900D78(void) {
 
 void func_86900DE0(void) {
     if ((D_8690B390.buttonPressed & 0x8000) && (D_8690B344 < 0x18)) {
-        func_80048B90(0x2C);
+        PlaySoundEffect(0x2C);
         D_8690B340 = 0xA;
         if (D_8690A70C != 1) {
             func_8000E88C(&D_83402EE0[D_8690B344].unk_50, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y,
@@ -680,7 +680,7 @@ void func_86900DE0(void) {
             D_83402E20 = D_8690B344;
         }
 
-        func_800077B4(1);
+        Stage_AdvanceN(1);
     }
 }
 
@@ -697,13 +697,13 @@ s32 func_86901044(void) {
 
     if ((D_8690B390.buttonPressed & 0x8020) && (D_8690B380 == 1)) {
         D_8690B380 = ~D_8690B380 + 2;
-        func_80048B90(3);
+        PlaySoundEffect(3);
         return 1;
     }
 
     if (D_8690B390.buttonPressed & 0x20) {
         D_8690B380 = ~D_8690B380 + 2;
-        func_80048B90(2);
+        PlaySoundEffect(2);
     }
 
     if (D_8690B380 == 0) {
@@ -718,7 +718,7 @@ s32 func_86901044(void) {
     sp1E = D_8690B390.buttonDown;
     D_8690A680++;
     if ((D_8690A680 >= 8) || (D_8690A680 == 0)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         if (D_8690A680 != 0) {
             D_8690A680 = 6;
         }
@@ -823,7 +823,7 @@ void func_86901384(void) {
                 if (D_8690B4D0[D_8690B3C0.unk_04] != 0) {
                     D_8690B3D0[D_8690B3C0.unk_04] = D_8690B4D0[D_8690B3C0.unk_04];
                     D_8690B3C0.unk_04++;
-                    func_80048B90(0x3C);
+                    PlaySoundEffect(0x3C);
                 }
                 break;
 
@@ -854,7 +854,7 @@ s32 func_86901558(void) {
         D_8690B350.unk_04 = 0;
         D_8690B348 = 1;
         D_8690B344--;
-        func_80048B90(0x2D);
+        PlaySoundEffect(0x2D);
         return 0;
     }
 
@@ -867,13 +867,13 @@ s32 func_86901558(void) {
     }
 
     if (gPlayer1Controller->buttonPressed & 0x4000) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         D_8690A67C = 1;
         return D_8690A67C;
     }
 
     if (D_8690B390.buttonPressed & 0x1000) {
-        func_80048B90(0x2E);
+        PlaySoundEffect(0x2E);
         D_8690A67C = 2;
         return D_8690A67C;
     }
@@ -885,9 +885,9 @@ s32 func_86901558(void) {
         }
 
         if (D_8690A710->unk_014 == 0) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
         } else {
-            func_80048B90(2);
+            PlaySoundEffect(2);
         }
     }
 
@@ -907,7 +907,7 @@ s32 func_8690172C(void) {
             D_8690B360.unk_00 = 0x14;
         } else {
             D_8690B348 = 2;
-            func_80048B90(0x2E);
+            PlaySoundEffect(0x2E);
             D_8690B360.unk_08 = 0xE38;
         }
     }
@@ -941,7 +941,7 @@ s32 func_869018A0(void) {
         D_8690B350.unk_0A = 0x78;
         D_8690B350.unk_00 = 0;
         D_8690B348 = 4;
-        func_80048B90(0x30);
+        PlaySoundEffect(0x30);
     }
     return 0;
 }
@@ -1000,7 +1000,7 @@ void func_86901A44(void) {
     func_869089AC();
     func_869073D8(D_8690A6A0.unk_30);
     func_86907858(D_8690A710->unk_00C);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86901B28(void) {
@@ -1025,7 +1025,7 @@ void func_86901B28(void) {
     tmp2 = 5.7f;
     tmp3 = 0.6f;
     tmp1 = 19.0f;
-    func_80048B90(0x2F);
+    PlaySoundEffect(0x2F);
     tmp4 = tmp2 * tmp3;
 
     while (true) {
@@ -1127,13 +1127,13 @@ void func_86902004(s32 arg0) {
 }
 
 s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('SNAP');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(0x16, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -1146,13 +1146,13 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     func_8002D510();
     D_8690A678 = GetMessageBank(0x2B);
     func_86902004(arg0);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86901B28();
     func_86901ECC();
     func_86901FB4();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('SNAP');
 

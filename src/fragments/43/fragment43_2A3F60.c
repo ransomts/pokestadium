@@ -235,35 +235,35 @@ void func_83402A38(void) {
             }
 
             if (tmpA != D_83407C0A) {
-                func_80048B90(1);
+                PlaySoundEffect(1);
             }
         }
 
         if (D_83407C04->buttonPressed & 0x8000) {
             if (temp_a3 == NULL) {
-                func_80048B90(2);
+                PlaySoundEffect(2);
             } else {
                 switch (temp_a3[D_83407C0A]) {
                     case 1:
-                        func_80048B90(3);
+                        PlaySoundEffect(3);
                         break;
 
                     case 2:
-                        func_80048B90(2);
+                        PlaySoundEffect(2);
                         break;
 
                     case 3:
-                        func_80048B90(0x1D);
+                        PlaySoundEffect(0x1D);
                         break;
 
                     case 4:
-                        func_80048B90(0x21);
+                        PlaySoundEffect(0x21);
                         break;
                 }
             }
             D_83402E40 = 3;
         } else if (D_83407C04->buttonPressed & 0x4000) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             D_83407C0A = -2;
             D_83402E40 = 3;
         }
@@ -311,7 +311,7 @@ s32 func_83402C6C(void) {
 
 s32 func_83402CE4(s16 arg0, Controller* arg1) {
     if (D_83402E40 == 0) {
-        func_80048B90(4);
+        PlaySoundEffect(4);
         D_83407C00 = arg0;
         D_83407C0A = D_83402E4C[arg0].unk_09;
         D_83407C08 = 0;

@@ -35,7 +35,7 @@ void func_83002324(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
         D_83003EE0 = 3;
         D_83003EE2 = 5;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 

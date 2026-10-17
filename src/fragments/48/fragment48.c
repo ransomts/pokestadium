@@ -106,7 +106,7 @@ void func_839002B8(void) {
     func_800079C4();
     func_8001D924(D_839026F8);
     func_83900180();
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_839002F4(void) {
@@ -193,23 +193,23 @@ void func_839004B4(void) {
 }
 
 s32 func_839004F4(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('GLDB');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(0x18, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
     D_839026F8 = func_8000484C(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
     func_83900038();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_839004B4();
     func_839000E4();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('GLDB');
 

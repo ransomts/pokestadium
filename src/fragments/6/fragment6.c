@@ -474,7 +474,7 @@ void func_86000C10(void) {
 
 void func_86000C18(void) {
     Gfx* gfx = gDisplayListHead;
-    Mtx* var_s1 = (Mtx*)func_80005F5C(sizeof(MtxF) * 4);
+    Mtx* var_s1 = (Mtx*)GfxAlloc(sizeof(MtxF) * 4);
     Mtx sp100;
     Mtx spC0;
     UNUSED Mtx sp80;
@@ -516,7 +516,7 @@ void func_86000D88(s32 arg0) {
     }
 
     func_87804FD4();
-    func_80007778();
+    Stage_Advance();
 
     D_86002F42++;
 }
@@ -560,7 +560,7 @@ s32 func_86000FD4(void) {
     s32 var_s0_2;
     s32 i;
 
-    func_800077B4(0xA);
+    Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
 
     for (i = 0; i < 4; i++) {
@@ -587,7 +587,7 @@ s32 func_86000FD4(void) {
             }
 
             if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 func_87802EB8(2);
                 return -1;
             }
@@ -1181,13 +1181,13 @@ void func_86002440(void) {
 }
 
 void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x20000, 0);
-    sp24 = (unk_func_80007444*)func_80007444(0, 1, 3, 1, 2, 1);
-    D_86003B7C = func_8001E94C(0x36, 0);
+    Gfx_InitBuffers(0x20000, 0);
+    sp24 = (Stage*)Stage_Create(0, 1, 3, 1, 2, 1);
+    D_86003B7C = Text_Init(0x36, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
@@ -1196,7 +1196,7 @@ void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     func_86002440();
     func_878029C0();
-    func_80007678(sp24);
+    Stage_Set(sp24);
 
     if (func_86000FD4() != -1) {
         func_8004B9C4(0x3C);
@@ -1216,7 +1216,7 @@ void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_86002264();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

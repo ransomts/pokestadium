@@ -519,46 +519,46 @@ void func_8420D75C(void) {
 
             switch (tmp2 & 7) {
                 case 1:
-                    func_80048B90(3);
+                    PlaySoundEffect(3);
                     break;
 
                 case 2:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     break;
 
                 case 3:
-                    func_80048B90(0x1C);
+                    PlaySoundEffect(0x1C);
                     break;
 
                 case 4:
-                    func_80048B90(0x20);
+                    PlaySoundEffect(0x20);
                     break;
 
                 case 5:
-                    func_80048B90(0x21);
+                    PlaySoundEffect(0x21);
                     break;
 
                 case 6:
                     if (func_80028E68() < 0xC) {
-                        func_80048B90(0x20);
+                        PlaySoundEffect(0x20);
                     } else {
-                        func_80048B90(8);
+                        PlaySoundEffect(8);
                     }
                     break;
             }
             D_84211700 = 3;
         } else if (BTN_IS_PRESSED(D_8423E584, BTN_B)) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             D_8423E58A = -1;
             D_84211700 = 3;
         } else if (BTN_IS_PRESSED(D_8423E584, BTN_DUP)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             D_8423E58A -= 1;
             if (D_8423E58A < 0) {
                 D_8423E58A = tmp - 1;
             }
         } else if (BTN_IS_PRESSED(D_8423E584, BTN_DDOWN)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             D_8423E58A += 1;
             if (D_8423E58A >= tmp) {
                 D_8423E58A = 0;
@@ -611,13 +611,13 @@ s32 func_8420DA28(s16 arg0, Controller* arg1) {
     if (D_84211700 == 0) {
         switch (arg0) {
             case 8:
-                func_80048B90(0x1F);
+                PlaySoundEffect(0x1F);
 
             case 11:
-                func_80048B90(0x1E);
+                PlaySoundEffect(0x1E);
                 break;
         }
-        func_80048B90(4);
+        PlaySoundEffect(4);
         D_8423E580 = arg0;
         D_8423E58A = D_84211704[arg0].unk_0B;
         D_8423E588 = 0;

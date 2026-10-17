@@ -29,7 +29,7 @@ void func_8001E7C0(UNUSED s32 arg0, UNUSED s32 arg1);
 void func_8001E7D4(UNUSED s32 arg0, s32 arg1);
 s32 GetFontBank(s32 arg0);
 void func_8001E884(s32 arg0, s32 arg1, s32 arg2);
-unk_D_800AC870* func_8001E94C(s32 arg0, s32 arg1);
+unk_D_800AC870* Text_Init(s32 arg0, s32 arg1);
 void func_8001E9CC(void);
 void func_8001E9F0(s32 arg0);
 void func_8001EAD0(s32 arg0);

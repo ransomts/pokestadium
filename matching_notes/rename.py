@@ -282,11 +282,16 @@ def preflight(rows, protected, named, allow_applied_skip=True):
         elif len(defs) == 0:
             # fragment bss/data symbols are dlabel-defined in asm, not in symbol_addrs:
             # the rewrite adds a symbol_addrs entry so the name survives `make extract`
-            info = dlabel_info(r.old)
-            if info is None:
-                errors.append(f"{tag}: {r.old} not in symbol_addrs and no parsable single dlabel")
+            if len(dlabel_files(r.old)) == 0:
+                # last fallback: C-defined file-scope statics (e.g. static pointers) - whole-word only
+                if not r.is_field_row() and c_definition_count(r.old) == 0:
+                    errors.append(f"{tag}: {r.old} not in symbol_addrs, no dlabel, no C definition")
             elif len(dlabel_files(r.old)) > 1:
                 errors.append(f"{tag}: {r.old} dlabel'd in multiple asm files")
+            else:
+                info = dlabel_info(r.old)
+                if info is None:
+                    errors.append(f"{tag}: {r.old} dlabel present but unparseable")
         elif len(defs) > 1:
             errors.append(f"{tag}: {r.old} defined in multiple symbol_addrs files")
         if sa_definitions(r.new):
@@ -522,6 +527,31 @@ def is_typedef_row(r, files=None):
     return False
 
 
+def c_definition_count(sym):
+    """File-scope C definitions/declarations of `sym` (static or global, incl. array defs)."""
+    pat = re.compile(
+        r"^(static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
+        r"\s*(\[[^\]]*\])?\s*[;=]", re.M)
+    n = 0
+    for f in rewrite_files():
+        if not f.endswith(".c"):
+            continue
+        if pat.search(open(f, errors="replace").read()):
+            n += 1
+    return n
+
+
+def is_c_static(sym):
+    """True if `sym` has a `static` file-scope C definition (never in the linker map)."""
+    pat = re.compile(
+        r"^static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
+        r"\s*(\[[^\]]*\])?\s*[;=]", re.M)
+    for f in rewrite_files():
+        if f.endswith(".c") and pat.search(open(f, errors="replace").read()):
+            return True
+    return False
+
+
 def cmd_apply(ledger, batch, sample, no_make):
     rows = read_ledger(ledger)
     todo = select_batch(rows, batch)
@@ -543,7 +573,8 @@ def cmd_apply(ledger, batch, sample, no_make):
     real = [r for r in todo if r.old != r.new]
     noops = [r for r in todo if r.old == r.new]
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
-    sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)]  # pre-rewrite check
+    sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)  # pre-rewrite check
+                 and not (is_c_static(r.old) and not sa_definitions(r.old))]
     rw = do_rewrites(real, files)
     touched = rw.commit()
     # post-rewrite checks

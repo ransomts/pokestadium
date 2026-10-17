@@ -13,7 +13,7 @@
 
 static s32 D_837004C0;
 static BinArchive* D_837004C4;
-static unk_func_80007444* D_837004C8;
+static Stage* D_837004C8;
 
 static unk_func_80031270* D_837004B0 = NULL;
 
@@ -37,7 +37,7 @@ void func_83700098(void) {
     if (D_837004B0->unk_00 == 2) {
         func_834018C0(D_837004B0->unk_08->img_p, 0, 0, D_837004B0->unk_04, D_837004B0->unk_06, 1, 0);
     }
-    func_80007778();
+    Stage_Advance();
     D_837004B4 += 0x1000;
 }
 
@@ -73,7 +73,7 @@ s32 func_83700174(void) {
         case 1:
             if (func_83700114() != 0) {
                 D_837004C0 = 2;
-                func_80048B90(0x1A);
+                PlaySoundEffect(0x1A);
                 func_80006CB4(1);
             }
             break;
@@ -107,16 +107,16 @@ void func_8370026C(void) {
 }
 
 s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('ELRG');
 
-    func_80005E40(0x10000, 0);
+    Gfx_InitBuffers(0x10000, 0);
 
-    sp24 = func_80007444(1, 0, 1, 0, 2, 1);
+    sp24 = Stage_Create(1, 0, 1, 0, 2, 1);
     D_837004C8 = sp24;
 
-    func_8001E94C(0x18, 0);
+    Text_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -130,11 +130,11 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_837004C4 = ASSET_LOAD2(stadium_models, 1, 1);
 
     func_83700020();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_8370026C();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('ELRG');
 

@@ -102,21 +102,21 @@ s32 func_811007AC(u8 arg0) {
 }
 
 void func_811007F8(s32 arg0, s32 arg1) {
-    unk_func_80007444* temp_s0;
+    Stage* temp_s0;
 
     D_81100930 = arg0;
     D_81100934 = arg1;
 
     main_pool_push_state('FATL');
 
-    func_80005E40(0x10000, 0);
-    temp_s0 = func_80007444(0, 1, 2, 0, 2, 1);
-    func_8001E94C(6, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    temp_s0 = Stage_Create(0, 1, 2, 0, 2, 1);
+    Text_Init(6, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, transfer_pak_error_ui, 0);
     func_8002D510();
     D_81100938 = GetMessageBank(0xD);
-    func_80007678(temp_s0);
+    Stage_Set(temp_s0);
 
     while (true) {
         func_800078D4(func_811007AC, 8, 8);

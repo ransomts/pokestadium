@@ -382,7 +382,7 @@ void func_8300059C(void) {
     }
 
     if (D_83003CA6 != tmp) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -393,15 +393,15 @@ void func_8300059C(void) {
             func_830025F8(D_83003CA0[D_83003CA6]);
         } else {
             func_830038DC();
-            func_80048B90(4);
+            PlaySoundEffect(4);
         }
 
-        func_80048B90(2);
+        PlaySoundEffect(2);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         D_83003C80 = 3;
         D_83003C82 = 0xA;
         D_83003C90 = -1;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 
@@ -655,7 +655,7 @@ void func_83001A9C(void) {
 
     func_8300243C();
     func_83003484();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_83001B64(void) {
@@ -704,7 +704,7 @@ void func_83001CF8(void) {
     D_83003C82 = 0xA;
     D_83003C90 = -1;
     D_83003C92 = 0;
-    func_80048B90(4);
+    PlaySoundEffect(4);
     D_83003C98 = 0;
     D_83003C9C = NULL;
     D_83003CA6 = 0;
@@ -803,7 +803,7 @@ void func_830020D0(void) {
 s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
     main_pool_push_state('EXPL');
 
-    func_8001E94C(0x1C, 0);
+    Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);

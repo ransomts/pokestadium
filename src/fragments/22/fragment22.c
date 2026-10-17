@@ -2892,7 +2892,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                                                                                GetMessageString(NULL, 0, D_88016CF4, 8));
                         var_s1 |= 0x80000101;
                     } else {
-                        func_80048B90(0x1C);
+                        PlaySoundEffect(0x1C);
                         FRAGMENT_LOAD_AND_CALL2(fragment23, 0, 0);
                         var_s6 = 0x26;
                         var_s1 = 1;
@@ -2901,7 +2901,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
 
                 case 6:
                     var_s6 = 0x10002;
-                    func_80048B90(0x1C);
+                    PlaySoundEffect(0x1C);
                     var_s1 = 1;
                     break;
 
@@ -2915,7 +2915,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                                                                                GetMessageString(NULL, 0, D_88016CF4, 9));
                         var_s1 |= 0x80000101;
                     } else {
-                        func_80048B90(0x1C);
+                        PlaySoundEffect(0x1C);
                         FRAGMENT_LOAD_AND_CALL2(fragment28, 1, 0);
                         var_s6 = 0x26;
                         var_s1 = 1;
@@ -2940,7 +2940,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                                                                                GetMessageString(NULL, 0, D_88016CF4, 0xB));
                         var_s1 |= 0x80000101;
                     } else {
-                        func_80048B90(0x1C);
+                        PlaySoundEffect(0x1C);
                         var_s6 = 0x10001;
                         var_s1 = 1;
                     }
@@ -2964,7 +2964,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                                                                                GetMessageString(NULL, 0, D_88016CF4, 0xC));
                         var_s1 |= 0x80000101;
                     } else {
-                        func_80048B90(0x1C);
+                        PlaySoundEffect(0x1C);
                         FRAGMENT_LOAD_AND_CALL2(fragment23, 5, 0);
                         var_s6 = 0x26;
                         var_s1 = 1;
@@ -3067,7 +3067,7 @@ void func_88002580(unk_func_88001300* arg0) {
     func2 = Memmap_GetFragmentVaddr((u32)func_88500828);
     func2(arg0, 0, 0);
 
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_880025D8(unk_func_88001300* arg0) {
@@ -3092,7 +3092,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('LABO');
 
-    sp2C = func_8001E94C(0x1C, 0);
+    sp2C = Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);

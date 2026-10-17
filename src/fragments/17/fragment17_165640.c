@@ -830,7 +830,7 @@ void func_86B07DF4(void) {
     func_80015094(&D_87906050->unk_00);
     func_86B075EC();
     func_87901C98();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86B07EA0(void) {
@@ -839,7 +839,7 @@ void func_86B07EA0(void) {
     func_80015348();
     func_80015094(&D_87906050->unk_00);
     func_8001F504(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86B07F14(void) {
@@ -1071,13 +1071,13 @@ void func_86B0819C(void) {
 }
 
 s32 func_86B08644(void) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('DEMO');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(0x10, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, cup_clear_ui, 0);
@@ -1085,13 +1085,13 @@ s32 func_86B08644(void) {
     FRAGMENT_LOAD(fragment31);
 
     func_86B0819C();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86B07F14();
     func_86B07FA4();
     func_86B08034();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('DEMO');
 

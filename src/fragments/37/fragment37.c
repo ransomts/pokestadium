@@ -153,7 +153,7 @@ Vtx* func_82200424(void) {
     temp_s4 = D_82203150.unk_08.b;
     temp_s5 = D_82203150.unk_08.a;
 
-    temp_v0 = func_80005F5C(sizeof(Vtx) * 8);
+    temp_v0 = GfxAlloc(sizeof(Vtx) * 8);
 
     if (temp_v0 != NULL) {
         func_8001E680(&temp_v0[0], temp_s6 - temp_s0, temp_s7 - temp_s0, -1, 0, 0, temp_s2, temp_s3, temp_s4, temp_s5);
@@ -258,7 +258,7 @@ Vtx* func_82200C8C(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8 arg3) {
     s16 sp44;
     Vtx* temp_v0;
 
-    temp_v0 = func_80005F5C(sizeof(Vtx) * 8);
+    temp_v0 = GfxAlloc(sizeof(Vtx) * 8);
     if (temp_v0 != NULL) {
         sp44 = arg2 / 2;
 
@@ -526,12 +526,12 @@ s32 func_822023A4(void) {
         if (D_822031D8 == 3) {
             func_8004E810(0x96, 8);
         }
-        func_80048B90(0x33);
-        func_80048B90(0x16);
+        PlaySoundEffect(0x33);
+        PlaySoundEffect(0x16);
         var_t1 = 3;
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         func_8000D23C(0x28);
-        func_80048B90(3);
+        PlaySoundEffect(3);
         var_t1 = 4;
     } else if (gPlayer1Controller->buttonPressed & 0x800) {
         var_s0 = D_82202FE4[D_822031D8].unk_06;
@@ -544,7 +544,7 @@ s32 func_822023A4(void) {
     }
 
     if (var_s0 != 8) {
-        func_80048B90(0x32);
+        PlaySoundEffect(0x32);
         var_t1 = 2;
         D_822031DA = D_822031D8;
         D_822031D8 = var_s0;
@@ -699,7 +699,7 @@ void func_82202980(s16 arg0) {
         func_822022C8(arg0 == 1);
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_82202A6C(void) {
@@ -802,13 +802,13 @@ void func_82202CB8(void) {
 }
 
 s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('LAND');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(0x1C, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, area_select_ui, 0);
@@ -826,11 +826,11 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
         D_82202FA0 = 0xFF;
     }
 
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_82202AFC();
     func_82202B60();
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('LAND');
 

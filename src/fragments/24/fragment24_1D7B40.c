@@ -3418,8 +3418,8 @@ s32 func_883125B4(unk_func_8830867C_04C_080* arg0, Controller* arg1) {
             case 3:
                 switch (arg0->unk_24->unk_7C->unk_3C->unk_38) {
                     case 0:
-                        func_80048B90(0x22);
-                        func_80048B90(0x0120000D);
+                        PlaySoundEffect(0x22);
+                        PlaySoundEffect(0x0120000D);
                         var_s0 &= 0x7FFFFFFF;
                         break;
 

@@ -10,7 +10,7 @@ unk_D_800AC870* func_88200020(void) {
 
     main_pool_push_state('TERM');
 
-    sp1C = func_8001E94C(0x1C, 0);
+    sp1C = Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);

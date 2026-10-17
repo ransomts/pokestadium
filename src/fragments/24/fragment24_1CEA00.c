@@ -1707,11 +1707,11 @@ void func_88305520(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* a
     sp78.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
     func_88315C98(arg0->unk_0C8, sp80, sp7C, sp78);
-    func_80048B90(0x0120000D);
+    PlaySoundEffect(0x0120000D);
 
     ((func8850CF00)Memmap_GetFragmentVaddr(func_8850CF00))(arg0->unk_0B8, arg2);
 
-    func_80048B90(0x29);
+    PlaySoundEffect(0x29);
     func_883167CC(&arg0->unk_03C, &arg0->unk_144);
     func_88305270(arg0);
     func_883051B0(arg0);
@@ -2584,7 +2584,7 @@ void func_883074D4(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
 s32 func_8830757C(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
     s32 sp1C = 2;
 
-    func_80048B90(3);
+    PlaySoundEffect(3);
 
     if (arg0->unk_24->unk_CB4 != 0) {
         func_88305168(arg0->unk_24);
@@ -2602,7 +2602,7 @@ s32 func_88307628(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (gPlayer1Controller->buttonPressed & 2) {
-        func_80048B90(2);
+        PlaySoundEffect(2);
         if (arg0->unk_24->unk_CD0 == 0) {
             arg0->unk_24->unk_CD0 += 3;
         }
@@ -2611,7 +2611,7 @@ s32 func_88307628(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
         func_88303520(arg0->unk_24);
         var_v1 = 0x80000005;
     } else if (gPlayer1Controller->buttonPressed & 1) {
-        func_80048B90(2);
+        PlaySoundEffect(2);
         if (arg0->unk_24->unk_CD0 >= 2) {
             arg0->unk_24->unk_CD0 -= 3;
         }
@@ -2632,16 +2632,16 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
     if (arg0->unk_24->unk_0E0 != 0) {
         if (arg2 & 2) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             func_88307478(arg0);
             func_883074D4(arg0, arg1);
             arg2 = 1;
         } else if (arg2 & 4) {
             if (arg0->unk_24->unk_034->unk_00.unk_34[arg0->unk_24->unk_034->unk_00.unk_38] & 4) {
-                func_80048B90(8);
+                PlaySoundEffect(8);
                 arg2 = 1;
             } else {
-                func_80048B90(2);
+                PlaySoundEffect(2);
                 func_88312018(
                     arg0->unk_24->unk_0AC,
                     &arg0->unk_24->unk_034->unk_00.unk_2C->unk_00[arg0->unk_24->unk_034->unk_00.unk_38]->unk_08);
@@ -2670,10 +2670,10 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
             arg2 = func_8830757C(arg0, arg1);
         } else if (arg2 & 4) {
             if (arg0->unk_24->unk_034->unk_00.unk_2C->unk_08 == 0) {
-                func_80048B90(8);
+                PlaySoundEffect(8);
                 arg2 = 1;
             } else {
-                func_80048B90(2);
+                PlaySoundEffect(2);
                 temp_v0 = func_8830681C(arg0->unk_24, arg1);
                 if (temp_v0 == 1) {
                     sp24 = arg0->unk_24->unk_034->unk_00.unk_2C->unk_00[arg0->unk_24->unk_034->unk_00.unk_38];
@@ -2770,7 +2770,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
             sp34 = func_88306F90(arg0->unk_24);
             switch (sp34) {
                 case 0:
-                    func_80048B90(3);
+                    PlaySoundEffect(3);
                     arg2 = 2;
                     if (func_88307264(arg0->unk_24, arg1, 1) == 0) {
                         arg2 = 3;
@@ -2778,7 +2778,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                     break;
 
                 case 1:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     temp_v0_2 = func_88306544(arg0->unk_24, arg1);
                     if (temp_v0_2 == 1) {
                         sp2C = -1;
@@ -2838,31 +2838,31 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                     break;
 
                 case 2:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_058, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 3:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_05C, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 4:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_060, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 5:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_064, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 8:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     if (func_88306C70(arg0->unk_24, arg0->unk_24->unk_070, sp34, arg1) == 1) {
                         if (arg0->unk_24->unk_C54.unk_0C != 0) {
                             sp28 = arg0->unk_24->unk_C54.unk_09;
@@ -2916,37 +2916,37 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                     break;
 
                 case 9:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_074, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 10:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_078, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 11:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_07C, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 12:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_080, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 13:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_88306C70(arg0->unk_24, arg0->unk_24->unk_084, sp34, arg1);
                     arg2 = 1;
                     break;
 
                 case 6:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_8830EE58(arg0->unk_24->unk_09C, &arg0->unk_24->unk_C54.unk_1C);
 
                     arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
@@ -2975,7 +2975,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                     break;
 
                 case 7:
-                    func_80048B90(2);
+                    PlaySoundEffect(2);
                     func_883103CC(arg0->unk_24->unk_0A0, &arg0->unk_24->unk_C54.unk_24);
 
                     arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
@@ -3191,7 +3191,7 @@ void func_88308D60(unk_func_8830867C* arg0) {
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(&arg0->unk_00);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(&arg0->unk_00, 0, 0);
 
-        func_80007778();
+        Stage_Advance();
         func_8002EF18(&sp34);
     }
 }
@@ -3222,7 +3222,7 @@ s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('PCHK');
 
-    sp54 = func_8001E94C(0x1C, 0);
+    sp54 = Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);

@@ -56,7 +56,7 @@ void func_865029C0(void) {
     D_8650AD85 = (func_87B00050(4) * 0xF) + 0x1E;
 
     if (D_86509254 != 0) {
-        func_80048B90(0x11);
+        PlaySoundEffect(0x11);
     }
 }
 
@@ -64,8 +64,8 @@ void func_86502A68(void) {
     Gfx* sp1C;
     Mtx* sp18;
 
-    sp1C = func_80005F5C(sizeof(Gfx) * 16);
-    sp18 = func_80005F5C(sizeof(Mtx) * 1);
+    sp1C = GfxAlloc(sizeof(Gfx) * 16);
+    sp18 = GfxAlloc(sizeof(Mtx) * 1);
 
     D_8650AD80->unk_18 = sp1C;
     guScale(sp18, 0.1f, 0.1f, 0.1f);

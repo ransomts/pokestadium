@@ -1375,11 +1375,11 @@ void func_86B04500(void) {
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x200) || (gPlayer1Controller->buttonPressed & 0x100)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 1)) {
-            func_80048B90(2);
+            PlaySoundEffect(2);
             D_86B0EBE0->unk_00 = 6;
             func_86B02F34();
             func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
@@ -1390,7 +1390,7 @@ void func_86B04500(void) {
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 0)) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             D_86B0EBE0->unk_00 = 7;
             func_86B02F34();
             func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
@@ -1403,7 +1403,7 @@ void func_86B04500(void) {
 void func_86B04740(void) {
     if ((D_86B0EBE0->unk_18 == 1) && (gPlayer1Controller->buttonPressed & 0x8000)) {
         D_86B0EBE0->unk_18 = 0;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -1556,7 +1556,7 @@ void func_86B04CF4(UNUSED s32 arg0) {
     func_80015348();
     func_80015094(D_86B0EBC0);
     func_86B04C9C();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86B04D48(void) {
@@ -1634,13 +1634,13 @@ void func_86B04EBC(void) {
 }
 
 s32 func_86B04FB0(void) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('DEMO');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(2, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(2, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
@@ -1655,13 +1655,13 @@ s32 func_86B04FB0(void) {
     D_86B0EBD4 = GetMessageBank(0x24);
 
     func_86B04EBC();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86B04D48();
     func_86B04D98();
     func_86B04DF0();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
     main_pool_pop_state('DEMO');
 
     return 0;

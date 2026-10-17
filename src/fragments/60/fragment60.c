@@ -328,7 +328,7 @@ void func_82E0045C(s32 arg0, s32 arg1) {
     if (arg0 == 1) {
         func_82E00058(0xD0, (D_82E023A8 * 0x6C) + 0x32, 0xE0, 0x38, 0xFF, 0xF0, 0x64, 0xFF);
     }
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_82E00A54(void) {
@@ -360,19 +360,19 @@ s32 func_82E00BDC(void) {
     s32 var_v1 = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        func_80048B90(0x26);
+        PlaySoundEffect(0x26);
         D_800AE540.unk_0002 = D_82E023A8;
         var_v1 = 'slct';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         var_v1 = 'quit';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         if (D_82E023A8 > 0) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             D_82E023A8--;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (D_82E023A8 < D_82E023AA)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         D_82E023A8++;
     }
     return var_v1;
@@ -410,7 +410,7 @@ s32 func_82E00CF0(void) {
             func_82E00020();
             func_82E0045C(1, 0);
         }
-        func_800077B4(2);
+        Stage_AdvanceN(2);
     }
     return temp_v1;
 }
@@ -454,7 +454,7 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
     if (var_v1 != -1) {
         main_pool_push_state('LVSL');
 
-        func_8001E94C(0x10, 0);
+        Text_Init(0x10, 0);
         func_80028AFC(2);
         func_80027FA0(&D_82E023A0, D_800AE540.unk_11F2);
         if (D_800AE540.unk_0000 == 3) {

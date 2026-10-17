@@ -183,9 +183,9 @@ void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Vp* sp80;
 
     temp_s1 = func_8000648C();
-    temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    sp84 = func_80005F5C(sizeof(Mtx) * 1);
-    sp80 = func_80005F5C(sizeof(Vp) * 1);
+    temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    sp84 = GfxAlloc(sizeof(Mtx) * 1);
+    sp80 = GfxAlloc(sizeof(Vp) * 1);
     SetViewport(sp80, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp80 & 0x1FFFFFFF);
@@ -216,9 +216,9 @@ void func_8430FF8C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
     Vp* sp78;
 
     temp_s1 = func_8000648C();
-    temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    sp7C = func_80005F5C(sizeof(Mtx) * 1);
-    sp78 = func_80005F5C(sizeof(Vp) * 1);
+    temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    sp7C = GfxAlloc(sizeof(Mtx) * 1);
+    sp78 = GfxAlloc(sizeof(Vp) * 1);
     SetViewport(sp78, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp78 & 0x1FFFFFFF);
@@ -1696,9 +1696,9 @@ void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
                    u8 argA, u8 argB, u8 argC) {
     UNUSED s32 pad;
     unk_D_80068BB0* temp_s1 = func_8000648C();
-    Vtx* temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    Mtx* spC0 = func_80005F5C(sizeof(Mtx) * 1);
-    Vp* spBC = func_80005F5C(sizeof(Vp));
+    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    Mtx* spC0 = GfxAlloc(sizeof(Mtx) * 1);
+    Vp* spBC = GfxAlloc(sizeof(Vp));
 
     SetViewport(spBC, temp_s1->width, temp_s1->height);
 

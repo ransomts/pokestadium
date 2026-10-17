@@ -547,11 +547,11 @@ void func_8420A288(unk_D_842168A0* arg0) {
                              var_t1);
 
         if (tmp1 != 0) {
-            func_80048B90(2);
+            PlaySoundEffect(2);
             arg0->unk_00001 = 0xB;
         }
     } else {
-        func_80048B90(8);
+        PlaySoundEffect(8);
     }
 }
 
@@ -562,7 +562,7 @@ void func_8420A3E4(unk_D_842168A0* arg0) {
             arg0->unk_00018 = -1;
             arg0->unk_0001A = -4;
             arg0->unk_00001 = 0xA;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if ((arg0->unk_00006 > 0) &&
                    (func_84209DB8(arg0, arg0->unk_00140->unk_268C, arg0->unk_00006 - 1, arg0->unk_0013C) != 0)) {
             arg0->unk_00006--;
@@ -570,7 +570,7 @@ void func_8420A3E4(unk_D_842168A0* arg0) {
             arg0->unk_00018 = -1;
             arg0->unk_0001A = -4;
             arg0->unk_00001 = 8;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
 
         arg0->unk_00007 = arg0->unk_00008;
@@ -585,14 +585,14 @@ void func_8420A4B8(unk_D_842168A0* arg0) {
             arg0->unk_00018 = 1;
             arg0->unk_0001A = 4;
             arg0->unk_00001 = 0xA;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if (func_84209DB8(arg0, func_84209CF4(arg0->unk_00140, 4), arg0->unk_00006 + 4, arg0->unk_0013C) != 0) {
             arg0->unk_00006++;
             arg0->unk_00140 = arg0->unk_00140->unk_2688;
             arg0->unk_00018 = 1;
             arg0->unk_0001A = 4;
             arg0->unk_00001 = 8;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_00007 = arg0->unk_00008;
         arg0->unk_00008 = 2;
@@ -606,7 +606,7 @@ void func_8420A594(unk_D_842168A0* arg0) {
             arg0->unk_00018 = -1;
             arg0->unk_0001A = -4;
             arg0->unk_00001 = 9;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_00007 = arg0->unk_00008;
         arg0->unk_00008 = 2;
@@ -620,7 +620,7 @@ void func_8420A604(unk_D_842168A0* arg0) {
             arg0->unk_00018 = 1;
             arg0->unk_0001A = 4;
             arg0->unk_00001 = 9;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_00007 = arg0->unk_00008;
         arg0->unk_00008 = 2;
@@ -638,7 +638,7 @@ void func_8420A678(unk_D_842168A0* arg0) {
     }
 
     if (var_s0 != arg0->unk_00005) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
         arg0->unk_00005 = var_s0;
         arg0->unk_00140 = func_84209CF4(arg0->unk_00140, 4);
         arg0->unk_00006 = 0;
@@ -666,7 +666,7 @@ void func_8420A7D8(unk_D_842168A0* arg0) {
     }
 
     if (var_s0 != arg0->unk_00005) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
         arg0->unk_00005 = var_s0;
         arg0->unk_00140 = func_84209CF4(arg0->unk_00140, 4);
         arg0->unk_00006 = 0;
@@ -690,13 +690,13 @@ void func_8420A938(unk_D_842168A0* arg0) {
         if (temp_v0 == 1) {
             arg0->unk_00009 = 2;
             arg0->unk_00001 = 4;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
     } else {
         arg0->unk_00009 = 2;
         arg0->unk_0000A = 0;
         arg0->unk_00001 = 6;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 
@@ -704,7 +704,7 @@ void func_8420A9B8(unk_D_842168A0* arg0) {
     if (func_84207D5C(arg0->unk_13608) != 0) {
         arg0->unk_00009 = 2;
         arg0->unk_00001 = 4;
-        func_80048B90(2);
+        PlaySoundEffect(2);
     }
 }
 

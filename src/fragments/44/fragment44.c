@@ -102,7 +102,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
 
     arg0->unk_00 = (sp54 * 3) + sp58;
     if (sp5C != arg0->unk_00) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp4C != 0)) {
@@ -118,7 +118,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
     }
 
     if (sp60 != arg0->unk_08) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
 
         for (i = 0; i < arg0->unk_14; i++) {
             sp40 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
@@ -140,21 +140,21 @@ s32 func_83500020(unk_D_83407B38* arg0) {
                     arg0->unk_B0->unk_00 = 0;
                     if (D_8350407C == 2) {
                         D_83503FC0 = 3;
-                        func_80048B90(0xD);
+                        PlaySoundEffect(0xD);
                         D_83407B30.unk_04 = arg0->unk_04;
                     } else {
-                        func_80048B90(2);
+                        PlaySoundEffect(2);
                     }
                 } else {
-                    func_80048B90(8);
+                    PlaySoundEffect(8);
                 }
             } else {
                 sp64 = 1;
-                func_80048B90(3);
+                PlaySoundEffect(3);
             }
         } else if ((sp54 * 3) < 6) {
             if (sp3C != arg0->unk_04) {
-                func_80048B90(0x29);
+                PlaySoundEffect(0x29);
                 func_83400590(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
 
                 tmp = D_83504090[sp3C];
@@ -164,7 +164,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
                 arg0->unk_20[arg0->unk_04]->unk_00 = 0;
                 sp38->unk_00 = 0;
             } else {
-                func_80048B90(3);
+                PlaySoundEffect(3);
             }
             arg0->unk_04 = -1;
         } else {
@@ -181,17 +181,17 @@ s32 func_83500020(unk_D_83407B38* arg0) {
         } else {
             arg0->unk_04 = -1;
         }
-        func_80048B90(3);
+        PlaySoundEffect(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = arg0->unk_08 * arg0->unk_14 + arg0->unk_00;
         ptr = arg0->unk_20[idx];
 
         if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (func_800317D8(ptr) != 0)) {
             sp64 = 2;
-            func_80048B90(0x19);
+            PlaySoundEffect(0x19);
             func_83400694(ptr->unk_18);
         } else {
-            func_80048B90(8);
+            PlaySoundEffect(8);
         }
     }
     return sp64;
@@ -1055,7 +1055,7 @@ void func_83503770(void) {
     func_83501BE4(0x6B, 0x4E, &D_83503FC8);
     func_8350365C(&D_83503FC8);
     func_8350355C(&D_83503FC8, 0x9E, 0x16B);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_835038DC(unk_D_83407B38* arg0) {
@@ -1197,13 +1197,13 @@ s32 func_83503BD4(unk_D_83407B38* arg0) {
 }
 
 void func_83503C9C(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('ALBM');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    D_8250A304 = func_8001E94C(0x18, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    D_8250A304 = Text_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -1217,11 +1217,11 @@ void func_83503C9C(s32 arg0, s32 arg1) {
     func_8002D510();
     func_83402340();
     func_8350057C(arg0, arg1);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_83503B2C();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('ALBM');
 

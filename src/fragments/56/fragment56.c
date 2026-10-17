@@ -198,7 +198,7 @@ void func_82C00D98(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         func_82C00CB4(arg1);
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_82C00E10(s32 arg0) {
@@ -217,7 +217,7 @@ s32 func_82C00E10(s32 arg0) {
     while (var_s2 != 0) {
         func_800290B4();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP | BTN_DDOWN)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_s1 ^= 1;
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s2 = 0;
@@ -231,12 +231,12 @@ s32 func_82C00E10(s32 arg0) {
     temp_s2 = var_s1 == 0;
     if (temp_s2 != 0) {
         if (arg0 == 0) {
-            func_80048B90(2);
+            PlaySoundEffect(2);
         } else {
-            func_80048B90(0x1F);
+            PlaySoundEffect(0x1F);
         }
     } else {
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 
     if ((arg0 == 1) || (var_s1 == 1)) {
@@ -261,7 +261,7 @@ void func_82C00F88(void) {
         func_82C00D98(8, 8, 2, 0);
     } while (!BTN_IS_PRESSED(gPlayer1Controller, BTN_A));
 
-    func_80048B90(2);
+    PlaySoundEffect(2);
 
     for (i = 7; i > 0; i--) {
         func_800290B4();
@@ -335,17 +335,17 @@ s16 func_82C0120C(void) {
 
     switch (D_82C01664) {
         case 0:
-            func_80048B90(2);
+            PlaySoundEffect(2);
             D_82C01666 ^= 1;
             break;
 
         case 1:
-            func_80048B90(2);
+            PlaySoundEffect(2);
             D_82C01666 ^= 2;
             break;
 
         case 2:
-            func_80048B90(2);
+            PlaySoundEffect(2);
             if ((func_82C00E10(0) != 0) && (func_82C00E10(1) != 0)) {
                 func_82C01054();
                 func_82C00F88();
@@ -353,7 +353,7 @@ s16 func_82C0120C(void) {
             break;
 
         case 3:
-            func_80048B90(0x1D);
+            PlaySoundEffect(0x1D);
             func_82C0115C(D_82C01666);
             sp1E = 1;
             break;
@@ -381,15 +381,15 @@ void func_82C012FC(void) {
         func_800290B4();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
             D_82C01664 = (D_82C01664 + 3) % 4;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
             D_82C01664 = (D_82C01664 + 1) % 4;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s1 = func_82C0120C();
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
             var_s1 = 2;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
         func_82C00D98(8, 0, 0, 0);
     }
@@ -409,13 +409,13 @@ void func_82C012FC(void) {
 }
 
 s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('PREF');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(0x1C, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
@@ -426,11 +426,11 @@ s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80028BE4();
     func_80028070(&D_82C01666);
     D_82C01664 = 0;
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_82C012FC();
     func_800076C0();
     func_800286D8();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('PREF');
 

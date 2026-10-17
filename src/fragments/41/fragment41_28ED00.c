@@ -538,7 +538,7 @@ void func_82F07DEC(unk_D_82F20A40* arg0) {
     }
 
     if (D_82F210D2 != tmp) {
-        func_80048B90(0x25);
+        PlaySoundEffect(0x25);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A) && (D_82F210D2 != -1)) {
@@ -555,7 +555,7 @@ void func_82F07DEC(unk_D_82F20A40* arg0) {
                     }
                 }
             }
-            func_80048B90(2);
+            PlaySoundEffect(2);
         } else {
             arg0->unk_00 = 3;
             arg0->unk_02 = 0xA;
@@ -596,7 +596,7 @@ void func_82F07DEC(unk_D_82F20A40* arg0) {
             func_82F07214(&D_82F20A88[i], 0);
         }
 
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 
@@ -702,7 +702,7 @@ void func_82F0866C(unk_D_82F20A40* arg0) {
     }
 
     if (D_82F210D4 != tmp) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -718,12 +718,12 @@ void func_82F0866C(unk_D_82F20A40* arg0) {
             arg0->unk_02 = 0xA;
             func_82F07214(D_82F20A88, 0);
             func_82F07214(&D_82F20A88[D_82F210D2 + 1], 0);
-            func_80048B90(0x1B);
+            PlaySoundEffect(0x1B);
         } else {
             arg0->unk_00 = 9;
             arg0->unk_02 = 0xA;
             func_82F07214(&D_82F20A88[D_82F210D2 + 1], 5);
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
     }
 }

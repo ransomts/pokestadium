@@ -211,21 +211,21 @@ s32 func_88900808(unk_func_889000C4* arg0, Controller* arg1, s32 arg2) {
             if (arg1->buttonPressed & 0x4000) {
                 if (arg0->unk_30->unk_2C->unk_08 == 3) {
                     var_s0 = 3;
-                    func_80048B90(var_s0);
+                    PlaySoundEffect(var_s0);
                 }
             } else if (arg1->buttonPressed & 0x8000) {
                 if (arg2 != 0) {
                     switch (arg0->unk_30->unk_38) {
                         case 0:
-                            func_80048B90(0x1D);
+                            PlaySoundEffect(0x1D);
                             break;
 
                         case 1:
-                            func_80048B90(0x21);
+                            PlaySoundEffect(0x21);
                             break;
 
                         case 2:
-                            func_80048B90(3);
+                            PlaySoundEffect(3);
                             break;
                     }
                 }

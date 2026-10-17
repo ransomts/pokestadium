@@ -1254,7 +1254,7 @@ s32 func_8004DF94(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x1100012:
-            func_80048B90(0x1B);
+            PlaySoundEffect(0x1B);
             break;
 
         case 0x1100004:
@@ -1415,7 +1415,7 @@ s32 func_8004E304(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
             if (D_80079064 != 0) {
                 func_8004B1CC(0x10);
             }
-            func_80048B90(2);
+            PlaySoundEffect(2);
             D_80079064 = 0;
             break;
 

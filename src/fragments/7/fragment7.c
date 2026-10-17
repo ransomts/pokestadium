@@ -779,7 +779,7 @@ void func_861017E4(s32 arg0) {
     }
 
     func_87804FD4();
-    func_80007778();
+    Stage_Advance();
     D_86105496 += 1;
 }
 
@@ -788,7 +788,7 @@ s32 func_8610197C(void) {
     u16 temp_v1;
     s32 i;
 
-    func_800077B4(0xA);
+    Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
 
     for (i = 0; i < 4; i++) {
@@ -825,7 +825,7 @@ s32 func_8610197C(void) {
         }
 
         if ((D_8780FA2A == 0) && (temp_v1 & 0x4000) && (D_861054BA == 1)) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             func_87802EB8(2);
             return -1;
         }
@@ -1837,7 +1837,7 @@ void func_8610426C(void) {
         }
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_86104380(void) {
@@ -1878,13 +1878,13 @@ s32 func_86104380(void) {
 }
 
 void func_86104474(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    D_861054B4 = func_8001E94C(0x36, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    D_861054B4 = Text_Init(0x36, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
@@ -1893,7 +1893,7 @@ void func_86104474(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     func_86103E9C();
     func_878029C0();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_8610426C();
 
     if (func_8610197C() != -1) {
@@ -1915,7 +1915,7 @@ void func_86104474(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_86103D28();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

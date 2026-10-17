@@ -135,7 +135,7 @@ void func_86700428(s32 arg0) {
     func_80015348();
     func_80015094(D_86700934);
     func_86700254(arg0);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_8670047C(void) {
@@ -208,13 +208,13 @@ void func_86700648(void) {
 }
 
 s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(6, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
 
@@ -222,13 +222,13 @@ s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     func_86700648();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_8670047C();
     func_867004E8();
     func_867005A8();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

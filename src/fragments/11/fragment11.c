@@ -538,7 +538,7 @@ void func_865013D4(s32 arg0) {
     }
 
     func_87804FD4();
-    func_80007778();
+    Stage_Advance();
 
     if (D_8780FC94 == 0) {
         D_87B000C0++;
@@ -603,7 +603,7 @@ void func_86501668(void) {
     var_s1 = 0;
     var_s2 = 1;
 
-    func_800077B4(5);
+    Stage_AdvanceN(5);
     func_80006C6C(0x10);
 
     while (var_s2 != 0) {
@@ -611,7 +611,7 @@ void func_86501668(void) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s2 = 0;
             } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 func_87802EB8(2);
                 D_87B000D0 = 1;
                 return;
@@ -821,25 +821,25 @@ void func_86501AAC(void) {
 }
 
 void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x18000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    D_87B000E0 = func_8001E94C(0x16, 0);
+    Gfx_InitBuffers(0x18000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    D_87B000E0 = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     func_86501AAC();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86501668();
     func_86501828();
     func_86501964();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

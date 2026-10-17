@@ -538,7 +538,7 @@ void func_86E00020(s16 arg0, s16 arg1) {
             break;
 
         case 13:
-            func_80048B90(3);
+            PlaySoundEffect(3);
             break;
 
         case 14:
@@ -1707,12 +1707,12 @@ void func_86E02880(s32 arg0) {
         showDebuggCameraInfo();
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 void metapodMinigameInit(void) {
     initMetapodMinigameAssets();
-    func_800077B4(0xA);
+    Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
     miniTutoScreenState = 3;
     miniDifficulty = D_8780FA38;
@@ -1861,7 +1861,7 @@ void func_86E02C5C(void) {
 }
 
 s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     if (arg0 == 1) {
         D_86E08E40 = 1;
@@ -1871,22 +1871,22 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x40000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    D_86E08E44 = func_8001E94C(0x16, 0);
+    Gfx_InitBuffers(0x40000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    D_86E08E44 = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     func_86E02C5C();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     metapodMinigameInit();
     func_86E02A64(); //	tutorial screen ?
     func_86E02BB0();
     func_800076C0();
     func_8001E9CC(); //	main_pool_try_free(D_800AC870);
-    func_80005EAC(); //	main_pool_try_free(D_800A7428.unk4); main_pool_try_free(D_800A7428.unk0);
+    Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');
 

@@ -188,7 +188,7 @@ Gfx* func_80032E00(Gfx* gfx) {
     guScaleF(&scaleMtx.mf[0], scale.x, scale.y, scale.z);
     guMtxXFMF(&tempCatMtx.mf[0], 0.0f, 0.0f, 0.0f, &translate.z, &translate.y, &translate.x);
     guTranslateF(&translateMtx.mf[0], translate.z, translate.y, translate.x);
-    mtxL = func_80005F5C(0x40);
+    mtxL = GfxAlloc(0x40);
     guMtxCatF(&scaleMtx.mf[0], &translateMtx.mf[0], &tempCatMtx.mf[0]);
     guMtxF2L(&tempCatMtx.mf[0], mtxL);
     guMtxCatL(&tempMtx, mtxL, mtxL);
@@ -216,7 +216,7 @@ Gfx* func_80032F94(Gfx* gfx) {
     if (mode >= 2) {
         mode &= 1;
         if (D_800AF7C0[mode] >= 2) {
-            func_80005F5C(0xA0);
+            GfxAlloc(0xA0);
             gfx = func_80032A7C(gfx);
             var_v1 = &D_800AF7B0[mode & 1];
             {
@@ -239,7 +239,7 @@ Gfx* func_80032F94(Gfx* gfx) {
             break;
         case 2:
         case 3:
-            vtx = func_80005F5C(0xA0);
+            vtx = GfxAlloc(0xA0);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &D_80076270;    }
             gfx = func_80032A7C(gfx);
             var_v1 = &D_800AF7B0[mode & 1];

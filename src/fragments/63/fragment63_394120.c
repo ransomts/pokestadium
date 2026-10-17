@@ -322,7 +322,7 @@ void func_84B014DC(void) {
     func_80015094(D_84B1A598.unk_0004);
     func_84B0F464(&D_84B26640.unk_1C);
     func_84B0F464(&D_84B26640.unk_28);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_84B01538(void) {
@@ -603,7 +603,7 @@ void func_84B01DBC(void) {
             func_84B01AA0();
         }
         func_84B0D9D8(&D_84B26640.unk_10, &D_84B1A598.unk_0008[0x1B]);
-        func_80048B90(0x28);
+        PlaySoundEffect(0x28);
     }
 
     while ((D_84B259E8.unk_00 != 0) || (D_84B26080.unk_5A0 != 0)) {
@@ -1212,14 +1212,14 @@ void func_84B03064(void) {
 }
 
 s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp2C;
+    Stage* sp2C;
 
     main_pool_push_state('EYEC');
     func_80028AFC(2);
     func_80027FA0(&D_84B26670, D_800AE540.unk_11F2);
-    func_80005E40(0x18000, 0);
-    sp2C = func_80007444(0, 1, 3, 1, 2, 1);
-    func_8001E94C(0x17, 0);
+    Gfx_InitBuffers(0x18000, 0);
+    sp2C = Stage_Create(0, 1, 3, 1, 2, 1);
+    Text_Init(0x17, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, badge_ui, 0);
@@ -1232,7 +1232,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
     D_84B1A598.unk_B408 = func_800044F4(0x898000, NULL, 1, 1);
     D_84B1A598.unk_B40C = ASSET_LOAD2(battle_portraits, 1, 1);
 
-    func_80007678(sp2C);
+    Stage_Set(sp2C);
     func_84B03064();
 
     while (arg0 < 4) {
@@ -1261,7 +1261,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
 
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('EYEC');
 

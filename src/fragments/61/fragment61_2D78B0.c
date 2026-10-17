@@ -353,11 +353,11 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
         }
     }
     func_8420D4F8(0);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_84202208(void) {
-    func_80048B90(8);
+    PlaySoundEffect(8);
     func_8420DA28(0x10, gPlayer1Controller);
 
     while (func_8420DB48(0x10) == -1) {
@@ -375,24 +375,24 @@ s32 func_84202284(void) {
             func_84202208();
         } else {
             if (D_8423D3F8 < 3) {
-                func_80048B90(0x1C);
+                PlaySoundEffect(0x1C);
             } else {
-                func_80048B90(3);
+                PlaySoundEffect(3);
             }
             sp1C = 'btnA';
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         D_8423D3F8 = 3;
         sp1C = 'btnB';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         D_8423D3F8--;
         if (D_8423D3F8 < 0) {
             D_8423D3F8 = 3;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         D_8423D3F8++;
         if (D_8423D3F8 >= 4) {
             D_8423D3F8 = 0;
@@ -406,7 +406,7 @@ s16 func_842023E4(void) {
     s32 temp_s0;
 
     D_8423D3F8 = 0;
-    func_80048B90(4);
+    PlaySoundEffect(4);
 
     for (i = 0; i < 9; i++) {
         func_800290B4();
@@ -509,7 +509,7 @@ void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
         func_8420D4F8(temp_s0);
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 s16 func_84202844(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -567,7 +567,7 @@ void func_84202974(UNUSED s16 arg0, UNUSED s32 arg1) {
 }
 
 void func_84202A64(s16 arg0, s32 arg1, s16 arg2) {
-    func_80048B90(4);
+    PlaySoundEffect(4);
     if (arg0 == 4) {
         func_84210A18(&D_84229EB0);
     } else {
@@ -699,10 +699,10 @@ void func_8420305C(s32 arg0) {
         if (arg0 != 0) {
             func_842024DC(0, -1);
         }
-        func_80007778();
+        Stage_Advance();
     }
 
-    func_800077B4(2);
+    Stage_AdvanceN(2);
 }
 
 void func_84203100(void) {
@@ -715,7 +715,7 @@ void func_84203100(void) {
             func_800079C4();
             func_8001D924(D_84211B34);
             func_842024DC(0, -1);
-            func_80007778();
+            Stage_Advance();
         }
     }
 }
@@ -1088,7 +1088,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('PICK');
 
-    func_8001E94C(0x1C, 0);
+    Text_Init(0x1C, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     FRAGMENT_LOAD(fragment31);

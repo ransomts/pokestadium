@@ -842,12 +842,12 @@ s32 func_848025A0(unk_D_848037A0* arg0) {
 
 void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
     if (arg1 >= arg0->unk_0017) {
-        func_80048B90(8);
+        PlaySoundEffect(8);
         return;
     }
 
     if (arg2 != 0) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         arg0->unk_0005 = 4;
         arg0->unk_0006 = 2;
         arg0->unk_0016 = arg1;
@@ -855,7 +855,7 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
     }
 
     if (func_84802430(arg0, arg1) != 0) {
-        func_80048B90(8);
+        PlaySoundEffect(8);
         return;
     }
 
@@ -868,13 +868,13 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
     }
 
     if (func_8480247C(arg0) != 0) {
-        func_80048B90(8);
+        PlaySoundEffect(8);
         arg0->unk_0005 = 2;
         arg0->unk_0006 = 2;
         return;
     }
 
-    func_80048B90(2);
+    PlaySoundEffect(2);
     if (func_848025A0(arg0) != 0) {
         arg0->unk_0005 = 1;
         arg0->unk_000A = 0;
@@ -894,7 +894,7 @@ void func_84802740(unk_D_848037A0* arg0) {
             arg0->unk_0006 = 2;
         }
 
-        func_80048B90(3);
+        PlaySoundEffect(3);
 
         if (arg0->unk_0002 != -1) {
             temp_v0 = &D_848037A0[arg0->unk_0002];
@@ -952,20 +952,20 @@ void func_8480290C(Controller* arg0, unk_D_848037A0* arg1) {
     if (BTN_IS_PRESSED(arg0, BTN_DLEFT | BTN_DRIGHT)) {
         arg1->unk_0006 = 2;
         arg1->unk_000A ^= 1;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     } else if (BTN_IS_PRESSED(arg0, BTN_A)) {
         if (arg1->unk_000A == 0) {
             arg1->unk_0006 = 2;
             arg1->unk_0005 = 3;
             arg1->unk_0008 = 0;
-            func_80048B90(9);
+            PlaySoundEffect(9);
         } else {
             arg1->unk_0006 = 2;
             arg1->unk_0005 = 0;
             arg1->unk_000B = 0;
             arg1->unk_0009 = 0;
             func_84800C68(arg1->unk_0003);
-            func_80048B90(3);
+            PlaySoundEffect(3);
             if (arg1->unk_0002 != -1) {
                 temp_v0_2 = &D_848037A0[arg1->unk_0002];
                 temp_v0_2->unk_0005 = 0;
@@ -985,7 +985,7 @@ void func_84802A44(Controller* arg0, unk_D_848037A0* arg1) {
         arg1->unk_0009 = 0;
         arg1->unk_0006 = 2;
         func_84800C68(arg1->unk_0003);
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 
@@ -1251,14 +1251,14 @@ void func_84803110(unk_D_800AE540* arg0) {
 }
 
 s32 func_84803368(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('MSEL');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 1, 2, 0, 2, 1);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 1, 2, 0, 2, 1);
     func_8002D510();
-    func_8001E94C(0x3C, 0);
+    Text_Init(0x3C, 0);
     func_8001B058();
     D_84803780 = ASSET_LOAD2(backgrounds, 1, 1);
     D_84803784 = func_8000484C(D_84803780, 5);
@@ -1274,12 +1274,12 @@ s32 func_84803368(s32 arg0, s32 arg1) {
 
     func_84803110(&D_800AE540);
     func_8000D1F0(7);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_800078D4(func_84802C40, 8, 8);
     func_800076C0();
     func_84802E18();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MSEL');
     return 0;

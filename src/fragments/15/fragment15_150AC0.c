@@ -33,9 +33,9 @@ extern u8 D_50017E8[];
 
 void func_86904070(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     unk_D_80068BB0* temp_s1 = func_8000648C();
-    Vtx* temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    Mtx* sp84 = func_80005F5C(sizeof(Mtx) * 1);
-    Vp* sp80 = func_80005F5C(sizeof(Vp) * 1);
+    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
+    Vp* sp80 = GfxAlloc(sizeof(Vp) * 1);
 
     SetViewport(sp80, temp_s1->width, temp_s1->height);
 
@@ -187,11 +187,11 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Vp* spA4;
 
     spB8 = func_8000648C();
-    spB4 = func_80005F5C(sizeof(Vtx) * 4);
-    spB0 = func_80005F5C(sizeof(MtxF) * 1);
-    spAC = func_80005F5C(sizeof(Mtx) * 1);
-    spA8 = func_80005F5C(sizeof(MtxF) * 1);
-    spA4 = func_80005F5C(sizeof(Vp) * 1);
+    spB4 = GfxAlloc(sizeof(Vtx) * 4);
+    spB0 = GfxAlloc(sizeof(MtxF) * 1);
+    spAC = GfxAlloc(sizeof(Mtx) * 1);
+    spA8 = GfxAlloc(sizeof(MtxF) * 1);
+    spA4 = GfxAlloc(sizeof(Vp) * 1);
 
     func_8000EB70(&spD8, 0, 0, D_8690B360.unk_06);
 
@@ -249,9 +249,9 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     Vp* spE0;
 
     spEC = func_8000648C();
-    spE8 = func_80005F5C(sizeof(Vtx) * 4);
-    spE4 = func_80005F5C(sizeof(Mtx) * 1);
-    spE0 = func_80005F5C(sizeof(Vp) * 1);
+    spE8 = GfxAlloc(sizeof(Vtx) * 4);
+    spE4 = GfxAlloc(sizeof(Mtx) * 1);
+    spE0 = GfxAlloc(sizeof(Vp) * 1);
     a1 = arg1;
     a2 = arg2;
 
@@ -319,9 +319,9 @@ void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     Vp* spC8;
 
     spD4 = func_8000648C();
-    spD0 = func_80005F5C(sizeof(Vtx) * 4);
-    spCC = func_80005F5C(sizeof(Mtx) * 1);
-    spC8 = func_80005F5C(sizeof(Vp) * 1);
+    spD0 = GfxAlloc(sizeof(Vtx) * 4);
+    spCC = GfxAlloc(sizeof(Mtx) * 1);
+    spC8 = GfxAlloc(sizeof(Vp) * 1);
 
     a1 = arg1;
     a2 = arg2;
@@ -394,9 +394,9 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     Vp* spC8;
 
     spD4 = func_8000648C();
-    spD0 = func_80005F5C(sizeof(Vtx) * 4);
-    spCC = func_80005F5C(sizeof(Mtx) * 1);
-    spC8 = func_80005F5C(sizeof(Vp) * 1);
+    spD0 = GfxAlloc(sizeof(Vtx) * 4);
+    spCC = GfxAlloc(sizeof(Mtx) * 1);
+    spC8 = GfxAlloc(sizeof(Vp) * 1);
 
     temp_fv0 = arg1;
     temp_fv1 = arg2;
@@ -460,9 +460,9 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
 void func_86906E70(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC) {
     unk_D_80068BB0* temp_s1 = func_8000648C();
-    Vtx* temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    Mtx* spAC = func_80005F5C(sizeof(Mtx) * 1);
-    Vp* spA8 = func_80005F5C(sizeof(Vp));
+    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    Mtx* spAC = GfxAlloc(sizeof(Mtx) * 1);
+    Vp* spA8 = GfxAlloc(sizeof(Vp));
 
     SetViewport(spA8, temp_s1->width, temp_s1->height);
 

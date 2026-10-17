@@ -102,7 +102,7 @@ s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
 
     switch (arg1) {
         case 0x800:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_04 == 0) {
                 arg0->unk_04 += arg0->unk_08;
             }
@@ -111,7 +111,7 @@ s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
             break;
 
         case 0x400:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
                 arg0->unk_04 -= arg0->unk_08;
             }
@@ -135,7 +135,7 @@ s32 func_8002DD98(unk_func_8002DD98_arg0* arg0, s32 arg1) {
 
     switch (arg1) {
         case 0x200:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_04 == 0) {
                 arg0->unk_04 += arg0->unk_08;
             }
@@ -144,7 +144,7 @@ s32 func_8002DD98(unk_func_8002DD98_arg0* arg0, s32 arg1) {
             break;
 
         case 0x100:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
                 arg0->unk_04 -= arg0->unk_08;
             }
@@ -173,7 +173,7 @@ void func_8002DE78(unk_func_8002DE78_arg0* arg0) {
 
     switch (temp_v0) {
         case 0x800:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_00 - sp18 < arg0->unk_04) {
                 arg0->unk_00 = arg0->unk_04;
             } else {
@@ -182,7 +182,7 @@ void func_8002DE78(unk_func_8002DE78_arg0* arg0) {
             break;
 
         case 0x400:
-            func_80048B90(1);
+            PlaySoundEffect(1);
             if (arg0->unk_08 < arg0->unk_00 + sp18) {
                 arg0->unk_00 = arg0->unk_08;
             } else {
@@ -210,7 +210,7 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
             temp_v0 = arg0->unk_10 + 1;
             if (temp_v0 < arg0->unk_0C) {
                 arg0->unk_10 = temp_v0;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 var_t1 = 9;
             } else {
                 var_t1 = 8;
@@ -220,7 +220,7 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
         case 0x100:
             if (arg0->unk_10 > 0) {
                 arg0->unk_10--;
-                func_80048B90(1);
+                PlaySoundEffect(1);
                 var_t1 = 9;
             } else {
                 var_t1 = 8;
@@ -239,7 +239,7 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
                     arg0->unk_00 = arg0->unk_08;
                 }
             }
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_t1 = 9;
             break;
 
@@ -252,7 +252,7 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
                     arg0->unk_00 = arg0->unk_04;
                 }
             }
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_t1 = 9;
             break;
     }
@@ -271,7 +271,7 @@ s32 func_8002E128(unk_func_8002E128_arg0* arg0) {
     s32 sp18 = arg0->unk_0C;
 
     if (sp1C != 0) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
 
         switch (sp1C) {
             case 0x200:
@@ -537,8 +537,8 @@ void func_8002EF44(void) {
                 func_80023D60(func_80029080());
             }
 
-            func_80005E40(0x16000, 0);
-            func_80007678(func_80007444(1, 1, 2, 0, 2, 1));
+            Gfx_InitBuffers(0x16000, 0);
+            Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
 
             FRAGMENT_LOAD_AND_CALL2(fragment22, var_s4, 0);
 
@@ -549,7 +549,7 @@ void func_8002EF44(void) {
             }
 
             func_800076C0();
-            func_80005EAC();
+            Gfx_FreeBuffers();
 
             main_pool_pop_state('PLAB');
         } else {

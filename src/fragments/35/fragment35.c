@@ -62,21 +62,21 @@ void func_8200036C(void) {
 
 s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     u64 sp30;
-    unk_func_80007444* sp2C;
+    Stage* sp2C;
     u16 sp2A;
 
     main_pool_push_state('LOGO');
 
-    func_80005E40(0x10000, 0);
-    sp2C = func_80007444(0, 1, 2, 0, 2, 1);
+    Gfx_InitBuffers(0x10000, 0);
+    sp2C = Stage_Create(0, 1, 2, 0, 2, 1);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, n64_logo_texture, 0);
 
     func_80028AFC(2);
-    func_80007678(sp2C);
+    Stage_Set(sp2C);
     func_80006C04(1);
-    func_80007820(3, func_820002B4);
+    Stage_AdvanceUntil(3, func_820002B4);
     func_8002D510();
     LoadNameSlots();
     func_80021920();
@@ -94,14 +94,14 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
         func_8003D68C(1);
     }
 
-    func_80048B90(0xA);
+    PlaySoundEffect(0xA);
     sp30 = osGetTime();
     func_8200036C();
     func_820002F0(sp30);
     func_80006C04(0x10);
-    func_80007820(0x10, func_820002B4);
+    Stage_AdvanceUntil(0x10, func_820002B4);
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('LOGO');
     return 2;

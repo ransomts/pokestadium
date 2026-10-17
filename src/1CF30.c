@@ -215,10 +215,10 @@ void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) 
     MtxF* temp_s0;
     MtxF* temp_s3;
 
-    temp_s3 = func_80005F5C(0x40);
-    temp_s4 = func_80005F5C(0x40);
-    temp_s0 = func_80005F5C(0x40);
-    temp_s2 = func_80005F5C(0x10);
+    temp_s3 = GfxAlloc(0x40);
+    temp_s4 = GfxAlloc(0x40);
+    temp_s0 = GfxAlloc(0x40);
+    temp_s2 = GfxAlloc(0x10);
     temp_s1 = func_8000648C();
 
     func_8000EB70(&spCC, 0, 0, arg2);
@@ -368,7 +368,7 @@ void func_8001E884(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-unk_D_800AC870* func_8001E94C(s32 arg0, s32 arg1) {
+unk_D_800AC870* Text_Init(s32 arg0, s32 arg1) {
     D_800AC870 = main_pool_alloc_with_func(sizeof(*D_800AC870), arg1, 'PRNT', func_8001E7C0);
     bzero(D_800AC870, sizeof(*D_800AC870));
     D_800AC870->unk_48 = ASSET_LOAD2(fonts, 1, 1);

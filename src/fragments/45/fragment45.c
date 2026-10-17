@@ -181,7 +181,7 @@ s32 func_83600384(unk_D_83407B38* arg0) {
     arg0->unk_00 = sp1C + sp48;
     if (sp4C != arg0->unk_00) {
         D_836032F4 = 0;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp40 != 0)) {
@@ -204,44 +204,44 @@ s32 func_83600384(unk_D_83407B38* arg0) {
                     if (D_836033B4 < D_836033B8) {
                         D_83403C00[idx] = 1;
                         D_836033B4++;
-                        func_80048B90(0xD);
+                        PlaySoundEffect(0xD);
                     } else {
                         D_836032F4 = 1;
-                        func_80048B90(8);
+                        PlaySoundEffect(8);
                     }
                 } else {
                     D_83403C00[idx] = 0;
                     D_836033B4--;
-                    func_80048B90(3);
+                    PlaySoundEffect(3);
                 }
             } else {
-                func_80048B90(8);
+                PlaySoundEffect(8);
             }
         } else if (sp48 == 0) {
             sp54 = 1;
-            func_80048B90(0x1C);
+            PlaySoundEffect(0x1C);
         } else if (func_83600288() != 0) {
             D_836032F0 = 2;
             D_836032F4 = 2;
-            func_80048B90(0x31);
+            PlaySoundEffect(0x31);
         } else {
             sp54 = 1;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         if ((sp1C < 6) && (func_800317D8(arg0->unk_20[idx]) != 0)) {
-            func_80048B90(0x19);
+            PlaySoundEffect(0x19);
             func_83400694(arg0->unk_20[idx]->unk_18);
             sp54 = 2;
         } else {
-            func_80048B90(8);
+            PlaySoundEffect(8);
         }
     }
 
     if (sp50 != arg0->unk_08) {
         D_836032F4 = 0;
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
         func_83600310(arg0);
 
         for (i = 0; i < arg0->unk_14; i++) {
@@ -768,7 +768,7 @@ void func_83602C14(void) {
     func_836028E8(&D_83603300, 0xA5, 0x16B);
     func_8360296C(0xF0, 0x14E);
     func_83602A8C(0x1E0, 0x14E);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_83602D98(void) {
@@ -776,11 +776,11 @@ void func_83602D98(void) {
         D_836032F0 = 3;
         func_80007990(0xFFFF);
         func_80006CB4(0xF);
-        func_80048B90(0x1D);
+        PlaySoundEffect(0x1D);
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         D_836032F4 = 0;
         D_836032F0 = 1;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 
@@ -880,13 +880,13 @@ s32 func_83602FF4(unk_D_83407B38* arg0) {
 }
 
 void func_836030A8(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('FILM');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    D_8250A304 = func_8001E94C(0x18, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    D_8250A304 = Text_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -899,11 +899,11 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     func_8002D510();
     func_83402340();
     func_8360086C(arg0);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_83602F4C();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('FILM');
 

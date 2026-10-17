@@ -3384,7 +3384,7 @@ s32 func_88804B1C(s32 arg0) {
 }
 
 void func_88804E68(void) {
-    Gfx* temp_v0 = func_80005F5C(sizeof(Gfx) * 5);
+    Gfx* temp_v0 = GfxAlloc(sizeof(Gfx) * 5);
 
     D_888269C0.unk_18 = temp_v0;
 
@@ -3411,9 +3411,9 @@ void func_88804EC8(void) {
     temp_s2 = D_88826A44->unk_0C;
     ptr = &temp_s2->unk_60;
 
-    temp_v0 = func_80005F5C(sizeof(Gfx) * 36 * 25);
+    temp_v0 = GfxAlloc(sizeof(Gfx) * 36 * 25);
     D_888269E0.unk_18 = temp_v0;
-    D_88826CE8 = func_80005F5C(sizeof(Mtx) * 36);
+    D_88826CE8 = GfxAlloc(sizeof(Mtx) * 36);
     var_s1 = D_88826CE8;
 
     func_8000EE1C(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
@@ -3490,7 +3490,7 @@ void func_8880554C(void) {
     s32 temp_t2;
     Gfx* temp_v0;
 
-    temp_v0 = func_80005F5C(sizeof(Gfx) * 170);
+    temp_v0 = GfxAlloc(sizeof(Gfx) * 170);
     D_88826A20.unk_18 = temp_v0;
 
     if (D_88826A4C == 1) {
@@ -3771,7 +3771,7 @@ void func_888069B0(void) {
     Gfx* temp_v0;
     s32 sp2C;
 
-    temp_v0 = func_80005F5C(sizeof(Gfx) * 450);
+    temp_v0 = GfxAlloc(sizeof(Gfx) * 450);
     D_88826A00.unk_18 = temp_v0;
 
     gSPDisplayList(temp_v0++, D_88825510);

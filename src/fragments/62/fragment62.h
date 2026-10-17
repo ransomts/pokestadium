@@ -1062,7 +1062,7 @@ s32 func_843010EC(s32 arg0);
 void func_8430123C(u8* arg0, s32 arg1);
 void func_8430128C(void);
 void func_843013E4(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1);
-void func_84301430(unk_func_80007444* arg0);
+void func_84301430(Stage* arg0);
 void func_84301A24(void);
 s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1);
 

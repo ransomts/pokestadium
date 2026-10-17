@@ -500,7 +500,7 @@ void func_8130222C(void) {
 
     if (D_81304000 != D_81304A62) {
         D_81303CB0 = 0;
-        func_80048B90(0x25);
+        PlaySoundEffect(0x25);
     }
 }
 
@@ -516,17 +516,17 @@ void func_8130237C(void) {
 
             if ((var_v0 == 0) && (func_81300314(D_81304000) != 1)) {
                 if (gCurrentGameState == 0x25) {
-                    func_80048B90(0x2A);
+                    PlaySoundEffect(0x2A);
                 } else {
-                    func_80048B90(0x2B);
+                    PlaySoundEffect(0x2B);
                 }
                 D_81304A64 = 1;
                 func_813001EC();
             } else {
-                func_80048B90(8);
+                PlaySoundEffect(8);
             }
         } else if ((gPlayer1Controller->buttonPressed & 0x4000) && (D_81304A64 != 2)) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             D_81304A64 = 2;
         } else if (D_81304000 >= 0) {
             func_8130222C();
@@ -554,7 +554,7 @@ void func_813024C8(s32 arg0) {
 
     func_81301E8C();
     func_80015094(D_8130464C);
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_81302548(void) {
@@ -794,14 +794,14 @@ void func_81302DD8(void) {
 }
 
 s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
     s32 sp20;
 
     main_pool_push_state('GBSL');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(0x1C, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_8000000, _6EC4D0, 0);
@@ -822,10 +822,10 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
 
     D_81303FA0 = ASSET_LOAD(0, fragment33_misc, 0);
 
-    func_80007678(sp24);
+    Stage_Set(sp24);
     sp20 = func_81302A70(arg0);
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('GBSL');
 

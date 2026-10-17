@@ -284,9 +284,9 @@ void func_800200B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
     Vp* sp78;
 
     temp_s1 = func_8000648C();
-    temp_s2 = func_80005F5C(sizeof(Vtx) * 4);
-    sp7C = func_80005F5C(sizeof(Mtx) * 1);
-    sp78 = func_80005F5C(sizeof(Vp) * 1);
+    temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
+    sp7C = GfxAlloc(sizeof(Mtx) * 1);
+    sp78 = GfxAlloc(sizeof(Vp) * 1);
 
     SetViewport(sp78, temp_s1->width, temp_s1->height);
 

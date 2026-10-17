@@ -303,7 +303,7 @@ s32 func_88202254(unk_func_88201DA0* arg0, Controller* arg1) {
             if (arg1->buttonPressed & 0x4000) {
                 var_v1 = 0x80000002;
             } else if (arg1->buttonPressed & 0x8000) {
-                func_80048B90(2);
+                PlaySoundEffect(2);
 
                 arg0->unk_4C->unk_0C = arg0->unk_34[arg0->unk_30->unk_38].unk_000;
                 arg0->unk_4C->unk_10 = arg0->unk_60 >> 0x10;
@@ -634,14 +634,14 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
                 switch (arg0->unk_2C) {
                     case 0:
                         if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
-                            func_80048B90(8);
+                            PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[0].unk_00, arg0->unk_3C[0].unk_04,
                                 arg0->unk_3C[0].unk_08);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(func_8850A3CC))(arg0->unk_00.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         } else if (func_882013F8(arg0->unk_24[1]->unk_2C) != 0) {
-                            func_80048B90(8);
+                            PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[4].unk_00, arg0->unk_3C[4].unk_04,
                                 arg0->unk_3C[4].unk_08);
@@ -656,7 +656,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
                     case 1:
                         if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
-                            func_80048B90(8);
+                            PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[1].unk_00, arg0->unk_3C[1].unk_04,
                                 arg0->unk_3C[1].unk_08);
@@ -674,7 +674,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
                     case 2:
                         if ((func_88201440(arg0->unk_24[0]->unk_2C) != 0) ||
                             (func_88201440(arg0->unk_24[1]->unk_2C) != 0)) {
-                            func_80048B90(8);
+                            PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[2].unk_00, arg0->unk_3C[2].unk_04,
                                 arg0->unk_3C[2].unk_08);
@@ -689,7 +689,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
                     case 3:
                         if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
-                            func_80048B90(8);
+                            PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[3].unk_00, arg0->unk_3C[3].unk_04,
                                 arg0->unk_3C[3].unk_08);
@@ -1360,7 +1360,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
     if (sp34 & 2) {
         switch (arg0->unk_00.unk_1C) {
             case 0:
-                func_80048B90(3);
+                PlaySoundEffect(3);
                 sp34 = 2;
                 if (func_882051EC(arg0->unk_24, arg1) == 0) {
                     sp34 = 3;
@@ -1401,7 +1401,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                         break;
 
                     case 4:
-                        func_80048B90(3);
+                        PlaySoundEffect(3);
                         sp34 = 2;
                         if (func_882051EC(arg0->unk_24, arg1) == 0) {
                             sp34 = 3;
@@ -1414,7 +1414,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                 switch (arg0->unk_24->unk_68->unk_24) {
                     case 0:
                     case 2:
-                        func_80048B90(0x18);
+                        PlaySoundEffect(0x18);
                         func_88204CBC(arg0->unk_24);
                         func_88202F2C(arg0->unk_24->unk_6C);
                         func_88202E98(arg0->unk_24->unk_6C);
@@ -1422,7 +1422,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                         break;
 
                     case 1:
-                        func_80048B90(0x18);
+                        PlaySoundEffect(0x18);
                         func_88204CBC(arg0->unk_24);
                         func_88202EF4(arg0->unk_24->unk_6C);
                         func_88202E98(arg0->unk_24->unk_6C);
@@ -1430,7 +1430,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                         break;
 
                     case 3:
-                        func_80048B90(2);
+                        PlaySoundEffect(2);
                         tmp = (arg0->unk_24->unk_6C->unk_38 != 0 ? 1 : 2) << 0x10;
                         func_8820213C(arg0->unk_24->unk_5C,
                         ((s32*)arg0->unk_24->unk_6C->unk_24[0]->unk_2C->unk_00)[arg0->unk_24->unk_6C->unk_24[0]->unk_38],
@@ -1616,7 +1616,7 @@ void func_88205DF8(unk_func_88205880* arg0) {
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(arg0);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(arg0, 0, 0);
 
-        func_80007778();
+        Stage_Advance();
         func_8002EF18(&sp34);
     }
 }

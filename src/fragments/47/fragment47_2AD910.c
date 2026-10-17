@@ -68,7 +68,7 @@ void func_83800218(void) {
     func_838022C8(1);
     func_838043F8(1);
     func_834028D0(1);
-    func_80007778();
+    Stage_Advance();
     if (D_83805668 > 0) {
         D_83805668 -= 1;
     }
@@ -249,13 +249,13 @@ s32 func_83800698(void) {
 }
 
 s32 func_83800730(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('SLCT');
 
-    func_80005E40(0x20000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    D_8250A304 = func_8001E94C(0x1C, 0);
+    Gfx_InitBuffers(0x20000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    D_8250A304 = Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
@@ -267,11 +267,11 @@ s32 func_83800730(s32 arg0, s32 arg1) {
 
     func_8001B058();
     func_83800020(arg0);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_83800640();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('SLCT');
 

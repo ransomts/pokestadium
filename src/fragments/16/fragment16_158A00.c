@@ -263,7 +263,7 @@ void func_86A00788(u8 arg0) {
         func_86A00720(arg0);
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86A00840(void) {
@@ -312,7 +312,7 @@ void func_86A0092C(s32 arg0) {
 
     s32 var_s6 = 1;
 
-    func_800077B4(0x3C);
+    Stage_AdvanceN(0x3C);
     func_80006C6C(0xB4);
 
     if (arg0 != 0) {
@@ -1411,7 +1411,7 @@ void func_86A00C90(void) {
         func_86A00788(2);
     }
 
-    func_800077B4(0x3C);
+    Stage_AdvanceN(0x3C);
 }
 
 void func_86A00D00(void) {
@@ -1447,26 +1447,26 @@ void func_86A00DAC(s32 arg0) {
 }
 
 s32 func_86A00ED8(s32 arg0, s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('ROLE');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 1, 1);
-    D_86A06200 = func_8001E94C(4, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 1, 1);
+    D_86A06200 = Text_Init(4, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_game_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     func_86A00DAC(arg1);
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86A00840();
     func_86A0092C(arg1);
     func_86A00C90();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('ROLE');
     // The unused labels below generate no code. They stand in for >= 7 file-level symbols the

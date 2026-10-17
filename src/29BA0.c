@@ -681,12 +681,12 @@ void func_80029310(void) {
 
     main_pool_push_state('TITL');
 
-    func_80005E40(0x10000, 0);
-    func_80007678(func_80007444(0, 1, 3, 1, 2, 1));
+    Gfx_InitBuffers(0x10000, 0);
+    Stage_Set(Stage_Create(0, 1, 3, 1, 2, 1));
 
     if (func_800290E4(0x12) == 2) {
         func_80006CF8(1);
-        func_800077B4(2);
+        Stage_AdvanceN(2);
     }
 
     gCurrentGameState = STATE_TITLE_SCREEN;
@@ -741,15 +741,15 @@ void func_800296AC(void) {
 
 void func_800296E0(void) {
     s32 temp_v0;
-    unk_func_80007444* temp_s0;
+    Stage* temp_s0;
 
     main_pool_push_state('DBUG');
 
-    func_80005E40(0x10000, 0);
-    temp_s0 = func_80007444(1, 1, 2, 0, 2, 1);
+    Gfx_InitBuffers(0x10000, 0);
+    temp_s0 = Stage_Create(1, 1, 2, 0, 2, 1);
 
     FRAGMENT_LOAD(fragment34);
-    func_80007678(temp_s0);
+    Stage_Set(temp_s0);
     FRAGMENT_LOAD_AND_CALL2(fragment67, 1, 0);
 
     while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (D_800AE520.unk_00 != 0)) {
@@ -759,7 +759,7 @@ void func_800296E0(void) {
     }
 
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('DBUG');
 }
@@ -786,8 +786,8 @@ void func_80029924(void) {
 s16 func_80029984(s16 arg0) {
     main_pool_push_state('STAD');
 
-    func_80005E40(0x18000, 0);
-    func_80007678(func_80007444(1, 1, 2, 0, 2, 1));
+    Gfx_InitBuffers(0x18000, 0);
+    Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
 
     while ((arg0 > 0) && (arg0 < 5)) {
         switch (arg0) {
@@ -826,7 +826,7 @@ s16 func_80029984(s16 arg0) {
     }
 
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');
 
@@ -896,8 +896,8 @@ void func_80029BC0(void) {
 s32 func_80029E78(s16 arg0) {
     main_pool_push_state('FREE');
 
-    func_80005E40(0x18000, 0);
-    func_80007678(func_80007444(1, 1, 2, 0, 2, 1));
+    Gfx_InitBuffers(0x18000, 0);
+    Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
 
     while ((arg0 > 0) && (arg0 < 4)) {
         switch (arg0) {
@@ -928,7 +928,7 @@ s32 func_80029E78(s16 arg0) {
     }
 
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
     main_pool_pop_state('FREE');
 
     return arg0;
@@ -975,8 +975,8 @@ void func_8002A06C(void) {
 s16 func_8002A260(s16 arg0) {
     main_pool_push_state('STAD');
 
-    func_80005E40(0x18000, 0);
-    func_80007678(func_80007444(1, 1, 2, 0, 2, 1));
+    Gfx_InitBuffers(0x18000, 0);
+    Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
 
     while ((arg0 > 0) && (arg0 < 3)) {
         switch (arg0) {
@@ -999,7 +999,7 @@ s16 func_8002A260(s16 arg0) {
     }
 
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');
     return arg0;
@@ -1114,8 +1114,8 @@ void func_8002A728(void) {
 s16 func_8002A8A0(s16 arg0, s16 arg1) {
     main_pool_push_state('STAD');
 
-    func_80005E40(0x18000, 0);
-    func_80007678(func_80007444(1, 1, 2, 0, 2, 1));
+    Gfx_InitBuffers(0x18000, 0);
+    Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
 
     while ((arg0 > 0) && (arg0 < 4)) {
         switch (arg0) {
@@ -1148,7 +1148,7 @@ s16 func_8002A8A0(s16 arg0, s16 arg1) {
     }
 
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('STAD');
 

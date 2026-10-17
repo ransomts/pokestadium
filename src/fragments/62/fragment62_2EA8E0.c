@@ -490,7 +490,7 @@ void func_843013E4(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
     func_8001C07C(arg0);
 }
 
-void func_84301430(unk_func_80007444* arg0) {
+void func_84301430(Stage* arg0) {
     MemoryBlock* sp44;
     u32* temp_v0_4;
     FragmentEntry sp3C;
@@ -504,11 +504,11 @@ void func_84301430(unk_func_80007444* arg0) {
     func_843001FC(1.0f);
 
     if (D_800AE540.unk_0000 == 0x11) {
-        func_8001E94C(4, 0);
+        Text_Init(4, 0);
     } else if (D_800AE540.unk_0000 == 0x10) {
-        func_8001E94C(7, 0);
+        Text_Init(7, 0);
     } else {
-        func_8001E94C(3, 0);
+        Text_Init(3, 0);
     }
 
     D_8438E798[0].unk_10 = func_80019760(3);
@@ -611,22 +611,22 @@ void func_84301A24(void) {
 }
 
 s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     D_8438E798 = D_800AE540.unk_1194;
     D_8438E7AC = -2;
 
     main_pool_push_state('BATL');
 
-    func_80005E40(0x20000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
+    Gfx_InitBuffers(0x20000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
     func_84301430(sp24);
-    func_80007678(sp24);
-    func_800077B4(1);
+    Stage_Set(sp24);
+    Stage_AdvanceN(1);
     func_800078D4(func_843010EC, 0x20, 0x10);
-    func_800077B4(2);
+    Stage_AdvanceN(2);
     func_800076C0();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('BATL');
 

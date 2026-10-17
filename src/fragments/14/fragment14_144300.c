@@ -488,7 +488,7 @@ void func_86801644(void) {
         func_8780005C();
     }
 
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86801700(void) {
@@ -508,7 +508,7 @@ void func_86801700(void) {
             func_8004B9C4(0x3C);
             func_86805108(0xF, 1);
         } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-            func_80048B90(3);
+            PlaySoundEffect(3);
             D_8680750C = 7;
             D_86807540 = 0x1E;
             func_80006CB4(D_86807540);
@@ -662,7 +662,7 @@ s32 func_86801884(void) {
 void func_86801CA8(void) {
     s32 var_s0;
 
-    func_800077B4(5);
+    Stage_AdvanceN(5);
     func_80006C6C(0x10);
     D_86807508 = 0;
 
@@ -716,7 +716,7 @@ void func_86801D48(void) {
 }
 
 void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     if (arg0 == 1) {
         D_8680753E = 1;
@@ -727,9 +727,9 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    func_80005E40(0x18000, 0);
-    sp24 = func_80007444(0, 1, 3, 1, 2, 1);
-    D_86807504 = func_8001E94C(0x17, 0);
+    Gfx_InitBuffers(0x18000, 0);
+    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
+    D_86807504 = Text_Init(0x17, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_04000000, sushi_go_round_sprites, 0);
@@ -738,11 +738,11 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
     func_80004454((((u32)D_87000000 & 0x0FF00000) >> 0x14) - 0x10, sushi_go_round_ROM_START, order_select_ui_ROM_START);
 
     func_86801D48();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_86801CA8();
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');
 

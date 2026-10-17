@@ -134,9 +134,9 @@ void func_82F0A0A8(s32 arg0) {
     ptr->unk_34.unk_02 = 0;
 
     if (arg0 != 0) {
-        func_80048B90(0x1E);
+        PlaySoundEffect(0x1E);
     } else {
-        func_80048B90(4);
+        PlaySoundEffect(4);
     }
 }
 
@@ -204,7 +204,7 @@ void func_82F0A5F8(unk_D_82F210E0* arg0) {
 
     if (D_82F21128 != tmp) {
         var_t0 = 0;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -221,14 +221,14 @@ void func_82F0A5F8(unk_D_82F210E0* arg0) {
                     arg0->unk_00 = 5;
                     arg0->unk_02 = 0xA;
                     D_82F21130 = 0;
-                    func_80048B90(0x1D);
+                    PlaySoundEffect(0x1D);
                     break;
 
                 case 1:
                     arg0->unk_00 = 5;
                     arg0->unk_02 = 0xA;
                     D_82F21130 = 1;
-                    func_80048B90(0x22);
+                    PlaySoundEffect(0x22);
                     break;
 
                 default:
@@ -236,7 +236,7 @@ void func_82F0A5F8(unk_D_82F210E0* arg0) {
                     arg0->unk_02 = 0xA;
                     arg0->unk_04 &= ~4;
                     D_82F21130 = 0;
-                    func_80048B90(3);
+                    PlaySoundEffect(3);
                     break;
             }
         } else {
@@ -245,10 +245,10 @@ void func_82F0A5F8(unk_D_82F210E0* arg0) {
             arg0->unk_04 &= ~6;
             if (D_82F21128 == 0) {
                 D_82F2112C = 1;
-                func_80048B90(2);
+                PlaySoundEffect(2);
             } else {
                 D_82F2112C = 0;
-                func_80048B90(3);
+                PlaySoundEffect(3);
             }
         }
         arg0->unk_12 = -1;
@@ -348,7 +348,7 @@ void func_82F0AB68(unk_D_82F210E0* arg0) {
                 arg0->unk_02 = 0xA;
                 arg0->unk_04 &= ~4;
                 arg0->unk_10 = -1;
-                func_80048B90(9);
+                PlaySoundEffect(9);
             } else {
                 arg0->unk_06 += 1;
                 arg0->unk_0C = 1;

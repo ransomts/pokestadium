@@ -526,7 +526,7 @@ void func_83101674(void) {
         func_831013FC();
     }
     func_83100784();
-    func_80007778();
+    Stage_Advance();
 }
 
 s32 func_831016D0(void) {
@@ -635,13 +635,13 @@ void func_83101870(void) {
 }
 
 s32 func_83101A98(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('CLRG');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(1, 0, 2, 0, 2, 1);
-    func_8001E94C(0x10, 0);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
+    Text_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_clear_gfx, 0);
@@ -649,12 +649,12 @@ s32 func_83101A98(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_83101EE4 = func_8000484C(D_83101EE0, 0xE);
 
     func_83101870();
-    func_80007678(sp24);
+    Stage_Set(sp24);
     func_83101818();
-    func_800077B4(2);
+    Stage_AdvanceN(2);
     func_800076C0();
     func_8001E9CC();
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('CLRG');
 

@@ -60,12 +60,12 @@ void func_82A00144(UnkInputStruct8000D738* arg0) {
 }
 
 s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
-    unk_func_80007444* sp24;
+    Stage* sp24;
 
     main_pool_push_state('PREP');
 
-    func_80005E40(0x10000, 0);
-    sp24 = func_80007444(0, 1, 2, 0, 1, 1);
+    Gfx_InitBuffers(0x10000, 0);
+    sp24 = Stage_Create(0, 1, 2, 0, 1, 1);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
@@ -75,11 +75,11 @@ s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
     func_8001987C();
     func_82A00020(arg0);
     func_80028AFC(2);
-    func_80007678(sp24);
-    func_80007820(8, func_82A000F0);
+    Stage_Set(sp24);
+    Stage_AdvanceUntil(8, func_82A000F0);
     func_800076C0();
     func_82A00144(arg1);
-    func_80005EAC();
+    Gfx_FreeBuffers();
 
     main_pool_pop_state('PREP');
 

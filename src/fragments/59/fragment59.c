@@ -815,7 +815,7 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
 
     func_84100288(arg0);
     func_84101210(arg0);
-    func_80007778();
+    Stage_Advance();
 }
 
 unk_D_80068BB0* func_84101894(u8* arg0, s16 arg1) {
@@ -897,11 +897,11 @@ s16 func_84101D80(void) {
     s16 var_v1 = -1;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        func_80048B90(0x26);
+        PlaySoundEffect(0x26);
         var_v1 = -1;
         var_a1 = D_84103CC8;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         var_v1 = -1;
         var_a1 = 6;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
@@ -915,7 +915,7 @@ s16 func_84101D80(void) {
     }
 
     if (var_v1 != -1) {
-        func_80048B90(1);
+        PlaySoundEffect(1);
         D_84103CC8 = var_v1;
     }
     return var_a1;
@@ -973,7 +973,7 @@ void func_84101EC8(void) {
             func_800290B4();
             func_841014E4(0xA, 0, 0.0f);
         }
-        func_800077B4(2);
+        Stage_AdvanceN(2);
     }
 }
 
@@ -1018,7 +1018,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
 
     func_80028AFC(2);
     func_80027FA0(&D_84103CF0, D_800AE540.unk_11F2);
-    func_8001E94C(0x18, 0);
+    Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, stadium_select_ui, 0);

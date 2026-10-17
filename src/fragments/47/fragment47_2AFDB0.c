@@ -212,7 +212,7 @@ s32 func_838029D4(s32 arg0, unk_D_83407B18_008* arg1) {
         ptr2 = ptr2->unk_2688;
     }
 
-    func_80048B90(4);
+    PlaySoundEffect(4);
     return 1;
 }
 
@@ -247,16 +247,16 @@ void func_83802C98(unk_D_838067F0* arg0) {
         if ((temp_a1->unk_00.unk_00 == 0x19) && (temp_a1->unk_52 & 0x80)) {
             D_83407AC8.unk_02 = 0x99;
         }
-        func_80048B90(0x20);
+        PlaySoundEffect(0x20);
     } else {
-        func_80048B90(8);
+        PlaySoundEffect(8);
     }
 }
 
 void func_83802D64(unk_D_838067F0* arg0) {
     arg0->unk_0000 = 8;
     arg0->unk_0014 = 0;
-    func_80048B90(3);
+    PlaySoundEffect(3);
     func_8380008C(-1);
 }
 
@@ -271,7 +271,7 @@ void func_83802D98(unk_D_838067F0* arg0) {
     }
 
     if (var_s0 != arg0->unk_001C) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
         arg0->unk_001C = var_s0;
         arg0->unk_0160 = func_83802C74(arg0->unk_0160, 6);
         arg0->unk_0020 = 0;
@@ -299,7 +299,7 @@ void func_83802EE8(unk_D_838067F0* arg0) {
     }
 
     if (var_s0 != arg0->unk_001C) {
-        func_80048B90(0x27);
+        PlaySoundEffect(0x27);
         arg0->unk_001C = var_s0;
         arg0->unk_0160 = func_83802C74(arg0->unk_0160, 6);
         arg0->unk_0020 = 0;
@@ -323,7 +323,7 @@ void func_83803038(unk_D_838067F0* arg0) {
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 5;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_0038 = arg0->unk_0034;
         arg0->unk_0034 = 2;
@@ -337,7 +337,7 @@ void func_838030A8(unk_D_838067F0* arg0) {
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 5;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_0038 = arg0->unk_0034;
         arg0->unk_0034 = 2;
@@ -351,7 +351,7 @@ void func_8380311C(unk_D_838067F0* arg0) {
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 6;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if ((arg0->unk_0020 > 0) &&
                    (func_83802700(arg0, arg0->unk_0160->unk_268C, arg0->unk_0020 - 1, arg0->unk_015C) != 0)) {
             arg0->unk_0020 -= 1;
@@ -359,7 +359,7 @@ void func_8380311C(unk_D_838067F0* arg0) {
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 4;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_0038 = arg0->unk_0034;
         arg0->unk_0034 = 2;
@@ -373,14 +373,14 @@ void func_838031F0(unk_D_838067F0* arg0) {
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 6;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         } else if (func_83802700(arg0, func_83802C74(arg0->unk_0160, 6), arg0->unk_0020 + 6, arg0->unk_015C) != 0) {
             arg0->unk_0020++;
             arg0->unk_0160 = arg0->unk_0160->unk_2688;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 4;
-            func_80048B90(1);
+            PlaySoundEffect(1);
         }
         arg0->unk_0038 = arg0->unk_0034;
         arg0->unk_0034 = 2;

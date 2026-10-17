@@ -4184,19 +4184,19 @@ static u8* D_84386E08[][5] = {
 };
 
 void func_8432B490(void) {
-    func_80048B90(1);
+    PlaySoundEffect(1);
 }
 
 void func_8432B4B0(void) {
-    func_80048B90(2);
+    PlaySoundEffect(2);
 }
 
 void func_8432B4D0(void) {
-    func_80048B90(3);
+    PlaySoundEffect(3);
 }
 
 void func_8432B4F0(void) {
-    func_80048B90(8);
+    PlaySoundEffect(8);
 }
 
 void func_8432B510(unk_D_84390010* arg0, s16 arg1) {

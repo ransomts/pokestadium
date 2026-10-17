@@ -35,8 +35,8 @@ static char** D_888267AC;
 static char** D_888267B0;
 static unk_D_86002F58_004_000 D_888267B8;
 static unk_func_8001B1FC* D_88826920;
-static unk_func_80007444* D_88826924;
-static unk_func_80007444* D_88826928;
+static Stage* D_88826924;
+static Stage* D_88826928;
 static unk_D_86002F58_004_000_010* D_8882692C;
 static s32 D_88826930;
 static s32 D_88826934;
@@ -835,7 +835,7 @@ s32 func_88803614(void) {
         func_800079C4();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
-        func_80007778();
+        Stage_Advance();
         var_s5 = var_s2;
     }
     return var_s5;
@@ -907,7 +907,7 @@ s32 func_888038E0(void) {
         func_800079C4();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
-        func_80007778();
+        Stage_Advance();
         var_s3 = var_s1;
     };
 
@@ -923,7 +923,7 @@ void func_88803BCC(u8* arg0, s32 arg1) {
     sp18 = func_8001AFD8(sp1C, 0);
     func_8001A324(sp1C, 0, arg1, 0x9530);
     func_8001ABAC(sp1C, 0);
-    func_800077B4(2);
+    Stage_AdvanceN(2);
     osInvalDCache(sp18, 0x3200);
     _bcopy(sp18, arg0, 0x3200);
     main_pool_pop_state('ICON');
@@ -6130,16 +6130,16 @@ s32 func_88803C74(void) {
         func_8001F730();
         if ((gPlayer1Controller->buttonPressed & 0x4000) && (func_8003D494() == 0)) {
             var_s1 = 2;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         } else if ((gPlayer1Controller->buttonPressed & 0x8000) && (func_8003D494() == 0)) {
             var_s1 = 1;
-            func_80048B90(2);
+            PlaySoundEffect(2);
         }
         func_80015348();
         func_800079C4();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
-        func_80007778();
+        Stage_Advance();
     } while (var_s1 == 3);
 
     func_8001BCF0(&D_888267B8);
@@ -6156,7 +6156,7 @@ s32 func_88803ECC(void) {
         func_800079C4();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
-        func_80007778();
+        Stage_Advance();
     }
     return 2;
 }
@@ -6175,25 +6175,25 @@ void func_88804020(void) {
     D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
     D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
     func_80006C04(8);
-    func_80007820(8, func_88803FB0);
-    func_800077B4(2);
+    Stage_AdvanceUntil(8, func_88803FB0);
+    Stage_AdvanceN(2);
     func_80007614(D_88826928);
-    func_800077B4(2);
+    Stage_AdvanceN(2);
     sp2C = func_88801030(D_88826940->unk_38->unk_2C) + 1;
     func_88807D04(sp2C, D_88826930, 0x70800, D_88826934, 0x4B000, GetMessageString(NULL, 0, D_888267A4, sp2C - 1),
                   D_888267B0);
     func_80006C04(8);
-    func_80007820(0xA, func_8880725C);
+    Stage_AdvanceUntil(0xA, func_8880725C);
 }
 
 void func_8880412C(void) {
     func_80006C04(8);
-    func_80007820(8, func_8880725C);
-    func_800077B4(2);
+    Stage_AdvanceUntil(8, func_8880725C);
+    Stage_AdvanceN(2);
     func_80007614(D_88826924);
     func_8880812C();
     func_80006C04(8);
-    func_80007820(0xA, func_88803FB0);
+    Stage_AdvanceUntil(0xA, func_88803FB0);
 }
 
 s32 func_88804190(void) {
@@ -6209,10 +6209,10 @@ s32 func_88804190(void) {
         if (func_88807AC0() != 0) {
             var_s0 = 2;
         }
-        func_80007778();
+        Stage_Advance();
     }
 
-    func_80048B90(3);
+    PlaySoundEffect(3);
     func_8880412C();
     return var_s0;
 }
@@ -6299,10 +6299,10 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     main_pool_push_state('BOOK');
 
     D_88826924 = func_800075F8();
-    D_88826928 = func_80007444(0, 1, 2, 1, 2, 0);
+    D_88826928 = Stage_Create(0, 1, 2, 1, 2, 0);
     func_88804370();
     func_80025540(D_88826938);
-    func_8001E94C(0x1D, 0);
+    Text_Init(0x1D, 0);
     D_8882692C = func_80019760(1);
     func_8001987C();
 
@@ -6334,11 +6334,11 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80007754();
     func_8001BB20();
     func_80006C6C(8);
-    func_80007820(8, func_88804218);
+    Stage_AdvanceUntil(8, func_88804218);
     func_88804288();
     func_80007990(1);
     func_80006CB4(8);
-    func_80007820(0xA, func_88804218);
+    Stage_AdvanceUntil(0xA, func_88804218);
     func_8000771C();
     func_8001E9CC();
 

@@ -15,7 +15,7 @@ typedef struct unk_D_800A7450 {
     /* 0x10 */ char unk10[0x4];
 } unk_D_800A7450; // size >= 0x14
 
-typedef struct unk_func_80007444 {
+typedef struct Stage {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -34,7 +34,7 @@ typedef struct unk_func_80007444 {
     /* 0x16 */ s8 unk_16;
     /* 0x17 */ u8 pad17;
     /* 0x18 */ unk_D_80068BB0* unk_18[3];
-} unk_func_80007444; // size = 0x24
+} Stage; // size = 0x24
 
 void func_800069F0(void);
 s32 func_80006C04(s32 arg0);
@@ -42,24 +42,24 @@ s32 func_80006C6C(s32 arg0);
 s32 func_80006CB4(s32 arg0);
 void func_80006CF8(s32 arg0);
 void func_80006D28(u32 arg0, u32 arg1);
-void func_80006D50(void);
+void Gfx_SetDefaultState(void);
 void func_80006F34(void);
-void func_80006F98(void);
+void Gfx_BeginFrame(void);
 void func_80006FE8(void);
 void func_80007234(void);
 void func_8000725C(void);
 void func_80007304(void);
-unk_func_80007444* func_80007444(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5);
-unk_func_80007444* func_800075F8(void);
+Stage* Stage_Create(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5);
+Stage* func_800075F8(void);
 s32 func_80007604(void);
-void func_80007614(unk_func_80007444* arg0);
-void func_80007678(unk_func_80007444* arg0);
+void func_80007614(Stage* arg0);
+void Stage_Set(Stage* arg0);
 void func_800076C0(void);
 void func_8000771C(void);
 void func_80007754(void);
-s32 func_80007778(void);
-void func_800077B4(s32 arg0);
-s32 func_80007820(u32 arg0, s32 (*arg1)(u8));
+s32 Stage_Advance(void);
+void Stage_AdvanceN(s32 arg0);
+s32 Stage_AdvanceUntil(u32 arg0, s32 (*arg1)(u8));
 s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2);
 void func_80007990(u16 arg0);
 void func_800079C4(void);

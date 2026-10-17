@@ -1340,7 +1340,7 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                 arg0->unk_84 = tmp;
                 arg0->unk_40->unk_7C[tmp]->unk_00.unk_28 |= 1;
                 func_886050C0(arg0, 3);
-                func_80048B90(2);
+                PlaySoundEffect(2);
                 var_a2 = 1;
             } else if (arg1->buttonPressed & 0x5000) {
                 func_886050C0(arg0, 0);
@@ -1354,7 +1354,7 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                 if (arg0->unk_70->unk_00.unk_24 == arg0->unk_84) {
                     var_a2 = 0x80000101;
                 } else {
-                    func_80048B90(0x18);
+                    PlaySoundEffect(0x18);
                     arg0->unk_40->unk_7C[arg0->unk_70->unk_00.unk_24]->unk_00.unk_28 |= 1;
                     arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 0);
                     func_88602F04(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
@@ -1385,7 +1385,7 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                     var_a2 |= 0x80000002;
                 } else if (arg1->buttonPressed & 0x8000) {
                     if (arg0->unk_6C->unk_24 == 0) {
-                        func_80048B90(0x0120000C);
+                        PlaySoundEffect(0x0120000C);
                         var_a2 |= 4;
                     } else {
                         var_a2 |= 0x80000002;

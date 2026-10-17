@@ -70,3 +70,20 @@ func_8001F444	Text_SetupDL	a6		gSPDisplayList of the text setup Gfx list (D_8006
 func_8001EBE0	Text_SetFont	a6		sets the current font bank via the size bitmask resolver and the s8 secondary field	applied@e847756
 func_8001E810	GetFontBank	a6		size bitmask (1/2/4/8/0x10/0x20) -> font bank index 0..5; 0 maps to 0 (callers use the saved bank)	applied@e847756
 func_8001E6E8	SetViewport	a6		sets a Vp viewport: vtrans/vscale = (w*2, h*2), z 0x1FF (used with screen w/h from the mode struct)	applied@e847756
+func_80048B90	PlaySoundEffect	a7		central SFX dispatcher (73 files): 0x0120xxxx ids to func_8004E304, 0x0110xxxx to func_8004DF94, id 0xF via MusStartSoundEffect, per-id duration/volume fixes	applied@e9f0608
+func_80005F5C	GfxAlloc	a7		allocates from the top of the active display-list buffer (ALIGN8, descending, guarded against the growing DL) - the Vtx/sprite allocator	applied@e9f0608
+func_80005E40	Gfx_InitBuffers	a7		allocates the 'DYN0'/'DYN1' display-list double buffer (size, main-pool tag) and installs the first via the swap	applied@e9f0608
+func_80005EAC	Gfx_FreeBuffers	a7		frees both 'DYN0'/'DYN1' DL pools	applied@e9f0608
+func_80005EDC	Gfx_SwapDisplayList	a7		toggles the active DL buffer, resets gDisplayListHead to its base and the allocator top (D_800A7428.unk8)	applied@e9f0608
+func_80005F1C	Gfx_GetCurrentDL	a7		returns the active DL buffer's base and used extent (head - base)	applied@e9f0608
+D_800A7428	gDLBuffers	a7		DL double-buffer state: two pool pointers, allocator top, pool size, active index	applied@e9f0608
+func_80006F98	Gfx_BeginFrame	a7		frame setup: Memmap segment map reset, DL clear, 320x240 guOrtho, default RDP state	applied@e9f0608
+func_80006D50	Gfx_SetDefaultState	a7		the full RDP default state block (PipeSync, 1CYCLE, OPA_SURF, CC_SHADE, bilerp, dithers)	applied@e9f0608
+func_80007444	Stage_Create	a7		allocates a stage/view (0x280x0x1E0 hi-res or 0x140x0xF0, N frame buffers via func_80006314 with optional mirror), returns the 0x24-byte Stage struct	applied@e9f0608
+func_80007678	Stage_Set	a7		activates a stage: installs gCurrentStage, submits to the scheduler, runs the first frame	applied@e9f0608
+D_800A7464	gCurrentStage	a7		the active Stage struct (screen size, buffer count, mode/transition, frame index, DL pointers)	applied@e9f0608
+unk_func_80007444	Stage	a7		stage/view struct typedef (used by Stage_Create/Set/gCurrentStage)	applied@e9f0608
+func_80007778	Stage_Advance	a7		one stage frame: submits the current stage DL to the scheduler queue, runs the frame machinery (64 files)	applied@e9f0608
+func_800077B4	Stage_AdvanceN	a7		runs arg0 stage frames (Stage_Advance loop)	applied@e9f0608
+func_80007820	Stage_AdvanceUntil	a7		runs until the callback returns nonzero or arg0 frames elapse (callback gets the stage mode byte)	applied@e9f0608
+func_8001E94C	Text_Init	a7		allocates the text state ('PRNT' tag), loads the fonts asset, runs the bank setup	applied@e9f0608

@@ -318,7 +318,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     f32 spFC;
     unk_D_86002F58_004_000* var_v0;
 
-    sp294 = func_80005F5C(0x40);
+    sp294 = GfxAlloc(0x40);
     func_80031EF4(&sp14C, &D_8006F088->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
     var_v0 = D_8006F09C;
@@ -521,9 +521,9 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
     sp5C = state->addresses;
     if (arg0 == 2) {
         if (D_81004B54 == 0) {
-            state->gfx = func_80005F5C(0x500);
+            state->gfx = GfxAlloc(0x500);
         } else {
-            state->gfx = func_80005F5C(0x80);
+            state->gfx = GfxAlloc(0x80);
         }
         gfx = state->gfx;
         temp_v1 = D_8006F09C->unk_0A6;

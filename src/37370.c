@@ -17,7 +17,7 @@ u32 D_80077938[6] = { 0xCE00CB, 0xCA00CD, 0x980097, 0x950094, 0x920091, 0 };
 u32 D_80077950[8] = { 0xB0000, 0xA0008, (u32)(void*)D_800778B0, (u32)(void*)D_800778E0, (u32)(void*)D_80077938, (u32)(void*)D_80077868, (u32)(void*)D_800777C8, (u32)(void*)D_80077880 };
 
 void func_80036770(s32 arg0) {
-    func_80048B90(arg0);
+    PlaySoundEffect(arg0);
 }
 
 s32 func_80036790(void) {

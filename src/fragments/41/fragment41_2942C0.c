@@ -91,7 +91,7 @@ void func_82F0C7FC(unk_D_82F211A0* arg0) {
         sp1C = arg0 - D_82F211A0;
         func_82F0C658(sp1C, 3);
         if (sp1C == 0) {
-            func_80048B90(0x01200006);
+            PlaySoundEffect(0x01200006);
         }
     }
 }
@@ -294,7 +294,7 @@ void func_82F0D160(s16 arg0) {
     ptr->unk_30.unk_00 = ptr->unk_30.unk_02 = 0;
     ptr->unk_30.unk_04 = ptr->unk_30.unk_06 = -1;
 
-    func_80048B90(4);
+    PlaySoundEffect(4);
     func_800256F4(ptr->unk_04, ptr->unk_24->unk_00.unk_00, 3);
 }
 
@@ -364,15 +364,15 @@ void func_82F0D428(unk_D_82F21238* arg0) {
             arg0->unk_18 = 0;
             arg0->unk_1A = 0x800;
             arg0->unk_1C = 0;
-            func_80048B90(2);
-            func_80048B90(0x01200007);
+            PlaySoundEffect(2);
+            PlaySoundEffect(0x01200007);
         } else {
             arg0->unk_02 = 6;
             arg0->unk_0C = 0xA;
             if (arg0->unk_08 != 0) {
-                func_80048B90(0x01200009);
+                PlaySoundEffect(0x01200009);
             } else {
-                func_80048B90(2);
+                PlaySoundEffect(2);
             }
         }
     }
@@ -460,7 +460,7 @@ void func_82F0D76C(unk_D_82F21238* arg0) {
         arg0->unk_30.unk_02 = 0x168;
         arg0->unk_30.unk_04 = 0x210;
         arg0->unk_30.unk_06 = 0;
-        func_80048B90(0x01200008);
+        PlaySoundEffect(0x01200008);
     }
 }
 
@@ -1176,7 +1176,7 @@ void func_82F0FDEC(s16 arg0) {
         case 1:
             ptr->unk_18 = 0x1E;
             ptr->unk_0C |= 0x20;
-            func_80048B90(0x01200002);
+            PlaySoundEffect(0x01200002);
             break;
 
         case 2:
@@ -1232,12 +1232,12 @@ void func_82F0FDEC(s16 arg0) {
 
         case 19:
             func_82F0EFC4(0, 1);
-            func_80048B90(0x01200004);
+            PlaySoundEffect(0x01200004);
             break;
 
         case 20:
             func_82F0EFC4(1, 1);
-            func_80048B90(0x01200004);
+            PlaySoundEffect(0x01200004);
             break;
 
         case 21:
@@ -1413,7 +1413,7 @@ void func_82F10674(unk_D_82F21140* arg0) {
             arg0->unk_0C |= 0x40;
             func_82F0C658(0, 1);
             func_82F0C658(1, 1);
-            func_80048B90(0x01200005);
+            PlaySoundEffect(0x01200005);
         }
     }
 }
@@ -1498,7 +1498,7 @@ void func_82F10A24(unk_D_82F21140* arg0) {
 
     if (arg0->unk_0C & 0x20) {
         arg0->unk_0C &= ~0x20;
-        func_80048B90(0x01200003);
+        PlaySoundEffect(0x01200003);
     }
 
     arg0->unk_18--;

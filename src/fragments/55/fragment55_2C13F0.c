@@ -131,7 +131,7 @@ s32 func_83002974(unk_D_83079E70* arg0) {
         arg0->unk_0A = -1;
         arg0->unk_0C = -1;
         sp1C = 1;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     return sp1C;
@@ -148,7 +148,7 @@ s32 func_83002A0C(unk_D_83079E70* arg0) {
         arg0->unk_0A = 1;
         arg0->unk_0C = -1;
         sp1C = 1;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     return sp1C;
@@ -169,7 +169,7 @@ void func_83002B1C(unk_D_83079E70* arg0) {
         arg0->unk_00 = 4;
         arg0->unk_02 = 5;
         arg0->unk_0C = -1;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
         func_83002974(arg0);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DDOWN)) {

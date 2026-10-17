@@ -491,7 +491,7 @@ s32 func_8850230C(unk_func_88001300_038* arg0) {
     if (arg0->unk_2C < 8) {
         arg0->unk_30 = 1;
         if (arg0->unk_2C == 1) {
-            func_80048B90(4);
+            PlaySoundEffect(4);
         }
     } else if (arg0->unk_2C >= 0x14) {
         arg0->unk_2C = -1;
@@ -1118,7 +1118,7 @@ s32 func_8850555C(unk_func_88001300_030* arg0) {
         arg0->unk_30++;
     } else if (arg0->unk_30 < 4) {
         if (arg0->unk_30 == 0) {
-            func_80048B90(4);
+            PlaySoundEffect(4);
         }
         arg0->unk_34 = 1;
         arg0->unk_30++;
@@ -2687,7 +2687,7 @@ void func_8850BC94(s32 arg0) {
         }
 
         if (var_a1 != 0) {
-            func_80048B90(var_a1);
+            PlaySoundEffect(var_a1);
         }
     }
 }

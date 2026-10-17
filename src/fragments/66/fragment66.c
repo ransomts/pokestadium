@@ -271,7 +271,7 @@ void func_832007A4(char* arg0, s32 arg1) {
         func_8001F3B4(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetupDL();
-        func_80007778();
+        Stage_Advance();
     }
 
     D_83201F58 = arg0;
@@ -293,10 +293,10 @@ void func_8320084C(char* arg0, s32 arg1) {
             func_832005E4(0x104, 0x38);
         }
         Text_SetupDL();
-        func_80007778();
+        Stage_Advance();
     } while (!BTN_IS_PRESSED(gPlayer1Controller, BTN_A));
 
-    func_80048B90(1);
+    PlaySoundEffect(1);
     D_83201F58 = arg0;
 }
 
@@ -320,7 +320,7 @@ void func_83200934(s8* arg0) {
         Text_Print(0x2E, y1 - i * 4, D_83201F58);
         Text_Print(0x2E, y2 - i * 4, arg0);
         Text_SetupDL();
-        func_80007778();
+        Stage_Advance();
     }
 
     D_83201F58 = arg0;
@@ -338,7 +338,7 @@ s32 func_83200ADC(char* arg0) {
     while (var_s2 != 0) {
         func_800290B4();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP | BTN_DDOWN)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_s1 ^= 1;
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s2 = 0;
@@ -375,13 +375,13 @@ s32 func_83200ADC(char* arg0) {
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
         Text_Print(0xF2, 0x6C, GetMessageString(NULL, 0, D_83202020, 0x11));
         Text_SetupDL();
-        func_80007778();
+        Stage_Advance();
     }
 
     if (temp_s3 != 0) {
-        func_80048B90(2);
+        PlaySoundEffect(2);
     } else {
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
     return temp_s3;
 }
@@ -398,7 +398,7 @@ s32 func_83200CD8(char* arg0) {
         func_800290B4();
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_s0--;
             if (var_s0 < 0) {
                 var_s0 = 3;
@@ -406,7 +406,7 @@ s32 func_83200CD8(char* arg0) {
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-            func_80048B90(1);
+            PlaySoundEffect(1);
             var_s0++;
             if (var_s0 >= 4) {
                 var_s0 = 0;
@@ -414,15 +414,15 @@ s32 func_83200CD8(char* arg0) {
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             if ((D_832027C8.unk_04.unk_09[var_s0] == 0xF) || (D_832027C8.unk_04.unk_09[var_s0] == 0x13) ||
                 (D_832027C8.unk_04.unk_09[var_s0] == 0x46) || (D_832027C8.unk_04.unk_09[var_s0] == 0x94)) {
-                func_80048B90(8);
+                PlaySoundEffect(8);
             } else {
                 var_s4 = 0;
-                func_80048B90(2);
+                PlaySoundEffect(2);
             }
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
             var_s4 = 0;
             var_s0 = -1;
-            func_80048B90(3);
+            PlaySoundEffect(3);
         }
 
         func_8320058C(0);
@@ -475,7 +475,7 @@ s32 func_83200CD8(char* arg0) {
         Text_Print(0xB6, 0x58, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[3] - 1));
 
         Text_SetupDL();
-        func_80007778();
+        Stage_Advance();
     }
 
     return var_s0;
@@ -517,7 +517,7 @@ void func_8320118C(void) {
         temp_s1->unk_60.eye.y = 0x320 - ((i * 0x1E0) / 120);
         D_83202028->unk_01E.y += 0x200;
         func_8320058C(0);
-        func_80007778();
+        Stage_Advance();
     }
 }
 
@@ -532,7 +532,7 @@ s32 func_8320126C(void) {
         func_800290B4();
         func_8320058C(0);
         func_83200684(0xA0 - (var_s0 / 2), 0x38 - (var_s1 / 2), var_s0, var_s1);
-        func_80007778();
+        Stage_Advance();
         var_s0 += 0x1E;
         var_s1 += 4;
     }
@@ -639,7 +639,7 @@ void func_832016F4(s32 arg0) {
     }
 
     Text_SetupDL();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_832018DC(void) {
@@ -705,9 +705,9 @@ void func_83201B60(void) {
     s32 temp_v0;
 
     func_8000D1F0(0x49);
-    func_800077B4(2);
+    Stage_AdvanceN(2);
     func_80006C04(0x28);
-    func_80007820(0xA, func_8320058C);
+    Stage_AdvanceUntil(0xA, func_8320058C);
     func_8320118C();
     if (func_8320126C() != 0) {
         temp_v0 = func_83201450();
@@ -715,7 +715,7 @@ void func_83201B60(void) {
             func_83201A18(temp_v0);
         }
     }
-    func_800077B4(2);
+    Stage_AdvanceN(2);
 }
 
 void func_83201BD8(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -754,14 +754,14 @@ void func_83201C8C(void) {
 
 s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
     UNUSED s32 pad;
-    unk_func_80007444* sp20;
+    Stage* sp20;
 
     main_pool_push_state('PIKA');
 
     if (func_8320029C() != 0) {
-        func_80005E40(0x10000, 0);
-        sp20 = func_80007444(0, 1, 3, 1, 2, 1);
-        func_8001E94C(6, 0);
+        Gfx_InitBuffers(0x10000, 0);
+        sp20 = Stage_Create(0, 1, 3, 1, 2, 1);
+        Text_Init(6, 0);
 
         FRAGMENT_LOAD(fragment31);
         func_80004454(FRAGMENT_ID(_798CD0), _798CD0_ROM_START, _798CD0_ROM_END);
@@ -773,11 +773,11 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
         func_8001987C();
         D_83202018 = func_80019D90(&D_832027C8.unk_04);
         func_83201C8C();
-        func_80007678(sp20);
+        Stage_Set(sp20);
         func_83201B60();
         func_800076C0();
         func_8001E9CC();
-        func_80005EAC();
+        Gfx_FreeBuffers();
     }
 
     main_pool_pop_state('PIKA');

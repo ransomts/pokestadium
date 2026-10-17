@@ -362,7 +362,7 @@ void func_84206F1C(unk_D_84211B50* arg0) {
         arg0->unk_000C = -1;
         arg0->unk_000E = -4;
         arg0->unk_0001 = 0xC;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -372,7 +372,7 @@ void func_84206F64(unk_D_84211B50* arg0) {
         arg0->unk_000C = 1;
         arg0->unk_000E = 4;
         arg0->unk_0001 = 0xC;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -382,7 +382,7 @@ void func_84206FB0(unk_D_84211B50* arg0) {
         arg0->unk_000C = -1;
         arg0->unk_000E = -4;
         arg0->unk_0001 = 0xD;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -392,7 +392,7 @@ void func_84206FF8(unk_D_84211B50* arg0) {
         arg0->unk_000C = 1;
         arg0->unk_000E = 4;
         arg0->unk_0001 = 0xD;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 }
 
@@ -405,11 +405,11 @@ void func_84207040(unk_D_84211B50* arg0) {
         s32 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
         if (arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 != 0) {
-            func_80048B90(2);
+            PlaySoundEffect(2);
             arg0->unk_0001 = 0xB;
         }
     } else if (BTN_IS_PRESSED(cont, BTN_B)) {
-        func_80048B90(3);
+        PlaySoundEffect(3);
         arg0->unk_0001 = 0x10;
     } else if (BTN_IS_PRESSED(cont, BTN_DUP)) {
         func_84206FB0(arg0);

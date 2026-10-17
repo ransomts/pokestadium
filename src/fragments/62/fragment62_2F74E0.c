@@ -654,24 +654,24 @@ void func_8430E1CC(unk_D_84390010* arg0) {
     if ((D_84390240.unk_00->unk_40 == 0) &&
         (BTN_IS_PRESSED(D_84390148, BTN_DLEFT) || BTN_IS_PRESSED(D_8439014C, BTN_DLEFT))) {
         sp18->unk_2F = 0;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if ((D_84390240.unk_00->unk_40 == 0) &&
         (BTN_IS_PRESSED(D_84390148, BTN_DRIGHT) || BTN_IS_PRESSED(D_8439014C, BTN_DRIGHT))) {
         sp18->unk_2F = 1;
-        func_80048B90(1);
+        PlaySoundEffect(1);
     }
 
     if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A)) &&
         (D_84390240.unk_00->unk_40 == 0)) {
-        func_80048B90(2);
+        PlaySoundEffect(2);
         D_84390240.unk_00->unk_40 = (func_84307F00(arg0) == 0) + 1;
         func_8004B9C4(0x14);
     } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A))) {
         sp18->unk_10 = 0;
         sp18->unk_04 = 0;
-        func_80048B90(3);
+        PlaySoundEffect(3);
     }
 }
 

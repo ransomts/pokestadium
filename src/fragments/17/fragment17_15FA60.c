@@ -479,7 +479,7 @@ void func_86B0100C(void) {
     func_80015094(D_86B0E5D0);
     func_86B00794();
     func_86B02348();
-    func_80007778();
+    Stage_Advance();
 }
 
 void func_86B0107C(void) {
@@ -526,7 +526,7 @@ void func_86B0111C(void) {
 s32 func_86B01190(void) {
     main_pool_push_state('MINI');
 
-    func_8001E94C(6, 0);
+    Text_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
