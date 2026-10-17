@@ -692,3 +692,14 @@ the adopted 300. All farm jobs cancelled (17519735 x, 17523026/17523027 w2) per 
 condition (single-builder rule). Round-9 open functions parked at: 8004A89C 300, 80034348 60,
 88304850 1716, 88805AEC 2337, 8437B0CC 4724. The 8437B0CC lesson (u64 perturbation placement
 dominates form, IDO_TRICKS) is the standing lead for the next round / post-API-reset agents.
+
+## F6 test sequence complete (2026-10-17 ~13:45)
+rename.py built per rename_spec.md and the mandatory sequence passed in order:
+1 no-op (0 changes, gate OK); 2 round-trip tmp_RenameRoundTrip (make OK both ways, empty diff);
+3 single (GbAudio_StepNoiseChannel + gGbAudioNoiseChannel + symbol_addrs entry, 19611f0; typedef
+fixup cf9fb88); 4 batch of 10 (GB APU channel family, a5ddc79); 5 re-extract invariance in a
+scratch copy (/tmp copy): all 12 new names survive make extract (symbol_addrs + dlabels), zero
+old-name hits, ROM OK. Tool fixes found by the sequence: header-row parsing, 0x/0X address check,
+also-pairs for symbol rows, typedef-row preflight/map checks, dlabel-only symbols need a
+symbol_addrs entry ADDED so extraction does not revert the name (the gate caught this live).
+Next: Tier A waves, one commit per batch, spot-check + owner approval between batches.
