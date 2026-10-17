@@ -3,6 +3,10 @@
 #include "src/libnumus/player.h"
 #include "src/3D140.h"
 
+s32 D_80078E60 = 0;
+s32 D_80078E64 = 0;
+s32 D_80078E68 = 0;
+
 void func_8004AE90(s32 arg0, u32 arg1) {
     s32 var_a1;
 

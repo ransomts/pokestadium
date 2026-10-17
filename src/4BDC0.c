@@ -18,7 +18,21 @@ extern u8 D_80078E9B;
 extern u8 D_80078EA3;
 extern u8 D_80078EAB;
 extern u8 D_80078EB3;
-extern u8 D_80078EBC;
+extern u8 D_80078EBC[9];
+
+s32 D_80078E70 = 0;
+s32 D_80078E74 = 112;
+u8 D_80078E78 = 0;
+u8 D_80078E7C = 0;
+u8 D_80078E80 = 0;  // tail holds D_80078E83, D_80078E8B, D_80078E93, D_80078E9B, D_80078EA3, D_80078EAB, D_80078EB3 (linker-defined symbols)
+static u32 D_80078E80_tail[14] = { 0x2020203, 0x3030405, 0x23232325, 0x2525250E, 0x23232325, 0x25250E0D, 0x6060637, 0x37373B39, 0x3434342F, 0x2F2F2E35, 0xB0B0B0C, 0xC0C0C12, 0xB0B0B0C, 0xC0C1236 };
+u8 D_80078EBC[9] = { 0x22, 0x22, 0x22, 0x24, 0x24, 0x24, 0x24, 0x24, 0x26 };  // tail holds D_80078EBF (linker-defined symbols)
+s32 D_80078EC8 = -1;
+s32 D_80078ECC = 0;
+u8 D_80078ED0 = 0;
+s32 D_80078ED4 = 0;
+s32 D_80078ED8 = 0;
+s32 D_80078EDC = 0;
 extern u8 D_80078EBF;
 
 void func_8004B1C0(s32 arg0) {
@@ -554,7 +568,7 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
         if (arg0 >= 0x21U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078EBC + ((arg0 - 1) & 3)));
+        ret = func_8004B1CC(*(D_80078EBC + ((arg0 - 1) & 3)));
         break;
     case 13:
         if (arg0 >= 6U) {
