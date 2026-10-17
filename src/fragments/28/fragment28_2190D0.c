@@ -4110,6 +4110,14 @@ s32 func_88807AC0(void) {
 // dropping `case 3:` (worse). `!= -1` gives 530 (only the branch differs). Wrapping the
 // assignment as `if (1) { temp_s0 = ...; }` gives 350 (s4 + one lui hoisted above bltz).
 // Candidate for the permuter farm (scheduling-only).
+// Round 8 (agent-5): now 350 with the `if (1) { temp_s0 = ...; }` form (kept below).
+// Root cause found by feeding `cc -S` output through as0+as1 by hand (global sched on):
+// the target is reproduced EXACTLY when the if-body block (first insn after the bltz) has a
+// second predecessor (a label there plus any branch to it) - as1 then hoists nothing above
+// the bltz and the jal delay slot gets `sll s4`. Making t0/t3 live at the bltz target also
+// blocks those two hoists (s4 still hoists). A branch to the very next insn, unreferenced
+// labels, .loc/.livereg/nop changes do NOT block it. So the original source most likely has
+// some control flow entering the if-body start (or the taken target keeps t0/t3/s4 live).
 #ifdef NON_MATCHING
 void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6) {
     s32 i;
@@ -4149,7 +4157,8 @@ void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32
 
     for (i = 0; i < 59; i++) {
         if (D_88826564[i] >= 0) {
-            unk_D_88826CF0* temp_s0 = &D_88826CF0[D_8882651C[D_88826564[i]] - 1];
+            unk_D_88826CF0* temp_s0;
+            if (1) { temp_s0 = &D_88826CF0[D_8882651C[D_88826564[i]] - 1]; }
 
             D_88826A56 = func_8002EC08(func_80024F68(func_80029080()));
 
