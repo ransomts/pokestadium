@@ -1296,7 +1296,7 @@ Gfx* func_86B040C0(void) {
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-        func_8001C8C4(D_86B0EBE0->unk_16 + 0x9E, D_86B0EBE0->unk_14 + 9, 0x10, 0x10,
+        Gfx_DrawSpriteRGBA32(D_86B0EBE0->unk_16 + 0x9E, D_86B0EBE0->unk_14 + 9, 0x10, 0x10,
                       D_86B0DB98[D_86B0EBE0->unk_1C].unk_00, 0x10, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);

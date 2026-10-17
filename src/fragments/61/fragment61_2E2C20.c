@@ -212,9 +212,9 @@ void func_8420B5A4(s16 arg0, s16 arg1, s16 arg2) {
     gDPSetEnvColor(gDisplayListHead++, sp34->unk_00->r, sp34->unk_00->g, sp34->unk_00->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (sp30->unk_00 + 1)->r, (sp30->unk_00 + 1)->g, (sp30->unk_00 + 1)->b, 255);
 
-    func_8001CADC(arg0, arg1, 0x14, 0x28, D_20165C0, 0x18, 0);
-    func_8001CADC(arg0 + 0x38, arg1, 0x14, 0x28, D_2016980, 0x18, 0);
-    func_8001C330(arg0 + 0x14, arg1, 0x24, 0x28, 0, 0, 0, 0x400, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1, 0x14, 0x28, D_20165C0, 0x18, 0);
+    Gfx_DrawSpriteIA8(arg0 + 0x38, arg1, 0x14, 0x28, D_2016980, 0x18, 0);
+    Gfx_DrawTextureRect(arg0 + 0x14, arg1, 0x24, 0x28, 0, 0, 0, 0x400, 0);
 }
 
 void func_8420B71C(s16 arg0, s16 arg1, s32 arg2) {
@@ -227,7 +227,7 @@ void func_8420B71C(s16 arg0, s16 arg1, s32 arg2) {
 
         for (i = 0; i < 0x54; i += 0x14) {
             var_a3 = CLAMP_MIN(0x54 - i, 20);
-            func_8001C6AC(arg0, arg1 + i, 0x64, var_a3, (i * 0xC8) + arg2, 0x64, 0x200000);
+            Gfx_DrawSpriteRGBA16(arg0, arg1 + i, 0x64, var_a3, (i * 0xC8) + arg2, 0x64, 0x200000);
         }
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
@@ -280,13 +280,13 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-            func_8001C6AC(temp_s4 + 0x108, temp_s5 + 0x77, 0x1C, 0x1A, D_2014F00, 0x1C, 0);
-            func_8001C6AC(temp_s4 + 0xF0, temp_s5 + 0x90, 0x1C, 0x1A, D_20154B0, 0x1C, 0);
-            func_8001C6AC(temp_s4 + 0x11C, temp_s5 + 0x90, 0x1C, 0x1A, D_2016010, 0x1C, 0);
-            func_8001C6AC(temp_s4 + 0x108, temp_s5 + 0xA9, 0x1C, 0x1A, D_2015A60, 0x1C, 0);
+            Gfx_DrawSpriteRGBA16(temp_s4 + 0x108, temp_s5 + 0x77, 0x1C, 0x1A, D_2014F00, 0x1C, 0);
+            Gfx_DrawSpriteRGBA16(temp_s4 + 0xF0, temp_s5 + 0x90, 0x1C, 0x1A, D_20154B0, 0x1C, 0);
+            Gfx_DrawSpriteRGBA16(temp_s4 + 0x11C, temp_s5 + 0x90, 0x1C, 0x1A, D_2016010, 0x1C, 0);
+            Gfx_DrawSpriteRGBA16(temp_s4 + 0x108, temp_s5 + 0xA9, 0x1C, 0x1A, D_2015A60, 0x1C, 0);
 
             if ((arg0->unk_2C->unk_000 != 4) && (arg0->unk_2C->unk_001 == 0xD)) {
-                func_8001C6AC(temp_s4 + 0x14, temp_s5 + 0x78, 0x40, 0x14, D_2016D40, 0x40, 0);
+                Gfx_DrawSpriteRGBA16(temp_s4 + 0x14, temp_s5 + 0x78, 0x40, 0x14, D_2016D40, 0x40, 0);
             }
 
             gDPSetCombineLERP(gDisplayListHead++, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, ENVIRONMENT, 0,
@@ -366,7 +366,7 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
                     }
 
                     sp80 = func_8420B870(i, D_842116F0[i], func_842000C0(temp_s6->unk_09[i]));
-                    func_8001C6AC((temp_s4 + sp80) - 0x18, D_842116F8[i] + temp_s5, 0x14, 0x14,
+                    Gfx_DrawSpriteRGBA16((temp_s4 + sp80) - 0x18, D_842116F8[i] + temp_s5, 0x14, 0x14,
                                   D_842115F0[gMoveStrings[temp_s6->unk_09[i] - 1].unk_01].unk_0C, 0x14, 0);
                 }
             }
@@ -482,8 +482,8 @@ s32 func_8420C60C(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
     arg0->unk_20 = 0;
     arg0->unk_2C = arg6;
 
-    func_80005FC0(&arg0->unk_0E, arg2, arg3, arg2 + 0x227, arg3 + 0xCB);
-    func_80005FC0(&arg0->unk_16, arg4, arg5, arg4 + 0x8B, arg5 + 0x33);
+    Gfx_MakeClipRect(&arg0->unk_0E, arg2, arg3, arg2 + 0x227, arg3 + 0xCB);
+    Gfx_MakeClipRect(&arg0->unk_16, arg4, arg5, arg4 + 0x8B, arg5 + 0x33);
     return 1;
 }
 
@@ -496,7 +496,7 @@ s32 func_8420C6D8(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_
 
     func_8001B2D8(arg0->unk_28, &arg3->unk_004, 0x108D);
     arg0->unk_2C = arg3;
-    func_80005FC0(&arg0->unk_16, arg1, arg2, arg1 + 0x8B, arg2 + 0x33);
+    Gfx_MakeClipRect(&arg0->unk_16, arg1, arg2, arg1 + 0x8B, arg2 + 0x33);
     return 1;
 }
 

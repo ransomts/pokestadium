@@ -216,9 +216,9 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
     gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 
-    func_8001CADC(arg0, arg1, 0x10, 8, D_200A200, 0x10, 0);
-    func_8001CADC(arg0, arg1 + 0x114, 0x10, 8, D_200A280, 0x10, 0);
-    func_8001C330(arg0, arg1 + 8, 0x10, 0x10C, 0, 0, 0x400, 0, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1, 0x10, 8, D_200A200, 0x10, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1 + 0x114, 0x10, 8, D_200A280, 0x10, 0);
+    Gfx_DrawTextureRect(arg0, arg1 + 8, 0x10, 0x10C, 0, 0, 0x400, 0, 0);
 
     if (arg2->unk_00 != 3) {
         temp_t0 = (arg2->unk_08 * 0x10C) / 21;
@@ -231,9 +231,9 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
     if (D_83003B70 < 4) {
-        func_8001C6AC(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A300, 0x18, 0);
+        Gfx_DrawSpriteRGBA16(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A300, 0x18, 0);
     } else {
-        func_8001C6AC(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A780, 0x18, 0);
+        Gfx_DrawSpriteRGBA16(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A780, 0x18, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
@@ -248,7 +248,7 @@ void func_83002F9C(s16 arg0, s16 arg1) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, 60, 60, 160, 255);
 
-    func_8001CF10(arg0, arg1, 0x20, 0x14, D_4000DD0, 0x20, 0);
+    Gfx_DrawSpriteI4(arg0, arg1, 0x20, 0x14, D_4000DD0, 0x20, 0);
 }
 
 void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
@@ -278,7 +278,7 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     for (i = 0; i < 6; i++) {
         temp_s0 = arg2->unk_00[i].unk_00;
         if (temp_s0 != NULL) {
-            func_8001C6AC(arg0 + (i * 0x54) + 0x16, arg1 + 3, 0x28, 0x28, D_83003EF0[temp_s0 - 1], 0x28, 0);
+            Gfx_DrawSpriteRGBA16(arg0 + (i * 0x54) + 0x16, arg1 + 3, 0x28, 0x28, D_83003EF0[temp_s0 - 1], 0x28, 0);
         }
     }
 

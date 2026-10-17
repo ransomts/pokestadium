@@ -201,7 +201,7 @@ void func_8001F870(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, sp34, sp30, 0);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, sp34, sp30, 0);
 }
 
 void func_8001F9D4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -380,7 +380,7 @@ void func_80020754(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 void func_800207FC(s32 arg0, s32 arg1) {
     if (func_80007A58() != 0) {
         gSPDisplayList(gDisplayListHead++, D_8006F4E0);
-        func_8001C6AC(arg0, arg1, 0x20, 0x16, D_10031D0, 0x20, 0x200000);
+        Gfx_DrawSpriteRGBA16(arg0, arg1, 0x20, 0x16, D_10031D0, 0x20, 0x200000);
     } else {
         gSPDisplayList(gDisplayListHead++, D_8006F5A0);
         func_8001D560(arg0, arg1, 0xC, 0xA, D_1003750, D_1003890, 0x10, 0x100000);

@@ -1274,7 +1274,7 @@ s32 func_88505EF4(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
                 var_s5 += arg0->unk_36;
             } else {
                 Text_PutChar(var_s2, var_s5, var_s0);
-                temp_v0_3 = func_8001E78C(&arg0->unk_3C->unk_00[arg0->unk_3C->unk_50], temp_v0_3 = var_s0);
+                temp_v0_3 = Text_GetCharWidth(&arg0->unk_3C->unk_00[arg0->unk_3C->unk_50], temp_v0_3 = var_s0);
                 if (arg0->unk_3C->unk_50 >= 2) {
                     var_v1 = temp_v0_3 - 2;
                 } else {

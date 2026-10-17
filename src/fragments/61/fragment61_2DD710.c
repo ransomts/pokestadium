@@ -29,7 +29,7 @@ void func_84205F18(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-        func_8001C6AC(arg1 + 0x32, arg2 + 0x32, 0x14, 0x14, D_20068E0, 0x14, 0);
+        Gfx_DrawSpriteRGBA16(arg1 + 0x32, arg2 + 0x32, 0x14, 0x14, D_20068E0, 0x14, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
     } else {
@@ -89,7 +89,7 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
                 s16 tmp1 = D_842115B0[i] + arg0->unk_0018 + 2;
                 s16 tmp2 = D_842115BC[i] + arg0->unk_001A + 2;
 
-                func_8001C6AC(tmp1, tmp2, 0x28, 0x28, arg0->unk_0030[i].unk_058, 0x28, 0);
+                Gfx_DrawSpriteRGBA16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0030[i].unk_058, 0x28, 0);
             }
         }
 

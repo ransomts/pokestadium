@@ -104,7 +104,7 @@ void func_821000C4(s16 arg0, s16 arg1) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, 100, 15, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0, arg1, 100, 15, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
@@ -155,7 +155,7 @@ void func_8210046C(u8* arg0) {
 
     for (i = 0; i < 0xF0; i += 0x10) {
         for (j = 0; j < 0x140; j += 0x10, arg0 += 0x200) {
-            func_8001C6AC(j, i, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawSpriteRGBA16(j, i, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 

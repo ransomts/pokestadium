@@ -254,7 +254,7 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(arg1, arg2, sp34, sp32, 0, 0, sp36, sp36, 0);
+        Gfx_DrawTextureRect(arg1, arg2, sp34, sp32, 0, 0, sp36, sp36, 0);
     }
 }
 

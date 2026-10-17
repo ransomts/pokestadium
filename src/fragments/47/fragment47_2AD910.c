@@ -36,8 +36,8 @@ void func_8380008C(s32 arg0) {
 }
 
 void func_83800098(s32 arg0, s32 arg1) {
-    func_8001C6AC(arg0, arg1, 0x40, 0x18, D_04000000, 0x40, 0);
-    func_8001C6AC(arg0, arg1 + 0x18, 0x40, 0x18, D_4000C00, 0x40, 0);
+    Gfx_DrawSpriteRGBA16(arg0, arg1, 0x40, 0x18, D_04000000, 0x40, 0);
+    Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x18, 0x40, 0x18, D_4000C00, 0x40, 0);
 }
 
 void func_83800120(void) {

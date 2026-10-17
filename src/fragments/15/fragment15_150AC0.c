@@ -91,34 +91,34 @@ void func_869043FC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A60, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028AA0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20289E0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A20, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
+    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F498);
 
     if ((sp4C > 0) && (sp48 > 0)) {
-        func_8001C604(arg0 + var_s3, arg1, sp4C, var_s2, arg4, arg5, arg6, arg7);
-        func_8001C604(arg0, (arg1 + var_s3), arg2, sp48, arg4, arg5, arg6, arg7);
-        func_8001C604(arg0 + var_s3, (arg1 + var_s3) + sp48, sp4C, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRGBA(arg0 + var_s3, arg1, sp4C, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRGBA(arg0, (arg1 + var_s3), arg2, sp48, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRGBA(arg0 + var_s3, (arg1 + var_s3) + sp48, sp4C, var_s2, arg4, arg5, arg6, arg7);
     } else if (sp4C > 0) {
-        func_8001C604(arg0 + var_s3, arg1, sp4C, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRGBA(arg0 + var_s3, arg1, sp4C, arg3, arg4, arg5, arg6, arg7);
     } else if (sp48 > 0) {
-        func_8001C604(arg0, arg1 + var_s2, arg2, sp48, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, sp48, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
@@ -128,11 +128,11 @@ void func_86904BFC(void) {
 }
 
 void func_86904C04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
-    unk_D_800A7440 sp30;
+    ClipRect sp30;
 
-    func_80005FC0(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (func_80006030(&sp30) != 0) {
+    if (Gfx_IntersectClip(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -556,7 +556,7 @@ void func_86907858(UNUSED s32 arg0) {
 
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_v1);
 
-        func_8001CADC(0x93, 0x20, 0x18, 0xF, &D_50017E8, 0x18, 0);
+        Gfx_DrawSpriteIA8(0x93, 0x20, 0x18, 0xF, &D_50017E8, 0x18, 0);
 
         if ((D_8690B38C - 4) != D_8690B384) {
             var_v1 = 0xFF;
@@ -566,7 +566,7 @@ void func_86907858(UNUSED s32 arg0) {
 
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_v1);
 
-        func_8001CADC(0x93, 0x9C, 0x18, 0xF, &D_5001680, 0x18, 0);
+        Gfx_DrawSpriteIA8(0x93, 0x9C, 0x18, 0xF, &D_5001680, 0x18, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
         gSPDisplayList(gDisplayListHead++, D_8006F5A0);

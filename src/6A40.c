@@ -11,7 +11,7 @@ typedef struct UnkStruct800A7428 {
 
 Gfx* gDisplayListHead;
 UnkStruct800A7428 gDLBuffers;
-unk_D_800A7440 D_800A7440;
+ClipRect gClipRect;
 
 void Gfx_SwapDisplayList(void);
 

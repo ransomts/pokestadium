@@ -213,13 +213,13 @@ void func_84300750(GraphNode* arg0, unk_D_80068BB0* arg1) {
 }
 
 void func_84300810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800A7440 sp38;
+    ClipRect sp38;
     u16 tmp5;
     u16 tmp6;
 
-    func_80005FC0(&sp38, arg0, arg1, arg2, arg3);
+    Gfx_MakeClipRect(&sp38, arg0, arg1, arg2, arg3);
 
-    if (func_80006030(&sp38) != 0) {
+    if (Gfx_IntersectClip(&sp38) != 0) {
         if (!arg2) {}
 
         tmp5 = ((sp38.x1 - arg0) << 5);

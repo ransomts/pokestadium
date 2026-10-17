@@ -119,7 +119,7 @@ void func_84A003BC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f
                         0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg6, 1024.0f / arg6, 0);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg6, 1024.0f / arg6, 0);
 }
 
 void func_84A00630(void) {
@@ -132,7 +132,7 @@ void func_84A00638(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg5, 1024.0f / arg5, 0);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg5, 1024.0f / arg5, 0);
 }
 
 void func_84A008A8(void) {
@@ -241,7 +241,7 @@ void func_84A00E98(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
     for (i = 0; i < 9; i++) {
-        func_8001C6AC(0x24, var_s1, 0xE4, 8, D_3011A30 + i * 0xE40, 0xE4, 0);
+        Gfx_DrawSpriteRGBA16(0x24, var_s1, 0xE4, 8, D_3011A30 + i * 0xE40, 0xE4, 0);
         var_s1 += 8;
     }
 
@@ -356,8 +356,8 @@ void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         gSPDisplayList(gDisplayListHead++, D_8006F558);
         gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
 
-        func_8001CCF8(0x166, 0x174, 0x10, 0x4C, D_300C290, 0x10, 0);
-        func_8001C330(0x176, 0x174, 0x80, 0x4C, 0x1E0, 0, 0, 0x400, 0);
+        Gfx_DrawSpriteIA16(0x166, 0x174, 0x10, 0x4C, D_300C290, 0x10, 0);
+        Gfx_DrawTextureRect(0x176, 0x174, 0x80, 0x4C, 0x1E0, 0, 0, 0x400, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -406,8 +406,8 @@ void func_84A01770(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, D_300C290, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 76, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(0x15A, 0x174, 0x10, 0x4C, 0, 0, 0x400, 0x400, 0);
-    func_8001C330(0x16A, 0x174, 0x6C, 0x4C, 0x1E0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureRect(0x15A, 0x174, 0x10, 0x4C, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(0x16A, 0x174, 0x6C, 0x4C, 0x1E0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -507,7 +507,7 @@ void func_84A01EE0(void) {
     if (D_800AE540.unk_11F2 == 1) {
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-        func_8001C6AC(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
+        Gfx_DrawSpriteRGBA16(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
     }

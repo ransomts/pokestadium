@@ -304,7 +304,7 @@ void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg3 == 0) {
         gSPDisplayList(gDisplayListHead++, D_8006F498);
 
-        func_8001C604(arg0, arg1, arg2, 4, 0, 0, 0, 0x80);
+        Gfx_FillRectRGBA(arg0, arg1, arg2, 4, 0, 0, 0, 0x80);
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -313,7 +313,7 @@ void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 128);
 
     for (i = 0; i < sp50; i++) {
-        func_8001C330(arg0 + 4 + i * 0x28, arg1 + 4, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(arg0 + 4 + i * 0x28, arg1 + 4, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -325,7 +325,7 @@ void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     for (i = 0; i < sp50; i++) {
-        func_8001C330(arg0 + i * 0x28, arg1, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(arg0 + i * 0x28, arg1, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
     }
 }
 
@@ -356,7 +356,7 @@ void func_83600E20(s32 arg0, s32 arg1, s16 arg2) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -371,7 +371,7 @@ void func_83600E20(s32 arg0, s32 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
 void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
@@ -394,7 +394,7 @@ void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -409,7 +409,7 @@ void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
 void func_83601800(unk_D_83407B38* arg0) {
@@ -499,8 +499,8 @@ void func_83601B48(s32 arg0, s32 arg1) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    func_8001C330(arg0 + 0x36, arg1 - 3, 0x64, 0x24, 0, 0, 0x400, 0x400, 0);
-    func_8001C330(arg0 + 0x11C, arg1 - 3, 0x64, 0x24, 0xC60, 0, -0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0 + 0x36, arg1 - 3, 0x64, 0x24, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0 + 0x11C, arg1 - 3, 0x64, 0x24, 0xC60, 0, -0x400, 0x400, 0);
 
     if (D_836033C4 != 0) {
         sp78 = sp7C;
@@ -574,7 +574,7 @@ void func_83601F28(int arg0, int arg1, s32 arg2, f32 arg3) {
                            temp_v0_2 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
+        Gfx_DrawTextureRect(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
                       0, 0, tmp / arg3, tmp / arg3, 0);
     }
 
@@ -632,7 +632,7 @@ void func_83602458(void) {
 
             gDPSetEnvColor(gDisplayListHead++, r, g, b, 255);
 
-            func_8001C330(0, i, 0x280, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+            Gfx_DrawTextureRect(0, i, 0x280, temp_v0_2, 0, 0, 0x400, 0x400, 0);
         }
     }
 }
@@ -706,7 +706,7 @@ void func_83602A8C(s32 arg0, s32 arg1) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_8001C6AC((arg0 + sp28) - 0x20, arg1 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
+    Gfx_DrawSpriteRGBA16((arg0 + sp28) - 0x20, arg1 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

@@ -219,11 +219,11 @@ void func_82F0CC3C(void) {
                     if (MathUtil_Random16() & 0x8000) {
                         var_s0 = -var_s0;
                     }
-                    func_8001C330(var_s4->unk_02 + var_s0, var_s4->unk_04 + j, 0x3C, 1, 0,
+                    Gfx_DrawTextureRect(var_s4->unk_02 + var_s0, var_s4->unk_04 + j, 0x3C, 1, 0,
                                   ROUND_MAX((j * 32.0f) / 1.5f), 0x2AB, 0x2AB, 0);
                 }
             } else {
-                func_8001C330(var_s4->unk_02, var_s4->unk_04, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
+                Gfx_DrawTextureRect(var_s4->unk_02, var_s4->unk_04, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
             }
 
             if (var_s4->unk_0E == 0) {
@@ -238,7 +238,7 @@ void func_82F0CC3C(void) {
                     gDPPipeSync(gDisplayListHead++);
                     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, tmp);
 
-                    func_8001C330(var_s4->unk_10[j].unk_00, var_s4->unk_10[j].unk_02, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB,
+                    Gfx_DrawTextureRect(var_s4->unk_10[j].unk_00, var_s4->unk_10[j].unk_02, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB,
                                   0);
                 }
             }
@@ -640,21 +640,21 @@ void func_82F0E5C8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_8001C6AC(arg0 - 0xD, arg1 - 0xD, 0x10, 0x10, D_3026568, 0x10, 0);
-    func_8001C330(arg0 - 0xD, arg1 + 3, 0x10, (arg3 / 2) - 3, 0, 0x1E0, 0x400, 0, 0);
-    func_8001C6AC((arg0 + arg2) - 3, arg1 - 0xD, 0x10, 0x10, D_3026768, 0x10, 0);
-    func_8001C330(arg0 + 3, arg1 - 0xD, arg2 - 6, 0x10, 0, 0, 0, 0x400, 0);
-    func_8001C330((arg0 + arg2) - 3, arg1 + 3, 0x10, (arg3 / 2) - 3, 0, 0x1E0, 0x400, 0, 0);
-    func_8001C6AC(arg0 - 0xD, (arg1 + arg3) - 3, 0x10, 0x10, D_3026D68, 0x10, 0);
+    Gfx_DrawSpriteRGBA16(arg0 - 0xD, arg1 - 0xD, 0x10, 0x10, D_3026568, 0x10, 0);
+    Gfx_DrawTextureRect(arg0 - 0xD, arg1 + 3, 0x10, (arg3 / 2) - 3, 0, 0x1E0, 0x400, 0, 0);
+    Gfx_DrawSpriteRGBA16((arg0 + arg2) - 3, arg1 - 0xD, 0x10, 0x10, D_3026768, 0x10, 0);
+    Gfx_DrawTextureRect(arg0 + 3, arg1 - 0xD, arg2 - 6, 0x10, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureRect((arg0 + arg2) - 3, arg1 + 3, 0x10, (arg3 / 2) - 3, 0, 0x1E0, 0x400, 0, 0);
+    Gfx_DrawSpriteRGBA16(arg0 - 0xD, (arg1 + arg3) - 3, 0x10, 0x10, D_3026D68, 0x10, 0);
 
-    func_8001C330(arg0 - 0xD, tmp + 8, 0x10, (arg3 / 2) - 3, 0, 0, 0x400, 0, 0);
-    func_8001C6AC((arg0 + arg2) - 3, (arg1 + arg3) - 3, 0x10, 0x10, D_3026F68, 0x10, 0);
-    func_8001C330(arg0 + 3, (arg1 + arg3) - 3, arg2 - 6, 0x10, 0, 0, 0, 0x400, 0);
-    func_8001C330((arg0 + arg2) - 3, tmp + 8, 0x10, (arg3 / 2) - 3, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureRect(arg0 - 0xD, tmp + 8, 0x10, (arg3 / 2) - 3, 0, 0, 0x400, 0, 0);
+    Gfx_DrawSpriteRGBA16((arg0 + arg2) - 3, (arg1 + arg3) - 3, 0x10, 0x10, D_3026F68, 0x10, 0);
+    Gfx_DrawTextureRect(arg0 + 3, (arg1 + arg3) - 3, arg2 - 6, 0x10, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureRect((arg0 + arg2) - 3, tmp + 8, 0x10, (arg3 / 2) - 3, 0, 0, 0x400, 0, 0);
 
     if (arg3 >= 0x10) {
-        func_8001C6AC(arg0 - 0xD, tmp, 0x10, 0x10, D_3026968, 0x10, 0);
-        func_8001C6AC((arg0 + arg2) - 3, tmp, 0x10, 0x10, D_3026B68, 0x10, 0);
+        Gfx_DrawSpriteRGBA16(arg0 - 0xD, tmp, 0x10, 0x10, D_3026968, 0x10, 0);
+        Gfx_DrawSpriteRGBA16((arg0 + arg2) - 3, tmp, 0x10, 0x10, D_3026B68, 0x10, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
@@ -697,7 +697,7 @@ void func_82F0E97C(unk_D_82F21238* arg0) {
         } else {
             var_a0 = (s16)(SINS(arg0->unk_18 + (arg0->unk_1A * i)) * arg0->unk_1C) + 0xE0;
         }
-        func_8001C330(var_a0, i + 0x64, 0xC0, var_s2, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(var_a0, i + 0x64, 0xC0, var_s2, 0, 0, 0x400, 0x400, 0);
     }
 
     if (sp5C != 0) {
@@ -1779,7 +1779,7 @@ void func_82F12614(void) {
     gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, D_82F14050 * 4.0f, D_82F14054 * 4.0f, temp_fa0 * 4.0f,
                    temp_fa4 * 4.0f);
 
-    func_8001C330(0, 0, 0x20, 0x20, 0, 0, 0x400, 0x400, 0x100000);
+    Gfx_DrawTextureRect(0, 0, 0x20, 0x20, 0, 0, 0x400, 0x400, 0x100000);
 
     D_82F14050 += 0.75f;
     if (D_82F14050 >= 32.0f) {

@@ -109,3 +109,19 @@ func_8001F3C4	Text_SetNoWordWrap	a9		sets unk_53 bit 2 - Text_Print then treats 
 func_80001474	Vi_SetMode	a10		osViSetMode from the index table (osTvType-aware index, TV type 2 offset +4), gamma/dither features off, PAL YScale 0.8333 for NTSC-class sets	applied@1b48f29
 func_8001F738	MenuInput_SetController	a10		sets the active menu-input controller and primes the repeat counter to 0xA	applied@1b48f29
 func_8001F750	MenuInput_ReadDirection	a10		direction read with hold-repeat: fresh press resets the counter (0xA) and returns the bit, held direction repeats every 2 ticks; 0x800/0x400/0x200/0x100 direction bits	applied@1b48f29
+func_8001C330	Gfx_DrawTextureRect	b1		the core clipped textured quad: builds a clip rect, skips if off-screen, adjusts UVs for clipping, gSPTextureRectangle with xs/ys scale	applied@44c9843
+func_8001C4E4	Gfx_DrawTextureRect2	b1		corner-pair form of Gfx_DrawTextureRect ((x0,y0)-(x1,y1) + scale)	applied@44c9843
+func_8001C560	Gfx_FillRect	b1		fills a rect: sets PrimColor (r,g,b, alpha fixed 0xFF) then draws the untextured quad	applied@44c9843
+func_8001C604	Gfx_FillRectRGBA	b1		same with explicit alpha (u8 arg7)	applied@44c9843
+func_8001C6AC	Gfx_DrawSpriteRGBA16	b1		loads an RGBA16 texture block then Gfx_DrawTextureRect unscaled (0x400/0x400)	applied@44c9843
+func_8001C8C4	Gfx_DrawSpriteRGBA32	b1		RGBA32 variant of the sprite draw	applied@44c9843
+func_8001CADC	Gfx_DrawSpriteIA8	b1		IA8 variant of the sprite draw	applied@44c9843
+func_8001CCF8	Gfx_DrawSpriteIA16	b1		IA16 variant of the sprite draw	applied@44c9843
+func_8001CF10	Gfx_DrawSpriteI4	b1		I 4-bit variant (gDPLoadTextureBlock_4b) of the sprite draw	applied@44c9843
+func_80005FC0	Gfx_MakeClipRect	b1		normalises two corner coordinates into a ClipRect (min/max ordering of each axis)	applied@44c9843
+func_80006030	Gfx_IntersectClip	b1		intersects a ClipRect with the global gClipRect and reports visibility (needs a screen active)	applied@44c9843
+D_800A7440	gClipRect	b1		the global clip rectangle used by Gfx_IntersectClip (all sprite drawing is clipped against it)	applied@44c9843
+unk_D_800A7440	ClipRect	b1		{x1,y1,x2,y2} clip bounds struct typedef used by the sprite library	applied@44c9843
+func_8001ECB4	Text_DrawGlyph	b1		renders one glyph: font-bank lookup, gDPLoadTextureBlock of the glyph's IA8 cell (offset = idx*w*h, reloaded on change), Gfx_DrawTextureRect, returns advanced x	applied@44c9843
+func_8001E78C	Text_GetCharWidth	b1		glyph advance from the font bank's width table (unk_04[index])	applied@44c9843
+func_8001E7D4	Text_UnloadFont	b1		zeros one font bank's width and texture pointers (called when a font asset is freed)	applied@44c9843

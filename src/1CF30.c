@@ -13,12 +13,12 @@
 // .bss
 unk_D_800AC870* D_800AC870;
 
-void func_8001C330(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
-    unk_D_800A7440 sp30;
+void Gfx_DrawTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
+    ClipRect sp30;
 
-    func_80005FC0(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (func_80006030(&sp30) != 0) {
+    if (Gfx_IntersectClip(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -39,69 +39,69 @@ void func_8001C330(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s
     }
 }
 
-void func_8001C4E4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    func_8001C330(arg0, arg1, (arg2 - arg0) + 1, (arg3 - arg1) + 1, 0, 0, arg4, arg5, arg6);
+void Gfx_DrawTextureRect2(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    Gfx_DrawTextureRect(arg0, arg1, (arg2 - arg0) + 1, (arg3 - arg1) + 1, 0, 0, arg4, arg5, arg6);
 }
 
-void func_8001C560(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void Gfx_FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4, arg5, arg6, 0xFF);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
 }
 
-void func_8001C604(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Gfx_FillRectRGBA(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4, arg5, arg6, arg7);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
 }
 
-void func_8001C6AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteRGBA16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg5, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001C8C4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteRGBA32(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_32b, arg5, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001CADC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteIA8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001CCF8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteIA16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_16b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001CF10(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteI4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, arg4, G_IM_FMT_I, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
 void func_8001D12C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_8b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
 void func_8001D348(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_16b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
 void func_8001D560(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s16 arg6, s32 arg7) {
@@ -112,7 +112,7 @@ void func_8001D560(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s
                       G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                       G_TX_NOLOD);
 
-    func_8001C330(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg7);
+    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg7);
 }
 
 void func_8001D924(u8* arg0) {
@@ -315,7 +315,7 @@ u8 func_8001E730(u16 arg0) {
     return var_v1;
 }
 
-u8 func_8001E78C(unk_D_800AC870_sub* arg0, u16 arg1) {
+u8 Text_GetCharWidth(unk_D_800AC870_sub* arg0, u16 arg1) {
     s32 idx = func_8001E730(arg1);
 
     return arg0->unk_04[idx];
@@ -325,7 +325,7 @@ void func_8001E7C0(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_800AC870 = NULL;
 }
 
-void func_8001E7D4(UNUSED s32 arg0, s32 arg1) {
+void Text_UnloadFont(UNUSED s32 arg0, s32 arg1) {
     if (D_800AC870 != NULL) {
         D_800AC870->unk_00[arg1].unk_04 = 0;
         D_800AC870->unk_00[arg1].unk_08 = 0;
@@ -364,7 +364,7 @@ void func_8001E884(s32 arg0, s32 arg1, s32 arg2) {
         D_800AC870->unk_00[sp1C].unk_02 = arg2;
         D_800AC870->unk_00[sp1C].unk_04 = temp_v0_2;
         D_800AC870->unk_00[sp1C].unk_08 = &temp_v0_2->unk_90;
-        main_pool_set_func(temp_v0_2, sp1C, &func_8001E7D4);
+        main_pool_set_func(temp_v0_2, sp1C, &Text_UnloadFont);
     }
 }
 
@@ -468,14 +468,14 @@ s32 func_8001EC40(s32 arg0, unk_D_800AC870_sub* arg1) {
     return var_v1;
 }
 
-s16 func_8001ECB4(s16 arg0, s16 arg1, s16 arg2) {
+s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
     unk_D_800AC870_sub* temp_s0;
     s32 sp88;
     s16 sp86;
 
     temp_s0 = &D_800AC870->unk_00[D_800AC870->unk_50];
     sp88 = func_8001E730(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
-    sp86 = func_8001E78C(temp_s0, arg2);
+    sp86 = Text_GetCharWidth(temp_s0, arg2);
 
     if ((D_800AC870->unk_53 & 1) && !(D_800AC870->unk_53 & 2)) {
         D_800AC870->unk_53 |= 2;
@@ -493,7 +493,7 @@ s16 func_8001ECB4(s16 arg0, s16 arg1, s16 arg2) {
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    func_8001C330(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
 
     arg0 += sp86 + D_800AC870->unk_51;
     if (D_800AC870->unk_50 >= 2) {
@@ -538,7 +538,7 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
             }
 
             if (var_v0 != 0) {
-                var_s1 = func_8001ECB4(var_s1, y, chr & 0xFF);
+                var_s1 = Text_DrawGlyph(var_s1, y, chr & 0xFF);
             }
 
             chr = *var_s0;
@@ -550,7 +550,7 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
 }
 
 void Text_PutChar(s32 arg0, s32 arg1, s32 arg2) {
-    func_8001ECB4(arg0 - 1, arg1, arg2 & 0xFF);
+    Text_DrawGlyph(arg0 - 1, arg1, arg2 & 0xFF);
 }
 
 void Text_SetEnvColor(s32 r, s32 g, s32 b, s32 a) {
@@ -600,7 +600,7 @@ void func_8001F4C4(void) {
 void func_8001F504(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     gSPDisplayList(gDisplayListHead++, D_8006F498);
 
-    func_8001C604(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
@@ -639,7 +639,7 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
                 if (chr == 0xA) {
                     temp_s0 = 0;
                 } else {
-                    temp_s0 += func_8001E78C(temp_s4, chr & 0xFF) + y;
+                    temp_s0 += Text_GetCharWidth(temp_s4, chr & 0xFF) + y;
                     if (var_a0 >= 2) {
                         temp_s0 -= 2;
                     } else {
@@ -663,5 +663,5 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
 }
 
 u8 MeasureCharWidth(s32 arg0, s32 arg1) {
-    return func_8001E78C(&D_800AC870->unk_00[D_800AC870->unk_50], arg1 & 0xFF);
+    return Text_GetCharWidth(&D_800AC870->unk_00[D_800AC870->unk_50], arg1 & 0xFF);
 }

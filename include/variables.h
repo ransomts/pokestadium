@@ -849,13 +849,13 @@ extern u8 D_86C00000;
 extern u8 D_87A00000;
 extern u8 D_87000000[];
 
-typedef struct unk_D_800A7440 {
+typedef struct ClipRect {
 	/* 0x00 */ s16 x1;
 	/* 0x02 */ s16 y1;
 	/* 0x04 */ s16 x2;
 	/* 0x06 */ s16 y2;
-} unk_D_800A7440; // size >= 0x8
-extern unk_D_800A7440 D_800A7440;
+} ClipRect; // size >= 0x8
+extern ClipRect gClipRect;
 
 extern struct unk_D_86002F58_004_000_000 D_800AC840;
 extern struct unk_D_86002F58_004_000_000 D_800AC858;

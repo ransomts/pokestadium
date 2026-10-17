@@ -132,14 +132,14 @@ void func_82F05920(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, 255);
 
-    func_8001CADC(arg0, arg1, 8, 8, D_30387B0, 8, 0);
-    func_8001CADC((arg0 + arg2) - 8, arg1, 8, 8, D_30387F0, 8, 0);
-    func_8001C330(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    func_8001CADC(arg0, (arg1 + arg3) - 8, 8, 8, D_3038830, 8, 0);
-    func_8001C330(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
-    func_8001CADC((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_3038870, 8, 0);
-    func_8001C330(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    func_8001C330((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1, 8, 8, D_30387B0, 8, 0);
+    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, arg1, 8, 8, D_30387F0, 8, 0);
+    Gfx_DrawTextureRect(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawSpriteIA8(arg0, (arg1 + arg3) - 8, 8, 8, D_3038830, 8, 0);
+    Gfx_DrawTextureRect(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_3038870, 8, 0);
+    Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F4C0);
 
@@ -164,7 +164,7 @@ void func_82F05C50(s16 arg0, s16 arg1, s32 arg2) {
             } else {
                 var_a3 = 8;
             }
-            func_8001C6AC(arg0, arg1 + i, 0xE0, var_a3, (i * 0x1C8) + arg2, 0xE4, 0x200000);
+            Gfx_DrawSpriteRGBA16(arg0, arg1 + i, 0xE0, var_a3, (i * 0x1C8) + arg2, 0xE4, 0x200000);
         }
     }
 }
@@ -186,7 +186,7 @@ void func_82F05D74(s16 arg0, s16 arg1, s16 arg2) {
         s32 temp_lo = arg2 / var_s0;
 
         if ((temp_lo != 0) || (var_s4 != 0) || (i == 1)) {
-            func_8001CADC(arg0, arg1, 8, 0xC, D_82F13C20[temp_lo], 8, 0);
+            Gfx_DrawSpriteIA8(arg0, arg1, 8, 0xC, D_82F13C20[temp_lo], 8, 0);
             var_s4 = 1;
         }
 
@@ -255,10 +255,10 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
         gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
-        func_8001C6AC(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
-        func_8001C6AC(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
-        func_8001C6AC(arg0->unk_04 + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
-        func_8001C6AC(arg0->unk_04 + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
+        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
+        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
+        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
+        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
 
         for (i = 0; i < 4; i++) {
             if (sp11C->unk_09[i] == 0) {
@@ -266,7 +266,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
             }
 
             if (func_82F05F20(sp11C->unk_09[i]) == 0) {
-                func_8001C6AC(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
+                Gfx_DrawSpriteRGBA16(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
                               D_82F13C68[gMoveStrings[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
             }
         }
@@ -289,7 +289,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
                 }
 
                 sp80 = ((sp11C->unk_20[i] >> 6) * var_t0) + ptr->unk_05;
-                func_8001CADC(D_82F13C54[i] + arg0->unk_04 + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
+                Gfx_DrawSpriteIA8(D_82F13C54[i] + arg0->unk_04 + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
                               8, 0);
                 func_82F05D74(D_82F13C54[i] + arg0->unk_04 + 0xA4, D_82F13C5C[i] + arg0->unk_06 + 6,
                               sp11C->unk_20[i] & 0x3F);

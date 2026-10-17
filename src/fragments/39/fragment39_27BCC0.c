@@ -1221,7 +1221,7 @@ void func_825010A8(unk_D_82508B30* arg0) {
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-        func_8001C330(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
         var_s2 += 0xBB8;
     }
 
@@ -1264,7 +1264,7 @@ void func_825014B0(unk_D_82508B30* arg0) {
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-        func_8001C330(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTextureRect(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
         var_s2 += 0xBB8;
     }
 

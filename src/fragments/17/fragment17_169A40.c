@@ -66,7 +66,7 @@ void func_86B0A18C(u8* arg0) {
 
     for (i = 0; i < 15; i++) {
         for (j = 0; j < 20; j++, arg0 += 0x200) {
-            func_8001C6AC(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawSpriteRGBA16(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 

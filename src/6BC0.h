@@ -28,8 +28,8 @@ typedef struct unk_D_80068BB0 {
 	/* 0x0C */ struct unk_D_80068BB0* depth_p;
 } unk_D_80068BB0; // size = 0x10
 
-unk_D_800A7440* func_80005FC0(unk_D_800A7440* arg0, s16 x1, s16 y1, s16 x2, s16 y2);
-s32 func_80006030(unk_D_800A7440* arg0);
+ClipRect* Gfx_MakeClipRect(ClipRect* arg0, s16 x1, s16 y1, s16 x2, s16 y2);
+s32 Gfx_IntersectClip(ClipRect* arg0);
 void func_800060E0(Gfx** gfx_p, s16 x, s16 y, s16 width, s16 height);
 void func_80006200(Gfx** gfx_p);
 void func_800062E4(unk_D_80068BB0* arg0, s32 fmt, s32 size, s32 width, s32 height, u32 img_p);

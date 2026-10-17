@@ -314,11 +314,11 @@ void func_86B095C4(void) {
 }
 
 void func_86B0961C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
-    unk_D_800A7440 sp30;
+    ClipRect sp30;
 
-    func_80005FC0(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (func_80006030(&sp30) != 0) {
+    if (Gfx_IntersectClip(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -363,7 +363,7 @@ void func_86B09928(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, unk_D_86B0D
 void func_86B09AD8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_8001C6AC(arg1, arg2, arg3, arg4, arg0, arg3, 0);
+    Gfx_DrawSpriteRGBA16(arg1, arg2, arg3, arg4, arg0, arg3, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }

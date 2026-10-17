@@ -325,7 +325,7 @@ void func_83100784(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3002C00, G_IM_FMT_I, 64, 64, 0, G_TX_MIRROR | G_TX_WRAP,
                            G_TX_MIRROR | G_TX_WRAP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(sp38, sp40, sp9E, sp9C, 0, 0, temp_ft2, temp_ft2, 0);
+    Gfx_DrawTextureRect(sp38, sp40, sp9E, sp9C, 0, 0, temp_ft2, temp_ft2, 0);
 
     var_t3 = sp38;
     var_t0 = sp40;

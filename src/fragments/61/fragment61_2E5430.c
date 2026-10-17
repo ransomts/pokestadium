@@ -103,7 +103,7 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
-    func_8001C560(arg1, arg2 + 0x58, 0x200, 4, 0x32, 0x32, 0x32);
+    Gfx_FillRect(arg1, arg2 + 0x58, 0x200, 4, 0x32, 0x32, 0x32);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
@@ -113,9 +113,9 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
         } else {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
         }
-        func_8001C6AC(arg1 + 0x14, arg2 + 0xE, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-        func_8001C6AC(arg1 + 0x14, arg2 + 0x22, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-        func_8001C6AC(arg1 + 0x14, arg2 + 0x36, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+        Gfx_DrawSpriteRGBA16(arg1 + 0x14, arg2 + 0xE, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+        Gfx_DrawSpriteRGBA16(arg1 + 0x14, arg2 + 0x22, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+        Gfx_DrawSpriteRGBA16(arg1 + 0x14, arg2 + 0x36, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
     }
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
@@ -124,11 +124,11 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
         if (arg3->unk_0000[var_s1].raw != 0) {
             temp_s2 = D_84211870[var_s1] + arg1 + 2;
             temp_s3 = D_8421187C[var_s1] + arg2 + 2;
-            func_8001C6AC(temp_s2, temp_s3, 0x28, 0x28, arg3->unk_0000[var_s1].unk_058, 0x28, 0);
+            Gfx_DrawSpriteRGBA16(temp_s2, temp_s3, 0x28, 0x28, arg3->unk_0000[var_s1].unk_058, 0x28, 0);
             if (arg3->unk_0000[var_s1].raw & 0x80000000) {
                 u8* ptr = D_84211850[arg3->unk_0000[var_s1].raw & 7];
 
-                func_8001CF10(temp_s2 - 4, temp_s3 - 4, 0x30, 0x30, ptr, 0x30, 0);
+                Gfx_DrawSpriteI4(temp_s2 - 4, temp_s3 - 4, 0x30, 0x30, ptr, 0x30, 0);
             }
         }
     }
@@ -179,9 +179,9 @@ void func_8420E46C(s16 arg0, s16 arg1) {
     gDPSetEnvColor(gDisplayListHead++, 170, 60, 150, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 80, 40, 60, 255);
 
-    func_8001CADC(arg0, arg1, 8, 0x1C, D_2000980, 8, 0);
-    func_8001CADC(arg0 + 0x218, arg1, 8, 0x1C, D_2000A60, 8, 0);
-    func_8001C330(arg0 + 4, arg1, 0x218, 0x1C, 0, 0, 0, 0x400, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1, 8, 0x1C, D_2000980, 8, 0);
+    Gfx_DrawSpriteIA8(arg0 + 0x218, arg1, 8, 0x1C, D_2000A60, 8, 0);
+    Gfx_DrawTextureRect(arg0 + 4, arg1, 0x218, 0x1C, 0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -206,8 +206,8 @@ void func_8420E63C(unk_D_84229EB0* arg0) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
-    func_8001C560(sp62 + 0, temp_s2, 0x18, arg0->unk_00016, 0x3C, 0x3C, 0xA0);
-    func_8001C560(sp62 + 0x18, temp_s2, 8, arg0->unk_00016, 0x32, 0x32, 0x32);
+    Gfx_FillRect(sp62 + 0, temp_s2, 0x18, arg0->unk_00016, 0x3C, 0x3C, 0xA0);
+    Gfx_FillRect(sp62 + 0x18, temp_s2, 8, arg0->unk_00016, 0x32, 0x32, 0x32);
 
     if (sp64 < 3) {
         sp64 = 3;
@@ -228,16 +228,16 @@ void func_8420E63C(unk_D_84229EB0* arg0) {
         gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
         gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 
-        func_8001CADC(sp62 + 4, temp_s2 + 4, 0x10, 8, D_200A200, 0x10, 0);
-        func_8001CADC(sp62 + 4, temp_s2 + 0x104, 0x10, 8, D_200A280, 0x10, 0);
-        func_8001C330(sp62 + 4, temp_s2 + 0xC, 0x10, 0xF8, 0, 0, 0x400, 0, 0);
+        Gfx_DrawSpriteIA8(sp62 + 4, temp_s2 + 4, 0x10, 8, D_200A200, 0x10, 0);
+        Gfx_DrawSpriteIA8(sp62 + 4, temp_s2 + 0x104, 0x10, 8, D_200A280, 0x10, 0);
+        Gfx_DrawTextureRect(sp62 + 4, temp_s2 + 0xC, 0x10, 0xF8, 0, 0, 0x400, 0, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
         if (D_84211888 < 4) {
-            func_8001C6AC(sp62, temp_s2 + sp66, 0x18, 0x18, D_200A300, 0x18, 0);
+            Gfx_DrawSpriteRGBA16(sp62, temp_s2 + sp66, 0x18, 0x18, D_200A300, 0x18, 0);
         } else {
-            func_8001C6AC(sp62, temp_s2 + sp66, 0x18, 0x18, D_200A780, 0x18, 0);
+            Gfx_DrawSpriteRGBA16(sp62, temp_s2 + sp66, 0x18, 0x18, D_200A780, 0x18, 0);
         }
     }
 

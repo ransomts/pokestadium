@@ -425,7 +425,7 @@ void func_82F0B2A4(s16 arg0, s16 arg1, s16 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, img, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C330(arg1, arg2, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
+    Gfx_DrawTextureRect(arg1, arg2, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
 }
 
 void func_82F0B3E0(unk_D_82F210E0* arg0) {
@@ -458,7 +458,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
         if (sp74[i] != 0) {
-            func_8001C604(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
+            Gfx_FillRectRGBA(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
         }
     }
 

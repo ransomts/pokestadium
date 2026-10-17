@@ -484,9 +484,9 @@ void func_8380355C(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
 
-    func_8001CF10(arg0, arg1, 0x10, 0x1C, D_20007C0, 0x10, 0);
-    func_8001CF10((arg0 + arg2) - 0x10, arg1, 0x10, 0x1C, D_20008A0, 0x10, 0);
-    func_8001C330(arg0 + 0x10, arg1, arg2 - 0x20, 0x1C, 0, 0, 0, 0x400, 0);
+    Gfx_DrawSpriteI4(arg0, arg1, 0x10, 0x1C, D_20007C0, 0x10, 0);
+    Gfx_DrawSpriteI4((arg0 + arg2) - 0x10, arg1, 0x10, 0x1C, D_20008A0, 0x10, 0);
+    Gfx_DrawTextureRect(arg0 + 0x10, arg1, arg2 - 0x20, 0x1C, 0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
@@ -497,7 +497,7 @@ void func_8380369C(s16 arg0, s16 arg1, u8* arg2, s16 arg3) {
     } else {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
     }
-    func_8001C6AC(arg0, arg1, 0x24, 0x14, arg2, 0x24, 0);
+    Gfx_DrawSpriteRGBA16(arg0, arg1, 0x24, 0x14, arg2, 0x24, 0);
 }
 
 void func_83803748(unk_D_838067F0* arg0) {
@@ -524,8 +524,8 @@ void func_83803748(unk_D_838067F0* arg0) {
     func_8380369C(temp_s0 + 0x1DC, sp40 + 4, D_2001FC0, 0x97);
 
     if (arg0->unk_0000 != 3) {
-        func_8001C6AC(temp_s0 + 4 + (arg0->unk_001C * 0x24), sp40, 0x2C, 0xE, D_2001080, 0x2C, 0);
-        func_8001C6AC(temp_s0 + 4 + (arg0->unk_001C * 0x24), sp40 + 0xE, 0x2C, 0xE, D_2001550, 0x2C, 0);
+        Gfx_DrawSpriteRGBA16(temp_s0 + 4 + (arg0->unk_001C * 0x24), sp40, 0x2C, 0xE, D_2001080, 0x2C, 0);
+        Gfx_DrawSpriteRGBA16(temp_s0 + 4 + (arg0->unk_001C * 0x24), sp40 + 0xE, 0x2C, 0xE, D_2001550, 0x2C, 0);
     }
 }
 
@@ -559,22 +559,22 @@ void func_83803A80(s32 arg0, s32 arg1, unk_D_838067F0* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
-    func_8001C560(arg0, arg1, 0x18, 0x124, 0x3C, 0x3C, 0xA0);
+    Gfx_FillRect(arg0, arg1, 0x18, 0x124, 0x3C, 0x3C, 0xA0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F558);
     gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 
-    func_8001CADC(arg0 + 4, arg1 + 0x20, 0x10, 8, D_200A200, 0x10, 0);
-    func_8001CADC(arg0 + 4, arg1 + 0x118, 0x10, 8, D_200A280, 0x10, 0);
-    func_8001C330(arg0 + 4, arg1 + 0x28, 0x10, 0xF0, 0, 0, 0x400, 0, 0);
+    Gfx_DrawSpriteIA8(arg0 + 4, arg1 + 0x20, 0x10, 8, D_200A200, 0x10, 0);
+    Gfx_DrawSpriteIA8(arg0 + 4, arg1 + 0x118, 0x10, 8, D_200A280, 0x10, 0);
+    Gfx_DrawTextureRect(arg0 + 4, arg1 + 0x28, 0x10, 0xF0, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
     if (D_83805540 < 4) {
-        func_8001C6AC(arg0, arg1 + sp5C + 0x1C, 0x18, 0x18, D_200A300, 0x18, 0);
+        Gfx_DrawSpriteRGBA16(arg0, arg1 + sp5C + 0x1C, 0x18, 0x18, D_200A300, 0x18, 0);
     } else {
-        func_8001C6AC(arg0, arg1 + sp5C + 0x1C, 0x18, 0x18, D_200A780, 0x18, 0);
+        Gfx_DrawSpriteRGBA16(arg0, arg1 + sp5C + 0x1C, 0x18, 0x18, D_200A780, 0x18, 0);
     }
 
     if (arg2->unk_0000 == 2) {
@@ -635,9 +635,9 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
     gDPSetEnvColor(gDisplayListHead++, D_83805544[temp_v0].r, D_83805544[temp_v0].g, D_83805544[temp_v0].b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, D_83805550[temp_v0].r, D_83805550[temp_v0].g, D_83805550[temp_v0].b, 255);
 
-    func_8001CADC(arg0, arg1, 8, 0x1C, &D_2000980, 8, 0);
-    func_8001CADC(arg0 + 0x184, arg1, 8, 0x1C, &D_2000A60, 8, 0);
-    func_8001C330(arg0 + 8, arg1, 0x17C, 0x1C, 0, 0, 0, 0x400, 0);
+    Gfx_DrawSpriteIA8(arg0, arg1, 8, 0x1C, &D_2000980, 8, 0);
+    Gfx_DrawSpriteIA8(arg0 + 0x184, arg1, 8, 0x1C, &D_2000A60, 8, 0);
+    Gfx_DrawTextureRect(arg0 + 8, arg1, 0x17C, 0x1C, 0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -679,7 +679,7 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 
     for (i = 0; i < 3; i++) {
         if (arg2->unk_0000[i].unk_004.unk_00.unk_00 != 0) {
-            func_8001C6AC(arg0 + (i * 0x84) + 2, arg1 + 2, 0x28, 0x28, &arg2->unk_0000[i].unk_058, 0x28, 0);
+            Gfx_DrawSpriteRGBA16(arg0 + (i * 0x84) + 2, arg1 + 2, 0x28, 0x28, &arg2->unk_0000[i].unk_058, 0x28, 0);
         }
     }
 
@@ -729,7 +729,7 @@ void func_838043F8(s32 arg0)
   func_83803A80(spC4 + 4, spC0 + 4, &D_838067F0);
   {
     Gfx *_g = (Gfx *) (gDisplayListHead++);
- _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; if (func_83803E94(&D_838067F0) >= 2) { func_8001C6AC(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0); func_8001C6AC(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0); func_8001C6AC(spC4 + 0x1BA, spC0 + 8, 0x30 & 0xFFFFu, 0x18, D_2009000, 0x30, 0); func_8001C6AC(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0); } { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F470; } ; func_8001C560(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32); arg0 = 0x24; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F630; } ; if (ptr->unk_0000 == 3) { s32 var_s0; s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8); if (ptr->unk_0030 > 0) { var_s0 = 0x194; } else { var_s0 = -0x194; } i = arg0; func_800060E0(&gDisplayListHead, spC4 + arg0, spC0 + 4, 0x18C, 0x124); func_83803F34(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C); func_83803F34((var_s0 + temp_s2_2) + arg0, spC0 + 4, ptr->unk_0160); { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((long) ((unsigned int) 0xde)) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; { { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = ((((unsigned int) ((((unsigned int) 0xfd) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (1 - 1)) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (unsigned int) D_2000C40; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe6) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf3) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((((((8 * 4) + 0) >> 0) - 1) < 2047) ? ((((8 * 4) + 0) >> 0) - 1) : (2047))) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((((1 << 11) + ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8))) - 1) / ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8)))) & ((0x01 << 12) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe7) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (((8 * 2) + 7) >> 3)) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf2) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((8 - 1) << 2)) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((4 - 1) << 2)) & ((0x01 << 12) - 1)) << 0)); } ; } ; func_8001C330(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); func_8001C330((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); { Gfx *_g = (Gfx *) (gDisplayListHead++);
+ _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; if (func_83803E94(&D_838067F0) >= 2) { Gfx_DrawSpriteRGBA16(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0); Gfx_DrawSpriteRGBA16(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0); Gfx_DrawSpriteRGBA16(spC4 + 0x1BA, spC0 + 8, 0x30 & 0xFFFFu, 0x18, D_2009000, 0x30, 0); Gfx_DrawSpriteRGBA16(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0); } { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F470; } ; Gfx_FillRect(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32); arg0 = 0x24; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F630; } ; if (ptr->unk_0000 == 3) { s32 var_s0; s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8); if (ptr->unk_0030 > 0) { var_s0 = 0x194; } else { var_s0 = -0x194; } i = arg0; func_800060E0(&gDisplayListHead, spC4 + arg0, spC0 + 4, 0x18C, 0x124); func_83803F34(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C); func_83803F34((var_s0 + temp_s2_2) + arg0, spC0 + 4, ptr->unk_0160); { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((long) ((unsigned int) 0xde)) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; { { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = ((((unsigned int) ((((unsigned int) 0xfd) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (1 - 1)) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (unsigned int) D_2000C40; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe6) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf3) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((((((8 * 4) + 0) >> 0) - 1) < 2047) ? ((((8 * 4) + 0) >> 0) - 1) : (2047))) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((((1 << 11) + ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8))) - 1) / ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8)))) & ((0x01 << 12) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe7) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (((8 * 2) + 7) >> 3)) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf2) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((8 - 1) << 2)) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((4 - 1) << 2)) & ((0x01 << 12) - 1)) << 0)); } ; } ; Gfx_DrawTextureRect(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); Gfx_DrawTextureRect((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); { Gfx *_g = (Gfx *) (gDisplayListHead++);
       _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0));
       _g->words.w1 = (unsigned int) D_8006F630;
     }

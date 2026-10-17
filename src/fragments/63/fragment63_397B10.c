@@ -1374,7 +1374,7 @@ void func_84B05CE0(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetEnvColor(gDisplayListHead++, 255, 50, 20, 160);
 
-    func_8001CF10(0, 0, 0x40, 0x40, sp3C, 0x40, 0);
+    Gfx_DrawSpriteI4(0, 0, 0x40, 0x40, sp3C, 0x40, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
@@ -1453,8 +1453,8 @@ void func_84B05FCC(unk_D_84B259E8* arg0) {
 
             gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
-            func_8001C6AC(4, 0x24, 0x38, 0x1C, &arg0->unk_10[D_800AE540.unk_0003 - 1][0x208], 0x40, 0x200000);
-            func_8001C6AC(4, 0x40, 0x38, 0x1C, &arg0->unk_10[D_800AE540.unk_0003 - 1][0x1008], 0x40, 0x200000);
+            Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[D_800AE540.unk_0003 - 1][0x208], 0x40, 0x200000);
+            Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[D_800AE540.unk_0003 - 1][0x1008], 0x40, 0x200000);
 
             gSPDisplayList(gDisplayListHead++, D_8006F630);
         }
@@ -1539,13 +1539,13 @@ void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
-    func_8001C6AC(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
-    func_8001C6AC(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);
-    func_8001C6AC(0, 0x40, 0x40, 0x20, D_3014000, 0x40, 0x200000);
+    Gfx_DrawSpriteRGBA16(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
+    Gfx_DrawSpriteRGBA16(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);
+    Gfx_DrawSpriteRGBA16(0, 0x40, 0x40, 0x20, D_3014000, 0x40, 0x200000);
 
     if ((D_800AE540.unk_0002 < 9) || (arg1 == 0)) {
-        func_8001C6AC(4, 0x24, 0x38, 0x1C, arg0->unk_10[arg1] + 0x208, 0x40, 0x200000);
-        func_8001C6AC(4, 0x40, 0x38, 0x1C, arg0->unk_10[arg1] + 0x1008, 0x40, 0x200000);
+        Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, arg0->unk_10[arg1] + 0x208, 0x40, 0x200000);
+        Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, arg0->unk_10[arg1] + 0x1008, 0x40, 0x200000);
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);

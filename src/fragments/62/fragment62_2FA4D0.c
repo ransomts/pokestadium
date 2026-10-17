@@ -309,16 +309,16 @@ void func_843109F4(s32 arg0, s32 arg1, s32 arg2) {
 
     if (arg2 >= 0x64) {
         arg0 -= 2;
-        func_8001C6AC(arg0, arg1, 8, 6, temp_s4[sp58[0] - '0'], 8, 0);
+        Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, temp_s4[sp58[0] - '0'], 8, 0);
         arg0 += 8;
         var_s2 = &sp58[1];
     } else {
-        func_8001C6AC(arg0, arg1, 4, 6, temp_s4[11], 4, 0);
+        Gfx_DrawSpriteRGBA16(arg0, arg1, 4, 6, temp_s4[11], 4, 0);
         arg0 += 5;
     }
 
     while (*var_s2 != 0) {
-        func_8001C6AC(arg0, arg1, 8, 6, temp_s4[*var_s2 - '0'], 8, 0);
+        Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, temp_s4[*var_s2 - '0'], 8, 0);
         arg0 += 8;
         var_s2++;
     }
@@ -355,7 +355,7 @@ void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v0 != NULL) {
-            func_8001C6AC(arg0, arg1, 8, 6, var_v0, 8, 0);
+            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v0, 8, 0);
         }
 
         arg0 += 8;
@@ -481,7 +481,7 @@ s32 func_843112C4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_8001C4E4(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1, sp2C, sp28, 0);
+    Gfx_DrawTextureRect2(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1, sp2C, sp28, 0);
 }
 
 void func_84311420(void) {
@@ -596,7 +596,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
             for (i = 0; i < arg0->unk_720->unk_08[0]->unk_002; i++) {
@@ -607,7 +607,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
             for (j = 0; j < arg0->unk_720->unk_08[1]->unk_002; j++) {
@@ -618,7 +618,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 + i * 7 + j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 + i * 7 + j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         }
     }
@@ -633,7 +633,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
             for (i = 0; i < arg0->unk_720->unk_08[0]->unk_002; i++) {
@@ -644,7 +644,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
             for (j = 0; j < arg0->unk_720->unk_08[1]->unk_002; j++) {
@@ -655,7 +655,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                func_8001C6AC(arg1 - i * 7 - j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawSpriteRGBA16(arg1 - i * 7 - j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         }
     }
@@ -939,7 +939,7 @@ s32 func_8431379C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v1 != NULL) {
-            func_8001C6AC(arg0, arg1, 8, 6, var_v1, 8, 0);
+            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v1, 8, 0);
             arg0 += 8;
         }
     }
@@ -983,7 +983,7 @@ s32 func_84313908(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v1 != NULL) {
-            func_8001C6AC(arg0, arg1, 8, 6, var_v1, 8, 0);
+            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v1, 8, 0);
             arg0 -= 8;
         }
     }
@@ -1069,42 +1069,42 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            func_8001C6AC(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            func_8001C6AC(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            func_8001C6AC(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            func_8001C6AC(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            func_8001C6AC(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            func_8001C6AC(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            func_8001C6AC(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            func_8001C6AC(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     }
@@ -1295,7 +1295,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-        func_8001C6AC(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
+        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
         gSPDisplayList(gDisplayListHead++, D_8006F630);
     }
 }
@@ -1338,7 +1338,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-        func_8001C6AC(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
+        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
     }
@@ -1381,7 +1381,7 @@ void func_8431524C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_8001C6AC(arg2 + 1, arg3, 0x18, 0x10, D_84385850[arg4], 0x18, 0);
+    Gfx_DrawSpriteRGBA16(arg2 + 1, arg3, 0x18, 0x10, D_84385850[arg4], 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -1429,7 +1429,7 @@ void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_8001C6AC(arg1 + 1, arg2, 0x18, 0x10, *(D_84385850 + arg3), 0x18, 0);
+    Gfx_DrawSpriteRGBA16(arg1 + 1, arg2, 0x18, 0x10, *(D_84385850 + arg3), 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
@@ -1649,11 +1649,11 @@ void func_84316610(void) {
 }
 
 void func_84316640(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
-    unk_D_800A7440 sp30;
+    ClipRect sp30;
 
-    func_80005FC0(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (func_80006030(&sp30) != 0) {
+    if (Gfx_IntersectClip(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }

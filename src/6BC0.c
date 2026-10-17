@@ -4,7 +4,7 @@
 
 static unk_D_80068BB0* D_80068BB0 = NULL;
 
-unk_D_800A7440* func_80005FC0(unk_D_800A7440* arg0, s16 x1, s16 y1, s16 x2, s16 y2) {
+ClipRect* Gfx_MakeClipRect(ClipRect* arg0, s16 x1, s16 y1, s16 x2, s16 y2) {
     if (x2 >= x1) {
         arg0->x1 = x1;
         arg0->y1 = x2;
@@ -24,24 +24,24 @@ unk_D_800A7440* func_80005FC0(unk_D_800A7440* arg0, s16 x1, s16 y1, s16 x2, s16 
     return arg0;
 }
 
-s32 func_80006030(unk_D_800A7440* arg0) {
+s32 Gfx_IntersectClip(ClipRect* arg0) {
     s32 ret = 0;
 
     if (D_80068BB0 != NULL) {
-        if (arg0->x1 < D_800A7440.x1) {
-            arg0->x1 = D_800A7440.x1;
+        if (arg0->x1 < gClipRect.x1) {
+            arg0->x1 = gClipRect.x1;
         }
 
-        if (D_800A7440.y1 < arg0->y1) {
-            arg0->y1 = D_800A7440.y1;
+        if (gClipRect.y1 < arg0->y1) {
+            arg0->y1 = gClipRect.y1;
         }
 
-        if (arg0->y2 < D_800A7440.y2) {
-            arg0->y2 = D_800A7440.y2;
+        if (arg0->y2 < gClipRect.y2) {
+            arg0->y2 = gClipRect.y2;
         }
 
-        if (D_800A7440.x2 < arg0->x2) {
-            arg0->x2 = D_800A7440.x2;
+        if (gClipRect.x2 < arg0->x2) {
+            arg0->x2 = gClipRect.x2;
         }
 
         ret = arg0->y1 >= arg0->x1 && arg0->x2 >= arg0->y2;
@@ -59,7 +59,7 @@ void func_800060E0(Gfx** gfx_p, s16 x, s16 y, s16 width, s16 height) {
 
         *gfx_p = gfx;
 
-        func_80005FC0(&D_800A7440, x, y, x + width - 1, y + height - 1);
+        Gfx_MakeClipRect(&gClipRect, x, y, x + width - 1, y + height - 1);
     }
 }
 
@@ -68,8 +68,8 @@ void func_80006200(Gfx** gfx_p) {
         Gfx* gfx = *gfx_p;
 
         gDPPipeSync(gfx++);
-        gDPSetScissorFrac(gfx++, G_SC_NON_INTERLACE, D_800A7440.x1 * 4.0f, D_800A7440.y2 * 4.0f,
-                          (D_800A7440.y1 + 1) * 4.0f, (D_800A7440.x2 + 1) * 4.0f);
+        gDPSetScissorFrac(gfx++, G_SC_NON_INTERLACE, gClipRect.x1 * 4.0f, gClipRect.y2 * 4.0f,
+                          (gClipRect.y1 + 1) * 4.0f, (gClipRect.x2 + 1) * 4.0f);
 
         *gfx_p = gfx;
     }
@@ -125,7 +125,7 @@ void func_80006414(unk_D_80068BB0* img, unk_D_80068BB0* depth) {
 
 void func_80006450(void) {
     D_80068BB0 = NULL;
-    func_80005FC0(&D_800A7440, 0, 0, 0, 0);
+    Gfx_MakeClipRect(&gClipRect, 0, 0, 0, 0);
 }
 
 unk_D_80068BB0* func_8000648C(void) {
