@@ -2487,7 +2487,6 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
 
             case 0x43:
                 temp_s3 = &temp_s4->unk_12;
-                if (temp_s3) {}
 
                 if (arg4) {
                     if ((temp_s3->unk_15 == 0) && !(temp_s3->unk_4D & 0x10) &&
