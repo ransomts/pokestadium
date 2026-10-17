@@ -2175,14 +2175,22 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 13175 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 10424 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
+// the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
+// there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
+// ORDER only (target: 0x64 spBA copy and 0x68 unk_0A copy in case 0x5C, 0x6C temp_t0, 0x70 the
+// spB6 copy at ~instr 2470, 0x78 sp78, 0x80 arg2 bound; ours: 0x64 temp_t0, 0x68 spB7/spB6 copies
+// shared, 0x70 sp78, 0x74 spBA copy, 0x7C arg2 bound) and spC0 vs var_s2 (target spills spC0
+// (unk_06, t1) to 0xC0 and keeps unk_08 in s2; ours puts spC0 in s2 and spills var_s2 to 0xE8).
+// Tried for that: swapping the unk_06/unk_08 store order, reading temp_s7->unk_06/08 back in the
+// float expression (all worse).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
-// gets a home slot top-down (i 0x107 ... pad84 0x84); spilled CSE temps / split register vars go
-// below, in 0x50..0x80 (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
+// gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
+// below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
 // unk_0A*0x11 0x54, unk_0B*0x14 0x50). The m2c spXX copies were such temps: write them inline.
 // Remaining regions:
-// - frame 0x110 vs 0x108: draft allocates 15 temp slots (0x50..0x8B), target 13; all named slots
-//   are +8 because of that (most of the ~250 stack diffs). Temp slot order also differs.
+// - temp slot order (see above).
 // - case 0x2 (unk_00 == 0x5C block): target keeps spB7 in s0 (var_s0 copy, matched) but CSEs the
 //   unk_0A value (spill 0x68 -> reload into s5) and spBA (spill 0x64); draft CSEs spB7 into v1/0x68
 //   and reloads unk_0A from its slot. Dead ends: var_s5/var_v1_6 = temp_t0 copies, operand order
@@ -2240,8 +2248,6 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     s32 tmp5;
     s32 tmp6;
     f32 sp8C;
-    s32 tmp7;
-    s32 pad84;
 
     spBA = D_843C5564->unk_0E;
     sp58 = D_843C5564->unk_09;
@@ -3484,10 +3490,9 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
         tmp4 = temp_s7->unk_14 * (spB5 * 0x14);
         tmp5 = temp_s7->unk_18 * (spB5 * 0x14);
         tmp6 = temp_s7->unk_1C * (spB5 * 0x14);
-        tmp7 = temp_s7->unk_20 * (spB5 * 0x14);
 
         temp_s7->unk_28 = (((((tmp1 + tmp6 + tmp3) * (var_s0_4 / 255.0f)) + tmp2) - (tmp4 * (spC0 / 255.0f))) - tmp5) -
-                          (tmp7 * (var_s2 / 255.0f));
+                          ((temp_s7->unk_20 * (spB5 * 0x14)) * (var_s2 / 255.0f));
 
         if (arg4) {
             if (!(D_843C5564->unk_00 & 0x30)) {
