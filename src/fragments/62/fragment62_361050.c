@@ -2209,9 +2209,15 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 //   unk_0A value (spill 0x68 -> reload into s5) and spBA (spill 0x64); draft CSEs spB7 into v1/0x68
 //   and reloads unk_0A from its slot. Dead ends: var_s5/var_v1_6 = temp_t0 copies, operand order
 //   flips, one combined expression, using spB7 directly (34173!).
-// - end-of-loop clamps: target unk_01 -> t5, sp58 -> t9 (draft swapped; `sp58 + unk_01` gets the
-//   regs but reorders the loads -> worse); unk_06 result lives in t1 (saved at 0xC0 around calls),
-//   unk_08 in s2; draft has them the other way round. Every `break` delay slot shows the t5/t9 diff.
+// - end-of-loop block: its t-registers (unk_01 t5 / sp58 t9 in the target; every `break` delay
+//   slot copies its first load) follow the rotation left by the last case, so they are not a
+//   separate problem. spC0/unk_08 (t1/s2) fixed in round 8. Clamp rewrites (operand order,
+//   >= 0x100, swapped ternary arms): worse.
+// - spB7's CSE is v0 in the target and v1 in ours in EVERY case (2, 5, 0x19, ...): our 0x5C block
+//   keeps it live across the first call (copy-propagated into the first multiply), which rules out
+//   v0 for the whole live range. So the 0x5C block is the root of these diffs too. Reusing tmp1..6 /
+//   other s32 vars for the multiplier or the 0x19 switch value, and var_s2 = spB7 * 2 as a named
+//   value, were all worse.
 // - case 0x19 switch: target copies the switch value v0 -> v1 after the 0/8 compares (missing).
 // - prologue: fixed (read order).
 // - remaining ~1200 'r' lines are t-register rotation following from the above.
