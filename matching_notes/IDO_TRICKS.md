@@ -168,3 +168,10 @@ to an earlier line and fixed a one-store scheduling diff. Verified by editing ug
 - Expression temps are coloured in first-appearance order of their expressions (dead copies count).
 - Use `matching_notes/ccs.py` (pre-as1 registers; it now adds -I<source dir> for fragment headers) to see the
   real uopt choice: as1 renames/forwards registers, so final asm can hide a `mov.s` from a temp.
+
+## F5 tidy trap (2026-10-17): clang-format breaks the ROM
+Running clang-format over a matched file changed instruction scheduling and broke the byte-identical
+ROM: as1 breaks scheduling ties by .loc line numbers (see the func_80012870 lesson), so ANY
+reflow that changes line attribution can reorder instructions. Permuter-formatted functions can
+only be tidied in ways that keep each statement on its original line (or verified with a full make
+after every single-statement change).
