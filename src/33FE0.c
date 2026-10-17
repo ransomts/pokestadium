@@ -710,13 +710,21 @@ void func_80034254(StadiumModel* model) {
 // Sweeps that did not help on top of the boundary: ay named (before/after ax, 1434-1709), any
 // subset of the six edges named (copy-propagated, sunk to first use in nx; 1499+), each of ay/az/
 // cy/cz named vs inline loads (48 variants, best 1314).
+// Round 9 F1 (farm v2/390): 705 -> 390 with a copy `by2 = by` (decl between nx and ny) used in nx
+// and both nz statements, nz split into `nz = (by2 - ay) * (cx - bx); nz = ((bx - ax) * (cy - by2)) - nz;`
+// (the (by-ay)*(cx-bx) subexpression gets its own live range), AND a dead `cx` reload
+// (`cx = (vertices + ic)->position.base.x;`) right after `len = 120.0f / len;`. All three edits are
+// required together: new_var/nz-split without the cx reload scores 2417, single-statement nz with
+// the reload 3844, the reload alone 6761, an added `if (!len) {}` at the first counter store 390.
+// Still differs: az fs0 vs fa1, cy/cz fa1/ft4 vs ft4/ft5, cz-bz f24 / bz-az f26 vs f20/f22, nx/ny/nz
+// colours, and the phantom len (fs3) save/restore. Re-seed the farm from this.
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 ax;
     f32 ay;
     f32 az, bx, by, bz, cx, cy, cz;
-    f32 nx, ny, nz;
+    f32 nx, by2, ny, nz;
     f32 len;
     s16 ia, ib, ic;
     s32 pad1[10];
@@ -754,12 +762,15 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         cx = (vertices + ic)->position.base.x;
         cy = (vertices + ic)->position.base.y;
         cz = (vertices + ic)->position.base.z;
-        nx = ((by - ay) * (cz - bz)) - ((bz - az) * (cy - by));
+        by2 = by;
+        nx = ((by2 - ay) * (cz - bz)) - ((bz - az) * (cy - by2));
         ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
-        nz = ((bx - ax) * (cy - by)) - ((by - ay) * (cx - bx));
+        nz = (by2 - ay) * (cx - bx);
+        nz = ((bx - ax) * (cy - by2)) - nz;
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
         if ((s32) len > 0) {
             len = 120.0f / len;
+            cx = (vertices + ic)->position.base.x;
             nx *= len;
             ny *= len;
             nz *= len;
