@@ -257,6 +257,15 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 //  - s32 w = arg3/2 (or -(arg3/2)), f32 x/y for -h/-arg4, c/s for COSS/SINS: 4000+.
 //  - mixing a1 and arg1 per line: copy-propagated, identical to the a1 draft.
 // Looks like a temp-priority problem; candidate for the permuter farm (use --stack-diffs).
+// Round 8 (agent-7): stack accounting. Target: named locals 0x68..0x107 (0xF8..0xE0 used, 0x100-0x107
+// and the gfx _g homes unused), temp area 0x30..0x67 = 14 slots (memory temps 0x50-0x64, spills
+// 0x30/0x34/0x3C, 0x38 and 0x40-0x4C never touched). This draft: named block 0x10 bigger (the four
+// sp64/sp60/sp5C/tmp1 slots) and temp area 0x10 smaller, so every temp is 0x10 low. Dropping the four
+// named (arg1/arg2 direct) gives frame 0xF8 (3330): the target has 4 more (unused) temp slots that we
+// do not generate. Statement order changes the temp count (all spF8 lines first: frame 0xE8, 8915);
+// block-scoped f32 x0/x1/y0/c/s: frame 0x118, 6024. Farm best (output-1298) wraps the gfx code in
+// do/while (1427 in fd.sh), no insight into the corner math. Full rotation for corners 2/3
+// (`- SINS * 0.0f`, `COSS * 0.0f +`) folds away: identical code, no extra temp slots.
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
