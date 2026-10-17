@@ -32,6 +32,8 @@ rsync -a --exclude '/scratch/' --exclude '.claude/' --exclude '/asm/us/nonmatchi
   "$SRC_REPO/" "$STAGE/base/"
 cd "$STAGE/base" || exit 1
 rm -f .venv && ln -s "$SRC_REPO/.venv" .venv 2>/dev/null || true
+# test committed code only: the working tree may hold experiments while the job waits in the queue
+git reset -q --hard HEAD; git clean -qfd src include yamls
 git add -A >/dev/null 2>&1; git -c user.name=phased -c user.email=phased@local commit -qm "phased base" >/dev/null 2>&1
 (make extract >/dev/null 2>&1 && make -j"$CPUS" 2>&1) > "$OUT/base_build.log"
 if ! tail -1 "$OUT/base_build.log" | grep -q ': OK'; then
