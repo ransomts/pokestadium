@@ -75,6 +75,8 @@ def read_ledger(path):
         line = raw.rstrip("\n")
         if not line.strip() or line.lstrip().startswith("#"):
             continue
+        if line.split("\t")[0].strip() == "old":  # header row
+            continue
         parts = line.split("\t")
         if len(parts) < 6:
             die(f"{path}:{lineno}: expected 6 TSV fields, got {len(parts)}")
@@ -180,6 +182,41 @@ def s_path_for(func):
     return hits[0] if len(hits) == 1 else (hits or None)
 
 
+def dlabel_files(sym):
+    """asm .s files containing a `dlabel sym` definition line."""
+    hits = []
+    base = os.path.join(REPO, "asm/us")
+    pat = re.compile(r"^dlabel\s+" + re.escape(sym) + r"\s*$", re.M)
+    for dirpath, _dirs, files in os.walk(base):
+        for fn in files:
+            if fn.endswith(".s"):
+                p = os.path.join(dirpath, fn)
+                if pat.search(open(p, errors="replace").read()):
+                    hits.append(p)
+    return hits
+
+
+def dlabel_info(sym):
+    """(file, address, size) from the .s after `dlabel sym`: address from the /* ADDR */ comment,
+    size from the following `.space 0xN` (or the next dlabel's address). None if unparseable."""
+    for f in dlabel_files(sym):
+        text = open(f, errors="replace").read()
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            if re.match(r"^dlabel\s+" + re.escape(sym) + r"\s*$", line):
+                addr = size = None
+                rest = "\n".join(lines[i + 1:i + 6])
+                m = re.search(r"/\*\s*([0-9A-Fa-f]{8})\s*\*/", rest)
+                if m:
+                    addr = int(m.group(1), 16)
+                s = re.search(r"\.space\s+0x([0-9A-Fa-f]+)", rest)
+                if s:
+                    size = int(s.group(1), 16)
+                if addr is not None and size is not None:
+                    return f, addr, size
+    return None
+
+
 def pragma_count(func):
     pat = re.compile(re.escape(func) + r"\.s")
     n, files = 0, []
@@ -234,14 +271,27 @@ def preflight(rows, protected, named, allow_applied_skip=True):
             continue
         defs = sa_definitions(r.old)
         if len(defs) == 0:
-            errors.append(f"{tag}: {r.old} not defined in any symbol_addrs file")
+            # fragment bss/data symbols are dlabel-defined in asm, not in symbol_addrs:
+            # the rewrite adds a symbol_addrs entry so the name survives `make extract`
+            info = dlabel_info(r.old)
+            if info is None:
+                errors.append(f"{tag}: {r.old} not in symbol_addrs and no parsable single dlabel")
+            elif len(dlabel_files(r.old)) > 1:
+                errors.append(f"{tag}: {r.old} dlabel'd in multiple asm files")
         elif len(defs) > 1:
             errors.append(f"{tag}: {r.old} defined in multiple symbol_addrs files")
         if sa_definitions(r.new):
             errors.append(f"{tag}: {r.new!r} already defined in a symbol_addrs file")
+        if r.also:
+            for pair in r.also.split(","):
+                a, b = pair.split(":")
+                if sa_definitions(b.strip()) or b.strip() in named:
+                    errors.append(f"{tag}: also-pair target {b.strip()!r} already named/defined")
+                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", b.strip()):
+                    errors.append(f"{tag}: also-pair target {b.strip()!r} is not a valid identifier")
         m = re.fullmatch(r"func_([0-9A-Fa-f]{8})", r.old)
         if m:
-            if len(defs) == 1 and f"0x{m.group(1).upper()}" not in defs[0][2].upper():
+            if len(defs) == 1 and not re.search(r"0[xX]" + m.group(1), defs[0][2], re.I):
                 errors.append(f"{tag}: func_ suffix does not match address line: {defs[0][2]}")
             sp = s_path_for(r.old)
             pc, pfiles = pragma_count(r.old)
@@ -322,6 +372,17 @@ class Rewriter:
                 return k
         return 0
 
+    def add_sa_entry(self, new, addr, size):
+        """Append `new = 0xADDR; // defined:true size:0xSIZE` to symbol_addrs.txt (dlabel-only syms)."""
+        f = SA_FILES[2]
+        t = self._load(f)
+        entry = f"{new} = 0x{addr:08X}; // defined:true size:0x{size:X}"
+        if entry in t:
+            return 0
+        t = t.rstrip("\n") + "\n" + entry + "\n"
+        self._save(f, t)
+        return 1
+
     def commit(self):
         for path, text in self.edits.items():
             open(path, "w").write(text)
@@ -345,6 +406,11 @@ def do_rewrites(rows, files):
             continue
         rw.rewrite_sa_line(r.old, r.new)
         rw.rewrite_word(r.old, r.new, files)
+        if not sa_definitions(r.old):
+            info = dlabel_info(r.old)
+            if info:
+                _f, addr, size = info
+                rw.add_sa_entry(r.new, addr, size)
         sp = s_path_for(r.old)
         if sp and os.path.exists(sp):
             rw.move_s(sp, os.path.join(os.path.dirname(sp), r.new + ".s"))

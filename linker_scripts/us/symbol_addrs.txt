@@ -2074,3 +2074,4 @@ D_800761B0 = 0x800761B0; // defined:true size:0xC0
 D_80076270 = 0x80076270; // defined:true size:0x40
 D_800762B0 = 0x800762B0; // defined:true size:0x18
 D_800762C8 = 0x800762C8; // defined:true size:0x28
+gGbAudioNoiseChannel = 0x8122C888; // defined:true size:0x50
