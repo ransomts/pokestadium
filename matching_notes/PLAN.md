@@ -62,7 +62,16 @@ Real scope: **27 files** after 2026-10-16 (the "184" count included 153 fragment
 binary stubs, which stay binary by design). Done: rom_data_7A110, fragment1_rodata_AA8F0,
 fragment1_data_8E3E0 (103 KB GB audio state + samples: the mid-.data static D_8120EB6C that the
 tier-3 functions in fragment1_86CB0 need is now real C data; func_81207DF8 matched from it),
-4A3E0 (GB APU tables) and rom_data_78990 (3D140 audio tables). 24 files left.
+4A3E0 (GB APU tables) and rom_data_78990 (3D140 audio tables); overnight 2026-10-16: 703E0 (into
+20470.c), 71BA1 + string rodata 7C1C0/7C220/7C750 (four data-only files src/data_*.c), 78220
+(37370.c), 76A40 (30640.c, 334D0.c), fragment1 8D1A0. Status of the rest (survey 2026-10-16 night):
+- by design (leave): F3DEX2.data, F3DEX2_data.rodata, unk_F3DEX2_68020/68C80, 66BC0 (microcode
+  data next to the F3DEX2 blobs); fragment1 A8020, data_asm, rodata A8E80/A8F00/A9140/A9BE0/AA900 are
+  the data of the hand-written fragment1_code_asm (hasm; jtbl_81229500 etc.), fragment1_bss.
+- waits for a match: 7E0D0 = float literals of the GB APU functions in 4A3E0.c (GLOBAL_ASM).
+- needs judgment: 7D110 (D_8007C570 = 65535.0 literal of 30640.c, then format strings "0x%08x ",
+  "%10.4f  " that no C source contains: a print routine between 30640 and 33FE0), 7A1C0 (custom
+  OSViMode used only by fragment1), unk_bin_7F670.
 1. `.venv/bin/python3 matching_notes/datamig.py survey` (~1 min) lists every file, READY or not;
    `plan <file.s>` shows per label: span, declared type/size, C users, proposed owner, link-order check.
 2. `datamig.py apply <file.s>` writes the definitions (values from the baserom, pointers by symbol
