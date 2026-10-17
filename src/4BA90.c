@@ -97,9 +97,9 @@ void func_8004B094(u32 arg0) {
 
     temp_v0 = osSetIntMask(1);
 
-    D_80077DD4 = D_80078E60;
+    gMusicChannel2Volume = D_80078E60;
     D_80077DDC = D_80078E64;
-    D_80077DD8 = D_80077DD4 / arg0;
+    gMusicChannel2Step = gMusicChannel2Volume / arg0;
     D_80077DE0 = D_80077DDC / arg0;
     mus_sound_effect_blocked = 1;
 
@@ -110,7 +110,7 @@ void func_8004B154(void) {
     u32 temp_v0 = osSetIntMask(1);
 
     mus_sound_effect_blocked = 0;
-    D_80077DD4 = 0.0f;
+    gMusicChannel2Volume = 0.0f;
     D_80077DDC = 0.0f;
 
     osSetIntMask(temp_v0);

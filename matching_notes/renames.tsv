@@ -351,24 +351,24 @@ D_800AC830	gCameraNode	p4		used as a GraphNode pointer for camera positioning in
 D_800AC834	gDebugMode	p4		controls debug text output in func_8001B9D4, selecting which debug info to print	pending
 D_800ABE10	gAssetManager	p4		holds .unk_A04.unk_0C and .unk_A04.unk_10 used for asset loading and callbacks throughout the file	pending
 D_8006F350	sSpriteGeoLayoutCommands	p4		static array of geo layout commands passed to process_geo_layout for sprite display initialization	pending
-func_8003CADC	AudioTask_Build	p5		constructs an OSTask for audio playback using __am audio manager structures and ACMD lists	pending
-func_8003D264	Audio_SetMusicEnabled	p5		sets D_80077D90 flag and D_80077D94 volume to enable or disable music playback	pending
-func_8003D2B8	Audio_StartMusicFade	p5		initialises music fade state (D_80077D9C) and stores target track in D_80077DA0	pending
-func_8003D32C	Audio_MusicFadeUpdate	p5		updates the music fade state machine based on D_80077D9C and controls volume fades	pending
-func_8003D494	Audio_IsMusicEnabled	p5		returns the value of D_80077D90[0] indicating if music is currently enabled	pending
-func_8003D4A0	Audio_SetPauseState	p5		sets D_80077DA8 to pause or resume audio and reinitialises AI frequency when unpausing	pending
-func_8003D514	Audio_GetUnitReadyStatus	p5		returns unit?ready result (D_800FC828) and value (D_800FC825) when D_80077DAC is set	pending
-func_8003D54C	Audio_SetUnitReadyFlag	p5		sets the D_80077DAC flag controlling whether unit?ready status is reported	pending
-D_80077D90	gMusicEnabled	p5		used as a boolean flag (index?0) to indicate whether music playback is active	pending
-D_80077D94	gMusicVolume	p5		holds the current music volume multiplier, set in Audio_SetMusicEnabled and Audio_StartMusicFade	pending
-D_80077D9C	gMusicFadeState	p5		acts as a state variable for the music fade state machine processed in Audio_MusicFadeUpdate	pending
-D_80077DA0	gMusicFadeTargetTrack	p5		stores the track ID passed to Audio_StartMusicFade and later used in func_80042AB0	pending
-D_80077DA4	gMusicFadeTimer	p5		used as a counter/timer within the music fade state machine in Audio_MusicFadeUpdate	pending
-D_80077DAC	gAudioUnitReady	p5		controls whether unit?ready information is reported in Audio_GetUnitReadyStatus	pending
-D_80077DD4	gMusicChannel2Volume	p5		used for gradual volume reduction of music channel?2 in the main audio task loop	pending
-D_80077DD8	gMusicChannel2Step	p5		subtracted from D_80077DD4 each frame to implement the fade step for channel?2	pending
-D_800FCAD4	gAudioOutputRate	p5		initialized from ALSynConfig->outputRate and later used to restore AI frequency when unpausing	pending
-D_800FCB08	gAudioPiHandle	p5		stores the OSPiHandle returned by osCartRomInit for DMA operations in __amDMA	pending
+func_8003CADC	AudioTask_Build	p5		constructs an OSTask for audio playback using __am audio manager structures and ACMD lists	applied@f4ef3d1
+func_8003D264	Audio_SetMusicEnabled	p5		sets D_80077D90 flag and D_80077D94 volume to enable or disable music playback	applied@f4ef3d1
+func_8003D2B8	Audio_StartMusicFade	p5		initialises music fade state (D_80077D9C) and stores target track in D_80077DA0	applied@f4ef3d1
+func_8003D32C	Audio_MusicFadeUpdate	p5		updates the music fade state machine based on D_80077D9C and controls volume fades	applied@f4ef3d1
+func_8003D494	Audio_IsMusicEnabled	p5		returns the value of D_80077D90[0] indicating if music is currently enabled	applied@f4ef3d1
+func_8003D4A0	Audio_SetPauseState	p5		sets D_80077DA8 to pause or resume audio and reinitialises AI frequency when unpausing	applied@f4ef3d1
+func_8003D514	Audio_GetUnitReadyStatus	p5		returns unit?ready result (D_800FC828) and value (D_800FC825) when D_80077DAC is set	applied@f4ef3d1
+func_8003D54C	Audio_SetUnitReadyFlag	p5		sets the D_80077DAC flag controlling whether unit?ready status is reported	applied@f4ef3d1
+D_80077D90	gMusicEnabled	p5		used as a boolean flag (index?0) to indicate whether music playback is active	applied@f4ef3d1
+D_80077D94	gMusicVolume	p5		holds the current music volume multiplier, set in Audio_SetMusicEnabled and Audio_StartMusicFade	applied@f4ef3d1
+D_80077D9C	gMusicFadeState	p5		acts as a state variable for the music fade state machine processed in Audio_MusicFadeUpdate	applied@f4ef3d1
+D_80077DA0	gMusicFadeTargetTrack	p5		stores the track ID passed to Audio_StartMusicFade and later used in func_80042AB0	applied@f4ef3d1
+D_80077DA4	gMusicFadeTimer	p5		used as a counter/timer within the music fade state machine in Audio_MusicFadeUpdate	applied@f4ef3d1
+D_80077DAC	gAudioUnitReady	p5		controls whether unit?ready information is reported in Audio_GetUnitReadyStatus	applied@f4ef3d1
+D_80077DD4	gMusicChannel2Volume	p5		used for gradual volume reduction of music channel?2 in the main audio task loop	applied@f4ef3d1
+D_80077DD8	gMusicChannel2Step	p5		subtracted from D_80077DD4 each frame to implement the fade step for channel?2	applied@f4ef3d1
+D_800FCAD4	gAudioOutputRate	p5		initialized from ALSynConfig->outputRate and later used to restore AI frequency when unpausing	applied@f4ef3d1
+D_800FCB08	gAudioPiHandle	p5		stores the OSPiHandle returned by osCartRomInit for DMA operations in __amDMA	applied@f4ef3d1
 D_800ABCC0	gAnimChannels	p6		global array holds two animation channel structs used by Anim_Get* functions	pending
 D_800ABCF0	gCurrentAnimChannelIdx	p6		global index tracks the currently active animation channel (set to -1 on reset)	pending
 func_8002D860	MenuScroll_Init	p7		initializes menu scroll struct using list functions and sets current index	pending

@@ -478,7 +478,7 @@ void func_8003733C(void) {
 }
 
 void func_80037340(void* arg0) {
-    func_8003CADC(arg0);
+    AudioTask_Build(arg0);
 }
 
 void func_80037360(u32* arg0, u32 arg1, s32 arg2) {

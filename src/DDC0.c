@@ -85,11 +85,11 @@ void func_8000D338(void) {
 
 void func_8000D358(void) {
     D_800A83A0 = 0;
-    func_8003D4A0(0);
+    Audio_SetPauseState(0);
 }
 
 void func_8000D380(void) {
-    func_8003D4A0(1);
+    Audio_SetPauseState(1);
     D_800A83A0 = 1;
 }
 

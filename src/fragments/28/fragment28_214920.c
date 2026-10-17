@@ -878,7 +878,7 @@ s32 func_888038E0(void) {
                     switch (D_88826940->unk_40->unk_34->unk_38) {
                         case 0:
                             var_s1 = 3;
-                            func_8003D2B8(func_88801030(D_88826940->unk_38->unk_2C) + 1);
+                            Audio_StartMusicFade(func_88801030(D_88826940->unk_38->unk_2C) + 1);
                             var_s0 |= 5;
                             break;
 
@@ -6128,10 +6128,10 @@ s32 func_88803C74(void) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
         func_8001F730();
-        if ((gPlayer1Controller->buttonPressed & 0x4000) && (func_8003D494() == 0)) {
+        if ((gPlayer1Controller->buttonPressed & 0x4000) && (Audio_IsMusicEnabled() == 0)) {
             var_s1 = 2;
             PlaySoundEffect(3);
-        } else if ((gPlayer1Controller->buttonPressed & 0x8000) && (func_8003D494() == 0)) {
+        } else if ((gPlayer1Controller->buttonPressed & 0x8000) && (Audio_IsMusicEnabled() == 0)) {
             var_s1 = 1;
             PlaySoundEffect(2);
         }
@@ -6150,9 +6150,9 @@ s32 func_88803C74(void) {
 s32 func_88803ECC(void) {
     D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
     D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
-    func_8003D2B8(func_88801030(D_88826940->unk_38->unk_2C) + 1);
+    Audio_StartMusicFade(func_88801030(D_88826940->unk_38->unk_2C) + 1);
 
-    while (func_8003D494() != 0) {
+    while (Audio_IsMusicEnabled() != 0) {
         Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);

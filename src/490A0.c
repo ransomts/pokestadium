@@ -28,7 +28,7 @@ s32 func_800484E0(void) {
         }
     }
 
-    temp_v0 = func_8003D494();
+    temp_v0 = Audio_IsMusicEnabled();
     if (temp_v0 != 0) {
         var_s1 += temp_v0 * 1000;
     }
