@@ -10,12 +10,14 @@ every dead end: read it before touching the function.
 
 | Item | State |
 |---|---|
-| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, 280 commits ahead of `master`, never pushed |
-| Upstream | `origin/master` unchanged since 2026-10-03 (#283); open upstream PRs #284 (audio tools), #282 (progress.py stops counting hand-written asm) |
-| Code (`progress.py -v us`, all) | 96.60% (93.13% when matching began; 96.40% before round 8) |
-| `#pragma GLOBAL_ASM` left | 9 = 6 open + 3 parked (list in section 3) |
-| Parked (owner decision) | func_860005B8 + func_86100C30 (linker alias, branch `round6-gfxhead-alias`); func_86A013C8 (unused-label symbol padding, branch `round8-86A013C8-labels`) |
-| Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; 7A1C0 migrated to C 2026-10-17 (custom PAL OSViMode = osViModePalLpn1 with vStart HSTART(47,617), src/data_7A1C0.c); 7D110 and unk_bin_7F670 documented below |
+| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, 310 commits ahead of `master`, never pushed |
+| Upstream | `origin/master` unchanged since 2026-10-03 (#283); PR series prepared 2026-10-17: up/tools-data2c -> up/main-segment -> up/fragment1 -> up/fragments-a -> up/fragments-b -> up/fragment62 -> up/frag67-gfxhead-alias -> up/fragment16-labels (all build OK standalone; see UPSTREAM_PR_plan.md); nothing pushed |
+| Code (`progress.py -v us`, all) | 97.83% (96.60% at round-8 end; round 9: +func_86905734 + the owner-accepted alias/labels merges) |
+| `#pragma GLOBAL_ASM` left | 5 open (see F2 table) |
+| Parked (owner decision) | DECIDED 2026-10-17: both accepted and merged (gfxhead alias, 86A013C8 labels). FAKE C: try to clean first |
+| Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; 7A1C0 migrated to C 2026-10-17 (src/data_7A1C0.c); 7D110 and unk_bin_7F670 documented as by-design; 7E0D0 waits on func_8004A89C |
+| Farm (running) | x=17519735 (8004A89C, 8437B0CC, node0457), y2=17522923 (88304850, 88805AEC, node0452), z=17522869 (80034348, node0435); ends ~19:00-19:30; permuter ranking is UNRELIABLE for fragment28 and 33FE0 - cand_score every candidate |
+| API | weekly limit hit 07:45 Oct 17, resets Oct 19 7pm; agent worktrees (agent-1..6) parked clean at match-round-1 for SendMessage resume |
 | Farm (running) | Slurm 17512644 (tag v: func_8004A89C, func_80034348) and 17512996 (tag w: func_86905734, func_88304850, func_88805AEC), both end ~14:45 on 10-17; candidates in `/scratch/$USER/permuter_best/<func>__<tag><k>/` |
 | Tools | datamig.py + phased_job.sh (data migration with sbatch build gate), adopt_candidate.py / try_candidate.py (permuter candidates), ccs.py (IDO `cc -S` for one function: uopt's registers before as1), corpus.py, accessmap.py, symcheck.py, ido_bisect.py, var.py, fd.sh |
 
