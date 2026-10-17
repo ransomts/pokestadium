@@ -3584,6 +3584,13 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // arg2 offsets are written relative to the new y5 (y5 + 8 == arg2 + 3; uopt refolds them onto t4):
 // 12907 -> 5546, frame still 0x230 vs 0x228. Writing case 0s (y5 + 8) as (arg2 + 3): 5131. Writing more
 // later offsets on arg2 (arg6 block, case 1) makes uopt promote arg2 to s1 and fold the copy (9.5k-11k).
+// Dead ends from this state: a never-reassigned copy (y = arg2, separate y5 = y - 5, or y assigned twice
+// from arg2) is folded back into arg2 (s1); `y5 = (y5 - 5) << 2`; reassigning the param itself
+// (`arg2 -= 5`, frame right but arg2 -> s-reg, 16413); tmp2 as the copy (`tmp2 = arg2; ... tmp2 += arg4;`,
+// frame 0x228 but arg2 -> s1, 11.5k+); inlining tmp (s1 appears, 13.4k) or tmp2 (13.5k); tmp2 assigned
+// late (5594); if/else of the arg5 0/1/2 block as switch (10516) or `== 0 || == 1` (7281). Remaining:
+// one extra compiler temp slot (frame +8), y5 kept unshifted in t2 (target keeps only (arg2-5)<<2 in t0
+// and computes arg2+2 / arg2-0xC / arg2+3 from t4), arg5 not kept in v1 across the arg6 block.
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
