@@ -1301,6 +1301,8 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // Good permuter candidate from this state.
 // Round 8 second pass (agent-11): a local copy `arg2 = a2` (as in the matched sibling func_88310CA4) puts
 // arg2 in s2 like the target: 3777 -> 3567 (pad[2] -> pad[1] keeps the frame at 0xC0).
+// `var_s6 = arg0;` at the top (s6 holds arg0 early in the target; the later reassignment of var_s6 stops
+// uopt from folding the copy) used for rect1 lrx and temp_s7: 3567 -> 3364, temp_s7 no longer spilled.
 // Round 8 (agent-6) dead ends (all 3777 or worse): a separate (s32/u32/u8*) copy of arg0 for rect1's lrx and
 // temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
 // webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
@@ -1343,6 +1345,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     unk_func_88304850_arg2* arg2 = a2;
     UNUSED s32 pad[1];
 
+    var_s6 = arg0;
     temp_s5 = arg5->unk_70;
     if (temp_s5->unk_0AC->unk_2C->unk_30 & 2) {
         var_s1 = temp_s5->unk_0AC->unk_00.unk_10.unk_00 - temp_s5->unk_000.unk_10.unk_00;
@@ -1360,9 +1363,9 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
     color = ((temp_v1[0].r << 8) & 0xF800) | ((temp_v1[0].g << 3) & 0x7C0) | ((temp_v1[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
     gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
-    gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + 0x25, arg1 + 0x13);
+    gDPFillRectangle(gDisplayListHead++, arg0, arg1, var_s6 + 0x25, arg1 + 0x13);
 
-    temp_s7 = var_s1 + arg0;
+    temp_s7 = var_s1 + var_s6;
 
     // clang-format off
     color = ((temp_v1[1].r << 8) & 0xF800) | ((temp_v1[1].g << 3) & 0x7C0) | ((temp_v1[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
