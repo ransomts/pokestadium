@@ -56,22 +56,22 @@ Fragment* func_80018DE8(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2) {
     s32 temp_v0_2;
 
     sp18 = arg0->size;
-    sp1C = func_80002DCC(arg0, arg2->unk_0C + 0x100, 0x10);
+    sp1C = state_pool_alloc_aligned(arg0, arg2->unk_0C + 0x100, 0x10);
 
     if (sp1C != NULL) {
         temp_v0_2 = func_80003680(sp1C, arg2->unk_0C + 0x100, (u8*)arg2 + arg2->unk_08);
         if (temp_v0_2 == 0) {
-            func_80002E3C(arg0, sp18);
+            state_pool_resize(arg0, sp18);
             sp1C = NULL;
         } else {
-            func_80002E3C(arg0, sp18 + temp_v0_2);
+            state_pool_resize(arg0, sp18 + temp_v0_2);
         }
     }
     return sp1C;
 }
 
 Fragment* func_80018E7C(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2) {
-    u8* sp1C = func_80002DCC(arg0, arg2->decompressed_size2, 0x10);
+    u8* sp1C = state_pool_alloc_aligned(arg0, arg2->decompressed_size2, 0x10);
 
     if (sp1C != NULL) {
         func_80003890(arg2, sp1C);
@@ -82,7 +82,7 @@ Fragment* func_80018E7C(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2) {
 Fragment* func_80018EC4(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3) {
     u32* sp1C;
 
-    sp1C = func_80002DCC(arg0, arg3, 0x10);
+    sp1C = state_pool_alloc_aligned(arg0, arg3, 0x10);
     if (sp1C != NULL) {
         Util_Memcpy(sp1C, (u8*)arg1 + arg2, arg3 >> 2);
     }
@@ -137,7 +137,7 @@ Fragment* func_80018FF4(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* a
 
 void func_80019128(MainPoolState* arg0, u32 arg1, Fragment* arg2) {
     Memmap_RelocateFragment(arg1, arg2);
-    func_80002E3C(arg0, ((u32)arg2 + arg2->sizeInRam) - (u32)arg0->listHeadR);
+    state_pool_resize(arg0, ((u32)arg2 + arg2->sizeInRam) - (u32)arg0->listHeadR);
 }
 
 Fragment* func_80019170(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
@@ -221,7 +221,7 @@ void func_80019484(unk_func_80019600* arg0) {
     MemoryBlock* sp28;
     Fragment* sp24;
 
-    sp28 = func_80002DA4(arg0->pool, arg0->size);
+    sp28 = state_pool_init(arg0->pool, arg0->size);
     sp24 = func_80019204(sp28, D_800ABE10.unk_A04.unk_00, arg0->unk_02, D_800ABE10.unk_A04.unk_08, 0x28000);
 
     if (sp24 != NULL) {
@@ -242,7 +242,7 @@ void func_80019514(unk_func_80019600* arg0) {
 
     temp_s6 = arg0->unk_08;
     var_s2 = 0;
-    temp_s3 = func_80002DA4(arg0->pool, arg0->size);
+    temp_s3 = state_pool_init(arg0->pool, arg0->size);
     var_s0 = arg0->unk_0C;
 
     while (*var_s0 != -1) {
@@ -326,8 +326,8 @@ unk_D_86002F58_004_000_010* func_80019760(u32 arg0) {
 }
 
 void func_8001987C(void) {
-    D_800ABE10.unk_A04.unk_00 = func_800044F4(0x920000, NULL, 1, 1);
-    D_800ABE10.unk_A04.unk_04 = func_800044F4(0x8CC000, NULL, 1, 1);
+    D_800ABE10.unk_A04.unk_00 = Asset_Load2(0x920000, NULL, 1, 1);
+    D_800ABE10.unk_A04.unk_04 = Asset_Load2(0x8CC000, NULL, 1, 1);
     D_800ABE10.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
 }
 
@@ -472,9 +472,9 @@ unk_D_86002F30* func_80019D18(s32 arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = func_8000484C(D_800ABE10.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0 - 1);
     if (sp2C != NULL) {
-        sp20 = func_80002D10(main_pool_get_available(), 0);
+        sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
         sp24 = func_80019328(sp20, sp2C, sp28);
         func_80002D60(sp20);
@@ -489,9 +489,9 @@ unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = func_8000484C(D_800ABE10.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
+    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
     if (sp2C != NULL) {
-        sp20 = func_80002D10(main_pool_get_available(), 0);
+        sp20 = state_pool_try_init(main_pool_get_available(), 0);
         func_8001BEE8(&sp28, arg0);
         sp24 = func_80019328(sp20, sp2C, sp28);
         func_80002D60(sp20);
@@ -505,9 +505,9 @@ s32 func_80019E18(s32 arg0, s32 arg1) {
     s32 sp24 = 0;
     MemoryBlock* sp20;
 
-    sp2C = func_8000484C(D_800ABE10.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(D_800ABE10.unk_A04.unk_00, arg0 - 1);
     if (sp2C != NULL) {
-        sp20 = func_80002D10(main_pool_get_available(), 0);
+        sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
         sp28.unk_00 = arg1 * 64;
         sp24 = func_80019328(sp20, sp2C, sp28);
@@ -522,9 +522,9 @@ arg1_func_80019420* func_80019EA0(s32 arg0) {
     MemoryBlock* sp1C;
 
     sp20 = NULL;
-    sp24 = func_8000484C(D_800ABE10.unk_A04.unk_04, arg0);
+    sp24 = BinArchive_GetFile(D_800ABE10.unk_A04.unk_04, arg0);
     if (sp24 != NULL) {
-        sp1C = func_80002D10(main_pool_get_available(), 0);
+        sp1C = state_pool_try_init(main_pool_get_available(), 0);
         sp20 = sp24->data;
         func_80019420(sp1C, sp20);
         func_80002D60(sp1C);

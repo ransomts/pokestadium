@@ -1110,7 +1110,7 @@ void func_86002440(void) {
     s32 i;
     MemoryBlock* temp_v0;
 
-    temp_v0 = (MemoryBlock*)func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = (MemoryBlock*)state_pool_try_init(main_pool_get_available(), 0);
     D_86002F34 = (unk_D_86002F34*)process_geo_layout(temp_v0, D_86002B18);
     func_80002D60(temp_v0);
     func_8001BB20();
@@ -1175,7 +1175,7 @@ void func_86002440(void) {
         func_800173CC(&D_86003B60->unk_000);
     }
 
-    D_86002F50 = func_80004258(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
+    D_86002F50 = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
     func_86000478();
     func_87802528();
 }
@@ -1192,7 +1192,7 @@ void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
+    Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_86002440();
     func_878029C0();

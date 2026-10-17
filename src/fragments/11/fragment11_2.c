@@ -82,7 +82,7 @@ void func_86502A68(void) {
 void func_86502BB8(void) {
     MainPoolState* sp1C;
 
-    sp1C = func_80002D10(main_pool_get_available(), 0);
+    sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_8650AD80 = func_80011B94(sp1C, NULL, 1, NULL);
     func_80012094(&D_800AC840, &D_8650AD80->unk_00);
     func_80002D60(sp1C);

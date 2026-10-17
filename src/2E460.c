@@ -544,7 +544,7 @@ void func_8002EF44(void) {
 
             while ((game_state == STATE_POKEMON_LAB) && (D_800AE520.unk_00 != 0)) {
                 D_800AE520.unk_00 = 0;
-                game_state = func_80029008(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
+                game_state = Fragment_LoadAndCall(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
                                            D_800AE520.arg0, D_800AE520.arg1);
             }
 

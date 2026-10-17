@@ -4215,7 +4215,7 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   unk_D_88826CF0_004 *new_var2;
   s16 new_var;
   unk_D_88826CF0_004 *var_v1_2;
-  sp4C = func_80002DA4(arg1, 0x70800);
+  sp4C = state_pool_init(arg1, 0x70800);
   D_88826A4C = 0;
   D_88826A80 = 0;
   D_88826A52 = 0;
@@ -4235,9 +4235,9 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   D_88826CE4 = GetMessageString(0, 0, D_88826A3C, 0x37);
   D_88826CD4 = main_pool_alloc(0x3200, 0);
   func_88803BCC(D_88826CD4, arg0);
-  func_80004258((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
+  Asset_Load((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
   func_80019F0C(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
-  D_88826A48 = func_8000484C(func_800044F4(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
+  D_88826A48 = BinArchive_GetFile(Asset_Load2(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
   func_80011B94(0, &D_888269C0, 5, 0);
   D_88826A54 = 1;
   for (i = 0; i < 59; i++)

@@ -111,17 +111,17 @@ void func_83000058(void) {
     unk_func_80027FA0 sp20;
 
     if (D_800AE540.unk_0000 != 0xA) {
-        D_83003C88 = func_800044F4(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
+        D_83003C88 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
         if (D_800AE540.unk_0000 == 7) {
             func_80028AFC(2);
             func_80027FA0(&sp20, D_800AE540.unk_11F2);
             if (sp20.unk_04 < 8) {
-                D_83003C8C = func_8000484C(D_83003C88, 0xD);
+                D_83003C8C = BinArchive_GetFile(D_83003C88, 0xD);
             } else {
-                D_83003C8C = func_8000484C(D_83003C88, 0x10);
+                D_83003C8C = BinArchive_GetFile(D_83003C88, 0x10);
             }
         } else {
-            D_83003C8C = func_8000484C(D_83003C88, D_830039C8[D_800AE540.unk_0000]);
+            D_83003C8C = BinArchive_GetFile(D_83003C88, D_830039C8[D_800AE540.unk_0000]);
         }
     }
 }

@@ -262,8 +262,8 @@ s32 func_83800730(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, gallery_ui, 0);
     ASSET_LOAD(D_04000000, snap_select_ui, 0);
 
-    D_83805658 = func_8000484C(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
-    D_8380565C = func_8000484C(func_800044F4(0x898000, NULL, 1, 0), 0x1A);
+    D_83805658 = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
+    D_8380565C = BinArchive_GetFile(Asset_Load2(0x898000, NULL, 1, 0), 0x1A);
 
     func_8001B058();
     func_83800020(arg0);

@@ -511,7 +511,7 @@ void func_86B010FC(void) {
 void func_86B0111C(void) {
     MemoryBlock* sp1C;
 
-    sp1C = func_80002D10(main_pool_get_available(), 0);
+    sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_86B0E5D0 = process_geo_layout(sp1C, &D_86B0BBF8);
 
     func_80002D60(sp1C);
@@ -530,16 +530,16 @@ s32 func_86B01190(void) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
+    Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_80028AFC(2);
     func_80027FA0(&D_86B0EBB8, 0);
     D_86B0E5E4 = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (D_86B0EBB8 == 0x1F8) {
-        D_86B0E5E8 = func_8000484C(D_86B0E5E4, 0x11);
+        D_86B0E5E8 = BinArchive_GetFile(D_86B0E5E4, 0x11);
     } else {
-        D_86B0E5E8 = func_8000484C(D_86B0E5E4, 0);
+        D_86B0E5E8 = BinArchive_GetFile(D_86B0E5E4, 0);
     }
 
     func_8002D510();

@@ -97,7 +97,7 @@ void func_87802528(void) {
     D_8780FAC6 = 0;
 
     func_8001BBC8(&D_8780FAC8);
-    sp1C = func_80002D10(main_pool_get_available(), 0);
+    sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_8780FC30 = func_80011B94(sp1C, NULL, 4, D_87806390);
     D_8780FAC8.unk_000.unk_02 |= 8;
 

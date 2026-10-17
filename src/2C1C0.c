@@ -391,7 +391,7 @@ void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         arg1 += 0x1F;
     }
 
-    ptr = func_8000484C(D_800AF738, arg1);
+    ptr = BinArchive_GetFile(D_800AF738, arg1);
     ptr += arg2;
 
     temp_s2 = &ptr->unk_004;
@@ -456,7 +456,7 @@ void func_8002C128(void) {
 
     main_pool_push_state('RIVL');
 
-    D_800AF738 = func_800044F4(0x898000, NULL, 1, 0);
+    D_800AF738 = Asset_Load2(0x898000, NULL, 1, 0);
 
     switch (D_800AE540.unk_0000) {
         case 1:
@@ -498,7 +498,7 @@ void func_8002C128(void) {
 void func_8002C394(s16 arg0) {
     main_pool_push_state('RIVL');
 
-    D_800AF738 = func_800044F4(0x898000, NULL, 1, 0);
+    D_800AF738 = Asset_Load2(0x898000, NULL, 1, 0);
     func_8002B5EC(9, 6, 0);
 
     if (arg0 == 1) {

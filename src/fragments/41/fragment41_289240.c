@@ -128,8 +128,8 @@ void func_82F01530(s32 arg0, s16 arg1) {
         ptr2->unk_008 = ptr1;
     }
 
-    temp_v0_2 = func_80002D10(main_pool_get_available(), 0);
-    D_82F20A00 = func_80002DCC(temp_v0_2, sizeof(unk_D_82F20A00), 8);
+    temp_v0_2 = state_pool_try_init(main_pool_get_available(), 0);
+    D_82F20A00 = state_pool_alloc_aligned(temp_v0_2, sizeof(unk_D_82F20A00), 8);
     func_80002D60(temp_v0_2);
 
     for (i = 0; i < temp_s1->unk_0CA8[temp_s1->unk_0010].unk_000; i++) {

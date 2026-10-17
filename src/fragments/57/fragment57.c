@@ -2757,7 +2757,7 @@ void func_82D06AB0(void) {
 
 void func_82D06B98(void) {
     s32 i;
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     unk_D_86002F58_004_000* var_s1;
 
     D_82D09FF0 = process_geo_layout(temp_v0, &D_82D06FA4);

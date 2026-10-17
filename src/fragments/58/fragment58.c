@@ -835,7 +835,7 @@ s32 func_84002A84(s32 arg0, s32 arg1) {
     D_84002D00 = GetMessageBank(0xF);
     D_84002D04 = GetMessageBank(6);
     D_84002D08 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_84002D0C = func_8000484C(D_84002D08, 6);
+    D_84002D0C = BinArchive_GetFile(D_84002D08, 6);
     D_84002D14 = Cont_GetControllerBits();
     func_80007754();
     sp1C = func_84002914();

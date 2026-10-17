@@ -947,7 +947,7 @@ void func_84101EC8(void) {
     D_84103CC8 = temp_v0;
 
     if (D_84103CC8 < 6) {
-        D_8410344C = func_8000484C(D_84103444, D_84102430[D_84103CC8]);
+        D_8410344C = BinArchive_GetFile(D_84103444, D_84102430[D_84103CC8]);
 
         for (i = 11; i < 21; i++) {
             func_800290B4();
@@ -981,7 +981,7 @@ void func_84102140(void) {
     s32 i;
     unk_D_86002F58_004_000* ptr;
     unk_D_86002F58_004_000* ptr2;
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_84103454 = process_geo_layout(temp_v0, D_8410254C);
     D_84103CE8 = process_geo_layout(temp_v0, D_84102D40);
@@ -1028,7 +1028,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
 
     D_84103444 = ASSET_LOAD2(backgrounds, 1, 1);
 
-    D_84103448 = func_8000484C(D_84103444, 3);
+    D_84103448 = BinArchive_GetFile(D_84103444, 3);
     D_84103CC8 = 0;
     func_84102140();
     func_80007754();

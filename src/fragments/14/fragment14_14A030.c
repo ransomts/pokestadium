@@ -519,7 +519,7 @@ void func_86806A50(void) {
     }
 
     D_868084D0 = 0;
-    temp_s2 = func_80002D10(main_pool_get_available(), 0);
+    temp_s2 = state_pool_try_init(main_pool_get_available(), 0);
 
     for (i = 0, ptr = D_86808808; i < 12; i++, ptr++) {
         func_86805F94(ptr, i);

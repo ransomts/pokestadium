@@ -1089,7 +1089,7 @@ void func_82F09B70(s16 arg0) {
 void func_82F09C6C(void) {
     UNUSED s32 pad;
     s32 i;
-    MemoryBlock* sp1C = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_82F210C8 = process_geo_layout(sp1C, D_82F13E8C);
     D_82F210CC = process_geo_layout(sp1C, D_82F13E58);

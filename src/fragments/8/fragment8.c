@@ -1269,7 +1269,7 @@ void func_86203008(void) {
 void func_862030D0(void) {
     s32 i;
     s32 j;
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     unk_D_86002F58_004_000* temp_s0;
 
     D_86203E38 = process_geo_layout(temp_v0, &D_86203D0C);
@@ -1395,7 +1395,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_04000000, run_rattata_run_flag_gfx, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_80004454((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
+    Fragment_Load((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_862030D0();
     func_878029C0();

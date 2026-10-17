@@ -1098,7 +1098,7 @@ void func_84B05184(unk_D_84B259A8* arg0) {
     BinArchive* temp_a0 = ASSET_LOAD2(battle_headers, 1, 1);
 
     if (D_800AE540.unk_0000 == 7) {
-        arg0->unk_0C = func_8000484C(temp_a0, D_84B0FC48[D_800AE540.unk_0002]);
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, D_84B0FC48[D_800AE540.unk_0002]);
         arg0->unk_10 = Util_ConvertAddrToVirtAddr(D_84B0FC6C[D_800AE540.unk_0002]);
 
         switch (D_800AE540.unk_0002) {
@@ -1119,7 +1119,7 @@ void func_84B05184(unk_D_84B259A8* arg0) {
                 break;
         }
     } else {
-        arg0->unk_0C = func_8000484C(temp_a0, D_84B0FC40[D_800AE540.unk_0000 - 1]);
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, D_84B0FC40[D_800AE540.unk_0000 - 1]);
         arg0->unk_10 = Util_ConvertAddrToVirtAddr(D_84B0FC54[D_800AE540.unk_0000 - 1]);
         arg0->unk_14 = Util_ConvertAddrToVirtAddr(D_84B0FCAC[D_800AE540.unk_0002]);
 
@@ -1180,7 +1180,7 @@ void func_84B0535C(unk_D_84B259A8* arg0) {
 void func_84B053F4(unk_D_84B259A8* arg0) {
     MemoryBlock* temp_v0;
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     arg0->unk_24 = process_geo_layout(temp_v0, D_84B10378);
     arg0->unk_38 = process_geo_layout(temp_v0, D_84B10E78);
     arg0->unk_34 = process_geo_layout(temp_v0, D_84B109F0);
@@ -1630,13 +1630,13 @@ void func_84B067B4(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
         sp44 += 0x1F;
     }
 
-    temp_s5 = func_8000484C(arg1, sp44);
+    temp_s5 = BinArchive_GetFile(arg1, sp44);
     if (D_800AE540.unk_0000 == 7) {
         for (i = 0; i < 4; i++) {
             ptr = i + ((void)0, temp_s5);
 
             tmp = (ptr->unk_038 >> 8) & 0xFF;
-            arg0->unk_10[i] = func_84B06720(func_8000484C(arg2, tmp));
+            arg0->unk_10[i] = func_84B06720(BinArchive_GetFile(arg2, tmp));
             if (i < (D_800AE540.unk_0003 - 1)) {
                 func_84B05CE0(arg0->unk_10[i]);
             }
@@ -1648,12 +1648,12 @@ void func_84B067B4(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
             if (i < D_800AE540.unk_0003) {
                 tmp = (temp_s5[D_800AE540.unk_11E4[0][i]].unk_038 >> 8) & 0xFF;
 
-                arg0->unk_10[i] = func_84B06720(func_8000484C(arg2, tmp));
+                arg0->unk_10[i] = func_84B06720(BinArchive_GetFile(arg2, tmp));
                 if (i < (D_800AE540.unk_0003 - 1)) {
                     func_84B05CE0(arg0->unk_10[i]);
                 }
             } else {
-                arg0->unk_10[i] = func_8000484C(arg2, 0);
+                arg0->unk_10[i] = BinArchive_GetFile(arg2, 0);
             }
         }
     }
@@ -1672,7 +1672,7 @@ void func_84B06A54(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
         arg0->unk_30[i] = func_80006314(0, 2, 0x40, 0x60, 0);
     }
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     if (D_800AE540.unk_0000 == 7) {
         arg0->unk_0C = process_geo_layout(temp_v0, D_84B11BD0);
     } else {

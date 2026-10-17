@@ -589,7 +589,7 @@ void func_83101818(void) {
 
 void func_83101870(void) {
     unk_D_83101F00* ptr;
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     s32 i;
 
     D_83101EF4 = process_geo_layout(temp_v0, D_83101E1C);
@@ -646,7 +646,7 @@ s32 func_83101A98(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_clear_gfx, 0);
     D_83101EE0 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_83101EE4 = func_8000484C(D_83101EE0, 0xE);
+    D_83101EE4 = BinArchive_GetFile(D_83101EE0, 0xE);
 
     func_83101870();
     Stage_Set(sp24);

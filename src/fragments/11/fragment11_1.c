@@ -1245,7 +1245,7 @@ void func_86502848(void) {
     u8 j;
     MainPoolState* temp_s5;
 
-    temp_s5 = func_80002D10(main_pool_get_available(), 0);
+    temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
         D_8650AB28 = &D_8650A528[i];

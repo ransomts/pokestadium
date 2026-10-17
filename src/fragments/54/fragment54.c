@@ -229,16 +229,16 @@ s16 func_82B00CB4(void) {
 }
 
 void func_82B00DD0(unk_func_80027FA0* arg0) {
-    D_82B01144 = func_800044F4(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
+    D_82B01144 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
 
     if (D_800AE540.unk_0000 == 7) {
         if (arg0->unk_04 < 8) {
-            D_82B01148 = func_8000484C(D_82B01144, 0xD);
+            D_82B01148 = BinArchive_GetFile(D_82B01144, 0xD);
         } else {
-            D_82B01148 = func_8000484C(D_82B01144, 0x10);
+            D_82B01148 = BinArchive_GetFile(D_82B01144, 0x10);
         }
     } else {
-        D_82B01148 = func_8000484C(D_82B01144, D_82B01120[D_800AE540.unk_0000]);
+        D_82B01148 = BinArchive_GetFile(D_82B01144, D_82B01120[D_800AE540.unk_0000]);
     }
 }
 

@@ -90,7 +90,7 @@ void func_82800238(void) {
 }
 
 void func_828002E4(void) {
-    MemoryBlock* sp1C = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_82800534 = process_geo_layout(sp1C, D_828004D0);
     func_80002D60(sp1C);
@@ -115,7 +115,7 @@ s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     D_828006A0 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_828006A4 = func_8000484C(D_828006A0, 2);
+    D_828006A4 = BinArchive_GetFile(D_828006A0, 2);
 
     func_828002E4();
     Stage_Set(sp24);

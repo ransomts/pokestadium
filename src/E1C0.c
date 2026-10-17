@@ -60,8 +60,8 @@ void func_8000D738(UnkInputStruct8000D738* arg0) {
     FRAGMENT_LOAD(fragment1);
     temp_v0 = ASSET_LOAD2(fonts, 1, 1);
 
-    D_800AA660->font1 = func_8000484C(temp_v0, 0);
-    D_800AA660->font2 = func_8000484C(temp_v0, 1);
+    D_800AA660->font1 = BinArchive_GetFile(temp_v0, 0);
+    D_800AA660->font2 = BinArchive_GetFile(temp_v0, 1);
     D_800AA660->unk_2204 = *arg0;
     osCreateMesgQueue(&D_800AA660->queue2, &D_800AA660->mesg, 1);
     osCreateThread(&D_800AA664->thread, 10, func_8000D5C0, NULL, (u32)D_800AA664 + 0x21E0, 0x11);

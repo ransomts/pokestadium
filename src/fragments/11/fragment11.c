@@ -732,7 +732,7 @@ void func_86501AAC(void) {
     u8 i;
     MemoryBlock* temp_v0;
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_87B000E8 = process_geo_layout(temp_v0, D_86502DE4);
     func_80002D60(temp_v0);
     func_8001BB20();

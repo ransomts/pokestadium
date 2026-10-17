@@ -1084,8 +1084,8 @@ void func_84B0A36C(unk_D_84B25A58* arg0) {
 }
 
 void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
-    u8* sp24 = func_8000484C(arg1, D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_003);
-    u8* sp20 = func_8000484C(arg1, D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_003);
+    u8* sp24 = BinArchive_GetFile(arg1, D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_003);
+    u8* sp20 = BinArchive_GetFile(arg1, D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
     func_8001987C();
 
@@ -1207,7 +1207,7 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
 
     func_8001A250(arg0->unk_1C, D_84B186C0);
 
-    sp2C = func_80002D10(main_pool_get_available(), 0);
+    sp2C = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {
         arg0->unk_08 = process_geo_layout(sp2C, D_84B15F50);
         arg0->unk_0C = process_geo_layout(sp2C, D_84B15FA8);

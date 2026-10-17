@@ -108,7 +108,7 @@ void func_86D0032C(void) {
 
 void func_86D0037C(void) {
     UNUSED s32 pad[2];
-    MemoryBlock* sp1C = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_87906050 = process_geo_layout(sp1C, &D_86D00530);
     func_80002D60(sp1C);
@@ -129,7 +129,7 @@ s32 func_86D003EC(s32 arg0, s32 arg1) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
+    Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     func_86D0037C();
     Stage_Set(sp24);

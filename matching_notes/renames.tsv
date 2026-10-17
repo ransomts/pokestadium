@@ -87,3 +87,14 @@ func_80007778	Stage_Advance	a7		one stage frame: submits the current stage DL to
 func_800077B4	Stage_AdvanceN	a7		runs arg0 stage frames (Stage_Advance loop)	applied@e9f0608
 func_80007820	Stage_AdvanceUntil	a7		runs until the callback returns nonzero or arg0 frames elapse (callback gets the stage mode byte)	applied@e9f0608
 func_8001E94C	Text_Init	a7		allocates the text state ('PRNT' tag), loads the fonts asset, runs the bank setup	applied@e9f0608
+func_80002D10	state_pool_try_init	a8		allocates a MainPoolState arena from the main pool (ALIGN4) and initialises it (mirrors mem_pool_try_init in the same file)	applied@848c3bc
+func_80002DA4	state_pool_init	a8		initialises a MainPoolState bump region: listHeadL=0, freeSpace=size-0x10, listHeadR/prev=start	applied@848c3bc
+func_80002DCC	state_pool_alloc_aligned	a8		alignment-aware bump allocation with room check (align 4/8/0x10 at call sites); advances prev and listHeadL	applied@848c3bc
+func_80002E3C	state_pool_resize	a8		sets the used region to exactly `size` bytes - the commit/rollback marker used around decompression attempts	applied@848c3bc
+func_80002E64	state_pool_reset	a8		resets a MainPoolState to empty (both heads back to the base)	applied@848c3bc
+func_80004454	Fragment_Load	a8		the FRAGMENT_LOAD macro body: loads fragment by id + rom range	applied@848c3bc
+func_80029008	Fragment_LoadAndCall	a8		FRAGMENT_LOAD_AND_CALL macro body: load then call the fragment entry with two args	applied@848c3bc
+func_80029048	Fragment_LoadAndCall2	a8		FRAGMENT_LOAD_AND_CALL2 macro body	applied@848c3bc
+func_80004258	Asset_Load	a8		ASSET_LOAD macro body: loads an asset by id + rom range into vram	applied@848c3bc
+func_800044F4	Asset_Load2	a8		ASSET_LOAD2 macro body (used by Text_Init for the fonts asset)	applied@848c3bc
+func_8000484C	BinArchive_GetFile	a8		returns a BinArchive file entry by number: direct pointer, cached, or decompressed via func_80004804/800047C4; used by GetMessageBank and friends	applied@848c3bc

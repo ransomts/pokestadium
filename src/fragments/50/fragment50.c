@@ -2603,7 +2603,7 @@ void func_82603924(void) {
     D_82607B50 = 2;
     D_82607B54 = 0;
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_82607418 = process_geo_layout(temp_v0, &D_82607228);
     func_80002D60(temp_v0);
     func_8001BB20();

@@ -358,7 +358,7 @@ void func_8001E884(s32 arg0, s32 arg1, s32 arg2) {
 
     sp1C = GetFontBank(arg0);
     if (D_800AC870->unk_00[sp1C].unk_04 == 0) {
-        temp_v0_2 = func_8000484C(D_800AC870->unk_48, sp1C);
+        temp_v0_2 = BinArchive_GetFile(D_800AC870->unk_48, sp1C);
         D_800AC870->unk_50 = sp1C;
         D_800AC870->unk_00[sp1C].unk_00 = arg1;
         D_800AC870->unk_00[sp1C].unk_02 = arg2;

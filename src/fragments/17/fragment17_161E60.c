@@ -1611,7 +1611,7 @@ void func_86B04DF0(void) {
 void func_86B04EBC(void) {
     MemoryBlock* sp1C;
 
-    sp1C = func_80002D10(main_pool_get_available(), 0);
+    sp1C = state_pool_try_init(main_pool_get_available(), 0);
     D_86B0EBC0 = process_geo_layout(sp1C, &D_86B0DC5C);
     func_80002D60(sp1C);
     func_8001BB20();
@@ -1647,7 +1647,7 @@ s32 func_86B04FB0(void) {
     ASSET_LOAD(D_3000000, cup_clear_ui, 0);
 
     FRAGMENT_LOAD(fragment31);
-    func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
+    Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     func_8002D510();
 

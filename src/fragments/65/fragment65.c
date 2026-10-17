@@ -616,14 +616,14 @@ void func_84A02304(void) {
         var_a1 += 0x1F;
     }
 
-    var_s1 = func_8000484C(D_84A03168, var_a1);
+    var_s1 = BinArchive_GetFile(D_84A03168, var_a1);
 
     for (i = 0; i < var_s7; i++) {
         portrait_file_idx = (var_s1[i].gfx_file_idx >> 8) & 0xFF;
         D_84A03138[i].unk_00 = 1;
         D_84A03138[i].unk_02 = 0x280;
         D_84A03138[i].unk_08 = var_s1[i].name1;
-        D_84A03138[i].unk_04 = func_8000484C(D_84A0316C, portrait_file_idx);
+        D_84A03138[i].unk_04 = BinArchive_GetFile(D_84A0316C, portrait_file_idx);
     }
 }
 
@@ -850,11 +850,11 @@ s16 func_84A02B70(s16 arg0) {
     }
 
     for (i = 0; i < 8; i++) {
-        D_84A02F00[i].unk_24 = func_8000484C(D_84A0316C, i + 2);
+        D_84A02F00[i].unk_24 = BinArchive_GetFile(D_84A0316C, i + 2);
     }
 
     D_84A02F00[10].unk_24 = D_300CC10;
-    D_84A02F00[11].unk_24 = func_8000484C(D_84A0316C, 0xE);
+    D_84A02F00[11].unk_24 = BinArchive_GetFile(D_84A0316C, 0xE);
     return sp2C;
 }
 
@@ -871,12 +871,12 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
     D_84A03134 = GetMessageBank(0x22);
     func_80028AFC(2);
     func_80027FA0(&D_84A03180, D_800AE540.unk_11F2);
-    D_84A03168 = func_800044F4(0x898000, NULL, 1, 1);
+    D_84A03168 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84A0316C = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_84A03174 = func_8000484C(D_84A03170, 0xD);
-    D_84A03178 = func_8000484C(D_84A03170, 0x10);
-    D_84A0317C = func_8000484C(D_84A03170, 0xE);
+    D_84A03174 = BinArchive_GetFile(D_84A03170, 0xD);
+    D_84A03178 = BinArchive_GetFile(D_84A03170, 0x10);
+    D_84A0317C = BinArchive_GetFile(D_84A03170, 0xE);
     func_80007754();
 
     sp1E = func_84A02B70(arg0);

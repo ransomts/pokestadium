@@ -789,15 +789,15 @@ void func_82202CB8(void) {
 
     if (D_822031E8.unk_00 == 2) {
         if (D_800AE540.unk_11F2 == 0) {
-            D_82203148 = func_8000484C(D_822030F4, 1);
-            D_8220314C = func_8000484C(D_822030F4, 2);
+            D_82203148 = BinArchive_GetFile(D_822030F4, 1);
+            D_8220314C = BinArchive_GetFile(D_822030F4, 2);
         } else {
-            D_8220314C = D_82203148 = func_8000484C(D_822030F4, 2);
+            D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 2);
         }
     } else if (D_822031E8.unk_00 == 1) {
-        D_8220314C = D_82203148 = func_8000484C(D_822030F4, 0x13);
+        D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 0x13);
     } else {
-        D_8220314C = D_82203148 = func_8000484C(D_822030F4, 0x12);
+        D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 0x12);
     }
 }
 

@@ -33,7 +33,7 @@ void func_80010FDC(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
 
 GraphNode* func_8001103C(MainPoolState* arg0, GraphNode* arg1) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(struct GraphNode), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(struct GraphNode), 4);
     }
 
     if (arg1 != NULL) {
@@ -45,7 +45,7 @@ GraphNode* func_8001103C(MainPoolState* arg0, GraphNode* arg1) {
 
 unk_D_86002F34_alt2* func_80011088(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt2), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt2), 4);
     }
 
     if (arg1 != NULL) {
@@ -58,7 +58,7 @@ unk_D_86002F34_alt2* func_80011088(MainPoolState* arg0, unk_D_86002F34_alt2* arg
 
 unk_D_86002F34_00C* func_800110E0(MemoryBlock* arg0, unk_D_86002F34_00C* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_00C), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_00C), 4);
     }
 
     if (arg1 != NULL) {
@@ -73,7 +73,7 @@ unk_D_86002F34_00C* func_800110E0(MemoryBlock* arg0, unk_D_86002F34_00C* arg1, s
 
 unk_D_86002F34_alt13* func_800111A4(MemoryBlock* arg0, unk_D_86002F34_alt13* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt13), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt13), 4);
     }
 
     if (arg1 != NULL) {
@@ -86,7 +86,7 @@ unk_D_86002F34_alt13* func_800111A4(MemoryBlock* arg0, unk_D_86002F34_alt13* arg
 
 unk_D_86002F34_alt1* func_800111FC(MemoryBlock* arg0, unk_D_86002F34_alt1* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt1), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt1), 4);
     }
 
     if (arg1 != NULL) {
@@ -100,7 +100,7 @@ unk_D_86002F34_alt1* func_800111FC(MemoryBlock* arg0, unk_D_86002F34_alt1* arg1,
 
 unk_D_86002F34_alt14* func_80011258(MainPoolState* arg0, unk_D_86002F34_alt14* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt14), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt14), 4);
     }
 
     if (arg1 != NULL) {
@@ -113,7 +113,7 @@ unk_D_86002F34_alt14* func_80011258(MainPoolState* arg0, unk_D_86002F34_alt14* a
 
 unk_D_86002F34_alt15* func_800112BC(MainPoolState* arg0, unk_D_86002F34_alt15* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt15), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt15), 4);
     }
 
     if (arg1 != NULL) {
@@ -128,7 +128,7 @@ unk_D_86002F34_alt16* func_80011320(MainPoolState* arg0, unk_D_86002F34_alt16* a
     u32 temp_v0;
 
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt16), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt16), 4);
     }
 
     if (arg1 != NULL) {
@@ -141,7 +141,7 @@ unk_D_86002F34_alt16* func_80011320(MainPoolState* arg0, unk_D_86002F34_alt16* a
 
 unk_D_86002F34_alt17* func_800113AC(MainPoolState* arg0, unk_D_86002F34_alt17* arg1) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt17), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt17), 4);
     }
 
     if (arg1 != NULL) {
@@ -153,7 +153,7 @@ unk_D_86002F34_alt17* func_800113AC(MainPoolState* arg0, unk_D_86002F34_alt17* a
 
 unk_D_8690A610* func_800113F8(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != 0) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_8690A610), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_8690A610), 4);
     }
 
     if (arg1 != NULL) {
@@ -169,7 +169,7 @@ unk_D_8690A610* func_800113F8(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3
 unk_D_86002F34_alt18* func_80011484(MainPoolState* arg0, unk_D_86002F34_alt18* arg1, s16 arg2, s16 arg3, u8 r, u8 g,
                                     u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt18), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt18), 4);
     }
 
     if (arg1 != NULL) {
@@ -187,7 +187,7 @@ unk_D_86002F34_alt18* func_80011484(MainPoolState* arg0, unk_D_86002F34_alt18* a
 
 unk_D_86002F34_alt19* func_80011504(MainPoolState* arg0, unk_D_86002F34_alt19* arg1, u8 r, u8 g, u8 b) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt19), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt19), 4);
     }
 
     if (arg1 != NULL) {
@@ -203,7 +203,7 @@ unk_D_86002F34_alt19* func_80011504(MainPoolState* arg0, unk_D_86002F34_alt19* a
 unk_D_86002F34* func_8001156C(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg2, unk_D_86002F34_018* arg3, s32 arg4,
                               unk_D_86002F34_01C* arg5, s32 arg6, Vtx* arg7) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34), 4);
     }
 
     if (arg1 != NULL) {
@@ -223,7 +223,7 @@ unk_D_86002F34* func_8001156C(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg
 unk_D_86002F34_alt12* func_800115F0(MainPoolState* arg0, unk_D_86002F34_alt12* arg1, s16 arg2, s16 arg3, s16 arg4,
                                     s16 arg5) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt12), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt12), 4);
     }
 
     if (arg1 != NULL) {
@@ -239,7 +239,7 @@ unk_D_86002F34_alt12* func_800115F0(MainPoolState* arg0, unk_D_86002F34_alt12* a
 
 unk_D_86002F34_alt20* func_80011660(MainPoolState* arg0, unk_D_86002F34_alt20* arg1, s16 arg2, s16 arg3) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt20), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt20), 4);
     }
 
     if (arg1 != NULL) {
@@ -253,7 +253,7 @@ unk_D_86002F34_alt20* func_80011660(MainPoolState* arg0, unk_D_86002F34_alt20* a
 
 unk_D_86002F34_alt21* func_800116C0(MainPoolState* arg0, unk_D_86002F34_alt21* arg1, s16 arg2, s16 arg3) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt21), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt21), 4);
     }
 
     if (arg1 != NULL) {
@@ -267,7 +267,7 @@ unk_D_86002F34_alt21* func_800116C0(MainPoolState* arg0, unk_D_86002F34_alt21* a
 
 unk_D_86002F34_alt5* func_80011720(MainPoolState* arg0, unk_D_86002F34_alt5* arg1, Vec3f* arg2, Vec3s* arg3) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt5), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt5), 4);
     }
 
     if (arg1 != NULL) {
@@ -281,7 +281,7 @@ unk_D_86002F34_alt5* func_80011720(MainPoolState* arg0, unk_D_86002F34_alt5* arg
 
 unk_D_86002F34_alt22* func_800117A8(MainPoolState* arg0, unk_D_86002F34_alt22* arg1, Vec3f* arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt22), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt22), 4);
     }
 
     if (arg1 != NULL) {
@@ -295,7 +295,7 @@ unk_D_86002F34_alt22* func_800117A8(MainPoolState* arg0, unk_D_86002F34_alt22* a
 unk_D_86002F34_alt6* func_80011814(MainPoolState* arg0, unk_D_86002F34_alt6* arg1, s16 arg2, s16 arg3, s16 arg4,
                                    Vec3s* arg5, Vec3s* arg6, Vec3f* arg7) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt6), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt6), 4);
     }
 
     if (arg1 != NULL) {
@@ -313,7 +313,7 @@ unk_D_86002F34_alt6* func_80011814(MainPoolState* arg0, unk_D_86002F34_alt6* arg
 
 unk_D_86002F34_alt7* func_800118D0(MainPoolState* arg0, unk_D_86002F34_alt7* arg1, s32 arg2, Gfx* arg3, s16 arg4) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt7), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt7), 4);
     }
 
     if (arg1 != NULL) {
@@ -329,7 +329,7 @@ unk_D_86002F34_alt7* func_800118D0(MainPoolState* arg0, unk_D_86002F34_alt7* arg
 unk_D_86002F58_004_000* func_80011938(MainPoolState* arg0, unk_D_86002F58_004_000* arg1, s16 arg2, Vec3f* arg3,
                                       Vec3s* arg4, Vec3f* arg5) {
     if (arg0 != 0) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F58_004_000), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F58_004_000), 4);
     }
 
     if (arg1 != NULL) {
@@ -361,7 +361,7 @@ unk_D_86002F58_004_000* func_80011938(MainPoolState* arg0, unk_D_86002F58_004_00
 
 unk_D_86002F34_alt8* func_80011A3C(MainPoolState* arg0, unk_D_86002F34_alt8* arg1, s32 arg2, Gfx* arg3, MtxF* arg4) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt8), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt8), 4);
     }
 
     if (arg1 != NULL) {
@@ -389,7 +389,7 @@ unk_D_86002F34_alt8* func_80011ABC(MainPoolState* arg0, unk_D_86002F34_alt8* arg
 unk_D_86002F34_alt9* func_80011B10(MainPoolState* arg0, unk_D_86002F34_alt9* arg1, s32 arg2, Gfx* arg3, Vec3f* arg4,
                                    f32 arg5) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt9), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt9), 4);
     }
 
     if (arg1 != NULL) {
@@ -405,7 +405,7 @@ unk_D_86002F34_alt9* func_80011B10(MainPoolState* arg0, unk_D_86002F34_alt9* arg
 
 unk_func_80011B94* func_80011B94(MainPoolState* arg0, unk_func_80011B94* arg1, s32 arg2, Gfx* arg3) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_func_80011B94), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_func_80011B94), 4);
     }
 
     if (arg1 != NULL) {
@@ -420,7 +420,7 @@ unk_func_80011B94* func_80011B94(MainPoolState* arg0, unk_func_80011B94* arg1, s
 unk_D_86002F34_alt10* func_80011BF4(MainPoolState* arg0, unk_D_86002F34_alt10* arg1, s16 arg2, s16 arg3, Gfx* arg4,
                                     s16 arg5, s16 arg6, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt10), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt10), 4);
     }
 
     if (arg1 != NULL) {
@@ -438,7 +438,7 @@ unk_D_86002F34_alt10* func_80011BF4(MainPoolState* arg0, unk_D_86002F34_alt10* a
 
 unk_D_86002F34_alt23* func_80011C98(MainPoolState* arg0, unk_D_86002F34_alt23* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt23), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt23), 4);
     }
 
     if (arg1 != NULL) {
@@ -452,7 +452,7 @@ unk_D_86002F34_alt23* func_80011C98(MainPoolState* arg0, unk_D_86002F34_alt23* a
 unk_D_86002F34_alt24* func_80011CF0(MainPoolState* arg0, unk_D_86002F34_alt24* arg1, s32 arg2, s16 arg3, s16 arg4,
                                     s16 arg5, s16 arg6, s16 arg7, s16 arg8, s32 arg9, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = func_80002DCC(arg0, sizeof(unk_D_86002F34_alt24), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt24), 4);
     }
 
     if (arg1 != NULL) {

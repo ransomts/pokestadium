@@ -1261,7 +1261,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     Text_Init(0x3C, 0);
     func_8001B058();
     D_84803780 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_84803784 = func_8000484C(D_84803780, 5);
+    D_84803784 = BinArchive_GetFile(D_84803780, 5);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, order_select_ui, 0);

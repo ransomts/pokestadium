@@ -830,7 +830,7 @@ void func_86401F74(void) {
 
 void func_8640203C(void) {
     u8 i;
-    MemoryBlock* temp_s5 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
         D_864052C8 = &D_86404778[i];
@@ -845,7 +845,7 @@ void func_86402130(void) {
     u8 i;
     u8 x;
     u8 y;
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_87B000E8 = process_geo_layout(temp_v0, D_8640290C);
     func_80002D60(temp_v0);

@@ -34,7 +34,7 @@ void func_80019F84(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
     };
 
     unk_D_86002F34_00C* sp24;
-    MemoryBlock* sp20 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* sp20 = state_pool_try_init(main_pool_get_available(), 0);
 
     arg0->unk_0C = process_geo_layout(sp20, D_8006F350);
     arg0->unk_10 = D_800ABE10.unk_A04.unk_0C;
@@ -436,7 +436,7 @@ s32 func_8001B010(unk_func_8001A024* arg0) {
 }
 
 void func_8001B058(void) {
-    D_800ABE10.unk_A04.unk_10 = func_800044F4(0x820000, NULL, 1, 1);
+    D_800ABE10.unk_A04.unk_10 = Asset_Load2(0x820000, NULL, 1, 1);
 }
 
 void func_8001B088(u16* arg0, s32 arg1) {
@@ -480,7 +480,7 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     MemoryBlock* sp24;
     MemoryBlock* temp_v0;
 
-    sp24 = func_80002D10(main_pool_get_available(), 0);
+    sp24 = state_pool_try_init(main_pool_get_available(), 0);
     arg0->unk_20 = process_geo_layout(sp24, D_8006F3E0);
     arg0->unk_24 = D_800AC830;
     func_80002D60(sp24);

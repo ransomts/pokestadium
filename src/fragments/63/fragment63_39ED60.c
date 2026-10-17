@@ -458,7 +458,7 @@ void func_84B0BE28(unk_D_84B25A90* arg0) {
     arg0->unk_1C = Memmap_GetSegmentVaddr(D_2018000);
     arg0->unk_24 = Memmap_GetSegmentVaddr(D_2023240);
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     arg0->unk_08 = process_geo_layout(temp_v0, D_84B16588);
     arg0->unk_0C = process_geo_layout(temp_v0, D_84B166E8);

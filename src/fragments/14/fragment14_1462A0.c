@@ -1650,7 +1650,7 @@ void func_86805858(s32 arg0) {
     D_86808448 = -1;
     D_86807550 = func_80019D18(0xA0);
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_86808474 = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &D_86807078);
     func_80002D60(temp_v0);
     D_8680847A = 0;

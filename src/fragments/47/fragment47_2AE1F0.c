@@ -372,7 +372,7 @@ void func_83800EFC(void) {
     unk_D_86002F58_004_000_004* temp_v0_2;
     unk_D_86002F58_004_000* ptr;
 
-    temp_s1 = func_80002D10(main_pool_get_available(), 0);
+    temp_s1 = state_pool_try_init(main_pool_get_available(), 0);
     D_838067D8 = 0;
     D_83805670 = process_geo_layout(temp_s1, D_83804CC0);
     temp_v0_2 = process_geo_layout(temp_s1, D_83804EB8);

@@ -542,7 +542,7 @@ void func_84301430(Stage* arg0) {
         }
     }
 
-    sp3C = func_8000484C(ASSET_LOAD2(stadium_models, 1, 1), sp32);
+    sp3C = BinArchive_GetFile(ASSET_LOAD2(stadium_models, 1, 1), sp32);
     D_8438E780 = sp3C(2, 0);
 
     sp28 = func_80019D18(0x9A);
@@ -565,7 +565,7 @@ void func_84301430(Stage* arg0) {
     func_8432AEE4(0, &D_8438E440);
     func_8432D0D8(0, &D_8438E440);
 
-    sp44 = func_80002D10(main_pool_get_available(), 0);
+    sp44 = state_pool_try_init(main_pool_get_available(), 0);
     D_8438E784 = process_geo_layout(sp44, D_84384364);
     D_8438E788 = process_geo_layout(sp44, D_843844C4);
     D_8438E78C = process_geo_layout(sp44, D_84384514);

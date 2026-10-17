@@ -416,7 +416,7 @@ s32 func_82E00CF0(void) {
 }
 
 void func_82E00E2C(void) {
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     s32 i;
     unk_D_86002F58_004_000* var_s2;
 
@@ -471,7 +471,7 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
         ASSET_LOAD(D_3000000, cup_ball_select_ui, 0);
 
         D_82E019B0 = ASSET_LOAD2(backgrounds, 1, 1);
-        D_82E019B4 = func_8000484C(D_82E019B0, var_v1);
+        D_82E019B4 = BinArchive_GetFile(D_82E019B0, var_v1);
 
         func_82E00E2C();
         func_80007754();

@@ -895,7 +895,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     func_8001987C();
-    D_836032F8 = func_800044F4(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
+    D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
     func_8002D510();
     func_83402340();
     func_8360086C(arg0);

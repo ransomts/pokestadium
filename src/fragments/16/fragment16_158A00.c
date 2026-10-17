@@ -149,8 +149,8 @@ void func_86A000B4(s8 arg0, u8 arg1) {
 
     main_pool_push_state('BACK');
 
-    sp28 = func_8000484C(D_86A061DC, arg0);
-    sp2C = func_80002D10(main_pool_get_available(), 0);
+    sp28 = BinArchive_GetFile(D_86A061DC, arg0);
+    sp2C = state_pool_try_init(main_pool_get_available(), 0);
 
     temp_v0 = sp28(0, 0);
     if (temp_v0 != NULL) {
@@ -1435,7 +1435,7 @@ void func_86A00DAC(s32 arg0) {
     func_8001103C(NULL, &D_86A061A8);
     func_8001103C(NULL, &D_86A061C0);
     func_86A0003C(0xFF, 0xFF, 0xFF);
-    sp2C = func_80002D10(main_pool_get_available(), 0);
+    sp2C = state_pool_try_init(main_pool_get_available(), 0);
     D_86A061E4 = process_geo_layout(sp2C, &D_86A025D0);
     func_80002D60(sp2C);
     func_8001BB20();

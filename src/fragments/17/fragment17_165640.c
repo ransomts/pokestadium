@@ -976,14 +976,14 @@ void func_86B0819C(void) {
             break;
     }
 
-    sp2C = func_8000484C(func_800044F4(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), D_86B0FA42);
+    sp2C = BinArchive_GetFile(Asset_Load2(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), D_86B0FA42);
 
     D_86B0FA4C = sp2C(2, 0);
     func_800113F8(0, &D_86B0F9D0, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     func_8001103C(NULL, &D_86B0F9F0);
     func_8001103C(NULL, &D_86B0FA08);
     func_8001103C(NULL, &D_86B0FA20);
-    sp34 = func_80002D10(main_pool_get_available(), 0);
+    sp34 = state_pool_try_init(main_pool_get_available(), 0);
     D_87906050 = process_geo_layout(sp34, D_86B0DE5C);
 
     temp_v0_3 = sp2C(0, 0);

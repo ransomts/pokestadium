@@ -353,9 +353,9 @@ void func_82100B98(void) {
     D_82100EB0 = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (D_82100EA8.unk_00 == 0x1F8) {
-        D_82100EB4 = func_8000484C(D_82100EB0, 0x11);
+        D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0x11);
     } else {
-        D_82100EB4 = func_8000484C(D_82100EB0, 0);
+        D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0);
     }
 
     D_82100EC8 = 0;

@@ -388,7 +388,7 @@ void func_86B0B810(void) {
 }
 
 void func_86B0B8DC(void) {
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_86B10848 = process_geo_layout(temp_v0, &D_86B0E374);
     func_80002D60(temp_v0);
@@ -434,10 +434,10 @@ s32 func_86B0BA18(void) {
 
     if (D_800AE540.unk_0000 == 0x16) {
         D_86B109BC = ASSET_LOAD2(backgrounds, 1, 1);
-        D_86B109C0 = func_8000484C(D_86B109BC, 0x12);
+        D_86B109C0 = BinArchive_GetFile(D_86B109BC, 0x12);
     } else {
         D_86B109BC = ASSET_LOAD2(backgrounds, 1, 1);
-        D_86B109C0 = func_8000484C(D_86B109BC, 0x13);
+        D_86B109C0 = BinArchive_GetFile(D_86B109BC, 0x13);
     }
 
     func_86B0B8DC();

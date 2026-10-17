@@ -599,11 +599,11 @@ s32 Game_DoCopyProtection(s32 state) {
     return state;
 }
 
-s32 func_80029008(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4) {
+s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4) {
     s32 result;
     FragmentEntry func;
 
-    func = func_80004454(arg0, romStart, romEnd);
+    func = Fragment_Load(arg0, romStart, romEnd);
 
     result = func(arg3, arg4);
 
@@ -612,7 +612,7 @@ s32 func_80029008(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4) {
     return result;
 }
 
-void func_80029048(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
+void Fragment_LoadAndCall2(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
     D_800AE520.unk_00 = 1;
     D_800AE520.fragment_id = arg0;
     D_800AE520.rom_start = arg1;
@@ -754,7 +754,7 @@ void func_800296E0(void) {
 
     while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (D_800AE520.unk_00 != 0)) {
         D_800AE520.unk_00 = 0;
-        gCurrentGameState = func_80029008(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
+        gCurrentGameState = Fragment_LoadAndCall(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
                                           D_800AE520.arg0, D_800AE520.arg1);
     }
 

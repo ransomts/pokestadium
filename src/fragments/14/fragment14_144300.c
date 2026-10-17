@@ -688,7 +688,7 @@ void func_86801D48(void) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
-    sp18 = func_80002D10(main_pool_get_available(), 0);
+    sp18 = state_pool_try_init(main_pool_get_available(), 0);
     D_86807500 = (GraphNode*)process_geo_layout(sp18, &D_86806CD0);
 
     func_80002D60(sp18);
@@ -735,7 +735,7 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_04000000, sushi_go_round_sprites, 0);
 
     FRAGMENT_LOAD(fragment31);
-    func_80004454((((u32)D_87000000 & 0x0FF00000) >> 0x14) - 0x10, sushi_go_round_ROM_START, order_select_ui_ROM_START);
+    Fragment_Load((((u32)D_87000000 & 0x0FF00000) >> 0x14) - 0x10, sushi_go_round_ROM_START, order_select_ui_ROM_START);
 
     func_86801D48();
     Stage_Set(sp24);

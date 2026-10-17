@@ -3437,7 +3437,7 @@ void ekansMinigameUpdate(void) {
 }
 
 void func_86C044B4(void) {
-    MemoryBlock* temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     unk_D_86002F30* temp_s1;
     s32 i;
 
@@ -3504,7 +3504,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    func_80004454((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
+    Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     func_86C044B4(); // memory
     Stage_Set(sp24);

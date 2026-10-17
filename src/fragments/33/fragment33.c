@@ -783,7 +783,7 @@ void func_81302C20(void) {
 }
 
 void func_81302DD8(void) {
-    MemoryBlock* sp1C = func_80002D10(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_8130464C = process_geo_layout(sp1C, &D_81303CB4);
     D_81304648 = process_geo_layout(sp1C, &D_81303EC0);

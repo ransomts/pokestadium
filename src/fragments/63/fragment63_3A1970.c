@@ -175,7 +175,7 @@ void func_84B0DAA4(unk_D_84B26640_010* arg0, u8 arg1) {
     arg0->unk_01 = 0;
     arg0->unk_02 = arg1;
 
-    sp2C = func_80002D10(main_pool_get_available(), 0);
+    sp2C = state_pool_try_init(main_pool_get_available(), 0);
     if (arg1 == 0) {
         arg0->unk_08 = process_geo_layout(sp2C, D_84B17240);
     } else {

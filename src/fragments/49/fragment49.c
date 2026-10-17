@@ -95,7 +95,7 @@ void func_83A00754(void) {
     if (D_83A00B7C >= 0) {
         main_pool_push_state('mksl');
 
-        D_83A00B78 = func_8000484C(D_83A00B74, D_83A00B58[D_83A00B7C]);
+        D_83A00B78 = BinArchive_GetFile(D_83A00B74, D_83A00B58[D_83A00B7C]);
         func_80006498(&gDisplayListHead, D_83A00B80);
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);

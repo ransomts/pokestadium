@@ -472,7 +472,7 @@ void func_80004200(u32 block_addr, u32 addr) {
     }
 }
 
-u8* func_80004258(s32 id, u8* rom_start, u8* rom_end, s32 arg3) {
+u8* Asset_Load(s32 id, u8* rom_start, u8* rom_end, s32 arg3) {
     u8* vaddr = func_80003DC4(rom_start, rom_end, arg3, 0);
 
     if ((vaddr != NULL) && (id > 0)) {
@@ -522,7 +522,7 @@ void func_800043BC(s32 arg0, Fragment* addr) {
     }
 }
 
-ret_func_80004454 func_80004454(s32 arg0, u8* romStart, u8* romEnd) {
+ret_func_80004454 Fragment_Load(s32 arg0, u8* romStart, u8* romEnd) {
     void* addr = func_80003DC4(romStart, romEnd, 0, 0);
 
     if (addr != NULL) {
@@ -542,7 +542,7 @@ void* func_800044A8(s32 arg0, s32 arg1, s32 arg2) {
     return sp2C;
 }
 
-BinArchive* func_800044F4(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
+BinArchive* Asset_Load2(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
     BinArchive* ret = NULL;
     u32 sp28;
     u32 sp28_2;
@@ -659,7 +659,7 @@ void* func_80004804(BinArchive* arg0, BinArchiveFile* arg1) {
     return func_80003F54(&sp1C, 0);
 }
 
-void* func_8000484C(BinArchive* archive, s32 file_number) {
+void* BinArchive_GetFile(BinArchive* archive, s32 file_number) {
     Fragment* var_a2 = NULL;
     UNUSED s32 pad;
     BinArchiveFile* sp18 = (u8*)archive + sizeof(BinArchive) + (file_number * sizeof(BinArchiveFile));

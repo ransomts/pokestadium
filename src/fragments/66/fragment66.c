@@ -732,7 +732,7 @@ void func_83201C8C(void) {
     MemoryBlock* temp_v0;
     s32 i;
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_83202010 = process_geo_layout(temp_v0, D_83201F5C);
     D_83202014 = process_geo_layout(temp_v0, D_8C201070);
 
@@ -764,7 +764,7 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
         Text_Init(6, 0);
 
         FRAGMENT_LOAD(fragment31);
-        func_80004454(FRAGMENT_ID(_798CD0), _798CD0_ROM_START, _798CD0_ROM_END);
+        Fragment_Load(FRAGMENT_ID(_798CD0), _798CD0_ROM_START, _798CD0_ROM_END);
         ASSET_LOAD(D_1000000, common_menu1_ui, 0);
 
         func_8002D510();

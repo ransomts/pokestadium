@@ -533,7 +533,7 @@ void func_80031204(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
-    sp18 = func_80002D10(main_pool_get_available(), 0);
+    sp18 = state_pool_try_init(main_pool_get_available(), 0);
     D_80075F80 = arg0;
     arg0->unk_1C = process_geo_layout(sp18, D_80075FA0);
     D_80075F80 = NULL;
@@ -671,8 +671,8 @@ void func_800314BC(unk_func_80031270* arg0) {
     func_8001103C(0, arg0->unk_28);
     func_8001103C(0, arg0->unk_2C);
     func_8001103C(0, arg0->unk_30);
-    sp20 = func_8000484C(arg0->unk_14, D_8007616C[func_8002FF7C(arg0->unk_18)]);
-    sp24 = func_80002D10(main_pool_get_available(), 0);
+    sp20 = BinArchive_GetFile(arg0->unk_14, D_8007616C[func_8002FF7C(arg0->unk_18)]);
+    sp24 = state_pool_try_init(main_pool_get_available(), 0);
     temp_v0 = sp20(0, 0);
     if (temp_v0 != NULL) {
         func_80012094(arg0->unk_28, process_geo_layout(sp24, temp_v0));

@@ -2620,7 +2620,7 @@ void func_825045C0(void) {
     MemoryBlock* temp_v0;
 
     D_82508AF8 = &D_82508B00;
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_8250A270 = process_geo_layout(temp_v0, D_8250880C);
     D_8250A274 = process_geo_layout(temp_v0, D_825073F0);
     D_8250A278 = process_geo_layout(temp_v0, D_82507CC8);
@@ -2646,7 +2646,7 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, kids_club_select_ui, 0);
     D_8250A264 = ASSET_LOAD2(backgrounds, 1, 1);
 
-    D_8250A268 = func_8000484C(D_8250A264, 4);
+    D_8250A268 = BinArchive_GetFile(D_8250A264, 4);
     D_8250A47C = D_87806330;
     func_80028AFC(2);
     func_825045C0();

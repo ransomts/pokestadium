@@ -1008,7 +1008,7 @@ void func_84203C90(void) {
     BinArchive* temp_a0;
     s16 var_a1;
 
-    temp_a0 = func_800044F4(0x898000, NULL, 1, 0);
+    temp_a0 = Asset_Load2(0x898000, NULL, 1, 0);
 
     switch (D_800AE540.unk_0001) {
         case 0:
@@ -1058,7 +1058,7 @@ void func_84203C90(void) {
         if (D_800AE540.unk_11F2 != 0) {
             var_a1 += 0x1F;
         }
-        D_84211B38 = func_8000484C(temp_a0, var_a1);
+        D_84211B38 = BinArchive_GetFile(temp_a0, var_a1);
     }
 }
 
@@ -1068,18 +1068,18 @@ void func_84203D74(void) {
     D_84211B30 = ASSET_LOAD2(backgrounds, 1, 1);
     if (D_800AE540.unk_0000 == 7) {
         if (D_800AE540.unk_0002 >= 8) {
-            D_84211B34 = func_8000484C(D_84211B30, 0xE);
+            D_84211B34 = BinArchive_GetFile(D_84211B30, 0xE);
         } else {
             func_80028AFC(2);
             func_80027FA0(&sp20, D_800AE540.unk_11F2);
             if (sp20.unk_04 < 8) {
-                D_84211B34 = func_8000484C(D_84211B30, 0xD);
+                D_84211B34 = BinArchive_GetFile(D_84211B30, 0xD);
             } else {
-                D_84211B34 = func_8000484C(D_84211B30, 0x10);
+                D_84211B34 = BinArchive_GetFile(D_84211B30, 0x10);
             }
         }
     } else {
-        D_84211B34 = func_8000484C(D_84211B30, D_84210D4C[D_800AE540.unk_0000]);
+        D_84211B34 = BinArchive_GetFile(D_84211B30, D_84210D4C[D_800AE540.unk_0000]);
     }
 }
 

@@ -627,7 +627,7 @@ void func_84B0D7A8(unk_D_84B25AC0* arg0, s8 arg1, s8 arg2) {
     arg0->unk_5A3 = arg1;
     arg0->unk_5A2 = arg2;
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     if (arg2 == -1) {
         arg0->unk_5B0 = process_geo_layout(temp_v0, D_84B16CFC);
     } else {

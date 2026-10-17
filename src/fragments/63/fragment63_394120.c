@@ -1198,7 +1198,7 @@ void func_84B03064(void) {
         D_84B1A598.unk_0008[i].unk_0A6 = i;
     }
 
-    temp_v0 = func_80002D10(main_pool_get_available(), 0);
+    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_84B1A598.unk_0004 = process_geo_layout(temp_v0, &D_84B0FB20);
     func_80002D60(temp_v0);
 
@@ -1229,7 +1229,7 @@ s32 func_84B03194(s32 arg0, UNUSED s32 arg1) {
     D_84B26678 = GetMessageBank(0x1B);
     func_8001B058();
 
-    D_84B1A598.unk_B408 = func_800044F4(0x898000, NULL, 1, 1);
+    D_84B1A598.unk_B408 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84B1A598.unk_B40C = ASSET_LOAD2(battle_portraits, 1, 1);
 
     Stage_Set(sp2C);

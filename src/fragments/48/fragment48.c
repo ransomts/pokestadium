@@ -202,7 +202,7 @@ s32 func_839004F4(s32 arg0, s32 arg1) {
     Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
-    D_839026F8 = func_8000484C(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
+    D_839026F8 = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
     func_83900038();
     Stage_Set(sp24);
     func_839004B4();
