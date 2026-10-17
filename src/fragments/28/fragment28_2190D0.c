@@ -4153,99 +4153,121 @@ s32 func_88807AC0(void) {
 // dies in as1 (dead code after the if-body), e.g. a strength-reduced `s4 += 4` that the
 // body's own `sll s4` makes dead. Dead C statements there (else-branch / after the if)
 // are removed by uopt, and a function-local `static` D_88826564 changes nothing.
-#ifdef NON_MATCHING
-void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6) {
-    s32 i;
-    unk_D_86002F34_00C* ptr;
-    MemoryBlock* sp4C;
-    unk_D_88826CF0_004* var_v1_2;
+void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
+{
+  s32 i;
+  unk_D_86002F34_00C *ptr;
+  MemoryBlock *sp4C;
+  unk_D_88826CF0_004 *new_var2;
+  s16 new_var;
+  unk_D_88826CF0_004 *var_v1_2;
+  sp4C = func_80002DA4(arg1, 0x70800);
+  D_88826A4C = 0;
+  D_88826A80 = 0;
+  D_88826A52 = 0;
+  D_88826CB4 = 0;
+  D_88826CC6 = 0;
+  for (i = 0; i < 36; i++)
+  {
+    D_88826CF0[i].unk_00 = 0;
+    D_88826CF0[i].unk_02 = 0;
+  }
 
-    sp4C = func_80002DA4(arg1, 0x70800);
-    D_88826A4C = 0;
-    D_88826A80 = 0;
-    D_88826A52 = 0;
-    D_88826CB4 = 0;
-    D_88826CC6 = 0;
-
-    for (i = 0; i < 36; i++) {
-        D_88826CF0[i].unk_00 = 0;
-        D_88826CF0[i].unk_02 = 0;
+  main_pool_push_state('MAPV');
+  D_88826A3C = arg6;
+  D_88826A58 = arg0 - 1;
+  sprintf(D_88826A60, "%s", arg5);
+  D_88826CE0 = func_8002D7C0(0, 0, D_88826A3C, 9);
+  D_88826CE4 = func_8002D7C0(0, 0, D_88826A3C, 0x37);
+  D_88826CD4 = main_pool_alloc(0x3200, 0);
+  func_88803BCC(D_88826CD4, arg0);
+  func_80004258((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
+  func_80019F0C(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
+  D_88826A48 = func_8000484C(func_800044F4(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
+  func_80011B94(0, &D_888269C0, 5, 0);
+  D_88826A54 = 1;
+  for (i = 0; i < 59; i++)
+  {
+    new_var = D_88826564[i];
+    if ((i && i) && i)
+    {
     }
+    if (new_var >= 0)
+    {
+      unk_D_88826CF0 *temp_s0 = &D_88826CF0[D_8882651C[new_var ^ 0] - 1];
+      if (1)
+      {
+      }
+      if (1)
+      {
+      }
+      if (1)
+      {
+      }
+      if (1)
+      {
+      }
+      if (1)
+      {
+      }
+      D_88826A56 = func_8002EC08(func_80024F68(func_80029080()));
+      switch (D_88826A56)
+      {
+        case 0:
+          var_v1_2 = D_88820D28[i];
+          break;
 
-    main_pool_push_state('MAPV');
-    D_88826A3C = arg6;
-    D_88826A58 = arg0 - 1;
-    sprintf(D_88826A60, "%s", arg5);
-    D_88826CE0 = func_8002D7C0(NULL, 0, D_88826A3C, 9);
-    D_88826CE4 = func_8002D7C0(NULL, 0, D_88826A3C, 0x37);
+        case 1:
+          var_v1_2 = (new_var2 = D_888218FC[i]);
+          break;
 
-    D_88826CD4 = main_pool_alloc(0x3200, 0);
-    func_88803BCC(D_88826CD4, arg0);
+        case 2:
+          var_v1_2 = D_888218FC[i];
+          break;
 
-    ASSET_LOAD(D_3000000, kanto_gb_map, 0);
-    func_80019F0C(sp4C, (((u32)&D_8C000000 & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START,
-                  pokedex_area_model_ROM_END, arg3, arg4);
+        case 3:
 
-    D_88826A48 = func_8000484C(ASSET_LOAD2(_6EB340, 1, 1), 0);
-    func_80011B94(NULL, &D_888269C0, 5, NULL);
-    D_88826A54 = 1;
+        default:
+          var_v1_2 = D_888230CC[i];
+          break;
 
-    for (i = 0; i < 59; i++) {
-        if (D_88826564[i] >= 0) {
-            unk_D_88826CF0* temp_s0;
-            if (1) { temp_s0 = &D_88826CF0[D_8882651C[D_88826564[i]] - 1]; }
+      }
 
-            D_88826A56 = func_8002EC08(func_80024F68(func_80029080()));
-
-            switch (D_88826A56) {
-                case 0:
-                    var_v1_2 = D_88820D28[i];
-                    break;
-
-                case 1:
-                    var_v1_2 = D_888218FC[i];
-                    break;
-
-                case 2:
-                    var_v1_2 = D_888218FC[i];
-                    break;
-
-                case 3:
-                default:
-                    var_v1_2 = D_888230CC[i];
-                    break;
-            }
-
-            while (true) {
-                if (var_v1_2->unk_00 < 0) {
-                    break;
-                }
-
-                if (D_88826A58 == var_v1_2->unk_00 - 1) {
-                    temp_s0->unk_00 = 1;
-                    temp_s0->unk_04[temp_s0->unk_02] = var_v1_2;
-                    temp_s0->unk_18[temp_s0->unk_02] = i;
-                    D_88826A54 = 0;
-                    temp_s0->unk_02++;
-                }
-                var_v1_2++;
-            }
+      while (1)
+      {
+        if (var_v1_2->unk_00 < 0)
+        {
+          break;
         }
-    }
+        if (D_88826A58 == (var_v1_2->unk_00 - 1))
+        {
+          temp_s0->unk_00 = 1;
+          temp_s0->unk_04[temp_s0->unk_02] = var_v1_2;
+          temp_s0->unk_18[temp_s0->unk_02] = i;
+          D_88826A54 = 0;
+          temp_s0->unk_02++;
+        }
+        var_v1_2++;
+        goto dummy_label_519886;
+        dummy_label_519886:
+        ;
 
-    D_88826A4E = func_888047D0(0);
-    D_88826A50 = D_88826A4E;
-    func_80011B94(NULL, &D_88826A20, 5, NULL);
-    func_80011B94(NULL, &D_88826A00, 5, NULL);
-    func_80011B94(NULL, &D_888269E0, 4, NULL);
-    D_88826A44 = process_geo_layout(sp4C, D_888265DC);
-    ptr = D_88826A44->unk_0C;
-    ptr->unk_60.at = D_8882627C;
-    ptr->unk_60.eye = D_88826288;
+        ;
+      }
+
+    }
+  }
+
+  D_88826A4E = func_888047D0(0);
+  D_88826A50 = D_88826A4E;
+  func_80011B94(0, &D_88826A20, 5, 0);
+  func_80011B94(0, &D_88826A00, 5, 0);
+  func_80011B94(0, &D_888269E0, 4, 0);
+  D_88826A44 = process_geo_layout(sp4C, D_888265DC);
+  ptr = D_88826A44->unk_0C;
+  ptr->unk_60.at = D_8882627C;
+  ptr->unk_60.eye = D_88826288;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/28/fragment28_2190D0/func_88807D04.s")
-#endif
 
 void func_8880812C(void) {
     main_pool_pop_state('MAPV');
