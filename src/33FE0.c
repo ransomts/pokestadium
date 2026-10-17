@@ -698,14 +698,25 @@ void func_80034254(StadiumModel* model) {
 // Vec3f* / ModelVertex* pointers (13193); computing nx before ny in the m2c draft (~3600); inlining
 // e1x/e2x (3280-5172); named edges (all subsets); len reused / separate scale var / inline 120/len;
 // D_800B2F50[ia].x += form; -Wo,-rege/-regr (no effect on FPRs).
-#ifdef NON_MATCHING
+// Round 8 pass 4 (agent-15): 2582 -> 1298. From farm j2 output-1458: a uopt basic-block boundary
+// right after the bx load (`if (0) {}`, an empty goto label or `switch (0) { default:; }` all give
+// the same code; `do {} while (0)` / `while (0) {}` / bare label do not) plus a named
+// `e = by - ay` used only in nx (nz keeps the inline form; using e in nz too is 3700+). Block
+// boundary sweep: after `ib =` 1322-1338, after `bx =` 1298-1314, every other line 2900-10000.
+// pad0 dropped for e, so cx's home is 0xDC (target 0xD8); keeping pad0 and dropping a pad1 slot
+// instead gives the target layout but scores 1314. Still differs: az lands in fs0 (target fa1),
+// cy/cz in fa1/ft4 (target ft4/ft5), cz-bz f24 / bz-az f26 (target f20/f22), nx/ny/nz colours.
+// Sweeps that did not help on top of the boundary: ay named (before/after ax, 1434-1709), any
+// subset of the six edges named (copy-propagated, sunk to first use in nx; 1499+), each of ay/az/
+// cy/cz named vs inline loads (48 variants, best 1314).
+#if 1
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 ax;
-    s32 pad0;
     f32 az, bx, by, bz, cx, cy, cz;
     f32 nx, ny, nz;
     f32 len;
+    f32 e;
     s16 ia, ib, ic;
     s32 pad1[10];
     f32 count;
@@ -734,13 +745,15 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         az = (vertices + ia)->position.base.z;
         ib = remap[*index++];
         bx = (vertices + ib)->position.base.x;
+        if (0) {}
         by = (vertices + ib)->position.base.y;
         bz = (vertices + ib)->position.base.z;
+        e = by - (vertices + ia)->position.base.y;
         ic = remap[*index++];
         cx = (vertices + ic)->position.base.x;
         cy = (vertices + ic)->position.base.y;
         cz = (vertices + ic)->position.base.z;
-        nx = ((by - (vertices + ia)->position.base.y) * (cz - bz)) - ((bz - az) * (cy - by));
+        nx = (e * (cz - bz)) - ((bz - az) * (cy - by));
         ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
         nz = ((bx - ax) * (cy - by)) - ((by - (vertices + ia)->position.base.y) * (cx - bx));
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
