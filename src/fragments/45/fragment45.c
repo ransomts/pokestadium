@@ -277,7 +277,7 @@ void InitializeSelectionScreen(s32 arg0) {
         D_836033BC = 0;
     }
 
-    func_83401D68(&D_83603300, 0x88, 0x66, 6, 3, func_80019760(5), D_836032F8, D_83402EE0, 0x18, 1);
+    func_83401D68(&D_83603300, 0x88, 0x66, 6, 3, AssetManager_Create(5), D_836032F8, D_83402EE0, 0x18, 1);
 
     if (D_83407AF8.unk_00 != -1) {
         func_834021EC(&D_83603300, &D_83407AF8);
@@ -830,7 +830,7 @@ s32 func_83602E14(void) {
 void func_83602F1C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_83602F4C(void) {
@@ -894,7 +894,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_04000000, _6A9750, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
     MessageBank_Init();
     func_83402340();
@@ -902,7 +902,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_83602F4C();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('FILM');

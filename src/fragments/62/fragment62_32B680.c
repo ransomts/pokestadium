@@ -389,7 +389,7 @@ void func_843416B0(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_81408150(arg0);
             }
             break;
@@ -478,7 +478,7 @@ Gfx* func_84341B84(Gfx* arg0, arg1_func_8434E21C* arg1, s16 arg2, s16 arg3, s16 
 }
 
 void func_84341E50(Gfx* arg0) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -511,7 +511,7 @@ void func_84341F44(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     s16 sp2A;
     s32 temp_v0_2;
 
-    sp40 = func_8432CB60(D_8006F09C);
+    sp40 = func_8432CB60(gDefaultGraphRoot);
     temp_v0_2 = func_8140C040(sp40);
     var_a2 = 0x80;
 
@@ -1084,7 +1084,7 @@ void func_843431B0(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -1548,7 +1548,7 @@ void func_84343EB4(unk_D_8140E720* arg0) {
 }
 
 void func_84343FA4(Gfx* arg0, u16 arg1) {
-    unk_D_86002F58_004_000* tmp = D_8006F09C;
+    unk_D_86002F58_004_000* tmp = gDefaultGraphRoot;
 
     gDPPipeSync(arg0++);
 
@@ -1773,7 +1773,7 @@ void func_8434495C(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -1916,7 +1916,7 @@ void func_843450B4(void) {
 }
 
 void func_8434523C(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, temp_v0->prim_a);
@@ -2060,7 +2060,7 @@ void func_843456DC(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -2137,7 +2137,7 @@ void func_843459A0(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -2149,7 +2149,7 @@ void func_843459A0(unk_D_8140E720* arg0) {
 }
 
 void func_84345A20(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2266,7 +2266,7 @@ void func_84345EC0(void) {
 
 void func_84345F38(Gfx* arg0, s32 arg1, u16 arg2) {
     UNUSED s32 pad;
-    unk_D_8140E720* sp28 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* sp28 = func_8432CB60(gDefaultGraphRoot);
 
     func_81406204(arg0++, 1, 0x28, 0x20, 0x20);
     func_81406288(arg0++, -1, 0x1E, 0x20, 0x20);
@@ -2287,7 +2287,7 @@ void func_84346014(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434605C(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2329,7 +2329,7 @@ void func_843461D0(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -2404,7 +2404,7 @@ void func_843463C8(unk_D_8140E720* arg0) {
         case 3:
             func_8140BAE4(arg0, 0, 0x10);
             func_8140BB14(arg0, 0, 0x20);
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -2498,7 +2498,7 @@ void func_8434669C(unk_D_8140E720* arg0) {
 }
 
 void func_843466EC(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2518,7 +2518,7 @@ void func_843467B0(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_843467F8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2542,7 +2542,7 @@ void func_84346960(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_843469A8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2638,7 +2638,7 @@ void func_84347108(unk_D_8140E720* arg0) {
 }
 
 void func_8434719C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    func_8432CB60(D_8006F09C);
+    func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetEnvColor(arg0++, 155, 255, 255, 255);
@@ -2656,7 +2656,7 @@ void func_84347254(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434729C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, temp_v0->prim_a);
@@ -2893,7 +2893,7 @@ void func_84347AF0(unk_D_8140E720* arg0) {
 }
 
 void func_84347BF4(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -3237,7 +3237,7 @@ void func_84348D4C(unk_D_8140E720* arg0) {
             break;
 
         case 4:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_81408150(arg0);
             }
             break;
@@ -3269,7 +3269,7 @@ void func_84348D4C(unk_D_8140E720* arg0) {
 }
 
 void func_84348F24(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -3312,7 +3312,7 @@ void func_8434917C(void) {
 }
 
 void func_843491D4(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    func_8432CB60(D_8006F09C);
+    func_8432CB60(gDefaultGraphRoot);
     arg0 = func_843418C0(arg0, arg1, 0x20, 5, -4, -4, 0xD, 6, 4, 4, 0xF, 1);
 
     gSPEndDisplayList(arg0++);
@@ -3326,7 +3326,7 @@ void func_84349264(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_843492AC(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    func_8432CB60(D_8006F09C);
+    func_8432CB60(gDefaultGraphRoot);
     arg0 = func_843418C0(arg0, arg1, 0x20, 5, 1, -1, 0xE, 0xE, -1, 1, 2, 2);
 
     gSPEndDisplayList(arg0++);
@@ -3481,7 +3481,7 @@ void func_84349AE8(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_81408150(arg0);
             }
             break;
@@ -3543,7 +3543,7 @@ void func_84349C74(unk_D_8140E720* arg0) {
 
 void func_84349D10(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     UNUSED s32 pad[2];
-    s16 sp2E = func_8140C058(func_8432CB60(D_8006F09C));
+    s16 sp2E = func_8140C058(func_8432CB60(gDefaultGraphRoot));
     u8 sp2D;
     u8 sp2C;
     u8 sp2B;
@@ -3608,8 +3608,8 @@ void func_84349F80(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_86002F58_004_000* sp24 = D_8006F09C;
-    s32 tmp = func_8432CB60(D_8006F09C);
+    unk_D_86002F58_004_000* sp24 = gDefaultGraphRoot;
+    s32 tmp = func_8432CB60(gDefaultGraphRoot);
     UNUSED u8 sp1F;
     UNUSED u8 sp1E;
     u8 sp1D;
@@ -3796,7 +3796,7 @@ f32 func_8434A574(unk_D_8140E720* arg0) {
 }
 
 void func_8434A654(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    func_8432CB60(D_8006F09C);
+    func_8432CB60(gDefaultGraphRoot);
     arg0 = func_84341B84(arg0, arg1, 0x20, 5, 0, 0, 1, 1, 0, -3, 1, 1);
 
     gSPEndDisplayList(arg0++);
@@ -3810,7 +3810,7 @@ void func_8434A6D8(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434A720(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -3880,7 +3880,7 @@ void func_8434AAEC(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
     u8* var_a3;
     s32 idx = arg1 * 0xB48;
 
-    if (func_84307F00(func_8432CB60(D_8006F09C)->unk_10) == 0) {
+    if (func_84307F00(func_8432CB60(gDefaultGraphRoot)->unk_10) == 0) {
         var_a3 = D_8438E778 + idx;
     } else {
         var_a3 = D_8438E77C + idx;
@@ -4085,7 +4085,7 @@ void func_8434B2B8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     s16 var_t2;
     s16 var_t1;
 
-    spC8 = func_8432CB60(D_8006F09C);
+    spC8 = func_8432CB60(gDefaultGraphRoot);
     temp_v0_2 = func_8140C048(spC8);
     var_s1 = 0x20;
     var_t1 = 5;
@@ -4425,7 +4425,7 @@ void func_8434C3A8(unk_D_8140E720* arg0) {
 }
 
 void func_8434C3F0(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     switch (arg1) {
         case 0:
@@ -4484,7 +4484,7 @@ void func_8434C720(void) {
 }
 
 void func_8434C814(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 100, 200, 255, temp_v0->prim_a);
@@ -4702,7 +4702,7 @@ void func_8434D72C(unk_D_8140E720* arg0) {
 
 void func_8434D77C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     UNUSED s32 pad;
-    unk_D_8140E720* sp48 = func_8432CB60(D_8006F09C);
+    unk_D_8140E720* sp48 = func_8432CB60(gDefaultGraphRoot);
     UNUSED s16 pad2;
     s16 sp44;
     s16 sp42;
@@ -4871,7 +4871,7 @@ void func_8434E21C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     UNUSED s16 pad2;
     s16 var_t5;
 
-    temp_v0 = func_8432CB60(D_8006F09C);
+    temp_v0 = func_8432CB60(gDefaultGraphRoot);
     var_t1 = 0x96;
     var_t2 = 0xFF;
     var_s1 = 0x20;
@@ -5001,7 +5001,7 @@ void func_8434E7CC(unk_D_8140E720* arg0) {
                 func_8140BC2C(arg0, 0, 0x20);
             }
 
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_81408150(arg0);
             }
             break;
@@ -5077,7 +5077,7 @@ void func_8434EC68(unk_D_8140E720* arg0) {
         case 2:
             func_8140D908(arg0, 0x33, 0x24);
             func_8140BC2C(arg0, 0xFF, 0x1D);
-            if (func_80017514(arg0->unk_14) != 0) {
+            if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
                 func_81408150(arg0);
             }
             break;

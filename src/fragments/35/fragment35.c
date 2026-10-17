@@ -55,7 +55,7 @@ void func_820002F0(u64 arg0) {
 void func_8200036C(void) {
     main_pool_push_state('GPAK');
 
-    func_800240A0();
+    InitializePlayers();
 
     main_pool_pop_state('GPAK');
 }
@@ -73,14 +73,14 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, n64_logo_texture, 0);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     Stage_Set(sp2C);
     func_80006C04(1);
     Stage_AdvanceUntil(3, func_820002B4);
     MessageBank_Init();
     LoadNameSlots();
     func_80021920();
-    func_80028070(&sp2A);
+    GbsGetPlayerMoney(&sp2A);
 
     if (sp2A & 1) {
         func_8004AF24(1);

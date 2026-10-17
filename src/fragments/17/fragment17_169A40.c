@@ -46,7 +46,7 @@ void func_86B0A0B8(void) {
 void func_86B0A15C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86B0A18C(u8* arg0) {
@@ -77,7 +77,7 @@ void func_86B0A30C(void) {
     Stage_BeginDisplayList();
     func_86B0A18C(D_86B10828);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_86B106B4);
     func_86B0A0B0();
     Stage_Advance();
@@ -127,9 +127,9 @@ void func_86B0A47C(void) {
     Graph_InitRoots();
     func_86B0A0B8();
     Graph_AddToRootList0(&D_86B106B8);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
-    D_86B106B0 = func_80019D18(0xD6);
+    D_86B106B0 = GeoLayout_LoadById(0xD6);
     GraphNode_InitChild(&D_86B106B8, 0, 0xD6, D_86B106B0->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B106B8, 1);
     Vec3f_Set(&D_86B106B8.unk_024, 0.0f, 0.0f, 0.0f);
@@ -148,7 +148,7 @@ s32 BattleState_Handle24(void) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&D_86B10830, gBattleContext.unk_11F2);
 
     if (gBattleContext.unk_11F2 == 1) {
@@ -166,7 +166,7 @@ s32 BattleState_Handle24(void) {
     Stage_Set(sp24);
     func_86B0A414();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MTWO');

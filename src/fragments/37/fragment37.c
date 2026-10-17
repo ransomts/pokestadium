@@ -299,9 +299,9 @@ void DrawParticleSprites(u8* arg0) {
 
             if (temp_s1 != 0) {
                 if (i == 0) {
-                    func_8000E840(&sp5C, 0xFF, 0xFF, 0xFF, 0xFF);
+                    GfxColor_SetRGBA(&sp5C, 0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
-                    func_8000E840(&sp5C, 0xFF, 0xFF, 0x64, 0xA0 - (i * 30));
+                    GfxColor_SetRGBA(&sp5C, 0xFF, 0xFF, 0x64, 0xA0 - (i * 30));
                 }
                 DrawTexturedQuad(temp_s3, temp_s4, temp_s1, arg0, sp5C);
             }
@@ -504,7 +504,7 @@ void func_822022C8(s32 arg0) {
 void func_82202374(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 s32 func_822023A4(void) {
@@ -816,8 +816,8 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     MessageBank_Init();
     D_822030F0 = GetMessageBank(0x17);
-    func_80028AFC(2);
-    func_80027F24(&D_822031E8);
+    GbsEnsureBankLoaded(2);
+    GbsGetPlayerName(&D_822031E8);
     func_80027FA0(&D_822031E0, gBattleContext.unk_11F2);
     func_82202CB8();
     D_822031D8 = 8;

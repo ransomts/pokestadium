@@ -294,7 +294,7 @@ void func_82C01054(void) {
     GbsClearAndCommitBlock(0x15, 0);
     GbsClearAndCommitBlock(0x16, 0);
     GbsClearAndCommitBlock(0x17, 0);
-    func_800286D8();
+    GbsSyncAllBanks();
     gBattleContext.unk_11F2 = 0;
     func_8004AF24(0);
     SetAudioActiveFlag(1);
@@ -305,7 +305,7 @@ void func_82C0115C(u16 arg0) {
     u16 sp26;
     u16 sp24;
 
-    func_80028070(&sp26);
+    GbsGetPlayerMoney(&sp26);
     sp24 = arg0 ^ sp26;
 
     if (sp24 != 0) {
@@ -325,7 +325,7 @@ void func_82C0115C(u16 arg0) {
             }
         }
 
-        func_80028084(&arg0);
+        GbsSetPlayerMoney(&arg0);
         GbsCommitBankBlock(0x14, 0);
     }
 }
@@ -424,12 +424,12 @@ s32 Pref_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
     MessageBank_Init();
     gPrefMessageBank = GetMessageBank(0x15);
     func_80028BE4();
-    func_80028070(&gPrefToggleFlags);
+    GbsGetPlayerMoney(&gPrefToggleFlags);
     gPrefSelectedOption = 0;
     Stage_Set(sp24);
     Pref_MainLoop();
     Stage_Destroy();
-    func_800286D8();
+    GbsSyncAllBanks();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('PREF');

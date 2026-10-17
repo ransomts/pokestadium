@@ -64,7 +64,7 @@ void func_8431AE6C(void) {
 
 void func_8431AE7C(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6) {
     Vec3f_Set(&arg0->unk_60.at, arg1, arg2, arg3);
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, arg4, arg5, arg6);
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg4, arg5, arg6);
 }
 
 void func_8431AED8(unk_D_84390010* arg0, Vec3f* arg1) {
@@ -203,7 +203,7 @@ s32 func_8431B34C(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2) {
         }
     }
 
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, D_84390240.unk_00->unk_5C, D_84390240.unk_00->unk_56,
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, D_84390240.unk_00->unk_5C, D_84390240.unk_00->unk_56,
                   D_84390240.unk_00->unk_58);
     return 0;
 }
@@ -322,35 +322,35 @@ void func_8431BA5C(void) {
 }
 
 void func_8431BAB4(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
-    func_80010354(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
+    Camera_SetViewParameters(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
     arg1->unk_60.at.y += arg6;
     arg1->unk_60.at.y += func_84307C30(arg0);
 }
 
 void func_8431BB24(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
-    func_80010354(&arg1, &arg0->unk_60.at, arg4, arg2, arg3);
+    Camera_SetViewParameters(&arg1, &arg0->unk_60.at, arg4, arg2, arg3);
     arg0->unk_60.at.y += arg5;
 }
 
 void func_8431BB80(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
-    func_80010354(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
+    Camera_SetViewParameters(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
     arg0->unk_60.eye.y += arg5;
 }
 
 void func_8431BBDC(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
     arg0->unk_60.eye.y += arg4;
 }
 
 void func_8431BC38(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     func_8431B4C0(arg2, arg3, arg4);
-    func_80010354(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
+    Camera_SetViewParameters(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
     arg0->unk_60.eye.y += arg5;
 }
 
 void func_8431BCA4(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     func_8431B4C0(arg1, arg2, arg3);
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
     arg0->unk_60.eye.y += arg4;
 }
 
@@ -456,7 +456,7 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     }
 
     sp64.y = arg1->unk_448.unk_18.y;
-    func_80010354(&sp64, &sp58, sp2C->unk_4C, sp2C->unk_44, sp2C->unk_46);
+    Camera_SetViewParameters(&sp64, &sp58, sp2C->unk_4C, sp2C->unk_44, sp2C->unk_46);
     sp4C.y = sp58.y;
     Matrix_Decompose(&sp4C, &sp58, &sp3C, &sp36, &sp34);
 
@@ -495,9 +495,9 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
         var_fv1 = 1.0f;
     }
 
-    func_80010354(&sp4C, &arg0->unk_60.at, sp3C * var_fv1, 0, sp34);
+    Camera_SetViewParameters(&sp4C, &arg0->unk_60.at, sp3C * var_fv1, 0, sp34);
     func_8431AED8(arg1, &sp64);
-    func_80010354(&sp64, &sp58, sp2C->unk_4C, sp2C->unk_44, sp2C->unk_46);
+    Camera_SetViewParameters(&sp64, &sp58, sp2C->unk_4C, sp2C->unk_44, sp2C->unk_46);
 
     sp3C = sp40.y - sp58.y;
     if (sp3C < 0.0f) {
@@ -577,7 +577,7 @@ void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
             sp44 = func_800104AC(sp44, D_84390240.unk_00->unk_70, var_fv0_2 * 0.4f, var_fv0_2 * 0.08f);
         }
     }
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
 }
 
 void func_8431C71C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
@@ -613,7 +613,7 @@ void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         func_8430C1E4(&sp54, &arg1->unk_448.unk_18);
     }
 
-    func_80010354(&sp54, &sp48, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
+    Camera_SetViewParameters(&sp54, &sp48, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     Matrix_Decompose(&sp3C, &sp48, &sp38, &sp32, &sp30);
 
     var_fa0 = (sp38 / (func_84307BD8(arg1) * 80.0f)) * 3.0f;
@@ -621,7 +621,7 @@ void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         var_fa0 = 1.0f;
     }
 
-    func_80010354(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
+    Camera_SetViewParameters(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
 }
 
 s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
@@ -690,10 +690,10 @@ void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
 
     func_8430C1E4(&sp34, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp58);
-    func_80010354(&sp58, &sp4C, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
+    Camera_SetViewParameters(&sp58, &sp4C, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     Matrix_Decompose(&sp34, &sp4C, &sp30, &sp2A, &sp28);
     D_84390240.unk_00->unk_94.z = func_800104AC(D_84390240.unk_00->unk_94.z, 0.8f, 0.05f, 0.05f);
-    func_80010354(&sp34, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
+    Camera_SetViewParameters(&sp34, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
 }
 
 void func_8431CC38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
@@ -706,7 +706,7 @@ void func_8431CC38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
 
     func_8430C1E4(&sp3C, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp60);
-    func_80010354(&sp60, &sp54, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
+    Camera_SetViewParameters(&sp60, &sp54, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     func_8430C718(&arg0->unk_60.at.y, sp54.y, 0.1f);
     if (arg0->unk_60.at.y < -10.0f) {
         arg0->unk_60.at.y = -10.0f;
@@ -738,7 +738,7 @@ void func_8431CCFC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C4F8(&sp52, sp50, 0x108);
     func_8430C4F8(&sp4E, sp4C, 0xB6);
     func_8430C070(&sp68, &arg0->unk_60.at, &sp58, &sp56, &sp54);
-    func_80010354(&sp68, &arg0->unk_60.at, sp58 / 8, sp56, sp54);
+    Camera_SetViewParameters(&sp68, &arg0->unk_60.at, sp58 / 8, sp56, sp54);
     func_8431BBDC(arg0, sp4E, sp52, D_843901F0, 0.0f);
 }
 
@@ -754,9 +754,9 @@ void func_8431CEF0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED s32 ar
 
     func_8431AED8(arg1, &sp50);
     func_8430C1E4(&sp38, &arg0->unk_60.at);
-    func_80010354(&sp50, &sp44, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
+    Camera_SetViewParameters(&sp50, &sp44, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     func_8430C070(&sp38, &sp44, &sp34, &sp32, &sp30);
-    func_80010354(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
+    Camera_SetViewParameters(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
 }
 
 void func_8431CFA4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
@@ -781,7 +781,7 @@ s32 func_8431D048(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C1E4(&sp30, &arg0->unk_60.eye);
     func_8431EF54(arg0, arg1);
     Matrix_Decompose(&sp30, &arg0->unk_60.eye, &sp2C, &sp28, &sp2A);
-    func_80010354(&sp30, &arg0->unk_60.eye, sp2C / 2, sp28, sp2A);
+    Camera_SetViewParameters(&sp30, &arg0->unk_60.eye, sp2C / 2, sp28, sp2A);
     func_8430C1E4(&arg0->unk_60.at, &sp3C);
 
     if (sp2C <= 0.5f) {
@@ -810,11 +810,11 @@ s32 func_8431D118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 
     }
 
     func_8430C718(&D_84390240.unk_00->unk_94.z, D_843901B0.unk_34, D_843901B0.unk_38);
-    func_80010354(&D_843901B0.unk_00, &sp54, D_843901B0.unk_30, D_843901B0.unk_26, D_843901B0.unk_28);
+    Camera_SetViewParameters(&D_843901B0.unk_00, &sp54, D_843901B0.unk_30, D_843901B0.unk_26, D_843901B0.unk_28);
     func_8430C1E4(&sp48, &arg0->unk_60.eye);
     func_8430C070(&sp48, &sp54, &sp38, &sp32, &sp30);
-    func_80010354(&sp48, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp38, sp32, sp30);
-    func_80010354(&D_843901B0.unk_00, &sp3C, D_843901B0.unk_2C, D_843901B0.unk_20, D_843901B0.unk_22);
+    Camera_SetViewParameters(&sp48, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp38, sp32, sp30);
+    Camera_SetViewParameters(&D_843901B0.unk_00, &sp3C, D_843901B0.unk_2C, D_843901B0.unk_20, D_843901B0.unk_22);
 
     if (arg2 == 1) {
         sp3C.y += func_84307C30(arg1);
@@ -822,7 +822,7 @@ s32 func_8431D118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 
 
     func_8430C1E4(&sp60, &arg0->unk_60.at);
     func_8430C070(&sp60, &sp3C, &sp34, &sp32, &sp30);
-    func_80010354(&sp60, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp34, sp32, sp30);
+    Camera_SetViewParameters(&sp60, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp34, sp32, sp30);
 
     if ((sp38 <= 1.75f) && (sp34 <= 1.75f)) {
         return 1;
@@ -860,10 +860,10 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     sp44 *= var_fa1;
     sp44 += D_843901B0.unk_30;
 
-    func_80010354(&D_843901B0.unk_00, &sp60, sp44, D_843901B0.unk_26, D_843901B0.unk_28);
+    Camera_SetViewParameters(&D_843901B0.unk_00, &sp60, sp44, D_843901B0.unk_26, D_843901B0.unk_28);
     func_8430C1E4(&sp54, &arg0->unk_60.eye);
     func_8430C070(&sp54, &sp60, &sp40, &sp36, &sp34);
-    func_80010354(&sp54, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp40, sp36, sp34);
+    Camera_SetViewParameters(&sp54, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp40, sp36, sp34);
     func_8431AED8(arg1, &sp6C);
     Matrix_Decompose(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
@@ -874,11 +874,11 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     sp44 *= var_fa1;
     sp44 += D_843901B0.unk_2C;
 
-    func_80010354(&D_843901B0.unk_00, &sp48, sp44, D_843901B0.unk_20, D_843901B0.unk_22);
+    Camera_SetViewParameters(&D_843901B0.unk_00, &sp48, sp44, D_843901B0.unk_20, D_843901B0.unk_22);
     sp48.y += func_84307C30(arg1);
     func_8430C1E4(&sp6C, &arg0->unk_60.at);
     func_8430C070(&sp6C, &sp48, &sp3C, &sp36, &sp34);
-    func_80010354(&sp6C, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp3C, sp36, sp34);
+    Camera_SetViewParameters(&sp6C, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp3C, sp36, sp34);
 
     if ((sp40 <= 1.0f) && (sp3C <= 1.0f)) {
         return 1;
@@ -1006,16 +1006,16 @@ s32 func_8431DA38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C718(&arg0->unk_24.fovy, 30.0f, 0.06f);
     Vec3f_Set(&sp64, arg1->unk_4B0 * -150.0f, 5.0f, 0.0f);
     func_8430C718(&D_84390240.unk_00->unk_94.z, 0.2f, 0.06f);
-    func_80010354(&sp64, &sp4C, 100.0f, 0, func_84308190(arg1));
+    Camera_SetViewParameters(&sp64, &sp4C, 100.0f, 0, func_84308190(arg1));
     func_8430C1E4(&sp40, &arg0->unk_60.eye);
     func_8430C070(&sp40, &sp4C, &sp30, &sp2A, &sp28);
-    func_80010354(&sp40, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
-    func_80010354(&sp64, &sp34, 0.0f, 0, func_84308190(arg1));
+    Camera_SetViewParameters(&sp40, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
+    Camera_SetViewParameters(&sp64, &sp34, 0.0f, 0, func_84308190(arg1));
     func_8430C1E4(&sp58, &arg0->unk_60.at);
     func_8430C070(&sp58, &sp34, &sp30, &sp2A, &sp28);
 
     if (sp30 >= 1.0f) {
-        func_80010354(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
+        Camera_SetViewParameters(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
         return 0;
     }
     return 1;
@@ -1091,7 +1091,7 @@ s32 func_8431DE30(unk_D_86002F34_00C* arg0, s32 arg1) {
 
     func_8430C1E4(&sp58, &arg0->unk_60.at);
     func_8430C070(&sp58, &sp4C, &sp30, &sp2E, &sp2C);
-    func_80010354(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2E, sp2C);
+    Camera_SetViewParameters(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2E, sp2C);
 
     if (sp30 <= 1.0f) {
         return 1;

@@ -101,7 +101,7 @@ s32 func_81300020(s32 arg0, GraphNode* arg1) {
     s32 idx;
 
     if (arg0 == 5) {
-        idx = D_8006F09C->unk_000.unk_14;
+        idx = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -111,7 +111,7 @@ s32 func_81300020(s32 arg0, GraphNode* arg1) {
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 639, 202);
         }
 
-        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, D_8006F09C->unk_01D);
+        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
 
         if (D_81304008[idx].unk_01C != NULL) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_81304008[idx].unk_01C));
@@ -126,8 +126,8 @@ s32 func_81300020(s32 arg0, GraphNode* arg1) {
 s32 func_813001C0(void) {
     unk_func_8002A728 sp18;
 
-    func_80028AFC(2);
-    func_80027F24(&sp18);
+    GbsEnsureBankLoaded(2);
+    GbsGetPlayerName(&sp18);
     return sp18.unk_00;
 }
 
@@ -537,7 +537,7 @@ void func_8130237C(void) {
 void func_81302498(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_813024C8(s32 arg0) {
@@ -811,7 +811,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     SpriteAssets_Load();
     func_81302548();
     func_81302630();

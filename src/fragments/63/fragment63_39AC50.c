@@ -86,9 +86,9 @@ s32 func_84B06B50(s32 arg0, unk_func_80011B94* arg1) {
     s32 var_a1;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A28*)D_8006F09C->unk_000.unk_14;
+        temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = D_8006F09C->unk_0A6 - temp_a3->unk_04->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6;
         if (temp_v1 < 5) {
             var_a1 = ((arg1->unk_00.unk_14 * 3) + temp_v1) - 2;
             sp30 = D_300C000;
@@ -112,9 +112,9 @@ s32 func_84B06C7C(s32 arg0, unk_func_80011B94* arg1) {
     s32 var_a1;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A28*)D_8006F09C->unk_000.unk_14;
+        temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = D_8006F09C->unk_0A6 - temp_a3->unk_04->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6;
         if (temp_v1 < 5) {
             var_a1 = (arg1->unk_00.unk_14 * 2) + (((temp_v1 - 1) / 2) * 6) + ((temp_v1 - 1) % 2);
             sp30 = D_300F000;
@@ -136,8 +136,8 @@ s32 func_84B06E08(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25A28*)D_8006F09C->unk_000.unk_14;
-        if (temp_v1->unk_04->unk_0A6 == D_8006F09C->unk_0A6) {
+        temp_v1 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
+        if (temp_v1->unk_04->unk_0A6 == gDefaultGraphRoot->unk_0A6) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;
@@ -729,7 +729,7 @@ s32 func_84B06F60(unk_D_84B25A28* arg0, s16 arg1) {
 
 void func_84B07058(unk_D_84B25A28* arg0, s16 arg1) {
     arg0->unk_08->unk_60.at.y = SINS(arg1 << 0xE) * SQ((0x10 - arg1) / 12.0f);
-    func_80010354(&arg0->unk_08->unk_60.at, &arg0->unk_08->unk_60.eye, 289.0f, 0, 0);
+    Camera_SetViewParameters(&arg0->unk_08->unk_60.at, &arg0->unk_08->unk_60.eye, 289.0f, 0, 0);
 }
 
 s32 func_84B070EC(unk_D_84B25A28* arg0, s16 arg1) {
@@ -829,7 +829,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
     s32 count;
     unk_D_86002F58_004_000_010* temp_s0;
 
-    temp_s0 = func_80019760(5);
+    temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_20, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
@@ -844,7 +844,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
 void func_84B07560(unk_D_84B25A28* arg0) {
     s32 i;
     s32 count;
-    unk_D_86002F58_004_000_010* tmp = func_80019760(5);
+    unk_D_86002F58_004_000_010* tmp = AssetManager_Create(5);
 
     SpriteDisplay_SetDepthBuffer(arg0->unk_20, tmp, FramebufferImage_Allocate(0, 2, 0x60, 0x40, 1));
 
@@ -873,7 +873,7 @@ void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     FRAGMENT_LOAD(fragment31);
 
     if (arg0->unk_02 == 1) {

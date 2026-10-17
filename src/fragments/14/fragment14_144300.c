@@ -120,7 +120,7 @@ void ReadAllControllers(void) {
 
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 
     bzero(&D_86807518, sizeof(Controller));
 
@@ -470,7 +470,7 @@ void RenderSushiGoRoundFrame(void) {
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
     if (D_8780FC94 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(D_86807500);
@@ -693,7 +693,7 @@ void InitSushiGoRound(void) {
 
     mem_pool_resize_block(sp18);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     Fragment2_1_Init();
     func_86806A50();
 
@@ -741,7 +741,7 @@ void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     RunSushiGoRound();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

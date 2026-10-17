@@ -724,7 +724,7 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
     func_83400524();
     UpdateMenuItemStates();
     Graph_InitRoots();
-    sp30 = func_80019760(5);
+    sp30 = AssetManager_Create(5);
     func_83401D68(&D_833032E8, 0x3C, 0x2D, 4, 2, sp30, D_8330339C, D_83407ABC, 4, 1);
     func_83402298(&D_83407B38, sp30, D_8330339C);
 
@@ -1187,7 +1187,7 @@ s32 func_83302B5C(void) {
 void func_83302E3C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_83302E6C(void) {
@@ -1254,7 +1254,7 @@ void func_83302FD8(s32 arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     D_8330339C = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
     func_83402340();
@@ -1262,7 +1262,7 @@ void func_83302FD8(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_83302E6C();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('SNAP');

@@ -592,7 +592,7 @@ void miniInitMetapodPlayer(MiniActor* metapod, s32 arg1) {
     metapod->middleHeight = metapod->halfHeight * 0.5f;
 
     GraphNode_TriggerAction(&metapod->unk_000, 0);
-    func_80017788(&metapod->unk_000);
+    InitAnimState(&metapod->unk_000);
     metapod->unk_000.unk_01C = 0;
     miniActorUpdateTransform(metapod);
     metapod->isComp = gMiniHudColors[arg1];
@@ -633,7 +633,7 @@ void miniMetapodHumanControls(MiniActor* metapod) {
             break;
 
         case 2: //  harden
-            if (func_80017484(&metapod->unk_000, 5) != 0) {
+            if (Anim_IsFrameInRange(&metapod->unk_000, 5) != 0) {
                 metapod->unk_000.unk_000.unk_02 &= ~0x20;
             }
 
@@ -879,7 +879,7 @@ void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
             compMetapod->damageTimer++;
             compMetapod->unk_272 = 4;
             compMetapod->unk_000.unk_01C = 1;
-            if (func_80017484(&compMetapod->unk_000, 5) != 0) {
+            if (Anim_IsFrameInRange(&compMetapod->unk_000, 5) != 0) {
                 compMetapod->unk_000.unk_000.unk_02 &= ~0x20;
             }
             break;
@@ -1692,7 +1692,7 @@ void func_86E02880(s32 arg0) {
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(&D_87906050->unk_00);
@@ -1829,7 +1829,7 @@ void func_86E02C5C(void) {
         Graph_AddToRootList0(&miniMetapodRocks[i].unk_000);
     }
 
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     for (i = 0; i < 4; i++) {
         randN = D_8780FA68[i] - 1;
@@ -1838,7 +1838,7 @@ void func_86E02C5C(void) {
         }
 
         miniMetapods[i].unk_23C = playerVariations[randN][0];
-        miniMetapods[i].unk_168 = func_80019D18(miniMetapods[i].unk_23C);
+        miniMetapods[i].unk_168 = GeoLayout_LoadById(miniMetapods[i].unk_23C);
         miniMetapods[i].cubeRadio = playerVariations[randN][1];
         miniMetapods[i].halfHeight = playerVariations[randN][2];
 
@@ -1848,7 +1848,7 @@ void func_86E02C5C(void) {
         if (miniMetapods) {}
     }
 
-    temp_s1_2 = func_80019D18(0x9C);
+    temp_s1_2 = GeoLayout_LoadById(0x9C);
     for (i = 0; i < 20; i++) {
         miniMetapodRocks[i].unk_23C = 0x9C;
         miniMetapodRocks[i].unk_168 = temp_s1_2;
@@ -1885,7 +1885,7 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
     func_86E02A64(); //	tutorial screen ?
     func_86E02BB0();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(gFontManager);
+    FontManager_Free(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

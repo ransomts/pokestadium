@@ -3949,7 +3949,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
 
     spF4 = GetMessageString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
     func_88807090();
-    func_80015348();
+    Gfx_FinishFrame();
     Stage_BeginDisplayList();
     Graph_SetTextureState(D_88826A44);
     Text_ResetState();
@@ -4221,7 +4221,7 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   Asset_Load((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
   func_80019F0C(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
   D_88826A48 = BinArchive_GetFile(Asset_Load2(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
-  func_80011B94(0, &D_888269C0, 5, 0);
+  SimpleGfxNode_Create(0, &D_888269C0, 5, 0);
   D_88826A54 = 1;
   for (i = 0; i < 59; i++)
   {
@@ -4297,9 +4297,9 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
 
   D_88826A4E = func_888047D0(0);
   D_88826A50 = D_88826A4E;
-  func_80011B94(0, &D_88826A20, 5, 0);
-  func_80011B94(0, &D_88826A00, 5, 0);
-  func_80011B94(0, &D_888269E0, 4, 0);
+  SimpleGfxNode_Create(0, &D_88826A20, 5, 0);
+  SimpleGfxNode_Create(0, &D_88826A00, 5, 0);
+  SimpleGfxNode_Create(0, &D_888269E0, 4, 0);
   D_88826A44 = process_geo_layout(sp4C, D_888265DC);
   ptr = D_88826A44->unk_0C;
   ptr->unk_60.at = D_8882627C;

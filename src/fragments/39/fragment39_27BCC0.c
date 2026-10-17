@@ -797,7 +797,7 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
     Gfx* var_a3;
 
     if (arg0 == 5) {
-        tmp = D_8006F09C->unk_000.unk_14;
+        tmp = gDefaultGraphRoot->unk_000.unk_14;
         var_v0 = 0;
         if ((tmp == D_8250A288.unk_00) && (D_8250A26C != 7)) {
             var_v0 = (D_82508AF4 % 30u) / 3;
@@ -824,7 +824,7 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
 
 s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
-        s32 tmp = D_8006F09C->unk_000.unk_14;
+        s32 tmp = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -878,7 +878,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
     s32 idx3;
 
     if (arg0 == 5) {
-        idx = D_8006F09C->unk_000.unk_14;
+        idx = gDefaultGraphRoot->unk_000.unk_14;
 
         idx2 = D_8250A240[idx]->unk_0A;
         idx3 = D_8250A240[idx]->unk_0C;
@@ -925,7 +925,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
 }
 
 void UI_Cursor_Init(void) {
-    unk_D_86002F58_004_000_000* ptr = &D_8250A308.unk_000.unk_000;
+    GraphRootNode* ptr = &D_8250A308.unk_000.unk_000;
 
     D_8250A308.unk_16C = 0;
     D_8250A308.unk_168 = 0;
@@ -1018,12 +1018,12 @@ s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
             break;
 
         case 2:
-            UI_Cursor_Update(D_8006F09C);
+            UI_Cursor_Update(gDefaultGraphRoot);
             break;
 
         case 5:
             gDPPipeSync(gDisplayListHead++);
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, D_8006F09C->unk_01D);
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDefaultGraphRoot->unk_01D);
             gSPDisplayList(gDisplayListHead++, D_82508770);
 
             func_80015684();
@@ -1113,7 +1113,7 @@ void ControllerInput_Update(void) {
 void func_82500EE8(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
     ControllerInput_Update();
 }
 
@@ -2648,13 +2648,13 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
 
     D_8250A268 = BinArchive_GetFile(D_8250A264, 4);
     D_8250A47C = D_87806330;
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_825045C0();
     Stage_Set(sp24);
     func_82504370(arg0, arg1);
     Stage_AdvanceN(2);
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('KIDC');

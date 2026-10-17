@@ -21,7 +21,7 @@ void func_81000518(s32 arg0, DisplayListState* state) {
 }
 
 void func_81000560(Gfx* gfx, s32* address) {
-    if (D_8006F09C->unk_01C == 0) {
+    if (gDefaultGraphRoot->unk_01C == 0) {
         gSPDisplayList(gfx++, *address);
     }
     gSPEndDisplayList(gfx++);

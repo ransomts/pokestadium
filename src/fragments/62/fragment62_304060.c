@@ -338,7 +338,7 @@ void func_8431A1C8(unk_D_86002F34_00C* arg0) {
     }
     arg0->unk_24.fovy = D_843859E0[var_v1].unk_0C;
     Vec3f_Set(&arg0->unk_60.at, 0.0f, 10.0f, 0.0f);
-    func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, D_843859E0[var_v1].unk_04, D_843859E0[var_v1].unk_08,
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, D_843859E0[var_v1].unk_04, D_843859E0[var_v1].unk_08,
                   D_843859E0[var_v1].unk_0A);
     D_84390240.unk_00->unk_20++;
 }
@@ -378,7 +378,7 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
         tmp4 = D_84384580[D_84390240.unk_00->unk_2C]->unk_0C;
         tmp3 = (temp_s0->unk_4B0 * D_84384580[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
 
-        func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
+        Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
         D_84390240.unk_00->unk_20++;
     }
 }

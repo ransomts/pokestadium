@@ -67,7 +67,7 @@ void func_86B0A750(void) {
     D_86B10BCA = 0;
     D_86B10BCC = 0x78;
 
-    func_80010354(&D_86B109B8->unk_60.at, &D_86B109B8->unk_60.eye, D_86B10BCC, D_86B10BC8, D_86B10BCA);
+    Camera_SetViewParameters(&D_86B109B8->unk_60.at, &D_86B109B8->unk_60.eye, D_86B10BCC, D_86B10BC8, D_86B10BCA);
 
     D_86B109B8->unk_24.near = 50.0f;
     D_86B109B8->unk_24.far = 6400.0f;
@@ -269,7 +269,7 @@ void func_86B0B184(void) {
 void func_86B0B498(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86B0B4C8(void) {
@@ -303,7 +303,7 @@ void func_86B0B650(void) {
     Stage_BeginDisplayList();
     func_86B0B4D0(D_86B109C0);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_86B10848);
     func_86B0B184();
     Stage_Advance();
@@ -398,13 +398,13 @@ void func_86B0B8DC(void) {
     func_86B0A7F8();
     func_86B0B024();
     Graph_AddToRootList0(&D_86B10850);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     if (gBattleContext.unk_0000 == 0x16) {
-        D_86B10844 = func_80019D18(0xD5);
+        D_86B10844 = GeoLayout_LoadById(0xD5);
         GraphNode_InitChild(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
     } else {
-        D_86B10844 = func_80019D18(0xD4);
+        D_86B10844 = GeoLayout_LoadById(0xD4);
         GraphNode_InitChild(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
     }
 
@@ -444,7 +444,7 @@ s32 BattleState_Handle22Or23(void) {
     Stage_Set(sp24);
     func_86B0B810();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('GBOY');

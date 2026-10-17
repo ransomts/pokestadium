@@ -21,7 +21,7 @@ void Fragment31_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
     u8 temp_v0;
 
     temp_v0 = func_800325B4();
-    if (D_8006F09C->unk_01C == 0) {
+    if (gDefaultGraphRoot->unk_01C == 0) {
         temp_t2 = (gFragment31ScrollOffset >> 4);
         temp_t3 = 0x4000 - (u16)(gFragment31ScrollOffset >> 4);
         temp_t4 = 0x4000 - (gFragment31ScrollOffset >> 3);

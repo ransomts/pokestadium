@@ -255,7 +255,7 @@ void func_82F0D084(void) {
 }
 
 void func_82F0D090(unk_D_82F21238* arg0, s32 arg1) {
-    arg0->unk_28 = func_80019760(1);
+    arg0->unk_28 = AssetManager_Create(1);
     arg0->unk_2C = func_8001B1FC(arg0->unk_28, 0xC0, 0xC0, 0, 0, 0xC0, 0xC0, NULL);
     arg0->unk_2C->unk_00 &= ~2;
     func_8001B2D8(arg0->unk_2C, arg0->unk_24, 1);
@@ -301,7 +301,7 @@ void func_82F0D160(s16 arg0) {
 void func_82F0D27C(unk_D_82F21238* arg0) {
     unk_D_86002F58_004_000* sp24 = arg0->unk_2C->unk_24;
 
-    if ((func_80017514(sp24) != 0) && (arg0->unk_06 == 2)) {
+    if ((Anim_HasReachedEnd(sp24) != 0) && (arg0->unk_06 == 2)) {
         arg0->unk_06 = 1;
         arg0->unk_2C->unk_00 |= 4;
         GraphNode_TriggerAction(sp24, arg0->unk_06);

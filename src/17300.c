@@ -79,7 +79,7 @@ f32 Anim_GetPosition(unk_D_800ABCC0* arg0, s32 arg1) {
     return var_fv1;
 }
 
-f32 func_80016934(Vec3s* arg0, s16 arg1, s16 arg2) {
+f32 Anim_InterpolateCubic(Vec3s* arg0, s16 arg1, s16 arg2) {
     f32 y;
     s32 i;
     f32 x;
@@ -109,7 +109,7 @@ f32 func_80016934(Vec3s* arg0, s16 arg1, s16 arg2) {
     return var_fv1;
 }
 
-f32 func_80016B30(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
+f32 Anim_InterpolateCubicVec(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
     f32 y;
     s32 i;
     f32 x;
@@ -139,7 +139,7 @@ f32 func_80016B30(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
     return var_fv1;
 }
 
-f32 func_80016D20(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 Anim_GetScaleInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
     s16* tmp;
@@ -149,15 +149,15 @@ f32 func_80016D20(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         tmp = &arg0->unk_0C[temp_v0->unk_04];
         if (temp_v0->unk_03 & 4) {
-            var_fv1 = func_80016B30(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
+            var_fv1 = Anim_InterpolateCubicVec(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
         } else {
-            var_fv1 = func_80016934(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
+            var_fv1 = Anim_InterpolateCubic(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
         }
     }
     return var_fv1;
 }
 
-s16 func_80016DE0(unk_D_800ABCC0* arg0, s32 arg1) {
+s16 Anim_GetRotationInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16* temp_a0;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -167,9 +167,9 @@ s16 func_80016DE0(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         temp_a0 = &arg0->unk_10[temp_v0->unk_06];
         if (temp_v0->unk_03 & 2) {
-            var_fv1 = func_80016B30(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
+            var_fv1 = Anim_InterpolateCubicVec(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
         } else {
-            var_fv1 = func_80016934(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
+            var_fv1 = Anim_InterpolateCubic(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
         }
     }
 
@@ -184,7 +184,7 @@ s16 func_80016DE0(unk_D_800ABCC0* arg0, s32 arg1) {
     return (var_fv1 / 360.0f) * 65536.0f;
 }
 
-f32 func_80016F20(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 Anim_GetPositionInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     s16* temp_a0;
     f32 var_fv0;
     f32 var_fv1;
@@ -195,9 +195,9 @@ f32 func_80016F20(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         temp_a0 = &arg0->unk_14[temp_v0->unk_08];
         if (temp_v0->unk_03 & 1) {
-            var_fv0 = func_80016B30(temp_a0, temp_v0->unk_02, arg0->unk_02);
+            var_fv0 = Anim_InterpolateCubicVec(temp_a0, temp_v0->unk_02, arg0->unk_02);
         } else {
-            var_fv0 = func_80016934(temp_a0, temp_v0->unk_02, arg0->unk_02);
+            var_fv0 = Anim_InterpolateCubic(temp_a0, temp_v0->unk_02, arg0->unk_02);
         }
         var_fv1 = var_fv0;
     }
@@ -221,7 +221,7 @@ typedef struct unk_D_86002F58_004_000_040_raw {
     /* 0x12 */ u16 unk_12;
 } unk_D_86002F58_004_000_040_raw; // size >= 0x14
 
-s32 func_80016FBC(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
+s32 Anim_ComputeKeyframeIndex(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
     unk_D_86002F58_004_000_040_raw_08 spC;
     unk_D_86002F58_004_000_040_raw_08* ptr;
     unk_D_86002F58_004_000_040_004* temp_v0;
@@ -253,11 +253,11 @@ s32 func_80016FBC(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
     return spC.raw;
 }
 
-void func_80017080(void) {
+void Anim_ResetChannelIndex(void) {
     gCurrentAnimChannelIdx = -1;
 }
 
-void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
+void Anim_StartChannel(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
     unk_D_86002F58_004_000_040_004* temp_s1;
     unk_D_800ABCC0* temp_s0;
 
@@ -268,7 +268,7 @@ void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
         temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
         if (arg0->unk_04 != NULL) {
             if (arg2 != 0) {
-                arg0->unk_08 = func_80016FBC(arg0, arg1);
+                arg0->unk_08 = Anim_ComputeKeyframeIndex(arg0, arg1);
             }
 
             arg0->unk_12 = arg1;
@@ -291,7 +291,7 @@ void func_80017090(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
     }
 }
 
-void func_80017188(void) {
+void Anim_EndChannel(void) {
     if (gCurrentAnimChannelIdx >= 0) {
         gCurrentAnimChannelIdx--;
     }
@@ -303,17 +303,17 @@ void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
 
         if ((temp_s0->unk_00 == 1) && (arg3 >= 0) && (arg3 + 2 < temp_s0->unk_04->unk_08)) {
             if (temp_s0->unk_01 & 8) {
-                arg0->x = func_80016F20(temp_s0, arg3 + 0);
-                arg0->y = func_80016F20(temp_s0, arg3 + 1);
-                arg0->z = func_80016F20(temp_s0, arg3 + 2);
+                arg0->x = Anim_GetPositionInterpolated(temp_s0, arg3 + 0);
+                arg0->y = Anim_GetPositionInterpolated(temp_s0, arg3 + 1);
+                arg0->z = Anim_GetPositionInterpolated(temp_s0, arg3 + 2);
 
-                arg1->x = func_80016DE0(temp_s0, arg3 + 0);
-                arg1->y = func_80016DE0(temp_s0, arg3 + 1);
-                arg1->z = func_80016DE0(temp_s0, arg3 + 2);
+                arg1->x = Anim_GetRotationInterpolated(temp_s0, arg3 + 0);
+                arg1->y = Anim_GetRotationInterpolated(temp_s0, arg3 + 1);
+                arg1->z = Anim_GetRotationInterpolated(temp_s0, arg3 + 2);
 
-                arg2->x = func_80016D20(temp_s0, arg3 + 0);
-                arg2->y = func_80016D20(temp_s0, arg3 + 1);
-                arg2->z = func_80016D20(temp_s0, arg3 + 2);
+                arg2->x = Anim_GetScaleInterpolated(temp_s0, arg3 + 0);
+                arg2->y = Anim_GetScaleInterpolated(temp_s0, arg3 + 1);
+                arg2->z = Anim_GetScaleInterpolated(temp_s0, arg3 + 2);
             } else {
                 arg0->x = Anim_GetPosition(temp_s0, arg3 + 0);
                 arg0->y = Anim_GetPosition(temp_s0, arg3 + 1);
@@ -331,12 +331,12 @@ void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
     }
 }
 
-void func_800173CC(unk_D_86002F58_004_000* arg0) {
+void Anim_ClearChannelState(unk_D_86002F58_004_000* arg0) {
     arg0->unk_040.unk_00 = -1;
     arg0->unk_040.unk_04 = NULL;
 }
 
-s32 func_800173DC(unk_D_86002F58_004_000* arg0, s16 arg1, void* arg2, s32 arg3) {
+s32 Anim_SetChannel(unk_D_86002F58_004_000* arg0, s16 arg1, void* arg2, s32 arg3) {
     unk_D_86002F58_004_000_040_004* temp_v0 = Util_ConvertAddrToVirtAddr(arg2);
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
 
@@ -350,16 +350,16 @@ s32 func_800173DC(unk_D_86002F58_004_000* arg0, s16 arg1, void* arg2, s32 arg3) 
     return ptr->unk_08 >> 0x10;
 }
 
-s32 func_80017454(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 Anim_SetChannelOffset(unk_D_86002F58_004_000* arg0, s32 arg1) {
     arg0->unk_040.unk_0C = arg1;
     return arg0->unk_040.unk_08 >> 0x10;
 }
 
-void func_80017464(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void Anim_SetChannelBase(unk_D_86002F58_004_000* arg0, s16 arg1) {
     arg0->unk_040.unk_08 = (arg1 << 0x10) - arg0->unk_040.unk_0C;
 }
 
-s32 func_80017484(unk_D_86002F58_004_000* arg0, s16 arg1) {
+s32 Anim_IsFrameInRange(unk_D_86002F58_004_000* arg0, s16 arg1) {
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
     s32 temp_v0 = ptr->unk_08 + ptr->unk_0C;
     s32 arg = arg1 << 0x10;
@@ -382,9 +382,9 @@ s32 func_80017484(unk_D_86002F58_004_000* arg0, s16 arg1) {
 }
 
 s32 func_800174E4(unk_D_86002F58_004_000* arg0) {
-    return func_80017484(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+    return Anim_IsFrameInRange(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 func_80017514(unk_D_86002F58_004_000* arg0) {
+s32 Anim_HasReachedEnd(unk_D_86002F58_004_000* arg0) {
     return arg0->unk_040.unk_08 >= ((arg0->unk_040.unk_04->unk_0A - 1) << 0x10);
 }

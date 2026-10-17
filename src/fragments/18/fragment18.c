@@ -1754,8 +1754,8 @@ void initEkans(MiniActor* ekans, s16 player) {
     ekans->unk_000.unk_000.unk_01 |= 1;
     ekans->unk_000.unk_000.unk_02 |= 0x20;
 
-    func_800173DC(&ekans->unk_000, 0, ekans->unk_000.unk_040.unk_04, 0x10000);
-    func_80017464(&ekans->unk_000, ekans->unk_26E);
+    Anim_SetChannel(&ekans->unk_000, 0, ekans->unk_000.unk_040.unk_04, 0x10000);
+    Anim_SetChannelBase(&ekans->unk_000, ekans->unk_26E);
 
     ekans->unk_000.unk_000.unk_02 &= ~0x40;
     ekans->isComp = gMiniHudColors[player];
@@ -2617,8 +2617,8 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             break;
 
         case 0x65: //	win animation
-            if (func_80017514(&ekans->unk_000) != 0) {
-                func_80017464(&ekans->unk_000, 0xA);
+            if (Anim_HasReachedEnd(&ekans->unk_000) != 0) {
+                Anim_SetChannelBase(&ekans->unk_000, 0xA);
             }
             break;
     }
@@ -3329,7 +3329,7 @@ void func_86C040B4(s32 arg0) {
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(&D_87906050->unk_00);
@@ -3457,9 +3457,9 @@ void func_86C044B4(void) {
         Graph_AddToRootList0(&miniDiglettHoles[i].unk_000);
     }
 
-    func_8001987C();
+    AssetManager_LoadArchives();
 
-    temp_s1 = func_80019D18(0x9F);
+    temp_s1 = GeoLayout_LoadById(0x9F);
     for (i = 0; i < 4; i++) {
         miniEkanses[i].unk_23C = 0x9F;
         miniEkanses[i].unk_168 = temp_s1;
@@ -3467,7 +3467,7 @@ void func_86C044B4(void) {
         GraphNode_TriggerAction(&miniEkanses[i].unk_000, 0);
     }
 
-    temp_s1 = func_80019D18(0xA4);
+    temp_s1 = GeoLayout_LoadById(0xA4);
     for (i = 0; i < 9; i++) {
         miniDigletts[i].unk_23C = 0xA4;
         miniDigletts[i].unk_168 = temp_s1;
@@ -3475,7 +3475,7 @@ void func_86C044B4(void) {
         miniDigletts[i].unk_000.unk_000.unk_01 &= ~1;
     }
 
-    temp_s1 = func_80019D18(0xA3);
+    temp_s1 = GeoLayout_LoadById(0xA3);
     for (i = 0; i < 9; i++) {
         miniDiglettHoles[i].unk_23C = 0xA3;
         miniDiglettHoles[i].unk_168 = temp_s1;
@@ -3512,7 +3512,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     miniEkansTutoScreenControls();
     ekansMinigameUpdate();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(gFontManager);
+    FontManager_Free(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

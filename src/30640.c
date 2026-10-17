@@ -307,8 +307,8 @@ s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1) {
 
     if (arg0 == 2) {
         src = (unk_D_83403C60_050_00C*)((u8*)gCamSecondary->unk_18 + 0x50);
-        func_80011DAC(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
-        func_80011E68(arg1, Cam_GetFov(gCamSecondary->unk_18), 20.0f, 10000.0f);
+        Viewport_SetRect(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+        Perspective_SetParams(arg1, Cam_GetFov(gCamSecondary->unk_18), 20.0f, 10000.0f);
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[0] = src[0];
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[1] = src[1];
         pad = 0;
@@ -319,8 +319,8 @@ s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1) {
 s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1) {
     if (Cam_GetActive(arg0) != 0) {
         if (arg0 == 2) {
-            func_80011DAC(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
-            func_80011E68(arg1, 45.0f, 20.0f, 8000.0f);
+            Viewport_SetRect(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+            Perspective_SetParams(arg1, 45.0f, 20.0f, 8000.0f);
         }
     }
     return 0;
@@ -647,16 +647,16 @@ void Cam_Initialize(unk_func_80031270* arg0) {
     }
     ComputeStatFromName(&sp90, &sp30);
     sp30.unk_00.unk_00 = sp94;
-    func_800198E4(arg0->unk_10, sp30.unk_00.unk_00, sp90);
-    func_80019CA8(arg0->unk_10);
+    AssetManager_RequestLoad(arg0->unk_10, sp30.unk_00.unk_00, sp90);
+    AssetManager_WaitLoadQueue(arg0->unk_10);
     GraphNode_ClearCallback(arg0->unk_20);
     GraphNode_InitChild(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
     sp28 = Util_ConvertAddrToVirtAddr(&func_81002260);
     sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->unk_00.unk_09[1]));
     GraphNode_TriggerAction(arg0->unk_20, temp_s1->unk_00.unk_05);
-    func_80017464(arg0->unk_20, temp_s1->unk_00.unk_06);
+    Anim_SetChannelBase(arg0->unk_20, temp_s1->unk_00.unk_06);
     GraphNode_TriggerSound(arg0->unk_20, temp_s1->unk_00.unk_08);
-    func_80017804(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
+    SetAnimStateIndex(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
 }
 
 void Cam_LoadGeometry(unk_func_80031270* arg0) {
@@ -725,7 +725,7 @@ u8* Cam_Update(unk_func_80031270* arg0) {
                 } else {
                     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
                 }
-                func_80015348();
+                Gfx_FinishFrame();
                 *((s32*)Util_ConvertAddrToVirtAddr(&D_8140E6B8)) = sp24->unk_18;
                 sp20();
                 Graph_SetTextureState(arg0->unk_1C);

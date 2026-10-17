@@ -125,7 +125,7 @@ Gfx D_8006F5D8[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F608[] = {
+Gfx gFontCharTableExtended[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0,
@@ -155,7 +155,7 @@ static u8 D_8006F650[] = {
     0x7A, 0x00, 0x63, 0x00, 0x00, 0x7C, 0x8B, 0x7D, 0x64, 0x00, 0x00, 0x00,
 };
 
-Gfx D_8006F710[] = {
+Gfx gDL_TextResetState[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER),
@@ -167,13 +167,13 @@ Gfx D_8006F710[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F750[] = {
+Gfx gDL_TextSetup[] = {
     gsDPPipeSync(),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F768[] = {
+Gfx gDL_TextBegin[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -183,7 +183,7 @@ Gfx D_8006F768[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F798[] = {
+Gfx gDL_TextEnd[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0,
@@ -383,7 +383,7 @@ void DrawStatusIcon(s32 arg0, s32 arg1) {
         Gfx_DrawSpriteRGBA16(arg0, arg1, 0x20, 0x16, D_10031D0, 0x20, 0x200000);
     } else {
         gSPDisplayList(gDisplayListHead++, D_8006F5A0);
-        func_8001D560(arg0, arg1, 0xC, 0xA, D_1003750, D_1003890, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg0, arg1, 0xC, 0xA, D_1003750, D_1003890, 0x10, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);

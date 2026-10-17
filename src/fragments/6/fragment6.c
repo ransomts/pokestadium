@@ -275,7 +275,7 @@ s32 func_86000410(void) {
 
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 
     if (D_8780FC94 != 1) {
         func_86000020();
@@ -299,11 +299,11 @@ void func_86000478(void) {
     D_86002F38->unk_60.at.y = 70.0f;
     D_86002F38->unk_60.at.z = 0.0f;
 
-    func_80010354(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
+    Camera_SetViewParameters(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
 }
 
 void func_86000564(void) {
-    func_80010354(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
+    Camera_SetViewParameters(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
 }
 
 void func_860005B8(s32 arg0) {
@@ -503,7 +503,7 @@ void func_86000D88(s32 arg0) {
     func_87A00DB8(D_86002F50);
 
     if (D_8780FC94 != 1) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Fragment2_1_Update();
@@ -746,7 +746,7 @@ void func_860017C0(s32 arg0) {
             case 12:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
                     func_86001360(2);
-                } else if (func_80017514(&D_86003B60->unk_000)) {
+                } else if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     func_860016FC(arg0);
                 }
                 break;
@@ -754,7 +754,7 @@ void func_860017C0(s32 arg0) {
             case 13:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
                     func_86001360(3);
-                } else if (func_80017514(&D_86003B60->unk_000)) {
+                } else if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     func_86001760(arg0);
                 }
                 break;
@@ -771,7 +771,7 @@ void func_860017C0(s32 arg0) {
                 break;
 
             case 5:
-                if (func_80017514(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
                         func_860014B8();
                     } else {
@@ -781,7 +781,7 @@ void func_860017C0(s32 arg0) {
                 break;
 
             case 7:
-                if (func_80017514(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
                         s16 tmp = D_86003B5C->unk_004.unk_16A;
 
@@ -803,13 +803,13 @@ void func_860017C0(s32 arg0) {
             case 9:
             case 10:
             case 11:
-                if (func_80017514(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     func_8600165C(arg0);
                 }
                 break;
 
             case 1:
-                if (func_80017514(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     GraphNode_TriggerAction(&D_86003B60->unk_000, 7);
                     D_86003B60->unk_000.unk_040.unk_08 = 0;
                     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
@@ -817,7 +817,7 @@ void func_860017C0(s32 arg0) {
                 break;
 
             default:
-                if (func_80017514(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
                     GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
                     D_86003B60->unk_000.unk_040.unk_08 = 0;
                     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
@@ -1114,9 +1114,9 @@ void func_86002440(void) {
     D_86002F34 = (unk_D_86002F34*)process_geo_layout(temp_v0, D_86002B18);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     D_86002F4C = 0xFF;
-    D_86002F30 = (unk_D_86002F30*)func_80019D18(0xAD);
+    D_86002F30 = (unk_D_86002F30*)GeoLayout_LoadById(0xAD);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
@@ -1151,7 +1151,7 @@ void func_86002440(void) {
         D_86003B60->unk_000.unk_01E.y = -0x2800;
     }
 
-    D_86002F30 = (unk_D_86002F30*)func_80019D18(0xAE);
+    D_86002F30 = (unk_D_86002F30*)GeoLayout_LoadById(0xAE);
 
     for (i = 0; i < 4; i++) {
         D_86003B64 = &D_86003598[i];
@@ -1172,7 +1172,7 @@ void func_86002440(void) {
         HpWheel_SetDigits(i, 0);
         D_86003B64->unk_000.unk_0A6 = i;
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-        func_800173CC(&D_86003B60->unk_000);
+        Anim_ClearChannelState(&D_86003B60->unk_000);
     }
 
     D_86002F50 = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
@@ -1215,7 +1215,7 @@ void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     func_86002264();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

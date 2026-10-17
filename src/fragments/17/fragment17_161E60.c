@@ -786,7 +786,7 @@ void func_86B025A4(void) {
     s32 var_v0;
 
     D_86B0EBDC->unk_2F0 = 0;
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     var_v0 = func_8002816C() & 0xFF;
 
     D_86B0EBDC->unk_2E8 = var_v0;
@@ -819,17 +819,17 @@ void func_86B026C0(void) {
     main_pool_push_state('MONS');
 
     Graph_AddToRootList0(&D_86B0EBDC->unk_008);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
-    D_86B0EBDC->unk_000 = func_80019D18(0xD3);
+    D_86B0EBDC->unk_000 = GeoLayout_LoadById(0xD3);
     D_86B0EBDC->unk_008.unk_0A6 = 0xFF;
 
     GraphNode_InitChild(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B0EBDC->unk_008, 0);
     Graph_AddToRootList0(&D_86B0EBDC->unk_170);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
-    D_86B0EBDC->unk_004 = func_80019D18(D_86B0EBDC->unk_2EC);
+    D_86B0EBDC->unk_004 = GeoLayout_LoadById(D_86B0EBDC->unk_2EC);
     D_86B0EBDC->unk_170.unk_0A6 = 0;
     GraphNode_InitChild(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
@@ -898,7 +898,7 @@ void func_86B02A78(void) {
     D_86B0EBCC = 120.0f;
 
     Vec3f_Set(&D_86B0EBC4->unk_60.at, 0.0f, 132.5f, -225.0f);
-    func_80010354(&D_86B0EBC4->unk_60.at, &D_86B0EBC4->unk_60.eye, D_86B0EBCC, D_86B0EBC8, D_86B0EBCA);
+    Camera_SetViewParameters(&D_86B0EBC4->unk_60.at, &D_86B0EBC4->unk_60.eye, D_86B0EBCC, D_86B0EBC8, D_86B0EBCA);
 
     D_86B0EBC4->unk_24.near = 10.0f;
     D_86B0EBC4->unk_24.far = 6400.0f;
@@ -952,9 +952,9 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
     if (D_86B0EBDC->unk_2F0 == 1) {
-        func_8001D560(arg0 + 0x14, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x14, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
     } else {
-        func_8001D560(arg0 + 0x55, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x55, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1395,7 +1395,7 @@ void func_86B04500(void) {
             func_86B02F34();
             MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB94);
-            func_80017454(&D_86B0EBDC->unk_008, -1);
+            Anim_SetChannelOffset(&D_86B0EBDC->unk_008, -1);
         }
     }
 }
@@ -1410,19 +1410,19 @@ void func_86B04740(void) {
 void func_86B04794(void) {
     D_86B0EBDC->unk_304++;
     if (((D_86B0EBDC->unk_304 % 60) == 0) && (D_86B0EBDC->unk_308 == 0) && (D_86B0EBE8[2641] != 0xFF)) {
-        func_80017788(&D_86B0EBDC->unk_170);
+        InitAnimState(&D_86B0EBDC->unk_170);
         GraphNode_TriggerSound(&D_86B0EBDC->unk_170, D_86B0EBE8[2641]);
         D_86B0EBDC->unk_308 = 1;
-    } else if ((D_86B0EBDC->unk_308 == 1) && (func_8001783C(&D_86B0EBDC->unk_170) == 1)) {
+    } else if ((D_86B0EBDC->unk_308 == 1) && (IsAnimStateSecondLast(&D_86B0EBDC->unk_170) == 1)) {
         D_86B0EBDC->unk_308 = 0;
-        func_80017804(&D_86B0EBDC->unk_170, 0);
+        SetAnimStateIndex(&D_86B0EBDC->unk_170, 0);
         GraphNode_TriggerSound(&D_86B0EBDC->unk_170, -1);
     }
 }
 
 void func_86B04880(void) {
     if (func_800174E4(&D_86B0EBDC->unk_170) == 1) {
-        func_80017464(&D_86B0EBDC->unk_170, 0);
+        Anim_SetChannelBase(&D_86B0EBDC->unk_170, 0);
         GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
     }
 }
@@ -1438,7 +1438,7 @@ void func_86B048D8(void) {
 void func_86B04914(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 s32 func_86B04944(void) {
@@ -1553,7 +1553,7 @@ void func_86B04C9C(void) {
 void func_86B04CF4(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_86B0EBC0);
     func_86B04C9C();
     Stage_Advance();
@@ -1604,7 +1604,7 @@ void func_86B04DF0(void) {
             func_8002817C(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
         }
         GbsCommitBankBlock(0x14, 0);
-        func_800284B4(2);
+        GbsSyncBank(2);
     }
 }
 
@@ -1660,7 +1660,7 @@ s32 BattleState_Handle21Or26(void) {
     func_86B04D98();
     func_86B04DF0();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
     main_pool_pop_state('DEMO');
 

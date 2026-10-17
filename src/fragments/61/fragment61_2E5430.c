@@ -35,7 +35,7 @@ s32 func_8420DBA0(unk_D_84229EB0_00024* arg0) {
         }
 
         CommitAndFreeGbsBlock(temp_s3);
-        func_800286D8();
+        GbsSyncAllBanks();
         ret = 1;
     }
     return ret;
@@ -57,7 +57,7 @@ void func_8420DC78(unk_D_84229EB0_00024* arg0) {
     }
 
     GbsClearAndCommitBlock(0x10, 9);
-    func_800286D8();
+    GbsSyncAllBanks();
 }
 
 void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00024* arg3) {

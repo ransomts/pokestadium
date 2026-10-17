@@ -10,12 +10,12 @@ extern Gfx D_8006F4E0[];
 extern Gfx gPrefDL_Border[];
 extern Gfx D_8006F558[];
 extern Gfx D_8006F5A0[];
-extern Gfx D_8006F608[];
+extern Gfx gFontCharTableExtended[];
 extern Gfx gPrefDL_End[];
-extern Gfx D_8006F710[];
-extern Gfx D_8006F750[];
-extern Gfx D_8006F768[];
-extern Gfx D_8006F798[];
+extern Gfx gDL_TextResetState[];
+extern Gfx gDL_TextSetup[];
+extern Gfx gDL_TextBegin[];
+extern Gfx gDL_TextEnd[];
 
 void DrawTileTextureRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
 void DrawWindowBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3);

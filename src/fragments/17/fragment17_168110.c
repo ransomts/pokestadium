@@ -45,9 +45,9 @@ void func_86B087E8(unk_D_86B0FA78* arg0, Vec3f* arg1) {
 }
 
 void func_86B088E4(void) {
-    func_80010354(&D_86B0FA7C->unk_04, &D_86B0FA7C->unk_00->unk_60.at, D_86B0FA7C->unk_1C, D_86B0FA7C->unk_10,
+    Camera_SetViewParameters(&D_86B0FA7C->unk_04, &D_86B0FA7C->unk_00->unk_60.at, D_86B0FA7C->unk_1C, D_86B0FA7C->unk_10,
                   func_86B08780() + D_86B0FA7C->unk_12);
-    func_80010354(&D_86B0FA7C->unk_04, &D_86B0FA7C->unk_00->unk_60.eye, D_86B0FA7C->unk_20, D_86B0FA7C->unk_16,
+    Camera_SetViewParameters(&D_86B0FA7C->unk_04, &D_86B0FA7C->unk_00->unk_60.eye, D_86B0FA7C->unk_20, D_86B0FA7C->unk_16,
                   func_86B08780() + D_86B0FA7C->unk_18);
 
     D_86B0FA7C->unk_00->unk_60.at.y += D_86B10660.unk_0C;
@@ -137,7 +137,7 @@ s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
     }
 
     Math_ApproachFloat(&D_86B0FA7C->unk_44, D_86B0FA7C->unk_38, D_86B0FA7C->unk_3C);
-    func_80010354(&D_86B0FA7C->unk_04, &sp50, D_86B0FA7C->unk_34, D_86B0FA7C->unk_2A,
+    Camera_SetViewParameters(&D_86B0FA7C->unk_04, &sp50, D_86B0FA7C->unk_34, D_86B0FA7C->unk_2A,
                   func_86B08780() + D_86B0FA7C->unk_2C);
 
     if (sp50.y <= 10.0f) {
@@ -146,15 +146,15 @@ s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
 
     func_86B01404(&sp44, &arg0->unk_60.eye);
     Matrix_Decompose(&sp44, &sp50, &sp34, &sp2E, &sp2C);
-    func_80010354(&sp44, &arg0->unk_60.eye, D_86B0FA7C->unk_44 * sp34, sp2E, sp2C);
-    func_80010354(&D_86B0FA7C->unk_04, &sp38, D_86B0FA7C->unk_30, D_86B0FA7C->unk_24,
+    Camera_SetViewParameters(&sp44, &arg0->unk_60.eye, D_86B0FA7C->unk_44 * sp34, sp2E, sp2C);
+    Camera_SetViewParameters(&D_86B0FA7C->unk_04, &sp38, D_86B0FA7C->unk_30, D_86B0FA7C->unk_24,
                   func_86B08780() + D_86B0FA7C->unk_26);
 
     sp38.y += D_86B10660.unk_0C;
 
     func_86B01404(&sp5C, &arg0->unk_60.at);
     Matrix_Decompose(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
-    func_80010354(&sp5C, &arg0->unk_60.at, D_86B0FA7C->unk_44 * sp30, sp2E, sp2C);
+    Camera_SetViewParameters(&sp5C, &arg0->unk_60.at, D_86B0FA7C->unk_44 * sp30, sp2E, sp2C);
 
     if ((sp34 <= 1.0f) && (sp30 <= 1.0f)) {
         return 1;

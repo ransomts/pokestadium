@@ -370,8 +370,8 @@ s32 func_84B07EB0(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25A58*)D_8006F09C->unk_000.unk_14;
-        if (temp_v1->unk_04->unk_0A6 == D_8006F09C->unk_0A6) {
+        temp_v1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        if (temp_v1->unk_04->unk_0A6 == gDefaultGraphRoot->unk_0A6) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;
@@ -392,8 +392,8 @@ s32 func_84B07F78(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->unk_000.unk_14;
-        temp_t2 = D_8006F09C->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_t2 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
         if (temp_t2 < 4) {
             var_a3 = D_3006000;
         } else {
@@ -422,8 +422,8 @@ s32 func_84B080F4(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A58*)D_8006F09C->unk_000.unk_14;
-        temp_t0 = (D_8006F09C->unk_0A6 - temp_a3->unk_04->unk_0A6) % 8;
+        temp_a3 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_t0 = (gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6) % 8;
         if (temp_t0 < 4) {
             var_a0 = D_3006000;
         } else {
@@ -446,8 +446,8 @@ s32 func_84B08230(s32 arg0, unk_func_80011B94* arg1) {
     s32 temp_a1;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->unk_000.unk_14;
-        temp_a1 = D_8006F09C->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a1 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
 
         if (temp_a1 >= 0x10) {
             temp_a1 = (temp_a1 - 0x10) % 12;
@@ -483,8 +483,8 @@ s32 func_84B083D8(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->unk_000.unk_14;
-        temp_a3 = D_8006F09C->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a3 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
 
         if (temp_a3 >= 0x10) {
             temp_a3 = (temp_a3 - 0x10) % 12;
@@ -1042,7 +1042,7 @@ void func_84B0A244(unk_D_84B25A58* arg0) {
     s32 count;
     unk_D_86002F58_004_000_010* temp_s0;
 
-    temp_s0 = func_80019760(5);
+    temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0xC0, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
@@ -1059,7 +1059,7 @@ void func_84B0A36C(unk_D_84B25A58* arg0) {
     s32 count;
     unk_D_86002F58_004_000_010* temp_s0;
 
-    temp_s0 = func_80019760(5);
+    temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
@@ -1087,7 +1087,7 @@ void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     FRAGMENT_LOAD(fragment31);
 

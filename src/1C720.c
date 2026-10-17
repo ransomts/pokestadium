@@ -12,8 +12,8 @@
 #include "hal_libc.h"
 #include "src/12D80.h"
 
-struct unk_D_86002F58_004_000_000 gGraphRoot0;
-struct unk_D_86002F58_004_000_000 gGraphRoot1;
+struct GraphRootNode gGraphRoot0;
+struct GraphRootNode gGraphRoot1;
 
 void Graph_InitRoots(void) {
     GraphNode_AllocInit(0, &gGraphRoot0);
@@ -21,14 +21,14 @@ void Graph_InitRoots(void) {
 }
 
 void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0) {
-    func_80011938(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
+    func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot0, &arg0->unk_000);
     arg0->unk_0A6 = 0;
     arg0->unk_000.unk_01 &= ~1;
 }
 
 void Graph_AddToRootList1(unk_D_86002F58_004_000* arg0) {
-    func_80011938(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
+    func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot1, &arg0->unk_000);
     arg0->unk_000.unk_01 &= ~1;
 }
@@ -59,7 +59,7 @@ void GraphNode_InitChild(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D
     arg0->unk_000.unk_02 &= ~0x8;
 
     if (arg2 > 0) {
-        func_8003260C(arg0);
+        GraphNode_EnableTransform(arg0);
     }
 }
 
@@ -73,9 +73,9 @@ s32 GraphNode_TriggerAction(unk_D_86002F58_004_000* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C_028* temp_v0 = tmp->unk_28(0, 0);
 
     if (arg1 == -1) {
-        func_800173CC(arg0);
+        Anim_ClearChannelState(arg0);
     } else if (arg1 < temp_v0->unk_04) {
-        func_800173DC(arg0, arg1, temp_v0->unk_0C[arg1], 0x10000);
+        Anim_SetChannel(arg0, arg1, temp_v0->unk_0C[arg1], 0x10000);
         return 1;
     }
 
@@ -87,9 +87,9 @@ s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C_028* temp_v1 = temp_v0->unk_28(0, 0);
 
     if (arg1 == -1) {
-        func_80017788(arg0);
+        InitAnimState(arg0);
     } else if (arg1 < temp_v1->unk_05) {
-        func_80017798(arg0, arg1, temp_v1->unk_10[arg1]);
+        SetAnimStateTable(arg0, arg1, temp_v1->unk_10[arg1]);
         return 1;
     }
 
@@ -97,7 +97,7 @@ s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1) {
 }
 
 void GraphNode_SetColorRGBA(unk_D_86002F58_004_000* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
-    func_8000E840(&arg0->unk_0A0, arg1, arg2, arg3, arg4);
+    GfxColor_SetRGBA(&arg0->unk_0A0, arg1, arg2, arg3, arg4);
 }
 
 void GraphNode_SetState(unk_D_86002F58_004_000* arg0, u8 arg1) {
@@ -112,7 +112,7 @@ unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(unk_D_86002F58_004_000
     unk_D_86002F58_004_000_00C_028* var_v1 = NULL;
 
     if (arg0 == NULL) {
-        arg0 = D_8006F09C;
+        arg0 = gDefaultGraphRoot;
     }
 
     if (arg0 != NULL) {
@@ -191,12 +191,12 @@ void ProcessPokemonSelection(unk_D_800AE540_1194* arg0) {
         if (!(arg0->unk_10->unk_00 & 4)) {
             while (func_80001C90() == 0) {}
         }
-        func_800198E4(arg0->unk_10, (u16) sp2A, sp2C);
+        AssetManager_RequestLoad(arg0->unk_10, (u16) sp2A, sp2C);
         arg0->unk_00 |= 0x40;
         arg0->unk_00 &= ~0x10;
 
         if (arg0->unk_00 & 0x20) {
-            func_80019CA8(arg0->unk_10);
+            AssetManager_WaitLoadQueue(arg0->unk_10);
             arg0->unk_14 = arg0->unk_10->unk_24;
             arg0->unk_00 &= ~0xE0;
         }
@@ -204,7 +204,7 @@ void ProcessPokemonSelection(unk_D_800AE540_1194* arg0) {
 }
 
 void UpdatePokemonStateOnEnter(unk_func_8001C248* arg0) {
-    if (func_80019C08(arg0->unk_000.unk_10)) {
+    if (AssetManager_TryProcessLoadQueue(arg0->unk_000.unk_10)) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
         arg0->unk_000.unk_00 &= ~0xE0;
         arg0->unk_000.unk_00 |= 0x10;
@@ -212,7 +212,7 @@ void UpdatePokemonStateOnEnter(unk_func_8001C248* arg0) {
 }
 
 void UpdatePokemonStateOnExit(unk_func_8001C248* arg0) {
-    if (arg0->unk_000.unk_00 & 0x40 && func_80019CA8(arg0->unk_000.unk_10) != 0) {
+    if (arg0->unk_000.unk_00 & 0x40 && AssetManager_WaitLoadQueue(arg0->unk_000.unk_10) != 0) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
         arg0->unk_000.unk_00 &= ~0xE0;
         arg0->unk_000.unk_00 |= 0x10;

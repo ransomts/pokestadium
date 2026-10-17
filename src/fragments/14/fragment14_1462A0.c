@@ -121,12 +121,12 @@ void func_86802084(s32 arg0, UNUSED s32 arg1) {
 
     switch (arg0) {
         case 2:
-            idx = D_8006F09C->unk_000.unk_14;
+            idx = gDefaultGraphRoot->unk_000.unk_14;
             func_86801FC0(&D_86807558[idx]);
             break;
 
         case 5:
-            idx = D_8006F09C->unk_000.unk_14;
+            idx = gDefaultGraphRoot->unk_000.unk_14;
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_86807558[idx].unk_3B4));
 
             gDPPipeSync(gDisplayListHead++);
@@ -135,8 +135,8 @@ void func_86802084(s32 arg0, UNUSED s32 arg1) {
                              AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL | G_RM_PASS,
                              AA_EN | Z_CMP | Z_UPD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL |
                                  GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_A_MEM));
-            gDPSetEnvColor(gDisplayListHead++, D_8006F09C->unk_03C.r, D_8006F09C->unk_03C.g, D_8006F09C->unk_03C.b,
-                           D_8006F09C->unk_01D);
+            gDPSetEnvColor(gDisplayListHead++, gDefaultGraphRoot->unk_03C.r, gDefaultGraphRoot->unk_03C.g, gDefaultGraphRoot->unk_03C.b,
+                           gDefaultGraphRoot->unk_01D);
             gSPDisplayList(gDisplayListHead++, D_86807010);
 
             Graph_SetRenderMode();
@@ -195,14 +195,14 @@ s16 func_8680262C(unk_D_86002F58_004_000* arg0, s16 arg1) {
     s32 i;
     s16 sp2A;
 
-    if (func_80017514(arg0) != 0) {
+    if (Anim_HasReachedEnd(arg0) != 0) {
         return arg1;
     }
 
     sp2A = -1;
 
     for (i = 0; i < arg1; i++) {
-        if (func_80017484(arg0, i) != 0) {
+        if (Anim_IsFrameInRange(arg0, i) != 0) {
             sp2A = i;
             break;
         }
@@ -1010,7 +1010,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    func_81407D48(1.0f, arg0->unk_0E4.unk_0FC, D_8006F05C, func_879023EC, &D_87903E10, 4);
+                    func_81407D48(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &D_87903E10, 4);
                 }
             } else {
                 arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
@@ -1175,7 +1175,7 @@ s32 func_86804700(unk_D_86807558* arg0) {
         return 1;
     }
 
-    if (func_80017514(&arg0->unk_0E4) != 0) {
+    if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
         return 2;
     }
 
@@ -1237,7 +1237,7 @@ void func_86804884(unk_D_86807558* arg0) {
 void func_868049C0(unk_D_86807558* arg0) {
     switch (arg0->unk_0C0) {
         case 2:
-            if (func_80017514(&arg0->unk_0E4) != 0) {
+            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
                 arg0->unk_0C0 = 3;
             }
             break;
@@ -1266,7 +1266,7 @@ void func_868049C0(unk_D_86807558* arg0) {
                         }
                         break;
                 }
-            } else if (func_80017484(&arg0->unk_0E4, 0) != 0) {
+            } else if (Anim_IsFrameInRange(&arg0->unk_0E4, 0) != 0) {
                 if (arg0->unk_0DC == NULL) {
                     arg0->unk_0C0 = 4;
                 } else if (arg0->unk_0DC->unk_0C != 1) {
@@ -1280,25 +1280,25 @@ void func_868049C0(unk_D_86807558* arg0) {
             break;
 
         case 4:
-            if (func_80017514(&arg0->unk_0E4) != 0) {
+            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
                 func_86802E18(arg0, 0);
             }
             break;
 
         case 5:
-            if (func_80017514(&arg0->unk_0E4) != 0) {
+            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
                 arg0->unk_006--;
                 if (arg0->unk_006 <= 0) {
                     arg0->unk_0C0 = 6;
                     arg0->unk_0C8 = arg0->unk_0D8;
                 } else {
-                    func_80017464(&arg0->unk_0E4, 0);
+                    Anim_SetChannelBase(&arg0->unk_0E4, 0);
                 }
             }
             break;
 
         case 6:
-            if (func_80017514(&arg0->unk_0E4) != 0) {
+            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
                 func_86804884(arg0);
             }
             break;
@@ -1312,11 +1312,11 @@ void func_86804BD0(unk_D_86807558* arg0) {
     f32 tmp;
 
     if ((arg0->unk_028 != 1) || (arg0->unk_018 == 0)) {
-        if (func_80017514(&arg0->unk_0E4) != 0) {
-            func_80017464(&arg0->unk_0E4, 0x3D);
+        if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
+            Anim_SetChannelBase(&arg0->unk_0E4, 0x3D);
         }
     } else if (arg0->unk_0C0 == 8) {
-        if (func_80017514(&arg0->unk_0E4) != 0) {
+        if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
             func_86802E18(arg0, 0);
         }
     } else {
@@ -1648,7 +1648,7 @@ void func_86805858(s32 arg0) {
     bzero(&D_86808450, sizeof(Controller));
 
     D_86808448 = -1;
-    D_86807550 = func_80019D18(0xA0);
+    D_86807550 = GeoLayout_LoadById(0xA0);
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_86808474 = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &D_86807078);
@@ -1753,13 +1753,13 @@ void func_86805BD4(void) {
     D_86808498.unk_00.y = 0.0f;
     D_86808498.unk_00.z = -7.8f;
 
-    D_86808498.unk_0C = D_8006F050;
+    D_86808498.unk_0C = gRootNodePosition;
 
     D_86808498.unk_18 = 0;
     D_86808498.unk_1A = 0x16A8;
     D_86808498.unk_1C = 880.0f;
 
-    func_80010354(&D_86808498.unk_00, &D_86808498.unk_0C, D_86808498.unk_1C, D_86808498.unk_1A, D_86808498.unk_18);
+    Camera_SetViewParameters(&D_86808498.unk_00, &D_86808498.unk_0C, D_86808498.unk_1C, D_86808498.unk_1A, D_86808498.unk_18);
     func_86805AF0(&D_86808498);
 
     D_86808490->unk_24.near = 50.0f;
@@ -1767,7 +1767,7 @@ void func_86805BD4(void) {
 }
 
 void func_86805CB4(void) {
-    func_80010354(&D_86808498.unk_00, &D_86808498.unk_0C, D_86808498.unk_1C, D_86808498.unk_1A, D_86808498.unk_18);
+    Camera_SetViewParameters(&D_86808498.unk_00, &D_86808498.unk_0C, D_86808498.unk_1C, D_86808498.unk_1A, D_86808498.unk_18);
     func_86805AF0(&D_86808498);
     D_86808490->unk_60.eye = D_86808498.unk_0C;
     D_86808490->unk_60.at = D_86808498.unk_00;

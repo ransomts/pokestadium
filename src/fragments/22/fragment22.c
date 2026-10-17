@@ -2715,7 +2715,7 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
         }
 
         for (i = 0; i < 12; i++) {
-            if (func_800275E0(0x11, i) < 0x14) {
+            if (GbsGetBlockMaxEntries(0x11, i) < 0x14) {
                 arg0->unk_50 = 0;
                 break;
             }
@@ -3099,7 +3099,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment25);
     sp40 = ASSET_LOAD(0, fragment29_misc_2, 0);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     MessageBank_Init();
     D_88016CF0 = GetMessageBank(0x2A);
     D_88016CF4 = GetMessageBank(0);
@@ -3123,7 +3123,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
 
     osDestroyThread(&sp30->thread);
 
-    func_8001E9CC();
+    FontManager_Free();
 
     main_pool_pop_state('LABO');
 

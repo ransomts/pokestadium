@@ -571,7 +571,7 @@ void func_86907858(UNUSED s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-        func_8001D560(0x59, (D_8690B388 * 0x14) + 0x35, 0x18, 0xE, D_5000000, &D_50002A0, 0x18, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(0x59, (D_8690B388 * 0x14) + 0x35, 0x18, 0xE, D_5000000, &D_50002A0, 0x18, 0x100000);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 

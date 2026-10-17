@@ -29,7 +29,7 @@ void func_81002830(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     s16 temp_v0;
 
     var_a4 = 1;
-    if (D_8006F09C->unk_01C == 0) {
+    if (gDefaultGraphRoot->unk_01C == 0) {
         ptr = arg1;
         var_a3 = D_800AF7AE;
         temp_v0 = 0x4000 - (ptr->unk_00 * var_a3);
@@ -69,8 +69,8 @@ void func_81002A68(s32 arg0, TextureState* state) {
     if (arg0 == 2) {
         textures = state->textures;
         state->gfx = (Gfx*)GfxAlloc(0x50);
-        if (D_8006F09C->unk_01A == 0x58) {
-            index = (s32) D_8006F09C->unk_040.unk_08 >> 0x10;
+        if (gDefaultGraphRoot->unk_01A == 0x58) {
+            index = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
             if (index >= 0x42) {
                 index = index - 0x42;
             } else {
@@ -79,7 +79,7 @@ void func_81002A68(s32 arg0, TextureState* state) {
             if (index >= 8) {
                 index = 0;
             }
-            if (D_8006F09C->unk_040.unk_00 >= 2) {
+            if (gDefaultGraphRoot->unk_040.unk_00 >= 2) {
                 index = 0;
             }
         } else {

@@ -869,7 +869,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
     MessageBank_Init();
     D_84A03130 = GetMessageBank(0x19);
     D_84A03134 = GetMessageBank(0x22);
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&D_84A03180, gBattleContext.unk_11F2);
     D_84A03168 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84A0316C = ASSET_LOAD2(battle_portraits, 1, 1);
@@ -888,7 +888,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
 
     sp1E = func_84A02A34(sp1E);
     func_8000771C();
-    func_8001E9CC();
+    FontManager_Free();
 
     main_pool_pop_state('PNLV');
     return sp1E == 0;

@@ -121,9 +121,9 @@ static u8 D_86B0DE48[] = {
 };
 
 static unk_D_8690A610 D_86B0F9D0;
-static unk_D_86002F58_004_000_000 D_86B0F9F0;
-static unk_D_86002F58_004_000_000 D_86B0FA08;
-static unk_D_86002F58_004_000_000 D_86B0FA20;
+static GraphRootNode D_86B0F9F0;
+static GraphRootNode D_86B0FA08;
+static GraphRootNode D_86B0FA20;
 static u32 D_86B0FA38;
 static Color_RGBA8_u32 D_86B0FA3C;
 static u8 D_86B0FA40;
@@ -242,7 +242,7 @@ void func_86B05E18(void) {
 void func_86B05EE8(void) {
     D_86B0FA78->unk_174 = D_86B10690->unk_01C[D_86B0FA78->unk_17C].unk_00.unk_00;
     Graph_AddToRootList0(&D_86B0FA78->unk_004);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     D_86B0FA78->unk_000 = func_80019D90(&D_86B10690->unk_01C[D_86B0FA78->unk_17C]);
     GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
@@ -251,7 +251,7 @@ void func_86B05EE8(void) {
     func_86B05E18();
     D_86B0FA78->unk_004.unk_024.y += D_86B10660.unk_08;
     D_86B0FA78->unk_170 = 0;
-    func_80017804(&D_86B0FA78->unk_004, 0);
+    SetAnimStateIndex(&D_86B0FA78->unk_004, 0);
     GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
 }
 
@@ -283,8 +283,8 @@ void func_86B06100(void) {
 
     D_86B0FA78->unk_174 = D_86B0DD58[D_86B0FA44].unk_00;
     Graph_AddToRootList0(&D_86B0FA78->unk_004);
-    func_8001987C();
-    D_86B0FA78->unk_000 = func_80019D18(D_86B0FA78->unk_174);
+    AssetManager_LoadArchives();
+    D_86B0FA78->unk_000 = GeoLayout_LoadById(D_86B0FA78->unk_174);
     GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B0FA78->unk_004, 0);
     Vec3f_Set(&D_86B0FA78->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
@@ -407,12 +407,12 @@ void func_86B06960(void) {
 
 void func_86B069D8(void) {
     if (((D_86B0FA78->unk_178 % 50) == 0) && (D_86B0FA78->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
-        func_80017788(&D_86B0FA78->unk_004);
+        InitAnimState(&D_86B0FA78->unk_004);
         GraphNode_TriggerSound(&D_86B0FA78->unk_004, D_86B0FA80[0xA51]);
         D_86B0FA78->unk_170 = 1;
-    } else if ((D_86B0FA78->unk_170 == 1) && (func_8001783C(&D_86B0FA78->unk_004) == 1)) {
+    } else if ((D_86B0FA78->unk_170 == 1) && (IsAnimStateSecondLast(&D_86B0FA78->unk_004) == 1)) {
         D_86B0FA78->unk_170 = 0;
-        func_80017804(&D_86B0FA78->unk_004, 0);
+        SetAnimStateIndex(&D_86B0FA78->unk_004, 0);
         GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
     }
 }
@@ -535,7 +535,7 @@ void func_86B06F74(void) {
 void func_86B06FCC(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 s32 func_86B06FFC(void) {
@@ -645,7 +645,7 @@ s32 func_86B06FFC(void) {
 
             D_86B0FA64 = func_8001046C(D_86B0FA64, 0x3C, 1, 1);
             D_86B0FA68 += D_86B0FA64;
-            func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, D_86B0FA6C, D_86B0FA66, D_86B0FA68);
+            Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, D_86B0FA6C, D_86B0FA66, D_86B0FA68);
             break;
     }
 
@@ -826,7 +826,7 @@ void func_86B07DF4(void) {
         Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
 
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(&D_87906050->unk_00);
     func_86B075EC();
     func_87901C98();
@@ -836,7 +836,7 @@ void func_86B07DF4(void) {
 void func_86B07EA0(void) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(&D_87906050->unk_00);
     Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
     Stage_Advance();
@@ -979,7 +979,7 @@ void func_86B0819C(void) {
     sp2C = BinArchive_GetFile(Asset_Load2(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), D_86B0FA42);
 
     D_86B0FA4C = sp2C(2, 0);
-    func_800113F8(0, &D_86B0F9D0, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    ColorRectNode_Create(0, &D_86B0F9D0, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_86B0F9F0);
     GraphNode_AllocInit(NULL, &D_86B0FA08);
     GraphNode_AllocInit(NULL, &D_86B0FA20);
@@ -1090,7 +1090,7 @@ s32 BattleState_Handle17(void) {
     func_86B07FA4();
     func_86B08034();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('DEMO');

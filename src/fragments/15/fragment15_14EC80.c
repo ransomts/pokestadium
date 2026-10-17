@@ -44,7 +44,7 @@ void Camera_Init(void) {
         gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
     }
 
-    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
+    Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
 
     if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
         gMiniCameraPtr->unk_60.eye.y = 12.5f;
@@ -97,7 +97,7 @@ void Camera_ResetPosition(void) {
         gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
     }
 
-    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
+    Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
 
     if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
         gMiniCameraPtr->unk_60.eye.y = 12.5f;
@@ -166,7 +166,7 @@ void Camera_RotateAroundTarget(s16 arg0) {
     Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &D_8690B608, &D_8690B60A);
     gHorizontalDist = ComputeDistanceXZ(sp38, gMiniCameraPtr->unk_60.at);
     if ((ScaleCameraDistance(1.9f) - 1.0f) <= gHorizontalDist) {
-        func_80010354(&sp38, &sp50, ScaleCameraDistance(1.9f) - 1.0f, 0, D_8690B60A);
+        Camera_SetViewParameters(&sp38, &sp50, ScaleCameraDistance(1.9f) - 1.0f, 0, D_8690B60A);
         gMiniCameraPtr->unk_60.at.x = sp50.x;
         gMiniCameraPtr->unk_60.at.z = sp50.z;
     }
@@ -456,10 +456,10 @@ void Camera_Update(void) {
         Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
         if (gControllerInput.stickY >= 0.0f) {
             mag = -(gControllerInput.stickMag / 6.0f);
-            func_80010354(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
+            Camera_SetViewParameters(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
         } else {
             mag = gControllerInput.stickMag / 6.0f;
-            func_80010354(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
+            Camera_SetViewParameters(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
         }
         gCameraDistance = ComputeDistance3D(gMiniCameraPtr->unk_60.at, sp38);
         Camera_EnforceConstraints(&sp44, &sp38);
@@ -476,7 +476,7 @@ void Camera_Update(void) {
 
     if (gControllerInput.buttonDown & 0x300) {
         Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
-        func_80010354(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
         Camera_EnforceConstraintsMode(&sp44, &sp38, 1);
         Vec3f_Set(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
@@ -491,7 +491,7 @@ void Camera_Update(void) {
 
     if (gControllerInput.buttonDown & 0xC00) {
         Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
-        func_80010354(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
         Camera_EnforceConstraintsMode(&sp44, &sp38, 0);
         Vec3f_Set(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }

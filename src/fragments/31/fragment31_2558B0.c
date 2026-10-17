@@ -132,10 +132,10 @@ void func_8100080C(unk_D_810047E0* arg0) {
     var_s1 = 0xA;
     guMtxXFMF(Matrix_GetRelative(-1)->mf, 0, 0, 0, &sp90.x, &sp90.y, &sp90.z);
     guMtxXFMF(Matrix_GetRelative(0)->mf, 0, 0, 0, &sp84.x, &sp84.y, &sp84.z);
-    sp60 = D_8006F09C->unk_030.x;
-    sp5C = D_8006F09C->unk_030.y;
-    sp58 = D_8006F09C->unk_030.z;
-    switch (D_8006F09C->unk_01A) {
+    sp60 = gDefaultGraphRoot->unk_030.x;
+    sp5C = gDefaultGraphRoot->unk_030.y;
+    sp58 = gDefaultGraphRoot->unk_030.z;
+    switch (gDefaultGraphRoot->unk_01A) {
     case 0x6D:
     case 0x6E:
         var_fs0 = 0.5f;
@@ -234,11 +234,11 @@ void func_81000E78(unk_D_810047E0* arg0) {
     s32 var_v0;
     s16* var_v1;
 
-    var_a1 = D_8006F09C->unk_040.unk_08 >> 0x10;
-    switch (D_8006F09C->unk_01A) {
+    var_a1 = gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
+    switch (gDefaultGraphRoot->unk_01A) {
     case 0x6D:
     case 0x6E:
-        temp_v1 = D_8006F09C->unk_040.unk_00;
+        temp_v1 = gDefaultGraphRoot->unk_040.unk_00;
         temp_a0 = D_810040B8[D_81004B54 % 18];
         switch(temp_v1) {
         case 4:
@@ -321,15 +321,15 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     sp294 = GfxAlloc(0x40);
     func_80031EF4(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
-    var_v0 = D_8006F09C;
+    var_v0 = gDefaultGraphRoot;
     if (var_v0->unk_0A6 == 0xFE) {
         guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     } else {
         guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     }
 
-    if (D_8006F09C->unk_0A6 == 0xFF) {
-        if ((D_8006F09C->unk_01A == 0x5C) || (D_8006F09C->unk_01A == 0x6D) || (D_8006F09C->unk_01A == 0x6E)) {
+    if (gDefaultGraphRoot->unk_0A6 == 0xFF) {
+        if ((gDefaultGraphRoot->unk_01A == 0x5C) || (gDefaultGraphRoot->unk_01A == 0x6D) || (gDefaultGraphRoot->unk_01A == 0x6E)) {
             Matrix_Copy(&sp10C, Matrix_GetRelative(0));
             guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
             guTranslate(&sp190, spFC, sp100, sp104);
@@ -338,7 +338,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
             guTranslate(&sp210, arg1->position.x, arg1->position.y, arg1->position.z);
             guMtxCatL(&sp250, &sp210, sp294);
         }
-    } else if (D_8006F09C->unk_01A == 0x5C) {
+    } else if (gDefaultGraphRoot->unk_01A == 0x5C) {
         Matrix_Copy(&sp10C, Matrix_GetRelative(0));
         guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
         guTranslate(&sp190, spFC, sp100, sp104);
@@ -350,7 +350,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     guMtxCatL(&sp1D0, sp294, sp294);
     gSPMatrix(gfx++, sp294, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(gfx++, arg2->segments[0]);
-    switch (D_8006F09C->unk_01A) {
+    switch (gDefaultGraphRoot->unk_01A) {
     case 0x6D:
     case 0x6E:
         gDPLoadTextureBlock_4b(gfx++, arg2->textures[arg1->misc / 2], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -394,7 +394,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     gSPDisplayList(gfx++, arg2->segments[1]);
     gSPPopMatrix(gfx++, G_MTX_MODELVIEW);
     if (func_800325AC() == 0) {
-        var_v0 = D_8006F09C;
+        var_v0 = gDefaultGraphRoot;
 
         switch (var_v0->unk_01A) {
         case 0x6D:
@@ -526,10 +526,10 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
             state->gfx = GfxAlloc(0x80);
         }
         gfx = state->gfx;
-        temp_v1 = D_8006F09C->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->unk_0A6;
         if (temp_v1 == 0xFF) {
-            temp_v0 = D_8006F09C->unk_01A;
-            switch (D_8006F09C->unk_01A) {
+            temp_v0 = gDefaultGraphRoot->unk_01A;
+            switch (gDefaultGraphRoot->unk_01A) {
                 case 0x5C:
                     func_81000E78(&D_810047E0);
                     if (D_81004B54 == 0) {
@@ -539,9 +539,9 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
                 case 0x6D:
                 case 0x6E:
                     var_a3 = 0;
-                    temp_v0_2 = D_8006F09C->unk_040.unk_00;
+                    temp_v0_2 = gDefaultGraphRoot->unk_040.unk_00;
                     temp_a2 = D_810040B8[D_81004B54 % 18];
-                    temp_a1 = (s32) D_8006F09C->unk_040.unk_08 >> 0x10;
+                    temp_a1 = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
                     switch (temp_v0_2) {
                     case 4:
                         temp_a0 = D_81003FE0[temp_a2].unk_02;

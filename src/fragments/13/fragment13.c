@@ -36,7 +36,7 @@ static s16 gMiniGameCamDist;
 void MiniGame_PollController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void MiniGame_InitCamera(void) {
@@ -47,7 +47,7 @@ void MiniGame_InitCamera(void) {
 
     gMiniGameCameraNode->unk_24.near = 50.0f;
     gMiniGameCameraNode->unk_24.far = 6400.0f;
-    func_80010354(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
+    Camera_SetViewParameters(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
 }
 
 void MiniGame_HandleCameraInput(void) {
@@ -87,7 +87,7 @@ void MiniGame_HandleCameraInput(void) {
         gMiniGameCamDist = 50;
     }
 
-    func_80010354(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
+    Camera_SetViewParameters(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
 }
 
 void MiniGame_DrawOverlay(s32 arg0) {
@@ -132,7 +132,7 @@ void MiniGame_DrawOverlay(s32 arg0) {
 void MiniGame_RenderFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(gMiniGameRootNode);
     MiniGame_DrawOverlay(arg0);
     Stage_Advance();
@@ -142,7 +142,7 @@ void MiniGame_RunOpening(void) {
     func_80006C6C(0x10);
     GraphNode_TriggerAction(&D_86700940, 8);
 
-    while (func_80017514(&D_86700940) == 0) {
+    while (Anim_HasReachedEnd(&D_86700940) == 0) {
         MiniGame_PollController();
         MiniGame_RenderFrame(0);
     }
@@ -166,7 +166,7 @@ void MiniGame_RunPlaying(void) {
 
         if (var_s0 == 0x3C) {
             var_s0 = 0;
-            func_80017788(&D_86700940);
+            InitAnimState(&D_86700940);
             GraphNode_TriggerSound(&D_86700940, 0xA);
         }
 
@@ -180,7 +180,7 @@ void MiniGame_RunEnding(void) {
     GraphNode_TriggerAction(&D_86700940, 0xB);
     GraphNode_TriggerSound(&D_86700940, 0xB);
 
-    while (func_80017514(&D_86700940) == 0) {
+    while (Anim_HasReachedEnd(&D_86700940) == 0) {
         MiniGame_PollController();
         MiniGame_RenderFrame(2);
     }
@@ -200,8 +200,8 @@ void MiniGame_InitGraph(void) {
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     Graph_AddToRootList0(&D_86700940);
-    func_8001987C();
-    D_86700930 = func_80019D18(0x19);
+    AssetManager_LoadArchives();
+    D_86700930 = GeoLayout_LoadById(0x19);
     GraphNode_InitChild(&D_86700940, 0, 0x19, D_86700930->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86700940, 0);
     MiniGame_InitCamera();
@@ -227,7 +227,7 @@ s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     MiniGame_RunPlaying();
     MiniGame_RunEnding();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

@@ -156,7 +156,7 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     arg0->unk_06 = gSpeciesBaseStats[arg0->unk_00.unk_00 - 1].unk_06;
     arg0->unk_07 = gSpeciesBaseStats[arg0->unk_00.unk_00 - 1].unk_07;
 
-    func_80022734(arg0);
+    ApplyPPUps(arg0);
 
     arg0->unk_04 = arg0->unk_24;
 
@@ -2016,11 +2016,11 @@ void func_8820B504(unk_func_8820BE14_02C* arg0, s32 arg1) {
     if (func_882091E4(arg0->unk_30[0]) == 0x30000) {
         func_8002817C(0, 0);
         GbsProcessBankWrites(2);
-        func_800284B4(2);
+        GbsSyncBank(2);
     }
 
     if (arg1 & 4) {
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 
     if (arg1 & 3) {
@@ -2030,7 +2030,7 @@ void func_8820B504(unk_func_8820BE14_02C* arg0, s32 arg1) {
 
     if (arg1 & 4) {
         GbsProcessBankWrites(3);
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 }
 
@@ -2428,7 +2428,7 @@ void func_8820C510(unk_func_8820BE14* arg0) {
     volatile s32 sp34 = 0;
 
     while (sp34 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
         Stage_BeginDisplayList();
 
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(&arg0->unk_00);
@@ -2503,7 +2503,7 @@ void func_8820C700(TextObject* arg0, s32 arg1) {
     sp5C = mem_pool_try_init(0x18000, 0);
 
     if (arg1 == 1) {
-        func_80028AFC(2);
+        GbsEnsureBankLoaded(2);
     }
     MessageBank_Init();
 

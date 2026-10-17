@@ -123,7 +123,7 @@ s32 func_84B0BF10(s32 arg0, unk_func_80011B94* arg1) {
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B25AC0*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B25AC0*)gDefaultGraphRoot->unk_000.unk_14;
         if (temp_a0->unk_5A2 != 0) {
             var_a0 = D_3018800;
         } else {
@@ -156,7 +156,7 @@ s32 func_84B0C094(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B25AC0_000* temp_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B25AC0_000*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B25AC0_000*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
@@ -202,7 +202,7 @@ s32 func_84B0C3A4(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B25AC0_0A0* temp_v1;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25AC0_0A0*)D_8006F09C->unk_000.unk_14;
+        temp_v1 = (unk_D_84B25AC0_0A0*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gDPSetEnvColor(gDisplayListHead++, temp_v1->unk_0A.r, temp_v1->unk_0A.g, temp_v1->unk_0A.b, temp_v1->unk_0A.a);
@@ -239,7 +239,7 @@ void func_84B0C5E4(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2)
     arg0->unk_04 = 2;
     arg0->unk_08 = arg1->unk_08 + arg2;
 
-    func_8000E840(&arg0->unk_0A, 0xFF, 0xFF, 0xFF, 0xFF);
+    GfxColor_SetRGBA(&arg0->unk_0A, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_InitChild(arg0->unk_00, 1, 0, &arg1->unk_00->unk_000.unk_0C->unk_00);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024 = arg1->unk_00->unk_024;
@@ -249,7 +249,7 @@ void func_84B0C5E4(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2)
 void func_84B0C6B4(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 3;
-    func_8000E840(&arg0->unk_0A, 0xFF, 0xFF, 0xC8, 0xFF);
+    GfxColor_SetRGBA(&arg0->unk_0A, 0xFF, 0xFF, 0xC8, 0xFF);
     arg0->unk_0A.b = (MathUtil_Random16() % 200) + 0x32;
     GraphNode_InitChild(arg0->unk_00, 2, 0, arg1);
     Vec3f_Set(&arg0->unk_00->unk_030, 0.6f, 0.6f, 0.6f);

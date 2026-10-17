@@ -167,7 +167,7 @@ s32 func_83100180(s32 arg0, UNUSED GraphNode* arg1) {
             break;
 
         case 2:
-            func_83100020(D_8006F09C);
+            func_83100020(gDefaultGraphRoot);
             break;
 
         case 5:
@@ -236,7 +236,7 @@ void func_8310024C(unk_D_83101F00* arg0) {
 }
 
 s32 func_83100578(s32 arg0, GraphNode* arg1) {
-    unk_D_83101F00* ptr = (unk_D_83101F00*)D_8006F09C;
+    unk_D_83101F00* ptr = (unk_D_83101F00*)gDefaultGraphRoot;
 
     switch (arg0) {
         case 0:
@@ -448,7 +448,7 @@ void func_83101074(s16 arg0) {
 void func_831010B0(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_831010E0(unk_D_83101F00* arg0, s16 arg1) {
@@ -653,7 +653,7 @@ s32 func_83101A98(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_83101818();
     Stage_AdvanceN(2);
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('CLRG');

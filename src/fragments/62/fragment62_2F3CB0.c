@@ -131,7 +131,7 @@ void func_84309874(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_000.unk_024.y = arg0->unk_000.unk_024.y + sp5C.y;
         arg0->unk_168[i].unk_000.unk_024.z = arg0->unk_000.unk_024.z + sp5C.z;
 
-        func_80017464(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
     }
 }
@@ -162,7 +162,7 @@ s32 func_84309B0C(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_000.unk_030.y = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.z = temp_fv0_2;
 
-        func_80017464(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
 
         if (arg0->unk_168[i].unk_000.unk_030.y < 0.8) {
@@ -181,7 +181,7 @@ void func_84309C50(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_000.unk_01D = 0x41 - i * 4;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
 
-        func_80017464(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
         Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
@@ -200,10 +200,10 @@ void func_84309D78(unk_D_84390010* arg0, s16 arg1) {
     f32 sp70[3] = { 0.98f, 0.96f, 0.95f }; // D_84384644
 
     for (i = 0; i < 2; i++) {
-        func_80017464(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
         Matrix_Decompose(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
-        func_80010354(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
+        Camera_SetViewParameters(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
         func_8430C4F8(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
     }
 }
@@ -222,7 +222,7 @@ void func_84309F30(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_843093F0(arg1, 20.0f, 0x1FFE);
     arg1->unk_4B8++;
     arg1->unk_4EC.unk_000.unk_02 &= ~0x20;
-    func_80017464(&arg1->unk_4EC, 0);
+    Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
 void func_84309FD4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
@@ -260,7 +260,7 @@ void func_8430A0E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_843093F0(arg1, 0.0f, 0x3FFC);
     arg1->unk_4EC.unk_000.unk_01 |= 1;
     arg1->unk_4EC.unk_000.unk_02 &= ~0x20;
-    func_80017464(&arg1->unk_4EC, 0);
+    Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
 void func_8430A17C(unk_D_84390010* arg0, unk_D_84390010* arg1) {

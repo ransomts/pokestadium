@@ -28,7 +28,7 @@ static u32 D_828004D0[] = {
 void func_82900020(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_82800050(u8* arg0) {
@@ -59,7 +59,7 @@ void func_828001D0(void) {
     Stage_BeginDisplayList();
     func_82800050(D_828006A4);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_82800534);
     Stage_Advance();
 }
@@ -96,8 +96,8 @@ void func_828002E4(void) {
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     Graph_AddToRootList0(&D_82800538);
-    func_8001987C();
-    D_82800530 = func_80019D18(0x96);
+    AssetManager_LoadArchives();
+    D_82800530 = GeoLayout_LoadById(0x96);
     GraphNode_InitChild(&D_82800538, 0, 0x96, D_82800530->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_82800538, 0);
 }
@@ -121,7 +121,7 @@ s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_82800238();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MTWO');

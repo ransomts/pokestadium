@@ -98,7 +98,7 @@ void Fragment2_1_Init(void) {
 
     Graph_AddToRootList1(&gFragment2_1GraphNode);
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    gFragment2_1DisplayNode = func_80011B94(sp1C, NULL, 4, gFragment2_1EmptyDL);
+    gFragment2_1DisplayNode = SimpleGfxNode_Create(sp1C, NULL, 4, gFragment2_1EmptyDL);
     gFragment2_1GraphNode.unk_000.unk_02 |= 8;
 
     GraphNode_AddChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->unk_00);

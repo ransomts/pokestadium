@@ -857,8 +857,8 @@ typedef struct ClipRect {
 } ClipRect; // size >= 0x8
 extern ClipRect gClipRect;
 
-extern struct unk_D_86002F58_004_000_000 gGraphRoot0;
-extern struct unk_D_86002F58_004_000_000 gGraphRoot1;
+extern struct GraphRootNode gGraphRoot0;
+extern struct GraphRootNode gGraphRoot1;
 
 typedef struct unk_D_8006FF00 {
 	/* 0x00 */ u8 unk_00;

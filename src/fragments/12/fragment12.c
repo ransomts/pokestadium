@@ -35,7 +35,7 @@ static s16 D_86600ABC;
 void func_86600020(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86600050(void) {
@@ -48,7 +48,7 @@ void func_86600050(void) {
     D_86600948->unk_24.near = 10.0f;
     D_86600948->unk_24.far = 6400.0f;
 
-    func_80010354(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
+    Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
 void func_866000FC(void) {
@@ -92,7 +92,7 @@ void func_866000FC(void) {
         D_86600ABC = 2000;
     }
 
-    func_80010354(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
+    Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
 void func_86600264(s32 arg0) {
@@ -137,7 +137,7 @@ void func_86600264(s32 arg0) {
 void func_86600438(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_86600944);
     func_86600264(arg0);
     Stage_Advance();
@@ -146,11 +146,11 @@ void func_86600438(s32 arg0) {
 void func_8660048C(void) {
     func_80006C6C(0x10);
     GraphNode_TriggerAction(&D_86600950, 8);
-    if (func_80017514(&D_86600950) == 0) {
+    if (Anim_HasReachedEnd(&D_86600950) == 0) {
         do {
             func_86600020();
             func_86600438(0);
-        } while (func_80017514(&D_86600950) == 0);
+        } while (Anim_HasReachedEnd(&D_86600950) == 0);
     }
 }
 
@@ -172,7 +172,7 @@ void func_866004F8(void) {
 
         if (var_s0 == 60) {
             var_s0 = 0;
-            func_80017788(&D_86600950);
+            InitAnimState(&D_86600950);
             GraphNode_TriggerSound(&D_86600950, 0xA);
         }
 
@@ -186,7 +186,7 @@ void func_866005B8(void) {
     GraphNode_TriggerAction(&D_86600950, 0xB);
     GraphNode_TriggerSound(&D_86600950, 0xB);
 
-    while (func_80017514(&D_86600950) == 0) {
+    while (Anim_HasReachedEnd(&D_86600950) == 0) {
         func_86600020();
         func_86600438(3);
     }
@@ -206,8 +206,8 @@ void func_86600658(void) {
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     Graph_AddToRootList0(&D_86600950);
-    func_8001987C();
-    D_86600940 = func_80019D18(0x19);
+    AssetManager_LoadArchives();
+    D_86600940 = GeoLayout_LoadById(0x19);
     GraphNode_InitChild(&D_86600950, 0, 0x19, D_86600940->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86600950, 0);
     func_86600050();
@@ -233,7 +233,7 @@ s32 func_8660070C(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_866004F8();
     func_866005B8();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

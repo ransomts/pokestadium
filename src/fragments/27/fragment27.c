@@ -1463,8 +1463,8 @@ unk_func_88205880_0098_008* func_886058B8(unk_func_88205880_0098* arg0) {
     unk_func_88205880_0098_008* sp34;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
-    sp38 = func_8001B1FC(func_80019760(1), 228, 160, 0, 0, 0xE0, 0xA0, D_8860A6D0);
-    func_8001987C();
+    sp38 = func_8001B1FC(AssetManager_Create(1), 228, 160, 0, 0, 0xE0, 0xA0, D_8860A6D0);
+    AssetManager_LoadArchives();
     FRAGMENT_LOAD(fragment31);
 
     D_8861C510 = arg0->unk_1C;

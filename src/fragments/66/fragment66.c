@@ -166,7 +166,7 @@ void func_832003AC(void) {
         }
     }
 
-    if ((D_83202028[0].unk_040.unk_00 != 0) && (func_80017514(&D_83202028[0]) != 0)) {
+    if ((D_83202028[0].unk_040.unk_00 != 0) && (Anim_HasReachedEnd(&D_83202028[0]) != 0)) {
         if (D_83201F50 != 0) {
             D_83202028[0].unk_000.unk_01 &= ~1;
         } else {
@@ -215,7 +215,7 @@ void func_83200468(void) {
 }
 
 s32 func_8320058C(u8 arg0) {
-    func_80015348();
+    Gfx_FinishFrame();
     func_832003AC();
     func_83200468();
     Stage_BeginDisplayList();
@@ -720,7 +720,7 @@ void func_83201B60(void) {
 
 void func_83201BD8(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, s16 arg3) {
     GraphNode_InitChild(arg0, 0, 0, D_83202014);
-    func_800173DC(arg0, 0, D_8C2011C4, 0x10000);
+    Anim_SetChannel(arg0, 0, D_8C2011C4, 0x10000);
     arg0->unk_000.unk_01 &= ~1;
     Vec3f_Set(&arg0->unk_030, 1.5f, 1.5f, 1.5f);
     arg0->unk_024.x = arg1;
@@ -770,13 +770,13 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
         MessageBank_Init();
         D_8320201C = GetMessageBank(0x25);
         D_83202020 = GetMessageBank(0x1C);
-        func_8001987C();
+        AssetManager_LoadArchives();
         D_83202018 = func_80019D90(&D_832027C8.unk_04);
         func_83201C8C();
         Stage_Set(sp20);
         func_83201B60();
         Stage_Destroy();
-        func_8001E9CC();
+        FontManager_Free();
         Gfx_FreeBuffers();
     }
 

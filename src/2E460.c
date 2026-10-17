@@ -489,7 +489,7 @@ s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
         case 16:
         case 17:
         case 18:
-            sp1C = func_800275E0(arg0, arg2);
+            sp1C = GbsGetBlockMaxEntries(arg0, arg2);
             break;
     }
     return sp1C;
@@ -503,7 +503,7 @@ void ControllerMsgQueue_SendAndRead(OSMesg arg0) {
     osSendMesg(&gControllerMsgQueue, arg0, 1);
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void ControllerMsgQueue_Flush(void) {
@@ -533,7 +533,7 @@ void Game_RunPokemonLab(void) {
             main_pool_push_state('PLAB');
 
             if (func_80029080() != -1) {
-                func_80028AFC(3);
+                GbsEnsureBankLoaded(3);
                 func_80023D60(func_80029080());
             }
 

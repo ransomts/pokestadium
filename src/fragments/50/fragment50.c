@@ -1704,7 +1704,7 @@ s32 func_826000D8(void) {
     unk_func_800228F0 sp20;
     char* tmp;
 
-    func_800228F0(&sp20, (D_82607B54 % D_8267E4F0) + 1);
+    LoadPokemonNameData(&sp20, (D_82607B54 % D_8267E4F0) + 1);
     tmp = GetNameSlot(1);
     if ((sp20.unk_02 == 0) && (func_82600094(&sp20.unk_14, tmp) == 1)) {
         sp44 = 1;
@@ -1759,7 +1759,7 @@ s32 func_826007C8(s32 arg0) {
     UNUSED s32 pad;
     unk_func_800228F0 sp18;
 
-    return func_800228F0(&sp18, arg0);
+    return LoadPokemonNameData(&sp18, arg0);
 }
 
 s32 func_826007F0(s32 arg0, unk_D_86002F34_alt18* arg1) {
@@ -1834,7 +1834,7 @@ void func_82600C10(void) {
     D_82608558->unk_60.at.x = 0.0f;
     D_82608558->unk_60.at.y = 20.0f;
     D_82608558->unk_60.at.z = 0.0f;
-    func_80010354(&D_82608558->unk_60.at, &D_82608558->unk_60.eye, D_82608540, D_8260853C, D_8260853E);
+    Camera_SetViewParameters(&D_82608558->unk_60.at, &D_82608558->unk_60.eye, D_82608540, D_8260853C, D_8260853E);
     gCurrentCameraNode = D_82608558;
 }
 
@@ -1844,7 +1844,7 @@ void func_82600CFC(void) {
 void func_82600D04(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_82600D34(void) {
@@ -1935,7 +1935,7 @@ void func_8260125C(void) {
         unk_func_800228F0 sp158;
         UNUSED s32 pad2[1];
 
-        func_800228F0(&sp158, (D_82607B54 % D_8267E4F0) + 1);
+        LoadPokemonNameData(&sp158, (D_82607B54 % D_8267E4F0) + 1);
 
         gDPSetPrimColor(gDisplayListHead++, 0, 0, 0, 0, 0, 150);
 
@@ -2018,7 +2018,7 @@ void func_8260125C(void) {
     } else if ((D_82608542 == 1) && (func_826007C8((D_82607B54 % D_8267E4F0) + 1) != 0)) {
         unk_func_800228F0 sp58;
 
-        func_800228F0(&sp58, (D_82607B54 % D_8267E4F0) + 1);
+        LoadPokemonNameData(&sp58, (D_82607B54 % D_8267E4F0) + 1);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetFont(2, 0);
         Text_Print(0x58, 0x2E, "%s", GetMessageString(NULL, 0, D_8267E75C, 0));
@@ -2159,7 +2159,7 @@ void func_826026D4(s16 arg0) {
     unk_func_800228F0 sp2C;
 
     if (func_826007C8(temp_s1) != 0) {
-        func_800228F0(&sp2C, temp_s1);
+        LoadPokemonNameData(&sp2C, temp_s1);
         GetPokemonStatFromEntry(&sp54, &sp2C, temp_s1);
     } else {
         sp54.raw = 0;
@@ -2167,7 +2167,7 @@ void func_826026D4(s16 arg0) {
     D_82607B52 = (D_82607B50 + arg0 + 5) % 5;
     D_82607420[D_82607B52].unk_000 = temp_s1;
     func_80019A1C(D_8260741C, temp_s1, sp54, D_82607B52);
-    func_80019CA8(D_8260741C);
+    AssetManager_WaitLoadQueue(D_8260741C);
     D_82607420[D_82607B52].unk_004 = D_8260741C->unk_24;
 }
 
@@ -2497,7 +2497,7 @@ s32 func_826034EC(void) {
 }
 
 s32 func_826035D4(void) {
-    while (func_80019C08(D_8260741C) == 0) {
+    while (AssetManager_TryProcessLoadQueue(D_8260741C) == 0) {
         func_82600D04();
         func_82602294();
     }
@@ -2607,7 +2607,7 @@ void func_82603924(void) {
     D_82607418 = process_geo_layout(temp_v0, &D_82607228);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     SpriteAssets_Load();
 
     for (i = 0; i < 151; i++) {
@@ -2630,7 +2630,7 @@ void func_82603924(void) {
         D_8267E4EA++;
         D_8267E4F0 = 151;
     }
-    temp_s0 = func_80019D18(0xB7);
+    temp_s0 = GeoLayout_LoadById(0xB7);
 
     ptr = &D_82608268;
     Graph_AddToRootList0(&D_82608268);
@@ -2648,7 +2648,7 @@ void func_82603924(void) {
     ptr->unk_01E.z = 0;
     ptr->unk_040.unk_0C = 0;
 
-    temp_s0 = func_80019D18(0xB7);
+    temp_s0 = GeoLayout_LoadById(0xB7);
     ptr = &D_826083D0;
     Graph_AddToRootList0(&D_826083D0);
     GraphNode_InitChild(&D_826083D0, 0, 0xB7, temp_s0->unk_08->unk_00[1]);
@@ -2669,11 +2669,11 @@ void func_82603924(void) {
         Graph_AddToRootList0(&D_82607420[j].unk_008);
     }
 
-    D_8260741C = func_80019760(9);
+    D_8260741C = AssetManager_Create(9);
 
     for (j = -2; j < 3; j++) {
         func_82602614(j);
-        func_80019CA8(D_8260741C);
+        AssetManager_WaitLoadQueue(D_8260741C);
         D_82607420[D_82607B52].unk_004 = D_8260741C->unk_24;
     }
 
@@ -2685,7 +2685,7 @@ void func_82603924(void) {
         Graph_AddToRootList0(&D_82607B60[i]);
     }
 
-    D_82608538 = func_80019D18(0xB6);
+    D_82608538 = GeoLayout_LoadById(0xB6);
 
     for (i = 1; i < 4; i++) {
         func_82603800(i, (i - 2) * 600.0f);
@@ -2714,7 +2714,7 @@ s32 func_82603D20(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, victory_palace_plate_text, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_82603924();
     MessageBank_Init();
     D_8267E75C = GetMessageBank(0x1F);

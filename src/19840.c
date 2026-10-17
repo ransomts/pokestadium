@@ -20,7 +20,7 @@ typedef struct ret_func_unk_D_800ABE10 {
 // .bss
 unk_D_800ABE10 gAssetManager;
 
-void func_80018C40(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
+void GeoLayout_ConvertTextures(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
     s32 i;
     s32 j;
     unk_D_86002F34_018* var_s2 = arg0->unk_18;
@@ -89,7 +89,7 @@ Fragment* Fragment_LoadRaw(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg
     return sp1C;
 }
 
-Fragment* func_80018F20(MainPoolState* arg0, s32 start, s32 end, PERSSZP* arg3, s32 arg4) {
+Fragment* Fragment_LoadFromRange(MainPoolState* arg0, s32 start, s32 end, PERSSZP* arg3, s32 arg4) {
     UNUSED s32 pad;
     u32 size = ALIGN16(end - start);
     Fragment* var_v1 = NULL;
@@ -143,7 +143,7 @@ void Fragment_Relocate(MainPoolState* arg0, u32 arg1, Fragment* arg2) {
 Fragment* Fragment_LoadFromArchive(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
     s32 temp_a1 = arg1->unk_04 + arg2->offset;
 
-    return func_80018F20(arg0, temp_a1, arg2->size + temp_a1, arg3, arg4);
+    return Fragment_LoadFromRange(arg0, temp_a1, arg2->size + temp_a1, arg3, arg4);
 }
 
 Fragment* Fragment_LoadFromArchive2(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
@@ -182,7 +182,7 @@ Fragment* Fragment_LoadFromFile(MainPoolState* arg0, BinArchive* arg1, s32 arg2,
     return var_s0;
 }
 
-s32 func_80019328(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2) {
+s32 AssetGroup_CreateFromFragment(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2) {
     s32 i;
     unk_D_86002F34* temp_v0_2;
     ret_func_unk_D_800ABE10* temp_v0;
@@ -197,7 +197,7 @@ s32 func_80019328(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2) {
         if (temp_v0_2->unk_00.unk_00 == 0xE) {
             temp_v0_2->unk_28 = arg1;
             if (arg2.raw != 0) {
-                func_80018C40(temp_v0_2, arg2);
+                GeoLayout_ConvertTextures(temp_v0_2, arg2);
             }
         }
         temp_v0->unk_08[i] = temp_v0_2;
@@ -206,7 +206,7 @@ s32 func_80019328(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2) {
     return temp_v0;
 }
 
-void func_80019420(MemoryBlock* arg0, arg1_func_80019420* arg1) {
+void GeoLayout_ProcessList(MemoryBlock* arg0, arg1_func_80019420* arg1) {
     while (arg1->unk_00) {
         if (arg1->unk_00 == 3) {
             arg1->unk_04 = process_geo_layout(arg0, arg1->unk_04);
@@ -216,7 +216,7 @@ void func_80019420(MemoryBlock* arg0, arg1_func_80019420* arg1) {
     }
 }
 
-void func_80019484(unk_func_80019600* arg0) {
+void AssetLoader_LoadInitial(unk_func_80019600* arg0) {
     UNUSED s32 pad;
     MemoryBlock* sp28;
     Fragment* sp24;
@@ -225,7 +225,7 @@ void func_80019484(unk_func_80019600* arg0) {
     sp24 = Fragment_LoadFromFile(sp28, gAssetManager.unk_A04.unk_00, arg0->unk_02, gAssetManager.unk_A04.unk_08, 0x28000);
 
     if (sp24 != NULL) {
-        arg0->unk_08 = func_80019328(sp28, sp24, arg0->unk_18);
+        arg0->unk_08 = AssetGroup_CreateFromFragment(sp28, sp24, arg0->unk_18);
     } else {
         arg0->unk_08 = 0;
     }
@@ -233,7 +233,7 @@ void func_80019484(unk_func_80019600* arg0) {
     arg0->size = sp28->size + 0x10;
 }
 
-void func_80019514(unk_func_80019600* arg0) {
+void AssetLoader_LoadAdditional(unk_func_80019600* arg0) {
     Fragment* temp_v0;
     MainPoolState* temp_s3;
     s32 var_s2;
@@ -252,7 +252,7 @@ void func_80019514(unk_func_80019600* arg0) {
         }
 
         temp_s6[var_s2] = temp_v0 + 1;
-        func_80019420(temp_s3, temp_v0 + 1);
+        GeoLayout_ProcessList(temp_s3, temp_v0 + 1);
         var_s0++;
         var_s2++;
     }
@@ -261,7 +261,7 @@ void func_80019514(unk_func_80019600* arg0) {
     arg0->size = temp_s3->listHeadL + 1;
 }
 
-void func_80019600(UNUSED void* arg0) {
+void AssetLoader_ThreadMain(UNUSED void* arg0) {
     unk_func_80019600* sp34;
 
     __osSetFpcCsr(0x01000C01);
@@ -271,11 +271,11 @@ void func_80019600(UNUSED void* arg0) {
 
         switch (sp34->unk_00) {
             case 1:
-                func_80019484(sp34);
+                AssetLoader_LoadInitial(sp34);
                 break;
 
             case 2:
-                func_80019514(sp34);
+                AssetLoader_LoadAdditional(sp34);
                 break;
         }
 
@@ -288,11 +288,11 @@ void func_80019600(UNUSED void* arg0) {
 void Sched_InitThreads(void) {
     osCreateMesgQueue(&gAssetManager.unk_9D0, &gAssetManager.unk_9B0, 8);
     osCreateMesgQueue(&gAssetManager.unk_9EC, &gAssetManager.unk_9E8, 1);
-    osCreateThread(&gAssetManager.unk_000, 7, func_80019600, NULL, &gAssetManager.unk_9B0, 0xA);
+    osCreateThread(&gAssetManager.unk_000, 7, AssetLoader_ThreadMain, NULL, &gAssetManager.unk_9B0, 0xA);
     osStartThread(&gAssetManager.unk_000);
 }
 
-unk_D_86002F58_004_000_010* func_80019760(u32 arg0) {
+unk_D_86002F58_004_000_010* AssetManager_Create(u32 arg0) {
     s16 i = 1;
     unk_D_86002F58_004_000_010* temp_v0 = main_pool_alloc(sizeof(unk_D_86002F58_004_000_010), 1);
 
@@ -325,13 +325,13 @@ unk_D_86002F58_004_000_010* func_80019760(u32 arg0) {
     return temp_v0;
 }
 
-void func_8001987C(void) {
+void AssetManager_LoadArchives(void) {
     gAssetManager.unk_A04.unk_00 = Asset_Load2(0x920000, NULL, 1, 1);
     gAssetManager.unk_A04.unk_04 = Asset_Load2(0x8CC000, NULL, 1, 1);
     gAssetManager.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
 }
 
-s32 func_800198E4(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
+s32 AssetManager_RequestLoad(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
     s32 sp1C;
     sp18_func_800198E4* sp18;
     s32 var_v1;
@@ -371,7 +371,7 @@ s32 func_800198E4(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8
 s32 func_80019A1C(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
     if ((arg0->unk_00 & 8) && !(arg0->unk_01 & 1)) {
         arg0->unk_02 = arg3;
-        func_800198E4(arg0, arg1, arg2);
+        AssetManager_RequestLoad(arg0, arg1, arg2);
     }
     return 0;
 }
@@ -401,7 +401,7 @@ s32 func_80019A7C(unk_D_86002F58_004_000_010* arg0, s32 arg1, s32 arg2) {
     return sp1C;
 }
 
-s32 func_80019B48(unk_D_86002F58_004_000_010* arg0, sp18_func_800198E4* arg1) {
+s32 AssetManager_HandleRequest(unk_D_86002F58_004_000_010* arg0, sp18_func_800198E4* arg1) {
     s32 sp1C = 0;
 
     switch (arg1->unk_00) {
@@ -430,12 +430,12 @@ s32 func_80019B48(unk_D_86002F58_004_000_010* arg0, sp18_func_800198E4* arg1) {
     return sp1C;
 }
 
-s32 func_80019C08(unk_D_86002F58_004_000_010* arg0) {
+s32 AssetManager_TryProcessLoadQueue(unk_D_86002F58_004_000_010* arg0) {
     sp18_func_800198E4* sp1C;
     s32 sp18 = 0;
 
     if (osRecvMesg(&arg0->unk_30, &sp1C, 0) != -1) {
-        sp18 = func_80019B48(arg0, sp1C);
+        sp18 = AssetManager_HandleRequest(arg0, sp1C);
     }
 
     return sp18;
@@ -446,27 +446,27 @@ s32 func_80019C58(unk_D_86002F58_004_000_010* arg0) {
     s32 sp18 = 0;
 
     if (osRecvMesg(&arg0->unk_50, &sp1C, 0) != -1) {
-        sp18 = func_80019B48(arg0, sp1C);
+        sp18 = AssetManager_HandleRequest(arg0, sp1C);
     }
 
     return sp18;
 }
 
-s32 func_80019CA8(unk_D_86002F58_004_000_010* arg0) {
+s32 AssetManager_WaitLoadQueue(unk_D_86002F58_004_000_010* arg0) {
     OSMesg sp1C;
 
     osRecvMesg(&arg0->unk_30, &sp1C, 1);
-    return func_80019B48(arg0, sp1C);
+    return AssetManager_HandleRequest(arg0, sp1C);
 }
 
 s32 func_80019CE0(unk_D_86002F58_004_000_010* arg0) {
     OSMesg sp1C;
 
     osRecvMesg(&arg0->unk_50, &sp1C, 1);
-    return func_80019B48(arg0, sp1C);
+    return AssetManager_HandleRequest(arg0, sp1C);
 }
 
-unk_D_86002F30* func_80019D18(s32 arg0) {
+unk_D_86002F30* GeoLayout_LoadById(s32 arg0) {
     Fragment* sp2C;
     arg1_func_80010CA8 sp28;
     unk_D_86002F30* sp24 = NULL;
@@ -476,7 +476,7 @@ unk_D_86002F30* func_80019D18(s32 arg0) {
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
-        sp24 = func_80019328(sp20, sp2C, sp28);
+        sp24 = AssetGroup_CreateFromFragment(sp20, sp2C, sp28);
         mem_pool_resize_block(sp20);
     }
 
@@ -493,7 +493,7 @@ unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         ComputeStatFromName(&sp28, arg0);
-        sp24 = func_80019328(sp20, sp2C, sp28);
+        sp24 = AssetGroup_CreateFromFragment(sp20, sp2C, sp28);
         mem_pool_resize_block(sp20);
     }
     return sp24;
@@ -510,7 +510,7 @@ s32 func_80019E18(s32 arg0, s32 arg1) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
         sp28.raw = 0;
         sp28.unk_00 = arg1 * 64;
-        sp24 = func_80019328(sp20, sp2C, sp28);
+        sp24 = AssetGroup_CreateFromFragment(sp20, sp2C, sp28);
         mem_pool_resize_block(sp20);
     }
     return sp24;
@@ -526,14 +526,14 @@ arg1_func_80019420* func_80019EA0(s32 arg0) {
     if (sp24 != NULL) {
         sp1C = state_pool_try_init(main_pool_get_available(), 0);
         sp20 = sp24->data;
-        func_80019420(sp1C, sp20);
+        GeoLayout_ProcessList(sp1C, sp20);
         mem_pool_resize_block(sp1C);
     }
     return sp20;
 }
 
 Fragment* func_80019F0C(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSSZP* arg4, s32 arg5) {
-    Fragment* sp24 = func_80018F20(arg0, arg2, arg3, arg4, arg5);
+    Fragment* sp24 = Fragment_LoadFromRange(arg0, arg2, arg3, arg4, arg5);
 
     if (sp24 != NULL) {
         Fragment_Relocate(arg0, arg1, sp24);

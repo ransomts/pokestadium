@@ -62,7 +62,7 @@ char* func_842000C0(s32 arg0) {
 }
 
 char* func_842000F8(s32 arg0) {
-    return GetMessageString(NULL, 0, D_84211B44, func_800219FC(arg0));
+    return GetMessageString(NULL, 0, D_84211B44, RemapStadiumModeIndex(arg0));
 }
 
 char* func_84200130(s32 arg0) {
@@ -1070,7 +1070,7 @@ void func_84203D74(void) {
         if (gBattleContext.unk_0002 >= 8) {
             D_84211B34 = BinArchive_GetFile(D_84211B30, 0xE);
         } else {
-            func_80028AFC(2);
+            GbsEnsureBankLoaded(2);
             func_80027FA0(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_84211B34 = BinArchive_GetFile(D_84211B30, 0xD);
@@ -1092,7 +1092,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    func_8001987C();
+    AssetManager_LoadArchives();
     MessageBank_Init();
 
     D_84211B3C = GetMessageBank(0x24);
@@ -1101,7 +1101,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     D_84211B48 = GetMessageBank(0x1A);
     D_84211B4C = GetMessageBank(6);
 
-    func_80028AFC(gBattleContext.unk_0001 / 4);
+    GbsEnsureBankLoaded(gBattleContext.unk_0001 / 4);
     func_80028C48(gBattleContext.unk_0001);
     func_80028EB8();
     func_84203D74();

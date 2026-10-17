@@ -202,15 +202,15 @@ void func_86A000B4(s8 arg0, u8 arg1) {
 void func_86A00434(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86A00464(void) {
     if (D_86A061D9 < 6) {
-        func_80010354(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
+        Camera_SetViewParameters(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
     } else if (D_86A061D9 < 9) {
-        func_80010354(&D_86A06248, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
-        func_80010354(&D_86A06248, &D_86A061E8->unk_60.at, D_86A061F0 + 500.0f, D_86A061EC, D_86A061EE);
+        Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
+        Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.at, D_86A061F0 + 500.0f, D_86A061EC, D_86A061EE);
     }
 }
 
@@ -1422,7 +1422,7 @@ void func_86A00D00(void) {
 
     D_86A061E8->unk_24.near = 50.0f;
     D_86A061E8->unk_24.far = 6400.0f;
-    func_80010354(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
+    Camera_SetViewParameters(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
 }
 
 void func_86A00DAC(s32 arg0) {
@@ -1430,7 +1430,7 @@ void func_86A00DAC(s32 arg0) {
     MemoryBlock* temp_v0;
 
     D_86A061DC = ASSET_LOAD2(stadium_models, 1, 1);
-    func_800113F8(0, &D_86A06170, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    ColorRectNode_Create(0, &D_86A06170, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_86A06190);
     GraphNode_AllocInit(NULL, &D_86A061A8);
     GraphNode_AllocInit(NULL, &D_86A061C0);
@@ -1465,7 +1465,7 @@ s32 func_86A00ED8(s32 arg0, s32 arg1) {
     func_86A0092C(arg1);
     func_86A00C90();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('ROLE');
@@ -1501,7 +1501,7 @@ s32 func_86A01020(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     for (i = 0; i < 5; i++) {
         if (arg1 == D_86A02700[i].unk_00) {
             for (j = 0; j < 4; j++) {
-                func_8000E840(&arg0[j], D_86A02700[i].unk_03[j].r, D_86A02700[i].unk_03[j].g, D_86A02700[i].unk_03[j].b,
+                GfxColor_SetRGBA(&arg0[j], D_86A02700[i].unk_03[j].r, D_86A02700[i].unk_03[j].g, D_86A02700[i].unk_03[j].b,
                               D_86A02700[i].unk_02);
             }
             break;

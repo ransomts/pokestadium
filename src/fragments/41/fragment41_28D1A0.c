@@ -28,7 +28,7 @@ void func_82F052F0(unk_D_82F144D0* arg0, u8* arg1, s16 arg2, s16 arg3) {
     ptr->unk_14 = arg1;
     ptr->unk_18 = arg0;
     ptr->unk_1C = NULL;
-    ptr->unk_20 = func_80019760(1);
+    ptr->unk_20 = AssetManager_Create(1);
     ptr->unk_24 = func_8001B1FC(ptr->unk_20, 0xE4, 0xA0, 0, 0, 0xE0, 0xA0, D_3014468);
     ptr->unk_24->unk_00 &= ~2;
     func_8001B2D8(ptr->unk_24, ptr->unk_14, 0x108D);
@@ -309,8 +309,8 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         Text_SetFont(8, 0);
         Text_Print(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, func_82F00020(sp11C->unk_00.unk_00));
 
-        temp_s0 = func_800219FC(sp11C->unk_06);
-        temp_s1_2 = func_800219FC(sp11C->unk_07);
+        temp_s0 = RemapStadiumModeIndex(sp11C->unk_06);
+        temp_s1_2 = RemapStadiumModeIndex(sp11C->unk_07);
 
         Text_SetFont(8, 0);
         Text_Print(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, GetMessageString(NULL, 0, D_82F13B70, 0xC));

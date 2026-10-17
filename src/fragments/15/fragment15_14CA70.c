@@ -293,9 +293,9 @@ static unk_D_869091B8 D_869091B8[] = {
 };
 
 static unk_D_8690A610 D_8690A610;
-static unk_D_86002F58_004_000_000 D_8690A630;
-static unk_D_86002F58_004_000_000 D_8690A648;
-static unk_D_86002F58_004_000_000 D_8690A660;
+static GraphRootNode D_8690A630;
+static GraphRootNode D_8690A648;
+static GraphRootNode D_8690A660;
 char** D_8690A678;
 static s32 D_8690A67C;
 static s32 D_8690A680;
@@ -413,10 +413,10 @@ unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(unk_func_80026268_arg0* arg
     unk_D_86002F58_004_000_010* sp18;
 
     arg0->unk_00.unk_00 = 25;
-    sp18 = func_80019760(1);
+    sp18 = AssetManager_Create(1);
     ComputeStatFromName(&sp1C, arg0);
-    func_800198E4(sp18, arg0->unk_00.unk_00 = 153, sp1C);
-    func_80019CA8(sp18);
+    AssetManager_RequestLoad(sp18, arg0->unk_00.unk_00 = 153, sp1C);
+    AssetManager_WaitLoadQueue(sp18);
 
     return sp18->unk_24;
 }
@@ -430,7 +430,7 @@ void Stage_Init(void) {
     D_8690A704 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_01 - 6;
 
     Graph_AddToRootList0(&D_8690A69C->unk_004);
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     if (D_8690A69C->unk_16C == 153) {
         D_8690A69C->unk_000 = CreatePlayerStatNode(&D_8690A6A0);
@@ -502,7 +502,7 @@ void LoadStageFragmentByIndex(s32 arg0) {
 void Graphics_Init(void) {
     MemoryBlock* sp2C;
 
-    func_800113F8(0, &D_8690A610, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    ColorRectNode_Create(0, &D_8690A610, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_8690A630);
     GraphNode_AllocInit(NULL, &D_8690A648);
     GraphNode_AllocInit(NULL, &D_8690A660);
@@ -601,7 +601,7 @@ void func_86900B04(f32* arg0, f32* arg1, s16 arg2, s16 arg3) {
 void func_86900B6C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86900B9C(void) {
@@ -611,15 +611,15 @@ void func_86900B9C(void) {
 
     if ((D_8690A6F4 >= 0x96) && (func_800174E4(&D_8690A69C->unk_004) != 0) && (D_8690A6FC == 0)) {
         GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A704].unk_00);
-        func_80017464(&D_8690A69C->unk_004, 0);
-        func_80017804(&D_8690A69C->unk_004, 0);
+        Anim_SetChannelBase(&D_8690A69C->unk_004, 0);
+        SetAnimStateIndex(&D_8690A69C->unk_004, 0);
         GraphNode_TriggerSound(&D_8690A69C->unk_004, D_8690A718[D_8690A704].unk_01);
         D_8690A6FC = 1;
     }
 
     if ((func_800174E4(&D_8690A69C->unk_004) != 0) && (D_8690A6FC == 1)) {
         GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_00);
-        func_80017464(&D_8690A69C->unk_004, 0);
+        Anim_SetChannelBase(&D_8690A69C->unk_004, 0);
         D_8690A6F4 = 0;
         D_8690A6FC = 0;
     }
@@ -630,15 +630,15 @@ void func_86900CF4(void) {
     if (D_8690A6F8 == 60) {
         D_8690A6F8 = 0;
         if (D_8690A6FC == 0) {
-            func_80017804(&D_8690A69C->unk_004, 0);
+            SetAnimStateIndex(&D_8690A69C->unk_004, 0);
             GraphNode_TriggerSound(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_01);
         }
     }
 }
 
 void func_86900D78(void) {
-    if ((D_8690A69C->unk_004.unk_054.unk_00 != -1) && (func_8001783C(&D_8690A69C->unk_004) == 1)) {
-        func_80017804(&D_8690A69C->unk_004, 0);
+    if ((D_8690A69C->unk_004.unk_054.unk_00 != -1) && (IsAnimStateSecondLast(&D_8690A69C->unk_004) == 1)) {
+        SetAnimStateIndex(&D_8690A69C->unk_004, 0);
         GraphNode_TriggerSound(&D_8690A69C->unk_004, -1);
     }
 }
@@ -991,7 +991,7 @@ void func_86901A44(void) {
         Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
 
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_87906050);
     func_86908668();
     func_86907B78();
@@ -1139,7 +1139,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&D_8690B378, 0);
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
@@ -1151,7 +1151,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     func_86901ECC();
     func_86901FB4();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('SNAP');

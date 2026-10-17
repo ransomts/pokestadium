@@ -2687,7 +2687,7 @@ void func_882139C0(unk_func_8821421C_02C* arg0, s32 arg1) {
     }
 
     if (arg1 & 4) {
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 
     if (arg1 & 3) {
@@ -2696,7 +2696,7 @@ void func_882139C0(unk_func_8821421C_02C* arg0, s32 arg1) {
 
     if (arg1 & 4) {
         GbsProcessBankWrites(3);
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 }
 

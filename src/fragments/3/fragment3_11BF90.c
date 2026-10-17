@@ -15,7 +15,7 @@ void func_87903600(void) {
 
     for (i = 0; i < 3; i++, ptr++) {
         Graph_AddToRootList0(&ptr->unk_000);
-        ptr->unk_168 = func_80019D18(0xAB);
+        ptr->unk_168 = GeoLayout_LoadById(0xAB);
         GraphNode_InitChild(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
         GraphNode_TriggerAction(&ptr->unk_000, 0);
         ptr->unk_000.unk_000.unk_01 &= ~1;
@@ -102,8 +102,8 @@ Gfx* func_87903920(Gfx* gfx, arg1_func_87903D64_014* arg1) {
     u32 temp_a2;
     u32 temp_a3;
 
-    temp_a2 = D_8006F09C->unk_000.unk_14;
-    temp_a3 = (D_8006F09C->unk_040.unk_08 >> 0x10) + 1;
+    temp_a2 = gDefaultGraphRoot->unk_000.unk_14;
+    temp_a3 = (gDefaultGraphRoot->unk_040.unk_08 >> 0x10) + 1;
 
     pad = arg1->unk_00;
     switch (pad) {

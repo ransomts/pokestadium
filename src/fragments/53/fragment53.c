@@ -45,7 +45,7 @@ void func_82A00144(UnkInputStruct8000D738* arg0) {
     unk_func_8002A728 sp34;
     u16(*var_s1)[0x640] = arg0->unk_04[0];
 
-    func_80027F24(&sp34);
+    GbsGetPlayerName(&sp34);
     arg0->unk_02 = sp34.unk_00;
     arg0->unk_00 = sp34.unk_04;
     arg0->unk_03 = D_82A00360;
@@ -70,11 +70,11 @@ s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    D_82A00370 = func_80019760(1);
+    D_82A00370 = AssetManager_Create(1);
     D_82A00374 = SpriteDisplay_Alloc(D_82A00370, 6, 0x28, 0x28);
-    func_8001987C();
+    AssetManager_LoadArchives();
     func_82A00020(arg0);
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     Stage_Set(sp24);
     Stage_AdvanceUntil(8, func_82A000F0);
     Stage_Destroy();

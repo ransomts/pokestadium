@@ -703,7 +703,7 @@ void func_84100F04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 
 s32 func_84101120(s32 arg0, unk_func_80011B94* arg1) {
     if (arg0 == 5) {
-        s32 idx = D_8006F09C->unk_000.unk_14;
+        s32 idx = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1016,7 +1016,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
 
     main_pool_push_state('PSSL');
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&gMenuConfig, gBattleContext.unk_11F2);
     Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);

@@ -113,7 +113,7 @@ void func_83000058(void) {
     if (gBattleContext.unk_0000 != 0xA) {
         D_83003C88 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
         if (gBattleContext.unk_0000 == 7) {
-            func_80028AFC(2);
+            GbsEnsureBankLoaded(2);
             func_80027FA0(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_83003C8C = BinArchive_GetFile(D_83003C88, 0xD);
@@ -129,7 +129,7 @@ void func_83000058(void) {
 void func_83000130(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 s16* func_83000160(unk_D_800AE540* arg0) {

@@ -617,7 +617,7 @@ s32 func_84B03A10(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
@@ -632,7 +632,7 @@ s32 func_84B03AB4(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[0] & 0x1FFFFFFF);
@@ -647,7 +647,7 @@ s32 func_84B03B58(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[2] & 0x1FFFFFFF);
@@ -663,7 +663,7 @@ s32 func_84B03C20(s32 arg0, unk_func_80011B94* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[1] & 0x1FFFFFFF);
@@ -678,9 +678,9 @@ s32 func_84B03CC4(s32 arg0, unk_D_86002F34_alt5* arg1) {
     unk_D_84B259A8* temp_a0;
 
     if (arg0 == 2) {
-        temp_a0 = (unk_D_84B259A8*)D_8006F09C->unk_000.unk_14;
+        temp_a0 = (unk_D_84B259A8*)gDefaultGraphRoot->unk_000.unk_14;
 
-        arg1->unk_24.z = temp_a0->unk_02[(D_8006F09C->unk_0A6 - temp_a0->unk_20->unk_0A6) - 9];
+        arg1->unk_24.z = temp_a0->unk_02[(gDefaultGraphRoot->unk_0A6 - temp_a0->unk_20->unk_0A6) - 9];
     }
     return 0;
 }
@@ -1268,8 +1268,8 @@ s32 func_84B05760(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp2;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
-        tmp = ((D_8006F09C->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
         tmp2 = (arg1->unk_00.unk_14 * 4) + tmp;
 
         gDPPipeSync(gDisplayListHead++);
@@ -1290,8 +1290,8 @@ s32 func_84B05844(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp2;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
-        tmp = ((D_8006F09C->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8) - 4;
+        temp_v0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8) - 4;
         tmp2 = tmp + arg1->unk_00.unk_14 * 4;
 
         if ((temp_v0->unk_02 != 0) && ((tmp2 + 1) == gBattleContext.unk_0003)) {
@@ -1303,7 +1303,7 @@ s32 func_84B05844(s32 arg0, unk_func_80011B94* arg1) {
             // clang-format on
 
             gDPPipeSync(gDisplayListHead++);
-            gDPSetPrimColor(gDisplayListHead++, 0, D_8006F09C->unk_01D, 200, 200, 30, var_t1);
+            gDPSetPrimColor(gDisplayListHead++, 0, gDefaultGraphRoot->unk_01D, 200, 200, 30, var_t1);
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, D_84B114F8);
 
@@ -1319,8 +1319,8 @@ s32 func_84B05A2C(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
-        tmp = ((D_8006F09C->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
+        temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1340,8 +1340,8 @@ s32 func_84B05B04(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B259E8*)D_8006F09C->unk_000.unk_14;
-        tmp = ((D_8006F09C->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8);
+        temp_v0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8);
         tmp -= 4;
 
         if ((temp_v0->unk_02 != 0) && ((tmp + 1) == gBattleContext.unk_0003)) {
@@ -1353,7 +1353,7 @@ s32 func_84B05B04(s32 arg0, unk_func_80011B94* arg1) {
             // clang-format on
             gDPPipeSync(gDisplayListHead++);
 
-            gDPSetPrimColor(gDisplayListHead++, 0, D_8006F09C->unk_01D, 200, 200, 30, var_t1);
+            gDPSetPrimColor(gDisplayListHead++, 0, gDefaultGraphRoot->unk_01D, 200, 200, 30, var_t1);
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 

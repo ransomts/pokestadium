@@ -182,7 +182,7 @@ void GbsSyncBankBlock(s32 arg0, s32 arg1) {
 }
 
 void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
-    func_80021D9C(arg0, arg1);
+    DeserializePokemonRecord(arg0, arg1);
     CalculatePokemonStats(arg0);
 
     arg0->unk_52 = 0;
@@ -197,7 +197,7 @@ void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_00
 void Mon_WriteToSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
     arg0->unk_04 = arg0->unk_24;
 
-    func_80021F04(arg0, &arg1->unk_00);
+    SerializePokemonToRawData(arg0, &arg1->unk_00);
     EncodeGen1String(arg1->unk_21, arg0->unk_30);
 
     _bcopy(arg0->unk_46, arg1->unk_2C, 0xB);
@@ -660,7 +660,7 @@ char* GbsGetBlockString(s32 arg0, s32 arg1, char* arg2) {
     return sp1C;
 }
 
-void func_80027410(s32 arg0, s32 arg1, char* arg2) {
+void GbsGetBlockStringWrapper(s32 arg0, s32 arg1, char* arg2) {
     GbsGetBlockString(arg0, arg1, arg2);
 }
 
@@ -713,7 +713,7 @@ void GbsSetBlockStringAndValue(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg
     }
 }
 
-s16 func_800275E0(s32 arg0, s32 arg1) {
+s16 GbsGetBlockMaxEntries(s32 arg0, s32 arg1) {
     s16 var_v1 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
@@ -747,11 +747,11 @@ s16 func_800275E0(s32 arg0, s32 arg1) {
     return var_v1;
 }
 
-void func_800276F0(s32 arg0, s32 arg1, s32 arg2) {
+void GbsSetBlockEntryCount(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C = gCurrentBankSlot / 4;
     s32 sp18 = gCurrentBankSlot % 4;
 
-    if (arg2 < func_800275E0(arg0, arg1)) {
+    if (arg2 < GbsGetBlockMaxEntries(arg0, arg1)) {
         switch (arg0) {
             case 16:
                 gGbsSaveBanks[sp1C].unk_04.unk1->unk_0000[sp18][arg1].unk_000.unk_0E = arg2;
@@ -770,7 +770,7 @@ void func_800276F0(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8002782C(s32 arg0, s32 arg1) {
+void GbsIncrementBlockEntryCount(s32 arg0, s32 arg1) {
     s32 idx1;
     s32 idx2;
     s32 sp1C;
@@ -778,7 +778,7 @@ void func_8002782C(s32 arg0, s32 arg1) {
     idx1 = gCurrentBankSlot / 4;
     idx2 = gCurrentBankSlot % 4;
 
-    sp1C = func_800275E0(arg0, arg1);
+    sp1C = GbsGetBlockMaxEntries(arg0, arg1);
     if (sp1C < GbsGetBlockEntryCount(arg0)) {
         switch (arg0) {
             case 16:
@@ -797,12 +797,12 @@ void func_8002782C(s32 arg0, s32 arg1) {
     }
 }
 
-s32 func_8002797C(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
+s32 GbsReadBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     s32 sp2C = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
 
-    if (arg2 < func_800275E0(arg0, arg1)) {
+    if (arg2 < GbsGetBlockMaxEntries(arg0, arg1)) {
         switch (arg0) {
             case 16:
                 Mon_InitFromSaveEntry(arg3, &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_010[arg2]);
@@ -836,12 +836,12 @@ s32 func_8002797C(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     return sp2C;
 }
 
-s32 func_80027C24(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
+s32 GbsWriteBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     s32 sp34 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
     s32 sp28 = GbsGetBlockEntryCount(arg0);
-    s32 sp24 = func_800275E0(arg0, arg1);
+    s32 sp24 = GbsGetBlockMaxEntries(arg0, arg1);
 
     if ((arg2 < sp24) || ((arg2 == sp24) && (arg2 < sp28))) {
         switch (arg0) {
@@ -866,7 +866,7 @@ s32 func_80027C24(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
         }
 
         if (arg2 == sp24) {
-            func_8002782C(arg0, arg1);
+            GbsIncrementBlockEntryCount(arg0, arg1);
         } else {
             GbsSetBlockFlag(arg0, arg1, 2);
         }
@@ -876,11 +876,11 @@ s32 func_80027C24(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     return sp34;
 }
 
-void func_80027F24(unk_func_8002A728* arg0) {
+void GbsGetPlayerName(unk_func_8002A728* arg0) {
     *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04;
 }
 
-void func_80027F40(unk_func_8002A728* arg0) {
+void GbsSetPlayerName(unk_func_8002A728* arg0) {
     if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04, 8) != 0) {
         gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04 = *arg0;
         GbsSetBlockFlag(0x14, 0, 2);
@@ -898,11 +898,11 @@ void func_80027FE0(unk_func_80027FA0* arg0, s16 arg1) {
     }
 }
 
-void func_80028070(u16* arg0) {
+void GbsGetPlayerMoney(u16* arg0) {
     *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_02;
 }
 
-void func_80028084(u16* arg0) {
+void GbsSetPlayerMoney(u16* arg0) {
     u16 tmp = *arg0;
     unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].unk_04.unk2;
 
@@ -1005,8 +1005,8 @@ s32 func_8002847C(void) {
     return var_v1;
 }
 
-s32 func_800284B4(s16 arg0) {
-    static u32 D_80073650[] = {
+s32 GbsSyncBank(s16 arg0) {
+    static u32 gGbsBankSizeTable[] = {
         0x3700,
         0x3700,
         0x3F80,
@@ -1017,10 +1017,10 @@ s32 func_800284B4(s16 arg0) {
     s32 var_s0;
     s16 temp_s5;
 
-    temp_s5 = D_80073650[arg0] >> 7;
+    temp_s5 = gGbsBankSizeTable[arg0] >> 7;
 
     if ((gGbsSaveBanks[arg0].unk_00 & 1) && (gGbsSaveBanks[arg0].unk_00 & 2)) {
-        _bcopy(gGbsSaveBanks[arg0].unk_04.unk1, gGbsSaveBanks[arg0].unk_08.unk1, D_80073650[arg0]);
+        _bcopy(gGbsSaveBanks[arg0].unk_04.unk1, gGbsSaveBanks[arg0].unk_08.unk1, gGbsBankSizeTable[arg0]);
         var_s0 = 0;
         while (func_80003B04(arg0) == -1) {
             var_s0++;
@@ -1062,12 +1062,12 @@ s32 func_800284B4(s16 arg0) {
     return 0;
 }
 
-s32 func_800286D8(void) {
+s32 GbsSyncAllBanks(void) {
     s32 i;
     s32 var_s1 = 0;
 
     for (i = 0; i < 4; i++) {
-        if (func_800284B4(i) != 0) {
+        if (GbsSyncBank(i) != 0) {
             var_s1 |= 1 << i;
         }
     }
@@ -1075,7 +1075,7 @@ s32 func_800286D8(void) {
     return var_s1;
 }
 
-s32 func_8002873C(s16 arg0, u32 arg1) {
+s32 GbsAllocateBank(s16 arg0, u32 arg1) {
     s32 sp2C = 0;
     u8* sp28;
 
@@ -1098,7 +1098,7 @@ void func_80028840(void) {
     s32 j;
     s32 sp28;
 
-    if (func_8002873C(0, 0x3700) != 0) {
+    if (GbsAllocateBank(0, 0x3700) != 0) {
         sp28 = gCurrentBankSlot;
 
         for (gCurrentBankSlot = 0; gCurrentBankSlot < 4; gCurrentBankSlot++) {
@@ -1116,7 +1116,7 @@ void func_800288F4(void) {
     s32 i;
     s32 sp28;
 
-    if (func_8002873C(1, 0x3700) != 0) {
+    if (GbsAllocateBank(1, 0x3700) != 0) {
         sp28 = gCurrentBankSlot;
         gCurrentBankSlot = 4;
         while (gCurrentBankSlot < 8) {
@@ -1134,7 +1134,7 @@ void func_800289AC(void) {
     s32 i;
     s32 sp20;
 
-    if (func_8002873C(2, 0x3F80) != 0) {
+    if (GbsAllocateBank(2, 0x3F80) != 0) {
         sp20 = gCurrentBankSlot;
         gCurrentBankSlot = 8;
 
@@ -1156,7 +1156,7 @@ void func_800289AC(void) {
 void func_80028A74(void) {
     s32 i;
 
-    if (func_8002873C(3, 0x3880) != 0) {
+    if (GbsAllocateBank(3, 0x3880) != 0) {
         for (i = 0; i < 12; i++) {
             GbsSyncBankBlock(17, i);
         }
@@ -1169,7 +1169,7 @@ void func_80028A74(void) {
     }
 }
 
-s32 func_80028AFC(s16 arg0) {
+s32 GbsEnsureBankLoaded(s16 arg0) {
     if (!((gGbsSaveBanks[arg0].unk_00 & 1) != 0)) {
         switch (arg0) {
             case 0:
@@ -1197,12 +1197,12 @@ void func_80028BE4(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_80028AFC(i);
+        GbsEnsureBankLoaded(i);
     }
 }
 
 void func_80028C28(void) {
-    func_80028AFC(3);
+    GbsEnsureBankLoaded(3);
 }
 
 s32 func_80028C48(s16 arg0) {

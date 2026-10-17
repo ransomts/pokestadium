@@ -20,7 +20,7 @@ s16 D_87B000F4;
 void func_87B00020(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 u32 func_87B00050(u32 arg0) {

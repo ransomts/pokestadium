@@ -98,18 +98,18 @@ char* GetSpeciesName(char* arg0, s32 arg1) {
 char* GetItemName(s32 arg0, char* arg1) {
     extern char* gItemNames[];
     // "ひでんマシン%02d"
-    static const char D_0007CCA0[] = { 0xA4, 0xD2, 0xA4, 0xC7, 0xA4, 0xF3, 0xA5, 0xDE, 0xA5, 0xB7,
+    static const char gHiddenMachineFormat[] = { 0xA4, 0xD2, 0xA4, 0xC7, 0xA4, 0xF3, 0xA5, 0xDE, 0xA5, 0xB7,
                                        0xA5, 0xF3, 0x25, 0x30, 0x32, 0x64, 0x00, 0x00, 0x00, 0x00 };
     // "わざマシン%02d"
-    static const char D_0007CCB4[] = { 0xA4, 0xEF, 0xA4, 0xB6, 0xA5, 0xDE, 0xA5, 0xB7,
+    static const char gMoveMachineFormat[] = { 0xA4, 0xEF, 0xA4, 0xB6, 0xA5, 0xDE, 0xA5, 0xB7,
                                        0xA5, 0xF3, 0x25, 0x30, 0x32, 0x64, 0x00, 0x00 };
 
     if ((arg0 > 0) && (arg0 < 0x54)) {
         HAL_Strcpy(arg1, gItemNames[arg0 - 1]);
     } else if ((arg0 >= 0xC4) && (arg0 < 0xC9)) {
-        sprintf(arg1, D_0007CCA0, arg0 - 0xC3, arg0);
+        sprintf(arg1, gHiddenMachineFormat, arg0 - 0xC3, arg0);
     } else if ((arg0 >= 0xC9) && (arg0 < 0xFF)) {
-        sprintf(arg1, D_0007CCB4, arg0 - 0xC8, arg0);
+        sprintf(arg1, gMoveMachineFormat, arg0 - 0xC8, arg0);
     } else {
         HAL_Strcpy(arg1, gItemNames[6]);
     }
@@ -117,7 +117,7 @@ char* GetItemName(s32 arg0, char* arg1) {
     return arg1;
 }
 
-void func_80021D9C(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
+void DeserializePokemonRecord(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
     arg0->unk_00.unk_00 = GetPokemonFormId(arg1->unk_00);
     arg0->unk_00.unk_01 = arg1->unk_00;
     arg0->unk_02 = ReadBE16(arg1->unk_01);
@@ -141,8 +141,8 @@ void func_80021D9C(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_00
     memcpy(arg0->unk_20, arg1->unk_1D, 4);
 }
 
-void func_80021E90(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg1) {
-    func_80021D9C(arg0, &arg1->unk_00);
+void DeserializePartyPokemon(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg1) {
+    DeserializePokemonRecord(arg0, &arg1->unk_00);
     arg0->unk_24 = arg1->unk_21;
     arg0->unk_26 = ReadBE16(&arg1->unk_22);
     arg0->unk_28 = ReadBE16(&arg1->unk_24);
@@ -151,7 +151,7 @@ void func_80021E90(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg
     arg0->unk_2E = ReadBE16(&arg1->unk_2A);
 }
 
-void func_80021F04(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
+void SerializePokemonToRawData(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
     if (GetPokemonBaseStat(arg0->unk_00.unk_00) & 0xFF) {
         arg1->unk_00 = GetPokemonBaseStat(arg0->unk_00.unk_00);
     } else {
@@ -179,8 +179,8 @@ void func_80021F04(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_00
     memcpy(arg1->unk_1D, arg0->unk_20, 4);
 }
 
-void func_80022010(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg1) {
-    func_80021F04(arg0->unk_000, arg1);
+void SerializePartyToRawData(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg1) {
+    SerializePokemonToRawData(arg0->unk_000, arg1);
     arg1->unk_21 = arg0->unk_000[0].unk_24;
     WriteBE16(&arg1->unk_22, arg0->unk_000[0].unk_26);
     WriteBE16(&arg1->unk_24, arg0->unk_000[0].unk_28);

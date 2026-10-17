@@ -226,7 +226,7 @@ s32 func_83800900(s32 arg0, GraphNode* arg1) {
     u8* var_a3;
 
     if (arg0 == 5) {
-        switch (D_8006F09C->unk_000.unk_14) {
+        switch (gDefaultGraphRoot->unk_000.unk_14) {
             case 0:
                 // clang-format off
                 var_a0 = D_838067C8[0]; var_a3 = D_201D820;
@@ -262,7 +262,7 @@ s32 func_83800900(s32 arg0, GraphNode* arg1) {
         }
 
         gDPPipeSync(gDisplayListHead++);
-        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, D_8006F09C->unk_01D);
+        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(var_a0));
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a3));
         gSPDisplayList(gDisplayListHead++, arg1->unk_14);
@@ -696,12 +696,12 @@ void func_83801E84(s32 arg0, s16 arg1, s32 arg2) {
 
     if (D_8380548C[arg0].unk_00 != 0) {
         if (D_8380548C[arg0].unk_01 == 0) {
-            func_8000E840(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
+            GfxColor_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
-            func_8000E840(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
+            GfxColor_SetRGBA(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
         }
     } else {
-        func_8000E840(&sp2C, 0x1E, 0x1E, 0x82, 0x80);
+        GfxColor_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0x80);
     }
     func_8420092C((arg0 << 7) + 0x44, arg1 + 0x54, 0x78, arg2, sp2C.r, sp2C.g, sp2C.b, sp2C.a);
 }

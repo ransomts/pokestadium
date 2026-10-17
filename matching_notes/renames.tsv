@@ -1030,3 +1030,126 @@ func_814082B4	Particle_SetFlag	w4		Performs arg0->unk_18 |= arg1, a generic bit?
 func_814082C4	Particle_ClearFlag	w4		Performs arg0->unk_18 &= ~arg1, a generic bit?flag clearer for particle state.	applied@ca35c91
 func_814082E8	Particle_HasFlag	w4		Returns 1 if (arg0->unk_18 & arg1) is non?zero, checking whether a particle has a specific flag.	applied@ca35c91
 func_8140BAC8	Particle_SetPrimColor	w4		Sets arg0->prim_r/g/b to the three u8 parameters, defining the primary color of a particle.	applied@ca35c91
+func_800110E0	CameraNode_Create	w5		creates a node of type 2 and initializes viewport, perspective, camera and background settings, indicating a camera graph node.	applied@510e057
+func_80011DAC	Viewport_SetRect	w5		sets rectangle dimensions and computes left/right/top/bottom bounds, matching viewport rectangle configuration.	applied@510e057
+func_80011E68	Perspective_SetParams	w5		sets aspect ratio, field?of?view, near and far planes, typical of a perspective camera setup.	applied@510e057
+func_80011EB4	Camera_SetLookAt	w5		calculates eye, at and up vectors from given coordinates and angle, configuring a camera's view matrix.	applied@510e057
+func_80011FC8	Background_SetColor	w5		sets background color fields based on arguments, handling special cases for low?detail settings.	applied@510e057
+func_80012044	Texture_SetDefault	w5		assigns the global texture pointer D_1000800 as the node's texture, indicating a default texture assignment.	applied@510e057
+func_800113F8	ColorRectNode_Create	w5		creates a node of type 0xA, stores rectangle coordinates and an RGBA color, typical for a colored rectangle primitive.	applied@510e057
+func_80011484	ColoredVertexNode_Create	w5		creates a node of type 0xB, stores RGBA components and two additional s16 values, suggesting a colored vertex definition.	applied@510e057
+func_8001156C	MeshNode_Create	w5		creates a node of type 0xE and stores geometry pointers (vertex data, Vtx*, etc.), characteristic of a mesh/geometry node.	applied@510e057
+func_80011720	TransformNode_Create	w5		creates a node of type 0x12, storing a position Vec3f and rotation Vec3s, matching a transform node.	applied@510e057
+func_800118D0	DisplayListNode_Create	w5		creates a node of type 0x15, storing a Gfx display list pointer and an integer flag, typical for a display?list graph node.	applied@510e057
+func_80011A3C	MatrixNode_Create	w5		creates a node of type 0x17, stores a Gfx pointer and a matrix (or identity), indicating a matrix?transform node.	applied@510e057
+func_80011B10	BillboardNode_Create	w5		creates a node of type 0x18, stores a position Vec3f and a scale factor (f32), matching a billboard sprite node.	applied@510e057
+func_80011B94	SimpleGfxNode_Create	w5		creates a node of type 0x19, storing only a Gfx pointer, representing a simple graphics node.	applied@510e057
+func_80013764	TextureNode_VisitChildren	w5		Sets gCurrentTextureNode, visits its visible children and then clears it, indicating it processes a texture node.	applied@510e057
+func_800138F0	CameraNode_Render	w5		Assigns D_8006F094, calls func_8001638C, visits children and later clears D_8006F094, handling rendering of a camera node.	applied@510e057
+func_8001395C	CameraNode_SetProjection	w5		Sets perspective matrix using the current camera and then calls func_800138F0, thus setting up camera projection.	applied@510e057
+func_800139E8	CameraNode_SetLookAtProjection	w5		Sets look?at matrix and projection then calls func_800138F0, handling camera look?at projection.	applied@510e057
+func_80013AF8	CameraNode_FillRect	w5		Fills a rectangle with arg->unk_18 color using Gfx_FillRectangle, used by a camera node to clear the background.	applied@510e057
+func_80014124	LayerNode_Process	w5		Processes a layer node, pushes a matrix, begins layer render, visits its children, then restores state.	applied@510e057
+func_800142BC	Graph_VisitChildOffset	w5		Iterates to a sibling offset (arg->unk_1A) and invokes its handler, used to visit a child at a specific depth.	applied@510e057
+func_800143C0	ObjectNode_Transform	w5		Computes object transform based on animation and flags, then visits children, representing object node transformation.	applied@510e057
+func_80016934	Anim_InterpolateCubic	w5		Uses three Vec3s control points and a cubic Hermite formula to compute a float, indicating it interpolates values.	applied@510e057
+func_80016B30	Anim_InterpolateCubicVec	w5		Performs the same cubic interpolation but on a struct containing a Vec3s and an extra field, so it is the vector?layout version.	applied@510e057
+func_80016D20	Anim_GetScaleInterpolated	w5		Returns a float based on keyframe data and calls cubic interpolation functions when keyframe count ??2, thus providing an interpolated scale value.	applied@510e057
+func_80016DE0	Anim_GetRotationInterpolated	w5		Computes a rotation angle, normalizes it to 0?360?, converts to 0?65535 range and optionally uses cubic interpolation, so it returns an interpolated rotation.	applied@510e057
+func_80016F20	Anim_GetPositionInterpolated	w5		Returns a position float, using optional cubic interpolation on the animation?s position array, therefore yielding an interpolated position.	applied@510e057
+func_80016FBC	Anim_ComputeKeyframeIndex	w5		Adjusts a raw keyframe index based on animation flags and clamps it to animation bounds, computing the next keyframe index.	applied@510e057
+func_80017080	Anim_ResetChannelIndex	w5		Sets the global gCurrentAnimChannelIdx to ?1, resetting the active animation channel index.	applied@510e057
+func_80017090	Anim_StartChannel	w5		Increments gCurrentAnimChannelIdx and fills a gAnimChannels entry from the provided data, establishing a new animation channel.	applied@510e057
+func_80017188	Anim_EndChannel	w5		Decrements gCurrentAnimChannelIdx when a channel is finished, ending the current animation channel.	applied@510e057
+func_800173CC	Anim_ClearChannelState	w5		Sets the channel state struct fields to ?1 and NULL, clearing any stored animation channel information.	applied@510e057
+func_800173DC	Anim_SetChannel	w5		Initializes the channel struct with an ID, pointer, and start offset, configuring a new animation channel and returning its initial frame index.	applied@510e057
+func_80017454	Anim_SetChannelOffset	w5		Updates the channel?s offset field (unk_0C) and returns the current frame index, effectively setting the channel offset.	applied@510e057
+func_80017464	Anim_SetChannelBase	w5		Sets the channel?s base frame field (unk_08) based on a given frame value and current offset, establishing the channel?s base frame.	applied@510e057
+func_80017484	Anim_IsFrameInRange	w5		Checks whether a supplied frame lies between the channel?s start and end bounds, returning a boolean result.	applied@510e057
+func_80017514	Anim_HasReachedEnd	w5		Compares the channel?s current frame against the last frame index to determine if the animation has reached its end.	applied@510e057
+func_80017540	MapIndexInRange	w5		Maps a value into a range defined by the struct array argument, used by the animation stack to select an index	applied@510e057
+func_80017578	GetNextAnimFrame	w5		Calculates the next animation frame index based on current state and table flags, used when updating arg0->unk_08	applied@510e057
+func_800175D8	ResetAnimStack	w5		Resets the animation stack depth to -1, clearing any pending entries	applied@510e057
+func_800175E8	PushAnimStackEntry	w5		Pushes a new entry onto the animation stack, filling fields from the provided animation object	applied@510e057
+func_800176BC	PopAnimStackEntry	w5		Pops the top entry from the animation stack by decrementing the depth counter	applied@510e057
+func_800176DC	GetAnimStackCurrentFramePtr	w5		Retrieves a pointer to the current animation frame using the top stack entry and the index mapping function	applied@510e057
+func_80017788	InitAnimState	w5		Initializes an AnimState structure by setting its index to -1 and count to 0	applied@510e057
+func_80017798	SetAnimStateTable	w5		Sets up an AnimState with a new table pointer and starting index, returning the computed max index	applied@510e057
+func_80017804	SetAnimStateIndex	w5		Stores arg1?1 as the current frame index in the AnimState	applied@510e057
+func_8001781C	IsAnimStateAtIndex	w5		Returns true if the stored frame index plus one equals the supplied index	applied@510e057
+func_8001783C	IsAnimStateSecondLast	w5		Returns true if the stored frame index plus two equals the total frame count in the table	applied@510e057
+func_80017858	IsAnimStateLast	w5		Returns true if the stored frame index plus one equals the total frame count in the table	applied@510e057
+D_800ABD00	gAnimStack	w5		Global array of two entries used to store animation stack data in PushAnimStackEntry and GetAnimStackCurrentFramePtr	applied@510e057
+D_800ABD20	gAnimStackDepth	w5		Global counter tracking current depth of the animation stack, incremented in PushAnimStackEntry and decremented in PopAnimStackEntry	applied@510e057
+unk_D_800ABD00	AnimStackEntry	w5		Typedef for the struct stored in gAnimStack, containing fields unk_00 (active flag), unk_02 (index), unk_04 (table pointer) etc., used as a stack entry	applied@510e057
+func_80018C40	GeoLayout_ConvertTextures	w5		The function iterates over geometry layout structures and applies func_80010CA8 / func_80010E20 to each texel, converting textures.	applied@510e057
+func_80018F20	Fragment_LoadFromRange	w5		It copies a memory range via DMA, checks the fragment magic header and loads a PersSzp, PresJpeg or raw fragment, thus loading a fragment from a range.	applied@510e057
+func_80019328	AssetGroup_CreateFromFragment	w5		It calls a function pointer to obtain an asset group struct, processes each geo layout entry and optionally converts textures, creating an asset group from a fragment.	applied@510e057
+func_80019420	GeoLayout_ProcessList	w5		It walks a list of geo layout pointers, processing each with process_geo_layout when the entry type is 3, i.e., processing a geo layout list.	applied@510e057
+func_80019484	AssetLoader_LoadInitial	w5		It initializes a memory pool, loads a fragment from the main asset archive and creates an asset group via func_80019328, loading the initial asset data.	applied@510e057
+func_80019514	AssetLoader_LoadAdditional	w5		It iterates over an array of IDs until -1, loads each fragment from the archive, stores pointers, and processes each with func_80019420, loading additional assets.	applied@510e057
+func_80019600	AssetLoader_ThreadMain	w5		It is the entry point for the asset loading thread, receiving messages and dispatching to the appropriate load functions.	applied@510e057
+func_80019760	AssetManager_Create	w5		It allocates the main asset manager struct, sets flags, allocates memory pools based on flag bits, and creates its message queues.	applied@510e057
+func_8001987C	AssetManager_LoadArchives	w5		It loads the two main asset archives into gAssetManager and allocates a working buffer, initializing the asset manager's archives.	applied@510e057
+func_800198E4	AssetManager_RequestLoad	w5		It builds a load request struct, fills fields based on flags and arguments, and sends it to the appropriate message queue for loading.	applied@510e057
+func_80019B48	AssetManager_HandleRequest	w5		It processes a completed load request, clears the pending flag and updates the asset manager fields according to the request type.	applied@510e057
+func_80019C08	AssetManager_TryProcessLoadQueue	w5		It non?blocking checks the load request queue and processes any pending request via AssetManager_HandleRequest.	applied@510e057
+func_80019CA8	AssetManager_WaitLoadQueue	w5		It blocks on the load request queue and processes the received request via AssetManager_HandleRequest.	applied@510e057
+func_80019D18	GeoLayout_LoadById	w5		It retrieves a fragment by ID from the primary archive, creates a temporary memory block, and builds a geo layout via func_80019328.	applied@510e057
+func_80019F70	SpriteDisplay_SetCameraNode	w5		used in SpriteDisplay_InitGeoLayout command list to set the current camera node for the sprite display	applied@510e057
+D_8006F05C	gSpriteAnimUpdateFunc	w5		assigned to GraphNode.unk_01E, likely a per?frame animation update callback	applied@510e057
+D_8006F3E0	sSpriteCameraGeoLayoutCommands	w5		static command array used in func_8001B154 to build a camera geo layout	applied@510e057
+func_8000E990	GraphNode_SetPositionFromVec3s	w5		applies a Vec3s position to a graph node before rendering	applied@510e057
+func_80010354	Camera_SetViewParameters	w5		configures camera view (at, eye, distance, angle, offset) for rendering	applied@510e057
+func_80015348	Gfx_FinishFrame	w5		called after framebuffer setup to finalize the graphics command list	applied@510e057
+func_8001533C	Gfx_SetRenderMode	w5		sets the graphics render mode (values 3 and 1) before and after drawing sprites	applied@510e057
+D_8006F050	gRootNodePosition	w5		Passed to func_80011938 as the first transform parameter for root nodes, indicating a position vector	applied@510e057
+D_8006F064	gRootNodeScale	w5		Third argument to func_80011938, likely the scale vector for root nodes	applied@510e057
+D_8006F09C	gDefaultGraphRoot	w5		Used as fallback root when a null node is queried in GraphNode_GetChildByIndex, serving as the default graph root	applied@510e057
+func_8003260C	GraphNode_EnableTransform	w5		Invoked when a child node has a positive arg2, suggesting it enables a transform or special behavior for that node	applied@510e057
+func_8000E840	GfxColor_SetRGBA	w5		Sets RGBA values of a color struct, matching typical GfxColor_SetRGBA usage	applied@510e057
+unk_D_86002F58_004_000_000	GraphRootNode	w5		Struct type of gGraphRoot0/1 representing the root of the scene graph	applied@510e057
+func_8001D560	Gfx_DrawSpriteRGBA16Paletted	w5		draws an RGBA16 texture and a palette then renders a rectangle via Gfx_DrawTextureRect	applied@510e057
+func_8001E7C0	FontManager_Cleanup	w5		sets the global gFontManager pointer to NULL as a cleanup callback for Text_Init	applied@510e057
+func_8001E9CC	FontManager_Free	w5		frees the allocated gFontManager structure with main_pool_try_free	applied@510e057
+func_8001F1C4	Buffer_CopyAndAdvance	w5		copies data into a buffer and returns a pointer to the byte after the copied region, used by _Printf	applied@510e057
+D_8006F608	gFontCharTableExtended	w5		used in GetCharIndexFromFontTables to map extended character codes to indices	applied@510e057
+D_8006F710	gDL_TextResetState	w5		passed to gSPDisplayList in Text_ResetState to reset text rendering state	applied@510e057
+D_8006F750	gDL_TextSetup	w5		passed to gSPDisplayList in Text_SetupDL to configure the display list for text rendering	applied@510e057
+D_8006F768	gDL_TextBegin	w5		passed to gSPDisplayList in Text_BeginRender to start text rendering sequence	applied@510e057
+D_8006F798	gDL_TextEnd	w5		passed to gSPDisplayList in Text_EndRender to finalize text rendering sequence	applied@510e057
+func_8001F730	MenuInput_Init	w5		empty stub in menu input module likely intended for initialization	applied@510e057
+D_800AC888	gMenuInput_RepeatTimer	w5		counter set to 0xA on press and decremented to manage input repeat delay	applied@510e057
+D_800AC88C	gMenuInput_Controller	w5		global pointer storing the active Controller for menu input functions	applied@510e057
+func_800219A0	GetFlagCategory	w5		returns distinct codes based on which flag bits (0x7, 0x8, 0x10, 0x20, 0x40) are set in the argument	applied@510e057
+func_800219FC	RemapStadiumModeIndex	w5		maps values >=0x14 (20) to value?0xB and resets values >=0x1B (27) to 0, likely normalizing mode indices	applied@510e057
+func_80021D9C	DeserializePokemonRecord	w5		Copies fields from a big?endian raw Pok?mon struct (arg1) into the internal Pok?mon struct (arg0), converting endianness where needed, indicating deserialization of saved Pok?mon data	applied@510e057
+func_80021E90	DeserializePartyPokemon	w5		Calls DeserializePokemonRecord then copies additional party?specific fields (unk_21?unk_2E) from a larger raw party struct to the internal Pok?mon struct, showing it loads a party member	applied@510e057
+func_80021F04	SerializePokemonToRawData	w5		Performs the inverse of DeserializePokemonRecord, writing internal Pok?mon fields back into a big?endian raw struct, indicating serialization of Pok?mon data	applied@510e057
+func_80022010	SerializePartyToRawData	w5		Serializes an array of internal Pok?mon structs to raw party data by calling SerializePokemonToRawData and then writing extra party fields, showing it saves a party member	applied@510e057
+D_0007CCA0	gHiddenMachineFormat	w5		Static const char array containing the Japanese string "??????%02d" used in GetItemName for hidden?machine items, indicating a format string for those items	applied@510e057
+D_0007CCB4	gMoveMachineFormat	w5		Static const char array containing the Japanese string "?????%02d" used in GetItemName for move?machine items, indicating a format string for those items	applied@510e057
+func_80022734	ApplyPPUps	w5		Updates a Pok?mon's PP values based on PP?Ups by reading move data (gMoveBattleData) and adjusting arg0->unk_20 entries.	applied@510e057
+func_800228F0	LoadPokemonNameData	w5		Loads a Pok?mon's name and nickname from GBS bank 0x13 via func_8002797C and decodes them into arg0 fields.	applied@510e057
+func_80022978	SavePokemonNameData	w5		Stores a Pok?mon's name and nickname into GBS bank 0x13 using func_80027C24 after encoding the strings.	applied@510e057
+func_800240A0	InitializePlayers	w5		Detects connected controllers, builds gActivePlayerMask, detects inserted Pok?mon ROMs and initiates per?player loading.	applied@510e057
+func_80025498	MarkPokemonOwned	w5		Marks a Pok?mon as owned by setting bits in a flag array based on its form ID (GetPokemonFormId) and the provided count.	applied@510e057
+D_8007364C	gPlayerInitState	w5		Acts as a per?player state machine in func_80023E34, progressing through steps 0?3 during ROM detection.	applied@510e057
+D_80073640	gValidSaveFlags	w5		Iterated in func_80023990 to set a flag in gPlayerSaveData when a saved value matches any entry in this 12?byte table.	applied@510e057
+D_800ACA78	gSaveHeader	w5		Contains the save file header; its checksum is validated in func_800233F4 and func_80023480.	applied@510e057
+D_800ACA75	gControllerPortStatus	w5		High byte of the value returned by func_8000AA7C; used in func_800240A0 to determine which controller ports have a cartridge inserted.	applied@510e057
+func_80027410	GbsGetBlockStringWrapper	w5		Calls GbsGetBlockString directly, acting as a thin wrapper for retrieving block strings	applied@510e057
+func_800275E0	GbsGetBlockMaxEntries	w5		Returns the maximum entry count for each block type, used by validation functions	applied@510e057
+func_800276F0	GbsSetBlockEntryCount	w5		Sets a block's entry count after confirming it is below the maximum from GbsGetBlockMaxEntries	applied@510e057
+func_8002782C	GbsIncrementBlockEntryCount	w5		Increments a block's entry count when adding a new entry, checking against GbsGetBlockEntryCount	applied@510e057
+func_8002797C	GbsReadBlockEntry	w5		Reads a Pok?mon or data entry from a GBS block and returns success, used by higher?level load functions	applied@510e057
+func_80027C24	GbsWriteBlockEntry	w5		Writes a Pok?mon or data entry into a GBS block, updates count and dirty flags accordingly	applied@510e057
+func_80027F24	GbsGetPlayerName	w5		Copies the 8?byte unk_04 field from bank?2's unk_1EA0 structure, likely the player?s name, into the output pointer	applied@510e057
+func_80027F40	GbsSetPlayerName	w5		Sets the same field after change detection and marks block?0x14 as dirty, indicating a player name setter	applied@510e057
+func_80028070	GbsGetPlayerMoney	w5		Retrieves the 16?bit unk_02 field from bank?2?s unk_1EA0 structure, representing the player?s money	applied@510e057
+func_80028084	GbsSetPlayerMoney	w5		Writes the player money field after verifying a change and flags block?0x14 as modified	applied@510e057
+func_800284B4	GbsSyncBank	w5		Performs DMA copy and validation to synchronize a GBS bank using sizes from the bank?size table	applied@510e057
+func_800286D8	GbsSyncAllBanks	w5		Loops over all four banks, calling GbsSyncBank and returns a bitmask of banks that were synced	applied@510e057
+func_8002873C	GbsAllocateBank	w5		Allocates memory for a GBS bank if not present, sets up active and backup pointers, and initiates DMA copies	applied@510e057
+func_80028AFC	GbsEnsureBankLoaded	w5		Ensures a bank is loaded; if not, calls the appropriate GbsInitBankX function based on the bank index	applied@510e057
+D_80073650	gGbsBankSizeTable	w5		Static array of bank sizes (0x3700, 0x3700, 0x3F80, 0x3880) used by GbsSyncBank to determine copy lengths	applied@510e057

@@ -157,7 +157,7 @@ void func_84301D08(unk_D_84390010* arg0) {
         func_84305A74(arg0, sp24, 2);
         arg0->unk_4C4 = 0;
         D_84390068[D_843900A0].unk_04 = D_84385380;
-        func_80017464(&arg0->unk_000, 0);
+        Anim_SetChannelBase(&arg0->unk_000, 0);
         GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
     }
 }
@@ -484,11 +484,11 @@ void func_84302A78(unk_D_84390010* arg0) {
         func_843058C4(arg0, sp24->unk_5A - 1);
 
         if (D_84390020->unk_0B != 0) {
-            func_80017464(&arg0->unk_000, D_84390020->unk_0B);
-            func_80017804(&arg0->unk_000, D_84390020->unk_0B);
+            Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_0B);
+            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_0B);
             arg0->unk_4C4 = D_84390020->unk_0B;
         } else {
-            func_80017464(&arg0->unk_000, 0);
+            Anim_SetChannelBase(&arg0->unk_000, 0);
         }
     }
 }
@@ -621,15 +621,15 @@ void func_84303208(unk_D_84390010* arg0) {
             func_84306200(arg0, 0x4000);
         }
         GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
-        func_80017464(&arg0->unk_000, 0);
+        Anim_SetChannelBase(&arg0->unk_000, 0);
         func_843058C4(arg0, 4);
 
         if (D_84390020->unk_0B != 0) {
-            func_80017464(&arg0->unk_000, D_84390020->unk_0B);
-            func_80017804(&arg0->unk_000, D_84390020->unk_0B);
+            Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_0B);
+            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_0B);
             arg0->unk_4C4 = D_84390020->unk_0B;
         } else {
-            func_80017464(&arg0->unk_000, 0);
+            Anim_SetChannelBase(&arg0->unk_000, 0);
         }
     }
 }
@@ -658,10 +658,10 @@ void func_843033E0(unk_D_84390010* arg0) {
     if (!(sp20->unk_34 & 0x4000)) {
         func_84301F2C(arg0);
         GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
-        func_80017464(&arg0->unk_000, D_84390020->unk_06);
+        Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_06);
         if (D_84390020->unk_01 != 0xFF) {
             GraphNode_TriggerSound(&arg0->unk_000, D_84390020->unk_01);
-            func_80017804(&arg0->unk_000, D_84390020->unk_06);
+            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_06);
             sp20->unk_36 = 1;
         }
     }
@@ -784,7 +784,7 @@ void func_843037CC(unk_D_84390010* arg0) {
             D_84390020 = &D_84384570[sp40]->unk_A80;
         }
 
-        func_80017464(&D_84390010[sp40]->unk_000, 0);
+        Anim_SetChannelBase(&D_84390010[sp40]->unk_000, 0);
         GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, D_84390020->unk_00);
 
         if ((sp28->unk_44.unk_00 == 0x17) || (sp28->unk_44.unk_00 == 0x22) || (sp28->unk_44.unk_00 == 0x45)) {
@@ -847,7 +847,7 @@ void func_84303CB4(unk_D_84390010* arg0) {
 
     D_84390020 = &D_84384570[sp1C]->unk_A80;
     D_84390010[sp1C]->unk_4C4 = 0;
-    func_80017464(&arg0->unk_000, 0);
+    Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
     func_84305A74(D_84390010[sp1C], 0xA8, 1);
     func_8432BF88(arg0, 0x1E);
@@ -883,7 +883,7 @@ void func_84303E58(unk_D_84390010* arg0) {
     D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A80;
     func_843058C4(arg0, 0xA8);
     arg0->unk_4C4 = 0;
-    func_80017464(&arg0->unk_000, 0);
+    Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
 }
 
@@ -911,7 +911,7 @@ void func_84303ECC(unk_D_84390010* arg0) {
             D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_B00;
         }
 
-        func_80017464(&arg0->unk_000, 0);
+        Anim_SetChannelBase(&arg0->unk_000, 0);
         GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
 
         if (sp24->unk_34 & 0x200) {
@@ -1071,7 +1071,7 @@ void func_84304834(unk_D_84390010* arg0) {
 
     D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24];
     arg0->unk_4C4 = 0;
-    func_80017464(&arg0->unk_000, 0);
+    Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
     func_843058C4(arg0, sp24);
 }
@@ -1282,7 +1282,7 @@ void func_8430506C(unk_D_84390010* arg0) {
             func_843058C4(D_84390010[sp40], 0xA8);
         }
 
-        func_80017464(&D_84390010[sp40]->unk_000, 0);
+        Anim_SetChannelBase(&D_84390010[sp40]->unk_000, 0);
         GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, D_84390020->unk_00);
 
         if ((sp28->unk_44.unk_00 == 0x17) || (sp28->unk_44.unk_00 == 0x22) || (sp28->unk_44.unk_00 == 0x45)) {
@@ -1431,14 +1431,14 @@ void func_843058C4(unk_D_84390010* arg0, s32 arg1) {
         sp30 = D_84384570[func_84307F00(arg0)]->unk_000[arg1].unk_01;
         if ((sp30 != 0xFF) && (sp24->unk_36 != 2)) {
             if ((arg1 == 165) && (arg0->unk_000.unk_01A == 0x33)) {
-                func_80017804(&arg0->unk_000, 0);
+                SetAnimStateIndex(&arg0->unk_000, 0);
                 temp_v0 = func_8430C414(3);
                 if (temp_v0 >= 3) {
                     temp_v0 = 2;
                 }
                 GraphNode_TriggerSound(&arg0->unk_000, sp30 + temp_v0);
             } else {
-                func_80017804(&arg0->unk_000, 0);
+                SetAnimStateIndex(&arg0->unk_000, 0);
                 GraphNode_TriggerSound(&arg0->unk_000, sp30);
                 sp24->unk_36 = 1;
             }
@@ -1459,9 +1459,9 @@ s32 func_843059C0(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
         return 1;
     }
 
-    func_80017804(&arg0->unk_000, 0);
+    SetAnimStateIndex(&arg0->unk_000, 0);
     GraphNode_TriggerSound(&arg0->unk_000, sp20);
-    func_80017804(&arg0->unk_000, arg0->unk_000.unk_054.unk_04->unk_0A);
+    SetAnimStateIndex(&arg0->unk_000, arg0->unk_000.unk_054.unk_04->unk_0A);
 
     arg0->unk_654.unk_36 = arg2;
     return 0;
@@ -1474,7 +1474,7 @@ void func_84305A74(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
         temp_a1 = D_84384570[func_84307F00(arg0)]->unk_000[arg1].unk_01;
         if (temp_a1 != 0xFF) {
             GraphNode_TriggerSound(&arg0->unk_000, temp_a1);
-            func_80017804(&arg0->unk_000, 0);
+            SetAnimStateIndex(&arg0->unk_000, 0);
             arg0->unk_654.unk_36 = arg2;
         }
     }
@@ -1720,13 +1720,13 @@ void func_843062F0(void) {
 
     if ((sp34->unk_34 & 0x4000) && (sp24->unk_000.unk_01A == 0x33)) {
         D_84390020 = &D_84384570[0]->unk_000[0x5A];
-        func_80017464(&D_84390010[0]->unk_000, 0);
+        Anim_SetChannelBase(&D_84390010[0]->unk_000, 0);
         GraphNode_TriggerAction(&D_84390010[0]->unk_000, D_84390020->unk_00);
     }
 
     if ((sp30->unk_34 & 0x4000) && (sp20->unk_000.unk_01A == 0x33)) {
         D_84390020 = &D_84384570[1]->unk_000[0x5A];
-        func_80017464(&D_84390010[1]->unk_000, 0);
+        Anim_SetChannelBase(&D_84390010[1]->unk_000, 0);
         GraphNode_TriggerAction(&D_84390010[1]->unk_000, D_84390020->unk_00);
     }
 
@@ -1879,9 +1879,9 @@ void func_84306914(unk_D_84390010* arg0) {
             break;
 
         case 1:
-            if (func_8001783C(&arg0->unk_000) == 1) {
+            if (IsAnimStateSecondLast(&arg0->unk_000) == 1) {
                 GraphNode_TriggerSound(&arg0->unk_000, -1);
-                func_80017804(&arg0->unk_000, 0);
+                SetAnimStateIndex(&arg0->unk_000, 0);
                 temp_s1->unk_36 = 0;
             }
             break;
@@ -1956,7 +1956,7 @@ void func_84306C8C(unk_D_84390010* arg0) {
     GraphNode_InitChild(&arg0->unk_000, 0, sp22, sp24);
     func_84302658(arg0, 1);
     GraphNode_TriggerAction(&arg0->unk_000, 0);
-    func_80017464(&arg0->unk_000, 0);
+    Anim_SetChannelBase(&arg0->unk_000, 0);
 
     arg0->unk_720->unk_04 = arg0->unk_724->unk_01C;
     if ((arg0->unk_000.unk_01A == 0x32) || (arg0->unk_000.unk_01A == 0x33)) {
@@ -1992,7 +1992,7 @@ void func_84306DA8(unk_D_84390010* arg0) {
     }
 
     GraphNode_TriggerAction(&ptr->unk_000, 0);
-    func_80017464(&ptr->unk_000, 0);
+    Anim_SetChannelBase(&ptr->unk_000, 0);
     ptr->unk_000.unk_000.unk_02 &= ~0x40;
     Vec3f_Set(&ptr->unk_000.unk_024, 0.0f, 0.0f, 0.0f);
 }
@@ -2018,7 +2018,7 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
         }
 
         GraphNode_InitChild(ptr, 0, sp42, sp44);
-        func_80017464(ptr, 0);
+        Anim_SetChannelBase(ptr, 0);
         GraphNode_TriggerAction(ptr, 0);
 
         ptr->unk_000.unk_000.unk_02 &= ~0x40;

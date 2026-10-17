@@ -5005,11 +5005,11 @@ void func_8432CD14(unk_D_86002F58_004_000* arg0) {
 
 void func_8432CD70(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
     GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
-    func_800173DC(arg0, 0, D_843920C0[arg2], 0x10000);
+    Anim_SetChannel(arg0, 0, D_843920C0[arg2], 0x10000);
 }
 
 void func_8432CDD8(unk_D_86002F58_004_000* arg0, s16 arg1) {
-    func_80017464(arg0, arg1);
+    Anim_SetChannelBase(arg0, arg1);
 }
 
 void func_8432CE00(unk_D_86002F58_004_000* arg0, s16 arg1) {
@@ -5017,12 +5017,12 @@ void func_8432CE00(unk_D_86002F58_004_000* arg0, s16 arg1) {
 }
 
 void func_8432CE3C(unk_D_86002F58_004_000* arg0, s16 arg1) {
-    func_800173DC(arg0, 0, D_843920C0[arg1], 0x10000);
+    Anim_SetChannel(arg0, 0, D_843920C0[arg1], 0x10000);
 }
 
 void func_8432CE78(unk_D_86002F58_004_000* arg0, s16 arg1) {
-    func_800173DC(arg0, 0, D_843920C0[arg1], -0x10000);
-    func_80017464(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+    Anim_SetChannel(arg0, 0, D_843920C0[arg1], -0x10000);
+    Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
 s32 func_8432CED4(unk_D_86002F58_004_000* arg0) {

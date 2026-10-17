@@ -298,7 +298,7 @@ void func_84308660(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
     if (!(sp20->unk_34 & 0x4002)) {
         if ((func_84301FF0(arg0) == 0) && (arg1->unk_000.unk_040.unk_00 != -1) &&
-            (func_80017514(&arg1->unk_000) == 1)) {
+            (Anim_HasReachedEnd(&arg1->unk_000) == 1)) {
             if (sp20->unk_34 & 0x200) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp2C->unk_00);
             } else if ((sp20->unk_34 & 1) && (func_84307AE0(arg1->unk_000.unk_01A, D_84384590, 8) != 0)) {
@@ -316,7 +316,7 @@ void func_84308660(unk_D_84390010* arg0, unk_D_84390010* arg1) {
                 }
             }
 
-            func_80017464(&arg1->unk_000, 0);
+            Anim_SetChannelBase(&arg1->unk_000, 0);
         }
     }
 }
@@ -337,7 +337,7 @@ void func_843087F8(unk_D_84390010* arg0) {
     sp2C = &D_84384570[idx]->unk_AF0;
 
     if (!(sp24->unk_34 & 0x4002) && (func_84301FF0(arg0) == 0) && (arg0->unk_000.unk_040.unk_00 != -1)) {
-        func_80017464(&arg0->unk_000, 0);
+        Anim_SetChannelBase(&arg0->unk_000, 0);
         if (sp24->unk_34 & 0x200) {
             GraphNode_TriggerAction(&arg0->unk_000, sp30->unk_00);
         } else if ((sp24->unk_34 & 1) && (func_84307AE0(arg0->unk_000.unk_01A, D_84384590, 8) != 0)) {
@@ -360,7 +360,7 @@ void func_8430897C(unk_D_84390010* arg0) {
     unk_D_8438E7B0_A50* sp1C = &D_84384570[func_84307F00(arg0)]->unk_A80;
 
     if (arg0->unk_000.unk_040.unk_00 != -1) {
-        func_80017464(&arg0->unk_000, 0);
+        Anim_SetChannelBase(&arg0->unk_000, 0);
         GraphNode_TriggerAction(&arg0->unk_000, sp1C->unk_00);
     }
 }
@@ -468,7 +468,7 @@ void func_84308DB8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg
 
     GraphNode_InitChild(&arg1->unk_000, 0, arg2, sp20);
     func_84302658(arg0, arg3);
-    func_80017464(&arg1->unk_000, 0);
+    Anim_SetChannelBase(&arg1->unk_000, 0);
     GraphNode_TriggerAction(&arg1->unk_000, 0);
 
     if ((arg1->unk_000.unk_01A == 0x32) || (arg1->unk_000.unk_01A == 0x33)) {
@@ -506,7 +506,7 @@ void func_84308ED4(unk_D_84390010* arg0, unk_D_84390010_728* arg1, s16 arg2) {
         GraphNode_InitChild(&arg1->unk_000, 2, arg2, sp24);
     }
 
-    func_80017464(&arg1->unk_000, 0);
+    Anim_SetChannelBase(&arg1->unk_000, 0);
     GraphNode_TriggerAction(&arg1->unk_000, 0);
     arg1->unk_000.unk_000.unk_02 &= ~0x40;
 }
@@ -529,7 +529,7 @@ void func_84308F94(unk_D_84390010* arg0, s16 arg1) {
         }
 
         GraphNode_InitChild(&var_s0->unk_000, 0, arg1, sp58);
-        func_80017464(&var_s0->unk_000, 0);
+        Anim_SetChannelBase(&var_s0->unk_000, 0);
         GraphNode_TriggerAction(&var_s0->unk_000, 0);
 
         var_s0->unk_000.unk_000.unk_02 &= ~0x40;
@@ -551,7 +551,7 @@ void func_84309110(unk_D_84390010* arg0) {
         func_843059C0(arg0, 0xAF, 2);
     } else {
         arg0->unk_654.unk_36 = 0;
-        func_80017804(&arg0->unk_000, 0);
+        SetAnimStateIndex(&arg0->unk_000, 0);
         GraphNode_TriggerSound(&arg0->unk_000, -1);
     }
 }

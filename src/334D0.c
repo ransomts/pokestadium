@@ -106,9 +106,9 @@ void ModelSlot_Reset(s32 arg0) {
 }
 
 Gfx* Model_SetRenderColors(Gfx* gfx) {
-    u8 temp_v0 = D_8006F09C->unk_01D;
+    u8 temp_v0 = gDefaultGraphRoot->unk_01D;
 
-    switch (D_8006F09C->unk_01A) {
+    switch (gDefaultGraphRoot->unk_01A) {
         case 0x92:
             gSPDisplayList(gfx++, gModelRenderDL);
             gDPSetPrimColor(gfx++, 0, temp_v0, 255, 255, 255, 200);
@@ -140,7 +140,7 @@ void Model_DrawCurrent(void) {
         Model_ApplyScaleAndTranslation(index);
         Model_ConcatCameraMatrix(index);
 
-        if (D_8006F09C->unk_01A == 0x92) {
+        if (gDefaultGraphRoot->unk_01A == 0x92) {
             func_80033B2C(&gStadiumModelSlots[index][D_800AF7B0[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
             return;
         }
@@ -176,7 +176,7 @@ Gfx* Model_DrawSegment(Gfx* gfx) {
     Vec3f scale;
     Vec3f translate;
 
-    if (D_8006F09C->unk_01A == 0x92) {
+    if (gDefaultGraphRoot->unk_01A == 0x92) {
         segment = (ModelSegment *)&gSpecialModelSegment;
     } else {
         segment = (ModelSegment *)&gNormalModelSegment;

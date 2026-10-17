@@ -108,8 +108,8 @@ void func_86B0194C(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
 void func_86B01A40(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86002F34_00C* sp2C = arg1->unk_00;
 
-    func_80010354(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
-    func_80010354(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
+    Camera_SetViewParameters(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_SetViewParameters(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
 s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
@@ -127,14 +127,14 @@ s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
         Math_ApproachFloat(&temp_s2->unk_24.fovy, 30.0f, 0.06f);
     }
 
-    func_80010354(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
-    func_80010354(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
+    Camera_SetViewParameters(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_SetViewParameters(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
     Matrix_Decompose(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
 
     arg1->unk_04.unk_68 = func_800104AC(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
 
-    func_80010354(&sp58, &temp_s2->unk_60.at, arg1->unk_04.unk_68, sp3A, sp38);
-    func_80010354(&temp_s2->unk_60.at, &temp_s2->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
+    Camera_SetViewParameters(&sp58, &temp_s2->unk_60.at, arg1->unk_04.unk_68, sp3A, sp38);
+    Camera_SetViewParameters(&temp_s2->unk_60.at, &temp_s2->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 
     arg1->unk_04.unk_6C = sp3C - arg1->unk_04.unk_68;
     if (arg1->unk_04.unk_6C <= 5.0f) {

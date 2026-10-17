@@ -43,7 +43,7 @@ void miniUnkUpdateCamera(void) {
 void miniUnkDrawHUB(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(&D_87906050->unk_00);
 
     if (miniDebugMode != 0) {
@@ -113,7 +113,7 @@ void func_86D0037C(void) {
     D_87906050 = process_geo_layout(sp1C, &D_86D00530);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     func_87903600();
     func_86D00020();
 }
@@ -137,7 +137,7 @@ s32 func_86D003EC(s32 arg0, s32 arg1) {
     miniUnkControls();
     func_86D0032C();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

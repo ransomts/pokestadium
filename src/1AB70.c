@@ -16,9 +16,9 @@ static unk_D_86002F58_004_000* gCameraNode;
 static s32 gDebugMode;
 
 s32 SetCurrentCameraNode(s32, GraphNode*);
-s32 func_80019F70(s32, GraphNode*);
+s32 SpriteDisplay_SetCameraNode(s32, GraphNode*);
 
-s32 func_80019F70(s32 arg0, GraphNode* arg1) {
+s32 SpriteDisplay_SetCameraNode(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
         gAssetManager.unk_A04.unk_0C = arg1;
     }
@@ -30,7 +30,7 @@ void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x00300030, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D0019, 0xFFFFFF32, 0x14000000, 0xFFD300CD, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
-        func_80019F70, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
+        SpriteDisplay_SetCameraNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
     };
 
     unk_D_86002F34_00C* sp24;
@@ -40,8 +40,8 @@ void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
     arg0->unk_10 = gAssetManager.unk_A04.unk_0C;
     mem_pool_resize_block(sp20);
     sp24 = arg0->unk_0C->unk_0C;
-    func_80011DAC(sp24, 0, 0, arg1, arg2);
-    func_80011E68(sp24, 30.0f, 100.0f, 12800.0f);
+    Viewport_SetRect(sp24, 0, 0, arg1, arg2);
+    Perspective_SetParams(sp24, 30.0f, 100.0f, 12800.0f);
 }
 
 unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -103,7 +103,7 @@ void SpriteDisplay_Clear(unk_func_8001A024* arg0) {
     FramebufferImage* tempDepth_p;
 
     if (arg0->unk_00 & 1) {
-        func_80019CA8(arg0->unk_04);
+        AssetManager_WaitLoadQueue(arg0->unk_04);
         GraphNode_ClearCallback(arg0->unk_10);
     }
 
@@ -215,7 +215,7 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     sp2C = arg0->unk_04->unk_24->unk_08->unk_00[0];
 
     GraphNode_ClearCallback(arg0->unk_10);
-    func_800173CC(arg0->unk_10);
+    Anim_ClearChannelState(arg0->unk_10);
 
     if (temp_s1->unk_00 & 2) {
         sp38.x = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 0x10) >> 6;
@@ -223,26 +223,26 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
         sp38.z = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 << 6) >> 6;
         GraphNode_InitChild(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
         GraphNode_TriggerAction(arg0->unk_10, 1);
-        func_80017464(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
+        Anim_SetChannelBase(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
     } else {
         sp38.x = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 << 6) >> 6;
         GraphNode_InitChild(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
         GraphNode_TriggerAction(arg0->unk_10, 1);
-        func_80017464(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
+        Anim_SetChannelBase(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
     }
-    func_8000E990(&arg0->unk_10->unk_024, &sp38);
+    GraphNode_SetPositionFromVec3s(&arg0->unk_10->unk_024, &sp38);
     arg0->unk_10->unk_000.unk_02 &= ~0x40;
     arg0->unk_10->unk_000.unk_02 |= 0x80;
     Vec3f_Set(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
-    func_80010354(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
+    Camera_SetViewParameters(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-    func_80015348();
-    func_8001533C(3);
+    Gfx_FinishFrame();
+    Gfx_SetRenderMode(3);
     Graph_SetTextureState(arg0->unk_0C);
     Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
-    func_8001533C(1);
+    Gfx_SetRenderMode(1);
     Graph_SetTextureState(arg0->unk_0C);
 }
 
@@ -257,9 +257,9 @@ s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
     sp20 = arg0->unk_02;
     if (arg0->unk_00 & 1) {
         if (arg1 == 1) {
-            var_v0 = func_80019CA8(arg0->unk_04);
+            var_v0 = AssetManager_WaitLoadQueue(arg0->unk_04);
         } else {
-            var_v0 = func_80019C08(arg0->unk_04);
+            var_v0 = AssetManager_TryProcessLoadQueue(arg0->unk_04);
         }
         if (var_v0 != 0) {
             arg0->unk_00 &= 0xFFFE;
@@ -278,9 +278,9 @@ s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
             if (temp_v0_2->unk_00 & 1) {
                 arg0->unk_00 |= 1;
                 if (temp_v0_2->unk_00 & 2) {
-                    func_800198E4(arg0->unk_04, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
+                    AssetManager_RequestLoad(arg0->unk_04, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
                 } else {
-                    func_800198E4(arg0->unk_04, temp_v0_2->unk_14.unk_02, temp_v0_2->unk_10);
+                    AssetManager_RequestLoad(arg0->unk_04, temp_v0_2->unk_14.unk_02, temp_v0_2->unk_10);
                 }
                 arg0->unk_02 = sp20;
                 break;
@@ -323,15 +323,15 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
 
             sp48.raw = 0;
             if (temp_s1->unk_00 & 2) {
-                func_800198E4(arg0->unk_04, *temp_s1->unk_14.ptr, sp48);
+                AssetManager_RequestLoad(arg0->unk_04, *temp_s1->unk_14.ptr, sp48);
                 if (temp_s1->unk_10.raw != 0) {
                     temp_s1->unk_00 |= 4;
                 }
             } else {
-                func_800198E4(arg0->unk_04, temp_s1->unk_14.unk_02, sp48);
+                AssetManager_RequestLoad(arg0->unk_04, temp_s1->unk_14.unk_02, sp48);
             }
 
-            func_80019CA8(arg0->unk_04);
+            AssetManager_WaitLoadQueue(arg0->unk_04);
             arg0->unk_08[var_s1].unk_00 &= ~1;
             SpriteDisplay_RenderSlot(arg0, var_s1);
             sp44 = var_s1;
@@ -370,11 +370,11 @@ s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
             while (func_80001C90() == 0) {}
             
             if (temp_s1->unk_00 & 2) {
-                func_800198E4(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);
+                AssetManager_RequestLoad(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);
             } else {
-                func_800198E4(arg0->unk_04, temp_s1->unk_14.unk_02, temp_s1->unk_10);
+                AssetManager_RequestLoad(arg0->unk_04, temp_s1->unk_14.unk_02, temp_s1->unk_10);
             }
-            func_80019CA8(arg0->unk_04);
+            AssetManager_WaitLoadQueue(arg0->unk_04);
             arg0->unk_08[var_s0].unk_00 &= ~1;
             SpriteDisplay_RenderSlot(arg0, var_s0);
             arg0->unk_02 = var_s0;
@@ -401,7 +401,7 @@ void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) 
     if (arg1 == arg0->unk_03) {
         Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
         Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
-        func_8001533C(1);
+        Gfx_SetRenderMode(1);
         Graph_SetTextureState(arg0->unk_0C);
         return;
     }
@@ -471,7 +471,7 @@ s32 SetCurrentCameraNode(s32 arg0, GraphNode* arg1) {
 }
 
 void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    static u32 D_8006F3E0[] = {
+    static u32 sSpriteCameraGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x010000E0, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x14000000, 0xFFD30087, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
@@ -481,11 +481,11 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     MemoryBlock* temp_v0;
 
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
-    arg0->unk_20 = process_geo_layout(sp24, D_8006F3E0);
+    arg0->unk_20 = process_geo_layout(sp24, sSpriteCameraGeoLayoutCommands);
     arg0->unk_24 = gCameraNode;
     mem_pool_resize_block(sp24);
-    func_80011DAC(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
-    func_80011E68(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
+    Viewport_SetRect(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
+    Perspective_SetParams(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
 
 unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
@@ -526,10 +526,10 @@ void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 ar
     arg0->unk_24->unk_024.y = tmp2;
     arg0->unk_24->unk_024.z = tmp3;
 
-    arg0->unk_24->unk_01E = D_8006F05C;
+    arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
     ComputeStatFromName(&sp2C, arg1);
-    func_800198E4(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
-    func_80019CA8(arg0->unk_1C);
+    AssetManager_RequestLoad(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
+    AssetManager_WaitLoadQueue(arg0->unk_1C);
     GraphNode_ClearCallback(arg0->unk_24);
     GraphNode_InitChild(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
     GraphNode_TriggerAction(arg0->unk_24, 1);
@@ -554,10 +554,10 @@ void func_8001B480(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     arg0->unk_24->unk_024.y = tmp2;
     arg0->unk_24->unk_024.z = tmp3;
 
-    arg0->unk_24->unk_01E = D_8006F05C;
+    arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
     sp34.raw = 0;
-    func_800198E4(arg0->unk_1C, arg1, sp34);
-    func_80019CA8(arg0->unk_1C);
+    AssetManager_RequestLoad(arg0->unk_1C, arg1, sp34);
+    AssetManager_WaitLoadQueue(arg0->unk_1C);
     GraphNode_ClearCallback(arg0->unk_24);
     GraphNode_InitChild(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
     GraphNode_TriggerAction(arg0->unk_24, 1);
@@ -688,7 +688,7 @@ u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
     func_8001B778(arg0);
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_28);
     func_8001B834(arg0);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(arg0->unk_20);
 
     if (gDebugMode > 0) {

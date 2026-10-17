@@ -104,7 +104,7 @@ void Gfx_DrawSpriteI16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001D560(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s16 arg6, s32 arg7) {
+void Gfx_DrawSpriteRGBA16Paletted(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s16 arg6, s32 arg7) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg6, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
@@ -309,7 +309,7 @@ u8 GetCharIndexFromFontTables(u16 arg0) {
     if ((arg0 >= 0x20) && (arg0 < 0x80)) {
         var_v1 = ((u8*)gPrefDL_End)[arg0];
     } else if ((arg0 >= 0xA0) && (arg0 < 0x100)) {
-        var_v1 = ((u8*)D_8006F608)[sizeof(Gfx) + arg0];
+        var_v1 = ((u8*)gFontCharTableExtended)[sizeof(Gfx) + arg0];
     }
 
     return var_v1;
@@ -321,7 +321,7 @@ u8 Text_GetCharWidth(FontBankInfo* arg0, u16 arg1) {
     return arg0->unk_04[idx];
 }
 
-void func_8001E7C0(UNUSED s32 arg0, UNUSED s32 arg1) {
+void FontManager_Cleanup(UNUSED s32 arg0, UNUSED s32 arg1) {
     gFontManager = NULL;
 }
 
@@ -369,7 +369,7 @@ void LoadFontBank(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 TextObject* Text_Init(s32 arg0, s32 arg1) {
-    gFontManager = main_pool_alloc_with_func(sizeof(*gFontManager), arg1, 'PRNT', func_8001E7C0);
+    gFontManager = main_pool_alloc_with_func(sizeof(*gFontManager), arg1, 'PRNT', FontManager_Cleanup);
     bzero(gFontManager, sizeof(*gFontManager));
     gFontManager->unk_48 = ASSET_LOAD2(fonts, 1, 1);
     LoadFontBanksFromMask(arg0);
@@ -377,7 +377,7 @@ TextObject* Text_Init(s32 arg0, s32 arg1) {
     return gFontManager;
 }
 
-void func_8001E9CC(void) {
+void FontManager_Free(void) {
     main_pool_try_free(gFontManager);
 }
 
@@ -505,7 +505,7 @@ s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
     return arg0;
 }
 
-char* func_8001F1C4(char* buffer, const char* data, u32 size) {
+char* Buffer_CopyAndAdvance(char* buffer, const char* data, u32 size) {
     return (char*)memcpy(buffer, data, size) + size;
 }
 
@@ -521,7 +521,7 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    temp_v0 = _Printf(func_8001F1C4, sp50, fmt, args);
+    temp_v0 = _Printf(Buffer_CopyAndAdvance, sp50, fmt, args);
 
     if (temp_v0 > 0) {
         sp50[temp_v0] = 0;
@@ -578,23 +578,23 @@ void Text_ResetState(void) {
     gFontManager->unk_52 = 0x28;
     gFontManager->unk_4C = 0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F710);
+    gSPDisplayList(gDisplayListHead++, gDL_TextResetState);
 }
 
 void Text_SetupDL(void) {
-    gSPDisplayList(gDisplayListHead++, D_8006F750);
+    gSPDisplayList(gDisplayListHead++, gDL_TextSetup);
 }
 
 void Text_BeginRender(void) {
     gFontManager->unk_53 |= 1;
     gFontManager->unk_53 &= ~2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F768);
+    gSPDisplayList(gDisplayListHead++, gDL_TextBegin);
 }
 
 void Text_EndRender(void) {
     gFontManager->unk_53 &= ~3;
-    gSPDisplayList(gDisplayListHead++, D_8006F798);
+    gSPDisplayList(gDisplayListHead++, gDL_TextEnd);
 }
 
 void Text_DrawWindowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
@@ -628,7 +628,7 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
     temp_s4 = &gFontManager->unk_00[var_a0];
     if (temp_s4->unk_04 != NULL) {
         temp_s0 = 0;
-        temp_v0 = _Printf(func_8001F1C4, sp5C, fmt, args);
+        temp_v0 = _Printf(Buffer_CopyAndAdvance, sp5C, fmt, args);
         if (temp_v0 > 0) {
             sp5C[temp_v0] = 0;
 

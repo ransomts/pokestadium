@@ -139,8 +139,8 @@ s32 func_84B0AC60(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B25A90*)D_8006F09C->unk_000.unk_14;
-        tmp = (D_8006F09C->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
+        temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = (gDefaultGraphRoot->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F,
@@ -157,8 +157,8 @@ s32 func_84B0AD48(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B25A90*)D_8006F09C->unk_000.unk_14;
-        tmp = (D_8006F09C->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
+        temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = (gDefaultGraphRoot->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F,
@@ -175,8 +175,8 @@ s32 func_84B0AE30(s32 arg0, unk_func_80011B94* arg1) {
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A90*)D_8006F09C->unk_000.unk_14;
-        tmp = (D_8006F09C->unk_0A6 - temp_a3->unk_04->unk_0A6) - 0x10;
+        temp_a3 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        tmp = (gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6) - 0x10;
 
         if (temp_a3->unk_28[tmp] >= 0) {
             gDPPipeSync(gDisplayListHead++);
@@ -201,11 +201,11 @@ s32 func_84B0AF48(s32 arg0, unk_func_80011B94* arg1) {
     f32 temp_fv0;
 
     if (arg0 == 5) {
-        temp_fv0 = D_8006F09C->unk_030.x;
+        temp_fv0 = gDefaultGraphRoot->unk_030.x;
         sp1E = (4.5f - temp_fv0) * 255.0f * 0.25f;
         if (temp_fv0 <= 4.0f) {
             temp_fv0 += 0.5f;
-            Vec3f_Set(&D_8006F09C->unk_030, temp_fv0, temp_fv0, temp_fv0);
+            Vec3f_Set(&gDefaultGraphRoot->unk_030, temp_fv0, temp_fv0, temp_fv0);
 
             gDPPipeSync(gDisplayListHead++);
             gDPSetEnvColor(gDisplayListHead++, 0, 0, 255, sp1E);

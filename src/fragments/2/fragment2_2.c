@@ -1329,7 +1329,7 @@ void ResultScreen_Init(void) {
 
     if (D_8780FE32) {}
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
 }
 
 void ResetSelectionState(void) {
@@ -2030,7 +2030,7 @@ s32 func_87804FD4(void) {
                                 D_8780FA28 |= 1;
                                 func_800280D4(D_8780FA28 & 0xFF);
                                 GbsCommitBankBlock(0x14, 0);
-                                func_800284B4(2);
+                                GbsSyncBank(2);
                                 D_8780FCA7 = 1;
                             }
                         }

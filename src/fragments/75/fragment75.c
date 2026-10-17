@@ -99,10 +99,10 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
         ASSET_LOAD(D_5000000, snap_mode_ui, 0);
         FRAGMENT_LOAD(fragment31);
 
-        func_8001987C();
+        AssetManager_LoadArchives();
 
         D_8FA00A28 = ASSET_LOAD2(stadium_models, 1, 1);
-        temp_s0 = func_80019760(5);
+        temp_s0 = AssetManager_Create(5);
         Cam_ResetUnkF90();
         D_8FA00A00 = Cam_Create(0x280, 0x1E0, D_8FA00A2C->unk_18[0], NULL, temp_s0, D_8FA00A28, sp60);
     }

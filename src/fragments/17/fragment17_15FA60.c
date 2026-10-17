@@ -144,7 +144,7 @@ void func_86B00258(void) {
 void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     Graph_AddToRootList0(&arg0->unk_004);
 
-    arg0->unk_000 = func_80019D18(arg1->unk_0C);
+    arg0->unk_000 = GeoLayout_LoadById(arg1->unk_0C);
 
     GraphNode_InitChild(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&arg0->unk_004, arg1->unk_10);
@@ -155,7 +155,7 @@ void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
         arg0->unk_004.unk_0A6 = 0xFF;
     }
 
-    func_80017464(&arg0->unk_004, 0);
+    Anim_SetChannelBase(&arg0->unk_004, 0);
     arg0->unk_004.unk_000.unk_02 &= ~0x40;
 }
 
@@ -249,7 +249,7 @@ void func_86B00688(void) {
         if (D_86B0E5D4->unk_04.unk_44 != 4) {
             while (D_86B0C4C8[D_86B0E5D4->unk_04.unk_44][i].unk_0C != 0x98) {
                 if (func_800174E4(&D_86B0E5F0[i].unk_004) != 0) {
-                    func_80017464(&D_86B0E5F0[i].unk_004, 0);
+                    Anim_SetChannelBase(&D_86B0E5F0[i].unk_004, 0);
                 }
                 i++;
             }
@@ -333,7 +333,7 @@ void func_86B00944(s32 arg0) {
 void func_86B00AE4(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_86B00B14(void) {
@@ -473,7 +473,7 @@ void func_86B01004(void) {
 void func_86B0100C(void) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    func_80015348();
+    Gfx_FinishFrame();
     func_86B007EC();
     func_86B01C00(D_86B0E5E8);
     Graph_SetTextureState(D_86B0E5D0);
@@ -516,7 +516,7 @@ void func_86B0111C(void) {
 
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     func_86B00B14();
 
     D_86B0EBB0 = 0;
@@ -532,7 +532,7 @@ s32 BattleState_Handle18(void) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&D_86B0EBB8, 0);
     D_86B0E5E4 = ASSET_LOAD2(backgrounds, 1, 1);
 
@@ -549,7 +549,7 @@ s32 BattleState_Handle18(void) {
     func_86B0107C();
     func_86B010FC();
     func_8000771C();
-    func_8001E9CC();
+    FontManager_Free();
 
     main_pool_pop_state('MINI');
 

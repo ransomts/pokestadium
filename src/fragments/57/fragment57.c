@@ -1171,7 +1171,7 @@ void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 
 s32 func_82D01758(s32 arg0, unk_func_80011B94* arg1) {
     if (arg0 == 5) {
-        s32 var_a3 = D_8006F09C->unk_000.unk_14;
+        s32 var_a3 = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1913,7 +1913,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
         }
     } else if (var_s1 == 2) {
         GbsClearAndCommitBlock(0x15, 0);
-        func_800284B4(2);
+        GbsSyncBank(2);
     }
 
     if (var_s1 != 0) {
@@ -2026,7 +2026,7 @@ s32 func_82D04D50(s32 arg0, UNUSED unk_func_80011B94* arg1) {
     s32 var_a3;
 
     if (arg0 == 5) {
-        var_a3 = D_8006F09C->unk_000.unk_14;
+        var_a3 = gDefaultGraphRoot->unk_000.unk_14;
         var_a2 = var_a3;
         if ((var_a3 == 0) && (gBattleContext.unk_11F2 == 1)) {
             var_a2 = 7;
@@ -2036,8 +2036,8 @@ s32 func_82D04D50(s32 arg0, UNUSED unk_func_80011B94* arg1) {
 
         gSPSegment(gDisplayListHead++, 0x0F, (u32)D_82D0ABE0[var_a2]->img_p & 0x1FFFFFFF);
 
-        if (D_8006F09C->unk_01D < 0xFF) {
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, D_8006F09C->unk_01D);
+        if (gDefaultGraphRoot->unk_01D < 0xFF) {
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDefaultGraphRoot->unk_01D);
             gDPSetCombineLERP(gDisplayListHead++, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0,
                               0, COMBINED);
         } else {
@@ -2796,9 +2796,9 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
 
     main_pool_push_state('GBCK');
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     func_80027FA0(&D_82D0AB90, 0);
-    func_80028070(&D_82D0AB98);
+    GbsGetPlayerMoney(&D_82D0AB98);
     sp53 = (D_82D0AB98 & 4) != 0;
     gBattleContext.unk_11F2 = sp53;
     Gfx_InitBuffers(0x10000, 0);
@@ -2842,11 +2842,11 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
         } else {
             D_82D0AB98 |= 4;
         }
-        func_80028084(&D_82D0AB98);
+        GbsSetPlayerMoney(&D_82D0AB98);
         GbsCommitBankBlock(0x14, 0);
     }
 
-    func_800284B4(2);
+    GbsSyncBank(2);
     Gfx_FreeBuffers();
 
     main_pool_pop_state('GBCK');

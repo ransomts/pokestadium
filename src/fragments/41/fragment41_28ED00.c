@@ -116,10 +116,10 @@ static u8* D_82F13F2C[] = {
 
 s32 func_82F06E50(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
-        s32 idx = D_8006F09C->unk_000.unk_14;
+        s32 idx = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
-        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, D_8006F09C->unk_01D);
+        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
 
         if (D_82F20A88[idx].unk_024 != NULL) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_82F20A88[idx].unk_024));
@@ -1168,7 +1168,7 @@ void func_82F09E30(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
 
     if (ptr->unk_00 != 0) {
-        func_80015348();
+        Gfx_FinishFrame();
         func_82F08B7C(&D_82F20A40);
         func_82F08EB4(&D_82F20A40);
         func_82F0917C(&D_82F20A40);

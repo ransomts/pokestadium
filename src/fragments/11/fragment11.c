@@ -163,7 +163,7 @@ void func_86500238(void) {
                     } else {
                         gCurrentHealthBar->unk_008 = 5;
                     }
-                } else if (func_80017514(&gCurrentHealthBar->unk_014) != 0) {
+                } else if (Anim_HasReachedEnd(&gCurrentHealthBar->unk_014) != 0) {
                     switch (gCurrentHealthBar->unk_008) {
                         case 6:
                             var_s1 = 1;
@@ -221,7 +221,7 @@ void func_86500238(void) {
                     func_8004D9B0(0x80002, i, var_s0_2);
                 }
 
-                if (func_80017514(&gCurrentHealthBar->unk_014) != 0) {
+                if (Anim_HasReachedEnd(&gCurrentHealthBar->unk_014) != 0) {
                     switch (gCurrentHealthBar->unk_008) {
                         case 0:
                         case 3:
@@ -246,21 +246,21 @@ void func_86500238(void) {
                     }
                 } else if (gCurrentHealthBar->unk_008 == 6) {
                     if (gCurrentHealthBar->unk_004 == 0) {
-                        func_80017464(&gCurrentHealthBar->unk_014, 0x1B);
-                        func_80017804(&gCurrentHealthBar->unk_014, 0x1B);
+                        Anim_SetChannelBase(&gCurrentHealthBar->unk_014, 0x1B);
+                        SetAnimStateIndex(&gCurrentHealthBar->unk_014, 0x1B);
                     } else if (gCurrentHealthBar->unk_004 == 1) {
-                        func_80017464(&gCurrentHealthBar->unk_014, 0x4B);
-                        func_80017804(&gCurrentHealthBar->unk_014, 0x4B);
+                        Anim_SetChannelBase(&gCurrentHealthBar->unk_014, 0x4B);
+                        SetAnimStateIndex(&gCurrentHealthBar->unk_014, 0x4B);
                     }
                 } else if (var_s1 == 2) {
-                    func_80017464(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
+                    Anim_SetChannelBase(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
                     if (gCurrentHealthBar->unk_008 != 0) {
-                        func_80017804(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
+                        SetAnimStateIndex(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
                     }
                 } else {
-                    func_80017464(&gCurrentHealthBar->unk_014, 0);
+                    Anim_SetChannelBase(&gCurrentHealthBar->unk_014, 0);
                     if (gCurrentHealthBar->unk_008 != 0) {
-                        func_80017804(&gCurrentHealthBar->unk_014, 0);
+                        SetAnimStateIndex(&gCurrentHealthBar->unk_014, 0);
                     }
                 }
             }
@@ -314,9 +314,9 @@ void func_8650077C(void) {
         }
 
         if (var_a0 != 0) {
-            func_80017464(D_86502CA0[i], 0);
+            Anim_SetChannelBase(D_86502CA0[i], 0);
             GraphNode_TriggerSound(D_86502CA0[i], 0);
-            func_80017804(D_86502CA0[i], 0);
+            SetAnimStateIndex(D_86502CA0[i], 0);
         }
     }
 }
@@ -528,7 +528,7 @@ void func_865013D4(s32 arg0) {
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(D_87B000E8);
@@ -724,7 +724,7 @@ void func_865019E4(void) {
 
     D_87B000EC->unk_60.at.y = 51.0f;
 
-    func_80010354(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
+    Camera_SetViewParameters(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
 }
 
 void func_86501AAC(void) {
@@ -736,15 +736,15 @@ void func_86501AAC(void) {
     D_87B000E8 = process_geo_layout(temp_v0, D_86502DE4);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
-    func_8001987C();
+    AssetManager_LoadArchives();
     func_865000C0();
     func_86500140();
 
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            D_87B000E4 = func_80019D18(0xC5);
+            D_87B000E4 = GeoLayout_LoadById(0xC5);
         } else {
-            D_87B000E4 = func_80019D18(0xC6);
+            D_87B000E4 = GeoLayout_LoadById(0xC6);
         }
 
         for (j = 0; j < 4; j++) {
@@ -762,7 +762,7 @@ void func_86501AAC(void) {
 
                 gCurrentHealthBar->unk_008 = 0;
                 GraphNode_TriggerAction(D_8650AB2C, gCurrentHealthBar->unk_008);
-                func_80017464(D_8650AB2C, func_87B00050(D_8650AB2C->unk_040.unk_04->unk_0A));
+                Anim_SetChannelBase(D_8650AB2C, func_87B00050(D_8650AB2C->unk_040.unk_04->unk_0A));
 
                 D_8650AB2C->unk_024.x = D_86502C20[j].unk_00;
                 D_8650AB2C->unk_024.y = D_86502C20[j].unk_04;
@@ -799,7 +799,7 @@ void func_86501AAC(void) {
 
         for (j = 0; j < 13; j++) {
             if ((j != 2) && (j != 3) && (j != 4)) {
-                D_87B000E4 = func_80019D18(sp5C[j]);
+                D_87B000E4 = GeoLayout_LoadById(sp5C[j]);
             }
 
             D_8650AB2C = D_86502CA0[j];
@@ -807,7 +807,7 @@ void func_86501AAC(void) {
             Graph_AddToRootList0(D_8650AB2C);
             GraphNode_InitChild(D_8650AB2C, 0, sp5C[j], D_87B000E4->unk_08->unk_00[0]);
             GraphNode_TriggerAction(D_8650AB2C, 0);
-            func_80017464(D_8650AB2C, D_8650AB2C->unk_040.unk_04->unk_0A);
+            Anim_SetChannelBase(D_8650AB2C, D_8650AB2C->unk_040.unk_04->unk_0A);
         }
     }
 
@@ -838,7 +838,7 @@ void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_86501828();
     func_86501964();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

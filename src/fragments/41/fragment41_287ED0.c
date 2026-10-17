@@ -71,7 +71,7 @@ char* func_82F00058(s32 arg0) {
 }
 
 char* func_82F00090(s32 arg0) {
-    return GetMessageString(NULL, 0, D_82F144CC, func_800219FC(arg0));
+    return GetMessageString(NULL, 0, D_82F144CC, RemapStadiumModeIndex(arg0));
 }
 
 void InitProgressBarRect(s16 arg0) {
@@ -270,7 +270,7 @@ void DrawTextBox(void) {
 void PollControllerInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void UpdateControllerInfo(void) {
@@ -630,14 +630,14 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     SpriteAssets_Load();
     InitFragment41();
     Stage_Set(sp24);
     func_82F01180();
     Stage_AdvanceN(2);
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('PMEX');

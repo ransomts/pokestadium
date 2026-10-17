@@ -206,8 +206,8 @@ void func_8420B40C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 void func_8420B5A4(s16 arg0, s16 arg1, s16 arg2) {
-    unk_D_842115F0* sp34 = &D_842115F0[func_800219FC(arg2)];
-    unk_D_842115F0* sp30 = &D_842115F0[func_800219FC(arg2)];
+    unk_D_842115F0* sp34 = &D_842115F0[RemapStadiumModeIndex(arg2)];
+    unk_D_842115F0* sp30 = &D_842115F0[RemapStadiumModeIndex(arg2)];
 
     gDPSetEnvColor(gDisplayListHead++, sp34->unk_00->r, sp34->unk_00->g, sp34->unk_00->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (sp30->unk_00 + 1)->r, (sp30->unk_00 + 1)->g, (sp30->unk_00 + 1)->b, 255);
@@ -328,13 +328,13 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
             Text_SetFont(4, 0);
             temp_v0_8 = func_84200130(9);
             Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0x90, temp_s5 + 0x26, temp_v0_8);
-            temp_v0_8 = func_842000F8(func_800219FC(temp_s6->unk_06));
+            temp_v0_8 = func_842000F8(RemapStadiumModeIndex(temp_s6->unk_06));
             Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0x90, temp_s5 + 0x3A, temp_v0_8);
 
             if (temp_s6->unk_06 != temp_s6->unk_07) {
                 temp_v0_8 = func_84200130(0xA);
                 Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0xE0, temp_s5 + 0x26, temp_v0_8);
-                temp_v0_8 = func_842000F8(func_800219FC(temp_s6->unk_07));
+                temp_v0_8 = func_842000F8(RemapStadiumModeIndex(temp_s6->unk_07));
                 Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0xE0, temp_s5 + 0x3A, temp_v0_8);
             }
 
@@ -429,7 +429,7 @@ void func_8420C4DC(unk_D_8423D3A8* arg0) {
 }
 
 s32 func_8420C504(unk_D_8423D3A8* arg0) {
-    arg0->unk_24 = func_80019760(1);
+    arg0->unk_24 = AssetManager_Create(1);
     arg0->unk_28 = func_8001B1FC(arg0->unk_24, 0x64, 0x54, 0, 0, 0x64, 0x54, NULL);
     arg0->unk_28->unk_00 &= ~2;
     arg0->unk_00 = 0;

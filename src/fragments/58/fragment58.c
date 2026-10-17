@@ -650,7 +650,7 @@ void func_84002274(void) {
 void func_84002388(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_840023B8(void) {

@@ -108,8 +108,8 @@ void func_84329858(unk_D_86002F34_00C* arg0) {
             break;
 
         case 3:
-            func_80012044(arg0, 0x12C, 0xA, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
-            func_80011FC8(arg0, 5, 0xA, 0, 0, 0);
+            Texture_SetDefault(arg0, 0x12C, 0xA, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
+            Background_SetColor(arg0, 5, 0xA, 0, 0, 0);
             D_84390240.unk_00->unk_18 = 0;
             D_84390240.unk_00->unk_30 += 1;
 
@@ -133,8 +133,8 @@ void func_84329858(unk_D_86002F34_00C* arg0) {
                 func_843058A8(D_84390010[0]);
                 func_843058A8(D_84390010[1]);
                 D_84390240.unk_00->unk_18 = 2;
-                func_80012044(arg0, 0xA, 0x12C, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
-                func_80011FC8(arg0, 4, 0xA, 0, 0, 0);
+                Texture_SetDefault(arg0, 0xA, 0x12C, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
+                Background_SetColor(arg0, 4, 0xA, 0, 0, 0);
                 arg0->unk_24.fovy = 30.0f;
                 D_84390240.unk_00->unk_60 = 30.0f;
                 D_84390240.unk_00->unk_30 += 1;

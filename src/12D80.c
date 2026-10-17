@@ -27,12 +27,12 @@ unk_D_86002F34_alt1* gCurrentTextureNode = NULL;
 unk_D_86002F34_alt1* gCurrentLightNode = NULL;
 unk_D_86002F34_00C* D_8006F094 = NULL;
 unk_D_86002F34_alt1* D_8006F098 = NULL;
-unk_D_86002F58_004_000* D_8006F09C = NULL;
+unk_D_86002F58_004_000* gDefaultGraphRoot = NULL;
 unk_D_86002F34_alt11* D_8006F0A0 = NULL;
 static func_D_8006F0A4 D_8006F0A4[] = {
-    Graph_VisitVisibleChildren, Graph_VisitNodePre, Graph_SetupCamera, func_80013764, Graph_SetupLights, func_8001395C, func_800139E8,
-    func_80013AF8, func_80013B8C, func_80013C14, Graph_SetFog, Graph_AddLight, func_80013F7C, Graph_ApplyLights,
-    func_80014124, Graph_RenderBillboard, Graph_ConditionalDepthRender, func_800142BC, Graph_PushRotateTranslate, Graph_PushScaleNode, func_800143C0,
+    Graph_VisitVisibleChildren, Graph_VisitNodePre, Graph_SetupCamera, TextureNode_VisitChildren, Graph_SetupLights, CameraNode_SetProjection, CameraNode_SetLookAtProjection,
+    CameraNode_FillRect, func_80013B8C, func_80013C14, Graph_SetFog, Graph_AddLight, func_80013F7C, Graph_ApplyLights,
+    LayerNode_Process, Graph_RenderBillboard, Graph_ConditionalDepthRender, Graph_VisitChildOffset, Graph_PushRotateTranslate, Graph_PushScaleNode, ObjectNode_Transform,
     Graph_DrawModel, Graph_RenderComplexObject, func_800148D8, func_80014980, func_80014A60, func_80014AEC, func_80014D24,
     func_80014D50, NULL,          NULL,
 };
@@ -188,7 +188,7 @@ MtxF* Matrix_GetAbsolute(s32 arg0) {
 
 void Graph_ResetScaleStack(void) {
     D_800AB970.unk_180 = 0;
-    D_800AB970.unk_000[0] = D_8006F064;
+    D_800AB970.unk_000[0] = gRootNodeScale;
 }
 
 void Graph_PushScale(Vec3f* arg0) {
@@ -452,7 +452,7 @@ void Graph_SetupCamera(GraphNode* arg0) {
     gCurrentCameraNode = NULL;
 }
 
-void func_80013764(GraphNode* arg0) {
+void TextureNode_VisitChildren(GraphNode* arg0) {
     gCurrentTextureNode = arg0;
     Graph_VisitVisibleChildren(arg0);
     gCurrentTextureNode = NULL;
@@ -476,8 +476,8 @@ void Graph_SetupLights(GraphNode* arg0) {
         gSPTexture(gDisplayListHead++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
         gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
 
-        func_80017080();
-        func_800175D8();
+        Anim_ResetChannelIndex();
+        ResetAnimStack();
         Matrix_ResetStack();
         Graph_ResetScaleStack();
 
@@ -492,7 +492,7 @@ void Graph_SetupLights(GraphNode* arg0) {
     arg->unk_1A = gAnimationFrame;
 }
 
-void func_800138F0(GraphNode* arg0) {
+void CameraNode_Render(GraphNode* arg0) {
     unk_D_86002F34_00C* arg = (unk_D_86002F34_00C*)arg0;
 
     if ((D_8006F094 == NULL) && (arg->unk_00.unk_0C != NULL)) {
@@ -504,17 +504,17 @@ void func_800138F0(GraphNode* arg0) {
     }
 }
 
-void func_8001395C(GraphNode* arg0) {
+void CameraNode_SetProjection(GraphNode* arg0) {
     if ((D_8006F094 == NULL) && (arg0->unk_0C != NULL)) {
         gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
         gSPMatrix(gDisplayListHead++, (u32)gCurrentCameraNode->unk_40.mtx & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-        func_800138F0(arg0);
+        CameraNode_Render(arg0);
     }
 }
 
-void func_800139E8(GraphNode* arg0) {
+void CameraNode_SetLookAtProjection(GraphNode* arg0) {
     if ((D_8006F094 == NULL) && (arg0->unk_0C != NULL)) {
         gSPLookAt(gDisplayListHead++, (u32)&gCurrentCameraNode->unk_60.lookat->l & 0x1FFFFFFF);
 
@@ -525,11 +525,11 @@ void func_800139E8(GraphNode* arg0) {
         gSPMatrix(gDisplayListHead++, (u32)gCurrentCameraNode->unk_60.p_mtxf & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
-        func_800138F0(arg0);
+        CameraNode_Render(arg0);
     }
 }
 
-void func_80013AF8(GraphNode* arg0) {
+void CameraNode_FillRect(GraphNode* arg0) {
     unk_D_86002F34_alt2* arg = (unk_D_86002F34_alt2*)arg0;
     unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
 
@@ -628,15 +628,15 @@ void Graph_ApplyLights(GraphNode* arg0) {
     gSPLight(gDisplayListHead++, gCurrentLightNode->lights, i + 1);
 }
 
-void func_80014124(GraphNode* arg0) {
+void LayerNode_Process(GraphNode* arg0) {
     unk_D_86002F34_alt11* arg = (unk_D_86002F34_alt11*)arg0;
     MtxF* temp_v0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
     Vec3f sp2C;
     Vec3s sp24;
 
-    if (D_8006F09C->unk_000.unk_02 & 2) {
+    if (gDefaultGraphRoot->unk_000.unk_02 & 2) {
         Vec3f_Set(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
-        func_8000EB70(&sp24, 0, D_8006F09C->unk_01E.y, 0);
+        func_8000EB70(&sp24, 0, gDefaultGraphRoot->unk_01E.y, 0);
         Matrix_RotateTranslate(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
 
         D_800AA8C8.unk_10A0++;
@@ -666,7 +666,7 @@ void Graph_ConditionalDepthRender(GraphNode* arg0) {
     }
 }
 
-void func_800142BC(GraphNode* arg0) {
+void Graph_VisitChildOffset(GraphNode* arg0) {
     unk_D_86002F34_alt3* arg = (unk_D_86002F34_alt3*)arg0;
     s32 i;
     GraphNode* var_a1 = arg->unk_00.unk_0C;
@@ -702,7 +702,7 @@ void Graph_PushScaleNode(GraphNode* arg0) {
     D_800AA8C8.unk_10A0--;
 }
 
-void func_800143C0(GraphNode* arg0) {
+void ObjectNode_Transform(GraphNode* arg0) {
     Vec3s sp90;
     Vec3f sp84;
     Vec3f sp78;
@@ -714,7 +714,7 @@ void func_800143C0(GraphNode* arg0) {
     sp90 = arg->unk_1E;
     sp78 = arg->unk_24;
 
-    func_8000E990(&sp84, &arg->unk_18);
+    GraphNode_SetPositionFromVec3s(&sp84, &arg->unk_18);
     Anim_GetTransformTriple(&sp84, &sp90, &sp78, arg->unk_32 * 3);
 
     if (arg->unk_31 & 2) {
@@ -772,8 +772,8 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
 
     if (gCurrentLightNode->unk_18 == arg->unk_018) {
         arg->unk_0A7 = 0;
-        func_80017090(&arg->unk_040, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
-        func_800175E8(&arg->unk_054, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
+        Anim_StartChannel(&arg->unk_040, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
+        PushAnimStackEntry(&arg->unk_054, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
 
         if (arg->unk_000.unk_02 & 0x10) {
             Matrix_Multiply(&sp38, &arg->unk_060, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
@@ -794,7 +794,7 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
             D_800AA8C8.unk_10A0++;
 
             Matrix_SetIdentityAtCurrent();
-            D_8006F09C = arg0;
+            gDefaultGraphRoot = arg0;
 
             func_80016344(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
 
@@ -808,11 +808,11 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
 
             sp34.rgba = 0xFFFFFF00;
             func_80016344(sp34, 0xFF, 0);
-            D_8006F09C = NULL;
+            gDefaultGraphRoot = NULL;
         }
 
-        func_80017188();
-        func_800176BC();
+        Anim_EndChannel();
+        PopAnimStackEntry();
         D_800AA8C8.unk_10A0 -= 1;
     }
 }
@@ -892,13 +892,13 @@ void func_80014AEC(GraphNode* arg0) {
         sp38 = &D_8006F0A0->unk_1C[arg->unk_1E];
     }
 
-    if (D_8006F09C != NULL) {
-        sp44.r = (sp44.r * D_8006F09C->unk_03C.r) / 255;
-        sp44.g = (sp44.g * D_8006F09C->unk_03C.g) / 255;
-        sp44.b = (sp44.b * D_8006F09C->unk_03C.b) / 255;
+    if (gDefaultGraphRoot != NULL) {
+        sp44.r = (sp44.r * gDefaultGraphRoot->unk_03C.r) / 255;
+        sp44.g = (sp44.g * gDefaultGraphRoot->unk_03C.g) / 255;
+        sp44.b = (sp44.b * gDefaultGraphRoot->unk_03C.b) / 255;
     }
 
-    func_800176DC(&sp3C, D_8006F0A0->unk_18, arg->unk_20);
+    GetAnimStackCurrentFramePtr(&sp3C, D_8006F0A0->unk_18, arg->unk_20);
     func_80016364(arg->unk_22, sp44, sp3C, sp38, sp34);
     Graph_VisitVisibleChildren(arg0);
 }
@@ -907,9 +907,9 @@ void Graph_RecordNodePosition(s32 arg0) {
     MtxF* temp_a1;
     unk_D_86002F58_004_000_0A8* ptr;
 
-    if (D_8006F09C != NULL) {
-        if (D_8006F09C->unk_0A7 < 0xC) {
-            ptr = &D_8006F09C->unk_0A8[D_8006F09C->unk_0A7++];
+    if (gDefaultGraphRoot != NULL) {
+        if (gDefaultGraphRoot->unk_0A7 < 0xC) {
+            ptr = &gDefaultGraphRoot->unk_0A8[gDefaultGraphRoot->unk_0A7++];
             temp_a1 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
 
             ptr->unk_00 = arg0;
@@ -944,14 +944,14 @@ void Graph_RenderBillboard(GraphNode* arg0) {
     sp3C = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
     temp_s1 = GfxAlloc(sizeof(Gfx) * 2);
 
-    if (func_80015390(D_8006F09C, 0x64, NULL) == 0) {
+    if (func_80015390(gDefaultGraphRoot, 0x64, NULL) == 0) {
         Graph_RecordNodePosition(0x64);
     }
 
     Vec3f_Set(&sp9C, sp3C->mf[3][0], sp3C->mf[3][1] + arg->unk_1E, sp3C->mf[3][2]);
     sp9C.y = 0.0f;
 
-    if (D_8006F09C->unk_000.unk_02 & 0x40) {
+    if (gDefaultGraphRoot->unk_000.unk_02 & 0x40) {
         Vec3f_Set(&sp90, 0.0f, 1.0f, 0.0f);
         Matrix_GetScale(sp3C, &sp84);
 
@@ -966,7 +966,7 @@ void Graph_RenderBillboard(GraphNode* arg0) {
 
         sp84.x *= (arg->unk_1A / 100.0f) * sp80;
         sp84.z *= (arg->unk_1C / 100.0f) * sp80;
-        Matrix_LookAtYaw(&sp40, &sp90, &sp9C, D_8006F09C->unk_01E.y);
+        Matrix_LookAtYaw(&sp40, &sp90, &sp9C, gDefaultGraphRoot->unk_01E.y);
         Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp40, &sp84);
 
         D_800AA8C8.unk_10A0++;
@@ -979,14 +979,14 @@ void Graph_RenderBillboard(GraphNode* arg0) {
         }
         gDPSetEnvColor(&temp_s1[0], 0, 0, 0, (s32)(150.0f * sp80));
 
-        if (D_8006F09C->unk_000.unk_02 & 2) {
+        if (gDefaultGraphRoot->unk_000.unk_02 & 2) {
             Graph_BeginLayerRender(6, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
         } else {
             Graph_BeginLayerRender(5, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
         }
 
         gDPSetFogColor(gDisplayListHead++, 255, 255, 255, 0);
-        gDPSetPrimColor(gDisplayListHead++, 0, D_8006F09C->unk_01D, 255, 255, 255, 255);
+        gDPSetPrimColor(gDisplayListHead++, 0, gDefaultGraphRoot->unk_01D, 255, 255, 255, 255);
 
         func_80016274((u32)temp_s1 & 0x1FFFFFFF, 1);
         Graph_VisitVisibleChildren(arg0);
@@ -1048,7 +1048,7 @@ void func_80015220(GraphNode* arg0, s32 arg1) {
                     break;
 
                 case 0x16:
-                    var_s0 = &D_8006F09C;
+                    var_s0 = &gDefaultGraphRoot;
                     break;
             }
 
@@ -1067,11 +1067,11 @@ void func_80015220(GraphNode* arg0, s32 arg1) {
     } while (var_s1 != arg0);
 }
 
-void func_8001533C(s32 arg0) {
+void Gfx_SetRenderMode(s32 arg0) {
     gRenderFrameCounter = arg0;
 }
 
-void func_80015348(void) {
+void Gfx_FinishFrame(void) {
     gAnimationFrame++;
 }
 

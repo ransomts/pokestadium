@@ -3220,8 +3220,8 @@ void func_86A018D0(unk_D_86002F34_00C* arg0, u16 arg1, s8 arg2, u8 arg3) {
     D_86A06220 = 0;
     D_86A06222 = arg1;
 
-    func_80010354(&ptr->unk_00, &sp3C, 720.0f, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
-    func_80010354(&ptr->unk_14, &sp30, 720.0f, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_20) << 0xF) / 180, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_24) << 0xF) / 180);
+    Camera_SetViewParameters(&ptr->unk_00, &sp3C, 720.0f, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
+    Camera_SetViewParameters(&ptr->unk_14, &sp30, 720.0f, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_20) << 0xF) / 180, (((s32) D_86A04328[arg2 - 1][arg3 - 3].unk_24) << 0xF) / 180);
 
     D_86A06254->unk_60.eye = ptr->unk_00;
     D_86A06254->unk_60.at = sp3C;

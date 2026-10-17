@@ -622,14 +622,14 @@ void func_84801A88(unk_D_848037A0* arg0) {
         Text_Print(temp_fp + 0x32, sp7C + 0x43, GetMessageString(NULL, 0, D_84803790, 0xE));
     }
 
-    idx = func_800219FC(sp78->unk_06);
+    idx = RemapStadiumModeIndex(sp78->unk_06);
     Text_SetEnvColor(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-    Text_Print(temp_fp + 0x7A, sp7C + 0x2F, GetMessageString(NULL, 0, D_8480378C, func_800219FC(sp78->unk_06)));
+    Text_Print(temp_fp + 0x7A, sp7C + 0x2F, GetMessageString(NULL, 0, D_8480378C, RemapStadiumModeIndex(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
-        idx = func_800219FC(sp78->unk_07);
+        idx = RemapStadiumModeIndex(sp78->unk_07);
         Text_SetEnvColor(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-        Text_Print(temp_fp + 0x7A, sp7C + 0x43, GetMessageString(NULL, 0, D_8480378C, func_800219FC(sp78->unk_07)));
+        Text_Print(temp_fp + 0x7A, sp7C + 0x43, GetMessageString(NULL, 0, D_8480378C, RemapStadiumModeIndex(sp78->unk_07)));
     }
 
     Text_SetFont(4, 0);
@@ -1086,9 +1086,9 @@ s32 func_84802C40(s32 arg0) {
 
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
     func_84802350();
-    func_80015348();
+    Gfx_FinishFrame();
     Stage_BeginDisplayList();
 
     if (D_84803798 != 0) {
@@ -1205,7 +1205,7 @@ void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 
 
     for (i = 0; i < arg2->unk_214->unk_002; i++) {
         temp_s0 = &arg2->unk_214->unk_028[i];
-        func_80022734(temp_s0);
+        ApplyPPUps(temp_s0);
         temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_06;
         temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_07;
         func_8001B0DC(temp_v1->unk_0020[i], 0, temp_s0);
@@ -1278,7 +1278,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     func_800078D4(func_84802C40, 8, 8);
     Stage_Destroy();
     func_84802E18();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MSEL');

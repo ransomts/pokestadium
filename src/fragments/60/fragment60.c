@@ -191,7 +191,7 @@ static u32 D_82E01960[] = {
 void func_82E00020(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_82E00050(void) {
@@ -221,7 +221,7 @@ s32 func_82E00274(s32 arg0, unk_func_80011B94* arg1) {
     s32 var_t0;
 
     if (arg0 == 5) {
-        temp_a3 = D_8006F09C->unk_000.unk_14;
+        temp_a3 = gDefaultGraphRoot->unk_000.unk_14;
         if (D_82E023AA >= temp_a3) {
             var_t0 = 0xFF;
         } else {
@@ -242,7 +242,7 @@ s32 func_82E0036C(s32 arg0, unk_func_80011B94* arg1) {
     s32 var_a3;
 
     if (arg0 == 5) {
-        s32 tmp = D_8006F09C->unk_000.unk_14;
+        s32 tmp = gDefaultGraphRoot->unk_000.unk_14;
 
         if (tmp < D_82E023AA) {
             var_a3 = 0xFF;
@@ -455,7 +455,7 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
         main_pool_push_state('LVSL');
 
         Text_Init(0x10, 0);
-        func_80028AFC(2);
+        GbsEnsureBankLoaded(2);
         func_80027FA0(&D_82E023A0, gBattleContext.unk_11F2);
         if (gBattleContext.unk_0000 == 3) {
             D_82E023AA = D_82E023A0.unk_05;

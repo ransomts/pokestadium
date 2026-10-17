@@ -47,14 +47,14 @@ void Gallery_Debugger_Init(void) {
 
     gGalleryState = 0;
     D_83902700.unk_00 = 0;
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
 
     for (i = 0; i < 36; i++) {
-        func_8002797C(0x16, 0, i, &gGalleryLoadData[i]);
+        GbsReadBlockEntry(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        func_8002797C(0x17, 0, i, &gGallerySaveData[i]);
+        GbsReadBlockEntry(0x17, 0, i, &gGallerySaveData[i]);
     }
 
     Gallery_Debugger_PostLoad();
@@ -64,15 +64,15 @@ void func_839000E4(void) {
     s32 i;
 
     for (i = 0; i < 36; i++) {
-        func_80027C24(0x16, 0, i, &gGalleryLoadData[i]);
+        GbsWriteBlockEntry(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        func_80027C24(0x17, 0, i, &gGallerySaveData[i]);
+        GbsWriteBlockEntry(0x17, 0, i, &gGallerySaveData[i]);
     }
 
     GbsProcessBankWrites(2);
-    func_800284B4(2);
+    GbsSyncBank(2);
 }
 
 void Gallery_Debugger_DrawMenu(void) {
@@ -181,7 +181,7 @@ s32 Gallery_Debugger_MainLoop(void) {
 void Gallery_Debugger_UpdateController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void Gallery_Debugger_Run(void) {
@@ -208,7 +208,7 @@ s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1) {
     Gallery_Debugger_Run();
     func_839000E4();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('GLDB');

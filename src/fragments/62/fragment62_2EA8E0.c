@@ -329,7 +329,7 @@ void func_84300E80(void) {
 s32 func_84300E88(s32 arg0) {
     s32 sp1C;
 
-    func_80015348();
+    Gfx_FinishFrame();
     func_80032570();
     func_84307394(2, D_8438E798);
     func_84307A50(2, &D_8438E598, &D_8438E688);
@@ -394,7 +394,7 @@ s32 func_843010EC(s32 arg0) {
     ProcessPokemonSelection(&D_8438E798[1]);
     UpdatePokemonStateOnExit(&D_8438E798[1]);
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 
     switch (D_8438E79C) {
         case 0:
@@ -511,9 +511,9 @@ void func_84301430(Stage* arg0) {
         Text_Init(3, 0);
     }
 
-    D_8438E798[0].unk_10 = func_80019760(3);
-    D_8438E798[1].unk_10 = func_80019760(3);
-    func_8001987C();
+    D_8438E798[0].unk_10 = AssetManager_Create(3);
+    D_8438E798[1].unk_10 = AssetManager_Create(3);
+    AssetManager_LoadArchives();
 
     sp2C = main_pool_alloc(0x10, 0);
     FramebufferImage_Init(sp2C, 0, 2, 0x4C, 0x4C, arg0->unk_18[0]->depth_p->img_p);
@@ -545,20 +545,20 @@ void func_84301430(Stage* arg0) {
     sp3C = BinArchive_GetFile(ASSET_LOAD2(stadium_models, 1, 1), sp32);
     D_8438E780 = sp3C(2, 0);
 
-    sp28 = func_80019D18(0x9A);
+    sp28 = GeoLayout_LoadById(0x9A);
     func_8430128C();
     func_843013E4(&D_8438E798[0], sp28);
     func_843013E4(&D_8438E798[1], sp28);
 
     func_84300D44();
-    func_800110E0(NULL, &D_8438E440, 0, 0, 0x140, 0xF0);
-    func_800110E0(NULL, &D_8438E598, 0x1E, 0x50, 0x4C, 0x4C);
-    func_800110E0(NULL, &D_8438E688, 0xE2, 0x50, 0x4C, 0x4C);
-    func_800113F8(0, &D_8438E530, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    CameraNode_Create(NULL, &D_8438E440, 0, 0, 0x140, 0xF0);
+    CameraNode_Create(NULL, &D_8438E598, 0x1E, 0x50, 0x4C, 0x4C);
+    CameraNode_Create(NULL, &D_8438E688, 0xE2, 0x50, 0x4C, 0x4C);
+    ColorRectNode_Create(0, &D_8438E530, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_8438E550);
     GraphNode_AllocInit(NULL, &D_8438E568);
     GraphNode_AllocInit(NULL, &D_8438E580);
-    func_80011E68(&D_8438E440, 30.0f, 192.0f, 24576.0f);
+    Perspective_SetParams(&D_8438E440, 30.0f, 192.0f, 24576.0f);
     Graph_InitRoots();
     func_84307394(0, D_8438E798);
     func_84307A50(0, &D_8438E598, &D_8438E688);

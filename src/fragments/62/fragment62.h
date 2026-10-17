@@ -62,7 +62,7 @@ typedef struct unk_D_84390010_654 {
 } unk_D_84390010_654; // size = 0xCC
 
 typedef struct unk_D_84390010_728_0168 {
-    /* 0x00 */ unk_D_86002F58_004_000_000 unk_00;
+    /* 0x00 */ GraphRootNode unk_00;
     /* 0x18 */ char unk18[0x4];
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;

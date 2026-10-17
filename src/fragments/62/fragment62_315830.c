@@ -23,9 +23,9 @@ void func_8432AF70(unk_D_84390010* arg0) {
     if ((sp28->unk_15 & 0x20) && (ptr->unk_05 & 0x20) && !(sp2C->unk_34 & 2) &&
         ((arg0->unk_000.unk_040.unk_08 >> 0x10) >= 3)) {
         GraphNode_TriggerAction(&arg0->unk_000, sp20->unk_00);
-        func_80017464(&arg0->unk_000, 4);
+        Anim_SetChannelBase(&arg0->unk_000, 4);
         GraphNode_TriggerSound(&arg0->unk_000, sp20->unk_01);
-        func_80017804(&arg0->unk_000, 3);
+        SetAnimStateIndex(&arg0->unk_000, 3);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
         func_843061EC(arg0, 2);
         func_8432C7A0(1, arg0);

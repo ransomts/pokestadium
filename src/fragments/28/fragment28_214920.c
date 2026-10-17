@@ -807,7 +807,7 @@ s32 func_88803614(void) {
     while (var_s2 == 1) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
-        func_8001F730();
+        MenuInput_Init();
 
         var_s0 = D_88826940->unk_38->unk_00.unk_20(&D_88826940->unk_38->unk_00, gPlayer1Controller);
         if (!(var_s0 & 1)) {
@@ -831,7 +831,7 @@ s32 func_88803614(void) {
         }
 
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
-        func_80015348();
+        Gfx_FinishFrame();
         Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
@@ -861,7 +861,7 @@ s32 func_888038E0(void) {
     while (var_s1 == 2) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
-        func_8001F730();
+        MenuInput_Init();
         var_s0 = D_88826940->unk_40->unk_00.unk_20(&D_88826940->unk_40->unk_00, gPlayer1Controller);
         if (!(var_s0 & 1)) {
             if (gPlayer1Controller->buttonPressed & 1) {
@@ -903,7 +903,7 @@ s32 func_888038E0(void) {
         }
 
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
-        func_80015348();
+        Gfx_FinishFrame();
         Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
@@ -6127,7 +6127,7 @@ s32 func_88803C74(void) {
     do {
         Cont_StartReadInputs();
         Cont_ReadInputs();
-        func_8001F730();
+        MenuInput_Init();
         if ((gPlayer1Controller->buttonPressed & 0x4000) && (Audio_IsMusicEnabled() == 0)) {
             var_s1 = 2;
             PlaySoundEffect(3);
@@ -6135,7 +6135,7 @@ s32 func_88803C74(void) {
             var_s1 = 1;
             PlaySoundEffect(2);
         }
-        func_80015348();
+        Gfx_FinishFrame();
         Stage_BeginDisplayList();
         ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
@@ -6204,7 +6204,7 @@ s32 func_88804190(void) {
     while (var_s0 == 3) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
-        func_8001F730();
+        MenuInput_Init();
         func_8880725C(0);
         if (func_88807AC0() != 0) {
             var_s0 = 2;
@@ -6303,8 +6303,8 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_88804370();
     func_80025540(D_88826938);
     Text_Init(0x1D, 0);
-    D_8882692C = func_80019760(1);
-    func_8001987C();
+    D_8882692C = AssetManager_Create(1);
+    AssetManager_LoadArchives();
 
     FRAGMENT_LOAD(fragment31);
 
@@ -6340,7 +6340,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80006CB4(8);
     Stage_AdvanceUntil(0xA, func_88804218);
     func_8000771C();
-    func_8001E9CC();
+    FontManager_Free();
 
     main_pool_pop_state('BOOK');
 

@@ -1037,7 +1037,7 @@ void func_84321D3C(unk_D_86002F34_00C* arg0) {
         sp40 = D_84384580[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[sp3B].x;
         sp3E = D_84384580[D_84390240.unk_00->unk_2C]->unk_0C;
         tmp1 = (temp_s0->unk_4B0 * D_84384580[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
-        func_80010354(&arg0->unk_60.at, &arg0->unk_60.eye, sp40, sp3E, tmp1);
+        Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp40, sp3E, tmp1);
         D_84390240.unk_00->unk_20++;
     }
 }

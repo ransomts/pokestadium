@@ -22,7 +22,7 @@ void func_83700020(void) {
     unk_D_86002F58_004_000_010* sp28;
 
     D_837004C0 = 0;
-    sp28 = func_80019760(1);
+    sp28 = AssetManager_Create(1);
     Cam_CallInit318B8();
     D_837004B0 = Cam_Create(0x280, 0x1E0, NULL, D_837004C8->unk_18[0], sp28, D_837004C4, func_834006A0(1));
 }
@@ -90,7 +90,7 @@ s32 func_83700174(void) {
 void func_8370023C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_8370026C(void) {
@@ -125,7 +125,7 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
 
     D_837004C4 = ASSET_LOAD2(stadium_models, 1, 1);
 
@@ -133,7 +133,7 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_8370026C();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('ELRG');

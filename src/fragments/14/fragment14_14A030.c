@@ -200,7 +200,7 @@ void func_86805FFC(unk_D_868084D8* arg0) {
 
     switch (arg0->unk_10) {
         case 0:
-            arg0->unk_14 = D_8006F050;
+            arg0->unk_14 = gRootNodePosition;
             arg0->unk_20 = arg0->unk_14;
             break;
 
@@ -523,13 +523,13 @@ void func_86806A50(void) {
 
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
         func_86805F94(ptr, i);
-        temp_a1 = func_80011B94(temp_s2, NULL, 4, gSushiPlaneDL);
+        temp_a1 = SimpleGfxNode_Create(temp_s2, NULL, 4, gSushiPlaneDL);
         ptr->unk_018.unk_000.unk_01 |= 1;
         GraphNode_AddChild(&ptr->unk_018, &temp_a1->unk_00);
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        var_s0->unk_40 = func_80011B10(temp_s2, NULL, 5, gfx, &D_8006F050, var_s0->unk_2C);
+        var_s0->unk_40 = BillboardNode_Create(temp_s2, NULL, 5, gfx, &gRootNodePosition, var_s0->unk_2C);
         func_868061E8(0, var_s0, i, NULL);
         GraphNode_AddChild(&gGraphRoot0, var_s0->unk_40);
     }

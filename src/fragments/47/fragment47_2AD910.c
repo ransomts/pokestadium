@@ -204,7 +204,7 @@ s32 SnapSelect_Process(void) {
 void SnapSelect_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void SnapSelect_MainLoop(void) {
@@ -270,7 +270,7 @@ s32 SnapSelect_Run(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     SnapSelect_MainLoop();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('SLCT');

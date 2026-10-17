@@ -140,15 +140,15 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
         case 1:
             GraphNode_TriggerAction(&poke->unk_000, poke->unk_24A);
             if (poke->unk_26C != 0) {
-                func_800173DC(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
-                func_80017464(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
+                Anim_SetChannel(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
+                Anim_SetChannelBase(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
             } else {
-                func_800173DC(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, 0x10000);
-                func_80017464(&poke->unk_000, poke->unk_26E);
-                func_80017788(&poke->unk_000);
+                Anim_SetChannel(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, 0x10000);
+                Anim_SetChannelBase(&poke->unk_000, poke->unk_26E);
+                InitAnimState(&poke->unk_000);
                 if (poke->unk_24C != -1) {
                     GraphNode_TriggerSound(&poke->unk_000, poke->unk_24C);
-                    func_80017804(&poke->unk_000, poke->unk_26E);
+                    SetAnimStateIndex(&poke->unk_000, poke->unk_26E);
                 }
             }
             poke->unk_248++;
@@ -176,13 +176,13 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
 }
 
 void MiniActor_SetAnimToLastFrame(unk_D_86002F58_004_000* arg0) {
-    func_80017464(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+    Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
 void MiniGame_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730(); // nothing
+    MenuInput_Init(); // nothing
 }
 
 void hideMiniGameHUD(void) {

@@ -76,17 +76,17 @@ typedef struct unk_D_86002F58_004_000_00C {
     /* 0x28 */ unk_D_86002F58_004_000_00C_028_func unk_28;
 } unk_D_86002F58_004_000_00C; // size >= 0x2C
 
-typedef struct unk_D_86002F58_004_000_000 {
+typedef struct GraphRootNode {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ struct unk_D_86002F58_004_000_000* unk_04;
-    /* 0x08 */ struct unk_D_86002F58_004_000_000* unk_08;
+    /* 0x04 */ struct GraphRootNode* unk_04;
+    /* 0x08 */ struct GraphRootNode* unk_08;
     /* 0x0C */ unk_D_86002F58_004_000_00C* unk_0C;
     /* 0x10 */ unk_D_86002F58_004_000_010* unk_10;
     /* 0x14 */ s32 unk_14;
-} unk_D_86002F58_004_000_000; // size = 0x18
+} GraphRootNode; // size = 0x18
 
 typedef struct unk_D_86002F58_004_000_040_004 {
     /* 0x00 */ s16 unk_00;
@@ -135,7 +135,7 @@ typedef struct unk_D_86002F58_004_000_0A8 {
 } unk_D_86002F58_004_000_0A8; // size = 0x10
 
 typedef struct unk_D_86002F58_004_000 {
-    /* 0x000 */ unk_D_86002F58_004_000_000 unk_000;
+    /* 0x000 */ GraphRootNode unk_000;
     /* 0x018 */ s16 unk_018;
     /* 0x01A */ s16 unk_01A;
     /* 0x01C */ u8 unk_01C;

@@ -83,7 +83,7 @@ void miniUpdateCamera(void) {
     gMiniCameraPtr->unk_60.at.y = miniCameraCoords.y;
     gMiniCameraPtr->unk_60.at.z = miniCameraCoords.z;
 
-    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
+    Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
 }
 
 s32 minigameDebuggModeControl(void) {

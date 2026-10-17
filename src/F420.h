@@ -3,20 +3,20 @@
 
 #include "global.h"
 
-extern Vec3f D_8006F050;
-extern Vec3s D_8006F05C;
-extern Vec3f D_8006F064;
+extern Vec3f gRootNodePosition;
+extern Vec3s gSpriteAnimUpdateFunc;
+extern Vec3f gRootNodeScale;
 extern u16 D_8006F070[];
 
 Color_RGBA8* func_8000E820(Color_RGBA8* arg0, u8 r, u8 g, u8 b);
-Color_RGBA8* func_8000E840(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
+Color_RGBA8* GfxColor_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
 Vec3f* func_8000E868(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3);
 Vec3f* Vec3f_Set(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3);
 Vec3f* Vec3f_Add(Vec3f* arg0, Vec3f* arg1);
 Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* func_8000E920(Vec3f* arg0, Vec3f* arg1);
 Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
-Vec3f* func_8000E990(Vec3f* arg0, Vec3s* arg1);
+Vec3f* GraphNode_SetPositionFromVec3s(Vec3f* arg0, Vec3s* arg1);
 Vec3f* func_8000E9D4(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3);
 Vec3f* func_8000EA84(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* func_8000EAF4(Vec3f* arg0);
@@ -44,7 +44,7 @@ void Matrix_TransformVec3sInPlace(MtxF* arg0, Vec3s* arg1);
 void Matrix_ConvertToMtx(MtxF* dest, MtxF* src);
 void Matrix_BuildObjectTransform(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4, MtxF* arg5);
 void Matrix_Decompose(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4);
-void func_80010354(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw);
+void Camera_SetViewParameters(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw);
 s16 func_800103F0(s16 current, s16 target, s16 inc);
 s32 func_8001046C(s32 current, s32 target, s32 inc, s32 dec);
 f32 func_800104AC(f32 current, f32 target, f32 inc, f32 dec);

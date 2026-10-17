@@ -166,7 +166,7 @@ s32 func_83A00880(void) {
 void func_83A00990(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_83A009C0(void) {
@@ -197,7 +197,7 @@ s32 func_83A00A4C(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_83A009C8();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('BNVW');

@@ -39,20 +39,20 @@ void func_83400020(void) {
 
     main_pool_push_state('bkgl');
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     bzero(D_83403C60, sizeof(unk_D_83403C60) * 36);
     bzero(D_83405010, sizeof(unk_D_83403C60) * 36);
     bzero(&D_834063C0, sizeof(unk_D_83403C60) * 21);
     bzero(&D_83406F40, sizeof(unk_D_83403C60) * 21);
 
     for (i = 0; i < 36; i++) {
-        func_8002797C(0x16, 0, i, &D_83403C60[i]);
+        GbsReadBlockEntry(0x16, 0, i, &D_83403C60[i]);
     }
 
     _bcopy(&D_83403C60, &D_83405010, sizeof(unk_D_83403C60) * 36);
 
     for (i = 0; i < 21; i++) {
-        func_8002797C(0x17, 0, i, &D_834063C0[i]);
+        GbsReadBlockEntry(0x17, 0, i, &D_834063C0[i]);
     }
 
     func_80027FA0(&D_83407AF0, 1);
@@ -77,11 +77,11 @@ void func_83400020(void) {
         D_83407AC4->unk_6C &= ~2;
 
         for (i = 0; i < 21; i++) {
-            func_80027C24(0x17, 0, i, &D_834063C0[i]);
+            GbsWriteBlockEntry(0x17, 0, i, &D_834063C0[i]);
         }
 
         GbsProcessBankWrites(2);
-        func_800284B4(2);
+        GbsSyncBank(2);
     } else {
         D_83407AE8 = 0;
     }
@@ -157,7 +157,7 @@ s32 func_83400410(s32 arg0, s32 arg1) {
 
     main_pool_push_state('bkgl');
 
-    func_80028AFC(2);
+    GbsEnsureBankLoaded(2);
     if (arg0 != 0) {
         sp28 = func_83400334();
     } else {
@@ -166,15 +166,15 @@ s32 func_83400410(s32 arg0, s32 arg1) {
 
     if (sp28 != 0) {
         for (i = 0; i < 36; i++) {
-            func_80027C24(0x16, 0, i, &D_83403C60[i]);
+            GbsWriteBlockEntry(0x16, 0, i, &D_83403C60[i]);
         }
 
         for (i = 0; i < 21; i++) {
-            func_80027C24(0x17, 0, i, &D_834063C0[i]);
+            GbsWriteBlockEntry(0x17, 0, i, &D_834063C0[i]);
         }
 
         GbsProcessBankWrites(2);
-        func_800284B4(2);
+        GbsSyncBank(2);
     }
 
     main_pool_pop_state('bkgl');

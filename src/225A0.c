@@ -1,6 +1,6 @@
 #include "225A0.h"
 
-u32 func_800219A0(s32 arg0) {
+u32 GetFlagCategory(s32 arg0) {
     s32 ret;
 
     if (arg0 & 7) {
@@ -20,7 +20,7 @@ u32 func_800219A0(s32 arg0) {
     return ret;
 }
 
-u32 func_800219FC(s32 arg0) {
+u32 RemapStadiumModeIndex(s32 arg0) {
     if (arg0 >= 0x1B) {
         arg0 = 0;
     } else if (arg0 >= 0x14) {

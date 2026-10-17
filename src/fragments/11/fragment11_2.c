@@ -83,7 +83,7 @@ void HealthBar_CreateNode(void) {
     MainPoolState* sp1C;
 
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    gHealthBarNode = func_80011B94(sp1C, NULL, 1, NULL);
+    gHealthBarNode = SimpleGfxNode_Create(sp1C, NULL, 1, NULL);
     GraphNode_AddChild(&gGraphRoot0, &gHealthBarNode->unk_00);
     mem_pool_resize_block(sp1C);
 }

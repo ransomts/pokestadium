@@ -29,9 +29,9 @@ Mtx D_8006F010 = { {
     },
 } };
 
-Vec3f D_8006F050 = { 0.0f, 0.0f, 0.0f };
-Vec3s D_8006F05C = { 0, 0, 0 };
-Vec3f D_8006F064 = { 1.0f, 1.0f, 1.0f };
+Vec3f gRootNodePosition = { 0.0f, 0.0f, 0.0f };
+Vec3s gSpriteAnimUpdateFunc = { 0, 0, 0 };
+Vec3f gRootNodeScale = { 1.0f, 1.0f, 1.0f };
 u16 D_8006F070[] = { 1, 1, 1 };
 
 Color_RGBA8* func_8000E820(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
@@ -42,7 +42,7 @@ Color_RGBA8* func_8000E820(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
     return arg0;
 }
 
-Color_RGBA8* func_8000E840(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+Color_RGBA8* GfxColor_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     arg0->r = arg1;
     arg0->g = arg2;
     arg0->b = arg3;
@@ -99,7 +99,7 @@ Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     return arg0;
 }
 
-Vec3f* func_8000E990(Vec3f* arg0, Vec3s* arg1) {
+Vec3f* GraphNode_SetPositionFromVec3s(Vec3f* arg0, Vec3s* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
@@ -609,7 +609,7 @@ void Matrix_BuildObjectTransform(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* ar
     MtxF sp20;
 
     Matrix_ComposeTR(&sp60, arg4, arg5, arg1, 1.0f);
-    Matrix_RotateTranslate(&sp20, &D_8006F050, arg2);
+    Matrix_RotateTranslate(&sp20, &gRootNodePosition, arg2);
     Matrix_Multiply(&sp20, &sp20, &sp60);
     Matrix_Scale(arg0, &sp20, arg3);
 }
@@ -624,7 +624,7 @@ void Matrix_Decompose(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4)
     *arg4 = MathUtil_Atan2s(sp24, sp2C);
 }
 
-void func_80010354(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw) {
+void Camera_SetViewParameters(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw) {
     to->x = from->x + (dist * COSS(pitch) * SINS(yaw));
     to->y = from->y + (dist * SINS(pitch));
     to->z = from->z + (dist * COSS(pitch) * COSS(yaw));

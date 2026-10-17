@@ -102,7 +102,7 @@ void func_86300020(void) {
 void func_8630011C(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
     func_86300020();
 }
 
@@ -121,7 +121,7 @@ void func_86300154(void) {
     D_86301718->unk_60.at.y = 70.0f;
     D_86301718->unk_60.at.z = 0.0f;
 
-    func_80010354(&D_86301718->unk_60.at, &D_86301718->unk_60.eye, D_86301720, D_8630171C, D_8630171E);
+    Camera_SetViewParameters(&D_86301718->unk_60.at, &D_86301718->unk_60.eye, D_86301720, D_8630171C, D_8630171E);
 }
 
 void func_86300230(void) {
@@ -206,7 +206,7 @@ void func_863006D8(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0x53D);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    func_80015348();
+    Gfx_FinishFrame();
     Graph_SetTextureState(D_86301714);
     func_86300238(arg0);
     func_87804FD4();
@@ -431,7 +431,7 @@ void func_86300C50(s32 arg0) {
     }
 
     if (func_878001E8(0x64) == 0) {
-        func_80017788(D_86301D48);
+        InitAnimState(D_86301D48);
         GraphNode_TriggerSound(D_86301D48, 3);
     }
 }
@@ -527,8 +527,8 @@ void func_86301234(void) {
     D_86301714 = process_geo_layout(temp_v0, &D_86301650);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
-    func_8001987C();
-    D_86301710 = func_80019D18(0x27);
+    AssetManager_LoadArchives();
+    D_86301710 = GeoLayout_LoadById(0x27);
 
     for (i = 0; i < 4; i++) {
         D_86301D44 = &D_86301730[i];
@@ -548,13 +548,13 @@ void func_86301234(void) {
         D_86301D44->unk_16C.y = 0.0f;
 
         GraphNode_TriggerAction(D_86301D48, 2);
-        func_80017788(D_86301D48);
+        InitAnimState(D_86301D48);
 
         D_86301D48->unk_040.unk_08 = func_878001E8(5) << 0x10;
     }
 
-    func_8001987C();
-    D_86301710 = func_80019D18(0x9A);
+    AssetManager_LoadArchives();
+    D_86301710 = GeoLayout_LoadById(0x9A);
     D_86301D48 = &D_86301D58;
 
     Graph_AddToRootList0(D_86301D48);
@@ -571,7 +571,7 @@ void func_86301234(void) {
     D_86301D48->unk_01E.y = 0;
 
     GraphNode_TriggerAction(D_86301D48, 0);
-    func_80017788(D_86301D48);
+    InitAnimState(D_86301D48);
     D_86301D48->unk_040.unk_0C = 0;
     func_86300154();
 }
@@ -603,7 +603,7 @@ void func_86301474(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     func_86301168();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('MINI');

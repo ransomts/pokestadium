@@ -220,7 +220,7 @@ void func_8350057C(s32 arg0, s32 arg1) {
     D_83504088 = -1;
     D_835040D8 = 0;
 
-    tmp = func_80019760(5);
+    tmp = AssetManager_Create(5);
     func_83401D68(&D_83503FC8, 0x88, 0x66, 6, 3, tmp, D_83504084, D_83403C60, 0x24, 1);
     if (D_8350407C == 2) {
         func_834021EC(&D_83503FC8, &D_83407B18.unk_00);
@@ -1134,7 +1134,7 @@ s32 func_835039C8(void) {
 void func_83503AFC(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 void func_83503B2C(void) {
@@ -1212,7 +1212,7 @@ void func_83503C9C(s32 arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    func_8001987C();
+    AssetManager_LoadArchives();
     D_83504084 = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
     func_83402340();
@@ -1220,7 +1220,7 @@ void func_83503C9C(s32 arg0, s32 arg1) {
     Stage_Set(sp24);
     func_83503B2C();
     Stage_Destroy();
-    func_8001E9CC();
+    FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('ALBM');

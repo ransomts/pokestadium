@@ -207,7 +207,7 @@ s32 func_84206990(unk_D_84211B50* arg0) {
         }
 
         CommitAndFreeGbsBlock(temp_s3);
-        func_800286D8();
+        GbsSyncAllBanks();
         var_s0 = 1;
     }
     return var_s0;

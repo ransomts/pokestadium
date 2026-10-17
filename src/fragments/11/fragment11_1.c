@@ -1250,7 +1250,7 @@ void InitHealthBar(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &D_8650A528[i];
 
-        gCurrentHealthBar->unk_17C = func_80011B10(temp_s5, NULL, 4, NULL, &D_8006F050, 1.0f);
+        gCurrentHealthBar->unk_17C = BillboardNode_Create(temp_s5, NULL, 4, NULL, &gRootNodePosition, 1.0f);
         GraphNode_AddChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->unk_00);
     }
 

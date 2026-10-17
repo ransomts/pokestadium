@@ -1662,9 +1662,9 @@ void miniSandshewReangleAll(void) {
 
 void miniSandshewChangeAnim(MiniActor* actor, s32 animID) {
     GraphNode_TriggerAction(&actor->unk_000, animID);
-    func_800173DC(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
-    func_80017464(&actor->unk_000, 0);
-    func_80017454(&actor->unk_000, 0x10000);
+    Anim_SetChannel(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
+    Anim_SetChannelBase(&actor->unk_000, 0);
+    Anim_SetChannelOffset(&actor->unk_000, 0x10000);
 }
 
 void sandshrewDecreaseVel(MiniActor* sandshrew, f32 arg1) {
@@ -1802,7 +1802,7 @@ void func_86F00920(MiniActor* sandshrew) {
         case 0x2: //	start digging animation 2
             if (func_800174E4(&sandshrew->unk_000) != 0) {
                 miniSandshewChangeAnim(sandshrew, 2);
-                func_80017454(&sandshrew->unk_000, 0);
+                Anim_SetChannelOffset(&sandshrew->unk_000, 0);
                 sandshrew->ySpinSpeed = 0;
                 sandshrew->mainState++;
             }
@@ -1828,7 +1828,7 @@ void func_86F00920(MiniActor* sandshrew) {
                     }
                 }
 
-                func_80017454(&sandshrew->unk_000, ((s32)sandshrew->diggingAccel2 << 0xE) + 0xC000);
+                Anim_SetChannelOffset(&sandshrew->unk_000, ((s32)sandshrew->diggingAccel2 << 0xE) + 0xC000);
 
                 holeDeepeness = sandshrew->diggingSpeed / 5000.0f;
                 if (holeDeepeness > 0.2f) {
@@ -1837,14 +1837,14 @@ void func_86F00920(MiniActor* sandshrew) {
 
                 func_86F00188(3, sandshrew - miniSandshrews);
                 if (func_800174E4(&sandshrew->unk_000) != 0) {
-                    func_80017464(&sandshrew->unk_000, 0);
+                    Anim_SetChannelBase(&sandshrew->unk_000, 0);
                 }
             } else {
                 sandshrew->diggingSpeed = 0.0f;
                 GraphNode_TriggerAction(&sandshrew->unk_000, 3);
-                func_800173DC(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
-                func_80017464(&sandshrew->unk_000, 0);
-                func_80017454(&sandshrew->unk_000, 0x10000);
+                Anim_SetChannel(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+                Anim_SetChannelBase(&sandshrew->unk_000, 0);
+                Anim_SetChannelOffset(&sandshrew->unk_000, 0x10000);
                 func_86F00188(4, sandshrew - miniSandshrews);
                 sandshrew->mainState++;
             }
@@ -1859,9 +1859,9 @@ void func_86F00920(MiniActor* sandshrew) {
 
         case 0x64: //	win start animation
             GraphNode_TriggerAction(&sandshrew->unk_000, 4);
-            func_800173DC(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
-            func_80017464(&sandshrew->unk_000, 0);
-            func_80017454(&sandshrew->unk_000, 0x10000);
+            Anim_SetChannel(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+            Anim_SetChannelBase(&sandshrew->unk_000, 0);
+            Anim_SetChannelOffset(&sandshrew->unk_000, 0x10000);
             sandshrew->mainState++;
             sandshrew->position_2.y += 15.0f;
             break;
@@ -1960,7 +1960,7 @@ void func_86F00F68(MiniActor* sandshrewHole, MiniActor* sandshrewPlayer) {
         } else {
             var_a1 = 0;
         }
-        func_80017454(&sandshrewHole->unk_000, var_a1);
+        Anim_SetChannelOffset(&sandshrewHole->unk_000, var_a1);
     }
 }
 
@@ -2028,7 +2028,7 @@ void func_86F011E8(MiniActor* geiser) {
             geiser->mainState++;
             break;
         case 2:
-            if (func_80017514(&miniSandshrewGeiserPtr->unk_000) != 0) {
+            if (Anim_HasReachedEnd(&miniSandshrewGeiserPtr->unk_000) != 0) {
                 miniSandshewChangeAnim(geiser, 1);
                 geiser->mainState++;
             }
@@ -2347,7 +2347,7 @@ void func_86F01F58(s32 arg0) {
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
-        func_80015348();
+        Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(&D_87906050->unk_00);
@@ -2471,9 +2471,9 @@ void func_86F02320(void) {
         Graph_AddToRootList0(&miniSandshrewGeisers[i].unk_000);
     }
 
-    func_8001987C();
+    AssetManager_LoadArchives();
 
-    temp_s1 = func_80019D18(0xA1);
+    temp_s1 = GeoLayout_LoadById(0xA1);
 
     for (i = 0; i < 4; i++) {
         miniSandshrews[i].unk_23C = 0xA1;
@@ -2482,7 +2482,7 @@ void func_86F02320(void) {
         GraphNode_TriggerAction(&miniSandshrews[i].unk_000, 0);
     }
 
-    temp_s1 = func_80019D18(0x9D);
+    temp_s1 = GeoLayout_LoadById(0x9D);
 
     for (i = 0; i < 4; i++) {
         miniSandshrewHoles[i].unk_23C = 0x9D;
@@ -2491,7 +2491,7 @@ void func_86F02320(void) {
         GraphNode_TriggerAction(&miniSandshrewHoles[i].unk_000, 0);
     }
 
-    temp_s1 = func_80019D18(0xA2);
+    temp_s1 = GeoLayout_LoadById(0xA2);
 
     for (i = 0; i < 4; i++) {
         miniSandshrewGeisers[i].unk_23C = 0xA2;
@@ -2526,7 +2526,7 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     func_86F0204C(); //	tutorial screen ?
     func_86F02230();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(gFontManager);
+    FontManager_Free(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

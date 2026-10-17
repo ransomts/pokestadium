@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/controller.h"
 
-void func_8001F730(void);
+void MenuInput_Init(void);
 void MenuInput_SetController(Controller*);
 s32 MenuInput_ReadDirection(void);
 

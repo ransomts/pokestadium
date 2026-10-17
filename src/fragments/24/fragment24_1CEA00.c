@@ -1172,7 +1172,7 @@ void func_88304350(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
         sp28 = Mon_GetEvolutionLine(arg3, arg4);
         if (sp28 != -1) {
             sp2C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp28)->unk_04;
-            sp20 = GetMessageString(NULL, 0, D_8831A4D4, func_800219FC(sp28));
+            sp20 = GetMessageString(NULL, 0, D_8831A4D4, RemapStadiumModeIndex(sp28));
         } else {
             return;
         }
@@ -2467,7 +2467,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
     func_88302C18(arg0);
 
     if (arg1 & 0x30) {
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 
     if (arg1 & 0xF) {
@@ -2479,7 +2479,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
 
     if (arg1 & 0x30) {
         GbsProcessBankWrites(3);
-        func_800284B4(3);
+        GbsSyncBank(3);
     }
 }
 

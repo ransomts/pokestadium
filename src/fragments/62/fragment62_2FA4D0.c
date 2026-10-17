@@ -676,7 +676,7 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     if (sp7C->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = func_800219A0(sp7C->unk_05);
+        var_v1 = GetFlagCategory(sp7C->unk_05);
     }
 
     temp_v0_2 = &D_84385860[sp80->unk_001];
@@ -764,7 +764,7 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     if (sp7C->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = func_800219A0(sp7C->unk_05);
+        var_v1 = GetFlagCategory(sp7C->unk_05);
     }
 
     temp_v0 = &D_84385860[sp80->unk_001];
@@ -846,9 +846,9 @@ void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x86, arg2 + 3, 0x10, 0xC, D_3009080, D_3009200, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x86, arg2 + 3, 0x10, 0xC, D_3009080, D_3009200, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -869,8 +869,8 @@ void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -890,7 +890,7 @@ void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -1059,10 +1059,10 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg1 + 0x5D, arg2 + 6, 0x10, 0xE, &D_3006A70, &D_3006C30, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x6C, arg2 + 0x16, 0x10, 0xE, &D_3006290, &D_3006450, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x5D, arg2 + 0x26, 0x10, 0xE, &D_3006530, &D_30066F0, 0x10, 0x100000);
-    func_8001D560(arg1 + 0x4E, arg2 + 0x16, 0x10, 0xE, &D_30067D0, &D_3006990, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x5D, arg2 + 6, 0x10, 0xE, &D_3006A70, &D_3006C30, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x6C, arg2 + 0x16, 0x10, 0xE, &D_3006290, &D_3006450, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x5D, arg2 + 0x26, 0x10, 0xE, &D_3006530, &D_30066F0, 0x10, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x4E, arg2 + 0x16, 0x10, 0xE, &D_30067D0, &D_3006990, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -1230,7 +1230,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
+    Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -1256,27 +1256,27 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
     if (arg5 == 0) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
     }
 
     if (arg5 == 1) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_30067D0, D_3006990, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_30067D0, D_3006990, 0x10, 0x100000);
     }
 
     if (arg5 == 2) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
     }
 
     if (arg5 == 3) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
     }
 
     if (arg5 == 4) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
     }
 
     if (arg5 == 5) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1289,7 +1289,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     if (arg1->unk_01C[arg5].unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = func_800219A0(arg1->unk_01C[arg5].unk_05);
+        var_t0 = GetFlagCategory(arg1->unk_01C[arg5].unk_05);
     }
 
     if (var_t0 != 0) {
@@ -1311,15 +1311,15 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
     if (arg5 == 0) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
     }
 
     if (arg5 == 1) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
     }
 
     if (arg5 == 2) {
-        func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1332,7 +1332,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     if (arg1->unk_01C[arg5].unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = func_800219A0(arg1->unk_01C[arg5].unk_05);
+        var_t0 = GetFlagCategory(arg1->unk_01C[arg5].unk_05);
     }
 
     if (var_t0 != 0) {
@@ -1475,7 +1475,7 @@ void func_8431595C(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     if (sp40->unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = func_800219A0(sp40->unk_05);
+        var_t0 = GetFlagCategory(sp40->unk_05);
     }
 
     if (temp_v0->unk_30 < 0xFF00) {
@@ -1547,9 +1547,9 @@ void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f_Set(&sp40, arg1, arg2, 0.0f);
     Vec3f_Set(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
     Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
-    func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
-    func_80010354(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315C28(arg0, arg1, arg2, sp4C);
 }
 
@@ -1559,7 +1559,7 @@ s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     Vec3f_Set(&sp28, arg1, arg2, 0.0f);
     arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
-    func_80010354(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315C28(arg0, arg1, arg2, sp34);
 
     if (arg0->unk_24 == arg0->unk_20) {
@@ -1585,9 +1585,9 @@ void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f_Set(&sp40, arg1, arg2, 0.0f);
     Vec3f_Set(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
     Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
-    func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
-    func_80010354(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315FAC(arg0, arg1, arg2, sp4C);
 }
 
@@ -1597,7 +1597,7 @@ s32 func_843161F8(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     Vec3f_Set(&sp28, arg1, arg2, 0.0f);
     arg0->unk_24 = func_800104AC(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
-    func_80010354(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     func_84315FAC(arg0, arg1, arg2, sp34);
 
     if (arg0->unk_24 == arg0->unk_20) {
@@ -1633,7 +1633,7 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
-    func_8001D560(arg1 + (arg0->unk_654.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
+    Gfx_DrawSpriteRGBA16Paletted(arg1 + (arg0->unk_654.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
                   0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);

@@ -639,7 +639,7 @@ void func_8002908C(s32 arg0) {
 void Game_UpdateInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001F730();
+    MenuInput_Init();
 }
 
 s32 func_800290E4(s16 arg0) {
@@ -1096,14 +1096,14 @@ void Game_RunGbTower(void) {
         }
 
         func_80024040(D_80075674);
-        func_80028AFC(2);
-        func_80027F24(&sp24);
+        GbsEnsureBankLoaded(2);
+        GbsGetPlayerName(&sp24);
 
         sp24.unk_04 = sp2C.unk_00;
 
-        func_80027F40(&sp24);
+        GbsSetPlayerName(&sp24);
         GbsCommitBankBlock(0x14, 0);
-        func_800284B4(2);
+        GbsSyncBank(2);
     }
 
     main_pool_pop_state('EMU0');
