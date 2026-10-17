@@ -829,6 +829,40 @@ def apply(path):
         t = src[owner]
         block, pos = [], None
         defined = {l["name"]: l for l, _ in items}
+        if res.get("cont") and owner == res["prev"]:
+            # the owner's section used to end with alignment padding up to this blob; now the data
+            # continues it, so that padding must become explicit (e.g. 20470.c: D_8006F7D0 -> F7E0)
+            # IDO leaves function statics out of the symbol table and pads the section, so size the
+            # owner's existing data from its source: D_XXXXXXXX names carry their address
+            ends = []
+            for m in re.finditer(r"^[ \t]*(?:static\s+)?((?:const\s+)?[A-Za-z_]\w*\s*\**)\s*(?:pad_)?D_([0-9A-F]{8})\s*"
+                                 r"((?:\[[^\]]*\])*)\s*=", t, re.M):
+                if in_draft(owner + "#placement", t, m.start()):
+                    continue
+                es = type_size(m.group(1).strip())
+                dd = dims_of(m.group(3))
+                if es is None or any(not isinstance(x, int) for x in dd):
+                    if None in dd:  # `T x[] = {...}`: count the initializer's top-level elements
+                        body = t[m.end():t.index(";", m.end())]
+                        n = body.count(",") + 1 - (1 if body.rstrip().rstrip("}").rstrip().endswith(",") else 0)
+                        dd = [n if x is None else x for x in dd]
+                    if es is None or any(not isinstance(x, int) for x in dd):
+                        continue
+                for x in dd:
+                    es *= x
+                ends.append(int(m.group(2), 16) + es)
+            first_l = min((l for l, _ in items), key=lambda x: x["vram"])
+            ends = [e for e in ends if e <= first_l["vram"]]
+            if not ends:
+                print(f"REFUSING: cannot find where {owner}'s existing data ends")
+                return 2
+            end_v = (max(ends) + 3) & ~3
+            gap = first_l["vram"] - end_v
+            if gap < 0 or any(ROM[first_l["rom"] - gap:first_l["rom"]]):
+                print(f"REFUSING: {owner}'s section ends at {end_v:08X}, after/at non-zero bytes before {first_l['vram']:08X}")
+                return 2
+            if gap >= 4:
+                block.append(f"static {'const ' if const else ''}s32 pad_D_{first_l['vram']:08X}[{gap // 4}] = {{ 0 }};")
         for l, _ in items:
             if l.get("hoist") and l["hoist"][0] == owner and l["hoist"][1] in t:
                 td = l["hoist"][1]
@@ -982,9 +1016,21 @@ def apply(path):
     have = ld.read_text()
     add = [f"{n} = 0x{l['vram'] + off:08X};" for l in res["labels"] for n, off in l.get("folded_at", [])
            if not re.search(r"^%s\s*=" % re.escape(n), have, re.M)]
+    # symbols splat auto-defined inside this blob (e.g. D_80071D88, used only by fragments) lose that
+    # definition once the blob is C: keep every one the new C does not define
+    auto = SYMS.parent / "auto" / "undefined_syms_auto.ld"
+    if auto.exists() and res["labels"]:
+        lo_v = res["labels"][0]["vram"]
+        hi_v = res["labels"][-1]["vram"] + (res["labels"][-1]["span"] or 0)
+        defined = {l["name"] for l in res["labels"]}
+        for m in re.finditer(r"^(\w+)\s*=\s*(0x[0-9A-Fa-f]+)\s*;", auto.read_text(), re.M):
+            n, v = m.group(1), int(m.group(2), 16)
+            if lo_v <= v < hi_v and n not in defined and not re.search(r"^%s\s*=" % re.escape(n), have, re.M) \
+                    and f"{n} = 0x{v:08X};" not in add:
+                add.append(f"{n} = 0x{v:08X};")
     if add:
         ld.write_text(have.rstrip("\n") + "\n" + "\n".join(add) + "\n")
-        print(f"undefined_syms.ld: +{len(add)} folded symbol(s)")
+        print(f"undefined_syms.ld: +{len(add)} folded/interior symbol(s)")
     print("yaml + symbol_addrs updated; now: make extract && make  (phased_job.sh does this)")
     return 0
 
