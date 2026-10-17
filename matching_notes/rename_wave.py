@@ -127,7 +127,23 @@ def write_ledger_drop(linenos):
     return dropped
 
 
-def fixup(rows, facts, batch, log):
+def remove_batch_pending(batch):
+    """Strip pending (not applied) rows of `batch` - makes wave re-runs idempotent."""
+    out, removed = [], 0
+    for i, raw in enumerate(open(LEDGER), 1):
+        line = raw.rstrip("\n")
+        parts = line.split("\t")
+        if (len(parts) >= 6 and parts[2] == batch
+                and not parts[5].startswith("applied") and parts[0] != "old"
+                and not line.lstrip().startswith("#")):
+            removed += 1
+            continue
+        out.append(line)
+    open(LEDGER, "w").write("\n".join(out) + "\n")
+    return removed
+
+
+def fixup(rows, facts, batch, log, vetoes):
     """rows: list of (old,new,batch,also,just) tuples from the wave's merged.tsv."""
     applied_olds, applied_news = set(), set()
     for _i, p in ledger_rows():
@@ -137,11 +153,14 @@ def fixup(rows, facts, batch, log):
     seen_old, seen_new = set(), set()
     kept = []
     for old, new, b, also, just in rows:
+        if old in vetoes:
+            log(f"  drop {old}: vetoed by {batch}/veto.txt")
+            continue
         if VRAM_ANCHOR_RE.fullmatch(old):
             log(f"  drop {old}: asset-VRAM anchor")
             continue
-        if old in facts.undefined_syms and old in facts.sa_names:
-            log(f"  drop {old}: dual-source (symbol_addrs + undefined_syms.ld)")
+        if old in facts.undefined_syms:
+            log(f"  drop {old}: defined in undefined_syms.ld (never-touch)")
             continue
         if old in facts.protected:
             log(f"  drop {old}: protected")
@@ -270,8 +289,18 @@ def run_wave(qwave, args, facts):
             rows.append((parts[0], parts[1], parts[2], parts[3], parts[4]))
     log(f"  salvage: {len(rows)} proposal rows")
 
-    # 3. fixup + append
-    kept = fixup(rows, facts, batch, log)
+    # 3. fixup + append (idempotent: strip this batch's pending rows first)
+    vetoes = set()
+    veto_path = os.path.join(wdir, "veto.txt")
+    if os.path.exists(veto_path):
+        for line in open(veto_path):
+            line = line.strip()
+            if line and not line.startswith("#"):
+                vetoes.add(line)
+    removed = remove_batch_pending(batch)
+    if removed:
+        log(f"  idempotent re-run: replaced {removed} pending {batch} row(s)")
+    kept = fixup(rows, facts, batch, log, vetoes)
     log(f"  fixup kept {len(kept)} of {len(rows)} rows")
     if not kept:
         log("  nothing to apply - wave skipped (no commit)")

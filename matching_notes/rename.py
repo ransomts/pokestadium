@@ -135,6 +135,21 @@ def load_protected():
     return prot
 
 
+_UNDEF_SYMS_CACHE = None
+
+
+def undefined_syms_names():
+    """Symbols assigned in linker_scripts/us/undefined_syms.ld (the never-touch file)."""
+    global _UNDEF_SYMS_CACHE
+    if _UNDEF_SYMS_CACHE is None:
+        _UNDEF_SYMS_CACHE = set()
+        p = os.path.join(REPO, "linker_scripts/us/undefined_syms.ld")
+        if os.path.exists(p):
+            for m in re.finditer(r"([A-Za-z_][A-Za-z0-9_]*)\s*=", open(p).read()):
+                _UNDEF_SYMS_CACHE.add(m.group(1))
+    return _UNDEF_SYMS_CACHE
+
+
 def rewrite_files():
     out = []
     for root in REWRITE_ROOTS:
@@ -255,6 +270,9 @@ def preflight(rows, protected, named, allow_applied_skip=True):
             errors.append(f"{tag}: new name {r.new!r} looks like a placeholder")
         if r.old in protected:
             errors.append(f"{tag}: {r.old} is protected (renames_protected.txt)")
+        if r.old in undefined_syms_names():
+            errors.append(f"{tag}: {r.old} is defined in linker_scripts/us/undefined_syms.ld"
+                         " (never-touch; out of scope per rename_spec.md)")
         if r.is_field_row():
             # field rows are refused when their STRUCT type is protected (the farm-merge closure):
             # renaming members of a struct the open drafts use desyncs farm candidates.
