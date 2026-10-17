@@ -36,6 +36,7 @@ several live ranges; a dead redefinition or a separate early local blocks that (
 | F3 owner decisions | Alias pair, func_86A013C8 labels; accept (merge the branch) or keep GLOBAL_ASM with a comment | owner | decided |
 | F4 data leftovers | 7E0D0 (literals of the GB APU functions), 7D110, 7A1C0, unk_bin_7F670 | integrator or 1 agent | migrated or documented as by-design |
 | F5 upstream | Tidy, rebase onto `origin/master`, split into PRs, file the permuter PR | integrator + owner approval for every push | PRs open |
+| F6 symbol rename sweep (spec: matching_notes/rename_spec.md) | rename.py tool + test sequence (no-op, round-trip, single, batch, re-extract invariance), then waves Tier A (evidence-rich: oldnotes/stadium1+stadiumgs constants, strings, audio/libleo clusters) -> B (per-fragment groups, 50-100/batch) -> C (struct fields + locals). Start ONLY after F5's stop point with farms/agents fully wrapped; single-builder rule (no parallel make); batches gated on make md5-OK + map cross-check + progress 97.92% with auto-revert; renames.tsv is the resumable ledger; one commit per batch; spot-check sample + owner approval between batches | integrator (sole builder) + owner approval per batch | all renamable symbols renamed or parked |
 
 ### F2 detail: the six open functions
 | Function (file) | Draft | Farm best (permuter score, unverified) | What is left (details in the draft comment) |
