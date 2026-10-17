@@ -668,22 +668,22 @@ void func_800314BC(unk_func_80031270* arg0) {
     unk_func_800314BC_temp_v4* temp_v0_4;
     unk_func_80031270_024* temp_v1;
 
-    func_8001103C(0, arg0->unk_28);
-    func_8001103C(0, arg0->unk_2C);
-    func_8001103C(0, arg0->unk_30);
+    GraphNode_AllocInit(0, arg0->unk_28);
+    GraphNode_AllocInit(0, arg0->unk_2C);
+    GraphNode_AllocInit(0, arg0->unk_30);
     sp20 = BinArchive_GetFile(arg0->unk_14, D_8007616C[func_8002FF7C(arg0->unk_18)]);
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
     temp_v0 = sp20(0, 0);
     if (temp_v0 != NULL) {
-        func_80012094(arg0->unk_28, process_geo_layout(sp24, temp_v0));
+        GraphNode_AddChild(arg0->unk_28, process_geo_layout(sp24, temp_v0));
     }
     temp_v0_2 = sp20(1, 0);
     if (temp_v0_2 != NULL) {
-        func_80012094(arg0->unk_2C, process_geo_layout(sp24, temp_v0_2));
+        GraphNode_AddChild(arg0->unk_2C, process_geo_layout(sp24, temp_v0_2));
     }
     temp_v0_3 = sp20(3, 0);
     if (temp_v0_3 != NULL) {
-        func_80012094(arg0->unk_30, process_geo_layout(sp24, temp_v0_3));
+        GraphNode_AddChild(arg0->unk_30, process_geo_layout(sp24, temp_v0_3));
     }
     arg0->unk_34 = sp20(2, 0);
     func_80002D60(sp24);

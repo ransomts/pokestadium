@@ -101,7 +101,7 @@ void func_87802528(void) {
     D_8780FC30 = func_80011B94(sp1C, NULL, 4, D_87806390);
     D_8780FAC8.unk_000.unk_02 |= 8;
 
-    func_80012094(&D_8780FAC8.unk_000, &D_8780FC30->unk_00);
+    GraphNode_AddChild(&D_8780FAC8.unk_000, &D_8780FC30->unk_00);
     func_80002D60(sp1C);
 }
 

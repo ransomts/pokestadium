@@ -525,13 +525,13 @@ void func_86806A50(void) {
         func_86805F94(ptr, i);
         temp_a1 = func_80011B94(temp_s2, NULL, 4, D_868072C0);
         ptr->unk_018.unk_000.unk_01 |= 1;
-        func_80012094(&ptr->unk_018, &temp_a1->unk_00);
+        GraphNode_AddChild(&ptr->unk_018, &temp_a1->unk_00);
     }
 
     for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
         var_s0->unk_40 = func_80011B10(temp_s2, NULL, 5, gfx, &D_8006F050, var_s0->unk_2C);
         func_868061E8(0, var_s0, i, NULL);
-        func_80012094(&D_800AC840, var_s0->unk_40);
+        GraphNode_AddChild(&D_800AC840, var_s0->unk_40);
     }
 
     func_80002D60(temp_s2);

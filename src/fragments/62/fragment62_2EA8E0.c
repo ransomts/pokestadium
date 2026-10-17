@@ -555,9 +555,9 @@ void func_84301430(Stage* arg0) {
     func_800110E0(NULL, &D_8438E598, 0x1E, 0x50, 0x4C, 0x4C);
     func_800110E0(NULL, &D_8438E688, 0xE2, 0x50, 0x4C, 0x4C);
     func_800113F8(0, &D_8438E530, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001103C(NULL, &D_8438E550);
-    func_8001103C(NULL, &D_8438E568);
-    func_8001103C(NULL, &D_8438E580);
+    GraphNode_AllocInit(NULL, &D_8438E550);
+    GraphNode_AllocInit(NULL, &D_8438E568);
+    GraphNode_AllocInit(NULL, &D_8438E580);
     func_80011E68(&D_8438E440, 30.0f, 192.0f, 24576.0f);
     func_8001BB20();
     func_84307394(0, D_8438E798);
@@ -572,17 +572,17 @@ void func_84301430(Stage* arg0) {
 
     temp_v0_4 = sp3C(0, 0);
     if (temp_v0_4 != NULL) {
-        func_80012094(&D_8438E550, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&D_8438E550, process_geo_layout(sp44, temp_v0_4));
     }
 
     temp_v0_4 = sp3C(1, 0);
     if (temp_v0_4 != NULL) {
-        func_80012094(&D_8438E568, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&D_8438E568, process_geo_layout(sp44, temp_v0_4));
     }
 
     temp_v0_4 = sp3C(3, 0);
     if (temp_v0_4 != NULL) {
-        func_80012094(&D_8438E580, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&D_8438E580, process_geo_layout(sp44, temp_v0_4));
     }
 
     func_80002D60(sp44);

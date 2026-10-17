@@ -130,7 +130,7 @@ void func_80017AC4(GraphNode* arg0) {
                 gCurRootGraphNode = arg0;
             }
         } else {
-            func_80012094(gCurGraphNodeList[gCurGraphNodeIndex - 1], arg0);
+            GraphNode_AddChild(gCurGraphNodeList[gCurGraphNodeIndex - 1], arg0);
         }
     }
 }
@@ -147,14 +147,14 @@ void func_80017B60(void) {
     unk_D_800ABE00_cmd8* cmd = (unk_D_800ABE00_cmd8*)gGeoLayoutCommand;
 
     if (gCurGraphNodeList[gCurGraphNodeIndex] != NULL) {
-        func_80010FDC(gCurGraphNodeList[gCurGraphNodeIndex], cmd->unk_04, cmd->unk_08);
+        GraphNode_SetCallback(gCurGraphNodeList[gCurGraphNodeIndex], cmd->unk_04, cmd->unk_08);
     }
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd8);
 }
 
 void func_80017BBC(void) {
-    func_80017AC4(func_8001103C(gGraphNodePool, NULL));
+    func_80017AC4(GraphNode_AllocInit(gGraphNodePool, NULL));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd9);
 }
@@ -162,7 +162,7 @@ void func_80017BBC(void) {
 void func_80017BFC(void) {
     unk_D_800ABE00_cmdA* cmd = (unk_D_800ABE00_cmdA*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011088(gGraphNodePool, NULL, cmd->unk_04));
+    func_80017AC4(GraphNodeAlt_AllocInitParent(gGraphNodePool, NULL, cmd->unk_04));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdA);
 }

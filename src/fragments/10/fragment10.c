@@ -835,7 +835,7 @@ void func_8640203C(void) {
     for (i = 0; i < 4; i++) {
         D_864052C8 = &D_86404778[i];
         D_864052C8->unk_190 = func_80011B10(temp_s5, NULL, 4, NULL, &D_8006F050, 0.0f);
-        func_80012094(&D_800AC840, &D_864052C8->unk_190->unk_00);
+        GraphNode_AddChild(&D_800AC840, &D_864052C8->unk_190->unk_00);
     }
 
     func_80002D60(temp_s5);

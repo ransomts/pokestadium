@@ -3,7 +3,7 @@
 #include "F420.h"
 #include "util.h"
 
-void func_80010FA0(GraphNode* arg0, u8 arg1) {
+void GraphNode_Init(GraphNode* arg0, u8 arg1) {
     if (arg0 != NULL) {
         arg0->unk_00 = arg1;
         arg0->unk_01 = 0x11;
@@ -17,7 +17,7 @@ void func_80010FA0(GraphNode* arg0, u8 arg1) {
     }
 }
 
-void func_80010FDC(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
+void GraphNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
     if (arg1 != NULL) {
         arg1 = Util_ConvertAddrToVirtAddr(arg1);
     }
@@ -31,26 +31,26 @@ void func_80010FDC(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
     }
 }
 
-GraphNode* func_8001103C(MainPoolState* arg0, GraphNode* arg1) {
+GraphNode* GraphNode_AllocInit(MainPoolState* arg0, GraphNode* arg1) {
     if (arg0 != NULL) {
         arg1 = state_pool_alloc_aligned(arg0, sizeof(struct GraphNode), 4);
     }
 
     if (arg1 != NULL) {
-        func_80010FA0(arg1, 0);
+        GraphNode_Init(arg1, 0);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt2* func_80011088(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2) {
+unk_D_86002F34_alt2* GraphNodeAlt_AllocInitParent(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2) {
     if (arg0 != NULL) {
         arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt2), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        func_80010FA0(arg1, 1);
+        GraphNode_Init(arg1, 1);
     }
 
     return arg1;
@@ -66,7 +66,7 @@ unk_D_86002F34_00C* func_800110E0(MemoryBlock* arg0, unk_D_86002F34_00C* arg1, s
         func_80011E68(arg1, 30.0f, 100.0f, 12800.0f);
         func_80011EB4(arg1, 0.0f, 512.0f, 4096.0f, 0.0f, 0.0f, 0.0f, 0);
         func_80011FC8(arg1, 2, 0, 0, 0, 0);
-        func_80010FA0(arg1, 2);
+        GraphNode_Init(arg1, 2);
     }
     return arg1;
 }
@@ -78,7 +78,7 @@ unk_D_86002F34_alt13* func_800111A4(MemoryBlock* arg0, unk_D_86002F34_alt13* arg
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        func_80010FA0(arg1, 3);
+        GraphNode_Init(arg1, 3);
     }
 
     return arg1;
@@ -92,7 +92,7 @@ unk_D_86002F34_alt1* func_800111FC(MemoryBlock* arg0, unk_D_86002F34_alt1* arg1,
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = 0;
-        func_80010FA0(arg1, 4);
+        GraphNode_Init(arg1, 4);
     }
 
     return arg1;
@@ -104,7 +104,7 @@ unk_D_86002F34_alt14* func_80011258(MainPoolState* arg0, unk_D_86002F34_alt14* a
     }
 
     if (arg1 != NULL) {
-        func_80010FA0(arg1, 5);
+        GraphNode_Init(arg1, 5);
         arg1->unk_00.unk_02 |= arg2 & 3;
     }
 
@@ -117,7 +117,7 @@ unk_D_86002F34_alt15* func_800112BC(MainPoolState* arg0, unk_D_86002F34_alt15* a
     }
 
     if (arg1 != NULL) {
-        func_80010FA0(arg1, 6);
+        GraphNode_Init(arg1, 6);
         arg1->unk_00.unk_02 |= arg2 & 3;
     }
 
@@ -134,7 +134,7 @@ unk_D_86002F34_alt16* func_80011320(MainPoolState* arg0, unk_D_86002F34_alt16* a
     if (arg1 != NULL) {
         temp_v0 = ((arg2 >> 3) << 0xB) | ((arg3 >> 3) << 6) | ((arg4 >> 3) << 1) | 1;
         arg1->unk_18 = (temp_v0 << 0x10) | temp_v0;
-        func_80010FA0(arg1, 7);
+        GraphNode_Init(arg1, 7);
     }
     return arg1;
 }
@@ -145,7 +145,7 @@ unk_D_86002F34_alt17* func_800113AC(MainPoolState* arg0, unk_D_86002F34_alt17* a
     }
 
     if (arg1 != NULL) {
-        func_80010FA0(arg1, 8);
+        GraphNode_Init(arg1, 8);
     }
 
     return arg1;
@@ -160,7 +160,7 @@ unk_D_8690A610* func_800113F8(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3
         arg1->unk_18.unk_00 = arg2;
         arg1->unk_18.unk_02 = arg3;
         arg1->unk_18.unk_04.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        func_80010FA0(arg1, 0xA);
+        GraphNode_Init(arg1, 0xA);
     }
 
     return arg1;
@@ -179,7 +179,7 @@ unk_D_86002F34_alt18* func_80011484(MainPoolState* arg0, unk_D_86002F34_alt18* a
         arg1->a = a;
         arg1->unk_1C = arg2;
         arg1->unk_1E = arg3;
-        func_80010FA0(arg1, 0xB);
+        GraphNode_Init(arg1, 0xB);
     }
 
     return arg1;
@@ -194,7 +194,7 @@ unk_D_86002F34_alt19* func_80011504(MainPoolState* arg0, unk_D_86002F34_alt19* a
         arg1->r = r;
         arg1->g = g;
         arg1->b = b;
-        func_80010FA0(arg1, 0xD);
+        GraphNode_Init(arg1, 0xD);
     }
 
     return arg1;
@@ -214,7 +214,7 @@ unk_D_86002F34* func_8001156C(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg
         arg1->unk_25 = arg4;
         arg1->unk_26 = arg6;
         arg1->unk_28 = NULL;
-        func_80010FA0(arg1, 0xE);
+        GraphNode_Init(arg1, 0xE);
     }
 
     return arg1;
@@ -231,7 +231,7 @@ unk_D_86002F34_alt12* func_800115F0(MainPoolState* arg0, unk_D_86002F34_alt12* a
         arg1->unk_1A = arg3;
         arg1->unk_1C = arg4;
         arg1->unk_1E = arg5;
-        func_80010FA0(arg1, 0xF);
+        GraphNode_Init(arg1, 0xF);
     }
 
     return arg1;
@@ -245,7 +245,7 @@ unk_D_86002F34_alt20* func_80011660(MainPoolState* arg0, unk_D_86002F34_alt20* a
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = arg3;
-        func_80010FA0(arg1, 0x10);
+        GraphNode_Init(arg1, 0x10);
     }
 
     return arg1;
@@ -259,7 +259,7 @@ unk_D_86002F34_alt21* func_800116C0(MainPoolState* arg0, unk_D_86002F34_alt21* a
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = arg3;
-        func_80010FA0(arg1, 0x11);
+        GraphNode_Init(arg1, 0x11);
     }
 
     return arg1;
@@ -273,7 +273,7 @@ unk_D_86002F34_alt5* func_80011720(MainPoolState* arg0, unk_D_86002F34_alt5* arg
     if (arg1 != NULL) {
         arg1->unk_18 = *arg2;
         arg1->unk_24 = *arg3;
-        func_80010FA0(arg1, 0x12);
+        GraphNode_Init(arg1, 0x12);
     }
 
     return arg1;
@@ -286,7 +286,7 @@ unk_D_86002F34_alt22* func_800117A8(MainPoolState* arg0, unk_D_86002F34_alt22* a
 
     if (arg1 != NULL) {
         arg1->unk_18 = *arg2;
-        func_80010FA0(arg1, 0x13);
+        GraphNode_Init(arg1, 0x13);
     }
 
     return arg1;
@@ -305,7 +305,7 @@ unk_D_86002F34_alt6* func_80011814(MainPoolState* arg0, unk_D_86002F34_alt6* arg
         arg1->unk_30 = arg2;
         arg1->unk_31 = arg3;
         arg1->unk_32 = arg4;
-        func_80010FA0(arg1, 0x14);
+        GraphNode_Init(arg1, 0x14);
     }
 
     return arg1;
@@ -319,7 +319,7 @@ unk_D_86002F34_alt7* func_800118D0(MainPoolState* arg0, unk_D_86002F34_alt7* arg
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
         arg1->unk_1C = arg4;
-        func_80010FA0(arg1, 0x15);
+        GraphNode_Init(arg1, 0x15);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -352,7 +352,7 @@ unk_D_86002F58_004_000* func_80011938(MainPoolState* arg0, unk_D_86002F58_004_00
         arg1->unk_054.unk_04 = NULL;
         arg1->unk_054.unk_08 = 0;
         arg1->unk_054.unk_0A = 0;
-        func_80010FA0(&arg1->unk_000, 0x16);
+        GraphNode_Init(&arg1->unk_000, 0x16);
         arg1->unk_000.unk_02 |= 0x60;
     }
 
@@ -371,7 +371,7 @@ unk_D_86002F34_alt8* func_80011A3C(MainPoolState* arg0, unk_D_86002F34_alt8* arg
         } else {
             Matrix_Copy(&arg1->unk_1C, arg4);
         }
-        func_80010FA0(arg1, 0x17);
+        GraphNode_Init(arg1, 0x17);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -396,7 +396,7 @@ unk_D_86002F34_alt9* func_80011B10(MainPoolState* arg0, unk_D_86002F34_alt9* arg
         arg1->unk_1C = *arg4;
         arg1->unk_28 = arg5;
         arg1->unk_18 = arg3;
-        func_80010FA0(arg1, 0x18);
+        GraphNode_Init(arg1, 0x18);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -410,7 +410,7 @@ unk_func_80011B94* func_80011B94(MainPoolState* arg0, unk_func_80011B94* arg1, s
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
-        func_80010FA0(arg1, 0x19);
+        GraphNode_Init(arg1, 0x19);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -430,7 +430,7 @@ unk_D_86002F34_alt10* func_80011BF4(MainPoolState* arg0, unk_D_86002F34_alt10* a
         arg1->unk_1C = arg5;
         arg1->unk_1E = arg6;
         arg1->unk_24.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        func_80010FA0(arg1, 0x1A);
+        GraphNode_Init(arg1, 0x1A);
     }
 
     return arg1;
@@ -443,7 +443,7 @@ unk_D_86002F34_alt23* func_80011C98(MainPoolState* arg0, unk_D_86002F34_alt23* a
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        func_80010FA0(arg1, 0x1B);
+        GraphNode_Init(arg1, 0x1B);
     }
 
     return arg1;
@@ -464,7 +464,7 @@ unk_D_86002F34_alt24* func_80011CF0(MainPoolState* arg0, unk_D_86002F34_alt24* a
         arg1->unk_1A = arg8;
         arg1->unk_24 = arg9;
         arg1->unk_28.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        func_80010FA0(arg1, 0x1C);
+        GraphNode_Init(arg1, 0x1C);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -541,7 +541,7 @@ void func_80012044(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s32 arg3, u32 a
     ptr->texture = D_1000800;
 }
 
-void func_80012094(GraphNode* arg0, GraphNode* arg1) {
+void GraphNode_AddChild(GraphNode* arg0, GraphNode* arg1) {
     GraphNode* temp_v0;
     GraphNode* temp_v1;
 
@@ -561,7 +561,7 @@ void func_80012094(GraphNode* arg0, GraphNode* arg1) {
     }
 }
 
-void func_800120DC(GraphNode* arg0, GraphNode* arg1) {    
+void GraphNode_RemoveChild(GraphNode* arg0, GraphNode* arg1) {    
     arg1->unk_04->unk_08 = arg1->unk_08;
     arg1->unk_08->unk_04 = arg1->unk_04;
     if ((unk_D_86002F34_00C*)arg1 == arg0->unk_0C) {
@@ -573,7 +573,7 @@ void func_800120DC(GraphNode* arg0, GraphNode* arg1) {
     }
 }
 
-GraphNode* func_80012120(GraphNode* arg0, s32 arg1) {
+GraphNode* GraphNode_GetNthChild(GraphNode* arg0, s32 arg1) {
     GraphNode* var_v1;
     s32 i;
     var_v1 = (GraphNode*)arg0->unk_0C;

@@ -200,3 +200,10 @@ func_8000FF04	Matrix_GetScale	b8		extracts the per-axis scale (row norms) of a m
 func_8000FFB8	Matrix_TransformVec3sInPlace	b8		multiplies a Vec3s by the matrix including translation (affine transform of a 16-bit vector)	applied@2ff239c
 func_80010228	Matrix_BuildObjectTransform	b8		composes a full object transform: TR matrix from arg4/arg5, euler rotation, then scale (uses Matrix_ComposeTR/RotateTranslate/Multiply/Scale)	applied@2ff239c
 func_800102A4	Matrix_Decompose	b8		extracts translation (Vec3f), yaw/pitch/roll (s16s) and scale from a matrix - the inverse of the compose family	applied@2ff239c
+func_80010FA0	GraphNode_Init	b9		initialises a GraphNode: type byte, flags 0x11, prev/next/parent self-links, null child/function pointers (SM64 geo-style)	applied@ba40d34
+func_80010FDC	GraphNode_SetCallback	b9		sets the node's function pointer + context (the per-node render/update callback)	applied@ba40d34
+func_8001103C	GraphNode_AllocInit	b9		state-pool alloc of a GraphNode (align 4) + GraphNode_Init(0)	applied@ba40d34
+func_80012094	GraphNode_AddChild	b9		inserts arg1 into arg0's circular child list (empty list init or append before head)	applied@ba40d34
+func_800120DC	GraphNode_RemoveChild	b9		unlinks arg1 from the doubly-linked sibling list and fixes the parent's child head (sole child -> NULL)	applied@ba40d34
+func_80012120	GraphNode_GetNthChild	b9		walks the sibling ring arg1 steps from the first child	applied@ba40d34
+func_80011088	GraphNodeAlt_AllocInitParent	b9		state-pool alloc of the alt2 node type with the parent set then Init(1)	applied@ba40d34

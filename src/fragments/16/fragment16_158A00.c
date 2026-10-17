@@ -141,9 +141,9 @@ void func_86A000B4(s8 arg0, u8 arg1) {
 
     while (func_80001C90() == 0) {}
 
-    func_8001103C(NULL, &D_86A06190);
-    func_8001103C(NULL, &D_86A061A8);
-    func_8001103C(NULL, &D_86A061C0);
+    GraphNode_AllocInit(NULL, &D_86A06190);
+    GraphNode_AllocInit(NULL, &D_86A061A8);
+    GraphNode_AllocInit(NULL, &D_86A061C0);
 
     main_pool_pop_state('BACK');
 
@@ -154,17 +154,17 @@ void func_86A000B4(s8 arg0, u8 arg1) {
 
     temp_v0 = sp28(0, 0);
     if (temp_v0 != NULL) {
-        func_80012094(&D_86A06190, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AddChild(&D_86A06190, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(1, 0);
     if (temp_v0 != NULL) {
-        func_80012094(&D_86A061A8, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AddChild(&D_86A061A8, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(3, 0);
     if (temp_v0 != NULL) {
-        func_80012094(&D_86A061C0, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AddChild(&D_86A061C0, process_geo_layout(sp2C, temp_v0));
     }
 
     D_86A025C8 = sp28(2, 0);
@@ -353,9 +353,9 @@ void func_86A0092C(s32 arg0) {
                     D_86A061D8 = -1;
                     D_86A025C8 = 0;
 
-                    func_8001103C(NULL, &D_86A06190);
-                    func_8001103C(NULL, &D_86A061A8);
-                    func_8001103C(NULL, &D_86A061C0);
+                    GraphNode_AllocInit(NULL, &D_86A06190);
+                    GraphNode_AllocInit(NULL, &D_86A061A8);
+                    GraphNode_AllocInit(NULL, &D_86A061C0);
 
                     D_86A06170.unk_00.unk_01 &= ~1;
                     if (D_86A025A0[D_86A025C4].unk_02 == 0) {
@@ -1431,9 +1431,9 @@ void func_86A00DAC(s32 arg0) {
 
     D_86A061DC = ASSET_LOAD2(stadium_models, 1, 1);
     func_800113F8(0, &D_86A06170, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001103C(NULL, &D_86A06190);
-    func_8001103C(NULL, &D_86A061A8);
-    func_8001103C(NULL, &D_86A061C0);
+    GraphNode_AllocInit(NULL, &D_86A06190);
+    GraphNode_AllocInit(NULL, &D_86A061A8);
+    GraphNode_AllocInit(NULL, &D_86A061C0);
     func_86A0003C(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     D_86A061E4 = process_geo_layout(sp2C, &D_86A025D0);
