@@ -2206,6 +2206,27 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // - case 0x19 switch: target copies the switch value v0 -> v1 after the 0/8 compares (missing).
 // - prologue: fixed (read order).
 // - remaining ~1200 'r' lines are t-register rotation following from the above.
+// Round 8 notes on the 0x5C block (the FIRST divergence in emission order; ugen's t-register
+// rotation carries over from block to block, so almost every later 'r' diff, including the
+// break delay slots, follows from it - the cases before it match exactly):
+// - The target captures temp_t0 and spBA at the top of the block (sw 0x68 / sw 0x64 before the
+//   first call). An s32 BLOCK-SCOPED local (`s32 sp68 = temp_t0;` at the top of the block) does
+//   that too, which neither function-level locals nor u8 copies do (u8 copies get
+//   copy-propagated away; var_s5/temp_s0/var_s0_4/var_v1_x reuse is worse). But the block local
+//   gets a home above the temps (frame 0x110) and is reloaded at each use instead of living in
+//   s5 like the target. Two block locals (sp68, sp64): frame 0x110, 12312.
+// - sp8C is probably a float spill temp, not a local (inlining
+//   `func_8437738C(..temp_s6) - func_8437738C(..temp_s3)` keeps frame 0x108 and puts the temp at
+//   0x84; the target has it at 0x8C, the top temp slot).
+// - The 0x50..0x88 slots as named s32 locals (m2c's sp50..sp78; temp_t0 as s32 at the bottom IS
+//   spilled after the blez like the target): s32 sp78 is stored in the prologue instead, and the
+//   frame grows to 0x120-0x138. Dead end.
+// - Rewriting the four multiplies as one expression: frame 0x110, 18000+. `if (..) {}` /
+//   `&&`-chain no-ops after the block: all worse.
+// - Case 0x19: switching on temp_s6->unk_15 in the first switch with `u8 var_v1_5` assigned
+//   after it gives the target's load register and `move v1,v0` copy, but the copy lands before the
+//   `== 8` compare instead of after it, and it scores 8709 (not kept). Goto-free first switch
+//   (5 case layouts): worse.
 // Dead ends: declaration order never changes regalloc; sp58/temp_t0/sp78 as s32 (worse, frame
 // 0x118); s16/f32 var_s5; temp_s6 macro (worse); `j = 0` hoisting (IDO already does it).
 #ifdef NON_MATCHING
