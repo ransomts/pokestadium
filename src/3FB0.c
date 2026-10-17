@@ -139,7 +139,7 @@ void func_80003648(unk_func_80003680_sp90* arg0, u8(arg1)[2][0x80], unk_func_800
     arg0->unk_14 = (u32)&arg1[1] & 0x1FFFFFFF;
 }
 
-s32 func_80003680(u32 addr, s32 arg1, u8* arg2) {
+s32 JpegDecodePres(u32 addr, s32 arg1, u8* arg2) {
     UnkStruct80001380 sp318;
     unk_func_80003680_sp300 sp300;
     u8 sp200[2][0x80];
@@ -198,7 +198,7 @@ void func_80003860(void) {
     osCreateMesgQueue(&D_800A62C0, &D_800A62D8, 1);
 }
 
-void func_80003890(u8* in_header, u8* memory) {
+void SzpDecompress(u8* in_header, u8* memory) {
     UNUSED s32 pad2;
     PERSSZP* header = in_header;
     u32* sp2C = (u32*)header + 6;
@@ -310,7 +310,7 @@ void* func_80003C80(u8* addr, PRESJPEG* arg1, s32 side) {
     s32 new_addr = main_pool_alloc(arg1->unk_0C + 0x100, side);
 
     if (new_addr != NULL) {
-        s32 size = func_80003680(new_addr, arg1->unk_0C + 0x100, (u32)arg1 + arg1->unk_08);
+        s32 size = JpegDecodePres(new_addr, arg1->unk_0C + 0x100, (u32)arg1 + arg1->unk_08);
 
         if (size == 0) {
             main_pool_try_free(new_addr);
@@ -329,7 +329,7 @@ s32 func_80003D18(s32 arg0, PERSSZP* arg1, s32 side) {
     s32 vaddr = main_pool_alloc(arg1->decompressed_size2, side);
 
     if (vaddr != NULL) {
-        func_80003890(arg1, vaddr);
+        SzpDecompress(arg1, vaddr);
     }
 
     main_pool_try_free(arg0);

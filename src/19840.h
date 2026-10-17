@@ -51,15 +51,15 @@ typedef struct unk_D_800ABE10 {
 extern unk_D_800ABE10 D_800ABE10;
 
 void func_80018C40(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1);
-Fragment* func_80018DE8(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2);
-Fragment* func_80018E7C(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2);
-Fragment* func_80018EC4(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3);
+Fragment* Fragment_LoadPresJpeg(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2);
+Fragment* Fragment_LoadPersSzp(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2);
+Fragment* Fragment_LoadRaw(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3);
 Fragment* func_80018F20(MainPoolState* arg0, s32 start, s32 end, PERSSZP* arg3, s32 arg4);
-Fragment* func_80018FF4(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* arg2, u32 arg3);
-void func_80019128(MainPoolState* arg0, u32 arg1, Fragment* arg2);
-Fragment* func_80019170(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4);
-Fragment* func_800191B0(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4);
-Fragment* func_80019204(MainPoolState* arg0, BinArchive* arg1, s32 arg2, u32 arg3, s32 arg4);
+Fragment* Fragment_LoadCompressed(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* arg2, u32 arg3);
+void Fragment_Relocate(MainPoolState* arg0, u32 arg1, Fragment* arg2);
+Fragment* Fragment_LoadFromArchive(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4);
+Fragment* Fragment_LoadFromArchive2(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4);
+Fragment* Fragment_LoadFromFile(MainPoolState* arg0, BinArchive* arg1, s32 arg2, u32 arg3, s32 arg4);
 s32 func_80019328(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2);
 void func_80019420(MemoryBlock* arg0, arg1_func_80019420* arg1);
 void func_80019484(unk_func_80019600* arg0);

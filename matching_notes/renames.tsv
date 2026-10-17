@@ -125,3 +125,13 @@ unk_D_800A7440	ClipRect	b1		{x1,y1,x2,y2} clip bounds struct typedef used by the
 func_8001ECB4	Text_DrawGlyph	b1		renders one glyph: font-bank lookup, gDPLoadTextureBlock of the glyph's IA8 cell (offset = idx*w*h, reloaded on change), Gfx_DrawTextureRect, returns advanced x	applied@44c9843
 func_8001E78C	Text_GetCharWidth	b1		glyph advance from the font bank's width table (unk_04[index])	applied@44c9843
 func_8001E7D4	Text_UnloadFont	b1		zeros one font bank's width and texture pointers (called when a font asset is freed)	applied@44c9843
+func_80018DE8	Fragment_LoadPresJpeg	b2		loads a 'PRES-JPEG' compressed block: state-pool alloc, func_80003680 JPEG decode, resize on success/rollback on failure	applied@a239305
+func_80018E7C	Fragment_LoadPersSzp	b2		loads a 'PERS-SZP' block: state-pool alloc (decompressed_size2) then func_80003890 SZP decode	applied@a239305
+func_80018EC4	Fragment_LoadRaw	b2		raw copy variant: state-pool alloc + Util_Memcpy of arg3 bytes	applied@a239305
+func_80018FF4	Fragment_LoadCompressed	b2		the dispatcher: LeoLBAToByte, async Leo read, then PERS-SZP / PRES-JPEG / raw by magic tags	applied@a239305
+func_80019128	Fragment_Relocate	b2		Memmap_RelocateFragment + state_pool_resize to cover the relocated fragment's RAM size	applied@a239305
+func_80019170	Fragment_LoadFromArchive	b2		archive load path for unflagged entries: reader init (func_800040EC) then Fragment_LoadCompressed	applied@a239305
+func_800191B0	Fragment_LoadFromArchive2	b2		archive load path for 0x80-flagged (offset-based) entries	applied@a239305
+func_80019204	Fragment_LoadFromFile	b2		top dispatcher by file number: direct/cached paths, magic check ('FRAG'/'MENT') + relocation, caches the result in the file entry	applied@a239305
+func_80003680	JpegDecodePres	b2		PRES-JPEG decoder (JpegDecoder/JpegHuffmanTable machinery in 3FB0.c, the jpeg library file)	applied@a239305
+func_80003890	SzpDecompress	b2		PERS-SZP decompressor (yay0-style: decompressed_size1/2 fields, window/copy state machine)	applied@a239305

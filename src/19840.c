@@ -50,7 +50,7 @@ void func_80018C40(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
     }
 }
 
-Fragment* func_80018DE8(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2) {
+Fragment* Fragment_LoadPresJpeg(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2) {
     Fragment* sp1C;
     s32 sp18;
     s32 temp_v0_2;
@@ -59,7 +59,7 @@ Fragment* func_80018DE8(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2) {
     sp1C = state_pool_alloc_aligned(arg0, arg2->unk_0C + 0x100, 0x10);
 
     if (sp1C != NULL) {
-        temp_v0_2 = func_80003680(sp1C, arg2->unk_0C + 0x100, (u8*)arg2 + arg2->unk_08);
+        temp_v0_2 = JpegDecodePres(sp1C, arg2->unk_0C + 0x100, (u8*)arg2 + arg2->unk_08);
         if (temp_v0_2 == 0) {
             state_pool_resize(arg0, sp18);
             sp1C = NULL;
@@ -70,16 +70,16 @@ Fragment* func_80018DE8(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2) {
     return sp1C;
 }
 
-Fragment* func_80018E7C(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2) {
+Fragment* Fragment_LoadPersSzp(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2) {
     u8* sp1C = state_pool_alloc_aligned(arg0, arg2->decompressed_size2, 0x10);
 
     if (sp1C != NULL) {
-        func_80003890(arg2, sp1C);
+        SzpDecompress(arg2, sp1C);
     }
     return sp1C;
 }
 
-Fragment* func_80018EC4(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3) {
+Fragment* Fragment_LoadRaw(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3) {
     u32* sp1C;
 
     sp1C = state_pool_alloc_aligned(arg0, arg3, 0x10);
@@ -98,18 +98,18 @@ Fragment* func_80018F20(MainPoolState* arg0, s32 start, s32 end, PERSSZP* arg3, 
         func_80003B30(arg3, start, end, 0);
 
         if (((u32*)arg3->magic)[0] == 'PERS' && (((u32*)arg3->magic)[1] == '-SZP')) {
-            var_v1 = func_80018E7C(arg0, arg3, arg3);
+            var_v1 = Fragment_LoadPersSzp(arg0, arg3, arg3);
         } else if (((u32*)arg3->magic)[0] == 'PRES' && (((u32*)arg3->magic)[1] == 'JPEG')) {
-            var_v1 = func_80018DE8(arg0, arg3, arg3);
+            var_v1 = Fragment_LoadPresJpeg(arg0, arg3, arg3);
         } else {
-            var_v1 = func_80018EC4(arg0, arg3, 0, size);
+            var_v1 = Fragment_LoadRaw(arg0, arg3, 0, size);
         }
     }
 
     return var_v1;
 }
 
-Fragment* func_80018FF4(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* arg2, u32 arg3) {
+Fragment* Fragment_LoadCompressed(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* arg2, u32 arg3) {
     s32 sp3C;
     Fragment* sp38;
     PERSSZP* temp_s1;
@@ -124,36 +124,36 @@ Fragment* func_80018FF4(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* a
         osRecvMesg(&D_800ABE10.unk_9EC, NULL, 1);
 
         if (((u32*)temp_s1->magic)[0] == 'PERS' && (((u32*)temp_s1->magic)[1] == '-SZP')) {
-            sp38 = func_80018E7C(arg0, arg2, temp_s1);
+            sp38 = Fragment_LoadPersSzp(arg0, arg2, temp_s1);
         } else if (((u32*)temp_s1->magic)[0] == 'PRES' && (((u32*)temp_s1->magic)[1] == 'JPEG')) {
-            sp38 = func_80018DE8(arg0, arg2, temp_s1);
+            sp38 = Fragment_LoadPresJpeg(arg0, arg2, temp_s1);
         } else {
-            sp38 = func_80018EC4(arg0, arg2, arg1->unk_04, arg1->unk_08);
+            sp38 = Fragment_LoadRaw(arg0, arg2, arg1->unk_04, arg1->unk_08);
         }
     }
 
     return sp38;
 }
 
-void func_80019128(MainPoolState* arg0, u32 arg1, Fragment* arg2) {
+void Fragment_Relocate(MainPoolState* arg0, u32 arg1, Fragment* arg2) {
     Memmap_RelocateFragment(arg1, arg2);
     state_pool_resize(arg0, ((u32)arg2 + arg2->sizeInRam) - (u32)arg0->listHeadR);
 }
 
-Fragment* func_80019170(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
+Fragment* Fragment_LoadFromArchive(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
     s32 temp_a1 = arg1->unk_04 + arg2->offset;
 
     return func_80018F20(arg0, temp_a1, arg2->size + temp_a1, arg3, arg4);
 }
 
-Fragment* func_800191B0(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
+Fragment* Fragment_LoadFromArchive2(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
     unk_func_800041C0 sp1C;
 
     func_800040EC(&sp1C, arg1->unk_04, arg2->offset, arg2->size);
-    return func_80018FF4(arg0, &sp1C, arg3, arg4);
+    return Fragment_LoadCompressed(arg0, &sp1C, arg3, arg4);
 }
 
-Fragment* func_80019204(MainPoolState* arg0, BinArchive* arg1, s32 arg2, u32 arg3, s32 arg4) {
+Fragment* Fragment_LoadFromFile(MainPoolState* arg0, BinArchive* arg1, s32 arg2, u32 arg3, s32 arg4) {
     s32 pad[4];
     Fragment* var_s0 = NULL;
     BinArchiveFile* sp2C = (u8*)arg1 + sizeof(BinArchive) + (arg2 * sizeof(BinArchiveFile));
@@ -165,14 +165,14 @@ Fragment* func_80019204(MainPoolState* arg0, BinArchive* arg1, s32 arg2, u32 arg
             var_s0 = sp2C->unk_08;
         } else {
             if (arg1->unk_00 & 0x80) {
-                var_s0 = func_800191B0(arg0, arg1, sp2C, arg3, arg4);
+                var_s0 = Fragment_LoadFromArchive2(arg0, arg1, sp2C, arg3, arg4);
             } else {
-                var_s0 = func_80019170(arg0, arg1, sp2C, arg3, arg4);
+                var_s0 = Fragment_LoadFromArchive(arg0, arg1, sp2C, arg3, arg4);
             }
 
             if (var_s0 != NULL) {
                 if ((((u32*)var_s0->magic)[0] == 'FRAG') && (((u32*)var_s0->magic)[1] == 'MENT')) {
-                    func_80019128(arg0, arg1->unk_02, var_s0);
+                    Fragment_Relocate(arg0, arg1->unk_02, var_s0);
                 }
                 sp2C->unk_08 = var_s0;
             }
@@ -222,7 +222,7 @@ void func_80019484(unk_func_80019600* arg0) {
     Fragment* sp24;
 
     sp28 = state_pool_init(arg0->pool, arg0->size);
-    sp24 = func_80019204(sp28, D_800ABE10.unk_A04.unk_00, arg0->unk_02, D_800ABE10.unk_A04.unk_08, 0x28000);
+    sp24 = Fragment_LoadFromFile(sp28, D_800ABE10.unk_A04.unk_00, arg0->unk_02, D_800ABE10.unk_A04.unk_08, 0x28000);
 
     if (sp24 != NULL) {
         arg0->unk_08 = func_80019328(sp28, sp24, arg0->unk_18);
@@ -246,7 +246,7 @@ void func_80019514(unk_func_80019600* arg0) {
     var_s0 = arg0->unk_0C;
 
     while (*var_s0 != -1) {
-        temp_v0 = func_80019204(temp_s3, D_800ABE10.unk_A04.unk_04, *var_s0, D_800ABE10.unk_A04.unk_08, 0x28000);
+        temp_v0 = Fragment_LoadFromFile(temp_s3, D_800ABE10.unk_A04.unk_04, *var_s0, D_800ABE10.unk_A04.unk_08, 0x28000);
         if (temp_v0 == NULL) {
             break;
         }
@@ -536,7 +536,7 @@ Fragment* func_80019F0C(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSS
     Fragment* sp24 = func_80018F20(arg0, arg2, arg3, arg4, arg5);
 
     if (sp24 != NULL) {
-        func_80019128(arg0, arg1, sp24);
+        Fragment_Relocate(arg0, arg1, sp24);
     }
     return sp24;
 }
