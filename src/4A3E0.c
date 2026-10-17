@@ -700,6 +700,9 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
 // `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
+// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(D_800FCFD8.unk_20 < D_800FCFD8.unk_00) != 0`
+// (an explicit boolean compare instead of the bare condition): 345 -> 320. The other candidate edits
+// (`!= 0U`, comma-noise `((0, D_800FCFD8)).unk_04`, statement line joins) are equivalent or worse noise.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
@@ -808,7 +811,7 @@ s16 func_8004A89C(void) {
 
     sample = D_800FCFD8.unk_04;
     dir = p[0x22] & 8;
-    if (D_800FCFD8.unk_20 < D_800FCFD8.unk_00) {
+    if ((D_800FCFD8.unk_20 < D_800FCFD8.unk_00) != 0) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
