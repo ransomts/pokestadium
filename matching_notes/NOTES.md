@@ -703,3 +703,20 @@ old-name hits, ROM OK. Tool fixes found by the sequence: header-row parsing, 0x/
 also-pairs for symbol rows, typedef-row preflight/map checks, dlabel-only symbols need a
 symbol_addrs entry ADDED so extraction does not revert the name (the gate caught this live).
 Next: Tier A waves, one commit per batch, spot-check + owner approval between batches.
+
+## F6 Tier A complete (2026-10-17 ~16:30)
+108 renames applied across 10 gated batches (a1-a10, ROM md5-OK + map cross-check + progress
+97.9197% after every batch; expected/ refreshed at wave end - byte-identical, as expected for
+ROM-neutral renames). Clusters named: Gen-1 battle math + item/move/species tables (a1), the
+message/string core - GetMessageString/Bank, DecompressString, RegisterPlayer (a2), the Gen-1
+string codec + name slots + BE I/O (a3), the GB APU driver core (a4/a5), the text/UI rendering
+core (a6), the gfx/stage/sound hubs - GfxAlloc/PlaySoundEffect/Stage_*/gCurrentStage (a7), the
+state-pool allocator + fragment/asset loading (a8), the scheduler/frame + text state (a9), video
+mode + menu input (a10). Tool hardening during the wave: C-static symbols (no symbol_addrs, no
+dlabel, no linker-map presence - skipped in the map check), typedef rows, also-pairs for symbol
+rows. NOT renamed (deliberate): the species-stats alias triple D_8006FF00/D_80070F84/D_8006FEE8
+(overlapping splat views + the partially-named PokemonStats typedef in 22630.h - needs a
+consolidation decision); func_80022734 (unknown tier semantics); the 19840.c Fragment loader
+family (Tier B: needs per-function call-graph evidence).
+Next: Tier B (per-fragment-group sweeps, 50-100 symbols/batch, call graphs + accessmap), then
+Tier C (struct fields + locals via dotted-path rows).
