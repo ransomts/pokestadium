@@ -2263,6 +2263,14 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
 // spC4/spA0 for ptr2 (IDO splits webs), block-scoped p, while/do-while inner loops, i/j swapped, j for the first
 // loops, j as u32 (2365: j not strength-reduced), j as s16/u16/s8, count u32/s16, all 6 orders of the three
 // unk_30 stores (and moving them before FRAGMENT_LOAD), j = 0 at other spots (after the call = no change).
+// Round 8: the target's `move v0,zero` in the func_882062E4 delay slot is a DEAD `j = 0;` before the call:
+// keeping `j = 0;` there AND writing `for (j = 0; j < count; j++)` reproduces the inner-loop instruction
+// stream exactly (j strength-reduced into v0, no j in an s-reg), but then only 6 s-regs are used and ptr2
+// sits in a0 instead of s0 (score 3156, all register diffs). Still needed: something that makes ptr2 a
+// call-crossing (s-reg) web. Tried with that shape: ptr2 assigned before the call (identical code), ptr2
+// also used as `ptr2 = &ptr[i].unk_04; func_8002CBC0(ptr2, ...)` in the three setup loops (identical).
+// First setup loops as &arg0->unk_XX.unk_00[i].unk_04 (5203), via var_s4_2 (2345) / var_s4 (1785) /
+// ptr++ walk (2990).
 #ifdef NON_MATCHING
 void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4, s32 arg5, char** arg6,
                    char** arg7, char** arg8, char** arg9, char** argA, char** argB) {
