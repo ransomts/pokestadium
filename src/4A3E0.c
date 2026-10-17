@@ -275,6 +275,17 @@ void func_80049D5C(u16 arg0) {
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 1 (square wave with frequency sweep), registers NR10-NR14.
+// Round 8 pass 4 (agent-14): 975 -> 110 (only diff: trigger `andi t3,t0,8` + `move t2,t3` vs target
+// `andi t2,t0,8`). Wins, all from func_8004A474's match: (1) `dir` is ONE variable shared by the trigger and
+// the tail (target t2 in both), kept real by the redundant `duty = D_800FD008[2].value` between the kill
+// tests; (2) NR12/NR11 reads in the sweep go through `p = (u8*)D_800FD008` so uopt emits them as fresh
+// lui/%lo loads straight into the variable (p[4] & 8 -> lbu t2; andi t2,t2) instead of extending the a1
+// base range; (3) the target computes dir and duty in EACH predecessor: `dir = p[4] & 8` is written in
+// the goto path AND before `skip:` (not after it), and `duty = (p[2] & 0xC0) >> 6` in both the increase
+// and the decrease path (after the unk_04 store), with the switch on duty after unk_24; (4) the decrease
+// path is a plain `if (bad) { dir = ...; goto skip; } unk_04 = freq; duty = ...;` (no else / else if (1)).
+// The leftover move: uopt colours the `duty & 8` temp t3 and dir t2; as1 does not fold the move here
+// (it does in func_8004A474, same uopt output shape). Older notes follow.
 // Hand-written (no m2c). Score 975 over the whole function (diff.py without -s and with func_8004A474 left as
 // GLOBAL_ASM; fd.sh's -s stops at the first jr ra; was 3565). Wins: `default:` last with no break,
 // one u32 temp for duty / NR12 / NR10 (target t0), `(u8)(nr14 & 7) << 8`, fail-first
@@ -316,7 +327,9 @@ s16 func_80049DF0(void) {
     u32 pos;
     s32 dir;
     s16 value;
+    u8* p;
 
+    p = (u8*)D_800FD008;
     changed = 0;
     for (i = 0; i < 5; i++) {
         if (D_800FD008[i].dirty != 0) {
@@ -377,6 +390,7 @@ s16 func_80049DF0(void) {
             D_800FD008[0x16].value &= ~1;
             return 0;
         }
+        duty = D_800FD008[2].value;
         if (dir && !(duty & 0xF0) && !(duty & 7)) {
             D_800FCF60.unk_2C = 0;
             D_800FD008[0x16].value &= ~1;
@@ -436,16 +450,17 @@ s16 func_80049DF0(void) {
                 return 0;
             }
             D_800FCF60.unk_04 = freq;
+            duty = (p[2] & 0xC0) >> 6;
         } else {
             freq = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
             if (freq >= 0x800 || freq < 0) {
+                dir = p[4] & 8;
                 goto skip;
-            } else if (1) {
-                D_800FCF60.unk_04 = freq;
             }
+            D_800FCF60.unk_04 = freq;
+            duty = (p[2] & 0xC0) >> 6;
         }
         D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
-        duty = (D_800FD008[1].value & 0xC0) >> 6;
         switch (duty) {
             case 0:
                 D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
@@ -480,18 +495,18 @@ s16 func_80049DF0(void) {
                 D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
         }
     }
+    dir = p[4] & 8;
 skip:
     if (D_800FCF60.unk_14 < D_800FCF60.unk_00) {
         D_800FCF60.unk_0C += D_800FCF60.unk_0E;
         D_800FCF60.unk_14 += D_800FCF60.unk_10;
     }
-    changed = D_800FD008[2].value & 8;
     while (D_800FCF60.unk_20 < D_800FCF60.unk_00) {
         D_800FCF60.unk_1E ^= 1;
         D_800FCF60.unk_20 += D_800FCF60.unk_18[D_800FCF60.unk_1E];
     }
 
-    if (!changed && (D_800FCF60.unk_0C < 0)) {
+    if (!dir && (D_800FCF60.unk_0C < 0)) {
         D_800FCF60.unk_2C = 0;
         return 0;
     }
