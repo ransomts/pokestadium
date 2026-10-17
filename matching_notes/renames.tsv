@@ -249,3 +249,8 @@ func_8002FA40	Gallery_Run	b15		the Snap/Gallery main loop ('SNPM' + 'galy' pool 
 func_800318B8	Cam_ClearActive2	b15		NULLs the second camera object pointer D_80075F84 (gallery camera teardown)	applied@e5a6001
 func_800318C4	IsMonIndexDisplayable	b15		valid mon display index check: 1..0x97 (151 species) or 0x99 (egg), used to filter gallery/snap subjects	applied@e5a6001
 func_80031910	Matrix_BillboardBetween	b15		builds a yaw+pitch rotation facing from one point to another (guRotate Y then Z from Atan2s of the deltas) - the billboard orientation	applied@e5a6001
+func_80016700	Anim_GetScalar	b16		animation channel value: direct keyframe (unk_04/1000) or interpolated from the frame table (unk_0C) by current frame unk_02	applied@f8657e3
+func_800167B4	Anim_GetRotation	b16		rotation channel (unk_06 * 0x10), direct or keyframed via func_80010500 with 0xC-bit packing	applied@f8657e3
+func_80016848	Anim_GetPosition	b16		position channel with the 4-bit flag variant (unk_08 direct/interpolated) and table fallback	applied@f8657e3
+func_800171A8	Anim_GetTransformTriple	b16		reads position + rotation + scale triples for three consecutive channel indices from the active D_800ABCC0 animation into Vec3f/Vec3s/Vec3f outputs	applied@f8657e3
+func_800196DC	Sched_InitThreads	b16		creates the scheduler message queues (unk_9D0 8-deep, unk_9EC 1-deep) and starts thread 7 (func_80019600, prio 0xA); called from Game_Thread before the state loop	applied@f8657e3

@@ -11,7 +11,7 @@ typedef struct unk_func_80016B30_arg0 {
 static unk_D_800ABCC0 D_800ABCC0[2];
 static s32 D_800ABCF0;
 
-f32 func_80016700(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 Anim_GetScalar(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 ret;
     s32 var_a2;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -31,7 +31,7 @@ f32 func_80016700(unk_D_800ABCC0* arg0, s32 arg1) {
     return ret;
 }
 
-s16 func_800167B4(unk_D_800ABCC0* arg0, s32 arg1) {
+s16 Anim_GetRotation(unk_D_800ABCC0* arg0, s32 arg1) {
     s32 var_a1;
     s16 var_v1;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -49,7 +49,7 @@ s16 func_800167B4(unk_D_800ABCC0* arg0, s32 arg1) {
     return var_v1;
 }
 
-f32 func_80016848(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 Anim_GetPosition(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16 var_a2;
     s32 var_a1;
@@ -297,7 +297,7 @@ void func_80017188(void) {
     }
 }
 
-void func_800171A8(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
+void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
     if ((D_800ABCF0 >= 0) && (D_800ABCF0 < 2)) {
         unk_D_800ABCC0* temp_s0 = &D_800ABCC0[D_800ABCF0];
 
@@ -315,17 +315,17 @@ void func_800171A8(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
                 arg2->y = func_80016D20(temp_s0, arg3 + 1);
                 arg2->z = func_80016D20(temp_s0, arg3 + 2);
             } else {
-                arg0->x = func_80016848(temp_s0, arg3 + 0);
-                arg0->y = func_80016848(temp_s0, arg3 + 1);
-                arg0->z = func_80016848(temp_s0, arg3 + 2);
+                arg0->x = Anim_GetPosition(temp_s0, arg3 + 0);
+                arg0->y = Anim_GetPosition(temp_s0, arg3 + 1);
+                arg0->z = Anim_GetPosition(temp_s0, arg3 + 2);
 
-                arg1->x = func_800167B4(temp_s0, arg3 + 0);
-                arg1->y = func_800167B4(temp_s0, arg3 + 1);
-                arg1->z = func_800167B4(temp_s0, arg3 + 2);
+                arg1->x = Anim_GetRotation(temp_s0, arg3 + 0);
+                arg1->y = Anim_GetRotation(temp_s0, arg3 + 1);
+                arg1->z = Anim_GetRotation(temp_s0, arg3 + 2);
 
-                arg2->x = func_80016700(temp_s0, arg3 + 0);
-                arg2->y = func_80016700(temp_s0, arg3 + 1);
-                arg2->z = func_80016700(temp_s0, arg3 + 2);
+                arg2->x = Anim_GetScalar(temp_s0, arg3 + 0);
+                arg2->y = Anim_GetScalar(temp_s0, arg3 + 1);
+                arg2->z = Anim_GetScalar(temp_s0, arg3 + 2);
             }
         }
     }

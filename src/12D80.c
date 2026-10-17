@@ -715,7 +715,7 @@ void func_800143C0(GraphNode* arg0) {
     sp78 = arg->unk_24;
 
     func_8000E990(&sp84, &arg->unk_18);
-    func_800171A8(&sp84, &sp90, &sp78, arg->unk_32 * 3);
+    Anim_GetTransformTriple(&sp84, &sp90, &sp78, arg->unk_32 * 3);
 
     if (arg->unk_31 & 2) {
         Matrix_BuildObjectTransform(&sp38, &sp84, &sp90, &sp78, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
