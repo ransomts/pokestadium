@@ -2409,7 +2409,7 @@ void func_8437B0CC(unk_D_843C60A4 *arg0, unk_D_843C60A4 *arg1, u8 arg2, unk_func
         if (arg4)
       {
         temp_s3 = &temp_s4->unk_12;
-        if (((func_84377644(arg1, 7) == 0) && ((!(temp_s3->unk_4D & 0x10)) & 0xFFFFFFFFFFFFFFFFu)) && (temp_s3->unk_15 == 0))
+        if (((func_84377644(arg1, 7) == 0) && (!(temp_s3->unk_4D & 0x10))) && (temp_s3->unk_15 == 0))
         {
           var_s1 += spB7 * 5;
           if (func_843776FC(temp_fp, temp_fp, 0x8A) != 0)
@@ -2597,7 +2597,7 @@ void func_8437B0CC(unk_D_843C60A4 *arg0, unk_D_843C60A4 *arg1, u8 arg2, unk_func
               var_s1 += spB6 * 3;
             }
           }
-          if ((func_84377FA4(temp_fp, arg0, &sp103, 1, &sp104) != 0) && (temp_s3->unk_2E >= arg0->unk_14[sp103].unk_12.unk_2E))
+          if ((func_84377FA4(temp_fp, arg0, &sp103, 1, &sp104) != 0) && (temp_s3->unk_2E >= arg0->unk_14[(unsigned long long) sp103].unk_12.unk_2E))
           {
             var_s1 += spBA * 3;
           }
@@ -3309,7 +3309,7 @@ void func_8437B0CC(unk_D_843C60A4 *arg0, unk_D_843C60A4 *arg1, u8 arg2, unk_func
         }
         if (temp_s3->unk_5C[3] != 7)
         {
-          var_s1 = (0, (var_s1 - (temp_s3->unk_5C[3] * 7)) + 0x31);
+          var_s1 = (var_s1 - (temp_s3->unk_5C[3] * 7)) + 0x31;
           var_s0 = 1;
         }
         if (temp_s3->unk_5C[4] != 7)
