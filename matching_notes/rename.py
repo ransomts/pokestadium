@@ -244,13 +244,23 @@ def preflight(rows, protected, named, allow_applied_skip=True):
             if r.status != "noop":
                 errors.append(f"{tag}: old == new but status is not 'noop'")
             continue
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", r.new):
+        if r.is_field_row():
+            for part in re.split(r"[.:]", r.old) + re.split(r"[.:]", r.new):
+                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", part):
+                    errors.append(f"{tag}: invalid field-path component {part!r} in {r.old!r} -> {r.new!r}")
+        elif not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", r.new):
             errors.append(f"{tag}: invalid identifier {r.new!r}")
             continue
         if r.new.startswith(PLACEHOLDER_PREFIXES):
             errors.append(f"{tag}: new name {r.new!r} looks like a placeholder")
         if r.old in protected:
             errors.append(f"{tag}: {r.old} is protected (renames_protected.txt)")
+        if r.is_field_row():
+            # field rows are refused when their STRUCT type is protected (the farm-merge closure):
+            # renaming members of a struct the open drafts use desyncs farm candidates.
+            prefix = re.split(r"[.:]", r.old, 1)[0]
+            if prefix in protected:
+                errors.append(f"{tag}: field row on protected struct {prefix} (farm-merge closure)")
         if r.new in named or r.new in protected:
             errors.append(f"{tag}: new name {r.new!r} is already in use / protected")
         if r.old in seen_old:
