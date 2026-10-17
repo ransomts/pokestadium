@@ -930,16 +930,16 @@ void func_84101EC8(void) {
     D_84103CC8 = 0;
     func_80006C6C(0xA);
     while (func_80007604() != 0) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_841014E4(0, 0, 0.0f);
     }
 
     for (i = 0; i < 10; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_841014E4(i, 0, 0.0f);
     }
     do {
-        func_800290B4();
+        Game_UpdateInputs();
         func_841014E4(0xA, 1, 0.0f);
         temp_v0 = func_84101D80();
     } while (temp_v0 == -1);
@@ -950,7 +950,7 @@ void func_84101EC8(void) {
         D_8410344C = BinArchive_GetFile(D_84103444, D_84102430[D_84103CC8]);
 
         for (i = 11; i < 21; i++) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_841014E4(i, 0, 0.0f);
         }
 
@@ -959,7 +959,7 @@ void func_84101EC8(void) {
         }
 
         for (i = 1; i < 10; i++) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_841014E4(0, 0, i / 10.0f);
         }
 
@@ -970,7 +970,7 @@ void func_84101EC8(void) {
         func_8000D278(0x14);
         func_80006CB4(0xA);
         while (func_80007604() != 1) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_841014E4(0xA, 0, 0.0f);
         }
         Stage_AdvanceN(2);

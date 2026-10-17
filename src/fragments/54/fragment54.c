@@ -168,7 +168,7 @@ void func_82B00BC8(void) {
     if (func_80007604 != NULL) {
         func_80006C6C(8);
         while (func_80007604() != 0) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_82B00B3C(0);
         }
     }
@@ -183,7 +183,7 @@ void func_82B00C24(void) {
     func_80006CB4(8);
 
     while (func_80007604() != 1) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_82B00B3C(0);
     }
 
@@ -200,18 +200,18 @@ s16 func_82B00CB4(void) {
     PlaySoundEffect(4);
 
     for (i = 1; i < 8; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_82B00B3C(i);
     }
 
     while (temp_s1 == 'exec') {
-        func_800290B4();
+        Game_UpdateInputs();
         temp_s1 = func_82B00A50();
         func_82B00B3C(i);
     }
 
     for (i = 7; i >= 0; i--) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_82B00B3C(i);
     }
 

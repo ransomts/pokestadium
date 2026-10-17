@@ -326,7 +326,7 @@ void func_84B014DC(void) {
 }
 
 void func_84B01538(void) {
-    func_800290B4();
+    Game_UpdateInputs();
     func_84B03814(D_84B19910);
     func_84B073D8(&D_84B25A28);
     func_84B014DC();
@@ -379,7 +379,7 @@ s32 func_84B01578(void) {
 }
 
 void func_84B016F4(void) {
-    func_800290B4();
+    Game_UpdateInputs();
     func_84B03814(D_84B19910);
     func_84B04A7C(&D_84B259A8);
     func_84B062E4(&D_84B259E8);
@@ -496,7 +496,7 @@ void func_84B01994(void) {
 }
 
 void func_84B01AA0(void) {
-    func_800290B4();
+    Game_UpdateInputs();
     func_84B03814(D_84B19910);
     func_84B0A1F4(&D_84B25A58);
     func_84B062E4(&D_84B259E8);
@@ -643,7 +643,7 @@ void func_84B0204C(void) {
     func_8004DF94(0x01100017, 0, 0);
 
     for (j = 0; j < 16; j++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B0117C(j);
         func_84B03814(D_84B19910);
         func_84B014DC();
@@ -654,7 +654,7 @@ void func_84B0204C(void) {
     }
 
     for (j = 0; j < 16; j++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B03814(D_84B19910);
         func_84B014DC();
     }
@@ -666,7 +666,7 @@ void func_84B02188(void) {
     func_8000D278(0x3C);
 
     for (i = 0; i < 16; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B01474(i);
         func_84B03814(D_84B19910);
         func_84B014DC();
@@ -681,13 +681,13 @@ void func_84B021FC(void) {
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B03814(D_84B19910);
         func_84B014DC();
     }
 
     for (i = 0; i < 16; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B03814(D_84B19910);
         func_84B014DC();
     }
@@ -1158,7 +1158,7 @@ s32 func_84B02F60(void) {
     func_8000D1F0(0x3F);
 
     for (i = 0; i < var_s1; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B03814(D_84B19910);
         func_84B04A7C(&D_84B259A8);
         func_84B014DC();
@@ -1168,7 +1168,7 @@ s32 func_84B02F60(void) {
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_84B03814(D_84B19910);
         func_84B04A7C(&D_84B259A8);
         func_84B014DC();

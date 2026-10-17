@@ -672,7 +672,7 @@ void func_84002430(void) {
         func_80006C6C(8);
 
         for (i = 0; i < 10; i++) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_800079C4();
             func_8001D924(D_84002D0C);
             Stage_Advance();
@@ -686,7 +686,7 @@ void func_840024B0(void) {
     func_80006CB4(8);
 
     while (func_80007604() != 1) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_800079C4();
         func_8001D924(D_84002D0C);
         Stage_Advance();

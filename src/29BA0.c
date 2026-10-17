@@ -636,7 +636,7 @@ void func_8002908C(s32 arg0) {
     }
 }
 
-void func_800290B4(void) {
+void Game_UpdateInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
@@ -676,7 +676,7 @@ void func_800291E0(void) {
     main_pool_pop_state('demo');
 }
 
-void func_80029310(void) {
+void Game_GoToTitle(void) {
     FRAGMENT_LOAD_AND_CALL(fragment35, 0, 0);
 
     main_pool_push_state('TITL');
@@ -692,7 +692,7 @@ void func_80029310(void) {
     gCurrentGameState = STATE_TITLE_SCREEN;
 }
 
-void func_800293CC(void) {
+void Game_RunTitleScreen(void) {
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment36, 0, &D_8007567C);
 
     if (gCurrentGameState == STATE_TITLE_SCREEN) {
@@ -764,20 +764,20 @@ void func_800296E0(void) {
     main_pool_pop_state('DBUG');
 }
 
-void func_80029828(void) {
+void Game_RunAreaSelect(void) {
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment37, 0, 0);
     D_80075674 = -1;
 }
 
-void func_80029884(void) {
+void Game_RunEventBattle(void) {
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment38, 0, 0);
 }
 
-void func_800298D4(void) {
+void Game_RunOptions(void) {
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment56, 0, 0);
 }
 
-void func_80029924(void) {
+void Game_RunMenuSelect(void) {
     s32 from_title_screen = gLastGameState == STATE_TITLE_SCREEN;
 
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment57, 0, from_title_screen);
@@ -934,7 +934,7 @@ s32 func_80029E78(s16 arg0) {
     return arg0;
 }
 
-void func_8002A06C(void) {
+void Game_RunFreeBattle(void) {
     s16 sp4E = 1;
 
     while ((sp4E > 0) && (sp4E < 4)) {
@@ -1005,7 +1005,7 @@ s16 func_8002A260(s16 arg0) {
     return arg0;
 }
 
-void func_8002A400(void) {
+void Game_RunVsMewtwo(void) {
     s16 sp4E = 1;
 
     func_800290E4(0x18);
@@ -1050,24 +1050,24 @@ void func_8002A400(void) {
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-void func_8002A670(void) {
+void Game_RunKidsClub(void) {
     func_8002F2A0();
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-void func_8002A698(void) {
+void Game_RunGallery(void) {
     func_8002FA40();
     gCurrentGameState = STATE_MENU_SELECT;
 }
 
-void func_8002A6C0(void) {
+void Game_RunVictoryPalace(void) {
     if (FRAGMENT_LOAD_AND_CALL(fragment50, 0, 0) == 1) {
         func_800290E4(0x1A);
     }
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-void func_8002A728(void) {
+void Game_RunGbTower(void) {
     s32 sp34;
     UnkInputStruct8000D738 sp2C;
     unk_func_8002A728 sp24;
@@ -1155,7 +1155,7 @@ s16 func_8002A8A0(s16 arg0, s16 arg1) {
     return arg0;
 }
 
-void func_8002AAA8(void) {
+void Game_RunGymLeaderCastle(void) {
     s16 sp4E = 1;
     s16 sp4C = 0;
 
@@ -1343,52 +1343,52 @@ void Game_Thread(UNUSED LEODiskID* arg) {
 
         switch (state) {
             case STATE_N64_LOGO_INTRO:
-                func_80029310();
+                Game_GoToTitle();
                 break;
             case STATE_TITLE_SCREEN:
-                func_800293CC();
+                Game_RunTitleScreen();
                 break;
             case STATE_N64DD_BOOT_UNUSED:
                 func_800296AC();
                 break;
             case STATE_AREA_SELECT:
-                func_80029828();
+                Game_RunAreaSelect();
                 break;
             case STATE_GALLERY:
-                func_8002A698();
+                Game_RunGallery();
                 break;
             case STATE_EVENT_BATTLE:
-                func_80029884();
+                Game_RunEventBattle();
                 break;
             case STATE_OPTIONS:
-                func_800298D4();
+                Game_RunOptions();
                 break;
             case STATE_MENU_SELECT:
-                func_80029924();
+                Game_RunMenuSelect();
                 break;
             case STATE_STADIUM_MENU:
                 func_80029BC0();
                 break;
             case STATE_FREE_BATTLE:
-                func_8002A06C();
+                Game_RunFreeBattle();
                 break;
             case STATE_VS_MEWTWO:
-                func_8002A400();
+                Game_RunVsMewtwo();
                 break;
             case STATE_KIDS_CLUB:
-                func_8002A670();
+                Game_RunKidsClub();
                 break;
             case STATE_VICTORY_PALACE:
-                func_8002A6C0();
+                Game_RunVictoryPalace();
                 break;
             case STATE_POKEMON_LAB:
-                func_8002EF44();
+                Game_RunPokemonLab();
                 break;
             case STATE_GB_TOWER:
-                func_8002A728();
+                Game_RunGbTower();
                 break;
             case STATE_GYM_LEADER_CASTLE:
-                func_8002AAA8();
+                Game_RunGymLeaderCastle();
                 break;
             case STATE_BATTLE_NOW_1P:
                 func_8002ADE8(1);
@@ -1413,7 +1413,7 @@ void Game_Thread(UNUSED LEODiskID* arg) {
                 break;
             // same as state 1: N64 Logo + Intro.
             default:
-                func_80029310();
+                Game_GoToTitle();
                 break;
         }
 

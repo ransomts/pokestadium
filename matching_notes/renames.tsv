@@ -146,3 +146,18 @@ func_80025EF8	GbsClearBlock	b3		zeroes a block, sets its dirty bit, marks the sa
 D_800AE4E8	gGbsSaveBanks	b3		save-bank descriptor array: unk_00 flags (dirty/valid), unk_04 primary view, unk_08 backup view; indexed by save slot	applied@222697e
 func_80026268	Mon_InitFromSaveEntry	b3		converts a raw save mon entry into the battle-mon struct: func_80021D9C + CalculatePokemonStats + nickname/OT name conversions (EncodeGen1String)	applied@222697e
 func_800262DC	Mon_WriteToSaveEntry	b3		reverse conversion: stats back + EncodeGen1String of nickname/OT + bcopy into the save entry	applied@222697e
+func_80029310	Game_GoToTitle	b4		STATE_N64_LOGO_INTRO handler from the dispatcher: fragment35 + stage setup + the demo/intro call, sets STATE_TITLE_SCREEN	applied@0546dca
+func_800293CC	Game_RunTitleScreen	b4		STATE_TITLE_SCREEN handler: fragment36 sets the next state; title demo playback on return	applied@0546dca
+func_80029828	Game_RunAreaSelect	b4		STATE_AREA_SELECT handler: gCurrentGameState = fragment37	applied@0546dca	pending
+func_80029884	Game_RunEventBattle	b4		STATE_EVENT_BATTLE handler: gCurrentGameState = fragment38	applied@0546dca	pending
+func_800298D4	Game_RunOptions	b4		STATE_OPTIONS handler: gCurrentGameState = fragment56	applied@0546dca	pending
+func_80029924	Game_RunMenuSelect	b4		STATE_MENU_SELECT handler: fragment57 with the from-title flag (gLastGameState == STATE_TITLE_SCREEN)	applied@0546dca
+func_8002A698	Game_RunGallery	b4		STATE_GALLERY handler (dispatcher case mapping)	applied@0546dca
+func_8002A06C	Game_RunFreeBattle	b4		STATE_FREE_BATTLE handler (dispatcher case mapping)	applied@0546dca
+func_8002A400	Game_RunVsMewtwo	b4		STATE_VS_MEWTWO handler (dispatcher case mapping)	applied@0546dca
+func_8002A670	Game_RunKidsClub	b4		STATE_KIDS_CLUB handler (dispatcher case mapping)	applied@0546dca
+func_8002A6C0	Game_RunVictoryPalace	b4		STATE_VICTORY_PALACE handler (dispatcher case mapping)	applied@0546dca
+func_8002EF44	Game_RunPokemonLab	b4		STATE_POKEMON_LAB handler (dispatcher case mapping)	applied@0546dca
+func_8002A728	Game_RunGbTower	b4		STATE_GB_TOWER handler (dispatcher case mapping)	applied@0546dca
+func_8002AAA8	Game_RunGymLeaderCastle	b4		STATE_GYM_LEADER_CASTLE handler (dispatcher case mapping)	applied@0546dca
+func_800290B4	Game_UpdateInputs	b4		Cont_StartReadInputs + Cont_ReadInputs + the menu-input reset - the per-frame input pump	applied@0546dca

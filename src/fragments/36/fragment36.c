@@ -297,7 +297,7 @@ s32 func_821009B4(void) {
             }
         }
 
-        func_800290B4();
+        Game_UpdateInputs();
 
         if ((gPlayer1Controller->buttonPressed & 0x9000) && (D_82100EC8 != 0)) {
             PlaySoundEffect(0xF);
@@ -321,7 +321,7 @@ void func_82100AB8(void) {
     if (func_80007604() == 1) {
         func_80006C6C(0xA);
         while (func_80007604() != 0) {
-            func_800290B4();
+            Game_UpdateInputs();
             func_821005EC();
         }
     }
@@ -337,7 +337,7 @@ void func_82100B1C(s32 arg0) {
     func_80006CB4(8);
 
     while (func_80007604() != 1) {
-        func_800290B4();
+        Game_UpdateInputs();
         func_821005EC();
     }
 }
