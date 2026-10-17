@@ -43,6 +43,20 @@ for vi, variant in enumerate(open(spec).read().split("=====\n")):
     if os.path.exists(obj):
         os.remove(obj)  # NFS stale-object trap: never trust a cached .o (see IDO_TRICKS)
     print("=== variant", vi, variant.strip().splitlines()[0][:60], flush=True)
-    subprocess.run([FD, f, func, lines])
+    # Full score: NO -s, uncapped. fd.sh's -s + 1000-line cap produced fantasy scores on
+    # early-return/big functions (three documented incidents on 2026-10-17) - do not rank with them.
+    env = dict(os.environ, PATH=f"{REPO}/.venv/bin:~/local/bin".replace("~", os.path.expanduser("~")) + ":/usr/local/bin:/usr/bin:/bin")
+    make = subprocess.run(["make", obj, f"PYTHON={REPO}/.venv/bin/python3"], cwd=REPO, env=env,
+                          capture_output=True, text=True)
+    errs = [l for l in (make.stdout + make.stderr).splitlines() if "rror" in l and "cfe: Warning" not in l]
+    if errs:
+        print("BUILD ERROR:", errs[:2])
+    else:
+        d = subprocess.run([f"{REPO}/.venv/bin/python3", "-W", "ignore",
+                            f"{REPO}/tools/asm-differ/diff.py", "-o", func, "--format", "plain",
+                            "--max-lines", "30000"], cwd=REPO, capture_output=True, text=True)
+        for l in d.stdout.splitlines():
+            if "CURRENT" in l:
+                print(l.strip())
     if "--keep" not in sys.argv:
         open(path, "w").write(orig)
