@@ -100,6 +100,18 @@ Rules learned:
 - Definitions go after the owner's own extern; declarations are ranked owner > sized > unsized, and
   sources are walked in sorted order (placement once depended on filesystem order and differed by node).
 - `survey` READY is optimistic (apply can still refuse: GLOBAL_ASM literals, nonzero slack bytes).
+- Main-segment .rodata 7C1C0 + 7C220 + 7C750 (271 strings: "No"..., 165 x "skill", item names) are
+  anonymous string literals of 22630.c's data tables: every string is pointed to exactly once from
+  rom_data_71BA1 (D_80072338 move table -> "skill", D_80072EE0 char*[84] -> item names), and the
+  blobs sit right before `.rodata, 22630` (0x7CCA0). IDO emits literals from data initializers into
+  .rodata in source order, one copy per use, each padded to 4 (tested 2026-10-16), so defining the
+  tables with inline literals before 22630's functions re-creates the blobs; yaml then starts
+  `.rodata, 22630` at 0x7C1C0. Ownership of the .data side: 22630 owns 703E0 and 71BA1 up to
+  D_80073230 (D_80072B00 too, used by 232C0 via extern: otherwise owners interleave); 232C0 owns
+  D_80073230 on. datamig's inference picked fragment62 for D_80070FA0..D_80072AF4 because a fragment
+  uses them: fragments cannot own main-segment data (fix: only same-segment users are candidates).
+  Still manual: D_8006FF00[152] overlaps D_80070F84 (= &D_8006FF00[151], typed PokemonStats[]) and
+  the table runs on into 71BA1; D_8006FEE8 is a fake offset symbol into D_8006FF00.
 What blocks the remaining files (needs an agent, not the script): labels with no C user (only
 referenced from other data or GLOBAL_ASM; owner = surrounding owner, decided by hand), externs with
 the wrong type (`extern u16` on a 12-byte object: real type must be worked out from the users), and
