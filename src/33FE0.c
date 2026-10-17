@@ -698,7 +698,8 @@ void func_80034254(StadiumModel* model) {
 // Vec3f* / ModelVertex* pointers (13193); computing nx before ny in the m2c draft (~3600); inlining
 // e1x/e2x (3280-5172); named edges (all subsets); len reused / separate scale var / inline 120/len;
 // D_800B2F50[ia].x += form; -Wo,-rege/-regr (no effect on FPRs).
-// Round 8 pass 4 (agent-15): 2582 -> 1298. From farm j2 output-1458: a uopt basic-block boundary
+// Round 8 pass 4 (agent-15): 2582 -> 705: named ay loaded AFTER a block boundary placed after the by
+// load (sweep of ay position x boundary position; earlier step, 1298, below). From farm j2 output-1458: a uopt basic-block boundary
 // right after the bx load (`if (0) {}`, an empty goto label or `switch (0) { default:; }` all give
 // the same code; `do {} while (0)` / `while (0) {}` / bare label do not) plus a named
 // `e = by - ay` used only in nx (nz keeps the inline form; using e in nz too is 3700+). Block
@@ -713,10 +714,10 @@ void func_80034254(StadiumModel* model) {
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 ax;
+    f32 ay;
     f32 az, bx, by, bz, cx, cy, cz;
     f32 nx, ny, nz;
     f32 len;
-    f32 e;
     s16 ia, ib, ic;
     s32 pad1[10];
     f32 count;
@@ -745,17 +746,17 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         az = (vertices + ia)->position.base.z;
         ib = remap[*index++];
         bx = (vertices + ib)->position.base.x;
-        if (0) {}
         by = (vertices + ib)->position.base.y;
+        if (0) {}
         bz = (vertices + ib)->position.base.z;
-        e = by - (vertices + ia)->position.base.y;
+        ay = (vertices + ia)->position.base.y;
         ic = remap[*index++];
         cx = (vertices + ic)->position.base.x;
         cy = (vertices + ic)->position.base.y;
         cz = (vertices + ic)->position.base.z;
-        nx = (e * (cz - bz)) - ((bz - az) * (cy - by));
+        nx = ((by - ay) * (cz - bz)) - ((bz - az) * (cy - by));
         ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
-        nz = ((bx - ax) * (cy - by)) - ((by - (vertices + ia)->position.base.y) * (cx - bx));
+        nz = ((bx - ax) * (cy - by)) - ((by - ay) * (cx - bx));
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
         if ((s32) len > 0) {
             len = 120.0f / len;
