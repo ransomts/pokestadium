@@ -1056,7 +1056,7 @@ void Game_RunKidsClub(void) {
 }
 
 void Game_RunGallery(void) {
-    func_8002FA40();
+    Gallery_Run();
     gCurrentGameState = STATE_MENU_SELECT;
 }
 

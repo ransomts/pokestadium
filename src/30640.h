@@ -133,7 +133,7 @@ typedef struct unk_D_83407B38 {
 
 extern unk_D_83407B00 D_83407B30;
 
-void func_8002FA40(void);
+void Gallery_Run(void);
 void Cam_CallInit318B8(void);
 void Cam_ResetUnkF90(void);
 void func_8003107C(unk_D_83402EE0_070*, unk_func_80026268_arg0*);
@@ -143,8 +143,8 @@ u8* func_80031660(unk_func_80031270*);
 s32 func_800317D8(unk_func_80031270*);
 s32 func_8003181C(unk_func_80031270**, s32);
 unk_func_80031270* func_800318AC(void);
-void func_800318B8(void);
-s32 func_800318C4(unk_D_83403C60*);
+void Cam_ClearActive2(void);
+s32 IsMonIndexDisplayable(unk_D_83403C60*);
 f32 func_80031A6C(f32);
 void func_80031A94(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
 void func_80031B04(f32*, f32*, f32*);

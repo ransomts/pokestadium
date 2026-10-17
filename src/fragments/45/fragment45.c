@@ -35,9 +35,9 @@ void func_83600020(unk_D_83407B38* arg0) {
     sp40 = 0;
 
     for (i = 35; i >= 0; i--) {
-        if (func_800318C4(&D_83403C60[i]) == 0) {
+        if (IsMonIndexDisplayable(&D_83403C60[i]) == 0) {
             idx = i;
-            while ((idx > 0) && func_800318C4(&D_83403C60[idx - 1]) == 0) {
+            while ((idx > 0) && IsMonIndexDisplayable(&D_83403C60[idx - 1]) == 0) {
                 idx--;
             }
             sp40 = idx;
@@ -71,7 +71,7 @@ s32 func_83600288(void) {
     s32 sp28 = 0;
 
     for (i = 0; i < 0x18; i++) {
-        if ((func_800318C4(&D_83402EE0[i]) != 0) && (D_83403C00[i] == 0)) {
+        if ((IsMonIndexDisplayable(&D_83402EE0[i]) != 0) && (D_83403C00[i] == 0)) {
             sp28 = 1;
             break;
         }

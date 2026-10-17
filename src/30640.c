@@ -83,10 +83,10 @@ extern f64 D_8007C560;
 extern f64 D_8007C568;
 extern f64 D_8007C570;
 
-void func_800318B8(void);
+void Cam_ClearActive2(void);
 void func_8340051C(void);
 
-void func_8002FA40(void) {
+void Gallery_Run(void) {
     s32 var_s6;
     u32* temp_s0;
     u32 var_s0;
@@ -253,7 +253,7 @@ void func_8002FA40(void) {
 }
 
 void Cam_CallInit318B8(void) {
-    func_800318B8();
+    Cam_ClearActive2();
 }
 
 void Cam_ResetUnkF90(void) {
@@ -763,7 +763,7 @@ s32 func_800317D8(unk_func_80031270* arg0) {
         if (temp_a0 != 0) {
             sp1C = 0;
             var_v1 = sp1C;
-            if (func_800318C4(temp_a0) != 0) {
+            if (IsMonIndexDisplayable(temp_a0) != 0) {
                 var_v1 = 1;
             }
         }
@@ -792,11 +792,11 @@ unk_func_80031270* func_800318AC(void) {
     return D_80075F84;
 }
 
-void func_800318B8(void) {
+void Cam_ClearActive2(void) {
     D_80075F84 = 0;
 }
 
-s32 func_800318C4(unk_D_83403C60* arg0) {
+s32 IsMonIndexDisplayable(unk_D_83403C60* arg0) {
     s32 v1 = 0;
 
     if ((arg0->unk_00.unk_04 > 0 && arg0->unk_00.unk_04 < 0x98) || arg0->unk_00.unk_04 == 0x99) {
@@ -809,7 +809,7 @@ void func_800318F0(void) {
     func_80036790();
 }
 
-void func_80031910(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+void Matrix_BillboardBetween(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     f32 sp144;
     f32 sp140;
     f32 temp_fa0;

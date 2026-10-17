@@ -245,3 +245,7 @@ func_800327CC	Gfx_SetCombineRaw	b14		17-arg raw gDPSetCombine wrapper (GCCc0w0/G
 func_8001A024	SpriteDisplay_Alloc	b14		allocates the display manager: N image slots (each with own unk_D_80068BB0 framebuffer), parent node, anim table	applied@9f9a004
 func_8001A258	SpriteDisplay_Clear	b14		clears all slots: frees the node, zeroes every slot flag and bzeroes each image buffer	applied@9f9a004
 func_8001A324	SpriteDisplay_SetupSlot	b14		zeroes slot arg1's image and sets its mon index (1..0x97), starting frame, framerate (unk_18[mon-1].unk_02/100) and x offset (-0xE38 or table-relative)	applied@9f9a004
+func_8002FA40	Gallery_Run	b15		the Snap/Gallery main loop ('SNPM' + 'galy' pool states, fragment42/15 flow); called by the STATE_GALLERY handler	applied@e5a6001
+func_800318B8	Cam_ClearActive2	b15		NULLs the second camera object pointer D_80075F84 (gallery camera teardown)	applied@e5a6001
+func_800318C4	IsMonIndexDisplayable	b15		valid mon display index check: 1..0x97 (151 species) or 0x99 (egg), used to filter gallery/snap subjects	applied@e5a6001
+func_80031910	Matrix_BillboardBetween	b15		builds a yaw+pitch rotation facing from one point to another (guRotate Y then Z from Atan2s of the deltas) - the billboard orientation	applied@e5a6001

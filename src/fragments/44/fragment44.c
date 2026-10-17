@@ -232,9 +232,9 @@ void func_8350057C(s32 arg0, s32 arg1) {
         unk_D_83403C60* ptr = &D_83403C60[i];
 
         D_83504090[i] = 0;
-        if (func_800318C4(ptr) != 0) {
+        if (IsMonIndexDisplayable(ptr) != 0) {
             for (j = 0; j < 21; j++) {
-                if ((func_800318C4(&D_834063C0[j]) != 0) && (func_83400660(&D_834063C0[j], ptr) != 0)) {
+                if ((IsMonIndexDisplayable(&D_834063C0[j]) != 0) && (func_83400660(&D_834063C0[j], ptr) != 0)) {
                     if (j < 4) {
                         D_83504090[i] |= 1;
                     } else {

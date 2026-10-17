@@ -255,10 +255,10 @@ s32 func_83400704(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
 
     for (i = 0; i < arg1; i++) {
         if (arg2 != 0) {
-            if (func_800318C4(&arg0[i]) != 0) {
+            if (IsMonIndexDisplayable(&arg0[i]) != 0) {
                 var_s0++;
             }
-        } else if (func_800318C4(&arg0[i]) == 0) {
+        } else if (IsMonIndexDisplayable(&arg0[i]) == 0) {
             var_s0++;
         }
     }
@@ -271,7 +271,7 @@ s32 func_834007B4(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_s1 = -1;
 
     while (true) {
-        if (func_800318C4(&arg0[var_s0]) == 0) {
+        if (IsMonIndexDisplayable(&arg0[var_s0]) == 0) {
             var_s1++;
         }
 
@@ -289,7 +289,7 @@ s32 func_83400870(unk_D_83403C60* arg0, s32 arg1) {
     s32 sp28 = -1;
 
     for (i = 0; i < arg1; i++) {
-        if (func_800318C4(&arg0[i]) == 0) {
+        if (IsMonIndexDisplayable(&arg0[i]) == 0) {
             sp28 = i;
             break;
         }
@@ -548,7 +548,7 @@ void func_834020D8(void) {
 
     if ((temp_v0 != NULL) && (temp_v0->unk_00 == 2)) {
         main_pool_pop_state('albu');
-        func_800318B8();
+        Cam_ClearActive2();
     }
 }
 
