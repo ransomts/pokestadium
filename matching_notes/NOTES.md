@@ -594,4 +594,8 @@ func_8437B0CC 7934. Each draft's // comment has the model of what still differs 
 Farm (tags p2 GB APU, q 86905734, r 88805AEC/88304850, s 84367660, j 80034348) keeps running.
 Tools added: adopt_candidate.py, try_candidate.py, ccs.py (cc -S for one function), datamig.py,
 phased_job.sh; agent_setup.sh now links assets/.
+Round 8 late passes (01:45-04:45): matched func_8004A474, func_84367660 (agent-13, uopt copy-propagation
+model in IDO_TRICKS.md), func_80049DF0 (agent-14). Open (non-parked) at 04:45, scores without -s:
+func_8004A89C 345, func_80034348 705, func_86905734 1386, func_88304850 2834, func_88805AEC 4600,
+func_8437B0CC 7809. Farm jobs v (8004A89C, 80034348) and w (86905734, 88304850, 88805AEC), 10 h.
 
