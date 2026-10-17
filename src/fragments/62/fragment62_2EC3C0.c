@@ -1252,6 +1252,19 @@ void func_84304F54(unk_D_84390010* arg0) {
 // "!!", "== 1", "!= 0" on the call results, "!(a || b)" forms, ptr reuse for the A80/B20/
 // unk_000[sp48] lines, sp30 reuse for the D_84390010[sp40] uses, (*(D_84390010+sp40)),
 // unk_000+sp48, sp48 initialiser, nested ifs, if(1){} after the unk_4C4 store.
+// Round 8 (agent 4): the matched sibling func_843037CC (same prologue, same sp28 / sp40 /
+// D_84390010[sp40] pattern) also has a never-stored temp slot: its temps are [0x28 sp28val,
+// 0x24 unused, 0x20 sp40*4, 0x1C Daddr]. Ablations on that sibling: dropping the final
+// sp28->unk_44 || chain removes BOTH sp28val's slot and the unused one; writing its
+// sp28->unk_15 test as arg0->unk_654.unk_38.unk_15 removes only the unused one; deleting the
+// unk_15 test moves the unused slot BELOW sp40*4, i.e. exactly this target's [sp28val, v1, X,
+// Daddr] pattern. So X is most likely tied to how sp28 (the pointer variable) is used. Moving
+// "sp28 = ..." here (first / after the 4C4 store / before if1, 9 or 10 named) changes nothing;
+// putting it inside the big if leaves sp28val's slot reserved but unused. Dead copies stored
+// into ptr/ptr2 (sp28->unk_44.unk_00, sp28->unk_5A, D_84390010[sp40], &D_84384570[sp40]...)
+// at six positions are deleted before slot assignment (zero effect). Sibling-style decls
+// (temp_v0 for the first func_84307AE0 result, sp28 assigned first) give the same 4-line diff.
+// The farm ran 1.6M iterations without improvement, so this needs a source-level idea.
 void func_8430506C(unk_D_84390010* arg0) {
     unk_D_8438E7B0* ptr;
     s32 sp48;
