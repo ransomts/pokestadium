@@ -2290,6 +2290,13 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // Dead ends: declaration order never changes regalloc; sp58/temp_t0/sp78 as s32 (worse, frame
 // 0x118); s16/f32 var_s5; temp_s6 macro (worse); `j = 0` hoisting (IDO already does it).
 #ifdef NON_MATCHING
+// Round 9 (farm x1): best candidate real-scored 5479 (from the 6584 u64 state; spliced source
+// saved as matching_notes/func_8437B0CC_best5479.c). Its carrying edits are NOT just the second
+// u64 AND - that alone is 10054 uncapped (fd.sh's -s + 1000-line cap made it LOOK like 4213; the
+// cap illusion bit three times today: always score uncapped, no -s, forced rebuild). The candidate
+// also rewrites several condition paren groupings, `var_s1 += spBA` -> spB7, an extra
+// `func_843776FC(..., 0x49)` + `var_s1 -= spC0` block in a == 2 path, and `!= 0` spelling - needs
+// careful decomposition. The farm keeps exploring from it.
 void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func_843794CC* arg3, u8 arg4) {
     u8 i;
     u8 j;
