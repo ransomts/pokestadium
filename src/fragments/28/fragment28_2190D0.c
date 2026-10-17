@@ -3611,6 +3611,15 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // G_TX_RENDERTILE arg) change nothing on their own. The arg1 boundary splits the arg6 block so the
 // trailing gDPSetPrimColor args are sunk separately; the remaining diff is still the frame +8 (0x230 vs
 // 0x228) and the arg5-not-in-v1 rotation. Re-seed the farm from this.
+// Round 9 (agent-5): 3093 -> 2627 (no -s), FRAME NOW 0x228: `tmp = arg1 + arg3` moved to just after the
+// first gDPLoadTextureBlock (before `y5 = arg2`; 2779 alone) and `tmp2 = arg2 + arg4` to just after the
+// first rect (before the first switch). Temp-slot order now equals the target's (tmp, E4|tmp<<12,
+// (arg2+8)<<2, arg1<<14, arg2<<2, tmp2, ..., ((tmp2-arg4)+8)<<2) but every slot is 4 low (ours 0x40..0x24,
+// target 0x44..0x20; target has 3 never-stored slots between tmp2 and the last, ours 1).
+// Sweep (from 3093): tmp after strlen 5581; tmp2 after strlen / before rect1 5.2k-5.6k, after the first
+// switch 10.2k, just before its first use 2929. Renaming y5 to arg2 (with or without the no-op defs):
+// 19k (arg2 -> s1). A second variable for the tail (`y = y5 - 5;` for all or some later uses): 9.3k-9.9k
+// (y5 loses its only non-copy def and is folded back into arg2 -> s1).
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
@@ -3618,16 +3627,15 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     s32 tmp2;
     s32 y5;
 
-    tmp2 = arg2 + arg4;
-    tmp = arg1 + arg3;
-
     temp_v0 = strlen(D_88825BFC[D_88826A4E]);
 
     gDPLoadTextureBlock(arg0++, D_88823618, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP,
                         G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    tmp = arg1 + arg3;
     y5 = arg2;
     gSPTextureRectangle(arg0++, ((tmp)-8) << 2, y5 << 2, (tmp) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400,
                         0x0400);
+    tmp2 = arg2 + arg4;
 
     switch (arg5) {
         case 0:
