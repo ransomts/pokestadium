@@ -4139,6 +4139,13 @@ s32 func_88807AC0(void) {
 // blocks those two hoists (s4 still hoists). A branch to the very next insn, unreferenced
 // labels, .loc/.livereg/nop changes do NOT block it. So the original source most likely has
 // some control flow entering the if-body start (or the taken target keeps t0/t3/s4 live).
+// More dead ends (round 8): whole body in do{}while(0) / `while (x >= 0) {...; break;}` /
+// `x >= 0 && 1` (all 350, same as if(1)); `x >= 0 && x >= 0` 230 but keeps an extra
+// bltzl; `&& (i >= 0)` 235 (extra branch); `||` forms 1005; inner loop as for(;;) 1505;
+// do-while / goto outer loop 830; `!(x < 0)`, goto-skip 705. as1 side: unreferenced label,
+// branch-to-next, .loc/.livereg/nop/.noalias edits, moving the bltz target backwards, and
+// any reordering of the s0 block do NOT stop the hoist; an unreachable extra branch does
+// but stays in the output.
 #ifdef NON_MATCHING
 void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6) {
     s32 i;
