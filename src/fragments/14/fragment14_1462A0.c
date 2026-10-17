@@ -362,12 +362,12 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
 
     arg0->unk_24C.unk_000.unk_14 = arg0->unk_000;
 
-    func_8001BC34(sp24, 0, 0xA0, D_86807550->unk_08->unk_00[0]);
-    func_8001BD04(sp24, arg0->unk_0C0);
+    GraphNode_InitChild(sp24, 0, 0xA0, D_86807550->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(sp24, arg0->unk_0C0);
 
     sp24->unk_040.unk_08 = func_878001E8(0x1E) << 0x10;
 
-    func_8001BC34(&arg0->unk_24C, 0, 0, D_86808474);
+    GraphNode_InitChild(&arg0->unk_24C, 0, 0, D_86808474);
 
     arg0->unk_24C.unk_000.unk_01 |= 1;
     arg0->unk_24C.unk_000.unk_02 |= 8;
@@ -1428,7 +1428,7 @@ void func_86805000(unk_D_86807558* arg0) {
     ptr->unk_03C.rgba = arg0->unk_0D0.rgba;
 
     if (arg0->unk_0C4 != arg0->unk_0C0) {
-        func_8001BD04(&arg0->unk_0E4, arg0->unk_0C0);
+        GraphNode_TriggerAction(&arg0->unk_0E4, arg0->unk_0C0);
     }
 
     ptr->unk_040.unk_0C = (s32)(arg0->unk_0C8 * 65536.0f);

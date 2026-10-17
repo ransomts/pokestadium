@@ -52,7 +52,7 @@ void func_8431F610(unk_D_84390010* arg0) {
     if ((arg0->unk_000.unk_01A == 0x32) && (ptr->unk_34 & 0x4000)) {
         unk_D_8438E7B0_A50* tmp = &D_84384570[func_84307F00(arg0)]->unk_000[0x5A];
 
-        func_8001BD04(&arg0->unk_000, tmp->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, tmp->unk_00);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
     }
 }
@@ -485,7 +485,7 @@ void func_8432056C(void) {
     unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
 
     if ((func_8430CD0C() == 0) && (D_84390134 != 1)) {
-        func_8003DB84(1);
+        AudioFrameUpdate(1);
     }
 
     func_8431FC74();
@@ -782,7 +782,7 @@ void func_8432113C(void) {
 }
 
 void func_84321184(unk_D_86002F34_00C* arg0) {
-    func_8003DB84(0);
+    AudioFrameUpdate(0);
     func_8431AFD0(arg0, 20.0f, 12800.0f);
     func_8431F680();
     D_84390240.unk_00->unk_34 = 0;
@@ -837,7 +837,7 @@ void func_84321208(unk_D_86002F34_00C* arg0) {
     if ((sp2E == 0x32) || (sp2E == 0x33)) {
         D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_000.unk_02 |= 0x20;
         D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
-        func_8001BD04(&D_84390010[D_84390240.unk_00->unk_2C]->unk_000, sp28->unk_00);
+        GraphNode_TriggerAction(&D_84390010[D_84390240.unk_00->unk_2C]->unk_000, sp28->unk_00);
     }
 
     func_843087F8(D_84390010[D_84390240.unk_00->unk_2C]);
@@ -874,7 +874,7 @@ s32 func_84321594(unk_D_84390010* arg0) {
 
     func_8432B38C(arg0);
     sp28->unk_2E = 0xFF;
-    func_8001BE34(&arg0->unk_000, 0xFF, 0xFF, 0xFF, sp28->unk_2E);
+    GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, sp28->unk_2E);
     func_843066E0(arg0);
     arg0->unk_000.unk_01E.x = 0;
     return 0;
@@ -886,7 +886,7 @@ void func_84321698(unk_D_86002F34_00C* arg0) {
         func_80048014();
         func_8432E9D8(2);
         func_8431AE5C();
-        func_8003F1AC(func_84308D98(D_84390010[!D_84390240.unk_00->unk_2C]));
+        RemovePlayer(func_84308D98(D_84390010[!D_84390240.unk_00->unk_2C]));
 
         if (func_84321594(D_84390010[!D_84390240.unk_00->unk_2C]) != 0) {
             func_84305760(D_84390010[!D_84390240.unk_00->unk_2C], 0x11);
@@ -2615,7 +2615,7 @@ void func_84325E94(unk_D_86002F34_00C* arg0) {
                 Vec3f_Set(&sp3C, 0.0f, 200.0f, 0.0f);
                 func_8430C1E4(&arg0->unk_60.at, &sp3C);
                 func_8432E9D8(2);
-                func_8001BD04(&D_84390204->unk_000, sp4C->unk_00);
+                GraphNode_TriggerAction(&D_84390204->unk_000, sp4C->unk_00);
                 arg0->unk_24.fovy = 60.0f;
                 D_84390240.unk_00->unk_20 += 1;
             } else {
@@ -2866,7 +2866,7 @@ void func_84326AC4(unk_D_86002F34_00C* arg0) {
                 func_8431F500(D_84390204, arg0, 3);
                 func_8431B078(D_84390204);
                 func_8431F680();
-                func_8001BD04(&D_84390204->unk_000, sp1C->unk_00);
+                GraphNode_TriggerAction(&D_84390204->unk_000, sp1C->unk_00);
                 D_84390240.unk_00->unk_20 += 1;
             }
             break;
@@ -3267,11 +3267,11 @@ void func_84327DC0(unk_D_86002F34_00C* arg0) {
             if (D_84390240.unk_00->unk_34 == 1) {
                 func_8431FF70(arg0);
                 func_8431F420(temp_s0, arg0, 4);
-                func_8003F4C0(func_84308D98(temp_s0));
+                PlayerDefeated(func_84308D98(temp_s0));
                 D_84390240.unk_00->unk_20 += 1;
             } else if (func_8431D118(arg0, temp_s0, 1, 1) != 0) {
                 func_843184E4(0xA);
-                func_8003F4C0(func_84308D98(temp_s0));
+                PlayerDefeated(func_84308D98(temp_s0));
                 D_84390240.unk_00->unk_20 += 1;
             }
             break;

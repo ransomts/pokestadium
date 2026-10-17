@@ -39,7 +39,7 @@ static u32 D_83201F5C[] = {
     0x0D000000,  0x05000000, 0x0E000002,    0x05000000, 0x22010000, 0x8C200060, 0x06000000, 0x14000000, 0x002B0012,
     0xFFFFFF32,  0x16FFFFFF, 0x0F000003,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0x003CFF06, 0x00640064,
     0x00640000,  0x08000000, func_83200020, 0x00000000, 0x05000000, 0x00000000, D_8C200920, 0x06000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
 s32 func_83200020(s32 arg0, unk_D_86002F58_004_000* arg1) {
@@ -161,8 +161,8 @@ void func_832003AC(void) {
         D_83202004++;
         if (D_83202004 == 0x3C) {
             D_83202004 = 0;
-            func_8001BD9C(&D_83202028[0], -1);
-            func_8001BD9C(&D_83202028[0], 0xA);
+            GraphNode_TriggerSound(&D_83202028[0], -1);
+            GraphNode_TriggerSound(&D_83202028[0], 0xA);
         }
     }
 
@@ -170,7 +170,7 @@ void func_832003AC(void) {
         if (D_83201F50 != 0) {
             D_83202028[0].unk_000.unk_01 &= ~1;
         } else {
-            func_8001BD04(&D_83202028[0], 0);
+            GraphNode_TriggerAction(&D_83202028[0], 0);
         }
     }
 }
@@ -219,7 +219,7 @@ s32 func_8320058C(u8 arg0) {
     func_832003AC();
     func_83200468();
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     Graph_SetTextureState(D_83202010);
     return 0;
 }
@@ -484,8 +484,8 @@ s32 func_83200CD8(char* arg0) {
 void func_83200FF8(void) {
     func_83200934(GetMessageString(NULL, 0, D_83202020, 4));
     D_83202028->unk_01E.y = -0x800;
-    func_8001BD04(D_83202028, 5);
-    func_8001BD9C(D_83202028, 0);
+    GraphNode_TriggerAction(D_83202028, 5);
+    GraphNode_TriggerSound(D_83202028, 0);
     D_83201F50 = 1;
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x46);
     func_80006C04(0x1E);
@@ -494,8 +494,8 @@ void func_83200FF8(void) {
 }
 
 void func_832010BC(void) {
-    func_8001BD04(D_83202028, 0xA);
-    func_8001BD9C(D_83202028, 7);
+    GraphNode_TriggerAction(D_83202028, 0xA);
+    GraphNode_TriggerSound(D_83202028, 7);
     func_80048060(0, 0x39, 0x19, 0);
     D_83201F50 = 1;
     func_8000D1F0(0x4A);
@@ -526,7 +526,7 @@ s32 func_8320126C(void) {
     s16 var_s1 = 0x10;
     s32 i;
 
-    func_8001BD04(D_83202028, 8);
+    GraphNode_TriggerAction(D_83202028, 8);
 
     for (i = 0; i < 8; i++) {
         Game_UpdateInputs();
@@ -575,7 +575,7 @@ s32 func_83201450(void) {
                 spAC = func_83200CD8(GetMessageString(NULL, 0, D_83202020, 9));
                 if (spAC >= 0) {
                     func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xA), 0x1E);
-                    func_8001BD04(D_83202028, 9);
+                    GraphNode_TriggerAction(D_83202028, 9);
                     D_83201F54 = 0;
                     func_800479C0(0x85, 0x19, 0);
                     func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xB), 1);
@@ -719,7 +719,7 @@ void func_83201B60(void) {
 }
 
 void func_83201BD8(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, s16 arg3) {
-    func_8001BC34(arg0, 0, 0, D_83202014);
+    GraphNode_InitChild(arg0, 0, 0, D_83202014);
     func_800173DC(arg0, 0, D_8C2011C4, 0x10000);
     arg0->unk_000.unk_01 &= ~1;
     Vec3f_Set(&arg0->unk_030, 1.5f, 1.5f, 1.5f);
@@ -743,9 +743,9 @@ void func_83201C8C(void) {
         Graph_AddToRootList0(&D_83202028[i]);
     }
 
-    func_8001BC34(&D_83202028[0], 0, 0, D_83202018->unk_08->unk_00[0]);
+    GraphNode_InitChild(&D_83202028[0], 0, 0, D_83202018->unk_08->unk_00[0]);
     Vec3f_Set(&D_83202028[0].unk_030, 16.0f, 16.0f, 16.0f);
-    func_8001BD04(&D_83202028[0], 0);
+    GraphNode_TriggerAction(&D_83202028[0], 0);
     D_83202028->unk_000.unk_02 &= ~0x40;
     func_83201BD8(&D_83202028[1], -0x50, 0x17C, 0x1800);
     func_83201BD8(&D_83202028[2], 0, 0x17C, 0);

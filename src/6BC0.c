@@ -2,7 +2,7 @@
 #include "6BC0.h"
 #include "memory.h"
 
-static unk_D_80068BB0* D_80068BB0 = NULL;
+static FramebufferImage* gCurrentFramebuffer = NULL;
 
 ClipRect* Gfx_MakeClipRect(ClipRect* arg0, s16 x1, s16 y1, s16 x2, s16 y2) {
     if (x2 >= x1) {
@@ -27,7 +27,7 @@ ClipRect* Gfx_MakeClipRect(ClipRect* arg0, s16 x1, s16 y1, s16 x2, s16 y2) {
 s32 Gfx_IntersectClip(ClipRect* arg0) {
     s32 ret = 0;
 
-    if (D_80068BB0 != NULL) {
+    if (gCurrentFramebuffer != NULL) {
         if (arg0->x1 < gClipRect.x1) {
             arg0->x1 = gClipRect.x1;
         }
@@ -50,8 +50,8 @@ s32 Gfx_IntersectClip(ClipRect* arg0) {
     return ret;
 }
 
-void func_800060E0(Gfx** gfx_p, s16 x, s16 y, s16 width, s16 height) {
-    if (D_80068BB0 != NULL) {
+void Gfx_SetScissorRect(Gfx** gfx_p, s16 x, s16 y, s16 width, s16 height) {
+    if (gCurrentFramebuffer != NULL) {
         Gfx* gfx = *gfx_p;
 
         gDPPipeSync(gfx++);
@@ -63,8 +63,8 @@ void func_800060E0(Gfx** gfx_p, s16 x, s16 y, s16 width, s16 height) {
     }
 }
 
-void func_80006200(Gfx** gfx_p) {
-    if (D_80068BB0 != NULL) {
+void Gfx_RestoreScissor(Gfx** gfx_p) {
+    if (gCurrentFramebuffer != NULL) {
         Gfx* gfx = *gfx_p;
 
         gDPPipeSync(gfx++);
@@ -75,7 +75,7 @@ void func_80006200(Gfx** gfx_p) {
     }
 }
 
-void func_800062E4(unk_D_80068BB0* arg0, s32 fmt, s32 size, s32 width, s32 height, u32 img_p) {
+void FramebufferImage_Init(FramebufferImage* arg0, s32 fmt, s32 size, s32 width, s32 height, u32 img_p) {
     arg0->fmt = fmt;
     arg0->size = size;
     arg0->width = width;
@@ -84,8 +84,8 @@ void func_800062E4(unk_D_80068BB0* arg0, s32 fmt, s32 size, s32 width, s32 heigh
     arg0->depth_p = NULL;
 }
 
-unk_D_80068BB0* func_80006314(s32 fmt, s32 size, s32 width, s32 height, s32 side) {
-    unk_D_80068BB0* sp34;
+FramebufferImage* FramebufferImage_Allocate(s32 fmt, s32 size, s32 width, s32 height, s32 side) {
+    FramebufferImage* sp34;
     s32 size_bytes;
     s32 num_pixels = width * height;
 
@@ -108,31 +108,31 @@ unk_D_80068BB0* func_80006314(s32 fmt, s32 size, s32 width, s32 height, s32 side
     }
 
     // header + image size + rounding up to 64
-    sp34 = main_pool_alloc(sizeof(unk_D_80068BB0) + size_bytes + 64, side);
+    sp34 = main_pool_alloc(sizeof(FramebufferImage) + size_bytes + 64, side);
     if (sp34 != NULL) {
         // image data follows the header struct
-        func_800062E4(sp34, fmt, size, width, height, (u8*)sp34 + sizeof(unk_D_80068BB0));
+        FramebufferImage_Init(sp34, fmt, size, width, height, (u8*)sp34 + sizeof(FramebufferImage));
     }
 
     return sp34;
 }
 
-void func_80006414(unk_D_80068BB0* img, unk_D_80068BB0* depth) {
+void FramebufferImage_AttachDepth(FramebufferImage* img, FramebufferImage* depth) {
     if ((depth->size == IMAGE_SIZE_BITS_16b) && (img->width == depth->width) && (img->height == depth->height)) {
         img->depth_p = depth;
     }
 }
 
-void func_80006450(void) {
-    D_80068BB0 = NULL;
+void Gfx_ResetFramebufferState(void) {
+    gCurrentFramebuffer = NULL;
     Gfx_MakeClipRect(&gClipRect, 0, 0, 0, 0);
 }
 
-unk_D_80068BB0* func_8000648C(void) {
-    return D_80068BB0;
+FramebufferImage* Gfx_GetCurrentFramebuffer(void) {
+    return gCurrentFramebuffer;
 }
 
-void Gfx_SetupFrameBuffer(Gfx** gfx_p, unk_D_80068BB0* arg1) {
+void Gfx_SetupFrameBuffer(Gfx** gfx_p, FramebufferImage* arg1) {
     Gfx* gfx = *gfx_p;
 
     gDPPipeSync(gfx++);
@@ -144,29 +144,29 @@ void Gfx_SetupFrameBuffer(Gfx** gfx_p, unk_D_80068BB0* arg1) {
 
     gDPSetColorImage(gfx++, arg1->fmt, arg1->size, arg1->width, (u32)arg1->img_p & 0x1FFFFFFF);
 
-    D_80068BB0 = arg1;
-    func_800060E0(&gfx, 0, 0, arg1->width, arg1->height);
+    gCurrentFramebuffer = arg1;
+    Gfx_SetScissorRect(&gfx, 0, 0, arg1->width, arg1->height);
 
     *gfx_p = gfx;
 }
 
-void func_800065B4(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 fill_colour) {
-    if (D_80068BB0 != NULL) {
+void Gfx_FillRectangle(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 fill_colour) {
+    if (gCurrentFramebuffer != NULL) {
         Gfx* gfx = *gfx_p;
 
         gDPPipeSync(gfx++);
         gDPSetRenderMode(gfx++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
         gDPSetCycleType(gfx++, G_CYC_FILL);
 
-        if (D_80068BB0->depth_p) {
-            unk_D_80068BB0* depth = D_80068BB0->depth_p;
+        if (gCurrentFramebuffer->depth_p) {
+            FramebufferImage* depth = gCurrentFramebuffer->depth_p;
 
             gDPSetColorImage(gfx++, depth->fmt, depth->size, depth->width, (u32)depth->img_p & 0x1FFFFFFF);
             gDPSetFillColor(gfx++, 0xFFFCFFFC);
             gDPFillRectangle(gfx++, arg1, arg2, (arg1 + arg3) - 1, (arg2 + arg4) - 1);
             gDPPipeSync(gfx++);
-            gDPSetColorImage(gfx++, D_80068BB0->fmt, D_80068BB0->size, D_80068BB0->width,
-                             (u32)D_80068BB0->img_p & 0x1FFFFFFF);
+            gDPSetColorImage(gfx++, gCurrentFramebuffer->fmt, gCurrentFramebuffer->size, gCurrentFramebuffer->width,
+                             (u32)gCurrentFramebuffer->img_p & 0x1FFFFFFF);
         }
 
         gDPPipeSync(gfx++);
@@ -177,10 +177,10 @@ void func_800065B4(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 fill
     }
 }
 
-void func_800067E4(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    if (D_80068BB0 != NULL && D_80068BB0->depth_p != NULL) {
+void Gfx_FillDepthRectangle(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    if (gCurrentFramebuffer != NULL && gCurrentFramebuffer->depth_p != NULL) {
         Gfx* gfx = *gfx_p;
-        unk_D_80068BB0* depth = D_80068BB0->depth_p;
+        FramebufferImage* depth = gCurrentFramebuffer->depth_p;
 
         gDPPipeSync(gfx++);
         gDPSetRenderMode(gfx++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -191,13 +191,13 @@ void func_800067E4(Gfx** gfx_p, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         gDPFillRectangle(gfx++, arg1, arg2, (arg1 + arg3) - 1, (arg2 + arg4) - 1);
 
         gDPPipeSync(gfx++);
-        gDPSetColorImage(gfx++, D_80068BB0->fmt, D_80068BB0->size, D_80068BB0->width,
-                         (u32)D_80068BB0->img_p & 0x1FFFFFFF);
+        gDPSetColorImage(gfx++, gCurrentFramebuffer->fmt, gCurrentFramebuffer->size, gCurrentFramebuffer->width,
+                         (u32)gCurrentFramebuffer->img_p & 0x1FFFFFFF);
 
         *gfx_p = gfx;
     }
 }
 
-void func_8000699C(Gfx** gfx_p, u16 fill_colour) {
-    func_800065B4(gfx_p, 0, 0, D_80068BB0->width, D_80068BB0->height, (fill_colour << 0x10) | fill_colour);
+void Gfx_FillScreen(Gfx** gfx_p, u16 fill_colour) {
+    Gfx_FillRectangle(gfx_p, 0, 0, gCurrentFramebuffer->width, gCurrentFramebuffer->height, (fill_colour << 0x10) | fill_colour);
 }

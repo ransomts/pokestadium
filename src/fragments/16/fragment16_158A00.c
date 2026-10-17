@@ -104,7 +104,7 @@ u32 D_86A025D0[] = {
     0x00640000, 0x08000000, func_86A00020, 0x00000000, 0x05000000,  0x07000000, &D_86A061A8, 0x06000000,
     0x06000000, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
     0x00640000, 0x08000000, func_86A00020, 0x00000000, 0x05000000,  0x07000000, &D_86A061C0, 0x06000000,
-    0x06000000, 0x0F000003, 0x05000000,    0x0A000000, &D_800AC840, 0x06000000, 0x06000000,  0x06000000,
+    0x06000000, 0x0F000003, 0x05000000,    0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000,  0x06000000,
     0x06000000, 0x01000000,
 };
 
@@ -221,7 +221,7 @@ void func_86A0056C(void) {
         if (D_86A025CC < 8) {
             temp_v1_2 = (s8)ROUND_MAX(((-(f32)D_86A025CC / 8) + 1.0f) * 255.0f);
             if (temp_v1_2 != 0) {
-                func_8001F504(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
+                Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
             }
         } else {
             if ((D_86A025A0[D_86A025C4].unk_02 - 0x28) < D_86A025CC) {
@@ -229,7 +229,7 @@ void func_86A0056C(void) {
 
                 temp_v1_2 = (s32)ROUND_MAX((((D_86A025CC - tmp) + 0x28) * 255.0f) / 40.0f);
                 if (temp_v1_2 != 0) {
-                    func_8001F504(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
+                    Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
                 }
             }
         }
@@ -249,11 +249,11 @@ void func_86A00788(u8 arg0) {
     Stage_BeginDisplayList();
 
     if ((D_86A025C8 == -1) || (D_86A025C8 == 0)) {
-        func_8000699C(&gDisplayListHead, 1);
+        Gfx_FillScreen(&gDisplayListHead, 1);
     } else if (D_86A025C8 < 0x10000) {
-        func_8000699C(&gDisplayListHead, D_86A025C8);
+        Gfx_FillScreen(&gDisplayListHead, D_86A025C8);
     } else {
-        func_8000699C(&gDisplayListHead, 0xA6BF);
+        Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
 
     if (arg0 == 0) {
@@ -1594,7 +1594,7 @@ void func_86A014F0(void) {
 
     if (func_86A01020(sp60, D_86A06214->unk_00, D_86A06214->unk_02, D_86A06214->unk_04) != 0) {
         Text_ResetState();
-        func_8001F470();
+        Text_BeginRender();
         Text_SetFont(4, 0);
 
         var_s5 = 0;
@@ -1652,7 +1652,7 @@ void func_86A014F0(void) {
             var_s11 += 0x11;
         }
 
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
     }
 

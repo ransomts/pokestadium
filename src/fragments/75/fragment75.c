@@ -146,7 +146,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
             D_8FA00A20 = ASSET_LOAD2(backgrounds, 1, 1);
             D_8FA00A24 = BinArchive_GetFile(D_8FA00A20, D_8FA009F0[i]);
-            func_8001D924(D_8FA00A24);
+            Gfx_DrawTextureAtlas(D_8FA00A24);
             func_8FA00020(i);
 
             main_pool_pop_state('DRAW');

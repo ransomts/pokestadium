@@ -240,9 +240,9 @@ void func_84B0B05C(unk_D_84B25A90* arg0) {
         }
     } else {
         for (i = 0; i < 8; i++) {
-            func_8001BCF0(&arg0->unk_04[i]);
+            GraphNode_ClearCallback(&arg0->unk_04[i]);
             func_84B00404(&arg0->unk_04[8 + i]);
-            func_8001BC34(&arg0->unk_04[i], 0, 0, arg0->unk_08);
+            GraphNode_InitChild(&arg0->unk_04[i], 0, 0, arg0->unk_08);
             arg0->unk_04[i].unk_01E.y = 0;
             arg0->unk_04[i].unk_000.unk_14 = arg0;
         }
@@ -282,10 +282,10 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
     if (var_s3 < gBattleContext.unk_0003 - 1) {
         if ((arg0->unk_01 % var_a0) == 0) {
             func_8004DF94(0x0110000E, var_s3 + 1, 0);
-            func_8001BC34(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
+            GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;
-            func_8001BC34(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
+            GraphNode_InitChild(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_030, 2.5f, 2.5f, 2.5f);
             arg0->unk_04[16 + var_s3].unk_000.unk_14 = arg0;
@@ -294,15 +294,15 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
     } else if (var_s3 == gBattleContext.unk_0003 - 1) {
         if (var_a1 == (arg0->unk_01 - (var_s3 * var_a0))) {
             func_8004DF94(0x0110000F, 0, 0);
-            func_8001BC34(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
+            GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;
-            func_8001BC34(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
+            GraphNode_InitChild(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_030, 6.0f, 6.0f, 6.0f);
             arg0->unk_04[16 + var_s3].unk_000.unk_14 = arg0;
             arg0->unk_28[var_s3] = 0;
-            func_8001BC34(&arg0->unk_04[24], 0, 0, arg0->unk_14);
+            GraphNode_InitChild(&arg0->unk_04[24], 0, 0, arg0->unk_14);
             Vec3f_Set(&arg0->unk_04[24].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
             arg0->unk_04[24].unk_000.unk_14 = arg0;
 
@@ -329,7 +329,7 @@ void func_84B0B6EC(unk_D_84B25A90* arg0, unk_D_86002F58_004_000* arg1, s16 arg2)
 
     if (arg2 < gBattleContext.unk_0003) {
         if (arg1->unk_000.unk_0C == NULL) {
-            func_8001BC34(arg1, 2, 0, arg0->unk_18);
+            GraphNode_InitChild(arg1, 2, 0, arg0->unk_18);
         }
 
         sp26 = MathUtil_Random16();
@@ -423,7 +423,7 @@ void func_84B0BC6C(unk_D_84B25A90* arg0, unk_D_86002F58_004_000* arg1) {
     arg0->unk_00 = 1;
 
     for (i = 0; i < 8; i++) {
-        func_8001BC34(&arg0->unk_04[8 + i], 0, 0, arg0->unk_08);
+        GraphNode_InitChild(&arg0->unk_04[8 + i], 0, 0, arg0->unk_08);
         arg0->unk_04[8 + i].unk_01E.y = -0x8000;
         arg0->unk_04[8 + i].unk_000.unk_14 = arg0;
     }

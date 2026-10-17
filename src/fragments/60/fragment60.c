@@ -27,7 +27,7 @@ static s16 D_82E023AA;
 static u32 D_82E01110[] = {
     0x0C000000, 0x05000000, 0x0B00002D,  0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x00000000, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
-    0x05000000, 0x0A000000, &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u8* D_82E01170[] = { D_3000000, D_3009000, D_3012000, D_301B000 };
 static Vtx D_82E01180[] = {
@@ -262,7 +262,7 @@ s32 func_82E0036C(s32 arg0, unk_func_80011B94* arg1) {
 
 void func_82E0045C(s32 arg0, s32 arg1) {
     Stage_BeginDisplayList();
-    func_8001D924(D_82E019B4);
+    Gfx_DrawTextureAtlas(D_82E019B4);
     Graph_SetTextureState(D_82E019B8);
 
     if (arg0 == 0) {
@@ -337,7 +337,7 @@ void func_82E00A54(void) {
     unk_D_86002F58_004_000* var_s2;
 
     for (var_s1 = &D_82E019C8[0], i = 0; i < 4; i++, var_s1++) {
-        func_8001BC34(var_s1, 0, 0, D_82E019BC);
+        GraphNode_InitChild(var_s1, 0, 0, D_82E019BC);
         D_82E019C8[i].unk_01E.y = -0x5000;
     }
 
@@ -347,7 +347,7 @@ void func_82E00A54(void) {
     Vec3f_Set(&D_82E019C8[3].unk_024, 0.0f, -162.0f, -579.0f);
 
     for (var_s2 = &D_82E01F68[0], i = 0; i < 3; i++, var_s2++) {
-        func_8001BC34(var_s2, 0, 0, D_82E019C0);
+        GraphNode_InitChild(var_s2, 0, 0, D_82E019C0);
         D_82E01F68[i].unk_01E.y = -0x5000;
     }
 

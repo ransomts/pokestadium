@@ -38,7 +38,7 @@ static s16 D_838067E6;
 static u32 D_83804CC0[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static Vtx D_83804D10[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -400,8 +400,8 @@ void func_8380101C(void) {
 
     for (i = 0; i < 6; i++) {
         if (D_8380548C[i].unk_00 != 0) {
-            func_8001BC34(D_83805698[0] + i, 0, 0, D_83805678[i]);
-            func_8001BC34(D_83805698[1] + i, 0, 0, D_83805690);
+            GraphNode_InitChild(D_83805698[0] + i, 0, 0, D_83805678[i]);
+            GraphNode_InitChild(D_83805698[1] + i, 0, 0, D_83805690);
             Vec3f_Set(&D_83805698[0][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xF0 - D_8380548C[i].unk_04,
                           -579.0f);
             Vec3f_Set(&D_83805698[1][i].unk_024, D_8380548C[i].unk_02 - 0x140, 0xE4 - D_8380548C[i].unk_04,
@@ -561,8 +561,8 @@ void func_83801744(void) {
     if (D_838067DC == 0) {
         for (i = 0; i < 6; i++) {
             if (i != D_838067E0) {
-                func_8001BCF0(&D_83805698[0][i]);
-                func_8001BCF0(&D_83805698[1][i]);
+                GraphNode_ClearCallback(&D_83805698[0][i]);
+                GraphNode_ClearCallback(&D_83805698[1][i]);
             }
         }
         D_838067E4 = 0;
@@ -599,8 +599,8 @@ void func_83801988(void) {
 
         D_83805698[0][D_838067E0].unk_01E.z = 0;
     } else if (D_838067DC == 0xC) {
-        func_8001BCF0(&D_83805698[0][D_838067E0]);
-        func_8001BCF0(&D_83805698[1][D_838067E0]);
+        GraphNode_ClearCallback(&D_83805698[0][D_838067E0]);
+        GraphNode_ClearCallback(&D_83805698[1][D_838067E0]);
     } else if (D_838067DC == 0xE) {
         D_838067D8 = 0;
     }
@@ -613,8 +613,8 @@ void func_83801AE0(void) {
     D_838067DC--;
     if (D_838067DC == 0) {
         for (i = 0; i < 6; i++) {
-            func_8001BCF0(&D_83805698[0][i]);
-            func_8001BCF0(&D_83805698[1][i]);
+            GraphNode_ClearCallback(&D_83805698[0][i]);
+            GraphNode_ClearCallback(&D_83805698[1][i]);
         }
 
         D_838067E0 = -2;

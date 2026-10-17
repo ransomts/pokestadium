@@ -655,31 +655,31 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
 
     switch (arg0->unk_10) {
         case 0:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
             Text_Print(0xEC, 0xA8, (u32)(u64) GetMessageString(NULL, 0, D_82F13B70, 0x1F));
-            func_8001F4C4();
+            Text_EndRender();
             break;
 
         case 2:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
             func_8002D600(1, sp20.unk_02 + 1);
             Text_Print(0xB0, 0x90, (u32)(u64) GetMessageString(sp38, sizeof(sp38), D_82F13B70, 0x20));
-            func_8001F4C4();
+            Text_EndRender();
             break;
 
         case 3:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
             Text_Print(0x80, 0x90, GetMessageString(NULL, 0, D_82F13B70, 0x21));
-            func_8001F4C4();
+            Text_EndRender();
             break;
     }
 
     if (arg0->unk_10 != 0) {
-        func_8001F470();
+        Text_BeginRender();
         Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetLineHeight(0x24);

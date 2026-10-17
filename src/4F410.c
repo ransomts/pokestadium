@@ -1153,9 +1153,9 @@ void func_8004E810(u32 arg0, u32 arg1) {
             break;
 
         case 5:
-            if ((var_v0 != 0) && ((D_800FCB18[0] == NULL) || (D_800FCB18[1] == NULL) ||
-                                  (((D_800FCB18[0]->unk_15 & 7) == 0) && ((D_800FCB18[1]->unk_15 & 7) == 0) &&
-                                   !(D_800FCB18[0]->unk_15 & 0x20) && !(D_800FCB18[1]->unk_15 & 0x20)))) {
+            if ((var_v0 != 0) && ((gAudioInfoPtr[0] == NULL) || (gAudioInfoPtr[1] == NULL) ||
+                                  (((gAudioInfoPtr[0]->unk_15 & 7) == 0) && ((gAudioInfoPtr[1]->unk_15 & 7) == 0) &&
+                                   !(gAudioInfoPtr[0]->unk_15 & 0x20) && !(gAudioInfoPtr[1]->unk_15 & 0x20)))) {
                 arg0 = 0x9A;
                 sp24 = 0x70;
             } else {
@@ -1164,9 +1164,9 @@ void func_8004E810(u32 arg0, u32 arg1) {
             break;
 
         case 6:
-            if ((var_v0 != 0) && (((D_800FCB18[0] == NULL) || (D_800FCB18[1] == NULL)) ||
-                                  (!(D_800FCB18[0]->unk_15 & 7) && !(D_800FCB18[1]->unk_15 & 7) &&
-                                   !(D_800FCB18[0]->unk_15 & 0x20) && !(D_800FCB18[1]->unk_15 & 0x20)))) {
+            if ((var_v0 != 0) && (((gAudioInfoPtr[0] == NULL) || (gAudioInfoPtr[1] == NULL)) ||
+                                  (!(gAudioInfoPtr[0]->unk_15 & 7) && !(gAudioInfoPtr[1]->unk_15 & 7) &&
+                                   !(gAudioInfoPtr[0]->unk_15 & 0x20) && !(gAudioInfoPtr[1]->unk_15 & 0x20)))) {
                 arg0 = 0x9B;
                 sp24 = 0x70;
             } else {

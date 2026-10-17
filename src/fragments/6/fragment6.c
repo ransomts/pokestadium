@@ -118,7 +118,7 @@ static u32 D_86002B18[] = {
     0x0C00FFFF, (u32)&D_5000000,  0x0B00001E,      0x00000000,      0x014000F0,      0x0000000F,
     0x00000000, 0x00000000,       (u32)&D_5000000, 0x0D000000,      (u32)&D_5000000, 0x0F000002,
     0x14000000, 0x002B0012,       0xFFFFFF32,      0x16FFFFFF,      0x0F000003,      (u32)&D_5000000,
-    0x0A000000, (u32)&D_800AC840, (u32)&D_6000000, (u32)&D_6000000, (u32)&D_6000000, (u32)&D_3000000,
+    0x0A000000, (u32)&gGraphRoot0, (u32)&D_6000000, (u32)&D_6000000, (u32)&D_6000000, (u32)&D_3000000,
     0x87806398, (u32)&D_6000000,  (u32)&D_1000000,
 };
 
@@ -354,7 +354,7 @@ void func_860005B8(s32 arg0) {
             break;
 
         case 0:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetFont(2, 0);
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -396,17 +396,17 @@ void func_860005B8(s32 arg0) {
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
             Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            func_8001F4C4();
+            Text_EndRender();
             break;
 
         case 4:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetFont(0x20, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0x1E, 0x1E, 0xFF, 0xFF);
             Text_Print(0xA0 - (func_878013D4(D_86003B7C, GetMessageString(NULL, 0, D_87806330, 0x5A)) / 2), 0x64,
                           GetMessageString(NULL, 0, D_87806330, 0x5A));
-            func_8001F4C4();
+            Text_EndRender();
             break;
     }
 
@@ -499,7 +499,7 @@ void func_86000C18(void) {
 
 void func_86000D88(s32 arg0) {
     Stage_BeginDisplayList();
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_87A00DB8(D_86002F50);
 
     if (D_8780FC94 != 1) {
@@ -566,7 +566,7 @@ s32 func_86000FD4(void) {
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
         D_86003B60 = &D_86003B5C->unk_004;
-        func_8001BD04(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
         D_86003B60->unk_000.unk_040.unk_08 = (func_878001E8(0x14) << 0x10);
         D_86003B70[i] = 0;
@@ -605,7 +605,7 @@ void func_86001204(void) {
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
         D_86003B60 = &D_86003B5C->unk_004;
-        func_8001BD04(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
         D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(0x14) << 0x10;
         D_86003B70[i] = 0;
@@ -654,7 +654,7 @@ void func_86001360(s16 arg0) {
     D_86003B5C->unk_004.unk_168 = 5;
     D_86003B5C->unk_004.unk_16A = arg0;
 
-    func_8001BD04(&D_86003B60->unk_000, 8);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 8);
 
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
@@ -662,42 +662,42 @@ void func_86001360(s16 arg0) {
 
 void func_86001464(void) {
     D_86003B5C->unk_004.unk_168 = 6;
-    func_8001BD04(&D_86003B60->unk_000, 9);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 9);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void func_860014B8(void) {
     D_86003B5C->unk_004.unk_168 = 7;
-    func_8001BD04(&D_86003B60->unk_000, 0xA);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xA);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void func_8600150C(void) {
     D_86003B5C->unk_004.unk_168 = 8;
-    func_8001BD04(&D_86003B60->unk_000, 0xB);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xB);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void func_86001560(void) {
     D_86003B5C->unk_004.unk_168 = 9;
-    func_8001BD04(&D_86003B60->unk_000, 0xC);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xC);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void func_860015B4(void) {
     D_86003B5C->unk_004.unk_168 = 0xA;
-    func_8001BD04(&D_86003B60->unk_000, 0xD);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xD);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void func_86001608(void) {
     D_86003B5C->unk_004.unk_168 = 0xB;
-    func_8001BD04(&D_86003B60->unk_000, 0xE);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xE);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
@@ -715,7 +715,7 @@ void func_8600165C(s32 arg0) {
     }
 
     D_86003B5C->unk_004.unk_168 = 0xC;
-    func_8001BD04(&D_86003B60->unk_000, 5);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 5);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
@@ -723,7 +723,7 @@ void func_8600165C(s32 arg0) {
 void func_860016FC(s32 arg0) {
     D_86003B70[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0xD;
-    func_8001BD04(&D_86003B60->unk_000, 6);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 6);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
@@ -731,7 +731,7 @@ void func_860016FC(s32 arg0) {
 void func_86001760(s32 arg0) {
     D_86003B70[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0;
-    func_8001BD04(&D_86003B60->unk_000, 0);
+    GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
     D_86003B60->unk_000.unk_040.unk_08 = 0;
     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 }
@@ -810,7 +810,7 @@ void func_860017C0(s32 arg0) {
 
             case 1:
                 if (func_80017514(&D_86003B60->unk_000)) {
-                    func_8001BD04(&D_86003B60->unk_000, 7);
+                    GraphNode_TriggerAction(&D_86003B60->unk_000, 7);
                     D_86003B60->unk_000.unk_040.unk_08 = 0;
                     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
                 }
@@ -818,7 +818,7 @@ void func_860017C0(s32 arg0) {
 
             default:
                 if (func_80017514(&D_86003B60->unk_000)) {
-                    func_8001BD04(&D_86003B60->unk_000, 0);
+                    GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
                     D_86003B60->unk_000.unk_040.unk_08 = 0;
                     D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
                     D_86003B70[arg0] = 0;
@@ -832,7 +832,7 @@ void func_860017C0(s32 arg0) {
             if (D_86003B70[arg0] == 0) {
                 D_86003B64->unk_16A++;
                 D_86003B70[arg0] = 1;
-                func_8001BD04(&D_86003B64->unk_000, 0);
+                GraphNode_TriggerAction(&D_86003B64->unk_000, 0);
                 D_86003B64->unk_000.unk_040.unk_0C = 0x10000;
                 D_86003B64->unk_000.unk_040.unk_08 = 0;
                 func_87A010D4(0x20008, arg0, 4);
@@ -846,7 +846,7 @@ void func_860017C0(s32 arg0) {
         if (D_86003B5C->unk_188 > 0) {
             D_86003B5C->unk_188--;
             if (D_86003B5C->unk_188 == 0) {
-                func_8001BE34(&D_86003B5C->unk_004.unk_000, 0xFF, 0xFF, 0xFF, 0);
+                GraphNode_SetColorRGBA(&D_86003B5C->unk_004.unk_000, 0xFF, 0xFF, 0xFF, 0);
             }
         }
     }
@@ -865,7 +865,7 @@ void func_86001C90(void) {
         D_86003B60 = &D_86003B5C->unk_004;
 
         D_86003B5C->unk_004.unk_168 = 0;
-        func_8001BD04(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
 
         D_86003B70[i] = 0;
@@ -1000,11 +1000,11 @@ void func_86001F64(void) {
         D_86003B60 = &D_86003B5C->unk_004;
         if ((D_86003B80 == D_86003598[i].unk_16A) && (D_86003B80 > 0)) {
             D_86003B5C->unk_004.unk_168 = 1;
-            func_8001BD04(&D_86003B60->unk_000, 7);
+            GraphNode_TriggerAction(&D_86003B60->unk_000, 7);
             D_86003B60->unk_000.unk_040.unk_08 = 0;
         } else {
             D_86003B5C->unk_004.unk_168 = 2;
-            func_8001BD04(&D_86003B60->unk_000, 0);
+            GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
             D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(5) << 0x10;
         }
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
@@ -1123,7 +1123,7 @@ void func_86002440(void) {
         D_86003B60 = &D_86003B5C->unk_004;
 
         Graph_AddToRootList0(&D_86003B60->unk_000);
-        func_8001BC34(&D_86003B60->unk_000, 0, 0xAD, D_86002F30->unk_08->unk_00[0]);
+        GraphNode_InitChild(&D_86003B60->unk_000, 0, 0xAD, D_86002F30->unk_08->unk_00[0]);
 
         D_86003B60->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
 
@@ -1145,7 +1145,7 @@ void func_86002440(void) {
             D_86003B5C->unk_000 = D_8780FA38 + 1;
         }
 
-        func_8001BD04(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
 
         D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(5) << 0x10;
         D_86003B60->unk_000.unk_01E.y = -0x2800;
@@ -1158,7 +1158,7 @@ void func_86002440(void) {
         D_86003B60 = D_86003B64;
 
         Graph_AddToRootList0(&D_86003B60->unk_000);
-        func_8001BC34(&D_86003B60->unk_000, 0, 0xAE, D_86002F30->unk_08->unk_00[0]);
+        GraphNode_InitChild(&D_86003B60->unk_000, 0, 0xAE, D_86002F30->unk_08->unk_00[0]);
         D_86003B60->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
         D_86003B60->unk_000.unk_024.z = 0.0f;
         D_86003B60->unk_000.unk_024.y = 200.0f;
@@ -1171,7 +1171,7 @@ void func_86002440(void) {
         D_86003B64->unk_16C = 0;
         HpWheel_SetDigits(i, 0);
         D_86003B64->unk_000.unk_0A6 = i;
-        func_8001BD04(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         func_800173CC(&D_86003B60->unk_000);
     }
 

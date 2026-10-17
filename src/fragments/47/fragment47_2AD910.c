@@ -62,7 +62,7 @@ void func_83800120(void) {
 void func_83800218(void) {
     Stage_BeginDisplayList();
     if (D_83805668 != 0) {
-        func_8001D924(D_83805658);
+        Gfx_DrawTextureAtlas(D_83805658);
         func_83800120();
     }
     func_838022C8(1);

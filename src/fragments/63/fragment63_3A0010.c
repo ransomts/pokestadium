@@ -173,7 +173,7 @@ void func_84B0C174(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16
     arg0->unk_06 = arg4;
     arg0->unk_08.r = 0x50;
     arg0->unk_08.g = 0x64;
-    func_8001BC34(arg0->unk_00, 0, 0, arg1);
+    GraphNode_InitChild(arg0->unk_00, 0, 0, arg1);
     Vec3f_Set(&arg0->unk_00->unk_030, 2.0f, 2.0f, 2.0f);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024.x = (COSS(arg4) * 52.0f) + arg2;
@@ -217,7 +217,7 @@ void func_84B0C45C(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, s16 arg2, s16
     arg0->unk_06 = 0;
     arg0->unk_04 = 0;
     arg0->unk_08 = arg4;
-    func_8001BC34(arg0->unk_00, 2, 0, arg1);
+    GraphNode_InitChild(arg0->unk_00, 2, 0, arg1);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024.x = (COSS(arg4) * 60.0f) + arg2;
     arg0->unk_00->unk_024.y = (SINS(arg4) * 30.0f) + arg3;
@@ -228,7 +228,7 @@ void func_84B0C534(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 1;
     arg0->unk_0A = arg1->unk_0A;
-    func_8001BC34(arg0->unk_00, 1, 0, &arg1->unk_00->unk_000.unk_0C->unk_00);
+    GraphNode_InitChild(arg0->unk_00, 1, 0, &arg1->unk_00->unk_000.unk_0C->unk_00);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024 = arg1->unk_00->unk_024;
     arg0->unk_00->unk_030 = arg1->unk_00->unk_030;
@@ -240,7 +240,7 @@ void func_84B0C5E4(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2)
     arg0->unk_08 = arg1->unk_08 + arg2;
 
     func_8000E840(&arg0->unk_0A, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001BC34(arg0->unk_00, 1, 0, &arg1->unk_00->unk_000.unk_0C->unk_00);
+    GraphNode_InitChild(arg0->unk_00, 1, 0, &arg1->unk_00->unk_000.unk_0C->unk_00);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024 = arg1->unk_00->unk_024;
     Vec3f_Set(&arg0->unk_00->unk_030, 0.5f, 0.5f, 0.5f);
@@ -251,7 +251,7 @@ void func_84B0C6B4(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) 
     arg0->unk_04 = 3;
     func_8000E840(&arg0->unk_0A, 0xFF, 0xFF, 0xC8, 0xFF);
     arg0->unk_0A.b = (MathUtil_Random16() % 200) + 0x32;
-    func_8001BC34(arg0->unk_00, 2, 0, arg1);
+    GraphNode_InitChild(arg0->unk_00, 2, 0, arg1);
     Vec3f_Set(&arg0->unk_00->unk_030, 0.6f, 0.6f, 0.6f);
     arg0->unk_00->unk_000.unk_14 = arg0;
     arg0->unk_00->unk_024.x = ((MathUtil_Random_ZeroOne() - 0.5f) * 50.0f) + arg2->x;
@@ -554,7 +554,7 @@ void func_84B0D54C(unk_D_84B25AC0* arg0, unk_D_86002F58_004_000* arg1, unk_D_860
 
     arg0->unk_5A8 = arg1;
     arg0->unk_5AC = arg2;
-    func_8001BC34(arg1, 1, 0, arg0->unk_5B0);
+    GraphNode_InitChild(arg1, 1, 0, arg0->unk_5B0);
     arg0->unk_5A8->unk_000.unk_14 = arg0;
 
     if (arg0->unk_5A2 == -1) {

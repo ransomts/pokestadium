@@ -5,7 +5,7 @@
 
 void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs,
                    u8 lrt, u8 argB, u8 argC, unk_D_86B0DAE0* argD, s32 argE) {
-    unk_D_80068BB0* temp_s1 = func_8000648C();
+    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s6 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* spD4 = GfxAlloc(sizeof(Mtx) * 1);
     Vp* temp_v0 = GfxAlloc(sizeof(Vp) * 1);
@@ -16,22 +16,22 @@ void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u
 
     guOrtho(spD4, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
     if (argE != 0) {
-        func_8001E680(&temp_s6[0], arg1, arg2, -1, argC << 5, 0, argD->unk_00.unk_12, argD->unk_00.unk_14,
+        SetTileVertex(&temp_s6[0], arg1, arg2, -1, argC << 5, 0, argD->unk_00.unk_12, argD->unk_00.unk_14,
                       argD->unk_00.unk_16, 0xFF);
-        func_8001E680(&temp_s6[1], arg1 + arg3, arg2, -1, argB << 5, 0, argD->unk_00.unk_12, argD->unk_00.unk_14,
+        SetTileVertex(&temp_s6[1], arg1 + arg3, arg2, -1, argB << 5, 0, argD->unk_00.unk_12, argD->unk_00.unk_14,
                       argD->unk_00.unk_16, 0xFF);
-        func_8001E680(&temp_s6[2], arg1, arg2 + arg4, -1, argC << 5, height << 5, argD->unk_00.unk_0C,
+        SetTileVertex(&temp_s6[2], arg1, arg2 + arg4, -1, argC << 5, height << 5, argD->unk_00.unk_0C,
                       argD->unk_00.unk_0E, argD->unk_00.unk_10, 0xFF);
-        func_8001E680(&temp_s6[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, height << 5, argD->unk_00.unk_0C,
+        SetTileVertex(&temp_s6[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, height << 5, argD->unk_00.unk_0C,
                       argD->unk_00.unk_0E, argD->unk_00.unk_10, 0xFF);
     } else {
-        func_8001E680(&temp_s6[0], arg1, arg2, -1, argC << 5, 0, argD->unk_00.unk_0C, argD->unk_00.unk_0E,
+        SetTileVertex(&temp_s6[0], arg1, arg2, -1, argC << 5, 0, argD->unk_00.unk_0C, argD->unk_00.unk_0E,
                       argD->unk_00.unk_10, 0xFF);
-        func_8001E680(&temp_s6[1], arg1 + arg3, arg2, -1, argB << 5, 0, argD->unk_00.unk_0C, argD->unk_00.unk_0E,
+        SetTileVertex(&temp_s6[1], arg1 + arg3, arg2, -1, argB << 5, 0, argD->unk_00.unk_0C, argD->unk_00.unk_0E,
                       argD->unk_00.unk_10, 0xFF);
-        func_8001E680(&temp_s6[2], arg1, arg2 + arg4, -1, argC << 5, height << 5, argD->unk_00.unk_12,
+        SetTileVertex(&temp_s6[2], arg1, arg2 + arg4, -1, argC << 5, height << 5, argD->unk_00.unk_12,
                       argD->unk_00.unk_14, argD->unk_00.unk_16, 0xFF);
-        func_8001E680(&temp_s6[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, height << 5, argD->unk_00.unk_12,
+        SetTileVertex(&temp_s6[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, height << 5, argD->unk_00.unk_12,
                       argD->unk_00.unk_14, argD->unk_00.unk_16, 0xFF);
     }
 
@@ -62,7 +62,7 @@ void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u
 }
 
 void func_86B05944(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    unk_D_80068BB0* temp_s1 = func_8000648C();
+    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
     Vp* sp80 = GfxAlloc(sizeof(Vp) * 1);
@@ -73,10 +73,10 @@ void func_86B05944(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     guOrtho(sp84, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
 
     gDPPipeSync(gDisplayListHead++);
 

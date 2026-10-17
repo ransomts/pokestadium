@@ -45,7 +45,7 @@ static Vtx* D_84103450;
 static GraphNode* D_84103454;
 static unk_D_86002F58_004_000 D_84103458[6];
 static s16 D_84103CC8;
-static unk_D_80068BB0* D_84103CD0[6];
+static FramebufferImage* D_84103CD0[6];
 static GraphNode* D_84103CE8;
 static GraphNode* D_84103CEC;
 static unk_func_80027FA0 D_84103CF0;
@@ -228,7 +228,7 @@ static u8* D_84102534[] = { D_03028EC0, D_03029C40, D_0302A9C0, D_0302B740, D_03
 static u32 D_8410254C[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x00000000, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_841025B0[] = {
     VTX(0, 63, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -604,9 +604,9 @@ void func_841003F0(void) {
     }
 }
 
-void func_8410048C(unk_D_80068BB0* arg0, s16 arg1, s16 arg2) {
+void func_8410048C(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
-    func_8000699C(&gDisplayListHead, 0);
+    Gfx_FillScreen(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -794,7 +794,7 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
     }
 
     Stage_BeginDisplayList();
-    func_8001D924(D_84103448);
+    Gfx_DrawTextureAtlas(D_84103448);
     Graph_SetTextureState(D_84103454);
 
     if (arg2 != 0.0f) {
@@ -803,7 +803,7 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
         temp_v1 = (ptr->unk_04 / 2) + ptr->unk_00;
         temp_t1 = (ptr->unk_06 / 2) + ptr->unk_02;
         temp_fv0 = ptr->unk_04 / 640.0f;
-        func_8001E000(temp_v1 + ((0x140 - temp_v1) * arg2), temp_t1 + ((0xF0 - temp_t1) * arg2), 0,
+        Gfx_DrawTileMap16x16(temp_v1 + ((0x140 - temp_v1) * arg2), temp_t1 + ((0xF0 - temp_t1) * arg2), 0,
                       ((1.0f - temp_fv0) * arg2) + temp_fv0, D_84103450, D_8410344C);
     }
 
@@ -818,9 +818,9 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
     Stage_Advance();
 }
 
-unk_D_80068BB0* func_84101894(u8* arg0, s16 arg1) {
+FramebufferImage* func_84101894(u8* arg0, s16 arg1) {
     s16 i;
-    unk_D_80068BB0* sp40 = func_80006314(0, 2, 0xA4, 0x7E, 1);
+    FramebufferImage* sp40 = FramebufferImage_Allocate(0, 2, 0xA4, 0x7E, 1);
     s32 var_s3;
 
     if (arg1 == 3) {
@@ -847,9 +847,9 @@ unk_D_80068BB0* func_84101894(u8* arg0, s16 arg1) {
     return sp40;
 }
 
-unk_D_80068BB0* func_84101A94(u8* arg0, s16 arg1) {
+FramebufferImage* func_84101A94(u8* arg0, s16 arg1) {
     s16 i;
-    unk_D_80068BB0* sp30 = func_80006314(0, 2, 0x8C, 0x6C, 1);
+    FramebufferImage* sp30 = FramebufferImage_Allocate(0, 2, 0x8C, 0x6C, 1);
     s32 var_v0;
 
     func_8410048C(sp30, 0x88, 0x68);
@@ -882,10 +882,10 @@ void func_84101BFC(void) {
     D_84103CD0[3] = func_84101894(&D_3020760, 6);
     D_84103CD0[4] = func_84101A94(&D_3014760, 4);
     D_84103CD0[5] = func_84101A94(&D_301A760, 5);
-    func_8001BC34(D_84103458, 0, 0, D_84103CE8);
-    func_8001BC34(&D_84103458[3], 0, 0, D_84103CE8);
-    func_8001BC34(&D_84103458[4], 0, 0, D_84103CEC);
-    func_8001BC34(&D_84103458[5], 0, 0, D_84103CEC);
+    GraphNode_InitChild(D_84103458, 0, 0, D_84103CE8);
+    GraphNode_InitChild(&D_84103458[3], 0, 0, D_84103CE8);
+    GraphNode_InitChild(&D_84103458[4], 0, 0, D_84103CEC);
+    GraphNode_InitChild(&D_84103458[5], 0, 0, D_84103CEC);
     Vec3f_Set(&D_84103458->unk_024, -80.0f, 113.0f, -579.0f);
     Vec3f_Set(&D_84103458[3].unk_024, -80.0f, -29.0f, -579.0f);
     Vec3f_Set(&D_84103458[4].unk_024, -236.0f, 42.0f, -579.0f);
@@ -955,7 +955,7 @@ void func_84101EC8(void) {
         }
 
         for (i = 0; i < 6; i++) {
-            func_8001BCF0(&D_84103458[i]);
+            GraphNode_ClearCallback(&D_84103458[i]);
         }
 
         for (i = 1; i < 10; i++) {
@@ -1024,7 +1024,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, stadium_select_ui, 0);
     func_8002D510();
     D_84103440 = GetMessageBank(0x13);
-    D_84103450 = func_8001E490();
+    D_84103450 = AllocateTileMapVertices();
 
     D_84103444 = ASSET_LOAD2(backgrounds, 1, 1);
 

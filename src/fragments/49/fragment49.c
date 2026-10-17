@@ -13,11 +13,11 @@ static s32 D_83A00B70;
 static BinArchive* D_83A00B74;
 static u8* D_83A00B78;
 static s32 D_83A00B7C;
-static unk_D_80068BB0* D_83A00B80;
+static FramebufferImage* D_83A00B80;
 
 void func_83A00020(void) {
     D_83A00B70 = 0;
-    D_83A00B80 = func_80006314(0, 2, 0x280, 0x1E0, 0);
+    D_83A00B80 = FramebufferImage_Allocate(0, 2, 0x280, 0x1E0, 0);
     D_83A00B7C = -1;
 }
 
@@ -174,7 +174,7 @@ void func_83A009C0(void) {
 
 void func_83A009C8(void) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
-    func_800065B4(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
+    Gfx_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
     Stage_Advance();
     func_80006C6C(8);
     do {

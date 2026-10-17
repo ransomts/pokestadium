@@ -16,8 +16,8 @@ void func_87903600(void) {
     for (i = 0; i < 3; i++, ptr++) {
         Graph_AddToRootList0(&ptr->unk_000);
         ptr->unk_168 = func_80019D18(0xAB);
-        func_8001BC34(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
-        func_8001BD04(&ptr->unk_000, 0);
+        GraphNode_InitChild(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&ptr->unk_000, 0);
         ptr->unk_000.unk_000.unk_01 &= ~1;
         miniActorAllToZero(ptr);
     }

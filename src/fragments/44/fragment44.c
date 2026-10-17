@@ -311,7 +311,7 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     char sp30[4];
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(8, 0);
     Text_SetEnvColor(0, 0x64, 0xDC, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -333,7 +333,7 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     if (sp30) {}
     sprintf(sp30, "%d", arg0->unk_08 + 1);
     Text_Print((arg1 + temp_s1) - MeasureTextWidth(0, 0, sp30), arg2 + 0x108, sp30);
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -923,11 +923,11 @@ void func_83502F78(int arg0, int arg1, s32 arg2, f32 arg3) {
     Text_SetLineHeight(0x14);
     Text_SetEnvColor(0, 0, 0, 0xFF);
     Text_Print(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(spD0[arg2].r, spD0[arg2].g, spD0[arg2].b, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_Print(arg0 + temp_s3, arg1 + temp_s2, spD8);
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 

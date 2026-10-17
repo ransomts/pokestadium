@@ -90,7 +90,7 @@ u8 D_84210DD8[] = {
 u32 D_84210DF4[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 Vtx D_84210E48[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -558,8 +558,8 @@ void func_842050CC(void) {
 
         D_8423D408[0][D_8423E568].unk_01E.z = 0;
     } else {
-        func_8001BCF0(&D_8423D408[0][D_8423E568]);
-        func_8001BCF0(&D_8423D408[1][D_8423E568]);
+        GraphNode_ClearCallback(&D_8423D408[0][D_8423E568]);
+        GraphNode_ClearCallback(&D_8423D408[1][D_8423E568]);
         D_8423E56C = 0;
     }
 }
@@ -571,8 +571,8 @@ void func_84205200(void) {
     if (D_8423E56E == 0) {
         for (i = 0; i < 6; i++) {
             if (i != D_8423E568) {
-                func_8001BCF0(&D_8423D408[0][i]);
-                func_8001BCF0(&D_8423D408[1][i]);
+                GraphNode_ClearCallback(&D_8423D408[0][i]);
+                GraphNode_ClearCallback(&D_8423D408[1][i]);
             }
         }
 
@@ -602,8 +602,8 @@ void func_8420545C(void) {
     if (D_8423E56E == 0) {
 
         for (i = 0; i < 6; i++) {
-            func_8001BCF0(&D_8423D408[0][i]);
-            func_8001BCF0(&D_8423D408[1][i]);
+            GraphNode_ClearCallback(&D_8423D408[0][i]);
+            GraphNode_ClearCallback(&D_8423D408[1][i]);
         }
 
         D_8423E568 = -2;
@@ -721,8 +721,8 @@ void func_8420594C(void) {
 
     for (i = 0; i < 6; i++) {
         if (D_84210DA0[i].unk_00 != 0) {
-            func_8001BC34(D_8423D408[0] + i, 0, 0, D_8423E4E8[i]);
-            func_8001BC34(D_8423D408[1] + i, 0, 0, D_8423E500);
+            GraphNode_InitChild(D_8423D408[0] + i, 0, 0, D_8423E4E8[i]);
+            GraphNode_InitChild(D_8423D408[1] + i, 0, 0, D_8423E500);
             Vec3f_Set(&D_8423D408[0][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xF0 - D_84210DA0[i].unk_04, -579.f);
             Vec3f_Set(&D_8423D408[1][i].unk_024, D_84210DA0[i].unk_02 - 0x140, 0xE4 - D_84210DA0[i].unk_04,
                           -579.0f);

@@ -42,7 +42,7 @@ static u32 D_86B0E2B0[] = {
 static u32 D_86B0E374[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,  0x00000000, 0x014000F0, 0x00000000, 0x00000000, 0x00000118,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
-    0x05000000, 0x0A000000, &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
 static char** D_86B10840;
@@ -302,7 +302,7 @@ void func_86B0B4D0(u8* arg0) {
 void func_86B0B650(void) {
     Stage_BeginDisplayList();
     func_86B0B4D0(D_86B109C0);
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
     Graph_SetTextureState(D_86B10848);
     func_86B0B184();
@@ -402,13 +402,13 @@ void func_86B0B8DC(void) {
 
     if (gBattleContext.unk_0000 == 0x16) {
         D_86B10844 = func_80019D18(0xD5);
-        func_8001BC34(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
+        GraphNode_InitChild(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
     } else {
         D_86B10844 = func_80019D18(0xD4);
-        func_8001BC34(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
+        GraphNode_InitChild(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
     }
 
-    func_8001BD04(&D_86B10850, 0);
+    GraphNode_TriggerAction(&D_86B10850, 0);
 
     D_86B10850.unk_000.unk_02 &= ~0x20;
     D_86B10850.unk_000.unk_01 &= ~1;

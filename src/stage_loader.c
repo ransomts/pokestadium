@@ -315,7 +315,7 @@ void func_80006F34(void) {
 }
 
 void Gfx_BeginFrame(void) {
-    func_80006450();
+    Gfx_ResetFramebufferState();
     Memmap_SetSegmentMap(0, 0x80000000, osMemSize);
     Memmap_SetSegments(&gDisplayListHead);
     Gfx_SetDefaultState();
@@ -338,7 +338,7 @@ void func_80006FE8(void) {
         gSPViewport(gDisplayListHead++, (u32)&D_80068C08 & 0x1FFFFFFF);
     }
 
-    func_800060E0(&gDisplayListHead, 0, 0, gCurrentStage->unk_00, gCurrentStage->unk_02);
+    Gfx_SetScissorRect(&gDisplayListHead, 0, 0, gCurrentStage->unk_00, gCurrentStage->unk_02);
     func_800069F0();
 
     if (gShowCPUProfiler != 0) {
@@ -425,15 +425,15 @@ Stage* Stage_Create(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5) {
 
             for (i = 0; i < temp_v0->unk_0E; i++) {
                 temp_v0->unk_18[i] =
-                    func_80006314(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_RIGHT);
+                    FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_RIGHT);
             }
 
             if (temp_v0->unk_0F == 1) {
                 void* temp_s3 =
-                    func_80006314(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_LEFT);
+                    FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_LEFT);
 
                 for (i = 0; i < temp_v0->unk_0E; i++) {
-                    func_80006414(temp_v0->unk_18[i], temp_s3);
+                    FramebufferImage_AttachDepth(temp_v0->unk_18[i], temp_s3);
                 }
             }
         }
@@ -569,8 +569,8 @@ void Stage_BeginDisplayList(void) {
     }
 }
 
-unk_D_80068BB0* Stage_GetFrameBuffer(void) {
-    unk_D_80068BB0* ret = NULL;
+FramebufferImage* Stage_GetFrameBuffer(void) {
+    FramebufferImage* ret = NULL;
 
     if (gCurrentStage != NULL) {
         ret = gCurrentStage->unk_18[gCurrentStage->unk_16];

@@ -1,6 +1,6 @@
 #include "46680.h"
 
-typedef struct unk_arg1_func_80045A80 {
+typedef struct AnimHeader {
     s16 unk0;
     s16 unk2;
     s16 unk4;
@@ -9,9 +9,9 @@ typedef struct unk_arg1_func_80045A80 {
     s16 unkA;
     s16 unkC;
     s16 unkE;
-} unk_arg1_func_80045A80; // size 0x10
+} AnimHeader; // size 0x10
 
-typedef struct unk_arg1_func_80045D60 {
+typedef struct AnimPackedData {
     u8 unk0;
     u8 unk1;
     u8 unk2;
@@ -19,7 +19,7 @@ typedef struct unk_arg1_func_80045D60 {
     u8 unk4;
     u8 unk5;
     u8 unk6;
-} unk_arg1_func_80045D60; // size 0x7
+} AnimPackedData; // size 0x7
 
 typedef struct AnimBlock19 {
     s16 xRotA;
@@ -37,14 +37,14 @@ typedef struct AnimBlock19 {
     s16 unkD;
 } AnimBlock19; // size 0x1A
 
-typedef struct unk_arg0_func_80045A80 {
+typedef struct AnimProcessor {
     char pad0[0x168];
-    unk_arg1_func_80045A80 unk168[2];
+    AnimHeader unk168[2];
     s16 unk188;       // 0x188
-} unk_arg0_func_80045A80;
+} AnimProcessor;
 
-void func_80045A80(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045A80* arg1, s32 arg2, s32 arg3) {
-    unk_arg1_func_80045A80* temp_v0_2;
+void AnimHeader_ProcessScaled(AnimProcessor* arg0, AnimHeader* arg1, s32 arg2, s32 arg3) {
+    AnimHeader* temp_v0_2;
 
     temp_v0_2 = &arg0->unk168[arg0->unk188];
     temp_v0_2->unk0 = (s16) (((s32) ((((arg1->unk0 - 0x20) << 0xA) * 0x3333) + 0x4000) >> 0xF) * 2);
@@ -60,7 +60,7 @@ void func_80045A80(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045A80* arg1, s
     arg0->unk188 ^= 1;
 }
 
-void func_80045C78(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045A80* arg1, s16* arg2, s16* arg3, s16* arg4, s16* arg5, AnimBlock19* arg6, s32 arg7) {
+void AnimFrame_ProcessSubframes(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2, s16* arg3, s16* arg4, s16* arg5, AnimBlock19* arg6, s32 arg7) {
     s32 i;
     s16 sp44[40];
     
@@ -75,11 +75,11 @@ void func_80045C78(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045A80* arg1, s
     }
 
 
-    func_80045A80(arg0, arg1, arg0, arg7);
+    AnimHeader_ProcessScaled(arg0, arg1, arg0, arg7);
 }
 
-s32 func_80045D60(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045D60* arg1, s32 arg2) {
-    unk_arg1_func_80045A80 header;
+s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
+    AnimHeader header;
     s16 spC8[4];
     s16 spC0[4];
     s16 spB8[4];
@@ -115,7 +115,7 @@ s32 func_80045D60(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045D60* arg1, s3
         sp48[i].unkC = (arg1[i + 1].unk4 >> 3) & 7;
         sp48[i].unkD = arg1[i + 1].unk4 & 7;
     }
-    func_80045C78(arg0, &header, spC8, spB8, spC0, spB0, sp48, arg2);
+    AnimFrame_ProcessSubframes(arg0, &header, spC8, spB8, spC0, spB0, sp48, arg2);
     return 0;
 }
 
@@ -146,11 +146,11 @@ s32 func_80045D60(unk_arg0_func_80045A80* arg0, unk_arg1_func_80045D60* arg1, s3
 //    (unk_18C), 0 => voiced run of (7 bits + 1) frames (unk_18A).
 //  - silence frame: zero the output buffer.
 //  - voiced frame: 8 header fields (6,6,5,5,4,4,3,3 bits) then 4 subframes of
-//    (7,2,2,6 bits + 13 x 3 bits), same layout func_80045D60 unpacks from
-//    bytes, then synthesised by func_80045C78.
+//    (7,2,2,6 bits + 13 x 3 bits), same layout AnimData_DecodePacked unpacks from
+//    bytes, then synthesised by AnimFrame_ProcessSubframes.
 // The stored position is (word-aligned pos) + (32 - left).
-s32 func_80045FF0(unk_D_800FCED8* arg0, void* arg1) {
-    unk_arg1_func_80045A80 header;
+s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState* arg0, void* arg1) {
+    AnimHeader header;
     s16 spE0[4];
     s16 spD8[4];
     s16 spD0[4];
@@ -209,7 +209,7 @@ s32 func_80045FF0(unk_D_800FCED8* arg0, void* arg1) {
             READ_BITS(sp60[i].unkD, 3);
         }
         arg0->unk_0000.unk_18A--;
-        func_80045C78((unk_arg0_func_80045A80*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
+        AnimFrame_ProcessSubframes((AnimProcessor*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
     }
 
     arg0->unk_25BC = (pos & ~0x1F) - left + 32;

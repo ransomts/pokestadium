@@ -277,27 +277,27 @@ void func_82C01054(void) {
         func_80028C48(i);
 
         for (j = 0; j < 12; j++) {
-            func_8002707C(0x10, j);
+            GbsClearAndCommitBlock(0x10, j);
         }
     }
 
     for (j = 0; j < 12; j++) {
-        func_8002707C(0x11, j);
+        GbsClearAndCommitBlock(0x11, j);
     }
 
     for (j = 0; j < 4; j++) {
-        func_8002707C(0x12, j);
+        GbsClearAndCommitBlock(0x12, j);
     }
 
-    func_8002707C(0x13, 0);
-    func_8002707C(0x14, 0);
-    func_8002707C(0x15, 0);
-    func_8002707C(0x16, 0);
-    func_8002707C(0x17, 0);
+    GbsClearAndCommitBlock(0x13, 0);
+    GbsClearAndCommitBlock(0x14, 0);
+    GbsClearAndCommitBlock(0x15, 0);
+    GbsClearAndCommitBlock(0x16, 0);
+    GbsClearAndCommitBlock(0x17, 0);
     func_800286D8();
     gBattleContext.unk_11F2 = 0;
     func_8004AF24(0);
-    func_8003D68C(1);
+    SetAudioActiveFlag(1);
     D_82C01666 = 0;
 }
 
@@ -319,14 +319,14 @@ void func_82C0115C(u16 arg0) {
 
         if (sp24 & 2) {
             if (arg0 & 2) {
-                func_8003D68C(0);
+                SetAudioActiveFlag(0);
             } else {
-                func_8003D68C(1);
+                SetAudioActiveFlag(1);
             }
         }
 
         func_80028084(&arg0);
-        func_80026684(0x14, 0);
+        GbsCommitBankBlock(0x14, 0);
     }
 }
 

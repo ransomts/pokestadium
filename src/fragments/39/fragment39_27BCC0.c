@@ -766,7 +766,7 @@ static u32 D_825087D8[] = {
 static u32 D_8250880C[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
 static s32 D_8250885C[] = { 1, 2, 3, 5, 6, 9, 0xD, 0xF, 0x10 };
@@ -934,7 +934,7 @@ void func_82500804(void) {
     D_8250A308.unk_170 = 0;
     Graph_AddToRootList0(&D_8250A308.unk_000);
     Vec3f_Set(&D_8250A308.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
-    func_8001BC34(&D_8250A308.unk_000, 0, 0, D_8250A284);
+    GraphNode_InitChild(&D_8250A308.unk_000, 0, 0, D_8250A284);
     ptr->unk_01 &= ~1;
 }
 
@@ -1209,7 +1209,7 @@ void func_825010A8(unk_D_82508B30* arg0) {
     D_825089A4 += 0x2000;
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
-    func_8000699C(&gDisplayListHead, 0);
+    Gfx_FillScreen(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -1252,7 +1252,7 @@ void func_825014B0(unk_D_82508B30* arg0) {
     s32 i;
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
-    func_8000699C(&gDisplayListHead, 0);
+    Gfx_FillScreen(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -1286,7 +1286,7 @@ void func_825014B0(unk_D_82508B30* arg0) {
         sp90[1] = D_8250A288.unk_04;
     }
 
-    func_800060E0(&gDisplayListHead, 0x6E, 0xE, 0x1C, 0x1A);
+    Gfx_SetScissorRect(&gDisplayListHead, 0x6E, 0xE, 0x1C, 0x1A);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -1332,7 +1332,7 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
     temp_v0->unk_04 = arg1;
     Graph_AddToRootList0(temp_s1);
     temp_s1->unk_1E = -0x4000;
-    func_8001BC34(temp_s1, 0, 0, arg2);
+    GraphNode_InitChild(temp_s1, 0, 0, arg2);
     temp_s1->unk_01 &= ~1;
 
     switch (temp_v0->unk_00) {
@@ -1344,7 +1344,7 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
 
         case 2:
             if (arg1 == 0) {
-                temp_v0->unk_38 = func_80006314(0, 2, 0x12C, 0x50, 1);
+                temp_v0->unk_38 = FramebufferImage_Allocate(0, 2, 0x12C, 0x50, 1);
                 temp_v0->unk_06 |= 1;
             } else {
                 temp_v0->unk_38 = NULL;
@@ -1354,7 +1354,7 @@ unk_D_8250A228* func_8250182C(s16 arg0, s16 arg1, GraphNode* arg2) {
             break;
 
         case 3:
-            temp_v0->unk_38 = func_80006314(0, 2, 0x12C, 0x50, 1);
+            temp_v0->unk_38 = FramebufferImage_Allocate(0, 2, 0x12C, 0x50, 1);
             temp_v0->unk_06 |= 1;
             Vec3f_Set(&temp_s1->unk_24, -150.0f, 0.0f, -579.0f);
             break;
@@ -1972,7 +1972,7 @@ void func_82502C78(void) {
 void func_82502F44(void) {
     func_82502BB0();
     Stage_BeginDisplayList();
-    func_8001D924(D_8250A268);
+    Gfx_DrawTextureAtlas(D_8250A268);
     Graph_SetTextureState(D_8250A270);
     func_825054F4();
     func_82505C10();

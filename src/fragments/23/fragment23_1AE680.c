@@ -2015,7 +2015,7 @@ void func_8820B504(unk_func_8820BE14_02C* arg0, s32 arg1) {
 
     if (func_882091E4(arg0->unk_30[0]) == 0x30000) {
         func_8002817C(0, 0);
-        func_80026E4C(2);
+        GbsProcessBankWrites(2);
         func_800284B4(2);
     }
 
@@ -2029,7 +2029,7 @@ void func_8820B504(unk_func_8820BE14_02C* arg0, s32 arg1) {
     }
 
     if (arg1 & 4) {
-        func_80026E4C(3);
+        GbsProcessBankWrites(3);
         func_800284B4(3);
     }
 }

@@ -47,10 +47,13 @@ grep -q OK <(env PATH="$STAGE/.venv/bin:$PATH" make PYTHON="$STAGE/.venv/bin/pyt
 #   sbatch --job-name=farm-a --export=ALL,RUN_TAG=fa,FUNCS_OVERRIDE="..." matching_notes/palmetto_job.sh
 # Mid-run re-seed (permuter_farm.sh) merges their best candidates automatically.
 FUNCS=(
-  # 2026-10-17 farm10 default (single node; live submissions use FUNCS_OVERRIDE per node)
-  func_8437B0CC:src/fragments/62/fragment62_361050.c:5:6
-  func_88805AEC:src/fragments/28/fragment28_2190D0.c:5:6
-  func_88304850:src/fragments/24/fragment24_1CEA00.c:4:6
+  # 2026-10-17 farm10: the last 5 open functions (post-rename-p11), tuned per compile cost.
+  # Run 3 jobs with distinct RUN_TAGs on different nodes; mid-run re-seed shares the bests.
+  func_8437B0CC:src/fragments/62/fragment62_361050.c:5:4
+  func_88805AEC:src/fragments/28/fragment28_2190D0.c:4:4
+  func_88304850:src/fragments/24/fragment24_1CEA00.c:4:4
+  func_80034348:src/33FE0.c:3:5
+  func_8004A89C:src/4A3E0.c:3:5
 )
 # FUNCS_OVERRIDE="func_X:src/a.c:3:8 func_Y:src/b.c" replaces the list (e.g. a side job).
 [ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"

@@ -108,7 +108,7 @@ static u32 D_83101DE8[] = {
 static u32 D_83101E1C[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
 static unk_D_83101E6C D_83101E6C[] = {
@@ -299,7 +299,7 @@ void func_83100784(void) {
     s16 sp38;
     s32 temp_ft2;
 
-    func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+    Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
     if (D_83102218.unk_00 == 0) {
         return;
     }
@@ -433,7 +433,7 @@ void func_8310102C(void) {
     if (D_83102224.unk_04 < 0xFF) {
         func_83100D4C(D_83101EE4, D_83102224.unk_04);
     } else {
-        func_8001D924(D_83101EE4);
+        Gfx_DrawTextureAtlas(D_83101EE4);
     }
 }
 
@@ -618,7 +618,7 @@ void func_83101870(void) {
             case 0:
                 Vec3f_Set(&ptr->unk_000.unk_024, -520.0f, 44.0f, -579.0f);
                 Vec3f_Set(&ptr->unk_000.unk_030, 2.0f, 2.0f, 2.0f);
-                func_8001BC34(&ptr->unk_000, 0, 0, D_83101EF8);
+                GraphNode_InitChild(&ptr->unk_000, 0, 0, D_83101EF8);
                 ptr->unk_168 = 1;
                 D_83102210 = ptr;
                 break;
@@ -626,7 +626,7 @@ void func_83101870(void) {
             case 1:
                 Vec3f_Set(&ptr->unk_000.unk_024, 0.0, -24.0f, -579.0f);
                 Vec3f_Set(&ptr->unk_000.unk_030, 0.0f, 0.0f, 0.0f);
-                func_8001BC34(&ptr->unk_000, 0, 0, D_83101EFC);
+                GraphNode_InitChild(&ptr->unk_000, 0, 0, D_83101EFC);
                 ptr->unk_168 = 2;
                 D_83102214 = ptr;
                 break;

@@ -1466,7 +1466,7 @@ static u32 D_86F0B004[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFE0000, 0x00640064, 0x00640000, 0x05000000,
-    0x00000000, D_86F0AFB8, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &D_800AC840,
+    0x00000000, D_86F0AFB8, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
     0x06000000, 0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
 };
 static Vec3f sandshrewPositions[4] = {
@@ -1623,7 +1623,7 @@ void initSandshrew(MiniActor* sandshrew, s32 player) {
     sandshrew->miniHealth = sandshrew->miniMaxHealth = 0x64;
     sandshrew->unk_238 = sandshrew->unk_23A = 0;
 
-    func_8001BD04(&sandshrew->unk_000, 0);
+    GraphNode_TriggerAction(&sandshrew->unk_000, 0);
 
     sandshrew->unk_290 = 0;
     sandshrew->mainState = 0;
@@ -1661,7 +1661,7 @@ void miniSandshewReangleAll(void) {
 }
 
 void miniSandshewChangeAnim(MiniActor* actor, s32 animID) {
-    func_8001BD04(&actor->unk_000, animID);
+    GraphNode_TriggerAction(&actor->unk_000, animID);
     func_800173DC(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
     func_80017464(&actor->unk_000, 0);
     func_80017454(&actor->unk_000, 0x10000);
@@ -1841,7 +1841,7 @@ void func_86F00920(MiniActor* sandshrew) {
                 }
             } else {
                 sandshrew->diggingSpeed = 0.0f;
-                func_8001BD04(&sandshrew->unk_000, 3);
+                GraphNode_TriggerAction(&sandshrew->unk_000, 3);
                 func_800173DC(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
                 func_80017464(&sandshrew->unk_000, 0);
                 func_80017454(&sandshrew->unk_000, 0x10000);
@@ -1852,13 +1852,13 @@ void func_86F00920(MiniActor* sandshrew) {
 
         case 0x4: //   on stop diggin
             if (func_800174E4(&sandshrew->unk_000) != 0) {
-                func_8001BD04(&sandshrew->unk_000, 0);
+                GraphNode_TriggerAction(&sandshrew->unk_000, 0);
                 sandshrew->mainState = 0;
             }
             break;
 
         case 0x64: //	win start animation
-            func_8001BD04(&sandshrew->unk_000, 4);
+            GraphNode_TriggerAction(&sandshrew->unk_000, 4);
             func_800173DC(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
             func_80017464(&sandshrew->unk_000, 0);
             func_80017454(&sandshrew->unk_000, 0x10000);
@@ -2237,7 +2237,7 @@ void func_86F01904(void) {
     DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
     DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -2262,7 +2262,7 @@ void func_86F01904(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
     Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetFont(4, -2);
     Text_SetupDL();
 }
@@ -2344,7 +2344,7 @@ static u32 D_86F0B170[] = {
 
 void func_86F01F58(s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0xA6BF);
+    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
         func_80015348();
@@ -2478,8 +2478,8 @@ void func_86F02320(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrews[i].unk_23C = 0xA1;
         miniSandshrews[i].unk_168 = temp_s1;
-        func_8001BC34(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        func_8001BD04(&miniSandshrews[i].unk_000, 0);
+        GraphNode_InitChild(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniSandshrews[i].unk_000, 0);
     }
 
     temp_s1 = func_80019D18(0x9D);
@@ -2487,8 +2487,8 @@ void func_86F02320(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrewHoles[i].unk_23C = 0x9D;
         miniSandshrewHoles[i].unk_168 = temp_s1;
-        func_8001BC34(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        func_8001BD04(&miniSandshrewHoles[i].unk_000, 0);
+        GraphNode_InitChild(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniSandshrewHoles[i].unk_000, 0);
     }
 
     temp_s1 = func_80019D18(0xA2);
@@ -2496,8 +2496,8 @@ void func_86F02320(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrewGeisers[i].unk_23C = 0xA2;
         miniSandshrewGeisers[i].unk_168 = temp_s1;
-        func_8001BC34(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        func_8001BD04(&miniSandshrewGeisers[i].unk_000, 0);
+        GraphNode_InitChild(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniSandshrewGeisers[i].unk_000, 0);
     }
 }
 
@@ -2526,7 +2526,7 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     func_86F0204C(); //	tutorial screen ?
     func_86F02230();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(D_800AC870);
+    func_8001E9CC(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

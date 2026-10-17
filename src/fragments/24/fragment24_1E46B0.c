@@ -959,9 +959,9 @@ void func_88316BEC(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     MenuScroll_Init(&sp48, arg0->unk_01);
 
     for (i = 0; i < 4; i++) {
-        if ((func_80027164(0x12, i) != 0) && (func_800275E0(0x12, i) > 0)) {
-            temp_s1 = func_80027184(0x12, i);
-            func_800272BC(0x12, i, &sp38);
+        if ((GbsIsBlockActive(0x12, i) != 0) && (func_800275E0(0x12, i) > 0)) {
+            temp_s1 = GbsGetBlockStatusField(0x12, i);
+            GbsGetBlockString(0x12, i, &sp38);
             if ((sp48.unk_08 == temp_s1) && (HAL_Strcmp(sp54, sp38) == 0)) {
                 break;
             }

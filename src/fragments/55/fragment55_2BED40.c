@@ -639,7 +639,7 @@ void func_83001A9C(void) {
         if (gBattleContext.unk_0000 == 0xA) {
             func_830007F4();
         } else {
-            func_8001D924(D_83003C8C);
+            Gfx_DrawTextureAtlas(D_83003C8C);
         }
 
         func_83000A30();

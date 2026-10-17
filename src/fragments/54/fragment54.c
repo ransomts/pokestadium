@@ -155,7 +155,7 @@ s32 func_82B00A50(void) {
 
 void func_82B00B3C(s16 arg0) {
     Stage_BeginDisplayList();
-    func_8001D924(D_82B01148);
+    Gfx_DrawTextureAtlas(D_82B01148);
     func_82B0029C();
     func_82B00994(arg0);
     if (arg0 == 8) {

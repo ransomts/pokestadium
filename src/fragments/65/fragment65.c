@@ -145,7 +145,7 @@ void func_84A008A8(void) {
     if (D_84A030EC >= 0x10) {
         sp3A = 0xF0 - (D_84A030EC / 2);
         DrawSimplePanel(0x78, sp3A, 0x190, D_84A030EC);
-        func_8001F504(0x7F, sp3A + 7, 0x182, D_84A030EC - 0xE, 0x14, 0x32, 0x64, 0x96);
+        Text_DrawWindowRect(0x7F, sp3A + 7, 0x182, D_84A030EC - 0xE, 0x14, 0x32, 0x64, 0x96);
 
         if (D_84A030EC == 0x50) {
             Text_ResetState();
@@ -321,7 +321,7 @@ void func_84A012B8(void) {
     }
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x50, 0x64, 0xDC, 0xFF);
 
@@ -339,7 +339,7 @@ void func_84A012B8(void) {
         }
     }
 
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -362,7 +362,7 @@ void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         gSPDisplayList(gDisplayListHead++, D_8006F630);
 
         Text_ResetState();
-        func_8001F470();
+        Text_BeginRender();
         Text_SetEnvColor(0x8C, 0x90, 0x90, arg2);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, arg2);
         Text_SetFont(8, 0);
@@ -384,7 +384,7 @@ void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         }
 
         Text_Print(0x1AE - (MeasureTextWidth(0x20, 0, sp54) / 2), 0x196, sp54);
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
     }
 }
@@ -412,7 +412,7 @@ void func_84A01770(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(0x8C, 0x90, 0x90, arg2);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, arg2);
     Text_SetFont(0x10, 0);
@@ -426,7 +426,7 @@ void func_84A01770(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     }
 
     Text_Print(0x198 - (MeasureTextWidth(0x10, 0, var_s0) / 2), 0x196, var_s0);
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -490,9 +490,9 @@ void func_84A01EE0(void) {
 
     if (D_84A030E0 < 9) {
         if (D_84A030F0 == 0) {
-            func_8001D924(D_84A03174);
+            Gfx_DrawTextureAtlas(D_84A03174);
         } else if (D_84A030F0 == 0xFF) {
-            func_8001D924(D_84A03178);
+            Gfx_DrawTextureAtlas(D_84A03178);
         } else {
             func_84A00020(D_84A03174, D_84A03178, D_84A030F0);
             if (D_84A030F0 < 0xFF) {
@@ -500,7 +500,7 @@ void func_84A01EE0(void) {
             }
         }
     } else {
-        func_8001D924(D_84A0317C);
+        Gfx_DrawTextureAtlas(D_84A0317C);
         D_84A030F0 = 0xFF;
     }
 

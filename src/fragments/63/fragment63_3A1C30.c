@@ -233,7 +233,7 @@ void func_84B0E50C(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     char* temp_v0;
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
@@ -251,7 +251,7 @@ void func_84B0E50C(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x26, temp_v0);
     }
 
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -260,7 +260,7 @@ void func_84B0E718(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     char sp2C[0x100];
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
@@ -284,7 +284,7 @@ void func_84B0E718(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
         }
     }
 
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -338,11 +338,11 @@ void func_84B0ECE8(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x14, gBattleContext.unk_1194);
     func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &gBattleContext.unk_1194[1]);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
     Text_Print(arg1->unk_00 + 0x40, arg1->unk_02 + 2, func_84B0037C(0x38));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetFont(0x10, 0);
     func_84B0EC18(&gBattleContext.unk_1194[0]);
     Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", gBattleContext.unk_1194[0].unk_1E);

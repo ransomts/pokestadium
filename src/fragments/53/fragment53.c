@@ -36,7 +36,7 @@ s32 func_82A000F0(u8 arg0) {
     Cont_ReadInputs();
     func_8001ABAC(D_82A00374, 0);
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     return 0;
 }
 

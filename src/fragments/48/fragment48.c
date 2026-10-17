@@ -71,7 +71,7 @@ void func_839000E4(void) {
         func_80027C24(0x17, 0, i, &D_83901AF0[i]);
     }
 
-    func_80026E4C(2);
+    GbsProcessBankWrites(2);
     func_800284B4(2);
 }
 
@@ -104,7 +104,7 @@ void func_83900180(void) {
 
 void func_839002B8(void) {
     Stage_BeginDisplayList();
-    func_8001D924(D_839026F8);
+    Gfx_DrawTextureAtlas(D_839026F8);
     func_83900180();
     Stage_Advance();
 }

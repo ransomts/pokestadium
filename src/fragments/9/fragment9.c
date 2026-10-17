@@ -150,7 +150,7 @@ void func_86300238(s32 arg0) {
 
     switch (arg0) {
         case 0:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetFont(4, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xC8, 0xC8, 0x64, 0xFF);
@@ -167,7 +167,7 @@ void func_86300238(s32 arg0) {
                 Text_Print(0xA0 - (func_878013D4(D_86301728, "PUSH START") / 2), 0xAA, "PUSH START");
             }
 
-            func_8001F4C4();
+            Text_EndRender();
 
             for (i = 0; i < 4; i++) {
                 D_86301D44 = &D_86301730[i];
@@ -204,8 +204,8 @@ void func_86300238(s32 arg0) {
 
 void func_863006D8(s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0x53D);
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillScreen(&gDisplayListHead, 0x53D);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
     Graph_SetTextureState(D_86301714);
     func_86300238(arg0);
@@ -224,7 +224,7 @@ s32 func_86300764(void) {
         D_86301D44 = &D_86301730[i];
         D_86301D48 = &D_86301D44->unk_004;
 
-        func_8001BD04(D_86301D48, 1);
+        GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
         D_86301D48->unk_040.unk_08 = func_878001E8(0x14) << 0x10;
@@ -269,7 +269,7 @@ void func_863008C0(void) {
         D_86301D44 = &D_86301730[i];
         D_86301D48 = &D_86301D44->unk_004;
 
-        func_8001BD04(D_86301D48, 1);
+        GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
         D_86301D48->unk_040.unk_08 = func_878001E8(0x14) << 0x10;
@@ -432,7 +432,7 @@ void func_86300C50(s32 arg0) {
 
     if (func_878001E8(0x64) == 0) {
         func_80017788(D_86301D48);
-        func_8001BD9C(D_86301D48, 3);
+        GraphNode_TriggerSound(D_86301D48, 3);
     }
 }
 
@@ -447,7 +447,7 @@ void func_86300F68(void) {
         D_86301D44 = &D_86301730[i];
         D_86301D48 = &D_86301D44->unk_004;
 
-        func_8001BD04(D_86301D48, 1);
+        GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
 
@@ -483,11 +483,11 @@ void func_86301094(void) {
         D_86301D48 = &D_86301730[i].unk_004;
 
         if (i == var) {
-            func_8001BD04(D_86301D48, 2);
-            func_8001BD9C(D_86301D48, 6);
+            GraphNode_TriggerAction(D_86301D48, 2);
+            GraphNode_TriggerSound(D_86301D48, 6);
         } else {
-            func_8001BD04(D_86301D48, 5);
-            func_8001BD9C(D_86301D48, 7);
+            GraphNode_TriggerAction(D_86301D48, 5);
+            GraphNode_TriggerSound(D_86301D48, 7);
         }
     }
 
@@ -535,7 +535,7 @@ void func_86301234(void) {
         D_86301D48 = &D_86301D44->unk_004;
 
         Graph_AddToRootList0(D_86301D48);
-        func_8001BC34(D_86301D48, 0, 0x27, D_86301710->unk_08->unk_00[0]);
+        GraphNode_InitChild(D_86301D48, 0, 0x27, D_86301710->unk_08->unk_00[0]);
 
         D_86301D48->unk_024.x = (i - 1.5f) * 50.0f;
         D_86301D48->unk_024.y = 0.0f;
@@ -547,7 +547,7 @@ void func_86301234(void) {
 
         D_86301D44->unk_16C.y = 0.0f;
 
-        func_8001BD04(D_86301D48, 2);
+        GraphNode_TriggerAction(D_86301D48, 2);
         func_80017788(D_86301D48);
 
         D_86301D48->unk_040.unk_08 = func_878001E8(5) << 0x10;
@@ -558,7 +558,7 @@ void func_86301234(void) {
     D_86301D48 = &D_86301D58;
 
     Graph_AddToRootList0(D_86301D48);
-    func_8001BC34(D_86301D48, 0, 0x9A, D_86301710->unk_08->unk_00[0]);
+    GraphNode_InitChild(D_86301D48, 0, 0x9A, D_86301710->unk_08->unk_00[0]);
 
     D_86301D48->unk_024.x = 0.0f;
     D_86301D48->unk_024.y = 0.0f;
@@ -570,7 +570,7 @@ void func_86301234(void) {
 
     D_86301D48->unk_01E.y = 0;
 
-    func_8001BD04(D_86301D48, 0);
+    GraphNode_TriggerAction(D_86301D48, 0);
     func_80017788(D_86301D48);
     D_86301D48->unk_040.unk_0C = 0;
     func_86300154();

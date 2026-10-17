@@ -18,10 +18,10 @@ s32 Audio_IsChannelActive(u32);
 void Audio_SetPaused(s32);
 void Audio_ProcessChannels(void);
 void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3);
-void AudioChannel_Init(unk_D_800FCED8*, s32, s32);
-void AudioChannel_Update(unk_D_800FCED8*);
-u32 AudioChannel_Consume(unk_D_800FCED8*, u32);
-void AudioChannel_StartPlayback(unk_D_800FCED8*);
-void AudioChannel_Stop(unk_D_800FCED8*);
+void AudioChannel_Init(GbAudioChannelState*, s32, s32);
+void AudioChannel_Update(GbAudioChannelState*);
+u32 AudioChannel_Consume(GbAudioChannelState*, u32);
+void AudioChannel_StartPlayback(GbAudioChannelState*);
+void AudioChannel_Stop(GbAudioChannelState*);
 
 #endif // _45720_H_

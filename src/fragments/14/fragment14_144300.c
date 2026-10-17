@@ -301,7 +301,7 @@ void func_86800B38(void) {
     }
 
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
 
     if (D_8680753C & 1) {
         s32 spA4;
@@ -441,7 +441,7 @@ void func_86800B38(void) {
             break;
     }
 
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 
     if (D_8680753C & 1) {
@@ -467,7 +467,7 @@ void func_86800B38(void) {
 
 void func_86801644(void) {
     Stage_BeginDisplayList();
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
     if (D_8780FC94 == 0) {
         func_80015348();

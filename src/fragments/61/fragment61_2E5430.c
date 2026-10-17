@@ -53,10 +53,10 @@ void func_8420DC78(unk_D_84229EB0_00024* arg0) {
     for (i = tmp; i < 9; i++) {
         func_80028C7C(&sp30, i + 1);
         func_80028D60(&sp30, i);
-        func_80026684(0x10, i);
+        GbsCommitBankBlock(0x10, i);
     }
 
-    func_8002707C(0x10, 9);
+    GbsClearAndCommitBlock(0x10, 9);
     func_800286D8();
 }
 
@@ -302,7 +302,7 @@ void func_8420ED0C(unk_D_84229EB0* arg0) {
     if (var_s0 > 0) {
         var_s0 = 0;
     }
-    func_800060E0(&gDisplayListHead, 0, temp_s4, 0x280, arg0->unk_00016);
+    Gfx_SetScissorRect(&gDisplayListHead, 0, temp_s4, 0x280, arg0->unk_00016);
 
     for (i = 0; i < 3; i++) {
         if ((var_s0 >= -0x5B) && (var_s0 < arg0->unk_00016)) {
@@ -312,7 +312,7 @@ void func_8420ED0C(unk_D_84229EB0* arg0) {
         var_s1 = var_s1->unk_4D24;
     }
 
-    func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+    Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
 }
 
 void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
@@ -334,7 +334,7 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
 
         if (arg0->unk_00001 == 0xC) {
             sp42 = tmp2 - ((arg0->unk_00018 * 0x5C) / 4);
-            func_800060E0(&gDisplayListHead, tmp1 + 0x24, tmp2 + 0x20, 0x200, 0x110);
+            Gfx_SetScissorRect(&gDisplayListHead, tmp1 + 0x24, tmp2 + 0x20, 0x200, 0x110);
             if (arg0->unk_0001A > 0) {
                 var_s0 = arg0->unk_00024->unk_4D28;
                 for (i = 0; i < 4; i++) {
@@ -348,7 +348,7 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
                     var_s0 = var_s0->unk_4D24;
                 }
             }
-            func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+            Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else {
             func_8420ED0C(arg0);
         }
@@ -416,8 +416,8 @@ s32 func_8420F204(unk_D_84229EB0_00024* arg0, s16 arg1) {
             var_s4 += func_80022E18(&arg0->unk_0000[i].unk_004, 1, temp_v0);
         }
         func_80022D8C(temp_v0);
-        arg0->unk_4D10 = func_80027184(0x10, arg1);
-        func_800272BC(0x10, arg1, arg0->unk_4D12);
+        arg0->unk_4D10 = GbsGetBlockStatusField(0x10, arg1);
+        GbsGetBlockString(0x10, arg1, arg0->unk_4D12);
     }
 
     for (i = 0; i < var_s4; i++) {

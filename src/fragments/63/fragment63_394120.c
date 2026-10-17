@@ -42,10 +42,10 @@ static u8* D_84B0FB10[] = {
 static u32 D_84B0FB20[] = {
     0x0C000000, 0x05000000,    0x0B00002D, 0x00000000, 0x014000F0, 0x00000000,  0xFEDF0000,  0x00000121,  0x05000000,
     0x0D000000, 0x05000000,    0x0F000000, 0x05000000, 0x20050000, 0x00000000,  0x00000000,  0x00000000,  0x00000000,
-    0x08000000, func_84B003D4, D_84B19910, 0x06000000, 0x0F000002, 0x05000000,  0x0A000000,  &D_800AC840, 0x06000000,
-    0x06000000, 0x0D000001,    0x05000000, 0x0F000002, 0x05000000, 0x0A000000,  &D_800AC840, 0x06000000,  0x06000000,
-    0x0D000002, 0x05000000,    0x0F000000, 0x05000000, 0x0A000000, &D_800AC840, 0x06000000,  0x06000000,  0x0D000003,
-    0x05000000, 0x14000000,    0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,  0x05000000,  0x0A000000,  &D_800AC840,
+    0x08000000, func_84B003D4, D_84B19910, 0x06000000, 0x0F000002, 0x05000000,  0x0A000000,  &gGraphRoot0, 0x06000000,
+    0x06000000, 0x0D000001,    0x05000000, 0x0F000002, 0x05000000, 0x0A000000,  &gGraphRoot0, 0x06000000,  0x06000000,
+    0x0D000002, 0x05000000,    0x0F000000, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,  0x06000000,  0x0D000003,
+    0x05000000, 0x14000000,    0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,  0x05000000,  0x0A000000,  &gGraphRoot0,
     0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
@@ -70,7 +70,7 @@ void func_84B00020(void) {
         func_80022978(var_s1++, gBattleContext.unk_0000, gBattleContext.unk_11F2);
     }
 
-    func_80026684(0x13, 0);
+    GbsCommitBankBlock(0x13, 0);
 }
 
 void func_84B000F0(void) {
@@ -145,7 +145,7 @@ s32 func_84B003D4(s32 arg0, unk_D_86002F34_alt8* arg1) {
 }
 
 void func_84B00404(unk_D_86002F58_004_000* arg0) {
-    func_8001BCF0(arg0);
+    GraphNode_ClearCallback(arg0);
     Vec3f_Set(&arg0->unk_024, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg0->unk_030, 1.0f, 1.0f, 1.0f);
     func_8000EB70(&arg0->unk_01E, 0, 0, 0);
@@ -227,7 +227,7 @@ void func_84B0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
 
-void func_84B00D3C(unk_D_80068BB0* arg0, s16 arg1, u8* arg2, u8* arg3) {
+void func_84B00D3C(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
     unk_D_800AE540_1194* temp_v1 = &gBattleContext.unk_1194[arg1];
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
@@ -318,7 +318,7 @@ void func_84B01474(s16 arg0) {
 
 void func_84B014DC(void) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     Graph_SetTextureState(D_84B1A598.unk_0004);
     func_84B0F464(&D_84B26640.unk_1C);
     func_84B0F464(&D_84B26640.unk_28);
@@ -371,7 +371,7 @@ s32 func_84B01578(void) {
 
     if (gBattleContext.unk_11F5 & 1) {
         gBattleContext.unk_11F5 &= ~1;
-        func_8002707C(0x15, 0);
+        GbsClearAndCommitBlock(0x15, 0);
         func_800284B4(2);
     }
 
@@ -450,7 +450,7 @@ s32 func_84B017AC(void) {
 
     if (gBattleContext.unk_11F5 & 1) {
         gBattleContext.unk_11F5 &= ~1;
-        func_8002707C(0x15, 0);
+        GbsClearAndCommitBlock(0x15, 0);
         func_800284B4(2);
     }
 
@@ -859,7 +859,7 @@ s32 func_84B02654(void) {
             func_84B000F0();
             func_84B001D8();
             func_84B00280();
-            func_80026684(0x14, 0);
+            GbsCommitBankBlock(0x14, 0);
             func_800284B4(2);
             func_84B0204C();
             func_84B021FC();
@@ -945,7 +945,7 @@ s32 func_84B02984(void) {
             func_84B001D8();
             func_84B00280();
             func_84B00020();
-            func_80026684(0x14, 0);
+            GbsCommitBankBlock(0x14, 0);
             func_800284B4(2);
 
             for (i = 0; i < 60; i++) {
@@ -1035,7 +1035,7 @@ s32 func_84B02C40(void) {
         }
 
         func_84B001D8();
-        func_80026684(0x14, 0);
+        GbsCommitBankBlock(0x14, 0);
         func_800284B4(2);
         func_84B0D718(&D_84B26080);
         func_84B0D718(&D_84B25AC0);

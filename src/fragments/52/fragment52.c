@@ -22,7 +22,7 @@ static u8* D_828006A4;
 static u32 D_828004D0[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,  0x00000000, 0x014000F0, 0x00000032, 0x00000000, 0x00000118,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
-    0x05000000, 0x0A000000, &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
 void func_82900020(void) {
@@ -58,7 +58,7 @@ void func_82800050(u8* arg0) {
 void func_828001D0(void) {
     Stage_BeginDisplayList();
     func_82800050(D_828006A4);
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
     Graph_SetTextureState(D_82800534);
     Stage_Advance();
@@ -98,8 +98,8 @@ void func_828002E4(void) {
     Graph_AddToRootList0(&D_82800538);
     func_8001987C();
     D_82800530 = func_80019D18(0x96);
-    func_8001BC34(&D_82800538, 0, 0x96, D_82800530->unk_08->unk_00[0]);
-    func_8001BD04(&D_82800538, 0);
+    GraphNode_InitChild(&D_82800538, 0, 0x96, D_82800530->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_82800538, 0);
 }
 
 s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {

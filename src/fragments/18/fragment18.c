@@ -1532,7 +1532,7 @@ static u32 D_86C0E0D0[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x05000000,
-    0x00000000, D_86C0D008, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &D_800AC840,
+    0x00000000, D_86C0D008, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
     0x06000000, 0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
 };
 
@@ -1749,7 +1749,7 @@ void initEkans(MiniActor* ekans, s16 player) {
     ekans->miniMaxHealth = 0x64;
     ekans->miniHealth = ekans->miniMaxHealth;
 
-    func_8001BD04(&ekans->unk_000, 0);
+    GraphNode_TriggerAction(&ekans->unk_000, 0);
 
     ekans->unk_000.unk_000.unk_01 |= 1;
     ekans->unk_000.unk_000.unk_02 |= 0x20;
@@ -2612,7 +2612,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             func_81400760(&ekans->position_2.z, 0.0f, 4.0f);
             if (func_81400550(&ekans->yRot_2, -0x8000, 0x400) != 0) {
                 ekans->mainState++;
-                func_8001BD04(&ekans->unk_000, 2);
+                GraphNode_TriggerAction(&ekans->unk_000, 2);
             }
             break;
 
@@ -2675,7 +2675,7 @@ void initDiglett(MiniActor* diglett, s32 nDiglett) {
     diglett->miniHealth = diglett->miniMaxHealth = 0x64;
     diglett->middleHeight = diglett->halfHeight / 2.0f;
 
-    func_8001BD04(&diglett->unk_000, 1);
+    GraphNode_TriggerAction(&diglett->unk_000, 1);
     func_879004F8(&diglett->unk_000);
 
     diglett->unk_000.unk_01C = 0;
@@ -2860,7 +2860,7 @@ void miniEkansRecolorDiglet(MiniActor* diglett, s32 nActiveDiglett) {
             break;
     }
 
-    func_8001BE34(&diglett->unk_000, r, g, b, 0x80);
+    GraphNode_SetColorRGBA(&diglett->unk_000, r, g, b, 0x80);
 }
 
 void miniDiglettStateMachine(void) {
@@ -2925,7 +2925,7 @@ void miniDiglettStateMachine(void) {
                 miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
                 if (miniPokeIsIdleCheck(miniDiglettPtr)) {
                     // recolor diglett to white
-                    func_8001BE34(&miniDiglettPtr->unk_000, 0xFF, 0xFF, 0xFF, 0);
+                    GraphNode_SetColorRGBA(&miniDiglettPtr->unk_000, 0xFF, 0xFF, 0xFF, 0);
                     miniChangeActorAnim(miniDiglettPtr, 1, -1, 0);
                     activeDigletts[i].state = 8;
                     func_86C00368(9, i);
@@ -3162,7 +3162,7 @@ void func_86C03608(void) {
     DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
     DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -3199,7 +3199,7 @@ void func_86C03608(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
     Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -3326,7 +3326,7 @@ void func_86C03ED4(void) {
 
 void func_86C040B4(s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0xA6BF);
+    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
         func_80015348();
@@ -3463,15 +3463,15 @@ void func_86C044B4(void) {
     for (i = 0; i < 4; i++) {
         miniEkanses[i].unk_23C = 0x9F;
         miniEkanses[i].unk_168 = temp_s1;
-        func_8001BC34(&miniEkanses[i].unk_000, 0, miniEkanses[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        func_8001BD04(&miniEkanses[i].unk_000, 0);
+        GraphNode_InitChild(&miniEkanses[i].unk_000, 0, miniEkanses[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniEkanses[i].unk_000, 0);
     }
 
     temp_s1 = func_80019D18(0xA4);
     for (i = 0; i < 9; i++) {
         miniDigletts[i].unk_23C = 0xA4;
         miniDigletts[i].unk_168 = temp_s1;
-        func_8001BC34(&miniDigletts[i].unk_000, 0, miniDigletts[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_InitChild(&miniDigletts[i].unk_000, 0, miniDigletts[i].unk_23C, temp_s1->unk_08->unk_00[0]);
         miniDigletts[i].unk_000.unk_000.unk_01 &= ~1;
     }
 
@@ -3479,7 +3479,7 @@ void func_86C044B4(void) {
     for (i = 0; i < 9; i++) {
         miniDiglettHoles[i].unk_23C = 0xA3;
         miniDiglettHoles[i].unk_168 = temp_s1;
-        func_8001BC34(&miniDiglettHoles[i].unk_000, 0, miniDiglettHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        GraphNode_InitChild(&miniDiglettHoles[i].unk_000, 0, miniDiglettHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
     }
 }
 
@@ -3512,7 +3512,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     miniEkansTutoScreenControls();
     ekansMinigameUpdate();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(D_800AC870);
+    func_8001E9CC(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

@@ -127,7 +127,7 @@ void func_84B0D8F0(unk_D_84B26640_010* arg0) {
     arg0->unk_01--;
     if (arg0->unk_01 == 0) {
         arg0->unk_00 = 0;
-        func_8001BCF0(arg0->unk_04);
+        GraphNode_ClearCallback(arg0->unk_04);
     } else {
         Vec3f_Set(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
     }
@@ -153,7 +153,7 @@ void func_84B0D9D8(unk_D_84B26640_010* arg0, unk_D_86002F58_004_000* arg1) {
     arg0->unk_04 = arg1;
     arg0->unk_01 = 0;
     arg0->unk_00 = 2;
-    func_8001BC34(arg1, 1, 0, arg0->unk_08);
+    GraphNode_InitChild(arg1, 1, 0, arg0->unk_08);
     arg0->unk_04->unk_000.unk_14 = arg0;
     if (arg0->unk_02 == 0) {
         Vec3f_Set(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);

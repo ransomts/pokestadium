@@ -33,7 +33,7 @@ typedef struct Stage {
     /* 0x14 */ u16 unk_14;
     /* 0x16 */ s8 unk_16;
     /* 0x17 */ u8 pad17;
-    /* 0x18 */ unk_D_80068BB0* unk_18[3];
+    /* 0x18 */ FramebufferImage* unk_18[3];
 } Stage; // size = 0x24
 
 void func_800069F0(void);
@@ -63,7 +63,7 @@ s32 Stage_AdvanceUntil(u32 arg0, s32 (*arg1)(u8));
 s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2);
 void func_80007990(u16 arg0);
 void Stage_BeginDisplayList(void);
-unk_D_80068BB0* Stage_GetFrameBuffer(void);
+FramebufferImage* Stage_GetFrameBuffer(void);
 s32 func_80007A58(void);
 void func_80007A80(void);
 void func_80007C3C(void);

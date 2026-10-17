@@ -1102,7 +1102,7 @@ void Game_RunGbTower(void) {
         sp24.unk_04 = sp2C.unk_00;
 
         func_80027F40(&sp24);
-        func_80026684(0x14, 0);
+        GbsCommitBankBlock(0x14, 0);
         func_800284B4(2);
     }
 

@@ -1649,7 +1649,7 @@ static u32 D_82607228[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x00000000, 0x00000005,    0x000003E8, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, func_826007F0, 0x00000000, 0x14000000,
     0x002D0019,  0x96966428, 0x08000000, func_82600A34, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000, 0x00000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000, 0x00000000,
 };
 static Gfx D_826072B0[] = {
     gsDPPipeSync(),
@@ -2032,7 +2032,7 @@ void func_8260125C(void) {
             Text_Print(0xD4, 0x6C, "%s", GetMessageString(NULL, 0, D_8267E75C, 3));
         }
 
-        func_8001F470();
+        Text_BeginRender();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
         if (func_826000D8() == 0) {
@@ -2048,7 +2048,7 @@ void func_8260125C(void) {
         Text_Print(0x8C, 0x56, "%s", sp58.unk_14);
         Text_Print(0x8C, 0x6A, "%05d", sp58.unk_02);
         Text_Print(0x46, 0x98, "%s", GetMessageString(NULL, 0, D_8267E75C, (((sp58.unk_00 & 0x7F) - 1) % 7) + 7));
-        func_8001F4C4();
+        Text_EndRender();
     }
 
     Text_SetFont(2, 0);
@@ -2083,8 +2083,8 @@ void func_8260125C(void) {
 
 void func_82602294(void) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0x2A9);
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillScreen(&gDisplayListHead, 0x2A9);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Graph_SetTextureState(D_82607418);
     func_8260125C();
     Stage_Advance();
@@ -2103,12 +2103,12 @@ void func_82602300(s16 arg0) {
     }
 
     temp_s0->unk_008.unk_0A6 = 0xFF;
-    func_8001BC34(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->unk_00[0]);
+    GraphNode_InitChild(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->unk_00[0]);
 
     if (temp_s0->unk_000 == 0x90) {
-        func_8001BD04(&temp_s0->unk_008, 0xB);
+        GraphNode_TriggerAction(&temp_s0->unk_008, 0xB);
     } else {
-        func_8001BD04(&temp_s0->unk_008, 1);
+        GraphNode_TriggerAction(&temp_s0->unk_008, 1);
     }
 
     temp_s0->unk_008.unk_000.unk_02 &= ~0x40;
@@ -2139,8 +2139,8 @@ void func_82602570(void) {
 void func_82602578(s16 arg0) {
     s32 sp1C = (D_82607B50 + arg0 + 5) % 5;
 
-    func_8001BCF0(&D_82607420[sp1C].unk_008);
-    func_8001BCF0(&D_82607B60[sp1C]);
+    GraphNode_ClearCallback(&D_82607420[sp1C].unk_008);
+    GraphNode_ClearCallback(&D_82607B60[sp1C]);
 }
 
 void func_82602614(s16 arg0) {
@@ -2160,7 +2160,7 @@ void func_826026D4(s16 arg0) {
 
     if (func_826007C8(temp_s1) != 0) {
         func_800228F0(&sp2C, temp_s1);
-        func_8001C014(&sp54, &sp2C, temp_s1);
+        GetPokemonStatFromEntry(&sp54, &sp2C, temp_s1);
     } else {
         sp54.raw = 0;
     }
@@ -2574,7 +2574,7 @@ void func_82603800(s32 arg0, f32 arg1) {
         unk_D_86002F58_004_000* temp_s0 = &D_82607B60[arg0];
 
         temp_s0->unk_0A6 = arg0;
-        func_8001BC34(temp_s0, 0, 0xB6, D_82608538->unk_08->unk_00[0]);
+        GraphNode_InitChild(temp_s0, 0, 0xB6, D_82608538->unk_08->unk_00[0]);
         temp_s0->unk_000.unk_02 &= ~0x40;
         temp_s0->unk_01E.x = 0;
         temp_s0->unk_01E.y = 0;
@@ -2634,7 +2634,7 @@ void func_82603924(void) {
 
     ptr = &D_82608268;
     Graph_AddToRootList0(&D_82608268);
-    func_8001BC34(&D_82608268, 0, 0xB7, temp_s0->unk_08->unk_00[0]);
+    GraphNode_InitChild(&D_82608268, 0, 0xB7, temp_s0->unk_08->unk_00[0]);
 
     ptr->unk_000.unk_02 &= ~0x40;
     ptr->unk_024.x = 0.0f;
@@ -2651,7 +2651,7 @@ void func_82603924(void) {
     temp_s0 = func_80019D18(0xB7);
     ptr = &D_826083D0;
     Graph_AddToRootList0(&D_826083D0);
-    func_8001BC34(&D_826083D0, 0, 0xB7, temp_s0->unk_08->unk_00[1]);
+    GraphNode_InitChild(&D_826083D0, 0, 0xB7, temp_s0->unk_08->unk_00[1]);
 
     ptr->unk_000.unk_02 &= ~0x40;
     ptr->unk_024.x = 0.0f;

@@ -169,8 +169,8 @@ void func_80022AF0(unk_func_80022C28_ret* arg0) {
         func_800276F0(arg0->unk_01, arg0->unk_03, 0);
     }
 
-    arg0->unk_05 = func_80027108(arg0->unk_01);
-    arg0->unk_06 = func_800270AC(arg0->unk_01);
+    arg0->unk_05 = GbsGetBlockDataSize(arg0->unk_01);
+    arg0->unk_06 = GbsGetBlockEntryCount(arg0->unk_01);
     arg0->unk_08 = func_800275E0(arg0->unk_01, arg0->unk_03);
 
     if (arg0->unk_00 == 2) {
@@ -229,7 +229,7 @@ unk_func_80022C28_ret* func_80022CC0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, cha
 
     sp24 = func_80022C28(arg0, arg1, arg2, 1);
     if ((sp24 != NULL) && (arg0 & 0xF0)) {
-        func_80027430(arg0, arg2, arg3, arg4, arg5);
+        GbsSetBlockStringAndValue(arg0, arg2, arg3, arg4, arg5);
     }
     return sp24;
 }
@@ -238,7 +238,7 @@ s32 func_80022D24(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
-        func_8002685C(arg0->unk_01, arg0->unk_03);
+        GbsInvalidateBankBlock(arg0->unk_01, arg0->unk_03);
         sp1C = 1;
     }
 
@@ -251,7 +251,7 @@ s32 func_80022D8C(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
-        func_80026684(arg0->unk_01, arg0->unk_03);
+        GbsCommitBankBlock(arg0->unk_01, arg0->unk_03);
         sp1C = 1;
     }
 

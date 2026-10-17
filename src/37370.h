@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void func_80036770(s32);
+void PlaySoundEffectById(s32);
 s32 func_80036790(void);
 
 #endif // _37370_H_

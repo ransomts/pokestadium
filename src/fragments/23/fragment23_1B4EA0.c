@@ -64,10 +64,10 @@ void func_8820CA2C(unk_func_8821421C_07C* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        arg0[i].unk_00 = func_80027164(0x12, i);
+        arg0[i].unk_00 = GbsIsBlockActive(0x12, i);
         if (arg0[i].unk_00 != 0) {
-            arg0[i].unk_04 = func_80027184(0x12, i) & 0xFFFF;
-            func_800272BC(0x12, i, arg0[i].unk_08);
+            arg0[i].unk_04 = GbsGetBlockStatusField(0x12, i) & 0xFFFF;
+            GbsGetBlockString(0x12, i, arg0[i].unk_08);
         }
     }
 }
@@ -2676,7 +2676,7 @@ void func_882139C0(unk_func_8821421C_02C* arg0, s32 arg1) {
     if (arg0->unk_78[2].unk_00 != 0) {
         if (arg0->unk_90[arg0->unk_7C->unk_00].unk_00 != 0) {
             if (arg0->unk_78[2].unk_04.unk_08 == 0) {
-                func_8002707C(0x12, arg0->unk_7C->unk_00);
+                GbsClearAndCommitBlock(0x12, arg0->unk_7C->unk_00);
             } else {
                 func_8820C97C(0x12, 0, arg0->unk_7C->unk_00, &arg0->unk_78[2].unk_04, 0, NULL, -1);
             }
@@ -2695,7 +2695,7 @@ void func_882139C0(unk_func_8821421C_02C* arg0, s32 arg1) {
     }
 
     if (arg1 & 4) {
-        func_80026E4C(3);
+        GbsProcessBankWrites(3);
         func_800284B4(3);
     }
 }

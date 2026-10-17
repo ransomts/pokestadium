@@ -12,28 +12,28 @@
 #include "hal_libc.h"
 #include "src/12D80.h"
 
-struct unk_D_86002F58_004_000_000 D_800AC840;
-struct unk_D_86002F58_004_000_000 D_800AC858;
+struct unk_D_86002F58_004_000_000 gGraphRoot0;
+struct unk_D_86002F58_004_000_000 gGraphRoot1;
 
 void Graph_InitRoots(void) {
-    GraphNode_AllocInit(0, &D_800AC840);
-    GraphNode_AllocInit(0, &D_800AC858);
+    GraphNode_AllocInit(0, &gGraphRoot0);
+    GraphNode_AllocInit(0, &gGraphRoot1);
 }
 
 void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0) {
     func_80011938(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
-    GraphNode_AddChild(&D_800AC840, &arg0->unk_000);
+    GraphNode_AddChild(&gGraphRoot0, &arg0->unk_000);
     arg0->unk_0A6 = 0;
     arg0->unk_000.unk_01 &= ~1;
 }
 
-void func_8001BBC8(unk_D_86002F58_004_000* arg0) {
+void Graph_AddToRootList1(unk_D_86002F58_004_000* arg0) {
     func_80011938(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
-    GraphNode_AddChild(&D_800AC858, &arg0->unk_000);
+    GraphNode_AddChild(&gGraphRoot1, &arg0->unk_000);
     arg0->unk_000.unk_01 &= ~1;
 }
 
-void func_8001BC34(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
+void GraphNode_InitChild(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
     GraphNode_AddChild(&arg0->unk_000, arg3);
     Matrix_Identity(&arg0->unk_060);
     arg0->unk_018 = arg1;
@@ -63,12 +63,12 @@ void func_8001BC34(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002
     }
 }
 
-void func_8001BCF0(unk_D_86002F58_004_000* arg0) {
+void GraphNode_ClearCallback(unk_D_86002F58_004_000* arg0) {
     arg0->unk_000.unk_0C = NULL;
     arg0->unk_000.unk_01 &= ~1;
 }
 
-s32 func_8001BD04(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 GraphNode_TriggerAction(unk_D_86002F58_004_000* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C* tmp = arg0->unk_000.unk_0C;
     unk_D_86002F58_004_000_00C_028* temp_v0 = tmp->unk_28(0, 0);
 
@@ -82,7 +82,7 @@ s32 func_8001BD04(unk_D_86002F58_004_000* arg0, s32 arg1) {
     return 0;
 }
 
-s32 func_8001BD9C(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C* temp_v0 = arg0->unk_000.unk_0C;
     unk_D_86002F58_004_000_00C_028* temp_v1 = temp_v0->unk_28(0, 0);
 
@@ -96,19 +96,19 @@ s32 func_8001BD9C(unk_D_86002F58_004_000* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8001BE34(unk_D_86002F58_004_000* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void GraphNode_SetColorRGBA(unk_D_86002F58_004_000* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     func_8000E840(&arg0->unk_0A0, arg1, arg2, arg3, arg4);
 }
 
-void func_8001BE78(unk_D_86002F58_004_000* arg0, u8 arg1) {
+void GraphNode_SetState(unk_D_86002F58_004_000* arg0, u8 arg1) {
     arg0->unk_01D = arg1;
 }
 
-void func_8001BE84(unk_D_86002F58_004_000* arg0, u8 arg1) {
+void GraphNode_SetSubState(unk_D_86002F58_004_000* arg0, u8 arg1) {
     arg0->unk_01C = arg1;
 }
 
-unk_D_86002F58_004_000_00C_028* func_8001BE90(unk_D_86002F58_004_000* arg0, s32 arg1) {
+unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(unk_D_86002F58_004_000* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C_028* var_v1 = NULL;
 
     if (arg0 == NULL) {
@@ -124,7 +124,7 @@ unk_D_86002F58_004_000_00C_028* func_8001BE90(unk_D_86002F58_004_000* arg0, s32 
     return var_v1;
 }
 
-arg1_func_80010CA8* func_8001BEE8(arg1_func_80010CA8* arg0, unk_func_80026268_arg0* arg1) {
+arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026268_arg0* arg1) {
     UNUSED s32 pad;
     char sp38[0xB];
     arg1_func_80010CA8 sp34;
@@ -162,7 +162,7 @@ arg1_func_80010CA8* func_8001BEE8(arg1_func_80010CA8* arg0, unk_func_80026268_ar
     return arg0;
 }
 
-void func_8001C014(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) {
+void GetPokemonStatFromEntry(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) {
     unk_func_80026268_arg0 stack;
 
     stack.unk_00.unk_00 = arg2;
@@ -170,10 +170,10 @@ void func_8001C014(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) 
 
     _bcopy(arg1->unk_04, stack.unk_30, 0x10);
     _bcopy(arg1->unk_14, stack.unk_3B, 0x10);
-    func_8001BEE8(arg0, &stack);
+    ComputeStatFromName(arg0, &stack);
 }
 
-void func_8001C07C(unk_D_800AE540_1194* arg0) {
+void ProcessPokemonSelection(unk_D_800AE540_1194* arg0) {
     arg1_func_80010CA8 sp2C;
     s16 sp2A;
     unk_D_800AE540_0004* temp_a1;
@@ -183,7 +183,7 @@ void func_8001C07C(unk_D_800AE540_1194* arg0) {
     if (!(arg0->unk_00 & 0x40) && (arg0->unk_00 & 0x80)) {
         temp_a1 = arg0->unk_04;
         if ((temp_a1 != NULL) && (sp2A == arg0->unk_04->unk_000)) {
-            func_8001BEE8(&sp2C, (unk_func_80026268_arg0*)arg0->unk_04);
+            ComputeStatFromName(&sp2C, (unk_func_80026268_arg0*)arg0->unk_04);
             if ((sp2A == 0x19) && (arg0->unk_04->unk_01C[0].unk_30[6] & 0x80)) {
                 sp2A = 0x99;
             }
@@ -203,7 +203,7 @@ void func_8001C07C(unk_D_800AE540_1194* arg0) {
     }
 }
 
-void func_8001C198(unk_func_8001C248* arg0) {
+void UpdatePokemonStateOnEnter(unk_func_8001C248* arg0) {
     if (func_80019C08(arg0->unk_000.unk_10)) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
         arg0->unk_000.unk_00 &= ~0xE0;
@@ -211,7 +211,7 @@ void func_8001C198(unk_func_8001C248* arg0) {
     }
 }
 
-void func_8001C1E8(unk_func_8001C248* arg0) {
+void UpdatePokemonStateOnExit(unk_func_8001C248* arg0) {
     if (arg0->unk_000.unk_00 & 0x40 && func_80019CA8(arg0->unk_000.unk_10) != 0) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
         arg0->unk_000.unk_00 &= ~0xE0;
@@ -219,7 +219,7 @@ void func_8001C1E8(unk_func_8001C248* arg0) {
     }
 }
 
-void func_8001C248(unk_func_8001C248* arg0) {
+void StartPokemonAnimation(unk_func_8001C248* arg0) {
     if (!(arg0->unk_01D & 0x40) && (arg0->unk_01D & 0x80)) {
         func_80019A7C(arg0->unk_000.unk_10, arg0->unk_020, arg0->unk_024);
         arg0->unk_01D |= 0x40;
@@ -232,7 +232,7 @@ void func_8001C248(unk_func_8001C248* arg0) {
     }
 }
 
-void func_8001C2D8(unk_func_8001C248* arg0) {
+void FinishPokemonAnimation(unk_func_8001C248* arg0) {
     if (func_80019C58(arg0->unk_000.unk_10) != 0) {
         arg0->unk_024 = arg0->unk_000.unk_10->unk_28;
         arg0->unk_01D &= ~0xE0;

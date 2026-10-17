@@ -586,11 +586,11 @@ void func_83601F28(int arg0, int arg1, s32 arg2, f32 arg3) {
     Text_SetLineHeight(0x14);
     Text_SetEnvColor(0, 0, 0, 0xFF);
     Text_Print(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(spD0[arg2].r, spD0[arg2].g, spD0[arg2].b, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_Print(arg0 + temp_s3, arg1 + temp_s2, spD8);
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 

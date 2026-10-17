@@ -46,7 +46,7 @@ typedef struct unk_func_80031660_sp24 {
 extern unk_func_80031270* gCamPrimary;
 extern unk_func_80031270* gCamSecondary;
 extern u32 gCamFovTable[2];
-extern unk_D_80068BB0* gCamFramebuffer;
+extern FramebufferImage* gCamFramebuffer;
 extern s32 gCamTexWidth;
 extern s32 gCamTexHeight;
 extern s32 gCamTextWidth;
@@ -67,7 +67,7 @@ s16 gCamDistances[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80,
 unk_func_80031270* gCamPrimary = NULL;
 unk_func_80031270* gCamSecondary = NULL;
 u32 gCamFovTable[2] = { 0x42200000, 0x41C80000 };
-unk_D_80068BB0* gCamFramebuffer = NULL;
+FramebufferImage* gCamFramebuffer = NULL;
 s32 gCamTexWidth = 200;
 s32 gCamTexHeight = 43;
 s32 gCamTextWidth = 0;
@@ -436,7 +436,7 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
         gCamTextWidth = MeasureTextWidth(0x10, 0, sp16C);
         Cam_SetupQuadVertices(0, -0x96);
         Gfx_SetupFrameBuffer(&gDisplayListHead, gCamFramebuffer);
-        func_8000699C(&gDisplayListHead, 0);
+        Gfx_FillScreen(&gDisplayListHead, 0);
         gDPPipeSync(gDisplayListHead++);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
         gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
@@ -457,24 +457,24 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
             gSPTextureRectangle(gDisplayListHead++, 0, 30 << 2, 100 << 2, 43 << 2, 0, 0, 30 << 5, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 100 << 2, 30 << 2, 200 << 2, 43 << 2, 0, 100 << 5, 30 << 5, -(1 << 10), 1 << 10);
             Text_ResetState();
-            func_8001F470();
+            Text_BeginRender();
             Text_SetEnvColor(0xF0, 0x78, 0x6E, 0xFF);
             Text_SetPrimColor(0xF0, 0xF0, 0x78, 0xFF);
             Text_SetFont(0x10, 0);
             Text_Print(0x64 - ((s32) gCamTextWidth / 2), 5, sp16C);
-            func_8001F4C4();
+            Text_EndRender();
             Text_SetupDL();
         } else {
             gDPLoadTextureTile(gDisplayListHead++, D_5003AE8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 40, 0, 0, 31, 39, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, 16 << 2, 0 << 2, 152 << 2, 40 << 2, 0, 0, 0, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 152 << 2, 0 << 2, 185 << 2, 40 << 2, 0, 32 << 5, 0, -(1 << 10), 1 << 10);
             Text_ResetState();
-            func_8001F470();
+            Text_BeginRender();
             Text_SetEnvColor(0xDC, 0xFF, 0xDC, 0xFF);
             Text_SetPrimColor(0x78, 0xB4, 0xFF, 0xFF);
             Text_SetFont(0x10, 0);
             Text_Print(0x64 - ((s32) gCamTextWidth / 2), 7, sp16C);
-            func_8001F4C4();
+            Text_EndRender();
             Text_SetupDL();
         }
         Gfx_SetupFrameBuffer(&gDisplayListHead, gCamSecondary->unk_08);
@@ -540,9 +540,9 @@ void Cam_ProcessGeoLayout(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 a
     mem_pool_resize_block(sp18);
 }
 
-unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80068BB0* arg3,
+unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
                                  unk_D_86002F58_004_000_010* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
-    UNUSED unk_D_80068BB0* var_v0;
+    UNUSED FramebufferImage* var_v0;
     unk_func_80031270* temp_v0 = main_pool_alloc(sizeof(unk_func_80031270), 0);
 
     if (temp_v0 != NULL) {
@@ -554,16 +554,16 @@ unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80
         if (arg2 != NULL) {
             temp_v0->unk_08 = arg2;
         } else {
-            temp_v0->unk_08 = func_80006314(0, 2, arg0, arg1, 0);
+            temp_v0->unk_08 = FramebufferImage_Allocate(0, 2, arg0, arg1, 0);
         }
 
         if (arg3 != NULL) {
             temp_v0->unk_0C = arg3;
         } else {
-            temp_v0->unk_0C = func_80006314(0, 2, arg0, arg1, 1);
+            temp_v0->unk_0C = FramebufferImage_Allocate(0, 2, arg0, arg1, 1);
         }
 
-        func_80006414(temp_v0->unk_08, temp_v0->unk_0C);
+        FramebufferImage_AttachDepth(temp_v0->unk_08, temp_v0->unk_0C);
 
         temp_v0->unk_10 = arg4;
         temp_v0->unk_14 = arg5;
@@ -571,7 +571,7 @@ unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80
         temp_v0->unk_34 = 0;
 
         if (gCamFramebuffer == 0) {
-            gCamFramebuffer = func_80006314(0, 2, 0xC8, 0x2B, 0);
+            gCamFramebuffer = FramebufferImage_Allocate(0, 2, 0xC8, 0x2B, 0);
         }
 
         Cam_ProcessGeoLayout(temp_v0, arg0, arg1);
@@ -645,17 +645,17 @@ void Cam_Initialize(unk_func_80031270* arg0) {
     if (sp30.unk_00.unk_00 == 0x99) {
         sp30.unk_00.unk_00 = 0x19;
     }
-    func_8001BEE8(&sp90, &sp30);
+    ComputeStatFromName(&sp90, &sp30);
     sp30.unk_00.unk_00 = sp94;
     func_800198E4(arg0->unk_10, sp30.unk_00.unk_00, sp90);
     func_80019CA8(arg0->unk_10);
-    func_8001BCF0(arg0->unk_20);
-    func_8001BC34(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
+    GraphNode_ClearCallback(arg0->unk_20);
+    GraphNode_InitChild(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
     sp28 = Util_ConvertAddrToVirtAddr(&func_81002260);
     sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->unk_00.unk_09[1]));
-    func_8001BD04(arg0->unk_20, temp_s1->unk_00.unk_05);
+    GraphNode_TriggerAction(arg0->unk_20, temp_s1->unk_00.unk_05);
     func_80017464(arg0->unk_20, temp_s1->unk_00.unk_06);
-    func_8001BD9C(arg0->unk_20, temp_s1->unk_00.unk_08);
+    GraphNode_TriggerSound(arg0->unk_20, temp_s1->unk_00.unk_08);
     func_80017804(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
 }
 
@@ -719,11 +719,11 @@ u8* Cam_Update(unk_func_80031270* arg0) {
                 Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08);
 
                 if ((arg0->unk_34 == -1) || (arg0->unk_34 == 0)) {
-                    func_8000699C(&gDisplayListHead, 1);
+                    Gfx_FillScreen(&gDisplayListHead, 1);
                 } else if (arg0->unk_34 < 0x10000U) {
-                    func_8000699C(&gDisplayListHead, arg0->unk_34);
+                    Gfx_FillScreen(&gDisplayListHead, arg0->unk_34);
                 } else {
-                    func_8000699C(&gDisplayListHead, 0xA6BF);
+                    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
                 }
                 func_80015348();
                 *((s32*)Util_ConvertAddrToVirtAddr(&D_8140E6B8)) = sp24->unk_18;

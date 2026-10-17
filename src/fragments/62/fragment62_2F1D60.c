@@ -6,7 +6,7 @@
 
 void func_843074A0(unk_D_84390010* arg0) {
     func_80017464(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
-    func_8001BD04(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
+    GraphNode_TriggerAction(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
     func_8430753C(arg0->unk_728.unk_168);
 }
 

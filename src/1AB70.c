@@ -46,7 +46,7 @@ void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
 
 unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 var_s0;
-    unk_D_80068BB0* temp_a1;
+    FramebufferImage* temp_a1;
     s32 i;
     unk_func_8001A024* temp_v0 = main_pool_alloc(sizeof(unk_func_8001A024), 0);
 
@@ -61,16 +61,16 @@ unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg
         temp_v0->unk_18 = D_8006FF00;
 
         if (arg0 != NULL) {
-            temp_v0->unk_14 = func_80006314(0, 2, arg2, arg3, 1);
+            temp_v0->unk_14 = FramebufferImage_Allocate(0, 2, arg2, arg3, 1);
         }
 
         for (i = 0; i < arg1; i++) {
             temp_v0->unk_08[i].unk_00 = 0;
             temp_v0->unk_08[i].unk_14.raw = 0;
-            temp_v0->unk_08[i].unk_0C = func_80006314(0, 2, arg2, arg3, 0);
+            temp_v0->unk_08[i].unk_0C = FramebufferImage_Allocate(0, 2, arg2, arg3, 0);
             bzero(temp_v0->unk_08[i].unk_0C->img_p, arg2 * arg3 * 2);
             if (temp_v0->unk_14 != NULL) {
-                func_80006414(temp_v0->unk_08[i].unk_0C, temp_v0->unk_14);
+                FramebufferImage_AttachDepth(temp_v0->unk_08[i].unk_0C, temp_v0->unk_14);
             }
         }
 
@@ -79,14 +79,14 @@ unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg
     return temp_v0;
 }
 
-void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, unk_D_80068BB0* arg2) {
+void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, FramebufferImage* arg2) {
     s32 i;
 
     arg0->unk_04 = arg1;
     arg0->unk_14 = arg2;
 
     for (i = 0; i < arg0->unk_01; ++i) {
-        func_80006414(arg0->unk_08[i].unk_0C, arg2);
+        FramebufferImage_AttachDepth(arg0->unk_08[i].unk_0C, arg2);
     }
 }
 
@@ -100,11 +100,11 @@ void SpriteDisplay_Clear(unk_func_8001A024* arg0) {
     u16 w;
     u16 h;
     unk_func_8001A024_008* tempImg_p;
-    unk_D_80068BB0* tempDepth_p;
+    FramebufferImage* tempDepth_p;
 
     if (arg0->unk_00 & 1) {
         func_80019CA8(arg0->unk_04);
-        func_8001BCF0(arg0->unk_10);
+        GraphNode_ClearCallback(arg0->unk_10);
     }
 
     arg0->unk_00 = 0;
@@ -162,7 +162,7 @@ void SpriteDisplay_ConfigSlotWithAnim(unk_func_8001A024* arg0, s32 arg1, unk_fun
             arg0->unk_08[arg1].unk_14.raw = arg2;;
             arg0->unk_08[arg1].unk_02 = arg3 & ~1;
             arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_02 / 100.0f;
-            func_8001BEE8(&arg0->unk_08[arg1].unk_10, arg2);
+            ComputeStatFromName(&arg0->unk_08[arg1].unk_10, arg2);
             if (arg0->unk_18[arg2->unk_00.unk_00 - 1].name == NULL) {
                 arg0->unk_08[arg1].unk_04 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_08 - 0xE38;;
                 return;
@@ -198,7 +198,7 @@ void U16Buffer_Transform(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     // clang-format on
 }
 
-void SpriteImage_Transform(unk_D_80068BB0* arg0, arg1_func_80010CA8 arg1) {
+void SpriteImage_Transform(FramebufferImage* arg0, arg1_func_80010CA8 arg1) {
     s32 size = arg0->width * arg0->height;
 
     U16Buffer_Transform(arg0->img_p, size, arg1);
@@ -214,22 +214,22 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     temp_s1 = &arg0->unk_08[arg1];
     sp2C = arg0->unk_04->unk_24->unk_08->unk_00[0];
 
-    func_8001BCF0(arg0->unk_10);
+    GraphNode_ClearCallback(arg0->unk_10);
     func_800173CC(arg0->unk_10);
 
     if (temp_s1->unk_00 & 2) {
         sp38.x = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 << 6) >> 6;
-        func_8001BC34(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
-        func_8001BD04(arg0->unk_10, 1);
+        GraphNode_InitChild(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
+        GraphNode_TriggerAction(arg0->unk_10, 1);
         func_80017464(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
     } else {
         sp38.x = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 << 6) >> 6;
-        func_8001BC34(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
-        func_8001BD04(arg0->unk_10, 1);
+        GraphNode_InitChild(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
+        GraphNode_TriggerAction(arg0->unk_10, 1);
         func_80017464(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
     }
     func_8000E990(&arg0->unk_10->unk_024, &sp38);
@@ -241,7 +241,7 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     func_80015348();
     func_8001533C(3);
     Graph_SetTextureState(arg0->unk_0C);
-    func_8000699C(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+    Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
     func_8001533C(1);
     Graph_SetTextureState(arg0->unk_0C);
 }
@@ -400,7 +400,7 @@ void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) 
 
     if (arg1 == arg0->unk_03) {
         Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-        func_8000699C(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+        Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
         func_8001533C(1);
         Graph_SetTextureState(arg0->unk_0C);
         return;
@@ -458,7 +458,7 @@ void func_8001B0DC(u16* arg0, s32 arg1, unk_func_80026268_arg0* arg2) {
         return;
     }
 
-    func_8001BEE8(&sp1C, arg2);
+    ComputeStatFromName(&sp1C, arg2);
     func_8001B088(arg0, arg2->unk_00.unk_00);
     U16Buffer_Transform(arg0, 0x640, sp1C);
 }
@@ -501,9 +501,9 @@ unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16
         temp_v0->unk_08 = arg5;
         temp_v0->unk_0A = arg6;
         temp_v0->unk_0C = arg7;
-        temp_v0->unk_28 = func_80006314(0, 2, arg1, arg2, 0);
-        temp_v0->unk_2C = func_80006314(0, 2, arg1, arg2, 1);
-        func_80006414(temp_v0->unk_28, temp_v0->unk_2C);
+        temp_v0->unk_28 = FramebufferImage_Allocate(0, 2, arg1, arg2, 0);
+        temp_v0->unk_2C = FramebufferImage_Allocate(0, 2, arg1, arg2, 1);
+        FramebufferImage_AttachDepth(temp_v0->unk_28, temp_v0->unk_2C);
         func_8001B154(temp_v0, arg3, arg4, arg5, arg6);
     }
     return temp_v0;
@@ -527,12 +527,12 @@ void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 ar
     arg0->unk_24->unk_024.z = tmp3;
 
     arg0->unk_24->unk_01E = D_8006F05C;
-    func_8001BEE8(&sp2C, arg1);
+    ComputeStatFromName(&sp2C, arg1);
     func_800198E4(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
     func_80019CA8(arg0->unk_1C);
-    func_8001BCF0(arg0->unk_24);
-    func_8001BC34(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
-    func_8001BD04(arg0->unk_24, 1);
+    GraphNode_ClearCallback(arg0->unk_24);
+    GraphNode_InitChild(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(arg0->unk_24, 1);
     arg0->unk_24->unk_000.unk_02 &= ~0x40;
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
@@ -558,9 +558,9 @@ void func_8001B480(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     sp34.raw = 0;
     func_800198E4(arg0->unk_1C, arg1, sp34);
     func_80019CA8(arg0->unk_1C);
-    func_8001BCF0(arg0->unk_24);
-    func_8001BC34(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
-    func_8001BD04(arg0->unk_24, 1);
+    GraphNode_ClearCallback(arg0->unk_24);
+    GraphNode_InitChild(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(arg0->unk_24, 1);
     arg0->unk_24->unk_000.unk_02 &= ~0x40;
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
@@ -658,7 +658,7 @@ void func_8001B834(unk_func_8001B1FC* arg0) {
     s32 i;
 
     if (arg0->unk_0C == 0) {
-        func_8000699C(&gDisplayListHead, arg0->unk_02);
+        Gfx_FillScreen(&gDisplayListHead, arg0->unk_02);
         return;
     }
 
@@ -681,7 +681,7 @@ void func_8001B834(unk_func_8001B1FC* arg0) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
 
-    func_800067E4(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
 }
 
 u8* func_8001B9D4(unk_func_8001B1FC* arg0) {

@@ -122,7 +122,7 @@ s32 func_8004B1CC(s32 arg0) {
         case 0x1:
             sp20 = 0x68;
             D_80078E80 = 1;
-            func_8003D918(0, 0xF);
+            ProcessMenuSelection(0, 0xF);
             break;
 
         case 0x9:
@@ -313,12 +313,12 @@ s32 func_8004B1CC(s32 arg0) {
 
         case 0x3A:
             sp20 = 0x68;
-            func_8003D918(0, 0xF);
+            ProcessMenuSelection(0, 0xF);
             func_8004DF94(0x01100016, 0, 0);
             break;
 
         case 0x48:
-            func_8003D918(0, 0xF);
+            ProcessMenuSelection(0, 0xF);
             func_8004DF94(0x01100016, 0, 0);
             sp20 = 0x70;
             break;
@@ -498,7 +498,7 @@ void func_8004B9C4(s32 arg0) {
     D_8007840C = 0;
     MusSetDurationScale(D_80078FA8, arg0);
     Audio_SetPaused(0);
-    func_8003DB84(0);
+    AudioFrameUpdate(0);
 
     if (D_800FF9B4 != 0x50) {
         for (i = 0; i < 2; i++) {

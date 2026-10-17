@@ -533,7 +533,7 @@ void func_823023F8(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
         sp3E = (arg0->unk_0010 >= 0) ? (s16)(SINS((s16)(SINS(arg0->unk_0010) * 16384.0f)) * 127.0f) + 0x7F
                                      : (s16)(SINS(arg0->unk_0010) * 127.0f) + 0x7F;
 
-        func_8001F504(arg1 + 0x78, arg2 + 4, 0x18C, 0x58, 0x64, 0x1E, 0x1E, (sp3E * 2) / 3);
+        Text_DrawWindowRect(arg1 + 0x78, arg2 + 4, 0x18C, 0x58, 0x64, 0x1E, 0x1E, (sp3E * 2) / 3);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, sp3E);

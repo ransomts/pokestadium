@@ -325,7 +325,7 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
     s16 temp_v0;
 
     Stage_BeginDisplayList();
-    func_8001D924(D_84211B34);
+    Gfx_DrawTextureAtlas(D_84211B34);
     func_84201D6C();
     if (arg2 > 0) {
         temp_a3 = (((arg2 * 0x9A) - 0x9A) / 8) + 0x10;
@@ -481,7 +481,7 @@ void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
 
     if (temp_s0 != 0) {
         D_84210D40--;
-        func_8001D924(D_84211B34);
+        Gfx_DrawTextureAtlas(D_84211B34);
         func_842024DC(arg1, arg2);
     }
 
@@ -695,7 +695,7 @@ void func_8420305C(s32 arg0) {
     for (i = 0; i < 8; i++) {
         Game_UpdateInputs();
         Stage_BeginDisplayList();
-        func_8001D924(D_84211B34);
+        Gfx_DrawTextureAtlas(D_84211B34);
         if (arg0 != 0) {
             func_842024DC(0, -1);
         }
@@ -713,7 +713,7 @@ void func_84203100(void) {
         for (i = 0; i < 10; i++) {
             Game_UpdateInputs();
             Stage_BeginDisplayList();
-            func_8001D924(D_84211B34);
+            Gfx_DrawTextureAtlas(D_84211B34);
             func_842024DC(0, -1);
             Stage_Advance();
         }

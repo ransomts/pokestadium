@@ -19,7 +19,7 @@
 static u32 D_86B0E250[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,  0x00000000, 0x014000F0, 0x00000032, 0x00000000, 0x00000118,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
-    0x05000000, 0x0A000000, &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
 static unk_D_86002F30* D_86B106B0;
@@ -76,7 +76,7 @@ void func_86B0A18C(u8* arg0) {
 void func_86B0A30C(void) {
     Stage_BeginDisplayList();
     func_86B0A18C(D_86B10828);
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
     Graph_SetTextureState(D_86B106B4);
     func_86B0A0B0();
@@ -87,7 +87,7 @@ s32 func_86B0A37C(void) {
     s32 var_v0;
 
     if ((D_86B106B8.unk_040.unk_08 >> 0x10) >= 0x5F) {
-        func_8001BE34(&D_86B106B8, 0, 0, 0, D_86B1082C += 0x14);
+        GraphNode_SetColorRGBA(&D_86B106B8, 0, 0, 0, D_86B1082C += 0x14);
     }
 
     if ((D_86B106B8.unk_040.unk_08 >> 0x10) == 0x64) {
@@ -130,8 +130,8 @@ void func_86B0A47C(void) {
     func_8001987C();
 
     D_86B106B0 = func_80019D18(0xD6);
-    func_8001BC34(&D_86B106B8, 0, 0xD6, D_86B106B0->unk_08->unk_00[0]);
-    func_8001BD04(&D_86B106B8, 1);
+    GraphNode_InitChild(&D_86B106B8, 0, 0xD6, D_86B106B0->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86B106B8, 1);
     Vec3f_Set(&D_86B106B8.unk_024, 0.0f, 0.0f, 0.0f);
     D_86B1082C = 0;
 }

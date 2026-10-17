@@ -2478,7 +2478,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
     }
 
     if (arg1 & 0x30) {
-        func_80026E4C(3);
+        GbsProcessBankWrites(3);
         func_800284B4(3);
     }
 }

@@ -279,11 +279,11 @@ void FillRectWithColorInset(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
 
 void DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
     Vtx* temp_s2;
-    unk_D_80068BB0* temp_s1;
+    FramebufferImage* temp_s1;
     Mtx* sp7C;
     Vp* sp78;
 
-    temp_s1 = func_8000648C();
+    temp_s1 = Gfx_GetCurrentFramebuffer();
     temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     sp7C = GfxAlloc(sizeof(Mtx) * 1);
     sp78 = GfxAlloc(sizeof(Vp) * 1);
@@ -293,10 +293,10 @@ void DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, 
     gSPViewport(gDisplayListHead++, (u32)sp78 & 0x1FFFFFFF);
 
     guOrtho(sp7C, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    func_8001E680(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    func_8001E680(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    func_8001E680(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
-    func_8001E680(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
 

@@ -375,25 +375,25 @@ void func_84318514(s8* arg0) {
     temp_v0 = arg0[0] & 0x7F;
 
     if ((arg0[0] & 0x80) == '\x00') {
-        func_8003F624(arg0[0]);
+        ProcessCommandQueue(arg0[0]);
     } else if (temp_v0 == 'Q') {
-        func_8003F624(0xBC);
+        ProcessCommandQueue(0xBC);
     } else if (temp_v0 == 'R') {
-        func_8003F624(0xB5);
+        ProcessCommandQueue(0xB5);
     } else if (temp_v0 == 'S') {
-        func_8003F624(0xB6);
+        ProcessCommandQueue(0xB6);
     } else if (temp_v0 == 'T') {
-        func_8003F624(0xB7);
+        ProcessCommandQueue(0xB7);
     } else if (temp_v0 == 'U') {
-        func_8003F624(0xB8);
+        ProcessCommandQueue(0xB8);
     } else if (temp_v0 == 'V') {
-        func_8003F624(0xB9);
+        ProcessCommandQueue(0xB9);
     } else if (temp_v0 == 'W') {
-        func_8003F624(0xBA);
+        ProcessCommandQueue(0xBA);
     } else if (temp_v0 == 'X') {
-        func_8003F624(0xBB);
+        ProcessCommandQueue(0xBB);
     } else {
-        func_8003F624(temp_v0 + 0x64);
+        ProcessCommandQueue(temp_v0 + 0x64);
     }
 }
 

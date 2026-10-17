@@ -960,7 +960,7 @@ void func_84B04A7C(unk_D_84B259A8* arg0) {
 }
 
 void func_84B04AE4(unk_D_84B259A8* arg0, s16 arg1, s16 arg2) {
-    func_8001BC34(arg0->unk_20, 0, 0, arg0->unk_24);
+    GraphNode_InitChild(arg0->unk_20, 0, 0, arg0->unk_24);
     Vec3f_Set(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
 }
 
@@ -976,8 +976,8 @@ void func_84B04B5C(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
     temp_s0 = (arg1 * 2) + 1;
     if (sp2C) {}
 
-    func_8001BC34(&arg0->unk_20[temp_s0], sp2C, 0, arg0->unk_28);
-    func_8001BC34(&arg0->unk_20[temp_s0 + 1], sp2C, 0, arg0->unk_2C);
+    GraphNode_InitChild(&arg0->unk_20[temp_s0], sp2C, 0, arg0->unk_28);
+    GraphNode_InitChild(&arg0->unk_20[temp_s0 + 1], sp2C, 0, arg0->unk_2C);
     Vec3f_Set(&arg0->unk_20[temp_s0].unk_024, arg2, arg3, -289.0f);
     Vec3f_Set(&arg0->unk_20[temp_s0 + 1].unk_024, arg2, arg3, -289.0f);
 
@@ -1000,7 +1000,7 @@ void func_84B04CCC(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_30);
+    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_30);
     Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
@@ -1020,7 +1020,7 @@ void func_84B04DB0(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_38);
+    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_38);
     Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, 320.0f, 0.0f, -289.0f);
 
     if (arg1 == 3) {
@@ -1040,7 +1040,7 @@ void func_84B04E94(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    func_8001BC34(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_34);
+    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_34);
     Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
@@ -1365,10 +1365,10 @@ s32 func_84B05B04(s32 arg0, unk_func_80011B94* arg1) {
 }
 
 void func_84B05CE0(s32 arg0) {
-    unk_D_80068BB0 sp40;
+    FramebufferImage sp40;
     u32 sp3C = Util_ConvertAddrToVirtAddr(&D_3017F00);
 
-    func_800062E4(&sp40, 0, 2, 0x40, 0x40, arg0);
+    FramebufferImage_Init(&sp40, 0, 2, 0x40, 0x40, arg0);
     Gfx_SetupFrameBuffer(&gDisplayListHead, &sp40);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1383,9 +1383,9 @@ void func_84B05DD0(unk_D_84B259E8* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_8001BCF0(&arg0->unk_08[i + 4]);
+        GraphNode_ClearCallback(&arg0->unk_08[i + 4]);
         func_84B00404(&arg0->unk_08[i + 12]);
-        func_8001BC34(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
         arg0->unk_08[i + 4].unk_01E.x = 0;
         arg0->unk_08[i + 4].unk_000.unk_14 = arg0;
     }
@@ -1510,14 +1510,14 @@ void func_84B06364(unk_D_84B259E8* arg0, unk_D_86002F58_004_000* arg1, s16 arg2)
 
     if (arg2 == 0) {
         for (i = 4; i < 8; i++) {
-            func_8001BC34(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
+            GraphNode_InitChild(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
             arg0->unk_08[i].unk_000.unk_14 = (s32)arg0;
         }
         arg0->unk_00 = 1;
     } else {
         for (i = 12, var_s2 = -0x60; i < 16; i++) {
-            func_8001BC34(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
+            GraphNode_InitChild(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
             Vec3f_Set(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
             arg0->unk_08[i].unk_01E.x = -0x8000;
             var_s2 += 0x40;
@@ -1640,7 +1640,7 @@ void func_84B067B4(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
             if (i < (gBattleContext.unk_0003 - 1)) {
                 func_84B05CE0(arg0->unk_10[i]);
             }
-            arg0->unk_30[i] = func_80006314(0, 2, 0x40, 0x60, 0);
+            arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
             func_84B064FC(arg0, i, ptr->unk_010);
         }
     } else {
@@ -1669,7 +1669,7 @@ void func_84B06A54(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
     arg0->unk_04 = 0;
 
     for (i = 0; i < 4; i++) {
-        arg0->unk_30[i] = func_80006314(0, 2, 0x40, 0x60, 0);
+        arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
     }
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);

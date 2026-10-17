@@ -138,7 +138,7 @@ s32 miniPokeIsIdleCheck(MiniActor* arg0) {
 void func_879003A0(MiniActor* poke) {
     switch (poke->unk_248) {
         case 1:
-            func_8001BD04(&poke->unk_000, poke->unk_24A);
+            GraphNode_TriggerAction(&poke->unk_000, poke->unk_24A);
             if (poke->unk_26C != 0) {
                 func_800173DC(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
                 func_80017464(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
@@ -147,7 +147,7 @@ void func_879003A0(MiniActor* poke) {
                 func_80017464(&poke->unk_000, poke->unk_26E);
                 func_80017788(&poke->unk_000);
                 if (poke->unk_24C != -1) {
-                    func_8001BD9C(&poke->unk_000, poke->unk_24C);
+                    GraphNode_TriggerSound(&poke->unk_000, poke->unk_24C);
                     func_80017804(&poke->unk_000, poke->unk_26E);
                 }
             }
@@ -168,7 +168,7 @@ void func_879003A0(MiniActor* poke) {
 
         case 3:
             if (poke->unk_26A != 0) {
-                func_8001BD04(&poke->unk_000, 0);
+                GraphNode_TriggerAction(&poke->unk_000, 0);
             }
             poke->unk_248 = 0;
             break;

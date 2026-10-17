@@ -57,7 +57,7 @@ static u32 D_82F13E58[] = {
 static u32 D_82F13E8C[] = {
     0x0C000000, 0x05000000, 0x0B00002D,  0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002D013B, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
-    0x05000000, 0x0A000000, &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
+    0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static s16 D_82F13EEC[] = {
     0x007E,
@@ -226,7 +226,7 @@ void func_82F07004(s16 arg0) {
         unk_D_86002F58_004_000* ptr = &var_s0->unk_028;
 
         Graph_AddToRootList0(ptr);
-        func_8001BC34(ptr, 0, 0, D_82F210CC);
+        GraphNode_InitChild(ptr, 0, 0, D_82F210CC);
         ptr->unk_000.unk_14 = i;
         ptr->unk_000.unk_01 &= ~1;
     }

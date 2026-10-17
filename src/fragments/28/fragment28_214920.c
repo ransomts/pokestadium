@@ -358,7 +358,7 @@ void func_888019A4(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
     func_8880123C(arg1 + 0xC, arg2 + 0x64, 0xC0, 0x14, D_888081FC);
     func_8880123C(arg1 + 0xC, arg2 + 0x7C, 0xC0, 0x14, D_888081FC);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xCC, 0x80, 0x80, 0xFF);
     Text_SetFont(0x10, 0);
@@ -370,7 +370,7 @@ void func_888019A4(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
     Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267A0, 8));
     Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 9));
     Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xA));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetEnvColor(D_888081F8.r, D_888081F8.g, D_888081F8.b, D_888081F8.a);
     Text_SetFont(8, 0);
     sprintf(sp38, "%d", arg0->unk_3C);
@@ -557,7 +557,7 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     func_8880123C(arg1 + 0xC, arg2 + 0x64, 0xC0, 0x14, D_88808218);
     func_8880123C(arg1 + 0xC, arg2 + 0x7C, 0xC0, 0x14, D_88808218);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0x96, 0xFF);
     Text_SetFont(0x10, 0);
@@ -569,7 +569,7 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267AC, sp54->unk_00 - 1));
     Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 0xC));
     Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xD));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetFont(8, 0);
     Text_SetEnvColor(D_88808214.r, D_88808214.g, D_88808214.b, D_88808214.a);
     sp4C = GetMessageString(NULL, 0, D_888267A0, 0xE);
@@ -6142,7 +6142,7 @@ s32 func_88803C74(void) {
         Stage_Advance();
     } while (var_s1 == 3);
 
-    func_8001BCF0(&D_888267B8);
+    GraphNode_ClearCallback(&D_888267B8);
     main_pool_pop_state('PICT');
     return var_s1;
 }
@@ -6269,9 +6269,9 @@ void func_88804370(void) {
     u32 sp34;
     u32 sp30;
     u32 sp2C;
-    unk_D_80068BB0* sp28;
+    FramebufferImage* sp28;
 
-    sp28 = main_pool_alloc(sizeof(unk_D_80068BB0), 0);
+    sp28 = main_pool_alloc(sizeof(FramebufferImage), 0);
 
     sp34 = D_88826924->unk_18[0]->img_p;
     D_88826930 = D_88826924->unk_18[0]->img_p + 0x25800;
@@ -6279,14 +6279,14 @@ void func_88804370(void) {
     D_88826934 = D_88826924->unk_18[1]->img_p + 0x25800;
     sp2C = D_88826924->unk_18[1]->img_p + 0x70800;
 
-    D_88826928->unk_18[0] = main_pool_alloc(sizeof(unk_D_80068BB0), 0);
-    D_88826928->unk_18[1] = main_pool_alloc(sizeof(unk_D_80068BB0), 0);
+    D_88826928->unk_18[0] = main_pool_alloc(sizeof(FramebufferImage), 0);
+    D_88826928->unk_18[1] = main_pool_alloc(sizeof(FramebufferImage), 0);
 
-    func_800062E4(D_88826928->unk_18[0], 0, 2, 0x140, 0xF0, sp34);
-    func_800062E4(D_88826928->unk_18[1], 0, 2, 0x140, 0xF0, sp30);
-    func_800062E4(sp28, 0, 2, 0x140, 0xF0, sp2C);
-    func_80006414(D_88826928->unk_18[0], sp28);
-    func_80006414(D_88826928->unk_18[1], sp28);
+    FramebufferImage_Init(D_88826928->unk_18[0], 0, 2, 0x140, 0xF0, sp34);
+    FramebufferImage_Init(D_88826928->unk_18[1], 0, 2, 0x140, 0xF0, sp30);
+    FramebufferImage_Init(sp28, 0, 2, 0x140, 0xF0, sp2C);
+    FramebufferImage_AttachDepth(D_88826928->unk_18[0], sp28);
+    FramebufferImage_AttachDepth(D_88826928->unk_18[1], sp28);
 }
 
 s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {

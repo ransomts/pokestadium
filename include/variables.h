@@ -857,8 +857,8 @@ typedef struct ClipRect {
 } ClipRect; // size >= 0x8
 extern ClipRect gClipRect;
 
-extern struct unk_D_86002F58_004_000_000 D_800AC840;
-extern struct unk_D_86002F58_004_000_000 D_800AC858;
+extern struct unk_D_86002F58_004_000_000 gGraphRoot0;
+extern struct unk_D_86002F58_004_000_000 gGraphRoot1;
 
 typedef struct unk_D_8006FF00 {
 	/* 0x00 */ u8 unk_00;
@@ -876,15 +876,15 @@ typedef struct unk_D_8006FF00 {
 } unk_D_8006FF00; // size = 0x1C
 extern unk_D_8006FF00 D_8006FF00[152];
 
-typedef struct unk_D_800AC870_sub {
+typedef struct FontBankInfo {
 	/* 0x00 */ s16 unk_00;
 	/* 0x02 */ s16 unk_02;
 	/* 0x04 */ u8* unk_04;
 	/* 0x08 */ u8* unk_08;
-} unk_D_800AC870_sub; // size = 0xC
+} FontBankInfo; // size = 0xC
 
 typedef struct unk_D_800AC870 {
-    /* 0x00 */ unk_D_800AC870_sub unk_00[6];
+    /* 0x00 */ FontBankInfo unk_00[6];
     /* 0x48 */ void* unk_48;
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ u8 unk_50;

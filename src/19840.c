@@ -492,7 +492,7 @@ unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
     sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
     if (sp2C != NULL) {
         sp20 = state_pool_try_init(main_pool_get_available(), 0);
-        func_8001BEE8(&sp28, arg0);
+        ComputeStatFromName(&sp28, arg0);
         sp24 = func_80019328(sp20, sp2C, sp28);
         mem_pool_resize_block(sp20);
     }

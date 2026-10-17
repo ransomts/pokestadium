@@ -177,12 +177,12 @@ void func_8430FC20(void) {
 }
 
 void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    unk_D_80068BB0* temp_s1;
+    FramebufferImage* temp_s1;
     Vtx* temp_s2;
     Mtx* sp84;
     Vp* sp80;
 
-    temp_s1 = func_8000648C();
+    temp_s1 = Gfx_GetCurrentFramebuffer();
     temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     sp84 = GfxAlloc(sizeof(Mtx) * 1);
     sp80 = GfxAlloc(sizeof(Vp) * 1);
@@ -192,10 +192,10 @@ void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     guOrtho(sp84, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -211,11 +211,11 @@ void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
 void func_8430FF8C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
     Vtx* temp_s2;
-    unk_D_80068BB0* temp_s1;
+    FramebufferImage* temp_s1;
     Mtx* sp7C;
     Vp* sp78;
 
-    temp_s1 = func_8000648C();
+    temp_s1 = Gfx_GetCurrentFramebuffer();
     temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     sp7C = GfxAlloc(sizeof(Mtx) * 1);
     sp78 = GfxAlloc(sizeof(Vp) * 1);
@@ -224,10 +224,10 @@ void func_8430FF8C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
     gSPViewport(gDisplayListHead++, (u32)sp78 & 0x1FFFFFFF);
 
     guOrtho(sp7C, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    func_8001E680(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    func_8001E680(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    func_8001E680(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
-    func_8001E680(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -432,12 +432,12 @@ void func_84311048(unk_D_84390010* arg0, unk_func_80026268_arg0* arg1, unk_D_843
     if (arg3 < 0) {
         temp_a2 = arg5 + arg3;
         if (temp_a2 < 0) {
-            func_8001F504(0, arg4, 0, arg6, arg7, arg8, arg9, argA);
+            Text_DrawWindowRect(0, arg4, 0, arg6, arg7, arg8, arg9, argA);
         } else {
-            func_8001F504(0, arg4, temp_a2, arg6, arg7, arg8, arg9, argA);
+            Text_DrawWindowRect(0, arg4, temp_a2, arg6, arg7, arg8, arg9, argA);
         }
     } else {
-        func_8001F504(arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
+        Text_DrawWindowRect(arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
     }
 
     func_843109F4(arg3 + 3, arg4 + 0x10, arg1->unk_24);
@@ -543,7 +543,7 @@ void func_843116D8(s16 arg0, s16 arg1) {
         var_v1 = 0;
     }
 
-    func_8001F504(arg0 - 1, arg1, 0x14, 0xD, sp54[var_v1].r, sp54[var_v1].g, sp54[var_v1].b, 0xBE);
+    Text_DrawWindowRect(arg0 - 1, arg1, 0x14, 0xD, sp54[var_v1].r, sp54[var_v1].g, sp54[var_v1].b, 0xBE);
     func_84311428(arg0 - 2, arg1 - 1, 0x14, 0xC);
 
     sprintf(sp44, "%02d", temp_t0);
@@ -561,7 +561,7 @@ void func_843118A8(s16 arg0, s16 arg1) {
     f32 sp3C = D_84390128 / 30.0f;
     UNUSED s32 pad[2];
 
-    func_8001F504(arg0, arg1, 0x27, 0xC, 0, 0, 0, 0x5A);
+    Text_DrawWindowRect(arg0, arg1, 0x27, 0xC, 0, 0, 0, 0x5A);
     func_84311428(arg0 - 2, arg1 - 1, 0x27, 0xC);
     Text_ResetState();
     Text_SetFont(2, 0);
@@ -1531,7 +1531,7 @@ void func_84315C28(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
     sp2C = (arg1 - arg3.x) * 2;
     sp28 = (arg2 - arg3.y) * 2;
 
-    func_8001F504(arg3.x, arg3.y, sp2C, sp28, temp_v0->r, temp_v0->g, temp_v0->b, 0x96);
+    Text_DrawWindowRect(arg3.x, arg3.y, sp2C, sp28, temp_v0->r, temp_v0->g, temp_v0->b, 0x96);
     func_84311428(arg3.x, arg3.y, sp2C, sp28);
     func_8430FC28(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
@@ -1569,7 +1569,7 @@ s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 void func_84315FAC(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
-    func_8001F504(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2), 0, 0, 0, 0x96);
+    Text_DrawWindowRect(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2), 0, 0, 0, 0x96);
     func_84311428(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2));
     func_8430FC28(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
@@ -1695,7 +1695,7 @@ void func_8431694C(void) {
 void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC) {
     UNUSED s32 pad;
-    unk_D_80068BB0* temp_s1 = func_8000648C();
+    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* spC0 = GfxAlloc(sizeof(Mtx) * 1);
     Vp* spBC = GfxAlloc(sizeof(Vp));
@@ -1706,10 +1706,10 @@ void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
 
     guOrtho(spC0, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xF0, 0, 0xFF);
-    func_8001E680(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xF0, 0, 0xFF);
-    func_8001E680(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
-    func_8001E680(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
+    SetTileVertex(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xF0, 0, 0xFF);
+    SetTileVertex(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xF0, 0, 0xFF);
+    SetTileVertex(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
+    SetTileVertex(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);

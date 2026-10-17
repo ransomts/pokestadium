@@ -94,8 +94,8 @@ const u8 D_8122AD50[] = {
 };
 
 // .bss
-extern unk_D_80068BB0* D_8122B1E0;
-extern unk_D_80068BB0* D_8122B1E4;
+extern FramebufferImage* D_8122B1E0;
+extern FramebufferImage* D_8122B1E4;
 extern u8 D_8120D820[234];
 extern u8 D_8120DD70[16];
 extern unk_D_8122B1E8 D_8122B1E8[2];
@@ -103,7 +103,7 @@ extern s32 D_8122B224[];
 extern s32 D_8122B2B8;
 extern unk_D_8122B2C0* D_8122B2C0;
 extern unk_D_8122B2F8* D_8122B2C8[3];
-extern unk_D_80068BB0* D_8122B2D8[2];
+extern FramebufferImage* D_8122B2D8[2];
 extern s32 D_8122B2E0;
 extern void* D_8122B2EC;
 extern s32 D_8122B2F0;
@@ -1407,8 +1407,8 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
     s32 pad[2];
     s32 i;
 
-    D_8122B1E0 = func_80006314(0, 2, 320, 288, 1);
-    D_8122B1E4 = func_80006314(0, 2, 320, 288, 1);
+    D_8122B1E0 = FramebufferImage_Allocate(0, 2, 320, 288, 1);
+    D_8122B1E4 = FramebufferImage_Allocate(0, 2, 320, 288, 1);
     D_8122B2F8 = main_pool_alloc(0x1FEAE8, 0);
     if (D_8122B2F8 == NULL) {
         D_8122C4DC = 1;

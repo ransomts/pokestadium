@@ -606,7 +606,7 @@ void func_84B08A90(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
-        func_8001BC34(&arg0->unk_04[i], 0, 0, arg0->unk_08);
+        GraphNode_InitChild(&arg0->unk_04[i], 0, 0, arg0->unk_08);
         arg0->unk_04[i].unk_000.unk_14 = arg0;
     }
 
@@ -625,7 +625,7 @@ void func_84B08BFC(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
-        func_8001BC34(&arg0->unk_04[8 + i], 0, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[8 + i], 0, 0, arg0->unk_10);
         arg0->unk_04[8 + i].unk_000.unk_14 = arg0;
         arg0->unk_04[8 + i].unk_01E.y = -0x8000;
     }
@@ -643,8 +643,8 @@ void func_84B08D54(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
-        func_8001BC34(&arg0->unk_04[15 + i], 0, 0, arg0->unk_08);
-        func_8001BC34(&arg0->unk_04[18 + i], 0, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[15 + i], 0, 0, arg0->unk_08);
+        GraphNode_InitChild(&arg0->unk_04[18 + i], 0, 0, arg0->unk_0C);
         arg0->unk_04[15 + i].unk_000.unk_14 = arg0;
         arg0->unk_04[18 + i].unk_000.unk_14 = arg0;
 
@@ -656,8 +656,8 @@ void func_84B08D54(unk_D_84B25A58* arg0) {
     }
 
     for (i = 0; i < 3; i++) {
-        func_8001BC34(&arg0->unk_04[22 + i], 0, 0, arg0->unk_08);
-        func_8001BC34(&arg0->unk_04[25 + i], 0, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[22 + i], 0, 0, arg0->unk_08);
+        GraphNode_InitChild(&arg0->unk_04[25 + i], 0, 0, arg0->unk_0C);
         arg0->unk_04[22 + i].unk_000.unk_14 = arg0;
         arg0->unk_04[25 + i].unk_000.unk_14 = arg0;
 
@@ -673,8 +673,8 @@ void func_84B08F7C(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
-        func_8001BC34(&arg0->unk_04[27 + i], 0, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[30 + i], 0, 0, arg0->unk_14);
+        GraphNode_InitChild(&arg0->unk_04[27 + i], 0, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[30 + i], 0, 0, arg0->unk_14);
 
         arg0->unk_04[27 + i].unk_000.unk_14 = arg0;
         arg0->unk_04[30 + i].unk_000.unk_14 = arg0;
@@ -687,8 +687,8 @@ void func_84B08F7C(unk_D_84B25A58* arg0) {
     }
 
     for (i = 0; i < 3; i++) {
-        func_8001BC34(&arg0->unk_04[34 + i], 0, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[37 + i], 0, 0, arg0->unk_14);
+        GraphNode_InitChild(&arg0->unk_04[34 + i], 0, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[37 + i], 0, 0, arg0->unk_14);
         arg0->unk_04[34 + i].unk_000.unk_14 = arg0;
         arg0->unk_04[37 + i].unk_000.unk_14 = arg0;
 
@@ -826,24 +826,24 @@ void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
 
     if (arg1 == 0x10) {
         for (i = 1; i < 7; i++) {
-            func_8001BCF0(&arg0->unk_04[i]);
+            GraphNode_ClearCallback(&arg0->unk_04[i]);
             func_84B00404(&arg0->unk_04[8 + i]);
             arg0->unk_04[i].unk_01E.y = 0;
         }
 
         for (i = 0; i < 3; i++) {
             if ((i >= gBattleContext.unk_1194[0].unk_08[0]->unk_002) || (temp_s5[i].unk_25 == 0)) {
-                func_8001BC34(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
+                GraphNode_InitChild(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
             } else {
-                func_8001BC34(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
+                GraphNode_InitChild(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
             }
         }
 
         for (i = 0; i < 3; i++) {
             if ((i >= gBattleContext.unk_1194[1].unk_08[0]->unk_002) || (temp_s6[i].unk_25 == 0)) {
-                func_8001BC34(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
+                GraphNode_InitChild(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
             } else {
-                func_8001BC34(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
+                GraphNode_InitChild(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
             }
         }
     }
@@ -905,9 +905,9 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0x10) {
         for (i = 0; i < 3; i++) {
             if (arg0->unk_04[16 + i].unk_01E.y == 0) {
-                func_8001BC34(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
+                GraphNode_InitChild(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
             } else {
-                func_8001BC34(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
+                GraphNode_InitChild(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
             }
             arg0->unk_04[1 + i].unk_000.unk_14 = arg0;
             Vec3f_Set(&arg0->unk_04[1 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
@@ -915,9 +915,9 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
 
         for (i = 0; i < 3; i++) {
             if (arg0->unk_04[19 + i].unk_01E.y == 0) {
-                func_8001BC34(&arg0->unk_04[9 + i], 0, 0, arg0->unk_0C);
+                GraphNode_InitChild(&arg0->unk_04[9 + i], 0, 0, arg0->unk_0C);
             } else {
-                func_8001BC34(&arg0->unk_04[9 + i], 0, 0, arg0->unk_14);
+                GraphNode_InitChild(&arg0->unk_04[9 + i], 0, 0, arg0->unk_14);
             }
             arg0->unk_04[9 + i].unk_000.unk_14 = arg0;
             Vec3f_Set(&arg0->unk_04[9 + i].unk_024, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
@@ -925,9 +925,9 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
 
         for (i = 0; i < 3; i++) {
             if (arg0->unk_04[22 + i].unk_01E.y == 0) {
-                func_8001BC34(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
+                GraphNode_InitChild(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
             } else {
-                func_8001BC34(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
+                GraphNode_InitChild(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
             }
             arg0->unk_04[4 + i].unk_000.unk_14 = arg0;
             Vec3f_Set(&arg0->unk_04[4 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
@@ -935,9 +935,9 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
 
         for (i = 0; i < 3; i++) {
             if (arg0->unk_04[25 + i].unk_01E.y == 0) {
-                func_8001BC34(&arg0->unk_04[12 + i], 0, 0, arg0->unk_0C);
+                GraphNode_InitChild(&arg0->unk_04[12 + i], 0, 0, arg0->unk_0C);
             } else {
-                func_8001BC34(&arg0->unk_04[12 + i], 0, 0, arg0->unk_14);
+                GraphNode_InitChild(&arg0->unk_04[12 + i], 0, 0, arg0->unk_14);
             }
             arg0->unk_04[12 + i].unk_000.unk_14 = arg0;
             Vec3f_Set(&arg0->unk_04[12 + i].unk_024, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
@@ -1043,7 +1043,7 @@ void func_84B0A244(unk_D_84B25A58* arg0) {
     unk_D_86002F58_004_000_010* temp_s0;
 
     temp_s0 = func_80019760(5);
-    SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, func_80006314(0, 2, 0x80, 0xC0, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0xC0, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_1C, count, gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
@@ -1060,7 +1060,7 @@ void func_84B0A36C(unk_D_84B25A58* arg0) {
     unk_D_86002F58_004_000_010* temp_s0;
 
     temp_s0 = func_80019760(5);
-    SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_1C, count, gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, 0);
@@ -1115,8 +1115,8 @@ s32 func_84B0A634(unk_D_84B25A58* arg0, unk_D_86002F58_004_000* arg1) {
 
         Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 48.0f, -289.0f);
         Vec3f_Set(&arg0->unk_04[7].unk_024, 96.0f, -48.0f, -289.0f);
-        func_8001BC34(&arg0->unk_04[0], 0, 0, arg0->unk_18);
-        func_8001BC34(&arg0->unk_04[7], 0, 0, arg0->unk_18);
+        GraphNode_InitChild(&arg0->unk_04[0], 0, 0, arg0->unk_18);
+        GraphNode_InitChild(&arg0->unk_04[7], 0, 0, arg0->unk_18);
 
         if (arg0->unk_02 == 1) {
             func_84B08D54(arg0);
@@ -1172,8 +1172,8 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = 0;
-    arg0->unk_24 = func_80006314(0, 2, 0x40, 0x60, 0);
-    arg0->unk_28 = func_80006314(0, 2, 0x40, 0x60, 0);
+    arg0->unk_24 = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
+    arg0->unk_28 = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
 
     if ((gBattleContext.unk_0001 == 8) && (gBattleContext.unk_1194[0].unk_08[0]->unk_002 >= 4)) {
         arg0->unk_02 = 1;

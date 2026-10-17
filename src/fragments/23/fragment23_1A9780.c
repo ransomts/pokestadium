@@ -1295,7 +1295,7 @@ void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
     }
 
     if (arg1 & 4) {
-        func_80026E4C(3);
+        GbsProcessBankWrites(3);
         func_800284B4(3);
     }
 }

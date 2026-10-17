@@ -1493,10 +1493,10 @@ void func_87803368(s16 arg0) {
 
     if (arg0 == 0) {
         for (x = 0; x < 4; x++) {
-            func_800067E4(&gDisplayListHead, (x * 0x36) + 0x44, 0, 0x16, 0xC0);
+            Gfx_FillDepthRectangle(&gDisplayListHead, (x * 0x36) + 0x44, 0, 0x16, 0xC0);
         }
     } else {
-        func_800067E4(&gDisplayListHead, 0x44, 0, 0xFC, 0xC0);
+        Gfx_FillDepthRectangle(&gDisplayListHead, 0x44, 0, 0xFC, 0xC0);
     }
 
     guLookAtReflect(&spD0, temp_s2, 0.0f, 0.0f, 320.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -1577,10 +1577,10 @@ void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s1
     spC8 = GfxAlloc(sizeof(Mtx) * 1);
     spC4 = GfxAlloc(sizeof(Mtx) * 1);
 
-    func_8001E680(&spCC[0], -sp64 + arg4, -sp5C + arg5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spCC[1], -sp64 + arg6, -sp5C + arg5, 0, arg2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spCC[2], -sp64 + arg4, -sp5C + arg7, 0, 0, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spCC[3], -sp64 + arg6, -sp5C + arg7, 0, arg2 << 5, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spCC[0], -sp64 + arg4, -sp5C + arg5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spCC[1], -sp64 + arg6, -sp5C + arg5, 0, arg2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spCC[2], -sp64 + arg4, -sp5C + arg7, 0, 0, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spCC[3], -sp64 + arg6, -sp5C + arg7, 0, arg2 << 5, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     guOrtho(spC8, -sp64, 0x140 - sp64, 0xF0 - sp5C, -sp5C, -2.0f, 2.0f, 1.0f);
 
@@ -1618,7 +1618,7 @@ void func_87803EAC(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 
 
     for (i = 0; i < arg6; i++) {
         for (j = 0; j < arg5; j++) {
-            func_8001E680(&temp_fp[(arg5 * i) + j], D_8780FCB8[j] - arg3, D_8780FCCC[i] - arg4, 0,
+            SetTileVertex(&temp_fp[(arg5 * i) + j], D_8780FCB8[j] - arg3, D_8780FCCC[i] - arg4, 0,
                           D_8780FCB8[j] * 32, D_8780FCCC[i] * 32, 0xFF, 0xFF, 0xFF, 0xFF);
         }
     }
@@ -1755,10 +1755,10 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
 
         for (i = 0, var_s4 = 0; i < 4; i++) {
             if (spA0[i] == 1) {
-                func_8001E680(&spAC[var_s4 * 4 + 0], -0x63, spA4[var_s4], 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(&spAC[var_s4 * 4 + 1], -0x1B, spA4[var_s4], 0, 0x480, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(&spAC[var_s4 * 4 + 2], -0x63, spA4[var_s4] + 0x34, 0, 0, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(&spAC[var_s4 * 4 + 3], -0x1B, spA4[var_s4] + 0x34, 0, 0x480, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(&spAC[var_s4 * 4 + 0], -0x63, spA4[var_s4], 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(&spAC[var_s4 * 4 + 1], -0x1B, spA4[var_s4], 0, 0x480, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(&spAC[var_s4 * 4 + 2], -0x63, spA4[var_s4] + 0x34, 0, 0, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(&spAC[var_s4 * 4 + 3], -0x1B, spA4[var_s4] + 0x34, 0, 0x480, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 gSPVertex(gDisplayListHead++, &spAC[var_s4 * 4 + 0], 4, 0);
                 gDPLoadTextureBlock(gDisplayListHead++, D_8780F910[D_8780FA30[i]][i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 36,
@@ -1837,7 +1837,7 @@ void func_87804AD0(s16 arg0) {
     }
 
     Text_SetFont(4, 0);
-    func_8001F470();
+    Text_BeginRender();
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
     func_8002D600(1, D_8780FA3A);
@@ -1854,7 +1854,7 @@ void func_87804AD0(s16 arg0) {
         }
 
         Text_Print((arg0 - (func_878013D4(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
     }
 }
@@ -2029,7 +2029,7 @@ s32 func_87804FD4(void) {
                             } else if ((D_8780FE44 < 0xAB) && (D_8780FCA7 == 0)) {
                                 D_8780FA28 |= 1;
                                 func_800280D4(D_8780FA28 & 0xFF);
-                                func_80026684(0x14, 0);
+                                GbsCommitBankBlock(0x14, 0);
                                 func_800284B4(2);
                                 D_8780FCA7 = 1;
                             }
@@ -2143,7 +2143,7 @@ s32 func_87804FD4(void) {
         }
 
         if ((D_8780FC40 != 0) && (D_8780FC40 != 1)) {
-            func_8001F504(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
+            Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
         }
 
         if (D_8780FC64 != 0) {
@@ -2219,7 +2219,7 @@ s32 func_87804FD4(void) {
             sp55 = (0xF0 - temp_t0) >> 1;
             func_87803200(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
             Text_ResetState();
-            func_8001F470();
+            Text_BeginRender();
             Text_SetEnvColor(0xFF, 0xFD, 0xD4, 0xFF);
             Text_SetPrimColor(0xBA, 0xB7, 0, 0xFF);
             Text_SetFont(4, 0);
@@ -2227,7 +2227,7 @@ s32 func_87804FD4(void) {
             Text_Print(0x28, sp55, sp60);
             sp55 = (sp55 + (sp44 * 0x12));
             Text_Print(0x28, sp55 & 0xFF, sp5C);
-            func_8001F4C4();
+            Text_EndRender();
             Text_SetupDL();
         }
 
@@ -2267,13 +2267,13 @@ s32 func_87804FD4(void) {
 
         if (D_8780FC74 != 0) {
             Text_ResetState();
-            func_8001F470();
+            Text_BeginRender();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
             Text_Print(0xA0 - (func_878013D4(NULL, GetMessageString(0, 0, D_87806330, 0x56)) / 2), 0x6C,
                           GetMessageString(0, 0, D_87806330, 0x56));
-            func_8001F4C4();
+            Text_EndRender();
             Text_SetupDL();
         }
     }

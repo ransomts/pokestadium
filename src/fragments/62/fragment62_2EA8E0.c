@@ -29,8 +29,8 @@ static void* D_8438E780;
 static GraphNode* D_8438E784;
 static GraphNode* D_8438E788;
 static GraphNode* D_8438E78C;
-static unk_D_80068BB0* D_8438E790;
-static unk_D_80068BB0* D_8438E794;
+static FramebufferImage* D_8438E790;
+static FramebufferImage* D_8438E794;
 static unk_D_800AE540_1194* D_8438E798;
 static s32 D_8438E79C;
 static s32 D_8438E7A0;
@@ -52,18 +52,18 @@ static u32 D_84384364[] = {
     0x00000000,  0x05000000,  0x07000000,    &D_8438E568,   0x06000000, 0x06000000,    0x0F000002,  0x05000000,
     0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  func_8430012C,
     0x00000000,  0x05000000,  0x07000000,    &D_8438E580,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
-    0x0A000000,  &D_800AC840, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &D_800AC858, 0x06000000,
+    0x0A000000,  &gGraphRoot0, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,
     0x09000000,  0x08000000,  func_84300020, 0x00000000,    0x06000000, 0x06000000,    0x06000000,  0x01000000,
 };
 static u32 D_843844C4[] = {
     0x0C00FFFF,  0x05000000, 0x07000000, &D_8438E598, 0x05000000, 0x0D000001, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 static u32 D_84384514[] = {
     0x0C00FFFF,  0x05000000, 0x07000000, &D_8438E688, 0x05000000, 0x0D000002, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 
 s32 func_84300020(s32 arg0, GraphNode* arg1) {
@@ -148,17 +148,17 @@ void func_84300340(void) {
     s16 sp44;
 
     if ((u32)D_8438E780 == NULL) {
-        func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+        Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
         return;
     }
 
     if ((u32)D_8438E780 == -1) {
-        func_8000699C(&gDisplayListHead, 1);
+        Gfx_FillScreen(&gDisplayListHead, 1);
         return;
     }
 
     if ((u32)D_8438E780 < 0x10000) {
-        func_8000699C(&gDisplayListHead, func_84300208(D_8438E780));
+        Gfx_FillScreen(&gDisplayListHead, func_84300208(D_8438E780));
         return;
     }
 
@@ -170,9 +170,9 @@ void func_84300340(void) {
     sp44 = 0x10000 / (D_8438E440.unk_18.height / 2);
 
     if ((D_8438E440.unk_18.width < 0x140) || (D_8438E440.unk_18.height < 0xF0)) {
-        func_8000699C(&gDisplayListHead, 1);
+        Gfx_FillScreen(&gDisplayListHead, 1);
     } else {
-        func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+        Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     }
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -190,7 +190,7 @@ void func_84300340(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
 
-void func_84300750(GraphNode* arg0, unk_D_80068BB0* arg1) {
+void func_84300750(GraphNode* arg0, FramebufferImage* arg1) {
     unk_D_86002F34_00C* sp2C = arg0->unk_0C;
     unk_D_86002F34_00C_018 sp20;
 
@@ -203,7 +203,7 @@ void func_84300750(GraphNode* arg0, unk_D_80068BB0* arg1) {
         sp2C->unk_18.height = 0x4C;
 
         Gfx_SetupFrameBuffer(&gDisplayListHead, arg1);
-        func_8000699C(&gDisplayListHead, 0x10D);
+        Gfx_FillScreen(&gDisplayListHead, 0x10D);
         Graph_SetTextureState(arg0);
 
         sp2C->unk_00.unk_01 &= ~0x10;
@@ -243,7 +243,7 @@ void func_84300938(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
     func_84300810(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
-void func_84300B34(GraphNode* arg0, unk_D_80068BB0* arg1) {
+void func_84300B34(GraphNode* arg0, FramebufferImage* arg1) {
     s32 temp_s2;
     s32 temp_s3;
     unk_D_86002F34_00C* temp_v1 = arg0->unk_0C;
@@ -389,10 +389,10 @@ s32 func_843010EC(s32 arg0) {
     s32 sp1C = 0;
 
     Cont_StartReadInputs();
-    func_8001C07C(&D_8438E798[0]);
-    func_8001C1E8(&D_8438E798[0]);
-    func_8001C07C(&D_8438E798[1]);
-    func_8001C1E8(&D_8438E798[1]);
+    ProcessPokemonSelection(&D_8438E798[0]);
+    UpdatePokemonStateOnExit(&D_8438E798[0]);
+    ProcessPokemonSelection(&D_8438E798[1]);
+    UpdatePokemonStateOnExit(&D_8438E798[1]);
     Cont_ReadInputs();
     func_8001F730();
 
@@ -411,12 +411,12 @@ s32 func_843010EC(s32 arg0) {
     }
 
     func_84301094();
-    func_8001C248(&D_8438E798[0]);
-    func_8001C248(&D_8438E798[1]);
+    StartPokemonAnimation(&D_8438E798[0]);
+    StartPokemonAnimation(&D_8438E798[1]);
 
     if ((arg0 != 2) && (D_8438E7AC == 1)) {
         D_8438E7AC = 2;
-        func_8003DB84(0);
+        AudioFrameUpdate(0);
         if (gBattleContext.unk_0000 != 0x11) {
             func_8004B9C4(0x1E);
         }
@@ -487,7 +487,7 @@ void func_843013E4(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
     arg0->unk_1C = 0;
     arg0->unk_02 = temp_v0->unk_01C[0].unk_00.unk_00;
     arg0->unk_04 = temp_v0->unk_01C;
-    func_8001C07C(arg0);
+    ProcessPokemonSelection(arg0);
 }
 
 void func_84301430(Stage* arg0) {
@@ -497,7 +497,7 @@ void func_84301430(Stage* arg0) {
     unk_D_8690A610_018* temp_v0_7;
     s32 pad;
     s16 sp32;
-    unk_D_80068BB0* sp2C;
+    FramebufferImage* sp2C;
     unk_D_86002F30* sp28;
 
     func_84300184(0xFF, 0xFF, 0xFF);
@@ -516,12 +516,12 @@ void func_84301430(Stage* arg0) {
     func_8001987C();
 
     sp2C = main_pool_alloc(0x10, 0);
-    func_800062E4(sp2C, 0, 2, 0x4C, 0x4C, arg0->unk_18[0]->depth_p->img_p);
-    D_8438E790 = func_80006314(0, 2, 0x4C, 0x4C, 0);
-    D_8438E794 = func_80006314(0, 2, 0x4C, 0x4C, 0);
+    FramebufferImage_Init(sp2C, 0, 2, 0x4C, 0x4C, arg0->unk_18[0]->depth_p->img_p);
+    D_8438E790 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
+    D_8438E794 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
 
-    func_80006414(D_8438E790, sp2C);
-    func_80006414(D_8438E794, sp2C);
+    FramebufferImage_AttachDepth(D_8438E790, sp2C);
+    FramebufferImage_AttachDepth(D_8438E794, sp2C);
 
     D_8438E778 = D_8438E790->img_p;
     D_8438E77C = D_8438E794->img_p;

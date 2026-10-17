@@ -533,10 +533,10 @@ void func_8432E784(void) {
         }
     }
 
-    func_8001BE34(&D_84390010[0]->unk_000, 0xFF, 0xFF, 0xFF, 0);
-    func_8001BE34(&D_84390010[1]->unk_000, 0xFF, 0xFF, 0xFF, 0);
-    func_8001BE78(&D_84390010[0]->unk_000, 0xFF);
-    func_8001BE78(&D_84390010[1]->unk_000, 0xFF);
+    GraphNode_SetColorRGBA(&D_84390010[0]->unk_000, 0xFF, 0xFF, 0xFF, 0);
+    GraphNode_SetColorRGBA(&D_84390010[1]->unk_000, 0xFF, 0xFF, 0xFF, 0);
+    GraphNode_SetState(&D_84390010[0]->unk_000, 0xFF);
+    GraphNode_SetState(&D_84390010[1]->unk_000, 0xFF);
 
     D_8439037E = 0xFF;
     D_8439037C = D_8439037E;

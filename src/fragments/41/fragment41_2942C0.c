@@ -14,7 +14,7 @@
 #include "src/stage_loader.h"
 
 static unk_D_82F21140 D_82F21140;
-static unk_D_80068BB0* D_82F2115C;
+static FramebufferImage* D_82F2115C;
 static unk_D_82F21160 D_82F21160[2];
 static unk_D_82F211A0 D_82F211A0[2];
 static unk_D_82F21238 D_82F21238;
@@ -201,7 +201,7 @@ void func_82F0CC3C(void) {
 
             if (sp84 == 0) {
                 sp84 = 1;
-                func_800060E0(&gDisplayListHead, 0xEC, 0x50, 0xAA, 0x50);
+                Gfx_SetScissorRect(&gDisplayListHead, 0xEC, 0x50, 0xAA, 0x50);
             }
 
             gDPPipeSync(gDisplayListHead++);
@@ -246,7 +246,7 @@ void func_82F0CC3C(void) {
     }
 
     if (sp84 != 0) {
-        func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+        Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
     }
 }
 
@@ -267,7 +267,7 @@ void func_82F0D090(unk_D_82F21238* arg0, s32 arg1) {
         arg0->unk_06 = 1;
         arg0->unk_2C->unk_00 |= 4;
     }
-    func_8001BD04(arg0->unk_2C->unk_24, arg0->unk_06);
+    GraphNode_TriggerAction(arg0->unk_2C->unk_24, arg0->unk_06);
 }
 
 void func_82F0D160(s16 arg0) {
@@ -304,7 +304,7 @@ void func_82F0D27C(unk_D_82F21238* arg0) {
     if ((func_80017514(sp24) != 0) && (arg0->unk_06 == 2)) {
         arg0->unk_06 = 1;
         arg0->unk_2C->unk_00 |= 4;
-        func_8001BD04(sp24, arg0->unk_06);
+        GraphNode_TriggerAction(sp24, arg0->unk_06);
     }
     arg0->unk_20 = func_8001B9D4(arg0->unk_2C);
 }
@@ -756,7 +756,7 @@ void func_82F0EE58(void) {
         if (ptr->unk_12 > 0) {
             if (ptr->unk_14 > 0) {
                 sp24 = 1;
-                func_800060E0(&gDisplayListHead, ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
+                Gfx_SetScissorRect(&gDisplayListHead, ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
                 if (ptr->unk_20 != 0) {
                     func_82F0E97C(&D_82F21238);
                 }
@@ -765,7 +765,7 @@ void func_82F0EE58(void) {
         }
 
         if (sp24 != 0) {
-            func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+            Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         }
 
         func_82F0E5C8(ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
@@ -1127,14 +1127,14 @@ void func_82F0FCC0(void) {
             if (var_s0->unk_08 < 0) {
                 var_s0->unk_08 = 0;
             }
-            func_800060E0(&gDisplayListHead, var_s0->unk_08, var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E);
+            Gfx_SetScissorRect(&gDisplayListHead, var_s0->unk_08, var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E);
         }
 
         func_82F0F9E0(var_s0->unk_04, var_s0->unk_06, var_s0->unk_14, var_s0->unk_18);
     }
 
     if (var_s3 != 0) {
-        func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+        Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
     }
 }
 
@@ -1845,7 +1845,7 @@ void func_82F13278(void) {
     func_82F0EF68();
     func_82F0C630();
     func_82F0D084();
-    D_82F2115C = func_80006314(0, 2, 0x20, 0x20, 1);
+    D_82F2115C = FramebufferImage_Allocate(0, 2, 0x20, 0x20, 1);
 }
 
 void func_82F132D0(void) {

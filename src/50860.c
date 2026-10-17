@@ -19,7 +19,7 @@ void func_8004FCD8(s32 arg0) {
     s32 i;
 
     D_8007840C = 0;
-    func_8003DB84(0);
+    AudioFrameUpdate(0);
     func_8004FC60(3, arg0);
 
     for (i = 0; i < 2; i++) {

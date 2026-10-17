@@ -830,7 +830,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
     unk_D_86002F58_004_000_010* temp_s0;
 
     temp_s0 = func_80019760(5);
-    SpriteDisplay_SetDepthBuffer(arg0->unk_20, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_20, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
@@ -846,7 +846,7 @@ void func_84B07560(unk_D_84B25A28* arg0) {
     s32 count;
     unk_D_86002F58_004_000_010* tmp = func_80019760(5);
 
-    SpriteDisplay_SetDepthBuffer(arg0->unk_20, tmp, func_80006314(0, 2, 0x60, 0x40, 1));
+    SpriteDisplay_SetDepthBuffer(arg0->unk_20, tmp, FramebufferImage_Allocate(0, 2, 0x60, 0x40, 1));
 
     for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
         SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
@@ -940,17 +940,17 @@ s32 func_84B07AB8(unk_D_84B25A28* arg0, unk_D_86002F58_004_000* arg1) {
         for (i = 5; i < 10; i++) { arg0->unk_04[i].unk_01E.x = -var_a1; }
         // clang-format on
 
-        func_8001BC34(&arg0->unk_04[0], 1, 0, arg0->unk_14);
-        func_8001BC34(&arg0->unk_04[1], 1, 0, arg0->unk_0C);
-        func_8001BC34(&arg0->unk_04[2], 1, 0, arg0->unk_0C);
-        func_8001BC34(&arg0->unk_04[3], 1, 0, arg0->unk_0C);
-        func_8001BC34(&arg0->unk_04[4], 1, 0, arg0->unk_0C);
-        func_8001BC34(&arg0->unk_04[5], 1, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[6], 1, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[7], 1, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[8], 1, 0, arg0->unk_10);
-        func_8001BC34(&arg0->unk_04[9], 1, 0, arg0->unk_18);
-        func_8001BC34(&arg0->unk_04[10], 3, 0, arg0->unk_1C);
+        GraphNode_InitChild(&arg0->unk_04[0], 1, 0, arg0->unk_14);
+        GraphNode_InitChild(&arg0->unk_04[1], 1, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[2], 1, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[3], 1, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[4], 1, 0, arg0->unk_0C);
+        GraphNode_InitChild(&arg0->unk_04[5], 1, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[6], 1, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[7], 1, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[8], 1, 0, arg0->unk_10);
+        GraphNode_InitChild(&arg0->unk_04[9], 1, 0, arg0->unk_18);
+        GraphNode_InitChild(&arg0->unk_04[10], 3, 0, arg0->unk_1C);
         Vec3f_Set(&arg0->unk_04[10].unk_024, 0.0f, 0.0f, 1000.0f);
 
         if (arg0->unk_02 == 1) {
@@ -970,8 +970,8 @@ void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = 0;
-    arg0->unk_24 = func_80006314(0, 2, 0x40, 0x60, 0);
-    arg0->unk_28 = func_80006314(0, 2, 0x40, 0x60, 0);
+    arg0->unk_24 = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
+    arg0->unk_28 = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
 
     if ((gBattleContext.unk_0001 == 0) && ((gBattleContext.unk_1194[0].unk_01 == 2) || (gBattleContext.unk_1194[1].unk_01 == 2))) {
         arg0->unk_02 = 1;

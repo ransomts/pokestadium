@@ -3,7 +3,7 @@
 u8 gAudioPaused = 0;
 
 s32 gAudioTransferPending;
-unk_D_800FCED8* gAudioChannel[2];
+GbAudioChannelState* gAudioChannel[2];
 s16* gAudioSampleData[2];
 u32 gAudioChunkSizeLarge;
 u32 gAudioChunkSizeSmall;
@@ -29,7 +29,7 @@ void Audio_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
     gAudioChunkSizeSmall = arg2 >> 1;
 
     for (i = 0; i < 2; i++) {
-        gAudioChannel[i] = alHeapDBAlloc(NULL, 0, arg0, 1, sizeof(unk_D_800FCED8));
+        gAudioChannel[i] = alHeapDBAlloc(NULL, 0, arg0, 1, sizeof(GbAudioChannelState));
         D_800FCF28[i] = alHeapDBAlloc(NULL, 0, arg0, sizeof(*D_800FCF28[0]) / 2, 2);
 
         gAudioSampleData[i] = (u32)gAudioChannel[i] + 0x198;
@@ -237,7 +237,7 @@ void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     osSendMesg(arg3, NULL, 1);
 }
 
-void AudioChannel_Init(unk_D_800FCED8* arg0, s32 arg1, s32 arg2) {
+void AudioChannel_Init(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
     bzero(&arg0->unk_0000, sizeof(unk_D_800FCED8_0000));
 
     arg0->unk_0000.unk_166 = 0x28;
@@ -262,7 +262,7 @@ void AudioChannel_Init(unk_D_800FCED8* arg0, s32 arg1, s32 arg2) {
     arg0->unk_25D2 = 2;
 }
 
-void AudioChannel_Update(unk_D_800FCED8* arg0) {
+void AudioChannel_Update(GbAudioChannelState* arg0) {
     s32 var_a2;
     s32 var_s2;
     u32 var_v1;
@@ -307,7 +307,7 @@ void AudioChannel_Update(unk_D_800FCED8* arg0) {
     var_v1 = arg0->unk_25CC - arg0->unk_25C8;
     while ((var_v1 < 0x960) && ((arg0->unk_25D1 == 1) || (arg0->unk_2598 > 0)) &&
            ((arg0->unk_25C4 - arg0->unk_25C0) >= 0x25) && (var_s2 > 0)) {
-        func_80045FF0(arg0, arg0->unk_0198.unk_0000 + (((arg0->unk_25CC % 2560) >> 2) * 8));
+        GbAudio_DecodeSpeechFrame(arg0, arg0->unk_0198.unk_0000 + (((arg0->unk_25CC % 2560) >> 2) * 8));
         arg0->unk_25C0 = (arg0->unk_25BC >> 3) & ~3;
         arg0->unk_25CC += 0xA0;
         arg0->unk_2598--;
@@ -320,7 +320,7 @@ void AudioChannel_Update(unk_D_800FCED8* arg0) {
     }
 }
 
-u32 AudioChannel_Consume(unk_D_800FCED8* arg0, u32 arg1) {
+u32 AudioChannel_Consume(GbAudioChannelState* arg0, u32 arg1) {
     u32 temp_v0;
     u32 var_a2;
 
@@ -341,12 +341,12 @@ u32 AudioChannel_Consume(unk_D_800FCED8* arg0, u32 arg1) {
     return 0;
 }
 
-void AudioChannel_StartPlayback(unk_D_800FCED8* arg0) {
+void AudioChannel_StartPlayback(GbAudioChannelState* arg0) {
     if (arg0->unk_25D1 == 2) {
         arg0->unk_25D1 = 3;
     }
 }
 
-void AudioChannel_Stop(unk_D_800FCED8* arg0) {
+void AudioChannel_Stop(GbAudioChannelState* arg0) {
     arg0->unk_25D1 = 4;
 }

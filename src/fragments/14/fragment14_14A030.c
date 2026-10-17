@@ -531,7 +531,7 @@ void func_86806A50(void) {
     for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
         var_s0->unk_40 = func_80011B10(temp_s2, NULL, 5, gfx, &D_8006F050, var_s0->unk_2C);
         func_868061E8(0, var_s0, i, NULL);
-        GraphNode_AddChild(&D_800AC840, var_s0->unk_40);
+        GraphNode_AddChild(&gGraphRoot0, var_s0->unk_40);
     }
 
     mem_pool_resize_block(temp_s2);

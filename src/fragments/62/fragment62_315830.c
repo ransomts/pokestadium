@@ -22,9 +22,9 @@ void func_8432AF70(unk_D_84390010* arg0) {
 
     if ((sp28->unk_15 & 0x20) && (ptr->unk_05 & 0x20) && !(sp2C->unk_34 & 2) &&
         ((arg0->unk_000.unk_040.unk_08 >> 0x10) >= 3)) {
-        func_8001BD04(&arg0->unk_000, sp20->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, sp20->unk_00);
         func_80017464(&arg0->unk_000, 4);
-        func_8001BD9C(&arg0->unk_000, sp20->unk_01);
+        GraphNode_TriggerSound(&arg0->unk_000, sp20->unk_01);
         func_80017804(&arg0->unk_000, 3);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
         func_843061EC(arg0, 2);
@@ -36,7 +36,7 @@ void func_8432AF70(unk_D_84390010* arg0) {
 void func_8432B0A4(unk_D_84390010* arg0) {
     unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_A50;
 
-    func_8001BD04(&arg0->unk_000, ptr->unk_00);
+    GraphNode_TriggerAction(&arg0->unk_000, ptr->unk_00);
 }
 
 void func_8432B0E4(unk_D_84390010* arg0) {

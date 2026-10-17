@@ -734,7 +734,7 @@ static u32 D_86B0DC5C[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x0000000F, 0x00000000,    0x00000000, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, func_86B024D0, 0x00000000, 0x14000000,
     0x002D0019,  0x80808028, 0x08000000, func_86B02538, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000,
 };
 
 static GraphNode* D_86B0EBC0;
@@ -824,15 +824,15 @@ void func_86B026C0(void) {
     D_86B0EBDC->unk_000 = func_80019D18(0xD3);
     D_86B0EBDC->unk_008.unk_0A6 = 0xFF;
 
-    func_8001BC34(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
-    func_8001BD04(&D_86B0EBDC->unk_008, 0);
+    GraphNode_InitChild(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86B0EBDC->unk_008, 0);
     Graph_AddToRootList0(&D_86B0EBDC->unk_170);
     func_8001987C();
 
     D_86B0EBDC->unk_004 = func_80019D18(D_86B0EBDC->unk_2EC);
     D_86B0EBDC->unk_170.unk_0A6 = 0;
-    func_8001BC34(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
-    func_8001BD04(&D_86B0EBDC->unk_170, 0);
+    GraphNode_InitChild(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
     D_86B0EBDC->unk_170.unk_000.unk_02 &= ~0x40;
 
     D_86B0EBDC->unk_170.unk_030.x = D_86B0EBDC->unk_2F4 = D_86B0DBCC[D_86B0F9C8].unk_00 / 1000.0f;
@@ -1056,7 +1056,7 @@ void func_86B03048(void) {
 
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, D_86B0DB78));
                 func_8004E810(D_86B0EBDC->unk_2EC, 2);
-                func_8001BD04(&D_86B0EBDC->unk_170, *D_86B0F648);
+                GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *D_86B0F648);
                 D_86B0EBE0->unk_00++;
             }
             break;
@@ -1385,7 +1385,7 @@ void func_86B04500(void) {
             func_8002D5D4(0x20, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2E8 - 1));
             func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, D_86B0DB8C);
-            func_8001BD04(&D_86B0EBDC->unk_170, *D_86B0F648);
+            GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *D_86B0F648);
             func_8004E810(D_86B0EBDC->unk_2EC, 2);
         }
 
@@ -1411,19 +1411,19 @@ void func_86B04794(void) {
     D_86B0EBDC->unk_304++;
     if (((D_86B0EBDC->unk_304 % 60) == 0) && (D_86B0EBDC->unk_308 == 0) && (D_86B0EBE8[2641] != 0xFF)) {
         func_80017788(&D_86B0EBDC->unk_170);
-        func_8001BD9C(&D_86B0EBDC->unk_170, D_86B0EBE8[2641]);
+        GraphNode_TriggerSound(&D_86B0EBDC->unk_170, D_86B0EBE8[2641]);
         D_86B0EBDC->unk_308 = 1;
     } else if ((D_86B0EBDC->unk_308 == 1) && (func_8001783C(&D_86B0EBDC->unk_170) == 1)) {
         D_86B0EBDC->unk_308 = 0;
         func_80017804(&D_86B0EBDC->unk_170, 0);
-        func_8001BD9C(&D_86B0EBDC->unk_170, -1);
+        GraphNode_TriggerSound(&D_86B0EBDC->unk_170, -1);
     }
 }
 
 void func_86B04880(void) {
     if (func_800174E4(&D_86B0EBDC->unk_170) == 1) {
         func_80017464(&D_86B0EBDC->unk_170, 0);
-        func_8001BD04(&D_86B0EBDC->unk_170, 0);
+        GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
     }
 }
 
@@ -1552,7 +1552,7 @@ void func_86B04C9C(void) {
 
 void func_86B04CF4(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     func_80015348();
     Graph_SetTextureState(D_86B0EBC0);
     func_86B04C9C();
@@ -1603,7 +1603,7 @@ void func_86B04DF0(void) {
         } else {
             func_8002817C(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
         }
-        func_80026684(0x14, 0);
+        GbsCommitBankBlock(0x14, 0);
         func_800284B4(2);
     }
 }

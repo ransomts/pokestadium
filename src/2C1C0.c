@@ -538,7 +538,7 @@ void Battle_PackStateForSave(void) {
     _bcopy(gBattleContext.unk_11E4[0], &sp20.unk_05, 8);
     func_80021C20(&sp20.unk_10, &gBattleContext.unk_1194[0].unk_08[0]->unk_008);
     func_800281D4(&sp20, sp1C->unk_028, sp1C->unk_002);
-    func_80026684(0x15, 0);
+    GbsCommitBankBlock(0x15, 0);
 }
 
 s32 Battle_LoadStateFromSave(void) {

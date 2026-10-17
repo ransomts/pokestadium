@@ -11,7 +11,7 @@
 #include "lib/ultralib/src/libc/xstdio.h"
 
 // .bss
-unk_D_800AC870* D_800AC870;
+unk_D_800AC870* gFontManager;
 
 void Gfx_DrawTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
     ClipRect sp30;
@@ -90,14 +90,14 @@ void Gfx_DrawSpriteI4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001D12C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteI8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_8b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void func_8001D348(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawSpriteI16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_16b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -115,7 +115,7 @@ void func_8001D560(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg7);
 }
 
-void func_8001D924(u8* arg0) {
+void Gfx_DrawTextureAtlas(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -139,7 +139,7 @@ void func_8001D924(u8* arg0) {
     }
 }
 
-void func_8001DBDC(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void Gfx_DrawClippedTextureRegion(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     s32 div = 32;
     s16 sp9A;
     s16 sp98;
@@ -203,14 +203,14 @@ void func_8001DBDC(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     }
 }
 
-void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) {
+void Gfx_DrawTileMap16x16(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) {
     s16 j;
     s16 i;
     Vec3s spCC;
     Vec3f spC0;
     Vec3f spB4;
     MtxF* temp_s4;
-    unk_D_80068BB0* temp_s1;
+    FramebufferImage* temp_s1;
     Vp* temp_s2;
     MtxF* temp_s0;
     MtxF* temp_s3;
@@ -219,7 +219,7 @@ void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) 
     temp_s4 = GfxAlloc(0x40);
     temp_s0 = GfxAlloc(0x40);
     temp_s2 = GfxAlloc(0x10);
-    temp_s1 = func_8000648C();
+    temp_s1 = Gfx_GetCurrentFramebuffer();
 
     func_8000EB70(&spCC, 0, 0, arg2);
     Vec3f_Set(&spC0, arg0, arg1, 0.0f);
@@ -256,7 +256,7 @@ void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) 
     }
 }
 
-Vtx* func_8001E490(void) {
+Vtx* AllocateTileMapVertices(void) {
     Vtx* sp54;
     Vtx* var_s0;
     s16 i;
@@ -268,10 +268,10 @@ Vtx* func_8001E490(void) {
 
         for (i = -0xF0; i < 0xF0; i += 0x20) {
             for (j = -0x140; j < 0x140; j += 0x20) {
-                func_8001E680(var_s0++, j + 0, i + 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(var_s0++, j + 0, i + 0x20, 0, 0, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(var_s0++, j + 0x20, i + 0x20, 0, 0x200, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001E680(var_s0++, j + 0x20, i + 0, 0, 0x200, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(var_s0++, j + 0, i + 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(var_s0++, j + 0, i + 0x20, 0, 0, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(var_s0++, j + 0x20, i + 0x20, 0, 0x200, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
+                SetTileVertex(var_s0++, j + 0x20, i + 0, 0, 0x200, 0, 0xFF, 0xFF, 0xFF, 0xFF);
             }
         }
     }
@@ -279,7 +279,7 @@ Vtx* func_8001E490(void) {
     return sp54;
 }
 
-void func_8001E680(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
+void SetTileVertex(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
     arg0->v.ob[0] = arg1;
     arg0->v.ob[1] = arg2;
     arg0->v.ob[2] = arg3;
@@ -303,7 +303,7 @@ void SetViewport(Vp* arg0, s16 arg1, s16 arg2) {
     arg0->vp.vscale[3] = 0;
 }
 
-u8 func_8001E730(u16 arg0) {
+u8 GetCharIndexFromFontTables(u16 arg0) {
     u8 var_v1 = 0;
 
     if ((arg0 >= 0x20) && (arg0 < 0x80)) {
@@ -315,20 +315,20 @@ u8 func_8001E730(u16 arg0) {
     return var_v1;
 }
 
-u8 Text_GetCharWidth(unk_D_800AC870_sub* arg0, u16 arg1) {
-    s32 idx = func_8001E730(arg1);
+u8 Text_GetCharWidth(FontBankInfo* arg0, u16 arg1) {
+    s32 idx = GetCharIndexFromFontTables(arg1);
 
     return arg0->unk_04[idx];
 }
 
 void func_8001E7C0(UNUSED s32 arg0, UNUSED s32 arg1) {
-    D_800AC870 = NULL;
+    gFontManager = NULL;
 }
 
 void Text_UnloadFont(UNUSED s32 arg0, s32 arg1) {
-    if (D_800AC870 != NULL) {
-        D_800AC870->unk_00[arg1].unk_04 = 0;
-        D_800AC870->unk_00[arg1].unk_08 = 0;
+    if (gFontManager != NULL) {
+        gFontManager->unk_00[arg1].unk_04 = 0;
+        gFontManager->unk_00[arg1].unk_08 = 0;
     }
 }
 
@@ -352,116 +352,116 @@ s32 GetFontBank(s32 arg0) {
     return var_v1;
 }
 
-void func_8001E884(s32 arg0, s32 arg1, s32 arg2) {
+void LoadFontBank(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
     ret_func_8000484C* temp_v0_2;
 
     sp1C = GetFontBank(arg0);
-    if (D_800AC870->unk_00[sp1C].unk_04 == 0) {
-        temp_v0_2 = BinArchive_GetFile(D_800AC870->unk_48, sp1C);
-        D_800AC870->unk_50 = sp1C;
-        D_800AC870->unk_00[sp1C].unk_00 = arg1;
-        D_800AC870->unk_00[sp1C].unk_02 = arg2;
-        D_800AC870->unk_00[sp1C].unk_04 = temp_v0_2;
-        D_800AC870->unk_00[sp1C].unk_08 = &temp_v0_2->unk_90;
+    if (gFontManager->unk_00[sp1C].unk_04 == 0) {
+        temp_v0_2 = BinArchive_GetFile(gFontManager->unk_48, sp1C);
+        gFontManager->unk_50 = sp1C;
+        gFontManager->unk_00[sp1C].unk_00 = arg1;
+        gFontManager->unk_00[sp1C].unk_02 = arg2;
+        gFontManager->unk_00[sp1C].unk_04 = temp_v0_2;
+        gFontManager->unk_00[sp1C].unk_08 = &temp_v0_2->unk_90;
         main_pool_set_func(temp_v0_2, sp1C, &Text_UnloadFont);
     }
 }
 
 unk_D_800AC870* Text_Init(s32 arg0, s32 arg1) {
-    D_800AC870 = main_pool_alloc_with_func(sizeof(*D_800AC870), arg1, 'PRNT', func_8001E7C0);
-    bzero(D_800AC870, sizeof(*D_800AC870));
-    D_800AC870->unk_48 = ASSET_LOAD2(fonts, 1, 1);
-    func_8001E9F0(arg0);
+    gFontManager = main_pool_alloc_with_func(sizeof(*gFontManager), arg1, 'PRNT', func_8001E7C0);
+    bzero(gFontManager, sizeof(*gFontManager));
+    gFontManager->unk_48 = ASSET_LOAD2(fonts, 1, 1);
+    LoadFontBanksFromMask(arg0);
 
-    return D_800AC870;
+    return gFontManager;
 }
 
 void func_8001E9CC(void) {
-    main_pool_try_free(D_800AC870);
+    main_pool_try_free(gFontManager);
 }
 
-void func_8001E9F0(s32 arg0) {
-    if (D_800AC870 != NULL) {
+void LoadFontBanksFromMask(s32 arg0) {
+    if (gFontManager != NULL) {
         if (arg0 & 0x20) {
-            func_8001E884(0x20, 0x20, 0x20);
+            LoadFontBank(0x20, 0x20, 0x20);
         }
 
         if (arg0 & 0x10) {
-            func_8001E884(0x10, 0x18, 0x18);
+            LoadFontBank(0x10, 0x18, 0x18);
         }
 
         if (arg0 & 8) {
-            func_8001E884(8, 0x18, 0x14);
+            LoadFontBank(8, 0x18, 0x14);
         }
 
         if (arg0 & 4) {
-            func_8001E884(4, 0x10, 0x10);
+            LoadFontBank(4, 0x10, 0x10);
         }
 
         if (arg0 & 2) {
-            func_8001E884(2, 0x10, 0xC);
+            LoadFontBank(2, 0x10, 0xC);
         }
 
         if (arg0 & 1) {
-            func_8001E884(1, 0x10, 0xA);
+            LoadFontBank(1, 0x10, 0xA);
         }
     }
 }
 
-void func_8001EAD0(s32 arg0) {
-    if (D_800AC870 != NULL) {
+void FreeFontBanks(s32 arg0) {
+    if (gFontManager != NULL) {
         if (arg0 & 1) {
-            if (D_800AC870->unk_00[0].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[0].unk_04);
+            if (gFontManager->unk_00[0].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[0].unk_04);
             }
         }
 
         if (arg0 & 2) {
-            if (D_800AC870->unk_00[1].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[1].unk_04);
+            if (gFontManager->unk_00[1].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[1].unk_04);
             }
         }
 
         if (arg0 & 4) {
-            if (D_800AC870->unk_00[2].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[2].unk_04);
+            if (gFontManager->unk_00[2].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[2].unk_04);
             }
         }
 
         if (arg0 & 8) {
-            if (D_800AC870->unk_00[3].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[3].unk_04);
+            if (gFontManager->unk_00[3].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[3].unk_04);
             }
         }
 
         if (arg0 & 0x10) {
-            if (D_800AC870->unk_00[4].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[4].unk_04);
+            if (gFontManager->unk_00[4].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[4].unk_04);
             }
         }
 
         if (arg0 & 0x20) {
-            if (D_800AC870->unk_00[5].unk_04 != NULL) {
-                main_pool_try_free(D_800AC870->unk_00[5].unk_04);
+            if (gFontManager->unk_00[5].unk_04 != NULL) {
+                main_pool_try_free(gFontManager->unk_00[5].unk_04);
             }
         }
     }
 }
 
 void Text_SetFont(s32 arg0, s32 arg1) {
-    if (D_800AC870 != NULL) {
-        D_800AC870->unk_50 = GetFontBank(arg0);
-        D_800AC870->unk_51 = arg1;
-        D_800AC870->unk_53 &= ~2;
+    if (gFontManager != NULL) {
+        gFontManager->unk_50 = GetFontBank(arg0);
+        gFontManager->unk_51 = arg1;
+        gFontManager->unk_53 &= ~2;
     }
 }
 
-s32 func_8001EC40(s32 arg0, unk_D_800AC870_sub* arg1) {
+s32 GetFontBankInfo(s32 arg0, FontBankInfo* arg1) {
     s32 var_v1 = 0;
 
-    if ((arg1 != NULL) && (D_800AC870 != NULL)) {
-        *arg1 = D_800AC870->unk_00[GetFontBank(arg0)];
+    if ((arg1 != NULL) && (gFontManager != NULL)) {
+        *arg1 = gFontManager->unk_00[GetFontBank(arg0)];
         var_v1 = 1;
     }
 
@@ -469,24 +469,24 @@ s32 func_8001EC40(s32 arg0, unk_D_800AC870_sub* arg1) {
 }
 
 s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
-    unk_D_800AC870_sub* temp_s0;
+    FontBankInfo* temp_s0;
     s32 sp88;
     s16 sp86;
 
-    temp_s0 = &D_800AC870->unk_00[D_800AC870->unk_50];
-    sp88 = func_8001E730(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
+    temp_s0 = &gFontManager->unk_00[gFontManager->unk_50];
+    sp88 = GetCharIndexFromFontTables(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
     sp86 = Text_GetCharWidth(temp_s0, arg2);
 
-    if ((D_800AC870->unk_53 & 1) && !(D_800AC870->unk_53 & 2)) {
-        D_800AC870->unk_53 |= 2;
+    if ((gFontManager->unk_53 & 1) && !(gFontManager->unk_53 & 2)) {
+        gFontManager->unk_53 |= 2;
 
         gDPLoadMultiBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + (temp_s0->unk_00 * 0x90 * temp_s0->unk_02), 0x0100,
                           1, G_IM_FMT_I, G_IM_SIZ_8b, temp_s0->unk_00, temp_s0->unk_02, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    if ((u32)temp_s0->unk_08 + sp88 != D_800AC870->unk_4C) {
-        D_800AC870->unk_4C = (u32)temp_s0->unk_08 + sp88;
+    if ((u32)temp_s0->unk_08 + sp88 != gFontManager->unk_4C) {
+        gFontManager->unk_4C = (u32)temp_s0->unk_08 + sp88;
 
         gDPLoadTextureBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + sp88, G_IM_FMT_IA, G_IM_SIZ_8b, temp_s0->unk_00,
                             temp_s0->unk_02, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
@@ -495,8 +495,8 @@ s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
 
     Gfx_DrawTextureRect(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
 
-    arg0 += sp86 + D_800AC870->unk_51;
-    if (D_800AC870->unk_50 >= 2) {
+    arg0 += sp86 + gFontManager->unk_51;
+    if (gFontManager->unk_50 >= 2) {
         arg0 -= 2;
     } else {
         arg0 -= 1;
@@ -531,10 +531,10 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
         while (chr != 0) {
             var_v0 = 1;
 
-            if (!(D_800AC870->unk_53 & 4) && (chr == 0xA)) {
+            if (!(gFontManager->unk_53 & 4) && (chr == 0xA)) {
                 var_s1 = temp_s5;
                 var_v0 = 0;
-                y += D_800AC870->unk_52;
+                y += gFontManager->unk_52;
             }
 
             if (var_v0 != 0) {
@@ -562,21 +562,21 @@ void Text_SetPrimColor(s32 r, s32 g, s32 b, s32 a) {
 }
 
 void Text_SetLineHeight(s32 arg0) {
-    D_800AC870->unk_52 = arg0;
+    gFontManager->unk_52 = arg0;
 }
 
 void Text_SetNoWordWrap(void) {
-    D_800AC870->unk_53 |= 4;
+    gFontManager->unk_53 |= 4;
 }
 
-void func_8001F3DC(void) {
-    D_800AC870->unk_53 &= ~4;
+void Text_EnableWordWrap(void) {
+    gFontManager->unk_53 &= ~4;
 }
 
 void Text_ResetState(void) {
-    D_800AC870->unk_53 = 0;
-    D_800AC870->unk_52 = 0x28;
-    D_800AC870->unk_4C = 0;
+    gFontManager->unk_53 = 0;
+    gFontManager->unk_52 = 0x28;
+    gFontManager->unk_4C = 0;
 
     gSPDisplayList(gDisplayListHead++, D_8006F710);
 }
@@ -585,19 +585,19 @@ void Text_SetupDL(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F750);
 }
 
-void func_8001F470(void) {
-    D_800AC870->unk_53 |= 1;
-    D_800AC870->unk_53 &= ~2;
+void Text_BeginRender(void) {
+    gFontManager->unk_53 |= 1;
+    gFontManager->unk_53 &= ~2;
 
     gSPDisplayList(gDisplayListHead++, D_8006F768);
 }
 
-void func_8001F4C4(void) {
-    D_800AC870->unk_53 &= ~3;
+void Text_EndRender(void) {
+    gFontManager->unk_53 &= ~3;
     gSPDisplayList(gDisplayListHead++, D_8006F798);
 }
 
-void func_8001F504(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+void Text_DrawWindowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     gSPDisplayList(gDisplayListHead++, D_8006F498);
 
     Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
@@ -613,19 +613,19 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
     s32 var_a0;
     s32 chr;
     u8* var_s1;
-    unk_D_800AC870_sub* temp_s4;
+    FontBankInfo* temp_s4;
 
     va_list args;
     va_start(args, fmt);
 
     var_s2 = 0;
     if (x == 0) {
-        var_a0 = D_800AC870->unk_50;
+        var_a0 = gFontManager->unk_50;
     } else {
         var_a0 = GetFontBank(x);
     }
 
-    temp_s4 = &D_800AC870->unk_00[var_a0];
+    temp_s4 = &gFontManager->unk_00[var_a0];
     if (temp_s4->unk_04 != NULL) {
         temp_s0 = 0;
         temp_v0 = _Printf(func_8001F1C4, sp5C, fmt, args);
@@ -663,5 +663,5 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
 }
 
 u8 MeasureCharWidth(s32 arg0, s32 arg1) {
-    return Text_GetCharWidth(&D_800AC870->unk_00[D_800AC870->unk_50], arg1 & 0xFF);
+    return Text_GetCharWidth(&gFontManager->unk_00[gFontManager->unk_50], arg1 & 0xFF);
 }

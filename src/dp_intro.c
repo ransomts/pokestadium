@@ -205,7 +205,7 @@ void func_800019C8(void) {
     osCreateMesgQueue(&D_80083CA0.unk_A04, &D_80083CA0.unk_9E8, 1);
     D_80083CA0.unk_A88 = 0;
     D_80083CA0.unk_A8A = 0;
-    D_80083CA0.unk_9E0 = func_80006314(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
+    D_80083CA0.unk_9E0 = FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
     Gfx_SetFrameFillColor(1);
     func_80003B30(&D_80084760, 0xB0000B70, 0xB0000C70, 0);
 }
@@ -261,7 +261,7 @@ void func_80001C1C(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s
     arg0->unk_03 = arg4;
     arg0->unk_04 = arg5;
     arg0->unk_08 = arg6;
-    arg0->unk_0C = (struct unk_D_80068BB0*)(uintptr_t)arg7;
+    arg0->unk_0C = (struct FramebufferImage*)(uintptr_t)arg7;
 }
 
 s32 func_80001C58(void) {

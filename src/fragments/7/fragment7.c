@@ -583,7 +583,7 @@ void func_86100C30(s32 arg0) {
             break;
 
         case 0:
-            func_8001F470();
+            Text_BeginRender();
             Text_SetFont(2, 0);
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -613,7 +613,7 @@ void func_86100C30(s32 arg0) {
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
             Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            func_8001F4C4();
+            Text_EndRender();
             break;
 
         case 3:
@@ -749,7 +749,7 @@ void func_861017E4(s32 arg0) {
     }
 
     Stage_BeginDisplayList();
-    func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
     if (D_8780FC94 == 0) {
         func_80015348();
@@ -794,7 +794,7 @@ s32 func_8610197C(void) {
     for (i = 0; i < 4; i++) {
         D_86105BC4 = &D_861054C0[i];
         D_86105BC8 = &D_86105BC4->unk_008;
-        func_8001BD04(D_86105BC8, 0);
+        GraphNode_TriggerAction(D_86105BC8, 0);
         func_80017788(D_86105BC8);
         D_86105BC8->unk_040.unk_0C = 0x10000;
         D_86105BC4->unk_1AA = 0x64;
@@ -843,13 +843,13 @@ void func_86101BB4(void) {
         D_86105BC4 = &D_861054C0[i];
         D_86105BC8 = &D_86105BC4->unk_008;
         if (D_86105BC4->unk_1AC == 0) {
-            func_8001BD04(D_86105BC8, 0);
+            GraphNode_TriggerAction(D_86105BC8, 0);
             func_80017788(D_86105BC8);
             D_86105BC8->unk_040.unk_0C = 0x10000;
         }
     }
 
-    func_8001BD04(&D_86105BD0, 0);
+    GraphNode_TriggerAction(&D_86105BD0, 0);
     func_80017788(&D_86105BD0);
 
     D_86105BD0.unk_040.unk_08 = 0;
@@ -888,7 +888,7 @@ void func_86101D3C(void) {
         if (D_86105BC4->unk_1AC == 0) {
             D_86105BC8 = &D_86105BC4->unk_008;
             if (func_80017514(D_86105BC8) != 0) {
-                func_8001BD04(D_86105BC8, 0);
+                GraphNode_TriggerAction(D_86105BC8, 0);
                 func_80017788(D_86105BC8);
             }
         }
@@ -905,10 +905,10 @@ void func_86101DEC(void) {
     D_8610549C = 0;
     func_87A010D4(0x90005, 0, 0);
     func_87A010D4(0x90003, 0, 0);
-    func_8001BD04(&D_86105BD0, 1);
+    GraphNode_TriggerAction(&D_86105BD0, 1);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
-    func_8001BD9C(&D_86105BD0, 0);
+    GraphNode_TriggerSound(&D_86105BD0, 0);
 }
 
 void func_86101E70(void) {
@@ -917,14 +917,14 @@ void func_86101E70(void) {
 
     D_86105498 = 4;
     D_8610549C = 0;
-    func_8001BD04(&D_86105BD0, 0);
+    GraphNode_TriggerAction(&D_86105BD0, 0);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
 
     for (i = 0; i < 4; i++) {
         temp_s0 = &D_861054C0[i].unk_008;
         if (D_861054C0[i].unk_1AC == 0) {
-            func_8001BD04(temp_s0, 2);
+            GraphNode_TriggerAction(temp_s0, 2);
             func_80017788(temp_s0);
             temp_s0->unk_040.unk_0C = 0x20000;
         }
@@ -958,7 +958,7 @@ s32 func_86101FD0(void) {
     for (i = 0; i < 4; i++) {
         temp_s0 = &D_861054C0[i].unk_008;
         if ((D_861054C0[i].unk_1AC == 0) && (func_80017514(temp_s0) != 0)) {
-            func_8001BD04(temp_s0, 1);
+            GraphNode_TriggerAction(temp_s0, 1);
             func_80017788(temp_s0);
             temp_s0->unk_040.unk_0C = 0x10000;
         }
@@ -977,7 +977,7 @@ void func_86102088(void) {
     D_86105498 = 5;
     D_8610549C = 0;
     func_87A010D4(0x90006, 0, 0);
-    func_8001BD04(&D_86105BD0, 2);
+    GraphNode_TriggerAction(&D_86105BD0, 2);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
 }
@@ -985,7 +985,7 @@ void func_86102088(void) {
 void func_861020E8(void) {
     D_86105498 = 6;
     D_8610549C = 0;
-    func_8001BD04(&D_86105BD0, 0);
+    GraphNode_TriggerAction(&D_86105BD0, 0);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
 }
@@ -1013,7 +1013,7 @@ s32 func_86102184(void) {
     index = (D_8610549C / D_861054A4) % 12;
     sp1C = &D_86106450[index];
     if (sp1C->unk_002 == 0) {
-        func_8001BC34(&sp1C->unk_004, 0, 0xB4, sp1C->unk_16C);
+        GraphNode_InitChild(&sp1C->unk_004, 0, 0xB4, sp1C->unk_16C);
         sp1C->unk_002 = 1;
     }
 
@@ -1029,11 +1029,11 @@ s32 func_8610228C(void) {
         for (i = 0; i < D_861054A0; i++) {
             unk_D_86106450* ptr = &D_86106450[i];
 
-            func_8001BCF0(&ptr->unk_004);
+            GraphNode_ClearCallback(&ptr->unk_004);
             ptr->unk_002 = 0;
         }
 
-        func_8001BD04(&D_86105BD0, 1);
+        GraphNode_TriggerAction(&D_86105BD0, 1);
         func_80017788(&D_86105BD0);
         D_86105BD0.unk_040.unk_08 = 0;
         return -1;
@@ -1048,7 +1048,7 @@ void func_86102370(void) {
 
     for (i = 0; i < D_861054A0; i++) {
         if (D_86106450[i].unk_002 == 1) {
-            func_8001BCF0(&D_86106450[i].unk_004);
+            GraphNode_ClearCallback(&D_86106450[i].unk_004);
         }
     }
 }
@@ -1058,7 +1058,7 @@ void func_861023E4(void) {
 
     for (i = 0; i < D_861054A0; i++) {
         if (D_86106450[i].unk_002 == 1) {
-            func_8001BC34(&D_86106450[i].unk_004, 0, 0xB4, D_86106450[i].unk_16C);
+            GraphNode_InitChild(&D_86106450[i].unk_004, 0, 0xB4, D_86106450[i].unk_16C);
         }
     }
 }
@@ -1121,7 +1121,7 @@ void func_86102510(void) {
 void func_86102614(void) {
     D_86105498 = 9;
     D_8610549C = 0;
-    func_8001BD04(&D_86105BD0, 1);
+    GraphNode_TriggerAction(&D_86105BD0, 1);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
     func_87A010D4(0x90008, 0, 0);
@@ -1138,7 +1138,7 @@ void func_8610268C(void) {
         D_86105BC4 = &D_861054C0[i];
         if (D_86105BC4->unk_1AC == 0) {
             D_86105BC8 = &D_86105BC4->unk_008;
-            func_8001BD04(D_86105BC8, 2);
+            GraphNode_TriggerAction(D_86105BC8, 2);
             func_80017788(D_86105BC8);
             D_86105BC8->unk_040.unk_08 = 0x200000;
             D_86105BC8->unk_040.unk_0C = 0xFFFE0000;
@@ -1204,7 +1204,7 @@ s32 func_86102750(void) {
     }
 
     if (func_80017514(&D_86105BD0) != 0) {
-        func_8001BD04(&D_86105BD0, 0);
+        GraphNode_TriggerAction(&D_86105BD0, 0);
         func_80017788(&D_86105BD0);
     }
 
@@ -1247,18 +1247,18 @@ void func_86102B2C(void) {
         if (D_86105BC4->unk_1AC == 0) {
             D_86105BC8 = &D_86105BC4->unk_008;
             D_86105BC4->unk_18C = 0;
-            func_8001BD04(D_86105BC8, 3);
+            GraphNode_TriggerAction(D_86105BC8, 3);
             func_80017788(D_86105BC8);
-            func_8001BD9C(D_86105BC8, 4);
+            GraphNode_TriggerSound(D_86105BC8, 4);
             D_86105BC8->unk_040.unk_08 = 0;
             D_86105BC8->unk_040.unk_0C = 0x10000;
         }
     }
 
-    func_8001BD04(&D_86105BD0, 3);
+    GraphNode_TriggerAction(&D_86105BD0, 3);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
-    func_8001BD9C(&D_86105BD0, 1);
+    GraphNode_TriggerSound(&D_86105BD0, 1);
 }
 
 s32 func_86102C24(void) {
@@ -1305,7 +1305,7 @@ void func_86102F30(void) {
 
     D_86105498 = 0xC;
     D_8610549C = 0;
-    func_8001BD04(&D_86105BD0, 4);
+    GraphNode_TriggerAction(&D_86105BD0, 4);
     func_80017788(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
 
@@ -1325,7 +1325,7 @@ s32 func_86102FDC(void) {
     }
 
     if (temp_lo >= D_861054A0) {
-        func_8001BD04(&D_86105BD0, 0);
+        GraphNode_TriggerAction(&D_86105BD0, 0);
         func_80017788(&D_86105BD0);
         D_86105BD0.unk_040.unk_08 = 0;
 
@@ -1333,7 +1333,7 @@ s32 func_86102FDC(void) {
             D_86105BC4 = &D_861054C0[i];
             if (D_86105BC4->unk_1AC == 0) {
                 D_86105BC8 = &D_86105BC4->unk_008;
-                func_8001BD04(D_86105BC8, 0);
+                GraphNode_TriggerAction(D_86105BC8, 0);
                 func_80017788(D_86105BC8);
                 D_86105BC8->unk_040.unk_0C = 0x10000;
             }
@@ -1349,25 +1349,25 @@ s32 func_86102FDC(void) {
                 D_86105BC8 = &D_86105BC4->unk_008;
                 switch (D_86105BC4->unk_18E[temp_lo]) {
                     case 0:
-                        func_8001BD04(D_86105BC8, 4);
+                        GraphNode_TriggerAction(D_86105BC8, 4);
                         func_80017788(D_86105BC8);
                         break;
                     case 1:
-                        func_8001BD04(D_86105BC8, 5);
+                        GraphNode_TriggerAction(D_86105BC8, 5);
                         func_80017788(D_86105BC8);
                         break;
                     case 2:
-                        func_8001BD04(D_86105BC8, 7);
+                        GraphNode_TriggerAction(D_86105BC8, 7);
                         func_80017788(D_86105BC8);
                         break;
                     case 3:
-                        func_8001BD04(D_86105BC8, 6);
+                        GraphNode_TriggerAction(D_86105BC8, 6);
                         func_80017788(D_86105BC8);
                         break;
                     default:
-                        func_8001BD04(D_86105BC8, 8);
+                        GraphNode_TriggerAction(D_86105BC8, 8);
                         func_80017788(D_86105BC8);
-                        func_8001BD9C(D_86105BC8, 2);
+                        GraphNode_TriggerSound(D_86105BC8, 2);
                         break;
                 }
 
@@ -1391,9 +1391,9 @@ void func_861032D8(void) {
     D_86105BC4->unk_1A8 -= 0x14;
     if (D_86105BC4->unk_1A8 <= 0) {
         D_86105BC4->unk_1A8 = 0;
-        func_8001BD04(D_86105BC8, 0xA);
+        GraphNode_TriggerAction(D_86105BC8, 0xA);
         func_80017788(D_86105BC8);
-        func_8001BD9C(D_86105BC8, 1);
+        GraphNode_TriggerSound(D_86105BC8, 1);
         D_86105BC8->unk_040.unk_08 = 0;
         D_86105BC8->unk_040.unk_0C = 0x10000;
         D_86105BC4->unk_1AC = 1;
@@ -1446,7 +1446,7 @@ s32 func_86103474(void) {
             D_86105BC8 = &D_86105BC4->unk_008;
             if (D_86105BC4->unk_1A6 > 0) {
                 temp_s0 = &D_86105EA0[i].unk_004;
-                func_8001BD04(temp_s0, 0);
+                GraphNode_TriggerAction(temp_s0, 0);
                 func_80017788(temp_s0);
                 temp_s0->unk_040.unk_08 = 0;
             }
@@ -1484,7 +1484,7 @@ s32 func_861035B0(void) {
             }
 
             if (func_80017514(D_86105BC8) != 0) {
-                func_8001BD04(D_86105BC8, 0);
+                GraphNode_TriggerAction(D_86105BC8, 0);
                 func_80017788(D_86105BC8);
                 D_86105BC8->unk_040.unk_0C = 0x10000;
             }
@@ -1504,9 +1504,9 @@ s32 func_861035B0(void) {
                         func_87A010D4(0x90004, 0, 0);
                         var_s5 = 1;
                     }
-                    func_8001BD04(D_86105BC8, 9);
+                    GraphNode_TriggerAction(D_86105BC8, 9);
                     func_80017788(D_86105BC8);
-                    func_8001BD9C(D_86105BC8, 0);
+                    GraphNode_TriggerSound(D_86105BC8, 0);
                     D_86105BC8->unk_040.unk_08 = 0;
                     D_86105BC8->unk_040.unk_0C = 0x10000;
                     D_86105BC4->unk_1B2 = 1;
@@ -1657,14 +1657,14 @@ void func_86103AB4(void) {
         D_86105BC8 = &D_86105BC4->unk_008;
         if ((i == D_861054A2) ||
             ((D_861054A2 < 0) && (D_861054AC == D_86105BC4->unk_1A8) && (D_86105BC4->unk_1A8 > 0))) {
-            func_8001BD04(D_86105BC8, 0xB);
+            GraphNode_TriggerAction(D_86105BC8, 0xB);
             func_80017788(D_86105BC8);
-            func_8001BD9C(D_86105BC8, 3);
+            GraphNode_TriggerSound(D_86105BC8, 3);
             if (D_861054C0[i].unk_000 == 0) {}
         } else {
-            func_8001BD04(D_86105BC8, 0xA);
+            GraphNode_TriggerAction(D_86105BC8, 0xA);
             func_80017788(D_86105BC8);
-            func_8001BD9C(D_86105BC8, 1);
+            GraphNode_TriggerSound(D_86105BC8, 1);
         }
     }
 
@@ -1682,7 +1682,7 @@ void func_86103AB4(void) {
         unk_D_86106450* ptr = &D_86106450[i];
 
         if (ptr->unk_002 == 0) {
-            func_8001BC34(&ptr->unk_004, 0, 0xB4, ptr->unk_16C);
+            GraphNode_InitChild(&ptr->unk_004, 0, 0xB4, ptr->unk_16C);
         }
         ptr->unk_002 = 1;
     }
@@ -1760,7 +1760,7 @@ void func_86103E9C(void) {
         D_86105BC8 = &D_86105BC4->unk_008;
 
         Graph_AddToRootList0(D_86105BC8);
-        func_8001BC34(D_86105BC8, 0, 0xB1, D_86105480->unk_08->unk_00[0]);
+        GraphNode_InitChild(D_86105BC8, 0, 0xB1, D_86105480->unk_08->unk_00[0]);
 
         D_86105BC8->unk_024.x = (i - 1.5f) * 40.0f;
         D_86105BC8->unk_024.y = 0.0f;
@@ -1769,7 +1769,7 @@ void func_86103E9C(void) {
         D_86105BC8->unk_030.y = 1.0f;
         D_86105BC8->unk_030.z = 1.0f;
 
-        func_8001BD04(D_86105BC8, 0);
+        GraphNode_TriggerAction(D_86105BC8, 0);
         func_80017788(D_86105BC8);
 
         D_86105BC8->unk_040.unk_08 = 0;
@@ -1781,19 +1781,19 @@ void func_86103E9C(void) {
     D_86105480 = func_80019D18(0xB2);
     D_86105BC8 = &D_86105BD0;
     Graph_AddToRootList0(D_86105BC8);
-    func_8001BC34(D_86105BC8, 0, 0xB2, D_86105480->unk_08->unk_00[0]);
+    GraphNode_InitChild(D_86105BC8, 0, 0xB2, D_86105480->unk_08->unk_00[0]);
     D_86105BC8->unk_024.x = 0.0f;
     D_86105BC8->unk_024.y = 10.0f;
     D_86105BC8->unk_024.z = -145.0f;
     D_86105BC8->unk_030.x = 1.0f;
     D_86105BC8->unk_030.y = 1.0f;
     D_86105BC8->unk_030.z = 1.0f;
-    func_8001BD04(D_86105BC8, 0);
+    GraphNode_TriggerAction(D_86105BC8, 0);
     func_80017788(D_86105BC8);
     D_86105480 = func_80019D18(0xB3);
     D_86105BC8 = &D_86105D38;
     Graph_AddToRootList0(D_86105BC8);
-    func_8001BC34(D_86105BC8, 0, 0xB3, D_86105480->unk_08->unk_00[0]);
+    GraphNode_InitChild(D_86105BC8, 0, 0xB3, D_86105480->unk_08->unk_00[0]);
     D_8610548C = func_80019D18(0xB4);
 
     for (i = 0; i < 12; i++) {
@@ -1807,11 +1807,11 @@ void func_86103E9C(void) {
     for (i = 0; i < 4; i++) {
         D_86105BC8 = &D_86105EA0[i].unk_004;
         Graph_AddToRootList0(D_86105BC8);
-        func_8001BC34(D_86105BC8, 0, 0xB5, D_86105480->unk_08->unk_00[0]);
+        GraphNode_InitChild(D_86105BC8, 0, 0xB5, D_86105480->unk_08->unk_00[0]);
         D_86105BC8->unk_024.x = (i - 1.5f) * 40.0f;
         D_86105BC8->unk_024.y = 0.0f;
         D_86105BC8->unk_024.z = 0.0f;
-        func_8001BD04(D_86105BC8, 0);
+        GraphNode_TriggerAction(D_86105BC8, 0);
         func_80017788(D_86105BC8);
         D_86105BC8->unk_040.unk_08 = 0x320000;
     }

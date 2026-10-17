@@ -2169,13 +2169,13 @@ s32 func_8850882C(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
     Text_SetFont(arg0->unk_2C, arg0->unk_38);
     Text_SetEnvColor(arg0->unk_30.r, arg0->unk_30.g, arg0->unk_30.b, arg0->unk_30.a);
     if (arg0->unk_44 != 0) {
-        func_8001F470();
+        Text_BeginRender();
         Text_SetPrimColor(arg0->unk_34.r, arg0->unk_34.g, arg0->unk_34.b, arg0->unk_34.a);
     }
     Text_SetLineHeight(arg0->unk_3C);
     Text_Print(arg1, arg2, arg0->unk_40);
     if (arg0->unk_44 != 0) {
-        func_8001F4C4();
+        Text_EndRender();
     }
     Text_SetupDL();
     return 0;

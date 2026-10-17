@@ -52,7 +52,7 @@ static u32 D_86B0BBF8[] = {
     0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    func_86B00188,
     0x00000000, 0x05000000, 0x00000000, D_86B0DA9C, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
     0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    func_86B000D0, 0x00000000,
-    0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &D_800AC840, 0x06000000,    0x06000000,    0x06000000,
+    0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,    0x06000000,    0x06000000,
     0x06000000, 0x01000000,
 };
 
@@ -131,7 +131,7 @@ void func_86B001D8(void) {
 
 void func_86B001FC(unk_D_86B0E5F0* arg0) {
     while (arg0->unk_16C != 1) {
-        func_8001BCF0(&arg0->unk_004);
+        GraphNode_ClearCallback(&arg0->unk_004);
         arg0++;
     }
     main_pool_pop_state('MONS');
@@ -146,8 +146,8 @@ void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
 
     arg0->unk_000 = func_80019D18(arg1->unk_0C);
 
-    func_8001BC34(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->unk_00[0]);
-    func_8001BD04(&arg0->unk_004, arg1->unk_10);
+    GraphNode_InitChild(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&arg0->unk_004, arg1->unk_10);
 
     if (arg1->unk_0C == 6) {
         arg0->unk_004.unk_0A6 = 0;
@@ -215,7 +215,7 @@ void func_86B00470(s32 arg0) {
     func_86B00348(arg0);
 
     if (arg0 == 4) {
-        func_8001BD9C(&D_86B0E5F0[0].unk_004, 0);
+        GraphNode_TriggerSound(&D_86B0E5F0[0].unk_004, 0);
     }
 }
 
@@ -259,7 +259,7 @@ void func_86B00688(void) {
 
 void func_86B00794(void) {
     if (D_86B0E5D4->unk_04.unk_48 == 1) {
-        func_8001F504(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, D_86B0EBB0);
+        Text_DrawWindowRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, D_86B0EBB0);
     }
 }
 
@@ -472,7 +472,7 @@ void func_86B01004(void) {
 
 void func_86B0100C(void) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     func_80015348();
     func_86B007EC();
     func_86B01C00(D_86B0E5E8);

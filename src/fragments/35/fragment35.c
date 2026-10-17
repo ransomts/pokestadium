@@ -38,7 +38,7 @@ void func_82000020(void) {
 
 s32 func_820002B4(UNUSED u8 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     func_82000020();
 
     return 0;
@@ -89,9 +89,9 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     }
 
     if (sp2A & 2) {
-        func_8003D68C(0);
+        SetAudioActiveFlag(0);
     } else {
-        func_8003D68C(1);
+        SetAudioActiveFlag(1);
     }
 
     PlaySoundEffect(0xA);

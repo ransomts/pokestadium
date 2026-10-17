@@ -161,8 +161,8 @@ static u32 D_86B0DE5C[] = {
     0x00640064, 0x00640000,    0x08000000,  func_86B05D84, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA08,
     0x06000000, 0x06000000,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
     0x00640064, 0x00640000,    0x08000000,  func_86B05D84, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA20,
-    0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x0A000000,  &D_800AC840, 0x06000000, 0x0F000002,
-    0x05000000, 0x0A000000,    &D_800AC858, 0x06000000,    0x09000000,  0x06000000,  0x06000000, 0x06000000,
+    0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x0A000000,  &gGraphRoot0, 0x06000000, 0x0F000002,
+    0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,    0x09000000,  0x06000000,  0x06000000, 0x06000000,
     0x01000000,
 };
 
@@ -245,18 +245,18 @@ void func_86B05EE8(void) {
     func_8001987C();
 
     D_86B0FA78->unk_000 = func_80019D90(&D_86B10690->unk_01C[D_86B0FA78->unk_17C]);
-    func_8001BC34(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
-    func_8001BD04(&D_86B0FA78->unk_004, 0);
+    GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86B0FA78->unk_004, 0);
     D_86B0FA78->unk_004.unk_0A6 = 0;
     func_86B05E18();
     D_86B0FA78->unk_004.unk_024.y += D_86B10660.unk_08;
     D_86B0FA78->unk_170 = 0;
     func_80017804(&D_86B0FA78->unk_004, 0);
-    func_8001BD9C(&D_86B0FA78->unk_004, -1);
+    GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
 }
 
 void func_86B06008(void) {
-    func_8001BCF0(&D_86B0FA78->unk_004);
+    GraphNode_ClearCallback(&D_86B0FA78->unk_004);
 
     main_pool_pop_state('MONS');
 
@@ -275,7 +275,7 @@ void func_86B06050(void) {
 }
 
 void func_86B06100(void) {
-    func_8001BCF0(&D_86B0FA78->unk_004);
+    GraphNode_ClearCallback(&D_86B0FA78->unk_004);
 
     main_pool_pop_state('MONS');
 
@@ -285,8 +285,8 @@ void func_86B06100(void) {
     Graph_AddToRootList0(&D_86B0FA78->unk_004);
     func_8001987C();
     D_86B0FA78->unk_000 = func_80019D18(D_86B0FA78->unk_174);
-    func_8001BC34(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
-    func_8001BD04(&D_86B0FA78->unk_004, 0);
+    GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86B0FA78->unk_004, 0);
     Vec3f_Set(&D_86B0FA78->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
 
@@ -408,12 +408,12 @@ void func_86B06960(void) {
 void func_86B069D8(void) {
     if (((D_86B0FA78->unk_178 % 50) == 0) && (D_86B0FA78->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
         func_80017788(&D_86B0FA78->unk_004);
-        func_8001BD9C(&D_86B0FA78->unk_004, D_86B0FA80[0xA51]);
+        GraphNode_TriggerSound(&D_86B0FA78->unk_004, D_86B0FA80[0xA51]);
         D_86B0FA78->unk_170 = 1;
     } else if ((D_86B0FA78->unk_170 == 1) && (func_8001783C(&D_86B0FA78->unk_004) == 1)) {
         D_86B0FA78->unk_170 = 0;
         func_80017804(&D_86B0FA78->unk_004, 0);
-        func_8001BD9C(&D_86B0FA78->unk_004, -1);
+        GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
     }
 }
 
@@ -799,14 +799,14 @@ void func_86B075EC(void) {
 
             case 1:
                 Text_ResetState();
-                func_8001F470();
+                Text_BeginRender();
                 Text_SetFont(0x10, 0);
                 Text_SetPrimColor(0, 0x82, 0xFF, 0xFF);
                 Text_SetEnvColor(0xC8, 0xFF, 0xFF, 0xFF);
                 func_86B07450(D_86B0FA50, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
                 Text_Print((s32)D_86B0FA50->unk_98 - (MeasureTextWidth(0x10, 0, D_86B0FA50->unk00) / 2),
                               D_86B0FA50->unk_9C, D_86B0FA50->unk00);
-                func_8001F4C4();
+                Text_EndRender();
                 Text_SetupDL();
                 break;
         }
@@ -819,11 +819,11 @@ void func_86B07DF4(void) {
     Stage_BeginDisplayList();
 
     if ((D_86B0FA38 == -1) || (D_86B0FA38 == 0)) {
-        func_8000699C(&gDisplayListHead, 1);
+        Gfx_FillScreen(&gDisplayListHead, 1);
     } else if (D_86B0FA38 < 0x10000) {
-        func_8000699C(&gDisplayListHead, D_86B0FA38);
+        Gfx_FillScreen(&gDisplayListHead, D_86B0FA38);
     } else {
-        func_8000699C(&gDisplayListHead, 0xA6BF);
+        Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
 
     func_80015348();
@@ -835,10 +835,10 @@ void func_86B07DF4(void) {
 
 void func_86B07EA0(void) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 1);
+    Gfx_FillScreen(&gDisplayListHead, 1);
     func_80015348();
     Graph_SetTextureState(&D_87906050->unk_00);
-    func_8001F504(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
+    Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
     Stage_Advance();
 }
 

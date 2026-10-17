@@ -4119,10 +4119,10 @@ s32 func_88807AC0(void) {
             D_88826A4C = (D_88826A4C + 1) & 1;
             switch (D_88826A4C) {
                 case 0:
-                    func_80036770(3);
+                    PlaySoundEffectById(3);
                     break;
                 case 1:
-                    func_80036770(2);
+                    PlaySoundEffectById(2);
                     break;
             }
         }
@@ -4131,7 +4131,7 @@ s32 func_88807AC0(void) {
             D_88826A50 = D_88826A4E;
             D_88826A4E = func_888047D0(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
-                func_80036770(1);
+                PlaySoundEffectById(1);
                 func_88806EAC();
             }
         }
@@ -4140,7 +4140,7 @@ s32 func_88807AC0(void) {
             D_88826A50 = D_88826A4E;
             D_88826A4E = func_88804B1C(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
-                func_80036770(1);
+                PlaySoundEffectById(1);
                 func_88806EAC();
             }
         }
@@ -4153,7 +4153,7 @@ s32 func_88807AC0(void) {
                         D_88826A4C = 0;
                     }
                     D_88826A50 = D_88826A4E;
-                    func_80036770(0x19);
+                    PlaySoundEffectById(0x19);
                     func_88806EAC();
                 }
                 break;
@@ -4163,7 +4163,7 @@ s32 func_88807AC0(void) {
                     D_88826A52 = 0;
                     D_88826A80 = 1;
                     D_88826A50 = D_88826A4E;
-                    func_80036770(0x1A);
+                    PlaySoundEffectById(0x1A);
                     func_88806EAC();
                 }
                 break;

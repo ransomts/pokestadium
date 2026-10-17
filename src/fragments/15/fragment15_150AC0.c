@@ -32,7 +32,7 @@ extern u8 D_5001680[];
 extern u8 D_50017E8[];
 
 void func_86904070(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    unk_D_80068BB0* temp_s1 = func_8000648C();
+    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
     Vp* sp80 = GfxAlloc(sizeof(Vp) * 1);
@@ -43,10 +43,10 @@ void func_86904070(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     guOrtho(sp84, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
-    func_8001E680(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -179,14 +179,14 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Vec3f spCC;
     Vec3f spC0;
     UNUSED s32 pad;
-    unk_D_80068BB0* spB8;
+    FramebufferImage* spB8;
     Vtx* spB4;
     MtxF* spB0;
     Mtx* spAC;
     MtxF* spA8;
     Vp* spA4;
 
-    spB8 = func_8000648C();
+    spB8 = Gfx_GetCurrentFramebuffer();
     spB4 = GfxAlloc(sizeof(Vtx) * 4);
     spB0 = GfxAlloc(sizeof(MtxF) * 1);
     spAC = GfxAlloc(sizeof(Mtx) * 1);
@@ -206,10 +206,10 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 
     guOrtho(spAC, 0.5f, spB8->width - 0.5f, spB8->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&spB4[0], -(arg3 / 2), -arg4, -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spB4[1], (arg3 / 2), -arg4, -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spB4[2], -(arg3 / 2), 0, -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spB4[3], (arg3 / 2), 0, -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spB4[0], -(arg3 / 2), -arg4, -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spB4[1], (arg3 / 2), -arg4, -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spB4[2], -(arg3 / 2), 0, -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spB4[3], (arg3 / 2), 0, -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
@@ -243,12 +243,12 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     s32 a2;
     s16 spF8[4];
     s16 spF0[4];
-    unk_D_80068BB0* spEC;
+    FramebufferImage* spEC;
     Vtx* spE8;
     Mtx* spE4;
     Vp* spE0;
 
-    spEC = func_8000648C();
+    spEC = Gfx_GetCurrentFramebuffer();
     spE8 = GfxAlloc(sizeof(Vtx) * 4);
     spE4 = GfxAlloc(sizeof(Mtx) * 1);
     spE0 = GfxAlloc(sizeof(Vp) * 1);
@@ -269,10 +269,10 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPViewport(gDisplayListHead++, (u32)spE0 & 0x1FFFFFFF);
 
     guOrtho(spE4, 0.5f, spEC->width - 0.5f, spEC->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    func_8001E680(&spE8[0], spF8[0], spF0[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spE8[1], spF8[1], spF0[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spE8[2], spF8[2], spF0[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spE8[3], spF8[3], spF0[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spE8[0], spF8[0], spF0[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spE8[1], spF8[1], spF0[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spE8[2], spF8[2], spF0[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spE8[3], spF8[3], spF0[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     if (arg6 == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, arg0, G_IM_FMT_IA, G_IM_SIZ_8b, arg3, arg4, 0,
@@ -313,12 +313,12 @@ void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     f32 a2;
     s16 spE0[4];
     s16 spD8[4];
-    unk_D_80068BB0* spD4;
+    FramebufferImage* spD4;
     Vtx* spD0;
     Mtx* spCC;
     Vp* spC8;
 
-    spD4 = func_8000648C();
+    spD4 = Gfx_GetCurrentFramebuffer();
     spD0 = GfxAlloc(sizeof(Vtx) * 4);
     spCC = GfxAlloc(sizeof(Mtx) * 1);
     spC8 = GfxAlloc(sizeof(Vp) * 1);
@@ -344,10 +344,10 @@ void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
 
     guOrtho(spCC, 0.5f, spD4->width - 0.5f, spD4->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&spD0[0], spE0[0], spD8[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[1], spE0[1], spD8[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[2], spE0[2], spD8[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[3], spE0[3], spD8[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[0], spE0[0], spD8[0], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[1], spE0[1], spD8[1], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[2], spE0[2], spD8[2], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[3], spE0[3], spD8[3], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     if (arg6 == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, arg0, G_IM_FMT_IA, G_IM_SIZ_8b, arg3, arg4, 0,
@@ -388,12 +388,12 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     f32 temp_fv1;
     s16 spE0[4];
     s16 spD8[4];
-    unk_D_80068BB0* spD4;
+    FramebufferImage* spD4;
     Vtx* spD0;
     Mtx* spCC;
     Vp* spC8;
 
-    spD4 = func_8000648C();
+    spD4 = Gfx_GetCurrentFramebuffer();
     spD0 = GfxAlloc(sizeof(Vtx) * 4);
     spCC = GfxAlloc(sizeof(Mtx) * 1);
     spC8 = GfxAlloc(sizeof(Vp) * 1);
@@ -419,10 +419,10 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
 
     guOrtho(spCC, 0.5f, spD4->width - 0.5f, spD4->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&spD0[0], spE0[0], spD8[0], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[1], spE0[1], spD8[1], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[2], spE0[2], spD8[2], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&spD0[3], spE0[3], spD8[3], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[0], spE0[0], spD8[0], -1, arg3 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[1], spE0[1], spD8[1], -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[2], spE0[2], spD8[2], -1, arg3 << 5, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&spD0[3], spE0[3], spD8[3], -1, 0, arg4 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     if (arg6 == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, arg0, G_IM_FMT_IA, G_IM_SIZ_8b, arg3, arg4, 0,
@@ -459,7 +459,7 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
 
 void func_86906E70(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC) {
-    unk_D_80068BB0* temp_s1 = func_8000648C();
+    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* spAC = GfxAlloc(sizeof(Mtx) * 1);
     Vp* spA8 = GfxAlloc(sizeof(Vp));
@@ -470,10 +470,10 @@ void func_86906E70(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
 
     guOrtho(spAC, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    func_8001E680(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001E680(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    SetTileVertex(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -528,12 +528,12 @@ void func_869073D8(char* arg0) {
         }
 
         Text_ResetState();
-        func_8001F470();
+        Text_BeginRender();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(sp4C.r, sp4C.g, sp4C.b, 0xFF);
         Text_SetPrimColor(sp48.r, sp48.g, sp48.b, 0xFF);
         Text_Print(0xA0 - (sp44 / 2), sp40 + 0xAE, arg0);
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
         func_86904070(0x50, 0xAC, 0xA0, 0x2D, 0);
     }

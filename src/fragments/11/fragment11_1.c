@@ -1251,7 +1251,7 @@ void func_86502848(void) {
         D_8650AB28 = &D_8650A528[i];
 
         D_8650AB28->unk_17C = func_80011B10(temp_s5, NULL, 4, NULL, &D_8006F050, 1.0f);
-        GraphNode_AddChild(&D_800AC840, &D_8650AB28->unk_17C->unk_00);
+        GraphNode_AddChild(&gGraphRoot0, &D_8650AB28->unk_17C->unk_00);
     }
 
     mem_pool_resize_block(temp_s5);

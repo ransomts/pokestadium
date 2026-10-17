@@ -32,11 +32,11 @@ static s32 D_82D0ABA8;
 static GraphNode* D_82D0ABAC;
 static GraphNode* D_82D0ABB0;
 static GraphNode* D_82D0ABB4;
-static unk_D_80068BB0* D_82D0ABB8[4];
-static unk_D_80068BB0* D_82D0ABC8;
-static unk_D_80068BB0* D_82D0ABCC;
+static FramebufferImage* D_82D0ABB8[4];
+static FramebufferImage* D_82D0ABC8;
+static FramebufferImage* D_82D0ABCC;
 static unk_D_82D0ABD0 D_82D0ABD0;
-static unk_D_80068BB0* D_82D0ABE0[8];
+static FramebufferImage* D_82D0ABE0[8];
 static GraphNode* D_82D0AC00;
 static GraphNode* D_82D0AC04;
 static GraphNode* D_82D0AC08;
@@ -46,7 +46,7 @@ static s16 D_82D06FA0 = 7;
 static u32 D_82D06FA4[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x00000000, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_82D07008[] = {
     VTX(-64, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -1013,9 +1013,9 @@ void func_82D00088(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
 
-void func_82D002C4(unk_D_80068BB0* arg0, s16 arg1, s16 arg2) {
+void func_82D002C4(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
-    func_8000699C(&gDisplayListHead, 0);
+    Gfx_FillScreen(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
@@ -1408,7 +1408,7 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
 void func_82D02870(s32 arg0) {
     unk_D_82D0AB38* temp_v1;
 
-    D_82D0ABB8[arg0] = func_80006314(0, 2, 0x80, 0xCC, 1);
+    D_82D0ABB8[arg0] = FramebufferImage_Allocate(0, 2, 0x80, 0xCC, 1);
     if (D_82D0AB38[arg0].unk_01 != 0) {
         if (D_82D0AB38[arg0].unk_00 == 0) {
             if (D_82D0AB38[arg0].unk_03 != 0) {
@@ -1429,7 +1429,7 @@ void func_82D02870(s32 arg0) {
 }
 
 void func_82D029E0(void) {
-    D_82D0ABC8 = func_80006314(0, 2, 0x21A, 0x64, 1);
+    D_82D0ABC8 = FramebufferImage_Allocate(0, 2, 0x21A, 0x64, 1);
     func_82D002C4(D_82D0ABC8, 0x216, 0x60);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1470,7 +1470,7 @@ void func_82D02D94(void) {
     s32 sp2C;
     char* sp28;
 
-    D_82D0ABCC = func_80006314(0, 2, 0x80, 0x2C, 1);
+    D_82D0ABCC = FramebufferImage_Allocate(0, 2, 0x80, 0x2C, 1);
     func_82D002C4(D_82D0ABCC, 0x78, 0x28);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -1522,13 +1522,13 @@ void func_82D02FB8(void) {
 
     for (i = 0; i < 4; i++) {
         func_82D02870(i);
-        func_8001BC34(&D_82D09FF8[i], 0, 0, D_82D0ABAC);
+        GraphNode_InitChild(&D_82D09FF8[i], 0, 0, D_82D0ABAC);
     }
 
     func_82D029E0();
-    func_8001BC34(&D_82D09FF8[4], 0, 0, D_82D0ABB0);
+    GraphNode_InitChild(&D_82D09FF8[4], 0, 0, D_82D0ABB0);
     func_82D02D94();
-    func_8001BC34(&D_82D09FF8[5], 0, 0, D_82D0ABB4);
+    GraphNode_InitChild(&D_82D09FF8[5], 0, 0, D_82D0ABB4);
     Vec3f_Set(&D_82D09FF8->unk_024, -204.0f, 104.0f, -579.0f);
     Vec3f_Set(&D_82D09FF8[1].unk_024, -68.0f, 104.0f, -579.0f);
     Vec3f_Set(&D_82D09FF8[2].unk_024, 68.0f, 104.0f, -579.0f);
@@ -1541,7 +1541,7 @@ void func_82D03120(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        func_8001BCF0(&D_82D09FF8[i]);
+        GraphNode_ClearCallback(&D_82D09FF8[i]);
     }
 
     main_pool_pop_state('chck');
@@ -1912,7 +1912,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
             sp44 = 0x20;
         }
     } else if (var_s1 == 2) {
-        func_8002707C(0x15, 0);
+        GbsClearAndCommitBlock(0x15, 0);
         func_800284B4(2);
     }
 
@@ -2306,10 +2306,10 @@ void func_82D053F4(s32 arg0, s32 arg1) {
     Stage_Advance();
 }
 
-unk_D_80068BB0* func_82D0580C(s32 arg0) {
+FramebufferImage* func_82D0580C(s32 arg0) {
     UNUSED s32 pad;
     s16 i;
-    unk_D_80068BB0* sp3C;
+    FramebufferImage* sp3C;
     u8* var_s3;
     s16 temp_s0;
 
@@ -2319,7 +2319,7 @@ unk_D_80068BB0* func_82D0580C(s32 arg0) {
         var_s3 = D_3017DA0;
     }
 
-    sp3C = func_80006314(0, 2, 0xAC, 0x98, 1);
+    sp3C = FramebufferImage_Allocate(0, 2, 0xAC, 0x98, 1);
     func_82D002C4(sp3C, 0xA8, 0x94);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -2347,10 +2347,10 @@ unk_D_80068BB0* func_82D0580C(s32 arg0) {
     return sp3C;
 }
 
-unk_D_80068BB0* func_82D05A5C(void) {
-    unk_D_80068BB0* sp34;
+FramebufferImage* func_82D05A5C(void) {
+    FramebufferImage* sp34;
 
-    sp34 = func_80006314(0, 2, 0xAC, 0x5C, 1);
+    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
     func_82D002C4(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -2373,10 +2373,10 @@ unk_D_80068BB0* func_82D05A5C(void) {
     return sp34;
 }
 
-unk_D_80068BB0* func_82D05BE0(void) {
-    unk_D_80068BB0* sp34;
+FramebufferImage* func_82D05BE0(void) {
+    FramebufferImage* sp34;
 
-    sp34 = func_80006314(0, 2, 0xAC, 0x5C, 1);
+    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
     func_82D002C4(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -2399,10 +2399,10 @@ unk_D_80068BB0* func_82D05BE0(void) {
     return sp34;
 }
 
-unk_D_80068BB0* func_82D05D64(void) {
-    unk_D_80068BB0* sp34;
+FramebufferImage* func_82D05D64(void) {
+    FramebufferImage* sp34;
 
-    sp34 = func_80006314(0, 2, 0xAC, 0x40, 1);
+    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x40, 1);
     func_82D002C4(sp34, 0xA8, 0x3C);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -2425,12 +2425,12 @@ unk_D_80068BB0* func_82D05D64(void) {
     return sp34;
 }
 
-unk_D_80068BB0* func_82D05EE8(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
+FramebufferImage* func_82D05EE8(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
     s32 sp2C;
-    unk_D_80068BB0* sp28;
+    FramebufferImage* sp28;
 
     sp2C = MeasureTextWidth(8, 0, arg0);
-    sp28 = func_80006314(0, 2, 0xAC, 0x30, 1);
+    sp28 = FramebufferImage_Allocate(0, 2, 0xAC, 0x30, 1);
     func_82D002C4(sp28, 0xA8, 0x2C);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
@@ -2462,13 +2462,13 @@ void func_82D06014(void) {
     D_82D0ABE0[5] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x42), 0x1E, 0x64, 0x1E);
     D_82D0ABE0[6] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x43), 0x1E, 0x64, 0x1E);
 
-    func_8001BC34(&D_82D09FF8[0], 0, 0, D_82D0AC00);
-    func_8001BC34(&D_82D09FF8[1], 0, 0, D_82D0AC04);
-    func_8001BC34(&D_82D09FF8[2], 0, 0, D_82D0AC08);
-    func_8001BC34(&D_82D09FF8[3], 0, 0, D_82D0AC0C);
-    func_8001BC34(&D_82D09FF8[4], 0, 0, D_82D0AC04);
-    func_8001BC34(&D_82D09FF8[5], 0, 0, D_82D0AC08);
-    func_8001BC34(&D_82D09FF8[6], 0, 0, D_82D0AC08);
+    GraphNode_InitChild(&D_82D09FF8[0], 0, 0, D_82D0AC00);
+    GraphNode_InitChild(&D_82D09FF8[1], 0, 0, D_82D0AC04);
+    GraphNode_InitChild(&D_82D09FF8[2], 0, 0, D_82D0AC08);
+    GraphNode_InitChild(&D_82D09FF8[3], 0, 0, D_82D0AC0C);
+    GraphNode_InitChild(&D_82D09FF8[4], 0, 0, D_82D0AC04);
+    GraphNode_InitChild(&D_82D09FF8[5], 0, 0, D_82D0AC08);
+    GraphNode_InitChild(&D_82D09FF8[6], 0, 0, D_82D0AC08);
     Vec3f_Set(&D_82D09FF8[0].unk_024, -84.0f, 48.0f, -579.0f);
     Vec3f_Set(&D_82D09FF8[1].unk_024, 100.0f, 18.0f, -579.0f);
     Vec3f_Set(&D_82D09FF8[3].unk_024, -84.0f, -64.0f, -579.0f);
@@ -2517,7 +2517,7 @@ void func_82D06388(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        func_8001BCF0(D_82D09FF8);
+        GraphNode_ClearCallback(D_82D09FF8);
     }
 
     main_pool_pop_state('msel');
@@ -2843,7 +2843,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
             D_82D0AB98 |= 4;
         }
         func_80028084(&D_82D0AB98);
-        func_80026684(0x14, 0);
+        GbsCommitBankBlock(0x14, 0);
     }
 
     func_800284B4(2);

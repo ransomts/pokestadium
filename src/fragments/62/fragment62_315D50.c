@@ -4215,7 +4215,7 @@ void func_8432B554(unk_D_84390010* arg0) {
 }
 
 void func_8432B588(unk_D_84390010* arg0) {
-    func_8003EB40(func_84308D98(arg0), &arg0->unk_654.unk_38);
+    ProcessAudioInfo(func_84308D98(arg0), &arg0->unk_654.unk_38);
 }
 
 void func_8432B5B8(unk_D_84390010* arg0, unk_D_800FCB18* arg1, s32 arg2) {
@@ -4249,7 +4249,7 @@ void func_8432B604(void) {
         }
     }
 
-    func_8003D828(sp20[0], sp20[1], sp20[2], sp20[3]);
+    SetPlayerSidesAndReset(sp20[0], sp20[1], sp20[2], sp20[3]);
 }
 
 void func_8432B704(void) {
@@ -4271,7 +4271,7 @@ void func_8432B704(void) {
     if (ptr2->unk_720->unk_01 == 2) {
         sp24[ptr2->unk_720->unk_08[1]->unk_001] = func_84308D90(ptr2->unk_720->unk_08[1]);
     }
-    func_8003D6B0(sp24[0], sp24[1], sp24[2], sp24[3]);
+    SetTeamScores(sp24[0], sp24[1], sp24[2], sp24[3]);
 }
 
 void func_8432B808(void) {
@@ -4279,155 +4279,155 @@ void func_8432B808(void) {
         case 0:
             switch (gBattleContext.unk_0001) {
                 case 0:
-                    func_8003D918(0, 0xE);
+                    ProcessMenuSelection(0, 0xE);
                     break;
 
                 case 1:
-                    func_8003D918(0, 0xA);
+                    ProcessMenuSelection(0, 0xA);
                     break;
 
                 case 2:
-                    func_8003D918(0, 0xB);
+                    ProcessMenuSelection(0, 0xB);
                     break;
 
                 case 3:
-                    func_8003D918(0, 6);
+                    ProcessMenuSelection(0, 6);
                     break;
 
                 case 4:
-                    func_8003D918(0, 5);
+                    ProcessMenuSelection(0, 5);
                     break;
 
                 case 5:
-                    func_8003D918(0, 4);
+                    ProcessMenuSelection(0, 4);
                     break;
 
                 case 6:
-                    func_8003D918(0, 0);
+                    ProcessMenuSelection(0, 0);
                     break;
 
                 case 7:
-                    func_8003D918(0, 0xC);
+                    ProcessMenuSelection(0, 0xC);
                     break;
 
                 case 8:
-                    func_8003D918(0, 0xC);
+                    ProcessMenuSelection(0, 0xC);
                     break;
             }
             break;
 
         case 1:
-            func_8003D918(gBattleContext.unk_0003, 0xA);
+            ProcessMenuSelection(gBattleContext.unk_0003, 0xA);
             break;
 
         case 2:
-            func_8003D918(gBattleContext.unk_0003, 0xB);
+            ProcessMenuSelection(gBattleContext.unk_0003, 0xB);
             break;
 
         case 3:
             switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8003D918(gBattleContext.unk_0003, 6);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    func_8003D918(gBattleContext.unk_0003, 7);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    func_8003D918(gBattleContext.unk_0003, 8);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    func_8003D918(gBattleContext.unk_0003, 9);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            func_8003D918(gBattleContext.unk_0003, 5);
+            ProcessMenuSelection(gBattleContext.unk_0003, 5);
             break;
 
         case 5:
-            func_8003D918(gBattleContext.unk_0003, 4);
+            ProcessMenuSelection(gBattleContext.unk_0003, 4);
             break;
 
         case 6:
             switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8003D918(gBattleContext.unk_0003, 0);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    func_8003D918(gBattleContext.unk_0003, 1);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    func_8003D918(gBattleContext.unk_0003, 2);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    func_8003D918(gBattleContext.unk_0003, 3);
+                    ProcessMenuSelection(gBattleContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
             if (gBattleContext.unk_0002 == 9) {
-                func_8003D918(5, 0xD);
+                ProcessMenuSelection(5, 0xD);
             } else if (gBattleContext.unk_0002 == 8) {
-                func_8003D918(gBattleContext.unk_0003, 0xD);
+                ProcessMenuSelection(gBattleContext.unk_0003, 0xD);
             } else {
-                func_8003D918((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
+                ProcessMenuSelection((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            func_8003D918(gBattleContext.unk_0003, 0xF);
+            ProcessMenuSelection(gBattleContext.unk_0003, 0xF);
             break;
 
         case 10:
             switch (gBattleContext.unk_0001) {
                 case 0:
-                    func_8003D918(0xFF, 0xE);
+                    ProcessMenuSelection(0xFF, 0xE);
                     break;
 
                 case 1:
-                    func_8003D918(0xFF, 0xA);
+                    ProcessMenuSelection(0xFF, 0xA);
                     break;
 
                 case 2:
-                    func_8003D918(0xFF, 0xB);
+                    ProcessMenuSelection(0xFF, 0xB);
                     break;
 
                 case 3:
-                    func_8003D918(0xFF, 6);
+                    ProcessMenuSelection(0xFF, 6);
                     break;
 
                 case 4:
-                    func_8003D918(0xFF, 5);
+                    ProcessMenuSelection(0xFF, 5);
                     break;
 
                 case 5:
-                    func_8003D918(0xFF, 4);
+                    ProcessMenuSelection(0xFF, 4);
                     break;
 
                 case 6:
-                    func_8003D918(0xFF, 0);
+                    ProcessMenuSelection(0xFF, 0);
                     break;
 
                 case 7:
-                    func_8003D918(0xFF, 0xC);
+                    ProcessMenuSelection(0xFF, 0xC);
                     break;
 
                 case 8:
-                    func_8003D918(0xFF, 0xC);
+                    ProcessMenuSelection(0xFF, 0xC);
                     break;
             }
             break;
 
         case 9:
-            func_8003D918(0, 0x10);
+            ProcessMenuSelection(0, 0x10);
             break;
     }
 }
@@ -4919,7 +4919,7 @@ void func_8432CAD0(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        func_8001BBC8(&D_84391A90[i]);
+        Graph_AddToRootList1(&D_84391A90[i]);
         D_84392030[i] = 0;
     }
 }
@@ -4961,7 +4961,7 @@ void func_8432CBF8(unk_D_86002F58_004_000* arg0) {
 
     if (i != 16) {
         D_84391A50[i] = 0;
-        func_8001BCF0(arg0);
+        GraphNode_ClearCallback(arg0);
     }
 }
 
@@ -4999,12 +4999,12 @@ void func_8432CD14(unk_D_86002F58_004_000* arg0) {
 
     if (i != 4) {
         D_84392030[i] = 0;
-        func_8001BCF0(arg0);
+        GraphNode_ClearCallback(arg0);
     }
 }
 
 void func_8432CD70(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
-    func_8001BC34(arg0, 0, 0, D_843920C0[arg1]);
+    GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
     func_800173DC(arg0, 0, D_843920C0[arg2], 0x10000);
 }
 
@@ -5013,7 +5013,7 @@ void func_8432CDD8(unk_D_86002F58_004_000* arg0, s16 arg1) {
 }
 
 void func_8432CE00(unk_D_86002F58_004_000* arg0, s16 arg1) {
-    func_8001BC34(arg0, 0, 0, D_843920C0[arg1]);
+    GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
 }
 
 void func_8432CE3C(unk_D_86002F58_004_000* arg0, s16 arg1) {

@@ -461,7 +461,7 @@ static u32 D_86E04B34[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0xFFE20032, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF,  0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFE0000, 0x00640064, 0x00640000,  0x05000000,
-    0x00000000, D_86E04AE0, 0x06000000, 0x06000000, 0x05000000, 0x0A000000, &D_800AC840, 0x06000000,
+    0x00000000, D_86E04AE0, 0x06000000, 0x06000000, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,
     0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
 };
 static Vec3f miniMetapodInfo[] = {
@@ -591,7 +591,7 @@ void miniInitMetapodPlayer(MiniActor* metapod, s32 arg1) {
     metapod->unk_2A6 = 5;
     metapod->middleHeight = metapod->halfHeight * 0.5f;
 
-    func_8001BD04(&metapod->unk_000, 0);
+    GraphNode_TriggerAction(&metapod->unk_000, 0);
     func_80017788(&metapod->unk_000);
     metapod->unk_000.unk_01C = 0;
     miniActorUpdateTransform(metapod);
@@ -1146,7 +1146,7 @@ void func_86E01310(MiniActor* rock) {
     rock->unk_270 = 1;
 
     rock->unk_000.unk_000.unk_01 |= 1;
-    func_8001BD04(&rock->unk_000, 0);
+    GraphNode_TriggerAction(&rock->unk_000, 0);
 }
 
 void func_86E01414(MiniActor* rock) {
@@ -1609,7 +1609,7 @@ void func_86E02308(void) {
     DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
     DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -1638,7 +1638,7 @@ void func_86E02308(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
     Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetupDL();
 }
 
@@ -1689,7 +1689,7 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
 
 void func_86E02880(s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0xA6BF);
+    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
     if (D_8780FC94 == 0) {
         func_80015348();
@@ -1842,8 +1842,8 @@ void func_86E02C5C(void) {
         miniMetapods[i].cubeRadio = playerVariations[randN][1];
         miniMetapods[i].halfHeight = playerVariations[randN][2];
 
-        func_8001BC34(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->unk_08->unk_00[0]);
-        func_8001BD04(&miniMetapods[i].unk_000, 0);
+        GraphNode_InitChild(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniMetapods[i].unk_000, 0);
 
         if (miniMetapods) {}
     }
@@ -1853,8 +1853,8 @@ void func_86E02C5C(void) {
         miniMetapodRocks[i].unk_23C = 0x9C;
         miniMetapodRocks[i].unk_168 = temp_s1_2;
 
-        func_8001BC34(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->unk_08->unk_00[0]);
-        func_8001BD04(&miniMetapodRocks[i].unk_000, 0);
+        GraphNode_InitChild(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(&miniMetapodRocks[i].unk_000, 0);
 
         miniMetapodRocks[i].unk_000.unk_000.unk_01 &= ~1;
     }
@@ -1885,7 +1885,7 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
     func_86E02A64(); //	tutorial screen ?
     func_86E02BB0();
     Stage_Destroy();
-    func_8001E9CC(); //	main_pool_try_free(D_800AC870);
+    func_8001E9CC(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');

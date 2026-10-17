@@ -80,7 +80,7 @@ void func_83400020(void) {
             func_80027C24(0x17, 0, i, &D_834063C0[i]);
         }
 
-        func_80026E4C(2);
+        GbsProcessBankWrites(2);
         func_800284B4(2);
     } else {
         D_83407AE8 = 0;
@@ -173,7 +173,7 @@ s32 func_83400410(s32 arg0, s32 arg1) {
             func_80027C24(0x17, 0, i, &D_834063C0[i]);
         }
 
-        func_80026E4C(2);
+        GbsProcessBankWrites(2);
         func_800284B4(2);
     }
 
@@ -477,8 +477,8 @@ void func_83401D0C(s32 arg0, s32 arg1, s32 arg2) {
 void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_D_86002F58_004_000_010* arg5,
                    BinArchive* arg6, unk_D_83403C60* arg7, s32 arg8, s32 arg9) {
     UNUSED s32 pad;
-    unk_D_80068BB0* sp168;
-    unk_D_80068BB0* sp68[64];
+    FramebufferImage* sp168;
+    FramebufferImage* sp68[64];
     UNUSED s32 pad2;
     s32 i;
 
@@ -496,10 +496,10 @@ void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     arg0->unk_18 = arg4;
     arg0->unk_1C = arg3 / arg4;
 
-    sp168 = func_80006314(G_IM_FMT_RGBA, IMAGE_SIZE_BITS_16b, arg1, arg2, 1);
+    sp168 = FramebufferImage_Allocate(G_IM_FMT_RGBA, IMAGE_SIZE_BITS_16b, arg1, arg2, 1);
 
     for (i = 0; i < arg3; i++) {
-        sp68[i] = func_80006314(G_IM_FMT_RGBA, IMAGE_SIZE_BITS_16b, arg1, arg2, 0);
+        sp68[i] = FramebufferImage_Allocate(G_IM_FMT_RGBA, IMAGE_SIZE_BITS_16b, arg1, arg2, 0);
     }
 
     if (arg9 != 0) {

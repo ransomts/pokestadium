@@ -218,10 +218,10 @@ Vtx* Graph_MakeQuadVertices(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040
                 break;
         }
 
-        func_8001E680(&temp_v0[0], arg1->l, arg1->t, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
-        func_8001E680(&temp_v0[1], arg1->l, arg1->b, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
-        func_8001E680(&temp_v0[2], arg1->r, arg1->b, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
-        func_8001E680(&temp_v0[3], arg1->r, arg1->t, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
+        SetTileVertex(&temp_v0[0], arg1->l, arg1->t, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
+        SetTileVertex(&temp_v0[1], arg1->l, arg1->b, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
+        SetTileVertex(&temp_v0[2], arg1->r, arg1->b, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
+        SetTileVertex(&temp_v0[3], arg1->r, arg1->t, -1, 0, 0, arg0->color.r, arg0->color.g, arg0->color.b, sp47);
     }
 
     return temp_v0;
@@ -271,7 +271,7 @@ void Graph_MakeRotatedVertex(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, 
     tmp1 = (s16)((a4 * COSS(idx)) - (SINS(idx) * a5)) + arg2;
     tmp2 = (s16)((a4 * SINS(idx)) + (COSS(idx) * a5)) + arg3;
 
-    func_8001E680(arg0, tmp1, tmp2, -1, arg6 * 32, arg7 * 32, arg1->color.r, arg1->color.g, arg1->color.b,
+    SetTileVertex(arg0, tmp1, tmp2, -1, arg6 * 32, arg7 * 32, arg1->color.r, arg1->color.g, arg1->color.b,
                   0xFF);
 }
 
@@ -448,7 +448,7 @@ void Graph_SetupCamera(GraphNode* arg0) {
         Graph_VisitVisibleChildren(&arg->unk_00);
     }
     Graph_RenderNode(&arg->unk_CC, temp_s2);
-    func_80006200(&gDisplayListHead);
+    Gfx_RestoreScissor(&gDisplayListHead);
     gCurrentCameraNode = NULL;
 }
 
@@ -533,7 +533,7 @@ void func_80013AF8(GraphNode* arg0) {
     unk_D_86002F34_alt2* arg = (unk_D_86002F34_alt2*)arg0;
     unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
 
-    func_800065B4(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height, arg->unk_18);
+    Gfx_FillRectangle(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height, arg->unk_18);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
@@ -542,7 +542,7 @@ void func_80013AF8(GraphNode* arg0) {
 void func_80013B8C(UNUSED GraphNode* arg0) {
     unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
 
-    func_800067E4(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height);
+    Gfx_FillDepthRectangle(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);

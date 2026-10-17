@@ -102,12 +102,12 @@ void func_86600264(s32 arg0) {
     DrawGradientPanel(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
     DrawPanel(0x1E, 0xBE, 0xA0, 0x20, 0x141);
     Text_ResetState();
-    func_8001F470();
+    Text_BeginRender();
     Text_SetFont(4, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
     Text_Print(0x30, 0x14, "MINIGAME7 SAMPLE");
-    func_8001F4C4();
+    Text_EndRender();
     Text_SetFont(2, -2);
     Text_SetEnvColor(0xFF, 0xC8, 0x32, 0xFF);
 
@@ -136,7 +136,7 @@ void func_86600264(s32 arg0) {
 
 void func_86600438(s32 arg0) {
     Stage_BeginDisplayList();
-    func_8000699C(&gDisplayListHead, 0xA6BF);
+    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     func_80015348();
     Graph_SetTextureState(D_86600944);
     func_86600264(arg0);
@@ -145,7 +145,7 @@ void func_86600438(s32 arg0) {
 
 void func_8660048C(void) {
     func_80006C6C(0x10);
-    func_8001BD04(&D_86600950, 8);
+    GraphNode_TriggerAction(&D_86600950, 8);
     if (func_80017514(&D_86600950) == 0) {
         do {
             func_86600020();
@@ -158,7 +158,7 @@ void func_866004F8(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
-    func_8001BD04(&D_86600950, 0);
+    GraphNode_TriggerAction(&D_86600950, 0);
 
     while (var_s1 != 0) {
         func_86600020();
@@ -173,7 +173,7 @@ void func_866004F8(void) {
         if (var_s0 == 60) {
             var_s0 = 0;
             func_80017788(&D_86600950);
-            func_8001BD9C(&D_86600950, 0xA);
+            GraphNode_TriggerSound(&D_86600950, 0xA);
         }
 
         func_86600438(2);
@@ -183,8 +183,8 @@ void func_866004F8(void) {
 void func_866005B8(void) {
     s32 i;
 
-    func_8001BD04(&D_86600950, 0xB);
-    func_8001BD9C(&D_86600950, 0xB);
+    GraphNode_TriggerAction(&D_86600950, 0xB);
+    GraphNode_TriggerSound(&D_86600950, 0xB);
 
     while (func_80017514(&D_86600950) == 0) {
         func_86600020();
@@ -208,8 +208,8 @@ void func_86600658(void) {
     Graph_AddToRootList0(&D_86600950);
     func_8001987C();
     D_86600940 = func_80019D18(0x19);
-    func_8001BC34(&D_86600950, 0, 0x19, D_86600940->unk_08->unk_00[0]);
-    func_8001BD04(&D_86600950, 0);
+    GraphNode_InitChild(&D_86600950, 0, 0x19, D_86600940->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&D_86600950, 0);
     func_86600050();
 }
 

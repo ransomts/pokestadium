@@ -4,10 +4,10 @@
 #include "src/3FB0.h"
 #include "src/memory.h"
 
-static s16 D_800AE4E0;
+static s16 gCurrentBankSlot;
 static unk_D_800AE4E8 gGbsSaveBanks[4];
 
-void func_80025C20(UNUSED MainPoolBlock* arg0, u32 arg1) {
+void GbsBankResetCallback(UNUSED MainPoolBlock* arg0, u32 arg1) {
     u32 bank_num = arg1 - 'BNK0';
     unk_D_800AE4E8* temp_v0 = &gGbsSaveBanks[bank_num];
 
@@ -99,7 +99,7 @@ void GbsClearBlock(u8* arg0, s32 arg1, s32 arg2) {
     gGbsSaveBanks[arg2].unk_00 |= 2;
 }
 
-void func_80025F50(s32 arg0, s32 arg1) {
+void GbsSyncBankBlock(s32 arg0, s32 arg1) {
     s32 sp34;
     s32 sp30;
     UNUSED s32 pad;
@@ -109,8 +109,8 @@ void func_80025F50(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            sp30 = D_800AE4E0 / 4;
-            idx2 = D_800AE4E0 % 4;
+            sp30 = gCurrentBankSlot / 4;
+            idx2 = gCurrentBankSlot % 4;
             sp34 = 0x160;
             sp24 = (u8*)&gGbsSaveBanks[sp30].unk_04.unk1->unk_0000[idx2][arg1];
             sp20 = (u8*)&gGbsSaveBanks[sp30].unk_08.unk1->unk_0000[idx2][arg1];
@@ -168,7 +168,7 @@ void func_80025F50(s32 arg0, s32 arg1) {
 
     switch ((GbsValidateBlock(sp24, sp34) | GbsValidateBlock(sp20, sp34) << 1)) {
         case 0:
-            func_8002707C(arg0, arg1);
+            GbsClearAndCommitBlock(arg0, arg1);
             break;
 
         case 1:
@@ -203,10 +203,10 @@ void Mon_WriteToSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000
     _bcopy(arg0->unk_46, arg1->unk_2C, 0xB);
 }
 
-s32 func_80026338(s32 arg0, s32 arg1, s16 arg2) {
+s32 GbsCheckBlockFlag(s32 arg0, s32 arg1, s16 arg2) {
     s32 var_v1 = 0;
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -245,9 +245,9 @@ s32 func_80026338(s32 arg0, s32 arg1, s16 arg2) {
     return var_v1;
 }
 
-void func_800264DC(s32 arg0, s32 arg1, s16 arg2) {
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+void GbsSetBlockFlag(s32 arg0, s32 arg1, s16 arg2) {
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -287,9 +287,9 @@ void func_800264DC(s32 arg0, s32 arg1, s16 arg2) {
 void func_8002667C(void) {
 }
 
-void func_80026684(s32 arg0, s32 arg1) {
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+void GbsCommitBankBlock(s32 arg0, s32 arg1) {
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -326,9 +326,9 @@ void func_80026684(s32 arg0, s32 arg1) {
     }
 }
 
-void func_8002685C(s32 arg0, s32 arg1) {
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+void GbsInvalidateBankBlock(s32 arg0, s32 arg1) {
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -365,9 +365,9 @@ void func_8002685C(s32 arg0, s32 arg1) {
     }
 }
 
-void func_80026A34(s32 arg0, s32 arg1) {
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+void GbsBackupBankBlock(s32 arg0, s32 arg1) {
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -404,7 +404,7 @@ void func_80026A34(s32 arg0, s32 arg1) {
     }
 }
 
-void func_80026C0C(s32 arg0, s32 arg1) {
+void GbsClearBankBlock(s32 arg0, s32 arg1) {
     UNUSED s32 pad;
     unk_D_800AE4E8_004_1_000* sp38;
     unk_D_800AE4E8_004_3_0000* sp34;
@@ -414,8 +414,8 @@ void func_80026C0C(s32 arg0, s32 arg1) {
     unk_D_800AE4E8_004_2_1D20* sp24;
     unk_D_800AE4E8_004_2_1EC8* sp20;
     unk_D_800AE4E8_004_2_3280* sp1C;
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -467,74 +467,74 @@ void func_80026C0C(s32 arg0, s32 arg1) {
     }
 }
 
-void func_80026E4C(s16 arg0) {
+void GbsProcessBankWrites(s16 arg0) {
     s32 i;
     s32 sp28;
 
     if (gGbsSaveBanks[arg0].unk_00 & 1) {
-        sp28 = D_800AE4E0;
+        sp28 = gCurrentBankSlot;
 
         switch (arg0) {
             case 0:
-                for (D_800AE4E0 = 0; D_800AE4E0 < 4; D_800AE4E0++) {
+                for (gCurrentBankSlot = 0; gCurrentBankSlot < 4; gCurrentBankSlot++) {
                     for (i = 0; i < 10; i++) {
-                        func_80026684(0x10, i);
+                        GbsCommitBankBlock(0x10, i);
                     }
                 }
                 break;
 
             case 1:
-                for (D_800AE4E0 = 4; D_800AE4E0 < 8; D_800AE4E0++) {
+                for (gCurrentBankSlot = 4; gCurrentBankSlot < 8; gCurrentBankSlot++) {
                     for (i = 0; i < 10; i++) {
-                        func_80026684(0x10, i);
+                        GbsCommitBankBlock(0x10, i);
                     }
                 }
                 break;
 
             case 2:
-                D_800AE4E0 = 8;
+                gCurrentBankSlot = 8;
 
                 for (i = 0; i < 10; i++) {
-                    func_80026684(0x10, i);
+                    GbsCommitBankBlock(0x10, i);
                 }
 
-                func_80026684(0x13, 0);
-                func_80026684(0x14, 0);
-                func_80026684(0x15, 0);
-                func_80026684(0x16, 0);
-                func_80026684(0x17, 0);
+                GbsCommitBankBlock(0x13, 0);
+                GbsCommitBankBlock(0x14, 0);
+                GbsCommitBankBlock(0x15, 0);
+                GbsCommitBankBlock(0x16, 0);
+                GbsCommitBankBlock(0x17, 0);
                 break;
 
             case 3:
                 for (i = 0; i < 12; i++) {
-                    func_80026684(0x11, i);
+                    GbsCommitBankBlock(0x11, i);
                 }
 
                 for (i = 0; i < 4; i++) {
-                    func_80026684(0x12, i);
+                    GbsCommitBankBlock(0x12, i);
                 }
 
                 break;
         }
 
-        D_800AE4E0 = sp28;
+        gCurrentBankSlot = sp28;
     }
 }
 
-void func_80027038(void) {
+void GbsProcessAllBanks(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_80026E4C(i);
+        GbsProcessBankWrites(i);
     }
 }
 
-void func_8002707C(s32 arg0, s32 arg1) {
-    func_80026C0C(arg0, arg1);
-    func_80026684(arg0, arg1);
+void GbsClearAndCommitBlock(s32 arg0, s32 arg1) {
+    GbsClearBankBlock(arg0, arg1);
+    GbsCommitBankBlock(arg0, arg1);
 }
 
-s32 func_800270AC(s32 arg0) {
+s32 GbsGetBlockEntryCount(s32 arg0) {
     s32 var_v1 = 0;
 
     switch (arg0) {
@@ -566,7 +566,7 @@ s32 func_800270AC(s32 arg0) {
     return var_v1;
 }
 
-s32 func_80027108(s32 arg0) {
+s32 GbsGetBlockDataSize(s32 arg0) {
     s32 var_v1 = 0;
 
     switch (arg0) {
@@ -598,16 +598,16 @@ s32 func_80027108(s32 arg0) {
     return var_v1;
 }
 
-s32 func_80027164(s32 arg0, s32 arg1) {
-    return func_80026338(arg0, arg1, 1);
+s32 GbsIsBlockActive(s32 arg0, s32 arg1) {
+    return GbsCheckBlockFlag(arg0, arg1, 1);
 }
 
-s32 func_80027184(s32 arg0, s32 arg1) {
+s32 GbsGetBlockStatusField(s32 arg0, s32 arg1) {
     s32 sp1C = -1;
 
-    if (func_80027164(arg0, arg1) != 0) {
-        s16 idx1 = D_800AE4E0 / 4;
-        s16 idx2 = D_800AE4E0 % 4;
+    if (GbsIsBlockActive(arg0, arg1) != 0) {
+        s16 idx1 = gCurrentBankSlot / 4;
+        s16 idx2 = gCurrentBankSlot % 4;
 
         switch (arg0) {
             case 16:
@@ -626,15 +626,15 @@ s32 func_80027184(s32 arg0, s32 arg1) {
     return sp1C;
 }
 
-char* func_800272BC(s32 arg0, s32 arg1, char* arg2) {
+char* GbsGetBlockString(s32 arg0, s32 arg1, char* arg2) {
     char* sp1C = NULL;
     char* var_a1;
 
     *arg2 = '\x00';
 
-    if (func_80027164(arg0, arg1) != 0) {
-        s16 idx1 = D_800AE4E0 / 4;
-        s16 idx2 = D_800AE4E0 % 4;
+    if (GbsIsBlockActive(arg0, arg1) != 0) {
+        s16 idx1 = gCurrentBankSlot / 4;
+        s16 idx2 = gCurrentBankSlot % 4;
 
         var_a1 = NULL;
 
@@ -661,15 +661,15 @@ char* func_800272BC(s32 arg0, s32 arg1, char* arg2) {
 }
 
 void func_80027410(s32 arg0, s32 arg1, char* arg2) {
-    func_800272BC(arg0, arg1, arg2);
+    GbsGetBlockString(arg0, arg1, arg2);
 }
 
-void func_80027430(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
+void GbsSetBlockStringAndValue(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
     unk_D_800AE4E8_004_1_000* temp_v0;
     unk_D_800AE4E8_004_3_0000* temp_v0_2;
     unk_D_800AE4E8_004_3_34E0* temp_v0_3;
-    s16 idx1 = D_800AE4E0 / 4;
-    s16 idx2 = D_800AE4E0 % 4;
+    s16 idx1 = gCurrentBankSlot / 4;
+    s16 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -682,7 +682,7 @@ void func_80027430(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
                 EncodeGen1String(&temp_v0->unk_000.unk_01, arg3);
             }
 
-            func_800264DC(arg0, arg1, 3);
+            GbsSetBlockFlag(arg0, arg1, 3);
             break;
 
         case 17:
@@ -695,7 +695,7 @@ void func_80027430(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
                 EncodeGen1String(&temp_v0_2->unk_000.unk_01, arg3);
             }
 
-            func_800264DC(arg0, arg1, 3);
+            GbsSetBlockFlag(arg0, arg1, 3);
             break;
 
         case 18:
@@ -708,15 +708,15 @@ void func_80027430(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
                 EncodeGen1String(&temp_v0_3->unk_00.unk_01, arg3);
             }
 
-            func_800264DC(arg0, arg1, 3);
+            GbsSetBlockFlag(arg0, arg1, 3);
             break;
     }
 }
 
 s16 func_800275E0(s32 arg0, s32 arg1) {
     s16 var_v1 = 0;
-    s32 idx1 = D_800AE4E0 / 4;
-    s32 idx2 = D_800AE4E0 % 4;
+    s32 idx1 = gCurrentBankSlot / 4;
+    s32 idx2 = gCurrentBankSlot % 4;
 
     switch (arg0) {
         case 16:
@@ -748,8 +748,8 @@ s16 func_800275E0(s32 arg0, s32 arg1) {
 }
 
 void func_800276F0(s32 arg0, s32 arg1, s32 arg2) {
-    s32 sp1C = D_800AE4E0 / 4;
-    s32 sp18 = D_800AE4E0 % 4;
+    s32 sp1C = gCurrentBankSlot / 4;
+    s32 sp18 = gCurrentBankSlot % 4;
 
     if (arg2 < func_800275E0(arg0, arg1)) {
         switch (arg0) {
@@ -766,7 +766,7 @@ void func_800276F0(s32 arg0, s32 arg1, s32 arg2) {
                 break;
         }
 
-        func_800264DC(arg0, arg1, 2);
+        GbsSetBlockFlag(arg0, arg1, 2);
     }
 }
 
@@ -775,11 +775,11 @@ void func_8002782C(s32 arg0, s32 arg1) {
     s32 idx2;
     s32 sp1C;
 
-    idx1 = D_800AE4E0 / 4;
-    idx2 = D_800AE4E0 % 4;
+    idx1 = gCurrentBankSlot / 4;
+    idx2 = gCurrentBankSlot % 4;
 
     sp1C = func_800275E0(arg0, arg1);
-    if (sp1C < func_800270AC(arg0)) {
+    if (sp1C < GbsGetBlockEntryCount(arg0)) {
         switch (arg0) {
             case 16:
                 gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_0E = sp1C + 1;
@@ -793,14 +793,14 @@ void func_8002782C(s32 arg0, s32 arg1) {
                 gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_0E = sp1C + 1;
                 break;
         }
-        func_800264DC(arg0, arg1, 2);
+        GbsSetBlockFlag(arg0, arg1, 2);
     }
 }
 
 s32 func_8002797C(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     s32 sp2C = 0;
-    s32 idx1 = D_800AE4E0 / 4;
-    s32 idx2 = D_800AE4E0 % 4;
+    s32 idx1 = gCurrentBankSlot / 4;
+    s32 idx2 = gCurrentBankSlot % 4;
 
     if (arg2 < func_800275E0(arg0, arg1)) {
         switch (arg0) {
@@ -838,9 +838,9 @@ s32 func_8002797C(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
 
 s32 func_80027C24(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     s32 sp34 = 0;
-    s32 idx1 = D_800AE4E0 / 4;
-    s32 idx2 = D_800AE4E0 % 4;
-    s32 sp28 = func_800270AC(arg0);
+    s32 idx1 = gCurrentBankSlot / 4;
+    s32 idx2 = gCurrentBankSlot % 4;
+    s32 sp28 = GbsGetBlockEntryCount(arg0);
     s32 sp24 = func_800275E0(arg0, arg1);
 
     if ((arg2 < sp24) || ((arg2 == sp24) && (arg2 < sp28))) {
@@ -868,7 +868,7 @@ s32 func_80027C24(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
         if (arg2 == sp24) {
             func_8002782C(arg0, arg1);
         } else {
-            func_800264DC(arg0, arg1, 2);
+            GbsSetBlockFlag(arg0, arg1, 2);
         }
 
         sp34 = 1;
@@ -883,7 +883,7 @@ void func_80027F24(unk_func_8002A728* arg0) {
 void func_80027F40(unk_func_8002A728* arg0) {
     if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04, 8) != 0) {
         gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04 = *arg0;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -894,7 +894,7 @@ void func_80027FA0(unk_func_80027FA0* arg0, s16 arg1) {
 void func_80027FE0(unk_func_80027FA0* arg0, s16 arg1) {
     if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1], sizeof(unk_func_80027FA0)) != 0) {
         gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -908,7 +908,7 @@ void func_80028084(u16* arg0) {
 
     if (temp_v1->unk_1EA0.unk_02 != tmp) {
         temp_v1->unk_1EA0.unk_02 = tmp;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -921,7 +921,7 @@ void func_800280D4(u8 arg0) {
 
     if (temp_v0->unk_1EA0.unk_1E != arg0) {
         temp_v0->unk_1EA0.unk_1E = arg0;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -934,7 +934,7 @@ void func_80028128(u8 arg0) {
 
     if (temp_v0->unk_1EA0.unk_1F != arg0) {
         temp_v0->unk_1EA0.unk_1F = arg0;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -948,7 +948,7 @@ void func_8002817C(u8 arg0, u8 arg1) {
 
     if (temp_v1->unk_1EA0.unk_1C != temp_v0) {
         temp_v1->unk_1EA0.unk_1C = temp_v0;
-        func_800264DC(0x14, 0, 2);
+        GbsSetBlockFlag(0x14, 0, 2);
     }
 }
 
@@ -1080,7 +1080,7 @@ s32 func_8002873C(s16 arg0, u32 arg1) {
     u8* sp28;
 
     if (gGbsSaveBanks[arg0].unk_04.unk1 == NULL) {
-        sp28 = main_pool_alloc_with_func(arg1 * 2, 0, 'BNK0' + arg0, func_80025C20);
+        sp28 = main_pool_alloc_with_func(arg1 * 2, 0, 'BNK0' + arg0, GbsBankResetCallback);
         if (sp28 != NULL) {
             bzero(sp28, arg1 * 2);
             gGbsSaveBanks[arg0].unk_04.unk1 = sp28;
@@ -1099,16 +1099,16 @@ void func_80028840(void) {
     s32 sp28;
 
     if (func_8002873C(0, 0x3700) != 0) {
-        sp28 = D_800AE4E0;
+        sp28 = gCurrentBankSlot;
 
-        for (D_800AE4E0 = 0; D_800AE4E0 < 4; D_800AE4E0++) {
+        for (gCurrentBankSlot = 0; gCurrentBankSlot < 4; gCurrentBankSlot++) {
             for (j = 0; j < 10; j++) {
-                func_80025F50(0x10, j);
+                GbsSyncBankBlock(0x10, j);
             }
         }
 
         gGbsSaveBanks->unk_00 |= 1;
-        D_800AE4E0 = sp28;
+        gCurrentBankSlot = sp28;
     }
 }
 
@@ -1117,16 +1117,16 @@ void func_800288F4(void) {
     s32 sp28;
 
     if (func_8002873C(1, 0x3700) != 0) {
-        sp28 = D_800AE4E0;
-        D_800AE4E0 = 4;
-        while (D_800AE4E0 < 8) {
+        sp28 = gCurrentBankSlot;
+        gCurrentBankSlot = 4;
+        while (gCurrentBankSlot < 8) {
             for (i = 0; i < 10; i++) {
-                func_80025F50(16, i);
+                GbsSyncBankBlock(16, i);
             }
-            D_800AE4E0++;
+            gCurrentBankSlot++;
         }
         gGbsSaveBanks[1].unk_00 |= 1;
-        D_800AE4E0 = sp28;
+        gCurrentBankSlot = sp28;
     }
 }
 
@@ -1135,21 +1135,21 @@ void func_800289AC(void) {
     s32 sp20;
 
     if (func_8002873C(2, 0x3F80) != 0) {
-        sp20 = D_800AE4E0;
-        D_800AE4E0 = 8;
+        sp20 = gCurrentBankSlot;
+        gCurrentBankSlot = 8;
 
         for (i = 0; i < 10; i++) {
-            func_80025F50(16, i);
+            GbsSyncBankBlock(16, i);
         }
 
-        func_80025F50(19, 0);
-        func_80025F50(20, 0);
-        func_80025F50(21, 0);
-        func_80025F50(22, 0);
-        func_80025F50(23, 0);
+        GbsSyncBankBlock(19, 0);
+        GbsSyncBankBlock(20, 0);
+        GbsSyncBankBlock(21, 0);
+        GbsSyncBankBlock(22, 0);
+        GbsSyncBankBlock(23, 0);
 
         gGbsSaveBanks[2].unk_00 |= 1;
-        D_800AE4E0 = sp20;
+        gCurrentBankSlot = sp20;
     }
 }
 
@@ -1158,11 +1158,11 @@ void func_80028A74(void) {
 
     if (func_8002873C(3, 0x3880) != 0) {
         for (i = 0; i < 12; i++) {
-            func_80025F50(17, i);
+            GbsSyncBankBlock(17, i);
         }
 
         for (i = 0; i < 4; i++) {
-            func_80025F50(18, i);
+            GbsSyncBankBlock(18, i);
         }
 
         gGbsSaveBanks[3].unk_00 |= 1;
@@ -1206,18 +1206,18 @@ void func_80028C28(void) {
 }
 
 s32 func_80028C48(s16 arg0) {
-    s32 tmp = D_800AE4E0;
+    s32 tmp = gCurrentBankSlot;
 
     if ((arg0 >= 0) && (arg0 < 9)) {
-        D_800AE4E0 = arg0;
+        gCurrentBankSlot = arg0;
     }
     return tmp;
 }
 
 s32 func_80028C7C(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 var_v1 = 0;
-    s32 idx1 = D_800AE4E0 / 4;
-    s32 idx2 = D_800AE4E0 % 4;
+    s32 idx1 = gCurrentBankSlot / 4;
+    s32 idx2 = gCurrentBankSlot % 4;
 
     if ((arg1 >= 0) && (arg1 < 0xA)) {
         *arg0 = gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1];
@@ -1228,12 +1228,12 @@ s32 func_80028C7C(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
 
 s32 func_80028D60(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 var_v1 = 0;
-    s32 idx1 = D_800AE4E0 / 4;
-    s32 idx2 = D_800AE4E0 % 4;
+    s32 idx1 = gCurrentBankSlot / 4;
+    s32 idx2 = gCurrentBankSlot % 4;
 
     if ((arg1 >= 0) && (arg1 < 0xA)) {
         gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1] = *arg0;
-        func_800264DC(0x10, arg1, 2);
+        GbsSetBlockFlag(0x10, arg1, 2);
         var_v1 = 1;
     }
     return var_v1;
@@ -1243,7 +1243,7 @@ s32 func_80028E68(void) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        if (func_80027164(0x10, i) == 0) {
+        if (GbsIsBlockActive(0x10, i) == 0) {
             break;
         }
     }
@@ -1257,13 +1257,13 @@ void func_80028EB8(void) {
     s32 j;
 
     for (i = 9; i >= 0; i--) {
-        if (func_80027164(0x10, i) != 0) {
+        if (GbsIsBlockActive(0x10, i) != 0) {
             break;
         }
     }
 
     for (j = i - 1; j >= 0; j--) {
-        if (func_80027164(0x10, j) != 0) {
+        if (GbsIsBlockActive(0x10, j) != 0) {
             continue;
         }
 
@@ -1272,9 +1272,9 @@ void func_80028EB8(void) {
 
             func_80028C7C(&sp40, i + 1);
             func_80028D60(&sp40, i);
-            func_80026684(0x10, i);
+            GbsCommitBankBlock(0x10, i);
         }
 
-        func_8002707C(0x10, 9);
+        GbsClearAndCommitBlock(0x10, 9);
     }
 }

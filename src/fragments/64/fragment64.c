@@ -104,7 +104,7 @@ static u8* D_8480369C[][3] = {
 static u8* D_848036D8 = D_30084C0;
 
 void func_84800020(void) {
-    func_8001D924(D_84803784);
+    Gfx_DrawTextureAtlas(D_84803784);
 
     gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
@@ -128,7 +128,7 @@ void func_84800184(void) {
     s32 var_s4;
     s8 temp_v0;
     s8* var_v0;
-    unk_D_80068BB0* sp58;
+    FramebufferImage* sp58;
     Color_RGB8 sp54;
     Color_RGB8 sp50;
 
@@ -405,9 +405,9 @@ void func_84800D08(unk_D_848037A0* arg0) {
 
     if (arg0->unk_0007 > 0) {
         if (arg0->unk_0003 == 0) {
-            func_8001DBDC(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
         } else {
-            func_8001DBDC(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
         }
         arg0->unk_0007 -= 1;
     }
@@ -458,7 +458,7 @@ void func_84801340(unk_D_848037A0* arg0) {
         var_s2 = arg0->unk_0014;
 
         func_84800D08(arg0);
-        func_8001F504(var_s1 + 5, var_s2 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
+        Text_DrawWindowRect(var_s1 + 5, var_s2 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         if (arg0->unk_000A == 0) {
             func_848012A4(var_s1 + 0x5C, var_s2 + 0x3C, arg0->unk_0000);
         } else {
@@ -517,7 +517,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         sp30 = arg0->unk_0014;
 
         func_84800D08(arg0);
-        func_8001F504(sp34 + 5, sp30 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
+        Text_DrawWindowRect(sp34 + 5, sp30 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
@@ -547,11 +547,11 @@ void func_84801800(unk_D_848037A0* arg0) {
         func_84800CA4(sp3C, sp38, 0x15F, 0x53, arg0->unk_0001);
         Text_ResetState();
         Text_SetFont(0x20, 0);
-        func_8001F470();
+        Text_BeginRender();
         Text_SetPrimColor(0x1C, 0x74, 0xFF, 0xFF);
         temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
         Text_Print((sp3C - (MeasureTextWidth(0x20, 0, temp_v0) / 2)) + 0xAF, sp38 + 0x19, temp_v0);
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
     } else {
         sp3C = arg0->unk_0012;
@@ -573,15 +573,15 @@ void func_84801800(unk_D_848037A0* arg0) {
         }
 
         func_84800D08(arg0);
-        func_8001F504(sp3C + 5, sp38 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
+        Text_DrawWindowRect(sp3C + 5, sp38 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         Text_ResetState();
         Text_SetFont(0x20, 0);
-        func_8001F470();
+        Text_BeginRender();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp34);
         Text_SetPrimColor(0x1C, 0x74, 0xFF, sp34);
         temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
         Text_Print((sp3C - (MeasureTextWidth(0x20, 0, temp_v0) / 2)) + 0xEB, sp38 + 0x25, temp_v0);
-        func_8001F4C4();
+        Text_EndRender();
         Text_SetupDL();
     }
 }
@@ -671,9 +671,9 @@ void func_84801A88(unk_D_848037A0* arg0) {
 
     if (arg0->unk_0007 > 0) {
         if (arg0->unk_0003 == 0) {
-            func_8001DBDC(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
         } else {
-            func_8001DBDC(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
         }
         arg0->unk_0007--;
     }

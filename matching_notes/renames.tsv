@@ -437,3 +437,108 @@ D_80075F98	gCamTexHeight	p9		Height (43) of the camera texture used in rendering
 D_80075F9C	gCamTextWidth	p9		Stores the width of the camera label text measured by MeasureTextWidth	applied@a8ca9c4
 D_8007616C	gCamGeoLayoutIndices	p9		Array mapping camera mode indices to geometry layout IDs, used in Cam_LoadGeometry	applied@a8ca9c4
 D_800761B0	gCamQuadVertices	p9		Array of 12 vertex structs defining the quad geometry for camera view rendering	applied@a8ca9c4
+func_8003D570	SetBitInArray	w1		Sets or clears a specific bit in a byte array based on the given index and flag.	applied@530bfe4
+func_8003D624	IsBitSetInArray	w1		Returns 1 if a particular bit is set in a byte array, otherwise 0.	applied@530bfe4
+func_8003D68C	SetAudioActiveFlag	w1		Sets the global audio?active flag (D_80078388) to 1 when the argument is non?zero, otherwise clears it.	applied@530bfe4
+func_8003D6B0	SetTeamScores	w1		Stores four team?score values into the global array D_8007838C.	applied@530bfe4
+func_8003D6DC	ResetPlayerData	w1		Clears all per?player statistics and related buffers for the specified player index (0 or 1).	applied@530bfe4
+func_8003D828	SetPlayerSidesAndReset	w1		Initialises the player?to?side mapping (D_80078398) and resets related audio structures.	applied@530bfe4
+func_8003D918	ProcessMenuSelection	w1		Handles a menu selection by looking up sound IDs in the D_80078410/46/EA tables and queues the appropriate sound.	applied@530bfe4
+func_8003DB84	AudioFrameUpdate	w1		Per?frame audio manager update that processes DMA buffers, updates HP history and triggers contextual sound effects.	applied@530bfe4
+func_8003EB40	ProcessAudioInfo	w1		Updates global audio info for a side, records HP history, and queues sound effects based on changes.	applied@530bfe4
+func_8003F1AC	RemovePlayer	w1		Decrements a player's team score and updates internal counters when a player leaves the match.	applied@530bfe4
+func_8003F4C0	PlayerDefeated	w1		Marks a player as defeated, sets a flag and triggers defeat?related sound cues.	applied@530bfe4
+func_8003F624	ProcessCommandQueue	w1		Iterates over the queued command IDs (D_800FCCF0) and executes the corresponding audio or UI actions.	applied@530bfe4
+D_80078388	gAudioActiveFlag	w1		Global flag indicating whether the audio system is currently active (used by many sound?queue functions).	applied@530bfe4
+D_8007838C	gTeamScores	w1		Array holding the current scores for up to four teams/players.	applied@530bfe4
+D_80078398	gPlayerSideMap	w1		Mapping from player index (1?4) to side identifier (1 or 2) used throughout the audio logic.	applied@530bfe4
+D_800FCB48	gHPHistory	w1		Per?side circular buffer storing recent HP values and related timing information.	applied@530bfe4
+D_800FCB18	gAudioInfoPtr	w1		Global pointers to the current AudioInfo structures for each side.	applied@530bfe4
+D_80078544	gCommandQueueCount	w1		Counter of pending command IDs in the command queue (D_800FCCF0).	applied@530bfe4
+func_80025C20	GbsBankResetCallback	w1		Clears flags and pointers for a bank identified by arg1 ('BNK0'?'BNK4') in the pool allocation callback.	applied@530bfe4
+func_80025F50	GbsSyncBankBlock	w1		Validates active and backup blocks for a given type (arg0) and index (arg1) and copies data to ensure consistency.	applied@530bfe4
+func_80026338	GbsCheckBlockFlag	w1		Tests a specific bit (arg2) in the block header for the given type and index, returning non?zero if set.	applied@530bfe4
+func_800264DC	GbsSetBlockFlag	w1		Sets (ORs) a flag bit (arg2) in the block header for the specified type and index.	applied@530bfe4
+func_80026684	GbsCommitBankBlock	w1		Writes a valid trailer to the block and clears the dirty flag for the given type and index.	applied@530bfe4
+func_8002685C	GbsInvalidateBankBlock	w1		Writes an invalid trailer (XOR checksum) to the block and marks it dirty for the given type and index.	applied@530bfe4
+func_80026A34	GbsBackupBankBlock	w1		Copies the backup block over the active block for the specified type and index.	applied@530bfe4
+func_80026C0C	GbsClearBankBlock	w1		Zeroes a block, sets its status byte to 0x50 (or sets a flag), and marks it dirty.	applied@530bfe4
+func_80026E4C	GbsProcessBankWrites	w1		If a bank?s dirty flag is set, iterates over its entries and calls GbsCommitBankBlock for each.	applied@530bfe4
+func_80027038	GbsProcessAllBanks	w1		Loops over all four banks and invokes GbsProcessBankWrites on each.	applied@530bfe4
+func_8002707C	GbsClearAndCommitBlock	w1		Calls GbsClearBankBlock then GbsCommitBankBlock for the specified type and index.	applied@530bfe4
+func_800270AC	GbsGetBlockEntryCount	w1		Returns the maximum number of entries for each block type (e.g., 6 for type 16, 0x14 for type 17).	applied@530bfe4
+func_80027108	GbsGetBlockDataSize	w1		Returns a size/offset constant for each block type (e.g., 0x54 for types 16/17, 2 for type 18).	applied@530bfe4
+func_80027164	GbsIsBlockActive	w1		Wrapper that checks flag bit?1 of a block by calling GbsCheckBlockFlag with arg2?=?1.	applied@530bfe4
+func_80027184	GbsGetBlockStatusField	w1		When a block is active, returns the unk_0C field from its header for the given type and index.	applied@530bfe4
+func_800272BC	GbsGetBlockString	w1		Decodes a Gen?1 encoded string from a block if the block is active, storing the result in the provided buffer.	applied@530bfe4
+func_80027430	GbsSetBlockStringAndValue	w1		Writes a string and optional numeric value into a block, then sets the dirty flag (bit?3).	applied@530bfe4
+D_800AE4E0	gCurrentBankSlot	w1		Global index used to select the current save?bank slot (0?8) throughout the GBS subsystem.	applied@530bfe4
+func_8001BBC8	Graph_AddToRootList1	w1		Adds a child to the D_800AC858 root node, mirroring Graph_AddToRootList0 for the second root list	applied@530bfe4
+func_8001BC34	GraphNode_InitChild	w1		Calls GraphNode_AddChild, sets matrix identity and initializes flags, typical of initializing a graph node with a child	applied@530bfe4
+func_8001BCF0	GraphNode_ClearCallback	w1		Clears the node's unk_0C pointer and resets the low flag bit, indicating removal of a callback	applied@530bfe4
+func_8001BD04	GraphNode_TriggerAction	w1		Validates an index and calls func_800173DC to perform an action when the index is within bounds	applied@530bfe4
+func_8001BD9C	GraphNode_TriggerSound	w1		Validates an index and calls func_80017798, suggesting it triggers a sound effect for that index	applied@530bfe4
+func_8001BE34	GraphNode_SetColorRGBA	w1		Forwards RGBA components to func_8000E840, which sets a color value for the node	applied@530bfe4
+func_8001BE78	GraphNode_SetState	w1		Writes a value to unk_01D, likely representing the node's primary state flag	applied@530bfe4
+func_8001BE84	GraphNode_SetSubState	w1		Writes a value to unk_01C, likely representing a secondary or sub?state flag	applied@530bfe4
+func_8001BE90	GraphNode_GetChildByIndex	w1		Retrieves a child structure via the unk_28 method using the supplied index, acting as a getter	applied@530bfe4
+func_8001BEE8	ComputeStatFromName	w1		Calculates a value based on species name, nickname strings, and base stats, typical of a stat derived from a name	applied@530bfe4
+func_8001C014	GetPokemonStatFromEntry	w1		Builds a temporary struct, copies Pok?mon data into it, then calls ComputeStatFromName to obtain the stat	applied@530bfe4
+func_8001C07C	ProcessPokemonSelection	w1		Handles a Pok?mon object, checks flags, computes a stat via ComputeStatFromName, and updates related structures	applied@530bfe4
+func_8001C198	UpdatePokemonStateOnEnter	w1		Checks a condition with func_80019C08 and sets flag bits to mark entry into a new state	applied@530bfe4
+func_8001C1E8	UpdatePokemonStateOnExit	w1		Checks a different flag condition and updates flag bits to reflect exiting or updating after a condition	applied@530bfe4
+func_8001C248	StartPokemonAnimation	w1		Verifies flags, calls func_80019A7C to start an animation, and sets appropriate flag bits	applied@530bfe4
+func_8001C2D8	FinishPokemonAnimation	w1		Calls func_80019C58 to detect animation completion and clears/sets flag bits accordingly	applied@530bfe4
+D_800AC840	gGraphRoot0	w1		Allocated and initialized as a root graph node used by Graph_AddToRootList0 and related functions	applied@530bfe4
+D_800AC858	gGraphRoot1	w1		Allocated and initialized as a second root graph node used by func_8001BBC8 and related functions	applied@530bfe4
+func_800060E0	Gfx_SetScissorRect	w1		Sets the scissor rectangle via gDPSetScissorFrac and updates the global clip rect, evidence: calls gDPSetScissorFrac and Gfx_MakeClipRect	applied@530bfe4
+func_80006200	Gfx_RestoreScissor	w1		Restores the scissor rectangle to the current global clip rect using gDPSetScissorFrac, evidence: uses gClipRect fields in the call	applied@530bfe4
+D_80068BB0	gCurrentFramebuffer	w1		Static pointer to the currently bound framebuffer image, evidence: assigned in Gfx_SetupFrameBuffer and cleared in Gfx_ResetFramebufferState	applied@530bfe4
+unk_D_80068BB0	FramebufferImage	w1	unk_D_80068BB0:FramebufferImage	Struct that stores framebuffer image parameters (fmt, size, width, height, img_p) and optional depth buffer, evidence: fields accessed throughout the file	applied@530bfe4
+func_800062E4	FramebufferImage_Init	w1		Initialises a FramebufferImage struct with format, size, dimensions and image pointer, evidence: assigns fmt, size, width, height, img_p fields	applied@530bfe4
+func_80006314	FramebufferImage_Allocate	w1		Allocates a FramebufferImage plus image data buffer sized for the given format and dimensions, evidence: calculates size_bytes, calls main_pool_alloc, then init function	applied@530bfe4
+func_80006414	FramebufferImage_AttachDepth	w1		Attaches a compatible depth buffer to a framebuffer image when both have matching dimensions and depth is 16?bit, evidence: checks depth->size == IMAGE_SIZE_BITS_16b and dimensions before setting depth_p	applied@530bfe4
+func_80006450	Gfx_ResetFramebufferState	w1		Resets the global framebuffer pointer and clears the clip rectangle to zero, evidence: sets D_80068BB0 = NULL and calls Gfx_MakeClipRect with zeros	applied@530bfe4
+func_8000648C	Gfx_GetCurrentFramebuffer	w1		Returns the currently bound framebuffer image pointer, evidence: simply returns D_80068BB0	applied@530bfe4
+func_800065B4	Gfx_FillRectangle	w1		Fills a rectangle with a colour, handling depth buffer if present, evidence: uses gDPFillRectangle after setting render mode and fill colour	applied@530bfe4
+func_800067E4	Gfx_FillDepthRectangle	w1		Fills a rectangle in the depth buffer with a default colour, evidence: sets colour image to depth buffer and calls gDPFillRectangle	applied@530bfe4
+func_8000699C	Gfx_FillScreen	w1		Fills the entire current framebuffer with a colour, evidence: calls Gfx_FillRectangle with the framebuffer's full width and height	applied@530bfe4
+D_80077620	gNormalModelTextureCoords	w1		Array of 40 u32 values with patterns like 0xFFCE00AA typical for packed texture coordinate data used by the normal model segment	applied@530bfe4
+D_800776C0	gNormalModelIndexCounts	w1		Six-element table (1,0x20003,0x40005,?) matching the index count layout referenced in gNormalModelSegment	applied@530bfe4
+D_800776D8	gNormalModelVertexData	w1		Contains 12 packed u32 values (e.g., 0x100A014) consistent with vertex position encoding for the normal model	applied@530bfe4
+D_80077708	gNormalModelIndices	w1		Sequence of small integers (1,0x20000,0x20003,?) typical for triangle index lists referenced by the normal model segment	applied@530bfe4
+D_80077738	gNormalModelNormals	w1		22 u32 entries with patterns (0x10002,0x3FFFF,?) matching packed normal vector representation for the normal model	applied@530bfe4
+D_80077790	gNormalModelColors	w1		Six u32 values like 0xCE00CB that correspond to RGB565 color entries for the normal model's vertex colors	applied@530bfe4
+D_800777C8	gSpecialModelTextureCoords	w1		Array of 40 u32 values mirroring the texture coordinate pattern of D_80077620 but used by the special model segment	applied@530bfe4
+D_80077868	gSpecialModelIndexCounts	w1		Six-element table identical in structure to D_800776C0, serving the special model's index count data	applied@530bfe4
+D_80077880	gSpecialModelVertexData	w1		12 packed u32 values (e.g., 0x100A014) analogous to D_800776D8, representing vertex positions for the special model	applied@530bfe4
+D_800778B0	gSpecialModelIndices	w1		Sequence of indices (1,0x20000,0x20003,?) matching the index list layout for the special model segment	applied@530bfe4
+D_800778E0	gSpecialModelNormals	w1		22 entries with patterns (0x10002,0x3FFFF,?) corresponding to packed normal vectors for the special model	applied@530bfe4
+D_80077938	gSpecialModelColors	w1		Six u32 color values (e.g., 0xCE00CB) used as vertex color data for the special model segment	applied@530bfe4
+func_80036770	PlaySoundEffectById	w1		Function forwards its argument directly to PlaySoundEffect, acting as a thin wrapper for playing a sound effect by ID	applied@530bfe4
+D_800AC870	gFontManager	w1		Used as the global font manager storing font banks, state flags and rendering parameters throughout the text subsystem	applied@530bfe4
+unk_D_800AC870_sub	FontBankInfo	w1		Struct representing a font bank with glyph dimensions, texture pointers and metrics used by text rendering	applied@530bfe4
+func_8001D12C	Gfx_DrawSpriteI8	w1		Draws an 8?bit intensity (I) sprite by loading a texture block with G_IM_FMT_I and G_IM_SIZ_8b	applied@530bfe4
+func_8001D348	Gfx_DrawSpriteI16	w1		Draws a 16?bit intensity (I) sprite using G_IM_FMT_I and G_IM_SIZ_16b	applied@530bfe4
+func_8001D924	Gfx_DrawTextureAtlas	w1		Iterates over a large image, loading 16?16 texture blocks and drawing them in a grid to render a full?screen texture atlas	applied@530bfe4
+func_8001DBDC	Gfx_DrawClippedTextureRegion	w1		Draws a clipped region of a texture atlas by calculating source offsets and rendering a textured rectangle	applied@530bfe4
+func_8001E000	Gfx_DrawTileMap16x16	w1		Allocates matrices and viewport then draws a 15?20 grid of 16?16 textured quads, typical for tile?map rendering	applied@530bfe4
+func_8001E490	AllocateTileMapVertices	w1		Allocates a vertex buffer sized for a full screen tile map and populates it with quad vertices	applied@530bfe4
+func_8001E680	SetTileVertex	w1		Initialises a single vertex with position, texture coordinates and colour for tile?map rendering	applied@530bfe4
+func_8001E730	GetCharIndexFromFontTables	w1		Looks up a character code in two global tables (D_8006F630 / D_8006F608) to obtain an index used for glyph data	applied@530bfe4
+func_8001E884	LoadFontBank	w1		Loads a font bank from the archive, stores its texture pointer and sets up unload callbacks based on a font mask	applied@530bfe4
+func_8001E9F0	LoadFontBanksFromMask	w1		Iterates over font?bank bits in a mask and calls LoadFontBank for each enabled bank	applied@530bfe4
+func_8001EAD0	FreeFontBanks	w1		Frees the texture data of font banks indicated by a bitmask, mirroring the load logic	applied@530bfe4
+func_8001EC40	GetFontBankInfo	w1		Retrieves the FontBankInfo struct for a given font identifier and returns success status	applied@530bfe4
+func_8001F470	Text_BeginRender	w1		Sets the text rendering active flag, clears pending flag and loads the text?setup display list	applied@530bfe4
+func_8001F4C4	Text_EndRender	w1		Clears text rendering flags and restores graphics state via display list	applied@530bfe4
+func_8001F3DC	Text_EnableWordWrap	w1		Clears the no?word?wrap flag in the font manager to re?enable automatic line wrapping	applied@530bfe4
+func_8001F504	Text_DrawWindowRect	w1		Draws a filled rectangle with a background texture by issuing a display list and FillRectRGBA call	applied@530bfe4
+func_80045A80	AnimHeader_ProcessScaled	w1		Processes an animation header, converts packed values to scaled coordinates and calls func_80048904 before toggling the double?buffer index	applied@530bfe4
+func_80045C78	AnimFrame_ProcessSubframes	w1		Iterates over four sub?frames, applying per?frame transforms via func_80048590/func_80048684 and then finalises the frame with func_80045A80	applied@530bfe4
+func_80045D60	AnimData_DecodePacked	w1		Unpacks a 7?byte packed animation block into header fields, per?frame parameters and an AnimBlock19 array, then forwards them to func_80045C78	applied@530bfe4
+func_80045FF0	GbAudio_DecodeSpeechFrame	w1		Decodes a GB?audio speech frame from the ring?buffer bitstream, handling silence runs and voiced frames, and passes the data to func_80045C78	applied@530bfe4
+unk_D_800FCED8	GbAudioChannelState	w1		Structure used by the speech decoder, containing the ring?buffer pointer, bit position and run?length counters for GB audio	applied@530bfe4
+unk_arg1_func_80045A80	AnimHeader	w1		Header structure holding eight 16?bit fields that are scaled and stored into the double?buffer in func_80045A80	applied@530bfe4
+unk_arg0_func_80045A80	AnimProcessor	w1		State object with a large buffer and two animation headers, used as a double?buffer for animation data	applied@530bfe4
+unk_arg1_func_80045D60	AnimPackedData	w1		Packed 7?byte source format for animation data that is unpacked in func_80045D60	applied@530bfe4
