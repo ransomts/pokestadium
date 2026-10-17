@@ -276,6 +276,10 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // 0x100, same code as this draft); dead `a1 = E1; a2 = E2;` at the top for 67 pairs of cos/sin/h/
 // -h/-arg4/arg1/arg2/products: no gain; 10 statement orders of the 8 corner lines: all worse (frame
 // changes with order, 0xE8-0x100).
+// 1952 -> 1529: the twin's a1/a2 form with the two spF0 product terms written sin-term first
+// (`(-h * SINS) + (COSS * -arg4)`) gives frame 0x108 and every memory temp in its target slot except
+// -h*sin/arg2 (0x5C/0x60, target 0x60/0x5C); operand order inside the products has no effect. The
+// term-order swap is NOT identical code once a1/a2 are used (it changes CSE discovery order).
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
@@ -285,30 +289,22 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     Vtx* spE8;
     Mtx* spE4;
     Vp* spE0;
-    f32 sp64;
-    f32 sp60;
-    f32 sp5C;
-    s32 tmp1;
 
     spEC = func_8000648C();
     spE8 = func_80005F5C(sizeof(Vtx) * 4);
     spE4 = func_80005F5C(sizeof(Mtx) * 1);
     spE0 = func_80005F5C(sizeof(Vp) * 1);
+    a1 = arg1;
+    a2 = arg2;
 
-    sp64 = arg1;
-    sp5C = arg2;
-
-    spF8[0] = ((-(arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + sp64;
-    spF0[0] = (COSS(arg5) * -arg4) + (-(arg3 / 2) * SINS(arg5)) + sp5C;
-
-    spF8[1] = (((arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + sp64;
-    spF0[1] = (COSS(arg5) * -arg4) + ((arg3 / 2) * SINS(arg5)) + sp5C;
-
-    spF8[2] = (-(arg3 / 2) * COSS(arg5)) + sp64;
-    spF0[2] = (-(arg3 / 2) * SINS(arg5)) + sp5C;
-
-    spF8[3] = ((arg3 / 2) * COSS(arg5)) + sp64;
-    spF0[3] = ((arg3 / 2) * SINS(arg5)) + sp5C;
+    spF8[0] = ((-(arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
+    spF0[0] = ((-(arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
+    spF8[1] = (((arg3 / 2) * COSS(arg5)) - (SINS(arg5) * -arg4)) + a1;
+    spF0[1] = (((arg3 / 2) * SINS(arg5)) + (COSS(arg5) * -arg4)) + a2;
+    spF8[2] = (-(arg3 / 2) * COSS(arg5)) + a1;
+    spF0[2] = (-(arg3 / 2) * SINS(arg5)) + a2;
+    spF8[3] = ((arg3 / 2) * COSS(arg5)) + a1;
+    spF0[3] = ((arg3 / 2) * SINS(arg5)) + a2;
 
     func_8001E6E8(spE0, spEC->width, spEC->height);
 
