@@ -6,14 +6,17 @@ Rewritten 2026-10-17 06:30 after round 8 (branch `match-round-1`). Read this fil
 function's `#ifdef NON_MATCHING` draft has a `//` comment with the model of what still differs and
 every dead end: read it before touching the function.
 
-## 0. Where the project stands (2026-10-17 morning)
+## 0. Where the project stands (2026-10-17 ~18:00, post round 10 pickup)
 
 | Item | State |
 |---|---|
-| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, 310 commits ahead of `master`, never pushed |
-| Upstream | `origin/master` unchanged since 2026-10-03 (#283); PR series prepared 2026-10-17: up/tools-data2c -> up/main-segment -> up/fragment1 -> up/fragments-a -> up/fragments-b -> up/fragment62 -> up/frag67-gfxhead-alias -> up/fragment16-labels (all build OK standalone; see UPSTREAM_PR_plan.md); nothing pushed |
-| Code (`progress.py -v us`, all) | 97.92% (96.60% at round-8 end; round 9: +func_86905734 + the owner-accepted alias/labels merges) |
-| `#pragma GLOBAL_ASM` left | 5 open (see F2 table) |
+| ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, never pushed |
+| Upstream | `origin/master` unchanged since 2026-10-03 (#283); PR series prepared 2026-10-17: up/tools-data2c -> up/main-segment -> up/fragment1 -> up/fragments-a -> up/fragments-b -> up/fragment62 -> up/frag67-gfxhead-alias -> up/fragment16-labels (all build OK standalone; see UPSTREAM_PR_plan.md); F6 rename commits need folding into the series before pushing; nothing pushed |
+| Code (`progress.py -v us`, all) | 97.92% (97.9197% exactly, unchanged through all 1026 renames) |
+| `#pragma GLOBAL_ASM` left | 5 open (8004A89C@300, 80034348@60, 88304850@1716, 88805AEC@1844, 8437B0CC@4724) |
+| F6 renames | 1026 applied (Tier A 108 + Tier B 120 + 4 agent waves 798 via gptoss-120b); ledger matching_notes/renames.tsv; recipe in NOTES.md "ROUND 10 PICKUP"; ~5,700 referenced placeholders + 609 struct fields remain (Tier C) |
+| Farm | DEAD since 14:57 10-17 (job cancelled 1.5h in); aa pools checkpointed in /scratch/$USER/permuter_best; relaunch command in NOTES.md; pre-rename pools in permuter_best_backup*/ (stale names - never re-seed from them) |
+| Anthropic API | weekly limit resets Oct 19 7pm; agent worktrees agent-1..6 parked clean for resume |
 | Parked (owner decision) | DECIDED 2026-10-17: both accepted and merged (gfxhead alias, 86A013C8 labels). FAKE C: try to clean first |
 | Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; 7A1C0 migrated to C 2026-10-17 (src/data_7A1C0.c); 7D110 and unk_bin_7F670 documented as by-design; 7E0D0 waits on func_8004A89C |
 | Farm (running) | x=17519735 (8004A89C, 8437B0CC, node0457), y2=17522923 (88304850, 88805AEC, node0452), z=17522869 (80034348, node0435); ends ~19:00-19:30; permuter ranking is UNRELIABLE for fragment28 and 33FE0 - cand_score every candidate |
