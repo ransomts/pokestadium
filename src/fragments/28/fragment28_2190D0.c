@@ -3591,6 +3591,8 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // late (5594); if/else of the arg5 0/1/2 block as switch (10516) or `== 0 || == 1` (7281). Remaining:
 // one extra compiler temp slot (frame +8), y5 kept unshifted in t2 (target keeps only (arg2-5)<<2 in t0
 // and computes arg2+2 / arg2-0xC / arg2+3 from t4), arg5 not kept in v1 across the arg6 block.
+// Farm lead m1/3595: a second def of the copy inside the `arg5 == 2` rect branch (`y5 = arg2;`, a
+// semantic no-op; `y5 = y5;` gives the same code) -> 4879. The farm also used noise (`(arg1 + 2) << 1 << 1`).
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
@@ -3644,6 +3646,7 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
         if (arg5 == 2) {
             gSPTextureRectangle(arg0++, arg1 << 2, ((tmp2 - arg4) + 8) << 2, (arg1 + 8) << 2, (tmp2 - 8) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
+            y5 = arg2;
         }
     } else {
         gSPTextureRectangle(arg0++, arg1 << 2, (tmp2 - arg4) << 2, (arg1 + 8) << 2, (tmp2 - 8) << 2, G_TX_RENDERTILE, 0,
