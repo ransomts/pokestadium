@@ -709,7 +709,7 @@ void func_80034254(StadiumModel* model) {
 // Sweeps that did not help on top of the boundary: ay named (before/after ax, 1434-1709), any
 // subset of the six edges named (copy-propagated, sunk to first use in nx; 1499+), each of ay/az/
 // cy/cz named vs inline loads (48 variants, best 1314).
-#if 1
+#ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 ax;
