@@ -3557,12 +3557,19 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // Sweep (inline tmp / inline tmp2 / tmp2 assigned late / pad[0..4]) scores:
 // best is this draft (14747); tmp2 assigned late 14783; inline tmp2 only 14905;
 // inline both 16007 (frame right with pad[3], arg2 still reloaded); inline tmp only 16881+.
+// Round 8 (agent-5): 12907. Target computes `addiu t0,t4,-5` (arg2 - 5) BEFORE the
+// `if (arg6 == 1)` test and keeps it in t0 through the arg6 block into the last switch's
+// case 0, so the source had a local assigned there: `y5 = arg2 - 5;` + `y5 << 2` in case 0
+// (14747 -> 13083; `y5 = (arg2 - 5) << 2` gets forward-substituted by uopt: 14943).
+// Dropping the unused sp44 local then gave 12907 (frame still 0x230 vs 0x228).
+// Target arg4 (0x238) is NOT kept in a register (2 loads) while ours keeps it in a3; ours
+// still reloads arg2 instead of holding it in t4.
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    UNUSED s32 sp44;
     u32 temp_v0;
     s32 tmp;
     s32 tmp2;
+    s32 y5;
 
     tmp = arg1 + arg3;
     tmp2 = arg2 + arg4;
@@ -3622,6 +3629,7 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
                             0x0400, 0x0400);
     }
 
+    y5 = arg2 - 5;
     if (arg6 == 1) {
         switch (D_88826A56) {
             case 0:
@@ -3668,12 +3676,12 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
         case 0:
             gDPLoadTextureBlock(arg0++, D_88823838, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP,
                                 G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(arg0++, arg1 << 2, (arg2 - 5) << 2, (arg1 + 0x2E) << 2, (arg2 + 3) << 2,
+            gSPTextureRectangle(arg0++, arg1 << 2, y5 << 2, (arg1 + 0x2E) << 2, (arg2 + 3) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
             gDPLoadTextureBlock(arg0++, D_888238C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 8, 0, G_TX_MIRROR | G_TX_CLAMP,
                                 G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, (arg2 - 5) << 2, (arg1 + 0x3E) << 2, (arg2 + 3) << 2,
+            gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, y5 << 2, (arg1 + 0x3E) << 2, (arg2 + 3) << 2,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
             break;
     }
