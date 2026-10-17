@@ -677,64 +677,48 @@ void func_80034254(StadiumModel* model) {
     }
 }
 
-// Score 2905 (fd.sh; was 3485). Frame and everything up to the a.y load match; the rest is float
-// register allocation in the cross product (target: bx=fs4, e1y=fs5, e1z=fs1, e2z=fs0, nx=fs2,
-// a.y/a.z in fa0/fa1; fs3 is saved but never used, so a phantom fs3 live range - probably a
-// spilled named local such as ax/cx - pushes everything up one register).
-// Target stack map: i 0xF4, ax 0xF0 (spilled), cx 0xD8 (spilled), ia/ib/ic 0xBE/BC/BA, remap 0x84,
-// compiler temps 0x58 (c.y-b.y), 0x5C (b.z-a.z), 0x60 (c.z-b.z). That fits nine named coordinates
-// ax..cz at 0xF0..0xD0 plus nx/ny/nz/len at 0xCC..0xC0 with inline-expression edges.
-// Dead ends: clean rewrite with all nine coords named + inline cross product (score ~9500-11000,
-// spills ay/az/nx and extra temps); Vec3f* / ModelVertex* pointers with direct loads (13193);
-// *index++ / index += 3 at loop end; computing nx before ny (worse, ~3600); inlining e1x/e2x
-// (3280-5172).
+// Score 2760 (fd.sh; was 2905, 3485). Integer side (index/remap/ia/ib/ic and the whole first and
+// last loops) now matches: the index reads are `remap[*index++]` x3 (uopt folds them into one +6).
+// Left: float register allocation in the triangle loop. Pre-as1 view (cc -S, see below) of what the
+// target must have been, from its final code:
+//   uopt colours ay f12, az f14, by f0, bz f2, cy f16, cz f18, bx f28 (fs4); ax and cx are named but
+//   uncoloured (homes 0xF0/0xD8); CSE temps by-ay f30, bz-az f22 split (spill 0x5C), cz-bz f20 split
+//   (0x60), cy-by uncoloured (0x58), bx-ax f16, cx-bx f14; ny f20, nz f22, nx f24, len f26.
+//   The "phantom" fs3 is len: ugen emits `mov.s $f26,$f0` after sqrtf, as1 forwards $f0 into both
+//   uses and deletes the mov, leaving only the save/restore. len only lands in a callee-saved reg if
+//   all six caller-saved FP regs (f0 f2 f12 f14 f16 f18) are taken in the loop block by named vars.
+// Tools: `cc -S` (ugen output, pre-as1, shows uopt's register choices and split/spill points);
+// a standalone harness with ~15000 generated variants (coords named/inline per coordinate, named
+// edges, cross-product operand and statement orders, load orders, index styles) never produced that
+// colouring: naming all nine coords gives a.* memory / b.* callee-saved / c.* caller-saved and nx/ny/
+// nz split around the call; naming only ay,az,by,cy,cz gives the right caller-saved set but len f2.
+// Declaration order and block scope of the locals do not change uopt's choices; load order does.
+// Dead ends: clean rewrite with all nine coords named + inline cross product (~9500-11000 in-tree);
+// Vec3f* / ModelVertex* pointers (13193); computing nx before ny in the m2c draft (~3600); inlining
+// e1x/e2x (3280-5172); named edges (all subsets); len reused / separate scale var / inline 120/len;
+// D_800B2F50[ia].x += form; -Wo,-rege/-regr (no effect on FPRs).
 #ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
-    f32 spF0;
-    s32 pad1[5];
-    f32 spD8;
-    s32 pad2[6];
-    s16 spBE;
-    s16 spBC;
-    s16 spBA;
-    s32 pad3[12];
-    s16* var_t2;
-    s32 pad4[6];
-    f32 sp60;
-    f32 sp5C;
-    f32 sp58;
-    f32 temp_fa1;
-    f32 temp_fs0;
-    f32 temp_fs1;
-    f32 temp_fs4;
-    f32 temp_fs5;
-    f32 temp_ft4;
-    f32 temp_fv0;
-    f32 temp_fv0_3;
-    f32 temp_fv0_4;
-    f32 temp_fv0_5;
-    f32 temp_fv0_6;
-    f32 temp_fv0_7;
-    f32 temp_fv0_8;
-    f32 temp_fv1;
-    f32 temp_fv1_2;
-    f32 var_fs0;
-    f32 var_fs1;
-    f32 var_fs2;
-    s16* var_s0;
+    f32 ax;
+    s32 pad0;
+    f32 az, bx, by, bz, cx, cy, cz;
+    f32 nx, ny, nz;
+    f32 len;
+    s16 ia, ib, ic;
+    s32 pad1[10];
+    s16* remap;
+    f32 count;
+    s16* index;
     s16 triangleCount;
     s16 vertexCount;
-    ModelVertex* temp_a0_2;
-    ModelVertex* temp_v0;
-    ModelVertex* temp_v1;
     ModelVertex* vtx;
     Vec3fCounter* counter;
 
     triangleCount = segment->triangleCount;
     vertexCount = segment->vertexCount;
-    var_s0 = Memmap_GetSegmentVaddr(segment->indexSegment);
-    var_t2 = Memmap_GetSegmentVaddr(segment->remapSegment);
+    index = Memmap_GetSegmentVaddr(segment->indexSegment);
+    remap = Memmap_GetSegmentVaddr(segment->remapSegment);
     counter = D_800B2F50;
     for (i = 0; i < vertexCount; i++) {
         counter->x = 0.0f;
@@ -743,59 +727,52 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         counter->count = 0;
         counter++;
     }
-    for(i = 0; i < triangleCount; i++) {
-        spBE = var_t2[var_s0[0]];
-        temp_v0 = &vertices[spBE];
-        spF0 = temp_v0->position.base.x;
-        spBC = var_t2[var_s0[1]];
-        spBA = var_t2[var_s0[2]];
-        var_s0 += 3;
-        temp_v1 = &vertices[spBC];
-        temp_fs4 = temp_v1->position.base.x;
-        temp_fv0 = temp_v1->position.base.y;
-        temp_fv1 = temp_v1->position.base.z;
-        temp_fs5 = temp_fv0 - temp_v0->position.base.y;
-        temp_fs1 = temp_fv1 - temp_v0->position.base.z;
-        temp_a0_2 = &vertices[spBA];
-        spD8 = temp_a0_2->position.base.x;
-        temp_fs0 = temp_a0_2->position.base.z - temp_fv1;
-        sp58 = temp_a0_2->position.base.y - temp_fv0;
-        temp_ft4 = temp_fs4 - spF0;
-        temp_fa1 = spD8 - temp_fs4;
-        var_fs0 = (temp_fs1 * temp_fa1) - (temp_ft4 * temp_fs0);
-        var_fs2 = (temp_fs5 * temp_fs0) - (temp_fs1 * sp58);
-        var_fs1 = (temp_ft4 * sp58) - (temp_fs5 * temp_fa1);
-        temp_fv0_3 = sqrtf((var_fs2 * var_fs2) + (var_fs0 * var_fs0) + (var_fs1 * var_fs1));
-        if ((s32) temp_fv0_3 > 0) {
-            temp_fv1_2 = 120.0f / temp_fv0_3;
-            var_fs2 *= temp_fv1_2;
-            var_fs0 *= temp_fv1_2;
-            var_fs1 *= temp_fv1_2;
+    for (i = 0; i < triangleCount; i++) {
+        ia = remap[*index++];
+        ax = vertices[ia].position.base.x;
+        az = vertices[ia].position.base.z;
+        ib = remap[*index++];
+        bx = vertices[ib].position.base.x;
+        by = vertices[ib].position.base.y;
+        bz = vertices[ib].position.base.z;
+        ic = remap[*index++];
+        cx = vertices[ic].position.base.x;
+        cy = vertices[ic].position.base.y;
+        cz = vertices[ic].position.base.z;
+        nx = ((by - vertices[ia].position.base.y) * (cz - bz)) - ((bz - az) * (cy - by));
+        ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
+        nz = ((bx - ax) * (cy - by)) - ((by - vertices[ia].position.base.y) * (cx - bx));
+        len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
+        if ((s32) len > 0) {
+            len = 120.0f / len;
+            nx *= len;
+            ny *= len;
+            nz *= len;
         }
-        counter = &D_800B2F50[spBE];
-        counter->x += var_fs2;
-        counter->y += var_fs0;
-        counter->z += var_fs1;
+        counter = &D_800B2F50[ia];
+        counter->x += nx;
+        counter->y += ny;
+        counter->z += nz;
         counter->count++;
-        counter = &D_800B2F50[spBC];
-        counter->x += var_fs2;
-        counter->y += var_fs0;
-        counter->z += var_fs1;
+        counter = &D_800B2F50[ib];
+        counter->x += nx;
+        counter->y += ny;
+        counter->z += nz;
         counter->count++;
-        counter = &D_800B2F50[spBA];
-        counter->x += var_fs2;
-        counter->y += var_fs0;
-        counter->z += var_fs1;
+        counter = &D_800B2F50[ic];
+        counter->x += nx;
+        counter->y += ny;
+        counter->z += nz;
         counter->count++;
     }
     counter = D_800B2F50;
     vtx = vertices;
     for (i = 0; i < vertexCount; i++) {
         if (counter->count > 0) {
-            temp_fv0_4 = (f32) counter->count;
-            vtx->position.color.r = (f32) (counter->x / temp_fv0_4);
-            vtx->position.color.g = (f32) (counter->y / temp_fv0_4);
-            vtx->position.color.b = (f32) (counter->z / temp_fv0_4);
+            count = (f32) counter->count;
+            vtx->position.color.r = (f32) (counter->x / count);
+            vtx->position.color.g = (f32) (counter->y / count);
+            vtx->position.color.b = (f32) (counter->z / count);
         }
         counter++;
         vtx++;
