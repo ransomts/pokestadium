@@ -648,3 +648,29 @@ idx boundary test took fd.sh (with -s, early returns!) to 0, the unwrap shifted 
 caught it. The no-s score at that state was 300 (tail sample/`move t5,a0` rows remain). fd.sh 0 on an
 early-return function is meaningless; always draft_score (no -s, uncapped, forced rebuild) before
 believing any zero. Restored, kept as draft 300.
+
+## Round 9 close-out (integrator, 2026-10-17 ~10:00)
+State: code 97.83%, 5 functions open (fd.sh-free scores, uncapped, no -s, forced rebuilds):
+func_8004A89C 300, func_80034348 60, func_88304850 1716, func_88805AEC 2337, func_8437B0CC 6584.
+The 5 Opus agents died on the weekly API limit ~07:45 (resets Oct 19 7pm; worktrees kept clean at
+match-round-1 for resuming with SendMessage). Three farm jobs keep exploring (x: 8004A89C/8437B0CC
+from node0457, y2: 88304850/88805AEC from node0452, z: 80034348 from node0435; all seeded from the
+current drafts after moving the stale saved candidates to permuter_best_backup_20261017 - the
+re-seed-from-best-saved mechanism backfires once a draft improves past the saved pool because
+permuter scores are not comparable across imports; when a draft improves, move its save dir aside).
+KNOWN BAD: the permuter's own scoring RANKING disagrees with the real fd score for
+fragment28_2190D0.c (candidates that improve the permuter score real-score WORSE: 20543-base runs
+saved 10043-permuter candidates at 9914 real vs the 2337 draft) - cand_score EVERY candidate before
+trusting it. For 33FE0.c the z-farm's 105-permuter candidate real-scores 105 (draft is 60) - also
+do not trust permuter numbers there.
+THREE-TIME LESSON (now in IDO_TRICKS): fd.sh's -s + 1000-line cap shows fantasy scores on
+early-return/big functions. The 8437B0CC u64#2 edit looked like 4213 and was actually 10054 (full).
+Always: rm the .o, no -s, --max-lines 30000. cand_score.py/draft_score.py do this; var.py now
+force-rebuilds but still uses fd.sh for the diff - read its output as CAPPED ONLY.
+F5 prep done: 8-branch PR series (up/tools-data2c -> up/main-segment -> up/fragment1 ->
+up/fragments-a -> up/fragments-b -> up/fragment62 -> up/frag67-gfxhead-alias ->
+up/fragment16-labels), each gated with a standalone make OK; the tip's upstreamable content equals
+match-round-1. NOT pushed (owner approval required). Permuter sizeof PR doc unchanged
+(UPSTREAM_PR_permuter_sizeof.md). Open follow-ups: decompose matching_notes/func_8437B0CC_best5479.c
+(5479 real, paren-grouping + third-u64-AND edits), 80034348's pointer-colour conflict model,
+clang-format-vs-.loc tidy trap (line numbers must be preserved when reformatting matched files).
