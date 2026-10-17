@@ -627,3 +627,9 @@ literals. Nothing to migrate yet.
 Round 9 farm: scancel v/w, fresh job (tag x, COPIES=3) on all six from the improved drafts.
 
 
+
+Owner decisions 2026-10-17 (round 9): ACCEPT the gDisplayListHead alias pair (merged
+round6-gfxhead-alias, undefined_syms conflict resolved by keeping both sides + D_800A7420) and
+ACCEPT func_86A013C8 via the eight unused labels (merged round8-86A013C8-labels); ROM stayed
+byte-identical (ed1378bc), 9 -> 6 GLOBAL_ASM, code 96.60% -> 96.78%. FAKE-but-load-bearing C
+(`if (x) {}`, dead reloads): try to clean FIRST, only accept if no clean form is found this round.
