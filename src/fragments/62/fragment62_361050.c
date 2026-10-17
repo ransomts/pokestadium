@@ -2297,6 +2297,16 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // also rewrites several condition paren groupings, `var_s1 += spBA` -> spB7, an extra
 // `func_843776FC(..., 0x49)` + `var_s1 -= spC0` block in a == 2 path, and `!= 0` spelling - needs
 // careful decomposition. The farm keeps exploring from it.
+// Round 9 post-adoption (integrator, ~11:30): state 5479 = farm x1 candidate (53f383c) verbatim;
+// the u64 AND on the case-0x1/0x20 `unk_4D & 0x10` test is LOAD-BEARING (removing it is 7809; a
+// u64 cast, `!= 0`, or `== 0` spelling of the same test is 7809/10154/10249 - only the
+// `& 0xFFFFFFFFFFFFFFFFu` mask produces the u64 temp that matters). The remaining 5479 is a GLOBAL
+// T-REGISTER ROTATION (547/599 rows are r-rows, spread evenly; first divergence at 4b94: the u64
+// test's temp lands in v1 where the target has t5) + 2-3 stack slots displaced ~8. Second-mask sweep
+// on the sibling unk_4D/unk_4C tests (0x3/0x14/0x19/4/0x4C positions): 5879-9244, all regressions -
+// the single mask is the optimum in that dimension. The old X-copy model (below) still stands;
+// agent-17's shapes were tested on the 7809 base, BEFORE the candidate's edits changed the temp
+// structure - re-test them on this base.
 void func_8437B0CC(unk_D_843C60A4 *arg0, unk_D_843C60A4 *arg1, u8 arg2, unk_func_843794CC *arg3, u8 arg4)
 {
   u8 i;
