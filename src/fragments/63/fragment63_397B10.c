@@ -1551,13 +1551,13 @@ void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
     if ((D_800AE540.unk_0002 < 9) || (arg1 == 0)) {
-        s32 sp34 = func_8001F5B0(2, 0, arg2);
+        s32 sp34 = MeasureTextWidth(2, 0, arg2);
 
-        func_8001F3F4();
+        Text_ResetState();
         func_8001F3B4(0xC);
-        func_8001EBE0(2, 0);
-        func_8001F1E8(0x20 - (sp34 / 2), 6, arg2);
-        func_8001F444();
+        Text_SetFont(2, 0);
+        Text_Print(0x20 - (sp34 / 2), 6, arg2);
+        Text_SetupDL();
     }
 }
 

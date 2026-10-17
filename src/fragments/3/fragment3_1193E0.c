@@ -174,21 +174,21 @@ void showDebuggCameraInfo(void) {
     u8 sp20[3] = { 0, 0, 250 }; // D_87903DE4
 
     func_80020460(0x14, 0x14, 0x122, 0x3C, 0x141);
-    func_8001F3F4();
-    func_8001EBE0(2, -2);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_ResetState();
+    Text_SetFont(2, -2);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (D_87903DB8 == 0) {
-        func_8001F1E8(0x19, 0x1C, "TRANSRATE");
+        Text_Print(0x19, 0x1C, "TRANSRATE");
     }
 
-    func_8001F1E8(0x19, 0x28, "CAMERA X:%d", miniCameraCoords.x);
-    func_8001F1E8(0x19, 0x34, "CAMERA Y:%d", miniCameraCoords.y);
-    func_8001F1E8(0x19, 0x40, "CAMERA Z:%d", miniCameraCoords.z);
-    func_8001F1E8(0xA7, 0x28, "CAMERA D:%d", miniCameraDistance);
-    func_8001F1E8(0xA7, 0x34, "CAMERA F:%d", miniCameraFov);
-    func_8001F1E8(0xA7, 0x40, "X:%04hX Y:%04hX", miniCameraXRot, miniCameraYRot);
-    func_8001F444();
+    Text_Print(0x19, 0x28, "CAMERA X:%d", miniCameraCoords.x);
+    Text_Print(0x19, 0x34, "CAMERA Y:%d", miniCameraCoords.y);
+    Text_Print(0x19, 0x40, "CAMERA Z:%d", miniCameraCoords.z);
+    Text_Print(0xA7, 0x28, "CAMERA D:%d", miniCameraDistance);
+    Text_Print(0xA7, 0x34, "CAMERA F:%d", miniCameraFov);
+    Text_Print(0xA7, 0x40, "X:%04hX Y:%04hX", miniCameraXRot, miniCameraYRot);
+    Text_SetupDL();
 }
 
 void showDebuggJoystickInfo(void) {
@@ -196,16 +196,16 @@ void showDebuggJoystickInfo(void) {
     u8 sp28[3] = { 0, 0, 250 }; // D_87903DEC
 
     func_80020460(0x78, 0x80, 0xB4, 0x64, 0x141);
-    func_8001F3F4();
-    func_8001EBE0(2, -2);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(0x82, 0x8C, "FORCE   :%2.2f", gPlayer1Controller->stickMag);
-    func_8001F1E8(0x82, 0x98, "LEVEL X :%2.2f", gPlayer1Controller->stickX);
-    func_8001F1E8(0x82, 0xA4, "LEVEL Y :%2.2f", gPlayer1Controller->stickY);
-    func_8001F1E8(0x82, 0xB0, "STICK X :%d", gPlayer1Controller->rawStickX);
-    func_8001F1E8(0x82, 0xBC, "STICK Y :%d", gPlayer1Controller->rawStickY);
-    func_8001F1E8(0x82, 0xC8, "ANGLE   :%04hx", gPlayer1Controller->angle);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(2, -2);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_Print(0x82, 0x8C, "FORCE   :%2.2f", gPlayer1Controller->stickMag);
+    Text_Print(0x82, 0x98, "LEVEL X :%2.2f", gPlayer1Controller->stickX);
+    Text_Print(0x82, 0xA4, "LEVEL Y :%2.2f", gPlayer1Controller->stickY);
+    Text_Print(0x82, 0xB0, "STICK X :%d", gPlayer1Controller->rawStickX);
+    Text_Print(0x82, 0xBC, "STICK Y :%d", gPlayer1Controller->rawStickY);
+    Text_Print(0x82, 0xC8, "ANGLE   :%04hx", gPlayer1Controller->angle);
+    Text_SetupDL();
 }
 
 void func_87901200(void) {
@@ -275,17 +275,17 @@ void func_87901200(void) {
     }
 
     func_80020460(0x78, 0x80, 0xB4, 0x64, 0x141);
-    func_8001F3F4();
-    func_8001EBE0(2, -2);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(0x7C, 0x8C + (D_879060CA * 0xC), "@");
+    Text_ResetState();
+    Text_SetFont(2, -2);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_Print(0x7C, 0x8C + (D_879060CA * 0xC), "@");
 
-    func_8001F1E8(0x82, 0x8C, "VX:%2.2f", D_87906100.x);
-    func_8001F1E8(0x82, 0x98, "VY:%2.2f", D_87906100.y);
-    func_8001F1E8(0x82, 0xA4, "BX:%2.2f", D_879060E0.x);
-    func_8001F1E8(0x82, 0xB0, "BY:%2.2f", D_879060E0.y);
-    func_8001F1E8(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
-    func_8001F1E8(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
+    Text_Print(0x82, 0x8C, "VX:%2.2f", D_87906100.x);
+    Text_Print(0x82, 0x98, "VY:%2.2f", D_87906100.y);
+    Text_Print(0x82, 0xA4, "BX:%2.2f", D_879060E0.x);
+    Text_Print(0x82, 0xB0, "BY:%2.2f", D_879060E0.y);
+    Text_Print(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
+    Text_Print(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
 
-    func_8001F444();
+    Text_SetupDL();
 }

@@ -500,7 +500,7 @@ void func_84318640(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 13:
-            temp_s1 = func_8001F5B0(1, 0, GetMessageString(NULL, 0, D_843900B0, 0xA4)) / 2;
+            temp_s1 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, D_843900B0, 0xA4)) / 2;
             func_84315BC0(GetMessageString(NULL, 0, D_843900B0, 0xA4), 0xA1 - temp_s1, 0x71);
             break;
 

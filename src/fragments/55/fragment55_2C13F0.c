@@ -238,7 +238,7 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
+    Text_ResetState();
     D_83003B70 = (D_83003B70 + 1) % 8;
 }
 
@@ -284,18 +284,18 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
-    func_8001EBE0(4, 0);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_ResetState();
+    Text_SetFont(4, 0);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 6; i++) {
         temp_s0 = arg2->unk_00[i].unk_00;
         if (temp_s0 != NULL) {
-            func_8001F1E8(arg0 + (i * 0x54) + 2, arg1 + 0x2A, func_83000020(temp_s0));
+            Text_Print(arg0 + (i * 0x54) + 2, arg1 + 0x2A, func_83000020(temp_s0));
         }
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_830032D8(s32 arg0) {
@@ -369,15 +369,15 @@ void func_83003484(void) {
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-        func_8001F3F4();
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001EBE0(8, 0);
+        Text_ResetState();
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetFont(8, 0);
         func_8002D600(3, ptr->unk_06);
         {
             char sp4C[64];
-            func_8001F1E8(spA6 + 0x2C, spA4 + 8, GetMessageString(sp4C, sizeof(sp4C), D_830039C0, 3));
+            Text_Print(spA6 + 0x2C, spA4 + 8, GetMessageString(sp4C, sizeof(sp4C), D_830039C0, 3));
         }
-        func_8001F444();
+        Text_SetupDL();
 
         if (ptr->unk_0C == 0) {
             return;

@@ -211,17 +211,17 @@ void func_88800A3C(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, un
         func_88800020(arg0 + 0x52, arg1 + 8, 1);
     }
 
-    func_8001F3F4();
-    func_8001F324(D_888081E8.r, D_888081E8.g, D_888081E8.b, D_888081E8.a);
-    func_8001EBE0(8, 0);
-    func_8001F1E8(arg0 + 0x10, arg1 + 6, "%03d", sp74 + 1);
+    Text_ResetState();
+    Text_SetEnvColor(D_888081E8.r, D_888081E8.g, D_888081E8.b, D_888081E8.a);
+    Text_SetFont(8, 0);
+    Text_Print(arg0 + 0x10, arg1 + 6, "%03d", sp74 + 1);
 
     if (sp70 != 0) {
-        func_8001EBE0(0x10, 0);
-        func_8001F1E8(arg0 + 0x76, arg1 + 4, GetMessageString(NULL, 0, D_888267A4, sp74));
+        Text_SetFont(0x10, 0);
+        Text_Print(arg0 + 0x76, arg1 + 4, GetMessageString(NULL, 0, D_888267A4, sp74));
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_88800E20(unk_func_888044BC_038_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5) {
@@ -357,29 +357,29 @@ void func_888019A4(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
     func_8880123C(arg1 + 0xC, arg2 + 0x4C, 0xC0, 0x14, D_888081FC);
     func_8880123C(arg1 + 0xC, arg2 + 0x64, 0xC0, 0x14, D_888081FC);
     func_8880123C(arg1 + 0xC, arg2 + 0x7C, 0xC0, 0x14, D_888081FC);
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F470();
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0xCC, 0x80, 0x80, 0xFF);
-    func_8001EBE0(0x10, 0);
-    func_8001F1E8(arg1 + 0x10, arg2 + 6, arg0->unk_30);
-    func_8001EBE0(0x10, 0);
-    func_8001F1E8(arg1 + 0x10, arg2 + 0x24, "%s%05d", GetMessageString(NULL, 0, D_888267A0, 7), arg0->unk_2C);
-    func_8001EBE0(8, 0);
-    func_8001F36C(0x80, 0xFF, 0x80, 0xFF);
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267A0, 8));
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 9));
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xA));
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0xCC, 0x80, 0x80, 0xFF);
+    Text_SetFont(0x10, 0);
+    Text_Print(arg1 + 0x10, arg2 + 6, arg0->unk_30);
+    Text_SetFont(0x10, 0);
+    Text_Print(arg1 + 0x10, arg2 + 0x24, "%s%05d", GetMessageString(NULL, 0, D_888267A0, 7), arg0->unk_2C);
+    Text_SetFont(8, 0);
+    Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
+    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267A0, 8));
+    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 9));
+    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xA));
     func_8001F4C4();
-    func_8001F324(D_888081F8.r, D_888081F8.g, D_888081F8.b, D_888081F8.a);
-    func_8001EBE0(8, 0);
+    Text_SetEnvColor(D_888081F8.r, D_888081F8.g, D_888081F8.b, D_888081F8.a);
+    Text_SetFont(8, 0);
     sprintf(sp38, "%d", arg0->unk_3C);
-    func_8001F1E8((arg1 - func_8001F5B0(0, 0, sp38)) + 0xB4, arg2 + 0x4C, sp38);
+    Text_Print((arg1 - MeasureTextWidth(0, 0, sp38)) + 0xB4, arg2 + 0x4C, sp38);
     sprintf(sp38, "%d", arg0->unk_40);
-    func_8001F1E8((arg1 - func_8001F5B0(0, 0, sp38)) + 0xB4, arg2 + 0x64, sp38);
+    Text_Print((arg1 - MeasureTextWidth(0, 0, sp38)) + 0xB4, arg2 + 0x64, sp38);
     sprintf(sp38, "%d", arg0->unk_44);
-    func_8001F1E8((arg1 - func_8001F5B0(0, 0, sp38)) + 0xB4, arg2 + 0x7C, sp38);
-    func_8001F444();
+    Text_Print((arg1 - MeasureTextWidth(0, 0, sp38)) + 0xB4, arg2 + 0x7C, sp38);
+    Text_SetupDL();
 }
 
 void func_88801CB4(unk_func_888044BC_03C* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4) {
@@ -419,28 +419,28 @@ s32 func_88801E1C(unk_func_888044BC_040_030* arg0, s32 arg1, s32 arg2) {
     s32 sp6C;
     s32 temp_v0_3;
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F324(0x9C, 0xCC, 0x98, 0xFF);
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_SetEnvColor(0x9C, 0xCC, 0x98, 0xFF);
     sp74 = GetMessageString(NULL, 0, D_888267A0, 0);
-    func_8001F1E8((arg1 - (func_8001F5B0(0, 0, sp74) / 2)) + 0x7C, arg2 + 0xA, sp74);
-    func_8001EBE0(0x10, 0);
+    Text_Print((arg1 - (MeasureTextWidth(0, 0, sp74) / 2)) + 0x7C, arg2 + 0xA, sp74);
+    Text_SetFont(0x10, 0);
     sp74 = GetMessageString(NULL, 0, D_888267A0, 1);
     sp70 = GetMessageString(NULL, 0, D_888267A0, 2);
-    sp6C = func_8001F5B0(0, 0, sp74);
-    temp_v0_3 = func_8001F5B0(0, 0, sp70);
+    sp6C = MeasureTextWidth(0, 0, sp74);
+    temp_v0_3 = MeasureTextWidth(0, 0, sp70);
 
     if (sp6C < temp_v0_3) {
         sp6C = temp_v0_3;
     }
     sp6C += 0x1E;
 
-    func_8001F324(D_88808204.r, D_88808204.g, D_88808204.b, (arg0->unk_2C != 0) ? 0xFF : 0x4D);
-    func_8001F1E8((arg1 - (sp6C / 2)) + 0x9A, arg2 + 0x24, sp74);
+    Text_SetEnvColor(D_88808204.r, D_88808204.g, D_88808204.b, (arg0->unk_2C != 0) ? 0xFF : 0x4D);
+    Text_Print((arg1 - (sp6C / 2)) + 0x9A, arg2 + 0x24, sp74);
 
-    func_8001F324(D_88808204.r, D_88808204.g, D_88808204.b, (arg0->unk_2C != 0) ? 0x4D : 0xFF);
-    func_8001F1E8((arg1 - (sp6C / 2)) + 0x9A, arg2 + 0x40, sp70);
-    func_8001F444();
+    Text_SetEnvColor(D_88808204.r, D_88808204.g, D_88808204.b, (arg0->unk_2C != 0) ? 0x4D : 0xFF);
+    Text_Print((arg1 - (sp6C / 2)) + 0x9A, arg2 + 0x40, sp70);
+    Text_SetupDL();
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -469,11 +469,11 @@ void func_88802238(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, UNUSED s32 a
     UNUSED s32 pad;
 
     func_8880123C(arg0 + 8, arg1 + 2, arg5->unk_3C - 0x10, arg5->unk_3E - 4, D_8880820C);
-    func_8001F3F4();
-    func_8001F324(D_88808208.r, D_88808208.g, D_88808208.b, D_88808208.a);
-    func_8001EBE0(8, 0);
-    func_8001F1E8(((arg5->unk_3C - func_8001F5B0(0, 0, arg2)) / 2) + arg0, arg1 + 2, arg2);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetEnvColor(D_88808208.r, D_88808208.g, D_88808208.b, D_88808208.a);
+    Text_SetFont(8, 0);
+    Text_Print(((arg5->unk_3C - MeasureTextWidth(0, 0, arg2)) / 2) + arg0, arg1 + 2, arg2);
+    Text_SetupDL();
 }
 
 void func_8880231C(unk_func_888044BC_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
@@ -532,14 +532,14 @@ void func_88802624(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
 
     sprintf(sp2C, "%d%s%02d", arg2 / 100, GetMessageString(NULL, 0, D_888267A0, 0x11), arg2 % 100);
-    func_8001F1E8(arg0 - func_8001F5B0(0, 0, sp2C), arg1, sp2C);
+    Text_Print(arg0 - MeasureTextWidth(0, 0, sp2C), arg1, sp2C);
 }
 
 void func_888026D8(s32 arg0, s32 arg1, s32 arg2) {
     char sp1C[12];
 
     sprintf(sp1C, "%d.%d", arg2 / 10, arg2 % 10);
-    func_8001F1E8(arg0 - func_8001F5B0(0, 0, sp1C), arg1, sp1C);
+    Text_Print(arg0 - MeasureTextWidth(0, 0, sp1C), arg1, sp1C);
 }
 
 s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
@@ -556,44 +556,44 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     func_8880123C(arg1 + 0xC, arg2 + 0x4C, 0xC0, 0x14, D_88808218);
     func_8880123C(arg1 + 0xC, arg2 + 0x64, 0xC0, 0x14, D_88808218);
     func_8880123C(arg1 + 0xC, arg2 + 0x7C, 0xC0, 0x14, D_88808218);
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F470();
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0xFF, 0xFF, 0x96, 0xFF);
-    func_8001EBE0(0x10, 0);
-    func_8001F1E8(arg1 + 0x10, arg2 + 6, "%s%03d", GetMessageString(NULL, 0, D_888267A0, 0x10), sp54->unk_00);
-    func_8001EBE0(0x10, 0);
-    func_8001F1E8(arg1 + 0x10, arg2 + 0x24, GetMessageString(NULL, 0, D_888267A4, sp54->unk_00 - 1));
-    func_8001EBE0(8, 0);
-    func_8001F36C(0x80, 0xFF, 0x80, 0xFF);
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267AC, sp54->unk_00 - 1));
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 0xC));
-    func_8001F1E8(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xD));
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0xFF, 0xFF, 0x96, 0xFF);
+    Text_SetFont(0x10, 0);
+    Text_Print(arg1 + 0x10, arg2 + 6, "%s%03d", GetMessageString(NULL, 0, D_888267A0, 0x10), sp54->unk_00);
+    Text_SetFont(0x10, 0);
+    Text_Print(arg1 + 0x10, arg2 + 0x24, GetMessageString(NULL, 0, D_888267A4, sp54->unk_00 - 1));
+    Text_SetFont(8, 0);
+    Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
+    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267AC, sp54->unk_00 - 1));
+    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 0xC));
+    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xD));
     func_8001F4C4();
-    func_8001EBE0(8, 0);
-    func_8001F324(D_88808214.r, D_88808214.g, D_88808214.b, D_88808214.a);
+    Text_SetFont(8, 0);
+    Text_SetEnvColor(D_88808214.r, D_88808214.g, D_88808214.b, D_88808214.a);
     sp4C = GetMessageString(NULL, 0, D_888267A0, 0xE);
     sp48 = GetMessageString(NULL, 0, D_888267A0, 0xF);
-    sp44 = func_8001F5B0(0, 0, sp4C);
+    sp44 = MeasureTextWidth(0, 0, sp4C);
 
-    temp_v0_2 = func_8001F5B0(0, 0, sp48);
+    temp_v0_2 = MeasureTextWidth(0, 0, sp48);
     if (sp44 < temp_v0_2) {
         sp44 = temp_v0_2;
     }
     sp44 = (0xB4 - sp44);
 
-    func_8001F1E8(arg1 + sp44, arg2 + 0x64, sp4C);
-    func_8001F1E8(arg1 + sp44, arg2 + 0x7C, sp48);
+    Text_Print(arg1 + sp44, arg2 + 0x64, sp4C);
+    Text_Print(arg1 + sp44, arg2 + 0x7C, sp48);
     if (func_8002564C(D_88826938, sp54->unk_00) >= 2) {
         func_88802624(arg1 + sp44, arg2 + 0x64, D_8007596C[sp54->unk_00].unk_00);
         func_888026D8(arg1 + sp44, arg2 + 0x7C, D_8007596C[sp54->unk_00].unk_02);
     } else {
         sprintf(sp34, "?%s??", GetMessageString(NULL, 0, D_888267A0, 0x11));
-        func_8001F1E8((arg1 + sp44) - func_8001F5B0(0, 0, sp34), arg2 + 0x64, sp34);
+        Text_Print((arg1 + sp44) - MeasureTextWidth(0, 0, sp34), arg2 + 0x64, sp34);
         sp48 = "???";
-        func_8001F1E8((arg1 + sp44) - func_8001F5B0(0, 0, sp48), arg2 + 0x7C, sp48);
+        Text_Print((arg1 + sp44) - MeasureTextWidth(0, 0, sp48), arg2 + 0x7C, sp48);
     }
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -648,7 +648,7 @@ void func_88802DAC(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2) {
     } else {
         sp18 = "\n???";
     }
-    arg0->unk_2C->unk_00.unk_10.unk_00 = (arg0->unk_00.unk_14.unk_00 - func_8001F5B0(0x10, 0, sp18)) / 2;
+    arg0->unk_2C->unk_00.unk_10.unk_00 = (arg0->unk_00.unk_14.unk_00 - MeasureTextWidth(0x10, 0, sp18)) / 2;
     arg0->unk_2C->unk_00.unk_10.unk_02 = 0xC;
     arg0->unk_2C->unk_40 = sp18;
 }

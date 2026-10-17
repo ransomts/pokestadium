@@ -180,7 +180,7 @@ void func_825053B4(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
         }
 
         tmp = SINS(arg4 + var_s2) * arg3;
-        func_8001F1E8(arg0, arg1 + tmp, sp50);
+        Text_Print(arg0, arg1 + tmp, sp50);
         var_s2 += 0x3000;
         arg0 += 0x18;
     }
@@ -195,17 +195,17 @@ void func_825054F4(void) {
     if (ptr->unk_00 != 0) {
         func_82504BB4(ptr->unk_04, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         func_82504BB4(ptr->unk_08, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
-        func_8001F3F4();
-        func_8001EBE0(0x10, 0);
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_ResetState();
+        Text_SetFont(0x10, 0);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         if (ptr->unk_10 <= 0.0f) {
-            func_8001F1E8((ptr->unk_04 - (func_8001F5B0(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
-            func_8001F1E8((ptr->unk_08 - (func_8001F5B0(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
+            Text_Print((ptr->unk_04 - (MeasureTextWidth(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
+            Text_Print((ptr->unk_08 - (MeasureTextWidth(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
         } else {
             func_825053B4(ptr->unk_04 + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
             func_825053B4(ptr->unk_08 + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
         }
-        func_8001F444();
+        Text_SetupDL();
     }
 }
 
@@ -233,7 +233,7 @@ void func_825057A8(s16 arg0) {
         ptr->unk_04 = ptr->unk_06;
     }
     ptr->unk_12 = arg0;
-    ptr->unk_0E = func_8001F5B0(0, 0, D_8250A4B0[ptr->unk_12], arg0) + 0x30;
+    ptr->unk_0E = MeasureTextWidth(0, 0, D_8250A4B0[ptr->unk_12], arg0) + 0x30;
     ptr->unk_06 = (0x280 - ptr->unk_0E) / 2;
     ptr->unk_02 = 5;
 }
@@ -251,7 +251,7 @@ void func_82505874(s16 arg0, s16 arg1) {
         case 1:
             ptr->unk_02 = 0xA;
             ptr->unk_10 = ptr->unk_12 = arg1;
-            ptr->unk_0C = ptr->unk_0E = func_8001F5B0(0, 0, D_8250A4B0[ptr->unk_12], arg1) + 0x30;
+            ptr->unk_0C = ptr->unk_0E = MeasureTextWidth(0, 0, D_8250A4B0[ptr->unk_12], arg1) + 0x30;
             ptr->unk_04 = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
             ptr->unk_08 = -0x2C;
             ptr->unk_0A = 0x1E0;
@@ -337,26 +337,26 @@ void func_82505C10(void) {
             func_82504BB4(0x98, ptr->unk_0A, 0x140, 0x2C, 0x64, 0, 0x50, 0x80);
         }
 
-        func_8001F3F4();
-        func_8001EBE0(0x10, 0);
+        Text_ResetState();
+        Text_SetFont(0x10, 0);
         sp3C = D_8250A4B0[ptr->unk_10];
         if (ptr->unk_10 == ptr->unk_12) {
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
         } else {
             tmp = (ptr->unk_02 * 0xFF) / 5;
-            func_8001F324(0xFF, 0xFF, 0xFF, tmp);
-            func_8001F1E8(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
+            Text_Print(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
             sp3C = D_8250A4B0[ptr->unk_12];
             tmp = ((5 - ptr->unk_02) * 0xFF) / 5;
-            func_8001F324(0xFF, 0xFF, 0xFF, tmp);
-            func_8001F1E8(ptr->unk_06 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
+            Text_Print(ptr->unk_06 + 0x18, ptr->unk_08 + 0xA, sp3C);
         }
 
         if (D_8780FA48 == -1) {
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x140 - (func_878013D4(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x140 - (func_878013D4(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
         }
-        func_8001F444();
+        Text_SetupDL();
     }
 }

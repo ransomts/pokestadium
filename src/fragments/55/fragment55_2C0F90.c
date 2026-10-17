@@ -80,14 +80,14 @@ void func_8300243C(void) {
         if (D_83003EE6 >= 0x400) {
             func_83001178(0x48, temp_s0, 0x1F0, 0x20, 0x1E, 0x64, 0x64);
             func_83001178(0x48, temp_s0 + 0x20, 0x1F0, D_83003EEA - 0x20, 0x3C, 0x3C, 0xA0);
-            func_8001F3F4();
-            func_8001EBE0(8, 0);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_ResetState();
+            Text_SetFont(8, 0);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             func_8001F3B4(0x18);
-            func_8001F1E8(0x50, temp_s0 + 6, D_83003CE0.unk_00[D_83003EE4]);
-            func_8001EBE0(8, 0);
-            func_8001F1E8(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[D_83003EE4]);
-            func_8001F444();
+            Text_Print(0x50, temp_s0 + 6, D_83003CE0.unk_00[D_83003EE4]);
+            Text_SetFont(8, 0);
+            Text_Print(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[D_83003EE4]);
+            Text_SetupDL();
         }
     }
 }

@@ -160,13 +160,13 @@ void func_84B00478(void) {
 }
 
 void func_84B004C0(s16 arg0, s16 arg1, char* arg2) {
-    s32 sp1C = func_8001F5B0(2, 0, arg2);
+    s32 sp1C = MeasureTextWidth(2, 0, arg2);
 
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F3B4(0xC);
-    func_8001EBE0(2, 0);
-    func_8001F1E8(0x20 - (sp1C / 2), arg1, arg2);
-    func_8001F444();
+    Text_SetFont(2, 0);
+    Text_Print(0x20 - (sp1C / 2), arg1, arg2);
+    Text_SetupDL();
 }
 
 void func_84B0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {

@@ -692,24 +692,24 @@ u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
     func_80015094(arg0->unk_20);
 
     if (D_800AC834 > 0) {
-        func_8001F3F4();
-        func_8001EBE0(8, -4);
+        Text_ResetState();
+        Text_SetFont(8, -4);
 
         switch (D_800AC834) {
             case 1:
-                func_8001F1E8(0, 0x64, "S:%5.2f  H:%4d", arg0->unk_18, (s32)arg0->unk_24->unk_024.y);
+                Text_Print(0, 0x64, "S:%5.2f  H:%4d", arg0->unk_18, (s32)arg0->unk_24->unk_024.y);
                 break;
 
             case 2:
-                func_8001F1E8(0, 0x64, "X:%4d  Z:%4d", (s32)arg0->unk_24->unk_024.x, (s32)arg0->unk_24->unk_024.z);
+                Text_Print(0, 0x64, "X:%4d  Z:%4d", (s32)arg0->unk_24->unk_024.x, (s32)arg0->unk_24->unk_024.z);
                 break;
 
             case 3:
-                func_8001F1E8(0, 0x64, "A:%04X  F:%3d", *(u16*)&arg0->unk_24->unk_01E.y,
+                Text_Print(0, 0x64, "A:%04X  F:%3d", *(u16*)&arg0->unk_24->unk_01E.y,
                               arg0->unk_24->unk_040.unk_08 >> 0x10);
                 break;
         }
-        func_8001F444();
+        Text_SetupDL();
     }
     return arg0->unk_28->img_p;
 }

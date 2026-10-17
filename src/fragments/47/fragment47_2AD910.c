@@ -50,13 +50,13 @@ void func_83800120(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
     func_83800098(0x28, 0x20);
-    func_8001F3F4();
-    func_8001EBE0(0x10, 0);
-    func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(0x7A, 0x2D, sp2C);
-    func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(0x78, 0x2B, sp2C);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(0x10, 0);
+    Text_SetEnvColor(0, 0, 0, 0xFF);
+    Text_Print(0x7A, 0x2D, sp2C);
+    Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
+    Text_Print(0x78, 0x2B, sp2C);
+    Text_SetupDL();
 }
 
 void func_83800218(void) {

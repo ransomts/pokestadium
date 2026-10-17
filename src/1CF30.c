@@ -227,7 +227,7 @@ void func_8001E000(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) 
     func_8000F2C4(temp_s0, &spC0, &spCC);
     func_8000FDE4(temp_s0, temp_s0, &spB4);
     func_80010090(temp_s3, temp_s0);
-    func_8001E6E8(temp_s2, temp_s1->width, temp_s1->height);
+    SetViewport(temp_s2, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)temp_s2 & 0x1FFFFFFF);
 
@@ -292,7 +292,7 @@ void func_8001E680(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, 
     arg0->v.cn[3] = arg9;
 }
 
-void func_8001E6E8(Vp* arg0, s16 arg1, s16 arg2) {
+void SetViewport(Vp* arg0, s16 arg1, s16 arg2) {
     arg0->vp.vtrans[0] = arg1 * 2;
     arg0->vp.vtrans[1] = arg2 * 2;
     arg0->vp.vtrans[2] = 0x1FF;
@@ -332,7 +332,7 @@ void func_8001E7D4(UNUSED s32 arg0, s32 arg1) {
     }
 }
 
-s32 func_8001E810(s32 arg0) {
+s32 GetFontBank(s32 arg0) {
     s32 var_v1 = 0;
 
     if (arg0 != 1) {
@@ -356,7 +356,7 @@ void func_8001E884(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
     ret_func_8000484C* temp_v0_2;
 
-    sp1C = func_8001E810(arg0);
+    sp1C = GetFontBank(arg0);
     if (D_800AC870->unk_00[sp1C].unk_04 == 0) {
         temp_v0_2 = func_8000484C(D_800AC870->unk_48, sp1C);
         D_800AC870->unk_50 = sp1C;
@@ -449,9 +449,9 @@ void func_8001EAD0(s32 arg0) {
     }
 }
 
-void func_8001EBE0(s32 arg0, s32 arg1) {
+void Text_SetFont(s32 arg0, s32 arg1) {
     if (D_800AC870 != NULL) {
-        D_800AC870->unk_50 = func_8001E810(arg0);
+        D_800AC870->unk_50 = GetFontBank(arg0);
         D_800AC870->unk_51 = arg1;
         D_800AC870->unk_53 &= ~2;
     }
@@ -461,7 +461,7 @@ s32 func_8001EC40(s32 arg0, unk_D_800AC870_sub* arg1) {
     s32 var_v1 = 0;
 
     if ((arg1 != NULL) && (D_800AC870 != NULL)) {
-        *arg1 = D_800AC870->unk_00[func_8001E810(arg0)];
+        *arg1 = D_800AC870->unk_00[GetFontBank(arg0)];
         var_v1 = 1;
     }
 
@@ -509,7 +509,7 @@ char* func_8001F1C4(char* buffer, const char* data, u32 size) {
     return (char*)memcpy(buffer, data, size) + size;
 }
 
-void func_8001F1E8(s32 x, s32 y, const char* fmt, ...) {
+void Text_Print(s32 x, s32 y, const char* fmt, ...) {
     char sp50[0x100];
     s32 temp_s5 = x - 1;
     s32 var_s1 = x - 1;
@@ -549,15 +549,15 @@ void func_8001F1E8(s32 x, s32 y, const char* fmt, ...) {
     va_end(args);
 }
 
-void func_8001F2E4(s32 arg0, s32 arg1, s32 arg2) {
+void Text_PutChar(s32 arg0, s32 arg1, s32 arg2) {
     func_8001ECB4(arg0 - 1, arg1, arg2 & 0xFF);
 }
 
-void func_8001F324(s32 r, s32 g, s32 b, s32 a) {
+void Text_SetEnvColor(s32 r, s32 g, s32 b, s32 a) {
     gDPSetEnvColor(gDisplayListHead++, r, g, b, a);
 }
 
-void func_8001F36C(s32 r, s32 g, s32 b, s32 a) {
+void Text_SetPrimColor(s32 r, s32 g, s32 b, s32 a) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, r, g, b, a);
 }
 
@@ -573,7 +573,7 @@ void func_8001F3DC(void) {
     D_800AC870->unk_53 &= ~4;
 }
 
-void func_8001F3F4(void) {
+void Text_ResetState(void) {
     D_800AC870->unk_53 = 0;
     D_800AC870->unk_52 = 0x28;
     D_800AC870->unk_4C = 0;
@@ -581,7 +581,7 @@ void func_8001F3F4(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F710);
 }
 
-void func_8001F444(void) {
+void Text_SetupDL(void) {
     gSPDisplayList(gDisplayListHead++, D_8006F750);
 }
 
@@ -605,7 +605,7 @@ void func_8001F504(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 }
 
-s32 func_8001F5B0(s32 x, s32 y, const char* fmt, ...) {
+s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
     s32 temp_s0;
     s32 temp_v0;
     s32 var_s2;
@@ -622,7 +622,7 @@ s32 func_8001F5B0(s32 x, s32 y, const char* fmt, ...) {
     if (x == 0) {
         var_a0 = D_800AC870->unk_50;
     } else {
-        var_a0 = func_8001E810(x);
+        var_a0 = GetFontBank(x);
     }
 
     temp_s4 = &D_800AC870->unk_00[var_a0];
@@ -662,6 +662,6 @@ s32 func_8001F5B0(s32 x, s32 y, const char* fmt, ...) {
     return var_s2;
 }
 
-u8 func_8001F6E8(s32 arg0, s32 arg1) {
+u8 MeasureCharWidth(s32 arg0, s32 arg1) {
     return func_8001E78C(&D_800AC870->unk_00[D_800AC870->unk_50], arg1 & 0xFF);
 }

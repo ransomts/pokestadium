@@ -737,21 +737,21 @@ void func_84101210(s16 arg0) {
     }
 
     if ((sp28 == 0x5A) && (D_84103CC8 < 6)) {
-        func_8001F3F4();
-        func_8001EBE0(0x10, 0);
-        func_8001F324(0xFF, 0xFF, 0x64, 0xFF);
-        func_8001F1E8(0x48, 0x160, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
-        func_8001F1E8(0x18C, 0x160, GetMessageString(NULL, 0, D_84103440, 0xC));
-        func_8001F1E8(func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_84103440, 0xC)) + 0x190, 0x160, "%d~%d",
+        Text_ResetState();
+        Text_SetFont(0x10, 0);
+        Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
+        Text_Print(0x48, 0x160, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
+        Text_Print(0x18C, 0x160, GetMessageString(NULL, 0, D_84103440, 0xC));
+        Text_Print(MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_84103440, 0xC)) + 0x190, 0x160, "%d~%d",
                       D_84102528[D_84103CC8][0], D_84102528[D_84103CC8][1]);
-        func_8001EBE0(8, 0);
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetFont(8, 0);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         func_8001F3B4(0x18);
-        func_8001F1E8(0x48, 0x182, GetMessageString(NULL, 0, D_84103440, D_84103CC8 + 6));
-        func_8001F444();
+        Text_Print(0x48, 0x182, GetMessageString(NULL, 0, D_84103440, D_84103CC8 + 6));
+        Text_SetupDL();
 
         if (D_800AE540.unk_11F2 == 1) {
-            temp_v0 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
+            temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
 

@@ -1261,9 +1261,9 @@ s32 func_88505EF4(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
     var_s4 = &arg0->unk_2C->unk_00.unk_00.unk_00;
     temp_fp = ((arg0->unk_40 * 0xF) / 5) + 1;
 
-    func_8001F3F4();
-    func_8001EBE0(arg0->unk_34, arg0->unk_35);
-    func_8001F324(arg0->unk_38.r, arg0->unk_38.g, arg0->unk_38.b, arg0->unk_38.a);
+    Text_ResetState();
+    Text_SetFont(arg0->unk_34, arg0->unk_35);
+    Text_SetEnvColor(arg0->unk_38.r, arg0->unk_38.g, arg0->unk_38.b, arg0->unk_38.a);
     var_s3 = 0;
     if (temp_fp > 0) {
         var_s0 = *var_s4++;
@@ -1273,7 +1273,7 @@ s32 func_88505EF4(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
                 var_s2 = arg1;
                 var_s5 += arg0->unk_36;
             } else {
-                func_8001F2E4(var_s2, var_s5, var_s0);
+                Text_PutChar(var_s2, var_s5, var_s0);
                 temp_v0_3 = func_8001E78C(&arg0->unk_3C->unk_00[arg0->unk_3C->unk_50], temp_v0_3 = var_s0);
                 if (arg0->unk_3C->unk_50 >= 2) {
                     var_v1 = temp_v0_3 - 2;
@@ -1292,7 +1292,7 @@ s32 func_88505EF4(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
         }
     }
 
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -2165,19 +2165,19 @@ s32 func_8850882C(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_40 == NULL) {
         return 0;
     }
-    func_8001F3F4();
-    func_8001EBE0(arg0->unk_2C, arg0->unk_38);
-    func_8001F324(arg0->unk_30.r, arg0->unk_30.g, arg0->unk_30.b, arg0->unk_30.a);
+    Text_ResetState();
+    Text_SetFont(arg0->unk_2C, arg0->unk_38);
+    Text_SetEnvColor(arg0->unk_30.r, arg0->unk_30.g, arg0->unk_30.b, arg0->unk_30.a);
     if (arg0->unk_44 != 0) {
         func_8001F470();
-        func_8001F36C(arg0->unk_34.r, arg0->unk_34.g, arg0->unk_34.b, arg0->unk_34.a);
+        Text_SetPrimColor(arg0->unk_34.r, arg0->unk_34.g, arg0->unk_34.b, arg0->unk_34.a);
     }
     func_8001F3B4(arg0->unk_3C);
-    func_8001F1E8(arg1, arg2, arg0->unk_40);
+    Text_Print(arg1, arg2, arg0->unk_40);
     if (arg0->unk_44 != 0) {
         func_8001F4C4();
     }
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -2323,23 +2323,23 @@ s32 func_88509AF0(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
     char* var_a2;
 
     if (arg0->unk_2C != -1) {
-        func_8001F3F4();
-        func_8001F324(D_8850CFA0.r, D_8850CFA0.g, D_8850CFA0.b, D_8850CFA0.a);
-        func_8001EBE0(0x10, 0);
-        func_8001F1E8(arg1 + 0x1A, arg2, "%dP", arg0->unk_2C + 1);
+        Text_ResetState();
+        Text_SetEnvColor(D_8850CFA0.r, D_8850CFA0.g, D_8850CFA0.b, D_8850CFA0.a);
+        Text_SetFont(0x10, 0);
+        Text_Print(arg1 + 0x1A, arg2, "%dP", arg0->unk_2C + 1);
         if (arg0->unk_30 == 0) {
             var_a2 = arg0->unk_40;
         } else {
             var_a2 = "?????";
         }
-        func_8001F1E8(arg1 + 0x48, arg2, var_a2);
-        func_8001EBE0(4, 0);
+        Text_Print(arg1 + 0x48, arg2, var_a2);
+        Text_SetFont(4, 0);
         if (arg0->unk_30 == 0) {
-            func_8001F1E8(arg1 + 0xBB, arg2 + 8, "%s %05d", arg0->unk_3C, arg0->unk_38);
+            Text_Print(arg1 + 0xBB, arg2 + 8, "%s %05d", arg0->unk_3C, arg0->unk_38);
         } else {
-            func_8001F1E8(arg1 + 0xBB, arg2 + 8, "%s ?????", arg0->unk_3C);
+            Text_Print(arg1 + 0xBB, arg2 + 8, "%s ?????", arg0->unk_3C);
         }
-        func_8001F444();
+        Text_SetupDL();
 
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -2370,11 +2370,11 @@ void func_88509E34(unk_func_88509E34* arg0, s32 arg1, s32 arg2, char* arg3) {
 s32 func_88509E8C(unk_func_88509F0C* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_8850CFA4 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F324(D_8850CFA4.r, D_8850CFA4.g, D_8850CFA4.b, D_8850CFA4.a);
-    func_8001F1E8(arg1 + 0x1AC, arg2 + 0x26, arg0->unk_2C);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_SetEnvColor(D_8850CFA4.r, D_8850CFA4.g, D_8850CFA4.b, D_8850CFA4.a);
+    Text_Print(arg1 + 0x1AC, arg2 + 0x26, arg0->unk_2C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -2416,11 +2416,11 @@ void func_8850A10C(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s
 
     *arg0->unk_34 = *arg1;
     arg0->unk_34->unk_00.unk_28 |= 1;
-    func_8001EBE0(arg1->unk_2C, arg1->unk_38);
+    Text_SetFont(arg1->unk_2C, arg1->unk_38);
     func_8001F3B4(arg1->unk_3C);
 
     if (arg3 == 0) {
-        arg3 = func_8001F5B0(0, 0, arg1->unk_40);
+        arg3 = MeasureTextWidth(0, 0, arg1->unk_40);
     }
 
     if (arg2 == 0) {

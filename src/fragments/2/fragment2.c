@@ -49,21 +49,21 @@ void func_8780005C(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_8780FA24, 0));
+        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_8780FA24, 0));
         temp_s0 = 0x50 - D_87806334;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-        func_8001F3F4();
-        func_8001EBE0(4, 0);
-        func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
+        Text_ResetState();
+        Text_SetFont(4, 0);
+        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
+            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
         }
 
-        func_8001F444();
+        Text_SetupDL();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
@@ -292,13 +292,13 @@ void func_87801290(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
     }
 
     if (var_t2 != 0) {
-        *arg0 = func_8001F5B0(0, 0, (char*)var_a2);
+        *arg0 = MeasureTextWidth(0, 0, (char*)var_a2);
         *arg1 = arg4 * sp30;
     }
 }
 
 s32 func_878013D4(UNUSED unk_D_800AC870* arg0, char* arg1) {
-    return func_8001F5B0(0, 0, arg1);
+    return MeasureTextWidth(0, 0, arg1);
 }
 
 void func_87801400(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {

@@ -47,11 +47,11 @@ void func_811001C0(s32 arg0, s32 arg1) {
 void func_811002D4(s32 arg0) {
     func_80020460(0x16, 0x10, 0x114, 0x76, 0x11C5);
     func_811001C0(0x27, 0x22);
-    func_8001F3F4();
-    func_8001EBE0(2, 0);
+    Text_ResetState();
+    Text_SetFont(2, 0);
     func_8001F3B4(0x10);
-    func_8001F1E8(0x52, 0x21, GetMessageString(NULL, 0, D_81100938, arg0 - 1));
-    func_8001F444();
+    Text_Print(0x52, 0x21, GetMessageString(NULL, 0, D_81100938, arg0 - 1));
+    Text_SetupDL();
 }
 
 void func_81100368(s32 arg0) {

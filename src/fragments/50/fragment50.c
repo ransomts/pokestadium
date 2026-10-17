@@ -1969,7 +1969,7 @@ void func_8260125C(void) {
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
 
-            temp_v0_2 = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_8267E75C, (((sp158.unk_00 & 0x7F) - 1) % 7) + 7));
+            temp_v0_2 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_8267E75C, (((sp158.unk_00 & 0x7F) - 1) % 7) + 7));
 
             gSPTextureRectangle(gDisplayListHead++, (temp_v0_2 + 0x49) << 2, 0x0264, (temp_v0_2 + 0x59) << 2, 0x02A4,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
@@ -2002,83 +2002,83 @@ void func_8260125C(void) {
         gSPTextureRectangle(gDisplayListHead++, 0x0080, 0x0058, 0x0480, 0x0370, G_TX_RENDERTILE, 0, 0, 0, 0);
     }
 
-    func_8001F3F4();
+    Text_ResetState();
 
     if (D_82608548 == 1) {
         unk_D_82604180* sp7C = &D_82604180[D_82607B54 % D_8267E4F0];
 
-        func_8001EBE0(2, 0);
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F1E8(0x1E, 0x8C, " --- No.%03d ---", (D_82607B54 % D_8267E4F0) + 1);
-        func_8001F1E8(0x1E, 0x98, " SCALE %3.1f", sp7C->unk_00);
-        func_8001F1E8(0x1E, 0xA4, " FRAME %d", sp7C->unk_04);
-        func_8001F1E8(0x1E, 0xBC, " POS-X %3.1f", sp7C->unk_08);
-        func_8001F1E8(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
-        func_8001F1E8(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
+        Text_SetFont(2, 0);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_Print(0x1E, 0x8C, " --- No.%03d ---", (D_82607B54 % D_8267E4F0) + 1);
+        Text_Print(0x1E, 0x98, " SCALE %3.1f", sp7C->unk_00);
+        Text_Print(0x1E, 0xA4, " FRAME %d", sp7C->unk_04);
+        Text_Print(0x1E, 0xBC, " POS-X %3.1f", sp7C->unk_08);
+        Text_Print(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
+        Text_Print(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
     } else if ((D_82608542 == 1) && (func_826007C8((D_82607B54 % D_8267E4F0) + 1) != 0)) {
         unk_func_800228F0 sp58;
 
         func_800228F0(&sp58, (D_82607B54 % D_8267E4F0) + 1);
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001EBE0(2, 0);
-        func_8001F1E8(0x58, 0x2E, "%s", GetMessageString(NULL, 0, D_8267E75C, 0));
-        func_8001F1E8(0x58, 0x42, "%s", GetMessageString(NULL, 0, D_8267E75C, 1));
-        func_8001F1E8(0x58, 0x56, "%s", GetMessageString(NULL, 0, D_8267E75C, 2));
-        func_8001F1E8(0x58, 0x6A, "ID");
-        func_8001F1E8(0x4C, 0x86, "%s", GetMessageString(NULL, 0, D_8267E75C, 4));
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetFont(2, 0);
+        Text_Print(0x58, 0x2E, "%s", GetMessageString(NULL, 0, D_8267E75C, 0));
+        Text_Print(0x58, 0x42, "%s", GetMessageString(NULL, 0, D_8267E75C, 1));
+        Text_Print(0x58, 0x56, "%s", GetMessageString(NULL, 0, D_8267E75C, 2));
+        Text_Print(0x58, 0x6A, "ID");
+        Text_Print(0x4C, 0x86, "%s", GetMessageString(NULL, 0, D_8267E75C, 4));
 
         if (func_826000D8() > 0) {
-            func_8001F324(0x64, 0x64, 0xC8, 0xFF);
-            func_8001F1E8(0xD4, 0x6C, "%s", GetMessageString(NULL, 0, D_8267E75C, 3));
+            Text_SetEnvColor(0x64, 0x64, 0xC8, 0xFF);
+            Text_Print(0xD4, 0x6C, "%s", GetMessageString(NULL, 0, D_8267E75C, 3));
         }
 
         func_8001F470();
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
         if (func_826000D8() == 0) {
-            func_8001F36C(0xC8, 0xC8, 0, 0xFF);
+            Text_SetPrimColor(0xC8, 0xC8, 0, 0xFF);
         } else {
-            func_8001F36C(0x64, 0x64, 0xC8, 0xFF);
+            Text_SetPrimColor(0x64, 0x64, 0xC8, 0xFF);
         }
 
-        func_8001EBE0(8, 0);
-        func_8001F1E8(0x84, 0x2A, "%s", sp58.unk_04);
-        func_8001EBE0(4, 0);
-        func_8001F1E8(0x8C, 0x42, "%d", sp58.unk_01);
-        func_8001F1E8(0x8C, 0x56, "%s", sp58.unk_14);
-        func_8001F1E8(0x8C, 0x6A, "%05d", sp58.unk_02);
-        func_8001F1E8(0x46, 0x98, "%s", GetMessageString(NULL, 0, D_8267E75C, (((sp58.unk_00 & 0x7F) - 1) % 7) + 7));
+        Text_SetFont(8, 0);
+        Text_Print(0x84, 0x2A, "%s", sp58.unk_04);
+        Text_SetFont(4, 0);
+        Text_Print(0x8C, 0x42, "%d", sp58.unk_01);
+        Text_Print(0x8C, 0x56, "%s", sp58.unk_14);
+        Text_Print(0x8C, 0x6A, "%05d", sp58.unk_02);
+        Text_Print(0x46, 0x98, "%s", GetMessageString(NULL, 0, D_8267E75C, (((sp58.unk_00 & 0x7F) - 1) % 7) + 7));
         func_8001F4C4();
     }
 
-    func_8001EBE0(2, 0);
+    Text_SetFont(2, 0);
     func_8001F3B4(0xC);
 
     if (D_82608544 == 1) {
         char sp38[32];
         UNUSED s32 pad3[1];
 
-        func_8001F324(0xFF, 0xFF, 0x64, 0xFF);
+        Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
         func_8002D600(3, D_8267E4EA);
-        func_8001F1E8(0xBE, 0xC2, "%s", GetMessageString(sp38, 0x20, D_8267E75C, 5));
-        func_8001F1E8(0x2A, 0xC3, "%s", GetMessageString(NULL, 0, D_8267E75C, 6));
+        Text_Print(0xBE, 0xC2, "%s", GetMessageString(sp38, 0x20, D_8267E75C, 5));
+        Text_Print(0x2A, 0xC3, "%s", GetMessageString(NULL, 0, D_8267E75C, 6));
     } else if ((D_8267E4E8 == 1) && (D_82608542 == 0) && (D_82608552 == 2) && (D_82608550 == 5)) {
         u16 temp_v1_70 = D_8267E758 % 32;
         char* sp2C;
 
         D_8267E758++;
         if (temp_v1_70 < 0x10) {
-            func_8001F324(0xFF, 0xFF, 0x64, (temp_v1_70 * 0xFF) / 15);
+            Text_SetEnvColor(0xFF, 0xFF, 0x64, (temp_v1_70 * 0xFF) / 15);
         } else {
-            func_8001F324(0xFF, 0xFF, 0x64, ((-temp_v1_70 * 0xFF) + 0x1EE1) / 15);
+            Text_SetEnvColor(0xFF, 0xFF, 0x64, ((-temp_v1_70 * 0xFF) + 0x1EE1) / 15);
         }
         sp2C = GetMessageString(NULL, 0, D_8267E75C, 0x14);
-        func_8001F1E8(0xA0 - (func_8001F5B0(0, 0, sp2C) / 2), 0xA2, "%s", sp2C);
+        Text_Print(0xA0 - (MeasureTextWidth(0, 0, sp2C) / 2), 0xA2, "%s", sp2C);
     } else if (D_8267E4E8 == 1) {
         D_8267E758 = 0;
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_82602294(void) {

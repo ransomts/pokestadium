@@ -939,15 +939,15 @@ s32 func_86B02B50(void) {
 }
 
 void func_86B02C9C(s16 arg0, s16 arg1) {
-    func_8001F3F4();
-    func_8001EBE0(2, 0);
+    Text_ResetState();
+    Text_SetFont(2, 0);
     func_8001F3B4(0x10);
     func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
     GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, 0xA5);
-    func_8001F1E8((arg0 - (func_8001F5B0(2, 0, D_86B0F7C8) / 2)) + 0x5A, arg1 + 5, D_86B0F7C8);
-    func_8001F1E8(arg0 + 0x28, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA2));
-    func_8001F1E8(arg0 + 0x69, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA3));
-    func_8001F444();
+    Text_Print((arg0 - (MeasureTextWidth(2, 0, D_86B0F7C8) / 2)) + 0x5A, arg1 + 5, D_86B0F7C8);
+    Text_Print(arg0 + 0x28, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA2));
+    Text_Print(arg0 + 0x69, arg1 + 0x19, GetMessageString(NULL, 0, D_86B0EBD0, 0xA3));
+    Text_SetupDL();
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
@@ -961,11 +961,11 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
 }
 
 void func_86B02ED0(s16 arg0, s16 arg1) {
-    func_8001F3F4();
-    func_8001EBE0(2, 0);
+    Text_ResetState();
+    Text_SetFont(2, 0);
     func_8001F3B4(0x10);
-    func_8001F1E8(arg0 + 0x10, arg1 + 5, "%s", D_86B0F8C8);
-    func_8001F444();
+    Text_Print(arg0 + 0x10, arg1 + 5, "%s", D_86B0F8C8);
+    Text_SetupDL();
 }
 
 void func_86B02F34(void) {

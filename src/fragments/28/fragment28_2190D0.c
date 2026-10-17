@@ -3969,26 +3969,26 @@ s32 func_8880725C(UNUSED u8 arg0) {
     func_80015348();
     func_800079C4();
     func_80015094(D_88826A44);
-    func_8001F3F4();
-    func_8001EBE0(1, 0);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_ResetState();
+    Text_SetFont(1, 0);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     func_8002D5D4(0x19, D_88826A60);
     temp_v0 = GetMessageString(spD0, 0x20, D_88826A3C, 4);
-    func_8001F1E8(0x23, 0x17, temp_v0);
-    D_88826CC8 = func_8001F5B0(0, 0, temp_v0) + 0xA;
+    Text_Print(0x23, 0x17, temp_v0);
+    D_88826CC8 = MeasureTextWidth(0, 0, temp_v0) + 0xA;
     D_88826CB2 = 0;
     D_88826CB0 = 0;
     D_88826CCE = 0;
     D_88826CD0 = 0;
     if (D_88826A54 == 1) {
         sprintf(D_88826A88[0].unk_00, "%s", GetMessageString(NULL, 0, D_88826A3C, 7));
-        D_88826CB2 = func_8001F5B0(0, 0, D_88826A88[0].unk_00) + 0x1E;
-        func_8001F1E8(0xAF - (D_88826CB2 / 2), 0x7D, "%s", D_88826A88[0].unk_00);
+        D_88826CB2 = MeasureTextWidth(0, 0, D_88826A88[0].unk_00) + 0x1E;
+        Text_Print(0xAF - (D_88826CB2 / 2), 0x7D, "%s", D_88826A88[0].unk_00);
     } else {
         if (D_88826A4C == 0) {
             temp_s0 = D_8882651C[D_88826A4E];
             temp_s0--;
-            func_8001F1E8(0xCB, 0xD5, " %s", GetMessageString(NULL, 0, D_88826A3C, 5));
+            Text_Print(0xCB, 0xD5, " %s", GetMessageString(NULL, 0, D_88826A3C, 5));
             if (D_88826A52 == 1) {
                 unk_D_88826CF0* ptr = &D_88826CF0[temp_s0];
 
@@ -4045,8 +4045,8 @@ s32 func_8880725C(UNUSED u8 arg0) {
                                 D_88826CB0 = D_88826CB2;
                             }
 
-                            temp_s0_3 = func_8001F5B0(0, 0, D_88826A88[i].unk_2D);
-                            temp_v0_3 = func_8001F5B0(0, 0, D_88826A88[i].unk_4B);
+                            temp_s0_3 = MeasureTextWidth(0, 0, D_88826A88[i].unk_2D);
+                            temp_v0_3 = MeasureTextWidth(0, 0, D_88826A88[i].unk_4B);
                             if (D_88826CCE < temp_s0_3) {
                                 D_88826CCE = temp_s0_3;
                             }
@@ -4080,11 +4080,11 @@ s32 func_8880725C(UNUSED u8 arg0) {
                                 temp_v0_3 = D_88826CB8[i];
 
                                 if (D_88826A88[temp_v0_3].unk_5A > 0) {
-                                    func_8001F1E8(0x64 - D_88826CCE, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Text_Print(0x64 - D_88826CCE, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_2D);
-                                    func_8001F1E8(0x6E, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Text_Print(0x6E, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_3C);
-                                    func_8001F1E8(0xB4, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Text_Print(0xB4, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_4B);
                                 }
                             }
@@ -4093,19 +4093,19 @@ s32 func_8880725C(UNUSED u8 arg0) {
                 }
             }
         } else {
-            func_8001F1E8(0x65, 0xB8, " %s", GetMessageString(NULL, 0, D_88826A3C, 6));
+            Text_Print(0x65, 0xB8, " %s", GetMessageString(NULL, 0, D_88826A3C, 6));
         }
 
         if ((D_88826A80 == 0) || (D_88826A4E == D_88826A50)) {
-            D_88826CCA = func_8001F5B0(0, 0, spF4);
+            D_88826CCA = MeasureTextWidth(0, 0, spF4);
             if (D_88826CCA == D_88826CCC) {
-                func_8001F1E8(0x5A - (D_88826CCA / 2), 0xD5, "%s", spF4);
+                Text_Print(0x5A - (D_88826CCA / 2), 0xD5, "%s", spF4);
             }
         }
     }
 
     D_88826CB4 = D_88826CB2;
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 

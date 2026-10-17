@@ -288,7 +288,7 @@ void func_800200B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
     sp7C = func_80005F5C(sizeof(Mtx) * 1);
     sp78 = func_80005F5C(sizeof(Vp) * 1);
 
-    func_8001E6E8(sp78, temp_s1->width, temp_s1->height);
+    SetViewport(sp78, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp78 & 0x1FFFFFFF);
 

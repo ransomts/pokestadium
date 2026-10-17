@@ -68,11 +68,11 @@ void func_88900020(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, UN
 
     sp24 = D_88901170[var_v0];
 
-    func_8001F3F4();
-    func_8001F324(sp24.r, sp24.g, sp24.b, sp24.a);
-    func_8001EBE0(8, 0);
-    func_8001F1E8(arg0 + 8, arg1 + 4, arg2);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetEnvColor(sp24.r, sp24.g, sp24.b, sp24.a);
+    Text_SetFont(8, 0);
+    Text_Print(arg0 + 8, arg1 + 4, arg2);
+    Text_SetupDL();
 }
 
 void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg2, unk_func_88001300_000* arg3,
@@ -92,7 +92,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
 
     var_s1 = 0;
     for (i = 0; i < 6; i++) {
-        temp_v0 = func_8001F5B0(D_88901178[i].unk_04, 0, GetMessageString(NULL, 0, arg4, D_88901178[i].unk_00));
+        temp_v0 = MeasureTextWidth(D_88901178[i].unk_04, 0, GetMessageString(NULL, 0, arg4, D_88901178[i].unk_00));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -142,7 +142,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
 
     temp_s0_4 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
     sp60 = GetMessageString(NULL, 0, arg4, 2);
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_4, (var_s1 - func_8001F5B0(0x10, 0, sp60)) / 2, 0xA,
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_4, (var_s1 - MeasureTextWidth(0x10, 0, sp60)) / 2, 0xA,
                                                            sp60, 0x10);
     temp_s0_4->unk_30 = (0, D_889011B0);
     temp_s0_4->unk_44 = temp_s0_4->unk_44;
@@ -310,7 +310,7 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp50->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     sp4C = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 6));
+    sp54 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, arg1, 6));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp4C, (0x1A0 - sp54) / 2, 0x30,
                                                            GetMessageString(NULL, 0, arg1, 6), 0x10);
     sp4C->unk_30 = (0, D_889011C8);
@@ -328,7 +328,7 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp48->unk_00);
 
     sp44 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 7));
+    sp54 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, arg1, 7));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp44, (0x1A0 - sp54) / 2, 0x30,
                                                            GetMessageString(NULL, 0, arg1, 7), 0x10);
     sp44->unk_30 = (0, D_889011C8);
@@ -338,7 +338,7 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp44->unk_00);
 
     sp40 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 8));
+    sp54 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, arg1, 8));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp40, (0x1A0 - sp54) / 2, 0xC,
                                                            GetMessageString(NULL, 0, arg1, 8), 0x10);
     sp40->unk_3C = 0x1C;
@@ -347,7 +347,7 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     sp40->unk_34 = (0, D_889011CC);
     sp40->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_30, &sp40->unk_00);
-    sp54 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, arg1, 9));
+    sp54 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, arg1, 9));
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_34, (0x1A0 - sp54) / 2, 0x78,

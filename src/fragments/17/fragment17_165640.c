@@ -798,16 +798,16 @@ void func_86B075EC(void) {
                 break;
 
             case 1:
-                func_8001F3F4();
+                Text_ResetState();
                 func_8001F470();
-                func_8001EBE0(0x10, 0);
-                func_8001F36C(0, 0x82, 0xFF, 0xFF);
-                func_8001F324(0xC8, 0xFF, 0xFF, 0xFF);
+                Text_SetFont(0x10, 0);
+                Text_SetPrimColor(0, 0x82, 0xFF, 0xFF);
+                Text_SetEnvColor(0xC8, 0xFF, 0xFF, 0xFF);
                 func_86B07450(D_86B0FA50, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
-                func_8001F1E8((s32)D_86B0FA50->unk_98 - (func_8001F5B0(0x10, 0, D_86B0FA50->unk00) / 2),
+                Text_Print((s32)D_86B0FA50->unk_98 - (MeasureTextWidth(0x10, 0, D_86B0FA50->unk00) / 2),
                               D_86B0FA50->unk_9C, D_86B0FA50->unk00);
                 func_8001F4C4();
-                func_8001F444();
+                Text_SetupDL();
                 break;
         }
     }

@@ -220,48 +220,48 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
         func_81300870(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
     }
 
-    func_8001F3F4();
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001EBE0(8, 0);
+    Text_ResetState();
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetFont(8, 0);
     func_8001F3B4(0x18);
 
     if ((arg0 == D_81304000) && (D_81304650 == 1)) {
         switch (func_81300314(arg0)) {
             case 1:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xE));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xE));
                 break;
 
             case 2:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xF));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xF));
                 break;
 
             case 3:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x10));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x10));
                 break;
 
             case 4:
-                func_8001F1E8(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x11));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x11));
                 break;
         }
     }
 
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (D_81303FA8[arg0].unk_00 == 0) {
-        func_8001EBE0(8, 0);
-        func_8001F1E8((arg1 - (func_8001F5B0(0, 0, D_81303FA8[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
+        Text_SetFont(8, 0);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, D_81303FA8[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
                       D_81303FA8[arg0].unk_08);
-        func_8001EBE0(4, 0);
+        Text_SetFont(4, 0);
         sprintf(D_81304660, "ID %05d", D_81303FA8[arg0].unk_06);
-        func_8001F1E8((arg1 - (func_8001F5B0(0, 0, D_81304660) / 2)) + 0x3C, arg2 + 0x1E, D_81304660);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, D_81304660) / 2)) + 0x3C, arg2 + 0x1E, D_81304660);
     } else if (D_81303FA8[arg0].unk_00 != 1) {
-        func_8001EBE0(8, 0);
-        func_8001F1E8((arg1 - (func_8001F5B0(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
-        func_8001EBE0(4, 0);
-        func_8001F1E8((arg1 - (func_8001F5B0(0, 0, "ID ?????") / 2)) + 0x3C, arg2 + 0x1E, "ID ?????");
+        Text_SetFont(8, 0);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
+        Text_SetFont(4, 0);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, "ID ?????") / 2)) + 0x3C, arg2 + 0x1E, "ID ?????");
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_81300870(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5) {
@@ -450,11 +450,11 @@ void func_81301E8C(void) {
 
     if (D_81304000 >= 0) {
         func_81301668(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
-        func_8001F3F4();
-        func_8001EBE0(0x10, 0);
-        func_8001F1E8(0x132 - (func_8001F5B0(0, 0, GetMessageString(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
+        Text_ResetState();
+        Text_SetFont(0x10, 0);
+        Text_Print(0x132 - (MeasureTextWidth(0, 0, GetMessageString(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
                       GetMessageString(NULL, 0, D_81304658, 0x12));
-        func_8001F444();
+        Text_SetupDL();
         func_813003B4(0, 0x38, 0x2E);
         func_813003B4(1, 0xBC, 0x2E);
         func_813003B4(2, 0x140, 0x2E);
@@ -464,11 +464,11 @@ void func_81301E8C(void) {
         }
     } else {
         func_81301668(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
-        func_8001F3F4();
-        func_8001EBE0(0x10, 0);
+        Text_ResetState();
+        Text_SetFont(0x10, 0);
         func_8001F3B4(0x1C);
-        func_8001F1E8(0x5A, 0x15A, GetMessageString(NULL, 0, D_81304658, 0x13));
-        func_8001F444();
+        Text_Print(0x5A, 0x15A, GetMessageString(NULL, 0, D_81304658, 0x13));
+        Text_SetupDL();
     }
     D_81303CB0 += 0xB80;
 }

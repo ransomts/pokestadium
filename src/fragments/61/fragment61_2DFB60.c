@@ -120,8 +120,8 @@ void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
+    Text_ResetState();
+    Text_SetFont(8, 0);
 
     switch (arg2->unk_2692) {
         case 0:
@@ -138,8 +138,8 @@ void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
             break;
     }
 
-    func_8001F1E8((arg0 - (func_8001F5B0(8, 0, sp54) / 2)) + 0xC6, arg1 + 4, sp54);
-    func_8001F444();
+    Text_Print((arg0 - (MeasureTextWidth(8, 0, sp54) / 2)) + 0xC6, arg1 + 4, sp54);
+    Text_SetupDL();
 }
 
 void func_84208B04(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
@@ -232,25 +232,25 @@ void func_84208F64(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
+    Text_ResetState();
 
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.unk_00.unk_00 != 0) &&
             (func_8420804C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) == 0)) {
             if (func_84207E3C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
-                func_8001F324(0x32, 0x32, 0xC8, 0x80);
+                Text_SetEnvColor(0x32, 0x32, 0xC8, 0x80);
             }
-            func_8001EBE0(4, 0);
-            func_8001F1E8(arg1 + (i * 0x84) + 0x2C, arg2 + 5, arg3->unk_0000[i].unk_004.unk_30);
-            func_8001EBE0(4, 0);
-            func_8001F1E8(arg1 + (i * 0x84) + 0x2C, arg2 + 0x17, "%s%d", func_84200160(0x15),
+            Text_SetFont(4, 0);
+            Text_Print(arg1 + (i * 0x84) + 0x2C, arg2 + 5, arg3->unk_0000[i].unk_004.unk_30);
+            Text_SetFont(4, 0);
+            Text_Print(arg1 + (i * 0x84) + 0x2C, arg2 + 0x17, "%s%d", func_84200160(0x15),
                           arg3->unk_0000[i].unk_004.unk_24);
         }
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_84209340(unk_D_842168A0* arg0, s32 arg1) {

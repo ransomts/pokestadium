@@ -433,7 +433,7 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
     temp_v0 = func_8002FF8C(arg0);
     if ((temp_v0 != 0) && (arg0 == 2)) {
         sp16C = (char*)((u8*)D_80075F84->unk_18 + 0x73);
-        D_80075F9C = func_8001F5B0(0x10, 0, sp16C);
+        D_80075F9C = MeasureTextWidth(0x10, 0, sp16C);
         func_800302A4(0, -0x96);
         func_80006498(&gDisplayListHead, D_80075F90);
         func_8000699C(&gDisplayListHead, 0);
@@ -456,26 +456,26 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
             gDPLoadTextureTile(gDisplayListHead++, D_5001950, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 0, 0, 30, 99, 42, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, 0, 30 << 2, 100 << 2, 43 << 2, 0, 0, 30 << 5, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 100 << 2, 30 << 2, 200 << 2, 43 << 2, 0, 100 << 5, 30 << 5, -(1 << 10), 1 << 10);
-            func_8001F3F4();
+            Text_ResetState();
             func_8001F470();
-            func_8001F324(0xF0, 0x78, 0x6E, 0xFF);
-            func_8001F36C(0xF0, 0xF0, 0x78, 0xFF);
-            func_8001EBE0(0x10, 0);
-            func_8001F1E8(0x64 - ((s32) D_80075F9C / 2), 5, sp16C);
+            Text_SetEnvColor(0xF0, 0x78, 0x6E, 0xFF);
+            Text_SetPrimColor(0xF0, 0xF0, 0x78, 0xFF);
+            Text_SetFont(0x10, 0);
+            Text_Print(0x64 - ((s32) D_80075F9C / 2), 5, sp16C);
             func_8001F4C4();
-            func_8001F444();
+            Text_SetupDL();
         } else {
             gDPLoadTextureTile(gDisplayListHead++, D_5003AE8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 40, 0, 0, 31, 39, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, 16 << 2, 0 << 2, 152 << 2, 40 << 2, 0, 0, 0, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 152 << 2, 0 << 2, 185 << 2, 40 << 2, 0, 32 << 5, 0, -(1 << 10), 1 << 10);
-            func_8001F3F4();
+            Text_ResetState();
             func_8001F470();
-            func_8001F324(0xDC, 0xFF, 0xDC, 0xFF);
-            func_8001F36C(0x78, 0xB4, 0xFF, 0xFF);
-            func_8001EBE0(0x10, 0);
-            func_8001F1E8(0x64 - ((s32) D_80075F9C / 2), 7, sp16C);
+            Text_SetEnvColor(0xDC, 0xFF, 0xDC, 0xFF);
+            Text_SetPrimColor(0x78, 0xB4, 0xFF, 0xFF);
+            Text_SetFont(0x10, 0);
+            Text_Print(0x64 - ((s32) D_80075F9C / 2), 7, sp16C);
             func_8001F4C4();
-            func_8001F444();
+            Text_SetupDL();
         }
         func_80006498(&gDisplayListHead, D_80075F84->unk_08);
         gDPPipeSync(gDisplayListHead++);

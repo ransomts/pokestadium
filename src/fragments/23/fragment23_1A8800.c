@@ -28,7 +28,7 @@ void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
 
     var_s1 = 0;
     for (i = 0; i < 4; i++) {
-        temp_v0 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BF0[i]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BF0[i]));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -78,10 +78,10 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
         arg2--;
     }
 
-    var_s2 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_88224F94, 1));
+    var_s2 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, 1));
 
     for (j = 0; j < 4; j++) {
-        temp_v0 = func_8001F5B0(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BFC[j]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BFC[j]));
         if (var_s2 < temp_v0) {
             var_s2 = temp_v0;
         }
@@ -106,7 +106,7 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     temp_s0 = GetMessageString(NULL, 0, D_88224F94, 1);
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s1, (var_s2 - func_8001F5B0(0x10, 0, temp_s0)) / 2, 0,
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s1, (var_s2 - MeasureTextWidth(0x10, 0, temp_s0)) / 2, 0,
                                                            temp_s0, 0x10);
     temp_s1->unk_3C = 0x1C;
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp6C, temp_s1);
@@ -144,11 +144,11 @@ void func_88200968(unk_func_88200FA0_030* arg0, s32 arg1) {
 void func_882009B4(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
     static Color_RGBA8 D_88217C10 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-    func_8001F3F4();
-    func_8001F324(D_88217C10.r, D_88217C10.g, D_88217C10.b, D_88217C10.a);
-    func_8001EBE0(0x10, 0);
-    func_8001F1E8(arg0 + 8, arg1 + 4, arg2);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetEnvColor(D_88217C10.r, D_88217C10.g, D_88217C10.b, D_88217C10.a);
+    Text_SetFont(0x10, 0);
+    Text_Print(arg0 + 8, arg1 + 4, arg2);
+    Text_SetupDL();
 }
 
 s32 func_88200A30(unk_func_88200FA0_030* arg0, Controller* arg1) {

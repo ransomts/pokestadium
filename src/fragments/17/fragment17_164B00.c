@@ -10,7 +10,7 @@ void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u
     Mtx* spD4 = func_80005F5C(sizeof(Mtx) * 1);
     Vp* temp_v0 = func_80005F5C(sizeof(Vp) * 1);
 
-    func_8001E6E8(temp_v0, temp_s1->width, temp_s1->height);
+    SetViewport(temp_v0, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)temp_v0 & 0x1FFFFFFF);
 
@@ -67,7 +67,7 @@ void func_86B05944(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Mtx* sp84 = func_80005F5C(sizeof(Mtx) * 1);
     Vp* sp80 = func_80005F5C(sizeof(Vp) * 1);
 
-    func_8001E6E8(sp80, temp_s1->width, temp_s1->height);
+    SetViewport(sp80, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp80 & 0x1FFFFFFF);
 

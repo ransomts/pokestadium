@@ -386,15 +386,15 @@ void func_86200940(s32 arg0) {
     s32 sp38;
     char* sp34;
 
-    func_8001F3F4();
-    func_8001F444();
+    Text_ResetState();
+    Text_SetupDL();
 
     if (arg0 == 0) {
         func_80020460(0x18, 0x16, 0x110, 0x90, 0x15);
         func_80020460(0x18, 0xA5, 0x110, 0x36, 0x14B);
     }
 
-    func_8001F3F4();
+    Text_ResetState();
 
     switch (arg0) {
         case 1:
@@ -405,54 +405,54 @@ void func_86200940(s32 arg0) {
 
         case 0:
             func_8001F470();
-            func_8001EBE0(2, 0);
+            Text_SetFont(2, 0);
             func_8001F3B4(0xC);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-            func_8001F1E8(0xA0 - (func_878013D4(D_86204714, GetMessageString(NULL, 0, D_87806330, 0x23)) / 2), 0x20,
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
+            Text_Print(0xA0 - (func_878013D4(D_86204714, GetMessageString(NULL, 0, D_87806330, 0x23)) / 2), 0x20,
                           GetMessageString(NULL, 0, D_87806330, 0x23));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x24));
-            func_8001F1E8(0x28, 0x4C, GetMessageString(NULL, 0, D_87806330, 0x25));
-            func_8001F1E8(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x26));
-            func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-            func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x24));
+            Text_Print(0x28, 0x4C, GetMessageString(NULL, 0, D_87806330, 0x25));
+            Text_Print(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x26));
+            Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+            Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
 
             sp40 = GetMessageString(NULL, 0, D_87806330, 0x5F);
             func_87801290(&sp48, &sp44, GetMessageString(NULL, 0, D_87806330, 0x24), sp40, 0xC);
             if (sp48 >= 0) {
-                func_8001F1E8(sp48 + 0x28, sp44 + 0x34, sp40);
+                Text_Print(sp48 + 0x28, sp44 + 0x34, sp40);
             }
 
-            func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
-            func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
+            Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
+            Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
 
             sp34 = GetMessageString(NULL, 0, D_87806330, 0x61);
             func_87801290(&sp3C, &sp38, GetMessageString(NULL, 0, D_87806330, 0x25), sp34, 0xC);
             if (sp3C >= 0) {
-                func_8001F1E8(sp3C + 0x28, sp38 + 0x4C, sp34);
+                Text_Print(sp3C + 0x28, sp38 + 0x4C, sp34);
             }
 
-            func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
-            func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-            func_8001F1E8(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x19));
-            func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-            func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
-            func_8001F1E8(0xFC, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x27));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-            func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            func_8001F1E8(0xE5, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
+            Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
+            Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x19));
+            Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+            Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
+            Text_Print(0xFC, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x27));
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
+            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_Print(0xE5, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
             func_8001F4C4();
             break;
     }
 
-    func_8001F444();
+    Text_SetupDL();
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 

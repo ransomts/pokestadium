@@ -39,7 +39,7 @@ void func_86B01D8C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
     Mtx* spCC = func_80005F5C(sizeof(Mtx) * 1);
     Vp* spC8 = func_80005F5C(sizeof(Vp));
 
-    func_8001E6E8(spC8, temp_s1->width, temp_s1->height);
+    SetViewport(spC8, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)spC8 & 0x1FFFFFFF);
 
@@ -86,21 +86,21 @@ void func_86B02348(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_86B0E5E0, 0));
         temp_s0 = 0x50 - D_86B0BD50;
         if (D_86B0E5DC != 1) {
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-            func_8001F3F4();
-            func_8001EBE0(4, 0);
-            func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+            Text_ResetState();
+            Text_SetFont(4, 0);
+            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
 
             temp_s0 += sp24 + 0x1E;
             if (temp_s0 < 0x140) {
-                func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+                Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
             }
 
-            func_8001F444();
+            Text_SetupDL();
 
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 

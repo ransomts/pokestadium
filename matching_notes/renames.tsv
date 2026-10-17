@@ -59,3 +59,14 @@ D_81228654	gGbAudioStreamData	a5		stream data pointers indexed by GbAudioStream 
 D_81228678	gGbAudioStreamLengths	a5		stream lengths indexed by GbAudioStream id (mainEnd/altEnd in GbAudio_RenderStream)	applied@82e1206
 func_8002ED08	GetMoveEntry	a5		returns &gMoveStrings[id-1] with the 1..165 validity check (NULL outside)	applied@82e1206
 func_800228B0	SetMonNickname	a5		encodes the mon name (EncodeGen1String) into an 11-byte buffer and bcopies it into the mon struct's name field (unk_46)	applied@82e1206
+func_8001F1E8	Text_Print	a6		prints a formatted string at pixel position (x-1, y) glyph by glyph via the plotter, newline advances by the current line height	applied@e847756
+func_8001F2E4	Text_PutChar	a6		plots a single character at (x-1, y) via the glyph plotter (thin wrapper over func_8001ECB4)	applied@e847756
+func_8001F5B0	MeasureTextWidth	a6		formats, then accumulates glyph advances in the size-selected font bank and returns the max line width; the "WWWWWWWWWW"/"000" measurement idiom for centering	applied@e847756
+func_8001F6E8	MeasureCharWidth	a6		single-character advance in the current font bank (func_8001E78C wrapper)	applied@e847756
+func_8001F324	Text_SetEnvColor	a6		gDPSetEnvColor wrapper for text rendering	applied@e847756
+func_8001F36C	Text_SetPrimColor	a6		gDPSetPrimColor wrapper for text rendering	applied@e847756
+func_8001F3F4	Text_ResetState	a6		clears the text state: cursor, line height back to 0x28, unk_4C	applied@e847756
+func_8001F444	Text_SetupDL	a6		gSPDisplayList of the text setup Gfx list (D_8006F750)	applied@e847756
+func_8001EBE0	Text_SetFont	a6		sets the current font bank via the size bitmask resolver and the s8 secondary field	applied@e847756
+func_8001E810	GetFontBank	a6		size bitmask (1/2/4/8/0x10/0x20) -> font bank index 0..5; 0 maps to 0 (callers use the saved bank)	applied@e847756
+func_8001E6E8	SetViewport	a6		sets a Vp viewport: vtrans/vscale = (w*2, h*2), z 0x1FF (used with screen w/h from the mode struct)	applied@e847756

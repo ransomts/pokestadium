@@ -53,13 +53,13 @@ void func_82B0029C(void) {
     func_8000E820(&sp28, 0x28, 0x28, 0x8C);
     func_82B000F4(0x48, 0x28, 0x208, &sp2C, &sp28);
     func_82B00020(0x30, 0x20);
-    func_8001F3F4();
-    func_8001EBE0(0x10, 0);
-    func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
-    func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(0x10, 0);
+    Text_SetEnvColor(0, 0, 0, 0xFF);
+    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
+    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    Text_SetupDL();
 }
 
 void func_82B003B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -110,10 +110,10 @@ void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
         gSPDisplayList(gDisplayListHead++, D_8006F630);
 
         if ((arg2 - 8) == 0x28) {
-            func_8001F3F4();
-            func_8001EBE0(0x10, 0);
-            func_8001F1E8((arg0 - (func_8001F5B0(0x10, 0, arg3) / 2)) + 0x4C, arg1 + 0xB, arg3);
-            func_8001F444();
+            Text_ResetState();
+            Text_SetFont(0x10, 0);
+            Text_Print((arg0 - (MeasureTextWidth(0x10, 0, arg3) / 2)) + 0x4C, arg1 + 0xB, arg3);
+            Text_SetupDL();
         }
     }
 }

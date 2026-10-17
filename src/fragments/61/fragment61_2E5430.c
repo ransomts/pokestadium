@@ -135,44 +135,44 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F1E8(arg1 + 2, arg2 + 2, "%d", arg3->unk_4D1E + 1);
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_Print(arg1 + 2, arg2 + 2, "%d", arg3->unk_4D1E + 1);
 
     if (arg3->unk_4D20 > 0) {
-        func_8001EBE0(8, 0);
-        func_8001F1E8(arg1 + 8, arg2 + 0x2B, &arg3->unk_4D12);
-        func_8001EBE0(4, 0);
-        func_8001F1E8(arg1 + 8, arg2 + 0x42, "ID %05d", arg3->unk_4D10);
+        Text_SetFont(8, 0);
+        Text_Print(arg1 + 8, arg2 + 0x2B, &arg3->unk_4D12);
+        Text_SetFont(4, 0);
+        Text_Print(arg1 + 8, arg2 + 0x42, "ID %05d", arg3->unk_4D10);
     }
 
-    func_8001EBE0(4, 0);
+    Text_SetFont(4, 0);
 
     for (var_s1 = 0; var_s1 < 6; var_s1++) {
         if (arg3->unk_0000[var_s1].unk_004.unk_00.unk_00 != 0) {
             s16 tmp1 = D_84211870[var_s1] + arg1 + 0x2C;
             s16 tmp2 = D_8421187C[var_s1] + arg2 + 5;
 
-            func_8001F1E8(tmp1, tmp2, arg3->unk_0000[var_s1].unk_004.unk_30);
+            Text_Print(tmp1, tmp2, arg3->unk_0000[var_s1].unk_004.unk_30);
         }
     }
 
-    func_8001EBE0(4, 0);
+    Text_SetFont(4, 0);
 
     for (var_s1 = 0; var_s1 < 6; var_s1++) {
         if (arg3->unk_0000[var_s1].unk_004.unk_00.unk_00 != 0) {
             temp_s2 = D_84211870[var_s1] + arg1 + 0x2C;
             temp_s3 = D_8421187C[var_s1] + arg2 + 0x17;
-            func_8001F1E8(temp_s2, temp_s3, "%s%d", func_84200160(0x15), arg3->unk_0000[var_s1].unk_004.unk_24);
+            Text_Print(temp_s2, temp_s3, "%s%d", func_84200160(0x15), arg3->unk_0000[var_s1].unk_004.unk_24);
         }
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_8420E46C(s16 arg0, s16 arg1) {
     char* sp54 = func_84200130(D_800AE540.unk_0001 + 0x3F);
-    s32 sp50 = func_8001F5B0(8, 0, sp54);
+    s32 sp50 = MeasureTextWidth(8, 0, sp54);
 
     gSPDisplayList(gDisplayListHead++, D_8006F558);
 
@@ -185,11 +185,11 @@ void func_8420E46C(s16 arg0, s16 arg1) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F1E8(arg0 + 8, arg1 + 3, func_84200130(0xE));
-    func_8001F1E8((arg0 - sp50) + 0x20E, arg1 + 3, sp54);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_Print(arg0 + 8, arg1 + 3, func_84200130(0xE));
+    Text_Print((arg0 - sp50) + 0x20E, arg1 + 3, sp54);
+    Text_SetupDL();
 }
 
 void func_8420E63C(unk_D_84229EB0* arg0) {
@@ -358,20 +358,20 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
 
         if ((arg1 != 0) && (arg0->unk_00000 == 1)) {
             func_8420112C(0x38, 0x190, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x96);
-            func_8001F3F4();
-            func_8001EBE0(0x10, 0);
+            Text_ResetState();
+            Text_SetFont(0x10, 0);
             temp_v0_3 = func_84200130(0x10);
-            func_8001F1E8(0x140 - (func_8001F5B0(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
-            func_8001F444();
+            Text_Print(0x140 - (MeasureTextWidth(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
+            Text_SetupDL();
         }
 
         if ((arg1 != 0) && (arg0->unk_00000 == 2)) {
             func_8420112C(0x38, 0x190, 0x210, 0x28, 0x64, 0x1E, 0x1E, 0x96);
-            func_8001F3F4();
-            func_8001EBE0(0x10, 0);
+            Text_ResetState();
+            Text_SetFont(0x10, 0);
             temp_v0_3 = func_84200130(0x11);
-            func_8001F1E8(0x140 - (func_8001F5B0(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
-            func_8001F444();
+            Text_Print(0x140 - (MeasureTextWidth(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
+            Text_SetupDL();
         }
 
         if (arg0->unk_00004 > 0) {

@@ -1593,14 +1593,14 @@ void func_86A014F0(void) {
     var_s1 = 0;
 
     if (func_86A01020(sp60, D_86A06214->unk_00, D_86A06214->unk_02, D_86A06214->unk_04) != 0) {
-        func_8001F3F4();
+        Text_ResetState();
         func_8001F470();
-        func_8001EBE0(4, 0);
+        Text_SetFont(4, 0);
 
         var_s5 = 0;
 
-        func_8001F324(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
-        func_8001F36C(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
+        Text_SetEnvColor(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
+        Text_SetPrimColor(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
 
         ptr = D_86A06214->unk_08;
         for (i = 0; i < D_86A06214->unk_05; i++, ptr++) {
@@ -1632,28 +1632,28 @@ void func_86A014F0(void) {
             if (var_s5 != ptr->unk_00) {
                 switch (ptr->unk_00) {
                     case 0:
-                        func_8001F324(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
-                        func_8001F36C(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
+                        Text_SetEnvColor(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
+                        Text_SetPrimColor(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
                         var_s5 = 0;
                         var_s11 += 0xC;
                         break;
 
                     case 1:
-                        func_8001F324(sp60[2].r, sp60[2].g, sp60[2].b, sp60[2].a);
-                        func_8001F36C(sp60[3].r, sp60[3].g, sp60[3].b, sp60[3].a);
+                        Text_SetEnvColor(sp60[2].r, sp60[2].g, sp60[2].b, sp60[2].a);
+                        Text_SetPrimColor(sp60[3].r, sp60[3].g, sp60[3].b, sp60[3].a);
                         var_s5 = 1;
                         var_s11 += 4;
                         break;
                 }
             }
 
-            func_8001F1E8(0xA0 - (func_8001F5B0(0, 0, ptr->unk_04[D_86A06211]) / 2), (var_s11 * 4) >> 2,
+            Text_Print(0xA0 - (MeasureTextWidth(0, 0, ptr->unk_04[D_86A06211]) / 2), (var_s11 * 4) >> 2,
                           ptr->unk_04[D_86A06211]);
             var_s11 += 0x11;
         }
 
         func_8001F4C4();
-        func_8001F444();
+        Text_SetupDL();
     }
 
     D_86A06214->unk_00 = D_86A06214->unk_00 + D_86A06210;

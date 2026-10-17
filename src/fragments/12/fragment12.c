@@ -101,37 +101,37 @@ void func_86600264(s32 arg0) {
 
     func_8002053C(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
     func_80020460(0x1E, 0xBE, 0xA0, 0x20, 0x141);
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F470();
-    func_8001EBE0(4, -2);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
-    func_8001F1E8(0x30, 0x14, "MINIGAME7 SAMPLE");
+    Text_SetFont(4, -2);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
+    Text_Print(0x30, 0x14, "MINIGAME7 SAMPLE");
     func_8001F4C4();
-    func_8001EBE0(2, -2);
-    func_8001F324(0xFF, 0xC8, 0x32, 0xFF);
+    Text_SetFont(2, -2);
+    Text_SetEnvColor(0xFF, 0xC8, 0x32, 0xFF);
 
     switch (arg0) {
         case 0:
-            func_8001F1E8(0xCD, 0xC2, "OPENNING");
+            Text_Print(0xCD, 0xC2, "OPENNING");
             break;
 
         case 2:
-            func_8001F1E8(0xCD, 0xC2, "PLAYING");
+            Text_Print(0xCD, 0xC2, "PLAYING");
             break;
 
         case 3:
-            func_8001F1E8(0xCD, 0xC2, "ENDING");
+            Text_Print(0xCD, 0xC2, "ENDING");
             break;
     }
 
     if (arg0 == 2) {
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F1E8(0x23, 0xC2, "CAMERA D:%d", D_86600ABC);
-        func_8001F1E8(0x23, 0xCE, "X:%04hX Y:%04hX", D_86600AB8, D_86600ABA);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_Print(0x23, 0xC2, "CAMERA D:%d", D_86600ABC);
+        Text_Print(0x23, 0xCE, "X:%04hX Y:%04hX", D_86600AB8, D_86600ABA);
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_86600438(s32 arg0) {

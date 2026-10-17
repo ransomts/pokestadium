@@ -1608,38 +1608,38 @@ void func_86E02308(void) {
 
     func_80020460(0x18, 0x16, 0x110, 0x90, 0x15);
     func_80020460(0x18, 0xA5, 0x110, 0x36, 0x14B);
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F470();
-    func_8001EBE0(2, 0);
+    Text_SetFont(2, 0);
     func_8001F3B4(0xC);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-    func_8001F1E8(0xA0 - (func_878013D4(D_86E08E44, GetMessageString(NULL, 0, D_87806330, 0x44)) / 2), 0x20,
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
+    Text_Print(0xA0 - (func_878013D4(D_86E08E44, GetMessageString(NULL, 0, D_87806330, 0x44)) / 2), 0x20,
                   GetMessageString(NULL, 0, D_87806330, 0x44));
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x45));
-    func_8001F1E8(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x46));
-    func_8001F1E8(0x28, 0x7C, GetMessageString(NULL, 0, D_87806330, 0x47));
-    func_8001F1E8(0x28, 0x94, GetMessageString(NULL, 0, D_87806330, 0x48));
-    func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-    func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x45));
+    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x46));
+    Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, D_87806330, 0x47));
+    Text_Print(0x28, 0x94, GetMessageString(NULL, 0, D_87806330, 0x48));
+    Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+    Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
     func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x45), GetMessageString(NULL, 0, D_87806330, 0x5F),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
+    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
     func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x46), GetMessageString(NULL, 0, D_87806330, 0x5F),
                   0xC);
-    func_8001F1E8(sp38 + 0x28, sp34 + 0x58, GetMessageString(NULL, 0, D_87806330, 0x5F));
-    func_8001F1E8(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-    func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
-    func_8001F1E8(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x49));
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-    func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+    Text_Print(sp38 + 0x28, sp34 + 0x58, GetMessageString(NULL, 0, D_87806330, 0x5F));
+    Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+    Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
+    Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x49));
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
+    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
     func_8001F4C4();
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_86E026D0(void) {
@@ -1662,8 +1662,8 @@ void func_86E026D0(void) {
     }
 
     if (miniTutoScreenState == -2) {
-        func_8001EBE0(0x10, -2);
-        func_8001EBE0(4, -2);
+        Text_SetFont(0x10, -2);
+        Text_SetFont(4, -2);
     }
 }
 
@@ -1676,10 +1676,10 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
     UNUSED u8 sp1C[] = { 0, 0, 30 };
     UNUSED u8 sp18[] = { 0, 0, 250 };
 
-    func_8001F3F4();
-    func_8001EBE0(4, -2);
+    Text_ResetState();
+    Text_SetFont(4, -2);
     func_86E027D4();
-    func_8001F444();
+    Text_SetupDL();
 
     if (miniShowHUB != 0) {
         miniDrawMetapodHealth();

@@ -735,13 +735,13 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
     if ((sp44[0] != '\x00') && ((arg0->unk_04 != 0x210) || (arg0->unk_06 != 0))) {
         func_82F037EC(arg0->unk_00, arg0->unk_02, arg0->unk_04, arg0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
         if ((arg0->unk_04 == 0x210) && (arg0->unk_06 == 0x28)) {
-            func_8001F3F4();
-            func_8001EBE0(0x10, 0);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_ResetState();
+            Text_SetFont(0x10, 0);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             spC6 = arg0->unk_00 + (arg0->unk_04 / 2);
-            tmp1 = func_8001F5B0(0, 0, sp38) / 2;
-            func_8001F1E8(spC6 - tmp1, arg0->unk_02 + 8, sp38);
-            func_8001F444();
+            tmp1 = MeasureTextWidth(0, 0, sp38) / 2;
+            Text_Print(spC6 - tmp1, arg0->unk_02 + 8, sp38);
+            Text_SetupDL();
         }
     }
 }

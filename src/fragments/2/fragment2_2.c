@@ -1319,13 +1319,13 @@ void func_878029C0(void) {
     D_8780FE18[0] = GetMessageString(NULL, 0, D_87806330, 0x54);
     D_8780FE18[1] = GetMessageString(NULL, 0, D_87806330, 0x55);
 
-    func_8001EBE0(4, 0);
+    Text_SetFont(4, 0);
 
-    D_8780FE30 = MAX(func_8001F5B0(0, 0, D_8780FE18[0]), func_8001F5B0(0, 0, D_8780FE18[2]));
-    D_8780FE32 = MAX(func_8001F5B0(0, 0, D_8780FE08[0]), func_8001F5B0(0, 0, D_8780FE08[1]));
-    D_8780FE32 = MAX(D_8780FE32, func_8001F5B0(0, 0, D_8780FE08[2]));
-    D_8780FE34 = MAX(D_8780FE30, func_8001F5B0(0, 0, D_8780FE18[1]));
-    D_8780FE36 = MAX(func_8001F5B0(0, 0, D_8780FE28[0]), func_8001F5B0(0, 0, D_8780FE28[1]));
+    D_8780FE30 = MAX(MeasureTextWidth(0, 0, D_8780FE18[0]), MeasureTextWidth(0, 0, D_8780FE18[2]));
+    D_8780FE32 = MAX(MeasureTextWidth(0, 0, D_8780FE08[0]), MeasureTextWidth(0, 0, D_8780FE08[1]));
+    D_8780FE32 = MAX(D_8780FE32, MeasureTextWidth(0, 0, D_8780FE08[2]));
+    D_8780FE34 = MAX(D_8780FE30, MeasureTextWidth(0, 0, D_8780FE18[1]));
+    D_8780FE36 = MAX(MeasureTextWidth(0, 0, D_8780FE28[0]), MeasureTextWidth(0, 0, D_8780FE28[1]));
 
     if (D_8780FE32) {}
 
@@ -1816,30 +1816,30 @@ void func_87804AD0(s16 arg0) {
                       D_8780F930[D_8780FCAC[i]], D_8780F940[D_8780FCB0[i]], 0.0f, 0.0f, 1.0f);
     }
 
-    func_8001F3F4();
-    func_8001EBE0(2, -2);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_ResetState();
+    Text_SetFont(2, -2);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 4; i++) {
         if (D_8780FC74 != 0) {
             if (D_8780FC80[i] == 0) {
-                func_8001F324(0xFF, 0xFF, 0xFF, 0x4B);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0x4B);
             } else {
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
         }
 
         if (D_8780FDFC[i] == 1) {
-            func_8001F1E8((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i] - 1);
+            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i] - 1);
         } else {
-            func_8001F1E8((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i]);
+            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i]);
         }
     }
 
-    func_8001EBE0(4, 0);
+    Text_SetFont(4, 0);
     func_8001F470();
-    func_8001F324(0xF0, 0xF0, 0xF0, 0xFF);
-    func_8001F36C(0x8C, 0x8C, 0x8C, 0xFF);
+    Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
+    Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
     func_8002D600(1, D_8780FA3A);
 
     {
@@ -1853,9 +1853,9 @@ void func_87804AD0(s16 arg0) {
             var_s0_3 = sp8C;
         }
 
-        func_8001F1E8((arg0 - (func_878013D4(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
+        Text_Print((arg0 - (func_878013D4(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
         func_8001F4C4();
-        func_8001F444();
+        Text_SetupDL();
     }
 }
 
@@ -2114,14 +2114,14 @@ s32 func_87804FD4(void) {
 
     if (D_8780FC94 != 0) {
         func_87803200(((0x140 - D_8780FE30) / 2) - 0xA, 0x61, D_8780FE30 + 0x14, 0x30, &sp70[0], &sp70[3]);
-        func_8001F3F4();
-        func_8001EBE0(4, 0);
+        Text_ResetState();
+        Text_SetFont(4, 0);
 
         for (i = 0; i < D_8780FC5D; i++) {
             if (D_8780FC5C == i) {
-                func_8001F324(0xFF, 0xFF, 0, 0xFF);
+                Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
             } else {
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
 
             if (i == 1) {
@@ -2130,10 +2130,10 @@ s32 func_87804FD4(void) {
                 temp_t0 = i;
             }
 
-            func_8001F1E8((0x140 - D_8780FE30) / 2, (i * 0x12) + 0x68, "%s", D_8780FE18[temp_t0]);
+            Text_Print((0x140 - D_8780FE30) / 2, (i * 0x12) + 0x68, "%s", D_8780FE18[temp_t0]);
         }
 
-        func_8001F444();
+        Text_SetupDL();
     } else {
         if (D_8780FC60 != 0) {
             if (D_8780FCA2 > 0) {
@@ -2218,17 +2218,17 @@ s32 func_87804FD4(void) {
             temp_t0 -= 2;
             sp55 = (0xF0 - temp_t0) >> 1;
             func_87803200(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
-            func_8001F3F4();
+            Text_ResetState();
             func_8001F470();
-            func_8001F324(0xFF, 0xFD, 0xD4, 0xFF);
-            func_8001F36C(0xBA, 0xB7, 0, 0xFF);
-            func_8001EBE0(4, 0);
+            Text_SetEnvColor(0xFF, 0xFD, 0xD4, 0xFF);
+            Text_SetPrimColor(0xBA, 0xB7, 0, 0xFF);
+            Text_SetFont(4, 0);
             func_8001F3B4(0x12);
-            func_8001F1E8(0x28, sp55, sp60);
+            Text_Print(0x28, sp55, sp60);
             sp55 = (sp55 + (sp44 * 0x12));
-            func_8001F1E8(0x28, sp55 & 0xFF, sp5C);
+            Text_Print(0x28, sp55 & 0xFF, sp5C);
             func_8001F4C4();
-            func_8001F444();
+            Text_SetupDL();
         }
 
         if (D_8780FC70 != 0) {
@@ -2241,40 +2241,40 @@ s32 func_87804FD4(void) {
             } else {
                 func_87803200(((0x140 - D_8780FE36) / 2) - 0xA, 0x61, D_8780FE36 + 0x14, 0x30, &sp70[0], &sp70[3]);
             }
-            func_8001F3F4();
-            func_8001EBE0(4, 0);
+            Text_ResetState();
+            Text_SetFont(4, 0);
 
             for (i = 0; i < D_8780FC5D; i++) {
                 if (D_8780FC5C == i) {
-                    func_8001F324(0xFF, 0xFF, 0, 0xFF);
+                    Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 } else {
-                    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 }
 
                 if (D_8780FC4C == 0) {
                     if (D_8780FA2A == 0) {
-                        func_8001F1E8((0x140 - D_8780FE32) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE08[i]);
+                        Text_Print((0x140 - D_8780FE32) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE08[i]);
                     } else {
-                        func_8001F1E8((0x140 - D_8780FE34) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE18[i]);
+                        Text_Print((0x140 - D_8780FE34) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE18[i]);
                     }
                 } else {
-                    func_8001F1E8((0x140 - D_8780FE36) / 2, (i * 0x12) + 0x68, "%s", D_8780FE28[i]);
+                    Text_Print((0x140 - D_8780FE36) / 2, (i * 0x12) + 0x68, "%s", D_8780FE28[i]);
                 }
             }
 
-            func_8001F444();
+            Text_SetupDL();
         }
 
         if (D_8780FC74 != 0) {
-            func_8001F3F4();
+            Text_ResetState();
             func_8001F470();
-            func_8001EBE0(0x10, 0);
-            func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
-            func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-            func_8001F1E8(0xA0 - (func_878013D4(NULL, GetMessageString(0, 0, D_87806330, 0x56)) / 2), 0x6C,
+            Text_SetFont(0x10, 0);
+            Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
+            Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
+            Text_Print(0xA0 - (func_878013D4(NULL, GetMessageString(0, 0, D_87806330, 0x56)) / 2), 0x6C,
                           GetMessageString(0, 0, D_87806330, 0x56));
             func_8001F4C4();
-            func_8001F444();
+            Text_SetupDL();
         }
     }
 

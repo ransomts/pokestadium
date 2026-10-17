@@ -116,21 +116,21 @@ void func_821002F8(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = func_8001F5B0(4, 0, GetMessageString(NULL, 0, D_82100EA0, 0));
+        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_82100EA0, 0));
         temp_s0 = 0x50 - D_82100DC8;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-        func_8001F3F4();
-        func_8001EBE0(4, 0);
-        func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
+        Text_ResetState();
+        Text_SetFont(4, 0);
+        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
 
         temp_s0 += sp24 + 30;
         if (temp_s0 < 0x140) {
-            func_8001F1E8(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
+            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_82100EA0, 0));
         }
 
-        func_8001F444();
+        Text_SetupDL();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 

@@ -105,13 +105,13 @@ s32 func_88300454(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171E0.r, D_883171E0.g, D_883171E0.b, D_883171E0.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171E0.r, D_883171E0.g, D_883171E0.b, D_883171E0.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 3);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
 
     return 0;
 }
@@ -145,13 +145,13 @@ s32 func_883006B0(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171E4.r, D_883171E4.g, D_883171E4.b, D_883171E4.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171E4.r, D_883171E4.g, D_883171E4.b, D_883171E4.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 4);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -184,13 +184,13 @@ s32 func_8830090C(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171E8.r, D_883171E8.g, D_883171E8.b, D_883171E8.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171E8.r, D_883171E8.g, D_883171E8.b, D_883171E8.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 5);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -223,13 +223,13 @@ s32 func_88300B68(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171EC.r, D_883171EC.g, D_883171EC.b, D_883171EC.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171EC.r, D_883171EC.g, D_883171EC.b, D_883171EC.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 6);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -262,13 +262,13 @@ s32 func_88300DC4(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171F0.r, D_883171F0.g, D_883171F0.b, D_883171F0.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171F0.r, D_883171F0.g, D_883171F0.b, D_883171F0.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 7);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -309,17 +309,17 @@ s32 func_88301020(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
                          (arg2 + arg0->unk_14.unk_02) - 1);
     }
 
-    func_8001F3F4();
-    func_8001F324(D_883171F4.r, D_883171F4.g, D_883171F4.b, D_883171F4.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171F4.r, D_883171F4.g, D_883171F4.b, D_883171F4.a);
+    Text_SetFont(4, 0);
 
     sp54 = GetMessageString(NULL, 0, D_8831A4C4, 8);
-    func_8001F1E8(((0x48 - func_8001F5B0(0, 0, sp54)) / 2) + arg1, arg2 + 2, sp54);
+    Text_Print(((0x48 - MeasureTextWidth(0, 0, sp54)) / 2) + arg1, arg2 + 2, sp54);
 
     sp54 = GetMessageString(NULL, 0, D_8831A4C4, 9);
-    func_8001F1E8(((0x48 - func_8001F5B0(0, 0, sp54)) / 2) + arg1 + 0x48, arg2 + 2, sp54);
+    Text_Print(((0x48 - MeasureTextWidth(0, 0, sp54)) / 2) + arg1 + 0x48, arg2 + 2, sp54);
 
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -379,23 +379,23 @@ s32 func_883013AC(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
         gDPFillRectangle(gDisplayListHead++, arg1 + 0x13B, arg2, arg1 + 0x1A3, (arg2 + arg0->unk_14.unk_02) - 1);
     }
 
-    func_8001F3F4();
-    func_8001F324(D_883171F8.r, D_883171F8.g, D_883171F8.b, D_883171F8.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171F8.r, D_883171F8.g, D_883171F8.b, D_883171F8.a);
+    Text_SetFont(4, 0);
 
     temp_v0_16 = GetMessageString(NULL, 0, D_8831A4C4, 0xA);
-    func_8001F1E8(((0x69 - func_8001F5B0(0, 0, temp_v0_16)) / 2) + arg1, arg2 + 2, temp_v0_16);
+    Text_Print(((0x69 - MeasureTextWidth(0, 0, temp_v0_16)) / 2) + arg1, arg2 + 2, temp_v0_16);
 
     temp_v0_16 = GetMessageString(NULL, 0, D_8831A4C4, 0xB);
-    func_8001F1E8(((0x69 - func_8001F5B0(0, 0, temp_v0_16)) / 2) + arg1 + 0x69, arg2 + 2, temp_v0_16);
+    Text_Print(((0x69 - MeasureTextWidth(0, 0, temp_v0_16)) / 2) + arg1 + 0x69, arg2 + 2, temp_v0_16);
 
     temp_v0_16 = GetMessageString(NULL, 0, D_8831A4C4, 0xC);
-    func_8001F1E8(((0x69 - func_8001F5B0(0, 0, temp_v0_16)) / 2) + arg1 + 0xD2, arg2 + 2, temp_v0_16);
+    Text_Print(((0x69 - MeasureTextWidth(0, 0, temp_v0_16)) / 2) + arg1 + 0xD2, arg2 + 2, temp_v0_16);
 
     temp_v0_16 = GetMessageString(NULL, 0, D_8831A4C4, 0xD);
-    func_8001F1E8(((0x69 - func_8001F5B0(0, 0, temp_v0_16)) / 2) + arg1 + 0x13B, arg2 + 2, temp_v0_16);
+    Text_Print(((0x69 - MeasureTextWidth(0, 0, temp_v0_16)) / 2) + arg1 + 0x13B, arg2 + 2, temp_v0_16);
 
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -428,14 +428,14 @@ s32 func_88301948(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_883171FC.r, D_883171FC.g, D_883171FC.b, D_883171FC.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_883171FC.r, D_883171FC.g, D_883171FC.b, D_883171FC.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 0xE);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
 
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -468,14 +468,14 @@ s32 func_88301BA4(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_88317200.r, D_88317200.g, D_88317200.b, D_88317200.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_88317200.r, D_88317200.g, D_88317200.b, D_88317200.a);
+    Text_SetFont(4, 0);
 
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 0xF);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
 
-    func_8001F444();
+    Text_SetupDL();
     return 0;
 }
 
@@ -507,11 +507,11 @@ s32 func_88301E00(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_88317204.r, D_88317204.g, D_88317204.b, D_88317204.a);
-    func_8001EBE0(4, 0);
-    func_8001F1E8(arg1 + 4, arg2 + 2, GetMessageString(NULL, 0, D_8831A4C4, 0x10));
-    func_8001F444();
+    Text_ResetState();
+    Text_SetEnvColor(D_88317204.r, D_88317204.g, D_88317204.b, D_88317204.a);
+    Text_SetFont(4, 0);
+    Text_Print(arg1 + 4, arg2 + 2, GetMessageString(NULL, 0, D_8831A4C4, 0x10));
+    Text_SetupDL();
     return 0;
 }
 
@@ -544,12 +544,12 @@ s32 func_88302028(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_88317208.r, D_88317208.g, D_88317208.b, D_88317208.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_88317208.r, D_88317208.g, D_88317208.b, D_88317208.a);
+    Text_SetFont(4, 0);
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 0x11);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -582,12 +582,12 @@ s32 func_88302284(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_8831720C.r, D_8831720C.g, D_8831720C.b, D_8831720C.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_8831720C.r, D_8831720C.g, D_8831720C.b, D_8831720C.a);
+    Text_SetFont(4, 0);
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 0x12);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -620,12 +620,12 @@ s32 func_883024E0(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_14.unk_00 + arg1) - 1,
                      (arg2 + arg0->unk_14.unk_02) - 1);
 
-    func_8001F3F4();
-    func_8001F324(D_88317210.r, D_88317210.g, D_88317210.b, D_88317210.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_88317210.r, D_88317210.g, D_88317210.b, D_88317210.a);
+    Text_SetFont(4, 0);
     sp1C = GetMessageString(NULL, 0, D_8831A4C4, 0x13);
-    func_8001F1E8(((arg0->unk_14.unk_00 - func_8001F5B0(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
-    func_8001F444();
+    Text_Print(((arg0->unk_14.unk_00 - MeasureTextWidth(0, 0, sp1C)) / 2) + arg1, arg2 + 2, sp1C);
+    Text_SetupDL();
     return 0;
 }
 
@@ -762,15 +762,15 @@ s32 func_88302E04(unk_func_88302D98* arg0, s32 arg1, s32 arg2) {
 
     func_8002D600(1, arg0->unk_2C->unk_CD0 + 1);
     GetMessageString(spF0, 0x20, D_8831A4C4, 2);
-    func_8001F3F4();
-    func_8001F324(D_88317218.r, D_88317218.g, D_88317218.b, D_88317218.a);
-    func_8001EBE0(8, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_88317218.r, D_88317218.g, D_88317218.b, D_88317218.a);
+    Text_SetFont(8, 0);
     spEC = GetMessageString(NULL, 0, D_8831A4C4, 1);
-    spE8 = func_8001F5B0(0, 0, spEC);
-    func_8001F1E8(arg1 + 0x22, arg2 + 5, spEC);
-    spE4 = 0x206 - func_8001F5B0(0, 0, spF0);
-    func_8001F1E8(arg1 + spE4, arg2 + 5, spF0);
-    func_8001F444();
+    spE8 = MeasureTextWidth(0, 0, spEC);
+    Text_Print(arg1 + 0x22, arg2 + 5, spEC);
+    spE4 = 0x206 - MeasureTextWidth(0, 0, spF0);
+    Text_Print(arg1 + spE4, arg2 + 5, spF0);
+    Text_SetupDL();
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -1178,11 +1178,11 @@ void func_88304350(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
         }
     }
 
-    func_8001F3F4();
-    func_8001EBE0(4, 0);
-    func_8001F324(sp2C.r, sp2C.g, sp2C.b, sp2C.a);
-    func_8001F1E8(((arg2 - func_8001F5B0(0, 0, sp20)) / 2) + arg0, arg1, sp20);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(4, 0);
+    Text_SetEnvColor(sp2C.r, sp2C.g, sp2C.b, sp2C.a);
+    Text_Print(((arg2 - MeasureTextWidth(0, 0, sp20)) / 2) + arg0, arg1, sp20);
+    Text_SetupDL();
 }
 
 void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
@@ -1202,11 +1202,11 @@ void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
             sp28 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp24->unk_00[1])->unk_04;
             sp2C = GetMessageString(NULL, 0, D_8831A4CC, sp18[9] - 1);
         }
-        func_8001F3F4();
-        func_8001EBE0(4, 0);
-        func_8001F324(sp28.r, sp28.g, sp28.b, sp28.a);
-        func_8001F1E8(((arg2 - func_8001F5B0(0, 0, sp2C)) / 2) + arg0, arg1, sp2C);
-        func_8001F444();
+        Text_ResetState();
+        Text_SetFont(4, 0);
+        Text_SetEnvColor(sp28.r, sp28.g, sp28.b, sp28.a);
+        Text_Print(((arg2 - MeasureTextWidth(0, 0, sp2C)) / 2) + arg0, arg1, sp2C);
+        Text_SetupDL();
     }
 }
 
@@ -1221,25 +1221,25 @@ void func_883045C0(s32 arg0, s32 arg1, s32 arg2, unk_func_88304850_arg2* arg3) {
 void func_88304608(s32 arg0, s32 arg1, s8* arg2, s32 arg3) {
     static Color_RGBA8 D_88317288 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-    func_8001F3F4();
-    func_8001F324(D_88317288.r, D_88317288.g, D_88317288.b, D_88317288.a);
-    func_8001EBE0(4, 0);
-    func_8001F1E8(arg0, arg1, arg2, arg3);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetEnvColor(D_88317288.r, D_88317288.g, D_88317288.b, D_88317288.a);
+    Text_SetFont(4, 0);
+    Text_Print(arg0, arg1, arg2, arg3);
+    Text_SetupDL();
 }
 
 void func_88304680(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
     static Color_RGBA8 D_8831728C = { 0xF0, 0xF0, 0xF0, 0xFF };
     char sp1C[12];
 
-    func_8001F3F4();
-    func_8001F324(D_8831728C.r, D_8831728C.g, D_8831728C.b, D_8831728C.a);
-    func_8001EBE0(4, 0);
+    Text_ResetState();
+    Text_SetEnvColor(D_8831728C.r, D_8831728C.g, D_8831728C.b, D_8831728C.a);
+    Text_SetFont(4, 0);
 
     sprintf(&sp1C, arg2, arg3);
 
-    func_8001F1E8(arg0 - func_8001F5B0(0, 0, sp1C), arg1, sp1C);
-    func_8001F444();
+    Text_Print(arg0 - MeasureTextWidth(0, 0, sp1C), arg1, sp1C);
+    Text_SetupDL();
 }
 
 void func_88304718(s32 arg0, s32 arg1, char* arg2, s32 arg3, u8* arg4) {
@@ -1247,11 +1247,11 @@ void func_88304718(s32 arg0, s32 arg1, char* arg2, s32 arg3, u8* arg4) {
     static char D_88317294[] = "?";
 
     if ((*arg4 <= 0) || (*arg4 >= 0x98)) {
-        func_8001F3F4();
-        func_8001F324(D_88317290.r, D_88317290.g, D_88317290.b, D_88317290.a);
-        func_8001EBE0(4, 0);
-        func_8001F1E8(arg0 - func_8001F5B0(0, 0, D_88317294), arg1, D_88317294);
-        func_8001F444();
+        Text_ResetState();
+        Text_SetEnvColor(D_88317290.r, D_88317290.g, D_88317290.b, D_88317290.a);
+        Text_SetFont(4, 0);
+        Text_Print(arg0 - MeasureTextWidth(0, 0, D_88317294), arg1, D_88317294);
+        Text_SetupDL();
     } else {
         func_88304680(arg0, arg1, arg2, arg3);
     }
@@ -1286,7 +1286,7 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 //   pad[2] keeps the frame at 0xC0.
 // - D_883172CC[arg3 & 1] must be hoisted into temp_v1 before the first loop so that (arg3 & 1) << 3
 //   is CSE'd (target keeps it in s0, used for both D_883171D0 and D_883172CC rows).
-// - var_s4 is assigned inside the func_8001F1E8 argument list (target computes arg1 + 2 after the
+// - var_s4 is assigned inside the Text_Print argument list (target computes arg1 + 2 after the
 //   nested GetMessageString call).
 // - cases 2 and 10-15 compute the x offset into a variable first (t0 in target, `x + var` operand
 //   order); reusing `color` for it works, a separate variable gives the same code.
@@ -1321,7 +1321,7 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
 // webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
 // commuting any arg0 + K / arg1 + K / var_s1 + arg0; var_s6 load vs temp_v1 order; x = arg0 + 0x84 before
-// var_s6 load, after func_8002E8E4, after func_8001F444 or in the second for-init; var_s1 if/else after
+// var_s6 load, after func_8002E8E4, after Text_SetupDL or in the second for-init; var_s1 if/else after
 // PipeSync (5453); constant locals in place of pad (h = 0x14 / 0x13 on the heights: 5744; w = 0x26: 4857;
 // w = 0x5C for rect2 lrx/spA8: 3772; w = 0x84: 4791).
 // Target shape notes: s6 holds arg0 only for rect1's lrx and temp_s7 (addu s7 is scheduled inside rect1's
@@ -1440,18 +1440,18 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
         } else {
             spBC.a = 0xFF;
         }
-        func_8001F3F4();
-        func_8001F324(spBC.r, spBC.g, spBC.b, spBC.a);
-        func_8001EBE0(4, 0);
-        spA8 = (0x5C - func_8001F5B0(0, 0, "WWWWWWWWWW")) / 2;
+        Text_ResetState();
+        Text_SetEnvColor(spBC.r, spBC.g, spBC.b, spBC.a);
+        Text_SetFont(4, 0);
+        spA8 = (0x5C - MeasureTextWidth(0, 0, "WWWWWWWWWW")) / 2;
 
         if ((arg2->unk_08 <= 0) || (arg2->unk_08 >= 0x98)) {
-            func_8001F1E8(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, "?????");
+            Text_Print(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, "?????");
         } else {
-            func_8001F1E8(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, GetMessageString(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
+            Text_Print(arg0 + spA8 + 0x26, var_s4 = arg1 + 2, GetMessageString(NULL, 0, D_8831A4D0, arg2->unk_08 - 1));
         }
 
-        func_8001F444();
+        Text_SetupDL();
 
         var_s6 = temp_s5->unk_CD4[temp_s5->unk_CD0];
 
@@ -1466,7 +1466,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
                     break;
 
                 case 2:
-                    color = (((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "WWWWWWW")) / 2;
+                    color = (((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "WWWWWWW")) / 2;
                     func_88304608(x + color, var_s4, arg2->unk_43, 0);
                     break;
 
@@ -1487,32 +1487,32 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32
                     break;
 
                 case 10:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", arg2->unk_2C, &arg2->unk_08);
                     break;
 
                 case 11:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_2E, &arg2->unk_08);
                     break;
 
                 case 12:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_30, &arg2->unk_08);
                     break;
 
                 case 13:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_32, &arg2->unk_08);
                     break;
 
                 case 14:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_34, &arg2->unk_08);
                     break;
 
                 case 15:
-                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - func_8001F5B0(0, 0, "000")) / 2);
+                    color = ((s32*)temp_s5->unk_0DC)[var_s6] - ((((s32*)temp_s5->unk_0DC)[var_s6] - MeasureTextWidth(0, 0, "000")) / 2);
                     func_88304718(x + color, var_s4, "%3d", (u16)arg2->unk_36, &arg2->unk_08);
                     break;
             }

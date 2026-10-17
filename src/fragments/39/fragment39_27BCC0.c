@@ -1287,18 +1287,18 @@ void func_825014B0(unk_D_82508B30* arg0) {
     }
 
     func_800060E0(&gDisplayListHead, 0x6E, 0xE, 0x1C, 0x1A);
-    func_8001F3F4();
-    func_8001EBE0(0x10, 0);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_ResetState();
+    Text_SetFont(0x10, 0);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 3; i++) {
         if (sp90[i] == -1) {
             continue;
         }
-        func_8001F1E8(0x76, (D_8250A300 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
+        Text_Print(0x76, (D_8250A300 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 unk_D_8250A228* func_825017F0(void) {
@@ -1938,10 +1938,10 @@ void func_82502C78(void) {
     if (D_8250A2A0.unk_00 != 0) {
         func_8002053C(D_8250A2A0.unk_08, D_8250A2A0.unk_0A, D_8250A2A0.unk_0C, D_8250A2A0.unk_0E, &sp80, &sp7C);
         if (D_8250A2A0.unk_00 == 2) {
-            func_8001F3F4();
-            func_8001EBE0(0x10, 0);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x140 - (func_878013D4(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
+            Text_ResetState();
+            Text_SetFont(0x10, 0);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x140 - (func_878013D4(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
                           D_8250A2A0.unk_0A + 0x18, GetMessageString(NULL, 0, D_8250A47C, 2));
 
             if (D_82508AF0 & 1) {
@@ -1956,15 +1956,15 @@ void func_82502C78(void) {
 
             for (i = 0; i < var_s4; i++) {
                 if (i != D_8250A288.unk_08) {
-                    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+                    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
-                    func_8001F324(0xFF, 0xFF, 0, 0xFF);
+                    Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
-                func_8001F1E8(0x140 - (func_878013D4(D_8250A304, var_v0[i]) / 2),
+                Text_Print(0x140 - (func_878013D4(D_8250A304, var_v0[i]) / 2),
                               D_8250A2A0.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
             }
 
-            func_8001F444();
+            Text_SetupDL();
         }
     }
 }

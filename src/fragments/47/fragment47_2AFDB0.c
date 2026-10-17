@@ -641,8 +641,8 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
+    Text_ResetState();
+    Text_SetFont(8, 0);
 
     switch (arg2->unk_2692) {
         case 0:
@@ -659,9 +659,9 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
             break;
     }
 
-    tmp = func_8001F5B0(8, 0, var_v0) / 2;
-    func_8001F1E8((arg0 - tmp) + 0xC6, arg1 + 4, var_v0);
-    func_8001F444();
+    tmp = MeasureTextWidth(8, 0, var_v0) / 2;
+    Text_Print((arg0 - tmp) + 0xC6, arg1 + 4, var_v0);
+    Text_SetupDL();
 }
 
 void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
@@ -683,19 +683,19 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
         }
     }
 
-    func_8001F3F4();
+    Text_ResetState();
 
     for (i = 0; i < 3; i++) {
         if (arg2->unk_0000[i].unk_004.unk_00.unk_00 != 0) {
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001EBE0(4, 0);
-            func_8001F1E8(arg0 + (i * 0x84) + 0x2C, arg1 + 5, arg2->unk_0000[i].unk_004.unk_30);
-            func_8001EBE0(4, 0);
-            func_8001F1E8(arg0 + (i * 0x84) + 0x2C, arg1 + 0x17, "L%d", arg2->unk_0000[i].unk_004.unk_24);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetFont(4, 0);
+            Text_Print(arg0 + (i * 0x84) + 0x2C, arg1 + 5, arg2->unk_0000[i].unk_004.unk_30);
+            Text_SetFont(4, 0);
+            Text_Print(arg0 + (i * 0x84) + 0x2C, arg1 + 0x17, "L%d", arg2->unk_0000[i].unk_004.unk_24);
         }
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 // Score 8 (was 56). Only diff: the CSE temp X = temp_s2_2 + 0x24 (saved at the first

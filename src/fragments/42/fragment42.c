@@ -572,19 +572,19 @@ void func_83301090(void) {
         }
     }
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
+    Text_ResetState();
+    Text_SetFont(8, 0);
 
     for (i = 0; i < 7; i++) {
         temp_v0_4 = func_83402374(D_833031B4[i].unk_08);
-        temp_s2 = ((0x73 - func_8001F5B0(0, 0, temp_v0_4)) / 2) + 0xC;
+        temp_s2 = ((0x73 - MeasureTextWidth(0, 0, temp_v0_4)) / 2) + 0xC;
         tmp2 = (D_833031B4[i].unk_12 == 0) ? 0xFFu : 0x40u;
 
-        func_8001F324(0xFF, 0xFF, 0xFF, tmp2);
-        func_8001F1E8(temp_s2 + 0x46, 0x50 + i * 0x36, temp_v0_4);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp2);
+        Text_Print(temp_s2 + 0x46, 0x50 + i * 0x36, temp_v0_4);
     }
 
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_833013C4(s32 arg0, s32 arg1, s32 arg2) {
@@ -615,15 +615,15 @@ void func_833013C4(s32 arg0, s32 arg1, s32 arg2) {
         func_8340144C(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
     }
 
-    func_8001F3F4();
-    func_8001EBE0(0x10, 0);
+    Text_ResetState();
+    Text_SetFont(0x10, 0);
     sp34 = func_83402374(sp20->unk_08);
-    sp3C = (0x186 - func_8001F5B0(0, 0, sp34)) / 2;
-    func_8001F324(0, 0, 0, 0xFF);
-    func_8001F1E8(arg0 + sp3C + 2, arg1 + 5, sp34);
-    func_8001F324(0xFF, 0xFF, 0x77, 0xFF);
-    func_8001F1E8(arg0 + sp3C, arg1 + 3, sp34);
-    func_8001F444();
+    sp3C = (0x186 - MeasureTextWidth(0, 0, sp34)) / 2;
+    Text_SetEnvColor(0, 0, 0, 0xFF);
+    Text_Print(arg0 + sp3C + 2, arg1 + 5, sp34);
+    Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
+    Text_Print(arg0 + sp3C, arg1 + 3, sp34);
+    Text_SetupDL();
 }
 
 void func_833015C8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
@@ -676,11 +676,11 @@ void func_833015C8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
         if (1) {}
         if (1) {}
         if (1) {}
-        func_8001F3F4();
-        func_8001EBE0(8, 0);
+        Text_ResetState();
+        Text_SetFont(8, 0);
         func_8001F3B4(0x14);
-        func_8001F1E8(arg1 + 0xA, arg2 + 8, sp18);
-        func_8001F444();
+        Text_Print(arg1 + 0xA, arg2 + 8, sp18);
+        Text_SetupDL();
     }
 }
 
@@ -747,7 +747,7 @@ void func_83301998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Co
     Mtx* sp84 = func_80005F5C(sizeof(Mtx) * 1);
     Vp* sp80 = func_80005F5C(sizeof(Vp) * 1);
 
-    func_8001E6E8(sp80, temp_s1->width, temp_s1->height);
+    SetViewport(sp80, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp80 & 0x1FFFFFFF);
 
@@ -939,16 +939,16 @@ void func_8330267C(s32 arg0) {
     s32 temp_v1;
 
     sp2C = func_83402374(0x3C);
-    temp_v1 = ((0x186 - func_8001F5B0(0, 0, sp2C)) / 2) + 0xD5;
+    temp_v1 = ((0x186 - MeasureTextWidth(0, 0, sp2C)) / 2) + 0xD5;
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
     func_8001C6AC(temp_v1 - 0x20, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    func_8001F1E8(temp_v1, arg0, sp2C);
-    func_8001F444();
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    Text_Print(temp_v1, arg0, sp2C);
+    Text_SetupDL();
 }
 
 void func_8330277C(void) {

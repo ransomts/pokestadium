@@ -82,24 +82,24 @@ void func_83900180(void) {
     s32 sp30;
     char* temp_s0 = "GALLERY DEBUGGER";
 
-    func_8001F3F4();
-    func_8001EBE0(8, 0);
-    func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-    sp30 = (0x280 - func_8001F5B0(0, 0, temp_s0)) / 2;
-    func_8001F1E8(sp30, 0x64, temp_s0);
+    Text_ResetState();
+    Text_SetFont(8, 0);
+    Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+    sp30 = (0x280 - MeasureTextWidth(0, 0, temp_s0)) / 2;
+    Text_Print(sp30, 0x64, temp_s0);
 
     for (i = 0; i < 3; i++) {
         s32 tmp = i * 0x16;
         if (i != D_83902700.unk_00) {
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
-            func_8001F324(0xFF, 0xFF, 0, 0xFF);
+            Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
-        func_8001F1E8(0x78, 0x82 + tmp, D_83900640[i]);
+        Text_Print(0x78, 0x82 + tmp, D_83900640[i]);
     }
 
-    func_8001F1E8(sp30, 0xC8, "PFS ERROR : %d", D_83902774);
-    func_8001F444();
+    Text_Print(sp30, 0xC8, "PFS ERROR : %d", D_83902774);
+    Text_SetupDL();
 }
 
 void func_839002B8(void) {

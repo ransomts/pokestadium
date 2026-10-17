@@ -386,19 +386,19 @@ void func_879033FC(MiniActor* arg0) {
 void func_8790354C(void) {
     switch (miniDifficulty) {
         case 0:
-            func_8001F1E8(0xC8, 0x20, "(EASY)");
+            Text_Print(0xC8, 0x20, "(EASY)");
             break;
 
         case 1:
-            func_8001F1E8(0xC8, 0x20, "(NORMAL)");
+            Text_Print(0xC8, 0x20, "(NORMAL)");
             break;
 
         case 2:
-            func_8001F1E8(0xC8, 0x20, "(HARD)");
+            Text_Print(0xC8, 0x20, "(HARD)");
             break;
 
         case 3:
-            func_8001F1E8(0xC8, 0x20, "(SUPER)");
+            Text_Print(0xC8, 0x20, "(SUPER)");
             break;
     }
 }

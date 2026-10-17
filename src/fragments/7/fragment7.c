@@ -573,7 +573,7 @@ void func_86100C30(s32 arg0) {
         func_80020460(0x18, 0xA5, 0x110, 0x36, 0x14B);
     }
 
-    func_8001F3F4();
+    Text_ResetState();
 
     switch (arg0) {
         s32 sp48;
@@ -584,57 +584,57 @@ void func_86100C30(s32 arg0) {
 
         case 0:
             func_8001F470();
-            func_8001EBE0(2, 0);
+            Text_SetFont(2, 0);
             func_8001F3B4(0xC);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-            func_8001F1E8(0xA0 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1A)) / 2), 0x20,
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
+            Text_Print(0xA0 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1A)) / 2), 0x20,
                           GetMessageString(NULL, 0, D_87806330, 0x1A));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x1B));
-            func_8001F1E8(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x1C));
-            func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
-            func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x1B));
+            Text_Print(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x1C));
+            Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
+            Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
             func_87801290(&sp48, &sp44, GetMessageString(NULL, 0, D_87806330, 0x1B),
                           GetMessageString(NULL, 0, D_87806330, 0x61), 0xC);
 
             if (sp48 >= 0) {
-                func_8001F1E8(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x61));
+                Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x61));
             }
 
-            func_8001F324(0xE6, 0xD2, 0xFF, 0xFF);
-            func_8001F36C(0x82, 0x50, 0xD2, 0xFF);
-            func_8001F1E8(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x1D));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-            func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
+            Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
+            Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x1D));
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
+            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
             func_8001F4C4();
             break;
 
         case 3:
-            func_8001EBE0(4, 0);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1E)) / 2), 0x40,
+            Text_SetFont(4, 0);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1E)) / 2), 0x40,
                           GetMessageString(NULL, 0, D_87806330, 0x1E));
             break;
 
         case 5:
-            func_8001EBE0(4, 0);
-            func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F1E8(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1F)) / 2), 0x40,
+            Text_SetFont(4, 0);
+            Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+            Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1F)) / 2), 0x40,
                           GetMessageString(NULL, 0, D_87806330, 0x1F));
             break;
 
         case 8:
             if (D_8610549C < 0x3C) {
-                func_8001EBE0(4, 0);
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001F1E8(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x20)) / 2), 0x40,
+                Text_SetFont(4, 0);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x20)) / 2), 0x40,
                               GetMessageString(NULL, 0, D_87806330, 0x20));
             }
             break;
@@ -642,24 +642,24 @@ void func_86100C30(s32 arg0) {
         case 9:
         case 10:
             if (D_8610549C < 0x3C) {
-                func_8001EBE0(4, 0);
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001F1E8(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x21)) / 2), 0x40,
+                Text_SetFont(4, 0);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x21)) / 2), 0x40,
                               GetMessageString(NULL, 0, D_87806330, 0x21));
             }
             break;
 
         case 11:
             if ((D_8610549C >= 0x10) && (D_8610549C < 0x3C)) {
-                func_8001EBE0(4, 0);
-                func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-                func_8001F1E8(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x22)) / 2), 0x40,
+                Text_SetFont(4, 0);
+                Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x22)) / 2), 0x40,
                               GetMessageString(NULL, 0, D_87806330, 0x22));
             }
             break;
     }
 
-    func_8001F444();
+    Text_SetupDL();
 
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).

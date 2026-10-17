@@ -493,11 +493,11 @@ void func_822022C8(s32 arg0) {
     func_82201AC8(0x38, 0x17C, 0x210, 0x3C, 0x1E, 0x1E, 0x82, 0x96);
 
     if (arg0 != 0) {
-        func_8001F3F4();
-        func_8001EBE0(8, 0);
+        Text_ResetState();
+        Text_SetFont(8, 0);
         func_8001F3B4(0x18);
-        func_8001F1E8(0x5B, 0x182, GetMessageString(NULL, 0, D_822030F0, D_822031D8));
-        func_8001F444();
+        Text_Print(0x5B, 0x182, GetMessageString(NULL, 0, D_822030F0, D_822031D8));
+        Text_SetupDL();
     }
 }
 
@@ -668,7 +668,7 @@ s32 func_822027E8(void) {
 
 void func_82202850(void) {
     guOrtho(&D_82203108, 0.0f, 640.0f, 480.0f, 0.0f, -2.0f, 2.0f, 1.0f);
-    func_8001E6E8(&D_822030F8, 0x280, 0x1E0);
+    SetViewport(&D_822030F8, 0x280, 0x1E0);
 
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
     gSPPerspNormalize(gDisplayListHead++, 0xFFFF);

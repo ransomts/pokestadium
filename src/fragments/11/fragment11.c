@@ -474,7 +474,7 @@ void func_86500D38(s32 arg0) {
         }
     }
 
-    func_8001F3F4();
+    Text_ResetState();
     func_8001F470();
 
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
@@ -483,42 +483,42 @@ void func_86500D38(s32 arg0) {
         s32 sp44;
         char* sp40 = GetMessageString(NULL, 0, D_87806330, 0x2D);
 
-        func_8001EBE0(2, 0);
+        Text_SetFont(2, 0);
         func_8001F3B4(0xC);
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F36C(0xF9, 0xF4, 0, 0xFF);
-        func_8001F1E8(0xA0 - (func_878013D4(D_87B000E0, GetMessageString(NULL, 0, D_87806330, 0x2C)) / 2), 0x20,
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
+        Text_Print(0xA0 - (func_878013D4(D_87B000E0, GetMessageString(NULL, 0, D_87806330, 0x2C)) / 2), 0x20,
                       GetMessageString(NULL, 0, D_87806330, 0x2C));
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F36C(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F1E8(0x28, 0x34, sp40);
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_Print(0x28, 0x34, sp40);
 
         temp_s0 = (CountTextLines(sp40) * 0xC) + 0xC;
-        func_8001F1E8(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2E));
+        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2E));
 
         temp_s0 += (CountTextLines(GetMessageString(NULL, 0, D_87806330, 0x2E)) * 0xC) + 0xC;
-        func_8001F1E8(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2F));
+        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2F));
 
-        func_8001F1E8(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-        func_8001F1E8(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
-        func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-        func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
+        Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
+        Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+        Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+        Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
         func_87801290(&sp48, &sp44, sp40, GetMessageString(NULL, 0, D_87806330, 0x5F), 0xC);
-        func_8001F1E8(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
-        func_8001F324(0xC8, 0xFA, 0xD2, 0xFF);
-        func_8001F36C(0x32, 0xE6, 0x82, 0xFF);
+        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
+        Text_SetEnvColor(0xC8, 0xFA, 0xD2, 0xFF);
+        Text_SetPrimColor(0x32, 0xE6, 0x82, 0xFF);
         func_87801290(&sp48, &sp44, sp40, GetMessageString(NULL, 0, D_87806330, 0x60), 0xC);
-        func_8001F1E8(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x60));
-        func_8001F324(0xC8, 0xC8, 0xFF, 0xFF);
-        func_8001F36C(0x50, 0x50, 0xFF, 0xFF);
-        func_8001F1E8(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x30));
-        func_8001F324(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F36C(0xFF, 0x80, 0x80, 0xFF);
-        func_8001F1E8(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x60));
+        Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
+        Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
+        Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x30));
+        Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
+        Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
+        Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
     }
 
     func_8001F4C4();
-    func_8001F444();
+    Text_SetupDL();
 }
 
 void func_865013D4(s32 arg0) {
