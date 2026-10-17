@@ -1312,6 +1312,11 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // arg0 + 0x84 in memory (target 0x50) happens with `for (x = arg0 + 0x84; ...)` on loop 2 as well, but then
 // arg0 itself gets s0 (3513). No effect: while-loops, early return for arg2, redundant x defs, var_s1 +=
 // var_s6 as the limit (5351), var_s4 = arg1 + 2 as its own statement (3705+).
+// The whole switch region differs only by a one-step t-register rotation: the target reloads x0 from 0x50
+// for the loop-2 guard (`lw t7,0x50(sp)`), consuming one ugen temp that ours does not (x0 lives in s0).
+// Farm leads r1/r3 fix the rotation with noise in case 1 (u64 casts / hoisting arg2->unk_16 into a local):
+// 2839 / 2967 in tree. Getting x0 spilled like the target should fix the rotation for free. Also no change:
+// unk_16/unk_2E..36 as u16 fields without the (u16) casts.
 // Round 8 (agent-6) dead ends (all 3777 or worse): a separate (s32/u32/u8*) copy of arg0 for rect1's lrx and
 // temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
 // webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
