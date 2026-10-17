@@ -97,12 +97,38 @@ All of these produced actual matches or big score drops in this codebase.
   function left as GLOBAL_ASM so the diff does not run on (4A3E0.c GB channel functions).
 - **include/macros.h `CLAMP_MAX`/`CLAMP_MIN` return the LARGER/SMALLER value**, the opposite of their
   names; matched code using them is correct but reads backwards (func_8437B0CC uses ternaries).
-- `fd.sh` grep for the score: diff.py prints `CURRENT (N)`, not `Score`; fixed 2026-10-07. diff.py
-  also caps the diff at 1000 lines, so very bad drafts show a too-low score (func_84362084: 11867
-  shown vs 65017 real) - use `--max-lines` or a full diff for big drafts.
-- Repo-root `diff.py` is broken on Python 3.12; use `tools/asm-differ/diff.py -o <func> -s --format plain`.
+- `fd.sh` grep for the score: diff.py prints `CURRENT (N)`, not `Score`; fixed 2026-10-07.
+- Repo-root `diff.py` is broken on Python 3.12; use `tools/asm-differ/diff.py -o <func> --format plain`.
 - diff.py score 0 is NOT proof: it treats `sym+off` relocation differences as equal. Always confirm
   the full `make` prints `build/pokestadium-us.z64: OK`.
+
+## SCORE TRUST RULES (2026-10-17; after three "cap illusion" incidents in one day)
+The ONLY ranking scale in this repo is the FULL diff: NO `-s`, `--max-lines 30000`, against a
+forced rebuild. Everything below now produces exactly that scale; do not compare against any
+other number.
+- `fd.sh` (since 2026-10-17): full diff, `rm -f` the .o first (NFS trap), and prints a loud
+  reminder when a 0 shows up. Before that it used `-s` + diff.py's 1000-line default, which
+  (a) hides diffs after early returns (func_8004A89C: a false 0 unwrapped a 4-instruction-short
+  tail that shifted the whole ROM 0x10) and (b) silently truncates big functions (func_8437B0CC:
+  the same edit measured 3083 capped / 6584 full, and later 2873 capped / 7809 full - the
+  truncation is not monotone, so a REGRESSION can look like an improvement).
+- `var.py` (since 2026-10-17): builds each variant with a forced rebuild and prints the FULL
+  score. Older sessions ranked variants with fd.sh's capped output - do not trust old var.py
+  numbers in notes.
+- `matching_notes/draft_score.py src/f.c func_X`: full score of the committed NON_MATCHING draft,
+  file restored. `matching_notes/cand_score.py src/f.c func_X candidate/source.c`: full score of a
+  spliced permuter candidate, file restored. Use these for every adopt/keep decision.
+- The permuter's OWN score is a different scale per import (and its RANKING disagreed with the
+  real fd score on fragment28_2190D0.c and 33FE0.c on 2026-10-17): cand_score every candidate
+  before trusting it, never rank by the permuter number.
+- A 0 from any of these is still not a match (relocations compare equal): only the full `make`
+  printing `: OK` proves a match. That gate caught the false-0 above.
+
+## Other tool traps
+- NFS stale-object trap (2026-10-17): `make` on NFS sometimes judges a just-rewritten .c older than the
+  .o and SKIPS the rebuild, so a wrapper can print the PREVIOUS state's score. fd.sh and var.py now
+  remove the .o before building; any new tool must too (`rm -f build/<file>.o`), or the score is
+  advisory only.
 - Permuter: always pass `--stack-diffs` (otherwise stack-only diffs score 0). The generated
   `nonmatchings/<f>/compile.sh` has the wrong arg order for tools/preprocess.sh; fix with
   `sed -i 's/-O2 "$INPUT" -o "$OUTPUT"/-O2 -o "$OUTPUT" "$INPUT"/' nonmatchings/<f>/compile.sh`
@@ -113,9 +139,6 @@ All of these produced actual matches or big score drops in this codebase.
   repairs the pattern in base.c as a fallback.
   Kill with `pkill -f "permuter[.]py nonmatchings/<func>"` (plain pattern kills your own shell).
 - Faster than full make: `make build/src/<path>.o` (~6s) then diff, batch-testing variants with a script.
-- NFS stale-object trap (2026-10-17): `make` on NFS sometimes judges a just-rewritten .c older than the
-  .o and SKIPS the rebuild, so var.py variant N can print variant N-1's score. Before trusting any
-  score: `rm -f build/<file>.o && touch src/<file>.c`, then build.
 - `src/4A3E0.c` has a struct missing a `;` (`char unk2D[0x13]`) — m2ctx/permuter need it added in their copy.
 - When grepping build output for errors, ignore `cfe: Warning` lines.
 - Sandbox: `source .venv/bin/activate` / inline `PATH=` may be refused. What worked:

@@ -44,11 +44,12 @@ several live ranges; a dead redefinition or a separate early local blocks that (
 | func_80034348 (src/33FE0.c) | 390 | 390 (v2) | float colouring in the triangle loop; the fs3 "phantom" is `len`; round-9 F1 applied the by2/nz-split/cx-reload trio |
 | func_86905734 (src/fragments/15/fragment15_150AC0.c) | 1355 | 1355 (w3) | ugen makes 2 fewer int temps before -h (t-register shift), two reloads of (f32)arg1/arg2, one swapped slot pair |
 | func_88304850 (src/fragments/24/fragment24_1CEA00.c) | 1716 | 1716 (w1) | arg0 split into three register groups, gDisplayListHead should be t0; round-9 F1 fixed the x0 spill to 0x50 and the switch t-rotation |
-| func_88805AEC (src/fragments/28/fragment28_2190D0.c) | 3093 | 3093 (w1) | one extra compiler temp (frame 0x230 vs 0x228), arg5 in v1, arg4 not kept in a3; round-9 F1 applied the arg1 empty-if boundary |
-| func_8437B0CC (src/fragments/62/fragment62_361050.c) | 7809 | none | two copies the target keeps and we propagate: the case-2 0x5C-block copy X (spilled before the first call, reloaded into s5) and `move v1,v0` in case 0x19; everything else follows. Consider a Fable agent here (decision 2) |
-Scores: diff.py WITHOUT `-s` (fd.sh's `-s` under-reports early-return functions); farm numbers are the
-permuter's own scale and must be checked with try_candidate.py. Farm candidates often reach a lower
-score with nonsense edits (`if (1)`, `x*0`, u64 casts); take the idea, write it as plausible C.
+| func_88805AEC (src/fragments/28/fragment28_2190D0.c) | 2337 | - | frame 0x228 fixed (agent-5); left: 2 missing never-stored temp slots (whole temp area 4 low) and the tail `(arg2-5)<<2` not in t0 at the join |
+| func_8437B0CC (src/fragments/62/fragment62_361050.c) | 5479 | 5474 (x1) | farm x1 candidate adopted verbatim (6584 -> 5479, 53f383c) after the u64#1 state; cleanup bisect pending (its noise is partly load-bearing: u64#2 removal regresses the full score to 7809) |
+Scores: the FULL diff (fd.sh now does this: no -s, --max-lines 30000, forced rebuild). The permuter's
+own numbers are a different scale per import - verify candidates with cand_score.py, not try_candidate's
+number. Farm candidates often reach a lower score with nonsense edits (`if (1)`, `x*0`, u64 casts);
+take the idea, write it as plausible C, and re-verify with draft_score.py.
 
 ### F5 detail: getting the work upstream
 1. `git fetch origin`; rebase or merge `match-round-1` onto `origin/master`, resolve conflicts, `make` -> OK.
@@ -398,8 +399,11 @@ Kill one run with `pkill -f "permuter[.]py nonmatchings/<func>"`.
 ### Round 8 process lessons
 - Before every round, scan `/scratch/$USER/permuter_best` for score-0 outputs of open functions and run
   `adopt_candidate.py` on them: four real matches sat there unadopted for up to ten days.
-- fd.sh uses `diff.py -s`, which gives false zeros and under-reports early-return functions; score
-  those without `-s`, and count a match only after the full make prints OK.
+- fd.sh USED `diff.py -s` with the 1000-line cap: false zeros and truncated scores; it cost a
+  false unwrap (ROM shifted 0x10) and two inverted rankings on 2026-10-17 alone. Since then fd.sh,
+  var.py, draft_score.py and cand_score.py all print the FULL score with forced rebuilds - rank on
+  nothing else (see IDO_TRICKS "SCORE TRUST RULES"), and count a match only after the full make
+  prints OK.
 - Agents work in Agent-tool worktrees with a private `asm/` copy (round_setup.md), so the integrator can
   run `make extract` in the main repo during a round. Pass job IDs to agents only after reading them
   from sbatch's output.

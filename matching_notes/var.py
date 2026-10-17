@@ -39,9 +39,9 @@ for vi, variant in enumerate(open(spec).read().split("=====\n")):
         continue
     open(path, "w").write(s)
     os.utime(path, None)  # NFS: make the rewrite visible to make NOW
-    obj = os.path.join(REPO, "build", f[:-2] + ".o")
-    if os.path.exists(obj):
-        os.remove(obj)  # NFS stale-object trap: never trust a cached .o (see IDO_TRICKS)
+    obj = os.path.join("build", f[:-2] + ".o")  # relative: Makefile rules match relative targets
+    if os.path.exists(os.path.join(REPO, obj)):
+        os.remove(os.path.join(REPO, obj))  # NFS stale-object trap: never trust a cached .o
     print("=== variant", vi, variant.strip().splitlines()[0][:60], flush=True)
     # Full score: NO -s, uncapped. fd.sh's -s + 1000-line cap produced fantasy scores on
     # early-return/big functions (three documented incidents on 2026-10-17) - do not rank with them.

@@ -650,7 +650,7 @@ early-return function is meaningless; always draft_score (no -s, uncapped, force
 believing any zero. Restored, kept as draft 300.
 
 ## Round 9 close-out (integrator, 2026-10-17 ~10:00)
-State: code 97.92%, 5 functions open (fd.sh-free scores, uncapped, no -s, forced rebuilds):
+State: code 97.92%, 5 functions open (FULL scores; see IDO_TRICKS SCORE TRUST RULES):
 func_8004A89C 300, func_80034348 60, func_88304850 1716, func_88805AEC 2337, func_8437B0CC 6584.
 The 5 Opus agents died on the weekly API limit ~07:45 (resets Oct 19 7pm; worktrees kept clean at
 match-round-1 for resuming with SendMessage). Three farm jobs keep exploring (x: 8004A89C/8437B0CC
@@ -674,3 +674,13 @@ match-round-1. NOT pushed (owner approval required). Permuter sizeof PR doc unch
 (UPSTREAM_PR_permuter_sizeof.md). Open follow-ups: decompose matching_notes/func_8437B0CC_best5479.c
 (5479 real, paren-grouping + third-u64-AND edits), 80034348's pointer-colour conflict model,
 clang-format-vs-.loc tidy trap (line numbers must be preserved when reformatting matched files).
+
+Post-close-out (10:2x): adopted the 8437B0CC farm candidate verbatim (6584 -> 5479, 53f383c) and
+started the cleanup bisect. The first cleanup step (removing the candidate's second u64 AND) looked
+like 5479 -> 2873 and was committed - that was the CAP ILLUSION in its inverted form (var.py was
+still ranking with fd.sh's capped output): the FULL score of the removal is 7809, i.e. the u64 AND
+is load-bearing noise. Reverted (ba3b0d6). Hardening so this cannot recur (b5c1cc6 + this commit):
+fd.sh = full diff + forced rebuild + a loud "0 is not a match" reminder; var.py = full scoring with
+forced rebuild; draft_score.py/cand_score.py promoted into matching_notes (known-state validated:
+8437B0CC 5479, 88805AEC draft 2337, y23 candidate 9914); IDO_TRICKS gained a SCORE TRUST RULES
+section; PLAN matcher rules updated. 8437B0CC now 5479, cleanup bisect continues from there.
