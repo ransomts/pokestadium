@@ -4,3 +4,13 @@ func_81207DF8	tmp_RenameRoundTrip	t2		round-trip test (rename_spec test 2)	pendi
 func_81207DF8	GbAudio_StepNoiseChannel	t3		noise channel step: called as `noise = ...` beside the sq1/sq2/wave steppers, gated by GB_APU_REGS.noiseLeft/noiseRight	applied
 D_8122C888	gGbAudioNoiseChannel	t3	unk_func_81208D7C:GbAudioChannel	noise channel state: one of the four 0x50-byte channel structs (D_8122C798/C7E8/C838/C888) stepped by the sq1/sq2/wave/noise functions	applied
 unk_func_81208D7C	GbAudioChannel	t3b		shared type of the four GB APU channel states (D_8122C798/C7E8/C838/C888); fields are envelope/timer/frequency per channel	applied
+func_81207774	GbAudio_StepSquare1	t4		sq1 channel step: `sq1 = func_81207774()` in the mixer, gated by GB_APU_REGS.sq1Left/Right; steps D_8122C798	applied@9f5189f
+func_81207A60	GbAudio_StepSquare2	t4		sq2 channel step: `sq2 = func_81207A60()` in the mixer, gated by GB_APU_REGS.sq2Left/Right; steps D_8122C7E8	applied@9f5189f
+func_81207C5C	GbAudio_StepWave	t4		wave channel step: `wave = func_81207C5C()` in the mixer, gated by GB_APU_REGS.waveLeft/Right; steps D_8122C838 with wave-table indexing	applied@9f5189f
+func_81207698	GbAudio_GetDutyVolume	t4		duty/volume-code -> 0x7F lookup switch (arg0 = duty 0-3/6/7, arg1 = volume code), output of every channel stepper	applied@9f5189f
+func_8120806C	GbAudio_WriteReg	t4		writes GB APU registers 0x10-0x26 into D_8120EA70 (GB_APU_REGS) and updates the channel states; 0x26 = NR52 power	applied@9f5189f
+func_812073B8	GbAudio_CalcWavePeriod	t4		wave period from frequency code: 65536/(0x800 - x) scaled by D_8120EAC0 - the GB wave channel period formula (2048-x)	applied@9f5189f
+D_8122C798	gGbAudioSquare1Channel	t4		square 1 channel state (GbAudioChannel, 0x50 bytes), stepped by GbAudio_StepSquare1	applied@9f5189f
+D_8122C7E8	gGbAudioSquare2Channel	t4		square 2 channel state (GbAudioChannel, 0x50 bytes), stepped by GbAudio_StepSquare2	applied@9f5189f
+D_8122C838	gGbAudioWaveChannel	t4		wave channel state (GbAudioChannel, 0x50 bytes), stepped by GbAudio_StepWave	applied@9f5189f
+D_8122C8D8	gGbApuWriteQueue	t4		0x2580-byte GbApuWrite queue ({time,reg,value}), consumed in order in the mixer loop via GbAudio_WriteReg	applied@9f5189f
