@@ -15,7 +15,7 @@ every dead end: read it before touching the function.
 | Code (`progress.py -v us`, all) | 96.60% (93.13% when matching began; 96.40% before round 8) |
 | `#pragma GLOBAL_ASM` left | 9 = 6 open + 3 parked (list in section 3) |
 | Parked (owner decision) | func_860005B8 + func_86100C30 (linker alias, branch `round6-gfxhead-alias`); func_86A013C8 (unused-label symbol padding, branch `round8-86A013C8-labels`) |
-| Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; open: 7E0D0, 7D110, 7A1C0, unk_bin_7F670 (Phase D section) |
+| Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; 7A1C0 migrated to C 2026-10-17 (custom PAL OSViMode = osViModePalLpn1 with vStart HSTART(47,617), src/data_7A1C0.c); 7D110 and unk_bin_7F670 documented below |
 | Farm (running) | Slurm 17512644 (tag v: func_8004A89C, func_80034348) and 17512996 (tag w: func_86905734, func_88304850, func_88805AEC), both end ~14:45 on 10-17; candidates in `/scratch/$USER/permuter_best/<func>__<tag><k>/` |
 | Tools | datamig.py + phased_job.sh (data migration with sbatch build gate), adopt_candidate.py / try_candidate.py (permuter candidates), ccs.py (IDO `cc -S` for one function: uopt's registers before as1), corpus.py, accessmap.py, symcheck.py, ido_bisect.py, var.py, fd.sh |
 
@@ -71,6 +71,16 @@ tier-3 functions in fragment1_86CB0 need is now real C data; func_81207DF8 match
   data next to the F3DEX2 blobs); fragment1 A8020, data_asm, rodata A8E80/A8F00/A9140/A9BE0/AA900 are
   the data of the hand-written fragment1_code_asm (hasm; jtbl_81229500 etc.), fragment1_bss.
 - waits for a match: 7E0D0 = float literals of the GB APU functions in 4A3E0.c (GLOBAL_ASM).
+- by design (2026-10-17, round 9): 7D110 - verified NOTHING in the ROM references 8007C510-7C5B8
+  (no relocations, no lui/addiu pairs, no data pointers; the objdump object scan must use the
+  absolute /home/tsranso/local/bin path - subprocess PATH silently fails and finds nothing). The
+  8 f64s (360/65535 x4, 7C538-7C578) are 30640.c's literals, but they sit BEHIND the dead err
+  string "og_normal_Fvector() zero div. err!" (7C510-7C538), and IDO emits a file's .rodata
+  contiguously: inlining the doubles would move them 0x28 too early, and no C form can emit an
+  unreferenced string (a use pollutes .data with a pointer). The trailing print strings
+  ("0x%08x ", "%10.4f  ") are dead data of a print routine whose code is not in the ROM.
+- by design: unk_bin_7F670 = aspMainDataStart (audio synth microcode DATA segment,
+  referenced as sp38.t.ucode_data in src/3D140.c) - microcode binary like the F3DEX2 blobs.
 - needs judgment: 7D110 (D_8007C570 = 65535.0 literal of 30640.c, then format strings "0x%08x ",
   "%10.4f  " that no C source contains: a print routine between 30640 and 33FE0), 7A1C0 (custom
   OSViMode used only by fragment1), unk_bin_7F670.
