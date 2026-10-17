@@ -3595,6 +3595,15 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // semantic no-op; `y5 = y5;` gives the same code) -> 4879. The farm also used noise (`(arg1 + 2) << 1 << 1`).
 // The same no-op def in the else (arg5 0/1) branch as well: 4879 -> 4687 (sweep of every other
 // statement position between the copy and `y5 = y5 - 5`: no change or worse).
+// Round 8 fourth pass (agent-16): 4687 -> 4600 (fd.sh; 4692 -> 4630 without -s): tmp2 assigned before
+// tmp (4675) plus an empty-if block boundary `if (y5) {}` before the arg5 0/1/2 if (4612 alone; same with
+// arg2). Slot model: target temp slots top-down are tmp 0x44, E4|(tmp<<2)<<12 0x40, (arg2+8)<<2 0x3c,
+// (arg1<<2)<<12 0x38, arg2<<2 0x34, tmp2 0x30, 3 unstored, ((tmp2-arg4)+8)<<2 0x20. Ours always puts the
+// E4|(tmp<<2)<<12 temp in the LAST slot (0x20) and has one extra slot (frame +8), with tmp/tmp2 named or
+// inline. Dead ends: inlining tmp and/or tmp2 with pad[0..3] (10.3k-14k; tmp2 inline gives frame 0x228 and
+// tmp at 0x44 but tmp2 no longer spilled), writing (arg1 + arg3) for (tmp) on any single rect line
+// (4687-10647), moving `y5 = arg2` (7415-8175), tmp2 after the first rect or after strlen (4695-7447),
+// empty-if sweep with arg5/y5/arg2 at every top-level statement (nothing below 4612).
 #ifdef NON_MATCHING
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     u32 temp_v0;
@@ -3602,8 +3611,8 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     s32 tmp2;
     s32 y5;
 
-    tmp = arg1 + arg3;
     tmp2 = arg2 + arg4;
+    tmp = arg1 + arg3;
 
     temp_v0 = strlen(D_88825BFC[D_88826A4E]);
 
@@ -3644,6 +3653,7 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     gSPTextureRectangle(arg0++, arg1 << 2, (tmp2 - 8) << 2, (arg1 + 8) << 2, tmp2 << 2, G_TX_RENDERTILE, 0, 0, 0x0400,
                         0x0400);
 
+    if (y5) {}
     if ((arg5 != 0) && (arg5 != 1)) {
         if (arg5 == 2) {
             gSPTextureRectangle(arg0++, arg1 << 2, ((tmp2 - arg4) + 8) << 2, (arg1 + 8) << 2, (tmp2 - 8) << 2,
