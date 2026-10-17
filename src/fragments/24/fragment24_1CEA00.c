@@ -1299,6 +1299,8 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // temp_s7 as an inline expression (worse), separate temp var for the case offsets (identical).
 // Moving `temp_s7 = var_s1 + arg0;` after the var_s6 load scores 3453 but adds stray spills.
 // Good permuter candidate from this state.
+// Round 8 second pass (agent-11): a local copy `arg2 = a2` (as in the matched sibling func_88310CA4) puts
+// arg2 in s2 like the target: 3777 -> 3567 (pad[2] -> pad[1] keeps the frame at 0xC0).
 // Round 8 (agent-6) dead ends (all 3777 or worse): a separate (s32/u32/u8*) copy of arg0 for rect1's lrx and
 // temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
 // webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
@@ -1310,7 +1312,7 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // w1); rect1's w1 reloads arg0/arg1 (t2/t1) and rect2 reuses those; arg0 + 0x84 is a memory temp at 0x50
 // (x = s3 is recomputed from it), temp_s7 stays in s7 the whole function.
 #ifdef NON_MATCHING
-void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
+void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* a2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5) {
     static Color_RGBA8 D_883172C0[] = {
         { 0xF0, 0xF0, 0xF0, 0xFF },
@@ -1338,7 +1340,8 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s
     s32 var_s4;
     unk_func_8830867C_02C* temp_s5;
     Color_RGBA8* temp_v1;
-    UNUSED s32 pad[2];
+    unk_func_88304850_arg2* arg2 = a2;
+    UNUSED s32 pad[1];
 
     temp_s5 = arg5->unk_70;
     if (temp_s5->unk_0AC->unk_2C->unk_30 & 2) {
