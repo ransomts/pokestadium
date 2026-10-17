@@ -250,14 +250,6 @@ void func_80012768(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     }
 }
 
-// func_80012870: score 60, one diff: as1 schedules `sw t8(0xFF), 0x24(sp)` one slot before
-// `sra a2` (target: after). Registers, float code and pre-as1 dependencies are identical, so this is
-// pure as1 list-scheduling order. ido_bisect: no flag fixes it. Dead ends (round 7, all same 1-line
-// diff or worse): s32 tmp (worse), tmp inline as (s16) casts, swap tmp1/tmp2 order, tmp += arg,
-// arg2 + tmp1 (worse), arg2 += tmp / arg4 reuse / s16 x = tmp + arg2 (much worse), `<< 5`, 0x20,
-// (s16) casts on args, 0xFFFF, (u8)-1, 255, u8 alpha local, s32 -1 local, &arg0[0], (f32) casts,
-// pads, if (1) {} in several spots, s32/u32 idx (worse), chained/inline sin/cos. Permuter candidate.
-#ifdef NON_MATCHING
 void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6,
                    s16 arg7) {
     f32 temp_fa0;
@@ -273,16 +265,15 @@ void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, 
     temp_fa0 = SINS(idx);
     a5 = arg5;
 
-    tmp1 = ((a4 * temp_fv1) - (temp_fa0 * a5));
-    tmp2 = ((temp_fv1 * a5) + (a4 * temp_fa0));
+    // The rotated coordinates must be computed in their own statements: the table loads keep uopt
+    // from sinking them into the call, and as1 schedules by source line. The dead temp_fv1/temp_fa0
+    // loads above are needed for the float register choice.
+    tmp1 = (s16)((a4 * COSS(idx)) - (SINS(idx) * a5)) + arg2;
+    tmp2 = (s16)((a4 * SINS(idx)) + (COSS(idx) * a5)) + arg3;
 
-    func_8001E680(arg0, tmp1 + arg2, tmp2 + arg3, -1, arg6 * 32, arg7 * 32, arg1->color.r, arg1->color.g, arg1->color.b,
+    func_8001E680(arg0, tmp1, tmp2, -1, arg6 * 32, arg7 * 32, arg1->color.r, arg1->color.g, arg1->color.b,
                   0xFF);
 }
-#else
-void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/12D80/func_80012870.s")
-#endif
 
 Vtx* func_80012960(unk_D_86002F34_00C_0CC* arg0) {
     Vtx* temp_v0 = func_80005F5C(sizeof(Vtx) * 8);
