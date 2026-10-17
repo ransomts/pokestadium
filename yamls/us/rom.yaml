@@ -349,7 +349,6 @@
     - [0x6FEB0, .data, geo_layout]
     - [0x6FF50, .data, 1AB70]
     - [0x70070, .data, 20470]
-    - [0x703E0, data, rom_data_703E0]
     - [0x71BA0, data, rom_data_71BA1] #22630
     - [0x74250, .data, 26820]
     - [0x74260, .data, 29BA0]
