@@ -38,11 +38,11 @@ several live ranges; a dead redefinition or a separate early local blocks that (
 ### F2 detail: the six open functions
 | Function (file) | Draft | Farm best (permuter score, unverified) | What is left (details in the draft comment) |
 |---|---|---|---|
-| func_8004A89C (src/4A3E0.c) | 345 | 320 (v1) | colouring among a0-a3 at the top (idx/row/sample) and a tail `move t5,a0`; siblings matched with the `dir[1]` array and pointer-read tricks |
-| func_80034348 (src/33FE0.c) | 705 | 390 (v2) | float colouring in the triangle loop; the fs3 "phantom" is `len`; agent-15's basic-block-boundary approach got 2582 -> 705 |
-| func_86905734 (src/fragments/15/fragment15_150AC0.c) | 1386 | 1298 (i1, older) | ugen makes 2 fewer int temps before -h (t-register shift), two reloads of (f32)arg1/arg2, one swapped slot pair |
-| func_88304850 (src/fragments/24/fragment24_1CEA00.c) | 2834 | 1676 (w1) | arg0 split into three register groups, gDisplayListHead should be t0, x0 = arg0+0x84 should spill to 0x50 (fixes a switch-wide t-register rotation) |
-| func_88805AEC (src/fragments/28/fragment28_2190D0.c) | 4600 | 2177 (w1) | one extra compiler temp (frame 0x230 vs 0x228), (arg2-5)<<2 should live in t0, arg5 in v1 |
+| func_8004A89C (src/4A3E0.c) | 320 | 320 (v1) | colouring among a0-a3 at the top (idx/row/sample) and a tail `move t5,a0`; siblings matched with the `dir[1]` array and pointer-read tricks |
+| func_80034348 (src/33FE0.c) | 390 | 390 (v2) | float colouring in the triangle loop; the fs3 "phantom" is `len`; round-9 F1 applied the by2/nz-split/cx-reload trio |
+| func_86905734 (src/fragments/15/fragment15_150AC0.c) | 1355 | 1355 (w3) | ugen makes 2 fewer int temps before -h (t-register shift), two reloads of (f32)arg1/arg2, one swapped slot pair |
+| func_88304850 (src/fragments/24/fragment24_1CEA00.c) | 1716 | 1716 (w1) | arg0 split into three register groups, gDisplayListHead should be t0; round-9 F1 fixed the x0 spill to 0x50 and the switch t-rotation |
+| func_88805AEC (src/fragments/28/fragment28_2190D0.c) | 3093 | 3093 (w1) | one extra compiler temp (frame 0x230 vs 0x228), arg5 in v1, arg4 not kept in a3; round-9 F1 applied the arg1 empty-if boundary |
 | func_8437B0CC (src/fragments/62/fragment62_361050.c) | 7809 | none | two copies the target keeps and we propagate: the case-2 0x5C-block copy X (spilled before the first call, reloaded into s5) and `move v1,v0` in case 0x19; everything else follows. Consider a Fable agent here (decision 2) |
 Scores: diff.py WITHOUT `-s` (fd.sh's `-s` under-reports early-return functions); farm numbers are the
 permuter's own scale and must be checked with try_candidate.py. Farm candidates often reach a lower

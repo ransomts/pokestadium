@@ -113,6 +113,9 @@ All of these produced actual matches or big score drops in this codebase.
   repairs the pattern in base.c as a fallback.
   Kill with `pkill -f "permuter[.]py nonmatchings/<func>"` (plain pattern kills your own shell).
 - Faster than full make: `make build/src/<path>.o` (~6s) then diff, batch-testing variants with a script.
+- NFS stale-object trap (2026-10-17): `make` on NFS sometimes judges a just-rewritten .c older than the
+  .o and SKIPS the rebuild, so var.py variant N can print variant N-1's score. Before trusting any
+  score: `rm -f build/<file>.o && touch src/<file>.c`, then build.
 - `src/4A3E0.c` has a struct missing a `;` (`char unk2D[0x13]`) — m2ctx/permuter need it added in their copy.
 - When grepping build output for errors, ignore `cfe: Warning` lines.
 - Sandbox: `source .venv/bin/activate` / inline `PATH=` may be refused. What worked:

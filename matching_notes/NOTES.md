@@ -599,3 +599,31 @@ model in IDO_TRICKS.md), func_80049DF0 (agent-14). Open (non-parked) at 04:45, s
 func_8004A89C 345, func_80034348 705, func_86905734 1386, func_88304850 2834, func_88805AEC 4600,
 func_8437B0CC 7809. Farm jobs v (8004A89C, 80034348) and w (86905734, 88304850, 88805AEC), 10 h.
 
+## Round 9 (2026-10-17 morning)
+F1 harvest (integrator, farm v/w candidates; all real scores = diff.py WITHOUT -s, --max-lines 30000,
+forced rebuilds - see the NFS lesson below): no score-0 candidates (the func_80049DF0__t1/t2/t3 zeros
+predate its round-8 match). Drafts improved by carrying the farm leads in as plausible C:
+- func_88805AEC 4600 -> 3093: `if (!arg1) {}` empty-if boundary after the (arg1+2)/(y5+7) rect in the
+  arg6==1 block (farm w1's only load-bearing edit; split-assignment and comma noise did nothing).
+- func_88304850 2834 -> 1716: `x0 = arg0 + 0x84` as a named local (decl between color and var_s4,
+  assigned BEFORE the var_s6 load, used as both for-inits): x0 now spills to 0x50 as predicted and the
+  switch t-rotation fixed itself. Decl position matters (wrong position 3011).
+- func_80034348 705 -> 390: `by2 = by` copy used in nx + both nz statements, nz split into
+  `nz = (by2 - ay) * (cx - bx); nz = ((bx - ax) * (cy - by2)) - nz;`, AND a dead `cx` reload after
+  `len = 120.0f / len;`. All three required together (subsets: 2417-6761).
+- func_8004A89C 345 -> 320: explicit `(unk_20 < unk_00) != 0` on the wrap test.
+- func_86905734 1386 -> 1355: `cos2 = COSS(arg5)` between spF8[0] and spF0[0] (used only in spF0[0]),
+  `w2 = arg3` before the first func_8001E680 (second call's `w2 << 5`), `if (!spF0) {}` after
+  gDPSetTexturePersp(G_TP_NONE); all required.
+- func_8437B0CC 7809: no farm run exists (round 9 farm adds it).
+**NFS stale-object lesson**: var.py/fd.sh scores can be STALE - make on NFS sometimes sees a
+just-rewritten .c as older than the .o and skips the rebuild, so a variant scores the PREVIOUS
+variant's number (cost an hour on 86905734: a "1355" that was really 2137). Always
+`rm -f build/<file>.o && touch src/<file>.c` before trusting a score. draft_score.py-style forced
+rebuilds verified all round-9 commits at their recorded scores.
+7E0D0 re-check: still waits for func_8004A89C (sole C/asm user of D_8007D4D0/D_8007D4D4); the two
+trailing zero floats (7E0D8/7E0DC) are referenced by nothing and are probably this function's 0.0f
+literals. Nothing to migrate yet.
+Round 9 farm: scancel v/w, fresh job (tag x, COPIES=3) on all six from the improved drafts.
+
+
