@@ -679,7 +679,8 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
 // col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
 // pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
-// Round 8 pass 4 (agent-14): 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
+// Round 8 pass 4 (agent-14): 955 -> 345: `f32 fv = D_8007D4D0` right after `if (flags & 0x80) {` used for unk_14 and
+// unk_18 (farm candidate t, 470 -> 345: fixes the li 1 / lwc1 order); before that 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
 // in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
 // (a) + (b) below + the call index written `D_800FC6CC[D_800FCFD8.unk_04 & 0xFF]`
 // (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
@@ -693,6 +694,10 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // `dir = p[0x22] & 8` + reload `nr = D_800FD008[0x11].value` between the kill tests makes dir ONE shared
 // variable with the target's tail shape (lui/lbu/andi into dir): 1045, but dir lands in a2 and flags in a1
 // (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400 (860 at 810).
+// Remaining at 345: top idx a0 / row a1 / sample v0 / load temp a3 (target a1/a3/a0/v0); tail sample a3 and
+// no `move t5,a0` copy before the value lh (target a0 + copy). `ent2 = &D_800FC6CC[(u8)value]` with value =
+// unk_04 materialises the copy early (andi instead of move): 375. One-element arrays (the func_80049DF0
+// fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
 // `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
 
@@ -712,6 +717,7 @@ s16 func_8004A89C(void) {
     u32 pos;
     s16 value;
     s32 k;
+    f32 fv;
     u8* p;
     u16 col;
 
@@ -762,12 +768,13 @@ s16 func_8004A89C(void) {
 
         flags = D_800FD008[0x13].value;
         if (flags & 0x80) {
+            fv = D_8007D4D0;
             D_800FCFD8.unk_00 = 0;
             D_800FCFD8.unk_28 = 1;
-            D_800FCFD8.unk_14 = (u8)(nr & 0xF0) * D_8007D4D0;
+            D_800FCFD8.unk_14 = (u8)(nr & 0xF0) * fv;
             if ((nr & 7) != 0) {
                 if (dir) {
-                    D_800FCFD8.unk_18 = D_8007D4D0;
+                    D_800FCFD8.unk_18 = fv;
                 } else {
                     D_800FCFD8.unk_18 = D_8007D4D4;
                 }
