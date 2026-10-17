@@ -53,6 +53,22 @@ static Vtx D_84389810[] = {
 // x/y/z lines of any vertex (105-666); dead tmp2 copies of 2*a3_z / v2.z / v6.z after a3_z, the
 // if or tmp1; inlining the six 1.2/0.2 expressions (no sp8C..sp78, pad4[13]): 279, the spills
 // land 3 slots low and the v2/v3 adds flip operands. Farm: 750k iterations, best 85.
+// Round 8 pass 2 (agent 10): the empty if is a uopt block boundary, not just an a3_z use.
+// With no boundary the code is wrecked (9805); "goto lbl; lbl:", "do { ... } while (0)" and
+// "if (1) { ... }" around the vertex code give 105 (arg4 -> f12, sp128 -> f14). A second
+// boundary anywhere (another if, or a goto after any vertex block) is 8500-12500, so there is
+// exactly one, at this position (moving it before the dead copies, a3_x, a3_y or a3_z:
+// 4500-12800). Conditions: a3_x/y/z, a3_z != 0 / < 0, sp128, arg4 * sp128, (a3_z, a3_z) = 85;
+// arg4, temp_v1, sp1E8, a1_x, a2_x, arg0/3/5, tmp1 = 105; anything else worse.
+// The register choice is consistent with Chow block-granular colouring (B2 = up to the if,
+// B3 = vertex writes): target order a3_x, a3_y, a3_z (f12), arg4 (f14), then sp128 (f16; its
+// B1 SQ load and B2 load are one candidate, so it shares a3_z's B2), 2*a3_x f14,
+// 2*a3_y f16, 2*a3_z f18. Here 2*a3_y and 2*a3_x are coloured before a3_z.
+// New dead ends (all 85 or worse): a3_z double/self/dead defs, tmp2 = a3_z copies, a3_z
+// declared first/last, permutations of the a3 decls, a3 assignment orders (148-231),
+// tmp2 = arg4 scale (1065), a3_z via tmp3, a3_* inlined as arg4 * spXXX (10000+), tmp1 or
+// tmp2 (2*a3_x) moved before the if, fake ifs in B1 or before guTranslate, named b_x/y/z for
+// 2*a3 (the 3 never-stored temps are not the 2*a3 CSEs: they survive that).
 Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     s32 i;
     Vtx* sp1E8;
