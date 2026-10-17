@@ -57,7 +57,7 @@ void func_88309160(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, u
         Text_SetupDL();
 
         if (sp34 != NULL) {
-            temp_v0_2 = func_8002ED40(arg2->unk_00);
+            temp_v0_2 = GetMoveBattleDataEntry(arg2->unk_00);
 
             var_v1 = temp_v0_2->unk_05 / 5;
             if (var_v1 >= 7) {
@@ -111,7 +111,7 @@ void func_883094CC(unk_func_8830867C_04C_078* arg0, unk_func_80026268_arg0* arg1
     s32 temp_v0;
     s32 sp34;
 
-    temp_v0 = func_8002ECDC(arg1);
+    temp_v0 = Mon_CountMoves(arg1);
     if ((temp_v0 - 1) >= arg0->unk_30->unk_38) {
         sp34 = arg0->unk_30->unk_38;
     } else {
@@ -1937,7 +1937,7 @@ void func_8830EE58(unk_func_8830867C_03C* arg0, unk_func_8830867C_02C_C54_01C* a
             arg0->unk_30[i].unk_00->unk_30 =
                 ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(arg0->unk_30[i].unk_04)->unk_04;
             arg0->unk_30[i].unk_00->unk_44 = arg0->unk_30[i].unk_00->unk_44;
-            arg0->unk_54->unk_00.unk_34[func_8002EDEC(arg0->unk_30[i].unk_04)] |= 2;
+            arg0->unk_54->unk_00.unk_34[MapMoveCategory(arg0->unk_30[i].unk_04)] |= 2;
         } else {
             arg0->unk_30[i].unk_04 = -1;
             var_s3 = "----";
@@ -2083,7 +2083,7 @@ s32 func_8830F2A0(unk_func_8830867C_03C_04C* arg0, Controller* arg1) {
                 } else {
                     if (arg0->unk_24->unk_30[arg0->unk_24->unk_50->unk_24].unk_04 != -1) {
                         arg0->unk_24->unk_54->unk_00
-                            .unk_34[func_8002EDEC(arg0->unk_24->unk_30[arg0->unk_24->unk_50->unk_24].unk_04)] &= ~2;
+                            .unk_34[MapMoveCategory(arg0->unk_24->unk_30[arg0->unk_24->unk_50->unk_24].unk_04)] &= ~2;
                     }
                     arg0->unk_24->unk_54->unk_00.unk_34[arg0->unk_24->unk_54->unk_00.unk_38] |= 2;
 
@@ -3125,7 +3125,7 @@ s32 func_88311D6C(s32 arg0, unk_func_8830867C_02C_0CC_000_008* arg1) {
         var_s3 = arg0 - 0x92;
     }
 
-    temp_v0 = func_8002ECDC(arg1);
+    temp_v0 = Mon_CountMoves(arg1);
     var_s4 = 0;
     for (i = 0; i < temp_v0; i++) {
         if (func_80022A28(var_s3) == arg1->unk_09[i]) {
@@ -3145,7 +3145,7 @@ s32 func_88311D6C(s32 arg0, unk_func_8830867C_02C_0CC_000_008* arg1) {
 
 s32 func_88311E28(unk_func_8830867C_02C_0CC_000_008* arg0) {
     s32 sp2C = 0;
-    s32 temp_v0 = func_8002ECDC(arg0);
+    s32 temp_v0 = Mon_CountMoves(arg0);
     s32 i;
 
     for (i = 0; i < temp_v0; i++) {
@@ -3278,7 +3278,7 @@ s32 func_8831221C(unk_func_8830867C_04C* arg0, s32* arg1) {
 
     if (ptr->unk_08 >= 0x64) {
         sp1C = 0;
-        if (func_8002ECDC(arg1) >= 4) {
+        if (Mon_CountMoves(arg1) >= 4) {
             sp1C = 2;
         }
     } else if (ptr->unk_08 >= 0x32) {

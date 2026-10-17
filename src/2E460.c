@@ -123,14 +123,14 @@ s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 func_8002DD64(s32 arg0) {
+s32 MenuScroll_HandleLeftRight(s32 arg0) {
     s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
     func_8002DCB8(arg0, sp1C);
     return sp1C;
 }
 
-s32 func_8002DD98(unk_func_8002DD98_arg0* arg0, s32 arg1) {
+s32 MenuScroll_Adjust(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
@@ -156,10 +156,10 @@ s32 func_8002DD98(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 func_8002DE44(unk_func_8002DD98_arg0* arg0) {
+s32 MenuScroll_HandleInput(unk_func_8002DD98_arg0* arg0) {
     s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
-    func_8002DD98(arg0, sp1C);
+    MenuScroll_Adjust(arg0, sp1C);
     return sp1C;
 }
 
@@ -397,13 +397,13 @@ s32 func_8002EBD8(unk_func_8002EBD8_arg0* arg0) {
     return var_v1;
 }
 
-s32 func_8002EC08(s32 arg0) {
+s32 GetMoveTargetType(s32 arg0) {
     static s32 D_80075910[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
 
     return D_80075910[arg0];
 }
 
-Color_RGBA8 func_8002EC1C(Color_RGBA8 arg0, f32 arg1) {
+Color_RGBA8 FadeColorTowardGray(Color_RGBA8 arg0, f32 arg1) {
     static Color_RGBA8 D_80075940 = { 0xC8, 0xC8, 0xC8, 0xFF };
 
     Color_RGBA8 sp4;
@@ -420,7 +420,7 @@ static u8 pad_D_80075944[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-s32 func_8002ECDC(unk_func_80026268_arg0* arg0) {
+s32 Mon_CountMoves(unk_func_80026268_arg0* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -439,14 +439,14 @@ ret_func_8002ED08* GetMoveEntry(s32 arg0) {
     return &gMoveStrings[arg0 - 1];
 }
 
-MoveBattleData* func_8002ED40(s32 arg0) {
+MoveBattleData* GetMoveBattleDataEntry(s32 arg0) {
     if ((arg0 <= 0) || (arg0 >= 0xA6)) {
         return NULL;
     }
     return &gMoveBattleData[arg0 - 1];
 }
 
-s32 func_8002ED78(unk_func_80026268_arg0* arg0, s32 arg1) {
+s32 Mon_GetEvolutionLine(unk_func_80026268_arg0* arg0, s32 arg1) {
     s32 temp_v0 = arg0->unk_00.unk_00 - 1;
     s32 var_v1;
 
@@ -461,7 +461,7 @@ s32 func_8002ED78(unk_func_80026268_arg0* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_8002EDEC(s32 arg0) {
+s32 MapMoveCategory(s32 arg0) {
     s32 ret;
 
     if (arg0 >= 0x14) {
@@ -475,7 +475,7 @@ s32 func_8002EDEC(s32 arg0) {
     return ret;
 }
 
-s32 func_8002EE1C(s32 arg0, s32 arg1, s32 arg2) {
+s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
 
     switch (arg0) {

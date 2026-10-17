@@ -642,7 +642,7 @@ s32 func_88316304(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024* 
     unk_func_8830867C_02C_C54_024* arg1 = a1;
     s32 i;
     s32 j;
-    s32 temp_v0 = func_8002ECDC(&arg0->unk_08);
+    s32 temp_v0 = Mon_CountMoves(&arg0->unk_08);
 
     for (i = 0; i < arg1->unk_04; i++) {
         for (j = 0; j < temp_v0; j++) {
@@ -862,7 +862,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
                 }
 
                 var_s3->unk_0C = 0;
-                if (func_8002EE1C(var_s5->unk_00, var_s5->unk_04, j) != var_s3->unk_10.unk_08) {
+                if (GetMonBankField(var_s5->unk_00, var_s5->unk_04, j) != var_s3->unk_10.unk_08) {
                     var_s3->unk_0C = 1;
                     var_s7 |= func_88316874(var_s5->unk_00);
                 } else {

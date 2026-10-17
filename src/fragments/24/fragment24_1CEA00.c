@@ -1169,7 +1169,7 @@ void func_88304350(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
             return;
         }
     } else {
-        sp28 = func_8002ED78(arg3, arg4);
+        sp28 = Mon_GetEvolutionLine(arg3, arg4);
         if (sp28 != -1) {
             sp2C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp28)->unk_04;
             sp20 = GetMessageString(NULL, 0, D_8831A4D4, func_800219FC(sp28));
@@ -1193,7 +1193,7 @@ void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
     ret_func_8002ED08* sp24;
     u8* sp18 = &arg3[arg4];
 
-    if (arg4 < func_8002ECDC(arg3)) {
+    if (arg4 < Mon_CountMoves(arg3)) {
         sp24 = GetMoveEntry(sp18[9]);
         if (sp24 == NULL) {
             sp28 = D_88317278;
@@ -1843,7 +1843,7 @@ void func_88305BC4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_03
     MoveBattleData* temp_v0;
     unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->unk_08;
 
-    temp_v0 = func_8002ED40(ptr->unk_09[arg2]);
+    temp_v0 = GetMoveBattleDataEntry(ptr->unk_09[arg2]);
 
     var_v1 = temp_v0->unk_05 / 5;
     if (var_v1 >= 7) {
@@ -1879,7 +1879,7 @@ void func_88305CDC(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_03
     }
 
     ptr->unk_09[arg2] = func_80022A28(var_a0);
-    ptr->unk_20[arg2] = func_8002ED40(ptr->unk_09[arg2])->unk_05;
+    ptr->unk_20[arg2] = GetMoveBattleDataEntry(ptr->unk_09[arg2])->unk_05;
 
     if (arg1->unk_00[0]->unk_00 >= 0xC9) {
         func_88317144(arg1);
@@ -1959,7 +1959,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
     spCC = spD0 - (arg0->unk_034->unk_58 / arg0->unk_034->unk_00.unk_3E);
 
     if (spDC->unk_08 >= 0x64) {
-        spC0 = func_8002ECDC(&spD8->unk_08);
+        spC0 = Mon_CountMoves(&spD8->unk_08);
         if (spC0 < 4) {
             func_88305C7C(&spD8->unk_08, spC0);
             spBC = -1;

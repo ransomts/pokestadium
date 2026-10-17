@@ -165,3 +165,13 @@ func_8000B430	WaitMs	b5		busy-wait on osGetCount for arg milliseconds (3000 coun
 func_8000B4C4	IsStickerStationConnected	b5		probes controller port 4's controller-pak RAM (0x400) with 0xFE/0x85 patterns - the Sticker Station detection (comment in source; used to pick STATE_FAST_N64_LOGO)	applied@60e79ca
 func_8000B6B4	StickerStation_GetCommand	b5		reads the Sticker Station command byte at controller-pak RAM 0x600 (port 3)	applied@60e79ca
 func_8000B6FC	StickerStation_SetCommand	b5		writes the command byte at 0x600, waiting out the 8-busy state with WaitMs(0x14) polling	applied@60e79ca
+func_8002ED40	GetMoveBattleDataEntry	b6		returns &gMoveBattleData[id-1] with the 1..0xA5 validity check (NULL outside), the battle-table sibling of GetMoveEntry	applied@f84e6a6
+func_8002ECDC	Mon_CountMoves	b6		counts the mon's filled move slots (up to 4, stops at the first 0 in unk_09)	applied@f84e6a6
+func_8002EC08	GetMoveTargetType	b6		looks up the static 12-entry target-type table {0,0,1,2,0,0,0,3,...} indexed by move target kind	applied@f84e6a6
+func_8002EC1C	FadeColorTowardGray	b6		lerps an RGBA color toward the 0xC8 gray by a fraction (kept alpha) - the UI "unavailable" fade	applied@f84e6a6
+func_8002ED78	Mon_GetEvolutionLine	b6		returns the species' evolution index (D_80070FA0[species-1].unk_06 first / .unk_07 second stage; -1 if none)	applied@f84e6a6
+func_8002EDEC	MapMoveCategory	b6		rebases move category ids into a compact range (>=0x14: -0xC, >=7: -1)	applied@f84e6a6
+func_8002DD64	MenuScroll_HandleLeftRight	b6		reads the menu direction and hands 0x100/0x200 (left/right) to the scroll handler	applied@f84e6a6
+func_8002DD98	MenuScroll_Adjust	b6		left/right adjust of a list index with wraparound across arg->unk_08 entries, beep on each move (PlaySoundEffect(1))	applied@f84e6a6
+func_8002DE44	MenuScroll_HandleInput	b6		reads the menu direction then MenuScroll_Adjust (same family shape)	applied@f84e6a6
+func_8002EE1C	GetMonBankField	b6		dispatches bank 32-35 to func_80024A48 and bank 16-18 to func_800275E0 - the per-bank mon-data accessor front end	applied@f84e6a6

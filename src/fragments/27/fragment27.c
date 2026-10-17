@@ -278,7 +278,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
     sp6C = GetMoveEntry(arg0->unk_2C);
     if (sp6C != NULL) {
         unk_D_88400138* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp6C->unk_00[1]);
-        s32 temp_v0_2 = func_8002EDEC(sp6C->unk_00[1]);
+        s32 temp_v0_2 = MapMoveCategory(sp6C->unk_00[1]);
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -330,7 +330,7 @@ void func_886015F4(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2)
 }
 
 s32 func_88601600(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
-    MoveBattleData* temp_v0 = func_8002ED40(arg0->unk_2C);
+    MoveBattleData* temp_v0 = GetMoveBattleDataEntry(arg0->unk_2C);
     s32 sp18;
     s32 var_v1;
 
@@ -520,7 +520,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
         char sp50[4];
 
         for (i = 0; i < 2; i++) {
-            tmp = func_8002ED78(arg0->unk_2C, i);
+            tmp = Mon_GetEvolutionLine(arg0->unk_2C, i);
             if (tmp != -1) {
                 temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(tmp);
                 sp68 = temp_v0_3->unk_04;
@@ -741,7 +741,7 @@ void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, Mem
 }
 
 void func_88602D40(unk_func_88205880_0098_008_040* arg0, unk_func_80026268_arg0* arg1) {
-    s32 temp_s3 = func_8002ECDC(arg1);
+    s32 temp_s3 = Mon_CountMoves(arg1);
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -886,7 +886,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    sp130 = func_8002ED40(arg0->unk_2C);
+    sp130 = GetMoveBattleDataEntry(arg0->unk_2C);
     sp134 = GetMoveEntry(arg0->unk_2C);
     sp12C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))((sp130 == NULL) ? 0 : sp130->unk_03);
 
@@ -1231,7 +1231,7 @@ void func_88604F80(unk_func_88205880_0098_008* arg0, unk_func_80026268_arg0* arg
     arg0->unk_30->unk_2C = 0;
     arg0->unk_34->unk_2C = 0;
 
-    func_88604190(arg0->unk_70, func_8002ECDC(arg1));
+    func_88604190(arg0->unk_70, Mon_CountMoves(arg1));
     func_88602D40(arg0->unk_40, arg1);
     func_88601B5C(arg0->unk_44, arg1);
     func_88601DE8(arg0->unk_48, arg1);

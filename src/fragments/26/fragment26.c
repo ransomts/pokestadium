@@ -2311,7 +2311,7 @@ void func_88509A2C(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* 
             arg0->unk_38 = func_80025084(arg3);
             func_800251B0(arg3, arg0->unk_40);
         }
-        arg0->unk_34 = func_8002EC08(func_80024F68(arg3));
+        arg0->unk_34 = GetMoveTargetType(func_80024F68(arg3));
     }
     arg0->unk_3C = arg4;
 }

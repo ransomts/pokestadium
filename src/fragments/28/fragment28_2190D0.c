@@ -4264,7 +4264,7 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
       if (1)
       {
       }
-      D_88826A56 = func_8002EC08(func_80024F68(func_80029080()));
+      D_88826A56 = GetMoveTargetType(func_80024F68(func_80029080()));
       switch (D_88826A56)
       {
         case 0:

@@ -97,7 +97,7 @@ void func_8820CBA0(unk_func_8821421C_02C_030* arg0, unk_func_8850143C* arg1, spE
     arg0->unk_00.unk_14.unk_00 = arg1->unk_00.unk_14.unk_00;
     arg0->unk_00.unk_14.unk_02 = arg1->unk_00.unk_14.unk_02;
     arg0->unk_2C = arg1;
-    arg0->unk_30 = func_8002EC08(func_80024F68(func_80029080()));
+    arg0->unk_30 = GetMoveTargetType(func_80024F68(func_80029080()));
     arg0->unk_34 = -1;
     arg0->unk_38 = arg2;
 }
@@ -2605,7 +2605,7 @@ s32 func_882137B4(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     arg0->unk_00 = 0;
-    if (func_8002EE1C(arg1, arg2, arg3) != arg0->unk_04.unk_08) {
+    if (GetMonBankField(arg1, arg2, arg3) != arg0->unk_04.unk_08) {
         arg0->unk_00 = 1;
         sp40 = 1;
     } else {
