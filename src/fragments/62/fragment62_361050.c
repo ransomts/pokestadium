@@ -2186,7 +2186,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // Tried for that: swapping the unk_06/unk_08 store order, reading temp_s7->unk_06/08 back in the
 // float expression (all worse). `var_s1 += (spB7 * a) + (spB6 * b);` is two statements in all four
 // places (target: addu s1,a0,x then addu s1,s1,y): 10424 -> 9079. Case 0x39 had a semantic
-&
+// bug: with unk_0B == 0x84 but !(unk_4E & 8) the target breaks (else-break added; `!= 0x84`).
 // The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
 // with no slot left for a tmp7 it reuses var_v1_4 (9074 -> 8919).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
