@@ -44,8 +44,6 @@ u8 D_86A06210;
 u8 D_86A06211;
 u8 D_86A06212;
 unk_D_86A03014* D_86A06214;
-char** D_86A06218;
-u32 D_86A0621C;
 
 unk_D_86A025A0 D_86A025A0[9] = {
     {
@@ -1471,6 +1469,19 @@ s32 func_86A00ED8(s32 arg0, s32 arg1) {
     func_80005EAC();
 
     main_pool_pop_state('ROLE');
+    // The unused labels below generate no code. They stand in for >= 7 file-level symbols the
+    // original had between the bss globals and func_86A013C8's static: IDO emits .lcomm in
+    // symbol-table hash order (bucket = symbol number mod ~255), and only with these extra
+    // symbol numbers does the static land at 0x86A06218 (with D_86A0621C declared after it).
+    // A user label, a newly referenced extern or a new file-scope definition each count as one.
+lab0:
+lab1:
+lab2:
+lab3:
+lab4:
+lab5:
+lab6:
+lab7:
 
     return 0;
 }
@@ -1524,8 +1535,6 @@ s32 func_86A01020(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     return 1;
 }
 
-#ifdef NON_MATCHING
-// Needs the in-fucntion static but that breaks bss ordering
 void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
     static char** D_86A06218;
 
@@ -1546,9 +1555,8 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
     D_86A06212 = 0;
     D_86A06214 = arg2;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/16/fragment16_158A00/func_86A013C8.s")
-#endif
+
+u32 D_86A0621C;
 
 void func_86A01490(void) {
     u32 v0 = D_800A62E0.unk_A34;
