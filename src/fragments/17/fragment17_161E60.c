@@ -760,7 +760,7 @@ s32 func_86B024D0(s32 arg0, GraphNode* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = sp26 + 0x2000;
         ptr->unk_1E = sp24 - 0x2000;
     }
@@ -774,7 +774,7 @@ s32 func_86B02538(s32 arg0, GraphNode* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = -0x2000 - sp26;
         ptr->unk_1E = sp24 + 0x6000;
     }
@@ -1554,7 +1554,7 @@ void func_86B04CF4(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_80015348();
-    func_80015094(D_86B0EBC0);
+    Graph_SetTextureState(D_86B0EBC0);
     func_86B04C9C();
     Stage_Advance();
 }

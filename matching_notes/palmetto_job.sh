@@ -11,9 +11,9 @@
 #SBATCH --output=/scratch/%u/pokestadium_%j.out
 #
 # Unattended Palmetto job: stage the repo to node-local SSD, verify the build, run the
-# permuter farm on the tier-1 functions, and leave a ready tree for Claude Code agents.
-# Edit FUNCS below (func:src pairs) before submitting. For a supervised session use
-# `salloc` with the same resources (see PLAN.md section 2) and run the steps by hand.
+# permuter farm on the open near misses, and leave a ready tree for Claude Code agents.
+# Edit FUNCS below before submitting (func:src[:workers[:copies]] specs). For a supervised
+# session use `salloc` with the same resources (see PLAN.md section 2) and run steps by hand.
 # QoS normal is preemptable (PreemptType=preempt/qos, mode REQUEUE): on preemption Slurm requeues
 # the job, which re-stages and re-seeds from /scratch/$USER/permuter_best. Logs append across restarts.
 # Phased runs (no 3-day job needed): the saved candidates are the checkpoint and every start
@@ -52,7 +52,7 @@ FUNCS=(
   func_88805AEC:src/fragments/28/fragment28_2190D0.c:5:6
   func_88304850:src/fragments/24/fragment24_1CEA00.c:4:6
 )
-# FUNCS_OVERRIDE="func_X:src/a.c func_Y:src/b.c" replaces the list (e.g. a small side job).
+# FUNCS_OVERRIDE="func_X:src/a.c:3:8 func_Y:src/b.c" replaces the list (e.g. a side job).
 [ -n "${FUNCS_OVERRIDE:-}" ] && read -r -a FUNCS <<< "$FUNCS_OVERRIDE"
 for spec in "${FUNCS[@]}"; do
   IFS=: read -r f s _ <<< "$spec"

@@ -263,7 +263,7 @@ s32 func_82E0036C(s32 arg0, unk_func_80011B94* arg1) {
 void func_82E0045C(s32 arg0, s32 arg1) {
     Stage_BeginDisplayList();
     func_8001D924(D_82E019B4);
-    func_80015094(D_82E019B8);
+    Graph_SetTextureState(D_82E019B8);
 
     if (arg0 == 0) {
         if ((arg1 >= 0) && (arg1 < 0xB)) {

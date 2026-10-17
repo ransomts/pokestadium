@@ -78,7 +78,7 @@ void func_86B0A30C(void) {
     func_86B0A18C(D_86B10828);
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
-    func_80015094(D_86B106B4);
+    Graph_SetTextureState(D_86B106B4);
     func_86B0A0B0();
     Stage_Advance();
 }

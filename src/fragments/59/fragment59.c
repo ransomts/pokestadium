@@ -795,7 +795,7 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
 
     Stage_BeginDisplayList();
     func_8001D924(D_84103448);
-    func_80015094(D_84103454);
+    Graph_SetTextureState(D_84103454);
 
     if (arg2 != 0.0f) {
         unk_D_84102450* ptr = &D_84102450[D_84103CC8];

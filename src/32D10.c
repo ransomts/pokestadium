@@ -119,8 +119,8 @@ void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1) {
 }
 
 void func_80032570(void) {
-    D_800AF7AC = (D_800AF7A8 == D_8006F084) ? 1 : 0;
-    D_800AF7A8 = D_8006F084;
+    D_800AF7AC = (D_800AF7A8 == gAnimationFrame) ? 1 : 0;
+    D_800AF7A8 = gAnimationFrame;
 }
 
 s32 func_800325AC(void) {

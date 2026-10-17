@@ -220,7 +220,7 @@ s32 func_8320058C(u8 arg0) {
     func_83200468();
     Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
-    func_80015094(D_83202010);
+    Graph_SetTextureState(D_83202010);
     return 0;
 }
 

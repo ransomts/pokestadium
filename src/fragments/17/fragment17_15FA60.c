@@ -476,7 +476,7 @@ void func_86B0100C(void) {
     func_80015348();
     func_86B007EC();
     func_86B01C00(D_86B0E5E8);
-    func_80015094(D_86B0E5D0);
+    Graph_SetTextureState(D_86B0E5D0);
     func_86B00794();
     func_86B02348();
     Stage_Advance();

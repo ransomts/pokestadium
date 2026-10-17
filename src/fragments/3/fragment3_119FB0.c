@@ -591,7 +591,7 @@ void func_87902D3C(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
 void func_87902F80(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_87902D3C(arg1->unk_18, arg1->unk_00.unk_14, D_8006F084);
+        func_87902D3C(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
     }
 }
 
@@ -619,6 +619,6 @@ void func_87902FC8(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
 void func_8790320C(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_87902FC8(arg1->unk_18, arg1->unk_00.unk_14, D_8006F084);
+        func_87902FC8(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
     }
 }

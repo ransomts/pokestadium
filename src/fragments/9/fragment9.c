@@ -207,7 +207,7 @@ void func_863006D8(s32 arg0) {
     func_8000699C(&gDisplayListHead, 0x53D);
     func_800067E4(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     func_80015348();
-    func_80015094(D_86301714);
+    Graph_SetTextureState(D_86301714);
     func_86300238(arg0);
     func_87804FD4();
     Stage_Advance();

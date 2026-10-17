@@ -46,7 +46,7 @@ void func_810002DC(s32 arg0, DisplayListState* state) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x50);
         state->gfx = gfx;
-        func_81000200(gfx, addresses, D_8006F084 & 7);
+        func_81000200(gfx, addresses, gAnimationFrame & 7);
     }
 }
 

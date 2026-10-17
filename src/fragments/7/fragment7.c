@@ -756,7 +756,7 @@ void func_861017E4(s32 arg0) {
     }
 
     func_878025D0();
-    func_80015094(D_86105484);
+    Graph_SetTextureState(D_86105484);
 
     gDisplayListHead = func_87A0002C(gDisplayListHead);
 
@@ -1826,7 +1826,7 @@ void func_8610426C(void) {
 
     Stage_BeginDisplayList();
     func_80015348();
-    func_80015094(D_86105484);
+    Graph_SetTextureState(D_86105484);
 
     for (i = 0; i < 12; i++) {
         if (func_80015390(&D_86105D38, (s16)(i + 1), &sp48) != 0) {

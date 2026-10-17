@@ -473,7 +473,7 @@ void func_86801644(void) {
         func_80015348();
     }
 
-    func_80015094(D_86807500);
+    Graph_SetTextureState(D_86807500);
     func_87901C98();
 
     if (D_8780FC98 == 0) {

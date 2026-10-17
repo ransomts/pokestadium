@@ -259,7 +259,7 @@ void func_86A00788(u8 arg0) {
     if (arg0 == 0) {
         func_86A0240C(0);
     } else {
-        func_80015094(D_86A061E4);
+        Graph_SetTextureState(D_86A061E4);
         func_86A00720(arg0);
     }
 

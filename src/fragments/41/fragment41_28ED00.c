@@ -1173,7 +1173,7 @@ void func_82F09E30(void) {
         func_82F08EB4(&D_82F20A40);
         func_82F0917C(&D_82F20A40);
         func_82F09284(&D_82F20A40);
-        func_80015094(D_82F210C8);
+        Graph_SetTextureState(D_82F210C8);
         func_82F09B70(ptr->unk_00);
         func_82F094B4(&D_82F20A40);
     }

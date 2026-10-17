@@ -44,7 +44,7 @@ void miniUnkDrawHUB(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
     func_80015348();
-    func_80015094(&D_87906050->unk_00);
+    Graph_SetTextureState(&D_87906050->unk_00);
 
     if (miniDebugMode != 0) {
         showDebuggCameraInfo();

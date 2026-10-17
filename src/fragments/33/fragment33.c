@@ -553,7 +553,7 @@ void func_813024C8(s32 arg0) {
     }
 
     func_81301E8C();
-    func_80015094(D_8130464C);
+    Graph_SetTextureState(D_8130464C);
     Stage_Advance();
 }
 

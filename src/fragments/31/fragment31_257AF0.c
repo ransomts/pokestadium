@@ -83,7 +83,7 @@ void func_81002A68(s32 arg0, TextureState* state) {
                 index = 0;
             }
         } else {
-            index = D_8006F084 & 7;
+            index = gAnimationFrame & 7;
         }
         func_810029B0(state->gfx, textures, index);
     }

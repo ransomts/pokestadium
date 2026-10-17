@@ -240,10 +240,10 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
     func_80015348();
     func_8001533C(3);
-    func_80015094(arg0->unk_0C);
+    Graph_SetTextureState(arg0->unk_0C);
     func_8000699C(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
     func_8001533C(1);
-    func_80015094(arg0->unk_0C);
+    Graph_SetTextureState(arg0->unk_0C);
 }
 
 s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
@@ -402,7 +402,7 @@ void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) 
         Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
         func_8000699C(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
         func_8001533C(1);
-        func_80015094(arg0->unk_0C);
+        Graph_SetTextureState(arg0->unk_0C);
         return;
     }
     for (i = arg0->unk_01; i > 0; i--) {
@@ -689,7 +689,7 @@ u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_28);
     func_8001B834(arg0);
     func_80015348();
-    func_80015094(arg0->unk_20);
+    Graph_SetTextureState(arg0->unk_20);
 
     if (gDebugMode > 0) {
         Text_ResetState();

@@ -333,7 +333,7 @@ s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         arg1->unk_1C = (s16) (sp26 + 0x2000);
         arg1->unk_1E = (s16) (sp24 - 0x2000);
     }
@@ -347,7 +347,7 @@ s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         arg1->unk_1C = (s16) (-0x2000 - sp26);
         arg1->unk_1E = (s16) (sp24 + 0x6000);
     }
@@ -728,7 +728,7 @@ u8* Cam_Update(unk_func_80031270* arg0) {
                 func_80015348();
                 *((s32*)Util_ConvertAddrToVirtAddr(&D_8140E6B8)) = sp24->unk_18;
                 sp20();
-                func_80015094(arg0->unk_1C);
+                Graph_SetTextureState(arg0->unk_1C);
                 break;
             default:
                 break;

@@ -531,7 +531,7 @@ void func_865013D4(s32 arg0) {
         func_80015348();
     }
 
-    func_80015094(D_87B000E8);
+    Graph_SetTextureState(D_87B000E8);
 
     if (D_8780FC98 == 0) {
         func_86500D38(arg0);

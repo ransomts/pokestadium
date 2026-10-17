@@ -71,7 +71,7 @@ void Model_ConcatCameraMatrix(u8 index) {
     MtxF sp1C;
 
     temp_a1 = &gModelMtxBuffers[index];
-    func_80031EF4(&sp1C, &D_8006F088->unk_60.mtxf);
+    func_80031EF4(&sp1C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxCatF(sp1C.mf, temp_a1->mf, temp_a1->mf);
 }
 
@@ -122,7 +122,7 @@ Gfx* Model_SetRenderColors(Gfx* gfx) {
         default:
             gSPDisplayList(gfx++, gModelRenderDL);
             gDPSetPrimColor(gfx++, 0, temp_v0, 255, 255, 255, 255);
-            gDPSetEnvColor(gfx++, 180 - (D_8006F084 % 8) * 10, 32, 0, 0);
+            gDPSetEnvColor(gfx++, 180 - (gAnimationFrame % 8) * 10, 32, 0, 0);
             break;
     }
 
@@ -181,7 +181,7 @@ Gfx* Model_DrawSegment(Gfx* gfx) {
     } else {
         segment = (ModelSegment *)&gNormalModelSegment;
     }
-    func_80031EF4(&modelMtx, &D_8006F088->unk_60.mtxf);
+    func_80031EF4(&modelMtx, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&modelMtx.mf[0], &tempMtx);
     Matrix_Copy(&tempCatMtx, Matrix_GetRelative(0));
     func_80032034(&tempCatMtx, &scale);

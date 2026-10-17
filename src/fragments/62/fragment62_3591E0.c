@@ -229,7 +229,7 @@ Gfx* func_8436EDE8(s16 arg0, Gfx* arg1) {
         return arg1;
     }
 
-    func_80031EF4(sp78.mf, &D_8006F088->unk_60.mtxf);
+    func_80031EF4(sp78.mf, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp78.mf, sp38.mf);
 
     var_s0 = &temp_s3->unk_004;

@@ -139,7 +139,7 @@ void func_86802084(s32 arg0, UNUSED s32 arg1) {
                            D_8006F09C->unk_01D);
             gSPDisplayList(gDisplayListHead++, D_86807010);
 
-            func_8001554C();
+            Graph_SetRenderMode();
             func_80015684();
             break;
     }

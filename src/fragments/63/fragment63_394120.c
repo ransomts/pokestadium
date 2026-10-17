@@ -319,7 +319,7 @@ void func_84B01474(s16 arg0) {
 void func_84B014DC(void) {
     Stage_BeginDisplayList();
     func_8000699C(&gDisplayListHead, 1);
-    func_80015094(D_84B1A598.unk_0004);
+    Graph_SetTextureState(D_84B1A598.unk_0004);
     func_84B0F464(&D_84B26640.unk_1C);
     func_84B0F464(&D_84B26640.unk_28);
     Stage_Advance();

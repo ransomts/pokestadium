@@ -1695,7 +1695,7 @@ void func_86E02880(s32 arg0) {
         func_80015348();
     }
 
-    func_80015094(&D_87906050->unk_00);
+    Graph_SetTextureState(&D_87906050->unk_00);
     func_87901C98();
 
     if (miniDebugMode == false) {

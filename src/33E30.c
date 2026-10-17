@@ -65,7 +65,7 @@ Gfx* func_80033284(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f
     sp140 = arg1->y;
     sp13C = arg1->z;
 
-    func_80031EF4(&sp34, &D_8006F088->unk_60.mtxf);
+    func_80031EF4(&sp34, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&sp34, &sp78);
     guScale(&spB8, arg6, arg6, arg6);
     guTranslate(&spF8, sp144, sp140, sp13C);

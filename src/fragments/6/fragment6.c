@@ -507,7 +507,7 @@ void func_86000D88(s32 arg0) {
     }
 
     func_878025D0();
-    func_80015094(D_86002F34);
+    Graph_SetTextureState(D_86002F34);
     gDisplayListHead = func_87A0002C(gDisplayListHead);
     func_86000C18();
 

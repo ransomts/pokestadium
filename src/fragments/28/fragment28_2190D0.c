@@ -3968,7 +3968,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     func_88807090();
     func_80015348();
     Stage_BeginDisplayList();
-    func_80015094(D_88826A44);
+    Graph_SetTextureState(D_88826A44);
     Text_ResetState();
     Text_SetFont(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

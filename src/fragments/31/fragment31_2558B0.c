@@ -319,7 +319,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     unk_D_86002F58_004_000* var_v0;
 
     sp294 = GfxAlloc(0x40);
-    func_80031EF4(&sp14C, &D_8006F088->unk_60.mtxf);
+    func_80031EF4(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
     var_v0 = D_8006F09C;
     if (var_v0->unk_0A6 == 0xFE) {
