@@ -352,21 +352,6 @@ void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2)
     func_80003B30(arg2, temp_a1, temp_a1 + 0x20, 0);
 }
 
-#ifdef NON_MATCHING
-// Only the stack slots of three spilled temps differ (sp68 * 4 vs. the D_6E910 rom address pair)
-// Round 6 (agent 1): temps top-down: target 0x2C var_a1 (D_6E910 addr), 0x28 var_a1+0x20,
-// 0x24 sp68*4, 0x20 &D_84384578[sp68], later the 0x2C slot is reused. Draft order is
-// [sp68*4, a1, a2]. Best found (11 -> 7 diff lines): permuter hint - give the 4th arg of
-// the D_84384570 call as arg0->unk_000.unk_01A * 0 (only that call; sp68*0, sp66*0,
-// var_a1*0, ptr->unk_52*0 or the same on the D_84384580 call do nothing) plus
-// tmp = (u32)_70D3A0_ROM_START; at the top, used as tmp + (...) in both D_80075BD0 lines,
-// the else-branch D_6E910 line and the ptr2->unk_10 line (which then needs no tmp = 2
-// hack). That gives [a1, sp68*4, a2]: a2 and sp68*4 still swapped. Using tmp in the
-// later lines flips addu operands (target has s1 first there). Dead ends: u32 sp68,
-// sp68 != 0, *(D_8438xxxx + sp68) forms, not recomputing var_a1 in the branches (same
-// code, same slots), if/else for the 0x19 override, moving ptr below var_a1, a named
-// species local for unk_01A (sp66 becomes a spilled temp, frame 0x78), sp66*0x20 or
-// &D_6E910[sp66] in the first D_6E910 line, if (1) {} at several spots.
 void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     s16 sp6E;
     s32 sp68;
@@ -381,6 +366,10 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     sp66 = arg0->unk_000.unk_01A - 1;
 
     ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_18];
+    // Fake: dead early copy of the D_6E910 address pair so its two spill temps are created
+    // before sp68 * 4 (IDO orders compiler-temp slots by first appearance in the source).
+    var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
+    tmp = var_a1 + 0x20;
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)D_80075BD0[sp66] & 0xFFFFFF);
     if ((arg0->unk_000.unk_01A == 0x19) && (ptr->unk_52 & 0x80)) {
@@ -442,9 +431,6 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
         func_8430245C(arg0);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_2EC3C0/func_84302658.s")
-#endif
 
 void func_843029D0(unk_D_84390010* arg0) {
     if (arg0->unk_4C4 == 0x14) {
