@@ -1303,6 +1303,15 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // arg2 in s2 like the target: 3777 -> 3567 (pad[2] -> pad[1] keeps the frame at 0xC0).
 // `var_s6 = arg0;` at the top (s6 holds arg0 early in the target; the later reassignment of var_s6 stops
 // uopt from folding the copy) used for rect1 lrx and temp_s7: 3567 -> 3364, temp_s7 no longer spilled.
+// Agent-11 findings from this state: uopt treats var_s6 and arg0 as one value (any mix of the two in rect1/
+// rect2 gives identical code). The colour temps are ugen locals; they land in t0 because uopt never gives
+// t0 to a global here (gDisplayListHead gets a0 after t1-t5/ra), while the target gives gDLH t0 and the
+// colours fall to a3/a0. Not changed by: separate/block-scoped colour vars (as in func_88301020), u16/s16/
+// u32 colours, inline GPACK expressions (colours go to s0/s1), computing colour1 earlier, separate case
+// variable, removing the `3` constant, cutting either rect, the cycle-type cmds or the loop. x0 =
+// arg0 + 0x84 in memory (target 0x50) happens with `for (x = arg0 + 0x84; ...)` on loop 2 as well, but then
+// arg0 itself gets s0 (3513). No effect: while-loops, early return for arg2, redundant x defs, var_s1 +=
+// var_s6 as the limit (5351), var_s4 = arg1 + 2 as its own statement (3705+).
 // Round 8 (agent-6) dead ends (all 3777 or worse): a separate (s32/u32/u8*) copy of arg0 for rect1's lrx and
 // temp_s7 (copy-propagated); separate variables for each of the three colour webs (identical: uopt splits
 // webs anyway); temp_s7 placed before PipeSync / SetCycleType / temp_v1 / the first FillRectangle (3959+);
