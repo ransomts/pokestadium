@@ -1236,45 +1236,15 @@ void func_84304F54(unk_D_84390010* arg0) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only the stack slots of two spilled temps differ (target has an extra unused temp slot at 0x20)
-// Round 6 (agent 1): slot model. Compiler temps sit directly below the lowest named slot,
-// allocated top-down in the fixed order [sp28 value, sp40*4 (v1), &D_84390010[sp40]]; the
-// order does NOT follow where sp28 is assigned in the source. Target = 9 named slots
-// (0x2C..0x4C) + 4 temps (0x28 sp28val, 0x24 v1, 0x20 unused X, 0x1C Daddr); this draft
-// has 10 named + 3 temps. Removing any one named slot (e.g. pad2, with ptr2 moved into
-// its slot) gives frame 0x48 with identical code, so the original has one less local and
-// one more never-stored temp. A never-stored temp can be made with "sp40 = !func_84307F00(arg0);" or
-// "!(x & 1) != 0" (ugen boolean temp) - with 9 named that restores frame 0x50 with
-// identical code, BUT such temps always take the TOP slot (0x28), wherever they occur in
-// the source, so sp28val/v1 stay one slot low (same 4-line diff). X must be a late
-// (regalloc-phase) temp ordered between v1 and Daddr. Dead ends (no new temp or worse):
-// "!!", "== 1", "!= 0" on the call results, "!(a || b)" forms, ptr reuse for the A80/B20/
-// unk_000[sp48] lines, sp30 reuse for the D_84390010[sp40] uses, (*(D_84390010+sp40)),
-// unk_000+sp48, sp48 initialiser, nested ifs, if(1){} after the unk_4C4 store.
-// Round 8 (agent 4): the matched sibling func_843037CC (same prologue, same sp28 / sp40 /
-// D_84390010[sp40] pattern) also has a never-stored temp slot: its temps are [0x28 sp28val,
-// 0x24 unused, 0x20 sp40*4, 0x1C Daddr]. Ablations on that sibling: dropping the final
-// sp28->unk_44 || chain removes BOTH sp28val's slot and the unused one; writing its
-// sp28->unk_15 test as arg0->unk_654.unk_38.unk_15 removes only the unused one; deleting the
-// unk_15 test moves the unused slot BELOW sp40*4, i.e. exactly this target's [sp28val, v1, X,
-// Daddr] pattern. So X is most likely tied to how sp28 (the pointer variable) is used. Moving
-// "sp28 = ..." here (first / after the 4C4 store / before if1, 9 or 10 named) changes nothing;
-// putting it inside the big if leaves sp28val's slot reserved but unused. Dead copies stored
-// into ptr/ptr2 (sp28->unk_44.unk_00, sp28->unk_5A, D_84390010[sp40], &D_84384570[sp40]...)
-// at six positions are deleted before slot assignment (zero effect). Sibling-style decls
-// (temp_v0 for the first func_84307AE0 result, sp28 assigned first) give the same 4-line diff.
-// The farm ran 1.6M iterations without improvement, so this needs a source-level idea.
 void func_8430506C(unk_D_84390010* arg0) {
-    unk_D_8438E7B0* ptr;
+    UNUSED s32 pad;
     s32 sp48;
-    s32 pad2[1];
+    UNUSED s32 pad2;
     s32 sp40;
     unk_D_84390010_654* sp3C;
-    s32 pad[2];
+    UNUSED s32 pad3[2];
     unk_D_84390010* sp30;
     unk_D_800FCB18* sp28;
-    unk_D_8438E7B0* ptr2;
 
     sp48 = 0xA5;
     sp40 = func_84307F00(arg0) == 0;
@@ -1302,11 +1272,11 @@ void func_8430506C(unk_D_84390010* arg0) {
         }
 
         if ((D_843C4E44 == 0) || (D_843C4DA4 != 0)) {
-            ptr = D_84384570[sp40];
-            ptr2 = ptr;
-            D_84390020 = &ptr2->unk_000[sp48];
+            // FAKE? keeps &D_84390020 out of a register while the load stays a CSE temp
+            if (D_84384570[sp40]) {}
+            D_84390020 = &D_84384570[sp40]->unk_000[sp48];
             if (sp3C->unk_34 & 0x200) {
-                D_84390020 = &ptr2->unk_000[0xB0];
+                D_84390020 = &D_84384570[sp40]->unk_000[0xB0];
             }
         } else if (!(sp3C->unk_34 & 1)) {
             func_843058C4(D_84390010[sp40], 0xA8);
@@ -1320,9 +1290,6 @@ void func_8430506C(unk_D_84390010* arg0) {
         }
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/62/fragment62_2EC3C0/func_8430506C.s")
-#endif
 
 void func_843052C0(unk_D_84390010* arg0) {
     s32 sp2C;
