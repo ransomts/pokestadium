@@ -23,7 +23,7 @@ void func_84205F18(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
     s16 i;
 
     func_842001B8(arg1, arg2, 0x208, 0x60);
-    if (((D_800AE540.unk_0001 == 0) || (D_800AE540.unk_0001 == 8)) && (arg0->unk_0004 != 0) && (arg0->unk_0006 > 0) &&
+    if (((gBattleContext.unk_0001 == 0) || (gBattleContext.unk_0001 == 8)) && (arg0->unk_0004 != 0) && (arg0->unk_0006 > 0) &&
         (arg0->unk_0006 < 6)) {
         func_84200420(arg1 + 4, arg2 + 4, 0x74, 0x58, 0, 0, 0, 0xFF);
 
@@ -97,7 +97,7 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
 
         Text_ResetState();
 
-        if (((D_800AE540.unk_0001 == 0) || (D_800AE540.unk_0001 == 8)) && (arg0->unk_0004 != 0) &&
+        if (((gBattleContext.unk_0001 == 0) || (gBattleContext.unk_0001 == 8)) && (arg0->unk_0004 != 0) &&
             (arg0->unk_0006 > 0) && (arg0->unk_0006 < 6)) {
             Text_SetFont(8, 0);
             temp_v0_4 = func_84200130(arg0->unk_0006 + 0x2A);
@@ -240,7 +240,7 @@ s32 func_84206A68(unk_D_84211B50* arg0) {
         }
     }
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         default:
             temp_v1 = 0;
             break;
@@ -556,7 +556,7 @@ void func_84207530(unk_D_84211B50* arg0) {
     s32 temp_v0_2;
     Controller* cont = &gControllers[arg0->unk_0002];
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         case 3:
             break;
 
@@ -857,7 +857,7 @@ s32 func_84207D5C(unk_D_84211B50* arg0) {
         return 0;
     }
 
-    if ((D_800AE540.unk_0001 != 0) && (D_800AE540.unk_0000 != 8)) {
+    if ((gBattleContext.unk_0001 != 0) && (gBattleContext.unk_0000 != 8)) {
         return 0;
     }
 
@@ -888,7 +888,7 @@ s32 func_84207E3C(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
 
     for (i = 0; i < 6; i++, ptr++) {
         if ((ptr->unk_004.unk_00.unk_00 != 0) && !(ptr->raw & 0x80000000)) {
-            if (D_800AE540.unk_0001 == 0) {
+            if (gBattleContext.unk_0001 == 0) {
                 if (ptr->raw == arg1->raw) {
                     return 0;
                 }

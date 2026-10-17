@@ -127,7 +127,7 @@ void func_84317B40(void) {
     unk_D_84390010* ptr1 = D_84390010[0];
     unk_D_84390010* ptr2 = D_84390010[1];
 
-    if ((D_800AE540.unk_0000 != 0x10) && (D_84390240.unk_00->unk_30 == 0)) {
+    if ((gBattleContext.unk_0000 != 0x10) && (D_84390240.unk_00->unk_30 == 0)) {
         func_8431595C(ptr1, 0x15, 0xF, ptr1->unk_720->unk_08[ptr1->unk_728.unk_16C]->unk_001);
         func_8431595C(ptr2, 0xE1, 0xF, ptr2->unk_720->unk_08[ptr2->unk_728.unk_16C]->unk_001);
     }
@@ -626,7 +626,7 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
 void func_843190A8(s16 arg0, s16 arg1) {
     unk_D_843901A0_4C8* temp_s0 = &D_843901A0->unk_4C8;
 
-    if (D_800AE540.unk_0000 == 0x10) {
+    if (gBattleContext.unk_0000 == 0x10) {
         return;
     }
 
@@ -730,7 +730,7 @@ void func_84319564(void) {
     unk_D_84390010_654* sp1C = &D_84390010[0]->unk_654;
     unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
 
-    if ((D_800AE540.unk_11ED != 0) && (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103) &&
+    if ((gBattleContext.unk_11ED != 0) && (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103) &&
         (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17)) {
         func_843118A8(0x101, 0x64);
         if (D_84390134 == 0) {
@@ -764,7 +764,7 @@ void func_843196A4(void) {
 
     func_843190A8(0xA0, 0xC8);
 
-    if (D_800AE540.unk_0000 == 0x10) {
+    if (gBattleContext.unk_0000 == 0x10) {
         func_8431712C();
         func_8431694C();
     }

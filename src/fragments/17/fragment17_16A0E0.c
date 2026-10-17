@@ -183,7 +183,7 @@ void func_86B0B184(void) {
 
     switch (D_86B10BE0.unk_00) {
         case 0x0:
-            if (D_800AE540.unk_0000 == 0x16) {
+            if (gBattleContext.unk_0000 == 0x16) {
                 sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x91));
             } else {
                 sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x93));
@@ -223,7 +223,7 @@ void func_86B0B184(void) {
             func_86B0B12C();
 
             if (D_86B10BE0.unk_08++ == 0x3C) {
-                if (D_800AE540.unk_0000 == 0x16) {
+                if (gBattleContext.unk_0000 == 0x16) {
                     sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x92));
                 } else {
                     sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x94));
@@ -400,7 +400,7 @@ void func_86B0B8DC(void) {
     Graph_AddToRootList0(&D_86B10850);
     func_8001987C();
 
-    if (D_800AE540.unk_0000 == 0x16) {
+    if (gBattleContext.unk_0000 == 0x16) {
         D_86B10844 = func_80019D18(0xD5);
         func_8001BC34(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
     } else {
@@ -432,7 +432,7 @@ s32 func_86B0BA18(void) {
     func_8002D510();
     D_86B10840 = GetMessageBank(0x1E);
 
-    if (D_800AE540.unk_0000 == 0x16) {
+    if (gBattleContext.unk_0000 == 0x16) {
         D_86B109BC = ASSET_LOAD2(backgrounds, 1, 1);
         D_86B109C0 = BinArchive_GetFile(D_86B109BC, 0x12);
     } else {

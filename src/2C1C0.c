@@ -9,8 +9,8 @@
 #include "src/memory.h"
 #include "src/controller.h"
 
-u8 D_80075680[3] = { 1, 15, 30 };
-static s16 D_80075684 = 0;
+u8 gBattleTimerLimits[3] = { 1, 15, 30 };
+static s16 gBattleToggleFlag = 0;
 
 void Battle_ResetSideState(unk_D_800AE540_1194* arg0) {
     arg0->unk_00 = 0;
@@ -29,48 +29,48 @@ void Battle_Init(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     s32 j;
 
-    Battle_ResetSideState(&D_800AE540.unk_1194[0]);
-    Battle_ResetSideState(&D_800AE540.unk_1194[1]);
+    Battle_ResetSideState(&gBattleContext.unk_1194[0]);
+    Battle_ResetSideState(&gBattleContext.unk_1194[1]);
 
-    D_800AE540.unk_0000 = arg0;
-    D_800AE540.unk_0001 = arg1;
-    D_800AE540.unk_0002 = arg2;
-    D_800AE540.unk_0003 = 1;
+    gBattleContext.unk_0000 = arg0;
+    gBattleContext.unk_0001 = arg1;
+    gBattleContext.unk_0002 = arg2;
+    gBattleContext.unk_0003 = 1;
 
-    D_800AE540.unk_11ED = 0;
-    D_800AE540.unk_11EE = 0;
-    D_800AE540.unk_11EF = 0;
-    D_800AE540.unk_11F4 = 0;
-    D_800AE540.unk_11F5 = 0;
-    D_800AE540.unk_11F3 = 0;
-    D_800AE540.unk_11F6 = 0;
-    D_800AE540.unk_11EC = 0;
+    gBattleContext.unk_11ED = 0;
+    gBattleContext.unk_11EE = 0;
+    gBattleContext.unk_11EF = 0;
+    gBattleContext.unk_11F4 = 0;
+    gBattleContext.unk_11F5 = 0;
+    gBattleContext.unk_11F3 = 0;
+    gBattleContext.unk_11F6 = 0;
+    gBattleContext.unk_11EC = 0;
 
     for (i = 0; i < 4; i++) {
-        D_800AE540.unk_0004[i].unk_000 = 0;
+        gBattleContext.unk_0004[i].unk_000 = 0;
     }
 
     for (i = 0; i < 2; i++) {
         if (1) {
             for (j = 0; j < 4; j++) {
-                D_800AE540.unk_11E4[i][j] = 0xFF;
+                gBattleContext.unk_11E4[i][j] = 0xFF;
             }
         }
     }
 }
 
-void func_8002B6BC(void) {
+void Battle_ClearSelectedMonIndices(void) {
     s32 i;
     s32 j;
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
-            D_800AE540.unk_11E4[i][j] = 0xFF;
+            gBattleContext.unk_11E4[i][j] = 0xFF;
         }
     }
 
-    D_800AE540.unk_0003 = 1;
-    D_800AE540.unk_11F3 = 0;
+    gBattleContext.unk_0003 = 1;
+    gBattleContext.unk_11F3 = 0;
 }
 
 unk_D_800AE540_0004* RegisterPlayer(s32 arg0, s16 arg1, char* arg2, char* arg3) {
@@ -79,9 +79,9 @@ unk_D_800AE540_0004* RegisterPlayer(s32 arg0, s16 arg1, char* arg2, char* arg3) 
     unk_D_800AE540_0004* sp1C = NULL;
 
     for (i = 0; i < 4; i++) {
-        if ((D_800AE540.unk_0004 + i)->unk_000 == 0) {
-            sp1C = &D_800AE540.unk_0004[i];
-            sp20 = &D_800AE540.unk_0874[i];
+        if ((gBattleContext.unk_0004 + i)->unk_000 == 0) {
+            sp1C = &gBattleContext.unk_0004[i];
+            sp20 = &gBattleContext.unk_0874[i];
             break;
         }
     }
@@ -113,7 +113,7 @@ unk_D_800AE540_0004* RegisterPlayer(s32 arg0, s16 arg1, char* arg2, char* arg3) 
 }
 
 void Battle_RegisterPlayerEntry(s32 arg0, unk_D_800AE540_0004* arg1) {
-    unk_D_800AE540_1194* temp_v0 = &D_800AE540.unk_1194[arg0];
+    unk_D_800AE540_1194* temp_v0 = &gBattleContext.unk_1194[arg0];
     u8 idx = temp_v0->unk_01;
 
     if (idx < 2) {
@@ -135,13 +135,13 @@ void Battle_AddPartyMon(unk_D_800AE540_0004* arg0, unk_func_80026268_arg0* arg1)
     }
 }
 
-unk_func_80026268_arg0* func_8002B924(unk_func_80026268_arg0* arg0, u8 arg1, s16 arg2) {
+unk_func_80026268_arg0* Pokemon_InitFromSpeciesLevel(unk_func_80026268_arg0* arg0, u8 arg1, s16 arg2) {
     arg0->unk_00.unk_00 = arg1;
     arg0->unk_04 = 0;
     arg0->unk_05 = 0;
 
-    arg0->unk_06 = D_80070FA0[arg1 - 1].unk_06;
-    arg0->unk_07 = D_80070FA0[arg1 - 1].unk_07;
+    arg0->unk_06 = gSpeciesBaseStats[arg1 - 1].unk_06;
+    arg0->unk_07 = gSpeciesBaseStats[arg1 - 1].unk_07;
 
     arg0->unk_14 = 0x6400;
     arg0->unk_16 = 0x6400;
@@ -177,7 +177,7 @@ unk_func_80026268_arg0* func_8002B924(unk_func_80026268_arg0* arg0, u8 arg1, s16
     return arg0;
 }
 
-void func_8002BA34(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Battle_CreateTwoPlayerMatch(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 spD6;
     s32 spD0;
     s32 spCC;
@@ -215,14 +215,14 @@ void func_8002BA34(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     spD0 = RegisterPlayer(0, 0, GetNameSlot(1), GetNameSlot(2));
     spCC = RegisterPlayer(1, 0, GetNameSlot(1), GetNameSlot(2));
 
-    Battle_AddPartyMon(spD0, func_8002B924(&sp78, arg2, spD6));
-    Battle_AddPartyMon(spCC, func_8002B924(&sp24, arg3, spD6));
+    Battle_AddPartyMon(spD0, Pokemon_InitFromSpeciesLevel(&sp78, arg2, spD6));
+    Battle_AddPartyMon(spCC, Pokemon_InitFromSpeciesLevel(&sp24, arg3, spD6));
 
     Battle_RegisterPlayerEntry(0, spD0);
     Battle_RegisterPlayerEntry(1, spCC);
 }
 
-void func_8002BB7C(s32 arg0, s32 arg1, s32 arg2) {
+void Battle_LoadTeamFromSaveSlot(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     unk_func_80026268_arg0 sp48;
     unk_func_80022C28_ret* temp_v0;
@@ -250,35 +250,35 @@ void func_8002BB7C(s32 arg0, s32 arg1, s32 arg2) {
     Battle_RegisterPlayerEntry(arg0, temp_s4);
 }
 
-void func_8002BC64(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Battle_StartRentalBattle(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     main_pool_push_state('RIVL');
 
     Battle_Init(0, 3, 0);
 
     if (arg0 > 0) {
-        func_8002BB7C(0, arg0 - 1, arg0 - 1);
+        Battle_LoadTeamFromSaveSlot(0, arg0 - 1, arg0 - 1);
     }
 
     if (arg1 > 0) {
-        func_8002BB7C(0, arg1 - 1, arg1 - 1);
+        Battle_LoadTeamFromSaveSlot(0, arg1 - 1, arg1 - 1);
     }
 
     if (arg2 > 0) {
-        func_8002BB7C(1, arg2 - 1, arg2 - 1);
+        Battle_LoadTeamFromSaveSlot(1, arg2 - 1, arg2 - 1);
     }
 
     if (arg3 > 0) {
-        func_8002BB7C(1, arg3 - 1, arg3 - 1);
+        Battle_LoadTeamFromSaveSlot(1, arg3 - 1, arg3 - 1);
     }
 
     main_pool_pop_state('RIVL');
 }
 
-s32 func_8002BD14(s32 arg0) {
+s32 Battle_IsMonIndexSelected(s32 arg0) {
     s32 i;
 
-    for (i = 0; i < D_800AE540.unk_0003 - 1; i++) {
-        if (arg0 == D_800AE540.unk_11E4[0][i]) {
+    for (i = 0; i < gBattleContext.unk_0003 - 1; i++) {
+        if (arg0 == gBattleContext.unk_11E4[0][i]) {
             return 1;
         }
     }
@@ -294,12 +294,12 @@ s32 Battle_PickRandomMon(s32 arg0) {
 
     var_s0 = -1;
 
-    sp24 = (arg0 - D_800AE540.unk_0003) + 1;
-    if (D_800AE540.unk_0003 == 1) {
+    sp24 = (arg0 - gBattleContext.unk_0003) + 1;
+    if (gBattleContext.unk_0003 == 1) {
         return 0;
     }
 
-    temp_v1 = D_800AE540.unk_11E4[0][D_800AE540.unk_0003 - 1];
+    temp_v1 = gBattleContext.unk_11E4[0][gBattleContext.unk_0003 - 1];
     if (temp_v1 != 0xFF) {
         return temp_v1;
     }
@@ -313,7 +313,7 @@ s32 Battle_PickRandomMon(s32 arg0) {
     var_s1 = MathUtil_Random16() % sp24;
     while (var_s1 >= 0) {
         var_s0++;
-        while (func_8002BD14(var_s0) != 0) {
+        while (Battle_IsMonIndexSelected(var_s0) != 0) {
             var_s0++;
         }
         var_s1--;
@@ -327,9 +327,9 @@ s16 Battle_GetMaxPartyLevel(void) {
     s16 var_v1 = 0;
     unk_func_80026268_arg0* var_v0;
 
-    var_v0 = &D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_028[0];
+    var_v0 = &gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[0];
 
-    for (i = 0; i < D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_002; i++, var_v0++) {
+    for (i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; i++, var_v0++) {
         if (var_v1 < var_v0->unk_24) {
             var_v1 = var_v0->unk_24;
         }
@@ -347,10 +347,10 @@ void Battle_SetPartyLevel(s16 arg0) {
         return;
     }
 
-    var_s0 = D_800AE540.unk_1194[1].unk_08[0]->unk_01C;
-    var_s1 = D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_028;
+    var_s0 = gBattleContext.unk_1194[1].unk_08[0]->unk_01C;
+    var_s1 = gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_028;
 
-    for (i = 0; i < D_800AE540.unk_1194[1].unk_08[0]->unk_002; i++, var_s1++, var_s0++) {
+    for (i = 0; i < gBattleContext.unk_1194[1].unk_08[0]->unk_002; i++, var_s1++, var_s0++) {
         var_s0->unk_24 = arg0;
         var_s0->unk_10 = CalculateExperienceAtLevel(var_s0->unk_00.unk_00, arg0);
         CalculatePokemonStats(var_s0);
@@ -376,7 +376,7 @@ typedef struct unk_func_8002BFC4 {
     /* 0x090 */ char unk090[0x1A0];
 } unk_func_8002BFC4; // size = 0x230
 
-void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
+void Battle_LoadPartyFromArchive(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s16 var_a1;
     unk_D_800AE540_0004* temp_s3;
@@ -386,17 +386,17 @@ void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     unk_func_8002BFC4* ptr;
     unk_func_8002BFC4* temp_v1;
 
-    temp_s3 = D_800AE540.unk_1194[arg0].unk_08[0];
-    if (D_800AE540.unk_11F2 != 0) {
+    temp_s3 = gBattleContext.unk_1194[arg0].unk_08[0];
+    if (gBattleContext.unk_11F2 != 0) {
         arg1 += 0x1F;
     }
 
-    ptr = BinArchive_GetFile(D_800AF738, arg1);
+    ptr = BinArchive_GetFile(gBattleArchive, arg1);
     ptr += arg2;
 
     temp_s2 = &ptr->unk_004;
 
-    D_800AE540.unk_11E4[0][D_800AE540.unk_0003 - 1] = arg2;
+    gBattleContext.unk_11E4[0][gBattleContext.unk_0003 - 1] = arg2;
 
     temp_s3->unk_018 = temp_s2->unk_34;
     temp_s3->unk_002 = 0;
@@ -416,14 +416,14 @@ void func_8002BFC4(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 }
 
-void func_8002C128(void) {
-    s16 var_s0 = D_800AE540.unk_0003 - 1;
-    s16 sp24 = D_800AE540.unk_0002;
+void Battle_InitializeFromMode(void) {
+    s16 var_s0 = gBattleContext.unk_0003 - 1;
+    s16 sp24 = gBattleContext.unk_0002;
 
-    if ((D_800AE540.unk_0000 == 2) && (D_800AE540.unk_11F2 != 0)) {
+    if ((gBattleContext.unk_0000 == 2) && (gBattleContext.unk_11F2 != 0)) {
         var_s0 = Battle_PickRandomMon(8);
-    } else if ((D_800AE540.unk_0000 == 7) && (sp24 == 9)) {
-        switch (D_800AE540.unk_11F0) {
+    } else if ((gBattleContext.unk_0000 == 7) && (sp24 == 9)) {
+        switch (gBattleContext.unk_11F0) {
             case 0x1:
                 var_s0 = 4;
                 break;
@@ -456,49 +456,49 @@ void func_8002C128(void) {
 
     main_pool_push_state('RIVL');
 
-    D_800AF738 = Asset_Load2(0x898000, NULL, 1, 0);
+    gBattleArchive = Asset_Load2(0x898000, NULL, 1, 0);
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 1:
-            func_8002BFC4(1, 6, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, 6, var_s0, 0);
             break;
 
         case 2:
-            func_8002BFC4(1, 7, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, 7, var_s0, 0);
             break;
 
         case 3:
-            func_8002BFC4(1, sp24 + 8, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, sp24 + 8, var_s0, 0);
             break;
 
         case 4:
-            func_8002BFC4(1, 0, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, 0, var_s0, 0);
             break;
 
         case 5:
-            func_8002BFC4(1, 1, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, 1, var_s0, 0);
             break;
 
         case 6:
-            func_8002BFC4(1, sp24 + 2, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, sp24 + 2, var_s0, 0);
             break;
 
         case 7:
-            func_8002BFC4(1, sp24 + 0xC, var_s0, 1);
+            Battle_LoadPartyFromArchive(1, sp24 + 0xC, var_s0, 1);
             break;
 
         case 8:
-            func_8002BFC4(1, 0x16, var_s0, 0);
+            Battle_LoadPartyFromArchive(1, 0x16, var_s0, 0);
             break;
     }
 
     main_pool_pop_state('RIVL');
 }
 
-void func_8002C394(s16 arg0) {
+void Battle_StartVersusMode(s16 arg0) {
     main_pool_push_state('RIVL');
 
-    D_800AF738 = Asset_Load2(0x898000, NULL, 1, 0);
+    gBattleArchive = Asset_Load2(0x898000, NULL, 1, 0);
     Battle_Init(9, 6, 0);
 
     if (arg0 == 1) {
@@ -509,39 +509,39 @@ void func_8002C394(s16 arg0) {
         Battle_RegisterPlayerEntry(1, RegisterPlayer(1, 0, "2P", GetNameSlot(1)));
     }
 
-    if (D_80075684 == 0) {
-        func_8002BFC4(0, 0x1D, 0, 0);
-        func_8002BFC4(1, 0x1D, 1, 0);
+    if (gBattleToggleFlag == 0) {
+        Battle_LoadPartyFromArchive(0, 0x1D, 0, 0);
+        Battle_LoadPartyFromArchive(1, 0x1D, 1, 0);
     } else {
-        func_8002BFC4(0, 0x1D, 1, 0);
-        func_8002BFC4(1, 0x1D, 0, 0);
+        Battle_LoadPartyFromArchive(0, 0x1D, 1, 0);
+        Battle_LoadPartyFromArchive(1, 0x1D, 0, 0);
     }
 
-    D_80075684 ^= 1;
+    gBattleToggleFlag ^= 1;
 
     main_pool_pop_state('RIVL');
 }
 
-void func_8002C538(void) {
+void Battle_PackStateForSave(void) {
     unk_func_800281D4 sp20;
-    unk_D_800AE540_0874* sp1C = D_800AE540.unk_1194[0].unk_08[0]->unk_214;
+    unk_D_800AE540_0874* sp1C = gBattleContext.unk_1194[0].unk_08[0]->unk_214;
 
-    sp20.unk_00 = D_800AE540.unk_0000;
-    sp20.unk_01 = D_800AE540.unk_0002;
-    sp20.unk_02 = D_800AE540.unk_0003;
-    sp20.unk_04 = D_800AE540.unk_11F3;
-    sp20.unk_03 = D_800AE540.unk_11F2;
+    sp20.unk_00 = gBattleContext.unk_0000;
+    sp20.unk_01 = gBattleContext.unk_0002;
+    sp20.unk_02 = gBattleContext.unk_0003;
+    sp20.unk_04 = gBattleContext.unk_11F3;
+    sp20.unk_03 = gBattleContext.unk_11F2;
 
-    sp20.unk_0D = D_800AE540.unk_11F0;
-    sp20.unk_0E = D_800AE540.unk_1194[0].unk_08[0]->unk_018;
+    sp20.unk_0D = gBattleContext.unk_11F0;
+    sp20.unk_0E = gBattleContext.unk_1194[0].unk_08[0]->unk_018;
 
-    _bcopy(D_800AE540.unk_11E4[0], &sp20.unk_05, 8);
-    func_80021C20(&sp20.unk_10, &D_800AE540.unk_1194[0].unk_08[0]->unk_008);
+    _bcopy(gBattleContext.unk_11E4[0], &sp20.unk_05, 8);
+    func_80021C20(&sp20.unk_10, &gBattleContext.unk_1194[0].unk_08[0]->unk_008);
     func_800281D4(&sp20, sp1C->unk_028, sp1C->unk_002);
     func_80026684(0x15, 0);
 }
 
-s32 func_8002C5E8(void) {
+s32 Battle_LoadStateFromSave(void) {
     unk_func_800281D4 sp250;
     unk_func_80026268_arg0 sp58[6];
     s32 i;
@@ -553,11 +553,11 @@ s32 func_8002C5E8(void) {
     if (temp_v0 != -1) {
         Battle_Init(sp250.unk_00, sp250.unk_00, sp250.unk_01);
 
-        _bcopy(sp250.unk_05, D_800AE540.unk_11E4[0], 8);
-        D_800AE540.unk_0003 = sp250.unk_02;
-        D_800AE540.unk_11F3 = sp250.unk_04;
-        D_800AE540.unk_11F2 = sp250.unk_03;
-        D_800AE540.unk_11F0 = sp250.unk_0D;
+        _bcopy(sp250.unk_05, gBattleContext.unk_11E4[0], 8);
+        gBattleContext.unk_0003 = sp250.unk_02;
+        gBattleContext.unk_11F3 = sp250.unk_04;
+        gBattleContext.unk_11F2 = sp250.unk_03;
+        gBattleContext.unk_11F0 = sp250.unk_0D;
         tmp = sp250.unk_0E;
 
         func_80021B5C(sp44, sp250.unk_10);
@@ -565,10 +565,10 @@ s32 func_8002C5E8(void) {
         Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, tmp, "COM", GetNameSlot(3)));
 
         for (i = 0; i < temp_v0; i++) {
-            Battle_AddPartyMon(D_800AE540.unk_1194[0].unk_08[0], &sp58[i]);
+            Battle_AddPartyMon(gBattleContext.unk_1194[0].unk_08[0], &sp58[i]);
         }
 
-        D_800AE540.unk_11F5 |= 3;
+        gBattleContext.unk_11F5 |= 3;
     }
     return (temp_v0 + 1) != 0;
 }

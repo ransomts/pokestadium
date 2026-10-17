@@ -583,8 +583,8 @@ static s16 D_8007567C = 0;
 
 unk_D_800AE520 D_800AE520;
 s32 pad_D_800AE534[2];
-unk_D_800AE540 D_800AE540;
-BinArchive* D_800AF738;
+unk_D_800AE540 gBattleContext;
+BinArchive* gBattleArchive;
 
 s32 Game_DoCopyProtection(s32 state) {
     u32 intr = osSetIntMask(1);
@@ -622,7 +622,7 @@ void Fragment_LoadAndCall2(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
 }
 
 unk_D_800AE540_0004* func_80029074(void) {
-    return D_800AE540.unk_0004;
+    return gBattleContext.unk_0004;
 }
 
 s32 func_80029080(void) {
@@ -651,7 +651,7 @@ s32 func_800290E4(s16 arg0) {
     FRAGMENT_LOAD(fragment2);
     FRAGMENT_LOAD(fragment3);
 
-    D_800AE540.unk_0000 = arg0;
+    gBattleContext.unk_0000 = arg0;
 
     sp24 = FRAGMENT_LOAD_AND_CALL(fragment17, arg0, 0);
 
@@ -667,7 +667,7 @@ void func_800291E0(void) {
     FRAGMENT_LOAD(fragment2);
     FRAGMENT_LOAD(fragment3);
 
-    if (D_800AE540.unk_11F2 != 0) {
+    if (gBattleContext.unk_11F2 != 0) {
         FRAGMENT_LOAD_AND_CALL(fragment16, 0, 0);
     } else {
         FRAGMENT_LOAD_AND_CALL(fragment16, 0, 1);
@@ -698,15 +698,15 @@ void Game_RunTitleScreen(void) {
     if (gCurrentGameState == STATE_TITLE_SCREEN) {
         main_pool_push_state('DEMO');
 
-        if (D_800AE540.unk_0000 == 0x10) {
+        if (gBattleContext.unk_0000 == 0x10) {
             FRAGMENT_LOAD(fragment34);
-            FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+            FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
         } else {
             ASSET_LOAD(D_3000000, kids_club_game_ui, 0); // borrows the Stadium logo from it
             FRAGMENT_LOAD(fragment2);
             FRAGMENT_LOAD(fragment34);
 
-            switch (D_800AE540.unk_0003) {
+            switch (gBattleContext.unk_0003) {
                 case 3:
                     FRAGMENT_LOAD(fragment4);
                     FRAGMENT_LOAD_AND_CALL(fragment8, 1, 0);
@@ -728,8 +728,8 @@ void Game_RunTitleScreen(void) {
         return;
     }
 
-    D_800AE540.unk_0002 = 0;
-    D_800AE540.unk_11F6 = 0;
+    gBattleContext.unk_0002 = 0;
+    gBattleContext.unk_11F6 = 0;
     D_80075674 = -1;
 }
 
@@ -837,56 +837,56 @@ void func_80029BC0(void) {
     s16 sp4E = 1;
 
     while ((sp4E > 0) && (sp4E < 5)) {
-        if (D_800AE540.unk_11F5 & 1) {
+        if (gBattleContext.unk_11F5 & 1) {
             sp4E = 5;
         } else {
             sp4E = func_80029984(sp4E);
         }
 
         if (sp4E == 5) {
-            D_800AE540.unk_11F6 = 0;
+            gBattleContext.unk_11F6 = 0;
             FRAGMENT_LOAD_AND_CALL(fragment63, 1, 0);
 
-            while (!(D_800AE540.unk_11F6 & 1)) {
+            while (!(gBattleContext.unk_11F6 & 1)) {
                 FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                 main_pool_push_state('STAD');
 
                 FRAGMENT_LOAD(fragment34);
-                FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+                FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
                 main_pool_pop_state('STAD');
 
                 FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
             }
 
-            if (D_800AE540.unk_11F6 & 0x20) {
+            if (gBattleContext.unk_11F6 & 0x20) {
                 sp4E = 4;
             }
 
-            if (D_800AE540.unk_11F6 & 0x800) {
+            if (gBattleContext.unk_11F6 & 0x800) {
                 sp4E = 4;
             }
 
-            if (D_800AE540.unk_11F6 & 2) {
+            if (gBattleContext.unk_11F6 & 2) {
                 func_800290E4(0x11);
             }
 
-            if (D_800AE540.unk_11F6 & 0x1000) {
+            if (gBattleContext.unk_11F6 & 0x1000) {
                 FRAGMENT_LOAD_AND_CALL(fragment66, 0, 0);
             }
 
-            if (D_800AE540.unk_11F6 & 8) {
+            if (gBattleContext.unk_11F6 & 8) {
                 func_800290E4(0x16);
             }
 
-            if (D_800AE540.unk_11F6 & 0x10) {
+            if (gBattleContext.unk_11F6 & 0x10) {
                 func_800290E4(0x17);
             }
         }
     }
 
-    if (D_800AE540.unk_11F6 & 0x40) {
+    if (gBattleContext.unk_11F6 & 0x40) {
         gCurrentGameState = STATE_TITLE_SCREEN;
     } else {
         gCurrentGameState = STATE_AREA_SELECT;
@@ -942,27 +942,27 @@ void Game_RunFreeBattle(void) {
 
         switch (sp4E) {
             case 4:
-                D_800AE540.unk_11F6 = 0;
+                gBattleContext.unk_11F6 = 0;
                 FRAGMENT_LOAD_AND_CALL(fragment63, 0, 0);
 
-                while (!(D_800AE540.unk_11F6 & 1)) {
+                while (!(gBattleContext.unk_11F6 & 1)) {
                     FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                     main_pool_push_state('FREE');
 
                     FRAGMENT_LOAD(fragment34);
-                    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+                    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
                     main_pool_pop_state('FREE');
 
                     FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
                 }
 
-                if (D_800AE540.unk_11F6 & 0x20) {
+                if (gBattleContext.unk_11F6 & 0x20) {
                     sp4E = 3;
                 }
 
-                if (D_800AE540.unk_11F6 & 0x80) {
+                if (gBattleContext.unk_11F6 & 0x80) {
                     sp4E = 1;
                 }
                 break;
@@ -1018,27 +1018,27 @@ void Game_RunVsMewtwo(void) {
 
         switch (sp4E) {
             case 3:
-                D_800AE540.unk_11F6 = 0;
+                gBattleContext.unk_11F6 = 0;
                 FRAGMENT_LOAD_AND_CALL(fragment63, 0, 0);
 
-                while (!(D_800AE540.unk_11F6 & 1)) {
+                while (!(gBattleContext.unk_11F6 & 1)) {
                     FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                     main_pool_push_state('STAD');
 
                     FRAGMENT_LOAD(fragment34);
-                    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+                    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
                     main_pool_pop_state('STAD');
 
                     FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
                 }
 
-                if (D_800AE540.unk_11F6 & 0x20) {
+                if (gBattleContext.unk_11F6 & 0x20) {
                     sp4E = 2;
                 }
 
-                if (D_800AE540.unk_11F6 & 4) {
+                if (gBattleContext.unk_11F6 & 4) {
                     func_800291E0();
                     gCurrentGameState = STATE_N64_LOGO_INTRO;
                     return;
@@ -1159,14 +1159,14 @@ void Game_RunGymLeaderCastle(void) {
     s16 sp4E = 1;
     s16 sp4C = 0;
 
-    if (!(D_800AE540.unk_11F5 & 1)) {
+    if (!(gBattleContext.unk_11F5 & 1)) {
         Battle_Init(7, 7, 0);
         Battle_RegisterPlayerEntry(0, RegisterPlayer(0, 0, "1P", GetNameSlot(1)));
         Battle_RegisterPlayerEntry(1, RegisterPlayer(-1, 0, "COM", GetNameSlot(3)));
     }
 
     while ((sp4E > 0) && (sp4E < 4)) {
-        if (D_800AE540.unk_11F5 & 1) {
+        if (gBattleContext.unk_11F5 & 1) {
             sp4E = 4;
         } else {
             sp4E = func_8002A8A0(sp4E, sp4C);
@@ -1174,48 +1174,48 @@ void Game_RunGymLeaderCastle(void) {
 
         if (sp4E == 4) {
             sp4C = 0;
-            D_800AE540.unk_11F6 = 0;
+            gBattleContext.unk_11F6 = 0;
 
             FRAGMENT_LOAD_AND_CALL(fragment63, 1, 0);
 
-            while (!(D_800AE540.unk_11F6 & 1)) {
+            while (!(gBattleContext.unk_11F6 & 1)) {
                 FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                 main_pool_push_state('STAD');
 
                 FRAGMENT_LOAD(fragment34);
-                FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+                FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
                 main_pool_pop_state('STAD');
 
                 FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
             }
 
-            if (D_800AE540.unk_11F6 & 0x200) {
+            if (gBattleContext.unk_11F6 & 0x200) {
                 FRAGMENT_LOAD_AND_CALL(fragment40, 0, 0);
                 func_800290E4(0x11);
                 func_800290E4(0x15);
             }
 
-            if (D_800AE540.unk_11F6 & 0x20) {
+            if (gBattleContext.unk_11F6 & 0x20) {
                 sp4E = 3;
             }
 
-            if (D_800AE540.unk_11F6 & 0x800) {
+            if (gBattleContext.unk_11F6 & 0x800) {
                 sp4E = 3;
             }
 
-            if (D_800AE540.unk_11F6 & 0x400) {
+            if (gBattleContext.unk_11F6 & 0x400) {
                 sp4C = 1;
             }
 
-            if (D_800AE540.unk_11F6 & 0x100) {
+            if (gBattleContext.unk_11F6 & 0x100) {
                 sp4E = 2;
             }
         }
     }
 
-    if (D_800AE540.unk_11F6 & 0x40) {
+    if (gBattleContext.unk_11F6 & 0x40) {
         gCurrentGameState = STATE_TITLE_SCREEN;
     } else {
         gCurrentGameState = STATE_AREA_SELECT;
@@ -1224,7 +1224,7 @@ void Game_RunGymLeaderCastle(void) {
 
 void func_8002ADE8(s32 arg0) {
     main_pool_push_state('QUIK');
-    func_8002C394(arg0);
+    Battle_StartVersusMode(arg0);
 
     FRAGMENT_LOAD_AND_CALL(fragment63, 0, 0);
     FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
@@ -1232,7 +1232,7 @@ void func_8002ADE8(s32 arg0) {
     main_pool_push_state('FIGT');
 
     FRAGMENT_LOAD(fragment34);
-    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
     main_pool_pop_state('FIGT');
 
@@ -1252,7 +1252,7 @@ void func_8002AF38(void) {
     main_pool_push_state('FIGT');
 
     FRAGMENT_LOAD(fragment34);
-    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
     main_pool_pop_state('FIGT');
 
@@ -1284,11 +1284,11 @@ void func_8002B07C(void) {
 void func_8002B180(void) {
     main_pool_push_state('STAD');
 
-    func_8002BC64(1, 0, 2, 0);
+    Battle_StartRentalBattle(1, 0, 2, 0);
     func_800367A0(0xA0, 0xA, 0);
 
     FRAGMENT_LOAD(fragment34);
-    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &D_800AE540);
+    FRAGMENT_LOAD_AND_CALL(fragment62, 0, &gBattleContext);
 
     main_pool_pop_state('STAD');
 
@@ -1331,7 +1331,7 @@ void Game_Thread(UNUSED LEODiskID* arg) {
 
     main_pool_push_state('GAME');
 
-    D_800AE540.unk_11F2 = 0;
+    gBattleContext.unk_11F2 = 0;
 
     // is this game connected to a Sticker Station?
     if (IsStickerStationConnected() != 0) {

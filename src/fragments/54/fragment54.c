@@ -56,9 +56,9 @@ void func_82B0029C(void) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[gBattleContext.unk_0000]));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[D_800AE540.unk_0000]));
+    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[gBattleContext.unk_0000]));
     Text_SetupDL();
 }
 
@@ -175,7 +175,7 @@ void func_82B00BC8(void) {
 }
 
 void func_82B00C24(void) {
-    if ((D_800AE540.unk_0000 == 7) || (D_800AE540.unk_0000 == 8)) {
+    if ((gBattleContext.unk_0000 == 7) || (gBattleContext.unk_0000 == 8)) {
         func_8000D278(0x10);
     }
 
@@ -220,7 +220,7 @@ s16 func_82B00CB4(void) {
     if (temp_s1 == 'btnA') {
         var_v1 = D_82B0114C + 1;
     } else {
-        if (D_800AE540.unk_0000 != 0) {
+        if (gBattleContext.unk_0000 != 0) {
             func_82B00C24();
         }
         var_v1 = 0;
@@ -231,14 +231,14 @@ s16 func_82B00CB4(void) {
 void func_82B00DD0(unk_func_80027FA0* arg0) {
     D_82B01144 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
 
-    if (D_800AE540.unk_0000 == 7) {
+    if (gBattleContext.unk_0000 == 7) {
         if (arg0->unk_04 < 8) {
             D_82B01148 = BinArchive_GetFile(D_82B01144, 0xD);
         } else {
             D_82B01148 = BinArchive_GetFile(D_82B01144, 0x10);
         }
     } else {
-        D_82B01148 = BinArchive_GetFile(D_82B01144, D_82B01120[D_800AE540.unk_0000]);
+        D_82B01148 = BinArchive_GetFile(D_82B01144, D_82B01120[gBattleContext.unk_0000]);
     }
 }
 
@@ -250,7 +250,7 @@ s32 func_82B00E84(void) {
     main_pool_push_state('menu');
 
     func_80028AFC(2);
-    func_80027FA0(&sp1C, D_800AE540.unk_11F2);
+    func_80027FA0(&sp1C, gBattleContext.unk_11F2);
     Text_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
@@ -262,7 +262,7 @@ s32 func_82B00E84(void) {
     D_82B01140 = GetMessageBank(0x18);
     D_82B0114C = 0;
 
-    if (D_800AE540.unk_0000 == 7) {
+    if (gBattleContext.unk_0000 == 7) {
         if (sp1C.unk_04 < 8) {
             func_8000D1F0(0x2A);
         } else {

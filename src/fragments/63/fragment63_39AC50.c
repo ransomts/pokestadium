@@ -832,12 +832,12 @@ void func_84B07428(unk_D_84B25A28* arg0) {
     temp_s0 = func_80019760(5);
     func_8001A1D0(arg0->unk_20, temp_s0, func_80006314(0, 2, 0x80, 0x60, 1));
 
-    for (count = 0, i = 0; i < D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
     }
 
-    for (count = 6, i = 0; i < D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    for (count = 6, i = 0; i < gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
     }
 }
 
@@ -848,30 +848,30 @@ void func_84B07560(unk_D_84B25A28* arg0) {
 
     func_8001A1D0(arg0->unk_20, tmp, func_80006314(0, 2, 0x60, 0x40, 1));
 
-    for (count = 0, i = 0; i < D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    for (count = 0, i = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
     }
 
-    if (D_800AE540.unk_1194[0].unk_08[1] != NULL) {
-        for (i = 0, count = 6; i < D_800AE540.unk_1194[0].unk_08[1]->unk_214->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[0].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    if (gBattleContext.unk_1194[0].unk_08[1] != NULL) {
+        for (i = 0, count = 6; i < gBattleContext.unk_1194[0].unk_08[1]->unk_214->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[0].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
         }
     }
 
-    for (i = 0, count = 12; i < D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    for (i = 0, count = 12; i < gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
     }
 
-    if (D_800AE540.unk_1194[1].unk_08[1] != NULL) {
-        for (count = 18, i = 0; i < D_800AE540.unk_1194[1].unk_08[1]->unk_214->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, D_800AE540.unk_1194[1].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
+    if (gBattleContext.unk_1194[1].unk_08[1] != NULL) {
+        for (count = 18, i = 0; i < gBattleContext.unk_1194[1].unk_08[1]->unk_214->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gBattleContext.unk_1194[1].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
         }
     }
 }
 
 void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1) {
-    u8* sp24 = BinArchive_GetFile(arg1, D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_003);
-    u8* sp20 = BinArchive_GetFile(arg1, D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_003);
+    u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
+    u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
     func_8001987C();
     FRAGMENT_LOAD(fragment31);
@@ -973,7 +973,7 @@ void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1) {
     arg0->unk_24 = func_80006314(0, 2, 0x40, 0x60, 0);
     arg0->unk_28 = func_80006314(0, 2, 0x40, 0x60, 0);
 
-    if ((D_800AE540.unk_0001 == 0) && ((D_800AE540.unk_1194[0].unk_01 == 2) || (D_800AE540.unk_1194[1].unk_01 == 2))) {
+    if ((gBattleContext.unk_0001 == 0) && ((gBattleContext.unk_1194[0].unk_01 == 2) || (gBattleContext.unk_1194[1].unk_01 == 2))) {
         arg0->unk_02 = 1;
     }
     if (arg0->unk_02 == 1) {

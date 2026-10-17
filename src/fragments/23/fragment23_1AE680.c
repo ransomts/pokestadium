@@ -153,8 +153,8 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
 
     arg0->unk_1E = guRandom() & 0xFFFF;
 
-    arg0->unk_06 = D_80070FA0[arg0->unk_00.unk_00 - 1].unk_06;
-    arg0->unk_07 = D_80070FA0[arg0->unk_00.unk_00 - 1].unk_07;
+    arg0->unk_06 = gSpeciesBaseStats[arg0->unk_00.unk_00 - 1].unk_06;
+    arg0->unk_07 = gSpeciesBaseStats[arg0->unk_00.unk_00 - 1].unk_07;
 
     func_80022734(arg0);
 

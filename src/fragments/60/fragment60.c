@@ -361,7 +361,7 @@ s32 func_82E00BDC(void) {
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         PlaySoundEffect(0x26);
-        D_800AE540.unk_0002 = D_82E023A8;
+        gBattleContext.unk_0002 = D_82E023A8;
         var_v1 = 'slct';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         PlaySoundEffect(3);
@@ -441,7 +441,7 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
     s16 var_v1 = -1;
     s32 sp18 = 1;
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 3:
             var_v1 = 9;
             break;
@@ -456,8 +456,8 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
 
         Text_Init(0x10, 0);
         func_80028AFC(2);
-        func_80027FA0(&D_82E023A0, D_800AE540.unk_11F2);
-        if (D_800AE540.unk_0000 == 3) {
+        func_80027FA0(&D_82E023A0, gBattleContext.unk_11F2);
+        if (gBattleContext.unk_0000 == 3) {
             D_82E023AA = D_82E023A0.unk_05;
         } else {
             D_82E023AA = D_82E023A0.unk_06;

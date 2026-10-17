@@ -295,7 +295,7 @@ void func_82C01054(void) {
     func_8002707C(0x16, 0);
     func_8002707C(0x17, 0);
     func_800286D8();
-    D_800AE540.unk_11F2 = 0;
+    gBattleContext.unk_11F2 = 0;
     func_8004AF24(0);
     func_8003D68C(1);
     D_82C01666 = 0;

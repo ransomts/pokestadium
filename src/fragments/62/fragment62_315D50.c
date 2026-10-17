@@ -4275,9 +4275,9 @@ void func_8432B704(void) {
 }
 
 void func_8432B808(void) {
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 0:
-            switch (D_800AE540.unk_0001) {
+            switch (gBattleContext.unk_0001) {
                 case 0:
                     func_8003D918(0, 0xE);
                     break;
@@ -4317,77 +4317,77 @@ void func_8432B808(void) {
             break;
 
         case 1:
-            func_8003D918(D_800AE540.unk_0003, 0xA);
+            func_8003D918(gBattleContext.unk_0003, 0xA);
             break;
 
         case 2:
-            func_8003D918(D_800AE540.unk_0003, 0xB);
+            func_8003D918(gBattleContext.unk_0003, 0xB);
             break;
 
         case 3:
-            switch (D_800AE540.unk_0002) {
+            switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8003D918(D_800AE540.unk_0003, 6);
+                    func_8003D918(gBattleContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    func_8003D918(D_800AE540.unk_0003, 7);
+                    func_8003D918(gBattleContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    func_8003D918(D_800AE540.unk_0003, 8);
+                    func_8003D918(gBattleContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    func_8003D918(D_800AE540.unk_0003, 9);
+                    func_8003D918(gBattleContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            func_8003D918(D_800AE540.unk_0003, 5);
+            func_8003D918(gBattleContext.unk_0003, 5);
             break;
 
         case 5:
-            func_8003D918(D_800AE540.unk_0003, 4);
+            func_8003D918(gBattleContext.unk_0003, 4);
             break;
 
         case 6:
-            switch (D_800AE540.unk_0002) {
+            switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8003D918(D_800AE540.unk_0003, 0);
+                    func_8003D918(gBattleContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    func_8003D918(D_800AE540.unk_0003, 1);
+                    func_8003D918(gBattleContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    func_8003D918(D_800AE540.unk_0003, 2);
+                    func_8003D918(gBattleContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    func_8003D918(D_800AE540.unk_0003, 3);
+                    func_8003D918(gBattleContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
-            if (D_800AE540.unk_0002 == 9) {
+            if (gBattleContext.unk_0002 == 9) {
                 func_8003D918(5, 0xD);
-            } else if (D_800AE540.unk_0002 == 8) {
-                func_8003D918(D_800AE540.unk_0003, 0xD);
+            } else if (gBattleContext.unk_0002 == 8) {
+                func_8003D918(gBattleContext.unk_0003, 0xD);
             } else {
-                func_8003D918((D_800AE540.unk_0002 * 4) + D_800AE540.unk_0003, 0xC);
+                func_8003D918((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            func_8003D918(D_800AE540.unk_0003, 0xF);
+            func_8003D918(gBattleContext.unk_0003, 0xF);
             break;
 
         case 10:
-            switch (D_800AE540.unk_0001) {
+            switch (gBattleContext.unk_0001) {
                 case 0:
                     func_8003D918(0xFF, 0xE);
                     break;
@@ -4433,13 +4433,13 @@ void func_8432B808(void) {
 }
 
 void func_8432BBC0(void) {
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 16:
             func_8004B1CC(1);
             break;
 
         case 0:
-            switch (D_800AE540.unk_0001) {
+            switch (gBattleContext.unk_0001) {
                 case 0:
                     func_8004BA88(0, 0xE);
                     break;
@@ -4479,77 +4479,77 @@ void func_8432BBC0(void) {
             break;
 
         case 1:
-            func_8004BA88(D_800AE540.unk_0003, 0xA);
+            func_8004BA88(gBattleContext.unk_0003, 0xA);
             break;
 
         case 2:
-            func_8004BA88(D_800AE540.unk_0003, 0xB);
+            func_8004BA88(gBattleContext.unk_0003, 0xB);
             break;
 
         case 3:
-            switch (D_800AE540.unk_0002) {
+            switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8004BA88(D_800AE540.unk_0003, 6);
+                    func_8004BA88(gBattleContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    func_8004BA88(D_800AE540.unk_0003, 7);
+                    func_8004BA88(gBattleContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    func_8004BA88(D_800AE540.unk_0003, 8);
+                    func_8004BA88(gBattleContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    func_8004BA88(D_800AE540.unk_0003, 9);
+                    func_8004BA88(gBattleContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            func_8004BA88(D_800AE540.unk_0003, 5);
+            func_8004BA88(gBattleContext.unk_0003, 5);
             break;
 
         case 5:
-            func_8004BA88(D_800AE540.unk_0003, 4);
+            func_8004BA88(gBattleContext.unk_0003, 4);
             break;
 
         case 6:
-            switch (D_800AE540.unk_0002) {
+            switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8004BA88(D_800AE540.unk_0003, 0);
+                    func_8004BA88(gBattleContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    func_8004BA88(D_800AE540.unk_0003, 1);
+                    func_8004BA88(gBattleContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    func_8004BA88(D_800AE540.unk_0003, 2);
+                    func_8004BA88(gBattleContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    func_8004BA88(D_800AE540.unk_0003, 3);
+                    func_8004BA88(gBattleContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
-            if (D_800AE540.unk_0002 == 9) {
+            if (gBattleContext.unk_0002 == 9) {
                 func_8004BA88(5, 0xD);
-            } else if (D_800AE540.unk_0002 == 8) {
-                func_8004BA88(D_800AE540.unk_0003, 0xD);
+            } else if (gBattleContext.unk_0002 == 8) {
+                func_8004BA88(gBattleContext.unk_0003, 0xD);
             } else {
-                func_8004BA88((D_800AE540.unk_0002 * 4) + D_800AE540.unk_0003, 0xC);
+                func_8004BA88((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            func_8004BA88(D_800AE540.unk_0003, 0xF);
+            func_8004BA88(gBattleContext.unk_0003, 0xF);
             break;
 
         case 10:
-            switch (D_800AE540.unk_0001) {
+            switch (gBattleContext.unk_0001) {
                 case 0:
                     func_8004BA88(0xFF, 0xE);
                     break;

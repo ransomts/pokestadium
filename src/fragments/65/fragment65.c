@@ -504,7 +504,7 @@ void func_84A01EE0(void) {
         D_84A030F0 = 0xFF;
     }
 
-    if (D_800AE540.unk_11F2 == 1) {
+    if (gBattleContext.unk_11F2 == 1) {
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 
         Gfx_DrawSpriteRGBA16(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
@@ -612,7 +612,7 @@ void func_84A02304(void) {
         var_a1 = D_84A030E0 + 0xA;
     }
 
-    if (D_800AE540.unk_11F2 != 0) {
+    if (gBattleContext.unk_11F2 != 0) {
         var_a1 += 0x1F;
     }
 
@@ -735,7 +735,7 @@ s32 func_84A02580(void) {
 s32 func_84A02898(void) {
     s16 i;
 
-    if (D_800AE540.unk_0002 == 7) {
+    if (gBattleContext.unk_0002 == 7) {
         func_8004DF94(0x01100015, 0, 0);
         D_84A030F0 = 5;
     }
@@ -753,7 +753,7 @@ s32 func_84A02898(void) {
 
     PlaySoundEffect(0x01100011);
 
-    if (D_800AE540.unk_0002 == 8) {
+    if (gBattleContext.unk_0002 == 8) {
         D_84A02F00[11].unk_01 = 0x3C;
     } else {
         D_84A02F00[D_84A03180.unk_04].unk_01 = 0x3C;
@@ -803,11 +803,11 @@ s16 func_84A02A34(s16 arg0) {
         }
     }
 
-    D_800AE540.unk_0003 = 1;
+    gBattleContext.unk_0003 = 1;
     if (D_84A030E0 < 8) {
-        D_800AE540.unk_0002 = D_84A030E0;
+        gBattleContext.unk_0002 = D_84A030E0;
     } else {
-        D_800AE540.unk_0002 = D_84A030E0 - 2;
+        gBattleContext.unk_0002 = D_84A030E0 - 2;
     }
     return arg0;
 }
@@ -817,15 +817,15 @@ s16 func_84A02B70(s16 arg0) {
     s16 sp2C = 2;
     s16 var_v1 = D_84A03180.unk_04;
 
-    if (D_800AE540.unk_0002 < 8) {
-        D_84A030E0 = D_800AE540.unk_0002;
+    if (gBattleContext.unk_0002 < 8) {
+        D_84A030E0 = gBattleContext.unk_0002;
     } else {
-        D_84A030E0 = D_800AE540.unk_0002 + 2;
+        D_84A030E0 = gBattleContext.unk_0002 + 2;
     }
 
     if (arg0 == 1) {
         sp2C = 4;
-        if (D_800AE540.unk_0002 < 8) {
+        if (gBattleContext.unk_0002 < 8) {
             var_v1--;
         }
     }
@@ -870,7 +870,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
     D_84A03130 = GetMessageBank(0x19);
     D_84A03134 = GetMessageBank(0x22);
     func_80028AFC(2);
-    func_80027FA0(&D_84A03180, D_800AE540.unk_11F2);
+    func_80027FA0(&D_84A03180, gBattleContext.unk_11F2);
     D_84A03168 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84A0316C = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);

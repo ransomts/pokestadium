@@ -167,7 +167,7 @@ void func_84B0DE04(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     if (arg1->unk_06 == 0x48) {
         Text_SetFont(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x36, "%s%d", func_84B0037C(0x2C), D_800AE540.unk_11F3);
+        Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x36, "%s%d", func_84B0037C(0x2C), gBattleContext.unk_11F3);
     }
 
     Text_SetupDL();
@@ -177,8 +177,8 @@ void func_84B0DF70(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp2C;
     s32 sp28;
 
-    sp2C = D_800AE540.unk_11F3 > 0;
-    sp28 = !!(D_800AE540.unk_11F5 & 2);
+    sp2C = gBattleContext.unk_11F3 > 0;
+    sp28 = !!(gBattleContext.unk_11F5 & 2);
     sp28 = !sp28;
 
     func_84B0DB30(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
@@ -191,12 +191,12 @@ void func_84B0DF70(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     func_84B0DD5C(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 4, 1, func_84B0037C(0x31));
     Text_SetFont(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x4C, "%s%d", func_84B0037C(0x2C), D_800AE540.unk_11F3);
+    Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x4C, "%s%d", func_84B0037C(0x2C), gBattleContext.unk_11F3);
     Text_SetupDL();
 }
 
 void func_84B0E198(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    s32 sp2C = !!(D_800AE540.unk_11F5 & 2);
+    s32 sp2C = !!(gBattleContext.unk_11F5 & 2);
 
     sp2C = !sp2C;
     func_84B0DB30(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
@@ -209,7 +209,7 @@ void func_84B0E198(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
 }
 
 void func_84B0E2D8(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    s32 sp2C = D_800AE540.unk_1194[0].unk_1E < 0x63 && D_800AE540.unk_1194[1].unk_1E < 0x63;
+    s32 sp2C = gBattleContext.unk_1194[0].unk_1E < 0x63 && gBattleContext.unk_1194[1].unk_1E < 0x63;
 
     func_84B0DB30(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
     Text_ResetState();
@@ -237,17 +237,17 @@ void func_84B0E50C(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
-    if ((D_800AE540.unk_0000 == 3) || (D_800AE540.unk_0000 == 6)) {
-        temp_v0 = func_84B0037C(D_800AE540.unk_0000 - 1);
+    if ((gBattleContext.unk_0000 == 3) || (gBattleContext.unk_0000 == 6)) {
+        temp_v0 = func_84B0037C(gBattleContext.unk_0000 - 1);
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 6, temp_v0);
-        temp_v0 = func_84B0037C(D_800AE540.unk_0002 + 7);
+        temp_v0 = func_84B0037C(gBattleContext.unk_0002 + 7);
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x18, temp_v0);
-        temp_v0 = func_84B0037C(D_800AE540.unk_0003 + 0xA);
+        temp_v0 = func_84B0037C(gBattleContext.unk_0003 + 0xA);
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x2A, temp_v0);
     } else {
-        temp_v0 = func_84B0037C(D_800AE540.unk_0000 - 1);
+        temp_v0 = func_84B0037C(gBattleContext.unk_0000 - 1);
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0xA, temp_v0);
-        temp_v0 = func_84B0037C(D_800AE540.unk_0003 + 0xA);
+        temp_v0 = func_84B0037C(gBattleContext.unk_0003 + 0xA);
         Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x26, temp_v0);
     }
 
@@ -264,23 +264,23 @@ void func_84B0E718(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Text_SetFont(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
-    sprintf(sp2C, "%s %s", func_84B0037C(D_800AE540.unk_0002 + 0x13), func_84B0037C(0x36));
+    sprintf(sp2C, "%s %s", func_84B0037C(gBattleContext.unk_0002 + 0x13), func_84B0037C(0x36));
     sp12C = MeasureTextWidth(4, 0, sp2C);
     Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0xA, sp2C);
 
-    if (D_800AE540.unk_0002 < 9) {
-        if (D_800AE540.unk_0002 == 8) {
-            sprintf(sp2C, "%s %d", func_84B0037C(0x1B), D_800AE540.unk_0003);
+    if (gBattleContext.unk_0002 < 9) {
+        if (gBattleContext.unk_0002 == 8) {
+            sprintf(sp2C, "%s %d", func_84B0037C(0x1B), gBattleContext.unk_0003);
             sp12C = MeasureTextWidth(4, 0, sp2C);
             Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
-        } else if (D_800AE540.unk_0003 < 4) {
-            sprintf(&sp2C, "%s %d", func_84B0037C(0x37), D_800AE540.unk_0003);
+        } else if (gBattleContext.unk_0003 < 4) {
+            sprintf(&sp2C, "%s %d", func_84B0037C(0x37), gBattleContext.unk_0003);
             sp12C = MeasureTextWidth(4, 0, sp2C);
             Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
         } else {
-            sp12C = MeasureTextWidth(4, 0, func_84B0037C(D_800AE540.unk_0002 + 0x1D));
+            sp12C = MeasureTextWidth(4, 0, func_84B0037C(gBattleContext.unk_0002 + 0x1D));
             Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26,
-                          func_84B0037C(D_800AE540.unk_0002 + 0x1D));
+                          func_84B0037C(gBattleContext.unk_0002 + 0x1D));
         }
     }
 
@@ -335,8 +335,8 @@ void func_84B0EC18(unk_D_800AE540_1194* arg0) {
 void func_84B0ECE8(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     func_84B0053C(arg1->unk_00 + 8, arg1->unk_02 + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
     func_84B0053C(arg1->unk_00 + 8, arg1->unk_02 + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x14, D_800AE540.unk_1194);
-    func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &D_800AE540.unk_1194[1]);
+    func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x14, gBattleContext.unk_1194);
+    func_84B0E948(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &gBattleContext.unk_1194[1]);
     Text_ResetState();
     func_8001F470();
     Text_SetFont(4, 0);
@@ -344,10 +344,10 @@ void func_84B0ECE8(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Text_Print(arg1->unk_00 + 0x40, arg1->unk_02 + 2, func_84B0037C(0x38));
     func_8001F4C4();
     Text_SetFont(0x10, 0);
-    func_84B0EC18(&D_800AE540.unk_1194[0]);
-    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", D_800AE540.unk_1194[0].unk_1E);
-    func_84B0EC18(&D_800AE540.unk_1194[1]);
-    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x48, "%2d", D_800AE540.unk_1194[1].unk_1E);
+    func_84B0EC18(&gBattleContext.unk_1194[0]);
+    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", gBattleContext.unk_1194[0].unk_1E);
+    func_84B0EC18(&gBattleContext.unk_1194[1]);
+    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x48, "%2d", gBattleContext.unk_1194[1].unk_1E);
     Text_SetFont(4, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_Print(arg1->unk_00 + 0x82, arg1->unk_02 + 0x1F, func_84B0037C(0x39));
@@ -594,18 +594,18 @@ void func_84B0F950(unk_D_84B2665C* arg0, s16 arg1) {
     PlaySoundEffect(4);
 
     if (arg1 - 1 == 2) {
-        if (D_800AE540.unk_11F3 == 0) {
+        if (gBattleContext.unk_11F3 == 0) {
             ptr->unk_0E &= ~3;
         }
-        if (D_800AE540.unk_11F5 & 2) {
+        if (gBattleContext.unk_11F5 & 2) {
             ptr->unk_0E &= ~4;
         }
     } else if (arg1 - 1 == 3) {
-        if (D_800AE540.unk_11F5 & 2) {
+        if (gBattleContext.unk_11F5 & 2) {
             ptr->unk_0E &= ~1;
         }
     } else if ((arg1 - 1 == 4) &&
-               ((D_800AE540.unk_1194[0].unk_1E >= 0x63) || (D_800AE540.unk_1194[1].unk_1E >= 0x63))) {
+               ((gBattleContext.unk_1194[0].unk_1E >= 0x63) || (gBattleContext.unk_1194[1].unk_1E >= 0x63))) {
         ptr->unk_0E &= ~1;
     }
 

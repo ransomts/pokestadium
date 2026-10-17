@@ -3101,7 +3101,7 @@ s32 func_88311C64(s32 arg0, s32 arg1) {
     PokemonStats* var_v1;
     s32 i;
 
-    var_v1 = &D_80070FA0[arg0 - 1];
+    var_v1 = &gSpeciesBaseStats[arg0 - 1];
 
     if (func_80024F68(func_80029080()) == 7) {
         for (i = 0; i < 9; i++) {

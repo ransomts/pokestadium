@@ -230,7 +230,7 @@ void func_82100760(u8* arg0) {
         sp38 = MathUtil_Random_ZeroOne() * sp2C;
     } while (temp_s0 == sp38);
 
-    func_8002BA34(arg0[0], arg0[1], func_8210071C(temp_s0, arg0[2]), func_8210071C(sp38, arg0[2]));
+    Battle_CreateTwoPlayerMatch(arg0[0], arg0[1], func_8210071C(temp_s0, arg0[2]), func_8210071C(sp38, arg0[2]));
 }
 
 static u8 D_82100E64[2][4] = {
@@ -254,8 +254,8 @@ s32 func_82100844(void) {
     if (mod == 0) {
         func_82100760(D_82100E64[low_index]);
     } else {
-        D_800AE540.unk_0000 = 0x19;
-        D_800AE540.unk_0003 = D_82100E64[low_index][3];
+        gBattleContext.unk_0000 = 0x19;
+        gBattleContext.unk_0003 = D_82100E64[low_index][3];
     }
 
     temp_a1 = ((temp_a1 + 1) % 4);

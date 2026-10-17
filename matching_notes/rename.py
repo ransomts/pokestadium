@@ -538,10 +538,10 @@ def is_typedef_row(r, files=None):
 
 
 def c_definition_count(sym):
-    """File-scope C definitions/declarations of `sym` (static or global, incl. array defs)."""
+    """File-scope or local C definitions/declarations of `sym` (static or global, any array dims)."""
     pat = re.compile(
-        r"^(static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
-        r"\s*(\[[^\]]*\])?\s*[;=]", re.M)
+        r"^\s*(static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
+        r"((\[[^\]]*\])*)\s*[;=]", re.M)
     n = 0
     for f in rewrite_files():
         if not f.endswith(".c"):

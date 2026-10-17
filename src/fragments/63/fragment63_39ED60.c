@@ -275,11 +275,11 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
 
     var_s3 = arg0->unk_01 / var_a0;
     arg0->unk_01++;
-    if (D_800AE540.unk_0003 - 1 < var_s3) {
-        var_s3 = D_800AE540.unk_0003 - 1;
+    if (gBattleContext.unk_0003 - 1 < var_s3) {
+        var_s3 = gBattleContext.unk_0003 - 1;
     }
 
-    if (var_s3 < D_800AE540.unk_0003 - 1) {
+    if (var_s3 < gBattleContext.unk_0003 - 1) {
         if ((arg0->unk_01 % var_a0) == 0) {
             func_8004DF94(0x0110000E, var_s3 + 1, 0);
             func_8001BC34(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
@@ -291,7 +291,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
             arg0->unk_04[16 + var_s3].unk_000.unk_14 = arg0;
             arg0->unk_28[var_s3] = 0;
         }
-    } else if (var_s3 == D_800AE540.unk_0003 - 1) {
+    } else if (var_s3 == gBattleContext.unk_0003 - 1) {
         if (var_a1 == (arg0->unk_01 - (var_s3 * var_a0))) {
             func_8004DF94(0x0110000F, 0, 0);
             func_8001BC34(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
@@ -306,7 +306,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
             Vec3f_Set(&arg0->unk_04[24].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
             arg0->unk_04[24].unk_000.unk_14 = arg0;
 
-            for (i = 0; i < D_800AE540.unk_0003 - 1; i++) {
+            for (i = 0; i < gBattleContext.unk_0003 - 1; i++) {
                 arg0->unk_04[8 + i].unk_018 = 0;
             }
         } else {
@@ -327,7 +327,7 @@ void func_84B0B6EC(unk_D_84B25A90* arg0, unk_D_86002F58_004_000* arg1, s16 arg2)
     u16 sp26;
     f32 temp_fv0;
 
-    if (arg2 < D_800AE540.unk_0003) {
+    if (arg2 < gBattleContext.unk_0003) {
         if (arg1->unk_000.unk_0C == NULL) {
             func_8001BC34(arg1, 2, 0, arg0->unk_18);
         }

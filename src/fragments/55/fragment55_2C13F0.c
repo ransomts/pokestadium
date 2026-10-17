@@ -123,7 +123,7 @@ unk_D_83079E70_000* func_83002950(unk_D_83079E70_000* arg0, s32 arg1) {
 s32 func_83002974(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
-    if (func_83002848(arg0->unk_10->unk_1C, arg0->unk_08 - 1, D_800AE540.unk_0001) > 0) {
+    if (func_83002848(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gBattleContext.unk_0001) > 0) {
         arg0->unk_00 = 3;
         arg0->unk_02 = 4;
         arg0->unk_08--;
@@ -140,7 +140,7 @@ s32 func_83002974(unk_D_83079E70* arg0) {
 s32 func_83002A0C(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
-    if (func_83002848(func_83002950(arg0->unk_10, 5), arg0->unk_08 + 5, D_800AE540.unk_0001) > 0) {
+    if (func_83002848(func_83002950(arg0->unk_10, 5), arg0->unk_08 + 5, gBattleContext.unk_0001) > 0) {
         arg0->unk_00 = 3;
         arg0->unk_02 = 4;
         arg0->unk_08++;
@@ -426,11 +426,11 @@ void func_830038DC(void) {
     ptr->unk_08 = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = -1;
-    ptr->unk_06 = func_830027C8(D_800AE540.unk_0001);
+    ptr->unk_06 = func_830027C8(gBattleContext.unk_0001);
     ptr->unk_10 = &ptr->unk_14[0];
 
     for (i = 0; i < 5; i++) {
-        func_83002848(&ptr->unk_14[i], i, D_800AE540.unk_0001);
+        func_83002848(&ptr->unk_14[i], i, gBattleContext.unk_0001);
     }
 }
 

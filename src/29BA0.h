@@ -127,8 +127,8 @@ typedef struct unk_D_800AE540 {
 extern u16 D_80073660[16][256];
 extern s32 gCurrentGameState;
 extern unk_D_800AE520 D_800AE520;
-extern unk_D_800AE540 D_800AE540;
-extern BinArchive* D_800AF738;
+extern unk_D_800AE540 gBattleContext;
+extern BinArchive* gBattleArchive;
 
 s32 Game_DoCopyProtection(s32 state);
 s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4);

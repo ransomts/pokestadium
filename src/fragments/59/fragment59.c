@@ -750,7 +750,7 @@ void func_84101210(s16 arg0) {
         Text_Print(0x48, 0x182, GetMessageString(NULL, 0, D_84103440, D_84103CC8 + 6));
         Text_SetupDL();
 
-        if (D_800AE540.unk_11F2 == 1) {
+        if (gBattleContext.unk_11F2 == 1) {
             temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_84103440, D_84103CC8));
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1017,7 +1017,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
     main_pool_push_state('PSSL');
 
     func_80028AFC(2);
-    func_80027FA0(&D_84103CF0, D_800AE540.unk_11F2);
+    func_80027FA0(&D_84103CF0, gBattleContext.unk_11F2);
     Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);

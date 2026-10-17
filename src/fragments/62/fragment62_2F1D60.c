@@ -167,7 +167,7 @@ void func_843079C4(unk_D_84390010* arg0) {
 }
 
 void func_84307A14(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    if (D_800AE540.unk_0000 != 0x10) {
+    if (gBattleContext.unk_0000 != 0x10) {
         func_843079C4(arg0);
         func_843079C4(arg1);
     }

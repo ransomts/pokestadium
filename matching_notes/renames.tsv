@@ -279,3 +279,161 @@ func_80020928	AnimateIconOffset	p1		Animates the x position of the icon by incre
 func_800209B4	DrawBadgeIcon	p1		Loads a 20x20 RGBA16 texture (var_t4) and draws it with gSPTextureRectangle, used for badge or icon rendering	applied@1f2a33d
 func_80020B88	DrawHealthBar	p1		Chooses health bar segment textures (D_1003B70/D_1003C30/D_1003CF0) based on health ratio and draws them, implementing a health bar	applied@1f2a33d
 func_80021270	DrawExpBar	p1		Selects experience bar segment textures (D_1003EA0/D_1003EC8/D_1003EF0) based on experience ratio and draws them, implementing an exp bar	applied@1f2a33d
+func_80012D88	Graph_DrawOctagon	p11		Creates an octagon vertex array, sets combine mode, loads texture and draws it, indicating it draws an octagon shape.	pending
+func_800131B4	Graph_RenderNode	p11		Calls matrix setup functions then draws either a colored quad or an octagon based on node state, showing it renders a generic graph node.	pending
+func_80013464	Graph_SetupCamera	p11		Initializes viewport, scissor, orthographic and perspective matrices and look?at, typical of a camera node setup.	pending
+func_8001378C	Graph_SetupLights	p11		Allocates a Lights7 struct, clears geometry mode, sets lighting flags and later applies lights, indicating it configures scene lighting.	pending
+func_80013C1C	Graph_SetFog	p11		Sets fog start/end positions and fog color via gSPFogPosition and gDPSetColor, clearly configuring fog parameters.	pending
+func_80013D34	Graph_AddLight	p11		Writes light color and direction into the current Lights7 array and increments the light count, adding a light to the scene.	pending
+func_80013F84	Graph_ApplyLights	p11		Configures ambient light, updates geometry mode for lighting, and issues gSPLight calls for each active light, applying lights to the pipeline.	pending
+func_80014214	Graph_ConditionalDepthRender	p11		Computes transformed Z value and only visits children if within a depth range, showing conditional depth?based rendering.	pending
+func_80014334	Graph_PushRotateTranslate	p11		Builds a rotation?translation matrix, pushes it onto the matrix stack, then visits children, matching a rotate?translate node.	pending
+func_80014384	Graph_PushScaleNode	p11		Pushes a scale matrix onto the stack before traversing children, typical for a scale node.	pending
+func_80014624	Graph_DrawModel	p11		Calls func_800160E0 and func_80016274 with model matrix and texture, then visits children, indicating it draws a 3D model.	pending
+func_80014690	Graph_RenderComplexObject	p11		Composes various matrices, applies scaling, sets render state, handles particle effects and fog before drawing children, a complex object renderer.	pending
+func_80014CB8	Graph_RecordNodePosition	p11		Stores the current matrix translation components into a position record when a particle node is active, recording node position.	pending
+func_80014D70	Graph_RenderBillboard	p11		Computes a billboard matrix using look?at yaw, scales it, sets fog and prim colors, then draws children, matching billboard rendering.	pending
+func_80015094	Graph_SetTextureState	p11		Configures texture LOD, LUT, filtering, combine key, alpha compare, etc., then visits children, setting up texture state for a node.	pending
+func_8001554C	Graph_SetRenderMode	p11		Selects a render mode from a table, sets fog color, and calls gDPSetRenderMode based on lighting flags, configuring the render mode.	pending
+func_800160E0	Graph_BeginLayerRender	p11		Handles layer selection, pipe sync, render state changes, and matrix binding before drawing a display list, initiating rendering for a layer.	pending
+D_8006F080	gRenderFrameCounter	p11		Set by func_8001533C and cleared after texture state changes, used as a per?frame counter.	pending
+D_8006F084	gAnimationFrame	p11		Incremented by func_80015348 and used for animation timing in many node functions.	pending
+D_8006F088	gCurrentCameraNode	p11		Assigned in func_80013464 when a camera node is processed and later referenced for viewport and matrix setup.	pending
+D_8006F08C	gCurrentTextureNode	p11		Set before traversing children in func_80015094 and cleared after, indicating the active texture?state node.	pending
+D_8006F090	gCurrentLightNode	p11		Assigned in func_8001378C when processing a lighting node and used for light configuration.	pending
+func_8002B6BC	Battle_ClearSelectedMonIndices	p2		Resets D_800AE540.unk_11E4 entries to 0xFF and clears the active side count, indicating selected Pok?mon indices are cleared	applied@272a37c
+func_8002B924	Pokemon_InitFromSpeciesLevel	p2		Initializes a Pok?mon struct with species arg1 and level arg2, setting base stats, experience, and name fields	applied@272a37c
+func_8002BA34	Battle_CreateTwoPlayerMatch	p2		Sets up a two?player battle by initializing the battle, registering two players, adding their party Pok?mon, and recording entries	applied@272a37c
+func_8002BB7C	Battle_LoadTeamFromSaveSlot	p2		Loads a team from a save slot (arg2), registers the player, reads the team file, and adds up to six Pok?mon to the party	applied@272a37c
+func_8002BC64	Battle_StartRentalBattle	p2		Initializes a rental battle, loading up to four participant teams via Battle_LoadTeamFromSaveSlot based on provided arguments	applied@272a37c
+func_8002BD14	Battle_IsMonIndexSelected	p2		Iterates over D_800AE540.unk_11E4[0] up to the current side count to determine if a given Pok?mon index has already been selected	applied@272a37c
+func_8002BFC4	Battle_LoadPartyFromArchive	p2		Retrieves a party definition from the binary archive (D_800AF738) and populates a player?s party with the contained Pok?mon data	applied@272a37c
+func_8002C128	Battle_InitializeFromMode	p2		Loads the battle asset archive and selects the appropriate party data based on the current battle mode (D_800AE540.unk_0000) using Battle_LoadPartyFromArchive	applied@272a37c
+func_8002C394	Battle_StartVersusMode	p2		Sets up a versus battle, registers player slots, loads two alternating parties, and toggles a flag to alternate which side gets which party	applied@272a37c
+func_8002C538	Battle_PackStateForSave	p2		Collects current battle context into a save?state struct, copying arrays and player data before invoking the save routine	applied@272a37c
+func_8002C5E8	Battle_LoadStateFromSave	p2		Restores a previously saved battle state, rebuilding the battle context, registering players, and re?adding party Pok?mon from the saved data	applied@272a37c
+D_800AE540	gBattleContext	p2		Global structure holding all battle state fields (mode, side counts, player arrays, selected Pok?mon indices, flags, etc.) used throughout the file	applied@272a37c
+D_800AF738	gBattleArchive	p2		Pointer to the loaded binary archive containing party definitions; assigned by Asset_Load2 and accessed by Battle_LoadPartyFromArchive	applied@272a37c
+D_80070FA0	gSpeciesBaseStats	p2		Array indexed by species ID (arg1?1) providing base stat fields (unk_06, unk_07) used when initializing a Pok?mon?s data	applied@272a37c
+D_80075680	gBattleTimerLimits	p2		Static array of three timer thresholds (1,?15,?30) likely used for battle time?limit settings	applied@272a37c
+D_80075684	gBattleToggleFlag	p2		Static flag toggled (XOR?1) each call to Battle_StartVersusMode to alternate which side receives which party data	applied@272a37c
+func_80044B20	Audio_Init	p3		Initializes audio streaming buffers and DMA queue, called at startup with heap and size parameters	pending
+func_80044CBC	Audio_StartChannel	p3		Starts playback on a channel, setting state flags and volume, guarded by D_800785F0	pending
+func_80044D78	Audio_SetVolumeFade	p3		Configures a volume fade by computing a step and setting channel state to 5 or 1	pending
+func_80044E54	Audio_IsChannelActive	p3		Returns 0 when channel state equals 2 (idle), otherwise 1, indicating activity	pending
+func_80044E80	Audio_SetPaused	p3		Toggles global pause flag D_800785F0 based on argument	pending
+func_80044EA4	Audio_ProcessChannels	p3		Main per?frame loop that updates DMA, mixes samples and advances channel state machines	pending
+func_800455DC	Audio_DmaTransfer	p3		Performs chunked DMA from ROM to RAM using OSPi, updating message queue and cache	pending
+func_800456D0	AudioChannel_Init	p3		Initializes an audio channel struct, zeroing fields and setting callback and state	pending
+func_80045780	AudioChannel_Update	p3		Advances channel state machine, handling DMA completion, buffer refill and playback progression	pending
+func_800459E0	AudioChannel_Consume	p3		Consumes requested bytes from the channel buffer when in state 3, updating pointers	pending
+func_80045A48	AudioChannel_StartPlayback	p3		Transitions channel state from 2 to 3, indicating playback should begin	pending
+func_80045A68	AudioChannel_Stop	p3		Sets channel state to 4, marking it as stopped	pending
+D_800785F0	gAudioPaused	p3		Global flag toggled by Audio_SetPaused; 1 means audio is paused	pending
+D_800FCED0	gAudioTransferPending	p3		Flag set to 1 when a DMA writeback occurs and cleared after processing	pending
+D_800FCED8	gAudioChannel	p3		Array of two audio channel structs used throughout the module	pending
+D_800FCEE0	gAudioSampleData	p3		Pointer into each channel struct (+0x198) used as source sample buffer	pending
+D_800FCEE8	gAudioChunkSizeLarge	p3		Half of the first size argument passed to Audio_Init, used as large DMA chunk size	pending
+D_800FCEEC	gAudioChunkSizeSmall	p3		Half of the second size argument passed to Audio_Init, used as small DMA chunk size	pending
+func_80019F84	SpriteDisplay_InitGeoLayout	p4		called after SpriteDisplay_Alloc to process a static geo layout command array and initialize the sprite display geometry	pending
+func_8001A1D0	SpriteDisplay_SetDepthBuffer	p4		sets each slot's depth buffer via func_80006414, indicating it configures depth for the sprite display	pending
+func_8001A250	SpriteDisplay_SetScaleTable	p4		assigns arg1 to arg0->unk_18, which is later used as a scaling table for sprite slots	pending
+func_8001A46C	SpriteDisplay_ConfigSlotWithAnim	p4		configures a sprite slot using an animation struct (arg2) and sets animation-specific fields	pending
+func_8001A654	U16Buffer_Transform	p4		iterates over a u16 buffer applying a function pointer arg2, indicating a generic buffer transformation	pending
+func_8001A6D4	SpriteImage_Transform	p4		calls func_8001A654 on a sprite image's pixel buffer, applying a transform to the image data	pending
+func_8001A714	SpriteDisplay_RenderSlot	p4		renders a sprite slot, sets up camera, framebuffer and draws the sprite using Gfx functions	pending
+func_8001AA18	SpriteDisplay_TryAdvance	p4		attempts to advance to the next ready sprite slot, handling callbacks and rendering the slot	pending
+func_8001AEEC	SpriteDisplay_SetCurrentSlotFramebuffer	p4		sets up the framebuffer for the currently active sprite slot when arg1 matches arg0->unk_03	pending
+func_8001AFD8	SpriteDisplay_GetImagePtr	p4		returns the image pointer of a sprite slot's depth buffer, used for direct pixel access	pending
+func_8001B058	SpriteAssets_Load	p4		loads asset archive into D_800ABE10.unk_A04.unk_10 via Asset_Load2, indicating a sprite asset loader	pending
+func_8001B140	SetCurrentCameraNode	p4		sets D_800AC830 to the provided GraphNode when arg0 is zero, likely storing the current camera node	pending
+D_800AC830	gCameraNode	p4		used as a GraphNode pointer for camera positioning in func_8001B9D4, indicating it stores the current camera node	pending
+D_800AC834	gDebugMode	p4		controls debug text output in func_8001B9D4, selecting which debug info to print	pending
+D_800ABE10	gAssetManager	p4		holds .unk_A04.unk_0C and .unk_A04.unk_10 used for asset loading and callbacks throughout the file	pending
+D_8006F350	sSpriteGeoLayoutCommands	p4		static array of geo layout commands passed to process_geo_layout for sprite display initialization	pending
+func_8003CADC	AudioTask_Build	p5		constructs an OSTask for audio playback using __am audio manager structures and ACMD lists	pending
+func_8003D264	Audio_SetMusicEnabled	p5		sets D_80077D90 flag and D_80077D94 volume to enable or disable music playback	pending
+func_8003D2B8	Audio_StartMusicFade	p5		initialises music fade state (D_80077D9C) and stores target track in D_80077DA0	pending
+func_8003D32C	Audio_MusicFadeUpdate	p5		updates the music fade state machine based on D_80077D9C and controls volume fades	pending
+func_8003D494	Audio_IsMusicEnabled	p5		returns the value of D_80077D90[0] indicating if music is currently enabled	pending
+func_8003D4A0	Audio_SetPauseState	p5		sets D_80077DA8 to pause or resume audio and reinitialises AI frequency when unpausing	pending
+func_8003D514	Audio_GetUnitReadyStatus	p5		returns unit?ready result (D_800FC828) and value (D_800FC825) when D_80077DAC is set	pending
+func_8003D54C	Audio_SetUnitReadyFlag	p5		sets the D_80077DAC flag controlling whether unit?ready status is reported	pending
+D_80077D90	gMusicEnabled	p5		used as a boolean flag (index?0) to indicate whether music playback is active	pending
+D_80077D94	gMusicVolume	p5		holds the current music volume multiplier, set in Audio_SetMusicEnabled and Audio_StartMusicFade	pending
+D_80077D9C	gMusicFadeState	p5		acts as a state variable for the music fade state machine processed in Audio_MusicFadeUpdate	pending
+D_80077DA0	gMusicFadeTargetTrack	p5		stores the track ID passed to Audio_StartMusicFade and later used in func_80042AB0	pending
+D_80077DA4	gMusicFadeTimer	p5		used as a counter/timer within the music fade state machine in Audio_MusicFadeUpdate	pending
+D_80077DAC	gAudioUnitReady	p5		controls whether unit?ready information is reported in Audio_GetUnitReadyStatus	pending
+D_80077DD4	gMusicChannel2Volume	p5		used for gradual volume reduction of music channel?2 in the main audio task loop	pending
+D_80077DD8	gMusicChannel2Step	p5		subtracted from D_80077DD4 each frame to implement the fade step for channel?2	pending
+D_800FCAD4	gAudioOutputRate	p5		initialized from ALSynConfig->outputRate and later used to restore AI frequency when unpausing	pending
+D_800FCB08	gAudioPiHandle	p5		stores the OSPiHandle returned by osCartRomInit for DMA operations in __amDMA	pending
+D_800ABCC0	gAnimChannels	p6		global array holds two animation channel structs used by Anim_Get* functions	pending
+D_800ABCF0	gCurrentAnimChannelIdx	p6		global index tracks the currently active animation channel (set to -1 on reset)	pending
+func_8002D860	MenuScroll_Init	p7		initializes menu scroll struct using list functions and sets current index	pending
+func_8002D8C8	DrawTextureRectFromInfo	p7		loads texture from struct and draws a rectangle on screen	pending
+func_8002DCB8	MenuScroll_ProcessInputLR	p7		handles left/right input (0x800/0x400) for menu scrolling	pending
+func_8002DE78	MenuScroll_ProcessInputAccelerated	p7		processes menu scroll input with accelerated step when button 0x2000 held	pending
+func_8002DF68	NumericInput_HandleDirection	p7		adjusts numeric value based on direction codes (0x200,0x100,0x800,0x400)	pending
+func_8002E0F4	NumericInput_ReadAndHandle	p7		reads controller direction and forwards to NumericInput_HandleDirection	pending
+func_8002E128	NumericInput_HandleDirectionStep	p7		handles numeric input with step size multiplied by 10 for certain directions	pending
+func_8002E244	DrawNumber	p7		renders an integer using digit textures from gDigitTextureIds	pending
+func_8002E5A0	DrawNumberPadded	p7		draws a number with fixed digit count, handling leading zeros	pending
+func_8002EBD8	GetInputDirectionSign	p7		returns -1, 0, or 1 based on input flag bits 0x4000/0x8000	pending
+func_8002EE78	ControllerMsgQueue_Init	p7		creates the controller message queue used for input handling	pending
+func_8002EEA8	ControllerMsgQueue_SendAndRead	p7		sends a message, starts controller input read, and updates game state	pending
+func_8002EEEC	ControllerMsgQueue_Flush	p7		sends a NULL message to clear the controller message queue	pending
+func_8002EF18	ControllerMsgQueue_Recv	p7		receives a message from the controller message queue	pending
+D_800AF750	gControllerMsgQueue	p7		static OSMesgQueue used for controller input messaging	pending
+D_800AF768	gControllerMsg	p7		static s32 buffer passed to osCreateMesgQueue for controller messages	pending
+D_800758A8	gDigitTextureIds	p7		array of texture IDs used to draw digit characters in number rendering functions	pending
+D_80075910	gMoveTargetTypeTable	p7		lookup table mapping move indices to target type values used by GetMoveTargetType	pending
+D_80075940	gFadeGrayColor	p7		gray color constant used as target in FadeColorTowardGray	pending
+D_80076270	gIdentityMtx	p8		Identity matrix (65536 = 1.0) used as default transform in rendering paths.	pending
+D_800762B0	gModelSetupDL	p8		Three?command display list that sets geometry mode, pipe sync and combine, used before drawing models.	pending
+D_800762C8	gModelRenderDL	p8		Five?command display list that sets geometry mode, pipe sync, combine, alpha compare and ends, used for model rendering.	pending
+D_800777A8	gNormalModelSegment	p8		Default model segment pointer selected when unk_01A is not 0x92.	pending
+D_80077950	gSpecialModelSegment	p8		Special model segment pointer selected when unk_01A equals 0x92.	pending
+D_800AF7C0	gModelPhase	p8		Array indexed by mode that drives the rendering state machine (values 0?3 control different draw paths).	pending
+D_800AF7C8	gModelMtxBuffers	p8		Per?index matrix buffers storing copied and transformed matrices for each mode.	pending
+D_800AFFC8	gStadiumModelSlots	p8		2?3 array of StadiumModelSlot structures holding models for each player side and slot.	pending
+D_800B2EA8	gModelTextureData	p8		Opaque data block passed to the model?drawing routine, likely texture or material information.	pending
+func_800328E4	Model_CopyCurrentToBuffer	p8		Copies the current relative matrix into gModelMtxBuffers[index] for later use.	pending
+func_80032940	Model_ConcatCameraMatrix	p8		Concatenates the camera matrix (from D_8006F088) onto the stored matrix buffer for the given index.	pending
+func_80032990	Model_ApplyScaleAndTranslation	p8		Extracts scale from a vector, builds scale and translation matrices, and combines them into the buffer matrix.	pending
+func_80032A34	ModelSlot_Reset	p8		Iterates over the three slots of a StadiumModelSlot array and clears the model's unknown field to zero.	pending
+func_80032A7C	Model_SetRenderColors	p8		Sets primitive and environment colors based on D_8006F09C->unk_01A before rendering a model.	pending
+func_80032BD4	Model_DrawCurrent	p8		Selects the current model slot, prepares matrices, and draws the model using the appropriate segment (special or normal).	pending
+func_80032D28	Model_DrawIfReady	p8		Draws the model only when func_800325AC() returns 0 and the phase counter is ?2, using a different draw routine.	pending
+func_80032E00	Model_DrawSegment	p8		Builds a full transformation matrix, loads it, and issues commands to draw the selected model segment.	pending
+func_80032F94	Model_RenderStateMachine	p8		Dispatches rendering based on the current mode and phase, handling special cases, animation steps, and default drawing.	pending
+func_80030010	Cam_SetupCameraParams	p9		Uses Cam_GetFov and copies camera struct fields to configure a camera, indicating it sets up camera parameters	pending
+func_800300CC	Cam_SetupDefaultCamera	p9		Sets a default FOV of 45.0f for the active camera, indicating default camera setup	pending
+func_8003013C	Cam_GetCameraAngles	p9		Decomposes the camera matrix and stores angle offsets in the output struct, suggesting it retrieves camera angles	pending
+func_800301A4	Cam_GetCameraAnglesInverse	p9		Decomposes the camera matrix with inverted offsets, indicating it provides an alternate angle set	pending
+func_80030210	Cam_SetActiveNode	p9		Assigns arg1 to D_80075F80->unk_20 when arg0==0, linking a node as the active camera node	pending
+func_80030228	Cam_SetActiveCameraParams	p9		Stores arg1 in D_80075F80->unk_24 for arg0==0, establishing active camera parameters	pending
+func_80030240	Cam_SetActiveGraphNode	p9		Routes GraphNode pointers into D_80075F80 based on node type, binding graph nodes to the active camera	pending
+func_800302A4	Cam_SetupQuadVertices	p9		Populates D_800761B0 array with vertex positions for a textured quad, used for camera rendering	pending
+func_800303C8	Cam_RenderView	p9		Renders the camera view, measures text width, loads textures and draws triangles, clearly a view rendering routine	pending
+func_8003107C	Cam_ConvertInputToState	p9		Copies fields from an input struct into a camera state struct, zero?initialising the destination	pending
+func_80031140	Cam_ConvertStateToInput	p9		Copies camera state fields back into an input struct, the inverse of Cam_ConvertInputToState	pending
+func_80031204	Cam_ProcessGeoLayout	p9		Calls process_geo_layout on a memory block and stores the result in the camera struct, processing geometry layout	pending
+func_80031270	Cam_Create	p9		Factory function allocating and initializing a camera object with texture, geometry and state pointers	pending
+func_80031390	Cam_Initialize	p9		Initialises camera transform, sets up rendering parameters and calls auxiliary setup functions for a new camera	pending
+func_800314BC	Cam_LoadGeometry	p9		Loads geometry fragments for the camera based on the current mode and attaches them to graph nodes	pending
+func_80031660	Cam_Update	p9		Main camera update routine that prepares the framebuffer and advances camera state, returning the framebuffer pointer	pending
+func_800317D8	Cam_IsMonIndexDisplayable	p9		Checks if the camera's associated monster index is within displayable range, returning a boolean	pending
+func_8003181C	Cam_FindActiveIndex	p9		Iterates over camera array to find the first active camera with state==1, returning its index	pending
+func_800318AC	Cam_GetCurrent	p9		Returns the global pointer D_80075F84 representing the currently active camera	pending
+D_80075E40	gCamDistances	p9		Array of s16 distance values used by camera calculations, indicating a table of preset distances	pending
+D_80075F80	gCamPrimary	p9		Global pointer to the primary camera object, referenced throughout camera functions	pending
+D_80075F84	gCamSecondary	p9		Global pointer to the secondary/active camera object, used for rendering and updates	pending
+D_80075F88	gCamFovTable	p9		Two?element float table (0x42200000, 0x41C80000) providing FOV values for camera modes	pending
+D_80075F90	gCamFramebuffer	p9		Pointer to the framebuffer texture used for camera rendering, cleared in Cam_ResetUnkF90	pending
+D_80075F94	gCamTexWidth	p9		Width (200) of the camera texture used in rendering quads	pending
+D_80075F98	gCamTexHeight	p9		Height (43) of the camera texture used in rendering quads	pending
+D_80075F9C	gCamTextWidth	p9		Stores the width of the camera label text measured by MeasureTextWidth	pending
+D_8007616C	gCamGeoLayoutIndices	p9		Array mapping camera mode indices to geometry layout IDs, used in Cam_LoadGeometry	pending
+D_800761B0	gCamQuadVertices	p9		Array of 12 vertex structs defining the quad geometry for camera view rendering	pending

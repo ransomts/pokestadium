@@ -1779,7 +1779,7 @@ void func_843172A0(unk_D_84390010* arg0, unk_D_84390010_654* arg1) {
     UNUSED s32 pad;
     s32 var_v1;
 
-    if (D_800AE540.unk_0000 != 0x10) {
+    if (gBattleContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
             func_84311F30(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
                           1);
@@ -1838,7 +1838,7 @@ void func_84317558(unk_D_84390010* arg0, unk_D_84390010_654* arg1) {
     unk_D_800AE540_0004* sp24 = arg0->unk_720->unk_08[arg0->unk_728.unk_16C];
     s32 sp20;
 
-    if (D_800AE540.unk_0000 != 0x10) {
+    if (gBattleContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
             func_843128A0(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
                           1);

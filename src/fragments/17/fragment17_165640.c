@@ -439,23 +439,23 @@ void func_86B06AB4(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4,
 }
 
 void func_86B06B38(void) {
-    if (D_800AE540.unk_11F2 == 1) {
+    if (gBattleContext.unk_11F2 == 1) {
         func_86B06AB4(D_86B0FA60, &D_300C6D0, -250.0f, 0xC8, 0x18, 0x18);
     }
 
     func_86B06AB4(D_86B0FA54, &D_3000180, -250.0f, 0xC8, 0x40, 0x18);
 
-    if (D_800AE540.unk_0002 == 0) {
+    if (gBattleContext.unk_0002 == 0) {
         func_86B06AB4(D_86B0FA5C, &D_30060E0, -170.0f, 0x3C, 0x88, 0x14);
-    } else if (D_800AE540.unk_0002 == 1) {
+    } else if (gBattleContext.unk_0002 == 1) {
         func_86B06AB4(D_86B0FA5C, &D_3006B80, -170.0f, 0x3C, 0x78, 0x14);
-    } else if (D_800AE540.unk_0002 == 2) {
+    } else if (gBattleContext.unk_0002 == 2) {
         func_86B06AB4(D_86B0FA5C, &D_3004E20, -170.0f, 0x3C, 0x78, 0x14);
-    } else if (D_800AE540.unk_0002 == 3) {
+    } else if (gBattleContext.unk_0002 == 3) {
         func_86B06AB4(D_86B0FA5C, &D_3005780, -170.0f, 0x3C, 0x78, 0x14);
     }
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         case 1:
             func_86B06AB4(D_86B0FA58, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
@@ -523,12 +523,12 @@ void func_86B06F60(void) {
 }
 
 void func_86B06F74(void) {
-    if (D_800AE540.unk_1194[0].unk_1C == 1) {
-        D_86B10690 = D_800AE540.unk_1194[0].unk_08[0];
-        D_86B10694 = &D_800AE540.unk_1194[0];
+    if (gBattleContext.unk_1194[0].unk_1C == 1) {
+        D_86B10690 = gBattleContext.unk_1194[0].unk_08[0];
+        D_86B10694 = &gBattleContext.unk_1194[0];
     } else {
-        D_86B10690 = D_800AE540.unk_1194[1].unk_08[0];
-        D_86B10694 = &D_800AE540.unk_1194[1];
+        D_86B10690 = gBattleContext.unk_1194[1].unk_08[0];
+        D_86B10694 = &gBattleContext.unk_1194[1];
     }
 }
 
@@ -554,7 +554,7 @@ s32 func_86B06FFC(void) {
             }
 
             if (func_86B08C44(D_86B0FA7C->unk_00) != 0) {
-                if ((D_800AE540.unk_0001 == 7) && (D_86B0FA78->unk_17C == 5)) {
+                if ((gBattleContext.unk_0001 == 7) && (D_86B0FA78->unk_17C == 5)) {
                     return 1;
                 }
                 func_86B08E50(3, 0x1E);
@@ -721,7 +721,7 @@ void func_86B075EC(void) {
                 func_86B09928(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
                               D_86B0FA58->unk_A0, &D_86B0FA54->unk_B0);
 
-                if (D_800AE540.unk_11F2 == 1) {
+                if (gBattleContext.unk_11F2 == 1) {
                     func_86B09AD8(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
                                   D_86B0FA58->unk_9C - 2, D_86B0FA60->unk_9E, D_86B0FA60->unk_A0);
                 }
@@ -772,7 +772,7 @@ void func_86B075EC(void) {
                 func_86B09928(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
                               D_86B0FA58->unk_A0, D_86B0DD40);
 
-                if (D_800AE540.unk_11F2 == 1) {
+                if (gBattleContext.unk_11F2 == 1) {
                     func_86B09AD8(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
                                   D_86B0FA58->unk_9C - 2, D_86B0FA60->unk_9E, D_86B0FA60->unk_A0);
                 }
@@ -887,7 +887,7 @@ void func_86B08034(void) {
     s32 var_s1;
     void (*temp_s2)(void) = Util_ConvertAddrToVirtAddr(func_8140C734);
 
-    if (D_800AE540.unk_0001 == 7) {
+    if (gBattleContext.unk_0001 == 7) {
         for (i = 0; i < 100; i++) {
             func_86B06FCC();
             func_87901C20();
@@ -898,7 +898,7 @@ void func_86B08034(void) {
         }
     }
 
-    if (D_800AE540.unk_0001 == 7) {
+    if (gBattleContext.unk_0001 == 7) {
         var_s1 = 0x64;
     } else {
         var_s1 = 0xA;
@@ -908,7 +908,7 @@ void func_86B08034(void) {
     func_8004B9C4(var_s1 - 2);
 
     for (i = 0; i < var_s1; i++) {
-        if (D_800AE540.unk_0001 == 7) {
+        if (gBattleContext.unk_0001 == 7) {
             func_86B06FCC();
             func_87901C20();
             temp_s2();
@@ -922,7 +922,7 @@ void func_86B08034(void) {
         }
     }
 
-    if (D_800AE540.unk_0001 == 7) {
+    if (gBattleContext.unk_0001 == 7) {
         for (i = 0; i < 30; i++) {
             func_86B06FCC();
             func_87901C20();
@@ -941,12 +941,12 @@ void func_86B0819C(void) {
     void* temp_v0_3;
     unk_D_8690A610_018* temp_v0_6;
 
-    D_86B0FA42 = D_86B0DE48[D_800AE540.unk_0001];
-    if (D_800AE540.unk_0001 == 7) {
-        D_86B0FA42 += D_800AE540.unk_0002;
+    D_86B0FA42 = D_86B0DE48[gBattleContext.unk_0001];
+    if (gBattleContext.unk_0001 == 7) {
+        D_86B0FA42 += gBattleContext.unk_0002;
     }
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         case 1:
             D_86B0FA44 = 4;
             break;
@@ -956,7 +956,7 @@ void func_86B0819C(void) {
             break;
 
         case 3:
-            D_86B0FA44 = D_800AE540.unk_0002;
+            D_86B0FA44 = gBattleContext.unk_0002;
             break;
 
         case 4:
@@ -968,7 +968,7 @@ void func_86B0819C(void) {
             break;
 
         case 6:
-            D_86B0FA44 = D_800AE540.unk_0002;
+            D_86B0FA44 = gBattleContext.unk_0002;
             break;
 
         default:
@@ -1042,7 +1042,7 @@ void func_86B0819C(void) {
 
     func_86B06F74();
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         case 1:
         case 2:
         case 4:
@@ -1055,7 +1055,7 @@ void func_86B0819C(void) {
             break;
 
         default:
-            if (D_800AE540.unk_0002 == 3) {
+            if (gBattleContext.unk_0002 == 3) {
                 D_86B0FA74 = 1;
                 func_86B06E34();
                 func_86B06E80();

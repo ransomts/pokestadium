@@ -747,7 +747,7 @@ void func_840026D8(void) {
     }
 
     if (D_84002D18.unk_02 == 3) {
-        D_800AE540.unk_11EC = D_84002BE4;
+        gBattleContext.unk_11EC = D_84002BE4;
         temp_v0 = RegisterPlayer(-1, 0, "COM", GetNameSlot(3));
         Battle_RegisterPlayerEntry(1, temp_v0);
         if (D_84002D18.unk_00 == 3) {
@@ -764,14 +764,14 @@ void func_840026D8(void) {
         }
     }
 
-    if (D_800AE540.unk_1194[0].unk_01 == 2) {
-        D_800AE540.unk_1194[0].unk_08[0]->unk_214->unk_003 = 0x35;
-        D_800AE540.unk_1194[0].unk_08[1]->unk_214->unk_003 = 0x35;
+    if (gBattleContext.unk_1194[0].unk_01 == 2) {
+        gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003 = 0x35;
+        gBattleContext.unk_1194[0].unk_08[1]->unk_214->unk_003 = 0x35;
     }
 
-    if (D_800AE540.unk_1194[1].unk_01 == 2) {
-        D_800AE540.unk_1194[1].unk_08[0]->unk_214->unk_003 = 0x35;
-        D_800AE540.unk_1194[1].unk_08[1]->unk_214->unk_003 = 0x35;
+    if (gBattleContext.unk_1194[1].unk_01 == 2) {
+        gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003 = 0x35;
+        gBattleContext.unk_1194[1].unk_08[1]->unk_214->unk_003 = 0x35;
     }
 }
 

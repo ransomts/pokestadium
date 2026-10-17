@@ -25,9 +25,9 @@ static u8 D_84385750[] = {
 };
 
 void func_8430CC20(void) {
-    D_8439012C = D_800AE540.unk_11EF * 0x1E;
-    D_84390130 = D_800AE540.unk_11EE * 0x708;
-    D_84390128 = D_800AE540.unk_11EE * 0x708;
+    D_8439012C = gBattleContext.unk_11EF * 0x1E;
+    D_84390130 = gBattleContext.unk_11EE * 0x708;
+    D_84390128 = gBattleContext.unk_11EE * 0x708;
 }
 
 void func_8430CC84(void) {
@@ -46,7 +46,7 @@ s32 func_8430CCC8(void) {
 }
 
 s32 func_8430CD0C(void) {
-    if (D_800AE540.unk_11ED == 0) {
+    if (gBattleContext.unk_11ED == 0) {
         return 0;
     }
 
@@ -130,7 +130,7 @@ s32 func_8430D02C(void) {
     s32 sp1C = 0;
     s32 var_v0;
 
-    if (D_800AE540.unk_11ED == 0) {
+    if (gBattleContext.unk_11ED == 0) {
         return 0;
     }
 
@@ -165,7 +165,7 @@ s32 func_8430D02C(void) {
 }
 
 s32 func_8430D124(void) {
-    if (D_800AE540.unk_11ED == 0) {
+    if (gBattleContext.unk_11ED == 0) {
         return 0;
     }
 
@@ -196,7 +196,7 @@ s32 func_8430D124(void) {
 }
 
 void func_8430D268(void) {
-    D_84390124 = D_800AE540.unk_11EF * 0x1E;
+    D_84390124 = gBattleContext.unk_11EF * 0x1E;
 }
 
 s32 func_8430D294(void) {
@@ -1318,7 +1318,7 @@ void func_8430F8B8(void) {
 
 void func_8430FB20(void) {
     D_84390288 = 0;
-    if (D_800AE540.unk_0000 == 0x10) {
+    if (gBattleContext.unk_0000 == 0x10) {
         func_8430F5F4();
     } else {
         func_8430F8B8();

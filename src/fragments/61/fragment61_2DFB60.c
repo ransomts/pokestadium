@@ -888,7 +888,7 @@ s32 func_8420AF1C(unk_D_842168A0* arg0, unk_D_84211B50* arg1, unk_D_8423D3A8* ar
     }
 
     for (i = 12; i >= 0; i--) {
-        if (func_8420ACA8(arg0, i, D_800AE540.unk_0001) > 0) {
+        if (func_8420ACA8(arg0, i, gBattleContext.unk_0001) > 0) {
             arg0->unk_00005 = i;
         }
     }

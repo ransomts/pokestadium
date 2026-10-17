@@ -1894,7 +1894,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
     func_82D043CC(0, var_s0, arg0, 0, 0);
 
     if (var_s1 == 0) {
-        func_8002C5E8();
+        Battle_LoadStateFromSave();
         func_8000D278(0x10);
         func_80007990(1);
         func_80006CB4(8);
@@ -1906,7 +1906,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
 
         Stage_AdvanceN(2);
 
-        if (D_800AE540.unk_0000 == 7) {
+        if (gBattleContext.unk_0000 == 7) {
             sp44 = 0x27;
         } else {
             sp44 = 0x20;
@@ -2028,7 +2028,7 @@ s32 func_82D04D50(s32 arg0, UNUSED unk_func_80011B94* arg1) {
     if (arg0 == 5) {
         var_a3 = D_8006F09C->unk_000.unk_14;
         var_a2 = var_a3;
-        if ((var_a3 == 0) && (D_800AE540.unk_11F2 == 1)) {
+        if ((var_a3 == 0) && (gBattleContext.unk_11F2 == 1)) {
             var_a2 = 7;
         }
 
@@ -2554,7 +2554,7 @@ s32 func_82D063E4(void) {
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (D_82D0AB90.unk_00 == 0x1F8)) {
         PlaySoundEffect(2);
         var_a3 = -1;
-        D_800AE540.unk_11F2 ^= 1;
+        gBattleContext.unk_11F2 ^= 1;
     }
 
     if ((sp24 != -1) && (sp22 != sp24)) {
@@ -2800,7 +2800,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
     func_80027FA0(&D_82D0AB90, 0);
     func_80028070(&D_82D0AB98);
     sp53 = (D_82D0AB98 & 4) != 0;
-    D_800AE540.unk_11F2 = sp53;
+    gBattleContext.unk_11F2 = sp53;
     Gfx_InitBuffers(0x10000, 0);
     sp54 = Stage_Create(1, 0, 2, 0, 2, 1);
     Text_Init(0x1C, 0);
@@ -2836,8 +2836,8 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
 
     Stage_Destroy();
 
-    if (D_800AE540.unk_11F2 != sp53) {
-        if (D_800AE540.unk_11F2 == 0) {
+    if (gBattleContext.unk_11F2 != sp53) {
+        if (gBattleContext.unk_11F2 == 0) {
             D_82D0AB98 &= ~4;
         } else {
             D_82D0AB98 |= 4;

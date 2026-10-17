@@ -2201,10 +2201,10 @@ s32 func_8830681C(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
                 arg0->unk_C54.unk_14.unk_00 = 1;
 
-                arg0->unk_C54.unk_14.unk_04[0] = D_80070FA0[sp2C].unk_06;
+                arg0->unk_C54.unk_14.unk_04[0] = gSpeciesBaseStats[sp2C].unk_06;
 
-                if (D_80070FA0[sp2C].unk_06 != D_80070FA0[sp2C].unk_07) {
-                    arg0->unk_C54.unk_14.unk_04[1] = D_80070FA0[sp2C].unk_07;
+                if (gSpeciesBaseStats[sp2C].unk_06 != gSpeciesBaseStats[sp2C].unk_07) {
+                    arg0->unk_C54.unk_14.unk_04[1] = gSpeciesBaseStats[sp2C].unk_07;
                     arg0->unk_C54.unk_14.unk_00++;
                 }
             }

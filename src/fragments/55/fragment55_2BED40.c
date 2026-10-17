@@ -110,18 +110,18 @@ char* func_83000020(s32 arg0) {
 void func_83000058(void) {
     unk_func_80027FA0 sp20;
 
-    if (D_800AE540.unk_0000 != 0xA) {
+    if (gBattleContext.unk_0000 != 0xA) {
         D_83003C88 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
-        if (D_800AE540.unk_0000 == 7) {
+        if (gBattleContext.unk_0000 == 7) {
             func_80028AFC(2);
-            func_80027FA0(&sp20, D_800AE540.unk_11F2);
+            func_80027FA0(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_83003C8C = BinArchive_GetFile(D_83003C88, 0xD);
             } else {
                 D_83003C8C = BinArchive_GetFile(D_83003C88, 0x10);
             }
         } else {
-            D_83003C8C = BinArchive_GetFile(D_83003C88, D_830039C8[D_800AE540.unk_0000]);
+            D_83003C8C = BinArchive_GetFile(D_83003C88, D_830039C8[gBattleContext.unk_0000]);
         }
     }
 }
@@ -636,7 +636,7 @@ void func_830017C0(void) {
 void func_83001A9C(void) {
     Stage_BeginDisplayList();
     if (D_83003C90 != 0) {
-        if (D_800AE540.unk_0000 == 0xA) {
+        if (gBattleContext.unk_0000 == 0xA) {
             func_830007F4();
         } else {
             func_8001D924(D_83003C8C);
@@ -710,7 +710,7 @@ void func_83001CF8(void) {
     D_83003CA6 = 0;
     D_83003C84 = 0;
 
-    D_83003CA0 = func_83000160(&D_800AE540);
+    D_83003CA0 = func_83000160(&gBattleContext);
     if (D_83003CA0 == 0) {
         D_83003CA4 = 0;
     } else {
@@ -739,10 +739,10 @@ void func_83001CF8(void) {
     D_83003CD8 = D_83003CB4;
     D_83003CDC = D_83003CB8;
 
-    D_83003C98 = func_830003A4(D_800AE540.unk_0000);
-    D_83003C9C = func_83000418(D_800AE540.unk_0001);
+    D_83003C98 = func_830003A4(gBattleContext.unk_0000);
+    D_83003C9C = func_83000418(gBattleContext.unk_0001);
 
-    if (D_800AE540.unk_11F2 != 0) {
+    if (gBattleContext.unk_11F2 != 0) {
         D_83003C84 |= 1;
     }
 

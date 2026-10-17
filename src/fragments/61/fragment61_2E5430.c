@@ -171,7 +171,7 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
 }
 
 void func_8420E46C(s16 arg0, s16 arg1) {
-    char* sp54 = func_84200130(D_800AE540.unk_0001 + 0x3F);
+    char* sp54 = func_84200130(gBattleContext.unk_0001 + 0x3F);
     s32 sp50 = MeasureTextWidth(8, 0, sp54);
 
     gSPDisplayList(gDisplayListHead++, D_8006F558);

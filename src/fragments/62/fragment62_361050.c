@@ -114,9 +114,9 @@ u8 func_84376920(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
     s32 var_v1;
 
     if (D_8438AC60[0] == 1) {
-        var_v1 = (D_80070FA0[arg0->unk_0B - 1].unk_04 + 0x4C) >> 2;
+        var_v1 = (gSpeciesBaseStats[arg0->unk_0B - 1].unk_04 + 0x4C) >> 2;
     } else {
-        var_v1 = D_80070FA0[arg0->unk_0B - 1].unk_04 >> 1;
+        var_v1 = gSpeciesBaseStats[arg0->unk_0B - 1].unk_04 >> 1;
     }
 
     if (D_8438AC60[0] != 1) {
@@ -534,7 +534,7 @@ s32 func_84377550(u8 arg0, u8 arg1) {
         return 0;
     }
 
-    var_a0 = D_80070FA0[temp_a0].unk_0F[temp_a1 / 8];
+    var_a0 = gSpeciesBaseStats[temp_a0].unk_0F[temp_a1 / 8];
 
     switch (arg0) {
         case 0x6:
@@ -616,15 +616,15 @@ u8 func_843776FC(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2) {
 
     if (((arg1->unk_01 | (arg1->unk_01 >> 4)) ^ 0xF) != 0) {
         for (i = 0; i < 4; i++) {
-            if (arg2 == D_80070FA0[sp30->unk_0B - 1].unk_0A[i]) {
+            if (arg2 == gSpeciesBaseStats[sp30->unk_0B - 1].unk_0A[i]) {
                 return 1;
             }
 
-            if ((D_84384588[sp36]->unk_00 != 0) && (arg2 == D_80070FA0[D_84384588[sp36]->unk_00 - 1].unk_0A[i])) {
+            if ((D_84384588[sp36]->unk_00 != 0) && (arg2 == gSpeciesBaseStats[D_84384588[sp36]->unk_00 - 1].unk_0A[i])) {
                 return 1;
             }
 
-            if ((D_84384588[sp36]->unk_01 != 0) && (arg2 == D_80070FA0[D_84384588[sp36]->unk_01 - 1].unk_0A[i])) {
+            if ((D_84384588[sp36]->unk_01 != 0) && (arg2 == gSpeciesBaseStats[D_84384588[sp36]->unk_01 - 1].unk_0A[i])) {
                 return 1;
             }
         }
@@ -1358,7 +1358,7 @@ s32 func_84378B0C(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3)
         }
 
         if (spD6 == 0) {
-            for (i = 0; i < 4 && (tmp = D_80070FA0[temp_s2->unk_0B - 1].unk_0A[i]); i++) {
+            for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[temp_s2->unk_0B - 1].unk_0A[i]); i++) {
                 func_843787F4(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
             }
 
@@ -1369,13 +1369,13 @@ s32 func_84378B0C(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3)
             }
 
             if (D_84384588[var_v0_2]->unk_00 != 0) {
-                for (i = 0; i < 4 && (tmp = D_80070FA0[D_84384588[var_v0_2]->unk_00 - 1].unk_0A[i]); i++) {
+                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[D_84384588[var_v0_2]->unk_00 - 1].unk_0A[i]); i++) {
                     func_843787F4(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
                 }
             }
 
             if (D_84384588[var_v0_2]->unk_01 != 0) {
-                for (i = 0; i < 4 && (tmp = D_80070FA0[D_84384588[var_v0_2]->unk_01 - 1].unk_0A[i]) != 0; i++) {
+                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[D_84384588[var_v0_2]->unk_01 - 1].unk_0A[i]) != 0; i++) {
                     func_843787F4(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
                 }
             }
@@ -4046,7 +4046,7 @@ void func_8437E974(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_8
 
         for (j = 0; j < arg2->unk_01[i]; j++) {
             sp73 = temp_s7[j].unk_24;
-            sp6C = &D_80070FA0[temp_s7[j].unk_00.unk_00 - 1];
+            sp6C = &gSpeciesBaseStats[temp_s7[j].unk_00.unk_00 - 1];
 
             arg2->unk_14[j + var_v1].unk_00 = j;
             arg2->unk_14[j + var_v1].unk_04 = 0;
@@ -5557,15 +5557,15 @@ s32 func_84382668(unk_D_800FCB18* arg0, s32 arg1, u8 arg2, u8 arg3) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        if (arg3 == D_80070FA0[arg1 - 1].unk_0A[i]) {
+        if (arg3 == gSpeciesBaseStats[arg1 - 1].unk_0A[i]) {
             return 0;
         }
 
-        if ((D_84384588[arg2]->unk_00 != 0) && (arg3 == D_80070FA0[D_84384588[arg2]->unk_00 - 1].unk_0A[i])) {
+        if ((D_84384588[arg2]->unk_00 != 0) && (arg3 == gSpeciesBaseStats[D_84384588[arg2]->unk_00 - 1].unk_0A[i])) {
             return 0;
         }
 
-        if ((D_84384588[arg2]->unk_01 != 0) && (arg3 == D_80070FA0[D_84384588[arg2]->unk_01 - 1].unk_0A[i])) {
+        if ((D_84384588[arg2]->unk_01 != 0) && (arg3 == gSpeciesBaseStats[D_84384588[arg2]->unk_01 - 1].unk_0A[i])) {
             return 0;
         }
     }

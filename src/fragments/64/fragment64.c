@@ -1206,8 +1206,8 @@ void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 
     for (i = 0; i < arg2->unk_214->unk_002; i++) {
         temp_s0 = &arg2->unk_214->unk_028[i];
         func_80022734(temp_s0);
-        temp_s0->unk_06 = D_80070FA0[temp_s0->unk_00.unk_00 - 1].unk_06;
-        temp_s0->unk_07 = D_80070FA0[temp_s0->unk_00.unk_00 - 1].unk_07;
+        temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_06;
+        temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_07;
         func_8001B0DC(temp_v1->unk_0020[i], 0, temp_s0);
     }
 
@@ -1272,7 +1272,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     D_84803790 = GetMessageBank(0x12);
     D_84803794 = GetMessageBank(6);
 
-    func_84803110(&D_800AE540);
+    func_84803110(&gBattleContext);
     func_8000D1F0(7);
     Stage_Set(sp24);
     func_800078D4(func_84802C40, 8, 8);

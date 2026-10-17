@@ -801,7 +801,7 @@ void func_86B025A4(void) {
         MathUtil_Random_ZeroOne();
     }
 
-    if (D_800AE540.unk_0000 == 0x1A) {
+    if (gBattleContext.unk_0000 == 0x1A) {
         D_86B0F9C8 = 8;
         D_86B0EBDC->unk_2EC = D_86B0DBC0[D_86B0F9C8];
     } else {
@@ -992,7 +992,7 @@ void func_86B03048(void) {
 
     switch (D_86B0EBE0->unk_00) {
         case 0:
-            if (D_800AE540.unk_0000 == 0x1A) {
+            if (gBattleContext.unk_0000 == 0x1A) {
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
                 func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
@@ -1082,7 +1082,7 @@ void func_86B034AC(void) {
 
     switch (D_86B0EBE0->unk_00) {
         case 0:
-            if (D_800AE540.unk_0000 == 0x1A) {
+            if (gBattleContext.unk_0000 == 0x1A) {
                 sprintf(D_86B0F7C8, GetMessageString(NULL, 0, D_86B0EBD0, 0x96));
             } else {
                 func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
@@ -1597,11 +1597,11 @@ void func_86B04DF0(void) {
     }
 
     if (D_86B0EBDC->unk_2F0 == 1) {
-        if (D_800AE540.unk_0000 == 0x1A) {
+        if (gBattleContext.unk_0000 == 0x1A) {
             func_8002817C(D_86B0EBDC->unk_2EC, 1);
             func_80028128(1);
         } else {
-            func_8002817C(D_86B0EBDC->unk_2EC, D_800AE540.unk_11F2);
+            func_8002817C(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
         }
         func_80026684(0x14, 0);
         func_800284B4(2);

@@ -325,15 +325,15 @@ void func_8431A1C8(unk_D_86002F34_00C* arg0) {
     s16 var_v1;
 
     func_8431AE5C();
-    if (D_800AE540.unk_0000 == 0x10) {
-        var_v1 = D_843859E0[D_800AE540.unk_0001].unk_00;
-        if (D_800AE540.unk_0001 == 7) {
-            var_v1 += D_800AE540.unk_0002;
+    if (gBattleContext.unk_0000 == 0x10) {
+        var_v1 = D_843859E0[gBattleContext.unk_0001].unk_00;
+        if (gBattleContext.unk_0001 == 7) {
+            var_v1 += gBattleContext.unk_0002;
         }
     } else {
-        var_v1 = D_843859E0[D_800AE540.unk_0000].unk_00;
-        if (D_800AE540.unk_0000 == 7) {
-            var_v1 += D_800AE540.unk_0002;
+        var_v1 = D_843859E0[gBattleContext.unk_0000].unk_00;
+        if (gBattleContext.unk_0000 == 7) {
+            var_v1 += gBattleContext.unk_0002;
         }
     }
     arg0->unk_24.fovy = D_843859E0[var_v1].unk_0C;
@@ -554,7 +554,7 @@ void func_8431AAAC(unk_D_86002F34_00C* arg0) {
 }
 
 void func_8431AAFC(unk_D_86002F34_00C* arg0) {
-    if ((D_800AE540.unk_0000 == 0x10) && (D_84390240.unk_00->unk_1C == 1)) {
+    if ((gBattleContext.unk_0000 == 0x10) && (D_84390240.unk_00->unk_1C == 1)) {
         func_8430FB68();
     } else if (D_84390240.unk_00->unk_1C == 1) {
         if ((D_84390240.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17) &&

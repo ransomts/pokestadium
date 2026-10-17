@@ -451,12 +451,12 @@ s32 Mon_GetEvolutionLine(unk_func_80026268_arg0* arg0, s32 arg1) {
     s32 var_v1;
 
     if (arg1 == 1) {
-        if (D_80070FA0[temp_v0].unk_06 == D_80070FA0[temp_v0].unk_07) {
+        if (gSpeciesBaseStats[temp_v0].unk_06 == gSpeciesBaseStats[temp_v0].unk_07) {
             return -1;
         }
-        var_v1 = D_80070FA0[temp_v0].unk_07;
+        var_v1 = gSpeciesBaseStats[temp_v0].unk_07;
     } else {
-        var_v1 = D_80070FA0[temp_v0].unk_06;
+        var_v1 = gSpeciesBaseStats[temp_v0].unk_06;
     }
     return var_v1;
 }

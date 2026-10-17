@@ -51,7 +51,7 @@ typedef struct unk_D_80070F84 {
 } unk_D_80070F84; // size = 0x17
 
 extern PokemonStats D_80070F84[];
-extern unk_D_80070F84 D_80070FA0[]; //TODO: is this typed correctly?
+extern unk_D_80070F84 gSpeciesBaseStats[]; //TODO: is this typed correctly?
 
 typedef struct unk_D_80071D88 {
     /* 0x00 */ char* type_name;

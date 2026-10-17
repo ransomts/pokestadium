@@ -2,7 +2,7 @@
 #include "29BA0.h"
 
 s32 func_86B00020(UNUSED s32 arg0, UNUSED s32 arg1) {
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 18:
             return func_86B01190();
 

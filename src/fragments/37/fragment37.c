@@ -349,7 +349,7 @@ void func_822012E8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             Gfx_DrawSpriteRGBA16(arg0, arg1 + (i * 4), 0xC4, 4, var_s2 + (i * 0x620), 0xC4, 0);
         }
 
-        if ((D_800AE540.unk_11F2 != 0) && ((arg3 == 0) || (arg3 == 2) || (arg3 == 3))) {
+        if ((gBattleContext.unk_11F2 != 0) && ((arg3 == 0) || (arg3 == 2) || (arg3 == 3))) {
             Gfx_DrawSpriteRGBA16(arg0 - 0x20, arg1 + 0xD, 0x24, 0x24, D_20144E0, 0x24, 0);
         }
 
@@ -400,7 +400,7 @@ void func_82201654(s16 arg0, s16 arg1) {
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetEnvColor(gDisplayListHead++, 0, 100, 255, 255);
 
-        if (D_800AE540.unk_11F5 & 4) {
+        if (gBattleContext.unk_11F5 & 4) {
             gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, D_82202FA0);
         } else {
             gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, 255);
@@ -709,7 +709,7 @@ s32 func_82202A6C(void) {
     if (func_80007604() == 0) {
         D_82202FA0 += 4;
         if (D_82202FA0 == 0x100) {
-            D_800AE540.unk_11F5 &= 0xFFFB;
+            gBattleContext.unk_11F5 &= 0xFFFB;
             D_82202FA0 = 0xFF;
             D_822031DA = 8;
             D_822031D8 = 0;
@@ -734,7 +734,7 @@ void func_82202B60(void) {
     s16 i;
 
     i = 2;
-    if (D_800AE540.unk_11F5 & 4) {
+    if (gBattleContext.unk_11F5 & 4) {
         func_8004E810(0x96, 7);
         i = 8;
     }
@@ -788,7 +788,7 @@ void func_82202CB8(void) {
     D_822030F4 = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (D_822031E8.unk_00 == 2) {
-        if (D_800AE540.unk_11F2 == 0) {
+        if (gBattleContext.unk_11F2 == 0) {
             D_82203148 = BinArchive_GetFile(D_822030F4, 1);
             D_8220314C = BinArchive_GetFile(D_822030F4, 2);
         } else {
@@ -818,11 +818,11 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_822030F0 = GetMessageBank(0x17);
     func_80028AFC(2);
     func_80027F24(&D_822031E8);
-    func_80027FA0(&D_822031E0, D_800AE540.unk_11F2);
+    func_80027FA0(&D_822031E0, gBattleContext.unk_11F2);
     func_82202CB8();
     D_822031D8 = 8;
 
-    if ((D_822031E0.unk_07 != 0) && !(D_800AE540.unk_11F5 & 4) && !(D_822031E0.unk_00 & 0x100)) {
+    if ((D_822031E0.unk_07 != 0) && !(gBattleContext.unk_11F5 & 4) && !(D_822031E0.unk_00 & 0x100)) {
         D_82202FA0 = 0xFF;
     }
 

@@ -149,9 +149,9 @@ s32 func_86B0A554(void) {
     FRAGMENT_LOAD(fragment31);
 
     func_80028AFC(2);
-    func_80027FA0(&D_86B10830, D_800AE540.unk_11F2);
+    func_80027FA0(&D_86B10830, gBattleContext.unk_11F2);
 
-    if (D_800AE540.unk_11F2 == 1) {
+    if (gBattleContext.unk_11F2 == 1) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         D_86B10828 = BinArchive_GetFile(D_86B10824, 2);
     } else if (D_86B10830.unk_00 & 0x100) {

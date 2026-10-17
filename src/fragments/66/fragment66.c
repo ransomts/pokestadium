@@ -122,7 +122,7 @@ s32 func_8320029C(void) {
     s32 i;
     unk_D_800AE540_0004* var_v1;
 
-    var_v1 = D_800AE540.unk_1194[0].unk_08[0];
+    var_v1 = gBattleContext.unk_1194[0].unk_08[0];
 
     for (i = 0; i < var_v1->unk_002; i++) {
         if (var_v1->unk_01C[i].unk_00.unk_00 == 0x19) {

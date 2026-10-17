@@ -507,7 +507,7 @@ void func_831013FC(void) {
 
 void func_83101608(void) {
     D_83101EE8 = 0;
-    if (D_800AE540.unk_11F2 != 0) {
+    if (gBattleContext.unk_11F2 != 0) {
         D_83101EEC = 1;
     } else {
         D_83101EEC = 0;

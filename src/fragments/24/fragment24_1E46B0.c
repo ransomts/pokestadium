@@ -605,8 +605,8 @@ s32 func_88316240(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C
     s32 idx = *(u8*)&arg0->unk_08 - 1;
     u8 spC[2];
 
-    spC[0] = D_80070FA0[idx].unk_06;
-    spC[1] = D_80070FA0[idx].unk_07;
+    spC[0] = gSpeciesBaseStats[idx].unk_06;
+    spC[1] = gSpeciesBaseStats[idx].unk_07;
 
     if (spC[0] == spC[1]) {
         var_v1 = 1;
@@ -672,8 +672,8 @@ s32 func_883163B8(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014
     s32 idx = *(u8*)&arg0->unk_08 - 1;
     s32 sp8[2];
 
-    sp8[0] = D_80070FA0[idx].unk_06;
-    sp8[1] = D_80070FA0[idx].unk_07;
+    sp8[0] = gSpeciesBaseStats[idx].unk_06;
+    sp8[1] = gSpeciesBaseStats[idx].unk_07;
 
     if (sp8[0] == sp8[1]) {
         var_v1 = 1;

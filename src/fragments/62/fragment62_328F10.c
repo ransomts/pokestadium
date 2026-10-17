@@ -362,7 +362,7 @@ void func_8433F270(unk_D_8140E720* arg0) {
 s16 func_8433F3B4(void) {
     s16 var_v1 = 0x3B;
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 0:
             var_v1 = 0xD;
             break;

@@ -1037,17 +1037,17 @@ void func_82303CA0(unk_D_82305A40* arg0) {
                     }
 
                     if (arg0->unk_0C == 3) {
-                        D_80075680[0] = arg0->unk_01;
-                        D_80075680[1] = arg0->unk_02;
-                        D_80075680[2] = arg0->unk_04;
+                        gBattleTimerLimits[0] = arg0->unk_01;
+                        gBattleTimerLimits[1] = arg0->unk_02;
+                        gBattleTimerLimits[2] = arg0->unk_04;
                         arg0->unk_00 = 3;
                         PlaySoundEffect(0x1D);
                     }
                 } else {
                     if (gPlayer1Controller->buttonPressed & 0x4000) {
-                        arg0->unk_01 = D_80075680[0];
-                        arg0->unk_02 = D_80075680[1];
-                        arg0->unk_04 = D_80075680[2];
+                        arg0->unk_01 = gBattleTimerLimits[0];
+                        arg0->unk_02 = gBattleTimerLimits[1];
+                        arg0->unk_04 = gBattleTimerLimits[2];
                         arg0->unk_00 = 3;
                         PlaySoundEffect(3);
                     }
@@ -1080,9 +1080,9 @@ void func_82303F58(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s32 arg3) {
     arg0->unk_0C = 0;
 
     if (arg3 != 0) {
-        arg0->unk_01 = D_80075680[0];
-        arg0->unk_02 = D_80075680[1];
-        arg0->unk_04 = D_80075680[2];
+        arg0->unk_01 = gBattleTimerLimits[0];
+        arg0->unk_02 = gBattleTimerLimits[1];
+        arg0->unk_04 = gBattleTimerLimits[2];
     }
 }
 
@@ -1394,9 +1394,9 @@ void func_82304D30(unk_D_82305A28* arg0) {
     func_82304C7C(&D_82305AF8[1]);
 
     if (D_82305A40.unk_01 == 1) {
-        D_800AE540.unk_11ED = D_82305A40.unk_01;
-        D_800AE540.unk_11EE = D_82305A40.unk_02;
-        D_800AE540.unk_11EF = D_82305A40.unk_04;
+        gBattleContext.unk_11ED = D_82305A40.unk_01;
+        gBattleContext.unk_11EE = D_82305A40.unk_02;
+        gBattleContext.unk_11EF = D_82305A40.unk_04;
     }
     D_82305AF8[0].unk_0000 = 3;
     D_82305AF8[1].unk_0000 = 3;

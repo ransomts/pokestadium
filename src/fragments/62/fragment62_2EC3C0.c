@@ -274,7 +274,7 @@ void func_843021E8(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk
 
     for (i = 0; i < 4; i++) {
         if (temp_s5->unk_1F[i] != 0) {
-            temp_s4 = &D_80070FA0[arg1];
+            temp_s4 = &gSpeciesBaseStats[arg1];
 
             for (j = 0; j < ARRAY_COUNT(temp_s4->unk_0A); j++) {
                 if ((temp_s4->unk_0A[j] != 0) && (temp_s4->unk_0A[j] == temp_s5->unk_1F[i])) {
@@ -2066,7 +2066,7 @@ void func_84307078(unk_D_800AE540_1194* arg0) {
     func_84306FB8(D_84390010[0]);
     func_84306FB8(D_84390010[1]);
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 0:
         case 1:
         case 2:

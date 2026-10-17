@@ -141,7 +141,7 @@ void func_84329164(unk_D_86002F34_00C* arg0) {
     D_84390240.unk_00->unk_2C = 1;
     func_8002D5D4(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
     func_843179F4(D_843901A0->unk_088, 0x21);
-    if (D_800AE540.unk_0000 != 8) {
+    if (gBattleContext.unk_0000 != 8) {
         func_843184E4(0xC);
     }
     func_8432B588(D_84390010[1]);

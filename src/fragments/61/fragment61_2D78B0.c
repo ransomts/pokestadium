@@ -303,9 +303,9 @@ void func_84201D6C(void) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(0x6A, 0x2C, func_84200130(D_84210D70[D_800AE540.unk_0000]));
+    Text_Print(0x6A, 0x2C, func_84200130(D_84210D70[gBattleContext.unk_0000]));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(0x68, 0x2A, func_84200130(D_84210D70[D_800AE540.unk_0000]));
+    Text_Print(0x68, 0x2A, func_84200130(D_84210D70[gBattleContext.unk_0000]));
     Text_SetupDL();
 }
 
@@ -340,7 +340,7 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
             AnimateIconOffset(0x79, (D_8423D3F8 * 0x1E) + 0xAD);
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            Text_Print(0x7D, 0x8B, "%s %s", func_84200130(D_800AE540.unk_0001 + 0x3F), func_84200130(0x48));
+            Text_Print(0x7D, 0x8B, "%s %s", func_84200130(gBattleContext.unk_0001 + 0x3F), func_84200130(0x48));
             func_84201E70(0x6D, 0x81, 0, func_84200130(0x49));
             func_84201E70(0x6D, 0x81, 1, func_84200130(0x4A));
             func_84201E70(0x6D, 0x81, 2, func_84200130(0x4B));
@@ -433,7 +433,7 @@ void func_842024DC(s16 arg0, s16 arg1) {
     Color_RGBA8 sp30;
     s32 var_t0 = 0;
 
-    if ((D_800AE540.unk_0000 == 0) && (arg1 >= 0)) {
+    if ((gBattleContext.unk_0000 == 0) && (arg1 >= 0)) {
         if (D_84210D48 == 0) {
             var_t0 = 1;
         } else {
@@ -600,7 +600,7 @@ void func_84202AF4(s16 arg0, s16 arg1, s16 arg2) {
 
 void func_84202C20(void) {
     s16 i;
-    unk_D_800AE540_0004* var_v0 = D_800AE540.unk_0004;
+    unk_D_800AE540_0004* var_v0 = gBattleContext.unk_0004;
 
     for (i = 0; i < 4; i++) {
         D_8423D3D8[i].unk_00 = 0;
@@ -613,7 +613,7 @@ void func_84202C20(void) {
             if (!(var_v0->unk_000 & 2)) {
                 D_8423D3D8[var_v0->unk_001].unk_00 = 1;
                 D_8423D3D8[var_v0->unk_001].unk_04 = var_v0;
-            } else if (D_800AE540.unk_0000 == 0) {
+            } else if (gBattleContext.unk_0000 == 0) {
                 D_8423D3D8[var_v0->unk_001].unk_00 = 1;
                 D_8423D3D8[var_v0->unk_001].unk_04 = var_v0;
                 D_8423D3D8[var_v0->unk_001].unk_01 = 4;
@@ -658,7 +658,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
         temp_s3 = func_84210B60(&D_84229EB0, &sp34);
         if (sp34 != NULL) {
             arg0->unk_04->unk_018 = sp34->unk_4D10;
-            if (D_800AE540.unk_0000 != 0) {
+            if (gBattleContext.unk_0000 != 0) {
                 HAL_Strcpy(arg0->unk_04->unk_008, sp34->unk_4D12);
             }
             HAL_Strcpy(arg0->unk_04->unk_214->unk_014, sp34->unk_4D12);
@@ -670,7 +670,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
         }
     } else {
         arg0->unk_04->unk_018 = D_84211B50.unk_001C;
-        if (D_800AE540.unk_0000 != 0) {
+        if (gBattleContext.unk_0000 != 0) {
             HAL_Strcpy(arg0->unk_04->unk_008, D_84211B50.unk_001E);
         }
         HAL_Strcpy(arg0->unk_04->unk_214->unk_014, D_84211B50.unk_001E);
@@ -736,13 +736,13 @@ s32 func_84203210(void) {
     s16 var_s1 = 0;
     s16 var_s2;
 
-    if ((D_800AE540.unk_0000 == 7) && (D_800AE540.unk_0002 == 9)) {
+    if ((gBattleContext.unk_0000 == 7) && (gBattleContext.unk_0002 == 9)) {
         func_8420305C(0);
-        func_8002B6BC();
+        Battle_ClearSelectedMonIndices();
         return 1;
     }
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 0:
             func_8000D1F0(0x2D);
             break;
@@ -790,9 +790,9 @@ s32 func_84203210(void) {
                 if (var_s2 < 4) {
                     func_80023D60(var_s2);
                     func_80024208(var_s2);
-                    D_800AE540.unk_11F0 = func_80025328(var_s2);
+                    gBattleContext.unk_11F0 = func_80025328(var_s2);
                 } else {
-                    D_800AE540.unk_11F0 = 0;
+                    gBattleContext.unk_11F0 = 0;
                 }
 
                 func_84202D18(&D_8423D3D8[(unsigned long)idx], var_s2);
@@ -816,7 +816,7 @@ s32 func_84203210(void) {
     }
 
     func_8420305C(1);
-    func_8002B6BC();
+    Battle_ClearSelectedMonIndices();
     return 1;
 }
 
@@ -824,7 +824,7 @@ s32 func_842034E4(void) {
     s16 var_s1 = 0;
     s16 var_s2;
 
-    switch (D_800AE540.unk_0000) {
+    switch (gBattleContext.unk_0000) {
         case 0:
             func_8000D1F0(0x2D);
             break;
@@ -876,9 +876,9 @@ s32 func_842034E4(void) {
                 if (var_s2 < 4) {
                     func_80023D60(var_s2);
                     func_80024208(var_s2);
-                    D_800AE540.unk_11F0 = func_80025328(var_s2);
+                    gBattleContext.unk_11F0 = func_80025328(var_s2);
                 } else {
-                    D_800AE540.unk_11F0 = 0;
+                    gBattleContext.unk_11F0 = 0;
                 }
                 func_84202D18(&D_8423D3D8[(unsigned long)idx], var_s2);
                 func_8420318C(var_s1, var_s2);
@@ -900,7 +900,7 @@ s32 func_842034E4(void) {
     }
 
     func_8420305C(1);
-    func_8002B6BC();
+    Battle_ClearSelectedMonIndices();
     return 1;
 }
 
@@ -1010,7 +1010,7 @@ void func_84203C90(void) {
 
     temp_a0 = Asset_Load2(0x898000, NULL, 1, 0);
 
-    switch (D_800AE540.unk_0001) {
+    switch (gBattleContext.unk_0001) {
         case 0:
             var_a1 = 0x1A;
             break;
@@ -1055,7 +1055,7 @@ void func_84203C90(void) {
     if (var_a1 == 0) {
         D_84211B38 = NULL;
     } else {
-        if (D_800AE540.unk_11F2 != 0) {
+        if (gBattleContext.unk_11F2 != 0) {
             var_a1 += 0x1F;
         }
         D_84211B38 = BinArchive_GetFile(temp_a0, var_a1);
@@ -1066,12 +1066,12 @@ void func_84203D74(void) {
     unk_func_80027FA0 sp20;
 
     D_84211B30 = ASSET_LOAD2(backgrounds, 1, 1);
-    if (D_800AE540.unk_0000 == 7) {
-        if (D_800AE540.unk_0002 >= 8) {
+    if (gBattleContext.unk_0000 == 7) {
+        if (gBattleContext.unk_0002 >= 8) {
             D_84211B34 = BinArchive_GetFile(D_84211B30, 0xE);
         } else {
             func_80028AFC(2);
-            func_80027FA0(&sp20, D_800AE540.unk_11F2);
+            func_80027FA0(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_84211B34 = BinArchive_GetFile(D_84211B30, 0xD);
             } else {
@@ -1079,7 +1079,7 @@ void func_84203D74(void) {
             }
         }
     } else {
-        D_84211B34 = BinArchive_GetFile(D_84211B30, D_84210D4C[D_800AE540.unk_0000]);
+        D_84211B34 = BinArchive_GetFile(D_84211B30, D_84210D4C[gBattleContext.unk_0000]);
     }
 }
 
@@ -1101,8 +1101,8 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     D_84211B48 = GetMessageBank(0x1A);
     D_84211B4C = GetMessageBank(6);
 
-    func_80028AFC(D_800AE540.unk_0001 / 4);
-    func_80028C48(D_800AE540.unk_0001);
+    func_80028AFC(gBattleContext.unk_0001 / 4);
+    func_80028C48(gBattleContext.unk_0001);
     func_80028EB8();
     func_84203D74();
     func_8001B058();
@@ -1111,11 +1111,11 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
 
     if (arg0 == 1) {
         var_v1 = func_84203BBC();
-    } else if (D_800AE540.unk_11F6 & 0x20) {
+    } else if (gBattleContext.unk_11F6 & 0x20) {
         var_v1 = func_842034E4();
-        D_800AE540.unk_11F6 = D_800AE540.unk_11F6 & 0xFFDF;
+        gBattleContext.unk_11F6 = gBattleContext.unk_11F6 & 0xFFDF;
     } else {
-        D_800AE540.unk_11F5 &= 0xFFFD;
+        gBattleContext.unk_11F5 &= 0xFFFD;
         var_v1 = func_84203210();
     }
 
