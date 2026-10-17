@@ -225,3 +225,11 @@ func_8002C990	List_RemoveAt	b11		removes the element at arg1 by shifting the tai
 func_8002CA00	List_GetCopy	b11		copies the element at arg2 out to a1 (1 = bad index)	applied@41211de
 func_8002CAAC	List_Set	b11		overwrites the element at arg2 from a1 (1 = bad index)	applied@41211de
 func_8002C740	SubList_Init	b11		initialises the smaller {data, elemSize, capacity, count} view struct (no pool; used for static/stack lists)	applied@41211de
+func_80012428	Graph_ResetScaleStack	b12		resets the D_800AB970 scale-stack level to 0 with the master scale (D_8006F064)	applied@238c8e6
+func_80012458	Graph_PushScale	b12		pushes a componentwise scale onto the D_800AB970 scale stack	applied@238c8e6
+func_800124D4	Graph_MakeQuadVertices	b12		GfxAlloc's 4 Vtx for a coloured quad with the fade-mode alpha (mode 2 fade-in / 3 fade-out over unk_0A/unk_08)	applied@238c8e6
+func_80012768	Graph_DrawColoredQuad	b12		draws the shaded translucent quad (G_CC_SHADE, AA_XLU) from Graph_MakeQuadVertices	applied@238c8e6
+func_80012870	Graph_MakeRotatedVertex	b12		writes one Vtx at a rotated UV offset (COSS/SINS by arg1->unk_18) relative to (x,y) with the node colour	applied@238c8e6
+func_80012960	Graph_MakeInterpOctagon	b12		GfxAlloc's 8 Vtx interpolating the octagon corners by the fade progress (unk_0A/unk_08) between the two rects	applied@238c8e6
+func_80013330	Graph_VisitVisibleChildren	b12		walks the child ring calling each visible node's callback then its type handler from the D_8006F0A4 vtable	applied@238c8e6
+func_800133D8	Graph_VisitNodePre	b12		calls the first child (pre-order) then Graph_VisitVisibleChildren - the pre-pass traversal	applied@238c8e6

@@ -30,7 +30,7 @@ unk_D_86002F34_alt1* D_8006F098 = NULL;
 unk_D_86002F58_004_000* D_8006F09C = NULL;
 unk_D_86002F34_alt11* D_8006F0A0 = NULL;
 static func_D_8006F0A4 D_8006F0A4[] = {
-    func_80013330, func_800133D8, func_80013464, func_80013764, func_8001378C, func_8001395C, func_800139E8,
+    Graph_VisitVisibleChildren, Graph_VisitNodePre, func_80013464, func_80013764, func_8001378C, func_8001395C, func_800139E8,
     func_80013AF8, func_80013B8C, func_80013C14, func_80013C1C, func_80013D34, func_80013F7C, func_80013F84,
     func_80014124, func_80014D70, func_80014214, func_800142BC, func_80014334, func_80014384, func_800143C0,
     func_80014624, func_80014690, func_800148D8, func_80014980, func_80014A60, func_80014AEC, func_80014D24,
@@ -186,12 +186,12 @@ MtxF* Matrix_GetAbsolute(s32 arg0) {
     return var_v1;
 }
 
-void func_80012428(void) {
+void Graph_ResetScaleStack(void) {
     D_800AB970.unk_180 = 0;
     D_800AB970.unk_000[0] = D_8006F064;
 }
 
-void func_80012458(Vec3f* arg0) {
+void Graph_PushScale(Vec3f* arg0) {
     D_800AB970.unk_000[D_800AB970.unk_180 + 1].x = D_800AB970.unk_000[D_800AB970.unk_180].x * arg0->x;
     D_800AB970.unk_000[D_800AB970.unk_180 + 1].y = D_800AB970.unk_000[D_800AB970.unk_180].y * arg0->y;
     D_800AB970.unk_000[D_800AB970.unk_180 + 1].z = D_800AB970.unk_000[D_800AB970.unk_180].z * arg0->z;
@@ -199,7 +199,7 @@ void func_80012458(Vec3f* arg0) {
     D_800AB970.unk_180++;
 }
 
-Vtx* func_800124D4(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
+Vtx* Graph_MakeQuadVertices(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     u8 sp47;
     Vtx* temp_v0 = GfxAlloc(sizeof(Vtx) * 4);
 
@@ -227,8 +227,8 @@ Vtx* func_800124D4(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     return temp_v0;
 }
 
-void func_80012768(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
-    Vtx* temp_v0 = func_800124D4(arg0, arg1);
+void Graph_DrawColoredQuad(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
+    Vtx* temp_v0 = Graph_MakeQuadVertices(arg0, arg1);
 
     if (temp_v0 != NULL) {
         gDPSetCombineMode(gDisplayListHead++, G_CC_SHADE, G_CC_SHADE);
@@ -250,7 +250,7 @@ void func_80012768(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     }
 }
 
-void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6,
+void Graph_MakeRotatedVertex(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6,
                    s16 arg7) {
     f32 temp_fa0;
     f32 temp_fv1;
@@ -275,7 +275,7 @@ void func_80012870(Vtx* arg0, unk_D_86002F34_00C_0CC* arg1, s16 arg2, s16 arg3, 
                   0xFF);
 }
 
-Vtx* func_80012960(unk_D_86002F34_00C_0CC* arg0) {
+Vtx* Graph_MakeInterpOctagon(unk_D_86002F34_00C_0CC* arg0) {
     Vtx* temp_v0 = GfxAlloc(sizeof(Vtx) * 8);
     Vtx* temp_s0;
     s16 temp_s2;
@@ -290,21 +290,21 @@ Vtx* func_80012960(unk_D_86002F34_00C_0CC* arg0) {
         temp_s2 = arg0->unk_0C + (((arg0->unk_0E - arg0->unk_0C) * arg0->unk_0A) / arg0->unk_08);
 
         if (arg0->unk_00 == 2) {
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, -temp_s2, -0x1F, 0x3F);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, -temp_s2, 0x1F, 0x3F);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, temp_s2, 0x1F, 0);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, temp_s2, -0x1F, 0);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, -temp_s2, -0x1F, 0x3F);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, -temp_s2, 0x1F, 0x3F);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, temp_s2, 0x1F, 0);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, temp_s2, -0x1F, 0);
         } else {
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, -temp_s2, 0, 0x3F);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, -temp_s2, 0x3F, 0x3F);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, temp_s2, 0x3F, 0);
-            func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, temp_s2, 0, 0);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, -temp_s2, 0, 0x3F);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, -temp_s2, 0x3F, 0x3F);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, temp_s2, temp_s2, 0x3F, 0);
+            Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, temp_s2, 0, 0);
         }
 
-        func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -0x7D0, -0x7D0, 0, 0);
-        func_80012870(temp_s0++, arg0, temp_s4, temp_s5, 0x7D0, -0x7D0, 0, 0);
-        func_80012870(temp_s0++, arg0, temp_s4, temp_s5, 0x7D0, 0x7D0, 0, 0);
-        func_80012870(temp_s0++, arg0, temp_s4, temp_s5, -0x7D0, 0x7D0, 0, 0);
+        Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -0x7D0, -0x7D0, 0, 0);
+        Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, 0x7D0, -0x7D0, 0, 0);
+        Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, 0x7D0, 0x7D0, 0, 0);
+        Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -0x7D0, 0x7D0, 0, 0);
     }
 
     arg0->unk_18 += arg0->unk_1A;
@@ -312,7 +312,7 @@ Vtx* func_80012960(unk_D_86002F34_00C_0CC* arg0) {
 }
 
 void func_80012D88(unk_D_86002F34_00C_0CC* arg0, UNUSED unk_D_86002F34_00C_040* arg1) {
-    Vtx* temp_v0 = func_80012960(arg0);
+    Vtx* temp_v0 = Graph_MakeInterpOctagon(arg0);
 
     if (temp_v0 != 0) {
         gDPSetCombineMode(gDisplayListHead++, G_CC_SHADE, G_CC_SHADE);
@@ -368,7 +368,7 @@ void func_800131B4(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
         gSPMatrix(gDisplayListHead++, (u32)&D_8006F010 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if ((arg0->unk_00 == 1) || (arg0->unk_00 == 2) || (arg0->unk_00 == 3)) {
-            func_80012768(arg0, arg1);
+            Graph_DrawColoredQuad(arg0, arg1);
         } else {
             func_80012D88(arg0, arg1);
         }
@@ -378,7 +378,7 @@ void func_800131B4(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
     }
 }
 
-void func_80013330(GraphNode* arg0) {
+void Graph_VisitVisibleChildren(GraphNode* arg0) {
     GraphNode* temp_s2 = arg0->unk_0C;
     GraphNode* var_s0 = temp_s2;
 
@@ -396,7 +396,7 @@ void func_80013330(GraphNode* arg0) {
     }
 }
 
-void func_800133D8(GraphNode* arg0) {
+void Graph_VisitNodePre(GraphNode* arg0) {
     UNUSED s32 pad;
     GraphNode* temp_a1 = ((unk_D_86002F34*)arg0)->unk_18;
 
@@ -408,7 +408,7 @@ void func_800133D8(GraphNode* arg0) {
         D_8006F0A4[temp_a1->unk_00](temp_a1);
     }
 
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80013464(GraphNode* arg0) {
@@ -445,7 +445,7 @@ void func_80013464(GraphNode* arg0) {
 
     D_8006F088 = arg;
     if ((arg->unk_CC.unk_00 != 1) && (arg->unk_00.unk_0C != NULL)) {
-        func_80013330(&arg->unk_00);
+        Graph_VisitVisibleChildren(&arg->unk_00);
     }
     func_800131B4(&arg->unk_CC, temp_s2);
     func_80006200(&gDisplayListHead);
@@ -454,7 +454,7 @@ void func_80013464(GraphNode* arg0) {
 
 void func_80013764(GraphNode* arg0) {
     D_8006F08C = arg0;
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
     D_8006F08C = NULL;
 }
 
@@ -479,13 +479,13 @@ void func_8001378C(GraphNode* arg0) {
         func_80017080();
         func_800175D8();
         Matrix_ResetStack();
-        func_80012428();
+        Graph_ResetScaleStack();
 
         gSPMatrix(gDisplayListHead++, (u32)D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         D_8006F090 = arg;
-        func_80013330(arg0);
+        Graph_VisitVisibleChildren(arg0);
         D_8006F090 = NULL;
     }
 
@@ -498,7 +498,7 @@ void func_800138F0(GraphNode* arg0) {
     if ((D_8006F094 == NULL) && (arg->unk_00.unk_0C != NULL)) {
         D_8006F094 = arg;
         func_8001638C(arg->unk_00.unk_02 & 3, D_8006F080);
-        func_80013330(arg0);
+        Graph_VisitVisibleChildren(arg0);
         func_8001660C();
         D_8006F094 = NULL;
     }
@@ -649,7 +649,7 @@ void func_80014124(GraphNode* arg0) {
     }
 
     D_8006F0A0 = arg;
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
     D_8006F0A0 = NULL;
 }
 
@@ -662,7 +662,7 @@ void func_80014214(GraphNode* arg0) {
     s16 temp_ft5 = ((a * mtx2->mf[0][2]) + (b * mtx2->mf[1][2]) + (c * mtx2->mf[2][2])) + mtx2->mf[3][2];
 
     if ((temp_ft5 >= arg->unk_18) && (temp_ft5 < arg->unk_1A)) {
-        func_80013330(arg0);
+        Graph_VisitVisibleChildren(arg0);
     }
 }
 
@@ -688,7 +688,7 @@ void func_80014334(GraphNode* arg0) {
 
     Matrix_RotateTranslate(&sp20, &arg->unk_18, &arg->unk_24);
     Matrix_PushMultiply(&sp20);
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 
     D_800AA8C8.unk_10A0--;
 }
@@ -697,7 +697,7 @@ void func_80014384(GraphNode* arg0) {
     unk_D_86002F34_alt5* arg = (unk_D_86002F34_alt5*)arg0;
 
     Matrix_PushScale(&arg->unk_18);
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 
     D_800AA8C8.unk_10A0--;
 }
@@ -729,7 +729,7 @@ void func_800143C0(GraphNode* arg0) {
 
         D_800AA8C8.unk_10A0++;
 
-        func_80012458(&sp78);
+        Graph_PushScale(&sp78);
         if (D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0 - 1] == 1) {
             Matrix_Multiply(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
                           &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 31]);
@@ -745,7 +745,7 @@ void func_800143C0(GraphNode* arg0) {
     }
 
     D_800AA6C8[arg->unk_30] = D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0];
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
     D_800AA6C8[arg->unk_30] = NULL;
     D_800AA8C8.unk_10A0--;
 
@@ -762,7 +762,7 @@ void func_80014624(GraphNode* arg0) {
         func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
 
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80014690(GraphNode* arg0) {
@@ -800,10 +800,10 @@ void func_80014690(GraphNode* arg0) {
 
             if ((D_8006F08C->unk_18 < 0) && (arg->unk_01A > 0)) {
                 func_80032670(arg->unk_0A6, arg->unk_01A);
-                func_80013330(arg0);
+                Graph_VisitVisibleChildren(arg0);
                 func_80032738(arg->unk_0A6, arg->unk_01A);
             } else {
-                func_80013330(arg0);
+                Graph_VisitVisibleChildren(arg0);
             }
 
             sp34.rgba = 0xFFFFFF00;
@@ -829,7 +829,7 @@ void func_800148D8(GraphNode* arg0) {
         }
         func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
     D_800AA8C8.unk_10A0--;
 }
 
@@ -850,7 +850,7 @@ void func_80014980(GraphNode* arg0) {
         func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
 
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
     D_800AA8C8.unk_10A0--;
 }
 
@@ -864,7 +864,7 @@ void func_80014A60(GraphNode* arg0) {
         }
         func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80014AEC(GraphNode* arg0) {
@@ -900,7 +900,7 @@ void func_80014AEC(GraphNode* arg0) {
 
     func_800176DC(&sp3C, D_8006F0A0->unk_18, arg->unk_20);
     func_80016364(arg->unk_22, sp44, sp3C, sp38, sp34);
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80014CB8(s32 arg0) {
@@ -924,11 +924,11 @@ void func_80014D24(GraphNode* arg0) {
     unk_D_86002F34_alt3* arg = (unk_D_86002F34_alt3*)arg0;
 
     func_80014CB8(arg->unk_18);
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80014D50(GraphNode* arg0) {
-    func_80013330(arg0);
+    Graph_VisitVisibleChildren(arg0);
 }
 
 void func_80014D70(GraphNode* arg0) {
@@ -989,7 +989,7 @@ void func_80014D70(GraphNode* arg0) {
         gDPSetPrimColor(gDisplayListHead++, 0, D_8006F09C->unk_01D, 255, 255, 255, 255);
 
         func_80016274((u32)temp_s1 & 0x1FFFFFFF, 1);
-        func_80013330(arg0);
+        Graph_VisitVisibleChildren(arg0);
 
         D_800AA8C8.unk_10A0--;
     }
@@ -1013,7 +1013,7 @@ void func_80015094(GraphNode* arg0) {
         gDPSetAlphaDither(gDisplayListHead++, G_AD_PATTERN);
 
         D_8006F08C = arg;
-        func_80013330(arg0);
+        Graph_VisitVisibleChildren(arg0);
         D_8006F08C = NULL;
     }
 
