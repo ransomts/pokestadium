@@ -455,7 +455,8 @@ def map_symbol_span(name):
         if os.path.exists(mp):
             entries = []
             for line in open(mp, errors="replace"):
-                m = re.match(r"^\s+(0x[0-9a-fA-F]+)\s+([A-Za-z_][A-Za-z0-9_.]*)\s*$", line)
+                m = re.match(r"^\s+(0x[0-9a-fA-F]+)\s+([A-Za-z_][A-Za-z0-9_.]*)"
+                            r"(\s+=\s+0x[0-9a-fA-F]+)?\s*$", line)
                 if m:
                     entries.append((int(m.group(1), 16), m.group(2)))
             for i, (addr, sym) in enumerate(entries):
