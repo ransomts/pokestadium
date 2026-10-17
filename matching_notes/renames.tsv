@@ -135,3 +135,14 @@ func_800191B0	Fragment_LoadFromArchive2	b2		archive load path for 0x80-flagged (
 func_80019204	Fragment_LoadFromFile	b2		top dispatcher by file number: direct/cached paths, magic check ('FRAG'/'MENT') + relocation, caches the result in the file entry	applied@a239305
 func_80003680	JpegDecodePres	b2		PRES-JPEG decoder (JpegDecoder/JpegHuffmanTable machinery in 3FB0.c, the jpeg library file)	applied@a239305
 func_80003890	SzpDecompress	b2		PERS-SZP decompressor (yay0-style: decompressed_size1/2 fields, window/copy state machine)	applied@a239305
+func_80025C80	GbsChecksum	b3		byte-sum over the first len-2 bytes of a GB save block (the block checksum)	applied@222697e
+func_80025CBC	GbsValidateBlock	b3		checks the 'PO'/'KE' trailer words and the checksum at the end of a GB save block	applied@222697e
+func_80025D30	GbsSetBlockTrailer	b3		writes the trailer: valid = 'PO','KE' + checksum; invalid = 'XX','XX' + checksum ^ 0xFF	applied@222697e
+func_80025DA0	GbsCopyBlock	b3		copies bytes into a save bank and marks the bank dirty (unk_00 |= 2)	applied@222697e
+func_80025DE4	GbsCommitBlock	b3		on a dirty block: clears the dirty bit, writes the valid trailer, marks the save	applied@222697e
+func_80025E44	GbsInvalidateBlock	b3		on a dirty block: writes the invalid ('XX') trailer and marks the save	applied@222697e
+func_80025EA0	GbsBackupBlock	b3		copies a block range from the primary bank view (unk_04) into the backup view (unk_08) of the same save slot	applied@222697e
+func_80025EF8	GbsClearBlock	b3		zeroes a block, sets its dirty bit, marks the save bank	applied@222697e
+D_800AE4E8	gGbsSaveBanks	b3		save-bank descriptor array: unk_00 flags (dirty/valid), unk_04 primary view, unk_08 backup view; indexed by save slot	applied@222697e
+func_80026268	Mon_InitFromSaveEntry	b3		converts a raw save mon entry into the battle-mon struct: func_80021D9C + CalculatePokemonStats + nickname/OT name conversions (EncodeGen1String)	applied@222697e
+func_800262DC	Mon_WriteToSaveEntry	b3		reverse conversion: stats back + EncodeGen1String of nickname/OT + bcopy into the save entry	applied@222697e

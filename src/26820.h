@@ -154,17 +154,17 @@ typedef struct unk_D_800AE4E8 {
 } unk_D_800AE4E8; // size = 0xC
 
 void func_80025C20(UNUSED MainPoolBlock* arg0, u32 arg1);
-u16 func_80025C80(u8* arg0, s32 arg1);
-s32 func_80025CBC(u8* arg0, s32 arg1);
-void func_80025D30(u8* arg0, s32 arg1, s32 arg2);
-void func_80025DA0(u8* arg0, u8* arg1, s32 arg2, s32 arg3);
-void func_80025DE4(u8* arg0, s32 arg1, s32 arg2);
-void func_80025E44(u8* arg0, s32 arg1, s32 arg2);
-void func_80025EA0(u8* arg0, s32 arg1, s32 arg2);
-void func_80025EF8(u8* arg0, s32 arg1, s32 arg2);
+u16 GbsChecksum(u8* arg0, s32 arg1);
+s32 GbsValidateBlock(u8* arg0, s32 arg1);
+void GbsSetBlockTrailer(u8* arg0, s32 arg1, s32 arg2);
+void GbsCopyBlock(u8* arg0, u8* arg1, s32 arg2, s32 arg3);
+void GbsCommitBlock(u8* arg0, s32 arg1, s32 arg2);
+void GbsInvalidateBlock(u8* arg0, s32 arg1, s32 arg2);
+void GbsBackupBlock(u8* arg0, s32 arg1, s32 arg2);
+void GbsClearBlock(u8* arg0, s32 arg1, s32 arg2);
 void func_80025F50(s32 arg0, s32 arg1);
-void func_80026268(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1);
-void func_800262DC(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1);
+void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1);
+void Mon_WriteToSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1);
 s32 func_80026338(s32 arg0, s32 arg1, s16 arg2);
 void func_800264DC(s32 arg0, s32 arg1, s16 arg2);
 void func_8002667C(void);

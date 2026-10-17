@@ -574,7 +574,7 @@ def cmd_apply(ledger, batch, sample, no_make):
     noops = [r for r in todo if r.old == r.new]
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
     sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)  # pre-rewrite check
-                 and not (is_c_static(r.old) and not sa_definitions(r.old))]
+                 and not is_c_static(r.old)]
     rw = do_rewrites(real, files)
     touched = rw.commit()
     # post-rewrite checks
