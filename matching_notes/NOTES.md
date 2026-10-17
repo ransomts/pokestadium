@@ -650,7 +650,7 @@ early-return function is meaningless; always draft_score (no -s, uncapped, force
 believing any zero. Restored, kept as draft 300.
 
 ## Round 9 close-out (integrator, 2026-10-17 ~10:00)
-State: code 97.83%, 5 functions open (fd.sh-free scores, uncapped, no -s, forced rebuilds):
+State: code 97.92%, 5 functions open (fd.sh-free scores, uncapped, no -s, forced rebuilds):
 func_8004A89C 300, func_80034348 60, func_88304850 1716, func_88805AEC 2337, func_8437B0CC 6584.
 The 5 Opus agents died on the weekly API limit ~07:45 (resets Oct 19 7pm; worktrees kept clean at
 match-round-1 for resuming with SendMessage). Three farm jobs keep exploring (x: 8004A89C/8437B0CC

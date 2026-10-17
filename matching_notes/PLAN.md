@@ -12,7 +12,7 @@ every dead end: read it before touching the function.
 |---|---|
 | ROM | builds byte-identical (`make` -> `OK`) on `match-round-1`, 310 commits ahead of `master`, never pushed |
 | Upstream | `origin/master` unchanged since 2026-10-03 (#283); PR series prepared 2026-10-17: up/tools-data2c -> up/main-segment -> up/fragment1 -> up/fragments-a -> up/fragments-b -> up/fragment62 -> up/frag67-gfxhead-alias -> up/fragment16-labels (all build OK standalone; see UPSTREAM_PR_plan.md); nothing pushed |
-| Code (`progress.py -v us`, all) | 97.83% (96.60% at round-8 end; round 9: +func_86905734 + the owner-accepted alias/labels merges) |
+| Code (`progress.py -v us`, all) | 97.92% (96.60% at round-8 end; round 9: +func_86905734 + the owner-accepted alias/labels merges) |
 | `#pragma GLOBAL_ASM` left | 5 open (see F2 table) |
 | Parked (owner decision) | DECIDED 2026-10-17: both accepted and merged (gfxhead alias, 86A013C8 labels). FAKE C: try to clean first |
 | Data still asm | by design: F3DEX2 blobs, 66BC0, fragment1 hand-written asm data; 7A1C0 migrated to C 2026-10-17 (src/data_7A1C0.c); 7D110 and unk_bin_7F670 documented as by-design; 7E0D0 waits on func_8004A89C |
