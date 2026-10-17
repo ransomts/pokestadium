@@ -133,3 +133,20 @@ swapping the two spill slots of func_8850B2D4 came from writing `((arg2 - 7) + h
   to 4. A file's sections end padded to 16, so a zero gap ending on a 16-byte boundary is a file edge.
 - A named `const` scalar goes to .data; a .rodata float in the ROM is an anonymous literal.
 
+
+## as1 scheduling ties follow .loc line numbers (2026-10-16, func_80012870, agent-2)
+as1 breaks instruction-scheduling ties by the source line recorded in `.loc`. Code attributed to an
+earlier statement is scheduled ahead of later statements' stores. uopt sinks expressions built only from
+locals/arguments into the call that uses them, but not expressions that load globals or pointers:
+computing the call's arguments in their own statements with inline table loads moved the coordinate code
+to an earlier line and fixed a one-store scheduling diff. Verified by editing ugen's .G records
+(`cc -K`) and re-running as1 alone.
+
+## Other round-8 lessons
+- A dead assignment, or an unused initialized local, makes a CSE expression appear earlier in the source,
+  which moves its compiler-temp stack slot (func_838043F8, func_82F04604, func_84302658).
+- An explicit guard plus `do-while` changes the order of the loop-end stores (func_82F04604).
+- Repeated strip/texture blocks can be one loop that IDO unrolled by 2 with a peeled iteration (func_8130337C).
+- A comma expression can reorder two adjacent stores (func_8820BE14).
+- A "phantom" saved FPR (saved, never used) can be a named float whose register move as1 forwarded away
+  (func_80034348: len in fs3).
