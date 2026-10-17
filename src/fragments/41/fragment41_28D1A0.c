@@ -223,7 +223,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
     s16 temp_s1_2;
     s32 temp_s1_3;
     unk_func_80026268_arg0* sp11C;
-    unk_D_80072B00* ptr;
+    MoveBattleData* ptr;
     UNUSED s32 pad;
     char sp94[128];
     char* sp8C[2];
@@ -267,7 +267,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
             if (func_82F05F20(sp11C->unk_09[i]) == 0) {
                 func_8001C6AC(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
-                              D_82F13C68[D_80072338[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
+                              D_82F13C68[gMoveStrings[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
             }
         }
 
@@ -281,7 +281,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
             }
 
             if (func_82F05F20(sp11C->unk_09[i]) == 0) {
-                ptr = &D_80072B00[sp11C->unk_09[i] - 1];
+                ptr = &gMoveBattleData[sp11C->unk_09[i] - 1];
 
                 var_t0 = ptr->unk_05 / 5;
                 if (var_t0 >= 7) {
@@ -371,7 +371,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
                 }
 
                 if (func_82F05F20(sp11C->unk_09[i]) == 0) {
-                    sp70 = &D_80071D88[D_80072338[sp11C->unk_09[i] - 1].unk_01].color;
+                    sp70 = &D_80071D88[gMoveStrings[sp11C->unk_09[i] - 1].unk_01].color;
                     sp74 = func_82F00058(sp11C->unk_09[i]);
                 } else {
                     // "？？？？？？？"

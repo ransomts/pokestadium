@@ -14,3 +14,12 @@ D_8122C798	gGbAudioSquare1Channel	t4		square 1 channel state (GbAudioChannel, 0x
 D_8122C7E8	gGbAudioSquare2Channel	t4		square 2 channel state (GbAudioChannel, 0x50 bytes), stepped by GbAudio_StepSquare2	applied@9f5189f
 D_8122C838	gGbAudioWaveChannel	t4		wave channel state (GbAudioChannel, 0x50 bytes), stepped by GbAudio_StepWave	applied@9f5189f
 D_8122C8D8	gGbApuWriteQueue	t4		0x2580-byte GbApuWrite queue ({time,reg,value}), consumed in order in the mixer loop via GbAudio_WriteReg	applied@9f5189f
+func_80021CE0	GetItemName	a1		item name: D_80072EE0[1..83], HM (0xC4-0xC8) and TM (0xC9-0xFE) via sprintf with the "ひでんマシン%02d"/"わざマシン%02d" strings, else slot 6 fallback	applied@a677abc
+D_80072EE0	gItemNames	a1		84-entry item-name table (char*, 0x150 bytes); indexed 1..0x53 by GetItemName with HM/TM ranges beyond	applied@a677abc
+func_80022084	CalcSqrtCeil	a1		smallest i in 1..254 with i*i >= arg0 (integer square root, ceiling)	applied@a677abc
+func_800224B8	CalculateExperienceAtLevel	a1		the six Gen-1 experience growth curves (n^3, medium-slow etc.) indexed by the species growth rate; consumed by the level loop	applied@a677abc
+func_800226C0	CalculateLevelFromExperience	a1		level loop: smallest i<100 with exp < CalculateExperienceAtLevel(species, i+1)	applied@a677abc
+func_80022338	CalculatePokemonStats	a1		recalculates level (via CalculateLevelFromExperience) then all five stats via CalculateStatValue (named neighbor)	applied@a677abc
+func_8002240C	CalcStatModifierForValue	a1		inverse of CalculateStatValue in the statModifier argument: smallest odd modifier whose stat exceeds the target	applied@a677abc
+D_80072B00	gMoveBattleData	a1	unk_D_80072B00:MoveBattleData	165-entry move battle table (6 bytes: type/accuracy/power); power at unk_05 (func_80022734), type at unk_03 (fragment62 comparisons)	applied@a677abc
+D_80072338	gMoveStrings	a1		unk_D_80072338:MoveStrings	applied@a677abc	pending

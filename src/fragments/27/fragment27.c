@@ -330,7 +330,7 @@ void func_886015F4(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2)
 }
 
 s32 func_88601600(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
-    unk_D_80072B00* temp_v0 = func_8002ED40(arg0->unk_2C);
+    MoveBattleData* temp_v0 = func_8002ED40(arg0->unk_2C);
     s32 sp18;
     s32 var_v1;
 
@@ -872,7 +872,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     s32 sp13C;
     s32 sp138;
     ret_func_8002ED08* sp134;
-    unk_D_80072B00* sp130;
+    MoveBattleData* sp130;
     unk_D_88400138* sp12C;
     char* sp128;
     char* sp124;

@@ -38,7 +38,7 @@ void func_88309160(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, u
     s32 var_v0;
     char* sp28;
     s32 var_v1;
-    unk_D_80072B00* temp_v0_2;
+    MoveBattleData* temp_v0_2;
 
     if (arg2 != NULL) {
         sp34 = func_8002ED08(arg2->unk_00);

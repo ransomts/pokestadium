@@ -31,7 +31,7 @@ typedef struct unk_func_800228F0 {
     /* 0x14 */ char unk_14[16];
 } unk_func_800228F0; // size >= 0x28
 
-u16 func_800226C0(s32 arg0, u32 arg1);
+u16 CalculateLevelFromExperience(s32 arg0, u32 arg1);
 void func_80022734(unk_func_80026268_arg0* arg0);
 void func_800228B0(unk_func_80026268_arg0* arg0);
 s32 func_800228F0(unk_func_800228F0*, u16);

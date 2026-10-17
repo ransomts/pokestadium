@@ -95,8 +95,8 @@ char* func_80021CA4(char* arg0, s32 arg1) {
     return arg0;
 }
 
-char* func_80021CE0(s32 arg0, char* arg1) {
-    extern char* D_80072EE0[];
+char* GetItemName(s32 arg0, char* arg1) {
+    extern char* gItemNames[];
     // "ひでんマシン%02d"
     static const char D_0007CCA0[] = { 0xA4, 0xD2, 0xA4, 0xC7, 0xA4, 0xF3, 0xA5, 0xDE, 0xA5, 0xB7,
                                        0xA5, 0xF3, 0x25, 0x30, 0x32, 0x64, 0x00, 0x00, 0x00, 0x00 };
@@ -105,13 +105,13 @@ char* func_80021CE0(s32 arg0, char* arg1) {
                                        0xA5, 0xF3, 0x25, 0x30, 0x32, 0x64, 0x00, 0x00 };
 
     if ((arg0 > 0) && (arg0 < 0x54)) {
-        HAL_Strcpy(arg1, D_80072EE0[arg0 - 1]);
+        HAL_Strcpy(arg1, gItemNames[arg0 - 1]);
     } else if ((arg0 >= 0xC4) && (arg0 < 0xC9)) {
         sprintf(arg1, D_0007CCA0, arg0 - 0xC3, arg0);
     } else if ((arg0 >= 0xC9) && (arg0 < 0xFF)) {
         sprintf(arg1, D_0007CCB4, arg0 - 0xC8, arg0);
     } else {
-        HAL_Strcpy(arg1, D_80072EE0[6]);
+        HAL_Strcpy(arg1, gItemNames[6]);
     }
 
     return arg1;
@@ -189,7 +189,7 @@ void func_80022010(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg
     func_80021A68(&arg1->unk_2A, arg0->unk_000[0].unk_2E);
 }
 
-u16 func_80022084(u16 arg0) {
+u16 CalcSqrtCeil(u16 arg0) {
     u16 i;
 
     for (i = 1; i < 255; i++) {
@@ -261,7 +261,7 @@ u32 CalculateStatValue(s32 statId, s32 speciesId, u16 statModifier, u16 level, u
     dvValue = GetPokemonDV(statId, dvBits);
 
     // Compute the preliminary stat value
-    statValue = (((func_80022084(statModifier) / 4) + ((baseStat + dvValue) * 2)) * level) / 100;
+    statValue = (((CalcSqrtCeil(statModifier) / 4) + ((baseStat + dvValue) * 2)) * level) / 100;
 
     // Add final adjustments
     if (statId == STAT_HP) {
@@ -278,8 +278,8 @@ u32 CalculateStatValue(s32 statId, s32 speciesId, u16 statModifier, u16 level, u
     return statValue;
 }
 
-void func_80022338(unk_func_80026268_arg0* arg0) {
-    arg0->unk_24 = func_800226C0(arg0->unk_00.unk_00, arg0->unk_10);
+void CalculatePokemonStats(unk_func_80026268_arg0* arg0) {
+    arg0->unk_24 = CalculateLevelFromExperience(arg0->unk_00.unk_00, arg0->unk_10);
     arg0->unk_26 = CalculateStatValue(1, arg0->unk_00.unk_00, arg0->unk_14, arg0->unk_24, arg0->unk_1E);
     arg0->unk_28 = CalculateStatValue(2, arg0->unk_00.unk_00, arg0->unk_16, arg0->unk_24, arg0->unk_1E);
     arg0->unk_2A = CalculateStatValue(3, arg0->unk_00.unk_00, arg0->unk_18, arg0->unk_24, arg0->unk_1E);
@@ -287,7 +287,7 @@ void func_80022338(unk_func_80026268_arg0* arg0) {
     arg0->unk_2E = CalculateStatValue(5, arg0->unk_00.unk_00, arg0->unk_1C, arg0->unk_24, arg0->unk_1E);
 }
 
-u16 func_8002240C(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4) {
+u16 CalcStatModifierForValue(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4) {
     s32 i;
     s32 tmp;
 
@@ -301,7 +301,7 @@ u16 func_8002240C(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4) {
     return i;
 }
 
-u32 func_800224B8(s32 arg0, u16 arg1) {
+u32 CalculateExperienceAtLevel(s32 arg0, u16 arg1) {
     u32 sp4;
 
     switch (D_80070F84[arg0].unk_13) {

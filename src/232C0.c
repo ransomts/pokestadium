@@ -29,11 +29,11 @@ static u8 D_800ACA75;
 static unk_D_800AC910_050 D_800ACA78;
 static u8 D_800ADA38[0xAA8]; // unreferenced bss
 
-u16 func_800226C0(s32 arg0, u32 arg1) {
+u16 CalculateLevelFromExperience(s32 arg0, u32 arg1) {
     s32 i;
 
     for (i = 1; i < 100; i++) {
-        if (arg1 < func_800224B8(arg0, i + 1)) {
+        if (arg1 < CalculateExperienceAtLevel(arg0, i + 1)) {
             break;
         }
     }
@@ -47,14 +47,14 @@ void func_80022734(unk_func_80026268_arg0* arg0) {
     s32 var_v0;
     s32 idx;
 
-    func_80022338(arg0);
+    CalculatePokemonStats(arg0);
     arg0->unk_05 = 0;
     arg0->unk_02 = arg0->unk_26;
 
     for (i = 0; i < 4; i++) {
         if (arg0->unk_09[i] != 0) {
             temp_a3 = (arg0->unk_20[i] >> 6) & 3;
-            var_v0 = D_80072B00[arg0->unk_09[i] - 1].unk_05;
+            var_v0 = gMoveBattleData[arg0->unk_09[i] - 1].unk_05;
 
             if (var_v0 >= 0x28) {
                 var_v0 = var_v0 + (temp_a3 * 7);
@@ -932,7 +932,7 @@ void func_80024624(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* ptr2 = &D_800AC910[arg1].unk_50->unk_9AC;
 
     func_80021E90(arg0, &ptr2->unk_008[arg2]);
-    func_80022338(arg0);
+    CalculatePokemonStats(arg0);
 
     arg0->unk_52 = 0;
     arg0->unk_53 = 0;
@@ -957,7 +957,7 @@ void func_800247C4(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     if (sp2C != NULL) {
         func_80021D9C(arg0, &sp2C->unk_016[arg3]);
-        func_80022338(arg0);
+        CalculatePokemonStats(arg0);
 
         arg0->unk_52 = 0;
         arg0->unk_53 = 0;

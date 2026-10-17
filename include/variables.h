@@ -948,15 +948,15 @@ typedef struct unk_D_70B10 {
 
 extern u32 D_8C000000; // start of some rom area
 
-typedef struct unk_D_80072B00 {
+typedef struct MoveBattleData {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 unk_04;
     /* 0x05 */ u8 unk_05;
-} unk_D_80072B00; // size = 0x6
-extern unk_D_80072B00 D_80072B00[];
+} MoveBattleData; // size = 0x6
+extern MoveBattleData gMoveBattleData[];
 
 typedef struct unk_D_80072338 {
     /* 0x00 */ char unk00[0x1];
@@ -965,7 +965,7 @@ typedef struct unk_D_80072338 {
     /* 0x04 */ char* unk_04; // move name (the US build has "skill" placeholders)
     /* 0x08 */ char* unk_08; // "comment"
 } unk_D_80072338; // size = 0xC
-extern unk_D_80072338 D_80072338[];
+extern unk_D_80072338 gMoveStrings[];
 
 extern char D_8006FEE8[][0x1C];
 

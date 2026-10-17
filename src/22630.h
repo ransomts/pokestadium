@@ -222,17 +222,17 @@ char* func_80021C20(char* arg0, char* arg1);
 char* func_80021C40(char* arg0, char* arg1);
 char* func_80021C80(char* arg0, char* arg1);
 char* func_80021CA4(char* arg0, s32 arg1);
-char* func_80021CE0(s32 arg0, char* arg1);
+char* GetItemName(s32 arg0, char* arg1);
 void func_80021D9C(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
 void func_80021E90(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg1);
 void func_80021F04(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
 void func_80022010(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg1);
-u16 func_80022084(u16 arg0);
+u16 CalcSqrtCeil(u16 arg0);
 void func_800220C4(void);
 u16 func_800220CC(s32 arg0, u16 arg1);
 u32 CalculateStatValue(s32 statId, s32 speciesId, u16 statModifier, u16 level, u16 dvBits);
-void func_80022338(unk_func_80026268_arg0* arg0);
-u16 func_8002240C(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4);
-u32 func_800224B8(s32 arg0, u16 arg1);
+void CalculatePokemonStats(unk_func_80026268_arg0* arg0);
+u16 CalcStatModifierForValue(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4);
+u32 CalculateExperienceAtLevel(s32 arg0, u16 arg1);
 
 #endif // _6BC0_H_

@@ -1825,8 +1825,8 @@ s32 func_883058C4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030
             sp34 = 0;
             *arg2 = temp_s0->unk_24;
             sp3A = temp_s0->unk_26;
-            *(s32*)&temp_s0->unk_10 = func_800224B8(temp_s0->unk_00, (temp_s0->unk_24 + 1) & 0xFFFF);
-            func_80022338(&arg0->unk_08);
+            *(s32*)&temp_s0->unk_10 = CalculateExperienceAtLevel(temp_s0->unk_00, (temp_s0->unk_24 + 1) & 0xFFFF);
+            CalculatePokemonStats(&arg0->unk_08);
             temp_s0->unk_02 = (temp_s0->unk_02 + temp_s0->unk_26) - sp3A;
             *arg3 = temp_s0->unk_24;
             break;
@@ -1840,7 +1840,7 @@ s32 func_883058C4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030
 void func_88305BC4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2, s32* arg3,
                    s32* arg4) {
     s32 var_v1;
-    unk_D_80072B00* temp_v0;
+    MoveBattleData* temp_v0;
     unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->unk_08;
 
     temp_v0 = func_8002ED40(ptr->unk_09[arg2]);
