@@ -33,7 +33,7 @@ typedef struct unk_func_800228F0 {
 
 u16 CalculateLevelFromExperience(s32 arg0, u32 arg1);
 void func_80022734(unk_func_80026268_arg0* arg0);
-void func_800228B0(unk_func_80026268_arg0* arg0);
+void SetMonNickname(unk_func_80026268_arg0* arg0);
 s32 func_800228F0(unk_func_800228F0*, u16);
 void func_80022978(unk_func_80026268_arg0* arg0, s16 arg1, u8 arg2);
 s32 func_80022A04(u16* arg0, unk_D_800AC910_040* arg1);

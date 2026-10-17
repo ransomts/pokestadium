@@ -132,7 +132,7 @@ s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
             if (var_s1_3 < arg3->unk_000) {
                 _bcopy(&arg3->unk_004[var_s1_3++], &arg1->unk_0000[var_s4].unk_004,
                        sizeof(arg1->unk_0000[var_s4].unk_004));
-                func_800228B0(&arg1->unk_0000[var_s4++].unk_004);
+                SetMonNickname(&arg1->unk_0000[var_s4++].unk_004);
             }
         }
     }

@@ -1194,7 +1194,7 @@ void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
     u8* sp18 = &arg3[arg4];
 
     if (arg4 < func_8002ECDC(arg3)) {
-        sp24 = func_8002ED08(sp18[9]);
+        sp24 = GetMoveEntry(sp18[9]);
         if (sp24 == NULL) {
             sp28 = D_88317278;
             sp2C = " ????? ";

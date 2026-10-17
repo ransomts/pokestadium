@@ -444,7 +444,7 @@ s32 func_84209DB8(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
         for (j = 0; j < 3; j++) {
             if (i < arg3->unk_00) {
                 _bcopy(&arg3->unk_04[i++], &arg1->unk_0000[var_s3].unk_004, sizeof(arg3->unk_04[0]));
-                func_800228B0(&arg1->unk_0000[var_s3++].unk_004);
+                SetMonNickname(&arg1->unk_0000[var_s3++].unk_004);
             }
         }
     }

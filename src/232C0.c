@@ -67,7 +67,7 @@ void func_80022734(unk_func_80026268_arg0* arg0) {
     }
 }
 
-void func_800228B0(unk_func_80026268_arg0* arg0) {
+void SetMonNickname(unk_func_80026268_arg0* arg0) {
     UNUSED s32 pad;
     char sp18[11];
 

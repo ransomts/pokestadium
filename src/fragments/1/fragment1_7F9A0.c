@@ -1396,7 +1396,7 @@ void func_81202210(s32, s32);
 void func_8120241C(void);
 void func_812070A0(void);
 void func_8120735C(s32);
-void func_81208C08(u16, u8, u16);
+void GbAudio_QueueWrite(u16, u8, u16);
 void GbAudio_Reset(void);
 void GbAudio_SetNoiseTable(unk_D_8122B2F8*);
 void func_81208F94(void);
@@ -1499,10 +1499,10 @@ void func_812033F4(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u
     GbAudio_SetMode(0);
     func_8120735C(0);
     GbAudio_Reset();
-    func_81208C08(0xFF26, 0, 0);
-    func_81208C08(0xFF26, 0x8F, 0x10);
-    func_81208C08(0xFF24, 0x77, 0x20);
-    func_81208C08(0xFF25, 0xFF, 0x30);
+    GbAudio_QueueWrite(0xFF26, 0, 0);
+    GbAudio_QueueWrite(0xFF26, 0x8F, 0x10);
+    GbAudio_QueueWrite(0xFF24, 0x77, 0x20);
+    GbAudio_QueueWrite(0xFF25, 0xFF, 0x30);
     func_81208F94();
     D_8122B2F4 += 0x80000;
 

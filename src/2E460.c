@@ -432,7 +432,7 @@ s32 func_8002ECDC(unk_func_80026268_arg0* arg0) {
     return i;
 }
 
-ret_func_8002ED08* func_8002ED08(s32 arg0) {
+ret_func_8002ED08* GetMoveEntry(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 165)) {
         return NULL;
     }

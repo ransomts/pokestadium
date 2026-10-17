@@ -275,7 +275,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
         return 0;
     }
 
-    sp6C = func_8002ED08(arg0->unk_2C);
+    sp6C = GetMoveEntry(arg0->unk_2C);
     if (sp6C != NULL) {
         unk_D_88400138* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp6C->unk_00[1]);
         s32 temp_v0_2 = func_8002EDEC(sp6C->unk_00[1]);
@@ -887,7 +887,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     }
 
     sp130 = func_8002ED40(arg0->unk_2C);
-    sp134 = func_8002ED08(arg0->unk_2C);
+    sp134 = GetMoveEntry(arg0->unk_2C);
     sp12C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))((sp130 == NULL) ? 0 : sp130->unk_03);
 
     gDPPipeSync(gDisplayListHead++);

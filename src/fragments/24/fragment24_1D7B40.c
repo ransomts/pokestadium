@@ -41,7 +41,7 @@ void func_88309160(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, u
     MoveBattleData* temp_v0_2;
 
     if (arg2 != NULL) {
-        sp34 = func_8002ED08(arg2->unk_00);
+        sp34 = GetMoveEntry(arg2->unk_00);
         if (sp34 == NULL) {
             sp28 = "???????";
         } else {
@@ -137,7 +137,7 @@ void func_88309614(unk_func_8830867C_04C_078* arg0) {
     s32 i;
 
     for (i = 0; i < ((unk_func_88309614*)arg0->unk_30->unk_2C)->unk_08; i++) {
-        if ((func_8002ED08(arg0->unk_44[i].unk_00) == NULL) || (arg0->unk_44[i].unk_04 >= 0xC0)) {
+        if ((GetMoveEntry(arg0->unk_44[i].unk_00) == NULL) || (arg0->unk_44[i].unk_04 >= 0xC0)) {
             arg0->unk_30->unk_34[i] |= 4;
         }
     }
@@ -2298,7 +2298,7 @@ void func_8830FA80(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, unk_func_880
     temp_s2_3 = mem_pool_alloc(arg4, sizeof(s32) * 0xA4);
 
     for (i = 0; i < 0xA4; i++) {
-        temp_s2_3[D_88317360[i]] = func_8002ED08(i + 1);
+        temp_s2_3[D_88317360[i]] = GetMoveEntry(i + 1);
     }
 
     func_8002CBB0(&arg0->unk_68, temp_s2_3, 0xA4, 0xA4);
@@ -2344,7 +2344,7 @@ void func_883103CC(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* a
 
     for (i = 0; i < 4; i++) {
         if (i < arg1->unk_04) {
-            temp_v0 = func_8002ED08(arg1->unk_00[i]);
+            temp_v0 = GetMoveEntry(arg1->unk_00[i]);
             arg0->unk_30[i].unk_04 = temp_v0;
             var_s1 = GetMessageString(NULL, 0, D_8831A4CC, temp_v0->unk_00[0] - 1);
             arg0->unk_30[i].unk_00->unk_30 =
@@ -3149,7 +3149,7 @@ s32 func_88311E28(unk_func_8830867C_02C_0CC_000_008* arg0) {
     s32 i;
 
     for (i = 0; i < temp_v0; i++) {
-        if ((func_8002ED08(arg0->unk_09[i]) != NULL) && (arg0->unk_20[i] < 0xC0)) {
+        if ((GetMoveEntry(arg0->unk_09[i]) != NULL) && (arg0->unk_20[i] < 0xC0)) {
             break;
         }
     }
@@ -4130,7 +4130,7 @@ s32 func_88314574(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
             ret_func_8002ED08* sp44;
             UNUSED s32 pad[2];
 
-            sp44 = func_8002ED08(*(s32*)&arg0->unk_30);
+            sp44 = GetMoveEntry(*(s32*)&arg0->unk_30);
             sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp44->unk_00[1])->unk_04;
             sp6C = GetMessageString(NULL, 0, D_8831A4CC, *(s32*)&arg0->unk_30 - 1);
             sp68.a = 0xFF;
@@ -4139,14 +4139,14 @@ s32 func_88314574(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
         ret_func_8002ED08* sp38;
         UNUSED s32 pad2[2];
 
-        sp38 = func_8002ED08(*(s32*)&arg0->unk_30);
+        sp38 = GetMoveEntry(*(s32*)&arg0->unk_30);
         sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp38->unk_00[1])->unk_04;
         sp6C = GetMessageString(NULL, 0, D_8831A4CC, *(s32*)&arg0->unk_30 - 1);
         sp68.a = ((-sp64 * 0xFF) + 0x26D9) / 20;
     } else {
         ret_func_8002ED08* sp2C;
 
-        sp2C = func_8002ED08(*(s32*)&arg0->unk_34);
+        sp2C = GetMoveEntry(*(s32*)&arg0->unk_34);
         sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp2C->unk_00[1])->unk_04;
         sp6C = GetMessageString(NULL, 0, D_8831A4CC, *(s32*)&arg0->unk_34 - 1);
         sp68.a = ((sp64 * 0xFF) - 0x27D8) / 20;
@@ -4221,7 +4221,7 @@ s32 func_88314A38(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2) {
     sp90 = arg0->unk_00.unk_2C - 1;
     sp80 = func_8001F5B0(4, 0, "00") + 4;
     sp74 = (arg0->unk_00.unk_00.unk_14.unk_02 - 0x10) / 2;
-    temp_s0 = func_8002ED08(*(s32*)&arg0->unk_00.unk_30);
+    temp_s0 = GetMoveEntry(*(s32*)&arg0->unk_00.unk_30);
     sp8C = (((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(temp_s0->unk_00[1]))->unk_04;
     sp88 = GetMessageString(NULL, 0, D_8831A4CC, *(s32*)&arg0->unk_00.unk_30 - 1);
     sp70 = strlen(sp88);

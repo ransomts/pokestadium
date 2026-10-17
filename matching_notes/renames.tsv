@@ -52,3 +52,10 @@ D_8120EB7C	gGbAudioStreamQueued	a4		GbAudioStream {id,pos} waiting to start (id 
 D_8120EB84	gGbAudioStreamMain	a4		main playing GbAudioStream (becomes the rotation target with pos reset)	applied@8021bf6
 D_8120EB8C	gGbAudioStreamAlt	a4		alt/fading GbAudioStream (previous main, kept for the two-stream mix)	applied@8021bf6
 func_81209078	GbAudio_Update	a4		AI-frame driver: triple-buffers via osGbSetNextBuffer, dispatches GbAudio_MixChannels or GbAudio_RenderStream by gGbAudioMode, writeback + timing	applied@8021bf6
+func_81208C08	GbAudio_QueueWrite	a5		packs {time,reg,value} into a GbApuWrite and osSendMesg's it to gGbAudioMesgQueue; reg 20/25/30/35 with 0x80 set the channel-enable overrides	applied@82e1206
+D_8122EEA8	gGbAudioChannelOverride	a4		four per-channel enable overrides (2 = forced on) applied by GbAudio_ReadReg for NR52 reads; set by GbAudio_QueueWrite on envelope restarts; cleared each mix pass	pending
+D_8122EEB0	gGbAudioMesgQueue	a5		OSMesgQueue (0x960 deep, buffer D_8122EEC8) of GbApuWrite events, created in GbAudio_Reset, drained by GbAudio_MixChannels/GbAudio_Update	applied@82e1206
+D_81228654	gGbAudioStreamData	a5		stream data pointers indexed by GbAudioStream id (mainData/altData in GbAudio_RenderStream)	applied@82e1206
+D_81228678	gGbAudioStreamLengths	a5		stream lengths indexed by GbAudioStream id (mainEnd/altEnd in GbAudio_RenderStream)	applied@82e1206
+func_8002ED08	GetMoveEntry	a5		returns &gMoveStrings[id-1] with the 1..165 validity check (NULL outside)	applied@82e1206
+func_800228B0	SetMonNickname	a5		encodes the mon name (EncodeGen1String) into an 11-byte buffer and bcopies it into the mon struct's name field (unk_46)	applied@82e1206
