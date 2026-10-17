@@ -2399,7 +2399,7 @@ void func_8437B0CC(unk_D_843C60A4 *arg0, unk_D_843C60A4 *arg1, u8 arg2, unk_func
         if (arg4)
       {
         temp_s3 = &temp_s4->unk_12;
-        if (((func_84377644(arg1, 7) == 0) && ((!(temp_s3->unk_4D & 0x10)) & 0xFFFFFFFFFFFFFFFFu)) && (temp_s3->unk_15 == 0))
+        if ((func_84377644(arg1, 7) == 0) && (!(temp_s3->unk_4D & 0x10)) && (temp_s3->unk_15 == 0))
         {
           var_s1 += spB7 * 5;
           if (func_843776FC(temp_fp, temp_fp, 0x8A) != 0)
