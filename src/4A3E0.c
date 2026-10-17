@@ -731,7 +731,9 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
 // col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
 // pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
-// Round 8 pass 4 (agent-14), no score gain but two structural leads (see func_80049DF0's notes):
+// Round 8 pass 4 (agent-14): 955 -> 810 = (a) + (b) below + the call index written `D_800FC6CC[D_800FCFD8.unk_04 & 0xFF]`
+// (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
+// (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see func_80049DF0's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
 // every later ring temp by the target's offset. `u16 col = (idx & 0xF0) >> 4` alone is copy-propagated
 // away (expression of a register variable); `col = ...; if (idx) {} idx = D_800FD008[0x12].value;` (block
@@ -740,7 +742,9 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // local, col read from D_800FD008 (2275-2620) worse. (b) on top of (a), `p = (u8*)D_800FD008` + tail
 // `dir = p[0x22] & 8` + reload `nr = D_800FD008[0x11].value` between the kill tests makes dir ONE shared
 // variable with the target's tail shape (lui/lbu/andi into dir): 1045, but dir lands in a2 and flags in a1
-// (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400.
+// (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400 (860 at 810).
+// Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
+// `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
@@ -758,7 +762,10 @@ s16 func_8004A89C(void) {
     u32 pos;
     s16 value;
     s32 k;
+    u8* p;
+    u16 col;
 
+    p = (u8*)D_800FD008;
     value = 0;
     for (i = 0x10; i < 0x14; i++) {
         if (D_800FD008[i].dirty != 0) {
@@ -769,7 +776,10 @@ s16 func_8004A89C(void) {
 
     if (value) {
         idx = D_800FD008[0x12].value;
-        sample = D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)].unk_00;
+        col = (idx & 0xF0) >> 4;
+        if (idx) {}
+        idx = D_800FD008[0x12].value;
+        sample = D_80078A60[idx & 7][col].unk_00;
         if (sample == 0xFF) {
             D_800FCFD8.unk_28 = 0;
             return 0;
@@ -777,11 +787,11 @@ s16 func_8004A89C(void) {
         if (idx & 8) {
             sample += 0x10;
         }
-        D_800FCFD8.unk_0C = D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)].unk_04;
+        D_800FCFD8.unk_0C = D_80078A60[idx & 7][col].unk_04;
         if (sample != D_800FCFD8.unk_04) {
             D_800FCFD8.unk_04 = sample;
-            func_8004ADB0(D_800FC6CC[D_800FCFD8.unk_04].unk_00, (u32)D_800FC6D0,
-                          D_800FC6CC[D_800FCFD8.unk_04].unk_04);
+            func_8004ADB0(D_800FC6CC[(D_800FCFD8.unk_04 & 0xFF)].unk_00, (u32)D_800FC6D0,
+                          D_800FC6CC[(D_800FCFD8.unk_04 & 0xFF)].unk_04);
         }
 
         D_800FCFD8.unk_08 = 0;
@@ -793,6 +803,7 @@ s16 func_8004A89C(void) {
             D_800FD008[0x16].value &= ~8;
             return 0;
         }
+        nr = D_800FD008[0x11].value;
         if (dir && !(nr & 0xF0) && !(nr & 7)) {
             D_800FCFD8.unk_28 = 0;
             D_800FD008[0x16].value &= ~8;
@@ -840,7 +851,7 @@ s16 func_8004A89C(void) {
     }
 
     sample = D_800FCFD8.unk_04;
-    dir = D_800FD008[k].value & 8;
+    dir = p[0x22] & 8;
     if (D_800FCFD8.unk_20 < D_800FCFD8.unk_00) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
