@@ -31,3 +31,7 @@ inline-rodata asm/us/data/rom_rodata_7C750.rodata.s
 # The {type_name, color} table that the 23 strings of 7C1C0 belong to ("No", ...); spimdisasm left it
 # inside D_80070FA0. D_80071D88 (used by fragments) points 7 entries into it and stays linker-defined.
 label 0x80071D50 D_80071D50 unk_D_80071D88 [23]
+
+# rom_data_78220: vertices + two display lists (used by 334D0.c via D_800777A8/D_80077950), linked
+# between 33FE0's and 373A0's data: the only file there is 37370.c.
+owner D_80077620 src/37370.c
