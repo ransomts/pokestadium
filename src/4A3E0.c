@@ -510,7 +510,7 @@ skip:
 
 #ifdef NON_MATCHING
 // Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
-// Hand-written (no m2c). Score 540 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
+// Hand-written (no m2c). Score 30 over the whole function (diff.py without -s, func_80049DF0 as GLOBAL_ASM;
 // fd.sh -s and ido_bisect both report 0 because they stop at the first jr ra; was 1420). Wins:
 // `(u8)(nr24 & 7) << 8`, NR21 read twice (no local) so duty lives in a2 and NR21 in a3; round 8: NR22 & 8
 // read inline in the final `!(NR22 & 8) && unk_04 < 0` test (no dir local in the tail) -> fresh lui load
@@ -523,7 +523,13 @@ skip:
 // block like the target (670 -> 540). Same spot with duty/dir/nr24: 640, nr21 4545; at the final test
 // instead: 1000-1040.
 // Remaining (540): the hoisted load lands in a0 and the `& 8` stays in the loop-guard block into v0
-// (target: load and andi both in t1 inside the unk_0C test block). Older notes:
+// (target: load and andi both in t1 inside the unk_0C test block).
+// 30: farm candidate (func_8004A474__g1 output-30-1) showed the trick: read NR22 through a NON-constant
+// index or pointer (`D_800FD008[v].value` with v = 7, or `p = (u8*)D_800FD008; ... p[0xE]`) so uopt does
+// not fold it into the a0 base CSE: `duty = p[0xE] & 8` before the unk_0C test gives the fresh lui and
+// the andi in the beqz delay slot. Plain constant spellings ((u8*)D_800FD008)[0xE], (&D_800FD008[7])->value,
+// etc. all fold (670). Remaining: that value is in a2 (target t1); with dir/changed it takes v0 (150),
+// nr24 150, phase 595, value 1285, i ~4000. Older notes:
 // Remaining: that tail value lives in a2 and is loaded via the a0 base (target: fresh lui into t1, the
 // trigger dir's register; bnezl t1 at the final test). A new local or `dir` there gives 790-1420 (it then
 // takes v0 and shifts unk_0C/phase/value); the inline `!(NR22 & 8)` (690) gets the fresh lui but leaves the
@@ -543,7 +549,9 @@ s16 func_8004A474(void) {
     u32 pos;
     s32 dir;
     s16 value;
+    u8* p;
 
+    p = (u8*)D_800FD008;
     changed = 0;
     for (i = 6; i < 10; i++) {
         if (D_800FD008[i].dirty != 0) {
@@ -648,17 +656,17 @@ s16 func_8004A474(void) {
         return 0;
     }
 
+    duty = p[0xE] & 8;
     if (D_800FCF90.unk_0C < pos) {
         D_800FCF90.unk_04 += D_800FCF90.unk_06;
         D_800FCF90.unk_0C += D_800FCF90.unk_08;
     }
-    changed = D_800FD008[7].value & 8;
     while (D_800FCF90.unk_18 <= pos) {
         D_800FCF90.unk_16 ^= 1;
         D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
     }
 
-    if (!changed && (D_800FCF90.unk_04 < 0)) {
+    if (!duty && (D_800FCF90.unk_04 < 0)) {
         D_800FCF90.unk_24 = 0;
         return 0;
     }
