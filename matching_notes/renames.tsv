@@ -261,3 +261,6 @@ func_8002B888	Battle_AddPartyMon	b17		copies the mon struct into side slot arg0'
 func_8002BD60	Battle_PickRandomMon	b17		picks an unrepeating random team index (MathUtil_Random16 with an osGetCount entropy stir, skipping already-chosen indices) for CPU team selection	applied@9d5069f
 func_8002BE70	Battle_GetMaxPartyLevel	b17		returns the highest level (unk_24) among side 0's party mons	applied@9d5069f
 func_8002BEC8	Battle_SetPartyLevel	b17		sets every party mon's level on side 1 (>= 0x33 only): recalculates experience/stats/HP via CalculateExperienceAtLevel/CalculatePokemonStats and syncs the mirror list	applied@9d5069f
+func_8002CCC4	Util_SwapPtrArray	b18		swaps n pointer array entries between arg0 and arg1 (used by the sort routines below)	applied@c6628a0
+func_8002CD58	Util_MedianOfThree	b18		quicksort median-of-three pivot pick via the comparator (returns the median element pointer of three)	applied@c6628a0
+func_8002CE34	Util_QuickSort	b18		in-place quicksort over a pointer array (median-of-three partition, recursion) - the generic sort entry	applied@c6628a0

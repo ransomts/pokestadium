@@ -207,7 +207,7 @@ void func_8002CC80(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
     }
 }
 
-void func_8002CCC4(void** arg0, void** arg1, s32 arg2) {
+void Util_SwapPtrArray(void** arg0, void** arg1, s32 arg2) {
     s32 i;
 
     for (i = 0; i < arg2; i++) {
@@ -217,7 +217,7 @@ void func_8002CCC4(void** arg0, void** arg1, s32 arg2) {
     }
 }
 
-s32* func_8002CD58(s32* arg0, s32* arg1, s32* arg2, s32 (*arg3)(s32, s32)) {
+s32* Util_MedianOfThree(s32* arg0, s32* arg1, s32* arg2, s32 (*arg3)(s32, s32)) {
     return (arg3(*arg0, *arg1) < 0)   ? (arg3(*arg1, *arg2) < 0)   ? arg1
                                         : (arg3(*arg0, *arg2) < 0) ? arg2
                                                                    : arg0
@@ -226,7 +226,7 @@ s32* func_8002CD58(s32* arg0, s32* arg1, s32* arg2, s32 (*arg3)(s32, s32)) {
                                       : arg0;
 }
 
-void func_8002CE34(void** base, s32 n, s32 (*cmp)(s32, s32)) {
+void Util_QuickSort(void** base, s32 n, s32 (*cmp)(s32, s32)) {
     void** sp8C;
     s32 temp_s2;
     void* temp_s4;
@@ -273,11 +273,11 @@ void func_8002CE34(void** base, s32 n, s32 (*cmp)(s32, s32)) {
         var_a2 = (base + n) - 1;
         if (n >= 0x29) {
             temp_v0_2 = n / 8;
-            var_s2 = (void**)func_8002CD58((s32*)base, (s32*)(base + temp_v0_2), (s32*)(base + temp_v0_2 * 2), cmp);
-            sp8C = (void**)func_8002CD58((s32*)(sp8C - temp_v0_2), (s32*)sp8C, (s32*)(sp8C + temp_v0_2), cmp);
-            var_a2 = (void**)func_8002CD58((s32*)(var_a2 - temp_v0_2 * 2), (s32*)(var_a2 - temp_v0_2), (s32*)var_a2, cmp);
+            var_s2 = (void**)Util_MedianOfThree((s32*)base, (s32*)(base + temp_v0_2), (s32*)(base + temp_v0_2 * 2), cmp);
+            sp8C = (void**)Util_MedianOfThree((s32*)(sp8C - temp_v0_2), (s32*)sp8C, (s32*)(sp8C + temp_v0_2), cmp);
+            var_a2 = (void**)Util_MedianOfThree((s32*)(var_a2 - temp_v0_2 * 2), (s32*)(var_a2 - temp_v0_2), (s32*)var_a2, cmp);
         }
-        sp8C = (void**)func_8002CD58((s32*)var_s2, (s32*)sp8C, (s32*)var_a2, cmp);
+        sp8C = (void**)Util_MedianOfThree((s32*)var_s2, (s32*)sp8C, (s32*)var_a2, cmp);
     }
 
     temp_s4 = *sp8C;
@@ -336,7 +336,7 @@ void func_8002CE34(void** base, s32 n, s32 (*cmp)(s32, s32)) {
         var_a2_2 = temp_s4_2;
     }
     var_s6 = base + n;
-    func_8002CCC4(base, var_s1_2 - var_a2_2, var_a2_2);
+    Util_SwapPtrArray(base, var_s1_2 - var_a2_2, var_a2_2);
     temp_s2 = (s32)(var_s3 - var_s0_2);
     temp_v0_6 = ((s32)(var_s6 - var_s3)) - 1;
     if (temp_s2 < temp_v0_6) {
@@ -344,17 +344,17 @@ void func_8002CE34(void** base, s32 n, s32 (*cmp)(s32, s32)) {
     } else {
         var_a2_2 = temp_v0_6;
     }
-    func_8002CCC4(var_s1_2, var_s6 - var_a2_2, var_a2_2);
+    Util_SwapPtrArray(var_s1_2, var_s6 - var_a2_2, var_a2_2);
     if (temp_s4_2 >= 2) {
-        func_8002CE34(base, temp_s4_2, cmp);
+        Util_QuickSort(base, temp_s4_2, cmp);
     }
     if (temp_s2 >= 2) {
-        func_8002CE34(var_s6 - temp_s2, temp_s2, cmp);
+        Util_QuickSort(var_s6 - temp_s2, temp_s2, cmp);
     }
 }
 
 void func_8002D180(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
-    func_8002CE34(arg0->unk_00, arg0->unk_08, arg1);
+    Util_QuickSort(arg0->unk_00, arg0->unk_08, arg1);
 }
 
 void func_8002D1AC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
