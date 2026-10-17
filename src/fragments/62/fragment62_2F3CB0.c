@@ -202,7 +202,7 @@ void func_84309D78(unk_D_84390010* arg0, s16 arg1) {
     for (i = 0; i < 2; i++) {
         func_80017464(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         func_8001BD04(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
-        func_800102A4(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
+        Matrix_Decompose(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
         func_80010354(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
         func_8430C4F8(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
     }

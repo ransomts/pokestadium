@@ -145,7 +145,7 @@ s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
     }
 
     func_86B01404(&sp44, &arg0->unk_60.eye);
-    func_800102A4(&sp44, &sp50, &sp34, &sp2E, &sp2C);
+    Matrix_Decompose(&sp44, &sp50, &sp34, &sp2E, &sp2C);
     func_80010354(&sp44, &arg0->unk_60.eye, D_86B0FA7C->unk_44 * sp34, sp2E, sp2C);
     func_80010354(&D_86B0FA7C->unk_04, &sp38, D_86B0FA7C->unk_30, D_86B0FA7C->unk_24,
                   func_86B08780() + D_86B0FA7C->unk_26);
@@ -153,7 +153,7 @@ s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
     sp38.y += D_86B10660.unk_0C;
 
     func_86B01404(&sp5C, &arg0->unk_60.at);
-    func_800102A4(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
+    Matrix_Decompose(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
     func_80010354(&sp5C, &arg0->unk_60.at, D_86B0FA7C->unk_44 * sp30, sp2E, sp2C);
 
     if ((sp34 <= 1.0f) && (sp30 <= 1.0f)) {

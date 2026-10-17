@@ -186,3 +186,17 @@ func_8000ED98	Matrix_Identity	b7		zeroes the MtxF and sets the 1.0 diagonal (ide
 func_8000FBB0	Matrix_Multiply	b7		full 4x4 float matrix multiply (dest = a * b)	applied@c9fb301
 func_8000FDE4	Matrix_Scale	b7		multiplies the matrix's rows by the Vec3f scale components	applied@c9fb301
 func_80010090	Matrix_ConvertToMtx	b7		float MtxF -> fixed-point Mtx conversion (integer parts in the first 16 bytes, fractions in the last)	applied@c9fb301
+func_8000ED4C	Matrix_Copy	b8		MtxF copy (memcpy semantics)	applied@2ff239c
+func_8000EDD8	Matrix_FromTranslation	b8		identity + translation column set to the Vec3f	applied@2ff239c
+func_8000EE1C	Matrix_LookAtBetween	b8		builds a look-at basis from a `from`/`to` pair with a roll (orthonormal columns from the direction vector)	applied@2ff239c
+func_8000F174	Matrix_FromSRT	b8		composes rotation (Vec3s euler) then translation into the matrix (the sx/cx sy/cy sz/cz expansion, translate in [3][n])	applied@2ff239c
+func_8000F2C4	Matrix_RotateTranslate	b8		rotation (Vec3s euler) + translation from a Vec3f position (used for object transforms)	applied@2ff239c
+func_8000F3FC	Matrix_RotateTranslateScale	b8		the full rotate+translate+scale variant (Vec3f pos, Vec3s rot, Vec3f scale)	applied@2ff239c
+func_8000F5A8	Matrix_TransformPoint	b8		applies rotate+translate (Vec3f pos, Vec3s rot) to a point arg3 and writes the result	applied@2ff239c
+func_8000F730	Matrix_TransformPointScale	b8		same with an extra scale vector applied to the result	applied@2ff239c
+func_8000F88C	Matrix_ComposeTR	b8		general compose: dest = b * rot(c) * pos(arg3) with scale factor arg4	applied@2ff239c
+func_8000FA94	Matrix_LookAtYaw	b8		builds a look-at matrix from an up direction, a position and a yaw	applied@2ff239c
+func_8000FF04	Matrix_GetScale	b8		extracts the per-axis scale (row norms) of a matrix into a Vec3f	applied@2ff239c
+func_8000FFB8	Matrix_TransformVec3sInPlace	b8		multiplies a Vec3s by the matrix including translation (affine transform of a 16-bit vector)	applied@2ff239c
+func_80010228	Matrix_BuildObjectTransform	b8		composes a full object transform: TR matrix from arg4/arg5, euler rotation, then scale (uses Matrix_ComposeTR/RotateTranslate/Multiply/Scale)	applied@2ff239c
+func_800102A4	Matrix_Decompose	b8		extracts translation (Vec3f), yaw/pitch/roll (s16s) and scale from a matrix - the inverse of the compose family	applied@2ff239c

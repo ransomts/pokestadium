@@ -20,7 +20,7 @@ u16 func_86B01670(unk_D_86002F34_00C* arg0, unk_D_86002F58_004_000* arg1, s16 ar
     f32 sp38;
     s32 sp34 = 0;
 
-    func_800102A4(&arg0->unk_60.at, &arg0->unk_60.eye, &sp48, &sp46, &sp44);
+    Matrix_Decompose(&arg0->unk_60.at, &arg0->unk_60.eye, &sp48, &sp46, &sp44);
     sp40 = (COSS(sp44 + 0x8000) * arg5) + arg0->unk_60.eye.z;
     sp38 = (SINS(sp44 + 0x8000) * arg5) + arg0->unk_60.eye.x;
 
@@ -129,7 +129,7 @@ s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
 
     func_80010354(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
     func_80010354(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
-    func_800102A4(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
+    Matrix_Decompose(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
 
     arg1->unk_04.unk_68 = func_800104AC(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
 

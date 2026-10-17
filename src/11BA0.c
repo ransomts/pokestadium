@@ -369,7 +369,7 @@ unk_D_86002F34_alt8* func_80011A3C(MainPoolState* arg0, unk_D_86002F34_alt8* arg
         if (arg4 == NULL) {
             Matrix_Identity(&arg1->unk_1C);
         } else {
-            func_8000ED4C(&arg1->unk_1C, arg4);
+            Matrix_Copy(&arg1->unk_1C, arg4);
         }
         func_80010FA0(arg1, 0x17);
         arg1->unk_00.unk_03 = arg2;
@@ -382,7 +382,7 @@ unk_D_86002F34_alt8* func_80011ABC(MainPoolState* arg0, unk_D_86002F34_alt8* arg
                                    Vec3s* arg5) {
     MtxF sp20;
 
-    func_8000F2C4(&sp20, arg4, arg5);
+    Matrix_RotateTranslate(&sp20, arg4, arg5);
     return func_80011A3C(arg0, arg1, arg2, arg3, &sp20);
 }
 

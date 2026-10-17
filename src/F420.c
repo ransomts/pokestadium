@@ -181,7 +181,7 @@ Vec3s* func_8000EC88(Vec3s* arg0, Vec3f* arg1) {
     return arg0;
 }
 
-void func_8000ED4C(MtxF* dest, MtxF* src) {
+void Matrix_Copy(MtxF* dest, MtxF* src) {
     if (dest != src) {
         s32 i;
         u32* d = (u32*)dest;
@@ -207,7 +207,7 @@ void Matrix_Identity(MtxF* arg0) {
     // clang-format on
 }
 
-void func_8000EDD8(MtxF* arg0, Vec3f* arg1) {
+void Matrix_FromTranslation(MtxF* arg0, Vec3f* arg1) {
     Matrix_Identity(arg0);
 
     arg0->mf[3][0] = arg1->x;
@@ -215,7 +215,7 @@ void func_8000EDD8(MtxF* arg0, Vec3f* arg1) {
     arg0->mf[3][2] = arg1->z;
 }
 
-void func_8000EE1C(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
+void Matrix_LookAtBetween(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
     f32 invLength;
     f32 dx;
     f32 dz;
@@ -289,7 +289,7 @@ void func_8000EE1C(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
     mtx->mf[3][3] = 1.0f;
 }
 
-void func_8000F174(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
+void Matrix_FromSRT(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
     f32 sx = SINS(rotate->x);
     f32 cx = COSS(rotate->x);
 
@@ -320,7 +320,7 @@ void func_8000F174(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
     dest->mf[3][3] = 1.0f;
 }
 
-void func_8000F2C4(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
+void Matrix_RotateTranslate(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     f32 temp_fa0;
     f32 temp_fa1;
     f32 temp_ft4;
@@ -361,7 +361,7 @@ void func_8000F2C4(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_8000F3FC(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
+void Matrix_RotateTranslateScale(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     f32 sx = SINS(arg2->x);
     f32 cx = COSS(arg2->x);
     f32 sy = SINS(arg2->y);
@@ -389,7 +389,7 @@ void func_8000F3FC(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_8000F5A8(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
+void Matrix_TransformPoint(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     f32 sx = SINS(c->x);
     f32 cx = COSS(c->x);
 
@@ -420,7 +420,7 @@ void func_8000F5A8(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     dest->mf[3][3] = 1.0f;
 }
 
-void func_8000F730(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
+void Matrix_TransformPointScale(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     f32 sx = SINS(c->x);
     f32 cx = COSS(c->x);
 
@@ -451,7 +451,7 @@ void func_8000F730(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     dest->mf[3][3] = 1.0f;
 }
 
-void func_8000F88C(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4) {
+void Matrix_ComposeTR(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4) {
     f32 sp24;
     f32 sp20;
     f32 sp1C;
@@ -484,7 +484,7 @@ void func_8000F88C(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_8000FA94(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
+void Matrix_LookAtYaw(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     Vec3f lateralDir;
     Vec3f leftDir;
     Vec3f forwardDir;
@@ -571,13 +571,13 @@ void Matrix_Scale(MtxF* dest, MtxF* mtx, Vec3f* s) {
     }
 }
 
-void func_8000FF04(MtxF* arg0, Vec3f* arg1) {
+void Matrix_GetScale(MtxF* arg0, Vec3f* arg1) {
     arg1->x = sqrtf(SQ(arg0->mf[0][0]) + SQ(arg0->mf[0][1]) + SQ(arg0->mf[0][2]));
     arg1->y = sqrtf(SQ(arg0->mf[1][0]) + SQ(arg0->mf[1][1]) + SQ(arg0->mf[1][2]));
     arg1->z = sqrtf(SQ(arg0->mf[2][0]) + SQ(arg0->mf[2][1]) + SQ(arg0->mf[2][2]));
 }
 
-void func_8000FFB8(MtxF* arg0, Vec3s* arg1) {
+void Matrix_TransformVec3sInPlace(MtxF* arg0, Vec3s* arg1) {
     f32 entry0 = arg1->x;
     f32 entry1 = arg1->y;
     f32 entry2 = arg1->z;
@@ -604,17 +604,17 @@ void Matrix_ConvertToMtx(MtxF* dest, MtxF* src) {
     }
 }
 
-void func_80010228(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4, MtxF* arg5) {
+void Matrix_BuildObjectTransform(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4, MtxF* arg5) {
     MtxF sp60;
     MtxF sp20;
 
-    func_8000F88C(&sp60, arg4, arg5, arg1, 1.0f);
-    func_8000F2C4(&sp20, &D_8006F050, arg2);
+    Matrix_ComposeTR(&sp60, arg4, arg5, arg1, 1.0f);
+    Matrix_RotateTranslate(&sp20, &D_8006F050, arg2);
     Matrix_Multiply(&sp20, &sp20, &sp60);
     Matrix_Scale(arg0, &sp20, arg3);
 }
 
-void func_800102A4(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
+void Matrix_Decompose(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
     f32 sp2C = arg1->x - arg0->x;
     f32 sp28 = arg1->y - arg0->y;
     f32 sp24 = arg1->z - arg0->z;

@@ -134,7 +134,7 @@ void Matrix_SetIdentityAtCurrent(void) {
 }
 
 void Matrix_SetCurrent(MtxF* arg0) {
-    func_8000ED4C(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], arg0);
+    Matrix_Copy(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], arg0);
     D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
     D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
     Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
@@ -637,7 +637,7 @@ void func_80014124(GraphNode* arg0) {
     if (D_8006F09C->unk_000.unk_02 & 2) {
         func_8000E88C(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
         func_8000EB70(&sp24, 0, D_8006F09C->unk_01E.y, 0);
-        func_8000F2C4(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
+        Matrix_RotateTranslate(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
 
         D_800AA8C8.unk_10A0++;
 
@@ -686,7 +686,7 @@ void func_80014334(GraphNode* arg0) {
     MtxF sp20;
     unk_D_86002F34_alt5* arg = (unk_D_86002F34_alt5*)arg0;
 
-    func_8000F2C4(&sp20, &arg->unk_18, &arg->unk_24);
+    Matrix_RotateTranslate(&sp20, &arg->unk_18, &arg->unk_24);
     Matrix_PushMultiply(&sp20);
     func_80013330(arg0);
 
@@ -718,14 +718,14 @@ void func_800143C0(GraphNode* arg0) {
     func_800171A8(&sp84, &sp90, &sp78, arg->unk_32 * 3);
 
     if (arg->unk_31 & 2) {
-        func_80010228(&sp38, &sp84, &sp90, &sp78, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+        Matrix_BuildObjectTransform(&sp38, &sp84, &sp90, &sp78, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         D_800AA8C8.unk_10A0++;
         Matrix_SetCurrent(&sp38);
     } else if (arg->unk_31 & 1) {
-        func_8000F5A8(&sp38, &sp84, &sp90, &sp78);
+        Matrix_TransformPoint(&sp38, &sp84, &sp90, &sp78);
         Matrix_PushMultiply(&sp38);
     } else {
-        func_8000F730(&sp38, &sp84, &sp90, &D_800AB970.unk_000[D_800AB970.unk_180]);
+        Matrix_TransformPointScale(&sp38, &sp84, &sp90, &D_800AB970.unk_000[D_800AB970.unk_180]);
 
         D_800AA8C8.unk_10A0++;
 
@@ -778,13 +778,13 @@ void func_80014690(GraphNode* arg0) {
         if (arg->unk_000.unk_02 & 0x10) {
             Matrix_Multiply(&sp38, &arg->unk_060, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         } else if (arg->unk_000.unk_02 & 8) {
-            func_8000F88C(&sp38, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_024,
+            Matrix_ComposeTR(&sp38, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_024,
                           1.0f);
         } else if (arg->unk_000.unk_02 & 0x80) {
-            func_8000F3FC(&sp38, &arg->unk_024, &arg->unk_01E);
+            Matrix_RotateTranslateScale(&sp38, &arg->unk_024, &arg->unk_01E);
             Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         } else {
-            func_8000F2C4(&sp38, &arg->unk_024, &arg->unk_01E);
+            Matrix_RotateTranslate(&sp38, &arg->unk_024, &arg->unk_01E);
             Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
         }
 
@@ -837,7 +837,7 @@ void func_80014980(GraphNode* arg0) {
     MtxF sp30;
     unk_D_86002F34_alt9* arg = (unk_D_86002F34_alt9*)arg0;
 
-    func_8000F88C(&sp30, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_1C,
+    Matrix_ComposeTR(&sp30, &D_8006F088->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_1C,
                   arg->unk_28);
     D_800AA8C8.unk_10A0++;
     Matrix_SetCurrent(&sp30);
@@ -953,7 +953,7 @@ void func_80014D70(GraphNode* arg0) {
 
     if (D_8006F09C->unk_000.unk_02 & 0x40) {
         func_8000E88C(&sp90, 0.0f, 1.0f, 0.0f);
-        func_8000FF04(sp3C, &sp84);
+        Matrix_GetScale(sp3C, &sp84);
 
         sp80 = 1.0f - ((sp3C->mf[3][1] - sp9C.y) / 1000.0f);
         if (sp80 < 0.5f) {
@@ -966,7 +966,7 @@ void func_80014D70(GraphNode* arg0) {
 
         sp84.x *= (arg->unk_1A / 100.0f) * sp80;
         sp84.z *= (arg->unk_1C / 100.0f) * sp80;
-        func_8000FA94(&sp40, &sp90, &sp9C, D_8006F09C->unk_01E.y);
+        Matrix_LookAtYaw(&sp40, &sp90, &sp9C, D_8006F09C->unk_01E.y);
         Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp40, &sp84);
 
         D_800AA8C8.unk_10A0++;

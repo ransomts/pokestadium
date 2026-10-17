@@ -3416,7 +3416,7 @@ void func_88804EC8(void) {
     D_88826CE8 = GfxAlloc(sizeof(Mtx) * 36);
     var_s1 = D_88826CE8;
 
-    func_8000EE1C(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
+    Matrix_LookAtBetween(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
     func_80031EF4(&sp124, &temp_s2->unk_60.mtxf);
     guMtxF2L(sp124.mf, &spE0);
 

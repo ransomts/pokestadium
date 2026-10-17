@@ -445,7 +445,7 @@ void func_8432A578(unk_D_86002F34_00C* arg0) {
                             if ((sp40->unk_2D == 0xF) && (D_84390240.unk_00->unk_34 == 1)) {
                                 func_8432A4B0();
                             } else {
-                                func_800102A4(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &sp34, &sp32,
+                                Matrix_Decompose(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &sp34, &sp32,
                                               &sp30);
                                 temp_lo = sp30 / 182;
                                 if (((temp_lo == 0x5A) || (temp_lo == -0x5A)) && (D_84390240.unk_00->unk_34 == 1)) {

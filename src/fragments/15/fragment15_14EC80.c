@@ -48,7 +48,7 @@ void func_86902334(void) {
 
     if (D_87906054->unk_60.eye.y < 12.0f) {
         D_87906054->unk_60.eye.y = 12.5f;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     }
 
     D_87906054->unk_24.near = 20.0f;
@@ -101,7 +101,7 @@ void func_869025BC(void) {
 
     if (D_87906054->unk_60.eye.y < 12.0f) {
         D_87906054->unk_60.eye.y = 12.5f;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     }
 
     D_87906054->unk_24.near = 20.0f;
@@ -150,11 +150,11 @@ void func_86902890(s16 arg0) {
     UNUSED s32 pad2;
 
     func_8000E88C(&sp38, 0, 0.0f, 0.0f);
-    func_800102A4(&sp38, &D_87906054->unk_60.eye, &D_8690B60C, &D_8690B608, &D_8690B60A);
+    Matrix_Decompose(&sp38, &D_87906054->unk_60.eye, &D_8690B60C, &D_8690B608, &D_8690B60A);
     func_8000E88C(&sp50, D_87906054->unk_60.at.x, 0.0f, D_87906054->unk_60.at.z);
     func_8000EB70(&sp68, 0, D_8690B60A + arg0, 0);
     func_8000E88C(&sp5C, D_8690A710->unk_004 * 4.0f, 0.0f, 0.0f);
-    func_8000F3FC(&sp70, &D_87906054->unk_60.at, &sp68);
+    Matrix_RotateTranslateScale(&sp70, &D_87906054->unk_60.at, &sp68);
     func_86902814(&sp5C, &sp70);
 
     sp50.x += sp5C.x;
@@ -163,14 +163,14 @@ void func_86902890(s16 arg0) {
     D_87906054->unk_60.at.x = sp50.x;
     D_87906054->unk_60.at.z = sp50.z;
 
-    func_800102A4(&sp38, &D_87906054->unk_60.at, &D_8690B60C, &D_8690B608, &D_8690B60A);
+    Matrix_Decompose(&sp38, &D_87906054->unk_60.at, &D_8690B60C, &D_8690B608, &D_8690B60A);
     D_8690B60C = func_869022D8(sp38, D_87906054->unk_60.at);
     if ((func_86902294(1.9f) - 1.0f) <= D_8690B60C) {
         func_80010354(&sp38, &sp50, func_86902294(1.9f) - 1.0f, 0, D_8690B60A);
         D_87906054->unk_60.at.x = sp50.x;
         D_87906054->unk_60.at.z = sp50.z;
     }
-    func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
 void func_86902AE8(void) {
@@ -183,28 +183,28 @@ void func_86902AE8(void) {
 
     if ((D_8690B390.buttonDown & 8) && (D_87906054->unk_60.at.y < 300.0f)) {
         D_87906054->unk_60.at.y += 4.0f * D_8690A710->unk_004;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
         if (D_8690B600 < -0x38E3) {
             D_87906054->unk_60.at.y -= 4.0f * D_8690A710->unk_004;
         }
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     } else if ((D_8690B390.buttonDown & 4) && (D_87906054->unk_60.at.y > 5.0f)) {
         D_87906054->unk_60.at.y -= 4.0f * D_8690A710->unk_004;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
         if (D_8690B600 >= 0x38E4) {
             D_87906054->unk_60.at.y += 4.0f * D_8690A710->unk_004;
         }
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     }
 
     if (D_87906054->unk_60.at.y > 200.0f) {
         D_87906054->unk_60.at.y = 200.0f;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     }
 
     if (D_87906054->unk_60.at.y < 5.0f) {
         D_87906054->unk_60.at.y = 5.0f;
-        func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
     }
 
     if (D_8690B390.buttonDown & 1) {
@@ -288,7 +288,7 @@ void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
 
     func_8000E88C(arg0, arg1->x, arg1->y, arg1->z);
     func_8000E88C(arg1, sp7C.x, sp7C.y, sp7C.z);
-    func_800102A4(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
 void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
@@ -340,7 +340,7 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
     tmp.y = arg0->y;
 
     func_8000E88C(arg1, tmp.x, tmp.y, tmp.z);
-    func_800102A4(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
 void func_8690351C(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
@@ -364,7 +364,7 @@ void func_8690351C(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
     }
 
     arg1->y = arg2;
-    func_800102A4(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
 }
 
 void func_869035F4(Vec3f* arg0, Vec3f* arg1) {

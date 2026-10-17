@@ -309,9 +309,9 @@ void func_8431B858(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
     arg0->unk_448.unk_18.y = (arg0->unk_000.unk_024.y - func_84307BAC(arg0)) + arg0->unk_448.unk_18.y + sp3C;
     func_8430C1E4(&D_84390240.unk_00->unk_B8, &arg1->unk_60.at);
     func_8430C1E4(&D_84390240.unk_00->unk_C4, &arg1->unk_60.eye);
-    func_800102A4(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &D_84390240.unk_00->unk_70, &sp38->unk_44,
+    Matrix_Decompose(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &D_84390240.unk_00->unk_70, &sp38->unk_44,
                   &sp38->unk_46);
-    func_800102A4(&arg0->unk_448.unk_18, &arg1->unk_60.at, &sp38->unk_4C, &sp38->unk_44, &sp38->unk_46);
+    Matrix_Decompose(&arg0->unk_448.unk_18, &arg1->unk_60.at, &sp38->unk_4C, &sp38->unk_44, &sp38->unk_46);
     D_84390240.unk_00->unk_6C = 0.0f;
     D_84390240.unk_00->unk_74 = 0.0f;
 }
@@ -390,7 +390,7 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     func_8430C1E4(&sp4C, &arg0->unk_60.at);
     func_8430C1E4(&sp40, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp64);
-    func_800102A4(&sp64, &arg1->unk_448.unk_18, &sp3C, &sp36, &sp34);
+    Matrix_Decompose(&sp64, &arg1->unk_448.unk_18, &sp3C, &sp36, &sp34);
 
     switch (arg1->unk_000.unk_01A) {
         case 0x5F:
@@ -458,7 +458,7 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     sp64.y = arg1->unk_448.unk_18.y;
     func_80010354(&sp64, &sp58, sp2C->unk_4C, sp2C->unk_44, sp2C->unk_46);
     sp4C.y = sp58.y;
-    func_800102A4(&sp4C, &sp58, &sp3C, &sp36, &sp34);
+    Matrix_Decompose(&sp4C, &sp58, &sp3C, &sp36, &sp34);
 
     switch (arg1->unk_000.unk_01A) {
         case 0x58:
@@ -557,8 +557,8 @@ void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp34;
     u8 sp2C[] = { 0x2D, 0x35, 0x79, 0x2C, 0x6E };
 
-    func_800102A4(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &sp38, &sp36, &sp34);
-    func_800102A4(&arg0->unk_60.at, &arg0->unk_60.eye, &sp44, &sp3E, &sp3C);
+    Matrix_Decompose(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &sp38, &sp36, &sp34);
+    Matrix_Decompose(&arg0->unk_60.at, &arg0->unk_60.eye, &sp44, &sp3E, &sp3C);
 
     temp_lo = sp34 / 182;
     if ((temp_lo == 0x5A) || (temp_lo == -0x5A)) {
@@ -607,14 +607,14 @@ void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
 
     func_8430C1E4(&sp3C, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp54);
-    func_800102A4(&sp54, &arg1->unk_448.unk_18, &sp38, &sp32, &sp30);
+    Matrix_Decompose(&sp54, &arg1->unk_448.unk_18, &sp38, &sp32, &sp30);
 
     if (sp38 < (func_84307BD8(arg1) * 1.1f)) {
         func_8430C1E4(&sp54, &arg1->unk_448.unk_18);
     }
 
     func_80010354(&sp54, &sp48, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
-    func_800102A4(&sp3C, &sp48, &sp38, &sp32, &sp30);
+    Matrix_Decompose(&sp3C, &sp48, &sp38, &sp32, &sp30);
 
     var_fa0 = (sp38 / (func_84307BD8(arg1) * 80.0f)) * 3.0f;
     if (var_fa0 >= 1.0f) {
@@ -691,7 +691,7 @@ void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C1E4(&sp34, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp58);
     func_80010354(&sp58, &sp4C, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
-    func_800102A4(&sp34, &sp4C, &sp30, &sp2A, &sp28);
+    Matrix_Decompose(&sp34, &sp4C, &sp30, &sp2A, &sp28);
     D_84390240.unk_00->unk_94.z = func_800104AC(D_84390240.unk_00->unk_94.z, 0.8f, 0.05f, 0.05f);
     func_80010354(&sp34, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
 }
@@ -780,7 +780,7 @@ s32 func_8431D048(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C1E4(&sp3C, &arg0->unk_60.at);
     func_8430C1E4(&sp30, &arg0->unk_60.eye);
     func_8431EF54(arg0, arg1);
-    func_800102A4(&sp30, &arg0->unk_60.eye, &sp2C, &sp28, &sp2A);
+    Matrix_Decompose(&sp30, &arg0->unk_60.eye, &sp2C, &sp28, &sp2A);
     func_80010354(&sp30, &arg0->unk_60.eye, sp2C / 2, sp28, sp2A);
     func_8430C1E4(&arg0->unk_60.at, &sp3C);
 
@@ -850,7 +850,7 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
 
     func_8430C718(&D_84390240.unk_00->unk_94.z, D_843901B0.unk_34, D_843901B0.unk_38);
     func_8431AED8(arg1, &sp6C);
-    func_800102A4(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
+    Matrix_Decompose(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
     var_fa1 = sp44 / (func_84307BD8(arg1) * 40.0f);
     if (var_fa1 >= 0.6f) {
@@ -865,7 +865,7 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C070(&sp54, &sp60, &sp40, &sp36, &sp34);
     func_80010354(&sp54, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp40, sp36, sp34);
     func_8431AED8(arg1, &sp6C);
-    func_800102A4(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
+    Matrix_Decompose(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
     var_fa1 = sp44 / (func_84307BD8(arg1) * 40.0f);
     if (var_fa1 >= 0.6f) {

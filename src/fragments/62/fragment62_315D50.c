@@ -5059,7 +5059,7 @@ void func_8432CFCC(unk_D_86002F34_00C* arg0) {
     D_8140E628.unk_0C = arg0;
     D_8140E6B4 = &D_8140E628.unk_10;
 
-    func_8000ED4C(&D_8140E6B4->unk_00, &arg0->unk_60.mtxf);
+    Matrix_Copy(&D_8140E6B4->unk_00, &arg0->unk_60.mtxf);
     func_81400930(&D_8140E6B4->unk_40, &arg0->unk_60.eye);
     func_81400930(&D_8140E6B4->unk_4C, &arg0->unk_60.at);
     func_8432D468(&D_8140E6B4->unk_70, &D_8140E6B4->unk_72);

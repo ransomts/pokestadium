@@ -173,7 +173,7 @@ s32 func_86B05CB0(s32 arg0, GraphNode* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        func_800102A4(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = sp26 + 0x2000;
         ptr->unk_1E = sp24 - 0x2000;
     }
@@ -188,7 +188,7 @@ s32 func_86B05D18(s32 arg0, GraphNode* arg1) {
     s16 sp24;
 
     if (arg0 == 2) {
-        func_800102A4(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
+        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = -0x2000 - sp26;
         ptr->unk_1E = sp24 + 0x6000;
     }
@@ -623,7 +623,7 @@ s32 func_86B06FFC(void) {
             }
             if (D_86B0FA78->unk_178++ >= 0x41) {
                 D_86B0FA64 = 0;
-                func_800102A4(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_86B0FA6C, &D_86B0FA66, &D_86B0FA68);
+                Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_86B0FA6C, &D_86B0FA66, &D_86B0FA68);
                 D_86B0FA78->unk_16C++;
             }
             break;

@@ -330,7 +330,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
 
     if (D_8006F09C->unk_0A6 == 0xFF) {
         if ((D_8006F09C->unk_01A == 0x5C) || (D_8006F09C->unk_01A == 0x6D) || (D_8006F09C->unk_01A == 0x6E)) {
-            func_8000ED4C(&sp10C, Matrix_GetRelative(0));
+            Matrix_Copy(&sp10C, Matrix_GetRelative(0));
             guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
             guTranslate(&sp190, spFC, sp100, sp104);
             guMtxCatL(&sp250, &sp190, sp294);
@@ -339,7 +339,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
             guMtxCatL(&sp250, &sp210, sp294);
         }
     } else if (D_8006F09C->unk_01A == 0x5C) {
-        func_8000ED4C(&sp10C, Matrix_GetRelative(0));
+        Matrix_Copy(&sp10C, Matrix_GetRelative(0));
         guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
         guTranslate(&sp190, spFC, sp100, sp104);
         guMtxCatL(&sp250, &sp190, sp294);

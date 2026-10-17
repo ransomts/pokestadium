@@ -62,8 +62,8 @@ s32 func_800328D8(UNUSED s32 arg0) {
 }
 
 void func_800328E4(u8 arg0) {
-    func_8000ED4C(D_800AF7C8[arg0].mtx, Matrix_GetRelative(0));
-    func_8000ED4C(D_800AF7C8[arg0].mtx[1].mf, Matrix_GetRelative(-1));
+    Matrix_Copy(D_800AF7C8[arg0].mtx, Matrix_GetRelative(0));
+    Matrix_Copy(D_800AF7C8[arg0].mtx[1].mf, Matrix_GetRelative(-1));
 }
 
 void func_80032940(u8 index) {
@@ -183,7 +183,7 @@ Gfx* func_80032E00(Gfx* gfx) {
     }
     func_80031EF4(&modelMtx, &D_8006F088->unk_60.mtxf);
     guMtxF2L(&modelMtx.mf[0], &tempMtx);
-    func_8000ED4C(&tempCatMtx, Matrix_GetRelative(0));
+    Matrix_Copy(&tempCatMtx, Matrix_GetRelative(0));
     func_80032034(&tempCatMtx, &scale);
     guScaleF(&scaleMtx.mf[0], scale.x, scale.y, scale.z);
     guMtxXFMF(&tempCatMtx.mf[0], 0.0f, 0.0f, 0.0f, &translate.z, &translate.y, &translate.x);

@@ -1546,7 +1546,7 @@ void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     arg0->unk_10 = 0;
     func_8000E88C(&sp40, arg1, arg2, 0.0f);
     func_8000E88C(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
-    func_800102A4(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
+    Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
     func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
     func_80010354(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
@@ -1584,7 +1584,7 @@ void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     arg0->unk_10 = 0;
     func_8000E88C(&sp40, arg1, arg2, 0.0f);
     func_8000E88C(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
-    func_800102A4(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
+    Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
     func_80010354(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
     func_80010354(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);

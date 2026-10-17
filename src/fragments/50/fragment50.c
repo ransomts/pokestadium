@@ -1771,7 +1771,7 @@ s32 func_826007F0(s32 arg0, unk_D_86002F34_alt18* arg1) {
 
     if (arg0 == 2) {
 
-        func_800102A4(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp30, &sp2E, &sp2C);
+        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp30, &sp2E, &sp2C);
         arg1->unk_1C = sp2E + 0x2000;
         arg1->unk_1E = sp2C - 0x2000;
 
@@ -1804,7 +1804,7 @@ s32 func_82600A34(s32 arg0, unk_D_86002F34_alt18* arg1) {
     s16 sp2C;
 
     if (arg0 == 2) {
-        func_800102A4(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp30, &sp2E, &sp2C);
+        Matrix_Decompose(&D_8006F088->unk_60.at, &D_8006F088->unk_60.eye, &sp30, &sp2E, &sp2C);
 
         arg1->unk_1C = -0x2000 - sp2E;
         arg1->unk_1E = sp2C + 0x6000;
