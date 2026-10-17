@@ -527,8 +527,9 @@ def plan(path, quiet=False):
             p_["relocs"].update(x["relocs"])
             p_.setdefault("folded", []).append(x["name"])
             p_.setdefault("folded_at", []).append((x["name"], x["vram"] - p_["vram"]))
-            p_["users"] = sorted(set(p_["users"]) | set(x["users"]))
-            if not p_["owner"] and x["owner"]:
+            if x["name"] not in FAKE:
+                p_["users"] = sorted(set(p_["users"]) | set(x["users"]))
+            if not p_["owner"] and x["owner"] and x["name"] not in FAKE:  # a fake view confers no owner
                 p_["owner"], p_["why"] = x["owner"], f"via folded {x['name']}"
             continue
         k += 1
@@ -844,16 +845,23 @@ def apply(path):
             # last of them: every type they use is declared there, and earlier uses still see a decl.
             # Search the owner itself (l["decl"] may be another file's: source order is filesystem order)
             # and never inside a draft.
-            for m in re.finditer(r"^[ \t]*extern\b[^;\n]*\b%s\b[^;\n]*;[^\n]*\n" % re.escape(l["name"]), t, re.M):
+            for m in re.finditer(r"^extern\b[^;\n]*\b%s\b[^;\n]*;[^\n]*\n" % re.escape(l["name"]), t, re.M):  # file scope only
                 if not in_draft(owner + "#placement", t, m.start()):
                     pos = m.end() if pos is None else max(pos, m.end())
                     break
         # data must stay in address order: go after this owner's definitions of lower addresses
         # (an earlier migration of the same owner, e.g. 703E0 before 71BA1)
         first = min(l["vram"] for l, _ in items)
-        for m in re.finditer(r"^(?!extern\b)[^\n;]*\b(?:pad_)?D_([0-9A-F]{8})\b[^\n]*=[^\n]*;[^\n]*\n", t, re.M):
+        for m in re.finditer(r"^(?![ \t#/])(?!extern\b)[^\n;(]*\b(?:pad_)?D_([0-9A-F]{8})\b[^\n(]*=[^\n]*;[^\n]*\n", t, re.M):
             if int(m.group(1), 16) < first and not in_draft(owner + "#placement", t, m.start()):
                 pos = m.end() if pos is None else max(pos, m.end())
+        # initialized function statics are emitted in source order too (e.g. 20470.c's D_8006F7D0):
+        # data of higher addresses goes after the end of the enclosing function
+        for m in re.finditer(r"^[ \t]+static\b[^\n;(]*\bD_([0-9A-F]{8})\b[^\n(]*=[^\n]*;", t, re.M):
+            if int(m.group(1), 16) < first and not in_draft(owner + "#placement", t, m.start()):
+                e = re.compile(r"^\}[^\n]*\n", re.M).search(t, m.end())
+                if e:
+                    pos = e.end() if pos is None else max(pos, e.end())
         # forward-declare referenced symbols the owner cannot see (gcc's syntax check rejects them);
         # symbols of this batch defined later than their first use get a decl of their real type
         fwd, seen = [], set()
