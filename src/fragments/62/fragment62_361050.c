@@ -2175,7 +2175,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 9074 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// func_8437B0CC: full-diff score 8919 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
@@ -2186,7 +2186,9 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // Tried for that: swapping the unk_06/unk_08 store order, reading temp_s7->unk_06/08 back in the
 // float expression (all worse). `var_s1 += (spB7 * a) + (spB6 * b);` is two statements in all four
 // places (target: addu s1,a0,x then addu s1,s1,y): 10424 -> 9079. Case 0x39 had a semantic
-// bug: with unk_0B == 0x84 but !(unk_4E & 8) the target breaks (else-break added; `!= 0x84`).
+&
+// The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
+// with no slot left for a tmp7 it reuses var_v1_4 (9074 -> 8919).
 // Structure and s-register assignment match. Frame layout model (verified): every named local
 // gets a home slot top-down (i 0x107 ... sp8C 0x8C); spilled CSE temps / split register vars go
 // below, in 0x50..0x8B (unk_09 0x58, unk_0A 0x6C, unk_0F 0x78, arg2 loop bound 0x80,
@@ -3498,9 +3500,10 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
         tmp4 = temp_s7->unk_14 * (spB5 * 0x14);
         tmp5 = temp_s7->unk_18 * (spB5 * 0x14);
         tmp6 = temp_s7->unk_1C * (spB5 * 0x14);
+        var_v1_4 = temp_s7->unk_20 * (spB5 * 0x14);
 
         temp_s7->unk_28 = (((((tmp1 + tmp6 + tmp3) * (var_s0_4 / 255.0f)) + tmp2) - (tmp4 * (spC0 / 255.0f))) - tmp5) -
-                          ((temp_s7->unk_20 * (spB5 * 0x14)) * (var_s2 / 255.0f));
+                          (var_v1_4 * (var_s2 / 255.0f));
 
         if (arg4) {
             if (!(D_843C5564->unk_00 & 0x30)) {
