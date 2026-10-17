@@ -266,6 +266,16 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
 // block-scoped f32 x0/x1/y0/c/s: frame 0x118, 6024. Farm best (output-1298) wraps the gfx code in
 // do/while (1427 in fd.sh), no insight into the corner math. Full rotation for corners 2/3
 // (`- SINS * 0.0f`, `COSS * 0.0f +`) folds away: identical code, no extra temp slots.
+// Round 8 pass 2 (agent-12): the twin func_86905F24 (matched, same tail) also has 4 allocated but
+// unused temp slots (0x38-0x44) below its 2 memory temps, so the extra slots come from the corner
+// math, not the gfx tail. Using arg1/arg2 directly (a1/a2 declared, unused; frame 0xF8, 3330) gives
+// the target memory-temp ORDER (arg1, -h*sin, arg2, h*cos, h*sin, (f32)h) but makes -h*cos a memory
+// temp where the target spills cos*-arg4 instead. New dead ends: every 8-byte set of named locals
+// above spF8 from {f32 a1/a2, s32/s16/f32 w=arg3/2, f32 mw=-(arg3/2), s32 h=arg4, s32/f32 y=-arg4,
+// f32 c/s, s32 idx, u16 ang}: frames 0xE8-0x100, never 0x108 (best 2230 = f32 a1 + s32 h, frame
+// 0x100, same code as this draft); dead `a1 = E1; a2 = E2;` at the top for 67 pairs of cos/sin/h/
+// -h/-arg4/arg1/arg2/products: no gain; 10 statement orders of the 8 corner lines: all worse (frame
+// changes with order, 0xE8-0x100).
 void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
