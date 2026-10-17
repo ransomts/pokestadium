@@ -326,7 +326,9 @@ def run_wave(qwave, args, facts):
         return False
 
     # 6. commit + mark + amend
-    n = len(kept)
+    n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied@"))
+    if n == 0:
+        n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     short = ", ".join(os.path.basename(f) for f in files[:4]) + (", ..." if len(files) > 4 else "")
     r = sh(["git", "add", "-A", ":!.claude", ":!scratch"], 60)
     r = sh(["git", "commit", "-m", f"rename: {batch} ({n} symbols; {short})"], 120)
