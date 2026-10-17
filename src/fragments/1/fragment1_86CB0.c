@@ -1,6 +1,6 @@
 #include "global.h"
 
-typedef struct unk_func_81208D7C {
+typedef struct GbAudioChannel {
   /* 0x00 */ u8 unk_00;
   /* 0x02 */ char unk02[0x02];
   /* 0x04 */ s32 unk_04;
@@ -37,7 +37,7 @@ typedef struct unk_func_81208D7C {
   /* 0x48 */ u32 unk_48;
   /* 0x4C */ u8 unk_4C;
   /* 0x4D */ char unk4D[0x3];
-} unk_func_81208D7C; // size = 0x50
+} GbAudioChannel; // size = 0x50
 
 typedef struct unk_D_8122EEA8 {
   /* 0x00 */ u8 unk_00;
@@ -77,10 +77,10 @@ extern s8* D_81228654[];
 extern s16 D_8122C790;
 extern s16 D_8122C792;
 extern u8* D_8122C794;
-extern unk_func_81208D7C D_8122C798;
-extern unk_func_81208D7C D_8122C7E8;
-extern unk_func_81208D7C D_8122C838;
-extern unk_func_81208D7C gGbAudioNoiseChannel;
+extern GbAudioChannel D_8122C798;
+extern GbAudioChannel D_8122C7E8;
+extern GbAudioChannel D_8122C838;
+extern GbAudioChannel gGbAudioNoiseChannel;
 extern u8 D_8122EE58[40];
 extern u8 D_8120EA70[];
 

@@ -269,8 +269,17 @@ def preflight(rows, protected, named, allow_applied_skip=True):
                 break
         if r.is_field_row():
             continue
+        is_typedef = False
+        for f in rewrite_files():
+            if not f.endswith((".c", ".h")):
+                continue
+            if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", open(f, errors="replace").read()):
+                is_typedef = True
+                break
         defs = sa_definitions(r.old)
-        if len(defs) == 0:
+        if is_typedef:
+            pass  # C-level typedef: no symbol_addrs/dlabel expectations
+        elif len(defs) == 0:
             # fragment bss/data symbols are dlabel-defined in asm, not in symbol_addrs:
             # the rewrite adds a symbol_addrs entry so the name survives `make extract`
             info = dlabel_info(r.old)
@@ -406,6 +415,10 @@ def do_rewrites(rows, files):
             continue
         rw.rewrite_sa_line(r.old, r.new)
         rw.rewrite_word(r.old, r.new, files)
+        if r.also:
+            for pair in r.also.split(","):
+                a, b = pair.split(":")
+                rw.rewrite_word(a.strip(), b.strip(), files)
         if not sa_definitions(r.old):
             info = dlabel_info(r.old)
             if info:
@@ -498,6 +511,17 @@ def cmd_plan(ledger, batch):
     print("\npre-flight clean; no writes performed (plan mode)")
 
 
+def is_typedef_row(r, files=None):
+    if r.is_field_row():
+        return False
+    for f in rewrite_files():
+        if not f.endswith((".c", ".h")):
+            continue
+        if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", open(f, errors="replace").read()):
+            return True
+    return False
+
+
 def cmd_apply(ledger, batch, sample, no_make):
     rows = read_ledger(ledger)
     todo = select_batch(rows, batch)
@@ -519,6 +543,7 @@ def cmd_apply(ledger, batch, sample, no_make):
     real = [r for r in todo if r.old != r.new]
     noops = [r for r in todo if r.old == r.new]
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
+    sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)]  # pre-rewrite check
     rw = do_rewrites(real, files)
     touched = rw.commit()
     # post-rewrite checks
@@ -539,8 +564,7 @@ def cmd_apply(ledger, batch, sample, no_make):
             print("  " + p)
         undo(rw, touched)
         die("post-rewrite checks failed; batch reverted")
-    if not build_gate([r.new for r in real if not r.is_field_row()],
-                      [r.old for r in real if not r.is_field_row()], no_make):
+    if not build_gate([r.new for r in sym_rows], [r.old for r in sym_rows], no_make):
         undo(rw, touched)
         die("build gate failed; batch reverted")
     # ledger status
