@@ -442,33 +442,8 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
     *arg3 = var_ft4;
 }
 
-// Only differs in the stack slot of x (0xA4 vs 0x90).
-// Round 6 findings: 0xa4 is NOT x's named home; x is copy-propagated and the spilled value is
-// the CSE temp of arg1 + tmp2 (temp area 0x80..0xab, allocated top-down). The target has the
-// same 7 unused temp slots as this draft, but in a different order: target
-// [0xa8..0x94 unused, x=0x90, (s16)x=0x8c, 0x88 unused, 0x84, 0x80], draft
-// [0xa8 unused, x=0xa4, 0xa0..0x90 unused, (s16)x=0x8c, ...]. So in the target five vanished
-// temps are allocated BEFORE x. The ROUND_MAX ternaries are involved: replacing one pre-loop
-// ROUND_MAX by a plain value moves x's slot. x's slot did not move with any of: x as block-scoped
-// local (any position), inlining x/tmp2, moving `a = 1024.0f / arg5`, moving `tmp = 0xC` or the
-// x/tmp2/spE8 statements, declaration order of tmp2/x, operand order, (s16) casts, using a
-// temp copy for the loop's x. Removing tmp (literal 0xC) or temp_ft0 (use arg3) changes the
-// code a lot; both copies are real. The farm's output-51 is identical to base.c.
-// Sibling func_8340144C (fragment43) is a matched simpler version of the loop.
-// Round 8 (the trick that matched func_838043F8/func_82F04604: an unused temp slot is reserved
-// where a CSE'd expression FIRST appears, even in a dead assignment like `i = a + b;`): dead
-// `i = <expr>;` before tmp2 for 1024.0f / arg5, spF4 + 4, temp_ft3 + 4, sp100 - i, i * temp_ft0,
-// temp_ft0 - 1, (s16)arg1, arg1 + arg2 change nothing; `i = arg2 + spE8;` adds a slot (frame 0x118,
-// x 0xa0). Removing a loop ROUND_MAX puts x at 0x90 but shifts named slots. An explicit guard +
-// do-while / while loop, reordering the four pre-loop ROUND_MAX lines or sp100/temp_ft0/tmp, or
-// moving the early return first: no change to x's slot.
-// More round-8 probes (x stays the first temp at 0xa4 in all): x removed and its uses written as
-// arg1 + tmp2 (with/without a pad in its place); x = arg1; x += tmp2 and other split forms;
-// func_8001C604(arg1 + tmp2 + 0xA, ...) with x assigned after the call; 30 random declaration orders
-// (sp100/spF4/spE8 fixed): all 60. Adding or removing any one gfx macro (either gSPDisplayList or the
-// gDPSetRenderMode) moves x UP to 0xa8 (frame unchanged when removing, +8 when adding), so the 0xa8 slot
-// is not tied to source position of a temp.
-#ifdef NON_MATCHING
+// tmp2 is computed before the early return and the x position is written as arg1 + tmp2 at each use
+// (no named x): that is what puts its spilled CSE temp at 0x90 below six unused temp slots.
 void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
     s32 tmp;
@@ -484,7 +459,6 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
     s32 temp_fv0_3;
     s32 var_t0;
     s32 tmp2;
-    s32 x;
 
     sp100 = arg4;
     temp_ft0 = arg3;
@@ -497,17 +471,16 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
 
     spE8 = (temp_ft7 - temp_ft3) / 2;
 
+    tmp2 = (temp_ft8 - spF4) / 2;
+
     if (arg5 <= 0.0f) {
         return;
     }
 
     gSPDisplayList(gDisplayListHead++, D_8006F498);
 
-    tmp2 = (temp_ft8 - spF4) / 2;
-    x = arg1 + tmp2;
-
-    func_8001C604(x + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
-    func_83401728(x, arg2 + spE8, spF4, temp_ft3, 2);
+    func_8001C604(arg1 + tmp2 + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
+    func_83401728(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -523,12 +496,9 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
                            temp_ft0, var_t0 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        func_8001C330(x, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
+        func_8001C330(arg1 + tmp2, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
     }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/44/fragment44/func_83501718.s")
-#endif
 
 void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     UNUSED s32 pad;
