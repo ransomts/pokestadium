@@ -4146,6 +4146,13 @@ s32 func_88807AC0(void) {
 // branch-to-next, .loc/.livereg/nop/.noalias edits, moving the bltz target backwards, and
 // any reordering of the s0 block do NOT stop the hoist; an unreachable extra branch does
 // but stays in the output.
+// NOTE as1 deletes dead instructions only AFTER scheduling: putting a dead
+// `addu $4,$8,$11; addu $4,$4,$20` (reads t0, t3, s4) at the bltz target in the cc -S
+// output reproduces the target byte-for-byte (opcodes) and the dead adds vanish. So the
+// original ugen output probably had something at the loop latch that reads t0/t3/s4 and
+// dies in as1 (dead code after the if-body), e.g. a strength-reduced `s4 += 4` that the
+// body's own `sll s4` makes dead. Dead C statements there (else-branch / after the if)
+// are removed by uopt, and a function-local `static` D_88826564 changes nothing.
 #ifdef NON_MATCHING
 void func_88807D04(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6) {
     s32 i;
