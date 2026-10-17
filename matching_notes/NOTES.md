@@ -884,3 +884,77 @@ its own; cand_score gate held it out); 8004A89C 290 real = worse than 300; 88304
 F6 totals: 1026 renames applied, 22 gated commits + 13 agent-wave commits, ROM byte-identical
 after every batch, progress 97.9197% throughout. Next session: wave 5+ on the remaining
 ~5,700 referenced placeholder symbols (fragment files are the bulk), Tier C struct fields.
+
+## ROUND 10 PICKUP (handoff written 2026-10-17 ~18:00, end of session)
+Read PLAN.md section 0 first, then this. Everything below is the current truth.
+
+### Where things stand
+- Branch match-round-1, HEAD 341d4fc, tree clean, ROM builds byte-identical (make -> OK),
+  progress 97.9197%, 6 GLOBAL_ASM lines: the 5 open functions + (none parked - both parked
+  decisions were merged 2026-10-17 morning).
+- Open functions (FULL fd scores - no -s, --max-lines 30000, forced rebuild):
+  func_8004A89C 300, func_80034348 60, func_88304850 1716, func_88805AEC 1844 (farm candidate
+  adopted 17:5x, e28cc3d), func_8437B0CC 4724. Each draft's // comment has the model + dead ends.
+- F5 upstream: 8-branch series up/tools-data2c..up/fragment16-labels, all build OK standalone,
+  NOTHING pushed (owner approval required per push). UPSTREAM_PR_plan.md has the split;
+  UPSTREAM_PR_permuter_sizeof.md the permuter PR. The rename work (F6) should be folded into
+  that series before pushing (rename commits are cherry-pickable; ask the owner how to sequence).
+- F6: 1026 renames applied (Tier A 108, Tier B 120, agent waves 798). Ledger
+  matching_notes/renames.tsv (resumable, applied@<commit> per row). All waves gated: ROM md5-OK,
+  map cross-checked, progress unchanged.
+
+### Farm: DEAD since 14:57 Oct 17 (job 17528911 cancelled ~1.5h in - not by an scancel I
+remember running; likely fallout from an aborted command block). Pools are CHECKPOINTED in
+/scratch/$USER/permuter_best/func_*__aa*/ (best permuter scores: 80034348 40, 8004A89C 290,
+8437B0CC 4572, 88304850 1626, 88805AEC 1340 - all real-verified WORSE than current drafts
+except 88805AEC which was adopted). To relaunch (single-builder rule means do this when no
+rename gate is mid-flight; the farm builds in its own staged copy so it can run alongside
+renaming, just not during an in-progress apply):
+  sbatch --time=11:00:00 --export=ALL,RUN_TAG=ab,COPIES=3,FUNCS_OVERRIDE="<five funcs>" \
+    matching_notes/palmetto_job.sh
+Pre-rename pools (pre-gptoss naming) are in permuter_best_backup_20261017/ and
+permuter_best_prerename_20261017/ - DO NOT re-seed from those; candidates in them reference
+symbol names that no longer exist. The aa pools reference the CURRENT names (post-w4) EXCEPT
+the 88805AEC pool (pre-e28cc3d - its best is what we adopted; harmless).
+
+### F6 continuation: the agent-wave recipe (fastest path to readable code)
+1. Pick 12-16 fresh files (fragment files without open NON_MATCHING drafts; check
+   `grep -l "NON_MATCHING" src/fragments/<n>/*.c`). Done so far: fragments 2,3,10,11,13,14,
+   15,17,23,31 (partial),34,37,39,40,41(partial),42,44,45,47,48,55,56,59,63 (partial) +
+   most main-segment files. REMAINING main files: 11BA0 remainder, 19840 remainder, 2E460
+   remainder, 30640 remainder, 32D10 remainder, 45720 remainder, 46680 remainder, 4CBC0/49790
+   remainders, dp_intro remainder, crash_screen, profiler, gb_tower, gb_mbc, rsp, dma,
+   heap, geo_layout, jpeg*, util, memory_main.
+2. Launch: for each file, `setsid nohup .venv/bin/python3 matching_notes/rename_agent.py
+   --file <f> --batch <b> --model gptoss-120b --max 15 --out <dir> &` (8-16 concurrent is
+   fine on the gateway; they finish in ~5-8 min each).
+3. Salvage: `.venv/bin/python3 matching_notes/rename_salvage.py <batch> '<dir>/<prefix>_*.raw'
+   <merged.tsv>` (normalizes literal-\t output, dedupes, drops <15-char justifications).
+4. `cat merged.tsv >> matching_notes/renames.tsv` then FIX what preflight flags:
+   - mis-prefixed D_ vars written as func_ (agents confuse D_80078FXX): re-prefix the row.
+   - new-name collisions with applied rows: drop the later row.
+   - asset-VRAM anchors (D_[0-9A-F]000xxx like D_3000000) and dual-source symbols (in BOTH
+     symbol_addrs.txt and linker_scripts/us/undefined_syms.ld, e.g. D_30242C0): DROP BOTH
+     CLASSES - out of scope (undefined_syms.ld is on the spec's never-touch list).
+   Then `.venv/bin/python3 matching_notes/rename.py apply matching_notes/renames.tsv --batch <b>`
+   (plan first if paranoid), git add+commit, mark-committed, amend. ONE gate per wave.
+5. Wave end: make diff-init (expected/ should stay byte-identical).
+Gate costs ~4-6 min regardless of batch size; waves of 100-200 symbols are the sweet spot.
+
+### API / agents
+- Anthropic weekly limit resets Oct 19 7pm (America/New_York). After that: agent worktrees
+  agent-1..6 are parked clean at match-round-1 for SendMessage resume, OR relaunch the
+  round.sh flow (round9_assignments.txt has the file groups).
+- RCD gateway (llm.rcd.clemson.edu, key at ~/.config/rcd-llm/api-key - never print it):
+  121 models incl. gptoss-120b (used for rename agents), gpt-5.6-*, o3-pro, qwen3.6-35b.
+  rename_agent.py is model-agnostic (--model).
+
+### The standing caveats (unchanged, all deliberate)
+- SCORE TRUST RULES (IDO_TRICKS): full diff only; permuter numbers never ranked.
+- Farm-merge closure (67 symbols in renames_protected.txt + field rows on those structs):
+  do not rename until the five open functions match; then harvest, unprotect, rename,
+  relaunch farm. Cycle costs one farm restart.
+- Species-stats alias triple D_8006FF00/D_80070F84/D_8006FEE8: needs an owner consolidation
+  decision (overlapping splat views + partially-named PokemonStats typedef in 22630.h).
+- func_80022734 (move-power tier semantics unknown), 19840 loader family (named in b2),
+  Tier C struct fields (dotted-path rows; struct prefixes in the closure are protected).
