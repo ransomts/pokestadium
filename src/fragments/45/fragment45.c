@@ -118,7 +118,7 @@ s32 func_83600384(unk_D_83407B38* arg0) {
     sp40 = 0;
     sp3C = 0;
 
-    if (func_8003181C(arg0->unk_20, 0x25) != -1) {
+    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -199,7 +199,7 @@ s32 func_83600384(unk_D_83407B38* arg0) {
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         if (sp1C < 6) {
-            if (func_800317D8(arg0->unk_20[idx]) != 0) {
+            if (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0) {
                 if (D_83403C00[idx] == 0) {
                     if (D_836033B4 < D_836033B8) {
                         D_83403C00[idx] = 1;
@@ -230,7 +230,7 @@ s32 func_83600384(unk_D_83407B38* arg0) {
         }
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
-        if ((sp1C < 6) && (func_800317D8(arg0->unk_20[idx]) != 0)) {
+        if ((sp1C < 6) && (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0)) {
             PlaySoundEffect(0x19);
             func_83400694(arg0->unk_20[idx]->unk_18);
             sp54 = 2;
@@ -426,7 +426,7 @@ void func_83601800(unk_D_83407B38* arg0) {
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s5 = (arg0->unk_08 * arg0->unk_14) + i;
         temp_s0 = arg0->unk_20[temp_s5];
-        if ((func_800317D8(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
+        if ((Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
             temp_s4 = (i / 3) * 0x6E;
             temp_s1 = (i % 3) * 0xA4;
             func_834018C0(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);

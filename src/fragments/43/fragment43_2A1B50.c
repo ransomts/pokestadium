@@ -508,17 +508,17 @@ void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
 
     for (i = 0; i < 36; i++) {
         if (i < arg8) {
-            arg0->unk_20[i] = func_80031270(arg1, arg2, sp68[i % arg3], sp168, arg5, arg6, &arg7[i]);
+            arg0->unk_20[i] = Cam_Create(arg1, arg2, sp68[i % arg3], sp168, arg5, arg6, &arg7[i]);
         } else {
             arg0->unk_20[i] = 0;
         }
     }
 
-    arg0->unk_B0 = func_80031270(arg1, arg2, 0, sp168, arg5, arg6, NULL);
+    arg0->unk_B0 = Cam_Create(arg1, arg2, 0, sp168, arg5, arg6, NULL);
 }
 
 void func_83401FD0(unk_D_83407B38* arg0) {
-    s32 temp_v0 = func_8003181C(arg0->unk_20, 0x25);
+    s32 temp_v0 = Cam_FindActiveIndex(arg0->unk_20, 0x25);
     unk_func_80031270* var_s0;
     s32 i;
 
@@ -532,19 +532,19 @@ void func_83401FD0(unk_D_83407B38* arg0) {
                 var_s0 = NULL;
             }
 
-            if ((func_800317D8(var_s0) != 0) && (var_s0->unk_00 == 0)) {
+            if ((Cam_IsMonIndexDisplayable(var_s0) != 0) && (var_s0->unk_00 == 0)) {
                 main_pool_push_state('albu');
-                func_80031660(var_s0);
+                Cam_Update(var_s0);
                 break;
             }
         }
     } else {
-        func_80031660(arg0->unk_20[temp_v0]);
+        Cam_Update(arg0->unk_20[temp_v0]);
     }
 }
 
 void func_834020D8(void) {
-    unk_func_80031270* temp_v0 = func_800318AC();
+    unk_func_80031270* temp_v0 = Cam_GetCurrent();
 
     if ((temp_v0 != NULL) && (temp_v0->unk_00 == 2)) {
         main_pool_pop_state('albu');
@@ -560,7 +560,7 @@ s32 func_83402124(unk_D_83407B38* arg0, s32 arg1) {
     if ((arg1 >= 0) && (arg1 < arg0->unk_0C)) {
         for (i = 0; i < arg0->unk_14; i++) {
             idx = (arg0->unk_14 * arg1) + i;
-            if (func_800317D8(arg0->unk_20[idx]) != 0) {
+            if (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0) {
                 var_s2++;
             }
         }

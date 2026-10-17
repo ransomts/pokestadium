@@ -56,7 +56,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
         sp50 = 2;
     }
 
-    if (func_8003181C(arg0->unk_20, 0x25) != -1) {
+    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -122,7 +122,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
 
         for (i = 0; i < arg0->unk_14; i++) {
             sp40 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
-            if (func_800317D8(sp40) != 0) {
+            if (Cam_IsMonIndexDisplayable(sp40) != 0) {
                 sp40->unk_00 = 0;
             }
         }
@@ -134,7 +134,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
 
         if (arg0->unk_04 == -1) {
             if ((sp54 * 3) < 6) {
-                if (func_800317D8(sp38) != 0) {
+                if (Cam_IsMonIndexDisplayable(sp38) != 0) {
                     arg0->unk_04 = sp3C;
                     arg0->unk_B0->unk_18 = sp38->unk_18;
                     arg0->unk_B0->unk_00 = 0;
@@ -186,7 +186,7 @@ s32 func_83500020(unk_D_83407B38* arg0) {
         idx = arg0->unk_08 * arg0->unk_14 + arg0->unk_00;
         ptr = arg0->unk_20[idx];
 
-        if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (func_800317D8(ptr) != 0)) {
+        if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(ptr) != 0)) {
             sp64 = 2;
             PlaySoundEffect(0x19);
             func_83400694(ptr->unk_18);
@@ -514,7 +514,7 @@ void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         ptr = arg2->unk_20[temp_s3];
 
         var_s4 = 0;
-        if ((temp_s3 != arg2->unk_04) && (func_800317D8(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((temp_s3 != arg2->unk_04) && (Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
             var_s4 = 1;
             func_834018C0(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
@@ -538,7 +538,7 @@ void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         func_83402210(arg2, &sp70, &sp6C, arg2->unk_00);
 
         ptr = arg2->unk_B0;
-        if ((func_800317D8(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
             if (sp6C < 2) {
                 func_83401818((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
                 func_834018C0(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
@@ -1072,7 +1072,7 @@ void func_835038DC(unk_D_83407B38* arg0) {
 void func_83503968(unk_D_83407B38* arg0) {
     unk_func_80031270* sp1C = arg0->unk_B0;
 
-    if ((func_800317D8(sp1C) != 0) && (sp1C->unk_00 == 2)) {
+    if ((Cam_IsMonIndexDisplayable(sp1C) != 0) && (sp1C->unk_00 == 2)) {
         D_83503FC0 = 4;
         D_83504088 = 0xFFFF;
         func_80007990(0xFFFF);

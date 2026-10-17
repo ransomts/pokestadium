@@ -422,7 +422,7 @@ unk_D_86002F58_004_000_010_024* func_86900244(unk_func_80026268_arg0* arg0) {
 }
 
 void func_869002AC(void) {
-    func_80031140(&D_8690A6A0, &D_83407AC8);
+    Cam_ConvertStateToInput(&D_8690A6A0, &D_83407AC8);
     D_8690A69C->unk_16C = D_83407AC8.unk_02;
 
     D_8690A708 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_04;
@@ -670,7 +670,7 @@ void func_86900DE0(void) {
             D_83402EE0[D_8690B344].unk_09 = D_8690A69C->unk_004.unk_054.unk_08;
 
             func_81002174(D_83402EE0[D_8690B344].unk_0A);
-            func_8003107C(&D_83402EE0[D_8690B344].unk_70, &D_8690A6A0);
+            Cam_ConvertInputToState(&D_83402EE0[D_8690B344].unk_70, &D_8690A6A0);
         }
 
         D_8690B360.unk_00 = 0x14;

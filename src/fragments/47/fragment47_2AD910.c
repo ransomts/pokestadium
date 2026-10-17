@@ -162,7 +162,7 @@ s32 func_838003B4(void) {
                 case 5:
                     sp78 = 1;
                     _bcopy(&D_8380565C->unk_7E4, &sp20, sizeof(unk_func_80026268_arg0));
-                    func_8003107C(&D_83407AC8, &sp20);
+                    Cam_ConvertInputToState(&D_83407AC8, &sp20);
                     break;
             }
 

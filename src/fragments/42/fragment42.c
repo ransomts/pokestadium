@@ -272,7 +272,7 @@ s32 func_83300628(void) {
     sp20 = D_83407AE8;
     sp1C = D_83402E28;
 
-    if (func_8003181C(func_83300300()->unk_20, 0x25) != -1) {
+    if (Cam_FindActiveIndex(func_83300300()->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -384,7 +384,7 @@ s32 func_83300970(unk_D_83407B38* arg0) {
     sp4C = 0;
     sp48 = arg0->unk_00;
     func_83402210(arg0, &sp44, &sp40, sp48);
-    if (func_8003181C(arg0->unk_20, 0x25) != -1) {
+    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -425,7 +425,7 @@ s32 func_83300970(unk_D_83407B38* arg0) {
         sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         sp38 = arg0->unk_20[sp3C];
         if (arg0->unk_04 == -1) {
-            if (func_800317D8(sp38) != 0) {
+            if (Cam_IsMonIndexDisplayable(sp38) != 0) {
                 arg0->unk_04 = sp3C;
                 arg0->unk_B0->unk_18 = sp38->unk_18;
                 arg0->unk_B0->unk_00 = 0;
@@ -480,7 +480,7 @@ s32 func_83300970(unk_D_83407B38* arg0) {
             sp28 = arg0->unk_B0;
         }
 
-        if ((arg0->unk_04 == -1) && (func_800317D8(sp28) != 0)) {
+        if ((arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(sp28) != 0)) {
             sp4C = 1;
             PlaySoundEffect(0x19);
             func_83400694(sp28->unk_18);
@@ -846,7 +846,7 @@ void func_83302068(unk_D_83407B38* arg0) {
         func_83402210(arg0, &sp78, &sp74, i);
         temp_s1 = arg0->unk_20[temp_s0];
 
-        if ((i != arg0->unk_04) && (func_800317D8(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
+        if ((i != arg0->unk_04) && (Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
                 func_834018C0(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
                               (temp_s5 * sp74) + sp8C + ((temp_s5 / 2) * (j / 2)), temp_s1->unk_04, temp_s1->unk_06, 8,
@@ -858,7 +858,7 @@ void func_83302068(unk_D_83407B38* arg0) {
     if (arg0->unk_04 != -1) {
         func_83402210(arg0, &sp68, &sp64, arg0->unk_00);
         temp_s1 = arg0->unk_B0;
-        if ((func_800317D8(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
+        if ((Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
                 tmp1 = j % 2;
                 tmp2 = j / 2;
@@ -918,7 +918,7 @@ void func_833023D8(unk_D_83407B38* arg0) {
             break;
 
         case 1:
-            if ((arg0->unk_04 != -1) && (func_800317D8(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
+            if ((arg0->unk_04 != -1) && (Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
                 gSPDisplayList(gDisplayListHead++, D_8006F518);
 
                 if (D_83407AE4 == 0) {

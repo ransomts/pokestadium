@@ -243,7 +243,7 @@ void func_83802C98(unk_D_838067F0* arg0) {
 
     if (temp_a1->unk_00.unk_00 != 0) {
         arg0->unk_0000 = 7;
-        func_8003107C(&D_83407AC8, temp_a1);
+        Cam_ConvertInputToState(&D_83407AC8, temp_a1);
         if ((temp_a1->unk_00.unk_00 == 0x19) && (temp_a1->unk_52 & 0x80)) {
             D_83407AC8.unk_02 = 0x99;
         }

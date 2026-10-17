@@ -873,7 +873,7 @@ void func_8432FC40(unk_D_84390010* arg0, Vec3f* arg1) {
 }
 
 f32 func_8432FC60(unk_D_84390010* arg0) {
-    f32 ret = D_80075E40[arg0->unk_000.unk_01A] * 0.01f;
+    f32 ret = gCamDistances[arg0->unk_000.unk_01A] * 0.01f;
 
     return ret;
 }

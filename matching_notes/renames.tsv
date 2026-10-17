@@ -408,32 +408,32 @@ func_80032BD4	Model_DrawCurrent	p8		Selects the current model slot, prepares mat
 func_80032D28	Model_DrawIfReady	p8		Draws the model only when func_800325AC() returns 0 and the phase counter is ?2, using a different draw routine.	applied@4bb3e72
 func_80032E00	Model_DrawSegment	p8		Builds a full transformation matrix, loads it, and issues commands to draw the selected model segment.	applied@4bb3e72
 func_80032F94	Model_RenderStateMachine	p8		Dispatches rendering based on the current mode and phase, handling special cases, animation steps, and default drawing.	applied@4bb3e72
-func_80030010	Cam_SetupCameraParams	p9		Uses Cam_GetFov and copies camera struct fields to configure a camera, indicating it sets up camera parameters	pending
-func_800300CC	Cam_SetupDefaultCamera	p9		Sets a default FOV of 45.0f for the active camera, indicating default camera setup	pending
-func_8003013C	Cam_GetCameraAngles	p9		Decomposes the camera matrix and stores angle offsets in the output struct, suggesting it retrieves camera angles	pending
-func_800301A4	Cam_GetCameraAnglesInverse	p9		Decomposes the camera matrix with inverted offsets, indicating it provides an alternate angle set	pending
-func_80030210	Cam_SetActiveNode	p9		Assigns arg1 to D_80075F80->unk_20 when arg0==0, linking a node as the active camera node	pending
-func_80030228	Cam_SetActiveCameraParams	p9		Stores arg1 in D_80075F80->unk_24 for arg0==0, establishing active camera parameters	pending
-func_80030240	Cam_SetActiveGraphNode	p9		Routes GraphNode pointers into D_80075F80 based on node type, binding graph nodes to the active camera	pending
-func_800302A4	Cam_SetupQuadVertices	p9		Populates D_800761B0 array with vertex positions for a textured quad, used for camera rendering	pending
-func_800303C8	Cam_RenderView	p9		Renders the camera view, measures text width, loads textures and draws triangles, clearly a view rendering routine	pending
-func_8003107C	Cam_ConvertInputToState	p9		Copies fields from an input struct into a camera state struct, zero?initialising the destination	pending
-func_80031140	Cam_ConvertStateToInput	p9		Copies camera state fields back into an input struct, the inverse of Cam_ConvertInputToState	pending
-func_80031204	Cam_ProcessGeoLayout	p9		Calls process_geo_layout on a memory block and stores the result in the camera struct, processing geometry layout	pending
-func_80031270	Cam_Create	p9		Factory function allocating and initializing a camera object with texture, geometry and state pointers	pending
-func_80031390	Cam_Initialize	p9		Initialises camera transform, sets up rendering parameters and calls auxiliary setup functions for a new camera	pending
-func_800314BC	Cam_LoadGeometry	p9		Loads geometry fragments for the camera based on the current mode and attaches them to graph nodes	pending
-func_80031660	Cam_Update	p9		Main camera update routine that prepares the framebuffer and advances camera state, returning the framebuffer pointer	pending
-func_800317D8	Cam_IsMonIndexDisplayable	p9		Checks if the camera's associated monster index is within displayable range, returning a boolean	pending
-func_8003181C	Cam_FindActiveIndex	p9		Iterates over camera array to find the first active camera with state==1, returning its index	pending
-func_800318AC	Cam_GetCurrent	p9		Returns the global pointer D_80075F84 representing the currently active camera	pending
-D_80075E40	gCamDistances	p9		Array of s16 distance values used by camera calculations, indicating a table of preset distances	pending
-D_80075F80	gCamPrimary	p9		Global pointer to the primary camera object, referenced throughout camera functions	pending
-D_80075F84	gCamSecondary	p9		Global pointer to the secondary/active camera object, used for rendering and updates	pending
-D_80075F88	gCamFovTable	p9		Two?element float table (0x42200000, 0x41C80000) providing FOV values for camera modes	pending
-D_80075F90	gCamFramebuffer	p9		Pointer to the framebuffer texture used for camera rendering, cleared in Cam_ResetUnkF90	pending
-D_80075F94	gCamTexWidth	p9		Width (200) of the camera texture used in rendering quads	pending
-D_80075F98	gCamTexHeight	p9		Height (43) of the camera texture used in rendering quads	pending
-D_80075F9C	gCamTextWidth	p9		Stores the width of the camera label text measured by MeasureTextWidth	pending
-D_8007616C	gCamGeoLayoutIndices	p9		Array mapping camera mode indices to geometry layout IDs, used in Cam_LoadGeometry	pending
-D_800761B0	gCamQuadVertices	p9		Array of 12 vertex structs defining the quad geometry for camera view rendering	pending
+func_80030010	Cam_SetupCameraParams	p9		Uses Cam_GetFov and copies camera struct fields to configure a camera, indicating it sets up camera parameters	applied@a8ca9c4
+func_800300CC	Cam_SetupDefaultCamera	p9		Sets a default FOV of 45.0f for the active camera, indicating default camera setup	applied@a8ca9c4
+func_8003013C	Cam_GetCameraAngles	p9		Decomposes the camera matrix and stores angle offsets in the output struct, suggesting it retrieves camera angles	applied@a8ca9c4
+func_800301A4	Cam_GetCameraAnglesInverse	p9		Decomposes the camera matrix with inverted offsets, indicating it provides an alternate angle set	applied@a8ca9c4
+func_80030210	Cam_SetActiveNode	p9		Assigns arg1 to D_80075F80->unk_20 when arg0==0, linking a node as the active camera node	applied@a8ca9c4
+func_80030228	Cam_SetActiveCameraParams	p9		Stores arg1 in D_80075F80->unk_24 for arg0==0, establishing active camera parameters	applied@a8ca9c4
+func_80030240	Cam_SetActiveGraphNode	p9		Routes GraphNode pointers into D_80075F80 based on node type, binding graph nodes to the active camera	applied@a8ca9c4
+func_800302A4	Cam_SetupQuadVertices	p9		Populates D_800761B0 array with vertex positions for a textured quad, used for camera rendering	applied@a8ca9c4
+func_800303C8	Cam_RenderView	p9		Renders the camera view, measures text width, loads textures and draws triangles, clearly a view rendering routine	applied@a8ca9c4
+func_8003107C	Cam_ConvertInputToState	p9		Copies fields from an input struct into a camera state struct, zero?initialising the destination	applied@a8ca9c4
+func_80031140	Cam_ConvertStateToInput	p9		Copies camera state fields back into an input struct, the inverse of Cam_ConvertInputToState	applied@a8ca9c4
+func_80031204	Cam_ProcessGeoLayout	p9		Calls process_geo_layout on a memory block and stores the result in the camera struct, processing geometry layout	applied@a8ca9c4
+func_80031270	Cam_Create	p9		Factory function allocating and initializing a camera object with texture, geometry and state pointers	applied@a8ca9c4
+func_80031390	Cam_Initialize	p9		Initialises camera transform, sets up rendering parameters and calls auxiliary setup functions for a new camera	applied@a8ca9c4
+func_800314BC	Cam_LoadGeometry	p9		Loads geometry fragments for the camera based on the current mode and attaches them to graph nodes	applied@a8ca9c4
+func_80031660	Cam_Update	p9		Main camera update routine that prepares the framebuffer and advances camera state, returning the framebuffer pointer	applied@a8ca9c4
+func_800317D8	Cam_IsMonIndexDisplayable	p9		Checks if the camera's associated monster index is within displayable range, returning a boolean	applied@a8ca9c4
+func_8003181C	Cam_FindActiveIndex	p9		Iterates over camera array to find the first active camera with state==1, returning its index	applied@a8ca9c4
+func_800318AC	Cam_GetCurrent	p9		Returns the global pointer D_80075F84 representing the currently active camera	applied@a8ca9c4
+D_80075E40	gCamDistances	p9		Array of s16 distance values used by camera calculations, indicating a table of preset distances	applied@a8ca9c4
+D_80075F80	gCamPrimary	p9		Global pointer to the primary camera object, referenced throughout camera functions	applied@a8ca9c4
+D_80075F84	gCamSecondary	p9		Global pointer to the secondary/active camera object, used for rendering and updates	applied@a8ca9c4
+D_80075F88	gCamFovTable	p9		Two?element float table (0x42200000, 0x41C80000) providing FOV values for camera modes	applied@a8ca9c4
+D_80075F90	gCamFramebuffer	p9		Pointer to the framebuffer texture used for camera rendering, cleared in Cam_ResetUnkF90	applied@a8ca9c4
+D_80075F94	gCamTexWidth	p9		Width (200) of the camera texture used in rendering quads	applied@a8ca9c4
+D_80075F98	gCamTexHeight	p9		Height (43) of the camera texture used in rendering quads	applied@a8ca9c4
+D_80075F9C	gCamTextWidth	p9		Stores the width of the camera label text measured by MeasureTextWidth	applied@a8ca9c4
+D_8007616C	gCamGeoLayoutIndices	p9		Array mapping camera mode indices to geometry layout IDs, used in Cam_LoadGeometry	applied@a8ca9c4
+D_800761B0	gCamQuadVertices	p9		Array of 12 vertex structs defining the quad geometry for camera view rendering	applied@a8ca9c4

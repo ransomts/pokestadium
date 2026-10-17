@@ -43,37 +43,37 @@ typedef struct unk_func_80031660_sp24 {
     /* 0x18 */ s32 unk_18;
 } unk_func_80031660_sp24; // size = 0x1C
 
-extern unk_func_80031270* D_80075F80;
-extern unk_func_80031270* D_80075F84;
-extern u32 D_80075F88[2];
-extern unk_D_80068BB0* D_80075F90;
-extern s32 D_80075F94;
-extern s32 D_80075F98;
-extern s32 D_80075F9C;
+extern unk_func_80031270* gCamPrimary;
+extern unk_func_80031270* gCamSecondary;
+extern u32 gCamFovTable[2];
+extern unk_D_80068BB0* gCamFramebuffer;
+extern s32 gCamTexWidth;
+extern s32 gCamTexHeight;
+extern s32 gCamTextWidth;
 extern u32 D_80075FA0[];
-extern u32 D_8007616C[];
-extern unk_D_800761B0 D_800761B0[12];
+extern u32 gCamGeoLayoutIndices[];
+extern unk_D_800761B0 gCamQuadVertices[12];
 
-s32 func_80030010(s32 arg0, unk_D_86002F34_00C* arg1);
-s32 func_80030228(s32 arg0, unk_func_80031270_024* arg1);
-s32 func_8003013C(s32 arg0, unk_func_8003013C_arg1* arg1);
-s32 func_800301A4(s32 arg0, unk_func_8003013C_arg1* arg1);
-s32 func_80030240(s32 arg0, GraphNode* arg1);
-s32 func_80030210(s32 arg0, unk_D_86002F58_004_000* arg1);
-s32 func_800300CC(s32 arg0, unk_D_86002F34_00C* arg1);
-s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1);
+s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1);
+s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1);
+s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1);
+s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1);
+s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1);
+s32 Cam_SetActiveNode(s32 arg0, unk_D_86002F58_004_000* arg1);
+s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1);
+s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1);
 
-s16 D_80075E40[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80, 120, 60, 70, 100, 70, 130, 170, 80, 110, 65, 160, 120, 180, 85, 105, 100, 130, 80, 100, 160, 100, 120, 160, 100, 140, 80, 130, 90, 120, 110, 160, 90, 100, 160, 80, 125, 130, 150, 60, 120, 70, 105, 105, 170, 90, 120, 100, 190, 100, 140, 170, 90, 150, 150, 80, 120, 160, 80, 165, 170, 140, 160, 120, 140, 160, 110, 170, 140, 160, 80, 110, 100, 140, 150, 110, 90, 140, 220, 85, 170, 150, 180, 150, 250, 120, 160, 102, 160, 100, 130, 110, 160, 60, 100, 150, 140, 150, 110, 140, 130, 200, 150, 120, 220, 80, 140, 80, 140, 90, 110, 140, 160, 140, 130, 130, 150, 160, 90, 270, 250, 100, 65, 120, 120, 110, 120, 70, 120, 90, 140, 200, 180, 170, 180, 180, 100, 200, 180, 180, 85, 100, 40, 0, 0, 0, 0, 0, 0 };
-unk_func_80031270* D_80075F80 = NULL;
-unk_func_80031270* D_80075F84 = NULL;
-u32 D_80075F88[2] = { 0x42200000, 0x41C80000 };
-unk_D_80068BB0* D_80075F90 = NULL;
-s32 D_80075F94 = 200;
-s32 D_80075F98 = 43;
-s32 D_80075F9C = 0;
-u32 D_80075FA0[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&func_80030010, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&func_80030228, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&func_8003013C, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&func_800301A4, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&func_80030240, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&func_80030240, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&func_80030240, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&func_80030210, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&func_800300CC, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&func_800303C8, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
-u32 D_8007616C[17] = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x11, 0 };
-unk_D_800761B0 D_800761B0[12] = { { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 } };
+s16 gCamDistances[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80, 120, 60, 70, 100, 70, 130, 170, 80, 110, 65, 160, 120, 180, 85, 105, 100, 130, 80, 100, 160, 100, 120, 160, 100, 140, 80, 130, 90, 120, 110, 160, 90, 100, 160, 80, 125, 130, 150, 60, 120, 70, 105, 105, 170, 90, 120, 100, 190, 100, 140, 170, 90, 150, 150, 80, 120, 160, 80, 165, 170, 140, 160, 120, 140, 160, 110, 170, 140, 160, 80, 110, 100, 140, 150, 110, 90, 140, 220, 85, 170, 150, 180, 150, 250, 120, 160, 102, 160, 100, 130, 110, 160, 60, 100, 150, 140, 150, 110, 140, 130, 200, 150, 120, 220, 80, 140, 80, 140, 90, 110, 140, 160, 140, 130, 130, 150, 160, 90, 270, 250, 100, 65, 120, 120, 110, 120, 70, 120, 90, 140, 200, 180, 170, 180, 180, 100, 200, 180, 180, 85, 100, 40, 0, 0, 0, 0, 0, 0 };
+unk_func_80031270* gCamPrimary = NULL;
+unk_func_80031270* gCamSecondary = NULL;
+u32 gCamFovTable[2] = { 0x42200000, 0x41C80000 };
+unk_D_80068BB0* gCamFramebuffer = NULL;
+s32 gCamTexWidth = 200;
+s32 gCamTexHeight = 43;
+s32 gCamTextWidth = 0;
+u32 D_80075FA0[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Cam_SetupCameraParams, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Cam_SetActiveCameraParams, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Cam_GetCameraAngles, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Cam_GetCameraAnglesInverse, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Cam_SetActiveNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Cam_SetupDefaultCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
+u32 gCamGeoLayoutIndices[17] = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x11, 0 };
+unk_D_800761B0 gCamQuadVertices[12] = { { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 } };
 extern f64 D_8007C538;
 extern f64 D_8007C540;
 extern f64 D_8007C548;
@@ -257,7 +257,7 @@ void Cam_CallInit318B8(void) {
 }
 
 void Cam_ResetUnkF90(void) {
-    D_80075F90 = 0;
+    gCamFramebuffer = 0;
 }
 
 s32 Cam_GetMode(unk_D_83403C60* arg0) {
@@ -268,7 +268,7 @@ f32 Cam_GetFov(unk_D_83403C60* arg0) {
     s32 index;
     f32* table;
     index = ((s32) arg0->unk_6C >> 1) & 1;
-    table = (f32*)Util_ConvertAddrToVirtAddr(D_80075F88);
+    table = (f32*)Util_ConvertAddrToVirtAddr(gCamFovTable);
     return table[index];
 }
 
@@ -285,30 +285,30 @@ s32 Cam_GetActive(s32 arg0) {
     var_a1 = NULL;
     switch (arg0) {
     case 0:
-        var_a1 = D_80075F80;
+        var_a1 = gCamPrimary;
         break;
     case 2:
-        var_a1 = D_80075F84;
+        var_a1 = gCamSecondary;
         break;
     case 5:
-        var_a1 = D_80075F84;
+        var_a1 = gCamSecondary;
         break;
     }
     sp1C = var_a1;
-    if (func_800317D8(var_a1) != 0) {
+    if (Cam_IsMonIndexDisplayable(var_a1) != 0) {
         return Cam_GetMode(var_a1->unk_18);
     }
     return 0;
 }
 
-s32 func_80030010(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1) {
     s32 pad;
     unk_D_83403C60_050_00C* src;
 
     if (arg0 == 2) {
-        src = (unk_D_83403C60_050_00C*)((u8*)D_80075F84->unk_18 + 0x50);
-        func_80011DAC(arg1, 0, 0, D_80075F84->unk_04, D_80075F84->unk_06);
-        func_80011E68(arg1, Cam_GetFov(D_80075F84->unk_18), 20.0f, 10000.0f);
+        src = (unk_D_83403C60_050_00C*)((u8*)gCamSecondary->unk_18 + 0x50);
+        func_80011DAC(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+        func_80011E68(arg1, Cam_GetFov(gCamSecondary->unk_18), 20.0f, 10000.0f);
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[0] = src[0];
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[1] = src[1];
         pad = 0;
@@ -316,17 +316,17 @@ s32 func_80030010(s32 arg0, unk_D_86002F34_00C* arg1) {
     return 0;
 }
 
-s32 func_800300CC(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1) {
     if (Cam_GetActive(arg0) != 0) {
         if (arg0 == 2) {
-            func_80011DAC(arg1, 0, 0, D_80075F84->unk_04, D_80075F84->unk_06);
+            func_80011DAC(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
             func_80011E68(arg1, 45.0f, 20.0f, 8000.0f);
         }
     }
     return 0;
 }
 
-s32 func_8003013C(s32 arg0, unk_func_8003013C_arg1* arg1) {
+s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
@@ -340,7 +340,7 @@ s32 func_8003013C(s32 arg0, unk_func_8003013C_arg1* arg1) {
     return 0;
 }
 
-s32 func_800301A4(s32 arg0, unk_func_8003013C_arg1* arg1) {
+s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
@@ -354,34 +354,34 @@ s32 func_800301A4(s32 arg0, unk_func_8003013C_arg1* arg1) {
     return 0;
 }
 
-s32 func_80030210(s32 arg0, unk_D_86002F58_004_000* arg1) {
+s32 Cam_SetActiveNode(s32 arg0, unk_D_86002F58_004_000* arg1) {
     if (arg0 == 0) {
-        D_80075F80->unk_20 = arg1;
+        gCamPrimary->unk_20 = arg1;
     }
     return 0;
 }
 
-s32 func_80030228(s32 arg0, unk_func_80031270_024* arg1) {
+s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1) {
     if (arg0 == 0) {
-        D_80075F80->unk_24 = arg1;
+        gCamPrimary->unk_24 = arg1;
     }
     return 0;
 }
 
-s32 func_80030240(s32 arg0, GraphNode* arg1) {
+s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1) {
     s32 temp_v0;
 
     if (arg0 == 0) {
         temp_v0 = arg1->unk_14;
         switch (temp_v0) {                          /* irregular */
         case 0:
-            D_80075F80->unk_28 = arg1;
+            gCamPrimary->unk_28 = arg1;
             break;
         case 1:
-            D_80075F80->unk_2C = arg1;
+            gCamPrimary->unk_2C = arg1;
             break;
         case 2:
-            D_80075F80->unk_30 = arg1;
+            gCamPrimary->unk_30 = arg1;
             break;
         }
         arg1->unk_14 = 0;
@@ -389,7 +389,7 @@ s32 func_80030240(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_800302A4(s32 arg0, s32 arg1) {
+void Cam_SetupQuadVertices(s32 arg0, s32 arg1) {
     s16 temp_a0;
     s16 temp_a1;
     s32 temp_a3;
@@ -397,45 +397,45 @@ void func_800302A4(s32 arg0, s32 arg1) {
     s32 temp_v1;
     s32 temp_a2;
     s32 i;
-    unk_D_800761B0* var = &D_800761B0[10];
-    unk_D_800761B0* var2 = &D_800761B0[11];
+    unk_D_800761B0* var = &gCamQuadVertices[10];
+    unk_D_800761B0* var2 = &gCamQuadVertices[11];
 
     temp_v0 = arg0 - 0xC8;
     temp_v1 = arg0 + 0xC8;
     temp_a2 = arg1 + 0x2B;
     temp_a3 = arg1 - 0x2B;
     for(i = 0; i < 12; i+=2) {
-        D_800761B0[i].unk_00 = temp_v0;
-        D_800761B0[i].unk_08 = 0;
-        D_800761B0[i + 1].unk_00 = temp_v1;
-        D_800761B0[i + 1].unk_08 = 0x18E0;
+        gCamQuadVertices[i].unk_00 = temp_v0;
+        gCamQuadVertices[i].unk_08 = 0;
+        gCamQuadVertices[i + 1].unk_00 = temp_v1;
+        gCamQuadVertices[i + 1].unk_08 = 0x18E0;
         if (i < 10) {
             temp_a0 = temp_a2 - (i * 0xA);
-            D_800761B0[i].unk_02 = temp_a0;
-            D_800761B0[i + 1].unk_02 = temp_a0;
+            gCamQuadVertices[i].unk_02 = temp_a0;
+            gCamQuadVertices[i + 1].unk_02 = temp_a0;
             temp_a1 = (i * 5) << 5;
-            D_800761B0[i].unk_0A = temp_a1;
-            D_800761B0[i + 1].unk_0A = temp_a1;
+            gCamQuadVertices[i].unk_0A = temp_a1;
+            gCamQuadVertices[i + 1].unk_0A = temp_a1;
         } else {
-            D_800761B0[10].unk_02 = temp_a3;
+            gCamQuadVertices[10].unk_02 = temp_a3;
             var->unk_0A = 0x540;
-            D_800761B0[11].unk_02 = temp_a3;
+            gCamQuadVertices[11].unk_02 = temp_a3;
             var2->unk_0A = 0x540;
         }
     }
 }
 
-s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
+s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
     s32 temp_v0;
     s32 i;
     char* sp16C;
 
     temp_v0 = Cam_GetActive(arg0);
     if ((temp_v0 != 0) && (arg0 == 2)) {
-        sp16C = (char*)((u8*)D_80075F84->unk_18 + 0x73);
-        D_80075F9C = MeasureTextWidth(0x10, 0, sp16C);
-        func_800302A4(0, -0x96);
-        Gfx_SetupFrameBuffer(&gDisplayListHead, D_80075F90);
+        sp16C = (char*)((u8*)gCamSecondary->unk_18 + 0x73);
+        gCamTextWidth = MeasureTextWidth(0x10, 0, sp16C);
+        Cam_SetupQuadVertices(0, -0x96);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, gCamFramebuffer);
         func_8000699C(&gDisplayListHead, 0);
         gDPPipeSync(gDisplayListHead++);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
@@ -461,7 +461,7 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
             Text_SetEnvColor(0xF0, 0x78, 0x6E, 0xFF);
             Text_SetPrimColor(0xF0, 0xF0, 0x78, 0xFF);
             Text_SetFont(0x10, 0);
-            Text_Print(0x64 - ((s32) D_80075F9C / 2), 5, sp16C);
+            Text_Print(0x64 - ((s32) gCamTextWidth / 2), 5, sp16C);
             func_8001F4C4();
             Text_SetupDL();
         } else {
@@ -473,30 +473,30 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
             Text_SetEnvColor(0xDC, 0xFF, 0xDC, 0xFF);
             Text_SetPrimColor(0x78, 0xB4, 0xFF, 0xFF);
             Text_SetFont(0x10, 0);
-            Text_Print(0x64 - ((s32) D_80075F9C / 2), 7, sp16C);
+            Text_Print(0x64 - ((s32) gCamTextWidth / 2), 7, sp16C);
             func_8001F4C4();
             Text_SetupDL();
         }
-        Gfx_SetupFrameBuffer(&gDisplayListHead, D_80075F84->unk_08);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, gCamSecondary->unk_08);
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
         gDPSetRenderMode(gDisplayListHead++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
         gSPMatrix(gDisplayListHead++, &D_8006F010, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPVertex(gDisplayListHead++, D_800761B0, 12, 0);
+        gSPVertex(gDisplayListHead++, gCamQuadVertices, 12, 0);
         for (i = 0; i < 10; i += 2) {
-            gDPLoadMultiTile(gDisplayListHead++, D_80075F90->img_p, 0, 0, G_IM_FMT_RGBA, G_IM_SIZ_16b, D_80075F94, D_80075F98, 0, i * 5, D_80075F94 - 1, (i + 2) * 5 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPLoadMultiTile(gDisplayListHead++, gCamFramebuffer->img_p, 0, 0, G_IM_FMT_RGBA, G_IM_SIZ_16b, gCamTexWidth, gCamTexHeight, 0, i * 5, gCamTexWidth - 1, (i + 2) * 5 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSP2Triangles(gDisplayListHead++, i, 2 + i, 1 + i, i, 1 + i, 2 + i, 3 + i, i);
         }
-        gDPLoadMultiTile(gDisplayListHead++, D_80075F90->img_p, 0, 0, G_IM_FMT_RGBA, G_IM_SIZ_16b, D_80075F94, D_80075F98, 0, 40, D_80075F94 - 1, D_80075F98 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadMultiTile(gDisplayListHead++, gCamFramebuffer->img_p, 0, 0, G_IM_FMT_RGBA, G_IM_SIZ_16b, gCamTexWidth, gCamTexHeight, 0, 40, gCamTexWidth - 1, gCamTexHeight - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSP2Triangles(gDisplayListHead++, 9, 8, 10, 0, 11, 9, 10, 0);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
     }
     return 0;
 }
 
-void func_8003107C(unk_D_83402EE0_070* arg0, unk_func_80026268_arg0* arg1) {
+void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, unk_func_80026268_arg0* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(unk_D_83402EE0_070));
@@ -512,7 +512,7 @@ void func_8003107C(unk_D_83402EE0_070* arg0, unk_func_80026268_arg0* arg1) {
     }
 }
 
-void func_80031140(unk_func_80026268_arg0* arg0, unk_D_83407AC8* arg1) {
+void Cam_ConvertStateToInput(unk_func_80026268_arg0* arg0, unk_D_83407AC8* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(unk_func_80026268_arg0));
@@ -529,18 +529,18 @@ void func_80031140(unk_func_80026268_arg0* arg0, unk_D_83407AC8* arg1) {
     }
 }
 
-void func_80031204(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
+void Cam_ProcessGeoLayout(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
     sp18 = state_pool_try_init(main_pool_get_available(), 0);
-    D_80075F80 = arg0;
+    gCamPrimary = arg0;
     arg0->unk_1C = process_geo_layout(sp18, D_80075FA0);
-    D_80075F80 = NULL;
+    gCamPrimary = NULL;
     mem_pool_resize_block(sp18);
 }
 
-unk_func_80031270* func_80031270(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80068BB0* arg3,
+unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D_80068BB0* arg3,
                                  unk_D_86002F58_004_000_010* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
     UNUSED unk_D_80068BB0* var_v0;
     unk_func_80031270* temp_v0 = main_pool_alloc(sizeof(unk_func_80031270), 0);
@@ -570,11 +570,11 @@ unk_func_80031270* func_80031270(s16 arg0, s16 arg1, unk_D_80068BB0* arg2, unk_D
         temp_v0->unk_18 = arg6;
         temp_v0->unk_34 = 0;
 
-        if (D_80075F90 == 0) {
-            D_80075F90 = func_80006314(0, 2, 0xC8, 0x2B, 0);
+        if (gCamFramebuffer == 0) {
+            gCamFramebuffer = func_80006314(0, 2, 0xC8, 0x2B, 0);
         }
 
-        func_80031204(temp_v0, arg0, arg1);
+        Cam_ProcessGeoLayout(temp_v0, arg0, arg1);
     }
     return temp_v0;
 }
@@ -629,7 +629,7 @@ typedef struct unk_D_83403C60_raw {
     /* 0x8A */ char unk8A[0x2];
 } unk_D_83403C60_raw; // size = 0x8C
 
-void func_80031390(unk_func_80031270* arg0) {
+void Cam_Initialize(unk_func_80031270* arg0) {
     s32 sp94;
     arg1_func_80010CA8 sp90;
     UNUSED s32 pad[3]; // unk_func_80026268_arg0 potentially bigger?
@@ -638,7 +638,7 @@ void func_80031390(unk_func_80031270* arg0) {
     void (*sp28)(void*, u32);
 
     temp_s1 = (unk_D_83403C60_raw*)arg0->unk_18;
-    func_80031140(&sp30, &temp_s1->unk_70);
+    Cam_ConvertStateToInput(&sp30, &temp_s1->unk_70);
     Vec3f_Set(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
     arg0->unk_20->unk_0A6 = 0xFE;
     sp94 = sp30.unk_00.unk_00;
@@ -659,7 +659,7 @@ void func_80031390(unk_func_80031270* arg0) {
     func_80017804(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
 }
 
-void func_800314BC(unk_func_80031270* arg0) {
+void Cam_LoadGeometry(unk_func_80031270* arg0) {
     MemoryBlock* sp24;
     FragmentEntry sp20;
     u32* temp_v0;
@@ -671,7 +671,7 @@ void func_800314BC(unk_func_80031270* arg0) {
     GraphNode_AllocInit(0, arg0->unk_28);
     GraphNode_AllocInit(0, arg0->unk_2C);
     GraphNode_AllocInit(0, arg0->unk_30);
-    sp20 = BinArchive_GetFile(arg0->unk_14, D_8007616C[Cam_GetUnk6CHigh(arg0->unk_18)]);
+    sp20 = BinArchive_GetFile(arg0->unk_14, gCamGeoLayoutIndices[Cam_GetUnk6CHigh(arg0->unk_18)]);
     sp24 = state_pool_try_init(main_pool_get_available(), 0);
     temp_v0 = sp20(0, 0);
     if (temp_v0 != NULL) {
@@ -702,18 +702,18 @@ void func_800314BC(unk_func_80031270* arg0) {
     temp_v1->unk_01 = (u8) (temp_v1->unk_01 | 1);
 }
 
-u8* func_80031660(unk_func_80031270* arg0) {
+u8* Cam_Update(unk_func_80031270* arg0) {
     unk_func_80031660_sp24* sp24;
     void (*sp20)();
 
     sp24 = (unk_func_80031660_sp24*)((u8*)arg0->unk_18 + 0x50);
     sp20 = Util_ConvertAddrToVirtAddr(&func_8140C734);
-    D_80075F84 = arg0;
+    gCamSecondary = arg0;
     if (arg0->unk_00 == 1) {
         switch (arg0->unk_02) {
             case 2:
-                func_80031390(arg0);
-                func_800314BC(arg0);
+                Cam_Initialize(arg0);
+                Cam_LoadGeometry(arg0);
                 break;
             case 1:
                 Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08);
@@ -752,7 +752,7 @@ u8* func_80031660(unk_func_80031270* arg0) {
     return arg0->unk_08->img_p;
 }
 
-s32 func_800317D8(unk_func_80031270* arg0) {
+s32 Cam_IsMonIndexDisplayable(unk_func_80031270* arg0) {
     s32 var_v1;
     s32 sp1C;
     unk_D_83403C60* temp_a0;
@@ -771,7 +771,7 @@ s32 func_800317D8(unk_func_80031270* arg0) {
     return var_v1;
 }
 
-s32 func_8003181C(unk_func_80031270** arg0, s32 arg1) {
+s32 Cam_FindActiveIndex(unk_func_80031270** arg0, s32 arg1) {
     unk_func_80031270* temp_s1;
     s32 sp30;
     s32 i;
@@ -780,7 +780,7 @@ s32 func_8003181C(unk_func_80031270** arg0, s32 arg1) {
 
     for (i = 0; i < arg1; i++) {
         temp_s1 = arg0[i];
-        if ((func_800317D8(temp_s1) != 0) && (temp_s1->unk_00 == 1)) {
+        if ((Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 1)) {
             sp30 = i;
             break;
         }
@@ -788,12 +788,12 @@ s32 func_8003181C(unk_func_80031270** arg0, s32 arg1) {
     return sp30;
 }
 
-unk_func_80031270* func_800318AC(void) {
-    return D_80075F84;
+unk_func_80031270* Cam_GetCurrent(void) {
+    return gCamSecondary;
 }
 
 void Cam_ClearActive2(void) {
-    D_80075F84 = 0;
+    gCamSecondary = 0;
 }
 
 s32 IsMonIndexDisplayable(unk_D_83403C60* arg0) {

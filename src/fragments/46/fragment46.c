@@ -24,7 +24,7 @@ void func_83700020(void) {
     D_837004C0 = 0;
     sp28 = func_80019760(1);
     Cam_CallInit318B8();
-    D_837004B0 = func_80031270(0x280, 0x1E0, NULL, D_837004C8->unk_18[0], sp28, D_837004C4, func_834006A0(1));
+    D_837004B0 = Cam_Create(0x280, 0x1E0, NULL, D_837004C8->unk_18[0], sp28, D_837004C4, func_834006A0(1));
 }
 
 void func_83700090(void) {
@@ -44,7 +44,7 @@ void func_83700098(void) {
 s32 func_83700114(void) {
     s32 sp1C = 0;
 
-    if (func_8003181C(&D_837004B0, 1) != -1) {
+    if (Cam_FindActiveIndex(&D_837004B0, 1) != -1) {
         return 0;
     }
 
@@ -95,7 +95,7 @@ void func_8370023C(void) {
 
 void func_8370026C(void) {
     do {
-        func_80031660(D_837004B0);
+        Cam_Update(D_837004B0);
     } while (D_837004B0->unk_00 != 2);
 
     func_80006C6C(1);
