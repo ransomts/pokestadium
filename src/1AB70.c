@@ -237,7 +237,7 @@ void func_8001A714(unk_func_8001A024* arg0, s32 arg1) {
     arg0->unk_10->unk_000.unk_02 |= 0x80;
     func_8000E88C(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
     func_80010354(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
-    func_80006498(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
     func_80015348();
     func_8001533C(3);
     func_80015094(arg0->unk_0C);
@@ -399,7 +399,7 @@ void func_8001AEEC(unk_func_8001A024* arg0, s32 arg1) {
     s32 i;
 
     if (arg1 == arg0->unk_03) {
-        func_80006498(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
         func_8000699C(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
         func_8001533C(1);
         func_80015094(arg0->unk_0C);
@@ -686,7 +686,7 @@ void func_8001B834(unk_func_8001B1FC* arg0) {
 
 u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
     func_8001B778(arg0);
-    func_80006498(&gDisplayListHead, arg0->unk_28);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_28);
     func_8001B834(arg0);
     func_80015348();
     func_80015094(arg0->unk_20);

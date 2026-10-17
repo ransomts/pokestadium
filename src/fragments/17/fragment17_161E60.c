@@ -941,7 +941,7 @@ s32 func_86B02B50(void) {
 void func_86B02C9C(s16 arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     func_8002D5D4(0x1F, GetMessageString(NULL, 0, D_86B0EBD4, D_86B0EBDC->unk_2EC - 1));
     GetMessageString(D_86B0F7C8, 0xFF, D_86B0EBD0, 0xA5);
     Text_Print((arg0 - (MeasureTextWidth(2, 0, D_86B0F7C8) / 2)) + 0x5A, arg1 + 5, D_86B0F7C8);
@@ -963,7 +963,7 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
 void func_86B02ED0(s16 arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(arg0 + 0x10, arg1 + 5, "%s", D_86B0F8C8);
     Text_SetupDL();
 }

@@ -561,11 +561,11 @@ void Text_SetPrimColor(s32 r, s32 g, s32 b, s32 a) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, r, g, b, a);
 }
 
-void func_8001F3B4(s32 arg0) {
+void Text_SetLineHeight(s32 arg0) {
     D_800AC870->unk_52 = arg0;
 }
 
-void func_8001F3C4(void) {
+void Text_SetNoWordWrap(void) {
     D_800AC870->unk_53 |= 4;
 }
 

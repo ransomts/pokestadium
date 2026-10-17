@@ -173,7 +173,7 @@ void func_86B0B0B4(void) {
 void func_86B0B12C(void) {
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(0x56, 0xAF, "%s", D_86B10AC8);
     Text_SetupDL();
 }

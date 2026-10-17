@@ -1369,7 +1369,7 @@ void func_84B05CE0(s32 arg0) {
     u32 sp3C = Util_ConvertAddrToVirtAddr(&D_3017F00);
 
     func_800062E4(&sp40, 0, 2, 0x40, 0x40, arg0);
-    func_80006498(&gDisplayListHead, &sp40);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, &sp40);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
     gDPSetEnvColor(gDisplayListHead++, 255, 50, 20, 160);
@@ -1449,7 +1449,7 @@ void func_84B05FCC(unk_D_84B259E8* arg0) {
         func_84B05CE0(arg0->unk_10[D_800AE540.unk_0003 - 1]);
 
         if (D_800AE540.unk_0000 == 7) {
-            func_80006498(&gDisplayListHead, arg0->unk_30[D_800AE540.unk_0003 - 1]);
+            Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[D_800AE540.unk_0003 - 1]);
 
             gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
@@ -1535,7 +1535,7 @@ void func_84B06364(unk_D_84B259E8* arg0, unk_D_86002F58_004_000* arg1, s16 arg2)
 }
 
 void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
-    func_80006498(&gDisplayListHead, arg0->unk_30[arg1]);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[arg1]);
 
     gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 
@@ -1554,7 +1554,7 @@ void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
         s32 sp34 = MeasureTextWidth(2, 0, arg2);
 
         Text_ResetState();
-        func_8001F3B4(0xC);
+        Text_SetLineHeight(0xC);
         Text_SetFont(2, 0);
         Text_Print(0x20 - (sp34 / 2), 6, arg2);
         Text_SetupDL();

@@ -1208,7 +1208,7 @@ void func_825010A8(unk_D_82508B30* arg0) {
 
     D_825089A4 += 0x2000;
 
-    func_80006498(&gDisplayListHead, arg0->unk_038);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
     func_8000699C(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1251,7 +1251,7 @@ void func_825014B0(unk_D_82508B30* arg0) {
     s16 sp90[3];
     s32 i;
 
-    func_80006498(&gDisplayListHead, arg0->unk_038);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
     func_8000699C(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);

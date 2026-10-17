@@ -1014,7 +1014,7 @@ void func_82D00088(void) {
 }
 
 void func_82D002C4(unk_D_80068BB0* arg0, s16 arg1, s16 arg2) {
-    func_80006498(&gDisplayListHead, arg0);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
     func_8000699C(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1386,7 +1386,7 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
 
     if (sp2C != 0) {
         Text_SetFont(4, 0);
-        func_8001F3B4(0x14);
+        Text_SetLineHeight(0x14);
 
         switch (arg2) {
             case 20:
@@ -1461,7 +1461,7 @@ void func_82D029E0(void) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8001F3B4(0x1C);
+    Text_SetLineHeight(0x1C);
     Text_Print(0x6E, 8, GetMessageString(NULL, 0, D_82D0AB9C, 0x23));
     Text_SetupDL();
 }
@@ -1686,7 +1686,7 @@ void func_82D03BCC(s16 arg0, s16 arg1) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
-            func_8001F3B4(0x1A);
+            Text_SetLineHeight(0x1A);
             Text_Print(0x9B, sp24 + 0xC, GetMessageString(NULL, 0, D_82D0AB9C, 0x25));
             Text_Print(0x9B, sp24 + 0x44, GetMessageString(NULL, 0, D_82D0AB9C, 0x26));
             Text_SetEnvColor(0xFF, 0xFF, ((arg1 * 0x1C) == 0) ? 0 : 0xFF, 0xFF);
@@ -1755,7 +1755,7 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
 
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
-            func_8001F3B4(0x1A);
+            Text_SetLineHeight(0x1A);
             Text_Print(0xA1, temp_s0 + 0x124, GetMessageString(NULL, 0, D_82D0AB9C, 0x32));
             Text_SetupDL();
 
@@ -1960,7 +1960,7 @@ void func_82D04904(unk_D_82D0ABD0* arg0) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0x64, 0x32, 0xFF);
-            func_8001F3B4(0x1C);
+            Text_SetLineHeight(0x1C);
 
             if (arg0->unk_08 != 0) {
                 Text_Print(sp4A + 0x76, temp_s0 + 0x18, GetMessageString(NULL, 0, D_82D0AB9C, arg0->unk_08 + 0x32));
@@ -2219,7 +2219,7 @@ void func_82D05258(s32 arg0, s32 arg1) {
         if ((arg0 == 10) && (D_82D06FA0 < 7)) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            func_8001F3B4(0x1C);
+            Text_SetLineHeight(0x1C);
             if (D_82D0ABA4 == 0) {
                 Text_Print(0x50, 0x15E, GetMessageString(NULL, 0, D_82D0AB9C, D_82D09F14[D_82D06FA0]));
             } else {
@@ -2366,7 +2366,7 @@ unk_D_80068BB0* func_82D05A5C(void) {
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    func_8001F3B4(0x16);
+    Text_SetLineHeight(0x16);
     Text_Print(0x50, 0x17, GetMessageString(NULL, 0, D_82D0AB9C, 0x3F));
     Text_SetupDL();
 
@@ -2392,7 +2392,7 @@ unk_D_80068BB0* func_82D05BE0(void) {
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    func_8001F3B4(0x16);
+    Text_SetLineHeight(0x16);
     Text_Print(0x50, 0x17, GetMessageString(NULL, 0, D_82D0AB9C, 0x40));
     Text_SetupDL();
 
@@ -2418,7 +2418,7 @@ unk_D_80068BB0* func_82D05D64(void) {
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    func_8001F3B4(0x16);
+    Text_SetLineHeight(0x16);
     Text_Print(0x40, 0x14, GetMessageString(NULL, 0, D_82D0AB9C, 0x44));
     Text_SetupDL();
 

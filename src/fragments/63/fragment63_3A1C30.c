@@ -404,7 +404,7 @@ void func_84B0EF14(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
         sp48 = (arg1->unk_04 - MeasureTextWidth(1, 0, func_84B0037C(0x3F))) / 2;
         Text_SetFont(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
-        func_8001F3B4(0xC);
+        Text_SetLineHeight(0xC);
         Text_Print(arg1->unk_00 + sp48, arg1->unk_02 + 0x86, func_84B0037C(0x3F));
     }
 

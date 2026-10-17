@@ -605,7 +605,7 @@ void func_841003F0(void) {
 }
 
 void func_8410048C(unk_D_80068BB0* arg0, s16 arg1, s16 arg2) {
-    func_80006498(&gDisplayListHead, arg0);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
     func_8000699C(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -746,7 +746,7 @@ void func_84101210(s16 arg0) {
                       D_84102528[D_84103CC8][0], D_84102528[D_84103CC8][1]);
         Text_SetFont(8, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F3B4(0x18);
+        Text_SetLineHeight(0x18);
         Text_Print(0x48, 0x182, GetMessageString(NULL, 0, D_84103440, D_84103CC8 + 6));
         Text_SetupDL();
 

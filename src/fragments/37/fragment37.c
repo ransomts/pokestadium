@@ -495,7 +495,7 @@ void func_822022C8(s32 arg0) {
     if (arg0 != 0) {
         Text_ResetState();
         Text_SetFont(8, 0);
-        func_8001F3B4(0x18);
+        Text_SetLineHeight(0x18);
         Text_Print(0x5B, 0x182, GetMessageString(NULL, 0, D_822030F0, D_822031D8));
         Text_SetupDL();
     }

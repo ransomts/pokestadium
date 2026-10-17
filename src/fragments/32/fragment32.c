@@ -49,7 +49,7 @@ void func_811002D4(s32 arg0) {
     func_811001C0(0x27, 0x22);
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(0x52, 0x21, GetMessageString(NULL, 0, D_81100938, arg0 - 1));
     Text_SetupDL();
 }

@@ -154,10 +154,10 @@ void func_82C00AA4(s32 arg0, s32 arg1, s32 arg2) {
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
 
             if (arg0 == 0) {
-                func_8001F3B4(0x1C);
+                Text_SetLineHeight(0x1C);
                 Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 9));
             } else {
-                func_8001F3B4(0x1C);
+                Text_SetLineHeight(0x1C);
                 Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 0xA));
             }
 

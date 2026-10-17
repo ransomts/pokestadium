@@ -995,7 +995,7 @@ void func_82F094B4(unk_D_82F20A40* arg0) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F3B4(0x1A);
+            Text_SetLineHeight(0x1A);
 
             switch (arg0->unk_04) {
                 case 1:

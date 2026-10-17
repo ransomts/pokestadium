@@ -163,7 +163,7 @@ void func_84B004C0(s16 arg0, s16 arg1, char* arg2) {
     s32 sp1C = MeasureTextWidth(2, 0, arg2);
 
     Text_ResetState();
-    func_8001F3B4(0xC);
+    Text_SetLineHeight(0xC);
     Text_SetFont(2, 0);
     Text_Print(0x20 - (sp1C / 2), arg1, arg2);
     Text_SetupDL();
@@ -230,7 +230,7 @@ void func_84B0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 void func_84B00D3C(unk_D_80068BB0* arg0, s16 arg1, u8* arg2, u8* arg3) {
     unk_D_800AE540_1194* temp_v1 = &D_800AE540.unk_1194[arg1];
 
-    func_80006498(&gDisplayListHead, arg0);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
 
     gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 

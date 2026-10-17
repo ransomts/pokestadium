@@ -268,7 +268,7 @@ void func_832007A4(char* arg0, s32 arg1) {
         func_83200684(0x1E, 0x20, 0x104, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetupDL();
         Stage_Advance();
@@ -286,7 +286,7 @@ void func_8320084C(char* arg0, s32 arg1) {
         func_83200684(0x1E, 0x20, 0x104, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetFont(4, 0);
         if (arg1 != 0) {
@@ -316,7 +316,7 @@ void func_83200934(s8* arg0) {
 
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x2E, y1 - i * 4, D_83201F58);
         Text_Print(0x2E, y2 - i * 4, arg0);
         Text_SetupDL();
@@ -354,7 +354,7 @@ s32 func_83200ADC(char* arg0) {
         func_83200700(0xDA, (var_s1 * 0x10) + 0x5C);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
 
         if (temp_s3 != 0) {
@@ -429,14 +429,14 @@ s32 func_83200CD8(char* arg0) {
         func_83200684(0x1E, 0x20, 0x82, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetupDL();
         func_83200684(0x96, 0x20, 0x8C, 0x4C);
         func_83200700(0x9E, (var_s0 * 0x10) + 0x28);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
 
         if (var_s0 == 0) {
             var_a2 = 0;
@@ -616,7 +616,7 @@ void func_832016F4(s32 arg0) {
 
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(0x2E, 0x28, GetMessageString(NULL, 0, D_83202020, 0xE));
 
     if (arg0 == 0) {
@@ -625,7 +625,7 @@ void func_832016F4(s32 arg0) {
         Text_Print(0x5C, 0x70, GetMessageString(NULL, 0, D_83202020, 0x12));
         Text_SetupDL();
     } else {
-        func_8001F3B4(0x10);
+        Text_SetLineHeight(0x10);
         Text_Print(0x40, 0x84, GetMessageString(NULL, 0, D_83202020, 0x13));
         Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
 
@@ -633,7 +633,7 @@ void func_832016F4(s32 arg0) {
             Text_SetFont(4, 0);
             Text_Print(0x4C, 0x64, GetMessageString(NULL, 0, D_83202020, 0x14));
         } else if (arg0 == 3) {
-            func_8001F3B4(0x10);
+            Text_SetLineHeight(0x10);
             Text_Print(0x40, 0x5C, GetMessageString(NULL, 0, D_83202020, 0x15));
         }
     }

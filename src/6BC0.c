@@ -132,7 +132,7 @@ unk_D_80068BB0* func_8000648C(void) {
     return D_80068BB0;
 }
 
-void func_80006498(Gfx** gfx_p, unk_D_80068BB0* arg1) {
+void Gfx_SetupFrameBuffer(Gfx** gfx_p, unk_D_80068BB0* arg1) {
     Gfx* gfx = *gfx_p;
 
     gDPPipeSync(gfx++);

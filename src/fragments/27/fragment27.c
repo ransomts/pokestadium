@@ -957,7 +957,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
         Text_SetFont(4, 0);
         Text_Print(MeasureTextWidth(0, 0, sp128) + sp13C + 0x90, sp138 + 8, " %s",
                       GetMessageString(NULL, 0, D_8861C51C, sp12C->unk_00));
-        func_8001F3B4(0x12);
+        Text_SetLineHeight(0x12);
         Text_Print(sp13C + 0xE, sp138 + 0x3A, GetMessageString(NULL, 0, D_8861C528, sp134->unk_00[0] - 1));
         Text_SetEnvColor(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
         Text_SetFont(4, 0);

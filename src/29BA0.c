@@ -735,7 +735,7 @@ void func_800293CC(void) {
 
 void func_800296AC(void) {
     func_8000D2B4(1);
-    func_80001BD4(2);
+    Sched_RunFrames(2);
     LeoBootGame(D_800AA680.unk_08);
 }
 
@@ -1077,7 +1077,7 @@ void func_8002A728(void) {
     if ((FRAGMENT_LOAD_AND_CALL(fragment33, 0, 0) == 0) && (D_80075674 >= 0) && (D_80075674 < 4)) {
         func_8000D278(4);
         func_8000D2B4(1);
-        func_80001BD4(2);
+        Sched_RunFrames(2);
         func_8000D358();
 
         sp2C.unk_04 = main_pool_alloc(sizeof(*sp2C.unk_04), 0);
@@ -1088,7 +1088,7 @@ void func_8002A728(void) {
         sp34 = func_8000D8A8();
 
         func_8000D8DC(&sp2C);
-        func_80001BD4(2);
+        Sched_RunFrames(2);
         func_8000D380();
 
         if (sp34 != 0) {
@@ -1308,9 +1308,9 @@ void func_8002B274(s32 arg0, s32 arg1) {
     func_8000A924();
     func_8000D338();
     func_8002B310();
-    func_80001AD4(1);
+    Gfx_SetFrameFillColor(1);
     func_80001C64();
-    func_80001BD4(0xA);
+    Sched_RunFrames(0xA);
 
     main_pool_pop_state('GAME');
 

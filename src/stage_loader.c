@@ -323,7 +323,7 @@ void Gfx_BeginFrame(void) {
 }
 
 void func_80006FE8(void) {
-    func_80006498(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
     guOrtho(&D_800A7468, 0.0f, 320.0f, 0.0f, 240.0f, -2.0f, 2.0f, 1.0f);
     Gfx_SetDefaultState();
     func_80006F34();
@@ -409,7 +409,7 @@ Stage* Stage_Create(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5) {
         temp_v0->unk_0E = arg2;
         temp_v0->unk_0F = arg3;
         temp_v0->unk_10 = arg4;
-        temp_v0->unk_14 = func_80001B2C();
+        temp_v0->unk_14 = Gfx_GetFrameFillColor();
         temp_v0->unk_16 = 0;
         temp_v0->unk_04 = 0;
         temp_v0->unk_06 = temp_v0->unk_00 - 1;
@@ -467,9 +467,9 @@ void func_80007614(Stage* arg0) {
 
 void Stage_Set(Stage* arg0) {
     gCurrentStage = arg0;
-    func_80001BA8(NULL);
-    func_80001B7C();
-    func_80001AD4(arg0->unk_14);
+    Sched_SendFrame(NULL);
+    Sched_WaitFrame();
+    Gfx_SetFrameFillColor(arg0->unk_14);
     func_80007234();
 }
 
@@ -477,9 +477,9 @@ void func_800076C0(void) {
     if (gCurrentStage != NULL) {
         func_80007304();
         func_8000725C();
-        func_80001BA8(&D_800A7450);
-        func_80001B7C();
-        func_80001BD4(2);
+        Sched_SendFrame(&D_800A7450);
+        Sched_WaitFrame();
+        Sched_RunFrames(2);
         gCurrentStage = NULL;
     }
 }
@@ -494,8 +494,8 @@ void func_80007754(void) {
 
 s32 Stage_Advance(void) {
     func_8000725C();
-    func_80001BA8(&D_800A7450);
-    func_80001B7C();
+    Sched_SendFrame(&D_800A7450);
+    Sched_WaitFrame();
     func_80007234();
 }
 
@@ -503,8 +503,8 @@ void Stage_AdvanceN(s32 arg0) {
     while (arg0-- > 0) {
         func_80007304();
         func_8000725C();
-        func_80001BA8(&D_800A7450);
-        func_80001B7C();
+        Sched_SendFrame(&D_800A7450);
+        Sched_WaitFrame();
         func_80007234();
     }
 }
@@ -557,13 +557,13 @@ s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
 void func_80007990(u16 arg0) {
     if (gCurrentStage != NULL) {
         gCurrentStage->unk_14 = arg0;
-        func_80001AD4(arg0);
+        Gfx_SetFrameFillColor(arg0);
     }
 }
 
 void func_800079C4(void) {
     if (gCurrentStage != NULL) {
-        func_80006498(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
 
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
     }

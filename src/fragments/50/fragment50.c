@@ -2052,7 +2052,7 @@ void func_8260125C(void) {
     }
 
     Text_SetFont(2, 0);
-    func_8001F3B4(0xC);
+    Text_SetLineHeight(0xC);
 
     if (D_82608544 == 1) {
         char sp38[32];

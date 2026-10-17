@@ -1759,7 +1759,7 @@ void func_82F12614(void) {
     f32 temp_fa8;
     f32 temp_faC;
 
-    func_80006498(&gDisplayListHead, D_82F2115C);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, D_82F2115C);
 
     gSPDisplayList(gDisplayListHead++, D_82F14060);
 

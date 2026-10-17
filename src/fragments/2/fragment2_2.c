@@ -2223,7 +2223,7 @@ s32 func_87804FD4(void) {
             Text_SetEnvColor(0xFF, 0xFD, 0xD4, 0xFF);
             Text_SetPrimColor(0xBA, 0xB7, 0, 0xFF);
             Text_SetFont(4, 0);
-            func_8001F3B4(0x12);
+            Text_SetLineHeight(0x12);
             Text_Print(0x28, sp55, sp60);
             sp55 = (sp55 + (sp44 * 0x12));
             Text_Print(0x28, sp55 & 0xFF, sp5C);

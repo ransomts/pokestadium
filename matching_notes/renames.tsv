@@ -98,3 +98,11 @@ func_80029048	Fragment_LoadAndCall2	a8		FRAGMENT_LOAD_AND_CALL2 macro body	appli
 func_80004258	Asset_Load	a8		ASSET_LOAD macro body: loads an asset by id + rom range into vram	applied@848c3bc
 func_800044F4	Asset_Load2	a8		ASSET_LOAD2 macro body (used by Text_Init for the fonts asset)	applied@848c3bc
 func_8000484C	BinArchive_GetFile	a8		returns a BinArchive file entry by number: direct pointer, cached, or decompressed via func_80004804/800047C4; used by GetMessageBank and friends	applied@848c3bc
+func_80001BA8	Sched_SendFrame	a9		osSendMesg to the DP thread's DL queue (unk_9EC): submits the next display list (or a blank frame for NULL); 43 files	applied@ec5c0b7
+func_80001B7C	Sched_WaitFrame	a9		blocking osRecvMesg on the DP completion queue (unk_A04): waits for the displayed frame; 56 files	applied@ec5c0b7
+func_80001BD4	Sched_RunFrames	a9		runs n blank frames (Sched_SendFrame(NULL) + Sched_WaitFrame)	applied@ec5c0b7
+func_80006498	Gfx_SetupFrameBuffer	a9		writes the DL commands targeting a stage framebuffer: pipe sync, depth source + depth image, then the frame's list	applied@ec5c0b7
+func_80001AD4	Gfx_SetFrameFillColor	a9		fills the top scanline (640 halfwords) of the DP's current framebuffer with a colour - the frame fill/border colour	applied@ec5c0b7
+func_80001B2C	Gfx_GetFrameFillColor	a9		reads back the first pixel of the current framebuffer (the value Gfx_SetFrameFillColor wrote)	applied@ec5c0b7
+func_8001F3B4	Text_SetLineHeight	a9		sets the text state's line advance (unk_52; default 0x28, applied per newline in Text_Print; 0xC at compact-UI call sites)	applied@ec5c0b7
+func_8001F3C4	Text_SetNoWordWrap	a9		sets unk_53 bit 2 - Text_Print then treats newlines as ordinary characters (no line advance)	applied@ec5c0b7

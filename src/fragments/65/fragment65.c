@@ -150,7 +150,7 @@ void func_84A008A8(void) {
         if (D_84A030EC == 0x50) {
             Text_ResetState();
             Text_SetFont(8, 0);
-            func_8001F3B4(0x18);
+            Text_SetLineHeight(0x18);
 
             if (D_84A030E0 == 7) {
                 Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, D_84A03130, 0xC));

@@ -247,7 +247,7 @@ void func_82F00568(void) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
 
-        func_8001F3B4(0x1E);
+        Text_SetLineHeight(0x1E);
         temp_t0 = MeasureTextWidth(0, 0, D_82F1444C->unk_10) / 2;
         if (D_82F1444C->unk_00 == -1) {
             Text_Print(D_82F1444C->unk_04 - temp_t0, D_82F1444C->unk_06, D_82F1444C->unk_10);

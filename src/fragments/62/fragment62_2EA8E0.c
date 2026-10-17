@@ -202,7 +202,7 @@ void func_84300750(GraphNode* arg0, unk_D_80068BB0* arg1) {
         sp2C->unk_18.width = 0x4C;
         sp2C->unk_18.height = 0x4C;
 
-        func_80006498(&gDisplayListHead, arg1);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, arg1);
         func_8000699C(&gDisplayListHead, 0x10D);
         func_80015094(arg0);
 

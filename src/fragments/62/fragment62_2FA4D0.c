@@ -1499,7 +1499,7 @@ void func_84315ADC(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
     func_84310334(arg1 + 1, arg2 + 1, 0xEE, 0x24, &D_84385860[arg0], &D_84385870[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(arg1 + 0xA, arg2 + 5, arg3);
     Text_SetupDL();
     func_84311428(arg1, arg2, 0xEE, 0x24);
@@ -1610,7 +1610,7 @@ void func_843162E4(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
     func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &D_84385860[arg0], &D_84385870[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
-    func_8001F3B4(0x10);
+    Text_SetLineHeight(0x10);
     Text_Print(arg1 + 0xA, arg2 + 5, arg3);
     Text_SetupDL();
     func_84311428(arg1, arg2, 0xC8, 0x25);

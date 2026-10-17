@@ -435,7 +435,7 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
         sp16C = (char*)((u8*)D_80075F84->unk_18 + 0x73);
         D_80075F9C = MeasureTextWidth(0x10, 0, sp16C);
         func_800302A4(0, -0x96);
-        func_80006498(&gDisplayListHead, D_80075F90);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, D_80075F90);
         func_8000699C(&gDisplayListHead, 0);
         gDPPipeSync(gDisplayListHead++);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
@@ -477,7 +477,7 @@ s32 func_800303C8(s32 arg0, UNUSED GraphNode* arg1) {
             func_8001F4C4();
             Text_SetupDL();
         }
-        func_80006498(&gDisplayListHead, D_80075F84->unk_08);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, D_80075F84->unk_08);
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -716,7 +716,7 @@ u8* func_80031660(unk_func_80031270* arg0) {
                 func_800314BC(arg0);
                 break;
             case 1:
-                func_80006498(&gDisplayListHead, arg0->unk_08);
+                Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08);
 
                 if ((arg0->unk_34 == -1) || (arg0->unk_34 == 0)) {
                     func_8000699C(&gDisplayListHead, 1);

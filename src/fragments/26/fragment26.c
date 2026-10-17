@@ -2172,7 +2172,7 @@ s32 func_8850882C(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
         func_8001F470();
         Text_SetPrimColor(arg0->unk_34.r, arg0->unk_34.g, arg0->unk_34.b, arg0->unk_34.a);
     }
-    func_8001F3B4(arg0->unk_3C);
+    Text_SetLineHeight(arg0->unk_3C);
     Text_Print(arg1, arg2, arg0->unk_40);
     if (arg0->unk_44 != 0) {
         func_8001F4C4();
@@ -2417,7 +2417,7 @@ void func_8850A10C(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s
     *arg0->unk_34 = *arg1;
     arg0->unk_34->unk_00.unk_28 |= 1;
     Text_SetFont(arg1->unk_2C, arg1->unk_38);
-    func_8001F3B4(arg1->unk_3C);
+    Text_SetLineHeight(arg1->unk_3C);
 
     if (arg3 == 0) {
         arg3 = MeasureTextWidth(0, 0, arg1->unk_40);

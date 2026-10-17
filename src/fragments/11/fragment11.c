@@ -484,7 +484,7 @@ void func_86500D38(s32 arg0) {
         char* sp40 = GetMessageString(NULL, 0, D_87806330, 0x2D);
 
         Text_SetFont(2, 0);
-        func_8001F3B4(0xC);
+        Text_SetLineHeight(0xC);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
         Text_Print(0xA0 - (func_878013D4(D_87B000E0, GetMessageString(NULL, 0, D_87806330, 0x2C)) / 2), 0x20,

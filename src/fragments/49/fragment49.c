@@ -96,7 +96,7 @@ void func_83A00754(void) {
         main_pool_push_state('mksl');
 
         D_83A00B78 = BinArchive_GetFile(D_83A00B74, D_83A00B58[D_83A00B7C]);
-        func_80006498(&gDisplayListHead, D_83A00B80);
+        Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
         gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -173,7 +173,7 @@ void func_83A009C0(void) {
 }
 
 void func_83A009C8(void) {
-    func_80006498(&gDisplayListHead, D_83A00B80);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
     func_800065B4(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
     Stage_Advance();
     func_80006C6C(8);

@@ -678,7 +678,7 @@ void func_833015C8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
         if (1) {}
         Text_ResetState();
         Text_SetFont(8, 0);
-        func_8001F3B4(0x14);
+        Text_SetLineHeight(0x14);
         Text_Print(arg1 + 0xA, arg2 + 8, sp18);
         Text_SetupDL();
     }

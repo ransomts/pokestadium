@@ -356,7 +356,7 @@ void func_860005B8(s32 arg0) {
         case 0:
             func_8001F470();
             Text_SetFont(2, 0);
-            func_8001F3B4(0xC);
+            Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
             Text_Print(0xA0 - (func_878013D4(D_86003B7C, GetMessageString(NULL, 0, D_87806330, 0x15)) / 2), 0x20,

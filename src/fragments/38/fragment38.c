@@ -351,7 +351,7 @@ void func_82301B0C(unk_D_82305A30* arg0) {
         if (((0x3C - tmp1) == 0) && (D_82305A28.unk_02 < 8)) {
             Text_ResetState();
             Text_SetFont(8, 0);
-            func_8001F3B4(0x18);
+            Text_SetLineHeight(0x18);
             Text_Print(tmp2 + 0x20, sp3A + 8,
                           GetMessageString(NULL, 0, D_82305A20, D_82305A50[D_82305A28.unk_02].unk_18));
             Text_SetupDL();
@@ -537,7 +537,7 @@ void func_823023F8(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, sp3E);
-        func_8001F3B4(0x20);
+        Text_SetLineHeight(0x20);
         func_8002D600(3, D_8230597C[arg0->unk_0004 - 1].unk_04);
         Text_Print(arg1 + 0x88, arg2 + 0x14, GetMessageString(sp40, 0x100, D_82305A20, 9));
         Text_SetupDL();

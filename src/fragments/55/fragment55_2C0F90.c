@@ -83,7 +83,7 @@ void func_8300243C(void) {
             Text_ResetState();
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F3B4(0x18);
+            Text_SetLineHeight(0x18);
             Text_Print(0x50, temp_s0 + 6, D_83003CE0.unk_00[D_83003EE4]);
             Text_SetFont(8, 0);
             Text_Print(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[D_83003EE4]);

@@ -1611,7 +1611,7 @@ void func_86E02308(void) {
     Text_ResetState();
     func_8001F470();
     Text_SetFont(2, 0);
-    func_8001F3B4(0xC);
+    Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
     Text_Print(0xA0 - (func_878013D4(D_86E08E44, GetMessageString(NULL, 0, D_87806330, 0x44)) / 2), 0x20,

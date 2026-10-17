@@ -3164,7 +3164,7 @@ void func_86C03608(void) {
     Text_ResetState();
     func_8001F470();
     Text_SetFont(2, 0);
-    func_8001F3B4(0xC);
+    Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

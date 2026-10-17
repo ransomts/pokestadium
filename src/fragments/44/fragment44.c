@@ -920,7 +920,7 @@ void func_83502F78(int arg0, int arg1, s32 arg2, f32 arg3) {
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    func_8001F3B4(0x14);
+    Text_SetLineHeight(0x14);
     Text_SetEnvColor(0, 0, 0, 0xFF);
     Text_Print(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
     func_8001F470();
@@ -956,7 +956,7 @@ void func_8350355C(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     if (sp1C != NULL) {
         Text_ResetState();
         Text_SetFont(8, 0);
-        func_8001F3B4(0x14);
+        Text_SetLineHeight(0x14);
         Text_Print(arg1 + 0xA, arg2 + 8, sp1C);
         Text_SetupDL();
     }

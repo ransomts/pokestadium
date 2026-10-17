@@ -223,7 +223,7 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetFont(8, 0);
-    func_8001F3B4(0x18);
+    Text_SetLineHeight(0x18);
 
     if ((arg0 == D_81304000) && (D_81304650 == 1)) {
         switch (func_81300314(arg0)) {
@@ -466,7 +466,7 @@ void func_81301E8C(void) {
         func_81301668(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
-        func_8001F3B4(0x1C);
+        Text_SetLineHeight(0x1C);
         Text_Print(0x5A, 0x15A, GetMessageString(NULL, 0, D_81304658, 0x13));
         Text_SetupDL();
     }

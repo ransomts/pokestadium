@@ -507,7 +507,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
-        func_8001F3B4(0x25);
+        Text_SetLineHeight(0x25);
         func_8002D600(3, sp2C);
         Text_Print(sp34 + 0x10, sp30 + 0xB, GetMessageString(sp38, sizeof(sp38), D_84803790, 7));
         Text_SetupDL();
@@ -521,7 +521,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
-        func_8001F3B4(0x28);
+        Text_SetLineHeight(0x28);
         func_8002D600(3, sp2C);
         Text_Print(sp34 + 0x50, sp30 + 0x14, GetMessageString(NULL, 0, D_84803790, 7));
         Text_SetupDL();

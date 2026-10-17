@@ -182,7 +182,7 @@ void func_8420B40C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         func_80020928(arg0 + 0x19C, arg1 + (arg3 * 0x16) + 0x3A);
         Text_ResetState();
         Text_SetFont(8, 0);
-        func_8001F3B4(0x16);
+        Text_SetLineHeight(0x16);
 
         switch (arg2) {
             case 1:

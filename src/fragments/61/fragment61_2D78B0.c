@@ -347,7 +347,7 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
             func_84201E70(0x6D, 0x81, 3, func_84200130(0x4C));
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            func_8001F3B4(0x18);
+            Text_SetLineHeight(0x18);
             Text_Print(0x58, 0x154, GetMessageString(NULL, 0, D_84211B48, 0x4D));
             Text_SetupDL();
         }

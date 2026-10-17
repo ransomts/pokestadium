@@ -682,7 +682,7 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
         func_8001F470();
         Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F3B4(0x24);
+        Text_SetLineHeight(0x24);
         Text_Print(0x80, 0xF0, GetMessageString(NULL, 0, D_82F13B70, 0x22));
     }
 

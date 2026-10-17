@@ -77,7 +77,7 @@ void SoftReset_ClearLines640(u16* buf) {
 void func_8000559C(void) {
     if (gSoftResetLineNum <= 15) {
         if (gSoftResetLineNum == 0) {
-            u16 color = func_80001B2C();
+            u16 color = Gfx_GetFrameFillColor();
             // decoding a 5551 value back to the raw R/G/B values.
             gSoftResetRed = (color >> 11) & 31;  // masked red?
             gSoftResetGreen = (color >> 6) & 31; // masked green?
@@ -85,7 +85,7 @@ void func_8000559C(void) {
         }
         // this function is supposed to only take 1 argument. huh?
         // this function packs 3 values into a RGBA5551 format.
-        func_80001AD4(((((gSoftResetRed * (15 - gSoftResetLineNum)) >> 4) << 11) |
+        Gfx_SetFrameFillColor(((((gSoftResetRed * (15 - gSoftResetLineNum)) >> 4) << 11) |
                        (((gSoftResetGreen * (15 - gSoftResetLineNum)) >> 4) << 6) |
                        (((gSoftResetBlue * (15 - gSoftResetLineNum)) >> 4) << 1) | 1) &
                           0xFFFF,

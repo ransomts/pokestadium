@@ -34,7 +34,7 @@ u64 D_80084C68[0xC08 / sizeof(u64)];
 u64 D_80085870[0x20000 / sizeof(u64)];
 
 // function prototypes
-void func_80001AD4(u16 color);
+void Gfx_SetFrameFillColor(u16 color);
 void func_80001C1C(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7);
 
 void func_80001380(UnkStruct80001380* arg0) {
@@ -206,14 +206,14 @@ void func_800019C8(void) {
     D_80083CA0.unk_A88 = 0;
     D_80083CA0.unk_A8A = 0;
     D_80083CA0.unk_9E0 = func_80006314(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
-    func_80001AD4(1);
+    Gfx_SetFrameFillColor(1);
     func_80003B30(&D_80084760, 0xB0000B70, 0xB0000C70, 0);
 }
 
 /**
  * Write a specific color to a line on the framebuffer for a 640x480 resolution.
  */
-void func_80001AD4(u16 color) {
+void Gfx_SetFrameFillColor(u16 color) {
     s32 width = 640;
     u16* buf = (u16*)D_80083CA0.unk_9E0->img_p;
 
@@ -224,7 +224,7 @@ void func_80001AD4(u16 color) {
     osWritebackDCache(D_80083CA0.unk_9E0->img_p, 0x500);
 }
 
-u16 func_80001B2C(void) {
+u16 Gfx_GetFrameFillColor(void) {
     u16* ptr = (u16*)D_80083CA0.unk_9E0->img_p;
     return *ptr;
 }
@@ -239,18 +239,18 @@ s32 func_80001B40(void) {
     return result;
 }
 
-void func_80001B7C(void) {
+void Sched_WaitFrame(void) {
     osRecvMesg(&D_80083CA0.unk_A04, NULL, 1);
 }
 
-void func_80001BA8(void* arg0) {
+void Sched_SendFrame(void* arg0) {
     osSendMesg(&D_80083CA0.unk_9EC, arg0, 0);
 }
 
-void func_80001BD4(s32 arg0) {
+void Sched_RunFrames(s32 arg0) {
     while (arg0-- > 0) {
-        func_80001BA8(0);
-        func_80001B7C();
+        Sched_SendFrame(0);
+        Sched_WaitFrame();
     }
 }
 

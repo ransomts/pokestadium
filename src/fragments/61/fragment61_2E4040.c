@@ -350,7 +350,7 @@ void func_8420CE24(unk_D_84211704* arg0) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8001F3B4(0x1E);
+    Text_SetLineHeight(0x1E);
     Text_Print(arg0->unk_00 + 0x78, arg0->unk_02 + arg0->unk_08 + 0x29, func_84200130(0x23));
     Text_SetupDL();
 }
@@ -366,7 +366,7 @@ void func_8420CFC4(unk_D_84211704* arg0) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8001F3B4(0x1C);
+    Text_SetLineHeight(0x1C);
     Text_Print(arg0->unk_00 + 0x68, arg0->unk_02 + 0x14, func_84200130(0x24));
     Text_SetupDL();
 }
@@ -405,7 +405,7 @@ void func_8420D370(unk_D_84211704* arg0, s16 arg1) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8001F3B4(0x1C);
+    Text_SetLineHeight(0x1C);
     func_8002D600(2, arg1);
     sp20 = func_84200190(sp28, sizeof(sp28), 0x27);
     tmp = ((arg0->unk_04 - MeasureTextWidth(0, 0, sp20)) / 2);

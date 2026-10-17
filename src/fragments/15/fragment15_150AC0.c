@@ -820,7 +820,7 @@ void func_869089AC(void) {
         func_869043FC(0x3C, 0x9B - (D_8690B3C0.unk_0C / 2), D_8690B3C0.unk_08, D_8690B3C0.unk_0C, 0, 0, 0x9B, 0x7D);
         Text_ResetState();
         Text_SetFont(2, 0);
-        func_8001F3B4(0xC);
+        Text_SetLineHeight(0xC);
         Text_Print(0x46, 0x9F - (D_8690B3C0.unk_0C / 2), D_8690B3D0);
         Text_SetupDL();
     }

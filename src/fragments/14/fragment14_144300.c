@@ -317,7 +317,7 @@ void func_86800B38(void) {
                       GetMessageString(NULL, 0, D_87806330, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-        func_8001F3B4(0xC);
+        Text_SetLineHeight(0xC);
         Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x32));
         Text_Print(0x28, 0x4C, GetMessageString(NULL, 0, D_87806330, 0x33));
         Text_Print(0x78, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
