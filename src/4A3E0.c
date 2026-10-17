@@ -722,6 +722,10 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // from D_800FD008 instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
 // declaration order (no effect), chained 0x20-first store; single (u8) casts on idx/nr/flags/len/dir uses
 // (best 2110 = (u8)flags or (u8)nr in the kill tests, before the clamp fix; pairs of them are worse).
+// At 955: tail `value = unk_04` (sample through the value local; target a0 + uopt copy t5 suggests
+// this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
+// col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
+// pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
