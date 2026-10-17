@@ -698,7 +698,6 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
     func_8001F444();
 }
 
-#ifdef NON_MATCHING
 // Score 8 (was 56). Only diff: the CSE temp X = temp_s2_2 + 0x24 (saved at the first
 // func_83803F34 call, reloaded in the second block-3 loop) is at sp+0x48, target sp+0x4c.
 // Stack model (verified): named locals top-down from 0xd0 in declaration order (incl. each gfx
@@ -714,129 +713,115 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 // s5 for &D_838067F0. Dead ends: ptr-> vs D_838067F0. per line, inline temp_s2_2 / var_s0,
 // nested scope for new_var (still allocated in source order), constant var in block 4,
 // operand-order and s16 casts in block 3, `if (1) {}` after each call.
-void func_838043F8(s32 arg0) {
-    unk_D_838067F0* ptr = &D_838067F0;
-    s32 i;
-    s32 spC4 = ptr->unk_000C;
-    s32 spC0 = ptr->unk_0010;
-    unk_D_838067F0_0168* var_s2;
-
-    if ((ptr->unk_0000 == 0) || (arg0 == 0)) {
-        return;
+void func_838043F8(s32 arg0)
+{
+  unk_D_838067F0 *ptr = &D_838067F0;
+  s32 i;
+  s32 spC4 = ptr->unk_000C;
+  s32 spC0 = ptr->unk_0010;
+  unk_D_838067F0_0168 *var_s2;
+  if ((ptr->unk_0000 == 0) || (arg0 == 0))
+  {
+    return;
+  }
+  func_83803748(&D_838067F0);
+  func_842001B8(spC4, spC0, 0x1B4, 0x12C);
+  func_83803A80(spC4 + 4, spC0 + 4, &D_838067F0);
+  {
+    Gfx *_g = (Gfx *) (gDisplayListHead++);
+ _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; if (func_83803E94(&D_838067F0) >= 2) { func_8001C6AC(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0); func_8001C6AC(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0); func_8001C6AC(spC4 + 0x1BA, spC0 + 8, 0x30 & 0xFFFFu, 0x18, D_2009000, 0x30, 0); func_8001C6AC(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0); } { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F470; } ; func_8001C560(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32); arg0 = 0x24; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F630; } ; if (ptr->unk_0000 == 3) { s32 var_s0; s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8); if (ptr->unk_0030 > 0) { var_s0 = 0x194; } else { var_s0 = -0x194; } i = arg0; func_800060E0(&gDisplayListHead, spC4 + arg0, spC0 + 4, 0x18C, 0x124); func_83803F34(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C); func_83803F34((var_s0 + temp_s2_2) + arg0, spC0 + 4, ptr->unk_0160); { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((long) ((unsigned int) 0xde)) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) D_8006F518; } ; { { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = ((((unsigned int) ((((unsigned int) 0xfd) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (1 - 1)) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (unsigned int) D_2000C40; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe6) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf3) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((((((8 * 4) + 0) >> 0) - 1) < 2047) ? ((((8 * 4) + 0) >> 0) - 1) : (2047))) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((((1 << 11) + ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8))) - 1) / ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8)))) & ((0x01 << 12) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe7) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (((8 * 2) + 7) >> 3)) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf2) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((8 - 1) << 2)) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((4 - 1) << 2)) & ((0x01 << 12) - 1)) << 0)); } ; } ; func_8001C330(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); func_8001C330((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); { Gfx *_g = (Gfx *) (gDisplayListHead++);
+      _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0));
+      _g->words.w1 = (unsigned int) D_8006F630;
+    }
+    ;
+    var_s2 = ptr->unk_0160;
+    for (i = 0; i < 6; i++)
+    {
+      func_8380419C((var_s0 + temp_s2_2) + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
+      var_s2 = var_s2->unk_2688;
     }
 
-    func_83803748(&D_838067F0);
-    func_842001B8(spC4, spC0, 0x1B4, 0x12C);
-    func_83803A80(spC4 + 4, spC0 + 4, &D_838067F0);
-
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
-
-    if (func_83803E94(&D_838067F0) >= 2) {
-        func_8001C6AC(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0);
-        func_8001C6AC(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0);
-        func_8001C6AC(spC4 + 0x1BA, spC0 + 8, 0x30, 0x18, D_2009000, 0x30, 0);
-        func_8001C6AC(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0);
+    for (i = 0; i < 6; i++)
+    {
+      func_8380419C(temp_s2_2 + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
+      var_s2 = var_s2->unk_2688;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F470);
+    func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+  }
+  else
+    if (ptr->unk_0000 == 4)
+  {
+    s32 sp80 = spC0 - ((ptr->unk_002C * 0x2C) / 4);
+    s32 pad;
+    func_83803F34(spC4 + arg0, spC0 + 4, ptr->unk_0160);
+    func_800060E0(&gDisplayListHead, spC4 + arg0, spC0 + 0x20, 0x18C, 0x108);
+    if (ptr->unk_0030 > 0)
+    {
+      var_s2 = ptr->unk_0160->unk_268C;
+      for (i = 0; i < 7; i++)
+      {
+        func_8380419C(spC4 + arg0, (sp80 + 0x20) + (i * 0x2C), var_s2);
+        var_s2 = var_s2->unk_2688;
+      }
 
-    func_8001C560(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32);
+    }
+    else
+    {
+      var_s2 = ptr->unk_0160;
+      for (i = 0; i < 7; i++)
+      {
+        func_8380419C(spC4 + arg0, (sp80 - 0xC) + (i * 0x2C), var_s2);
+        var_s2 = var_s2->unk_2688;
+      }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
-
-    if (ptr->unk_0000 == 3) {
-        s32 var_s0;
-        s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8);
-
-        if (ptr->unk_0030 > 0) {
-            var_s0 = 0x194;
-        } else {
-            var_s0 = -0x194;
-        }
-
-        i = 0x24;
-        func_800060E0(&gDisplayListHead, spC4 + 0x24, spC0 + 4, 0x18C, 0x124);
-        func_83803F34(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C);
-        func_83803F34((var_s0 + temp_s2_2) + 0x24, spC0 + 4, ptr->unk_0160);
-
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
-        gDPLoadTextureBlock(gDisplayListHead++, D_2000C40, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 4, 0,
-                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
-
-        func_8001C330(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0);
-        func_8001C330((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0);
-
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
-
-        var_s2 = ptr->unk_0160;
-        for (i = 0; i < 6; i++) {
-            func_8380419C((var_s0 + temp_s2_2) + 0x24, spC0 + 0x20 + i * 0x2C, var_s2);
-            var_s2 = var_s2->unk_2688;
-        }
-
-        for (i = 0; i < 6; i++) {
-            func_8380419C(temp_s2_2 + 0x24, spC0 + 0x20 + i * 0x2C, var_s2);
-            var_s2 = var_s2->unk_2688;
-        }
-
-        func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
-    } else if (ptr->unk_0000 == 4) {
-        s32 sp80 = spC0 - ((ptr->unk_002C * 0x2C) / 4);
-        s32 pad;
-
-        func_83803F34(spC4 + 0x24, spC0 + 4, ptr->unk_0160);
-        func_800060E0(&gDisplayListHead, spC4 + 0x24, spC0 + 0x20, 0x18C, 0x108);
-        if (ptr->unk_0030 > 0) {
-            var_s2 = ptr->unk_0160->unk_268C;
-            for (i = 0; i < 7; i++) {
-                func_8380419C(spC4 + 0x24, sp80 + 0x20 + i * 0x2C, var_s2);
-                var_s2 = var_s2->unk_2688;
-            }
-        } else {
-            var_s2 = ptr->unk_0160;
-            for (i = 0; i < 7; i++) {
-                func_8380419C(spC4 + 0x24, sp80 - 0xC + i * 0x2C, var_s2);
-                var_s2 = var_s2->unk_2688;
-            }
-        }
-        func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
-    } else {
-        func_83803F34(spC4 + 0x24, spC0 + 4, ptr->unk_0160);
-        var_s2 = ptr->unk_0160;
-        for (i = 0; i < 6; i++) {
-            func_8380419C(spC4 + 0x24, spC0 + 0x20 + i * 0x2C, var_s2);
-            var_s2 = var_s2->unk_2688;
-        }
+    }
+    func_800060E0(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
+  }
+  else
+  {
+    func_83803F34(spC4 + arg0, spC0 + 4, ptr->unk_0160);
+    var_s2 = ptr->unk_0160;
+    for (i = 0; i < 6; i++)
+    {
+      func_8380419C(spC4 + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
+      var_s2 = var_s2->unk_2688;
     }
 
-    if (ptr->unk_0000 == 6) {
-        s32 var_v0 = (ptr->unk_0024 * 0x84) + 0x24;
-        s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
-
-        if (ptr->unk_002C > 0) {
-            var_v1 += ((ptr->unk_002C * 0x2C) / 4) - 0x2C;
-        } else {
-            var_v1 += ((ptr->unk_002C * 0x2C) / 4) + 0x2C;
-        }
-        func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
-    } else if (ptr->unk_0000 == 5) {
-        s32 var_v0 = (ptr->unk_0024 * 0x84) + 0x24;
-        s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
-
-        if (ptr->unk_002C > 0) {
-            var_v0 += ((ptr->unk_002C * 0x84) / 4) - 0x84;
-        } else {
-            var_v0 += ((ptr->unk_002C * 0x84) / 4) + 0x84;
-        }
-        func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
-    } else {
-        s32 var_v0 = (ptr->unk_0024 * 0x84) + 0x24;
-        s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
-
-        func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+  }
+  if (ptr->unk_0000 == 6)
+  {
+    s32 var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    if (ptr->unk_002C > 0)
+    {
+      var_v1 += ((ptr->unk_002C * 0x2C) / 4) - 0x2C;
     }
+    else
+    {
+      var_v1 += ((ptr->unk_002C * 0x2C) / 4) + 0x2C;
+    }
+    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+  }
+  else
+    if (ptr->unk_0000 == 5)
+  {
+    s32 var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    if (ptr->unk_002C > 0)
+    {
+      var_v0 += ((ptr->unk_002C * 0x84) / 4) - 0x84;
+    }
+    else
+    {
+      var_v0 += ((ptr->unk_002C * 0x84) / 4) + 0x84;
+    }
+    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+  }
+  else
+  {
+    unsigned long var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+  }
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/47/fragment47_2AFDB0/func_838043F8.s")
-#endif
