@@ -573,3 +573,10 @@ Work plan for the next rounds is in `PLAN.md` (tiers, agent protocol, Palmetto h
 Cluster helpers: `palmetto_job.sh` (sbatch: stage repo to /local_scratch, verify build, run
 permuter farm on tier-1 functions) and `permuter_farm.sh` (parallel permuter runs re-seeded from
 the current drafts, best candidates synced to /scratch/$USER/permuter_best).
+
+## Parked for the owner (2026-10-16 night)
+- func_86A013C8: matched on branch `round8-86A013C8-labels` (f793ca9 picked there; agent-7 verified the full
+  make OK in its worktree). IDO emits .lcomm (bss) in symbol-table hash order; the original
+  needed ~7+ extra symbols before the function, supplied there by eight unused labels in func_86A00ED8.
+  No code change, but the labels are a stand-in. Same kind of decision as the gDisplayListHead alias pair.
+
