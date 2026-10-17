@@ -78,7 +78,7 @@ char* func_84200190(char* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_842001B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 3, arg1 - 3, 8, 8, D_2000340, 8, 0);
     Gfx_DrawSpriteIA8((arg0 + arg2) - 5, arg1 - 3, 8, 8, D_2000380, 8, 0);
@@ -89,11 +89,11 @@ void func_842001B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Gfx_DrawTextureRect(arg0 + 4, (arg1 + arg3) - 5, arg2 - 8, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 5, arg1 + 4, 8, arg3 - 8, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84200420(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     Gfx_DrawSpriteIA8(arg0, arg1, 8, 8, D_2000B40, 8, 0);
@@ -105,11 +105,11 @@ void func_84200420(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6, arg7);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84200738(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -118,7 +118,7 @@ void func_84200738(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 sp56 = SINS(D_84210D58) * 2;
     UNUSED s32 pad[2];
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 240, 212, 104, 255);
 
     Gfx_DrawSpriteIA8(arg0 + sp56, arg1 + sp56, 0x10, 0x10, D_2000C80, 0x10, 0);
@@ -126,7 +126,7 @@ void func_84200738(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 0x10, arg1 + sp56, 0x10, 0x10, D_2000D80, 0x10, 0);
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 0x10, ((arg1 + arg3) - sp56) - 0x10, 0x10, 0x10, D_2000E80, 0x10, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_84210D58 += 0x2000;
 }
@@ -150,7 +150,7 @@ void func_8420092C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     temp_a2 = arg2 - (var_s3 * 2);
     temp_s0_32 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20288E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -174,7 +174,7 @@ void func_8420092C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
@@ -186,7 +186,7 @@ void func_8420092C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
@@ -208,7 +208,7 @@ void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     temp_a2 = arg2 - (var_s3 * 2);
     temp_s0_32 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A60, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -232,7 +232,7 @@ void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
@@ -244,36 +244,36 @@ void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_8420192C(s16 arg0, s16 arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, D_2006C00, 0x30, 0);
     Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x18, 0x30, 0x18, D_2007500, 0x30, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84201A00(s16 arg0, s16 arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, &D_2028AE0, 0x30, 0);
     Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x18, 0x30, 0x18, &D_20293E0, 0x30, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84201AD4(s16 arg0, s16 arg1, s16 arg2) {
     static u8* D_84210D5C[] = { D_200DFA0, D_200F3E0, D_2010820, D_2011C60, D_20130A0 };
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x48, 0x12, D_84210D5C[arg2], 0x48, 0);
     Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x12, 0x48, 0x12, D_84210D5C[arg2] + 0xA20, 0x48, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84201BC4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
@@ -285,7 +285,7 @@ void func_84201BC4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8*
     Gfx_DrawSpriteIA8((arg0 + arg2) - 0x10, arg1, 0x10, 0x20, D_20005C0, 0x10, 0);
     Gfx_DrawTextureRect(arg0 + 0x10, arg1, arg2 - 0x20, 0x20, 0, 0, 0, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84201D6C(void) {

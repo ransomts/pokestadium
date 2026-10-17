@@ -11,7 +11,7 @@ s16 D_87906048; //  unused?
 s16 D_8790604A;
 s32 pad_D_8790604C; //	unused?
 unk_D_86002F34_00C* D_87906050;
-unk_D_86002F34_00C* D_87906054;
+unk_D_86002F34_00C* gMiniCameraPtr;
 s32 pad_D_87906058[2]; //	unused?
 s16 miniCameraXRot;
 s16 miniCameraYRot;
@@ -28,16 +28,16 @@ f32 gMiniCameraDistanceBackup;
 f32 gMiniCameraFovBackup;
 s32 pad_D_87906084;
 Vec3f gMiniCameraCoordsBackup;
-s16 D_87906094;
-s16 D_87906096;
-s16 D_87906098;
-s16 D_8790609A;
-Vec3s D_8790609C;
+s16 gMiniCamRotXDelta;
+s16 gMiniCamRotYDelta;
+s16 gMiniCamDistDelta;
+s16 gMiniCamFovDelta;
+Vec3s gMiniCamPosDelta;
 s16 D_879060A2;
-s16 D_879060A4;
+s16 gMiniCamBaseRotY;
 s16 D_879060A6;
 s16 D_879060A8;
-Vec3s D_879060AC;
+Vec3s gMiniCamBasePos;
 s32 pad_D_879060B4;
 s32 pad_D_879060B8;
 Controller* miniControllerPtr;
@@ -45,45 +45,45 @@ s16 D_879060C0;
 s16 miniEkansCountdown;
 s8 gMiniHudColors[4];
 s16 miniHudTransparency;
-s16 D_879060CA;
+s16 gMiniDebugCameraMode;
 s32 pad_D_879060D0[4];
-Vec3f D_879060E0;
+Vec3f gMiniDebugBasePos;
 Vec3f pad_D_879060F0;
 Vec3f D_87906100;
 Vec3f D_87906110;
 
-void func_87900A50(void) {
-    miniCameraXRot = D_879060A2 + D_87906094;
-    miniCameraYRot = D_879060A4 + D_87906096;
+void MiniCamera_ApplyOffsets(void) {
+    miniCameraXRot = D_879060A2 + gMiniCamRotXDelta;
+    miniCameraYRot = gMiniCamBaseRotY + gMiniCamRotYDelta;
 
-    miniCameraCoords.x = D_879060AC.x + D_8790609C.x;
-    miniCameraCoords.y = D_879060AC.y + D_8790609C.y;
-    miniCameraCoords.z = D_879060AC.z + D_8790609C.z;
+    miniCameraCoords.x = gMiniCamBasePos.x + gMiniCamPosDelta.x;
+    miniCameraCoords.y = gMiniCamBasePos.y + gMiniCamPosDelta.y;
+    miniCameraCoords.z = gMiniCamBasePos.z + gMiniCamPosDelta.z;
 
-    miniCameraDistance = D_879060A6 + D_87906098;
-    miniCameraFov = D_879060A8 + D_8790609A;
+    miniCameraDistance = D_879060A6 + gMiniCamDistDelta;
+    miniCameraFov = D_879060A8 + gMiniCamFovDelta;
 
     if (miniCameraDistance < 0x32) {
         miniCameraDistance = 0x32;
-        D_87906098 = miniCameraDistance - D_879060A6;
+        gMiniCamDistDelta = miniCameraDistance - D_879060A6;
     }
 
     if (miniCameraFov < 0xA) {
         miniCameraFov = 0xA;
-        D_8790609A = miniCameraFov - D_879060A8;
+        gMiniCamFovDelta = miniCameraFov - D_879060A8;
     }
 }
 
 void miniUpdateCamera(void) {
-    D_87906054->unk_24.fovy = miniCameraFov;
-    D_87906054->unk_24.near = miniCameraNear;
-    D_87906054->unk_24.far = miniCameraFar;
+    gMiniCameraPtr->unk_24.fovy = miniCameraFov;
+    gMiniCameraPtr->unk_24.near = miniCameraNear;
+    gMiniCameraPtr->unk_24.far = miniCameraFar;
 
-    D_87906054->unk_60.at.x = miniCameraCoords.x;
-    D_87906054->unk_60.at.y = miniCameraCoords.y;
-    D_87906054->unk_60.at.z = miniCameraCoords.z;
+    gMiniCameraPtr->unk_60.at.x = miniCameraCoords.x;
+    gMiniCameraPtr->unk_60.at.y = miniCameraCoords.y;
+    gMiniCameraPtr->unk_60.at.z = miniCameraCoords.z;
 
-    func_80010354(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
+    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
 }
 
 s32 minigameDebuggModeControl(void) {
@@ -108,14 +108,14 @@ s32 minigameDebuggModeControl(void) {
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
-        D_8790609C.x = 0;
-        D_8790609C.y = 0;
-        D_8790609C.z = 0;
+        gMiniCamPosDelta.x = 0;
+        gMiniCamPosDelta.y = 0;
+        gMiniCamPosDelta.z = 0;
 
-        D_87906094 = 0;
-        D_87906096 = 0;
-        D_87906098 = 0;
-        D_8790609A = 0;
+        gMiniCamRotXDelta = 0;
+        gMiniCamRotYDelta = 0;
+        gMiniCamDistDelta = 0;
+        gMiniCamFovDelta = 0;
     }
 
     if (D_87903DB8 == 0) {
@@ -144,27 +144,27 @@ s32 minigameDebuggModeControl(void) {
                 sp6 = miniCameraYRot;
             }
 
-            D_8790609C.x += SINS(sp6) * 16.0f;
-            D_8790609C.z += COSS(sp6) * 16.0f;
+            gMiniCamPosDelta.x += SINS(sp6) * 16.0f;
+            gMiniCamPosDelta.z += COSS(sp6) * 16.0f;
         }
 
-        D_87906096 += gPlayer1Controller->stickX * 4.0f;
-        D_87906094 += gPlayer1Controller->stickY * 4.0f;
+        gMiniCamRotYDelta += gPlayer1Controller->stickX * 4.0f;
+        gMiniCamRotXDelta += gPlayer1Controller->stickY * 4.0f;
 
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_CUP)) {
-            D_8790609C.y += 4;
+            gMiniCamPosDelta.y += 4;
         }
 
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_CDOWN)) {
-            D_8790609C.y -= 4;
+            gMiniCamPosDelta.y -= 4;
         }
 
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_CRIGHT)) {
-            D_87906098 += 0xA;
+            gMiniCamDistDelta += 0xA;
         }
 
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_CLEFT)) {
-            D_87906098 -= 0xA;
+            gMiniCamDistDelta -= 0xA;
         }
     }
 }
@@ -208,26 +208,26 @@ void showDebuggJoystickInfo(void) {
     Text_SetupDL();
 }
 
-void func_87901200(void) {
+void MiniDebugCamera_Control(void) {
     UNUSED s32 pad;
     u8 sp30[3] = { 0, 0, 30 };  // D_87903DF0
     u8 sp2C[3] = { 0, 0, 250 }; // D_87903DF4
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CUP)) {
-        D_879060CA--;
-        if (D_879060CA < 0) {
-            D_879060CA = 4;
+        gMiniDebugCameraMode--;
+        if (gMiniDebugCameraMode < 0) {
+            gMiniDebugCameraMode = 4;
         }
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CDOWN)) {
-        D_879060CA++;
-        if (D_879060CA >= 5) {
-            D_879060CA = 0;
+        gMiniDebugCameraMode++;
+        if (gMiniDebugCameraMode >= 5) {
+            gMiniDebugCameraMode = 0;
         }
     }
 
-    switch (D_879060CA) {
+    switch (gMiniDebugCameraMode) {
         case 0:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
                 D_87906100.x -= 0.1f;
@@ -248,19 +248,19 @@ void func_87901200(void) {
 
         case 2:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-                D_879060E0.x -= 1.0;
+                gMiniDebugBasePos.x -= 1.0;
             }
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT)) {
-                D_879060E0.x += 1.0;
+                gMiniDebugBasePos.x += 1.0;
             }
             break;
 
         case 3:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-                D_879060E0.y -= 1.0;
+                gMiniDebugBasePos.y -= 1.0;
             }
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT)) {
-                D_879060E0.y += 1.0;
+                gMiniDebugBasePos.y += 1.0;
             }
             break;
 
@@ -278,12 +278,12 @@ void func_87901200(void) {
     Text_ResetState();
     Text_SetFont(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x7C, 0x8C + (D_879060CA * 0xC), "@");
+    Text_Print(0x7C, 0x8C + (gMiniDebugCameraMode * 0xC), "@");
 
     Text_Print(0x82, 0x8C, "VX:%2.2f", D_87906100.x);
     Text_Print(0x82, 0x98, "VY:%2.2f", D_87906100.y);
-    Text_Print(0x82, 0xA4, "BX:%2.2f", D_879060E0.x);
-    Text_Print(0x82, 0xB0, "BY:%2.2f", D_879060E0.y);
+    Text_Print(0x82, 0xA4, "BX:%2.2f", gMiniDebugBasePos.x);
+    Text_Print(0x82, 0xB0, "BY:%2.2f", gMiniDebugBasePos.y);
     Text_Print(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
     Text_Print(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
 

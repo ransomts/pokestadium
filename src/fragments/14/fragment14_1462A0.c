@@ -1747,7 +1747,7 @@ void func_86805AF0(unk_D_86808498* arg0) {
 }
 
 void func_86805BD4(void) {
-    D_87906054 = D_86808490 = D_86807500->unk_00.unk_0C;
+    gMiniCameraPtr = D_86808490 = D_86807500->unk_00.unk_0C;
 
     D_86808498.unk_00.x = 0.0f;
     D_86808498.unk_00.y = 0.0f;

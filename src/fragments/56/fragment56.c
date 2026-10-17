@@ -12,9 +12,9 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** D_82C01660;
-static s16 D_82C01664;
-static u16 D_82C01666;
+static char** gPrefMessageBank;
+static s16 gPrefSelectedOption;
+static u16 gPrefToggleFlags;
 
 void func_82C00020(void) {
     gDPPipeSync(gDisplayListHead++);
@@ -28,16 +28,16 @@ void func_82C00020(void) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 20, 100, 50, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F780, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gPrefBackgroundTexture, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
     Gfx_DrawTextureRect(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82C0025C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     Gfx_DrawSpriteIA8(arg0, arg1, 8, 8, D_2000B40, 8, 0);
@@ -49,11 +49,11 @@ void func_82C0025C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6, arg7);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82C00574(s16 arg0, s16 arg1) {
@@ -80,60 +80,60 @@ void func_82C00658(s16 arg0, s32 arg1) {
             func_82C0025C(0x90, sp2C + 0x27, 0x160, 0x8C, 0x1E, 0x1E, 0x64, 0xFF);
 
             if (arg1 != 0) {
-                AnimateIconOffset(0x95, sp2C + (D_82C01664 * 0x20) + 0x31);
+                AnimateIconOffset(0x95, sp2C + (gPrefSelectedOption * 0x20) + 0x31);
             }
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             func_82C00574(0x168, sp2C + 0x30);
             func_82C00574(0x168, sp2C + 0x50);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            sp40 = GetMessageString(NULL, 0, D_82C01660, 4);
+            sp40 = GetMessageString(NULL, 0, gPrefMessageBank, 4);
             Text_Print(0x140 - (MeasureTextWidth(0x10, 0, sp40) / 2), sp2C + 0xA, sp40);
 
-            if (D_82C01664 == 0) {
+            if (gPrefSelectedOption == 0) {
                 var_a2 = 0;
             } else {
                 var_a2 = 0xFF;
             }
 
             Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-            Text_Print(0xBB, sp2C + 0x31, GetMessageString(NULL, 0, D_82C01660, 5));
-            sp40 = GetMessageString(NULL, 0, D_82C01660, (D_82C01666 & 1) != 0);
+            Text_Print(0xBB, sp2C + 0x31, GetMessageString(NULL, 0, gPrefMessageBank, 5));
+            sp40 = GetMessageString(NULL, 0, gPrefMessageBank, (gPrefToggleFlags & 1) != 0);
             Text_Print(0x1A4 - (MeasureTextWidth(0x10, 0, sp40) / 2), sp2C + 0x31, sp40);
 
-            if (D_82C01664 == 1) {
+            if (gPrefSelectedOption == 1) {
                 var_a2 = 0;
             } else {
                 var_a2 = 0xFF;
             }
 
             Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-            Text_Print(0xBB, sp2C + 0x51, GetMessageString(NULL, 0, D_82C01660, 6));
-            sp40 = GetMessageString(NULL, 0, D_82C01660, ((D_82C01666 & 2) != 0) + 2);
+            Text_Print(0xBB, sp2C + 0x51, GetMessageString(NULL, 0, gPrefMessageBank, 6));
+            sp40 = GetMessageString(NULL, 0, gPrefMessageBank, ((gPrefToggleFlags & 2) != 0) + 2);
             Text_Print(0x1A4 - (MeasureTextWidth(0x10, 0, sp40) / 2), sp2C + 0x51, sp40);
 
-            if (D_82C01664 == 2) {
+            if (gPrefSelectedOption == 2) {
                 var_a2 = 0;
             } else {
                 var_a2 = 0xFF;
             }
 
             Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-            Text_Print(0xBB, sp2C + 0x71, GetMessageString(NULL, 0, D_82C01660, 7));
+            Text_Print(0xBB, sp2C + 0x71, GetMessageString(NULL, 0, gPrefMessageBank, 7));
 
-            if (D_82C01664 == 3) {
+            if (gPrefSelectedOption == 3) {
                 var_a2 = 0;
             } else {
                 var_a2 = 0xFF;
             }
 
             Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-            Text_Print(0xBB, sp2C + 0x91, GetMessageString(NULL, 0, D_82C01660, 8));
+            Text_Print(0xBB, sp2C + 0x91, GetMessageString(NULL, 0, gPrefMessageBank, 8));
             Text_SetupDL();
         }
     }
@@ -155,16 +155,16 @@ void func_82C00AA4(s32 arg0, s32 arg1, s32 arg2) {
 
             if (arg0 == 0) {
                 Text_SetLineHeight(0x1C);
-                Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 9));
+                Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, gPrefMessageBank, 9));
             } else {
                 Text_SetLineHeight(0x1C);
-                Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, D_82C01660, 0xA));
+                Text_Print(0x63, sp24 + 0xC, GetMessageString(NULL, 0, gPrefMessageBank, 0xA));
             }
 
             Text_SetEnvColor(0xFF, 0xFF, (arg1 == 0) ? 0 : 0xFF, 0xFF);
-            Text_Print(0x141, sp24 + 0x48, GetMessageString(NULL, 0, D_82C01660, 0xB));
+            Text_Print(0x141, sp24 + 0x48, GetMessageString(NULL, 0, gPrefMessageBank, 0xB));
             Text_SetEnvColor(0xFF, 0xFF, (arg1 == 1) ? 0 : 0xFF, 0xFF);
-            Text_Print(0x141, sp24 + 0x64, GetMessageString(NULL, 0, D_82C01660, 0xC));
+            Text_Print(0x141, sp24 + 0x64, GetMessageString(NULL, 0, gPrefMessageBank, 0xC));
             Text_SetupDL();
         }
     }
@@ -181,7 +181,7 @@ void func_82C00CB4(s32 arg0) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
-            Text_Print(0x9B, sp24 + 0x18, GetMessageString(NULL, 0, D_82C01660, 0xD));
+            Text_Print(0x9B, sp24 + 0x18, GetMessageString(NULL, 0, gPrefMessageBank, 0xD));
             Text_SetupDL();
         }
     }
@@ -298,7 +298,7 @@ void func_82C01054(void) {
     gBattleContext.unk_11F2 = 0;
     func_8004AF24(0);
     SetAudioActiveFlag(1);
-    D_82C01666 = 0;
+    gPrefToggleFlags = 0;
 }
 
 void func_82C0115C(u16 arg0) {
@@ -333,15 +333,15 @@ void func_82C0115C(u16 arg0) {
 s16 func_82C0120C(void) {
     s16 sp1E = 0;
 
-    switch (D_82C01664) {
+    switch (gPrefSelectedOption) {
         case 0:
             PlaySoundEffect(2);
-            D_82C01666 ^= 1;
+            gPrefToggleFlags ^= 1;
             break;
 
         case 1:
             PlaySoundEffect(2);
-            D_82C01666 ^= 2;
+            gPrefToggleFlags ^= 2;
             break;
 
         case 2:
@@ -354,7 +354,7 @@ s16 func_82C0120C(void) {
 
         case 3:
             PlaySoundEffect(0x1D);
-            func_82C0115C(D_82C01666);
+            func_82C0115C(gPrefToggleFlags);
             sp1E = 1;
             break;
     }
@@ -362,7 +362,7 @@ s16 func_82C0120C(void) {
     return sp1E;
 }
 
-void func_82C012FC(void) {
+void Pref_MainLoop(void) {
     s16 i;
     s16 var_s1 = 0;
 
@@ -380,10 +380,10 @@ void func_82C012FC(void) {
     while (var_s1 == 0) {
         Game_UpdateInputs();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-            D_82C01664 = (D_82C01664 + 3) % 4;
+            gPrefSelectedOption = (gPrefSelectedOption + 3) % 4;
             PlaySoundEffect(1);
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-            D_82C01664 = (D_82C01664 + 1) % 4;
+            gPrefSelectedOption = (gPrefSelectedOption + 1) % 4;
             PlaySoundEffect(1);
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s1 = func_82C0120C();
@@ -408,7 +408,7 @@ void func_82C012FC(void) {
     }
 }
 
-s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Pref_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('PREF');
@@ -422,12 +422,12 @@ s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     MessageBank_Init();
-    D_82C01660 = GetMessageBank(0x15);
+    gPrefMessageBank = GetMessageBank(0x15);
     func_80028BE4();
-    func_80028070(&D_82C01666);
-    D_82C01664 = 0;
+    func_80028070(&gPrefToggleFlags);
+    gPrefSelectedOption = 0;
     Stage_Set(sp24);
-    func_82C012FC();
+    Pref_MainLoop();
     Stage_Destroy();
     func_800286D8();
     Gfx_FreeBuffers();

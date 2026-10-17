@@ -456,7 +456,7 @@ void func_830007F4(void) {
 
     Gfx_DrawTextureRect(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_83000A30(void) {
@@ -487,14 +487,14 @@ void func_83000A30(void) {
     Gfx_DrawTextureRect(0x48, temp_s1, 0x1F8, spD8, 0, 0, 0, 0x8000 / spD8, 0);
 
     if (D_83003C94 < 0x400) {
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawSpriteRGBA16(0x30, temp_s1 - 8, 0x30, 0x18, D_2006C00, 0x30, 0);
         Gfx_DrawSpriteRGBA16(0x30, temp_s1 + 0x10, 0x30, 0x18, D_2007500, 0x30, 0);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
         Text_SetFont(0x10, 0);
@@ -516,7 +516,7 @@ void func_83000A30(void) {
 }
 
 void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, D_2000340, 8, 0);
     Gfx_DrawSpriteIA8((arg0 + arg2) - 1, arg1 - 7, 8, 8, D_2000380, 8, 0);
@@ -527,11 +527,11 @@ void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Gfx_DrawTextureRect(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_83001178(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, 255);
@@ -545,11 +545,11 @@ void func_83001178(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6, 0xFF);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_830014B0(s16 arg0, s16 arg1) {
@@ -617,7 +617,7 @@ void func_830017C0(void) {
             D_83003B60 += 0x1000;
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawSpriteRGBA16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
 
@@ -625,7 +625,7 @@ void func_830017C0(void) {
             func_830014B0(0x74, temp_s3 + 0x28 + i * 0x18);
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
         func_830015EC(0x38, temp_s3);

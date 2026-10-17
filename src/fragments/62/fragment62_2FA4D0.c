@@ -261,7 +261,7 @@ void func_84310368(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
         spCC = D_1003EA0;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_1003DB0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 5, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -289,7 +289,7 @@ void func_84310368(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
                             ((arg0 + sp14) + temp_ft2 + 0x10) << 2, (arg1 + 5) << 2, G_TX_RENDERTILE, 0, 0, 0, 0x0400);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_843109EC(void) {
@@ -305,7 +305,7 @@ void func_843109F4(s32 arg0, s32 arg1, s32 arg2) {
     temp_s4 = Memmap_GetSegmentVaddr(D_300B870);
     sprintf(sp58, "%d", arg2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg2 >= 0x64) {
         arg0 -= 2;
@@ -323,7 +323,7 @@ void func_843109F4(s32 arg0, s32 arg1, s32 arg2) {
         var_s2++;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -337,7 +337,7 @@ void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     temp_s2 = Memmap_GetSegmentVaddr(D_300B870);
     sprintf(sp70, "%3d/%3d", arg2, arg3);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < sizeof(sp70); i++) {
         switch (sp70[i]) {
@@ -361,7 +361,7 @@ void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         arg0 += 8;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84310CE4(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4) {
@@ -490,7 +490,7 @@ void func_84311420(void) {
 void func_84311428(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 i;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     func_843112C4(arg0, arg1 - 1, 8, 8, D_3008480);
     func_843112C4(arg0, (arg1 + arg3) - 6, 8, 8, D_3008400);
@@ -519,7 +519,7 @@ void func_84311428(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_843116D8(s16 arg0, s16 arg1) {
@@ -584,7 +584,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
     s32 j;
     s32 var_v0_2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == D_84390010[0]) {
         if (arg0->unk_720->unk_01 == 1) {
@@ -660,7 +660,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
@@ -684,7 +684,7 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
                   temp_v0_2->b, 0xB2);
     func_84310FA4(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     func_843112C4(arg1, arg2, 8, 8, D_3008480);
     func_843112C4(arg1, arg2 + 0xF, 8, 8, D_3008200);
@@ -744,7 +744,7 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     func_843112C4(arg1 + 0x14, arg2 + 0x59, 8, 8, D_3008680);
     func_843112C4(arg1 + 0x1C, arg2 + 0x59, 8, 8, D_3008680);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_8430FC28(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
     func_8430FC28(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
@@ -772,7 +772,7 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
                   0xB2);
     func_84310FA4(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     func_843112C4(arg1, arg2 + 0x4C, 8, 8, D_3008200);
     func_843112C4(arg1, arg2 + 0x5B, 8, 8, D_3008400);
@@ -831,7 +831,7 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     func_843112C4(arg1 + 0x30, arg2, 8, 8, D_3008700);
     func_843112C4(arg1 + 0x37, arg2, 8, 8, D_3008700);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_8430FC28(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
     func_8430FC28(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
@@ -850,7 +850,7 @@ void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     func_8001D560(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
     func_8001D560(arg1 + 0x86, arg2 + 3, 0x10, 0xC, D_3009080, D_3009200, 0x10, 0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -872,7 +872,7 @@ void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     func_8001D560(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
     func_8001D560(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -892,7 +892,7 @@ void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     func_8001D560(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -915,7 +915,7 @@ s32 func_8431379C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     temp_s2 = Memmap_GetSegmentVaddr(D_300B870);
     sprintf(sp70, "%3d/%3d", arg2 & 0x3F, arg3);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 7; i++) {
         s32 c = sp70[i];
@@ -944,7 +944,7 @@ s32 func_8431379C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     return arg0;
 }
@@ -959,7 +959,7 @@ s32 func_84313908(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     temp_s2 = Memmap_GetSegmentVaddr(D_300B870);
     sprintf(sp70, "%3d/%3d", arg2 & 0x3F, arg3);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 7; i > 0; i--) {
         s32 c = sp70[i];
@@ -988,7 +988,7 @@ s32 func_84313908(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     return arg0;
 }
@@ -1064,8 +1064,8 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     func_8001D560(arg1 + 0x5D, arg2 + 0x26, 0x10, 0xE, &D_3006530, &D_30066F0, 0x10, 0x100000);
     func_8001D560(arg1 + 0x4E, arg2 + 0x16, 0x10, 0xE, &D_30067D0, &D_3006990, 0x10, 0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1109,7 +1109,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -1232,7 +1232,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     func_8001D560(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg0, arg1, 0xC6, 0x28);
     func_8430FC28(arg0 - 3, arg1 - 2, 0xCC, 0x2D, 0);
@@ -1279,7 +1279,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
         func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -1293,10 +1293,10 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     }
 
     if (var_t0 != 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
 
@@ -1322,7 +1322,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
         func_8001D560(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(1, 0);
@@ -1336,11 +1336,11 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, unk_func_800
     }
 
     if (var_t0 != 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
 
@@ -1379,11 +1379,11 @@ void func_8431524C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
         func_84314F60(arg0, arg1, &arg1->unk_01C[2], arg2 + 1, arg3 + 0x4A, 2);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg2 + 1, arg3, 0x18, 0x10, D_84385850[arg4], 0x18, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg2, arg3, 0x63, 0x66);
     func_8430FC28(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
@@ -1427,11 +1427,11 @@ void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     tmp = MeasureTextWidth(1, 0, temp_s0->unk_008) / 2;
     func_84314B20((arg1 - tmp) + 0x32, arg2 + 3, temp_s0->unk_008);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg1 + 1, arg2, 0x18, 0x10, *(D_84385850 + arg3), 0x18, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (temp_s0->unk_002 > 0) {
         func_84314B6C(arg0, temp_s0, sp5C[5], arg1 + 1, arg2 + 0x10, 0);
@@ -1636,7 +1636,7 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     func_8001D560(arg1 + (arg0->unk_654.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
                   0x100000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg1, arg2, 0xC8, 0x25);
     func_8430FC28(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
@@ -1681,13 +1681,13 @@ void func_843167D4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
 void func_8431694C(void) {
     s32 i;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 0x30; i++) {
         func_843167D4(0x1E, i + 0x17, 0x58, 1, &D_3001F70[i * 0x160], 0x58);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_8430FC28(0x1C, 0x16, 0x5E, 0x34, 0);
 }
@@ -1732,7 +1732,7 @@ void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
     gSPMatrix(gDisplayListHead++, (u32)&D_8006F010 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPVertex(gDisplayListHead++, (u32)temp_s2 & 0x1FFFFFFF, 4, 0);
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 

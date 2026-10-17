@@ -193,7 +193,7 @@ void func_84B0C278(unk_D_84B25AC0_000* arg0) {
         arg0->unk_00->unk_024.y += 2.0f * SINS(arg0->unk_06);
         arg0->unk_04++;
     } else if (arg0->unk_04 == 0x10) {
-        func_84B00404(arg0->unk_00);
+        GraphNode_Reset(arg0->unk_00);
         arg0->unk_04++;
     }
 }
@@ -286,7 +286,7 @@ void func_84B0C7D0(unk_D_84B25AC0_0A0* arg0) {
         func_84B0C5E4(&arg0[5], &arg0[0], -0x6500);
         func_84B0C5E4(&arg0[6], &arg0[0], 0);
         func_84B0C5E4(&arg0[7], &arg0[0], 0x6500);
-        func_84B00404(arg0->unk_00);
+        GraphNode_Reset(arg0->unk_00);
         arg0->unk_06 = -1;
     }
 }
@@ -297,7 +297,7 @@ void func_84B0CA34(unk_D_84B25AC0_0A0* arg0) {
         Vec3f_Set(&arg0->unk_00->unk_030, arg0->unk_00->unk_030.x * 0.8f, arg0->unk_00->unk_030.x * 0.8f,
                       arg0->unk_00->unk_030.x * 0.8f);
     } else if (arg0->unk_06 == 0x10) {
-        func_84B00404(arg0->unk_00);
+        GraphNode_Reset(arg0->unk_00);
         arg0->unk_06 = -1;
     }
 }
@@ -314,7 +314,7 @@ void func_84B0CACC(unk_D_84B25AC0_0A0* arg0) {
         Vec3f_Set(&arg0->unk_00->unk_030, temp_fv0, temp_fv0, temp_fv0);
         arg0->unk_06++;
     } else if (arg0->unk_06 == 0x10) {
-        func_84B00404(arg0->unk_00);
+        GraphNode_Reset(arg0->unk_00);
         arg0->unk_06 = -1;
     }
 }
@@ -327,7 +327,7 @@ void func_84B0CBCC(unk_D_84B25AC0_0A0* arg0) {
         arg0->unk_00->unk_024.y -= 2.0f;
         arg0->unk_06++;
     } else if (arg0->unk_06 == 0x14) {
-        func_84B00404(arg0->unk_00);
+        GraphNode_Reset(arg0->unk_00);
         arg0->unk_06 = -1;
     }
 }
@@ -464,7 +464,7 @@ void func_84B0D194(unk_D_84B25AC0* arg0) {
         }
 
         if (arg0->unk_5A1 == 0x22) {
-            func_84B00404(arg0->unk_5A8);
+            GraphNode_Reset(arg0->unk_5A8);
             arg0->unk_5A0 = 0;
         }
     }
@@ -483,7 +483,7 @@ void func_84B0D31C(unk_D_84B25AC0* arg0) {
         }
 
         if (arg0->unk_5A1 == 0x20) {
-            func_84B00404(arg0->unk_5A8);
+            GraphNode_Reset(arg0->unk_5A8);
             arg0->unk_5A0 = 0;
         }
     }

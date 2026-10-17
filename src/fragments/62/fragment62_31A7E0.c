@@ -2,7 +2,7 @@
 
 void func_8432FF20(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
@@ -31,7 +31,7 @@ void func_8432FF8C(unk_D_8140E720* arg0) {
 
 void func_84330048(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);

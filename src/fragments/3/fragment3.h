@@ -161,7 +161,7 @@ extern s16 miniDifficulty;
 extern s16 D_87906048;
 extern s16 D_8790604A;
 extern unk_D_86002F34_00C* D_87906050;      // geo layout
-extern unk_D_86002F34_00C* D_87906054;
+extern unk_D_86002F34_00C* gMiniCameraPtr;
 extern s16 miniCameraXRot;
 extern s16 miniCameraYRot;
 extern s16 miniCameraDistance;
@@ -175,17 +175,17 @@ extern s16 D_87906078;
 extern f32 gMiniCameraDistanceBackup;
 extern f32 gMiniCameraFovBackup;
 extern Vec3f gMiniCameraCoordsBackup;
-extern s16 D_87906094;
-extern s16 D_87906096;
-extern s16 D_87906098;
-extern s16 D_8790609A;
-extern Vec3s D_8790609C;
+extern s16 gMiniCamRotXDelta;
+extern s16 gMiniCamRotYDelta;
+extern s16 gMiniCamDistDelta;
+extern s16 gMiniCamFovDelta;
+extern Vec3s gMiniCamPosDelta;
 
 extern s16 D_879060A2;
-extern s16 D_879060A4;
+extern s16 gMiniCamBaseRotY;
 extern s16 D_879060A6;
 extern s16 D_879060A8;
-extern Vec3s D_879060AC;
+extern Vec3s gMiniCamBasePos;
 
 extern s16 miniDebugMode;
 extern s16 D_87903DB8;
@@ -194,9 +194,9 @@ extern s16 D_879060C0;
 extern s16 miniEkansCountdown;
 extern s8 gMiniHudColors[4];
 extern s16 miniHudTransparency;
-extern s16 D_879060CA;
+extern s16 gMiniDebugCameraMode;
 
-extern Vec3f D_879060E0;
+extern Vec3f gMiniDebugBasePos;
 extern Vec3f D_87906100;
 extern Vec3f D_87906110;
 
@@ -224,12 +224,12 @@ void MiniGame_ResetState(void);
 void MiniGame_SaveCameraState(void);
 void MiniGame_RestoreCameraState(void);
 
-void func_87900A50(void);
+void MiniCamera_ApplyOffsets(void);
 void miniUpdateCamera(void);
 s32 minigameDebuggModeControl(void);
 void showDebuggCameraInfo(void);
 void showDebuggJoystickInfo(void);
-void func_87901200(void);
+void MiniDebugCamera_Control(void);
 
 void func_87901620(void);
 s32 func_8790168C(void);

@@ -98,7 +98,7 @@ void func_83A00754(void) {
         D_83A00B78 = BinArchive_GetFile(D_83A00B74, D_83A00B58[D_83A00B7C]);
         Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
 
         func_83A0031C(D_83A00B7C, D_83A00B78);

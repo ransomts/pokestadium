@@ -1289,7 +1289,7 @@ void miniUpdateRocksPositions(void) {
 }
 
 void func_86E01904(void) {
-    D_87906054 = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
 
     miniCameraXRot = -0x200;
     miniCameraYRot = 0;
@@ -1587,7 +1587,7 @@ void miniDrawMetapodHeads(void) {
     s32 i;
     s32 tmp;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, miniHudTransparency);
 
     for (i = 0, tmp = 0x26; i < 4; tmp += 0x4A, i++) {
@@ -1598,7 +1598,7 @@ void miniDrawMetapodHeads(void) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_86E02308(void) {
@@ -1647,13 +1647,13 @@ void func_86E026D0(void) {
         case 3:
             func_86E02308();
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             func_87801F48(2, 0x19, 0xA6);
             func_87801684(0x74, 0xB0, D_86E04C5C);
             func_87801824(0x74, 0xC6, D_86E04C84);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
 
         case 5:

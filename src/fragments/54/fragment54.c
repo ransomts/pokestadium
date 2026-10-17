@@ -24,12 +24,12 @@ static s8 D_82B0112C[] = {
 };
 
 void func_82B00020(s16 arg0, s16 arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, D_2006C00, 0x30, 0);
     Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x18, 0x30, 0x18, D_2007500, 0x30, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82B000F4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
@@ -42,7 +42,7 @@ void func_82B000F4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8*
     Gfx_DrawSpriteIA8((arg0 + arg2) - 0x10, arg1, 0x10, 0x20, D_20005C0, 0x10, 0);
     Gfx_DrawTextureRect(arg0 + 0x10, arg1, arg2 - 0x20, 0x20, 0, 0, 0, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82B0029C(void) {
@@ -68,7 +68,7 @@ void func_82B003B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 sp56 = SINS(D_82B01138) * 2;
     UNUSED s32 pad[2];
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 240, 212, 104, 255);
 
     Gfx_DrawSpriteIA8(arg0 + sp56, arg1 + sp56, 0x10, 0x10, D_2000C80, 0x10, 0);
@@ -76,13 +76,13 @@ void func_82B003B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 0x10, arg1 + sp56, 0x10, 0x10, D_2000D80, 0x10, 0);
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 0x10, ((arg1 + arg3) - sp56) - 0x10, 0x10, 0x10, D_2000E80, 0x10, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_82B01138 += 0x2000;
 }
 
 void func_82B005AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 3, arg1 - 3, 8, 8, D_2000340, 8, 0);
     Gfx_DrawSpriteIA8((arg0 + arg2) - 5, arg1 - 3, 8, 8, D_2000380, 8, 0);
@@ -93,7 +93,7 @@ void func_82B005AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Gfx_DrawTextureRect(arg0 + 4, (arg1 + arg3) - 5, arg2 - 8, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 5, arg1 + 4, 8, arg3 - 8, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
@@ -107,7 +107,7 @@ void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
 
         Gfx_FillRect(arg0 + 4, arg1 + 4, 0x90, arg2 - 8, 0x1E, 0x1E, 0x82);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         if ((arg2 - 8) == 0x28) {
             Text_ResetState();

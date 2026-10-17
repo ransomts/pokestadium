@@ -241,7 +241,7 @@ void func_84B0B05C(unk_D_84B25A90* arg0) {
     } else {
         for (i = 0; i < 8; i++) {
             GraphNode_ClearCallback(&arg0->unk_04[i]);
-            func_84B00404(&arg0->unk_04[8 + i]);
+            GraphNode_Reset(&arg0->unk_04[8 + i]);
             GraphNode_InitChild(&arg0->unk_04[i], 0, 0, arg0->unk_08);
             arg0->unk_04[i].unk_01E.y = 0;
             arg0->unk_04[i].unk_000.unk_14 = arg0;
@@ -312,7 +312,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
         } else {
             if (var_a2 == (arg0->unk_01 - (var_s3 * var_a0))) {
                 for (i = 16; i < 25; i++) {
-                    func_84B00404(&arg0->unk_04[i]);
+                    GraphNode_Reset(&arg0->unk_04[i]);
                 }
 
                 arg0->unk_04[8 + var_s3].unk_018 = 0;
@@ -442,7 +442,7 @@ void func_84B0BDCC(unk_D_84B25A90* arg0) {
     s32 i;
 
     for (i = 16; i < 41; i++) {
-        func_84B00404(&arg0->unk_04[i]);
+        GraphNode_Reset(&arg0->unk_04[i]);
     }
 
     arg0->unk_01 = 0;

@@ -312,9 +312,9 @@ static s32 D_8690A6F8;
 static s32 D_8690A6FC;
 static s32 D_8690A700;
 static s32 D_8690A704;
-f32 D_8690A708;
+f32 gCameraZoomOffset;
 static s32 D_8690A70C;
-unk_D_8690A710* D_8690A710;
+unk_D_8690A710* gCameraParams;
 static unk_D_8690A718 D_8690A718[190];
 unk_D_8690B2F8 D_8690B2F8;
 unk_D_8690B308 D_8690B308;
@@ -328,7 +328,7 @@ s32 D_8690B380;
 s32 D_8690B384;
 s32 D_8690B388;
 s32 D_8690B38C;
-Controller D_8690B390;
+Controller gControllerInput;
 static u16 D_8690B3B4;
 static s32 D_8690B3B8;
 static u16 D_8690B3BC;
@@ -425,7 +425,7 @@ void Stage_Init(void) {
     Cam_ConvertStateToInput(&D_8690A6A0, &D_83407AC8);
     D_8690A69C->unk_16C = D_83407AC8.unk_02;
 
-    D_8690A708 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_04;
+    gCameraZoomOffset = D_86908CA0[D_8690A69C->unk_16C - 1].unk_04;
     D_8690A700 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_00 - 6;
     D_8690A704 = D_86908CA0[D_8690A69C->unk_16C - 1].unk_01 - 6;
 
@@ -528,11 +528,11 @@ void func_8690079C(void) {
         D_8690B344 = D_83402E20;
     }
 
-    D_8690A710->unk_014 = 1;
+    gCameraParams->unk_014 = 1;
     D_8690B380 = 0;
     D_8690B384 = 0;
     D_8690B388 = 0;
-    D_8690A710->unk_00C = 0;
+    gCameraParams->unk_00C = 0;
     D_8690A6F4 = 0;
     D_8690A6F8 = 0;
     D_8690A6FC = 0;
@@ -590,7 +590,7 @@ void func_86900A14(void) {
         D_8690B3BC--;
     }
 
-    func_869009E8(&D_8690B390, &D_8690B5D0);
+    func_869009E8(&gControllerInput, &D_8690B5D0);
 }
 
 void func_86900B04(f32* arg0, f32* arg1, s16 arg2, s16 arg3) {
@@ -644,22 +644,22 @@ void func_86900D78(void) {
 }
 
 void func_86900DE0(void) {
-    if ((D_8690B390.buttonPressed & 0x8000) && (D_8690B344 < 0x18)) {
+    if ((gControllerInput.buttonPressed & 0x8000) && (D_8690B344 < 0x18)) {
         PlaySoundEffect(0x2C);
         D_8690B340 = 0xA;
         if (D_8690A70C != 1) {
-            Vec3f_Set(&D_83402EE0[D_8690B344].unk_50, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y,
-                          D_87906054->unk_60.eye.z);
-            Vec3f_Set(&D_83402EE0[D_8690B344].unk_5C, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y,
-                          D_87906054->unk_60.at.z);
+            Vec3f_Set(&D_83402EE0[D_8690B344].unk_50, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y,
+                          gMiniCameraPtr->unk_60.eye.z);
+            Vec3f_Set(&D_83402EE0[D_8690B344].unk_5C, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y,
+                          gMiniCameraPtr->unk_60.at.z);
             D_83402EE0[D_8690B344].unk_6C = 0;
 
-            D_83402EE0[D_8690B344].unk_6C = D_8690A710->unk_014 * 4;
-            if (D_8690A710->unk_008 == 25.0f) {
+            D_83402EE0[D_8690B344].unk_6C = gCameraParams->unk_014 * 4;
+            if (gCameraParams->unk_008 == 25.0f) {
                 D_83402EE0[D_8690B344].unk_6C |= 2;
             }
 
-            D_83402EE0[D_8690B344].unk_6C |= D_8690A710->unk_00C * 0x10;
+            D_83402EE0[D_8690B344].unk_6C |= gCameraParams->unk_00C * 0x10;
             D_83402EE0[D_8690B344].unk_68 = D_8140E6B8;
 
             D_83402EE0[D_8690B344].unk_00 = D_8690A69C->unk_004.unk_024.y;
@@ -687,7 +687,7 @@ void func_86900DE0(void) {
 void func_86900FFC(u16 arg0) {
     if (arg0 & 0xC00) {
         func_86900410();
-        LoadStageFragmentByIndex(D_8690A710->unk_00C);
+        LoadStageFragmentByIndex(gCameraParams->unk_00C);
         D_8690B340 = 5;
     }
 }
@@ -695,13 +695,13 @@ void func_86900FFC(u16 arg0) {
 s32 func_86901044(void) {
     u16 sp1E;
 
-    if ((D_8690B390.buttonPressed & 0x8020) && (D_8690B380 == 1)) {
+    if ((gControllerInput.buttonPressed & 0x8020) && (D_8690B380 == 1)) {
         D_8690B380 = ~D_8690B380 + 2;
         PlaySoundEffect(3);
         return 1;
     }
 
-    if (D_8690B390.buttonPressed & 0x20) {
+    if (gControllerInput.buttonPressed & 0x20) {
         D_8690B380 = ~D_8690B380 + 2;
         PlaySoundEffect(2);
     }
@@ -710,12 +710,12 @@ s32 func_86901044(void) {
         return 0;
     }
 
-    if (!(D_8690B390.buttonDown & 0xC00)) {
+    if (!(gControllerInput.buttonDown & 0xC00)) {
         D_8690A680 = -1;
         return 1;
     }
 
-    sp1E = D_8690B390.buttonDown;
+    sp1E = gControllerInput.buttonDown;
     D_8690A680++;
     if ((D_8690A680 >= 8) || (D_8690A680 == 0)) {
         PlaySoundEffect(1);
@@ -738,27 +738,27 @@ s32 func_86901044(void) {
         }
     }
 
-    if ((sp1E & 0x800) && (D_8690B388 == 0) && (D_8690B384 == 0) && (D_8690A710->unk_00C == 0)) {
+    if ((sp1E & 0x800) && (D_8690B388 == 0) && (D_8690B384 == 0) && (gCameraParams->unk_00C == 0)) {
         D_8690B384 = D_8690B38C - 4;
-        D_8690A710->unk_00C = D_8690B38C;
+        gCameraParams->unk_00C = D_8690B38C;
         D_8690B388 = 4;
         func_86900FFC(sp1E);
     } else if ((sp1E & 0x400) && (D_8690B388 == 4) && (D_8690B384 == (D_8690B38C - 4)) &&
-               (D_8690B38C == D_8690A710->unk_00C)) {
+               (D_8690B38C == gCameraParams->unk_00C)) {
         D_8690B384 = 0;
-        D_8690A710->unk_00C = 0;
+        gCameraParams->unk_00C = 0;
         D_8690B388 = 0;
         func_86900FFC(sp1E);
     } else {
         if (sp1E & 0x800) {
-            if (D_8690A710->unk_00C > 0) {
-                D_8690A710->unk_00C--;
+            if (gCameraParams->unk_00C > 0) {
+                gCameraParams->unk_00C--;
             }
         }
 
         if (sp1E & 0x400) {
-            if (D_8690A710->unk_00C < D_8690B38C) {
-                D_8690A710->unk_00C++;
+            if (gCameraParams->unk_00C < D_8690B38C) {
+                gCameraParams->unk_00C++;
             }
         }
 
@@ -862,7 +862,7 @@ s32 func_86901558(void) {
         return 0;
     }
 
-    if (func_8690274C() != 0) {
+    if (Camera_ToggleFOV() != 0) {
         return 0;
     }
 
@@ -872,27 +872,27 @@ s32 func_86901558(void) {
         return D_8690A67C;
     }
 
-    if (D_8690B390.buttonPressed & 0x1000) {
+    if (gControllerInput.buttonPressed & 0x1000) {
         PlaySoundEffect(0x2E);
         D_8690A67C = 2;
         return D_8690A67C;
     }
 
-    if (D_8690B390.buttonPressed & 0x2000) {
-        D_8690A710->unk_014++;
-        if (D_8690A710->unk_014 == 3) {
-            D_8690A710->unk_014 = 0;
+    if (gControllerInput.buttonPressed & 0x2000) {
+        gCameraParams->unk_014++;
+        if (gCameraParams->unk_014 == 3) {
+            gCameraParams->unk_014 = 0;
         }
 
-        if (D_8690A710->unk_014 == 0) {
+        if (gCameraParams->unk_014 == 0) {
             PlaySoundEffect(3);
         } else {
             PlaySoundEffect(2);
         }
     }
 
-    func_86902AE8();
-    func_86903D80();
+    Camera_UpdateSpeedFactor();
+    Camera_Update();
     func_86900DE0();
     return 0;
 }
@@ -999,7 +999,7 @@ void func_86901A44(void) {
     func_86908418();
     func_869089AC();
     func_869073D8(D_8690A6A0.unk_30);
-    func_86907858(D_8690A710->unk_00C);
+    func_86907858(gCameraParams->unk_00C);
     Stage_Advance();
 }
 
@@ -1080,7 +1080,7 @@ void func_86901ECC(void) {
         func_86900B6C();
 
         if (D_8690A70C != 1) {
-            func_869009E8(&D_8690B390, gPlayer1Controller);
+            func_869009E8(&gControllerInput, gPlayer1Controller);
         } else {
             func_86900A14();
         }
@@ -1117,13 +1117,13 @@ void func_86902004(s32 arg0) {
     D_8690A69C = main_pool_alloc(sizeof(unk_D_8690A69C), 0);
     bzero(D_8690A69C, sizeof(unk_D_8690A69C));
 
-    D_8690A710 = main_pool_alloc(sizeof(unk_D_8690A710), 0);
-    bzero(D_8690A710, sizeof(unk_D_8690A710));
+    gCameraParams = main_pool_alloc(sizeof(unk_D_8690A710), 0);
+    bzero(gCameraParams, sizeof(unk_D_8690A710));
 
     func_8690079C();
     Stage_Init();
-    func_86902334();
-    LoadStageFragmentByIndex(D_8690A710->unk_00C);
+    Camera_Init();
+    LoadStageFragmentByIndex(gCameraParams->unk_00C);
 }
 
 s32 func_86902098(s32 arg0, UNUSED s32 arg1) {

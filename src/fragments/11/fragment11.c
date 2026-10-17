@@ -89,7 +89,7 @@ void func_86500020(unk_D_8650A528* arg0, u8 arg1) {
 
     if (arg1 == 0) {
         arg0->unk_00D = func_87B00050(3);
-    } else if ((D_8650AD84 + 1) == D_8650AD85) {
+    } else if ((gHealthBarTimer + 1) == gHealthBarDuration) {
         arg0->unk_00D = func_86501FC0(arg0->unk_000, 1);
     } else {
         arg0->unk_00D = func_86501FC0(arg0->unk_000, 0);
@@ -363,7 +363,7 @@ void func_86500904(void) {
 
 void func_86500AC4(UNUSED s32 arg0) {
     Fragment2_1_Update();
-    func_86502A68();
+    HealthBar_BuildDisplayList();
 }
 
 void func_86500AEC(void) {
@@ -377,7 +377,7 @@ void func_86500AEC(void) {
         gCurrentHealthBar = &D_8650A528[i];
 
         if (gCurrentHealthBar->unk_000 == 4) {
-            if ((D_86509250 == 1) || (D_86509250 == 3) || ((D_86509250 == 0) && (D_86509254 == 1))) {
+            if ((gHealthBarPaletteIndex == 1) || (gHealthBarPaletteIndex == 3) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 1))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
                     gCurrentHealthBar->unk_00D += 1;
                 }
@@ -385,7 +385,7 @@ void func_86500AEC(void) {
                 if (gControllers[i].buttonPressed & 0x4000) {
                     gCurrentHealthBar->unk_00D -= 2;
                 }
-            } else if ((D_86509250 == 2) || (D_86509250 == 4) || ((D_86509250 == 0) && (D_86509254 == 2))) {
+            } else if ((gHealthBarPaletteIndex == 2) || (gHealthBarPaletteIndex == 4) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 2))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
                     gCurrentHealthBar->unk_00D -= 2;
                 }
@@ -397,34 +397,34 @@ void func_86500AEC(void) {
         }
     }
 
-    D_8650AD84++;
-    if (D_8650AD84 == 2) {
-        switch (D_86509250) {
+    gHealthBarTimer++;
+    if (gHealthBarTimer == 2) {
+        switch (gHealthBarPaletteIndex) {
             case 3:
-                D_86509250 = 1;
+                gHealthBarPaletteIndex = 1;
                 break;
 
             case 4:
-                D_86509250 = 2;
+                gHealthBarPaletteIndex = 2;
                 break;
         }
-    } else if ((D_8650AD84 + 4) == D_8650AD85) {
-        D_86509254 = D_86509250;
+    } else if ((gHealthBarTimer + 4) == gHealthBarDuration) {
+        gHealthBarMode = gHealthBarPaletteIndex;
 
-        switch (D_86509250) {
+        switch (gHealthBarPaletteIndex) {
             case 1:
-                D_86509250 = 3;
+                gHealthBarPaletteIndex = 3;
                 break;
 
             case 2:
-                D_86509250 = 4;
+                gHealthBarPaletteIndex = 4;
                 break;
         }
     } else {
-        if ((D_8650AD84 + 2) == D_8650AD85) {
-            D_86509250 = 0;
-        } else if (D_8650AD84 >= D_8650AD85) {
-            func_865029C0();
+        if ((gHealthBarTimer + 2) == gHealthBarDuration) {
+            gHealthBarPaletteIndex = 0;
+        } else if (gHealthBarTimer >= gHealthBarDuration) {
+            HealthBar_Init();
         }
     }
 }
@@ -436,14 +436,14 @@ void func_86500D38(s32 arg0) {
         DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
         DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_87801F48(2, 0x19, 0xA6);
         func_87801754(0x62, 0xB0, D_86502CDC);
         func_87801684(0x74, 0xB0, D_86502D4C);
         func_87801824(0x74, 0xC6, D_86502DBC);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
         s16 sp5C[] = {
             0x002B,
@@ -452,7 +452,7 @@ void func_86500D38(s32 arg0) {
             0x00FD,
         };
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
         for (i = 0; i < 4; i++) {
@@ -463,7 +463,7 @@ void func_86500D38(s32 arg0) {
             }
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
     if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
@@ -662,7 +662,7 @@ void func_86501828(void) {
     s32 var_s0 = 1;
 
     if (D_8780FC92 == 0) {
-        func_865029C0();
+        HealthBar_Init();
         func_8004D9B0(0x80008, 0, 0);
         func_87B00020();
         func_86500AC4(2);
@@ -811,7 +811,7 @@ void func_86501AAC(void) {
         }
     }
 
-    func_86502BB8();
+    HealthBar_CreateNode();
     InitHealthBar();
     func_865019E4();
     Fragment2_1_Init();

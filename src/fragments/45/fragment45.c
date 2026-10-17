@@ -14,7 +14,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-s32 D_836032F0;
+s32 gSelectionState;
 s32 D_836032F4;
 BinArchive* D_836032F8;
 unk_D_83407B38 D_83603300;
@@ -25,7 +25,7 @@ u16 D_836033C0;
 s32 D_836033C4;
 s32 D_836033C8;
 
-void func_83600020(unk_D_83407B38* arg0) {
+void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
     s32 i;
     s32 sp40;
     unk_D_83403C60* temp_s0;
@@ -66,7 +66,7 @@ void func_83600020(unk_D_83407B38* arg0) {
     }
 }
 
-s32 func_83600288(void) {
+s32 HasUnselectedDisplayableMonsters(void) {
     s32 i;
     s32 sp28 = 0;
 
@@ -80,7 +80,7 @@ s32 func_83600288(void) {
     return sp28;
 }
 
-void func_83600310(unk_D_83407B38* arg0) {
+void UpdateCursorEdgeFlags(unk_D_83407B38* arg0) {
     UNUSED s32 pad;
     s32 sp18 = arg0->unk_08 + 1;
 
@@ -97,7 +97,7 @@ void func_83600310(unk_D_83407B38* arg0) {
     }
 }
 
-s32 func_83600384(unk_D_83407B38* arg0) {
+s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     s32 sp54;
     s32 sp50;
     s32 sp4C;
@@ -220,8 +220,8 @@ s32 func_83600384(unk_D_83407B38* arg0) {
         } else if (sp48 == 0) {
             sp54 = 1;
             PlaySoundEffect(0x1C);
-        } else if (func_83600288() != 0) {
-            D_836032F0 = 2;
+        } else if (HasUnselectedDisplayableMonsters() != 0) {
+            gSelectionState = 2;
             D_836032F4 = 2;
             PlaySoundEffect(0x31);
         } else {
@@ -242,7 +242,7 @@ s32 func_83600384(unk_D_83407B38* arg0) {
     if (sp50 != arg0->unk_08) {
         D_836032F4 = 0;
         PlaySoundEffect(0x27);
-        func_83600310(arg0);
+        UpdateCursorEdgeFlags(arg0);
 
         for (i = 0; i < arg0->unk_14; i++) {
             ptr = arg0->unk_20[(arg0->unk_08 * arg0->unk_14) + i];
@@ -255,10 +255,10 @@ s32 func_83600384(unk_D_83407B38* arg0) {
     return sp54;
 }
 
-void func_8360086C(s32 arg0) {
+void InitializeSelectionScreen(s32 arg0) {
     s32 i;
 
-    D_836032F0 = 0;
+    gSelectionState = 0;
     D_836032F4 = 0;
     D_836033B4 = 0;
 
@@ -283,10 +283,10 @@ void func_8360086C(s32 arg0) {
         func_834021EC(&D_83603300, &D_83407AF8);
     }
 
-    func_83600310(&D_83603300);
+    UpdateCursorEdgeFlags(&D_83603300);
 }
 
-void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 sp50;
     u8* var_s6;
     s32 i;
@@ -302,12 +302,12 @@ void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     tmp_s6 = var_s6;
 
     if (arg3 == 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F498);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
         Gfx_FillRectRGBA(arg0, arg1, arg2, 4, 0, 0, 0, 0x80);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPLoadTextureBlock(gDisplayListHead++, var_s6, G_IM_FMT_IA, G_IM_SIZ_8b, 40, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -329,14 +329,14 @@ void func_836009A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_83600D68(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawFilledRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, D_8006F4C0);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_83600E20(s32 arg0, s32 arg1, s16 arg2) {
+void DrawSelectionHighlightBar(s32 arg0, s32 arg1, s16 arg2) {
     s16 end = 16;
     s32 i;
     UNUSED s32 pad;
@@ -347,7 +347,7 @@ void func_83600E20(s32 arg0, s32 arg1, s16 arg2) {
     spC0 = 0x30;
     spBC = (s32)ROUND_MAX((SINS(arg2) + 1.0f) * 255.0f * 0.5f) & 0xFF;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < spC0; i += end) {
         temp_v0_2 = CLAMP_MIN(spC0 - i, end);
@@ -385,7 +385,7 @@ void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
     spC0 = 0x20;
     spBC = (s32)ROUND_MAX((SINS(arg2) + 1.0f) * 255.0f * 0.5f) & 0xFF;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < spC0; i += end) {
         temp_v0_2 = CLAMP_MIN(spC0 - i, end);
@@ -412,7 +412,7 @@ void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_83601800(unk_D_83407B38* arg0) {
+void RenderSelectionScreenItems(unk_D_83407B38* arg0) {
     static s16 D_83603280 = 0;
 
     s32 temp_s0_2;
@@ -431,7 +431,7 @@ void func_83601800(unk_D_83407B38* arg0) {
             temp_s1 = (i % 3) * 0xA4;
             func_834018C0(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
             if (D_83403C00[temp_s5] != 0) {
-                func_83600E20(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
+                DrawSelectionHighlightBar(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
             }
         }
         Text_ResetState();
@@ -446,12 +446,12 @@ void func_83601800(unk_D_83407B38* arg0) {
     D_83603280 += 0x400;
 }
 
-void func_83601A3C(unk_D_83407B38* arg0) {
+void DrawSelectionCursor(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 var_a0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (temp_lo < 2) {
         func_83401B48((temp_hi * 0xA4) + 0x58, (temp_lo * 0x6E) + 0x6E, 0x88, 0x66);
@@ -475,7 +475,7 @@ void func_83601A3C(unk_D_83407B38* arg0) {
     }
 }
 
-void func_83601B48(s32 arg0, s32 arg1) {
+void DrawSelectionArrows(s32 arg0, s32 arg1) {
     static Color_RGBA8 D_83603284 = { 0x9A, 0x37, 0x54, 0xFF };
     static Color_RGBA8 D_83603288 = { 0xC3, 0x54, 0x84, 0xFF };
     static s16 D_8360328C = 0;
@@ -493,7 +493,7 @@ void func_83601B48(s32 arg0, s32 arg1) {
     sp7C = SINS(D_8360328C) * 4.0f;
     func_83401110(arg0, arg1, 0x1B6, &sp74, &sp70);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPLoadTextureTile(gDisplayListHead++, D_4003A38, G_IM_FMT_IA, G_IM_SIZ_8b, 100, 36, 0, 0, 99, 35, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -540,7 +540,7 @@ void func_83601B48(s32 arg0, s32 arg1) {
     D_8360328C += 0x1000;
 }
 
-void func_83601F28(int arg0, int arg1, s32 arg2, f32 arg3) {
+void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
     s32 temp_s2;
     s32 temp_s3;
     f32 tmp = 1024.0f;
@@ -563,7 +563,7 @@ void func_83601F28(int arg0, int arg1, s32 arg2, f32 arg3) {
         return;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < spF8; i += iter) {
         s32 temp_v0_2 = CLAMP_MIN(spF8 - i, iter);
@@ -594,7 +594,7 @@ void func_83601F28(int arg0, int arg1, s32 arg2, f32 arg3) {
     Text_SetupDL();
 }
 
-void func_83602458(void) {
+void DrawBackgroundGradient(void) {
     static Color_RGB8 D_836032A4 = { 0xCD, 0xD7, 0x9B };
     static Color_RGB8 D_836032A8 = { 0x28, 0x64, 0xAF };
     static Color_RGB8 D_836032AC = { 0xCD, 0xEB, 0x9B };
@@ -607,7 +607,7 @@ void func_83602458(void) {
     s32 end = 0x1E0;
     s32 idx;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_4007448, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -704,7 +704,7 @@ void func_83602A8C(s32 arg0, s32 arg1) {
     sp2C = func_83402374(0x3C);
     sp28 = -MeasureTextWidth(8, 0, sp2C) / 2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16((arg0 + sp28) - 0x20, arg1 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
     Text_ResetState();
@@ -748,23 +748,23 @@ void func_83602C14(void) {
 
     func_83402210(&D_83603300, &sp28, &sp24, D_83603300.unk_00);
     Stage_BeginDisplayList();
-    func_83602458();
-    func_836009A4(0, 0x4F, 0x280, 1);
-    func_836009A4(0, 0x151, 0x280, 0);
-    func_83600D68(0, 0x5F, 0x280, 0xF2);
-    func_83601800(&D_83603300);
+    DrawBackgroundGradient();
+    DrawItemList(0, 0x4F, 0x280, 1);
+    DrawItemList(0, 0x151, 0x280, 0);
+    DrawFilledRect(0, 0x5F, 0x280, 0xF2);
+    RenderSelectionScreenItems(&D_83603300);
 
     sp1C = func_83602B98(&D_836032C0, &D_836032C4, 0x1E);
     sp18 = func_83602B98(&D_836032C8, &D_836032CC, 0xF);
 
     tmp = ((sp24 >= 2) && (sp28 == 0)) ? sp18 : sp1C;
-    func_83601F28(0x30, 0x172, 0, tmp);
+    DrawStatBar(0x30, 0x172, 0, tmp);
 
     tmp = ((sp24 >= 2) && (sp28 != 0)) ? sp18 : sp1C;
-    func_83601F28(0x1E1, 0x172, 1, tmp);
+    DrawStatBar(0x1E1, 0x172, 1, tmp);
 
-    func_83601A3C(&D_83603300);
-    func_83601B48(0x65, 0x2B);
+    DrawSelectionCursor(&D_83603300);
+    DrawSelectionArrows(0x65, 0x2B);
     func_836028E8(&D_83603300, 0xA5, 0x16B);
     func_8360296C(0xF0, 0x14E);
     func_83602A8C(0x1E0, 0x14E);
@@ -773,13 +773,13 @@ void func_83602C14(void) {
 
 void func_83602D98(void) {
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        D_836032F0 = 3;
+        gSelectionState = 3;
         func_80007990(0xFFFF);
         func_80006CB4(0xF);
         PlaySoundEffect(0x1D);
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         D_836032F4 = 0;
-        D_836032F0 = 1;
+        gSelectionState = 1;
         PlaySoundEffect(3);
     }
 }
@@ -790,20 +790,20 @@ s32 func_83602E14(void) {
     s32 sp1C = 1;
     s32 temp_v0_2;
 
-    switch (D_836032F0) {
+    switch (gSelectionState) {
         case 0:
             if (func_80007604() == 0) {
                 D_836032D0--;
                 if (D_836032D0 <= 0) {
-                    D_836032F0 = 1;
+                    gSelectionState = 1;
                 }
             }
             break;
 
         case 1:
-            temp_v0_2 = func_83600384(&D_83603300);
+            temp_v0_2 = ProcessSelectionScreenInput(&D_83603300);
             if (temp_v0_2 != 0) {
-                D_836032F0 = 3;
+                gSelectionState = 3;
                 if (temp_v0_2 == 2) {
                     func_80007990(1);
                     func_80006CB4(1);
@@ -843,7 +843,7 @@ void func_83602F4C(void) {
     do {
         func_83602F1C();
 
-        switch (D_836032F0) {
+        switch (gSelectionState) {
             case 0:
             case 3:
                 break;
@@ -872,7 +872,7 @@ s32 func_83602FF4(unk_D_83407B38* arg0) {
     }
 
     if ((sp1C == 0) && (D_836033B4 > 0)) {
-        func_83600020(arg0);
+        AddSelectedMonstersToTeam(arg0);
     }
 
     func_834021D8(&D_83603300, &D_83407AF8);
@@ -898,7 +898,7 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
     MessageBank_Init();
     func_83402340();
-    func_8360086C(arg0);
+    InitializeSelectionScreen(arg0);
     Stage_Set(sp24);
     func_83602F4C();
     Stage_Destroy();

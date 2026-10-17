@@ -3,17 +3,17 @@
 
 #include "global.h"
 
-void func_83900020(void);
+void Gallery_Debugger_PostLoad(void);
 void func_83900028(void);
 void func_83900030(void);
-void func_83900038(void);
+void Gallery_Debugger_Init(void);
 void func_839000E4(void);
-void func_83900180(void);
-void func_839002B8(void);
-s32 func_839002F4(void);
-s32 func_839003DC(void);
-void func_83900484(void);
-void func_839004B4(void);
-s32 func_839004F4(s32 arg0, s32 arg1);
+void Gallery_Debugger_DrawMenu(void);
+void Gallery_Debugger_Render(void);
+s32 Gallery_Debugger_HandleInput(void);
+s32 Gallery_Debugger_MainLoop(void);
+void Gallery_Debugger_UpdateController(void);
+void Gallery_Debugger_Run(void);
+s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT48_H_

@@ -1,7 +1,7 @@
 #include "fragment62.h"
 
 void func_8433FD80(unk_D_8140E720* arg0) {
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
 }

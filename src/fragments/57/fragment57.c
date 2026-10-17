@@ -1005,19 +1005,19 @@ void func_82D00088(void) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 120, 100, 40, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F780, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gPrefBackgroundTexture, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
     Gfx_DrawTextureRect(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D002C4(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
     Gfx_FillScreen(&gDisplayListHead, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
@@ -1031,7 +1031,7 @@ void func_82D002C4(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_DrawTextureRect(4, arg2 - 5, arg1 - 8, 8, 0xE0, 0, 0, 0x400, 0);
     Gfx_DrawSpriteIA8(arg1 - 5, arg2 - 5, 8, 8, D_2000300, 8, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
@@ -1053,7 +1053,7 @@ void func_82D0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     temp_a2 = arg2 - (var_s3 * 2);
     temp_s0_32 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F480, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -1077,7 +1077,7 @@ void func_82D0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
@@ -1089,7 +1089,7 @@ void func_82D0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
@@ -1111,7 +1111,7 @@ void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     temp_a2 = arg2 - (var_s3 * 2);
     temp_s0_32 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3022A20, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -1135,7 +1135,7 @@ void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
@@ -1147,7 +1147,7 @@ void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
@@ -1156,7 +1156,7 @@ void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     s16 sp56 = SINS(D_82D09EEC) * 2;
     UNUSED s32 pad[2];
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     Gfx_DrawSpriteIA8((arg0 + sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000C80, 0x10, 0);
@@ -1164,7 +1164,7 @@ void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000D80, 0x10, 0);
     Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000E80, 0x10, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_82D09EEC += 0x2000;
 }
@@ -1231,7 +1231,7 @@ void func_82D01AB4(s16 arg0) {
 
     Color_RGB8* ptr = &D_82D09EF0[0];
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg0);
 
     Gfx_DrawSpriteRGBA16(0x100, 0x20, 0x80, 0x10, D_300A820, 0x80, 0);
@@ -1279,7 +1279,7 @@ void func_82D01AB4(s16 arg0) {
     Gfx_DrawTextureRect(0x208, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTextureRect(0x160, 0x6C, 0xA8, 8, 0, 0, 0, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D021B4(s32 arg0) {
@@ -1307,16 +1307,16 @@ void func_82D021B4(s32 arg0) {
             break;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(0x26, 8, 0x30, 0x18, var_t0, 0x30, 0);
     Gfx_DrawSpriteRGBA16(0x26, 0x20, 0x30, 0x18, var_t0 + 0x900, 0x30, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D022E8(u8 arg0) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg0);
 
     Gfx_DrawSpriteRGBA16(0xC, 0x60, 0x64, 0x14, D_3000000, 0x64, 0);
@@ -1325,7 +1325,7 @@ void func_82D022E8(u8 arg0) {
     Gfx_DrawSpriteRGBA16(0xC, 0x9C, 0x64, 0x14, D_3002EE0, 0x64, 0);
     Gfx_DrawSpriteRGBA16(0xC, 0xB0, 0x64, 0x14, D_3003E80, 0x64, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
@@ -1344,7 +1344,7 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
         Gfx_FillRect(4, 4, 0x74, 0xC0, 0x32, 0x32, 0x78);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (arg1 != 0) {
         func_82D021B4(arg0);
@@ -1432,7 +1432,7 @@ void func_82D029E0(void) {
     D_82D0ABC8 = FramebufferImage_Allocate(0, 2, 0x21A, 0x64, 1);
     func_82D002C4(D_82D0ABC8, 0x216, 0x60);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
@@ -1457,7 +1457,7 @@ void func_82D029E0(void) {
 
     Gfx_FillRect(0x62, 4, 0x1B0, 0x58, 0x64, 0x1E, 0x1E);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -1477,7 +1477,7 @@ void func_82D02D94(void) {
 
     Gfx_FillRect(4, 4, 0x70, 0x20, 0x1E, 0x64, 0x1E);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     sp28 = GetMessageString(NULL, 0, D_82D0AB9C, 0x24);
     sp2C = MeasureTextWidth(0x10, 0, sp28);
@@ -1622,7 +1622,7 @@ void func_82D03340(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     temp_a2 = arg2 - (var_s3 * 2);
     temp_s0_32 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20288E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -1646,7 +1646,7 @@ void func_82D03340(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
@@ -1658,7 +1658,7 @@ void func_82D03340(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82D03B40(s16 arg0, s16 arg1, s16 arg2, s16 arg3, char* arg4) {
@@ -1762,11 +1762,11 @@ void func_82D03DC0(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
             if (arg2->unk_03 == 1) {
                 s32 temp_v0_3 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_82D0AB9C, arg2->unk_00 - 1));
 
-                gSPDisplayList(gDisplayListHead++, D_8006F518);
+                gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
                 Gfx_DrawSpriteRGBA16(temp_v0_3 + 0xAB, temp_s0 + 0x2B, 0x1C, 0x1C, &D_3022AA0, 0x1C, 0);
 
-                gSPDisplayList(gDisplayListHead++, D_8006F630);
+                gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             }
         }
     }
@@ -1938,7 +1938,7 @@ void func_82D04904(unk_D_82D0ABD0* arg0) {
         temp_s0 = arg0->unk_06 + ((0xA6 - sp48) / 2);
         DrawPanel(sp4A, temp_s0, 0x19E, sp48, 1);
         if (arg0->unk_02 == 0xA6) {
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x20, 0x48, 0x12, D_3024C80, 0x48, 0);
             Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x32, 0x48, 0x12, &D_30256A0, 0x48, 0);
@@ -1955,7 +1955,7 @@ void func_82D04904(unk_D_82D0ABD0* arg0) {
                 Gfx_DrawSpriteI4(sp4A + 0x22, temp_s0 + 0x54, 0x40, 0x40, &D_3024480, 0x40, 0);
             }
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
             Text_ResetState();
             Text_SetFont(0x10, 0);
@@ -2171,12 +2171,12 @@ void func_82D04FA0(s32 arg0, s32 arg1) {
         if (arg0 == 10) {
             sp48 = func_82D04EB8();
             if (D_82D0AB90.unk_00 == 0x1F8) {
-                gSPDisplayList(gDisplayListHead++, D_8006F518);
+                gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp48);
 
                 Gfx_DrawSpriteRGBA16(0x1B8, 0x35, 0x1C, 0x1A, &D_2016010, 0x1C, 0);
 
-                gSPDisplayList(gDisplayListHead++, D_8006F630);
+                gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             }
 
             Text_ResetState();
@@ -2330,13 +2330,13 @@ FramebufferImage* func_82D0580C(s32 arg0) {
         Gfx_FillRect(4, 4, 0xA0, 0x8C, 0x64, 0x1E, 0x1E);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 8; i++) {
         Gfx_DrawSpriteRGBA16(0xC, (i * 0xC) + 0xC, 0x90, 0xC, (i * 0xD80) + var_s3, 0x90, 0);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     temp_s0 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, D_82D0AB9C, 0x3E));
@@ -2357,12 +2357,12 @@ FramebufferImage* func_82D05A5C(void) {
 
     Gfx_FillRect(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(0xC, 0xC, 0x40, 0x20, &D_301E9A0, 0x40, 0);
     Gfx_DrawSpriteRGBA16(0xC, 0x2C, 0x40, 0x20, &D_301F9A0, 0x40, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(8, 0);
@@ -2383,12 +2383,12 @@ FramebufferImage* func_82D05BE0(void) {
 
     Gfx_FillRect(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(0xC, 0xC, 0x40, 0x20, &D_30209A0, 0x40, 0);
     Gfx_DrawSpriteRGBA16(0xC, 0x2C, 0x40, 0x20, &D_30219A0, 0x40, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(8, 0);
@@ -2409,12 +2409,12 @@ FramebufferImage* func_82D05D64(void) {
 
     Gfx_FillRect(4, 4, 0xA0, 0x34, 0x1E, 0x1E, 0x82);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(6, 6, 0x30, 0x18, &D_30230C0, 0x30, 0);
     Gfx_DrawSpriteRGBA16(6, 0x1E, 0x30, 0x18, &D_30239C0, 0x30, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(8, 0);
@@ -2437,7 +2437,7 @@ FramebufferImage* func_82D05EE8(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
 
     Gfx_FillRect(4, 4, 0xA0, 0x24, arg1, arg2, arg3);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(8, 0);

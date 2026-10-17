@@ -128,7 +128,7 @@ void func_82F05828(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 }
 
 void func_82F05920(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, 255);
 
@@ -145,7 +145,7 @@ void func_82F05920(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 
     func_82F05828(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_82F05C50(s16 arg0, s16 arg1, s32 arg2) {
@@ -273,7 +273,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
         func_82F05C50(arg0->unk_04, arg0->unk_06 + 0x24, arg0->unk_1C);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 4; i++) {
             if (sp11C->unk_09[i] == 0) {
@@ -394,7 +394,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
             Text_SetupDL();
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             {
                 s16 sp60[2];
@@ -408,7 +408,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
             }
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         if (arg0->unk_02 > 0) {
             arg0->unk_02--;

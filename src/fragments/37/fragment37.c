@@ -324,7 +324,7 @@ void func_82201108(void) {
 
         DrawParticleSprites(D_82203064[D_82203160->unk_0A / 2]);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 
         D_82203160->unk_08 -= 0x800;
@@ -342,7 +342,7 @@ void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         }
         var_s2 = gBackgroundTexturePtrs[arg3];
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg2);
 
         for (i = 0; i < 16; i++) {
@@ -353,7 +353,7 @@ void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             Gfx_DrawSpriteRGBA16(arg0 - 0x20, arg1 + 0xD, 0x24, 0x24, D_20144E0, 0x24, 0);
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
 
@@ -421,7 +421,7 @@ void func_822018D4(s16 arg0, s16 arg1, s16 arg2) {
         return;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3044260, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -451,7 +451,7 @@ void func_82201AC8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     sp50 = arg2 - (var_s3 * 2);
     sp54 = arg3 - (var_s2 * 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A60, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
@@ -474,7 +474,7 @@ void func_82201AC8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((sp50 > 0) && (sp54 > 0)) {
         Gfx_FillRectRGBA(arg0 + var_s3, arg1, sp50, var_s2, arg4, arg5, arg6, arg7);
@@ -486,7 +486,7 @@ void func_82201AC8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
         Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, sp54, arg4, arg5, arg6, arg7);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_822022C8(s32 arg0) {

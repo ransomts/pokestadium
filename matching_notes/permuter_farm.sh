@@ -28,6 +28,9 @@
 #   restarts. Summarise with farm_status.sh.
 # - Judge candidates with matching_notes/fd.sh, not the permuter score (statics inflate it).
 # - COPIES=N (default 1) is the default copy count for functions without an explicit :C.
+# - DIVERSITY=1 (default): copies past the first re-seed from the k-th best distinct saved
+#   candidate instead of the single best, so copies explore different basins. DIVERSITY=0
+#   makes every copy start from the global best.
 # - RUN_TAG=x names this job's runs <func>__x1, <func>__x2, ... so several jobs can share SAVE_DIR.
 # - FOCUS_DIR=dir: start <func> from dir/<func>.c when present (a candidate with PERM_RANDOMIZE()
 #   around the code that still differs) instead of the import/re-seed.
@@ -46,6 +49,8 @@ COPIES=${COPIES:-1}
 RUN_TAG=${RUN_TAG:-}
 FOCUS_DIR=${FOCUS_DIR:-}
 HERE=$(cd "$(dirname "$0")" && pwd)
+FOCUS_DIR=${FOCUS_DIR:-$HERE/focus}  # per-function focused starts; presence of <func>.c opts in
+HERE=$(cd "$(dirname "$0")" && pwd)
 PY="$REPO/.venv/bin/python3"
 export PATH="$REPO/.venv/bin:$HOME/local/bin:/usr/local/bin:/usr/bin:/bin"
 export PYTHONUNBUFFERED=1
@@ -54,6 +59,7 @@ cd "$FARM_DIR" || exit 1
 ln -sfn "$REPO/tools" tools 2>/dev/null
 shopt -s nullglob
 END_AT=$(( $(date +%s) + $(awk "BEGIN{printf \"%d\", $HOURS * 3600}") ))
+FARM_START=$(date +%s)
 declare -A sub started seedv run_workers
 
 best_saved() {  # print path of the lowest-scoring saved source.c for $1, if any
@@ -64,6 +70,29 @@ best_saved() {  # print path of the lowest-scoring saved source.c for $1, if any
         if [ -z "$bestv" ] || [ "$v" -lt "$bestv" ]; then bestv=$v; best=${s%score.txt}source.c; fi
     done
     [ -n "$best" ] && [ -f "$best" ] && echo "$best"
+}
+
+best_kth() {  # $1=func $2=k: k-th best DISTINCT saved candidate, by score then content hash
+              # (equal-score ties are different basins and count separately). Empty if < k.
+    local f=$1 k=$2 s line path h x skip n=0
+    local -a cands=() seen=()
+    for s in "$SAVE_DIR/$f"/output-*/score.txt "$SAVE_DIR/$f"__*/output-*/score.txt; do
+        [ -f "$s" ] && [ -f "${s%score.txt}source.c" ] || continue
+        cands+=("$(cat "$s") ${s%score.txt}source.c")
+    done
+    [ ${#cands[@]} -ge 1 ] || return 0
+    while IFS= read -r line; do
+        path=${line#* }
+        h=$(md5sum < "$path" 2>/dev/null | cut -d" " -f1)
+        [ -n "$h" ] || continue
+        skip=0
+        for x in "${seen[@]}"; do [ "$x" = "$h" ] && skip=1; done
+        [ "$skip" = 1 ] && continue
+        seen+=("$h")
+        n=$((n+1))
+        [ "$n" -eq "$k" ] && { echo "$path"; return 0; }
+    done < <(printf '%s\n' "${cands[@]}" | sort -n)
+    return 0
 }
 
 score_of() {  # print the lowest score.txt under $1/output-*/, empty if there is none
@@ -121,6 +150,11 @@ reseed_check() {  # after a sync: restart copies trailing their function's globa
         own=$(score_of "nonmatchings/$run"); [ -n "$own" ] || own=${seedv[$run]:-}
         [ -n "$own" ] || continue
         gsrc=$(best_saved "$func"); [ -n "$gsrc" ] || continue
+        # Metric-era gate: rename waves / re-extracts change symbol-era scoring, so a
+        # score.txt older than this farm is not comparable to current scores (2026-10-17:
+        # func_88805AEC's pre-rename "1228" churned every reseed onto a worse base). Only
+        # mid-run re-seed onto candidates saved since the farm started.
+        [ "$(stat -c %Y "$(dirname "$gsrc")/score.txt" 2>/dev/null || echo 0)" -ge "$FARM_START" ] || continue
         gscore=$(seed_score "$gsrc")
         [ -n "$gscore" ] || continue
         if [ "$gscore" -eq 0 ] && [ "$own" -ne 0 ]; then
@@ -178,7 +212,20 @@ PYEOF
         run=$func; [ "$k" -gt 1 ] && run=${func}__c$k
         [ -n "$RUN_TAG" ] && run=${func}__${RUN_TAG}$k
         [ "$run" != "$func" ] && { rm -rf "nonmatchings/$run"; cp -r "nonmatchings/$func" "nonmatchings/$run"; }
-        if [ -n "$sv" ]; then seedv[$run]=$sv; fi
+        # Diversity seeding (DIVERSITY=0 disables): copies past the first start from the
+        # k-th best DISTINCT saved candidate instead of the global best, so copies hunt
+        # different basins instead of converging on one (mid-run re-seed still pulls a
+        # copy over once it trails by RESEED_PCT/RESEED_ABS). Copy 1 keeps the best seed.
+        if [ "$RESEED" != 0 ] && [ "${DIVERSITY:-1}" != 0 ] && [ ! -f "$FOCUS_DIR/$func.c" ] && [ "$k" -gt 1 ]; then
+            myseed=$(best_kth "$func" "$k")
+            [ -z "$myseed" ] && myseed=$seed
+            if [ -n "$myseed" ] && [ "$myseed" != "$seed" ]; then
+                cp "$myseed" "nonmatchings/$run/base.c"
+                seedv[$run]=$(seed_score "$myseed")
+                echo "  $run: diversity seed $(seed_score "$myseed")"
+            fi
+        fi
+        if [ -n "${seedv[$run]:-}" ]; then :; elif [ -n "$sv" ]; then seedv[$run]=$sv; fi
         echo "starting $run with $w workers"
         start_run "$run" "$w"
     done

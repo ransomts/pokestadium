@@ -177,7 +177,7 @@ void func_8433EC40(unk_D_8140E720* arg0) {
     sp24.y = (sp2C << 0xC) + 0xB000;
     sp24.z = 0;
     func_8140A4F0(arg0, sp24);
-    func_8140BAC8(arg0, 0xC8, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xC8, 0xFF, 0xFF);
     func_8140BC20(arg0, 0x60);
     func_8140BCA8(arg0, sp2E);
     func_81408348(arg0);

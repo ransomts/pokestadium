@@ -744,7 +744,7 @@ void func_84351090(unk_D_8140E720* arg0) {
     func_81409708(arg0, 0xF, 0xF);
     func_8140B938(arg0, 1.0f);
     func_8140AD8C(arg0, 0.2f);
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0xFF, 0x64, 0);
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, sp26 * 4);
@@ -2560,7 +2560,7 @@ void func_8435581C(unk_D_8140E720* arg0) {
 void func_8435586C(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
-    func_8140BAC8(arg0, 0xDC, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xDC, 0xFF, 0xFF);
     func_8140D568(arg0, 0x35);
     arg0->unk_1C = (sp26 * 0.05f) + 0.5f;
     func_8140AD8C(arg0, 2.0f);

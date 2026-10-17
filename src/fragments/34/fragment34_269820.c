@@ -4,7 +4,7 @@
 unk_D_8140E728_01C D_8140E460 = { 3, func_8140C5BC };
 
 void func_814078B0(unk_D_8140E720* arg0) {
-    func_8140810C(arg0);
+    Particle_Init(arg0);
     func_81408BE0(arg0, 0.0f, 0.0f, 0.0f);
     func_81409888(arg0, 0.0f, 0.0f, 0.0f);
     func_814098A8(arg0, 0.0f, 0.0f, 0.0f);
@@ -22,7 +22,7 @@ void func_814078B0(unk_D_8140E720* arg0) {
     func_8140BF10(arg0, 0);
     func_8140BED8(arg0, 0);
     func_8140BEEC(arg0, 0);
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BC20(arg0, 0xFF);
 
@@ -30,7 +30,7 @@ void func_814078B0(unk_D_8140E720* arg0) {
     arg0->unk_28 = 1.0f;
 }
 
-unk_D_8140E720* func_81407A30(void) {
+unk_D_8140E720* Particle_Allocate(void) {
     s32 i;
     s32 var_v0 = D_8140E72C;
     unk_D_8140E720* var_a0 = &D_8140E720[var_v0];
@@ -65,7 +65,7 @@ unk_D_8140E720* func_81407A30(void) {
     return var_a0;
 }
 
-void func_81407B04(unk_D_8140E720* arg0) {
+void Particle_Free(unk_D_8140E720* arg0) {
     if (arg0->prev != NULL) {
         arg0->prev->next = arg0->next;
     }
@@ -81,7 +81,7 @@ void func_81407B04(unk_D_8140E720* arg0) {
 }
 
 unk_D_8140E720* func_81407B3C(void) {
-    return func_81407A30();
+    return Particle_Allocate();
 }
 
 unk_D_8140E720* func_81407B5C(u8 arg0) {
@@ -90,14 +90,14 @@ unk_D_8140E720* func_81407B5C(u8 arg0) {
     unk_D_8140E720* temp_v0;
     unk_D_8140E720* var_s0;
 
-    sp28 = func_81407A30();
+    sp28 = Particle_Allocate();
 
     if ((u32)sp28 != -1) {
         var_s0 = sp28;
         arg0--;
 
         for (i = 0; i < arg0; i++) {
-            temp_v0 = func_81407A30();
+            temp_v0 = Particle_Allocate();
             if ((u32)temp_v0 == -1) {
                 break;
             }
@@ -110,7 +110,7 @@ unk_D_8140E720* func_81407B5C(u8 arg0) {
     return sp28;
 }
 
-unk_D_8140E720* func_81407BE4(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4,
+unk_D_8140E720* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4,
                               s16 arg5, s16 arg6, s16 arg7) {
     unk_D_8140E720* sp1C = func_81407B3C();
 
@@ -131,7 +131,7 @@ unk_D_8140E720* func_81407BE4(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E
     return sp1C;
 }
 
-unk_D_8140E720* func_81407C7C(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2,
+unk_D_8140E720* Particle_CreateFromEntity(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2,
                               s16 arg3, s16 arg4, s16 arg5) {
     unk_D_8140E720* sp1C = func_81407B3C();
 
@@ -165,7 +165,7 @@ void func_81407D48(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg
     s32 i;
 
     for (i = 0; i < arg5; i++) {
-        if ((u32)func_81407BE4(arg0, arg1, arg2, arg3, arg4, i, 0xFF, NULL) == -1) {
+        if ((u32)Particle_Create(arg0, arg1, arg2, arg3, arg4, i, 0xFF, NULL) == -1) {
             break;
         }
     }
@@ -176,7 +176,7 @@ void func_81407E30(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg
     s32 i;
 
     for (i = 0; i < arg5; i++) {
-        if ((u32)func_81407BE4(arg0, arg1, arg2, arg3, arg4, i, 0xFF, arg6) == -1) {
+        if ((u32)Particle_Create(arg0, arg1, arg2, arg3, arg4, i, 0xFF, arg6) == -1) {
             break;
         }
     }
@@ -187,7 +187,7 @@ void func_81407F24(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, u
     s32 i;
 
     for (i = 0; i < arg3; i++) {
-        if ((u32)func_81407C7C(arg0, arg1, arg2, i, arg4, 0) == -1) {
+        if ((u32)Particle_CreateFromEntity(arg0, arg1, arg2, i, arg4, 0) == -1) {
             break;
         }
     }
@@ -198,13 +198,13 @@ void func_81407FC8(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, u
     s32 i;
 
     for (i = 0; i < arg3; i++) {
-        if ((u32)func_81407C7C(arg0, arg1, arg2, i, arg4, arg5) == -1) {
+        if ((u32)Particle_CreateFromEntity(arg0, arg1, arg2, i, arg4, arg5) == -1) {
             break;
         }
     }
 }
 
-s32 func_81408078(void) {
+s32 Particle_CountActive(void) {
     s32 i;
     s32 var_v1 = 0;
     unk_D_8140E720* ptr = D_8140E720;
@@ -219,17 +219,17 @@ s32 func_81408078(void) {
 }
 
 s32 func_814080EC(void) {
-    return func_81408078();
+    return Particle_CountActive();
 }
 
-void func_8140810C(unk_D_8140E720* arg0) {
+void Particle_Init(unk_D_8140E720* arg0) {
     arg0->unk_B2 = 1;
     arg0->unk_0C = &D_8140E460;
     arg0->unk_08 = NULL;
     arg0->unk_10 = 0;
     arg0->unk_14 = 0;
     arg0->unk_B8 = 0;
-    func_814082B4(arg0, 4);
+    Particle_SetFlag(arg0, 4);
 }
 
 void func_81408150(unk_D_8140E720* arg0) {
@@ -264,7 +264,7 @@ s32 func_8140819C(unk_D_8140E720* arg0) {
 }
 
 void func_814081BC(unk_D_8140E720* arg0) {
-    func_814082C4(arg0, 1);
+    Particle_ClearFlag(arg0, 1);
     arg0->unk_B2++;
 }
 
@@ -272,14 +272,14 @@ s32 func_814081F0(unk_D_8140E720* arg0, s16 arg1) {
     s32 sp1C = 0;
 
     if (func_81408308(arg0, 0x80) != 0) {
-        func_814082B4(arg0, 0x80);
+        Particle_SetFlag(arg0, 0x80);
         arg0->unk_BC = arg1;
     }
 
     arg0->unk_BC--;
     if (arg0->unk_BC <= 0) {
         arg0->unk_BC = 0;
-        func_814082C4(arg0, 0x80);
+        Particle_ClearFlag(arg0, 0x80);
         sp1C = 1;
     }
 
@@ -295,11 +295,11 @@ s32 func_8140826C(unk_D_8140E720* arg0, s16 arg1) {
     return sp1C;
 }
 
-void func_814082B4(unk_D_8140E720* arg0, s32 arg1) {
+void Particle_SetFlag(unk_D_8140E720* arg0, s32 arg1) {
     arg0->unk_18 |= arg1;
 }
 
-void func_814082C4(unk_D_8140E720* arg0, s32 arg1) {
+void Particle_ClearFlag(unk_D_8140E720* arg0, s32 arg1) {
     arg0->unk_18 &= ~arg1;
 }
 
@@ -307,7 +307,7 @@ void func_814082D8(unk_D_8140E720* arg0, s32 arg1) {
     arg0->unk_18 ^= arg1;
 }
 
-s32 func_814082E8(unk_D_8140E720* arg0, s32 arg1) {
+s32 Particle_HasFlag(unk_D_8140E720* arg0, s32 arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_18 & arg1) {
@@ -326,27 +326,27 @@ s32 func_81408308(unk_D_8140E720* arg0, s32 arg1) {
 }
 
 void func_81408328(unk_D_8140E720* arg0) {
-    func_814082B4(arg0, 4);
+    Particle_SetFlag(arg0, 4);
 }
 
 void func_81408348(unk_D_8140E720* arg0) {
-    func_814082C4(arg0, 4);
+    Particle_ClearFlag(arg0, 4);
 }
 
 s32 func_81408368(unk_D_8140E720* arg0) {
-    return func_814082E8(arg0, 4);
+    return Particle_HasFlag(arg0, 4);
 }
 
 void func_81408388(unk_D_8140E720* arg0) {
-    func_814082B4(arg0, 0x40);
+    Particle_SetFlag(arg0, 0x40);
 }
 
 void func_814083A8(unk_D_8140E720* arg0) {
-    func_814082C4(arg0, 0x40);
+    Particle_ClearFlag(arg0, 0x40);
 }
 
 void func_814083C8(unk_D_8140E720* arg0) {
-    func_814082E8(arg0, 0x40);
+    Particle_HasFlag(arg0, 0x40);
 }
 
 void func_814083E8(unk_D_8140E720* arg0, s16 arg1) {
@@ -360,7 +360,7 @@ s32 func_814083FC(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
         arg0->unk_B6 = arg4;
         arg0->unk_C7 = arg1;
         arg0->unk_C6 = arg5;
-        func_814082B4(arg0, 1);
+        Particle_SetFlag(arg0, 1);
     } else {
         arg0->unk_B6--;
         if (arg0->unk_B6 <= 0) {
@@ -401,7 +401,7 @@ s32 func_81408548(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
         arg0->unk_B6 = arg4;
         arg0->unk_C7 = arg1;
         arg0->unk_C6 = arg5;
-        func_814082B4(arg0, 1);
+        Particle_SetFlag(arg0, 1);
     } else {
         arg0->unk_B6--;
         if (arg0->unk_B6 <= 0) {
@@ -442,8 +442,8 @@ s32 func_81408694(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
         arg0->unk_B6 = arg4;
         arg0->unk_C7 = arg1;
         arg0->unk_C6 = arg5;
-        func_814082B4(arg0, 1);
-        func_814082C4(arg0, 0x10);
+        Particle_SetFlag(arg0, 1);
+        Particle_ClearFlag(arg0, 0x10);
     } else {
         arg0->unk_B6--;
         if (arg0->unk_B6 <= 0) {
@@ -453,7 +453,7 @@ s32 func_81408694(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
                 arg0->unk_C7 += arg3;
                 if (arg0->unk_C7 >= arg2) {
                     arg0->unk_C7 = arg2;
-                    func_814082B4(arg0, 0x10);
+                    Particle_SetFlag(arg0, 0x10);
                 }
             } else {
                 arg0->unk_C7 -= arg3;
@@ -464,12 +464,12 @@ s32 func_81408694(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
                     }
 
                     if (arg0->unk_C6 == 0) {
-                        func_814082C4(arg0, 0x20);
-                        func_814082C4(arg0, 1);
+                        Particle_ClearFlag(arg0, 0x20);
+                        Particle_ClearFlag(arg0, 1);
                         sp24 = 1;
                     } else {
-                        func_814082C4(arg0, 0x10);
-                        func_814082B4(arg0, 0x20);
+                        Particle_ClearFlag(arg0, 0x10);
+                        Particle_SetFlag(arg0, 0x20);
                     }
                 }
             }
@@ -495,8 +495,8 @@ s32 func_81408864(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
         arg0->unk_B6 = arg4;
         arg0->unk_C7 = arg1;
         arg0->unk_C6 = arg5;
-        func_814082B4(arg0, 1);
-        func_814082C4(arg0, 0x10);
+        Particle_SetFlag(arg0, 1);
+        Particle_ClearFlag(arg0, 0x10);
     } else {
         arg0->unk_B6--;
         if (arg0->unk_B6 <= 0) {
@@ -505,7 +505,7 @@ s32 func_81408864(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
                 arg0->unk_C7 -= arg3;
                 if (arg2 >= arg0->unk_C7) {
                     arg0->unk_C7 = arg2;
-                    func_814082B4(arg0, 0x10);
+                    Particle_SetFlag(arg0, 0x10);
                 }
             } else {
                 arg0->unk_C7 += arg3;
@@ -516,10 +516,10 @@ s32 func_81408864(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
                     }
 
                     if (arg0->unk_C6 == 0) {
-                        func_814082C4(arg0, 1);
+                        Particle_ClearFlag(arg0, 1);
                         sp24 = 1;
                     } else {
-                        func_814082C4(arg0, 0x10);
+                        Particle_ClearFlag(arg0, 0x10);
                     }
                 }
             }
@@ -539,12 +539,12 @@ s32 func_814089AC(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
 
 void func_81408A1C(unk_D_8140E720* arg0) {
     arg0->unk_B8 = 1;
-    func_814082C4(arg0, 2);
+    Particle_ClearFlag(arg0, 2);
 }
 
 void func_81408A44(unk_D_8140E720* arg0) {
     arg0->unk_B8 = 0;
-    func_814082C4(arg0, 2);
+    Particle_ClearFlag(arg0, 2);
 }
 
 void func_81408A68(unk_D_8140E720* arg0) {
@@ -555,13 +555,13 @@ s32 func_81408A78(unk_D_8140E720* arg0, s16 arg1) {
     s32 sp1C = 0;
 
     if (func_81408308(arg0, 2) != 0) {
-        func_814082B4(arg0, 2);
+        Particle_SetFlag(arg0, 2);
         arg0->unk_BA = arg1;
     }
 
     arg0->unk_BA--;
     if (arg0->unk_BA < 0) {
-        func_814082C4(arg0, 2);
+        Particle_ClearFlag(arg0, 2);
         sp1C = 1;
     }
     return sp1C;
@@ -1619,7 +1619,7 @@ s32 func_8140B854(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, 
     s32 sp24 = 0;
 
     if (func_81408308(arg0, 2) != 0) {
-        func_814082B4(arg0, 2);
+        Particle_SetFlag(arg0, 2);
         arg0->unk_50.x = arg0->unk_50.y = arg0->unk_50.z = 0.0f;
         arg0->unk_74 = arg3 * D_8140E628.unk_00.y;
         arg0->unk_7C.y = arg1 * D_8140E628.unk_00.y;
@@ -1685,7 +1685,7 @@ s32 func_8140BA84(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return ApproachF32(&arg0->unk_20, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
-void func_8140BAC8(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
+void Particle_SetPrimColor(unk_D_8140E720* arg0, u8 arg1, u8 arg2, u8 arg3) {
     arg0->prim_r = arg1;
     arg0->prim_g = arg2;
     arg0->prim_b = arg3;
@@ -1971,7 +1971,7 @@ void func_8140C204(unk_D_86002F34_00C* arg0) {
             func_8140C4CC(var_s2);
             var_s0 = var_s2;
             while (var_s0 != NULL) {
-                if ((func_814082E8(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
+                if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
                     func_8140C530(var_s0, arg0);
                 }
                 var_s0 = var_s0->next;
@@ -1985,9 +1985,9 @@ void func_8140C2D8(unk_D_86002F34_00C* arg0) {
     unk_D_8140E720* var_s0 = D_8140E720;
 
     for (i = 0; i < 0x12C; i++, var_s0++) {
-        if ((var_s0->unk_D0 != 0) && (func_814082E8(var_s0, 8) != 0)) {
+        if ((var_s0->unk_D0 != 0) && (Particle_HasFlag(var_s0, 8) != 0)) {
             func_8140C4CC(var_s0);
-            if ((func_814082E8(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
+            if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
                 func_8140C530(var_s0, arg0);
             }
         }

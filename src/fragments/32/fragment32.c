@@ -29,7 +29,7 @@ void func_81100020(s32 arg0, s32 arg1, s32 arg2) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_811001C0(s32 arg0, s32 arg1) {
@@ -41,7 +41,7 @@ void func_811001C0(s32 arg0, s32 arg1) {
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x18, 0x18, D_2002000, 0x18, 0x200000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_811002D4(s32 arg0) {
@@ -62,7 +62,7 @@ void func_81100368(s32 arg0) {
         0x00E9,
     };
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(0x98, 0xA1, 8, 8, D_20069A0, 8, 0);
 
@@ -76,7 +76,7 @@ void func_81100368(s32 arg0) {
     Gfx_DrawSpriteRGBA16(0xAA, 0xAA, 0x64, 0x12, D_2004C00, 0x64, 0x200000);
     Gfx_DrawSpriteRGBA16(0xAA, 0xBC, 0x64, 0x12, D_2005A10, 0x64, 0x200000);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(0x9B, 0xD4, 8, 8, D_20068A0, 8, 0);
 
@@ -90,7 +90,7 @@ void func_81100368(s32 arg0) {
 
     gSPTextureRectangle(gDisplayListHead++, sp80[arg0] << 2, 0x0320, (sp80[arg0] + 8) << 2, 0x0350, G_TX_RENDERTILE, 0,
                         0x00E0, 0x0400, 0);
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 s32 func_811007AC(u8 arg0) {

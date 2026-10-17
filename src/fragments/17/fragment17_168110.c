@@ -133,10 +133,10 @@ s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
     if (D_86B0FA7C->unk_40 != 200.0f) {
         arg0->unk_24.fovy = D_86B0FA7C->unk_40;
     } else {
-        func_86B0145C(&arg0->unk_24.fovy, 30.0f, 0.06f);
+        Math_ApproachFloat(&arg0->unk_24.fovy, 30.0f, 0.06f);
     }
 
-    func_86B0145C(&D_86B0FA7C->unk_44, D_86B0FA7C->unk_38, D_86B0FA7C->unk_3C);
+    Math_ApproachFloat(&D_86B0FA7C->unk_44, D_86B0FA7C->unk_38, D_86B0FA7C->unk_3C);
     func_80010354(&D_86B0FA7C->unk_04, &sp50, D_86B0FA7C->unk_34, D_86B0FA7C->unk_2A,
                   func_86B08780() + D_86B0FA7C->unk_2C);
 

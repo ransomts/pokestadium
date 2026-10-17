@@ -4980,7 +4980,7 @@ unk_D_86002F58_004_000* func_8432CC54(unk_D_8140E720* arg0) {
     if (var_a2 >= 0) {
         sp1C = &D_84391A90[var_a2];
         D_84392030[var_a2] = 1;
-        func_814082B4(arg0, 0x400);
+        Particle_SetFlag(arg0, 0x400);
         sp1C->unk_000.unk_14 = arg0;
     } else {
         sp1C = NULL;

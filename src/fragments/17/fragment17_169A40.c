@@ -70,7 +70,7 @@ void func_86B0A18C(u8* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_86B0A30C(void) {

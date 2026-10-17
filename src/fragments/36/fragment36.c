@@ -97,7 +97,7 @@ void func_821000C4(s16 arg0, s16 arg1) {
         D_82100DC4 = 0x30;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_s0);
 
     gDPLoadTextureTile(gDisplayListHead++, D_2000000, G_IM_FMT_IA, G_IM_SIZ_8b, 100, 0, 0, 0, 100 - 1, 15 - 1, 0,
@@ -106,7 +106,7 @@ void func_821000C4(s16 arg0, s16 arg1) {
 
     Gfx_DrawTextureRect(arg0, arg1, 100, 15, 0, 0, 0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_821002F8(void) {
@@ -159,7 +159,7 @@ void func_8210046C(u8* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_821005EC(void) {

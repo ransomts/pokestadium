@@ -53,7 +53,6 @@ D_8120EB84	gGbAudioStreamMain	a4		main playing GbAudioStream (becomes the rotati
 D_8120EB8C	gGbAudioStreamAlt	a4		alt/fading GbAudioStream (previous main, kept for the two-stream mix)	applied@8021bf6
 func_81209078	GbAudio_Update	a4		AI-frame driver: triple-buffers via osGbSetNextBuffer, dispatches GbAudio_MixChannels or GbAudio_RenderStream by gGbAudioMode, writeback + timing	applied@8021bf6
 func_81208C08	GbAudio_QueueWrite	a5		packs {time,reg,value} into a GbApuWrite and osSendMesg's it to gGbAudioMesgQueue; reg 20/25/30/35 with 0x80 set the channel-enable overrides	applied@82e1206
-D_8122EEA8	gGbAudioChannelOverride	a4		four per-channel enable overrides (2 = forced on) applied by GbAudio_ReadReg for NR52 reads; set by GbAudio_QueueWrite on envelope restarts; cleared each mix pass	pending
 D_8122EEB0	gGbAudioMesgQueue	a5		OSMesgQueue (0x960 deep, buffer D_8122EEC8) of GbApuWrite events, created in GbAudio_Reset, drained by GbAudio_MixChannels/GbAudio_Update	applied@82e1206
 D_81228654	gGbAudioStreamData	a5		stream data pointers indexed by GbAudioStream id (mainData/altData in GbAudio_RenderStream)	applied@82e1206
 D_81228678	gGbAudioStreamLengths	a5		stream lengths indexed by GbAudioStream id (mainEnd/altEnd in GbAudio_RenderStream)	applied@82e1206
@@ -852,3 +851,182 @@ func_882000E4	Fragment23_Terminate	w3		Cleans up fragment23 by calling func_8000
 func_88200110	Fragment23_Execute	w3		Executes the main fragment23 sequence: creates text, sets display flags, and loads the next fragment, showing it is the primary execution function	applied@727ea94
 func_88200190	Fragment23_HandleState	w3		Dispatches fragment23 sub?states based on arg0, invoking specific handlers in a loop, thus it is the state?handling function	applied@727ea94
 unk_D_800AC870	TextObject	w3		Returned by Text_Init and used in text?related functions, indicating it represents a text object	applied@727ea94
+func_83300020	DrawPanelFrame	w4		Draws UI panel frame using corner sprites and edge textures, then fills rectangle with given RGBA color.	applied@ca35c91
+func_83300300	GetActiveMenu	w4		Returns pointer to D_833032E8 when D_83407AE4 is 0 otherwise to D_83407B38, selecting the active menu data structure.	applied@ca35c91
+func_8330032C	UpdateMenuItemStates	w4		Iterates over D_833031B4 entries and sets unk_12 based on game state flags, configuring menu item enable/disable.	applied@ca35c91
+func_83300628	ProcessMenuInput	w4		Handles controller button presses for up/down/confirm/cancel, updates D_83402E28 selection index and triggers actions, acting as menu input processor.	applied@ca35c91
+func_83300938	ResetMenuState	w4		Sets D_833032E0 to 0, D_833032E4 to 1 and calls func_834006BC, effectively resetting the menu mode and state.	applied@ca35c91
+func_83300970	HandlePokemonGridInput	w4		Processes navigation within a 2D grid, swaps Pokemon data on confirm, and plays sound effects, indicating grid input handling.	applied@ca35c91
+func_83301090	DrawMenuScreen	w4		Loops over 7 menu items, draws frames, icons, and prints item names, constructing the full menu screen.	applied@ca35c91
+func_833013C4	DrawSubPanel	w4		Draws a sub?panel at given coordinates, optionally using a texture from D_83303180, and prints centered title text.	applied@ca35c91
+func_833015C8	DrawMessageBox	w4		Displays a message box at position (arg1,arg2) with text selected based on current menu mode and state.	applied@ca35c91
+func_833017BC	InitializeMenuState	w4		Initializes global menu mode variables, loads assets, creates menu structures, and sets up initial camera and sticker?station flags.	applied@ca35c91
+func_83301D74	DrawBackground	w4		Loads background texture D_3000000, draws it, fills left side with black, then calls DrawGradientRect for overlay.	applied@ca35c91
+func_83302068	DrawPokemonGrid	w4		Iterates over menu grid entries and draws each Pokemon icon with scaling based on layout arrays, handling the selected entry specially.	applied@ca35c91
+func_833023D8	DrawSelectionHighlight	w4		Draws a selection highlight rectangle around the currently selected menu item, varying size per mode.	applied@ca35c91
+func_8330277C	RenderFrame	w4		Calls background, sub?panel, grid, and menu drawing functions and advances the stage, acting as the per?frame render routine.	applied@ca35c91
+func_83600020	AddSelectedMonstersToTeam	w4		Copies selected monster data from the UI fragment into the global team arrays and is called when the player confirms their selection.	applied@ca35c91
+func_83600288	HasUnselectedDisplayableMonsters	w4		Scans the monster list for any displayable Pok?mon that have not yet been marked as selected.	applied@ca35c91
+func_83600310	UpdateCursorEdgeFlags	w4		Calls a helper to check neighboring slots and sets D_836033C4/D_836033C8 to indicate whether the cursor can move left/right.	applied@ca35c91
+func_83600384	ProcessSelectionScreenInput	w4		Handles all controller input for the selection screen, updating cursor position, toggling selections, playing sounds and returning action codes.	applied@ca35c91
+func_8360086C	InitializeSelectionScreen	w4		Resets selection counters, loads UI fragment data, and prepares the screen at the start of the fragment.	applied@ca35c91
+func_836009A4	DrawItemList	w4		Draws a horizontal list of textured rectangles (background for item rows) using two possible texture sets based on the flag argument.	applied@ca35c91
+func_83600D68	DrawFilledRect	w4		Issues a fill?color command and draws a solid rectangle covering the given coordinates.	applied@ca35c91
+func_83600E20	DrawSelectionHighlightBar	w4		Renders a pulsating highlight bar over a selected entry using a sine?based alpha calculation.	applied@ca35c91
+func_83601800	RenderSelectionScreenItems	w4		Iterates over the visible Pok?mon slots, draws each portrait, selection highlight, and the slot number.	applied@ca35c91
+func_83601A3C	DrawSelectionCursor	w4		Draws the cursor rectangle around the currently focused slot, handling both top?row and bottom?row cases.	applied@ca35c91
+func_83601B48	DrawSelectionArrows	w4		Displays left/right navigation arrows with animated color pulsing based on edge?availability flags.	applied@ca35c91
+func_83601F28	DrawStatBar	w4		Draws a horizontal bar (e.g., HP or other stat) with a texture that scales with a progress value and prints the associated label.	applied@ca35c91
+func_83602458	DrawBackgroundGradient	w4		Generates a vertical gradient background by interpolating between two color sets for each row whose bit is set in D_836033C0.	applied@ca35c91
+D_836032F0	gSelectionState	w4		Used throughout the fragment as the main state variable (0?waiting, 1?input, 2?idle, 3?fade) controlling the screen flow.	applied@ca35c91
+func_83900020	Gallery_Debugger_PostLoad	w4		Called after loading gallery resources in func_83900038, indicating post?load processing for the Gallery Debugger.	applied@ca35c91
+func_83900038	Gallery_Debugger_Init	w4		Initialises the Gallery Debugger by resetting state, loading entries via func_8002797C and then calling the post?load stub.	applied@ca35c91
+func_83900180	Gallery_Debugger_DrawMenu	w4		Draws the "GALLERY DEBUGGER" screen, prints the three menu options and the PFS error code.	applied@ca35c91
+func_839002B8	Gallery_Debugger_Render	w4		Begins a display list, draws the background texture and then calls the menu draw function each frame.	applied@ca35c91
+func_839002F4	Gallery_Debugger_HandleInput	w4		Processes controller input to move the menu cursor and activate the selected option, returning a quit flag.	applied@ca35c91
+func_839003DC	Gallery_Debugger_MainLoop	w4		Implements the fragment state machine that waits for fade?in, runs input handling, then waits for fade?out.	applied@ca35c91
+func_83900484	Gallery_Debugger_UpdateController	w4		Reads the player controller inputs each frame before the main loop runs.	applied@ca35c91
+func_839004B4	Gallery_Debugger_Run	w4		Starts a fade?in, then repeatedly updates inputs and renders until the main loop signals exit.	applied@ca35c91
+func_839004F4	Gallery_Debugger_Entry	w4		Entry point for fragment 48; sets up graphics, loads assets, creates the stage and runs the Gallery Debugger loop.	applied@ca35c91
+D_839006B0	gGalleryLoadData	w4		Array of 37 unk_D_839006B0 structs filled by func_8002797C with ID 0x16, used for loading gallery data.	applied@ca35c91
+D_83901AF0	gGallerySaveData	w4		Array of 22 unk_D_839006B0 structs filled by func_8002797C with ID 0x17, used for saving gallery data.	applied@ca35c91
+D_839026F8	gGalleryBackgroundTexture	w4		Pointer assigned the background texture file retrieved from BinArchive_GetFile, later drawn each frame.	applied@ca35c91
+D_839026FC	gGalleryState	w4		State variable checked in func_839003DC to drive the Gallery Debugger state machine.	applied@ca35c91
+D_82C01660	gPrefMessageBank	w4		D_82C01660 is assigned from GetMessageBank(0x15) and later used with GetMessageString, indicating it holds a message bank for this fragment	applied@ca35c91
+D_82C01664	gPrefSelectedOption	w4		D_82C01664 is used as an index (0?3) to select which option is highlighted and to drive switch statements, so it's the selected option	applied@ca35c91
+D_82C01666	gPrefToggleFlags	w4		D_82C01666 is XORed with 1 or 2 and its bits are checked to decide text colors, indicating it stores toggle flags	applied@ca35c91
+D_300F780	gPrefBackgroundTexture	w4		D_300F780 is passed to Gfx_LoadTextureBlock as the texture for the background drawn in func_82C00020	applied@ca35c91
+D_8006F630	gPrefDL_End	w4		D_8006F630 is displayed at the end of the display list in multiple functions, serving as the terminating DL segment	applied@ca35c91
+D_8006F518	gPrefDL_Border	w4		D_8006F518 is displayed before drawing panel borders, suggesting it contains border graphics	applied@ca35c91
+D_8006F498	gPrefDL_Fill	w4		D_8006F498 is displayed before filling the panel interior, indicating it contains fill graphics	applied@ca35c91
+func_82C014FC	Pref_Entry	w4		func_82C014FC loads assets, creates the stage, runs the menu loop and cleans up, acting as the entry point for the preferences fragment	applied@ca35c91
+func_82C012FC	Pref_MainLoop	w4		func_82C012FC contains the input loop, navigation and selection handling for the preferences screen, thus the main loop	applied@ca35c91
+func_84100020	AnimateRectangle	w4		Uses arg0/arg1 as rectangle position and arg2 as size to draw a textured rectangle, indicating a generic rectangle animation function.	applied@ca35c91
+D_84103440	gMessageBank	w4		Assigned from GetMessageBank(0x13) and passed to GetMessageString, showing it stores message bank pointers.	applied@ca35c91
+D_84103444	gBackgroundArchive	w4		Loaded via ASSET_LOAD2(backgrounds,1,1) and used to retrieve files for backgrounds, indicating a BinArchive of background assets.	applied@ca35c91
+D_84103448	gMenuTextureAtlas	w4		Passed to Gfx_DrawTextureAtlas for rendering UI textures, confirming it holds the menu texture atlas.	applied@ca35c91
+D_8410344C	gCurrentBackgroundTexture	w4		Set to BinArchive_GetFile(D_84103444, D_84102430[D_84103CC8]) and used as the active background texture.	applied@ca35c91
+D_84103450	gTileMapVertices	w4		Allocated by AllocateTileMapVertices() and later used in Gfx_DrawTileMap16x16, indicating it stores tile?map vertex data.	applied@ca35c91
+D_84103454	gMenuGeoRoot	w4		Created by process_geo_layout and later passed to Graph_SetTextureState, showing it is the root GraphNode for the menu layout.	applied@ca35c91
+D_84103458	gMenuGraphNodes	w4		Array of unk_func_80027FA0 structs initialized as GraphNodes, linked into the scene graph, representing UI element nodes.	applied@ca35c91
+D_84103CC8	gSelectedMenuIndex	w4		Modified by navigation input handling and used to index layout tables, clearly the currently selected menu entry.	applied@ca35c91
+D_84103CD0	gMenuBackgroundImages	w4		Array of FramebufferImage* filled by func_84101894/func_84101A94 to hold rendered background images for the menu.	applied@ca35c91
+D_84103CE8	gMenuBarGraphNode	w4		Returned from process_geo_layout and used as a child of D_84103458[0] and [3], representing the bar portion of the menu UI.	applied@ca35c91
+D_84103CEC	gMenuOptionGraphNode	w4		Returned from process_geo_layout and attached to D_84103458[4] and [5], representing the option portion of the menu UI.	applied@ca35c91
+D_84103CF0	gMenuConfig	w4		Fields unk_05, unk_06 store counts and unk_00 stores flag bits; functions set these values to configure the menu layout.	applied@ca35c91
+D_84102430	gBackgroundFileIds	w4		Array of file IDs used with BinArchive_GetFile to load background textures based on the selected menu index.	applied@ca35c91
+D_84102438	gBattleModeTable	w4		Indexed by gSelectedMenuIndex and passed as the first argument to Battle_Init, indicating it maps menu entries to battle modes.	applied@ca35c91
+D_84102444	gBattleDifficultyTable	w4		Indexed similarly and passed as the second argument to Battle_Init, mapping menu entries to difficulty settings.	applied@ca35c91
+func_84B003D4	Battle_ProcessResult	w4		Battle_ProcessResult is called with arg0==5 to trigger func_84B0345C and func_80015684, indicating end?of?battle processing	applied@ca35c91
+func_84B00404	GraphNode_Reset	w4		GraphNode_Reset clears callbacks, resets position, scale and rotation of a graph node, used to initialize node arrays	applied@ca35c91
+func_84B004C0	Text_DrawCentered	w4		Text_DrawCentered measures text width, sets font and line height, then prints text centered on screen	applied@ca35c91
+func_84B0053C	Gfx_DrawPanel	w4		Gfx_DrawPanel draws a textured panel with borders and fills using supplied dimensions and RGBA color	applied@ca35c91
+func_84B0117C	Battle_AnimateSprites	w4		Battle_AnimateSprites updates positions of multiple sprite nodes based on an input magnitude, used for battle visual effects	applied@ca35c91
+func_84B01474	Battle_SetSpriteAlpha	w4		Battle_SetSpriteAlpha sets the alpha (unk_01D) of a range of sprite nodes based on the supplied argument	applied@ca35c91
+func_84B01578	Battle_MainLoop	w4		Battle_MainLoop initializes the battle, runs the main update loop, handles inputs and state transitions	applied@ca35c91
+func_84B03194	Battle_Run	w4		Battle_Run sets up stage, loads assets, creates the battle scene and drives the main battle state machine	applied@ca35c91
+D_84B0FB10	gTrainerIconTextures	w4		gTrainerIconTextures is an array of texture pointers used to draw trainer icons in func_84B00D3C	applied@ca35c91
+D_84B0FB20	gGeoLayoutCommands	w4		gGeoLayoutCommands is the command table fed to process_geo_layout to build the battle geometry layout	applied@ca35c91
+D_84B19910	gInputBuffer	w4		gInputBuffer is supplied to func_84B03814 each frame, indicating it holds the current input state	applied@ca35c91
+D_84B1A598	gBattleGraphics	w4		gBattleGraphics holds arrays of GraphNode structures and related rendering data for the battle scene	applied@ca35c91
+func_87900A50	MiniCamera_ApplyOffsets	w4		calculates camera rotation, position, distance and fov from base values and deltas, then clamps distance and fov	applied@ca35c91
+func_87901200	MiniDebugCamera_Control	w4		handles C?button input to adjust debug camera parameters and draws a panel showing VX, VY, BX, BY, GV, PW	applied@ca35c91
+D_87906054	gMiniCameraPtr	w4		its .unk_24.fovy, .near, .far and .unk_60.at/eye fields are set before calling func_80010354, indicating it is the active camera object	applied@ca35c91
+D_879060A4	gMiniCamBaseRotY	w4		base Y?rotation added to D_87906096 to produce miniCameraYRot	applied@ca35c91
+D_87906094	gMiniCamRotXDelta	w4		user?controlled delta added to base X?rotation for camera, modified by joystick and reset with START	applied@ca35c91
+D_87906096	gMiniCamRotYDelta	w4		user?controlled delta added to base Y?rotation for camera, modified by joystick	applied@ca35c91
+D_87906098	gMiniCamDistDelta	w4		user?controlled delta added to base distance for camera, modified by C?left/right	applied@ca35c91
+D_8790609A	gMiniCamFovDelta	w4		user?controlled delta added to base fov for camera, modified by C?left/right	applied@ca35c91
+D_8790609C	gMiniCamPosDelta	w4		Vec3s offset added to base camera position D_879060AC	applied@ca35c91
+D_879060AC	gMiniCamBasePos	w4		base camera position vector added to offset D_8790609C	applied@ca35c91
+D_879060CA	gMiniDebugCameraMode	w4		index 0?4 selecting which debug parameter (VX, VY, BX, BY, GV) is edited with C?buttons	applied@ca35c91
+D_879060E0	gMiniDebugBasePos	w4		Vec3f whose x and y components are edited in debug mode cases 2 and 3 and printed as BX and BY	applied@ca35c91
+D_865091D0	gHealthBarVertices	w4		gives the four corner positions for the health bar quad used in the display list D_86509238	applied@ca35c91
+D_86509210	gHealthBarSetupDL	w4		sets texture LUT, combine mode and enables texturing before drawing the health bar, used by HealthBar_BuildDisplayList	applied@ca35c91
+D_86509238	gHealthBarQuadDL	w4		draws two triangles from D_865091D0 to render the health bar rectangle	applied@ca35c91
+D_86509250	gHealthBarPaletteIndex	w4		used as index into the palette pointer array D_86509258 when loading the health bar texture	applied@ca35c91
+D_86509254	gHealthBarMode	w4		switch statement selects palette based on this variable and triggers a sound when non?zero, indicating a mode flag	applied@ca35c91
+D_86509258	gHealthBarPalettes	w4		array of pointers to HealthBarPalette0?4 used for texture loading of the health bar	applied@ca35c91
+D_8650AD80	gHealthBarNode	w4		created by func_80011B94, added as a child to gGraphRoot0, and stores display?list pointers for the health bar	applied@ca35c91
+D_8650AD84	gHealthBarTimer	w4		zeroed in HealthBar_Init, likely used as a per?frame countdown for the health bar	applied@ca35c91
+D_8650AD85	gHealthBarDuration	w4		calculated from func_87B00050(4) and stored during HealthBar_Init, suggesting a duration value for the health bar	applied@ca35c91
+func_865029C0	HealthBar_Init	w4		initialises palette index, timer, duration and plays a sound based on gHealthBarMode	applied@ca35c91
+func_86502A68	HealthBar_BuildDisplayList	w4		allocates Gfx and matrix, loads the selected palette texture and draws the health bar quad	applied@ca35c91
+func_86502BB8	HealthBar_CreateNode	w4		creates the health bar graph node via func_80011B94 and attaches it to the scene graph	applied@ca35c91
+func_86800070	ReadAllControllers	w4		Aggregates buttonDown, buttonPressed, and unk_0A from all four player controllers into D_86807518.	applied@ca35c91
+func_868001A8	DrawTextureStackColumn	w4		Draws a vertical stack of UI textures using texture pointers from D_86806E20 arrays and positions based on arguments.	applied@ca35c91
+func_868004F4	RenderPanelColumns	w4		Iterates over four panels and calls DrawTextureStackColumn for each, then updates the global display list head.	applied@ca35c91
+func_868005A8	InterpolateColors	w4		Interpolates between two Color_RGB8 palettes based on a timer and writes the result to an output Color_RGB8.	applied@ca35c91
+func_8680091C	DrawSushiItem	w4		Loads a sushi item texture from gSushiItemDefs and draws it at a scaled position using Gfx_DrawTextureRect.	applied@ca35c91
+func_86800B38	RenderSushiGoRoundUI	w4		Composes the full UI for the Sushi Go Round mini?game: panels, text, sushi icons, and conditional overlays.	applied@ca35c91
+func_86801644	RenderSushiGoRoundFrame	w4		Sets up the display list, clears depth, loads textures, calls UI render, and advances the stage for each frame.	applied@ca35c91
+func_86801700	HandleSushiGoRoundInput	w4		Processes controller input to start the game, cancel, or trigger a result, updating state variables accordingly.	applied@ca35c91
+func_86801840	IsTimerExpired	w4		Returns true when the current mode?s timer (D_86807510) has reached zero, handling both normal and demo modes.	applied@ca35c91
+func_86801884	UpdateSushiGoRoundState	w4		Main state?machine step that advances the mini?game through its phases based on timers and player actions.	applied@ca35c91
+func_86801CA8	RunSushiGoRound	w4		Main loop that repeatedly reads inputs, updates fragments, renders frames, and exits when the state machine signals completion.	applied@ca35c91
+func_86801D48	InitSushiGoRound	w4		Initialises graphics, loads geometry, creates the fragment?s data structures, and sets initial flags for the mini?game.	applied@ca35c91
+func_86801E2C	SetupSushiGoRoundStage	w4		Creates the stage, loads UI assets, initialises text, and then calls InitSushiGoRound before entering the main loop.	applied@ca35c91
+D_86806CD0	gSushiGoRoundGeoLayout	w4		Passed to process_geo_layout to build the geometry layout for the Sushi Go Round UI.	applied@ca35c91
+D_86806E20	gPanelTextureSets	w4		Array of pointers to texture descriptor structs used by DrawTextureStackColumn to render UI panels.	applied@ca35c91
+func_86902230	ComputeDistance3D	w4		Calculates Euclidean distance between two Vec3f positions using sqrt of summed squares	applied@ca35c91
+func_86902294	ScaleCameraDistance	w4		Scales camera distance by (D_8690B2F8.unk_00 + gCameraZoomOffset) and caps at 400.0f	applied@ca35c91
+func_869022D8	ComputeDistanceXZ	w4		Returns horizontal distance (sqrt of dx?+dz?) between two Vec3f points	applied@ca35c91
+func_86902334	Camera_Init	w4		Initialises camera parameters, sets yaw/pitch to 0, distance via ScaleCameraDistance, and stores position in gCameraPosition	applied@ca35c91
+func_869024B4	Camera_UpdateZoomFromInput	w4		Adjusts gCameraZoomOffset based on player 2 stick Y magnitude and prints the offset	applied@ca35c91
+func_869025BC	Camera_ResetPosition	w4		Resets camera yaw/pitch to 0, distance via ScaleCameraDistance, and repositions camera at target coordinates	applied@ca35c91
+func_8690274C	Camera_ToggleFOV	w4		Toggles camera field?of?view between 25.0f and 40.0f on button press and smooths transition	applied@ca35c91
+func_86902814	TransformVec3fByMtxF	w4		Applies a 3?4 matrix (MtxF) to a Vec3f, overwriting the vector with the transformed result	applied@ca35c91
+func_86902890	Camera_RotateAroundTarget	w4		Rotates camera around its target by a given angle, updating yaw/pitch and clamping distance	applied@ca35c91
+func_86902AE8	Camera_UpdateSpeedFactor	w4		Modifies gCameraParams.unk_004 (speed factor) based on directional button presses	applied@ca35c91
+func_86902E6C	Camera_ClampSegmentToRadius	w4		Adjusts two points so the segment stays within a radius around a centre point, used for camera bounds	applied@ca35c91
+func_8690351C	Camera_InterpolatePositionToY	w4		Interpolates X/Z of a point toward a target Y while preserving line proportion	applied@ca35c91
+func_869035F4	Camera_EnforceConstraints	w4		Enforces min/max Y, distance, and radius constraints on the camera position	applied@ca35c91
+func_86903888	Camera_EnforceConstraintsMode	w4		Same as Camera_EnforceConstraints but with mode flag to choose different handling	applied@ca35c91
+func_86903D80	Camera_Update	w4		Main per?frame camera update handling stick rotation, zoom, and constraint enforcement	applied@ca35c91
+D_8690B600	gCameraYaw	w4		Global yaw angle used by func_80010354 for camera positioning	applied@ca35c91
+D_8690B602	gCameraPitch	w4		Global pitch angle used by func_80010354 for camera positioning	applied@ca35c91
+D_8690B604	gCameraDistance	w4		Global distance from camera target, set by ScaleCameraDistance	applied@ca35c91
+D_8690B60C	gHorizontalDist	w4		Horizontal distance between camera target and reference point, used for clamping	applied@ca35c91
+D_8690B390	gControllerInput	w4		Structure holding current controller button and stick states	applied@ca35c91
+D_8690A708	gCameraZoomOffset	w4		Offset applied to camera distance scaling, modified by stick Y input	applied@ca35c91
+D_8690A710	gCameraParams	w4		Struct holding camera parameters such as field?of?view (unk_008) and speed factor (unk_004)	applied@ca35c91
+func_86B01320	Math_RandomU16Range	w4		Uses MathUtil_Random16 and scales the result by arg0 to produce a random value in [0,arg0)	applied@ca35c91
+func_86B01424	Vec3s_Copy	w4		Copies x, y, z fields from source Vec3s to destination and returns the destination	applied@ca35c91
+func_86B01444	Vec3f_Zero	w4		Sets all components of a Vec3f to 0.0f	applied@ca35c91
+func_86B0145C	Math_ApproachFloat	w4		Updates a float towards a target value by a factor arg2 and clamps values near zero to exactly 0.0f	applied@ca35c91
+func_86B014C4	Vec3f_Distance	w4		Computes Euclidean distance between two Vec3f vectors using sqrt of squared component differences	applied@ca35c91
+func_86B01528	Matrix_CopyScaled	w4		Computes row magnitudes of source matrix, multiplies each row by its magnitude, zeroes translation and sets bottom row to identity, effectively copying a scaled version of the matrix	applied@ca35c91
+D_88224F90	gFragment23ItemNameBank	w4		Assigned from GetMessageBank(0x2A) which in Stadium holds the item name table.	applied@ca35c91
+D_88224F94	gFragment23CommonStringBank	w4		Assigned from GetMessageBank(1) and used for UI strings throughout the fragment.	applied@ca35c91
+D_88217BF8	gFragment23ButtonColor	w4		Passed as a Color_RGBA8 to func_885012A4 when creating a button background.	applied@ca35c91
+D_88217C04	gFragment23PanelGradientStart	w4		Used as the first color argument in func_8850B254 for a panel gradient.	applied@ca35c91
+D_88217C08	gFragment23PanelGradientEnd	w4		Used as the second color argument in func_8850B254 for a panel gradient.	applied@ca35c91
+D_88217C0C	gFragment23ButtonHighlightColor	w4		Passed to func_885012A4 for a secondary button visual element.	applied@ca35c91
+D_88217C10	gFragment23TextColor	w4		Used in UI_DrawMenuItem to set the text drawing color.	applied@ca35c91
+D_88217C14	gFragment23BackgroundColorTop	w4		First color passed to func_88500EE4 for the background panel.	applied@ca35c91
+D_88217C18	gFragment23BackgroundColorBottom	w4		Second color passed to func_88500EE4 for the background panel.	applied@ca35c91
+func_81002DC0	Fragment31_LoadTexture0	w4		Loads a CI texture tile using D_862082A0[0] and the per?frame counter D_81004B70, indicating it handles texture slot?0 for fragment?31.	applied@ca35c91
+func_81002FC0	Fragment31_LoadTexture1	w4		Loads a CI texture tile using D_862082A0[1] and the per?frame counter D_81004B80, indicating it handles texture slot?1 for fragment?31.	applied@ca35c91
+func_810031C0	Fragment31_LoadTexture2	w4		Loads a CI texture tile using D_862082A0[2] and the per?frame counter D_81004B90, indicating it handles texture slot?2 for fragment?31.	applied@ca35c91
+func_810033C0	Fragment31_LoadTexture3	w4		Loads a CI texture tile using D_862082A0[3] and the per?frame counter D_81004BA0, indicating it handles texture slot?3 for fragment?31.	applied@ca35c91
+func_810035C0	Fragment31_DrawAnimatedTile	w4		Writes two custom Gfx words based on a static counter that wraps at 0x7F, creating an animated tile effect for fragment?31.	applied@ca35c91
+func_81003678	Fragment31_AnimateColorCycle	w4		Interpolates between color keyframes and updates tile sizes each frame, implementing a color?cycle animation for fragment?31.	applied@ca35c91
+func_810038D0	Fragment31_DrawOverlay	w4		Constructs a display list with several custom commands and uses D_800AF770[5] to compute a fade value, suggesting it draws an overlay or screen effect for fragment?31.	applied@ca35c91
+func_81003A24	StringLength	w4		Iterates over a null?terminated s8 string counting characters, i.e. a generic string length routine.	applied@ca35c91
+func_81003A54	Fragment31_DrawNumberDigit	w4		Selects a digit from a number based on D_81004BB0 and loads the corresponding texture tile, drawing one digit of a numeric display for fragment?31.	applied@ca35c91
+func_81003CF0	Fragment31_CreateOverlay	w4		Allocates a display list and calls func_810038D0, acting as a wrapper to create the fragment?31 overlay display list.	applied@ca35c91
+D_81004B70	gFragment31_Tex0Counter	w4		Counter incremented each time texture slot?0 is drawn, used in func_81002DC0.	applied@ca35c91
+D_81004B80	gFragment31_Tex1Counter	w4		Counter for texture slot?1, used in func_81002FC0.	applied@ca35c91
+D_81004B90	gFragment31_Tex2Counter	w4		Counter for texture slot?2, used in func_810031C0.	applied@ca35c91
+D_81004BA0	gFragment31_Tex3Counter	w4		Counter for texture slot?3, used in func_810033C0.	applied@ca35c91
+D_81004BB0	gFragment31_NumberDrawPhase	w4		State variable incremented each call of func_81003A54 to step through digit drawing phases.	applied@ca35c91
+func_81407A30	Particle_Allocate	w4		Finds a free entry in the global D_8140E720 array, marks it used and returns it, indicating a particle allocation routine.	applied@ca35c91
+func_81407B04	Particle_Free	w4		Unlinks the particle from its list, clears its prev/next pointers and resets unk_D0, effectively freeing the particle slot.	applied@ca35c91
+func_81407BE4	Particle_Create	w4		Calls Particle_Allocate, then sets position, rotation, callbacks and other fields, creating a new particle instance.	applied@ca35c91
+func_81407C7C	Particle_CreateFromEntity	w4		Allocates a particle and initializes it using data from a unk_86002F58 entity (position, rotation), showing creation from an entity.	applied@ca35c91
+func_81408078	Particle_CountActive	w4		Iterates over D_8140E720 and counts entries where unk_D0 != 0, returning the number of active particles.	applied@ca35c91
+func_8140810C	Particle_Init	w4		Sets initial flags, assigns the default callback D_8140E460 and calls Particle_SetFlag with 4, initializing a particle.	applied@ca35c91
+func_814082B4	Particle_SetFlag	w4		Performs arg0->unk_18 |= arg1, a generic bit?flag setter used throughout the particle system.	applied@ca35c91
+func_814082C4	Particle_ClearFlag	w4		Performs arg0->unk_18 &= ~arg1, a generic bit?flag clearer for particle state.	applied@ca35c91
+func_814082E8	Particle_HasFlag	w4		Returns 1 if (arg0->unk_18 & arg1) is non?zero, checking whether a particle has a specific flag.	applied@ca35c91
+func_8140BAC8	Particle_SetPrimColor	w4		Sets arg0->prim_r/g/b to the three u8 parameters, defining the primary color of a particle.	applied@ca35c91

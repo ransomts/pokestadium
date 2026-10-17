@@ -3123,7 +3123,7 @@ void func_86C034F8(void) {
 }
 
 void miniEkansInitCam(void) {
-    D_87906054 = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
 
     miniCameraXRot = 0x1800;
     miniCameraYRot = 0;
@@ -3138,10 +3138,10 @@ void miniEkansInitCam(void) {
 
     miniUpdateCamera();
 
-    D_879060CA = 0;
+    gMiniDebugCameraMode = 0;
 
-    D_879060E0.x = 26.0f;
-    D_879060E0.y = 70.0f;
+    gMiniDebugBasePos.x = 26.0f;
+    gMiniDebugBasePos.y = 70.0f;
 
     D_87906100.x = 10.0f;
     D_87906100.y = 8.0f;
@@ -3208,14 +3208,14 @@ void func_86C03AB8(void) {
         case 3:
             func_86C03608();
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             func_87801F48(1, 0x19, 0xA6);
             func_87801C8C(0x56, 0xAC, D_86C0E33C);
             func_87801D5C(1, 0xC2, 0xA8, D_86C0E314);
             func_87801824(0x74, 0xC6, D_86C0E2A4);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
 
         case 4:
@@ -3250,7 +3250,7 @@ void miniEkansDrawHub(void) {
     }
     Text_SetupDL();
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, miniHudTransparency);
 
     if (ekansMinigameCountdownStarted) {
@@ -3272,7 +3272,7 @@ void miniEkansDrawHub(void) {
         Text_Print(tmp + 0x14, 0xCC, "  %d", miniEkanses[i].ekansScore);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_86C03E4C(void) {

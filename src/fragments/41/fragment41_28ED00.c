@@ -782,11 +782,11 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
     func_82F022DC(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06);
 
     if ((temp_s4->unk_04 == 0x200) && (temp_s4->unk_06 == 0x88)) {
-        gSPDisplayList(gDisplayListHead++, D_8006F498);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
         Gfx_FillRectRGBA(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06, 0x32, 0x32, 0x96, 0xFF);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         for (i = 0; i < 2; i++) {
             Color_RGB8 sp5C = { 0x1E, 0x1E, 0x64 };
@@ -1033,7 +1033,7 @@ void func_82F097D8(s16 arg0, s16 arg1) {
 
     s16 sp86 = ROUND_MAX(2.0f * SINS(D_82F13F5C));
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPLoadTextureBlock(gDisplayListHead++, D_302AC68, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 24, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
@@ -1048,7 +1048,7 @@ void func_82F097D8(s16 arg0, s16 arg1) {
     Gfx_DrawTextureRect(arg0 + sp86, arg1 + 0x18, 0x30, 0x18, 0, 0, 0x400, 0x400, 0);
     Gfx_DrawTextureRect((arg0 - sp86) + 0x10, arg1 + 0x40, 0x30, 0x18, 0x600, 0, -0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_82F13F5C += 0x1000;
 }

@@ -150,19 +150,19 @@ extern unk_D_86807558 D_86807558[4];
 extern unk_D_868084D8 gSushiInstances[12];
 
 void func_86800020(s32 arg0);
-void func_86800070(void);
-Gfx* func_868001A8(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_868004F4(void);
-void func_868005A8(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
-void func_86800B38(void);
-void func_86801644(void);
-void func_86801700(void);
-s32 func_86801840(void);
-s32 func_86801884(void);
-void func_86801CA8(void);
-void func_86801D48(void);
-void func_86801E2C(s32 arg0, UNUSED s32 arg1);
+void ReadAllControllers(void);
+Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void RenderPanelColumns(void);
+void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4);
+void DrawSushiItem(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
+void RenderSushiGoRoundUI(void);
+void RenderSushiGoRoundFrame(void);
+void HandleSushiGoRoundInput(void);
+s32 IsTimerExpired(void);
+s32 UpdateSushiGoRoundState(void);
+void RunSushiGoRound(void);
+void InitSushiGoRound(void);
+void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1);
 
 
 void func_86805108(u16, s32);

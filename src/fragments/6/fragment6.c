@@ -320,7 +320,7 @@ void func_860005B8(s32 arg0) {
     };
 
     if (arg0 != 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, D_86002F4C);
 
         for (i = 0; i < 4; i++) {
@@ -333,7 +333,7 @@ void func_860005B8(s32 arg0) {
             }
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
     if (arg0 == 0) {
@@ -414,7 +414,7 @@ void func_860005B8(s32 arg0) {
 
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
-        gSPDisplayList(D_800A7420++, D_8006F518);
+        gSPDisplayList(D_800A7420++, gPrefDL_Border);
         func_87801684(0x74, 0xB0, D_86002AC8);
         func_87801824(0x74, 0xC6, D_86002AF0);
         func_87801F48(2, 0x19, 0xA6);

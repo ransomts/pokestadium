@@ -10,15 +10,15 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** D_88224F90;
-static char** D_88224F94;
+static char** gFragment23ItemNameBank;
+static char** gFragment23CommonStringBank;
 
 static u16 D_88217BF0[4] = { 6, 7, 8, 9 };
-static Color_RGBA8 D_88217BF8 = { 0xA0, 0x96, 0x64, 0xFF };
+static Color_RGBA8 gFragment23ButtonColor = { 0xA0, 0x96, 0x64, 0xFF };
 static u16 D_88217BFC[4] = { 2, 3, 4, 5 };
-static Color_RGBA8 D_88217C04 = { 0x64, 0x96, 0xB4, 0xFF };
-static Color_RGBA8 D_88217C08 = { 0x3C, 0x64, 0x78, 0xFF };
-static Color_RGBA8 D_88217C0C = { 0xA0, 0x96, 0x64, 0xFF };
+static Color_RGBA8 gFragment23PanelGradientStart = { 0x64, 0x96, 0xB4, 0xFF };
+static Color_RGBA8 gFragment23PanelGradientEnd = { 0x3C, 0x64, 0x78, 0xFF };
+static Color_RGBA8 gFragment23ButtonHighlightColor = { 0xA0, 0x96, 0x64, 0xFF };
 
 void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
@@ -28,7 +28,7 @@ void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
 
     var_s1 = 0;
     for (i = 0; i < 4; i++) {
-        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BF0[i]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BF0[i]));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -47,7 +47,7 @@ void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
 
     temp_s0 = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0, 0, 0, var_s1, 0x68, D_88217BF8);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0, 0, 0, var_s1, 0x68, gFragment23ButtonColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, temp_s0);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
@@ -78,10 +78,10 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
         arg2--;
     }
 
-    var_s2 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, 1));
+    var_s2 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, 1));
 
     for (j = 0; j < 4; j++) {
-        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_88224F94, D_88217BFC[j]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[j]));
         if (var_s2 < temp_v0) {
             var_s2 = temp_v0;
         }
@@ -101,11 +101,11 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
 
     sp6C = mem_pool_alloc(arg4, sizeof(unk_func_8850B254));
-    ((func8850B254)Memmap_GetFragmentVaddr(func_8850B254))(sp6C, 0, 0, var_s2, 0x18, D_88217C04, D_88217C08);
+    ((func8850B254)Memmap_GetFragmentVaddr(func_8850B254))(sp6C, 0, 0, var_s2, 0x18, gFragment23PanelGradientStart, gFragment23PanelGradientEnd);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp6C);
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
-    temp_s0 = GetMessageString(NULL, 0, D_88224F94, 1);
+    temp_s0 = GetMessageString(NULL, 0, gFragment23CommonStringBank, 1);
     ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s1, (var_s2 - MeasureTextWidth(0x10, 0, temp_s0)) / 2, 0,
                                                            temp_s0, 0x10);
     temp_s1->unk_3C = 0x1C;
@@ -114,11 +114,11 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     func_8002CBC0(&arg0->unk_38, 4, arg4);
 
     for (i = 0; i < 4; i++) {
-        func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, D_88224F94, D_88217BFC[i]), i);
+        func_8002CC2C(&arg0->unk_38, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[i]), i);
     }
 
     temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0_2, 0, 0x1C, var_s2, 0x88, D_88217C0C);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0_2, 0, 0x1C, var_s2, 0x88, gFragment23ButtonHighlightColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030_030));
@@ -138,14 +138,14 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
 }
 
 void func_88200968(unk_func_88200FA0_030* arg0, s32 arg1) {
-    func_882004BC(arg0->unk_34, GetMessageString(NULL, 0, D_88224F94, arg1 + 6));
+    func_882004BC(arg0->unk_34, GetMessageString(NULL, 0, gFragment23CommonStringBank, arg1 + 6));
 }
 
 void func_882009B4(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
-    static Color_RGBA8 D_88217C10 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gFragment23TextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Text_ResetState();
-    Text_SetEnvColor(D_88217C10.r, D_88217C10.g, D_88217C10.b, D_88217C10.a);
+    Text_SetEnvColor(gFragment23TextColor.r, gFragment23TextColor.g, gFragment23TextColor.b, gFragment23TextColor.a);
     Text_SetFont(0x10, 0);
     Text_Print(arg0 + 8, arg1 + 4, arg2);
     Text_SetupDL();
@@ -206,8 +206,8 @@ s32 func_88200B60(unk_func_88200FA0_030* arg0, Controller* arg1) {
 }
 
 void func_88200C44(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4) {
-    static Color_RGBA8 D_88217C14 = { 0x1E, 0x50, 0x50, 0xFF };
-    static Color_RGBA8 D_88217C18 = { 0x00, 0x0A, 0x0A, 0xFF };
+    static Color_RGBA8 gFragment23BackgroundColorTop = { 0x1E, 0x50, 0x50, 0xFF };
+    static Color_RGBA8 gFragment23BackgroundColorBottom = { 0x00, 0x0A, 0x0A, 0xFF };
 
     unk_func_88001300_000* sp4C;
     unk_func_88500EE4* sp48;
@@ -223,8 +223,8 @@ void func_88200C44(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, sp4C);
 
     sp48 = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(func_88500EE4))(sp48, 0, 0, 0x280, 0x1E0, D_88223E48, D_88217C14,
-                                                           D_88217C18);
+    ((func88500EE4)Memmap_GetFragmentVaddr(func_88500EE4))(sp48, 0, 0, 0x280, 0x1E0, D_88223E48, gFragment23BackgroundColorTop,
+                                                           gFragment23BackgroundColorBottom);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp4C, sp48);
 
     arg0->unk_2C = mem_pool_alloc(arg4, sizeof(unk_func_885088F4));
@@ -236,11 +236,11 @@ void func_88200C44(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     sp44 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(func_88509A2C))(sp44, 0x38, 0x22, func_80029080(),
-                                                           GetMessageString(NULL, 0, D_88224F90, 0));
+                                                           GetMessageString(NULL, 0, gFragment23ItemNameBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp44);
 
     sp40 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(sp40, 0, 0, GetMessageString(NULL, 0, D_88224F94, 0));
+    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(sp40, 0, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp40);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030));
@@ -302,8 +302,8 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
     sp34 = mem_pool_try_init(0x8000, 0);
 
     MessageBank_Init();
-    D_88224F90 = GetMessageBank(0x2A);
-    D_88224F94 = GetMessageBank(1);
+    gFragment23ItemNameBank = GetMessageBank(0x2A);
+    gFragment23CommonStringBank = GetMessageBank(1);
 
     sp30 = mem_pool_alloc(sp34, sizeof(unk_func_88200FA0));
     func_88200C44(sp30, 0, 0, arg0, sp34);

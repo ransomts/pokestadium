@@ -228,7 +228,7 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
         temp_t0 = (((arg2->unk_08 * 4) + arg2->unk_02) * 0x10C) / 84;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (D_83003B70 < 4) {
         Gfx_DrawSpriteRGBA16(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A300, 0x18, 0);
@@ -236,7 +236,7 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
         Gfx_DrawSpriteRGBA16(arg0 - 4, (arg1 + temp_t0) - 4, 0x18, 0x18, D_200A780, 0x18, 0);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     D_83003B70 = (D_83003B70 + 1) % 8;
@@ -273,7 +273,7 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
         func_83001178(arg0 + i * 0x54, arg1, 0x54, 0x3C, var_v0->r, var_v0->g, var_v0->b);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 6; i++) {
         temp_s0 = arg2->unk_00[i].unk_00;
@@ -282,7 +282,7 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(4, 0);
@@ -363,11 +363,11 @@ void func_83003484(void) {
         func_83001178(spA6, spA4 + 0x24, 0x18, 0x12C, 0x1E, 0x1E, 0x64);
         func_83002C74(spA6 + 4, spA4 + 0x2C, ptr);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_83002F9C(spA6 + 8, spA4 + 8);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

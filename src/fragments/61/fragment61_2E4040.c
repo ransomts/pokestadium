@@ -325,13 +325,13 @@ void func_8420CC54(unk_D_84211704* arg0) {
 }
 
 void func_8420CCAC(unk_D_84211704* arg0) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -340,13 +340,13 @@ void func_8420CCAC(unk_D_84211704* arg0) {
 }
 
 void func_8420CE24(unk_D_84211704* arg0) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -356,13 +356,13 @@ void func_8420CE24(unk_D_84211704* arg0) {
 }
 
 void func_8420CFC4(unk_D_84211704* arg0) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -372,13 +372,13 @@ void func_8420CFC4(unk_D_84211704* arg0) {
 }
 
 void func_8420D144(unk_D_84211704* arg0) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetFont(0x10, 0);

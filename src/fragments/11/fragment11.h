@@ -27,10 +27,10 @@ typedef struct unk_D_8650AB30 {
     /* 0x00 */ unk_D_8650AB30_000 unk_00[12];
 } unk_D_8650AB30; // size = 0x90
 
-extern s32 D_86509250;
-extern s32 D_86509254;
-extern u8 D_8650AD84;
-extern u8 D_8650AD85;
+extern s32 gHealthBarPaletteIndex;
+extern s32 gHealthBarMode;
+extern u8 gHealthBarTimer;
+extern u8 gHealthBarDuration;
 extern unk_D_8650A528 D_8650A528[4];
 extern unk_D_8650A528* gCurrentHealthBar;
 extern unk_D_8650AB30 D_8650AB30[4];
@@ -44,8 +44,8 @@ extern u32 HealthBarPalette4[];
 s8 func_86501FC0(s32, s32);
 void RenderHealthBar(s32 arg0);
 void InitHealthBar(void);
-void func_865029C0(void);
-void func_86502A68(void);
-void func_86502BB8(void);
+void HealthBar_Init(void);
+void HealthBar_BuildDisplayList(void);
+void HealthBar_CreateNode(void);
 
 #endif // _FRAGMENT11_H_

@@ -18,10 +18,10 @@ typedef struct unk_D_83902700 {
     /* 0x04 */ char unk04[0x70];
 } unk_D_83902700; // size >= 0x74
 
-static unk_D_839006B0 D_839006B0[37];
-static unk_D_839006B0 D_83901AF0[22];
-static void* D_839026F8;
-static s32 D_839026FC;
+static unk_D_839006B0 gGalleryLoadData[37];
+static unk_D_839006B0 gGallerySaveData[22];
+static void* gGalleryBackgroundTexture;
+static s32 gGalleryState;
 static unk_D_83902700 D_83902700;
 static s32 D_83902774;
 
@@ -33,7 +33,7 @@ static Gfx D_83900638[] = {
     gsSPEndDisplayList(),
 };
 
-void func_83900020(void) {
+void Gallery_Debugger_PostLoad(void) {
 }
 
 void func_83900028(void) {
@@ -42,40 +42,40 @@ void func_83900028(void) {
 void func_83900030(void) {
 }
 
-void func_83900038(void) {
+void Gallery_Debugger_Init(void) {
     s32 i;
 
-    D_839026FC = 0;
+    gGalleryState = 0;
     D_83902700.unk_00 = 0;
     func_80028AFC(2);
 
     for (i = 0; i < 36; i++) {
-        func_8002797C(0x16, 0, i, &D_839006B0[i]);
+        func_8002797C(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        func_8002797C(0x17, 0, i, &D_83901AF0[i]);
+        func_8002797C(0x17, 0, i, &gGallerySaveData[i]);
     }
 
-    func_83900020();
+    Gallery_Debugger_PostLoad();
 }
 
 void func_839000E4(void) {
     s32 i;
 
     for (i = 0; i < 36; i++) {
-        func_80027C24(0x16, 0, i, &D_839006B0[i]);
+        func_80027C24(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        func_80027C24(0x17, 0, i, &D_83901AF0[i]);
+        func_80027C24(0x17, 0, i, &gGallerySaveData[i]);
     }
 
     GbsProcessBankWrites(2);
     func_800284B4(2);
 }
 
-void func_83900180(void) {
+void Gallery_Debugger_DrawMenu(void) {
     static char* D_83900640[] = { "Load Controller Pak", "Save Controller Pak", "Quit" };
 
     s32 i;
@@ -102,14 +102,14 @@ void func_83900180(void) {
     Text_SetupDL();
 }
 
-void func_839002B8(void) {
+void Gallery_Debugger_Render(void) {
     Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(D_839026F8);
-    func_83900180();
+    Gfx_DrawTextureAtlas(gGalleryBackgroundTexture);
+    Gallery_Debugger_DrawMenu();
     Stage_Advance();
 }
 
-s32 func_839002F4(void) {
+s32 Gallery_Debugger_HandleInput(void) {
     s32 var_a2 = 0;
     s32 temp_a1 = D_83902700.unk_00;
 
@@ -152,19 +152,19 @@ s32 func_839002F4(void) {
     return var_a2;
 }
 
-s32 func_839003DC(void) {
+s32 Gallery_Debugger_MainLoop(void) {
     s32 sp1C = 1;
 
-    switch (D_839026FC) {
+    switch (gGalleryState) {
         case 0:
             if (func_80007604() == 0) {
-                D_839026FC = 1;
+                gGalleryState = 1;
             }
             break;
 
         case 1:
-            if (func_839002F4() != 0) {
-                D_839026FC = 2;
+            if (Gallery_Debugger_HandleInput() != 0) {
+                gGalleryState = 2;
                 func_80006CB4(0xF);
             }
             break;
@@ -178,21 +178,21 @@ s32 func_839003DC(void) {
     return sp1C;
 }
 
-void func_83900484(void) {
+void Gallery_Debugger_UpdateController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
 }
 
-void func_839004B4(void) {
+void Gallery_Debugger_Run(void) {
     func_80006C6C(0xF);
     do {
-        func_83900484();
-        func_839002B8();
-    } while (func_839003DC() != 0);
+        Gallery_Debugger_UpdateController();
+        Gallery_Debugger_Render();
+    } while (Gallery_Debugger_MainLoop() != 0);
 }
 
-s32 func_839004F4(s32 arg0, s32 arg1) {
+s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('GLDB');
@@ -202,10 +202,10 @@ s32 func_839004F4(s32 arg0, s32 arg1) {
     Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
-    D_839026F8 = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
-    func_83900038();
+    gGalleryBackgroundTexture = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
+    Gallery_Debugger_Init();
     Stage_Set(sp24);
-    func_839004B4();
+    Gallery_Debugger_Run();
     func_839000E4();
     Stage_Destroy();
     func_8001E9CC();

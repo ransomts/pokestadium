@@ -357,13 +357,13 @@ void func_86B09928(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, unk_D_86B0D
 
     func_86B097B0(arg1, arg2, arg3, arg4, arg0, arg3);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_86B09AD8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg1, arg2, arg3, arg4, arg0, arg3, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }

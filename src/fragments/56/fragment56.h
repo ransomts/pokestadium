@@ -15,7 +15,7 @@ void func_82C00F88(void);
 void func_82C01054(void);
 void func_82C0115C(u16 arg0);
 s16 func_82C0120C(void);
-void func_82C012FC(void);
-s32 func_82C014FC(UNUSED s32 arg0, UNUSED s32 arg1);
+void Pref_MainLoop(void);
+s32 Pref_Entry(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT56_H_

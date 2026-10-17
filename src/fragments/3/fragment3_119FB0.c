@@ -180,7 +180,7 @@ void func_87901BD4(unk_D_8140E720* arg0) {
     if (func_81408180(arg0) != 0) {
         arg0->unk_18 = 0;
         func_81408158(arg0);
-        func_81407B04(arg0);
+        Particle_Free(arg0);
     } else {
         func_81408AF0(arg0);
     }
@@ -204,16 +204,16 @@ void func_87901C20(void) {
 }
 
 void func_87901C98(void) {
-    gSPPerspNormalize(gDisplayListHead++, D_87906054->unk_24.perspNorm);
-    gSPMatrix(gDisplayListHead++, D_87906054->unk_24.mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, D_87906054->unk_60.p_mtxf, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    gSPPerspNormalize(gDisplayListHead++, gMiniCameraPtr->unk_24.perspNorm);
+    gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_24.mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_60.p_mtxf, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
     D_8140E620 = GfxAlloc(sizeof(unk_D_8140E620));
     D_8140E624 = 0;
 
     gSPDisplayList(gDisplayListHead++, D_8140DB30);
 
-    func_8140C204(D_87906054);
+    func_8140C204(gMiniCameraPtr);
 
     gSPDisplayList(gDisplayListHead++, D_8140DAE0);
 }
@@ -222,7 +222,7 @@ void func_87901DA0(unk_D_8140E720* arg0) {
     Vec3s sp28;
     s16 sp26 = func_8140C038(arg0);
 
-    func_8140BAC8(arg0, 0xC8, 0xAA, 0x64);
+    Particle_SetPrimColor(arg0, 0xC8, 0xAA, 0x64);
     func_8140BB74(arg0, 0x3A, 0x18, 0x18);
     func_8140B938(arg0, (RandomMod(0xA) * 0.03f) + 0.15f);
 
@@ -371,7 +371,7 @@ void func_879023EC(unk_D_8140E720* arg0) {
 void func_879024DC(unk_D_8140E720* arg0) {
     Vec3s sp28;
 
-    func_8140BAC8(arg0, 0xC8, 0xAA, 0x64);
+    Particle_SetPrimColor(arg0, 0xC8, 0xAA, 0x64);
     func_8140BB74(arg0, 0x3A, 0x18, 0x18);
     func_8140B938(arg0, (MathUtil_Random_ZeroOne() * 0.1f) + 0.1f);
 
@@ -531,7 +531,7 @@ void func_879029F0(unk_D_8140E720* arg0) {
 void func_87902AE0(unk_D_8140E720* arg0) {
     Vec3s sp30;
 
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
     func_8140B938(arg0, (MathUtil_Random_ZeroOne() * 0.2f) + 0.3f);
 

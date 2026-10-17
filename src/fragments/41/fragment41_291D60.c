@@ -453,7 +453,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
@@ -462,8 +462,8 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 2; i++) {
         if (sp74[i] != 0) {
@@ -471,7 +471,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Text_ResetState();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

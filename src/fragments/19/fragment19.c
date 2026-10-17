@@ -19,7 +19,7 @@ static u32 D_86D00530[] = {
 };
 
 void func_86D00020(void) {
-    D_87906054 = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
 
     miniCameraXRot = 0xA00;
     miniCameraYRot = 0;

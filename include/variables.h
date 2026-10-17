@@ -519,7 +519,7 @@ extern u8 D_2000A60[];
 extern u8 D_3008200[];
 extern u8 D_4000C40[];
 extern u8 D_4000DD0[];
-extern u8 D_300F780[];
+extern u8 gPrefBackgroundTexture[];
 extern u8 D_3024480[];
 extern u8 D_30256A0[];
 extern u8 D_3026AE0[];
@@ -834,8 +834,8 @@ extern u8 D_3007D48[];
 
 extern LEODiskID D_800818E0;
 
-extern Gfx D_8006F518[];
-extern Gfx D_8006F630[];
+extern Gfx gPrefDL_Border[];
+extern Gfx gPrefDL_End[];
 extern u8 D_82000000;
 extern u8 D_81400000;
 extern u8 D_86B00000;
@@ -893,7 +893,7 @@ typedef struct TextObject {
     /* 0x53 */ u8 unk_53;
 } TextObject; // size = 0x54
 
-extern Gfx D_8006F498[];
+extern Gfx gPrefDL_Fill[];
 
 extern s32 D_80078E60;
 extern s32 D_80078E64;

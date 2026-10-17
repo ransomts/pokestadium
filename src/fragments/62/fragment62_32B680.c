@@ -83,7 +83,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
         case 4:
             sp2A = 0x78;
             sp28 = 0x79;
-            func_8140BAC8(arg0, 0x50, 0x46, 0x3C);
+            Particle_SetPrimColor(arg0, 0x50, 0x46, 0x3C);
             func_8140BB74(arg0, 0xFF, 0, 0);
             break;
 
@@ -130,7 +130,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
         case 9:
             sp2A = 0x83;
             sp28 = 0x84;
-            func_814082B4(arg0, 0x800);
+            Particle_SetFlag(arg0, 0x800);
             func_81408E90(arg0, 5.0f);
             break;
 
@@ -244,7 +244,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
         case 25:
             sp2A = 0xAF;
             sp28 = 0xB0;
-            func_8140BAC8(arg0, 0xFF, 0xFF, 0);
+            Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
             func_8140BB74(arg0, 0xFF, 0, 0);
             func_81408CA0(arg0, 10.0f);
             break;
@@ -259,7 +259,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0xB3;
             sp28 = 0xB4;
             func_8140BC20(arg0, 0x64);
-            func_8140BAC8(arg0, 0xFF, 0xFF, 0);
+            Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
             func_8140BB74(arg0, 0xFF, 0, 0);
             sp2C = 0.8f;
             break;
@@ -268,7 +268,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0xB3;
             sp28 = 0xB5;
             func_8140BC20(arg0, 0x64);
-            func_8140BAC8(arg0, 0xFF, 0xFF, 0);
+            Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
             func_8140BB74(arg0, 0xFF, 0, 0);
             sp2C = 0.8f;
             break;
@@ -343,7 +343,7 @@ void func_84340E40(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0x4D;
             sp28 = 0x4E;
             func_8434749C(arg0);
-            func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+            Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
             func_8140BB74(arg0, 0x37, 0xFF, 0xFF);
             break;
 
@@ -1825,7 +1825,7 @@ void func_84344D28(unk_D_8140E720* arg0) {
     arg0->unk_14 = func_8432CC54(arg0);
     if (arg0->unk_14 != NULL) {
         func_8432CE00(arg0->unk_14, 0x30);
-        func_814082B4(arg0, 0x200);
+        Particle_SetFlag(arg0, 0x200);
         func_8140B950(arg0, 5.3f);
         func_8140BC20(arg0, 0);
         func_814081BC(arg0);
@@ -2384,7 +2384,7 @@ void func_84346250(unk_D_8140E720* arg0) {
                 func_8140B938(arg0, 1.5f);
                 break;
         }
-        func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+        Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
         func_814081BC(arg0);
     } else {
         func_81408158(arg0);
@@ -2608,7 +2608,7 @@ void func_84347080(unk_D_8140E720* arg0) {
     if (arg0->unk_14 != NULL) {
         func_8432CE00(arg0->unk_14, 0x60);
         func_8140BECC(arg0, 7);
-        func_814082B4(arg0, 0x200);
+        Particle_SetFlag(arg0, 0x200);
         func_8140B950(arg0, 3.3f);
         func_8140BC20(arg0, 0);
         func_814081BC(arg0);
@@ -3200,7 +3200,7 @@ void func_84348C84(unk_D_8140E720* arg0) {
             func_8432CE00(arg0->unk_14, 0x63);
         }
         func_8432CE3C(arg0->unk_14, 0x56);
-        func_814082B4(arg0, 0x200);
+        Particle_SetFlag(arg0, 0x200);
         func_8140BECC(arg0, 7);
         func_8140B950(arg0, 1.0f);
         func_8140D5A0(arg0, 0x24);

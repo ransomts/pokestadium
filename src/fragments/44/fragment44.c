@@ -477,12 +477,12 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
         return;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg1 + tmp2 + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
     func_83401728(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
 
     for (i = 0; i < sp100; i += tmp) {
@@ -519,7 +519,7 @@ void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
             func_834018C0(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_83501204(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
 
@@ -573,7 +573,7 @@ void func_83501FA8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     temp_s0 = (0x1B6 - MeasureTextWidth(0x10, 0, sp5C)) / 2;
     func_83401110(arg1, arg2, 0x1B6, &sp4C, &sp48);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     func_8340144C(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
     func_8340144C(D_3001D20, MeasureTextWidth(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
@@ -625,7 +625,7 @@ void func_835022F0(s32 arg0) {
     temp_v1 = (0xF3 - MeasureTextWidth(8, 0, sp2C)) / 2;
     sp28 = temp_v1 + 0x5E;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(temp_v1 + 0x3E, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
     Text_ResetState();
@@ -638,7 +638,7 @@ void func_835022F0(s32 arg0) {
 void func_835023F0(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     s32 i;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 6; i++) {
         func_83500758(arg0, arg1 + i * 0x30);
@@ -670,7 +670,7 @@ void func_835024FC(void) {
     s32 b;
     s32 end = 0x1E0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_04000000, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -827,7 +827,7 @@ void func_835028D0(s32 arg0, s32 arg1, s32 arg2) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < end; i += var_s2) {
         s32 temp_v0_11 = CLAMP_MIN(end - i, var_s2);
@@ -900,7 +900,7 @@ void func_83502F78(int arg0, int arg1, s32 arg2, f32 arg3) {
         return;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < spF8; i += iter) {
         s32 temp_v0_2 = CLAMP_MIN(spF8 - i, iter);
@@ -985,7 +985,7 @@ void func_8350365C(unk_D_83407B38* arg0) {
     s32 temp_lo = arg0->unk_00 / 3;
     s32 var_v0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0->unk_04 == -1) {
         var_v0 = 0;

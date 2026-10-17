@@ -1211,7 +1211,7 @@ void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
     Gfx_FillScreen(&gDisplayListHead, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
 
@@ -1225,8 +1225,8 @@ void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
         var_s2 += 0xBB8;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 4; i++) {
         if (D_8780FA30[i] == 0) {
@@ -1239,7 +1239,7 @@ void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 static const char D_82508A20[] = "コンピュータのつよさ";
@@ -1254,7 +1254,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
     Gfx_FillScreen(&gDisplayListHead, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
 
@@ -1268,7 +1268,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
         var_s2 += 0xBB8;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if ((D_8250A2FC == 1) || (D_8250A2FC == 2)) {
         var_v1 = D_8250A288.unk_04 - 1;
@@ -1878,7 +1878,7 @@ void func_8250281C(void) {
         DrawStatusIcon(sp18, sp38);
 
         if ((sp2C != 0) && (D_8780FA48 >= 0)) {
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
             var_a2_2 = D_8780FA48;
@@ -1888,7 +1888,7 @@ void func_8250281C(void) {
                 func_87801644(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             }
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         }
     }
 }

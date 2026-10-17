@@ -27,11 +27,11 @@ void func_84205F18(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
         (arg0->unk_0006 < 6)) {
         func_84200420(arg1 + 4, arg2 + 4, 0x74, 0x58, 0, 0, 0, 0xFF);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawSpriteRGBA16(arg1 + 0x32, arg2 + 0x32, 0x14, 0x14, D_20068E0, 0x14, 0);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
         func_84200420(arg1 + 4, arg2 + 4, 0x74, 0x58, 0x64, 0x64, 0xC8, 0xFF);
     }
@@ -82,7 +82,7 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
     if ((arg0->unk_0001 != 1) && (arg0->unk_0001 != 0) && ((arg1 != 0) || (arg0->unk_0003 != 0))) {
         func_84205F18(arg0, arg0->unk_0018, arg0->unk_001A);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 6; i++) {
             if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
@@ -93,7 +93,7 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
             }
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F630);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
 

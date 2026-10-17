@@ -827,7 +827,7 @@ void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0x10) {
         for (i = 1; i < 7; i++) {
             GraphNode_ClearCallback(&arg0->unk_04[i]);
-            func_84B00404(&arg0->unk_04[8 + i]);
+            GraphNode_Reset(&arg0->unk_04[8 + i]);
             arg0->unk_04[i].unk_01E.y = 0;
         }
 
@@ -944,7 +944,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
         }
 
         for (i = 16; i < 40; i++) {
-            func_84B00404(&arg0->unk_04[i]);
+            GraphNode_Reset(&arg0->unk_04[i]);
         }
     }
 }

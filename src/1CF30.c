@@ -307,7 +307,7 @@ u8 GetCharIndexFromFontTables(u16 arg0) {
     u8 var_v1 = 0;
 
     if ((arg0 >= 0x20) && (arg0 < 0x80)) {
-        var_v1 = ((u8*)D_8006F630)[arg0];
+        var_v1 = ((u8*)gPrefDL_End)[arg0];
     } else if ((arg0 >= 0xA0) && (arg0 < 0x100)) {
         var_v1 = ((u8*)D_8006F608)[sizeof(Gfx) + arg0];
     }
@@ -598,11 +598,11 @@ void Text_EndRender(void) {
 }
 
 void Text_DrawWindowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {

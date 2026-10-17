@@ -5,7 +5,7 @@
 #include "src/6BC0.h"
 #include "src/11BA0.h"
 
-void func_84100020(s16 arg0, s16 arg1, s16 arg2);
+void AnimateRectangle(s16 arg0, s16 arg1, s16 arg2);
 void func_84100288(s16 arg0);
 void func_841003F0(void);
 void func_8410048C(FramebufferImage* arg0, s16 arg1, s16 arg2);

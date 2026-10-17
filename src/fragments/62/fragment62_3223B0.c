@@ -1182,7 +1182,7 @@ void func_8433A954(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.4f);
     func_8140AD8C(arg0, 2.5f);
     func_8140A52C(arg0, RandomRangeSigned(0x2000), RandomRangeSigned(0x2000), 0);
-    func_8140BAC8(arg0, 0xFF, 0xFF, 0xFF);
+    Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140D78C(arg0);
     func_8140BCA8(arg0, sp2E * 4);
     func_81408348(arg0);

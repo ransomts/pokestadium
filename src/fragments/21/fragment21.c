@@ -2055,7 +2055,7 @@ void func_86F012B8(void) {
 }
 
 void func_86F0132C(void) {
-    D_87906054 = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
 
     miniCameraXRot = 0x1600;
     miniCameraYRot = 0;
@@ -2272,14 +2272,14 @@ void func_86F01C40(void) {
         case 3:
             func_86F01904();
 
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             func_87801F48(2, 0x19, 0xA6);
             func_878018F4(0x63, 0xAB, D_86F0B100);
             func_87801AC0(0x8B, 0xAB, D_86F0B128);
             func_87801824(0x74, 0xC6, D_86F0B0D8);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
 
         case 5:
@@ -2299,7 +2299,7 @@ void func_86F01C40(void) {
 void fixSandshrewMinigameHUD(void) {
     s32 i;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, miniHudTransparency);
 
     for (i = 0; i < 4; i++) {
@@ -2313,7 +2313,7 @@ void fixSandshrewMinigameHUD(void) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_86F01EB4(void) {

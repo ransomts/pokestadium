@@ -143,8 +143,8 @@ static s16 D_83303264[2] = { 0x98, 0x4C };
 static s16 D_83303268[2] = { 0x7A, 0x3D };
 static s32 D_8330326C[] = { 5, 3, 3, 0, 0, 7, 8 };
 
-void func_83300020(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+void DrawPanelFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg7);
 
     Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, &D_300BE40, 8, 0);
@@ -156,14 +156,14 @@ void func_83300020(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 
     Gfx_DrawTextureRect(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
     Gfx_DrawTextureRect((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F498);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-unk_D_83407B38* func_83300300(void) {
+unk_D_83407B38* GetActiveMenu(void) {
     unk_D_83407B38* ret;
 
     if (D_83407AE4 == 0) {
@@ -174,7 +174,7 @@ unk_D_83407B38* func_83300300(void) {
     return ret;
 }
 
-void func_8330032C(void) {
+void UpdateMenuItemStates(void) {
     unk_D_833031B4* ptr;
     s32 sp28;
     s32 i;
@@ -260,7 +260,7 @@ s32 func_833005CC(void) {
     return sp1C;
 }
 
-s32 func_83300628(void) {
+s32 ProcessMenuInput(void) {
     s32 sp2C;
     s32 sp28;
     unk_D_833031B4* sp24;
@@ -272,7 +272,7 @@ s32 func_83300628(void) {
     sp20 = D_83407AE8;
     sp1C = D_83402E28;
 
-    if (Cam_FindActiveIndex(func_83300300()->unk_20, 0x25) != -1) {
+    if (Cam_FindActiveIndex(GetActiveMenu()->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -312,7 +312,7 @@ s32 func_83300628(void) {
 
     if (sp20 != D_83407AE8) {
         D_833033A0 = 0;
-        func_8330032C();
+        UpdateMenuItemStates();
     }
 
     if (sp2C != 0) {
@@ -334,7 +334,7 @@ s32 func_83300628(void) {
 
                 case 4:
                     D_83407AE4 ^= 1;
-                    func_8330032C();
+                    UpdateMenuItemStates();
                     break;
 
                 case 5:
@@ -364,13 +364,13 @@ s32 func_83300628(void) {
     return sp28;
 }
 
-void func_83300938(void) {
+void ResetMenuState(void) {
     D_833032E0 = 0;
     D_833032E4 = 1;
     func_834006BC(&D_83407B30);
 }
 
-s32 func_83300970(unk_D_83407B38* arg0) {
+s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
     s32 sp4C;
     s32 sp48;
     s32 sp44;
@@ -454,7 +454,7 @@ s32 func_83300970(unk_D_83407B38* arg0) {
                     sp38->unk_00 = 0;
                 } else {
                     PlaySoundEffect(3);
-                    func_83300938();
+                    ResetMenuState();
                 }
             }
             arg0->unk_04 = -1;
@@ -515,7 +515,7 @@ void func_83300D80(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, 
     Gfx_DrawTextureRect(arg1 + temp_fv1_2, arg2 - temp_fa0_2, temp_fv1, temp_fa0, 0, 0, 1024.0f / arg5, 1024.0f / arg6, 0);
 }
 
-void func_83301090(void) {
+void DrawMenuScreen(void) {
     static s16 D_83303288 = 0;
     static s16 D_8330328C = 0x3200;
 
@@ -538,15 +538,15 @@ void func_83301090(void) {
         tmp = (D_833031B4[i].unk_12 == 0) ? 0xFF : 0x40;
 
         if (D_833031B4[i].unk_10 == 1) {
-            func_83300020(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x1E, 0x82, tmp);
+            DrawPanelFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x1E, 0x82, tmp);
         } else {
-            func_83300020(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x64, 0x1E, tmp);
+            DrawPanelFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x64, 0x1E, tmp);
         }
     }
 
-    func_833023D8(func_83300300());
+    DrawSelectionHighlight(GetActiveMenu());
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 7; i++) {
         temp_t0 = -D_833031B4[i].unk_04 + 0xC;
@@ -587,7 +587,7 @@ void func_83301090(void) {
     Text_SetupDL();
 }
 
-void func_833013C4(s32 arg0, s32 arg1, s32 arg2) {
+void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp3C;
     UNUSED s32 pad;
     char* sp34;
@@ -610,7 +610,7 @@ void func_833013C4(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (sp20->unk_00 != NULL) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_8340144C(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
     }
@@ -626,7 +626,7 @@ void func_833013C4(s32 arg0, s32 arg1, s32 arg2) {
     Text_SetupDL();
 }
 
-void func_833015C8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     unk_D_833031B4* temp_v1 = &D_833031B4[D_83402E28];
     char* sp18 = NULL;
 
@@ -684,7 +684,7 @@ void func_833015C8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_833017BC(s32 arg0, s32 arg1) {
+void InitializeMenuState(s32 arg0, s32 arg1) {
     unk_D_83407B38* temp_v0_2;
     unk_D_86002F58_004_000_010* sp30;
 
@@ -722,14 +722,14 @@ void func_833017BC(s32 arg0, s32 arg1) {
     }
 
     func_83400524();
-    func_8330032C();
+    UpdateMenuItemStates();
     Graph_InitRoots();
     sp30 = func_80019760(5);
     func_83401D68(&D_833032E8, 0x3C, 0x2D, 4, 2, sp30, D_8330339C, D_83407ABC, 4, 1);
     func_83402298(&D_83407B38, sp30, D_8330339C);
 
     if (D_833032E0 == 1) {
-        temp_v0_2 = func_83300300();
+        temp_v0_2 = GetActiveMenu();
         temp_v0_2->unk_04 = 0x400;
         temp_v0_2->unk_B0->unk_18 = &D_83403C60[D_83407B30.unk_04];
         temp_v0_2->unk_B0->unk_00 = 0;
@@ -771,7 +771,7 @@ void func_83301998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Co
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void func_83301D74(void) {
+void DrawBackground(void) {
     static Color_RGBA8 D_83303298 = { 0, 0, 0, 0xFF };
     static Color_RGBA8 D_8330329C = { 0, 0, 0, 0 };
     static s32 D_833032A0 = 0xBE;
@@ -791,7 +791,7 @@ void func_83301D74(void) {
         var_ra = 0x280;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetCombineLERP(gDisplayListHead++, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, 0, 0, 0, TEXEL0, ENVIRONMENT,
                       PRIMITIVE, TEXEL0, PRIMITIVE, 0, 0, 0, TEXEL0);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -803,16 +803,16 @@ void func_83301D74(void) {
 
     Gfx_DrawTextureRect(D_833032A0, 0, var_ra - D_833032A0, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPDisplayList(gDisplayListHead++, D_8006F4C0);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
     gDPFillRectangle(gDisplayListHead++, 0, 0, D_833032A0 - 1, 479);
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_83301998(D_833032A0, 0, D_833032A4 - D_833032A0, 0x1E0, &sp80, &sp7C);
 }
 
-void func_83302068(unk_D_83407B38* arg0) {
+void DrawPokemonGrid(unk_D_83407B38* arg0) {
     s32 temp_fp;
     s32 temp_s4;
     s32 temp_s5;
@@ -873,7 +873,7 @@ void func_83302068(unk_D_83407B38* arg0) {
     }
 }
 
-void func_833023D8(unk_D_83407B38* arg0) {
+void DrawSelectionHighlight(unk_D_83407B38* arg0) {
     unk_func_80031270* temp_s0;
     s32 sp58;
     s32 sp54;
@@ -894,12 +894,12 @@ void func_833023D8(unk_D_83407B38* arg0) {
 
     switch (D_833032E0) {
         case 0:
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             func_83401B48(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
             break;
 
         case 2:
-            gSPDisplayList(gDisplayListHead++, D_8006F518);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             if (arg0->unk_04 == -1) {
                 var_v0 = 0;
@@ -919,7 +919,7 @@ void func_833023D8(unk_D_83407B38* arg0) {
 
         case 1:
             if ((arg0->unk_04 != -1) && (Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
-                gSPDisplayList(gDisplayListHead++, D_8006F518);
+                gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
                 if (D_83407AE4 == 0) {
                     var_a2 = (temp_s0->unk_04 * 2) + 0x18;
@@ -941,7 +941,7 @@ void func_8330267C(s32 arg0) {
     sp2C = func_83402374(0x3C);
     temp_v1 = ((0x186 - MeasureTextWidth(0, 0, sp2C)) / 2) + 0xD5;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(temp_v1 - 0x20, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
     Text_ResetState();
@@ -951,21 +951,21 @@ void func_8330267C(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_8330277C(void) {
+void RenderFrame(void) {
     UNUSED s32 pad;
-    unk_D_83407B38* sp18 = func_83300300();
+    unk_D_83407B38* sp18 = GetActiveMenu();
 
     Stage_BeginDisplayList();
-    func_83301D74();
-    func_833013C4(0xD5, 0x24, D_833032E0);
-    func_83302068(sp18);
-    func_83301090();
+    DrawBackground();
+    DrawSubPanel(0xD5, 0x24, D_833032E0);
+    DrawPokemonGrid(sp18);
+    DrawMenuScreen();
 
     if ((D_833032E0 == 2) && (sp18->unk_04 == -1)) {
         func_8330267C(0x158);
     }
 
-    func_833015C8(sp18, 0xD5, 0x172);
+    DrawMessageBox(sp18, 0xD5, 0x172);
     func_834028D0(1);
     Stage_Advance();
 }
@@ -978,7 +978,7 @@ void func_83302820(unk_D_83407B38* arg0) {
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         PlaySoundEffect(0x29);
         var_a2 = 1;
-        func_8330032C();
+        UpdateMenuItemStates();
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         *temp_v1->unk_18 = D_833033A8;
         temp_v1->unk_00 = 0;
@@ -987,7 +987,7 @@ void func_83302820(unk_D_83407B38* arg0) {
     }
 
     if (var_a2 != 0) {
-        func_83300938();
+        ResetMenuState();
     }
 }
 
@@ -1124,7 +1124,7 @@ s32 func_83302B5C(void) {
             break;
 
         case 1:
-            temp_v0_2 = func_83300628();
+            temp_v0_2 = ProcessMenuInput();
             if (temp_v0_2 != 0) {
                 D_833032E4 = 8;
                 if (temp_v0_2 == 2) {
@@ -1148,7 +1148,7 @@ s32 func_83302B5C(void) {
 
         case 2:
         case 3:
-            if (func_83300970(func_83300300()) != 0) {
+            if (HandlePokemonGridInput(GetActiveMenu()) != 0) {
                 D_833032E4 = 8;
                 func_80007990(1);
                 func_80006CB4(1);
@@ -1156,7 +1156,7 @@ s32 func_83302B5C(void) {
             break;
 
         case 4:
-            func_83302820(func_83300300());
+            func_83302820(GetActiveMenu());
             break;
 
         case 5:
@@ -1213,11 +1213,11 @@ void func_83302E6C(void) {
                 break;
 
             default:
-                func_83401FD0(func_83300300());
+                func_83401FD0(GetActiveMenu());
                 break;
         }
 
-        func_8330277C();
+        RenderFrame();
         func_834020D8();
     } while (func_83302B5C() != 0);
 }
@@ -1258,7 +1258,7 @@ void func_83302FD8(s32 arg0, s32 arg1) {
     D_8330339C = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
     func_83402340();
-    func_833017BC(arg0, arg1);
+    InitializeMenuState(arg0, arg1);
     Stage_Set(sp24);
     func_83302E6C();
     Stage_Destroy();

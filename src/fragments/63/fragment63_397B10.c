@@ -907,7 +907,7 @@ void func_84B04798(unk_D_84B259A8* arg0) {
 
     if (arg0->unk_20->unk_024.x >= 416.0f) {
         for (i = 0; i < 17; i++) {
-            func_84B00404(&arg0->unk_20[i]);
+            GraphNode_Reset(&arg0->unk_20[i]);
         }
         arg0->unk_00 = 0;
     }
@@ -1371,12 +1371,12 @@ void func_84B05CE0(s32 arg0) {
     FramebufferImage_Init(&sp40, 0, 2, 0x40, 0x40, arg0);
     Gfx_SetupFrameBuffer(&gDisplayListHead, &sp40);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 50, 20, 160);
 
     Gfx_DrawSpriteI4(0, 0, 0x40, 0x40, sp3C, 0x40, 0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_84B05DD0(unk_D_84B259E8* arg0) {
@@ -1384,7 +1384,7 @@ void func_84B05DD0(unk_D_84B259E8* arg0) {
 
     for (i = 0; i < 4; i++) {
         GraphNode_ClearCallback(&arg0->unk_08[i + 4]);
-        func_84B00404(&arg0->unk_08[i + 12]);
+        GraphNode_Reset(&arg0->unk_08[i + 12]);
         GraphNode_InitChild(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
         arg0->unk_08[i + 4].unk_01E.x = 0;
         arg0->unk_08[i + 4].unk_000.unk_14 = arg0;
@@ -1418,7 +1418,7 @@ void func_84B05F18(unk_D_84B259E8* arg0) {
 
     if (arg0->unk_01 == 0xA) {
         for (i = 0; i < 4; i++) {
-            func_84B00404(&arg0->unk_08[4 + i]);
+            GraphNode_Reset(&arg0->unk_08[4 + i]);
         }
         arg0->unk_01 = 0;
         arg0->unk_00 = 0;
@@ -1456,7 +1456,7 @@ void func_84B05FCC(unk_D_84B259E8* arg0) {
             Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x208], 0x40, 0x200000);
             Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x1008], 0x40, 0x200000);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F630);
+            gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         }
 
         arg0->unk_01 = 0;
@@ -1548,7 +1548,7 @@ void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
         Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, arg0->unk_10[arg1] + 0x1008, 0x40, 0x200000);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if ((gBattleContext.unk_0002 < 9) || (arg1 == 0)) {
         s32 sp34 = MeasureTextWidth(2, 0, arg2);

@@ -198,9 +198,9 @@ void func_86B010FC(void);
 void func_86B0111C(void);
 s32 BattleState_Handle18(void);
 
-u16 func_86B01320(s32);
+u16 Math_RandomU16Range(s32);
 Vec3f* func_86B01404(Vec3f*, Vec3f*);
-void func_86B0145C(f32*, f32, f32);
+void Math_ApproachFloat(f32*, f32, f32);
 
 u16 func_86B01670(unk_D_86002F34_00C* arg0, unk_D_86002F58_004_000* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);
 void func_86B01898(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);

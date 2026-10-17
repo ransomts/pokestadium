@@ -12,23 +12,23 @@ typedef struct {
 } Keyframe;  // size = 0x04
 
 // .bss
-static s32 D_81004B70;
+static s32 gFragment31_Tex0Counter;
 static u8 pad_D_81004B78[0x8];
-static s32 D_81004B80;
+static s32 gFragment31_Tex1Counter;
 static u8 pad_D_81004B88[0x8];
-static s32 D_81004B90;
+static s32 gFragment31_Tex2Counter;
 static u8 pad_D_81004B98[0x8];
-static s32 D_81004BA0;
+static s32 gFragment31_Tex3Counter;
 static u8 pad_D_81004BA8[0x8];
-static s32 D_81004BB0;
+static s32 gFragment31_NumberDrawPhase;
 static char D_81004BB8[0x28];
 
-void func_81002DC0(Gfx* gfx, u16* arg1, u8* arg2) {
+void Fragment31_LoadTexture0(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTLUT_pal256(gfx++, arg1);
-    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[0] * 4) & ~0x1F) + ((D_81004B70 & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[0] * 4) & ~0x1F) + ((gFragment31_Tex0Counter & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
 }
 
@@ -39,23 +39,23 @@ void func_81002F38(s32 arg0, DisplayListState* state) {
     addresses = state->addresses;
     switch (arg0) {
     case 0:
-        D_81004B70 = 0;
+        gFragment31_Tex0Counter = 0;
         return;
     case 2:
         gfx = GfxAlloc(0xA0);
         state->gfx = gfx;
-        func_81002DC0(gfx, addresses->segments[0], addresses->segments[1]);
-        D_81004B70 += 1;
+        Fragment31_LoadTexture0(gfx, addresses->segments[0], addresses->segments[1]);
+        gFragment31_Tex0Counter += 1;
         return;
     }
 }
 
-void func_81002FC0(Gfx* gfx, u16* arg1, u8* arg2) {
+void Fragment31_LoadTexture1(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTLUT_pal256(gfx++, arg1);
-    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[1] * 4) & ~0x1F) + ((D_81004B80 & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[1] * 4) & ~0x1F) + ((gFragment31_Tex1Counter & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
 }
 
@@ -66,23 +66,23 @@ void func_81003138(s32 arg0, DisplayListState* state) {
     addresses = state->addresses;
     switch (arg0) {                                 /* irregular */
     case 0:
-        D_81004B80 = 0;
+        gFragment31_Tex1Counter = 0;
         return;
     case 2:
         gfx = GfxAlloc(0xA0);
         state->gfx = gfx;
-        func_81002FC0(gfx, addresses->segments[0], addresses->segments[1]);
-        D_81004B80 += 1;
+        Fragment31_LoadTexture1(gfx, addresses->segments[0], addresses->segments[1]);
+        gFragment31_Tex1Counter += 1;
         return;
     }
 }
 
-void func_810031C0(Gfx* gfx, u16* arg1, u8* arg2) {
+void Fragment31_LoadTexture2(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTLUT_pal256(gfx++, arg1);
-    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[2] * 4) & ~0x1F) + ((D_81004B90 & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[2] * 4) & ~0x1F) + ((gFragment31_Tex2Counter & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
 }
 
@@ -93,23 +93,23 @@ void func_81003338(s32 arg0, DisplayListState* state) {
     addresses = state->addresses;
     switch (arg0) {                                 /* irregular */
     case 0:
-        D_81004B90 = 0;
+        gFragment31_Tex2Counter = 0;
         return;
     case 2:
         gfx = GfxAlloc(0xA0);
         state->gfx = gfx;
-        func_810031C0(gfx, addresses->segments[0], addresses->segments[1]);
-        D_81004B90 += 1;
+        Fragment31_LoadTexture2(gfx, addresses->segments[0], addresses->segments[1]);
+        gFragment31_Tex2Counter += 1;
         return;
     }
 }
 
-void func_810033C0(Gfx* gfx, u16* arg1, u8* arg2) {
+void Fragment31_LoadTexture3(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTLUT_pal256(gfx++, arg1);
-    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[3] * 4) & ~0x1F) + ((D_81004BA0 & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile(gfx++, (arg2 + ((D_862082A0[3] * 4) & ~0x1F) + ((gFragment31_Tex3Counter & 3) << 0xB)), G_IM_FMT_CI, G_IM_SIZ_8b, 0x20, 0x40, 0, 0, 0x20 - 1, 0x40 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
 }
 
@@ -120,18 +120,18 @@ void func_81003538(s32 arg0, DisplayListState* state) {
     addresses = state->addresses;
     switch (arg0) {                                 /* irregular */
     case 0:
-        D_81004BA0 = 0;
+        gFragment31_Tex3Counter = 0;
         return;
     case 2:
         gfx = GfxAlloc(0xA0);
         state->gfx = gfx;
-        func_810033C0(gfx, addresses->segments[0], addresses->segments[1]);
-        D_81004BA0 += 1;
+        Fragment31_LoadTexture3(gfx, addresses->segments[0], addresses->segments[1]);
+        gFragment31_Tex3Counter += 1;
         return;
     }
 }
 
-void func_810035C0(s32 arg0, DisplayListState* state) {
+void Fragment31_DrawAnimatedTile(s32 arg0, DisplayListState* state) {
     static u8 D_81004190 = 0;
     s32 temp_a1;
     s32 temp_a2;
@@ -149,7 +149,7 @@ void func_810035C0(s32 arg0, DisplayListState* state) {
     }
 }
 
-void func_81003678(s32 arg0, DisplayListState* state) {
+void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
     static u8 D_81004194 = 0;
     static u8 D_81004198 = 0;
     static Keyframe D_8100419C[6] = {
@@ -197,7 +197,7 @@ void func_81003678(s32 arg0, DisplayListState* state) {
     }
 }
 
-void func_810038D0(Gfx* gfx) {
+void Fragment31_DrawOverlay(Gfx* gfx) {
     s32 temp_a3;
 
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &D_810041D0;    }
@@ -212,10 +212,10 @@ void func_810038D0(Gfx* gfx) {
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF5680800;    _gfx->words.w1 = 0x94260;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xF2000000;    _gfx->words.w1 = 0x7C03C;    }
     gSPEndDisplayList(gfx++);
-    D_81004BB0 = 0;
+    gFragment31_NumberDrawPhase = 0;
 }
 
-s32 func_81003A24(s8* arg0) {
+s32 StringLength(s8* arg0) {
     s32 var_v1;
     s8 temp_t7;
     s8* var_v0;
@@ -231,7 +231,7 @@ s32 func_81003A24(s8* arg0) {
     return var_v1;
 }
 
-void func_81003A54(Gfx* gfx) {
+void Fragment31_DrawNumberDigit(Gfx* gfx) {
     u16 temp_v1;
     u8 sp4D;
     s32 pad[4];
@@ -242,7 +242,7 @@ void func_81003A54(Gfx* gfx) {
     s32 sp2C;
 
     temp_t0 = D_800AF770[var_v0];
-    switch (D_81004BB0) {
+    switch (gFragment31_NumberDrawPhase) {
     case 0:
         sp4D = (((s32) (temp_t0 + 1) / 100) + 0x10) & 0xFF;
         break;
@@ -256,9 +256,9 @@ void func_81003A54(Gfx* gfx) {
         {
         sp34 = GetMessageString(0, 0, D_8267E760, temp_t0);
         sprintf(D_81004BB8, "%s     ", sp34);
-        temp_v1 = D_81004BB0 - 3;
+        temp_v1 = gFragment31_NumberDrawPhase - 3;
         sp4D = GetCharIndexFromFontTables((u8) D_81004BB8[temp_v1]);
-        sp2C = 0xA - func_81003A24((s8*)sp34);
+        sp2C = 0xA - StringLength((s8*)sp34);
         sp30 = GfxAlloc(sizeof(Mtx));
         guTranslate(sp30, (f32) sp2C * 32.0f, 0.0f, 0.0f);
         gSPMatrix(gfx++, sp30, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
@@ -267,16 +267,16 @@ void func_81003A54(Gfx* gfx) {
     }
     gDPLoadTextureTile(gfx++, Util_ConvertAddrToVirtAddr(D_3000000 + ((sp4D & 0xF) << 4) + ((((sp4D & 0xF0) >> 4) << 4) * 256)), G_IM_FMT_IA, G_IM_SIZ_8b, 256, 17, 0, 0, 16, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
-    D_81004BB0++;
+    gFragment31_NumberDrawPhase++;
 }
 
-void func_81003CF0(s32 arg0, DisplayListState* state) {
+void Fragment31_CreateOverlay(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
         gfx = GfxAlloc(0xF0);
         state->gfx = gfx;
-        func_810038D0(gfx);
+        Fragment31_DrawOverlay(gfx);
     }
 }
 
@@ -286,6 +286,6 @@ void func_81003D2C(s32 arg0, DisplayListState* state) {
     if (arg0 == 2) {
         gfx = GfxAlloc(0xA0);
         state->gfx = gfx;
-        func_81003A54(gfx);
+        Fragment31_DrawNumberDigit(gfx);
     }
 }

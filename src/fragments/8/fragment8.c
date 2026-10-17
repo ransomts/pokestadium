@@ -454,7 +454,7 @@ void func_86200940(s32 arg0) {
 
     Text_SetupDL();
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == 0) {
         func_87801C8C(0x56, 0xAC, D_86203CC4);

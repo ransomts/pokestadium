@@ -124,7 +124,7 @@ s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     if (arg0->unk_3C != 255.0f) {
         temp_s2->unk_24.fovy = arg0->unk_3C;
     } else {
-        func_86B0145C(&temp_s2->unk_24.fovy, 30.0f, 0.06f);
+        Math_ApproachFloat(&temp_s2->unk_24.fovy, 30.0f, 0.06f);
     }
 
     func_80010354(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);

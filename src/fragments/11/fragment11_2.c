@@ -4,14 +4,14 @@
 #include "src/fragments/2/fragment2.h"
 #include "src/fragments/5/fragment5.h"
 
-static Vtx D_865091D0[] = {
+static Vtx gHealthBarVertices[] = {
     VTX(-1, 545, -834, 0, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(219, 545, -834, 1024, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(219, 764, -834, 1024, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(-1, 764, -834, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
 
-static Gfx D_86509210[] = {
+static Gfx gHealthBarSetupDL[] = {
     gsDPPipeSync(),
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPSetCombineMode(G_CC_DECALRGB, G_CC_PASS2),
@@ -19,71 +19,71 @@ static Gfx D_86509210[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_86509238[] = {
-    gsSPVertex(D_865091D0, 4, 0),
+static Gfx gHealthBarQuadDL[] = {
+    gsSPVertex(gHealthBarVertices, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 
-s32 D_86509250 = 0;
-s32 D_86509254 = 0;
-static u32* D_86509258[] = {
+s32 gHealthBarPaletteIndex = 0;
+s32 gHealthBarMode = 0;
+static u32* gHealthBarPalettes[] = {
     HealthBarPalette0, HealthBarPalette1, HealthBarPalette2, HealthBarPalette3, HealthBarPalette4,
 };
 
 const char D_865092C0[] = "%d : TIME = %d\n";
 
-static unk_func_80011B94* D_8650AD80;
-u8 D_8650AD84;
-u8 D_8650AD85;
+static unk_func_80011B94* gHealthBarNode;
+u8 gHealthBarTimer;
+u8 gHealthBarDuration;
 
-void func_865029C0(void) {
-    switch (D_86509254) {
+void HealthBar_Init(void) {
+    switch (gHealthBarMode) {
         case 0:
-            D_86509250 = func_87B00050(2) + 3;
+            gHealthBarPaletteIndex = func_87B00050(2) + 3;
             break;
 
         case 1:
-            D_86509250 = 4;
+            gHealthBarPaletteIndex = 4;
             break;
 
         case 2:
-            D_86509250 = 3;
+            gHealthBarPaletteIndex = 3;
             break;
     }
 
-    D_8650AD84 = 0;
-    D_8650AD85 = (func_87B00050(4) * 0xF) + 0x1E;
+    gHealthBarTimer = 0;
+    gHealthBarDuration = (func_87B00050(4) * 0xF) + 0x1E;
 
-    if (D_86509254 != 0) {
+    if (gHealthBarMode != 0) {
         PlaySoundEffect(0x11);
     }
 }
 
-void func_86502A68(void) {
+void HealthBar_BuildDisplayList(void) {
     Gfx* sp1C;
     Mtx* sp18;
 
     sp1C = GfxAlloc(sizeof(Gfx) * 16);
     sp18 = GfxAlloc(sizeof(Mtx) * 1);
 
-    D_8650AD80->unk_18 = sp1C;
+    gHealthBarNode->unk_18 = sp1C;
     guScale(sp18, 0.1f, 0.1f, 0.1f);
 
-    gSPDisplayList(sp1C++, D_86509210);
-    gDPLoadTextureBlock(sp1C++, D_86509258[D_86509250], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
+    gSPDisplayList(sp1C++, gHealthBarSetupDL);
+    gDPLoadTextureBlock(sp1C++, gHealthBarPalettes[gHealthBarPaletteIndex], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPMatrix(sp1C++, sp18, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(sp1C++, D_86509238);
+    gSPDisplayList(sp1C++, gHealthBarQuadDL);
     gSPEndDisplayList(sp1C++);
 }
 
-void func_86502BB8(void) {
+void HealthBar_CreateNode(void) {
     MainPoolState* sp1C;
 
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    D_8650AD80 = func_80011B94(sp1C, NULL, 1, NULL);
-    GraphNode_AddChild(&gGraphRoot0, &D_8650AD80->unk_00);
+    gHealthBarNode = func_80011B94(sp1C, NULL, 1, NULL);
+    GraphNode_AddChild(&gGraphRoot0, &gHealthBarNode->unk_00);
     mem_pool_resize_block(sp1C);
 }

@@ -55,7 +55,7 @@ Gfx D_8006F470[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F498[] = {
+Gfx gPrefDL_Fill[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2),
@@ -80,7 +80,7 @@ Gfx D_8006F4E0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F518[] = {
+Gfx gPrefDL_Border[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -134,7 +134,7 @@ Gfx D_8006F608[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F630[] = {
+Gfx gPrefDL_End[] = {
     gsDPPipeSync(),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetAlphaCompare(G_AC_NONE),
@@ -314,7 +314,7 @@ void DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, 
 }
 
 void DrawPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (func_80007A58() != 0) {
         DrawWindowBorder(arg0, arg1, arg2, arg3);
@@ -326,7 +326,7 @@ void DrawPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
         FillRectWithColor(arg0, arg1, arg2, arg3, arg4);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
@@ -338,7 +338,7 @@ void DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4,
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (func_80007A58() != 0) {
         DrawWindowBorder(arg0, arg1, arg2, arg3);
@@ -346,11 +346,11 @@ void DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4,
         DrawWindowBorderThin(arg0, arg1, arg2, arg3);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawPanelAlt(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (func_80007A58() != 0) {
         func_8001FB40(arg0, arg1, arg2, arg3);
@@ -362,11 +362,11 @@ void DrawPanelAlt(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
         FillRectWithColorInset(arg0, arg1, arg2, arg3, arg4);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawSimplePanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (func_80007A58() != 0) {
         DrawWindowBorder(arg0, arg1, arg2, arg3);
@@ -374,7 +374,7 @@ void DrawSimplePanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         DrawWindowBorderThin(arg0, arg1, arg2, arg3);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawStatusIcon(s32 arg0, s32 arg1) {
@@ -386,7 +386,7 @@ void DrawStatusIcon(s32 arg0, s32 arg1) {
         func_8001D560(arg0, arg1, 0xC, 0xA, D_1003750, D_1003890, 0x10, 0x100000);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void AnimateIconOffset(s16 arg0, s16 arg1) {
@@ -569,7 +569,7 @@ void DrawBadgeIcon(s32 arg0, s32 arg1, s32 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 0x13) << 2, (arg1 + 0x13) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawHealthBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
@@ -615,7 +615,7 @@ void DrawHealthBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
                             (arg1 + 0xB) << 2, G_TX_RENDERTILE, 0, 0, 0, 0x0400);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void DrawExpBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -631,7 +631,7 @@ void DrawExpBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         spCC = D_1003EA0;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_1003DB0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 5, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -658,7 +658,7 @@ void DrawExpBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                             ((arg0 + sp14) + temp_lo + 0x10) << 2, (arg1 + 5) << 2, G_TX_RENDERTILE, 0, 0, 0, 0x0400);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_80021920(void) {

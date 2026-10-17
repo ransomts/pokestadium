@@ -47,7 +47,7 @@ void SnapSelect_DrawPrompt(void) {
 
     func_83401110(0x48, 0x28, 0x208, &sp28, &sp24);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     SnapSelect_DrawHeader(0x28, 0x20);
     Text_ResetState();

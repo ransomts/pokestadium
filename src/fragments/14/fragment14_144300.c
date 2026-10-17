@@ -28,7 +28,7 @@ typedef struct unk_D_86806E20 {
     /* 0x04 */ s16 height;
 } unk_D_86806E20; // size = 0x8
 
-static u32 D_86806CD0[] = {
+static u32 gSushiGoRoundGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFF0000, 0x00640064, 0x00640000, 0x05000000,
@@ -58,7 +58,7 @@ static unk_D_86806E20* D_86806DF0[] = { &D_86806DA0, &D_86806DB0, &D_86806DB8, &
 static unk_D_86806E20* D_86806E08[] = {
     &D_86806DA0, &D_86806DB0, &D_86806DB8, &D_86806DB8, &D_86806DA8, &D_86806D88,
 };
-static unk_D_86806E20** D_86806E20[] = { NULL, D_86806DC0, D_86806DCC, D_86806DDC, D_86806DF0, D_86806E08 };
+static unk_D_86806E20** gPanelTextureSets[] = { NULL, D_86806DC0, D_86806DCC, D_86806DDC, D_86806DF0, D_86806E08 };
 static unk_func_87801684 D_86806E38[] = {
     { 0x0303ED80, 0xE }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
@@ -115,7 +115,7 @@ void func_86800020(s32 arg0) {
     }
 }
 
-void func_86800070(void) {
+void ReadAllControllers(void) {
     Controller* temp_v0;
 
     Cont_StartReadInputs();
@@ -147,7 +147,7 @@ void func_86800070(void) {
     if (1) {}
 }
 
-Gfx* func_868001A8(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     unk_D_86806E20** var_a3;
     s32 var_v0;
     s32 var_v1;
@@ -160,7 +160,7 @@ Gfx* func_868001A8(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         s32 sp34 = var_v1;
 
         if (arg4 < 5) {
-            var_a3 = D_86806E20[arg4];
+            var_a3 = gPanelTextureSets[arg4];
             arg4 = 0;
         } else {
             var_a3 = &D_86806E08[0];
@@ -191,19 +191,19 @@ Gfx* func_868001A8(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return arg0;
 }
 
-void func_868004F4(void) {
+void RenderPanelColumns(void) {
     s32 i;
     Gfx* var_s4 = gDisplayListHead;
     unk_D_86807558* ptr;
 
     for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
-        var_s4 = func_868001A8(var_s4, i / 2, D_86806D78[i], D_86806D80[i], ptr->unk_02A);
+        var_s4 = DrawTextureStackColumn(var_s4, i / 2, D_86806D78[i], D_86806D80[i], ptr->unk_02A);
     }
 
     gDisplayListHead = var_s4;
 }
 
-void func_868005A8(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4) {
+void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4) {
     Color_RGB8* var_v0;
     Color_RGB8* var_v1;
     f32 temp_fv0;
@@ -240,7 +240,7 @@ void func_868005A8(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 a
     }
 }
 
-void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
+void DrawSushiItem(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
     s16 sp36;
     s16 sp34;
     s16 sp32;
@@ -258,7 +258,7 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
     }
 }
 
-void func_86800B38(void) {
+void RenderSushiGoRoundUI(void) {
     s32 pad1;
     s32 pad2;
     s32 i;
@@ -268,10 +268,10 @@ void func_86800B38(void) {
     Color_RGB8 spB4 = D_86806F40;
     s32 var_v0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (D_8680753C & 2) {
-        func_868004F4();
+        RenderPanelColumns();
         for (i = 0; i < 4; i++) {
             if ((i == 0) || (i == 3)) {
                 var_v0 = -0x18;
@@ -291,7 +291,7 @@ void func_86800B38(void) {
         func_878021B4(0x1E, 0x17);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (D_8680753C & 1) {
         DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
@@ -385,7 +385,7 @@ void func_86800B38(void) {
                             Text_SetPrimColor(D_86806F44[i].r, D_86806F44[i].g, D_86806F44[i].b,
                                           ptr->unk_040.unk_18);
                         } else {
-                            func_868005A8(spD8, D_86806F68, 4, 4, 0);
+                            InterpolateColors(spD8, D_86806F68, 4, 4, 0);
                             Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                             Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
@@ -408,8 +408,8 @@ void func_86800B38(void) {
                 spD0[0] = spB4;
                 spD0[1] = D_86806F44[i];
 
-                func_868005A8(&spB8[0][i], spD0, 2, 0x1E, 0);
-                func_868005A8(&spB8[1][i], spD0, 2, 0x1E, 1);
+                InterpolateColors(&spB8[0][i], spD0, 2, 0x1E, 0);
+                InterpolateColors(&spB8[1][i], spD0, 2, 0x1E, 1);
 
                 if ((i / 2) != 0) {
                     var_s7 = -0x32;
@@ -425,9 +425,9 @@ void func_86800B38(void) {
 
                 if ((ptr->unk_028 == 1) && (ptr->unk_018 == ptr->unk_01C) &&
                     (ptr->unk_018 > 0)) {
-                    func_868005A8(&spD8, &D_86806F50, 3, 4, 0);
+                    InterpolateColors(&spD8, &D_86806F50, 3, 4, 0);
                     Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
-                    func_868005A8(&spD8, &D_86806F5C, 3, 4, 0);
+                    InterpolateColors(&spD8, &D_86806F5C, 3, 4, 0);
                     Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
                 } else {
                     Text_SetEnvColor(spB8[0][i].r, spB8[0][i].g, spB8[0][i].b, 0xFF);
@@ -445,7 +445,7 @@ void func_86800B38(void) {
     Text_SetupDL();
 
     if (D_8680753C & 1) {
-        gSPDisplayList(gDisplayListHead++, D_8006F518);
+        gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 8; i++) {
             if ((i % 4) >= 2) {
@@ -455,7 +455,7 @@ void func_86800B38(void) {
             }
 
             pad1 = i % 4;
-            func_8680091C(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
+            DrawSushiItem(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
         }
 
         func_87801D5C(0, 0x5A, 0xA8, D_86806E88);
@@ -465,7 +465,7 @@ void func_86800B38(void) {
     }
 }
 
-void func_86801644(void) {
+void RenderSushiGoRoundFrame(void) {
     Stage_BeginDisplayList();
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
@@ -477,7 +477,7 @@ void func_86801644(void) {
     func_87901C98();
 
     if (D_8780FC98 == 0) {
-        func_86800B38();
+        RenderSushiGoRoundUI();
     }
 
     if (D_8680753E == 0) {
@@ -491,7 +491,7 @@ void func_86801644(void) {
     Stage_Advance();
 }
 
-void func_86801700(void) {
+void HandleSushiGoRoundInput(void) {
     func_878001E8(0x80);
 
     if (func_80007604() == 0) {
@@ -518,7 +518,7 @@ void func_86801700(void) {
     }
 }
 
-s32 func_86801840(void) {
+s32 IsTimerExpired(void) {
     s32 var_v1 = 0;
 
     if (D_8680753E == 0) {
@@ -531,7 +531,7 @@ s32 func_86801840(void) {
     return var_v1;
 }
 
-s32 func_86801884(void) {
+s32 UpdateSushiGoRoundState(void) {
     s32 sp1C;
     s32 sp18;
     unk_D_86807558* ptr;
@@ -557,7 +557,7 @@ s32 func_86801884(void) {
 
     switch (D_8680750C) {
         case 0:
-            func_86801700();
+            HandleSushiGoRoundInput();
             break;
 
         case 1:
@@ -589,7 +589,7 @@ s32 func_86801884(void) {
                 }
             }
 
-            if (func_86801840() != 0) {
+            if (IsTimerExpired() != 0) {
                 if (D_8680753E == 0) {
                     D_8680750C = 4;
                     D_86807540 = 0x1E;
@@ -659,7 +659,7 @@ s32 func_86801884(void) {
     return sp1C;
 }
 
-void func_86801CA8(void) {
+void RunSushiGoRound(void) {
     s32 var_s0;
 
     Stage_AdvanceN(5);
@@ -668,15 +668,15 @@ void func_86801CA8(void) {
 
     var_s0 = 1;
     while (var_s0 != 0) {
-        func_86800070();
+        ReadAllControllers();
         Fragment2_1_Update();
         func_86805CB4();
         func_86806BF0();
         func_86805974();
         func_87901C20();
-        func_86801644();
+        RenderSushiGoRoundFrame();
 
-        if (func_86801884() != 0) {
+        if (UpdateSushiGoRoundState() != 0) {
             var_s0 = 0;
         }
 
@@ -684,12 +684,12 @@ void func_86801CA8(void) {
     }
 }
 
-void func_86801D48(void) {
+void InitSushiGoRound(void) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
     sp18 = state_pool_try_init(main_pool_get_available(), 0);
-    D_86807500 = (GraphNode*)process_geo_layout(sp18, &D_86806CD0);
+    D_86807500 = (GraphNode*)process_geo_layout(sp18, &gSushiGoRoundGeoLayout);
 
     mem_pool_resize_block(sp18);
     Graph_InitRoots();
@@ -715,7 +715,7 @@ void func_86801D48(void) {
     func_86805108(0xF, 2);
 }
 
-void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
+void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
@@ -737,9 +737,9 @@ void func_86801E2C(s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_87000000 & 0x0FF00000) >> 0x14) - 0x10, sushi_go_round_ROM_START, order_select_ui_ROM_START);
 
-    func_86801D48();
+    InitSushiGoRound();
     Stage_Set(sp24);
-    func_86801CA8();
+    RunSushiGoRound();
     Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();

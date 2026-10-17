@@ -133,14 +133,14 @@ unk_D_8140E720* func_8432D9BC(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
         func_81408AF0(temp_v0);
         func_8000EB70(&temp_v0->unk_94, arg2, arg2, arg2);
         temp_v0->unk_1C = arg3;
-        func_814082B4(temp_v0, 0x108);
+        Particle_SetFlag(temp_v0, 0x108);
     }
     return temp_v0;
 }
 
 void func_8432DA64(unk_D_8140E720* arg0) {
     if (arg0->unk_14 != NULL) {
-        if (func_814082E8(arg0, 0x400) != 0) {
+        if (Particle_HasFlag(arg0, 0x400) != 0) {
             func_8432CD14(arg0->unk_14);
         } else {
             func_8432CBF8(arg0->unk_14);
@@ -152,7 +152,7 @@ void func_8432DAB8(unk_D_8140E720* arg0) {
     func_8432DA64(arg0);
     arg0->unk_18 = 0;
     func_81408158(arg0);
-    func_81407B04(arg0);
+    Particle_Free(arg0);
 }
 
 void func_8432DAEC(unk_D_8140E720* arg0) {
@@ -311,7 +311,7 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
 }
 
 void func_8432E0A4(unk_D_8140E720* arg0) {
-    if ((arg0->unk_10 == NULL) || (func_814082E8(arg0, 0x108) != 0)) {
+    if ((arg0->unk_10 == NULL) || (Particle_HasFlag(arg0, 0x108) != 0)) {
         D_8140E628.unk_00.x = 1.0f;
         D_8140E628.unk_00.y = 1.0f;
         D_8140E628.unk_00.z = 1.0f;
@@ -614,7 +614,7 @@ void func_8432EA60(u8 arg0, unk_D_84390010* arg1) {
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_D0 != 0) && (var_s0->unk_CA == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {
-            func_814082B4(var_s0, 0x1000);
+            Particle_SetFlag(var_s0, 0x1000);
             func_814081BC(var_s0);
         }
     }

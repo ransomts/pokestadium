@@ -3,21 +3,21 @@
 #include "src/stage_loader.h"
 #include "src/fragments/3/fragment3.h"
 
-static s16 D_8690B600;
-static s16 D_8690B602;
-static f32 D_8690B604;
+static s16 gCameraYaw;
+static s16 gCameraPitch;
+static f32 gCameraDistance;
 static s16 D_8690B608;
 static s16 D_8690B60A;
-static f32 D_8690B60C;
+static f32 gHorizontalDist;
 static f32 D_8690B610;
 static Vec3f D_8690B618;
 
-f32 func_86902230(Vec3f arg0, Vec3f arg1) {
+f32 ComputeDistance3D(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.y - arg0.y) + SQ(arg1.z - arg0.z));
 }
 
-f32 func_86902294(f32 arg0) {
-    f32 temp_fv1 = (D_8690B2F8.unk_00 + D_8690A708) * arg0;
+f32 ScaleCameraDistance(f32 arg0) {
+    f32 temp_fv1 = (D_8690B2F8.unk_00 + gCameraZoomOffset) * arg0;
 
     if (temp_fv1 > 400.0f) {
         return 400.0f;
@@ -25,112 +25,112 @@ f32 func_86902294(f32 arg0) {
     return temp_fv1;
 }
 
-f32 func_869022D8(Vec3f arg0, Vec3f arg1) {
+f32 ComputeDistanceXZ(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.z - arg0.z));
 }
 
 void func_8690232C(void) {
 }
 
-void func_86902334(void) {
-    D_87906054 = D_87906050->unk_00.unk_0C;
-    D_8690B600 = 0;
-    D_8690B602 = 0;
-    D_8690B604 = func_86902294(4.0f);
+void Camera_Init(void) {
+    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gCameraYaw = 0;
+    gCameraPitch = 0;
+    gCameraDistance = ScaleCameraDistance(4.0f);
 
     if (D_8690B2F8.unk_08 != 0.0f) {
-        D_87906054->unk_60.at.y = D_8690B2F8.unk_08;
+        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_08;
     } else {
-        D_87906054->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
     }
 
-    func_80010354(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, D_8690B604, D_8690B600, D_8690B602);
+    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
 
-    if (D_87906054->unk_60.eye.y < 12.0f) {
-        D_87906054->unk_60.eye.y = 12.5f;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
+        gMiniCameraPtr->unk_60.eye.y = 12.5f;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
     }
 
-    D_87906054->unk_24.near = 20.0f;
-    D_87906054->unk_24.far = 10000.0f;
-    D_87906054->unk_24.fovy = 40.0f;
-    D_8690A710->unk_008 = 40.0f;
+    gMiniCameraPtr->unk_24.near = 20.0f;
+    gMiniCameraPtr->unk_24.far = 10000.0f;
+    gMiniCameraPtr->unk_24.fovy = 40.0f;
+    gCameraParams->unk_008 = 40.0f;
 
     D_8690B610 = 0.0f;
 
-    Vec3f_Set(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
+    Vec3f_Set(&D_8690B618, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }
 
-void func_869024B4(void) {
+void Camera_UpdateZoomFromInput(void) {
     f32 temp_fv1;
 
     if (gPlayer2Controller->stickMag != 0.0f) {
         if (gPlayer2Controller->stickY >= 0.0f) {
-            D_8690A708 += gPlayer2Controller->stickMag / 400.0f;
+            gCameraZoomOffset += gPlayer2Controller->stickMag / 400.0f;
         } else {
-            D_8690A708 -= gPlayer2Controller->stickMag / 400.0f;
+            gCameraZoomOffset -= gPlayer2Controller->stickMag / 400.0f;
         }
 
         temp_fv1 = 10.0f - D_8690B2F8.unk_00;
-        if (D_8690A708 < temp_fv1) {
-            D_8690A708 = temp_fv1;
+        if (gCameraZoomOffset < temp_fv1) {
+            gCameraZoomOffset = temp_fv1;
         }
 
-        if (D_8690A708 > 60.0f) {
-            D_8690A708 = 60.0f;
+        if (gCameraZoomOffset > 60.0f) {
+            gCameraZoomOffset = 60.0f;
         }
     }
 
-    HAL_Printf(0x14, 0x14, "OFFSET %6.2f", D_8690A708);
+    HAL_Printf(0x14, 0x14, "OFFSET %6.2f", gCameraZoomOffset);
 }
 
-void func_869025BC(void) {
-    D_8690B600 = 0;
-    D_8690B602 = 0;
-    D_8690B604 = func_86902294(4.0f);
-    D_87906054->unk_60.at.x = 0.0f;
-    D_87906054->unk_60.at.z = 0.0f;
+void Camera_ResetPosition(void) {
+    gCameraYaw = 0;
+    gCameraPitch = 0;
+    gCameraDistance = ScaleCameraDistance(4.0f);
+    gMiniCameraPtr->unk_60.at.x = 0.0f;
+    gMiniCameraPtr->unk_60.at.z = 0.0f;
 
     if (D_8690B2F8.unk_08 != 0) {
-        D_87906054->unk_60.at.y = D_8690B2F8.unk_08;
+        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_08;
     } else {
-        D_87906054->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
     }
 
-    func_80010354(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, D_8690B604, D_8690B600, D_8690B602);
+    func_80010354(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
 
-    if (D_87906054->unk_60.eye.y < 12.0f) {
-        D_87906054->unk_60.eye.y = 12.5f;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
+        gMiniCameraPtr->unk_60.eye.y = 12.5f;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
     }
 
-    D_87906054->unk_24.near = 20.0f;
-    D_87906054->unk_24.far = 10000.0f;
-    D_87906054->unk_24.fovy = 40.0f;
-    D_8690A710->unk_008 = 40.0f;
+    gMiniCameraPtr->unk_24.near = 20.0f;
+    gMiniCameraPtr->unk_24.far = 10000.0f;
+    gMiniCameraPtr->unk_24.fovy = 40.0f;
+    gCameraParams->unk_008 = 40.0f;
     D_8690B610 = 0.0f;
 
-    Vec3f_Set(&D_8690B618, D_87906054->unk_60.at.x, D_87906054->unk_60.at.y, D_87906054->unk_60.at.z);
+    Vec3f_Set(&D_8690B618, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }
 
-s32 func_8690274C(void) {
-    if (D_8690B390.buttonPressed & 0x10) {
-        if (D_8690A710->unk_008 == 25.0f) {
-            D_8690A710->unk_008 = 40.0f;
+s32 Camera_ToggleFOV(void) {
+    if (gControllerInput.buttonPressed & 0x10) {
+        if (gCameraParams->unk_008 == 25.0f) {
+            gCameraParams->unk_008 = 40.0f;
         } else {
-            D_8690A710->unk_008 = 25.0f;
+            gCameraParams->unk_008 = 25.0f;
         }
     }
 
-    D_87906054->unk_24.fovy = func_800104AC(D_87906054->unk_24.fovy, D_8690A710->unk_008, 1.5f, 1.5f);
+    gMiniCameraPtr->unk_24.fovy = func_800104AC(gMiniCameraPtr->unk_24.fovy, gCameraParams->unk_008, 1.5f, 1.5f);
 
-    if (D_87906054->unk_24.fovy == D_8690A710->unk_008) {
+    if (gMiniCameraPtr->unk_24.fovy == gCameraParams->unk_008) {
         return 0;
     }
     return 1;
 }
 
-void func_86902814(Vec3f* arg0, MtxF* arg1) {
+void TransformVec3fByMtxF(Vec3f* arg0, MtxF* arg1) {
     f32 x = (arg1->mf[0][0] * arg0->x) + (arg1->mf[0][1] * arg0->y) + (arg1->mf[0][2] * arg0->z);
     f32 y = (arg1->mf[1][0] * arg0->x) + (arg1->mf[1][1] * arg0->y) + (arg1->mf[1][2] * arg0->z);
     f32 z = (arg1->mf[2][0] * arg0->x) + (arg1->mf[2][1] * arg0->y) + (arg1->mf[2][2] * arg0->z);
@@ -140,7 +140,7 @@ void func_86902814(Vec3f* arg0, MtxF* arg1) {
     arg0->z = z;
 }
 
-void func_86902890(s16 arg0) {
+void Camera_RotateAroundTarget(s16 arg0) {
     MtxF sp70;
     Vec3s sp68;
     Vec3f sp5C;
@@ -150,71 +150,71 @@ void func_86902890(s16 arg0) {
     UNUSED s32 pad2;
 
     Vec3f_Set(&sp38, 0, 0.0f, 0.0f);
-    Matrix_Decompose(&sp38, &D_87906054->unk_60.eye, &D_8690B60C, &D_8690B608, &D_8690B60A);
-    Vec3f_Set(&sp50, D_87906054->unk_60.at.x, 0.0f, D_87906054->unk_60.at.z);
+    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &D_8690B608, &D_8690B60A);
+    Vec3f_Set(&sp50, gMiniCameraPtr->unk_60.at.x, 0.0f, gMiniCameraPtr->unk_60.at.z);
     func_8000EB70(&sp68, 0, D_8690B60A + arg0, 0);
-    Vec3f_Set(&sp5C, D_8690A710->unk_004 * 4.0f, 0.0f, 0.0f);
-    Matrix_RotateTranslateScale(&sp70, &D_87906054->unk_60.at, &sp68);
-    func_86902814(&sp5C, &sp70);
+    Vec3f_Set(&sp5C, gCameraParams->unk_004 * 4.0f, 0.0f, 0.0f);
+    Matrix_RotateTranslateScale(&sp70, &gMiniCameraPtr->unk_60.at, &sp68);
+    TransformVec3fByMtxF(&sp5C, &sp70);
 
     sp50.x += sp5C.x;
     sp50.z += sp5C.z;
 
-    D_87906054->unk_60.at.x = sp50.x;
-    D_87906054->unk_60.at.z = sp50.z;
+    gMiniCameraPtr->unk_60.at.x = sp50.x;
+    gMiniCameraPtr->unk_60.at.z = sp50.z;
 
-    Matrix_Decompose(&sp38, &D_87906054->unk_60.at, &D_8690B60C, &D_8690B608, &D_8690B60A);
-    D_8690B60C = func_869022D8(sp38, D_87906054->unk_60.at);
-    if ((func_86902294(1.9f) - 1.0f) <= D_8690B60C) {
-        func_80010354(&sp38, &sp50, func_86902294(1.9f) - 1.0f, 0, D_8690B60A);
-        D_87906054->unk_60.at.x = sp50.x;
-        D_87906054->unk_60.at.z = sp50.z;
+    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &D_8690B608, &D_8690B60A);
+    gHorizontalDist = ComputeDistanceXZ(sp38, gMiniCameraPtr->unk_60.at);
+    if ((ScaleCameraDistance(1.9f) - 1.0f) <= gHorizontalDist) {
+        func_80010354(&sp38, &sp50, ScaleCameraDistance(1.9f) - 1.0f, 0, D_8690B60A);
+        gMiniCameraPtr->unk_60.at.x = sp50.x;
+        gMiniCameraPtr->unk_60.at.z = sp50.z;
     }
-    Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
 }
 
-void func_86902AE8(void) {
-    if (((D_8690B390.buttonDown & 8) | (D_8690B390.buttonDown & 4) | (D_8690B390.buttonDown & 2) |
-         (D_8690B390.buttonDown & 1)) != 0) {
-        D_8690A710->unk_004 = func_800104AC(D_8690A710->unk_004, 1.0f, 0.2f, 0.2f);
+void Camera_UpdateSpeedFactor(void) {
+    if (((gControllerInput.buttonDown & 8) | (gControllerInput.buttonDown & 4) | (gControllerInput.buttonDown & 2) |
+         (gControllerInput.buttonDown & 1)) != 0) {
+        gCameraParams->unk_004 = func_800104AC(gCameraParams->unk_004, 1.0f, 0.2f, 0.2f);
     } else {
-        D_8690A710->unk_004 = func_800104AC(D_8690A710->unk_004, 0.0f, 0.2f, 0.2f);
+        gCameraParams->unk_004 = func_800104AC(gCameraParams->unk_004, 0.0f, 0.2f, 0.2f);
     }
 
-    if ((D_8690B390.buttonDown & 8) && (D_87906054->unk_60.at.y < 300.0f)) {
-        D_87906054->unk_60.at.y += 4.0f * D_8690A710->unk_004;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
-        if (D_8690B600 < -0x38E3) {
-            D_87906054->unk_60.at.y -= 4.0f * D_8690A710->unk_004;
+    if ((gControllerInput.buttonDown & 8) && (gMiniCameraPtr->unk_60.at.y < 300.0f)) {
+        gMiniCameraPtr->unk_60.at.y += 4.0f * gCameraParams->unk_004;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        if (gCameraYaw < -0x38E3) {
+            gMiniCameraPtr->unk_60.at.y -= 4.0f * gCameraParams->unk_004;
         }
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
-    } else if ((D_8690B390.buttonDown & 4) && (D_87906054->unk_60.at.y > 5.0f)) {
-        D_87906054->unk_60.at.y -= 4.0f * D_8690A710->unk_004;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
-        if (D_8690B600 >= 0x38E4) {
-            D_87906054->unk_60.at.y += 4.0f * D_8690A710->unk_004;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+    } else if ((gControllerInput.buttonDown & 4) && (gMiniCameraPtr->unk_60.at.y > 5.0f)) {
+        gMiniCameraPtr->unk_60.at.y -= 4.0f * gCameraParams->unk_004;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        if (gCameraYaw >= 0x38E4) {
+            gMiniCameraPtr->unk_60.at.y += 4.0f * gCameraParams->unk_004;
         }
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
     }
 
-    if (D_87906054->unk_60.at.y > 200.0f) {
-        D_87906054->unk_60.at.y = 200.0f;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    if (gMiniCameraPtr->unk_60.at.y > 200.0f) {
+        gMiniCameraPtr->unk_60.at.y = 200.0f;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
     }
 
-    if (D_87906054->unk_60.at.y < 5.0f) {
-        D_87906054->unk_60.at.y = 5.0f;
-        Matrix_Decompose(&D_87906054->unk_60.at, &D_87906054->unk_60.eye, &D_8690B604, &D_8690B600, &D_8690B602);
+    if (gMiniCameraPtr->unk_60.at.y < 5.0f) {
+        gMiniCameraPtr->unk_60.at.y = 5.0f;
+        Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
     }
 
-    if (D_8690B390.buttonDown & 1) {
-        func_86902890(0);
-    } else if (D_8690B390.buttonDown & 2) {
-        func_86902890(-0x8000);
+    if (gControllerInput.buttonDown & 1) {
+        Camera_RotateAroundTarget(0);
+    } else if (gControllerInput.buttonDown & 2) {
+        Camera_RotateAroundTarget(-0x8000);
     }
 }
 
-void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
+void Camera_ClampSegmentToRadius(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
     Vec3f sp94;
     Vec3f sp88;
     Vec3f sp7C;
@@ -260,7 +260,7 @@ void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
         sp88.y = 0.0f;
         sp88.z = (sp6C * sp88.x) + sp68;
 
-        if (func_869022D8(*arg0, sp94) > func_869022D8(*arg0, sp88)) {
+        if (ComputeDistanceXZ(*arg0, sp94) > ComputeDistanceXZ(*arg0, sp88)) {
             sp7C.x = sp88.x;
             sp7C.z = sp88.z;
         } else {
@@ -288,7 +288,7 @@ void func_86902E6C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3, s32 arg4) {
 
     Vec3f_Set(arg0, arg1->x, arg1->y, arg1->z);
     Vec3f_Set(arg1, sp7C.x, sp7C.y, sp7C.z);
-    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
 }
 
 void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
@@ -307,10 +307,10 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
     sp60 = D_86908C2C;
     sp2C = arg1->x;
     tmp.z = arg3;
-    if (D_87906054->unk_60.at.x == sp2C) {
-        tmp.x = D_87906054->unk_60.at.x;
+    if (gMiniCameraPtr->unk_60.at.x == sp2C) {
+        tmp.x = gMiniCameraPtr->unk_60.at.x;
     } else {
-        sp5C = (arg1->z - D_87906054->unk_60.at.z) / (arg1->x - D_87906054->unk_60.at.x);
+        sp5C = (arg1->z - gMiniCameraPtr->unk_60.at.z) / (arg1->x - gMiniCameraPtr->unk_60.at.x);
         sp58 = arg1->z - (arg1->x * sp5C);
 
         sp44 = (((SQ(arg2.x) + SQ(sp58)) - ((2 * arg2.z) * sp58)) + SQ(arg2.z)) - SQ(arg3);
@@ -328,7 +328,7 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
         sp78.y = 0.0f;
         sp78.z = (sp5C * sp78.x) + sp58;
 
-        if (func_869022D8(*arg1, sp84) > func_869022D8(*arg1, sp78)) {
+        if (ComputeDistanceXZ(*arg1, sp84) > ComputeDistanceXZ(*arg1, sp78)) {
             tmp.x = sp78.x;
             tmp.z = sp78.z;
         } else {
@@ -340,10 +340,10 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
     tmp.y = arg0->y;
 
     Vec3f_Set(arg1, tmp.x, tmp.y, tmp.z);
-    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
 }
 
-void func_8690351C(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
+void Camera_InterpolatePositionToY(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
     f32 temp_fa0;
 
     arg2 += arg3;
@@ -364,135 +364,135 @@ void func_8690351C(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
     }
 
     arg1->y = arg2;
-    Matrix_Decompose(&D_87906054->unk_60.at, arg1, &D_8690B604, &D_8690B600, &D_8690B602);
+    Matrix_Decompose(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
 }
 
-void func_869035F4(Vec3f* arg0, Vec3f* arg1) {
+void Camera_EnforceConstraints(Vec3f* arg0, Vec3f* arg1) {
     UNUSED s32 pad[2];
     Vec3f sp3C = D_86908C38;
     f32 sp38;
 
     if (arg1->y < 12.0f) {
-        func_8690351C(arg0, arg1, 12.0f, 0.05f, 0);
+        Camera_InterpolatePositionToY(arg0, arg1, 12.0f, 0.05f, 0);
     }
 
     if (arg1->y > 350.0f) {
-        func_8690351C(arg0, arg1, 350.0f, 0.0f, 0);
+        Camera_InterpolatePositionToY(arg0, arg1, 350.0f, 0.0f, 0);
     }
 
-    sp38 = func_86902294(1.9f);
-    if (func_869022D8(sp3C, *arg1) < sp38) {
-        func_86902E6C(arg0, arg1, sp3C, func_86902294(1.9f) + 0.05f, 1);
+    sp38 = ScaleCameraDistance(1.9f);
+    if (ComputeDistanceXZ(sp3C, *arg1) < sp38) {
+        Camera_ClampSegmentToRadius(arg0, arg1, sp3C, ScaleCameraDistance(1.9f) + 0.05f, 1);
     }
 
-    if (func_869022D8(sp3C, *arg1) > 400.0f) {
-        func_86902E6C(arg0, arg1, sp3C, 399.0f, 1);
+    if (ComputeDistanceXZ(sp3C, *arg1) > 400.0f) {
+        Camera_ClampSegmentToRadius(arg0, arg1, sp3C, 399.0f, 1);
     }
 
-    if (func_869022D8(D_87906054->unk_60.at, *arg1) < 30.0f) {
-        func_86902E6C(arg0, arg1, D_87906054->unk_60.at, 30.1f, 1);
+    if (ComputeDistanceXZ(gMiniCameraPtr->unk_60.at, *arg1) < 30.0f) {
+        Camera_ClampSegmentToRadius(arg0, arg1, gMiniCameraPtr->unk_60.at, 30.1f, 1);
     }
 }
 
-void func_86903888(Vec3f* arg0, Vec3f* arg1, s32 arg2) {
+void Camera_EnforceConstraintsMode(Vec3f* arg0, Vec3f* arg1, s32 arg2) {
     UNUSED s32 pad[2];
     Vec3f sp3C = D_86908C44;
     f32 sp38;
 
     if (arg2 == 0) {
         if (arg1->y < 12.0f) {
-            func_8690351C(arg0, arg1, 12.0f, 0.05f, 1);
+            Camera_InterpolatePositionToY(arg0, arg1, 12.0f, 0.05f, 1);
         }
 
         if (arg1->y > 350.0f) {
-            func_8690351C(arg0, arg1, 350.0f, 0.0f, 1);
+            Camera_InterpolatePositionToY(arg0, arg1, 350.0f, 0.0f, 1);
         }
     } else {
         if (arg1->y < 12.0f) {
-            func_8690351C(arg0, arg1, 12.0f, 0.05f, 0);
+            Camera_InterpolatePositionToY(arg0, arg1, 12.0f, 0.05f, 0);
         }
 
         if (arg1->y > 350.0f) {
-            func_8690351C(arg0, arg1, 350.0f, 0.0f, 0);
+            Camera_InterpolatePositionToY(arg0, arg1, 350.0f, 0.0f, 0);
         }
     }
 
     if (arg2 == 0) {
-        sp38 = func_86902294(1.9f);
-        if (func_869022D8(sp3C, *arg1) < sp38) {
-            func_86902E6C(arg0, arg1, sp3C, func_86902294(1.9f) + 0.05f, 0);
+        sp38 = ScaleCameraDistance(1.9f);
+        if (ComputeDistanceXZ(sp3C, *arg1) < sp38) {
+            Camera_ClampSegmentToRadius(arg0, arg1, sp3C, ScaleCameraDistance(1.9f) + 0.05f, 0);
         }
 
-        if (func_869022D8(sp3C, *arg1) > 400.0f) {
-            func_86902E6C(arg0, arg1, sp3C, 399.0f, 0);
+        if (ComputeDistanceXZ(sp3C, *arg1) > 400.0f) {
+            Camera_ClampSegmentToRadius(arg0, arg1, sp3C, 399.0f, 0);
         }
 
-        if (func_869022D8(D_87906054->unk_60.at, *arg1) < 30.0f) {
-            func_86902E6C(arg0, arg1, D_87906054->unk_60.at, 30.1f, 0);
+        if (ComputeDistanceXZ(gMiniCameraPtr->unk_60.at, *arg1) < 30.0f) {
+            Camera_ClampSegmentToRadius(arg0, arg1, gMiniCameraPtr->unk_60.at, 30.1f, 0);
         }
     } else {
-        sp38 = func_86902294(1.9f);
-        if (func_869022D8(sp3C, *arg1) < sp38) {
-            func_8690325C(arg0, arg1, sp3C, func_86902294(1.9f) + 0.05f);
+        sp38 = ScaleCameraDistance(1.9f);
+        if (ComputeDistanceXZ(sp3C, *arg1) < sp38) {
+            func_8690325C(arg0, arg1, sp3C, ScaleCameraDistance(1.9f) + 0.05f);
         }
 
-        if (func_869022D8(sp3C, *arg1) > 400.0f) {
+        if (ComputeDistanceXZ(sp3C, *arg1) > 400.0f) {
             func_8690325C(arg0, arg1, sp3C, 399.0f);
         }
 
-        if (func_869022D8(D_87906054->unk_60.at, *arg1) < 30.0f) {
-            func_8690325C(arg0, arg1, D_87906054->unk_60.at, 30.1f);
+        if (ComputeDistanceXZ(gMiniCameraPtr->unk_60.at, *arg1) < 30.0f) {
+            func_8690325C(arg0, arg1, gMiniCameraPtr->unk_60.at, 30.1f);
         }
     }
 }
 
-void func_86903D80(void) {
+void Camera_Update(void) {
     Vec3f sp44;
     Vec3f sp38;
     UNUSED s32 pad;
     f32 mag;
 
-    if (D_8690B390.stickMag != 0.0f) {
-        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
-        if (D_8690B390.stickY >= 0.0f) {
-            mag = -(D_8690B390.stickMag / 6.0f);
-            func_80010354(&D_87906054->unk_60.eye, &sp38, mag, D_8690B600, D_8690B602);
+    if (gControllerInput.stickMag != 0.0f) {
+        Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
+        if (gControllerInput.stickY >= 0.0f) {
+            mag = -(gControllerInput.stickMag / 6.0f);
+            func_80010354(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
         } else {
-            mag = D_8690B390.stickMag / 6.0f;
-            func_80010354(&D_87906054->unk_60.eye, &sp38, mag, D_8690B600, D_8690B602);
+            mag = gControllerInput.stickMag / 6.0f;
+            func_80010354(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
         }
-        D_8690B604 = func_86902230(D_87906054->unk_60.at, sp38);
-        func_869035F4(&sp44, &sp38);
-        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+        gCameraDistance = ComputeDistance3D(gMiniCameraPtr->unk_60.at, sp38);
+        Camera_EnforceConstraints(&sp44, &sp38);
+        Vec3f_Set(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 
-    if (D_8690B390.buttonDown & 0x200) {
-        D_8690B602 -= 0x100;
+    if (gControllerInput.buttonDown & 0x200) {
+        gCameraPitch -= 0x100;
     }
 
-    if (D_8690B390.buttonDown & 0x100) {
-        D_8690B602 += 0x100;
+    if (gControllerInput.buttonDown & 0x100) {
+        gCameraPitch += 0x100;
     }
 
-    if (D_8690B390.buttonDown & 0x300) {
-        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
-        func_80010354(&D_87906054->unk_60.at, &sp38, D_8690B604, D_8690B600, D_8690B602);
-        func_86903888(&sp44, &sp38, 1);
-        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+    if (gControllerInput.buttonDown & 0x300) {
+        Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
+        func_80010354(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_EnforceConstraintsMode(&sp44, &sp38, 1);
+        Vec3f_Set(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 
-    if (D_8690B390.buttonDown & 0x800) {
-        D_8690B600 += 0x100;
+    if (gControllerInput.buttonDown & 0x800) {
+        gCameraYaw += 0x100;
     }
 
-    if (D_8690B390.buttonDown & 0x400) {
-        D_8690B600 -= 0x100;
+    if (gControllerInput.buttonDown & 0x400) {
+        gCameraYaw -= 0x100;
     }
 
-    if (D_8690B390.buttonDown & 0xC00) {
-        Vec3f_Set(&sp44, D_87906054->unk_60.eye.x, D_87906054->unk_60.eye.y, D_87906054->unk_60.eye.z);
-        func_80010354(&D_87906054->unk_60.at, &sp38, D_8690B604, D_8690B600, D_8690B602);
-        func_86903888(&sp44, &sp38, 0);
-        Vec3f_Set(&D_87906054->unk_60.eye, sp38.x, sp38.y, sp38.z);
+    if (gControllerInput.buttonDown & 0xC00) {
+        Vec3f_Set(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
+        func_80010354(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_EnforceConstraintsMode(&sp44, &sp38, 0);
+        Vec3f_Set(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 }

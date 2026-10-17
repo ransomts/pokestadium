@@ -318,7 +318,7 @@ void func_83100784(void) {
     sp38 = (0x280 - sp9E) / 2;
     sp40 = (0x1E0 - sp9C) / 2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetCombineLERP(gDisplayListHead++, 1, TEXEL0, ENVIRONMENT, 0, 1, TEXEL0, ENVIRONMENT, 0, 1, TEXEL0, ENVIRONMENT,
                       0, 1, TEXEL0, ENVIRONMENT, 0);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
@@ -491,7 +491,7 @@ void func_831013FC(void) {
     s16 temp_fa0;
     s16 temp_ft2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F518);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     temp_ft2 = ROUND_MAX(28 * v);
     temp_fa0 = ROUND_MAX(1024.0f / v);
@@ -502,7 +502,7 @@ void func_831013FC(void) {
 
     func_831011D4(D_83101EEE, D_83101EF0, temp_ft2, temp_ft2, 0, 0, temp_fa0, temp_fa0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F630);
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void func_83101608(void) {
