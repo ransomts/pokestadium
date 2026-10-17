@@ -264,3 +264,18 @@ func_8002BEC8	Battle_SetPartyLevel	b17		sets every party mon's level on side 1 (
 func_8002CCC4	Util_SwapPtrArray	b18		swaps n pointer array entries between arg0 and arg1 (used by the sort routines below)	applied@c6628a0
 func_8002CD58	Util_MedianOfThree	b18		quicksort median-of-three pivot pick via the comparator (returns the median element pointer of three)	applied@c6628a0
 func_8002CE34	Util_QuickSort	b18		in-place quicksort over a pointer array (median-of-three partition, recursion) - the generic sort entry	applied@c6628a0
+func_8001F870	DrawTileTextureRect	p1		Loads an 8x8 RGBA16 texture and draws it with Gfx_DrawTextureRect, used by border-drawing functions	applied@1f2a33d
+func_8001F9D4	DrawWindowBorder	p1		Calls func_8001F870 with corner and side textures (D_10027D0?D_1002950) to compose a rectangular window border	applied@1f2a33d
+func_8001FCAC	DrawWindowBorderThin	p1		Similar to func_8001F9D4 but uses a different set of textures (D_1002FD0?D_1003150) for a thin window border	applied@1f2a33d
+func_8001FE18	FillRectWithColor	p1		Sets fill color and uses gDPFillRectangle to fill a rectangle, acting as a generic colored fill	applied@1f2a33d
+func_8001FF68	FillRectWithColorInset	p1		Same as func_8001FE18 but with a smaller inset (5/6 pixels), indicating a tighter fill area	applied@1f2a33d
+func_800200B8	DrawGradientRect	p1		Creates four vertices with two colors and draws two triangles, producing a vertical gradient rectangle	applied@1f2a33d
+func_80020460	DrawPanel	p1		Combines a panel display list (D_8006F518) with a window border (func_8001F9D4 or func_8001FCAC) and optional fill, implementing a UI panel	applied@1f2a33d
+func_8002053C	DrawGradientPanel	p1		Draws a gradient rectangle (func_800200B8) then the same panel and border as func_80020460, forming a gradient UI panel	applied@1f2a33d
+func_80020678	DrawPanelAlt	p1		Uses func_8001FB40 for an alternate border style before drawing the panel, creating an alternate UI panel	applied@1f2a33d
+func_80020754	DrawSimplePanel	p1		Draws only the panel and border without any fill, representing a simple UI panel	applied@1f2a33d
+func_800207FC	DrawStatusIcon	p1		Selects between two display lists (D_8006F4E0/D_8006F5A0) and draws either a sprite or a rectangle, used for status icons	applied@1f2a33d
+func_80020928	AnimateIconOffset	p1		Animates the x position of the icon by incrementing a static counter D_8006F7D0, creating a wobble effect	applied@1f2a33d
+func_800209B4	DrawBadgeIcon	p1		Loads a 20x20 RGBA16 texture (var_t4) and draws it with gSPTextureRectangle, used for badge or icon rendering	applied@1f2a33d
+func_80020B88	DrawHealthBar	p1		Chooses health bar segment textures (D_1003B70/D_1003C30/D_1003CF0) based on health ratio and draws them, implementing a health bar	applied@1f2a33d
+func_80021270	DrawExpBar	p1		Selects experience bar segment textures (D_1003EA0/D_1003EC8/D_1003EF0) based on experience ratio and draws them, implementing an exp bar	applied@1f2a33d

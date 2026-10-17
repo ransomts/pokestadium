@@ -137,7 +137,7 @@ void func_84800184(void) {
     sp58 = Stage_GetFrameBuffer();
     sp54 = D_8480367C;
     sp50 = D_84803680;
-    func_8002053C(0x228, 0x20, 0x2E, 0x186, &sp54, &sp50);
+    DrawGradientPanel(0x228, 0x20, 0x2E, 0x186, &sp54, &sp50);
 
     gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 563, 48, 587, 408);
 
@@ -347,7 +347,7 @@ void func_84800C68(s32 arg0) {
 }
 
 void func_84800CA4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    func_80020678(arg0, arg1, arg2, arg3, D_84803540[arg4]);
+    DrawPanelAlt(arg0, arg1, arg2, arg3, D_84803540[arg4]);
 }
 
 void func_84800D08(unk_D_848037A0* arg0) {
@@ -419,7 +419,7 @@ void func_848012A4(s16 arg0, s16 arg1, s16 arg2) {
     } else {
         arg0 = (arg0 - D_84816458[arg2]) + 0xC;
     }
-    func_800207FC(arg0, arg1);
+    DrawStatusIcon(arg0, arg1);
     D_84816458[arg2] = (D_84816458[arg2] + 1) % 12;
 }
 

@@ -565,7 +565,7 @@ s32 func_88602198(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
     }
 
     if ((arg0->unk_2C->unk_00.unk_00 > 0) && (arg0->unk_2C->unk_00.unk_00 < 0x98)) {
-        func_80020B88(sp54, arg2 + 0x18, 0x90, arg0->unk_2C->unk_02, arg0->unk_2C->unk_26);
+        DrawHealthBar(sp54, arg2 + 0x18, 0x90, arg0->unk_2C->unk_02, arg0->unk_2C->unk_26);
     }
 
     Text_ResetState();

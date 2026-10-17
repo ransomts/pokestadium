@@ -433,8 +433,8 @@ void func_86500D38(s32 arg0) {
     u8 i;
 
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
-        func_80020460(0x18, 0x16, 0x110, 0x90, 0x15);
-        func_80020460(0x18, 0xA5, 0x110, 0x36, 0x14B);
+        DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+        DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
 

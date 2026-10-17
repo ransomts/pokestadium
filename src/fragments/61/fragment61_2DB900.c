@@ -265,7 +265,7 @@ void func_84204210(void) {
     if (D_8423E56C == 3) {
         s16 tmp = (D_84210DA0[D_8423E568].unk_02 - (D_84210DA0[D_8423E568].unk_06 / 2)) - 0x1E;
 
-        func_80020928(tmp, D_84210DA0[D_8423E568].unk_04 - 0x20);
+        AnimateIconOffset(tmp, D_84210DA0[D_8423E568].unk_04 - 0x20);
     }
 }
 

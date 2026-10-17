@@ -71,7 +71,7 @@ void func_82C00658(s16 arg0, s32 arg1) {
     s16 sp2C = ((0xBA - sp30) / 2) + 0xE5;
 
     if (arg0 > 0) {
-        func_80020754(0x89, sp2C, 0x16E, sp30);
+        DrawSimplePanel(0x89, sp2C, 0x16E, sp30);
 
         if (arg0 == 8) {
             char* sp40;
@@ -80,7 +80,7 @@ void func_82C00658(s16 arg0, s32 arg1) {
             func_82C0025C(0x90, sp2C + 0x27, 0x160, 0x8C, 0x1E, 0x1E, 0x64, 0xFF);
 
             if (arg1 != 0) {
-                func_80020928(0x95, sp2C + (D_82C01664 * 0x20) + 0x31);
+                AnimateIconOffset(0x95, sp2C + (D_82C01664 * 0x20) + 0x31);
             }
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -145,10 +145,10 @@ void func_82C00AA4(s32 arg0, s32 arg1, s32 arg2) {
     s16 sp24 = ((0x8A - sp28) / 2) + 0x54;
 
     if (arg2 > 0) {
-        func_80020460(0x51, sp24, 0x1DE, sp28, 0x6109);
+        DrawPanel(0x51, sp24, 0x1DE, sp28, 0x6109);
 
         if (arg2 == 8) {
-            func_80020928(0x119, sp24 + (arg1 * 0x1C) + 0x48);
+            AnimateIconOffset(0x119, sp24 + (arg1 * 0x1C) + 0x48);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
@@ -176,7 +176,7 @@ void func_82C00CB4(s32 arg0) {
     s16 sp24 = ((0x38 - sp28) / 2) + 0x82;
 
     if (arg0 >= 2) {
-        func_80020460(0x87, sp24, 0x172, sp28, 0x6109);
+        DrawPanel(0x87, sp24, 0x172, sp28, 0x6109);
         if (arg0 == 8) {
             Text_ResetState();
             Text_SetFont(0x10, 0);

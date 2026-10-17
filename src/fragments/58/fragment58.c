@@ -544,7 +544,7 @@ void func_84001AE0(void) {
     Text_SetupDL();
 
     if (D_84002D16 == 3) {
-        func_80020928(0x6C, (D_84002D20 * 0x18) + 0x114);
+        AnimateIconOffset(0x6C, (D_84002D20 * 0x18) + 0x114);
     }
 }
 
@@ -584,7 +584,7 @@ void func_84001FC0(void) {
     if (D_84002D28.unk_04 > 0) {
         s16 tmp = D_84002D28.unk_04 * 0x11;
 
-        func_80020460(D_84002D28.unk_00, D_84002D28.unk_02 + (s16)((0x88 - tmp) / 2), 0x98, tmp, 0x2121);
+        DrawPanel(D_84002D28.unk_00, D_84002D28.unk_02 + (s16)((0x88 - tmp) / 2), 0x98, tmp, 0x2121);
         if (D_84002D28.unk_04 == 8) {
             gSPDisplayList(gDisplayListHead++, D_8006F518);
 
@@ -592,7 +592,7 @@ void func_84001FC0(void) {
 
             gSPDisplayList(gDisplayListHead++, D_8006F630);
 
-            func_80020928(D_84002D28.unk_00 + 0xC, D_84002D28.unk_02 + (D_84002D28.unk_08 * 0x1C) + 0x2B);
+            AnimateIconOffset(D_84002D28.unk_00 + 0xC, D_84002D28.unk_02 + (D_84002D28.unk_08 * 0x1C) + 0x2B);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_Print(D_84002D28.unk_00 + 0x30, D_84002D28.unk_02 + 0xB, GetMessageString(NULL, 0, D_84002D00, 0xA));

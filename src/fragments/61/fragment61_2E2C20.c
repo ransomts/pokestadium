@@ -179,7 +179,7 @@ void func_8420B390(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s8* arg4) {
 
 void func_8420B40C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     if (arg2 != 0) {
-        func_80020928(arg0 + 0x19C, arg1 + (arg3 * 0x16) + 0x3A);
+        AnimateIconOffset(arg0 + 0x19C, arg1 + (arg3 * 0x16) + 0x3A);
         Text_ResetState();
         Text_SetFont(8, 0);
         Text_SetLineHeight(0x16);

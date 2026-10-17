@@ -141,9 +141,9 @@ void func_86300238(s32 arg0) {
     };
 
     if (arg0 == 0) {
-        func_8002053C(0x3A, 0x37, 0xC8, 0x64, sp40, sp3C);
+        DrawGradientPanel(0x3A, 0x37, 0xC8, 0x64, sp40, sp3C);
     } else {
-        func_8002053C(0x5A, 0xD7, 0x96, 0x12, sp40, sp3C);
+        DrawGradientPanel(0x5A, 0xD7, 0x96, 0x12, sp40, sp3C);
     }
 
     Text_ResetState();

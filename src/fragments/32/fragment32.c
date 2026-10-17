@@ -45,7 +45,7 @@ void func_811001C0(s32 arg0, s32 arg1) {
 }
 
 void func_811002D4(s32 arg0) {
-    func_80020460(0x16, 0x10, 0x114, 0x76, 0x11C5);
+    DrawPanel(0x16, 0x10, 0x114, 0x76, 0x11C5);
     func_811001C0(0x27, 0x22);
     Text_ResetState();
     Text_SetFont(2, 0);

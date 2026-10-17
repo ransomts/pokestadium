@@ -1449,7 +1449,7 @@ s32 func_87803118(void) {
 }
 
 void func_87803200(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
-    func_8002053C(arg0, arg1, arg2, arg3, arg4, arg5);
+    DrawGradientPanel(arg0, arg1, arg2, arg3, arg4, arg5);
     func_8780118C(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
 }
 

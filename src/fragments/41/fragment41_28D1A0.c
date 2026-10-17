@@ -251,7 +251,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         }
 
         func_82F05920(arg0->unk_04, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
-        func_80020B88(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
+        DrawHealthBar(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
 
         gSPDisplayList(gDisplayListHead++, D_8006F4E0);
 

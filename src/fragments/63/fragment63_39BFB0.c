@@ -526,7 +526,7 @@ void func_84B0852C(unk_D_84B25A58* arg0, s32 arg1) {
                 var_s0 = temp_lo;
             }
             Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_1C->unk_08[i * 3 + j].unk_0C);
-            func_80020B88(4, 0xB4, 0x78, var_s0, temp_s5->unk_01C[j].unk_26 * 0x64);
+            DrawHealthBar(4, 0xB4, 0x78, var_s0, temp_s5->unk_01C[j].unk_26 * 0x64);
         }
     }
 }
@@ -551,7 +551,7 @@ void func_84B08694(unk_D_84B25A58* arg0, s32 arg1) {
                         var_s0 = temp_lo;
                     }
                     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_1C->unk_08[(i * 6) + (j * 3) + x].unk_0C);
-                    func_80020B88(4, 0x54, 0x78, var_s0, temp_s5->unk_01C[x].unk_26 * 0x64);
+                    DrawHealthBar(4, 0x54, 0x78, var_s0, temp_s5->unk_01C[x].unk_26 * 0x64);
                 }
             }
         }

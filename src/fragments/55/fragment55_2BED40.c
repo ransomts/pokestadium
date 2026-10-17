@@ -613,7 +613,7 @@ void func_830017C0(void) {
         if ((func_830026C0() == 0) && (func_830039AC() == 0)) {
             s16 sins = SINS(D_83003B60) * 3.0f;
 
-            func_800207FC(sins + 0x48, temp_s3 + (D_83003CA6 * 0x18) + 0x2A);
+            DrawStatusIcon(sins + 0x48, temp_s3 + (D_83003CA6 * 0x18) + 0x2A);
             D_83003B60 += 0x1000;
         }
 

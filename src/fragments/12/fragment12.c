@@ -99,8 +99,8 @@ void func_86600264(s32 arg0) {
     Color_RGB8 sp2C = { 0, 0, 30 };
     Color_RGB8 sp28 = { 0, 0, 250 };
 
-    func_8002053C(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
-    func_80020460(0x1E, 0xBE, 0xA0, 0x20, 0x141);
+    DrawGradientPanel(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
+    DrawPanel(0x1E, 0xBE, 0xA0, 0x20, 0x141);
     Text_ResetState();
     func_8001F470();
     Text_SetFont(4, -2);

@@ -522,7 +522,7 @@ void func_82F0B7B4(unk_D_82F210E0* arg0) {
     }
 
     if ((var_s4->unk_04 >= 0xE) && (var_s4->unk_06 >= 0xE)) {
-        func_8002053C(var_s4->unk_00, var_s4->unk_02, var_s4->unk_04, var_s4->unk_06, var_v0, var_v0);
+        DrawGradientPanel(var_s4->unk_00, var_s4->unk_02, var_s4->unk_04, var_s4->unk_06, var_v0, var_v0);
     }
 
     if (arg0->unk_04 & 1) {
@@ -539,9 +539,9 @@ void func_82F0B7B4(unk_D_82F210E0* arg0) {
         temp_ft3 = SINS(D_82F13F78) * 3.0f;
 
         if (arg0->unk_04 & 1) {
-            func_800207FC(var_s4->unk_00 + temp_ft3 + 0x10, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x14);
+            DrawStatusIcon(var_s4->unk_00 + temp_ft3 + 0x10, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x14);
         } else {
-            func_800207FC(var_s4->unk_00 + temp_ft3 + 0x18, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x32);
+            DrawStatusIcon(var_s4->unk_00 + temp_ft3 + 0x18, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x32);
         }
 
         Text_ResetState();
@@ -608,7 +608,7 @@ void func_82F0BD38(unk_D_82F210E0* arg0) {
 
     if ((arg0->unk_34.unk_04 != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
         if ((temp_s0->unk_04 >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
-            func_8002053C(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp38, &sp38);
+            DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp38, &sp38);
         }
 
         if ((temp_s0->unk_04 == 0xE8) && (temp_s0->unk_06 == 0x38)) {
@@ -627,7 +627,7 @@ void func_82F0BE7C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Color_RGB8 sp24 = { 0x58, 0x08, 0x00 };
     Color_RGB8 sp20 = { 0x58, 0x08, 0x00 };
 
-    func_8002053C(arg0, arg1, arg2, arg3, &sp24, &sp20);
+    DrawGradientPanel(arg0, arg1, arg2, arg3, &sp24, &sp20);
 }
 
 void func_82F0BEF8(unk_D_82F210E0* arg0) {

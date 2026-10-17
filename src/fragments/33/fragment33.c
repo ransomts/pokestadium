@@ -214,7 +214,7 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if ((arg0 == D_81304000) && (D_81304650 == 1) && (func_81300314(arg0) > 0)) {
-        func_8002053C(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &D_81303F14, &D_81303F14);
+        DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &D_81303F14, &D_81303F14);
         tmp1 = arg1 + 0x28;
         tmp2 = (SINS(D_81303CB0 * 2) * 2) + (arg2 + 0x8C);
         func_81300870(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
@@ -460,7 +460,7 @@ void func_81301E8C(void) {
         func_813003B4(2, 0x140, 0x2E);
         func_813003B4(3, 0x1C4, 0x2E);
         if (D_81304650 == 1) {
-            func_800207FC((SINS(D_81303CB0) * 5.0f) + ((D_81304000 * 0x84) + 0x38), 0x7E);
+            DrawStatusIcon((SINS(D_81303CB0) * 5.0f) + ((D_81304000 * 0x84) + 0x38), 0x7E);
         }
     } else {
         func_81301668(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);

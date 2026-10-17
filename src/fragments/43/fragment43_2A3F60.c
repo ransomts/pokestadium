@@ -116,7 +116,7 @@ void func_834024C4(unk_D_83402E4C* arg0) {
     Text_SetupDL();
 
     if (D_83407C0A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, D_83402EA4[D_83407C0A] + arg0->unk_02 + 0x48);
+        AnimateIconOffset(arg0->unk_00 + 0x10, D_83402EA4[D_83407C0A] + arg0->unk_02 + 0x48);
     }
 }
 
@@ -145,7 +145,7 @@ void func_834026A4(unk_D_83402E4C* arg0) {
     Text_SetupDL();
 
     if (D_83407C0A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_83407C0A * 0x22) + 0x48);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_83407C0A * 0x22) + 0x48);
     }
 }
 
@@ -177,9 +177,9 @@ void func_834028D0(UNUSED s32 arg0) {
             }
             tmp = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
 
-            func_80020460(temp_s0->unk_00, tmp, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+            DrawPanel(temp_s0->unk_00, tmp, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
         } else {
-            func_80020460(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+            DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
 
             switch (D_83407C00) {
                 case 0:

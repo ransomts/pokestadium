@@ -437,13 +437,13 @@ void func_84B0F464(unk_D_84B2665C* arg0) {
 
             temp_a1 = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
             if (temp_s0->unk_0C == 0) {
-                func_80020460(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+                DrawPanel(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
             } else {
                 func_84B0053C(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, 0x1E, 0x1E, 0x82, 0xFF);
             }
         } else {
             if (temp_s0->unk_0C == 0) {
-                func_80020460(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+                DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
             } else {
                 func_84B0053C(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82,
                               0xFF);

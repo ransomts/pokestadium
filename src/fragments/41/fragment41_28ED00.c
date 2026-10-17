@@ -941,7 +941,7 @@ void func_82F09284(unk_D_82F20A40* arg0) {
     }
 
     if ((temp_s3->unk_04 >= 0xE) && (temp_s3->unk_06 >= 0xE)) {
-        func_8002053C(temp_s3->unk_00, temp_s3->unk_02, temp_s3->unk_04, temp_s3->unk_06, &sp54, &sp54);
+        DrawGradientPanel(temp_s3->unk_00, temp_s3->unk_02, temp_s3->unk_04, temp_s3->unk_06, &sp54, &sp54);
     }
 
     if ((temp_s3->unk_04 != 0xE8) || (temp_s3->unk_06 != 0x70)) {
@@ -988,7 +988,7 @@ void func_82F094B4(unk_D_82F20A40* arg0) {
     if ((arg0->unk_36.unk_04 != arg0->unk_40->unk_04) || (arg0->unk_36.unk_06 != arg0->unk_40->unk_06)) {
 
         if ((temp_s0->unk_04 >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
-            func_8002053C(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp40, &sp40);
+            DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp40, &sp40);
         }
 
         if ((temp_s0->unk_04 >= arg0->unk_44->unk_04) && (temp_s0->unk_06 >= arg0->unk_44->unk_06)) {
@@ -1080,7 +1080,7 @@ void func_82F09B70(s16 arg0) {
     if (var_v1 != 0) {
         s16 sins = SINS(D_82F13F60) * 3.0f;
 
-        func_800207FC(sp1E + sins, sp1A);
+        DrawStatusIcon(sp1E + sins, sp1A);
     }
 
     D_82F13F60 += 0x1000;

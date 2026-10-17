@@ -687,7 +687,7 @@ void func_83801E00(void) {
         s32 tmp = D_8380548C[D_838067E0].unk_02 - (D_8380548C[D_838067E0].unk_06 / 2) - 0x1E;
         s32 tmp2 = D_8380548C[D_838067E0].unk_04 - 0x20;
 
-        func_80020928(tmp, tmp2);
+        AnimateIconOffset(tmp, tmp2);
     }
 }
 

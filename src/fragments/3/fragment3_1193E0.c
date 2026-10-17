@@ -173,7 +173,7 @@ void showDebuggCameraInfo(void) {
     u8 sp24[3] = { 0, 0, 30 };  // D_87903DE0
     u8 sp20[3] = { 0, 0, 250 }; // D_87903DE4
 
-    func_80020460(0x14, 0x14, 0x122, 0x3C, 0x141);
+    DrawPanel(0x14, 0x14, 0x122, 0x3C, 0x141);
     Text_ResetState();
     Text_SetFont(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -195,7 +195,7 @@ void showDebuggJoystickInfo(void) {
     u8 sp2C[3] = { 0, 0, 30 };  // D_87903DE8
     u8 sp28[3] = { 0, 0, 250 }; // D_87903DEC
 
-    func_80020460(0x78, 0x80, 0xB4, 0x64, 0x141);
+    DrawPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
     Text_ResetState();
     Text_SetFont(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -274,7 +274,7 @@ void func_87901200(void) {
             break;
     }
 
-    func_80020460(0x78, 0x80, 0xB4, 0x64, 0x141);
+    DrawPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
     Text_ResetState();
     Text_SetFont(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);

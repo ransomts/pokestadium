@@ -329,7 +329,7 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
     func_84201D6C();
     if (arg2 > 0) {
         temp_a3 = (((arg2 * 0x9A) - 0x9A) / 8) + 0x10;
-        func_80020754(0x6D, (s16)(((0xAA - temp_a3) / 2) + 0x81), 0x1A6, temp_a3);
+        DrawSimplePanel(0x6D, (s16)(((0xAA - temp_a3) / 2) + 0x81), 0x1A6, temp_a3);
         temp_v0 = (((arg2 * 0x5C) - 0x5C) / 8) + 0x10;
         if (1) {}
         func_8420112C(0x38, ((0x6C - temp_v0) / 2) + 0x14C, 0x210, (((arg2 * 0x5C) - 0x5C) / 8) + 0x10, 0x1E, 0x1E,
@@ -337,7 +337,7 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
         if (arg2 == 9) {
             func_84200420(0x74, 0x88, 0x198, 0x20, 0x8C, 0x28, 0x8C, 0xFF);
             func_84200420(0x74, 0xA8, 0x198, 0x7C, 0x64, 0x1E, 0x64, 0xFF);
-            func_80020928(0x79, (D_8423D3F8 * 0x1E) + 0xAD);
+            AnimateIconOffset(0x79, (D_8423D3F8 * 0x1E) + 0xAD);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_Print(0x7D, 0x8B, "%s %s", func_84200130(D_800AE540.unk_0001 + 0x3F), func_84200130(0x48));

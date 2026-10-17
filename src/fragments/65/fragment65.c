@@ -144,7 +144,7 @@ void func_84A008A8(void) {
 
     if (D_84A030EC >= 0x10) {
         sp3A = 0xF0 - (D_84A030EC / 2);
-        func_80020754(0x78, sp3A, 0x190, D_84A030EC);
+        DrawSimplePanel(0x78, sp3A, 0x190, D_84A030EC);
         func_8001F504(0x7F, sp3A + 7, 0x182, D_84A030EC - 0xE, 0x14, 0x32, 0x64, 0x96);
 
         if (D_84A030EC == 0x50) {
@@ -482,7 +482,7 @@ void func_84A01DAC(void) {
         }
     }
 
-    func_80020928(sp1E - 3, sp1C);
+    AnimateIconOffset(sp1E - 3, sp1C);
 }
 
 void func_84A01EE0(void) {

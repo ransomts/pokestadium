@@ -302,7 +302,7 @@ void func_834008DC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Color_RGB8 sp24 = { 0x00, 0x64, 0xFF };
     Color_RGB8 sp20 = { 0x64, 0xFF, 0xFF };
 
-    func_8002053C(arg0, arg1, arg2, arg3, &sp24, &sp20);
+    DrawGradientPanel(arg0, arg1, arg2, arg3, &sp24, &sp20);
 }
 
 void func_83400928(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {

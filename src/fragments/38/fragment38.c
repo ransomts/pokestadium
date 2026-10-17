@@ -938,12 +938,12 @@ void func_8230391C(unk_D_82305A40* arg0) {
         temp_s2 = arg0->unk_08;
         temp_s1 = arg0->unk_0A + ((0xBA - sp4A) / 2);
 
-        func_80020754(temp_s2, temp_s1, 0x1BE, sp4A);
+        DrawSimplePanel(temp_s2, temp_s1, 0x1BE, sp4A);
 
         if (sp4A == 0xBA) {
             func_8230147C(temp_s2 + 7, temp_s1 + 7, 0x1B0, 0x20, 0x82, 0x1E, 0x1E, 0xFF);
             func_8230147C(temp_s2 + 7, temp_s1 + 0x27, 0x1B0, 0x8C, 0x1E, 0x1E, 0x64, 0xFF);
-            func_80020928(temp_s2 + 0xE, temp_s1 + (arg0->unk_0C * 0x21) + 0x31);
+            AnimateIconOffset(temp_s2 + 0xE, temp_s1 + (arg0->unk_0C * 0x21) + 0x31);
 
             gSPDisplayList(gDisplayListHead++, D_8006F518);
 

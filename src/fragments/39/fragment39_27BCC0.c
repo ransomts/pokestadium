@@ -1875,7 +1875,7 @@ void func_8250281C(void) {
             var_a2_2 = 6 - var_a2_2;
         }
         sp18 = sp40 + var_a2_2;
-        func_800207FC(sp18, sp38);
+        DrawStatusIcon(sp18, sp38);
 
         if ((sp2C != 0) && (D_8780FA48 >= 0)) {
             gSPDisplayList(gDisplayListHead++, D_8006F518);
@@ -1936,7 +1936,7 @@ void func_82502C78(void) {
     sp5C[3] = GetMessageString(NULL, 0, D_8250A47C, 6);
 
     if (D_8250A2A0.unk_00 != 0) {
-        func_8002053C(D_8250A2A0.unk_08, D_8250A2A0.unk_0A, D_8250A2A0.unk_0C, D_8250A2A0.unk_0E, &sp80, &sp7C);
+        DrawGradientPanel(D_8250A2A0.unk_08, D_8250A2A0.unk_0A, D_8250A2A0.unk_0C, D_8250A2A0.unk_0E, &sp80, &sp7C);
         if (D_8250A2A0.unk_00 == 2) {
             Text_ResetState();
             Text_SetFont(0x10, 0);

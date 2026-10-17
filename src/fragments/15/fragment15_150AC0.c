@@ -605,10 +605,10 @@ void func_86907B78(void) {
 
     if (D_8690B348 == 4) {
         if (D_8690B350.unk_0E < 0x15) {
-            func_8002053C(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
+            DrawGradientPanel(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
                           D_8690B350.unk_0E, &sp34, &sp34);
         } else {
-            func_8002053C(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
+            DrawGradientPanel(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
                           D_8690B350.unk_0E, &sp34, &sp30);
         }
 

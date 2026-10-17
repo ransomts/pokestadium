@@ -262,7 +262,7 @@ void func_8420C844(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -275,7 +275,7 @@ void func_8420C930(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -288,7 +288,7 @@ void func_8420CA00(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -301,7 +301,7 @@ void func_8420CAD0(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -313,7 +313,7 @@ void func_8420CBA0(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -394,7 +394,7 @@ void func_8420D2BC(unk_D_84211704* arg0) {
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
-        func_80020928(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -440,9 +440,9 @@ void func_8420D4F8(s32 arg0) {
                 var_a3 = 0x10;
             }
             tmp2 = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
-            func_80020460(temp_s0->unk_00, tmp2, temp_s0->unk_04, var_a3, temp_s0->unk_0C);
+            DrawPanel(temp_s0->unk_00, tmp2, temp_s0->unk_04, var_a3, temp_s0->unk_0C);
         } else {
-            func_80020460(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0C);
+            DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0C);
 
             switch (D_8423E580) {
                 case 0:

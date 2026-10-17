@@ -1930,7 +1930,7 @@ void func_8260125C(void) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, 0x006C, 0x0224, 0x032C, 0x0390, G_TX_RENDERTILE, 0, 0, 0, 0);
-        func_80020754(0x19, 0x87, 0xB4, 0x5F);
+        DrawSimplePanel(0x19, 0x87, 0xB4, 0x5F);
     } else if (D_82608542 == 1) {
         unk_func_800228F0 sp158;
         UNUSED s32 pad2[1];
@@ -1993,7 +1993,7 @@ void func_8260125C(void) {
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, 0x0080, 0x0058, 0x0480, 0x0370, G_TX_RENDERTILE, 0, 0, 0, 0);
 
-        func_80020754(0x1E, 0x14, 0x104, 0xCA);
+        DrawSimplePanel(0x1E, 0x14, 0x104, 0xCA);
     }
 
     if (D_82608544 == 1) {
