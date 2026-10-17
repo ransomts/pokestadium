@@ -6326,7 +6326,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_888269A0 = func_80029080();
 
     if (D_888269A0 != -1) {
-        func_8002D860(&D_888269A8, D_888269A0);
+        MenuScroll_Init(&D_888269A8, D_888269A0);
     }
 
     D_88826940 = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));

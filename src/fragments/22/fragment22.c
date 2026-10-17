@@ -2867,7 +2867,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
 
     var_s6 = 0;
     while (var_s6 == 0) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
         var_s1 = arg0->unk_00.unk_20(arg0, gPlayer1Controller);
         if (var_s1 & 1) {
             if (var_s1 & 8) {
@@ -2986,7 +2986,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     func88506074 temp_s0;
 
     while (func_80007604() != 0) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
     }
 
     if (arg0->unk_54 == 2) {
@@ -2999,11 +2999,11 @@ void func_8800233C(unk_func_88001300* arg0) {
 
         i = 10;
         while (i-- > 0) {
-            func_8002EEA8(NULL);
+            ControllerMsgQueue_SendAndRead(NULL);
         }
 
         func_8004B9C4(0x10);
-        func_8002EEA8(0x10002);
+        ControllerMsgQueue_SendAndRead(0x10002);
     }
 
     arg0->unk_2C->unk_2C = -1;
@@ -3015,13 +3015,13 @@ void func_8800233C(unk_func_88001300* arg0) {
             // clang-format on
 
             for (i = 0; i < 60; i++) {
-                func_8002EEA8(NULL);
+                ControllerMsgQueue_SendAndRead(NULL);
             }
 
             arg0->unk_38->unk_00.unk_28 |= 0x201;
 
             for (i = 0; i < 8; i++) {
-                func_8002EEA8(NULL);
+                ControllerMsgQueue_SendAndRead(NULL);
             }
 
             // clang-format off
@@ -3047,10 +3047,10 @@ void func_8800233C(unk_func_88001300* arg0) {
 
     i = 10;
     while (i-- > 0) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
     }
 
-    func_8002EEA8(sp34);
+    ControllerMsgQueue_SendAndRead(sp34);
 
     osStopThread(NULL);
 }
@@ -3075,7 +3075,7 @@ s32 func_880025D8(unk_func_88001300* arg0) {
 
     while (sp24 == 0) {
         func_88002580(arg0);
-        func_8002EF18(&sp24);
+        ControllerMsgQueue_Recv(&sp24);
     }
 
     return sp24 - 1;
@@ -3112,7 +3112,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
 
     sp30 = ALIGN16((u32)mem_pool_alloc(sp44, sizeof(func_88002628_sp38)));
     osCreateThread(&sp30->thread, 0x32, func_8800233C, sp38, sp34 + 0x1000, osGetThreadPri(NULL) - 1);
-    func_8002EE78();
+    ControllerMsgQueue_Init();
     MenuInput_SetController(gPlayer1Controller);
     osStartThread(&sp30->thread);
 

@@ -1912,7 +1912,7 @@ void func_88305DF4(unk_func_8830867C_02C* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_02C);
 
     while (!(arg0->unk_02C->unk_30 & 2)) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
     }
 
     func_8830B2EC(arg0->unk_094, &arg0->unk_144);
@@ -1922,7 +1922,7 @@ void func_88305DF4(unk_func_8830867C_02C* arg0, Controller* arg1) {
     }
 
     while (var_s3 == 0) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
         temp_v0 = func_88305DA8(arg0, arg1);
         if (!(temp_v0 & 1) && (temp_v0 & 2)) {
             var_s3 = 1;
@@ -2462,7 +2462,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
 
     ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_0B0->unk_40, 2);
 
-    func_8002EEA8(NULL);
+    ControllerMsgQueue_SendAndRead(NULL);
     func_88316A58(&arg0->unk_144, arg1);
     func_88302C18(arg0);
 
@@ -2568,15 +2568,15 @@ void func_88307478(unk_func_8830867C_02C_048* arg0) {
 
 void func_883074D4(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
     func_883073E8(arg0->unk_24, 0);
-    func_8002EEA8(NULL);
-    func_8002EEA8(NULL);
+    ControllerMsgQueue_SendAndRead(NULL);
+    ControllerMsgQueue_SendAndRead(NULL);
 
     if (func_88312998(arg0->unk_24->unk_0AC, arg1) == 2) {
         arg0->unk_24->unk_0E0 = 1;
         func_88307110(arg0->unk_24);
         ((func8850CD24)Memmap_GetFragmentVaddr(func_8850CD24))(arg0, 0);
     } else {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
         func_883073E8(arg0->unk_24, 1);
     }
 }
@@ -2649,7 +2649,7 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                 arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 0x100);
 
                 if (func_88312998(arg0->unk_24->unk_0AC, arg1) == 1) {
-                    func_8002EEA8(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
                     func_88305F28(arg0->unk_24);
                     func_88307478(arg0);
                     func_883073E8(arg0->unk_24, 1);
@@ -2683,12 +2683,12 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                     arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 0x100);
 
-                    func_8002EEA8(NULL);
-                    func_8002EEA8(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
                     if (func_88313E50(arg0->unk_24->unk_0A8, arg1) == 1) {
                         func_88305520(arg0->unk_24, sp24, arg1);
                     }
-                    func_8002EEA8(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
 
                     arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 1);
 
@@ -2702,12 +2702,12 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                     arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 0x100);
 
-                    func_8002EEA8(NULL);
-                    func_8002EEA8(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
                     if (func_88312998(arg0->unk_24->unk_0AC, arg1) == 1) {
                         func_88305F28(arg0->unk_24);
                     }
-                    func_8002EEA8(NULL);
+                    ControllerMsgQueue_SendAndRead(NULL);
 
                     arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 1);
 
@@ -2726,7 +2726,7 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                         if (arg0->unk_24->unk_CD8(4, arg0->unk_24->unk_CDC) == 1) {
                             sp20->unk_00->unk_0C = 1;
                         }
-                        func_8002EEA8(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
 
                         arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 1);
                     }
@@ -2789,11 +2789,11 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                         arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
 
-                        func_8002EEA8(NULL);
-                        func_8002EEA8(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
 
                         sp2C = func_8830CE84(arg0->unk_24->unk_098, arg1);
-                        func_8002EEA8(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
 
                         arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 1);
 
@@ -2823,14 +2823,14 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                             arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
 
-                            func_8002EEA8(NULL);
-                            func_8002EEA8(NULL);
+                            ControllerMsgQueue_SendAndRead(NULL);
+                            ControllerMsgQueue_SendAndRead(NULL);
                             if (func_8830B954(arg0->unk_24->unk_094, arg1) == 1) {
                                 func_883167CC(&arg0->unk_24->unk_03C, &arg0->unk_24->unk_144);
                                 func_88305270(arg0->unk_24);
                                 func_883051B0(arg0->unk_24);
                             }
-                            func_8002EEA8(NULL);
+                            ControllerMsgQueue_SendAndRead(NULL);
                             arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 1);
                         }
                     }
@@ -2875,10 +2875,10 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                         arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
 
-                        func_8002EEA8(NULL);
-                        func_8002EEA8(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
                         temp_s0_11 = func_8830DC58(arg0->unk_24->unk_0A4, arg1);
-                        func_8002EEA8(NULL);
+                        ControllerMsgQueue_SendAndRead(NULL);
 
                         arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 1);
 
@@ -3192,7 +3192,7 @@ void func_88308D60(unk_func_8830867C* arg0) {
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(&arg0->unk_00, 0, 0);
 
         Stage_Advance();
-        func_8002EF18(&sp34);
+        ControllerMsgQueue_Recv(&sp34);
     }
 }
 
@@ -3201,10 +3201,10 @@ void func_88308DFC(unk_func_8830867C* arg0) {
     func_88305DF4(arg0->unk_2C, gPlayer1Controller);
 
     while (arg0->unk_2C->unk_02C->unk_00.unk_28 & 1) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
     }
 
-    func_8002EEA8(1);
+    ControllerMsgQueue_SendAndRead(1);
     osStopThread(NULL);
 }
 
@@ -3256,7 +3256,7 @@ s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     osCreateThread(&sp44->thread, 0x32, func_88308DFC, sp4C, sp48 + 0x1000, osGetThreadPri(NULL) - 1);
 
-    func_8002EE78();
+    ControllerMsgQueue_Init();
 
     osStartThread(&sp44->thread);
 

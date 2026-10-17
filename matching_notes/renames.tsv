@@ -371,25 +371,25 @@ D_800FCAD4	gAudioOutputRate	p5		initialized from ALSynConfig->outputRate and lat
 D_800FCB08	gAudioPiHandle	p5		stores the OSPiHandle returned by osCartRomInit for DMA operations in __amDMA	applied@f4ef3d1
 D_800ABCC0	gAnimChannels	p6		global array holds two animation channel structs used by Anim_Get* functions	applied@4c34287
 D_800ABCF0	gCurrentAnimChannelIdx	p6		global index tracks the currently active animation channel (set to -1 on reset)	applied@4c34287
-func_8002D860	MenuScroll_Init	p7		initializes menu scroll struct using list functions and sets current index	pending
-func_8002D8C8	DrawTextureRectFromInfo	p7		loads texture from struct and draws a rectangle on screen	pending
-func_8002DCB8	MenuScroll_ProcessInputLR	p7		handles left/right input (0x800/0x400) for menu scrolling	pending
-func_8002DE78	MenuScroll_ProcessInputAccelerated	p7		processes menu scroll input with accelerated step when button 0x2000 held	pending
-func_8002DF68	NumericInput_HandleDirection	p7		adjusts numeric value based on direction codes (0x200,0x100,0x800,0x400)	pending
-func_8002E0F4	NumericInput_ReadAndHandle	p7		reads controller direction and forwards to NumericInput_HandleDirection	pending
-func_8002E128	NumericInput_HandleDirectionStep	p7		handles numeric input with step size multiplied by 10 for certain directions	pending
-func_8002E244	DrawNumber	p7		renders an integer using digit textures from gDigitTextureIds	pending
-func_8002E5A0	DrawNumberPadded	p7		draws a number with fixed digit count, handling leading zeros	pending
-func_8002EBD8	GetInputDirectionSign	p7		returns -1, 0, or 1 based on input flag bits 0x4000/0x8000	pending
-func_8002EE78	ControllerMsgQueue_Init	p7		creates the controller message queue used for input handling	pending
-func_8002EEA8	ControllerMsgQueue_SendAndRead	p7		sends a message, starts controller input read, and updates game state	pending
-func_8002EEEC	ControllerMsgQueue_Flush	p7		sends a NULL message to clear the controller message queue	pending
-func_8002EF18	ControllerMsgQueue_Recv	p7		receives a message from the controller message queue	pending
-D_800AF750	gControllerMsgQueue	p7		static OSMesgQueue used for controller input messaging	pending
-D_800AF768	gControllerMsg	p7		static s32 buffer passed to osCreateMesgQueue for controller messages	pending
-D_800758A8	gDigitTextureIds	p7		array of texture IDs used to draw digit characters in number rendering functions	pending
-D_80075910	gMoveTargetTypeTable	p7		lookup table mapping move indices to target type values used by GetMoveTargetType	pending
-D_80075940	gFadeGrayColor	p7		gray color constant used as target in FadeColorTowardGray	pending
+func_8002D860	MenuScroll_Init	p7		initializes menu scroll struct using list functions and sets current index	applied@02824c8
+func_8002D8C8	DrawTextureRectFromInfo	p7		loads texture from struct and draws a rectangle on screen	applied@02824c8
+func_8002DCB8	MenuScroll_ProcessInputLR	p7		handles left/right input (0x800/0x400) for menu scrolling	applied@02824c8
+func_8002DE78	MenuScroll_ProcessInputAccelerated	p7		processes menu scroll input with accelerated step when button 0x2000 held	applied@02824c8
+func_8002DF68	NumericInput_HandleDirection	p7		adjusts numeric value based on direction codes (0x200,0x100,0x800,0x400)	applied@02824c8
+func_8002E0F4	NumericInput_ReadAndHandle	p7		reads controller direction and forwards to NumericInput_HandleDirection	applied@02824c8
+func_8002E128	NumericInput_HandleDirectionStep	p7		handles numeric input with step size multiplied by 10 for certain directions	applied@02824c8
+func_8002E244	DrawNumber	p7		renders an integer using digit textures from gDigitTextureIds	applied@02824c8
+func_8002E5A0	DrawNumberPadded	p7		draws a number with fixed digit count, handling leading zeros	applied@02824c8
+func_8002EBD8	GetInputDirectionSign	p7		returns -1, 0, or 1 based on input flag bits 0x4000/0x8000	applied@02824c8
+func_8002EE78	ControllerMsgQueue_Init	p7		creates the controller message queue used for input handling	applied@02824c8
+func_8002EEA8	ControllerMsgQueue_SendAndRead	p7		sends a message, starts controller input read, and updates game state	applied@02824c8
+func_8002EEEC	ControllerMsgQueue_Flush	p7		sends a NULL message to clear the controller message queue	applied@02824c8
+func_8002EF18	ControllerMsgQueue_Recv	p7		receives a message from the controller message queue	applied@02824c8
+D_800AF750	gControllerMsgQueue	p7		static OSMesgQueue used for controller input messaging	applied@02824c8
+D_800AF768	gControllerMsg	p7		static s32 buffer passed to osCreateMesgQueue for controller messages	applied@02824c8
+D_800758A8	gDigitTextureIds	p7		array of texture IDs used to draw digit characters in number rendering functions	applied@02824c8
+D_80075910	gMoveTargetTypeTable	p7		lookup table mapping move indices to target type values used by GetMoveTargetType	applied@02824c8
+D_80075940	gFadeGrayColor	p7		gray color constant used as target in FadeColorTowardGray	applied@02824c8
 D_80076270	gIdentityMtx	p8		Identity matrix (65536 = 1.0) used as default transform in rendering paths.	pending
 D_800762B0	gModelSetupDL	p8		Three?command display list that sets geometry mode, pipe sync and combine, used before drawing models.	pending
 D_800762C8	gModelRenderDL	p8		Five?command display list that sets geometry mode, pipe sync, combine, alpha compare and ends, used for model rendering.	pending

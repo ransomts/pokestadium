@@ -10,15 +10,15 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static OSMesgQueue D_800AF750;
-static s32 D_800AF768;
+static OSMesgQueue gControllerMsgQueue;
+static s32 gControllerMsg;
 
 static Color_RGBA8 D_800758A0[] = {
     { 0xF0, 0xF0, 0xF0, 0xFF },
     { 0xE1, 0xE1, 0xE1, 0xFF },
 };
 
-static u32 D_800758A8[] = {
+static u32 gDigitTextureIds[] = {
     D_04001878, D_040018E0, D_04001948, D_040019B0, D_04001A18, D_04001A80, D_04001AF0,
     D_04001B58, D_04001BC0, D_04001C28, 0x10,       0x10,       0x10,       D_4001010,
 };
@@ -45,7 +45,7 @@ unk_func_88500020 D_800758F0[] = {
     },
 };
 
-void func_8002D860(unk_func_8002D860* arg0, s32 arg1) {
+void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1) {
     if (func_80024F00(arg1) != 0) {
         arg0->unk_00 = 1;
     } else {
@@ -56,7 +56,7 @@ void func_8002D860(unk_func_8002D860* arg0, s32 arg1) {
     arg0->unk_04 = func_80024F68(arg1);
 }
 
-void func_8002D8C8(unk_func_88500020* arg0, s32 arg1, s32 a2) {
+void DrawTextureRectFromInfo(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     s32 temp_lo;
     s32 var_t0;
     u8* var_s2;
@@ -97,7 +97,7 @@ void func_8002D8C8(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
+s32 MenuScroll_ProcessInputLR(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
@@ -126,7 +126,7 @@ s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
 s32 MenuScroll_HandleLeftRight(s32 arg0) {
     s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
-    func_8002DCB8(arg0, sp1C);
+    MenuScroll_ProcessInputLR(arg0, sp1C);
     return sp1C;
 }
 
@@ -163,7 +163,7 @@ s32 MenuScroll_HandleInput(unk_func_8002DD98_arg0* arg0) {
     return sp1C;
 }
 
-void func_8002DE78(unk_func_8002DE78_arg0* arg0) {
+void MenuScroll_ProcessInputAccelerated(unk_func_8002DE78_arg0* arg0) {
     s32 temp_v0 = MenuInput_ReadDirection();
     s32 sp18 = arg0->unk_0C;
 
@@ -192,7 +192,7 @@ void func_8002DE78(unk_func_8002DE78_arg0* arg0) {
     }
 }
 
-s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
+s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
     s32 temp_v0;
     s32 var_a2;
     s32 var_t1;
@@ -259,14 +259,14 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
     return var_t1;
 }
 
-s32 func_8002E0F4(unk_func_8820E99C_030_030* arg0) {
+s32 NumericInput_ReadAndHandle(unk_func_8820E99C_030_030* arg0) {
     s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
-    func_8002DF68(arg0, sp1C);
+    NumericInput_HandleDirection(arg0, sp1C);
     return sp1C;
 }
 
-s32 func_8002E128(unk_func_8002E128_arg0* arg0) {
+s32 NumericInput_HandleDirectionStep(unk_func_8002E128_arg0* arg0) {
     s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
     s32 sp18 = arg0->unk_0C;
 
@@ -305,7 +305,7 @@ s32 func_8002E128(unk_func_8002E128_arg0* arg0) {
     return sp1C;
 }
 
-void func_8002E244(s32 arg0, s32 arg1, s32 arg2) {
+void DrawNumber(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     s32 temp_lo;
     s32 var_s3;
@@ -327,7 +327,7 @@ void func_8002E244(s32 arg0, s32 arg1, s32 arg2) {
         if ((temp_lo != 0) || (var_s3 != 0) || (i == 0)) {
             var_s3 = 1;
 
-            gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[temp_lo], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+            gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[temp_lo], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 8) << 2, (arg1 + 0xC) << 2,
@@ -340,7 +340,7 @@ void func_8002E244(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8002E5A0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawNumberPadded(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_t0 = 1;
 
     gDPPipeSync(gDisplayListHead++);
@@ -354,7 +354,7 @@ void func_8002E5A0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     while (arg3 > 0) {
         arg3--;
         if ((arg2 > 0) || (var_t0 != 0)) {
-            gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+            gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, (arg0 + (arg3 * 9)) << 2, arg1 << 2, ((arg0 + (arg3 * 9)) + 8) << 2,
@@ -376,7 +376,7 @@ void func_8002E8E4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     while (arg3 > 0) {
         arg3--;
-        gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (arg0 + (arg3 * 9)) << 2, arg1 << 2, ((arg0 + (arg3 * 9)) + 8) << 2,
@@ -385,7 +385,7 @@ void func_8002E8E4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-s32 func_8002EBD8(unk_func_8002EBD8_arg0* arg0) {
+s32 GetInputDirectionSign(unk_func_8002EBD8_arg0* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_08 & 0x4000) {
@@ -398,19 +398,19 @@ s32 func_8002EBD8(unk_func_8002EBD8_arg0* arg0) {
 }
 
 s32 GetMoveTargetType(s32 arg0) {
-    static s32 D_80075910[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
+    static s32 gMoveTargetTypeTable[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
 
-    return D_80075910[arg0];
+    return gMoveTargetTypeTable[arg0];
 }
 
 Color_RGBA8 FadeColorTowardGray(Color_RGBA8 arg0, f32 arg1) {
-    static Color_RGBA8 D_80075940 = { 0xC8, 0xC8, 0xC8, 0xFF };
+    static Color_RGBA8 gFadeGrayColor = { 0xC8, 0xC8, 0xC8, 0xFF };
 
     Color_RGBA8 sp4;
 
-    sp4.r = (s32)((arg0.r - D_80075940.r) * arg1) + D_80075940.r;
-    sp4.g = (s32)((arg0.g - D_80075940.g) * arg1) + D_80075940.g;
-    sp4.b = (s32)((arg0.b - D_80075940.b) * arg1) + D_80075940.b;
+    sp4.r = (s32)((arg0.r - gFadeGrayColor.r) * arg1) + gFadeGrayColor.r;
+    sp4.g = (s32)((arg0.g - gFadeGrayColor.g) * arg1) + gFadeGrayColor.g;
+    sp4.b = (s32)((arg0.b - gFadeGrayColor.b) * arg1) + gFadeGrayColor.b;
     sp4.a = arg0.a;
 
     return sp4;
@@ -495,23 +495,23 @@ s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
     return sp1C;
 }
 
-void func_8002EE78(void) {
-    osCreateMesgQueue(&D_800AF750, &D_800AF768, 1);
+void ControllerMsgQueue_Init(void) {
+    osCreateMesgQueue(&gControllerMsgQueue, &gControllerMsg, 1);
 }
 
-void func_8002EEA8(OSMesg arg0) {
-    osSendMesg(&D_800AF750, arg0, 1);
+void ControllerMsgQueue_SendAndRead(OSMesg arg0) {
+    osSendMesg(&gControllerMsgQueue, arg0, 1);
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
 }
 
-void func_8002EEEC(void) {
-    osSendMesg(&D_800AF750, NULL, 1);
+void ControllerMsgQueue_Flush(void) {
+    osSendMesg(&gControllerMsgQueue, NULL, 1);
 }
 
-void func_8002EF18(OSMesg arg0) {
-    osRecvMesg(&D_800AF750, arg0, 1);
+void ControllerMsgQueue_Recv(OSMesg arg0) {
+    osRecvMesg(&gControllerMsgQueue, arg0, 1);
 }
 
 void Game_RunPokemonLab(void) {

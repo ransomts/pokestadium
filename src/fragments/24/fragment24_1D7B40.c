@@ -65,7 +65,7 @@ void func_88309160(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, u
             }
 
             new_var = temp_v0_2->unk_05 + (var_v1 * (arg2->unk_04 >> 6));
-            func_8002E5A0((arg5->unk_00.unk_14.unk_00 + arg0) - 0x19, arg1 + 0xC, new_var, 2);
+            DrawNumberPadded((arg5->unk_00.unk_14.unk_00 + arg0) - 0x19, arg1 + 0xC, new_var, 2);
         }
     }
 }
@@ -281,9 +281,9 @@ void func_88309C38(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2, s32 arg3, s
 
     sp38 = GetMessageString(NULL, 0, D_8831A4C4, 0x5F);
     if (arg4 & 2) {
-        func_8002D8C8(&D_800758E0, arg0 + 8, arg1 + 2);
+        DrawTextureRectFromInfo(&D_800758E0, arg0 + 8, arg1 + 2);
     } else {
-        func_8002D8C8(&D_800758F0, arg0 + 8, arg1 + 2);
+        DrawTextureRectFromInfo(&D_800758F0, arg0 + 8, arg1 + 2);
     }
 
     Text_ResetState();
@@ -547,9 +547,9 @@ void func_8830AADC(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2, s32 arg3, s
 
     if (arg2 != NULL) {
         if (arg4 & 2) {
-            func_8002D8C8(&D_800758E0, arg0 + 8, arg1 + 4);
+            DrawTextureRectFromInfo(&D_800758E0, arg0 + 8, arg1 + 4);
         } else {
-            func_8002D8C8(&D_800758F0, arg0 + 8, arg1 + 4);
+            DrawTextureRectFromInfo(&D_800758F0, arg0 + 8, arg1 + 4);
         }
         sp34 = D_88317440;
         Text_ResetState();
@@ -853,7 +853,7 @@ s32 func_8830B954(unk_func_8830867C_034* arg0, Controller* arg1) {
     MenuInput_SetController(arg1);
 
     while (var_s0 == 0) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
         if (!(temp_v0 & 1)) {
             if (temp_v0 & 2) {
@@ -1036,7 +1036,7 @@ u32 func_8830C058(unk_func_8830867C_030* arg0, Controller* arg1, s32 arg2) {
     func_8830BFE0(arg0, arg2);
 
     while (var_s1 == NULL) {
-        func_8002EEA8(var_s1);
+        ControllerMsgQueue_SendAndRead(var_s1);
         var_s0 = arg0->unk_00.unk_20(arg0, arg1);
         if (var_s0 & 2) {
             var_s1 = 1;
@@ -1297,7 +1297,7 @@ s32 func_8830CE84(unk_func_8830867C_038* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_40);
 
     while (var_s0 == 0) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
         if (!(temp_v0 & 1)) {
             if (temp_v0 & 2) {
@@ -1369,7 +1369,7 @@ s32 func_8830D11C(unk_func_8830867C_044_038* arg0, s32 arg1, s32 arg2) {
 }
 
 s32 func_8830D268(unk_func_8830867C_044_038* arg0, Controller* arg1) {
-    s32 var_v1 = func_8002DF68(&arg0->unk_30, MenuInput_ReadDirection() & 0xFFFF);
+    s32 var_v1 = NumericInput_HandleDirection(&arg0->unk_30, MenuInput_ReadDirection() & 0xFFFF);
 
     if (!(var_v1 & 1)) {
         if (!(var_v1 & 8)) {
@@ -1584,7 +1584,7 @@ s32 func_8830DC58(unk_func_8830867C_044* arg0, Controller* arg1) {
 
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
     while (var_s0 == 0) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
 
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
 
@@ -2001,7 +2001,7 @@ s32 func_8830F114(unk_func_8830867C_03C* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 
     while (var_s0 == NULL) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
 
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
 
@@ -2412,7 +2412,7 @@ s32 func_883106C8(unk_func_8830867C_040* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 
     while (var_s0 == 0) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
 
         if (!(temp_v0 & 1)) {
@@ -3485,7 +3485,7 @@ s32 func_88312998(unk_func_8830867C_04C* arg0, Controller* arg1) {
     }
 
     while (var_s0 == 0) {
-        func_8002EEA8(var_s0);
+        ControllerMsgQueue_SendAndRead(var_s0);
 
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
         if (!(temp_v0 & 1)) {
@@ -3945,7 +3945,7 @@ s32 func_88313E50(unk_func_8830867C_048* arg0, Controller* arg1) {
     func_88313A94(arg0);
 
     while (var_s1 == 0) {
-        func_8002EEA8(var_s1);
+        ControllerMsgQueue_SendAndRead(var_s1);
 
         var_s0 = arg0->unk_00.unk_20(arg0, arg1);
         if (!(var_s0 & 1)) {
@@ -4050,7 +4050,7 @@ s32 func_88314340(unk_func_8830867C_02C_0B4* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 
     while (var_s1 == 0) {
-        func_8002EEA8(var_s1);
+        ControllerMsgQueue_SendAndRead(var_s1);
 
         var_s0 = arg0->unk_00.unk_20(arg0, arg1);
 

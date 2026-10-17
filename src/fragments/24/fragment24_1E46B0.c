@@ -956,7 +956,7 @@ void func_88316BEC(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     arg0[2].unk_01 = 0;
     List_Init(&arg0[2].unk_0C, 2, 0x64, arg1);
 
-    func_8002D860(&sp48, arg0->unk_01);
+    MenuScroll_Init(&sp48, arg0->unk_01);
 
     for (i = 0; i < 4; i++) {
         if ((func_80027164(0x12, i) != 0) && (func_800275E0(0x12, i) > 0)) {

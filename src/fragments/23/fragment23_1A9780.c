@@ -193,7 +193,7 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
             gSPTextureRectangle(gDisplayListHead++, (arg0 + 0xA) << 2, (arg1 + 0x1F) << 2, (arg0 + 0x12) << 2,
                                 (arg1 + 0x29) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-            func_8002E244(arg0 + 0x14, arg1 + 0x1D, arg2->unk_00->unk_24);
+            DrawNumber(arg0 + 0x14, arg1 + 0x1D, arg2->unk_00->unk_24);
         }
 
         Text_ResetState();
@@ -331,7 +331,7 @@ void func_88202394(unk_func_88201DA0* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 
     while (var_s1 == 0) {
-        func_8002EEA8(var_s1);
+        ControllerMsgQueue_SendAndRead(var_s1);
         var_s0 = func_88202254(arg0, arg1);
         if (!(var_s0 & 1) && (var_s0 & 2)) {
             var_s0 |= 1;
@@ -356,7 +356,7 @@ void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     Text_Print(((arg1 + sp24) - MeasureTextWidth(0, 0, sp28)) + 0x1C, arg2 + 4, sp28);
     Text_SetupDL();
     if (arg0->unk_690 > 0) {
-        func_8002D8C8(&D_800758E0, arg1, arg2 + 2);
+        DrawTextureRectFromInfo(&D_800758E0, arg1, arg2 + 2);
     }
 }
 
@@ -1266,7 +1266,7 @@ void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
     unk_func_88205880_00D0** var_s1;
 
     ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_84->unk_40, 2);
-    func_8002EEA8(NULL);
+    ControllerMsgQueue_SendAndRead(NULL);
 
     var_s1 = arg0->unk_38->unk_2C->unk_00;
 
@@ -1489,7 +1489,7 @@ void func_882057B4(unk_func_88203ED8* arg0, Controller* arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 
     while (var_s1 == 0) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
 
         temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
         if (!(temp_v0 & 1) && (temp_v0 & 2)) {
@@ -1617,7 +1617,7 @@ void func_88205DF8(unk_func_88205880* arg0) {
         ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(arg0, 0, 0);
 
         Stage_Advance();
-        func_8002EF18(&sp34);
+        ControllerMsgQueue_Recv(&sp34);
     }
 }
 
@@ -1626,10 +1626,10 @@ void func_88205E94(unk_func_88205880* arg0) {
     func_882057B4(arg0->unk_002C, gPlayer1Controller);
 
     while (arg0->unk_002C->unk_2C->unk_00.unk_28 & 1) {
-        func_8002EEA8(NULL);
+        ControllerMsgQueue_SendAndRead(NULL);
     }
 
-    func_8002EEA8(1);
+    ControllerMsgQueue_SendAndRead(1);
     osStopThread(NULL);
 }
 
@@ -1673,7 +1673,7 @@ void func_88205F1C(unk_D_800AC870* arg0) {
 
     osCreateThread(&sp60->thread, 0x32, func_88205E94, sp68, sp64 + 0x1000, osGetThreadPri(NULL) - 1);
 
-    func_8002EE78();
+    ControllerMsgQueue_Init();
 
     osStartThread(&sp60->thread);
 

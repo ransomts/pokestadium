@@ -340,8 +340,8 @@ s32 func_88601600(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) 
             var_v1 = 7;
         }
         sp18 = temp_v0->unk_05 + (var_v1 * (arg0->unk_30 >> 6));
-        func_8002E5A0(arg1, arg2, arg0->unk_30 & 0x3F, 2);
-        func_8002E5A0(arg1 + 0x1B, arg2, sp18, 2);
+        DrawNumberPadded(arg1, arg2, arg0->unk_30 & 0x3F, 2);
+        DrawNumberPadded(arg1 + 0x1B, arg2, sp18, 2);
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1432,7 +1432,7 @@ s32 func_88605718(unk_func_88205880_0098_008* arg0) {
     while (var_s1 == 0) {
         s32 temp_v0_5;
 
-        func_8002EEA8((OSMesg*)var_s1);
+        ControllerMsgQueue_SendAndRead((OSMesg*)var_s1);
         temp_v0_5 = arg0->unk_00.unk_20(&arg0->unk_00, gPlayer1Controller);
 
         if (!(temp_v0_5 & 1)) {
