@@ -654,14 +654,21 @@ typedef struct unk_D_80078A60 {
 
 unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.5f }, { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xD, 8.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.25f }, { 4, 1.25f }, { 5, 1.25f }, { 6, 1.25f }, { 7, 1.25f }, { 8, 1.25f }, { 9, 1.25f }, { 0xA, 1.25f }, { 0xB, 1.25f }, { 0xC, 1.25f }, { 0xD, 1.25f }, { 0xD, 2.5f }, { 0xD, 5.0f }, { 0xD, 10.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xD, 12.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.75f }, { 4, 1.75f }, { 5, 1.75f }, { 6, 1.75f }, { 7, 1.75f }, { 8, 1.75f }, { 9, 1.75f }, { 0xA, 1.75f }, { 0xB, 1.75f }, { 0xC, 1.75f }, { 0xD, 1.75f }, { 0xD, 3.5f }, { 0xD, 7.0f }, { 0xD, 14.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } } };
 #ifdef NON_MATCHING
-// Score 3355 (was 5415). Wins: `unk_10 = 0` (int literal) stops IDO sharing one 0.0f register across the
-// function (target does mtc1 zero per use); reading unk_04 + NR42&8 into locals before the unk_20 test and
-// taking &D_800FC6CC[sample] after the value load reproduces the target's early lbu / late pointer.
-// Remaining: unk_0C store uses %lo(at) instead of 0xc(v1) and is scheduled too early; li 1 / D_8007D4D0
-// load order in the trigger block; NR42 reread via t0 base instead of fresh lui (target bnezl a1);
-// unk_20 = -1 / unk_14 reload order in the 0.75 clamp. Dead ends (all worse or equal): other 0/0.0f
-// literal mixes, nr as full byte or `dir`, NR42 read before pos, u8* access, &= 0xF7, checking
-// entry->unk_00 == 0xFF directly, ternary +0x10, comma-expr unk_0C, D_800FC6CC[sample] in the call.
+// Score 2195 (diff.py without -s; was 3355, 5415). Wins: `unk_10 = 0` (int literal) stops IDO sharing one
+// 0.0f register across the function; table row read TWICE as D_80078A60[..][..].unk_00 / .unk_04 (no entry
+// pointer) puts the unk_0C store in the beq delay slot with 0xc(v1) addressing (3215 -> 2195);
+// `unk_20 = unk_1C = len*D_800FD004*4` (no pos temp; 0x1C stored first like the target); `sample = unk_04`
+// before the unk_20 test, NR42&8 read inline in the final test (fresh lui like the target), ent2 taken
+// BEFORE the value load, `value = value * unk_14; return value;` (trunc result in a0 like the target).
+// Remaining (mostly regalloc): target keeps idx in a1, (u16)col in a2 (computed in place), row ptr in a3,
+// sample in a0 (v0 copy); NR42&8 andi sits in the unk_20 beqz delay slot (ours is late); pos split into
+// v0 in the unk_24 test (target reloads unk_20 into v0 in a beqzl slot); li 1 / D_8007D4D0 order.
+// Dead ends (all worse or equal): other 0/0.0f literal mixes, nr as full byte or `dir`, NR42 read before
+// pos, u8* access, &= 0xF7, ternary +0x10, comma-expr unk_0C, D_800FC6CC[sample] in the call (2865 but
+// loses the target's andi 0xFF re-read), entry pointer variable, u16/s32 `col` local (back to 2985),
+// NR42&8 into any local (dir/idx/len/i/nr/flags, before or after the unk_20 test: 3235+), idx re-read
+// from D_800FD008 instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
+// declaration order (no effect), chained 0x20-first store.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
@@ -670,7 +677,6 @@ extern f32 D_8007D4D4;
 s16 func_8004A89C(void) {
     s32 changed;
     s32 i;
-    unk_D_80078A60* entry;
     unk_D_800FC6CC* ent2;
     u8 sample;
     u32 nr;
@@ -691,8 +697,7 @@ s16 func_8004A89C(void) {
 
     if (changed) {
         idx = D_800FD008[0x12].value;
-        entry = &D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)];
-        sample = entry->unk_00;
+        sample = D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)].unk_00;
         if (sample == 0xFF) {
             D_800FCFD8.unk_28 = 0;
             return 0;
@@ -700,7 +705,7 @@ s16 func_8004A89C(void) {
         if (idx & 8) {
             sample += 0x10;
         }
-        D_800FCFD8.unk_0C = entry->unk_04;
+        D_800FCFD8.unk_0C = D_80078A60[idx & 7][(u16)((idx & 0xF0) >> 4)].unk_04;
         if (sample != D_800FCFD8.unk_04) {
             D_800FCFD8.unk_04 = sample;
             func_8004ADB0(D_800FC6CC[D_800FCFD8.unk_04].unk_00, (u32)D_800FC6D0,
@@ -734,9 +739,7 @@ s16 func_8004A89C(void) {
                 } else {
                     D_800FCFD8.unk_18 = D_8007D4D4;
                 }
-                pos = len * D_800FD004 * 4;
-                D_800FCFD8.unk_1C = pos;
-                D_800FCFD8.unk_20 = pos;
+                D_800FCFD8.unk_20 = D_800FCFD8.unk_1C = len * D_800FD004 * 4;
             } else {
                 D_800FCFD8.unk_1C = -1;
                 D_800FCFD8.unk_20 = -1;
@@ -764,14 +767,13 @@ s16 func_8004A89C(void) {
     }
 
     sample = D_800FCFD8.unk_04;
-    nr = D_800FD008[0x11].value & 8;
     if (D_800FCFD8.unk_20 < pos) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
 
-    value = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
     ent2 = &D_800FC6CC[sample];
+    value = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
     D_800FCFD8.unk_10 += 1.0f;
     if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
         D_800FCFD8.unk_08++;
@@ -781,7 +783,7 @@ s16 func_8004A89C(void) {
         }
     }
 
-    if (!nr && (D_800FCFD8.unk_14 < 0.0f)) {
+    if (!(D_800FD008[0x11].value & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
         D_800FCFD8.unk_28 = 0;
         return 0;
     }
@@ -793,7 +795,8 @@ s16 func_8004A89C(void) {
     }
 
     D_800FCFD8.unk_00 += 0x100;
-    return value * D_800FCFD8.unk_14;
+    value = value * D_800FCFD8.unk_14;
+    return value;
 }
 #else
 #pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_8004A89C.s")
