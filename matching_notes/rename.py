@@ -451,6 +451,11 @@ def map_symbol_span(name):
     global _MAP_SPAN_CACHE
     if _MAP_SPAN_CACHE is None:
         _MAP_SPAN_CACHE = {}
+        sa_addrs = set()
+        for f in SA_FILES:
+            if os.path.exists(f):
+                for m in re.finditer(r"^(\S+)\s*=\s*(0x[0-9a-fA-F]+)\s*;", open(f, errors="replace").read(), re.M):
+                    sa_addrs.add(int(m.group(2), 16))
         mp = os.path.join(REPO, "build/pokestadium-us.map")
         if os.path.exists(mp):
             entries = []
@@ -463,7 +468,9 @@ def map_symbol_span(name):
                 if sym in _MAP_SPAN_CACHE:
                     continue
                 nxt = next((a for a, _s in entries[i + 1:] if a > addr), None)
-                _MAP_SPAN_CACHE[sym] = (addr, (nxt - addr) if nxt else 4)
+                sa_nxt = min((a for a in sa_addrs if a > addr), default=None)
+                end = min(x for x in (nxt, sa_nxt) if x is not None) if (nxt or sa_nxt) else None
+                _MAP_SPAN_CACHE[sym] = (addr, (end - addr) if end else 4)
     return _MAP_SPAN_CACHE.get(name)
 
 
