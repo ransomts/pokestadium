@@ -950,8 +950,8 @@ def apply(path):
                 if sym in defined:
                     fwd.append(sym)
                     continue
-                if re.search(r"\b%s\b" % re.escape(sym), t):
-                    continue
+                if re.search(r"\b%s\b" % re.escape(sym), t[:pos] if pos is not None else t):
+                    continue  # declared/defined before the insertion point
                 hdr = any(re.search(r"\b%s\s*\(" % re.escape(sym), x) or
                           re.search(r"extern[^;]*\b%s\b" % re.escape(sym), x)
                           for f, x in src.items() if f.endswith(".h"))
@@ -966,9 +966,13 @@ def apply(path):
                 else:
                     decls.append(f"extern {base_type(d['type'])} {sym}{''.join(f'[{x}]' for x in d['dims'])};")
                 continue
-            isfn = any(re.search(r"^[\w*][\w\s*]*\b%s\s*\([^;]*\)\s*\{" % re.escape(sym), x, re.M)
-                       for f, x in src.items() if f.endswith(".c"))
-            decls.append(f"void {sym}(void);" if isfn else f"extern u8 {sym}[];")
+            sig = None
+            for f, x in [(owner, t)] + [(f, x) for f, x in src.items() if f.endswith(".c") and f != owner]:
+                m = re.search(r"^([\w*][\w\s*]*?)\b%s\s*\(([^;{]*)\)\s*\{" % re.escape(sym), x, re.M)
+                if m:
+                    sig = f"{m.group(1).strip()} {sym}({' '.join(m.group(2).split())});"
+                    break
+            decls.append(sig if sig else f"extern u8 {sym}[];")
         if decls:
             block = decls + [""] + block
         ins = "\n".join(block) + "\n"
