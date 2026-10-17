@@ -124,7 +124,7 @@ s32 func_8002DCB8(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
 }
 
 s32 func_8002DD64(s32 arg0) {
-    s32 sp1C = func_8001F750() & 0xFFFF;
+    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
     func_8002DCB8(arg0, sp1C);
     return sp1C;
@@ -157,14 +157,14 @@ s32 func_8002DD98(unk_func_8002DD98_arg0* arg0, s32 arg1) {
 }
 
 s32 func_8002DE44(unk_func_8002DD98_arg0* arg0) {
-    s32 sp1C = func_8001F750() & 0xFFFF;
+    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
     func_8002DD98(arg0, sp1C);
     return sp1C;
 }
 
 void func_8002DE78(unk_func_8002DE78_arg0* arg0) {
-    s32 temp_v0 = func_8001F750();
+    s32 temp_v0 = MenuInput_ReadDirection();
     s32 sp18 = arg0->unk_0C;
 
     if (gPlayer1Controller->buttonDown & 0x2000) {
@@ -260,14 +260,14 @@ s32 func_8002DF68(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
 }
 
 s32 func_8002E0F4(unk_func_8820E99C_030_030* arg0) {
-    s32 sp1C = func_8001F750() & 0xFFFF;
+    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
 
     func_8002DF68(arg0, sp1C);
     return sp1C;
 }
 
 s32 func_8002E128(unk_func_8002E128_arg0* arg0) {
-    s32 sp1C = func_8001F750() & 0xFFFF;
+    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
     s32 sp18 = arg0->unk_0C;
 
     if (sp1C != 0) {

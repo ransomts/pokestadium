@@ -5,8 +5,8 @@
 #include "src/controller.h"
 
 void func_8001F730(void);
-void func_8001F738(Controller*);
-s32 func_8001F750(void);
+void MenuInput_SetController(Controller*);
+s32 MenuInput_ReadDirection(void);
 
 
 #endif // _20330_H_

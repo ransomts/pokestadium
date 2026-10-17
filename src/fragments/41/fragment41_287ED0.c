@@ -598,7 +598,7 @@ s32 func_82F0109C(void) {
 void func_82F01180(void) {
     func_80006C6C(0x10);
     func_8004B1CC(0x10);
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     D_82F144C0 = 1;
 

@@ -990,7 +990,7 @@ void func_82303CA0(unk_D_82305A40* arg0) {
 
     switch (arg0->unk_00) {
         case 1:
-            temp_v0_2 = func_8001F750();
+            temp_v0_2 = MenuInput_ReadDirection();
             if ((temp_v0_2 == 0x200) && (arg0->unk_01 == 1)) {
                 if (arg0->unk_0C == 1) {
                     if (arg0->unk_02 >= 6) {
@@ -1058,7 +1058,7 @@ void func_82303CA0(unk_D_82305A40* arg0) {
         case 2:
             arg0->unk_06 += 0x16;
             if (arg0->unk_06 == 0xBA) {
-                func_8001F738(gPlayer1Controller);
+                MenuInput_SetController(gPlayer1Controller);
                 arg0->unk_00 = 1;
             }
             break;

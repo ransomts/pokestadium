@@ -106,3 +106,6 @@ func_80001AD4	Gfx_SetFrameFillColor	a9		fills the top scanline (640 halfwords) o
 func_80001B2C	Gfx_GetFrameFillColor	a9		reads back the first pixel of the current framebuffer (the value Gfx_SetFrameFillColor wrote)	applied@ec5c0b7
 func_8001F3B4	Text_SetLineHeight	a9		sets the text state's line advance (unk_52; default 0x28, applied per newline in Text_Print; 0xC at compact-UI call sites)	applied@ec5c0b7
 func_8001F3C4	Text_SetNoWordWrap	a9		sets unk_53 bit 2 - Text_Print then treats newlines as ordinary characters (no line advance)	applied@ec5c0b7
+func_80001474	Vi_SetMode	a10		osViSetMode from the index table (osTvType-aware index, TV type 2 offset +4), gamma/dither features off, PAL YScale 0.8333 for NTSC-class sets	applied@1b48f29
+func_8001F738	MenuInput_SetController	a10		sets the active menu-input controller and primes the repeat counter to 0xA	applied@1b48f29
+func_8001F750	MenuInput_ReadDirection	a10		direction read with hold-repeat: fresh press resets the counter (0xA) and returns the bit, held direction repeats every 2 ticks; 0x800/0x400/0x200/0x100 direction bits	applied@1b48f29

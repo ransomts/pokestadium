@@ -850,7 +850,7 @@ s32 func_8830B954(unk_func_8830867C_034* arg0, Controller* arg1) {
     s32 temp_v0;
 
     func_8830B8A0(arg0);
-    func_8001F738(arg1);
+    MenuInput_SetController(arg1);
 
     while (var_s0 == 0) {
         func_8002EEA8(var_s0);
@@ -1369,7 +1369,7 @@ s32 func_8830D11C(unk_func_8830867C_044_038* arg0, s32 arg1, s32 arg2) {
 }
 
 s32 func_8830D268(unk_func_8830867C_044_038* arg0, Controller* arg1) {
-    s32 var_v1 = func_8002DF68(&arg0->unk_30, func_8001F750() & 0xFFFF);
+    s32 var_v1 = func_8002DF68(&arg0->unk_30, MenuInput_ReadDirection() & 0xFFFF);
 
     if (!(var_v1 & 1)) {
         if (!(var_v1 & 8)) {

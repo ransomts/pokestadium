@@ -175,7 +175,7 @@ void func_82F01A70(unk_D_82F144D0* arg0) {
     unk_func_82F00838_sp30_00C* temp_a3;
     unk_func_82F00838_sp30_00C* temp_a3_2;
     s16 temp_t1;
-    u16 temp_v0 = func_8001F750();
+    u16 temp_v0 = MenuInput_ReadDirection();
 
     controller = gPlayer1Controller;
 

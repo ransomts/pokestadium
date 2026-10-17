@@ -1486,7 +1486,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
     sp48 = ((arg0->unk_2C->unk_08 + arg0->unk_48) - 1) / arg0->unk_48;
     sp58 = arg0->unk_38 % arg0->unk_48;
     sp54 = arg0->unk_38 / arg0->unk_48;
-    sp24 = func_8001F750() & 0xFFFF;
+    sp24 = MenuInput_ReadDirection() & 0xFFFF;
 
     if (sp24 == 0x800) {
         for (i = 0, sp4C = sp54; i < sp48 - 1; i++) {
@@ -2930,7 +2930,7 @@ s32 func_8850C3B8(unk_func_88001300_03C* arg0, Controller* arg1) {
 
     sp54 = arg0->unk_24 % arg0->unk_2C;
     sp50 = arg0->unk_24 / arg0->unk_2C;
-    sp24 = func_8001F750() & 0xFFFF;
+    sp24 = MenuInput_ReadDirection() & 0xFFFF;
 
     if (sp24 == 0x800) {
         for (i = 0, sp48 = sp50; i < arg0->unk_30 - 1; i++) {

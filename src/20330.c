@@ -8,12 +8,12 @@ static Controller* D_800AC88C;
 void func_8001F730(void) {
 }
 
-void func_8001F738(Controller* arg0) {
+void MenuInput_SetController(Controller* arg0) {
     D_800AC888 = 0xA;
     D_800AC88C = arg0;
 }
 
-s32 func_8001F750(void) {
+s32 MenuInput_ReadDirection(void) {
     if (D_800AC88C->buttonPressed & 0x800) {
         D_800AC888 = 0xA;
         return 0x800;

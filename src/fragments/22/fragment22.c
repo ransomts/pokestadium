@@ -3113,7 +3113,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     sp30 = ALIGN16((u32)mem_pool_alloc(sp44, sizeof(func_88002628_sp38)));
     osCreateThread(&sp30->thread, 0x32, func_8800233C, sp38, sp34 + 0x1000, osGetThreadPri(NULL) - 1);
     func_8002EE78();
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
     osStartThread(&sp30->thread);
 
     func_80007754();

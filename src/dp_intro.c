@@ -61,7 +61,7 @@ void func_80001444(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
     func_800053B4(arg0, arg2);
 }
 
-void func_80001474(s8 arg0, s8 arg1) {
+void Vi_SetMode(s8 arg0, s8 arg1) {
     s32 var_v0;
 
     if (osTvType == 2) {
@@ -125,7 +125,7 @@ void func_800015A8(void) {
         osViRepeatLine(0);
         if ((D_80083CA0.unk_A9C.unk_01 != D_80083CA0.unk_AAC.unk_01) ||
             (D_80083CA0.unk_A9C.unk_02 != D_80083CA0.unk_AAC.unk_02)) {
-            func_80001474((s8)D_80083CA0.unk_A9C.unk_01, (s8)D_80083CA0.unk_A9C.unk_02);
+            Vi_SetMode((s8)D_80083CA0.unk_A9C.unk_01, (s8)D_80083CA0.unk_A9C.unk_02);
         }
         if (D_80068B70 != 0) {
             osViBlack(1U);
@@ -138,7 +138,7 @@ void func_800015A8(void) {
         osViSwapBuffer(D_80083CA0.unk_9E0->img_p);
         if ((D_80083CA0.unk_A9C.unk_01 != D_80083CA0.unk_AAC.unk_01) ||
             (D_80083CA0.unk_A9C.unk_02 != D_80083CA0.unk_AAC.unk_02)) {
-            func_80001474((s8)D_80083CA0.unk_A9C.unk_01, (s8)D_80083CA0.unk_A9C.unk_02);
+            Vi_SetMode((s8)D_80083CA0.unk_A9C.unk_01, (s8)D_80083CA0.unk_A9C.unk_02);
         }
     }
 
@@ -269,7 +269,7 @@ s32 func_80001C58(void) {
 }
 
 void func_80001C64(void) {
-    func_80001474((s8)D_80083CA0.unk_AAC.unk_01, (s8)D_80083CA0.unk_AAC.unk_02);
+    Vi_SetMode((s8)D_80083CA0.unk_AAC.unk_01, (s8)D_80083CA0.unk_AAC.unk_02);
 }
 
 s32 func_80001C90(void) {

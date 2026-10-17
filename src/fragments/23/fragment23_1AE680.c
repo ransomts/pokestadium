@@ -2527,7 +2527,7 @@ void func_8820C700(unk_D_800AC870* arg0, s32 arg1) {
     osCreateThread(&sp50->thread, 0x32, D_88217FC8[arg1], sp58, sp54 + 0x10000, osGetThreadPri(NULL) - 1);
 
     func_8002EE78();
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     osStartThread(&sp50->thread);
 

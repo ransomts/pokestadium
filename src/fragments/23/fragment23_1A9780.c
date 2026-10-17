@@ -1622,7 +1622,7 @@ void func_88205DF8(unk_func_88205880* arg0) {
 }
 
 void func_88205E94(unk_func_88205880* arg0) {
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
     func_882057B4(arg0->unk_002C, gPlayer1Controller);
 
     while (arg0->unk_002C->unk_2C->unk_00.unk_28 & 1) {

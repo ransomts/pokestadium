@@ -802,7 +802,7 @@ s32 func_88803614(void) {
     D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0);
 
     ((func8850628C)Memmap_GetFragmentVaddr(func_8850628C))(&D_88826940->unk_38->unk_2C->unk_00);
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     while (var_s2 == 1) {
         Cont_StartReadInputs();
@@ -856,7 +856,7 @@ s32 func_888038E0(void) {
     D_88826940->unk_34->unk_2C = 0;
     D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
     D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 1);
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     while (var_s1 == 2) {
         Cont_StartReadInputs();

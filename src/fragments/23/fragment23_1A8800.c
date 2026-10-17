@@ -271,7 +271,7 @@ void func_88200FA0(unk_func_88200FA0* arg0) {
         func_8002EEA8(NULL);
     }
 
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     sp24 = func_88200B60(arg0->unk_30, gPlayer1Controller);
     if (sp24 == 1) {
@@ -312,7 +312,7 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
     osCreateThread(&sp28->thread, 0x32, func_88200FA0, sp30, sp2C + 0x1000, osGetThreadPri(NULL) - 1);
 
     func_8002EE78();
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     osStartThread(&sp28->thread);
 

@@ -34,7 +34,7 @@ void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
 void func_82100034(void) {
-    func_8001F750();
+    MenuInput_ReadDirection();
 }
 
 s32 func_82100054(void) {
@@ -287,7 +287,7 @@ s32 func_821009B4(void) {
     s32 var_s0 = 0;
     s32 var_s2 = 30;
 
-    func_8001F738(gPlayer1Controller);
+    MenuInput_SetController(gPlayer1Controller);
 
     while (var_s0 == 0) {
         if (D_82100EC8 == 0) {
