@@ -1070,7 +1070,7 @@ void func_86B0819C(void) {
     }
 }
 
-s32 func_86B08644(void) {
+s32 BattleState_Handle17(void) {
     Stage* sp24;
 
     main_pool_push_state('DEMO');

@@ -1,25 +1,25 @@
 #include "fragment17.h"
 #include "29BA0.h"
 
-s32 func_86B00020(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 BattleContext_HandleState(UNUSED s32 arg0, UNUSED s32 arg1) {
     switch (gBattleContext.unk_0000) {
         case 18:
-            return func_86B01190();
+            return BattleState_Handle18();
 
         case 17:
-            return func_86B08644();
+            return BattleState_Handle17();
 
         case 21:
-            return func_86B04FB0();
+            return BattleState_Handle21Or26();
 
         case 26:
-            return func_86B04FB0();
+            return BattleState_Handle21Or26();
 
         case 22:
         case 23:
-            return func_86B0BA18();
+            return BattleState_Handle22Or23();
 
         case 24:
-            return func_86B0A554();
+            return BattleState_Handle24();
     }
 }

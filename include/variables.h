@@ -883,7 +883,7 @@ typedef struct FontBankInfo {
 	/* 0x08 */ u8* unk_08;
 } FontBankInfo; // size = 0xC
 
-typedef struct unk_D_800AC870 {
+typedef struct TextObject {
     /* 0x00 */ FontBankInfo unk_00[6];
     /* 0x48 */ void* unk_48;
     /* 0x4C */ s32 unk_4C;
@@ -891,7 +891,7 @@ typedef struct unk_D_800AC870 {
     /* 0x51 */ s8 unk_51;
     /* 0x52 */ u8 unk_52;
     /* 0x53 */ u8 unk_53;
-} unk_D_800AC870; // size = 0x54
+} TextObject; // size = 0x54
 
 extern Gfx D_8006F498[];
 

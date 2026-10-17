@@ -35,7 +35,7 @@ static MiniActor miniSandshrews[4];
 static MiniActor miniSandshrewHoles[4];
 static MiniActor miniSandshrewGeisers[4];
 static s16 D_86F0D260;
-static unk_D_800AC870* D_86F0D264;
+static TextObject* D_86F0D264;
 
 static u32 D_86F02690[1024] = {
     0xBC99B499, 0xCD5DDE61, 0xE623C4DB, 0xD59DCD5D, 0xCD5BDDDD, 0xD5DFBCD9, 0xEE69E6A9, 0xDDDDDDDF, 0xDDDFE61F,
@@ -1629,7 +1629,7 @@ void initSandshrew(MiniActor* sandshrew, s32 player) {
     sandshrew->mainState = 0;
     sandshrew->isSquashed = 0;
 
-    sandshrew->isComp = D_879060C4[player];
+    sandshrew->isComp = gMiniHudColors[player];
 }
 
 void initSandshrews(void) {
@@ -1893,7 +1893,7 @@ void func_86F00D04(void) {
 
         func_86F00920(miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewPtr);
-        func_87900808(miniSandshrewPtr);
+        MiniActor_UpdateCollider(miniSandshrewPtr);
 
         miniSandshrewPtr++;
         miniSandshrewHolePtr++;
@@ -1973,7 +1973,7 @@ void func_86F01014(void) {
     for (i = 0; i < 4; i++) {
         func_86F00F68(miniSandshrewHolePtr, miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewHolePtr);
-        func_87900808(miniSandshrewHolePtr);
+        MiniActor_UpdateCollider(miniSandshrewHolePtr);
 
         miniSandshrewHolePtr++;
         miniSandshrewPtr++;
@@ -2048,7 +2048,7 @@ void func_86F012B8(void) {
     for (i = 0; i < 4; i++) {
         func_86F011E8(miniSandshrewGeiserPtr);
         miniActorUpdateTransform(miniSandshrewGeiserPtr);
-        func_87900808(miniSandshrewGeiserPtr);
+        MiniActor_UpdateCollider(miniSandshrewGeiserPtr);
 
         miniSandshrewGeiserPtr++;
     }
@@ -2074,20 +2074,20 @@ void func_86F0132C(void) {
 void func_86F013B8(void) {
     switch (D_87906072) {
         case 1:
-            func_87900920();
+            MiniGame_SaveCameraState();
             D_87906072++;
             break;
 
         case 2:
-            ApproachF32(&D_8790607C, 250.0f, 1.0f);
-            ApproachF32(&D_87906088.y, 34.0f, 1.8f);
-            func_81400550(&D_87906076, 0x600, 0xCC);
+            ApproachF32(&gMiniCameraDistanceBackup, 250.0f, 1.0f);
+            ApproachF32(&gMiniCameraCoordsBackup.y, 34.0f, 1.8f);
+            func_81400550(&gMiniCameraXRotBackup, 0x600, 0xCC);
             func_81400550(&miniHudTransparency, 0, 0x30);
             break;
     }
 
     if (D_87906072 != 0) {
-        func_879009B4();
+        MiniGame_RestoreCameraState();
     }
 }
 
@@ -2098,7 +2098,7 @@ void func_86F01488(void) {
 }
 
 void sandshrewMinigameInitObjects(void) {
-    func_87900854(); //	init minigame variables
+    MiniGame_ResetState(); //	init minigame variables
     initSandshrews();
     initSandshrewHoles();
     initSandshrewGeisers();
@@ -2155,7 +2155,7 @@ void func_86F0164C(void) {
 
 s32 func_86F016D8(void) {
     s32 sp1C = 0;
-    s32 sp18 = func_87802974();
+    s32 sp18 = Fragment2_1_GetResult();
 
     if (sp18 == -2) {
         func_86F00188(6, 0);
@@ -2181,7 +2181,7 @@ void func_86F0174C(void) {
         case 2: //  waits for some frames before starting the main countdown
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
-                func_8780295C(1);
+                Fragment2_1_SetStartFlag(1);
                 minigameState++;
             }
             break;
@@ -2222,7 +2222,7 @@ void func_86F0174C(void) {
             }
             break;
     }
-    func_878025D0();
+    Fragment2_1_Update();
 }
 
 void func_86F018E4(void) {
@@ -2306,7 +2306,7 @@ void fixSandshrewMinigameHUD(void) {
         s16 xPos = playerIconsScreenXPos[i];
         s16 yPos = playerIconsScreenYPos[i];
 
-        if (D_879060C4[i] == 0) { //	if ai player
+        if (gMiniHudColors[i] == 0) { //	if ai player
             func_87801644(i, xPos, yPos, 0.75f);
         } else { //	if human player
             func_87801644(-1 - i, xPos, yPos, 0.75f);
@@ -2381,7 +2381,7 @@ void func_86F0204C(void) {
     hideMiniGameHUD();
 
     while (var_s5 != 0) {
-        func_87900528();
+        MiniGame_ReadInputs();
 
         if (minigameState == 0) {
             D_87906042 += 1;
@@ -2432,7 +2432,7 @@ void func_86F02230(void) {
     }
 
     for (i = 0; i < 30; i++) {
-        func_87900528();
+        MiniGame_ReadInputs();
 
         if (D_8780FC94 == 0) {
             func_8140C5D0();

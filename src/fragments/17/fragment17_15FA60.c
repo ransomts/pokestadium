@@ -523,7 +523,7 @@ void func_86B0111C(void) {
     D_86B0E5DC = 0;
 }
 
-s32 func_86B01190(void) {
+s32 BattleState_Handle18(void) {
     main_pool_push_state('MINI');
 
     Text_Init(6, 0);

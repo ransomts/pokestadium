@@ -165,7 +165,7 @@ extern unk_D_86B0FA78* D_86B0FA78;
 extern unk_D_86B0FA7C* D_86B0FA7C;
 extern unk_70D3A0 D_86B10660;
 
-s32 func_86B00020(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 BattleContext_HandleState(UNUSED s32 arg0, UNUSED s32 arg1);
 
 s32 func_86B000D0(s32 arg0, GraphNode* arg1);
 s32 func_86B00158(s32 arg0, GraphNode* arg1);
@@ -196,7 +196,7 @@ void func_86B0100C(void);
 void func_86B0107C(void);
 void func_86B010FC(void);
 void func_86B0111C(void);
-s32 func_86B01190(void);
+s32 BattleState_Handle18(void);
 
 u16 func_86B01320(s32);
 Vec3f* func_86B01404(Vec3f*, Vec3f*);
@@ -253,7 +253,7 @@ void func_86B04D48(void);
 void func_86B04D98(void);
 void func_86B04DF0(void);
 void func_86B04EBC(void);
-s32 func_86B04FB0(void);
+s32 BattleState_Handle21Or26(void);
 
 void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs, u8 lrt, u8 argB, u8 argC, unk_D_86B0DAE0* argD, s32 argE);
 void func_86B05944(s32, s32, s32, s32, s32);
@@ -292,7 +292,7 @@ void func_86B07F14(void);
 void func_86B07FA4(void);
 void func_86B08034(void);
 void func_86B0819C(void);
-s32 func_86B08644(void);
+s32 BattleState_Handle17(void);
 
 s16 func_86B08780(void);
 s32 func_86B087A0(u8 arg0, u8* arg1, s32 arg2);
@@ -325,7 +325,7 @@ void func_86B0A30C(void);
 s32 func_86B0A37C(void);
 void func_86B0A414(void);
 void func_86B0A47C(void);
-s32 func_86B0A554(void);
+s32 BattleState_Handle24(void);
 
 void func_86B0A750(void);
 void func_86B0A7F8(void);
@@ -344,6 +344,6 @@ void func_86B0B650(void);
 s32 func_86B0B6C0(void);
 void func_86B0B810(void);
 void func_86B0B8DC(void);
-s32 func_86B0BA18(void);
+s32 BattleState_Handle22Or23(void);
 
 #endif // _FRAGMENT17_H_

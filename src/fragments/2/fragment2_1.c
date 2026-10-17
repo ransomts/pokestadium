@@ -5,7 +5,7 @@
 #include "src/1C720.h"
 #include "src/math_util.h"
 
-static Gfx D_87806390[] = {
+static Gfx gFragment2_1EmptyDL[] = {
     gsSPEndDisplayList(),
 };
 
@@ -14,7 +14,7 @@ u32 D_87806398[] = {
     0x0F000002, 0x05000000, 0x0A000000, &gGraphRoot1, 0x06000000, 0x06000000, 0x06000000, 0x04000000, 0x00000000,
 };
 
-static Vtx D_878063E0[] = {
+static Vtx gFragment2_1QuadVertices[] = {
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 16, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 512, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 32, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -25,16 +25,16 @@ static Vtx D_878063E0[] = {
     VTX(32, -32, 0, 2048, 512, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static u32* D_878064E0[] = { &D_300C000, &D_3000000, 0x3004000, &D_3008000 };
+static u32* gFragment2_1TexturePtrs[] = { &D_300C000, &D_3000000, 0x3004000, &D_3008000 };
 
-static s16 D_8780FAC0;
-static s16 D_8780FAC2;
-static s16 D_8780FAC4;
-static s16 D_8780FAC6;
-static unk_D_86002F58_004_000 D_8780FAC8;
-static unk_func_80011B94* D_8780FC30;
+static s16 gFragment2_1RemainingSteps;
+static s16 gFragment2_1StepTimer;
+static s16 gFragment2_1Phase;
+static s16 gFragment2_1StartFlag;
+static unk_D_86002F58_004_000 gFragment2_1GraphNode;
+static unk_func_80011B94* gFragment2_1DisplayNode;
 
-void func_87802360(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
+void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
     f32 var_fv0;
     s32 temp_ft1;
     s32 var_v0;
@@ -88,24 +88,24 @@ void func_87802360(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
     }
 }
 
-void func_87802528(void) {
+void Fragment2_1_Init(void) {
     MainPoolState* sp1C;
 
-    D_8780FAC4 = 0;
-    D_8780FAC0 = 4;
-    D_8780FAC2 = 0;
-    D_8780FAC6 = 0;
+    gFragment2_1Phase = 0;
+    gFragment2_1RemainingSteps = 4;
+    gFragment2_1StepTimer = 0;
+    gFragment2_1StartFlag = 0;
 
-    Graph_AddToRootList1(&D_8780FAC8);
+    Graph_AddToRootList1(&gFragment2_1GraphNode);
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    D_8780FC30 = func_80011B94(sp1C, NULL, 4, D_87806390);
-    D_8780FAC8.unk_000.unk_02 |= 8;
+    gFragment2_1DisplayNode = func_80011B94(sp1C, NULL, 4, gFragment2_1EmptyDL);
+    gFragment2_1GraphNode.unk_000.unk_02 |= 8;
 
-    GraphNode_AddChild(&D_8780FAC8.unk_000, &D_8780FC30->unk_00);
+    GraphNode_AddChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->unk_00);
     mem_pool_resize_block(sp1C);
 }
 
-void func_878025D0(void) {
+void Fragment2_1_Update(void) {
     s32 i;
     Gfx* temp_v0;
     s32 var_s2;
@@ -113,56 +113,56 @@ void func_878025D0(void) {
     u32* img;
 
     var_s2 = 0;
-    switch (D_8780FAC4) {
+    switch (gFragment2_1Phase) {
         case 0:
-            if (D_8780FAC6 != 0) {
-                D_8780FAC6 = 0;
-                D_8780FAC4 = 1;
+            if (gFragment2_1StartFlag != 0) {
+                gFragment2_1StartFlag = 0;
+                gFragment2_1Phase = 1;
                 var_s2 = 1;
-                D_8780FAC8.unk_000.unk_01 |= 1;
-                D_8780FAC8.unk_030.x = 0.5f;
-                D_8780FAC8.unk_030.y = 0.5f;
+                gFragment2_1GraphNode.unk_000.unk_01 |= 1;
+                gFragment2_1GraphNode.unk_030.x = 0.5f;
+                gFragment2_1GraphNode.unk_030.y = 0.5f;
             }
             break;
 
         case 1:
-            D_8780FAC2 -= 1;
-            if (D_8780FAC2 <= 0) {
-                D_8780FAC2 = 0x1B;
-                D_8780FAC0 -= 1;
+            gFragment2_1StepTimer -= 1;
+            if (gFragment2_1StepTimer <= 0) {
+                gFragment2_1StepTimer = 0x1B;
+                gFragment2_1RemainingSteps -= 1;
             }
 
-            if ((D_8780FAC0 >= 0) && (D_8780FAC0 < 4)) {
+            if ((gFragment2_1RemainingSteps >= 0) && (gFragment2_1RemainingSteps < 4)) {
                 var_s2 = 1;
-                func_87802360(D_8780FAC0, D_8780FAC2, &D_8780FAC8.unk_030.x, &D_8780FAC8.unk_030.y);
+                Fragment2_1_CalcAnimOffset(gFragment2_1RemainingSteps, gFragment2_1StepTimer, &gFragment2_1GraphNode.unk_030.x, &gFragment2_1GraphNode.unk_030.y);
             } else {
-                D_8780FC30->unk_18 = D_87806390;
+                gFragment2_1DisplayNode->unk_18 = gFragment2_1EmptyDL;
             }
 
-            if (D_8780FAC0 < 0) {
-                D_8780FAC4 = 2;
-                D_8780FAC2 = 0x1B;
-                D_8780FAC8.unk_000.unk_01 &= ~1;
+            if (gFragment2_1RemainingSteps < 0) {
+                gFragment2_1Phase = 2;
+                gFragment2_1StepTimer = 0x1B;
+                gFragment2_1GraphNode.unk_000.unk_01 &= ~1;
             }
             break;
 
         case 2:
-            if (D_8780FAC2 == 0x1B) {
-                D_8780FAC2 = 0;
+            if (gFragment2_1StepTimer == 0x1B) {
+                gFragment2_1StepTimer = 0;
             }
             break;
     }
 
-    if ((var_s2 != 0) && (D_8780FAC0 < 4)) {
-        temp_s1 = D_878064E0[D_8780FAC0];
+    if ((var_s2 != 0) && (gFragment2_1RemainingSteps < 4)) {
+        temp_s1 = gFragment2_1TexturePtrs[gFragment2_1RemainingSteps];
         temp_v0 = GfxAlloc(sizeof(Gfx) * 48);
-        D_8780FC30->unk_18 = temp_v0;
+        gFragment2_1DisplayNode->unk_18 = temp_v0;
 
         gSPSetGeometryMode(&temp_v0[0], G_CULL_BACK);
         gSPTexture(&temp_v0[1], 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
         gDPPipeSync(&temp_v0[2]);
         gDPSetCombineMode(&temp_v0[3], G_CC_DECALRGBA, G_CC_PASS2);
-        gSPVertex(&temp_v0[4], D_878063E0, 16, 0);
+        gSPVertex(&temp_v0[4], gFragment2_1QuadVertices, 16, 0);
 
         temp_v0 += 5;
         img = temp_s1;
@@ -179,17 +179,17 @@ void func_878025D0(void) {
     }
 }
 
-void func_8780295C(s16 arg0) {
-    D_8780FAC6 = arg0;
+void Fragment2_1_SetStartFlag(s16 arg0) {
+    gFragment2_1StartFlag = arg0;
 }
 
-s32 func_87802974(void) {
+s32 Fragment2_1_GetResult(void) {
     s16 var_v1 = -1;
 
-    if (D_8780FAC4 == 2) {
+    if (gFragment2_1Phase == 2) {
         var_v1 = -2;
-    } else if ((D_8780FAC2 == 0x1B) && (D_8780FAC4 == 1)) {
-        var_v1 = D_8780FAC0;
+    } else if ((gFragment2_1StepTimer == 0x1B) && (gFragment2_1Phase == 1)) {
+        var_v1 = gFragment2_1RemainingSteps;
     }
 
     return var_v1;

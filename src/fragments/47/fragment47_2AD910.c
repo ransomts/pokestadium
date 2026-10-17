@@ -11,17 +11,17 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static s32 D_83805650;
-static s32 D_83805654;
-static void* D_83805658;
+static s32 gSnapSelectMode;
+static s32 gSnapSelectState;
+static void* gSnapSelectBackground;
 static unk_D_8380565C* D_8380565C;
 static s32 D_83805660;
 static s32 D_83805664;
 static s32 D_83805668;
 
-void func_83800020(s32 arg0) {
-    D_83805654 = 0;
-    D_83805650 = arg0;
+void SnapSelect_Init(s32 arg0) {
+    gSnapSelectState = 0;
+    gSnapSelectMode = arg0;
     D_83805668 = -1;
     D_83805660 = -1;
     MessageBank_Init();
@@ -31,16 +31,16 @@ void func_83800020(s32 arg0) {
     func_834028C4();
 }
 
-void func_8380008C(s32 arg0) {
+void SnapSelect_SetTimer(s32 arg0) {
     D_83805668 = arg0;
 }
 
-void func_83800098(s32 arg0, s32 arg1) {
+void SnapSelect_DrawHeader(s32 arg0, s32 arg1) {
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x40, 0x18, D_04000000, 0x40, 0);
     Gfx_DrawSpriteRGBA16(arg0, arg1 + 0x18, 0x40, 0x18, D_4000C00, 0x40, 0);
 }
 
-void func_83800120(void) {
+void SnapSelect_DrawPrompt(void) {
     char* sp2C = func_83402374(4);
     Color_RGBA8 sp28 = { 0x9A, 0x37, 0x54, 0xFF };
     Color_RGBA8 sp24 = { 0xC3, 0x54, 0x84, 0xFF };
@@ -49,7 +49,7 @@ void func_83800120(void) {
 
     gSPDisplayList(gDisplayListHead++, D_8006F518);
 
-    func_83800098(0x28, 0x20);
+    SnapSelect_DrawHeader(0x28, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
@@ -59,11 +59,11 @@ void func_83800120(void) {
     Text_SetupDL();
 }
 
-void func_83800218(void) {
+void SnapSelect_Update(void) {
     Stage_BeginDisplayList();
     if (D_83805668 != 0) {
-        Gfx_DrawTextureAtlas(D_83805658);
-        func_83800120();
+        Gfx_DrawTextureAtlas(gSnapSelectBackground);
+        SnapSelect_DrawPrompt();
     }
     func_838022C8(1);
     func_838043F8(1);
@@ -74,9 +74,9 @@ void func_83800218(void) {
     }
 }
 
-void func_83800294(s32 arg0) {
-    D_83805654 = 2;
-    func_8380008C(0xC);
+void SnapSelect_Prepare(s32 arg0) {
+    gSnapSelectState = 2;
+    SnapSelect_SetTimer(0xC);
 
     main_pool_push_state('glpc');
 
@@ -91,7 +91,7 @@ void func_83800294(s32 arg0) {
     }
 }
 
-void func_83800320(void) {
+void SnapSelect_HandleResult(void) {
     D_83805660 = func_83402DC8(2);
 
     if (D_83805660 != -1) {
@@ -100,17 +100,17 @@ void func_83800320(void) {
         }
 
         if (D_83805660 != 2) {
-            D_83805654 = 4;
+            gSnapSelectState = 4;
             func_80006CB4(0xF);
         } else {
-            D_83805654 = 1;
+            gSnapSelectState = 1;
             func_83801190(D_83805664);
             D_83805660 = -1;
         }
     }
 }
 
-s32 func_838003B4(void) {
+s32 SnapSelect_Process(void) {
     static s32 D_83804CB8 = 4;
 
     s32 sp7C = 1;
@@ -118,17 +118,17 @@ s32 func_838003B4(void) {
     s32 sp74;
     unk_func_80026268_arg0 sp20;
 
-    switch (D_83805654) {
+    switch (gSnapSelectState) {
         case 0:
             if (func_80007604() == 0) {
                 D_83804CB8--;
                 if (D_83804CB8 <= 0) {
-                    D_83805654 = 1;
-                    if (D_83805650 == 1) {
+                    gSnapSelectState = 1;
+                    if (gSnapSelectMode == 1) {
                         D_83805664 = D_83407B18.unk_08.unk_00;
-                        func_83800294(1);
+                        SnapSelect_Prepare(1);
                     } else {
-                        if (D_83805650 == 2) {
+                        if (gSnapSelectMode == 2) {
                             D_83805664 = 5;
                         } else {
                             D_83805664 = -1;
@@ -144,7 +144,7 @@ s32 func_838003B4(void) {
             switch (D_83805664) {
                 case -2:
                     if (D_83402E20 > 0) {
-                        D_83805654 = 3;
+                        gSnapSelectState = 3;
                         func_83402CE4(2, gPlayer1Controller);
                     } else {
                         sp78 = 1;
@@ -156,7 +156,7 @@ s32 func_838003B4(void) {
                 case 2:
                 case 3:
                 case 4:
-                    func_83800294(0);
+                    SnapSelect_Prepare(0);
                     break;
 
                 case 5:
@@ -167,7 +167,7 @@ s32 func_838003B4(void) {
             }
 
             if (sp78 != 0) {
-                D_83805654 = 4;
+                gSnapSelectState = 4;
                 func_80006CB4(0xF);
             }
             break;
@@ -179,17 +179,17 @@ s32 func_838003B4(void) {
 
                 D_83805668 = -1;
                 if (sp74 > 0) {
-                    D_83805654 = 4;
+                    gSnapSelectState = 4;
                     func_80006CB4(0xF);
                 } else {
-                    D_83805654 = 1;
+                    gSnapSelectState = 1;
                     func_83801190(D_83805664);
                 }
             }
             break;
 
         case 3:
-            func_83800320();
+            SnapSelect_HandleResult();
             break;
 
         case 4:
@@ -201,24 +201,24 @@ s32 func_838003B4(void) {
     return sp7C;
 }
 
-void func_83800610(void) {
+void SnapSelect_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
 }
 
-void func_83800640(void) {
+void SnapSelect_MainLoop(void) {
     func_80006C6C(7);
     do {
-        func_83800610();
+        SnapSelect_ReadInputs();
         func_83801D64();
         func_83803488();
         func_83402C6C();
-        func_83800218();
-    } while (func_838003B4() != 0);
+        SnapSelect_Update();
+    } while (SnapSelect_Process() != 0);
 }
 
-s32 func_83800698(void) {
+s32 SnapSelect_FinalizeResult(void) {
     s32 var_v1;
     unk_D_83407B18_008* temp_a0 = &D_83407B18.unk_08;
     temp_a0 += 0;
@@ -248,7 +248,7 @@ s32 func_83800698(void) {
     return var_v1;
 }
 
-s32 func_83800730(s32 arg0, s32 arg1) {
+s32 SnapSelect_Run(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('SLCT');
@@ -262,18 +262,18 @@ s32 func_83800730(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, gallery_ui, 0);
     ASSET_LOAD(D_04000000, snap_select_ui, 0);
 
-    D_83805658 = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
+    gSnapSelectBackground = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
     D_8380565C = BinArchive_GetFile(Asset_Load2(0x898000, NULL, 1, 0), 0x1A);
 
     SpriteAssets_Load();
-    func_83800020(arg0);
+    SnapSelect_Init(arg0);
     Stage_Set(sp24);
-    func_83800640();
+    SnapSelect_MainLoop();
     Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('SLCT');
 
-    return func_83800698();
+    return SnapSelect_FinalizeResult();
 }

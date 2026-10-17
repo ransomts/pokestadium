@@ -5,8 +5,8 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-unk_D_800AC870* func_88200020(void) {
-    unk_D_800AC870* sp1C;
+TextObject* Fragment23_Init(void) {
+    TextObject* sp1C;
 
     main_pool_push_state('TERM');
 
@@ -20,30 +20,30 @@ unk_D_800AC870* func_88200020(void) {
     return sp1C;
 }
 
-void func_882000E4(void) {
+void Fragment23_Terminate(void) {
     func_8000771C();
 
     main_pool_pop_state('TERM');
 }
 
-s32 func_88200110(UNUSED s32 arg0, UNUSED s32 arg1) {
-    func_8820C700(func_88200020(), 1);
+s32 Fragment23_Execute(UNUSED s32 arg0, UNUSED s32 arg1) {
+    func_8820C700(Fragment23_Init(), 1);
     func_80007990(1);
     func_80006CB4(0xA);
-    func_882000E4();
+    Fragment23_Terminate();
 
     FRAGMENT_LOAD_AND_CALL2(fragment22, 1, 0);
     return 0x25;
 }
 
-s32 func_88200190(s32 arg0, s32 arg1) {
-    unk_D_800AC870* temp_s0;
+s32 Fragment23_HandleState(s32 arg0, s32 arg1) {
+    TextObject* temp_s0;
     s32 var_s1;
 
     if (arg0 == 5) {
-        return func_88200110(arg0, arg1);
+        return Fragment23_Execute(arg0, arg1);
     }
-    temp_s0 = func_88200020();
+    temp_s0 = Fragment23_Init();
 
     var_s1 = func_8820104C(arg0, arg1);
     while (var_s1 != 0) {
@@ -63,7 +63,7 @@ s32 func_88200190(s32 arg0, s32 arg1) {
         var_s1 = func_8820104C(var_s1, arg1);
     }
 
-    func_882000E4();
+    Fragment23_Terminate();
 
     return 0x25;
 }

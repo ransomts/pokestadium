@@ -871,7 +871,7 @@ s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_88205880_A030* arg3,
-                   unk_func_88001300_000* arg4, unk_func_88201DA0* arg5, unk_D_800AC870* arg6, char** arg7,
+                   unk_func_88001300_000* arg4, unk_func_88201DA0* arg5, TextObject* arg6, char** arg7,
                    MemoryPool* arg8) {
     static Color_RGBA8 D_88217C60 = { 0x6C, 0x6C, 0x7E, 0xFF };
     static Color_RGBA8 D_88217C64 = { 0x50, 0x50, 0x86, 0xFF };
@@ -1502,7 +1502,7 @@ void func_882057B4(unk_func_88203ED8* arg0, Controller* arg1) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, unk_D_800AC870* arg3, MemoryPool* arg4, char** arg5,
+void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3, MemoryPool* arg4, char** arg5,
                    char** arg6, char** arg7, char** arg8, char** arg9, char** argA, char** argB, char** argC) {
     static Color_RGBA8 D_88217D04 = { 0x1E, 0x50, 0x50, 0xFF };
     static Color_RGBA8 D_88217D08 = { 0x00, 0x0A, 0x0A, 0xFF };
@@ -1633,7 +1633,7 @@ void func_88205E94(unk_func_88205880* arg0) {
     osStopThread(NULL);
 }
 
-void func_88205F1C(unk_D_800AC870* arg0) {
+void func_88205F1C(TextObject* arg0) {
     MemoryPool* sp6C;
     unk_func_88205880* sp68;
     u8* sp64;

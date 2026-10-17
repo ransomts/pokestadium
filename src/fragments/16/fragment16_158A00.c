@@ -38,7 +38,7 @@ static s16 D_86A061EC;
 static s16 D_86A061EE;
 static s16 D_86A061F0;
 static s32 pad_D_86A061F8[2];
-static unk_D_800AC870* D_86A06200;
+static TextObject* D_86A06200;
 static s32 pad_D_86A06208[2];
 u8 D_86A06210;
 u8 D_86A06211;

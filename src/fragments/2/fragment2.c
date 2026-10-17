@@ -297,7 +297,7 @@ void func_87801290(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
     }
 }
 
-s32 func_878013D4(UNUSED unk_D_800AC870* arg0, char* arg1) {
+s32 func_878013D4(UNUSED TextObject* arg0, char* arg1) {
     return MeasureTextWidth(0, 0, arg1);
 }
 

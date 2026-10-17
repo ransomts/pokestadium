@@ -58,7 +58,7 @@ typedef struct ActorOriginPosition {
 static MiniActor miniDigletts[9];
 static MiniActor miniDiglettHoles[9];
 static MiniActor miniEkanses[4];
-static unk_D_800AC870* D_86C12000;
+static TextObject* D_86C12000;
 static ActiveDiglettInfo activeDigletts[3];
 static s32 D_86C12034;
 static s16 D_86C12038;
@@ -1758,7 +1758,7 @@ void initEkans(MiniActor* ekans, s16 player) {
     func_80017464(&ekans->unk_000, ekans->unk_26E);
 
     ekans->unk_000.unk_000.unk_02 &= ~0x40;
-    ekans->isComp = D_879060C4[player];
+    ekans->isComp = gMiniHudColors[player];
     ekans->collidingActorId = -1;
 
     if (ekansMinigameCountdownStarted == false) {
@@ -2650,9 +2650,9 @@ void miniEkansPlayersUpdate(void) {
 
     for (i = 0; i < 4; i++) {
         miniEkansPlayerStateMachine(miniEkansPtr, i);
-        func_879003A0(miniEkansPtr);
+        MiniActor_ProcessAnim(miniEkansPtr);
         miniActorUpdateTransform(miniEkansPtr);
-        func_87900808(miniEkansPtr); // update the model?
+        MiniActor_UpdateCollider(miniEkansPtr); // update the model?
 
         miniEkansPtr++;
     }
@@ -2676,7 +2676,7 @@ void initDiglett(MiniActor* diglett, s32 nDiglett) {
     diglett->middleHeight = diglett->halfHeight / 2.0f;
 
     GraphNode_TriggerAction(&diglett->unk_000, 1);
-    func_879004F8(&diglett->unk_000);
+    MiniActor_SetAnimToLastFrame(&diglett->unk_000);
 
     diglett->unk_000.unk_01C = 0;
     diglett->unk_000.unk_000.unk_02 &= ~0x40;
@@ -2739,7 +2739,7 @@ void initDigletts(void) {
         miniActorUpdateTransform(miniDiglettPtr);
         initDiglettHole(miniDiglettHolePtr, i);
         miniActorUpdateTransform(miniDiglettHolePtr);
-        func_87900808(miniDiglettHolePtr);
+        MiniActor_UpdateCollider(miniDiglettHolePtr);
         miniDiglettPtr = &miniDiglettPtr[1];
         miniDiglettHolePtr = &miniDiglettHolePtr[1];
     }
@@ -2962,15 +2962,15 @@ void func_86C03008(void) {
 
     for (i = 0; i < 9; i++) {
         miniActorUpdateTransform(miniDiglettPtr);
-        func_87900808(miniDiglettPtr);
-        func_879003A0(miniDiglettPtr);
+        MiniActor_UpdateCollider(miniDiglettPtr);
+        MiniActor_ProcessAnim(miniDiglettPtr);
         miniDiglettPtr++;
     }
 }
 
 //	init game objects
 void ekansMinigameInitObjects(void) {
-    func_87900854(); //  minigame variables
+    MiniGame_ResetState(); //  minigame variables
     initAllEkans();
     initDigletts();
     miniEkansInitCam();
@@ -3021,7 +3021,7 @@ void func_86C03128(void) {
 
 s32 func_86C031E4(void) {
     s32 sp1C = 0;
-    s32 sp18 = func_87802974();
+    s32 sp18 = Fragment2_1_GetResult();
 
     if (sp18 == -2) {
         func_86C00368(0xD, 0);
@@ -3072,7 +3072,7 @@ void miniEkansMinigameStateMachine(void) {
         case 2: //	waits for some frames before starting the main countdown
             miniInputLockTimer -= 1;
             if (miniInputLockTimer < 0) {
-                func_8780295C(1);
+                Fragment2_1_SetStartFlag(1);
                 minigameState++;
             }
             break;
@@ -3116,7 +3116,7 @@ void miniEkansMinigameStateMachine(void) {
             break;
     }
 
-    func_878025D0();
+    Fragment2_1_Update();
 }
 
 void func_86C034F8(void) {
@@ -3372,7 +3372,7 @@ void miniEkansTutoScreenControls(void) {
     s32 var_s1 = 1;
 
     while (var_s1 != 0) {
-        func_87900528(); //	input
+        MiniGame_ReadInputs(); //	input
 
         if ((miniDebugMode == false) && (func_80007604() == 0)) {
             if (ekansMinigameCountdownStarted) {
@@ -3420,7 +3420,7 @@ void ekansMinigameUpdate(void) {
     }
 
     for (i = 0; i < 30; i++) {
-        func_87900528(); //	input
+        MiniGame_ReadInputs(); //	input
         if (D_8780FC94 == 0) {
             func_8140C5D0();
             miniEkansMinigameStateMachine();

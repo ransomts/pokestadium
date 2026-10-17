@@ -40,7 +40,7 @@ void func_878009BC(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_878010C8(s16 arg0);
 void func_8780118C(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_87801290(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4);
-s32 func_878013D4(UNUSED unk_D_800AC870* arg0, char* arg1);
+s32 func_878013D4(UNUSED TextObject* arg0, char* arg1);
 void func_87801400(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4);
 void func_87801644(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
 void func_87801684(s16 arg0, s16 arg1, unk_func_87801684* arg2);
@@ -53,11 +53,11 @@ void func_87801D5C(s16 arg0, s16 arg1, s16 arg2, unk_func_87801684* arg3);
 void func_87801F48(s16 arg0, s16 arg1, s16 arg2);
 void func_878021B4(s16 arg0, s16 arg1);
 
-void func_87802360(s16 arg0, s16 arg1, f32* arg2, f32* arg3);
-void func_87802528(void);
-void func_878025D0(void);
-void func_8780295C(s16 arg0);
-s32 func_87802974(void);
+void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3);
+void Fragment2_1_Init(void);
+void Fragment2_1_Update(void);
+void Fragment2_1_SetStartFlag(s16 arg0);
+s32 Fragment2_1_GetResult(void);
 
 void ResultScreen_Init(void);
 void ResetSelectionState(void);

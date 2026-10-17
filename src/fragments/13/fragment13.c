@@ -16,7 +16,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static u32 D_86700840[] = {
+static u32 gMiniGameGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000,
     0x00000000, 0x00640064, 0x00640000, 0x05000000, 0x00000000, 0x8D000020, 0x06000000, 0x06000000,
@@ -25,72 +25,72 @@ static u32 D_86700840[] = {
 };
 
 static unk_D_86002F30* D_86700930;
-static GraphNode* D_86700934;
-static unk_D_86002F34_00C* D_86700938;
+static GraphNode* gMiniGameRootNode;
+static unk_D_86002F34_00C* gMiniGameCameraNode;
 static unk_D_86002F58_004_000 D_86700940;
 
-static s16 D_86700AA8;
-static s16 D_86700AAA;
-static s16 D_86700AAC;
+static s16 gMiniGameCamX;
+static s16 gMiniGameCamY;
+static s16 gMiniGameCamDist;
 
-void func_86700020(void) {
+void MiniGame_PollController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730();
 }
 
-void func_86700050(void) {
-    D_86700938 = D_86700934->unk_0C;
-    D_86700AA8 = 0x100;
-    D_86700AAA = 0;
-    D_86700AAC = 0x78;
+void MiniGame_InitCamera(void) {
+    gMiniGameCameraNode = gMiniGameRootNode->unk_0C;
+    gMiniGameCamX = 0x100;
+    gMiniGameCamY = 0;
+    gMiniGameCamDist = 0x78;
 
-    D_86700938->unk_24.near = 50.0f;
-    D_86700938->unk_24.far = 6400.0f;
-    func_80010354(&D_86700938->unk_60.at, &D_86700938->unk_60.eye, D_86700AAC, D_86700AA8, D_86700AAA);
+    gMiniGameCameraNode->unk_24.near = 50.0f;
+    gMiniGameCameraNode->unk_24.far = 6400.0f;
+    func_80010354(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
 }
 
-void func_867000FC(void) {
+void MiniGame_HandleCameraInput(void) {
     if (gPlayer1Controller->buttonDown & 0x800) {
-        D_86700AA8 += 256;
+        gMiniGameCamX += 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x400) {
-        D_86700AA8 -= 256;
+        gMiniGameCamX -= 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x200) {
-        D_86700AAA += 256;
+        gMiniGameCamY += 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x100) {
-        D_86700AAA -= 256;
+        gMiniGameCamY -= 256;
     }
 
     if (gPlayer1Controller->buttonDown & 8) {
-        D_86700AAC -= 10;
+        gMiniGameCamDist -= 10;
     }
 
     if (gPlayer1Controller->buttonDown & 4) {
-        D_86700AAC += 10;
+        gMiniGameCamDist += 10;
     }
 
-    if (D_86700AA8 > 16128) {
-        D_86700AA8 = 16128;
+    if (gMiniGameCamX > 16128) {
+        gMiniGameCamX = 16128;
     }
 
-    if (D_86700AA8 < 0) {
-        D_86700AA8 = 0;
+    if (gMiniGameCamX < 0) {
+        gMiniGameCamX = 0;
     }
 
-    if (D_86700AAC < 50) {
-        D_86700AAC = 50;
+    if (gMiniGameCamDist < 50) {
+        gMiniGameCamDist = 50;
     }
 
-    func_80010354(&D_86700938->unk_60.at, &D_86700938->unk_60.eye, D_86700AAC, D_86700AA8, D_86700AAA);
+    func_80010354(&gMiniGameCameraNode->unk_60.at, &gMiniGameCameraNode->unk_60.eye, gMiniGameCamDist, gMiniGameCamX, gMiniGameCamY);
 }
 
-void func_86700254(s32 arg0) {
+void MiniGame_DrawOverlay(s32 arg0) {
     Color_RGB8 sp2C = { 0, 0, 30 };
     Color_RGB8 sp28 = { 0, 0, 250 };
 
@@ -122,41 +122,41 @@ void func_86700254(s32 arg0) {
 
     if (arg0 == 1) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(0x23, 0xC2, "CAMERA D:%d", D_86700AAC);
-        Text_Print(0x23, 0xCE, "X:%04hX Y:%04hX", D_86700AA8, D_86700AAA);
+        Text_Print(0x23, 0xC2, "CAMERA D:%d", gMiniGameCamDist);
+        Text_Print(0x23, 0xCE, "X:%04hX Y:%04hX", gMiniGameCamX, gMiniGameCamY);
     }
 
     Text_SetupDL();
 }
 
-void func_86700428(s32 arg0) {
+void MiniGame_RenderFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     func_80015348();
-    Graph_SetTextureState(D_86700934);
-    func_86700254(arg0);
+    Graph_SetTextureState(gMiniGameRootNode);
+    MiniGame_DrawOverlay(arg0);
     Stage_Advance();
 }
 
-void func_8670047C(void) {
+void MiniGame_RunOpening(void) {
     func_80006C6C(0x10);
     GraphNode_TriggerAction(&D_86700940, 8);
 
     while (func_80017514(&D_86700940) == 0) {
-        func_86700020();
-        func_86700428(0);
+        MiniGame_PollController();
+        MiniGame_RenderFrame(0);
     }
 }
 
-void func_867004E8(void) {
+void MiniGame_RunPlaying(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
     GraphNode_TriggerAction(&D_86700940, 0);
 
     while (var_s1 != 0) {
-        func_86700020();
-        func_867000FC();
+        MiniGame_PollController();
+        MiniGame_HandleCameraInput();
 
         var_s0++;
 
@@ -170,33 +170,33 @@ void func_867004E8(void) {
             GraphNode_TriggerSound(&D_86700940, 0xA);
         }
 
-        func_86700428(1);
+        MiniGame_RenderFrame(1);
     }
 }
 
-void func_867005A8(void) {
+void MiniGame_RunEnding(void) {
     s32 i;
 
     GraphNode_TriggerAction(&D_86700940, 0xB);
     GraphNode_TriggerSound(&D_86700940, 0xB);
 
     while (func_80017514(&D_86700940) == 0) {
-        func_86700020();
-        func_86700428(2);
+        MiniGame_PollController();
+        MiniGame_RenderFrame(2);
     }
 
     func_80006CB4(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_86700020();
-        func_86700428(2);
+        MiniGame_PollController();
+        MiniGame_RenderFrame(2);
     }
 }
 
-void func_86700648(void) {
+void MiniGame_InitGraph(void) {
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_86700934 = process_geo_layout(sp1C, &D_86700840);
+    gMiniGameRootNode = process_geo_layout(sp1C, &gMiniGameGeoLayout);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     Graph_AddToRootList0(&D_86700940);
@@ -204,7 +204,7 @@ void func_86700648(void) {
     D_86700930 = func_80019D18(0x19);
     GraphNode_InitChild(&D_86700940, 0, 0x19, D_86700930->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86700940, 0);
-    func_86700050();
+    MiniGame_InitCamera();
 }
 
 s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -221,11 +221,11 @@ s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    func_86700648();
+    MiniGame_InitGraph();
     Stage_Set(sp24);
-    func_8670047C();
-    func_867004E8();
-    func_867005A8();
+    MiniGame_RunOpening();
+    MiniGame_RunPlaying();
+    MiniGame_RunEnding();
     Stage_Destroy();
     func_8001E9CC();
     Gfx_FreeBuffers();

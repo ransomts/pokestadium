@@ -82,9 +82,9 @@ void func_8433079C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DCD8);
 
     func_81405ED8(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
-    func_81403754(D_843920C0[0x29], 0, 0, 4, 0x20, 0x20, 1, 1, 5, 5, 2, 0);
+    Gfx_LoadMultiBlock4b(D_843920C0[0x29], 0, 0, 4, 0x20, 0x20, 1, 1, 5, 5, 2, 0);
     func_814060D4(1, 1, 0x20, 0x20);
-    func_81403754(D_843920C0[0x29], 0x100, 1, 4, 0x20, 0x20, 1, 1, 5, 5, 1, 0xF);
+    Gfx_LoadMultiBlock4b(D_843920C0[0x29], 0x100, 1, 4, 0x20, 0x20, 1, 1, 5, 5, 1, 0xF);
     func_81406168(-1, 1, 0x20, 0x20);
     func_81404A6C(D_8140E3B8);
 }

@@ -1943,7 +1943,7 @@ s32 func_87804FD4(void) {
                         D_8780FC94 = 0;
                         D_8780FC5C = 0;
                     }
-                } else if ((func_87802974() == -2) && (D_8780FC9C->buttonPressed & 0x1000)) {
+                } else if ((Fragment2_1_GetResult() == -2) && (D_8780FC9C->buttonPressed & 0x1000)) {
                     func_8004AF44(1);
                     D_8780FC94 = 1;
                     D_8780FC5D = 2;

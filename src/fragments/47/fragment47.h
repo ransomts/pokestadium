@@ -76,18 +76,18 @@ typedef struct unk_D_8380548C {
     /* 0x0C */ s16 unk_0C;
 } unk_D_8380548C; // size = 0xE
 
-void func_83800020(s32 arg0);
-void func_8380008C(s32 arg0);
-void func_83800098(s32 arg0, s32 arg1);
-void func_83800120(void);
-void func_83800218(void);
-void func_83800294(s32 arg0);
-void func_83800320(void);
-s32 func_838003B4(void);
-void func_83800610(void);
-void func_83800640(void);
-s32 func_83800698(void);
-s32 func_83800730(s32 arg0, s32 arg1);
+void SnapSelect_Init(s32 arg0);
+void SnapSelect_SetTimer(s32 arg0);
+void SnapSelect_DrawHeader(s32 arg0, s32 arg1);
+void SnapSelect_DrawPrompt(void);
+void SnapSelect_Update(void);
+void SnapSelect_Prepare(s32 arg0);
+void SnapSelect_HandleResult(void);
+s32 SnapSelect_Process(void);
+void SnapSelect_ReadInputs(void);
+void SnapSelect_MainLoop(void);
+s32 SnapSelect_FinalizeResult(void);
+s32 SnapSelect_Run(s32 arg0, s32 arg1);
 
 s32 func_83800900(s32 arg0, GraphNode* arg1);
 void func_83800AA0(s32 arg0, f32 arg1);

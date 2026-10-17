@@ -36,10 +36,10 @@ typedef struct unk_D_86405158 {
 } unk_D_86405158; // size = 0x170
 
 extern u8 D_86402848;
-extern u16 D_864029F0[4][14][8];
-extern Gfx D_86403FA0[];
-extern Gfx D_86403BB0[];
-extern Gfx D_86403F30[];
+extern u16 gGaugeSegmentLengths[4][14][8];
+extern Gfx gHealthBarDL[];
+extern Gfx gHealthBarQuadDL[];
+extern Gfx gDamageOverlayDL[];
 
 void func_86400020(void);
 u16 func_86400128(u8 arg0);
@@ -62,6 +62,6 @@ void func_8640203C(void);
 void func_86402130(void);
 void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1);
 
-s8 func_864026D0(u8 arg0, s32 arg1);
+s8 GetHealthBarSegmentOffset(u8 arg0, s32 arg1);
 
 #endif // _FRAGMENT10_H_

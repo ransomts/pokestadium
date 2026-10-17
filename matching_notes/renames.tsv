@@ -676,3 +676,179 @@ func_8780304C	FindLowestScorers	w2		FindLowestScorers determines the minimum sco
 func_87803118	GetCurrentOptionCount	w2		GetCurrentOptionCount returns the number of selectable options for the current UI state based on flags such as D_8780FC4C and D_8780FC92.	applied@c896a2a
 func_87803280	CreateScaledTranslationMatrix	w2		CreateScaledTranslationMatrix builds a transformation matrix that applies independent X/Y/Z scaling and translation, used for positioning 3?D UI elements.	applied@c896a2a
 func_87803368	RenderScoreCubes	w2		RenderScoreCubes renders the rotating score cubes for each player, applying per?cube rotation and position based on D_8780FCD8 state.	applied@c896a2a
+func_81002530	Fragment31_BuildDisplayList	w3		Builds the fragment's display list by loading two textures and setting tile sizes based on a scroll offset	applied@727ea94
+func_810027E0	Fragment31_Init	w3		Initializes the fragment when arg0==2, allocating a Gfx buffer and calling the build function	applied@727ea94
+D_81004170	gFragment31SetupDL	w3		Static Gfx display list that sets combine mode and env color for the fragment	applied@727ea94
+D_81004B60	gFragment31ScrollOffset	w3		Static s16 used as a texture coordinate offset that is decremented under certain conditions, indicating a scrolling offset	applied@727ea94
+func_81402410	Gfx_PipeSync	w3		calls gDPPipeSync on gDisplayListHead	applied@727ea94
+func_81402434	Gfx_SetCycle1_NoTexture	w3		sets cycle type to 1?cycle and disables texture via gsDPSetCycleType and gsSPTexture	applied@727ea94
+func_81402494	GetLog2	w3		loops dividing size by 2 until 1 to compute log2 of a power?of?two size	applied@727ea94
+func_81402500	Gfx_LoadTextureBlockRGBA32	w3		wraps gDPLoadTextureBlock for 32?bit RGBA textures	applied@727ea94
+func_81402784	Gfx_LoadTextureTileRGBA32	w3		wraps gDPLoadTextureTile for 32?bit RGBA textures	applied@727ea94
+func_8140297C	Gfx_LoadTextureBlockRGBA16	w3		wraps gDPLoadTextureBlock for 16?bit RGBA textures	applied@727ea94
+func_81402C1C	Gfx_LoadTextureTileRGBA16	w3		wraps gDPLoadTextureTile for 16?bit RGBA textures	applied@727ea94
+func_81402E14	Gfx_LoadTextureBlockIA8	w3		wraps gDPLoadTextureBlock for 8?bit IA textures	applied@727ea94
+func_814030C0	Gfx_LoadTextureTileIA8	w3		wraps gDPLoadTextureTile for 8?bit IA textures	applied@727ea94
+func_814032B4	Gfx_LoadTextureBlock4b	w3		wraps gDPLoadTextureBlock_4b for 4?bit textures	applied@727ea94
+func_8140353C	Gfx_LoadTextureTile4b	w3		wraps gDPLoadTextureTile_4b for 4?bit textures	applied@727ea94
+func_81403754	Gfx_LoadMultiBlock4b	w3		wraps gDPLoadMultiBlock_4b for 4?bit textures	applied@727ea94
+func_814059C8	Gfx_SetPrimColor	w3		sets primitive color via gDPSetPrimColor	applied@727ea94
+func_81405A20	Gfx_SetEnvColor	w3		sets environment color via gDPSetEnvColor after pipe sync	applied@727ea94
+func_81406080	GetTileSizeByIndex	w3		returns a tile size constant based on argument (cases 2?4)	applied@727ea94
+func_82200088	DrawFullScreenTextureBlend	w3		Draws tiled full?screen textures using two texture pointers and an alpha argument, looping over screen coordinates and setting env color with arg2	applied@727ea94
+func_82200424	CreateTileVertices	w3		Allocates eight vertices and sets their positions from D_82203150 fields to form a tile quad, returning a Vtx* pointer	applied@727ea94
+func_82200690	DrawTileOverlay	w3		Uses D_82203150 color and alpha to render a tile overlay; returns early if alpha ?0 and draws geometry with loaded texture	applied@727ea94
+func_82200BF4	InitParticleTrail	w3		Copies a tile config entry from D_82202FE4 into D_82203160[0] and runs six updates of the particle trail, decrementing the Z offset each iteration	applied@727ea94
+func_82200C8C	CreateColoredQuad	w3		Creates an 8?vertex quad of given size and Color_RGBA8, calculating half?size and calling SetTileVertex for each corner	applied@727ea94
+func_82200E34	DrawTexturedQuad	w3		Loads a texture block and draws a textured quad using vertices created by CreateColoredQuad, issuing two triangles	applied@727ea94
+func_82200FB0	DrawParticleSprites	w3		Iterates over the particle trail array, sets sprite colors based on age, and draws each sprite with DrawTexturedQuad	applied@727ea94
+func_822012E8	DrawScrollingBackground	w3		Draws 16 sequential sprites from a background texture array (D_82202FBC) and optionally an extra sprite for battle context, creating a scrolling effect	applied@727ea94
+func_822014C8	UpdateBackgroundFade	w3		Updates static counters (D_82203074/D_82203078) to modulate alpha values and calls DrawScrollingBackground with computed fade parameters	applied@727ea94
+func_82201654	DrawAnimatedIcon	w3		Loads an icon texture from a rotating index array (D_8220307C) and draws it with scaling, advancing the index modulo 20 each call	applied@727ea94
+D_82202FA0	gOverlayAlpha	w3		Used as the env?color alpha for overlay textures and compared against 0xFF to trigger special rendering paths	applied@727ea94
+D_82202FA4	gFadeStepCounter	w3		Incremented by 0x40 in func_82202758 to track fade progression through defined thresholds (0x200, 0x280)	applied@727ea94
+D_82202FA8	gStateTransitionTable	w3		Array of STATE_* constants mapping indices to game states, referenced when returning the final state in func_82202DC4	applied@727ea94
+D_82202FBC	gBackgroundTexturePtrs	w3		Array of texture pointers indexed by background ID in func_822012E8 to select the appropriate scrolling background	applied@727ea94
+D_82202FE4	gTileConfigTable	w3		Contains position offsets and a Color_RGBA8 used to initialize particle trails and tile geometry in multiple functions	applied@727ea94
+func_82500020	DrawStatusIconForPlayer	w3		Draws a status icon for the current player by loading texture segments based on D_8006F09C->unk_000.unk_14 and selection indices.	applied@727ea94
+func_825001B4	DrawComputerSelection	w3		Draws the computer's selection UI using texture segments and segment registers, handling both default and alternate states.	applied@727ea94
+func_8250042C	DrawItemSelectionUI	w3		Constructs the item selection interface by loading item textures, setting colors, and issuing draw calls for each item slot.	applied@727ea94
+func_82500804	UI_Cursor_Init	w3		Initializes the UI cursor graph node, sets its position, and adds it to the root list for rendering.	applied@727ea94
+func_8250088C	UI_Cursor_Update	w3		Updates the UI cursor animation and position based on the current mode, selection indices, and frame counter.	applied@727ea94
+func_82500BD8	UI_DrawIcon	w3		Selects a small icon display list to draw based on arg0 and issues the appropriate graphics commands.	applied@727ea94
+func_82500C98	ControllerInput_Clear	w3		Zeroes all fields of the controller state structures in D_82508B00 to reset input tracking.	applied@727ea94
+func_82500D14	ControllerInput_Update	w3		Reads raw stick positions and button states from gControllers and populates D_82508B00 with current and changed inputs.	applied@727ea94
+func_825010A8	UI_AnimatedBackground_Draw	w3		Draws the animated background by loading a series of textures and applying sine?based scaling to create a wave effect.	applied@727ea94
+func_825014B0	UI_GradientPanel_Draw	w3		Renders a gradient panel using parameters from gGradientPanelState and prints associated text strings.	applied@727ea94
+func_825017F0	UI_Element_Allocate	w3		Scans the gUIElements array for an unused slot and returns a pointer to a newly allocated UI element.	applied@727ea94
+func_8250182C	UI_Element_Create	w3		Allocates and initializes a UI element of a given type, sets its position, and links it into the scene graph.	applied@727ea94
+func_82501CBC	UI_Element_IsState	w3		Returns true if the UI element's current state matches the supplied state argument.	applied@727ea94
+func_825023D4	SelectionState_Clear	w3		Resets all fields of the gSelectionIndices struct to zero, clearing any previous selection data.	applied@727ea94
+func_825024C4	SelectionUI_Init	w3		Initializes the selection UI for a specific mode, sets default values, and prepares related graphics resources.	applied@727ea94
+func_82502400	SelectionState_InitDefaults	w3		Sets default values for the selection indices, including difficulty flags based on D_82508AF0.	applied@727ea94
+func_83800020	SnapSelect_Init	w3		Sets up snap?select globals, loads message bank and UI assets before entering the snap?select screen (called from SnapSelect_Run)	applied@727ea94
+func_8380008C	SnapSelect_SetTimer	w3		Sets the snap?select timer variable D_83805668 used for UI delays (assigned in SnapSelect_Init and SnapSelect_Prepare)	applied@727ea94
+func_83800098	SnapSelect_DrawHeader	w3		Draws two RGBA16 sprites at fixed positions, likely the header graphics of the snap?select UI (used in SnapSelect_Update)	applied@727ea94
+func_83800120	SnapSelect_DrawPrompt	w3		Displays the prompt text with two colors and draws UI elements, called after the background is drawn in SnapSelect_Update	applied@727ea94
+func_83800218	SnapSelect_Update	w3		Per?frame update for the snap?select screen: draws background, calls UI draw, advances stage and decrements timer (looped in SnapSelect_MainLoop)	applied@727ea94
+func_83800294	SnapSelect_Prepare	w3		Prepares a snap?select picture, pushes a memory pool state and loads picture data based on the current index (called from SnapSelect_Process)	applied@727ea94
+func_83800320	SnapSelect_HandleResult	w3		Queries the result of a picture?selection operation and branches to success or failure handling (used in SnapSelect_Process case 3)	applied@727ea94
+func_838003B4	SnapSelect_Process	w3		State?machine that drives snap?select logic, returning a continue flag for the main loop (invoked by SnapSelect_MainLoop)	applied@727ea94
+func_83800610	SnapSelect_ReadInputs	w3		Starts and reads controller inputs and updates the input system (called each frame in SnapSelect_MainLoop)	applied@727ea94
+func_83800640	SnapSelect_MainLoop	w3		Main loop that repeatedly reads inputs, updates UI, and runs SnapSelect_Process until it signals exit (called from SnapSelect_Run)	applied@727ea94
+func_83800698	SnapSelect_FinalizeResult	w3		Writes the selected index to a result struct, calls a finalizer, and returns a status code based on the selection outcome (return value of SnapSelect_Run)	applied@727ea94
+func_83800730	SnapSelect_Run	w3		Top?level entry that loads assets, creates the stage, runs the main loop and returns the final result of the snap?select operation	applied@727ea94
+D_83805650	gSnapSelectMode	w3		Global indicating which snap?select mode is active (used to decide initial index and flow in SnapSelect_Process)	applied@727ea94
+D_83805654	gSnapSelectState	w3		Global state variable for the snap?select state machine (driven by SnapSelect_Process)	applied@727ea94
+D_83805658	gSnapSelectBackground	w3		Pointer to the background texture displayed during snap?select (loaded in SnapSelect_Run and drawn in SnapSelect_Update)	applied@727ea94
+D_87806390	gFragment2_1EmptyDL	w3		Static Gfx array containing only gsSPEndDisplayList(), used as a placeholder DL in init and update functions.	applied@727ea94
+D_878063E0	gFragment2_1QuadVertices	w3		Vertex array of 16 vertices forming a 4?4 grid, passed to gSPVertex for rendering textured quads.	applied@727ea94
+D_878064E0	gFragment2_1TexturePtrs	w3		Array of four texture base pointers indexed by the current step (D_8780FAC0) in the update routine.	applied@727ea94
+D_8780FAC0	gFragment2_1RemainingSteps	w3		Decremented each time the step timer expires; controls which texture set is drawn.	applied@727ea94
+D_8780FAC2	gFragment2_1StepTimer	w3		Counts down each frame; reset to 0x1B when it reaches zero and drives the animation calculations.	applied@727ea94
+D_8780FAC4	gFragment2_1Phase	w3		Switch variable governing the fragment?s state machine (0?=?idle,?1?=?animating,?2?=?final).	applied@727ea94
+D_8780FAC6	gFragment2_1StartFlag	w3		Set by func_8780295C and cleared in the transition from phase?0 to?1 to trigger the start of the animation.	applied@727ea94
+D_8780FAC8	gFragment2_1GraphNode	w3		Graph node added to the root list and used as the parent for the display list node.	applied@727ea94
+D_8780FC30	gFragment2_1DisplayNode	w3		Returned by func_80011B94 and stored as the node whose display list is swapped each frame.	applied@727ea94
+func_87802360	Fragment2_1_CalcAnimOffset	w3		Computes X/Y offsets based on the current step and timer, writing results to the provided pointers.	applied@727ea94
+func_87802528	Fragment2_1_Init	w3		Initialises the fragment?s state, creates the graph node and display list node, and registers them.	applied@727ea94
+func_878025D0	Fragment2_1_Update	w3		Advances the state machine, updates timers, selects textures, builds the display list and applies geometry mode.	applied@727ea94
+func_8780295C	Fragment2_1_SetStartFlag	w3		Sets the start flag (gFragment2_1StartFlag) that triggers the transition from idle to active phase.	applied@727ea94
+func_87802974	Fragment2_1_GetResult	w3		Returns ?2 when the animation has finished, otherwise the current step index if the timer is at its start value.	applied@727ea94
+func_879000C4	CheckActorCollision	w3		Checks collision between two MiniActor objects using positions and scaled radii, returning true when overlapping.	applied@727ea94
+func_879003A0	MiniActor_ProcessAnim	w3		Runs the MiniActor animation state machine, triggering actions and sounds based on the actor's unk_248 field.	applied@727ea94
+func_87900528	MiniGame_ReadInputs	w3		Reads controller inputs for the minigame by calling Cont_StartReadInputs and Cont_ReadInputs.	applied@727ea94
+func_87900564	MiniActor_ResetPosition	w3		Resets all three position vectors (position_1, position_2, totalPos) of a MiniActor to zero.	applied@727ea94
+func_879005AC	MiniActor_ResetLocalOffset	w3		Zeroes the secondary position offset (position_2) of a MiniActor.	applied@727ea94
+func_87900808	MiniActor_UpdateCollider	w3		Updates the MiniActor's collider struct with its current scale, total position and total rotation.	applied@727ea94
+func_87900854	MiniGame_ResetState	w3		Resets many minigame state globals, initializes the result screen and copies default HUD colors.	applied@727ea94
+func_87900920	MiniGame_SaveCameraState	w3		Saves the current mini-game camera distance, FOV, coordinates and rotations into backup globals.	applied@727ea94
+func_879009B4	MiniGame_RestoreCameraState	w3		Restores the mini-game camera distance, FOV, coordinates and rotations from backup globals.	applied@727ea94
+func_879004F8	MiniActor_SetAnimToLastFrame	w3		Sets the actor's animation to the last frame by calling func_80017464 with (frameCount-1).	applied@727ea94
+D_879060C4	gMiniHudColors	w3		Array of four s16 values receiving the default HUD color entries from D_8780FA30.	applied@727ea94
+D_8790607C	gMiniCameraDistanceBackup	w3		Backup of miniCameraDistance saved before changing camera settings.	applied@727ea94
+D_87906080	gMiniCameraFovBackup	w3		Backup of miniCameraFov saved before changing camera settings.	applied@727ea94
+D_87906088	gMiniCameraCoordsBackup	w3		Backup vector of miniCameraCoords saved before changing camera settings.	applied@727ea94
+D_87906076	gMiniCameraXRotBackup	w3		Backup of miniCameraXRot saved before changing camera settings.	applied@727ea94
+func_864026D0	GetHealthBarSegmentOffset	w3		Uses D_864029F0 to map a value to a health?bar segment, indicating it computes a health?bar segment offset	applied@727ea94
+D_864029F0	gGaugeSegmentLengths	w3		3?dimensional table summed in GetHealthBarSegmentOffset to determine gauge segment sizes	applied@727ea94
+D_86402D70	gHealthBarTexture	w3		Loaded as a 16?bit RGBA texture for the health?bar quad in D_86403BB0	applied@727ea94
+D_86403570	gHealthBarMaskTexture	w3		Loaded as a 4?bit intensity texture alongside the health?bar texture in D_86403BB0	applied@727ea94
+D_86403770	gDamageOverlayTexture	w3		Loaded as a 4?bit intensity texture in the damage?overlay display list D_86403F30	applied@727ea94
+D_86403B70	gHealthBarQuadVertices	w3		Four vertices forming a rectangular quad used by D_86403BB0 to draw the health bar	applied@727ea94
+D_86403BB0	gHealthBarQuadDL	w3		Display list that sets up textures and draws the health?bar quad using D_86403B70	applied@727ea94
+D_86403C70	gHealthBarShapeVertices	w3		Thirty?two vertices defining the main shape of the health?bar used in D_86403FA0	applied@727ea94
+D_86403E70	gHealthBarCapVertices	w3		Twelve vertices defining the cap/end of the health?bar used in D_86403FA0	applied@727ea94
+D_86403F30	gDamageOverlayDL	w3		Display list that loads the damage?overlay texture and sets render mode for the overlay effect	applied@727ea94
+D_86403FA0	gHealthBarDL	w3		Display list that renders the health?bar shape and cap using the vertex arrays and textures	applied@727ea94
+func_86502110	RenderHealthBar	w3		Draws a health bar UI element using texture data and updates its fill based on current/max health values.	applied@727ea94
+func_86502848	InitHealthBar	w3		Initialises health?bar objects, allocating graph nodes and resetting effect data structures.	applied@727ea94
+D_86502F50	HealthBarTextureData	w3		Static byte array containing the texture data for the health?bar segments used in RenderHealthBar.	applied@727ea94
+D_86505F50	HealthBarBackgroundTextureData	w3		Static byte array holding the background texture for the health bar drawn in RenderHealthBar.	applied@727ea94
+D_86506750	HealthBarPalette0	w3		Color palette array used for the health?bar rendering (first palette).	applied@727ea94
+D_86506F50	HealthBarPalette1	w3		Color palette array used for the health?bar rendering (second palette).	applied@727ea94
+D_86507750	HealthBarPalette2	w3		Color palette array used for the health?bar rendering (third palette).	applied@727ea94
+D_86507F50	HealthBarPalette3	w3		Color palette array used for the health?bar rendering (fourth palette).	applied@727ea94
+D_86508750	HealthBarPalette4	w3		Color palette array used for the health?bar rendering (fifth palette).	applied@727ea94
+D_86508F50	HealthBarDisplayList	w3		Display list configuring render mode, combine mode, and primitive/env colors for the health bar.	applied@727ea94
+D_86508F90	HealthBarSegmentVertices	w3		Vertex data defining the quads for each health?bar segment drawn in RenderHealthBar.	applied@727ea94
+D_86509190	HealthBarBackgroundVertices	w3		Vertex data defining the background quad for the health bar drawn in RenderHealthBar.	applied@727ea94
+D_8650AB28	gCurrentHealthBar	w3		Pointer to the currently active health?bar instance, accessed in RenderHealthBar and InitHealthBar.	applied@727ea94
+D_8650AD70	gHealthBarEffectData	w3		Pointer to the health?bar effect data array, storing particle state for visual effects on the health bar.	applied@727ea94
+D_86700840	gMiniGameGeoLayout	w3		Used as argument to process_geo_layout to define the fragment's geometry layout	applied@727ea94
+D_86700934	gMiniGameRootNode	w3		Assigned the result of process_geo_layout and later used for texture state, indicating it is the root graph node	applied@727ea94
+D_86700938	gMiniGameCameraNode	w3		Derived from the root node's child and its near/far fields are set before calling the camera setup function, showing it is the camera node	applied@727ea94
+D_86700AA8	gMiniGameCamX	w3		Modified by left/right button inputs and passed as the X coordinate to func_80010354, indicating it stores the camera X position	applied@727ea94
+D_86700AAA	gMiniGameCamY	w3		Modified by up/down button inputs and passed as the Y coordinate to func_80010354, indicating it stores the camera Y position	applied@727ea94
+D_86700AAC	gMiniGameCamDist	w3		Modified by Z/L button inputs and passed as the distance parameter to func_80010354, indicating it stores the camera distance	applied@727ea94
+func_86700020	MiniGame_PollController	w3		Calls Cont_StartReadInputs, Cont_ReadInputs and func_8001F730, handling controller polling for the minigame	applied@727ea94
+func_86700050	MiniGame_InitCamera	w3		Sets up camera node, near/far planes and initial parameters then calls func_80010354 to initialize the camera	applied@727ea94
+func_867000FC	MiniGame_HandleCameraInput	w3		Adjusts camera X, Y and distance based on controller buttonDown bits and clamps the values before updating the camera	applied@727ea94
+func_86700254	MiniGame_DrawOverlay	w3		Draws UI panels and prints state?dependent text, providing the on?screen overlay for the minigame	applied@727ea94
+func_86700428	MiniGame_RenderFrame	w3		Begins a display list, fills the screen, sets texture state, draws the overlay and advances the stage for one frame	applied@727ea94
+func_8670047C	MiniGame_RunOpening	w3		Triggers action 8 and loops calling controller polling and rendering with state 0, representing the opening sequence	applied@727ea94
+func_867004E8	MiniGame_RunPlaying	w3		Triggers action 0, processes input, updates camera, plays periodic sounds and renders with state 1 in a loop, representing gameplay	applied@727ea94
+func_867005A8	MiniGame_RunEnding	w3		Triggers action 0xB, loops until completion, then fills the screen and renders state 2 for the ending sequence	applied@727ea94
+func_86700648	MiniGame_InitGraph	w3		Creates a memory block, processes the geo layout, initializes graph roots, adds the fragment node and loads model data for the minigame	applied@727ea94
+D_868074B0	gSushiName_Agari	w3		contains the Japanese string "???" used as a sushi name	applied@727ea94
+D_868074B8	gSushiName_Ebi	w3		contains the Japanese string "??" used as a sushi name	applied@727ea94
+D_868074C0	gSushiName_Ikura	w3		contains the Japanese string "???" used as a sushi name	applied@727ea94
+D_868074C8	gSushiName_Kappa	w3		contains the Japanese string "???" used as a sushi name	applied@727ea94
+D_868074D0	gSushiName_Toro	w3		contains the Japanese string "??" used as a sushi name	applied@727ea94
+D_868074D8	gSushiName_Tekka	w3		contains the Japanese string "???" used as a sushi name	applied@727ea94
+D_868074E0	gSushiName_Tamago	w3		contains the Japanese string "???" used as a sushi name	applied@727ea94
+D_868074E8	gSushiName_Uni	w3		contains the Japanese string "??" used as a sushi name	applied@727ea94
+D_86807140	gSushiOrbitRadius	w3		used as the radius for circular positioning of sushi items	applied@727ea94
+D_86807144	gSushiOrbitCenter	w3		used as the central point around which sushi items orbit	applied@727ea94
+D_86807150	gSushiTargetOffset	w3		added to the sushi position to compute a target offset	applied@727ea94
+D_8680715C	gSushiHeightOffset	w3		appears as a vertical offset in distance calculations for sushi	applied@727ea94
+D_86807160	gSushiOrderIndices	w3		holds a permutation of indices likely defining sushi spawn order	applied@727ea94
+D_86807180	gSushiItemDefs	w3		array of structs describing each sushi type (texture, name, thresholds)	applied@727ea94
+D_86807280	gSushiPlaneVtx	w3		vertex array defining a flat square used to render sushi	applied@727ea94
+D_868072C0	gSushiPlaneDL	w3		display list that draws the sushi plane with its texture	applied@727ea94
+D_86807338	gSushiEmptyDL	w3		empty display list used as a placeholder for sushi rendering	applied@727ea94
+D_86807340	gSushiBillboardVtx	w3		vertex array for a vertical billboard used for sushi sprites	applied@727ea94
+D_868084D0	gSushiFirstSpawnFlag	w3		flag set on the first sushi spawn to trigger a sound effect	applied@727ea94
+D_868084D4	gSushiRotationAngle	w3		global angle incremented each frame to rotate sushi around the center	applied@727ea94
+D_868084D8	gSushiInstances	w3		array of active sushi instance structs managed by the system	applied@727ea94
+D_86808808	gSushiSpawners	w3		array of spawner structs that create sushi instances over time	applied@727ea94
+func_86900020	CameraNode_SetAnglesFromCurrent	w3		Uses Matrix_Decompose on gCurrentCameraNode to store pitch and roll offsets in the node fields when arg0==2	applied@727ea94
+func_86900088	CameraNode_SetAnglesNegated	w3		Uses Matrix_Decompose on gCurrentCameraNode and stores negated pitch and adjusted roll values in the node when arg0==2	applied@727ea94
+func_869000F4	GraphNode_ApplyGlobalColor	w3		Sets the node's rgba color from the global D_8690A68C when arg0==2	applied@727ea94
+func_86900110	SetGlobalRGBA	w3		Writes the provided RGB values to the global D_8690A68C and toggles a flag in D_8690A610 based on the combined result	applied@727ea94
+func_86900188	LoadStageDataDMA	w3		Copies stage geometry and related data from ROM to RAM using DmaCopyAsyncRange based on D_8690A69C->unk_16C	applied@727ea94
+func_86900244	CreatePlayerStatNode	w3		Computes a character's stats from its name and creates a graph node via func_80019760 and related calls	applied@727ea94
+func_869002AC	Stage_Init	w3		Initialises the stage: converts camera input, loads model data, creates graph nodes and triggers the initial action	applied@727ea94
+func_86900484	LoadStageFragmentByIndex	w3		Selects a fragment file using D_86908A80[arg0], loads its geometry and colour data, and sets up related globals	applied@727ea94
+func_8690060C	Graphics_Init	w3		Initialises graphics buffers, clears the screen, allocates root graph nodes and processes the main geo layout	applied@727ea94
+func_86B00020	BattleContext_HandleState	w3		Calls specific handlers based on gBattleContext.unk_0000, acting as a dispatcher for battle states.	applied@727ea94
+func_86B01190	BattleState_Handle18	w3		Invoked when gBattleContext.unk_0000 == 18, so it processes the battle state 18.	applied@727ea94
+func_86B08644	BattleState_Handle17	w3		Invoked when gBattleContext.unk_0000 == 17, so it processes the battle state 17.	applied@727ea94
+func_86B04FB0	BattleState_Handle21Or26	w3		Invoked for both gBattleContext.unk_0000 == 21 and == 26, handling those two battle states.	applied@727ea94
+func_86B0BA18	BattleState_Handle22Or23	w3		Invoked for gBattleContext.unk_0000 == 22 and == 23, handling those battle states.	applied@727ea94
+func_86B0A554	BattleState_Handle24	w3		Invoked when gBattleContext.unk_0000 == 24, handling that battle state.	applied@727ea94
+func_88200020	Fragment23_Init	w3		Initializes a text object and loads assets for fragment23, evident from calls to Text_Init and ASSET_LOAD before returning the text pointer	applied@727ea94
+func_882000E4	Fragment23_Terminate	w3		Cleans up fragment23 by calling func_8000771C (stage end) and popping the memory pool, indicating a termination routine	applied@727ea94
+func_88200110	Fragment23_Execute	w3		Executes the main fragment23 sequence: creates text, sets display flags, and loads the next fragment, showing it is the primary execution function	applied@727ea94
+func_88200190	Fragment23_HandleState	w3		Dispatches fragment23 sub?states based on arg0, invoking specific handlers in a loop, thus it is the state?handling function	applied@727ea94
+unk_D_800AC870	TextObject	w3		Returned by Text_Init and used in text?related functions, indicating it represents a text object	applied@727ea94

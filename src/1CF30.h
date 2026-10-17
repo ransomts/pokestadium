@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern unk_D_800AC870* gFontManager;
+extern TextObject* gFontManager;
 
 void Gfx_DrawTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8);
 void Gfx_DrawTextureRect2(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
@@ -29,7 +29,7 @@ void func_8001E7C0(UNUSED s32 arg0, UNUSED s32 arg1);
 void Text_UnloadFont(UNUSED s32 arg0, s32 arg1);
 s32 GetFontBank(s32 arg0);
 void LoadFontBank(s32 arg0, s32 arg1, s32 arg2);
-unk_D_800AC870* Text_Init(s32 arg0, s32 arg1);
+TextObject* Text_Init(s32 arg0, s32 arg1);
 void func_8001E9CC(void);
 void LoadFontBanksFromMask(s32 arg0);
 void FreeFontBanks(s32 arg0);

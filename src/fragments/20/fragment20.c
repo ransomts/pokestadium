@@ -40,7 +40,7 @@ typedef struct MiniRockInfo {
 static MiniActor miniMetapods[4];
 static MiniActor miniMetapodRocks[20];
 static s16 D_86E08E40;
-static unk_D_800AC870* D_86E08E44;
+static TextObject* D_86E08E44;
 
 static u32 D_86E02FB0[] = {
     0xE8E0CBB4, 0xAAAAAFB6, 0xB6AEABBC, 0xD6BBA5A5, 0xA6BCC4C9, 0xC3B5BBBB, 0xB8B5B9C0, 0xBDB9C3D7, 0xDED2CBBD,
@@ -595,7 +595,7 @@ void miniInitMetapodPlayer(MiniActor* metapod, s32 arg1) {
     func_80017788(&metapod->unk_000);
     metapod->unk_000.unk_01C = 0;
     miniActorUpdateTransform(metapod);
-    metapod->isComp = D_879060C4[arg1];
+    metapod->isComp = gMiniHudColors[arg1];
 }
 
 void miniInitMetapodPlayers(void) {
@@ -913,7 +913,7 @@ void miniUpdateMetapods(void) {
         }
 
         miniActorUpdateTransform(miniMetapodPtr);
-        func_87900808(miniMetapodPtr);
+        MiniActor_UpdateCollider(miniMetapodPtr);
 
         miniMetapodPtr++;
         miniControllerPtr++;
@@ -1020,7 +1020,7 @@ void miniMatapodMinigameChecks(void) {
 }
 
 void func_86E00F60(void) {
-    func_879003A0(miniMetapodPtr);
+    MiniActor_ProcessAnim(miniMetapodPtr);
 
     miniMetapodPtr->unk_000.unk_024.x = miniMetapodPtr->totalPos.x;
     miniMetapodPtr->unk_000.unk_024.y = miniMetapodPtr->totalPos.y;
@@ -1263,7 +1263,7 @@ void miniUpdateRocks(void) {
 
 //	update model transform ?
 void func_86E0182C(MiniActor* arg0) {
-    func_879003A0(arg0);
+    MiniActor_ProcessAnim(arg0);
 
     arg0->unk_000.unk_030.x = arg0->scale.x;
     arg0->unk_000.unk_030.y = arg0->scale.y;
@@ -1311,7 +1311,7 @@ void miniMetapodCameraControls(void) {
 }
 
 void initMetapodMinigameAssets(void) {
-    func_87900854(); //	minigame variables
+    MiniGame_ResetState(); //	minigame variables
     miniInitRocks();
     miniInitMetapodPlayers();
     func_86E01904(); //	camera
@@ -1479,7 +1479,7 @@ void func_86E01EB0(void) {
 
 s32 func_86E01EE8(void) {
     s32 sp1C = 0;
-    s32 temp_v0 = func_87802974();
+    s32 temp_v0 = Fragment2_1_GetResult();
 
     if (temp_v0 == -2) {
         sp1C = 1;
@@ -1519,7 +1519,7 @@ void miniMetapodMinigameStateMachine(void) {
         case 2:
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
-                func_8780295C(1);
+                Fragment2_1_SetStartFlag(1);
                 minigameState++;
             }
             break;
@@ -1567,7 +1567,7 @@ void miniMetapodMinigameStateMachine(void) {
             break;
     }
 
-    func_878025D0();
+    Fragment2_1_Update();
     func_86E01EB0();
 }
 
@@ -1591,7 +1591,7 @@ void miniDrawMetapodHeads(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, miniHudTransparency);
 
     for (i = 0, tmp = 0x26; i < 4; tmp += 0x4A, i++) {
-        if (D_879060C4[i] == 0) {
+        if (gMiniHudColors[i] == 0) {
             func_87801644(i, tmp, 0xD6, 0.7f); //  draw player icon
         } else {
             func_87801644(-1 - i, tmp, 0xD6, 0.7f); //  draw player icon
@@ -1752,7 +1752,7 @@ void func_86E02A64(void) {
     hideMiniGameHUD();
 
     while (var_s1 != 0) {
-        func_87900528();
+        MiniGame_ReadInputs();
 
         if (minigameState == 0) {
             D_87906042 += 1;
@@ -1796,7 +1796,7 @@ void func_86E02BB0(void) {
     }
 
     for (i = 0; i < 30; i++) {
-        func_87900528();  // input reading
+        MiniGame_ReadInputs();  // input reading
         func_86E02880(2); // display text ?
     }
 

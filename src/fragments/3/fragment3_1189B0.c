@@ -38,7 +38,7 @@ void MinigameGetVec3Distance_3d(MiniActor* arg0, MiniActor* arg1) {
 }
 
 //  unused,
-s32 func_879000C4(MiniActor* arg0, MiniActor* arg1) {
+s32 CheckActorCollision(MiniActor* arg0, MiniActor* arg1) {
     f32 totalX = arg1->totalPos_alt.x - arg0->totalPos_alt.x;
     f32 totalY = arg1->totalPos_alt.y - arg0->totalPos_alt.y;
     f32 totalZ = arg1->totalPos_alt.z - arg0->totalPos_alt.z;
@@ -135,7 +135,7 @@ s32 miniPokeIsIdleCheck(MiniActor* arg0) {
     return var_v1;
 }
 
-void func_879003A0(MiniActor* poke) {
+void MiniActor_ProcessAnim(MiniActor* poke) {
     switch (poke->unk_248) {
         case 1:
             GraphNode_TriggerAction(&poke->unk_000, poke->unk_24A);
@@ -175,11 +175,11 @@ void func_879003A0(MiniActor* poke) {
     }
 }
 
-void func_879004F8(unk_D_86002F58_004_000* arg0) {
+void MiniActor_SetAnimToLastFrame(unk_D_86002F58_004_000* arg0) {
     func_80017464(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-void func_87900528(void) {
+void MiniGame_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     func_8001F730(); // nothing
@@ -189,7 +189,7 @@ void hideMiniGameHUD(void) {
     miniShowHUB = 0;
 }
 
-void func_87900564(MiniActor* actor) {
+void MiniActor_ResetPosition(MiniActor* actor) {
     actor->position_2.x = 0.0f;
     actor->position_1.x = 0.0f;
     actor->totalPos.x = 0.0f;
@@ -209,7 +209,7 @@ void minigameActorLocalOriginToZero(MiniActor* arg0) {
     arg0->position_1.z = 0.0f;
 }
 
-void func_879005AC(MiniActor* arg0) {
+void MiniActor_ResetLocalOffset(MiniActor* arg0) {
     arg0->position_2.x = 0.0f;
     arg0->position_2.y = 0.0f;
     arg0->position_2.z = 0.0f;
@@ -291,7 +291,7 @@ void miniActorUpdateTransform(MiniActor* poke) {
 }
 
 //  updates an object's collider ?
-void func_87900808(MiniActor* arg0) {
+void MiniActor_UpdateCollider(MiniActor* arg0) {
     arg0->unk_000.unk_030.x = arg0->scale.x;
     arg0->unk_000.unk_030.y = arg0->scale.y;
     arg0->unk_000.unk_030.z = arg0->scale.z;
@@ -305,7 +305,7 @@ void func_87900808(MiniActor* arg0) {
     arg0->unk_000.unk_01E.z = arg0->totalRot.z;
 }
 
-void func_87900854(void) {
+void MiniGame_ResetState(void) {
     s16* ptr = D_8780FA30;
 
     minigameInputLock = 0;
@@ -322,36 +322,36 @@ void func_87900854(void) {
     D_87906072 = 0;
 
     ResultScreen_Init();
-    func_87802528();
+    Fragment2_1_Init();
 
-    D_879060C4[0] = ptr[0];
-    D_879060C4[1] = ptr[1];
-    D_879060C4[2] = ptr[2];
-    D_879060C4[3] = ptr[3];
+    gMiniHudColors[0] = ptr[0];
+    gMiniHudColors[1] = ptr[1];
+    gMiniHudColors[2] = ptr[2];
+    gMiniHudColors[3] = ptr[3];
 
     miniHudTransparency = 0xFF;
 }
 
-void func_87900920(void) {
-    D_8790607C = miniCameraDistance;
-    D_87906080 = miniCameraFov;
+void MiniGame_SaveCameraState(void) {
+    gMiniCameraDistanceBackup = miniCameraDistance;
+    gMiniCameraFovBackup = miniCameraFov;
 
-    D_87906088.x = miniCameraCoords.x;
-    D_87906088.y = miniCameraCoords.y;
-    D_87906088.z = miniCameraCoords.z;
+    gMiniCameraCoordsBackup.x = miniCameraCoords.x;
+    gMiniCameraCoordsBackup.y = miniCameraCoords.y;
+    gMiniCameraCoordsBackup.z = miniCameraCoords.z;
 
-    D_87906076 = miniCameraXRot;
+    gMiniCameraXRotBackup = miniCameraXRot;
     D_87906078 = miniCameraYRot;
 }
 
-void func_879009B4(void) {
-    miniCameraDistance = D_8790607C;
-    miniCameraFov = D_87906080;
+void MiniGame_RestoreCameraState(void) {
+    miniCameraDistance = gMiniCameraDistanceBackup;
+    miniCameraFov = gMiniCameraFovBackup;
 
-    miniCameraCoords.x = D_87906088.x;
-    miniCameraCoords.y = D_87906088.y;
-    miniCameraCoords.z = D_87906088.z;
+    miniCameraCoords.x = gMiniCameraCoordsBackup.x;
+    miniCameraCoords.y = gMiniCameraCoordsBackup.y;
+    miniCameraCoords.z = gMiniCameraCoordsBackup.z;
 
-    miniCameraXRot = D_87906076;
+    miniCameraXRot = gMiniCameraXRotBackup;
     miniCameraYRot = D_87906078;
 }

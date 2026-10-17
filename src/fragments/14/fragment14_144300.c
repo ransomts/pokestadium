@@ -97,7 +97,7 @@ static Color_RGB8 D_86806F68[] = {
 static s32 D_86806F74[] = { 0x50002, 0x50002, 0x50001, 0x50002, 0, 0, 0 };
 
 unk_D_86002F34* D_86807500;
-static unk_D_800AC870* D_86807504;
+static TextObject* D_86807504;
 static u32 D_86807508;
 static s32 D_8680750C;
 s32 D_86807510;
@@ -250,7 +250,7 @@ void func_8680091C(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
         sp34 = ROUND_MAX(32.0f * arg3);
         sp32 = ROUND_MAX(32.0f * arg3);
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_86807180[arg0].unk_08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gSushiItemDefs[arg0].unk_08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
@@ -455,7 +455,7 @@ void func_86800B38(void) {
             }
 
             pad1 = i % 4;
-            func_8680091C(D_86807160[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
+            func_8680091C(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
         }
 
         func_87801D5C(0, 0x5A, 0xA8, D_86806E88);
@@ -564,12 +564,12 @@ s32 func_86801884(void) {
             D_86807540 -= 1;
             if (D_86807540 <= 0) {
                 D_8680750C = 2;
-                func_8780295C(1);
+                Fragment2_1_SetStartFlag(1);
             }
             break;
 
         case 2:
-            temp_v0 = func_87802974();
+            temp_v0 = Fragment2_1_GetResult();
             if ((temp_v0 >= 0) && (temp_v0 < 4)) {
                 func_8004D9B0(D_86806F74[temp_v0], 0, 0);
             } else if (temp_v0 == -2) {
@@ -669,7 +669,7 @@ void func_86801CA8(void) {
     var_s0 = 1;
     while (var_s0 != 0) {
         func_86800070();
-        func_878025D0();
+        Fragment2_1_Update();
         func_86805CB4();
         func_86806BF0();
         func_86805974();
@@ -694,7 +694,7 @@ void func_86801D48(void) {
     mem_pool_resize_block(sp18);
     Graph_InitRoots();
     func_8001987C();
-    func_87802528();
+    Fragment2_1_Init();
     func_86806A50();
 
     if (D_8680753E != 0) {

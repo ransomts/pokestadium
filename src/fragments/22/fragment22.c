@@ -2684,7 +2684,7 @@ void func_88001258(unk_func_88001300* arg0) {
     ((func88506074)Memmap_GetFragmentVaddr(func_88506074))(arg0->unk_34, GetMessageString(NULL, 0, D_88016CF4, var_a3));
 }
 
-void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, unk_D_800AC870* arg5,
+void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, TextObject* arg5,
                    MemoryPool* arg6) {
     s32 i;
     unk_func_88500E34* sp78;
@@ -3088,7 +3088,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     unk_func_88001300* sp38;
     u8* sp34;
     func_88002628_sp38* sp30;
-    unk_D_800AC870* sp2C;
+    TextObject* sp2C;
 
     main_pool_push_state('LABO');
 

@@ -79,7 +79,7 @@ typedef struct unk_func_88001300_034 {
     /* 0x35 */ s8 unk_35;
     /* 0x36 */ u8 unk_36;
     /* 0x38 */ Color_RGBA8 unk_38;
-    /* 0x3C */ unk_D_800AC870* unk_3C;
+    /* 0x3C */ TextObject* unk_3C;
     /* 0x40 */ s32 unk_40;
 } unk_func_88001300_034; // size = 0x44
 
@@ -317,7 +317,7 @@ typedef struct unk_func_88509F48 {
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_885012A4* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
-    /* 0x38 */ unk_D_800AC870* unk_38;
+    /* 0x38 */ TextObject* unk_38;
 } unk_func_88509F48; // size = 0x3C
 
 typedef s32 (*unk_func_8850CD44_010)(struct unk_func_8850CD44* arg0, Controller* arg1);
@@ -745,7 +745,7 @@ typedef void (*func88503BAC)(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Col
 typedef void (*func88504570)(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
 typedef void (*func88504F98)(unk_func_8820E99C_030_044*, s32, s32, s32, s32);
 typedef void (*func885054D8)(unk_func_88001300_030*, s32, s32, s32, s32, Color_RGBA8);
-typedef void (*func88505E2C)(unk_func_88001300_034*, s32, s32, s32, s32, s32, Color_RGBA8, unk_D_800AC870*);
+typedef void (*func88505E2C)(unk_func_88001300_034*, s32, s32, s32, s32, s32, Color_RGBA8, TextObject*);
 typedef void (*func88506074)(unk_func_88001300_034*, char*);
 typedef void (*func885060BC)(unk_func_88200FA0_030_030*, s32, s32, unk_func_88200FA0_030_030_040, s32, s32, s32, s32, MemoryPool*);
 typedef void (*func88506238)(unk_func_88200FA0_030_030*, s32, MemoryPool*);
@@ -851,7 +851,7 @@ void func_885054CC(unk_func_8820E99C_030_044*, s32);
 void func_885054D8(unk_func_88001300_030*, s32, s32, s32, s32, Color_RGBA8);
 s32 func_8850555C(unk_func_88001300_030*);
 s32 func_8850562C(unk_func_88001300_030*, s32, s32);
-void func_88505E2C(unk_func_88001300_034*, s32, s32, s32, s32, s32, Color_RGBA8, unk_D_800AC870*);
+void func_88505E2C(unk_func_88001300_034*, s32, s32, s32, s32, s32, Color_RGBA8, TextObject*);
 s32 func_88505EC0(unk_func_88001300_034*);
 s32 func_88505EF4(unk_func_88001300_034*, s32, s32);
 void func_88506074(unk_func_88001300_034* arg0, u8* arg1);
@@ -893,7 +893,7 @@ void func_88509A2C(unk_func_88509A2C*, s32, s32, s32, char*);
 s32 func_88509AF0(unk_func_88509A2C*, s32, s32);
 void func_88509E34(unk_func_88509E34*, s32, s32, char*);
 s32 func_88509E8C(unk_func_88509F0C*, s32, s32);
-void func_88509F48(unk_func_88509F48*, s32, s32, s32, s32, MemoryPool*, unk_D_800AC870*);
+void func_88509F48(unk_func_88509F48*, s32, s32, s32, s32, MemoryPool*, TextObject*);
 void func_8850A10C(unk_func_88509F48*, unk_func_8850878C*, s32, s32);
 s32 func_8850A29C(unk_func_88509F48*, Controller*);
 void func_8850A3CC(unk_func_88509F48*, Controller*);

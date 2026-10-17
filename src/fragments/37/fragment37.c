@@ -50,21 +50,21 @@ typedef struct unk_D_82203150 {
     /* 0x08 */ Color_RGBA8 unk_08;
 } unk_D_82203150; // size >= 0xC
 
-static s16 D_82202FA0 = 0;
+static s16 gOverlayAlpha = 0;
 
-static s16 D_82202FA4 = 0;
+static s16 gFadeStepCounter = 0;
 
-static s16 D_82202FA8[] = {
+static s16 gStateTransitionTable[] = {
     STATE_STADIUM_MENU,   STATE_FREE_BATTLE, STATE_GYM_LEADER_CASTLE, STATE_VS_MEWTWO,   STATE_KIDS_CLUB,
     STATE_VICTORY_PALACE, STATE_POKEMON_LAB, STATE_GB_TOWER,          STATE_MENU_SELECT,
 };
 
-static u8* D_82202FBC[] = {
+static u8* gBackgroundTexturePtrs[] = {
     0x03006E60, 0x0300D060, 0x03013260, 0x03019460, 0x0301F660,
     0x03025860, 0x0302BA60, 0x03031C60, 0x03037E60, 0x0303E060,
 };
 
-static unk_D_82202FE4 D_82202FE4[9] = {
+static unk_D_82202FE4 gTileConfigTable[9] = {
     { 0x012C, 0x00B9, 0x004B, 0x03, 0x04, 0x06, 0x07, { 0x32, 0x50, 0x96, 0x00 } },
     { 0x0208, 0x0118, 0x004B, 0x07, 0x08, 0x04, 0x08, { 0x32, 0x50, 0x96, 0x00 } },
     { 0x006E, 0x005A, 0x0041, 0x08, 0x06, 0x08, 0x03, { 0x32, 0x50, 0x96, 0x00 } },
@@ -104,7 +104,7 @@ s32 func_82200020(s32 arg0) {
     return arg0;
 }
 
-void func_82200088(u8* arg0, u8* arg1, u8 arg2) {
+void DrawFullScreenTextureBlend(u8* arg0, u8* arg1, u8 arg2) {
     s32 i;
     s32 j;
 
@@ -135,7 +135,7 @@ void func_82200088(u8* arg0, u8* arg1, u8 arg2) {
     }
 }
 
-Vtx* func_82200424(void) {
+Vtx* CreateTileVertices(void) {
     Vtx* temp_v0;
     s16 temp_s0;
     s16 temp_s6;
@@ -173,14 +173,14 @@ Vtx* func_82200424(void) {
     return temp_v0;
 }
 
-void func_82200690(void) {
+void DrawTileOverlay(void) {
     Vtx* temp_v0;
 
     if (D_82203150.unk_08.a <= 0) {
         return;
     }
 
-    temp_v0 = func_82200424();
+    temp_v0 = CreateTileVertices();
 
     if (temp_v0 != 0) {
         gDPPipeSync(gDisplayListHead++);
@@ -238,12 +238,12 @@ void func_82200A5C(void) {
     }
 }
 
-void func_82200BF4(s32 arg0) {
+void InitParticleTrail(s32 arg0) {
     s32 i;
 
-    D_82203160[0].unk_00 = D_82202FE4[arg0].unk_00;
-    D_82203160[0].unk_02 = D_82202FE4[arg0].unk_02;
-    D_82203160[0].unk_04 = D_82202FE4[arg0].unk_04;
+    D_82203160[0].unk_00 = gTileConfigTable[arg0].unk_00;
+    D_82203160[0].unk_02 = gTileConfigTable[arg0].unk_02;
+    D_82203160[0].unk_04 = gTileConfigTable[arg0].unk_04;
     D_82203160[0].unk_06 = 0x64;
     D_82203160[0].unk_0A = 0;
     D_82203160[0].unk_08 = 0;
@@ -254,7 +254,7 @@ void func_82200BF4(s32 arg0) {
     }
 }
 
-Vtx* func_82200C8C(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8 arg3) {
+Vtx* CreateColoredQuad(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8 arg3) {
     s16 sp44;
     Vtx* temp_v0;
 
@@ -271,8 +271,8 @@ Vtx* func_82200C8C(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8 arg3) {
     return temp_v0;
 }
 
-void func_82200E34(s16 arg0, s16 arg1, s16 arg2, u8* arg3, Color_RGBA8 arg4) {
-    Vtx* temp_v0 = func_82200C8C(arg0, arg1, arg2, arg4);
+void DrawTexturedQuad(s16 arg0, s16 arg1, s16 arg2, u8* arg3, Color_RGBA8 arg4) {
+    Vtx* temp_v0 = CreateColoredQuad(arg0, arg1, arg2, arg4);
 
     if (temp_v0 != NULL) {
         gDPLoadTextureBlock(gDisplayListHead++, arg3, G_IM_FMT_RGBA, G_IM_SIZ_16b, 36, 36, 0,
@@ -283,7 +283,7 @@ void func_82200E34(s16 arg0, s16 arg1, s16 arg2, u8* arg3, Color_RGBA8 arg4) {
     }
 }
 
-void func_82200FB0(u8* arg0) {
+void DrawParticleSprites(u8* arg0) {
     Color_RGBA8 sp5C;
     s16 i;
     s16 j;
@@ -303,7 +303,7 @@ void func_82200FB0(u8* arg0) {
                 } else {
                     func_8000E840(&sp5C, 0xFF, 0xFF, 0x64, 0xA0 - (i * 30));
                 }
-                func_82200E34(temp_s3, temp_s4, temp_s1, arg0, sp5C);
+                DrawTexturedQuad(temp_s3, temp_s4, temp_s1, arg0, sp5C);
             }
         }
     }
@@ -322,7 +322,7 @@ void func_82201108(void) {
         gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
 
-        func_82200FB0(D_82203064[D_82203160->unk_0A / 2]);
+        DrawParticleSprites(D_82203064[D_82203160->unk_0A / 2]);
 
         gSPDisplayList(gDisplayListHead++, D_8006F630);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
@@ -332,7 +332,7 @@ void func_82201108(void) {
     }
 }
 
-void func_822012E8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 i;
     u8* var_s2;
 
@@ -340,7 +340,7 @@ void func_822012E8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         if (arg3 == 7) {
             arg3 += D_822031E8.unk_00;
         }
-        var_s2 = D_82202FBC[arg3];
+        var_s2 = gBackgroundTexturePtrs[arg3];
 
         gSPDisplayList(gDisplayListHead++, D_8006F518);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg2);
@@ -360,7 +360,7 @@ void func_822012E8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 void func_822014C0(void) {
 }
 
-void func_822014C8(s16 arg0, s16 arg1, s16 arg2) {
+void UpdateBackgroundFade(s16 arg0, s16 arg1, s16 arg2) {
     static s16 D_82203074 = 1;
     static s16 D_82203078 = 1;
 
@@ -368,10 +368,10 @@ void func_822014C8(s16 arg0, s16 arg1, s16 arg2) {
 
     if (arg0 == 2) {
         sp1E = (D_822031DC * 0x2A) + 3;
-        func_822012E8(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF - sp1E, D_822031DA);
-        func_822012E8(arg1, (arg2 + (D_82203074 / 4)) - 5, sp1E, D_822031D8);
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF - sp1E, D_822031DA);
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, sp1E, D_822031D8);
     } else if ((arg0 != 8) && (arg0 != 0)) {
-        func_822012E8(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF, D_822031D8);
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF, D_822031D8);
     }
 
     D_82203074 += D_82203078;
@@ -384,7 +384,7 @@ void func_822014C8(s16 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_82201654(s16 arg0, s16 arg1) {
+void DrawAnimatedIcon(s16 arg0, s16 arg1) {
     static u32 D_8220307C[] = {
         0x03044C60, 0x03045020, 0x030453E0, 0x030457A0, 0x03045B60, 0x03045F20, 0x030462E0,
         0x030466A0, 0x03046A60, 0x03046E20, 0x030471E0, 0x030475A0, 0x03047960, 0x03047D20,
@@ -401,7 +401,7 @@ void func_82201654(s16 arg0, s16 arg1) {
         gDPSetEnvColor(gDisplayListHead++, 0, 100, 255, 255);
 
         if (gBattleContext.unk_11F5 & 4) {
-            gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, D_82202FA0);
+            gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, gOverlayAlpha);
         } else {
             gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, 255);
         }
@@ -511,14 +511,14 @@ s32 func_822023A4(void) {
     s8 var_s0 = 8;
     s32 var_t1 = 1;
 
-    D_82203160->unk_00 = D_82202FE4[D_822031D8].unk_00;
-    D_82203160->unk_02 = D_82202FE4[D_822031D8].unk_02;
-    D_82203160->unk_04 = D_82202FE4[D_822031D8].unk_04;
+    D_82203160->unk_00 = gTileConfigTable[D_822031D8].unk_00;
+    D_82203160->unk_02 = gTileConfigTable[D_822031D8].unk_02;
+    D_82203160->unk_04 = gTileConfigTable[D_822031D8].unk_04;
     D_82203160->unk_06 = 0x64;
 
-    D_82203150.unk_00 = D_82202FE4[D_822031D8].unk_00;
-    D_82203150.unk_02 = D_82202FE4[D_822031D8].unk_02;
-    D_82203150.unk_08 = D_82202FE4[D_822031D8].unk_0A;
+    D_82203150.unk_00 = gTileConfigTable[D_822031D8].unk_00;
+    D_82203150.unk_02 = gTileConfigTable[D_822031D8].unk_02;
+    D_82203150.unk_08 = gTileConfigTable[D_822031D8].unk_0A;
     D_82203150.unk_06 = 0;
     D_82203150.unk_04 = 0x12C;
 
@@ -534,13 +534,13 @@ s32 func_822023A4(void) {
         PlaySoundEffect(3);
         var_t1 = 4;
     } else if (gPlayer1Controller->buttonPressed & 0x800) {
-        var_s0 = D_82202FE4[D_822031D8].unk_06;
+        var_s0 = gTileConfigTable[D_822031D8].unk_06;
     } else if (gPlayer1Controller->buttonPressed & 0x400) {
-        var_s0 = D_82202FE4[D_822031D8].unk_07;
+        var_s0 = gTileConfigTable[D_822031D8].unk_07;
     } else if (gPlayer1Controller->buttonPressed & 0x200) {
-        var_s0 = D_82202FE4[D_822031D8].unk_08;
+        var_s0 = gTileConfigTable[D_822031D8].unk_08;
     } else if (gPlayer1Controller->buttonPressed & 0x100) {
-        var_s0 = D_82202FE4[D_822031D8].unk_09;
+        var_s0 = gTileConfigTable[D_822031D8].unk_09;
     }
 
     if (var_s0 != 8) {
@@ -563,12 +563,12 @@ s16 func_82202520(void) {
     s32 vA_2;
     s32 vA_4;
 
-    vA_0 = D_82202FE4[D_822031DA].unk_00;
-    vA_2 = D_82202FE4[D_822031DA].unk_02;
-    vA_4 = D_82202FE4[D_822031DA].unk_04;
-    v8_0 = D_82202FE4[D_822031D8].unk_00;
-    v8_2 = D_82202FE4[D_822031D8].unk_02;
-    v8_4 = D_82202FE4[D_822031D8].unk_04;
+    vA_0 = gTileConfigTable[D_822031DA].unk_00;
+    vA_2 = gTileConfigTable[D_822031DA].unk_02;
+    vA_4 = gTileConfigTable[D_822031DA].unk_04;
+    v8_0 = gTileConfigTable[D_822031D8].unk_00;
+    v8_2 = gTileConfigTable[D_822031D8].unk_02;
+    v8_4 = gTileConfigTable[D_822031D8].unk_04;
 
     D_822031DC++;
 
@@ -630,16 +630,16 @@ s32 func_822026BC(void) {
 s32 func_82202758(void) {
     s16 var_a1 = 6;
 
-    if (D_82202FA4 < 0x200) {
-        D_82202FA4 += 0x40;
-    } else if (D_82202FA4 == 0x200) {
-        D_82202FA4 += 0x40;
+    if (gFadeStepCounter < 0x200) {
+        gFadeStepCounter += 0x40;
+    } else if (gFadeStepCounter == 0x200) {
+        gFadeStepCounter += 0x40;
         func_80007990(0xFFFF);
         func_80006CB4(2);
         var_a1 = 6;
-    } else if (D_82202FA4 < 0x280) {
-        D_82202FA4 += 0x40;
-        if (D_82202FA4 == 0x280) {
+    } else if (gFadeStepCounter < 0x280) {
+        gFadeStepCounter += 0x40;
+        if (gFadeStepCounter == 0x280) {
             var_a1 = 7;
         }
     }
@@ -681,19 +681,19 @@ void func_82202980(s16 arg0) {
     Stage_BeginDisplayList();
     func_82202850();
 
-    if (D_82202FA0 == 0) {
+    if (gOverlayAlpha == 0) {
         Gfx_DrawTextureAtlas(D_82203148);
-    } else if (D_82202FA0 == 0xFF) {
+    } else if (gOverlayAlpha == 0xFF) {
         Gfx_DrawTextureAtlas(D_8220314C);
     } else {
-        func_82200088(D_82203148, D_8220314C, D_82202FA0);
+        DrawFullScreenTextureBlend(D_82203148, D_8220314C, gOverlayAlpha);
     }
 
-    func_82201654(0x12C, 0x41);
+    DrawAnimatedIcon(0x12C, 0x41);
     func_82201108();
-    func_822014C8(arg0, 0x194, 0x28);
-    func_822018D4(0x12C, 0x41, D_82202FA4);
-    func_82200690();
+    UpdateBackgroundFade(arg0, 0x194, 0x28);
+    func_822018D4(0x12C, 0x41, gFadeStepCounter);
+    DrawTileOverlay();
 
     if ((arg0 == 1) || (arg0 == 2)) {
         func_822022C8(arg0 == 1);
@@ -707,10 +707,10 @@ s32 func_82202A6C(void) {
 
     D_822031D8 = 8;
     if (func_80007604() == 0) {
-        D_82202FA0 += 4;
-        if (D_82202FA0 == 0x100) {
+        gOverlayAlpha += 4;
+        if (gOverlayAlpha == 0x100) {
             gBattleContext.unk_11F5 &= 0xFFFB;
-            D_82202FA0 = 0xFF;
+            gOverlayAlpha = 0xFF;
             D_822031DA = 8;
             D_822031D8 = 0;
             var_v1 = 2;
@@ -720,7 +720,7 @@ s32 func_82202A6C(void) {
 }
 
 void func_82202AFC(void) {
-    func_82200BF4(D_822031D8);
+    InitParticleTrail(D_822031D8);
     func_8000D1F0(0x50);
     func_80006C6C(0xA);
 
@@ -740,9 +740,9 @@ void func_82202B60(void) {
     }
 
     if (D_822031E0.unk_07 == 0) {
-        D_82202FE4[0].unk_06 = 8;
-        D_82202FE4[2].unk_09 = 8;
-        D_82202FE4[7].unk_06 = 8;
+        gTileConfigTable[0].unk_06 = 8;
+        gTileConfigTable[2].unk_09 = 8;
+        gTileConfigTable[7].unk_06 = 8;
     }
 
     D_822031DA = 8;
@@ -823,7 +823,7 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_822031D8 = 8;
 
     if ((D_822031E0.unk_07 != 0) && !(gBattleContext.unk_11F5 & 4) && !(D_822031E0.unk_00 & 0x100)) {
-        D_82202FA0 = 0xFF;
+        gOverlayAlpha = 0xFF;
     }
 
     Stage_Set(sp24);
@@ -834,5 +834,5 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('LAND');
 
-    return D_82202FA8[D_822031D8];
+    return gStateTransitionTable[D_822031D8];
 }

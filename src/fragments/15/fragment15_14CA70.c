@@ -339,7 +339,7 @@ static Controller D_8690B5D0;
 static s32 D_8690B5F4;
 static s32 D_8690B5F8;
 
-s32 func_86900020(s32 arg0, GraphNode* arg1) {
+s32 CameraNode_SetAnglesFromCurrent(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -353,7 +353,7 @@ s32 func_86900020(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86900088(s32 arg0, GraphNode* arg1) {
+s32 CameraNode_SetAnglesNegated(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -367,7 +367,7 @@ s32 func_86900088(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_869000F4(s32 arg0, GraphNode* arg1) {
+s32 GraphNode_ApplyGlobalColor(s32 arg0, GraphNode* arg1) {
     unk_D_86002F58_004_000* ptr = (unk_D_86002F58_004_000*)arg1;
 
     if (arg0 == 2) {
@@ -376,7 +376,7 @@ s32 func_869000F4(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_86900110(u8 arg0, u8 arg1, u8 arg2) {
+void SetGlobalRGBA(u8 arg0, u8 arg1, u8 arg2) {
     u8 v = arg0 & arg1 & arg2;
 
     D_8690A68C.r = arg0;
@@ -392,7 +392,7 @@ void func_86900110(u8 arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void func_86900188(void) {
+void LoadStageDataDMA(void) {
     UNUSED s32 pad[2];
     u8* temp_a1 = (u32)_70D3A0_ROM_START + (D_80075BD0[D_8690A69C->unk_16C - 1] & 0xFFFFFF);
     u8* sp20 = (u32)_70D3A0_ROM_START +
@@ -408,7 +408,7 @@ void func_86900188(void) {
     DmaCopyAsyncRange(&D_8690B2F8, sp20, sp1C, 0);
 }
 
-unk_D_86002F58_004_000_010_024* func_86900244(unk_func_80026268_arg0* arg0) {
+unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(unk_func_80026268_arg0* arg0) {
     arg1_func_80010CA8 sp1C;
     unk_D_86002F58_004_000_010* sp18;
 
@@ -421,7 +421,7 @@ unk_D_86002F58_004_000_010_024* func_86900244(unk_func_80026268_arg0* arg0) {
     return sp18->unk_24;
 }
 
-void func_869002AC(void) {
+void Stage_Init(void) {
     Cam_ConvertStateToInput(&D_8690A6A0, &D_83407AC8);
     D_8690A69C->unk_16C = D_83407AC8.unk_02;
 
@@ -433,13 +433,13 @@ void func_869002AC(void) {
     func_8001987C();
 
     if (D_8690A69C->unk_16C == 153) {
-        D_8690A69C->unk_000 = func_86900244(&D_8690A6A0);
+        D_8690A69C->unk_000 = CreatePlayerStatNode(&D_8690A6A0);
     } else {
         D_8690A69C->unk_000 = func_80019D90(&D_8690A6A0);
     }
 
     GraphNode_InitChild(&D_8690A69C->unk_004, 0, D_8690A69C->unk_16C, D_8690A69C->unk_000->unk_08->unk_00[0]);
-    func_86900188();
+    LoadStageDataDMA();
     GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_00);
 
     D_8690A69C->unk_004.unk_024.y += D_8690B2F8.unk_08;
@@ -456,7 +456,7 @@ void func_86900410(void) {
     main_pool_pop_state('BACK');
 }
 
-void func_86900484(s32 arg0) {
+void LoadStageFragmentByIndex(s32 arg0) {
     MemoryBlock* sp1C;
     FragmentEntry sp18;
     u32* temp_v0;
@@ -496,17 +496,17 @@ void func_86900484(s32 arg0) {
         D_8690A610.unk_00.unk_14 = 1;
     }
 
-    func_86900110(0xFF, 0xFF, 0xFF);
+    SetGlobalRGBA(0xFF, 0xFF, 0xFF);
 }
 
-void func_8690060C(void) {
+void Graphics_Init(void) {
     MemoryBlock* sp2C;
 
     func_800113F8(0, &D_8690A610, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_8690A630);
     GraphNode_AllocInit(NULL, &D_8690A648);
     GraphNode_AllocInit(NULL, &D_8690A660);
-    func_86900110(0xFF, 0xFF, 0xFF);
+    SetGlobalRGBA(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     D_87906050 = process_geo_layout(sp2C, &D_86908ABC);
     mem_pool_resize_block(sp2C);
@@ -687,7 +687,7 @@ void func_86900DE0(void) {
 void func_86900FFC(u16 arg0) {
     if (arg0 & 0xC00) {
         func_86900410();
-        func_86900484(D_8690A710->unk_00C);
+        LoadStageFragmentByIndex(D_8690A710->unk_00C);
         D_8690B340 = 5;
     }
 }
@@ -1112,7 +1112,7 @@ void func_86901FB4(void) {
 
 void func_86902004(s32 arg0) {
     D_8690A70C = arg0;
-    func_8690060C();
+    Graphics_Init();
 
     D_8690A69C = main_pool_alloc(sizeof(unk_D_8690A69C), 0);
     bzero(D_8690A69C, sizeof(unk_D_8690A69C));
@@ -1121,9 +1121,9 @@ void func_86902004(s32 arg0) {
     bzero(D_8690A710, sizeof(unk_D_8690A710));
 
     func_8690079C();
-    func_869002AC();
+    Stage_Init();
     func_86902334();
-    func_86900484(D_8690A710->unk_00C);
+    LoadStageFragmentByIndex(D_8690A710->unk_00C);
 }
 
 s32 func_86902098(s32 arg0, UNUSED s32 arg1) {

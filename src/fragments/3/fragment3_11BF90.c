@@ -39,9 +39,9 @@ void func_8790370C(void) {
 
     for (i = 0; i < 3; i++, ptr++) {
         func_879036B4(ptr);
-        func_879003A0(ptr);
+        MiniActor_ProcessAnim(ptr);
         miniActorUpdateTransform(ptr);
-        func_87900808(ptr);
+        MiniActor_UpdateCollider(ptr);
     }
 }
 

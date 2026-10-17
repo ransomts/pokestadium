@@ -311,7 +311,7 @@ static s16 D_861054A6;
 static s16 D_861054A8;
 static s32 D_861054AC;
 static s32 D_861054B0;
-static unk_D_800AC870* D_861054B4;
+static TextObject* D_861054B4;
 static s16 D_861054B8;
 static s16 D_861054BA;
 static s32 D_861054BC;
@@ -755,7 +755,7 @@ void func_861017E4(s32 arg0) {
         func_80015348();
     }
 
-    func_878025D0();
+    Fragment2_1_Update();
     Graph_SetTextureState(D_86105484);
 
     gDisplayListHead = func_87A0002C(gDisplayListHead);
@@ -856,11 +856,11 @@ void func_86101BB4(void) {
     D_86105BCC = 1;
     D_86105BCE = 0x5A;
 
-    func_8780295C(1);
+    Fragment2_1_SetStartFlag(1);
     D_86105498 = 1;
 
     while (D_86105BCC == 1) {
-        switch (func_87802974()) {
+        switch (Fragment2_1_GetResult()) {
             case 3:
                 func_87A010D4(0x90001, 0, 0);
                 break;
@@ -1817,7 +1817,7 @@ void func_86103E9C(void) {
     }
 
     func_86100B48();
-    func_87802528();
+    Fragment2_1_Init();
 }
 
 void func_8610426C(void) {

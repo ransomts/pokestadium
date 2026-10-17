@@ -354,17 +354,17 @@ Gfx D_8140E448[] = {
     gsSPEndDisplayList(),
 };
 
-void func_81402410(void) {
+void Gfx_PipeSync(void) {
     gDPPipeSync(gDisplayListHead++);
 }
 
-void func_81402434(void) {
+void Gfx_SetCycle1_NoTexture(void) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
     gSPTexture(gDisplayListHead++, 0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-s32 func_81402494(s32 size) {
+s32 GetLog2(s32 size) {
     s32 size_log2 = 0;
 
     do {
@@ -399,71 +399,71 @@ void func_814024F0(void) {
 void func_814024F8(void) {
 }
 
-void func_81402500(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureBlockRGBA32(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureBlock(gDisplayListHead++, texture, fmt, G_IM_SIZ_32b, width, height, 0, cms, cmt, masks, maskt,
                         shifts, shiftt);
 }
 
-void func_81402784(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureTileRGBA32(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureTile(gDisplayListHead++, texture, fmt, G_IM_SIZ_32b, width, 0, 0, 0, width - 1, height - 1, 0, cms,
                        cmt, masks, maskt, shifts, shiftt);
 }
 
-void func_8140297C(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureBlockRGBA16(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureBlock(gDisplayListHead++, texture, fmt, G_IM_SIZ_16b, width, height, 0, cms, cmt, masks, maskt,
                         shifts, shiftt);
 }
 
-void func_81402C1C(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureTileRGBA16(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureTile(gDisplayListHead++, texture, fmt, G_IM_SIZ_16b, width, 0, 0, 0, width - 1, height - 1, 0, cms,
                        cmt, masks, maskt, shifts, shiftt);
 }
 
-void func_81402E14(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureBlockIA8(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureBlock(gDisplayListHead++, texture, fmt, G_IM_SIZ_8b, width, height, 0, cms, cmt, masks, maskt, shifts,
                         shiftt);
 }
 
-void func_814030C0(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureTileIA8(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureTile(gDisplayListHead++, texture, fmt, G_IM_SIZ_8b, width, 0, 0, 0, width - 1, height - 1, 0, cms,
                        cmt, masks, maskt, shifts, shiftt);
 }
 
-void func_814032B4(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureBlock4b(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, texture, fmt, width, height, 0, cms, cmt, masks, maskt, shifts, shiftt);
 }
 
-void func_8140353C(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
+void Gfx_LoadTextureTile4b(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,
                    s32 shiftt) {
     gDPLoadTextureTile_4b(gDisplayListHead++, texture, fmt, width, 0, 0, 0, width - 1, height - 1, 0, cms, cmt, masks,
                           maskt, shifts, shiftt);
 }
 
-void func_81403754(u8* texture, s32 tmem, s32 rtile, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks,
+void Gfx_LoadMultiBlock4b(u8* texture, s32 tmem, s32 rtile, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks,
                    s32 maskt, s32 shifts, s32 shiftt) {
     gDPLoadMultiBlock_4b(gDisplayListHead++, texture, tmem, rtile, fmt, width, height, 0, cms, cmt, masks, maskt,
                          shifts, shiftt);
 }
 
 void func_81403A20(u8* texture, s32 width, s32 height) {
-    func_81402500(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockRGBA32(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403A6C(u8* texture, s32 width, s32 height) {
-    func_81402784(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileRGBA32(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403AB8(u8* texture, s32 width, s32 height) {
-    func_8140297C(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
@@ -478,80 +478,80 @@ void func_81403B04(u8* texture1, u8* texture2, s32 width, s32 height) {
 }
 
 void func_81403D20(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
+    s32 masks = GetLog2(width);
 
-    func_8140297C(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403D80(u8* texture, s32 width, s32 height) {
-    s32 maskt = func_81402494(height);
+    s32 maskt = GetLog2(height);
 
-    func_8140297C(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_WRAP,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_WRAP,
                   G_TX_NOMASK, maskt, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403DE0(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_8140297C(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
                   G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403E50(u8* texture, s32 width, s32 height, s32 masks) {
-    func_8140297C(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403EA8(u8* texture, s32 width, s32 height) {
-    func_81402C1C(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403EF4(u8* texture, s32 width, s32 height) {
-    func_8140297C(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403F40(u8* texture, s32 width, s32 height) {
-    func_81402C1C(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileRGBA16(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403F8C(u8* texture, s32 width, s32 height) {
-    func_81402E14(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81403FD8(u8* texture, s32 width, s32 height) {
-    func_814030C0(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileIA8(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404024(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_81402E14(texture, G_IM_FMT_IA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_IA, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
                   G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404094(u8* texture, s32 width, s32 height) {
-    func_81402E14(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_814040E0(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_81402E14(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
                   G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404150(u8* texture, s32 width, s32 height) {
-    func_814030C0(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileIA8(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
@@ -564,30 +564,30 @@ void func_814041BC(u8* texture, s32 width, s32 height) {
 }
 
 void func_814041DC(u8* texture, s32 width, s32 height) {
-    func_8140353C(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTile4b(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404228(u8* texture, s32 width, s32 height) {
-    func_8140353C(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTile4b(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404274(u8* texture, s32 width, s32 height) {
-    func_814032B4(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlock4b(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_814042C0(u8* texture, s32 width, s32 height) {
-    func_814032B4(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_8140430C(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_814032B4(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
+    Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, masks, maskt,
                   G_TX_NOLOD, G_TX_NOLOD);
 }
 
@@ -600,52 +600,52 @@ void func_8140439C(u8* texture, s32 width, s32 height) {
 }
 
 void func_814043BC(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
+    s32 masks = GetLog2(width);
 
-    func_814032B4(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
+    Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_8140441C(u8* texture, s32 width, s32 height) {
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_814032B4(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
+    Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, masks,
                   maskt, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404484(u8* texture, s32 width, s32 height) {
     s32 tmem = 0x100;
     s32 rtile = 1;
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_81403754(texture, tmem, rtile, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+    Gfx_LoadMultiBlock4b(texture, tmem, rtile, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                   masks, maskt, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_814044FC(u8* texture, s32 width, s32 height, s32 shifts, s32 shiftt) {
     s32 tmem = 0x100;
     s32 rtile = 1;
-    s32 masks = func_81402494(width);
-    s32 maskt = func_81402494(height);
+    s32 masks = GetLog2(width);
+    s32 maskt = GetLog2(height);
 
-    func_81403754(texture, tmem, rtile, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+    Gfx_LoadMultiBlock4b(texture, tmem, rtile, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                   masks, maskt, shifts, shiftt);
 }
 
 void func_81404580(u8* texture, s32 width, s32 height) {
-    func_81402E14(texture, G_IM_FMT_CI, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_CI, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_814045CC(u8* texture, s32 width, s32 height, s32 masks) {
-    func_81402E14(texture, G_IM_FMT_CI, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
+    Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_CI, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void func_81404624(u8* texture, s32 width, s32 height) {
-    func_814030C0(texture, G_IM_FMT_CI, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+    Gfx_LoadTextureTileIA8(texture, G_IM_FMT_CI, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
@@ -849,11 +849,11 @@ void func_81405814(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
     gSPTexture(gDisplayListHead++, 0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_814059C8(u8 r, u8 g, u8 b, u8 a) {
+void Gfx_SetPrimColor(u8 r, u8 g, u8 b, u8 a) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, r, g, b, a);
 }
 
-void func_81405A20(u8 r, u8 g, u8 b, u8 a) {
+void Gfx_SetEnvColor(u8 r, u8 g, u8 b, u8 a) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, r, g, b, a);
 }
@@ -922,7 +922,7 @@ void func_81405FAC(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u
                       ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
 }
 
-u32 func_81406080(s32 arg0) {
+u32 GetTileSizeByIndex(s32 arg0) {
     u32 ret = D_8140E6B8;
 
     switch (arg0) {
@@ -973,7 +973,7 @@ void func_81406388(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void func_81406404(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    u32 temp_v0 = func_81406080(arg7);
+    u32 temp_v0 = GetTileSizeByIndex(arg7);
     s32 temp_v1 = arg1 + (arg3 * temp_v0);
     s32 temp_a0 = arg2 - (arg4 * temp_v0);
 
@@ -981,7 +981,7 @@ void func_81406404(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 }
 
 void func_814064B0(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    u32 temp_v0 = func_81406080(arg7);
+    u32 temp_v0 = GetTileSizeByIndex(arg7);
     s32 temp_v1 = arg1 + (arg3 * temp_v0);
     s32 temp_a0 = arg2 - (arg4 * temp_v0);
 
@@ -1059,7 +1059,7 @@ Gfx* func_814072B0(Gfx* arg0, arg1_func_81407874_014_004* arg1, s32 tmem, s32 rt
 
     texture = NULL;
     if (arg1->unk_0C != NULL) {
-        ret = func_81406080(arg1->unk_0C->unk_06) % arg1->unk_0C->unk_04;
+        ret = GetTileSizeByIndex(arg1->unk_0C->unk_06) % arg1->unk_0C->unk_04;
         texture = arg1->unk_0C->unk_00.texture[ret];
     } else if (arg1->unk_00 != NULL) {
         texture = arg1->unk_00;
@@ -1138,7 +1138,7 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
                 gDPPipeSync(arg0++);
                 gDPSetPrimColor(arg0++, 0, 0xFF, sp1c, sp18, sp14, sp10);
             } else {
-                ret = func_81406080(var_a3->unk_14->unk_06) % var_a3->unk_14->unk_04;
+                ret = GetTileSizeByIndex(var_a3->unk_14->unk_06) % var_a3->unk_14->unk_04;
                 temp_v1 = &var_a3->unk_14->unk_00.ptr5[ret];
 
                 gDPPipeSync(arg0++);
@@ -1151,7 +1151,7 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
             if (var_a3->unk_18->unk_04 == 0) {
                 gDPSetColor(arg0++, G_SETENVCOLOR, var_a3->unk_18->unk_00.color.rgba);
             } else {
-                ret = func_81406080(var_a3->unk_18->unk_06) % var_a3->unk_18->unk_04;
+                ret = GetTileSizeByIndex(var_a3->unk_18->unk_06) % var_a3->unk_18->unk_04;
                 temp_v0 = &var_a3->unk_18->unk_00.ptr4[ret];
 
                 gDPSetEnvColor(arg0++, temp_v0->color.r, temp_v0->color.g, temp_v0->color.b, temp_v0->color.a);

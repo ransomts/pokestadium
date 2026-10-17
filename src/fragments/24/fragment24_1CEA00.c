@@ -893,7 +893,7 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
                    unk_func_8830867C_030* arg4, unk_func_8830867C_034* arg5, unk_func_8830867C_038* arg6,
                    unk_func_8830867C_03C* arg7, unk_func_8830867C_040* arg8, unk_func_8830867C_044* arg9,
                    unk_func_8830867C_048* argA, unk_func_8830867C_04C* argB, unk_func_889000C4* argC,
-                   FragmentEntry argD, unk_func_8830867C_054* argE, MemoryPool* argF, unk_D_800AC870* arg10) {
+                   FragmentEntry argD, unk_func_8830867C_054* argE, MemoryPool* argF, TextObject* arg10) {
     static s32 D_8831721C[] = {
         0x0000005C,
         0x00000034,
@@ -3056,7 +3056,7 @@ s32 func_8830858C(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
     return var_a2;
 }
 
-void func_8830867C(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3, unk_D_800AC870* arg4, char** arg5,
+void func_8830867C(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3, TextObject* arg4, char** arg5,
                    char** arg6, char** arg7, char** arg8, char** arg9) {
     static Color_RGBA8 D_88317354 = { 0x1E, 0x50, 0x50, 0xFF };
     static Color_RGBA8 D_88317358 = { 0x00, 0x0A, 0x0A, 0xFF };
@@ -3209,7 +3209,7 @@ void func_88308DFC(unk_func_8830867C* arg0) {
 }
 
 s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
-    unk_D_800AC870* sp54;
+    TextObject* sp54;
     MemoryPool* sp50;
     void* sp4C;
     u8* sp48;

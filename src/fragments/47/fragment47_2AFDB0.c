@@ -257,7 +257,7 @@ void func_83802D64(unk_D_838067F0* arg0) {
     arg0->unk_0000 = 8;
     arg0->unk_0014 = 0;
     PlaySoundEffect(3);
-    func_8380008C(-1);
+    SnapSelect_SetTimer(-1);
 }
 
 void func_83802D98(unk_D_838067F0* arg0) {

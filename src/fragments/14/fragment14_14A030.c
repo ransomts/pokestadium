@@ -8,23 +8,23 @@
 #include "src/fragments/2/fragment2.h"
 #include "src/memory.h"
 
-static const u32 D_868074B0[] = { 0xA4A2A4AC, 0xA4EA0000 }; // "あがり"
-static const u32 D_868074B8[] = { 0xA4A8A4D3, 0x00000000 }; // "えび"
-static const u32 D_868074C0[] = { 0xA4A4A4AF, 0xA4E90000 }; // "いくら"
-static const u32 D_868074C8[] = { 0xA4ABA4C3, 0xA4D10000 }; // "かっぱ"
-static const u32 D_868074D0[] = { 0xA4C8A4ED, 0x00000000 }; // "とろ"
-static const u32 D_868074D8[] = { 0xA4C6A4C3, 0xA4AB0000 }; // "てっか"
-static const u32 D_868074E0[] = { 0xA4BFA4DE, 0xA4B40000 }; // "たまご"
-static const u32 D_868074E8[] = { 0xA4A6A4CB, 0x00000000 }; // "うに"
+static const u32 gSushiName_Agari[] = { 0xA4A2A4AC, 0xA4EA0000 }; // "あがり"
+static const u32 gSushiName_Ebi[] = { 0xA4A8A4D3, 0x00000000 }; // "えび"
+static const u32 gSushiName_Ikura[] = { 0xA4A4A4AF, 0xA4E90000 }; // "いくら"
+static const u32 gSushiName_Kappa[] = { 0xA4ABA4C3, 0xA4D10000 }; // "かっぱ"
+static const u32 gSushiName_Toro[] = { 0xA4C8A4ED, 0x00000000 }; // "とろ"
+static const u32 gSushiName_Tekka[] = { 0xA4C6A4C3, 0xA4AB0000 }; // "てっか"
+static const u32 gSushiName_Tamago[] = { 0xA4BFA4DE, 0xA4B40000 }; // "たまご"
+static const u32 gSushiName_Uni[] = { 0xA4A6A4CB, 0x00000000 }; // "うに"
 
-static f32 D_86807140 = 230.0f;
-static Vec3f D_86807144 = { 0.0f, 35.0f, 0.0f };
-static Vec3f D_86807150 = { 3.0f, 0.0f, 17.0f };
-static f32 D_8680715C = 10.0f;
-s32 D_86807160[] = {
+static f32 gSushiOrbitRadius = 230.0f;
+static Vec3f gSushiOrbitCenter = { 0.0f, 35.0f, 0.0f };
+static Vec3f gSushiTargetOffset = { 3.0f, 0.0f, 17.0f };
+static f32 gSushiHeightOffset = 10.0f;
+s32 gSushiOrderIndices[] = {
     8, 5, 2, 3, 6, 7, 4, 1,
 };
-unk_D_86807180 D_86807180[9] = {
+unk_D_86807180 gSushiItemDefs[9] = {
     {
         0x00000000,
         NULL,
@@ -39,7 +39,7 @@ unk_D_86807180 D_86807180[9] = {
         0x00000014,
         0x04000000,
         0x04004000,
-        D_868074B0,
+        gSushiName_Agari,
         0x0000,
         0x0014,
         0x00000000,
@@ -49,7 +49,7 @@ unk_D_86807180 D_86807180[9] = {
         0x0000015E,
         0x04000800,
         0x04005000,
-        D_868074B8,
+        gSushiName_Ebi,
         0x0014,
         0x000A,
         0x00050005,
@@ -59,7 +59,7 @@ unk_D_86807180 D_86807180[9] = {
         0x000000FA,
         0x04001000,
         0x04006000,
-        D_868074C0,
+        gSushiName_Ikura,
         0x0000,
         0x000C,
         0x00000000,
@@ -69,7 +69,7 @@ unk_D_86807180 D_86807180[9] = {
         0x00000032,
         0x04001800,
         0x04007000,
-        D_868074C8,
+        gSushiName_Kappa,
         0x0000,
         0x0014,
         0x00000000,
@@ -79,7 +79,7 @@ unk_D_86807180 D_86807180[9] = {
         0x00000258,
         0x04002000,
         0x04008000,
-        D_868074D0,
+        gSushiName_Toro,
         0x0019,
         0x0005,
         0x00050006,
@@ -89,7 +89,7 @@ unk_D_86807180 D_86807180[9] = {
         0x000000C8,
         0x04002800,
         0x04009000,
-        D_868074D8,
+        gSushiName_Tekka,
         0x0000,
         0x000D,
         0x00000000,
@@ -99,7 +99,7 @@ unk_D_86807180 D_86807180[9] = {
         0x00000096,
         0x04003000,
         0x0400A000,
-        D_868074E0,
+        gSushiName_Tamago,
         0x0000,
         0x0011,
         0x00000000,
@@ -109,74 +109,74 @@ unk_D_86807180 D_86807180[9] = {
         0x000003E8,
         0x04003800,
         0x0400B000,
-        D_868074E8,
+        gSushiName_Uni,
         0x001E,
         0x0003,
         0x00050007,
         0x0001,
     },
 };
-static Vtx D_86807280[] = {
+static Vtx gSushiPlaneVtx[] = {
     VTX(-16, 0, -16, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, -16, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, 0, 15, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, 15, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_868072C0[] = {
+static Gfx gSushiPlaneDL[] = {
     gsDPPipeSync(),
     gsDPSetTextureLUT(G_TT_NONE),
     gsSPClearGeometryMode(G_LIGHTING),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_86807280, 4, 0),
+    gsSPVertex(gSushiPlaneVtx, 4, 0),
     gsDPLoadTextureBlock(0x0400C000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 3, 1, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_86807338[] = {
+static Gfx gSushiEmptyDL[] = {
     gsSPEndDisplayList(),
 };
-static Vtx D_86807340[] = {
+static Vtx gSushiBillboardVtx[] = {
     VTX(-16, 31, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 31, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, 0, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static s32 D_868084D0;
-static f32 D_868084D4;
-unk_D_868084D8 D_868084D8[12];
-static unk_D_86808808 D_86808808[12];
+static s32 gSushiFirstSpawnFlag;
+static f32 gSushiRotationAngle;
+unk_D_868084D8 gSushiInstances[12];
+static unk_D_86808808 gSushiSpawners[12];
 static s32 D_86809A08;
 static s16 D_86809A0C;
 static s16 D_86809A10[9];
 
 void func_86805D50(s16 arg0, Vec3f* arg1) {
-    f32 var_fv0 = D_868084D4 + (arg0 * 30.0f);
+    f32 var_fv0 = gSushiRotationAngle + (arg0 * 30.0f);
 
     if (var_fv0 >= 360.0f) {
         var_fv0 -= 360.0f;
     }
     var_fv0 = (var_fv0 * 65536.0f) / 360.0f;
 
-    arg1->x = D_86807144.x + (SINS(var_fv0) * D_86807140);
-    arg1->y = D_86807144.y;
-    arg1->z = D_86807144.z + (COSS(var_fv0) * D_86807140);
+    arg1->x = gSushiOrbitCenter.x + (SINS(var_fv0) * gSushiOrbitRadius);
+    arg1->y = gSushiOrbitCenter.y;
+    arg1->z = gSushiOrbitCenter.z + (COSS(var_fv0) * gSushiOrbitRadius);
 }
 
 f32 func_86805E94(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
     unk_D_868084D8_038* ptr = arg0->unk_38;
 
-    var_fv1 = (0.5f * D_8680715C) + D_868084D4 + (30.0f * ptr->unk_000);
+    var_fv1 = (0.5f * gSushiHeightOffset) + gSushiRotationAngle + (30.0f * ptr->unk_000);
     if (var_fv1 >= 360.0f) {
         var_fv1 -= 360.0f;
     }
 
-    arg2->x = ((SINS(((s32)var_fv1 << 0xF) / 180) * D_86807140) + D_86807144.x) - arg1->x;
+    arg2->x = ((SINS(((s32)var_fv1 << 0xF) / 180) * gSushiOrbitRadius) + gSushiOrbitCenter.x) - arg1->x;
     arg2->y = 0.0f;
-    arg2->z = ((COSS(((s32)var_fv1 << 0xF) / 180) * D_86807140) + D_86807144.z) - arg1->z;
+    arg2->z = ((COSS(((s32)var_fv1 << 0xF) / 180) * gSushiOrbitRadius) + gSushiOrbitCenter.z) - arg1->z;
     return SQ(arg2->x) + SQ(arg2->z);
 }
 
@@ -210,9 +210,9 @@ void func_86805FFC(unk_D_868084D8* arg0) {
             arg0->unk_14.y = arg0->unk_38->unk_00C.y;
             arg0->unk_14.z = arg0->unk_38->unk_00C.z;
 
-            arg0->unk_20.x = arg0->unk_14.x + D_86807150.x;
-            arg0->unk_20.y = arg0->unk_14.y + D_86807150.y;
-            arg0->unk_20.z = arg0->unk_14.z + D_86807150.z;
+            arg0->unk_20.x = arg0->unk_14.x + gSushiTargetOffset.x;
+            arg0->unk_20.y = arg0->unk_14.y + gSushiTargetOffset.y;
+            arg0->unk_20.z = arg0->unk_14.z + gSushiTargetOffset.z;
             break;
 
         case 3:
@@ -238,7 +238,7 @@ s32 func_86806100(void) {
         var_v0 = D_86809A0C;
     } else {
         sp20 = 1;
-        var_v0 = D_86809A0C - D_86807180[1].unk_12;
+        var_v0 = D_86809A0C - gSushiItemDefs[1].unk_12;
     }
 
     temp_v0 = func_878001E8(var_v0);
@@ -249,7 +249,7 @@ s32 func_86806100(void) {
             continue;
         }
 
-        temp_a0 = D_86807180[i].unk_12 + var_a1;
+        temp_a0 = gSushiItemDefs[i].unk_12 + var_a1;
         if ((temp_v0 >= var_a1) && (temp_v0 < temp_a0)) {
             sp1C = i;
             break;
@@ -289,15 +289,15 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
         arg1->unk_2C = 0.0f;
         arg1->unk_38 = arg3;
 
-        if ((s16)func_878001E8(100) < D_86807180[arg1->unk_0C].unk_10) {
+        if ((s16)func_878001E8(100) < gSushiItemDefs[arg1->unk_0C].unk_10) {
             arg1->unk_02 |= 2;
         }
 
         arg1->unk_40->unk_00.unk_01 |= 1;
 
         if (arg3->unk_006 >= 2) {
-            if ((D_86807180[arg1->unk_0C].unk_18 != 0) && (D_86807510 >= 0x3D)) {
-                func_8004D9B0(D_86807180[arg1->unk_0C].unk_14, 0, 0);
+            if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (D_86807510 >= 0x3D)) {
+                func_8004D9B0(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
             }
         }
     }
@@ -307,12 +307,12 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
 
     func_86805FFC(arg1);
 
-    arg1->unk_3C = &D_86807338;
+    arg1->unk_3C = &gSushiEmptyDL;
 }
 
 unk_D_868084D8* func_86806388(void) {
     s32 i;
-    unk_D_868084D8* var_v1 = D_868084D8;
+    unk_D_868084D8* var_v1 = gSushiInstances;
 
     for (i = 0; i < 12; i++, var_v1++) {
         if (var_v1->unk_0C == 0) {
@@ -338,8 +338,8 @@ void func_868063C4(unk_D_86808808* arg0) {
             sp24 = func_86806388();
             if (sp24 != NULL) {
                 arg0->unk_006++;
-                if (D_868084D0 == 0) {
-                    D_868084D0 = 1;
+                if (gSushiFirstSpawnFlag == 0) {
+                    gSushiFirstSpawnFlag = 1;
                     func_8004D9B0(0x50003, 0, 0);
                     func_8004B1CC(0x17);
                 }
@@ -409,7 +409,7 @@ void func_868064BC(unk_D_868084D8* arg0) {
     gfx = GfxAlloc(sizeof(Gfx) * 16);
     arg0->unk_3C = gfx;
 
-    gSPVertex(gfx++, D_86807340, 4, 0);
+    gSPVertex(gfx++, gSushiBillboardVtx, 4, 0);
 
     if (arg0->unk_08.a != 0xFF) {
         gDPPipeSync(gfx++);
@@ -418,7 +418,7 @@ void func_868064BC(unk_D_868084D8* arg0) {
         gDPSetPrimColor(gfx++, 0, 0, arg0->unk_08.r, arg0->unk_08.g, arg0->unk_08.b, arg0->unk_08.a);
     }
 
-    gDPLoadTextureBlock(gfx++, D_86807180[arg0->unk_0C].unk_04, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
+    gDPLoadTextureBlock(gfx++, gSushiItemDefs[arg0->unk_0C].unk_04, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSP2Triangles(gfx++, 0, 3, 1, 0, 0, 2, 3, 0);
@@ -467,7 +467,7 @@ void func_86806868(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
 }
 
 s32 func_86806930(unk_D_868084D8* arg0) {
-    return D_86807180[arg0->unk_0C].unk_00;
+    return gSushiItemDefs[arg0->unk_0C].unk_00;
 }
 
 s16 func_86806950(s32 arg0) {
@@ -486,13 +486,13 @@ void func_86806980(void) {
 
     switch (D_86809A08) {
         case 1:
-            for (i = 0, var_v1 = D_86808808; i < 12; i++, var_v1++) {
+            for (i = 0, var_v1 = gSushiSpawners; i < 12; i++, var_v1++) {
                 var_v1->unk_004 |= 1;
             }
             break;
 
         case 2:
-            for (i = 0, var_v1 = D_86808808; i < 12; i++, var_v1++) {
+            for (i = 0, var_v1 = gSushiSpawners; i < 12; i++, var_v1++) {
                 var_v1->unk_004 &= ~1;
             }
             break;
@@ -507,28 +507,28 @@ void func_86806A50(void) {
     unk_D_868084D8* var_s0;
     unk_func_80011B94* temp_a1;
     unk_D_86808808* ptr;
-    Gfx* gfx = D_86807338;
+    Gfx* gfx = gSushiEmptyDL;
 
-    D_868084D4 = 0.0f;
+    gSushiRotationAngle = 0.0f;
     D_86809A08 = 0;
     D_86809A0C = 0;
 
     for (i = 0; i < 9; i++) {
-        D_86809A0C += D_86807180[i].unk_12;
+        D_86809A0C += gSushiItemDefs[i].unk_12;
         D_86809A10[i] = 0;
     }
 
-    D_868084D0 = 0;
+    gSushiFirstSpawnFlag = 0;
     temp_s2 = state_pool_try_init(main_pool_get_available(), 0);
 
-    for (i = 0, ptr = D_86808808; i < 12; i++, ptr++) {
+    for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
         func_86805F94(ptr, i);
-        temp_a1 = func_80011B94(temp_s2, NULL, 4, D_868072C0);
+        temp_a1 = func_80011B94(temp_s2, NULL, 4, gSushiPlaneDL);
         ptr->unk_018.unk_000.unk_01 |= 1;
         GraphNode_AddChild(&ptr->unk_018, &temp_a1->unk_00);
     }
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         var_s0->unk_40 = func_80011B10(temp_s2, NULL, 5, gfx, &D_8006F050, var_s0->unk_2C);
         func_868061E8(0, var_s0, i, NULL);
         GraphNode_AddChild(&gGraphRoot0, var_s0->unk_40);
@@ -547,17 +547,17 @@ void func_86806BF0(void) {
     }
 
     if (D_8780FC94 == 0) {
-        D_868084D4 += 0.5f;
-        if (D_868084D4 >= 360.0f) {
-            D_868084D4 -= 360.0f;
+        gSushiRotationAngle += 0.5f;
+        if (gSushiRotationAngle >= 360.0f) {
+            gSushiRotationAngle -= 360.0f;
         }
     }
 
-    for (i = 0, ptr = D_86808808; i < 12; i++, ptr++) {
+    for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
         func_868063C4(ptr);
     }
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if (var_s0->unk_0C != 0) {
             func_868064BC(var_s0);
         }

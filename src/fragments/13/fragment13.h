@@ -3,15 +3,15 @@
 
 #include "global.h"
 
-void func_86700020(void);
-void func_86700050(void);
-void func_867000FC(void);
-void func_86700254(s32 arg0);
-void func_86700428(s32 arg0);
-void func_8670047C(void);
-void func_867004E8(void);
-void func_867005A8(void);
-void func_86700648(void);
+void MiniGame_PollController(void);
+void MiniGame_InitCamera(void);
+void MiniGame_HandleCameraInput(void);
+void MiniGame_DrawOverlay(s32 arg0);
+void MiniGame_RenderFrame(s32 arg0);
+void MiniGame_RunOpening(void);
+void MiniGame_RunPlaying(void);
+void MiniGame_RunEnding(void);
+void MiniGame_InitGraph(void);
 s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT13_H_

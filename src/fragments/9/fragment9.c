@@ -64,7 +64,7 @@ static s16 D_8630171E;
 static s16 D_86301720;
 static u16 D_86301722;
 static s32 D_86301724;
-static unk_D_800AC870* D_86301728;
+static TextObject* D_86301728;
 static unk_D_86301730 D_86301730[4];
 static u32 D_86301D40;
 static unk_D_86301730* D_86301D44;

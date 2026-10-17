@@ -62,7 +62,7 @@ void miniUnkControls(void) {
     s32 var_s1 = 1;
 
     while (var_s1 != 0) {
-        func_87900528();
+        MiniGame_ReadInputs();
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             func_879037D0(0.2f, 0.0f, 50.0f, 50.0f, 0x2000, 0, 0x1000);
@@ -101,7 +101,7 @@ void func_86D0032C(void) {
     func_80006CB4(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_87900528(); //  inputs
+        MiniGame_ReadInputs(); //  inputs
         miniUnkDrawHUB(2);
     }
 }

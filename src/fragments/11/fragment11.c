@@ -76,10 +76,10 @@ static u8 D_86502E6C = 0;
 static u8 D_86502E70 = 0;
 
 unk_D_8650A528 D_8650A528[4];
-unk_D_8650A528* D_8650AB28;
+unk_D_8650A528* gCurrentHealthBar;
 static unk_D_86002F58_004_000* D_8650AB2C;
 unk_D_8650AB30 D_8650AB30[4];
-unk_D_8650AB30* D_8650AD70;
+unk_D_8650AB30* gHealthBarEffectData;
 
 void func_86500020(unk_D_8650A528* arg0, u8 arg1) {
     if (arg0->unk_000 == 4) {
@@ -142,8 +142,8 @@ void func_86500238(void) {
 
     if (D_8780FC94 != 1) {
         for (i = 0; i < 4; i++) {
-            D_8650AB28 = &D_8650A528[i];
-            sp58 = D_8650AB28->unk_008;
+            gCurrentHealthBar = &D_8650A528[i];
+            sp58 = gCurrentHealthBar->unk_008;
 
             var_s1 = 0;
             if (D_87B000C8 != 0) {
@@ -151,61 +151,61 @@ void func_86500238(void) {
                     var_s1 = 2;
                 } else if (D_86502CD8 == 0x57) {
                     var_s1 = 1;
-                    if (D_8650AB28->unk_00C == 1) {
-                        D_8650AB28->unk_008 = 3;
+                    if (gCurrentHealthBar->unk_00C == 1) {
+                        gCurrentHealthBar->unk_008 = 3;
                     } else {
-                        D_8650AB28->unk_008 = 4;
+                        gCurrentHealthBar->unk_008 = 4;
                     }
                 } else if (D_86502CD8 == 0xB4) {
                     var_s1 = 1;
-                    if (D_8650AB28->unk_00C == 1) {
-                        D_8650AB28->unk_008 = 6;
+                    if (gCurrentHealthBar->unk_00C == 1) {
+                        gCurrentHealthBar->unk_008 = 6;
                     } else {
-                        D_8650AB28->unk_008 = 5;
+                        gCurrentHealthBar->unk_008 = 5;
                     }
-                } else if (func_80017514(&D_8650AB28->unk_014) != 0) {
-                    switch (D_8650AB28->unk_008) {
+                } else if (func_80017514(&gCurrentHealthBar->unk_014) != 0) {
+                    switch (gCurrentHealthBar->unk_008) {
                         case 6:
                             var_s1 = 1;
-                            if (D_8650AB28->unk_004 == 0) {
+                            if (gCurrentHealthBar->unk_004 == 0) {
                                 D_86502E6C = 1;
-                            } else if (D_8650AB28->unk_004 == 1) {
+                            } else if (gCurrentHealthBar->unk_004 == 1) {
                                 D_86502E70 = 1;
                             }
                             break;
 
                         case 4:
                             var_s1 = 1;
-                            D_8650AB28->unk_008 = 5;
+                            gCurrentHealthBar->unk_008 = 5;
                             break;
 
                         case 0:
                         case 3:
                             var_s1 = 1;
-                            D_8650AB28->unk_008 = 0;
+                            gCurrentHealthBar->unk_008 = 0;
                             break;
                     }
-                } else if ((D_8650AB28->unk_008 == 6) &&
-                           (((D_86502E6C != 0) && ((D_8650AB28->unk_014.unk_040.unk_08 >> 0x10) == 0x37)) ||
-                            ((D_86502E70 != 0) && ((D_8650AB28->unk_014.unk_040.unk_08 >> 0x10) == 0x5E)))) {
+                } else if ((gCurrentHealthBar->unk_008 == 6) &&
+                           (((D_86502E6C != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x37)) ||
+                            ((D_86502E70 != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x5E)))) {
                     var_s1 = 1;
                 }
-            } else if ((D_86502CD4 == 0) && (D_8650AB28->unk_00E >= 3) &&
-                       ((D_8650AB28->unk_008 == 0) || (D_8650AB28->unk_008 == 3))) {
-                D_8650AB28->unk_008 = 1;
+            } else if ((D_86502CD4 == 0) && (gCurrentHealthBar->unk_00E >= 3) &&
+                       ((gCurrentHealthBar->unk_008 == 0) || (gCurrentHealthBar->unk_008 == 3))) {
+                gCurrentHealthBar->unk_008 = 1;
                 var_s1 = 1;
                 if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                     func_8004D9B0(0x80001, i, 0);
                 }
-            } else if ((D_86502CD4 == 0) && (D_8650AB28->unk_00E < 3) && (D_8650AB28->unk_008 == 2)) {
-                D_8650AB28->unk_008 = 3;
+            } else if ((D_86502CD4 == 0) && (gCurrentHealthBar->unk_00E < 3) && (gCurrentHealthBar->unk_008 == 2)) {
+                gCurrentHealthBar->unk_008 = 3;
                 var_s1 = 1;
                 if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                     func_8004D9B0(0x80001, i, 5);
                 }
             } else {
                 if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
-                    temp_ft2 = ROUND_MAX((D_8650AB28->unk_010 * 100.0f) / D_8650AB28->unk_012);
+                    temp_ft2 = ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012);
 
                     if (temp_ft2 >= 0x4B) {
                         var_s0_2 = 4;
@@ -221,46 +221,46 @@ void func_86500238(void) {
                     func_8004D9B0(0x80002, i, var_s0_2);
                 }
 
-                if (func_80017514(&D_8650AB28->unk_014) != 0) {
-                    switch (D_8650AB28->unk_008) {
+                if (func_80017514(&gCurrentHealthBar->unk_014) != 0) {
+                    switch (gCurrentHealthBar->unk_008) {
                         case 0:
                         case 3:
                             var_s1 = 1;
-                            D_8650AB28->unk_008 = 0;
+                            gCurrentHealthBar->unk_008 = 0;
                             break;
 
                         case 1:
                         case 2:
                             var_s1 = 1;
-                            D_8650AB28->unk_008 = 2;
+                            gCurrentHealthBar->unk_008 = 2;
                             break;
                     }
                 }
             }
 
             if (!!var_s1) {
-                if (D_8650AB28->unk_008 != sp58) {
-                    GraphNode_TriggerAction(&D_8650AB28->unk_014, D_8650AB28->unk_008);
-                    if (D_8650AB28->unk_008 != 0) {
-                        GraphNode_TriggerSound(&D_8650AB28->unk_014, D_8650AB28->unk_008);
+                if (gCurrentHealthBar->unk_008 != sp58) {
+                    GraphNode_TriggerAction(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_008);
+                    if (gCurrentHealthBar->unk_008 != 0) {
+                        GraphNode_TriggerSound(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_008);
                     }
-                } else if (D_8650AB28->unk_008 == 6) {
-                    if (D_8650AB28->unk_004 == 0) {
-                        func_80017464(&D_8650AB28->unk_014, 0x1B);
-                        func_80017804(&D_8650AB28->unk_014, 0x1B);
-                    } else if (D_8650AB28->unk_004 == 1) {
-                        func_80017464(&D_8650AB28->unk_014, 0x4B);
-                        func_80017804(&D_8650AB28->unk_014, 0x4B);
+                } else if (gCurrentHealthBar->unk_008 == 6) {
+                    if (gCurrentHealthBar->unk_004 == 0) {
+                        func_80017464(&gCurrentHealthBar->unk_014, 0x1B);
+                        func_80017804(&gCurrentHealthBar->unk_014, 0x1B);
+                    } else if (gCurrentHealthBar->unk_004 == 1) {
+                        func_80017464(&gCurrentHealthBar->unk_014, 0x4B);
+                        func_80017804(&gCurrentHealthBar->unk_014, 0x4B);
                     }
                 } else if (var_s1 == 2) {
-                    func_80017464(&D_8650AB28->unk_014, D_8650AB28->unk_014.unk_040.unk_08 >> 0x10);
-                    if (D_8650AB28->unk_008 != 0) {
-                        func_80017804(&D_8650AB28->unk_014, D_8650AB28->unk_014.unk_040.unk_08 >> 0x10);
+                    func_80017464(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
+                    if (gCurrentHealthBar->unk_008 != 0) {
+                        func_80017804(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
                     }
                 } else {
-                    func_80017464(&D_8650AB28->unk_014, 0);
-                    if (D_8650AB28->unk_008 != 0) {
-                        func_80017804(&D_8650AB28->unk_014, 0);
+                    func_80017464(&gCurrentHealthBar->unk_014, 0);
+                    if (gCurrentHealthBar->unk_008 != 0) {
+                        func_80017804(&gCurrentHealthBar->unk_014, 0);
                     }
                 }
             }
@@ -326,18 +326,18 @@ void func_86500904(void) {
     s16 var_s4 = 0;
 
     for (i = 0; i < 4; i++) {
-        D_8650AB28 = &D_8650A528[i];
+        gCurrentHealthBar = &D_8650A528[i];
 
-        if ((D_8650AB28->unk_010 >= D_8650AB28->unk_012) && (var_s4 < D_8650AB28->unk_010)) {
-            var_s4 = D_8650AB28->unk_010;
+        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 < gCurrentHealthBar->unk_010)) {
+            var_s4 = gCurrentHealthBar->unk_010;
         }
     }
 
     for (i = 0; i < 4; i++) {
-        D_8650AB28 = &D_8650A528[i];
+        gCurrentHealthBar = &D_8650A528[i];
 
-        if ((D_8650AB28->unk_010 >= D_8650AB28->unk_012) && (var_s4 == D_8650AB28->unk_010)) {
-            D_8650AB28->unk_00C = 1;
+        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 == gCurrentHealthBar->unk_010)) {
+            gCurrentHealthBar->unk_00C = 1;
             IncrementPlayerScore(i);
 
             D_87B000D4++;
@@ -349,20 +349,20 @@ void func_86500904(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        D_8650AB28 = &D_8650A528[i];
+        gCurrentHealthBar = &D_8650A528[i];
 
-        if (D_8650AB28->unk_010 >= D_8650AB28->unk_012) {
-            if (D_8650AB28->unk_00C == 1) {
-                D_8650AB28->unk_010 = D_8650AB28->unk_012 + 1;
+        if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
+            if (gCurrentHealthBar->unk_00C == 1) {
+                gCurrentHealthBar->unk_010 = gCurrentHealthBar->unk_012 + 1;
             } else {
-                D_8650AB28->unk_010 = D_8650AB28->unk_012;
+                gCurrentHealthBar->unk_010 = gCurrentHealthBar->unk_012;
             }
         }
     }
 }
 
 void func_86500AC4(UNUSED s32 arg0) {
-    func_878025D0();
+    Fragment2_1_Update();
     func_86502A68();
 }
 
@@ -374,24 +374,24 @@ void func_86500AEC(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        D_8650AB28 = &D_8650A528[i];
+        gCurrentHealthBar = &D_8650A528[i];
 
-        if (D_8650AB28->unk_000 == 4) {
+        if (gCurrentHealthBar->unk_000 == 4) {
             if ((D_86509250 == 1) || (D_86509250 == 3) || ((D_86509250 == 0) && (D_86509254 == 1))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
-                    D_8650AB28->unk_00D += 1;
+                    gCurrentHealthBar->unk_00D += 1;
                 }
 
                 if (gControllers[i].buttonPressed & 0x4000) {
-                    D_8650AB28->unk_00D -= 2;
+                    gCurrentHealthBar->unk_00D -= 2;
                 }
             } else if ((D_86509250 == 2) || (D_86509250 == 4) || ((D_86509250 == 0) && (D_86509254 == 2))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
-                    D_8650AB28->unk_00D -= 2;
+                    gCurrentHealthBar->unk_00D -= 2;
                 }
 
                 if (gControllers[i].buttonPressed & 0x4000) {
-                    D_8650AB28->unk_00D += 1;
+                    gCurrentHealthBar->unk_00D += 1;
                 }
             }
         }
@@ -468,9 +468,9 @@ void func_86500D38(s32 arg0) {
 
     if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
         for (i = 0; i < 4; i++) {
-            D_8650AB28 = &D_8650A528[i];
+            gCurrentHealthBar = &D_8650A528[i];
 
-            func_8780024C((i * 0x47) + 0x1C, 0xDB, 0x32, D_8650AB28->unk_010, D_8650AB28->unk_012 + 1);
+            func_8780024C((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->unk_012 + 1);
         }
     }
 
@@ -550,16 +550,16 @@ void func_865013D4(s32 arg0) {
                     D_86502CD4 = 0;
 
                     for (i = 0; i < 4; i++) {
-                        D_8650AB28 = &D_8650A528[i];
+                        gCurrentHealthBar = &D_8650A528[i];
 
-                        D_8650AB28->unk_010 += D_8650AB28->unk_00D;
-                        if (D_8650AB28->unk_010 < 0) {
-                            D_8650AB28->unk_010 = 0;
-                        } else if (D_8650AB28->unk_010 >= D_8650AB28->unk_012) {
+                        gCurrentHealthBar->unk_010 += gCurrentHealthBar->unk_00D;
+                        if (gCurrentHealthBar->unk_010 < 0) {
+                            gCurrentHealthBar->unk_010 = 0;
+                        } else if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
                             D_87B000C8 = 1;
                         }
-                        D_8650AB28->unk_00E = D_8650AB28->unk_00D;
-                        func_86500020(D_8650AB28, 1);
+                        gCurrentHealthBar->unk_00E = gCurrentHealthBar->unk_00D;
+                        func_86500020(gCurrentHealthBar, 1);
                     }
 
                     if (D_87B000C8 != 0) {
@@ -640,7 +640,7 @@ void func_86501668(void) {
                 s32 tmp = (i * 0x3C) / 2;
                 if (tmp == D_87B000C4) {
                     if (i == 3) {
-                        func_8780295C(1);
+                        Fragment2_1_SetStartFlag(1);
                     }
                     func_8004D9B0(0x80007, 0, 0);
                 }
@@ -674,7 +674,7 @@ void func_86501828(void) {
                 break;
             }
 
-            if ((D_86502E7C == 0) && (func_87802974() == -2)) {
+            if ((D_86502E7C == 0) && (Fragment2_1_GetResult() == -2)) {
                 func_8004B1CC(0x1D);
                 D_86502E7C = 1;
             }
@@ -688,7 +688,7 @@ void func_86501828(void) {
                 var_s0 = 0;
             }
 
-            func_86502110(2);
+            RenderHealthBar(2);
             func_86500238();
             func_865013D4(2);
         }
@@ -705,7 +705,7 @@ void func_86501964(void) {
     for (i = 0; i < 30; i++) {
         func_87B00020();
         func_86500AC4(3);
-        func_86502110(3);
+        RenderHealthBar(3);
         func_86500238();
         func_865013D4(3);
     }
@@ -749,8 +749,8 @@ void func_86501AAC(void) {
 
         for (j = 0; j < 4; j++) {
             if (i == D_8650A528[j].unk_004) {
-                D_8650AB28 = &D_8650A528[j];
-                D_8650AB2C = &D_8650AB28->unk_014;
+                gCurrentHealthBar = &D_8650A528[j];
+                D_8650AB2C = &gCurrentHealthBar->unk_014;
 
                 Graph_AddToRootList0(D_8650AB2C);
 
@@ -760,8 +760,8 @@ void func_86501AAC(void) {
                     GraphNode_InitChild(D_8650AB2C, 0, 0xC6, D_87B000E4->unk_08->unk_00[0]);
                 }
 
-                D_8650AB28->unk_008 = 0;
-                GraphNode_TriggerAction(D_8650AB2C, D_8650AB28->unk_008);
+                gCurrentHealthBar->unk_008 = 0;
+                GraphNode_TriggerAction(D_8650AB2C, gCurrentHealthBar->unk_008);
                 func_80017464(D_8650AB2C, func_87B00050(D_8650AB2C->unk_040.unk_04->unk_0A));
 
                 D_8650AB2C->unk_024.x = D_86502C20[j].unk_00;
@@ -781,13 +781,13 @@ void func_86501AAC(void) {
                 D_8650AB2C->unk_01E.y = D_86502C20[j].unk_1A;
                 D_8650AB2C->unk_01E.z = D_86502C20[j].unk_1C;
 
-                D_8650AB28->unk_00C = 0;
-                D_8650AB28->unk_00E = 0;
+                gCurrentHealthBar->unk_00C = 0;
+                gCurrentHealthBar->unk_00E = 0;
 
-                func_86500020(D_8650AB28, 0);
+                func_86500020(gCurrentHealthBar, 0);
 
-                D_8650AB28->unk_010 = 0;
-                D_8650AB28->unk_012 = 0x28;
+                gCurrentHealthBar->unk_010 = 0;
+                gCurrentHealthBar->unk_012 = 0x28;
             }
         }
     }
@@ -812,9 +812,9 @@ void func_86501AAC(void) {
     }
 
     func_86502BB8();
-    func_86502848();
+    InitHealthBar();
     func_865019E4();
-    func_87802528();
+    Fragment2_1_Init();
     ResultScreen_Init();
     func_87801684(0, 0, NULL);
     func_87801754(0, 0, NULL);

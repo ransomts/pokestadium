@@ -1221,7 +1221,7 @@ s32 func_8850562C(unk_func_88001300_030* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_88505E2C(unk_func_88001300_034* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, Color_RGBA8 arg6,
-                   unk_D_800AC870* arg7) {
+                   TextObject* arg7) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_034));
     arg0->unk_00.unk_18 = func_88505EF4;
     arg0->unk_00.unk_1C = func_88505EC0;
@@ -2384,7 +2384,7 @@ void func_88509F0C(unk_func_88509F0C* arg0) {
 }
 
 void func_88509F48(unk_func_88509F48* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
-                   unk_D_800AC870* arg6) {
+                   TextObject* arg6) {
     static Color_RGBA8 D_8850CFA8 = { 0x64, 0x1E, 0x1E, 0xFF };
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88509F48));

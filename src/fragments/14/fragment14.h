@@ -140,14 +140,14 @@ typedef struct unk_D_86807180 {
     /* 0x18 */ s16 unk_18;
 } unk_D_86807180; // size = 0x1C
 
-extern s32 D_86807160[];
-extern unk_D_86807180 D_86807180[];
+extern s32 gSushiOrderIndices[];
+extern unk_D_86807180 gSushiItemDefs[];
 
 extern unk_D_86002F34* D_86807500;
 extern s32 D_86807510;
 extern unk_D_86807558 D_86807558[4];
 
-extern unk_D_868084D8 D_868084D8[12];
+extern unk_D_868084D8 gSushiInstances[12];
 
 void func_86800020(s32 arg0);
 void func_86800070(void);

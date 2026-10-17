@@ -68,6 +68,13 @@ All of these produced actual matches or big score drops in this codebase.
   unsolved in several functions (func_8430506C, func_84302658, func_838043F8, func_8850B2D4).
   Ideas not yet tried much: changing which sub-expressions are temps vs named, splitting/merging
   blocks, `if (1) {}` / empty statements, changing loop forms, different variable scoping.
+- **Diagnose the stack-diff class before choosing a fix:** every slot shifted by the same amount
+  = one named local missing/extra -> declaration surgery (matching_notes/stack_perm.py sweeps
+  insert/delete/swap moves). Most slots one way but one slot the other way = spill-slot ORDER
+  problem (func_88805AEC, 2026-10-17: every declaration move scored worse; declaration surgery
+  is provably useless there). The fix has to change CSE discovery order — statement order,
+  temps-vs-literals spelling, or a PERM_RANDOMIZE focus on the statements where the spilled
+  CSEs are first discovered (early in the function).
 
 ## Registers / scheduling
 - Reusing one local for several unrelated values can unify register choice (func_80049A60).

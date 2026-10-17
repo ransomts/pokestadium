@@ -572,7 +572,7 @@ unk_D_868084D8* func_86803078(unk_D_86807558* arg0) {
     }
     var_fs0 = 1e9f;
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if (func_86802FB0(var_s0, var_s6, var_s4) == 0) {
             continue;
         }
@@ -625,7 +625,7 @@ unk_D_868084D8* func_868031A8(unk_D_86807558* arg0) {
     var_fs0 = 1e9f;
     var_s4 = NULL;
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if (func_86802FB0(var_s0, var_s7, var_s5) == 0) {
             continue;
         }
@@ -693,7 +693,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
     var_fs0 = 1e9f;
 
     if (arg0->unk_05C != 0) {
-        for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+        for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
             if ((func_86802FB0(var_s0, var_s6, var_s7) == 0) || (arg0->unk_05C != var_s0->unk_0C)) {
                 continue;
             }
@@ -720,7 +720,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
         var_s4 = 0;
 
         for (i = 0; i < 8; i++) {
-            s32 v = D_86807160[i];
+            s32 v = gSushiOrderIndices[i];
             if (v != 1) {
                 if (sp4A < func_86806950(v)) {
                     var_s4 = v;
@@ -730,7 +730,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
         }
 
         if (var_s4 != 0) {
-            for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+            for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
                 if ((func_86802FB0(var_s0, var_s6, var_s7) == 0) || (var_s4 != var_s0->unk_0C)) {
                     continue;
                 }
@@ -771,7 +771,7 @@ unk_D_868084D8* func_868035FC(unk_D_86807558* arg0) {
     var_fs0 = 1e9f;
     var_s3 = NULL;
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if ((func_86802FB0(var_s0, 0, 1) == 0) || (var_s0->unk_0C != 1)) {
             continue;
         }
@@ -787,7 +787,7 @@ unk_D_868084D8* func_868035FC(unk_D_86807558* arg0) {
         return var_s3;
     }
 
-    for (i = 0, var_s0 = D_868084D8; i < 12; i++, var_s0++) {
+    for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if ((func_86802FB0(var_s0, 0, 1) == 0) || !(var_s0->unk_02 & 2)) {
             continue;
         }
@@ -1140,7 +1140,7 @@ unk_D_868084D8* func_86804634(unk_D_86807558* arg0) {
 
     sp14 = arg0->unk_0E4.unk_0EC;
 
-    for (i = 0, var_v1 = D_868084D8; i < 12; i++, var_v1++) {
+    for (i = 0, var_v1 = gSushiInstances; i < 12; i++, var_v1++) {
         if (!(var_v1->unk_02 & 1)) {
             continue;
         }

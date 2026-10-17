@@ -28,7 +28,7 @@ static Gfx D_86509238[] = {
 s32 D_86509250 = 0;
 s32 D_86509254 = 0;
 static u32* D_86509258[] = {
-    D_86506750, D_86506F50, D_86507750, D_86507F50, D_86508750,
+    HealthBarPalette0, HealthBarPalette1, HealthBarPalette2, HealthBarPalette3, HealthBarPalette4,
 };
 
 const char D_865092C0[] = "%d : TIME = %d\n";

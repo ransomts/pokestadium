@@ -35,7 +35,7 @@ typedef struct unk_D_82F144B0 {
     /* 0x08 */ s16 unk_08;
 } unk_D_82F144B0; // size = 0xA
 
-static unk_D_800AC870* D_82F14420;
+static TextObject* D_82F14420;
 s32 D_82F14424;
 static s32 D_82F14428;
 static s16 D_82F1442C;

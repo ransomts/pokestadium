@@ -83,9 +83,9 @@ void func_86400020(void) {
         }
 
         D_864052C8->unk_008 =
-            D_8640284C[D_864052CC->unk_000][2] + func_864026D0(D_864052CC->unk_000, D_864052C8->unk_000);
+            D_8640284C[D_864052CC->unk_000][2] + GetHealthBarSegmentOffset(D_864052CC->unk_000, D_864052C8->unk_000);
         D_864052C8->unk_00A =
-            D_8640284C[D_864052CC->unk_000][6] + func_864026D0(D_864052CC->unk_000, D_864052C8->unk_000);
+            D_8640284C[D_864052CC->unk_000][6] + GetHealthBarSegmentOffset(D_864052CC->unk_000, D_864052C8->unk_000);
     }
 }
 
@@ -295,10 +295,10 @@ void func_86400860(UNUSED s32 arg0) {
         if ((D_864052C8->unk_010 == 0) || (D_864052C8->unk_00C == 1)) {
             temp_a3 = D_864052C8->unk_028.unk_040.unk_08 >> 0x10;
 
-            gSPDisplayList(temp_v0++, D_86403F30);
+            gSPDisplayList(temp_v0++, gDamageOverlayDL);
             gDPSetTileSize(temp_v0++, G_TX_RENDERTILE, 0x0000, (0x40 - (D_87B000C0 % 64)) << 2, 0x007C,
                            ((0x80 - (D_87B000C0 % 64)) & 0x3F) << 2);
-            gSPDisplayList(temp_v0++, D_86403FA0);
+            gSPDisplayList(temp_v0++, gHealthBarDL);
 
             if ((D_864052C8->unk_004 == 5) && (temp_a3 >= 0x18)) {
                 if (D_864052C8->unk_015 == 0) {
@@ -320,7 +320,7 @@ void func_86400860(UNUSED s32 arg0) {
                 D_864052C8->unk_190->unk_28 = 0.0f;
             }
         } else {
-            gSPDisplayList(temp_v0++, D_86403BB0);
+            gSPDisplayList(temp_v0++, gHealthBarQuadDL);
 
             if (D_864052C8->unk_018 == 2) {
                 switch (D_864052C8->unk_01C) {
@@ -364,7 +364,7 @@ void func_86400BE8(s32 arg0) {
     };
     u8 i;
 
-    func_878025D0();
+    Fragment2_1_Update();
 
     if (D_8780FC94 == 0) {
         if (arg0 == 2) {
@@ -722,7 +722,7 @@ void func_86401B3C(void) {
             for (i = 3; i > 0; i--) {
                 if (D_87B000C4 == ((i * 0x3C) / 2)) {
                     if (i == 3) {
-                        func_8780295C(1);
+                        Fragment2_1_SetStartFlag(1);
                     }
                     func_8004D9B0(0x70001, 0, 0);
                 }
@@ -760,7 +760,7 @@ void func_86401D1C(void) {
                 break;
             }
 
-            if ((D_864029DC == 0) && (func_87802974() == -2)) {
+            if ((D_864029DC == 0) && (Fragment2_1_GetResult() == -2)) {
                 func_8004B1CC(0x18);
                 D_864029DC = 1;
             }
@@ -939,7 +939,7 @@ void func_86402130(void) {
     func_864001A0();
     func_86400020();
     func_86401F74();
-    func_87802528();
+    Fragment2_1_Init();
     ResultScreen_Init();
 }
 

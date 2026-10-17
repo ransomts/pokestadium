@@ -416,7 +416,7 @@ void func_86B0B8DC(void) {
     Vec3f_Set(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);
 }
 
-s32 func_86B0BA18(void) {
+s32 BattleState_Handle22Or23(void) {
     Stage* sp24;
 
     main_pool_push_state('GBOY');
