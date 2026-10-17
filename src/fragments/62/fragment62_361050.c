@@ -2690,7 +2690,7 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
                         spF8 = 1;
                     }
                 } else {
-                    if (D_80072B00[temp_s7->unk_05 - 1].unk_03 < 0xA) {
+                    if ((D_80072B00[temp_s7->unk_05 - 1].unk_03 < 0xA) & 0xFFFFFFFFFFFFFFFFu) {
                         var_s1 += spB6 * 4;
                     }
                     var_s1 += spB6 * 4;
