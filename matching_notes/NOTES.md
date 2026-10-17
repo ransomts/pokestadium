@@ -684,3 +684,11 @@ fd.sh = full diff + forced rebuild + a loud "0 is not a match" reminder; var.py 
 forced rebuild; draft_score.py/cand_score.py promoted into matching_notes (known-state validated:
 8437B0CC 5479, 88805AEC draft 2337, y23 candidate 9914); IDO_TRICKS gained a SCORE TRUST RULES
 section; PLAN matcher rules updated. 8437B0CC now 5479, cleanup bisect continues from there.
+
+## F6 start (2026-10-17 ~12:40): farms wrapped
+Final farm state at wrap: 8437B0CC x1 best 4724 (ADOPTED, 091c6fa); w2 copies (9) seeded from
+5349-level reached 4944-5339 (no adoption - worse than 4724); 8004A89C x-runs no improvement over
+the adopted 300. All farm jobs cancelled (17519735 x, 17523026/17523027 w2) per the F6 start
+condition (single-builder rule). Round-9 open functions parked at: 8004A89C 300, 80034348 60,
+88304850 1716, 88805AEC 2337, 8437B0CC 4724. The 8437B0CC lesson (u64 perturbation placement
+dominates form, IDO_TRICKS) is the standing lead for the next round / post-API-reset agents.
