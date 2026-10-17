@@ -252,6 +252,8 @@ def type_size(ty):
     t = base_type(ty)
     if t.endswith("*"):
         return 4
+    if t == "Gfx":  # data2c mis-sizes the gbi union
+        return 8
     if t in SCALARS:
         return struct.calcsize(">" + SCALARS[t].replace("P", "I"))
     if t in data2c.BASE_TYPES:
@@ -358,6 +360,8 @@ class Emit:
         t = base_type(ty)
         if t.endswith("*") or t == "fnptr":
             return self.ptr(vram)
+        if t == "Gfx":
+            return "{ { " + self.scalar("u32", vram) + ", " + self.scalar("u32", vram + 4) + " } }"
         if t in SCALARS or t in data2c.BASE_TYPES:
             return self.scalar(t, vram)
         s = data2c.STRUCTS.get(t)
@@ -680,6 +684,24 @@ def fix_short_arrays(res):
             l["dims"] = [n] + l["dims"][1:]
             l["size"] = n * per
             l["verdict"] = "ok (array grown to %d)" % n
+        elif "> span" in l["verdict"] and l["dims"] and isinstance(l["dims"][0], int) and l["dims"][0] > 0 \
+                and l["span"]:
+            # declared longer than the label's span: the next named label starts inside it, so the
+            # declaration over-counts (D_800762B0 Gfx[6] holds 3 commands); shrink it and its externs
+            per = l["size"] // l["dims"][0]
+            if per and l["span"] // per >= 1 and not any(ROM[l["rom"] + (l["span"] // per) * per:l["rom"] + l["span"]]):
+                n = l["span"] // per
+                l["dims"] = [n] + l["dims"][1:]
+                l["size"] = n * per
+                l["verdict"] = "ok (array shrunk to %d)" % n
+        elif "nonzero tail" in l["verdict"] and not l["dims"] and l["type"] and \
+                base_type(l["type"]).endswith("*") and address_only(l["name"]):
+            # pointer placeholder (`extern u32* D_X;` used only as &D_X): a word table
+            n = l["span"] // 4
+            while n > 1 and not any(ROM[l["rom"] + (n - 1) * 4:l["rom"] + n * 4]) and (n - 1) * 4 >= 4:
+                n -= 1
+            l["type"], l["dims"], l["size"], l["retype"] = "u32", [n], n * 4, True
+            l["verdict"] = "ok (retyped to u32[%d])" % n
         elif "nonzero tail" in l["verdict"] and not l["dims"] and l["type"] and \
                 base_type(l["type"]) in SCALARS and address_only(l["name"]):
             # A scalar placeholder (`extern u16 D_X;`) on a longer object that C only ever takes the
@@ -711,12 +733,12 @@ def address_only(name):
 def retype_uses(l, src):
     """Rewrite every extern of a retyped label to its array type and `&NAME` to `NAME`."""
     dims = "".join(f"[{x}]" for x in l["dims"])
-    rx = re.compile(r"^(\s*extern\s+[^;]*?)\b%s\b\s*;" % re.escape(l["name"]), re.M)
+    rx = re.compile(r"^([ \t]*)extern\s+[^;]*?\b%s\b\s*;" % re.escape(l["name"]), re.M)
     for f in list(src):
         t = src[f]
         if l["name"] not in t:
             continue
-        n = rx.sub(lambda m: f"{m.group(1)}{l['name']}{dims};", t)
+        n = rx.sub(lambda m: f"{m.group(1)}extern {base_type(l['type'])} {l['name']}{dims};", t)
         if f.endswith(".c"):
             n = re.sub(r"&\s*%s\b" % re.escape(l["name"]), l["name"], n)
         if n != t:
@@ -820,7 +842,7 @@ def apply(path):
         if l.get("retype"):
             retype_uses(l, src)
     for l in res["labels"]:
-        if "grown" not in l["verdict"]:
+        if "grown" not in l["verdict"] and "shrunk" not in l["verdict"]:
             continue
         dims = "".join(f"[{x}]" for x in l["dims"])
         for f, _ln, _k, _ty, _dims, is_ext, text, *_ in find_decl(l["name"]):
