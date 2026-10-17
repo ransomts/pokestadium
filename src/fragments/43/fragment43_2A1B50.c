@@ -152,7 +152,7 @@ s32 func_83400410(s32 arg0, s32 arg1) {
     s32 sp28;
 
     if (arg1 != 0) {
-        func_8000B6FC(0xCC);
+        StickerStation_SetCommand(0xCC);
     }
 
     main_pool_push_state('bkgl');
@@ -180,7 +180,7 @@ s32 func_83400410(s32 arg0, s32 arg1) {
     main_pool_pop_state('bkgl');
 
     if (arg1 != 0) {
-        func_8000B6FC(0x33);
+        StickerStation_SetCommand(0x33);
     }
 
     return sp28;

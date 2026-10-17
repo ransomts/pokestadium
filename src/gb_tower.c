@@ -145,7 +145,7 @@ s32 func_8000AA7C(void) {
     osPfsIsPlug(&gSIEventMesgQueue, &D_800A82A6);
 
     for (i = 0; i < 4; i++) {
-        if ((D_800A82A6 & (1 << i)) && ((i != 3) || (func_8000B4C4() == 0))) {
+        if ((D_800A82A6 & (1 << i)) && ((i != 3) || (IsStickerStationConnected() == 0))) {
             if (osGbpakInit(&gSIEventMesgQueue, &D_800A8100[i], i) == 0) {
                 D_800A82A4 |= (1 << i);
                 temp_v0 = osGbpakReadId(&D_800A8100[i], &sp4C, &status);

@@ -1334,7 +1334,7 @@ void Game_Thread(UNUSED LEODiskID* arg) {
     D_800AE540.unk_11F2 = 0;
 
     // is this game connected to a Sticker Station?
-    if (func_8000B4C4() != 0) {
+    if (IsStickerStationConnected() != 0) {
         gCurrentGameState = STATE_FAST_N64_LOGO;
     }
 

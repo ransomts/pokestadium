@@ -161,3 +161,7 @@ func_8002EF44	Game_RunPokemonLab	b4		STATE_POKEMON_LAB handler (dispatcher case 
 func_8002A728	Game_RunGbTower	b4		STATE_GB_TOWER handler (dispatcher case mapping)	applied@0546dca
 func_8002AAA8	Game_RunGymLeaderCastle	b4		STATE_GYM_LEADER_CASTLE handler (dispatcher case mapping)	applied@0546dca
 func_800290B4	Game_UpdateInputs	b4		Cont_StartReadInputs + Cont_ReadInputs + the menu-input reset - the per-frame input pump	applied@0546dca
+func_8000B430	WaitMs	b5		busy-wait on osGetCount for arg milliseconds (3000 counts/ms, the RCP counter rate)	applied@60e79ca
+func_8000B4C4	IsStickerStationConnected	b5		probes controller port 4's controller-pak RAM (0x400) with 0xFE/0x85 patterns - the Sticker Station detection (comment in source; used to pick STATE_FAST_N64_LOGO)	applied@60e79ca
+func_8000B6B4	StickerStation_GetCommand	b5		reads the Sticker Station command byte at controller-pak RAM 0x600 (port 3)	applied@60e79ca
+func_8000B6FC	StickerStation_SetCommand	b5		writes the command byte at 0x600, waiting out the 8-busy state with WaitMs(0x14) polling	applied@60e79ca

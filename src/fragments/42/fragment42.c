@@ -715,7 +715,7 @@ void func_833017BC(s32 arg0, s32 arg1) {
         D_83303444 = 1;
     }
 
-    if (func_8000B4C4() != 0) {
+    if (IsStickerStationConnected() != 0) {
         D_8330343C = 1;
     } else {
         D_8330343C = 0;
@@ -1009,7 +1009,7 @@ void func_833028FC(void) {
             PlaySoundEffect(0x1C);
             func_83400410(1, D_8330343C);
             if (D_8330343C != 0) {
-                func_8000B6FC(0x5A);
+                StickerStation_SetCommand(0x5A);
             }
             D_833033A0 = 1;
             D_833032A8 = 4;

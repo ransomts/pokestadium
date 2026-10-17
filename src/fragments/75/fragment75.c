@@ -80,7 +80,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
     if (func_8FA00510() == 0) {
         if (func_83400704(sp60, (D_83407AE4 != 0) ? 16 : 4, 0) != 0) {
-            func_8000B6FC(0x10);
+            StickerStation_SetCommand(0x10);
             return 0;
         }
     }
@@ -108,7 +108,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     }
 
     Stage_Set(temp_v0);
-    func_8000B6FC(1);
+    StickerStation_SetCommand(1);
     func_8FA0047C(0xC8);
     func_80006C6C(1);
 
@@ -159,9 +159,9 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
         osViBlack(0);
         func_80001CC8();
         func_8FA0047C(0xC8);
-        func_8000B6FC(2);
+        StickerStation_SetCommand(2);
 
-        while (func_8000B6B4() == 8) {
+        while (StickerStation_GetCommand() == 8) {
             func_8FA0047C(0xC8);
         }
 
@@ -169,9 +169,9 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
         func_80001CB8();
     }
 
-    func_8000B6FC(4);
+    StickerStation_SetCommand(4);
 
-    while (func_8000B6B4() == 8) {
+    while (StickerStation_GetCommand() == 8) {
         func_8FA0047C(0x14);
     }
 

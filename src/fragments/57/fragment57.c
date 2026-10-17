@@ -2779,7 +2779,7 @@ void func_82D06B98(void) {
 
     func_82D06AB0();
 
-    if (func_8000B4C4() != 0) {
+    if (IsStickerStationConnected() != 0) {
         D_82D0ABA0 = 1;
     } else {
         D_82D0ABA0 = 0;
