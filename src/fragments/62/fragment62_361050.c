@@ -2184,6 +2184,29 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // in s5 (sw t8,0x68 before the first call, lw s5,0x68 after); see below.
 // Case 0x19: the five temp_s6->unk_5C[n] adjustments are `var_s1 += (x * m) - c;` (target
 // addu s1,s1,t; `var_s1 = (var_s1 + x * m) - c` gave addu s1,t,s1): 7849 -> 7809.
+// The 0x5C-block temp_t0 copy ("X", the last open structural diff; ugen's t-register rotation
+// from it shifts nearly every later 'r' line, incl. the end-of-loop block). Facts (pass 4):
+// - X is NOT a named s32: an s32 copy (var_s2/spC0/var_v1_x/tmp*/spFC, at the block top, after
+//   `var_s1 += var_s0`, or at the top of `if (arg4)`) is a real variable but spills to its own
+//   home (e.g. var_s2 -> 0xE8); target spills X to the temp area (0x68). s32 var_s5 = temp_t0
+//   gives X a callee-saved reg (s6, no spill) but breaks case 0x34's `move s2,s5` copies.
+// - Every u8 (var_s5, temp_s0, sp103, pads), u16, and block-scoped u8 copy is copy-propagated
+//   (uses reload temp_t0's slot). Blockers that did nothing: `temp_t0 = var_s5;` after the
+//   copy, a dead-stored intermediate (`temp_s0 = temp_t0; var_s5 = temp_s0; temp_s0 = 0;`),
+//   a second `temp_t0 = D_843C5564->unk_0A;` in the prologue, casts on the uses
+//   ((s16)/(u16)/(s32)/(u32)temp_t0), operand order. `temp_t0 + 0` blocks it (X in s5 with
+//   a spill, like the target) but reloads temp_t0 with lbu 0x6f and grows the frame (10608).
+// - s16 X folds into `lh` of temp_t0's slot; block-scoped s32 X is a memory var at 0x88
+//   (frame 0x110); s32 temp_t0 declared last becomes a memory var at 0x88 (frame stays 0x108,
+//   9518) but its in-block loads are not shared either. Named s32 locals at 0x50..0x88 (m2c's
+//   spXX model) put sp58/sp78 in memory at their definitions (stored in the prologue): no.
+// - Model that fits best: X is a compiler temp (spBA's load before the first call, spilled to
+//   0x64 and reloaded for `spBA * func_843776FC(..)`, is the same shape), i.e. the original
+//   produced a CSE temp holding temp_t0's value for the `/ 2` multiply and the `-= ` in the
+//   if; not reproduced yet.
+// - Case 0x19 first switch: copy `move v1,v0` still missing; nested `default: switch`, an
+//   if/else chain, and switching on temp_s6->unk_15 / reusing var_v1_4/var_v1_6/var_s2/spC0
+//   for the switch value were all worse or did not create the copy.
 // Round 8: frame fixed (0x108) by dropping the two bottom s32 locals (pad84, tmp7; tmp7 inlined):
 // the temp area really is 15 slots 0x50..0x8B in the target too (0x60/0x74/0x7C/0x84/0x88 unused
 // there), so every named slot now lines up (13175 -> 10424). Remaining stack diffs are temp-slot
