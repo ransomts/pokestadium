@@ -641,3 +641,10 @@ byte-identical (ed1378bc), 9 -> 6 GLOBAL_ASM, code 96.60% -> 96.78%. FAKE-but-lo
   Starts from the round-8 1386 shape; the round-9 F1 farm edits (w2/cos2/empty-if, 1355) grew the
   frame to 0x110 and were reverted. LESSON: a wrong-type local copy can be closer than every
   regalloc trick - check whether a copied variable's TYPE matches how the target uses it.
+
+Round 9 integrator addendum: the -s FALSE ZERO nearly cost func_8004A89C - `value = idx` before the
+idx boundary test took fd.sh (with -s, early returns!) to 0, the unwrap shifted the whole ROM 0x10
+(ultralib -0x10: the compiled function is 4 instructions short in the tail), and only the full make
+caught it. The no-s score at that state was 300 (tail sample/`move t5,a0` rows remain). fd.sh 0 on an
+early-return function is meaningless; always draft_score (no -s, uncapped, forced rebuild) before
+believing any zero. Restored, kept as draft 300.
