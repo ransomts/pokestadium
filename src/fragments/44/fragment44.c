@@ -462,6 +462,12 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
 // x 0xa0). Removing a loop ROUND_MAX puts x at 0x90 but shifts named slots. An explicit guard +
 // do-while / while loop, reordering the four pre-loop ROUND_MAX lines or sp100/temp_ft0/tmp, or
 // moving the early return first: no change to x's slot.
+// More round-8 probes (x stays the first temp at 0xa4 in all): x removed and its uses written as
+// arg1 + tmp2 (with/without a pad in its place); x = arg1; x += tmp2 and other split forms;
+// func_8001C604(arg1 + tmp2 + 0xA, ...) with x assigned after the call; 30 random declaration orders
+// (sp100/spF4/spE8 fixed): all 60. Adding or removing any one gfx macro (either gSPDisplayList or the
+// gDPSetRenderMode) moves x UP to 0xa8 (frame unchanged when removing, +8 when adding), so the 0xa8 slot
+// is not tied to source position of a temp.
 #ifdef NON_MATCHING
 void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
