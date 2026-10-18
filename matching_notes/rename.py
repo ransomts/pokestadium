@@ -113,11 +113,13 @@ def file_text(path):
 
 
 def _invalidate_text_cache():
-    global _GREP_BLOB, _DEF_CLASSES, _HEADER_TAGS
+    global _GREP_BLOB, _DEF_CLASSES, _HEADER_TAGS, _ASM_INDEX, _PRAGMA_INDEX
     _TEXT_CACHE.clear()
     _GREP_BLOB = None
     _DEF_CLASSES = None
     _HEADER_TAGS = None
+    _ASM_INDEX = None
+    _PRAGMA_INDEX = None
 
 
 def sa_definitions(name):
@@ -212,22 +214,32 @@ def git_status_dirty():
     return dirty
 
 
+_ASM_INDEX = None
+
+
+def _asm_index():
+    """{filename -> [paths]} under asm/us, built once (was: os.walk per call)."""
+    global _ASM_INDEX
+    if _ASM_INDEX is None:
+        idx = {}
+        for dirpath, _dirs, files in os.walk(os.path.join(REPO, "asm/us")):
+            for fn in files:
+                idx.setdefault(fn, []).append(os.path.join(dirpath, fn))
+        _ASM_INDEX = idx
+    return _ASM_INDEX
+
+
 def s_path_for(func):
     """The nonmatchings .s path for an unmatched function, or None."""
-    hits = []
-    base = os.path.join(REPO, "asm/us/nonmatchings")
-    for dirpath, _dirs, files in os.walk(base):
-        if func + ".s" in files:
-            hits.append(os.path.join(dirpath, func + ".s"))
+    hits = _asm_index().get(func + ".s", [])
     return hits[0] if len(hits) == 1 else (hits or None)
 
 
 def dlabel_files(sym):
     """asm .s files containing a `dlabel sym` definition line."""
     hits = []
-    base = os.path.join(REPO, "asm/us")
     pat = re.compile(r"^dlabel\s+" + re.escape(sym) + r"\s*$", re.M)
-    for dirpath, _dirs, files in os.walk(base):
+    for dirpath, _dirs, files in os.walk(os.path.join(REPO, "asm/us")):
         for fn in files:
             if fn.endswith(".s"):
                 p = os.path.join(dirpath, fn)
@@ -257,18 +269,33 @@ def dlabel_info(sym):
     return None
 
 
-def pragma_count(func):
-    pat = re.compile(re.escape(func) + r"\.s")
-    n, files = 0, []
-    for dirpath, _dirs, files_ in os.walk(os.path.join(REPO, "src")):
-        for fn in files_:
-            if fn.endswith(".c"):
+_PRAGMA_INDEX = None
+
+
+def _pragma_index():
+    """{func name -> (count, [files])} for GLOBAL_ASM `func.s` path references, one pass."""
+    global _PRAGMA_INDEX
+    if _PRAGMA_INDEX is None:
+        idx = {}
+        pat = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\.s")
+        for dirpath, _dirs, files in os.walk(os.path.join(REPO, "src")):
+            for fn in files:
+                if not fn.endswith(".c"):
+                    continue
                 p = os.path.join(dirpath, fn)
-                c = len(pat.findall(file_text(p)))
-                if c:
-                    n += c
-                    files.append(p)
-    return n, files
+                for m in pat.finditer(file_text(p)):
+                    name = m.group(1)
+                    e = idx.setdefault(name, [0, []])
+                    e[0] += 1
+                    if p not in e[1]:
+                        e[1].append(p)
+        _PRAGMA_INDEX = idx
+    return _PRAGMA_INDEX
+
+
+def pragma_count(func):
+    e = _pragma_index().get(func)
+    return (e[0], e[1]) if e else (0, [])
 
 
 # ---------------------------------------------------------------- pre-flight
