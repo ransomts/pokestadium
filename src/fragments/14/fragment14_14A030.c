@@ -501,7 +501,7 @@ void func_86806980(void) {
     gSushiSpawnMode = 0;
 }
 
-void func_86806A50(void) {
+void Sushi_InitAssets(void) {
     s32 i;
     MainPoolState* temp_s2;
     unk_D_868084D8* var_s0;
@@ -537,7 +537,7 @@ void func_86806A50(void) {
     mem_pool_resize_block(temp_s2);
 }
 
-void func_86806BF0(void) {
+void Sushi_UpdateLogic(void) {
     unk_D_86808808* ptr;
     unk_D_868084D8* var_s0;
     s32 i;

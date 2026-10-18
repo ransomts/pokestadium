@@ -49,19 +49,19 @@ static Fragment2_1GraphNode* gHealthBarGraphNodePtrs[] = {
 static u8 gHealthBarUpdateCounter = 0;
 static u16 gResultTimer = 0;
 
-static unk_func_87801684 gResultScreenUIElements1[] = {
+static AnimFrame gResultScreenUIElements1[] = {
     { 0x0303F980, 2 }, { 0x0303FD80, 2 }, { 0x03040180, 2 },    { 0x0303FD80, 2 }, { 0x0303F980, 2 },
     { 0x0303FD80, 2 }, { 0x03040180, 2 }, { 0x0303FD80, 2 },    { 0x0303F980, 2 }, { 0x0303FD80, 2 },
     { 0x03040180, 2 }, { 0x0303FD80, 2 }, { 0x0303F980, 0x18 }, { NULL, 0 },
 };
 
-static unk_func_87801684 gResultScreenUIElements2[] = {
+static AnimFrame gResultScreenUIElements2[] = {
     { 0x0303ED80, 0x18 }, { 0x0303F180, 2 }, { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 },
     { 0x0303F180, 2 },    { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { 0x0303F180, 2 },
     { 0x0303F580, 2 },    { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { NULL, 0 },
 };
 
-static unk_func_87801684 gResultScreenUIElements3[] = {
+static AnimFrame gResultScreenUIElements3[] = {
     { 0x03040580, 0x12 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
@@ -438,10 +438,10 @@ void ResultScreen_Draw(s32 arg0) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        func_87801F48(2, 0x19, 0xA6);
-        func_87801754(0x62, 0xB0, gResultScreenUIElements1);
-        func_87801684(0x74, 0xB0, gResultScreenUIElements2);
-        func_87801824(0x74, 0xC6, gResultScreenUIElements3);
+        DrawDualTexturePanel(2, 0x19, 0xA6);
+        DrawAnimatedSprite2(0x62, 0xB0, gResultScreenUIElements1);
+        DrawAnimatedSprite(0x74, 0xB0, gResultScreenUIElements2);
+        DrawAnimatedSprite3(0x74, 0xC6, gResultScreenUIElements3);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
@@ -628,7 +628,7 @@ void ResultScreen_MainLoop(void) {
         }
     }
 
-    func_8004B9C4(0x3C);
+    Stage_SetFadeColor(0x3C);
 
     if (gResultFlag_Special == 0) {
         while (true) {
@@ -816,8 +816,8 @@ void func_86501AAC(void) {
     Camera_SetupResultScreen();
     Fragment2_1_Init();
     ResultScreen_Init();
-    func_87801684(0, 0, NULL);
-    func_87801754(0, 0, NULL);
+    DrawAnimatedSprite(0, 0, NULL);
+    DrawAnimatedSprite2(0, 0, NULL);
 }
 
 void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {

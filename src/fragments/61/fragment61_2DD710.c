@@ -19,7 +19,7 @@ void DrawSlotBackground(s16 arg0, s16 arg1, s32 arg2) {
     }
 }
 
-void DrawSlotGrid(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
+void DrawSlotGrid(gItemPanel* arg0, s16 arg1, s16 arg2) {
     s16 i;
 
     DrawBorderedBox(arg1, arg2, 0x208, 0x60);
@@ -44,7 +44,7 @@ void DrawSlotGrid(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void DrawSelectionRect(unk_D_84211B50* arg0) {
+void DrawSelectionRect(gItemPanel* arg0) {
     s16 temp_s0 = arg0->unk_0018 + (arg0->unk_0010 * 0x84) + 0x78;
     s16 temp_a1 = arg0->unk_001A + (arg0->unk_0012 * 0x2C) + 4;
 
@@ -67,7 +67,7 @@ void DrawSelectionRect(unk_D_84211B50* arg0) {
     }
 }
 
-void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1) {
+void DrawItemInfoPanel(gItemPanel* arg0, s32 arg1) {
     char* temp_v0_10;
     char* temp_v0_4;
     char* temp_v0_5;
@@ -167,7 +167,7 @@ void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1) {
     }
 }
 
-void ClearSlotItem(unk_D_84211B50* arg0) {
+void ClearSlotItem(gItemPanel* arg0) {
     s16 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 != 0) {
@@ -177,7 +177,7 @@ void ClearSlotItem(unk_D_84211B50* arg0) {
     }
 }
 
-void MarkSlotForRemoval(unk_D_84211B50* arg0) {
+void MarkSlotForRemoval(gItemPanel* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (RequestNextPokemon(arg0->unk_4D40) != 0) {
@@ -192,7 +192,7 @@ void MarkSlotForRemoval(unk_D_84211B50* arg0) {
     }
 }
 
-s32 GbsSyncItemData(unk_D_84211B50* arg0) {
+s32 GbsSyncItemData(gItemPanel* arg0) {
     s16 i;
     s16 temp_v0;
     s32 var_s0 = 0;
@@ -213,7 +213,7 @@ s32 GbsSyncItemData(unk_D_84211B50* arg0) {
     return var_s0;
 }
 
-s32 CheckStatThresholdForMode(unk_D_84211B50* arg0) {
+s32 CheckStatThresholdForMode(gItemPanel* arg0) {
     UNUSED s32 pad;
     s32 temp_v1;
     s16 i;
@@ -263,18 +263,18 @@ s32 CheckStatThresholdForMode(unk_D_84211B50* arg0) {
     return temp_v1;
 }
 
-void SetPanelPositionOffscreen(unk_D_84211B50* arg0) {
+void SetPanelPositionOffscreen(gItemPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014 + 0x280;
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void SetPanelPositionOnscreen(unk_D_84211B50* arg0) {
+void SetPanelPositionOnscreen(gItemPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void StartItemMoveAnimation(unk_D_84211B50* a0) {
-    unk_D_84211B50* arg0 = a0;
+void StartItemMoveAnimation(gItemPanel* a0) {
+    gItemPanel* arg0 = a0;
     s16 temp_v0;
     s16 temp_v1;
     s16 tmp;
@@ -295,7 +295,7 @@ void StartItemMoveAnimation(unk_D_84211B50* a0) {
     a0->unk_0003 = 2;
 }
 
-void HandleItemMoveResult(unk_D_84211B50* arg0) {
+void HandleItemMoveResult(gItemPanel* arg0) {
     s16 sp26 = arg0->unk_0010 + (arg0->unk_0012 * 3);
     s32 temp_v0 = GetSelectedMoveIndex(arg0->unk_4D44);
 
@@ -313,7 +313,7 @@ void HandleItemMoveResult(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void UpdatePanelSlideDown(unk_D_84211B50* arg0) {
+void UpdatePanelSlideDown(gItemPanel* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A <= 0) {
         arg0->unk_0018 = arg0->unk_0014 + 0x280;
@@ -336,7 +336,7 @@ void UpdatePanelSlideDown(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void UpdatePanelSlideUp(unk_D_84211B50* arg0) {
+void UpdatePanelSlideUp(gItemPanel* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A == 0xA) {
         arg0->unk_0001 = 0;
@@ -349,14 +349,14 @@ void UpdatePanelSlideUp(unk_D_84211B50* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void func_84206EE0(unk_D_84211B50* arg0) {
+void ItemPanel_RemoveSelected(gItemPanel* arg0) {
     MarkSlotForRemoval(arg0);
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->unk_0016;
     arg0->unk_0003 = 2;
 }
 
-void func_84206F1C(unk_D_84211B50* arg0) {
+void ItemPanel_MoveCursorLeft(gItemPanel* arg0) {
     if (arg0->unk_0010 > 0) {
         arg0->unk_0010--;
         arg0->unk_000C = -1;
@@ -366,7 +366,7 @@ void func_84206F1C(unk_D_84211B50* arg0) {
     }
 }
 
-void func_84206F64(unk_D_84211B50* arg0) {
+void ItemPanel_MoveCursorRight(gItemPanel* arg0) {
     if (arg0->unk_0010 < 2) {
         arg0->unk_0010++;
         arg0->unk_000C = 1;
@@ -376,7 +376,7 @@ void func_84206F64(unk_D_84211B50* arg0) {
     }
 }
 
-void func_84206FB0(unk_D_84211B50* arg0) {
+void ItemPanel_MoveCursorUp(gItemPanel* arg0) {
     if (arg0->unk_0012 > 0) {
         arg0->unk_0012--;
         arg0->unk_000C = -1;
@@ -386,7 +386,7 @@ void func_84206FB0(unk_D_84211B50* arg0) {
     }
 }
 
-void func_84206FF8(unk_D_84211B50* arg0) {
+void ItemPanel_MoveCursorDown(gItemPanel* arg0) {
     if (arg0->unk_0012 <= 0) {
         arg0->unk_0012++;
         arg0->unk_000C = 1;
@@ -396,7 +396,7 @@ void func_84206FF8(unk_D_84211B50* arg0) {
     }
 }
 
-void func_84207040(unk_D_84211B50* arg0) {
+void ItemPanel_HandleInput(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     if (arg0->unk_000A < 8) {
@@ -412,13 +412,13 @@ void func_84207040(unk_D_84211B50* arg0) {
         PlaySoundEffect(3);
         arg0->unk_0001 = 0x10;
     } else if (BTN_IS_PRESSED(cont, BTN_DUP)) {
-        func_84206FB0(arg0);
+        ItemPanel_MoveCursorUp(arg0);
     } else if (BTN_IS_PRESSED(cont, BTN_DDOWN)) {
-        func_84206FF8(arg0);
+        ItemPanel_MoveCursorDown(arg0);
     } else if (BTN_IS_PRESSED(cont, BTN_DRIGHT)) {
-        func_84206F64(arg0);
+        ItemPanel_MoveCursorRight(arg0);
     } else if (BTN_IS_PRESSED(cont, BTN_DLEFT)) {
-        func_84206F1C(arg0);
+        ItemPanel_MoveCursorLeft(arg0);
     }
 
     arg0->unk_0018 = arg0->unk_0014;
@@ -426,7 +426,7 @@ void func_84207040(unk_D_84211B50* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void func_84207190(unk_D_84211B50* arg0) {
+void ItemPanel_CheckModeTransition(gItemPanel* arg0) {
     func_8420DAF4(1);
     if (func_8420DB48(1) >= 0) {
         if (CheckStatThresholdForMode(arg0) != 0) {
@@ -440,7 +440,7 @@ void func_84207190(unk_D_84211B50* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void func_8420720C(unk_D_84211B50* arg0) {
+void ItemPanel_HandleMenuSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
@@ -499,7 +499,7 @@ void func_8420720C(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_842073A4(unk_D_84211B50* arg0) {
+void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
@@ -550,7 +550,7 @@ void func_842073A4(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84207530(unk_D_84211B50* arg0) {
+void ItemPanel_HandleModeSpecificSelection(gItemPanel* arg0) {
     UNUSED s16 pad;
     s16 sp1C = 0xD;
     s32 temp_v0_2;
@@ -591,7 +591,7 @@ void func_84207530(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84207634(unk_D_84211B50* arg0) {
+void ItemPanel_HandleActionSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     func_8420DA28(2, cont);
@@ -602,7 +602,7 @@ void func_84207634(unk_D_84211B50* arg0) {
     }
 }
 
-void func_842076A0(unk_D_84211B50* arg0) {
+void ItemPanel_HandleCancelSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     func_8420DA28(3, cont);
@@ -611,7 +611,7 @@ void func_842076A0(unk_D_84211B50* arg0) {
     }
 }
 
-void func_842076F8(unk_D_84211B50* arg0) {
+void ItemPanel_UpdateCursorAnim(gItemPanel* arg0) {
     if (arg0->unk_000E > 0) {
         arg0->unk_000C++;
         if (arg0->unk_000C >= arg0->unk_000E) {
@@ -628,7 +628,7 @@ void func_842076F8(unk_D_84211B50* arg0) {
     arg0->unk_0003 = 2;
 }
 
-s32 UpdateItemStateMachine(unk_D_84211B50* arg0) {
+s32 UpdateItemStateMachine(gItemPanel* arg0) {
     s32 sp1C = 0;
 
     switch (arg0->unk_0001) {
@@ -645,7 +645,7 @@ s32 UpdateItemStateMachine(unk_D_84211B50* arg0) {
             break;
 
         case 2:
-            func_84206EE0(arg0);
+            ItemPanel_RemoveSelected(arg0);
             break;
 
         case 4:
@@ -663,19 +663,19 @@ s32 UpdateItemStateMachine(unk_D_84211B50* arg0) {
             break;
 
         case 7:
-            func_8420720C(arg0);
+            ItemPanel_HandleMenuSelection(arg0);
             break;
 
         case 8:
-            func_84207040(arg0);
+            ItemPanel_HandleInput(arg0);
             break;
 
         case 9:
-            func_84207634(arg0);
+            ItemPanel_HandleActionSelection(arg0);
             break;
 
         case 10:
-            func_842076A0(arg0);
+            ItemPanel_HandleCancelSelection(arg0);
             break;
 
         case 11:
@@ -683,29 +683,29 @@ s32 UpdateItemStateMachine(unk_D_84211B50* arg0) {
             break;
 
         case 12:
-            func_842076F8(arg0);
+            ItemPanel_UpdateCursorAnim(arg0);
             break;
 
         case 13:
-            func_842076F8(arg0);
+            ItemPanel_UpdateCursorAnim(arg0);
             break;
 
         case 14:
-            func_842073A4(arg0);
+            ItemPanel_HandleAltMenuSelection(arg0);
             break;
 
         case 15:
-            func_84207530(arg0);
+            ItemPanel_HandleModeSpecificSelection(arg0);
             break;
 
         case 16:
-            func_84207190(arg0);
+            ItemPanel_CheckModeTransition(arg0);
             break;
     }
     return sp1C;
 }
 
-s32 func_842078C0(unk_D_84211B50* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4,
+s32 ItemPanel_Init(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4,
                   u16 arg5, char* arg6, s16 arg7, s16 arg8, s16 arg9) {
     s32 i;
 
@@ -737,7 +737,7 @@ s32 func_842078C0(unk_D_84211B50* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* ar
     return 1;
 }
 
-s32 func_842079B4(unk_D_84211B50* arg0, s16 arg1) {
+s32 ItemPanel_StartSlideDown(gItemPanel* arg0, s16 arg1) {
     if (arg0->unk_0001 != 1) {
         return 0;
     }
@@ -746,7 +746,7 @@ s32 func_842079B4(unk_D_84211B50* arg0, s16 arg1) {
     return 1;
 }
 
-s32 func_842079F0(unk_D_84211B50* arg0) {
+s32 ItemPanel_StartSlideUp(gItemPanel* arg0) {
     if (arg0->unk_0001 != 3) {
         return 0;
     }
@@ -755,7 +755,7 @@ s32 func_842079F0(unk_D_84211B50* arg0) {
     return 1;
 }
 
-s32 func_84207A1C(unk_D_84211B50* arg0) {
+s32 ItemPanel_ClearAndReset(gItemPanel* arg0) {
     s16 i;
 
     if (arg0->unk_0001 != 3) {
@@ -776,7 +776,7 @@ s32 func_84207A1C(unk_D_84211B50* arg0) {
     return 1;
 }
 
-s32 func_84207AAC(unk_D_84211B50* arg0) {
+s32 ItemPanel_ConfirmSelection(gItemPanel* arg0) {
     s32 temp_v0;
     s32 temp_v1;
 
@@ -808,7 +808,7 @@ s32 func_84207AAC(unk_D_84211B50* arg0) {
     return 0;
 }
 
-s32 func_84207BD4(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 ItemPanel_AddItem(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 var_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (arg0->unk_0001 != 3) {
@@ -842,7 +842,7 @@ s32 func_84207BD4(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 1;
 }
 
-s32 func_84207D5C(unk_D_84211B50* arg0) {
+s32 ItemPanel_RemoveCurrent(gItemPanel* arg0) {
     s32 idx = (arg0->unk_0010 + (arg0->unk_0012 * 3));
 
     if (arg0->unk_0001 != 3) {
@@ -874,7 +874,7 @@ s32 func_84207D5C(unk_D_84211B50* arg0) {
     return 1;
 }
 
-s32 func_84207E3C(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 ItemPanel_IsItemDuplicate(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 i;
     u8 temp_a2;
     unk_D_838067F0_0168_0000* ptr;
@@ -901,7 +901,7 @@ s32 func_84207E3C(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 1;
 }
 
-s32 func_8420804C(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 ItemPanel_HasItem(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 i;
     unk_D_838067F0_0168_0000* ptr;
 
@@ -919,11 +919,11 @@ s32 func_8420804C(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 0;
 }
 
-s32 func_842081A8(unk_D_84211B50* arg0) {
+s32 ItemPanel_IsOffscreen(gItemPanel* arg0) {
     return arg0->unk_0001 == 0;
 }
 
-void func_842081B4(unk_D_84211B50* arg0, PokemonData* arg1, s16 arg2) {
+void ItemPanel_LoadItems(gItemPanel* arg0, PokemonData* arg1, s16 arg2) {
     s32 i;
 
     arg0->unk_0006 = arg2;

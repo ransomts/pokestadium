@@ -15,7 +15,7 @@
 #include "src/stage_loader.h"
 #include "src/math_util.h"
 
-typedef struct unk_D_82202FE4 {
+typedef struct AreaConfig {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -24,31 +24,31 @@ typedef struct unk_D_82202FE4 {
     /* 0x08 */ s8 unk_08;
     /* 0x09 */ s8 unk_09;
     /* 0x0A */ Color_RGBA8 unk_0A;
-} unk_D_82202FE4; // size = 0xE
+} AreaConfig; // size = 0xE
 
-typedef struct unk_D_82203160_006 {
+typedef struct ParticlePos {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
-} unk_D_82203160_006; // size = 0x6
+} ParticlePos; // size = 0x6
 
-typedef struct unk_D_82203160 {
+typedef struct ParticleTrail {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ unk_D_82203160_006 unk_0C[4];
-} unk_D_82203160; // size = 0x24
+    /* 0x0C */ ParticlePos unk_0C[4];
+} ParticleTrail; // size = 0x24
 
-typedef struct unk_D_82203150 {
+typedef struct TileOverlay {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ Color_RGBA8 unk_08;
-} unk_D_82203150; // size >= 0xC
+} TileOverlay; // size >= 0xC
 
 static s16 gOverlayAlpha = 0;
 
@@ -64,7 +64,7 @@ static u8* gBackgroundTexturePtrs[] = {
     0x03025860, 0x0302BA60, 0x03031C60, 0x03037E60, 0x0303E060,
 };
 
-static unk_D_82202FE4 gTileConfigTable[9] = {
+static AreaConfig gTileConfigTable[9] = {
     { 0x012C, 0x00B9, 0x004B, 0x03, 0x04, 0x06, 0x07, { 0x32, 0x50, 0x96, 0x00 } },
     { 0x0208, 0x0118, 0x004B, 0x07, 0x08, 0x04, 0x08, { 0x32, 0x50, 0x96, 0x00 } },
     { 0x006E, 0x005A, 0x0041, 0x08, 0x06, 0x08, 0x03, { 0x32, 0x50, 0x96, 0x00 } },
@@ -76,24 +76,24 @@ static unk_D_82202FE4 gTileConfigTable[9] = {
     { 0x012C, 0x00B9, 0x000A, 0x08, 0x08, 0x08, 0x08, { 0x32, 0x50, 0x96, 0x00 } },
 };
 
-static u8* D_82203064[] = { 0x03005000, 0x03005A20, 0x03006440, 0x03005A20 };
+static u8* gParticleTextures[] = { 0x03005000, 0x03005A20, 0x03006440, 0x03005A20 };
 
-static char** D_822030F0;
-static BinArchive* D_822030F4;
-static Vp D_822030F8;
-static Mtx D_82203108;
-static u8* D_82203148;
-static u8* D_8220314C;
-static unk_D_82203150 D_82203150;
-static unk_D_82203160 D_82203160[3];
+static char** gAreaMessageBank;
+static BinArchive* gAreaAssetArchive;
+static Vp gAreaViewport;
+static Mtx gAreaProjMatrix;
+static u8* gBgTexturePrimary;
+static u8* gBgTextureSecondary;
+static TileOverlay gTileOverlayState;
+static ParticleTrail gParticleTrailState[3];
 static s32 pad_D_822031D0[0x2];
-static s16 D_822031D8;
-static s16 D_822031DA;
-static s16 D_822031DC;
-static unk_func_80027FA0 D_822031E0;
-static PlayerName D_822031E8;
+static s16 gCurrentAreaIndex;
+static s16 gPreviousAreaIndex;
+static s16 gTransitionFrame;
+static unk_func_80027FA0 gAreaAudioState;
+static PlayerName gAreaPlayerName;
 
-s32 func_82200020(s32 arg0) {
+s32 GetControllerInputMask(s32 arg0) {
     u32 temp_a0 = osSetIntMask(1);
 
     if (!(HW_REG(PI_STATUS_REG, u32) & 3) && ((*(u32*)0xB0000D10 & 0xFFFF) != 0x400)) {
@@ -145,13 +145,13 @@ Vtx* CreateTileVertices(void) {
     u8 temp_s4;
     u8 temp_s5;
 
-    temp_s6 = D_82203150.unk_00;
-    temp_s7 = D_82203150.unk_02;
-    temp_s0 = D_82203150.unk_04;
-    temp_s2 = D_82203150.unk_08.r;
-    temp_s3 = D_82203150.unk_08.g;
-    temp_s4 = D_82203150.unk_08.b;
-    temp_s5 = D_82203150.unk_08.a;
+    temp_s6 = gTileOverlayState.unk_00;
+    temp_s7 = gTileOverlayState.unk_02;
+    temp_s0 = gTileOverlayState.unk_04;
+    temp_s2 = gTileOverlayState.unk_08.r;
+    temp_s3 = gTileOverlayState.unk_08.g;
+    temp_s4 = gTileOverlayState.unk_08.b;
+    temp_s5 = gTileOverlayState.unk_08.a;
 
     temp_v0 = GfxAlloc(sizeof(Vtx) * 8);
 
@@ -176,7 +176,7 @@ Vtx* CreateTileVertices(void) {
 void DrawTileOverlay(void) {
     Vtx* temp_v0;
 
-    if (D_82203150.unk_08.a <= 0) {
+    if (gTileOverlayState.unk_08.a <= 0) {
         return;
     }
 
@@ -187,7 +187,7 @@ void DrawTileOverlay(void) {
 
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
-        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, D_82203150.unk_06);
+        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gTileOverlayState.unk_06);
         gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
         gDPSetCombineLERP(gDisplayListHead++, ENVIRONMENT, SHADE, ENV_ALPHA, SHADE, 0, 0, 0, SHADE, ENVIRONMENT, SHADE,
                           ENV_ALPHA, SHADE, 0, 0, 0, SHADE);
@@ -221,18 +221,18 @@ void UpdateParticleTrailPositions(void) {
     s32 i;
     s32 j;
     s16 temp_fv0;
-    s16 var_v0 = D_82203160[0].unk_08;
+    s16 var_v0 = gParticleTrailState[0].unk_08;
 
     for (i = 0; i < 3; i++) {
         for (j = 4; j >= 0; j--) {
-            D_82203160[i].unk_0C[j + 1] = D_82203160[i].unk_0C[j];
+            gParticleTrailState[i].unk_0C[j + 1] = gParticleTrailState[i].unk_0C[j];
         }
 
-        temp_fv0 = (D_82203160[0].unk_06 * D_82203160[0].unk_04) / 100;
+        temp_fv0 = (gParticleTrailState[0].unk_06 * gParticleTrailState[0].unk_04) / 100;
 
-        D_82203160[i].unk_0C[0].unk_00 = D_82203160[0].unk_00 + (COSS((var_v0)) * temp_fv0);
-        D_82203160[i].unk_0C[0].unk_02 = D_82203160[0].unk_02 + (SINS((var_v0)) * temp_fv0);
-        D_82203160[i].unk_0C[0].unk_04 = (D_82203160[0].unk_06 * 0x48) / 100;
+        gParticleTrailState[i].unk_0C[0].unk_00 = gParticleTrailState[0].unk_00 + (COSS((var_v0)) * temp_fv0);
+        gParticleTrailState[i].unk_0C[0].unk_02 = gParticleTrailState[0].unk_02 + (SINS((var_v0)) * temp_fv0);
+        gParticleTrailState[i].unk_0C[0].unk_04 = (gParticleTrailState[0].unk_06 * 0x48) / 100;
 
         var_v0 -= 0x5555;
     }
@@ -241,16 +241,16 @@ void UpdateParticleTrailPositions(void) {
 void InitParticleTrail(s32 arg0) {
     s32 i;
 
-    D_82203160[0].unk_00 = gTileConfigTable[arg0].unk_00;
-    D_82203160[0].unk_02 = gTileConfigTable[arg0].unk_02;
-    D_82203160[0].unk_04 = gTileConfigTable[arg0].unk_04;
-    D_82203160[0].unk_06 = 0x64;
-    D_82203160[0].unk_0A = 0;
-    D_82203160[0].unk_08 = 0;
+    gParticleTrailState[0].unk_00 = gTileConfigTable[arg0].unk_00;
+    gParticleTrailState[0].unk_02 = gTileConfigTable[arg0].unk_02;
+    gParticleTrailState[0].unk_04 = gTileConfigTable[arg0].unk_04;
+    gParticleTrailState[0].unk_06 = 0x64;
+    gParticleTrailState[0].unk_0A = 0;
+    gParticleTrailState[0].unk_08 = 0;
 
     for (i = 0; i < 6; i++) {
         UpdateParticleTrailPositions();
-        D_82203160[0].unk_08 -= 0x800;
+        gParticleTrailState[0].unk_08 -= 0x800;
     }
 }
 
@@ -293,9 +293,9 @@ void DrawParticleSprites(u8* arg0) {
 
     for (i = 5; i >= 0; i--) {
         for (j = 0; j < 3; j++) {
-            temp_s1 = D_82203160[j].unk_0C[i].unk_04;
-            temp_s3 = D_82203160[j].unk_0C[i].unk_00;
-            temp_s4 = D_82203160[j].unk_0C[i].unk_02;
+            temp_s1 = gParticleTrailState[j].unk_0C[i].unk_04;
+            temp_s3 = gParticleTrailState[j].unk_0C[i].unk_00;
+            temp_s4 = gParticleTrailState[j].unk_0C[i].unk_02;
 
             if (temp_s1 != 0) {
                 if (i == 0) {
@@ -309,8 +309,8 @@ void DrawParticleSprites(u8* arg0) {
     }
 }
 
-void func_82201108(void) {
-    if (D_822031D8 != 8) {
+void DrawParticleTrail(void) {
+    if (gCurrentAreaIndex != 8) {
         UpdateParticleTrailPositions();
 
         gDPPipeSync(gDisplayListHead++);
@@ -322,13 +322,13 @@ void func_82201108(void) {
         gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
 
-        DrawParticleSprites(D_82203064[D_82203160->unk_0A / 2]);
+        DrawParticleSprites(gParticleTextures[gParticleTrailState->unk_0A / 2]);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 
-        D_82203160->unk_08 -= 0x800;
-        D_82203160->unk_0A = (D_82203160->unk_0A + 2) % 8;
+        gParticleTrailState->unk_08 -= 0x800;
+        gParticleTrailState->unk_0A = (gParticleTrailState->unk_0A + 2) % 8;
     }
 }
 
@@ -338,7 +338,7 @@ void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     if (arg3 != 8) {
         if (arg3 == 7) {
-            arg3 += D_822031E8.unk_00;
+            arg3 += gAreaPlayerName.unk_00;
         }
         var_s2 = gBackgroundTexturePtrs[arg3];
 
@@ -357,7 +357,7 @@ void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-void func_822014C0(void) {
+void AreaSelect_Update(void) {
 }
 
 void UpdateBackgroundFade(s16 arg0, s16 arg1, s16 arg2) {
@@ -367,11 +367,11 @@ void UpdateBackgroundFade(s16 arg0, s16 arg1, s16 arg2) {
     s16 sp1E;
 
     if (arg0 == 2) {
-        sp1E = (D_822031DC * 0x2A) + 3;
-        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF - sp1E, D_822031DA);
-        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, sp1E, D_822031D8);
+        sp1E = (gTransitionFrame * 0x2A) + 3;
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF - sp1E, gPreviousAreaIndex);
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, sp1E, gCurrentAreaIndex);
     } else if ((arg0 != 8) && (arg0 != 0)) {
-        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF, D_822031D8);
+        DrawScrollingBackground(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF, gCurrentAreaIndex);
     }
 
     D_82203074 += D_82203078;
@@ -392,7 +392,7 @@ void DrawAnimatedIcon(s16 arg0, s16 arg1) {
     };
     static s16 D_822030CC = 0;
 
-    if (D_822031E0.unk_07 != 0) {
+    if (gAreaAudioState.unk_07 != 0) {
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -417,7 +417,7 @@ void DrawAnimatedIcon(s16 arg0, s16 arg1) {
 }
 
 void func_822018D4(s16 arg0, s16 arg1, s16 arg2) {
-    if ((D_822031E0.unk_07 == 0) || (arg2 <= 0)) {
+    if ((gAreaAudioState.unk_07 == 0) || (arg2 <= 0)) {
         return;
     }
 
@@ -430,7 +430,7 @@ void func_822018D4(s16 arg0, s16 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg0 - (arg2 / 2), arg1 - (arg2 / 2), arg2, arg2, 0, 0, 0x10000 / arg2, 0x10000 / arg2, 0);
 }
 
-void func_82201AC8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawBeveledPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 sp54;
     s16 sp50;
     s16 var_s2;
@@ -489,41 +489,41 @@ void func_82201AC8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_822022C8(s32 arg0) {
-    func_82201AC8(0x38, 0x17C, 0x210, 0x3C, 0x1E, 0x1E, 0x82, 0x96);
+void DrawAreaLabel(s32 arg0) {
+    DrawBeveledPanel(0x38, 0x17C, 0x210, 0x3C, 0x1E, 0x1E, 0x82, 0x96);
 
     if (arg0 != 0) {
         Text_ResetState();
         Text_SetFont(8, 0);
         Text_SetLineHeight(0x18);
-        Text_Print(0x5B, 0x182, GetMessageString(NULL, 0, D_822030F0, D_822031D8));
+        Text_Print(0x5B, 0x182, GetMessageString(NULL, 0, gAreaMessageBank, gCurrentAreaIndex));
         Text_SetupDL();
     }
 }
 
-void func_82202374(void) {
+void AreaSelect_InitInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-s32 func_822023A4(void) {
+s32 AreaSelect_HandleInput(void) {
     s8 var_s0 = 8;
     s32 var_t1 = 1;
 
-    D_82203160->unk_00 = gTileConfigTable[D_822031D8].unk_00;
-    D_82203160->unk_02 = gTileConfigTable[D_822031D8].unk_02;
-    D_82203160->unk_04 = gTileConfigTable[D_822031D8].unk_04;
-    D_82203160->unk_06 = 0x64;
+    gParticleTrailState->unk_00 = gTileConfigTable[gCurrentAreaIndex].unk_00;
+    gParticleTrailState->unk_02 = gTileConfigTable[gCurrentAreaIndex].unk_02;
+    gParticleTrailState->unk_04 = gTileConfigTable[gCurrentAreaIndex].unk_04;
+    gParticleTrailState->unk_06 = 0x64;
 
-    D_82203150.unk_00 = gTileConfigTable[D_822031D8].unk_00;
-    D_82203150.unk_02 = gTileConfigTable[D_822031D8].unk_02;
-    D_82203150.unk_08 = gTileConfigTable[D_822031D8].unk_0A;
-    D_82203150.unk_06 = 0;
-    D_82203150.unk_04 = 0x12C;
+    gTileOverlayState.unk_00 = gTileConfigTable[gCurrentAreaIndex].unk_00;
+    gTileOverlayState.unk_02 = gTileConfigTable[gCurrentAreaIndex].unk_02;
+    gTileOverlayState.unk_08 = gTileConfigTable[gCurrentAreaIndex].unk_0A;
+    gTileOverlayState.unk_06 = 0;
+    gTileOverlayState.unk_04 = 0x12C;
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        if (D_822031D8 == 3) {
+        if (gCurrentAreaIndex == 3) {
             Audio_PlaySequence(0x96, 8);
         }
         PlaySoundEffect(0x33);
@@ -534,27 +534,27 @@ s32 func_822023A4(void) {
         PlaySoundEffect(3);
         var_t1 = 4;
     } else if (gPlayer1Controller->buttonPressed & 0x800) {
-        var_s0 = gTileConfigTable[D_822031D8].unk_06;
+        var_s0 = gTileConfigTable[gCurrentAreaIndex].unk_06;
     } else if (gPlayer1Controller->buttonPressed & 0x400) {
-        var_s0 = gTileConfigTable[D_822031D8].unk_07;
+        var_s0 = gTileConfigTable[gCurrentAreaIndex].unk_07;
     } else if (gPlayer1Controller->buttonPressed & 0x200) {
-        var_s0 = gTileConfigTable[D_822031D8].unk_08;
+        var_s0 = gTileConfigTable[gCurrentAreaIndex].unk_08;
     } else if (gPlayer1Controller->buttonPressed & 0x100) {
-        var_s0 = gTileConfigTable[D_822031D8].unk_09;
+        var_s0 = gTileConfigTable[gCurrentAreaIndex].unk_09;
     }
 
     if (var_s0 != 8) {
         PlaySoundEffect(0x32);
         var_t1 = 2;
-        D_822031DA = D_822031D8;
-        D_822031D8 = var_s0;
-        D_822031DC = 0;
+        gPreviousAreaIndex = gCurrentAreaIndex;
+        gCurrentAreaIndex = var_s0;
+        gTransitionFrame = 0;
     }
 
     return var_t1;
 }
 
-s16 func_82202520(void) {
+s16 AreaSelect_AnimateTransition(void) {
     s32 var_v1;
     s32 v8_0;
     s32 v8_2;
@@ -563,22 +563,22 @@ s16 func_82202520(void) {
     s32 vA_2;
     s32 vA_4;
 
-    vA_0 = gTileConfigTable[D_822031DA].unk_00;
-    vA_2 = gTileConfigTable[D_822031DA].unk_02;
-    vA_4 = gTileConfigTable[D_822031DA].unk_04;
-    v8_0 = gTileConfigTable[D_822031D8].unk_00;
-    v8_2 = gTileConfigTable[D_822031D8].unk_02;
-    v8_4 = gTileConfigTable[D_822031D8].unk_04;
+    vA_0 = gTileConfigTable[gPreviousAreaIndex].unk_00;
+    vA_2 = gTileConfigTable[gPreviousAreaIndex].unk_02;
+    vA_4 = gTileConfigTable[gPreviousAreaIndex].unk_04;
+    v8_0 = gTileConfigTable[gCurrentAreaIndex].unk_00;
+    v8_2 = gTileConfigTable[gCurrentAreaIndex].unk_02;
+    v8_4 = gTileConfigTable[gCurrentAreaIndex].unk_04;
 
-    D_822031DC++;
+    gTransitionFrame++;
 
-    D_82203160->unk_00 = (((v8_0 - vA_0) * D_822031DC) / 6) + vA_0;
-    D_82203160->unk_02 = (((v8_2 - vA_2) * D_822031DC) / 6) + vA_2;
-    D_82203160->unk_04 = (((v8_4 - vA_4) * D_822031DC) / 6) + vA_4;
-    D_82203160->unk_06 = 0x64;
-    D_82203160->unk_08 += 0x800;
+    gParticleTrailState->unk_00 = (((v8_0 - vA_0) * gTransitionFrame) / 6) + vA_0;
+    gParticleTrailState->unk_02 = (((v8_2 - vA_2) * gTransitionFrame) / 6) + vA_2;
+    gParticleTrailState->unk_04 = (((v8_4 - vA_4) * gTransitionFrame) / 6) + vA_4;
+    gParticleTrailState->unk_06 = 0x64;
+    gParticleTrailState->unk_08 += 0x800;
 
-    if (D_822031DC == 6) {
+    if (gTransitionFrame == 6) {
         var_v1 = 1;
     } else {
         var_v1 = 2;
@@ -587,18 +587,18 @@ s16 func_82202520(void) {
     return var_v1;
 }
 
-s32 func_8220263C(void) {
+s32 AreaSelect_AnimateParticleOut(void) {
     s32 var_v1 = 3;
 
-    if (D_82203160->unk_06 >= 0xB) {
-        D_82203160->unk_06 -= 5;
+    if (gParticleTrailState->unk_06 >= 0xB) {
+        gParticleTrailState->unk_06 -= 5;
     } else {
-        D_82203160->unk_06 = 0;
-        if (D_822031D8 == 3) {
+        gParticleTrailState->unk_06 = 0;
+        if (gCurrentAreaIndex == 3) {
             Music_StopTrack(0x20);
             var_v1 = 6;
         } else {
-            if (D_822031D8 != 7) {
+            if (gCurrentAreaIndex != 7) {
                 Music_StopTrack(0x28);
             }
             var_v1 = 5;
@@ -607,27 +607,27 @@ s32 func_8220263C(void) {
     return var_v1;
 }
 
-s32 func_822026BC(void) {
+s32 AreaSelect_FadeInOverlay(void) {
     s16 var_a1 = 5;
 
-    if (D_82203150.unk_08.a < 0xFA) {
-        D_82203150.unk_08.a += 0x19;
-    } else if (D_82203150.unk_06 < 0xFF) {
-        D_82203150.unk_08.a = 0xFF;
-        D_82203150.unk_06 += 0x19;
-        if (D_82203150.unk_06 >= 0xFF) {
-            D_82203150.unk_06 = 0xFF;
+    if (gTileOverlayState.unk_08.a < 0xFA) {
+        gTileOverlayState.unk_08.a += 0x19;
+    } else if (gTileOverlayState.unk_06 < 0xFF) {
+        gTileOverlayState.unk_08.a = 0xFF;
+        gTileOverlayState.unk_06 += 0x19;
+        if (gTileOverlayState.unk_06 >= 0xFF) {
+            gTileOverlayState.unk_06 = 0xFF;
             Stage_SetFillColor(1);
             Stage_FadeOut(1);
             var_a1 = 5;
         }
     } else {
-        var_a1 = func_82200020(7);
+        var_a1 = GetControllerInputMask(7);
     }
     return var_a1;
 }
 
-s32 func_82202758(void) {
+s32 AreaSelect_FadeOutSequence(void) {
     s16 var_a1 = 6;
 
     if (gFadeStepCounter < 0x200) {
@@ -646,7 +646,7 @@ s32 func_82202758(void) {
     return var_a1;
 }
 
-s32 func_822027E8(void) {
+s32 AreaSelect_HandleFadeEnd(void) {
     s32 temp_v0 = Stage_GetFadeState();
     s16 var_v1 = 4;
 
@@ -658,7 +658,7 @@ s32 func_822027E8(void) {
             break;
 
         case 1:
-            D_822031D8 = 8;
+            gCurrentAreaIndex = 8;
             var_v1 = 7;
             break;
     }
@@ -666,71 +666,71 @@ s32 func_822027E8(void) {
     return var_v1;
 }
 
-void func_82202850(void) {
-    guOrtho(&D_82203108, 0.0f, 640.0f, 480.0f, 0.0f, -2.0f, 2.0f, 1.0f);
-    SetViewport(&D_822030F8, 0x280, 0x1E0);
+void AreaSelect_SetupProjection(void) {
+    guOrtho(&gAreaProjMatrix, 0.0f, 640.0f, 480.0f, 0.0f, -2.0f, 2.0f, 1.0f);
+    SetViewport(&gAreaViewport, 0x280, 0x1E0);
 
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
     gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
-    gSPViewport(gDisplayListHead++, (u32)&D_822030F8 & 0x1FFFFFFF);
-    gSPMatrix(gDisplayListHead++, (u32)&D_82203108 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPViewport(gDisplayListHead++, (u32)&gAreaViewport & 0x1FFFFFFF);
+    gSPMatrix(gDisplayListHead++, (u32)&gAreaProjMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gDisplayListHead++, (u32)&gCamProjectionMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 }
 
-void func_82202980(s16 arg0) {
+void AreaSelect_Render(s16 arg0) {
     Stage_BeginDisplayList();
-    func_82202850();
+    AreaSelect_SetupProjection();
 
     if (gOverlayAlpha == 0) {
-        Gfx_DrawTextureAtlas(D_82203148);
+        Gfx_DrawTextureAtlas(gBgTexturePrimary);
     } else if (gOverlayAlpha == 0xFF) {
-        Gfx_DrawTextureAtlas(D_8220314C);
+        Gfx_DrawTextureAtlas(gBgTextureSecondary);
     } else {
-        DrawFullScreenTextureBlend(D_82203148, D_8220314C, gOverlayAlpha);
+        DrawFullScreenTextureBlend(gBgTexturePrimary, gBgTextureSecondary, gOverlayAlpha);
     }
 
     DrawAnimatedIcon(0x12C, 0x41);
-    func_82201108();
+    DrawParticleTrail();
     UpdateBackgroundFade(arg0, 0x194, 0x28);
     func_822018D4(0x12C, 0x41, gFadeStepCounter);
     DrawTileOverlay();
 
     if ((arg0 == 1) || (arg0 == 2)) {
-        func_822022C8(arg0 == 1);
+        DrawAreaLabel(arg0 == 1);
     }
 
     Stage_Advance();
 }
 
-s32 func_82202A6C(void) {
+s32 AreaSelect_TransitionToGame(void) {
     s16 var_v1 = 8;
 
-    D_822031D8 = 8;
+    gCurrentAreaIndex = 8;
     if (Stage_GetFadeState() == 0) {
         gOverlayAlpha += 4;
         if (gOverlayAlpha == 0x100) {
             gBattleContext.unk_11F5 &= 0xFFFB;
             gOverlayAlpha = 0xFF;
-            D_822031DA = 8;
-            D_822031D8 = 0;
+            gPreviousAreaIndex = 8;
+            gCurrentAreaIndex = 0;
             var_v1 = 2;
         }
     }
     return var_v1;
 }
 
-void func_82202AFC(void) {
-    InitParticleTrail(D_822031D8);
+void AreaSelect_StartAnimation(void) {
+    InitParticleTrail(gCurrentAreaIndex);
     Music_ChangeTrack(0x50);
     Stage_FadeIn(0xA);
 
     while (Stage_GetFadeState() != 0) {
-        func_82202374();
-        func_82202980(0);
+        AreaSelect_InitInput();
+        AreaSelect_Render(0);
     }
 }
 
-void func_82202B60(void) {
+void AreaSelect_MainLoop(void) {
     s16 i;
 
     i = 2;
@@ -739,69 +739,69 @@ void func_82202B60(void) {
         i = 8;
     }
 
-    if (D_822031E0.unk_07 == 0) {
+    if (gAreaAudioState.unk_07 == 0) {
         gTileConfigTable[0].unk_06 = 8;
         gTileConfigTable[2].unk_09 = 8;
         gTileConfigTable[7].unk_06 = 8;
     }
 
-    D_822031DA = 8;
-    D_822031D8 = 0;
+    gPreviousAreaIndex = 8;
+    gCurrentAreaIndex = 0;
 
     while (i != 7) {
-        func_82202374();
+        AreaSelect_InitInput();
 
         switch (i) {
             case 1:
-                i = func_822023A4();
+                i = AreaSelect_HandleInput();
                 break;
             case 2:
-                i = func_82202520();
+                i = AreaSelect_AnimateTransition();
                 break;
 
             case 3:
-                i = func_8220263C();
+                i = AreaSelect_AnimateParticleOut();
                 break;
 
             case 4:
-                i = func_822027E8();
+                i = AreaSelect_HandleFadeEnd();
                 break;
 
             case 5:
-                i = func_822026BC();
+                i = AreaSelect_FadeInOverlay();
                 break;
 
             case 6:
-                i = func_82202758();
+                i = AreaSelect_FadeOutSequence();
                 break;
 
             case 8:
-                i = func_82202A6C();
+                i = AreaSelect_TransitionToGame();
                 break;
         }
 
-        func_82202980(i);
+        AreaSelect_Render(i);
     }
 }
 
-void func_82202CB8(void) {
-    D_822030F4 = ASSET_LOAD2(backgrounds, 1, 1);
+void AreaSelect_LoadAssets(void) {
+    gAreaAssetArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
-    if (D_822031E8.unk_00 == 2) {
+    if (gAreaPlayerName.unk_00 == 2) {
         if (gBattleContext.unk_11F2 == 0) {
-            D_82203148 = BinArchive_GetFile(D_822030F4, 1);
-            D_8220314C = BinArchive_GetFile(D_822030F4, 2);
+            gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 1);
+            gBgTextureSecondary = BinArchive_GetFile(gAreaAssetArchive, 2);
         } else {
-            D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 2);
+            gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 2);
         }
-    } else if (D_822031E8.unk_00 == 1) {
-        D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 0x13);
+    } else if (gAreaPlayerName.unk_00 == 1) {
+        gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 0x13);
     } else {
-        D_8220314C = D_82203148 = BinArchive_GetFile(D_822030F4, 0x12);
+        gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 0x12);
     }
 }
 
-s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 AreaSelect_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('LAND');
@@ -815,24 +815,24 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     MessageBank_Init();
-    D_822030F0 = GetMessageBank(0x17);
+    gAreaMessageBank = GetMessageBank(0x17);
     GbsEnsureBankLoaded(2);
-    GbsGetPlayerName(&D_822031E8);
-    GBAudio_ResetState(&D_822031E0, gBattleContext.unk_11F2);
-    func_82202CB8();
-    D_822031D8 = 8;
+    GbsGetPlayerName(&gAreaPlayerName);
+    GBAudio_ResetState(&gAreaAudioState, gBattleContext.unk_11F2);
+    AreaSelect_LoadAssets();
+    gCurrentAreaIndex = 8;
 
-    if ((D_822031E0.unk_07 != 0) && !(gBattleContext.unk_11F5 & 4) && !(D_822031E0.unk_00 & 0x100)) {
+    if ((gAreaAudioState.unk_07 != 0) && !(gBattleContext.unk_11F5 & 4) && !(gAreaAudioState.unk_00 & 0x100)) {
         gOverlayAlpha = 0xFF;
     }
 
     Stage_Set(sp24);
-    func_82202AFC();
-    func_82202B60();
+    AreaSelect_StartAnimation();
+    AreaSelect_MainLoop();
     Stage_Destroy();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('LAND');
 
-    return gStateTransitionTable[D_822031D8];
+    return gStateTransitionTable[gCurrentAreaIndex];
 }

@@ -418,7 +418,7 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
         D_8438E7AC = 2;
         AudioFrameUpdate(0);
         if (gBattleContext.unk_0000 != 0x11) {
-            func_8004B9C4(0x1E);
+            Stage_SetFadeColor(0x1E);
         }
         return 1;
     }

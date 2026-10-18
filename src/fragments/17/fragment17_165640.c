@@ -905,7 +905,7 @@ void BattleSequence_Outro(void) {
     }
 
     Stage_FadeOut(var_s1);
-    func_8004B9C4(var_s1 - 2);
+    Stage_SetFadeColor(var_s1 - 2);
 
     for (i = 0; i < var_s1; i++) {
         if (gBattleContext.unk_0001 == 7) {

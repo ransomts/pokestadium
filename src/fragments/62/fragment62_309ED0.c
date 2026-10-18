@@ -89,7 +89,7 @@ s32 HandlePlayerActionFlag800(unk_BattlePlayerEntity* arg0) {
             sp1C = 1;
             if (arg0->unk_720->unk_00 & 0x10) {
                 arg0->unk_720->unk_00 &= ~0x90;
-                func_84309368(arg0);
+                Pokemon_RestoreVisuals(arg0);
                 TriggerSpecialActionIfReady(arg0);
                 gBattleState.unk_00->unk_24++;
             }
@@ -121,7 +121,7 @@ s32 HandlePlayerActionFlag800Alt(unk_BattlePlayerEntity* arg0) {
             sp1C = 1;
             if (arg0->unk_720->unk_00 & 0x10) {
                 arg0->unk_720->unk_00 &= ~0x90;
-                func_84309328(arg0);
+                Pokemon_ResetAnimations(arg0);
                 gBattleState.unk_00->unk_24++;
             }
             break;
@@ -153,7 +153,7 @@ s32 HandlePlayerActionFlag1000(unk_BattlePlayerEntity* arg0) {
             var_s0 = 1;
             if (arg0->unk_720->unk_00 & 0x10) {
                 arg0->unk_720->unk_00 &= ~0x90;
-                func_84309368(arg0);
+                Pokemon_RestoreVisuals(arg0);
                 ClearEntityAnimFlags(arg0, 0x1800);
                 var_s0 = 0;
                 Battle_ResetSubstate();
@@ -197,7 +197,7 @@ s32 ProcessActionWhenState44Is2(unk_BattlePlayerEntity* arg0) {
             sp1C = 1;
             if (arg0->unk_720->unk_00 & 0x10) {
                 arg0->unk_720->unk_00 &= ~0x90;
-                func_84309368(arg0);
+                Pokemon_RestoreVisuals(arg0);
                 TriggerSpecialActionIfReady(arg0);
                 gBattleState.unk_00->unk_24 += 1;
             }
@@ -238,7 +238,7 @@ s32 ProcessDualPlayerActionState1(void) {
             if (temp_a1->unk_34 & 0x800) {
                 if (D_84390010[0]->unk_720->unk_00 & 0x10) {
                     D_84390010[0]->unk_720->unk_00 &= ~0x90;
-                    func_84309328(D_84390010[0]);
+                    Pokemon_ResetAnimations(D_84390010[0]);
                     gBattleState.unk_00->unk_24 += 1;
                 }
             } else {
@@ -259,7 +259,7 @@ s32 ProcessDualPlayerActionState1(void) {
             if (temp_a2->unk_34 & 0x800) {
                 if (D_84390010[1]->unk_720->unk_00 & 0x10) {
                     D_84390010[1]->unk_720->unk_00 &= ~0x90;
-                    func_84309328(D_84390010[1]);
+                    Pokemon_ResetAnimations(D_84390010[1]);
                     gBattleState.unk_00->unk_24 += 1;
                 }
             } else {
@@ -1046,14 +1046,14 @@ void func_84321F2C(UNUSED CameraStruct* arg0) {
     if (Battle_WaitForAnimation(0x50) != 0) {
         gBattleState.unk_00->unk_40 = gBattleState.unk_00->unk_2C + 1;
         Dialog_Clear();
-        func_8004B9C4(0x14);
+        Stage_SetFadeColor(0x14);
     }
 }
 
 void func_84321F74(UNUSED CameraStruct* arg0) {
     if (Battle_WaitForAnimation(0x7D) != 0) {
         gBattleState.unk_00->unk_40 = gBattleState.unk_00->unk_2C + 1;
-        func_8004B9C4(0x14);
+        Stage_SetFadeColor(0x14);
     }
 }
 
@@ -2469,7 +2469,7 @@ void func_84325724(CameraStruct* arg0) {
             Camera_SmoothPanToEntity(arg0, gCurrentPlayer);
             if (gCurrentPlayer->unk_720->unk_00 & 0x10) {
                 gCurrentPlayer->unk_720->unk_00 &= ~0x90;
-                func_84309168(gCurrentPlayer);
+                Pokemon_ResetToDefaultState(gCurrentPlayer);
                 RefreshPokemonTransform(gCurrentPlayer);
                 AnimChannel_StartMoveAction(gCurrentPlayer, sp30->unk_5A);
                 TriggerMoveEvent(gCurrentPlayer, sp30, 0);
@@ -3320,7 +3320,7 @@ void Battle_PlayerDefeatSequence(CameraStruct* arg0) {
                 gPlayerScaleFactors[gBattleState.unk_00->unk_2C] = temp_s0->unk_654.unk_38.unk_0C;
                 InitActionScriptMode3(3, temp_s0, temp_s0, 0xFF, 0xFF);
                 Audio_PlaySoundEffect(2, 0, 0);
-                func_84308A04(temp_s0, sp34->unk_2C);
+                Entity_SetupBattleState(temp_s0, sp34->unk_2C);
                 arg0->unk_24.fovy = 40.0f;
                 Dialog_SetMode(0xC);
                 ProcessEntityAudioInfo(temp_s0);
@@ -3418,7 +3418,7 @@ void Battle_PlayerDefeatSequenceAlt(CameraStruct* arg0) {
                 RefreshPokemonTransform(temp_s0);
                 gPlayerScaleFactors[IsPrimaryEntity(temp_s0)] = temp_s0->unk_654.unk_38.unk_0C;
                 Audio_PlaySoundEffect(2, 0, 0);
-                func_84308A04(temp_s0, sp3C->unk_2C);
+                Entity_SetupBattleState(temp_s0, sp3C->unk_2C);
                 Battle_FinishTurn();
                 InitActionScriptMode3(3, temp_s0, temp_s0, 0xFF, 0xFF);
                 arg0->unk_24.fovy = 40.0f;

@@ -863,7 +863,7 @@ void BattleIntroPanel_InitInputTables(void) {
 void func_86B02928(void) {
     Vec3f sp1C;
 
-    if (func_80015390(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
+    if (Graph_GetRecordedPosition(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
         D_86B0EBDC->unk_170.unk_024.x = sp1C.x;
         D_86B0EBDC->unk_170.unk_024.y = D_86B0EBDC->unk_2FC + sp1C.y;
         D_86B0EBDC->unk_170.unk_024.z = D_86B0EBDC->unk_300 + sp1C.z;

@@ -197,7 +197,7 @@ void MenuBar_Render(void) {
 
     for (i = 0, var_s4 = &D_82F211A0[0]; i < 2; i++, var_s4++) {
         if (var_s4->unk_00 != 0) {
-            temp_s0 = func_82F05198(i);
+            temp_s0 = Picker_GetSelectedSprite(i);
 
             if (sp84 == 0) {
                 sp84 = 1;
@@ -275,7 +275,7 @@ void ScreenTransition_Start(s16 arg0) {
     unk_D_82F21238* ptr = &gScreenTransition;
 
     main_pool_push_state('intr');
-    func_82F0525C(arg0, &sp20);
+    Picker_GetSelectionInfo(arg0, &sp20);
     gScreenTransition.unk_00 = arg0;
     gScreenTransition.unk_02 = 1;
     gScreenTransition.unk_04 = sp20.unk_02;
@@ -454,7 +454,7 @@ void ScreenTransition_ApplyPokemonUpdate(unk_D_82F21238* arg0) {
         }
         arg0->unk_20 = 0;
         PokemonData_UpdateNameIfSpecial(arg0->unk_04, arg0->unk_24);
-        func_82F05210(arg0->unk_00, arg0->unk_24);
+        Picker_SetSelectedSprite(arg0->unk_00, arg0->unk_24);
         ScreenTransition_Init(arg0, 1);
         arg0->unk_30.unk_00 = 0x38;
         arg0->unk_30.unk_02 = 0x168;
@@ -733,7 +733,7 @@ void DrawTransitionText(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
     }
 
     if ((sp44[0] != '\x00') && ((arg0->unk_04 != 0x210) || (arg0->unk_06 != 0))) {
-        func_82F037EC(arg0->unk_00, arg0->unk_02, arg0->unk_04, arg0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
+        Picker_DrawLargePanelBorder(arg0->unk_00, arg0->unk_02, arg0->unk_04, arg0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
         if ((arg0->unk_04 == 0x210) && (arg0->unk_06 == 0x28)) {
             Text_ResetState();
             Text_SetFont(0x10, 0);

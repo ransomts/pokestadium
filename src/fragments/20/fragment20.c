@@ -476,10 +476,10 @@ static MiniRockInfo miniRockInfos[] = {
     { { 18.0f, 0.0f, -300.0f }, { 0, 0, 0 }, 20, 40, 0 },
     { { 54.0f, 0.0f, -300.0f }, { 0, 0, 0 }, 20, 40, 0 },
 };
-static unk_func_87801684 gMetapodAudioEvents1[] = {
+static AnimFrame gMetapodAudioEvents1[] = {
     { D_0303ED80, 0xE }, { D_0303F180, 2 }, { D_0303F580, 6 }, { D_0303F180, 2 }, { NULL, 0 },
 };
-static unk_func_87801684 gMetapodAudioEvents2[] = {
+static AnimFrame gMetapodAudioEvents2[] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
 };
 
@@ -530,7 +530,7 @@ void MiniAudioEventHandler(s16 arg0, s16 arg1) {
             break;
 
         case 11:
-            func_8004B9C4(0x3C);
+            Stage_SetFadeColor(0x3C);
             break;
 
         case 12:
@@ -1649,9 +1649,9 @@ void func_86E026D0(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            func_87801F48(2, 0x19, 0xA6);
-            func_87801684(0x74, 0xB0, gMetapodAudioEvents1);
-            func_87801824(0x74, 0xC6, gMetapodAudioEvents2);
+            DrawDualTexturePanel(2, 0x19, 0xA6);
+            DrawAnimatedSprite(0x74, 0xB0, gMetapodAudioEvents1);
+            DrawAnimatedSprite3(0x74, 0xC6, gMetapodAudioEvents2);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;

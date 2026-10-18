@@ -47,7 +47,7 @@ unk_D_82F14450 gPlayerInfo[4];
 static s16 gActivePlayerIndex;
 static s16 gSelectedOptionId;
 static s32 pad_D_82F144AC;
-static unk_D_82F144B0 D_82F144B0;
+static unk_D_82F144B0 gProgressBarRect;
 static s32 gPoolStatePushed;
 static s32 gPollControllerFlag;
 static char** D_82F144C4;
@@ -75,7 +75,7 @@ char* GetMessageStringBank26Remapped(s32 arg0) {
 }
 
 void InitProgressBarRect(s16 arg0) {
-    unk_D_82F144B0* ptr = &D_82F144B0;
+    unk_D_82F144B0* ptr = &gProgressBarRect;
 
     switch (arg0) {
         case 0:
@@ -95,12 +95,12 @@ void InitProgressBarRect(s16 arg0) {
 }
 
 void ResetProgressBar(void) {
-    D_82F144B0.unk_00 = -1;
+    gProgressBarRect.unk_00 = -1;
     InitProgressBarRect(0);
 }
 
 void UpdateProgressBar(void) {
-    unk_D_82F144B0* ptr = &D_82F144B0;
+    unk_D_82F144B0* ptr = &gProgressBarRect;
 
     if ((ptr->unk_00 != 0) && (MenuPanel_IsAnimating() != 0)) {
         if (ptr->unk_00 > 0) {
@@ -300,18 +300,18 @@ void UpdateControllerInfo(void) {
 
 void SwapPlayerSelections(void) {
     s32 i;
-    unk_func_82F00838_sp30_00C sp50;
+    PickerPokemonEntry sp50;
     unk_func_82F00838_sp30 sp30[2];
 
     for (i = 0; i < 2; i++) {
-        func_82F0525C(i, &sp30[i]);
+        Picker_GetSelectionInfo(i, &sp30[i]);
     }
 
     sp50 = sp30[0].unk_0C[sp30[0].unk_06];
     sp30[0].unk_0C[sp30[0].unk_06] = sp30[1].unk_0C[sp30[1].unk_06];
     sp30[1].unk_0C[sp30[1].unk_06] = sp50;
 
-    func_82F051B8();
+    Picker_SwapSelectedSprites();
 }
 
 void func_82F00960(void) {
@@ -336,7 +336,7 @@ void InitFragment41(void) {
     MenuPanel_Init();
     UpdateControllerInfo();
     InitMenuGraphics();
-    func_82F04FD4();
+    Picker_Reset();
     func_82F0C190();
 }
 
@@ -348,7 +348,7 @@ void RenderFragment41Frame(void) {
     }
     DrawTextBox();
     func_82F09E30();
-    func_82F05110();
+    Picker_Render();
     func_82F0C320();
     func_82F00960();
     Stage_Advance();
@@ -391,7 +391,7 @@ void func_82F00AC8(s32 arg0) {
         case 7:
             InitProgressBarRect(0);
             Stage_FadeOut(0xF);
-            func_8004B9C4(0xF);
+            Stage_SetFadeColor(0xF);
             break;
     }
 }
@@ -467,11 +467,11 @@ void func_82F00D3C(void) {
 
         case 12:
             if (MenuPanel_CheckState(0xC) != 0) {
-                if (D_82F144B0.unk_00 == -1) {
-                    D_82F144B0.unk_00 = 5;
+                if (gProgressBarRect.unk_00 == -1) {
+                    gProgressBarRect.unk_00 = 5;
                 }
             } else {
-                D_82F144B0.unk_00 = -1;
+                gProgressBarRect.unk_00 = -1;
             }
 
             if (MenuPanel_CheckState(0xA) != 0) {
@@ -485,7 +485,7 @@ void func_82F00E88(void) {
     unk_func_82F00838_sp30 sp20;
 
     if (GetPickerState() == 0) {
-        func_82F0525C(gActivePlayerIndex, &sp20);
+        Picker_GetSelectionInfo(gActivePlayerIndex, &sp20);
 
         if (sp20.unk_00 != 0) {
             if (gActivePlayerIndex == 0) {
@@ -510,11 +510,11 @@ void func_82F00F3C(void) {
     InitProgressBarRect(1);
 
     if (func_82F0C16C() == 2) {
-        if (D_82F144B0.unk_00 == -1) {
-            D_82F144B0.unk_00 = 3;
+        if (gProgressBarRect.unk_00 == -1) {
+            gProgressBarRect.unk_00 = 3;
         }
     } else {
-        D_82F144B0.unk_00 = -1;
+        gProgressBarRect.unk_00 = -1;
     }
 
     if (func_82F0C16C() == 0) {
@@ -530,11 +530,11 @@ void func_82F00FD8(void) {
     InitProgressBarRect(1);
 
     if (func_82F0C16C() == 2) {
-        if (D_82F144B0.unk_00 == -1) {
-            D_82F144B0.unk_00 = 3;
+        if (gProgressBarRect.unk_00 == -1) {
+            gProgressBarRect.unk_00 = 3;
         }
     } else {
-        D_82F144B0.unk_00 = -1;
+        gProgressBarRect.unk_00 = -1;
     }
 
     if (func_82F0C16C() == 7) {
@@ -608,7 +608,7 @@ void func_82F01180(void) {
         }
         UpdateTextBox();
         UpdateMenuStateMachine();
-        func_82F0504C();
+        Picker_Update();
         func_82F0C254();
         MenuPanel_Update();
         RenderFragment41Frame();

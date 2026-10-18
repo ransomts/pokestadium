@@ -270,7 +270,7 @@ s32 MenuFragment_Init(void) {
         }
     }
 
-    func_80007754();
+    Menu_SetupDisplayList();
     sp26 = RunMenuSelectionLoop();
     Stage_Terminate();
 

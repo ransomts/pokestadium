@@ -372,7 +372,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
         Gfx_InitBuffers(0x10000, 0);
         Stage_Set(Stage_Create(0, 1, 3, 1, 2, 1));
     } else {
-        func_80007754();
+        Menu_SetupDisplayList();
     }
 
     GbsEnsureBankLoaded(2);

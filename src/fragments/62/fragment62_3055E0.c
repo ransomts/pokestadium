@@ -9,7 +9,7 @@ f32 gCameraDistCurrent;
 static s32 gBattleFrameCounter = 0;
 
 f32 ClampScaledDistance(unk_BattlePlayerEntity* arg0, f32 arg1, f32 arg2) {
-    f32 temp_fv1 = func_84308598(arg0) * arg1;
+    f32 temp_fv1 = GetScaledWidth(arg0) * arg1;
 
     if (arg2 < temp_fv1) {
         return arg2;
@@ -81,7 +81,7 @@ void GetEntityGroundPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
 }
 
 void ResolveEntityPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1, s32 arg2) {
-    if (func_80015390(&arg0->unk_000, arg2, arg1) == NULL) {
+    if (Graph_GetRecordedPosition(&arg0->unk_000, arg2, arg1) == NULL) {
         GetEntityCenterPosition(arg0, arg1);
         arg1->x = GetEntityXOffset(arg0);
         arg1->z = 0.0f;

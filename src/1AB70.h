@@ -57,7 +57,7 @@ typedef struct SpriteDisplay {
     /* 0x18 */ SpeciesDisplayParams* unk_18;
 } SpriteDisplay; // size = 0x1C
 
-typedef struct unk_D_84B25A28 {
+typedef struct BattleUiState {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
@@ -72,7 +72,7 @@ typedef struct unk_D_84B25A28 {
     /* 0x24 */ FramebufferImage* unk_24;
     /* 0x28 */ FramebufferImage* unk_28;
     /* 0x2C */ char unk2C[0x4];
-} unk_D_84B25A28; // size = 0x30
+} BattleUiState; // size = 0x30
 
 SpriteDisplay* SpriteDisplay_Alloc(AssetManager*, s16, s16, s16);
 void SpriteDisplay_SetDepthBuffer(SpriteDisplay*, AssetManager*, FramebufferImage*);
@@ -84,7 +84,7 @@ s32 SpriteDisplay_TryAdvance(SpriteDisplay*, s32);
 s32 func_8001ABAC(SpriteDisplay*, s32);
 s32 func_8001AD90(SpriteDisplay*, s32);
 u8* SpriteDisplay_GetImagePtr(SpriteDisplay*, s32);
-s32 func_8001B010(SpriteDisplay*);
+s32 SpriteDisplay_IsAnimating(SpriteDisplay*);
 void SpriteAssets_Load(void);
 void func_8001B0DC(u16*, s32, PokemonData*);
 unk_func_8001B1FC* func_8001B1FC(AssetManager*, s16, s16, s16, s16, s16, s16, u8*);

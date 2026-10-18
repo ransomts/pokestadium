@@ -11,7 +11,7 @@
 static unk_D_82F20A10 gBattleResultScreenState;
 static s16 gResultOptionIndex;
 
-void BattleResultScreen_Start(unk_D_82F144D0* arg0, u8* arg1, s16 arg2, s16 arg3) {
+void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     unk_D_82F20A10* ptr = &gBattleResultScreenState;
 
     main_pool_push_state('BBRD');
@@ -234,7 +234,7 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
     sp8C[0] = GetMessageString(NULL, 0, D_82F13B70, 0x12);
     sp8C[1] = GetMessageString(NULL, 0, D_82F13B70, 0x13);
     sp11C = arg0->unk_14;
-    func_82F022DC(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
+    Picker_DrawFrame(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
 
     if ((arg0->unk_0C == 0x210) && (arg0->unk_0E == 0x148)) {
         if (arg0->unk_18->unk_0010 == 0) {
@@ -403,7 +403,7 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                     sp60[j] = MeasureTextWidth(0, 0, sp8C[j]);
                 }
 
-                func_82F02CE8((D_82F13C64[gResultOptionIndex] + arg0->unk_04) - 8, arg0->unk_06 + 0x128,
+                Picker_DrawCursor((D_82F13C64[gResultOptionIndex] + arg0->unk_04) - 8, arg0->unk_06 + 0x128,
                               sp60[gResultOptionIndex] + 0x10, 0x1E);
             }
         }

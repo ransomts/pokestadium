@@ -817,7 +817,7 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
         gSPDisplayList(gDisplayListHead++, gStatusIconDL);
         gSPDisplayList(gDisplayListHead++, var_a3);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -849,7 +849,7 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
             gSPDisplayList(gDisplayListHead++, gComputerSelectionDL);
             gSPDisplayList(gDisplayListHead++, var_a3);
         }
-        func_80015684();
+        Gfx_ResetRenderState();
     }
 
     return 0;
@@ -861,7 +861,7 @@ s32 DrawComputerRootUI(s32 arg0, GraphNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIRoot->unk_38->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gComputerRootDL);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -919,7 +919,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
             gSP2Triangles(gDisplayListHead++, 0, 1, 2, 0, 0, 2, 3, 0);
         }
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1026,7 +1026,7 @@ s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDefaultGraphRoot->unk_01D);
             gSPDisplayList(gDisplayListHead++, gIconDL);
 
-            func_80015684();
+            Gfx_ResetRenderState();
             break;
     }
     return 0;
@@ -2056,7 +2056,7 @@ void UI_HandleMainSelectionInput(void) {
         D_8250A288.unk_06 = -1;
         Stage_SetFillColor(1);
         Stage_FadeOut(0xF);
-        func_8004B9C4(0xF);
+        Stage_SetFadeColor(0xF);
         PlaySoundEffect(3);
     }
 }

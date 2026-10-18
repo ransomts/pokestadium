@@ -484,7 +484,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
     return gMusicHandle;
 }
 
-void func_8004B9C4(s32 arg0) {
+void Stage_SetFadeColor(s32 arg0) {
     s32 i;
 
     if (arg0 == 0) {

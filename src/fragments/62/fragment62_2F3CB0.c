@@ -124,7 +124,7 @@ void Entity_AnimateSubObjects(unk_BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_16C = Math_ApproachS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
         arg0->unk_168[i].unk_16A += arg0->unk_168[i].unk_16C;
 
-        tmp = SINS(arg0->unk_168[i].unk_16A) * (func_84308598(arg0) * sp4C[i]);
+        tmp = SINS(arg0->unk_168[i].unk_16A) * (GetScaledWidth(arg0) * sp4C[i]);
         Vector_SetXZFromPolar(&sp5C, tmp, arg0->unk_000.unk_01E.y);
 
         arg0->unk_168[i].unk_000.unk_024.x = arg0->unk_000.unk_024.x + sp5C.x;

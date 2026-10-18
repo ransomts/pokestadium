@@ -1661,7 +1661,7 @@ void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
     }
 
     if (arg0->unk_720->unk_01 == 2) {
-        for (i = 0; i < func_84307EE0(arg0); i++) {
+        for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
             temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
@@ -1691,7 +1691,7 @@ void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
     }
 
     if (arg0->unk_720->unk_01 == 2) {
-        for (i = 0; i < func_84307EE0(arg0); i++) {
+        for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
             temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
@@ -1721,7 +1721,7 @@ void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
     }
 
     if (arg0->unk_720->unk_01 == 2) {
-        for (i = 0; i < func_84307EE0(arg0); i++) {
+        for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
             temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
@@ -1751,7 +1751,7 @@ void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
     }
 
     if (arg0->unk_720->unk_01 == 2) {
-        for (i = 0; i < func_84307EE0(arg0); i++) {
+        for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
             temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
@@ -1780,7 +1780,7 @@ s32 CheckBattleEntityFaintStatus(unk_BattlePlayerEntity* arg0) {
             }
 
             if (arg0->unk_720->unk_01 == 2) {
-                for (i = 0; i < func_84307EE0(arg0); i++) {
+                for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
                     temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
                     var_s2 += temp_v0->unk_02;
                 }

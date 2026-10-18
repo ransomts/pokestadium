@@ -24,7 +24,7 @@ s32 pad_D_84B1A590[2];
 unk_D_84B1A598 gBattleGraphics;
 unk_D_84B259A8 gErrorScreenState;
 unk_D_84B259E8 gErrorScreenAnim;
-unk_D_84B25A28 gUIState;
+BattleUiState gUIState;
 unk_D_84B25A58 gUIElementA;
 unk_D_84B25A90 gUIElementB;
 unk_D_84B25AC0 gUIBarA;
@@ -140,7 +140,7 @@ char* Battle_GetMessageStringBuffer(char* arg0, s32 arg1, u32 arg2) {
 s32 Battle_ProcessResult(s32 arg0, unk_D_86002F34_alt8* arg1) {
     if (arg0 == 5) {
         BattleResult_ProcessGraphics(arg1->unk_00.unk_14);
-        func_80015684();
+        Gfx_ResetRenderState();
     }
 }
 

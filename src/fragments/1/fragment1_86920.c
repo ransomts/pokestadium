@@ -80,7 +80,7 @@ void AudioArena_Init(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
   arg0->unk_0C = 0;
 }
 
-void func_812070A0(void) {
+void GbPak_InitGfx(void) {
     u64* var_v0_2;
     s16* var_v1_2;
     s32 var_a0;

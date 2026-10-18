@@ -6331,7 +6331,7 @@ s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));
     TrainerCardMenuInit(gTrainerCardMenu, 0, 0, sp28, sp2C);
-    func_80007754();
+    Menu_SetupDisplayList();
     Graph_InitRoots();
     Stage_FadeIn(8);
     Stage_AdvanceUntil(8, PictureQuiz_DrawResultsFrame);

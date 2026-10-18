@@ -648,29 +648,29 @@ void HandleSnapshotButton(void) {
         PlaySoundEffect(0x2C);
         gStagePanelTransitionTimer = 0xA;
         if (gStagePanelMode != 1) {
-            Vec3f_Set(&D_83402EE0[gStageSnapshotCount].unk_50, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y,
+            Vec3f_Set(&gDisplayableMonIndices[gStageSnapshotCount].unk_50, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y,
                           gMiniCameraPtr->unk_60.eye.z);
-            Vec3f_Set(&D_83402EE0[gStageSnapshotCount].unk_5C, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y,
+            Vec3f_Set(&gDisplayableMonIndices[gStageSnapshotCount].unk_5C, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y,
                           gMiniCameraPtr->unk_60.at.z);
-            D_83402EE0[gStageSnapshotCount].unk_6C = 0;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_6C = 0;
 
-            D_83402EE0[gStageSnapshotCount].unk_6C = gCameraParams->unk_014 * 4;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_6C = gCameraParams->unk_014 * 4;
             if (gCameraParams->unk_008 == 25.0f) {
-                D_83402EE0[gStageSnapshotCount].unk_6C |= 2;
+                gDisplayableMonIndices[gStageSnapshotCount].unk_6C |= 2;
             }
 
-            D_83402EE0[gStageSnapshotCount].unk_6C |= gCameraParams->unk_00C * 0x10;
-            D_83402EE0[gStageSnapshotCount].unk_68 = gTimerCounter;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_6C |= gCameraParams->unk_00C * 0x10;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_68 = gTimerCounter;
 
-            D_83402EE0[gStageSnapshotCount].unk_00 = gStagePanelState->unk_004.unk_024.y;
-            D_83402EE0[gStageSnapshotCount].unk_04 = gStagePanelState->unk_16C;
-            D_83402EE0[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.unk_08 >> 0x10;
-            D_83402EE0[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.unk_00;
-            D_83402EE0[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.unk_00;
-            D_83402EE0[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.unk_08;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_00 = gStagePanelState->unk_004.unk_024.y;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_04 = gStagePanelState->unk_16C;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.unk_08 >> 0x10;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.unk_00;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.unk_00;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.unk_08;
 
-            Particle_Serialize(D_83402EE0[gStageSnapshotCount].unk_0A);
-            Cam_ConvertInputToState(&D_83402EE0[gStageSnapshotCount].unk_70, &gStagePanelPlayerData);
+            Particle_Serialize(gDisplayableMonIndices[gStageSnapshotCount].unk_0A);
+            Cam_ConvertInputToState(&gDisplayableMonIndices[gStageSnapshotCount].unk_70, &gStagePanelPlayerData);
         }
 
         gStagePanelAnimState.unk_00 = 0x14;

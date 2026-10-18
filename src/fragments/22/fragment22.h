@@ -49,14 +49,14 @@ void Labo_ColorRectSetFrame(unk_func_88001300* arg0, s32 arg1);
 void Labo_CreateBlinkingObject(unk_func_88000CC8* arg0, s32 arg1, s32 arg2, unk_func_88500020* arg3, u8* arg4, u8* arg5, u8* arg6, u8* arg7, u8* arg8, unk_func_88001300_034* arg9);
 void Labo_BlinkingObjectAdvanceFrame(unk_func_88001300_000* arg0);
 s32 Labo_DrawBlinkingObject(unk_func_88001300_000* arg0, s32 arg1, s32 arg2);
-void func_88001258(unk_func_88001300* arg0);
-void func_88001CBC(unk_func_88001300* arg0, s32 arg1);
-s32 func_88001D0C(unk_func_88001300* arg0, Controller* controller);
-s32 func_88001D34(void);
-s32 func_88001D94(unk_func_88001300* arg0);
-void func_8800233C(unk_func_88001300* arg0);
-void func_88002580(unk_func_88001300* arg0);
-s32 func_880025D8(unk_func_88001300* arg0);
-s32 func_88002628(s32 arg0, UNUSED s32 arg1);
+void Labo_SetMessageBoxText(unk_func_88001300* arg0);
+void Labo_SetUIState(unk_func_88001300* arg0, s32 arg1);
+s32 Labo_HandleInput(unk_func_88001300* arg0, Controller* controller);
+s32 Labo_GetActivePlayerCount(void);
+s32 Labo_ProcessInput(unk_func_88001300* arg0);
+void Labo_ThreadMain(unk_func_88001300* arg0);
+void Labo_RenderFrame(unk_func_88001300* arg0);
+s32 Labo_WaitUntilExit(unk_func_88001300* arg0);
+s32 Labo_FragmentEntry(s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT22_H_

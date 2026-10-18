@@ -4262,14 +4262,14 @@ void SetTeamScoresFromActivePokemons(void) {
     sp24[2] = 0;
     sp24[3] = 0;
 
-    sp24[ptr1->unk_720->unk_08[0]->unk_001] = func_84308D90(ptr1->unk_720->unk_08[0]);
+    sp24[ptr1->unk_720->unk_08[0]->unk_001] = GetPokemonType(ptr1->unk_720->unk_08[0]);
     if (ptr1->unk_720->unk_01 == 2) {
-        sp24[ptr1->unk_720->unk_08[1]->unk_001] = func_84308D90(ptr1->unk_720->unk_08[1]);
+        sp24[ptr1->unk_720->unk_08[1]->unk_001] = GetPokemonType(ptr1->unk_720->unk_08[1]);
     }
 
-    sp24[ptr2->unk_720->unk_08[0]->unk_001] = func_84308D90(ptr2->unk_720->unk_08[0]);
+    sp24[ptr2->unk_720->unk_08[0]->unk_001] = GetPokemonType(ptr2->unk_720->unk_08[0]);
     if (ptr2->unk_720->unk_01 == 2) {
-        sp24[ptr2->unk_720->unk_08[1]->unk_001] = func_84308D90(ptr2->unk_720->unk_08[1]);
+        sp24[ptr2->unk_720->unk_08[1]->unk_001] = GetPokemonType(ptr2->unk_720->unk_08[1]);
     }
     SetTeamScores(sp24[0], sp24[1], sp24[2], sp24[3]);
 }

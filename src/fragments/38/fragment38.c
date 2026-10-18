@@ -1628,7 +1628,7 @@ s16 EventBattleMainLoop(void) {
     SpriteAssets_Load();
     SaveSlot_Load(0);
     SaveSlot_Load(1);
-    func_80007754();
+    Menu_SetupDisplayList();
     EventBattle_InitUI(&D_82305A28, D_823059CC);
     EventBattle_StateMachine(&D_82305A28);
     D_823059CC = D_82305A28.unk_02;

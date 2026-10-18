@@ -13,11 +13,11 @@ typedef struct unk_D_8122C4FA {
   /* 0x01 */ u8 unk_01;
 } unk_D_8122C4FA; // size >= 0x2
 
-typedef struct unk_D_8122B2F8 {
+typedef struct TileAssetFragment {
   /* 0x000000 */ char unk000000[0x1FEAE8];
-} unk_D_8122B2F8; // size = 0x1FEAE8
+} TileAssetFragment; // size = 0x1FEAE8
 
-typedef struct unk_D_8122B1E8 {
+typedef struct GbPakThreadContext {
   /* 0x00 */ OSMesg mesg[1];
   /* 0x04 */ OSMesgQueue queue;
   /* 0x1C */ char unk1C[0x4];
@@ -37,9 +37,9 @@ typedef struct unk_D_8122B1E8 {
   /* 0x58 */ s32 unk_58;
   /* 0x5C */ u32 unk_5C;
   /* 0x60 */ char unk60[0x8];
-} unk_D_8122B1E8; // size = 0x68
+} GbPakThreadContext; // size = 0x68
 
-typedef struct unk_func_812009D0 {
+typedef struct GbPakHeader {
   /* 0x00 */ u8 unk00[0x34];
   /* 0x34 */ u8 data[0x10];  
   /* 0x44 */ u16 unk_44;
@@ -48,9 +48,9 @@ typedef struct unk_func_812009D0 {
   /* 0x48 */ u8 unk_48;
   /* 0x49 */ u8 unk_49;
   /* 0x4A */ u8 unk_4A;
-} unk_func_812009D0; // size = 0x4B
+} GbPakHeader; // size = 0x4B
 
-typedef struct unk_D_8122C748 {
+typedef struct GbPakAssetData {
   /* 0x0000 */ u8 unk0000[0x9790];
   /* 0x9790 */ s32 unk_9790;
   /* 0x9794 */ u8 unk9794[0xFC];
@@ -61,7 +61,7 @@ typedef struct unk_D_8122C748 {
   /* 0x9A90 */ u16 unk_9A90[0x42];
   /* 0x9B14 */ u8 unk9B14[0x82];
   /* 0x9B96 */ u16 unk_9B96[0x42];
-} unk_D_8122C748; // size = 0x9C1A
+} GbPakAssetData; // size = 0x9C1A
 
 typedef struct unk_D_8120D7F3 {
     u8 pad[0x116];
@@ -69,7 +69,7 @@ typedef struct unk_D_8120D7F3 {
 } unk_D_8120D7F3; // size = 0x10A ??
 
 // ??
-extern unk_D_8120D7F3 D_8120D7F3;
+extern unk_D_8120D7F3 gStadiumUILayout;
 
 // .data
 extern s16 Palette_Default0[];
@@ -96,32 +96,32 @@ const u8 D_8122AD50[] = {
 // .bss
 extern FramebufferImage* FramebufferImage0;
 extern FramebufferImage* FramebufferImage1;
-extern u8 D_8120D820[234];
+extern u8 gStadiumUIMap[234];
 extern u8 gGameTitle_PokemonYellow[16];
-extern unk_D_8122B1E8 GbPakThreadData[2];
+extern GbPakThreadContext GbPakThreadData[2];
 extern s32 D_8122B224[];
 extern s32 UnknownCounterB;
-extern unk_D_8122B2C0* GbPakDevice;
-extern unk_D_8122B2F8* TileAssetFragments[3];
+extern GbPakDeviceState* GbPakDevice;
+extern TileAssetFragment* TileAssetFragments[3];
 extern FramebufferImage* FramebufferImages[2];
 extern s32 ScreenBasePtr;
 extern void* UnknownPtr;
 extern s32 UnknownCounter;
 extern u8* TempScreenBufferPtr;
-extern unk_D_8122B2F8* TileAssetPtr;
+extern TileAssetFragment* TileAssetPtr;
 extern s32 UnknownFlag;
 typedef struct {
     /* 0x0000 */ OSThread thread;
     /* 0x01B0 */ u8 stack[0x1000];
-} unk_D_8122B300; // size = 0x11B0
+} GbPakThreadStruct; // size = 0x11B0
 
-extern unk_D_8122B300 GbPakThread;
+extern GbPakThreadStruct GbPakThread;
 extern OSMesg MsgQueue_GbPak[4];
 extern OSMesgQueue MsgQueue_GbPakControl;
 extern s16 Msg_GbPakStatus;
 extern u8 Flag_GbPakInitialized;
 extern u8 Flag_GbPakPowerState;
-extern s32 D_8122C774;
+extern s32 gEmuSavedAudioMode;
 extern Controller* gPlayer1Controller;
 extern u8 UnknownBufferC[];
 extern u8 UnknownBufferE[];
@@ -179,14 +179,14 @@ extern u8 D_8120D8FD;
 extern u8 D_8120D8FE;
 extern u8 D_8120D906;
 extern u8* gImageDataPtrs[2];
-extern u32 D_8122C760;
+extern u32 gStadiumTimer;
 extern u32 gSubTimer;
 extern u32 gTimerInterval;
-extern u32 D_8122C76C;
-extern u8 D_8122C770;
-extern u8 D_8122C771;
+extern u32 gStadiumInterval;
+extern u8 gStadiumScreenFlag0;
+extern u8 gPlayerInfoBoxType;
 
-s32 GbPak_CheckConnector(unk_D_8122B2C0* arg0) {
+s32 GbPak_CheckConnector(GbPakDeviceState* arg0) {
   s32 result;
 
   result = osGbpakCheckConnector(&arg0->pfs, &arg0->status);
@@ -196,7 +196,7 @@ s32 GbPak_CheckConnector(unk_D_8122B2C0* arg0) {
   return result;
 }
 
-s32 GbPak_WriteRegister(unk_D_8122B2C0* arg0, u16 arg1, s32 arg2) {
+s32 GbPak_WriteRegister(GbPakDeviceState* arg0, u16 arg1, s32 arg2) {
   s32 i;
   for (i = 0x1F; i >= 0; i--) {
       TempBuffer_GbPakReg[i] = arg2;
@@ -204,7 +204,7 @@ s32 GbPak_WriteRegister(unk_D_8122B2C0* arg0, u16 arg1, s32 arg2) {
   return osGbpakReadWrite(&arg0->pfs, 1, arg1, &TempBuffer_GbPakReg, 0x20);
 }
 
-s32 GbPak_Initialize(unk_D_8122B2C0* arg0) {
+s32 GbPak_Initialize(GbPakDeviceState* arg0) {
   s32 ret;
 
   if (!(ret = GbPak_WriteRegister(arg0, 0, 0xA))    && !(ret = GbPak_WriteRegister(arg0, 0x6000, 1))
@@ -218,7 +218,7 @@ s32 GbPak_Initialize(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 GbPak_GetStatus(unk_D_8122B2C0* arg0) {
+s32 GbPak_GetStatus(GbPakDeviceState* arg0) {
   s32 ret;
 
   ret = osGbpakGetStatus(&arg0->pfs, &arg0->status);
@@ -228,7 +228,7 @@ s32 GbPak_GetStatus(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 GbPak_SetReadBank(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
   s32 temp_a2;
   s32 var_v1;
 
@@ -260,7 +260,7 @@ s32 GbPak_SetReadBank(unk_D_8122B2C0* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_SetWriteBank(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_SetWriteBank(GbPakDeviceState* arg0, s32 arg1) {
   s32 var_v1;
 
   var_v1 = 0;
@@ -281,7 +281,7 @@ s32 GbPak_SetWriteBank(unk_D_8122B2C0* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_VerifyChecksum(unk_D_8122B2C0* arg0) {
+s32 GbPak_VerifyChecksum(GbPakDeviceState* arg0) {
   s32 ret;
 
   ret = GbPak_SetWriteBank(arg0, arg0->unk_5DA0 / 8192);
@@ -294,7 +294,7 @@ s32 GbPak_VerifyChecksum(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-void GbPak_CollectCounters(unk_D_8122B2C0* arg0, s32 arg1) {
+void GbPak_CollectCounters(GbPakDeviceState* arg0, s32 arg1) {
   s32 i;
 
   switch (arg1) {
@@ -318,7 +318,7 @@ void GbPak_CollectCounters(unk_D_8122B2C0* arg0, s32 arg1) {
   }
 }
 
-s32 GbPak_VerifyWriteReadLoop(unk_D_8122B2C0* arg0) {
+s32 GbPak_VerifyWriteReadLoop(GbPakDeviceState* arg0) {
     s32 ret;
     s32 count;
 
@@ -346,7 +346,7 @@ s32 GbPak_VerifyWriteReadLoop(unk_D_8122B2C0* arg0) {
     return ret;
 }
 
-s32 GbPak_Init(unk_D_8122B2C0* arg0) {
+s32 GbPak_Init(GbPakDeviceState* arg0) {
   s32 ret;
 
   ret = 0;
@@ -376,7 +376,7 @@ s32 GbPak_Init(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 GbPak_ReadDataAndAccumulate(unk_D_8122B2C0* arg0) {
+s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
     s32 var_s1 = 0;
     s32 var_s2;
     s32 var_s2_2;
@@ -455,7 +455,7 @@ s32 GbPak_ReadDataAndAccumulate(unk_D_8122B2C0* arg0) {
     return var_v1;
 }
 
-s32 GbPak_ReadWriteLoop(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_ReadWriteLoop(GbPakDeviceState* arg0, s32 arg1) {
   s32 temp_v0;
   s32 var_s0;
   s32 var_s1;
@@ -492,7 +492,7 @@ s32 GbPak_ReadWriteLoop(unk_D_8122B2C0* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_FindMatchingHeader(unk_func_812009D0* arg0) {
+s32 GbPak_FindMatchingHeader(GbPakHeader* arg0) {
   u8* var_s1;
   s32 i;
 
@@ -516,7 +516,7 @@ s32 GbPak_FindMatchingHeader(unk_func_812009D0* arg0) {
 void GbPak_ThreadMain(s32 arg0) {
     u16* entry;
     s32 retries;
-    unk_D_8122B2C0* emu;
+    GbPakDeviceState* emu;
     u32 value;
     u16 sum;
     u8* ptr;
@@ -571,7 +571,7 @@ void GbPak_ThreadMain(s32 arg0) {
                 if (!(emu->status & 1)) {
                     goto retry;
                 }
-                emu->unk_5DC5 = GbPak_FindMatchingHeader((unk_func_812009D0*)&emu->unk_5C5C);
+                emu->unk_5DC5 = GbPak_FindMatchingHeader((GbPakHeader*)&emu->unk_5C5C);
                 emu->unk_5DC9 = 2;
                 /* fallthrough */
             case 2:
@@ -972,10 +972,10 @@ void DrawHorizontalBorder(s32 arg0, s32 arg1, s32 arg2) {
   s32 i;
 
   for (i = 8; i < arg2 - 8; i += 8) {
-      ApplyColorIntensity(arg0 + i * 2, &((unk_D_8122C748*) DataStruct_TileAssets)->unk_9890, arg1, 8, 0x10);
+      ApplyColorIntensity(arg0 + i * 2, &((GbPakAssetData*) DataStruct_TileAssets)->unk_9890, arg1, 8, 0x10);
   }
-  ApplyColorIntensity(arg0, &((unk_D_8122C748*) DataStruct_TileAssets)->unk_9790, arg1, 8, 0x10);
-  ApplyColorIntensity(arg0 + (arg2 - 8) * 2, &((unk_D_8122C748*) DataStruct_TileAssets)->unk_9990, arg1, 8, 0x10);
+  ApplyColorIntensity(arg0, &((GbPakAssetData*) DataStruct_TileAssets)->unk_9790, arg1, 8, 0x10);
+  ApplyColorIntensity(arg0 + (arg2 - 8) * 2, &((GbPakAssetData*) DataStruct_TileAssets)->unk_9990, arg1, 8, 0x10);
 }
 
 void DrawVerticalMarker(u16* dst, s32 arg1, s32 arg2) {
@@ -1050,7 +1050,7 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
     Flag_ScreenRefreshPending = 0;
 }
 
-void func_8120241C(void) {
+void DrawStadiumUI(void) {
     u8* var_s2;
     s32 temp_s0;
     s32 var_s0;
@@ -1089,7 +1089,7 @@ void func_8120241C(void) {
 
     var_s0 = 0;
     var_s4 -= 0x266;
-    for (var_s2 = (u8*) &D_8120D7F3, var_s1 = 0x37; var_s1 < 0x42; var_s1++, var_s2--) {
+    for (var_s2 = (u8*) &gStadiumUILayout, var_s1 = 0x37; var_s1 < 0x42; var_s1++, var_s2--) {
         BlendWithAlphaMap((u16*) ((var_s0 * 2) + var_s4), (TileMap_12x12[var_s2[0x116] - var_s1 + 0x80] * 0xC0) + DataPtr_TileGraphicsB,
                       0xFFFE, 0xC, 0xC, 0x10);
         var_s0 += TileMap_12x12[TileMap_12x12[var_s2[0x116] - var_s1 + 0x80]];
@@ -1122,7 +1122,7 @@ void DrawPlayerInfoBox(s32 arg0, s32 arg1) {
     }
     BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8510), 0, 8, 8);
     arg0 += 0x10;
-    switch (D_8122C771) {
+    switch (gPlayerInfoBoxType) {
     case 1:
         i = 7;
         break;
@@ -1183,10 +1183,10 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
         if (x != 0) {
             for (i = j; i != 0; i++) {
                 BlendWithAlphaMap((u16*) ((xpos * 2) + Ptr_TempScreenBuffer2 + 0x280),
-                              (TileMap_12x12[D_8120D820[0xE7 - i] - i * 2 + 0x5B] * 0xC0) + DataPtr_TileGraphicsB, 0xFFFE, 0xC, 0xC,
+                              (TileMap_12x12[gStadiumUIMap[0xE7 - i] - i * 2 + 0x5B] * 0xC0) + DataPtr_TileGraphicsB, 0xFFFE, 0xC, 0xC,
                               0x10);
-                xpos += TileMap_12x12[TileMap_12x12[D_8120D820[0xE7 - i] - i * 2 + 0x5B]];
-                if (D_8120D820[0xE6 - i] < 0x40) {
+                xpos += TileMap_12x12[TileMap_12x12[gStadiumUIMap[0xE7 - i] - i * 2 + 0x5B]];
+                if (gStadiumUIMap[0xE6 - i] < 0x40) {
                     break;
                 }
             }
@@ -1251,9 +1251,9 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
             break;
     }
 
-    D_8122C771 = arg2;
+    gPlayerInfoBoxType = arg2;
     DrawPlayerInfoBox((s32) (gCurrentFramebufferPtr + 0x87BA), 0);
-    D_8122C770 = 0;
+    gStadiumScreenFlag0 = 0;
     gTimerInterval = 0x800000;
     gSubTimer = 0xA0;
 }
@@ -1289,30 +1289,30 @@ s32 EmuTick(s32 arg0, s32 arg1) {
     s32 var_s0;
 
     var_s0 = 0;
-    if (gTimerInterval < (osGetCount() - D_8122C76C)) {
+    if (gTimerInterval < (osGetCount() - gStadiumInterval)) {
         var_s0 = 1;
-        D_8122C76C = osGetCount();
-        D_8122C770 = (D_8122C770 + 1) & 7;
+        gStadiumInterval = osGetCount();
+        gStadiumScreenFlag0 = (gStadiumScreenFlag0 + 1) & 7;
         if (gTimerInterval >= 0x80001U) {
             gTimerInterval -= gTimerInterval >> 8;
         }
     }
-    if ((osGetCount() - D_8122C760) >= 0x200001U) {
+    if ((osGetCount() - gStadiumTimer) >= 0x200001U) {
         var_s0 = 1;
-        D_8122C760 = osGetCount();
+        gStadiumTimer = osGetCount();
         gSubTimer++;
         if (gSubTimer >= 0x140U) {
             gSubTimer = 0;
         }
     }
     if (var_s0 != 0) {
-        DrawPlayerInfoBox(arg0 + 0x87BA, D_8122C770);
+        DrawPlayerInfoBox(arg0 + 0x87BA, gStadiumScreenFlag0);
         BlendImagesClamp(Ptr_TempScreenBuffer2, Ptr_TempScreenBuffer, arg1 + 0x20A80, 0xF, gSubTimer);
     }
     return var_s0;
 }
 
-void EmuInitBuffers(unk_D_8122B2C0* arg0) {
+void EmuInitBuffers(GbPakDeviceState* arg0) {
   s32 i;
   s32 var_a0;
   u8* var_a1;
@@ -1342,7 +1342,7 @@ void EmuInitBuffers(unk_D_8122B2C0* arg0) {
 
   var_a0 = 0;
   for (i = 0x10; i < 0x1A0; i += 2) {
-      arg0->unk_788[i] = D_8120D820[var_a0];
+      arg0->unk_788[i] = gStadiumUIMap[var_a0];
       var_a0++;
   }
 
@@ -1393,17 +1393,17 @@ void DelayMs(OSTime arg0) {
 }
 
 void DrawStadiumScreen(s32, s32);
-void func_8120241C(void);
-void func_812070A0(void);
+void DrawStadiumUI(void);
+void GbPak_InitGfx(void);
 void SetAudioVolume(s32);
 void GbAudio_QueueWrite(u16, u8, u16);
 void GbAudio_Reset(void);
-void GbAudio_SetNoiseTable(unk_D_8122B2F8*);
+void GbAudio_SetNoiseTable(TileAssetFragment*);
 void func_81208F94(void);
 void GbAudio_SetMode(s32);
 
 void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16 (*arg5)[6][0x640]) {
-    unk_D_8122B2C0* emu;
+    GbPakDeviceState* emu;
     s32 pad[2];
     s32 i;
 
@@ -1447,10 +1447,10 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     TempScreenBufferPtr += 0xC410;
 
     for (i = 0; i < 1; i++) {
-        emu = (unk_D_8122B2C0*)TempScreenBufferPtr;
+        emu = (GbPakDeviceState*)TempScreenBufferPtr;
         (&GbPakDevice)[i] = emu;
-        bzero(emu, sizeof(unk_D_8122B2C0));
-        TempScreenBufferPtr += sizeof(unk_D_8122B2C0);
+        bzero(emu, sizeof(GbPakDeviceState));
+        TempScreenBufferPtr += sizeof(GbPakDeviceState);
         emu->unk_53B4 = TempScreenBufferPtr;
         TempScreenBufferPtr += 0x6000;
         if (i == 0) {
@@ -1492,10 +1492,10 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         gImageDataPtrs[i] = gCurrentFramebufferPtr;
     }
 
-    func_812070A0();
+    GbPak_InitGfx();
     DmaCopyAsyncRange((u32)(TempScreenBufferPtr + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)TempScreenBufferPtr + 0x80000), TempScreenBufferPtr);
-    GbAudio_SetNoiseTable((unk_D_8122B2F8*)TempScreenBufferPtr);
+    GbAudio_SetNoiseTable((TileAssetFragment*)TempScreenBufferPtr);
     GbAudio_SetMode(0);
     SetAudioVolume(0);
     GbAudio_Reset();
@@ -1557,7 +1557,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         GbPakStateByte = 0xFF;
         DrawStadiumScreen(0, 1);
         DrawStadiumScreen(1, 1);
-        func_8120241C();
+        DrawStadiumUI();
         if ((emu->unk_5DC5 == 0) || (emu->unk_5DC5 == 2)) {
             GbPakRetryCounter = 1;
             UnknownFlag = 1;
@@ -1569,12 +1569,12 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         DrawFullScreenBackground((u16*)FramebufferImage1->img_p, arg5, arg1, (emu->unk_5DC5 != 0) ? emu->unk_5DC5 - 1 : 0);
     }
 
-    D_8122C760 = osGetCount();
-    D_8122C76C = D_8122C760;
+    gStadiumTimer = osGetCount();
+    gStadiumInterval = gStadiumTimer;
     osViSwapBuffer((&FramebufferImage0)[UnknownCounterB]->img_p);
     UnknownCounterB ^= 1;
 }
-void LoadCompressedBank(unk_D_8122B2C0* arg0) {
+void LoadCompressedBank(GbPakDeviceState* arg0) {
     u16* list;
     s32 i;
     s32 count;
@@ -1624,7 +1624,7 @@ void UpdateAudioModeIndices(void) {
   gAudioModeIndex1 = (GbPakStatusFlags.unk_01 == 0) ? 0x1000 : (GbPakStatusFlags.unk_01 == 2) ? 0x10 : (GbPakStatusFlags.unk_01 == 3) ? 2 : (GbPakStatusFlags.unk_01 == 4) ? 4 : 0x20;
 }
 
-void AudioStateMachine(unk_D_8122B2C0* arg0) {
+void AudioStateMachine(GbPakDeviceState* arg0) {
     u8 var_v0;
     u8 var_v0_2;
 
@@ -1677,7 +1677,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
                 return;
             }
             {
-                ((unk_D_8122B1E8*) D_8122B224)[UnknownCounterB].mesg[0] = NULL;
+                ((GbPakThreadContext*) D_8122B224)[UnknownCounterB].mesg[0] = NULL;
                 switch (Flag_GbPakInitialized) {
                     case 1:
                         arg0->unk_53FD -= 4;
@@ -1776,7 +1776,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
                                 return;
                             case 0x8000:
                                 GbAudio_PlayStream(6);
-                                D_8122C774 = (s32) GbPakStatusFlags.unk_00;
+                                gEmuSavedAudioMode = (s32) GbPakStatusFlags.unk_00;
                                 Flag_GbPakPowerState = 0;
                                 Flag_GbPakInitialized = 7;
                                 return;
@@ -1820,7 +1820,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
                             case 0x8000:
                                 GbAudio_PlayStream(6);
                                 Flag_GbPakPowerState = 0;
-                                D_8122C774 = (s32) GbPakStatusFlags.unk_01;
+                                gEmuSavedAudioMode = (s32) GbPakStatusFlags.unk_01;
                                 Flag_GbPakInitialized = 0xB;
                                 return;
                             case 0x1000:
@@ -1872,7 +1872,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                                 GbAudio_PlayStream(8);
-                                GbPakStatusFlags.unk_00 = D_8122C774;
+                                GbPakStatusFlags.unk_00 = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 9;
                                 return;
                             case 0x8000:
@@ -1918,7 +1918,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                                 GbAudio_PlayStream(8);
-                                GbPakStatusFlags.unk_01 = D_8122C774;
+                                GbPakStatusFlags.unk_01 = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 0xD;
                                 return;
                             case 0x8000:
@@ -1997,7 +1997,7 @@ void AudioStateMachine(unk_D_8122B2C0* arg0) {
     }
 }
 
-void func_81204A84(s32 arg0) {
+void GbPak_DrawMenu(s32 arg0) {
     s32 pad;
     s32 j;
     s32 i;
@@ -2272,9 +2272,9 @@ void func_81204A84(s32 arg0) {
 }
 
 extern u8 gAnimDelayCounter;
-extern u8 D_8122C4F6;
-extern u8 D_8122C4F9;
-extern s32 D_8122C4EC;
+extern u8 gGbBankLoadedFlag;
+extern u8 gGbScreenRefreshCounter;
+extern s32 gAudioBufferPtr;
 extern u8 D_812297C0[];
 extern u8 D_8122A1A4[];
 extern u8 D_8122A260[];
@@ -2291,7 +2291,7 @@ extern s32 gRandomSeedTable[16];
 extern u8 gFragments[];
 extern u8 gRdpOutputBuffer[];
 
-u8 D_8120D820[234] = { 0xF0, 0xF0, 0xFC, 0xFC, 0xFC, 0xFC, 0xF3, 0xF3, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0xF0, 0xF0, 0xF0, 0xF0, 0, 0, 0xF3, 0xF3, 0, 0, 0, 0, 0, 0, 0xCF, 0xCF, 0, 0, 0xF, 0xF, 0x3F, 0x3F, 0xF, 0xF, 0, 0, 0, 0, 0xC0, 0xC0, 0xF, 0xF, 0, 0, 0, 0, 0, 0, 0xF0, 0xF0, 0, 0, 0, 0, 0, 0, 0xF3, 0xF3, 0, 0, 0, 0, 0, 0, 0xC0, 0xC0, 3, 3, 3, 3, 3, 3, 0xFF, 0xFF, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC3, 0xC3, 0, 0, 0, 0, 0, 0, 0xFC, 0xFC, 0xF3, 0xF3, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0x3C, 0x3C, 0xFC, 0xFC, 0xFC, 0xFC, 0x3C, 0x3C, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0x3C, 0x3C, 0x3F, 0x3F, 0x3C, 0x3C, 0xF, 0xF, 0x3C, 0x3C, 0xFC, 0xFC, 0, 0, 0xFC, 0xFC, 0xFC, 0xFC, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF0, 0xF0, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xFF, 0xFF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xC3, 0xC3, 0xF, 0xF, 0xF, 0xF, 0xF, 0xF, 0xFC, 0xFC, 0x3C, 0x42, 0xB9, 0xA5, 0xB9, 0xA5, 0x42, 0x3C, 0x91, 0x8F, 0x8D, 0xD1, 0xC4, 0xBA, 0xCE, 0x75, 0xB8, 0xC4, 0xB0, 0xB2, 0xB7, 0x99, 0x67, 0x73, 0xAA, 0xAF, 0xA8, 0xA1, 0x9C, 0xA8, 0x83, 0xB6, 0xAE, 0xA4, 0x8B, 0x77, 0xAA, 0xAA, 0xAE, 0xAD, 0xAD, 0x79 };  // tail holds D_8120D8FD, D_8120D8FE, D_8120D906 (linker-defined symbols)
+u8 gStadiumUIMap[234] = { 0xF0, 0xF0, 0xFC, 0xFC, 0xFC, 0xFC, 0xF3, 0xF3, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0xF0, 0xF0, 0xF0, 0xF0, 0, 0, 0xF3, 0xF3, 0, 0, 0, 0, 0, 0, 0xCF, 0xCF, 0, 0, 0xF, 0xF, 0x3F, 0x3F, 0xF, 0xF, 0, 0, 0, 0, 0xC0, 0xC0, 0xF, 0xF, 0, 0, 0, 0, 0, 0, 0xF0, 0xF0, 0, 0, 0, 0, 0, 0, 0xF3, 0xF3, 0, 0, 0, 0, 0, 0, 0xC0, 0xC0, 3, 3, 3, 3, 3, 3, 0xFF, 0xFF, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC3, 0xC3, 0, 0, 0, 0, 0, 0, 0xFC, 0xFC, 0xF3, 0xF3, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0x3C, 0x3C, 0xFC, 0xFC, 0xFC, 0xFC, 0x3C, 0x3C, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0x3C, 0x3C, 0x3F, 0x3F, 0x3C, 0x3C, 0xF, 0xF, 0x3C, 0x3C, 0xFC, 0xFC, 0, 0, 0xFC, 0xFC, 0xFC, 0xFC, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF3, 0xF0, 0xF0, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xFF, 0xFF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xCF, 0xC3, 0xC3, 0xF, 0xF, 0xF, 0xF, 0xF, 0xF, 0xFC, 0xFC, 0x3C, 0x42, 0xB9, 0xA5, 0xB9, 0xA5, 0x42, 0x3C, 0x91, 0x8F, 0x8D, 0xD1, 0xC4, 0xBA, 0xCE, 0x75, 0xB8, 0xC4, 0xB0, 0xB2, 0xB7, 0x99, 0x67, 0x73, 0xAA, 0xAF, 0xA8, 0xA1, 0x9C, 0xA8, 0x83, 0xB6, 0xAE, 0xA4, 0x8B, 0x77, 0xAA, 0xAA, 0xAE, 0xAD, 0xAD, 0x79 };  // tail holds D_8120D8FD, D_8120D8FE, D_8120D906 (linker-defined symbols)
 s32 gItemEffectTable[256] = { 1, 16, 18, 22, 0, 32, 36, 0, 2, 6, 0, 0, 0, 0, 0, 76, 78, 64, 66, 70, 0, 0, 0, 0, 0, 256, 0, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32768, 0, 0, 4096 };
 s32 gPowerOfTwoTable[8] = { 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304 };
 s32 gRandomSeedTable[16] = { 0, 2048, 8192, 32768, 131072, 1347373893, 1297042976, 1380271104, 0, 1347373893, 1297042976, 1196574021, 1308688383, 1347373893, 1297042976, 1112298821 };
@@ -2336,13 +2336,13 @@ u8 gText_UnableToSave[24] = { 0x80, 0x64, 0x3C, 0xC, 8, 0xF, 0x55, 0x6E, 0x61, 0
 u8 gText_LeavingN64[128] = { 0x80, 0x28, 0x78, 0xC, 7, 0x10, 0x4C, 0x65, 0x61, 0x76, 0x69, 0x6E, 0x67, 0x20, 0x79, 0x6F, 0x75, 0x72, 0x20, 0x4E, 0x36, 0x34, 0x80, 0xCC, 0x78, 0xC, 7, 8, 0x2C, 0x20, 0x64, 0x65, 0x74, 0x61, 0x63, 0x68, 0x80, 0x91, 0x78, 0xC, 0xB, 9, 0x74, 0x75, 0x72, 0x6E, 0x65, 0x64, 0x20, 0x4F, 0x4E, 0x80, 0x28, 0x8C, 0xC, 7, 0x24, 0x74, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x2C, 0x20, 0x63, 0x6C, 0x65, 0x61, 0x6E, 0x20, 0x74, 0x68, 0x65, 0x20, 0x63, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x6F, 0x72, 0x80, 0x28, 0xA0, 0xC, 7, 0x19, 0x73, 0x65, 0x63, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x61, 0x6E, 0x64, 0x20, 0x72, 0x65, 0x2D, 0x61, 0x74, 0x74, 0x61, 0x63, 0x68, 0x20, 0x69, 0x74, 0x2E, 0, 0, 0, 0 };
 u8 gText_GBGamePakInfo[248] = { 0x80, 0x32, 0x32, 0xC, 8, 0x20, 0x54, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x20, 0x6F, 0x72, 0x20, 0x74, 0x68, 0x65, 0x20, 0x64, 0x61, 0x74, 0x61, 0x20, 0x68, 0x61, 0x73, 0x20, 0x80, 0x32, 0x40, 0xC, 8, 0xD, 0x62, 0x65, 0x65, 0x6E, 0x20, 0x63, 0x68, 0x61, 0x6E, 0x67, 0x65, 0x64, 0x2E, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x43, 0x6C, 0x65, 0x61, 0x72, 0x20, 0x57, 0x6F, 0x72, 0x6B, 0x61, 0x72, 0x65, 0x61, 0x20, 0x25, 0x78, 0x20, 0x2D, 0x25, 0x78, 0x20, 0x73, 0x69, 0x7A, 0x65, 0x20, 0x25, 0x78, 0x20, 0xA, 0, 0x48, 0x65, 0x61, 0x70, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 u8 GbAudio_ReadReg(u16);
-s32 AllocateAudioBuffer(unk_D_8122B2C0*, s32);
-void StartAudioPlayback(unk_D_8122B2C0*, unk_D_8122B2F8*);
+s32 AllocateAudioBuffer(GbPakDeviceState*, s32);
+void StartAudioPlayback(GbPakDeviceState*, TileAssetFragment*);
 
 s32 EmuMainLoop(s32);
 // emu must live in arg0: a separate pointer local takes a stack slot and the frame grows to 0x50.
 s32 EmuMainLoop(s32 arg0) {
-#define emu ((unk_D_8122B2C0*) arg0)
+#define emu ((GbPakDeviceState*) arg0)
     s32 btn;
     s32 i;
 
@@ -2604,9 +2604,9 @@ s32 EmuMainLoop(s32 arg0) {
             DrawStadiumScreen(0, 0);
             DrawStadiumScreen(1, 0);
             if (ScreenMode_Current == 0) {
-                D_8122C4F9 = 2;
+                gGbScreenRefreshCounter = 2;
             } else {
-                D_8122C4F9 = 0x20;
+                gGbScreenRefreshCounter = 0x20;
             }
             GbPakRetryCounter = 6;
 
@@ -2618,10 +2618,10 @@ s32 EmuMainLoop(s32 arg0) {
                     Flag_ScreenRefreshPending = 0;
                 }
                 DrawVerticalMarker((u16*) ((u8*) FramebufferImages[gCurrentBufferIndex] + 0x9C), 0, Flag_ScreenRefreshPending);
-                if ((D_8122C4F9 >= 3) && (D_8122C4F9 < 0x20)) {
-                    D_8122C4F9++;
+                if ((gGbScreenRefreshCounter >= 3) && (gGbScreenRefreshCounter < 0x20)) {
+                    gGbScreenRefreshCounter++;
                 }
-                GbPakThreadData[UnknownCounterB].unk_3C = (D_8122C4F9 / 2) | 0x1000;
+                GbPakThreadData[UnknownCounterB].unk_3C = (gGbScreenRefreshCounter / 2) | 0x1000;
                 GbPakThreadData[UnknownCounterB].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
             } else {
                 GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
@@ -2634,13 +2634,13 @@ s32 EmuMainLoop(s32 arg0) {
                 UnknownFlag = 1;
                 goto stop;
             }
-            if ((D_8122C4F6 == 0) && (emu->unk_549C[0] != 0) && (emu->unk_549C[1] != 0) &&
+            if ((gGbBankLoadedFlag == 0) && (emu->unk_549C[0] != 0) && (emu->unk_549C[1] != 0) &&
                 (emu->unk_559C[0] != 0) && (emu->unk_559C[1] != 0) && (emu->unk_559C[2] != 0) &&
                 (emu->unk_559C[3] != 0) && (emu->unk_53E8 == 0x100)) {
                 if (ScreenMode_Current == 0) {
-                    D_8122C4F9 = 3;
+                    gGbScreenRefreshCounter = 3;
                 }
-                D_8122C4F6 = 1;
+                gGbBankLoadedFlag = 1;
                 LoadCompressedBank(emu);
                 if (((u8*) emu->unk_53BC)[0x143] & 0x80) {
                     emu->unk_5485 = 0;
@@ -2681,7 +2681,7 @@ reset:
     emu->unk_53C0 = 0;
     emu->unk_5490 = emu->unk_548E;
     if (Flag_GbPakInitialized == 0) {
-        D_8122C4EC = AllocateAudioBuffer(emu, emu->unk_548E * 154);
+        gAudioBufferPtr = AllocateAudioBuffer(emu, emu->unk_548E * 154);
     } else if (UnknownCounter != 0) {
         while (!(IO_READ(SP_STATUS_REG) & 0x400)) {}
         IO_WRITE(SP_STATUS_REG, 0x8000);
@@ -2753,8 +2753,8 @@ reset:
     if ((Flag_GbPakInitialized == 0) && (emu->unk_53FD < 0x40)) {
         emu->unk_53FD++;
     }
-    if ((GbPakRetryCounter == 0xFF) && (D_8122C4F6 == 0) && (emu->unk_53E8 == 0x100)) {
-        D_8122C4F6 = 1;
+    if ((GbPakRetryCounter == 0xFF) && (gGbBankLoadedFlag == 0) && (emu->unk_53E8 == 0x100)) {
+        gGbBankLoadedFlag = 1;
         emu->unk_5390 = gItemEffectTable[((u8*) emu->unk_53BC)[0x147]];
         emu->unk_5394 = (((u8*) emu->unk_53BC)[0x148] < 8U) ? gPowerOfTwoTable[((u8*) emu->unk_53BC)[0x148]] : 0x8000;
         emu->unk_5398 = (((u8*) emu->unk_53BC)[0x149] < 5U) ? gRandomSeedTable[((u8*) emu->unk_53BC)[0x149]] : 0;
@@ -2790,7 +2790,7 @@ reset:
     GbPakThreadData[UnknownCounterB].unk_5C = (emu->unk_53FC << 24) | (emu->unk_53FD << 16) | (emu->unk_53EE << 6) | emu->unk_53F0;
     if (UnknownCounter != 0) {
         osRecvMesg(&GbPakThreadData[UnknownCounterB ^ 1].queue, NULL, 1);
-        func_81204A84((&FramebufferImage0)[UnknownCounterB ^ 1]->img_p);
+        GbPak_DrawMenu((&FramebufferImage0)[UnknownCounterB ^ 1]->img_p);
     }
     if (gRspTaskManager.unk_A38 == 0) {
         osWritebackDCacheAll();
@@ -2809,7 +2809,7 @@ reset:
 }
 #undef emu
 
-void func_81206D9C(GbEmuState* arg0) {
+void GbEmu_Init(GbEmuState* arg0) {
   GbPakStatusByte = 0;
   ScreenMode_Current = arg0->inputConfig.unk_02;
   if ((ScreenMode_Current < 0) || (ScreenMode_Current >= 3)) {
@@ -2823,7 +2823,7 @@ void func_81206D9C(GbEmuState* arg0) {
   EmuMainInit(0, GetCurrentPokemonBank(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
 }
 
-void func_81206E64(GbEmuState* arg0) {
+void GbEmu_RunFrame(GbEmuState* arg0) {
   if (EmuMainLoop(0) != 0) {
       arg0->inputConfig.unk_00 = ((GbPakStatusFlags.unk_01 - 1) & 0xFF) | (GbPakStatusFlags.unk_00 << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
@@ -2841,7 +2841,7 @@ void func_81206E64(GbEmuState* arg0) {
   }
 }
 
-void func_81206F38(UNUSED GbEmuThreadInfo* arg0) {
+void GbEmu_AudioUpdateThread(UNUSED GbEmuThreadInfo* arg0) {
   if ((gRspTaskManager.unk_A38 == 0) && (GbPakStatusByte == 2) && ((GbPakRetryCounter == 0) || (GbPakRetryCounter == 6))) {
       GbAudio_Update();
   }

@@ -43,5 +43,5 @@ static const char D_8438DBCC[0x10] = " SpAttackTbl5\n";
 static const char D_8438DBDC[0x10] = " IkariCheck\n";
 static const char D_8438DBEC[0x14] = " RENZOKU Count %d\n";
 
-void func_8436F6C0(void) {
+void Battle_DebugLogClear(void) {
 }

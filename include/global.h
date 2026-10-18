@@ -536,7 +536,7 @@ typedef struct TrainerData {
 } TrainerData; // size = 0x230
 
 // GB Emulator State
-typedef struct unk_D_8122B2C0 {
+typedef struct GbPakDeviceState {
     /* 0x00000 */ u8 unk_00[0x208];
     /* 0x00208 */ u8 unk_208[0x40];
     /* 0x00248 */ u8 unk_248[0x40];
@@ -617,7 +617,7 @@ typedef struct unk_D_8122B2C0 {
     /* 0x05DCF */ u8 unk_5DCF;
     /* 0x05DD0 */ u8 unk_5DD0;
     /* 0x05DD1 */ u8 unk05DD1[0x15287];
-} unk_D_8122B2C0; // size = 0x1B058
+} GbPakDeviceState; // size = 0x1B058
 
 extern s16 gCamDistances[];
 

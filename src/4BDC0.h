@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void func_8004B9C4(s32);
+void Stage_SetFadeColor(s32);
 s32 ResultScreen_SetAnimation(s32);
 s32 func_8004BA88(s32, s32);
 s32 func_8004BC84(s32, u32);

@@ -922,7 +922,7 @@ void func_84210328(unk_D_84229EB0* arg0) {
         arg0->unk_00006++;
     } else if (func_8420DB48(0xB) >= 0) {
         if (func_80028E68() >= 0xA) {
-            func_842079F0(arg0->unk_134E8);
+            ItemPanel_StartSlideUp(arg0->unk_134E8);
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 4;
         } else {
@@ -940,7 +940,7 @@ void func_8421059C(unk_D_84229EB0* arg0) {
 
     switch (func_8420DB48(0xC)) {
         case 1:
-            func_84207A1C(arg0->unk_134E8);
+            ItemPanel_ClearAndReset(arg0->unk_134E8);
             TriggerScrollDown(arg0->unk_134EC);
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 4;
@@ -948,7 +948,7 @@ void func_8421059C(unk_D_84229EB0* arg0) {
 
         case 0:
         case 2:
-            func_842079F0(arg0->unk_134E8);
+            ItemPanel_StartSlideUp(arg0->unk_134E8);
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 4;
             break;
@@ -1073,7 +1073,7 @@ s32 func_842106FC(unk_D_84229EB0* arg0) {
     return sp1C;
 }
 
-s32 func_8421089C(unk_D_84229EB0* arg0, unk_D_84211B50* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
+s32 func_8421089C(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
                   s16 arg5, s16 arg6, s16 arg7) {
     s32 i;
 

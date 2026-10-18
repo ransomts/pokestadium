@@ -56,7 +56,7 @@ void Stage_CopyState(Stage* arg0);
 void Stage_Set(Stage* arg0);
 void Stage_Destroy(void);
 void Stage_Terminate(void);
-void func_80007754(void);
+void Menu_SetupDisplayList(void);
 s32 Stage_Advance(void);
 void Stage_AdvanceN(s32 arg0);
 s32 Stage_AdvanceUntil(u32 arg0, s32 (*arg1)(u8));

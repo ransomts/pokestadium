@@ -424,7 +424,7 @@ u8* SpriteDisplay_GetImagePtr(SpriteDisplay* arg0, s32 arg1) {
     return image;
 }
 
-s32 func_8001B010(SpriteDisplay* arg0) {
+s32 SpriteDisplay_IsAnimating(SpriteDisplay* arg0) {
     s32 i;
     
     for (i = 0; i < arg0->unk_01; i++) {

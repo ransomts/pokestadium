@@ -255,7 +255,7 @@ s32 RenderUIElement(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a3));
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
 
     return 0;

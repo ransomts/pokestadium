@@ -67,7 +67,7 @@ static u32 gShimmerTexture[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
 };
-static Gfx D_84B12420[] = {
+static Gfx gShimmerDL[] = {
     gsDPPipeSync(),
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPSetCombineMode(G_CC_MODULATEI, G_CC_PASS2),
@@ -80,13 +80,13 @@ static Gfx D_84B12420[] = {
 };
 
 s32 HealthBar_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A28* temp_a3;
+    BattleUiState* temp_a3;
     u8* sp30;
     s32 temp_v1;
     s32 var_a1;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a3 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
 
         temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
         if (temp_v1 < 5) {
@@ -106,13 +106,13 @@ s32 HealthBar_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 PowerGauge_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A28* temp_a3;
+    BattleUiState* temp_a3;
     u8* sp30;
     s32 temp_v1;
     s32 var_a1;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a3 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
 
         temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
         if (temp_v1 < 5) {
@@ -132,11 +132,11 @@ s32 PowerGauge_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 SpriteDisplay_DrawSegment(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A28* temp_v1;
+    BattleUiState* temp_v1;
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_v1 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
         if (temp_v1->unk_04->modelPhase == gDefaultGraphRoot->modelPhase) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
@@ -147,24 +147,24 @@ s32 SpriteDisplay_DrawSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)var_a3 & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
 
 s32 UI_ShimmerEffect(s32 arg0, SimpleGfxNode* arg1) {
-    static s32 D_84B12490 = 0x80;
+    static s32 gShimmerFrame = 0x80;
 
     s32 var_v0;
 
     if (arg0 == 5) {
-        D_84B12490--;
-        if (D_84B12490 < 0) {
-            D_84B12490 = 0x80;
+        gShimmerFrame--;
+        if (gShimmerFrame < 0) {
+            gShimmerFrame = 0x80;
         }
 
-        gSPDisplayList(gDisplayListHead++, D_84B12420);
-        gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, D_84B12490, 0, (D_84B12490 + 0x1F) << 2, 0x007C);
+        gSPDisplayList(gDisplayListHead++, gShimmerDL);
+        gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, gShimmerFrame, 0, (gShimmerFrame + 0x1F) << 2, 0x007C);
     }
 }
 
@@ -376,7 +376,7 @@ static Vtx D_84B13AD8[] = {
     VTX(-10, 1, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF), VTX(-16, 8, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(-10, 1, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),  VTX(0, 8, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
-static Gfx D_84B13B38[] = {
+static Gfx gShimmerMeshDL[] = {
     gsSPVertex(D_84B12498, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -411,7 +411,7 @@ static Gfx D_84B13B38[] = {
     gsSP1Triangle(0, 3, 4, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B13C40[] = {
+static Gfx gPowerGaugeMeshDL[] = {
     gsSPVertex(D_84B12AD8, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -526,11 +526,11 @@ static Gfx D_84B13C40[] = {
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B13FC8[] = {
+static u32 gPowerGaugeAnimDL[] = {
     0x17000000, 0x0000016A,    0x00000000, 0x00000000, 0x84B12498, 0x05000000, 0x22010000, 0x00000000,
     0x08000000, UI_ShimmerEffect, 0x00000000, 0x1B000000, 0x00000000, 0x0000001B, 0x00040000, 0x05000000,
-    0x22010000, D_84B13C40,    0x06000000, 0x1B000000, 0x00000000, 0x0000FFD2, 0x00010000, 0x05000000,
-    0x22010000, D_84B13B38,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x22010000, gPowerGaugeMeshDL,    0x06000000, 0x1B000000, 0x00000000, 0x0000FFD2, 0x00010000, 0x05000000,
+    0x22010000, gShimmerMeshDL,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B14040[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -540,7 +540,7 @@ static Vtx D_84B14040[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B14100[] = {
+static Gfx gGaugeSegmentDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGB, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -556,15 +556,15 @@ static Gfx D_84B14100[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B141E8[] = {
+static u32 gGaugeLeftLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0xFFD00000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
-    SpriteDisplay_DrawSegment, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
+    SpriteDisplay_DrawSegment, gGaugeSegmentDL, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 D_84B14234[] = {
+static u32 gGaugeRightLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00300000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
-    SpriteDisplay_DrawSegment, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
+    SpriteDisplay_DrawSegment, gGaugeSegmentDL, 0x06000000, 0x06000000, 0x01000000,
 };
 static Vtx D_84B14280[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -590,7 +590,7 @@ static Vtx D_84B14400[] = {
     VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -22, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B14480[] = {
+static Gfx gGaugeFillDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -624,17 +624,17 @@ static Gfx D_84B14480[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B146C0[] = {
+static u32 gHealthBarLeftLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
-    0xFFE80000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, D_84B14480,
+    0xFFE80000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, gGaugeFillDL,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0xFFB80000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    HealthBar_SetSegment, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
+    HealthBar_SetSegment, 0x00000001, 0x22050000, gGaugeFillDL, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
-static u32 D_84B1474C[] = {
+static u32 gHealthBarRightLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
-    0x00480000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, D_84B14480,
+    0x00480000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, gGaugeFillDL,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0x00180000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    HealthBar_SetSegment, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
+    HealthBar_SetSegment, 0x00000001, 0x22050000, gGaugeFillDL, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
 static Vtx D_84B147D8[] = {
     VTX(-24, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -654,7 +654,7 @@ static Vtx D_84B14898[] = {
     VTX(0, 0, 0, 1536, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(0, -14, 0, 1536, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, -14, 0, 3072, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(22, 0, 0, 3072, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B14918[] = {
+static Gfx gPowerGaugeFillDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -678,24 +678,24 @@ static Gfx D_84B14918[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B14A90[] = {
+static u32 gPowerGaugeLeftLayoutDouble[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000,    0xFFF00000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000000,
-    0x22050000,    D_84B14918, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0xFFD00000,    0x05000000,
-    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
+    0x22050000,    gPowerGaugeFillDL, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0xFFD00000,    0x05000000,
+    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, gPowerGaugeFillDL,    0x06000000,
     0x1B000000,    0x00000000, 0x00000000, 0xFFB00000,    0x05000000, 0x22050000, 0x00000000,    0x08000000,
-    PowerGauge_SetSegment, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
+    PowerGauge_SetSegment, 0x00000002, 0x22050000, gPowerGaugeFillDL,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
 };
-static u32 D_84B14B50[] = {
+static u32 gPowerGaugeRightLayoutDouble[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000,    0x00500000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000000,
-    0x22050000,    D_84B14918, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0x00300000,    0x05000000,
-    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
+    0x22050000,    gPowerGaugeFillDL, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0x00300000,    0x05000000,
+    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, gPowerGaugeFillDL,    0x06000000,
     0x1B000000,    0x00000000, 0x00000000, 0x00100000,    0x05000000, 0x22050000, 0x00000000,    0x08000000,
-    PowerGauge_SetSegment, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
+    PowerGauge_SetSegment, 0x00000002, 0x22050000, gPowerGaugeFillDL,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
 };
 
-s32 UI_SlideElements(unk_D_84B25A28* arg0, s16 arg1) {
+s32 UI_SlideElements(BattleUiState* arg0, s16 arg1) {
     s16 i;
     s16 sp24;
     s16 sp22;
@@ -727,12 +727,12 @@ s32 UI_SlideElements(unk_D_84B25A28* arg0, s16 arg1) {
     return 1;
 }
 
-void Camera_Shake(unk_D_84B25A28* arg0, s16 arg1) {
+void Camera_Shake(BattleUiState* arg0, s16 arg1) {
     arg0->unk_08->unk_60.at.y = SINS(arg1 << 0xE) * SQ((0x10 - arg1) / 12.0f);
     Camera_SetViewParameters(&arg0->unk_08->unk_60.at, &arg0->unk_08->unk_60.eye, 289.0f, 0, 0);
 }
 
-s32 PowerGauge_AnimateStepA(unk_D_84B25A28* arg0, s16 arg1) {
+s32 PowerGauge_AnimateStepA(BattleUiState* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x01100007, 0, 0);
     }
@@ -753,7 +753,7 @@ s32 PowerGauge_AnimateStepA(unk_D_84B25A28* arg0, s16 arg1) {
     return 1;
 }
 
-s32 PowerGauge_AnimateStepB(unk_D_84B25A28* arg0, s16 arg1) {
+s32 PowerGauge_AnimateStepB(BattleUiState* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x01100007, 0, 0);
     }
@@ -775,7 +775,7 @@ s32 PowerGauge_AnimateStepB(unk_D_84B25A28* arg0, s16 arg1) {
     return 1;
 }
 
-void PowerGauge_Update(unk_D_84B25A28* arg0) {
+void PowerGauge_Update(BattleUiState* arg0) {
     s32 sp24 = 1;
 
     if (osTvType == OS_TV_PAL) {
@@ -802,17 +802,17 @@ void PowerGauge_Update(unk_D_84B25A28* arg0) {
     arg0->unk_01++;
 }
 
-void SpriteAnimation_Tick(unk_D_84B25A28* arg0) {
+void SpriteAnimation_Tick(BattleUiState* arg0) {
     SpriteDisplay_TryAdvance(arg0->unk_20, 0);
 
     arg0->unk_01++;
-    if ((arg0->unk_01 >= 0x1E) && (func_8001B010(arg0->unk_20) != 0)) {
+    if ((arg0->unk_01 >= 0x1E) && (SpriteDisplay_IsAnimating(arg0->unk_20) != 0)) {
         arg0->unk_01 = 0;
         arg0->unk_00 = 2;
     }
 }
 
-void UI_StateMachine(unk_D_84B25A28* arg0) {
+void UI_StateMachine(BattleUiState* arg0) {
     switch (arg0->unk_00) {
         case 1:
             SpriteAnimation_Tick(arg0);
@@ -824,7 +824,7 @@ void UI_StateMachine(unk_D_84B25A28* arg0) {
     }
 }
 
-void SpriteDisplay_SetupBattle(unk_D_84B25A28* arg0) {
+void SpriteDisplay_SetupBattle(BattleUiState* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -841,7 +841,7 @@ void SpriteDisplay_SetupBattle(unk_D_84B25A28* arg0) {
     }
 }
 
-void SpriteDisplay_SetupDoubleBattle(unk_D_84B25A28* arg0) {
+void SpriteDisplay_SetupDoubleBattle(BattleUiState* arg0) {
     s32 i;
     s32 count;
     AssetManager* tmp = AssetManager_Create(5);
@@ -869,7 +869,7 @@ void SpriteDisplay_SetupDoubleBattle(unk_D_84B25A28* arg0) {
     }
 }
 
-void UI_Init(unk_D_84B25A28* arg0, BinArchive* arg1) {
+void UI_Init(BattleUiState* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
@@ -887,7 +887,7 @@ void UI_Init(unk_D_84B25A28* arg0, BinArchive* arg1) {
     arg0->unk_00 = 1;
 }
 
-void func_84B07848(unk_D_84B25A28* arg0) {
+void UI_SetSingleBattlePositions(BattleUiState* arg0) {
     Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
     Vec3f_Set(&arg0->unk_04[2].unk_024, -32.0f, 96.0f, -289.0f);
     Vec3f_Set(&arg0->unk_04[3].unk_024, 32.0f, 96.0f, -289.0f);
@@ -901,7 +901,7 @@ void func_84B07848(unk_D_84B25A28* arg0) {
     arg0->unk_04[8].unk_000.unk_01 &= ~1;
 }
 
-void func_84B07978(unk_D_84B25A28* arg0) {
+void UI_SetDoubleBattlePositions(BattleUiState* arg0) {
     Vec3f_Set(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
     Vec3f_Set(&arg0->unk_04[1].unk_024, -40.0f, 96.0f, -289.0f);
     Vec3f_Set(&arg0->unk_04[2].unk_024, 8.0f, 96.0f, -289.0f);
@@ -914,7 +914,7 @@ void func_84B07978(unk_D_84B25A28* arg0) {
     Vec3f_Set(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
 }
 
-s32 UI_WaitUntilFinished(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
+s32 UI_WaitUntilFinished(BattleUiState* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
     s16 var_a1;
 
@@ -954,16 +954,16 @@ s32 UI_WaitUntilFinished(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
         Vec3f_Set(&arg0->unk_04[10].unk_024, 0.0f, 0.0f, 1000.0f);
 
         if (arg0->unk_02 == 1) {
-            func_84B07978(arg0);
+            UI_SetDoubleBattlePositions(arg0);
         } else {
-            func_84B07848(arg0);
+            UI_SetSingleBattlePositions(arg0);
         }
     }
 
     return arg0->unk_00 == 3;
 }
 
-void UI_SetupGraphNodes(unk_D_84B25A28* arg0, CameraStruct* arg1) {
+void UI_SetupGraphNodes(BattleUiState* arg0, CameraStruct* arg1) {
     MemoryBlock* temp_s1;
 
     arg0->unk_08 = arg1;
@@ -985,16 +985,16 @@ void UI_SetupGraphNodes(unk_D_84B25A28* arg0, CameraStruct* arg1) {
 
     temp_s1 = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {
-        arg0->unk_0C = process_geo_layout(temp_s1, D_84B14A90);
-        arg0->unk_10 = process_geo_layout(temp_s1, D_84B14B50);
+        arg0->unk_0C = process_geo_layout(temp_s1, gPowerGaugeLeftLayoutDouble);
+        arg0->unk_10 = process_geo_layout(temp_s1, gPowerGaugeRightLayoutDouble);
     } else {
-        arg0->unk_0C = process_geo_layout(temp_s1, D_84B146C0);
-        arg0->unk_10 = process_geo_layout(temp_s1, D_84B1474C);
+        arg0->unk_0C = process_geo_layout(temp_s1, gHealthBarLeftLayout);
+        arg0->unk_10 = process_geo_layout(temp_s1, gHealthBarRightLayout);
     }
 
-    arg0->unk_14 = process_geo_layout(temp_s1, D_84B141E8);
-    arg0->unk_18 = process_geo_layout(temp_s1, D_84B14234);
-    arg0->unk_1C = process_geo_layout(temp_s1, D_84B13FC8);
+    arg0->unk_14 = process_geo_layout(temp_s1, gGaugeLeftLayout);
+    arg0->unk_18 = process_geo_layout(temp_s1, gGaugeRightLayout);
+    arg0->unk_1C = process_geo_layout(temp_s1, gPowerGaugeAnimDL);
 
     mem_pool_resize_block(temp_s1);
 }

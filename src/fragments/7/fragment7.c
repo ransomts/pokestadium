@@ -127,11 +127,11 @@ static s16 gPlayerAIParams[5][6] = {
 
 static u8 gItemPairCounts[] = { 0, 5, 0, 10 };
 
-static unk_func_87801684 gResultScreenAnim1[] = {
+static AnimFrame gResultScreenAnim1[] = {
     { 0x3040580, 0x12 }, { 0x3040980, 2 }, { 0x3040D80, 8 }, { 0x3040980, 2 }, { 0x0, 0x0 },
 };
 
-static unk_func_87801684 gResultScreenAnim2[] = {
+static AnimFrame gResultScreenAnim2[] = {
     { 0x03042E00, 0x0006 }, { 0x03044360, 0x0002 }, { 0x03044A80, 0x0006 }, { 0x03044360, 0x0002 },
     { 0x03042E00, 0x0006 }, { 0x03041180, 0x0002 }, { 0x030418A0, 0x0006 }, { 0x03041180, 0x0002 },
     { 0x03042E00, 0x0006 }, { 0x03043520, 0x0002 }, { 0x03043C40, 0x0006 }, { 0x03043520, 0x0002 },
@@ -665,9 +665,9 @@ void RenderResultScreenUI(s32 arg0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
         gSPDisplayList(D_800A7420++, gPrefDL_Border);
 
-        func_87801C8C(0x56, 0xAC, gResultScreenAnim2);
-        func_87801824(0x74, 0xC6, gResultScreenAnim1);
-        func_87801F48(2, 0x19, 0xA6);
+        DrawAnimatedSpriteLarge(0x56, 0xAC, gResultScreenAnim2);
+        DrawAnimatedSprite3(0x74, 0xC6, gResultScreenAnim1);
+        DrawDualTexturePanel(2, 0x19, 0xA6);
     }
 }
 
@@ -1695,7 +1695,7 @@ void ShowResultScreen_Fragment7(void) {
 void FadeOutStage_Fragment7(void) {
     s32 i;
 
-    func_8004B9C4(0x1E);
+    Stage_SetFadeColor(0x1E);
     Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
@@ -1829,7 +1829,7 @@ void RenderFragment7Stage(void) {
     Graph_SetTextureState(gFragment7Struct2);
 
     for (i = 0; i < 12; i++) {
-        if (func_80015390(&gResultScreenGraphNode2, (s16)(i + 1), &sp48) != 0) {
+        if (Graph_GetRecordedPosition(&gResultScreenGraphNode2, (s16)(i + 1), &sp48) != 0) {
             gCurrentPlayerGraphNode = &gItemPairStates[i].unk_004;
             gCurrentPlayerGraphNode->unk_024.x = sp48.x / 10.0f;
             gCurrentPlayerGraphNode->unk_024.y = sp48.y / 10.0f;
@@ -1897,7 +1897,7 @@ void Fragment7_MainEntrypoint(UNUSED s32 arg0, UNUSED s32 arg1) {
     RenderFragment7Stage();
 
     if (RunMatchLoop() != -1) {
-        func_8004B9C4(0x3C);
+        Stage_SetFadeColor(0x3C);
         WaitFrames_Fragment7(5);
         gPlayerItemRows = 0xA;
         InitRandomItemPairs();

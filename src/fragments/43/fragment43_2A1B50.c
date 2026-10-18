@@ -7,8 +7,8 @@
 #include "src/C030.h"
 #include "src/memory.h"
 
-unk_D_83402EE0 D_83402EE0[24];
-s32 D_83403C00[24];
+unk_D_83402EE0 gDisplayableMonIndices[24];
+s32 gMonSelectionFlags[24];
 unk_D_83403C60 gGalleryEntries[36];
 static unk_D_83403C60 gGalleryEntriesBackup[36];
 unk_D_83403C60 gGalleryCamEntries[21];
@@ -22,7 +22,7 @@ s32 gGallerySpecialViewed;
 s32 gGalleryAudioStateFlag;
 static unk_func_80027FA0 D_83407AF0;
 unk_D_83407B00 gGallerySelection;
-unk_D_83407B00 D_83407B00;
+unk_D_83407B00 gGalleryMainSelectionCam;
 unk_D_83407B00 gGallerySubSelection;
 unk_D_83407B00 gGalleryTertiarySelection;
 unk_D_83407B18 gGalleryFinalSelection;
@@ -91,7 +91,7 @@ void Gallery_Init(void) {
     main_pool_pop_state('bkgl');
 
     GallerySelection_Init(&gGalleryMainSelection);
-    Selection_Reset(&D_83407B00);
+    Selection_Reset(&gGalleryMainSelectionCam);
     Selection_Reset(&gGallerySubSelection);
     Selection_Reset(&gGalleryTertiarySelection);
     Selection_Reset(&gGalleryFinalSelection.unk_00);
@@ -191,8 +191,8 @@ void Gallery_Terminate(void) {
 
 void Gallery_Reset(void) {
     D_83402E20 = 0;
-    bzero(D_83402EE0, 0xD20);
-    bzero(D_83403C00, 0x60);
+    bzero(gDisplayableMonIndices, 0xD20);
+    bzero(gMonSelectionFlags, 0x60);
     Selection_Reset(&gGallerySelection);
 }
 

@@ -3,10 +3,10 @@
 
 #include "global.h"
 
-typedef struct unk_func_87801684 {
+typedef struct AnimFrame {
     /* 0x00 */ u32* unk_00;
     /* 0x04 */ s16 unk_04;
-} unk_func_87801684; // size = 0x8
+} AnimFrame; // size = 0x8
 
 extern char** gItemNamesBank;
 extern s16 gCurrentMenuIndex;
@@ -37,20 +37,20 @@ void IncrementRandomCounter(void);
 u32 GetRandomMod(u32 arg0);
 void DrawBorderRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_878010C8(s16 arg0);
+void Sushi_SetDemoParams(s16 arg0);
 void FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void ParseStringAndMeasure(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4);
 s32 GetTextWidth(UNUSED TextObject* arg0, char* arg1);
 void DrawScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4);
 void DrawUniformScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
-void func_87801684(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_87801754(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_87801824(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_878018F4(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_87801AC0(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_87801C8C(s16 arg0, s16 arg1, unk_func_87801684* arg2);
-void func_87801D5C(s16 arg0, s16 arg1, s16 arg2, unk_func_87801684* arg3);
-void func_87801F48(s16 arg0, s16 arg1, s16 arg2);
+void DrawAnimatedSprite(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedSprite2(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedSprite3(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedTexture(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedTexture2(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedSpriteLarge(s16 arg0, s16 arg1, AnimFrame* arg2);
+void DrawAnimatedTextureDual(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3);
+void DrawDualTexturePanel(s16 arg0, s16 arg1, s16 arg2);
 void Stage_SetBorderFadeParams(s16 arg0, s16 arg1);
 
 void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3);

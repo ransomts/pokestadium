@@ -3220,7 +3220,7 @@ s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     osStartThread(&sp44->thread);
 
-    func_80007754();
+    Menu_SetupDisplayList();
     func_88308D60(sp4C);
 
     osDestroyThread(&sp44->thread);

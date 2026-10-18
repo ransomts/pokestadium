@@ -134,7 +134,7 @@ s32 Fragment63_RenderCallbackBarA(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)Memmap_GetSegmentVaddr(var_a0) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -147,7 +147,7 @@ s32 Fragment63_RenderCallbackBarB(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)Memmap_GetSegmentVaddr(D_3020800) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -163,7 +163,7 @@ s32 Fragment63_RenderCallbackBarEnv(s32 arg0, SimpleGfxNode* arg1) {
         gDPSetEnvColor(gDisplayListHead++, temp_a0->unk_08.r, temp_a0->unk_08.g, temp_a0->unk_08.b, 255);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -208,7 +208,7 @@ s32 Fragment63_RenderCallbackIconEnv(s32 arg0, SimpleGfxNode* arg1) {
         gDPSetEnvColor(gDisplayListHead++, temp_v1->unk_0A.r, temp_v1->unk_0A.g, temp_v1->unk_0A.b, temp_v1->unk_0A.a);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }

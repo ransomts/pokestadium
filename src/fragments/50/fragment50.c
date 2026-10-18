@@ -2561,7 +2561,7 @@ void Fragment50_MainSequence(void) {
 
     Stage_SetFillColor(0xFFFF);
     Stage_FadeOut(0x16);
-    func_8004B9C4(0x3C);
+    Stage_SetFadeColor(0x3C);
 
     while (Stage_GetFadeState() != 1) {
         func_82600D04();

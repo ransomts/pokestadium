@@ -28,7 +28,7 @@ char** D_84211B40;
 char** gMessageBank_26;
 char** D_84211B48;
 char** gMessageBank_06;
-unk_D_84211B50 gPartyInfo;
+gItemPanel gPartyInfo;
 unk_D_842168A0 gControllerInfo;
 unk_D_84229EB0 gPokemonData;
 unk_D_8423D3A8 gMoveScreenInfo;
@@ -571,7 +571,7 @@ void PartyScreenTransition(s16 arg0, s32 arg1, s16 arg2) {
     if (arg0 == 4) {
         func_84210A18(&gPokemonData);
     } else {
-        func_842079B4(&gPartyInfo, 0);
+        ItemPanel_StartSlideDown(&gPartyInfo, 0);
         TriggerScrollUp(&gControllerInfo, 0);
     }
     Game_UpdateInputs();
@@ -592,7 +592,7 @@ void PartyScreenInputLoop(s16 arg0, s16 arg1, s16 arg2) {
         if (arg0 == 4) {
             var_s0 = func_84210B54(&gPokemonData) == 0;
         } else {
-            var_s0 = !func_842081A8(&gPartyInfo);
+            var_s0 = !ItemPanel_IsOffscreen(&gPartyInfo);
             var_s0 |= !IsMenuInState2(&gControllerInfo);
         }
     }
@@ -643,7 +643,7 @@ void SetupBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
         var_v1 = 0;
     }
 
-    gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
+    gSubsystemEnableMask |= ItemPanel_Init(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
     gSubsystemEnableMask |= InitPokemonMenu(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->unk_02, arg1, gBattleSelectionControllerInfo);
 }
 
@@ -727,7 +727,7 @@ void ShowSelectedMonInfo(s16 arg0, s16 arg1) {
         if (arg1 == 4) {
             func_84210C80(&gPokemonData, temp_v1->unk_214->unk_028[0].unk_53);
         } else {
-            func_842081B4(&gPartyInfo, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
+            ItemPanel_LoadItems(&gPartyInfo, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
         }
     }
 }
@@ -932,7 +932,7 @@ void RunRegistrationMode(void) {
 
         ptr = &gPokemonData;
         gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 3, 0x2C, 0xBC, 0);
-        gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
+        gSubsystemEnableMask |= ItemPanel_Init(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
         gSubsystemEnableMask |= InitPokemonMenu(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 1, 0x68, 0xE4, 0, temp_v0, gBattleSelectionControllerInfo);
 
         PartyScreenTransition(temp_v0, 1, 0);
@@ -1107,7 +1107,7 @@ s32 RunPartyScreenMain(s32 arg0, UNUSED s32 arg1) {
     LoadBattleSelectionBackground();
     SpriteAssets_Load();
     LoadBattleSelectionControllerAssets();
-    func_80007754();
+    Menu_SetupDisplayList();
 
     if (arg0 == 1) {
         var_v1 = RunMainPartyMenu();

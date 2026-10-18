@@ -145,7 +145,7 @@ s32 SnapSelect_Process(void) {
                 case -2:
                     if (D_83402E20 > 0) {
                         gSnapSelectState = 3;
-                        func_83402CE4(2, gPlayer1Controller);
+                        Menu_SetStep(2, gPlayer1Controller);
                     } else {
                         sp78 = 1;
                     }
@@ -213,7 +213,7 @@ void SnapSelect_MainLoop(void) {
         SnapSelect_ReadInputs();
         PlayerSelectStateUpdate();
         func_83803488();
-        func_83402C6C();
+        Menu_IsExitPressed();
         SnapSelect_Update();
     } while (SnapSelect_Process() != 0);
 }

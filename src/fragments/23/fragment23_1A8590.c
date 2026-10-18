@@ -16,7 +16,7 @@ TextObject* Fragment23_Init(void) {
     FRAGMENT_LOAD(fragment26);
     FRAGMENT_LOAD(fragment29);
 
-    func_80007754();
+    Menu_SetupDisplayList();
     return sp1C;
 }
 

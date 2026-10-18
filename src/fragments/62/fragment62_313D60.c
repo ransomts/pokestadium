@@ -334,7 +334,7 @@ u16 IsPointInTriangleAndWithinRange(unk_BattlePlayerEntity* arg0, CameraStruct* 
     sp60.y = a2->unk_000.unk_024.y;
     sp60.z = a2->unk_000.unk_024.z;
 
-    if ((func_84308598(arg0) * 2.5f) >= Vector_Distance(arg1->unk_60.eye, sp60)) {
+    if ((GetScaledWidth(arg0) * 2.5f) >= Vector_Distance(arg1->unk_60.eye, sp60)) {
         sp5C = 0;
     }
     return sp5C;

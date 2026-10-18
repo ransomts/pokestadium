@@ -5,7 +5,7 @@
 #include "src/1AB70.h"
 #include "src/29BA0.h"
 
-typedef struct unk_func_82F00838_sp30_00C {
+typedef struct PickerPokemonEntry {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ char unk01[0xD];
     /* 0x0E */ u16 unk_0E;
@@ -16,16 +16,16 @@ typedef struct unk_func_82F00838_sp30_00C {
     /* 0x3B */ char unk_3B[11];
     /* 0x46 */ char unk46[0xA];
     /* 0x50 */ s32 force_align;
-} unk_func_82F00838_sp30_00C; // size = 0x54
+} PickerPokemonEntry; // size = 0x54
 
-typedef struct unk_D_82F144D0_0CA8 {
+typedef struct PickerPokemonGroup {
     /* 0x000 */ s16 unk_000;
-    /* 0x004 */ struct unk_D_82F144D0_0CA8* unk_004;
-    /* 0x008 */ struct unk_D_82F144D0_0CA8* unk_008;
-    /* 0x00C */ unk_func_82F00838_sp30_00C unk_00C[20];
-} unk_D_82F144D0_0CA8; // size = 0x69C
+    /* 0x004 */ struct PickerPokemonGroup* unk_004;
+    /* 0x008 */ struct PickerPokemonGroup* unk_008;
+    /* 0x00C */ PickerPokemonEntry unk_00C[20];
+} PickerPokemonGroup; // size = 0x69C
 
-typedef struct unk_D_82F144D0 {
+typedef struct PickerState {
     /* 0x0000 */ s16 unk_0000;
     /* 0x0002 */ s16 unk_0002;
     /* 0x0004 */ s16 unk_0004;
@@ -45,9 +45,9 @@ typedef struct unk_D_82F144D0 {
     /* 0x0020 */ s16 unk_0020;
     /* 0x0022 */ char unk0022[0x6];
     /* 0x0028 */ u16 unk_0028[0x640];
-    /* 0x0CA8 */ unk_D_82F144D0_0CA8 unk_0CA8[13];
+    /* 0x0CA8 */ PickerPokemonGroup unk_0CA8[13];
     /* 0x6294 */ char unk6294[0x4];
-} unk_D_82F144D0; // size = 0x6298
+} PickerState; // size = 0x6298
 
 typedef struct unk_func_82F00838_sp30 {
     /* 0x00 */ s16 unk_00;
@@ -55,7 +55,7 @@ typedef struct unk_func_82F00838_sp30 {
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
-    /* 0x0C */ unk_func_82F00838_sp30_00C* unk_0C;
+    /* 0x0C */ PickerPokemonEntry* unk_0C;
 } unk_func_82F00838_sp30; // size = 0x10
 
 typedef struct unk_D_82F14450 {
@@ -87,7 +87,7 @@ typedef struct unk_D_82F20A10 {
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
     /* 0x14 */ PokemonData* unk_14;
-    /* 0x18 */ unk_D_82F144D0* unk_18;
+    /* 0x18 */ PickerState* unk_18;
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ AssetManager* unk_20;
     /* 0x24 */ unk_func_8001B1FC* unk_24;
@@ -260,37 +260,37 @@ s32 func_82F0109C(void);
 void func_82F01180(void);
 s32 func_82F01234(s32 arg0, s32 arg1);
 
-s16 LoadPokemonFromGbsBlock(unk_D_82F144D0* arg0, s16 arg1);
+s16 LoadPokemonFromGbsBlock(PickerState* arg0, s16 arg1);
 u16* GetSpriteDataPtr(u8* arg0, s16 arg1, s16 arg2);
 void InitPokemonPicker(s32 arg0, s16 arg1);
 s32 GetPickerState(void);
-void PickerCountdownTick(unk_D_82F144D0* arg0);
-void HandlePickerInput(unk_D_82F144D0* arg0);
-void func_82F01FE4(unk_D_82F144D0* arg0);
-void func_82F020B4(unk_D_82F144D0* arg0);
-void func_82F02180(unk_D_82F144D0* arg0);
-void func_82F022DC(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void func_82F02544(s16 arg0, s16 arg1, s16 arg2);
-void func_82F028AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16 arg5);
-void func_82F029FC(s16 arg0, s16 arg1, s16 arg2);
+void PickerCountdownTick(PickerState* arg0);
+void HandlePickerInput(PickerState* arg0);
+void Picker_SlideTransition(PickerState* arg0);
+void Picker_HandleBattleStart(PickerState* arg0);
+void Picker_ExitAnimation(PickerState* arg0);
+void Picker_DrawFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void Picker_DrawHeader(s16 arg0, s16 arg1, s16 arg2);
+void Picker_DrawRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16 arg5);
+void Picker_DrawSlot(s16 arg0, s16 arg1, s16 arg2);
 void DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2);
-void func_82F02CE8(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void func_82F02EAC(s16 arg0, s16 arg1, s16 arg2);
-void func_82F02FEC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-void func_82F037EC(s16, s16, s16, s16, u8, u8, u8, u8);
-void func_82F04010(s16 arg0, s16 arg1, u8* arg2, s16 arg3);
-void DrawPokemonListUI(unk_D_82F144D0* arg0, s16 arg1, s16 arg2, s32 arg3);
+void Picker_DrawCursor(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void Picker_DrawListBackground(s16 arg0, s16 arg1, s16 arg2);
+void Picker_DrawPanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
+void Picker_DrawLargePanelBorder(s16, s16, s16, s16, u8, u8, u8, u8);
+void Picker_DrawListSlot(s16 arg0, s16 arg1, u8* arg2, s16 arg3);
+void DrawPokemonListUI(PickerState* arg0, s16 arg1, s16 arg2, s32 arg3);
 void DrawStatusPanel(s16 arg0, s16 arg1, s16 arg2);
-void UpdateAndRenderPicker(unk_D_82F144D0* arg0);
-void func_82F04FD4(void);
-void func_82F0504C(void);
-void func_82F05110(void);
-u16* func_82F05198(s32);
-void func_82F051B8(void);
-s32 func_82F0525C(s32 arg0, unk_func_82F00838_sp30* arg1);
+void UpdateAndRenderPicker(PickerState* arg0);
+void Picker_Reset(void);
+void Picker_Update(void);
+void Picker_Render(void);
+u16* Picker_GetSelectedSprite(s32);
+void Picker_SwapSelectedSprites(void);
+s32 Picker_GetSelectionInfo(s32 arg0, unk_func_82F00838_sp30* arg1);
 
-void func_82F05210(s16, PokemonData*);
-void BattleResultScreen_Start(unk_D_82F144D0* arg0, u8* arg1, s16 arg2, s16 arg3);
+void Picker_SetSelectedSprite(s16, PokemonData*);
+void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3);
 void BattleResultScreen_UpdateTimer(unk_D_82F20A10* arg0);
 void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0);
 void BattleResultScreen_Close(unk_D_82F20A10* arg0);

@@ -141,7 +141,7 @@ ParticleEffectInstance* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, fu
             sp1C->unk_38.y = arg0->unk_024.y;
             sp1C->unk_38.z = arg0->unk_024.z;
         } else {
-            func_80015390(arg0, arg4, &sp1C->unk_38);
+            Graph_GetRecordedPosition(arg0, arg4, &sp1C->unk_38);
         }
 
         sp1C->unk_94.x = arg0->unk_01E.x;

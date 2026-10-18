@@ -877,7 +877,7 @@ s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
     D_84A03174 = BinArchive_GetFile(D_84A03170, 0xD);
     D_84A03178 = BinArchive_GetFile(D_84A03170, 0x10);
     D_84A0317C = BinArchive_GetFile(D_84A03170, 0xE);
-    func_80007754();
+    Menu_SetupDisplayList();
 
     sp1E = func_84A02B70(arg0);
     if (D_84A03180.unk_04 < 8) {

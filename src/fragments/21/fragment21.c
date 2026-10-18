@@ -1500,13 +1500,13 @@ static s16 gSandshrewAngleOffsets[] = {
     0xA000,
 };
 
-static unk_func_87801684 gSandshrewTutoAnimTable1[5] = {
+static AnimFrame gSandshrewTutoAnimTable1[5] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
 };
-static unk_func_87801684 gSandshrewTutoAnimTable2[5] = {
+static AnimFrame gSandshrewTutoAnimTable2[5] = {
     { D_030451A0, 8 }, { D_03045E20, 2 }, { D_03046AA0, 2 }, { D_03045E20, 2 }, { NULL, 0 },
 };
-static unk_func_87801684 gSandshrewTutoAnimTable3[6] = {
+static AnimFrame gSandshrewTutoAnimTable3[6] = {
     { D_03047720, 2 }, { D_030483A0, 2 }, { D_03049020, 2 }, { D_030483A0, 2 }, { D_03047720, 6 }, { NULL, 0 },
 };
 
@@ -1552,7 +1552,7 @@ void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1) {
             break;
 
         case 7:
-            func_8004B9C4(0x3C);
+            Stage_SetFadeColor(0x3C);
             break;
 
         case 8:
@@ -1868,7 +1868,7 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
 
         case 0x65: //	win animation loop
             minigameActorLocalOriginToZero(sandshrew);
-            func_80015390(&miniSandshrewGeiserPtr->unk_000, 0xA, &sandshrew->position_2);
+            Graph_GetRecordedPosition(&miniSandshrewGeiserPtr->unk_000, 0xA, &sandshrew->position_2);
             break;
     }
 }
@@ -2274,10 +2274,10 @@ void func_86F01C40(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            func_87801F48(2, 0x19, 0xA6);
-            func_878018F4(0x63, 0xAB, gSandshrewTutoAnimTable2);
-            func_87801AC0(0x8B, 0xAB, gSandshrewTutoAnimTable3);
-            func_87801824(0x74, 0xC6, gSandshrewTutoAnimTable1);
+            DrawDualTexturePanel(2, 0x19, 0xA6);
+            DrawAnimatedTexture(0x63, 0xAB, gSandshrewTutoAnimTable2);
+            DrawAnimatedTexture2(0x8B, 0xAB, gSandshrewTutoAnimTable3);
+            DrawAnimatedSprite3(0x74, 0xC6, gSandshrewTutoAnimTable1);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;

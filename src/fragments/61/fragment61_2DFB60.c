@@ -204,7 +204,7 @@ void DrawPokemonEntry(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0
 
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.unk_00.unk_00 != 0) &&
-            (func_84207E3C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0)) {
+            (ItemPanel_IsItemDuplicate(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0)) {
             DrawColoredBox(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
         } else {
             DrawColoredBox(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
@@ -225,7 +225,7 @@ void DrawPokemonEntry(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 40, 100, 220, 255);
 
     for (i = 0; i < 3; i++) {
-        if (func_8420804C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
+        if (ItemPanel_HasItem(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
             Gfx_DrawSpriteIA8(arg1 + (i * 0x84) + 0x2E, arg2 + 0xB, 0x48, 0x1C, D_200AC00, 0x48, 0);
         }
     }
@@ -236,8 +236,8 @@ void DrawPokemonEntry(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0
 
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.unk_00.unk_00 != 0) &&
-            (func_8420804C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) == 0)) {
-            if (func_84207E3C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
+            (ItemPanel_HasItem(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) == 0)) {
+            if (ItemPanel_IsItemDuplicate(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0x32, 0x32, 0xC8, 0x80);
@@ -488,7 +488,7 @@ void HandleMoveSelection(unk_D_842168A0* arg0) {
     temp_v0 = GetSelectedMoveIndex(arg0->unk_1360C);
 
     if (temp_v0 == 1) {
-        if (func_84207BD4(arg0->unk_13608, &sp2C->unk_0000[arg0->unk_0000C]) != 0) {
+        if (ItemPanel_AddItem(arg0->unk_13608, &sp2C->unk_0000[arg0->unk_0000C]) != 0) {
             arg0->unk_00009 = 2;
             arg0->unk_00001 = 4;
         }
@@ -534,7 +534,7 @@ void SelectPokemon(unk_D_842168A0* arg0) {
     s16 tmp1;
     s16 tmp2;
 
-    if (func_84207E3C(arg0->unk_13608, &sp3C->unk_0000[arg0->unk_0000C]) != 0) {
+    if (ItemPanel_IsItemDuplicate(arg0->unk_13608, &sp3C->unk_0000[arg0->unk_0000C]) != 0) {
         if (arg0->unk_00000 == 0) {
             var_t1 = 1;
         } else {
@@ -684,7 +684,7 @@ void SwitchPageLeft(unk_D_842168A0* arg0) {
 }
 
 void HandleCancelAction(unk_D_842168A0* arg0) {
-    s32 temp_v0 = func_84207AAC(arg0->unk_13608);
+    s32 temp_v0 = ItemPanel_ConfirmSelection(arg0->unk_13608);
 
     if (temp_v0 != -1) {
         if (temp_v0 == 1) {
@@ -701,7 +701,7 @@ void HandleCancelAction(unk_D_842168A0* arg0) {
 }
 
 void HandleStartAction(unk_D_842168A0* arg0) {
-    if (func_84207D5C(arg0->unk_13608) != 0) {
+    if (ItemPanel_RemoveCurrent(arg0->unk_13608) != 0) {
         arg0->unk_00009 = 2;
         arg0->unk_00001 = 4;
         PlaySoundEffect(2);
@@ -857,7 +857,7 @@ s32 FilterPokemonByStat(unk_D_842168A0* arg0, s16 arg1, s16 arg2) {
     return ptr->unk_00;
 }
 
-s32 InitPokemonMenu(unk_D_842168A0* arg0, unk_D_84211B50* arg1, unk_D_8423D3A8* arg2, s16 arg3, s16 arg4, s16 arg5,
+s32 InitPokemonMenu(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8* arg2, s16 arg3, s16 arg4, s16 arg5,
                   s16 arg6, s16 arg7, unk_D_842168A0_0013C* arg8) {
     s16 i;
 
@@ -992,7 +992,7 @@ void FindNextValidPokemon(unk_D_842168A0* arg0) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (func_84207E3C(arg0->unk_13608,
+        if (ItemPanel_IsItemDuplicate(arg0->unk_13608,
                           &GetPokemonNode(arg0->unk_00140, arg0->unk_0000E)->unk_0000[arg0->unk_0000C]) != 0) {
             break;
         }

@@ -30,8 +30,8 @@ typedef struct unk_D_83407B18 {
     /* 0x14 */ char unk14[0x4];
 } unk_D_83407B18; // size = 0x18
 
-extern unk_D_83402EE0 D_83402EE0[24];
-extern s32 D_83403C00[24];
+extern unk_D_83402EE0 gDisplayableMonIndices[24];
+extern s32 gMonSelectionFlags[24];
 extern unk_D_83403C60 gGalleryEntries[36];
 extern unk_D_83403C60 gGalleryCamEntries[21];
 extern unk_D_83403C60* gCurrentCamEntry;
@@ -41,7 +41,7 @@ extern s32 gGallerySpecialUnlocked;
 extern s32 gGallerySpecialViewed;
 extern s32 gGalleryAudioStateFlag;
 extern unk_D_83407B00 gGallerySelection;
-extern unk_D_83407B00 D_83407B00;
+extern unk_D_83407B00 gGalleryMainSelectionCam;
 extern unk_D_83407B00 gGallerySubSelection;
 extern unk_D_83407B00 gGalleryTertiarySelection;
 extern unk_D_83407B18 gGalleryFinalSelection;
@@ -107,9 +107,9 @@ void SnapSelect_UpdateUIState(UNUSED s32 arg0);
 void func_83402A38(void);
 void func_83402BF4(void);
 void func_83402C34(void);
-s32 func_83402C6C(void);
-s32 func_83402CE4(s16 arg0, Controller* arg1);
-s32 func_83402D74(s16 arg0);
+s32 Menu_IsExitPressed(void);
+s32 Menu_SetStep(s16 arg0, Controller* arg1);
+s32 Menu_ExitToGallery(s16 arg0);
 s16 SnapSelect_GetResultCode(s16 arg0);
 
 #endif // _FRAGMENT43_H_

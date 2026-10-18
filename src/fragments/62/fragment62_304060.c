@@ -231,9 +231,9 @@ void func_84319C58(CameraStruct* arg0, s32 arg1) {
             ExecuteAnimStateHandlers(temp_s0, 1);
         }
 
-        sp50 = func_84308598(temp_s0) * 3.5f;
+        sp50 = GetScaledWidth(temp_s0) * 3.5f;
         sp3E = Math_RandomU16Scaled(3);
-        sp50 *= ((func_84308014(temp_s0) * 0.5f * sp3E) + 1.0f);
+        sp50 *= ((GetScaledHeight(temp_s0) * 0.5f * sp3E) + 1.0f);
 
         if (sp50 > 325.0f) {
             sp50 = 325.0f;

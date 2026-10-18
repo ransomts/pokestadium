@@ -11,7 +11,7 @@ extern u32 gResultCubeTex_4[];
 extern u32 gResultCubeTex_5[];
 extern u32 gResultCubeTex_6[];
 extern u32 gResultCubeTex_7[];
-extern u32 D_8780A270[];
+extern u32 gResultCubeTex_8[];
 extern u32 gBorderTexture_Left[];
 extern u32 gBorderTexture_Middle[];
 extern u32 gBorderTexture_Fill[];
@@ -43,14 +43,14 @@ void InitMessageBanks(void) {
 }
 
 void UpdateScrollingMessage(void) {
-    static s32 D_87806334 = 0;
+    static s32 gScrollingMessageOffset = 0;
 
     s32 sp24;
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
         sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMoveNamesBank, 0));
-        temp_s0 = 0x50 - D_87806334;
+        temp_s0 = 0x50 - gScrollingMessageOffset;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
@@ -67,9 +67,9 @@ void UpdateScrollingMessage(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
-        D_87806334++;
-        if (D_87806334 >= (sp24 + 0x50)) {
-            D_87806334 = 0x32;
+        gScrollingMessageOffset++;
+        if (gScrollingMessageOffset >= (sp24 + 0x50)) {
+            gScrollingMessageOffset = 0x32;
         }
     }
 }
@@ -188,9 +188,9 @@ void DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 s16 gCurrentMenuIndex = -1;
 u32* gPositiveTextureBank[] = { gResultCubeTex_0, gResultCubeTex_1, gResultCubeTex_2, gResultCubeTex_3 };
-u32* gNegativeTextureBank[] = { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7, D_8780A270 };
+u32* gNegativeTextureBank[] = { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7, gResultCubeTex_8 };
 
-void func_878010C8(s16 arg0) {
+void Sushi_SetDemoParams(s16 arg0) {
     s32 i;
     gMenuRandomSeed = 0;
     gCurrentMenuIndex = arg0;
@@ -333,204 +333,204 @@ void DrawUniformScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 _scale) {
     DrawScaledTextureRect(arg0, arg1, arg2, _scale, _scale);
 }
 
-void func_87801684(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_87806360 = NULL;
-    static unk_func_87801684* D_8780FA74;
-    static s16 D_8780FA78;
+void DrawAnimatedSprite(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimSprite1_Current = NULL;
+    static AnimFrame* gAnimSprite1_Ptr;
+    static s16 gAnimSprite1_Timer;
 
-    if ((D_87806360 != arg2) || (arg2 == NULL)) {
-        D_87806360 = arg2;
+    if ((gAnimSprite1_Current != arg2) || (arg2 == NULL)) {
+        gAnimSprite1_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA74 = arg2;
-        D_8780FA78 = arg2->unk_04;
+        gAnimSprite1_Ptr = arg2;
+        gAnimSprite1_Timer = arg2->unk_04;
     }
 
-    D_8780FA78--;
-    if (D_8780FA78 <= 0) {
-        D_8780FA74++;
-        if (D_8780FA74->unk_00 == NULL) {
-            D_8780FA74 = arg2;
+    gAnimSprite1_Timer--;
+    if (gAnimSprite1_Timer <= 0) {
+        gAnimSprite1_Ptr++;
+        if (gAnimSprite1_Ptr->unk_00 == NULL) {
+            gAnimSprite1_Ptr = arg2;
         }
-        D_8780FA78 = D_8780FA74->unk_04;
+        gAnimSprite1_Timer = gAnimSprite1_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, D_8780FA74->unk_00, 0x10, 0);
+    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite1_Ptr->unk_00, 0x10, 0);
 }
 
-void func_87801754(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_87806364 = NULL;
-    static unk_func_87801684* D_8780FA7C;
-    static s16 D_8780FA80;
+void DrawAnimatedSprite2(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimSprite2_Current = NULL;
+    static AnimFrame* gAnimSprite2_Ptr;
+    static s16 gAnimSprite2_Timer;
 
-    if ((D_87806364 != arg2) || (arg2 == NULL)) {
-        D_87806364 = arg2;
+    if ((gAnimSprite2_Current != arg2) || (arg2 == NULL)) {
+        gAnimSprite2_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA7C = arg2;
-        D_8780FA80 = arg2->unk_04;
+        gAnimSprite2_Ptr = arg2;
+        gAnimSprite2_Timer = arg2->unk_04;
     }
 
-    D_8780FA80--;
-    if (D_8780FA80 <= 0) {
-        D_8780FA7C++;
-        if (D_8780FA7C->unk_00 == NULL) {
-            D_8780FA7C = arg2;
+    gAnimSprite2_Timer--;
+    if (gAnimSprite2_Timer <= 0) {
+        gAnimSprite2_Ptr++;
+        if (gAnimSprite2_Ptr->unk_00 == NULL) {
+            gAnimSprite2_Ptr = arg2;
         }
-        D_8780FA80 = D_8780FA7C->unk_04;
+        gAnimSprite2_Timer = gAnimSprite2_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, D_8780FA7C->unk_00, 0x10, 0);
+    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite2_Ptr->unk_00, 0x10, 0);
 }
 
-void func_87801824(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_87806368 = NULL;
-    static unk_func_87801684* D_8780FA84;
-    static s16 D_8780FA88;
+void DrawAnimatedSprite3(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimSprite3_Current = NULL;
+    static AnimFrame* gAnimSprite3_Ptr;
+    static s16 gAnimSprite3_Timer;
 
-    if ((D_87806368 != arg2) || (arg2 == NULL)) {
-        D_87806368 = arg2;
+    if ((gAnimSprite3_Current != arg2) || (arg2 == NULL)) {
+        gAnimSprite3_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA84 = arg2;
-        D_8780FA88 = arg2->unk_04;
+        gAnimSprite3_Ptr = arg2;
+        gAnimSprite3_Timer = arg2->unk_04;
     }
 
-    D_8780FA88--;
-    if (D_8780FA88 <= 0) {
-        D_8780FA84++;
-        if (D_8780FA84->unk_00 == NULL) {
-            D_8780FA84 = arg2;
+    gAnimSprite3_Timer--;
+    if (gAnimSprite3_Timer <= 0) {
+        gAnimSprite3_Ptr++;
+        if (gAnimSprite3_Ptr->unk_00 == NULL) {
+            gAnimSprite3_Ptr = arg2;
         }
-        D_8780FA88 = D_8780FA84->unk_04;
+        gAnimSprite3_Timer = gAnimSprite3_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, D_8780FA84->unk_00, 0x10, 0);
+    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite3_Ptr->unk_00, 0x10, 0);
 }
 
-void func_878018F4(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_8780636C = NULL;
-    static unk_func_87801684* D_8780FA8C;
-    static s16 D_8780FA90;
+void DrawAnimatedTexture(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimTex1_Current = NULL;
+    static AnimFrame* gAnimTex1_Ptr;
+    static s16 gAnimTex1_Timer;
 
-    if ((D_8780636C != arg2) || (arg2 == NULL)) {
-        D_8780636C = arg2;
+    if ((gAnimTex1_Current != arg2) || (arg2 == NULL)) {
+        gAnimTex1_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA8C = arg2;
-        D_8780FA90 = arg2->unk_04;
+        gAnimTex1_Ptr = arg2;
+        gAnimTex1_Timer = arg2->unk_04;
     }
 
-    D_8780FA90--;
-    if (D_8780FA90 <= 0) {
-        D_8780FA8C++;
-        if (D_8780FA8C->unk_00 == NULL) {
-            D_8780FA8C = arg2;
+    gAnimTex1_Timer--;
+    if (gAnimTex1_Timer <= 0) {
+        gAnimTex1_Ptr++;
+        if (gAnimTex1_Ptr->unk_00 == NULL) {
+            gAnimTex1_Ptr = arg2;
         }
-        D_8780FA90 = D_8780FA8C->unk_04;
+        gAnimTex1_Timer = gAnimTex1_Ptr->unk_04;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, D_8780FA8C->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTex1_Ptr->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
     Gfx_DrawTextureRect(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_87801AC0(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_87806370 = NULL;
-    static unk_func_87801684* D_8780FA94;
-    static s16 D_8780FA98;
+void DrawAnimatedTexture2(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimTex2_Current = NULL;
+    static AnimFrame* gAnimTex2_Ptr;
+    static s16 gAnimTex2_Timer;
 
-    if ((D_87806370 != arg2) || (arg2 == NULL)) {
-        D_87806370 = arg2;
+    if ((gAnimTex2_Current != arg2) || (arg2 == NULL)) {
+        gAnimTex2_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA94 = arg2;
-        D_8780FA98 = arg2->unk_04;
+        gAnimTex2_Ptr = arg2;
+        gAnimTex2_Timer = arg2->unk_04;
     }
 
-    D_8780FA98--;
-    if (D_8780FA98 <= 0) {
-        D_8780FA94++;
-        if (D_8780FA94->unk_00 == NULL) {
-            D_8780FA94 = arg2;
+    gAnimTex2_Timer--;
+    if (gAnimTex2_Timer <= 0) {
+        gAnimTex2_Ptr++;
+        if (gAnimTex2_Ptr->unk_00 == NULL) {
+            gAnimTex2_Ptr = arg2;
         }
-        D_8780FA98 = D_8780FA94->unk_04;
+        gAnimTex2_Timer = gAnimTex2_Ptr->unk_04;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, D_8780FA94->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTex2_Ptr->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
     Gfx_DrawTextureRect(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_87801C8C(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
-    static unk_func_87801684* D_87806374 = NULL;
-    static unk_func_87801684* D_8780FA9C;
-    static s16 D_8780FAA0;
+void DrawAnimatedSpriteLarge(s16 arg0, s16 arg1, AnimFrame* arg2) {
+    static AnimFrame* gAnimSpriteLarge_Current = NULL;
+    static AnimFrame* gAnimSpriteLarge_Ptr;
+    static s16 gAnimSpriteLarge_Timer;
 
-    if ((D_87806374 != arg2) || (arg2 == NULL)) {
-        D_87806374 = arg2;
+    if ((gAnimSpriteLarge_Current != arg2) || (arg2 == NULL)) {
+        gAnimSpriteLarge_Current = arg2;
         if (arg2 == NULL) {
             return;
         }
-        D_8780FA9C = arg2;
-        D_8780FAA0 = arg2->unk_04;
+        gAnimSpriteLarge_Ptr = arg2;
+        gAnimSpriteLarge_Timer = arg2->unk_04;
     }
 
-    D_8780FAA0--;
-    if (D_8780FAA0 <= 0) {
-        D_8780FA9C++;
-        if (D_8780FA9C->unk_00 == NULL) {
-            D_8780FA9C = arg2;
+    gAnimSpriteLarge_Timer--;
+    if (gAnimSpriteLarge_Timer <= 0) {
+        gAnimSpriteLarge_Ptr++;
+        if (gAnimSpriteLarge_Ptr->unk_00 == NULL) {
+            gAnimSpriteLarge_Ptr = arg2;
         }
-        D_8780FAA0 = D_8780FA9C->unk_04;
+        gAnimSpriteLarge_Timer = gAnimSpriteLarge_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x18, 0x13, D_8780FA9C->unk_00, 0x18, 0);
+    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x18, 0x13, gAnimSpriteLarge_Ptr->unk_00, 0x18, 0);
 }
 
-void func_87801D5C(s16 arg0, s16 arg1, s16 arg2, unk_func_87801684* arg3) {
-    static unk_func_87801684* D_87806378[] = {
+void DrawAnimatedTextureDual(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
+    static AnimFrame* gAnimTexDual_Current[] = {
         NULL,
         NULL,
     };
-    static unk_func_87801684* D_8780FAA8[2];
-    static s16 D_8780FAB0[2];
+    static AnimFrame* gAnimTexDual_Ptr[2];
+    static s16 gAnimTexDual_Timer[2];
 
-    if ((arg3 != D_87806378[arg0]) || (arg3 == NULL)) {
-        D_87806378[arg0] = arg3;
+    if ((arg3 != gAnimTexDual_Current[arg0]) || (arg3 == NULL)) {
+        gAnimTexDual_Current[arg0] = arg3;
         if (arg3 == NULL) {
             return;
         }
-        D_8780FAA8[arg0] = arg3;
-        D_8780FAB0[arg0] = arg3->unk_04;
+        gAnimTexDual_Ptr[arg0] = arg3;
+        gAnimTexDual_Timer[arg0] = arg3->unk_04;
     }
 
-    D_8780FAB0[arg0]--;
-    if (D_8780FAB0[arg0] <= 0) {
-        D_8780FAA8[arg0]++;
-        if (D_8780FAA8[arg0]->unk_00 == NULL) {
-            D_8780FAA8[arg0] = arg3;
+    gAnimTexDual_Timer[arg0]--;
+    if (gAnimTexDual_Timer[arg0] <= 0) {
+        gAnimTexDual_Ptr[arg0]++;
+        if (gAnimTexDual_Ptr[arg0]->unk_00 == NULL) {
+            gAnimTexDual_Ptr[arg0] = arg3;
         }
-        D_8780FAB0[arg0] = D_8780FAA8[arg0]->unk_04;
+        gAnimTexDual_Timer[arg0] = gAnimTexDual_Ptr[arg0]->unk_04;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, D_8780FAA8[arg0]->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 28, 0, 0, 0, 27, 27,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTexDual_Ptr[arg0]->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 28, 0, 0, 0, 27, 27,
                        0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
     Gfx_DrawTextureRect(arg1, arg2, 0x1C, 0x1C, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_87801F48(s16 arg0, s16 arg1, s16 arg2) {
+void DrawDualTexturePanel(s16 arg0, s16 arg1, s16 arg2) {
     static u32 gDualTexturePanelIds[] = { 0x03049CA0, 0x0304B1C0, 0x0304C6E0, 0x0304DC00 };
 
     u32 sp34 = gDualTexturePanelIds[arg0];

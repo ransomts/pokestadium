@@ -25,19 +25,19 @@ u16 gAnimationFrame = 0;
 CameraStruct* gCurrentCameraNode = NULL;
 unk_D_86002F34_alt1* gCurrentTextureNode = NULL;
 unk_D_86002F34_alt1* gCurrentLightNode = NULL;
-CameraStruct* D_8006F094 = NULL;
-unk_D_86002F34_alt1* D_8006F098 = NULL;
+CameraStruct* gActiveCameraNode = NULL;
+unk_D_86002F34_alt1* gActiveNode = NULL;
 Fragment2_1GraphNode* gDefaultGraphRoot = NULL;
-unk_D_86002F34_alt11* D_8006F0A0 = NULL;
+unk_D_86002F34_alt11* gActiveLayerNode = NULL;
 static func_D_8006F0A4 D_8006F0A4[] = {
     Graph_VisitVisibleChildren, Graph_VisitNodePre, Graph_SetupCamera, TextureNode_VisitChildren, Graph_SetupLights, CameraNode_SetProjection, CameraNode_SetLookAtProjection,
-    CameraNode_FillRect, func_80013B8C, func_80013C14, Graph_SetFog, Graph_AddLight, func_80013F7C, Graph_ApplyLights,
+    CameraNode_FillRect, Graph_FillDepthRect, Graph_NoOp, Graph_SetFog, Graph_AddLight, Graph_NoOp2, Graph_ApplyLights,
     LayerNode_Process, Graph_RenderBillboard, Graph_ConditionalDepthRender, Graph_VisitChildOffset, Graph_PushRotateTranslate, Graph_PushScaleNode, ObjectNode_Transform,
-    Graph_DrawModel, Graph_RenderComplexObject, func_800148D8, func_80014980, func_80014A60, func_80014AEC, func_80014D24,
-    func_80014D50, NULL,          NULL,
+    Graph_DrawModel, Graph_RenderComplexObject, Graph_DrawModelWithTransform, Graph_DrawModelWithCompose, Graph_DrawModelSimple, Graph_DrawAnimatedSprite, Graph_RecordPosAndVisit,
+    Graph_VisitChildrenOnly, NULL,          NULL,
 };
 
-static s32 D_8006F120 = 0;
+static s32 gIsRenderInitialized = 0;
 
 static u32 D_8006F124[4][9] = {
     {
@@ -106,71 +106,71 @@ static u8 D_8006F1B4[15][16] = {
 
 static s16 D_8006F2A4[] = { 16, 8, 4, 2, 0, 0 };
 
-static s32 D_800AA6C0;
-static MtxF* D_800AA6C8[8];
+static s32 gGraphNodeReturnVal;
+static MtxF* gNodeMatrixCache[8];
 static u8 pad_D_800AA6E8[0x1E0];
-static unk_D_800AA8C8 D_800AA8C8;
-static unk_D_800AB970 D_800AB970;
-static s32 D_800ABB00;
-static s32 D_800ABB04;
-static s32 D_800ABB08;
-static unk_D_800ABB10 D_800ABB10;
-static unk_D_800ABB28 D_800ABB28[10];
-static unk_D_800ABB28* D_800ABCB8;
-static s32 D_800ABCBC;
+static unk_D_800AA8C8 gMatrixStack;
+static unk_D_800AB970 gScaleStack;
+static s32 gRenderModeIndex;
+static s32 gRenderFlags;
+static s32 gPipeSynced;
+static unk_D_800ABB10 gRenderState;
+static unk_D_800ABB28 gLayerStates[10];
+static unk_D_800ABB28* gCurrentRenderState;
+static s32 gRenderStateCount;
 
 void Matrix_ResetStack(void) {
-    D_800AA8C8.unk_10A0 = 0;
-    D_800AA8C8.unk_1080[0] = 0;
-    Matrix_Identity(&D_800AA8C8.unk_0000[0]);
-    D_800AA8C8.unk_1000[0] = GfxAlloc(sizeof(Mtx) * 1);
-    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[0], D_800AA8C8.unk_0000);
+    gMatrixStack.unk_10A0 = 0;
+    gMatrixStack.unk_1080[0] = 0;
+    Matrix_Identity(&gMatrixStack.unk_0000[0]);
+    gMatrixStack.unk_1000[0] = GfxAlloc(sizeof(Mtx) * 1);
+    Matrix_ConvertToMtx(gMatrixStack.unk_1000[0], gMatrixStack.unk_0000);
 }
 
 void Matrix_SetIdentityAtCurrent(void) {
-    D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
-    D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    gMatrixStack.unk_1080[gMatrixStack.unk_10A0] = 0;
+    gMatrixStack.unk_1000[gMatrixStack.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
+    Matrix_ConvertToMtx(gMatrixStack.unk_1000[gMatrixStack.unk_10A0], &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
 }
 
 void Matrix_SetCurrent(MtxF* arg0) {
-    Matrix_Copy(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], arg0);
-    D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
-    D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_Copy(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0], arg0);
+    gMatrixStack.unk_1080[gMatrixStack.unk_10A0] = 0;
+    gMatrixStack.unk_1000[gMatrixStack.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
+    Matrix_ConvertToMtx(gMatrixStack.unk_1000[gMatrixStack.unk_10A0], &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
 }
 
 void Matrix_PushMultiply(MtxF* arg0) {
     MtxF* temp_a0;
 
-    D_800AA8C8.unk_10A0++;
-    temp_a0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
+    gMatrixStack.unk_10A0++;
+    temp_a0 = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
 
     Matrix_Multiply(&temp_a0[0], arg0, &temp_a0[-1]);
-    D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
-    D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
-    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    gMatrixStack.unk_1080[gMatrixStack.unk_10A0] = 0;
+    gMatrixStack.unk_1000[gMatrixStack.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
+    Matrix_ConvertToMtx(gMatrixStack.unk_1000[gMatrixStack.unk_10A0], &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
 }
 
 void Matrix_PushScale(Vec3f* arg0) {
     MtxF* temp_a0;
 
-    D_800AA8C8.unk_10A0++;
-    temp_a0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
+    gMatrixStack.unk_10A0++;
+    temp_a0 = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
 
     Matrix_Scale(&temp_a0[0], &temp_a0[-1], arg0);
 
-    D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 0;
-    D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
+    gMatrixStack.unk_1080[gMatrixStack.unk_10A0] = 0;
+    gMatrixStack.unk_1000[gMatrixStack.unk_10A0] = GfxAlloc(sizeof(MtxF) * 1);
 
-    Matrix_ConvertToMtx(D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+    Matrix_ConvertToMtx(gMatrixStack.unk_1000[gMatrixStack.unk_10A0], &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
 }
 
 MtxF* Matrix_GetRelative(s32 arg0) {
     MtxF* var_v1 = NULL;
 
     if (arg0 <= 0) {
-        var_v1 = &(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0])[arg0];
+        var_v1 = &(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0])[arg0];
     }
 
     return var_v1;
@@ -180,23 +180,23 @@ MtxF* Matrix_GetAbsolute(s32 arg0) {
     MtxF* var_v1 = NULL;
 
     if ((arg0 >= 0) && (arg0 < 0x20)) {
-        var_v1 = &D_800AA8C8.unk_0000[arg0];
+        var_v1 = &gMatrixStack.unk_0000[arg0];
     }
 
     return var_v1;
 }
 
 void Graph_ResetScaleStack(void) {
-    D_800AB970.unk_180 = 0;
-    D_800AB970.unk_000[0] = gRootNodeScale;
+    gScaleStack.unk_180 = 0;
+    gScaleStack.unk_000[0] = gRootNodeScale;
 }
 
 void Graph_PushScale(Vec3f* arg0) {
-    D_800AB970.unk_000[D_800AB970.unk_180 + 1].x = D_800AB970.unk_000[D_800AB970.unk_180].x * arg0->x;
-    D_800AB970.unk_000[D_800AB970.unk_180 + 1].y = D_800AB970.unk_000[D_800AB970.unk_180].y * arg0->y;
-    D_800AB970.unk_000[D_800AB970.unk_180 + 1].z = D_800AB970.unk_000[D_800AB970.unk_180].z * arg0->z;
+    gScaleStack.unk_000[gScaleStack.unk_180 + 1].x = gScaleStack.unk_000[gScaleStack.unk_180].x * arg0->x;
+    gScaleStack.unk_000[gScaleStack.unk_180 + 1].y = gScaleStack.unk_000[gScaleStack.unk_180].y * arg0->y;
+    gScaleStack.unk_000[gScaleStack.unk_180 + 1].z = gScaleStack.unk_000[gScaleStack.unk_180].z * arg0->z;
 
-    D_800AB970.unk_180++;
+    gScaleStack.unk_180++;
 }
 
 Vtx* Graph_MakeQuadVertices(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_040* arg1) {
@@ -385,9 +385,9 @@ void Graph_VisitVisibleChildren(GraphNode* arg0) {
     if (temp_s2 != NULL) {
         do {
             if (var_s0->unk_01 & 1) {
-                D_800AA6C0 = 0;
+                gGraphNodeReturnVal = 0;
                 if (var_s0->unk_10 != NULL) {
-                    D_800AA6C0 = var_s0->unk_10(2, var_s0);
+                    gGraphNodeReturnVal = var_s0->unk_10(2, var_s0);
                 }
                 D_8006F0A4[var_s0->unk_00](var_s0);
             }
@@ -401,9 +401,9 @@ void Graph_VisitNodePre(GraphNode* arg0) {
     GraphNode* temp_a1 = ((unk_D_86002F34*)arg0)->unk_18;
 
     if ((temp_a1 != NULL) && (temp_a1->unk_01 & 1)) {
-        D_800AA6C0 = 0;
+        gGraphNodeReturnVal = 0;
         if (temp_a1->unk_10 != NULL) {
-            D_800AA6C0 = temp_a1->unk_10(2, temp_a1);
+            gGraphNodeReturnVal = temp_a1->unk_10(2, temp_a1);
         }
         D_8006F0A4[temp_a1->unk_00](temp_a1);
     }
@@ -481,7 +481,7 @@ void Graph_SetupLights(GraphNode* arg0) {
         Matrix_ResetStack();
         Graph_ResetScaleStack();
 
-        gSPMatrix(gDisplayListHead++, (u32)D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0] & 0x1FFFFFFF,
+        gSPMatrix(gDisplayListHead++, (u32)gMatrixStack.unk_1000[gMatrixStack.unk_10A0] & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gCurrentLightNode = arg;
@@ -495,17 +495,17 @@ void Graph_SetupLights(GraphNode* arg0) {
 void CameraNode_Render(GraphNode* arg0) {
     CameraStruct* arg = (CameraStruct*)arg0;
 
-    if ((D_8006F094 == NULL) && (arg->unk_00.unk_0C != NULL)) {
-        D_8006F094 = arg;
-        func_8001638C(arg->unk_00.unk_02 & 3, gRenderFrameCounter);
+    if ((gActiveCameraNode == NULL) && (arg->unk_00.unk_0C != NULL)) {
+        gActiveCameraNode = arg;
+        Gfx_InitRenderState(arg->unk_00.unk_02 & 3, gRenderFrameCounter);
         Graph_VisitVisibleChildren(arg0);
-        func_8001660C();
-        D_8006F094 = NULL;
+        Gfx_FlushLayers();
+        gActiveCameraNode = NULL;
     }
 }
 
 void CameraNode_SetProjection(GraphNode* arg0) {
-    if ((D_8006F094 == NULL) && (arg0->unk_0C != NULL)) {
+    if ((gActiveCameraNode == NULL) && (arg0->unk_0C != NULL)) {
         gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
         gSPMatrix(gDisplayListHead++, (u32)gCurrentCameraNode->unk_40.mtx & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -515,7 +515,7 @@ void CameraNode_SetProjection(GraphNode* arg0) {
 }
 
 void CameraNode_SetLookAtProjection(GraphNode* arg0) {
-    if ((D_8006F094 == NULL) && (arg0->unk_0C != NULL)) {
+    if ((gActiveCameraNode == NULL) && (arg0->unk_0C != NULL)) {
         gSPLookAt(gDisplayListHead++, (u32)&gCurrentCameraNode->unk_60.lookat->l & 0x1FFFFFFF);
 
         gSPPerspNormalize(gDisplayListHead++, gCurrentCameraNode->unk_24.perspNorm);
@@ -539,7 +539,7 @@ void CameraNode_FillRect(GraphNode* arg0) {
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
 }
 
-void func_80013B8C(UNUSED GraphNode* arg0) {
+void Graph_FillDepthRect(UNUSED GraphNode* arg0) {
     unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
 
     Gfx_FillDepthRectangle(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height);
@@ -548,7 +548,7 @@ void func_80013B8C(UNUSED GraphNode* arg0) {
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
 }
 
-void func_80013C14(UNUSED GraphNode* arg0) {
+void Graph_NoOp(UNUSED GraphNode* arg0) {
 }
 
 void Graph_SetFog(GraphNode* arg0) {
@@ -599,7 +599,7 @@ void Graph_AddLight(GraphNode* arg0) {
     gCurrentLightNode->unk_1C++;
 }
 
-void func_80013F7C(UNUSED GraphNode* arg0) {
+void Graph_NoOp2(UNUSED GraphNode* arg0) {
 }
 
 void Graph_ApplyLights(GraphNode* arg0) {
@@ -630,35 +630,35 @@ void Graph_ApplyLights(GraphNode* arg0) {
 
 void LayerNode_Process(GraphNode* arg0) {
     unk_D_86002F34_alt11* arg = (unk_D_86002F34_alt11*)arg0;
-    MtxF* temp_v0 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
+    MtxF* temp_v0 = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
     Vec3f sp2C;
     Vec3s sp24;
 
     if (gDefaultGraphRoot->unk_000.unk_02 & 2) {
         Vec3f_Set(&sp2C, temp_v0->xw, 0.0f, temp_v0->zw);
         Vec3s_Set(&sp24, 0, gDefaultGraphRoot->unk_01E.y, 0);
-        Matrix_RotateTranslate(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp2C, &sp24);
+        Matrix_RotateTranslate(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 1], &sp2C, &sp24);
 
-        D_800AA8C8.unk_10A0++;
+        gMatrixStack.unk_10A0++;
 
         Matrix_SetIdentityAtCurrent();
-        Graph_BeginLayerRender(0, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
-        func_80016274(D_1002590, 1);
+        Graph_BeginLayerRender(0, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
+        Gfx_DrawDisplayList(D_1002590, 1);
 
-        D_800AA8C8.unk_10A0--;
+        gMatrixStack.unk_10A0--;
     }
 
-    D_8006F0A0 = arg;
+    gActiveLayerNode = arg;
     Graph_VisitVisibleChildren(arg0);
-    D_8006F0A0 = NULL;
+    gActiveLayerNode = NULL;
 }
 
 void Graph_ConditionalDepthRender(GraphNode* arg0) {
     unk_D_86002F34_alt3* arg = (unk_D_86002F34_alt3*)arg0;
     MtxF* mtx2 = &gCurrentCameraNode->unk_60.mtxf;
-    f32 a = D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0].mf[3][0];
-    f32 b = D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0].mf[3][1];
-    f32 c = D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0].mf[3][2];
+    f32 a = gMatrixStack.unk_0000[gMatrixStack.unk_10A0].mf[3][0];
+    f32 b = gMatrixStack.unk_0000[gMatrixStack.unk_10A0].mf[3][1];
+    f32 c = gMatrixStack.unk_0000[gMatrixStack.unk_10A0].mf[3][2];
     s16 temp_ft5 = ((a * mtx2->mf[0][2]) + (b * mtx2->mf[1][2]) + (c * mtx2->mf[2][2])) + mtx2->mf[3][2];
 
     if ((temp_ft5 >= arg->unk_18) && (temp_ft5 < arg->unk_1A)) {
@@ -690,7 +690,7 @@ void Graph_PushRotateTranslate(GraphNode* arg0) {
     Matrix_PushMultiply(&sp20);
     Graph_VisitVisibleChildren(arg0);
 
-    D_800AA8C8.unk_10A0--;
+    gMatrixStack.unk_10A0--;
 }
 
 void Graph_PushScaleNode(GraphNode* arg0) {
@@ -699,7 +699,7 @@ void Graph_PushScaleNode(GraphNode* arg0) {
     Matrix_PushScale(&arg->unk_18);
     Graph_VisitVisibleChildren(arg0);
 
-    D_800AA8C8.unk_10A0--;
+    gMatrixStack.unk_10A0--;
 }
 
 void ObjectNode_Transform(GraphNode* arg0) {
@@ -718,39 +718,39 @@ void ObjectNode_Transform(GraphNode* arg0) {
     Anim_GetTransformTriple(&sp84, &sp90, &sp78, arg->unk_32 * 3);
 
     if (arg->unk_31 & 2) {
-        Matrix_BuildObjectTransform(&sp38, &sp84, &sp90, &sp78, &gCurrentCameraNode->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
-        D_800AA8C8.unk_10A0++;
+        Matrix_BuildObjectTransform(&sp38, &sp84, &sp90, &sp78, &gCurrentCameraNode->unk_60.mtxf, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
+        gMatrixStack.unk_10A0++;
         Matrix_SetCurrent(&sp38);
     } else if (arg->unk_31 & 1) {
         Matrix_TransformPoint(&sp38, &sp84, &sp90, &sp78);
         Matrix_PushMultiply(&sp38);
     } else {
-        Matrix_TransformPointScale(&sp38, &sp84, &sp90, &D_800AB970.unk_000[D_800AB970.unk_180]);
+        Matrix_TransformPointScale(&sp38, &sp84, &sp90, &gScaleStack.unk_000[gScaleStack.unk_180]);
 
-        D_800AA8C8.unk_10A0++;
+        gMatrixStack.unk_10A0++;
 
         Graph_PushScale(&sp78);
-        if (D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0 - 1] == 1) {
-            Matrix_Multiply(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
-                          &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 31]);
+        if (gMatrixStack.unk_1080[gMatrixStack.unk_10A0 - 1] == 1) {
+            Matrix_Multiply(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 32], &sp38,
+                          &gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 31]);
         } else {
-            Matrix_Multiply(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32], &sp38,
-                          &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 - 1]);
+            Matrix_Multiply(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 32], &sp38,
+                          &gMatrixStack.unk_0000[gMatrixStack.unk_10A0 - 1]);
         }
-        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 32],
-                      &D_800AB970.unk_000[D_800AB970.unk_180]);
+        Matrix_Scale(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0], &gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 32],
+                      &gScaleStack.unk_000[gScaleStack.unk_180]);
         Matrix_SetIdentityAtCurrent();
-        D_800AA8C8.unk_1080[D_800AA8C8.unk_10A0] = 1;
+        gMatrixStack.unk_1080[gMatrixStack.unk_10A0] = 1;
         sp30 = 1;
     }
 
-    D_800AA6C8[arg->unk_30] = D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0];
+    gNodeMatrixCache[arg->unk_30] = gMatrixStack.unk_1000[gMatrixStack.unk_10A0];
     Graph_VisitVisibleChildren(arg0);
-    D_800AA6C8[arg->unk_30] = NULL;
-    D_800AA8C8.unk_10A0--;
+    gNodeMatrixCache[arg->unk_30] = NULL;
+    gMatrixStack.unk_10A0--;
 
     if (sp30 != 0) {
-        D_800AB970.unk_180--;
+        gScaleStack.unk_180--;
     }
 }
 
@@ -758,8 +758,8 @@ void Graph_DrawModel(GraphNode* arg0) {
     unk_D_86002F34_alt7* arg = (unk_D_86002F34_alt7*)arg0;
 
     if (arg->unk_18 != NULL) {
-        Graph_BeginLayerRender(arg->unk_00.unk_03, D_800AA6C8[arg->unk_1C]);
-        func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
+        Graph_BeginLayerRender(arg->unk_00.unk_03, gNodeMatrixCache[arg->unk_1C]);
+        Gfx_DrawDisplayList(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
 
     Graph_VisitVisibleChildren(arg0);
@@ -776,27 +776,27 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
         PushAnimStackEntry(&arg->unk_054, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
 
         if (arg->unk_000.unk_02 & 0x10) {
-            Matrix_Multiply(&sp38, &arg->unk_060, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &arg->unk_060, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
         } else if (arg->unk_000.unk_02 & 8) {
-            Matrix_ComposeTR(&sp38, &gCurrentCameraNode->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_024,
+            Matrix_ComposeTR(&sp38, &gCurrentCameraNode->unk_60.mtxf, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0], &arg->unk_024,
                           1.0f);
         } else if (arg->unk_000.unk_02 & 0x80) {
             Matrix_RotateTranslateScale(&sp38, &arg->unk_024, &arg->unk_01E);
-            Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &sp38, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
         } else {
             Matrix_RotateTranslate(&sp38, &arg->unk_024, &arg->unk_01E);
-            Matrix_Multiply(&sp38, &sp38, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0]);
+            Matrix_Multiply(&sp38, &sp38, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
         }
 
-        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp38, &arg->unk_030);
+        Matrix_Scale(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 1], &sp38, &arg->unk_030);
 
         if (!(arg->unk_000.unk_02 & 4)) {
-            D_800AA8C8.unk_10A0++;
+            gMatrixStack.unk_10A0++;
 
             Matrix_SetIdentityAtCurrent();
             gDefaultGraphRoot = arg0;
 
-            func_80016344(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
+            Gfx_SetColor(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
 
             if ((gCurrentTextureNode->unk_18 < 0) && (arg->unk_01A > 0)) {
                 ModelPhase_Advance(arg->modelPhase, arg->unk_01A);
@@ -807,67 +807,67 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
             }
 
             sp34.rgba = 0xFFFFFF00;
-            func_80016344(sp34, 0xFF, 0);
+            Gfx_SetColor(sp34, 0xFF, 0);
             gDefaultGraphRoot = NULL;
         }
 
         Anim_EndChannel();
         PopAnimStackEntry();
-        D_800AA8C8.unk_10A0 -= 1;
+        gMatrixStack.unk_10A0 -= 1;
     }
 }
 
-void func_800148D8(GraphNode* arg0) {
+void Graph_DrawModelWithTransform(GraphNode* arg0) {
     unk_D_86002F34_alt8* arg = (unk_D_86002F34_alt8*)arg0;
 
     Matrix_PushMultiply(&arg->unk_1C);
 
     if ((arg->unk_18 != NULL) || (arg->unk_00.unk_10 != NULL)) {
-        Graph_BeginLayerRender(arg->unk_00.unk_03, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
+        Graph_BeginLayerRender(arg->unk_00.unk_03, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
         if (arg->unk_00.unk_10 != NULL) {
             arg->unk_00.unk_10(5, arg0);
         }
-        func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
+        Gfx_DrawDisplayList(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
     Graph_VisitVisibleChildren(arg0);
-    D_800AA8C8.unk_10A0--;
+    gMatrixStack.unk_10A0--;
 }
 
-void func_80014980(GraphNode* arg0) {
+void Graph_DrawModelWithCompose(GraphNode* arg0) {
     MtxF sp30;
     unk_D_86002F34_alt9* arg = (unk_D_86002F34_alt9*)arg0;
 
-    Matrix_ComposeTR(&sp30, &gCurrentCameraNode->unk_60.mtxf, &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0], &arg->unk_1C,
+    Matrix_ComposeTR(&sp30, &gCurrentCameraNode->unk_60.mtxf, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0], &arg->unk_1C,
                   arg->unk_28);
-    D_800AA8C8.unk_10A0++;
+    gMatrixStack.unk_10A0++;
     Matrix_SetCurrent(&sp30);
 
     if ((arg->unk_18 != NULL) || (arg->unk_00.unk_10 != NULL)) {
-        Graph_BeginLayerRender(arg->unk_00.unk_03, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
+        Graph_BeginLayerRender(arg->unk_00.unk_03, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
         if (arg->unk_00.unk_10 != NULL) {
             arg->unk_00.unk_10(5, arg0);
         }
-        func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
+        Gfx_DrawDisplayList(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
 
     Graph_VisitVisibleChildren(arg0);
-    D_800AA8C8.unk_10A0--;
+    gMatrixStack.unk_10A0--;
 }
 
-void func_80014A60(GraphNode* arg0) {
+void Graph_DrawModelSimple(GraphNode* arg0) {
     unk_D_86002F34_alt9* arg = (unk_D_86002F34_alt9*)arg0;
 
     if ((arg->unk_18 != NULL) || (arg->unk_00.unk_10 != NULL)) {
-        Graph_BeginLayerRender(arg->unk_00.unk_03, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
+        Graph_BeginLayerRender(arg->unk_00.unk_03, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
         if (arg->unk_00.unk_10 != NULL) {
             arg->unk_00.unk_10(5, arg0);
         }
-        func_80016274(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
+        Gfx_DrawDisplayList(arg->unk_18, (arg->unk_00.unk_02 & 4) != 0);
     }
     Graph_VisitVisibleChildren(arg0);
 }
 
-void func_80014AEC(GraphNode* arg0) {
+void Graph_DrawAnimatedSprite(GraphNode* arg0) {
     Color_RGBA8_u32 sp44;
     unk_D_86002F34_alt10* arg = (unk_D_86002F34_alt10*)arg0;
     unk_D_86002F34_alt11_018* sp3C;
@@ -885,11 +885,11 @@ void func_80014AEC(GraphNode* arg0) {
     }
 
     if (arg->unk_1C >= 0) {
-        sp3C = &D_8006F0A0->unk_18[arg->unk_1C];
+        sp3C = &gActiveLayerNode->unk_18[arg->unk_1C];
     }
 
     if (arg->unk_1E >= 0) {
-        sp38 = &D_8006F0A0->unk_1C[arg->unk_1E];
+        sp38 = &gActiveLayerNode->unk_1C[arg->unk_1E];
     }
 
     if (gDefaultGraphRoot != NULL) {
@@ -898,8 +898,8 @@ void func_80014AEC(GraphNode* arg0) {
         sp44.b = (sp44.b * gDefaultGraphRoot->unk_03C.b) / 255;
     }
 
-    GetAnimStackCurrentFramePtr(&sp3C, D_8006F0A0->unk_18, arg->unk_20);
-    func_80016364(arg->unk_22, sp44, sp3C, sp38, sp34);
+    GetAnimStackCurrentFramePtr(&sp3C, gActiveLayerNode->unk_18, arg->unk_20);
+    Gfx_SetTextureParams(arg->unk_22, sp44, sp3C, sp38, sp34);
     Graph_VisitVisibleChildren(arg0);
 }
 
@@ -910,7 +910,7 @@ void Graph_RecordNodePosition(s32 arg0) {
     if (gDefaultGraphRoot != NULL) {
         if (gDefaultGraphRoot->unk_0A7 < 0xC) {
             ptr = &gDefaultGraphRoot->unk_0A8[gDefaultGraphRoot->unk_0A7++];
-            temp_a1 = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
+            temp_a1 = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
 
             ptr->unk_00 = arg0;
             ptr->unk_04.x = temp_a1->mf[3][0];
@@ -920,14 +920,14 @@ void Graph_RecordNodePosition(s32 arg0) {
     }
 }
 
-void func_80014D24(GraphNode* arg0) {
+void Graph_RecordPosAndVisit(GraphNode* arg0) {
     unk_D_86002F34_alt3* arg = (unk_D_86002F34_alt3*)arg0;
 
     Graph_RecordNodePosition(arg->unk_18);
     Graph_VisitVisibleChildren(arg0);
 }
 
-void func_80014D50(GraphNode* arg0) {
+void Graph_VisitChildrenOnly(GraphNode* arg0) {
     Graph_VisitVisibleChildren(arg0);
 }
 
@@ -941,10 +941,10 @@ void Graph_RenderBillboard(GraphNode* arg0) {
     unk_D_86002F34_alt12* arg = (unk_D_86002F34_alt12*)arg0;
     Gfx* temp_s1;
 
-    sp3C = &D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0];
+    sp3C = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
     temp_s1 = GfxAlloc(sizeof(Gfx) * 2);
 
-    if (func_80015390(gDefaultGraphRoot, 0x64, NULL) == 0) {
+    if (Graph_GetRecordedPosition(gDefaultGraphRoot, 0x64, NULL) == 0) {
         Graph_RecordNodePosition(0x64);
     }
 
@@ -967,9 +967,9 @@ void Graph_RenderBillboard(GraphNode* arg0) {
         sp84.x *= (arg->unk_1A / 100.0f) * sp80;
         sp84.z *= (arg->unk_1C / 100.0f) * sp80;
         Matrix_LookAtYaw(&sp40, &sp90, &sp9C, gDefaultGraphRoot->unk_01E.y);
-        Matrix_Scale(&D_800AA8C8.unk_0000[D_800AA8C8.unk_10A0 + 1], &sp40, &sp84);
+        Matrix_Scale(&gMatrixStack.unk_0000[gMatrixStack.unk_10A0 + 1], &sp40, &sp84);
 
-        D_800AA8C8.unk_10A0++;
+        gMatrixStack.unk_10A0++;
         Matrix_SetIdentityAtCurrent();
 
         if (arg->unk_18 == 0) {
@@ -980,18 +980,18 @@ void Graph_RenderBillboard(GraphNode* arg0) {
         gDPSetEnvColor(&temp_s1[0], 0, 0, 0, (s32)(150.0f * sp80));
 
         if (gDefaultGraphRoot->unk_000.unk_02 & 2) {
-            Graph_BeginLayerRender(6, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
+            Graph_BeginLayerRender(6, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
         } else {
-            Graph_BeginLayerRender(5, D_800AA8C8.unk_1000[D_800AA8C8.unk_10A0]);
+            Graph_BeginLayerRender(5, gMatrixStack.unk_1000[gMatrixStack.unk_10A0]);
         }
 
         gDPSetFogColor(gDisplayListHead++, 255, 255, 255, 0);
         gDPSetPrimColor(gDisplayListHead++, 0, gDefaultGraphRoot->unk_01D, 255, 255, 255, 255);
 
-        func_80016274((u32)temp_s1 & 0x1FFFFFFF, 1);
+        Gfx_DrawDisplayList((u32)temp_s1 & 0x1FFFFFFF, 1);
         Graph_VisitVisibleChildren(arg0);
 
-        D_800AA8C8.unk_10A0--;
+        gMatrixStack.unk_10A0--;
     }
 }
 
@@ -1020,7 +1020,7 @@ void Graph_SetTextureState(GraphNode* arg0) {
     gRenderFrameCounter = 0;
 }
 
-void func_80015220(GraphNode* arg0, s32 arg1) {
+void Graph_TraverseAndSetGlobals(GraphNode* arg0, s32 arg1) {
     GraphNode* var_s1 = arg0;
     GraphNode** var_s0;
 
@@ -1044,7 +1044,7 @@ void func_80015220(GraphNode* arg0, s32 arg1) {
                     break;
 
                 case 6:
-                    var_s0 = &D_8006F098;
+                    var_s0 = &gActiveNode;
                     break;
 
                 case 0x16:
@@ -1056,7 +1056,7 @@ void func_80015220(GraphNode* arg0, s32 arg1) {
                 *var_s0 = var_s1;
             }
 
-            func_80015220(var_s1->unk_0C, arg1);
+            Graph_TraverseAndSetGlobals(var_s1->unk_0C, arg1);
 
             if (var_s0 != NULL) {
                 *var_s0 = NULL;
@@ -1075,7 +1075,7 @@ void Gfx_FinishFrame(void) {
     gAnimationFrame++;
 }
 
-s32 func_80015360(void) {
+s32 Graph_IsFrameCurrent(void) {
     s32 var_v1 = 1;
 
     if (gCurrentLightNode != NULL) {
@@ -1084,7 +1084,7 @@ s32 func_80015360(void) {
     return var_v1;
 }
 
-Vec3f* func_80015390(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* arg2) {
+Vec3f* Graph_GetRecordedPosition(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* arg2) {
     s32 i;
     s32 var_v0;
     u8 temp_v1;
@@ -1102,7 +1102,7 @@ Vec3f* func_80015390(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* arg2) {
     return NULL;
 }
 
-void func_80015400(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
+void Gfx_SetCombineMode(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
     gDPSetCombine(arg0++,
                   GCCc0w0(arg1->unk_00, arg1->unk_02, arg1->unk_04, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
 
@@ -1110,26 +1110,26 @@ void func_80015400(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
                       GCCc1w1(arg1->unk_09, arg1->unk_0C, arg1->unk_0E, arg1->unk_0B, arg1->unk_0D, arg1->unk_0F));
 }
 
-void func_8001550C(void) {
-    if (D_800ABB08 == 0) {
-        D_800ABB08 = 1;
+void Gfx_SyncPipe(void) {
+    if (gPipeSynced == 0) {
+        gPipeSynced = 1;
 
         gDPPipeSync(gDisplayListHead++);
     }
 }
 
 void Graph_SetRenderMode(void) {
-    s32 var_v0 = D_8006F124[D_800ABB00][D_800ABCB8->unk_24];
+    s32 var_v0 = D_8006F124[gRenderModeIndex][gCurrentRenderState->unk_24];
 
-    D_800ABB08 = 1;
+    gPipeSynced = 1;
 
     gDPPipeSync(gDisplayListHead++);
 
-    D_800ABCB8->unk_14.rgba = 0x00000000;
+    gCurrentRenderState->unk_14.rgba = 0x00000000;
 
     gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, gCurrentLightNode->unk_20);
 
-    if ((D_800ABB04 & 1) && (D_800ABB00 == 1) && (D_800ABCB8->unk_24 == 5)) {
+    if ((gRenderFlags & 1) && (gRenderModeIndex == 1) && (gCurrentRenderState->unk_24 == 5)) {
         var_v0 = 0x107A58;
     }
 
@@ -1140,23 +1140,23 @@ void Graph_SetRenderMode(void) {
     }
 }
 
-void func_80015684(void) {
+void Gfx_ResetRenderState(void) {
     Color_RGBA8_u32 sp1C;
 
-    sp1C.rgba = D_800ABCB8->unk_10.rgba;
+    sp1C.rgba = gCurrentRenderState->unk_10.rgba;
 
-    D_800ABCB8->unk_18 = NULL;
-    D_800ABCB8->unk_1C = NULL;
-    D_800ABCB8->unk_0C = NULL;
-    D_800ABCB8->unk_27 = 0;
-    D_800ABB08 = 1;
+    gCurrentRenderState->unk_18 = NULL;
+    gCurrentRenderState->unk_1C = NULL;
+    gCurrentRenderState->unk_0C = NULL;
+    gCurrentRenderState->unk_27 = 0;
+    gPipeSynced = 1;
 
     gDPPipeSync(gDisplayListHead++);
-    gDPSetPrimColor(gDisplayListHead++, 0, D_800ABCB8->unk_26, sp1C.r, sp1C.g, sp1C.b, sp1C.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, gCurrentRenderState->unk_26, sp1C.r, sp1C.g, sp1C.b, sp1C.a);
     gDPSetTextureLUT(gDisplayListHead++, G_TT_NONE);
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 
-    func_80015400(gDisplayListHead++, D_8006F1B4[D_800ABCB8->unk_25]);
+    Gfx_SetCombineMode(gDisplayListHead++, D_8006F1B4[gCurrentRenderState->unk_25]);
 
     gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
     gSPClearGeometryMode(gDisplayListHead++, G_FOG | G_TEXTURE_GEN);
@@ -1168,62 +1168,62 @@ void func_80015684(void) {
     }
 }
 
-void func_8001587C(unk_D_800ABB10* arg0) {
-    if (arg0->unk_08.rgba != D_800ABCB8->unk_14.rgba) {
-        func_8001550C();
+void Gfx_UpdateFogColor(unk_D_800ABB10* arg0) {
+    if (arg0->unk_08.rgba != gCurrentRenderState->unk_14.rgba) {
+        Gfx_SyncPipe();
 
         gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, arg0->unk_08.rgba);
-        gDPSetRenderMode(gDisplayListHead++, D_8006F124[D_800ABB00][D_800ABCB8->unk_24], 0xC4000000);
+        gDPSetRenderMode(gDisplayListHead++, D_8006F124[gRenderModeIndex][gCurrentRenderState->unk_24], 0xC4000000);
 
-        D_800ABCB8->unk_14.rgba = arg0->unk_08.rgba;
+        gCurrentRenderState->unk_14.rgba = arg0->unk_08.rgba;
     }
 }
 
-void func_80015948(UNUSED unk_D_800ABB10* arg0) {
-    if (D_800ABCB8->unk_14.rgba & 0xFF) {
+void Gfx_ApplyRenderMode(UNUSED unk_D_800ABB10* arg0) {
+    if (gCurrentRenderState->unk_14.rgba & 0xFF) {
         Graph_SetRenderMode();
     }
 }
 
-void func_80015984(unk_D_800ABB10* arg0) {
-    if ((arg0->unk_04.rgba != D_800ABCB8->unk_10.rgba) || (arg0->unk_01 != D_800ABCB8->unk_26)) {
-        func_8001550C();
+void Gfx_UpdatePrimColor(unk_D_800ABB10* arg0) {
+    if ((arg0->unk_04.rgba != gCurrentRenderState->unk_10.rgba) || (arg0->unk_01 != gCurrentRenderState->unk_26)) {
+        Gfx_SyncPipe();
 
         gDPSetPrimColor(gDisplayListHead++, 0, arg0->unk_01, arg0->unk_04.r, arg0->unk_04.g, arg0->unk_04.b,
                         arg0->unk_04.a);
 
-        D_800ABCB8->unk_10.rgba = arg0->unk_04.rgba;
-        D_800ABCB8->unk_26 = arg0->unk_01;
+        gCurrentRenderState->unk_10.rgba = arg0->unk_04.rgba;
+        gCurrentRenderState->unk_26 = arg0->unk_01;
     }
 }
 
 void func_80015A44(unk_D_800ABB10* arg0) {
-    if (arg0->unk_00 != D_800ABCB8->unk_25) {
-        func_8001550C();
-        func_80015400(gDisplayListHead++, D_8006F1B4[arg0->unk_00]);
-        D_800ABCB8->unk_25 = arg0->unk_00;
+    if (arg0->unk_00 != gCurrentRenderState->unk_25) {
+        Gfx_SyncPipe();
+        Gfx_SetCombineMode(gDisplayListHead++, D_8006F1B4[arg0->unk_00]);
+        gCurrentRenderState->unk_25 = arg0->unk_00;
     }
 }
 
-void func_80015AC4(UNUSED unk_D_800ABB10* arg0) {
-    if (D_800ABCB8->unk_18 != NULL) {
+void Gfx_DisableTexture(UNUSED unk_D_800ABB10* arg0) {
+    if (gCurrentRenderState->unk_18 != NULL) {
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
     }
 
-    D_800ABCB8->unk_18 = NULL;
-    D_800ABCB8->unk_1C = NULL;
-    D_800ABCB8->unk_20 = NULL;
+    gCurrentRenderState->unk_18 = NULL;
+    gCurrentRenderState->unk_1C = NULL;
+    gCurrentRenderState->unk_20 = NULL;
 }
 
-void func_80015B20(unk_D_800ABB10* arg0) {
+void Gfx_EnableTexture(unk_D_800ABB10* arg0) {
     unk_D_86002F34_alt11_018* temp_t0;
     s32 var_a3;
 
-    if (D_800ABCB8->unk_18 == NULL) {
+    if (gCurrentRenderState->unk_18 == NULL) {
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     }
 
-    if ((arg0->unk_0C != D_800ABCB8->unk_18) || (arg0->unk_14 != D_800ABCB8->unk_20)) {
+    if ((arg0->unk_0C != gCurrentRenderState->unk_18) || (arg0->unk_14 != gCurrentRenderState->unk_20)) {
         temp_t0 = arg0->unk_0C;
 
         if (arg0->unk_10 != NULL) {
@@ -1254,13 +1254,13 @@ void func_80015B20(unk_D_800ABB10* arg0) {
         gSPDisplayList(gDisplayListHead++, arg0->unk_14);
     }
 
-    D_800ABCB8->unk_18 = arg0->unk_0C;
-    D_800ABCB8->unk_1C = arg0->unk_10;
-    D_800ABCB8->unk_20 = arg0->unk_14;
+    gCurrentRenderState->unk_18 = arg0->unk_0C;
+    gCurrentRenderState->unk_1C = arg0->unk_10;
+    gCurrentRenderState->unk_20 = arg0->unk_14;
 }
 
-void func_80015DD8(UNUSED unk_D_800ABB10* arg0) {
-    if (D_800ABCB8->unk_27 == 0) {
+void Gfx_SetupTextureBlock(UNUSED unk_D_800ABB10* arg0) {
+    if (gCurrentRenderState->unk_27 == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, D_1001800, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
         gSPTexture(gDisplayListHead++, 0x1194, 0x1194, 0, G_TX_RENDERTILE, G_ON);
@@ -1269,41 +1269,41 @@ void func_80015DD8(UNUSED unk_D_800ABB10* arg0) {
         gSPClearGeometryMode(gDisplayListHead++, G_TEXTURE_GEN_LINEAR);
         gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA, G_CC_PASS2);
 
-        D_800ABCB8->unk_27 = 1;
+        gCurrentRenderState->unk_27 = 1;
     }
 }
 
-void func_80015F64(s16 arg0) {
-    if (arg0 == D_800ABCBC) {
+void Gfx_SetRenderLayer(s16 arg0) {
+    if (arg0 == gRenderStateCount) {
         return;
     }
 
-    D_800ABCB8->unk_08 = gDisplayListHead;
+    gCurrentRenderState->unk_08 = gDisplayListHead;
 
     gSPBranchList(gDisplayListHead++, NULL);
 
-    D_800ABCBC = arg0;
-    D_800ABCB8 = &D_800ABB28[D_800ABCBC];
+    gRenderStateCount = arg0;
+    gCurrentRenderState = &gLayerStates[gRenderStateCount];
 
-    if (D_800ABCB8->unk_04 == NULL) {
-        D_800ABCB8->unk_04 = gDisplayListHead;
-    } else if (D_800ABCB8->unk_08 != NULL) {
-        gSPBranchList(D_800ABCB8->unk_08, gDisplayListHead);
+    if (gCurrentRenderState->unk_04 == NULL) {
+        gCurrentRenderState->unk_04 = gDisplayListHead;
+    } else if (gCurrentRenderState->unk_08 != NULL) {
+        gSPBranchList(gCurrentRenderState->unk_08, gDisplayListHead);
     }
 }
 
-void func_80016010(s16 arg0) {
+void Gfx_UpdateLayerAlpha(s16 arg0) {
     if (((arg0 > 0) && (arg0 < 4)) || (arg0 == 0x84) || (arg0 == 6)) {
-        D_800ABB10.unk_03 = D_800ABB10.unk_02;
+        gRenderState.unk_03 = gRenderState.unk_02;
     } else {
-        D_800ABB10.unk_03 = 0;
+        gRenderState.unk_03 = 0;
     }
 }
 
-s16 func_80016060(s16 arg0) {
+s16 Gfx_GetLayerIndex(s16 arg0) {
     s16 var_v1 = arg0 & 0xF;
 
-    if (D_800ABB10.unk_01 < 0xFF) {
+    if (gRenderState.unk_01 < 0xFF) {
         switch (var_v1) {
             case 1:
                 var_v1 = 8;
@@ -1324,49 +1324,49 @@ s16 func_80016060(s16 arg0) {
 }
 
 void Graph_BeginLayerRender(s16 arg0, MtxF* arg1) {
-    if ((D_8006F120 != 0) && !(D_800ABB04 & 2) && (D_800ABB10.unk_01 > 0)) {
-        func_80016010(arg0);
-        func_80015F64(func_80016060(arg0));
-        D_800ABB08 = 0;
+    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.unk_01 > 0)) {
+        Gfx_UpdateLayerAlpha(arg0);
+        Gfx_SetRenderLayer(Gfx_GetLayerIndex(arg0));
+        gPipeSynced = 0;
 
-        if (D_800ABCB8->unk_00 == 0) {
+        if (gCurrentRenderState->unk_00 == 0) {
             Graph_SetRenderMode();
-            func_80015684();
-            D_800ABCB8->unk_00 = 1;
+            Gfx_ResetRenderState();
+            gCurrentRenderState->unk_00 = 1;
         }
 
-        if (D_800ABB10.unk_08.rgba & 0xFF) {
-            func_8001587C(&D_800ABB10);
+        if (gRenderState.unk_08.rgba & 0xFF) {
+            Gfx_UpdateFogColor(&gRenderState);
         } else {
-            func_80015948(&D_800ABB10);
+            Gfx_ApplyRenderMode(&gRenderState);
         }
 
-        if (D_800ABB10.unk_03 != 0) {
-            func_80015DD8(&D_800ABB10);
+        if (gRenderState.unk_03 != 0) {
+            Gfx_SetupTextureBlock(&gRenderState);
         } else {
-            if (D_800ABCB8->unk_27 == 1) {
-                func_80015684();
+            if (gCurrentRenderState->unk_27 == 1) {
+                Gfx_ResetRenderState();
             }
 
-            if (D_800ABB10.unk_0C != 0) {
-                func_80015B20(&D_800ABB10);
+            if (gRenderState.unk_0C != 0) {
+                Gfx_EnableTexture(&gRenderState);
             } else {
-                func_80015AC4(&D_800ABB10);
+                Gfx_DisableTexture(&gRenderState);
             }
 
-            func_80015984(&D_800ABB10);
-            func_80015A44(&D_800ABB10);
+            Gfx_UpdatePrimColor(&gRenderState);
+            func_80015A44(&gRenderState);
         }
 
-        if (arg1 != D_800ABCB8->unk_0C) {
-            D_800ABCB8->unk_0C = arg1;
+        if (arg1 != gCurrentRenderState->unk_0C) {
+            gCurrentRenderState->unk_0C = arg1;
             gSPMatrix(gDisplayListHead++, (u32)arg1 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         }
     }
 }
 
-void func_80016274(Gfx* arg0, s32 arg1) {
-    if ((D_8006F120 != 0) && !(D_800ABB04 & 2) && (D_800ABB10.unk_01 > 0)) {
+void Gfx_DrawDisplayList(Gfx* arg0, s32 arg1) {
+    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.unk_01 > 0)) {
         if (arg0 != NULL) {
             if (((u32)arg0 >= 0x81000000) && ((u32)arg0 < 0x90000000)) {
                 gSPDisplayList(gDisplayListHead++, Memmap_GetFragmentVaddr((u32)arg0));
@@ -1376,29 +1376,29 @@ void func_80016274(Gfx* arg0, s32 arg1) {
         }
 
         if (arg1 != 0) {
-            func_80015684();
+            Gfx_ResetRenderState();
         }
     }
 }
 
-void func_80016344(Color_RGBA8_u32 arg0, u8 arg1, u32 arg2) {
-    D_800ABB10.unk_08.rgba = arg0.rgba;
-    D_800ABB10.unk_01 = arg1;
-    D_800ABB10.unk_02 = arg2;
+void Gfx_SetColor(Color_RGBA8_u32 arg0, u8 arg1, u32 arg2) {
+    gRenderState.unk_08.rgba = arg0.rgba;
+    gRenderState.unk_01 = arg1;
+    gRenderState.unk_02 = arg2;
 }
 
-void func_80016364(s32 arg0, Color_RGBA8_u32 arg1, unk_D_86002F34_alt11_018* arg2, unk_D_86002F34_alt11_018* arg3,
+void Gfx_SetTextureParams(s32 arg0, Color_RGBA8_u32 arg1, unk_D_86002F34_alt11_018* arg2, unk_D_86002F34_alt11_018* arg3,
                    s32 arg4) {
-    D_800ABB10.unk_00 = arg0;
-    D_800ABB10.unk_04.rgba = arg1.rgba;
-    D_800ABB10.unk_0C = arg2;
-    D_800ABB10.unk_10 = arg3;
-    D_800ABB10.unk_14 = arg4;
+    gRenderState.unk_00 = arg0;
+    gRenderState.unk_04.rgba = arg1.rgba;
+    gRenderState.unk_0C = arg2;
+    gRenderState.unk_10 = arg3;
+    gRenderState.unk_14 = arg4;
 }
 
-void func_8001638C(s32 arg0, s32 arg1) {
+void Gfx_InitRenderState(s32 arg0, s32 arg1) {
     s32 i;
-    unk_D_800ABB28* ptr = D_800ABB28;
+    unk_D_800ABB28* ptr = gLayerStates;
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
@@ -1429,54 +1429,54 @@ void func_8001638C(s32 arg0, s32 arg1) {
         ptr->unk_26 = 0xFF;
     }
 
-    D_800ABB10.unk_00 = 0;
-    D_800ABB10.unk_01 = 0xFF;
-    D_800ABB10.unk_02 = 0;
-    D_800ABB10.unk_03 = 0;
-    D_800ABB10.unk_04.rgba = -1;
-    D_800ABB10.unk_08.rgba = 0xFFFFFF00;
-    D_800ABB10.unk_0C = 0;
-    D_800ABB10.unk_10 = 0;
-    D_800ABB10.unk_14 = 0;
+    gRenderState.unk_00 = 0;
+    gRenderState.unk_01 = 0xFF;
+    gRenderState.unk_02 = 0;
+    gRenderState.unk_03 = 0;
+    gRenderState.unk_04.rgba = -1;
+    gRenderState.unk_08.rgba = 0xFFFFFF00;
+    gRenderState.unk_0C = 0;
+    gRenderState.unk_10 = 0;
+    gRenderState.unk_14 = 0;
 
-    D_800ABB00 = arg0;
-    D_800ABB04 = arg1;
+    gRenderModeIndex = arg0;
+    gRenderFlags = arg1;
 
-    D_800ABB28[0].unk_04 = gDisplayListHead;
+    gLayerStates[0].unk_04 = gDisplayListHead;
 
-    D_800ABCBC = 0;
-    D_800ABCB8 = D_800ABB28;
+    gRenderStateCount = 0;
+    gCurrentRenderState = gLayerStates;
 
-    D_8006F120 = 1;
+    gIsRenderInitialized = 1;
 }
 
-void func_8001660C(void) {
+void Gfx_FlushLayers(void) {
     s32 sp1C = 0;
     Gfx* temp_t0;
     s32 temp_v0;
 
-    func_80015F64(9);
+    Gfx_SetRenderLayer(9);
 
-    if (D_800ABB28[0].unk_08 != NULL) {
+    if (gLayerStates[0].unk_08 != NULL) {
         while (sp1C < 9) {
             temp_v0 = sp1C + 1;
-            temp_t0 = D_800ABB28[sp1C].unk_08;
+            temp_t0 = gLayerStates[sp1C].unk_08;
             sp1C++;
 
-            while (D_800ABB28[temp_v0].unk_04 == NULL) {
+            while (gLayerStates[temp_v0].unk_04 == NULL) {
                 temp_v0 = sp1C + 1;
                 sp1C++;
             }
 
-            gSPBranchList(temp_t0, D_800ABB28[sp1C].unk_04);
+            gSPBranchList(temp_t0, gLayerStates[sp1C].unk_04);
         }
     }
 
-    func_80015684();
+    Gfx_ResetRenderState();
 
-    if (D_800ABB00 & 1) {
+    if (gRenderModeIndex & 1) {
         gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER);
     }
 
-    D_8006F120 = 0;
+    gIsRenderInitialized = 0;
 }

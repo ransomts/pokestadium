@@ -287,7 +287,7 @@ void func_83402C34(void) {
     }
 }
 
-s32 func_83402C6C(void) {
+s32 Menu_IsExitPressed(void) {
     s32 sp1C = 0;
 
     switch (D_83402E40) {
@@ -309,7 +309,7 @@ s32 func_83402C6C(void) {
     return sp1C;
 }
 
-s32 func_83402CE4(s16 arg0, Controller* arg1) {
+s32 Menu_SetStep(s16 arg0, Controller* arg1) {
     if (D_83402E40 == 0) {
         PlaySoundEffect(4);
         D_83407C00 = arg0;
@@ -322,7 +322,7 @@ s32 func_83402CE4(s16 arg0, Controller* arg1) {
     return 0;
 }
 
-s32 func_83402D74(s16 arg0) {
+s32 Menu_ExitToGallery(s16 arg0) {
     if ((D_83402E40 == 2) && (arg0 == D_83407C00)) {
         D_83407C0A = -1;
         D_83402E40 = 3;

@@ -74,7 +74,7 @@ void Battle_TurnStart(void) {
         if (gDefenderBattleEntity->unk_15 == 0) {
             HandleMoveEffectFlags();
             if ((gSpecialFlag == 0) &&
-                ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
+                ((Battle_HasAbilityEffect(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
                 goto block_9;
             }
         }
@@ -87,7 +87,7 @@ void Battle_TurnStart(void) {
     }
 
 block_9:
-    if ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) && (D_8438AC60[0] != 2)) {
+    if ((Battle_HasAbilityEffect(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) && (D_8438AC60[0] != 2)) {
         gIsBattleMode = 0;
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(gBattleMessageBuffers->unk_088, -0x7F);
@@ -242,7 +242,7 @@ void Battle_HandleItemEffect(void) {
 
             case 5:
             case 35:
-                if (func_84308A4C(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) {
+                if (Battle_HasStatusEffect(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) {
                     gDefenderBattleEntity->unk_4D &= ~0x20;
                     gDefenderBattleEntity->unk_15 = 0x20;
                     MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));

@@ -815,7 +815,7 @@ s32 BattleModeMenu_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
     MessageBank_Init();
     D_830039C0 = GetMessageBank(0x20);
     gBattleModeMessageBank = GetMessageBank(0x24);
-    func_80007754();
+    Menu_SetupDisplayList();
     BattleModeMenu_MainLoop();
     Stage_Terminate();
 

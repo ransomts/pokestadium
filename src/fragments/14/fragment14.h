@@ -149,7 +149,7 @@ extern unk_D_86807558 gSushiEntities[4];
 
 extern unk_D_868084D8 gSushiInstances[12];
 
-void func_86800020(s32 arg0);
+void Sushi_FadeAudio(s32 arg0);
 void ReadAllControllers(void);
 Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void RenderPanelColumns(void);
@@ -177,7 +177,7 @@ void SushiInstance_SetMode(unk_D_868084D8*, s32, unk_D_86807558*);
 s32 func_86806930(unk_D_868084D8*);
 s16 Sushi_GetActiveCount(s32);
 void Sushi_SetSpawnMode(s32);
-void func_86806A50(void);
-void func_86806BF0(void);
+void Sushi_InitAssets(void);
+void Sushi_UpdateLogic(void);
 
 #endif // _FRAGMENT14_H_

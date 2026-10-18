@@ -365,7 +365,7 @@ s32 StateMachine_Update(void) {
         (gFragment17State->unk_04.unk_48 == 0)) {
         if ((gFragment17State->unk_04.unk_4C != 8) && (gFragment17State->unk_04.unk_4C != 5)) {
             gFragment17State->unk_04.unk_48 = 1;
-            func_8004B9C4(0xA);
+            Stage_SetFadeColor(0xA);
             gFragment17WindowAlpha = 0;
             gFragment17Result = 2;
         }
@@ -545,7 +545,7 @@ s32 BattleState_Handle18(void) {
     MessageBank_Init();
     D_86B0E5E0 = GetMessageBank(0x14);
     func_86B0111C();
-    func_80007754();
+    Menu_SetupDisplayList();
     func_86B0107C();
     func_86B010FC();
     Stage_Terminate();

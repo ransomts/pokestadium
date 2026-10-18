@@ -6,7 +6,7 @@
 #include "src/49790.h"
 
 static unk_D_82F210E0 gRentalMenuState;
-static unk_func_82F00838_sp30_00C* gRentalItemPtrs[2];
+static PickerPokemonEntry* gRentalItemPtrs[2];
 static s16 D_82F21128;
 static s32 D_82F2112C;
 static s32 D_82F21130;
@@ -38,7 +38,7 @@ s32 InitRentalItems(unk_D_82F210E0* arg0) {
     s32 sp2C = 0;
 
     for (i = 0; i < 2; i++) {
-        func_82F0525C(i, &sp30[i]);
+        Picker_GetSelectionInfo(i, &sp30[i]);
     }
 
     if (arg0->unk_06 < 0) {
@@ -106,7 +106,7 @@ void RentalMenu_Init(s32 arg0) {
     }
 
     for (i = 0; i < 2; i++) {
-        func_82F0525C(i, &sp2C);
+        Picker_GetSelectionInfo(i, &sp2C);
         gRentalItemPtrs[i] = &sp2C.unk_0C[sp2C.unk_06];
     }
 
@@ -317,7 +317,7 @@ void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0) {
     if (arg0->unk_02 <= 0) {
         arg0->unk_02 = 0;
         if (arg0->unk_0C == 1) {
-            func_82F0525C(arg0->unk_0A, &sp24);
+            Picker_GetSelectionInfo(arg0->unk_0A, &sp24);
             temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
             if (temp_v0 == 1) {
                 arg0->unk_10 = 1;
@@ -353,7 +353,7 @@ void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0) {
                 arg0->unk_06 += 1;
                 arg0->unk_0C = 1;
                 arg0->unk_10 = 2;
-                func_82F0525C(arg0->unk_0A, &sp24);
+                Picker_GetSelectionInfo(arg0->unk_0A, &sp24);
                 temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
                 if (temp_v0 == 1) {
                     arg0->unk_10 = 1;
@@ -420,7 +420,7 @@ void RentalMenu_Finalize(unk_D_82F210E0* arg0) {
 
 void func_82F0B2A4(s16 arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad;
-    u16* img = func_82F05198(arg0);
+    u16* img = Picker_GetSelectedSprite(arg0);
 
     gDPLoadTextureBlock(gDisplayListHead++, img, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -431,7 +431,7 @@ void func_82F0B2A4(s16 arg0, s16 arg1, s16 arg2) {
 void RentalMenu_RenderItemList(unk_D_82F210E0* arg0) {
     unk_D_82F20A40_00E* var_s0;
     s32 sp74[2];
-    unk_func_82F00838_sp30_00C* temp_s3;
+    PickerPokemonEntry* temp_s3;
     s32 i;
 
     if (arg0->unk_12 > 0) {
@@ -441,7 +441,7 @@ void RentalMenu_RenderItemList(unk_D_82F210E0* arg0) {
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
         if ((var_s0->unk_04 != 0xC8) || (var_s0->unk_06 != 0)) {
-            func_82F022DC(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
+            Picker_DrawFrame(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
         }
     }
 
@@ -587,7 +587,7 @@ void func_82F0BBE8(unk_D_82F210E0* arg0) {
     unk_D_82F20A40_00E* temp_s0 = &arg0->unk_2C;
 
     if ((arg0->unk_2C.unk_04 != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
-        func_82F037EC(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
+        Picker_DrawLargePanelBorder(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
         if ((temp_s0->unk_04 == 0x210) && (temp_s0->unk_06 == 0x28)) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
@@ -639,9 +639,9 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
     unk_func_82F00838_sp30 sp20;
 
     if (arg0->unk_08 < 2) {
-        func_82F0525C(arg0->unk_08, &sp20);
+        Picker_GetSelectionInfo(arg0->unk_08, &sp20);
     } else {
-        func_82F0525C(arg0->unk_0A, &sp20);
+        Picker_GetSelectionInfo(arg0->unk_0A, &sp20);
     }
 
     if (arg0->unk_10 == -1) {

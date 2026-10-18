@@ -1554,15 +1554,15 @@ static ActorOriginPosition diglettActorInfo[] = {
     { { 0.0f, 0.0f, -225.0f }, { 0, 0, 0, 0, 0, 0 }, 0xA, 0x23 },
     { { 75.0f, 0.0f, -225.0f }, { 0, 0, 0, 0, 0, 0 }, 0xA, 0x23 },
 };
-static unk_func_87801684 gMiniEkansAnimTable[] = {
+static AnimFrame gMiniEkansAnimTable[] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
     { D_030397C0, 0xE },  { D_0303A400, 4 }, { D_0303B040, 4 }, { D_0303A400, 4 }, { D_030397C0, 0xE },
     { D_030366C0, 4 },    { D_03037300, 4 }, { D_030366C0, 4 }, { NULL, 0 },
 };
-static unk_func_87801684 gMiniDiglettAnimTable[] = {
+static AnimFrame gMiniDiglettAnimTable[] = {
     { D_030397C0, 0xE }, { D_03034E40, 4 }, { D_03035A80, 0xE }, { D_0303D500, 2 }, { NULL, 0 },
 };
-static unk_func_87801684 gMiniDiglettHoleAnimTable[] = {
+static AnimFrame gMiniDiglettHoleAnimTable[] = {
     { D_03042E00, 0xE }, { D_03043520, 4 }, { D_03043C40, 8 }, { D_03043520, 4 }, { D_03042E00, 0xE },
     { D_03041FC0, 4 },   { D_030426E0, 8 }, { D_03041FC0, 4 }, { NULL, 0 },
 };
@@ -1683,7 +1683,7 @@ void MiniGame_PlaySoundEvent(s16 arg0, s16 arg1) {
             break;
 
         case 16:
-            func_8004B9C4(0x3C);
+            Stage_SetFadeColor(0x3C);
             break;
 
         case 17:
@@ -2338,11 +2338,11 @@ void checkCollitionWithDigletts(MiniActor* ekans, s32 nPlayer) {
     Vec3f tempEkansHitboxPos;
 
     ekans->ekansAbbleToHoop = false;
-    func_80015390(&ekans->unk_000, 0xA, &tempEkansHitboxPos);
+    Graph_GetRecordedPosition(&ekans->unk_000, 0xA, &tempEkansHitboxPos);
     if ((ekans->ekansIsMidAir) && (ekans->midAirState < 2)) {
         for (i = 0; i < 3; i++) {
             if ((activeDigletts[i].unk_06 != 0) && (activeDigletts[i].gotHoop == false)) {
-                func_80015390(&miniDigletts[activeDigletts[i].diglettId].unk_000, 0xA, &tempDiglettHitboxPos);
+                Graph_GetRecordedPosition(&miniDigletts[activeDigletts[i].diglettId].unk_000, 0xA, &tempDiglettHitboxPos);
                 distance2d = Vec3f_DistXZ(tempEkansHitboxPos, tempDiglettHitboxPos);
 
                 xDist = tempEkansHitboxPos.x - tempDiglettHitboxPos.x;
@@ -2382,9 +2382,9 @@ void MiniEkans_ResolveHoopConflicts(void) {
                 if ((miniEkanses[j].ekansAbbleToHoop) && (idx == miniEkanses[j].collidingActorId)) {
                     diglett = &miniDigletts[activeDigletts[idx].diglettId];
 
-                    func_80015390(&ekans->unk_000, 0xA, &sp7C);
-                    func_80015390(&miniEkanses[j].unk_000, 0xA, &sp70);
-                    func_80015390(&diglett->unk_000, 0xA, &sp88);
+                    Graph_GetRecordedPosition(&ekans->unk_000, 0xA, &sp7C);
+                    Graph_GetRecordedPosition(&miniEkanses[j].unk_000, 0xA, &sp70);
+                    Graph_GetRecordedPosition(&diglett->unk_000, 0xA, &sp88);
 
                     if (Vec3f_Dist(sp7C, sp88) > Vec3f_Dist(sp70, sp88)) {
                         ekans->ekansAbbleToHoop = false;
@@ -2416,13 +2416,13 @@ void MiniEkansHandleDiglettCollision(MiniActor* ekans, s32 nPlayer) {
         return;
     }
 
-    func_80015390(&ekans->unk_000, 0xA, &ekansColl);
+    Graph_GetRecordedPosition(&ekans->unk_000, 0xA, &ekansColl);
 
     idx = ekans->collidingActorId;
     activeDiglett = &activeDigletts[idx];
     diglett = &miniDigletts[activeDiglett->diglettId];
 
-    func_80015390(&diglett->unk_000, 0xA, &diglettColl);
+    Graph_GetRecordedPosition(&diglett->unk_000, 0xA, &diglettColl);
 
     xDist = ekansColl.x - diglettColl.x;
     zDist = ekansColl.z - diglettColl.z;
@@ -3210,10 +3210,10 @@ void MiniEkansTutoScreenUpdate(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            func_87801F48(1, 0x19, 0xA6);
-            func_87801C8C(0x56, 0xAC, gMiniDiglettHoleAnimTable);
-            func_87801D5C(1, 0xC2, 0xA8, gMiniDiglettAnimTable);
-            func_87801824(0x74, 0xC6, gMiniEkansAnimTable);
+            DrawDualTexturePanel(1, 0x19, 0xA6);
+            DrawAnimatedSpriteLarge(0x56, 0xAC, gMiniDiglettHoleAnimTable);
+            DrawAnimatedTextureDual(1, 0xC2, 0xA8, gMiniDiglettAnimTable);
+            DrawAnimatedSprite3(0x74, 0xC6, gMiniEkansAnimTable);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
@@ -3313,7 +3313,7 @@ void MiniEkansDrawShadows(void) {
             gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
             Gfx_SetPrimColorCombinePrimitive(playerColors[i].r, playerColors[i].g, playerColors[i].b, (ekans->unk_000.unk_01D / 2) & 0xFF);
-            func_80015390(&ekans->unk_000, 0xA, &sp7C);
+            Graph_GetRecordedPosition(&ekans->unk_000, 0xA, &sp7C);
 
             sp7C.y = 5.0f;
 
@@ -3488,7 +3488,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     if (arg0 == 1) {
         ekansMinigameCountdownStarted = true;
-        func_878010C8(0xD);
+        Sushi_SetDemoParams(0xD);
         MiniGame_QueueSoundEvent(0x10, 0);
     } else {
         ekansMinigameCountdownStarted = false;

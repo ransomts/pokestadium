@@ -590,7 +590,7 @@ def do_rewrites(rows, files):
             elif not is_typedef_row(r):
                 span = map_symbol_span(r.old)
                 if span:
-                    if c_definition_count(r.old) > 0:
+                    if has_c_definition(r.old):
                         rw.add_sa_entry_no_size(r.new, span[0])
                     else:
                         # extern-only phantom: its only definition is the auto .ld
@@ -701,7 +701,7 @@ def is_typedef_row(r, files=None):
 
 def c_definition_count(sym):
     """File-scope or local C definitions/declarations of `sym` (static or global, any array dims)."""
-    statics, globals_, locals_, _closers = _def_classes()
+    statics, globals_, locals_, _closers, _strict = _def_classes()
     return (sym in statics) + (sym in globals_) + (sym in locals_)
 
 
@@ -736,11 +736,13 @@ def _def_classes():
     global _DEF_CLASSES
     if _DEF_CLASSES is not None:
         return _DEF_CLASSES
-    statics, globals_, locals_, closers = set(), set(), set(), set()
+    statics, globals_, locals_, closers, strict_globals = set(), set(), set(), set(), set()
     p_static = re.compile(r"^\s*static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
                           r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
     p_global = re.compile(r"^(?:static\s+|extern\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
                           r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
+    p_strict_global = re.compile(r"^(?!extern\b)(?:static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
+                                 r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
     p_local = re.compile(r"^[ \t]+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
                          r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
     p_close = re.compile(r"\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")
@@ -752,13 +754,22 @@ def _def_classes():
             statics.add(m.group(1))
         for m in p_global.finditer(t):
             globals_.add(m.group(1))
+        for m in p_strict_global.finditer(t):
+            strict_globals.add(m.group(1))
         for m in p_local.finditer(t):
             locals_.add(m.group(1))
         for m in p_close.finditer(t):
             closers.add(m.group(1))
     closers |= {n for n in header_tag_names()}
-    _DEF_CLASSES = (statics, globals_, locals_, closers)
+    _DEF_CLASSES = (statics, globals_, locals_, closers, strict_globals)
     return _DEF_CLASSES
+
+
+def has_c_definition(sym):
+    """True if sym has a non-extern C definition (static, file-scope or local).
+    Extern-only declarations do NOT count - such symbols are linker phantoms."""
+    statics, _globals_, _locals_, _closers, strict = _def_classes()
+    return sym in statics or sym in strict or sym in _locals_
 
 
 def is_typedef_row_fast(sym):
@@ -774,7 +785,7 @@ def is_c_static(sym):
 def is_function_local(sym):
     """True if sym is declared ONLY inside function bodies (indented, non-static,
     no extern/file-scope definition) - also absent from the linker map."""
-    statics, globals_, locals_, _closers = _def_classes()
+    statics, globals_, locals_, _closers, _strict = _def_classes()
     return sym in locals_ and sym not in globals_ and sym not in statics
 
 

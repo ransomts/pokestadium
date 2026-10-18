@@ -66,7 +66,7 @@ static u32 gRacePanelParams[] = {
     0xFFFFFFFF, 0xFF0000FF, 0x00EE000E, 0xFFFFFFFF, 0xFFFF00FF, 0x00000000,
 };
 
-static unk_func_87801684 gRacePanelAnim1[] = {
+static AnimFrame gRacePanelAnim1[] = {
     {
         0x303ED80,
         0x02,
@@ -89,7 +89,7 @@ static unk_func_87801684 gRacePanelAnim1[] = {
     },
 };
 
-static unk_func_87801684 gRacePanelAnim2[] = {
+static AnimFrame gRacePanelAnim2[] = {
     {
         0x3040580,
         0x12,
@@ -106,7 +106,7 @@ static unk_func_87801684 gRacePanelAnim2[] = {
     { 0x0, 0x0 },
 };
 
-static unk_func_87801684 gRacePanelAnim3[] = {
+static AnimFrame gRacePanelAnim3[] = {
     { 0x03042E00, 0x0E }, { 0x03044360, 0x02 }, { 0x03044A80, 0x06 }, { 0x03044360, 0x02 }, { 0, 0 },
 };
 
@@ -457,10 +457,10 @@ void Race_DrawPanelAndText(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == 0) {
-        func_87801C8C(0x56, 0xAC, gRacePanelAnim3);
-        func_87801684(0xCC, 0xB0, gRacePanelAnim1);
-        func_87801824(0x74, 0xC6, gRacePanelAnim2);
-        func_87801F48(2, 0x19, 0xA6);
+        DrawAnimatedSpriteLarge(0x56, 0xAC, gRacePanelAnim3);
+        DrawAnimatedSprite(0xCC, 0xB0, gRacePanelAnim1);
+        DrawAnimatedSprite3(0x74, 0xC6, gRacePanelAnim2);
+        DrawDualTexturePanel(2, 0x19, 0xA6);
     } else if (gRaceIsResultScreen == 1) {
         Stage_SetBorderFadeParams(0x1E, 0x17);
     }
@@ -1228,7 +1228,7 @@ void func_86202EE4(void) {
 void func_86202F3C(void) {
     s32 i;
 
-    func_8004B9C4(0x1E);
+    Stage_SetFadeColor(0x1E);
     Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
@@ -1379,7 +1379,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     if (arg0 == 1) {
         gRaceIsResultScreen = 1;
-        func_878010C8(3);
+        Sushi_SetDemoParams(3);
     } else {
         gRaceIsResultScreen = 0;
     }
@@ -1403,7 +1403,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     func_86203380();
 
     if (RunRaceStartSequence() != -1) {
-        func_8004B9C4(0x3C);
+        Stage_SetFadeColor(0x3C);
         func_86202FA4(5);
         HandleResultScreen();
         func_862023F8();

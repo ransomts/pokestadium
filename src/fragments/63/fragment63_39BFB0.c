@@ -381,7 +381,7 @@ s32 DrawPokemonFrontSprite(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)var_a3 & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -405,7 +405,7 @@ s32 DrawPokemonStatusIcon(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(var_a3) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
 
         if (temp_t1->unk_2C[temp_t2 - 1] != 0) {
             arg1->unk_00.unk_08->unk_01 |= 1;
@@ -435,7 +435,7 @@ s32 DrawPokemonItemIcon(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(var_a0) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -466,7 +466,7 @@ s32 DrawHPBarSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(var_a3) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
 
         if (temp_t1->unk_2C[temp_a1] != 0) {
             arg1->unk_00.unk_08->unk_01 |= 1;
@@ -503,7 +503,7 @@ s32 DrawHPBarSegmentAlt(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)Memmap_GetSegmentVaddr(var_a0) & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1019,7 +1019,7 @@ void AdvanceSpriteAnimation(unk_D_84B25A58* arg0) {
     SpriteDisplay_TryAdvance(arg0->unk_1C, 0);
 
     arg0->unk_01++;
-    if ((arg0->unk_01 >= 0x1E) && (func_8001B010(arg0->unk_1C) != 0)) {
+    if ((arg0->unk_01 >= 0x1E) && (SpriteDisplay_IsAnimating(arg0->unk_1C) != 0)) {
         arg0->unk_01 = 0;
         arg0->unk_00 = 2;
     }

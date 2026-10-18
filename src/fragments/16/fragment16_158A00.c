@@ -272,7 +272,7 @@ void Stage_IntroFadeSequence(void) {
     u8 sp35;
     s32 var_s1;
 
-    func_8004B9C4(0x1E);
+    Stage_SetFadeColor(0x1E);
 
     for (i = 0; i < 3; i++) {
         var_s1 = sp35;

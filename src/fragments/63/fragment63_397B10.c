@@ -623,7 +623,7 @@ s32 RenderUI_BackgroundSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -638,7 +638,7 @@ s32 RenderUI_FrontLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[0] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -654,7 +654,7 @@ s32 RenderUI_TwoLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)temp_a0->unk_10[3] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -669,7 +669,7 @@ s32 RenderUI_MiddleLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[1] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1276,7 +1276,7 @@ s32 RenderUI_BarSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[tmp2] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gUIBarBarSegmentDisplayList);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1307,7 +1307,7 @@ s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, gUIBarBarSegmentDetailDisplayList);
 
-            func_80015684();
+            Gfx_ResetRenderState();
             gBarHighlightAnimPhase += 0x800;
         }
     }
@@ -1327,7 +1327,7 @@ s32 RenderUI_SegmentImage(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_30[tmp]->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1357,7 +1357,7 @@ s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-            func_80015684();
+            Gfx_ResetRenderState();
             gSegmentHighlightAnimPhase += 0x800;
         }
     }

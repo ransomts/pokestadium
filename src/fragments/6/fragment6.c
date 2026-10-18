@@ -68,7 +68,7 @@ static unk_D_86002A98 gMiniHudTextureRects[4] = {
     { 0x00E6, 0x00D7, 0xFFFF, 0xFFFF, 0xFFFF, 0x00FF },
 };
 
-static unk_func_87801684 gMiniHudDL_Panel1[] = {
+static AnimFrame gMiniHudDL_Panel1[] = {
     {
         0x0303ED80,
         0x000E,
@@ -91,7 +91,7 @@ static unk_func_87801684 gMiniHudDL_Panel1[] = {
     },
 };
 
-static unk_func_87801684 gMiniHudDL_Panel2[] = {
+static AnimFrame gMiniHudDL_Panel2[] = {
     {
         0x03040580,
         0x0012,
@@ -415,9 +415,9 @@ void MiniHud_RenderUI(s32 arg0) {
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
         gSPDisplayList(D_800A7420++, gPrefDL_Border);
-        func_87801684(0x74, 0xB0, gMiniHudDL_Panel1);
-        func_87801824(0x74, 0xC6, gMiniHudDL_Panel2);
-        func_87801F48(2, 0x19, 0xA6);
+        DrawAnimatedSprite(0x74, 0xB0, gMiniHudDL_Panel1);
+        DrawAnimatedSprite3(0x74, 0xC6, gMiniHudDL_Panel2);
+        DrawDualTexturePanel(2, 0x19, 0xA6);
     }
 }
 
@@ -917,7 +917,7 @@ void MiniHud_PlayGame(void) {
         MiniHud_MainLoop(gMiniHudState);
     }
 
-    func_8004B9C4(0xA);
+    Stage_SetFadeColor(0xA);
 }
 
 s32 MiniHud_CheckAllIdle(void) {
@@ -1059,7 +1059,7 @@ void MiniHud_Exit(void) {
     s32 i;
     s32 j;
 
-    func_8004B9C4(30);
+    Stage_SetFadeColor(30);
     Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
@@ -1199,7 +1199,7 @@ void MiniHud_Init(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
 
     if (MiniHud_InitAndWait() != -1) {
-        func_8004B9C4(0x3C);
+        Stage_SetFadeColor(0x3C);
         MiniHud_WaitFrames(5);
         MiniHud_PlayIntro();
         MiniHud_PlayGame();

@@ -126,7 +126,7 @@ s32 RenderPlayerSlot(s32 arg0, GraphNode* arg1) {
             gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_82F13F2C[gPlayerSlotInfo[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -779,7 +779,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
     s32 i;
     unk_D_82F14450* ptr;
 
-    func_82F022DC(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06);
+    Picker_DrawFrame(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06);
 
     if ((temp_s4->unk_04 == 0x200) && (temp_s4->unk_06 == 0x88)) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
@@ -798,7 +798,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
                 var_v0 = &sp5C;
             }
 
-            func_82F02FEC(temp_s4->unk_00 + (i * 0x110) + 0x10, temp_s4->unk_02 + 0x28, 0xD0, 0x50, var_v0->r,
+            Picker_DrawPanelBorder(temp_s4->unk_00 + (i * 0x110) + 0x10, temp_s4->unk_02 + 0x28, 0xD0, 0x50, var_v0->r,
                           var_v0->g, var_v0->b, 0xFF);
         }
 
@@ -864,7 +864,7 @@ void func_82F08EB4(unk_D_82F20A40* arg0) {
             var_v0 = &sp84;
         }
 
-        func_82F037EC(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, var_v0->r, var_v0->g, var_v0->b, var_v1);
+        Picker_DrawLargePanelBorder(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, var_v0->r, var_v0->g, var_v0->b, var_v1);
     }
 
     Text_ResetState();
@@ -916,7 +916,7 @@ void func_82F0917C(unk_D_82F20A40* arg0) {
     unk_D_82F20A40_00E* temp_s1 = &arg0->unk_26;
     char* temp_v0;
 
-    func_82F037EC(arg0->unk_26.unk_00, arg0->unk_26.unk_02, arg0->unk_26.unk_04, arg0->unk_26.unk_06, 0x1E, 0x1E, 0x82,
+    Picker_DrawLargePanelBorder(arg0->unk_26.unk_00, arg0->unk_26.unk_02, arg0->unk_26.unk_04, arg0->unk_26.unk_06, 0x1E, 0x1E, 0x82,
                   0xFF);
     if ((temp_s1->unk_04 == 0x210) && (temp_s1->unk_06 == 0x28)) {
         Text_ResetState();

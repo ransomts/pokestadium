@@ -488,7 +488,7 @@ void Stage_Terminate(void) {
     while (RspTaskYielded() == 0) {}
 }
 
-void func_80007754(void) {
+void Menu_SetupDisplayList(void) {
     Memmap_SetSegments(&gDisplayListHead);
 }
 

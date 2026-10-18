@@ -156,7 +156,7 @@ s32 Battle_UpdateResultPhase(void) {
 
                 if (var_v0 != 0) {
                     gBattleState.unk_00->unk_40 = Battle_ComputeWinner();
-                    func_8004B9C4(0x14);
+                    Stage_SetFadeColor(0x14);
                 }
                 break;
         }
@@ -667,7 +667,7 @@ void Battle_HandleMenuNavigation(unk_BattlePlayerEntity* arg0) {
         (gBattleState.unk_00->unk_40 == 0)) {
         PlaySoundEffect(2);
         gBattleState.unk_00->unk_40 = (IsPrimaryEntity(arg0) == 0) + 1;
-        func_8004B9C4(0x14);
+        Stage_SetFadeColor(0x14);
     } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(gActiveController1, BTN_A) || BTN_IS_PRESSED(gActiveController2, BTN_A))) {
         sp18->unk_10 = 0;
         sp18->unk_04 = 0;

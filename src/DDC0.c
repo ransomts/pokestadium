@@ -41,7 +41,7 @@ void Music_ClearCurrentId(void) {
 void Music_ChangeTrack(s32 arg0) {
     if (arg0 != gCurrentMusicId) {
         if (gCurrentMusicId >= 0) {
-            func_8004B9C4(0);
+            Stage_SetFadeColor(0);
         }
         ResultScreen_SetAnimation(arg0);
         gCurrentMusicId = arg0;
@@ -57,7 +57,7 @@ void Music_SetTrack(s32 arg0) {
 
 void Music_StopTrack(s32 arg0) {
     if (gCurrentMusicId >= 0) {
-        func_8004B9C4(arg0);
+        Stage_SetFadeColor(arg0);
         gCurrentMusicId = -1;
     }
 }

@@ -16,7 +16,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_833031B4 {
+typedef struct MenuItem {
     /* 0x00 */ u8* unk_00;
     /* 0x04 */ u16 unk_04;
     /* 0x06 */ u16 unk_06;
@@ -26,14 +26,14 @@ typedef struct unk_D_833031B4 {
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s32 unk_14;
-} unk_D_833031B4; // size = 0x18
+} MenuItem; // size = 0x18
 
-typedef struct unk_D_83303180 {
+typedef struct MenuSubPanelItem {
     /* 0x00 */ u8* unk_00;
     /* 0x04 */ u16 unk_04;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ s16 unk_08;
-} unk_D_83303180; // size = 0xC
+} MenuSubPanelItem; // size = 0xC
 
 static s32 D_833032E0;
 static s32 gMenuStep;
@@ -41,13 +41,13 @@ static unk_D_83407B38 gMenuActiveData;
 static BinArchive* gMenuAssetArchive;
 static s32 gMenuDirty;
 static unk_D_83403C60 gSwapTempPokemon;
-static s32 D_83303434;
+static s32 gMenuConfirmState;
 static s32 gBackgroundFadeTimer;
 static s32 gStickerStationConnected;
 static s32 gFadeOutTimer;
 static s32 gMenuInputLocked;
 
-static unk_D_83303180 D_83303180[] = {
+static MenuSubPanelItem gSubPanelItems[] = {
     { NULL, 0x30, 0x23, 0 },
     { D_03002A40, 0x20, 0x24, 7 },
     { NULL, 0x30, 0x23, 8 },
@@ -58,7 +58,7 @@ static s16 D_833031A8[] = { 0x12 };
 static s16 D_833031AC[] = { 0x13 };
 static s16 D_833031B0[] = { -1, 0x15 };
 
-static unk_D_833031B4 D_833031B4[] = {
+static MenuItem D_833031B4[] = {
     {
         D_03001000,
         48,
@@ -137,11 +137,11 @@ static unk_D_833031B4 D_833031B4[] = {
         3,
     },
 };
-static s16 D_8330325C[2] = { 0x108, 0x108 };
-static s16 D_83303260[2] = { 0x5C, 0x5C };
-static s16 D_83303264[2] = { 0x98, 0x4C };
-static s16 D_83303268[2] = { 0x7A, 0x3D };
-static s32 D_8330326C[] = { 5, 3, 3, 0, 0, 7, 8 };
+static s16 gGridOffsetX[2] = { 0x108, 0x108 };
+static s16 gGridOffsetY[2] = { 0x5C, 0x5C };
+static s16 gGridStepX[2] = { 0x98, 0x4C };
+static s16 gGridStepY[2] = { 0x7A, 0x3D };
+static s32 gMenuExitFadeColors[] = { 5, 3, 3, 0, 0, 7, 8 };
 
 void DrawPanelFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -175,7 +175,7 @@ unk_D_83407B38* GetActiveMenu(void) {
 }
 
 void UpdateMenuItemStates(void) {
-    unk_D_833031B4* ptr;
+    MenuItem* ptr;
     s32 sp28;
     s32 i;
     s32 sp20;
@@ -252,7 +252,7 @@ s32 Menu_HandleConfirm(void) {
 
     if (Gallery_CheckForChanges() != 0) {
         gMenuStep = 6;
-        func_83402CE4(3, gPlayer1Controller);
+        Menu_SetStep(3, gPlayer1Controller);
         gBackgroundFadeTimer = 4;
     } else {
         sp1C = 1;
@@ -263,7 +263,7 @@ s32 Menu_HandleConfirm(void) {
 s32 ProcessMenuInput(void) {
     s32 sp2C;
     s32 sp28;
-    unk_D_833031B4* sp24;
+    MenuItem* sp24;
     s32 sp20;
     s32 sp1C;
 
@@ -342,7 +342,7 @@ s32 ProcessMenuInput(void) {
                         sp28 = 2;
                     } else {
                         gMenuStep = 5;
-                        D_83303434 = 0;
+                        gMenuConfirmState = 0;
                     }
                     break;
 
@@ -593,19 +593,19 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     char* sp34;
     Color_RGBA8 sp30 = { 0x9A, 0x37, 0x54, 0xFF };
     Color_RGBA8 sp2C = { 0xC3, 0x54, 0x84, 0xFF };
-    unk_D_83303180* sp20;
+    MenuSubPanelItem* sp20;
 
     DrawPanelWithTextures(arg0, arg1, 0x186, &sp30, &sp2C);
 
     if ((D_833032E0 != 0) && (D_833032E0 != 2)) {
-        sp20 = &D_83303180[arg2];
+        sp20 = &gSubPanelItems[arg2];
     } else if (gGallerySpecialUnlocked == 0) {
-        sp20 = &D_83303180[arg2];
+        sp20 = &gSubPanelItems[arg2];
         do {
             sp20->unk_00 = D_3004540;
         } while (0);
     } else {
-        sp20 = &D_83303180[arg2];
+        sp20 = &gSubPanelItems[arg2];
         sp20->unk_00 = D_3005260;
     }
 
@@ -627,13 +627,13 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    unk_D_833031B4* temp_v1 = &D_833031B4[D_83402E28];
+    MenuItem* temp_v1 = &D_833031B4[D_83402E28];
     char* sp18 = NULL;
 
     switch (D_833032E0) {
         case 0:
             if (gMenuStep == 5) {
-                switch (D_83303434) {
+                switch (gMenuConfirmState) {
                     case 0:
                         if (gGallerySpecialViewed == 0) {
                             sp18 = Text_GetMessageString_Bank2C(0x1B);
@@ -705,7 +705,7 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
     gMenuStep = 0;
     gBackgroundFadeTimer = -1;
     gMenuDirty = 0;
-    D_83303434 = 0;
+    gMenuConfirmState = 0;
     gMenuInputLocked = 0;
 
     if (arg1 == 0) {
@@ -734,7 +734,7 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
         temp_v0_2->unk_B0->unk_18 = &gGalleryEntries[gGalleryMainSelection.unk_04];
         temp_v0_2->unk_B0->unk_00 = 0;
     } else if (D_833032E0 == 2) {
-        Gallery_SyncCamToSelection(&gMenuActiveData, &D_83407B00);
+        Gallery_SyncCamToSelection(&gMenuActiveData, &gGalleryMainSelectionCam);
         Gallery_SyncCamToSelection(&gGalleryCamList, &gGallerySubSelection);
     }
 
@@ -830,10 +830,10 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     s32 tmp1;
     s32 tmp2;
 
-    temp_fp = D_8330325C[gGallerySpecialUnlocked];
-    temp_s4 = D_83303264[gGallerySpecialUnlocked];
-    temp_s5 = D_83303268[gGallerySpecialUnlocked];
-    sp8C = D_83303260[gGallerySpecialUnlocked];
+    temp_fp = gGridOffsetX[gGallerySpecialUnlocked];
+    temp_s4 = gGridStepX[gGallerySpecialUnlocked];
+    temp_s5 = gGridStepY[gGallerySpecialUnlocked];
+    sp8C = gGridOffsetY[gGallerySpecialUnlocked];
 
     if (gGallerySpecialUnlocked == 0) {
         var_s6 = 4;
@@ -885,10 +885,10 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
     s32 var_a3;
     s32 var_v0;
 
-    sp50 = D_8330325C[gGallerySpecialUnlocked];
-    sp4C = D_83303260[gGallerySpecialUnlocked];
-    sp48 = D_83303264[gGallerySpecialUnlocked];
-    sp44 = D_83303268[gGallerySpecialUnlocked];
+    sp50 = gGridOffsetX[gGallerySpecialUnlocked];
+    sp4C = gGridOffsetY[gGallerySpecialUnlocked];
+    sp48 = gGridStepX[gGallerySpecialUnlocked];
+    sp44 = gGridStepY[gGallerySpecialUnlocked];
     temp_s0 = arg0->unk_B0;
     Gallery_GetPageAndIndex(arg0, &sp58, &sp54, arg0->unk_00);
 
@@ -998,7 +998,7 @@ void Menu_HandleConfirmTimer(void) {
         if (gConfirmTimer > 0) {
             gConfirmTimer--;
             if (gConfirmTimer == 0) {
-                D_83303434 = 1;
+                gMenuConfirmState = 1;
                 PlaySoundEffect(8);
             }
         }
@@ -1017,7 +1017,7 @@ void Menu_HandleConfirmTimer(void) {
             PlaySoundEffect(3);
             gMenuStep = 1;
             gMenuDirty = 0;
-            D_83303434 = 0;
+            gMenuConfirmState = 0;
         }
     }
 }
@@ -1036,7 +1036,7 @@ void Menu_ProcessResult(void) {
         switch (temp_v0) {
             case 0:
                 gMenuStep = 7;
-                func_83402CE4(4, gPlayer1Controller);
+                Menu_SetStep(4, gPlayer1Controller);
                 var_a2 = 0;
                 gFadeOutTimer = 6;
                 break;
@@ -1054,8 +1054,8 @@ void Menu_ProcessResult(void) {
             gMenuStep = 8;
             Stage_SetFillColor(0xFFFF);
             Stage_FadeOut(0xF);
-            if (D_8330326C[D_83402E28] == 8) {
-                func_8004B9C4(0xF);
+            if (gMenuExitFadeColors[D_83402E28] == 8) {
+                Stage_SetFadeColor(0xF);
             }
         }
     }
@@ -1064,13 +1064,13 @@ void Menu_ProcessResult(void) {
 void Menu_FadeOutStep(void) {
     gFadeOutTimer--;
     if (gFadeOutTimer <= 0) {
-        func_83402D74(4);
+        Menu_ExitToGallery(4);
         Gallery_SaveChanges(0, gStickerStationConnected);
         gMenuStep = 8;
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(0xF);
-        if (D_8330326C[D_83402E28] == 8) {
-            func_8004B9C4(0xF);
+        if (gMenuExitFadeColors[D_83402E28] == 8) {
+            Stage_SetFadeColor(0xF);
         }
     }
 }
@@ -1082,7 +1082,7 @@ s32 Menu_MainLoopStep(void) {
     s32 sp28;
     s32 sp24;
     s32 sp20;
-    unk_D_833031B4* sp1C;
+    MenuItem* sp1C;
     s32 sp18;
 
     sp28 = 1;
@@ -1100,7 +1100,7 @@ s32 Menu_MainLoopStep(void) {
                             if (gGallerySpecialViewed != 0) {
                                 if (sp1C->unk_12 == 0) {
                                     gMenuStep = 5;
-                                    D_83303434 = 0;
+                                    gMenuConfirmState = 0;
                                 } else {
                                     gMenuStep = 1;
                                     gMenuDirty = 1;
@@ -1136,8 +1136,8 @@ s32 Menu_MainLoopStep(void) {
                     Stage_SetFillColor(0xFFFF);
                 }
                 Stage_FadeOut(sp18);
-                if (D_8330326C[D_83402E28] == 8) {
-                    func_8004B9C4(sp18);
+                if (gMenuExitFadeColors[D_83402E28] == 8) {
+                    Stage_SetFadeColor(sp18);
                 }
             }
 
@@ -1203,7 +1203,7 @@ void Menu_RunLoop(void) {
     do {
         Menu_PollInputs();
 
-        if ((func_83402C6C() != 0) && (gBackgroundFadeTimer == 0)) {
+        if ((Menu_IsExitPressed() != 0) && (gBackgroundFadeTimer == 0)) {
             gBackgroundFadeTimer = -1;
         }
 
@@ -1223,7 +1223,7 @@ void Menu_RunLoop(void) {
 }
 
 s32 Menu_GetResult(void) {
-    s32 sp1C = D_8330326C[D_83402E28];
+    s32 sp1C = gMenuExitFadeColors[D_83402E28];
 
     if (Gallery_GetCurrentEntry(0) != NULL) {
         sp1C = 4;
@@ -1233,7 +1233,7 @@ s32 Menu_GetResult(void) {
         gGalleryMainSelection.unk_00 = 1;
     }
 
-    Gallery_SyncSelectionToCam(&gMenuActiveData, &D_83407B00);
+    Gallery_SyncSelectionToCam(&gMenuActiveData, &gGalleryMainSelectionCam);
     Gallery_SyncSelectionToCam(&gGalleryCamList, &gGallerySubSelection);
 
     return sp1C;

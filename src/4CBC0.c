@@ -1401,7 +1401,7 @@ s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 
         case 0x1200007:
             D_8007905C = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
-            func_8004B9C4(0x78);
+            Stage_SetFadeColor(0x78);
             D_80079064 = 1;
             break;
 

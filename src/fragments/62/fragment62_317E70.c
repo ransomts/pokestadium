@@ -185,29 +185,29 @@ void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
 
         case 11:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             break;
 
         case 12:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y + 0x8000);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             break;
 
         case 13:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             arg0->unk_68.y += sp30.y * 25.0f;
             break;
 
         case 14:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             arg0->unk_68.y -= sp30.y * 25.0f;
             if (arg0->unk_68.y <= 0.0f) {
                 arg0->unk_68.y = 0.0f;
@@ -216,8 +216,8 @@ void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
 
         case 15:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             arg0->unk_68.y = 0.0f;
@@ -229,14 +229,14 @@ void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
 
         case 19:
             Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             break;
 
         case 30:
-            func_84308520(arg0->unk_10, &arg0->unk_68);
+            GetEntityOffsetPosition(arg0->unk_10, &arg0->unk_68);
             break;
     }
 }
@@ -258,29 +258,29 @@ void ParticleNode_UpdateBehaviorAlt(ParticleEffectInstance* arg0) {
 
         case 4:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             break;
 
         case 5:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y + 0x8000);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             break;
 
         case 6:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             arg0->unk_68.y += sp30.y * 25.0f;
             break;
 
         case 7:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             arg0->unk_68.y -= sp30.y * 25.0f;
             if (arg0->unk_68.y <= 0.0f) {
                 arg0->unk_68.y = 0.0f;
@@ -289,8 +289,8 @@ void ParticleNode_UpdateBehaviorAlt(ParticleEffectInstance* arg0) {
 
         case 8:
             Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
-            func_84308148(arg0->unk_10, &sp28);
-            func_84308094(arg0->unk_10, &sp30);
+            GetEntityRotation(arg0->unk_10, &sp28);
+            GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
             Vec3f_Offset(&arg0->unk_68, &sp3C);
             arg0->unk_68.y = 0.0f;
@@ -305,7 +305,7 @@ void ParticleNode_UpdateBehaviorAlt(ParticleEffectInstance* arg0) {
             break;
 
         case 29:
-            func_84308520(arg0->unk_10, &arg0->unk_68);
+            GetEntityOffsetPosition(arg0->unk_10, &arg0->unk_68);
             break;
     }
 }
@@ -372,7 +372,7 @@ void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_BattlePlayerEn
 
         if (arg1 != NULL) {
             ParticleNode_UpdateBehavior(arg0);
-            func_84308148(arg0->unk_10, &arg0->unk_94);
+            GetEntityRotation(arg0->unk_10, &arg0->unk_94);
         }
 
         if ((arg2->unk_16 & 0xFFFFu) == 0x12) {
@@ -821,14 +821,14 @@ void Model_GetNodePosition(unk_BattlePlayerEntity* arg0, s16 arg1, Vec3f* arg2) 
 
     if (arg0 != NULL) {
         if (arg1 == 0x64) {
-            if (func_80015390(&arg0->unk_000, 0xA, arg2) != NULL) {
+            if (Graph_GetRecordedPosition(&arg0->unk_000, 0xA, arg2) != NULL) {
                 sp24 = 1;
-            } else if (func_80015390(&arg0->unk_000, 0x64, arg2) != NULL) {
+            } else if (Graph_GetRecordedPosition(&arg0->unk_000, 0x64, arg2) != NULL) {
                 sp24 = 2;
             }
         } else {
-            if (func_80015390(&arg0->unk_000, arg1, arg2) == NULL) {
-                if (func_80015390(&arg0->unk_000, 0x64, arg2) != NULL) {
+            if (Graph_GetRecordedPosition(&arg0->unk_000, arg1, arg2) == NULL) {
+                if (Graph_GetRecordedPosition(&arg0->unk_000, 0x64, arg2) != NULL) {
                     sp24 = 3;
                 }
             } else {
@@ -869,7 +869,7 @@ void GetSecondaryEntityNode9Position(Vec3f* arg0) {
 }
 
 void GetEntityDirectionVector(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
-    func_84308094(arg0, arg1);
+    GetEntityScaleDimensions(arg0, arg1);
 }
 
 f32 GetEntityCameraDistance(unk_BattlePlayerEntity* arg0) {

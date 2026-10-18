@@ -42,7 +42,7 @@ static Color_RGBA8 gHpBarColorBlueBright = { 0x82, 0xDC, 0x82, 0x7F };
 static Color_RGBA8 gHpBarColorOrange = { 0xFF, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gHpBarColorPurple = { 0x1E, 0x1E, 0x82, 0x96 };
 static Color_RGBA8 gHpBarColorWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
-static Gfx D_88002890[] = {
+static Gfx gHpBarDisplayListEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gHpBarPixelData[] = {
@@ -1199,7 +1199,7 @@ static u32 gHpBarPixelData[] = {
     0xD73FE77D, 0xF7BFF7FF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
     0xEFBF4A55, 0x0003BE33, 0xE77FFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xF7FF314B, 0x00010000, 0x00000000
 };
-static unk_func_88500020 D_8800CA98 = {
+static unk_func_88500020 gFragment22HpBarConfig = {
     0x00000090,
     0x00000090,
     0x00000090,
@@ -1208,7 +1208,7 @@ static unk_func_88500020 D_8800CA98 = {
 static Gfx gEmptyGfxDL[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_8800CAB0[] = {
+static u32 gFragment22GfxData0[] = {
     0x9B91ABD1, 0xAC13B415, 0xBC55CC97, 0xD519DD19, 0xE59DF5DF, 0xF61FFE63, 0xFE61FE65, 0xFEA5FEA5, 0xFEA7FEA7,
     0xFEE7FEE7, 0xFEE7FEE9, 0xFEEBFEE9, 0xFEE9FEE9, 0xFF2BFEE9, 0xFEEBFEE9, 0xFEA7FEA5, 0xFEA5FE65, 0xFE65FEA7,
     0xFEA7FEE9, 0xFEE9FEEB, 0xFEE9FF2D, 0xFF2DFF2F, 0xFF71FFB3, 0xFFB7FFB5, 0xFF35F735, 0xFFF9FFF9, 0xFFB9FFB9,
@@ -1327,7 +1327,7 @@ static u32 D_8800CAB0[] = {
 static Gfx gEmptyGfxDL2[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_8800DAB8[] = {
+static u32 gFragment22GfxData1[] = {
     0x9B91ABD1, 0xAC13B415, 0xBC55CC97, 0xD519DD19, 0xE59DF5DF, 0xF61FFE63, 0xFE61FE65, 0xFEA5FEA5, 0xFEA7FEA7,
     0xFEE7FEE7, 0xFEE7FEE9, 0xFEEBFEE9, 0xFEE9FEE9, 0xFF2BFEE9, 0xFEEBFEE9, 0xFEA7FEA5, 0xFEA5FE65, 0xFE65FEA7,
     0xFEA7FEE9, 0xFEE9FEEB, 0xFEE9FF2D, 0xFF2DFF2F, 0xFF71FFB3, 0xFFB7FFB5, 0xFF35F735, 0xFFF9FFF9, 0xFFB9FFB9,
@@ -1446,7 +1446,7 @@ static u32 D_8800DAB8[] = {
 static Gfx gEmptyGfxDL3[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_8800EAC0[] = {
+static u32 gFragment22GfxData2[] = {
     0x0001624B, 0xB415B413, 0xB455C455, 0xD519DD5B, 0xE59DF59F, 0xEDDDF621, 0xFE21F663, 0xFE65FE65, 0xFEE9FEAB,
     0xFEA9F6A7, 0xEDE3CD5B, 0xC499A3D3, 0x728F5A4B, 0xC4D9F5DF, 0xF661FE63, 0xFEEBFF31, 0xFFB3FF73, 0xFF73FF2F,
     0xFEEBFEA9, 0xFEA7FEA9, 0xFEE9FEE9, 0xFEEBFEED, 0xFF2FFF2D, 0xFF31FF71, 0xFF73FF73, 0xFFB5FF77, 0xFFF7FFB9,
@@ -1565,7 +1565,7 @@ static u32 D_8800EAC0[] = {
 static Gfx gEmptyGfxDL4[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_8800FAC8[] = {
+static u32 gFragment22GfxData3[] = {
     0x0001624B, 0xBC15AC13, 0xBC55BC55, 0xD519DD5D, 0xED9DEDDD, 0xF5DFF621, 0xF621F663, 0xFE65FE67, 0xFEA9FEE9,
     0xFEA9F6A7, 0xEDE3CD5D, 0xC497A3D5, 0x728D5A4B, 0xC4D9F5E1, 0xF65FFE65, 0xFEE9FF31, 0xFF75FFB3, 0xFF73FEEF,
     0xFEEBFEE9, 0xFEA7FEA9, 0xFEE9FEE9, 0xFEEDFEEB, 0xFF2FFF2F, 0xFF2FFF71, 0xFF73FF73, 0xFFB5FF77, 0xFFB9FFF7,
@@ -1684,7 +1684,7 @@ static u32 D_8800FAC8[] = {
 static Gfx gEmptyGfxDL5[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_88010AD0[] = {
+static u32 gFragment22GfxData4[] = {
     0x0001624B, 0xB415B413, 0xB455C455, 0xD519DD5B, 0xE59DF59F, 0xEDDFF61F, 0xFE23F663, 0xFE65FEA7, 0xFEA9FEEB,
     0xFEEBF6A9, 0xEDE3CD5D, 0xC499A3D3, 0x728D624D, 0xBCD7F5E1, 0xFE61FE63, 0xFEEBFF31, 0xFFB3FF73, 0xFF73FEEF,
     0xFEEBFEE9, 0xFEA9FEA9, 0xFEE9FEE9, 0xFEEDFF2D, 0xFF2FFF2F, 0xFF2FFF73, 0xFF73FF73, 0xFFB7FFB7, 0xFFB7FFB7,
@@ -1803,7 +1803,7 @@ static u32 D_88010AD0[] = {
 static Gfx gEmptyGfxDL6[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_88011AD8[] = {
+static u32 gFragment22GfxData5[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x01111111, 0x11111111,
     0x11000000, 0x00000000, 0x00000000, 0x00000011, 0x22222222, 0x22222222, 0x22211000, 0x00000000, 0x00000000,
     0x00000123, 0x44555555, 0x55555555, 0x54432100, 0x00000000, 0x00000000, 0x00001235, 0x67888888, 0x88888888,
@@ -1836,7 +1836,7 @@ static u32 D_88011AD8[] = {
 static Gfx gEmptyGfxDL7[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_88011ED0[] = {
+static u32 gFragment22GfxData6[] = {
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
@@ -1869,7 +1869,7 @@ static u32 D_88011ED0[] = {
 static Gfx gEmptyGfxDL8[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_880122C8[] = {
+static u32 gFragment22GfxData7[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00001111, 0x11111111, 0x11111111, 0x00000000, 0x00000000,
     0x00000000, 0x01122223, 0x33333222, 0x22222222, 0x22111000, 0x00000000, 0x00000000, 0x12344555, 0x55555555,
@@ -1902,7 +1902,7 @@ static u32 D_880122C8[] = {
 static Gfx gEmptyGfxDL9[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_880126C0[] = {
+static u32 gFragment22GfxData8[] = {
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
@@ -1935,7 +1935,7 @@ static u32 D_880126C0[] = {
 static Gfx gEmptyGfxDL10[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_88012AB8[] = {
+static u32 gFragment22GfxData9[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00011000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1980,7 +1980,7 @@ static u32 D_88012AB8[] = {
 static Gfx D_88013058[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_88013060[] = {
+static u32 gFragment22GfxData10[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00011000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -2657,7 +2657,7 @@ s32 Labo_DrawBlinkingObject(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-void func_88001258(unk_func_88001300* arg0) {
+void Labo_SetMessageBoxText(unk_func_88001300* arg0) {
     u32 var_a3 = 0;
 
     switch (arg0->unk_3C->unk_24) {
@@ -2684,7 +2684,7 @@ void func_88001258(unk_func_88001300* arg0) {
     ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34, GetMessageString(NULL, 0, gLaboMessageBankSystem, var_a3));
 }
 
-void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, TextObject* arg5,
+void Labo_InitFragment(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, TextObject* arg5,
                    MemoryPool* arg6) {
     s32 i;
     unk_func_88500E34* sp78;
@@ -2724,8 +2724,8 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88001300));
 
-    arg0->unk_00.unk_20 = func_88001D0C;
-    arg0->unk_00.unk_24 = func_88001CBC;
+    arg0->unk_00.unk_20 = Labo_HandleInput;
+    arg0->unk_00.unk_24 = Labo_SetUIState;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_3C = mem_pool_alloc(arg6, sizeof(unk_func_88001300_03C));
@@ -2737,15 +2737,15 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &sp78->unk_00.unk_00);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Labo_CreateDualLayerObject(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, D_88011AD8, D_88011ED0, gHpBarColorGreen, gHpBarColorGreenBright);
+    Labo_CreateDualLayerObject(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, gFragment22GfxData5, gFragment22GfxData6, gHpBarColorGreen, gHpBarColorGreenBright);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp78->unk_00.unk_00, &temp_v0_2->unk_00.unk_00);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Labo_CreateDualLayerObject(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, D_880122C8, D_880126C0, gHpBarColorYellow, gHpBarColorYellowBright);
+    Labo_CreateDualLayerObject(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, gFragment22GfxData7, gFragment22GfxData8, gHpBarColorYellow, gHpBarColorYellowBright);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp78->unk_00.unk_00, &temp_v0_2->unk_00.unk_00);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Labo_CreateDualLayerObject(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, D_88012AB8, D_88013060, gHpBarColorRed, gHpBarColorRedBright);
+    Labo_CreateDualLayerObject(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, gFragment22GfxData9, gFragment22GfxData10, gHpBarColorRed, gHpBarColorRedBright);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp78->unk_00.unk_00, &temp_v0_2->unk_00.unk_00);
 
     temp_v0_5 = mem_pool_alloc(arg6, sizeof(unk_func_88000830));
@@ -2833,21 +2833,21 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00, &arg0->unk_34->unk_00.unk_00);
 
     temp_v0_16 = mem_pool_alloc(arg6, sizeof(unk_func_88000CC8));
-    Labo_CreateBlinkingObject(temp_v0_16, 0xA, -0x2B, &D_8800CA98, D_8800CAB0, D_8800DAB8, D_8800FAC8, D_88010AD0, D_8800EAC0,
+    Labo_CreateBlinkingObject(temp_v0_16, 0xA, -0x2B, &gFragment22HpBarConfig, gFragment22GfxData0, gFragment22GfxData1, gFragment22GfxData3, gFragment22GfxData4, gFragment22GfxData2,
                   arg0->unk_34);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00, &temp_v0_16->unk_00.unk_00);
 }
 
-void func_88001CBC(unk_func_88001300* arg0, s32 arg1) {
+void Labo_SetUIState(unk_func_88001300* arg0, s32 arg1) {
     ((func8850093C)Memmap_GetFragmentVaddr(UIElement_SetState))(arg0, arg1);
     arg0->unk_3C->unk_14(arg0->unk_3C, arg1);
 }
 
-s32 func_88001D0C(unk_func_88001300* arg0, Controller* controller) {
+s32 Labo_HandleInput(unk_func_88001300* arg0, Controller* controller) {
     return arg0->unk_3C->unk_10(arg0->unk_3C, controller);
 }
 
-s32 func_88001D34(void) {
+s32 Labo_GetActivePlayerCount(void) {
     s32 i;
     s32 temp_v0 = GetActivePlayerMask();
     s32 var_v1 = 0;
@@ -2861,7 +2861,7 @@ s32 func_88001D34(void) {
     return var_v1;
 }
 
-s32 func_88001D94(unk_func_88001300* arg0) {
+s32 Labo_ProcessInput(unk_func_88001300* arg0) {
     s32 var_s1;
     s32 var_s6;
 
@@ -2871,7 +2871,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
         var_s1 = arg0->unk_00.unk_20(arg0, gPlayer1Controller);
         if (var_s1 & 1) {
             if (var_s1 & 8) {
-                func_88001258(arg0);
+                Labo_SetMessageBoxText(arg0);
             }
         } else if (gPlayer1Controller->buttonPressed & 0x4000) {
             var_s1 = 0x80000003;
@@ -2935,7 +2935,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 8));
                         var_s1 |= 0x80000101;
-                    } else if (func_88001D34() < 2) {
+                    } else if (Labo_GetActivePlayerCount() < 2) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 0xB));
                         var_s1 |= 0x80000101;
@@ -2979,7 +2979,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
     return var_s6;
 }
 
-void func_8800233C(unk_func_88001300* arg0) {
+void Labo_ThreadMain(unk_func_88001300* arg0) {
     s32 sp34;
     s32 i;
     UNUSED s32 pad;
@@ -3002,7 +3002,7 @@ void func_8800233C(unk_func_88001300* arg0) {
             ControllerMsgQueue_SendAndRead(NULL);
         }
 
-        func_8004B9C4(0x10);
+        Stage_SetFadeColor(0x10);
         ControllerMsgQueue_SendAndRead(0x10002);
     }
 
@@ -3029,20 +3029,20 @@ void func_8800233C(unk_func_88001300* arg0) {
             // clang-format on
         } else {
             arg0->unk_38->unk_00.unk_28 |= 0x201;
-            func_88001258(arg0);
+            Labo_SetMessageBoxText(arg0);
         }
     } else {
-        func_88001258(arg0);
+        Labo_SetMessageBoxText(arg0);
     }
 
     arg0->unk_00.unk_24(arg0, 1);
-    sp34 = func_88001D94(arg0);
+    sp34 = Labo_ProcessInput(arg0);
 
     Stage_SetFillColor(1);
     Stage_FadeOut(8);
 
     if ((sp34 == 0x11) || (sp34 == 0x10001)) {
-        func_8004B9C4(0x10);
+        Stage_SetFadeColor(0x10);
     }
 
     i = 10;
@@ -3055,7 +3055,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     osStopThread(NULL);
 }
 
-void func_88002580(unk_func_88001300* arg0) {
+void Labo_RenderFrame(unk_func_88001300* arg0) {
     func885008C4 func1;
     func88500828 func2;
 
@@ -3070,18 +3070,18 @@ void func_88002580(unk_func_88001300* arg0) {
     Stage_Advance();
 }
 
-s32 func_880025D8(unk_func_88001300* arg0) {
+s32 Labo_WaitUntilExit(unk_func_88001300* arg0) {
     s32 sp24 = 0;
 
     while (sp24 == 0) {
-        func_88002580(arg0);
+        Labo_RenderFrame(arg0);
         ControllerMsgQueue_Recv(&sp24);
     }
 
     return sp24 - 1;
 }
 
-s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
+s32 Labo_FragmentEntry(s32 arg0, UNUSED s32 arg1) {
     MemoryPool* sp44;
     u8* sp40;
     s32 sp3C;
@@ -3108,17 +3108,17 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     sp44 = mem_pool_try_init(0x8000, 0);
     sp38 = (unk_func_88001300*)mem_pool_alloc(sp44, sizeof(unk_func_88001300));
 
-    func_88001300(sp38, 0, 0, arg0, sp40, sp2C, sp44);
+    Labo_InitFragment(sp38, 0, 0, arg0, sp40, sp2C, sp44);
 
     sp30 = ALIGN16((u32)mem_pool_alloc(sp44, sizeof(TextObjectThreadData)));
-    osCreateThread(&sp30->thread, 0x32, func_8800233C, sp38, sp34 + 0x1000, osGetThreadPri(NULL) - 1);
+    osCreateThread(&sp30->thread, 0x32, Labo_ThreadMain, sp38, sp34 + 0x1000, osGetThreadPri(NULL) - 1);
     ControllerMsgQueue_Init();
     MenuInput_SetController(gPlayer1Controller);
     osStartThread(&sp30->thread);
 
-    func_80007754();
+    Menu_SetupDisplayList();
     Stage_FadeIn(8);
-    sp3C = func_880025D8(sp38);
+    sp3C = Labo_WaitUntilExit(sp38);
     Stage_Terminate();
 
     osDestroyThread(&sp30->thread);

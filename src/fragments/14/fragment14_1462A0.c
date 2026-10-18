@@ -140,7 +140,7 @@ void Sushi_Render(s32 arg0, UNUSED s32 arg1) {
             gSPDisplayList(gDisplayListHead++, gSushiRenderDL);
 
             Graph_SetRenderMode();
-            func_80015684();
+            Gfx_ResetRenderState();
             break;
     }
 }

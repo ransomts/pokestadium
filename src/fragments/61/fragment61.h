@@ -43,7 +43,7 @@ typedef struct unk_D_84229EB0_00024 {
     /* 0x4D2C */ char unk4D2C[0x4];
 } unk_D_84229EB0_00024; // size = 0x4D30
 
-typedef struct unk_D_84211B50 {
+typedef struct gItemPanel {
     /* 0x0000 */ u8 unk_0000;
     /* 0x0001 */ u8 unk_0001;
     /* 0x0002 */ u8 unk_0002;
@@ -67,7 +67,7 @@ typedef struct unk_D_84211B50 {
     /* 0x4D40 */ struct unk_D_842168A0* unk_4D40;
     /* 0x4D44 */ unk_D_8423D3A8* unk_4D44;
     /* 0x4D48 */ struct unk_D_84229EB0* unk_4D48;
-} unk_D_84211B50; // size = 0x4D4C
+} gItemPanel; // size = 0x4D4C
 
 typedef struct unk_D_842168A0_0013C {
     /* 0x00 */ u32 unk_00;
@@ -100,7 +100,7 @@ typedef struct unk_D_842168A0 {
     /* 0x00140 */ unk_D_838067F0_0168* unk_00140;
     /* 0x00144 */ char unk00144[0x4];
     /* 0x00148 */ unk_D_838067F0_0168 unk_00148[8];
-    /* 0x13608 */ unk_D_84211B50* unk_13608;
+    /* 0x13608 */ gItemPanel* unk_13608;
     /* 0x1360C */ unk_D_8423D3A8* unk_1360C;
 } unk_D_842168A0; // size = 0x13610
 
@@ -130,7 +130,7 @@ typedef struct unk_D_84229EB0 {
     /* 0x00024 */ unk_D_84229EB0_00024* unk_00024;
     /* 0x00028 */ unk_D_84229EB0_00024 unk_00028[3];
     /* 0x0E7B8 */ char unk0E7B8[0x4D30];
-    /* 0x134E8 */ unk_D_84211B50* unk_134E8;
+    /* 0x134E8 */ gItemPanel* unk_134E8;
     /* 0x134EC */ unk_D_842168A0* unk_134EC;
     /* 0x134F0 */ unk_D_8423D3A8* unk_134F0;
     /* 0x134F4 */ char unk134F4[0x4];
@@ -226,47 +226,47 @@ s32 Menu_Start(s16 arg0, s32 arg1);
 s16 Menu_GetSelectedIndex(void);
 
 void DrawSlotBackground(s16 arg0, s16 arg1, s32 arg2);
-void DrawSlotGrid(unk_D_84211B50* arg0, s16 arg1, s16 arg2);
-void DrawSelectionRect(unk_D_84211B50* arg0);
-void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1);
-void MarkSlotForRemoval(unk_D_84211B50* arg0);
-s32 GbsSyncItemData(unk_D_84211B50* arg0);
-s32 CheckStatThresholdForMode(unk_D_84211B50* arg0);
-void SetPanelPositionOffscreen(unk_D_84211B50* arg0);
-void SetPanelPositionOnscreen(unk_D_84211B50* arg0);
-void StartItemMoveAnimation(unk_D_84211B50* a0);
-void HandleItemMoveResult(unk_D_84211B50* arg0);
-void UpdatePanelSlideDown(unk_D_84211B50* arg0);
-void UpdatePanelSlideUp(unk_D_84211B50* arg0);
-void func_84206EE0(unk_D_84211B50* arg0);
-void func_84206F1C(unk_D_84211B50* arg0);
-void func_84206F64(unk_D_84211B50* arg0);
-void func_84206FB0(unk_D_84211B50* arg0);
-void func_84206FF8(unk_D_84211B50* arg0);
-void func_84207040(unk_D_84211B50* arg0);
-void func_84207190(unk_D_84211B50* arg0);
-void func_8420720C(unk_D_84211B50* arg0);
-void func_842073A4(unk_D_84211B50* arg0);
-void func_84207530(unk_D_84211B50* arg0);
-void func_84207634(unk_D_84211B50* arg0);
-void func_842076A0(unk_D_84211B50* arg0);
-void func_842076F8(unk_D_84211B50* arg0);
-s32 UpdateItemStateMachine(unk_D_84211B50* arg0);
-s32 func_842078C0(unk_D_84211B50* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4, u16 arg5,
+void DrawSlotGrid(gItemPanel* arg0, s16 arg1, s16 arg2);
+void DrawSelectionRect(gItemPanel* arg0);
+void DrawItemInfoPanel(gItemPanel* arg0, s32 arg1);
+void MarkSlotForRemoval(gItemPanel* arg0);
+s32 GbsSyncItemData(gItemPanel* arg0);
+s32 CheckStatThresholdForMode(gItemPanel* arg0);
+void SetPanelPositionOffscreen(gItemPanel* arg0);
+void SetPanelPositionOnscreen(gItemPanel* arg0);
+void StartItemMoveAnimation(gItemPanel* a0);
+void HandleItemMoveResult(gItemPanel* arg0);
+void UpdatePanelSlideDown(gItemPanel* arg0);
+void UpdatePanelSlideUp(gItemPanel* arg0);
+void ItemPanel_RemoveSelected(gItemPanel* arg0);
+void ItemPanel_MoveCursorLeft(gItemPanel* arg0);
+void ItemPanel_MoveCursorRight(gItemPanel* arg0);
+void ItemPanel_MoveCursorUp(gItemPanel* arg0);
+void ItemPanel_MoveCursorDown(gItemPanel* arg0);
+void ItemPanel_HandleInput(gItemPanel* arg0);
+void ItemPanel_CheckModeTransition(gItemPanel* arg0);
+void ItemPanel_HandleMenuSelection(gItemPanel* arg0);
+void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0);
+void ItemPanel_HandleModeSpecificSelection(gItemPanel* arg0);
+void ItemPanel_HandleActionSelection(gItemPanel* arg0);
+void ItemPanel_HandleCancelSelection(gItemPanel* arg0);
+void ItemPanel_UpdateCursorAnim(gItemPanel* arg0);
+s32 UpdateItemStateMachine(gItemPanel* arg0);
+s32 ItemPanel_Init(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4, u16 arg5,
                   char* arg6, s16 arg7, s16 arg8, s16 arg9);
-s32 func_842079B4(unk_D_84211B50* arg0, s16 arg1);
-s32 func_842079F0(unk_D_84211B50*);
-s32 func_84207A1C(unk_D_84211B50*);
-s32 func_84207AAC(unk_D_84211B50*);
-s32 func_84207BD4(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
-s32 func_84207D5C(unk_D_84211B50*);
-s32 func_84207E3C(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
-s32 func_8420804C(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
-s32 func_842081A8(unk_D_84211B50* arg0);
-void func_842081B4(unk_D_84211B50* arg0, PokemonData* arg1, s16 arg2);
+s32 ItemPanel_StartSlideDown(gItemPanel* arg0, s16 arg1);
+s32 ItemPanel_StartSlideUp(gItemPanel*);
+s32 ItemPanel_ClearAndReset(gItemPanel*);
+s32 ItemPanel_ConfirmSelection(gItemPanel*);
+s32 ItemPanel_AddItem(gItemPanel*, unk_D_838067F0_0168_0000*);
+s32 ItemPanel_RemoveCurrent(gItemPanel*);
+s32 ItemPanel_IsItemDuplicate(gItemPanel*, unk_D_838067F0_0168_0000*);
+s32 ItemPanel_HasItem(gItemPanel*, unk_D_838067F0_0168_0000*);
+s32 ItemPanel_IsOffscreen(gItemPanel* arg0);
+void ItemPanel_LoadItems(gItemPanel* arg0, PokemonData* arg1, s16 arg2);
 
 void DrawPokemonMenu(unk_D_842168A0*, s32);
-s32 InitPokemonMenu(unk_D_842168A0*, unk_D_84211B50*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
+s32 InitPokemonMenu(unk_D_842168A0*, gItemPanel*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
 s32 UpdateMenuState(unk_D_842168A0*);
 s32 TriggerScrollUp(unk_D_842168A0*, s16);
 s32 TriggerScrollDown(unk_D_842168A0*);
@@ -350,7 +350,7 @@ void func_84210328(unk_D_84229EB0* arg0);
 void func_8421059C(unk_D_84229EB0* arg0);
 void func_84210668(unk_D_84229EB0* arg0);
 s32 func_842106FC(unk_D_84229EB0* arg0);
-s32 func_8421089C(unk_D_84229EB0* arg0, unk_D_84211B50* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
+s32 func_8421089C(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
                   s16 arg4, s16 arg5, s16 arg6, s16 arg7);
 s32 func_84210A18(unk_D_84229EB0* arg0);
 s32 func_84210A48(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3);

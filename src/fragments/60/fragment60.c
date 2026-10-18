@@ -233,7 +233,7 @@ s32 Background_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_82E01170[temp_a3]));
         gSPDisplayList(gDisplayListHead++, D_82E01480);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -255,7 +255,7 @@ s32 Overlay_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_3024000));
         gSPDisplayList(gDisplayListHead++, D_82E018B8);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -474,7 +474,7 @@ s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
         gBackgroundTextureAtlas = BinArchive_GetFile(D_82E019B0, var_v1);
 
         Stage_LoadResourcesAndInit();
-        func_80007754();
+        Menu_SetupDisplayList();
         sp18 = Menu_RunSelection();
         Stage_Terminate();
 

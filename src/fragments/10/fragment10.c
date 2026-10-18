@@ -43,11 +43,11 @@ static u8 gHealthBarSegmentTable[][8] = {
     { 0x04, 0x05, 0x06, 0x07, 0x10, 0x11, 0x12, 0x13 }, { 0x03, 0x04, 0x05, 0x06, 0x0D, 0x0E, 0x0F, 0x10 },
 };
 
-static unk_func_87801684 gPrefLayoutTable1[] = {
+static AnimFrame gPrefLayoutTable1[] = {
     { 0x0303ED80, 14 }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
 
-static unk_func_87801684 gPrefLayoutTable2[] = {
+static AnimFrame gPrefLayoutTable2[] = {
     { 0x03040580, 18 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
@@ -248,7 +248,7 @@ void Hud_HandlePlayerElimination(u8 arg0) {
         D_864052CC->unk_004.unk_040.unk_0C = 0;
         D_87B000C8 = 1;
 
-        func_8004B9C4(0xA);
+        Stage_SetFadeColor(0xA);
 
         for (i = 0; i < 4; i++) {
             gCurrentHudState = &gPlayerHudStates[i];
@@ -582,9 +582,9 @@ void ResultScreen_DrawUI(s32 arg0) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        func_87801F48(2, 0x19, 0xA6);
-        func_87801684(0x74, 0xB0, gPrefLayoutTable1);
-        func_87801824(0x74, 0xC6, gPrefLayoutTable2);
+        DrawDualTexturePanel(2, 0x19, 0xA6);
+        DrawAnimatedSprite(0x74, 0xB0, gPrefLayoutTable1);
+        DrawAnimatedSprite3(0x74, 0xC6, gPrefLayoutTable2);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -712,7 +712,7 @@ void ResultScreen_IntroSequence(void) {
         }
     }
 
-    func_8004B9C4(0x3C);
+    Stage_SetFadeColor(0x3C);
     if (gResultFlag_Special == 0) {
         while (true) {
             if (D_87B000C4 <= 0) {

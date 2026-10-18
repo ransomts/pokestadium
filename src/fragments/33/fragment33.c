@@ -118,7 +118,7 @@ s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
             gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_81303EF4[gEntryGraphNodes[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -715,7 +715,7 @@ s32 Menu_RunScreen(s32 arg0) {
     }
 
     if ((arg0 == 1) && (var_s1 == -1)) {
-        func_8004B9C4(0x20);
+        Stage_SetFadeColor(0x20);
     }
 
     Stage_SetFillColor(1);

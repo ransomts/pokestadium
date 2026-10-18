@@ -16,7 +16,7 @@ static char gGbEmuThreadId;
 extern u8 D_81200000[];
 
 void GbAudio_ThreadMain(UNUSED void* arg0) {
-    void (*func)(void*) = Util_ConvertAddrToVirtAddr(&func_81206F38);
+    void (*func)(void*) = Util_ConvertAddrToVirtAddr(&GbEmu_AudioUpdateThread);
 
     __osSetFpcCsr(0x01000C01);
     MessageQueue_Create(gGbEmuThreadInfo, 0, 1);
@@ -32,8 +32,8 @@ void GbAudio_ThreadMain(UNUSED void* arg0) {
 }
 
 void GbEmu_ThreadMain(UNUSED void* arg0) {
-    void (*func1)(void* func) = Util_ConvertAddrToVirtAddr(&func_81206D9C);
-    void (*func2)(void* func) = Util_ConvertAddrToVirtAddr(&func_81206E64);
+    void (*func1)(void* func) = Util_ConvertAddrToVirtAddr(&GbEmu_Init);
+    void (*func2)(void* func) = Util_ConvertAddrToVirtAddr(&GbEmu_RunFrame);
 
     __osSetFpcCsr(0x01000C01);
     MessageQueue_Create(gGbEmuState, 0, 1);

@@ -1178,7 +1178,7 @@ s32 DrawMenuTextureA(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuFramebufferImages[var_a3]->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, MenuTextureA_DisplayList);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1190,7 +1190,7 @@ s32 DrawMenuTextureB(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuFramebufferImageB[0].img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, MenuTextureB_DisplayList);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -1202,7 +1202,7 @@ s32 DrawMenuTextureC(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuGraphNodeD->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gMenuInfoDisplayList);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }
@@ -2046,7 +2046,7 @@ s32 DrawMenuTextureGeneric(s32 arg0, UNUSED SimpleGfxNode* arg1) {
 
         gSPDisplayList(gDisplayListHead++, gBattleOverlayGfxList[var_a3]);
 
-        func_80015684();
+        Gfx_ResetRenderState();
     }
     return 0;
 }

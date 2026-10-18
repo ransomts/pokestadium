@@ -9,19 +9,19 @@
 #include "src/6BC0.h"
 #include "src/memory.h"
 
-typedef struct unk_D_82F20A00 {
+typedef struct PickerSpriteBuffer {
     /* 0x00000 */ u16 unk_00000[3][20][0x640];
-} unk_D_82F20A00; // size = 0x2EE00
+} PickerSpriteBuffer; // size = 0x2EE00
 
-static unk_D_82F144D0 gPickerState[2];
-static unk_D_82F20A00* gPickerSpriteBuffer;
-static s16 D_82F20A04;
+static PickerState gPickerState[2];
+static PickerSpriteBuffer* gPickerSpriteBuffer;
+static s16 gPickerActivePlayer;
 
-s16 LoadPokemonFromGbsBlock(unk_D_82F144D0* arg0, s16 arg1) {
+s16 LoadPokemonFromGbsBlock(PickerState* arg0, s16 arg1) {
     UNUSED s32 pad;
     unk_func_80022C28_ret* var_v0;
-    unk_func_82F00838_sp30_00C sp3C;
-    unk_D_82F144D0_0CA8* sp34 = &arg0->unk_0CA8[arg1];
+    PickerPokemonEntry sp3C;
+    PickerPokemonGroup* sp34 = &arg0->unk_0CA8[arg1];
 
     sp34->unk_000 = 0;
     if (arg1 == 0) {
@@ -46,12 +46,12 @@ u16* GetSpriteDataPtr(u8* arg0, s16 arg1, s16 arg2) {
 void InitPokemonPicker(s32 arg0, s16 arg1) {
     MainPoolState* temp_v0_2;
     s32 var_s2;
-    unk_D_82F144D0* temp_s1;
+    PickerState* temp_s1;
     s32 i;
     s32 j;
-    unk_D_82F144D0_0CA8* ptr1;
-    unk_D_82F144D0_0CA8* ptr2;
-    unk_func_82F00838_sp30_00C* temp_a3;
+    PickerPokemonGroup* ptr1;
+    PickerPokemonGroup* ptr2;
+    PickerPokemonEntry* temp_a3;
 
     if ((arg0 < 0) || (arg0 >= 2)) {
         return;
@@ -61,7 +61,7 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
         SetSaveDirtyFlag(arg1);
     }
 
-    D_82F20A04 = arg0;
+    gPickerActivePlayer = arg0;
 
     main_pool_push_state('PICK');
 
@@ -129,7 +129,7 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
     }
 
     temp_v0_2 = state_pool_try_init(main_pool_get_available(), 0);
-    gPickerSpriteBuffer = state_pool_alloc_aligned(temp_v0_2, sizeof(unk_D_82F20A00), 8);
+    gPickerSpriteBuffer = state_pool_alloc_aligned(temp_v0_2, sizeof(PickerSpriteBuffer), 8);
     mem_pool_resize_block(temp_v0_2);
 
     for (i = 0; i < temp_s1->unk_0CA8[temp_s1->unk_0010].unk_000; i++) {
@@ -146,12 +146,12 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
 }
 
 s32 GetPickerState(void) {
-    unk_D_82F144D0* ptr = &gPickerState[D_82F20A04];
+    PickerState* ptr = &gPickerState[gPickerActivePlayer];
 
     return ptr->unk_0000;
 }
 
-void PickerCountdownTick(unk_D_82F144D0* arg0) {
+void PickerCountdownTick(PickerState* arg0) {
     arg0->unk_000C--;
 
     arg0->unk_0004 = 0x64 - ((arg0->unk_000C * -0xDC) / 10);
@@ -165,15 +165,15 @@ void PickerCountdownTick(unk_D_82F144D0* arg0) {
     }
 }
 
-void HandlePickerInput(unk_D_82F144D0* arg0) {
+void HandlePickerInput(PickerState* arg0) {
     s32 temp_v1_3;
     s32 var_v0;
     Controller* controller;
-    unk_D_82F144D0_0CA8* temp_a2;
+    PickerPokemonGroup* temp_a2;
     s32 i;
-    unk_func_82F00838_sp30_00C* temp_a1;
-    unk_func_82F00838_sp30_00C* temp_a3;
-    unk_func_82F00838_sp30_00C* temp_a3_2;
+    PickerPokemonEntry* temp_a1;
+    PickerPokemonEntry* temp_a3;
+    PickerPokemonEntry* temp_a3_2;
     s16 temp_t1;
     u16 temp_v0 = MenuInput_ReadDirection();
 
@@ -303,7 +303,7 @@ void HandlePickerInput(unk_D_82F144D0* arg0) {
     }
 }
 
-void func_82F01FE4(unk_D_82F144D0* arg0) {
+void Picker_SlideTransition(PickerState* arg0) {
     arg0->unk_000C--;
     if (arg0->unk_0014 >= 0) {
         arg0->unk_0004 = ((arg0->unk_000C * 0x1C3) / 10) - 0x15F;
@@ -322,7 +322,7 @@ void func_82F01FE4(unk_D_82F144D0* arg0) {
     }
 }
 
-void func_82F020B4(unk_D_82F144D0* arg0) {
+void Picker_HandleBattleStart(PickerState* arg0) {
     s32 temp_v0 = func_82F06E38();
 
     if (temp_v0 != 0) {
@@ -342,7 +342,7 @@ void func_82F020B4(unk_D_82F144D0* arg0) {
     }
 }
 
-void func_82F02180(unk_D_82F144D0* arg0) {
+void Picker_ExitAnimation(PickerState* arg0) {
     arg0->unk_000C--;
     arg0->unk_0004 = 0x140 - ((arg0->unk_000C * 0xDC) / 10);
     arg0->unk_0006 = 0xA0 - ((arg0->unk_000C * 0x30) / 10);
@@ -354,7 +354,7 @@ void func_82F02180(unk_D_82F144D0* arg0) {
     }
 }
 
-void func_82F022DC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Picker_DrawFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, D_302F588, 8, 0);
@@ -369,7 +369,7 @@ void func_82F022DC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82F02544(s16 arg0, s16 arg1, s16 arg2) {
+void Picker_DrawHeader(s16 arg0, s16 arg1, s16 arg2) {
     static Color_RGB8 D_82F13B90 = { 0x82, 0x1E, 0x1E };
     static Color_RGB8 D_82F13B94 = { 0x96, 0x64, 0x1E };
 
@@ -417,7 +417,7 @@ void func_82F02544(s16 arg0, s16 arg1, s16 arg2) {
     Text_SetupDL();
 }
 
-void func_82F028AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16 arg5) {
+void Picker_DrawRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16 arg5) {
     if (arg5 != 0) {
         Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4->r, arg4->g, arg4->b, 0xFF);
     } else {
@@ -429,17 +429,17 @@ void func_82F028AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16
     }
 }
 
-void func_82F029FC(s16 arg0, s16 arg1, s16 arg2) {
+void Picker_DrawSlot(s16 arg0, s16 arg1, s16 arg2) {
     static Color_RGB8 D_82F13B98 = { 0x3C, 0x3C, 0x82 };
     static Color_RGB8 D_82F13B9C = { 0x28, 0x28, 0x64 };
     static Color_RGB8 D_82F13BA0 = { 0x78, 0x78, 0x96 };
 
-    func_82F028AC(arg0 + 1, arg1 + 1, 0x56, 0x29, &D_82F13B98, arg2);
-    func_82F028AC(arg0 + 1, arg1 + 0x2A, 0x56, 0x11, &D_82F13B9C, arg2);
-    func_82F028AC(arg0, arg1, 0x58, 1, &D_82F13BA0, arg2);
-    func_82F028AC(arg0, arg1 + 0x3B, 0x58, 1, &D_82F13BA0, arg2);
-    func_82F028AC(arg0, arg1 + 1, 1, 0x3A, &D_82F13BA0, arg2);
-    func_82F028AC(arg0 + 0x57, arg1 + 1, 1, 0x3A, &D_82F13BA0, arg2);
+    Picker_DrawRect(arg0 + 1, arg1 + 1, 0x56, 0x29, &D_82F13B98, arg2);
+    Picker_DrawRect(arg0 + 1, arg1 + 0x2A, 0x56, 0x11, &D_82F13B9C, arg2);
+    Picker_DrawRect(arg0, arg1, 0x58, 1, &D_82F13BA0, arg2);
+    Picker_DrawRect(arg0, arg1 + 0x3B, 0x58, 1, &D_82F13BA0, arg2);
+    Picker_DrawRect(arg0, arg1 + 1, 1, 0x3A, &D_82F13BA0, arg2);
+    Picker_DrawRect(arg0 + 0x57, arg1 + 1, 1, 0x3A, &D_82F13BA0, arg2);
 }
 
 void DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2) {
@@ -465,7 +465,7 @@ void DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_82F02CE8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Picker_DrawCursor(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     static s16 D_82F13BCC = 0;
 
     s16 sins = SINS(D_82F13BCC) * 2;
@@ -481,7 +481,7 @@ void func_82F02CE8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_82F13BCC += 0x2000;
 }
 
-void func_82F02EAC(s16 arg0, s16 arg1, s16 arg2) {
+void Picker_DrawListBackground(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
 
@@ -492,7 +492,7 @@ void func_82F02EAC(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82F02FEC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Picker_DrawPanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 sp4C;
     s16 sp48;
     s16 var_s2;
@@ -552,7 +552,7 @@ void func_82F02FEC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82F037EC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Picker_DrawLargePanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -620,7 +620,7 @@ void func_82F037EC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82F04010(s16 arg0, s16 arg1, u8* arg2, s16 arg3) {
+void Picker_DrawListSlot(s16 arg0, s16 arg1, u8* arg2, s16 arg3) {
     gDPPipeSync(gDisplayListHead++);
 
     if (arg3 == 0) {
@@ -632,7 +632,7 @@ void func_82F04010(s16 arg0, s16 arg1, u8* arg2, s16 arg3) {
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x24, 0x14, arg2, 0x24, 0);
 }
 
-void DrawPokemonListUI(unk_D_82F144D0* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void DrawPokemonListUI(PickerState* arg0, s16 arg1, s16 arg2, s32 arg3) {
     static u8* D_82F13BD0[] = {
         D_3039A10, D_3039FB0, D_303A550, D_303AAF0, D_303B090, D_303B630, D_303BBD0,
         D_303C170, D_303C710, D_303CCB0, D_303D250, D_303D7F0, D_303DD90,
@@ -640,12 +640,12 @@ void DrawPokemonListUI(unk_D_82F144D0* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     s32 i;
 
-    func_82F02EAC(arg1 - 0x10, arg2 - 4, 0x1F4);
+    Picker_DrawListBackground(arg1 - 0x10, arg2 - 4, 0x1F4);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 13; i++) {
-        func_82F04010(arg1 + i * 0x24, arg2, D_82F13BD0[i], arg0->unk_0CA8[i].unk_000);
+        Picker_DrawListSlot(arg1 + i * 0x24, arg2, D_82F13BD0[i], arg0->unk_0CA8[i].unk_000);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -678,7 +678,7 @@ void DrawStatusPanel(s16 arg0, s16 arg1, s16 arg2) {
     unk_D_82F14450* sp40 = &gPlayerInfo[gPickerState[arg0].unk_000E];
     u8* sp3C;
 
-    func_82F02FEC(arg1, arg2, 0x104, 0x28, 0x1E, 0x1E, 0x82, 0xFF);
+    Picker_DrawPanelBorder(arg1, arg2, 0x104, 0x28, 0x1E, 0x1E, 0x82, 0xFF);
 
     switch (sp40->unk_01) {
         case 1:
@@ -719,7 +719,7 @@ void DrawStatusPanel(s16 arg0, s16 arg1, s16 arg2) {
 // The (s16)(spEE * spF8) uses are strength-reduced into the stack temp at 0x68; the unused named
 // initialised copy makes that product appear before sp64 (so the temp takes the slot above the
 // sp64 spill), and the explicit guard + do-while gives the target's loop-end store order.
-void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
+void UpdateAndRenderPicker(PickerState* arg0) {
     static s16 D_82F13C0C[] = { 0x34, 0x148 };
 
     s32 i;
@@ -763,7 +763,7 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
     if (spF8 < spF4) {
         do {
             s32 unused = spEE * spF8;
-            unk_D_82F144D0_0CA8* sp64;
+            PickerPokemonGroup* sp64;
 
             if (spF8 == 0) {
                 var_s2 = arg0->unk_0010;
@@ -774,12 +774,12 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
             }
 
             sp64 = &arg0->unk_0CA8[var_s2];
-            func_82F022DC((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
+            Picker_DrawFrame((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
 
             if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
-                unk_func_82F00838_sp30_00C* ptr;
+                PickerPokemonEntry* ptr;
 
-                func_82F02544(var_s2, (s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006);
+                Picker_DrawHeader(var_s2, (s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006);
 
                 if (spF4 == 2) {
                     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
@@ -791,7 +791,7 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
                     idx1 = i / 5;
                     idx2 = i % 5;
 
-                    func_82F029FC((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58), arg0->unk_0006 + (idx1 * 0x3C) + 0x1C,
+                    Picker_DrawSlot((s16)(spEE * spF8) + arg0->unk_0004 + (idx2 * 0x58), arg0->unk_0006 + (idx1 * 0x3C) + 0x1C,
                                   spF4 - 1);
                 }
 
@@ -874,7 +874,7 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
                     temp_t0 = arg0->unk_0004 + (arg0->unk_0018 * 0x58);
                     temp_t1 = arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x1C;
 
-                    func_82F02CE8(temp_t0 - (((temp_t0 - temp_s3) * arg0->unk_000C) / 4),
+                    Picker_DrawCursor(temp_t0 - (((temp_t0 - temp_s3) * arg0->unk_000C) / 4),
                                   temp_t1 - (((temp_t1 - temp_lo) * arg0->unk_000C) / 4), 0x58, 0x3C);
                 }
 
@@ -896,15 +896,15 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
         }
 
         DrawPokemonListUI(arg0, 0x56, 0x50, var_a3);
-        DrawStatusPanel(D_82F20A04, D_82F13C0C[D_82F20A04], 0x20);
+        DrawStatusPanel(gPickerActivePlayer, D_82F13C0C[gPickerActivePlayer], 0x20);
     }
 }
 
-void func_82F04FD4(void) {
-    unk_D_82F144D0* ptr;
+void Picker_Reset(void) {
+    PickerState* ptr;
     s32 i;
 
-    D_82F20A04 = 0;
+    gPickerActivePlayer = 0;
 
     ptr = &gPickerState[0];
     for (i = 0; i < 2; i++, ptr++) {
@@ -922,10 +922,10 @@ void func_82F04FD4(void) {
     func_82F06D50();
 }
 
-void func_82F0504C(void) {
+void Picker_Update(void) {
     s16 temp_v0;
     s32 i;
-    unk_D_82F144D0* var_s0;
+    PickerState* var_s0;
 
     var_s0 = gPickerState;
 
@@ -944,25 +944,25 @@ void func_82F0504C(void) {
                 break;
 
             case 3:
-                func_82F01FE4(var_s0);
+                Picker_SlideTransition(var_s0);
                 break;
 
             case 4:
                 func_82F06D88();
-                func_82F020B4(var_s0);
+                Picker_HandleBattleStart(var_s0);
                 break;
 
             case 5:
-                func_82F02180(var_s0);
+                Picker_ExitAnimation(var_s0);
                 break;
         }
     }
 }
 
-void func_82F05110(void) {
+void Picker_Render(void) {
     s32 i;
     s32 var_s3 = 0;
-    unk_D_82F144D0* ptr = &gPickerState[0];
+    PickerState* ptr = &gPickerState[0];
 
     for (i = 0; i < 2; i++, ptr++) {
         if (ptr->unk_0000 != 0) {
@@ -978,11 +978,11 @@ void func_82F05110(void) {
     }
 }
 
-u16* func_82F05198(s32 arg0) {
+u16* Picker_GetSelectedSprite(s32 arg0) {
     return gPickerState[arg0].unk_0028;
 }
 
-void func_82F051B8(void) {
+void Picker_SwapSelectedSprites(void) {
     UNUSED s32 pad[2];
     u16 sp18[0x640];
 
@@ -991,13 +991,13 @@ void func_82F051B8(void) {
     _bcopy(sp18, gPickerState[1].unk_0028, sizeof(gPickerState[0].unk_0028));
 }
 
-void func_82F05210(s16 arg0, PokemonData* arg1) {
+void Picker_SetSelectedSprite(s16 arg0, PokemonData* arg1) {
     func_8001B0DC(gPickerState[arg0].unk_0028, 0, arg1);
 }
 
-s32 func_82F0525C(s32 arg0, unk_func_82F00838_sp30* arg1) {
+s32 Picker_GetSelectionInfo(s32 arg0, unk_func_82F00838_sp30* arg1) {
     s32 ret = 0;
-    unk_D_82F144D0* ptr;
+    PickerState* ptr;
 
     if (arg1 != NULL) {
         ptr = &gPickerState[arg0];
