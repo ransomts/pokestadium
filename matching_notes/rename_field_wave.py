@@ -83,10 +83,13 @@ def fixup(rows, batch, log):
         if not m:
             log(f"  drop {old!r}: malformed field row")
             continue
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*", new):
-            log(f"  drop {old} -> {new!r}: new side must be Type.field")
+        if "." in new:
+            new_field = new.split(".", 1)[1]
+        else:
+            new_field = new  # agents may emit a bare field name
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", new_field):
+            log(f"  drop {old} -> {new!r}: invalid new field name")
             continue
-        new_field = new.split(".", 1)[1]
         if new_field.startswith("unk_"):
             log(f"  drop {old}: new field still a placeholder")
             continue
