@@ -41,7 +41,7 @@ MAKE_ENV = dict(
     PATH=f"{REPO}/.venv/bin:{os.path.expanduser('~')}/local/bin:/usr/local/bin:/usr/bin:/bin",
 )
 PLACEHOLDER_PREFIXES = ("func_", "D_", "jtbl_", "pad_", "unk_D_", "unk_func_")
-EXPECT_PROGRESS = "97.9197"
+EXPECT_PROGRESS = "98.8837"
 
 
 def die(msg):
