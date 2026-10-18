@@ -1643,8 +1643,8 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 }
 
 void func_84316610(void) {
-    if (func_8436EF48() != 0) {
-        func_8436F664();
+    if (ScreenTransition_GetState() != 0) {
+        ScreenTransition_Apply();
     }
 }
 

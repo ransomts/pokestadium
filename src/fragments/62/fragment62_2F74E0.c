@@ -380,8 +380,8 @@ void func_8430D814(void) {
     D_843900A8[0] = D_84390010[0]->unk_654.unk_38.unk_0C;
     D_843900A8[1] = D_84390010[1]->unk_654.unk_38.unk_0C;
 
-    func_8436F9D8(0, 1);
-    func_8436F9D8(1, 0);
+    ResetBattleAfterMove(0, 1);
+    ResetBattleAfterMove(1, 0);
 }
 
 s32 func_8430D8C4(unk_D_84390010* arg0) {
@@ -1268,17 +1268,17 @@ void func_8430F8B8(void) {
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
 
     if (D_84390010[0]->unk_724->unk_000 & 2) {
-        D_84390144 = D_843C4DC4;
+        D_84390144 = gCurrentDamage;
         func_8430DFCC(D_84390010[0], D_84390010[1]);
-        D_843C4DC4 = D_84390144;
+        gCurrentDamage = D_84390144;
     } else {
         func_8430F794(D_84390010[0], D_84390010[1]);
     }
 
     if (D_84390010[1]->unk_724->unk_000 & 2) {
-        D_84390144 = D_843C4DC4;
+        D_84390144 = gCurrentDamage;
         func_8430DFCC(D_84390010[1], D_84390010[0]);
-        D_843C4DC4 = D_84390144;
+        gCurrentDamage = D_84390144;
     } else {
         func_8430F794(D_84390010[1], D_84390010[0]);
     }

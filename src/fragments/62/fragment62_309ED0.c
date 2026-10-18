@@ -391,7 +391,7 @@ void func_84320108(void) {
     func_8431AFE4(1, 1);
 
     sp2C = gBattleState.unk_00->unk_2C;
-    gBattleState.unk_00->unk_2C = func_8436FC7C(D_84390010[0], D_84390010[1]);
+    gBattleState.unk_00->unk_2C = CompareMovePriority(D_84390010[0], D_84390010[1]);
 
     ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     if ((ptr->unk_5A & 0xF0) == 0xF0) {
@@ -3324,7 +3324,7 @@ void func_84327DC0(CameraStruct* arg0) {
                 arg0->unk_24.fovy = 40.0f;
                 func_843184E4(0xC);
                 func_8432B588(temp_s0);
-                D_843C4DC4 = 0;
+                gCurrentDamage = 0;
                 gBattleState.unk_00->unk_20 += 1;
             }
             break;
@@ -3423,7 +3423,7 @@ void func_84328250(CameraStruct* arg0) {
                 func_8432C68C(3, temp_s0, temp_s0, 0xFF, 0xFF);
                 arg0->unk_24.fovy = 40.0f;
                 func_8432B588(temp_s0);
-                D_843C4DC4 = 0;
+                gCurrentDamage = 0;
                 gBattleState.unk_00->unk_20 += 1;
             }
             break;

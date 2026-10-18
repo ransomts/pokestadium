@@ -26,22 +26,22 @@ static const char D_8438DDC8[] = "******** spAttackMainEnd ********\n";
 
 static char* D_8438AE50 = D_8438DC80;
 static func_D_8438AE50 D_8438AE54[] = {
-    func_84373754, func_84373A30, func_84373D04, func_84373E60, func_84373E60, func_84373E60, func_84373E24,
-    func_84373D04, NULL,          func_843744F0, func_843744F0, func_843744F0, func_843744F0, func_843744F0,
-    func_843744F0, func_84375D78, NULL,          func_8437483C, func_8437483C, func_8437483C, func_8437483C,
-    func_8437483C, func_8437483C, func_84375DA4, func_84375E6C, func_84374C9C, func_84374D08, func_84374D58,
-    func_84374E08, func_84374E08, func_84374EE4, func_84373754, func_84373A30, func_84373E60, func_84373E60,
-    func_84373E60, func_84374EE4, func_84374FD4, func_84375038, NULL,          NULL,          func_843751F8,
-    func_84375038, func_84374E08, NULL,          func_843752C0, func_84375384, func_84375424, func_843755E8,
-    func_843744F0, func_843744F0, func_843744F0, func_843744F0, func_843744F0, func_843744F0, func_8437600C,
-    func_84376258, func_8437483C, func_8437483C, func_8437483C, func_8437483C, func_8437483C, func_8437483C,
-    func_843765E8, func_843765E8, func_84373A30, func_84375700, func_8437483C, func_8437483C, func_8437483C,
-    func_8437483C, func_8437483C, func_8437483C, func_8437483C, func_8437483C, func_84375508, func_84374E08,
+    Battle_TurnStart, Battle_ProcessCommand, Battle_UpdateProgress, Battle_HandleItemEffect, Battle_HandleItemEffect, Battle_HandleItemEffect, Battle_ResetState,
+    Battle_UpdateProgress, NULL,          Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange,
+    Battle_ApplyStatChange, func_84375D78, NULL,          Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease,
+    Battle_HandleStatDecrease, Battle_HandleStatDecrease, func_84375DA4, func_84375E6C, Battle_InitPhase, func_84374D08, Battle_HandleSpecialMove,
+    func_84374E08, func_84374E08, func_84374EE4, Battle_TurnStart, Battle_ProcessCommand, Battle_HandleItemEffect, Battle_HandleItemEffect,
+    Battle_HandleItemEffect, func_84374EE4, func_84374FD4, Battle_DisplayStatusMessage, NULL,          NULL,          func_843751F8,
+    Battle_DisplayStatusMessage, func_84374E08, NULL,          func_843752C0, func_84375384, func_84375424, func_843755E8,
+    Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, Battle_ApplyStatChange, func_8437600C,
+    func_84376258, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease,
+    func_843765E8, func_843765E8, Battle_ProcessCommand, func_84375700, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease,
+    Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_HandleStatDecrease, Battle_StartMiniGame, func_84374E08,
     NULL,          func_84375894, func_843759C4, func_843759DC, func_843759F4, NULL,          func_84375B1C,
     func_84375C24, func_84375C60, NULL,
 };
 
-u16 func_843736B0(u16* arg0, u16 arg1, u8 arg2) {
+u16 ScaleStatValue(u16* arg0, u16 arg1, u8 arg2) {
     *arg0 = (arg1 * D_8438ACB8[arg2 - 1].unk_00) / D_8438ACB8[arg2 - 1].unk_01;
 
     if (*arg0 == 0) {
@@ -55,7 +55,7 @@ u16 func_843736B0(u16* arg0, u16 arg1, u8 arg2) {
     return *arg0;
 }
 
-void func_84373754(void) {
+void Battle_TurnStart(void) {
     s32 sp24;
     s32 var_v1;
 
@@ -72,13 +72,13 @@ void func_84373754(void) {
         }
 
         if (D_843C523C->unk_15 == 0) {
-            func_843708CC();
+            HandleMoveEffectFlags();
             if ((D_843C4DA4 == 0) &&
                 ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
                 goto block_9;
             }
         }
-        D_843C4DC4 = 0;
+        gCurrentDamage = 0;
         D_843C4DA4 = 1;
         D_843C4E44 = 0;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -97,9 +97,9 @@ block_9:
     } else {
         do {
             if (D_8438AC60[0] == 2) {
-                var_v1 = func_8436F6D8() & 7;
+                var_v1 = GetRandomU8() & 7;
             } else {
-                var_v1 = func_8436F6D8() & 3;
+                var_v1 = GetRandomU8() & 3;
             }
         } while (var_v1 == 0);
         D_843C4DA4 = 0;
@@ -109,12 +109,12 @@ block_9:
     }
 }
 
-void func_84373A30(void) {
+void Battle_ProcessCommand(void) {
     char* sp1C = D_843901A0->unk_088;
 
     if (!(D_843C523C->unk_4D & 0x10) && (D_843C523C->unk_15 == 0) && (D_843C523C->unk_16[6] != 3) &&
         (D_843C523C->unk_16[7] != 3)) {
-        switch (D_843C5238->unk_44.unk_01) {
+        switch (gCurrentBattleEntity->unk_44.unk_01) {
             case 2:
                 if (gBattleState.unk_00->unk_48 != 0x18) {
                     gBattleState.unk_00->unk_48 = 0;
@@ -123,7 +123,7 @@ void func_84373A30(void) {
                     sp1C = D_843901A0->unk_308;
                 }
 
-                if (func_8436F6D8() >= 0x34) {
+                if (GetRandomU8() >= 0x34) {
                     return;
                 }
                 break;
@@ -131,7 +131,7 @@ void func_84373A30(void) {
             case 33:
                 gBattleState.unk_00->unk_48 = 0;
                 sp1C = D_843901A0->unk_208;
-                if (func_8436F6D8() >= 0x67) {
+                if (GetRandomU8() >= 0x67) {
                     return;
                 }
                 break;
@@ -139,7 +139,7 @@ void func_84373A30(void) {
             default:
                 gBattleState.unk_00->unk_48 = 0x16;
                 D_843C4DEC = 0xA;
-                func_843708CC();
+                HandleMoveEffectFlags();
                 if (D_843C4DA4 != 0) {
                     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
                     WriteMessageCharOrString(sp1C, -0x7D);
@@ -149,7 +149,7 @@ void func_84373A30(void) {
         }
 
         D_843C523C->unk_15 |= 8;
-        if (D_843C5238->unk_44.unk_00 == 0x5C) {
+        if (gCurrentBattleEntity->unk_44.unk_00 == 0x5C) {
             D_843C523C->unk_4E |= 1;
             D_843C523C->unk_51 = 0;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -158,7 +158,7 @@ void func_84373A30(void) {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(sp1C, -0x7B);
         }
-    } else if (D_843C5238->unk_44.unk_01 == 0x42) {
+    } else if (gCurrentBattleEntity->unk_44.unk_01 == 0x42) {
         if (gBattleState.unk_00->unk_48 != 0x18) {
             D_843C4DA4 = 1;
             gBattleState.unk_00->unk_48 = 0x16;
@@ -169,19 +169,19 @@ void func_84373A30(void) {
     }
 }
 
-void func_84373D04(void) {
-    D_843C4DC4 /= 2;
-    if (D_843C4DC4 == 0) {
-        D_843C4DC4 = 1;
+void Battle_UpdateProgress(void) {
+    gCurrentDamage /= 2;
+    if (gCurrentDamage == 0) {
+        gCurrentDamage = 1;
     }
 
-    if (D_843C5238->unk_28 < D_843C5238->unk_0C + D_843C4DC4) {
-        D_843C5238->unk_0C = D_843C5238->unk_28;
+    if (gCurrentBattleEntity->unk_28 < gCurrentBattleEntity->unk_0C + gCurrentDamage) {
+        gCurrentBattleEntity->unk_0C = gCurrentBattleEntity->unk_28;
     } else {
-        D_843C5238->unk_0C += D_843C4DC4;
+        gCurrentBattleEntity->unk_0C += gCurrentDamage;
     }
 
-    if (D_843C5238->unk_44.unk_01 == 8) {
+    if (gCurrentBattleEntity->unk_44.unk_01 == 8) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_208, -0x79);
     } else {
@@ -190,14 +190,14 @@ void func_84373D04(void) {
     }
 }
 
-void func_84373E24(void) {
+void Battle_ResetState(void) {
     gBattleState.unk_00->unk_48 = 0x1E;
-    D_843C5238->unk_0C = 0;
-    D_843C5238->unk_15 = 0;
-    D_843C5238->unk_4D &= ~0x80;
+    gCurrentBattleEntity->unk_0C = 0;
+    gCurrentBattleEntity->unk_15 = 0;
+    gCurrentBattleEntity->unk_4D &= ~0x80;
 }
 
-void func_84373E60(void) {
+void Battle_HandleItemEffect(void) {
     unk_D_800FCB18* temp_a2 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_84390010_654* temp_a0 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
@@ -206,7 +206,7 @@ void func_84373E60(void) {
     }
 
     if (D_843C523C->unk_15 != 0) {
-        if ((D_843C523C->unk_15 & 0x20) && (D_843C5238->unk_44.unk_03 == 0x14)) {
+        if ((D_843C523C->unk_15 & 0x20) && (gCurrentBattleEntity->unk_44.unk_03 == 0x14)) {
             D_843C523C->unk_15 = 0;
             if (temp_a0->unk_14 != 4) {
                 temp_a2->unk_5A = temp_a2->unk_1F[temp_a0->unk_0C];
@@ -221,17 +221,17 @@ void func_84373E60(void) {
         return;
     }
 
-    if ((D_843C523C->unk_16[6] != (*D_843C5238).unk_44.unk_03) &&
-        (D_843C523C->unk_16[7] != (*D_843C5238).unk_44.unk_03)) {
-        if ((D_843C5238->unk_44.unk_01 < 7) || ((D_8438AC60[0] != 2) && (D_843C5238->unk_44.unk_00 == 0x3B))) {
-            if (func_8436F6D8() >= 0x1A) {
+    if ((D_843C523C->unk_16[6] != (*gCurrentBattleEntity).unk_44.unk_03) &&
+        (D_843C523C->unk_16[7] != (*gCurrentBattleEntity).unk_44.unk_03)) {
+        if ((gCurrentBattleEntity->unk_44.unk_01 < 7) || ((D_8438AC60[0] != 2) && (gCurrentBattleEntity->unk_44.unk_00 == 0x3B))) {
+            if (GetRandomU8() >= 0x1A) {
                 return;
             }
-        } else if (func_8436F6D8() >= 0x4D) {
+        } else if (GetRandomU8() >= 0x4D) {
             return;
         }
 
-        switch (D_843C5238->unk_44.unk_01) {
+        switch (gCurrentBattleEntity->unk_44.unk_01) {
             case 4:
             case 34:
                 D_843C523C->unk_15 = 0x10;
@@ -261,7 +261,7 @@ void func_84373E60(void) {
     }
 }
 
-void func_843741C4(void) {
+void Battle_ApplyStatIncrease(void) {
     s32 sp2C;
     s32 sp28;
     s32 sp24;
@@ -272,17 +272,17 @@ void func_843741C4(void) {
     gBattleState.unk_00->unk_4C = 0xA;
 
     var_a3 = 1;
-    sp24 = D_843C5238->unk_44.unk_01 - 0xA;
+    sp24 = gCurrentBattleEntity->unk_44.unk_01 - 0xA;
 
     if (sp24 >= 8) {
         var_a3 = 2;
         sp24 -= 0x28;
     }
 
-    if (D_843C5238->unk_5C[sp24] != 0xD) {
-        D_843C5238->unk_5C[sp24] += var_a3;
-        if (D_843C5238->unk_5C[sp24] >= 0xE) {
-            D_843C5238->unk_5C[var_a3] = 0xD;
+    if (gCurrentBattleEntity->unk_5C[sp24] != 0xD) {
+        gCurrentBattleEntity->unk_5C[sp24] += var_a3;
+        if (gCurrentBattleEntity->unk_5C[sp24] >= 0xE) {
+            gCurrentBattleEntity->unk_5C[var_a3] = 0xD;
         }
 
         sp28 = 0;
@@ -291,31 +291,31 @@ void func_843741C4(void) {
         if (sp24 < 4) {
             switch (sp24) {
                 case 0:
-                    sp18 = &D_843C5238->unk_38;
-                    sp1C = &D_843C5238->unk_2A;
+                    sp18 = &gCurrentBattleEntity->unk_38;
+                    sp1C = &gCurrentBattleEntity->unk_2A;
                     sp2C = 1;
                     break;
 
                 case 1:
-                    sp18 = &D_843C5238->unk_3A;
-                    sp1C = &D_843C5238->unk_2C;
+                    sp18 = &gCurrentBattleEntity->unk_3A;
+                    sp1C = &gCurrentBattleEntity->unk_2C;
                     break;
 
                 case 2:
-                    sp18 = &D_843C5238->unk_3C;
-                    sp1C = &D_843C5238->unk_2E;
+                    sp18 = &gCurrentBattleEntity->unk_3C;
+                    sp1C = &gCurrentBattleEntity->unk_2E;
                     sp28 = 1;
                     break;
 
                 case 3:
-                    sp18 = &D_843C5238->unk_3E;
-                    sp1C = &D_843C5238->unk_30;
+                    sp18 = &gCurrentBattleEntity->unk_3E;
+                    sp1C = &gCurrentBattleEntity->unk_30;
                     break;
             }
 
             if (*sp1C != 0x3E7) {
-                *sp1C = (*sp18 * D_8438ACB8[D_843C5238->unk_5C[sp24] - 1].unk_00) /
-                        D_8438ACB8[D_843C5238->unk_5C[sp24] - 1].unk_01;
+                *sp1C = (*sp18 * D_8438ACB8[gCurrentBattleEntity->unk_5C[sp24] - 1].unk_00) /
+                        D_8438ACB8[gCurrentBattleEntity->unk_5C[sp24] - 1].unk_01;
                 if (*sp1C >= 0x3E8) {
                     *sp1C = 0x3E7;
                 }
@@ -324,8 +324,8 @@ void func_843741C4(void) {
             }
         }
 
-        if (D_843C5238->unk_44.unk_00 == 0x6B) {
-            D_843C5238->unk_56 = 1;
+        if (gCurrentBattleEntity->unk_44.unk_00 == 0x6B) {
+            gCurrentBattleEntity->unk_56 = 1;
         }
 
         if (var_a3 == 2) {
@@ -349,7 +349,7 @@ void func_843741C4(void) {
     }
 }
 
-void func_843744F0(void) {
+void Battle_ApplyStatChange(void) {
     s32 sp2C;
     s32 sp28;
     s32 sp24;
@@ -357,23 +357,23 @@ void func_843744F0(void) {
     u16* sp1C;
     u16* sp18;
 
-    if (D_843C5238->unk_44.unk_00 == 0x6E) {
+    if (gCurrentBattleEntity->unk_44.unk_00 == 0x6E) {
         gBattleState.unk_00->unk_48 = 0x26;
     } else {
         gBattleState.unk_00->unk_48 = 7;
     }
 
     var_a3 = 1;
-    sp24 = D_843C5238->unk_44.unk_01 - 0xA;
+    sp24 = gCurrentBattleEntity->unk_44.unk_01 - 0xA;
     if (sp24 >= 8) {
         var_a3 = 2;
         sp24 -= 0x28;
     }
 
-    if (D_843C5238->unk_5C[sp24] != 0xD) {
-        D_843C5238->unk_5C[sp24] += var_a3;
-        if (D_843C5238->unk_5C[sp24] >= 0xE) {
-            D_843C5238->unk_5C[sp24] = 0xD;
+    if (gCurrentBattleEntity->unk_5C[sp24] != 0xD) {
+        gCurrentBattleEntity->unk_5C[sp24] += var_a3;
+        if (gCurrentBattleEntity->unk_5C[sp24] >= 0xE) {
+            gCurrentBattleEntity->unk_5C[sp24] = 0xD;
         }
 
         sp28 = 0;
@@ -382,31 +382,31 @@ void func_843744F0(void) {
         if (sp24 < 4) {
             switch (sp24) {
                 case 0:
-                    sp18 = &D_843C5238->unk_38;
-                    sp1C = &D_843C5238->unk_2A;
+                    sp18 = &gCurrentBattleEntity->unk_38;
+                    sp1C = &gCurrentBattleEntity->unk_2A;
                     sp2C = 1;
                     break;
 
                 case 1:
-                    sp18 = &D_843C5238->unk_3A;
-                    sp1C = &D_843C5238->unk_2C;
+                    sp18 = &gCurrentBattleEntity->unk_3A;
+                    sp1C = &gCurrentBattleEntity->unk_2C;
                     break;
 
                 case 2:
-                    sp18 = &D_843C5238->unk_3C;
-                    sp1C = &D_843C5238->unk_2E;
+                    sp18 = &gCurrentBattleEntity->unk_3C;
+                    sp1C = &gCurrentBattleEntity->unk_2E;
                     sp28 = 1;
                     break;
 
                 case 3:
-                    sp18 = &D_843C5238->unk_3E;
-                    sp1C = &D_843C5238->unk_30;
+                    sp18 = &gCurrentBattleEntity->unk_3E;
+                    sp1C = &gCurrentBattleEntity->unk_30;
                     break;
             }
 
             if (*sp1C != 0x3E7) {
-                *sp1C = (*sp18 * D_8438ACB8[D_843C5238->unk_5C[sp24] - 1].unk_00) /
-                        D_8438ACB8[D_843C5238->unk_5C[sp24] - 1].unk_01;
+                *sp1C = (*sp18 * D_8438ACB8[gCurrentBattleEntity->unk_5C[sp24] - 1].unk_00) /
+                        D_8438ACB8[gCurrentBattleEntity->unk_5C[sp24] - 1].unk_01;
                 if (*sp1C >= 0x3E8) {
                     *sp1C = 0x3E7;
                 }
@@ -415,8 +415,8 @@ void func_843744F0(void) {
             }
         }
 
-        if (D_843C5238->unk_44.unk_00 == 0x6B) {
-            D_843C5238->unk_56 = 1;
+        if (gCurrentBattleEntity->unk_44.unk_00 == 0x6B) {
+            gCurrentBattleEntity->unk_56 = 1;
         }
 
         if (var_a3 == 2) {
@@ -441,7 +441,7 @@ void func_843744F0(void) {
     }
 }
 
-void func_8437483C(void) {
+void Battle_HandleStatDecrease(void) {
     s32 sp2C;
     s32 sp28;
     s32 sp24;
@@ -449,7 +449,7 @@ void func_8437483C(void) {
     u16* sp1C;
     u16* sp18;
 
-    if (D_843C5238->unk_44.unk_01 < 0x44) {
+    if (gCurrentBattleEntity->unk_44.unk_01 < 0x44) {
         gBattleState.unk_00->unk_48 = 0x1A;
     } else {
         gBattleState.unk_00->unk_1A = 3;
@@ -459,16 +459,16 @@ void func_8437483C(void) {
         goto end;
     }
 
-    sp24 = D_843C5238->unk_44.unk_01;
+    sp24 = gCurrentBattleEntity->unk_44.unk_01;
     sp20 = 1;
 
     if (sp24 >= 0x44) {
-        if (func_8436F6D8() < 0x55) {
+        if (GetRandomU8() < 0x55) {
             sp24 -= 0x44;
             goto block_14;
         }
     } else {
-        func_843708CC();
+        HandleMoveEffectFlags();
 
         if (D_843C4DA4 != 0) {
             goto end;
@@ -550,7 +550,7 @@ void func_8437483C(void) {
     }
 
 block_39:
-    if (D_843C5238->unk_44.unk_01 < 0x44) {
+    if (gCurrentBattleEntity->unk_44.unk_01 < 0x44) {
         D_843C4E44 = 0;
         D_843C4E45 = 0;
         WriteMessageCharOrString(D_843901A0->unk_088, -0x5A);
@@ -558,7 +558,7 @@ block_39:
     }
 
 end:
-    if (D_843C5238->unk_44.unk_01 < 0x44) {
+    if (gCurrentBattleEntity->unk_44.unk_01 < 0x44) {
         D_843C4E44 = 0;
         D_843C4E45 = 0;
         if (D_843C4DA9 == 0) {
@@ -569,22 +569,22 @@ end:
     }
 }
 
-void func_84374C9C(void) {
+void Battle_InitPhase(void) {
     gBattleState.unk_00->unk_48 = 0x1B;
-    D_843C5238->unk_44.unk_01 = 0;
-    D_843C5238->unk_4C |= 1;
-    D_843C5238->unk_54 = 0;
-    D_843C5238->unk_4F = (func_8436F6D8() & 1) + 2;
+    gCurrentBattleEntity->unk_44.unk_01 = 0;
+    gCurrentBattleEntity->unk_4C |= 1;
+    gCurrentBattleEntity->unk_54 = 0;
+    gCurrentBattleEntity->unk_4F = (GetRandomU8() & 1) + 2;
 }
 
 void func_84374D08(void) {
-    D_843C5238->unk_44.unk_01 = 0;
-    D_843C5238->unk_4C |= 2;
-    D_843C5238->unk_4F = (func_8436F6D8() & 1) + 2;
+    gCurrentBattleEntity->unk_44.unk_01 = 0;
+    gCurrentBattleEntity->unk_4C |= 2;
+    gCurrentBattleEntity->unk_4F = (GetRandomU8() & 1) + 2;
 }
 
-void func_84374D58(void) {
-    if (D_843C5238->unk_44.unk_00 == 0x64) {
+void Battle_HandleSpecialMove(void) {
+    if (gCurrentBattleEntity->unk_44.unk_00 == 0x64) {
         gBattleState.unk_00->unk_48 = 0x27;
         WriteMessageCharOrString(D_843901A0->unk_088, -0x53);
         return;
@@ -597,28 +597,28 @@ void func_84374D58(void) {
 void func_84374E08(void) {
     s32 var_v1;
 
-    if (!(D_843C5238->unk_4C & 4)) {
-        D_843C5238->unk_4C |= 4;
+    if (!(gCurrentBattleEntity->unk_4C & 4)) {
+        gCurrentBattleEntity->unk_4C |= 4;
 
-        switch (D_843C5238->unk_44.unk_01) {
+        switch (gCurrentBattleEntity->unk_44.unk_01) {
             case 0x4D:
-                D_843C5238->unk_44.unk_01 = 2;
+                gCurrentBattleEntity->unk_44.unk_01 = 2;
 
             case 0x2C:
-                D_843C5238->unk_54 = 2;
-                D_843C5238->unk_4F = D_843C5238->unk_54;
+                gCurrentBattleEntity->unk_54 = 2;
+                gCurrentBattleEntity->unk_4F = gCurrentBattleEntity->unk_54;
                 break;
 
             default:
-                var_v1 = func_8436F6D8() & 3;
+                var_v1 = GetRandomU8() & 3;
                 if (var_v1 >= 2) {
-                    var_v1 = func_8436F6D8() & 3;
+                    var_v1 = GetRandomU8() & 3;
                 }
-                D_843C5238->unk_4F = D_843C5238->unk_54 = var_v1 + 2;
+                gCurrentBattleEntity->unk_4F = gCurrentBattleEntity->unk_54 = var_v1 + 2;
                 break;
         }
 
-        D_8439022C = D_843C5238->unk_54 - 1;
+        D_8439022C = gCurrentBattleEntity->unk_54 - 1;
         gBattleState.unk_00->unk_48 = 0x18;
     }
 }
@@ -626,20 +626,20 @@ void func_84374E08(void) {
 void func_84374EE4(void) {
     if (!(D_843C523C->unk_4D & 0x10)) {
         if (D_8438AC60[0] == 1) {
-            if (D_843C5238->unk_44.unk_01 == 0x1F) {
-                if (func_8436F6D8() >= 0x1A) {
+            if (gCurrentBattleEntity->unk_44.unk_01 == 0x1F) {
+                if (GetRandomU8() >= 0x1A) {
                     return;
                 }
-            } else if (func_8436F6D8() >= 0x4D) {
+            } else if (GetRandomU8() >= 0x4D) {
                 return;
             }
         } else {
             D_843C523C->unk_4D &= ~0x20;
-            if (D_843C5238->unk_44.unk_01 == 0x1F) {
-                if (func_8436F6D8() >= 0x1A) {
+            if (gCurrentBattleEntity->unk_44.unk_01 == 0x1F) {
+                if (GetRandomU8() >= 0x1A) {
                     return;
                 }
-            } else if (func_8436F6D8() >= 0x4D) {
+            } else if (GetRandomU8() >= 0x4D) {
                 return;
             }
         }
@@ -648,34 +648,34 @@ void func_84374EE4(void) {
 }
 
 void func_84374FD4(void) {
-    D_843C4DC4 = 0;
+    gCurrentDamage = 0;
     D_843C4DA5 = 0xFF;
-    if (D_843C5238->unk_2E < D_843C523C->unk_2E) {
+    if (gCurrentBattleEntity->unk_2E < D_843C523C->unk_2E) {
         D_843C4DA4 = 1;
         return;
     }
-    D_843C4DC4 = 0xFFFF;
+    gCurrentDamage = 0xFFFF;
     D_843C4DA5 = 2;
 }
 
-void func_84375038(void) {
+void Battle_DisplayStatusMessage(void) {
     gBattleState.unk_00->unk_48 = 0xE;
-    D_843C5238->unk_4C |= 0x10;
+    gCurrentBattleEntity->unk_4C |= 0x10;
 
-    if ((D_843C5238->unk_44.unk_01 == 0x2B) || (D_843C5238->unk_44.unk_00 == 0x5B)) {
-        D_843C5238->unk_4C |= 0x40;
-        if (D_843C5238->unk_44.unk_00 == 0x5B) {
+    if ((gCurrentBattleEntity->unk_44.unk_01 == 0x2B) || (gCurrentBattleEntity->unk_44.unk_00 == 0x5B)) {
+        gCurrentBattleEntity->unk_4C |= 0x40;
+        if (gCurrentBattleEntity->unk_44.unk_00 == 0x5B) {
             gBattleState.unk_00->unk_48 = 0xD;
         }
 
-        if (D_843C5238->unk_44.unk_01 == 0x2B) {
+        if (gCurrentBattleEntity->unk_44.unk_01 == 0x2B) {
             gBattleState.unk_00->unk_48 = 0xC;
         }
     }
 
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
 
-    switch (D_843C5238->unk_44.unk_00) {
+    switch (gCurrentBattleEntity->unk_44.unk_00) {
         case 0xD:
             WriteMessageCharOrString(D_843901A0->unk_0C8, -0x51);
             break;
@@ -705,37 +705,37 @@ void func_84375038(void) {
 void func_843751F8(void) {
     s32 var_v1;
 
-    if (!(D_843C5238->unk_4C & 0x20) && ((D_8438AC60[0] != 1) || (D_843C5238->unk_44.unk_03 != 0) ||
+    if (!(gCurrentBattleEntity->unk_4C & 0x20) && ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_03 != 0) ||
                                          ((D_843C523C->unk_16[6] != 8) && (D_843C523C->unk_16[7] != 8)))) {
         D_843C523C->unk_4D &= 0xFFDF;
-        D_843C5238->unk_4C |= 0x20;
-        var_v1 = func_8436F6D8() & 3;
+        gCurrentBattleEntity->unk_4C |= 0x20;
+        var_v1 = GetRandomU8() & 3;
         if (var_v1 >= 2) {
-            var_v1 = func_8436F6D8() & 3;
+            var_v1 = GetRandomU8() & 3;
         }
-        D_843C5238->unk_4F = var_v1 + 1;
+        gCurrentBattleEntity->unk_4F = var_v1 + 1;
     }
 }
 
 void func_843752C0(void) {
-    if (D_843C5238->unk_4D & 2) {
+    if (gCurrentBattleEntity->unk_4D & 2) {
         gBattleState.unk_00->unk_48 = 7;
         WriteMessageCharOrString(D_843901A0->unk_088, -0x4B);
         return;
     }
     gBattleState.unk_00->unk_48 = 7;
-    D_843C5238->unk_4D |= 2;
+    gCurrentBattleEntity->unk_4D |= 2;
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
     WriteMessageCharOrString(D_843901A0->unk_088, -0x4A);
 }
 
 void func_84375384(void) {
     gBattleState.unk_00->unk_48 = 7;
-    if (D_843C5238->unk_4D & 4) {
+    if (gCurrentBattleEntity->unk_4D & 4) {
         WriteMessageCharOrString(D_843901A0->unk_088, -0x49);
         return;
     }
-    D_843C5238->unk_4D |= 4;
+    gCurrentBattleEntity->unk_4D |= 4;
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
     WriteMessageCharOrString(D_843901A0->unk_088, -0x48);
 }
@@ -743,22 +743,22 @@ void func_84375384(void) {
 void func_84375424(void) {
     s32 var_v1;
 
-    D_843C5238->unk_12 = D_843C5238->unk_0C;
+    gCurrentBattleEntity->unk_12 = gCurrentBattleEntity->unk_0C;
 
-    if (D_843C5238->unk_44.unk_00 == 0xA5) {
-        var_v1 = D_843C4DC4 >> 1;
+    if (gCurrentBattleEntity->unk_44.unk_00 == 0xA5) {
+        var_v1 = gCurrentDamage >> 1;
     } else {
-        var_v1 = D_843C4DC4 >> 2;
+        var_v1 = gCurrentDamage >> 2;
     }
 
     if (var_v1 == 0) {
         var_v1 += 1;
     }
 
-    if (D_843C5238->unk_12 < var_v1) {
-        D_843C5238->unk_12 = 0;
+    if (gCurrentBattleEntity->unk_12 < var_v1) {
+        gCurrentBattleEntity->unk_12 = 0;
     } else {
-        D_843C5238->unk_12 -= var_v1;
+        gCurrentBattleEntity->unk_12 -= var_v1;
     }
 
     D_843C523C->unk_12 = D_843C523C->unk_0C;
@@ -767,12 +767,12 @@ void func_84375424(void) {
     gBattleState.unk_00->unk_48 = 9;
 }
 
-void func_84375508(void) {
-    if (!(D_843C523C->unk_4D & 0x10) && (func_8436F6D8() < 0x1A) && !(D_843C523C->unk_4C & 0x80)) {
+void Battle_StartMiniGame(void) {
+    if (!(D_843C523C->unk_4D & 0x10) && (GetRandomU8() < 0x1A) && !(D_843C523C->unk_4C & 0x80)) {
         gBattleState.unk_00->unk_1A = 3;
         D_843C4E45 = 0;
         D_843C523C->unk_4C |= 0x80;
-        D_843C523C->unk_50 = (func_8436F6D8() & 3) + 2;
+        D_843C523C->unk_50 = (GetRandomU8() & 3) + 2;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_208, -0x46);
     }
@@ -783,11 +783,11 @@ void func_843755E8(void) {
     D_843C4E44 = 0;
 
     if (!(D_843C523C->unk_4D & 0x10)) {
-        func_843708CC();
+        HandleMoveEffectFlags();
         if ((D_843C4DA4 == 0) && !(D_843C523C->unk_4C & 0x80)) {
             D_843C4E44 = 1;
             D_843C523C->unk_4C |= 0x80;
-            D_843C523C->unk_50 = (func_8436F6D8() & 3) + 2;
+            D_843C523C->unk_50 = (GetRandomU8() & 3) + 2;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_088, -0x45);
             return;
@@ -802,8 +802,8 @@ void func_843755E8(void) {
 void func_84375700(void) {
     gBattleState.unk_00->unk_48 = 0x16;
     if (D_843C523C->unk_15 == 0) {
-        if ((D_843C5238->unk_44.unk_03 != 0x17) || ((D_843C523C->unk_16[6] != 4) && (D_843C523C->unk_16[7] != 4))) {
-            func_843708CC();
+        if ((gCurrentBattleEntity->unk_44.unk_03 != 0x17) || ((D_843C523C->unk_16[6] != 4) && (D_843C523C->unk_16[7] != 4))) {
+            HandleMoveEffectFlags();
             if (D_843C4DA4 == 0) {
                 D_843C523C->unk_15 |= 0x40;
                 func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
@@ -829,32 +829,32 @@ void func_84375894(void) {
     s32 temp_v1;
 
     gBattleState.unk_00->unk_48 = 0x1C;
-    if (D_843C5238->unk_4D & 0x10) {
+    if (gCurrentBattleEntity->unk_4D & 0x10) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x2A);
         return;
     }
 
-    temp_v1 = D_843C5238->unk_28 >> 2;
-    if (temp_v1 >= D_843C5238->unk_0C) {
+    temp_v1 = gCurrentBattleEntity->unk_28 >> 2;
+    if (temp_v1 >= gCurrentBattleEntity->unk_0C) {
         WriteMessageCharOrString(D_843901A0->unk_088, -0x29);
         return;
     }
 
     gBattleState.unk_00->unk_48 = 0x19;
-    D_843C5238->unk_59 = temp_v1;
-    D_843C5238->unk_0C -= temp_v1;
-    D_843C5238->unk_4D |= 0x10;
+    gCurrentBattleEntity->unk_59 = temp_v1;
+    gCurrentBattleEntity->unk_0C -= temp_v1;
+    gCurrentBattleEntity->unk_4D |= 0x10;
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
     WriteMessageCharOrString(D_843901A0->unk_088, -0x28);
 }
 
 void func_843759C4(void) {
-    D_843C5238->unk_4D |= 0x20;
+    gCurrentBattleEntity->unk_4D |= 0x20;
 }
 
 void func_843759DC(void) {
-    D_843C5238->unk_4D |= 0x40;
+    gCurrentBattleEntity->unk_4D |= 0x40;
 }
 
 void func_843759F4(void) {
@@ -863,7 +863,7 @@ void func_843759F4(void) {
     u8 temp_v0;
 
     gBattleState.unk_00->unk_48 = 7;
-    func_843708CC();
+    HandleMoveEffectFlags();
 
     if ((D_843C4DA4 == 0) && !(D_843C523C->unk_4C & 0x40)) {
         D_843C4DAA = 1;
@@ -875,7 +875,7 @@ void func_843759F4(void) {
             temp_v0 = D_843C523C->unk_1F[var_t0];
         } while (temp_v0 == 0);
 
-        D_843C5238->unk_1F[sp24->unk_0C] = temp_v0;
+        gCurrentBattleEntity->unk_1F[sp24->unk_0C] = temp_v0;
         MessageBank_SetPointer_0x14_0x2A(0x1E, GetMessageString(NULL, 0, gPokemonMessageBank, D_843C523C->unk_1F[var_t0] - 1));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x40);
         return;
@@ -885,7 +885,7 @@ void func_843759F4(void) {
 }
 
 void func_84375B1C(void) {
-    func_843708CC();
+    HandleMoveEffectFlags();
 
     if ((D_843C4DA4 == 0) && (D_843C523C->unk_16[6] != 0x16) && (D_843C523C->unk_16[7] != 0x16)) {
         if (!(D_843C523C->unk_4D & 0x80)) {
@@ -910,15 +910,15 @@ void func_84375C60(void) {
     s32 sp24;
     s32 temp_v1;
 
-    func_843708CC();
+    HandleMoveEffectFlags();
 
     if (D_843C4DA4 == 0) {
         gBattleState.unk_00->unk_48 = 0x20;
         if (D_843C523C->unk_52 == 0) {
             do {
-                sp24 = func_8436F6D8() & 3;
+                sp24 = GetRandomU8() & 3;
             } while (D_843C523C->unk_1F[sp24] == 0);
-            temp_v1 = (func_8436F6D8() & 7) + 1;
+            temp_v1 = (GetRandomU8() & 7) + 1;
             D_843C523C->unk_52 = (sp24 * 0x10) + temp_v1;
             D_843C523C->unk_57 = D_843C523C->unk_1F[sp24];
             MessageBank_SetPointer_0x14_0x2A(0x1E, GetMessageString(NULL, 0, gPokemonMessageBank, D_843C523C->unk_57 - 1));
@@ -938,8 +938,8 @@ void func_84375D78(void) {
 void func_84375DA4(void) {
     gBattleState.unk_00->unk_48 = 7;
     if (!(D_843C523C->unk_4C & 0x40)) {
-        D_843C5238->unk_16[6] = D_843C523C->unk_16[6];
-        D_843C5238->unk_16[7] = D_843C523C->unk_16[7];
+        gCurrentBattleEntity->unk_16[6] = D_843C523C->unk_16[6];
+        gCurrentBattleEntity->unk_16[7] = D_843C523C->unk_16[7];
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x38);
     } else {
@@ -974,7 +974,7 @@ void func_84375E6C(void) {
 
     D_843C523C->unk_15 = 0;
     // clang-format off
-    if (D_8438AC60[0] == 1) { D_843C5238->unk_15 = 0; }
+    if (D_8438AC60[0] == 1) { gCurrentBattleEntity->unk_15 = 0; }
     // clang-format on
 
     temp_t0->unk_52 = temp_a3->unk_52 = 0;
@@ -985,7 +985,7 @@ void func_84375E6C(void) {
     temp_a3->unk_4C &= ~0x80;
     temp_a3->unk_4D &= 0x78;
     temp_a3->unk_4E &= 8;
-    D_843C5238->unk_56 = 0;
+    gCurrentBattleEntity->unk_56 = 0;
     D_843C523C->unk_56 = 0;
 
     WriteMessageCharOrString(D_843901A0->unk_088, -0x36);
@@ -1000,18 +1000,18 @@ void func_8437600C(void) {
     temp_a2 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
     gBattleState.unk_00->unk_48 = 0x15;
-    if (D_843C5238->unk_0C != D_843C5238->unk_28) {
-        if (D_843C5238->unk_44.unk_00 == 0x9C) {
-            temp_v0 = D_843C5238->unk_15;
+    if (gCurrentBattleEntity->unk_0C != gCurrentBattleEntity->unk_28) {
+        if (gCurrentBattleEntity->unk_44.unk_00 == 0x9C) {
+            temp_v0 = gCurrentBattleEntity->unk_15;
 
-            D_843C5238->unk_15 = 2;
+            gCurrentBattleEntity->unk_15 = 2;
             temp_a2->unk_16[temp_a1->unk_08 + temp_a1->unk_2B * 3] = 2;
 
             if (temp_v0 != 0) {
                 if (D_8438AC60[0] == 1) {
-                    D_843C5238->unk_4E &= ~1;
-                    func_843736B0(&D_843C5238->unk_2A, D_843C5238->unk_38, D_843C5238->unk_5C[0]);
-                    func_843736B0(&D_843C5238->unk_2E, D_843C5238->unk_3C, D_843C5238->unk_5C[2]);
+                    gCurrentBattleEntity->unk_4E &= ~1;
+                    ScaleStatValue(&gCurrentBattleEntity->unk_2A, gCurrentBattleEntity->unk_38, gCurrentBattleEntity->unk_5C[0]);
+                    ScaleStatValue(&gCurrentBattleEntity->unk_2E, gCurrentBattleEntity->unk_3C, gCurrentBattleEntity->unk_5C[2]);
                 }
                 MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
                 WriteMessageCharOrString(D_843901A0->unk_088, -0x35);
@@ -1019,13 +1019,13 @@ void func_8437600C(void) {
                 MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
                 WriteMessageCharOrString(D_843901A0->unk_088, -0x34);
             }
-            D_843C5238->unk_0C += D_843C5238->unk_28;
+            gCurrentBattleEntity->unk_0C += gCurrentBattleEntity->unk_28;
         } else {
-            D_843C5238->unk_0C += D_843C5238->unk_28 / 2;
+            gCurrentBattleEntity->unk_0C += gCurrentBattleEntity->unk_28 / 2;
         }
 
-        if (D_843C5238->unk_28 < D_843C5238->unk_0C) {
-            D_843C5238->unk_0C = D_843C5238->unk_28;
+        if (gCurrentBattleEntity->unk_28 < gCurrentBattleEntity->unk_0C) {
+            gCurrentBattleEntity->unk_0C = gCurrentBattleEntity->unk_28;
         }
 
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
@@ -1055,13 +1055,13 @@ void func_84376258(void) {
         return;
     }
 
-    ptr = D_843C5238;
+    ptr = gCurrentBattleEntity;
     if (!(ptr->unk_4C & 0x40) &&
         ((D_8438AC60[0] != 1) || (D_843C523C->unk_1F[0] != 0x90) || (D_843C523C->unk_1F[1] != 0))) {
         gBattleState.unk_00->unk_48 = 0xF;
         MessageBank_SetPointer_0x14_0x2A(0x1B, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_148, -0x31);
-        D_843C5238->unk_4E |= 8;
+        gCurrentBattleEntity->unk_4E |= 8;
 
         if (D_843C523C->unk_4E & 8) {
             sp20->unk_BE = sp1C->unk_BE;
@@ -1069,32 +1069,32 @@ void func_84376258(void) {
             sp20->unk_BE = D_843C523C->unk_0B;
         }
 
-        D_843C5238->unk_16[6] = D_843C523C->unk_16[6];
-        D_843C5238->unk_16[7] = D_843C523C->unk_16[7];
-        D_843C5238->unk_1F[0] = D_843C523C->unk_1F[0];
-        D_843C5238->unk_1F[1] = D_843C523C->unk_1F[1];
-        D_843C5238->unk_1F[2] = D_843C523C->unk_1F[2];
-        D_843C5238->unk_1F[3] = D_843C523C->unk_1F[3];
-        D_843C5238->unk_24 = D_843C523C->unk_24;
-        D_843C5238->unk_2A = D_843C523C->unk_2A;
-        D_843C5238->unk_2C = D_843C523C->unk_2C;
-        D_843C5238->unk_2E = D_843C523C->unk_2E;
-        D_843C5238->unk_30 = D_843C523C->unk_30;
+        gCurrentBattleEntity->unk_16[6] = D_843C523C->unk_16[6];
+        gCurrentBattleEntity->unk_16[7] = D_843C523C->unk_16[7];
+        gCurrentBattleEntity->unk_1F[0] = D_843C523C->unk_1F[0];
+        gCurrentBattleEntity->unk_1F[1] = D_843C523C->unk_1F[1];
+        gCurrentBattleEntity->unk_1F[2] = D_843C523C->unk_1F[2];
+        gCurrentBattleEntity->unk_1F[3] = D_843C523C->unk_1F[3];
+        gCurrentBattleEntity->unk_24 = D_843C523C->unk_24;
+        gCurrentBattleEntity->unk_2A = D_843C523C->unk_2A;
+        gCurrentBattleEntity->unk_2C = D_843C523C->unk_2C;
+        gCurrentBattleEntity->unk_2E = D_843C523C->unk_2E;
+        gCurrentBattleEntity->unk_30 = D_843C523C->unk_30;
 
         for (i = 0; i < 4; i++) {
             if (D_843C523C->unk_1F[i] == 0) {
                 break;
             }
-            D_843C5238->unk_32[i] = 5;
+            gCurrentBattleEntity->unk_32[i] = 5;
         }
 
-        D_843C5238->unk_38 = D_843C523C->unk_38;
-        D_843C5238->unk_3A = D_843C523C->unk_3A;
-        D_843C5238->unk_3C = D_843C523C->unk_3C;
-        D_843C5238->unk_3E = D_843C523C->unk_3E;
+        gCurrentBattleEntity->unk_38 = D_843C523C->unk_38;
+        gCurrentBattleEntity->unk_3A = D_843C523C->unk_3A;
+        gCurrentBattleEntity->unk_3C = D_843C523C->unk_3C;
+        gCurrentBattleEntity->unk_3E = D_843C523C->unk_3E;
 
         for (i = 0; i < 8; i++) {
-            D_843C5238->unk_5C[i] = D_843C523C->unk_5C[i];
+            gCurrentBattleEntity->unk_5C[i] = D_843C523C->unk_5C[i];
         }
         return;
     }
@@ -1105,16 +1105,16 @@ void func_84376258(void) {
 
 void func_843765E8(void) {
     gBattleState.unk_00->unk_48 = 7;
-    if (D_843C5238->unk_44.unk_01 == 0x40) {
-        if (!(D_843C5238->unk_4E & 2)) {
-            D_843C5238->unk_4E |= 2;
+    if (gCurrentBattleEntity->unk_44.unk_01 == 0x40) {
+        if (!(gCurrentBattleEntity->unk_4E & 2)) {
+            gCurrentBattleEntity->unk_4E |= 2;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_088, -0x2E);
         } else {
             WriteMessageCharOrString(D_843901A0->unk_088, -0x2D);
         }
-    } else if (!(D_843C5238->unk_4E & 4)) {
-        D_843C5238->unk_4E |= 4;
+    } else if (!(gCurrentBattleEntity->unk_4E & 4)) {
+        gCurrentBattleEntity->unk_4E |= 4;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x2C);
     } else {
@@ -1122,7 +1122,7 @@ void func_843765E8(void) {
     }
 }
 
-void func_8437670C(void) {
+void SpAttack_Dispatch(void) {
     unk_D_800FCB18* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     s32 idx = ptr->unk_44.unk_01;
 
@@ -1131,6 +1131,6 @@ void func_8437670C(void) {
     }
 }
 
-void func_84376768(void) {
-    func_8437670C();
+void SpAttack_Main(void) {
+    SpAttack_Dispatch();
 }

@@ -4,22 +4,22 @@
 #include "30640.h"
 #include "32D10.h"
 
-static s16 D_843C3500;
-static unk_D_843C3508 D_843C3508[6];
+static s16 gWaterEffectFrameCounter;
+static unk_D_843C3508 gWaterEffects[6];
 
-void func_8436D370(void) {
+void WaterEffect_Init(void) {
     s32 i;
     s32 j;
     unk_D_843C3508* var_v0;
     unk_D_843C3508_0A4* var_a0;
-    unk_D_84389CE0 sp0 = {
+    ColorBlendInfo sp0 = {
         { 0, 0, 0, 0 },
         0,
     };
 
-    D_843C3500 = 0;
+    gWaterEffectFrameCounter = 0;
 
-    var_v0 = &D_843C3508[0];
+    var_v0 = &gWaterEffects[0];
     for (i = 0; i < 6; i++, var_v0++) {
         var_v0->unk_000 = 0;
         var_v0->unk_004 = 0;
@@ -42,10 +42,10 @@ void func_8436D370(void) {
     }
 }
 
-void func_8436D4A4(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9,
+void WaterEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, u8 argE, u8 argF, f32 arg10, f32 arg11, f32 arg12, s16 arg13,
                    s32 arg14, s32 arg15, s16 arg16, s16 arg17, s16 arg18, s16 arg19, s16 arg1A, s16 arg1B, s16 arg1C,
-                   s16 arg1D, unk_D_843C2C00_024* arg1E, unk_D_843C2C00_024* arg1F) {
+                   s16 arg1D, CombineParams* arg1E, CombineParams* arg1F) {
     unk_D_843C3508* var_v0;
     unk_D_843C3508_0A4* var_v1_2;
     s32 i;
@@ -53,7 +53,7 @@ void func_8436D4A4(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f
     Vec3f spC;
     Vec3f sp0;
 
-    var_v0 = &D_843C3508[0];
+    var_v0 = &gWaterEffects[0];
     spC.x = arg1;
     spC.y = arg2;
     spC.z = arg3;
@@ -111,7 +111,7 @@ void func_8436D4A4(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f
     }
 }
 
-void func_8436D920(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
+void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
                    UNUSED f32 arg7) {
     UNUSED s32 pad[36];
     CameraStruct* temp_v0 = func_8432FD64();
@@ -152,7 +152,7 @@ void func_8436D920(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UN
     }
 }
 
-void func_8436DA38(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+void WaterEffect_ApplyRotation(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     UNUSED Mtx sp70;
     Mtx sp30;
     UNUSED s32 pad;
@@ -161,7 +161,7 @@ void func_8436DA38(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 a
     guMtxXFMF(&sp30, 0.0f, 0.0f, arg3, &arg2->x, &arg2->y, &arg2->z);
 }
 
-void func_8436DAC4(unk_D_843C3508* arg0) {
+void WaterEffect_UpdateParticles(unk_D_843C3508* arg0) {
     unk_D_843C3508_0A4* var_s0;
     s32 spA8;
     s32 i;
@@ -205,15 +205,15 @@ void func_8436DAC4(unk_D_843C3508* arg0) {
     }
 }
 
-s32 func_8436DE60(void) {
+s32 WaterEffect_Process(void) {
     f32 temp_fv0;
     s32 i;
     s32 var_s2;
     unk_D_843C3508* var_s0;
 
-    D_843C3500++;
+    gWaterEffectFrameCounter++;
     var_s2 = 0;
-    var_s0 = &D_843C3508[0];
+    var_s0 = &gWaterEffects[0];
 
     for (i = 0; i < 6; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -221,12 +221,12 @@ s32 func_8436DE60(void) {
             if (var_s0->unk_006 < var_s0->unk_004) {
                 var_s0->unk_000 = 0;
             } else {
-                func_8436DAC4(var_s0);
+                WaterEffect_UpdateParticles(var_s0);
                 var_s2++;
             }
 
-            if (var_s0->unk_01C < D_843C3500) {
-                s16 tmp = D_843C3500 - var_s0->unk_01C;
+            if (var_s0->unk_01C < gWaterEffectFrameCounter) {
+                s16 tmp = gWaterEffectFrameCounter - var_s0->unk_01C;
 
                 temp_fv0 = tmp * 0.02f;
                 var_s0->unk_014 = 1.0f - temp_fv0;
@@ -249,7 +249,7 @@ s32 func_8436DE60(void) {
     return -1;
 }
 
-Gfx* func_8436DFB8(Gfx* arg0, unk_D_843C3508* arg1) {
+Gfx* WaterEffect_RenderGeometry(Gfx* arg0, unk_D_843C3508* arg1) {
     s32 i;
     Vtx* temp_v0 = arg1->unk_088;
 
@@ -262,8 +262,8 @@ Gfx* func_8436DFB8(Gfx* arg0, unk_D_843C3508* arg1) {
     return arg0;
 }
 
-Gfx* func_8436E0E8(Gfx* arg0, unk_D_843C3508* arg1) {
-    unk_D_843C2C00_064* ptr;
+Gfx* WaterEffect_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1) {
+    TextureTileInfo* ptr;
     UNUSED s32 pad[2];
 
     ptr = &arg1->unk_068;
@@ -279,8 +279,8 @@ Gfx* func_8436E0E8(Gfx* arg0, unk_D_843C3508* arg1) {
     return arg0;
 }
 
-Gfx* func_8436E3BC(Gfx* arg0) {
-    static Gfx D_84389CE8[] = {
+Gfx* WaterEffect_RenderAll(Gfx* arg0) {
+    static Gfx sWaterEffectRenderStateDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -309,7 +309,7 @@ Gfx* func_8436E3BC(Gfx* arg0) {
 
     func_8432FD64();
 
-    var_s6 = &D_843C3508[0];
+    var_s6 = &gWaterEffects[0];
     for (i = 0; i < 6; i++, var_s6++) {
         if (var_s6->unk_000 == 1) {
             var_s0 = &var_s6->unk_0A4[0];
@@ -322,14 +322,14 @@ Gfx* func_8436E3BC(Gfx* arg0) {
                     switch (var_s6->unk_002) {
                         case 0:
                             if (var_s0->unk_00 <= 0.0) {
-                                func_8436DA38(var_s0->unk_08 + ((k % 2) * 3.1415927f), &var_s0->unk_18, &spF0,
+                                WaterEffect_ApplyRotation(var_s0->unk_08 + ((k % 2) * 3.1415927f), &var_s0->unk_18, &spF0,
                                               var_s0->unk_04, 1.0f, 0.0f, 0.0f);
                             }
                             break;
 
                         case 1:
                             if (var_s0->unk_00 <= 0.0) {
-                                func_8436D920(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->unk_04, 1.0f,
+                                WaterEffect_CalcDirection(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->unk_04, 1.0f,
                                               0.0f, 0.0f);
                             }
                             break;
@@ -350,7 +350,7 @@ Gfx* func_8436E3BC(Gfx* arg0) {
                 }
             }
 
-            gSPDisplayList(arg0++, D_84389CE8);
+            gSPDisplayList(arg0++, sWaterEffectRenderStateDL);
 
             Gfx_SetCombineRaw(
                 arg0++, var_s6->unk_028.unk_00, var_s6->unk_028.unk_04, var_s6->unk_028.unk_08, var_s6->unk_028.unk_0C,
@@ -363,11 +363,11 @@ Gfx* func_8436E3BC(Gfx* arg0) {
             gDPSetEnvColor(arg0++, var_s6->unk_00D.unk_00.r, var_s6->unk_00D.unk_00.g, var_s6->unk_00D.unk_00.b,
                            (u8)(var_s6->unk_00D.unk_00.a * var_s6->unk_018));
 
-            arg0 = func_8436E0E8(arg0, var_s6);
+            arg0 = WaterEffect_LoadTextures(arg0, var_s6);
 
             gDPPipeSync(arg0++);
 
-            arg0 = func_8436DFB8(arg0, var_s6);
+            arg0 = WaterEffect_RenderGeometry(arg0, var_s6);
         }
     }
 

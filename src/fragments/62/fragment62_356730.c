@@ -2,7 +2,7 @@
 #include "src/32D10.h"
 #include "src/6A40.h"
 
-static unk_D_843C2C00 D_843C2C00[4];
+static WaterParticleSystem D_843C2C00[4];
 
 static Gfx D_84389C70[] = {
     gsDPPipeSync(),
@@ -22,11 +22,11 @@ static Gfx D_84389C70[] = {
     gsSPEndDisplayList(),
 };
 
-void func_8436BE70(void) {
+void WaterParticleSystems_ResetAll(void) {
     s32 i;
     s32 j;
-    unk_D_843C2C00* var_v0 = &D_843C2C00[0];
-    unk_D_843C2C00_0B0* var_a0;
+    WaterParticleSystem* var_v0 = &D_843C2C00[0];
+    WaterParticleVertex* var_a0;
 
     for (i = 0; i < 4; i++, var_v0++) {
         var_v0->unk_000 = 0;
@@ -51,11 +51,11 @@ void func_8436BE70(void) {
 
 void func_8436BFB8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
                    f32 argA, s16 argB, s32 argC, s32 argD, s16 argE, s16 argF, s16 arg10, s16 arg11, s16 arg12,
-                   s16 arg13, s16 arg14, s16 arg15, unk_D_843C2C00_024* arg16, unk_D_843C2C00_024* arg17, u8 arg18,
+                   s16 arg13, s16 arg14, s16 arg15, CombineParams* arg16, CombineParams* arg17, u8 arg18,
                    u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22,
                    u8 arg23, u8 arg24) {
-    unk_D_843C2C00* var_v0;
-    unk_D_843C2C00_0B0* var_a0;
+    WaterParticleSystem* var_v0;
+    WaterParticleVertex* var_a0;
     s32 i;
     s32 j;
     Vec3f sp3C;
@@ -137,7 +137,7 @@ void func_8436BFB8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f
     }
 }
 
-void func_8436C344(f32 arg0, Vec3f* arg1, f32 arg2) {
+void WaterParticle_ComputeOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     UNUSED MtxF sp70;
     MtxF sp30;
     UNUSED s32 pad;
@@ -146,8 +146,8 @@ void func_8436C344(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_8436C3CC(unk_D_843C2C00* arg0) {
-    unk_D_843C2C00_0B0* var_v0;
+void func_8436C3CC(WaterParticleSystem* arg0) {
+    WaterParticleVertex* var_v0;
     UNUSED s32 pad;
     s32 i;
     Vec3f sp58;
@@ -213,9 +213,9 @@ void func_8436C3CC(unk_D_843C2C00* arg0) {
     }
 }
 
-s32 func_8436C62C(void) {
+s32 WaterParticleSystems_Tick(void) {
     s32 i;
-    unk_D_843C2C00* var_s0 = &D_843C2C00[0];
+    WaterParticleSystem* var_s0 = &D_843C2C00[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -227,12 +227,12 @@ s32 func_8436C62C(void) {
     return 0;
 }
 
-Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3) {
+Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 arg3) {
     s32 i;
     s32 j;
     Vtx* sp44;
-    unk_D_84389CE0* temp_v0;
-    unk_D_84389CE0* temp_v1;
+    ColorBlendInfo* temp_v0;
+    ColorBlendInfo* temp_v1;
     u8 a1;
     u8 a2;
     s16 tmp;
@@ -281,8 +281,8 @@ Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
-Gfx* func_8436CB60(Gfx* arg0, unk_D_843C2C00* arg1) {
-    unk_D_843C2C00_064* ptr;
+Gfx* WaterParticle_LoadTextureTiles(Gfx* arg0, WaterParticleSystem* arg1) {
+    TextureTileInfo* ptr;
 
     ptr = &arg1->unk_064;
     gDPLoadTextureTile_4b(arg0++, gWaterTexture[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
@@ -301,8 +301,8 @@ Gfx* func_8436CE34(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    unk_D_843C2C00* var_fp;
-    unk_D_843C2C00_0B0* var_s2;
+    WaterParticleSystem* var_fp;
+    WaterParticleVertex* var_s2;
     Vec3f sp100;
     Vec3f spF4;
     Vec3f spE8;
@@ -330,7 +330,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
             var_s0 = var_fp->unk_018;
             for (j = 0; j < 10; j++, var_s2++) {
                 for (k = 0; k < 9; k++) {
-                    func_8436C344(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->unk_08);
+                    WaterParticle_ComputeOffset(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->unk_08);
                     var_s0->v.ob[0] = var_s2->unk_10.x + sp100.x;
                     var_s0->v.ob[1] = var_s2->unk_10.y + sp100.y;
                     var_s0->v.ob[2] = var_s2->unk_10.z + sp100.z;
@@ -353,7 +353,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
                 spDC.x = spD8->unk_60.eye.x;
                 spDC.y = spD8->unk_60.eye.y;
                 spDC.z = spD8->unk_60.eye.z;
-                arg0 = func_84367660(arg0, &spF4, &spE8, &spDC, 20.0f, var_fp->unk_086.r, var_fp->unk_086.g,
+                arg0 = Gfx_DrawThickLine(arg0, &spF4, &spE8, &spDC, 20.0f, var_fp->unk_086.r, var_fp->unk_086.g,
                                      var_fp->unk_086.b, var_fp->unk_086.a * var_fp->unk_08C);
             }
 
@@ -365,7 +365,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
                 var_fp->unk_044.unk_00, var_fp->unk_044.unk_04, var_fp->unk_044.unk_08, var_fp->unk_044.unk_0C,
                 var_fp->unk_044.unk_10, var_fp->unk_044.unk_14, var_fp->unk_044.unk_18, var_fp->unk_044.unk_1C);
 
-            arg0 = func_8436CB60(arg0, var_fp);
+            arg0 = WaterParticle_LoadTextureTiles(arg0, var_fp);
 
             gDPSetPrimColor(arg0++, 0, var_fp->unk_07C.unk_04, var_fp->unk_07C.unk_00.r, var_fp->unk_07C.unk_00.g,
                             var_fp->unk_07C.unk_00.b, var_fp->unk_07C.unk_00.a);
@@ -375,13 +375,13 @@ Gfx* func_8436CE34(Gfx* arg0) {
             gSPSetGeometryMode(arg0++, G_CULL_FRONT);
             gDPPipeSync(arg0++);
 
-            arg0 = func_8436C6A4(arg0, var_fp, i, 0);
+            arg0 = WaterParticle_DrawPass(arg0, var_fp, i, 0);
 
             gSPClearGeometryMode(arg0++, G_CULL_BOTH);
             gSPSetGeometryMode(arg0++, G_CULL_BACK);
             gDPPipeSync(arg0++);
 
-            arg0 = func_8436C6A4(arg0, var_fp, i, 1);
+            arg0 = WaterParticle_DrawPass(arg0, var_fp, i, 1);
         }
     }
 

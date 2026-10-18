@@ -5112,7 +5112,7 @@ s32 func_843811D0(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_D_843C60A4* ar
         sp44 += 0x99;
     }
 
-    if (func_8436FD54(*arg3, arg2->unk_0A, arg2->unk_09) == 0) {
+    if (IsByteInArray(*arg3, arg2->unk_0A, arg2->unk_09) == 0) {
         sp44 /= 2;
     }
     return sp44;
@@ -5521,8 +5521,8 @@ s32 func_8438249C(u8 arg0, u8 arg1) {
         return 1;
     }
 
-    if ((func_8436FD54(gMoveBattleData[arg1 - 1].unk_01, D_8438B0D8, 0x1A) != 0) &&
-        (func_8436FD54(sp18->unk_01, D_8438B0D8, 0x1A) != 0)) {
+    if ((IsByteInArray(gMoveBattleData[arg1 - 1].unk_01, D_8438B0D8, 0x1A) != 0) &&
+        (IsByteInArray(sp18->unk_01, D_8438B0D8, 0x1A) != 0)) {
         return 1;
     }
     return 0;
@@ -5533,21 +5533,21 @@ s32 func_8438255C(u8 arg0, u8 arg1) {
         return 0;
     }
 
-    if (func_8436FD54(gMoveBattleData[arg1 - 1].unk_01, D_8438B0F4, 2) != 0) {
+    if (IsByteInArray(gMoveBattleData[arg1 - 1].unk_01, D_8438B0F4, 2) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 func_843825D8(u8 arg0) {
-    if (func_8436FD54(arg0, D_8438B0BC, 5) != 0) {
+    if (IsByteInArray(arg0, D_8438B0BC, 5) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 func_84382614(u8 arg0) {
-    if ((func_8436FD54(arg0, D_8438B0C4, 0x11) != 0) && (func_843767E4(0xF) != 0)) {
+    if ((IsByteInArray(arg0, D_8438B0C4, 0x11) != 0) && (func_843767E4(0xF) != 0)) {
         return 1;
     }
     return 0;

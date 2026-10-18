@@ -3283,3 +3283,130 @@ func_8436611C	WaterSurface_PackVertex	w21		Copies a WaterSurfaceVertex into a N6
 D_84389608	gWaterSurfaceAltDL	w21		Alternative display list configuring a different render mode (unused in this file) for the water surface.	applied@966d7f0
 unk_D_8439CA60	WaterSurfaceData	w21		Structure type that stores the overall water surface data, including the vertex grid and animation counters.	applied@966d7f0
 unk_D_86002F34_00C	CameraStruct	w21		Structure type containing camera eye and target vectors used to build the water surface view matrix.	applied@966d7f0
+D_843A22C0	gWaterParticlePool	w22		used as a 40?element array of particle structs cleared and iterated in func_84366A10, func_84366B38, func_84367014 and func_843670C8	applied@e014d06
+D_84389690	gWaterParticleQuadVertices	w22		defines a 2?2 quad (?10 to 10) referenced in D_84389720 for particle rendering	applied@e014d06
+D_843896D0	gWaterParticleDL_NoTexture	w22		sets up a translucent, shade?only render mode and is used when particle state == 1 in func_843670C8	applied@e014d06
+D_84389720	gWaterParticleDL_Textured	w22		enables texture, sets env color (255,255,64,255) and draws the quad for water particles in func_843670C8	applied@e014d06
+func_84366A10	WaterParticle_Reset	w22		clears all fields of each entry in gWaterParticlePool, resetting the particle system	applied@e014d06
+func_84366B38	WaterParticle_Spawn	w22		initialises a new particle with position, velocity, colour, size and lifetime fields in gWaterParticlePool	applied@e014d06
+func_84366DCC	WaterParticle_TransformVertex	w22		rotates by arg0 and translates by arg2 using guRotateRPYF and guMtxXFMF to compute a vertex offset	applied@e014d06
+func_84366E54	WaterParticle_UpdateSegment	w22		shifts vertex data, updates positions and handles state transitions for a particle segment	applied@e014d06
+func_84367014	WaterParticle_TickAll	w22		loops over gWaterParticlePool, ages active particles, expires them and calls WaterParticle_UpdateSegment	applied@e014d06
+func_843670C8	WaterParticle_RenderAll	w22		allocates matrices and vertices, builds transforms and issues display lists to draw active particles each frame	applied@e014d06
+func_84367660	Gfx_DrawThickLine	w22		Given three points, a width and RGBA colour the function builds a vertex buffer and issues a display list to render a thick line or beam, so it draws a beam.	applied@e014d06
+D_84389780	gBeamSetupDL	w22		Static Gfx array sets up blending, texture and env colour for the beam effect, indicating it is the beam setup display list.	applied@e014d06
+D_84389810	gBeamVertexTemplate	w22		Static Vtx array defines 10 vertices forming a template for a thick line/beam shape, copied and modified before rendering.	applied@e014d06
+D_8438A648	gBeamTexture	w22		Texture loaded with gsDPLoadTextureBlock_4b in the beam display list, used as the beam?s texture.	applied@e014d06
+func_84367CB0	WaterParticleSystem_ResetAll	w22		Resets all water particle emitters to initial state, called at start of level.	applied@e014d06
+func_84367E2C	WaterParticleSystem_Spawn	w22		Spawns a new water particle emitter with position, velocity, color, etc., searching for a free slot.	applied@e014d06
+func_84368080	WaterParticle_CalcOffset	w22		Computes a rotated and scaled offset for a particle using matrix transforms, used in the render loop.	applied@e014d06
+func_84368140	WaterParticleSystem_UpdateEmitter	w22		Updates positions, velocities and other per?particle fields for a single emitter each frame.	applied@e014d06
+func_843684CC	WaterParticleSystem_UpdateAll	w22		Iterates over all emitters, advances their timers and calls per?emitter update; returns 0.	applied@e014d06
+func_84368560	WaterParticleSystem_Render	w22		Renders active water particle emitters, allocating matrices and vertex buffers and drawing with the water texture.	applied@e014d06
+D_843AA880	gWaterParticleEmitters	w22		Global array of four water?particle emitter structs used by spawn, update and render functions.	applied@e014d06
+D_843898B0	gWaterSplashQuadVtx	w22		Vertex array defining a quad used by the water splash display list D_843898F0.	applied@e014d06
+D_843898F0	gWaterSplashDL	w22		Display list that draws the splash quad with blending and texture, referenced in the render function.	applied@e014d06
+D_84389958	gWaterParticleDL	w22		Display list that sets shading mode for water?particle vertices, used before drawing particle geometry.	applied@e014d06
+unk_D_843AA880	WaterParticleEmitter	w22		Struct representing a water particle emitter with state, color and particle array.	applied@e014d06
+unk_D_843AA880_034	WaterParticleParticle	w22		Struct representing an individual particle within an emitter, holding position, velocity and life data.	applied@e014d06
+func_84368AB0	ResetParticleEmitters	w22		Resets all four ParticleEmitter structs in the global D_843AB940 array by clearing their fields.	applied@e014d06
+func_84368C04	CreateParticleEmitter	w22		Creates a new ParticleEmitter entry in D_843AB940, initializing position, color, lifetime and per?particle state.	applied@e014d06
+func_84368E78	ComputeParticleOffset	w22		Computes a rotated offset vector using guRotateF and guMtxXFMF, used for particle positioning.	applied@e014d06
+func_84368F08	UpdateParticleEmitter	w22		Advances the state of a single ParticleEmitter, updating positions, velocities and visual parameters each frame.	applied@e014d06
+func_843692E8	TickParticleEmitters	w22		Iterates over all ParticleEmitters, increments their timers, ends expired emitters and calls UpdateParticleEmitter.	applied@e014d06
+func_84369388	RenderParticleEmitters	w22		Generates geometry for active ParticleEmitters, allocating matrices and vertex buffers and issuing display?list commands.	applied@e014d06
+unk_D_843AB940	ParticleEmitter	w22		Type of each entry in D_843AB940, holding emitter state such as active flag, timer, color and particle list.	applied@e014d06
+unk_D_843AB940_038	ParticleState	w22		Per?particle struct inside a ParticleEmitter, storing alpha, size, angle, position and velocity.	applied@e014d06
+D_843899B0	Gfx_ParticleRenderDL	w22		Display list that sets up rendering state (transparent, shading) for drawing particle quads.	applied@e014d06
+D_843ACA10	gParticleSystems	w22		global array of 4 particle system structs used for spark effects	applied@e014d06
+D_84389A00	gParticleBlendDL	w22		display list that sets up translucent shading and color dither for particles	applied@e014d06
+D_8438A980	gParticleQuadDL	w22		display list referenced when drawing each particle quad	applied@e014d06
+func_843697F0	ParticleSystem_ResetAll	w22		loops over gParticleSystems and clears all fields to initialize the effect	applied@e014d06
+func_84369950	ParticleSystem_Spawn	w22		finds an inactive particle system slot and initializes it with position, velocity, color and lifetime parameters	applied@e014d06
+func_84369BF0	CalcRotatedOffsetX	w22		computes a point rotated around the X axis by a given angle and radius using libultra matrix functions	applied@e014d06
+func_84369F0C	ParticleSystem_TickAll	w22		iterates all particle systems, advances timers, deactivates finished ones and calls update	applied@e014d06
+func_84369FA0	ParticleSystem_RenderAll	w22		renders active particle systems by allocating matrices, vertices and issuing display list commands	applied@e014d06
+func_8436A410	WaterParticlePool_Init	w22		Initializes the pool of 50 water particle system structs by clearing all fields, as seen in the nested loops that zero each struct.	applied@e014d06
+func_8436A540	WaterParticlePool_Spawn	w22		Spawns a new water particle system by finding a free entry in D_843ADA80 and filling it with position, color, and motion parameters.	applied@e014d06
+func_8436A890	WaterParticleSystem_Update	w22		Updates a single water particle system each frame, handling state transitions and interpolating particle positions.	applied@e014d06
+func_8436ABA8	WaterParticlePool_Tick	w22		Iterates over all water particle systems, increments timers, deactivates finished ones, and calls the per?system update function.	applied@e014d06
+func_8436AC44	WaterParticlePool_Render	w22		Renders all active water particle systems, allocating matrices, applying transforms, and issuing the water?particle display lists.	applied@e014d06
+D_843ADA80	gWaterParticleSystems	w22		Global array of 50 structs representing water particle systems, referenced throughout the file.	applied@e014d06
+D_84389A50	gWaterParticleSetupDL	w22		Display list that sets up rendering state (transparent, shading) for water particles before drawing vertices.	applied@e014d06
+D_84389AA0	gWaterParticleQuadVtx	w22		Vertex array defining a 12?unit square used by the water particle quad display list.	applied@e014d06
+D_84389AE0	gWaterParticleQuadDL	w22		Display list that draws a textured water quad using the vertex array D_84389AA0.	applied@e014d06
+func_8436B538	WaterParticle_CalcVertexOffset	w22		Computes a rotated and translated offset for a particle vertex based on angle and radius, used in rendering.	applied@e014d06
+func_8436B5C0	WaterParticle_Update	w22		Advances a single particle's sub?frames, updating positions, velocities and state transitions.	applied@e014d06
+func_8436B8D8	WaterParticle_UpdateAll	w22		Iterates over the particle pool D_843B8340, increments lifetimes and calls WaterParticle_Update for active particles.	applied@e014d06
+func_8436B974	WaterParticle_Render	w22		Generates display?list commands to draw all active water particles, allocating matrices and vertex buffers.	applied@e014d06
+D_84389BF0	gWaterParticleTextureDL	w22		Display list that renders a textured quad with water texture, used for each particle segment.	applied@e014d06
+func_8436BE70	WaterParticleSystems_ResetAll	w22		Resets all entries of the global D_843C2C00 particle array to their default state, as seen in the nested loops clearing fields.	applied@e014d06
+func_8436C344	WaterParticle_ComputeOffset	w22		Rotates a vector around the X axis using guRotateF and transforms it with guMtxXFMF, used to offset particle vertices.	applied@e014d06
+func_8436C62C	WaterParticleSystems_Tick	w22		Iterates over all D_843C2C00 entries, increments their timers and calls WaterParticleSystem_Update.	applied@e014d06
+func_8436C6A4	WaterParticle_DrawPass	w22		Draws the particle geometry with current primary and environment colors, handling two rendering passes (arg3 flag).	applied@e014d06
+func_8436CB60	WaterParticle_LoadTextureTiles	w22		Loads water texture tiles for a particle system using texture offsets stored in the system?s 0x64 and 0x70 structs.	applied@e014d06
+unk_D_843C2C00	WaterParticleSystem	w22		Struct representing a single water particle system, evidenced by fields for timers, colors, texture indices and vertex buffers.	applied@e014d06
+unk_D_843C2C00_0B0	WaterParticleVertex	w22		Struct for per?particle vertex data (position, alpha, texture coords) used in loops that build vertex arrays.	applied@e014d06
+unk_D_843C2C00_024	CombineParams	w22		Struct holding combine mode parameters passed to Gfx_SetCombineRaw, indicating its purpose for texture/color blending.	applied@e014d06
+unk_D_843C2C00_064	TextureTileInfo	w22		Struct with texture offset fields (unk_00, unk_02, unk_08, unk_0A) used when loading water texture tiles.	applied@e014d06
+unk_D_84389CE0	ColorBlendInfo	w22		Struct containing primary and environment RGBA colors (unk_00 and unk_04) used for setting prim and env colors in rendering.	applied@e014d06
+func_8436D370	WaterEffect_Init	w22		Initializes the water effect system by clearing D_843C3500 and zeroing the six entries of D_843C3508, which store water effect instances.	applied@e014d06
+func_8436D4A4	WaterEffect_Spawn	w22		Finds a free slot in D_843C3508, fills fields such as type, timers, texture indices, and colors, and sets up a new water effect, indicating it creates/spawns water effects.	applied@e014d06
+func_8436D920	WaterEffect_CalcDirection	w22		Computes a direction vector via cross product and scaling, used for water effect type?1 particle motion in func_8436E3BC, thus calculates particle direction.	applied@e014d06
+func_8436DA38	WaterEffect_ApplyRotation	w22		Generates a rotation matrix from arg0 and applies it to a point, used for water effect type?0 particle motion, therefore applies rotation to particle positions.	applied@e014d06
+func_8436DAC4	WaterEffect_UpdateParticles	w22		Iterates over the 20 sub?particles of a water effect, applying random jitter or advancing along velocity each frame, updating particle positions.	applied@e014d06
+func_8436DE60	WaterEffect_Process	w22		Increments D_843C3500, updates timers, fades alpha, and calls WaterEffect_UpdateParticles for active effects, returning 0 while any effect remains active.	applied@e014d06
+func_8436DFB8	WaterEffect_RenderGeometry	w22		Emits vertices and triangles for a water effect by looping over 19 vertex groups, returning the updated Gfx pointer, thus renders the water effect geometry.	applied@e014d06
+func_8436E0E8	WaterEffect_LoadTextures	w22		Loads water texture tiles and sets tile sizes based on fields in a water effect struct, preparing textures before drawing the effect.	applied@e014d06
+func_8436E3BC	WaterEffect_RenderAll	w22		Main rendering routine that iterates over active water effects, builds vertex data, sets combine and colors, loads textures, and draws geometry, rendering all water effects.	applied@e014d06
+D_843C3500	gWaterEffectFrameCounter	w22		Incremented each frame in func_8436DE60 and used to compute fade timing for water effects, indicating a global frame counter for water particles.	applied@e014d06
+D_843C3508	gWaterEffects	w22		Array of six unk_D_843C3508 structs representing individual water effect instances, accessed throughout the file, thus a global pool of water effects.	applied@e014d06
+D_84389CE8	sWaterEffectRenderStateDL	w22		Static Gfx array containing pipeline setup commands used before rendering each water effect in func_8436E3BC, serving as the display list for water effect render state.	applied@e014d06
+unk_D_843C49C0_004	Particle	w22		Struct representing a single particle with state, timer, lifetime, scale and position fields	applied@e014d06
+D_84389D60	gParticleQuadVertices	w22		Vertex array defining a 2?D quad used for rendering particles	applied@e014d06
+D_84389DA8	gParticleTextureData	w22		32?32 IA texture data loaded for particle rendering	applied@e014d06
+D_8438A5A8	gParticleRenderDL	w22		Display list that sets up rendering state and draws the particle quad	applied@e014d06
+func_8436EA0C	ParticleEmitter_AddParticle	w22		Adds a new particle to the specified emitter with position, lifetime and scale parameters	applied@e014d06
+func_8436EDE8	ParticleEmitter_RenderAll	w22		Iterates over all active particles of an emitter and renders each via Particle_Render	applied@e014d06
+D_843C4D90	gTransitionState	w22		gives the current transition state (0?3) set in func_8436EEF0 and read by other transition functions	applied@e014d06
+D_843C4D92	gTransitionOffset	w22		used as the horizontal offset for drawing transition rectangles in func_8436EFE8	applied@e014d06
+D_843C4D94	gTransitionSpeed	w22		holds the per?frame speed increment added/subtracted to gTransitionOffset in func_8436EF54	applied@e014d06
+D_8438A858	gTransitionVertices	w22		vertex array passed to gsSPVertex in display list D_8438A980 to render the transition bar	applied@e014d06
+D_8438A978	gTransitionTextureData	w22		4?bit texture (0x77777777) loaded in D_8438A980 with gsDPLoadTextureBlock_4b	applied@e014d06
+D_8438AA68	gTransitionMaskTexture	w22		large 4?bit texture array loaded in func_8436EFE8 as a mask for the transition effect	applied@e014d06
+D_8438ABE8	gTransitionMaskSetupDL	w22		setup DL configuring blending and texture before drawing the mask in func_8436EFE8	applied@e014d06
+D_8438AC30	gTransitionMaskCleanupDL	w22		cleanup DL restoring 2?cycle mode and texture perspective after the mask in func_8436EFE8	applied@e014d06
+func_8436EF48	ScreenTransition_GetState	w22		returns the current gTransitionState	applied@e014d06
+func_8436EF54	ScreenTransition_Update	w22		updates gTransitionOffset based on gTransitionState and gTransitionSpeed	applied@e014d06
+func_8436EFE8	ScreenTransition_Draw	w22		draws the transition effect into the display list, using side argument to select left/right mask and gTransitionOffset	applied@e014d06
+func_8436F664	ScreenTransition_Apply	w22		adds the transition draw call to the global display list when gTransitionState is active	applied@e014d06
+func_8436F6D8	GetRandomU8	w22		Returns a pseudo?random u8 using an LCG and osGetCount, used throughout the battle code for RNG	applied@e014d06
+func_8436F788	GetRandomU8_Alt	w22		Returns a pseudo?random u8 from a second LCG seed, also used for RNG in battle logic	applied@e014d06
+func_8436F838	ShowDamageMessage	w22		Selects a message character (0x21?0x24) based on HP ratio and writes it to the message buffer	applied@e014d06
+func_8436F9D8	ResetBattleAfterMove	w22		Calls func_8436F838 then clears many battle state fields and flags after a move	applied@e014d06
+func_8436FC7C	CompareMovePriority	w22		Compares the unk_5A fields (likely move priority) of two entities and returns ordering	applied@e014d06
+func_8436FD54	IsByteInArray	w22		Iterates over a byte array to test if a given byte value is present, used for move/category checks	applied@e014d06
+func_8436FDF4	ComputePokemonStat	w22		Calculates a specific Pok?mon stat (HP, Attack, etc.) from base stats, level and other factors	applied@e014d06
+func_84370090	ComputeAllPokemonStats	w22		Calls ComputePokemonStat for each of the five main stats to fully initialize a Pok?mon	applied@e014d06
+func_843700F0	InitBattleParameters	w22		Initialises many D_843C4xx globals and sets up damage multipliers based on battle entities	applied@e014d06
+func_84370260	UpdateDamageAccumulator	w22		Updates D_843C4DC4 using damage formulas and caps it, driving the damage progression	applied@e014d06
+func_843703BC	ProcessTurnEnd	w22		Handles end?of?turn logic, message output and damage counter adjustments for both combatants	applied@e014d06
+func_843706E8	DecrementMovePP	w22		Decrements the PP counter (unk_0C) of a move and optionally reduces a Pok?mon?s stat usage	applied@e014d06
+func_843708CC	HandleMoveEffectFlags	w22		Checks numerous flag bits and move IDs to decide whether to reset damage or apply special effects	applied@e014d06
+D_843C4DC4	gCurrentDamage	w22		Used as the main damage counter, scaled and clamped throughout the battle calculations	applied@e014d06
+D_843C5238	gCurrentBattleEntity	w22		Pointer to the active battle entity struct (unk_D_800FCB18) used for current turn operations	applied@e014d06
+func_843736B0	ScaleStatValue	w22		Clamps a value derived from arg1 using the D_8438ACB8 scaling table to the range 1?999, indicating a stat scaling routine	applied@e014d06
+func_84373754	Battle_TurnStart	w22		Initializes turn state (sets unk_48 to 0x16) and writes start?turn messages, showing it handles the beginning of a battle turn	applied@e014d06
+func_84373A30	Battle_ProcessCommand	w22		Selects message strings based on D_843C5238->unk_44.unk_01 values and updates battle state, indicating command processing logic	applied@e014d06
+func_84373D04	Battle_UpdateProgress	w22		Adjusts D_843C4DC4 timer and increments D_843C5238->unk_0C progress, then writes a progress message, typical of a progress update function	applied@e014d06
+func_84373E24	Battle_ResetState	w22		Sets gBattleState.unk_48 to 0x1E and clears several fields, clearly resetting battle state variables	applied@e014d06
+func_84373E60	Battle_HandleItemEffect	w22		Checks flags, manipulates item?related structs (unk_654), and outputs messages, suggesting handling of an item effect	applied@e014d06
+func_843741C4	Battle_ApplyStatIncrease	w22		Calculates stat increments using D_8438ACB8 table, updates stats, and writes messages, matching a stat increase routine	applied@e014d06
+func_843744F0	Battle_ApplyStatChange	w22		Similar to func_843741C4 but operates on a different struct, applying stat changes and displaying messages	applied@e014d06
+func_8437483C	Battle_HandleStatDecrease	w22		Decrements counters in D_843C523C->unk_5C, writes corresponding messages, indicating handling of stat decreases	applied@e014d06
+func_84374C9C	Battle_InitPhase	w22		Sets battle state to 0x1B, clears phase counters and initializes unk_4F, typical of initializing a new battle phase	applied@e014d06
+func_84374D58	Battle_HandleSpecialMove	w22		Checks for special move identifier (unk_44.unk_00 == 0x64) and writes a dedicated message, handling a special move scenario	applied@e014d06
+func_84375038	Battle_DisplayStatusMessage	w22		Selects message strings based on unk_44.unk_00 values (e.g., 0xD, 0x4C) and writes them, used for displaying status messages	applied@e014d06
+func_84375508	Battle_StartMiniGame	w22		Sets flags, chooses a random timer value, and writes a mini?game start message, indicating initiation of a mini?game	applied@e014d06
+func_8437670C	SpAttack_Dispatch	w22		Indexes D_8438AE54 function pointer array using battle parameter and calls the selected function, acting as a SP?attack dispatcher	applied@e014d06
+func_84376768	SpAttack_Main	w22		Simply invokes func_8437670C, serving as the main entry point for SP?attack execution	applied@e014d06

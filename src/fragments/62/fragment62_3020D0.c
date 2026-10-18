@@ -268,7 +268,7 @@ void func_843180AC(void) {
 
     if (sp24->unk_5A == 0x76) {
         do {
-            tmp = func_8436F6D8();
+            tmp = GetRandomU8();
         } while ((tmp == 0) || (tmp >= 0xA5) || tmp == 0x76);
 
         sp24->unk_5A = tmp;

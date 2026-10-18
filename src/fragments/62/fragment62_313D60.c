@@ -177,13 +177,13 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
 
         case 3:
             func_8436EEF0(3, 0x1E);
-            func_8436EF54();
+            ScreenTransition_Update();
             gBattleState.unk_00->unk_18 = 0;
             gBattleState.unk_00->unk_30 += 1;
 
         case 4:
-            func_8436EF54();
-            if (func_8436EF48() == 1) {
+            ScreenTransition_Update();
+            if (ScreenTransition_GetState() == 1) {
                 Battle_ResetSubstate();
                 func_843062F0();
                 func_843066E0(D_84390010[0]);
@@ -218,7 +218,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
                 func_843058A8(D_84390010[1]);
                 gBattleState.unk_00->unk_18 = 2;
                 func_8436EEF0(2, 0x1E);
-                func_8436EF54();
+                ScreenTransition_Update();
                 arg0->unk_24.fovy = 30.0f;
                 gBattleState.unk_00->unk_60 = 30.0f;
                 gBattleState.unk_00->unk_30 += 1;
@@ -230,8 +230,8 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             arg0->unk_24.fovy = 30.0f;
             gBattleState.unk_00->unk_60 = 30.0f;
             gBattleState.unk_00->unk_18 = 0;
-            func_8436EF54();
-            if (func_8436EF48() == 0) {
+            ScreenTransition_Update();
+            if (ScreenTransition_GetState() == 0) {
                 gBattleState.unk_00->unk_30 = 0;
                 if (gBattleState.unk_00->unk_44 == 1) {
                     SetAllPokemonActiveFlags();

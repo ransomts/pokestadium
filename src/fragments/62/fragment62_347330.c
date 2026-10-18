@@ -514,7 +514,7 @@ s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
         tmp1 = __cosf(temp_fa0) * sp9C;
         tmp2 = __sinf(temp_fa0) * sp9C;
 
-        func_8436EA0C(arg0->unk_01E, sp80 + tmp1, sp7C + sp84, sp78 + tmp2, 0xA, 0.75f);
+        ParticleEmitter_AddParticle(arg0->unk_01E, sp80 + tmp1, sp7C + sp84, sp78 + tmp2, 0xA, 0.75f);
         func_8436EB54(arg0->unk_01E);
     }
 
@@ -642,7 +642,7 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
     ptr = &D_843925E0[0];
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
-            arg0 = func_8436EDE8(ptr->unk_01E, arg0);
+            arg0 = ParticleEmitter_RenderAll(ptr->unk_01E, arg0);
         }
     }
 

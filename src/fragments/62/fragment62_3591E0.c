@@ -6,7 +6,7 @@
 
 static unk_D_843C49C0 D_843C49C0[2];
 
-static Vtx D_84389D60[] = {
+static Vtx gParticleQuadVertices[] = {
     VTX(-10, -10, 0, 0, 0, 0x88, 0x00, 0x00, 0x80),
     VTX(-10, 10, 0, 1984, 0, 0x88, 0x00, 0x00, 0x80),
     VTX(10, -10, 0, 0, 1984, 0x88, 0x00, 0x00, 0x80),
@@ -15,7 +15,7 @@ static Vtx D_84389D60[] = {
 static Gfx D_84389DA0[] = {
     gsSPEndDisplayList(),
 };
-static u32 D_84389DA8[] = {
+static u32 gParticleTextureData[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000B0019, 0x000B0000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000F0620, 0x000F0000, 0x00000000, 0x00000000,
@@ -74,7 +74,7 @@ static u32 D_84389DA8[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00030013,
     0x00030000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx D_8438A5A8[] = {
+static Gfx gParticleRenderDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -82,13 +82,13 @@ static Gfx D_8438A5A8[] = {
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
-    gsDPLoadTextureBlock(D_84389DA8, G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gsDPLoadTextureBlock(gParticleTextureData, G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT,
                        TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0),
     gsDPSetEnvColor(0, 64, 255, 0),
     gsDPSetRenderMode(G_RM_ZB_XLU_SURF, G_RM_ZB_XLU_SURF2),
-    gsSPVertex(D_84389D60, 4, 0),
+    gsSPVertex(gParticleQuadVertices, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 2, 1, 3, 0),
     gsSPEndDisplayList(),
 };
@@ -97,7 +97,7 @@ Gfx D_8438A640[] = {
     gsSPEndDisplayList(),
 };
 
-u32 D_8438A648[] = {
+u32 gBeamTexture[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00001112, 0x22111000, 0x00000000, 0x00000000,
     0x00123344, 0x44433210, 0x00000000, 0x00000000, 0x12345566, 0x66655432, 0x10000000, 0x00000001, 0x34566777,
     0x88776654, 0x31000000, 0x00000013, 0x45678899, 0x99988765, 0x43100000, 0x00000134, 0x67899AAA, 0xAAAA9987,
@@ -125,7 +125,7 @@ void func_8436E920(void) {
 
 s16 func_8436E944(void) {
     unk_D_843C49C0* var_a0;
-    unk_D_843C49C0_004* var_v1;
+    Particle* var_v1;
     s32 i;
     s32 j;
 
@@ -147,10 +147,10 @@ s16 func_8436E944(void) {
     return -1;
 }
 
-void func_8436EA0C(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
+void ParticleEmitter_AddParticle(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
     s32 i;
     unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
-    unk_D_843C49C0_004* var_v1;
+    Particle* var_v1;
 
     if (temp_v0->unk_000 != 0) {
         var_v1 = &temp_v0->unk_004[0];
@@ -171,7 +171,7 @@ void func_8436EA0C(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
 
 void func_8436EB54(s16 arg0) {
     unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
-    unk_D_843C49C0_004* var_v1;
+    Particle* var_v1;
     s32 i;
 
     if (temp_v0->unk_000 != 0) {
@@ -188,7 +188,7 @@ void func_8436EB54(s16 arg0) {
     }
 }
 
-Gfx* func_8436ECB0(Gfx* arg0, unk_D_843C49C0_004* arg1, MtxF* arg2) {
+Gfx* func_8436ECB0(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     f32 spCC;
     f32 spC8;
     f32 spC4;
@@ -211,16 +211,16 @@ Gfx* func_8436ECB0(Gfx* arg0, unk_D_843C49C0_004* arg1, MtxF* arg2) {
 
     gSPMatrix(arg0++, spBC, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, 200);
-    gSPDisplayList(arg0++, D_8438A5A8);
+    gSPDisplayList(arg0++, gParticleRenderDL);
     gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
 
     return arg0;
 }
 
-Gfx* func_8436EDE8(s16 arg0, Gfx* arg1) {
+Gfx* ParticleEmitter_RenderAll(s16 arg0, Gfx* arg1) {
     UNUSED s32 pad;
     unk_D_843C49C0* temp_s3 = &D_843C49C0[arg0];
-    unk_D_843C49C0_004* var_s0;
+    Particle* var_s0;
     s32 i;
     MtxF sp78;
     MtxF sp38;

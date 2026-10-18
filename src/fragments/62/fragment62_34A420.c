@@ -1029,7 +1029,7 @@ Gfx* func_84362084(Gfx* arg0) {
                                 vtx->v.ob[2] = z1;
 
                                 if ((y == 0) && (RAND(100) == 0)) {
-                                    func_8436EA0C(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
+                                    ParticleEmitter_AddParticle(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
                                 }
 
                                 vtx->v.cn[0] = ((gParticlePaletteR[x] * (0xFF - var_s2->unk_04)) +
@@ -1206,7 +1206,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     gSP1Triangle(arg0++, 8, 7, 6, 0);
                     break;
             }
-            arg0 = func_8436EDE8(sp1B4->unk_002, arg0);
+            arg0 = ParticleEmitter_RenderAll(sp1B4->unk_002, arg0);
         }
         sp1B4++;
     }

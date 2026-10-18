@@ -1,15 +1,15 @@
 #include "fragment62.h"
 #include "src/6A40.h"
 
-static unk_D_843AA880 D_843AA880[4];
+static WaterParticleEmitter gWaterParticleEmitters[4];
 
-static Vtx D_843898B0[] = {
+static Vtx gWaterSplashQuadVtx[] = {
     VTX(-30, 0, -20, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, -20, 0, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(-30, 0, 20, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, 20, 0, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
 };
-static Gfx D_843898F0[] = {
+static Gfx gWaterSplashDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -25,7 +25,7 @@ static Gfx D_843898F0[] = {
     gsSP2Triangles(0, 2, 1, 0, 2, 3, 1, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84389958[] = {
+static Gfx gWaterParticleDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -39,15 +39,15 @@ static Gfx D_84389958[] = {
     gsSPEndDisplayList(),
 };
 
-void func_84367CB0(void) {
+void WaterParticleSystem_ResetAll(void) {
     s32 i;
     s32 j;
     f32 temp_fa0;
-    unk_D_843AA880* var_a2;
-    unk_D_843AA880_034* var_v0;
+    WaterParticleEmitter* var_a2;
+    WaterParticleParticle* var_v0;
 
     temp_fa0 = func_8432FCD4() * 0.75f;
-    var_a2 = &D_843AA880[0];
+    var_a2 = &gWaterParticleEmitters[0];
 
     for (i = 0; i < 4; i++, var_a2++) {
         var_a2->unk_000 = 0;
@@ -66,10 +66,10 @@ void func_84367CB0(void) {
     }
 }
 
-void func_84367E2C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void WaterParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
-    unk_D_843AA880* var_v1;
-    unk_D_843AA880_034* var_s0;
+    WaterParticleEmitter* var_v1;
+    WaterParticleParticle* var_s0;
     s32 i;
     s32 j;
     Vec3f sp64;
@@ -78,7 +78,7 @@ void func_84367E2C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     sp64.x = arg0;
     sp64.y = arg1;
     sp64.z = arg2;
-    var_v1 = &D_843AA880[0];
+    var_v1 = &gWaterParticleEmitters[0];
 
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -118,7 +118,7 @@ void func_84367E2C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     }
 }
 
-void func_84368080(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
+void WaterParticle_CalcOffset(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     MtxF spB0;
     MtxF sp70;
     MtxF sp30;
@@ -130,8 +130,8 @@ void func_84368080(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     guMtxXFMF(spB0.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_84368140(unk_D_843AA880* arg0) {
-    unk_D_843AA880_034* var_v0 = &arg0->unk_034[0];
+void WaterParticleSystem_UpdateEmitter(WaterParticleEmitter* arg0) {
+    WaterParticleParticle* var_v0 = &arg0->unk_034[0];
     s32 i;
     f32 temp_fa0;
     f32 temp_fa1;
@@ -193,9 +193,9 @@ void func_84368140(unk_D_843AA880* arg0) {
     }
 }
 
-s32 func_843684CC(void) {
+s32 WaterParticleSystem_UpdateAll(void) {
     s32 i;
-    unk_D_843AA880* var_s0 = &D_843AA880[0];
+    WaterParticleEmitter* var_s0 = &gWaterParticleEmitters[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -203,7 +203,7 @@ s32 func_843684CC(void) {
             if (var_s0->unk_004 < var_s0->unk_002) {
                 var_s0->unk_000 = 0;
             } else {
-                func_84368140(var_s0);
+                WaterParticleSystem_UpdateEmitter(var_s0);
             }
         }
     }
@@ -211,12 +211,12 @@ s32 func_843684CC(void) {
     return 0;
 }
 
-Gfx* func_84368560(Gfx* arg0) {
+Gfx* WaterParticleSystem_Render(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    unk_D_843AA880* var_s4;
-    unk_D_843AA880_034* temp_s0;
+    WaterParticleEmitter* var_s4;
+    WaterParticleParticle* temp_s0;
     Mtx* temp_v0;
     Vec3f sp134;
     Vtx* var_s0;
@@ -229,7 +229,7 @@ Gfx* func_84368560(Gfx* arg0) {
     gDPLoadTextureBlock_4b(arg0++, gWaterTexture[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s4 = &D_843AA880[0];
+    var_s4 = &gWaterParticleEmitters[0];
     for (i = 0; i < 4; i++, var_s4++) {
         if (var_s4->unk_000 == 1) {
             guScale(&spB0, var_s4->unk_00C, var_s4->unk_00C, var_s4->unk_00C);
@@ -244,7 +244,7 @@ Gfx* func_84368560(Gfx* arg0) {
                 guMtxCatL(&spB0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_843898F0);
+                gSPDisplayList(arg0++, gWaterSplashDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -252,7 +252,7 @@ Gfx* func_84368560(Gfx* arg0) {
             var_s0 = var_s4->unk_018;
 
             for (j = 0; j < 15; j++) {
-                func_84368080(temp_s0->unk_08, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                WaterParticle_CalcOffset(temp_s0->unk_08, &sp134, temp_s0->unk_04, var_s4->unk_00C);
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {
                     var_s3 = 0;
@@ -267,7 +267,7 @@ Gfx* func_84368560(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                func_84368080(temp_s0->unk_08 + M_PI_F, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                WaterParticle_CalcOffset(temp_s0->unk_08 + M_PI_F, &sp134, temp_s0->unk_04, var_s4->unk_00C);
 
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {
@@ -287,7 +287,7 @@ Gfx* func_84368560(Gfx* arg0) {
 
             var_s0 = var_s4->unk_018;
 
-            gSPDisplayList(arg0++, D_84389958);
+            gSPDisplayList(arg0++, gWaterParticleDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

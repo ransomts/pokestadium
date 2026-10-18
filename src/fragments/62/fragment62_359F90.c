@@ -61,7 +61,7 @@ static u8 D_843C4DBF;
 static u8 D_843C4DC0;
 static u8 D_843C4DC1;
 static u8 D_843C4DC2;
-u16 D_843C4DC4;
+u16 gCurrentDamage;
 static u16 D_843C4DC6;
 static u16 D_843C4DC8;
 static u16 D_843C4DCA;
@@ -78,7 +78,7 @@ static s32 pad_D_843C4DF0[21];
 u8 D_843C4E44;
 u8 D_843C4E45;
 static s32 pad_D_843C4E48[252];
-unk_D_800FCB18* D_843C5238;
+unk_D_800FCB18* gCurrentBattleEntity;
 unk_D_800FCB18* D_843C523C;
 static unk_D_800FCB18 D_843C5240[2];
 
@@ -149,7 +149,7 @@ static u8 D_8438AE4C[] = { 2, 0x4B, 0x98, 0xA3 };
 void func_8436F6D0(void) {
 }
 
-u8 func_8436F6D8(void) {
+u8 GetRandomU8(void) {
     u8 var_v1;
     s32 ret;
 
@@ -168,7 +168,7 @@ u8 func_8436F6D8(void) {
     return ret;
 }
 
-u8 func_8436F788(void) {
+u8 GetRandomU8_Alt(void) {
     u8 var_v1;
     s32 ret;
 
@@ -186,7 +186,7 @@ u8 func_8436F788(void) {
     return ret;
 }
 
-void func_8436F838(s32 arg0, s32 arg1) {
+void ShowDamageMessage(s32 arg0, s32 arg1) {
     unk_D_800AE540_0004* temp_a3;
     unk_D_800FCB18* temp_a2_2;
     unk_D_84390010_654* temp_v1;
@@ -218,11 +218,11 @@ void func_8436F838(s32 arg0, s32 arg1) {
     }
 }
 
-void func_8436F9D8(s32 arg0, s32 arg1) {
+void ResetBattleAfterMove(s32 arg0, s32 arg1) {
     unk_D_800FCB18* sp1C = &D_84390010[arg0]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[arg1]->unk_654.unk_38;
 
-    func_8436F838(arg0, arg1);
+    ShowDamageMessage(arg0, arg1);
     D_843C4DC2 = 0;
     D_843C4DB3 = 0;
     sp1C->unk_44.unk_00 = 0;
@@ -271,16 +271,16 @@ void func_8436FA80(unk_D_84390010* arg0) {
 void func_8436FC10(void) {
     s32 temp_v0;
 
-    if (D_843C4DC4 >= 2) {
+    if (gCurrentDamage >= 2) {
         temp_v0 = 0;
         while (temp_v0 < 0xD9) {
-            temp_v0 = func_8436F6D8();
+            temp_v0 = GetRandomU8();
         }
-        D_843C4DC4 = (D_843C4DC4 * temp_v0) / 255;
+        gCurrentDamage = (gCurrentDamage * temp_v0) / 255;
     }
 }
 
-u16 func_8436FC7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+u16 CompareMovePriority(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     unk_D_800FCB18* ptr1 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* ptr2 = &arg1->unk_654.unk_38;
 
@@ -308,13 +308,13 @@ u16 func_8436FC7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
         return 1;
     }
 
-    if (func_8436F6D8() < 0x80) {
+    if (GetRandomU8() < 0x80) {
         return 0;
     }
     return 1;
 }
 
-s32 func_8436FD54(u8 arg0, u8* arg1, s32 arg2) {
+s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2) {
     while (arg2--) {
         if (arg0 == *arg1) {
             return 1;
@@ -330,7 +330,7 @@ void func_8436FD9C(void) {
 }
 
 s32 func_8436FDBC(void) {
-    func_84376768();
+    SpAttack_Main();
 
     if (D_843C4DA4 == 1) {
         return 0;
@@ -338,7 +338,7 @@ s32 func_8436FDBC(void) {
     return 1;
 }
 
-void func_8436FDF4(s32 arg0, PokemonData* arg1) {
+void ComputePokemonStat(s32 arg0, PokemonData* arg1) {
     u16 i;
     u16 spC;
     u16 spA;
@@ -437,19 +437,19 @@ void func_8436FDF4(s32 arg0, PokemonData* arg1) {
     }
 }
 
-void func_84370090(PokemonData* arg0) {
-    func_8436FDF4(0, arg0);
-    func_8436FDF4(1, arg0);
-    func_8436FDF4(2, arg0);
-    func_8436FDF4(3, arg0);
-    func_8436FDF4(4, arg0);
+void ComputeAllPokemonStats(PokemonData* arg0) {
+    ComputePokemonStat(0, arg0);
+    ComputePokemonStat(1, arg0);
+    ComputePokemonStat(2, arg0);
+    ComputePokemonStat(3, arg0);
+    ComputePokemonStat(4, arg0);
 }
 
-void func_843700F0(void) {
-    D_843C4DC4 = 0;
-    D_843C4DC6 = D_843C5238->unk_44.unk_02;
+void InitBattleParameters(void) {
+    gCurrentDamage = 0;
+    D_843C4DC6 = gCurrentBattleEntity->unk_44.unk_02;
     if (D_843C4DC6) {
-        if (D_843C5238->unk_44.unk_03 < 0x14) {
+        if (gCurrentBattleEntity->unk_44.unk_03 < 0x14) {
             D_843C4DCA = D_843C523C->unk_2C;
             if (D_843C523C->unk_4E & 4) {
                 D_843C4DCA *= 2;
@@ -457,9 +457,9 @@ void func_843700F0(void) {
 
             if (D_843C4DA5 != 0) {
                 D_843C4DCA = D_843C523C->unk_3A;
-                D_843C4DC8 = D_843C5238->unk_38;
+                D_843C4DC8 = gCurrentBattleEntity->unk_38;
             } else {
-                D_843C4DC8 = D_843C5238->unk_2A;
+                D_843C4DC8 = gCurrentBattleEntity->unk_2A;
             }
         } else {
             D_843C4DCA = D_843C523C->unk_30;
@@ -469,9 +469,9 @@ void func_843700F0(void) {
 
             if (D_843C4DA5 != 0) {
                 D_843C4DCA = D_843C523C->unk_3E;
-                D_843C4DC8 = D_843C5238->unk_3E;
+                D_843C4DC8 = gCurrentBattleEntity->unk_3E;
             } else {
-                D_843C4DC8 = D_843C5238->unk_30;
+                D_843C4DC8 = gCurrentBattleEntity->unk_30;
             }
         }
 
@@ -485,15 +485,15 @@ void func_843700F0(void) {
             }
         }
 
-        D_843C4DCC = D_843C5238->unk_26;
+        D_843C4DCC = gCurrentBattleEntity->unk_26;
         if (D_843C4DA5 != 0) {
             D_843C4DCC *= 2;
         }
     }
 }
 
-s32 func_84370260(void) {
-    s32 temp_v0 = D_843C5238->unk_44.unk_01;
+s32 UpdateDamageAccumulator(void) {
+    s32 temp_v0 = gCurrentBattleEntity->unk_44.unk_01;
 
     if (temp_v0 == 7) {
         D_843C4DCA >>= 1;
@@ -512,71 +512,71 @@ s32 func_84370260(void) {
         }
     }
 
-    D_843C4DC4 += (((((D_843C4DCC * 2) / 5) + 2) * D_843C4DC6 * D_843C4DC8) / D_843C4DCA) / 50;
-    if (D_843C4DC4 > 0x3E4) {
-        D_843C4DC4 = 0x3E4;
+    gCurrentDamage += (((((D_843C4DCC * 2) / 5) + 2) * D_843C4DC6 * D_843C4DC8) / D_843C4DCA) / 50;
+    if (gCurrentDamage > 0x3E4) {
+        gCurrentDamage = 0x3E4;
     }
-    D_843C4DC4 += 2;
+    gCurrentDamage += 2;
 
     return 1;
 }
 
-void func_843703BC(void) {
+void ProcessTurnEnd(void) {
     if (D_843C523C->unk_4D & 0x10) {
         if (gBattleState.unk_00->unk_48 == 0x14) {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_208, 0x2B);
-            if (D_843C523C->unk_59 < D_843C4DC4) {
+            if (D_843C523C->unk_59 < gCurrentDamage) {
                 D_843C523C->unk_4D &= 0xFFEF;
                 MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
                 WriteMessageCharOrString(D_843901A0->unk_208, 0x2C);
 
-                if ((D_8438AC60[0] == 1) && (D_843C5238->unk_44.unk_01 == 0x1D)) {
-                    func_84376768();
-                    D_843C5238->unk_4F = 1;
+                if ((D_8438AC60[0] == 1) && (gCurrentBattleEntity->unk_44.unk_01 == 0x1D)) {
+                    SpAttack_Main();
+                    gCurrentBattleEntity->unk_4F = 1;
                 }
 
-                if ((D_8438AC60[0] != 1) || (D_843C5238->unk_44.unk_01 != 7)) {
-                    D_843C5238->unk_44.unk_01 = 0;
+                if ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_01 != 7)) {
+                    gCurrentBattleEntity->unk_44.unk_01 = 0;
                 }
 
                 func_843061EC(D_84390010[gBattleState.unk_00->unk_2C], 0x1000);
             } else {
-                D_843C523C->unk_59 -= D_843C4DC4;
+                D_843C523C->unk_59 -= gCurrentDamage;
             }
         } else {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_208, 0x2B);
-            if (D_843C523C->unk_59 < D_843C4DC4) {
+            if (D_843C523C->unk_59 < gCurrentDamage) {
                 D_843C523C->unk_4D &= 0xFFEF;
                 MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
                 WriteMessageCharOrString(D_843901A0->unk_208, 0x2C);
 
-                if ((D_8438AC60[0] == 1) && (D_843C5238->unk_44.unk_01 == 0x1D)) {
-                    func_84376768();
-                    D_843C5238->unk_4F = 1;
+                if ((D_8438AC60[0] == 1) && (gCurrentBattleEntity->unk_44.unk_01 == 0x1D)) {
+                    SpAttack_Main();
+                    gCurrentBattleEntity->unk_4F = 1;
                 }
 
-                if ((D_8438AC60[0] != 1) || (D_843C5238->unk_44.unk_01 != 7)) {
-                    D_843C5238->unk_44.unk_01 = 0;
+                if ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_01 != 7)) {
+                    gCurrentBattleEntity->unk_44.unk_01 = 0;
                 }
 
                 func_843061EC(D_84390010[!gBattleState.unk_00->unk_2C], 0x1000);
             } else {
-                D_843C523C->unk_59 -= D_843C4DC4;
+                D_843C523C->unk_59 -= gCurrentDamage;
             }
         }
     } else if (D_84390288 == 0) {
-        if (D_843C4DC4 < D_843C523C->unk_0C) {
-            D_843C523C->unk_0C -= D_843C4DC4;
+        if (gCurrentDamage < D_843C523C->unk_0C) {
+            D_843C523C->unk_0C -= gCurrentDamage;
         } else {
-            D_843C4DC4 = D_843C523C->unk_0C;
+            gCurrentDamage = D_843C523C->unk_0C;
             D_843C523C->unk_0C = 0;
         }
     }
 }
 
-void func_843706E8(s32 arg0) {
+void DecrementMovePP(s32 arg0) {
     unk_D_800FCB18* temp_v0;
     unk_D_84390010_654* temp_a1;
     PokemonData* temp_a2;
@@ -605,11 +605,11 @@ void func_84370790(void) {
         var_v0 = D_8438ACB8;
     }
 
-    idx = D_843C5238->unk_5C[4];
+    idx = gCurrentBattleEntity->unk_5C[4];
     idx2 = D_843C523C->unk_5C[5];
     idx2 = 0xE - idx2;
 
-    var_a2 = (D_843C5238->unk_44.unk_04 * var_v0[idx - 1].unk_00) / var_v0[idx - 1].unk_01;
+    var_a2 = (gCurrentBattleEntity->unk_44.unk_04 * var_v0[idx - 1].unk_00) / var_v0[idx - 1].unk_01;
     if (var_a2 == 0) {
         var_a2 = 1;
     }
@@ -622,62 +622,62 @@ void func_84370790(void) {
     if (var_a2 >= 0x100) {
         var_a2 = 0xFF;
     }
-    D_843C5238->unk_44.unk_04 = var_a2;
+    gCurrentBattleEntity->unk_44.unk_04 = var_a2;
 }
 
 void func_843708A0(void) {
-    D_843C4DC4 = 0;
+    gCurrentDamage = 0;
     D_843C4DA4 = 1;
-    D_843C5238->unk_4C &= ~0x20;
+    gCurrentBattleEntity->unk_4C &= ~0x20;
 }
 
-void func_843708CC(void) {
-    if (D_843C5238->unk_44.unk_01 == 0x50) {
-        if (!(D_843C5238->unk_4D & 0x20) && (D_8438AC60[0] == 1)) {
-            D_843C5238->unk_4D |= 0x20;
+void HandleMoveEffectFlags(void) {
+    if (gCurrentBattleEntity->unk_44.unk_01 == 0x50) {
+        if (!(gCurrentBattleEntity->unk_4D & 0x20) && (D_8438AC60[0] == 1)) {
+            gCurrentBattleEntity->unk_4D |= 0x20;
         }
     }
 
-    if ((D_843C5238->unk_44.unk_01 == 8) && !(D_843C523C->unk_15 & 7)) {
+    if ((gCurrentBattleEntity->unk_44.unk_01 == 8) && !(D_843C523C->unk_15 & 7)) {
         func_843708A0();
         return;
     }
 
     if (D_843C523C->unk_4D & 0x10) {
-        if (D_843C5238->unk_44.unk_01 == 17) {
+        if (gCurrentBattleEntity->unk_44.unk_01 == 17) {
             return;
         }
 
-        if (D_843C5238->unk_44.unk_01 == 3 || D_843C5238->unk_44.unk_01 == 8 ||
-            ((D_8438AC60[0] == 1) && (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438ACB0, 5) != 0))) {
+        if (gCurrentBattleEntity->unk_44.unk_01 == 3 || gCurrentBattleEntity->unk_44.unk_01 == 8 ||
+            ((D_8438AC60[0] == 1) && (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ACB0, 5) != 0))) {
             func_843708A0();
             return;
         }
     }
 
     if (D_843C523C->unk_4C & 0x40) {
-        if (D_843C5238->unk_44.unk_01 != 0x11) {
+        if (gCurrentBattleEntity->unk_44.unk_01 != 0x11) {
             func_843708A0();
         }
     } else {
-        if ((((D_843C5238->unk_44.unk_01 >= 0x12) && (D_843C5238->unk_44.unk_01 < 0x1A)) ||
-             ((D_843C5238->unk_44.unk_01 >= 0x3A) && (D_843C5238->unk_44.unk_01 < 0x42))) &&
+        if ((((gCurrentBattleEntity->unk_44.unk_01 >= 0x12) && (gCurrentBattleEntity->unk_44.unk_01 < 0x1A)) ||
+             ((gCurrentBattleEntity->unk_44.unk_01 >= 0x3A) && (gCurrentBattleEntity->unk_44.unk_01 < 0x42))) &&
             (D_843C523C->unk_4D & 2)) {
             func_843708A0();
             return;
         }
 
-        if (!(D_843C5238->unk_4D & 1)) {
-            if ((D_8438AC60[0] != 1) || (D_843C5238->unk_44.unk_01 != 0x11)) {
+        if (!(gCurrentBattleEntity->unk_4D & 1)) {
+            if ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_01 != 0x11)) {
                 func_84370790();
             }
 
-            D_843C4DA2 = func_8436F788();
+            D_843C4DA2 = GetRandomU8_Alt();
             if (D_843C4DA2 == 0xFF) {
-                D_843C4DA2 = func_8436F788();
+                D_843C4DA2 = GetRandomU8_Alt();
             }
 
-            if (D_843C4DA2 >= D_843C5238->unk_44.unk_04) {
+            if (D_843C4DA2 >= gCurrentBattleEntity->unk_44.unk_04) {
                 func_843708A0();
             }
         }
@@ -803,32 +803,32 @@ void func_84370E78(void) {
 }
 
 void func_84370E80(void) {
-    D_843C5238->unk_44.unk_00 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_00;
-    D_843C5238->unk_44.unk_01 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_01;
-    D_843C5238->unk_44.unk_02 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_02;
-    D_843C5238->unk_44.unk_03 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_03;
-    D_843C5238->unk_44.unk_04 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_04;
-    D_843C5238->unk_44.unk_05 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_05;
+    gCurrentBattleEntity->unk_44.unk_00 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_00;
+    gCurrentBattleEntity->unk_44.unk_01 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_01;
+    gCurrentBattleEntity->unk_44.unk_02 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_02;
+    gCurrentBattleEntity->unk_44.unk_03 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_03;
+    gCurrentBattleEntity->unk_44.unk_04 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_04;
+    gCurrentBattleEntity->unk_44.unk_05 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_05;
 }
 
 void func_84370F40(void) {
     unk_D_800FCB18* sp24;
 
     if ((D_843C523C->unk_4D & 0x40) && ((D_843C523C->unk_5C[0]) != 0xD)) {
-        sp24 = D_843C5238;
+        sp24 = gCurrentBattleEntity;
 
-        D_843C5238 = D_843C523C;
-        D_843C5238->unk_44.unk_00 = 0;
-        D_843C5238->unk_44.unk_01 = 10;
+        gCurrentBattleEntity = D_843C523C;
+        gCurrentBattleEntity->unk_44.unk_00 = 0;
+        gCurrentBattleEntity->unk_44.unk_01 = 10;
 
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_348, 0x1F);
-        func_843741C4();
+        Battle_ApplyStatIncrease();
 
-        D_843C5238->unk_44.unk_00 = 0x63;
-        D_843C5238->unk_44.unk_01 = 0;
+        gCurrentBattleEntity->unk_44.unk_00 = 0x63;
+        gCurrentBattleEntity->unk_44.unk_01 = 0;
 
-        D_843C5238 = sp24;
+        gCurrentBattleEntity = sp24;
     }
 }
 
@@ -862,22 +862,22 @@ void func_8437114C(void) {
     s32 var_s0;
     s32 temp_v0;
 
-    switch (D_843C5238->unk_44.unk_01) {
+    switch (gCurrentBattleEntity->unk_44.unk_01) {
         case 38:
             break;
 
         case 40:
-            D_843C4DC4 = D_843C523C->unk_0C / 2;
-            if (D_843C4DC4 == 0) {
-                D_843C4DC4 = 1;
+            gCurrentDamage = D_843C523C->unk_0C / 2;
+            if (gCurrentDamage == 0) {
+                gCurrentDamage = 1;
             }
             break;
 
         case 41:
-            switch (D_843C5238->unk_44.unk_00) {
+            switch (gCurrentBattleEntity->unk_44.unk_00) {
                 case 0x45:
                 case 0x65:
-                    var_s0 = D_843C5238->unk_26;
+                    var_s0 = gCurrentBattleEntity->unk_26;
                     break;
 
                 case 0x31:
@@ -889,32 +889,32 @@ void func_8437114C(void) {
                     break;
 
                 default:
-                    var_s0 = D_843C5238->unk_26;
+                    var_s0 = gCurrentBattleEntity->unk_26;
                     var_s0 = (var_s0 >> 1) + var_s0;
                     do {
                         do {
-                            temp_v0 = func_8436F6D8();
+                            temp_v0 = GetRandomU8();
                         } while (temp_v0 == 0);
                     } while (temp_v0 >= var_s0);
                     var_s0 = temp_v0;
             }
-            D_843C4DC4 = var_s0;
+            gCurrentDamage = var_s0;
             break;
 
         default:
-            if (D_843C5238->unk_44.unk_02 != 0) {
-                if (D_843C5238->unk_4C & 4) {
-                    D_843C4DA0 += D_843C4DC4;
+            if (gCurrentBattleEntity->unk_44.unk_02 != 0) {
+                if (gCurrentBattleEntity->unk_4C & 4) {
+                    D_843C4DA0 += gCurrentDamage;
                 } else {
-                    D_843C4DA0 = D_843C4DC4;
+                    D_843C4DA0 = gCurrentDamage;
                 }
                 break;
             }
             return;
     }
 
-    if (D_843C4DC4 != 0) {
-        func_843703BC();
+    if (gCurrentDamage != 0) {
+        ProcessTurnEnd();
     }
 }
 
@@ -936,24 +936,24 @@ void func_843712CC(void) {
 
     D_843C4DA5 = 0;
 
-    if (D_843C5238->unk_44.unk_01 == 0x2D) {
+    if (gCurrentBattleEntity->unk_44.unk_01 == 0x2D) {
         gBattleState.unk_00->unk_48 = 0x10;
-        D_843C4DC4 >>= 3;
-        if (D_843C4DC4 == 0) {
-            D_843C4DC4++;
+        gCurrentDamage >>= 3;
+        if (gCurrentDamage == 0) {
+            gCurrentDamage++;
         }
 
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, 0x1C);
 
-        sp1C = D_843C5238;
-        D_843C5238 = D_843C523C;
+        sp1C = gCurrentBattleEntity;
+        gCurrentBattleEntity = D_843C523C;
         D_843C523C = sp1C;
         gBattleState.unk_00->unk_2C = !gBattleState.unk_00->unk_2C;
-        func_843703BC();
+        ProcessTurnEnd();
         gBattleState.unk_00->unk_2C = !gBattleState.unk_00->unk_2C;
-        D_843C523C = D_843C5238;
-        D_843C5238 = sp1C;
+        D_843C523C = gCurrentBattleEntity;
+        gCurrentBattleEntity = sp1C;
     }
 }
 
@@ -967,7 +967,7 @@ void func_843714D8(void) {
         &D_84390010[gBattleState.unk_00->unk_2C]->unk_724->unk_01C[D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_08];
     temp_a1 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
-    D_843C5238->unk_32[temp_a1->unk_0C]++;
+    gCurrentBattleEntity->unk_32[temp_a1->unk_0C]++;
     if (!(ptr->unk_4E & 8)) {
         temp_a0->unk_20[temp_a1->unk_0C]++;
     }
@@ -979,10 +979,10 @@ s32 func_84371564(void) {
     func_843714D8();
     do {
         do {
-            temp_v0 = func_8436F6D8();
+            temp_v0 = GetRandomU8();
         } while (temp_v0 == 0 || temp_v0 >= 0xA5);
     } while (temp_v0 == 0x76);
-    D_843C5238->unk_5A = temp_v0;
+    gCurrentBattleEntity->unk_5A = temp_v0;
     func_84370E80();
     return 1;
 }
@@ -990,57 +990,57 @@ s32 func_84371564(void) {
 void func_843715C0(void) {
     u16 var_a0;
 
-    if (D_843C5238->unk_12 != 0xFFFF) {
-        D_843C5238->unk_0E = D_843C5238->unk_12;
+    if (gCurrentBattleEntity->unk_12 != 0xFFFF) {
+        gCurrentBattleEntity->unk_0E = gCurrentBattleEntity->unk_12;
     } else {
-        D_843C5238->unk_0E = D_843C5238->unk_0C;
+        gCurrentBattleEntity->unk_0E = gCurrentBattleEntity->unk_0C;
     }
 
-    var_a0 = (D_843C5238->unk_28 >> 4) & 0xFFFF;
+    var_a0 = (gCurrentBattleEntity->unk_28 >> 4) & 0xFFFF;
     if (var_a0 == 0) {
         var_a0++;
     }
 
-    if (D_843C5238->unk_4E & 1) {
-        D_843C5238->unk_51++;
-        var_a0 *= D_843C5238->unk_51;
+    if (gCurrentBattleEntity->unk_4E & 1) {
+        gCurrentBattleEntity->unk_51++;
+        var_a0 *= gCurrentBattleEntity->unk_51;
     }
 
-    if (D_843C5238->unk_0E < var_a0) {
-        D_843C5238->unk_0E = 0;
+    if (gCurrentBattleEntity->unk_0E < var_a0) {
+        gCurrentBattleEntity->unk_0E = 0;
     } else {
-        D_843C5238->unk_0E -= var_a0;
+        gCurrentBattleEntity->unk_0E -= var_a0;
     }
 
-    D_843C5238->unk_10 = D_843C5238->unk_0E;
+    gCurrentBattleEntity->unk_10 = gCurrentBattleEntity->unk_0E;
 }
 
 void func_8437166C(void) {
     u16 var_a0;
 
-    if (!(D_843C5238->unk_15 & 0x18)) {
-        if (D_843C5238->unk_12 != 0xFFFF) {
-            D_843C5238->unk_10 = D_843C5238->unk_12;
+    if (!(gCurrentBattleEntity->unk_15 & 0x18)) {
+        if (gCurrentBattleEntity->unk_12 != 0xFFFF) {
+            gCurrentBattleEntity->unk_10 = gCurrentBattleEntity->unk_12;
         } else {
-            D_843C5238->unk_10 = D_843C5238->unk_0C;
+            gCurrentBattleEntity->unk_10 = gCurrentBattleEntity->unk_0C;
         }
     }
 
-    var_a0 = (D_843C5238->unk_28 >> 4) & 0xFFFF;
+    var_a0 = (gCurrentBattleEntity->unk_28 >> 4) & 0xFFFF;
     if (var_a0 == 0) {
         var_a0++;
     }
 
-    if (D_843C5238->unk_4E & 1) {
-        D_843C5238->unk_51++;
-        var_a0 *= D_843C5238->unk_51;
+    if (gCurrentBattleEntity->unk_4E & 1) {
+        gCurrentBattleEntity->unk_51++;
+        var_a0 *= gCurrentBattleEntity->unk_51;
     }
 
-    if (D_843C5238->unk_10 < var_a0) {
-        var_a0 = D_843C5238->unk_10;
-        D_843C5238->unk_10 = 0;
+    if (gCurrentBattleEntity->unk_10 < var_a0) {
+        var_a0 = gCurrentBattleEntity->unk_10;
+        gCurrentBattleEntity->unk_10 = 0;
     } else {
-        D_843C5238->unk_10 -= var_a0;
+        gCurrentBattleEntity->unk_10 -= var_a0;
     }
 
     D_843C523C->unk_10 = D_843C523C->unk_0C;
@@ -1056,8 +1056,8 @@ s32 func_8437176C(void) {
         return 0;
     }
 
-    if (D_843C5238->unk_15 & 0x18) {
-        if (D_843C5238->unk_15 & 8) {
+    if (gCurrentBattleEntity->unk_15 & 0x18) {
+        if (gCurrentBattleEntity->unk_15 & 8) {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_248, 0);
         } else {
@@ -1068,13 +1068,13 @@ s32 func_8437176C(void) {
         D_843C523C->unk_0E = D_843C523C->unk_0C;
     }
 
-    if (D_843C5238->unk_4D & 0x80) {
+    if (gCurrentBattleEntity->unk_4D & 0x80) {
         func_8437166C();
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_288, 2);
     }
 
-    if (D_843C5238->unk_0C != 0) {
+    if (gCurrentBattleEntity->unk_0C != 0) {
         return 0;
     }
     return 1;
@@ -1092,7 +1092,7 @@ s32 func_843718E4(void) {
         return 0;
     }
 
-    D_843C5238->unk_5A = D_843C523C->unk_58;
+    gCurrentBattleEntity->unk_5A = D_843C523C->unk_58;
     func_843714D8();
     func_84370E80();
     return 1;
@@ -1109,17 +1109,17 @@ void func_84371974(void) {
 
     var_v0 = 3;
 
-    temp_a1 = D_843C5238->unk_16[6];
-    temp_a3 = D_843C5238->unk_16[7];
+    temp_a1 = gCurrentBattleEntity->unk_16[6];
+    temp_a3 = gCurrentBattleEntity->unk_16[7];
 
     var_v1 = D_843C523C->unk_16[6];
     temp_a0 = D_843C523C->unk_16[7];
 
-    temp_t1 = D_843C5238->unk_44.unk_03;
+    temp_t1 = gCurrentBattleEntity->unk_44.unk_03;
 
-    if ((D_8438AC60[0] != 1) || (D_843C5238->unk_44.unk_00 != 0xA5)) {
+    if ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_00 != 0xA5)) {
         if ((temp_t1 == temp_a1) || (temp_t1 == temp_a3)) {
-            D_843C4DC4 += D_843C4DC4 >> 1;
+            gCurrentDamage += gCurrentDamage >> 1;
             D_843C4DB3 |= 0x80;
         }
 
@@ -1134,9 +1134,9 @@ void func_84371974(void) {
                     }
                 }
 
-                D_843C4DC4 = (D_843C4DC4 * var_a3->unk_02) / 10;
+                gCurrentDamage = (gCurrentDamage * var_a3->unk_02) / 10;
 
-                if (D_843C4DC4 == 0) {
+                if (gCurrentDamage == 0) {
                     D_843C4DA4 = 1;
                 }
             }
@@ -1161,7 +1161,7 @@ void func_84371974(void) {
 }
 
 s32 func_84371B3C(void) {
-    if (D_843C5238->unk_5A != 0x44) {
+    if (gCurrentBattleEntity->unk_5A != 0x44) {
         return 1;
     }
 
@@ -1176,19 +1176,19 @@ s32 func_84371B3C(void) {
     }
 
     if ((D_843C523C->unk_44.unk_03 == 0) || (D_843C523C->unk_44.unk_03 == 1)) {
-        if (D_843C4DC4 == 0) {
+        if (gCurrentDamage == 0) {
             return 0;
         }
 
-        if (D_843C4DC4 >= 0x8000) {
-            D_843C4DC4 = 0xFFFF;
+        if (gCurrentDamage >= 0x8000) {
+            gCurrentDamage = 0xFFFF;
         } else {
-            D_843C4DC4 *= 2;
+            gCurrentDamage *= 2;
         }
 
         D_843C4DA4 = 0;
         D_843C4DA5 = 0;
-        func_843708CC();
+        HandleMoveEffectFlags();
         return 0;
     }
     return 0;
@@ -1200,29 +1200,29 @@ s32 func_84371C18(void) {
 
     D_843C4DA5 = 0;
     if (D_8438AC60[0] == 1) {
-        sp18 = (D_80070F84[D_843C5238->unk_0B].baseDefense + 0x4C) >> 2;
+        sp18 = (D_80070F84[gCurrentBattleEntity->unk_0B].baseDefense + 0x4C) >> 2;
     } else {
-        sp18 = D_80070F84[D_843C5238->unk_0B].baseDefense >> 1;
+        sp18 = D_80070F84[gCurrentBattleEntity->unk_0B].baseDefense >> 1;
     }
 
-    if (D_843C5238->unk_44.unk_02 == 0) {
+    if (gCurrentBattleEntity->unk_44.unk_02 == 0) {
         return 0;
     }
 
     if (D_8438AC60[0] == 1) {
-        if (D_843C5238->unk_4D & 4) {
+        if (gCurrentBattleEntity->unk_4D & 4) {
             sp18 = (sp18 * 4) + 0xA0;
         } else {
             sp18 *= 2;
         }
 
-        if (func_8436FD54(D_843C5238->unk_44.unk_00, D_8438AE4C, 4) != 0) {
+        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, D_8438AE4C, 4) != 0) {
             sp18 *= 4;
         } else {
             sp18 >>= 1;
         }
     } else {
-        if (D_843C5238->unk_4D & 4) {
+        if (gCurrentBattleEntity->unk_4D & 4) {
             sp18 >>= 1;
         } else {
             sp18 *= 2;
@@ -1231,7 +1231,7 @@ s32 func_84371C18(void) {
             }
         }
 
-        if (func_8436FD54(D_843C5238->unk_44.unk_00, D_8438AE4C, 4) != 0) {
+        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, D_8438AE4C, 4) != 0) {
             sp18 *= 4;
             if (sp18 >= 0x100) {
                 sp18 = 0xFF;
@@ -1249,7 +1249,7 @@ s32 func_84371C18(void) {
         sp18 = 1;
     }
 
-    D_843C4DA2 = func_8436F6D8();
+    D_843C4DA2 = GetRandomU8();
     if (D_843C4DA2 >= sp18) {
         return 0;
     }
@@ -1267,13 +1267,13 @@ s32 func_84371DCC(void) {
     temp_v0 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     temp_v1 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    if (D_843C5238->unk_15 & 7) {
-        D_843C5238->unk_15 = (D_843C5238->unk_15 & 7) - 1;
+    if (gCurrentBattleEntity->unk_15 & 7) {
+        gCurrentBattleEntity->unk_15 = (gCurrentBattleEntity->unk_15 & 7) - 1;
         if (temp_v1->unk_16[temp_v0->unk_08 + temp_v0->unk_2B * 3] != 0) {
             temp_v1->unk_16[temp_v0->unk_08 + temp_v0->unk_2B * 3]--;
         }
 
-        if (D_843C5238->unk_15 != 0) {
+        if (gCurrentBattleEntity->unk_15 != 0) {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_088, 5);
             gBattleState.unk_00->unk_48 = 0x11;
@@ -1283,14 +1283,14 @@ s32 func_84371DCC(void) {
             gBattleState.unk_00->unk_48 = 0x11;
         }
 
-        D_843C5238->unk_58 = 0;
+        gCurrentBattleEntity->unk_58 = 0;
         return 0;
     }
 
-    if (D_843C5238->unk_15 & 0x20) {
+    if (gCurrentBattleEntity->unk_15 & 0x20) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, 7);
-        D_843C5238->unk_58 = 0;
+        gCurrentBattleEntity->unk_58 = 0;
         gBattleState.unk_00->unk_48 = 0x11;
         return 0;
     }
@@ -1302,19 +1302,19 @@ s32 func_84371DCC(void) {
         return 0;
     }
 
-    if (D_843C5238->unk_4C & 8) {
+    if (gCurrentBattleEntity->unk_4C & 8) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, 9);
-        D_843C5238->unk_4D &= 0xFFDF;
-        D_843C5238->unk_4C &= 0xFFF7;
+        gCurrentBattleEntity->unk_4D &= 0xFFDF;
+        gCurrentBattleEntity->unk_4C &= 0xFFF7;
         gBattleState.unk_00->unk_48 = 0x1C;
         return 0;
     }
 
-    if (D_843C5238->unk_4D & 0x20) {
-        D_843C5238->unk_4D &= ~0x20;
+    if (gCurrentBattleEntity->unk_4D & 0x20) {
+        gCurrentBattleEntity->unk_4D &= ~0x20;
         if (D_8438AC60[0] == 1) {
-            D_843C4DC4 = 0;
+            gCurrentDamage = 0;
         }
         gBattleState.unk_00->unk_48 = 0x11;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
@@ -1322,92 +1322,92 @@ s32 func_84371DCC(void) {
         return 0;
     }
 
-    if (D_843C5238->unk_52 != 0) {
-        D_843C5238->unk_52--;
-        if (!(D_843C5238->unk_52 & 0xF)) {
-            D_843C5238->unk_52 = 0;
-            D_843C5238->unk_57 = 0;
+    if (gCurrentBattleEntity->unk_52 != 0) {
+        gCurrentBattleEntity->unk_52--;
+        if (!(gCurrentBattleEntity->unk_52 & 0xF)) {
+            gCurrentBattleEntity->unk_52 = 0;
+            gCurrentBattleEntity->unk_57 = 0;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_388, 0xB);
         }
     }
 
-    if (D_843C5238->unk_4C & 0x80) {
-        D_843C5238->unk_50--;
-        if (D_843C5238->unk_50 == 0) {
-            D_843C5238->unk_4C &= 0xFF7F;
+    if (gCurrentBattleEntity->unk_4C & 0x80) {
+        gCurrentBattleEntity->unk_50--;
+        if (gCurrentBattleEntity->unk_50 == 0) {
+            gCurrentBattleEntity->unk_4C &= 0xFF7F;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_188, 0xC);
         } else {
             func_84317EDC();
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_188, 0xD);
-            D_843C4DA2 = func_8436F6D8();
+            D_843C4DA2 = GetRandomU8();
             if (D_843C4DA2 >= 0x80) {
                 func_843180AC();
                 gBattleState.unk_00->unk_48 = 0x14;
-                D_843C5238->unk_4C &= 0x80;
+                gCurrentBattleEntity->unk_4C &= 0x80;
                 WriteMessageCharOrString(D_843901A0->unk_148, 0xE);
 
                 sp26 = D_843C523C->unk_2C;
-                D_843C523C->unk_2C = D_843C5238->unk_2C;
-                sp25 = D_843C5238->unk_44.unk_01;
-                D_843C5238->unk_44.unk_01 = 0;
+                D_843C523C->unk_2C = gCurrentBattleEntity->unk_2C;
+                sp25 = gCurrentBattleEntity->unk_44.unk_01;
+                gCurrentBattleEntity->unk_44.unk_01 = 0;
                 D_843C4DA5 = 0;
-                D_843C5238->unk_44.unk_02 = 0x28;
-                D_843C5238->unk_44.unk_03 = 0;
-                func_843700F0();
-                func_84370260();
-                D_843C5238->unk_44.unk_01 = sp25;
+                gCurrentBattleEntity->unk_44.unk_02 = 0x28;
+                gCurrentBattleEntity->unk_44.unk_03 = 0;
+                InitBattleParameters();
+                UpdateDamageAccumulator();
+                gCurrentBattleEntity->unk_44.unk_01 = sp25;
                 D_843C523C->unk_2C = sp26;
 
-                sp2C = D_843C5238;
-                D_843C5238 = D_843C523C;
+                sp2C = gCurrentBattleEntity;
+                gCurrentBattleEntity = D_843C523C;
                 D_843C523C = sp2C;
-                func_843703BC();
-                D_843C523C = D_843C5238;
-                D_843C5238 = sp2C;
+                ProcessTurnEnd();
+                D_843C523C = gCurrentBattleEntity;
+                gCurrentBattleEntity = sp2C;
                 goto label1;
             }
         }
     }
 
-    if ((D_843C5238->unk_57 != 0) && (D_843C5238->unk_57 == D_843C5238->unk_5A)) {
-        D_843C5238->unk_4C &= 0xFFEF;
-        MessageBank_SetPointer_0x14_0x2A(0x1D, (u32)gMoveStrings[D_843C5238->unk_5A - 1].unk_04);
+    if ((gCurrentBattleEntity->unk_57 != 0) && (gCurrentBattleEntity->unk_57 == gCurrentBattleEntity->unk_5A)) {
+        gCurrentBattleEntity->unk_4C &= 0xFFEF;
+        MessageBank_SetPointer_0x14_0x2A(0x1D, (u32)gMoveStrings[gCurrentBattleEntity->unk_5A - 1].unk_04);
         WriteMessageCharOrString(D_843901A0->unk_088, 0xF);
         gBattleState.unk_00->unk_48 = 0x11;
         return 0;
     }
 
-    if (D_843C5238->unk_15 & 0x40) {
-        D_843C4DA2 = func_8436F6D8();
+    if (gCurrentBattleEntity->unk_15 & 0x40) {
+        D_843C4DA2 = GetRandomU8();
         if (D_843C4DA2 < 0x3F) {
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_088, 0x10);
             gBattleState.unk_00->unk_48 = 0x1F;
-            D_843C4DC4 = 0;
+            gCurrentDamage = 0;
         label1:
-            D_843C5238->unk_4C &= 0xFF8C;
+            gCurrentBattleEntity->unk_4C &= 0xFF8C;
             return 0;
         }
     }
 
-    if (D_843C5238->unk_4C & 1) {
-        D_843C5238->unk_44.unk_00 = 0;
-        D_843C5238->unk_54 += D_843C4DC4;
-        D_843C5238->unk_4F -= 1;
-        if (D_843C5238->unk_4F != 0) {
+    if (gCurrentBattleEntity->unk_4C & 1) {
+        gCurrentBattleEntity->unk_44.unk_00 = 0;
+        gCurrentBattleEntity->unk_54 += gCurrentDamage;
+        gCurrentBattleEntity->unk_4F -= 1;
+        if (gCurrentBattleEntity->unk_4F != 0) {
             gBattleState.unk_00->unk_48 = 0x1B;
             return 0;
         }
-        D_843C5238->unk_4C &= 0xFFFE;
+        gCurrentBattleEntity->unk_4C &= 0xFFFE;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_0C8, 0x11);
-        D_843C5238->unk_44.unk_02 = 1;
+        gCurrentBattleEntity->unk_44.unk_02 = 1;
 
-        D_843C4DC4 = D_843C5238->unk_54 * 2;
-        if (!D_843C4DC4) {
+        gCurrentDamage = gCurrentBattleEntity->unk_54 * 2;
+        if (!gCurrentDamage) {
             D_843C4DA4 = 1;
         }
 
@@ -1415,36 +1415,36 @@ s32 func_84371DCC(void) {
             D_843C4DA4 = 1;
         }
 
-        D_843C5238->unk_54 = 0;
-        D_843C5238->unk_44.unk_00 = 0x75;
+        gCurrentBattleEntity->unk_54 = 0;
+        gCurrentBattleEntity->unk_44.unk_00 = 0x75;
         return 5;
     }
 
-    if (D_843C5238->unk_4C & 2) {
-        D_843C5238->unk_44.unk_00 = 0x25;
+    if (gCurrentBattleEntity->unk_4C & 2) {
+        gCurrentBattleEntity->unk_44.unk_00 = 0x25;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_0C8, 0x12);
-        D_843C5238->unk_4F -= 1;
-        if (D_843C5238->unk_4F != 0) {
+        gCurrentBattleEntity->unk_4F -= 1;
+        if (gCurrentBattleEntity->unk_4F != 0) {
             return 4;
         }
 
         WriteMessageCharOrString(D_843901A0->unk_188, -0x45);
-        D_843C5238->unk_4C &= 0xFFFD;
-        D_843C5238->unk_4C |= 0x80;
-        D_843C5238->unk_50 = (func_8436F6D8() & 3) + 2;
+        gCurrentBattleEntity->unk_4C &= 0xFFFD;
+        gCurrentBattleEntity->unk_4C |= 0x80;
+        gCurrentBattleEntity->unk_50 = (GetRandomU8() & 3) + 2;
         return 4;
     }
 
-    if (D_843C5238->unk_4C & 0x20) {
+    if (gCurrentBattleEntity->unk_4C & 0x20) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_0C8, 0x13);
-        D_843C5238->unk_4F -= 1;
+        gCurrentBattleEntity->unk_4F -= 1;
         return 6;
     }
 
-    if (D_843C5238->unk_4D & 0x40) {
-        D_843C5238->unk_44.unk_01 = 0;
+    if (gCurrentBattleEntity->unk_4D & 0x40) {
+        gCurrentBattleEntity->unk_44.unk_01 = 0;
         return 3;
     }
     return 2;
@@ -1457,7 +1457,7 @@ void func_84372670(void) {
     UNUSED s32 pad;
     char sp2C[8];
 
-    if (D_843C5238->unk_5A != 0xFF) {
+    if (gCurrentBattleEntity->unk_5A != 0xFF) {
         D_843C4DA4 = 0;
         D_843C4DB5 = 0;
         D_843C4DA9 = 0;
@@ -1466,48 +1466,48 @@ void func_84372670(void) {
         switch (func_84371DCC()) {
             case 2:
                 func_84370E80();
-                if (D_843C5238->unk_4C & 0x10) {
-                    D_843C5238->unk_4C &= ~0x50;
+                if (gCurrentBattleEntity->unk_4C & 0x10) {
+                    gCurrentBattleEntity->unk_4C &= ~0x50;
                     func_843061EC(D_84390010[gBattleState.unk_00->unk_2C], 8);
                 } else {
                 block_5:
-                    switch (D_843C5238->unk_44.unk_01) {
+                    switch (gCurrentBattleEntity->unk_44.unk_01) {
                         case 0x27:
                         case 0x2B:
                             if (D_8438AC60[0] == 1) {
-                                D_843C4DC4 = 0;
+                                gCurrentDamage = 0;
                             }
-                            func_84376768();
-                            D_843C5238->unk_58 = D_843C5238->unk_5A;
+                            SpAttack_Main();
+                            gCurrentBattleEntity->unk_58 = gCurrentBattleEntity->unk_5A;
                             return;
                     }
                 }
 
             case 3:
                 DetermineMessageCategoryAndDisplay();
-                func_843706E8(gBattleState.unk_00->unk_2C);
+                DecrementMovePP(gBattleState.unk_00->unk_2C);
 
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438ADEC, 0x10) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ADEC, 0x10) != 0) {
                     if (D_8438AC60[0] == 1) {
-                        D_843C4DC4 = 0;
+                        gCurrentDamage = 0;
                     }
-                    func_84376768();
+                    SpAttack_Main();
                     return;
                 }
 
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438ADFC, 1) != 0) {
-                    func_84376768();
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ADFC, 1) != 0) {
+                    SpAttack_Main();
                 }
 
             case 4:
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438AE00, 2) == 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE00, 2) == 0) {
                     func_84371C18();
                     if (func_84371B3C() == 0) {
                         goto case_5;
                     }
 
-                    func_843700F0();
-                    if (func_84370260() == 0) {
+                    InitBattleParameters();
+                    if (UpdateDamageAccumulator() == 0) {
                         goto case_6;
                     }
 
@@ -1516,14 +1516,14 @@ void func_84372670(void) {
                 }
 
                 if (D_8438AC60[0] == 1) {
-                    D_843C5238->unk_44.unk_04 = gMoveBattleData[D_843C5238->unk_5A - 1].unk_04;
+                    gCurrentBattleEntity->unk_44.unk_04 = gMoveBattleData[gCurrentBattleEntity->unk_5A - 1].unk_04;
                 }
-                func_843708CC();
+                HandleMoveEffectFlags();
 
             case 5:
             case_5:
                 if (D_843C4DA4 != 0) {
-                    switch (D_843C5238->unk_44.unk_01) {
+                    switch (gCurrentBattleEntity->unk_44.unk_01) {
                         case 7:
                             break;
                     }
@@ -1534,7 +1534,7 @@ void func_84372670(void) {
 
             case 6:
             case_6:
-                switch (D_843C5238->unk_44.unk_01) {
+                switch (gCurrentBattleEntity->unk_44.unk_01) {
                     case 9:
                         if (func_843718E4() == 0) {
                             goto end;
@@ -1547,15 +1547,15 @@ void func_84372670(void) {
                         goto block_5;
                 }
 
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438AE04, 0x1B) != 0) {
-                    func_84376768();
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE04, 0x1B) != 0) {
+                    SpAttack_Main();
                     return;
                 }
 
                 if (D_843C4DA4 != 0) {
                     func_843712CC();
 
-                    if (D_843C5238->unk_44.unk_01 != 7) {
+                    if (gCurrentBattleEntity->unk_44.unk_01 != 7) {
                         goto end;
                     }
                 } else {
@@ -1565,15 +1565,15 @@ void func_84372670(void) {
                     D_843C4DA9 = 1;
                 }
 
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438AE20, 0xA) != 0) {
-                    func_84376768();
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE20, 0xA) != 0) {
+                    SpAttack_Main();
                 }
 
                 if (D_843C523C->unk_0C == 0) {
                     if (D_8438AC60[0] == 1) {
-                        switch (D_843C5238->unk_44.unk_01) {
+                        switch (gCurrentBattleEntity->unk_44.unk_01) {
                             case 0x50:
-                                D_843C4DC4 = 0;
+                                gCurrentDamage = 0;
                                 return;
                         }
                     }
@@ -1582,29 +1582,29 @@ void func_84372670(void) {
 
                 func_84370F40();
 
-                if (D_843C5238->unk_4C & 4) {
-                    D_843C5238->unk_4F -= 1;
-                    if (D_843C5238->unk_4F != 0) {
+                if (gCurrentBattleEntity->unk_4C & 4) {
+                    gCurrentBattleEntity->unk_4F -= 1;
+                    if (gCurrentBattleEntity->unk_4F != 0) {
                         goto loop_4F;
                     }
-                    D_843C5238->unk_4C &= ~4;
-                    sprintf(sp2C, D_8438DC00, D_843C5238->unk_54);
-                    MessageBank_SetPointer_1_9(2, D_843C5238->unk_54);
+                    gCurrentBattleEntity->unk_4C &= ~4;
+                    sprintf(sp2C, D_8438DC00, gCurrentBattleEntity->unk_54);
+                    MessageBank_SetPointer_1_9(2, gCurrentBattleEntity->unk_54);
                     WriteMessageCharOrString(D_843901A0->unk_3C8, 4);
                     gBattleState.unk_00->unk_1A = 1;
-                    D_843C5238->unk_54 = 0;
-                    D_843C4DC4 = D_843C4DA0;
+                    gCurrentBattleEntity->unk_54 = 0;
+                    gCurrentDamage = D_843C4DA0;
                 }
 
-                if (D_843C5238->unk_44.unk_01 == 0) {
+                if (gCurrentBattleEntity->unk_44.unk_01 == 0) {
                     goto end;
                 }
 
-                if (func_8436FD54(D_843C5238->unk_44.unk_01, D_8438AE2C, 0xF) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE2C, 0xF) != 0) {
                     goto end;
                 }
 
-                func_84376768();
+                SpAttack_Main();
                 goto end;
         }
     }
@@ -1802,19 +1802,19 @@ s32 func_843732B8(void) {
         func_84373018(D_84390010[!gBattleState.unk_00->unk_2C]);
     }
 
-    if (D_843C5238->unk_0C == 0) {
+    if (gCurrentBattleEntity->unk_0C == 0) {
         func_84373018(D_84390010[gBattleState.unk_00->unk_2C]);
     }
 
-    if ((D_843C5238->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (D_843C5238->unk_12 == 0)) {
+    if ((gCurrentBattleEntity->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (gCurrentBattleEntity->unk_12 == 0)) {
         func_84372ED0(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
-    } else if ((D_843C5238->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (D_843C5238->unk_15 & 0x18) &&
-               (D_843C5238->unk_0E == 0)) {
+    } else if ((gCurrentBattleEntity->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (gCurrentBattleEntity->unk_15 & 0x18) &&
+               (gCurrentBattleEntity->unk_0E == 0)) {
         func_84372C40(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
-    } else if ((D_843C5238->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (D_843C5238->unk_4D & 0x80) &&
-               (D_843C5238->unk_10 == 0)) {
+    } else if ((gCurrentBattleEntity->unk_0C != 0) && (D_843C523C->unk_0C != 0) && (gCurrentBattleEntity->unk_4D & 0x80) &&
+               (gCurrentBattleEntity->unk_10 == 0)) {
         func_84372D88(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
     }
@@ -1846,7 +1846,7 @@ void func_8437345C(void) {
     func_84370ADC(D_84390010[0]);
     func_84370ADC(D_84390010[1]);
 
-    D_843C5238 = sp1C;
+    gCurrentBattleEntity = sp1C;
     D_843C523C = sp18;
     func_84372670();
     func_8437176C();
@@ -1880,7 +1880,7 @@ void func_84373570(unk_D_84390010* arg0) {
     gBattleState.unk_00->unk_48 = 0;
     gBattleState.unk_00->unk_4C = 0;
 
-    D_843C5238 = ptr1;
+    gCurrentBattleEntity = ptr1;
     D_843C523C = ptr2;
 
     func_8436FA80(arg0);
@@ -1889,8 +1889,8 @@ void func_84373570(unk_D_84390010* arg0) {
     func_84370B7C(arg0);
 
     if (arg0 == D_84390010[0]) {
-        func_8436F9D8(0, 1);
+        ResetBattleAfterMove(0, 1);
     } else {
-        func_8436F9D8(1, 0);
+        ResetBattleAfterMove(1, 0);
     }
 }

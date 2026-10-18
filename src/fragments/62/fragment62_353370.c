@@ -2,9 +2,9 @@
 #include "src/6A40.h"
 #include "src/math_util.h"
 
-static unk_D_843AB940 D_843AB940[4];
+static ParticleEmitter D_843AB940[4];
 
-static Gfx D_843899B0[] = {
+static Gfx Gfx_ParticleRenderDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -18,11 +18,11 @@ static Gfx D_843899B0[] = {
     gsSPEndDisplayList(),
 };
 
-void func_84368AB0(void) {
+void ResetParticleEmitters(void) {
     s32 i;
     s32 j;
-    unk_D_843AB940* var_a2 = &D_843AB940[0];
-    unk_D_843AB940_038* var_v0;
+    ParticleEmitter* var_a2 = &D_843AB940[0];
+    ParticleState* var_v0;
 
     for (i = 0; i < 4; i++, var_a2++) {
         var_a2->unk_000 = 0;
@@ -40,12 +40,12 @@ void func_84368AB0(void) {
     }
 }
 
-void func_84368C04(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void CreateParticleEmitter(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     s32 i;
     s32 j;
-    unk_D_843AB940* var_v1;
-    unk_D_843AB940_038* var_s0;
+    ParticleEmitter* var_v1;
+    ParticleState* var_s0;
     Vec3f sp64;
     Vec3f sp58;
 
@@ -90,7 +90,7 @@ void func_84368C04(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     }
 }
 
-void func_84368E78(f32 arg0, Vec3f* arg1, f32 arg2) {
+void ComputeParticleOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     UNUSED MtxF sp70;
     MtxF sp30;
     UNUSED s32 pad;
@@ -99,8 +99,8 @@ void func_84368E78(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_84368F08(unk_D_843AB940* arg0) {
-    unk_D_843AB940_038* var_s0 = &arg0->unk_038[0];
+void UpdateParticleEmitter(ParticleEmitter* arg0) {
+    ParticleState* var_s0 = &arg0->unk_038[0];
     s32 i;
     f32 var_ft4;
 
@@ -166,9 +166,9 @@ void func_84368F08(unk_D_843AB940* arg0) {
     }
 }
 
-s32 func_843692E8(void) {
+s32 TickParticleEmitters(void) {
     s32 i;
-    unk_D_843AB940* var_s0 = &D_843AB940[0];
+    ParticleEmitter* var_s0 = &D_843AB940[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -177,19 +177,19 @@ s32 func_843692E8(void) {
                 var_s0->unk_000 = 0;
                 func_8432FE24(var_s0->unk_034);
             } else {
-                func_84368F08(var_s0);
+                UpdateParticleEmitter(var_s0);
             }
         }
     }
     return 0;
 }
 
-Gfx* func_84369388(Gfx* arg0) {
+Gfx* RenderParticleEmitters(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    unk_D_843AB940* var_s5;
-    unk_D_843AB940_038* temp_s0;
+    ParticleEmitter* var_s5;
+    ParticleState* temp_s0;
     Mtx* temp_v0;
     Vec3f sp154;
     UNUSED s32 pad[14];
@@ -213,7 +213,7 @@ Gfx* func_84369388(Gfx* arg0) {
                 guMtxCatL(&sp90, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_8438A980);
+                gSPDisplayList(arg0++, gParticleQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -221,7 +221,7 @@ Gfx* func_84369388(Gfx* arg0) {
             var_s0 = var_s5->unk_018;
 
             for (j = 0; j < 15; j++) {
-                func_84368E78(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                ComputeParticleOffset(temp_s0->unk_08, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -237,7 +237,7 @@ Gfx* func_84369388(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                func_84368E78(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                ComputeParticleOffset(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -258,7 +258,7 @@ Gfx* func_84369388(Gfx* arg0) {
 
             var_s0 = var_s5->unk_018;
 
-            gSPDisplayList(arg0++, D_843899B0);
+            gSPDisplayList(arg0++, Gfx_ParticleRenderDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

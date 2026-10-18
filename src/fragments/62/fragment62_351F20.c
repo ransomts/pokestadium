@@ -2,7 +2,7 @@
 #include "src/30640.h"
 #include "src/6A40.h"
 
-static Gfx D_84389780[] = {
+static Gfx gBeamSetupDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -10,7 +10,7 @@ static Gfx D_84389780[] = {
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
-    gsDPLoadTextureBlock_4b(D_8438A648, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5,
+    gsDPLoadTextureBlock_4b(gBeamTexture, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5,
                             5, G_TX_NOLOD, G_TX_NOLOD),
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
     gsDPSetCombineMode(G_CC_BLENDIA, G_CC_BLENDIA),
@@ -18,7 +18,7 @@ static Gfx D_84389780[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsSPEndDisplayList(),
 };
-static Vtx D_84389810[] = {
+static Vtx gBeamVertexTemplate[] = {
     VTX(0, 20, 0, 1024, 2048, 0xFF, 0xFF, 0xFF, 0x00), VTX(30, 20, 0, 1024, 2048, 0xFF, 0xFF, 0xFF, 0x00),
     VTX(-20, 10, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0x00),  VTX(50, 10, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0x00),
     VTX(0, 0, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(30, 0, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -33,7 +33,7 @@ static Vtx D_84389810[] = {
 // `arg4 = 0.0f` (dead) stops uopt copy-propagating `arg4 * sp128` into the if, which would otherwise
 // create a separate f12 temp in front of the a3_z variable. tmp1/tmp2 must not appear before the vertex
 // writes (the 2*a3 temps are coloured in first-appearance order).
-Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
+Gfx* Gfx_DrawThickLine(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8) {
     s32 i;
     Vtx* sp1E8;
     s32 pad[2];
@@ -68,7 +68,7 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
     sp1E8 = GfxAlloc(sizeof(Vtx) * 10);
 
     temp_v1 = sp1E8;
-    var_a1 = &D_84389810[0];
+    var_a1 = &gBeamVertexTemplate[0];
     for (i = 0; i < 10; i++) {
         *temp_v1 = *var_a1++;
         if ((i == 4) || (i == 5)) {
@@ -95,7 +95,7 @@ Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u
         Math_NormalizeVector(&sp130, &sp12C, &sp128);
     }
 
-    gSPDisplayList(arg0++, D_84389780);
+    gSPDisplayList(arg0++, gBeamSetupDL);
     gDPPipeSync(arg0++);
     gDPSetEnvColor(arg0++, arg5, arg6, arg7, arg8);
 

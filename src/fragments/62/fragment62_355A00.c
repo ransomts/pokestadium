@@ -22,7 +22,7 @@ static Vtx D_84389BB0[] = {
     VTX(-6, 0, 6, 2048, 2048, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(6, 0, 6, 0, 2048, 0xFF, 0xFF, 0xFF, 0x14),
 };
-static Gfx D_84389BF0[] = {
+static Gfx gWaterParticleTextureDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -130,7 +130,7 @@ void func_8436B270(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     }
 }
 
-void func_8436B538(f32 arg0, Vec3f* arg1, f32 arg2) {
+void WaterParticle_CalcVertexOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     MtxF sp30;
     f32 temp_fv0 = (arg0 * 360.0) / 6.2831854820251465;
 
@@ -138,7 +138,7 @@ void func_8436B538(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_8436B5C0(unk_D_843ADA80* arg0) {
+void WaterParticle_Update(unk_D_843ADA80* arg0) {
     s32 i;
     f32 temp_fs3 = arg0->unk_010;
     unk_D_843ADA80_040* var_s0 = &arg0->unk_040[0];
@@ -202,7 +202,7 @@ void func_8436B5C0(unk_D_843ADA80* arg0) {
     }
 }
 
-s32 func_8436B8D8(void) {
+s32 WaterParticle_UpdateAll(void) {
     s32 i;
     unk_D_843ADA80* var_s0 = &D_843B8340[0];
 
@@ -212,14 +212,14 @@ s32 func_8436B8D8(void) {
             if ((var_s0->unk_002 == 1) && (var_s0->unk_006 < var_s0->unk_004)) {
                 var_s0->unk_000 = 0;
             } else {
-                func_8436B5C0(var_s0);
+                WaterParticle_Update(var_s0);
             }
         }
     }
     return 0;
 }
 
-Gfx* func_8436B974(Gfx* arg0) {
+Gfx* WaterParticle_Render(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -253,7 +253,7 @@ Gfx* func_8436B974(Gfx* arg0) {
                 guMtxCatL(&spC0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_84389BF0);
+                gSPDisplayList(arg0++, gWaterParticleTextureDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -261,7 +261,7 @@ Gfx* func_8436B974(Gfx* arg0) {
 
             var_s0 = var_s5->unk_020;
             for (j = 0; j < 10; j++) {
-                func_8436B538(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
+                WaterParticle_CalcVertexOffset(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -277,7 +277,7 @@ Gfx* func_8436B974(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                func_8436B538(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
+                WaterParticle_CalcVertexOffset(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {

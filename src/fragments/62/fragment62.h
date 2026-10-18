@@ -546,7 +546,7 @@ typedef struct unk_D_843A22C0 {
     /* 0x038 */ unk_D_843A22C0_038 unk_038[10];
 } unk_D_843A22C0; // size = 0x358
 
-typedef struct unk_D_843AA880_034 {
+typedef struct WaterParticleParticle {
     /* 0x00 */ u8 unk_00;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
@@ -556,9 +556,9 @@ typedef struct unk_D_843AA880_034 {
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ Vec3f unk_2C;
     /* 0x38 */ Vec3f unk_38;
-} unk_D_843AA880_034; // size = 0x44
+} WaterParticleParticle; // size = 0x44
 
-typedef struct unk_D_843AA880 {
+typedef struct WaterParticleEmitter {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -570,10 +570,10 @@ typedef struct unk_D_843AA880 {
     /* 0x018 */ Vtx* unk_018;
     /* 0x01C */ Vec3f unk_01C;
     /* 0x028 */ char unk028[0xC];
-    /* 0x034 */ unk_D_843AA880_034 unk_034[15];
-} unk_D_843AA880; // size = 0x430
+    /* 0x034 */ WaterParticleParticle unk_034[15];
+} WaterParticleEmitter; // size = 0x430
 
-typedef struct unk_D_843AB940_038 {
+typedef struct ParticleState {
     /* 0x00 */ u8 unk_00;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
@@ -583,9 +583,9 @@ typedef struct unk_D_843AB940_038 {
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ Vec3f unk_2C;
     /* 0x38 */ Vec3f unk_38;
-} unk_D_843AB940_038; // size = 0x44
+} ParticleState; // size = 0x44
 
-typedef struct unk_D_843AB940 {
+typedef struct ParticleEmitter {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -598,8 +598,8 @@ typedef struct unk_D_843AB940 {
     /* 0x01C */ Vec3f unk_01C;
     /* 0x028 */ char unk028[0xC];
     /* 0x034 */ unk_D_8140E720* unk_034;
-    /* 0x038 */ unk_D_843AB940_038 unk_038[15];
-} unk_D_843AB940; // size = 0x434
+    /* 0x038 */ ParticleState unk_038[15];
+} ParticleEmitter; // size = 0x434
 
 typedef struct unk_D_843ACA10_01C {
     /* 0x00 */ u8 unk_00;
@@ -657,7 +657,7 @@ typedef struct unk_D_843ADA80 {
     /* 0x040 */ unk_D_843ADA80_040 unk_040[10];
 } unk_D_843ADA80; // size = 0x360
 
-typedef struct unk_D_843C2C00_0B0 {
+typedef struct WaterParticleVertex {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ u8 unk_04;
     /* 0x08 */ f32 unk_08;
@@ -666,18 +666,18 @@ typedef struct unk_D_843C2C00_0B0 {
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
-} unk_D_843C2C00_0B0; // size = 0x28
+} WaterParticleVertex; // size = 0x28
 
-typedef struct unk_D_843C2C00_064 {
+typedef struct TextureTileInfo {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_843C2C00_064; // size = 0xC
+} TextureTileInfo; // size = 0xC
 
-typedef struct unk_D_843C2C00_024 {
+typedef struct CombineParams {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
@@ -686,14 +686,14 @@ typedef struct unk_D_843C2C00_024 {
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
-} unk_D_843C2C00_024; // size = 0x20
+} CombineParams; // size = 0x20
 
-typedef struct unk_D_84389CE0 {
+typedef struct ColorBlendInfo {
     /* 0x00 */ Color_RGBA8 unk_00;
     /* 0x04 */ u8 unk_04;
-} unk_D_84389CE0; // size = 0x8
+} ColorBlendInfo; // size = 0x8
 
-typedef struct unk_D_843C2C00 {
+typedef struct WaterParticleSystem {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -704,33 +704,33 @@ typedef struct unk_D_843C2C00 {
     /* 0x018 */ Vtx* unk_018;
     /* 0x01C */ s32 unk_01C;
     /* 0x020 */ s32 unk_020;
-    /* 0x024 */ unk_D_843C2C00_024 unk_024;
-    /* 0x044 */ unk_D_843C2C00_024 unk_044;
-    /* 0x064 */ unk_D_843C2C00_064 unk_064;
-    /* 0x070 */ unk_D_843C2C00_064 unk_070;
-    /* 0x07C */ unk_D_84389CE0 unk_07C;
-    /* 0x081 */ unk_D_84389CE0 unk_081;
+    /* 0x024 */ CombineParams unk_024;
+    /* 0x044 */ CombineParams unk_044;
+    /* 0x064 */ TextureTileInfo unk_064;
+    /* 0x070 */ TextureTileInfo unk_070;
+    /* 0x07C */ ColorBlendInfo unk_07C;
+    /* 0x081 */ ColorBlendInfo unk_081;
     /* 0x086 */ Color_RGBA8 unk_086;
     /* 0x08C */ f32 unk_08C;
     /* 0x090 */ f32 unk_090;
     /* 0x094 */ s16 unk_094;
     /* 0x096 */ char unk096[0x1A];
-    /* 0x0B0 */ unk_D_843C2C00_0B0 unk_0B0[10];
-} unk_D_843C2C00; // size = 0x240
+    /* 0x0B0 */ WaterParticleVertex unk_0B0[10];
+} WaterParticleSystem; // size = 0x240
 
-typedef struct unk_D_843C49C0_004 {
+typedef struct Particle {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
-} unk_D_843C49C0_004; // size = 0x18
+} Particle; // size = 0x18
 
 typedef struct unk_D_843C49C0 {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ char pad002[2];
-    /* 0x004 */ unk_D_843C49C0_004 unk_004[20];
+    /* 0x004 */ Particle unk_004[20];
 } unk_D_843C49C0; // size = 0x1E4
 
 typedef struct unk_D_843C3508_0A4 {
@@ -746,17 +746,17 @@ typedef struct unk_D_843C3508 {
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
     /* 0x006 */ s16 unk_006;
-    /* 0x008 */ unk_D_84389CE0 unk_008;
-    /* 0x00D */ unk_D_84389CE0 unk_00D;
+    /* 0x008 */ ColorBlendInfo unk_008;
+    /* 0x00D */ ColorBlendInfo unk_00D;
     /* 0x014 */ f32 unk_014;
     /* 0x018 */ f32 unk_018;
     /* 0x01C */ s16 unk_01C;
     /* 0x020 */ s32 unk_020;
     /* 0x024 */ s32 unk_024;
-    /* 0x028 */ unk_D_843C2C00_024 unk_028;
-    /* 0x048 */ unk_D_843C2C00_024 unk_048;
-    /* 0x068 */ unk_D_843C2C00_064 unk_068;
-    /* 0x074 */ unk_D_843C2C00_064 unk_074;
+    /* 0x028 */ CombineParams unk_028;
+    /* 0x048 */ CombineParams unk_048;
+    /* 0x068 */ TextureTileInfo unk_068;
+    /* 0x074 */ TextureTileInfo unk_074;
     /* 0x080 */ f32 unk_080;
     /* 0x084 */ f32 unk_084;
     /* 0x088 */ Vtx* unk_088;
@@ -951,9 +951,9 @@ extern func_D_84390320 D_84388668[];
 extern func_D_84390320 D_843888C0[];
 extern func_D_84390320 D_84388A50[];
 extern func_D_84390320 D_84388CA8[];
-extern Gfx D_84389AE0[];
-extern u32 D_8438A648[];
-extern Gfx D_8438A980[];
+extern Gfx gWaterParticleQuadDL[];
+extern u32 gBeamTexture[];
+extern Gfx gParticleQuadDL[];
 extern u8 D_8438AC60[];
 extern unk_D_8438ACB8 D_8438ACB8[];
 extern u8 D_8438ACD4[];
@@ -969,8 +969,8 @@ extern s32 D_843C4DEC;
 //extern unk_D_843C4E44 D_843C4E44;
 extern u8 D_843C4E44;
 extern u8 D_843C4E45;
-extern u16 D_843C4DC4;
-extern unk_D_800FCB18* D_843C5238;
+extern u16 gCurrentDamage;
+extern unk_D_800FCB18* gCurrentBattleEntity;
 extern unk_D_800FCB18* D_843C523C;
 
 
@@ -2934,117 +2934,117 @@ void func_8436643C(void);
 Gfx* func_84366560(Gfx* arg0);
 
 
-void func_84366A10(void);
-void func_84366B38(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, s16 argB);
-void func_84366DCC(f32 arg0, Vec3f* arg1, f32 arg2);
-void func_84366E54(unk_D_843A22C0* arg0);
-s32 func_84367014(void);
-Gfx* func_843670C8(Gfx* arg0);
+void WaterParticle_Reset(void);
+void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, s16 argB);
+void WaterParticle_TransformVertex(f32 arg0, Vec3f* arg1, f32 arg2);
+void WaterParticle_UpdateSegment(unk_D_843A22C0* arg0);
+s32 WaterParticle_TickAll(void);
+Gfx* WaterParticle_RenderAll(Gfx* arg0);
 
 
-Gfx* func_84367660(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8);
+Gfx* Gfx_DrawThickLine(Gfx* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8);
 
 
-void func_84367CB0(void);
-void func_84367E2C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
-void func_84368080(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3);
-void func_84368140(unk_D_843AA880* arg0);
-s32 func_843684CC(void);
-Gfx* func_84368560(Gfx* arg0);
+void WaterParticleSystem_ResetAll(void);
+void WaterParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
+void WaterParticle_CalcOffset(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3);
+void WaterParticleSystem_UpdateEmitter(WaterParticleEmitter* arg0);
+s32 WaterParticleSystem_UpdateAll(void);
+Gfx* WaterParticleSystem_Render(Gfx* arg0);
 
 
-void func_84368AB0(void);
-void func_84368C04(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
-void func_84368E78(f32 arg0, Vec3f* arg1, f32 arg2);
-void func_84368F08(unk_D_843AB940* arg0);
-s32 func_843692E8(void);
-Gfx* func_84369388(Gfx* arg0);
+void ResetParticleEmitters(void);
+void CreateParticleEmitter(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
+void ComputeParticleOffset(f32 arg0, Vec3f* arg1, f32 arg2);
+void UpdateParticleEmitter(ParticleEmitter* arg0);
+s32 TickParticleEmitters(void);
+Gfx* RenderParticleEmitters(Gfx* arg0);
 
 
-void func_843697F0(void);
-void func_84369950(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
-void func_84369BF0(f32 arg0, Vec3f* arg1, f32 arg2);
+void ParticleSystem_ResetAll(void);
+void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
+void CalcRotatedOffsetX(f32 arg0, Vec3f* arg1, f32 arg2);
 void func_84369C80(unk_D_843ACA10* arg0);
-s32 func_84369F0C(void);
-Gfx* func_84369FA0(Gfx* arg0);
+s32 ParticleSystem_TickAll(void);
+Gfx* ParticleSystem_RenderAll(Gfx* arg0);
 
 
-void func_8436A410(void);
-void func_8436A540(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
+void WaterParticlePool_Init(void);
+void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
 void func_8436A808(f32 arg0, Vec3f* arg1, f32 arg2);
-void func_8436A890(unk_D_843ADA80* arg0);
-s32 func_8436ABA8(void);
-Gfx* func_8436AC44(Gfx* arg0);
+void WaterParticleSystem_Update(unk_D_843ADA80* arg0);
+s32 WaterParticlePool_Tick(void);
+Gfx* WaterParticlePool_Render(Gfx* arg0);
 
 
 void func_8436B140(void);
 void func_8436B270(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
-void func_8436B538(f32 arg0, Vec3f* arg1, f32 arg2);
-void func_8436B5C0(unk_D_843ADA80* arg0);
-s32 func_8436B8D8(void);
-Gfx* func_8436B974(Gfx* arg0);
+void WaterParticle_CalcVertexOffset(f32 arg0, Vec3f* arg1, f32 arg2);
+void WaterParticle_Update(unk_D_843ADA80* arg0);
+s32 WaterParticle_UpdateAll(void);
+Gfx* WaterParticle_Render(Gfx* arg0);
 
 
-void func_8436BE70(void);
-void func_8436BFB8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9, f32 argA, s16 argB, s32 argC, s32 argD, s16 argE, s16 argF, s16 arg10, s16 arg11, s16 arg12, s16 arg13, s16 arg14, s16 arg15, unk_D_843C2C00_024* arg16, unk_D_843C2C00_024* arg17, u8 arg18, u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22, u8 arg23, u8 arg24);
-void func_8436C344(f32 arg0, Vec3f* arg1, f32 arg2);
-void func_8436C3CC(unk_D_843C2C00* arg0);
-s32 func_8436C62C(void);
-Gfx* func_8436C6A4(Gfx* arg0, unk_D_843C2C00* arg1, s16 arg2, s16 arg3);
-Gfx* func_8436CB60(Gfx* arg0, unk_D_843C2C00* arg1);
+void WaterParticleSystems_ResetAll(void);
+void func_8436BFB8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9, f32 argA, s16 argB, s32 argC, s32 argD, s16 argE, s16 argF, s16 arg10, s16 arg11, s16 arg12, s16 arg13, s16 arg14, s16 arg15, CombineParams* arg16, CombineParams* arg17, u8 arg18, u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22, u8 arg23, u8 arg24);
+void WaterParticle_ComputeOffset(f32 arg0, Vec3f* arg1, f32 arg2);
+void func_8436C3CC(WaterParticleSystem* arg0);
+s32 WaterParticleSystems_Tick(void);
+Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 arg3);
+Gfx* WaterParticle_LoadTextureTiles(Gfx* arg0, WaterParticleSystem* arg1);
 Gfx* func_8436CE34(Gfx* arg0);
 
 
-void func_8436D370(void);
-void func_8436D4A4(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB, u8 argC, u8 argD, u8 argE, u8 argF, f32 arg10, f32 arg11, f32 arg12, s16 arg13, s32 arg14, s32 arg15, s16 arg16, s16 arg17, s16 arg18, s16 arg19, s16 arg1A, s16 arg1B, s16 arg1C, s16 arg1D, unk_D_843C2C00_024* arg1E, unk_D_843C2C00_024* arg1F);
-void func_8436D920(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7);
-void func_8436DA38(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6);
-void func_8436DAC4(unk_D_843C3508* arg0);
-s32 func_8436DE60(void);
-Gfx* func_8436DFB8(Gfx* arg0, unk_D_843C3508* arg1);
-Gfx* func_8436E0E8(Gfx* arg0, unk_D_843C3508* arg1);
-Gfx* func_8436E3BC(Gfx* arg0);
+void WaterEffect_Init(void);
+void WaterEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB, u8 argC, u8 argD, u8 argE, u8 argF, f32 arg10, f32 arg11, f32 arg12, s16 arg13, s32 arg14, s32 arg15, s16 arg16, s16 arg17, s16 arg18, s16 arg19, s16 arg1A, s16 arg1B, s16 arg1C, s16 arg1D, CombineParams* arg1E, CombineParams* arg1F);
+void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7);
+void WaterEffect_ApplyRotation(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6);
+void WaterEffect_UpdateParticles(unk_D_843C3508* arg0);
+s32 WaterEffect_Process(void);
+Gfx* WaterEffect_RenderGeometry(Gfx* arg0, unk_D_843C3508* arg1);
+Gfx* WaterEffect_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1);
+Gfx* WaterEffect_RenderAll(Gfx* arg0);
 void func_8436E920(void);
 s16 func_8436E944(void);
-void func_8436EA0C(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5);
+void ParticleEmitter_AddParticle(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5);
 void func_8436EB54(s16 arg0);
-Gfx* func_8436ECB0(Gfx* arg0, unk_D_843C49C0_004* arg1, MtxF* arg2);
-Gfx* func_8436EDE8(s16 arg0, Gfx* arg1);
+Gfx* func_8436ECB0(Gfx* arg0, Particle* arg1, MtxF* arg2);
+Gfx* ParticleEmitter_RenderAll(s16 arg0, Gfx* arg1);
 void func_8436EED4(void);
 void func_8436EEDC(void);
 s32 func_8436EEE4(s32 arg0);
 
 
 void func_8436EEF0(s32 arg0, s32 arg1);
-s32 func_8436EF48(void);
-void func_8436EF54(void);
-Gfx* func_8436EFE8(Gfx* arg0, s32 arg1);
-void func_8436F664(void);
+s32 ScreenTransition_GetState(void);
+void ScreenTransition_Update(void);
+Gfx* ScreenTransition_Draw(Gfx* arg0, s32 arg1);
+void ScreenTransition_Apply(void);
 
 
 void func_8436F6C0(void);
 
 
 void func_8436F6D0(void);
-u8 func_8436F6D8(void);
-u8 func_8436F788(void);
-void func_8436F838(s32 arg0, s32 arg1);
-void func_8436F9D8(s32 arg0, s32 arg1);
+u8 GetRandomU8(void);
+u8 GetRandomU8_Alt(void);
+void ShowDamageMessage(s32 arg0, s32 arg1);
+void ResetBattleAfterMove(s32 arg0, s32 arg1);
 void func_8436FA80(unk_D_84390010* arg0);
 void func_8436FC10(void);
-u16 func_8436FC7C(unk_D_84390010* arg0, unk_D_84390010* arg1);
-s32 func_8436FD54(u8 arg0, u8* arg1, s32 arg2);
+u16 CompareMovePriority(unk_D_84390010* arg0, unk_D_84390010* arg1);
+s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2);
 void func_8436FD9C(void);
 s32 func_8436FDBC(void);
-void func_8436FDF4(s32 arg0, PokemonData* arg1);
-void func_84370090(PokemonData* arg0);
-void func_843700F0(void);
-s32 func_84370260(void);
-void func_843703BC(void);
-void func_843706E8(s32 arg0);
+void ComputePokemonStat(s32 arg0, PokemonData* arg1);
+void ComputeAllPokemonStats(PokemonData* arg0);
+void InitBattleParameters(void);
+s32 UpdateDamageAccumulator(void);
+void ProcessTurnEnd(void);
+void DecrementMovePP(s32 arg0);
 void func_84370790(void);
 void func_843708A0(void);
-void func_843708CC(void);
+void HandleMoveEffectFlags(void);
 void func_84370ADC(unk_D_84390010* arg0);
 void func_84370B0C(unk_D_84390010* arg0);
 void func_84370B44(unk_D_84390010* arg0);
@@ -3081,27 +3081,27 @@ void func_8437345C(void);
 void func_84373570(unk_D_84390010* arg0);
 
 
-u16 func_843736B0(u16* arg0, u16 arg1, u8 arg2);
-void func_84373754(void);
-void func_84373A30(void);
-void func_84373D04(void);
-void func_84373E24(void);
-void func_84373E60(void);
-void func_843741C4(void);
-void func_843744F0(void);
-void func_8437483C(void);
-void func_84374C9C(void);
+u16 ScaleStatValue(u16* arg0, u16 arg1, u8 arg2);
+void Battle_TurnStart(void);
+void Battle_ProcessCommand(void);
+void Battle_UpdateProgress(void);
+void Battle_ResetState(void);
+void Battle_HandleItemEffect(void);
+void Battle_ApplyStatIncrease(void);
+void Battle_ApplyStatChange(void);
+void Battle_HandleStatDecrease(void);
+void Battle_InitPhase(void);
 void func_84374D08(void);
-void func_84374D58(void);
+void Battle_HandleSpecialMove(void);
 void func_84374E08(void);
 void func_84374EE4(void);
 void func_84374FD4(void);
-void func_84375038(void);
+void Battle_DisplayStatusMessage(void);
 void func_843751F8(void);
 void func_843752C0(void);
 void func_84375384(void);
 void func_84375424(void);
-void func_84375508(void);
+void Battle_StartMiniGame(void);
 void func_843755E8(void);
 void func_84375700(void);
 void func_84375894(void);
@@ -3117,8 +3117,8 @@ void func_84375E6C(void);
 void func_8437600C(void);
 void func_84376258(void);
 void func_843765E8(void);
-void func_8437670C(void);
-void func_84376768(void);
+void SpAttack_Dispatch(void);
+void SpAttack_Main(void);
 
 
 void func_84376790(s32 arg0, u32 arg1);

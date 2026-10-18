@@ -399,13 +399,13 @@ void func_84359E68(void) {
     sp58 += sp40 * (30.0f - (guRandom() % 60));
     sp54 += sp40 * (30.0f - (guRandom() % 60));
     sp50 += sp40 * (30.0f - (guRandom() % 60));
-    func_84366B38(sp58, sp54, sp50, sp4C, sp48, sp44, 0xFF, 0xFF, 0, 0x3C, 0.3f, 0x1E);
+    WaterParticle_Spawn(sp58, sp54, sp50, sp4C, sp48, sp44, 0xFF, 0xFF, 0, 0x3C, 0.3f, 0x1E);
 }
 
 void func_84359FE0(void) {
     gParticleSpawnTimerB = 0;
     InitEffectMatrix();
-    func_84366A10();
+    WaterParticle_Reset();
     func_84359E68();
 }
 
@@ -419,13 +419,13 @@ s32 func_8435A014(void) {
         func_84359E68();
     }
 
-    return func_84367014();
+    return WaterParticle_TickAll();
 }
 
 void func_8435A084(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_843670C8(gDisplayListHead);
+    gDisplayListHead = WaterParticle_RenderAll(gDisplayListHead);
 }
 
 void func_8435A0D8(void) {
@@ -597,20 +597,20 @@ s32 func_8435A81C(void) {
         }
         func_8436B270(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
     }
-    func_8436B8D8();
+    WaterParticle_UpdateAll();
     return 0;
 }
 
 void func_8435A99C(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436B974(gDisplayListHead);
+    gDisplayListHead = WaterParticle_Render(gDisplayListHead);
 }
 
 void func_8435A9F0(void) {
     gParticleSpawnTimerG = 0;
     InitEffectMatrix();
-    func_8436A410();
+    WaterParticlePool_Init();
 }
 
 s32 func_8435AA1C(void) {
@@ -634,16 +634,16 @@ s32 func_8435AA1C(void) {
         if (sp5C > 0.0) {
             var_fv0 = -var_fv0;
         }
-        func_8436A540(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
+        WaterParticlePool_Spawn(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
     }
-    func_8436ABA8();
+    WaterParticlePool_Tick();
     return 0;
 }
 
 void func_8435AB9C(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436AC44(gDisplayListHead);
+    gDisplayListHead = WaterParticlePool_Render(gDisplayListHead);
 }
 
 void func_8435ABF0(void) {
@@ -703,7 +703,7 @@ void func_8435AD88(void) {
 void func_8435ADDC(void) {
     gEffectPhaseCounterA = 0;
     InitEffectMatrix();
-    func_84367CB0();
+    WaterParticleSystem_ResetAll();
 }
 
 s32 func_8435AE08(void) {
@@ -738,12 +738,12 @@ s32 func_8435AE08(void) {
         if (sp64 < 0.0) {
             sp58 = -sp58;
         }
-        func_84367E2C(sp64, sp60, sp5C, sp58, sp54, sp50, 0xC0, 0xFF, 0xFF, 0x80, (((guRandom() % 2) * 2) - 1) * 0.3,
+        WaterParticleSystem_Spawn(sp64, sp60, sp5C, sp58, sp54, sp50, 0xC0, 0xFF, 0xFF, 0x80, (((guRandom() % 2) * 2) - 1) * 0.3,
                       2.0f, 13.0f, 0x28);
     }
 
     if (gEffectPhaseCounterA >= 2) {
-        var_v1 = func_843684CC();
+        var_v1 = WaterParticleSystem_UpdateAll();
     } else {
         var_v1 = 0;
     }
@@ -754,14 +754,14 @@ void func_8435B048(void) {
     if (gEffectPhaseCounterA >= 2) {
         gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDisplayListHead = func_84368560(gDisplayListHead);
+        gDisplayListHead = WaterParticleSystem_Render(gDisplayListHead);
     }
 }
 
 void func_8435B0B0(void) {
     gEffectPhaseCounterB = 0;
     InitEffectMatrix();
-    func_84368AB0();
+    ResetParticleEmitters();
 }
 
 s32 func_8435B0DC(void) {
@@ -781,11 +781,11 @@ s32 func_8435B0DC(void) {
         sp54 *= 7.0f * __cosf(sp48);
         sp50 = __sinf(sp48) * 10.0f;
         sp4C = 0.0f;
-        func_84368C04(sp60, sp5C, sp58, sp54, sp50, 0.0f, 0xD0, 0xFF, 0xFF, 0x80, 0.8f, 2.0f, 4.0f, 0x28);
+        CreateParticleEmitter(sp60, sp5C, sp58, sp54, sp50, 0.0f, 0xD0, 0xFF, 0xFF, 0x80, 0.8f, 2.0f, 4.0f, 0x28);
     }
 
     if (gEffectPhaseCounterB >= 2) {
-        var_v1 = func_843692E8();
+        var_v1 = TickParticleEmitters();
     } else {
         var_v1 = 0;
     }
@@ -796,7 +796,7 @@ void func_8435B260(void) {
     if (gEffectPhaseCounterB >= 2) {
         gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDisplayListHead = func_84369388(gDisplayListHead);
+        gDisplayListHead = RenderParticleEmitters(gDisplayListHead);
     }
 }
 
@@ -811,12 +811,12 @@ void func_8435B2C8(void) {
 
     gParticleSpawnTimerI = 0;
     InitEffectMatrix();
-    func_843697F0();
+    ParticleSystem_ResetAll();
     CalcVectorATtoDM(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 5.0;
     sp48 *= 5.0;
     sp44 *= 5.0;
-    func_84369950(sp58, sp54, sp50, sp4C, sp48, sp44, 0xC0, 0xFF, 0xFF, 0xA0, 0.6f, 2.0f, 4.0f, 0x28);
+    ParticleSystem_Spawn(sp58, sp54, sp50, sp4C, sp48, sp44, 0xC0, 0xFF, 0xFF, 0xA0, 0.6f, 2.0f, 4.0f, 0x28);
     sp5C.x = sp58;
     sp5C.y = sp54;
     sp5C.z = sp50;
@@ -829,13 +829,13 @@ s32 func_8435B408(void) {
         return -1;
     }
 
-    return func_84369F0C();
+    return ParticleSystem_TickAll();
 }
 
 void func_8435B454(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_84369FA0(gDisplayListHead);
+    gDisplayListHead = ParticleSystem_RenderAll(gDisplayListHead);
 }
 
 void func_8435B4A8(void) {
@@ -875,10 +875,10 @@ void func_8435B600(void) {
 }
 
 void func_8435B654(void) {
-    static unk_D_843C2C00_024 D_84387FC0 = { 2, 1, 0xE, 1, 2, 2, 3, 1 };
-    static unk_D_843C2C00_024 D_84387FE0 = { 3, 5, 0, 5, 3, 7, 0, 5 };
-    static unk_D_843C2C00_024 D_84388000 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
-    static unk_D_843C2C00_024 D_84388020 = { 3, 5, 0, 5, 0, 7, 5, 7 };
+    static CombineParams D_84387FC0 = { 2, 1, 0xE, 1, 2, 2, 3, 1 };
+    static CombineParams D_84387FE0 = { 3, 5, 0, 5, 3, 7, 0, 5 };
+    static CombineParams D_84388000 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
+    static CombineParams D_84388020 = { 3, 5, 0, 5, 0, 7, 5, 7 };
 
     f32 spB4;
     f32 spB0;
@@ -900,12 +900,12 @@ void func_8435B654(void) {
 
 void func_8435B8E8(void) {
     InitEffectMatrix();
-    func_8436BE70();
+    WaterParticleSystems_ResetAll();
     func_8435B654();
 }
 
 s32 func_8435B918(void) {
-    return func_8436C62C();
+    return WaterParticleSystems_Tick();
 }
 
 void func_8435B938(void) {
@@ -915,8 +915,8 @@ void func_8435B938(void) {
 }
 
 void func_8435B98C(void) {
-    static unk_D_843C2C00_024 D_84388040 = { 3, 5, 1, 5, 1, 7, 3, 7 };
-    static unk_D_843C2C00_024 D_84388060 = { 0x1F, 0x1F, 0x1F, 0, 7, 7, 7, 0 };
+    static CombineParams D_84388040 = { 3, 5, 1, 5, 1, 7, 3, 7 };
+    static CombineParams D_84388060 = { 0x1F, 0x1F, 0x1F, 0, 7, 7, 7, 0 };
 
     f32 spA4;
     f32 spA0;
@@ -933,14 +933,14 @@ void func_8435B98C(void) {
     sp94 *= 12.0f;
     sp90 *= 12.0f;
 
-    func_8436D4A4(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0x64, 0xFF, 0xFF, 0.4f, 2.0f,
+    WaterEffect_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0x64, 0xFF, 0xFF, 0.4f, 2.0f,
                   20.0f, 0x3C, 0x95, 0x95, 0, 0xA, 0, 0xD, 0, 0, 0, 0, &D_84388040, &D_84388060);
 }
 
 void func_8435BB64(void) {
     gParticleSpawnTimerH = 0;
     InitEffectMatrix();
-    func_8436D370();
+    WaterEffect_Init();
     func_8435B98C();
 }
 
@@ -949,20 +949,20 @@ s32 func_8435BB98(void) {
     if ((gParticleSpawnTimerH % 10) == 0) {
         func_8435B98C();
     }
-    return func_8436DE60();
+    return WaterEffect_Process();
 }
 
 void func_8435BBEC(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436E3BC(gDisplayListHead);
+    gDisplayListHead = WaterEffect_RenderAll(gDisplayListHead);
 }
 
 void func_8435BC40(void) {
-    static unk_D_843C2C00_024 D_84388080 = { 3, 5, 1, 5, 6, 7, 2, 3 };
-    static unk_D_843C2C00_024 D_843880A0 = { 0x1F, 0x1F, 0x1F, 0, 0, 7, 5, 7 };
-    static unk_D_843C2C00_024 D_843880C0 = { 3, 5, 2, 5, 1, 7, 3, 7 };
-    static unk_D_843C2C00_024 D_843880E0 = { 0x1F, 0x1F, 0x1F, 0, 0, 7, 5, 7 };
+    static CombineParams D_84388080 = { 3, 5, 1, 5, 6, 7, 2, 3 };
+    static CombineParams D_843880A0 = { 0x1F, 0x1F, 0x1F, 0, 0, 7, 5, 7 };
+    static CombineParams D_843880C0 = { 3, 5, 2, 5, 1, 7, 3, 7 };
+    static CombineParams D_843880E0 = { 0x1F, 0x1F, 0x1F, 0, 0, 7, 5, 7 };
 
     f32 spB4;
     f32 spB0;
@@ -985,12 +985,12 @@ void func_8435BC40(void) {
 
 void func_8435BED8(void) {
     InitEffectMatrix();
-    func_8436BE70();
+    WaterParticleSystems_ResetAll();
     func_8435BC40();
 }
 
 s32 func_8435BF08(void) {
-    return func_8436C62C();
+    return WaterParticleSystems_Tick();
 }
 
 void func_8435BF28(void) {
@@ -1000,10 +1000,10 @@ void func_8435BF28(void) {
 }
 
 void func_8435BF7C(void) {
-    static unk_D_843C2C00_024 D_84388100 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
-    static unk_D_843C2C00_024 D_84388120 = { 3, 5, 0, 5, 0, 7, 5, 7 };
-    static unk_D_843C2C00_024 D_84388140 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
-    static unk_D_843C2C00_024 D_84388160 = { 3, 5, 0, 5, 0, 7, 5, 7 };
+    static CombineParams D_84388100 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
+    static CombineParams D_84388120 = { 3, 5, 0, 5, 0, 7, 5, 7 };
+    static CombineParams D_84388140 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
+    static CombineParams D_84388160 = { 3, 5, 0, 5, 0, 7, 5, 7 };
 
     f32 spB4;
     f32 spB0;
@@ -1026,12 +1026,12 @@ void func_8435BF7C(void) {
 
 void func_8435C220(void) {
     InitEffectMatrix();
-    func_8436BE70();
+    WaterParticleSystems_ResetAll();
     func_8435BF7C();
 }
 
 s32 func_8435C250(void) {
-    return func_8436C62C();
+    return WaterParticleSystems_Tick();
 }
 
 void func_8435C270(void) {
@@ -1041,8 +1041,8 @@ void func_8435C270(void) {
 }
 
 void func_8435C2C4(void) {
-    static unk_D_843C2C00_024 D_84388180 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
-    static unk_D_843C2C00_024 D_843881A0 = { 3, 5, 0, 5, 0, 7, 5, 7 };
+    static CombineParams D_84388180 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
+    static CombineParams D_843881A0 = { 3, 5, 0, 5, 0, 7, 5, 7 };
 
     f32 spB4;
     f32 spB0;
@@ -1062,12 +1062,12 @@ void func_8435C2C4(void) {
 
 void func_8435C448(void) {
     InitEffectMatrix();
-    func_8436BE70();
+    WaterParticleSystems_ResetAll();
     func_8435C2C4();
 }
 
 s32 func_8435C478(void) {
-    return func_8436C62C();
+    return WaterParticleSystems_Tick();
 }
 
 void func_8435C498(void) {
@@ -1077,16 +1077,16 @@ void func_8435C498(void) {
 }
 
 void func_8435C4EC(void) {
-    static unk_D_843C2C00_024 D_843881C0 = {
+    static CombineParams D_843881C0 = {
         0x00000002, 0x00000001, 0x0000000E, 0x00000001, 0x00000007, 0x00000007, 0x00000007, 0x00000003,
     };
-    static unk_D_843C2C00_024 D_843881E0 = {
+    static CombineParams D_843881E0 = {
         0x00000003, 0x00000005, 0x00000000, 0x00000005, 0x00000007, 0x00000007, 0x00000007, 0x00000000,
     };
-    static unk_D_843C2C00_024 D_84388200 = {
+    static CombineParams D_84388200 = {
         0x00000002, 0x00000001, 0x0000000E, 0x00000001, 0x00000002, 0x00000001, 0x00000003, 0x00000001,
     };
-    static unk_D_843C2C00_024 D_84388220 = {
+    static CombineParams D_84388220 = {
         0x00000003, 0x00000005, 0x00000000, 0x00000005, 0x00000000, 0x00000007, 0x00000005, 0x00000007,
     };
 
@@ -1110,10 +1110,10 @@ void func_8435C4EC(void) {
 }
 
 void func_8435C790(void) {
-    static unk_D_843C2C00_024 D_84388240 = {
+    static CombineParams D_84388240 = {
         0x00000002, 0x00000001, 0x0000000E, 0x00000001, 0x00000002, 0x00000001, 0x00000003, 0x00000001,
     };
-    static unk_D_843C2C00_024 D_84388260 = {
+    static CombineParams D_84388260 = {
         0x00000003, 0x00000005, 0x00000000, 0x00000005, 0x00000000, 0x00000007, 0x00000005, 0x00000007,
     };
 
@@ -1133,15 +1133,15 @@ void func_8435C790(void) {
     sp94 *= 12.0f;
     sp90 *= 12.0f;
 
-    func_8436D4A4(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0x64, 0x32, 0xC8, 0xFF, 0x32, 0, 0xFF, 0.4f, 2.0f,
+    WaterEffect_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0x64, 0x32, 0xC8, 0xFF, 0x32, 0, 0xFF, 0.4f, 2.0f,
                   5.0f, 0x3C, 0x95, 0x95, 0, 0x14, 0, 0xD, 0, 0x19, 0, 0xD, &D_84388240, &D_84388260);
 }
 
 void func_8435C96C(void) {
     InitEffectMatrix();
-    func_8436BE70();
+    WaterParticleSystems_ResetAll();
     func_8435C4EC();
-    func_8436D370();
+    WaterEffect_Init();
     func_8435C790();
 }
 
@@ -1150,13 +1150,13 @@ s32 func_8435C9AC(void) {
     if ((gParticleSpawnTimerD % 10) == 0) {
         func_8435C790();
     }
-    func_8436DE60();
-    return func_8436C62C();
+    WaterEffect_Process();
+    return WaterParticleSystems_Tick();
 }
 
 void func_8435CA08(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
-    gDisplayListHead = func_8436E3BC(gDisplayListHead);
+    gDisplayListHead = WaterEffect_RenderAll(gDisplayListHead);
 }

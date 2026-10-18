@@ -1,15 +1,15 @@
 #include "fragment62.h"
 #include "src/6A40.h"
 
-static unk_D_843A22C0 D_843A22C0[40];
+static unk_D_843A22C0 gWaterParticlePool[40];
 
-static Vtx D_84389690[] = {
+static Vtx gWaterParticleQuadVertices[] = {
     VTX(-10, 0, -10, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, -10, 0, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(-10, 0, 10, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, 10, 0, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
 };
-static Gfx D_843896D0[] = {
+static Gfx gWaterParticleDL_NoTexture[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -22,7 +22,7 @@ static Gfx D_843896D0[] = {
     gsDPSetColorDither(G_CD_NOISE),
     gsSPEndDisplayList(),
 };
-static Gfx D_84389720[] = {
+static Gfx gWaterParticleDL_Textured[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -33,18 +33,18 @@ static Gfx D_84389720[] = {
     gsDPSetRenderMode(G_RM_ZB_XLU_SURF, G_RM_ZB_XLU_SURF2),
     gsDPSetCombineMode(G_CC_BLENDIA, G_CC_BLENDIA),
     gsDPSetEnvColor(255, 255, 64, 255),
-    gsSPVertex(D_84389690, 4, 0),
+    gsSPVertex(gWaterParticleQuadVertices, 4, 0),
     gsSP2Triangles(0, 2, 1, 0, 2, 3, 1, 0),
     gsSPEndDisplayList(),
 };
 
-void func_84366A10(void) {
+void WaterParticle_Reset(void) {
     unk_D_843A22C0* var_v0;
     unk_D_843A22C0_038* var_a0;
     s32 i;
     s32 j;
 
-    var_v0 = &D_843A22C0[0];
+    var_v0 = &gWaterParticlePool[0];
     for (i = 0; i < 40; i++, var_v0++) {
         var_v0->unk_000 = 0;
         var_v0->unk_004 = 0;
@@ -61,7 +61,7 @@ void func_84366A10(void) {
     }
 }
 
-void func_84366B38(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, s16 argB) {
     unk_D_843A22C0* var_v1;
     unk_D_843A22C0_038* var_s0;
@@ -86,7 +86,7 @@ void func_84366B38(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     sp5C.y = -1.0f;
     sp5C.z = 0.0f;
 
-    var_v1 = &D_843A22C0[0];
+    var_v1 = &gWaterParticlePool[0];
 
     for (i = 0; i < 40; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -120,14 +120,14 @@ void func_84366B38(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     }
 }
 
-void func_84366DCC(f32 arg0, Vec3f* arg1, f32 arg2) {
+void WaterParticle_TransformVertex(f32 arg0, Vec3f* arg1, f32 arg2) {
     MtxF sp30;
 
     guRotateRPYF(sp30.mf, 90.0f, (arg0 * 360.0) / 6.2831854820251465, (arg0 * 360.0) / 6.2831854820251465);
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_84366E54(unk_D_843A22C0* arg0) {
+void WaterParticle_UpdateSegment(unk_D_843A22C0* arg0) {
     s32 i;
     s32 j;
     Vtx* var_a1;
@@ -175,10 +175,10 @@ void func_84366E54(unk_D_843A22C0* arg0) {
     }
 }
 
-s32 func_84367014(void) {
+s32 WaterParticle_TickAll(void) {
     s32 i;
     s32 var_s2 = 0;
-    unk_D_843A22C0* var_s0 = &D_843A22C0[0];
+    unk_D_843A22C0* var_s0 = &gWaterParticlePool[0];
 
     for (i = 0; i < 40; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -186,7 +186,7 @@ s32 func_84367014(void) {
             if ((var_s0->unk_006 + 0xA) < var_s0->unk_004) {
                 var_s0->unk_000 = 0;
             } else {
-                func_84366E54(var_s0);
+                WaterParticle_UpdateSegment(var_s0);
                 var_s2++;
             }
         }
@@ -198,7 +198,7 @@ s32 func_84367014(void) {
     return -1;
 }
 
-Gfx* func_843670C8(Gfx* arg0) {
+Gfx* WaterParticle_RenderAll(Gfx* arg0) {
     s32 i;
     unk_D_843A22C0* var_s5;
     unk_D_843A22C0_038* temp_s0;
@@ -216,7 +216,7 @@ Gfx* func_843670C8(Gfx* arg0) {
     gDPLoadTextureBlock_4b(arg0++, gWaterTexture[0x10], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s5 = &D_843A22C0[0];
+    var_s5 = &gWaterParticlePool[0];
     for (i = 0; i < 40; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_038[0];
@@ -238,7 +238,7 @@ Gfx* func_843670C8(Gfx* arg0) {
             guMtxCatL(&spB8, temp_s1, temp_s1);
 
             gSPMatrix(arg0++, temp_s1, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-            gSPDisplayList(arg0++, D_84389720);
+            gSPDisplayList(arg0++, gWaterParticleDL_Textured);
             gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
 
             var_s5->unk_018 = GfxAlloc(sizeof(Vtx) * 20);
@@ -248,7 +248,7 @@ Gfx* func_843670C8(Gfx* arg0) {
                 if ((j == 0) || (var_s5->unk_004 < 2)) {
                     for (k = 0, vtx2 = &temp_s0->unk_30[0]; k < 2; k++) {
                         if (temp_s0->unk_00 <= 0.0) {
-                            func_84366DCC(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
+                            WaterParticle_TransformVertex(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
                                           (10.0f * tmp) * 0.8f);
                         }
 
@@ -277,7 +277,7 @@ Gfx* func_843670C8(Gfx* arg0) {
                 vtx = var_s5->unk_018;
 
                 for (k = 0; k < 9; k++) {
-                    gSPDisplayList(arg0++, D_843896D0);
+                    gSPDisplayList(arg0++, gWaterParticleDL_NoTexture);
                     gSPVertex(arg0++, vtx, 4, 0);
                     gSP2Triangles(arg0++, 0, 1, 2, 0, 1, 3, 2, 0);
 

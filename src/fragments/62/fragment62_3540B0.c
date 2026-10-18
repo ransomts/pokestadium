@@ -1,9 +1,9 @@
 #include "fragment62.h"
 #include "src/6A40.h"
 
-static unk_D_843ACA10 D_843ACA10[4];
+static unk_D_843ACA10 gParticleSystems[4];
 
-static Gfx D_84389A00[] = {
+static Gfx gParticleBlendDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -17,10 +17,10 @@ static Gfx D_84389A00[] = {
     gsSPEndDisplayList(),
 };
 
-void func_843697F0(void) {
+void ParticleSystem_ResetAll(void) {
     s32 i;
     s32 j;
-    unk_D_843ACA10* var_v0 = &D_843ACA10[0];
+    unk_D_843ACA10* var_v0 = &gParticleSystems[0];
     unk_D_843ACA10_01C* var_a0;
 
     for (i = 0; i < 4; i++, var_v0++) {
@@ -44,7 +44,7 @@ void func_843697F0(void) {
     }
 }
 
-void func_84369950(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     s32 i;
     s32 j;
@@ -60,7 +60,7 @@ void func_84369950(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     sp58.y = arg4;
     sp58.z = arg5;
 
-    var_v1 = &D_843ACA10[0];
+    var_v1 = &gParticleSystems[0];
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
             var_v1->unk_000 = 1;
@@ -99,7 +99,7 @@ void func_84369950(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     }
 }
 
-void func_84369BF0(f32 arg0, Vec3f* arg1, f32 arg2) {
+void CalcRotatedOffsetX(f32 arg0, Vec3f* arg1, f32 arg2) {
     UNUSED MtxF sp70;
     MtxF sp30;
     UNUSED s32 pad;
@@ -158,9 +158,9 @@ void func_84369C80(unk_D_843ACA10* arg0) {
     }
 }
 
-s32 func_84369F0C(void) {
+s32 ParticleSystem_TickAll(void) {
     s32 i;
-    unk_D_843ACA10* var_s0 = &D_843ACA10[0];
+    unk_D_843ACA10* var_s0 = &gParticleSystems[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -176,7 +176,7 @@ s32 func_84369F0C(void) {
     return 0;
 }
 
-Gfx* func_84369FA0(Gfx* arg0) {
+Gfx* ParticleSystem_RenderAll(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -190,7 +190,7 @@ Gfx* func_84369FA0(Gfx* arg0) {
     Mtx spC0;
     s16 var_s3;
 
-    var_s5 = &D_843ACA10[0];
+    var_s5 = &gParticleSystems[0];
     for (i = 0; i < 4; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_01C[0];
@@ -204,7 +204,7 @@ Gfx* func_84369FA0(Gfx* arg0) {
                 guMtxCatL(&spC0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_8438A980);
+                gSPDisplayList(arg0++, gParticleQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -212,7 +212,7 @@ Gfx* func_84369FA0(Gfx* arg0) {
 
             var_s0 = var_s5->unk_014;
             for (j = 0; j < 15; j++) {
-                func_84369BF0(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                CalcRotatedOffsetX(temp_s0->unk_08, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -228,7 +228,7 @@ Gfx* func_84369FA0(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                func_84369BF0(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                CalcRotatedOffsetX(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -249,7 +249,7 @@ Gfx* func_84369FA0(Gfx* arg0) {
 
             var_s0 = var_s5->unk_014;
 
-            gSPDisplayList(arg0++, D_84389A00);
+            gSPDisplayList(arg0++, gParticleBlendDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);
