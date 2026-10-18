@@ -93,3 +93,21 @@ Single-builder during gates; one gate + one commit per wave; auto-revert on any 
 protected set enforced by rename.py; out-of-scope classes dropped; expected/ byte-identical at
 wave ends; commit your own work BEFORE a wave runs (git add -A sweep hazard); ASCII-only
 justifications; ledger resumable at every boundary.
+
+## Round 12 addendum (2026-10-18 midday, same sessions)
+
+Follow-up pass completed: **w26 (2,382 symbols, top-20 concentrated files via --max 100 /
+--max-tokens 16384 gptoss-120b, chunked) + h1 (346 symbols, header pass over
+fragment62/16/34/23/24.h via file-writing sub-agents)**. Ledger total 6,441 applied.
+Remaining distinct placeholders in src/: 6,807. ROM byte-identical, progress 97.9197%.
+
+New tooling during this pass: continuation turns past output caps; one-pass caches in
+rename.py (content cache, def classifiers, header tags, asm index, pragma index,
+joined grep blob) - 2,400-row batches went from timing out to minutes; the remaining
+slow path is the per-row rewrite_word scan (O(rows x repo text) ~50 min at w26 scale;
+batch into one alternation-regex pass if waves get bigger).
+
+Cross-session: the farm/matching session (farm11) runs concurrently; its uncommitted
+NOTES.md/focus work is left alone (driver commits only rename outputs). Messages:
+/tmp/opencode/FROM_RENAME_SESSION.md. farm11-c pools saved pre-w26 reference old names;
+farm11-a/b (submitted after w26) import post-rename source cleanly.
