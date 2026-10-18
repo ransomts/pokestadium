@@ -331,7 +331,7 @@ def run_wave(qwave, args, facts):
     if n == 0:
         n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     short = ", ".join(os.path.basename(f) for f in files[:4]) + (", ..." if len(files) > 4 else "")
-    r = sh(["git", "add", "-A", ":!.claude", ":!scratch"], 60)
+    r = sh(["git", "add", "src", "include", "linker_scripts", "matching_notes/renames.tsv"], 60)
     r = sh(["git", "commit", "-m", f"rename: {batch} ({n} symbols; {short})"], 120)
     if r.returncode != 0:
         log(f"  STOP: git commit failed: {r.stdout}\n{r.stderr}")
@@ -342,7 +342,7 @@ def run_wave(qwave, args, facts):
     if r.returncode != 0:
         log(f"  STOP: mark-committed failed: {r.stdout}\n{r.stderr}")
         return False
-    sh(["git", "add", "-A", ":!.claude", ":!scratch"], 60)
+    sh(["git", "add", "src", "include", "linker_scripts", "matching_notes/renames.tsv"], 60)
     r = sh(["git", "commit", "--amend", "--no-edit"], 120)
     if r.returncode != 0:
         log(f"  STOP: amend failed: {r.stdout}\n{r.stderr}")
