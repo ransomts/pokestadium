@@ -161,17 +161,17 @@ void func_888031FC(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, Memory
 s32 func_88803614(void);
 s32 func_888038E0(void);
 void func_88803BCC(u8* arg0, s32 arg1);
-s32 func_88803C74(void);
-s32 func_88803ECC(void);
-s32 func_88803FB0(u8 arg0);
-void func_88804020(void);
-void func_8880412C(void);
-s32 func_88804190(void);
-s32 func_88804218(u8 arg0);
-void func_88804288(void);
-s32 func_8880431C(void);
-void func_88804370(void);
-s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 PictureQuiz_MainLoop(void);
+s32 PictureQuiz_MusicFadeLoop(void);
+s32 PictureQuiz_DrawFrame(u8 arg0);
+void PictureQuiz_ShowResults(void);
+void PictureQuiz_ResultsFadeOut(void);
+s32 PictureQuiz_ResultsInputLoop(void);
+s32 PictureQuiz_DrawResultsFrame(u8 arg0);
+void PictureQuiz_StateDispatcher(void);
+s32 PictureQuiz_GetLastUnlockedPokemon(void);
+void PictureQuiz_InitFramebuffers(void);
+s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1);
 
 
 s32 func_888047D0(s32 arg0);

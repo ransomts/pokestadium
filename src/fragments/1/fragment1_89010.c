@@ -1,4 +1,4 @@
 #include "global.h"
 
-void func_81209690(UNUSED s32 arg0) {
+void Fragment1_NoOp(UNUSED s32 arg0) {
 }

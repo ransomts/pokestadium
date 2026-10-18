@@ -435,7 +435,7 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2);
 void func_86A01490(void);
 void func_86A014F0(void);
 
-u16 func_86A018C0(void);
+u16 GetFragment16Constant(void);
 
 void func_86A018D0(CameraStruct*, u16, s8, u8);
 void func_86A01BEC(void);

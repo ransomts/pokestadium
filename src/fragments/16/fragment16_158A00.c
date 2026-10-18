@@ -1542,7 +1542,7 @@ void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
     u16 sp2C;
     unk_D_86A02750* ptr;
 
-    sp2C = func_86A018C0();
+    sp2C = GetFragment16Constant();
     MessageBank_Init();
     D_86A06218 = GetMessageBank(0x2D);
 

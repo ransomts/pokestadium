@@ -1,5 +1,5 @@
 #include "fragment34.h"
 
-s32 func_8140DA40(void) {
+s32 Fragment34_ReturnOne(void) {
     return 1;
 }

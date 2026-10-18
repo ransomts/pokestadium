@@ -3609,3 +3609,108 @@ GbEmuState.unk_01D8	GbEmuState.next	c1		traversed as the next pointer and update
 GbEmuState.unk_01DC	GbEmuState.threadState	c1		compared against state values 0 and 2 to decide whether to send messages or stop the associated thread	applied@9614c25
 GbEmuState.unk_2204	GbEmuState.inputConfig	c1		copied from the initialization argument, returned on shutdown, and its members configure input-related setup	applied@9614c25
 func_80036790	Stub_ReturnInvalidIndex	w25		returns arr[16] from a 1-element array, clearly a placeholder stub	applied@a6a513a
+func_86A018C0	GetFragment16Constant	w25		returns constant 0xBB, likely a fragment16-specific value or ID	applied@a7e3e8b
+D_8120EB94	gGbWaveTable0	w25		gGbAudioStreamData[2] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_812156D4	gGbWaveTable1	w25		gGbAudioStreamData[3] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_8121B1C4	gGbWaveTable2	w25		gGbAudioStreamData[4] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_8121DA94	gGbWaveTable3	w25		gGbAudioStreamData[5] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_8121F574	gGbWaveTable4	w25		gGbAudioStreamData[6] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_81223704	gGbWaveTable5	w25		gGbAudioStreamData[7] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_81226964	gGbWaveTable6	w25		gGbAudioStreamData[8] points here, used as a wave sample table in GB audio stream mode	applied@a7e3e8b
+D_8122864C	gGbWaveSilence	w25		gGbAudioStreamData[0] and [1] point here, used as a silent/empty wave table	applied@a7e3e8b
+D_8120EB14	gGbEnvStepTable	w25		Used as envelope step table for volume/envelope in GbAudio_StepSquare1/2, GbAudio_StepWave, GbAudio_StepNoiseChannel	applied@a7e3e8b
+D_8120EB24	gGbWaveLevelTable	w25		Used for wave channel output level, GbAudio_StepWave and GbAudio_WriteReg (case 0x1C)	applied@a7e3e8b
+D_8120EB28	gGbNoiseStepTable0	w25		Used for noise channel step table, GbAudio_StepNoiseChannel and GbAudio_WriteReg (case 0x23, width4==0)	applied@a7e3e8b
+D_8120EB38	gGbNoiseStepTable1	w25		Used for noise channel step table, GbAudio_StepNoiseChannel and GbAudio_WriteReg (case 0x23, width4==1)	applied@a7e3e8b
+D_8120EB48	gGbNoisePeriodTable	w25		Used in func_81207494 for noise channel period calculation, GbAudio_WriteReg (case 0x22)	applied@a7e3e8b
+D_8120EAD4	gGbNoiseFreqTable	w25		Used in func_81207494 for noise channel frequency calculation, GbAudio_WriteReg (case 0x22)	applied@a7e3e8b
+D_8122EE58	gGbWaveRamMirror	w25		Written in GbAudio_WriteReg (0x30-0x3F), used as a mirror of GB wave RAM	applied@a7e3e8b
+D_8122EEA8	gGbApuStatusLatch	w25		Struct holding status latches for APU channels, used in GbAudio_ReadReg and GbAudio_QueueWrite	applied@a7e3e8b
+D_8122869C	GbAudioStreamAltVolume	w25		Used as a multiplier for altData in audio mixing, matches audio volume scaling usage in similar code.	applied@a7e3e8b
+func_81209688	GbAudioStreamAlt_Reset	w25		Empty function with arg0 unused, pattern matches other *_Reset stubs in audio code.	applied@a7e3e8b
+func_81209690	Fragment1_NoOp	w25		Empty function, matches stub pattern and unused arg0, likely a placeholder or fragment init stub	applied@a7e3e8b
+D_88002850	gQuadDirectionTable	w25		Used as a 4-entry table with values {0,1,2,1}, likely for quad direction or winding order in rendering logic (see usage in fragment rendering).	applied@a7e3e8b
+D_88002860	gHpBarColorGreen	w25		Color_RGBA8 {0xC8, 0xFF, 0xFF, 0x96} matches typical HP bar green color in Pokemon UI.	applied@a7e3e8b
+D_88002864	gHpBarColorGreenBright	w25		Color_RGBA8 {0x00, 0xFF, 0x00, 0xFF} is a bright green, likely for HP bar highlight.	applied@a7e3e8b
+D_88002868	gHpBarColorYellow	w25		Color_RGBA8 {0xC8, 0xFF, 0xFF, 0x82} is a yellowish color, matching HP bar yellow zone.	applied@a7e3e8b
+D_8800286C	gHpBarColorYellowBright	w25		Color_RGBA8 {0x00, 0x64, 0x00, 0xFF} is a bright yellow-green, likely for HP bar highlight in yellow zone.	applied@a7e3e8b
+D_88002870	gHpBarColorRed	w25		Color_RGBA8 {0xC8, 0xFF, 0xFF, 0x96} is a reddish color, matching HP bar red zone.	applied@a7e3e8b
+D_88002874	gHpBarColorRedBright	w25		Color_RGBA8 {0x00, 0xFF, 0xFF, 0xFF} is a bright red, likely for HP bar highlight in red zone.	applied@a7e3e8b
+D_88002878	gHpBarColorBlue	w25		Color_RGBA8 {0x1E, 0x1E, 0x82, 0x96} is a blue shade, possibly for status or background bar.	applied@a7e3e8b
+D_8800287C	gHpBarColorBlueBright	w25		Color_RGBA8 {0x82, 0xDC, 0x82, 0x7F} is a bright blue-green, likely for HP bar highlight in blue zone.	applied@a7e3e8b
+D_88002880	gHpBarColorOrange	w25		Color_RGBA8 {0xFF, 0xFF, 0x00, 0xFF} is an orange/yellow, possibly for warning or status.	applied@a7e3e8b
+D_88002884	gHpBarColorPurple	w25		Color_RGBA8 {0x1E, 0x1E, 0x82, 0x96} is a purple shade, possibly for poison status or similar.	applied@a7e3e8b
+D_88002888	gHpBarColorWhite	w25		Color_RGBA8 {0xF0, 0xF0, 0xF0, 0xFF} is white, likely for HP bar border or text.	applied@a7e3e8b
+D_88002898	gHpBarPixelData	w25		Large u32 array, likely raw pixel data for HP bar or similar UI element, based on size and context.	applied@a7e3e8b
+D_88002840	gHpBarPalette	w25		Struct with 0x4C values and pointer to D_88013F98, matches palette struct for HP bar graphics.	applied@a7e3e8b
+D_88013F80	gFragment22MonIconPalettes	w25		array of pointers to palette data for mon icons, see D_88013608 etc, used in icon rendering	applied@a7e3e8b
+D_88013F98	gFragment22MonIconTiles	w25		tile data for mon icons, 16x16 or 32x32, matches palette pointers above, used in icon rendering	applied@a7e3e8b
+D_88013608	gFragment22MonIconPalette0	w25		palette data for mon icon 0, referenced by D_88013F80[0]	applied@a7e3e8b
+D_88013868	gFragment22MonIconPalette1	w25		palette data for mon icon 1, referenced by D_88013F80[1]	applied@a7e3e8b
+D_88013AC8	gFragment22MonIconPalette2	w25		palette data for mon icon 2, referenced by D_88013F80[2]	applied@a7e3e8b
+D_88013D28	gFragment22MonIconPalette3	w25		palette data for mon icon 3, referenced by D_88013F80[3]	applied@a7e3e8b
+D_8800CAA8	gEmptyGfxDL	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_8800DAB0	gEmptyGfxDL2	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_8800EAB8	gEmptyGfxDL3	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_8800FAC0	gEmptyGfxDL4	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_88010AC8	gEmptyGfxDL5	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_88011AD0	gEmptyGfxDL6	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_88011EC8	gEmptyGfxDL7	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_880122C0	gEmptyGfxDL8	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_880126B8	gEmptyGfxDL9	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_88012AB0	gEmptyGfxDL10	w25		gsSPEndDisplayList() only, used as a placeholder display list	applied@a7e3e8b
+D_88016CF0	gLaboMessageBankMain	w25		MessageBank_Init assigns GetMessageBank(0x2A), used as message bank in GetMessageString for main LABO text	applied@a7e3e8b
+D_88016CF4	gLaboMessageBankSystem	w25		MessageBank_Init assigns GetMessageBank(0), used as message bank in GetMessageString for system messages (errors, etc)	applied@a7e3e8b
+func_88000020	Labo_CreateBackgroundObject	w25		Initializes unk_func_88001300_000 with draw callback func_8800008C, sets up background object for LABO	applied@a7e3e8b
+func_8800008C	Labo_DrawBackground	w25		Draw callback for LABO background, calls DrawTiledTextureRect with D_88002840, sets up display list	applied@a7e3e8b
+func_880001A8	Labo_DrawDualLayerRect	w25		Draws a rectangle with two texture layers and color blending, used for LABO UI elements	applied@a7e3e8b
+func_8800071C	Labo_CreateDualLayerObject	w25		Initializes unk_func_8800071C with draw callback func_880007C0, sets up dual-layer UI object	applied@a7e3e8b
+func_880007C0	Labo_DrawDualLayerObject	w25		Draw callback for dual-layer object, calls Labo_DrawDualLayerRect with struct fields	applied@a7e3e8b
+func_88000830	Labo_CreateAnimatedImageObject	w25		Initializes unk_func_88000830 with animation callbacks, sets up animated image (cycling textures)	applied@a7e3e8b
+func_880008C4	Labo_AnimatedImageAdvanceFrame	w25		Increments frame index for animated image, wraps at 4, used as animation callback	applied@a7e3e8b
+func_880008E0	Labo_DrawAnimatedImage	w25		Draw callback for animated image, loads texture from frame array and draws rectangle	applied@a7e3e8b
+func_88000C18	Labo_CreateColorRectObject	w25		Initializes unk_func_88000C18 with color and size, sets up solid color rectangle for LABO	applied@a7e3e8b
+func_88000CB0	Labo_ColorRectAdvanceFrame	w25		Increments frame counter for color rect, used as animation callback	applied@a7e3e8b
+func_88000CC0	Labo_ColorRectSetFrame	w25		Sets frame index for color rect object, used as callback	applied@a7e3e8b
+func_88000CC8	Labo_CreateBlinkingObject	w25		Initializes unk_func_88000CC8 with multiple textures and animation state, sets up blinking UI object	applied@a7e3e8b
+func_88000D80	Labo_BlinkingObjectAdvanceFrame	w25		Advances animation state for blinking object, randomizes blink timing, manages frame counters	applied@a7e3e8b
+func_88000E30	Labo_DrawBlinkingObject	w25		Draw callback for blinking object, draws base, overlay, and blinking textures with display list commands	applied@a7e3e8b
+D_8861C510	gMonSummaryStrings	w25		static char** used as the string bank for GetMessageString in summary screen routines	applied@a7e3e8b
+D_8861C514	gMonSpeciesNames	w25		static char** used as the string bank for GetMessageString with species index (arg0->unk_00.unk_00 - 1)	applied@a7e3e8b
+D_8861C518	gMoveNames	w25		static char** used as the string bank for GetMessageString with move index (sp6C->unk_00[0] - 1)	applied@a7e3e8b
+D_8861C51C	gMoveTypeNames	w25		static char** used as the string bank for GetMessageString with move type index (temp_v0_3->unk_00)	applied@a7e3e8b
+D_8861C520	gUnusedStringBank1	w25		static char** never referenced in this fragment, likely unused string bank	applied@a7e3e8b
+D_8861C524	gPaletteColorNames	w25		static char** used for GetMessageString with palette color index (sp74->unk_00)	applied@a7e3e8b
+D_8861C528	gMoveDescriptions	w25		static char** used as the string bank for GetMessageString with move index (sp134->unk_00[0] - 1) in move details	applied@a7e3e8b
+D_88605B98	gSummaryBallIconTex	w25		used in gDPLoadTextureBlock for the left icon in summary screen	applied@a7e3e8b
+D_886067E8	gSummaryRibbonsIconTex	w25		used in gDPLoadTextureBlock for the right icon in summary screen	applied@a7e3e8b
+D_886061C0	gSummaryAbilityIconTex	w25		used in gDPLoadTextureBlock for ability icon in summary screen	applied@a7e3e8b
+D_8860A688	gMoveTypeIconTextures	w25		u8* array indexed by move category, used in gDPLoadTextureBlock for move type icons	applied@a7e3e8b
+D_88605AC0	gSummaryTextColor	w25		Color_RGBA8 used for summary screen text (Text_SetEnvColor)	applied@a7e3e8b
+D_88605AC4	gSummaryTextColor2	w25		Color_RGBA8 used for summary screen text (Text_SetEnvColor) in func_88600738	applied@a7e3e8b
+D_88605AC8	gSummaryTextColor3	w25		Color_RGBA8 used for summary screen text (Text_SetEnvColor) in func_88600A64	applied@a7e3e8b
+D_88605AF0	gSummarySpeciesTextColor	w25		Color_RGBA8 used for species name text in summary screen	applied@a7e3e8b
+D_888267A0	gTrainerCardMsgBank	w25		Message bank used for trainer card UI, passed to GetMessageString for trainer card labels/numbers	applied@a7e3e8b
+D_888267A4	gSpeciesNameMsgBank	w25		Message bank used for species names, passed to GetMessageString for species name rendering	applied@a7e3e8b
+D_888267A8	gSpeciesDexMsgBank	w25		Message bank used for species dex entries, passed to GetMessageString for dex text rendering	applied@a7e3e8b
+D_888267AC	gSpeciesTypeMsgBank	w25		Message bank used for species type names, passed to GetMessageString for type label rendering	applied@a7e3e8b
+D_888267B0	gSpeciesCategoryMsgBank	w25		Message bank used for species category names, passed to GetMessageString for category label rendering	applied@a7e3e8b
+D_88826920	gTrainerCardSpriteMgr	w25		Passed to SpriteDisplay_Alloc and func_8001B480, used as a sprite manager for trainer card	applied@a7e3e8b
+D_88826928	gNextStage	w25		Used as a Stage*, matches project convention for next stage pointer	applied@a7e3e8b
+D_88826930	gTrainerCardState	w25		Used as a state variable for trainer card menu logic, s32, controls menu state	applied@a7e3e8b
+D_88826934	gTrainerCardSubstate	w25		Used as a substate variable for trainer card menu logic, s32, controls sub-menu state	applied@a7e3e8b
+D_88826938	gTrainerCardSaveSlot	w25		Passed to SaveSlot_GetTrainerName and func_8002564C, represents the save slot for trainer card	applied@a7e3e8b
+D_8882693C	gTrainerCardSpeciesIndex	w25		Used as a species index for trainer card, s32, controls which species is shown	applied@a7e3e8b
+D_88826940	gTrainerCardMenu	w25		Used as main menu struct for trainer card, passed to many menu functions	applied@a7e3e8b
+func_88803C74	PictureQuiz_MainLoop	w25		Calls main_pool_push_state('PICT'), handles input, runs display list, returns selection state (1/2/3)	applied@a7e3e8b
+func_88803ECC	PictureQuiz_MusicFadeLoop	w25		Fades out music, waits for fade to complete, runs display list during fade	applied@a7e3e8b
+func_88803FB0	PictureQuiz_DrawFrame	w25		Sets quiz state, runs display list, used as callback for fade/advance	applied@a7e3e8b
+func_88804020	PictureQuiz_ShowResults	w25		Handles fade, advances, copies state, calls func_88807D04 to show results, uses GetMessageString for message	applied@a7e3e8b
+func_8880412C	PictureQuiz_ResultsFadeOut	w25		Fades out, advances, copies state, calls func_8880812C, then fades out again	applied@a7e3e8b
+func_88804190	PictureQuiz_ResultsInputLoop	w25		Handles input loop for results, calls func_88804020 and func_8880412C, returns state	applied@a7e3e8b
+func_88804218	PictureQuiz_DrawResultsFrame	w25		Sets state, runs display list, used as callback for fade/advance in results	applied@a7e3e8b
+func_88804288	PictureQuiz_StateDispatcher	w25		Dispatches to main state handlers (func_88803614, func_888038E0, etc) in a loop	applied@a7e3e8b
+func_8880431C	PictureQuiz_GetLastUnlockedPokemon	w25		Loops from 151 down, calls func_8002564C, returns first unlocked index	applied@a7e3e8b
+func_88804370	PictureQuiz_InitFramebuffers	w25		Allocates and initializes framebuffer images for quiz display, uses FramebufferImage_Init/AttachDepth	applied@a7e3e8b
+func_888044BC	PictureQuiz_MainEntry	w25		Sets up memory pools, assets, message banks, framebuffers, state machine, and runs the quiz main loop	applied@a7e3e8b
+func_8140DA40	Fragment34_ReturnOne	w25		always returns 1, no arguments, matches stub/placeholder pattern in fragment34	applied@a7e3e8b

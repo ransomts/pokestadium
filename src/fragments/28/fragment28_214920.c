@@ -28,21 +28,21 @@ s32 func_88802598(unk_func_888044BC_040*, Controller*);
 s32 func_8880276C(unk_func_888044BC_044_02C*, s32, s32);
 s32 func_88802F10(unk_func_888044BC_04C_02C*, s32, s32);
 
-static char** D_888267A0;
-static char** D_888267A4;
-static char** D_888267A8;
-static char** D_888267AC;
-static char** D_888267B0;
+static char** gTrainerCardMsgBank;
+static char** gSpeciesNameMsgBank;
+static char** gSpeciesDexMsgBank;
+static char** gSpeciesTypeMsgBank;
+static char** gSpeciesCategoryMsgBank;
 static Fragment2_1GraphNode D_888267B8;
-static unk_func_8001B1FC* D_88826920;
+static unk_func_8001B1FC* gTrainerCardSpriteMgr;
 static Stage* D_88826924;
-static Stage* D_88826928;
+static Stage* gNextStage;
 static AssetManager* D_8882692C;
-static s32 D_88826930;
-static s32 D_88826934;
-static s32 D_88826938;
-static s32 D_8882693C;
-static unk_func_888044BC* D_88826940;
+static s32 gTrainerCardState;
+static s32 gTrainerCardSubstate;
+static s32 gTrainerCardSaveSlot;
+static s32 gTrainerCardSpeciesIndex;
+static unk_func_888044BC* gTrainerCardMenu;
 static u8 pad_D_88826948[0x58];
 static s32 D_888269A0;
 static u32 pad_D_888269A4;
@@ -218,7 +218,7 @@ void func_88800A3C(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, un
 
     if (sp70 != 0) {
         Text_SetFont(0x10, 0);
-        Text_Print(arg0 + 0x76, arg1 + 4, GetMessageString(NULL, 0, D_888267A4, sp74));
+        Text_Print(arg0 + 0x76, arg1 + 4, GetMessageString(NULL, 0, gSpeciesNameMsgBank, sp74));
     }
 
     Text_SetupDL();
@@ -364,12 +364,12 @@ void func_888019A4(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
     Text_SetFont(0x10, 0);
     Text_Print(arg1 + 0x10, arg2 + 6, arg0->unk_30);
     Text_SetFont(0x10, 0);
-    Text_Print(arg1 + 0x10, arg2 + 0x24, "%s%05d", GetMessageString(NULL, 0, D_888267A0, 7), arg0->unk_2C);
+    Text_Print(arg1 + 0x10, arg2 + 0x24, "%s%05d", GetMessageString(NULL, 0, gTrainerCardMsgBank, 7), arg0->unk_2C);
     Text_SetFont(8, 0);
     Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
-    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267A0, 8));
-    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 9));
-    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xA));
+    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, gTrainerCardMsgBank, 8));
+    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, gTrainerCardMsgBank, 9));
+    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, gTrainerCardMsgBank, 0xA));
     Text_EndRender();
     Text_SetEnvColor(D_888081F8.r, D_888081F8.g, D_888081F8.b, D_888081F8.a);
     Text_SetFont(8, 0);
@@ -422,11 +422,11 @@ s32 func_88801E1C(unk_func_888044BC_040_030* arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_SetEnvColor(0x9C, 0xCC, 0x98, 0xFF);
-    sp74 = GetMessageString(NULL, 0, D_888267A0, 0);
+    sp74 = GetMessageString(NULL, 0, gTrainerCardMsgBank, 0);
     Text_Print((arg1 - (MeasureTextWidth(0, 0, sp74) / 2)) + 0x7C, arg2 + 0xA, sp74);
     Text_SetFont(0x10, 0);
-    sp74 = GetMessageString(NULL, 0, D_888267A0, 1);
-    sp70 = GetMessageString(NULL, 0, D_888267A0, 2);
+    sp74 = GetMessageString(NULL, 0, gTrainerCardMsgBank, 1);
+    sp70 = GetMessageString(NULL, 0, gTrainerCardMsgBank, 2);
     sp6C = MeasureTextWidth(0, 0, sp74);
     temp_v0_3 = MeasureTextWidth(0, 0, sp70);
 
@@ -496,10 +496,10 @@ void func_8880231C(unk_func_888044BC_040* arg0, s32 arg1, s32 arg2, MemoryPool* 
     func_88801DB8(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp58->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
     PtrList_Init(&arg0->unk_38, 4, arg3);
-    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 3), 0);
-    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 4), 1);
-    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 5), 2);
-    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, D_888267A0, 6), 3);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gTrainerCardMsgBank, 3), 0);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gTrainerCardMsgBank, 4), 1);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gTrainerCardMsgBank, 5), 2);
+    PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gTrainerCardMsgBank, 6), 3);
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_88200FA0_030_030));
     ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_34, 0x154, 4, func_88802238, 0x70, 0x18, 4, 1,
@@ -531,7 +531,7 @@ void func_88802624(s32 arg0, s32 arg1, s32 arg2) {
     char sp2C[12];
     UNUSED s32 pad[2];
 
-    sprintf(sp2C, "%d%s%02d", arg2 / 100, GetMessageString(NULL, 0, D_888267A0, 0x11), arg2 % 100);
+    sprintf(sp2C, "%d%s%02d", arg2 / 100, GetMessageString(NULL, 0, gTrainerCardMsgBank, 0x11), arg2 % 100);
     Text_Print(arg0 - MeasureTextWidth(0, 0, sp2C), arg1, sp2C);
 }
 
@@ -561,19 +561,19 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0x96, 0xFF);
     Text_SetFont(0x10, 0);
-    Text_Print(arg1 + 0x10, arg2 + 6, "%s%03d", GetMessageString(NULL, 0, D_888267A0, 0x10), sp54->unk_00);
+    Text_Print(arg1 + 0x10, arg2 + 6, "%s%03d", GetMessageString(NULL, 0, gTrainerCardMsgBank, 0x10), sp54->unk_00);
     Text_SetFont(0x10, 0);
-    Text_Print(arg1 + 0x10, arg2 + 0x24, GetMessageString(NULL, 0, D_888267A4, sp54->unk_00 - 1));
+    Text_Print(arg1 + 0x10, arg2 + 0x24, GetMessageString(NULL, 0, gSpeciesNameMsgBank, sp54->unk_00 - 1));
     Text_SetFont(8, 0);
     Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
-    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, D_888267AC, sp54->unk_00 - 1));
-    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, D_888267A0, 0xC));
-    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, D_888267A0, 0xD));
+    Text_Print(arg1 + 0x24, arg2 + 0x4C, GetMessageString(NULL, 0, gSpeciesTypeMsgBank, sp54->unk_00 - 1));
+    Text_Print(arg1 + 0x24, arg2 + 0x64, GetMessageString(NULL, 0, gTrainerCardMsgBank, 0xC));
+    Text_Print(arg1 + 0x24, arg2 + 0x7C, GetMessageString(NULL, 0, gTrainerCardMsgBank, 0xD));
     Text_EndRender();
     Text_SetFont(8, 0);
     Text_SetEnvColor(D_88808214.r, D_88808214.g, D_88808214.b, D_88808214.a);
-    sp4C = GetMessageString(NULL, 0, D_888267A0, 0xE);
-    sp48 = GetMessageString(NULL, 0, D_888267A0, 0xF);
+    sp4C = GetMessageString(NULL, 0, gTrainerCardMsgBank, 0xE);
+    sp48 = GetMessageString(NULL, 0, gTrainerCardMsgBank, 0xF);
     sp44 = MeasureTextWidth(0, 0, sp4C);
 
     temp_v0_2 = MeasureTextWidth(0, 0, sp48);
@@ -584,11 +584,11 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
 
     Text_Print(arg1 + sp44, arg2 + 0x64, sp4C);
     Text_Print(arg1 + sp44, arg2 + 0x7C, sp48);
-    if (func_8002564C(D_88826938, sp54->unk_00) >= 2) {
+    if (func_8002564C(gTrainerCardSaveSlot, sp54->unk_00) >= 2) {
         func_88802624(arg1 + sp44, arg2 + 0x64, gMenuItemCoords[sp54->unk_00].unk_00);
         func_888026D8(arg1 + sp44, arg2 + 0x7C, gMenuItemCoords[sp54->unk_00].unk_02);
     } else {
-        sprintf(sp34, "?%s??", GetMessageString(NULL, 0, D_888267A0, 0x11));
+        sprintf(sp34, "?%s??", GetMessageString(NULL, 0, gTrainerCardMsgBank, 0x11));
         Text_Print((arg1 + sp44) - MeasureTextWidth(0, 0, sp34), arg2 + 0x64, sp34);
         sp48 = "???";
         Text_Print((arg1 + sp44) - MeasureTextWidth(0, 0, sp48), arg2 + 0x7C, sp48);
@@ -644,7 +644,7 @@ void func_88802DAC(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2) {
     char* sp18;
 
     if (func_8002564C(arg1, gSpeciesDisplayTable[arg2].unk_00) >= 2) {
-        sp18 = GetMessageString(NULL, 0, D_888267A8, arg2);
+        sp18 = GetMessageString(NULL, 0, gSpeciesDexMsgBank, arg2);
     } else {
         sp18 = "\n???";
     }
@@ -661,8 +661,8 @@ void func_88802E68(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
 }
 
 void func_88802EC4(unk_func_888044BC_04C_02C* arg0, s32 arg1) {
-    func_8001B480(D_88826920, arg1 + 1, 0x108D);
-    arg0->unk_2C = func_8002564C(D_88826938, arg1 + 1);
+    func_8001B480(gTrainerCardSpriteMgr, arg1 + 1, 0x108D);
+    arg0->unk_2C = func_8002564C(gTrainerCardSaveSlot, arg1 + 1);
 }
 
 s32 func_88802F10(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
@@ -676,7 +676,7 @@ s32 func_88802F10(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
     // clang-format off
     sp58.unk_00 = 0x100; sp58.unk_04 = 0xC0; sp58.unk_08 = 0xF8;
     // clang-format on
-    sp58.unk_0C = func_8001B9D4(D_88826920);
+    sp58.unk_0C = func_8001B9D4(gTrainerCardSpriteMgr);
 
     Stage_BeginDisplayList();
 
@@ -792,16 +792,16 @@ s32 func_88803614(void) {
 
     var_s5 = var_s2 = 1;
 
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_2C, 0);
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_30, 0);
-    D_88826940->unk_50->unk_00.unk_28 |= 0x100;
-    D_88826940->unk_54->unk_00.unk_28 |= 0x100;
-    D_88826940->unk_34->unk_2C = 0;
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_2C, 0);
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_30, 0);
+    gTrainerCardMenu->unk_50->unk_00.unk_28 |= 0x100;
+    gTrainerCardMenu->unk_54->unk_00.unk_28 |= 0x100;
+    gTrainerCardMenu->unk_34->unk_2C = 0;
 
-    D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 1);
-    D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0);
+    gTrainerCardMenu->unk_38->unk_00.unk_24(&gTrainerCardMenu->unk_38->unk_00, 1);
+    gTrainerCardMenu->unk_40->unk_00.unk_24(&gTrainerCardMenu->unk_40->unk_00, 0);
 
-    ((func8850628C)Memmap_GetFragmentVaddr(func_8850628C))(&D_88826940->unk_38->unk_2C->unk_00);
+    ((func8850628C)Memmap_GetFragmentVaddr(func_8850628C))(&gTrainerCardMenu->unk_38->unk_2C->unk_00);
     MenuInput_SetController(gPlayer1Controller);
 
     while (var_s2 == 1) {
@@ -809,21 +809,21 @@ s32 func_88803614(void) {
         Cont_ReadInputs();
         MenuInput_Init();
 
-        var_s0 = D_88826940->unk_38->unk_00.unk_20(&D_88826940->unk_38->unk_00, gPlayer1Controller);
+        var_s0 = gTrainerCardMenu->unk_38->unk_00.unk_20(&gTrainerCardMenu->unk_38->unk_00, gPlayer1Controller);
         if (!(var_s0 & 1)) {
             if (gPlayer1Controller->buttonPressed & 1) {
                 var_s0 |= 0x80000005;
-                func_88801054(D_88826940->unk_38->unk_2C);
-                func_88802228(D_88826940->unk_40->unk_30);
+                func_88801054(gTrainerCardMenu->unk_38->unk_2C);
+                func_88802228(gTrainerCardMenu->unk_40->unk_30);
             } else if (gPlayer1Controller->buttonPressed & 0x4000) {
                 var_s0 |= 0x80000003;
                 var_s2 = 0;
             } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-                if (func_8002564C(D_88826938, func_88801030(D_88826940->unk_38->unk_2C) + 1) == 0) {
+                if (func_8002564C(gTrainerCardSaveSlot, func_88801030(gTrainerCardMenu->unk_38->unk_2C) + 1) == 0) {
                     var_s0 |= 0x80000101;
                 } else {
-                    D_88826940->unk_38->unk_2C->unk_00.unk_34[D_88826940->unk_38->unk_2C->unk_00.unk_38] |= 2;
-                    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(D_88826940->unk_40->unk_34, 0);
+                    gTrainerCardMenu->unk_38->unk_2C->unk_00.unk_34[gTrainerCardMenu->unk_38->unk_2C->unk_00.unk_38] |= 2;
+                    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(gTrainerCardMenu->unk_40->unk_34, 0);
                     var_s0 |= 0x80000005;
                     var_s2 = 2;
                 }
@@ -833,8 +833,8 @@ s32 func_88803614(void) {
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
         Gfx_FinishFrame();
         Stage_BeginDisplayList();
-        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
-        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
+        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(gTrainerCardMenu);
+        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(gTrainerCardMenu, 0, 0);
         Stage_Advance();
         var_s5 = var_s2;
     }
@@ -849,36 +849,36 @@ s32 func_888038E0(void) {
 
 
     var_s1 = var_s3 = 2;
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_2C, 0);
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_30, 0);
-    D_88826940->unk_50->unk_00.unk_28 |= 0x100;
-    D_88826940->unk_54->unk_00.unk_28 |= 0x100;
-    D_88826940->unk_34->unk_2C = 0;
-    D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
-    D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 1);
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_2C, 0);
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_30, 0);
+    gTrainerCardMenu->unk_50->unk_00.unk_28 |= 0x100;
+    gTrainerCardMenu->unk_54->unk_00.unk_28 |= 0x100;
+    gTrainerCardMenu->unk_34->unk_2C = 0;
+    gTrainerCardMenu->unk_38->unk_00.unk_24(&gTrainerCardMenu->unk_38->unk_00, 0x100);
+    gTrainerCardMenu->unk_40->unk_00.unk_24(&gTrainerCardMenu->unk_40->unk_00, 1);
     MenuInput_SetController(gPlayer1Controller);
 
     while (var_s1 == 2) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
         MenuInput_Init();
-        var_s0 = D_88826940->unk_40->unk_00.unk_20(&D_88826940->unk_40->unk_00, gPlayer1Controller);
+        var_s0 = gTrainerCardMenu->unk_40->unk_00.unk_20(&gTrainerCardMenu->unk_40->unk_00, gPlayer1Controller);
         if (!(var_s0 & 1)) {
             if (gPlayer1Controller->buttonPressed & 1) {
-                func_88801054(D_88826940->unk_38->unk_2C);
-                func_88802228(D_88826940->unk_40->unk_30);
+                func_88801054(gTrainerCardMenu->unk_38->unk_2C);
+                func_88802228(gTrainerCardMenu->unk_40->unk_30);
                 var_s0 |= 0x80000005;
             } else if (gPlayer1Controller->buttonPressed & 0x4000) {
                 var_s0 |= 0x80000003;
                 var_s1 = 1;
             } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-                if (D_88826940->unk_40->unk_34->unk_34[D_88826940->unk_40->unk_34->unk_38] & 4) {
+                if (gTrainerCardMenu->unk_40->unk_34->unk_34[gTrainerCardMenu->unk_40->unk_34->unk_38] & 4) {
                     var_s0 |= 0x80000101;
                 } else {
-                    switch (D_88826940->unk_40->unk_34->unk_38) {
+                    switch (gTrainerCardMenu->unk_40->unk_34->unk_38) {
                         case 0:
                             var_s1 = 3;
-                            Audio_StartMusicFade(func_88801030(D_88826940->unk_38->unk_2C) + 1);
+                            Audio_StartMusicFade(func_88801030(gTrainerCardMenu->unk_38->unk_2C) + 1);
                             var_s0 |= 5;
                             break;
 
@@ -893,7 +893,7 @@ s32 func_888038E0(void) {
                             break;
 
                         case 3:
-                            D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
+                            gTrainerCardMenu->unk_40->unk_00.unk_24(&gTrainerCardMenu->unk_40->unk_00, 0x100);
                             var_s0 |= 0x80000002;
                             var_s1 = 0;
                             break;
@@ -905,8 +905,8 @@ s32 func_888038E0(void) {
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
         Gfx_FinishFrame();
         Stage_BeginDisplayList();
-        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
-        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
+        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(gTrainerCardMenu);
+        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(gTrainerCardMenu, 0, 0);
         Stage_Advance();
         var_s3 = var_s1;
     };
@@ -6107,22 +6107,22 @@ u8 D_88808248[] = {
     0,    0,    0,    0,    0,    0,
 };
 
-s32 func_88803C74(void) {
+s32 PictureQuiz_MainLoop(void) {
     s32 temp_s0;
     s32 var_s1;
 
     var_s1 = 3;
-    temp_s0 = func_88801030(D_88826940->unk_38->unk_2C);
+    temp_s0 = func_88801030(gTrainerCardMenu->unk_38->unk_2C);
     main_pool_push_state('PICT');
-    D_88826920 = func_8001B1FC(D_8882692C, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, D_88808248);
-    func_88802EC4(D_88826940->unk_4C->unk_2C, temp_s0);
-    func_8880261C(D_88826940->unk_44->unk_2C, temp_s0);
-    func_88802DAC(D_88826940->unk_48, func_80029080(), temp_s0);
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_2C, 1);
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(D_88826940->unk_30, 1);
-    D_88826940->unk_50->unk_00.unk_28 &= ~0x100;
-    D_88826940->unk_54->unk_00.unk_28 &= ~0x100;
-    D_88826940->unk_34->unk_2C = 0;
+    gTrainerCardSpriteMgr = func_8001B1FC(D_8882692C, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, D_88808248);
+    func_88802EC4(gTrainerCardMenu->unk_4C->unk_2C, temp_s0);
+    func_8880261C(gTrainerCardMenu->unk_44->unk_2C, temp_s0);
+    func_88802DAC(gTrainerCardMenu->unk_48, func_80029080(), temp_s0);
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_2C, 1);
+    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(gTrainerCardMenu->unk_30, 1);
+    gTrainerCardMenu->unk_50->unk_00.unk_28 &= ~0x100;
+    gTrainerCardMenu->unk_54->unk_00.unk_28 &= ~0x100;
+    gTrainerCardMenu->unk_34->unk_2C = 0;
 
     do {
         Cont_StartReadInputs();
@@ -6137,8 +6137,8 @@ s32 func_88803C74(void) {
         }
         Gfx_FinishFrame();
         Stage_BeginDisplayList();
-        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
-        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
+        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(gTrainerCardMenu);
+        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(gTrainerCardMenu, 0, 0);
         Stage_Advance();
     } while (var_s1 == 3);
 
@@ -6147,59 +6147,59 @@ s32 func_88803C74(void) {
     return var_s1;
 }
 
-s32 func_88803ECC(void) {
-    D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
-    D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
-    Audio_StartMusicFade(func_88801030(D_88826940->unk_38->unk_2C) + 1);
+s32 PictureQuiz_MusicFadeLoop(void) {
+    gTrainerCardMenu->unk_38->unk_00.unk_24(&gTrainerCardMenu->unk_38->unk_00, 0x100);
+    gTrainerCardMenu->unk_40->unk_00.unk_24(&gTrainerCardMenu->unk_40->unk_00, 0x100);
+    Audio_StartMusicFade(func_88801030(gTrainerCardMenu->unk_38->unk_2C) + 1);
 
     while (Audio_IsMusicEnabled() != 0) {
         Stage_BeginDisplayList();
-        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
-        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
+        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(gTrainerCardMenu);
+        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(gTrainerCardMenu, 0, 0);
         Stage_Advance();
     }
     return 2;
 }
 
-s32 func_88803FB0(u8 arg0) {
-    D_88826940->unk_34->unk_2C = -1;
+s32 PictureQuiz_DrawFrame(u8 arg0) {
+    gTrainerCardMenu->unk_34->unk_2C = -1;
     Stage_BeginDisplayList();
-    ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(D_88826940);
-    ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(D_88826940, 0, 0);
+    ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(gTrainerCardMenu);
+    ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(gTrainerCardMenu, 0, 0);
     return 0;
 }
 
-void func_88804020(void) {
+void PictureQuiz_ShowResults(void) {
     s32 sp2C;
 
-    D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
-    D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
+    gTrainerCardMenu->unk_38->unk_00.unk_24(&gTrainerCardMenu->unk_38->unk_00, 0x100);
+    gTrainerCardMenu->unk_40->unk_00.unk_24(&gTrainerCardMenu->unk_40->unk_00, 0x100);
     Stage_StartFade(8);
-    Stage_AdvanceUntil(8, func_88803FB0);
+    Stage_AdvanceUntil(8, PictureQuiz_DrawFrame);
     Stage_AdvanceN(2);
-    Stage_CopyState(D_88826928);
+    Stage_CopyState(gNextStage);
     Stage_AdvanceN(2);
-    sp2C = func_88801030(D_88826940->unk_38->unk_2C) + 1;
-    func_88807D04(sp2C, D_88826930, 0x70800, D_88826934, 0x4B000, GetMessageString(NULL, 0, D_888267A4, sp2C - 1),
-                  D_888267B0);
+    sp2C = func_88801030(gTrainerCardMenu->unk_38->unk_2C) + 1;
+    func_88807D04(sp2C, gTrainerCardState, 0x70800, gTrainerCardSubstate, 0x4B000, GetMessageString(NULL, 0, gSpeciesNameMsgBank, sp2C - 1),
+                  gSpeciesCategoryMsgBank);
     Stage_StartFade(8);
     Stage_AdvanceUntil(0xA, func_8880725C);
 }
 
-void func_8880412C(void) {
+void PictureQuiz_ResultsFadeOut(void) {
     Stage_StartFade(8);
     Stage_AdvanceUntil(8, func_8880725C);
     Stage_AdvanceN(2);
     Stage_CopyState(D_88826924);
     func_8880812C();
     Stage_StartFade(8);
-    Stage_AdvanceUntil(0xA, func_88803FB0);
+    Stage_AdvanceUntil(0xA, PictureQuiz_DrawFrame);
 }
 
-s32 func_88804190(void) {
+s32 PictureQuiz_ResultsInputLoop(void) {
     s32 var_s0 = 3;
 
-    func_88804020();
+    PictureQuiz_ShowResults();
 
     while (var_s0 == 3) {
         Cont_StartReadInputs();
@@ -6213,19 +6213,19 @@ s32 func_88804190(void) {
     }
 
     PlaySoundEffect(3);
-    func_8880412C();
+    PictureQuiz_ResultsFadeOut();
     return var_s0;
 }
 
-s32 func_88804218(u8 arg0) {
-    D_88826940->unk_34->unk_2C = -1;
+s32 PictureQuiz_DrawResultsFrame(u8 arg0) {
+    gTrainerCardMenu->unk_34->unk_2C = -1;
     Stage_BeginDisplayList();
-    ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(&D_88826940->unk_00);
-    ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(&D_88826940->unk_00, 0, 0);
+    ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(&gTrainerCardMenu->unk_00);
+    ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(&gTrainerCardMenu->unk_00, 0, 0);
     return 0;
 }
 
-void func_88804288(void) {
+void PictureQuiz_StateDispatcher(void) {
     s32 var_v0 = 1;
 
     while (var_v0 != 0) {
@@ -6239,25 +6239,25 @@ void func_88804288(void) {
                 break;
 
             case 3:
-                var_v0 = func_88803C74();
+                var_v0 = PictureQuiz_MainLoop();
                 break;
 
             case 4:
-                var_v0 = func_88803ECC();
+                var_v0 = PictureQuiz_MusicFadeLoop();
                 break;
 
             case 5:
-                var_v0 = func_88804190();
+                var_v0 = PictureQuiz_ResultsInputLoop();
                 break;
         }
     }
 }
 
-s32 func_8880431C(void) {
+s32 PictureQuiz_GetLastUnlockedPokemon(void) {
     s32 i;
 
     for (i = 151; i > 0; i--) {
-        if (func_8002564C(D_88826938, i) != 0) {
+        if (func_8002564C(gTrainerCardSaveSlot, i) != 0) {
             break;
         }
     }
@@ -6265,7 +6265,7 @@ s32 func_8880431C(void) {
     return i;
 }
 
-void func_88804370(void) {
+void PictureQuiz_InitFramebuffers(void) {
     u32 sp34;
     u32 sp30;
     u32 sp2C;
@@ -6274,34 +6274,34 @@ void func_88804370(void) {
     sp28 = main_pool_alloc(sizeof(FramebufferImage), 0);
 
     sp34 = D_88826924->unk_18[0]->img_p;
-    D_88826930 = D_88826924->unk_18[0]->img_p + 0x25800;
+    gTrainerCardState = D_88826924->unk_18[0]->img_p + 0x25800;
     sp30 = D_88826924->unk_18[1]->img_p;
-    D_88826934 = D_88826924->unk_18[1]->img_p + 0x25800;
+    gTrainerCardSubstate = D_88826924->unk_18[1]->img_p + 0x25800;
     sp2C = D_88826924->unk_18[1]->img_p + 0x70800;
 
-    D_88826928->unk_18[0] = main_pool_alloc(sizeof(FramebufferImage), 0);
-    D_88826928->unk_18[1] = main_pool_alloc(sizeof(FramebufferImage), 0);
+    gNextStage->unk_18[0] = main_pool_alloc(sizeof(FramebufferImage), 0);
+    gNextStage->unk_18[1] = main_pool_alloc(sizeof(FramebufferImage), 0);
 
-    FramebufferImage_Init(D_88826928->unk_18[0], 0, 2, 0x140, 0xF0, sp34);
-    FramebufferImage_Init(D_88826928->unk_18[1], 0, 2, 0x140, 0xF0, sp30);
+    FramebufferImage_Init(gNextStage->unk_18[0], 0, 2, 0x140, 0xF0, sp34);
+    FramebufferImage_Init(gNextStage->unk_18[1], 0, 2, 0x140, 0xF0, sp30);
     FramebufferImage_Init(sp28, 0, 2, 0x140, 0xF0, sp2C);
-    FramebufferImage_AttachDepth(D_88826928->unk_18[0], sp28);
-    FramebufferImage_AttachDepth(D_88826928->unk_18[1], sp28);
+    FramebufferImage_AttachDepth(gNextStage->unk_18[0], sp28);
+    FramebufferImage_AttachDepth(gNextStage->unk_18[1], sp28);
 }
 
-s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1) {
     MemoryPool* sp2C;
     u8* sp28;
 
-    D_88826938 = func_80029080();
-    D_8882693C = func_8880431C() - 1;
+    gTrainerCardSaveSlot = func_80029080();
+    gTrainerCardSpeciesIndex = PictureQuiz_GetLastUnlockedPokemon() - 1;
 
     main_pool_push_state('BOOK');
 
     D_88826924 = Stage_GetCurrent();
-    D_88826928 = Stage_Create(0, 1, 2, 1, 2, 0);
-    func_88804370();
-    func_80025540(D_88826938);
+    gNextStage = Stage_Create(0, 1, 2, 1, 2, 0);
+    PictureQuiz_InitFramebuffers();
+    func_80025540(gTrainerCardSaveSlot);
     Text_Init(0x1D, 0);
     D_8882692C = AssetManager_Create(1);
     AssetManager_LoadArchives();
@@ -6318,27 +6318,27 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     sp2C = mem_pool_try_init(0x8000, 0);
     MessageBank_Init();
-    D_888267A0 = GetMessageBank(8);
-    D_888267A4 = GetMessageBank(0x24);
-    D_888267A8 = GetMessageBank(0xA);
-    D_888267AC = GetMessageBank(0x28);
-    D_888267B0 = GetMessageBank(9);
+    gTrainerCardMsgBank = GetMessageBank(8);
+    gSpeciesNameMsgBank = GetMessageBank(0x24);
+    gSpeciesDexMsgBank = GetMessageBank(0xA);
+    gSpeciesTypeMsgBank = GetMessageBank(0x28);
+    gSpeciesCategoryMsgBank = GetMessageBank(9);
     D_888269A0 = func_80029080();
 
     if (D_888269A0 != -1) {
         MenuScroll_Init(&D_888269A8, D_888269A0);
     }
 
-    D_88826940 = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));
-    func_888031FC(D_88826940, 0, 0, sp28, sp2C);
+    gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));
+    func_888031FC(gTrainerCardMenu, 0, 0, sp28, sp2C);
     func_80007754();
     Graph_InitRoots();
     Stage_FadeIn(8);
-    Stage_AdvanceUntil(8, func_88804218);
-    func_88804288();
+    Stage_AdvanceUntil(8, PictureQuiz_DrawResultsFrame);
+    PictureQuiz_StateDispatcher();
     Stage_SetFillColor(1);
     Stage_FadeOut(8);
-    Stage_AdvanceUntil(0xA, func_88804218);
+    Stage_AdvanceUntil(0xA, PictureQuiz_DrawResultsFrame);
     Stage_Terminate();
     FontManager_Free();
 

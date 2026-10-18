@@ -16,13 +16,13 @@
 #include "fragments/26/fragment26.h"
 #include "fragments/25/fragment25.h"
 
-static char** D_8861C510;
-static char** D_8861C514;
-static char** D_8861C518;
-static char** D_8861C51C;
-static char** D_8861C520;
-static char** D_8861C524;
-static char** D_8861C528;
+static char** gMonSummaryStrings;
+static char** gMonSpeciesNames;
+static char** gMoveNames;
+static char** gMoveTypeNames;
+static char** gUnusedStringBank1;
+static char** gPaletteColorNames;
+static char** gMoveDescriptions;
 
 extern u8 D_88606E10[];
 extern u8 D_88606E58[];
@@ -30,10 +30,10 @@ extern u8 D_88606EA0[];
 extern u8 D_88606EE8[];
 extern u8 D_88606F30[];
 extern u8 D_8860A6D0[];
-extern u8 D_88605B98[];
-extern u8 D_886067E8[];
-extern u8 D_886061C0[];
-extern u8* D_8860A688[];
+extern u8 gSummaryBallIconTex[];
+extern u8 gSummaryRibbonsIconTex[];
+extern u8 gSummaryAbilityIconTex[];
+extern u8* gMoveTypeIconTextures[];
 
 typedef struct unk_D_88605B00 {
     /* 0x00 */ s16 unk_00;
@@ -95,7 +95,7 @@ void func_88600248(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED Memor
 }
 
 s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummaryTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -103,13 +103,13 @@ s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_88605B98, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryBallIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886067E8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryRibbonsIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xF8) << 2, (arg2 + 4) << 2, (arg1 + 0x113) << 2,
@@ -120,9 +120,9 @@ s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_SetEnvColor(D_88605AC0.r, D_88605AC0.g, D_88605AC0.b, D_88605AC0.a);
-    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 0));
-    Text_Print(arg1 + 0x118, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 1));
+    Text_SetEnvColor(gSummaryTextColor.r, gSummaryTextColor.g, gSummaryTextColor.b, gSummaryTextColor.a);
+    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, gMonSummaryStrings, 0));
+    Text_Print(arg1 + 0x118, arg2 + 6, GetMessageString(NULL, 0, gMonSummaryStrings, 1));
     Text_SetupDL();
     return 0;
 }
@@ -135,7 +135,7 @@ void func_886006D8(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED Memor
 }
 
 s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC4 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummaryTextColor2 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -143,7 +143,7 @@ s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886061C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryAbilityIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
@@ -154,8 +154,8 @@ s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_SetEnvColor(D_88605AC4.r, D_88605AC4.g, D_88605AC4.b, D_88605AC4.a);
-    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 2));
+    Text_SetEnvColor(gSummaryTextColor2.r, gSummaryTextColor2.g, gSummaryTextColor2.b, gSummaryTextColor2.a);
+    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, gMonSummaryStrings, 2));
     Text_SetupDL();
     return 0;
 }
@@ -168,7 +168,7 @@ void func_88600A04(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED Memor
 }
 
 s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC8 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummaryTextColor3 = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605ACC = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605AD0 = { 0x1E, 0x78, 0x32, 0xFF };
     UNUSED static Color_RGBA8 D_88605AD4 = { 0x32, 0xB4, 0x64, 0xFF };
@@ -179,7 +179,7 @@ s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886061C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryAbilityIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
@@ -190,8 +190,8 @@ s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_SetEnvColor(D_88605AC8.r, D_88605AC8.g, D_88605AC8.b, D_88605AC8.a);
-    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, D_8861C510, 3));
+    Text_SetEnvColor(gSummaryTextColor3.r, gSummaryTextColor3.g, gSummaryTextColor3.b, gSummaryTextColor3.a);
+    Text_Print(arg1 + 0x2C, arg2 + 6, GetMessageString(NULL, 0, gMonSummaryStrings, 3));
     Text_SetupDL();
     return 0;
 }
@@ -287,7 +287,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_8860A688[temp_v0_2], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gMoveTypeIconTextures[temp_v0_2], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0x13) << 2, (arg2 + 0x13) << 2,
@@ -299,7 +299,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
         Text_ResetState();
         Text_SetEnvColor(sp68->unk_04.r, sp68->unk_04.g, sp68->unk_04.b, sp68->unk_04.a);
         Text_SetFont(8, 0);
-        Text_Print(arg1 + 0x16, arg2, GetMessageString(NULL, 0, D_8861C518, sp6C->unk_00[0] - 1));
+        Text_Print(arg1 + 0x16, arg2, GetMessageString(NULL, 0, gMoveNames, sp6C->unk_00[0] - 1));
         Text_SetupDL();
     } else {
         MoveCategoryColorGradient* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(0);
@@ -437,13 +437,13 @@ void func_88601B5C(unk_func_88205880_0098_008_044* arg0, PokemonData* arg1) {
 }
 
 s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AF0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummarySpeciesTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* sp34;
     char* sp30;
 
-    sp34 = GetMessageString(NULL, 0, D_8861C510, 0x15);
-    sp30 = GetMessageString(NULL, 0, D_8861C510, 0x16);
+    sp34 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x15);
+    sp30 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x16);
 
     if (arg0->unk_2C == NULL) {
         return 0;
@@ -451,7 +451,7 @@ s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_SetEnvColor(D_88605AF0.r, D_88605AF0.g, D_88605AF0.b, D_88605AF0.a);
+    Text_SetEnvColor(gSummarySpeciesTextColor.r, gSummarySpeciesTextColor.g, gSummarySpeciesTextColor.b, gSummarySpeciesTextColor.a);
     Text_Print(arg1 + 0x10, arg2 + 6, (char*)arg0->unk_2C->unk_30);
     if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
         Text_SetFont(0x10, 0);
@@ -464,7 +464,7 @@ s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
         Text_Print(arg1 + 0x9B, arg2 + 6, "%s%d", sp34, arg0->unk_2C->unk_24);
         Text_SetFont(8, 0);
         Text_Print(arg1 + 0x11E, arg2 + 0xA, "%s%03d", sp30, arg0->unk_2C->unk_00.unk_00);
-        Text_Print(arg1 + 0x1A0, arg2 + 0xA, GetMessageString(NULL, 0, D_8861C514, arg0->unk_2C->unk_00.unk_00 - 1));
+        Text_Print(arg1 + 0x1A0, arg2 + 0xA, GetMessageString(NULL, 0, gMonSpeciesNames, arg0->unk_2C->unk_00.unk_00 - 1));
     }
     Text_SetupDL();
     return 0;
@@ -500,7 +500,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
-    temp_v0 = GetMessageString(NULL, 0, D_8861C510, 7);
+    temp_v0 = GetMessageString(NULL, 0, gMonSummaryStrings, 7);
     tmp = MeasureTextWidth(8, 0, temp_v0) + MeasureTextWidth(8, 0, "1/WWWWWWWW2/WWWWWWWW");
     var_s4 = ((arg0->unk_00.unk_14.unk_00 - tmp) - 0xA) / 2;
     Text_Print(arg1 + var_s4, arg2 + 4, temp_v0);
@@ -529,7 +529,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
                 Text_Print(arg1 + var_s4, arg2 + 4, sp50);
                 Text_SetEnvColor(sp68.r, sp68.g, sp68.b, sp68.a);
                 Text_Print(MeasureTextWidth(0, 0, sp50) + arg1 + var_s4, arg2 + 4,
-                              GetMessageString(NULL, 0, D_8861C51C, temp_v0_3->unk_00));
+                              GetMessageString(NULL, 0, gMoveTypeNames, temp_v0_3->unk_00));
                 var_s4 += MeasureTextWidth(0, 0, "1/WWWWWWWW") + 0xA;
             }
         }
@@ -571,11 +571,11 @@ s32 func_88602198(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_SetEnvColor(D_88605AF8.r, D_88605AF8.g, D_88605AF8.b, D_88605AF8.a);
-    Text_Print(sp54 + 4, arg2 + 4, GetMessageString(NULL, 0, D_8861C510, 8));
-    Text_Print(sp54 + 4, arg2 + 0x2A, GetMessageString(NULL, 0, D_8861C510, 9));
-    Text_Print(sp54 + 4, arg2 + 0x40, GetMessageString(NULL, 0, D_8861C510, 0xA));
-    Text_Print(sp54 + 4, arg2 + 0x56, GetMessageString(NULL, 0, D_8861C510, 0xB));
-    Text_Print(sp54 + 4, arg2 + 0x6C, GetMessageString(NULL, 0, D_8861C510, 0xC));
+    Text_Print(sp54 + 4, arg2 + 4, GetMessageString(NULL, 0, gMonSummaryStrings, 8));
+    Text_Print(sp54 + 4, arg2 + 0x2A, GetMessageString(NULL, 0, gMonSummaryStrings, 9));
+    Text_Print(sp54 + 4, arg2 + 0x40, GetMessageString(NULL, 0, gMonSummaryStrings, 0xA));
+    Text_Print(sp54 + 4, arg2 + 0x56, GetMessageString(NULL, 0, gMonSummaryStrings, 0xB));
+    Text_Print(sp54 + 4, arg2 + 0x6C, GetMessageString(NULL, 0, gMonSummaryStrings, 0xC));
 
     if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
         sp50 = MeasureTextWidth(0, 0, D_88605AFC);
@@ -819,13 +819,13 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_SetEnvColor(D_88605B44.r, D_88605B44.g, D_88605B44.b, D_88605B44.a);
-    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xD);
+    sp70 = GetMessageString(NULL, 0, gMonSummaryStrings, 0xD);
     Text_Print(arg1 + 0x18, arg2 + 0x2C, sp70);
     Text_Print(MeasureTextWidth(0, 0, sp70) + arg1 + 0x18, arg2 + 0x2C, "%05d", arg0->unk_2C->unk_0E);
-    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xE);
+    sp70 = GetMessageString(NULL, 0, gMonSummaryStrings, 0xE);
     Text_Print(arg1 + 0x18, arg2 + 0x44, sp70);
     Text_Print(MeasureTextWidth(0, 0, sp70) + arg1 + 0x18, arg2 + 0x44, (char*)arg0->unk_2C->unk_3B);
-    sp70 = GetMessageString(NULL, 0, D_8861C510, 0xF);
+    sp70 = GetMessageString(NULL, 0, gMonSummaryStrings, 0xF);
     Text_Print(arg1 + 0xE8, arg2 + 0x2C, sp70);
     Text_Print(MeasureTextWidth(0, 0, sp70) + arg1 + 0xE8, arg2 + 0x2C, "%d", arg0->unk_2C->unk_10);
 
@@ -836,16 +836,16 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
         s32 sp44;
 
         MessageBank_SetPointer_1_9(6, (char*)(func_88600020(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
-        GetMessageString(sp48, sizeof(sp48), D_8861C510, 0x10);
+        GetMessageString(sp48, sizeof(sp48), gMonSummaryStrings, 0x10);
         sp44 = MeasureTextWidth(0, 0, sp48);
         Text_Print(arg1 + 0xE8, arg2 + 0x44, sp48);
-        Text_Print(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", GetMessageString(NULL, 0, D_8861C510, 0x15), sp6C);
-        sp70 = GetMessageString(NULL, 0, D_8861C510, 0x11);
+        Text_Print(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", GetMessageString(NULL, 0, gMonSummaryStrings, 0x15), sp6C);
+        sp70 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x11);
         Text_Print(arg1 + 0x18, arg2 + 8, sp70);
         sp74 = ((func8840007C)Util_ConvertAddrToVirtAddr((uintptr_t)GetPaletteColorEntry))(arg0->unk_2C);
         Text_SetEnvColor(sp74->unk_04.r, sp74->unk_04.g, sp74->unk_04.b, sp74->unk_04.a);
         Text_Print(MeasureTextWidth(0, 0, sp70) + arg1 + 0x18, arg2 + 8,
-                      GetMessageString(NULL, 0, D_8861C524, sp74->unk_00));
+                      GetMessageString(NULL, 0, gPaletteColorNames, sp74->unk_00));
     }
 
     Text_SetupDL();
@@ -931,11 +931,11 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     Text_ResetState();
     Text_SetFont(4, 0);
     Text_SetEnvColor(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
-    sp128 = GetMessageString(NULL, 0, D_8861C510, 0x12);
+    sp128 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x12);
     Text_Print(sp13C + 0x90, sp138 + 8, sp128);
-    sp124 = GetMessageString(NULL, 0, D_8861C510, 0x13);
+    sp124 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x13);
     Text_Print(sp13C + 0xE, sp138 + 0x1C, sp124);
-    sp120 = GetMessageString(NULL, 0, D_8861C510, 0x14);
+    sp120 = GetMessageString(NULL, 0, gMonSummaryStrings, 0x14);
     Text_Print(sp13C + 0x90, sp138 + 0x1C, sp120);
 
     if (sp130 == NULL) {
@@ -953,12 +953,12 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
         sp38 = ((((sp130->unk_04 * 0x64) / 255) + 2) / 5) * 5;
         Text_SetEnvColor(sp12C->unk_04.r, sp12C->unk_04.g, sp12C->unk_04.b, sp12C->unk_04.a);
         Text_SetFont(8, 0);
-        Text_Print(sp13C + 8, sp138 + 4, GetMessageString(NULL, 0, D_8861C518, sp134->unk_00[0] - 1));
+        Text_Print(sp13C + 8, sp138 + 4, GetMessageString(NULL, 0, gMoveNames, sp134->unk_00[0] - 1));
         Text_SetFont(4, 0);
         Text_Print(MeasureTextWidth(0, 0, sp128) + sp13C + 0x90, sp138 + 8, " %s",
-                      GetMessageString(NULL, 0, D_8861C51C, sp12C->unk_00));
+                      GetMessageString(NULL, 0, gMoveTypeNames, sp12C->unk_00));
         Text_SetLineHeight(0x12);
-        Text_Print(sp13C + 0xE, sp138 + 0x3A, GetMessageString(NULL, 0, D_8861C528, sp134->unk_00[0] - 1));
+        Text_Print(sp13C + 0xE, sp138 + 0x3A, GetMessageString(NULL, 0, gMoveDescriptions, sp134->unk_00[0] - 1));
         Text_SetEnvColor(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
         Text_SetFont(4, 0);
 
@@ -1179,7 +1179,7 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp6C->unk_00);
 
     sp68 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp68, 0x14, 5, GetMessageString(NULL, 0, D_8861C510, 4), 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp68, 0x14, 5, GetMessageString(NULL, 0, gMonSummaryStrings, 4), 0x10);
     sp68->unk_30 = (0, D_88605B6C);
     sp68->unk_44 = sp68->unk_44;
     sp68->unk_34 = (0, D_88605B70);
@@ -1187,13 +1187,13 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, D_8861C510, 5), D_88605B74, D_88605B78, arg5);
+    func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 5), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[0] = &sp64->unk_00;
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, D_8861C510, 6), D_88605B74, D_88605B78, arg5);
+    func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 6), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[1] = &sp64->unk_00;
@@ -1467,13 +1467,13 @@ unk_func_88205880_0098_008* func_886058B8(unk_func_88205880_0098* arg0) {
     AssetManager_LoadArchives();
     FRAGMENT_LOAD(fragment31);
 
-    D_8861C510 = arg0->unk_1C;
-    D_8861C514 = arg0->unk_20;
-    D_8861C518 = arg0->unk_24;
-    D_8861C51C = arg0->unk_28;
-    D_8861C520 = arg0->unk_2C;
-    D_8861C524 = arg0->unk_30;
-    D_8861C528 = arg0->unk_34;
+    gMonSummaryStrings = arg0->unk_1C;
+    gMonSpeciesNames = arg0->unk_20;
+    gMoveNames = arg0->unk_24;
+    gMoveTypeNames = arg0->unk_28;
+    gUnusedStringBank1 = arg0->unk_2C;
+    gPaletteColorNames = arg0->unk_30;
+    gMoveDescriptions = arg0->unk_34;
 
     sp34 = mem_pool_alloc(arg0->unk_04, sizeof(unk_func_88205880_0098_008));
     func_8860439C(sp34, arg0->unk_00, arg0->unk_02, sp38, arg0->unk_14, arg0->unk_04);
@@ -1512,7 +1512,7 @@ s32 func_88605A0C(u32 arg0, unk_func_88205880_0098* arg1) {
     return var_v1;
 }
 
-u8 D_88605B98[] = {
+u8 gSummaryBallIconTex[] = {
     0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00,
     0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66,
     0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00,
@@ -1600,7 +1600,7 @@ u8 D_88605B98[] = {
 static Gfx D_886061B8[] = {
     gsSPEndDisplayList(),
 };
-u8 D_886061C0[] = {
+u8 gSummaryAbilityIconTex[] = {
     0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82,
     0x80, 0x82, 0x80, 0x8A, 0x40, 0x82, 0x80, 0x82, 0x40, 0x82, 0x40, 0x82, 0x80, 0x82, 0x80, 0x8A, 0x40, 0x82, 0x80,
     0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82,
@@ -1688,7 +1688,7 @@ u8 D_886061C0[] = {
 static Gfx D_886067E0[] = {
     gsSPEndDisplayList(),
 };
-u8 D_886067E8[] = {
+u8 gSummaryRibbonsIconTex[] = {
     0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88,
     0xC6, 0x88, 0xC6, 0x88, 0xC8, 0x88, 0xC6, 0x80, 0xC6, 0x88, 0xC6, 0x80, 0xC6, 0x88, 0xC6, 0x88, 0xC8, 0x88, 0xC6,
     0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88,
@@ -2642,7 +2642,7 @@ static u8 D_8860A368[] = {
     0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15,
     0x13, 0x15
 };
-u8* D_8860A688[] = {
+u8* gMoveTypeIconTextures[] = {
     D_88607738, D_88607A60, D_88607D88, D_886080B0, D_886083D8, D_88608700, D_88608A28, D_88608D50,
     D_88609078, D_886093A0, D_886096C8, D_886099F0, D_88609D18, D_8860A040, D_8860A368,
 };
