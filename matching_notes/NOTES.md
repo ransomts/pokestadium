@@ -958,3 +958,53 @@ Gate costs ~4-6 min regardless of batch size; waves of 100-200 symbols are the s
   decision (overlapping splat views + partially-named PokemonStats typedef in 22630.h).
 - func_80022734 (move-power tier semantics unknown), 19840 loader family (named in b2),
   Tier C struct fields (dotted-path rows; struct prefixes in the closure are protected).
+
+## ROUND 11 PICKUP (handoff written 2026-10-17 ~23:59, end of the rename-execution session)
+
+### What happened tonight
+F6 continuation executed per matching_notes/RENAME_PLAN.md (owner-approved: fields-only Tier C,
+gptoss-120b bulk, 4-wave review cadence, alias triple consolidated). 2,686 renames applied in
+batches w5-w25 + s1 + c1 (ledger total 3,713). Every batch gated: ROM md5-OK, map cross-check,
+progress 97.9197% unchanged, expected/ byte-identical at every 4th wave; final make -j24 -> OK,
+make diff-init refreshed. Tree clean, branch match-round-1, nothing pushed.
+
+### Tooling hardened this session (all committed, see git log)
+- rename.py: hard preflight refusal for undefined_syms.ld-defined symbols (the D_80073267
+  class: extern-decl in C + definition in the never-touch .ld; c_definition_count counted
+  externs as definitions - the loophole).
+- rename.py: C-defined globals with no symbol_addrs entry now get a SIZELESS `defined:true`
+  entry added at rename time (map-derived address). Without it, spimdisasm re-derives the old
+  placeholder name from fragment relocs at every make extract (the D_800758E0 failure: it
+  resurrected in the map through auto/undefined_syms_auto.ld). Splat's .splat/*.csv files are
+  pure OUTPUT - scrubbing them does nothing.
+- rename.py: field-row declaration rewrite now handles `/* offset */` comments, pointer-typed
+  fields (GbEmuState* unk_01D8) and array suffixes; gate failures dump full build output to
+  scratch/gate_full.log.
+- rename_wave.py: end-to-end wave driver (agents 16x concurrent -> salvage -> fixup ->
+  plan/fixup loop -> apply+gate -> commit -> mark-committed -> amend; idempotent re-runs;
+  per-batch veto.txt). rename_field_agent.py + rename_field_wave.py: Tier C field renames via
+  gpt-5.6-sol (needs max_completion_tokens, no temperature!). rename_agent.py chunks files
+  >1200 lines (fragment27/28_214920 sized giants exceed gptoss-120b context; gpt-4.1 worked
+  as fallback when gptoss-120b returned empty content late in the night).
+
+### The alias triple is RESOLVED (s1, from the smart-agent analysis)
+Two DISJOINT tables, not aliases: gSpeciesDisplayTable (0x8006FF00, 152 rows x 0x1C: pmname
+model-name ptr, scale, flags, packed angles - consumed as sprite scale in 1AB70) ends exactly
+where gSpeciesBaseStats (0x80070FA0, 152 x 0x17, byte-verified canonical Gen-1 stats, renamed in
+p2) begins. D_8006FEE8 is the string "pmname_151"; D_80070F84 is an IDO constant-folded alias
+base (gSpeciesBaseStats - 0x1C) - both dual-source, parked forever. unk_D_80070F84 typedef
+renamed SpeciesStats (the true 0x17 row type). Follow-ups + evidence in rename_parked.md.
+
+### Still open
+1. The 5 open functions (unchanged scores; farm relaunch recipe in ROUND 10 PICKUP; Anthropic
+   API resets Oct 19 7pm). The farm-merge closure (67 symbols + protected field rows) unlocks
+   when they match.
+2. Tier C remainder: shared field names need struct-scoped rows (see rename_parked.md).
+3. PokemonStats field rotation + STAT_* define relabel: evidence documented, owner decision.
+4. F5 upstream: fold the 40+ rename commits into the up/* series (they are cherry-pickable;
+   export-upstream emits the curated subset).
+
+### Session recipe (proven, 2686 renames / ~5h wall, ~0 owner interventions)
+`.venv/bin/python3 matching_notes/rename_wave.py run <queue-wave> [count]` - queue in
+matching_notes/rename_queue.txt (21 waves + regen via rename_queue_gen.py). Field waves:
+`rename_field_wave.py cN <headers...>`. Veto: scratch/rename_waves/<batch>/veto.txt.
