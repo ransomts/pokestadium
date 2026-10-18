@@ -669,9 +669,9 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 
     for (i = 0; i < 3; i++) {
         if (arg2->unk_0000[i].unk_004.unk_00.unk_00 != 0) {
-            func_84200420(arg0 + i * 0x84, arg1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
+            DrawColoredBox(arg0 + i * 0x84, arg1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
         } else {
-            func_84200420(arg0 + i * 0x84, arg1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
+            DrawColoredBox(arg0 + i * 0x84, arg1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
         }
     }
 
@@ -725,7 +725,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
     return;
   }
   func_83803748(&D_838067F0);
-  func_842001B8(spC4, spC0, 0x1B4, 0x12C);
+  DrawBorderedBox(spC4, spC0, 0x1B4, 0x12C);
   func_83803A80(spC4 + 4, spC0 + 4, &D_838067F0);
   {
     Gfx *_g = (Gfx *) (gDisplayListHead++);

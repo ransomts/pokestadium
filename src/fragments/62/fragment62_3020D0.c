@@ -153,7 +153,7 @@ void func_84317BDC(void) {
 
     if ((sp18->unk_44.unk_00 == 0x76) || (sp18->unk_44.unk_00 == 0x77)) {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp1C) {
             case 0:
@@ -178,7 +178,7 @@ void func_84317BDC(void) {
         }
     } else {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp1C) {
             case 0:
@@ -222,7 +222,7 @@ void func_84317EDC(void) {
     }
 
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+    MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
     switch (sp24) {
         case 0:
@@ -274,7 +274,7 @@ void func_843180AC(void) {
         sp24->unk_5A = tmp;
 
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -301,7 +301,7 @@ void func_843180AC(void) {
         sp24->unk_5A = 0x76;
 
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -326,7 +326,7 @@ void func_843180AC(void) {
         }
     } else {
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        MessageBank_SetPointer_0x14_0x2A(0x1D, func_843085F0(D_84390010[D_84390240.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[D_84390240.unk_00->unk_2C]));
 
         switch (sp2C) {
             case 0:
@@ -718,7 +718,7 @@ void func_843194A0(unk_D_84390010* arg0) {
     arg0->unk_8C4.unk_08[arg0->unk_8C4.unk_04] = '\x00';
 
     if (arg0->unk_8C4.unk_48[0] != 0) {
-        if (arg0 == D_84390018) {
+        if (arg0 == gPrimaryPokemonEntity) {
             func_843162E4(temp_t0->unk_001, 0x5F, 0xE, &arg0->unk_8C4.unk_08);
         } else {
             func_843162E4(temp_t0->unk_001, 0x17, 0xBB, &arg0->unk_8C4.unk_08);

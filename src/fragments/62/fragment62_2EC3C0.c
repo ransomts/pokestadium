@@ -23,29 +23,29 @@ static unk_D_8438FF70 D_8438FFD0;
 static unk_D_84384588 D_8438FFF0;
 static unk_D_84384588 D_84390000;
 unk_D_84390010* D_84390010[2];
-unk_D_84390010* D_84390018;
+unk_D_84390010* gPrimaryPokemonEntity;
 unk_D_84390010* D_8439001C;
-static unk_D_8438E7B0_A50* D_84390020;
-unk_D_84390028 D_84390028[2];
+static unk_D_8438E7B0_A50* gCurrentAnimChannel;
+unk_D_84390028 gPokemonModelDimensions[2];
 static unk_D_84390048 D_84390048;
-static unk_D_84390068 D_84390068[7];
-static s32 D_843900A0;
+static unk_D_84390068 gAnimStateQueue[7];
+static s32 gAnimStateQueueIndex;
 static s32 D_843900A4;
 f32 D_843900A8[2];
 
-unk_D_8438E7B0* D_84384570[] = { &D_8438E7B0, &D_8438F390 };
-unk_D_8438FF70* D_84384578[] = {
+unk_D_8438E7B0* gAnimDataByPlayer[] = { &D_8438E7B0, &D_8438F390 };
+unk_D_8438FF70* gAnimDataSetB[] = {
     &D_8438FF70,
     &D_8438FF90,
 };
-unk_D_8438FF70* D_84384580[] = {
+unk_D_8438FF70* gAnimDataSetC[] = {
     &D_8438FFB0,
     &D_8438FFD0,
 };
-unk_D_84384588* D_84384588[] = { &D_8438FFF0, &D_84390000 };
-u8 D_84384590[] = { 0x39, 0x67, 0x64, 0x6D, 0x28, 0x6E, 0x2A, 0x47 };
-static u8 D_84384598[] = { 0x64, 0x6E };
-static u8 D_8438459C[] = {
+unk_D_84384588* gAnimExtraDataByPlayer[] = { &D_8438FFF0, &D_84390000 };
+u8 gSpecialMoveIDs[] = { 0x39, 0x67, 0x64, 0x6D, 0x28, 0x6E, 0x2A, 0x47 };
+static u8 gSpecialConditionIDs[] = { 0x64, 0x6E };
+static u8 gStatMaskIndices[] = {
     0x06, 0x0C, 0x30, 0x31, 0x32, 0x33, 0x8D, 0x96, 0x97,
 };
 static u8 D_843845A8[] = {
@@ -84,7 +84,7 @@ static u8 D_843845C8[] = {
     0x06,
     0x7F,
 };
-static u8* D_843845CC[] = {
+static u8* gStatMaskTable[] = {
     D_843845A8, D_843845AC, D_843845B0, D_843845B4, D_843845B8, D_843845BC, D_843845C0, D_843845C4, D_843845C8,
 };
 u8 D_843845F0 = 0x8E;
@@ -94,7 +94,7 @@ u8 D_843845FC[] = { 0x55, 0x54 };
 
 char** D_843900B0;
 char** D_843900B4;
-char** D_843900B8;
+char** gPokemonMessageBank;
 char** D_843900BC;
 char** D_843900C0;
 
@@ -102,7 +102,7 @@ void func_84301B00(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        D_84390068[i].unk_04 = D_84385380;
+        gAnimStateQueue[i].unk_04 = D_84385380;
     }
 }
 
@@ -115,7 +115,7 @@ void func_84301B84(unk_D_84390010* arg0, s32 arg1) {
     s16 sp24;
     s32 sp20;
 
-    sp20 = func_84307F00(arg0) == 0;
+    sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307F24(arg0);
     func_8432C5D4(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
 }
@@ -125,7 +125,7 @@ void func_84301BEC(unk_D_84390010* arg0, s32 arg1) {
     s16 sp24;
     s32 sp20;
 
-    sp20 = func_84307F00(arg0) == 0;
+    sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307F24(arg0);
     func_8432C654(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
 }
@@ -135,7 +135,7 @@ void func_84301C54(unk_D_84390010* arg0, s32 arg1) {
     s16 sp24;
     s32 sp20;
 
-    sp20 = func_84307F00(arg0) == 0;
+    sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307FAC(arg0);
     func_8432C604(arg1, D_84390010[sp20], arg0, sp24, func_84307FE0(arg0));
 }
@@ -143,7 +143,7 @@ void func_84301C54(unk_D_84390010* arg0, s32 arg1) {
 void func_84301CBC(unk_D_84390010* arg0) {
     if (func_84302000(arg0) != 0) {
         arg0->unk_4C4 = 0;
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -152,13 +152,13 @@ void func_84301D08(unk_D_84390010* arg0) {
     s32 idx = arg0->unk_4C0;
     s32 sp24 = D_84385384[idx].unk_20;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24];
     if (func_84302000(arg0) != 0) {
         func_84305A74(arg0, sp24, 2);
         arg0->unk_4C4 = 0;
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         Anim_SetChannelBase(&arg0->unk_000, 0);
-        GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
     }
 }
 
@@ -166,21 +166,21 @@ void func_84301DDC(unk_D_84390010* arg0) {
     s32 idx = arg0->unk_4C0;
     s32 sp28 = D_84385384[idx].unk_20;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp28];
-    if (func_84307BAC(arg0) != 0.0f) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (D_84390020->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp28];
+    if (GetModelBaseY(arg0) != 0.0f) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
         func_84301B48(arg0, D_84385384[idx].unk_24);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
-void func_84301EEC(unk_D_84390010* arg0) {
+void Anim_ResetPlayer(unk_D_84390010* arg0) {
     arg0->unk_4C4 = 0;
 }
 
-void func_84301EF4(unk_D_84390010* arg0) {
-    D_84390010[func_84307F00(arg0) == 0]->unk_4C4 = 0;
+void Anim_ResetAllPlayers(unk_D_84390010* arg0) {
+    D_84390010[IsPrimaryEntity(arg0) == 0]->unk_4C4 = 0;
 }
 
 void func_84301F2C(unk_D_84390010* arg0) {
@@ -297,11 +297,11 @@ void func_843021E8(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk
             }
 
             for (j = 0; j < 0x37; j++) {
-                temp_v0_3 = func_84302194(arg1 + 1, D_8438459C, 9);
+                temp_v0_3 = func_84302194(arg1 + 1, gStatMaskIndices, 9);
                 if (temp_v0_3 >= 0) {
                     temp_v1_2 = j / 8;
-                    if (temp_v1_2 == D_843845CC[temp_v0_3][0]) {
-                        var_a0 = temp_s4->unk_0F[temp_v1_2] | D_843845CC[temp_v0_3][1];
+                    if (temp_v1_2 == gStatMaskTable[temp_v0_3][0]) {
+                        var_a0 = temp_s4->unk_0F[temp_v1_2] | gStatMaskTable[temp_v0_3][1];
                     } else {
                         var_a0 = temp_s4->unk_0F[temp_v1_2];
                     }
@@ -327,12 +327,12 @@ void func_8430245C(unk_D_84390010* arg0) {
 
     func_843021E8(arg0, arg0->unk_654.unk_38.unk_0B - 1, &arg0->unk_94C, &arg0->unk_9AC);
 
-    if (D_84384588[func_84307F00(arg0)]->unk_00 != 0) {
-        func_843021E8(arg0, D_84384588[func_84307F00(arg0)]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
+    if (gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_00 != 0) {
+        func_843021E8(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
     }
 
-    if (D_84384588[func_84307F00(arg0)]->unk_01 != 0) {
-        func_843021E8(arg0, D_84384588[func_84307F00(arg0)]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
+    if (gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_01 != 0) {
+        func_843021E8(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
     }
 }
 
@@ -362,7 +362,7 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     unk_D_8438FF70* ptr2;
     u32 tmp;
 
-    sp68 = func_84307F00(arg0);
+    sp68 = IsPrimaryEntity(arg0);
     sp66 = arg0->unk_000.unk_01A - 1;
 
     ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_18];
@@ -375,34 +375,34 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     if ((arg0->unk_000.unk_01A == 0x19) && (ptr->unk_52 & 0x80)) {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)gStageRomOffsets[152] & 0xFFFFFF);
     }
-    DmaCopyAsyncRange(D_84384570[sp68], var_a1, var_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(gAnimDataByPlayer[sp68], var_a1, var_a1 + 0xBC0, 0);
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-    DmaCopyAsyncRange(D_84384580[sp68], var_a1, var_a1 + 0x20, 0);
+    DmaCopyAsyncRange(gAnimDataSetC[sp68], var_a1, var_a1 + 0x20, 0);
 
     if (sp68 == 1) {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        DmaCopyAsyncRange(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
+        DmaCopyAsyncRange(gAnimDataSetB[sp68], var_a1, var_a1 + 0x20, 0);
 
-        ptr2 = D_84384578[sp68];
+        ptr2 = gAnimDataSetB[sp68];
         if (ptr2->unk_10 != 0xFF) {
             sp6E = ptr2->unk_10;
 
             var_a1 = ((u32)_70D3A0_ROM_START) + (((u32)(D_6E910 + ((ptr2->unk_10 - (tmp = 2)) * 0x20))) & 0xFFFFFF);
             DmaCopyAsyncRange(ptr2, var_a1, var_a1 + 0x20, 0);
 
-            D_84384578[sp68]->unk_10 = sp6E;
+            gAnimDataSetB[sp68]->unk_10 = sp6E;
         }
     } else {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        DmaCopyAsyncRange(D_84384578[sp68], var_a1, var_a1 + 0x20, 0);
+        DmaCopyAsyncRange(gAnimDataSetB[sp68], var_a1, var_a1 + 0x20, 0);
     }
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70B10 + (sp66 * 0x20)) & 0xFFFFFF);
     DmaCopyAsyncRange(&D_84390048, var_a1, var_a1 + 0x20, 0);
 
-    func_8430C1E4(&arg0->unk_448.unk_24.unk_00, &D_84390048.unk_00);
-    func_8430C1E4(&arg0->unk_448.unk_24.unk_0C, &D_84390048.unk_0C);
+    Vector_Copy(&arg0->unk_448.unk_24.unk_00, &D_84390048.unk_00);
+    Vector_Copy(&arg0->unk_448.unk_24.unk_0C, &D_84390048.unk_0C);
 
     arg0->unk_448.unk_24.unk_18 = D_84390048.unk_18;
     arg0->unk_448.unk_24.unk_19 = D_84390048.unk_19;
@@ -412,19 +412,19 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     arg0->unk_448.unk_24.unk_0C.x *= arg0->unk_4B0;
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70110 + (sp66 << 4)) & 0xFFFFFF);
-    DmaCopyAsyncRange(&D_84390028[sp68], var_a1, var_a1 + 0x10, 0);
+    DmaCopyAsyncRange(&gPokemonModelDimensions[sp68], var_a1, var_a1 + 0x10, 0);
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_71E10 + (sp66 * 0x10)) & 0xFFFFFF);
-    DmaCopyAsyncRange(D_84384588[sp68], var_a1, var_a1 + 0x10, 0);
+    DmaCopyAsyncRange(gAnimExtraDataByPlayer[sp68], var_a1, var_a1 + 0x10, 0);
 
     func_843025BC(sp66, &arg0->unk_94C, &arg0->unk_9AC);
 
-    if (D_84384588[sp68]->unk_00 != 0) {
-        func_843025BC(D_84384588[sp68]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
+    if (gAnimExtraDataByPlayer[sp68]->unk_00 != 0) {
+        func_843025BC(gAnimExtraDataByPlayer[sp68]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
     }
 
-    if (D_84384588[sp68]->unk_01 != 0) {
-        func_843025BC(D_84384588[sp68]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
+    if (gAnimExtraDataByPlayer[sp68]->unk_01 != 0) {
+        func_843025BC(gAnimExtraDataByPlayer[sp68]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
     }
 
     if (arg1 == 1) {
@@ -440,9 +440,9 @@ void func_843029D0(unk_D_84390010* arg0) {
     if (arg0->unk_720->unk_00 & 0x10) {
         arg0->unk_720->unk_00 &= ~0x90;
         func_8430920C(arg0);
-        func_84307748(arg0);
+        RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         func_84305760(arg0, 0x12);
     }
 }
@@ -457,18 +457,18 @@ void func_84302A78(unk_D_84390010* arg0) {
     sp2A = arg0->unk_000.unk_01A - 1;
     sp24 = &arg0->unk_654.unk_38;
     sp20 = &arg0->unk_654;
-    idx = func_84307F00(arg0);
+    idx = IsPrimaryEntity(arg0);
 
-    D_84390020 = &D_84384570[idx]->unk_000[sp24->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[idx]->unk_000[sp24->unk_5A - 1];
 
     if (!(sp20->unk_34 & 2)) {
         arg0->unk_4C4 = 0;
 
         if (func_84307B60(arg0) != 0) {
-            tmp = func_84307F00(arg0);
+            tmp = IsPrimaryEntity(arg0);
             PlayMoveSoundEffect(tmp, sp24->unk_5A, 0xC8, 0);
         } else {
-            tmp = func_84307F00(arg0);
+            tmp = IsPrimaryEntity(arg0);
             PlayMoveSoundEffect(tmp, sp24->unk_5A, sp2A + 1, 0);
         }
 
@@ -480,13 +480,13 @@ void func_84302A78(unk_D_84390010* arg0) {
         }
 
         func_84301F2C(arg0);
-        GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
         func_843058C4(arg0, sp24->unk_5A - 1);
 
-        if (D_84390020->unk_0B != 0) {
-            Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_0B);
-            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_0B);
-            arg0->unk_4C4 = D_84390020->unk_0B;
+        if (gCurrentAnimChannel->unk_0B != 0) {
+            Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
+            SetAnimStateIndex(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
+            arg0->unk_4C4 = gCurrentAnimChannel->unk_0B;
         } else {
             Anim_SetChannelBase(&arg0->unk_000, 0);
         }
@@ -498,17 +498,17 @@ void func_84302C34(unk_D_84390010* arg0) {
     s16 sp32 = arg0->unk_000.unk_01A - 1;
     unk_D_800FCB18* sp24;
 
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
     sp24 = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
     if ((sp24->unk_5A == 0x19) && (sp32 == 0x64)) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (D_84390020->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
         if (D_84390240.unk_00->unk_48 == 0x14) {
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         } else if (sp24->unk_44.unk_00 == 0x5B) {
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         } else {
             if (sp24->unk_44.unk_00 == 0x6E) {
                 if ((sp32 != 7) && (sp32 != 8) && (sp32 != 0x5A) && (sp32 != 6)) {
@@ -527,7 +527,7 @@ void func_84302C34(unk_D_84390010* arg0) {
                 } else if (sp24->unk_44.unk_00 == 0x6B) {
                     func_84308654(arg0, 9, 0);
                 } else {
-                    func_84308654(arg0, D_84390020->unk_05, 0);
+                    func_84308654(arg0, gCurrentAnimChannel->unk_05, 0);
                 }
 
                 if ((sp24->unk_5A == 0x9A) && (D_84390230 == D_8439022C)) {
@@ -536,7 +536,7 @@ void func_84302C34(unk_D_84390010* arg0) {
                     func_84301B84(arg0, sp24->unk_5A);
                 }
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -544,9 +544,9 @@ void func_84302C34(unk_D_84390010* arg0) {
 void func_84302EF0(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp24 = &arg0->unk_654.unk_38;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
-    if (arg0->unk_4C4 == (D_84390020->unk_04 + 1)) {
+    if (arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) {
         if (func_84301FB0(arg0) == 0) {
             if (D_84390240.unk_00->unk_48 == 0x18) {
                 D_84390234--;
@@ -566,7 +566,7 @@ void func_84302EF0(unk_D_84390010* arg0) {
                 func_8432B5B8(arg0, sp24, 0);
                 func_843031A0(arg0);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -577,10 +577,10 @@ void func_8430305C(unk_D_84390010* arg0) {
     s16 sp18;
 
     sp18 = sp24->unk_5A;
-    func_84307F00(arg0);
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24->unk_5A - 1];
+    IsPrimaryEntity(arg0);
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
-    if (arg0->unk_4C4 == (D_84390020->unk_09 + 1)) {
+    if (arg0->unk_4C4 == (gCurrentAnimChannel->unk_09 + 1)) {
         if (func_84301FB0(arg0) == 0) {
             if (((sp18 == 0x4A) || (sp18 == 0x60) || (sp18 == 0x61) || (sp18 == 0x6A) || (sp18 == 0x6E) ||
                  (sp18 == 0xE) || (sp18 == 0x68) || (sp18 == 0x6B) || (sp18 == 0x6F) || (sp18 == 0x70) ||
@@ -589,7 +589,7 @@ void func_8430305C(unk_D_84390010* arg0) {
                 func_8432C6C4(3, arg0);
                 Audio_PlaySoundEffect(0x23, 0, 0);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -597,7 +597,7 @@ void func_8430305C(unk_D_84390010* arg0) {
 void func_843031A0(unk_D_84390010* arg0) {
     unk_D_800FCB18* temp_v1 = &arg0->unk_654.unk_38;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[temp_v1->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[temp_v1->unk_5A - 1];
 
     if (temp_v1->unk_5A == 0x6A) {
         GraphNode_SetSubState(&arg0->unk_000, 1);
@@ -610,7 +610,7 @@ void func_84303208(unk_D_84390010* arg0) {
     s16 sp22;
 
     sp22 = arg0->unk_000.unk_01A - 1;
-    D_84390020 = D_84384570[func_84307F00(arg0)]->unk_000;
+    gCurrentAnimChannel = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000;
 
     if (!(temp_v1->unk_34 & 2)) {
         arg0->unk_4C4 = 0;
@@ -620,14 +620,14 @@ void func_84303208(unk_D_84390010* arg0) {
             func_843061EC(arg0, 0x10);
             func_84306200(arg0, 0x4000);
         }
-        GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
         Anim_SetChannelBase(&arg0->unk_000, 0);
         func_843058C4(arg0, 4);
 
-        if (D_84390020->unk_0B != 0) {
-            Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_0B);
-            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_0B);
-            arg0->unk_4C4 = D_84390020->unk_0B;
+        if (gCurrentAnimChannel->unk_0B != 0) {
+            Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
+            SetAnimStateIndex(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
+            arg0->unk_4C4 = gCurrentAnimChannel->unk_0B;
         } else {
             Anim_SetChannelBase(&arg0->unk_000, 0);
         }
@@ -635,10 +635,10 @@ void func_84303208(unk_D_84390010* arg0) {
 }
 
 void func_8430334C(unk_D_84390010* arg0) {
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[0];
-    if ((arg0->unk_4C4 == (D_84390020->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
+    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
         func_800479C0(1, arg0->unk_000.unk_01A, 0);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -648,20 +648,20 @@ void func_843033E0(unk_D_84390010* arg0) {
 
     sp20 = &arg0->unk_654;
     ptr = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[ptr->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[ptr->unk_5A - 1];
 
     if (sp20->unk_34 & 2) {
         return;
     }
 
-    arg0->unk_4C4 = D_84390020->unk_06;
+    arg0->unk_4C4 = gCurrentAnimChannel->unk_06;
     if (!(sp20->unk_34 & 0x4000)) {
         func_84301F2C(arg0);
-        GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
-        Anim_SetChannelBase(&arg0->unk_000, D_84390020->unk_06);
-        if (D_84390020->unk_01 != 0xFF) {
-            GraphNode_TriggerSound(&arg0->unk_000, D_84390020->unk_01);
-            SetAnimStateIndex(&arg0->unk_000, D_84390020->unk_06);
+        GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
+        Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_06);
+        if (gCurrentAnimChannel->unk_01 != 0xFF) {
+            GraphNode_TriggerSound(&arg0->unk_000, gCurrentAnimChannel->unk_01);
+            SetAnimStateIndex(&arg0->unk_000, gCurrentAnimChannel->unk_06);
             sp20->unk_36 = 1;
         }
     }
@@ -672,16 +672,16 @@ void func_843034D8(unk_D_84390010* arg0) {
     s32 var_v0;
 
     sp20 = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp20->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp20->unk_5A - 1];
     if (sp20->unk_5A == 0x9A) {
-        var_v0 = D_84390020->unk_04 + 0x1E;
+        var_v0 = gCurrentAnimChannel->unk_04 + 0x1E;
     } else {
-        var_v0 = D_84390020->unk_04 + 1;
+        var_v0 = gCurrentAnimChannel->unk_04 + 1;
     }
 
     if ((var_v0 == arg0->unk_4C4) && (func_84301FB0(arg0) == 0)) {
         if (D_84390240.unk_00->unk_48 == 0x14) {
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
             return;
         }
 
@@ -696,9 +696,9 @@ void func_843034D8(unk_D_84390010* arg0) {
         } else if (sp20->unk_44.unk_00 == 0x39) {
             func_84308654(arg0, 0xA, 0);
         } else {
-            func_84308654(arg0, D_84390020->unk_05, 0);
+            func_84308654(arg0, gCurrentAnimChannel->unk_05, 0);
         }
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -707,12 +707,12 @@ void func_84303674(unk_D_84390010* arg0) {
     s32 var_v0;
 
     sp18 = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp18->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18->unk_5A - 1];
 
     if (sp18->unk_5A == 0x9A) {
-        var_v0 = D_84390020->unk_04 + 0x1E;
+        var_v0 = gCurrentAnimChannel->unk_04 + 0x1E;
     } else {
-        var_v0 = D_84390020->unk_04 + 1;
+        var_v0 = gCurrentAnimChannel->unk_04 + 1;
     }
 
     if (var_v0 == arg0->unk_4C4) {
@@ -733,7 +733,7 @@ void func_84303674(unk_D_84390010* arg0) {
             } else {
                 func_8432B5B8(arg0, sp18, 0);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -748,15 +748,15 @@ void func_843037CC(unk_D_84390010* arg0) {
     unk_D_84390010* temp_a1;
 
     sp28 = &arg0->unk_654.unk_38;
-    sp40 = func_84307F00(arg0) == 0;
+    sp40 = IsPrimaryEntity(arg0) == 0;
     sp3C = &D_84390010[sp40]->unk_654;
     temp_a1 = D_84390010[sp40];
-    D_84390020 = &D_84384570[sp40]->unk_A80;
+    gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
 
     if (sp3C->unk_34 & 1) {
-        temp_v0 = func_84307AE0(temp_a1->unk_000.unk_01A, D_84384598, 2);
+        temp_v0 = func_84307AE0(temp_a1->unk_000.unk_01A, gSpecialConditionIDs, 2);
         if (temp_v0 != 0) {
-            D_84390020 = &D_84384570[sp40]->unk_B20;
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B20;
         }
     }
 
@@ -764,9 +764,9 @@ void func_843037CC(unk_D_84390010* arg0) {
 
     if (!(sp3C->unk_34 & 0x200) && !(sp3C->unk_34 & 0x4000) && !(sp3C->unk_34 & 2)) {
         if (((D_843C4DEC < 0xA) || (D_843C4DA4 != 0)) && ((sp28->unk_15 & 0x20) == 0)) {
-            D_84390020 = &D_84384570[sp40]->unk_A50;
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A50;
             if (sp3C->unk_34 & 0x200) {
-                D_84390020 = &D_84384570[sp40]->unk_B00;
+                gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B00;
             }
         } else if (!(sp3C->unk_34 & 1)) {
             func_84305A74(D_84390010[sp40], 0xA8, 1);
@@ -781,11 +781,11 @@ void func_843037CC(unk_D_84390010* arg0) {
         }
 
         if ((D_843C4DA4 == 0) && (sp28->unk_5A == 0x49)) {
-            D_84390020 = &D_84384570[sp40]->unk_A80;
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
         }
 
         Anim_SetChannelBase(&D_84390010[sp40]->unk_000, 0);
-        GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, gCurrentAnimChannel->unk_00);
 
         if ((sp28->unk_44.unk_00 == 0x17) || (sp28->unk_44.unk_00 == 0x22) || (sp28->unk_44.unk_00 == 0x45)) {
             func_84308654(D_84390010[sp40], 0xF, 0);
@@ -798,11 +798,11 @@ void func_84303A48(unk_D_84390010* arg0) {
     s32 sp28;
 
     sp20 = &arg0->unk_654.unk_38;
-    sp28 = func_84307F00(arg0);
+    sp28 = IsPrimaryEntity(arg0);
 
-    D_84390020 = &D_84384570[func_84307F00(arg0) == 0]->unk_000[sp20->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
-    if (D_84390010[sp28 == 0]->unk_4C4 == (D_84390020->unk_07 + 1)) {
+    if (D_84390010[sp28 == 0]->unk_4C4 == (gCurrentAnimChannel->unk_07 + 1)) {
         if (func_84301FB0(arg0) == 0) {
             func_8432E9D8(1);
             if (sp20->unk_44.unk_00 == 0x51) {
@@ -816,7 +816,7 @@ void func_84303A48(unk_D_84390010* arg0) {
                     func_84308654(D_84390010[sp28 == 0], 0x10, 0);
                 }
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -825,30 +825,30 @@ void func_84303BB8(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
-    sp28 = func_84307F00(arg0) == 0;
+    sp28 = IsPrimaryEntity(arg0) == 0;
     sp20 = &arg0->unk_654.unk_38;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0) == 0]->unk_000[sp20->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
-    if ((D_84390020->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
+    if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
         if (func_84301FB0(arg0) == 0) {
             if (D_843C4E44 == 1) {
                 func_8432B5B8(D_84390010[sp28], sp20, 1);
             } else {
                 func_8432B5B8(D_84390010[sp28], sp20, 5);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
 
 void func_84303CB4(unk_D_84390010* arg0) {
-    s32 sp1C = func_84307F00(arg0);
+    s32 sp1C = IsPrimaryEntity(arg0);
 
-    D_84390020 = &D_84384570[sp1C]->unk_A80;
+    gCurrentAnimChannel = &gAnimDataByPlayer[sp1C]->unk_A80;
     D_84390010[sp1C]->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
-    GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+    GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
     func_84305A74(D_84390010[sp1C], 0xA8, 1);
     func_8432BF88(arg0, 0x1E);
 }
@@ -856,10 +856,10 @@ void func_84303CB4(unk_D_84390010* arg0) {
 s32 func_84303D50(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp1C;
 
-    sp1C = &D_84390010[func_84307F00(arg0) == 0]->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp1C->unk_5A - 1];
-    if (D_84390020->unk_0C != 0) {
-        if (arg0->unk_4C4 == D_84390020->unk_0C) {
+    sp1C = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp1C->unk_5A - 1];
+    if (gCurrentAnimChannel->unk_0C != 0) {
+        if (arg0->unk_4C4 == gCurrentAnimChannel->unk_0C) {
             return 1;
         }
         return 0;
@@ -868,10 +868,10 @@ s32 func_84303D50(unk_D_84390010* arg0) {
 }
 
 s32 func_84303DEC(unk_D_84390010* arg0) {
-    func_84307F00(arg0);
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[0];
-    if (D_84390020->unk_0C != 0) {
-        if (arg0->unk_4C4 == D_84390020->unk_0C) {
+    IsPrimaryEntity(arg0);
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
+    if (gCurrentAnimChannel->unk_0C != 0) {
+        if (arg0->unk_4C4 == gCurrentAnimChannel->unk_0C) {
             return 1;
         }
         return 0;
@@ -880,11 +880,11 @@ s32 func_84303DEC(unk_D_84390010* arg0) {
 }
 
 void func_84303E58(unk_D_84390010* arg0) {
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A80;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
     func_843058C4(arg0, 0xA8);
     arg0->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
-    GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+    GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
 }
 
 void func_84303ECC(unk_D_84390010* arg0) {
@@ -897,33 +897,33 @@ void func_84303ECC(unk_D_84390010* arg0) {
     sp34 = D_84385384[idx].unk_20;
     sp30 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     sp24 = &arg0->unk_654;
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp34];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp34];
     temp_a0 = sp24->unk_34 & 2;
 
     if ((temp_a0 == 0) && !(sp24->unk_34 & 0x4000) && (temp_a0 == 0)) {
         if (sp30->unk_05 & 7) {
-            if (func_84307AE0(arg0->unk_000.unk_01A, D_84384590, 8) != 0) {
-                D_84390020 = &D_84384570[func_84307F00(arg0)]->unkA90[0x60];
+            if (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
+                gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unkA90[0x60];
             } else {
-                D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A50;
+                gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
             }
         } else if (sp24->unk_34 & 0x200) {
-            D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_B00;
+            gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B00;
         }
 
         Anim_SetChannelBase(&arg0->unk_000, 0);
-        GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1A);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1A);
             } else {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1A);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1A);
             }
         } else if (func_84307B60(arg0) != 0) {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xA);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xA);
         } else {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xA);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xA);
         }
     }
 }
@@ -934,7 +934,7 @@ void func_84304114(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((sp18->unk_34 & 0x4000) || (sp18->unk_34 & 2) || (ptr->unk_05 & 7)) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     } else if (arg0->unk_4C4 == 1) {
         if (func_84301FB0(arg0) == 0) {
             if (arg0->unk_000.unk_01A >= 0x98) {
@@ -942,7 +942,7 @@ void func_84304114(unk_D_84390010* arg0) {
             } else {
                 func_8432B510(arg0, arg0->unk_000.unk_01A);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -953,7 +953,7 @@ void func_84304210(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp24 = &arg0->unk_654;
 
     if ((arg0->unk_654.unk_34 & 0x4000) || (sp24->unk_34 & 2) || (ptr->unk_05 & 7)) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     } else if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
         if (arg0->unk_000.unk_01A >= 0x98) {
             Audio_PlaySequence(sp24->unk_BC, 3);
@@ -965,16 +965,16 @@ void func_84304210(unk_D_84390010* arg0) {
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
         } else if (func_84307B60(arg0) != 0) {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -984,7 +984,7 @@ void func_843043FC(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp24;
 
     if ((arg0->unk_654.unk_34 & 0x4000) || (ptr->unk_05 & 0x20) || (ptr->unk_05 & 7)) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         return;
     }
 
@@ -1000,17 +1000,17 @@ void func_843043FC(unk_D_84390010* arg0) {
 
         if (sp24->unk_34 & 0x200) {
             if (func_84307B60(arg0) != 0) {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0x1B);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
-                PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
+                PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
         } else if (func_84307B60(arg0) != 0) {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, 0xC8, 0xB);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
-            PlayMoveSoundEffect(func_84307F00(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
+            PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
 
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -1025,18 +1025,18 @@ void func_843045DC(unk_D_84390010* arg0) {
         func_84301B48(arg0, D_84385384[sp24].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
         arg0->unk_720->unk_04 = &arg0->unk_720->unk_08[temp_v1->unk_2B]->unk_01C[temp_v1->unk_18];
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
 void func_843046BC(unk_D_84390010* arg0) {
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
     if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
         s32 idx = arg0->unk_4C0;
 
         func_84301B48(arg0, D_84385384[idx].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -1049,10 +1049,10 @@ void func_84304758(unk_D_84390010* arg0) {
         arg0->unk_720->unk_00 &= ~0x90;
 
         func_8430920C(arg0);
-        func_84307748(arg0);
+        RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
 
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
 
         func_84305760(arg0, 0x12);
     }
@@ -1069,10 +1069,10 @@ void func_84304834(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     s32 sp24 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp24];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24];
     arg0->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
-    GraphNode_TriggerAction(&arg0->unk_000, D_84390020->unk_00);
+    GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
     func_843058C4(arg0, sp24);
 }
 
@@ -1085,11 +1085,11 @@ void func_843048C8(unk_D_84390010* arg0) {
     temp_s1_2 = &arg0->unk_654.unk_38;
     temp_s1 = D_84384670[temp_s1_2->unk_5A - 1];
 
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[temp_s1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[temp_s1];
 
-    if ((arg0->unk_4C4 == (D_84390020->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
         func_84301BEC(arg0, temp_s1_2->unk_5A);
 
         if (temp_s1_2->unk_5A == 0x13) {
@@ -1101,7 +1101,7 @@ void func_843048C8(unk_D_84390010* arg0) {
             func_8432C7A0(4, arg0);
         }
 
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
 
         func_8432B5B8(arg0, temp_s1_2, 4);
     }
@@ -1115,7 +1115,7 @@ void func_843049FC(unk_D_84390010* arg0) {
     arg0->unk_4C4 = 0;
     if (!(arg0->unk_654.unk_34 & 2)) {
         if (ptr->unk_05 & 7) {
-            if (func_84307AE0(arg0->unk_000.unk_01A, D_84384590, 8) != 0) {
+            if (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
                 sp1C = 0xAF;
             } else {
                 sp1C = 0xA5;
@@ -1123,13 +1123,13 @@ void func_843049FC(unk_D_84390010* arg0) {
         } else {
             sp1C = 0xA5;
         }
-        D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_000[sp1C];
+        gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp1C];
         func_843058C4(arg0, sp1C);
     }
 }
 
 void func_84304ACC(unk_D_84390010* arg0) {
-    unk_D_800FCB18* ptr = &D_84390010[func_84307F00(arg0) == 0]->unk_654.unk_38;
+    unk_D_800FCB18* ptr = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (ptr->unk_4C & 0x20) {
         if ((ptr->unk_5A == 0x14) || (ptr->unk_5A == 0x23) || (ptr->unk_5A == 0x51)) {
@@ -1143,14 +1143,14 @@ void func_84304B50(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
-    sp28 = func_84307F00(arg0) == 0;
+    sp28 = IsPrimaryEntity(arg0) == 0;
     sp20 = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0) == 0]->unk_000[sp20->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
-    if ((D_84390020->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
+    if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
         if (func_84301FB0(arg0) == 0) {
             func_8432B5B8(arg0, sp20, 5);
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -1166,51 +1166,51 @@ void func_84304C20(unk_D_84390010* arg0) {
         func_8432BF88(arg0, 0x21);
     }
 
-    D_84390068[D_843900A0].unk_04 = D_84385380;
+    gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
 }
 
 void func_84304C8C(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     u16 sp22 = arg0->unk_000.unk_01A;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A70;
-    if ((func_84307BAC(arg0) != 0.0f) && (sp22 != 0x16) && (sp22 != 0x52) && (sp22 != 0x8E)) {
-        D_84390068[D_843900A0].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (D_84390020->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A70;
+    if ((GetModelBaseY(arg0) != 0.0f) && (sp22 != 0x16) && (sp22 != 0x52) && (sp22 != 0x8E)) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
         func_8432B554(arg0);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
 void func_84304D84(unk_D_84390010* arg0) {
     s32 sp24;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A70;
-    if (D_84390020->unk_09 == 1) {
-        sp24 = D_84390020->unk_0A - 0x4C;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A70;
+    if (gCurrentAnimChannel->unk_09 == 1) {
+        sp24 = gCurrentAnimChannel->unk_0A - 0x4C;
     } else {
-        sp24 = D_84390020->unk_0A - 0x31;
+        sp24 = gCurrentAnimChannel->unk_0A - 0x31;
     }
 
     if (func_84301FB0(arg0) == 0) {
-        if (func_84307BAC(arg0) != 0.0f) {
+        if (GetModelBaseY(arg0) != 0.0f) {
             if ((sp24 <= 0) || (sp24 == arg0->unk_4C4)) {
-                if (D_84390020->unk_09 == 1) {
+                if (gCurrentAnimChannel->unk_09 == 1) {
                     func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
                 } else {
                     func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
                 }
                 Audio_PlaySoundEffect(3, 0, 0);
-                D_84390068[D_843900A0].unk_04 = D_84385380;
+                gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
             }
         } else if ((sp24 <= 0) || (sp24 == arg0->unk_4C4)) {
-            if (D_84390020->unk_09 == 1) {
+            if (gCurrentAnimChannel->unk_09 == 1) {
                 func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
             } else {
                 func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
             }
             Audio_PlaySoundEffect(3, 0, 0);
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -1218,21 +1218,21 @@ void func_84304D84(unk_D_84390010* arg0) {
 void func_84304F54(unk_D_84390010* arg0) {
     s32 sp24;
 
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_B10;
-    if (D_84390020->unk_09 == 1) {
-        sp24 = D_84390020->unk_0A - 0x4C;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B10;
+    if (gCurrentAnimChannel->unk_09 == 1) {
+        sp24 = gCurrentAnimChannel->unk_0A - 0x4C;
     } else {
-        sp24 = D_84390020->unk_0A - 0x31;
+        sp24 = gCurrentAnimChannel->unk_0A - 0x31;
     }
 
     if ((func_84301FB0(arg0) == 0) && ((sp24 <= 0) || (sp24 == arg0->unk_4C4))) {
-        if (D_84390020->unk_09 == 1) {
+        if (gCurrentAnimChannel->unk_09 == 1) {
             func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
         } else {
             func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
         }
         Audio_PlaySoundEffect(3, 0, 0);
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -1247,20 +1247,20 @@ void func_8430506C(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp28;
 
     sp48 = 0xA5;
-    sp40 = func_84307F00(arg0) == 0;
+    sp40 = IsPrimaryEntity(arg0) == 0;
     sp3C = &D_84390010[sp40]->unk_654;
     sp30 = D_84390010[sp40];
     sp28 = &arg0->unk_654.unk_38;
 
-    D_84390020 = &D_84384570[sp40]->unk_A80;
+    gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
 
     if (sp3C->unk_34 & 1) {
-        if (func_84307AE0(sp30->unk_000.unk_01A, D_84384598, 2) != 0) {
-            D_84390020 = &D_84384570[sp40]->unk_B20;
+        if (func_84307AE0(sp30->unk_000.unk_01A, gSpecialConditionIDs, 2) != 0) {
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B20;
         }
     }
 
-    if ((sp3C->unk_34 & 1) && func_84307AE0(sp30->unk_000.unk_01A, D_84384590, 8)) {
+    if ((sp3C->unk_34 & 1) && func_84307AE0(sp30->unk_000.unk_01A, gSpecialMoveIDs, 8)) {
         sp48 = 0xAF;
     }
 
@@ -1268,22 +1268,22 @@ void func_8430506C(unk_D_84390010* arg0) {
 
     if (!(sp3C->unk_34 & 0x4000) && !(sp3C->unk_34 & 2)) {
         if ((sp28->unk_5A == 0x91) && (D_843C4DEC < 0xA)) {
-            D_84390020 = &D_84384570[sp40]->unk_000[sp48];
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[sp48];
         }
 
         if ((D_843C4E44 == 0) || (D_843C4DA4 != 0)) {
-            // FAKE? keeps &D_84390020 out of a register while the load stays a CSE temp
-            if (D_84384570[sp40]) {}
-            D_84390020 = &D_84384570[sp40]->unk_000[sp48];
+            // FAKE? keeps &gCurrentAnimChannel out of a register while the load stays a CSE temp
+            if (gAnimDataByPlayer[sp40]) {}
+            gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[sp48];
             if (sp3C->unk_34 & 0x200) {
-                D_84390020 = &D_84384570[sp40]->unk_000[0xB0];
+                gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[0xB0];
             }
         } else if (!(sp3C->unk_34 & 1)) {
             func_843058C4(D_84390010[sp40], 0xA8);
         }
 
         Anim_SetChannelBase(&D_84390010[sp40]->unk_000, 0);
-        GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&D_84390010[sp40]->unk_000, gCurrentAnimChannel->unk_00);
 
         if ((sp28->unk_44.unk_00 == 0x17) || (sp28->unk_44.unk_00 == 0x22) || (sp28->unk_44.unk_00 == 0x45)) {
             func_84308654(D_84390010[sp40], 0xF, 0);
@@ -1297,13 +1297,13 @@ void func_843052C0(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp24;
     unk_D_800FCB18* sp1C;
 
-    sp2C = func_84307F00(arg0);
+    sp2C = IsPrimaryEntity(arg0);
     sp24 = &D_84390010[sp2C == 0]->unk_654.unk_38;
     sp1C = &arg0->unk_654.unk_38;
 
-    D_84390020 = &D_84384570[sp2C == 0]->unk_000[sp1C->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[sp2C == 0]->unk_000[sp1C->unk_5A - 1];
 
-    if ((D_84390010[sp2C == 0]->unk_4C4 == (D_84390020->unk_07 + 1)) && (func_84301FB0(arg0) == 0)) {
+    if ((D_84390010[sp2C == 0]->unk_4C4 == (gCurrentAnimChannel->unk_07 + 1)) && (func_84301FB0(arg0) == 0)) {
         func_8432E9D8(1);
         if (((sp1C->unk_5A == 0x30) || (sp1C->unk_5A == 0x6D)) && (sp24->unk_4C & 0x80) && (D_843C4DA4 == 0) &&
             (D_843C4E44 == 1)) {
@@ -1315,7 +1315,7 @@ void func_843052C0(unk_D_84390010* arg0) {
             func_8432B5B8(D_84390010[sp2C == 0], &arg0->unk_654.unk_38, 1);
         }
 
-        D_84390068[D_843900A0].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     }
 }
 
@@ -1323,14 +1323,14 @@ s32 func_84305458(unk_D_84390010* arg0) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
     s32 temp_v1;
 
-    temp_v1 = func_84307F00(arg0) == 0;
-    D_84390020 = &D_84384570[temp_v1]->unk_000[ptr->unk_5A - 1];
+    temp_v1 = IsPrimaryEntity(arg0) == 0;
+    gCurrentAnimChannel = &gAnimDataByPlayer[temp_v1]->unk_000[ptr->unk_5A - 1];
 
     if (D_843C4E45 != 1) {
         return 2;
     }
 
-    if ((D_84390020->unk_08 + 0x50) == D_84390010[temp_v1]->unk_4C4) {
+    if ((gCurrentAnimChannel->unk_08 + 0x50) == D_84390010[temp_v1]->unk_4C4) {
         return 1;
     }
 
@@ -1341,15 +1341,15 @@ void func_843054F0(unk_D_84390010* arg0) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
     s32 sp28;
 
-    sp28 = func_84307F00(arg0) == 0;
-    D_84390020 = &D_84384570[func_84307F00(arg0) == 0]->unk_000[ptr->unk_5A - 1];
-    if (D_84390010[sp28]->unk_4C4 == (D_84390020->unk_08 + 1)) {
+    sp28 = IsPrimaryEntity(arg0) == 0;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[ptr->unk_5A - 1];
+    if (D_84390010[sp28]->unk_4C4 == (gCurrentAnimChannel->unk_08 + 1)) {
         if (func_84301FB0(arg0) == 0) {
             if (D_843C4E45 == 1) {
                 func_8432C6C4(1, D_84390010[sp28]);
                 func_8432BF88(arg0, 0x20);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -1358,18 +1358,18 @@ void func_843055E0(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
-    sp28 = func_84307F00(arg0) == 0;
+    sp28 = IsPrimaryEntity(arg0) == 0;
     sp20 = &arg0->unk_654.unk_38;
-    D_84390020 = &D_84384570[func_84307F00(arg0) == 0]->unk_000[sp20->unk_5A - 1];
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
-    if ((D_84390020->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
+    if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
         if (func_84301FB0(arg0) == 0) {
             if (D_843C4E44 == 1) {
                 func_8432B5B8(D_84390010[sp28], sp20, 1);
             } else {
                 func_8432B5B8(D_84390010[sp28], sp20, 5);
             }
-            D_84390068[D_843900A0].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
     }
 }
@@ -1382,16 +1382,16 @@ void func_843056E4(unk_D_84390010* arg0, unk_D_84385384_func arg1) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        if (D_84385380 == D_84390068[i].unk_04) {
-            D_84390068[i].unk_04 = arg1;
-            D_84390068[i].unk_00 = arg0;
+        if (D_84385380 == gAnimStateQueue[i].unk_04) {
+            gAnimStateQueue[i].unk_04 = arg1;
+            gAnimStateQueue[i].unk_00 = arg0;
             break;
         }
     }
 }
 
 void func_84305728(unk_D_84390010* arg0) {
-    func_843058C4(D_84390010[func_84307F00(arg0)], 0xA6);
+    func_843058C4(D_84390010[IsPrimaryEntity(arg0)], 0xA6);
 }
 
 void func_84305760(unk_D_84390010* arg0, s32 arg1) {
@@ -1407,12 +1407,12 @@ void func_84305760(unk_D_84390010* arg0, s32 arg1) {
     func_843056E4(arg0, D_84385384[arg1].unk_04[6]);
 }
 
-void func_84305808(void) {
+void Anim_ProcessQueue(void) {
     D_84390010[0]->unk_4C4++;
     D_84390010[1]->unk_4C4++;
 
-    for (D_843900A0 = 0; D_843900A0 < 7; D_843900A0++) {
-        D_84390068[D_843900A0].unk_04(D_84390068[D_843900A0].unk_00);
+    for (gAnimStateQueueIndex = 0; gAnimStateQueueIndex < 7; gAnimStateQueueIndex++) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04(gAnimStateQueue[gAnimStateQueueIndex].unk_00);
     }
 }
 
@@ -1428,11 +1428,11 @@ void func_843058C4(unk_D_84390010* arg0, s32 arg1) {
     unk_D_84390010_654* sp24 = &arg0->unk_654;
 
     if (func_84301FF0(arg0) == 0) {
-        sp30 = D_84384570[func_84307F00(arg0)]->unk_000[arg1].unk_01;
+        sp30 = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg1].unk_01;
         if ((sp30 != 0xFF) && (sp24->unk_36 != 2)) {
             if ((arg1 == 165) && (arg0->unk_000.unk_01A == 0x33)) {
                 SetAnimStateIndex(&arg0->unk_000, 0);
-                temp_v0 = func_8430C414(3);
+                temp_v0 = Math_RandomU16Scaled(3);
                 if (temp_v0 >= 3) {
                     temp_v0 = 2;
                 }
@@ -1454,7 +1454,7 @@ s32 func_843059C0(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    sp20 = D_84384570[func_84307F00(arg0)]->unk_000[arg1].unk_01;
+    sp20 = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg1].unk_01;
     if (sp20 == 0xFF) {
         return 1;
     }
@@ -1471,7 +1471,7 @@ void func_84305A74(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
     u8 temp_a1;
 
     if (func_84301FF0(arg0) == 0) {
-        temp_a1 = D_84384570[func_84307F00(arg0)]->unk_000[arg1].unk_01;
+        temp_a1 = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg1].unk_01;
         if (temp_a1 != 0xFF) {
             GraphNode_TriggerSound(&arg0->unk_000, temp_a1);
             SetAnimStateIndex(&arg0->unk_000, 0);
@@ -1508,7 +1508,7 @@ s32 func_84305B6C(unk_D_84390010* arg0, s32 arg1) {
 s32 func_84305BD8(unk_D_84390010* arg0, s32 arg1) {
     u8 temp_v0;
 
-    D_84390020 = D_84384570[func_84307F00(arg0)]->unkA60;
+    gCurrentAnimChannel = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unkA60;
     if (func_84305AFC(arg0) != 0) {
         if (func_8431ADAC(arg1) != 0) {
             return 1;
@@ -1516,14 +1516,14 @@ s32 func_84305BD8(unk_D_84390010* arg0, s32 arg1) {
         return 0;
     }
 
-    if ((D_84390020->unk_0A < 0xB) || (D_84390020->unk_0A == 0xFF)) {
+    if ((gCurrentAnimChannel->unk_0A < 0xB) || (gCurrentAnimChannel->unk_0A == 0xFF)) {
         if (arg0->unk_000.unk_040.unk_00 == -1) {
             return 1;
         }
         return func_800174E4(&arg0->unk_000);
     }
 
-    if (func_8431ADAC(D_84390020->unk_0A + 1) != 0) {
+    if (func_8431ADAC(gCurrentAnimChannel->unk_0A + 1) != 0) {
         return 1;
     }
 
@@ -1537,8 +1537,8 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
 
     if (arg0) {}
 
-    sp20 = &D_84384570[func_84307F00(arg0)]->unk_000[ptr->unk_5A - 1];
-    sp1C = &D_84384570[func_84307F00(arg0)]->unk_A50;
+    sp20 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[ptr->unk_5A - 1];
+    sp1C = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     if (func_84305AFC(arg0) != 0) {
         if (func_8431ADAC(arg1) != 0) {
@@ -1552,7 +1552,7 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
     }
 
     if (D_84390240.unk_00->unk_48 == 0x14) {
-        sp20 = &D_84384570[func_84307F00(arg0)]->unk_000[0];
+        sp20 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
     }
 
     if (sp20->unk_00 == sp1C->unk_00) {
@@ -1591,8 +1591,8 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
 
     sp28 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     sp20 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
-    sp1C = &D_84384570[func_84307F00(arg0)]->unk_000[sp20];
-    temp_a2 = &D_84384570[func_84307F00(arg0)]->unk_A50;
+    sp1C = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp20];
+    temp_a2 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     if ((arg0->unk_654.unk_34 & 2) || (sp28->unk_05 & 7) ||
         ((arg0->unk_654.unk_34 & 0x200) && !(arg0->unk_654.unk_34 & 0x400)) || (arg0->unk_654.unk_34 & 0x4000)) {
@@ -1632,7 +1632,7 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
 }
 
 s32 func_8430602C(unk_D_84390010* arg0, s32 arg1) {
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A80;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
 
     if ((arg0->unk_654.unk_34 & 2) || ((arg0->unk_654.unk_34 & 0x200) && !(arg0->unk_654.unk_34 & 0x400))) {
         if (func_8431ADAC(arg1) != 0) {
@@ -1645,7 +1645,7 @@ s32 func_8430602C(unk_D_84390010* arg0, s32 arg1) {
         return 1;
     }
 
-    if (arg0->unk_000.unk_040.unk_00 != D_84390020->unk_00) {
+    if (arg0->unk_000.unk_040.unk_00 != gCurrentAnimChannel->unk_00) {
         return 1;
     }
 
@@ -1653,14 +1653,14 @@ s32 func_8430602C(unk_D_84390010* arg0, s32 arg1) {
 }
 
 void func_843060EC(unk_D_84390010* arg0) {
-    D_84390020 = &D_84384570[func_84307F00(arg0)]->unk_A50;
+    gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
     if (func_84301FF0(arg0) == 0) {
         if ((arg0->unk_000.unk_040.unk_00 != -1) && (arg0->unk_000.unk_000.unk_01 & 1) &&
             (arg0->unk_000.unk_000.unk_02 & 0x20) && (D_84390240.unk_00->unk_1C == 1) &&
-            (D_84390020->unk_00 == arg0->unk_000.unk_040.unk_00) &&
-            (D_84390020->unk_04 == (arg0->unk_000.unk_040.unk_08 >> 0x10)) && (D_84390020->unk_05 != 0) &&
-            (func_8430C414(2) == 1)) {
-            func_8432C68C(D_84390020->unk_05, &arg0->unk_000, &arg0->unk_000, D_84390020->unk_02, D_84390020->unk_02);
+            (gCurrentAnimChannel->unk_00 == arg0->unk_000.unk_040.unk_00) &&
+            (gCurrentAnimChannel->unk_04 == (arg0->unk_000.unk_040.unk_08 >> 0x10)) && (gCurrentAnimChannel->unk_05 != 0) &&
+            (Math_RandomU16Scaled(2) == 1)) {
+            func_8432C68C(gCurrentAnimChannel->unk_05, &arg0->unk_000, &arg0->unk_000, gCurrentAnimChannel->unk_02, gCurrentAnimChannel->unk_02);
         }
     }
 }
@@ -1678,14 +1678,14 @@ void func_84306218(unk_D_84390010* arg0) {
 
     if (arg0->unk_4C8 != 0) {
         if (sp24->unk_34 & 0x200) {
-            arg0->unk_000.unk_024.y = D_84390028[func_84307F00(arg0)].unk_08;
+            arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
             func_84306200(arg0, 0x608);
         }
 
         if (sp24->unk_34 & 0x4008) {
             arg0->unk_000.unk_01D = 0xFF;
             func_8432C80C(4, arg0);
-            arg0->unk_000.unk_024.y = D_84390028[func_84307F00(arg0)].unk_08;
+            arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
             arg0->unk_000.unk_000.unk_02 &= ~2;
             arg0->unk_000.unk_000.unk_02 |= 0x20;
             arg0->unk_000.unk_000.unk_01 |= 1;
@@ -1719,15 +1719,15 @@ void func_843062F0(void) {
     }
 
     if ((sp34->unk_34 & 0x4000) && (sp24->unk_000.unk_01A == 0x33)) {
-        D_84390020 = &D_84384570[0]->unk_000[0x5A];
+        gCurrentAnimChannel = &gAnimDataByPlayer[0]->unk_000[0x5A];
         Anim_SetChannelBase(&D_84390010[0]->unk_000, 0);
-        GraphNode_TriggerAction(&D_84390010[0]->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&D_84390010[0]->unk_000, gCurrentAnimChannel->unk_00);
     }
 
     if ((sp30->unk_34 & 0x4000) && (sp20->unk_000.unk_01A == 0x33)) {
-        D_84390020 = &D_84384570[1]->unk_000[0x5A];
+        gCurrentAnimChannel = &gAnimDataByPlayer[1]->unk_000[0x5A];
         Anim_SetChannelBase(&D_84390010[1]->unk_000, 0);
-        GraphNode_TriggerAction(&D_84390010[1]->unk_000, D_84390020->unk_00);
+        GraphNode_TriggerAction(&D_84390010[1]->unk_000, gCurrentAnimChannel->unk_00);
     }
 
     func_84306218(D_84390010[0]);
@@ -1738,15 +1738,15 @@ void func_84306470(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp20;
 
-    sp20 = &D_84390010[func_84307F00(arg0) == 0]->unk_654;
-    func_84307F00(arg0);
-    func_84307F00(arg0);
-    func_843058A8(D_84390010[func_84307F00(arg0) == 0]);
+    sp20 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
+    IsPrimaryEntity(arg0);
+    IsPrimaryEntity(arg0);
+    func_843058A8(D_84390010[IsPrimaryEntity(arg0) == 0]);
 
     if (sp20->unk_34 & 4) {
-        D_84390010[func_84307F00(arg0) == 0]->unk_000.unk_024.y = 200.0f;
-        func_843061EC(D_84390010[func_84307F00(arg0) == 0], 0x200);
-        func_84306200(D_84390010[func_84307F00(arg0) == 0], 4);
+        D_84390010[IsPrimaryEntity(arg0) == 0]->unk_000.unk_024.y = 200.0f;
+        func_843061EC(D_84390010[IsPrimaryEntity(arg0) == 0], 0x200);
+        func_84306200(D_84390010[IsPrimaryEntity(arg0) == 0], 4);
     }
 
     if (arg0->unk_654.unk_34 & 0x200) {
@@ -1756,14 +1756,14 @@ void func_84306470(unk_D_84390010* arg0) {
 
 void func_84306584(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 8) {
-        arg0->unk_000.unk_024.y = func_84307BAC(arg0);
+        arg0->unk_000.unk_024.y = GetModelBaseY(arg0);
         func_84306200(arg0, 0x608);
     }
 }
 
 void func_843065C4(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
-    unk_D_84390010* sp1C = D_84390010[func_84307F00(arg0) == 0];
+    unk_D_84390010* sp1C = D_84390010[IsPrimaryEntity(arg0) == 0];
 
     if (sp1C->unk_654.unk_34 & 0x4000) {
         sp1C->unk_000.unk_000.unk_02 |= 0x20;
@@ -1774,7 +1774,7 @@ void func_843065C4(unk_D_84390010* arg0) {
 }
 
 void func_8430663C(unk_D_84390010* arg0) {
-    unk_D_84390010* temp_s0 = D_84390010[func_84307F00(arg0) == 0];
+    unk_D_84390010* temp_s0 = D_84390010[IsPrimaryEntity(arg0) == 0];
     unk_D_84390010_654* ptr = &temp_s0->unk_654;
 
     if (ptr->unk_34 & 0x4000) {
@@ -1785,7 +1785,7 @@ void func_8430663C(unk_D_84390010* arg0) {
     }
 
     if (ptr->unk_34 & 8) {
-        temp_s0->unk_000.unk_024.y = func_84307BAC(arg0);
+        temp_s0->unk_000.unk_024.y = GetModelBaseY(arg0);
         func_84306200(temp_s0, 0x608);
     }
 }
@@ -1794,7 +1794,7 @@ void func_843066E0(unk_D_84390010* arg0) {
     switch (arg0->unk_4B4) {
         case 14:
             func_84308654(arg0, 0, 0);
-            func_84307C5C(arg0);
+            UpdateEntityBasePosition(arg0);
             break;
 
         case 13:
@@ -1819,32 +1819,32 @@ void func_843066E0(unk_D_84390010* arg0) {
 
         case 10:
             func_84308654(arg0, 0, 0);
-            arg0->unk_000.unk_024.y = func_84307BAC(arg0);
+            arg0->unk_000.unk_024.y = GetModelBaseY(arg0);
             arg0->unk_000.unk_01E.x = 0;
             break;
 
         case 9:
             func_84308654(arg0, 0, 0);
             Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
-            func_843096EC(arg0);
+            Entity_ResetSubObjectFlags(arg0);
             break;
 
         case 7:
             func_84308654(arg0, 0, 0);
-            func_843096EC(arg0);
+            Entity_ResetSubObjectFlags(arg0);
             break;
 
         case 6:
             func_84308654(arg0, 0, 0);
-            func_843096EC(arg0);
-            func_84307C5C(arg0);
+            Entity_ResetSubObjectFlags(arg0);
+            UpdateEntityBasePosition(arg0);
             Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
             break;
 
         case 4:
             func_84308654(arg0, 0, 0);
             arg0->unk_000.unk_01E.y = arg0->unk_4B0 << 0xE;
-            func_843096EC(arg0);
+            Entity_ResetSubObjectFlags(arg0);
             break;
     }
 }
@@ -1873,7 +1873,7 @@ void func_84306914(unk_D_84390010* arg0) {
             break;
 
         case 0:
-            if (func_8430C414(0x32) == 2) {
+            if (Math_RandomU16Scaled(0x32) == 2) {
                 func_843058C4(arg0, 0xA5);
             }
             break;
@@ -1924,7 +1924,7 @@ void func_84306BC4(unk_D_800AE540_1194* arg0) {
     func_84306AF0(&arg0[0], 0);
     func_84306AF0(&arg0[1], 1);
     func_8431962C();
-    D_84390018 = D_84390010[0];
+    gPrimaryPokemonEntity = D_84390010[0];
     D_8439001C = D_84390010[1];
 }
 
@@ -1942,7 +1942,7 @@ void func_84306C8C(unk_D_84390010* arg0) {
     unk_D_86002F58_004_000_004* sp24;
     s16 sp22;
 
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
     sp24 = func_843085C4(arg0, 0);
     sp22 = func_843085E0(arg0, 0);
     Graph_AddToRootList0(&arg0->unk_000);
@@ -1966,10 +1966,10 @@ void func_84306C8C(unk_D_84390010* arg0) {
     }
 
     if (arg0 == D_84390010[0]) {
-        func_84307C5C(arg0);
+        UpdateEntityBasePosition(arg0);
         arg0->unk_000.unk_01E.y = 0x4000;
     } else {
-        func_84307C5C(arg0);
+        UpdateEntityBasePosition(arg0);
         arg0->unk_000.unk_01E.y = -0x4000;
     }
 }
@@ -2024,9 +2024,9 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
         ptr->unk_000.unk_000.unk_02 &= ~0x40;
 
         if (arg0 == D_84390010[0]) {
-            func_84307C5C(arg0);
+            UpdateEntityBasePosition(arg0);
         } else {
-            func_84307C5C(arg0);
+            UpdateEntityBasePosition(arg0);
         }
         ptr->unk_000.unk_000.unk_01 &= ~1;
     }
@@ -2113,12 +2113,12 @@ void func_84307220(unk_D_800AE540_1194* arg0) {
 
     D_843900B0 = GetMessageBank(0x1E);
     D_843900B4 = GetMessageBank(0x24);
-    D_843900B8 = GetMessageBank(0x25);
+    gPokemonMessageBank = GetMessageBank(0x25);
     D_843900BC = GetMessageBank(0x29);
     D_843900C0 = GetMessageBank(0x14);
 
     for (i = 0; i < 7; i++) {
-        D_84390068[i].unk_04 = D_84385380;
+        gAnimStateQueue[i].unk_04 = D_84385380;
     }
 
     func_843071B8(D_84390010[0], D_84390010[0], 1);

@@ -441,7 +441,7 @@ void func_84311048(unk_D_84390010* arg0, PokemonData* arg1, unk_D_84385790* arg2
     }
 
     func_843109F4(arg3 + 3, arg4 + 0x10, arg1->unk_24);
-    func_84310368(arg3 + 2, arg4 + 0x19, D_843900A8[func_84307F00(arg0)], arg1->unk_26);
+    func_84310368(arg3 + 2, arg4 + 0x19, D_843900A8[IsPrimaryEntity(arg0)], arg1->unk_26);
     func_84310B9C(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
     Text_ResetState();
     Text_SetFont(2, 0);
@@ -1121,7 +1121,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[0] - 1));
+            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1130,7 +1130,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[1] - 1));
+            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1139,7 +1139,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[2] - 1));
+            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1148,7 +1148,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[3] - 1));
+            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1157,7 +1157,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[0] - 1));
+            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1166,7 +1166,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[1] - 1));
+            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1175,7 +1175,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[2] - 1));
+            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1184,7 +1184,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, D_843900B8, temp_s0->unk_1F[3] - 1));
+            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     }
 

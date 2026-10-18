@@ -4210,7 +4210,7 @@ void func_8432B510(unk_D_84390010* arg0, s16 arg1) {
 void func_8432B554(unk_D_84390010* arg0) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
-    func_84307C04(arg0);
+    GetModelHeight(arg0);
     Audio_PlaySoundEffect(0x33, sp1E, 0);
 }
 

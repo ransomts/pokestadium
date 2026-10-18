@@ -243,7 +243,7 @@ unk_D_84211704 D_84211704[] = {
     },
 };
 
-void func_8420C7B0(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
+void Menu_PrintItem(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     if (arg2 == D_8423E58A) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
@@ -255,10 +255,10 @@ void func_8420C7B0(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
 void func_8420C844(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x16));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x17));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 3, func_84200130(0x18));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x16));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x17));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 3, func_84200130(0x18));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -269,9 +269,9 @@ void func_8420C844(unk_D_84211704* arg0) {
 void func_8420C930(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x19));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1A));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1B));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x19));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1A));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1B));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -282,9 +282,9 @@ void func_8420C930(unk_D_84211704* arg0) {
 void func_8420CA00(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x17));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x18));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x17));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x18));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -295,9 +295,9 @@ void func_8420CA00(unk_D_84211704* arg0) {
 void func_8420CAD0(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1C));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1D));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1E));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1C));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1D));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1E));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -308,8 +308,8 @@ void func_8420CAD0(unk_D_84211704* arg0) {
 void func_8420CBA0(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1F));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1F));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -389,8 +389,8 @@ void func_8420D144(unk_D_84211704* arg0) {
 void func_8420D2BC(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x26));
-    func_8420C7B0(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x26));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {

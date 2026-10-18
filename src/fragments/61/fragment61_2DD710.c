@@ -6,26 +6,26 @@
 #include "src/49790.h"
 #include "src/hal_libc.h"
 
-s16 D_842115B0[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };
-s16 D_842115BC[] = {
+s16 gSlotPosXOffsets[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };
+s16 gSlotPosYOffsets[] = {
     4, 4, 4, 0x30, 0x30, 0x30,
 };
 
-void func_84205E80(s16 arg0, s16 arg1, s32 arg2) {
+void DrawSlotBackground(s16 arg0, s16 arg1, s32 arg2) {
     if (arg2 & 0x80000000) {
-        func_84200420(arg0, arg1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
+        DrawColoredBox(arg0, arg1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
     } else {
-        func_84200420(arg0, arg1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
+        DrawColoredBox(arg0, arg1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
     }
 }
 
-void func_84205F18(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
+void DrawSlotGrid(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
     s16 i;
 
-    func_842001B8(arg1, arg2, 0x208, 0x60);
+    DrawBorderedBox(arg1, arg2, 0x208, 0x60);
     if (((gBattleContext.unk_0001 == 0) || (gBattleContext.unk_0001 == 8)) && (arg0->unk_0004 != 0) && (arg0->unk_0006 > 0) &&
         (arg0->unk_0006 < 6)) {
-        func_84200420(arg1 + 4, arg2 + 4, 0x74, 0x58, 0, 0, 0, 0xFF);
+        DrawColoredBox(arg1 + 4, arg2 + 4, 0x74, 0x58, 0, 0, 0, 0xFF);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -33,18 +33,18 @@ void func_84205F18(unk_D_84211B50* arg0, s16 arg1, s16 arg2) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
-        func_84200420(arg1 + 4, arg2 + 4, 0x74, 0x58, 0x64, 0x64, 0xC8, 0xFF);
+        DrawColoredBox(arg1 + 4, arg2 + 4, 0x74, 0x58, 0x64, 0x64, 0xC8, 0xFF);
     }
 
     for (i = 0; i < 6; i++) {
-        s16 tmp1 = D_842115B0[i] + arg1;
-        s16 tmp2 = D_842115BC[i] + arg2;
+        s16 tmp1 = gSlotPosXOffsets[i] + arg1;
+        s16 tmp2 = gSlotPosYOffsets[i] + arg2;
 
-        func_84205E80(tmp1, tmp2, arg0->unk_0030[i].raw);
+        DrawSlotBackground(tmp1, tmp2, arg0->unk_0030[i].raw);
     }
 }
 
-void func_84206144(unk_D_84211B50* arg0) {
+void DrawSelectionRect(unk_D_84211B50* arg0) {
     s16 temp_s0 = arg0->unk_0018 + (arg0->unk_0010 * 0x84) + 0x78;
     s16 temp_a1 = arg0->unk_001A + (arg0->unk_0012 * 0x2C) + 4;
 
@@ -67,7 +67,7 @@ void func_84206144(unk_D_84211B50* arg0) {
     }
 }
 
-void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
+void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1) {
     char* temp_v0_10;
     char* temp_v0_4;
     char* temp_v0_5;
@@ -80,14 +80,14 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
     char* temp_v0_9;
 
     if ((arg0->unk_0001 != 1) && (arg0->unk_0001 != 0) && ((arg1 != 0) || (arg0->unk_0003 != 0))) {
-        func_84205F18(arg0, arg0->unk_0018, arg0->unk_001A);
+        DrawSlotGrid(arg0, arg0->unk_0018, arg0->unk_001A);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 6; i++) {
             if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
-                s16 tmp1 = D_842115B0[i] + arg0->unk_0018 + 2;
-                s16 tmp2 = D_842115BC[i] + arg0->unk_001A + 2;
+                s16 tmp1 = gSlotPosXOffsets[i] + arg0->unk_0018 + 2;
+                s16 tmp2 = gSlotPosYOffsets[i] + arg0->unk_001A + 2;
 
                 Gfx_DrawSpriteRGBA16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0030[i].unk_058, 0x28, 0);
             }
@@ -141,8 +141,8 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
 
         for (i = 0; i < 6; i++) {
             if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
-                s16 tmp1 = D_842115B0[i] + arg0->unk_0018 + 0x2C;
-                s16 tmp2 = D_842115BC[i] + arg0->unk_001A + 5;
+                s16 tmp1 = gSlotPosXOffsets[i] + arg0->unk_0018 + 0x2C;
+                s16 tmp2 = gSlotPosYOffsets[i] + arg0->unk_001A + 5;
 
                 Text_Print(tmp1, tmp2, arg0->unk_0030[i].unk_004.unk_30);
             }
@@ -152,14 +152,14 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
 
         for (i = 0; i < 6; i++) {
             if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
-                sp42 = D_842115B0[i] + arg0->unk_0018 + 0x2C;
-                sp40 = D_842115BC[i] + arg0->unk_001A + 0x17;
+                sp42 = gSlotPosXOffsets[i] + arg0->unk_0018 + 0x2C;
+                sp40 = gSlotPosYOffsets[i] + arg0->unk_001A + 0x17;
                 Text_Print(sp42, sp40, "%s %d", func_84200160(0x15), arg0->unk_0030[i].unk_004.unk_24);
             }
         }
 
         Text_SetupDL();
-        func_84206144(arg0);
+        DrawSelectionRect(arg0);
 
         if (arg0->unk_0003 > 0) {
             arg0->unk_0003--;
@@ -167,7 +167,7 @@ void func_842062D4(unk_D_84211B50* arg0, s32 arg1) {
     }
 }
 
-void func_84206870(unk_D_84211B50* arg0) {
+void ClearSlotItem(unk_D_84211B50* arg0) {
     s16 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 != 0) {
@@ -177,7 +177,7 @@ void func_84206870(unk_D_84211B50* arg0) {
     }
 }
 
-void func_842068DC(unk_D_84211B50* arg0) {
+void MarkSlotForRemoval(unk_D_84211B50* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (func_8420B334(arg0->unk_4D40) != 0) {
@@ -192,7 +192,7 @@ void func_842068DC(unk_D_84211B50* arg0) {
     }
 }
 
-s32 func_84206990(unk_D_84211B50* arg0) {
+s32 GbsSyncItemData(unk_D_84211B50* arg0) {
     s16 i;
     s16 temp_v0;
     s32 var_s0 = 0;
@@ -213,7 +213,7 @@ s32 func_84206990(unk_D_84211B50* arg0) {
     return var_s0;
 }
 
-s32 func_84206A68(unk_D_84211B50* arg0) {
+s32 CheckStatThresholdForMode(unk_D_84211B50* arg0) {
     UNUSED s32 pad;
     s32 temp_v1;
     s16 i;
@@ -263,17 +263,17 @@ s32 func_84206A68(unk_D_84211B50* arg0) {
     return temp_v1;
 }
 
-void func_84206BC4(unk_D_84211B50* arg0) {
+void SetPanelPositionOffscreen(unk_D_84211B50* arg0) {
     arg0->unk_0018 = arg0->unk_0014 + 0x280;
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84206BDC(unk_D_84211B50* arg0) {
+void SetPanelPositionOnscreen(unk_D_84211B50* arg0) {
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84206BF0(unk_D_84211B50* a0) {
+void StartItemMoveAnimation(unk_D_84211B50* a0) {
     unk_D_84211B50* arg0 = a0;
     s16 temp_v0;
     s16 temp_v1;
@@ -287,7 +287,7 @@ void func_84206BF0(unk_D_84211B50* a0) {
         temp_v1 = a0->unk_0016 + (a0->unk_0012 * 0x2C);
 
         arg0->unk_0030[tmp].raw |= 0x80000000;
-        func_8420C60C(a0->unk_4D44, a0->unk_0002, 0x30, 0xEC, temp_v0, temp_v1, &a0->unk_0030[tmp], 2);
+        MoveScreen_Start(a0->unk_4D44, a0->unk_0002, 0x30, 0xEC, temp_v0, temp_v1, &a0->unk_0030[tmp], 2);
         a0->unk_0001 = 6;
     }
     a0->unk_0018 = a0->unk_0014;
@@ -295,9 +295,9 @@ void func_84206BF0(unk_D_84211B50* a0) {
     a0->unk_0003 = 2;
 }
 
-void func_84206D10(unk_D_84211B50* arg0) {
+void HandleItemMoveResult(unk_D_84211B50* arg0) {
     s16 sp26 = arg0->unk_0010 + (arg0->unk_0012 * 3);
-    s32 temp_v0 = func_8420C788(arg0->unk_4D44);
+    s32 temp_v0 = GetSelectedMoveIndex(arg0->unk_4D44);
 
     if (temp_v0 == 1) {
         func_8420B334(arg0->unk_4D40);
@@ -313,7 +313,7 @@ void func_84206D10(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84206DE8(unk_D_84211B50* arg0) {
+void UpdatePanelSlideDown(unk_D_84211B50* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A <= 0) {
         arg0->unk_0018 = arg0->unk_0014 + 0x280;
@@ -336,7 +336,7 @@ void func_84206DE8(unk_D_84211B50* arg0) {
     arg0->unk_001A = arg0->unk_0016;
 }
 
-void func_84206E88(unk_D_84211B50* arg0) {
+void UpdatePanelSlideUp(unk_D_84211B50* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A == 0xA) {
         arg0->unk_0001 = 0;
@@ -350,7 +350,7 @@ void func_84206E88(unk_D_84211B50* arg0) {
 }
 
 void func_84206EE0(unk_D_84211B50* arg0) {
-    func_842068DC(arg0);
+    MarkSlotForRemoval(arg0);
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->unk_0016;
     arg0->unk_0003 = 2;
@@ -429,7 +429,7 @@ void func_84207040(unk_D_84211B50* arg0) {
 void func_84207190(unk_D_84211B50* arg0) {
     func_8420DAF4(1);
     if (func_8420DB48(1) >= 0) {
-        if (func_84206A68(arg0) != 0) {
+        if (CheckStatThresholdForMode(arg0) != 0) {
             arg0->unk_0001 = 0xF;
         } else if (arg0->unk_0000 == 0) {
             arg0->unk_0001 = 7;
@@ -465,7 +465,7 @@ void func_8420720C(unk_D_84211B50* arg0) {
             break;
 
         case 2:
-            if (func_84206990(arg0) != 0) {
+            if (GbsSyncItemData(arg0) != 0) {
                 arg0->unk_0001 = 9;
             } else {
                 arg0->unk_0001 = 0xA;
@@ -628,20 +628,20 @@ void func_842076F8(unk_D_84211B50* arg0) {
     arg0->unk_0003 = 2;
 }
 
-s32 func_8420776C(unk_D_84211B50* arg0) {
+s32 UpdateItemStateMachine(unk_D_84211B50* arg0) {
     s32 sp1C = 0;
 
     switch (arg0->unk_0001) {
         case 0:
-            func_84206BC4(arg0);
+            SetPanelPositionOffscreen(arg0);
             break;
 
         case 1:
-            func_84206BC4(arg0);
+            SetPanelPositionOffscreen(arg0);
             break;
 
         case 3:
-            func_84206BDC(arg0);
+            SetPanelPositionOnscreen(arg0);
             break;
 
         case 2:
@@ -649,17 +649,17 @@ s32 func_8420776C(unk_D_84211B50* arg0) {
             break;
 
         case 4:
-            func_84206DE8(arg0);
+            UpdatePanelSlideDown(arg0);
             sp1C = 1;
             break;
 
         case 5:
-            func_84206E88(arg0);
+            UpdatePanelSlideUp(arg0);
             sp1C = 1;
             break;
 
         case 6:
-            func_84206D10(arg0);
+            HandleItemMoveResult(arg0);
             break;
 
         case 7:
@@ -679,7 +679,7 @@ s32 func_8420776C(unk_D_84211B50* arg0) {
             break;
 
         case 11:
-            func_84206BF0(arg0);
+            StartItemMoveAnimation(arg0);
             break;
 
         case 12:
@@ -795,7 +795,7 @@ s32 func_84207AAC(unk_D_84211B50* arg0) {
             temp_v0 = temp_v1 - 1;
             arg0->unk_0010 = temp_v0 % 3;
             arg0->unk_0012 = temp_v0 / 3;
-            func_84206870(arg0);
+            ClearSlotItem(arg0);
             arg0->unk_0001 = 2;
         } else {
             func_8420DA28(1, NULL);
@@ -824,7 +824,7 @@ s32 func_84207BD4(unk_D_84211B50* arg0, unk_D_838067F0_0168_0000* arg1) {
     if (arg0->unk_0006 == arg0->unk_0008) {
         arg0->unk_0003 = 2;
         arg0->unk_0004 = 0;
-        if (func_84206A68(arg0) != 0) {
+        if (CheckStatThresholdForMode(arg0) != 0) {
             arg0->unk_0001 = 15;
         } else if (arg0->unk_0000 == 0) {
             arg0->unk_0001 = 7;

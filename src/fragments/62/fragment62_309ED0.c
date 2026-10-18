@@ -50,7 +50,7 @@ void func_8431F610(unk_D_84390010* arg0) {
     unk_D_84390010_654* ptr = &arg0->unk_654;
 
     if ((arg0->unk_000.unk_01A == 0x32) && (ptr->unk_34 & 0x4000)) {
-        unk_D_8438E7B0_A50* tmp = &D_84384570[func_84307F00(arg0)]->unk_000[0x5A];
+        unk_D_8438E7B0_A50* tmp = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0x5A];
 
         GraphNode_TriggerAction(&arg0->unk_000, tmp->unk_00);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
@@ -164,7 +164,7 @@ s32 func_8431F888(unk_D_84390010* arg0) {
         case 2:
             func_8431F680();
             func_843081F0(arg0, &sp34);
-            func_8430C1E4(&D_84390240.unk_00->unk_DC->unk_60.at, &sp34);
+            Vector_Copy(&D_84390240.unk_00->unk_DC->unk_60.at, &sp34);
             break;
     }
     return var_s0;
@@ -307,12 +307,12 @@ s32 func_8431FCCC(unk_D_84390010* arg0) {
     }
 
     temp_fs0 = temp_s1->unk_28 / 90.0f;
-    sp30 = func_84307F00(arg0);
-    D_843900A8[sp30] = Math_ApproachF32(D_843900A8[func_84307F00(arg0)], temp_s1->unk_0C, temp_fs0, temp_fs0);
-    temp_s2->unk_02 = D_843900A8[func_84307F00(arg0)];
+    sp30 = IsPrimaryEntity(arg0);
+    D_843900A8[sp30] = Math_ApproachF32(D_843900A8[IsPrimaryEntity(arg0)], temp_s1->unk_0C, temp_fs0, temp_fs0);
+    temp_s2->unk_02 = D_843900A8[IsPrimaryEntity(arg0)];
     if (temp_s2->unk_02 == temp_s1->unk_0C) {
-        temp_fs0 = D_843900A8[func_84307F00(arg0)] - temp_s2->unk_02;
-        D_843900A8[func_84307F00(arg0)] -= temp_fs0;
+        temp_fs0 = D_843900A8[IsPrimaryEntity(arg0)] - temp_s2->unk_02;
+        D_843900A8[IsPrimaryEntity(arg0)] -= temp_fs0;
         if (arg0->unk_000.unk_01A == 0x98) {
             return 1;
         }
@@ -344,7 +344,7 @@ void func_8431FF70(unk_D_86002F34_00C* arg0) {
 }
 
 s32 func_8431FF8C(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
 
     return ptr->unk_0D;
 }
@@ -352,13 +352,13 @@ s32 func_8431FF8C(unk_D_84390010* arg0) {
 s32 func_8431FFD0(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     s32 sp18 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[sp18];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_0D;
 }
 
 s32 func_84320020(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
 
     return ptr->unk_0E;
 }
@@ -366,13 +366,13 @@ s32 func_84320020(unk_D_84390010* arg0) {
 s32 func_84320064(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     s32 sp18 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[sp18];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_0E;
 }
 
 s32 func_843200B4(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg0->unk_654.unk_38.unk_5A - 1];
 
     if (ptr->unk_0F == 0) {
         return 0xF;
@@ -797,7 +797,7 @@ void func_84321208(unk_D_86002F34_00C* arg0) {
     unk_D_84390010_654* temp_t2 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654;
     unk_D_84390010_654* temp_t1 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
     s16 sp2E = D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_01A;
-    unk_D_8438E7B0_A50* sp28 = &D_84384570[D_84390240.unk_00->unk_2C]->unk_A50;
+    unk_D_8438E7B0_A50* sp28 = &gAnimDataByPlayer[D_84390240.unk_00->unk_2C]->unk_A50;
     unk_D_84390010* sp24 = D_84390010[D_84390240.unk_00->unk_2C];
 
     if (((temp_t2->unk_2D == 0x13) && (temp_t1->unk_2D == 0x13)) ||
@@ -814,7 +814,7 @@ void func_84321208(unk_D_86002F34_00C* arg0) {
     if (temp_t1->unk_34 & 0x4008) {
         sp24->unk_000.unk_01D = 0xFF;
         func_8432C80C(4, sp24);
-        sp24->unk_000.unk_024.y = D_84390028[D_84390240.unk_00->unk_2C].unk_08;
+        sp24->unk_000.unk_024.y = gPokemonModelDimensions[D_84390240.unk_00->unk_2C].unk_08;
         sp24->unk_000.unk_000.unk_02 &= ~0x2;
         sp24->unk_000.unk_000.unk_02 |= 0x20;
         sp24->unk_000.unk_000.unk_01 |= 1;
@@ -842,7 +842,7 @@ void func_84321208(unk_D_86002F34_00C* arg0) {
 
     func_843087F8(D_84390010[D_84390240.unk_00->unk_2C]);
     Vec3f_Set(&D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-    D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_024.y = func_84307BAC(D_84390010[D_84390240.unk_00->unk_2C]);
+    D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_024.y = GetModelBaseY(D_84390010[D_84390240.unk_00->unk_2C]);
     func_843081F0(D_84390010[D_84390240.unk_00->unk_2C], &D_843901B0.unk_00);
     func_8431D7D8(&D_84384AF8, arg0, D_84390010[D_84390240.unk_00->unk_2C]);
     func_8431D5D0(arg0, D_84390010[D_84390240.unk_00->unk_2C], 1);
@@ -865,7 +865,7 @@ s32 func_84321594(unk_D_84390010* arg0) {
     if (sp28->unk_34 & 0x4008) {
         arg0->unk_000.unk_01D = 0xFF;
         func_8432C80C(4, arg0);
-        arg0->unk_000.unk_024.y = D_84390028[func_84307F00(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
         arg0->unk_000.unk_000.unk_02 &= ~0x2;
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         arg0->unk_000.unk_000.unk_01 |= 1;
@@ -911,7 +911,7 @@ void func_84321698(unk_D_86002F34_00C* arg0) {
 void func_84321860(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010_654* sp24 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654;
-    unk_D_8438E7B0_A50* sp20 = &D_84384570[!D_84390240.unk_00->unk_2C]->unk_A70;
+    unk_D_8438E7B0_A50* sp20 = &gAnimDataByPlayer[!D_84390240.unk_00->unk_2C]->unk_A70;
 
     if (func_84301FB0(D_84390010[!D_84390240.unk_00->unk_2C]) == 0) {
         if (D_84390240.unk_00->unk_14 == 0x1D) {
@@ -1028,15 +1028,15 @@ void func_84321D3C(unk_D_86002F34_00C* arg0) {
             sp3B = 0x97;
         }
 
-        sp44 = (D_84384580[D_84390240.unk_00->unk_2C]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[sp3B].z;
-        sp40 = ((D_84384580[D_84390240.unk_00->unk_2C]->unk_00.z + D_84384C30[sp3B].y) * temp_s0->unk_4B0) +
+        sp44 = (gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[sp3B].z;
+        sp40 = ((gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_00.z + D_84384C30[sp3B].y) * temp_s0->unk_4B0) +
                temp_s0->unk_000.unk_024.x;
 
         Vec3f_Set(&arg0->unk_60.at, sp40, sp44, temp_s0->unk_000.unk_024.z);
 
-        sp40 = D_84384580[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[sp3B].x;
-        sp3E = D_84384580[D_84390240.unk_00->unk_2C]->unk_0C;
-        tmp1 = (temp_s0->unk_4B0 * D_84384580[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
+        sp40 = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[sp3B].x;
+        sp3E = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0C;
+        tmp1 = (temp_s0->unk_4B0 * gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
         Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp40, sp3E, tmp1);
         D_84390240.unk_00->unk_20++;
     }
@@ -1060,7 +1060,7 @@ void func_84321F74(UNUSED unk_D_86002F34_00C* arg0) {
 void func_84321FB8(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010_654* sp24 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654;
-    unk_D_8438E7B0_A50* sp20 = &D_84384570[!D_84390240.unk_00->unk_2C]->unk_B10;
+    unk_D_8438E7B0_A50* sp20 = &gAnimDataByPlayer[!D_84390240.unk_00->unk_2C]->unk_B10;
 
     if (func_84301FB0(D_84390010[!D_84390240.unk_00->unk_2C]) == 0) {
         if (D_84390240.unk_00->unk_14 == 0x1D) {
@@ -1186,12 +1186,12 @@ void func_843223FC(unk_D_84390010* arg0) {
     unk_D_84390010_654* ptr = &arg0->unk_654;
 
     if (ptr->unk_34 & 0x200) {
-        arg0->unk_000.unk_024.y = D_84390028[func_84307F00(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
         func_84306200(arg0, 0x608);
     } else if (ptr->unk_34 & 0x4008) {
         arg0->unk_000.unk_01D = 0xFF;
         func_8432C80C(4, arg0);
-        arg0->unk_000.unk_024.y = D_84390028[func_84307F00(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
         arg0->unk_000.unk_000.unk_02 &= ~0x2;
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         arg0->unk_000.unk_000.unk_01 |= 1;
@@ -1207,7 +1207,7 @@ void func_843224C8(unk_D_86002F34_00C* arg0) {
     func_84301B00();
     func_8431F680();
 
-    sp24 = func_8430C414(5);
+    sp24 = Math_RandomU16Scaled(5);
     if (sp24 >= 5) {
         sp24 = 0;
     }
@@ -1220,7 +1220,7 @@ void func_843224C8(unk_D_86002F34_00C* arg0) {
         sp24 = 2;
     }
 
-    func_8430C1E4(&D_843901B0.unk_00, &D_84385B90);
+    Vector_Copy(&D_843901B0.unk_00, &D_84385B90);
     func_8431D968(&D_84384B2C[sp24], arg0);
     func_8431D5D0(arg0, D_84390204, 0);
     D_84390240.unk_00->unk_20++;
@@ -1278,27 +1278,27 @@ void func_843226E0(unk_D_86002F34_00C* arg0) {
     switch (var_t0) {
         case 20:
             func_8431F290(D_84390204, arg0,
-                          D_84390240.unk_00->unk_50 = D_84385B70[func_8430C384(ARRAY_COUNT(D_84385B70))], 1);
+                          D_84390240.unk_00->unk_50 = D_84385B70[Math_RandomIntBelow(ARRAY_COUNT(D_84385B70))], 1);
             break;
 
         case 21:
             func_8431F290(D_84390204, arg0,
-                          D_84390240.unk_00->unk_50 = D_84385B78[func_8430C384(ARRAY_COUNT(D_84385B78))], 1);
+                          D_84390240.unk_00->unk_50 = D_84385B78[Math_RandomIntBelow(ARRAY_COUNT(D_84385B78))], 1);
             break;
 
         case 22:
             func_8431F290(D_84390204, arg0,
-                          D_84390240.unk_00->unk_50 = D_84385B7C[func_8430C384(ARRAY_COUNT(D_84385B7C))], 1);
+                          D_84390240.unk_00->unk_50 = D_84385B7C[Math_RandomIntBelow(ARRAY_COUNT(D_84385B7C))], 1);
             break;
 
         case 23:
             func_8431F290(D_84390204, arg0,
-                          D_84390240.unk_00->unk_50 = D_84385B80[func_8430C384(ARRAY_COUNT(D_84385B80))], 1);
+                          D_84390240.unk_00->unk_50 = D_84385B80[Math_RandomIntBelow(ARRAY_COUNT(D_84385B80))], 1);
             break;
 
         case 24:
             func_8431F290(D_84390204, arg0,
-                          D_84390240.unk_00->unk_50 = D_84385B88[func_8430C384(ARRAY_COUNT(D_84385B88))], 1);
+                          D_84390240.unk_00->unk_50 = D_84385B88[Math_RandomIntBelow(ARRAY_COUNT(D_84385B88))], 1);
             break;
 
         default:
@@ -1428,7 +1428,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
         switch (temp_v0) {
             case 20:
                 do {
-                    temp_t0 = D_84385B70[func_8430C384(5.0f)];
+                    temp_t0 = D_84385B70[Math_RandomIntBelow(5.0f)];
                 } while (temp_t0 == D_84390240.unk_00->unk_50);
                 D_84390240.unk_00->unk_50 = temp_t0;
                 func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
@@ -1436,7 +1436,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
 
             case 21:
                 do {
-                    temp_t0 = D_84385B78[func_8430C384(4.0f)];
+                    temp_t0 = D_84385B78[Math_RandomIntBelow(4.0f)];
                 } while (temp_t0 == D_84390240.unk_00->unk_50);
                 D_84390240.unk_00->unk_50 = temp_t0;
                 func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
@@ -1444,7 +1444,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
 
             case 22:
                 do {
-                    temp_t0 = D_84385B7C[func_8430C384(3.0f)];
+                    temp_t0 = D_84385B7C[Math_RandomIntBelow(3.0f)];
                 } while (temp_t0 == D_84390240.unk_00->unk_50);
                 D_84390240.unk_00->unk_50 = temp_t0;
                 func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
@@ -1452,7 +1452,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
 
             case 23:
                 do {
-                    temp_t0 = D_84385B80[func_8430C384(6.0f)];
+                    temp_t0 = D_84385B80[Math_RandomIntBelow(6.0f)];
                 } while (temp_t0 == D_84390240.unk_00->unk_50);
                 D_84390240.unk_00->unk_50 = temp_t0;
                 if (1) {}
@@ -1464,7 +1464,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
 
             case 24:
                 do {
-                    temp_t0 = D_84385B88[func_8430C384(4.0f)];
+                    temp_t0 = D_84385B88[Math_RandomIntBelow(4.0f)];
                 } while (temp_t0 == D_84390240.unk_00->unk_50);
                 D_84390240.unk_00->unk_50 = temp_t0;
                 func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
@@ -1502,35 +1502,35 @@ void func_843230D8(unk_D_86002F34_00C* arg0, s32 arg1) {
 
         switch (sp18) {
             case 20:
-                D_84390240.unk_00->unk_50 = D_84385B70[func_8430C384(ARRAY_COUNT(D_84385B70))];
+                D_84390240.unk_00->unk_50 = D_84385B70[Math_RandomIntBelow(ARRAY_COUNT(D_84385B70))];
                 if (sp18 != D_84390240.unk_00->unk_50) {
                     func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
                 }
                 break;
 
             case 21:
-                D_84390240.unk_00->unk_50 = D_84385B78[func_8430C384(ARRAY_COUNT(D_84385B78))];
+                D_84390240.unk_00->unk_50 = D_84385B78[Math_RandomIntBelow(ARRAY_COUNT(D_84385B78))];
                 if (sp18 != D_84390240.unk_00->unk_50) {
                     func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
                 }
                 break;
 
             case 22:
-                D_84390240.unk_00->unk_50 = D_84385B7C[func_8430C384(ARRAY_COUNT(D_84385B7C))];
+                D_84390240.unk_00->unk_50 = D_84385B7C[Math_RandomIntBelow(ARRAY_COUNT(D_84385B7C))];
                 if (sp18 != D_84390240.unk_00->unk_50) {
                     func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
                 }
                 break;
 
             case 23:
-                D_84390240.unk_00->unk_50 = D_84385B80[func_8430C384(ARRAY_COUNT(D_84385B80))];
+                D_84390240.unk_00->unk_50 = D_84385B80[Math_RandomIntBelow(ARRAY_COUNT(D_84385B80))];
                 if (sp18 != D_84390240.unk_00->unk_50) {
                     func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
                 }
                 break;
 
             case 24:
-                D_84390240.unk_00->unk_50 = D_84385B88[func_8430C384(ARRAY_COUNT(D_84385B88))];
+                D_84390240.unk_00->unk_50 = D_84385B88[Math_RandomIntBelow(ARRAY_COUNT(D_84385B88))];
                 if (sp18 != D_84390240.unk_00->unk_50) {
                     func_8431F290(D_84390204, arg0, D_84390240.unk_00->unk_50, 1);
                 }
@@ -1670,7 +1670,7 @@ void func_84323808(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad;
     unk_D_800FCB18* sp18 = &D_84390204->unk_654.unk_38;
 
-    func_84307F00(D_84390204);
+    IsPrimaryEntity(D_84390204);
 
     switch (D_84390240.unk_00->unk_3C) {
         case 0:
@@ -1975,7 +1975,7 @@ void func_8432440C(void) {
 
 void func_84324414(unk_D_86002F34_00C* arg0) {
     unk_D_800FCB18* sp24 = &D_84390204->unk_654.unk_38;
-    unk_D_8438E7B0_A50* temp_v1 = &D_84384570[func_84307F00(D_84390200)]->unk_000[sp24->unk_5A - 1];
+    unk_D_8438E7B0_A50* temp_v1 = &gAnimDataByPlayer[IsPrimaryEntity(D_84390200)]->unk_000[sp24->unk_5A - 1];
     volatile s32 sp1C;
     s32 temp_v0_2;
 
@@ -2203,7 +2203,7 @@ s32 func_84324A68(void) {
 
 void func_84324C28(unk_D_86002F34_00C* arg0) {
     unk_D_800FCB18* sp1C = &D_84390204->unk_654.unk_38;
-    unk_D_8438E7B0_A50* sp18 = &D_84384570[func_84307F00(D_84390204)]->unk_000[sp1C->unk_5A - 1];
+    unk_D_8438E7B0_A50* sp18 = &gAnimDataByPlayer[IsPrimaryEntity(D_84390204)]->unk_000[sp1C->unk_5A - 1];
 
     switch (D_84390240.unk_00->unk_20) {
         case 0:
@@ -2345,7 +2345,7 @@ void func_843251D4(unk_D_86002F34_00C* arg0) {
             if (func_8431F7B0(D_84390200) == 0) {
                 func_8432E9D8(1);
                 ResetSoundDurations();
-                func_8431F500(D_84390200, arg0, func_8430C414(2));
+                func_8431F500(D_84390200, arg0, Math_RandomU16Scaled(2));
                 func_84305760(D_84390204, 4);
                 func_8431AE5C();
                 D_84390240.unk_00->unk_20++;
@@ -2470,7 +2470,7 @@ void func_84325724(unk_D_86002F34_00C* arg0) {
             if (D_84390204->unk_720->unk_00 & 0x10) {
                 D_84390204->unk_720->unk_00 &= ~0x90;
                 func_84309168(D_84390204);
-                func_84307748(D_84390204);
+                RefreshPokemonTransform(D_84390204);
                 func_84301B84(D_84390204, sp30->unk_5A);
                 func_8432B5B8(D_84390204, sp30, 0);
                 D_84390240.unk_00->unk_20 += 1;
@@ -2488,7 +2488,7 @@ void func_84325724(unk_D_86002F34_00C* arg0) {
             func_8431CCFC(arg0, D_84390204);
             D_84390204->unk_728.unk_168->unk_00.unk_01 |= 1;
             D_84390204->unk_728.unk_000.unk_000.unk_01 |= 1;
-            func_843074A0(D_84390204);
+            TriggerPokemonAnimAndAction(D_84390204);
             if (func_84305B6C(D_84390204, 0x32) != 0) {
                 func_8431F680();
                 func_84320CEC(arg0);
@@ -2591,7 +2591,7 @@ void func_84325CDC(unk_D_86002F34_00C* arg0) {
 }
 
 void func_84325E94(unk_D_86002F34_00C* arg0) {
-    unk_D_8438E7B0_A50* sp4C = &D_84384570[D_84390240.unk_00->unk_2C]->unk_B00;
+    unk_D_8438E7B0_A50* sp4C = &gAnimDataByPlayer[D_84390240.unk_00->unk_2C]->unk_B00;
     UNUSED s32 pad;
     Vec3f sp3C;
 
@@ -2613,7 +2613,7 @@ void func_84325E94(unk_D_86002F34_00C* arg0) {
                 func_8431BB80(arg0, sp3C, 0x11C6, func_84308190(D_84390204) - (D_84390204->unk_4B0 * 0x754E),
                               D_84390208, func_84308548(D_84390204));
                 Vec3f_Set(&sp3C, 0.0f, 200.0f, 0.0f);
-                func_8430C1E4(&arg0->unk_60.at, &sp3C);
+                Vector_Copy(&arg0->unk_60.at, &sp3C);
                 func_8432E9D8(2);
                 GraphNode_TriggerAction(&D_84390204->unk_000, sp4C->unk_00);
                 arg0->unk_24.fovy = 60.0f;
@@ -2847,7 +2847,7 @@ void func_84326A78(UNUSED unk_D_86002F34_00C* arg0) {
 void func_84326AC4(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad;
     s32 idx = D_84390240.unk_00->unk_2C;
-    unk_D_8438E7B0_A50* sp1C = &D_84384570[idx]->unk_A80;
+    unk_D_8438E7B0_A50* sp1C = &gAnimDataByPlayer[idx]->unk_A80;
 
     func_8431FF70(arg0);
 
@@ -2912,7 +2912,7 @@ void func_84326CB4(unk_D_86002F34_00C* arg0) {
                     if (D_84390200->unk_000.unk_01A == 0xF) {
                         func_8431F500(D_84390200, arg0, 0);
                     }
-                    func_8431F500(D_84390200, arg0, D_84390228 = func_8430C414(2));
+                    func_8431F500(D_84390200, arg0, D_84390228 = Math_RandomU16Scaled(2));
                 }
 
                 func_84305760(D_84390204, 0xC);
@@ -3316,7 +3316,7 @@ void func_84327DC0(unk_D_86002F34_00C* arg0) {
             if (temp_s0->unk_720->unk_00 & 0x10) {
                 temp_s0->unk_720->unk_00 &= ~0x90;
                 func_8430920C(temp_s0);
-                func_84307748(temp_s0);
+                RefreshPokemonTransform(temp_s0);
                 D_843900A8[D_84390240.unk_00->unk_2C] = temp_s0->unk_654.unk_38.unk_0C;
                 func_8432C68C(3, temp_s0, temp_s0, 0xFF, 0xFF);
                 Audio_PlaySoundEffect(2, 0, 0);
@@ -3415,8 +3415,8 @@ void func_84328250(unk_D_86002F34_00C* arg0) {
             if (temp_s0->unk_720->unk_00 & 0x10) {
                 temp_s0->unk_720->unk_00 &= ~0x90;
                 func_8430920C(temp_s0);
-                func_84307748(temp_s0);
-                D_843900A8[func_84307F00(temp_s0)] = temp_s0->unk_654.unk_38.unk_0C;
+                RefreshPokemonTransform(temp_s0);
+                D_843900A8[IsPrimaryEntity(temp_s0)] = temp_s0->unk_654.unk_38.unk_0C;
                 Audio_PlaySoundEffect(2, 0, 0);
                 func_84308A04(temp_s0, sp3C->unk_2C);
                 func_8431AE5C();

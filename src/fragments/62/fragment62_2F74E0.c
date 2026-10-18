@@ -629,7 +629,7 @@ s32 func_8430DFCC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
 void func_8430E1CC(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp18 = &arg0->unk_654;
-    unk_D_84390010_654* temp_a0 = &D_84390010[func_84307F00(arg0) == 0]->unk_654;
+    unk_D_84390010_654* temp_a0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
         D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
@@ -666,7 +666,7 @@ void func_8430E1CC(unk_D_84390010* arg0) {
     if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A)) &&
         (D_84390240.unk_00->unk_40 == 0)) {
         PlaySoundEffect(2);
-        D_84390240.unk_00->unk_40 = (func_84307F00(arg0) == 0) + 1;
+        D_84390240.unk_00->unk_40 = (IsPrimaryEntity(arg0) == 0) + 1;
         func_8004B9C4(0x14);
     } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A))) {
         sp18->unk_10 = 0;
@@ -677,7 +677,7 @@ void func_8430E1CC(unk_D_84390010* arg0) {
 
 void func_8430E490(unk_D_84390010* arg0) {
     unk_D_84390010_654* temp_v0 = &arg0->unk_654;
-    unk_D_800FCB18* temp_v1 = &D_84390010[func_84307F00(arg0) == 0]->unk_654.unk_38;
+    unk_D_800FCB18* temp_v1 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
         arg0->unk_654.unk_38.unk_5A = 0xFF;
@@ -1023,7 +1023,7 @@ void func_8430F080(unk_D_84390010* arg0) {
 
 void func_8430F0C0(unk_D_84390010* arg0) {
     unk_D_84390010_654* temp_v1 = &arg0->unk_654;
-    unk_D_84390010_654* temp_t0 = &D_84390010[func_84307F00(arg0) == 0]->unk_654;
+    unk_D_84390010_654* temp_t0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->unk_720->unk_01 == 1) {
@@ -1053,7 +1053,7 @@ void func_8430F0C0(unk_D_84390010* arg0) {
 }
 
 s32 func_8430F27C(unk_D_84390010* arg0) {
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
 
     if (func_8430D334(arg0) != 0) {
         return 1;
@@ -1186,8 +1186,8 @@ void func_8430F5F4(void) {
 
     if (cont->buttonPressed & 0x20) {
         func_8430F458();
-        func_843074A0(D_84390010[0]);
-        func_843074A0(D_84390010[1]);
+        TriggerPokemonAnimAndAction(D_84390010[0]);
+        TriggerPokemonAnimAndAction(D_84390010[1]);
     }
 
     if (cont->buttonPressed & 0x10) {

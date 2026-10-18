@@ -25,20 +25,20 @@ void* D_84211B34;
 unk_D_842168A0_0013C* D_84211B38;
 char** D_84211B3C;
 char** D_84211B40;
-char** D_84211B44;
+char** gMessageBank_26;
 char** D_84211B48;
-char** D_84211B4C;
-unk_D_84211B50 D_84211B50;
-unk_D_842168A0 D_842168A0;
-unk_D_84229EB0 D_84229EB0;
+char** gMessageBank_06;
+unk_D_84211B50 gPartyInfo;
+unk_D_842168A0 gControllerInfo;
+unk_D_84229EB0 gPokemonData;
 unk_D_8423D3A8 D_8423D3A8;
 unk_D_8423D3D8 D_8423D3D8[4];
-s16 D_8423D3F8;
+s16 gMenuSelectionIndex;
 
-s16 D_84210D40 = 2;
-s16 D_84210D44 = 0x20;
+s16 gFrameTimer = 2;
+s16 gSubsystemEnableMask = 0x20;
 s16 D_84210D48 = 0;
-u8 D_84210D4C[] = {
+u8 gStadiumModeTextureIndices[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F,
 };
 
@@ -62,7 +62,7 @@ char* func_842000C0(s32 arg0) {
 }
 
 char* func_842000F8(s32 arg0) {
-    return GetMessageString(NULL, 0, D_84211B44, RemapStadiumModeIndex(arg0));
+    return GetMessageString(NULL, 0, gMessageBank_26, RemapStadiumModeIndex(arg0));
 }
 
 char* func_84200130(s32 arg0) {
@@ -70,14 +70,14 @@ char* func_84200130(s32 arg0) {
 }
 
 char* func_84200160(s32 arg0) {
-    return GetMessageString(NULL, 0, D_84211B4C, arg0);
+    return GetMessageString(NULL, 0, gMessageBank_06, arg0);
 }
 
 char* func_84200190(char* arg0, s32 arg1, s32 arg2) {
     return GetMessageString(arg0, arg1, D_84211B48, arg2);
 }
 
-void func_842001B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawBorderedBox(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 3, arg1 - 3, 8, 8, D_2000340, 8, 0);
@@ -92,7 +92,7 @@ void func_842001B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84200420(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawColoredBox(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
@@ -131,7 +131,7 @@ void func_84200738(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_84210D58 += 0x2000;
 }
 
-void func_8420092C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawTiledBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -189,7 +189,7 @@ void func_8420092C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawSmallTiledBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -247,7 +247,7 @@ void func_8420112C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_8420192C(s16 arg0, s16 arg1) {
+void DrawTopPanel(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, D_2006C00, 0x30, 0);
@@ -256,7 +256,7 @@ void func_8420192C(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84201A00(s16 arg0, s16 arg1) {
+void DrawAlternateTopPanel(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, &D_2028AE0, 0x30, 0);
@@ -265,7 +265,7 @@ void func_84201A00(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84201AD4(s16 arg0, s16 arg1, s16 arg2) {
+void DrawIconPanel(s16 arg0, s16 arg1, s16 arg2) {
     static u8* D_84210D5C[] = { D_200DFA0, D_200F3E0, D_2010820, D_2011C60, D_20130A0 };
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -288,7 +288,7 @@ void func_84201BC4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8*
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84201D6C(void) {
+void SetupBattleSelectionUI(void) {
     static s32 D_84210D70[] = {
         0x3B, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3D, 0x3E,
     };
@@ -299,7 +299,7 @@ void func_84201D6C(void) {
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_84201BC4(0x48, 0x28, 0x208, &sp2C, &sp28);
-    func_8420192C(0x30, 0x20);
+    DrawTopPanel(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
@@ -309,8 +309,8 @@ void func_84201D6C(void) {
     Text_SetupDL();
 }
 
-void func_84201E70(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
-    if (arg2 == D_8423D3F8) {
+void PrintMenuOption(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
+    if (arg2 == gMenuSelectionIndex) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -318,7 +318,7 @@ void func_84201E70(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_Print(arg0 + 0x36, arg1 + (arg2 * 0x1E) + 0x2C, arg3);
 }
 
-void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
+void DrawOptionsScreen(s16 arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad[2];
     char* sp30;
     s16 temp_a3;
@@ -326,25 +326,25 @@ void func_84201F04(s16 arg0, s16 arg1, s16 arg2) {
 
     Stage_BeginDisplayList();
     Gfx_DrawTextureAtlas(D_84211B34);
-    func_84201D6C();
+    SetupBattleSelectionUI();
     if (arg2 > 0) {
         temp_a3 = (((arg2 * 0x9A) - 0x9A) / 8) + 0x10;
         DrawSimplePanel(0x6D, (s16)(((0xAA - temp_a3) / 2) + 0x81), 0x1A6, temp_a3);
         temp_v0 = (((arg2 * 0x5C) - 0x5C) / 8) + 0x10;
         if (1) {}
-        func_8420112C(0x38, ((0x6C - temp_v0) / 2) + 0x14C, 0x210, (((arg2 * 0x5C) - 0x5C) / 8) + 0x10, 0x1E, 0x1E,
+        DrawSmallTiledBorder(0x38, ((0x6C - temp_v0) / 2) + 0x14C, 0x210, (((arg2 * 0x5C) - 0x5C) / 8) + 0x10, 0x1E, 0x1E,
                       0x82, 0x96);
         if (arg2 == 9) {
-            func_84200420(0x74, 0x88, 0x198, 0x20, 0x8C, 0x28, 0x8C, 0xFF);
-            func_84200420(0x74, 0xA8, 0x198, 0x7C, 0x64, 0x1E, 0x64, 0xFF);
-            AnimateIconOffset(0x79, (D_8423D3F8 * 0x1E) + 0xAD);
+            DrawColoredBox(0x74, 0x88, 0x198, 0x20, 0x8C, 0x28, 0x8C, 0xFF);
+            DrawColoredBox(0x74, 0xA8, 0x198, 0x7C, 0x64, 0x1E, 0x64, 0xFF);
+            AnimateIconOffset(0x79, (gMenuSelectionIndex * 0x1E) + 0xAD);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_Print(0x7D, 0x8B, "%s %s", func_84200130(gBattleContext.unk_0001 + 0x3F), func_84200130(0x48));
-            func_84201E70(0x6D, 0x81, 0, func_84200130(0x49));
-            func_84201E70(0x6D, 0x81, 1, func_84200130(0x4A));
-            func_84201E70(0x6D, 0x81, 2, func_84200130(0x4B));
-            func_84201E70(0x6D, 0x81, 3, func_84200130(0x4C));
+            PrintMenuOption(0x6D, 0x81, 0, func_84200130(0x49));
+            PrintMenuOption(0x6D, 0x81, 1, func_84200130(0x4A));
+            PrintMenuOption(0x6D, 0x81, 2, func_84200130(0x4B));
+            PrintMenuOption(0x6D, 0x81, 3, func_84200130(0x4C));
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetLineHeight(0x18);
@@ -362,7 +362,7 @@ void func_84202208(void) {
 
     while (func_8420DB48(0x10) == -1) {
         func_8420D9B0();
-        func_84201F04(0x8C, 0xBC, 9);
+        DrawOptionsScreen(0x8C, 0xBC, 9);
         Game_UpdateInputs();
     }
 }
@@ -371,10 +371,10 @@ s32 func_84202284(void) {
     s32 sp1C = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if ((D_8423D3F8 == 0) && (func_80028E68() == 0xA)) {
+        if ((gMenuSelectionIndex == 0) && (func_80028E68() == 0xA)) {
             func_84202208();
         } else {
-            if (D_8423D3F8 < 3) {
+            if (gMenuSelectionIndex < 3) {
                 PlaySoundEffect(0x1C);
             } else {
                 PlaySoundEffect(3);
@@ -383,49 +383,49 @@ s32 func_84202284(void) {
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         PlaySoundEffect(3);
-        D_8423D3F8 = 3;
+        gMenuSelectionIndex = 3;
         sp1C = 'btnB';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         PlaySoundEffect(1);
-        D_8423D3F8--;
-        if (D_8423D3F8 < 0) {
-            D_8423D3F8 = 3;
+        gMenuSelectionIndex--;
+        if (gMenuSelectionIndex < 0) {
+            gMenuSelectionIndex = 3;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
         PlaySoundEffect(1);
-        D_8423D3F8++;
-        if (D_8423D3F8 >= 4) {
-            D_8423D3F8 = 0;
+        gMenuSelectionIndex++;
+        if (gMenuSelectionIndex >= 4) {
+            gMenuSelectionIndex = 0;
         }
     }
     return sp1C;
 }
 
-s16 func_842023E4(void) {
+s16 RunMenuSelection(void) {
     s16 i;
     s32 temp_s0;
 
-    D_8423D3F8 = 0;
+    gMenuSelectionIndex = 0;
     PlaySoundEffect(4);
 
     for (i = 0; i < 9; i++) {
         Game_UpdateInputs();
-        func_84201F04(0x8C, 0xBC, i);
+        DrawOptionsScreen(0x8C, 0xBC, i);
     }
 
     do {
         Game_UpdateInputs();
         temp_s0 = func_84202284();
-        func_84201F04(0x8C, 0xBC, 9);
+        DrawOptionsScreen(0x8C, 0xBC, 9);
     } while (temp_s0 == 'exec');
 
     for (i = 8; i >= 0; i--) {
         Game_UpdateInputs();
-        func_84201F04(0x8C, 0xBC, i);
+        DrawOptionsScreen(0x8C, 0xBC, i);
     }
 
-    func_84201F04(0x8C, 0xBC, 0);
-    return func_84200020(D_8423D3F8);
+    DrawOptionsScreen(0x8C, 0xBC, 0);
+    return func_84200020(gMenuSelectionIndex);
 }
 
 void func_842024DC(s16 arg0, s16 arg1) {
@@ -448,15 +448,15 @@ void func_842024DC(s16 arg0, s16 arg1) {
         GfxColor_SetRGB(&sp34, 0x64, 0x64, 0xC8);
         GfxColor_SetRGB(&sp30, 0x28, 0x28, 0x8C);
         func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
-        func_8420192C(0x30, 0x20);
+        DrawTopPanel(0x30, 0x20);
         if (var_t0 != 0) {
-            func_84201AD4(0x1AE, 0x26, arg1);
+            DrawIconPanel(0x1AE, 0x26, arg1);
         }
     } else {
         GfxColor_SetRGB(&sp34, 0xB4, 0x5A, 0xA0);
         GfxColor_SetRGB(&sp30, 0x78, 0x28, 0x64);
         func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
-        func_84201A00(0x30, 0x20);
+        DrawAlternateTopPanel(0x30, 0x20);
     }
 
     Text_ResetState();
@@ -475,37 +475,37 @@ void func_842024DC(s16 arg0, s16 arg1) {
 }
 
 void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
-    s32 temp_s0 = D_84210D40 > 0;
+    s32 temp_s0 = gFrameTimer > 0;
 
     Stage_BeginDisplayList();
 
     if (temp_s0 != 0) {
-        D_84210D40--;
+        gFrameTimer--;
         Gfx_DrawTextureAtlas(D_84211B34);
         func_842024DC(arg1, arg2);
     }
 
-    if (D_84210D44 & 8) {
+    if (gSubsystemEnableMask & 8) {
         func_84204760(temp_s0);
     }
 
-    if (D_84210D44 & 1) {
-        func_842062D4(&D_84211B50, temp_s0);
+    if (gSubsystemEnableMask & 1) {
+        DrawItemInfoPanel(&gPartyInfo, temp_s0);
     }
 
-    if (D_84210D44 & 2) {
-        func_84209340(&D_842168A0, temp_s0);
+    if (gSubsystemEnableMask & 2) {
+        func_84209340(&gControllerInfo, temp_s0);
     }
 
-    if (D_84210D44 & 4) {
-        func_8420EE54(&D_84229EB0, temp_s0);
+    if (gSubsystemEnableMask & 4) {
+        UpdateAndRenderPokemonListScreen(&gPokemonData, temp_s0);
     }
 
-    if (D_84210D44 & 0x10) {
-        func_8420B8CC(&D_8423D3A8, temp_s0);
+    if (gSubsystemEnableMask & 0x10) {
+        DrawPokemonMoveInfo(&D_8423D3A8, temp_s0);
     }
 
-    if (D_84210D44 & 0x20) {
+    if (gSubsystemEnableMask & 0x20) {
         func_8420D4F8(temp_s0);
     }
 
@@ -519,18 +519,18 @@ s16 func_84202844(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     D_84210D48 = 0x27;
 
     for (i = 0; i < 4; i++) {
-        D_84210D40 = 2;
+        gFrameTimer = 2;
         func_84202718(-1, arg1, arg2);
     }
 
-    func_84205D48(arg0, arg3);
+    Menu_Start(arg0, arg3);
 
     while (temp_s1 == -1) {
         Game_UpdateInputs();
         func_8420570C();
         func_8420D9B0();
-        temp_s1 = func_84205E54();
-        D_84210D40 = 2;
+        temp_s1 = Menu_GetSelectedIndex();
+        gFrameTimer = 2;
         func_84202718(-1, arg1, arg2);
     }
 
@@ -541,38 +541,38 @@ s16 func_84202844(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
 void func_84202974(UNUSED s16 arg0, UNUSED s32 arg1) {
     s32 var_a1 = 0;
 
-    if (D_84210D44 & 1) {
-        var_a1 = func_8420776C(&D_84211B50);
+    if (gSubsystemEnableMask & 1) {
+        var_a1 = UpdateItemStateMachine(&gPartyInfo);
     }
 
-    if (D_84210D44 & 2) {
-        var_a1 |= func_8420B0C8(&D_842168A0);
+    if (gSubsystemEnableMask & 2) {
+        var_a1 |= func_8420B0C8(&gControllerInfo);
     }
 
-    if (D_84210D44 & 4) {
-        var_a1 |= func_842106FC(&D_84229EB0);
+    if (gSubsystemEnableMask & 4) {
+        var_a1 |= func_842106FC(&gPokemonData);
     }
 
-    if (D_84210D44 & 0x10) {
-        var_a1 |= func_8420C580(&D_8423D3A8);
+    if (gSubsystemEnableMask & 0x10) {
+        var_a1 |= MoveScreen_Update(&D_8423D3A8);
     }
 
-    if (D_84210D44 & 0x20) {
+    if (gSubsystemEnableMask & 0x20) {
         var_a1 |= func_8420D9B0();
     }
 
     if (var_a1 != 0) {
-        D_84210D40 = 2;
+        gFrameTimer = 2;
     }
 }
 
 void func_84202A64(s16 arg0, s32 arg1, s16 arg2) {
     PlaySoundEffect(4);
     if (arg0 == 4) {
-        func_84210A18(&D_84229EB0);
+        func_84210A18(&gPokemonData);
     } else {
-        func_842079B4(&D_84211B50, 0);
-        func_8420B1D0(&D_842168A0, 0);
+        func_842079B4(&gPartyInfo, 0);
+        func_8420B1D0(&gControllerInfo, 0);
     }
     Game_UpdateInputs();
     func_84202974(arg0, 0);
@@ -582,7 +582,7 @@ void func_84202A64(s16 arg0, s32 arg1, s16 arg2) {
 void func_84202AF4(s16 arg0, s16 arg1, s16 arg2) {
     s32 var_s0 = 1;
 
-    MenuInput_SetController(&gControllers[D_842168A0.unk_00003]);
+    MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     while (var_s0 != 0) {
         Game_UpdateInputs();
@@ -590,10 +590,10 @@ void func_84202AF4(s16 arg0, s16 arg1, s16 arg2) {
         func_84202718(arg0, arg1, arg2);
 
         if (arg0 == 4) {
-            var_s0 = func_84210B54(&D_84229EB0) == 0;
+            var_s0 = func_84210B54(&gPokemonData) == 0;
         } else {
-            var_s0 = !func_842081A8(&D_84211B50);
-            var_s0 |= !func_8420B37C(&D_842168A0);
+            var_s0 = !func_842081A8(&gPartyInfo);
+            var_s0 |= !func_8420B37C(&gControllerInfo);
         }
     }
 }
@@ -630,7 +630,7 @@ void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
     unk_D_800AC910_040 sp38;
 
     if (arg1 == 4) {
-        D_84210D44 |= func_8421089C(&D_84229EB0, &D_84211B50, &D_842168A0, &D_8423D3A8, 0, 0x2C, 0x54, arg0->unk_02);
+        gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 0, 0x2C, 0x54, arg0->unk_02);
         return;
     }
 
@@ -643,8 +643,8 @@ void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
         var_v1 = 0;
     }
 
-    D_84210D44 |= func_842078C0(&D_84211B50, &D_842168A0, &D_8423D3A8, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
-    D_84210D44 |= func_8420AF1C(&D_842168A0, &D_84211B50, &D_8423D3A8, 0, 0x68, 0xE4, arg0->unk_02, arg1, D_84211B38);
+    gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &D_8423D3A8, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
+    gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &D_8423D3A8, 0, 0x68, 0xE4, arg0->unk_02, arg1, D_84211B38);
 }
 
 s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
@@ -655,7 +655,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
 
     arg0->unk_04->unk_002 = 0;
     if (arg1 == 4) {
-        temp_s3 = func_84210B60(&D_84229EB0, &sp34);
+        temp_s3 = func_84210B60(&gPokemonData, &sp34);
         if (sp34 != NULL) {
             arg0->unk_04->unk_018 = sp34->unk_4D10;
             if (gBattleContext.unk_0000 != 0) {
@@ -669,15 +669,15 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
             var_s0 = 1;
         }
     } else {
-        arg0->unk_04->unk_018 = D_84211B50.unk_001C;
+        arg0->unk_04->unk_018 = gPartyInfo.unk_001C;
         if (gBattleContext.unk_0000 != 0) {
-            HAL_Strcpy(arg0->unk_04->unk_008, D_84211B50.unk_001E);
+            HAL_Strcpy(arg0->unk_04->unk_008, gPartyInfo.unk_001E);
         }
-        HAL_Strcpy(arg0->unk_04->unk_214->unk_014, D_84211B50.unk_001E);
+        HAL_Strcpy(arg0->unk_04->unk_214->unk_014, gPartyInfo.unk_001E);
 
-        if (D_84211B50.unk_0006 > 0) {
-            for (i = 0; i < D_84211B50.unk_0006; i++) {
-                Battle_AddPartyMon(arg0->unk_04, &D_84211B50.unk_0030[i].unk_004);
+        if (gPartyInfo.unk_0006 > 0) {
+            for (i = 0; i < gPartyInfo.unk_0006; i++) {
+                Battle_AddPartyMon(arg0->unk_04, &gPartyInfo.unk_0030[i].unk_004);
             }
             var_s0 = 1;
         }
@@ -725,14 +725,14 @@ void func_8420318C(s16 arg0, s16 arg1) {
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {
-            func_84210C80(&D_84229EB0, temp_v1->unk_214->unk_028[0].unk_53);
+            func_84210C80(&gPokemonData, temp_v1->unk_214->unk_028[0].unk_53);
         } else {
-            func_842081B4(&D_84211B50, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
+            func_842081B4(&gPartyInfo, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
         }
     }
 }
 
-s32 func_84203210(void) {
+s32 RunBattleSelectionMode(void) {
     s16 var_s1 = 0;
     s16 var_s2;
 
@@ -763,8 +763,8 @@ s32 func_84203210(void) {
     func_84202C20();
     func_84203100();
 
-    D_84210D44 |= func_84205C18(0);
-    D_84210D44 |= func_8420C504(&D_8423D3A8);
+    gSubsystemEnableMask |= func_84205C18(0);
+    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
 
     while (var_s1 >= 0 && var_s1 < 4) {
         if (D_8423D3D8[var_s1].unk_00 != 0) {
@@ -845,8 +845,8 @@ s32 func_842034E4(void) {
     func_84202C20();
     func_84203100();
 
-    D_84210D44 |= func_84205C18(0);
-    D_84210D44 |= func_8420C504(&D_8423D3A8);
+    gSubsystemEnableMask |= func_84205C18(0);
+    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
 
     while ((var_s1 >= 0) && (var_s1 < 4)) {
         if (D_8423D3D8[var_s1].unk_00 != 0) {
@@ -930,62 +930,62 @@ void func_842037AC(void) {
             var_s1 = 0;
         }
 
-        ptr = &D_84229EB0;
-        D_84210D44 |= func_8421089C(ptr, &D_84211B50, &D_842168A0, &D_8423D3A8, 3, 0x2C, 0xBC, 0);
-        D_84210D44 |= func_842078C0(&D_84211B50, &D_842168A0, &D_8423D3A8, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
-        D_84210D44 |= func_8420AF1C(&D_842168A0, &D_84211B50, &D_8423D3A8, 1, 0x68, 0xE4, 0, temp_v0, D_84211B38);
+        ptr = &gPokemonData;
+        gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 3, 0x2C, 0xBC, 0);
+        gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &D_8423D3A8, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
+        gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &D_8423D3A8, 1, 0x68, 0xE4, 0, temp_v0, D_84211B38);
 
         func_84202A64(temp_v0, 1, 0);
         func_84202AF4(temp_v0, 1, 0);
 
         main_pool_pop_state('regi');
 
-        if (D_84211B50.unk_0006 != 0) {
+        if (gPartyInfo.unk_0006 != 0) {
             break;
         }
     }
 }
 
 void func_842039B4(void) {
-    D_84210D44 |= func_8421089C(&D_84229EB0, &D_84211B50, &D_842168A0, &D_8423D3A8, 1, 0x2C, 0x54, 0);
+    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 1, 0x2C, 0x54, 0);
 
-    func_84210A18(&D_84229EB0);
+    func_84210A18(&gPokemonData);
     Game_UpdateInputs();
     func_84202974(4, 0);
     func_84202718(4, 2, 0);
-    MenuInput_SetController(&gControllers[D_842168A0.unk_00003]);
+    MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     do {
         Game_UpdateInputs();
         func_84202974(4, MenuInput_ReadDirection() & 0xFFFF);
         func_84202718(4, 2, 0);
-    } while (func_84210B54(&D_84229EB0) == 0);
+    } while (func_84210B54(&gPokemonData) == 0);
 }
 
 void func_84203AB8(void) {
-    D_84210D44 |= func_8421089C(&D_84229EB0, &D_84211B50, &D_842168A0, &D_8423D3A8, 2, 0x2C, 0x54, 0);
+    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 2, 0x2C, 0x54, 0);
 
-    func_84210A18(&D_84229EB0);
+    func_84210A18(&gPokemonData);
     Game_UpdateInputs();
     func_84202974(4, 0);
     func_84202718(4, 3, 0);
-    MenuInput_SetController(&gControllers[D_842168A0.unk_00003]);
+    MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     do {
         Game_UpdateInputs();
         func_84202974(4, MenuInput_ReadDirection() & 0xFFFF);
         func_84202718(4, 3, 0);
-    } while (func_84210B54(&D_84229EB0) == 0);
+    } while (func_84210B54(&gPokemonData) == 0);
 }
 
 s32 func_84203BBC(void) {
     s16 temp_v0;
 
-    D_84210D44 |= func_84205C18(1);
-    D_84210D44 |= func_8420C504(&D_8423D3A8);
+    gSubsystemEnableMask |= func_84205C18(1);
+    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
 
     do {
-        temp_v0 = func_842023E4();
+        temp_v0 = RunMenuSelection();
         switch (temp_v0) {
             case 0:
                 func_842037AC();
@@ -1079,7 +1079,7 @@ void func_84203D74(void) {
             }
         }
     } else {
-        D_84211B34 = BinArchive_GetFile(D_84211B30, D_84210D4C[gBattleContext.unk_0000]);
+        D_84211B34 = BinArchive_GetFile(D_84211B30, gStadiumModeTextureIndices[gBattleContext.unk_0000]);
     }
 }
 
@@ -1097,9 +1097,9 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
 
     D_84211B3C = GetMessageBank(0x24);
     D_84211B40 = GetMessageBank(0x25);
-    D_84211B44 = GetMessageBank(0x26);
+    gMessageBank_26 = GetMessageBank(0x26);
     D_84211B48 = GetMessageBank(0x1A);
-    D_84211B4C = GetMessageBank(6);
+    gMessageBank_06 = GetMessageBank(6);
 
     GbsEnsureBankLoaded(gBattleContext.unk_0001 / 4);
     func_80028C48(gBattleContext.unk_0001);
@@ -1116,7 +1116,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
         gBattleContext.unk_11F6 = gBattleContext.unk_11F6 & 0xFFDF;
     } else {
         gBattleContext.unk_11F5 &= 0xFFFD;
-        var_v1 = func_84203210();
+        var_v1 = RunBattleSelectionMode();
     }
 
     Stage_Terminate();

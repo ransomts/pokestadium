@@ -83,7 +83,7 @@ void func_8431AED8(unk_D_84390010* arg0, Vec3f* arg1) {
 void func_8431AF58(unk_D_84390010* arg0, Vec3f* arg1, s32 arg2) {
     if (func_80015390(&arg0->unk_000, arg2, arg1) == NULL) {
         func_843081F0(arg0, arg1);
-        arg1->x = func_84307DE0(arg0);
+        arg1->x = GetEntityXOffset(arg0);
         arg1->z = 0.0f;
     }
 }
@@ -143,7 +143,7 @@ void func_8431B174(unk_D_86002F34_00C* arg0) {
     s16 sp2A;
     s16 sp28;
 
-    func_8430C070(&arg0->unk_60.eye, &arg0->unk_60.at, &sp30, &sp28, &sp2A);
+    Math_CalcDistAndAngles(&arg0->unk_60.eye, &arg0->unk_60.at, &sp30, &sp28, &sp2A);
     D_84390240.unk_00->unk_7A += 0x38E0;
     func_8430C718(&D_84390240.unk_00->unk_68, 0.0f, 0.18f);
 
@@ -269,8 +269,8 @@ void func_8431B500(unk_D_86002F34_00C* arg0, s32 arg1) {
     if (temp_s0->unk_448.unk_24.unk_0C.x == 0.0f) {
         func_843081F0(temp_s0, &sp58);
     } else {
-        func_8430C1E4(&sp58, &temp_s0->unk_448.unk_24.unk_0C);
-        sp58.y += temp_s0->unk_000.unk_024.y - func_84307BAC(temp_s0);
+        Vector_Copy(&sp58, &temp_s0->unk_448.unk_24.unk_0C);
+        sp58.y += temp_s0->unk_000.unk_024.y - GetModelBaseY(temp_s0);
     }
 
     sp54 = func_8431AD20(temp_s0, 3.0f, 300.0f);
@@ -306,9 +306,9 @@ void func_8431B858(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
 
     Vec3f_Set(&arg0->unk_448.unk_18, arg0->unk_448.unk_24.unk_00.x, arg0->unk_448.unk_24.unk_00.y,
                   arg0->unk_448.unk_24.unk_00.z);
-    arg0->unk_448.unk_18.y = (arg0->unk_000.unk_024.y - func_84307BAC(arg0)) + arg0->unk_448.unk_18.y + sp3C;
-    func_8430C1E4(&D_84390240.unk_00->unk_B8, &arg1->unk_60.at);
-    func_8430C1E4(&D_84390240.unk_00->unk_C4, &arg1->unk_60.eye);
+    arg0->unk_448.unk_18.y = (arg0->unk_000.unk_024.y - GetModelBaseY(arg0)) + arg0->unk_448.unk_18.y + sp3C;
+    Vector_Copy(&D_84390240.unk_00->unk_B8, &arg1->unk_60.at);
+    Vector_Copy(&D_84390240.unk_00->unk_C4, &arg1->unk_60.eye);
     Matrix_Decompose(&D_84390240.unk_00->unk_B8, &D_84390240.unk_00->unk_C4, &D_84390240.unk_00->unk_70, &sp38->unk_44,
                   &sp38->unk_46);
     Matrix_Decompose(&arg0->unk_448.unk_18, &arg1->unk_60.at, &sp38->unk_4C, &sp38->unk_44, &sp38->unk_46);
@@ -324,7 +324,7 @@ void func_8431BA5C(void) {
 void func_8431BAB4(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
     Camera_SetViewParameters(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
     arg1->unk_60.at.y += arg6;
-    arg1->unk_60.at.y += func_84307C30(arg0);
+    arg1->unk_60.at.y += GetModelDepth(arg0);
 }
 
 void func_8431BB24(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
@@ -387,8 +387,8 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     s16 sp36;
     s16 sp34;
 
-    func_8430C1E4(&sp4C, &arg0->unk_60.at);
-    func_8430C1E4(&sp40, &arg0->unk_60.at);
+    Vector_Copy(&sp4C, &arg0->unk_60.at);
+    Vector_Copy(&sp40, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp64);
     Matrix_Decompose(&sp64, &arg1->unk_448.unk_18, &sp3C, &sp36, &sp34);
 
@@ -399,8 +399,8 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
 
         case 0x82:
             arg0->unk_24.fovy = 50.0f;
-            if (sp3C < (func_84307BD8(arg1) * 0.5f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) * 0.5f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
@@ -409,14 +409,14 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
         case 0x32:
         case 0x33:
         case 0x5B:
-            if (sp3C < (func_84307BD8(arg1) * 5.0f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) * 5.0f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
         case 0x12:
-            if (sp3C < (func_84307BD8(arg1) * 1.5f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) * 1.5f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
@@ -424,16 +424,16 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
         case 0x58:
         case 0x59:
         case 0x96:
-            if (sp3C < func_84307BD8(arg1)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < GetModelWidth(arg1)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
         case 0x4A:
         case 0x65:
         case 0x67:
-            if (sp3C < (func_84307BD8(arg1) / 1.2f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) / 1.2f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
@@ -443,14 +443,14 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
         case 0x4C:
         case 0x5C:
         case 0x83:
-            if (sp3C < (func_84307BD8(arg1) / 3.0f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) / 3.0f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
 
         default:
-            if (sp3C < (func_84307BD8(arg1) * 0.5f)) {
-                func_8430C1E4(&sp64, &arg1->unk_448.unk_18);
+            if (sp3C < (GetModelWidth(arg1) * 0.5f)) {
+                Vector_Copy(&sp64, &arg1->unk_448.unk_18);
             }
             break;
     }
@@ -464,29 +464,29 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
         case 0x58:
         case 0x59:
         case 0x87:
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 50.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 50.0f);
             break;
 
         case 0x16:
         case 0x4C:
         case 0x96:
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 1.5f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 1.5f);
             break;
 
         default:
-            temp_fv1 = sp3C / func_84307BD8(arg1);
+            temp_fv1 = sp3C / GetModelWidth(arg1);
             if (temp_fv1 <= 0.1f) {
-                var_fv1 = sp3C / (func_84307BD8(arg1) * 15.0f);
+                var_fv1 = sp3C / (GetModelWidth(arg1) * 15.0f);
             } else if (temp_fv1 <= 0.2f) {
-                var_fv1 = sp3C / (func_84307BD8(arg1) * 7.0f);
+                var_fv1 = sp3C / (GetModelWidth(arg1) * 7.0f);
             } else if (temp_fv1 <= 0.3f) {
-                var_fv1 = sp3C / (func_84307BD8(arg1) * 5.0f);
+                var_fv1 = sp3C / (GetModelWidth(arg1) * 5.0f);
             } else if (temp_fv1 <= 0.4f) {
-                var_fv1 = sp3C / (func_84307BD8(arg1) * 3.0f);
+                var_fv1 = sp3C / (GetModelWidth(arg1) * 3.0f);
             } else if (temp_fv1 <= 0.5f) {
-                var_fv1 = sp3C / (func_84307BD8(arg1) * 1.5f);
+                var_fv1 = sp3C / (GetModelWidth(arg1) * 1.5f);
             } else {
-                var_fv1 = sp3C / func_84307BD8(arg1);
+                var_fv1 = sp3C / GetModelWidth(arg1);
             }
             break;
     }
@@ -507,30 +507,30 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     if (arg1->unk_4B4 == 0xD) {
         var_fv1 = 0;
     } else if ((arg1->unk_000.unk_01A == 0x58) || (arg1->unk_000.unk_01A == 0x59)) {
-        temp_fv1 = sp3C / func_84307BD8(arg1);
+        temp_fv1 = sp3C / GetModelWidth(arg1);
         if (temp_fv1 <= 0.05f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 90.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 90.0f);
         } else if (temp_fv1 <= 0.1f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 70.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 70.0f);
         } else if (temp_fv1 <= 0.2f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 65.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 65.0f);
         } else if (temp_fv1 <= 0.3f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 63.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 63.0f);
         } else {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 45.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 45.0f);
         }
     } else {
-        temp_fv1 = sp3C / func_84307BD8(arg1);
+        temp_fv1 = sp3C / GetModelWidth(arg1);
         if (temp_fv1 <= 0.05f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 50.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 50.0f);
         } else if (temp_fv1 <= 0.1f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 30.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 30.0f);
         } else if (temp_fv1 <= 0.2f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 25.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 25.0f);
         } else if (temp_fv1 <= 0.3f) {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 23.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 23.0f);
         } else {
-            var_fv1 = sp3C / (func_84307BD8(arg1) * 15.0f);
+            var_fv1 = sp3C / (GetModelWidth(arg1) * 15.0f);
         }
     }
 
@@ -605,18 +605,18 @@ void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp32;
     s16 sp30;
 
-    func_8430C1E4(&sp3C, &arg0->unk_60.at);
+    Vector_Copy(&sp3C, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp54);
     Matrix_Decompose(&sp54, &arg1->unk_448.unk_18, &sp38, &sp32, &sp30);
 
-    if (sp38 < (func_84307BD8(arg1) * 1.1f)) {
-        func_8430C1E4(&sp54, &arg1->unk_448.unk_18);
+    if (sp38 < (GetModelWidth(arg1) * 1.1f)) {
+        Vector_Copy(&sp54, &arg1->unk_448.unk_18);
     }
 
     Camera_SetViewParameters(&sp54, &sp48, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     Matrix_Decompose(&sp3C, &sp48, &sp38, &sp32, &sp30);
 
-    var_fa0 = (sp38 / (func_84307BD8(arg1) * 80.0f)) * 3.0f;
+    var_fa0 = (sp38 / (GetModelWidth(arg1) * 80.0f)) * 3.0f;
     if (var_fa0 >= 1.0f) {
         var_fa0 = 1.0f;
     }
@@ -637,7 +637,7 @@ s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     UNUSED s32 pad3[2];
     unk_D_800FCB18* temp_v1;
 
-    temp_v1 = &D_84390010[func_84307F00(arg1) == 0]->unk_654.unk_38;
+    temp_v1 = &D_84390010[IsPrimaryEntity(arg1) == 0]->unk_654.unk_38;
 
     if (arg1->unk_654.unk_34 & 0x4000) {
         return 1;
@@ -648,8 +648,8 @@ s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         return 1;
     }
 
-    func_8430C1E4(&sp6C, &arg0->unk_60.at);
-    func_8430C1E4(&sp60, &arg0->unk_60.eye);
+    Vector_Copy(&sp6C, &arg0->unk_60.at);
+    Vector_Copy(&sp60, &arg0->unk_60.eye);
 
     if ((arg1->unk_000.unk_01A != 0x5F) && (arg1->unk_4B4 != 0xD)) {
         func_8431C7A4(arg0, arg1);
@@ -663,8 +663,8 @@ s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
         arg0->unk_60.eye.y = 13.0f;
     }
 
-    func_8430C070(&sp84, &arg0->unk_60.eye, &D_843901F4, &sp4C, &sp50);
-    func_8430C070(&sp84, &sp60, &D_843901F0, &sp4E, &sp52);
+    Math_CalcDistAndAngles(&sp84, &arg0->unk_60.eye, &D_843901F4, &sp4C, &sp50);
+    Math_CalcDistAndAngles(&sp84, &sp60, &D_843901F0, &sp4E, &sp52);
     func_8430C718(&D_843901F0, D_843901F4, 0.2f);
     func_8430C718(&D_84390240.unk_00->unk_94.z, 0.2f, 0.03f);
     func_8430C59C(&sp52, sp50, D_84390240.unk_00->unk_94.z);
@@ -688,7 +688,7 @@ void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp2A;
     s16 sp28;
 
-    func_8430C1E4(&sp34, &arg0->unk_60.at);
+    Vector_Copy(&sp34, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp58);
     Camera_SetViewParameters(&sp58, &sp4C, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     Matrix_Decompose(&sp34, &sp4C, &sp30, &sp2A, &sp28);
@@ -704,7 +704,7 @@ void func_8431CC38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     Vec3f sp3C;
     UNUSED s32 pad2[3];
 
-    func_8430C1E4(&sp3C, &arg0->unk_60.at);
+    Vector_Copy(&sp3C, &arg0->unk_60.at);
     func_8431AED8(arg1, &sp60);
     Camera_SetViewParameters(&sp60, &sp54, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
     func_8430C718(&arg0->unk_60.at.y, sp54.y, 0.1f);
@@ -726,18 +726,18 @@ void func_8431CCFC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp4E;
     s16 sp4C;
 
-    func_8430C1E4(&sp68, &arg0->unk_60.at);
-    func_8430C1E4(&sp5C, &arg0->unk_60.eye);
+    Vector_Copy(&sp68, &arg0->unk_60.at);
+    Vector_Copy(&sp5C, &arg0->unk_60.eye);
     func_843081F0(arg1, &sp74);
     D_843901F0 = func_8431AD20(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, sp74, 0, func_84308190(arg1), 0.0f, 0.0f);
     func_8431BB80(arg0, sp74, 0, func_84308190(arg1), D_843901F0, 0.0f);
-    func_8430C070(&arg0->unk_60.at, &arg0->unk_60.eye, &D_843901F4, &sp4C, &sp50);
-    func_8430C070(&sp68, &sp5C, &D_843901F0, &sp4E, &sp52);
+    Math_CalcDistAndAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &D_843901F4, &sp4C, &sp50);
+    Math_CalcDistAndAngles(&sp68, &sp5C, &D_843901F0, &sp4E, &sp52);
     func_8430C718(&D_843901F0, D_843901F4, 0.05f);
-    func_8430C4F8(&sp52, sp50, 0x108);
-    func_8430C4F8(&sp4E, sp4C, 0xB6);
-    func_8430C070(&sp68, &arg0->unk_60.at, &sp58, &sp56, &sp54);
+    Math_StepTowards(&sp52, sp50, 0x108);
+    Math_StepTowards(&sp4E, sp4C, 0xB6);
+    Math_CalcDistAndAngles(&sp68, &arg0->unk_60.at, &sp58, &sp56, &sp54);
     Camera_SetViewParameters(&sp68, &arg0->unk_60.at, sp58 / 8, sp56, sp54);
     func_8431BBDC(arg0, sp4E, sp52, D_843901F0, 0.0f);
 }
@@ -753,9 +753,9 @@ void func_8431CEF0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED s32 ar
     UNUSED s32 pad;
 
     func_8431AED8(arg1, &sp50);
-    func_8430C1E4(&sp38, &arg0->unk_60.at);
+    Vector_Copy(&sp38, &arg0->unk_60.at);
     Camera_SetViewParameters(&sp50, &sp44, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
-    func_8430C070(&sp38, &sp44, &sp34, &sp32, &sp30);
+    Math_CalcDistAndAngles(&sp38, &sp44, &sp34, &sp32, &sp30);
     Camera_SetViewParameters(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
 }
 
@@ -764,9 +764,9 @@ void func_8431CFA4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp24;
 
     D_843901F0 = func_8431AD20(arg1, 8.0f, 500.0f);
-    func_8430C070(&arg0->unk_60.at, &arg0->unk_60.eye, &D_843901F4, &sp26, &sp24);
+    Math_CalcDistAndAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &D_843901F4, &sp26, &sp24);
     func_8430C718(&D_843901F4, D_843901F0, 0.03f);
-    func_8430C4F8(&sp26, 0xE38, 0x5B);
+    Math_StepTowards(&sp26, 0xE38, 0x5B);
     func_8431BBDC(arg0, sp26, sp24, D_843901F4, 0.0f);
 }
 
@@ -777,12 +777,12 @@ s32 func_8431D048(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     s16 sp2A;
     s16 sp28;
 
-    func_8430C1E4(&sp3C, &arg0->unk_60.at);
-    func_8430C1E4(&sp30, &arg0->unk_60.eye);
+    Vector_Copy(&sp3C, &arg0->unk_60.at);
+    Vector_Copy(&sp30, &arg0->unk_60.eye);
     func_8431EF54(arg0, arg1);
     Matrix_Decompose(&sp30, &arg0->unk_60.eye, &sp2C, &sp28, &sp2A);
     Camera_SetViewParameters(&sp30, &arg0->unk_60.eye, sp2C / 2, sp28, sp2A);
-    func_8430C1E4(&arg0->unk_60.at, &sp3C);
+    Vector_Copy(&arg0->unk_60.at, &sp3C);
 
     if (sp2C <= 0.5f) {
         return 1;
@@ -811,17 +811,17 @@ s32 func_8431D118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 
 
     func_8430C718(&D_84390240.unk_00->unk_94.z, D_843901B0.unk_34, D_843901B0.unk_38);
     Camera_SetViewParameters(&D_843901B0.unk_00, &sp54, D_843901B0.unk_30, D_843901B0.unk_26, D_843901B0.unk_28);
-    func_8430C1E4(&sp48, &arg0->unk_60.eye);
-    func_8430C070(&sp48, &sp54, &sp38, &sp32, &sp30);
+    Vector_Copy(&sp48, &arg0->unk_60.eye);
+    Math_CalcDistAndAngles(&sp48, &sp54, &sp38, &sp32, &sp30);
     Camera_SetViewParameters(&sp48, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp38, sp32, sp30);
     Camera_SetViewParameters(&D_843901B0.unk_00, &sp3C, D_843901B0.unk_2C, D_843901B0.unk_20, D_843901B0.unk_22);
 
     if (arg2 == 1) {
-        sp3C.y += func_84307C30(arg1);
+        sp3C.y += GetModelDepth(arg1);
     }
 
-    func_8430C1E4(&sp60, &arg0->unk_60.at);
-    func_8430C070(&sp60, &sp3C, &sp34, &sp32, &sp30);
+    Vector_Copy(&sp60, &arg0->unk_60.at);
+    Math_CalcDistAndAngles(&sp60, &sp3C, &sp34, &sp32, &sp30);
     Camera_SetViewParameters(&sp60, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp34, sp32, sp30);
 
     if ((sp38 <= 1.75f) && (sp34 <= 1.75f)) {
@@ -852,7 +852,7 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431AED8(arg1, &sp6C);
     Matrix_Decompose(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
-    var_fa1 = sp44 / (func_84307BD8(arg1) * 40.0f);
+    var_fa1 = sp44 / (GetModelWidth(arg1) * 40.0f);
     if (var_fa1 >= 0.6f) {
         var_fa1 = 1.0f;
     }
@@ -861,13 +861,13 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     sp44 += D_843901B0.unk_30;
 
     Camera_SetViewParameters(&D_843901B0.unk_00, &sp60, sp44, D_843901B0.unk_26, D_843901B0.unk_28);
-    func_8430C1E4(&sp54, &arg0->unk_60.eye);
-    func_8430C070(&sp54, &sp60, &sp40, &sp36, &sp34);
+    Vector_Copy(&sp54, &arg0->unk_60.eye);
+    Math_CalcDistAndAngles(&sp54, &sp60, &sp40, &sp36, &sp34);
     Camera_SetViewParameters(&sp54, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp40, sp36, sp34);
     func_8431AED8(arg1, &sp6C);
     Matrix_Decompose(&D_843901B0.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
-    var_fa1 = sp44 / (func_84307BD8(arg1) * 40.0f);
+    var_fa1 = sp44 / (GetModelWidth(arg1) * 40.0f);
     if (var_fa1 >= 0.6f) {
         var_fa1 = 1;
     }
@@ -875,9 +875,9 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     sp44 += D_843901B0.unk_2C;
 
     Camera_SetViewParameters(&D_843901B0.unk_00, &sp48, sp44, D_843901B0.unk_20, D_843901B0.unk_22);
-    sp48.y += func_84307C30(arg1);
-    func_8430C1E4(&sp6C, &arg0->unk_60.at);
-    func_8430C070(&sp6C, &sp48, &sp3C, &sp36, &sp34);
+    sp48.y += GetModelDepth(arg1);
+    Vector_Copy(&sp6C, &arg0->unk_60.at);
+    Math_CalcDistAndAngles(&sp6C, &sp48, &sp3C, &sp36, &sp34);
     Camera_SetViewParameters(&sp6C, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp3C, sp36, sp34);
 
     if ((sp40 <= 1.0f) && (sp3C <= 1.0f)) {
@@ -893,7 +893,7 @@ void func_8431D5C8(UNUSED unk_D_86002F34_00C* arg0) {
 void func_8431D5D0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431BB24(arg0, D_843901B0.unk_00, D_843901B0.unk_0C, D_843901B0.unk_0E, D_843901B0.unk_18, 0.0f);
     if (arg2 == 1) {
-        arg0->unk_60.at.y += func_84307C30(arg1);
+        arg0->unk_60.at.y += GetModelDepth(arg1);
         func_8431BB80(arg0, arg0->unk_60.at, D_843901B0.unk_12, D_843901B0.unk_14, D_843901B0.unk_1C, 0.0f);
     } else {
         func_8431BB80(arg0, D_843901B0.unk_00, D_843901B0.unk_12, D_843901B0.unk_14, D_843901B0.unk_1C, 0.0f);
@@ -1007,12 +1007,12 @@ s32 func_8431DA38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     Vec3f_Set(&sp64, arg1->unk_4B0 * -150.0f, 5.0f, 0.0f);
     func_8430C718(&D_84390240.unk_00->unk_94.z, 0.2f, 0.06f);
     Camera_SetViewParameters(&sp64, &sp4C, 100.0f, 0, func_84308190(arg1));
-    func_8430C1E4(&sp40, &arg0->unk_60.eye);
-    func_8430C070(&sp40, &sp4C, &sp30, &sp2A, &sp28);
+    Vector_Copy(&sp40, &arg0->unk_60.eye);
+    Math_CalcDistAndAngles(&sp40, &sp4C, &sp30, &sp2A, &sp28);
     Camera_SetViewParameters(&sp40, &arg0->unk_60.eye, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
     Camera_SetViewParameters(&sp64, &sp34, 0.0f, 0, func_84308190(arg1));
-    func_8430C1E4(&sp58, &arg0->unk_60.at);
-    func_8430C070(&sp58, &sp34, &sp30, &sp2A, &sp28);
+    Vector_Copy(&sp58, &arg0->unk_60.at);
+    Math_CalcDistAndAngles(&sp58, &sp34, &sp30, &sp2A, &sp28);
 
     if (sp30 >= 1.0f) {
         Camera_SetViewParameters(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2A, sp28);
@@ -1089,8 +1089,8 @@ s32 func_8431DE30(unk_D_86002F34_00C* arg0, s32 arg1) {
         sp4C.y *= 1.3f;
     }
 
-    func_8430C1E4(&sp58, &arg0->unk_60.at);
-    func_8430C070(&sp58, &sp4C, &sp30, &sp2E, &sp2C);
+    Vector_Copy(&sp58, &arg0->unk_60.at);
+    Math_CalcDistAndAngles(&sp58, &sp4C, &sp30, &sp2E, &sp2C);
     Camera_SetViewParameters(&sp58, &arg0->unk_60.at, D_84390240.unk_00->unk_94.z * sp30, sp2E, sp2C);
 
     if (sp30 <= 1.0f) {
@@ -1102,7 +1102,7 @@ s32 func_8431DE30(unk_D_86002F34_00C* arg0, s32 arg1) {
 void func_8431DF98(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &D_84390240.unk_00->unk_D0);
 
-    D_84390240.unk_00->unk_D0.x = func_84307DE0(arg1);
+    D_84390240.unk_00->unk_D0.x = GetEntityXOffset(arg1);
     D_84390240.unk_00->unk_D0.z = 0.0f;
 
     if (arg1->unk_654.unk_38.unk_44.unk_00 == 0x6E) {

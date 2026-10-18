@@ -2785,3 +2785,195 @@ D_84102930	gMenuBarBackgroundDL	w18		Display list that renders the menu bar back
 D_84103078	gMenuOptionBackgroundDL	w18		Display list that renders the menu option background using vertices D_84102D78?D_84103038	applied@4700320
 D_84102D40	gMenuBarGeoLayout	w18		Geo layout data passed to process_geo_layout to create the menu bar graph node	applied@4700320
 D_841033F8	gMenuOptionGeoLayout	w18		Geo layout data passed to process_geo_layout to create the menu option graph node	applied@4700320
+func_82E00058	DrawBorderCorners	w19		Draws four corner sprites with animated offset to render a border around the screen	applied@190f0c9
+func_82E00274	Background_DrawLayer	w19		When arg0==5 it selects a texture segment based on the current background index and draws D_82E01480 as the background layer	applied@190f0c9
+func_82E0036C	Overlay_DrawLayer	w19		When arg0==5 it loads a UI texture segment and draws D_82E018B8, rendering the overlay layer	applied@190f0c9
+func_82E0045C	Stage_DrawFrame	w19		Begins a display list, draws the background texture atlas, updates UI node positions, optionally draws the border, then advances the stage	applied@190f0c9
+func_82E00A54	Stage_InitGraphNodes	w19		Initializes graph nodes, sets their positions and adds them to the root list for the stage	applied@190f0c9
+func_82E00BDC	Menu_HandleInput	w19		Processes A, B, D?pad up/down button presses, updates the menu selection index and returns exec/slct/quit codes	applied@190f0c9
+func_82E00CF0	Menu_RunSelection	w19		Orchestrates the menu intro animation, input loop, and exit animation based on player selection	applied@190f0c9
+func_82E00E2C	Stage_LoadResourcesAndInit	w19		Loads background archive, processes geo layouts into graph nodes, initializes roots and adds nodes to the scene graph	applied@190f0c9
+func_82E00F2C	Fragment60_Main	w19		Entry point for fragment 60; loads assets, sets up level data, runs the menu system and cleans up after completion	applied@190f0c9
+D_82E019B4	gBackgroundTextureAtlas	w19		Obtained via BinArchive_GetFile on the background archive to retrieve the texture atlas used for drawing the background	applied@190f0c9
+D_82E019B8	gBackgroundGraphNode	w19		Created by process_geo_layout using D_82E01110, representing the background geometry node	applied@190f0c9
+D_82E019BC	gOverlayGraphNode	w19		Created by process_geo_layout using D_82E01800, representing the overlay geometry node	applied@190f0c9
+D_82E019C0	gUIGraphNode	w19		Created by process_geo_layout using D_82E01960, representing the UI geometry node	applied@190f0c9
+func_842001B8	DrawBorderedBox	w19		Draws a rectangular border using corner sprites and edge textures, as seen by the sequence of Gfx_DrawSpriteIA8 and Gfx_DrawTextureRect calls.	applied@190f0c9
+func_84200420	DrawColoredBox	w19		Draws a bordered rectangle with an environment color fill, evident from gDPSetEnvColor and Gfx_FillRectRGBA usage.	applied@190f0c9
+func_8420092C	DrawTiledBorder	w19		Calculates tile sizes and draws four texture blocks to create a tiled border, as shown by the texture loading and Gfx_DrawTextureRect calls.	applied@190f0c9
+func_8420112C	DrawSmallTiledBorder	w19		Similar to DrawTiledBorder but uses 16x8 textures and 0x2000 scaling, indicating a smaller tiled border implementation.	applied@190f0c9
+func_8420192C	DrawTopPanel	w19		Draws two stacked RGBA16 sprites at fixed positions, suggesting a top UI panel rendering.	applied@190f0c9
+func_84201A00	DrawAlternateTopPanel	w19		Draws two RGBA16 sprites with different texture references, indicating an alternate top panel layout.	applied@190f0c9
+func_84201AD4	DrawIconPanel	w19		Draws a double-height panel using a selectable texture from a static array based on arg2, implying an icon panel.	applied@190f0c9
+func_84201D6C	SetupBattleSelectionUI	w19		Initializes colors, draws UI elements, and prints text for battle selection, as seen in the sequence of color setup and Text_Print calls.	applied@190f0c9
+func_84201E70	PrintMenuOption	w19		Changes text color based on selection index and prints a menu option, evident from the conditional Text_SetEnvColor and Text_Print.	applied@190f0c9
+func_84201F04	DrawOptionsScreen	w19		Builds the main options screen by drawing background, panels, and handling variable numbers of options, as indicated by the layout calculations and calls to panel-drawing functions.	applied@190f0c9
+func_842023E4	RunMenuSelection	w19		Loops through menu options, updates inputs, and returns the selected index after handling execution states, as evident from the input loop and calls to func_84202284.	applied@190f0c9
+func_84203210	RunBattleSelectionMode	w19		Manages the overall battle selection flow, including music changes, player slot initialization, UI drawing, and looping over player slots, as seen throughout the function.	applied@190f0c9
+D_84211B44	gMessageBank_26	w19		Assigned from GetMessageBank(0x26) in func_84203E6C, indicating it stores message bank 0x26.	applied@190f0c9
+D_84211B4C	gMessageBank_06	w19		Assigned from GetMessageBank(6) in func_84203E6C, indicating it stores message bank 6.	applied@190f0c9
+D_84210D4C	gStadiumModeTextureIndices	w19		Array of texture indices used in func_84203D74 to select background assets based on gBattleContext.unk_0000.	applied@190f0c9
+D_84210D40	gFrameTimer	w19		Decremented each frame in func_84202718 to control display timing, indicating a frame countdown timer.	applied@190f0c9
+D_84210D44	gSubsystemEnableMask	w19		Bitmask checked in func_84202718 to conditionally call subsystem update functions, showing it enables/disables subsystems.	applied@190f0c9
+D_8423D3F8	gMenuSelectionIndex	w19		Used in menu navigation functions (e.g., func_84201E70, func_84202284) to track the currently highlighted menu item.	applied@190f0c9
+D_84229EB0	gPokemonData	w19		Passed to functions handling Pok?mon data loading and saving (e.g., func_8421089C, func_84202EB0), indicating it stores Pok?mon-related information.	applied@190f0c9
+D_842168A0	gControllerInfo	w19		Contains controller index (unk_00003) used in MenuInput_SetController and input handling, suggesting it stores controller state.	applied@190f0c9
+D_84211B50	gPartyInfo	w19		Struct with party details (e.g., unk_001C, unk_001E, party members) used in many UI and data functions, indicating it holds party information.	applied@190f0c9
+func_84204070	RenderUIElement	w19		sets segment 0x0F to a texture, 0x0E to optional data and draws a display list for UI elements	applied@190f0c9
+func_84204210	UpdateSelectedIconPosition	w19		calculates icon offset based on D_84210DA0 and calls AnimateIconOffset	applied@190f0c9
+func_84204294	DrawPlayerInfoEntry	w19		prints player name or placeholder and ID using Text_* functions for each slot	applied@190f0c9
+func_8420448C	DrawMainMenuScreen	w19		resets text state, draws player entries, prints messages and sets up display list	applied@190f0c9
+func_84204660	DrawIconBackgroundRect	w19		chooses color based on icon state and calls func_8420092C to draw a rectangle	applied@190f0c9
+func_84204934	UpdateIconTransform	w19		updates icon X/Y scale using sine/cosine of angle and increments the angle each frame	applied@190f0c9
+func_84204A3C	UpdateIconDepthTransform	w19		modifies icon Z position and X offset based on stored parameters and angle	applied@190f0c9
+func_84204B50	SelectNextActiveIcon	w19		searches forward from current selection to find the next icon with unk_00 != 0 and plays a sound	applied@190f0c9
+func_84204BF8	SelectAlternateIcon	w19		toggles between two possible icon indices when less than four icons are active	applied@190f0c9
+func_84204C9C	SelectLeftIcon	w19		moves selection leftward to the nearest active icon, handling the special case of index 5	applied@190f0c9
+func_84204D5C	SelectRightIcon	w19		moves selection rightward to the nearest active icon, handling transition to index 5	applied@190f0c9
+func_84205D48	Menu_Start	w19		initializes menu for a controller, selects first active icon and sets initial state variables	applied@190f0c9
+func_84205E54	Menu_GetSelectedIndex	w19		returns the currently selected icon index when the menu is idle, otherwise -1	applied@190f0c9
+D_8423D400	gMenuGraphRoot	w19		global GraphNode* used as the root for menu texture state	applied@190f0c9
+D_8423E4E8	gMenuGeoLayouts	w19		array of pointers to per?icon geometry layouts used in menu rendering	applied@190f0c9
+D_8423E500	gMenuCommonGeoLayout	w19		pointer to shared geometry layout for menu background elements	applied@190f0c9
+D_8423E508	gMenuTextureSegments	w19		array of segment addresses for icon textures selected per player slot	applied@190f0c9
+D_8423E568	gSelectedIconIndex	w19		current highlighted icon index in the menu	applied@190f0c9
+D_8423E56A	gMenuMode	w19		mode flag distinguishing two menu states (e.g., normal vs. alternate)	applied@190f0c9
+D_8423E56E	gMenuTimer	w19		counter used for timing animations and transitions in the menu	applied@190f0c9
+D_8423E570	gCurrentController	w19		pointer to the Controller struct for the player using the menu	applied@190f0c9
+D_8423E574	gMenuBackgroundWidth	w19		width value used when drawing the menu background rectangle	applied@190f0c9
+D_8423E576	gMenuBackgroundHeight	w19		height value used when drawing the menu background rectangle	applied@190f0c9
+D_8423E578	gMessageId	w19		message bank ID set before displaying a message in the menu	applied@190f0c9
+D_84210DA0	gIconConfig	w19		array of structs defining icon positions, angles and texture offsets for the menu	applied@190f0c9
+D_84210DD8	gMenuFlags	w19		byte array of flags controlling menu visibility and behavior	applied@190f0c9
+D_84210DF4	gMenuRootLayout	w19		geo layout command table used to build the root menu graph node	applied@190f0c9
+func_84205E80	DrawSlotBackground	w19		Draws a rectangle with colors based on the high bit of arg2, called for each slot in func_84205F18, thus rendering slot backgrounds.	applied@190f0c9
+func_84205F18	DrawSlotGrid	w19		Draws a border, a sprite, and then iterates over six slots calling func_84205E80, forming the complete slot grid UI.	applied@190f0c9
+func_84206144	DrawSelectionRect	w19		Calls func_84200738 to draw a rectangle whose position depends on arg0 fields and arg0->unk_0001, representing a selection cursor.	applied@190f0c9
+func_842062D4	DrawItemInfoPanel	w19		Renders a detailed panel with border, sprites, and multiple Text_Print calls for item info, indicating an item information panel.	applied@190f0c9
+func_84206870	ClearSlotItem	w19		Sets the slot's raw and presence flag to zero and decrements arg0->unk_0006, effectively clearing a slot.	applied@190f0c9
+func_842068DC	MarkSlotForRemoval	w19		Sets the slot's raw flag 0x80000000, marks arg0->unk_0004 = 1 and state 3, indicating the slot is marked for removal.	applied@190f0c9
+func_84206990	GbsSyncItemData	w19		Creates a GBS block with func_80022CC0, copies each item?s data into it, then commits and syncs, thus uploading item data to GBS.	applied@190f0c9
+func_84206A68	CheckStatThresholdForMode	w19		Collects the three smallest unk_24 values from items, then compares their sum to mode?specific thresholds (0x9C,0x51,0x33) based on gBattleContext.unk_0001.	applied@190f0c9
+func_84206BC4	SetPanelPositionOffscreen	w19		Sets arg0->unk_0018 to arg0->unk_0014 + 0x280 while keeping Y unchanged, moving the panel off?screen.	applied@190f0c9
+func_84206BDC	SetPanelPositionOnscreen	w19		Resets arg0->unk_0018 to arg0->unk_0014, returning the panel to its original on?screen position.	applied@190f0c9
+func_84206BF0	StartItemMoveAnimation	w19		Sets the selected slot?s raw flag, calls func_8420C60C with animation parameters, and sets state 6, starting a move animation.	applied@190f0c9
+func_84206D10	HandleItemMoveResult	w19		Handles the result of func_8420C788; for result 1 it sets state 3, for 2 it clears the move flag and sets state 8, processing move outcomes.	applied@190f0c9
+func_84206DE8	UpdatePanelSlideDown	w19		Increments a timer and adjusts arg0->unk_0018 to slide the panel down, used for a slide?down animation.	applied@190f0c9
+func_84206E88	UpdatePanelSlideUp	w19		Increments a timer and adjusts arg0->unk_0018 to slide the panel up, used for a slide?up animation.	applied@190f0c9
+func_8420776C	UpdateItemStateMachine	w19		Switches on arg0->unk_0001 and calls the corresponding state?handling function, acting as the item menu state machine dispatcher.	applied@190f0c9
+D_842115B0	gSlotPosXOffsets	w19		Used as X offsets added to arg1 for each of the six slots in func_84205F18, indicating horizontal positions of UI slots.	applied@190f0c9
+D_842115BC	gSlotPosYOffsets	w19		Used as Y offsets added to arg2 for each of the six slots in func_84205F18, indicating vertical positions of UI slots.	applied@190f0c9
+D_842115F0	gMoveColorInfoTable	w19		global array of Color_RGB8 palettes and texture pointers used to set env/prim colors for move types in func_8420B5A4	applied@190f0c9
+D_842116F0	gMoveTextXOffsets	w19		s16 array of X offsets used when printing move names in func_8420B8CC	applied@190f0c9
+D_842116F8	gMoveTextYOffsets	w19		s16 array of Y offsets used for move name vertical positions in func_8420B8CC	applied@190f0c9
+func_8420B390	PrintMoveEntry	w19		prints a string with env color set based on arg2 equality, called from func_8420B40C to render individual move entries	applied@190f0c9
+func_8420B40C	DrawMoveList	w19		draws icons, prints header strings and two move entries, representing the move list UI	applied@190f0c9
+func_8420B5A4	DrawMoveTypeBackground	w19		sets env and prim colors from gMoveColorInfoTable and draws IA8 sprites and a texture rect for a move type background	applied@190f0c9
+func_8420B71C	DrawTransferPakErrorScreen	w19		renders the transfer pak error border display list and draws a series of error sprites when arg2 != 0	applied@190f0c9
+func_8420B8CC	DrawPokemonMoveInfo	w19		large function that draws the whole Pokemon move info screen, including stats, move names, icons, and handles two move slots	applied@190f0c9
+func_8420C368	HandleMoveScreenInput	w19		processes controller input for the move screen, handling A/B/DPAD, playing sounds and updating state fields	applied@190f0c9
+func_8420C484	InitMoveScreenConfirm	w19		initialises state 2 of the move screen, setting clip rects and default values before showing the screen	applied@190f0c9
+func_8420C4DC	InitMoveScreenExit	w19		initialises state 3 of the move screen, setting different texture coordinates (0x8C,0x34) and state 0	applied@190f0c9
+func_8420C504	MoveScreen_Create	w19		creates an AssetManager, allocates a UI asset, sets up initial fields and returns size 0x10, used to create the move screen object	applied@190f0c9
+func_8420C580	MoveScreen_Update	w19		state machine update that calls state-specific functions based on arg0->unk_00 (idle, input, confirm, exit)	applied@190f0c9
+func_8420C60C	MoveScreen_Start	w19		starts the move screen by loading assets, setting state to 2, storing parameters and creating clip rectangles	applied@190f0c9
+func_8420C788	GetSelectedMoveIndex	w19		returns the selected move index (arg0->unk_02+1) when the screen is idle (state 0), otherwise 0	applied@190f0c9
+func_8420C7B0	Menu_PrintItem	w19		Prints a menu entry and highlights it when its index matches the selected item	applied@190f0c9
+func_8420DD14	DrawPokemonSlot	w19		draws a slot background, sprites and text for a Pokemon entry using Gfx_DrawSpriteRGBA16, Gfx_DrawSpriteI4 and Text_Print	applied@190f0c9
+func_8420E46C	DrawHeaderBar	w19		draws two IA8 sprites, a texture rectangle and prints a title string, indicating a header UI element	applied@190f0c9
+func_8420E63C	DrawVerticalScrollBar	w19		draws a vertical scroll bar with a moving indicator based on calculated position sp66	applied@190f0c9
+func_8420EA88	DrawBottomBar	w19		calls func_84200738 to draw a bottom rectangle area of size 0x200?0x58, representing a UI footer	applied@190f0c9
+func_8420EB7C	DrawSideBar	w19		calls func_84200738 to draw a side rectangle area of size 0x84?0x2C, representing a UI side panel	applied@190f0c9
+func_8420ED0C	RenderVisiblePokemonEntries	w19		sets a scissor rect and iterates three entries, calling DrawPokemonSlot for each visible slot	applied@190f0c9
+func_8420EE54	UpdateAndRenderPokemonListScreen	w19		invokes header, scrollbars, entry rendering and text setup to fully draw the Pokemon list screen	applied@190f0c9
+func_8420F1BC	GetPrevPage	w19		traverses the unk_4D28 linked list to move backward a given number of pages	applied@190f0c9
+func_8420F1E0	GetNextPage	w19		traverses the unk_4D24 linked list to move forward a given number of pages	applied@190f0c9
+func_8420F204	LoadPokemonPageFromGbs	w19		creates a GBS block, reads up to six Pokemon entries and fills the page structure with their data	applied@190f0c9
+func_8420F37C	UpdateSelectionHighlight	w19		calculates the selected slot index and updates the highlight sprite via func_8420C60C or func_8420C6D8	applied@190f0c9
+func_8420F4FC	ResetPokemonListState	w19		initialises many state fields, setting mode to 0xD and resetting selection indices	applied@190f0c9
+func_8420F53C	ScrollUpStep	w19		increments the scroll counter, adjusts the Y position and sets a short delay before the next state change	applied@190f0c9
+func_8420F598	ScrollDownStep	w19		increments the scroll counter, adjusts the Y position and sets a short delay before the next state change	applied@190f0c9
+func_8420F86C	ProcessPokemonListInput	w19		handles controller A/B/D-pad input to select, cancel or navigate the Pokemon list UI	applied@190f0c9
+func_84300020	CameraNode_UpdateCallback	w19		Called with arg0==2 and invokes func_8432D0D8 on D_8438E440, a CameraNode, indicating an update callback.	applied@190f0c9
+func_84300058	CameraNode_GetPanTiltPositive	w19		Decomposes the current camera matrix and stores adjusted pitch/yaw in arg1, used as a positive offset getter.	applied@190f0c9
+func_843000C0	CameraNode_GetPanTiltNegative	w19		Decomposes the current camera matrix and stores adjusted pitch/yaw with opposite offsets, serving as a negative offset getter.	applied@190f0c9
+func_8430012C	FragmentNode_SetScaleAndColor	w19		On arg0==2 it sets the node's position to the global scale D_8438E7A8 and its RGBA to the global color D_8438E7A4.	applied@190f0c9
+func_84300184	ColorRectNode_SetColor	w19		Sets global color D_8438E7A4 and toggles a flag in D_8438E530 when the color is pure white, matching a background color setter.	applied@190f0c9
+func_843001FC	FragmentNode_SetGlobalScale	w19		Assigns the float D_8438E7A8, used by fragment nodes for uniform scaling.	applied@190f0c9
+func_84300208	Color_ModulateWithGlobal	w19		Applies the global color multiplier D_8438E7A4 to a 16?bit RGB5A1 color, returning the modulated result.	applied@190f0c9
+func_84300340	RenderBackgroundScreen	w19		Chooses between solid fill, color fill, or textured fill based on D_8438E780 and draws the background using D_8438E440 dimensions.	applied@190f0c9
+func_84300750	FramebufferNode_Init	w19		Initialises a framebuffer for a GraphNode when flag 0x10 is set, clears the flag after setup.	applied@190f0c9
+func_84300B34	RenderPokemonPortraits	w19		Draws four 0x25?0xA texture blocks from a FramebufferImage to render Pok?mon portrait slots.	applied@190f0c9
+func_84300D44	PokemonSelection_ClearFlags	w19		Iterates over D_8438E798 array and clears the unk_25 field of each entry, resetting selection flags.	applied@190f0c9
+func_84300DC0	PokemonSelection_AssignIndices	w19		Sets unk_25 to the current index counter for entries meeting specific conditions and increments the counter if any were set.	applied@190f0c9
+func_84301430	BattleScreen_Init	w19		Initialises battle screen resources, textures, camera nodes, layout graphs, and UI elements for a battle fragment.	applied@190f0c9
+func_84301EEC	Anim_ResetPlayer	w19		Resets the player's animation state by setting unk_4C4 to 0, indicating a clear animation slot.	applied@190f0c9
+func_84301EF4	Anim_ResetAllPlayers	w19		Resets both players' animation state by setting unk_4C4 to 0 for each entry in D_84390010 array.	applied@190f0c9
+func_84305808	Anim_ProcessQueue	w19		Iterates over the 7?element D_84390068 queue, incrementing each player's unk_4C4 and invoking the stored callback function.	applied@190f0c9
+D_84384570	gAnimDataByPlayer	w19		Array indexed by func_84307F00 (player index) holding pointers to per?player animation data structures (e.g., D_8438E7B0).	applied@190f0c9
+D_84384578	gAnimDataSetB	w19		Second element of a per?player animation data table used for DMA copies when player index == 1 in func_84302658.	applied@190f0c9
+D_84384580	gAnimDataSetC	w19		Third element of a per?player animation data table used for DMA copies in func_84302658 for both players.	applied@190f0c9
+D_84384588	gAnimExtraDataByPlayer	w19		Array of pointers indexed by player, accessed for extra animation parameters in multiple functions (e.g., func_84301DDC).	applied@190f0c9
+D_843845CC	gStatMaskTable	w19		Array of pointers to two?byte tables (D_843845A8?D_843845C8) used in func_843021E8 for stat?mask calculations.	applied@190f0c9
+D_8438459C	gStatMaskIndices	w19		Byte array of indices used in func_843021E8 to locate stat?mask entries for move calculations.	applied@190f0c9
+D_84384590	gSpecialMoveIDs	w19		Byte array of move IDs (0x39,0x67,?) referenced in func_8430245C to trigger special handling for certain moves.	applied@190f0c9
+D_84384598	gSpecialConditionIDs	w19		Two?byte array (0x64,0x6E) checked in func_8430245C for additional move?specific conditions.	applied@190f0c9
+D_84390020	gCurrentAnimChannel	w19		Pointer set to the current animation channel (unk_D_8438E7B0_A50) based on player state in many functions (e.g., func_84301D08).	applied@190f0c9
+D_84390068	gAnimStateQueue	w19		Array of 7 structs (unk_D_84390068) representing pending animation actions, each holding a callback and state pointer.	applied@190f0c9
+D_843900A0	gAnimStateQueueIndex	w19		Global index used to iterate over D_84390068 in functions like func_84305808 and func_84301B00.	applied@190f0c9
+func_843074A0	TriggerPokemonAnimAndAction	w19		Calls Anim_SetChannelBase and GraphNode_TriggerAction on the Pokemon's animation channel, then sets an animation flag w19	applied@190f0c9
+func_843074EC	ClearPokemonActiveFlag	w19		Sets the unk_170 field of a Pokemon struct to 0, indicating it is inactive w19	applied@190f0c9
+func_843074F4	SetPokemonActiveFlag	w19		Sets the unk_170 field of a Pokemon struct to 1, marking it as active w19	applied@190f0c9
+func_84307500	ClearAllPokemonActiveFlags	w19		Clears unk_170 for both entries in the global D_84390010 array w19	applied@190f0c9
+func_8430751C	SetAllPokemonActiveFlags	w19		Sets unk_170 to 1 for both entries in the global D_84390010 array w19	applied@190f0c9
+func_8430754C	LoadPokemonModelParams	w19		Copies fields from the D_843847BC table into the Pokemon's model/transform sub?struct based on player index w19	applied@190f0c9
+func_843075D0	SetupPokemonForBattle	w19		Chooses active flags based on D_84390240 and loads model parameters for two Pokemon structs w19	applied@190f0c9
+func_84307638	UpdatePokemonTransform	w19		Computes scaling, rotation and position from D_84384578 table and calls func_8431AE7C to apply the transform w19	applied@190f0c9
+func_84307748	RefreshPokemonTransform	w19		Simply forwards to UpdatePokemonTransform for a given Pokemon w19	applied@190f0c9
+func_84307768	AssignPokemonModels	w19		Assigns model pointers to two Pokemon structs, initializes them and refreshes their transforms w19	applied@190f0c9
+func_843077B0	UpdatePokemonTurn	w19		Sets animation flags, triggers actions, and smoothly approaches target rotation values for a Pokemon w19	applied@190f0c9
+func_843078F4	ResetPokemonTurn	w19		Resets the Pokemon's rotation to its original value and clears the active animation flags w19	applied@190f0c9
+func_843079C4	ProcessPokemonTurnState	w19		Selects between resetting or updating a Pokemon's turn based on its active flag w19	applied@190f0c9
+func_84307A14	UpdatePokemonTurnIfBattleActive	w19		Calls ProcessPokemonTurnState for both Pokemon when the battle context is not in state 0x10 w19	applied@190f0c9
+func_84307A50	HandleBattlePhase	w19		Dispatches to different handlers based on the current battle phase argument w19	applied@190f0c9
+func_84307B28	GetCurrentPokemonData	w19		Returns a pointer into the current team's PokemonData based on stored indices	applied@190f0c9
+D_84390028	gPokemonModelDimensions	w19		Array of structs whose fields are accessed as width, height, depth and base Y for scaling	applied@190f0c9
+D_84390018	gPrimaryPokemonEntity	w19		Compared against arg0 to determine if the entity is the primary one (returns 0)	applied@190f0c9
+D_843900B8	gPokemonMessageBank	w19		Passed as the message bank argument to GetMessageString for Pokemon messages	applied@190f0c9
+func_84307BAC	GetModelBaseY	w19		Returns .unk_08 from the model dimensions, used as the Y coordinate for entity positioning	applied@190f0c9
+func_84307BD8	GetModelWidth	w19		Returns .unk_00 from the model dimensions, used in X scaling calculations	applied@190f0c9
+func_84307C04	GetModelHeight	w19		Returns .unk_04 from the model dimensions, used in Y scaling calculations	applied@190f0c9
+func_84307C30	GetModelDepth	w19		Returns .unk_0C from the model dimensions, likely representing depth	applied@190f0c9
+func_84307C5C	UpdateEntityBasePosition	w19		Sets the entity's base position vector based on side and type using model base Y	applied@190f0c9
+func_84307DE0	GetEntityXOffset	w19		Returns a signed X offset based on side and entity type for positioning	applied@190f0c9
+func_84307F00	IsPrimaryEntity	w19		Returns 0 if the given entity equals the primary entity, otherwise 1	applied@190f0c9
+func_843085F0	GetPokemonMessageString	w19		Calls GetMessageString with the global message bank D_843900B8 and a move index	applied@190f0c9
+func_843093F0	Entity_SetLaunchVelocity	w19		sets arg0->unk_498 to speed and computes velocity components with COSS/SINS based on angle arg2, initializing movement parameters	applied@190f0c9
+func_84309448	Entity_UpdateMovement	w19		updates arg1 speed via Math_ApproachF32, recalculates velocity using COSS/SINS, applies damping and adds the result to arg0 position	applied@190f0c9
+func_843095A4	Entity_UpdateMovementFast	w19		similar to func_84309448 but uses different constants (20.0f, 0.015f) for a faster movement update	applied@190f0c9
+func_843096EC	Entity_ResetSubObjectFlags	w19		loops over two sub-objects, sets their scale to 1.0 and clears flag bit 0 in unk_01 field	applied@190f0c9
+func_84309780	Entity_InitSubObjects	w19		initializes two sub-objects with preset angles {0,0xE38,0xF1C8} and enables flag bit 0, preparing them for animation	applied@190f0c9
+func_84309874	Entity_AnimateSubObjects	w19		updates sub-object positions each frame using sine/cosine of accumulated angle, applies scaling factors from a constant array, and triggers animation actions	applied@190f0c9
+func_84309A24	Entity_ActivateSubObjects	w19		sets sub-object active flag, initializes rotation offset (0x41 - i*4), enables flag bit, and resets scale to 1.0 for both sub-objects	applied@190f0c9
+func_84309B0C	Entity_ScaleSubObjects	w19		gradually approaches a target scale of 0.8 for each sub-object using per?object rates, updates animation channel and marks sub?object as scaled when below threshold	applied@190f0c9
+func_84309C50	Entity_SetSubObjectCameraOffsets	w19		configures sub?object camera offsets (0x41 - i*4), enables flag bit, and copies parent transforms to sub?objects for rendering	applied@190f0c9
+func_84309D78	Entity_UpdateCameraFromSubObject	w19		decomposes parent matrix, sets camera view parameters based on sub?object position, and smoothly interpolates view angle using func_8430C4F8	applied@190f0c9
+func_84309F30	Entity_LaunchProjectile	w19		positions a projectile left or right, sets initial speed 20.0f with angle 0x1FFE, increments state counter and clears a flag before starting animation	applied@190f0c9
+func_84309FD4	Entity_HandleProjectileLanding	w19		adjusts projectile rotation based on side, checks for ground contact, resets vertical velocity and calls func_84309F0C when landing occurs	applied@190f0c9
+func_8430A090	Entity_StateMachine_Dispatch	w19		switches on arg1->unk_4B8 state and calls the appropriate handler functions for the entity's current action phase	applied@190f0c9
+D_84384600	gDefaultScales	w19		static array {1.0f,2.0f} used as default scale values for entity initialization functions	applied@190f0c9
+func_8430C070	Math_CalcDistAndAngles	w19		Computes distance between two Vec3f points and returns vertical and horizontal angles using sqrtf and MathUtil_Atan2s.	applied@190f0c9
+func_8430C120	Vector_Zero	w19		Sets all components of a Vec3f to 0.0f, effectively zeroing the vector.	applied@190f0c9
+func_8430C138	Vector_CalcPolarOffset	w19		Calculates a new Vec3f by adding a polar offset (distance arg2, angle arg3) to a base Vec3f using SINS and COSS.	applied@190f0c9
+func_8430C19C	Vector_SetXZFromPolar	w19		Assigns x and z of a Vec3f from a polar radius and angle using COSS and SINS, leaving y unchanged.	applied@190f0c9
+func_8430C1E4	Vector_Copy	w19		Copies x, y, z from one Vec3f to another.	applied@190f0c9
+func_8430C204	VectorS_Copy	w19		Copies x, y, z from one Vec3s (short vector) to another.	applied@190f0c9
+func_8430C224	Vector_ScaleXYZ	w19		Scales each component of a Vec3f by separate factors arg1, arg2, arg3.	applied@190f0c9
+func_8430C260	Math_CalcAngleBetweenPoints	w19		Returns the angle between two 2D points by applying MathUtil_Atan2s to the differences of the coordinates.	applied@190f0c9
+func_8430C2A4	Vector_Distance	w19		Returns Euclidean distance between two Vec3f points using sqrtf of squared differences.	applied@190f0c9
+func_8430C308	Math_2DDistance	w19		Computes 2D distance between (arg0,arg1) and (arg2,arg3) using static temporaries D_843900D0/D_843900D4 and sqrtf.	applied@190f0c9
+func_8430C384	Math_RandomIntBelow	w19		Generates a random integer in [0, arg0?1] by scaling MathUtil_Random_ZeroOne and clamping the result.	applied@190f0c9
+func_8430C414	Math_RandomU16Scaled	w19		Returns a random u16 scaled to the range [0, arg0) using MathUtil_Random16.	applied@190f0c9
+func_8430C4F8	Math_StepTowards	w19		Adjusts a value towards a target by at most a step size arg2, returning 0 if already equal, otherwise 1.	applied@190f0c9
+func_8430C7E4	Math_CubicBezierCoeffs	w19		Fills an array with cubic B?zier coefficients based on parameter arg1, using (1?t)? and t? terms.	applied@190f0c9
+func_8430CA4C	Math_EaseOutCubicCoeffs	w19		Computes cubic ease?out coefficients using (1?t)?, (1?t)?, (1?t) and t? (CB macro) for animation easing.	applied@190f0c9

@@ -1613,7 +1613,7 @@ end:
 }
 
 void func_84372B48(unk_D_84390010* arg0) {
-    s32 sp1C = func_84307F00(arg0);
+    s32 sp1C = IsPrimaryEntity(arg0);
     unk_D_84390010_654* temp_a10;
     unk_D_800FCB18* temp_a11;
     unk_D_800FCB18* temp_a01;
@@ -1867,7 +1867,7 @@ void func_84373570(unk_D_84390010* arg0) {
     sp24 = &D_84390010[0]->unk_654;
     sp20 = &D_84390010[1]->unk_654;
 
-    ptr2 = &D_84390010[func_84307F00(arg0) == 0]->unk_654.unk_38;
+    ptr2 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     sp24->unk_2A = 0;
     sp20->unk_2A = 0;

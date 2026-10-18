@@ -205,9 +205,9 @@ void func_84208F64(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.unk_00.unk_00 != 0) &&
             (func_84207E3C(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0)) {
-            func_84200420(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
+            DrawColoredBox(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
         } else {
-            func_84200420(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
+            DrawColoredBox(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
         }
     }
 
@@ -266,7 +266,7 @@ void func_84209340(unk_D_842168A0* arg0, s32 arg1) {
     if ((arg0->unk_00001 != 1) && (arg0->unk_00001 != 2) && ((arg1 != 0) || (arg0->unk_00009 != 0))) {
         func_842084BC(arg0);
 
-        func_842001B8(spB0, temp_s7, 0x1B4, 0xD4);
+        DrawBorderedBox(spB0, temp_s7, 0x1B4, 0xD4);
         func_84208B04(spB0 + 4, temp_s7 + 4, arg0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -485,7 +485,7 @@ void func_8420A0E4(unk_D_842168A0* arg0) {
     s32 temp_v0;
 
     sp2C = func_84209CF4(arg0->unk_00140, arg0->unk_0000E);
-    temp_v0 = func_8420C788(arg0->unk_1360C);
+    temp_v0 = GetSelectedMoveIndex(arg0->unk_1360C);
 
     if (temp_v0 == 1) {
         if (func_84207BD4(arg0->unk_13608, &sp2C->unk_0000[arg0->unk_0000C]) != 0) {
@@ -543,7 +543,7 @@ void func_8420A288(unk_D_842168A0* arg0) {
 
         tmp1 = arg0->unk_00010 + (arg0->unk_0000C * 0x84) + 0x20;
         tmp2 = arg0->unk_00012 + (arg0->unk_0000E * 0x2C) + 0x1C;
-        tmp1 = func_8420C60C(arg0->unk_1360C, arg0->unk_00003, 0x30, 0xEC, tmp1, tmp2, &sp3C->unk_0000[arg0->unk_0000C],
+        tmp1 = MoveScreen_Start(arg0->unk_1360C, arg0->unk_00003, 0x30, 0xEC, tmp1, tmp2, &sp3C->unk_0000[arg0->unk_0000C],
                              var_t1);
 
         if (tmp1 != 0) {

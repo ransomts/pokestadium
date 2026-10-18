@@ -83,7 +83,7 @@ void func_843297F0(UNUSED unk_D_86002F34_00C* arg0) {
 }
 
 void func_843297F8(unk_D_86002F34_00C* arg0) {
-    if (func_8430C308(arg0->unk_60.at.x, arg0->unk_60.at.z, arg0->unk_60.eye.x, arg0->unk_60.eye.z) < 0.0001f) {
+    if (Math_2DDistance(arg0->unk_60.at.x, arg0->unk_60.at.z, arg0->unk_60.eye.x, arg0->unk_60.eye.z) < 0.0001f) {
         arg0->unk_60.at.z += 0.001f;
     }
 }
@@ -96,7 +96,7 @@ void func_84329858(unk_D_86002F34_00C* arg0) {
 
         case 1:
             if (D_84390240.unk_00->unk_44 == 2) {
-                func_84307500();
+                ClearAllPokemonActiveFlags();
             }
             D_84390240.unk_00->unk_30++;
             break;
@@ -149,7 +149,7 @@ void func_84329858(unk_D_86002F34_00C* arg0) {
             if (arg0->unk_CC.unk_0A == 0xA) {
                 D_84390240.unk_00->unk_30 = 0;
                 if (D_84390240.unk_00->unk_44 == 1) {
-                    func_8430751C();
+                    SetAllPokemonActiveFlags();
                 }
             }
             break;
@@ -164,7 +164,7 @@ void func_84329B04(unk_D_86002F34_00C* arg0) {
 
         case 1:
             if (D_84390240.unk_00->unk_44 == 2) {
-                func_84307500();
+                ClearAllPokemonActiveFlags();
             }
             D_84390240.unk_00->unk_30++;
             break;
@@ -234,7 +234,7 @@ void func_84329B04(unk_D_86002F34_00C* arg0) {
             if (func_8436EF48() == 0) {
                 D_84390240.unk_00->unk_30 = 0;
                 if (D_84390240.unk_00->unk_44 == 1) {
-                    func_8430751C();
+                    SetAllPokemonActiveFlags();
                 }
             }
             break;
@@ -268,7 +268,7 @@ u16 func_84329DFC(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010
     f32 sp38;
     s32 sp34 = 0;
 
-    func_8430C070(&arg1->unk_60.at, &arg1->unk_60.eye, &sp48, &sp46, &sp44);
+    Math_CalcDistAndAngles(&arg1->unk_60.at, &arg1->unk_60.eye, &sp48, &sp46, &sp44);
     sp40 = (COSS((sp44 - 0x8000)) * 50.0f) + arg1->unk_60.eye.z;
     sp38 = (SINS((sp44 - 0x8000)) * 30.0f) + arg1->unk_60.eye.x;
     sp54 = (COSS(((sp44 - arg3) + 0x8000)) * arg4) + sp40;
@@ -309,7 +309,7 @@ u16 func_8432A024(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010
     s32 sp5C;
 
     sp5C = 0;
-    func_8430C070(&arg1->unk_60.at, &arg1->unk_60.eye, &sp70, &sp6E, &sp6C);
+    Math_CalcDistAndAngles(&arg1->unk_60.at, &arg1->unk_60.eye, &sp70, &sp6E, &sp6C);
     sp60.z = (COSS((sp6C - 0x8000)) * 30.0f) + arg1->unk_60.eye.z;
     sp60.x = (SINS((sp6C - 0x8000)) * 30.0f) + arg1->unk_60.eye.x;
     sp7C = (COSS(((sp6C - arg3) + 0x8000)) * arg4) + sp60.z;
@@ -334,7 +334,7 @@ u16 func_8432A024(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010
     sp60.y = a2->unk_000.unk_024.y;
     sp60.z = a2->unk_000.unk_024.z;
 
-    if ((func_84308598(arg0) * 2.5f) >= func_8430C2A4(arg1->unk_60.eye, sp60)) {
+    if ((func_84308598(arg0) * 2.5f) >= Vector_Distance(arg1->unk_60.eye, sp60)) {
         sp5C = 0;
     }
     return sp5C;
@@ -718,8 +718,8 @@ void func_8432ADD8(unk_D_86002F34_00C* arg0) {
     }
 
     func_8432ABBC(arg0);
-    func_84305808();
-    func_84306914(D_84390018);
+    Anim_ProcessQueue();
+    func_84306914(gPrimaryPokemonEntity);
     func_84306914(D_8439001C);
     func_8431B174(arg0);
     func_8431B830(arg0);

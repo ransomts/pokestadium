@@ -620,11 +620,11 @@ u8 func_843776FC(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2) {
                 return 1;
             }
 
-            if ((D_84384588[sp36]->unk_00 != 0) && (arg2 == gSpeciesBaseStats[D_84384588[sp36]->unk_00 - 1].unk_0A[i])) {
+            if ((gAnimExtraDataByPlayer[sp36]->unk_00 != 0) && (arg2 == gSpeciesBaseStats[gAnimExtraDataByPlayer[sp36]->unk_00 - 1].unk_0A[i])) {
                 return 1;
             }
 
-            if ((D_84384588[sp36]->unk_01 != 0) && (arg2 == gSpeciesBaseStats[D_84384588[sp36]->unk_01 - 1].unk_0A[i])) {
+            if ((gAnimExtraDataByPlayer[sp36]->unk_01 != 0) && (arg2 == gSpeciesBaseStats[gAnimExtraDataByPlayer[sp36]->unk_01 - 1].unk_0A[i])) {
                 return 1;
             }
         }
@@ -1368,14 +1368,14 @@ s32 func_84378B0C(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3)
                 var_v0_2 = 1;
             }
 
-            if (D_84384588[var_v0_2]->unk_00 != 0) {
-                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[D_84384588[var_v0_2]->unk_00 - 1].unk_0A[i]); i++) {
+            if (gAnimExtraDataByPlayer[var_v0_2]->unk_00 != 0) {
+                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[gAnimExtraDataByPlayer[var_v0_2]->unk_00 - 1].unk_0A[i]); i++) {
                     func_843787F4(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
                 }
             }
 
-            if (D_84384588[var_v0_2]->unk_01 != 0) {
-                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[D_84384588[var_v0_2]->unk_01 - 1].unk_0A[i]) != 0; i++) {
+            if (gAnimExtraDataByPlayer[var_v0_2]->unk_01 != 0) {
+                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[gAnimExtraDataByPlayer[var_v0_2]->unk_01 - 1].unk_0A[i]) != 0; i++) {
                     func_843787F4(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
                 }
             }
@@ -5561,11 +5561,11 @@ s32 func_84382668(unk_D_800FCB18* arg0, s32 arg1, u8 arg2, u8 arg3) {
             return 0;
         }
 
-        if ((D_84384588[arg2]->unk_00 != 0) && (arg3 == gSpeciesBaseStats[D_84384588[arg2]->unk_00 - 1].unk_0A[i])) {
+        if ((gAnimExtraDataByPlayer[arg2]->unk_00 != 0) && (arg3 == gSpeciesBaseStats[gAnimExtraDataByPlayer[arg2]->unk_00 - 1].unk_0A[i])) {
             return 0;
         }
 
-        if ((D_84384588[arg2]->unk_01 != 0) && (arg3 == gSpeciesBaseStats[D_84384588[arg2]->unk_01 - 1].unk_0A[i])) {
+        if ((gAnimExtraDataByPlayer[arg2]->unk_01 != 0) && (arg3 == gSpeciesBaseStats[gAnimExtraDataByPlayer[arg2]->unk_01 - 1].unk_0A[i])) {
             return 0;
         }
     }

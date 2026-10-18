@@ -703,7 +703,7 @@ void func_83801E84(s32 arg0, s16 arg1, s32 arg2) {
     } else {
         GfxColor_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0x80);
     }
-    func_8420092C((arg0 << 7) + 0x44, arg1 + 0x54, 0x78, arg2, sp2C.r, sp2C.g, sp2C.b, sp2C.a);
+    DrawTiledBorder((arg0 << 7) + 0x44, arg1 + 0x54, 0x78, arg2, sp2C.r, sp2C.g, sp2C.b, sp2C.a);
 }
 
 void func_83801F84(s32 arg0) {
@@ -768,12 +768,12 @@ void SnapSelect_UpdateInputState(s32 arg0) {
             func_83801E84(1, temp_s0, D_838067E4);
             func_83801E84(2, temp_s0, D_838067E4);
             func_83801E84(3, temp_s0, D_838067E4);
-            func_8420092C(0x44, temp_s0 + 0xF0, 0xF8, D_838067E4, 0x78, 0x1E, 0x64, 0xFF);
-            func_8420092C(0x144, temp_s0 + 0xF0, 0xF8, D_838067E4, 0x78, 0x1E, 0x64, 0xFF);
+            DrawTiledBorder(0x44, temp_s0 + 0xF0, 0xF8, D_838067E4, 0x78, 0x1E, 0x64, 0xFF);
+            DrawTiledBorder(0x144, temp_s0 + 0xF0, 0xF8, D_838067E4, 0x78, 0x1E, 0x64, 0xFF);
         }
 
         if (D_838067E6 > 0) {
-            func_8420112C(0x38, sp3A + 0x190, 0x210, D_838067E6, 0x1E, 0x1E, 0x82, 0x96);
+            DrawSmallTiledBorder(0x38, sp3A + 0x190, 0x210, D_838067E6, 0x1E, 0x1E, 0x82, 0x96);
         }
 
         if (D_838067E4 == 0x38) {

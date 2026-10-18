@@ -68,7 +68,7 @@ void func_84328D70(unk_D_86002F34_00C* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     func_8430C718(&D_84390240.unk_00->unk_84, 40.0f, 0.1f);
-    func_8430C4F8(&D_84390240.unk_00->unk_56, 0xB6, 0x1E);
+    Math_StepTowards(&D_84390240.unk_00->unk_56, 0xB6, 0x1E);
     func_8431BB80(arg0, sp2C, D_84390240.unk_00->unk_56, 0x4000, D_84390240.unk_00->unk_84, 0.0f);
 
     if ((D_84390240.unk_00->unk_56 >= 0x2E) && (D_84390010[0]->unk_4EC.unk_024.y == 2.5f)) {
@@ -92,7 +92,7 @@ void func_84328F2C(unk_D_86002F34_00C* arg0) {
 
     D_84390010[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
     D_84390010[0]->unk_728.unk_000.unk_000.unk_01 |= 1;
-    func_843074A0(D_84390010[0]);
+    TriggerPokemonAnimAndAction(D_84390010[0]);
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     func_8432C68C(3, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
@@ -130,7 +130,7 @@ void func_84329164(unk_D_86002F34_00C* arg0) {
 
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
     D_84390010[1]->unk_728.unk_000.unk_000.unk_01 |= 1;
-    func_843074A0(D_84390010[1]);
+    TriggerPokemonAnimAndAction(D_84390010[1]);
     Audio_PlaySoundEffect(2, 0, 0);
     func_8432C68C(3, D_84390010[1], D_84390010[1], 0xFF, 0xFF);
     func_8431AE5C();

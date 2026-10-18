@@ -19,7 +19,7 @@ typedef struct unk_D_842115F0 {
     /* 0x0C */ u8* unk_0C;
 } unk_D_842115F0; // size = 0x10
 
-unk_D_842115F0 D_842115F0[] = {
+unk_D_842115F0 gMoveColorInfoTable[] = {
     {
         {
             { 0xB4, 0xB4, 0xB4 },
@@ -165,10 +165,10 @@ unk_D_842115F0 D_842115F0[] = {
         D_201A300,
     },
 };
-s16 D_842116F0[] = { 0x14A, 0x15E, 0xFC, 0xE4 };
-s16 D_842116F8[] = { 0x7C, 0x95, 0xAE, 0x95 };
+s16 gMoveTextXOffsets[] = { 0x14A, 0x15E, 0xFC, 0xE4 };
+s16 gMoveTextYOffsets[] = { 0x7C, 0x95, 0xAE, 0x95 };
 
-void func_8420B390(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s8* arg4) {
+void PrintMoveEntry(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s8* arg4) {
     if (arg2 == arg3) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
@@ -177,7 +177,7 @@ void func_8420B390(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s8* arg4) {
     Text_Print(arg0, arg1, arg4);
 }
 
-void func_8420B40C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawMoveList(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     if (arg2 != 0) {
         AnimateIconOffset(arg0 + 0x19C, arg1 + (arg3 * 0x16) + 0x3A);
         Text_ResetState();
@@ -199,15 +199,15 @@ void func_8420B40C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         }
 
         Text_SetFont(8, 0);
-        func_8420B390(arg0 + 0x1CE, arg1 + 0x3A, 0, arg3, func_84200130(3));
-        func_8420B390(arg0 + 0x1CE, arg1 + 0x50, 1, arg3, func_84200130(4));
+        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x3A, 0, arg3, func_84200130(3));
+        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x50, 1, arg3, func_84200130(4));
         Text_SetupDL();
     }
 }
 
-void func_8420B5A4(s16 arg0, s16 arg1, s16 arg2) {
-    unk_D_842115F0* sp34 = &D_842115F0[RemapStadiumModeIndex(arg2)];
-    unk_D_842115F0* sp30 = &D_842115F0[RemapStadiumModeIndex(arg2)];
+void DrawMoveTypeBackground(s16 arg0, s16 arg1, s16 arg2) {
+    unk_D_842115F0* sp34 = &gMoveColorInfoTable[RemapStadiumModeIndex(arg2)];
+    unk_D_842115F0* sp30 = &gMoveColorInfoTable[RemapStadiumModeIndex(arg2)];
 
     gDPSetEnvColor(gDisplayListHead++, sp34->unk_00->r, sp34->unk_00->g, sp34->unk_00->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (sp30->unk_00 + 1)->r, (sp30->unk_00 + 1)->g, (sp30->unk_00 + 1)->b, 255);
@@ -217,7 +217,7 @@ void func_8420B5A4(s16 arg0, s16 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg0 + 0x14, arg1, 0x24, 0x28, 0, 0, 0, 0x400, 0);
 }
 
-void func_8420B71C(s16 arg0, s16 arg1, s32 arg2) {
+void DrawTransferPakErrorScreen(s16 arg0, s16 arg1, s32 arg2) {
     s16 i;
     s16 var_a3;
 
@@ -241,7 +241,7 @@ s16 func_8420B870(s16 arg0, s16 arg1, char* arg2) {
     return arg1;
 }
 
-void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
+void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
     UNUSED s32 pad[2];
     s16 i;
     s16 temp_s4;
@@ -254,29 +254,29 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
     temp_s6 = &arg0->unk_2C->unk_004;
 
     if (arg0->unk_00 != 0) {
-        func_842001B8(temp_s4, temp_s5, arg0->unk_0A, arg0->unk_0C);
+        DrawBorderedBox(temp_s4, temp_s5, arg0->unk_0A, arg0->unk_0C);
         if ((arg0->unk_0A == 0x228) && (arg0->unk_0C == 0xCC)) {
             if (arg0->unk_2C->unk_000 == 4) {
-                func_84200420(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x96, 0xFF);
+                DrawColoredBox(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x96, 0xFF);
             } else {
                 switch (arg0->unk_2C->unk_001) {
                     case 0:
-                        func_84200420(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x3C, 0xFF);
+                        DrawColoredBox(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x3C, 0xFF);
                         break;
 
                     case 9:
-                        func_84200420(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x96, 0xFF);
+                        DrawColoredBox(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xAA, 0x3C, 0x96, 0xFF);
                         break;
 
                     default:
-                        func_84200420(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xB4, 0x8C, 0x28, 0xFF);
+                        DrawColoredBox(temp_s4 + 4, temp_s5 + 4, 0x190, 0x1C, 0xB4, 0x8C, 0x28, 0xFF);
                         break;
                 }
             }
 
-            func_84200420(temp_s4 + 0x68, temp_s5 + 0x20, 0x12C, 0x54, 0xB4, 0xAA, 0x64, 0xFF);
-            func_84200420(temp_s4 + 0x194, temp_s5 + 4, 0x90, 0x78, 0x32, 0x32, 0x82, 0xFF);
-            func_84200420(temp_s4 + 4, temp_s5 + 0x74, 0x220, 0x54, 0xA0, 0x96, 0x32, 0xFF);
+            DrawColoredBox(temp_s4 + 0x68, temp_s5 + 0x20, 0x12C, 0x54, 0xB4, 0xAA, 0x64, 0xFF);
+            DrawColoredBox(temp_s4 + 0x194, temp_s5 + 4, 0x90, 0x78, 0x32, 0x32, 0x82, 0xFF);
+            DrawColoredBox(temp_s4 + 4, temp_s5 + 0x74, 0x220, 0x54, 0xA0, 0x96, 0x32, 0xFF);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -292,16 +292,16 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
             gDPSetCombineLERP(gDisplayListHead++, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, ENVIRONMENT, 0,
                               ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, ENVIRONMENT, 0);
 
-            func_8420B5A4(temp_s4 + 0x6A, temp_s5 + 0x26, temp_s6->unk_06);
+            DrawMoveTypeBackground(temp_s4 + 0x6A, temp_s5 + 0x26, temp_s6->unk_06);
 
             if (temp_s6->unk_06 != temp_s6->unk_07) {
-                func_8420B5A4(temp_s4 + 0xBA, temp_s5 + 0x26, temp_s6->unk_07);
+                DrawMoveTypeBackground(temp_s4 + 0xBA, temp_s5 + 0x26, temp_s6->unk_07);
             }
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-            func_8420B71C(temp_s4 + 4, temp_s5 + 0x20, arg0->unk_20);
-            func_8420B40C(temp_s4, temp_s5, arg0->unk_01, arg0->unk_02);
+            DrawTransferPakErrorScreen(temp_s4 + 4, temp_s5 + 0x20, arg0->unk_20);
+            DrawMoveList(temp_s4, temp_s5, arg0->unk_01, arg0->unk_02);
             Text_ResetState();
             Text_SetFont(8, 0);
             Text_Print(temp_s4 + 0xC, temp_s5 + 8, temp_s6->unk_30);
@@ -350,10 +350,10 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
                     if (temp_a0 == 0) {
                         break;
                     }
-                    color = &D_842115F0[gMoveStrings[temp_a0 - 1].unk_01].unk_00[2];
-                    sp80 = func_8420B870(i, D_842116F0[i], func_842000C0(temp_a0));
+                    color = &gMoveColorInfoTable[gMoveStrings[temp_a0 - 1].unk_01].unk_00[2];
+                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], func_842000C0(temp_a0));
                     Text_SetEnvColor(color->r, color->g, color->b, 0xFF);
-                    Text_Print(temp_s4 + sp80, D_842116F8[i] + temp_s5, func_842000C0(temp_s6->unk_09[i]));
+                    Text_Print(temp_s4 + sp80, gMoveTextYOffsets[i] + temp_s5, func_842000C0(temp_s6->unk_09[i]));
                 }
 
                 Text_SetupDL();
@@ -365,9 +365,9 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
                         break;
                     }
 
-                    sp80 = func_8420B870(i, D_842116F0[i], func_842000C0(temp_s6->unk_09[i]));
-                    Gfx_DrawSpriteRGBA16((temp_s4 + sp80) - 0x18, D_842116F8[i] + temp_s5, 0x14, 0x14,
-                                  D_842115F0[gMoveStrings[temp_s6->unk_09[i] - 1].unk_01].unk_0C, 0x14, 0);
+                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], func_842000C0(temp_s6->unk_09[i]));
+                    Gfx_DrawSpriteRGBA16((temp_s4 + sp80) - 0x18, gMoveTextYOffsets[i] + temp_s5, 0x14, 0x14,
+                                  gMoveColorInfoTable[gMoveStrings[temp_s6->unk_09[i] - 1].unk_01].unk_0C, 0x14, 0);
                 }
             }
 
@@ -381,7 +381,7 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
 void func_8420C360(unk_D_8423D3A8* arg0) {
 }
 
-void func_8420C368(unk_D_8423D3A8* arg0) {
+void HandleMoveScreenInput(unk_D_8423D3A8* arg0) {
     Controller* cont = &gControllers[arg0->unk_03];
 
     if (BTN_IS_PRESSED(cont, BTN_A)) {
@@ -411,7 +411,7 @@ void func_8420C368(unk_D_8423D3A8* arg0) {
     arg0->unk_20 = func_8001B9D4(arg0->unk_28);
 }
 
-void func_8420C484(unk_D_8423D3A8* arg0) {
+void InitMoveScreenConfirm(unk_D_8423D3A8* arg0) {
     arg0->unk_06 = arg0->unk_0E.x1;
     arg0->unk_08 = arg0->unk_0E.y2;
     arg0->unk_0A = 0x228;
@@ -420,7 +420,7 @@ void func_8420C484(unk_D_8423D3A8* arg0) {
     arg0->unk_20 = func_8001B9D4(arg0->unk_28);
 }
 
-void func_8420C4DC(unk_D_8423D3A8* arg0) {
+void InitMoveScreenExit(unk_D_8423D3A8* arg0) {
     arg0->unk_06 = arg0->unk_16.x1;
     arg0->unk_08 = arg0->unk_16.y2;
     arg0->unk_0A = 0x8C;
@@ -428,7 +428,7 @@ void func_8420C4DC(unk_D_8423D3A8* arg0) {
     arg0->unk_00 = 0;
 }
 
-s32 func_8420C504(unk_D_8423D3A8* arg0) {
+s32 MoveScreen_Create(unk_D_8423D3A8* arg0) {
     arg0->unk_24 = AssetManager_Create(1);
     arg0->unk_28 = func_8001B1FC(arg0->unk_24, 0x64, 0x54, 0, 0, 0x64, 0x54, NULL);
     arg0->unk_28->unk_00 &= ~2;
@@ -439,7 +439,7 @@ s32 func_8420C504(unk_D_8423D3A8* arg0) {
     return 0x10;
 }
 
-s32 func_8420C580(unk_D_8423D3A8* arg0) {
+s32 MoveScreen_Update(unk_D_8423D3A8* arg0) {
     s32 sp1C = 0;
 
     switch (arg0->unk_00) {
@@ -450,23 +450,23 @@ s32 func_8420C580(unk_D_8423D3A8* arg0) {
 
         case 1:
             sp1C = 0;
-            func_8420C368(arg0);
+            HandleMoveScreenInput(arg0);
             break;
 
         case 2:
-            func_8420C484(arg0);
+            InitMoveScreenConfirm(arg0);
             sp1C = 1;
             break;
 
         case 3:
-            func_8420C4DC(arg0);
+            InitMoveScreenExit(arg0);
             sp1C = 1;
             break;
     }
     return sp1C;
 }
 
-s32 func_8420C60C(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
+s32 MoveScreen_Start(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
                   unk_D_838067F0_0168_0000* arg6, s16 arg7) {
     if (arg0->unk_00 != 0) {
         return 0;
@@ -500,7 +500,7 @@ s32 func_8420C6D8(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_
     return 1;
 }
 
-s32 func_8420C788(unk_D_8423D3A8* arg0) {
+s32 GetSelectedMoveIndex(unk_D_8423D3A8* arg0) {
     s16 var_v1 = 0;
 
     if (arg0->unk_00 == 0) {

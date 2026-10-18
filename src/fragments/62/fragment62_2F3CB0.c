@@ -3,16 +3,16 @@
 #include "src/1C720.h"
 #include "src/F420.h"
 
-static f32 D_84384600[] = { 1.0f, 2.0f };
+static f32 gDefaultScales[] = { 1.0f, 2.0f };
 
-void func_843093F0(unk_D_84390010* arg0, f32 arg1, s16 arg2) {
+void Entity_SetLaunchVelocity(unk_D_84390010* arg0, f32 arg1, s16 arg2) {
     arg0->unk_498 = arg1;
     arg0->unk_448.unk_0C.z = COSS(arg2) * arg1;
     arg0->unk_448.unk_0C.y = SINS(arg2) * arg1;
     arg0->unk_49C = 0.01f;
 }
 
-void func_84309448(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4) {
+void Entity_UpdateMovement(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -46,11 +46,11 @@ void func_84309448(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg
     sp3C.y = arg1->unk_448.unk_0C.y;
     arg1->unk_448.unk_0C.x = 0.0f;
 
-    func_8430C19C(&sp3C, arg1->unk_448.unk_0C.z, arg0->unk_000.unk_01E.y + 0x4000);
+    Vector_SetXZFromPolar(&sp3C, arg1->unk_448.unk_0C.z, arg0->unk_000.unk_01E.y + 0x4000);
     Vec3f_Add(&arg0->unk_000.unk_024, &sp3C);
 }
 
-void func_843095A4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
+void Entity_UpdateMovementFast(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -83,11 +83,11 @@ void func_843095A4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, 
     sp3C.y = arg1->unk_448.unk_0C.y;
     arg1->unk_448.unk_0C.x = 0.0f;
 
-    func_8430C19C(&sp3C, arg1->unk_448.unk_0C.z, arg5);
+    Vector_SetXZFromPolar(&sp3C, arg1->unk_448.unk_0C.z, arg5);
     Vec3f_Add(&arg1->unk_4EC.unk_024, &sp3C);
 }
 
-void func_843096EC(unk_D_84390010* arg0) {
+void Entity_ResetSubObjectFlags(unk_D_84390010* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -97,7 +97,7 @@ void func_843096EC(unk_D_84390010* arg0) {
     }
 }
 
-void func_84309780(unk_D_84390010* arg0) {
+void Entity_InitSubObjects(unk_D_84390010* arg0) {
     s32 i;
     s16 sp64[] = { 0x0, 0xE38, 0xF1C8 }; // D_84384608
 
@@ -106,13 +106,13 @@ void func_84309780(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_16A = sp64[i];
         arg0->unk_168[i].unk_000.unk_01D = 0;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        func_8430C204(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
     }
 }
 
-void func_84309874(unk_D_84390010* arg0) {
+void Entity_AnimateSubObjects(unk_D_84390010* arg0) {
     s32 i;
     f32 tmp;
     Vec3f sp5C = { 0.0f, 0.0f, 0.0f };         // D_84384610
@@ -125,7 +125,7 @@ void func_84309874(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_16A += arg0->unk_168[i].unk_16C;
 
         tmp = SINS(arg0->unk_168[i].unk_16A) * (func_84308598(arg0) * sp4C[i]);
-        func_8430C19C(&sp5C, tmp, arg0->unk_000.unk_01E.y);
+        Vector_SetXZFromPolar(&sp5C, tmp, arg0->unk_000.unk_01E.y);
 
         arg0->unk_168[i].unk_000.unk_024.x = arg0->unk_000.unk_024.x + sp5C.x;
         arg0->unk_168[i].unk_000.unk_024.y = arg0->unk_000.unk_024.y + sp5C.y;
@@ -136,7 +136,7 @@ void func_84309874(unk_D_84390010* arg0) {
     }
 }
 
-void func_84309A24(unk_D_84390010* arg0) {
+void Entity_ActivateSubObjects(unk_D_84390010* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -144,18 +144,18 @@ void func_84309A24(unk_D_84390010* arg0) {
         arg0->unk_168[i].unk_000.unk_01D = 0x3C;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
         Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        func_8430C204(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
     }
 }
 
-s32 func_84309B0C(unk_D_84390010* arg0) {
+s32 Entity_ScaleSubObjects(unk_D_84390010* arg0) {
     s32 i;
     f32 temp_fv0_2;
     f32 sp5C[] = { 0.007f, 0.005f, 0.039f }; // D_8438462C
 
     for (i = 0; i < 2; i++) {
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
 
         temp_fv0_2 = Math_ApproachF32(arg0->unk_168[i].unk_000.unk_030.x, 0.8f, sp5C[i], sp5C[i]);
         arg0->unk_168[i].unk_000.unk_030.x = temp_fv0_2;
@@ -173,7 +173,7 @@ s32 func_84309B0C(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_84309C50(unk_D_84390010* arg0) {
+void Entity_SetSubObjectCameraOffsets(unk_D_84390010* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -184,13 +184,13 @@ void func_84309C50(unk_D_84390010* arg0) {
         Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
         Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        func_8430C204(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
-        func_8430C1E4(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        Vector_Copy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
     }
 }
 
-void func_84309D78(unk_D_84390010* arg0, s16 arg1) {
+void Entity_UpdateCameraFromSubObject(unk_D_84390010* arg0, s16 arg1) {
     s32 i;
     f32 sp90;
     s16 sp8E;
@@ -204,7 +204,7 @@ void func_84309D78(unk_D_84390010* arg0, s16 arg1) {
         GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
         Matrix_Decompose(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
         Camera_SetViewParameters(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
-        func_8430C4F8(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
+        Math_StepTowards(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
     }
 }
 
@@ -212,24 +212,24 @@ void func_84309F0C(unk_D_84390010* arg0) {
     func_84308654(arg0, 0, 0);
 }
 
-void func_84309F30(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void Entity_LaunchProjectile(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4EC.unk_000.unk_01 |= 1;
     if (arg1 == D_84390010[0]) {
         Vec3f_Set(&arg1->unk_4EC.unk_024, 35.0f, 50.0f, -250.0f);
     } else {
         Vec3f_Set(&arg1->unk_4EC.unk_024, -35.0f, 50.0f, -250.0f);
     }
-    func_843093F0(arg1, 20.0f, 0x1FFE);
+    Entity_SetLaunchVelocity(arg1, 20.0f, 0x1FFE);
     arg1->unk_4B8++;
     arg1->unk_4EC.unk_000.unk_02 &= ~0x20;
     Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
-void func_84309FD4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    if (arg1 == D_84390018) {
-        func_843095A4(arg0, arg1, 0, 0, 0x1FFE, 0x4440);
+void Entity_HandleProjectileLanding(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+    if (arg1 == gPrimaryPokemonEntity) {
+        Entity_UpdateMovementFast(arg0, arg1, 0, 0, 0x1FFE, 0x4440);
     } else {
-        func_843095A4(arg0, arg1, 0, 0, 0x1FFE, 0x3BB8);
+        Entity_UpdateMovementFast(arg0, arg1, 0, 0, 0x1FFE, 0x3BB8);
     }
 
     arg1->unk_4EC.unk_01E.x += 0x1555;
@@ -243,13 +243,13 @@ void func_84309FD4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A090(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void Entity_StateMachine_Dispatch(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_84309F30(arg0, arg1);
+            Entity_LaunchProjectile(arg0, arg1);
 
         case 1:
-            func_84309FD4(arg0, arg1);
+            Entity_HandleProjectileLanding(arg0, arg1);
             break;
     }
 }
@@ -257,7 +257,7 @@ void func_8430A090(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 void func_8430A0E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     Vec3f_Set(&arg1->unk_4EC.unk_024, arg1->unk_4B0 * -150.0f, 100.0f, 0.0f);
     arg1->unk_4B8++;
-    func_843093F0(arg1, 0.0f, 0x3FFC);
+    Entity_SetLaunchVelocity(arg1, 0.0f, 0x3FFC);
     arg1->unk_4EC.unk_000.unk_01 |= 1;
     arg1->unk_4EC.unk_000.unk_02 &= ~0x20;
     Anim_SetChannelBase(&arg1->unk_4EC, 0);
@@ -267,12 +267,12 @@ void func_8430A17C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4EC.unk_01E.x += 0x1555;
     arg1->unk_4EC.unk_01E.z += 0xE38;
 
-    func_843095A4(arg0, arg1, 0.0f, 0.0f, 0x4000, 0);
+    Entity_UpdateMovementFast(arg0, arg1, 0.0f, 0.0f, 0x4000, 0);
 
     if (arg1->unk_4EC.unk_024.y < 0) {
         arg1->unk_4EC.unk_01E.x = 0;
         arg1->unk_4EC.unk_01E.z = 0;
-        if (arg1 == D_84390018) {
+        if (arg1 == gPrimaryPokemonEntity) {
             arg1->unk_4EC.unk_01E.y = 0x4000;
         } else {
             arg1->unk_4EC.unk_01E.y = -0x4000;
@@ -297,18 +297,18 @@ void func_8430A22C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 void func_8430A280(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
-    func_843093F0(arg1, D_84384600[0], 0x4000);
-    func_84309C50(arg1);
+    Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
+    Entity_SetSubObjectCameraOffsets(arg1);
     arg1->unk_4B8++;
 }
 
 void func_8430A308(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    func_84309448(arg0, arg1, 1.45f, 0.015f, 0x4000);
-    func_84309D78(arg1, 0);
+    Entity_UpdateMovement(arg0, arg1, 1.45f, 0.015f, 0x4000);
+    Entity_UpdateCameraFromSubObject(arg1, 0);
     if (arg0->unk_000.unk_024.y >= 200.0f) {
         arg1->unk_448.unk_0C.y = 0.0f;
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -326,13 +326,13 @@ void func_8430A390(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 void func_8430A3E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
-    func_843093F0(arg1, D_84384600[0], 0x4000);
+    Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
     arg1->unk_4B8++;
 }
 
 void func_8430A464(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    func_84309448(arg0, arg1, 2.0f, 0.002f, 0x4000);
-    if ((arg0->unk_000.unk_024.y - func_84307BAC(arg1)) >= 90.0f) {
+    Entity_UpdateMovement(arg0, arg1, 2.0f, 0.002f, 0x4000);
+    if ((arg0->unk_000.unk_024.y - GetModelBaseY(arg1)) >= 90.0f) {
         arg1->unk_4B8++;
         arg1->unk_448.unk_0C.y = 0.0f;
     }
@@ -371,7 +371,7 @@ s32 func_8430A558(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
 }
 
 void func_8430A5D4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    func_84309C50(arg1);
+    Entity_SetSubObjectCameraOffsets(arg1);
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
@@ -385,7 +385,7 @@ void func_8430A618(unk_D_84390010* arg0, unk_D_84390010* arg1) {
         arg1->unk_4C0 += 1;
     }
 
-    func_84309D78(arg1, arg1->unk_4A6);
+    Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
 
     if (arg1->unk_4C0 == 3) {
         arg1->unk_4B8 += 1;
@@ -408,12 +408,12 @@ void func_8430A6AC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
         sp26 = 0xE38;
     }
     sp20 = func_8430A558(arg0, sp26, arg1->unk_4B0 << 0xE);
-    func_84309D78(arg1, sp26);
+    Entity_UpdateCameraFromSubObject(arg1, sp26);
 
     if (sp20 != 0) {
         arg0->unk_000.unk_01E.y = arg1->unk_4B0 << 0xE;
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -447,7 +447,7 @@ void func_8430A848(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 
     if (arg1->unk_4C0 >= 3) {
-        func_84309C50(arg1);
+        Entity_SetSubObjectCameraOffsets(arg1);
         arg1->unk_4B8 += 1;
     }
 }
@@ -471,13 +471,13 @@ void func_8430A8DC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
         sp2C = 0.045f;
     }
 
-    func_84309D78(arg1, arg1->unk_4A6);
+    Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
     func_8430C718(&arg0->unk_000.unk_024.y, -(func_84308548(arg1) * sp30), sp2C);
 
     if (arg0->unk_000.unk_024.y <= -(func_84308548(arg1) * sp34)) {
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -501,9 +501,9 @@ void func_8430AA84(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
     arg1->unk_4A0 = 0.0f;
-    func_84307C5C(arg1);
+    UpdateEntityBasePosition(arg1);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
-    func_84309C50(arg1);
+    Entity_SetSubObjectCameraOffsets(arg1);
     arg1->unk_4B8++;
 }
 
@@ -514,10 +514,10 @@ void func_8430AB00(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_8430C718(&arg1->unk_4A0, 50.0f, 0.1f);
     arg1->unk_4A6 += 0xE38;
     tmp = SINS(arg1->unk_4A6) * arg1->unk_4A0;
-    func_8430C19C(&sp20, tmp, arg0->unk_000.unk_01E.y);
-    func_84307C5C(arg1);
+    Vector_SetXZFromPolar(&sp20, tmp, arg0->unk_000.unk_01E.y);
+    UpdateEntityBasePosition(arg1);
     Vec3f_Add(&arg0->unk_000.unk_024, &sp20);
-    func_84309D78(arg1, 0);
+    Entity_UpdateCameraFromSubObject(arg1, 0);
 
     if (arg1->unk_4A0 > 49.0f) {
         arg1->unk_4B8++;
@@ -532,17 +532,17 @@ void func_8430ABF0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4A6 += 0xE38;
 
     tmp = SINS(arg1->unk_4A6) * arg1->unk_4A0;
-    func_8430C19C(&sp20, tmp, arg0->unk_000.unk_01E.y);
+    Vector_SetXZFromPolar(&sp20, tmp, arg0->unk_000.unk_01E.y);
 
-    func_84307C5C(arg1);
+    UpdateEntityBasePosition(arg1);
     Vec3f_Add(&arg0->unk_000.unk_024, &sp20);
-    func_84309D78(arg1, 0);
+    Entity_UpdateCameraFromSubObject(arg1, 0);
 
     if (arg1->unk_4A0 <= 0.5f) {
-        func_84307C5C(arg1);
+        UpdateEntityBasePosition(arg1);
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -562,19 +562,19 @@ void func_8430AD10(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430AD7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    func_84309780(arg1);
+    Entity_InitSubObjects(arg1);
     arg1->unk_4AC = 0;
-    func_84307C5C(arg1);
+    UpdateEntityBasePosition(arg1);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
     arg1->unk_4B8++;
 }
 
 void func_8430ADE8(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    func_84309874(arg1);
+    Entity_AnimateSubObjects(arg1);
     arg1->unk_4AC++;
     if (arg1->unk_4AC == 0x3C) {
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -593,7 +593,7 @@ void func_8430AE90(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     unk_D_86002F34_00C* sp18 = D_84390240.unk_00->unk_DC;
 
-    func_84307C5C(arg0);
+    UpdateEntityBasePosition(arg0);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
     Vec3f_Set(&sp18->unk_60.up, 0.0f, 1.0f, 0.0f);
     func_84309F0C(arg0);
@@ -605,7 +605,7 @@ void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
     arg1->unk_4A0 = 0.0f;
-    func_84307C5C(arg1);
+    UpdateEntityBasePosition(arg1);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
     arg1->unk_4B8++;
 }
@@ -621,8 +621,8 @@ void func_8430AF80(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     f32 temp_fv0_2;
     f32 temp_fv1_2;
 
-    func_8430C4F8(&arg1->unk_4A4, 0x5B0, 0x3C);
-    func_8430C4F8(&arg1->unk_4A8, -0x8000, arg1->unk_4A4);
+    Math_StepTowards(&arg1->unk_4A4, 0x5B0, 0x3C);
+    Math_StepTowards(&arg1->unk_4A8, -0x8000, arg1->unk_4A4);
 
     sp2C = temp_s0->unk_60.at.x - temp_s0->unk_60.eye.x;
     sp28 = temp_s0->unk_60.at.y - temp_s0->unk_60.eye.y;
@@ -660,7 +660,7 @@ void func_8430B158(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     if (arg0->unk_000.unk_030.y != 1.0f) {
         func_84309F0C(arg1);
     } else {
-        func_84309A24(arg1);
+        Entity_ActivateSubObjects(arg1);
         arg1->unk_4B8++;
     }
 }
@@ -673,11 +673,11 @@ void func_8430B1B8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg0->unk_000.unk_030.y = temp_fv0;
     arg0->unk_000.unk_030.z = temp_fv0;
 
-    func_84309B0C(arg1);
+    Entity_ScaleSubObjects(arg1);
 
     if (arg0->unk_000.unk_030.y <= 0.8) {
         func_84309F0C(arg1);
-        func_843096EC(arg1);
+        Entity_ResetSubObjectFlags(arg1);
     }
 }
 
@@ -901,11 +901,11 @@ void func_8430BB24(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
     arg1->unk_4C0++;
     sp20 = func_8435E158(arg0->unk_000.unk_024.x, arg0->unk_000.unk_024.z, &sp24);
-    arg0->unk_000.unk_024.y = func_84307BAC(arg1) + sp20;
+    arg0->unk_000.unk_024.y = GetModelBaseY(arg1) + sp20;
     arg0->unk_000.unk_01E.x = (s16)sp24 * 0xB6;
 
     if (arg1->unk_4C0 == 0x12C) {
-        arg0->unk_000.unk_024.y = func_84307BAC(arg1);
+        arg0->unk_000.unk_024.y = GetModelBaseY(arg1);
         arg0->unk_000.unk_01E.x = 0;
         func_84309F0C(arg1);
     }
@@ -935,7 +935,7 @@ void func_8430BC44(s32 arg0) {
             break;
 
         case 1:
-            func_8430A090(temp_a1, temp_a2);
+            Entity_StateMachine_Dispatch(temp_a1, temp_a2);
             break;
 
         case 2:
@@ -1031,7 +1031,7 @@ void func_8430BE08(unk_D_84390010* arg0, unk_D_84390010* arg1, UNUSED f32 arg2, 
     sp2C.y = arg1->unk_4D8.y;
     arg1->unk_4D8.x = 0.0f;
 
-    func_8430C19C(&sp2C, arg1->unk_4D8.z, arg0->unk_000.unk_01E.y + 0x4000);
+    Vector_SetXZFromPolar(&sp2C, arg1->unk_4D8.z, arg0->unk_000.unk_01E.y + 0x4000);
     Vec3f_Add(&arg0->unk_000.unk_024, &sp2C);
 }
 
@@ -1044,9 +1044,9 @@ void func_8430BEC0(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
 void func_8430BF3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_8430BE08(arg0, arg1, 0, 0, 0x2E36);
-    if (arg1->unk_000.unk_024.y < func_84307BAC(arg1)) {
+    if (arg1->unk_000.unk_024.y < GetModelBaseY(arg1)) {
         arg1->unk_4D8.y = 0.0f;
-        arg1->unk_000.unk_024.y = func_84307BAC(arg1);
+        arg1->unk_000.unk_024.y = GetModelBaseY(arg1);
         func_8430BDB0(arg1);
     }
 }
@@ -1622,7 +1622,7 @@ unk_D_84385384 D_84385384[] = {
         {
             func_84303ECC,
             func_84305728,
-            func_84301EEC,
+            Anim_ResetPlayer,
             func_84304114,
             func_843056DC,
             func_843056DC,
@@ -1785,7 +1785,7 @@ unk_D_84385384 D_84385384[] = {
     {
         12,
         {
-            func_84301EEC,
+            Anim_ResetPlayer,
             func_84304B50,
             func_843056DC,
             func_843056DC,
@@ -1847,7 +1847,7 @@ unk_D_84385384 D_84385384[] = {
         {
             func_84303ECC,
             func_84305728,
-            func_84301EEC,
+            Anim_ResetPlayer,
             func_84304210,
             func_843056DC,
             func_843056DC,
@@ -1877,7 +1877,7 @@ unk_D_84385384 D_84385384[] = {
         {
             func_84303ECC,
             func_84305728,
-            func_84301EEC,
+            Anim_ResetPlayer,
             func_843043FC,
             func_843056DC,
             func_843056DC,

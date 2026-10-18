@@ -16,14 +16,14 @@ s32 func_84307AE0(u8 arg0, u8* arg1, s32 arg2) {
     return 0;
 }
 
-PokemonData* func_84307B28(unk_D_84390010* arg0) {
+PokemonData* GetCurrentPokemonData(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_08];
 
     return ptr;
 }
 
 s32 func_84307B60(unk_D_84390010* arg0) {
-    PokemonData* temp_v0 = func_84307B28(arg0);
+    PokemonData* temp_v0 = GetCurrentPokemonData(arg0);
 
     if ((arg0->unk_000.unk_01A == 0x19) && (temp_v0->unk_52 & 0x80)) {
         return 1;
@@ -31,44 +31,44 @@ s32 func_84307B60(unk_D_84390010* arg0) {
     return 0;
 }
 
-f32 func_84307BAC(unk_D_84390010* arg0) {
-    return D_84390028[func_84307F00(arg0)].unk_08;
+f32 GetModelBaseY(unk_D_84390010* arg0) {
+    return gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
 }
 
-f32 func_84307BD8(unk_D_84390010* arg0) {
-    return D_84390028[func_84307F00(arg0)].unk_00;
+f32 GetModelWidth(unk_D_84390010* arg0) {
+    return gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_00;
 }
 
-f32 func_84307C04(unk_D_84390010* arg0) {
-    return D_84390028[func_84307F00(arg0)].unk_04;
+f32 GetModelHeight(unk_D_84390010* arg0) {
+    return gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_04;
 }
 
-f32 func_84307C30(unk_D_84390010* arg0) {
-    return D_84390028[func_84307F00(arg0)].unk_0C;
+f32 GetModelDepth(unk_D_84390010* arg0) {
+    return gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_0C;
 }
 
-void func_84307C5C(unk_D_84390010* arg0) {
-    if (func_84307F00(arg0) == 0) {
+void UpdateEntityBasePosition(unk_D_84390010* arg0) {
+    if (IsPrimaryEntity(arg0) == 0) {
         if (arg0->unk_000.unk_01A == 0x82) {
-            Vec3f_Set(&arg0->unk_000.unk_024, -225.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(&arg0->unk_000.unk_024, -225.0f, GetModelBaseY(arg0), 0.0f);
         } else if ((arg0->unk_000.unk_01A == 3) || (arg0->unk_000.unk_01A == 0x83)) {
-            Vec3f_Set(&arg0->unk_000.unk_024, -175.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(&arg0->unk_000.unk_024, -175.0f, GetModelBaseY(arg0), 0.0f);
         } else if (arg0->unk_000.unk_01A == 0x5F) {
-            Vec3f_Set(&arg0->unk_000.unk_024, -225.0f, func_84307BAC(arg0), 7.5000005f);
+            Vec3f_Set(&arg0->unk_000.unk_024, -225.0f, GetModelBaseY(arg0), 7.5000005f);
         } else {
-            Vec3f_Set(&arg0->unk_000.unk_024, -150.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(&arg0->unk_000.unk_024, -150.0f, GetModelBaseY(arg0), 0.0f);
         }
     } else if ((arg0->unk_000.unk_01A == 0x82) || (arg0->unk_000.unk_01A == 0x5F)) {
-        Vec3f_Set(&arg0->unk_000.unk_024, 225.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(&arg0->unk_000.unk_024, 225.0f, GetModelBaseY(arg0), 0.0f);
     } else if ((arg0->unk_000.unk_01A == 3) || (arg0->unk_000.unk_01A == 0x83)) {
-        Vec3f_Set(&arg0->unk_000.unk_024, 175.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(&arg0->unk_000.unk_024, 175.0f, GetModelBaseY(arg0), 0.0f);
     } else {
-        Vec3f_Set(&arg0->unk_000.unk_024, 150.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(&arg0->unk_000.unk_024, 150.0f, GetModelBaseY(arg0), 0.0f);
     }
 }
 
-f32 func_84307DE0(unk_D_84390010* arg0) {
-    if (func_84307F00(arg0) == 0) {
+f32 GetEntityXOffset(unk_D_84390010* arg0) {
+    if (IsPrimaryEntity(arg0) == 0) {
         if ((arg0->unk_000.unk_01A == 0x82) || (arg0->unk_000.unk_01A == 0x5F)) {
             return -200.0f;
         }
@@ -106,8 +106,8 @@ s32 func_84307EE0(unk_D_84390010* arg0) {
     return arg0->unk_720->unk_08[idx]->unk_002;
 }
 
-s32 func_84307F00(unk_D_84390010* arg0) {
-    if (arg0 == D_84390018) {
+s32 IsPrimaryEntity(unk_D_84390010* arg0) {
+    if (arg0 == gPrimaryPokemonEntity) {
         return 0;
     }
     return 1;
@@ -117,7 +117,7 @@ u8 func_84307F24(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
     s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[sp18];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_02;
 }
@@ -126,29 +126,29 @@ u8 func_84307F68(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
     s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_000[sp18];
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_03;
 }
 
 s16 func_84307FAC(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_A80;
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
 
     return ptr->unk_02;
 }
 
 s32 func_84307FE0(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_A80;
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
 
     return ptr->unk_03;
 }
 
 f32 func_84308014(unk_D_84390010* arg0) {
-    return ((func_84307C04(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.y;
+    return ((GetModelHeight(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.y;
 }
 
 f32 func_84308058(unk_D_84390010* arg0) {
-    return (func_84307C04(arg0) * 2) / 50.0f;
+    return (GetModelHeight(arg0) * 2) / 50.0f;
 }
 
 s16 func_8430808C(unk_D_84390010* arg0) {
@@ -156,9 +156,9 @@ s16 func_8430808C(unk_D_84390010* arg0) {
 }
 
 void func_84308094(unk_D_84390010* arg0, Vec3f* arg1) {
-    arg1->x = ((func_84307BD8(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.x;
-    arg1->y = ((func_84307C04(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.y;
-    arg1->z = ((func_84307BD8(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.x;
+    arg1->x = ((GetModelWidth(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.x;
+    arg1->y = ((GetModelHeight(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.y;
+    arg1->z = ((GetModelWidth(arg0) * 2) / 50.0f) * arg0->unk_000.unk_030.x;
 }
 
 void func_84308148(unk_D_84390010* arg0, Vec3s* arg1) {
@@ -209,7 +209,7 @@ void func_843081F0(unk_D_84390010* arg0, Vec3f* arg1) {
         var_fs0 = func_84308548(arg0) * 1.5f;
     }
 
-    if (func_84307BAC(arg0) != 0.0f) {
+    if (GetModelBaseY(arg0) != 0.0f) {
         arg1->x = arg0->unk_000.unk_024.x;
         arg1->y = arg0->unk_000.unk_024.y + var_fs0;
         arg1->z = arg0->unk_000.unk_024.z;
@@ -225,22 +225,22 @@ void func_843081F0(unk_D_84390010* arg0, Vec3f* arg1) {
 }
 
 void func_843083A0(unk_D_84390010* arg0, Vec3f* arg1) {
-    if (func_84307F00(arg0) == 0) {
+    if (IsPrimaryEntity(arg0) == 0) {
         if (arg0->unk_000.unk_01A == 0x82) {
-            Vec3f_Set(arg1, -225.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(arg1, -225.0f, GetModelBaseY(arg0), 0.0f);
         } else if ((arg0->unk_000.unk_01A == 3) || (arg0->unk_000.unk_01A == 0x83)) {
-            Vec3f_Set(arg1, -175.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(arg1, -175.0f, GetModelBaseY(arg0), 0.0f);
         } else if (arg0->unk_000.unk_01A == 0x5F) {
-            Vec3f_Set(arg1, -225.0f, func_84307BAC(arg0), 7.5000005f);
+            Vec3f_Set(arg1, -225.0f, GetModelBaseY(arg0), 7.5000005f);
         } else {
-            Vec3f_Set(arg1, -150.0f, func_84307BAC(arg0), 0.0f);
+            Vec3f_Set(arg1, -150.0f, GetModelBaseY(arg0), 0.0f);
         }
     } else if ((arg0->unk_000.unk_01A == 0x82) || (arg0->unk_000.unk_01A == 0x5F)) {
-        Vec3f_Set(arg1, 225.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(arg1, 225.0f, GetModelBaseY(arg0), 0.0f);
     } else if ((arg0->unk_000.unk_01A == 3) || (arg0->unk_000.unk_01A == 0x83)) {
-        Vec3f_Set(arg1, 175.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(arg1, 175.0f, GetModelBaseY(arg0), 0.0f);
     } else {
-        Vec3f_Set(arg1, 150.0f, func_84307BAC(arg0), 0.0f);
+        Vec3f_Set(arg1, 150.0f, GetModelBaseY(arg0), 0.0f);
     }
 }
 
@@ -252,13 +252,13 @@ void func_84308520(unk_D_84390010* arg0, Vec3f* arg1) {
 
 f32 func_84308548(unk_D_84390010* arg0) {
     if (arg0->unk_4B4 == 0x10) {
-        return func_84307C04(arg0);
+        return GetModelHeight(arg0);
     }
-    return func_84307C04(arg0) * arg0->unk_000.unk_030.y;
+    return GetModelHeight(arg0) * arg0->unk_000.unk_030.y;
 }
 
 f32 func_84308598(unk_D_84390010* arg0) {
-    return func_84307BD8(arg0) * arg0->unk_000.unk_030.y;
+    return GetModelWidth(arg0) * arg0->unk_000.unk_030.y;
 }
 
 unk_D_86002F58_004_000_004* func_843085C4(unk_D_84390010* arg0, s32 arg1) {
@@ -269,8 +269,8 @@ s32 func_843085E0(unk_D_84390010* arg0, UNUSED s32 arg1) {
     return arg0->unk_720->unk_02;
 }
 
-char* func_843085F0(unk_D_84390010* arg0) {
-    return GetMessageString(NULL, 0, D_843900B8, arg0->unk_654.unk_38.unk_5A - 1);
+char* GetPokemonMessageString(unk_D_84390010* arg0) {
+    return GetMessageString(NULL, 0, gPokemonMessageBank, arg0->unk_654.unk_38.unk_5A - 1);
 }
 
 u8* func_8430862C(unk_D_84390010* arg0) {
@@ -289,23 +289,23 @@ void func_84308660(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     unk_D_8438E7B0_A50* sp28;
     unk_D_84390010_654* sp20 = &arg0->unk_654;
 
-    idx = func_84307F00(arg0);
-    sp30 = &D_84384570[idx]->unk_A50;
-    idx = func_84307F00(arg0);
-    sp2C = &D_84384570[idx]->unk_B00;
-    idx = func_84307F00(arg0);
-    sp28 = &D_84384570[idx]->unk_AF0;
+    idx = IsPrimaryEntity(arg0);
+    sp30 = &gAnimDataByPlayer[idx]->unk_A50;
+    idx = IsPrimaryEntity(arg0);
+    sp2C = &gAnimDataByPlayer[idx]->unk_B00;
+    idx = IsPrimaryEntity(arg0);
+    sp28 = &gAnimDataByPlayer[idx]->unk_AF0;
 
     if (!(sp20->unk_34 & 0x4002)) {
         if ((func_84301FF0(arg0) == 0) && (arg1->unk_000.unk_040.unk_00 != -1) &&
             (Anim_HasReachedEnd(&arg1->unk_000) == 1)) {
             if (sp20->unk_34 & 0x200) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp2C->unk_00);
-            } else if ((sp20->unk_34 & 1) && (func_84307AE0(arg1->unk_000.unk_01A, D_84384590, 8) != 0)) {
+            } else if ((sp20->unk_34 & 1) && (func_84307AE0(arg1->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp28->unk_00);
             } else {
                 if (arg1->unk_000.unk_01A == 0x84) {
-                    idx = func_8430C414(5);
+                    idx = Math_RandomU16Scaled(5);
                     GraphNode_TriggerAction(&arg1->unk_000, idx + 0xE);
                 } else {
                     GraphNode_TriggerAction(&arg1->unk_000, sp30->unk_00);
@@ -329,22 +329,22 @@ void func_843087F8(unk_D_84390010* arg0) {
     unk_D_8438E7B0_A50* sp2C;
 
     sp24 = &arg0->unk_654;
-    idx = func_84307F00(arg0);
-    sp34 = &D_84384570[idx]->unk_A50;
-    idx = func_84307F00(arg0);
-    sp30 = &D_84384570[idx]->unk_B00;
-    idx = func_84307F00(arg0);
-    sp2C = &D_84384570[idx]->unk_AF0;
+    idx = IsPrimaryEntity(arg0);
+    sp34 = &gAnimDataByPlayer[idx]->unk_A50;
+    idx = IsPrimaryEntity(arg0);
+    sp30 = &gAnimDataByPlayer[idx]->unk_B00;
+    idx = IsPrimaryEntity(arg0);
+    sp2C = &gAnimDataByPlayer[idx]->unk_AF0;
 
     if (!(sp24->unk_34 & 0x4002) && (func_84301FF0(arg0) == 0) && (arg0->unk_000.unk_040.unk_00 != -1)) {
         Anim_SetChannelBase(&arg0->unk_000, 0);
         if (sp24->unk_34 & 0x200) {
             GraphNode_TriggerAction(&arg0->unk_000, sp30->unk_00);
-        } else if ((sp24->unk_34 & 1) && (func_84307AE0(arg0->unk_000.unk_01A, D_84384590, 8) != 0)) {
+        } else if ((sp24->unk_34 & 1) && (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
             GraphNode_TriggerAction(&arg0->unk_000, sp2C->unk_00);
         } else {
             if (arg0->unk_000.unk_01A == 0x84) {
-                GraphNode_TriggerAction(&arg0->unk_000, func_8430C414(5) + 0xE);
+                GraphNode_TriggerAction(&arg0->unk_000, Math_RandomU16Scaled(5) + 0xE);
             } else {
                 GraphNode_TriggerAction(&arg0->unk_000, sp34->unk_00);
             }
@@ -357,7 +357,7 @@ void func_843087F8(unk_D_84390010* arg0) {
 }
 
 void func_8430897C(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* sp1C = &D_84384570[func_84307F00(arg0)]->unk_A80;
+    unk_D_8438E7B0_A50* sp1C = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
 
     if (arg0->unk_000.unk_040.unk_00 != -1) {
         Anim_SetChannelBase(&arg0->unk_000, 0);
@@ -457,7 +457,7 @@ void func_84308DB8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg
     UNUSED s32 pad;
     unk_D_86002F58_004_000_004* sp20 = func_843085C4(arg0, 0);
 
-    func_84307F00(arg0);
+    IsPrimaryEntity(arg0);
     GraphNode_ClearCallback(&arg1->unk_000);
 
     if (arg0 == D_84390010[0]) {
@@ -479,10 +479,10 @@ void func_84308DB8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg
 
     if (!(arg0->unk_654.unk_34 & 0x200)) {
         if (arg0 == D_84390010[0]) {
-            func_84307C5C(arg0);
+            UpdateEntityBasePosition(arg0);
             arg1->unk_000.unk_01E.y = 0x4000;
         } else {
-            func_84307C5C(arg0);
+            UpdateEntityBasePosition(arg0);
             arg1->unk_000.unk_01E.y = -0x4000;
         }
     }

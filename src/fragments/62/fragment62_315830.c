@@ -9,12 +9,12 @@ void func_8432AF70(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp2C;
     unk_D_800FCB18* sp28;
     unk_D_8438E7B0_A50* sp20;
-    s32 idx = func_84307F00(arg0);
+    s32 idx = IsPrimaryEntity(arg0);
 
     sp28 = &arg0->unk_654.unk_38;
     sp2C = &arg0->unk_654;
     ptr = &arg0->unk_724->unk_01C[sp2C->unk_08];
-    sp20 = &D_84384570[idx]->unk_A80;
+    sp20 = &gAnimDataByPlayer[idx]->unk_A80;
 
     if ((ptr->unk_05 & 0x20) && (sp2C->unk_34 & 2)) {
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
@@ -34,7 +34,7 @@ void func_8432AF70(unk_D_84390010* arg0) {
 }
 
 void func_8432B0A4(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &D_84384570[func_84307F00(arg0)]->unk_A50;
+    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     GraphNode_TriggerAction(&arg0->unk_000, ptr->unk_00);
 }
@@ -83,7 +83,7 @@ void func_8432B228(unk_D_84390010* arg0) {
         }
 
         if (!(sp2C->unk_05 & 7) && (sp24->unk_34 & 1)) {
-            if (D_84384570[func_84307F00(arg0)]->unk_B81 == 0xFF) {
+            if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
                 sp24->unk_36 = 0;
                 func_843058C4(arg0, 0xA5);
             } else {
@@ -100,7 +100,7 @@ void func_8432B38C(unk_D_84390010* arg0) {
 
     if (arg0->unk_654.unk_34 & 1) {
         ptr->unk_05 = 0;
-        if (D_84384570[func_84307F00(arg0)]->unk_B81 == 0xFF) {
+        if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
             arg0->unk_654.unk_36 = 0;
             func_843058C4(arg0, 0xA5);
         } else {

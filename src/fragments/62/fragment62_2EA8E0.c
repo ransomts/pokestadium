@@ -44,16 +44,16 @@ static u8 D_84384350[] = {
 };
 static u32 D_84384364[] = {
     0x0C00FFFF,  0x05000000,  0x07000000,    &D_8438E440,   0x05000000, 0x0D000000,    0x05000000,  0x07000000,
-    &D_8438E530, 0x14000000,  0x002D0019,    0xFFFFFF28,    0x08000000, func_84300058, 0x00000000,  0x14000000,
-    0x002D0019,  0x80808028,  0x08000000,    func_843000C0, 0x00000000, 0x16646464,    0x0F000002,  0x05000000,
-    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  func_8430012C,
+    &D_8438E530, 0x14000000,  0x002D0019,    0xFFFFFF28,    0x08000000, CameraNode_GetPanTiltPositive, 0x00000000,  0x14000000,
+    0x002D0019,  0x80808028,  0x08000000,    CameraNode_GetPanTiltNegative, 0x00000000, 0x16646464,    0x0F000002,  0x05000000,
+    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
     0x00000000,  0x05000000,  0x07000000,    &D_8438E550,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
-    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  func_8430012C,
+    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
     0x00000000,  0x05000000,  0x07000000,    &D_8438E568,   0x06000000, 0x06000000,    0x0F000002,  0x05000000,
-    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  func_8430012C,
+    0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
     0x00000000,  0x05000000,  0x07000000,    &D_8438E580,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
     0x0A000000,  &gGraphRoot0, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,
-    0x09000000,  0x08000000,  func_84300020, 0x00000000,    0x06000000, 0x06000000,    0x06000000,  0x01000000,
+    0x09000000,  0x08000000,  CameraNode_UpdateCallback, 0x00000000,    0x06000000, 0x06000000,    0x06000000,  0x01000000,
 };
 static u32 D_843844C4[] = {
     0x0C00FFFF,  0x05000000, 0x07000000, &D_8438E598, 0x05000000, 0x0D000001, 0x05000000,
@@ -66,14 +66,14 @@ static u32 D_84384514[] = {
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 
-s32 func_84300020(s32 arg0, GraphNode* arg1) {
+s32 CameraNode_UpdateCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         func_8432D0D8(5, &D_8438E440);
     }
     return 0;
 }
 
-s32 func_84300058(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 CameraNode_GetPanTiltPositive(s32 arg0, unk_D_86002F34_alt18* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
@@ -87,7 +87,7 @@ s32 func_84300058(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-s32 func_843000C0(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 CameraNode_GetPanTiltNegative(s32 arg0, unk_D_86002F34_alt18* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
@@ -101,7 +101,7 @@ s32 func_843000C0(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-s32 func_8430012C(s32 arg0, Fragment2_1GraphNode* arg1) {
+s32 FragmentNode_SetScaleAndColor(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 2) {
         Vec3f_Set(&arg1->unk_030, D_8438E7A8, D_8438E7A8, D_8438E7A8);
         arg1->unk_03C.rgba = D_8438E7A4.rgba;
@@ -109,7 +109,7 @@ s32 func_8430012C(s32 arg0, Fragment2_1GraphNode* arg1) {
     return 0;
 }
 
-void func_84300184(u8 arg0, u8 arg1, u8 arg2) {
+void ColorRectNode_SetColor(u8 arg0, u8 arg1, u8 arg2) {
     D_8438E7A4.r = arg0;
     D_8438E7A4.g = arg1;
     D_8438E7A4.b = arg2;
@@ -123,11 +123,11 @@ void func_84300184(u8 arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void func_843001FC(f32 arg0) {
+void FragmentNode_SetGlobalScale(f32 arg0) {
     D_8438E7A8 = arg0;
 }
 
-u16 func_84300208(u16 arg0) {
+u16 Color_ModulateWithGlobal(u16 arg0) {
     s32 r;
     s32 g;
     s32 b;
@@ -139,7 +139,7 @@ u16 func_84300208(u16 arg0) {
     return (r << 11) | (g << 6) | (b << 1) | 1;
 }
 
-void func_84300340(void) {
+void RenderBackgroundScreen(void) {
     s16 sp4E;
     s16 sp4C;
     s16 sp4A;
@@ -158,7 +158,7 @@ void func_84300340(void) {
     }
 
     if ((u32)D_8438E780 < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, func_84300208(D_8438E780));
+        Gfx_FillScreen(&gDisplayListHead, Color_ModulateWithGlobal(D_8438E780));
         return;
     }
 
@@ -190,7 +190,7 @@ void func_84300340(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84300750(GraphNode* arg0, FramebufferImage* arg1) {
+void FramebufferNode_Init(GraphNode* arg0, FramebufferImage* arg1) {
     unk_D_86002F34_00C* sp2C = arg0->unk_0C;
     unk_D_86002F34_00C_018 sp20;
 
@@ -243,7 +243,7 @@ void func_84300938(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
     func_84300810(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
-void func_84300B34(GraphNode* arg0, FramebufferImage* arg1) {
+void RenderPokemonPortraits(GraphNode* arg0, FramebufferImage* arg1) {
     s32 temp_s2;
     s32 temp_s3;
     unk_D_86002F34_00C* temp_v1 = arg0->unk_0C;
@@ -278,7 +278,7 @@ void func_84300B34(GraphNode* arg0, FramebufferImage* arg1) {
     gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
 }
 
-void func_84300D44(void) {
+void PokemonSelection_ClearFlags(void) {
     s32 i;
     s32 j;
     s32 x;
@@ -295,7 +295,7 @@ void func_84300D44(void) {
     }
 }
 
-void func_84300DC0(void) {
+void PokemonSelection_AssignIndices(void) {
     s32 i;
     s32 j;
     s32 x;
@@ -332,18 +332,18 @@ s32 func_84300E88(s32 arg0) {
     Gfx_FinishFrame();
     AnimationFrame_StallCheck();
     func_84307394(2, D_8438E798);
-    func_84307A50(2, &D_8438E598, &D_8438E688);
+    HandleBattlePhase(2, &D_8438E598, &D_8438E688);
     sp1C = func_8432AEE4(2, &D_8438E440);
     func_8432D0D8(2, &D_8438E440);
-    func_84300750(D_8438E788, D_8438E790);
-    func_84300750(D_8438E78C, D_8438E794);
+    FramebufferNode_Init(D_8438E788, D_8438E790);
+    FramebufferNode_Init(D_8438E78C, D_8438E794);
     Stage_BeginDisplayList();
-    func_84300340();
+    RenderBackgroundScreen();
     Graph_SetTextureState(D_8438E784);
     func_84307394(5, D_8438E798);
-    func_84300B34(D_8438E788, D_8438E790);
-    func_84300B34(D_8438E78C, D_8438E794);
-    func_84300DC0();
+    RenderPokemonPortraits(D_8438E788, D_8438E790);
+    RenderPokemonPortraits(D_8438E78C, D_8438E794);
+    PokemonSelection_AssignIndices();
 
     if (sp1C == 1) {
         D_8438E798[0].unk_1C = 1;
@@ -364,11 +364,11 @@ s32 func_84300FBC(s32 arg0) {
     } else {
         AnimationFrame_StallCheck();
         Stage_BeginDisplayList();
-        func_84300340();
+        RenderBackgroundScreen();
         Graph_SetTextureState(D_8438E784);
         func_84307394(5, D_8438E798);
-        func_84300B34(D_8438E788, D_8438E790);
-        func_84300B34(D_8438E78C, D_8438E794);
+        RenderPokemonPortraits(D_8438E788, D_8438E790);
+        RenderPokemonPortraits(D_8438E78C, D_8438E794);
     }
 
     if ((arg0 == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
@@ -490,7 +490,7 @@ void func_843013E4(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
     ProcessPokemonSelection(arg0);
 }
 
-void func_84301430(Stage* arg0) {
+void BattleScreen_Init(Stage* arg0) {
     MemoryBlock* sp44;
     u32* temp_v0_4;
     FragmentEntry sp3C;
@@ -500,8 +500,8 @@ void func_84301430(Stage* arg0) {
     FramebufferImage* sp2C;
     unk_D_86002F30* sp28;
 
-    func_84300184(0xFF, 0xFF, 0xFF);
-    func_843001FC(1.0f);
+    ColorRectNode_SetColor(0xFF, 0xFF, 0xFF);
+    FragmentNode_SetGlobalScale(1.0f);
 
     if (gBattleContext.unk_0000 == 0x11) {
         Text_Init(4, 0);
@@ -550,7 +550,7 @@ void func_84301430(Stage* arg0) {
     func_843013E4(&D_8438E798[0], sp28);
     func_843013E4(&D_8438E798[1], sp28);
 
-    func_84300D44();
+    PokemonSelection_ClearFlags();
     CameraNode_Create(NULL, &D_8438E440, 0, 0, 0x140, 0xF0);
     CameraNode_Create(NULL, &D_8438E598, 0x1E, 0x50, 0x4C, 0x4C);
     CameraNode_Create(NULL, &D_8438E688, 0xE2, 0x50, 0x4C, 0x4C);
@@ -561,7 +561,7 @@ void func_84301430(Stage* arg0) {
     Perspective_SetParams(&D_8438E440, 30.0f, 192.0f, 24576.0f);
     Graph_InitRoots();
     func_84307394(0, D_8438E798);
-    func_84307A50(0, &D_8438E598, &D_8438E688);
+    HandleBattlePhase(0, &D_8438E598, &D_8438E688);
     func_8432AEE4(0, &D_8438E440);
     func_8432D0D8(0, &D_8438E440);
 
@@ -599,7 +599,7 @@ void func_84301430(Stage* arg0) {
     }
 
     func_84307394(3, D_8438E798);
-    func_84307A50(3, &D_8438E598, &D_8438E688);
+    HandleBattlePhase(3, &D_8438E598, &D_8438E688);
     func_8432AEE4(3, &D_8438E440);
     func_8432D0D8(3, &D_8438E440);
 
@@ -620,7 +620,7 @@ s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
 
     Gfx_InitBuffers(0x20000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    func_84301430(sp24);
+    BattleScreen_Init(sp24);
     Stage_Set(sp24);
     Stage_AdvanceN(1);
     Stage_RunFadeSequence(func_843010EC, 0x20, 0x10);

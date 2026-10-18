@@ -60,7 +60,7 @@ void func_8420DC78(unk_D_84229EB0_00024* arg0) {
     GbsSyncAllBanks();
 }
 
-void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00024* arg3) {
+void DrawPokemonSlot(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00024* arg3) {
     UNUSED s32 pad;
     s16 i;
     s16 j;
@@ -72,16 +72,16 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
     s16 var_s1;
 
     if ((arg0->unk_00001 == 8) || (arg0->unk_00001 == 9) || (arg0->unk_00001 == 0xA)) {
-        func_84200420(arg1, arg2, 0x74, 0x58, 0x64, 0x64, 0xC8, 0xFF);
+        DrawColoredBox(arg1, arg2, 0x74, 0x58, 0x64, 0x64, 0xC8, 0xFF);
 
         for (var_s1 = 0, i = 0; i < 2; i++) {
             for (j = 0; j < 3; j++, var_s1++) {
                 temp_a0 = D_84211870[var_s1] + arg1;
                 temp_a1 = D_8421187C[var_s1] + arg2;
                 if ((j == arg0->unk_00008) && (i == arg0->unk_0000A)) {
-                    func_84200420(temp_a0, temp_a1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
+                    DrawColoredBox(temp_a0, temp_a1, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
                 } else {
-                    func_84200420(temp_a0, temp_a1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
+                    DrawColoredBox(temp_a0, temp_a1, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
                 }
             }
         }
@@ -91,13 +91,13 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
         } else {
             GfxColor_SetRGB(&sp8C, 0x3C, 0x3C, 0xC8);
         }
-        func_84200420(arg1, arg2, 0x74, 0x58, sp8C.r, sp8C.g, sp8C.b, 0xFF);
+        DrawColoredBox(arg1, arg2, 0x74, 0x58, sp8C.r, sp8C.g, sp8C.b, 0xFF);
 
         for (var_s1 = 0; var_s1 < 6; var_s1++) {
             temp_a0 = D_84211870[var_s1] + arg1;
             temp_a1 = D_8421187C[var_s1] + arg2;
 
-            func_84200420(temp_a0, temp_a1, 0x84, 0x2C, sp8C.r, sp8C.g, sp8C.b, 0xFF);
+            DrawColoredBox(temp_a0, temp_a1, 0x84, 0x2C, sp8C.r, sp8C.g, sp8C.b, 0xFF);
         }
     }
 
@@ -170,7 +170,7 @@ void func_8420DD14(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_0002
     Text_SetupDL();
 }
 
-void func_8420E46C(s16 arg0, s16 arg1) {
+void DrawHeaderBar(s16 arg0, s16 arg1) {
     char* sp54 = func_84200130(gBattleContext.unk_0001 + 0x3F);
     s32 sp50 = MeasureTextWidth(8, 0, sp54);
 
@@ -192,7 +192,7 @@ void func_8420E46C(s16 arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_8420E63C(unk_D_84229EB0* arg0) {
+void DrawVerticalScrollBar(unk_D_84229EB0* arg0) {
     static s16 D_84211888 = 0;
 
     s16 sp66;
@@ -248,7 +248,7 @@ void func_8420E63C(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420EA88(unk_D_84229EB0* arg0) {
+void DrawBottomBar(unk_D_84229EB0* arg0) {
     s16 sp1E = arg0->unk_00012 + 0x24;
     s16 temp_a1 = arg0->unk_00014 + ((arg0->unk_0000D - arg0->unk_0000C) * 0x5C) + 0x20;
 
@@ -264,7 +264,7 @@ void func_8420EA88(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420EB7C(unk_D_84229EB0* arg0) {
+void DrawSideBar(unk_D_84229EB0* arg0) {
     s16 temp_s0 = arg0->unk_00012 + (arg0->unk_00008 * 0x84) + 0x98;
     s16 temp_a1 = arg0->unk_00014 + (arg0->unk_0000A * 0x2C) + 0x20;
 
@@ -287,7 +287,7 @@ void func_8420EB7C(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420ED0C(unk_D_84229EB0* arg0) {
+void RenderVisiblePokemonEntries(unk_D_84229EB0* arg0) {
     s16 i;
     s16 temp_s4;
     s16 temp_s5;
@@ -306,7 +306,7 @@ void func_8420ED0C(unk_D_84229EB0* arg0) {
 
     for (i = 0; i < 3; i++) {
         if ((var_s0 >= -0x5B) && (var_s0 < arg0->unk_00016)) {
-            func_8420DD14(arg0, temp_s5, temp_s4 + var_s0, var_s1);
+            DrawPokemonSlot(arg0, temp_s5, temp_s4 + var_s0, var_s1);
         }
         var_s0 += 0x5C;
         var_s1 = var_s1->unk_4D24;
@@ -315,7 +315,7 @@ void func_8420ED0C(unk_D_84229EB0* arg0) {
     Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
 }
 
-void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
+void UpdateAndRenderPokemonListScreen(unk_D_84229EB0* arg0, s32 arg1) {
     UNUSED s32 pad;
     s32 i;
     char* temp_v0_3;
@@ -328,9 +328,9 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
     tmp2 = arg0->unk_00014;
 
     if ((arg0->unk_00001 != 1) && (arg0->unk_00001 != 0) && ((arg1 != 0) || (arg0->unk_00004 != 0))) {
-        func_842001B8(tmp1, tmp2, 0x228, arg0->unk_00016 + 0x24);
-        func_8420E46C(tmp1 + 4, tmp2 + 4);
-        func_8420E63C(arg0);
+        DrawBorderedBox(tmp1, tmp2, 0x228, arg0->unk_00016 + 0x24);
+        DrawHeaderBar(tmp1 + 4, tmp2 + 4);
+        DrawVerticalScrollBar(arg0);
 
         if (arg0->unk_00001 == 0xC) {
             sp42 = tmp2 - ((arg0->unk_00018 * 0x5C) / 4);
@@ -338,26 +338,26 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
             if (arg0->unk_0001A > 0) {
                 var_s0 = arg0->unk_00024->unk_4D28;
                 for (i = 0; i < 4; i++) {
-                    func_8420DD14(arg0, tmp1 + 0x24, sp42 + 0x20 + i * 0x5C, var_s0);
+                    DrawPokemonSlot(arg0, tmp1 + 0x24, sp42 + 0x20 + i * 0x5C, var_s0);
                     var_s0 = var_s0->unk_4D24;
                 }
             } else {
                 var_s0 = arg0->unk_00024;
                 for (i = 0; i < 4; i++) {
-                    func_8420DD14(arg0, tmp1 + 0x24, sp42 - 0x3C + i * 0x5C, var_s0);
+                    DrawPokemonSlot(arg0, tmp1 + 0x24, sp42 - 0x3C + i * 0x5C, var_s0);
                     var_s0 = var_s0->unk_4D24;
                 }
             }
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else {
-            func_8420ED0C(arg0);
+            RenderVisiblePokemonEntries(arg0);
         }
 
-        func_8420EA88(arg0);
-        func_8420EB7C(arg0);
+        DrawBottomBar(arg0);
+        DrawSideBar(arg0);
 
         if ((arg1 != 0) && (arg0->unk_00000 == 1)) {
-            func_8420112C(0x38, 0x190, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x96);
+            DrawSmallTiledBorder(0x38, 0x190, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x96);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             temp_v0_3 = func_84200130(0x10);
@@ -366,7 +366,7 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
         }
 
         if ((arg1 != 0) && (arg0->unk_00000 == 2)) {
-            func_8420112C(0x38, 0x190, 0x210, 0x28, 0x64, 0x1E, 0x1E, 0x96);
+            DrawSmallTiledBorder(0x38, 0x190, 0x210, 0x28, 0x64, 0x1E, 0x1E, 0x96);
             Text_ResetState();
             Text_SetFont(0x10, 0);
             temp_v0_3 = func_84200130(0x11);
@@ -380,7 +380,7 @@ void func_8420EE54(unk_D_84229EB0* arg0, s32 arg1) {
     }
 }
 
-unk_D_84229EB0_00024* func_8420F1BC(unk_D_84229EB0_00024* arg0, s32 arg1) {
+unk_D_84229EB0_00024* GetPrevPage(unk_D_84229EB0_00024* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_4D28;
     }
@@ -388,7 +388,7 @@ unk_D_84229EB0_00024* func_8420F1BC(unk_D_84229EB0_00024* arg0, s32 arg1) {
     return arg0;
 }
 
-unk_D_84229EB0_00024* func_8420F1E0(unk_D_84229EB0_00024* arg0, s32 arg1) {
+unk_D_84229EB0_00024* GetNextPage(unk_D_84229EB0_00024* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_4D24;
     }
@@ -396,7 +396,7 @@ unk_D_84229EB0_00024* func_8420F1E0(unk_D_84229EB0_00024* arg0, s32 arg1) {
     return arg0;
 }
 
-s32 func_8420F204(unk_D_84229EB0_00024* arg0, s16 arg1) {
+s32 LoadPokemonPageFromGbs(unk_D_84229EB0_00024* arg0, s16 arg1) {
     s16 i;
     s16 var_s4;
     unk_func_80022C28_ret* temp_v0;
@@ -434,7 +434,7 @@ s32 func_8420F204(unk_D_84229EB0_00024* arg0, s16 arg1) {
     return var_s4;
 }
 
-void func_8420F37C(unk_D_84229EB0* arg0) {
+void UpdateSelectionHighlight(unk_D_84229EB0* arg0) {
     s16 temp_s1;
     s16 sp34;
     s16 sp32;
@@ -444,9 +444,9 @@ void func_8420F37C(unk_D_84229EB0* arg0) {
         temp_s1 = arg0->unk_00008 + (arg0->unk_0000A * 3);
         sp34 = arg0->unk_0000E + (arg0->unk_00008 * 0x84) + 0x94;
         sp32 = arg0->unk_00010 + (arg0->unk_0000A * 0x2C) + 0x1C;
-        temp_v0_2 = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        temp_v0_2 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         if (arg0->unk_00005 == -1) {
-            func_8420C60C(arg0->unk_134F0, arg0->unk_00003, 0x30, 0xEC, sp34, sp32, &temp_v0_2->unk_0000[temp_s1], 0);
+            MoveScreen_Start(arg0->unk_134F0, arg0->unk_00003, 0x30, 0xEC, sp34, sp32, &temp_v0_2->unk_0000[temp_s1], 0);
         } else if (temp_s1 != arg0->unk_00005) {
             func_8420C6D8(arg0->unk_134F0, sp34, sp32, &temp_v0_2->unk_0000[temp_s1]);
             arg0->unk_00006 = 0xA;
@@ -459,7 +459,7 @@ void func_8420F37C(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420F4FC(unk_D_84229EB0* arg0) {
+void ResetPokemonListState(unk_D_84229EB0* arg0) {
     arg0->unk_00008 = 0;
     arg0->unk_0000A = 0;
     arg0->unk_00006 = 0;
@@ -473,7 +473,7 @@ void func_8420F524(unk_D_84229EB0* arg0) {
     arg0->unk_00014 = arg0->unk_00010;
 }
 
-void func_8420F53C(unk_D_84229EB0* arg0) {
+void ScrollUpStep(unk_D_84229EB0* arg0) {
     arg0->unk_00006++;
     if (arg0->unk_00006 == 0xA) {
         arg0->unk_00001 = 2;
@@ -486,7 +486,7 @@ void func_8420F53C(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420F598(unk_D_84229EB0* arg0) {
+void ScrollDownStep(unk_D_84229EB0* arg0) {
     arg0->unk_00006++;
     if (arg0->unk_00006 == 0xA) {
         arg0->unk_00001 = 0;
@@ -525,9 +525,9 @@ void func_8420F654(unk_D_84229EB0* arg0) {
             arg0->unk_00001 = 0xB;
             PlaySoundEffect(1);
         } else if (arg0->unk_0000C > 0) {
-            sp24 = func_8420F1BC(arg0->unk_00024, 1);
+            sp24 = GetPrevPage(arg0->unk_00024, 1);
             PlaySoundEffect(1);
-            func_8420F204(sp24, arg0->unk_0000D - 1);
+            LoadPokemonPageFromGbs(sp24, arg0->unk_0000D - 1);
             arg0->unk_0000C -= 1;
             arg0->unk_0000D -= 1;
             arg0->unk_00024 = arg0->unk_00024->unk_4D28;
@@ -551,7 +551,7 @@ void func_8420F754(unk_D_84229EB0* arg0) {
             arg0->unk_00001 = 0xB;
             PlaySoundEffect(1);
         } else if ((arg0->unk_0000C < 7) &&
-                   ((func_8420F204(func_8420F1E0(arg0->unk_00024, 3), arg0->unk_0000D + 1) != 0) ||
+                   ((LoadPokemonPageFromGbs(GetNextPage(arg0->unk_00024, 3), arg0->unk_0000D + 1) != 0) ||
                     (arg0->unk_00000 != 0))) {
             PlaySoundEffect(1);
             arg0->unk_0000C += 1;
@@ -567,9 +567,9 @@ void func_8420F754(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420F86C(unk_D_84229EB0* arg0) {
+void ProcessPokemonListInput(unk_D_84229EB0* arg0) {
     Controller* cont = &gControllers[arg0->unk_00003];
-    unk_D_84229EB0_00024* temp_v0 = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+    unk_D_84229EB0_00024* temp_v0 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
 
     if (BTN_IS_PRESSED(cont, BTN_A)) {
         if (temp_v0->unk_0000[0].unk_004.unk_00.unk_00 != 0) {
@@ -581,7 +581,7 @@ void func_8420F86C(unk_D_84229EB0* arg0) {
                     break;
 
                 case 1:
-                    func_8420F4FC(arg0);
+                    ResetPokemonListState(arg0);
                     break;
 
                 case 2:
@@ -611,7 +611,7 @@ void func_8420F86C(unk_D_84229EB0* arg0) {
 
 void func_8420F9C8(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 > 0) {
-        unk_D_84229EB0_00024* ptr = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 1;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -628,7 +628,7 @@ void func_8420F9C8(unk_D_84229EB0* arg0) {
 
 void func_8420FA88(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 < 2) {
-        unk_D_84229EB0_00024* ptr = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 1;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -645,7 +645,7 @@ void func_8420FA88(unk_D_84229EB0* arg0) {
 
 void func_8420FB4C(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A > 0) {
-        unk_D_84229EB0_00024* ptr = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 3;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -662,7 +662,7 @@ void func_8420FB4C(unk_D_84229EB0* arg0) {
 
 void func_8420FC0C(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A <= 0) {
-        unk_D_84229EB0_00024* ptr = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 3;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -680,10 +680,10 @@ void func_8420FC0C(unk_D_84229EB0* arg0) {
 void func_8420FCCC(unk_D_84229EB0* arg0) {
     Controller* cont = &gControllers[arg0->unk_00003];
 
-    func_8420F37C(arg0);
+    UpdateSelectionHighlight(arg0);
 
     if (arg0->unk_00006 == 0xA) {
-        if (func_8420C788(arg0->unk_134F0) != 0) {
+        if (GetSelectedMoveIndex(arg0->unk_134F0) != 0) {
             if (arg0->unk_00000 == 2) {
                 arg0->unk_00002 = 6;
             } else {
@@ -768,7 +768,7 @@ void func_8420FEC0(unk_D_84229EB0* arg0) {
             break;
 
         case 3:
-            func_8420F4FC(arg0);
+            ResetPokemonListState(arg0);
             break;
     }
 
@@ -797,7 +797,7 @@ void func_8420FFB0(unk_D_84229EB0* arg0) {
             break;
 
         case 2:
-            func_8420F4FC(arg0);
+            ResetPokemonListState(arg0);
             break;
 
         case 3:
@@ -843,7 +843,7 @@ void func_8421015C(unk_D_84229EB0* arg0) {
     s16 temp_hi;
     s16 temp_lo;
 
-    temp_v0 = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+    temp_v0 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
     temp_lo = arg0->unk_00006 / 12;
     temp_hi = arg0->unk_00006 % 12;
 
@@ -967,7 +967,7 @@ void func_84210668(unk_D_84229EB0* arg0) {
     if (arg0->unk_00006 == 4) {
         var_s1 = arg0->unk_00024;
         for (i = 0; i < 3; i++) {
-            func_8420F204(var_s1, arg0->unk_0000C + i);
+            LoadPokemonPageFromGbs(var_s1, arg0->unk_0000C + i);
             var_s1 = var_s1->unk_4D24;
         }
 
@@ -994,16 +994,16 @@ s32 func_842106FC(unk_D_84229EB0* arg0) {
             break;
 
         case 2:
-            func_8420F86C(arg0);
+            ProcessPokemonListInput(arg0);
             break;
 
         case 3:
-            func_8420F53C(arg0);
+            ScrollUpStep(arg0);
             sp1C = 1;
             break;
 
         case 4:
-            func_8420F598(arg0);
+            ScrollDownStep(arg0);
             sp1C = 1;
             break;
 
@@ -1106,7 +1106,7 @@ s32 func_8421089C(unk_D_84229EB0* arg0, unk_D_84211B50* arg1, unk_D_842168A0* ar
     if (arg4 != 3) {
         if (arg4 != 4) {
             for (i = 0; i < 3; i++) {
-                func_8420F204(&arg0->unk_00028[i], arg0->unk_0000C + i);
+                LoadPokemonPageFromGbs(&arg0->unk_00028[i], arg0->unk_0000C + i);
             }
         }
     }
@@ -1164,7 +1164,7 @@ s32 func_84210B60(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg1) {
     *arg1 = NULL;
 
     if (arg0->unk_00020 == 0) {
-        *arg1 = func_8420F1E0(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        *arg1 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         var_t0 = (*arg1)->unk_4D20;
 
         for (i = 0; i < 6; i++) {
@@ -1191,6 +1191,6 @@ void func_84210C80(unk_D_84229EB0* arg0, s16 arg1) {
     }
 
     for (arg1 = 0; arg1 < 3; arg1++) {
-        func_8420F204(&arg0->unk_00028[arg1], arg0->unk_0000C + arg1);
+        LoadPokemonPageFromGbs(&arg0->unk_00028[arg1], arg0->unk_0000C + arg1);
     }
 }

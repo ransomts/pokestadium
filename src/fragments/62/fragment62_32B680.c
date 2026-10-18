@@ -3880,7 +3880,7 @@ void func_8434AAEC(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
     u8* var_a3;
     s32 idx = arg1 * 0xB48;
 
-    if (func_84307F00(func_8432CB60(gDefaultGraphRoot)->unk_10) == 0) {
+    if (IsPrimaryEntity(func_8432CB60(gDefaultGraphRoot)->unk_10) == 0) {
         var_a3 = D_8438E778 + idx;
     } else {
         var_a3 = D_8438E77C + idx;

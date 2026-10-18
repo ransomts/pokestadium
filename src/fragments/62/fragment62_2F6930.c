@@ -1,7 +1,7 @@
 #include "fragment62.h"
 #include "src/math_util.h"
 
-void func_8430C070(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
+void Math_CalcDistAndAngles(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
     f32 sp2C = arg1->x - arg0->x;
     f32 sp28 = arg1->y - arg0->y;
     f32 sp24 = arg1->z - arg0->z;
@@ -11,55 +11,55 @@ void func_8430C070(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
     *arg4 = MathUtil_Atan2s(sp24, sp2C);
 }
 
-Vec3f* func_8430C120(Vec3f* arg0) {
+Vec3f* Vector_Zero(Vec3f* arg0) {
     arg0->x = 0.0f;
     arg0->y = 0.0f;
     arg0->z = 0.0f;
     return arg0;
 }
 
-Vec3f* func_8430C138(Vec3f* arg0, Vec3f* arg1, f32 arg2, s16 arg3) {
+Vec3f* Vector_CalcPolarOffset(Vec3f* arg0, Vec3f* arg1, f32 arg2, s16 arg3) {
     arg0->x = (SINS(arg3) * arg2) + arg1->x;
     arg0->y = arg1->y;
     arg0->z = (COSS(arg3) * arg2) + arg1->z;
     return arg0;
 }
 
-void func_8430C19C(Vec3f* arg0, f32 arg1, s16 arg2) {
+void Vector_SetXZFromPolar(Vec3f* arg0, f32 arg1, s16 arg2) {
     arg0->x = COSS(arg2) * arg1;
     arg0->z = SINS(arg2) * arg1;
 }
 
-Vec3f* func_8430C1E4(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vector_Copy(Vec3f* arg0, Vec3f* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
     return arg0;
 }
 
-Vec3s* func_8430C204(Vec3s* arg0, Vec3s* arg1) {
+Vec3s* VectorS_Copy(Vec3s* arg0, Vec3s* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
     return arg0;
 }
 
-Vec3f* func_8430C224(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
+Vec3f* Vector_ScaleXYZ(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->x = arg0->x * arg1;
     arg0->y = arg0->y * arg2;
     arg0->z = arg0->z * arg3;
     return arg0;
 }
 
-s16 func_8430C260(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+s16 Math_CalcAngleBetweenPoints(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return MathUtil_Atan2s(arg2 - arg0, arg3 - arg1);
 }
 
-f32 func_8430C2A4(Vec3f arg0, Vec3f arg1) {
+f32 Vector_Distance(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.y - arg0.y) + SQ(arg1.z - arg0.z));
 }
 
-f32 func_8430C308(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 Math_2DDistance(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     static f32 D_843900D0;
     static f32 D_843900D4;
 
@@ -73,7 +73,7 @@ f32 func_8430C308(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return sqrtf(D_843900D0 + D_843900D4);
 }
 
-s32 func_8430C384(f32 arg0) {
+s32 Math_RandomIntBelow(f32 arg0) {
     s32 temp_v1;
     s32 var_v1;
 
@@ -89,13 +89,13 @@ s32 func_8430C384(f32 arg0) {
     return var_v1;
 }
 
-u16 func_8430C414(s32 arg0) {
+u16 Math_RandomU16Scaled(s32 arg0) {
     f32 tmp = (u32)MathUtil_Random16();
 
     return (tmp / 65535.0) * arg0;
 }
 
-s32 func_8430C4F8(s16* arg0, s16 arg1, s16 arg2) {
+s32 Math_StepTowards(s16* arg0, s16 arg1, s16 arg2) {
     s16 temp_v0 = arg1 - *arg0;
 
     if (arg2 < 0) {
@@ -189,7 +189,7 @@ void func_8430C7B4(u16* arg0, u16 arg1, s16 arg2) {
     *arg0 = *arg0 + ((arg1 - *arg0) * arg2);
 }
 
-void func_8430C7E4(f32* arg0, f32 arg1) {
+void Math_CubicBezierCoeffs(f32* arg0, f32 arg1) {
     static f32 D_843900D8;
     static f32 D_843900DC;
     static f32 D_843900E0;
@@ -234,7 +234,7 @@ void func_8430C97C(f32* arg0, f32 arg1) {
     arg0[3] = D_843900F0 / 6.0f;
 }
 
-void func_8430CA4C(f32* arg0, f32 arg1) {
+void Math_EaseOutCubicCoeffs(f32* arg0, f32 arg1) {
     static f32 D_843900FC;
     static f32 D_84390100;
     static f32 D_84390104;

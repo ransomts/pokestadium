@@ -154,8 +154,8 @@ static unk_D_843859E0 D_843859E0[] = {
 };
 
 s32 func_843197A0(void) {
-    if (((func_84307C04(D_84390010[0]) + func_84307C04(D_84390010[1])) <= 85.0f) &&
-        (func_84307BAC(D_84390010[0]) == 0.0f) && (func_84307BAC(D_84390010[1]) == 0.0f) &&
+    if (((GetModelHeight(D_84390010[0]) + GetModelHeight(D_84390010[1])) <= 85.0f) &&
+        (GetModelBaseY(D_84390010[0]) == 0.0f) && (GetModelBaseY(D_84390010[1]) == 0.0f) &&
         (D_84390010[0]->unk_000.unk_024.y == 0.0f) && (D_84390010[1]->unk_000.unk_024.y == 0.0f)) {
         return 1;
     }
@@ -232,16 +232,16 @@ void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
         }
 
         sp50 = func_84308598(temp_s0) * 3.5f;
-        sp3E = func_8430C414(3);
+        sp3E = Math_RandomU16Scaled(3);
         sp50 *= ((func_84308014(temp_s0) * 0.5f * sp3E) + 1.0f);
 
         if (sp50 > 325.0f) {
             sp50 = 325.0f;
         }
 
-        sp3E = func_8430C414(4);
+        sp3E = Math_RandomU16Scaled(4);
         sp4C = func_84308548(temp_s0) * sp3E;
-        sp4A = func_8430C414(0xB4);
+        sp4A = Math_RandomU16Scaled(0xB4);
 
         if (sp44->unk_34 & 0x200) {
             sp4C = 0.0f;
@@ -275,7 +275,7 @@ void func_84319F10(unk_D_86002F34_00C* arg0, s32 arg1) {
         if (temp_s0->unk_654.unk_34 & 0x200) {
             sp24 = &D_84384888[0];
         } else {
-            var_a0 = func_8430C414(5);
+            var_a0 = Math_RandomU16Scaled(5);
             if (var_a0 >= 5) {
                 var_a0 = 0;
             }
@@ -369,14 +369,14 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
             var_v1 = (temp_s0->unk_000.unk_01A - 1) & 0xFF;
         }
 
-        tmp2 = (D_84384580[arg1]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[var_v1].z;
-        tmp1 = ((D_84384580[arg1]->unk_00.z + D_84384C30[var_v1].y) * temp_s0->unk_4B0) + temp_s0->unk_000.unk_024.x;
+        tmp2 = (gAnimDataSetC[arg1]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[var_v1].z;
+        tmp1 = ((gAnimDataSetC[arg1]->unk_00.z + D_84384C30[var_v1].y) * temp_s0->unk_4B0) + temp_s0->unk_000.unk_024.x;
 
         Vec3f_Set(&arg0->unk_60.at, tmp1, tmp2, temp_s0->unk_000.unk_024.z);
 
-        tmp1 = D_84384580[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[var_v1].x;
-        tmp4 = D_84384580[D_84390240.unk_00->unk_2C]->unk_0C;
-        tmp3 = (temp_s0->unk_4B0 * D_84384580[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
+        tmp1 = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[var_v1].x;
+        tmp4 = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0C;
+        tmp3 = (temp_s0->unk_4B0 * gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
 
         Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
         D_84390240.unk_00->unk_20++;

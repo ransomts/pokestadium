@@ -14,10 +14,10 @@
 #include "src/stage_loader.h"
 
 static BinArchive* D_82E019B0;
-static void* D_82E019B4;
-static GraphNode* D_82E019B8;
-static GraphNode* D_82E019BC;
-static GraphNode* D_82E019C0;
+static void* gBackgroundTextureAtlas;
+static GraphNode* gBackgroundGraphNode;
+static GraphNode* gOverlayGraphNode;
+static GraphNode* gUIGraphNode;
 static Fragment2_1GraphNode D_82E019C8[4];
 static Fragment2_1GraphNode D_82E01F68[3];
 static unk_func_80027FA0 D_82E023A0;
@@ -162,7 +162,7 @@ static Gfx D_82E01480[] = {
 };
 static u32 D_82E01800[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82E01180, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_82E00274, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, Background_DrawLayer, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_82E01838[] = {
     VTX(-38, 18, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-38, 0, 0, 0, 576, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -185,7 +185,7 @@ static Gfx D_82E018B8[] = {
 };
 static u32 D_82E01960[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82E01838, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_82E0036C, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, Overlay_DrawLayer, 0x00000000, 0x06000000, 0x01000000,
 };
 
 void func_82E00020(void) {
@@ -197,7 +197,7 @@ void func_82E00020(void) {
 void func_82E00050(void) {
 }
 
-void func_82E00058(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawBorderCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     static s16 D_82E01994 = 0;
 
     s16 sp56 = SINS(D_82E01994) * 2;
@@ -216,7 +216,7 @@ void func_82E00058(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_82E01994 += 0x2000;
 }
 
-s32 func_82E00274(s32 arg0, SimpleGfxNode* arg1) {
+s32 Background_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
     s32 var_t0;
 
@@ -238,7 +238,7 @@ s32 func_82E00274(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_82E0036C(s32 arg0, SimpleGfxNode* arg1) {
+s32 Overlay_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
     s32 var_a3;
 
     if (arg0 == 5) {
@@ -260,10 +260,10 @@ s32 func_82E0036C(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_82E0045C(s32 arg0, s32 arg1) {
+void Stage_DrawFrame(s32 arg0, s32 arg1) {
     Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(D_82E019B4);
-    Graph_SetTextureState(D_82E019B8);
+    Gfx_DrawTextureAtlas(gBackgroundTextureAtlas);
+    Graph_SetTextureState(gBackgroundGraphNode);
 
     if (arg0 == 0) {
         if ((arg1 >= 0) && (arg1 < 0xB)) {
@@ -326,18 +326,18 @@ void func_82E0045C(s32 arg0, s32 arg1) {
     }
 
     if (arg0 == 1) {
-        func_82E00058(0xD0, (D_82E023A8 * 0x6C) + 0x32, 0xE0, 0x38, 0xFF, 0xF0, 0x64, 0xFF);
+        DrawBorderCorners(0xD0, (D_82E023A8 * 0x6C) + 0x32, 0xE0, 0x38, 0xFF, 0xF0, 0x64, 0xFF);
     }
     Stage_Advance();
 }
 
-void func_82E00A54(void) {
+void Stage_InitGraphNodes(void) {
     s32 i;
     Fragment2_1GraphNode* var_s1;
     Fragment2_1GraphNode* var_s2;
 
     for (var_s1 = &D_82E019C8[0], i = 0; i < 4; i++, var_s1++) {
-        GraphNode_InitChild(var_s1, 0, 0, D_82E019BC);
+        GraphNode_InitChild(var_s1, 0, 0, gOverlayGraphNode);
         D_82E019C8[i].unk_01E.y = -0x5000;
     }
 
@@ -347,7 +347,7 @@ void func_82E00A54(void) {
     Vec3f_Set(&D_82E019C8[3].unk_024, 0.0f, -162.0f, -579.0f);
 
     for (var_s2 = &D_82E01F68[0], i = 0; i < 3; i++, var_s2++) {
-        GraphNode_InitChild(var_s2, 0, 0, D_82E019C0);
+        GraphNode_InitChild(var_s2, 0, 0, gUIGraphNode);
         D_82E01F68[i].unk_01E.y = -0x5000;
     }
 
@@ -356,7 +356,7 @@ void func_82E00A54(void) {
     Vec3f_Set(&D_82E01F68[2].unk_024, 0.0f, -108.0f, -579.0f);
 }
 
-s32 func_82E00BDC(void) {
+s32 Menu_HandleInput(void) {
     s32 var_v1 = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -378,51 +378,51 @@ s32 func_82E00BDC(void) {
     return var_v1;
 }
 
-s32 func_82E00CF0(void) {
+s32 Menu_RunSelection(void) {
     s16 i;
     s32 temp_v0 = 'exec';
     s32 temp_v1;
 
-    func_82E00A54();
+    Stage_InitGraphNodes();
     D_82E023A8 = D_82E023AA;
 
     for (i = 0; i < 23; i++) {
         func_82E00020();
-        func_82E0045C(0, i);
+        Stage_DrawFrame(0, i);
     }
 
     while (temp_v0 == 'exec') {
         func_82E00020();
-        func_82E0045C(1, 0);
-        temp_v0 = func_82E00BDC();
+        Stage_DrawFrame(1, 0);
+        temp_v0 = Menu_HandleInput();
     }
 
     temp_v1 = temp_v0 == 'slct';
     if (temp_v1) {
         for (i = 0; i < 23; i++) {
             func_82E00020();
-            func_82E0045C(2, i);
+            Stage_DrawFrame(2, i);
         }
     } else {
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(8);
         while (Stage_GetFadeState() != 1) {
             func_82E00020();
-            func_82E0045C(1, 0);
+            Stage_DrawFrame(1, 0);
         }
         Stage_AdvanceN(2);
     }
     return temp_v1;
 }
 
-void func_82E00E2C(void) {
+void Stage_LoadResourcesAndInit(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     s32 i;
     Fragment2_1GraphNode* var_s2;
 
-    D_82E019B8 = process_geo_layout(temp_v0, &D_82E01110);
-    D_82E019BC = process_geo_layout(temp_v0, &D_82E01800);
-    D_82E019C0 = process_geo_layout(temp_v0, &D_82E01960);
+    gBackgroundGraphNode = process_geo_layout(temp_v0, &D_82E01110);
+    gOverlayGraphNode = process_geo_layout(temp_v0, &D_82E01800);
+    gUIGraphNode = process_geo_layout(temp_v0, &D_82E01960);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 
@@ -437,7 +437,7 @@ void func_82E00E2C(void) {
     }
 }
 
-s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     s16 var_v1 = -1;
     s32 sp18 = 1;
 
@@ -471,11 +471,11 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
         ASSET_LOAD(D_3000000, cup_ball_select_ui, 0);
 
         D_82E019B0 = ASSET_LOAD2(backgrounds, 1, 1);
-        D_82E019B4 = BinArchive_GetFile(D_82E019B0, var_v1);
+        gBackgroundTextureAtlas = BinArchive_GetFile(D_82E019B0, var_v1);
 
-        func_82E00E2C();
+        Stage_LoadResourcesAndInit();
         func_80007754();
-        sp18 = func_82E00CF0();
+        sp18 = Menu_RunSelection();
         Stage_Terminate();
 
         main_pool_pop_state('LVSL');
