@@ -860,7 +860,7 @@ extern ClipRect gClipRect;
 extern struct GraphRootNode gGraphRoot0;
 extern struct GraphRootNode gGraphRoot1;
 
-typedef struct unk_D_8006FF00 {
+typedef struct SpeciesDisplayParams {
 	/* 0x00 */ u8 unk_00;
 	/* 0x01 */ u8 unk_01;
 	/* 0x02 */ s16 unk_02;
@@ -873,8 +873,8 @@ typedef struct unk_D_8006FF00 {
 	/* 0x12 */ s16 unk_12;
 	/* 0x14 */ u32 unk_14;
 	/* 0x18 */ u32 unk_18;
-} unk_D_8006FF00; // size = 0x1C
-extern unk_D_8006FF00 D_8006FF00[152];
+} SpeciesDisplayParams; // size = 0x1C
+extern SpeciesDisplayParams gSpeciesDisplayTable[152];
 
 typedef struct FontBankInfo {
 	/* 0x00 */ s16 unk_00;

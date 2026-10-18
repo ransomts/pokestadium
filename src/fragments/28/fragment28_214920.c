@@ -226,8 +226,8 @@ void func_88800A3C(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, un
 
 void func_88800E20(unk_func_888044BC_038_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5) {
     s32 i;
-    unk_D_8006FF00** sp40;
-    unk_D_8006FF00** sp3C;
+    SpeciesDisplayParams** sp40;
+    SpeciesDisplayParams** sp3C;
 
     ((func88506DCC)Memmap_GetFragmentVaddr(func_88506DCC))(arg0, arg1, arg2, func_88800A3C, 0xF8, 0x20, arg3, arg5);
 
@@ -236,16 +236,16 @@ void func_88800E20(unk_func_888044BC_038_02C* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_00.unk_44->unk_00.unk_14.unk_00 = 0xF6;
     arg0->unk_00.unk_44->unk_00.unk_14.unk_02 = 0x1E;
 
-    sp40 = mem_pool_alloc(arg5, sizeof(unk_D_8006FF00*) * 151);
+    sp40 = mem_pool_alloc(arg5, sizeof(SpeciesDisplayParams*) * 151);
     for (i = 0; i < 151; i++) {
-        sp40[i] = &D_8006FF00[i];
+        sp40[i] = &gSpeciesDisplayTable[i];
     }
 
     PtrArray_Init(&arg0->unk_70, sp40, 151, 151);
 
-    sp3C = mem_pool_alloc(arg5, sizeof(unk_D_8006FF00*) * 151);
+    sp3C = mem_pool_alloc(arg5, sizeof(SpeciesDisplayParams*) * 151);
     for (i = 0; i < 151; i++) {
-        sp3C[D_88808150[i]] = &D_8006FF00[i];
+        sp3C[D_88808150[i]] = &gSpeciesDisplayTable[i];
     }
 
     PtrArray_Init(&arg0->unk_7C, sp3C, 151, 151);
@@ -546,7 +546,7 @@ s32 func_8880276C(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88808214 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 D_88808218 = { 0x00, 0x00, 0x00, 0xFF };
 
-    unk_D_8006FF00* sp54 = &D_8006FF00[arg0->unk_2C];
+    SpeciesDisplayParams* sp54 = &gSpeciesDisplayTable[arg0->unk_2C];
     s32 temp_v0_2;
     char* sp4C;
     char* sp48;
@@ -643,7 +643,7 @@ void func_88802DAC(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad;
     char* sp18;
 
-    if (func_8002564C(arg1, D_8006FF00[arg2].unk_00) >= 2) {
+    if (func_8002564C(arg1, gSpeciesDisplayTable[arg2].unk_00) >= 2) {
         sp18 = GetMessageString(NULL, 0, D_888267A8, arg2);
     } else {
         sp18 = "\n???";

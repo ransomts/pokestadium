@@ -128,12 +128,12 @@ arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026
     UNUSED s32 pad;
     char sp38[0xB];
     arg1_func_80010CA8 sp34;
-    unk_D_8006FF00* sp30;
+    SpeciesDisplayParams* sp30;
     UNUSED s32 pad2;
     u8 var_a0;
     s8* var_v1;
 
-    sp30 = &D_8006FF00[arg1->unk_00.unk_00 - 1];
+    sp30 = &gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1];
     sp34.raw = 0;
 
     GetSpeciesName(sp38, arg1->unk_00.unk_00);

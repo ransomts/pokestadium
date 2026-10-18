@@ -58,7 +58,7 @@ unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg
         temp_v0->unk_08 = main_pool_alloc(arg1 * sizeof(unk_func_8001A024_008), 0);
         temp_v0->unk_04 = arg0;
         temp_v0->unk_14 = NULL;
-        temp_v0->unk_18 = D_8006FF00;
+        temp_v0->unk_18 = gSpeciesDisplayTable;
 
         if (arg0 != NULL) {
             temp_v0->unk_14 = FramebufferImage_Allocate(0, 2, arg2, arg3, 1);
@@ -90,7 +90,7 @@ void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_00
     }
 }
 
-void SpriteDisplay_SetScaleTable(unk_func_8001A024* arg0, unk_D_8006FF00* arg1) {
+void SpriteDisplay_SetScaleTable(unk_func_8001A024* arg0, SpeciesDisplayParams* arg1) {
     arg0->unk_18 = arg1;
 }
 
@@ -511,16 +511,16 @@ unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16
 
 void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 arg2) {
     arg1_func_80010CA8 sp2C;
-    s16 tmp1 = (s16)(D_8006FF00[arg1->unk_00.unk_00 - 1].unk_14 >> 0x10) >> 6;
-    s16 tmp2 = (s16)(D_8006FF00[arg1->unk_00.unk_00 - 1].unk_14 >> 6) >> 4;
-    s16 tmp3 = (s16)(D_8006FF00[arg1->unk_00.unk_00 - 1].unk_14 << 6) >> 6;
+    s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 0x10) >> 6;
+    s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 6) >> 4;
+    s16 tmp3 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 << 6) >> 6;
 
     arg0->unk_00 |= 1;
     arg0->unk_14 = arg1;
     arg0->unk_12 = 0x100;
     arg0->unk_10 = 0;
     arg0->unk_02 = arg2;
-    arg0->unk_18 = D_8006FF00[arg1->unk_00.unk_00 - 1].unk_02 / 100.0f;
+    arg0->unk_18 = gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_02 / 100.0f;
 
     arg0->unk_24->unk_024.x = tmp1;
     arg0->unk_24->unk_024.y = tmp2;
@@ -539,16 +539,16 @@ void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 ar
 
 void func_8001B480(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     arg1_func_80010CA8 sp34;
-    s16 tmp1 = (s16)(D_8006FF00[arg1 - 1].unk_14 >> 0x10) >> 6;
-    s16 tmp2 = (s16)(D_8006FF00[arg1 - 1].unk_14 >> 6) >> 4;
-    s16 tmp3 = (s16)(D_8006FF00[arg1 - 1].unk_14 << 6) >> 6;
+    s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 0x10) >> 6;
+    s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 6) >> 4;
+    s16 tmp3 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 << 6) >> 6;
 
     arg0->unk_00 &= ~1;
     arg0->unk_14 = arg1;
     arg0->unk_12 = 0x100;
     arg0->unk_10 = 0;
     arg0->unk_02 = arg2;
-    arg0->unk_18 = D_8006FF00[arg1 - 1].unk_02 / 100.0f;
+    arg0->unk_18 = gSpeciesDisplayTable[arg1 - 1].unk_02 / 100.0f;
 
     arg0->unk_24->unk_024.x = tmp1;
     arg0->unk_24->unk_024.y = tmp2;

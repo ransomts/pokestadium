@@ -171,8 +171,8 @@ typedef struct unk_D_84B17550 {
     /* 0x10 */ s16 unk_10;
 } unk_D_84B17550; // size = 0x12
 
-extern unk_D_8006FF00 D_84B17620[];
-extern unk_D_8006FF00 D_84B186C0[];
+extern SpeciesDisplayParams D_84B17620[];
+extern SpeciesDisplayParams D_84B186C0[];
 
 void func_84B00020(void);
 void func_84B000F0(void);

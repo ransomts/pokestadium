@@ -1,6 +1,6 @@
 #include "fragment63.h"
 
-unk_D_8006FF00 D_84B17620[] = {
+SpeciesDisplayParams D_84B17620[] = {
     {
         0x01,
         0x00,
@@ -2130,7 +2130,7 @@ unk_D_8006FF00 D_84B17620[] = {
         NULL,
     },
 };
-unk_D_8006FF00 D_84B186C0[] = {
+SpeciesDisplayParams D_84B186C0[] = {
     {
         0x01,
         0x00,

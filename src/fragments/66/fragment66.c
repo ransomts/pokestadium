@@ -72,7 +72,7 @@ s32 func_832000A0(unk_func_80026268_arg0* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 sp1C = 0;
 
     if ((arg0->unk_00.unk_00 > 0) && (arg0->unk_00.unk_00 < 0x98)) {
-        if ((func_83200064(arg0) != 0) && (D_8006FF00[arg0->unk_00.unk_00 - 1].unk_0C & arg3)) {
+        if ((func_83200064(arg0) != 0) && (gSpeciesDisplayTable[arg0->unk_00.unk_00 - 1].unk_0C & arg3)) {
             if ((arg0->unk_24 >= arg1) && (arg2 >= arg0->unk_24)) {
                 sp1C = 1;
             }

@@ -54,7 +54,7 @@ typedef struct unk_func_8001A024 {
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ Fragment2_1GraphNode* unk_10;
     /* 0x14 */ FramebufferImage* unk_14;
-    /* 0x18 */ unk_D_8006FF00* unk_18;
+    /* 0x18 */ SpeciesDisplayParams* unk_18;
 } unk_func_8001A024; // size = 0x1C
 
 typedef struct unk_D_84B25A28 {
@@ -76,7 +76,7 @@ typedef struct unk_D_84B25A28 {
 
 unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010*, s16, s16, s16);
 void SpriteDisplay_SetDepthBuffer(unk_func_8001A024*, unk_D_86002F58_004_000_010*, FramebufferImage*);
-void SpriteDisplay_SetScaleTable(unk_func_8001A024*, unk_D_8006FF00*);
+void SpriteDisplay_SetScaleTable(unk_func_8001A024*, SpeciesDisplayParams*);
 void SpriteDisplay_Clear(unk_func_8001A024*);
 void SpriteDisplay_SetupSlot(unk_func_8001A024*, s32, s32, u16);
 void SpriteDisplay_ConfigSlotWithAnim(unk_func_8001A024*, s32, unk_func_80026268_arg0*, u16);

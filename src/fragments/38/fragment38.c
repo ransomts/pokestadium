@@ -691,7 +691,7 @@ u8 func_82302BB4(unk_D_82305AF8* arg0, s16 arg1) {
             if (func_82302B78(var_s1) != 0) {
                 ptr1 = &D_8230597C[(arg1 - 1) & 0xFFFFFFFF];
 
-                if (D_8006FF00[var_s1->unk_00.unk_00 - 1].unk_0C & ptr1->unk_06) {
+                if (gSpeciesDisplayTable[var_s1->unk_00.unk_00 - 1].unk_0C & ptr1->unk_06) {
                     if ((var_s1->unk_24 >= ptr1->unk_00) && (ptr1->unk_02 >= var_s1->unk_24)) {
                         var_s1->unk_25 = 0;
                     }
