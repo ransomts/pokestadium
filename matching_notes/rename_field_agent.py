@@ -50,16 +50,17 @@ GbAudioChannelState.unk_0194<TAB>noiseChannelActive<TAB>BATCH<TAB><TAB>set to 1 
 Justifications must be one sentence, ASCII only."""
 
 
-def call_model(model, system, user, temperature=0.2, max_tokens=8192, retries=2):
+def call_model(model, system, user, temperature=None, max_tokens=8192, retries=2):
     key = open(KEY_PATH).read().strip()
-    body = json.dumps({
+    body = {
         "model": model,
         "messages": [{"role": "system", "content": system},
                      {"role": "user", "content": user}],
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-    }).encode()
-    req = urllib.request.Request(GATEWAY, data=body, method="POST",
+        "max_completion_tokens": max_tokens,
+    }
+    if temperature is not None:
+        body["temperature"] = temperature
+    req = urllib.request.Request(GATEWAY, data=json.dumps(body).encode(), method="POST",
                                  headers={"Authorization": "Bearer " + key,
                                           "Content-Type": "application/json"})
     last = None
