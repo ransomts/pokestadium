@@ -35,9 +35,9 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
     sp40 = 0;
 
     for (i = 35; i >= 0; i--) {
-        if (IsMonIndexDisplayable(&D_83403C60[i]) == 0) {
+        if (IsMonIndexDisplayable(&gGalleryEntries[i]) == 0) {
             idx = i;
-            while ((idx > 0) && IsMonIndexDisplayable(&D_83403C60[idx - 1]) == 0) {
+            while ((idx > 0) && IsMonIndexDisplayable(&gGalleryEntries[idx - 1]) == 0) {
                 idx--;
             }
             sp40 = idx;
@@ -47,20 +47,20 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
 
     for (i = 0; i < 24; i++) {
         if (D_83403C00[i] != 0) {
-            idx = FindNthDisplayableMonIndex(D_83403C60, 0x24, sp40, 0);
+            idx = FindNthDisplayableMonIndex(gGalleryEntries, 0x24, sp40, 0);
 
             temp_s0 = arg0->unk_20[i]->unk_18;
 
-            D_83403C60[idx] = *temp_s0;
+            gGalleryEntries[idx] = *temp_s0;
 
-            temp_v0 = FindFirstUndisplayedMonIndex(D_83407ABC, 4);
+            temp_v0 = FindFirstUndisplayedMonIndex(gCurrentCamEntry, 4);
             if (temp_v0 >= 0) {
-                D_83407ABC[temp_v0] = *temp_s0;
+                gCurrentCamEntry[temp_v0] = *temp_s0;
             }
 
-            temp_v0 = FindFirstUndisplayedMonIndex(D_83407AC0, 0x10);
+            temp_v0 = FindFirstUndisplayedMonIndex(gCurrentCamEntryPage, 0x10);
             if (temp_v0 >= 0) {
-                D_83407AC0[temp_v0] = *temp_s0;
+                gCurrentCamEntryPage[temp_v0] = *temp_s0;
             }
         }
     }
@@ -84,13 +84,13 @@ void UpdateCursorEdgeFlags(unk_D_83407B38* arg0) {
     UNUSED s32 pad;
     s32 sp18 = arg0->unk_08 + 1;
 
-    if (func_83402124(arg0, arg0->unk_08 - 1) > 0) {
+    if (Gallery_CountDisplayableInPage(arg0, arg0->unk_08 - 1) > 0) {
         gCursorCanMoveUp = 1;
     } else {
         gCursorCanMoveUp = 0;
     }
 
-    if (func_83402124(arg0, sp18) > 0) {
+    if (Gallery_CountDisplayableInPage(arg0, sp18) > 0) {
         D_836033C8 = 1;
     } else {
         D_836033C8 = 0;
@@ -232,7 +232,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         if ((sp1C < 6) && (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0)) {
             PlaySoundEffect(0x19);
-            func_83400694(arg0->unk_20[idx]->unk_18);
+            Gallery_SetCurrentEntry(arg0->unk_20[idx]->unk_18);
             sp54 = 2;
         } else {
             PlaySoundEffect(8);
@@ -268,7 +268,7 @@ void InitializeSelectionScreen(s32 arg0) {
         }
     }
 
-    D_836033B8 = CountDisplayableMonIndices(D_83403C60, 0x24, 0);
+    D_836033B8 = CountDisplayableMonIndices(gGalleryEntries, 0x24, 0);
     D_836033C0 = 0xFFE3;
 
     if (arg0 != 0) {
@@ -279,8 +279,8 @@ void InitializeSelectionScreen(s32 arg0) {
 
     CamList_Init(&D_83603300, 0x88, 0x66, 6, 3, AssetManager_Create(5), D_836032F8, D_83402EE0, 0x18, 1);
 
-    if (D_83407AF8.unk_00 != -1) {
-        func_834021EC(&D_83603300, &D_83407AF8);
+    if (gGallerySelection.unk_00 != -1) {
+        Gallery_SyncCamToSelection(&D_83603300, &gGallerySelection);
     }
 
     UpdateCursorEdgeFlags(&D_83603300);
@@ -429,7 +429,7 @@ void RenderSelectionScreenItems(unk_D_83407B38* arg0) {
         if ((Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
             temp_s4 = (i / 3) * 0x6E;
             temp_s1 = (i % 3) * 0xA4;
-            func_834018C0(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
+            Gallery_DrawTextureList(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
             if (D_83403C00[temp_s5] != 0) {
                 DrawSelectionHighlightBar(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
             }
@@ -454,7 +454,7 @@ void DrawSelectionCursor(unk_D_83407B38* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (temp_lo < 2) {
-        func_83401B48((temp_hi * 0xA4) + 0x58, (temp_lo * 0x6E) + 0x6E, 0x88, 0x66);
+        Gallery_DrawAnimatedCorners((temp_hi * 0xA4) + 0x58, (temp_lo * 0x6E) + 0x6E, 0x88, 0x66);
         return;
     }
 
@@ -471,7 +471,7 @@ void DrawSelectionCursor(unk_D_83407B38* arg0) {
     }
 
     if (var_a0 >= 0) {
-        func_83401B48(var_a0, 0x172, 0x6C, 0x45);
+        Gallery_DrawAnimatedCorners(var_a0, 0x172, 0x6C, 0x45);
     }
 }
 
@@ -513,7 +513,7 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp80);
 
-    func_83401D0C((arg0 - sp78) - 0x27, arg1 + 0x1A, 0);
+    Gallery_DrawCursor((arg0 - sp78) - 0x27, arg1 + 0x1A, 0);
 
     if (D_836033C8 != 0) {
         sp78 = sp7C;
@@ -526,7 +526,7 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp80);
 
-    func_83401D0C(arg0 + sp78 + 0x1A2, arg1 + 0x1A, 1);
+    Gallery_DrawCursor(arg0 + sp78 + 0x1A2, arg1 + 0x1A, 1);
     Text_ResetState();
     Text_SetFont(0x10, 0);
 
@@ -579,7 +579,7 @@ void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
     }
 
     temp_s3 = (spFC - MeasureTextWidth(0, 0, spD8)) / 2;
-    temp_s2 = (spF8 - (func_834006CC(spD8) * 0x14)) / 2;
+    temp_s2 = (spF8 - (Text_CountLines(spD8) * 0x14)) / 2;
 
     Text_ResetState();
     Text_SetFont(8, 0);
@@ -661,7 +661,7 @@ char* GetSelectionPromptString(unk_D_83407B38* arg0) {
 void DrawSelectionPrompt(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     char* sp1C = GetSelectionPromptString(arg0);
 
-    func_834008DC(arg1, arg2, 0x136, 0x4C);
+    Gallery_DrawGradientPanel(arg1, arg2, 0x136, 0x4C);
     if (sp1C != NULL) {
         Text_ResetState();
         Text_SetFont(8, 0);
@@ -746,7 +746,7 @@ void RenderSelectionScreen(void) {
     f32 sp1C;
     f32 sp18;
 
-    func_83402210(&D_83603300, &sp28, &sp24, D_83603300.unk_00);
+    Gallery_GetPageAndIndex(&D_83603300, &sp28, &sp24, D_83603300.unk_00);
     Stage_BeginDisplayList();
     DrawBackgroundGradient();
     DrawItemList(0, 0x4F, 0x280, 1);
@@ -854,7 +854,7 @@ void RunSelectionScreenLoop(void) {
         }
 
         RenderSelectionScreen();
-        func_834020D8();
+        Gallery_ClearActiveCamera();
     } while (UpdateSelectionStateMachine() != 0);
 }
 
@@ -875,7 +875,7 @@ s32 FinalizeSelectionAndCleanup(unk_D_83407B38* arg0) {
         AddSelectedMonstersToTeam(arg0);
     }
 
-    func_834021D8(&D_83603300, &D_83407AF8);
+    Gallery_SyncSelectionToCam(&D_83603300, &gGallerySelection);
     return sp1C;
 }
 

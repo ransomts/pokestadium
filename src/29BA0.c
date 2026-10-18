@@ -625,7 +625,7 @@ unk_D_800AE540_0004* func_80029074(void) {
     return gBattleContext.unk_0004;
 }
 
-s32 func_80029080(void) {
+s32 GetCurrentPokemonBank(void) {
     return D_80075674;
 }
 
@@ -1070,7 +1070,7 @@ void Game_RunVictoryPalace(void) {
 void Game_RunGbTower(void) {
     s32 sp34;
     UnkInputStruct8000D738 sp2C;
-    unk_func_8002A728 sp24;
+    PlayerName sp24;
 
     main_pool_push_state('EMU0');
 
@@ -1095,7 +1095,7 @@ void Game_RunGbTower(void) {
             func_8002B274(D_80075674, sp34);
         }
 
-        func_80024040(D_80075674);
+        PlayerSave_RequestRefresh(D_80075674);
         GbsEnsureBankLoaded(2);
         GbsGetPlayerName(&sp24);
 

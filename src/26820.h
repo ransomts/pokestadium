@@ -5,10 +5,10 @@
 #include "22630.h"
 #include "29BA0.h"
 
-typedef struct unk_func_8002A728 {
+typedef struct PlayerName {
     /* 0x00 */ s16 unk_00;
-    /* 0x04 */ struct unk_func_8002A728* unk_04;
-} unk_func_8002A728; // size = 0x8
+    /* 0x04 */ struct PlayerName* unk_04;
+} PlayerName; // size = 0x8
 
 typedef struct unk_func_80027FA0 {
     /* 0x00 */ u16 unk_00;
@@ -52,7 +52,7 @@ typedef struct unk_D_800AE4E8_004_1 {
 typedef struct unk_D_800AE4E8_004_2_1EA0 {
     /* 0x00 */ u8 unk_00;
     /* 0x02 */ u16 unk_02;
-    /* 0x04 */ unk_func_8002A728 unk_04;
+    /* 0x04 */ PlayerName unk_04;
     /* 0x0C */ unk_func_80027FA0 unk_0C[1];
     /* 0x14 */ char unk14[0x8];
     /* 0x1C */ u16 unk_1C;
@@ -187,14 +187,14 @@ void GbsSetBlockEntryCount(s32 arg0, s32 arg1, s32 arg2);
 void GbsIncrementBlockEntryCount(s32 arg0, s32 arg1);
 s32 GbsReadBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3);
 s32 GbsWriteBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3);
-void GbsGetPlayerName(unk_func_8002A728* arg0);
-void GbsSetPlayerName(unk_func_8002A728* arg0);
+void GbsGetPlayerName(PlayerName* arg0);
+void GbsSetPlayerName(PlayerName* arg0);
 void GBAudio_ResetState(unk_func_80027FA0* arg0, s16 arg1);
-void func_80027FE0(unk_func_80027FA0* arg0, s16 arg1);
+void BattleProgress_Save(unk_func_80027FA0* arg0, s16 arg1);
 void GbsGetPlayerMoney(u16* arg0);
 void GbsSetPlayerMoney(u16* arg0);
 s32 func_800280C4(void);
-void func_800280D4(u8 arg0);
+void ResultScreen_SetRandomSeed(u8 arg0);
 s32 func_80028118(void);
 void func_80028128(u8 arg0);
 s32 func_8002816C(void);

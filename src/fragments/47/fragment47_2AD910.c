@@ -85,7 +85,7 @@ void SnapSelect_Prepare(s32 arg0) {
     }
 
     if (arg0 != 0) {
-        SnapSelect_LoadModeData(D_83805664, &D_83407B18.unk_08);
+        SnapSelect_LoadModeData(D_83805664, &gGalleryFinalSelection.unk_08);
     } else {
         SnapSelect_LoadModeData(D_83805664, NULL);
     }
@@ -125,7 +125,7 @@ s32 SnapSelect_Process(void) {
                 if (D_83804CB8 <= 0) {
                     gSnapSelectState = 1;
                     if (gSnapSelectMode == 1) {
-                        D_83805664 = D_83407B18.unk_08.unk_00;
+                        D_83805664 = gGalleryFinalSelection.unk_08.unk_00;
                         SnapSelect_Prepare(1);
                     } else {
                         if (gSnapSelectMode == 2) {
@@ -220,7 +220,7 @@ void SnapSelect_MainLoop(void) {
 
 s32 SnapSelect_FinalizeResult(void) {
     s32 var_v1;
-    unk_D_83407B18_008* temp_a0 = &D_83407B18.unk_08;
+    unk_D_83407B18_008* temp_a0 = &gGalleryFinalSelection.unk_08;
     temp_a0 += 0;
 
     if (D_83805660 == 0) {

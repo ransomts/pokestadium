@@ -139,13 +139,13 @@ void DetermineMessageCategoryAndDisplay(void) {
 
     sp18->unk_58 = sp18->unk_44.unk_00;
 
-    if (func_84307AE0(sp18->unk_44.unk_00, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp18->unk_44.unk_00, D_84385990, 2) != 0) {
         sp1C = 0;
-    } else if (func_84307AE0(sp18->unk_44.unk_00, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_84385994, 5) != 0) {
         sp1C = 1;
-    } else if (func_84307AE0(sp18->unk_44.unk_00, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_8438599C, 5) != 0) {
         sp1C = 2;
-    } else if (func_84307AE0(sp18->unk_44.unk_00, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_843859A4, 0x2E) != 0) {
         sp1C = 3;
     } else {
         sp1C = 4;
@@ -209,13 +209,13 @@ void func_84317EDC(void) {
     UNUSED s32 pad;
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    if (func_84307AE0(sp1C->unk_5A, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp1C->unk_5A, D_84385990, 2) != 0) {
         sp24 = 0;
-    } else if (func_84307AE0(sp1C->unk_5A, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, D_84385994, 5) != 0) {
         sp24 = 1;
-    } else if (func_84307AE0(sp1C->unk_5A, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, D_8438599C, 5) != 0) {
         sp24 = 2;
-    } else if (func_84307AE0(sp1C->unk_5A, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, D_843859A4, 0x2E) != 0) {
         sp24 = 3;
     } else {
         sp24 = 4;
@@ -254,13 +254,13 @@ void func_843180AC(void) {
 
     sp24 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    if (func_84307AE0(sp24->unk_5A, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp24->unk_5A, D_84385990, 2) != 0) {
         sp2C = 0;
-    } else if (func_84307AE0(sp24->unk_5A, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, D_84385994, 5) != 0) {
         sp2C = 1;
-    } else if (func_84307AE0(sp24->unk_5A, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, D_8438599C, 5) != 0) {
         sp2C = 2;
-    } else if (func_84307AE0(sp24->unk_5A, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, D_843859A4, 0x2E) != 0) {
         sp2C = 3;
     } else {
         sp2C = 4;
@@ -688,7 +688,7 @@ void Dialog_RunWindowSequence(s16 arg0, s16 arg1) {
     }
 }
 
-void func_843193F4(unk_BattlePlayerEntity* arg0) {
+void Battle_SetEntityPosition(unk_BattlePlayerEntity* arg0) {
     arg0->unk_8C4.unk_00 = 0;
     arg0->unk_8C4.unk_04 = 0;
     arg0->unk_8C4.unk_48[0] = 0;
@@ -732,14 +732,14 @@ void func_84319564(void) {
 
     if ((gBattleContext.unk_11ED != 0) && (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103) &&
         (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17)) {
-        func_843118A8(0x101, 0x64);
+        DrawPhaseTimer(0x101, 0x64);
         if (gBattleResultPhase == 0) {
             if (sp1C->unk_10 != 3) {
-                func_843116D8(0x46, 0x4D);
+                DrawHPBarTimer(0x46, 0x4D);
             }
 
             if (sp18->unk_10 != 3) {
-                func_843116D8(0xE8, 0x96);
+                DrawHPBarTimer(0xE8, 0x96);
             }
         }
     }
@@ -750,13 +750,13 @@ void func_8431962C(void) {
     bzero(gBattleMessageBuffers, sizeof(unk_D_843901A0));
 }
 
-void func_84319668(void) {
+void Battle_InitCamera(void) {
     gBattleMessageBuffers->unk_004 = 0;
     gBattleMessageBuffers->unk_008[gBattleMessageBuffers->unk_004] = 0;
     ResetMessageIndices();
 }
 
-void func_843196A4(void) {
+void Battle_InitBattleEffects(void) {
     unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
     unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
 

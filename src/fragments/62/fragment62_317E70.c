@@ -109,7 +109,7 @@ void ParticleNode_CreateMultiple(ParticleEffectInstance* arg0, func_unk_D_8140E7
     }
 }
 
-void func_8432D8E8(ParticleEffectInstance* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4,
+void Particle_CreateChildParticles(ParticleEffectInstance* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4,
                    s16 arg5) {
     s16 i;
     ParticleEffectInstance* temp_v0;

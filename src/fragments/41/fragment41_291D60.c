@@ -21,12 +21,12 @@ s32 LoadRentalItemData(unk_func_82F00838_sp30* arg0) {
         sp24 = CreateGbsBlock(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
     }
 
-    func_80022F24(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
+    GbsBlock_WriteEntries(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
     CommitAndFreeGbsBlock(sp24);
 
-    var_v1 = func_80024270(arg0->unk_02);
+    var_v1 = PlayerSave_WriteBoxes(arg0->unk_02);
     if (var_v1 != 0) {
-        var_v1 = func_8002431C(arg0->unk_02);
+        var_v1 = PlayerSave_WriteHeader(arg0->unk_02);
     }
     return var_v1;
 }
@@ -44,7 +44,7 @@ s32 InitRentalItems(unk_D_82F210E0* arg0) {
     if (arg0->unk_06 < 0) {
         arg0->unk_06 = 0;
         for (i = 0, ptr = &sp30[0]; i < 2; i++, ptr++) {
-            func_8002447C(ptr->unk_02);
+            PlayerSave_VerifyPresence(ptr->unk_02);
         }
     }
 
@@ -54,7 +54,7 @@ s32 InitRentalItems(unk_D_82F210E0* arg0) {
                 continue;
             }
 
-            if (func_80023658(ptr->unk_02) != 0) {
+            if (SaveAndVerifyFooter(ptr->unk_02) != 0) {
                 arg0->unk_08++;
             } else {
                 break;
@@ -73,7 +73,7 @@ s32 InitRentalItems(unk_D_82F210E0* arg0) {
 
         if (LoadRentalItemData(ptr) != 0) {
             arg0->unk_0A += 1;
-            func_800244F4(ptr->unk_02);
+            PlayerSave_PowerOff(ptr->unk_02);
         } else {
             break;
         }
@@ -318,7 +318,7 @@ void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0) {
         arg0->unk_02 = 0;
         if (arg0->unk_0C == 1) {
             func_82F0525C(arg0->unk_0A, &sp24);
-            temp_v0 = func_80023E34(sp24.unk_02);
+            temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
             if (temp_v0 == 1) {
                 arg0->unk_10 = 1;
             }
@@ -354,7 +354,7 @@ void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0) {
                 arg0->unk_0C = 1;
                 arg0->unk_10 = 2;
                 func_82F0525C(arg0->unk_0A, &sp24);
-                temp_v0 = func_80023E34(sp24.unk_02);
+                temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
                 if (temp_v0 == 1) {
                     arg0->unk_10 = 1;
                 }

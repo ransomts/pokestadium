@@ -5,7 +5,7 @@
 #include "src/11BA0.h"
 #include "src/fragments/5/fragment5.h"
 
-typedef struct unk_D_86404778 {
+typedef struct HudState {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ s32 unk_004;
     /* 0x008 */ s16 unk_008;
@@ -25,15 +25,15 @@ typedef struct unk_D_86404778 {
     /* 0x190 */ unk_D_86002F34_alt9* unk_190;
     /* 0x194 */ u16 unk_194[14][8];
     /* 0x274 */ u8 unk_274;
-} unk_D_86404778; // size = 0x278
+} HudState; // size = 0x278
 
-typedef struct unk_D_86405158 {
+typedef struct ResultGameState {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ u8 unk_001;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ u8 unk_16C;
     /* 0x16D */ u8 unk_16D;
-} unk_D_86405158; // size = 0x170
+} ResultGameState; // size = 0x170
 
 extern u8 gUseAlphaBlend;
 extern u16 gGaugeSegmentLengths[4][14][8];
@@ -42,25 +42,25 @@ extern Gfx gHealthBarQuadDL[];
 extern Gfx gDamageOverlayDL[];
 
 void UpdateHealthBarSegmentOffsets(void);
-u16 func_86400128(u8 arg0);
-void func_86400184(unk_D_86404778* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
-void func_864001A0(void);
-void func_86400220(void);
-void func_86400258(unk_D_86405158* arg0);
-void func_864002F8(void);
-void func_864005EC(u8 arg0);
-void func_86400860(UNUSED s32 arg0);
-void func_86400BE8(s32 arg0);
-void func_86400EB4(void);
-void func_86401544(s32 arg0);
+u16 IsHealthSegmentMatch(u8 arg0);
+void Hud_SetAnimationState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
+void Hud_InitDefaultStates(void);
+void ResultScreen_ResetAnim(void);
+void GameState_UpdateAnim(ResultGameState* arg0);
+void Hud_UpdateAnimation(void);
+void Hud_HandlePlayerElimination(u8 arg0);
+void Hud_RenderHealthBars(UNUSED s32 arg0);
+void ResultScreen_Update(s32 arg0);
+void ResultScreen_HandleInput(void);
+void ResultScreen_DrawUI(s32 arg0);
 void func_86401A9C(s32 arg0);
-void func_86401B3C(void);
+void ResultScreen_IntroSequence(void);
 void func_86401D1C(void);
-void func_86401EEC(void);
-void func_86401F74(void);
-void func_8640203C(void);
-void func_86402130(void);
-void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1);
+void ResultScreen_OutroSequence(void);
+void ResultScreen_SetupCamera(void);
+void Hud_CreateBillboards(void);
+void ResultScreen_InitScene(void);
+void ResultScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
 s8 GetHealthBarSegmentOffset(u8 arg0, s32 arg1);
 

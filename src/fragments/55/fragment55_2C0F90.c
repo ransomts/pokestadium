@@ -84,9 +84,9 @@ void Dialog_Render(void) {
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetLineHeight(0x18);
-            Text_Print(0x50, temp_s0 + 6, D_83003CE0.unk_00[gDialogMessageId]);
+            Text_Print(0x50, temp_s0 + 6, gMenuStaticStrings.unk_00[gDialogMessageId]);
             Text_SetFont(8, 0);
-            Text_Print(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[gDialogMessageId]);
+            Text_Print(0x50, temp_s0 + 0x28, gMenuOptionStrings.unk_00[gDialogMessageId]);
             Text_SetupDL();
         }
     }
@@ -99,7 +99,7 @@ void Dialog_Start(s16 arg0) {
     gDialogTimer = 5;
     gDialogAnimProgress = 0;
     gDialogMessageId = arg0;
-    tmp = (GetStringLineCount(D_83003DE0.unk_00[gDialogMessageId]) * 0x18);
+    tmp = (GetStringLineCount(gMenuOptionStrings.unk_00[gDialogMessageId]) * 0x18);
     gDialogHeight = 0x2C + tmp;
     gDialogYPos = ((0x1E0 - gDialogHeight) / 2) + 0x14;
 }

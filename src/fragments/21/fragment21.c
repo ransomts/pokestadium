@@ -1548,7 +1548,7 @@ void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1) {
             break;
 
         case 6:
-            func_8004B1CC(0x1C);
+            ResultScreen_SetAnimation(0x1C);
             break;
 
         case 7:
@@ -1800,7 +1800,7 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
             break;
 
         case 0x2: //	start digging animation 2
-            if (func_800174E4(&sandshrew->unk_000) != 0) {
+            if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
                 miniSandshewChangeAnim(sandshrew, 2);
                 Anim_SetChannelOffset(&sandshrew->unk_000, 0);
                 sandshrew->ySpinSpeed = 0;
@@ -1836,7 +1836,7 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
                 }
 
                 MiniGame_PlaySoundIfNotMuted(3, sandshrew - miniSandshrews);
-                if (func_800174E4(&sandshrew->unk_000) != 0) {
+                if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
                     Anim_SetChannelBase(&sandshrew->unk_000, 0);
                 }
             } else {
@@ -1851,7 +1851,7 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
             break;
 
         case 0x4: //   on stop diggin
-            if (func_800174E4(&sandshrew->unk_000) != 0) {
+            if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
                 GraphNode_TriggerAction(&sandshrew->unk_000, 0);
                 sandshrew->mainState = 0;
             }
@@ -2216,7 +2216,7 @@ void MiniGame_UpdateSandshrewAI(void) {
             break;
 
         case 6:
-            if (D_8780FC96 != 0) {
+            if (gResultExitPending != 0) {
                 minigameState++;
                 D_87903DAC = 1;
             }
@@ -2346,7 +2346,7 @@ void MiniGame_WaitForFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
@@ -2354,7 +2354,7 @@ void MiniGame_WaitForFrame(s32 arg0) {
     ParticleRender_SetupMiniCamera();
 
     if (miniDebugMode == 0) {
-        if (D_8780FC98 == 0) {
+        if (gResultConfirmPressed == 0) {
             func_86F01EF4(arg0);
         }
         ResultScreen_UpdateAndRender();
@@ -2402,7 +2402,7 @@ void MiniGame_ShowTutorial(void) {
             }
         }
 
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             Timer_UpdateCounters();
             MiniGame_UpdateSandshrewAI(); //	next stept
             MiniGame_UpdateSandshrewPhysics();
@@ -2412,7 +2412,7 @@ void MiniGame_ShowTutorial(void) {
             MiniGame_UpdateSandshrewHUD();
         }
 
-        if ((miniDebugMode == 0) && ((D_87903DAC != 0) || (D_8780FC92 != 0))) {
+        if ((miniDebugMode == 0) && ((D_87903DAC != 0) || (gResultFlag_Special != 0))) {
             var_s5 = 0;
         }
 
@@ -2434,7 +2434,7 @@ void MiniGame_FadeOutAndWaitAudio(void) {
     for (i = 0; i < 30; i++) {
         MiniGame_ReadInputs();
 
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             Timer_UpdateCounters();
             MiniGame_UpdateSandshrewPhysics();
             MiniGame_UpdateSandshrewHoles();

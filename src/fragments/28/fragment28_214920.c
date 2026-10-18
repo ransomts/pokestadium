@@ -161,7 +161,7 @@ void TrainerCardDrawSpeciesListRow(s32 arg0, s32 arg1, char* arg2, UNUSED s32 ar
     s32 var_t3;
 
     sp74 = *arg2 - 1;
-    sp70 = func_8002564C(arg5->unk_88, sp74 + 1);
+    sp70 = SaveSlot_CheckPokemonOwned(arg5->unk_88, sp74 + 1);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
@@ -341,11 +341,11 @@ void TrainerCardInitStatsBox(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2
 }
 
 void TrainerCardLoadTrainerStats(unk_func_888044BC_03C_02C* arg0, s32 arg1) {
-    arg0->unk_2C = func_80025084(arg1);
+    arg0->unk_2C = SaveSlot_GetPokemonId(arg1);
     SaveSlot_GetTrainerName(arg1, arg0->unk_30);
-    arg0->unk_3C = func_80025840(arg1);
-    arg0->unk_40 = func_80025988(arg1);
-    arg0->unk_44 = func_80025AD0(arg1);
+    arg0->unk_3C = SaveSlot_CountOwnedPokemon1(arg1);
+    arg0->unk_40 = SaveSlot_CountOwnedPokemon2(arg1);
+    arg0->unk_44 = SaveSlot_CountOwnedPokemon3(arg1);
 }
 
 void TrainerCardDrawStatsBox(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
@@ -584,7 +584,7 @@ s32 TrainerCardDrawDexEntryBox(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 ar
 
     Text_Print(arg1 + sp44, arg2 + 0x64, sp4C);
     Text_Print(arg1 + sp44, arg2 + 0x7C, sp48);
-    if (func_8002564C(gTrainerCardSaveSlot, sp54->unk_00) >= 2) {
+    if (SaveSlot_CheckPokemonOwned(gTrainerCardSaveSlot, sp54->unk_00) >= 2) {
         TrainerCardPrintDexHeight(arg1 + sp44, arg2 + 0x64, gMenuItemCoords[sp54->unk_00].unk_00);
         TrainerCardPrintDexWeight(arg1 + sp44, arg2 + 0x7C, gMenuItemCoords[sp54->unk_00].unk_02);
     } else {
@@ -643,7 +643,7 @@ void TrainerCardSetDexDescText(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2) 
     UNUSED s32 pad;
     char* sp18;
 
-    if (func_8002564C(arg1, gSpeciesDisplayTable[arg2].unk_00) >= 2) {
+    if (SaveSlot_CheckPokemonOwned(arg1, gSpeciesDisplayTable[arg2].unk_00) >= 2) {
         sp18 = GetMessageString(NULL, 0, gSpeciesDexMsgBank, arg2);
     } else {
         sp18 = "\n???";
@@ -662,7 +662,7 @@ void TrainerCardInitSpriteTileBox(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32
 
 void TrainerCardSetSpriteTileSpecies(unk_func_888044BC_04C_02C* arg0, s32 arg1) {
     func_8001B480(gTrainerCardSpriteMgr, arg1 + 1, 0x108D);
-    arg0->unk_2C = func_8002564C(gTrainerCardSaveSlot, arg1 + 1);
+    arg0->unk_2C = SaveSlot_CheckPokemonOwned(gTrainerCardSaveSlot, arg1 + 1);
 }
 
 s32 TrainerCardDrawSpriteTileBox(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
@@ -719,7 +719,7 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     unk_func_88001300_000* sp44;
     unk_func_88001300_000* sp40;
 
-    sp48 = func_80029080();
+    sp48 = GetCurrentPokemonBank();
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -819,7 +819,7 @@ s32 TrainerCardMenuLoopSpecies(void) {
                 var_s0 |= 0x80000003;
                 var_s2 = 0;
             } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-                if (func_8002564C(gTrainerCardSaveSlot, TrainerCardGetSelectedSpecies(gTrainerCardMenu->unk_38->unk_2C) + 1) == 0) {
+                if (SaveSlot_CheckPokemonOwned(gTrainerCardSaveSlot, TrainerCardGetSelectedSpecies(gTrainerCardMenu->unk_38->unk_2C) + 1) == 0) {
                     var_s0 |= 0x80000101;
                 } else {
                     gTrainerCardMenu->unk_38->unk_2C->unk_00.unk_34[gTrainerCardMenu->unk_38->unk_2C->unk_00.unk_38] |= 2;
@@ -6117,7 +6117,7 @@ s32 PictureQuiz_MainLoop(void) {
     gTrainerCardSpriteMgr = func_8001B1FC(gTrainerCardAssetManager, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, gTrainerCardSpriteTileData);
     TrainerCardSetSpriteTileSpecies(gTrainerCardMenu->unk_4C->unk_2C, temp_s0);
     TrainerCardSetDexSpecies(gTrainerCardMenu->unk_44->unk_2C, temp_s0);
-    TrainerCardSetDexDescText(gTrainerCardMenu->unk_48, func_80029080(), temp_s0);
+    TrainerCardSetDexDescText(gTrainerCardMenu->unk_48, GetCurrentPokemonBank(), temp_s0);
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(gTrainerCardMenu->unk_2C, 1);
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(gTrainerCardMenu->unk_30, 1);
     gTrainerCardMenu->unk_50->unk_00.unk_28 &= ~0x100;
@@ -6257,7 +6257,7 @@ s32 PictureQuiz_GetLastUnlockedPokemon(void) {
     s32 i;
 
     for (i = 151; i > 0; i--) {
-        if (func_8002564C(gTrainerCardSaveSlot, i) != 0) {
+        if (SaveSlot_CheckPokemonOwned(gTrainerCardSaveSlot, i) != 0) {
             break;
         }
     }
@@ -6293,7 +6293,7 @@ s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1) {
     MemoryPool* sp2C;
     u8* sp28;
 
-    gTrainerCardSaveSlot = func_80029080();
+    gTrainerCardSaveSlot = GetCurrentPokemonBank();
     gTrainerCardSpeciesIndex = PictureQuiz_GetLastUnlockedPokemon() - 1;
 
     main_pool_push_state('BOOK');
@@ -6301,7 +6301,7 @@ s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1) {
     gTrainerCardStage = Stage_GetCurrent();
     gNextStage = Stage_Create(0, 1, 2, 1, 2, 0);
     PictureQuiz_InitFramebuffers();
-    func_80025540(gTrainerCardSaveSlot);
+    SaveSlot_UpdateOwnedPokemonBitmask(gTrainerCardSaveSlot);
     Text_Init(0x1D, 0);
     gTrainerCardAssetManager = AssetManager_Create(1);
     AssetManager_LoadArchives();
@@ -6323,7 +6323,7 @@ s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1) {
     gSpeciesDexMsgBank = GetMessageBank(0xA);
     gSpeciesTypeMsgBank = GetMessageBank(0x28);
     gSpeciesCategoryMsgBank = GetMessageBank(9);
-    gTrainerCardUnusedInt = func_80029080();
+    gTrainerCardUnusedInt = GetCurrentPokemonBank();
 
     if (gTrainerCardUnusedInt != -1) {
         MenuScroll_Init(&gTrainerCardGfxState, gTrainerCardUnusedInt);

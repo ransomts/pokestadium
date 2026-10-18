@@ -2515,7 +2515,7 @@ void Fragment50_MainSequence(void) {
     func_82600020();
 
     if (gPokedexPanelAllMonsSeen == 1) {
-        func_8004B1CC(0x47);
+        ResultScreen_SetAnimation(0x47);
         gPokedexPanelAllMonsSeenTimer = 0xA0;
         gPokedexPanelShowList = 1;
     } else {

@@ -577,7 +577,7 @@ s32 func_83201450(void) {
                     UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 0xA), 0x1E);
                     GraphNode_TriggerAction(D_83202028, 9);
                     D_83201F54 = 0;
-                    func_800479C0(0x85, 0x19, 0);
+                    Effect_TriggerMoveVisual(0x85, 0x19, 0);
                     UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 0xB), 1);
                     MessageBank_SetPointer_0x14_0x2A(0x1D, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[spAC] - 1));
                     GetMessageString(sp2C, sizeof(sp2C), gStadiumMessageBank, 0xC);
@@ -653,17 +653,17 @@ void func_832018DC(void) {
         var_v0 = CreateGbsBlock(0x21, D_832027C8.unk_00, D_832027C8.unk_01 - 1, 2);
     }
 
-    func_80022DF4(var_v0, D_832027C8.unk_02);
-    func_80022F24(&D_832027C8.unk_04, 1, var_v0);
+    GbsBlock_SetLimit(var_v0, D_832027C8.unk_02);
+    GbsBlock_WriteEntries(&D_832027C8.unk_04, 1, var_v0);
     CommitAndFreeGbsBlock(var_v0);
     func_832016F4(0);
     func_832016F4(0);
-    func_8002447C(D_832027C8.unk_00);
+    PlayerSave_VerifyPresence(D_832027C8.unk_00);
 
-    while (func_800243D8(D_832027C8.unk_00) == 0) {
+    while (PlayerSave_FullSave(D_832027C8.unk_00) == 0) {
         var_s0 = 2;
         do {
-            temp_v0 = func_80023E34(D_832027C8.unk_00);
+            temp_v0 = PlayerSave_UpdateState(D_832027C8.unk_00);
             if (temp_v0 == 1) {
                 var_s0 = 1;
             }
@@ -678,7 +678,7 @@ void func_832018DC(void) {
         func_832016F4(0);
         func_832016F4(0);
     }
-    func_800244F4(D_832027C8.unk_00);
+    PlayerSave_PowerOff(D_832027C8.unk_00);
 }
 
 void func_83201A18(s32 arg0) {

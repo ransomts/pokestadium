@@ -28,7 +28,7 @@ s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 void func_8004D3A0(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2);
 void func_8004D848(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
-s32 func_8004D858(s32 arg0, u32 arg1);
+s32 ResultScreen_PlaySfx(s32 arg0, u32 arg1);
 s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2);
 void StopSoundByCategory(s32 arg0, s32 arg1, s32 arg2);
 s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);

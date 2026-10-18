@@ -2699,16 +2699,16 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
     unk_func_88001300_03C* tmp3C;
 
     arg0->unk_54 = arg3;
-    arg0->unk_40 = func_80029080();
+    arg0->unk_40 = GetCurrentPokemonBank();
     arg0->unk_50 = 1;
 
     if ((arg0->unk_40 != -1) && (MenuItem_GetPokemonSpecies(arg0->unk_40) == 0)) {
-        if (func_80024A48(0x20, arg0->unk_40, 0) < 6) {
+        if (GetSaveBlockCurrentCount(0x20, arg0->unk_40, 0) < 6) {
             arg0->unk_50 = 0;
         }
 
         for (i = 0; i < 12; i++) {
-            if (func_80024A48(0x21, arg0->unk_40, i) < 0x14) {
+            if (GetSaveBlockCurrentCount(0x21, arg0->unk_40, i) < 0x14) {
                 arg0->unk_50 = 0;
                 break;
             }
@@ -2762,7 +2762,7 @@ void func_88001300(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* ar
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00, &temp_s0->unk_00);
 
     sp68 = mem_pool_alloc(arg6, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp68, 0xE, 8, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp68, 0xE, 8, GetCurrentPokemonBank(),
                                                            GetMessageString(NULL, 0, gLaboMessageBankMain, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&temp_s0->unk_00, &sp68->unk_00.unk_00);
 
@@ -2849,7 +2849,7 @@ s32 func_88001D0C(unk_func_88001300* arg0, Controller* controller) {
 
 s32 func_88001D34(void) {
     s32 i;
-    s32 temp_v0 = func_80024EF4();
+    s32 temp_v0 = GetActivePlayerMask();
     s32 var_v1 = 0;
 
     for (i = 0; i < 4; i++) {
@@ -2883,7 +2883,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 7));
                         var_s1 |= 0x80000101;
-                    } else if (func_8002539C(arg0->unk_40) == 0) {
+                    } else if (MenuItem_IsPokemonShiny(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 0xA));
                         var_s1 |= 0x80000101;
@@ -2910,7 +2910,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 7));
                         var_s1 |= 0x80000101;
-                    } else if (func_8002539C(arg0->unk_40) == 0) {
+                    } else if (MenuItem_IsPokemonShiny(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 9));
                         var_s1 |= 0x80000101;
@@ -2927,7 +2927,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 7));
                         var_s1 |= 0x80000101;
-                    } else if (func_8002539C(arg0->unk_40) == 0) {
+                    } else if (MenuItem_IsPokemonShiny(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 0xA));
                         var_s1 |= 0x80000101;
@@ -2951,7 +2951,7 @@ s32 func_88001D94(unk_func_88001300* arg0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 7));
                         var_s1 |= 0x80000101;
-                    } else if (func_8002539C(arg0->unk_40) == 0) {
+                    } else if (MenuItem_IsPokemonShiny(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(MessageBox_SetText))(arg0->unk_34,
                                                                                GetMessageString(NULL, 0, gLaboMessageBankSystem, 0xA));
                         var_s1 |= 0x80000101;
@@ -2990,7 +2990,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     }
 
     if (arg0->unk_54 == 2) {
-        func_8004B1CC(9);
+        ResultScreen_SetAnimation(9);
     }
 
     if (arg0->unk_40 == -1) {

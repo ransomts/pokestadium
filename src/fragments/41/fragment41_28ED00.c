@@ -1103,7 +1103,7 @@ void InitMenuGraphics(void) {
         gSelectedPlayerIndices[i] = -1;
     }
 
-    gSelectedPlayerIndices[0] = func_80029080();
+    gSelectedPlayerIndices[0] = GetCurrentPokemonBank();
     gSelectedSlotIndex = 0;
     InitPlayerSlots(gSelectedPlayerIndices[0]);
 }

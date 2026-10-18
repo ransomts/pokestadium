@@ -565,7 +565,7 @@ void func_84B0F8BC(unk_D_84B2665C* arg0) {
     }
 }
 
-void func_84B0F8E8(unk_D_84B2665C* arg0) {
+void UI_UpdatePanel(unk_D_84B2665C* arg0) {
     switch (arg0->unk_00) {
         case 1:
             func_84B0F888(arg0);
@@ -581,7 +581,7 @@ void func_84B0F8E8(unk_D_84B2665C* arg0) {
     }
 }
 
-void func_84B0F950(unk_D_84B2665C* arg0, s16 arg1) {
+void Menu_SetOption(unk_D_84B2665C* arg0, s16 arg1) {
     unk_D_84B17550* ptr = &gMenuPanelDefs[arg1 - 1];
 
     arg0->unk_01 = arg1;
@@ -614,13 +614,13 @@ void func_84B0F950(unk_D_84B2665C* arg0, s16 arg1) {
     }
 }
 
-void func_84B0FACC(unk_D_84B2665C* arg0) {
+void BattleMenu_UpdateState(unk_D_84B2665C* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = 0;
 }
 
-s32 func_84B0FADC(unk_D_84B2665C* arg0) {
+s32 Menu_GetInput(unk_D_84B2665C* arg0) {
     if (arg0->unk_00 == 4) {
         arg0->unk_00 = 0;
         return arg0->unk_04;

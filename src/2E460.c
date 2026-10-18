@@ -50,7 +50,7 @@ void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1) {
         arg0->unk_00 = 1;
     } else {
         arg0->unk_00 = 0;
-        arg0->unk_08 = func_80025084(arg1);
+        arg0->unk_08 = SaveSlot_GetPokemonId(arg1);
         SaveSlot_GetTrainerName(arg1, &arg0[1]);
     }
     arg0->unk_04 = MenuItem_GetHeldItemId(arg1);
@@ -483,7 +483,7 @@ s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
         case 33:
         case 34:
         case 35:
-            sp1C = func_80024A48(arg0, arg1, arg2);
+            sp1C = GetSaveBlockCurrentCount(arg0, arg1, arg2);
             break;
 
         case 16:
@@ -520,7 +520,7 @@ void Game_RunPokemonLab(void) {
 
     FRAGMENT_LOAD_AND_CALL(fragment33, 1, 0);
 
-    if (func_80029080() == -1) {
+    if (GetCurrentPokemonBank() == -1) {
         gCurrentGameState = STATE_AREA_SELECT;
         return;
     }
@@ -532,9 +532,9 @@ void Game_RunPokemonLab(void) {
         if (game_state == STATE_POKEMON_LAB) {
             main_pool_push_state('PLAB');
 
-            if (func_80029080() != -1) {
+            if (GetCurrentPokemonBank() != -1) {
                 GbsEnsureBankLoaded(3);
-                SnapSelect_SetCameraMode(func_80029080());
+                SnapSelect_SetCameraMode(GetCurrentPokemonBank());
             }
 
             Gfx_InitBuffers(0x16000, 0);

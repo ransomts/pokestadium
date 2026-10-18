@@ -37,11 +37,11 @@ static Gfx D_84B14CE0[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B14DC8[] = {
+static u32 gHealthBarNodeData[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gHealthBarQuadVtx, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, DrawPokemonFrontSprite, D_84B14CE0, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B14E00[] = {
+static Vtx gHealthBarVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -49,53 +49,53 @@ static Vtx D_84B14E00[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14EC0[] = {
+static Vtx gHealthBarSegmentVtx0[] = {
     VTX(-30, 45, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 45, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14F40[] = {
+static Vtx gHealthBarSegmentVtx1[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14FC0[] = {
+static Vtx gHealthBarSegmentVtx2[] = {
     VTX(-30, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 0, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15040[] = {
+static Vtx gHealthBarSegmentVtx3[] = {
     VTX(-30, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-30, -15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 0, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B150C0[] = {
+static Vtx gHealthBarSegmentVtx4[] = {
     VTX(-30, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15140[] = {
+static Vtx gHealthBarSegmentVtx5[] = {
     VTX(-30, -30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -45, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -45, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B151C0[] = {
+static Vtx gHealthBarBackVtx[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-30, -30, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15200[] = {
+static Gfx gHealthBarDL_Segments[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14E00, 12, 0),
+    gsSPVertex(gHealthBarVtx, 12, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -105,42 +105,42 @@ static Gfx D_84B15200[] = {
     gsDPLoadTextureBlock(0x0E002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
-    gsSPVertex(D_84B14EC0, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B14F40, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B14FC0, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15040, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx3, 8, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B150C0, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx4, 8, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15140, 8, 0),
+    gsSPVertex(gHealthBarSegmentVtx5, 8, 0),
     gsDPLoadTextureTile(0x0F00A000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -149,23 +149,23 @@ static Gfx D_84B15200[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B15618[] = {
+static Gfx gHealthBarBackDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B151C0, 4, 0),
+    gsSPVertex(gHealthBarBackVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15688[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B14E00, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, DrawPokemonStatusIcon, D_84B15200, 0x22050000, D_84B15618, 0x25000000, 0x06000000, 0x01000000,
+static u32 gHealthBarNodeData_Status[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gHealthBarVtx, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, DrawPokemonStatusIcon, gHealthBarDL_Segments, 0x22050000, gHealthBarBackDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B156C8[] = {
+static Vtx gItemIconVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -177,17 +177,17 @@ static Vtx D_84B156C8[] = {
     VTX(-24, -20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-24, -44, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, -44, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(24, -20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15808[] = {
+static Vtx gItemIconBackVtx[] = {
     VTX(-20, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-20, -10, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, -10, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15848[] = {
+static Gfx gItemIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B156C8, 20, 0),
+    gsSPVertex(gItemIconVtx, 20, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -205,78 +205,78 @@ static Gfx D_84B15848[] = {
     gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B159B0[] = {
+static Gfx gItemIconBackDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15808, 4, 0),
+    gsSPVertex(gItemIconBackVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15A20[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B156C8, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, DrawPokemonItemIcon, D_84B15848, 0x22050000, D_84B159B0, 0x25000000, 0x06000000, 0x01000000,
+static u32 gItemIconNodeData[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gItemIconVtx, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, DrawPokemonItemIcon, gItemIconDL, 0x22050000, gItemIconBackDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B15A60[] = {
+static Vtx gHPBarSegmentVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -24, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15AE0[] = {
+static Vtx gHPBarSegmentVtx0[] = {
     VTX(-30, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 22, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15B60[] = {
+static Vtx gHPBarSegmentVtx1[] = {
     VTX(-30, 7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15BE0[] = {
+static Vtx gHPBarSegmentVtx2[] = {
     VTX(-30, -7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -22, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -22, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15C60[] = {
+static Vtx gHPBarBackVtx[] = {
     VTX(-22, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-22, -22, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, -22, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15CA0[] = {
+static Gfx gHPBarSegmentDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15A60, 8, 0),
+    gsSPVertex(gHPBarSegmentVtx, 8, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureBlock(0x0E000C00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15AE0, 8, 0),
+    gsSPVertex(gHPBarSegmentVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15B60, 8, 0),
+    gsSPVertex(gHPBarSegmentVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15BE0, 8, 0),
+    gsSPVertex(gHPBarSegmentVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -285,29 +285,29 @@ static Gfx D_84B15CA0[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B15EE0[] = {
+static Gfx gHPBarBackDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15C60, 4, 0),
+    gsSPVertex(gHPBarBackVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15F50[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, D_84B15CA0,
-    0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gHPBarNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, gHPBarSegmentDL,
+    0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 D_84B15FA8[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, D_84B15CA0,
-    0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gHPBarNodeData_Alt[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, gHPBarSegmentDL,
+    0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B16000[] = {
+static Vtx gHPBarSegmentVtxAlt[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -317,17 +317,17 @@ static Vtx D_84B16000[] = {
     VTX(-12, -8, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-12, -20, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(12, -20, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(12, -8, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B16100[] = {
+static Vtx gHPBarBackVtxAlt[] = {
     VTX(-14, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-14, -8, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, -8, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, 20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16140[] = {
+static Gfx gHPBarSegmentDLAlt[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16000, 16, 0),
+    gsSPVertex(gHPBarSegmentVtxAlt, 16, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -342,27 +342,27 @@ static Gfx D_84B16140[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B16268[] = {
+static Gfx gHPBarBackDLAlt[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16100, 4, 0),
+    gsSPVertex(gHPBarBackVtxAlt, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B162D8[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, D_84B16140,
-    0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gHPBarNodeDataAlt[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtxAlt, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, gHPBarSegmentDLAlt,
+    0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 D_84B16330[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, D_84B16140,
-    0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
+static u32 gHPBarNodeDataAlt2[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtxAlt, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, gHPBarSegmentDLAlt,
+    0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
 };
 
 s32 DrawPokemonFrontSprite(s32 arg0, SimpleGfxNode* arg1) {
@@ -639,7 +639,7 @@ void InitDoubleBattleHealthBarGraphNodes(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B08D54(unk_D_84B25A58* arg0) {
+void InitDoubleBattleHealthBarGraphNodes_Alt(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
@@ -669,7 +669,7 @@ void func_84B08D54(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B08F7C(unk_D_84B25A58* arg0) {
+void InitDoubleBattleHealthBarGraphNodes_Alt2(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
@@ -700,7 +700,7 @@ void func_84B08F7C(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B091A0(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateHealthBarSlideIn(unk_D_84B25A58* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -720,7 +720,7 @@ void func_84B091A0(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09268(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateDoubleHealthBarSlideIn(unk_D_84B25A58* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -743,7 +743,7 @@ void func_84B09268(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09354(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateHealthBarDrain(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x0110000A, 0, 0);
     }
@@ -757,7 +757,7 @@ void func_84B09354(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09444(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateDoubleHealthBarDrain(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x0110000A, 0, 0);
     }
@@ -771,7 +771,7 @@ void func_84B09444(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09534(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateHealthBarDrainFast(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x0110000A, 0, 0);
     }
@@ -785,7 +785,7 @@ void func_84B09534(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B0962C(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateDoubleHealthBarDrainFast(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x0110000A, 0, 0);
     }
@@ -799,7 +799,7 @@ void func_84B0962C(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateHealthBarEntry(unk_D_84B25A58* arg0, s16 arg1) {
     s32 i;
     PokemonData* temp_s5 = gBattleContext.unk_1194[0].unk_08[0]->unk_01C;
     PokemonData* temp_s6 = gBattleContext.unk_1194[1].unk_08[0]->unk_01C;
@@ -849,7 +849,7 @@ void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
+void AnimateDoubleHealthBarEntry(unk_D_84B25A58* arg0, s16 arg1) {
     s32 i;
     PokemonData* temp_s0 = &gBattleContext.unk_1194[0].unk_08[0]->unk_01C[0];
     PokemonData* var_a3 = NULL;
@@ -865,7 +865,7 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 == 0) {
-        func_84B08F7C(arg0);
+        InitDoubleBattleHealthBarGraphNodes_Alt2(arg0);
     }
 
     if (arg1 < 0x10) {
@@ -949,31 +949,31 @@ void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void func_84B09F60(unk_D_84B25A58* arg0) {
+void UpdateHealthBarAnimation(unk_D_84B25A58* arg0) {
     if (osTvType == OS_TV_PAL) {
         if (arg0->unk_02 == 1) {
             if (arg0->unk_01 >= 0) {
-                func_84B09268(arg0, arg0->unk_01);
+                AnimateDoubleHealthBarSlideIn(arg0, arg0->unk_01);
             }
 
             if (arg0->unk_01 >= 0xC) {
-                func_84B0962C(arg0, arg0->unk_01 - 0xC);
+                AnimateDoubleHealthBarDrainFast(arg0, arg0->unk_01 - 0xC);
             }
 
             if (arg0->unk_01 >= 0x3E) {
-                func_84B099D8(arg0, arg0->unk_01 - 0x3E);
+                AnimateDoubleHealthBarEntry(arg0, arg0->unk_01 - 0x3E);
             }
         } else {
             if (arg0->unk_01 >= 0) {
-                func_84B091A0(arg0, arg0->unk_01);
+                AnimateHealthBarSlideIn(arg0, arg0->unk_01);
             }
 
             if (arg0->unk_01 >= 0xC) {
-                func_84B09534(arg0, arg0->unk_01 - 0xC);
+                AnimateHealthBarDrainFast(arg0, arg0->unk_01 - 0xC);
             }
 
             if (arg0->unk_01 >= 0x3E) {
-                func_84B09720(arg0, arg0->unk_01 - 0x3E);
+                AnimateHealthBarEntry(arg0, arg0->unk_01 - 0x3E);
             }
         }
 
@@ -984,27 +984,27 @@ void func_84B09F60(unk_D_84B25A58* arg0) {
     } else {
         if (arg0->unk_02 == 1) {
             if (arg0->unk_01 >= 0) {
-                func_84B09268(arg0, arg0->unk_01);
+                AnimateDoubleHealthBarSlideIn(arg0, arg0->unk_01);
             }
 
             if (arg0->unk_01 >= 0xC) {
-                func_84B09444(arg0, arg0->unk_01 - 0xC);
+                AnimateDoubleHealthBarDrain(arg0, arg0->unk_01 - 0xC);
             }
 
             if (arg0->unk_01 >= 0x4A) {
-                func_84B099D8(arg0, arg0->unk_01 - 0x4A);
+                AnimateDoubleHealthBarEntry(arg0, arg0->unk_01 - 0x4A);
             }
         } else {
             if (arg0->unk_01 >= 0) {
-                func_84B091A0(arg0, arg0->unk_01);
+                AnimateHealthBarSlideIn(arg0, arg0->unk_01);
             }
 
             if (arg0->unk_01 >= 0xC) {
-                func_84B09354(arg0, arg0->unk_01 - 0xC);
+                AnimateHealthBarDrain(arg0, arg0->unk_01 - 0xC);
             }
 
             if (arg0->unk_01 >= 0x4A) {
-                func_84B09720(arg0, arg0->unk_01 - 0x4A);
+                AnimateHealthBarEntry(arg0, arg0->unk_01 - 0x4A);
             }
         }
 
@@ -1025,19 +1025,19 @@ void AdvanceSpriteAnimation(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A1F4(unk_D_84B25A58* arg0) {
+void UI_UpdateState(unk_D_84B25A58* arg0) {
     switch (arg0->unk_00) {
         case 1:
             AdvanceSpriteAnimation(arg0);
             break;
 
         case 3:
-            func_84B09F60(arg0);
+            UpdateHealthBarAnimation(arg0);
             break;
     }
 }
 
-void func_84B0A244(unk_D_84B25A58* arg0) {
+void SetupSingleBattleSpriteSlots(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -1054,7 +1054,7 @@ void func_84B0A244(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A36C(unk_D_84B25A58* arg0) {
+void SetupDoubleBattleSpriteSlots(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -1083,7 +1083,7 @@ void func_84B0A36C(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
+void UI_Setup(unk_D_84B25A58* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
@@ -1092,9 +1092,9 @@ void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
     FRAGMENT_LOAD(fragment31);
 
     if (arg0->unk_02 == 1) {
-        func_84B0A36C(arg0);
+        SetupDoubleBattleSpriteSlots(arg0);
     } else {
-        func_84B0A244(arg0);
+        SetupSingleBattleSpriteSlots(arg0);
     }
 
     Battle_DrawTrainerInfo(arg0->unk_24, 0, sp24, D_3000000);
@@ -1102,7 +1102,7 @@ void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
     arg0->unk_00 = 1;
 }
 
-s32 func_84B0A634(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
+s32 UI_WaitUntilReady(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
     if (arg0->unk_00 == 2) {
         arg0->unk_00 = 3;
         arg0->unk_04 = arg1;
@@ -1119,7 +1119,7 @@ s32 func_84B0A634(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
         GraphNode_InitChild(&arg0->unk_04[7], 0, 0, arg0->unk_18);
 
         if (arg0->unk_02 == 1) {
-            func_84B08D54(arg0);
+            InitDoubleBattleHealthBarGraphNodes_Alt(arg0);
         } else {
             InitHealthBarGraphNodes(arg0);
         }
@@ -1127,7 +1127,7 @@ s32 func_84B0A634(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
     return arg0->unk_00 == 3;
 }
 
-void func_84B0A738(unk_D_84B25A58* arg0) {
+void UpdateSingleBattleSpriteImages(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
 
@@ -1140,7 +1140,7 @@ void func_84B0A738(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A82C(unk_D_84B25A58* arg0) {
+void UpdateDoubleBattleSpriteImages(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
 
@@ -1165,7 +1165,7 @@ void func_84B0A82C(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A9D0(unk_D_84B25A58* arg0) {
+void UI_InitElement(unk_D_84B25A58* arg0) {
     MemoryBlock* sp2C;
     s32 i;
 
@@ -1209,21 +1209,21 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
 
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {
-        arg0->unk_08 = process_geo_layout(sp2C, D_84B15F50);
-        arg0->unk_0C = process_geo_layout(sp2C, D_84B15FA8);
-        arg0->unk_10 = process_geo_layout(sp2C, D_84B162D8);
-        arg0->unk_14 = process_geo_layout(sp2C, D_84B16330);
+        arg0->unk_08 = process_geo_layout(sp2C, gHPBarNodeData);
+        arg0->unk_0C = process_geo_layout(sp2C, gHPBarNodeData_Alt);
+        arg0->unk_10 = process_geo_layout(sp2C, gHPBarNodeDataAlt);
+        arg0->unk_14 = process_geo_layout(sp2C, gHPBarNodeDataAlt2);
     } else {
-        arg0->unk_08 = process_geo_layout(sp2C, D_84B15688);
-        arg0->unk_10 = process_geo_layout(sp2C, D_84B15A20);
+        arg0->unk_08 = process_geo_layout(sp2C, gHealthBarNodeData_Status);
+        arg0->unk_10 = process_geo_layout(sp2C, gItemIconNodeData);
     }
 
-    arg0->unk_18 = process_geo_layout(sp2C, D_84B14DC8);
+    arg0->unk_18 = process_geo_layout(sp2C, gHealthBarNodeData);
     mem_pool_resize_block(sp2C);
 
     if (arg0->unk_02 == 1) {
-        func_84B0A82C(arg0);
+        UpdateDoubleBattleSpriteImages(arg0);
     } else {
-        func_84B0A738(arg0);
+        UpdateSingleBattleSpriteImages(arg0);
     }
 }

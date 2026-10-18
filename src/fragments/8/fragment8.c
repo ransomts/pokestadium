@@ -313,7 +313,7 @@ void UpdateCameraForPhase(void) {
             break;
 
         case 2:
-            if (D_8780FC94 == 0) {
+            if (gResultMenuVisible == 0) {
                 if (gRaceCameraPitch > 0x14A) {
                     gRaceCameraPitch -= 2;
                 }
@@ -476,7 +476,7 @@ void Race_RenderFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
@@ -485,7 +485,7 @@ void Race_RenderFrame(s32 arg0) {
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
     RenderPlayerPanels();
 
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         Race_DrawPanelAndText(arg0);
     }
 
@@ -1005,11 +1005,11 @@ void func_862023F8(void) {
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             return;
         }
 
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             if (gRaceFinishFrame >= 0x708) {
                 spA4 = 0;
             }
@@ -1032,7 +1032,7 @@ void func_862023F8(void) {
             }
 
             if (gRaceFinishFrame == 0xF) {
-                func_8004B1CC(0x19);
+                ResultScreen_SetAnimation(0x19);
             }
 
             temp_s1_2 = UpdatePlayersAndCheckFinish();
@@ -1112,8 +1112,8 @@ void func_862023F8(void) {
     while (var_s3 > 0) {
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
-        if (D_8780FC92 == 0) {
-            if (D_8780FC94 == 0) {
+        if (gResultFlag_Special == 0) {
+            if (gResultMenuVisible == 0) {
                 var_s3 = 0;
                 UpdateFinishersAnim();
 
@@ -1153,9 +1153,9 @@ void func_862023F8(void) {
     if (gRaceWinnersCount != 1) {
         gRaceMultipleWinners = 1;
     } else if (var_s3 == 1) {
-        func_8004B1CC(0xBD);
+        ResultScreen_SetAnimation(0xBD);
     } else {
-        func_8004B1CC(0xBE);
+        ResultScreen_SetAnimation(0xBE);
     }
 }
 
@@ -1196,7 +1196,7 @@ void TriggerResultAnims(void) {
         }
     }
 
-    while (D_8780FC94 != 0) {
+    while (gResultMenuVisible != 0) {
         PollInputsWhenStageReady();
         Race_RenderFrame(gRacePhase);
     }
@@ -1251,7 +1251,7 @@ void func_86202FA4(s32 arg0) {
 void func_86203008(void) {
     gRacePhase = 5;
 
-    while (D_8780FC96 == 0) {
+    while (gResultExitPending == 0) {
         if ((gMenuCursorX == 1) && (gRaceUnusedFlag2 > 0)) {
             gRaceUnusedFlag2 -= 0xA;
             if (gRaceUnusedFlag2 < 0) {
@@ -1407,7 +1407,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
         func_86202FA4(5);
         HandleResultScreen();
         func_862023F8();
-        if ((D_8780FC92 == 0) && (gRaceIsResultScreen == 0)) {
+        if ((gResultFlag_Special == 0) && (gRaceIsResultScreen == 0)) {
             TriggerResultAnims();
             func_86203008();
         }

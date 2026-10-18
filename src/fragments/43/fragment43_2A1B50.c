@@ -9,30 +9,30 @@
 
 unk_D_83402EE0 D_83402EE0[24];
 s32 D_83403C00[24];
-unk_D_83403C60 D_83403C60[36];
-static unk_D_83403C60 D_83405010[36];
-unk_D_83403C60 D_834063C0[21];
-static unk_D_83403C60 D_83406F40[21];
-unk_D_83403C60* D_83407ABC;
-unk_D_83403C60* D_83407AC0;
-static unk_D_83406EB0* D_83407AC4;
+unk_D_83403C60 gGalleryEntries[36];
+static unk_D_83403C60 gGalleryEntriesBackup[36];
+unk_D_83403C60 gGalleryCamEntries[21];
+static unk_D_83403C60 gGalleryCamEntriesBackup[21];
+unk_D_83403C60* gCurrentCamEntry;
+unk_D_83403C60* gCurrentCamEntryPage;
+static unk_D_83406EB0* gCurrentCamEntrySpecial;
 unk_D_83407AC8 D_83407AC8;
-s32 D_83407AE4;
-s32 D_83407AE8;
-s32 D_83407AEC;
+s32 gGallerySpecialUnlocked;
+s32 gGallerySpecialViewed;
+s32 gGalleryAudioStateFlag;
 static unk_func_80027FA0 D_83407AF0;
-unk_D_83407B00 D_83407AF8;
+unk_D_83407B00 gGallerySelection;
 unk_D_83407B00 D_83407B00;
-unk_D_83407B00 D_83407B08;
-unk_D_83407B00 D_83407B10;
-unk_D_83407B18 D_83407B18;
-unk_D_83407B00 D_83407B30;
-unk_D_83407B38 D_83407B38;
+unk_D_83407B00 gGallerySubSelection;
+unk_D_83407B00 gGalleryTertiarySelection;
+unk_D_83407B18 gGalleryFinalSelection;
+unk_D_83407B00 gGalleryMainSelection;
+unk_D_83407B38 gGalleryCamList;
 
 s32 D_83402E20 = 0;
 s32 D_83402E24 = 1;
 s32 D_83402E28 = 0;
-unk_D_83403C60* D_83402E2C = NULL;
+unk_D_83403C60* gCurrentGalleryEntryPtr = NULL;
 
 void Gallery_Init(void) {
     s32 i;
@@ -40,66 +40,66 @@ void Gallery_Init(void) {
     main_pool_push_state('bkgl');
 
     GbsEnsureBankLoaded(2);
-    bzero(D_83403C60, sizeof(unk_D_83403C60) * 36);
-    bzero(D_83405010, sizeof(unk_D_83403C60) * 36);
-    bzero(&D_834063C0, sizeof(unk_D_83403C60) * 21);
-    bzero(&D_83406F40, sizeof(unk_D_83403C60) * 21);
+    bzero(gGalleryEntries, sizeof(unk_D_83403C60) * 36);
+    bzero(gGalleryEntriesBackup, sizeof(unk_D_83403C60) * 36);
+    bzero(&gGalleryCamEntries, sizeof(unk_D_83403C60) * 21);
+    bzero(&gGalleryCamEntriesBackup, sizeof(unk_D_83403C60) * 21);
 
     for (i = 0; i < 36; i++) {
-        GbsReadBlockEntry(0x16, 0, i, &D_83403C60[i]);
+        GbsReadBlockEntry(0x16, 0, i, &gGalleryEntries[i]);
     }
 
-    _bcopy(&D_83403C60, &D_83405010, sizeof(unk_D_83403C60) * 36);
+    _bcopy(&gGalleryEntries, &gGalleryEntriesBackup, sizeof(unk_D_83403C60) * 36);
 
     for (i = 0; i < 21; i++) {
-        GbsReadBlockEntry(0x17, 0, i, &D_834063C0[i]);
+        GbsReadBlockEntry(0x17, 0, i, &gGalleryCamEntries[i]);
     }
 
     GBAudio_ResetState(&D_83407AF0, 1);
     if (D_83407AF0.unk_00 == 0x1F8) {
-        D_83407AEC = 1;
+        gGalleryAudioStateFlag = 1;
     } else {
-        D_83407AEC = 0;
+        gGalleryAudioStateFlag = 0;
     }
 
-    D_83407ABC = &D_834063C0[0];
-    D_83407AC0 = &D_834063C0[4];
-    D_83407AC4 = &D_834063C0[20];
+    gCurrentCamEntry = &gGalleryCamEntries[0];
+    gCurrentCamEntryPage = &gGalleryCamEntries[4];
+    gCurrentCamEntrySpecial = &gGalleryCamEntries[20];
 
-    if (func_834002C4(D_83407AC4) != 0) {
-        D_83407AE4 = 1;
+    if (Gallery_IsUnlocked(gCurrentCamEntrySpecial) != 0) {
+        gGallerySpecialUnlocked = 1;
     } else {
-        D_83407AE4 = 0;
+        gGallerySpecialUnlocked = 0;
     }
 
-    if (func_834002E4(D_83407AC4) != 0) {
-        D_83407AE8 = 1;
-        D_83407AC4->unk_6C &= ~2;
+    if (Gallery_IsViewed(gCurrentCamEntrySpecial) != 0) {
+        gGallerySpecialViewed = 1;
+        gCurrentCamEntrySpecial->unk_6C &= ~2;
 
         for (i = 0; i < 21; i++) {
-            GbsWriteBlockEntry(0x17, 0, i, &D_834063C0[i]);
+            GbsWriteBlockEntry(0x17, 0, i, &gGalleryCamEntries[i]);
         }
 
         GbsProcessBankWrites(2);
         GbsSyncBank(2);
     } else {
-        D_83407AE8 = 0;
+        gGallerySpecialViewed = 0;
     }
 
-    _bcopy(&D_834063C0, &D_83406F40, sizeof(unk_D_83403C60) * 21);
+    _bcopy(&gGalleryCamEntries, &gGalleryCamEntriesBackup, sizeof(unk_D_83403C60) * 21);
 
     main_pool_pop_state('bkgl');
 
-    GallerySelection_Init(&D_83407B30);
+    GallerySelection_Init(&gGalleryMainSelection);
     Selection_Reset(&D_83407B00);
-    Selection_Reset(&D_83407B08);
-    Selection_Reset(&D_83407B10);
-    Selection_Reset(&D_83407B18.unk_00);
+    Selection_Reset(&gGallerySubSelection);
+    Selection_Reset(&gGalleryTertiarySelection);
+    Selection_Reset(&gGalleryFinalSelection.unk_00);
     Cam_ResetUnkF90();
-    CamList_Init(&D_83407B38, 0x3C, 0x2D, 0x10, 4, 0, 0, D_83407AC0, 0x10, 0);
+    CamList_Init(&gGalleryCamList, 0x3C, 0x2D, 0x10, 4, 0, 0, gCurrentCamEntryPage, 0x10, 0);
 }
 
-s32 func_834002C4(unk_D_83406EB0* arg0) {
+s32 Gallery_IsUnlocked(unk_D_83406EB0* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_6C & 1) {
@@ -108,7 +108,7 @@ s32 func_834002C4(unk_D_83406EB0* arg0) {
     return var_v1;
 }
 
-s32 func_834002E4(unk_D_83406EB0* arg0) {
+s32 Gallery_IsViewed(unk_D_83406EB0* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_6C & 2) {
@@ -117,7 +117,7 @@ s32 func_834002E4(unk_D_83406EB0* arg0) {
     return var_v1;
 }
 
-s32 func_83400304(unk_D_83403C60* arg0, unk_D_83403C60* arg1, s32 arg2) {
+s32 Gallery_CompareEntries(unk_D_83403C60* arg0, unk_D_83403C60* arg1, s32 arg2) {
     s32 sp1C = 0;
 
     if (bcmp(arg0, arg1, arg2) != 0) {
@@ -126,22 +126,22 @@ s32 func_83400304(unk_D_83403C60* arg0, unk_D_83403C60* arg1, s32 arg2) {
     return sp1C;
 }
 
-s32 func_83400334(void) {
+s32 Gallery_CheckForChanges(void) {
     s32 sp1C = 0;
 
-    if (D_83407AE4 != 0) {
-        D_83407AC4->unk_6C |= 1;
+    if (gGallerySpecialUnlocked != 0) {
+        gCurrentCamEntrySpecial->unk_6C |= 1;
     } else {
-        D_83407AC4->unk_6C &= ~1;
+        gCurrentCamEntrySpecial->unk_6C &= ~1;
     }
 
-    if (D_83407AE8 != 0) {
-        D_83407AC4->unk_6C |= 2;
+    if (gGallerySpecialViewed != 0) {
+        gCurrentCamEntrySpecial->unk_6C |= 2;
     } else {
-        D_83407AC4->unk_6C &= ~2;
+        gCurrentCamEntrySpecial->unk_6C &= ~2;
     }
 
-    if ((func_83400304(D_83403C60, D_83405010, 0x13B0) != 0) || (func_83400304(D_834063C0, D_83406F40, 0xB7C) != 0)) {
+    if ((Gallery_CompareEntries(gGalleryEntries, gGalleryEntriesBackup, 0x13B0) != 0) || (Gallery_CompareEntries(gGalleryCamEntries, gGalleryCamEntriesBackup, 0xB7C) != 0)) {
         sp1C = 1;
     }
     return sp1C;
@@ -159,18 +159,18 @@ s32 Gallery_SaveChanges(s32 arg0, s32 arg1) {
 
     GbsEnsureBankLoaded(2);
     if (arg0 != 0) {
-        sp28 = func_83400334();
+        sp28 = Gallery_CheckForChanges();
     } else {
         sp28 = 1;
     }
 
     if (sp28 != 0) {
         for (i = 0; i < 36; i++) {
-            GbsWriteBlockEntry(0x16, 0, i, &D_83403C60[i]);
+            GbsWriteBlockEntry(0x16, 0, i, &gGalleryEntries[i]);
         }
 
         for (i = 0; i < 21; i++) {
-            GbsWriteBlockEntry(0x17, 0, i, &D_834063C0[i]);
+            GbsWriteBlockEntry(0x17, 0, i, &gGalleryCamEntries[i]);
         }
 
         GbsProcessBankWrites(2);
@@ -193,14 +193,14 @@ void Gallery_Reset(void) {
     D_83402E20 = 0;
     bzero(D_83402EE0, 0xD20);
     bzero(D_83403C00, 0x60);
-    Selection_Reset(&D_83407AF8);
+    Selection_Reset(&gGallerySelection);
 }
 
-void func_83400570(unk_D_83403C60* arg0) {
+void Gallery_ClearEntry(unk_D_83403C60* arg0) {
     bzero(arg0, sizeof(unk_D_83403C60));
 }
 
-void func_83400590(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
+void Gallery_SwapEntries(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
     unk_D_83403C60 sp4;
 
     sp4 = *arg0;
@@ -208,7 +208,7 @@ void func_83400590(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
     *arg1 = sp4;
 }
 
-s32 func_83400660(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
+s32 Gallery_IsEntryEqual(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
     s32 sp1C = 0;
 
     if (bcmp(arg0, arg1, sizeof(unk_D_83403C60)) == 0) {
@@ -217,15 +217,15 @@ s32 func_83400660(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
     return sp1C;
 }
 
-void func_83400694(unk_D_83403C60* arg0) {
-    D_83402E2C = arg0;
+void Gallery_SetCurrentEntry(unk_D_83403C60* arg0) {
+    gCurrentGalleryEntryPtr = arg0;
 }
 
-unk_D_83403C60* func_834006A0(s32 arg0) {
-    unk_D_83403C60* ret = D_83402E2C;
+unk_D_83403C60* Gallery_GetCurrentEntry(s32 arg0) {
+    unk_D_83403C60* ret = gCurrentGalleryEntryPtr;
 
     if (arg0 != 0) {
-        D_83402E2C = NULL;
+        gCurrentGalleryEntryPtr = NULL;
     }
 
     return ret;
@@ -236,7 +236,7 @@ void GallerySelection_Init(unk_D_83407B00* arg0) {
     arg0->unk_04 = -1;
 }
 
-s32 func_834006CC(s8* arg0) {
+s32 Text_CountLines(s8* arg0) {
     s32 var_v1 = 1;
 
     while (*arg0 != '\x00') {
@@ -298,14 +298,14 @@ s32 FindFirstUndisplayedMonIndex(unk_D_83403C60* arg0, s32 arg1) {
     return sp28;
 }
 
-void func_834008DC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Color_RGB8 sp24 = { 0x00, 0x64, 0xFF };
     Color_RGB8 sp20 = { 0x64, 0xFF, 0xFF };
 
     DrawGradientPanel(arg0, arg1, arg2, arg3, &sp24, &sp20);
 }
 
-void func_83400928(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Gallery_DrawBorderedRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 var_s2;
     s16 var_s3;
     s16 tmp1;
@@ -417,13 +417,13 @@ void DrawRectBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_834016C8(arg0 + arg2, arg1, arg4, arg3);
 }
 
-void func_83401818(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_DrawShadow(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg0 - 4, arg1 - 4, arg2 + 8, arg3 + 8, 0, 0, 0, 0x80);
 }
 
-void func_834018C0(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+void Gallery_DrawTextureList(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     UNUSED s32 pad;
     s32 temp_v0;
     s32 i;
@@ -446,7 +446,7 @@ void func_834018C0(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     }
 }
 
-void func_83401B48(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_DrawAnimatedCorners(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     static s16 D_83402E38 = 0;
 
     s16 sp4E = SINS(D_83402E38) * 2;
@@ -462,7 +462,7 @@ void func_83401B48(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_83402E38 += 0x2000;
 }
 
-void func_83401D0C(s32 arg0, s32 arg1, s32 arg2) {
+void Gallery_DrawCursor(s32 arg0, s32 arg1, s32 arg2) {
     u8* var_v0;
 
     if (arg2 != 0) {
@@ -543,7 +543,7 @@ void CamList_Update(unk_D_83407B38* arg0) {
     }
 }
 
-void func_834020D8(void) {
+void Gallery_ClearActiveCamera(void) {
     Camera* temp_v0 = Cam_GetCurrent();
 
     if ((temp_v0 != NULL) && (temp_v0->unk_00 == 2)) {
@@ -552,7 +552,7 @@ void func_834020D8(void) {
     }
 }
 
-s32 func_83402124(unk_D_83407B38* arg0, s32 arg1) {
+s32 Gallery_CountDisplayableInPage(unk_D_83407B38* arg0, s32 arg1) {
     s32 i;
     s32 idx;
     s32 var_s2 = 0;
@@ -573,28 +573,28 @@ void Selection_Reset(unk_D_83407B00* arg0) {
     arg0->unk_04 = -1;
 }
 
-void func_834021D8(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
+void Gallery_SyncSelectionToCam(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
     arg1->unk_00 = arg0->unk_00;
     arg1->unk_04 = arg0->unk_08;
 }
 
-void func_834021EC(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
+void Gallery_SyncCamToSelection(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
     if (arg1->unk_00 != -1) {
         arg0->unk_00 = arg1->unk_00;
         arg0->unk_08 = arg1->unk_04;
     }
 }
 
-void func_83402210(unk_D_83407B38* arg0, s32* arg1, s32* arg2, s32 arg3) {
+void Gallery_GetPageAndIndex(unk_D_83407B38* arg0, s32* arg1, s32* arg2, s32 arg3) {
     *arg1 = arg3 % arg0->unk_18;
     *arg2 = arg3 / arg0->unk_18;
 }
 
-s32 func_83402280(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+s32 Gallery_GetGlobalIndex(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     return (arg0->unk_18 * arg2) + arg1;
 }
 
-void func_83402298(unk_D_83407B38* arg0, AssetManager* arg1, BinArchive* arg2) {
+void Gallery_UpdateCameraAssets(unk_D_83407B38* arg0, AssetManager* arg1, BinArchive* arg2) {
     s32 i;
 
     for (i = 0; i < 37; i++) {

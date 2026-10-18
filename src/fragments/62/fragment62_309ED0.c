@@ -388,7 +388,7 @@ void DetermineTurnOrder(void) {
 
     temp_s0 = &D_84390010[0]->unk_654;
     temp_s1 = &D_84390010[1]->unk_654;
-    func_8431AFE4(1, 1);
+    Battle_SetTurnTimer(1, 1);
 
     sp2C = gBattleState.unk_00->unk_2C;
     gBattleState.unk_00->unk_2C = CompareMovePriority(D_84390010[0], D_84390010[1]);
@@ -428,7 +428,7 @@ void DetermineTurnOrderPriority(void) {
 
     sp28 = &D_84390010[0]->unk_654;
     sp24 = &D_84390010[1]->unk_654;
-    func_8431AFE4(1, 1);
+    Battle_SetTurnTimer(1, 1);
 
     sp2C = gBattleState.unk_00->unk_2C;
 
@@ -493,9 +493,9 @@ void Battle_UpdateAfterTurn(void) {
     sp18->unk_10 = 0;
 
     if ((sp1C->unk_2D == 0x10) || (sp18->unk_2D == 0x10) || (gBattleState.unk_00->unk_2E == 2)) {
-        func_8431AFE4(1, 0);
+        Battle_SetTurnTimer(1, 0);
     } else {
-        func_8431AFE4(1, 1);
+        Battle_SetTurnTimer(1, 1);
     }
 
     gBattleState.unk_00->unk_44 = 1;
@@ -568,7 +568,7 @@ void Battle_HandleSubstateTransition(void) {
     unk_BattlePlayerAnimState* sp1C;
 
     if (gBattleState.unk_00->unk_34 == 0) {
-        func_84301F80(D_84390010[gBattleState.unk_00->unk_2C]);
+        Anim_ClearEntityVisualFlags(D_84390010[gBattleState.unk_00->unk_2C]);
         ResetSoundDurations();
         Battle_ResetSubstate();
 
@@ -598,7 +598,7 @@ void Battle_HandleSubstateTransition(void) {
         sp24 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
         sp20 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-        func_84301F80(D_84390010[gBattleState.unk_00->unk_2C]);
+        Anim_ClearEntityVisualFlags(D_84390010[gBattleState.unk_00->unk_2C]);
         ResetSoundDurations();
         Battle_ResetSubstate();
 
@@ -620,7 +620,7 @@ s32 Battle_OpponentSpecialCondition(void) {
     unk_D_800FCB18* temp_v0 = &gOpponentPlayer->unk_654.unk_38;
 
     if (((temp_v0->unk_4D & 0x80) || (temp_v0->unk_15 & 0x18)) && ((temp_v0->unk_5A & 0xF0) == 0xF0)) {
-        func_84301F80(D_84390010[gBattleState.unk_00->unk_2C]);
+        Anim_ClearEntityVisualFlags(D_84390010[gBattleState.unk_00->unk_2C]);
         ResetSoundDurations();
         Battle_ResetSubstate();
         Battle_TogglePlayerAndPrepare(3);
@@ -634,14 +634,14 @@ s32 Battle_OpponentSpecialCondition(void) {
 
 void Battle_HandlePhaseTransition(void) {
     if ((gBattleState.unk_00->unk_34 == 0) && ((gOpponentPlayer->unk_654.unk_38.unk_5A & 0xF0) != 0xF0)) {
-        func_84301F80(D_84390010[gBattleState.unk_00->unk_2C]);
+        Anim_ClearEntityVisualFlags(D_84390010[gBattleState.unk_00->unk_2C]);
         ResetSoundDurations();
         Battle_ResetSubstate();
         Battle_TogglePlayerAndPrepare(3);
         gBattleState.unk_00->unk_20 = 0;
         gBattleState.unk_00->unk_14 = 0;
     } else if (Battle_OpponentSpecialCondition() == 0) {
-        func_84301F80(D_84390010[gBattleState.unk_00->unk_2C]);
+        Anim_ClearEntityVisualFlags(D_84390010[gBattleState.unk_00->unk_2C]);
         ResetSoundDurations();
         Battle_ResetSubstate();
         gBattleState.unk_00->unk_20 = 0;
@@ -783,7 +783,7 @@ void Battle_SetCurrentAndOpponent(void) {
 
 void Battle_InitializeCameraAndAudio(CameraStruct* arg0) {
     AudioFrameUpdate(0);
-    func_8431AFD0(arg0, 20.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
     Battle_ResetSubstate();
     gBattleState.unk_00->unk_34 = 0;
     Battle_ClearSubstateFlag();
@@ -890,17 +890,17 @@ void Battle_HandleOpponentDefeat(CameraStruct* arg0) {
 
         if (Battle_ResetMoveStateAndStartAnimation(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) {
             ExecuteAnimStateHandlers(D_84390010[!gBattleState.unk_00->unk_2C], 0x11);
-            func_8431BA5C();
+            Battle_ResetCameraState();
             gBattleState.unk_00->unk_20 = 0xA;
         } else {
             ExecuteAnimStateHandlers(D_84390010[!gBattleState.unk_00->unk_2C], 0);
-            func_8431BA5C();
+            Battle_ResetCameraState();
             gBattleState.unk_00->unk_20++;
         }
 
         Battle_QueueOpponentMove(D_84390010[!gBattleState.unk_00->unk_2C], arg0, 3);
 
-        if (func_84307B60(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) {
+        if (Pokemon_IsSpecialSpecies(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) {
             Audio_PlaySequence(0xC8, 1);
         } else {
             Audio_PlaySequence(D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_01A, 1);
@@ -918,8 +918,8 @@ void Battle_HandleOpponentAnimation(CameraStruct* arg0) {
             Battle_QueueOpponentMove(D_84390010[!gBattleState.unk_00->unk_2C], arg0, 4);
         }
 
-        if (func_8431ADF0(0x1E) != 0) {
-            func_8431CFA4(arg0, D_84390010[!gBattleState.unk_00->unk_2C]);
+        if (Battle_WaitFramesNonBlocking(0x1E) != 0) {
+            Camera_SmoothZoomOut(arg0, D_84390010[!gBattleState.unk_00->unk_2C]);
         }
 
         if (((sp20->unk_04 >> 1) == (D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_040.unk_08 >> 0x10)) &&
@@ -933,12 +933,12 @@ void Battle_HandleOpponentAnimation(CameraStruct* arg0) {
             Battle_FinishTurn();
             gBattleState.unk_00->unk_20 += 1;
         }
-        func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 0);
+        Camera_SetDistanceToEntity(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 0);
     }
 }
 
 void Battle_ProcessOpponentActionStep(CameraStruct* arg0) {
-    func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
+    Camera_SetDistanceToEntity(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
     if (Battle_WaitForAnimation(0x19) != 0) {
         ResetSoundDurations();
         gBattleState.unk_00->unk_20++;
@@ -948,7 +948,7 @@ void Battle_ProcessOpponentActionStep(CameraStruct* arg0) {
 void Battle_ProcessOpponentActionStep2(CameraStruct* arg0) {
     unk_BattlePlayerAnimState* temp_s0 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
-    func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
+    Camera_SetDistanceToEntity(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
 
     if (Battle_WaitForAnimation(5) != 0) {
         Battle_SetAnimChannelFlag(1);
@@ -1022,7 +1022,7 @@ void Battle_AdjustCameraForAction(CameraStruct* arg0) {
     if (Battle_CheckPlayerAction(arg0, temp_s0, 1, 0) != 0) {
         Battle_FinishTurn();
         Dialog_SetMode(0xE);
-        func_8431AFD0(arg0, 10.0f, 12800.0f);
+        Camera_SetClippingPlanes(arg0, 10.0f, 12800.0f);
         arg0->unk_24.fovy = 60.0f;
         if ((D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_01A == 0x5F) && (gBattleState.unk_00->unk_2C == 1)) {
             sp3B = 0x97;
@@ -1067,8 +1067,8 @@ void func_84321FB8(CameraStruct* arg0) {
             Battle_QueueOpponentMove(D_84390010[!gBattleState.unk_00->unk_2C], arg0, 4);
         }
 
-        if (func_8431ADF0(0x1E) != 0) {
-            func_8431CFA4(arg0, D_84390010[!gBattleState.unk_00->unk_2C]);
+        if (Battle_WaitFramesNonBlocking(0x1E) != 0) {
+            Camera_SmoothZoomOut(arg0, D_84390010[!gBattleState.unk_00->unk_2C]);
         }
 
         if (((sp20->unk_04 >> 1) == (D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_040.unk_08 >> 0x10)) &&
@@ -1084,7 +1084,7 @@ void func_84321FB8(CameraStruct* arg0) {
             gBattleState.unk_00->unk_20 = 2;
         }
 
-        func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 0);
+        Camera_SetDistanceToEntity(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 0);
     }
 }
 
@@ -2444,7 +2444,7 @@ void func_84325724(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             Battle_ChooseMoveByContext(arg0, 0);
-            func_8431CCFC(arg0, gCurrentPlayer);
+            Camera_SmoothPanToEntity(arg0, gCurrentPlayer);
             if (sp30->unk_4D & 0x10) {
                 if (sp2C->unk_4E & 8) {
                     sp28->unk_BC = gCurrentPlayer->unk_720->unk_02 = sp24->unk_BE;
@@ -2466,7 +2466,7 @@ void func_84325724(CameraStruct* arg0) {
             break;
 
         case 1:
-            func_8431CCFC(arg0, gCurrentPlayer);
+            Camera_SmoothPanToEntity(arg0, gCurrentPlayer);
             if (gCurrentPlayer->unk_720->unk_00 & 0x10) {
                 gCurrentPlayer->unk_720->unk_00 &= ~0x90;
                 func_84309168(gCurrentPlayer);
@@ -2478,14 +2478,14 @@ void func_84325724(CameraStruct* arg0) {
             break;
 
         case 2:
-            func_8431CCFC(arg0, gCurrentPlayer);
+            Camera_SmoothPanToEntity(arg0, gCurrentPlayer);
             TriggerMoveEvent(gCurrentPlayer, sp30, 0);
             ExecuteAnimStateHandlers(gCurrentPlayer, 0x12);
             gBattleState.unk_00->unk_20 += 1;
             break;
 
         case 3:
-            func_8431CCFC(arg0, gCurrentPlayer);
+            Camera_SmoothPanToEntity(arg0, gCurrentPlayer);
             gCurrentPlayer->unk_728.unk_168->unk_00.unk_01 |= 1;
             gCurrentPlayer->unk_728.unk_000.unk_000.unk_01 |= 1;
             TriggerPokemonAnimAndAction(gCurrentPlayer);
@@ -2600,7 +2600,7 @@ void Battle_PlayerSwitchIn(CameraStruct* arg0) {
             Battle_FinishTurn();
             Battle_ClearSubstateFlag();
             Battle_PlayMoveEffect(gCurrentPlayer, arg0, 3);
-            func_8431CB54(arg0, gCurrentPlayer);
+            Camera_SmoothFocusEntity(arg0, gCurrentPlayer);
             SetEntityAnimFlags(gCurrentPlayer, 0x200);
             gBattleState.unk_00->unk_20 += 1;
             break;
@@ -2608,10 +2608,10 @@ void Battle_PlayerSwitchIn(CameraStruct* arg0) {
         case 1:
             if (gCurrentPlayer->unk_000.unk_024.y >= 100.0f) {
                 GetEntityCenterPosition(gCurrentPlayer, &sp3C);
-                sp3C.y += func_84308548(gCurrentPlayer);
+                sp3C.y += Battle_GetEntityHeight(gCurrentPlayer);
                 gBattleUnusedFloat_84390208 = ClampScaledDistance(gCurrentPlayer, 3.0f, 500.0f);
-                func_8431BB80(arg0, sp3C, 0x11C6, GetPlayerSideYaw(gCurrentPlayer) - (gCurrentPlayer->unk_4B0 * 0x754E),
-                              gBattleUnusedFloat_84390208, func_84308548(gCurrentPlayer));
+                Camera_SetEyePositionOffset(arg0, sp3C, 0x11C6, GetPlayerSideYaw(gCurrentPlayer) - (gCurrentPlayer->unk_4B0 * 0x754E),
+                              gBattleUnusedFloat_84390208, Battle_GetEntityHeight(gCurrentPlayer));
                 Vec3f_Set(&sp3C, 0.0f, 200.0f, 0.0f);
                 Vector_Copy(&arg0->unk_60.at, &sp3C);
                 Battle_SetAnimChannelFlag(2);
@@ -2619,7 +2619,7 @@ void Battle_PlayerSwitchIn(CameraStruct* arg0) {
                 arg0->unk_24.fovy = 60.0f;
                 gBattleState.unk_00->unk_20 += 1;
             } else {
-                func_8431CB54(arg0, gCurrentPlayer);
+                Camera_SmoothFocusEntity(arg0, gCurrentPlayer);
             }
             break;
 
@@ -2633,7 +2633,7 @@ void Battle_PlayerSwitchIn(CameraStruct* arg0) {
         case 3:
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
-            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (func_8431ADF0(0x1E) != 0)) {
+            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (Battle_WaitFramesNonBlocking(0x1E) != 0)) {
                 SetEntityAnimFlags(D_84390010[gBattleState.unk_00->unk_2C], 4);
                 ClearGameStateFlag();
                 Battle_FinishTurn();
@@ -2661,7 +2661,7 @@ void Battle_PlayerSwitchOut(CameraStruct* arg0) {
 
         case 1:
             if (gCurrentPlayer->unk_4B8 == 2) {
-                func_8431CC38(arg0, gCurrentPlayer);
+                Camera_SmoothFocusEntityY(arg0, gCurrentPlayer);
                 gCurrentPlayer->unk_000.unk_000.unk_02 &= 0xFFBF;
             }
 
@@ -2673,13 +2673,13 @@ void Battle_PlayerSwitchOut(CameraStruct* arg0) {
                     gBattleState.unk_00->unk_20 += 1;
                 }
             } else if (AnimChannel_GetFlagsFB0(gCurrentPlayer) == 0) {
-                if (func_84307AE0(gCurrentPlayer->unk_000.unk_01A, (u8*)&sp24, 2) != 0) {
+                if (Array_ContainsValue(gCurrentPlayer->unk_000.unk_01A, (u8*)&sp24, 2) != 0) {
                     sp28 = 10.0f;
                 } else {
                     sp28 = 3.5f;
                 }
 
-                if (gCurrentPlayer->unk_000.unk_024.y <= (-func_84308548(gCurrentPlayer) * sp28)) {
+                if (gCurrentPlayer->unk_000.unk_024.y <= (-Battle_GetEntityHeight(gCurrentPlayer) * sp28)) {
                     SetEntityAnimFlags(gCurrentPlayer, 0x4000);
                     gCurrentPlayer->unk_000.unk_000.unk_02 &= 0xFFDF;
                     gBattleState.unk_00->unk_20 += 1;
@@ -2691,7 +2691,7 @@ void Battle_PlayerSwitchOut(CameraStruct* arg0) {
             if ((gCurrentPlayer->unk_000.unk_01A != 0x32) && (gCurrentPlayer->unk_000.unk_01A != 0x33)) {
                 gCurrentPlayer->unk_000.unk_000.unk_02 |= 0x40;
             }
-            func_8431CC38(arg0, gCurrentPlayer);
+            Camera_SmoothFocusEntityY(arg0, gCurrentPlayer);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
             Battle_ResetSubstate();
@@ -2948,7 +2948,7 @@ void Battle_OpponentDefeatAnim(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             ClearAnimFlagIfState6A(gCurrentPlayer);
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             Battle_ResetSubstate();
             UpdateEntityStateByMode(gCurrentPlayer);
             Battle_SetAnimChannelFlag(2);
@@ -2960,7 +2960,7 @@ void Battle_OpponentDefeatAnim(CameraStruct* arg0) {
                 Battle_ApplyAnimEffect(gCurrentPlayer);
                 ResetSoundDurations();
                 Battle_SetAnimChannelFlag(1);
-                func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+                Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
                 ExecuteAnimStateHandlers(D_84390010[gBattleState.unk_00->unk_2C], 0xD);
 
                 if (sp24->unk_15 & 0x18) {
@@ -2986,11 +2986,11 @@ void Battle_OpponentDefeatAnim(CameraStruct* arg0) {
             break;
 
         case 2:
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
 
-            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (func_8431ADF0(0x32) != 0)) {
+            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (Battle_WaitFramesNonBlocking(0x32) != 0)) {
                 Battle_FinishTurn();
                 if (GetCurrentHP(D_84390010[gBattleState.unk_00->unk_2C]) == 0) {
                     Battle_ClearSubstateFlag();
@@ -3010,11 +3010,11 @@ void Battle_OpponentDefeatAnim(CameraStruct* arg0) {
             break;
 
         case 3:
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
 
-            if ((func_8431ADF0(0x32) != 0) && (gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1)) {
+            if ((Battle_WaitFramesNonBlocking(0x32) != 0) && (gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1)) {
                 gBattleState.unk_00->unk_20 += 1;
                 Battle_FinishTurn();
             }
@@ -3028,7 +3028,7 @@ void Battle_OpponentDefeatAnim(CameraStruct* arg0) {
 
         case 5:
             Battle_ResetSubstate();
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
             Battle_ProcessReadyState(arg0);
@@ -3044,7 +3044,7 @@ void Battle_OpponentSwitchOut(CameraStruct* arg0) {
         case 0:
             UpdateEntityStateByMode(gCurrentPlayer);
             Battle_SetAnimChannelFlag(2);
-            func_8431E118(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Camera_SetEntityWideView(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gBattleState.unk_00->unk_20 += 1;
             break;
 
@@ -3055,7 +3055,7 @@ void Battle_OpponentSwitchOut(CameraStruct* arg0) {
                 Battle_SetAnimChannelFlag(1);
                 Battle_ApplyAnimChannelEffect(9, gCurrentPlayer);
                 Battle_FinishTurn();
-                func_8431E118(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+                Camera_SetEntityWideView(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
                 sp1C->unk_0C = sp1C->unk_12;
                 sp18->unk_0C = sp18->unk_12;
                 Dialog_SetMode(6);
@@ -3064,7 +3064,7 @@ void Battle_OpponentSwitchOut(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (func_8431D048(arg0, D_84390010[gBattleState.unk_00->unk_2C]) != 0) {
+            if (Camera_SmoothZoomIn(arg0, D_84390010[gBattleState.unk_00->unk_2C]) != 0) {
                 Battle_QueueOpponentMove(gCurrentPlayer, arg0, 3);
                 Pokemon_ResetAnimAndTrigger(gCurrentPlayer);
                 PlayBattleSoundEffect(gCurrentPlayer, 0x1F);
@@ -3085,7 +3085,7 @@ void Battle_OpponentSwitchOut(CameraStruct* arg0) {
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
             Battle_ProcessOpponentAction(arg0, gCurrentPlayer);
-            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (func_8431ADF0(0x3C) != 0)) {
+            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (Battle_WaitFramesNonBlocking(0x3C) != 0)) {
                 Battle_UpdateHPAndProceed(arg0);
             }
             break;
@@ -3103,7 +3103,7 @@ void Battle_OpponentDefeatAnimAlt(CameraStruct* arg0) {
                 Battle_FinishTurn();
                 InitSingleEntityActionScript(3, gOpponentPlayer);
                 Audio_PlaySoundEffect(0x23, 0, 0);
-                func_8431F194(arg0, gOpponentPlayer);
+                Battle_SetCameraMoveSimple(arg0, gOpponentPlayer);
                 Dialog_SetMode(7);
                 gBattleState.unk_00->unk_20 += 1;
             }
@@ -3138,7 +3138,7 @@ void Battle_OpponentSwitchOutAlt(CameraStruct* arg0) {
                 Battle_ApplyAnimEffect(gCurrentPlayer);
                 ResetSoundDurations();
                 Battle_SetAnimChannelFlag(1);
-                func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+                Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
                 ExecuteAnimStateHandlers(D_84390010[gBattleState.unk_00->unk_2C], 0xD);
 
                 if (sp24->unk_15 & 0x18) {
@@ -3162,10 +3162,10 @@ void Battle_OpponentSwitchOutAlt(CameraStruct* arg0) {
             break;
 
         case 2:
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
-            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (func_8431ADF0(0x32) != 0)) {
+            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (Battle_WaitFramesNonBlocking(0x32) != 0)) {
                 Battle_FinishTurn();
                 if (GetCurrentHP(D_84390010[gBattleState.unk_00->unk_2C]) == 0) {
                     Battle_ClearSubstateFlag();
@@ -3184,10 +3184,10 @@ void Battle_OpponentSwitchOutAlt(CameraStruct* arg0) {
             break;
 
         case 3:
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
-            if ((func_8431ADF0(0x32) != 0) && (gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1)) {
+            if ((Battle_WaitFramesNonBlocking(0x32) != 0) && (gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1)) {
                 gBattleState.unk_00->unk_20 += 1;
                 Battle_FinishTurn();
             }
@@ -3201,7 +3201,7 @@ void Battle_OpponentSwitchOutAlt(CameraStruct* arg0) {
 
         case 5:
             Battle_ResetSubstate();
-            func_8431F194(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraMoveSimple(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = UpdatePokemonHP(D_84390010[!gBattleState.unk_00->unk_2C]);
             Battle_ProcessReadyState(arg0);
@@ -3224,7 +3224,7 @@ void Battle_OpponentDefeatAnimFinal(CameraStruct* arg0) {
             Battle_ApplyAnimEffect(gCurrentPlayer);
             ResetSoundDurations();
             Battle_SetAnimChannelFlag(1);
-            func_8431EF54(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraOpponentClose(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             ExecuteAnimStateHandlers(D_84390010[gBattleState.unk_00->unk_2C], 0xD);
             sp1C->unk_0C = sp1C->unk_0E;
             sp18->unk_0C = sp18->unk_0E;
@@ -3232,11 +3232,11 @@ void Battle_OpponentDefeatAnimFinal(CameraStruct* arg0) {
             break;
 
         case 2:
-            func_8431EF54(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+            Battle_SetCameraOpponentClose(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[gBattleState.unk_00->unk_2C]);
             gPlayer1ReadyFlag = 1;
 
-            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (func_8431ADF0(0x32) != 0)) {
+            if ((gPlayer0ReadyFlag == 1) && (gPlayer1ReadyFlag == 1) && (Battle_WaitFramesNonBlocking(0x32) != 0)) {
                 Battle_FinishTurn();
                 if (GetCurrentHP(D_84390010[gBattleState.unk_00->unk_2C]) == 0) {
                     Battle_ClearSubstateFlag();
@@ -3277,14 +3277,14 @@ void Battle_PlayerDefeatSequence(CameraStruct* arg0) {
             break;
 
         case 1:
-            func_8431CFA4(arg0, temp_s0);
+            Camera_SmoothZoomOut(arg0, temp_s0);
             ExecuteAnimStateHandlers(temp_s0, 2);
             StartMoveAnimationAndFinalizeStatus(temp_s0);
             gBattleState.unk_00->unk_20 += 1;
             break;
 
         case 2:
-            func_8431CFA4(arg0, temp_s0);
+            Camera_SmoothZoomOut(arg0, temp_s0);
             if (Battle_WaitForAnimation(0x69) != 0) {
                 Vec3f_Set(&arg0->unk_60.at, temp_s0->unk_4B0 * -150.0f, 0.0, 0.0f);
                 if (gBattleState.unk_00 && gBattleState.unk_00) {}
@@ -3300,7 +3300,7 @@ void Battle_PlayerDefeatSequence(CameraStruct* arg0) {
                 temp_s0->unk_4EC.unk_000.unk_02 |= 0x20;
             }
 
-            if (func_800174E4(&temp_s0->unk_4EC) == 1) {
+            if (GraphNode_IsAnimationFinished(&temp_s0->unk_4EC) == 1) {
                 gBattleState.unk_00->unk_20 += 1;
             }
             break;
@@ -3315,7 +3315,7 @@ void Battle_PlayerDefeatSequence(CameraStruct* arg0) {
         case 5:
             if (temp_s0->unk_720->unk_00 & 0x10) {
                 temp_s0->unk_720->unk_00 &= ~0x90;
-                func_8430920C(temp_s0);
+                Pokemon_ApplyFaintTransform(temp_s0);
                 RefreshPokemonTransform(temp_s0);
                 gPlayerScaleFactors[gBattleState.unk_00->unk_2C] = temp_s0->unk_654.unk_38.unk_0C;
                 InitActionScriptMode3(3, temp_s0, temp_s0, 0xFF, 0xFF);
@@ -3337,7 +3337,7 @@ void Battle_PlayerDefeatSequence(CameraStruct* arg0) {
             break;
 
         case 7:
-            func_8431C750(arg0, temp_s0);
+            Battle_AdvanceCameraTimelineFast(arg0, temp_s0);
             if (CanAnimProceedWithChannel(temp_s0, 0x3C) != 0) {
                 ResetSoundDurations();
                 Battle_SetAnimChannelFlag(2);
@@ -3375,7 +3375,7 @@ void Battle_PlayerDefeatSequenceAlt(CameraStruct* arg0) {
                 gBattleState.unk_00->unk_20 += 1;
             } else {
                 Math_ExponentialApproach(&arg0->unk_24.fovy, 30.0f, 0.05f);
-                if (func_8431DA38(arg0, temp_s0) != 0) {
+                if (Camera_SmoothFocusEntitySide(arg0, temp_s0) != 0) {
                     Battle_SetCameraFOV30(arg0);
                     Battle_FinishTurn();
                     Dialog_SetMode(0xB);
@@ -3399,7 +3399,7 @@ void Battle_PlayerDefeatSequenceAlt(CameraStruct* arg0) {
                 temp_s0->unk_4EC.unk_000.unk_02 |= 0x20;
             }
 
-            if (func_800174E4(&temp_s0->unk_4EC) == 1) {
+            if (GraphNode_IsAnimationFinished(&temp_s0->unk_4EC) == 1) {
                 gBattleState.unk_00->unk_20 += 1;
             }
             break;
@@ -3414,7 +3414,7 @@ void Battle_PlayerDefeatSequenceAlt(CameraStruct* arg0) {
         case 4:
             if (temp_s0->unk_720->unk_00 & 0x10) {
                 temp_s0->unk_720->unk_00 &= ~0x90;
-                func_8430920C(temp_s0);
+                Pokemon_ApplyFaintTransform(temp_s0);
                 RefreshPokemonTransform(temp_s0);
                 gPlayerScaleFactors[IsPrimaryEntity(temp_s0)] = temp_s0->unk_654.unk_38.unk_0C;
                 Audio_PlaySoundEffect(2, 0, 0);
@@ -3435,7 +3435,7 @@ void Battle_PlayerDefeatSequenceAlt(CameraStruct* arg0) {
             break;
 
         case 6:
-            func_8431C750(arg0, temp_s0);
+            Battle_AdvanceCameraTimelineFast(arg0, temp_s0);
             if (CanAnimProceedWithChannel(temp_s0, 0x3C) != 0) {
                 if ((sp2C->unk_5A & 0xF0) == 0xF0) {
                     sp2C->unk_5A = 0xA5;

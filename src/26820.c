@@ -876,11 +876,11 @@ s32 GbsWriteBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     return sp34;
 }
 
-void GbsGetPlayerName(unk_func_8002A728* arg0) {
+void GbsGetPlayerName(PlayerName* arg0) {
     *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04;
 }
 
-void GbsSetPlayerName(unk_func_8002A728* arg0) {
+void GbsSetPlayerName(PlayerName* arg0) {
     if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04, 8) != 0) {
         gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04 = *arg0;
         GbsSetBlockFlag(0x14, 0, 2);
@@ -891,7 +891,7 @@ void GBAudio_ResetState(unk_func_80027FA0* arg0, s16 arg1) {
     *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1];
 }
 
-void func_80027FE0(unk_func_80027FA0* arg0, s16 arg1) {
+void BattleProgress_Save(unk_func_80027FA0* arg0, s16 arg1) {
     if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1], sizeof(unk_func_80027FA0)) != 0) {
         gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
         GbsSetBlockFlag(0x14, 0, 2);
@@ -916,7 +916,7 @@ s32 func_800280C4(void) {
     return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1E;
 }
 
-void func_800280D4(u8 arg0) {
+void ResultScreen_SetRandomSeed(u8 arg0) {
     unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].unk_04.unk2;
 
     if (temp_v0->unk_1EA0.unk_1E != arg0) {

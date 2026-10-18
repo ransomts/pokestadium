@@ -9,7 +9,7 @@
 
 void Intro_SetupCamera(CameraStruct* arg0) {
     Battle_FinishTurn();
-    func_8431AFD0(arg0, 20.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
     SetMessageFromAltTable(D_84390010[0]->unk_720, 3);
     arg0->unk_24.fovy = 40.0f;
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
@@ -22,7 +22,7 @@ void Intro_SetupCamera(CameraStruct* arg0) {
 }
 
 void Intro_CheckPlayerReady(UNUSED CameraStruct* arg0) {
-    if ((func_8431ADF0(0xA) != 0) && (AnimChannel_CheckAndReset(D_84390010[0]) != 0)) {
+    if ((Battle_WaitFramesNonBlocking(0xA) != 0) && (AnimChannel_CheckAndReset(D_84390010[0]) != 0)) {
         D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
         D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
         ApplyAnimEffectToOpponent(D_84390010[0], 1, 0);
@@ -55,8 +55,8 @@ void Intro_OpponentEnter(CameraStruct* arg0) {
         ApplyAnimEffectToOpponent(D_84390010[0], 2, 0);
         InitActionScriptMode3(0xB, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
         Vec3f_Set(&sp3C, -150.0f, 5.0f, 0.0f);
-        func_8431BAB4(D_84390010[0], arg0, sp3C, 0, 0, 0.0f, 0.0f);
-        func_8431BB80(arg0, sp3C, gBattleState.unk_00->unk_56 = 0x71C, 0x4000, gBattleState.unk_00->unk_84 = 300.0f, 0.0f);
+        Camera_SetLookAtPosition(D_84390010[0], arg0, sp3C, 0, 0, 0.0f, 0.0f);
+        Camera_SetEyePositionOffset(arg0, sp3C, gBattleState.unk_00->unk_56 = 0x71C, 0x4000, gBattleState.unk_00->unk_84 = 300.0f, 0.0f);
         gBattleState.unk_00->unk_20 += 1;
     }
 }
@@ -69,7 +69,7 @@ void Intro_CameraPanAndZoom(CameraStruct* arg0) {
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     Math_ExponentialApproach(&gBattleState.unk_00->unk_84, 40.0f, 0.1f);
     Math_StepTowards(&gBattleState.unk_00->unk_56, 0xB6, 0x1E);
-    func_8431BB80(arg0, sp2C, gBattleState.unk_00->unk_56, 0x4000, gBattleState.unk_00->unk_84, 0.0f);
+    Camera_SetEyePositionOffset(arg0, sp2C, gBattleState.unk_00->unk_56, 0x4000, gBattleState.unk_00->unk_84, 0.0f);
 
     if ((gBattleState.unk_00->unk_56 >= 0x2E) && (D_84390010[0]->unk_4EC.unk_024.y == 2.5f)) {
         Audio_PlaySoundEffect(2, 0, 0);
@@ -81,7 +81,7 @@ void Intro_CameraPanAndZoom(CameraStruct* arg0) {
 void Intro_WaitForAnimCompletion(UNUSED CameraStruct* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-    if (func_800174E4(&D_84390010[0]->unk_4EC) == 1) {
+    if (GraphNode_IsAnimationFinished(&D_84390010[0]->unk_4EC) == 1) {
         gBattleState.unk_00->unk_20 += 1;
     }
 }
@@ -117,7 +117,7 @@ void Intro_PostInfoDelay(CameraStruct* arg0) {
     D_84390010[0]->unk_728.unk_168->unk_00.unk_01 &= ~1;
     D_84390010[0]->unk_728.unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-    func_8431C750(arg0, D_84390010[0]);
+    Battle_AdvanceCameraTimelineFast(arg0, D_84390010[0]);
 
     if (CanAnimProceedWithChannel(D_84390010[0], 0x3C) != 0) {
         gBattleState.unk_00->unk_20 += 1;
@@ -155,7 +155,7 @@ void Opponent_PostInfoDelay(CameraStruct* arg0) {
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 &= ~1;
     D_84390010[1]->unk_728.unk_000.unk_000.unk_01 &= ~1;
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
-    func_8431C750(arg0, D_84390010[1]);
+    Battle_AdvanceCameraTimelineFast(arg0, D_84390010[1]);
     if (CanAnimProceedWithChannel(D_84390010[1], 0x3C) != 0) {
         Battle_UpdateAfterTurn();
         gBattleState.unk_00->unk_20 += 1;

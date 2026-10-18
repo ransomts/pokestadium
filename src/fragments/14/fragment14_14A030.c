@@ -331,7 +331,7 @@ void SushiSpawner_Update(unk_D_86808808* arg0) {
 
     Sushi_CalcOrbitPos(arg0->unk_000, &arg0->unk_00C);
 
-    if ((D_8780FC94 == 0) && (arg0->unk_008 == 0) && (arg0->unk_004 & 1)) {
+    if ((gResultMenuVisible == 0) && (arg0->unk_008 == 0) && (arg0->unk_004 & 1)) {
         arg0->unk_002 -= 1;
         if (arg0->unk_002 <= 0) {
             arg0->unk_002 = 0;
@@ -341,7 +341,7 @@ void SushiSpawner_Update(unk_D_86808808* arg0) {
                 if (gSushiFirstSpawnFlag == 0) {
                     gSushiFirstSpawnFlag = 1;
                     PlaySoundByCategory(0x50003, 0, 0);
-                    func_8004B1CC(0x17);
+                    ResultScreen_SetAnimation(0x17);
                 }
                 SushiInstance_SetActive(1, sp24, -1, arg0);
             }
@@ -356,7 +356,7 @@ void SushiInstance_Render(unk_D_868084D8* arg0) {
     f32 var_fv0;
     s32 var_v0;
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         switch (arg0->unk_10) {
             case 1:
                 if (arg0->unk_30 >= 0.0f) {
@@ -546,7 +546,7 @@ void func_86806BF0(void) {
         func_86806980();
     }
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         gSushiRotationAngle += 0.5f;
         if (gSushiRotationAngle >= 360.0f) {
             gSushiRotationAngle -= 360.0f;

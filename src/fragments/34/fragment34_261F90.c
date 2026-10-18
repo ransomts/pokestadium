@@ -543,7 +543,7 @@ s32 RandomRangeSignedPlus(s32 arg0, s32 arg1) {
     return RandomRangeSigned(arg0) + arg1;
 }
 
-s32 func_81400B4C(s32 arg0, s32 arg1) {
+s32 Particle_GetRandomRotation(s32 arg0, s32 arg1) {
     s32 temp_v0 = RandomRangeSigned(arg0);
 
     if (temp_v0 >= 0) {

@@ -914,7 +914,7 @@ void func_84B07978(unk_D_84B25A28* arg0) {
     Vec3f_Set(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
 }
 
-s32 func_84B07AB8(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
+s32 UI_WaitUntilFinished(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
     s16 var_a1;
 
@@ -963,7 +963,7 @@ s32 func_84B07AB8(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
     return arg0->unk_00 == 3;
 }
 
-void func_84B07CF8(unk_D_84B25A28* arg0, CameraStruct* arg1) {
+void UI_SetupGraphNodes(unk_D_84B25A28* arg0, CameraStruct* arg1) {
     MemoryBlock* temp_s1;
 
     arg0->unk_08 = arg1;

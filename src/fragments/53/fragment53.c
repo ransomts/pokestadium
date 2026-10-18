@@ -42,7 +42,7 @@ s32 MenuStage_Frame(u8 arg0) {
 
 void PopulateInputStructFromSprites(UnkInputStruct8000D738* arg0) {
     s32 i;
-    unk_func_8002A728 sp34;
+    PlayerName sp34;
     u16(*var_s1)[0x640] = arg0->unk_04[0];
 
     GbsGetPlayerName(&sp34);

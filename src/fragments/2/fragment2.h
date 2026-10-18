@@ -25,10 +25,10 @@ extern s16 gMenuSelectedOption;
 extern s16 gMenuOptionUsedFlags[9];
 extern s16 gMenuOptionFlags[4];
 extern u32* D_8780FA70;
-extern u16 D_8780FC92;
-extern u16 D_8780FC94;
-extern u16 D_8780FC96;
-extern u16 D_8780FC98;
+extern u16 gResultFlag_Special;
+extern u16 gResultMenuVisible;
+extern u16 gResultExitPending;
+extern u16 gResultConfirmPressed;
 
 
 void InitMessageBanks(void);

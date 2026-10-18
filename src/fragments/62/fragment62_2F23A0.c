@@ -5,7 +5,7 @@
 #include "src/2E110.h"
 #include "src/F420.h"
 
-s32 func_84307AE0(u8 arg0, u8* arg1, s32 arg2) {
+s32 Array_ContainsValue(u8 arg0, u8* arg1, s32 arg2) {
     while (arg2--) {
         if (arg0 == *arg1) {
             return 1;
@@ -22,7 +22,7 @@ PokemonData* GetCurrentPokemonData(unk_BattlePlayerEntity* arg0) {
     return ptr;
 }
 
-s32 func_84307B60(unk_BattlePlayerEntity* arg0) {
+s32 Pokemon_IsSpecialSpecies(unk_BattlePlayerEntity* arg0) {
     PokemonData* temp_v0 = GetCurrentPokemonData(arg0);
 
     if ((arg0->unk_000.unk_01A == 0x19) && (temp_v0->unk_52 & 0x80)) {
@@ -113,7 +113,7 @@ s32 IsPrimaryEntity(unk_BattlePlayerEntity* arg0) {
     return 1;
 }
 
-u8 func_84307F24(unk_BattlePlayerEntity* arg0) {
+u8 Anim_GetActionScriptId(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
     s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
@@ -122,7 +122,7 @@ u8 func_84307F24(unk_BattlePlayerEntity* arg0) {
     return ptr->unk_02;
 }
 
-u8 func_84307F68(unk_BattlePlayerEntity* arg0) {
+u8 Anim_GetActionScriptParam(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
     s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
@@ -199,14 +199,14 @@ void GetEntityPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
 void GetEntityCenterPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
     f32 var_fs0 = 0.0f;
 
-    if (func_84307AE0(arg0->unk_000.unk_01A, &D_843845F0, 1) != 0) {
-        var_fs0 = func_84308548(arg0) / 1.5f;
-    } else if (func_84307AE0(arg0->unk_000.unk_01A, &D_843845F4, 1) != 0) {
-        var_fs0 = func_84308548(arg0) * 0.5f;
-    } else if ((func_84307AE0(arg0->unk_000.unk_01A, &D_843845F8, 1) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
-        var_fs0 = 2.0f * func_84308548(arg0);
-    } else if ((func_84307AE0(arg0->unk_000.unk_01A, D_843845FC, 2) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
-        var_fs0 = func_84308548(arg0) * 1.5f;
+    if (Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_0, 1) != 0) {
+        var_fs0 = Battle_GetEntityHeight(arg0) / 1.5f;
+    } else if (Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_1, 1) != 0) {
+        var_fs0 = Battle_GetEntityHeight(arg0) * 0.5f;
+    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_2, 1) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
+        var_fs0 = 2.0f * Battle_GetEntityHeight(arg0);
+    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, gPokemonSfxId_3, 2) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
+        var_fs0 = Battle_GetEntityHeight(arg0) * 1.5f;
     }
 
     if (GetModelBaseY(arg0) != 0.0f) {
@@ -215,12 +215,12 @@ void GetEntityCenterPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
         arg1->z = arg0->unk_000.unk_024.z;
     } else {
         arg1->x = arg0->unk_000.unk_024.x;
-        arg1->y = func_84308548(arg0) + arg0->unk_000.unk_024.y + var_fs0;
+        arg1->y = Battle_GetEntityHeight(arg0) + arg0->unk_000.unk_024.y + var_fs0;
         arg1->z = arg0->unk_000.unk_024.z;
     }
 
     if (arg1->y < 0.0f) {
-        arg1->y = func_84308548(arg0);
+        arg1->y = Battle_GetEntityHeight(arg0);
     }
 }
 
@@ -250,7 +250,7 @@ void func_84308520(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
     arg1->z = arg0->unk_4EC.unk_024.z;
 }
 
-f32 func_84308548(unk_BattlePlayerEntity* arg0) {
+f32 Battle_GetEntityHeight(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_4B4 == 0x10) {
         return GetModelHeight(arg0);
     }
@@ -261,11 +261,11 @@ f32 func_84308598(unk_BattlePlayerEntity* arg0) {
     return GetModelWidth(arg0) * arg0->unk_000.unk_030.y;
 }
 
-unk_D_86002F58_004_000_004* func_843085C4(unk_BattlePlayerEntity* arg0, s32 arg1) {
+unk_D_86002F58_004_000_004* GraphNode_GetModelRoot(unk_BattlePlayerEntity* arg0, s32 arg1) {
     return arg0->unk_720->unk_14->unk_00[2]->unk_00[arg1];
 }
 
-s32 func_843085E0(unk_BattlePlayerEntity* arg0, UNUSED s32 arg1) {
+s32 GraphNode_GetModelPhase(unk_BattlePlayerEntity* arg0, UNUSED s32 arg1) {
     return arg0->unk_720->unk_02;
 }
 
@@ -282,7 +282,7 @@ void ApplyAnimEffectToOpponent(unk_BattlePlayerEntity* arg0, s32 arg1, s32 arg2)
     arg0->unk_4B8 = arg2;
 }
 
-void func_84308660(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void Battle_ResetEntityAnim(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     s32 idx;
     unk_BattleAnimDataEntry* sp30;
     unk_BattleAnimDataEntry* sp2C;
@@ -301,7 +301,7 @@ void func_84308660(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
             (Anim_HasReachedEnd(&arg1->unk_000) == 1)) {
             if (sp20->unk_34 & 0x200) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp2C->unk_00);
-            } else if ((sp20->unk_34 & 1) && (func_84307AE0(arg1->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
+            } else if ((sp20->unk_34 & 1) && (Array_ContainsValue(arg1->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp28->unk_00);
             } else {
                 if (arg1->unk_000.unk_01A == 0x84) {
@@ -340,7 +340,7 @@ void Battle_ApplyAnimEffect(unk_BattlePlayerEntity* arg0) {
         Anim_SetChannelBase(&arg0->unk_000, 0);
         if (sp24->unk_34 & 0x200) {
             GraphNode_TriggerAction(&arg0->unk_000, sp30->unk_00);
-        } else if ((sp24->unk_34 & 1) && (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
+        } else if ((sp24->unk_34 & 1) && (Array_ContainsValue(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
             GraphNode_TriggerAction(&arg0->unk_000, sp2C->unk_00);
         } else {
             if (arg0->unk_000.unk_01A == 0x84) {
@@ -365,23 +365,23 @@ void func_8430897C(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void func_843089DC(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void Entity_InitController(unk_BattlePlayerEntity* arg0, s32 arg1) {
     arg0->unk_724 = arg0->unk_720->unk_08[arg1];
 }
 
-void func_843089F4(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void Entity_InitPhysics(unk_BattlePlayerEntity* arg0, s32 arg1) {
     arg0->unk_654.unk_2B = arg1;
 }
 
-void func_843089FC(unk_BattlePlayerEntity* arg0, Controller* arg1) {
+void Entity_BindController(unk_BattlePlayerEntity* arg0, Controller* arg1) {
     arg0->unk_654.unk_C8 = arg1;
 }
 
 void func_84308A04(unk_BattlePlayerEntity* arg0, s32 arg1) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
 
-    func_843089DC(arg0, arg1);
-    func_843089F4(arg0, arg1);
+    Entity_InitController(arg0, arg1);
+    Entity_InitPhysics(arg0, arg1);
     temp_v0->unk_08 = temp_v0->unk_18;
     arg0->unk_728.unk_16C = temp_v0->unk_2B;
 }
@@ -455,7 +455,7 @@ s32 GetPlayerDefeatMessageId(unk_BattlePlayerEntity* arg0) {
 
 void func_84308DB8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
-    unk_D_86002F58_004_000_004* sp20 = func_843085C4(arg0, 0);
+    unk_D_86002F58_004_000_004* sp20 = GraphNode_GetModelRoot(arg0, 0);
 
     IsPrimaryEntity(arg0);
     GraphNode_ClearCallback(&arg1->unk_000);
@@ -491,7 +491,7 @@ void func_84308DB8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, s
 void func_84308ED4(unk_BattlePlayerEntity* arg0, unk_D_84390010_728* arg1, s16 arg2) {
     unk_D_86002F58_004_000_004* sp24;
 
-    sp24 = func_843085C4(arg0, 0);
+    sp24 = GraphNode_GetModelRoot(arg0, 0);
     GraphNode_ClearCallback(&arg1->unk_000);
 
     if (arg0 == D_84390010[0]) {
@@ -516,7 +516,7 @@ void func_84308F94(unk_BattlePlayerEntity* arg0, s16 arg1) {
     unk_D_86002F58_004_000_004* sp58;
     unk_D_84390010_168* var_s0;
 
-    sp58 = func_843085C4(arg0, 0);
+    sp58 = GraphNode_GetModelRoot(arg0, 0);
 
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_168[i];
@@ -561,8 +561,8 @@ void func_84309168(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[3];
     s16 sp26;
 
-    func_843085C4(arg0, 0);
-    sp26 = func_843085E0(arg0, 0);
+    GraphNode_GetModelRoot(arg0, 0);
+    sp26 = GraphNode_GetModelPhase(arg0, 0);
     func_84308DB8(arg0, arg0, sp26, 0);
     func_84308ED4(arg0, &arg0->unk_728, sp26);
     func_84308F94(arg0, sp26);
@@ -571,13 +571,13 @@ void func_84309168(unk_BattlePlayerEntity* arg0) {
     Vec3f_Set(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
 }
 
-void func_8430920C(unk_BattlePlayerEntity* arg0) {
+void Pokemon_ApplyFaintTransform(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
     UNUSED s32 pad[3];
     s16 sp26;
 
-    func_843085C4(arg0, 0);
-    sp26 = func_843085E0(arg0, 0);
+    GraphNode_GetModelRoot(arg0, 0);
+    sp26 = GraphNode_GetModelPhase(arg0, 0);
     func_84308DB8(arg0, arg0, sp26, 1);
     func_84308ED4(arg0, &arg0->unk_728, sp26);
     func_84308F94(arg0, sp26);
@@ -587,7 +587,7 @@ void func_8430920C(unk_BattlePlayerEntity* arg0) {
     Vec3f_Set(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
 }
 
-void func_843092B4(unk_BattlePlayerEntity* arg0) {
+void Pokemon_ClearFaintTransform(unk_BattlePlayerEntity* arg0) {
     GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, arg0->unk_654.unk_2E = 0xFF);
     arg0->unk_654.unk_BC = arg0->unk_000.unk_01A;
     func_84308DB8(arg0, arg0, 0x98, 0);
@@ -604,7 +604,7 @@ void func_84309328(unk_BattlePlayerEntity* arg0) {
 void func_84309368(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[3];
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
-    s16 sp2E = func_843085E0(arg0, 0);
+    s16 sp2E = GraphNode_GetModelPhase(arg0, 0);
 
     ptr->unk_2E = 0xFF;
     GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, ptr->unk_2E);

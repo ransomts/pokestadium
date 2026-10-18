@@ -2170,7 +2170,7 @@ void QueuePlayerDefeatMessage(s32 arg0) {
 
 void HandleStadiumModeAudio(void) {
     if (gStadiumModeActive == 0) {
-        func_8004B1CC(0x3D);
+        ResultScreen_SetAnimation(0x3D);
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
         if (gCurrentStadiumPhase == 0xC) {
             if (!(gStadiumPhaseSubstate & 3) && (*gPlayerActiveFlag != 0)) {

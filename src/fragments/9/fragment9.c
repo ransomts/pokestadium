@@ -514,7 +514,7 @@ void func_863011C8(void) {
     D_86301724 = 4;
     SetResultFlag(1);
 
-    while (D_8780FC96 == 0) {
+    while (gResultExitPending == 0) {
         func_8630011C();
         func_863006D8(D_86301724);
     }

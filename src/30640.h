@@ -131,7 +131,7 @@ typedef struct unk_D_83407B38 {
     /* 0xB0 */ Camera* unk_B0;
 } unk_D_83407B38; // size = 0xB4
 
-extern unk_D_83407B00 D_83407B30;
+extern unk_D_83407B00 gGalleryMainSelection;
 
 void Gallery_Run(void);
 void Cam_CallInit318B8(void);

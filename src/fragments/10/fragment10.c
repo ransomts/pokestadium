@@ -29,7 +29,7 @@ static unk_D_864027C0 gPlayerSpawnInfo[] = {
 };
 
 static u16 D_86402840 = 0;
-static u16 D_86402844 = 0;
+static u16 gPlayerButtonPressed = 0;
 
 u8 gUseAlphaBlend = 0;
 
@@ -62,12 +62,12 @@ static Fragment2_1GraphNode gResultScreenNode;
 
 static Fragment2_1GraphNode gPlayerResultNodes[4];
 
-static unk_D_86404778 gPlayerHudStates[4];
+static HudState gPlayerHudStates[4];
 
-static unk_D_86405158 gGameState;
+static ResultGameState gGameState;
 
-static unk_D_86404778* gCurrentHudState;
-static unk_D_86405158* D_864052CC;
+static HudState* gCurrentHudState;
+static ResultGameState* D_864052CC;
 static Fragment2_1GraphNode* gCurrentGraphNode;
 static u8 gHealthSegmentExactMatch;
 static s16 gCurrentHealthSegment;
@@ -89,21 +89,21 @@ void UpdateHealthBarSegmentOffsets(void) {
     }
 }
 
-u16 func_86400128(u8 arg0) {
+u16 IsHealthSegmentMatch(u8 arg0) {
     if ((gCurrentHealthSegment == gPlayerHudStates[arg0].unk_008) || (gCurrentHealthSegment == gPlayerHudStates[arg0].unk_00A)) {
         return 1;
     }
     return 0;
 }
 
-void func_86400184(unk_D_86404778* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4) {
+void Hud_SetAnimationState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4) {
     arg0->unk_018 = arg1;
     arg0->unk_01C = arg2;
     arg0->unk_020 = arg3;
     arg0->unk_024 = arg4;
 }
 
-void func_864001A0(void) {
+void Hud_InitDefaultStates(void) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
@@ -115,13 +115,13 @@ void func_864001A0(void) {
     }
 }
 
-void func_86400220(void) {
+void ResultScreen_ResetAnim(void) {
     if (Anim_HasReachedEnd(&gResultScreenNode) != 0) {
         Anim_SetChannelBase(&gResultScreenNode, 0);
     }
 }
 
-void func_86400258(unk_D_86405158* arg0) {
+void GameState_UpdateAnim(ResultGameState* arg0) {
     static u8 D_86402994 = 0;
     static u8 D_86402998[] = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x08, 0x08, 0x09,
@@ -146,14 +146,14 @@ void func_86400258(unk_D_86405158* arg0) {
     }
 }
 
-void func_864002F8(void) {
+void Hud_UpdateAnimation(void) {
     u8 i;
     f32 temp_fv0;
     f32 var_fv1;
     s8 temp_ft2;
     s32 temp_s1;
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         for (i = 0; i < 4; i++) {
             gCurrentHudState = &gPlayerHudStates[i];
 
@@ -211,7 +211,7 @@ void func_864002F8(void) {
     }
 }
 
-void func_864005EC(u8 arg0) {
+void Hud_HandlePlayerElimination(u8 arg0) {
     u8 i;
     u8 sp40[] = {
         0,
@@ -239,7 +239,7 @@ void func_864005EC(u8 arg0) {
 
         if (sp40[i] != 0) {
             gCurrentHudState->unk_00C = D_864029B4;
-            func_86400184(gCurrentHudState, 0, 0, 0, 0);
+            Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
         }
     }
 
@@ -255,7 +255,7 @@ void func_864005EC(u8 arg0) {
 
             if (gCurrentHudState->unk_00C == 0) {
                 gCurrentHudState->unk_00C = 1;
-                func_86400184(gCurrentHudState, 0, 0, 0, 0);
+                Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
             }
         }
 
@@ -278,7 +278,7 @@ void func_864005EC(u8 arg0) {
     }
 }
 
-void func_86400860(UNUSED s32 arg0) {
+void Hud_RenderHealthBars(UNUSED s32 arg0) {
     u8 i;
     f32 temp_fs0;
     s16 temp_a3;
@@ -303,7 +303,7 @@ void func_86400860(UNUSED s32 arg0) {
             if ((gCurrentHudState->unk_004 == 5) && (temp_a3 >= 0x18)) {
                 if (gCurrentHudState->unk_015 == 0) {
                     gCurrentHudState->unk_015 = 1;
-                    if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                    if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                         PlaySoundByCategory(0x70005, i + 1, 0);
                     }
                 }
@@ -311,7 +311,7 @@ void func_86400860(UNUSED s32 arg0) {
             } else if ((gCurrentHudState->unk_00C == 1) && (gCurrentHudState->unk_004 == 6) && (temp_a3 >= 0x77)) {
                 if (gCurrentHudState->unk_015 == 0) {
                     gCurrentHudState->unk_015 = 1;
-                    if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                    if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                         PlaySoundByCategory(0x70006, i + 1, 0);
                     }
                 }
@@ -330,7 +330,7 @@ void func_86400860(UNUSED s32 arg0) {
 
                     case 20:
                         gCurrentHudState->unk_190->unk_28 = temp_fs0;
-                        if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                        if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                             PlaySoundByCategory(0x70004, i + 1, 0);
                         }
                         break;
@@ -354,7 +354,7 @@ void func_86400860(UNUSED s32 arg0) {
     }
 }
 
-void func_86400BE8(s32 arg0) {
+void ResultScreen_Update(s32 arg0) {
     s32 temp;
     s16 sp24[] = {
         0xFB1E,
@@ -366,7 +366,7 @@ void func_86400BE8(s32 arg0) {
 
     Fragment2_1_Update();
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         if (arg0 == 2) {
             static u8 D_864029C0 = 0;
 
@@ -436,7 +436,7 @@ void func_86400BE8(s32 arg0) {
     }
 }
 
-void func_86400EB4(void) {
+void ResultScreen_HandleInput(void) {
     static u8 D_864029C8 = 0;
 
     u8 i;
@@ -444,7 +444,7 @@ void func_86400EB4(void) {
     s32 var_a2;
     UNUSED s32 pad;
 
-    if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+    if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
         D_864052CC->unk_16D = D_864052CC->unk_16C;
         if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.unk_04->unk_0A / 2)) {
             D_864052CC->unk_16C = 0;
@@ -477,16 +477,16 @@ void func_86400EB4(void) {
                 if (gCurrentHudState->unk_01C >= 2) {
                     gCurrentHudState->unk_01C--;
                 } else {
-                    func_86400184(gCurrentHudState, gCurrentHudState->unk_020, gCurrentHudState->unk_024, 0, 0);
+                    Hud_SetAnimationState(gCurrentHudState, gCurrentHudState->unk_020, gCurrentHudState->unk_024, 0, 0);
                 }
 
                 if (gCurrentHudState->unk_000 == 4) {
-                    D_86402844 = gControllers[i].buttonPressed & 0x8000;
+                    gPlayerButtonPressed = gControllers[i].buttonPressed & 0x8000;
                 } else {
-                    D_86402844 = func_86400128(i);
+                    gPlayerButtonPressed = IsHealthSegmentMatch(i);
                 }
 
-                if (D_86402844 != 0) {
+                if (gPlayerButtonPressed != 0) {
                     if (gHealthSegmentExactMatch != 0) {
                         if (gCurrentHudState->unk_014 == 0) {
                             if (D_864029C8 == 0) {
@@ -504,17 +504,17 @@ void func_86400EB4(void) {
                             }
 
                             if (gCurrentHudState->unk_018 == 0) {
-                                func_86400184(gCurrentHudState, 1, 0x14, 0, 0);
+                                Hud_SetAnimationState(gCurrentHudState, 1, 0x14, 0, 0);
                             } else {
-                                func_86400184(gCurrentHudState, 0, 1, 1, 0x14);
+                                Hud_SetAnimationState(gCurrentHudState, 0, 1, 1, 0x14);
                             }
                         }
                     } else {
                         gCurrentHudState->unk_010 -= 1;
                         if (gCurrentHudState->unk_018 == 0) {
-                            func_86400184(gCurrentHudState, 2, 0x14, 0, 0);
+                            Hud_SetAnimationState(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            func_86400184(gCurrentHudState, 0, 1, 2, 0x14);
+                            Hud_SetAnimationState(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     }
 
@@ -547,9 +547,9 @@ void func_86400EB4(void) {
                     if (gCurrentHudState->unk_014 == 0) {
                         gCurrentHudState->unk_010--;
                         if (gCurrentHudState->unk_018 == 0) {
-                            func_86400184(gCurrentHudState, 2, 0x14, 0, 0);
+                            Hud_SetAnimationState(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            func_86400184(gCurrentHudState, 0, 1, 2, 0x14);
+                            Hud_SetAnimationState(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     } else {
                         gCurrentHudState->unk_014 = 0;
@@ -568,14 +568,14 @@ void func_86400EB4(void) {
             if (gCurrentHudState->unk_010 <= 0) {
                 gCurrentHudState->unk_010 = 0;
                 if ((gCurrentHudState->unk_012 > 0) && (gCurrentHudState->unk_00C == 0)) {
-                    func_864005EC(i);
+                    Hud_HandlePlayerElimination(i);
                 }
             }
         }
     }
 }
 
-void func_86401544(s32 arg0) {
+void ResultScreen_DrawUI(s32 arg0) {
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
         DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
         DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
@@ -660,25 +660,25 @@ void func_86401A9C(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(D_87B000E8);
 
-    if (D_8780FC98 == 0) {
-        func_86401544(arg0);
+    if (gResultConfirmPressed == 0) {
+        ResultScreen_DrawUI(arg0);
     }
 
     ResultScreen_UpdateAndRender();
     Stage_Advance();
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         D_87B000C0++;
     }
 }
 
-void func_86401B3C(void) {
+void ResultScreen_IntroSequence(void) {
     u8 i;
     u8 var_s1;
     s32 var_s2;
@@ -701,10 +701,10 @@ void func_86401B3C(void) {
         }
 
         MenuInput_FrameUpdate();
-        func_86400BE8(0);
-        func_86400860(0);
-        func_864002F8();
-        func_86400220();
+        ResultScreen_Update(0);
+        Hud_RenderHealthBars(0);
+        Hud_UpdateAnimation();
+        ResultScreen_ResetAnim();
         func_86401A9C(0);
 
         if (var_s1 < 0x11) {
@@ -713,7 +713,7 @@ void func_86401B3C(void) {
     }
 
     func_8004B9C4(0x3C);
-    if (D_8780FC92 == 0) {
+    if (gResultFlag_Special == 0) {
         while (true) {
             if (D_87B000C4 <= 0) {
                 break;
@@ -731,10 +731,10 @@ void func_86401B3C(void) {
             D_87B000C4--;
 
             MenuInput_FrameUpdate();
-            func_86400BE8(1);
-            func_86400860(1);
-            func_864002F8();
-            func_86400220();
+            ResultScreen_Update(1);
+            Hud_RenderHealthBars(1);
+            Hud_UpdateAnimation();
+            ResultScreen_ResetAnim();
             func_86401A9C(1);
         }
     }
@@ -746,56 +746,56 @@ void func_86401D1C(void) {
 
     s32 var_s2 = 1;
 
-    if (D_8780FC92 == 0) {
+    if (gResultFlag_Special == 0) {
         PlaySoundByCategory(0x70002, 0, 0);
         MenuInput_FrameUpdate();
-        func_86400BE8(2);
-        func_86400860(2);
-        func_864002F8();
-        func_86400220();
+        ResultScreen_Update(2);
+        Hud_RenderHealthBars(2);
+        Hud_UpdateAnimation();
+        ResultScreen_ResetAnim();
         func_86401A9C(2);
 
         while (var_s2 != 0) {
-            if (D_8780FC92 != 0) {
+            if (gResultFlag_Special != 0) {
                 break;
             }
 
             if ((D_864029DC == 0) && (Fragment2_1_GetResult() == -2)) {
-                func_8004B1CC(0x18);
+                ResultScreen_SetAnimation(0x18);
                 D_864029DC = 1;
             }
 
             MenuInput_FrameUpdate();
-            func_86400BE8(2);
+            ResultScreen_Update(2);
 
             if (D_87B000C8 == 0) {
                 if (D_864029E0 < 0x1E) {
-                    if (D_8780FC94 == 0) {
+                    if (gResultMenuVisible == 0) {
                         D_864029E0++;
                     }
                 } else if (D_864029E0 == 0x1E) {
-                    if (D_8780FC94 == 0) {
+                    if (gResultMenuVisible == 0) {
                         PlaySoundByCategory(0x70003, 1, 0);
                         D_864029E0++;
                     }
                     Anim_SetChannelBase(&D_864052CC->unk_004, 1);
                 } else {
-                    func_86400EB4();
-                    func_86400258(D_864052CC);
+                    ResultScreen_HandleInput();
+                    GameState_UpdateAnim(D_864052CC);
                 }
-            } else if (D_8780FC96 != 0) {
+            } else if (gResultExitPending != 0) {
                 var_s2 = 0;
             }
 
-            func_86400860(2);
-            func_864002F8();
-            func_86400220();
+            Hud_RenderHealthBars(2);
+            Hud_UpdateAnimation();
+            ResultScreen_ResetAnim();
             func_86401A9C(2);
         }
     }
 }
 
-void func_86401EEC(void) {
+void ResultScreen_OutroSequence(void) {
     u8 i;
 
     Audio_SetVolumeFadeAndDuration(1, 0x1E);
@@ -804,15 +804,15 @@ void func_86401EEC(void) {
 
     for (i = 0; i < 30; i++) {
         MenuInput_FrameUpdate();
-        func_86400BE8(3);
-        func_86400860(3);
-        func_864002F8();
-        func_86400220();
+        ResultScreen_Update(3);
+        Hud_RenderHealthBars(3);
+        Hud_UpdateAnimation();
+        ResultScreen_ResetAnim();
         func_86401A9C(3);
     }
 }
 
-void func_86401F74(void) {
+void ResultScreen_SetupCamera(void) {
     D_87B000EC = D_87B000E8->unk_00.unk_0C;
 
     D_87B000F0 = 0x900;
@@ -828,7 +828,7 @@ void func_86401F74(void) {
     Camera_SetViewParameters(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
 }
 
-void func_8640203C(void) {
+void Hud_CreateBillboards(void) {
     u8 i;
     MemoryBlock* temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
 
@@ -841,7 +841,7 @@ void func_8640203C(void) {
     mem_pool_resize_block(temp_s5);
 }
 
-void func_86402130(void) {
+void ResultScreen_InitScene(void) {
     u8 i;
     u8 x;
     u8 y;
@@ -887,7 +887,7 @@ void func_86402130(void) {
         gCurrentHudState->unk_014 = 0;
         gCurrentHudState->unk_015 = 0;
 
-        func_86400184(gCurrentHudState, 0, 0, 0, 0);
+        Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
 
         for (x = 0; x < 14; x++) {
             for (y = 0; y < 8; y++) {
@@ -935,15 +935,15 @@ void func_86402130(void) {
         gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;
     }
 
-    func_8640203C();
-    func_864001A0();
+    Hud_CreateBillboards();
+    Hud_InitDefaultStates();
     UpdateHealthBarSegmentOffsets();
-    func_86401F74();
+    ResultScreen_SetupCamera();
     Fragment2_1_Init();
     ResultScreen_Init();
 }
 
-void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1) {
+void ResultScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
@@ -953,11 +953,11 @@ void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1) {
     gCurrentTextObject = Text_Init(0x16, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    func_86402130();
+    ResultScreen_InitScene();
     Stage_Set(sp24);
-    func_86401B3C();
+    ResultScreen_IntroSequence();
     func_86401D1C();
-    func_86401EEC();
+    ResultScreen_OutroSequence();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

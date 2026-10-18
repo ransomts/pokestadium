@@ -28,10 +28,10 @@ s32 func_8420DBA0(unk_D_84229EB0_00024* arg0) {
 
     temp_v0 = func_80028E68();
     if (temp_v0 < 0xA) {
-        temp_s3 = func_80022CC0(0x10, 0, temp_v0, &arg0->unk_4D12, &arg0->unk_4D12, arg0->unk_4D10);
+        temp_s3 = GbsBlock_CreateWithString(0x10, 0, temp_v0, &arg0->unk_4D12, &arg0->unk_4D12, arg0->unk_4D10);
 
         for (i = 0; i < arg0->unk_4D20; i++) {
-            func_80022F24(&arg0->unk_0000[i].unk_004.unk_00.unk_00, 1, temp_s3);
+            GbsBlock_WriteEntries(&arg0->unk_0000[i].unk_004.unk_00.unk_00, 1, temp_s3);
         }
 
         CommitAndFreeGbsBlock(temp_s3);
@@ -941,7 +941,7 @@ void func_8421059C(unk_D_84229EB0* arg0) {
     switch (func_8420DB48(0xC)) {
         case 1:
             func_84207A1C(arg0->unk_134E8);
-            func_8420B20C(arg0->unk_134EC);
+            TriggerScrollDown(arg0->unk_134EC);
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 4;
             break;

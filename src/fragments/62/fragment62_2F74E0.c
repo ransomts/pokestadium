@@ -7,16 +7,16 @@
 static f32 gBattleTimer;
 f32 gHPBarTimer;
 f32 gPhaseTimer;
-static f32 D_8439012C;
-static f32 D_84390130;
+static f32 gBattlePhaseTimerMax;
+static f32 gPhaseTimerInitial;
 u8 gBattleResultPhase;
 static s32 gRandomMoveSlot;
-static s32 D_8439013C;
+static s32 gRandomMoveSelectedFlag;
 static s32 pad_D_84390140;
-static u16 D_84390144;
-static Controller* D_84390148;
-static Controller* D_8439014C;
-static Controller D_84390150;
+static u16 gBattleControllerId;
+static Controller* gActiveController1;
+static Controller* gActiveController2;
+static Controller gDemoController;
 s32 gBattleInitFlag;
 unk_D_84390178 gBattleInitStruct;
 
@@ -24,13 +24,13 @@ static u8 D_84385750[] = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
 };
 
-void func_8430CC20(void) {
-    D_8439012C = gBattleContext.unk_11EF * 0x1E;
-    D_84390130 = gBattleContext.unk_11EE * 0x708;
+void Battle_InitTimers(void) {
+    gBattlePhaseTimerMax = gBattleContext.unk_11EF * 0x1E;
+    gPhaseTimerInitial = gBattleContext.unk_11EE * 0x708;
     gPhaseTimer = gBattleContext.unk_11EE * 0x708;
 }
 
-void func_8430CC84(void) {
+void Battle_AlignPhaseTimer(void) {
     s32 tmp = (s32)(gPhaseTimer / 30.0f) * 0x1E;
 
     gPhaseTimer = tmp;
@@ -60,7 +60,7 @@ s32 Battle_TickCountdownTimer(void) {
     return 0;
 }
 
-s32 func_8430CDAC(s32 arg0, s32 arg1) {
+s32 Battle_GetMoveScore(s32 arg0, s32 arg1) {
     s32 temp_v0 = arg0 * 0x30;
 
     if (temp_v0 < (arg1 * 0xA)) {
@@ -105,12 +105,12 @@ s32 Battle_ComputeWinner(void) {
 
     for (i = 0; i < func_84307EC4(D_84390010[0]); i++) {
         ptr = &D_84390010[0]->unk_724->unk_01C[i];
-        var_s5 += func_8430CDAC(ptr->unk_02, ptr->unk_26);
+        var_s5 += Battle_GetMoveScore(ptr->unk_02, ptr->unk_26);
     }
 
     for (i = 0; i < func_84307EC4(D_84390010[1]); i++) {
         ptr = &D_84390010[1]->unk_724->unk_01C[i];
-        var_s6 += func_8430CDAC(ptr->unk_02, ptr->unk_26);
+        var_s6 += Battle_GetMoveScore(ptr->unk_02, ptr->unk_26);
     }
 
     if (var_s5 == var_s6) {
@@ -126,7 +126,7 @@ s32 Battle_ComputeWinner(void) {
     }
 }
 
-s32 func_8430D02C(void) {
+s32 Battle_UpdateResultPhase(void) {
     s32 sp1C = 0;
     s32 var_v0;
 
@@ -164,7 +164,7 @@ s32 func_8430D02C(void) {
     return sp1C;
 }
 
-s32 func_8430D124(void) {
+s32 Battle_TickHPBarTimer(void) {
     if (gBattleContext.unk_11ED == 0) {
         return 0;
     }
@@ -195,11 +195,11 @@ s32 func_8430D124(void) {
     return 0;
 }
 
-void func_8430D268(void) {
+void Battle_ResetHPBarTimer(void) {
     gHPBarTimer = gBattleContext.unk_11EF * 0x1E;
 }
 
-s32 func_8430D294(void) {
+s32 Battle_TickBattleTimer(void) {
     if (gHPBarTimer > 0.0f) {
         gHPBarTimer -= 1.0f;
     }
@@ -212,12 +212,12 @@ s32 func_8430D294(void) {
     return 0;
 }
 
-void func_8430D30C(void) {
+void Battle_ResetAllTimers(void) {
     gBattleTimer = 0.0f;
-    func_8430D268();
+    Battle_ResetHPBarTimer();
 }
 
-s32 func_8430D334(unk_BattlePlayerEntity* arg0) {
+s32 Battle_UpdateAnimFrame(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v1 = &arg0->unk_654;
 
     if (arg0->unk_654.unk_10 == 3) {
@@ -227,7 +227,7 @@ s32 func_8430D334(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void func_8430D364(void) {
+void Battle_UpdateHPScale(void) {
     unk_D_800FCB18* temp_a2;
     unk_D_800FCB18* temp_a3;
     unk_BattlePlayerAnimState* ptr1;
@@ -252,7 +252,7 @@ void func_8430D364(void) {
     }
 }
 
-s32 func_8430D434(unk_BattlePlayerEntity* arg0) {
+s32 Battle_CheckMoveAvailability(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 var_v1;
     unk_BattlePlayerAnimState* temp_v1;
@@ -285,7 +285,7 @@ s32 func_8430D434(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 func_8430D574(unk_BattlePlayerEntity* arg0, s32 arg1) {
+s32 Battle_IsMoveInvalid(unk_BattlePlayerEntity* arg0, s32 arg1) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[arg1] & 0x3F)) {
@@ -299,13 +299,13 @@ s32 func_8430D574(unk_BattlePlayerEntity* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8430D5BC(unk_BattlePlayerEntity* arg0) {
+void Battle_SelectFirstAvailableMove(unk_BattlePlayerEntity* arg0) {
     s32 i;
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
 
-    if (func_8430D434(arg0) == 0) {
+    if (Battle_CheckMoveAvailability(arg0) == 0) {
         for (i = 0; i < 4; i++) {
-            if (func_8430D574(arg0, i) == 0) {
+            if (Battle_IsMoveInvalid(arg0, i) == 0) {
                 temp_v0->unk_04 = 1;
                 temp_v0->unk_10 = 3;
                 temp_v0->unk_14 = i;
@@ -316,7 +316,7 @@ void func_8430D5BC(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void func_8430D638(unk_BattlePlayerEntity* arg0) {
+void Battle_SelectNextValidMove(unk_BattlePlayerEntity* arg0) {
     s32 i;
     unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
 
@@ -331,17 +331,17 @@ void func_8430D638(unk_BattlePlayerEntity* arg0) {
         }
     }
 
-    func_8430D5BC(arg0);
+    Battle_SelectFirstAvailableMove(arg0);
 }
 
-void func_8430D6D0(unk_BattlePlayerEntity* arg0) {
+void Battle_UpdateControllerRef(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
     ptr->unk_2C = ptr->unk_2B;
     ptr->unk_C8 = &gControllers[arg0->unk_720->unk_08[ptr->unk_2C]->unk_001];
 }
 
-void func_8430D710(s32 arg0) {
+void Battle_HandleConfirmInput(s32 arg0) {
     unk_BattlePlayerAnimState* sp2C;
     unk_BattlePlayerAnimState* sp28;
     UNUSED s32 pad;
@@ -357,7 +357,7 @@ void func_8430D710(s32 arg0) {
 
     if (sp2C->unk_2D == 0x10) {
         if (sp2C->unk_04 == 2) {
-            func_8430D6D0(D_84390010[arg0]);
+            Battle_UpdateControllerRef(D_84390010[arg0]);
         }
         PlaySoundEffect_Confirm();
         sp2C->unk_10 = 2;
@@ -365,15 +365,15 @@ void func_8430D710(s32 arg0) {
 
     if (sp28->unk_2D != 0x10) {
         if (sp2C->unk_04 == 2) {
-            func_8430D6D0(D_84390010[arg0]);
+            Battle_UpdateControllerRef(D_84390010[arg0]);
         }
         PlaySoundEffect_Confirm();
         sp2C->unk_10 = 0;
     }
 }
 
-void func_8430D814(void) {
-    func_8430CC20();
+void Battle_InitLighting(void) {
+    Battle_InitTimers();
     func_84370B7C(D_84390010[0]);
     func_84370B7C(D_84390010[1]);
 
@@ -384,7 +384,7 @@ void func_8430D814(void) {
     ResetBattleAfterMove(1, 0);
 }
 
-s32 func_8430D8C4(unk_BattlePlayerEntity* arg0) {
+s32 Battle_HasAnyValidMoves(unk_BattlePlayerEntity* arg0) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
     s32 i;
     s32 var_v1 = 0;
@@ -409,14 +409,14 @@ s32 func_8430D8C4(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 func_8430D9EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 Battle_HandleSimultaneousInput(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad[2];
     unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
     unk_BattlePlayerAnimState* temp_v0 = &arg1->unk_654;
 
     if ((arg0->unk_654.unk_2D == 0x10) && (arg1->unk_654.unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
-            func_8430D334(arg0);
+            Battle_UpdateAnimFrame(arg0);
             return 1;
         }
 
@@ -456,21 +456,21 @@ s32 func_8430D9EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     return 0;
 }
 
-void func_8430DB58(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+void Battle_SetIdleAnim(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
-    func_8430D334(arg0);
+    Battle_UpdateAnimFrame(arg0);
     ptr->unk_2A = 1;
     ptr->unk_04 = 1;
     ptr->unk_0C = ptr->unk_14;
     ptr->unk_10 = 3;
 }
 
-void func_8430DBA0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void Battle_HandleMoveTimeout_Player1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_BattlePlayerAnimState* sp20 = &arg1->unk_654;
     unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
 
-    func_8430D334(arg0);
+    Battle_UpdateAnimFrame(arg0);
     sp1C->unk_2A = 1;
 
     if ((gBattleTimer == 30.0f) && (gRandomMoveSlot < 4)) {
@@ -490,7 +490,7 @@ void func_8430DBA0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430DCD4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void Battle_HandleMoveTimeout_Player2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_BattlePlayerAnimState* sp18;
     unk_BattlePlayerAnimState* sp14;
     s32 var_v0;
@@ -514,7 +514,7 @@ void func_8430DCD4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
             PlaySoundEffect_Cancel();
             sp18->unk_04 = 1;
             sp18->unk_10 = 3;
-            if (func_8430D8C4(arg0) != 0) {
+            if (Battle_HasAnyValidMoves(arg0) != 0) {
                 sp18->unk_14 = 4;
                 sp18->unk_0C = 4;
             } else {
@@ -526,7 +526,7 @@ void func_8430DCD4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-s32 func_8430DE20(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 Battle_HandleMoveTimeout_Random(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
     unk_BattlePlayerAnimState* sp18 = &arg1->unk_654;
 
@@ -558,21 +558,21 @@ s32 func_8430DE20(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     return 0;
 }
 
-void func_8430DF60(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
+void Battle_RandomizeMoveSlot(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
                    UNUSED unk_BattlePlayerAnimState* arg3, UNUSED unk_BattlePlayerEntity* arg4) {
-    if ((gBattleTimer == 1.0f) && (D_8439013C == 0)) {
-        D_8439013C = 1;
+    if ((gBattleTimer == 1.0f) && (gRandomMoveSelectedFlag == 0)) {
+        gRandomMoveSelectedFlag = 1;
         gRandomMoveSlot = func_84383B5C(0);
     }
 }
 
-s32 func_8430DFCC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 Battle_UpdateMoveSelection(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* sp34 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* sp30 = &arg1->unk_654.unk_38;
     unk_BattlePlayerAnimState* sp2C = &arg0->unk_654;
     unk_BattlePlayerAnimState* sp28 = &arg1->unk_654;
 
-    if (func_8430D9EC(arg0, arg1) != 0) {
+    if (Battle_HandleSimultaneousInput(arg0, arg1) != 0) {
         return 0;
     }
 
@@ -581,62 +581,62 @@ s32 func_8430DFCC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
         sp30->unk_4C &= ~8;
 
         if (!(sp34->unk_4C & 0x12)) {
-            if (func_8430D334(arg0) != 0) {
+            if (Battle_UpdateAnimFrame(arg0) != 0) {
                 return 0;
             }
 
             if (gBattleTimer == 0.0f) {
-                D_8439013C = 0;
+                gRandomMoveSelectedFlag = 0;
                 return 0;
             }
 
-            func_8430DF60(sp34, sp30, sp2C, sp28, arg1);
+            Battle_RandomizeMoveSlot(sp34, sp30, sp2C, sp28, arg1);
 
-            if (func_8430DE20(arg0, arg1) != 0) {
+            if (Battle_HandleMoveTimeout_Random(arg0, arg1) != 0) {
                 return 0;
             }
 
             if (!(sp34->unk_15 & 0x27)) {
                 if (!(sp34->unk_4C & 0x21)) {
                     if (sp30->unk_4C & 0x20) {
-                        func_8430DBA0(arg0, arg1);
+                        Battle_HandleMoveTimeout_Player1(arg0, arg1);
                         sp34->unk_5A = 0xFF;
-                    } else if (func_8430D334(arg0) != 0) {
+                    } else if (Battle_UpdateAnimFrame(arg0) != 0) {
                         return 0;
                     } else {
                         if (gBattleTimer == 0.0f) {
-                            D_8439013C = 0;
+                            gRandomMoveSelectedFlag = 0;
                             return 0;
                         }
-                        func_8430DF60(sp34, sp30, sp2C, sp28, arg1);
-                        func_8430DCD4(arg0, arg1);
+                        Battle_RandomizeMoveSlot(sp34, sp30, sp2C, sp28, arg1);
+                        Battle_HandleMoveTimeout_Player2(arg0, arg1);
                     }
                 } else {
-                    func_8430DBA0(arg0, arg1);
+                    Battle_HandleMoveTimeout_Player1(arg0, arg1);
                 }
             } else {
-                func_8430DBA0(arg0, arg1);
+                Battle_HandleMoveTimeout_Player1(arg0, arg1);
             }
         } else {
-            func_8430DB58(arg0, arg1);
+            Battle_SetIdleAnim(arg0, arg1);
         }
     } else {
-        func_8430DB58(arg0, arg1);
+        Battle_SetIdleAnim(arg0, arg1);
     }
 
     return 0;
 }
 
-void func_8430E1CC(unk_BattlePlayerEntity* arg0) {
+void Battle_HandleMenuNavigation(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp18 = &arg0->unk_654;
     unk_BattlePlayerAnimState* temp_a0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
     } else {
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
     }
 
     if (temp_a0->unk_10 == 4) {
@@ -652,30 +652,30 @@ void func_8430E1CC(unk_BattlePlayerEntity* arg0) {
     sp18->unk_10 = 4;
 
     if ((gBattleState.unk_00->unk_40 == 0) &&
-        (BTN_IS_PRESSED(D_84390148, BTN_DLEFT) || BTN_IS_PRESSED(D_8439014C, BTN_DLEFT))) {
+        (BTN_IS_PRESSED(gActiveController1, BTN_DLEFT) || BTN_IS_PRESSED(gActiveController2, BTN_DLEFT))) {
         sp18->unk_2F = 0;
         PlaySoundEffect(1);
     }
 
     if ((gBattleState.unk_00->unk_40 == 0) &&
-        (BTN_IS_PRESSED(D_84390148, BTN_DRIGHT) || BTN_IS_PRESSED(D_8439014C, BTN_DRIGHT))) {
+        (BTN_IS_PRESSED(gActiveController1, BTN_DRIGHT) || BTN_IS_PRESSED(gActiveController2, BTN_DRIGHT))) {
         sp18->unk_2F = 1;
         PlaySoundEffect(1);
     }
 
-    if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A)) &&
+    if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(gActiveController1, BTN_A) || BTN_IS_PRESSED(gActiveController2, BTN_A)) &&
         (gBattleState.unk_00->unk_40 == 0)) {
         PlaySoundEffect(2);
         gBattleState.unk_00->unk_40 = (IsPrimaryEntity(arg0) == 0) + 1;
         func_8004B9C4(0x14);
-    } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(D_84390148, BTN_A) || BTN_IS_PRESSED(D_8439014C, BTN_A))) {
+    } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(gActiveController1, BTN_A) || BTN_IS_PRESSED(gActiveController2, BTN_A))) {
         sp18->unk_10 = 0;
         sp18->unk_04 = 0;
         PlaySoundEffect(3);
     }
 }
 
-void func_8430E490(unk_BattlePlayerEntity* arg0) {
+void Battle_ClearMoveSelection(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
     unk_D_800FCB18* temp_v1 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
@@ -688,58 +688,58 @@ void func_8430E490(unk_BattlePlayerEntity* arg0) {
     }
 
     temp_v0->unk_1C = 0;
-    func_843193F4(arg0);
+    Battle_SetEntityPosition(arg0);
 }
 
-s32 func_8430E504(unk_BattlePlayerEntity* arg0) {
+s32 Battle_ValidateMoveSelection(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_18].unk_02 != 0) {
         return 1;
     }
 
-    func_843193F4(arg0);
+    Battle_SetEntityPosition(arg0);
     func_84319408(arg0, 3);
     PlaySoundEffect_Error();
     return 0;
 }
 
-void func_8430E580(unk_BattlePlayerEntity* arg0) {
-    func_843193F4(arg0);
+void Battle_InvalidMoveFeedback(unk_BattlePlayerEntity* arg0) {
+    Battle_SetEntityPosition(arg0);
     func_84319408(arg0, 4);
 }
 
-void func_8430E5AC(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void Battle_UpdateActiveController(unk_BattlePlayerEntity* arg0, s32 arg1) {
     if (arg1 == 1) {
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
     } else {
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
     }
 
     if (arg1 == 1) {
-        if (BTN_IS_PRESSED(D_84390148, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        if (BTN_IS_PRESSED(gActiveController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
             arg0->unk_654.unk_2C = 0;
-            func_843089FC(arg0, D_84390148);
-        } else if (BTN_IS_PRESSED(D_8439014C, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-            func_843089FC(arg0, D_8439014C);
+            Entity_BindController(arg0, gActiveController1);
+        } else if (BTN_IS_PRESSED(gActiveController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+            Entity_BindController(arg0, gActiveController2);
             arg0->unk_654.unk_2C = 0;
         }
-    } else if (BTN_IS_PRESSED(D_84390148, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-        func_843089FC(arg0, D_84390148);
+    } else if (BTN_IS_PRESSED(gActiveController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        Entity_BindController(arg0, gActiveController1);
         arg0->unk_654.unk_2C = 0;
-    } else if (BTN_IS_PRESSED(D_8439014C, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-        func_843089FC(arg0, D_8439014C);
+    } else if (BTN_IS_PRESSED(gActiveController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        Entity_BindController(arg0, gActiveController2);
         arg0->unk_654.unk_2C = 1;
     }
 }
 
-void func_8430E72C(unk_BattlePlayerEntity* arg0, Controller* arg1) {
+void Battle_HandleMoveSelectionInput(unk_BattlePlayerEntity* arg0, Controller* arg1) {
     unk_BattlePlayerAnimState* sp1C;
     unk_D_800AE540_0004* temp_a1;
 
     sp1C = &arg0->unk_654;
 
-    func_8430E5AC(arg0, arg0->unk_720->unk_01);
+    Battle_UpdateActiveController(arg0, arg0->unk_720->unk_01);
     temp_a1 = arg0->unk_720->unk_08[sp1C->unk_2C];
     arg1 = sp1C->unk_C8;
 
@@ -781,11 +781,11 @@ void func_8430E72C(unk_BattlePlayerEntity* arg0, Controller* arg1) {
 
     if (BTN_IS_PRESSED(arg1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
         if ((sp1C->unk_08 == sp1C->unk_18) && (sp1C->unk_2C == sp1C->unk_2B)) {
-            if (func_8430E504(arg0) != 0) {
+            if (Battle_ValidateMoveSelection(arg0) != 0) {
                 PlaySoundEffect_Error();
-                func_8430E580(arg0);
+                Battle_InvalidMoveFeedback(arg0);
             }
-        } else if (((temp_a1->unk_002 - 1) >= sp1C->unk_18) && (func_8430E504(arg0) != 0)) {
+        } else if (((temp_a1->unk_002 - 1) >= sp1C->unk_18) && (Battle_ValidateMoveSelection(arg0) != 0)) {
             PlaySoundEffect_Cancel();
             sp1C->unk_1C = 0;
             sp1C->unk_1E = 0;
@@ -794,45 +794,45 @@ void func_8430E72C(unk_BattlePlayerEntity* arg0, Controller* arg1) {
     }
 }
 
-void func_8430E8E8(unk_BattlePlayerEntity* arg0) {
+void Battle_UpdateInputState(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 idx;
     unk_BattlePlayerAnimState* sp18 = &arg0->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
     } else {
 
-        D_84390148 = &gControllers[arg0->unk_720->unk_08[sp18->unk_2C]->unk_001];
+        gActiveController1 = &gControllers[arg0->unk_720->unk_08[sp18->unk_2C]->unk_001];
         idx = sp18->unk_2C == 0;
-        D_8439014C = &gControllers[arg0->unk_720->unk_08[idx]->unk_001];
+        gActiveController2 = &gControllers[arg0->unk_720->unk_08[idx]->unk_001];
     }
 
     if (arg0->unk_8C4.unk_00 != 0) {
         if (sp18->unk_C8->buttonPressed & 0xE03F) {
-            func_843193F4(arg0);
+            Battle_SetEntityPosition(arg0);
         }
     } else if (sp18->unk_10 == 0) {
         sp18->unk_10 = 2;
-    } else if (((D_84390148->buttonPressed & 0x20) || (D_8439014C->buttonPressed & 0x20)) && (sp18->unk_2D != 0x10) &&
-               !(D_84390148->buttonDown & 0x10) && !(D_8439014C->buttonDown & 0x10)) {
-        func_8430D6D0(arg0);
+    } else if (((gActiveController1->buttonPressed & 0x20) || (gActiveController2->buttonPressed & 0x20)) && (sp18->unk_2D != 0x10) &&
+               !(gActiveController1->buttonDown & 0x10) && !(gActiveController2->buttonDown & 0x10)) {
+        Battle_UpdateControllerRef(arg0);
         PlaySoundEffect_Confirm();
         sp18->unk_10 = 0;
     } else {
         sp18->unk_1C = 0;
-        if ((D_84390148->buttonDown & 0x10) || (D_8439014C->buttonDown & 0x10)) {
-            if ((D_84390148->buttonPressed & 0x10) || (D_8439014C->buttonPressed & 0x10)) {
+        if ((gActiveController1->buttonDown & 0x10) || (gActiveController2->buttonDown & 0x10)) {
+            if ((gActiveController1->buttonPressed & 0x10) || (gActiveController2->buttonPressed & 0x10)) {
                 PlaySoundEffect_Select();
             }
             sp18->unk_1C = 1;
         }
-        func_8430E72C(arg0, sp18->unk_C8);
+        Battle_HandleMoveSelectionInput(arg0, sp18->unk_C8);
     }
 }
 
-void func_8430EB1C(unk_BattlePlayerEntity* arg0) {
+void Battle_ApplyMoveAnimation(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
     unk_D_800FCB18* temp_v1 = &arg0->unk_654.unk_38;
 
@@ -852,10 +852,10 @@ void func_8430EB1C(unk_BattlePlayerEntity* arg0) {
     }
 
     temp_v0->unk_1C = 0;
-    func_843193F4(arg0);
+    Battle_SetEntityPosition(arg0);
 }
 
-s32 func_8430EBA8(unk_BattlePlayerEntity* arg0) {
+s32 Battle_CheckInputTimeout(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 temp_a1;
     s32 var_v1;
@@ -888,14 +888,14 @@ s32 func_8430EBA8(unk_BattlePlayerEntity* arg0) {
             if (temp_v0->unk_10 == 0) {
                 temp_v0->unk_10 = 1;
             }
-            func_843193F4(arg0);
+            Battle_SetEntityPosition(arg0);
             func_84319408(arg0, 0);
         } else if (cont->buttonPressed & 0x20) {
-            func_843193F4(arg0);
+            Battle_SetEntityPosition(arg0);
             temp_v0->unk_10 = 0;
             PlaySoundEffect_Confirm();
         } else if (cont->buttonPressed & 0x8000) {
-            func_843193F4(arg0);
+            Battle_SetEntityPosition(arg0);
             temp_v0->unk_1E = 0;
             temp_v0->unk_10 = 3;
             temp_v0->unk_14 = 4;
@@ -905,21 +905,21 @@ s32 func_8430EBA8(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 func_8430ED88(unk_BattlePlayerEntity* arg0) {
+s32 Battle_HandleMoveError(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     unk_BattlePlayerAnimState* sp24 = &arg0->unk_654;
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[sp24->unk_14] & 0x3F)) {
         PlaySoundEffect_Error();
-        func_843193F4(arg0);
+        Battle_SetEntityPosition(arg0);
         func_84319408(arg0, 1);
         return 1;
     }
 
     if ((ptr->unk_52 & 0xF) && (sp24->unk_14 == (ptr->unk_52 >> 4))) {
         PlaySoundEffect_Error();
-        func_843193F4(arg0);
+        Battle_SetEntityPosition(arg0);
         func_84319408(arg0, 2);
         return 1;
     }
@@ -931,13 +931,13 @@ s32 func_8430ED88(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void func_8430EE50(unk_BattlePlayerEntity* arg0) {
+void Battle_HandleQuickSelectInput(unk_BattlePlayerEntity* arg0) {
     Controller* cont = arg0->unk_654.unk_C8;
 
     if ((cont->buttonPressed & 8) != 0) {
         if ((arg0->unk_654.unk_38.unk_1F[0] != 0) && (arg0->unk_654.unk_38.unk_1F[0] < 0xA6)) {
             arg0->unk_654.unk_14 = 0;
-            func_8430ED88(arg0);
+            Battle_HandleMoveError(arg0);
             return;
         }
     }
@@ -945,7 +945,7 @@ void func_8430EE50(unk_BattlePlayerEntity* arg0) {
     if ((cont->buttonPressed & 1) != 0) {
         if ((arg0->unk_654.unk_38.unk_1F[1] != 0) && (arg0->unk_654.unk_38.unk_1F[1] < 0xA6)) {
             arg0->unk_654.unk_14 = 1;
-            func_8430ED88(arg0);
+            Battle_HandleMoveError(arg0);
             return;
         }
     }
@@ -953,7 +953,7 @@ void func_8430EE50(unk_BattlePlayerEntity* arg0) {
     if ((cont->buttonPressed & 4) != 0) {
         if ((arg0->unk_654.unk_38.unk_1F[2] != 0) && (arg0->unk_654.unk_38.unk_1F[2] < 0xA6)) {
             arg0->unk_654.unk_14 = 2;
-            func_8430ED88(arg0);
+            Battle_HandleMoveError(arg0);
             return;
         }
     }
@@ -961,7 +961,7 @@ void func_8430EE50(unk_BattlePlayerEntity* arg0) {
     if ((cont->buttonPressed & 2) != 0) {
         if ((arg0->unk_654.unk_38.unk_1F[3] != 0) && (arg0->unk_654.unk_38.unk_1F[3] < 0xA6)) {
             arg0->unk_654.unk_14 = 3;
-            func_8430ED88(arg0);
+            Battle_HandleMoveError(arg0);
             return;
         }
     }
@@ -972,16 +972,16 @@ void func_8430EE50(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void func_8430EF4C(unk_BattlePlayerEntity* arg0) {
+void Battle_ProcessMoveInput(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     Controller* sp1C = arg0->unk_654.unk_C8;
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
 
-    if ((temp_v0->unk_04 == 1) && (func_8430EBA8(arg0) == 0)) {
+    if ((temp_v0->unk_04 == 1) && (Battle_CheckInputTimeout(arg0) == 0)) {
         if (arg0->unk_8C4.unk_00 != 0) {
             if (BTN_IS_PRESSED(sp1C,
                                BTN_A | BTN_B | BTN_Z | BTN_L | BTN_R | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-                func_843193F4(arg0);
+                Battle_SetEntityPosition(arg0);
             }
         } else {
             if (temp_v0->unk_10 == 0) {
@@ -999,84 +999,84 @@ void func_8430EF4C(unk_BattlePlayerEntity* arg0) {
                     PlaySoundEffect_Select();
                 }
 
-                func_8430EE50(arg0);
+                Battle_HandleQuickSelectInput(arg0);
             }
         }
     }
 }
 
-s32 func_8430F044(unk_BattlePlayerEntity* arg0, UNUSED Controller* arg1) {
+s32 Battle_UpdateMoveInputState(unk_BattlePlayerEntity* arg0, UNUSED Controller* arg1) {
     arg0->unk_654.unk_2A = 1;
-    func_8430EF4C(arg0);
+    Battle_ProcessMoveInput(arg0);
     arg0->unk_654.unk_2A = 1;
     return 0;
 }
 
-void func_8430F080(unk_BattlePlayerEntity* arg0) {
+void Battle_TriggerMoveAnim(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
-    func_8430D334(arg0);
+    Battle_UpdateAnimFrame(arg0);
     ptr->unk_2A = 1;
     ptr->unk_10 = 3;
     ptr->unk_0C = ptr->unk_14;
 }
 
-void func_8430F0C0(unk_BattlePlayerEntity* arg0) {
+void Battle_HandleCancelInput(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v1 = &arg0->unk_654;
     unk_BattlePlayerAnimState* temp_t0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->unk_720->unk_01 == 1) {
-            D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-            D_8439014C = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+            gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+            gActiveController2 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
         } else {
-            D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
-            D_8439014C = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
+            gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
+            gActiveController2 = &gControllers[arg0->unk_720->unk_08[1]->unk_001];
         }
 
         if (temp_v1->unk_C8->buttonPressed & 0x8000) {
             temp_v1->unk_04 = 1;
-        } else if ((D_84390148->buttonPressed | D_8439014C->buttonPressed) & 0x4000) {
+        } else if ((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x4000) {
             temp_v1->unk_04 = 2;
-        } else if ((D_84390148->buttonPressed | D_8439014C->buttonPressed) & 0x1000) {
+        } else if ((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x1000) {
             temp_v1->unk_04 = 3;
         } else {
             temp_v1->unk_04 = 0;
         }
 
         if ((temp_v1->unk_C8->buttonPressed & 0x8000) ||
-            (((D_84390148->buttonPressed | D_8439014C->buttonPressed) & 0x4000) != 0) ||
-            (((D_84390148->buttonPressed | D_8439014C->buttonPressed) & 0x1000) && (temp_t0->unk_10 != 4))) {
+            (((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x4000) != 0) ||
+            (((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x1000) && (temp_t0->unk_10 != 4))) {
             PlaySoundEffect_Cancel();
         }
     }
 }
 
-s32 func_8430F27C(unk_BattlePlayerEntity* arg0) {
+s32 Battle_UpdateEntityState(unk_BattlePlayerEntity* arg0) {
     IsPrimaryEntity(arg0);
 
-    if (func_8430D334(arg0) != 0) {
+    if (Battle_UpdateAnimFrame(arg0) != 0) {
         return 1;
     }
 
-    if (func_8430D124() != 0) {
+    if (Battle_TickHPBarTimer() != 0) {
         if (arg0->unk_654.unk_04 == 2) {
-            func_8430D638(arg0);
+            Battle_SelectNextValidMove(arg0);
         } else {
-            func_8430D5BC(arg0);
+            Battle_SelectFirstAvailableMove(arg0);
         }
         return 1;
     }
 
-    func_8430F0C0(arg0);
+    Battle_HandleCancelInput(arg0);
 
     switch (arg0->unk_654.unk_04) {
         case 2:
-            func_8430E8E8(arg0);
+            Battle_UpdateInputState(arg0);
             return 1;
 
         case 3:
-            func_8430E1CC(arg0);
+            Battle_HandleMenuNavigation(arg0);
             return 1;
 
         case 1:
@@ -1085,37 +1085,37 @@ s32 func_8430F27C(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 func_8430F350(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 Battle_UpdateDualEntityState(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
     unk_BattlePlayerAnimState* temp_v0 = &arg1->unk_654;
 
     if ((sp1C->unk_2D == 0x10) && (temp_v0->unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
-            func_8430D334(arg0);
+            Battle_UpdateAnimFrame(arg0);
             return 1;
         }
 
-        if (func_8430D124() != 0) {
-            func_8430D638(arg0);
+        if (Battle_TickHPBarTimer() != 0) {
+            Battle_SelectNextValidMove(arg0);
             return 1;
         }
 
         sp1C->unk_04 = 2;
         sp1C->unk_10 = 2;
-        func_8430E8E8(arg0);
+        Battle_UpdateInputState(arg0);
         return 1;
     }
 
     if (sp1C->unk_2D == 0x10) {
-        if (func_8430D124() != 0) {
-            func_8430D638(arg0);
+        if (Battle_TickHPBarTimer() != 0) {
+            Battle_SelectNextValidMove(arg0);
             return 1;
         }
         sp1C->unk_04 = 2;
         temp_v0->unk_04 = 1;
         sp1C->unk_10 = 2;
         temp_v0->unk_10 = 3;
-        func_8430E8E8(arg0);
+        Battle_UpdateInputState(arg0);
         return 1;
     }
     return 0;
@@ -1140,7 +1140,7 @@ void DemoFeedScriptedInput(void) {
         { 0x17C, 0, 0 },        { 0xA, BTN_L, 0 },  { 0xA, BTN_R, 0 }, { 0xC8, BTN_START, 0 },
         { 0xC8, BTN_START, 0 }, { 0xDC, BTN_A, 0 }, { 0, 0, 0 },
     };
-    Controller* controller = &D_84390150;
+    Controller* controller = &gDemoController;
 
     controller->buttonPressed = 0;
 
@@ -1158,7 +1158,7 @@ void DemoFeedScriptedInput(void) {
     }
 }
 
-void func_8430F598(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void Battle_SyncMoveFlags(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* temp_v1 = &arg1->unk_654.unk_38;
 
@@ -1173,16 +1173,16 @@ void func_8430F598(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430F5F4(void) {
+void Battle_DemoUpdate(void) {
     unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
     unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
     unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
-    Controller* cont = &D_84390150;
+    Controller* cont = &gDemoController;
 
     DemoFeedScriptedInput();
-    func_8430F598(D_84390010[0], D_84390010[1]);
-    func_8430F598(D_84390010[1], D_84390010[0]);
+    Battle_SyncMoveFlags(D_84390010[0], D_84390010[1]);
+    Battle_SyncMoveFlags(D_84390010[1], D_84390010[0]);
 
     if (cont->buttonPressed & 0x20) {
         Entities_ShowAllModels();
@@ -1199,11 +1199,11 @@ void func_8430F5F4(void) {
         sp20->unk_04 = 0;
 
         if (sp24->unk_2A == 0) {
-            sp1C->unk_5A = func_843841C4(0, 0);
+            sp1C->unk_5A = Battle_GetEntityState(0, 0);
         }
 
         if (sp20->unk_2A == 0) {
-            sp18->unk_5A = func_843841C4(1, 0);
+            sp18->unk_5A = Battle_GetEntityState(1, 0);
         }
 
         sp24->unk_10 = 3;
@@ -1214,7 +1214,7 @@ void func_8430F5F4(void) {
         }
     }
 
-    func_8430D364();
+    Battle_UpdateHPScale();
 
     if (cont->buttonPressed & 0x2000) {
         gBattleInitFlag = 0;
@@ -1226,61 +1226,61 @@ void func_8430F5F4(void) {
     }
 }
 
-void func_8430F794(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void Battle_UpdateEntityInteraction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad;
     unk_D_800FCB18* sp20 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* sp1C = &arg1->unk_654.unk_38;
 
-    if (func_8430F350(arg0, arg1) == 0) {
+    if (Battle_UpdateDualEntityState(arg0, arg1) == 0) {
         if (!(sp20->unk_4D & 0x60)) {
             sp20->unk_4C &= ~8;
             sp1C->unk_4C &= ~8;
             if (!(sp20->unk_4C & 0x12)) {
-                if (func_8430F27C(arg0) == 0) {
+                if (Battle_UpdateEntityState(arg0) == 0) {
                     if (!(sp20->unk_15 & 0x27)) {
                         if (!(sp20->unk_4C & 0x21)) {
                             if (sp1C->unk_4C & 0x20) {
-                                func_8430F044(arg0, arg0->unk_654.unk_C8);
+                                Battle_UpdateMoveInputState(arg0, arg0->unk_654.unk_C8);
                                 sp20->unk_5A = 0xFF;
                             } else {
-                                func_8430EF4C(arg0);
+                                Battle_ProcessMoveInput(arg0);
                             }
                         } else {
-                            func_8430F044(arg0, arg0->unk_654.unk_C8);
+                            Battle_UpdateMoveInputState(arg0, arg0->unk_654.unk_C8);
                         }
                     } else {
-                        func_8430F044(arg0, arg0->unk_654.unk_C8);
+                        Battle_UpdateMoveInputState(arg0, arg0->unk_654.unk_C8);
                     }
                 }
             } else {
-                func_8430F080(arg0);
+                Battle_TriggerMoveAnim(arg0);
             }
         } else {
-            func_8430F080(arg0);
+            Battle_TriggerMoveAnim(arg0);
         }
     }
 }
 
-void func_8430F8B8(void) {
+void Battle_UpdateEntities(void) {
     unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
     unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
     unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
 
     if (D_84390010[0]->unk_724->unk_000 & 2) {
-        D_84390144 = gCurrentDamage;
-        func_8430DFCC(D_84390010[0], D_84390010[1]);
-        gCurrentDamage = D_84390144;
+        gBattleControllerId = gCurrentDamage;
+        Battle_UpdateMoveSelection(D_84390010[0], D_84390010[1]);
+        gCurrentDamage = gBattleControllerId;
     } else {
-        func_8430F794(D_84390010[0], D_84390010[1]);
+        Battle_UpdateEntityInteraction(D_84390010[0], D_84390010[1]);
     }
 
     if (D_84390010[1]->unk_724->unk_000 & 2) {
-        D_84390144 = gCurrentDamage;
-        func_8430DFCC(D_84390010[1], D_84390010[0]);
-        gCurrentDamage = D_84390144;
+        gBattleControllerId = gCurrentDamage;
+        Battle_UpdateMoveSelection(D_84390010[1], D_84390010[0]);
+        gCurrentDamage = gBattleControllerId;
     } else {
-        func_8430F794(D_84390010[1], D_84390010[0]);
+        Battle_UpdateEntityInteraction(D_84390010[1], D_84390010[0]);
     }
 
     if ((sp24->unk_10 == 3) && (sp20->unk_10 == 3)) {
@@ -1289,15 +1289,15 @@ void func_8430F8B8(void) {
         }
 
         if (sp24->unk_04 == 2) {
-            func_8430E490(D_84390010[0]);
+            Battle_ClearMoveSelection(D_84390010[0]);
         } else {
-            func_8430EB1C(D_84390010[0]);
+            Battle_ApplyMoveAnimation(D_84390010[0]);
         }
 
         if (sp20->unk_04 == 2) {
-            func_8430E490(D_84390010[1]);
+            Battle_ClearMoveSelection(D_84390010[1]);
         } else {
-            func_8430EB1C(D_84390010[1]);
+            Battle_ApplyMoveAnimation(D_84390010[1]);
         }
 
         if ((sp24->unk_04 == 2) || (sp20->unk_04 == 2)) {
@@ -1307,29 +1307,29 @@ void func_8430F8B8(void) {
         }
     } else {
         if (!(D_84390010[0]->unk_724->unk_000 & 2) && !(sp1C->unk_4D & 0x60) && !(sp1C->unk_4C & 0x12)) {
-            func_8430D710(0);
+            Battle_HandleConfirmInput(0);
         }
 
         if (!(D_84390010[1]->unk_724->unk_000 & 2) && !(sp18->unk_4D & 0x60) && !(sp18->unk_4C & 0x12)) {
-            func_8430D710(1);
+            Battle_HandleConfirmInput(1);
         }
     }
 }
 
-void func_8430FB20(void) {
+void Battle_UpdateMain(void) {
     gBattleUpdateHPFlag = 0;
     if (gBattleContext.unk_0000 == 0x10) {
-        func_8430F5F4();
+        Battle_DemoUpdate();
     } else {
-        func_8430F8B8();
+        Battle_UpdateEntities();
     }
 }
 
-void func_8430FB68(void) {
+void Battle_UpdateFrame(void) {
     unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
     unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
 
-    if (func_8430D02C() == 0) {
+    if (Battle_UpdateResultPhase() == 0) {
         D_84390010[0]->unk_4C8 = 0;
         D_84390010[1]->unk_4C8 = 0;
 
@@ -1341,8 +1341,8 @@ void func_8430FB68(void) {
             sp18->unk_2A = 0;
         }
 
-        func_8430FB20();
+        Battle_UpdateMain();
         Battle_TickPhaseTimer();
-        func_8430D294();
+        Battle_TickBattleTimer();
     }
 }

@@ -295,7 +295,7 @@ void ScreenTransition_Start(s16 arg0) {
     ptr->unk_30.unk_04 = ptr->unk_30.unk_06 = -1;
 
     PlaySoundEffect(4);
-    func_800256F4(ptr->unk_04, ptr->unk_24->unk_00.unk_00, 3);
+    SaveSlot_SetPokemonOwned(ptr->unk_04, ptr->unk_24->unk_00.unk_00, 3);
 }
 
 void ScreenTransition_UpdateAnim(unk_D_82F21238* arg0) {
@@ -436,7 +436,7 @@ void PokemonData_UpdateNameIfSpecial(s16 arg0, PokemonData* arg1) {
             StrCopy(arg1->unk_30, GetMessageStringBank24(arg1->unk_00.unk_00));
         }
         CalculatePokemonStats(arg1);
-        func_800256F4(arg0, arg1->unk_00.unk_00, 3);
+        SaveSlot_SetPokemonOwned(arg0, arg1->unk_00.unk_00, 3);
     }
 }
 

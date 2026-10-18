@@ -15,24 +15,24 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static unk_D_84803760 D_84803760[2];
-static BinArchive* D_84803780;
-static void* D_84803784;
+static unk_D_84803760 gSelectionStates[2];
+static BinArchive* gBinArchive;
+static void* gPanelTextureAtlas;
 static char** D_84803788;
-static char** D_8480378C;
+static char** gModeNames;
 static char** gMsgBank_Common;
-static char** D_84803794;
-static s16 D_84803798;
-static s16 D_8480379A;
-static s32 D_8480379C;
-static unk_D_848037A0 D_848037A0[4];
+static char** gPanelStrings;
+static s16 gTransferPakErrorTimer;
+static s16 gTransferPakScrollPos;
+static s32 gPanelCount;
+static unk_D_848037A0 gPanels[4];
 static unk_D_800AE540* D_84816420;
-static Controller D_84816428;
-static s32 D_8481644C;
-static s32 D_84816450;
-static s16 D_84816458[4];
+static Controller gPanelController;
+static s32 gInputTimerIndex;
+static s32 gInputTimerValue;
+static s16 gStatusIconFrames[4];
 
-static u16 D_84803540[] = { 0x1D, 0x341, 0x6947, 0x6A41 };
+static u16 gPanelColors[] = { 0x1D, 0x341, 0x6947, 0x6A41 };
 static unk_D_84803548 D_84803548[] = {
     { 0x001E, 0x0000 },
     { 0x001E, 0x4000 },
@@ -58,10 +58,10 @@ static unk_D_84803548 D_848035C0[] = {
     { 0x001E, 0x0000 }, { 0x000A, 0x4000 }, { 0x000A, 0x0002 }, { 0x000A, 0x0008 },
     { 0x000A, 0x8000 }, { 0x000A, 0x0004 }, { 0x001E, 0x0001 }, { 0x0001, 0x8000 },
 };
-static unk_D_84803548* D_848035E0[] = {
+static unk_D_84803548* gInputTimingTable[] = {
     NULL, D_84803548, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
 };
-static unk_D_848035FC D_848035FC[] = {
+static unk_D_848035FC gModeColors[] = {
     { { 0xF0, 0xF0, 0xF0 }, D_2017740 }, { { 0xF0, 0x96, 0x32 }, D_2019040 }, { { 0x50, 0x96, 0xF0 }, D_20199A0 },
     { { 0xC8, 0x96, 0xF0 }, D_2019680 }, { { 0xF0, 0xC8, 0x78 }, D_2018D20 }, { { 0x64, 0xB4, 0xB4 }, D_2018A00 },
     { { 0x50, 0x96, 0xF0 }, D_20199A0 }, { { 0xC8, 0xF0, 0x50 }, D_2019360 }, { { 0xDC, 0xC8, 0xF0 }, D_2019FE0 },
@@ -104,7 +104,7 @@ static u8* D_8480369C[][3] = {
 static u8* D_848036D8 = D_30084C0;
 
 void TransferPakErrorScreen(void) {
-    Gfx_DrawTextureAtlas(D_84803784);
+    Gfx_DrawTextureAtlas(gPanelTextureAtlas);
 
     gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
@@ -132,8 +132,8 @@ void TransferPakMessageScroll(void) {
     Color_RGB8 sp54;
     Color_RGB8 sp50;
 
-    var_s4 = 0x30 - (D_8480379A % 24);
-    var_s2 = D_8480379A / 24;
+    var_s4 = 0x30 - (gTransferPakScrollPos % 24);
+    var_s2 = gTransferPakScrollPos / 24;
     sp58 = Stage_GetFrameBuffer();
     sp54 = D_8480367C;
     sp50 = D_84803680;
@@ -163,9 +163,9 @@ void TransferPakMessageScroll(void) {
 
     gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, sp58->width * 4.0f, sp58->height * 4.0f);
 
-    D_8480379A += 2;
-    if (D_8480379A >= ((strlen(var_v0) * 0x18) + 0x18)) {
-        D_8480379A = 0;
+    gTransferPakScrollPos += 2;
+    if (gTransferPakScrollPos >= ((strlen(var_v0) * 0x18) + 0x18)) {
+        gTransferPakScrollPos = 0;
     }
 }
 
@@ -259,7 +259,7 @@ s32 SelectionState_UpdateValue(s32 arg0, s32 arg1, s8 arg2, s8 arg3) {
 }
 
 void PlayerPanel_DrawLeft(void) {
-    unk_D_84803760* temp_v0 = &D_84803760[0];
+    unk_D_84803760* temp_v0 = &gSelectionStates[0];
     s32 i;
     s16 var_s2;
     s32 var_s1;
@@ -280,9 +280,9 @@ void PlayerPanel_DrawLeft(void) {
     Gfx_DrawSpriteRGBA16(0x25, var_s2 + 0x68, 0x28, 0x2E, D_3002E20, 0x28, 0x200000);
 
     if (temp_v0->unk_0F == -1) {
-        SelectionState_DrawSprite(0x2D, 0x21, &D_84803760[0]);
+        SelectionState_DrawSprite(0x2D, 0x21, &gSelectionStates[0]);
     } else {
-        SelectionState_DrawSprite(0x2D, 0x1D, &D_84803760[0]);
+        SelectionState_DrawSprite(0x2D, 0x1D, &gSelectionStates[0]);
     }
 
     var_s1 = var_s2 + 0x76;
@@ -294,7 +294,7 @@ void PlayerPanel_DrawLeft(void) {
 }
 
 void PlayerPanel_DrawRight(void) {
-    unk_D_84803760* temp_v0 = &D_84803760[1];
+    unk_D_84803760* temp_v0 = &gSelectionStates[1];
     s32 i;
     s16 var_s2;
     s32 var_s1;
@@ -315,9 +315,9 @@ void PlayerPanel_DrawRight(void) {
     Gfx_DrawSpriteRGBA16(0x2D, var_s2 + 0x88, 0x20, 0xE, D_3004D40, 0x20, 0x200000);
 
     if (temp_v0->unk_0F == -1) {
-        SelectionState_DrawSprite(0x2D, 0x189, &D_84803760[1]);
+        SelectionState_DrawSprite(0x2D, 0x189, &gSelectionStates[1]);
     } else {
-        SelectionState_DrawSprite(0x2D, 0x17C, &D_84803760[1]);
+        SelectionState_DrawSprite(0x2D, 0x17C, &gSelectionStates[1]);
     }
 
     var_s1 = var_s2 + 0xC;
@@ -329,7 +329,7 @@ void PlayerPanel_DrawRight(void) {
 }
 
 void MoveSelection_Record(s32 arg0, s32 arg1) {
-    unk_D_84803760* temp_v0 = &D_84803760[arg0];
+    unk_D_84803760* temp_v0 = &gSelectionStates[arg0];
 
     temp_v0->unk_02[temp_v0->unk_00] = ((arg1 + 1) << 4) | (temp_v0->unk_02[temp_v0->unk_00] & 0xF);
     temp_v0->unk_08[temp_v0->unk_00] = 1;
@@ -337,7 +337,7 @@ void MoveSelection_Record(s32 arg0, s32 arg1) {
 }
 
 void SelectionState_Reset(s32 arg0) {
-    unk_D_84803760* ptr = &D_84803760[arg0];
+    unk_D_84803760* ptr = &gSelectionStates[arg0];
     s32 i;
 
     for (i = 0; i < 6; i++) {
@@ -347,10 +347,10 @@ void SelectionState_Reset(s32 arg0) {
 }
 
 void func_84800CA4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    DrawPanelAlt(arg0, arg1, arg2, arg3, D_84803540[arg4]);
+    DrawPanelAlt(arg0, arg1, arg2, arg3, gPanelColors[arg4]);
 }
 
-void func_84800D08(unk_D_848037A0* arg0) {
+void DrawPanelContents(unk_D_848037A0* arg0) {
     s32 i;
     s16 temp_s7;
     s16 temp_fp;
@@ -387,7 +387,7 @@ void func_84800D08(unk_D_848037A0* arg0) {
     Text_SetFont(4, 0);
 
     for (i = 0; i < arg0->unk_0017; i++) {
-        temp_v0_4 = func_84802430(arg0, i);
+        temp_v0_4 = Panel_IsPokemonSelected(arg0, i);
         if ((arg0->unk_0009 != 0) && (temp_v0_4 != 0)) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
@@ -397,7 +397,7 @@ void func_84800D08(unk_D_848037A0* arg0) {
         if ((arg0->unk_0009 != 0) && (temp_v0_4 != 0)) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
-        Text_Print(temp_s1_2, temp_s2_3 + 0x14, "%s%d", GetMessageString(NULL, 0, D_84803794, 0x15),
+        Text_Print(temp_s1_2, temp_s2_3 + 0x14, "%s%d", GetMessageString(NULL, 0, gPanelStrings, 0x15),
                       arg0->unk_0018[i].unk_24);
     }
 
@@ -405,22 +405,22 @@ void func_84800D08(unk_D_848037A0* arg0) {
 
     if (arg0->unk_0007 > 0) {
         if (arg0->unk_0003 == 0) {
-            Gfx_DrawClippedTextureRegion(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(gPanelTextureAtlas, 0xC8, 0x81, 0x15F, 0x53);
         } else {
-            Gfx_DrawClippedTextureRegion(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(gPanelTextureAtlas, 0x50, 0xF0, 0x15F, 0x53);
         }
         arg0->unk_0007 -= 1;
     }
 }
 
 void StatusIcon_DrawAnimated(s16 arg0, s16 arg1, s16 arg2) {
-    if (D_84816458[arg2] < 6) {
-        arg0 += D_84816458[arg2];
+    if (gStatusIconFrames[arg2] < 6) {
+        arg0 += gStatusIconFrames[arg2];
     } else {
-        arg0 = (arg0 - D_84816458[arg2]) + 0xC;
+        arg0 = (arg0 - gStatusIconFrames[arg2]) + 0xC;
     }
     DrawStatusIcon(arg0, arg1);
-    D_84816458[arg2] = (D_84816458[arg2] + 1) % 12;
+    gStatusIconFrames[arg2] = (gStatusIconFrames[arg2] + 1) % 12;
 }
 
 void ModeSelectionPanel_Draw(unk_D_848037A0* arg0) {
@@ -437,7 +437,7 @@ void ModeSelectionPanel_Draw(unk_D_848037A0* arg0) {
             var_s2 = 0xF0;
         }
 
-        func_84800D08(arg0);
+        DrawPanelContents(arg0);
         func_84800CA4(var_s1, var_s2, 0x15F, 0x53, arg0->unk_0001);
 
         if (arg0->unk_000A == 0) {
@@ -457,7 +457,7 @@ void ModeSelectionPanel_Draw(unk_D_848037A0* arg0) {
         var_s1 = arg0->unk_0012;
         var_s2 = arg0->unk_0014;
 
-        func_84800D08(arg0);
+        DrawPanelContents(arg0);
         Text_DrawWindowRect(var_s1 + 5, var_s2 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         if (arg0->unk_000A == 0) {
             StatusIcon_DrawAnimated(var_s1 + 0x5C, var_s2 + 0x3C, arg0->unk_0000);
@@ -516,7 +516,7 @@ void ResultMessage_Draw(unk_D_848037A0* arg0) {
         sp34 = arg0->unk_0012;
         sp30 = arg0->unk_0014;
 
-        func_84800D08(arg0);
+        DrawPanelContents(arg0);
         Text_DrawWindowRect(sp34 + 5, sp30 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
@@ -543,7 +543,7 @@ void CenteredMessage_Draw(unk_D_848037A0* arg0) {
         }
         // clang-format on
         arg0->unk_0007 = 0;
-        func_84800D08(arg0);
+        DrawPanelContents(arg0);
         func_84800CA4(sp3C, sp38, 0x15F, 0x53, arg0->unk_0001);
         Text_ResetState();
         Text_SetFont(0x20, 0);
@@ -572,7 +572,7 @@ void CenteredMessage_Draw(unk_D_848037A0* arg0) {
             arg0->unk_0008 = 0;
         }
 
-        func_84800D08(arg0);
+        DrawPanelContents(arg0);
         Text_DrawWindowRect(sp3C + 5, sp38 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         Text_ResetState();
         Text_SetFont(0x20, 0);
@@ -611,7 +611,7 @@ void PokemonInfo_Draw(unk_D_848037A0* arg0) {
     Text_ResetState();
     Text_SetFont(4, 0);
     Text_Print(temp_fp + 0x32, sp7C + 7, arg0->unk_0018[temp_s1].unk_30);
-    Text_Print(temp_fp + 0x32, sp7C + 0x1B, "%s", GetMessageString(NULL, 0, D_84803794, 8));
+    Text_Print(temp_fp + 0x32, sp7C + 0x1B, "%s", GetMessageString(NULL, 0, gPanelStrings, 8));
     Text_Print(temp_fp + 0xBE, sp7C + 7, GetMessageString(NULL, 0, gMsgBank_Common, 9));
     Text_Print(temp_fp + 0xBE, sp7C + 0x1B, GetMessageString(NULL, 0, gMsgBank_Common, 0xA));
     Text_Print(temp_fp + 0xBE, sp7C + 0x2F, GetMessageString(NULL, 0, gMsgBank_Common, 0xB));
@@ -623,18 +623,18 @@ void PokemonInfo_Draw(unk_D_848037A0* arg0) {
     }
 
     idx = RemapStadiumModeIndex(sp78->unk_06);
-    Text_SetEnvColor(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-    Text_Print(temp_fp + 0x7A, sp7C + 0x2F, GetMessageString(NULL, 0, D_8480378C, RemapStadiumModeIndex(sp78->unk_06)));
+    Text_SetEnvColor(gModeColors[idx].unk_00.r, gModeColors[idx].unk_00.g, gModeColors[idx].unk_00.b, 0xFF);
+    Text_Print(temp_fp + 0x7A, sp7C + 0x2F, GetMessageString(NULL, 0, gModeNames, RemapStadiumModeIndex(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
         idx = RemapStadiumModeIndex(sp78->unk_07);
-        Text_SetEnvColor(D_848035FC[idx].unk_00.r, D_848035FC[idx].unk_00.g, D_848035FC[idx].unk_00.b, 0xFF);
-        Text_Print(temp_fp + 0x7A, sp7C + 0x43, GetMessageString(NULL, 0, D_8480378C, RemapStadiumModeIndex(sp78->unk_07)));
+        Text_SetEnvColor(gModeColors[idx].unk_00.r, gModeColors[idx].unk_00.g, gModeColors[idx].unk_00.b, 0xFF);
+        Text_Print(temp_fp + 0x7A, sp7C + 0x43, GetMessageString(NULL, 0, gModeNames, RemapStadiumModeIndex(sp78->unk_07)));
     }
 
     Text_SetFont(4, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(temp_fp + 0x8C, sp7C + 7, "%s%d", GetMessageString(NULL, 0, D_84803794, 0x15),
+    Text_Print(temp_fp + 0x8C, sp7C + 7, "%s%d", GetMessageString(NULL, 0, gPanelStrings, 0x15),
                   arg0->unk_0018[temp_s1].unk_24);
     Text_Print(temp_fp + 0x52, sp7C + 0x1B, "%3d", sp78->unk_26);
     Text_Print(temp_fp + 0xFA, sp7C + 7, "%3d", sp78->unk_28);
@@ -646,7 +646,7 @@ void PokemonInfo_Draw(unk_D_848037A0* arg0) {
         if (sp78->unk_09[i] == 0) {
             break;
         }
-        temp_v1 = &D_848035FC[gMoveStrings[sp78->unk_09[i] - 1].unk_01];
+        temp_v1 = &gModeColors[gMoveStrings[sp78->unk_09[i] - 1].unk_01];
         Text_SetFont(4, 0);
         Text_SetEnvColor(temp_v1->unk_00.r, temp_v1->unk_00.g, temp_v1->unk_00.b, 0xFF);
         Text_Print(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, GetMessageString(NULL, 0, D_84803788, sp78->unk_09[i] - 1));
@@ -664,22 +664,22 @@ void PokemonInfo_Draw(unk_D_848037A0* arg0) {
             break;
         }
         Gfx_DrawSpriteRGBA16(temp_fp + 0x136, (i * 0x14) + sp7C + 7, 0x14, 0x14,
-                      D_848035FC[gMoveStrings[sp78->unk_09[i] - 1].unk_01].unk_04, 0x14, 0);
+                      gModeColors[gMoveStrings[sp78->unk_09[i] - 1].unk_01].unk_04, 0x14, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (arg0->unk_0007 > 0) {
         if (arg0->unk_0003 == 0) {
-            Gfx_DrawClippedTextureRegion(D_84803784, 0xC8, 0x81, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(gPanelTextureAtlas, 0xC8, 0x81, 0x15F, 0x53);
         } else {
-            Gfx_DrawClippedTextureRegion(D_84803784, 0x50, 0xF0, 0x15F, 0x53);
+            Gfx_DrawClippedTextureRegion(gPanelTextureAtlas, 0x50, 0xF0, 0x15F, 0x53);
         }
         arg0->unk_0007--;
     }
 }
 
-void func_8480218C(unk_D_848037A0* arg0) {
+void DrawPanelHeader(unk_D_848037A0* arg0) {
     s16 sp26;
     s16 sp24;
 
@@ -700,15 +700,15 @@ void func_8480218C(unk_D_848037A0* arg0) {
     Text_SetupDL();
 }
 
-void func_8480225C(unk_D_848037A0* arg0) {
-    if ((D_84803798 != 0) || (arg0->unk_0006 != 0)) {
-        if ((D_84803798 != 0) && (arg0->unk_0002 == -1)) {
-            func_8480218C(arg0);
+void Panel_DrawState(unk_D_848037A0* arg0) {
+    if ((gTransferPakErrorTimer != 0) || (arg0->unk_0006 != 0)) {
+        if ((gTransferPakErrorTimer != 0) && (arg0->unk_0002 == -1)) {
+            DrawPanelHeader(arg0);
         }
 
         switch (arg0->unk_0005) {
             case 0:
-                func_84800D08(arg0);
+                DrawPanelContents(arg0);
                 break;
 
             case 1:
@@ -736,13 +736,13 @@ void func_8480225C(unk_D_848037A0* arg0) {
     }
 }
 
-void func_84802350(void) {
+void Panel_UpdateInputTimer(void) {
     s32 i;
     s8 var_v0;
     unk_D_84803548* ptr;
 
     for (i = 0; i < 4; i++) {
-        if ((D_848037A0[i].unk_001C != NULL) && (D_848037A0[i].unk_001C->unk_000 & 2)) {
+        if ((gPanels[i].unk_001C != NULL) && (gPanels[i].unk_001C->unk_000 & 2)) {
             break;
         }
     }
@@ -751,26 +751,26 @@ void func_84802350(void) {
         if ((D_84816420->unk_0001 != 0) && (D_84816420->unk_0001 != 8)) {
             var_v0 = 3;
         } else {
-            var_v0 = D_848037A0[i].unk_0017;
+            var_v0 = gPanels[i].unk_0017;
         }
-        D_84816428.buttonPressed = 0;
-        if (D_84816450 == 0) {
-            ptr = D_848035E0[var_v0];
+        gPanelController.buttonPressed = 0;
+        if (gInputTimerValue == 0) {
+            ptr = gInputTimingTable[var_v0];
 
-            D_84816450 = ptr[D_8481644C].unk_00;
-            if (D_84816450 != 0) {
-                D_84816428.buttonPressed = ptr[D_8481644C].unk_02;
-                D_8481644C++;
+            gInputTimerValue = ptr[gInputTimerIndex].unk_00;
+            if (gInputTimerValue != 0) {
+                gPanelController.buttonPressed = ptr[gInputTimerIndex].unk_02;
+                gInputTimerIndex++;
             }
         }
 
-        if (D_84816450 > 0) {
-            D_84816450--;
+        if (gInputTimerValue > 0) {
+            gInputTimerValue--;
         }
     }
 }
 
-s32 func_84802430(unk_D_848037A0* arg0, s8 arg1) {
+s32 Panel_IsPokemonSelected(unk_D_848037A0* arg0, s8 arg1) {
     s32 i;
     s8 temp_v1;
     unk_D_848037A0* var_a2;
@@ -784,7 +784,7 @@ s32 func_84802430(unk_D_848037A0* arg0, s8 arg1) {
     return 0;
 }
 
-s32 func_8480247C(unk_D_848037A0* arg0) {
+s32 Panel_CheckSelectionLimit(unk_D_848037A0* arg0) {
     s32 i;
     s32 var_v0 = 0;
 
@@ -823,7 +823,7 @@ s32 func_8480247C(unk_D_848037A0* arg0) {
     return 0;
 }
 
-s32 func_848025A0(unk_D_848037A0* arg0) {
+s32 Panel_IsSelectionComplete(unk_D_848037A0* arg0) {
     s8 var_v1;
 
     if ((D_84816420->unk_0001 != 0) && (D_84816420->unk_0001 != 8)) {
@@ -840,7 +840,7 @@ s32 func_848025A0(unk_D_848037A0* arg0) {
     return arg0->unk_000B >= var_v1;
 }
 
-void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
+void Panel_SelectPokemon(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
     if (arg1 >= arg0->unk_0017) {
         PlaySoundEffect(8);
         return;
@@ -854,7 +854,7 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
         return;
     }
 
-    if (func_84802430(arg0, arg1) != 0) {
+    if (Panel_IsPokemonSelected(arg0, arg1) != 0) {
         PlaySoundEffect(8);
         return;
     }
@@ -867,7 +867,7 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
         arg0->unk_0006 = 2;
     }
 
-    if (func_8480247C(arg0) != 0) {
+    if (Panel_CheckSelectionLimit(arg0) != 0) {
         PlaySoundEffect(8);
         arg0->unk_0005 = 2;
         arg0->unk_0006 = 2;
@@ -875,14 +875,14 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
     }
 
     PlaySoundEffect(2);
-    if (func_848025A0(arg0) != 0) {
+    if (Panel_IsSelectionComplete(arg0) != 0) {
         arg0->unk_0005 = 1;
         arg0->unk_000A = 0;
         arg0->unk_0006 = 2;
     }
 }
 
-void func_84802740(unk_D_848037A0* arg0) {
+void Panel_ClearSelection(unk_D_848037A0* arg0) {
     unk_D_848037A0* temp_v0;
 
     if (arg0->unk_000B > 0) {
@@ -897,7 +897,7 @@ void func_84802740(unk_D_848037A0* arg0) {
         PlaySoundEffect(3);
 
         if (arg0->unk_0002 != -1) {
-            temp_v0 = &D_848037A0[arg0->unk_0002];
+            temp_v0 = &gPanels[arg0->unk_0002];
             temp_v0->unk_0005 = 0;
             temp_v0->unk_000B = 0;
             temp_v0->unk_0009 = 0;
@@ -906,7 +906,7 @@ void func_84802740(unk_D_848037A0* arg0) {
     }
 }
 
-void func_848027F0(Controller* arg0, unk_D_848037A0* arg1) {
+void Panel_HandleSelectionInput(Controller* arg0, unk_D_848037A0* arg1) {
     s32 temp_a2 = BTN_IS_DOWN(arg0, BTN_R);
 
     if (BTN_IS_PRESSED(arg0, BTN_R)) {
@@ -921,23 +921,23 @@ void func_848027F0(Controller* arg0, unk_D_848037A0* arg1) {
     }
 
     if (BTN_IS_PRESSED(arg0, BTN_L)) {
-        func_84802740(arg1);
+        Panel_ClearSelection(arg1);
     } else if (BTN_IS_PRESSED(arg0, BTN_B)) {
-        func_84802614(arg1, 0, temp_a2);
+        Panel_SelectPokemon(arg1, 0, temp_a2);
     } else if (BTN_IS_PRESSED(arg0, BTN_CLEFT)) {
-        func_84802614(arg1, 1, temp_a2);
+        Panel_SelectPokemon(arg1, 1, temp_a2);
     } else if (BTN_IS_PRESSED(arg0, BTN_CUP)) {
-        func_84802614(arg1, 2, temp_a2);
+        Panel_SelectPokemon(arg1, 2, temp_a2);
     } else if (BTN_IS_PRESSED(arg0, BTN_A)) {
-        func_84802614(arg1, 3, temp_a2);
+        Panel_SelectPokemon(arg1, 3, temp_a2);
     } else if (BTN_IS_PRESSED(arg0, BTN_CDOWN)) {
-        func_84802614(arg1, 4, temp_a2);
+        Panel_SelectPokemon(arg1, 4, temp_a2);
     } else if (BTN_IS_PRESSED(arg0, BTN_CRIGHT)) {
-        func_84802614(arg1, 5, temp_a2);
+        Panel_SelectPokemon(arg1, 5, temp_a2);
     }
 }
 
-void func_8480290C(Controller* arg0, unk_D_848037A0* arg1) {
+void Panel_HandleModeInput(Controller* arg0, unk_D_848037A0* arg1) {
     unk_D_848037A0* temp_v0_2;
 
     if (BTN_IS_PRESSED(arg0, BTN_R)) {
@@ -967,7 +967,7 @@ void func_8480290C(Controller* arg0, unk_D_848037A0* arg1) {
             SelectionState_Reset(arg1->unk_0003);
             PlaySoundEffect(3);
             if (arg1->unk_0002 != -1) {
-                temp_v0_2 = &D_848037A0[arg1->unk_0002];
+                temp_v0_2 = &gPanels[arg1->unk_0002];
                 temp_v0_2->unk_0005 = 0;
                 temp_v0_2->unk_000B = 0;
                 temp_v0_2->unk_0009 = 0;
@@ -978,7 +978,7 @@ void func_8480290C(Controller* arg0, unk_D_848037A0* arg1) {
     arg1->unk_0006 = 2;
 }
 
-void func_84802A44(Controller* arg0, unk_D_848037A0* arg1) {
+void Panel_HandleCancelInput(Controller* arg0, unk_D_848037A0* arg1) {
     if (BTN_IS_PRESSED(arg0, BTN_A | BTN_B)) {
         arg1->unk_0005 = 0;
         arg1->unk_000B = 0;
@@ -989,7 +989,7 @@ void func_84802A44(Controller* arg0, unk_D_848037A0* arg1) {
     }
 }
 
-void func_84802A90(Controller* arg0, unk_D_848037A0* arg1) {
+void Panel_HandlePokemonDeselect(Controller* arg0, unk_D_848037A0* arg1) {
     s32 var_v0 = 0;
 
     switch (arg1->unk_0016) {
@@ -1039,12 +1039,12 @@ void func_84802A90(Controller* arg0, unk_D_848037A0* arg1) {
     }
 }
 
-s32 func_84802B70(s32 arg0, unk_D_848037A0* arg1) {
+s32 Panel_ProcessInput(s32 arg0, unk_D_848037A0* arg1) {
     Controller* var_a0;
     s32 sp18 = 0;
 
     if (arg1->unk_001C->unk_000 & 2) {
-        var_a0 = &D_84816428;
+        var_a0 = &gPanelController;
     } else {
         var_a0 = &gControllers[arg1->unk_0001];
     }
@@ -1052,15 +1052,15 @@ s32 func_84802B70(s32 arg0, unk_D_848037A0* arg1) {
     if (arg0 == 0) {
         switch (arg1->unk_0005) {
             case 0:
-                func_848027F0(var_a0, arg1);
+                Panel_HandleSelectionInput(var_a0, arg1);
                 break;
 
             case 1:
-                func_8480290C(var_a0, arg1);
+                Panel_HandleModeInput(var_a0, arg1);
                 break;
 
             case 2:
-                func_84802A44(var_a0, arg1);
+                Panel_HandleCancelInput(var_a0, arg1);
                 break;
 
             case 3:
@@ -1068,14 +1068,14 @@ s32 func_84802B70(s32 arg0, unk_D_848037A0* arg1) {
                 break;
 
             case 4:
-                func_84802A90(var_a0, arg1);
+                Panel_HandlePokemonDeselect(var_a0, arg1);
                 break;
         }
     }
     return sp18;
 }
 
-s32 func_84802C40(s32 arg0) {
+s32 Panel_MainLoop(s32 arg0) {
     UNUSED s32 pad;
     s32 i;
     s32 var_s2;
@@ -1087,17 +1087,17 @@ s32 func_84802C40(s32 arg0) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
-    func_84802350();
+    Panel_UpdateInputTimer();
     Gfx_FinishFrame();
     Stage_BeginDisplayList();
 
-    if (D_84803798 != 0) {
+    if (gTransferPakErrorTimer != 0) {
         TransferPakErrorScreen();
     }
 
-    for (i = 0; i < D_8480379C; i++) {
-        var_s2 += func_84802B70(arg0, &D_848037A0[i]);
-        func_8480225C(&D_848037A0[i]);
+    for (i = 0; i < gPanelCount; i++) {
+        var_s2 += Panel_ProcessInput(arg0, &gPanels[i]);
+        Panel_DrawState(&gPanels[i]);
     }
 
     PlayerPanel_DrawLeft();
@@ -1105,22 +1105,22 @@ s32 func_84802C40(s32 arg0) {
     TransferPakMessageScroll();
 
     if (arg0 == 0) {
-        if (var_s2 == D_8480379C) {
+        if (var_s2 == gPanelCount) {
             sp30 = 1;
             Stage_SetFillColor(0xFFFF);
             Music_StopTrack(0x10);
         }
 
-        if (D_84803798 > 0) {
-            D_84803798 -= 1;
+        if (gTransferPakErrorTimer > 0) {
+            gTransferPakErrorTimer -= 1;
         }
     } else {
-        D_84803798 = 2;
+        gTransferPakErrorTimer = 2;
     }
     return sp30;
 }
 
-void func_84802D84(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1) {
+void Panel_UpdatePokemonOrder(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1) {
     unk_D_800AE540_0004* temp_v0;
     s32 tmp;
 
@@ -1134,7 +1134,7 @@ void func_84802D84(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1) {
     }
 }
 
-void func_84802DC8(s8* arg0, s32 arg1) {
+void Panel_SortSelection(s8* arg0, s32 arg1) {
     s32 i;
     s32 j;
 
@@ -1152,14 +1152,14 @@ void func_84802DC8(s8* arg0, s32 arg1) {
     }
 }
 
-void func_84802E18(void) {
+void Panel_SyncSelectionToData(void) {
     s32 i;
     s32 var_s4;
     unk_D_800AE540_0004* temp_s1;
     unk_D_848037A0* var_s2;
 
-    var_s2 = D_848037A0;
-    var_s4 = D_8480379C;
+    var_s2 = gPanels;
+    var_s4 = gPanelCount;
 
     while (var_s4-- > 0) {
         temp_s1 = var_s2->unk_001C;
@@ -1167,7 +1167,7 @@ void func_84802E18(void) {
             temp_s1->unk_002 = temp_s1->unk_214->unk_002;
             _bcopy(temp_s1->unk_214->unk_028, temp_s1->unk_01C, 0x1F8);
         } else {
-            func_84802DC8(var_s2->unk_000C, var_s2->unk_000B);
+            Panel_SortSelection(var_s2->unk_000C, var_s2->unk_000B);
             temp_s1->unk_002 = var_s2->unk_000B;
 
             for (i = 0; i < temp_s1->unk_214->unk_002; i++) {
@@ -1177,8 +1177,8 @@ void func_84802E18(void) {
         var_s2++;
     }
 
-    func_84802D84(&D_84816420->unk_1194[0], &D_84803760[0]);
-    func_84802D84(&D_84816420->unk_1194[1], &D_84803760[1]);
+    Panel_UpdatePokemonOrder(&D_84816420->unk_1194[0], &gSelectionStates[0]);
+    Panel_UpdatePokemonOrder(&D_84816420->unk_1194[1], &gSelectionStates[1]);
 }
 
 void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4) {
@@ -1186,8 +1186,8 @@ void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 
     unk_D_848037A0* temp_v1;
     PokemonData* temp_s0;
 
-    temp_v1 = &D_848037A0[D_8480379C];
-    temp_v1->unk_0000 = D_8480379C;
+    temp_v1 = &gPanels[gPanelCount];
+    temp_v1->unk_0000 = gPanelCount;
     temp_v1->unk_0001 = arg2->unk_001;
     temp_v1->unk_0002 = arg4;
     temp_v1->unk_0003 = arg3;
@@ -1211,42 +1211,42 @@ void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 
         func_8001B0DC(temp_v1->unk_0020[i], 0, temp_s0);
     }
 
-    D_8480379C++;
+    gPanelCount++;
 }
 
 void func_84803110(unk_D_800AE540* arg0) {
     unk_D_800AE540_1194* temp_s0 = &arg0->unk_1194[0];
 
     D_84816420 = arg0;
-    D_8480379C = 0;
-    D_84803798 = 2;
-    D_8480379A = 0;
-    D_8481644C = 0;
-    D_84816450 = 0;
-    D_84816428.buttonPressed = 0;
+    gPanelCount = 0;
+    gTransferPakErrorTimer = 2;
+    gTransferPakScrollPos = 0;
+    gInputTimerIndex = 0;
+    gInputTimerValue = 0;
+    gPanelController.buttonPressed = 0;
 
-    SelectionState_Init(&D_84803760[0], &D_84816420->unk_1194[0], D_84816420->unk_0001);
-    SelectionState_Init(&D_84803760[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
+    SelectionState_Init(&gSelectionStates[0], &D_84816420->unk_1194[0], D_84816420->unk_0001);
+    SelectionState_Init(&gSelectionStates[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
 
     if (temp_s0->unk_01 == 1) {
         func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
     } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, D_8480379C + 1);
-        func_84802F7C(0x50, 0x81, temp_s0->unk_08[1], 0, D_8480379C - 1);
+        func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, gPanelCount + 1);
+        func_84802F7C(0x50, 0x81, temp_s0->unk_08[1], 0, gPanelCount - 1);
     } else {
-        func_84802F7C(0x50, 0x21, temp_s0->unk_08[1], 0, D_8480379C + 1);
-        func_84802F7C(0x50, 0x81, temp_s0->unk_08[0], 0, D_8480379C - 1);
+        func_84802F7C(0x50, 0x21, temp_s0->unk_08[1], 0, gPanelCount + 1);
+        func_84802F7C(0x50, 0x81, temp_s0->unk_08[0], 0, gPanelCount - 1);
     }
 
     temp_s0++;
     if (temp_s0->unk_01 == 1) {
         func_84802F7C(0x50, 0x146, temp_s0->unk_08[0], 1, -1);
     } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[0], 1, D_8480379C + 1);
-        func_84802F7C(0x50, 0x146, temp_s0->unk_08[1], 1, D_8480379C - 1);
+        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[0], 1, gPanelCount + 1);
+        func_84802F7C(0x50, 0x146, temp_s0->unk_08[1], 1, gPanelCount - 1);
     } else {
-        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[1], 1, D_8480379C + 1);
-        func_84802F7C(0x50, 0x146, temp_s0->unk_08[0], 1, D_8480379C - 1);
+        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[1], 1, gPanelCount + 1);
+        func_84802F7C(0x50, 0x146, temp_s0->unk_08[0], 1, gPanelCount - 1);
     }
 }
 
@@ -1260,24 +1260,24 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     MessageBank_Init();
     Text_Init(0x3C, 0);
     SpriteAssets_Load();
-    D_84803780 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_84803784 = BinArchive_GetFile(D_84803780, 5);
+    gBinArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gPanelTextureAtlas = BinArchive_GetFile(gBinArchive, 5);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     D_84803788 = GetMessageBank(0x25);
-    D_8480378C = GetMessageBank(0x26);
+    gModeNames = GetMessageBank(0x26);
     gMsgBank_Common = GetMessageBank(0x12);
-    D_84803794 = GetMessageBank(6);
+    gPanelStrings = GetMessageBank(6);
 
     func_84803110(&gBattleContext);
     Music_ChangeTrack(7);
     Stage_Set(sp24);
-    Stage_RunFadeSequence(func_84802C40, 8, 8);
+    Stage_RunFadeSequence(Panel_MainLoop, 8, 8);
     Stage_Destroy();
-    func_84802E18();
+    Panel_SyncSelectionToData();
     FontManager_Free();
     Gfx_FreeBuffers();
 

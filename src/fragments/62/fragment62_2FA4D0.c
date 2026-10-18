@@ -103,55 +103,55 @@ static Color_RGB8 gBoxColorSecondary[] = {
     { 0x82, 0x00, 0x00 },
     { 0x97, 0x89, 0x13 },
 };
-static Color_RGB8 D_8438587C[] = {
+static Color_RGB8 gBoxColorPrimaryAlt[] = {
     { 0x13, 0x45, 0xFF },
     { 0, 0x99, 0 },
     { 0xCC, 0x51, 0x28 },
     { 0xCC, 0x8F, 0 },
 };
-static Color_RGB8 D_84385888[] = {
+static Color_RGB8 gBoxColorBlue[] = {
     { 0x00, 0x00, 0x8B },
     { 0x00, 0x00, 0x8B },
     { 0x00, 0x00, 0x8B },
     { 0x00, 0x00, 0x8B },
 };
-static Color_RGB8 D_84385894[] = {
+static Color_RGB8 gBoxColorLightBlue[] = {
     { 0x00, 0x00, 0xEE },
     { 0x00, 0x00, 0xEE },
     { 0x00, 0x00, 0xEE },
     { 0x00, 0x00, 0xEE },
 };
-static Color_RGB8 D_843858A0[] = {
+static Color_RGB8 gBoxColorGreen[] = {
     { 0x00, 0x32, 0x00 },
     { 0x00, 0x32, 0x00 },
     { 0x00, 0x32, 0x00 },
     { 0x00, 0x32, 0x00 },
 };
-static Color_RGB8 D_843858AC[] = {
+static Color_RGB8 gBoxColorLightGreen[] = {
     { 0x00, 0x79, 0x00 },
     { 0x00, 0x79, 0x00 },
     { 0x00, 0x79, 0x00 },
     { 0x00, 0x79, 0x00 },
 };
-static Color_RGB8 D_843858B8[] = {
+static Color_RGB8 gBoxColorRed[] = {
     { 0x1E, 0x00, 0x00 },
     { 0x1E, 0x00, 0x00 },
     { 0x1E, 0x00, 0x00 },
     { 0x1E, 0x00, 0x00 },
 };
-static Color_RGB8 D_843858C4[] = {
+static Color_RGB8 gBoxColorLightRed[] = {
     { 0x82, 0x00, 0x00 },
     { 0x82, 0x00, 0x00 },
     { 0x82, 0x00, 0x00 },
     { 0x82, 0x00, 0x00 },
 };
-static Color_RGB8 D_843858D0[] = {
+static Color_RGB8 gBoxColorBrown[] = {
     { 0x65, 0x49, 0x11 },
     { 0x65, 0x49, 0x11 },
     { 0x65, 0x49, 0x11 },
     { 0x65, 0x49, 0x11 },
 };
-static Color_RGB8 D_843858DC[] = {
+static Color_RGB8 gBoxColorLightBrown[] = {
     { 0x97, 0x89, 0x13 },
     { 0x97, 0x89, 0x13 },
     { 0x97, 0x89, 0x13 },
@@ -241,7 +241,7 @@ void DrawColoredRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, C
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void func_84310334(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
+void DrawColoredRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
     DrawColoredRect(arg0, arg1, arg2, arg3, arg4, arg5);
 }
 
@@ -365,7 +365,7 @@ void DrawFractionNumber(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void func_84310CE4(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4) {
-    func_84310334(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
+    DrawColoredRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
     Text_ResetState();
     if (arg4 != 0) {
         Text_SetEnvColor(0xFF, 0x64, 0xFF, 0xFF);
@@ -375,7 +375,7 @@ void func_84310CE4(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4) {
     Text_SetupDL();
 }
 
-void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
+void DrawTextBoxAnimated(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
     s32 sp24;
     s16 sp22;
     s16 sp20;
@@ -386,7 +386,7 @@ void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
         sp20 = sp22 * -1;
     }
 
-    func_84310334(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
+    DrawColoredRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
     Text_ResetState();
     Text_SetFont(2, 0);
 
@@ -406,7 +406,7 @@ void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
     Text_SetupDL();
 }
 
-void func_84310FA4(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
+void DrawPokemonMoveBox(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
     unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
     s32 var_t0 = 0;
     s32 i;
@@ -420,7 +420,7 @@ void func_84310FA4(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 
     if (arg6 == 0) {
         func_84310CE4(arg2, arg3, arg4, &arg1->unk_008, var_t0);
     } else {
-        func_84310DC4(arg2, arg3, arg4, &arg1->unk_008, arg5, var_t0);
+        DrawTextBoxAnimated(arg2, arg3, arg4, &arg1->unk_008, arg5, var_t0);
     }
 }
 
@@ -463,7 +463,7 @@ void DrawPokemonInfoWindow(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_
     Text_SetupDL();
 }
 
-s32 func_843112C4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
+s32 DrawTextureRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     UNUSED s32 pad[4];
     s32 sp2C;
     s32 sp28;
@@ -492,37 +492,37 @@ void func_84311428(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    func_843112C4(arg0, arg1 - 1, 8, 8, D_3008480);
-    func_843112C4(arg0, (arg1 + arg3) - 6, 8, 8, D_3008400);
-    func_843112C4((arg0 + arg2) - 6, arg1 - 1, 8, 8, D_3008600);
-    func_843112C4((arg0 + arg2) - 6, (arg1 + arg3) - 6, 8, 8, D_3008580);
+    DrawTextureRect(arg0, arg1 - 1, 8, 8, D_3008480);
+    DrawTextureRect(arg0, (arg1 + arg3) - 6, 8, 8, D_3008400);
+    DrawTextureRect((arg0 + arg2) - 6, arg1 - 1, 8, 8, D_3008600);
+    DrawTextureRect((arg0 + arg2) - 6, (arg1 + arg3) - 6, 8, 8, D_3008580);
 
     for (i = 0; i < arg3 / 8; i++) {
         if ((arg3 - 4) >= (6 + i * 8)) {
-            func_843112C4((arg0 + arg2) - 6, arg1 + (i * 8) + 4, 8, 8, D_3008500);
+            DrawTextureRect((arg0 + arg2) - 6, arg1 + (i * 8) + 4, 8, 8, D_3008500);
         }
     }
 
     for (i = 0; i < arg3 / 8; i++) {
         if ((arg3 - 4) >= (6 + i * 8)) {
-            func_843112C4(arg0, arg1 + (i * 8) + 4, 8, 8, D_3008380);
+            DrawTextureRect(arg0, arg1 + (i * 8) + 4, 8, 8, D_3008380);
         }
     }
 
     for (i = 0; i < arg2 / 8; i++) {
         if ((arg2 - 4) >= (6 + i * 8)) {
-            func_843112C4(arg0 + (i * 8) + 3, arg1 - 1, 8, 8, D_3008700);
+            DrawTextureRect(arg0 + (i * 8) + 3, arg1 - 1, 8, 8, D_3008700);
         }
 
         if ((arg2 - 4) >= (6 + i * 8)) {
-            func_843112C4(arg0 + (i * 8) + 3, (arg1 + arg3) - 6, 8, 8, D_3008680);
+            DrawTextureRect(arg0 + (i * 8) + 3, (arg1 + arg3) - 6, 8, 8, D_3008680);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_843116D8(s16 arg0, s16 arg1) {
+void DrawHPBarTimer(s16 arg0, s16 arg1) {
     Color_RGB8 sp54[] = {
         { 0xB4, 0x00, 0x00 },
         { 0xCC, 0x8F, 0x00 },
@@ -556,7 +556,7 @@ void func_843116D8(s16 arg0, s16 arg1) {
     DrawWindowBackground(arg0 - 3, arg1 - 3, 0x19, 0x12, 0);
 }
 
-void func_843118A8(s16 arg0, s16 arg1) {
+void DrawPhaseTimer(s16 arg0, s16 arg1) {
     char sp40[16];
     f32 sp3C = gPhaseTimer / 30.0f;
     UNUSED s32 pad[2];
@@ -577,7 +577,7 @@ void func_843118A8(s16 arg0, s16 arg1) {
     DrawWindowBackground(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
 }
 
-void func_84311A38(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
+void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     u8* sp74[] = { D_3006170, D_30061D0, D_3006230 };
     UNUSED s32 pad;
     s32 i;
@@ -663,7 +663,7 @@ void func_84311A38(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84311F30(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void DrawBattleInfoWindowLeft(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -682,76 +682,76 @@ void func_84311F30(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s
     temp_v0_2 = &gBoxColorPrimary[sp80->unk_001];
     DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1 + 1, arg2 + 0x12, 0x46, 0x28, temp_v0_2->r, temp_v0_2->g,
                   temp_v0_2->b, 0xB2);
-    func_84310FA4(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
+    DrawPokemonMoveBox(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    func_843112C4(arg1, arg2, 8, 8, D_3008480);
-    func_843112C4(arg1, arg2 + 0xF, 8, 8, D_3008200);
-    func_843112C4(arg1, arg2 + 0x36, 8, 8, D_3008200);
-    func_843112C4(arg1 + 0x41, arg2, 8, 8, D_3008600);
-    func_843112C4(arg1 + 0x41, arg2 + 0xF, 8, 8, D_3008280);
-    func_843112C4(arg1 + 0x41, arg2 + 0x33, 8, 8, D_3008580);
-    func_843112C4(arg1 + 8, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x10, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x18, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x20, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x28, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x30, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x38, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x39, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 8, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x10, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x18, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x20, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x28, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x30, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x38, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x39, arg2 + 0x12, 8, 8, D_3008700);
-    func_843112C4(arg1 + 8, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x10, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x18, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x20, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x28, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x30, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x38, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x39, arg2 + 0x33, 8, 8, D_3008680);
-    func_843112C4(arg1, arg2 + 8, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x15, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x1D, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x25, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x2D, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x2E, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x41, arg2 + 8, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x41, arg2 + 0x15, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x41, arg2 + 0x1D, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x41, arg2 + 0x25, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x41, arg2 + 0x2D, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x41, arg2 + 0x2F, 8, 8, D_3008500);
-    func_843112C4(arg1, arg2 + 0x3D, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x45, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x4D, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x55, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x21, arg2 + 0x3A, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x21, arg2 + 0x3D, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x21, arg2 + 0x45, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x21, arg2 + 0x4D, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x21, arg2 + 0x55, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x21, arg2 + 0x59, 8, 8, D_3008580);
-    func_843112C4(arg1, arg2 + 0x59, 8, 8, D_3008400);
-    func_843112C4(arg1 + 4, arg2 + 0x59, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0xC, arg2 + 0x59, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x14, arg2 + 0x59, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x1C, arg2 + 0x59, 8, 8, D_3008680);
+    DrawTextureRect(arg1, arg2, 8, 8, D_3008480);
+    DrawTextureRect(arg1, arg2 + 0xF, 8, 8, D_3008200);
+    DrawTextureRect(arg1, arg2 + 0x36, 8, 8, D_3008200);
+    DrawTextureRect(arg1 + 0x41, arg2, 8, 8, D_3008600);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0xF, 8, 8, D_3008280);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x33, 8, 8, D_3008580);
+    DrawTextureRect(arg1 + 8, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x10, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x18, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x20, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x28, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x30, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x38, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x39, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 8, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x10, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x18, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x20, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x28, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x30, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x38, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x39, arg2 + 0x12, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 8, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x10, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x18, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x20, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x28, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x30, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x38, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x39, arg2 + 0x33, 8, 8, D_3008680);
+    DrawTextureRect(arg1, arg2 + 8, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x15, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x1D, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x25, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x2D, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x2E, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x41, arg2 + 8, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x15, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x1D, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x25, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x2D, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x41, arg2 + 0x2F, 8, 8, D_3008500);
+    DrawTextureRect(arg1, arg2 + 0x3D, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x45, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x4D, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x55, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x3A, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x3D, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x45, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x4D, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x55, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x21, arg2 + 0x59, 8, 8, D_3008580);
+    DrawTextureRect(arg1, arg2 + 0x59, 8, 8, D_3008400);
+    DrawTextureRect(arg1 + 4, arg2 + 0x59, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0xC, arg2 + 0x59, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x14, arg2 + 0x59, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x1C, arg2 + 0x59, 8, 8, D_3008680);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     DrawWindowBackground(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
     DrawWindowBackground(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
-    func_84311A38(arg0, arg1, arg2 + 0x62);
+    DrawPokemonStatusIcons(arg0, arg1, arg2 + 0x62);
 }
 
-void func_843128A0(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void DrawBattleInfoWindowRight(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -770,78 +770,78 @@ void func_843128A0(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s
     temp_v0 = &gBoxColorPrimary[sp80->unk_001];
     DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1, arg2 + 0x28, 0x46, 0x28, temp_v0->r, temp_v0->g, temp_v0->b,
                   0xB2);
-    func_84310FA4(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
+    DrawPokemonMoveBox(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    func_843112C4(arg1, arg2 + 0x4C, 8, 8, D_3008200);
-    func_843112C4(arg1, arg2 + 0x5B, 8, 8, D_3008400);
-    func_843112C4(arg1, arg2 + 0x27, 8, 8, D_3008480);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x24, 8, 8, D_3008280);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x4C, 8, 8, D_3008280);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x5B, 8, 8, D_3008580);
-    func_843112C4(arg1 + 7, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 8, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x10, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x18, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x20, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x28, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x30, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x38, arg2 + 0x27, 8, 8, D_3008700);
-    func_843112C4(arg1 + 7, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 8, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x10, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x18, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x20, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x28, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x30, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x38, arg2 + 0x4F, 8, 8, D_3008700);
-    func_843112C4(arg1 + 7, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 8, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x10, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x18, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x20, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x28, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x30, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1 + 0x38, arg2 + 0x5B, 8, 8, D_3008680);
-    func_843112C4(arg1, arg2 + 0x2C, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x34, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x3C, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x44, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x52, 8, 8, D_3008380);
-    func_843112C4(arg1, arg2 + 0x53, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x2C, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x34, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x3C, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x44, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x52, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x53, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2, 8, 8, D_3008600);
-    func_843112C4(arg1 + 0x1E, arg2, 8, 8, D_3008480);
-    func_843112C4(arg1 + 0x3F, arg2 + 8, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x10, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x18, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x3F, arg2 + 0x20, 8, 8, D_3008500);
-    func_843112C4(arg1 + 0x1E, arg2 + 8, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x1E, arg2 + 0x10, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x1E, arg2 + 0x18, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x1E, arg2 + 0x1F, 8, 8, D_3008380);
-    func_843112C4(arg1 + 0x20, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x28, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x30, arg2, 8, 8, D_3008700);
-    func_843112C4(arg1 + 0x37, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1, arg2 + 0x4C, 8, 8, D_3008200);
+    DrawTextureRect(arg1, arg2 + 0x5B, 8, 8, D_3008400);
+    DrawTextureRect(arg1, arg2 + 0x27, 8, 8, D_3008480);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x24, 8, 8, D_3008280);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x4C, 8, 8, D_3008280);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x5B, 8, 8, D_3008580);
+    DrawTextureRect(arg1 + 7, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 8, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x10, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x18, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x20, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x28, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x30, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x38, arg2 + 0x27, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 7, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 8, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x10, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x18, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x20, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x28, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x30, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x38, arg2 + 0x4F, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 7, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 8, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x10, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x18, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x20, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x28, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x30, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1 + 0x38, arg2 + 0x5B, 8, 8, D_3008680);
+    DrawTextureRect(arg1, arg2 + 0x2C, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x34, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x3C, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x44, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x52, 8, 8, D_3008380);
+    DrawTextureRect(arg1, arg2 + 0x53, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x2C, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x34, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x3C, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x44, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x52, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x53, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2, 8, 8, D_3008600);
+    DrawTextureRect(arg1 + 0x1E, arg2, 8, 8, D_3008480);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 8, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x10, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x18, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x3F, arg2 + 0x20, 8, 8, D_3008500);
+    DrawTextureRect(arg1 + 0x1E, arg2 + 8, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x1E, arg2 + 0x10, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x1E, arg2 + 0x18, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x1E, arg2 + 0x1F, 8, 8, D_3008380);
+    DrawTextureRect(arg1 + 0x20, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x28, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x30, arg2, 8, 8, D_3008700);
+    DrawTextureRect(arg1 + 0x37, arg2, 8, 8, D_3008700);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     DrawWindowBackground(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
     DrawWindowBackground(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
-    func_84311A38(arg0, arg1 + 0x41, arg2 - 7);
+    DrawPokemonStatusIcons(arg0, arg1 + 0x41, arg2 - 7);
 }
 
-void func_84313148(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void DrawBattleMenuThreeOptions(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0xC6, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
@@ -861,10 +861,10 @@ void func_84313148(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
 
-void func_843133B4(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void DrawBattleMenuTwoOptions(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    func_84310334(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    DrawColoredRectWrapper(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x7D, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
@@ -882,10 +882,10 @@ void func_843133B4(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
 
-void func_843135B8(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void DrawBattleMenuOneOption(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 pad[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x47, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
@@ -993,7 +993,7 @@ s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-void func_84313A74(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s32 sp64[] = { 0, 0, 0, 0 };
     u8 sp60[4];
@@ -1004,7 +1004,7 @@ void func_84313A74(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     sp58 = &arg0->unk_720->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->unk_654.unk_08];
     temp_s0 = &arg0->unk_654.unk_38;
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0xC7, 0x38);
 
     for (i = 0; i < 4; i++) {
@@ -1220,7 +1220,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         var_v1 = arg2;
     }
 
-    func_84310334(arg0 + 1, arg1 + 1, 0xC6, 0x28, &gBoxColorPrimary[var_v1], &gBoxColorSecondary[var_v1]);
+    DrawColoredRectWrapper(arg0 + 1, arg1 + 1, 0xC6, 0x28, &gBoxColorPrimary[var_v1], &gBoxColorSecondary[var_v1]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_Print(arg0 + 0x2E, arg1 + 6, "こうさんしますか?");
@@ -1347,23 +1347,23 @@ void func_84314F60(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, Poke
 void func_8431524C(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
     UNUSED s32 pad[2];
     Color_RGB8* sp88[] = {
-        D_84385888,
-        D_843858A0,
-        D_843858B8,
-        D_843858D0,
+        gBoxColorBlue,
+        gBoxColorGreen,
+        gBoxColorRed,
+        gBoxColorBrown,
     };
     Color_RGB8* sp78[] = {
-        D_84385894,
-        D_843858AC,
-        D_843858C4,
-        D_843858DC,
+        gBoxColorLightBlue,
+        gBoxColorLightGreen,
+        gBoxColorLightRed,
+        gBoxColorLightBrown,
     };
     UNUSED s32 pad2[4];
 
-    func_84310334(arg2 + 1, arg3 + 1, 0x63, 0xF, &sp88[arg4][0], &sp78[arg4][0]);
-    func_84310334(arg2 + 1, arg3 + 0x10, 0x63, 0x1D, &sp88[arg4][1], &sp78[arg4][1]);
-    func_84310334(arg2 + 1, arg3 + 0x2D, 0x63, 0x1D, &sp88[arg4][2], &sp78[arg4][2]);
-    func_84310334(arg2 + 1, arg3 + 0x4A, 0x63, 0x1D, &sp88[arg4][3], &sp78[arg4][3]);
+    DrawColoredRectWrapper(arg2 + 1, arg3 + 1, 0x63, 0xF, &sp88[arg4][0], &sp78[arg4][0]);
+    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x10, 0x63, 0x1D, &sp88[arg4][1], &sp78[arg4][1]);
+    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x2D, 0x63, 0x1D, &sp88[arg4][2], &sp78[arg4][2]);
+    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x4A, 0x63, 0x1D, &sp88[arg4][3], &sp78[arg4][3]);
 
     func_84314B20((arg2 - (MeasureTextWidth(1, 0, arg1->unk_008) / 2)) + 0x32, arg3 + 3, arg1->unk_008);
 
@@ -1395,16 +1395,16 @@ void func_84315550(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[0];
     s32 i;
     Color_RGB8* sp88[] = {
-        D_84385888,
-        D_843858A0,
-        D_843858B8,
-        D_843858D0,
+        gBoxColorBlue,
+        gBoxColorGreen,
+        gBoxColorRed,
+        gBoxColorBrown,
     };
     Color_RGB8* sp78[] = {
-        D_84385894,
-        D_843858AC,
-        D_843858C4,
-        D_843858DC,
+        gBoxColorLightBlue,
+        gBoxColorLightGreen,
+        gBoxColorLightRed,
+        gBoxColorLightBrown,
     };
     s32 tmp;
     PokemonData* sp5C[6];
@@ -1420,10 +1420,10 @@ void func_84315550(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     sp5C[1] = &temp_s1->unk_01C[4];
     sp5C[0] = &temp_s1->unk_01C[5];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0xF, &sp88[arg3][0], &sp78[arg3][0]);
-    func_84310334(arg1 + 1, arg2 + 0x10, 0xC8, 0x1D, &sp88[arg3][1], &sp78[arg3][1]);
-    func_84310334(arg1 + 1, arg2 + 0x2D, 0xC8, 0x1D, &sp88[arg3][2], &sp78[arg3][2]);
-    func_84310334(arg1 + 1, arg2 + 0x4A, 0xC8, 0x1D, &sp88[arg3][3], &sp78[arg3][3]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0xF, &sp88[arg3][0], &sp78[arg3][0]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x10, 0xC8, 0x1D, &sp88[arg3][1], &sp78[arg3][1]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x2D, 0xC8, 0x1D, &sp88[arg3][2], &sp78[arg3][2]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x4A, 0xC8, 0x1D, &sp88[arg3][3], &sp78[arg3][3]);
     tmp = MeasureTextWidth(1, 0, temp_s0->unk_008) / 2;
     func_84314B20((arg1 - tmp) + 0x32, arg2 + 3, temp_s0->unk_008);
 
@@ -1486,7 +1486,7 @@ void func_8431595C(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     if ((tmp >> 8) & 1) {
         var_v0 = &gBoxColorPrimary[arg3];
     } else {
-        var_v0 = &D_8438587C[arg3];
+        var_v0 = &gBoxColorPrimaryAlt[arg3];
     }
 
     DrawPokemonInfoWindow(arg0, sp40, &gStatusColors[var_t0], arg1 + 1, arg2 + 1, 0x46, 0x28, var_v0->r, var_v0->g, var_v0->b,
@@ -1496,7 +1496,7 @@ void func_8431595C(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
 }
 
 void func_84315ADC(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    func_84310334(arg1 + 1, arg2 + 1, 0xEE, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xEE, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
@@ -1607,7 +1607,7 @@ s32 Dialog_ZoomDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 void func_843162E4(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
@@ -1622,7 +1622,7 @@ void func_843163C8(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 sp48;
     UNUSED s32 pad2[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     Text_ResetState();
     Text_SetFont(2, 0);
     sp48 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA1)) / 2;
@@ -1781,10 +1781,10 @@ void func_843172A0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
 
     if (gBattleContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
-            func_84311F30(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
+            DrawBattleInfoWindowLeft(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
                           1);
         } else {
-            func_84311F30(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
+            DrawBattleInfoWindowLeft(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
                           0);
         }
 
@@ -1808,17 +1808,17 @@ void func_843172A0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
                             func_84315550(arg0, 0x60, 0xF, sp34->unk_001);
                         }
                     } else if (arg1->unk_2D == 0x10) {
-                        func_843135B8(arg0, 0x60, 0xF, sp34->unk_001);
+                        DrawBattleMenuOneOption(arg0, 0x60, 0xF, sp34->unk_001);
                     } else {
-                        func_843133B4(arg0, 0x60, 0xF, sp34->unk_001);
+                        DrawBattleMenuTwoOptions(arg0, 0x60, 0xF, sp34->unk_001);
                     }
                     break;
 
                 case 1:
                     if (arg1->unk_1C == 1) {
-                        func_84313A74(arg0, 0x60, 0xF, sp34->unk_001);
+                        DrawMovePPWindows(arg0, 0x60, 0xF, sp34->unk_001);
                     } else {
-                        func_843133B4(arg0, 0x60, 0xF, sp34->unk_001);
+                        DrawBattleMenuTwoOptions(arg0, 0x60, 0xF, sp34->unk_001);
                     }
                     break;
 
@@ -1827,7 +1827,7 @@ void func_843172A0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
                     break;
 
                 default:
-                    func_84313148(arg0, 0x60, 0xF, sp34->unk_001);
+                    DrawBattleMenuThreeOptions(arg0, 0x60, 0xF, sp34->unk_001);
                     break;
             }
         }
@@ -1840,10 +1840,10 @@ void func_84317558(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
 
     if (gBattleContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
-            func_843128A0(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
+            DrawBattleInfoWindowRight(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
                           1);
         } else {
-            func_843128A0(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
+            DrawBattleInfoWindowRight(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
                           0);
         }
 
@@ -1867,17 +1867,17 @@ void func_84317558(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
                             func_84315550(arg0, 0x18, 0x79, sp24->unk_001);
                         }
                     } else if (arg1->unk_2D == 0x10) {
-                        func_843135B8(arg0, 0x98, 0xCE, sp24->unk_001);
+                        DrawBattleMenuOneOption(arg0, 0x98, 0xCE, sp24->unk_001);
                     } else {
-                        func_843133B4(arg0, 0x62, 0xCE, sp24->unk_001);
+                        DrawBattleMenuTwoOptions(arg0, 0x62, 0xCE, sp24->unk_001);
                     }
                     break;
 
                 case 1:
                     if (arg1->unk_1C == 1) {
-                        func_84313A74(arg0, 0x19, 0xA6, sp24->unk_001);
+                        DrawMovePPWindows(arg0, 0x19, 0xA6, sp24->unk_001);
                     } else {
-                        func_843133B4(arg0, 0x62, 0xCE, sp24->unk_001);
+                        DrawBattleMenuTwoOptions(arg0, 0x62, 0xCE, sp24->unk_001);
                     }
                     break;
 
@@ -1886,7 +1886,7 @@ void func_84317558(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1
                     break;
 
                 default:
-                    func_84313148(arg0, 0x18, 0xCE, sp24->unk_001);
+                    DrawBattleMenuThreeOptions(arg0, 0x18, 0xCE, sp24->unk_001);
                     break;
             }
         }

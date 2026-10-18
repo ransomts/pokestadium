@@ -166,10 +166,10 @@ void DrawPanelFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8
 unk_D_83407B38* GetActiveMenu(void) {
     unk_D_83407B38* ret;
 
-    if (D_83407AE4 == 0) {
+    if (gGallerySpecialUnlocked == 0) {
         ret = &gMenuActiveData;
     } else {
-        ret = &D_83407B38;
+        ret = &gGalleryCamList;
     }
     return ret;
 }
@@ -183,17 +183,17 @@ void UpdateMenuItemStates(void) {
     u8* sp18;
     s32 var_v0;
 
-    sp28 = CountDisplayableMonIndices(D_83403C60, 0x24, 1);
-    if (D_83407AE4 == 0) {
+    sp28 = CountDisplayableMonIndices(gGalleryEntries, 0x24, 1);
+    if (gGallerySpecialUnlocked == 0) {
         sp1C[1] = 0xF;
         sp1C[0] = 0x14;
-        var_v0 = CountDisplayableMonIndices(D_83407ABC, 4, 1);
+        var_v0 = CountDisplayableMonIndices(gCurrentCamEntry, 4, 1);
         sp20 = 4;
         sp18 = D_3004540;
     } else {
         sp1C[1] = 0x3F;
         sp1C[0] = 0x40;
-        var_v0 = CountDisplayableMonIndices(D_83407AC0, 0x10, 1);
+        var_v0 = CountDisplayableMonIndices(gCurrentCamEntryPage, 0x10, 1);
         sp20 = 0x10;
         sp18 = D_3005260;
     }
@@ -221,7 +221,7 @@ void UpdateMenuItemStates(void) {
                 break;
 
             case 5:
-                if (D_83407AE8 == 0) {
+                if (gGallerySpecialViewed == 0) {
                     ptr->unk_08 = 9;
                     ptr->unk_0A = sp1C[1];
                 } else {
@@ -231,7 +231,7 @@ void UpdateMenuItemStates(void) {
 
                 D_833031B0[0] = sp1C[0];
 
-                if ((var_v0 < sp20) && (D_83407AE8 == 0)) {
+                if ((var_v0 < sp20) && (gGallerySpecialViewed == 0)) {
                     ptr->unk_12 = 1;
                 } else if (gStickerStationConnected == 0) {
                     ptr->unk_12 = 2;
@@ -250,7 +250,7 @@ void UpdateMenuItemStates(void) {
 s32 Menu_HandleConfirm(void) {
     s32 sp1C = 0;
 
-    if (func_83400334() != 0) {
+    if (Gallery_CheckForChanges() != 0) {
         gMenuStep = 6;
         func_83402CE4(3, gPlayer1Controller);
         gBackgroundFadeTimer = 4;
@@ -269,7 +269,7 @@ s32 ProcessMenuInput(void) {
 
     sp2C = 0;
     sp28 = 0;
-    sp20 = D_83407AE8;
+    sp20 = gGallerySpecialViewed;
     sp1C = D_83402E28;
 
     if (Cam_FindActiveIndex(GetActiveMenu()->unk_20, 0x25) != -1) {
@@ -302,15 +302,15 @@ s32 ProcessMenuInput(void) {
         gMenuInputLocked = 0;
     }
 
-    if ((D_83407AEC != 0) && (gMenuInputLocked == 0)) {
+    if ((gGalleryAudioStateFlag != 0) && (gMenuInputLocked == 0)) {
         if ((gPlayer1Controller->buttonDown & 0x20) && (gPlayer1Controller->buttonDown & 0x10) && (D_83402E28 == 5)) {
-            D_83407AE8 = 1;
+            gGallerySpecialViewed = 1;
         } else {
-            D_83407AE8 = 0;
+            gGallerySpecialViewed = 0;
         }
     }
 
-    if (sp20 != D_83407AE8) {
+    if (sp20 != gGallerySpecialViewed) {
         gMenuDirty = 0;
         UpdateMenuItemStates();
     }
@@ -333,12 +333,12 @@ s32 ProcessMenuInput(void) {
                     break;
 
                 case 4:
-                    D_83407AE4 ^= 1;
+                    gGallerySpecialUnlocked ^= 1;
                     UpdateMenuItemStates();
                     break;
 
                 case 5:
-                    if (D_83407AE8 != 0) {
+                    if (gGallerySpecialViewed != 0) {
                         sp28 = 2;
                     } else {
                         gMenuStep = 5;
@@ -353,7 +353,7 @@ s32 ProcessMenuInput(void) {
                     break;
             }
             PlaySoundEffect(sp24->unk_14);
-        } else if ((D_83402E28 == 5) && (D_83407AE8 != 0)) {
+        } else if ((D_83402E28 == 5) && (gGallerySpecialViewed != 0)) {
             sp28 = 2;
             PlaySoundEffect(sp24->unk_14);
         } else {
@@ -367,7 +367,7 @@ s32 ProcessMenuInput(void) {
 void ResetMenuState(void) {
     D_833032E0 = 0;
     gMenuStep = 1;
-    GallerySelection_Init(&D_83407B30);
+    GallerySelection_Init(&gGalleryMainSelection);
 }
 
 s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
@@ -383,7 +383,7 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
 
     sp4C = 0;
     sp48 = arg0->unk_00;
-    func_83402210(arg0, &sp44, &sp40, sp48);
+    Gallery_GetPageAndIndex(arg0, &sp44, &sp40, sp48);
     if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
@@ -416,7 +416,7 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
         }
     }
 
-    arg0->unk_00 = func_83402280(arg0, sp44, sp40);
+    arg0->unk_00 = Gallery_GetGlobalIndex(arg0, sp44, sp40);
     if (arg0->unk_00 != sp48) {
         PlaySoundEffect(1);
     }
@@ -438,13 +438,13 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
                 if (sp3C != arg0->unk_04) {
                     sp38->unk_00 = 0;
                     arg0->unk_20[arg0->unk_04]->unk_00 = 0;
-                    func_83400590(sp38->unk_18, arg0->unk_B0->unk_18);
+                    Gallery_SwapEntries(sp38->unk_18, arg0->unk_B0->unk_18);
                     PlaySoundEffect(0x29);
                 } else {
                     PlaySoundEffect(3);
                 }
             } else {
-                if (func_83400660(arg0->unk_B0->unk_18, sp38->unk_18) == 0) {
+                if (Gallery_IsEntryEqual(arg0->unk_B0->unk_18, sp38->unk_18) == 0) {
                     PlaySoundEffect(0x31);
                     gMenuStep = 4;
 
@@ -465,7 +465,7 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
             gMenuStep = 1;
         } else {
             if (arg0->unk_04 >= 4) {
-                GallerySelection_Init(&D_83407B30);
+                GallerySelection_Init(&gGalleryMainSelection);
                 D_833032E0 = 0;
                 gMenuStep = 1;
             }
@@ -483,7 +483,7 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
         if ((arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(sp28) != 0)) {
             sp4C = 1;
             PlaySoundEffect(0x19);
-            func_83400694(sp28->unk_18);
+            Gallery_SetCurrentEntry(sp28->unk_18);
         } else {
             PlaySoundEffect(8);
         }
@@ -599,7 +599,7 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
 
     if ((D_833032E0 != 0) && (D_833032E0 != 2)) {
         sp20 = &D_83303180[arg2];
-    } else if (D_83407AE4 == 0) {
+    } else if (gGallerySpecialUnlocked == 0) {
         sp20 = &D_83303180[arg2];
         do {
             sp20->unk_00 = D_3004540;
@@ -635,7 +635,7 @@ void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
             if (gMenuStep == 5) {
                 switch (D_83303434) {
                     case 0:
-                        if (D_83407AE8 == 0) {
+                        if (gGallerySpecialViewed == 0) {
                             sp18 = Text_GetMessageString_Bank2C(0x1B);
                         } else {
                             sp18 = Text_GetMessageString_Bank2C(0x45);
@@ -670,7 +670,7 @@ void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
             break;
     }
 
-    func_834008DC(arg1, arg2, 0x186, 0x4C);
+    Gallery_DrawGradientPanel(arg1, arg2, 0x186, 0x4C);
 
     if (sp18 != NULL) {
         if (1) {}
@@ -709,9 +709,9 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
     gMenuInputLocked = 0;
 
     if (arg1 == 0) {
-        D_83407AE8 = 0;
+        gGallerySpecialViewed = 0;
     } else {
-        D_83407AE8 = 1;
+        gGallerySpecialViewed = 1;
         gMenuInputLocked = 1;
     }
 
@@ -725,17 +725,17 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
     UpdateMenuItemStates();
     Graph_InitRoots();
     sp30 = AssetManager_Create(5);
-    CamList_Init(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, D_83407ABC, 4, 1);
-    func_83402298(&D_83407B38, sp30, gMenuAssetArchive);
+    CamList_Init(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, gCurrentCamEntry, 4, 1);
+    Gallery_UpdateCameraAssets(&gGalleryCamList, sp30, gMenuAssetArchive);
 
     if (D_833032E0 == 1) {
         temp_v0_2 = GetActiveMenu();
         temp_v0_2->unk_04 = 0x400;
-        temp_v0_2->unk_B0->unk_18 = &D_83403C60[D_83407B30.unk_04];
+        temp_v0_2->unk_B0->unk_18 = &gGalleryEntries[gGalleryMainSelection.unk_04];
         temp_v0_2->unk_B0->unk_00 = 0;
     } else if (D_833032E0 == 2) {
-        func_834021EC(&gMenuActiveData, &D_83407B00);
-        func_834021EC(&D_83407B38, &D_83407B08);
+        Gallery_SyncCamToSelection(&gMenuActiveData, &D_83407B00);
+        Gallery_SyncCamToSelection(&gGalleryCamList, &gGallerySubSelection);
     }
 
     SnapSelect_SetupDisplay();
@@ -830,12 +830,12 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     s32 tmp1;
     s32 tmp2;
 
-    temp_fp = D_8330325C[D_83407AE4];
-    temp_s4 = D_83303264[D_83407AE4];
-    temp_s5 = D_83303268[D_83407AE4];
-    sp8C = D_83303260[D_83407AE4];
+    temp_fp = D_8330325C[gGallerySpecialUnlocked];
+    temp_s4 = D_83303264[gGallerySpecialUnlocked];
+    temp_s5 = D_83303268[gGallerySpecialUnlocked];
+    sp8C = D_83303260[gGallerySpecialUnlocked];
 
-    if (D_83407AE4 == 0) {
+    if (gGallerySpecialUnlocked == 0) {
         var_s6 = 4;
     } else {
         var_s6 = 1;
@@ -843,12 +843,12 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
 
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s0 = (arg0->unk_08 * arg0->unk_14) + i;
-        func_83402210(arg0, &sp78, &sp74, i);
+        Gallery_GetPageAndIndex(arg0, &sp78, &sp74, i);
         temp_s1 = arg0->unk_20[temp_s0];
 
         if ((i != arg0->unk_04) && (Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
-                func_834018C0(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
+                Gallery_DrawTextureList(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
                               (temp_s5 * sp74) + sp8C + ((temp_s5 / 2) * (j / 2)), temp_s1->unk_04, temp_s1->unk_06, 8,
                               1);
             }
@@ -856,16 +856,16 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     }
 
     if (arg0->unk_04 != -1) {
-        func_83402210(arg0, &sp68, &sp64, arg0->unk_00);
+        Gallery_GetPageAndIndex(arg0, &sp68, &sp64, arg0->unk_00);
         temp_s1 = arg0->unk_B0;
         if ((Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
                 tmp1 = j % 2;
                 tmp2 = j / 2;
-                func_83401818((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
+                Gallery_DrawShadow((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
                               (temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2), temp_s1->unk_04, temp_s1->unk_06);
 
-                func_834018C0(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
+                Gallery_DrawTextureList(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
                               ((temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2)) - 0x10, temp_s1->unk_04,
                               temp_s1->unk_06, 8, 1);
             }
@@ -885,17 +885,17 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
     s32 var_a3;
     s32 var_v0;
 
-    sp50 = D_8330325C[D_83407AE4];
-    sp4C = D_83303260[D_83407AE4];
-    sp48 = D_83303264[D_83407AE4];
-    sp44 = D_83303268[D_83407AE4];
+    sp50 = D_8330325C[gGallerySpecialUnlocked];
+    sp4C = D_83303260[gGallerySpecialUnlocked];
+    sp48 = D_83303264[gGallerySpecialUnlocked];
+    sp44 = D_83303268[gGallerySpecialUnlocked];
     temp_s0 = arg0->unk_B0;
-    func_83402210(arg0, &sp58, &sp54, arg0->unk_00);
+    Gallery_GetPageAndIndex(arg0, &sp58, &sp54, arg0->unk_00);
 
     switch (D_833032E0) {
         case 0:
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
-            func_83401B48(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
+            Gallery_DrawAnimatedCorners(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
             break;
 
         case 2:
@@ -907,28 +907,28 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
                 var_v0 = -0x10;
             }
 
-            if (D_83407AE4 == 0) {
+            if (gGallerySpecialUnlocked == 0) {
                 var_a2 = (temp_s0->unk_04 * 2) + 0x18;
                 var_a3 = (temp_s0->unk_06 * 2) + 0x18;
             } else {
                 var_a2 = temp_s0->unk_04 + 8;
                 var_a3 = temp_s0->unk_06 + 8;
             }
-            func_83401B48(((sp48 * sp58) + sp50 + var_v0) - 4, ((sp44 * sp54) + sp4C + var_v0) - 4, var_a2, var_a3);
+            Gallery_DrawAnimatedCorners(((sp48 * sp58) + sp50 + var_v0) - 4, ((sp44 * sp54) + sp4C + var_v0) - 4, var_a2, var_a3);
             break;
 
         case 1:
             if ((arg0->unk_04 != -1) && (Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-                if (D_83407AE4 == 0) {
+                if (gGallerySpecialUnlocked == 0) {
                     var_a2 = (temp_s0->unk_04 * 2) + 0x18;
                     var_a3 = (temp_s0->unk_06 * 2) + 0x18;
                 } else {
                     var_a2 = temp_s0->unk_04 + 8;
                     var_a3 = temp_s0->unk_06 + 8;
                 }
-                func_83401B48(((sp48 * sp58) + sp50) - 0x14, ((sp44 * sp54) + sp4C) - 0x14, var_a2, var_a3);
+                Gallery_DrawAnimatedCorners(((sp48 * sp58) + sp50) - 0x14, ((sp44 * sp54) + sp4C) - 0x14, var_a2, var_a3);
             }
             break;
     }
@@ -1087,7 +1087,7 @@ s32 Menu_MainLoopStep(void) {
 
     sp28 = 1;
     sp24 = gMenuStep;
-    sp20 = D_83407AE4;
+    sp20 = gGallerySpecialUnlocked;
     sp1C = &D_833031B4[D_83402E28];
 
     switch (gMenuStep) {
@@ -1097,7 +1097,7 @@ s32 Menu_MainLoopStep(void) {
                 if (gInitialDelayCounter <= 0) {
                     switch (D_833032E0) {
                         case 0:
-                            if (D_83407AE8 != 0) {
+                            if (gGallerySpecialViewed != 0) {
                                 if (sp1C->unk_12 == 0) {
                                     gMenuStep = 5;
                                     D_83303434 = 0;
@@ -1178,7 +1178,7 @@ s32 Menu_MainLoopStep(void) {
             break;
     }
 
-    if (((sp24 != gMenuStep) && (gMenuStep == 1)) || (sp20 != D_83407AE4)) {
+    if (((sp24 != gMenuStep) && (gMenuStep == 1)) || (sp20 != gGallerySpecialUnlocked)) {
         gBackgroundFadeTimer = 4;
     }
     return sp28;
@@ -1218,23 +1218,23 @@ void Menu_RunLoop(void) {
         }
 
         RenderFrame();
-        func_834020D8();
+        Gallery_ClearActiveCamera();
     } while (Menu_MainLoopStep() != 0);
 }
 
 s32 Menu_GetResult(void) {
     s32 sp1C = D_8330326C[D_83402E28];
 
-    if (func_834006A0(0) != NULL) {
+    if (Gallery_GetCurrentEntry(0) != NULL) {
         sp1C = 4;
     }
 
     if (D_83402E28 == 2) {
-        D_83407B30.unk_00 = 1;
+        gGalleryMainSelection.unk_00 = 1;
     }
 
-    func_834021D8(&gMenuActiveData, &D_83407B00);
-    func_834021D8(&D_83407B38, &D_83407B08);
+    Gallery_SyncSelectionToCam(&gMenuActiveData, &D_83407B00);
+    Gallery_SyncSelectionToCam(&gGalleryCamList, &gGallerySubSelection);
 
     return sp1C;
 }

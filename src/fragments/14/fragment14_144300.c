@@ -196,7 +196,7 @@ void RenderPanelColumns(void) {
     Gfx* var_s4 = gDisplayListHead;
     unk_D_86807558* ptr;
 
-    for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
+    for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
         var_s4 = DrawTextureStackColumn(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
     }
 
@@ -279,7 +279,7 @@ void RenderSushiGoRoundUI(void) {
                 var_v0 = 0x1C;
             }
 
-            if (!(D_86807558[i].unk_002 & 4)) {
+            if (!(gSushiEntities[i].unk_002 & 4)) {
                 DrawUniformScaledTextureRect(i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
             } else {
                 DrawUniformScaledTextureRect(-1 - i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
@@ -366,7 +366,7 @@ void RenderSushiGoRoundUI(void) {
         case 3:
             if (gIsDemoMode == 0) {
                 Text_SetFont(4, 0);
-                for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
+                for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
                     if ((ptr->unk_040.unk_00 != 0) && (ptr->unk_040.unk_00 != 1)) {
                         if ((i / 2) != 0) {
                             var_s7 = -0x14;
@@ -402,7 +402,7 @@ void RenderSushiGoRoundUI(void) {
         case 6:
             Text_SetFont(4, 0);
 
-            for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
+            for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
                 char sp78[16];
 
                 spD0[0] = spB4;
@@ -469,14 +469,14 @@ void RenderSushiGoRoundFrame(void) {
     Stage_BeginDisplayList();
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(gSushiGoRoundGraphNode);
     ParticleRender_SetupMiniCamera();
 
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         RenderSushiGoRoundUI();
     }
 
@@ -506,7 +506,7 @@ void HandleSushiGoRoundInput(void) {
             gSushiGoRoundTimer = 0x708;
             D_86807540 = 0xF;
             func_8004B9C4(0x3C);
-            func_86805108(0xF, 1);
+            Sushi_SetEntityInput(0xF, 1);
         } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
             PlaySoundEffect(3);
             gSushiGoRoundState = 7;
@@ -548,7 +548,7 @@ s32 UpdateSushiGoRoundState(void) {
         }
     }
 
-    if (((D_8780FC92 != 0) || (sp18 != 0)) && (gSushiGoRoundState != 7)) {
+    if (((gResultFlag_Special != 0) || (sp18 != 0)) && (gSushiGoRoundState != 7)) {
         gSushiGoRoundState = 7;
         D_86807540 = 0x1E;
         Stage_FadeOut(D_86807540);
@@ -574,13 +574,13 @@ s32 UpdateSushiGoRoundState(void) {
                 PlaySoundByCategory(gResultSoundCategories[temp_v0], 0, 0);
             } else if (temp_v0 == -2) {
                 gSushiGoRoundState = 3;
-                func_86805108(0xF, 3);
+                Sushi_SetEntityInput(0xF, 3);
                 Sushi_SetSpawnMode(1);
             }
             break;
 
         case 3:
-            if (D_8780FC94 == 0) {
+            if (gResultMenuVisible == 0) {
                 gSushiGoRoundTimer--;
                 if (((gSushiGoRoundTimer % 30) == 0) && (gIsDemoMode == 0)) {
                     if (((gSushiGoRoundTimer / 30) > 0) && ((gSushiGoRoundTimer / 30) < 6)) {
@@ -593,7 +593,7 @@ s32 UpdateSushiGoRoundState(void) {
                 if (gIsDemoMode == 0) {
                     gSushiGoRoundState = 4;
                     D_86807540 = 0x1E;
-                    func_86805108(0xF, 2);
+                    Sushi_SetEntityInput(0xF, 2);
                     Sushi_SetSpawnMode(2);
                     func_8004B9C4(0xA);
                     PlaySoundByCategory(0x50004, 0, 0);
@@ -608,19 +608,19 @@ s32 UpdateSushiGoRoundState(void) {
             break;
 
         case 4:
-            if (func_868055D4() != 0) {
+            if (Sushi_CheckAllIdle() != 0) {
                 D_86807540--;
             }
 
             if (D_86807540 <= 0) {
                 gSushiGoRoundState = 5;
-                func_86805108(0xF, 4);
+                Sushi_SetEntityInput(0xF, 4);
             }
             break;
 
         case 5:
             var_a0 = 1;
-            ptr = &D_86807558[0];
+            ptr = &gSushiEntities[0];
 
             for (i = 0; i < 4; i++, ptr++) {
                 if (ptr->unk_018 != ptr->unk_01C) {
@@ -628,15 +628,15 @@ s32 UpdateSushiGoRoundState(void) {
                 }
             }
 
-            if ((var_a0 != 0) && (D_8780FC94 == 0)) {
+            if ((var_a0 != 0) && (gResultMenuVisible == 0)) {
                 gSushiGoRoundState = 6;
-                func_86805108(0xF, 5);
+                Sushi_SetEntityInput(0xF, 5);
                 SetResultFlag(1);
             }
             break;
 
         case 6:
-            if (D_8780FC96 != 0) {
+            if (gResultExitPending != 0) {
                 gSushiGoRoundState = 7;
                 D_86807540 = 0x1E;
                 Stage_FadeOut(D_86807540);
@@ -670,9 +670,9 @@ void RunSushiGoRound(void) {
     while (var_s0 != 0) {
         ReadAllControllers();
         Fragment2_1_Update();
-        func_86805CB4();
+        Sushi_UpdateCameraPos();
         func_86806BF0();
-        func_86805974();
+        Sushi_MainUpdate();
         ParticleSystem_UpdateAndRender();
         RenderSushiGoRoundFrame();
 
@@ -703,7 +703,7 @@ void InitSushiGoRound(void) {
         Sushi_InitSystem(0);
     }
 
-    func_86805BD4();
+    Sushi_InitCamera();
     ParticleSystem_Init();
     ResultScreen_Init();
 
@@ -712,7 +712,7 @@ void InitSushiGoRound(void) {
         gSushiUIFlags |= 1;
     }
 
-    func_86805108(0xF, 2);
+    Sushi_SetEntityInput(0xF, 2);
 }
 
 void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {

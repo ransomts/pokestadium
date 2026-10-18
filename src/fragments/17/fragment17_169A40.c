@@ -95,7 +95,7 @@ s32 Stage_HandleFade(void) {
         Stage_FadeOut(3);
     }
 
-    var_v0 = func_800174E4(&gStageRootFragmentNode) != 0;
+    var_v0 = GraphNode_IsAnimationFinished(&gStageRootFragmentNode) != 0;
     if (var_v0) {
         return 1;
     }

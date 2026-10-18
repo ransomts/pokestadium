@@ -97,12 +97,12 @@ void Gallery_Run(void) {
     s32 var_v0;
     unk_D_83407B00* val;
 
-    val = &D_83407B30;
+    val = &gGalleryMainSelection;
     var_s2 = 0;
     var_s5 = 0;
 
     main_pool_push_state('SNPM');
-    func_8004B1CC(0x4B);
+    ResultScreen_SetAnimation(0x4B);
 
     FRAGMENT_LOAD(fragment43)();
     FRAGMENT_LOAD(fragment34);

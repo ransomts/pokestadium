@@ -3103,7 +3103,7 @@ s32 IsPokemonStatFlagSet(s32 arg0, s32 arg1) {
 
     var_v1 = &gSpeciesBaseStats[arg0 - 1];
 
-    if (MenuItem_GetHeldItemId(func_80029080()) == 7) {
+    if (MenuItem_GetHeldItemId(GetCurrentPokemonBank()) == 7) {
         for (i = 0; i < 9; i++) {
             if (arg0 == gSpecialModeSpeciesStats[i].unk_00) {
                 var_v1 = &gSpecialModeSpeciesStats[i];
@@ -3128,7 +3128,7 @@ s32 IsMoveRestrictedForSpecies(s32 arg0, unk_func_8830867C_02C_0CC_000_008* arg1
     temp_v0 = Mon_CountMoves(arg1);
     var_s4 = 0;
     for (i = 0; i < temp_v0; i++) {
-        if (func_80022A28(var_s3) == arg1->unk_09[i]) {
+        if (GetPokemonType1(var_s3) == arg1->unk_09[i]) {
             break;
         }
     }

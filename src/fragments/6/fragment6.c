@@ -31,7 +31,7 @@ typedef struct unk_D_86002920 {
     /* 0x0A */ s16 unk_0A;
 } unk_D_86002920; // size = 0xC
 
-static unk_D_86002920 D_86002920[31] = {
+static unk_D_86002920 gMiniHudRandomChanceTable[31] = {
     { 0x87A0, 0x1190, 0x0032, 0x0028, 0x0005, 0x0000 }, { 0x87A0, 0x1178, 0x004B, 0x0037, 0x0014, 0x0000 },
     { 0x87A0, 0x1180, 0x005C, 0x003C, 0x001E, 0x0000 }, { 0x87A0, 0x11A4, 0x0063, 0x005A, 0x0028, 0x0000 },
     { 0xFFFF, 0xFFE2, 0xFFFF, 0xFFF5, 0x0000, 0x0007 }, { 0x0000, 0x0019, 0x000D, 0x000D, 0x000B, 0x000C },
@@ -61,14 +61,14 @@ typedef struct unk_D_86002A98 {
     /* 0x0A */ s16 unk_0A;
 } unk_D_86002A98; // size = 0xC
 
-static unk_D_86002A98 D_86002A98[4] = {
+static unk_D_86002A98 gMiniHudTextureRects[4] = {
     { 0x0014, 0x00D7, 0xFFFF, 0xFFFF, 0x0000, 0xFFFF },
     { 0x005A, 0x00D7, 0xFFFF, 0xFFFF, 0x00FF, 0x00FF },
     { 0x00A0, 0x00D7, 0xFFFF, 0xFFFF, 0xFF00, 0x00FF },
     { 0x00E6, 0x00D7, 0xFFFF, 0xFFFF, 0xFFFF, 0x00FF },
 };
 
-static unk_func_87801684 D_86002AC8[] = {
+static unk_func_87801684 gMiniHudDL_Panel1[] = {
     {
         0x0303ED80,
         0x000E,
@@ -91,7 +91,7 @@ static unk_func_87801684 D_86002AC8[] = {
     },
 };
 
-static unk_func_87801684 D_86002AF0[] = {
+static unk_func_87801684 gMiniHudDL_Panel2[] = {
     {
         0x03040580,
         0x0012,
@@ -114,7 +114,7 @@ static unk_func_87801684 D_86002AF0[] = {
     },
 };
 
-static u32 D_86002B18[] = {
+static u32 gMiniHudGeoLayout[] = {
     0x0C00FFFF, (u32)&D_5000000,  0x0B00001E,      0x00000000,      0x014000F0,      0x0000000F,
     0x00000000, 0x00000000,       (u32)&D_5000000, 0x0D000000,      (u32)&D_5000000, 0x0F000002,
     0x14000000, 0x002B0012,       0xFFFFFF32,      0x16FFFFFF,      0x0F000003,      (u32)&D_5000000,
@@ -122,17 +122,17 @@ static u32 D_86002B18[] = {
     0x87806398, (u32)&D_6000000,  (u32)&D_1000000,
 };
 
-static unk_D_86002F30* D_86002F30;
-static unk_D_86002F34* D_86002F34;
-static CameraStruct* D_86002F38;
-static s16 D_86002F3C;
-static s16 D_86002F3E;
-static s16 D_86002F40;
-static u16 D_86002F42;
-static s16 D_86002F44;
-static s32 D_86002F48;
-static s16 D_86002F4C;
-static s32 D_86002F50;
+static unk_D_86002F30* gMiniHudGeoLayoutObj;
+static unk_D_86002F34* gMiniHudMainGraph;
+static CameraStruct* gMiniHudCamera;
+static s16 gMiniHudCamAtY;
+static s16 gMiniHudCamAtZ;
+static s16 gMiniHudCamDist;
+static u16 gMiniHudFrameCount;
+static s16 gMiniHudWinnerCount;
+static s32 gMiniHudState;
+static s16 gMiniHudAlpha;
+static s32 gMiniHudTilemap;
 
 typedef struct unk_D_86002F58_004 {
     /* 0x000 */ Fragment2_1GraphNode unk_000;
@@ -159,85 +159,85 @@ typedef struct unk_D_86002F58 {
     /* 0x18E */ char pad18E[2];
 } unk_D_86002F58; // size = 0x190
 
-static unk_D_86002F58 D_86002F58[4];
+static unk_D_86002F58 gMiniHudPlayerStates[4];
 static unk_D_86002F58_004 D_86003598[4];
-static u32 D_86003B58;
+static u32 gMiniHudGameTimer;
 static unk_D_86002F58* D_86003B5C;
-static unk_D_86002F58_004* D_86003B60;
-static unk_D_86002F58_004* D_86003B64;
-static s16 D_86003B68;
-static s16 D_86003B6A;
-static s16 D_86003B70[4];
+static unk_D_86002F58_004* gCurrentPlayerGraph;
+static unk_D_86002F58_004* gCurrentPlayerWheel;
+static s16 gMiniHudIntroActive;
+static s16 gMiniHudIntroTimer;
+static s16 gMiniHudActionFlags[4];
 static s16 D_86003B78;
-static TextObject* D_86003B7C;
-static s32 D_86003B80;
-static Fragment2_1GraphNode D_86003B84[4];
+static TextObject* gMiniHudTextObj;
+static s32 gMiniHudMaxWheelValue;
+static Fragment2_1GraphNode gMiniHudWheelNodes[4];
 
 void MiniHud_UpdateControllerInput(void) {
     s32 i;
     s32 j;
 
-    D_86002F58[0].unk_17A = gPlayer1Controller->buttonPressed;
-    D_86002F58[1].unk_17A = gPlayer2Controller->buttonPressed;
-    D_86002F58[2].unk_17A = gPlayer3Controller->buttonPressed;
-    D_86002F58[3].unk_17A = gPlayer4Controller->buttonPressed;
+    gMiniHudPlayerStates[0].unk_17A = gPlayer1Controller->buttonPressed;
+    gMiniHudPlayerStates[1].unk_17A = gPlayer2Controller->buttonPressed;
+    gMiniHudPlayerStates[2].unk_17A = gPlayer3Controller->buttonPressed;
+    gMiniHudPlayerStates[3].unk_17A = gPlayer4Controller->buttonPressed;
 
-    D_86002F58[0].unk_174 = gPlayer1Controller->buttonDown;
-    D_86002F58[1].unk_174 = gPlayer2Controller->buttonDown;
-    D_86002F58[2].unk_174 = gPlayer3Controller->buttonDown;
-    D_86002F58[3].unk_174 = gPlayer4Controller->buttonDown;
+    gMiniHudPlayerStates[0].unk_174 = gPlayer1Controller->buttonDown;
+    gMiniHudPlayerStates[1].unk_174 = gPlayer2Controller->buttonDown;
+    gMiniHudPlayerStates[2].unk_174 = gPlayer3Controller->buttonDown;
+    gMiniHudPlayerStates[3].unk_174 = gPlayer4Controller->buttonDown;
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
+        D_86003B5C = &gMiniHudPlayerStates[i];
 
         if (D_86003B5C->unk_000 == 0) {
-            s32 temp = D_86002F48;
+            s32 temp = gMiniHudState;
 
             if ((temp != 0) && (temp != 2) && (temp != 3) && (temp != 5)) {
                 D_86003B5C->unk_174 = 0;
                 D_86003B5C->unk_17A = 0;
             }
-        } else if (D_86002F48 == 2) {
+        } else if (gMiniHudState == 2) {
             switch (D_86003B5C->unk_004.unk_168) {
                 case 0:
                 case 12:
                 case 13:
-                    if (GetRandomMod(0x64) < D_86002920[gMenuState].unk_06) {
+                    if (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_06) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 5:
                 case 7:
-                    if (GetRandomMod(0x64) < D_86002920[gMenuState].unk_04) {
+                    if (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_04) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
 
                 case 8:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0x90000) &&
-                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
+                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xD0000) &&
-                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
+                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xB0000) &&
-                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
+                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xF0000) &&
-                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
+                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -245,9 +245,9 @@ void MiniHud_UpdateControllerInput(void) {
         }
     }
 
-    if (D_86002F48 == 2) {
+    if (gMiniHudState == 2) {
         for (j = 0; j < 4; j++) {
-            D_86003B5C = &D_86002F58[j];
+            D_86003B5C = &gMiniHudPlayerStates[j];
 
             for (i = 1; i > 0; i--) {
                 D_86003B5C->unk_176[i] = D_86003B5C->unk_176[i - 1];
@@ -258,7 +258,7 @@ void MiniHud_UpdateControllerInput(void) {
         }
     } else {
         for (j = 0; j < 4; j++) {
-            D_86003B5C = &D_86002F58[j];
+            D_86003B5C = &gMiniHudPlayerStates[j];
 
             for (i = 0; i < 2; i++) {
                 D_86003B5C->unk_176[i] = 0;
@@ -277,7 +277,7 @@ s32 MiniHud_HandleInput(void) {
     Cont_ReadInputs();
     MenuInput_Init();
 
-    if (D_8780FC94 != 1) {
+    if (gResultMenuVisible != 1) {
         MiniHud_UpdateControllerInput();
     }
 
@@ -285,25 +285,25 @@ s32 MiniHud_HandleInput(void) {
 }
 
 void MiniHud_SetupCamera(void) {
-    D_86002F38 = D_86002F34->unk_00.unk_0C;
-    SetProjectionInfo(D_86002F38);
-    D_86002F3C = 0x600;
-    D_86002F3E = 0;
-    D_86002F40 = 1000;
+    gMiniHudCamera = gMiniHudMainGraph->unk_00.unk_0C;
+    SetProjectionInfo(gMiniHudCamera);
+    gMiniHudCamAtY = 0x600;
+    gMiniHudCamAtZ = 0;
+    gMiniHudCamDist = 1000;
 
-    D_86002F38->unk_24.near = 100.0f;
-    D_86002F38->unk_24.far = 12800.0f;
-    D_86002F38->unk_24.fovy = 10.0f;
+    gMiniHudCamera->unk_24.near = 100.0f;
+    gMiniHudCamera->unk_24.far = 12800.0f;
+    gMiniHudCamera->unk_24.fovy = 10.0f;
 
-    D_86002F38->unk_60.at.x = 0.0f;
-    D_86002F38->unk_60.at.y = 70.0f;
-    D_86002F38->unk_60.at.z = 0.0f;
+    gMiniHudCamera->unk_60.at.x = 0.0f;
+    gMiniHudCamera->unk_60.at.y = 70.0f;
+    gMiniHudCamera->unk_60.at.z = 0.0f;
 
-    Camera_SetViewParameters(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
+    Camera_SetViewParameters(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
 }
 
-void func_86000564(void) {
-    Camera_SetViewParameters(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
+void MiniHud_UpdateCamera(void) {
+    Camera_SetViewParameters(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
 }
 
 void MiniHud_RenderUI(s32 arg0) {
@@ -321,12 +321,12 @@ void MiniHud_RenderUI(s32 arg0) {
 
     if (arg0 != 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
-        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, D_86002F4C);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gMiniHudAlpha);
 
         for (i = 0; i < 4; i++) {
-            unk_D_86002A98* tmp = &D_86002A98[i];
+            unk_D_86002A98* tmp = &gMiniHudTextureRects[i];
 
-            if (D_86002F58[i].unk_000 == 0) {
+            if (gMiniHudPlayerStates[i].unk_000 == 0) {
                 DrawUniformScaledTextureRect(i, tmp->unk_00, tmp->unk_02, 0.75f);
             } else {
                 DrawUniformScaledTextureRect(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
@@ -359,7 +359,7 @@ void MiniHud_RenderUI(s32 arg0) {
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(D_86003B7C, GetMessageString(NULL, 0, gItemNamesBank, 0x15)) / 2), 0x20,
+            Text_Print(0xA0 - (GetTextWidth(gMiniHudTextObj, GetMessageString(NULL, 0, gItemNamesBank, 0x15)) / 2), 0x20,
                           GetMessageString(NULL, 0, gItemNamesBank, 0x15));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -404,7 +404,7 @@ void MiniHud_RenderUI(s32 arg0) {
             Text_SetFont(0x20, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0x1E, 0x1E, 0xFF, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(D_86003B7C, GetMessageString(NULL, 0, gItemNamesBank, 0x5A)) / 2), 0x64,
+            Text_Print(0xA0 - (GetTextWidth(gMiniHudTextObj, GetMessageString(NULL, 0, gItemNamesBank, 0x5A)) / 2), 0x64,
                           GetMessageString(NULL, 0, gItemNamesBank, 0x5A));
             Text_EndRender();
             break;
@@ -415,8 +415,8 @@ void MiniHud_RenderUI(s32 arg0) {
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
         gSPDisplayList(D_800A7420++, gPrefDL_Border);
-        func_87801684(0x74, 0xB0, D_86002AC8);
-        func_87801824(0x74, 0xC6, D_86002AF0);
+        func_87801684(0x74, 0xB0, gMiniHudDL_Panel1);
+        func_87801824(0x74, 0xC6, gMiniHudDL_Panel2);
         func_87801F48(2, 0x19, 0xA6);
     }
 }
@@ -482,9 +482,9 @@ void MiniHud_DrawPlayerIndicators(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86003B60 = &D_86002F58[i].unk_004;
-        temp_f20 = (410.0f - D_86003B60->unk_000.unk_0A8[0].unk_04.y) / 510.0f;
-        guTranslate(&sp100, D_86003B60->unk_000.unk_0A8[0].unk_04.x, 0.0f, 0.0f);
+        gCurrentPlayerGraph = &gMiniHudPlayerStates[i].unk_004;
+        temp_f20 = (410.0f - gCurrentPlayerGraph->unk_000.unk_0A8[0].unk_04.y) / 510.0f;
+        guTranslate(&sp100, gCurrentPlayerGraph->unk_000.unk_0A8[0].unk_04.x, 0.0f, 0.0f);
         guScale(&spC0, temp_f20, temp_f20, temp_f20);
         guMtxCatL(&spC0, &sp100, var_s1);
 
@@ -497,66 +497,66 @@ void MiniHud_DrawPlayerIndicators(void) {
     gDisplayListHead = gfx;
 }
 
-void func_86000D88(s32 arg0) {
+void MiniHud_MainLoop(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    Gfx_DrawTilemap(D_86002F50);
+    Gfx_DrawTilemap(gMiniHudTilemap);
 
-    if (D_8780FC94 != 1) {
+    if (gResultMenuVisible != 1) {
         Gfx_FinishFrame();
     }
 
     Fragment2_1_Update();
-    Graph_SetTextureState(D_86002F34);
+    Graph_SetTextureState(gMiniHudMainGraph);
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
     MiniHud_DrawPlayerIndicators();
 
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         MiniHud_RenderUI(arg0);
     }
 
     ResultScreen_UpdateAndRender();
     Stage_Advance();
 
-    D_86002F42++;
+    gMiniHudFrameCount++;
 }
 
-void func_86000E54(void) {
+void MiniHud_UpdateAnimations(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86003B60 = D_86003B64 = &D_86003598[i];
+        gCurrentPlayerGraph = gCurrentPlayerWheel = &D_86003598[i];
 
-        if (D_86003B60->unk_000.unk_024.y > 140.0f) {
-            D_86003B60->unk_000.unk_024.y -= 2.0f;
+        if (gCurrentPlayerGraph->unk_000.unk_024.y > 140.0f) {
+            gCurrentPlayerGraph->unk_000.unk_024.y -= 2.0f;
         }
 
-        switch (D_86003B64->unk_16C) {
+        switch (gCurrentPlayerWheel->unk_16C) {
             case 0:
-                if (D_86003B60->unk_000.unk_01E.y < 0x800) {
-                    D_86003B60->unk_000.unk_01E.y += 0x400;
+                if (gCurrentPlayerGraph->unk_000.unk_01E.y < 0x800) {
+                    gCurrentPlayerGraph->unk_000.unk_01E.y += 0x400;
                 } else {
-                    D_86003B64->unk_16C = 1;
+                    gCurrentPlayerWheel->unk_16C = 1;
                 }
                 break;
 
             case 1:
-                if (D_86003B60->unk_000.unk_01E.y > 0) {
-                    D_86003B60->unk_000.unk_01E.y -= 0x200;
+                if (gCurrentPlayerGraph->unk_000.unk_01E.y > 0) {
+                    gCurrentPlayerGraph->unk_000.unk_01E.y -= 0x200;
                 } else {
-                    D_86003B64->unk_16C = 2;
+                    gCurrentPlayerWheel->unk_16C = 2;
                 }
                 break;
 
             case 2:
             default:
-                D_86003B60->unk_000.unk_01E.y = 0;
+                gCurrentPlayerGraph->unk_000.unk_01E.y = 0;
                 break;
         }
     }
 }
 
-s32 func_86000FD4(void) {
+s32 MiniHud_InitAndWait(void) {
     s32 var_s0_2;
     s32 i;
 
@@ -564,20 +564,20 @@ s32 func_86000FD4(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
-        D_86003B60 = &D_86003B5C->unk_004;
-        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-        D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
-        D_86003B60->unk_000.unk_040.unk_08 = (GetRandomMod(0x14) << 0x10);
-        D_86003B70[i] = 0;
+        D_86003B5C = &gMiniHudPlayerStates[i];
+        gCurrentPlayerGraph = &D_86003B5C->unk_004;
+        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = (GetRandomMod(0x14) << 0x10);
+        gMiniHudActionFlags[i] = 0;
     }
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
+        D_86003B5C = &gMiniHudPlayerStates[i];
         D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : gMenuState + 1;
     }
 
-    D_86002F48 = 0;
+    gMiniHudState = 0;
 
     var_s0_2 = true;
     while (var_s0_2 == true) {
@@ -593,30 +593,30 @@ s32 func_86000FD4(void) {
             }
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 
     return 0;
 }
 
-void func_86001204(void) {
+void MiniHud_PlayIntro(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
-        D_86003B60 = &D_86003B5C->unk_004;
-        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-        D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
-        D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
-        D_86003B70[i] = 0;
+        D_86003B5C = &gMiniHudPlayerStates[i];
+        gCurrentPlayerGraph = &D_86003B5C->unk_004;
+        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
+        gMiniHudActionFlags[i] = 0;
     }
 
-    D_86003B68 = 1;
-    D_86003B6A = 90;
+    gMiniHudIntroActive = 1;
+    gMiniHudIntroTimer = 90;
     Fragment2_1_SetStartFlag(1);
-    D_86002F48 = 1;
+    gMiniHudState = 1;
 
-    while (D_86003B68 == 1) {
+    while (gMiniHudIntroActive == 1) {
         switch (Fragment2_1_GetResult()) {
             case 1:
             case 2:
@@ -625,17 +625,17 @@ void func_86001204(void) {
                 break;
 
             case 0:
-                D_86003B68 = 0;
+                gMiniHudIntroActive = 0;
                 break;
         }
 
-        func_86000E54();
+        MiniHud_UpdateAnimations();
         MiniHud_HandleInput();
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 }
 
-void func_86001360(s16 arg0) {
+void MiniHud_TriggerAction_5(s16 arg0) {
     switch (arg0) {
         case 0:
         case 1:
@@ -654,146 +654,146 @@ void func_86001360(s16 arg0) {
     D_86003B5C->unk_004.unk_168 = 5;
     D_86003B5C->unk_004.unk_16A = arg0;
 
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 8);
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 8);
 
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_86001464(void) {
+void MiniHud_TriggerAction_6(void) {
     D_86003B5C->unk_004.unk_168 = 6;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 9);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 9);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_860014B8(void) {
+void MiniHud_TriggerAction_7(void) {
     D_86003B5C->unk_004.unk_168 = 7;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xA);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xA);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_8600150C(void) {
+void MiniHud_TriggerAction_8(void) {
     D_86003B5C->unk_004.unk_168 = 8;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xB);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xB);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_86001560(void) {
+void MiniHud_TriggerAction_9(void) {
     D_86003B5C->unk_004.unk_168 = 9;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xC);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xC);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_860015B4(void) {
+void MiniHud_TriggerAction_10(void) {
     D_86003B5C->unk_004.unk_168 = 0xA;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xD);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xD);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_86001608(void) {
+void MiniHud_TriggerAction_11(void) {
     D_86003B5C->unk_004.unk_168 = 0xB;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0xE);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xE);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_8600165C(s32 arg0) {
+void MiniHud_HandleActionTimeout(s32 arg0) {
     s32 i;
 
-    D_86003B70[arg0] = 0;
+    gMiniHudActionFlags[arg0] = 0;
 
     for (i = 0; i < 2; i++) {
         if (D_86003B5C->unk_17C[i] & 0x8000) {
-            func_86001360(i);
+            MiniHud_TriggerAction_5(i);
             return;
         }
     }
 
     D_86003B5C->unk_004.unk_168 = 0xC;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 5);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 5);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_860016FC(s32 arg0) {
-    D_86003B70[arg0] = 0;
+void MiniHud_TriggerAction_6_Alt(s32 arg0) {
+    gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0xD;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 6);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 6);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_86001760(s32 arg0) {
-    D_86003B70[arg0] = 0;
+void MiniHud_TriggerAction_0_Alt(s32 arg0) {
+    gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0;
-    GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-    D_86003B60->unk_000.unk_040.unk_08 = 0;
-    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void func_860017C0(s32 arg0) {
-    D_86003B5C = &D_86002F58[arg0];
-    D_86003B64 = &D_86003598[arg0];
-    D_86003B60 = &D_86003B5C->unk_004;
+void MiniHud_UpdatePlayerState(s32 arg0) {
+    D_86003B5C = &gMiniHudPlayerStates[arg0];
+    gCurrentPlayerWheel = &D_86003598[arg0];
+    gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
-    if (D_8780FC94 != 1) {
+    if (gResultMenuVisible != 1) {
         switch (D_86003B5C->unk_004.unk_168) {
             case 12:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
-                    func_86001360(2);
-                } else if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
-                    func_860016FC(arg0);
+                    MiniHud_TriggerAction_5(2);
+                } else if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                    MiniHud_TriggerAction_6_Alt(arg0);
                 }
                 break;
 
             case 13:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
-                    func_86001360(3);
-                } else if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
-                    func_86001760(arg0);
+                    MiniHud_TriggerAction_5(3);
+                } else if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                    MiniHud_TriggerAction_0_Alt(arg0);
                 }
                 break;
 
             case 0:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
                     if (D_86003B5C->unk_18C == 1) {
-                        func_86001360(2);
+                        MiniHud_TriggerAction_5(2);
                         D_86003B5C->unk_18C = 0;
                     } else {
-                        func_86001360(4);
+                        MiniHud_TriggerAction_5(4);
                     }
                 }
                 break;
 
             case 5:
-                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
-                        func_860014B8();
+                        MiniHud_TriggerAction_7();
                     } else {
-                        func_86001464();
+                        MiniHud_TriggerAction_6();
                     }
                 }
                 break;
 
             case 7:
-                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
+                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
                         s16 tmp = D_86003B5C->unk_004.unk_16A;
 
                         if (tmp < 2) {
-                            func_860015B4();
+                            MiniHud_TriggerAction_10();
                         } else if (tmp == 2) {
-                            func_86001560();
+                            MiniHud_TriggerAction_9();
                         } else {
-                            func_86001608();
+                            MiniHud_TriggerAction_11();
                         }
                     } else {
-                        func_8600150C();
+                        MiniHud_TriggerAction_8();
                     }
                 }
                 break;
@@ -803,44 +803,44 @@ void func_860017C0(s32 arg0) {
             case 9:
             case 10:
             case 11:
-                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
-                    func_8600165C(arg0);
+                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                    MiniHud_HandleActionTimeout(arg0);
                 }
                 break;
 
             case 1:
-                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
-                    GraphNode_TriggerAction(&D_86003B60->unk_000, 7);
-                    D_86003B60->unk_000.unk_040.unk_08 = 0;
-                    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 7);
+                    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+                    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
                 }
                 break;
 
             default:
-                if (Anim_HasReachedEnd(&D_86003B60->unk_000)) {
-                    GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-                    D_86003B60->unk_000.unk_040.unk_08 = 0;
-                    D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
-                    D_86003B70[arg0] = 0;
+                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+                    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+                    gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
+                    gMiniHudActionFlags[arg0] = 0;
                 }
                 break;
         }
 
-        if (((D_86003B5C->unk_004.unk_168 == 9) && ((D_86003B60->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
-            ((D_86003B5C->unk_004.unk_168 == 10) && ((D_86003B60->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
-            ((D_86003B5C->unk_004.unk_168 == 11) && ((D_86003B60->unk_000.unk_040.unk_08 >> 0x10) == 2))) {
-            if (D_86003B70[arg0] == 0) {
-                D_86003B64->unk_16A++;
-                D_86003B70[arg0] = 1;
-                GraphNode_TriggerAction(&D_86003B64->unk_000, 0);
-                D_86003B64->unk_000.unk_040.unk_0C = 0x10000;
-                D_86003B64->unk_000.unk_040.unk_08 = 0;
+        if (((D_86003B5C->unk_004.unk_168 == 9) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
+            ((D_86003B5C->unk_004.unk_168 == 10) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
+            ((D_86003B5C->unk_004.unk_168 == 11) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2))) {
+            if (gMiniHudActionFlags[arg0] == 0) {
+                gCurrentPlayerWheel->unk_16A++;
+                gMiniHudActionFlags[arg0] = 1;
+                GraphNode_TriggerAction(&gCurrentPlayerWheel->unk_000, 0);
+                gCurrentPlayerWheel->unk_000.unk_040.unk_0C = 0x10000;
+                gCurrentPlayerWheel->unk_000.unk_040.unk_08 = 0;
                 PlaySoundIfEnabled(0x20008, arg0, 4);
             }
         }
 
-        if (D_8780FC94 != 1) {
-            HpWheel_SetDigitsSmooth(arg0, D_86003B64->unk_16A);
+        if (gResultMenuVisible != 1) {
+            HpWheel_SetDigitsSmooth(arg0, gCurrentPlayerWheel->unk_16A);
         }
 
         if (D_86003B5C->unk_188 > 0) {
@@ -852,7 +852,7 @@ void func_860017C0(s32 arg0) {
     }
 }
 
-void func_86001C90(void) {
+void MiniHud_PlayGame(void) {
     s32 i;
     s32 temp_lo;
     s32 temp_v1;
@@ -861,43 +861,43 @@ void func_86001C90(void) {
     PlaySoundIfEnabled(0x20002, 0, 0);
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
-        D_86003B60 = &D_86003B5C->unk_004;
+        D_86003B5C = &gMiniHudPlayerStates[i];
+        gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
         D_86003B5C->unk_004.unk_168 = 0;
-        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-        D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 
-        D_86003B70[i] = 0;
+        gMiniHudActionFlags[i] = 0;
 
         D_86003B5C->unk_18C = 1;
     }
 
-    D_86003B58 = 0;
+    gMiniHudGameTimer = 0;
     D_86003B78 = 0;
-    D_86002F48 = 2;
+    gMiniHudState = 2;
 
     while (var_s6 != 0) {
         MiniHud_HandleInput();
-        func_86000564();
+        MiniHud_UpdateCamera();
 
-        if (D_86003B58 == 0xF) {
-            func_8004B1CC(10);
+        if (gMiniHudGameTimer == 0xF) {
+            ResultScreen_SetAnimation(10);
         }
 
-        if (D_8780FC94 != 1) {
+        if (gResultMenuVisible != 1) {
             for (i = 0; i < 4; i++) {
-                func_860017C0(i);
+                MiniHud_UpdatePlayerState(i);
             }
 
-            func_86000E54();
+            MiniHud_UpdateAnimations();
 
-            D_86003B58++;
-            if (D_86003B58 >= 0x258) {
+            gMiniHudGameTimer++;
+            if (gMiniHudGameTimer >= 0x258) {
                 PlaySoundIfEnabled(0x20009, 0, 0);
                 var_s6 = 0;
             } else {
-                temp_v1 = 0x258 - D_86003B58;
+                temp_v1 = 0x258 - gMiniHudGameTimer;
                 if ((temp_v1 % 30) == 0) {
                     temp_lo = temp_v1 / 30;
                     if ((temp_lo < 6) && (temp_lo > 0)) {
@@ -910,22 +910,22 @@ void func_86001C90(void) {
             }
         }
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             var_s6 = 0;
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 
     func_8004B9C4(0xA);
 }
 
-s32 func_86001EEC(void) {
+s32 MiniHud_CheckAllIdle(void) {
     s32 var_v0 = 0;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
+        D_86003B5C = &gMiniHudPlayerStates[i];
         switch (D_86003B5C->unk_004.unk_168) {
             case 5:
             case 6:
@@ -949,83 +949,83 @@ s32 func_86001EEC(void) {
     return 0;
 }
 
-void func_86001F64(void) {
+void MiniHud_ResolveWinner(void) {
     s32 i;
     s32 j;
     s32 var_s1;
     s32 var_s5;
 
     var_s5 = 1;
-    D_86002F48 = 3;
+    gMiniHudState = 3;
     var_s1 = 1;
 
     while (var_s1 != 0) {
         MiniHud_HandleInput();
-        func_86000564();
+        MiniHud_UpdateCamera();
 
         for (i = 0; i < 4; i++) {
-            func_860017C0(i);
+            MiniHud_UpdatePlayerState(i);
         }
 
-        if (func_86001EEC() != 0) {
+        if (MiniHud_CheckAllIdle() != 0) {
             var_s1 = 0;
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             return;
         }
     }
 
-    D_86003B80 = 0;
+    gMiniHudMaxWheelValue = 0;
 
     for (i = 0; i < 4; i++) {
-        if (D_86003598[i].unk_16A >= D_86003B80) {
-            D_86003B80 = D_86003598[i].unk_16A;
+        if (D_86003598[i].unk_16A >= gMiniHudMaxWheelValue) {
+            gMiniHudMaxWheelValue = D_86003598[i].unk_16A;
         }
     }
 
-    D_86002F44 = 0;
+    gMiniHudWinnerCount = 0;
 
     for (i = 0; i < 4; i++) {
-        if ((D_86003B80 == D_86003598[i].unk_16A) && (D_86003B80 != 0)) {
+        if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue != 0)) {
             IncrementPlayerScore(i);
-            D_86002F44++;
+            gMiniHudWinnerCount++;
         }
     }
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
-        D_86003B60 = &D_86003B5C->unk_004;
-        if ((D_86003B80 == D_86003598[i].unk_16A) && (D_86003B80 > 0)) {
+        D_86003B5C = &gMiniHudPlayerStates[i];
+        gCurrentPlayerGraph = &D_86003B5C->unk_004;
+        if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue > 0)) {
             D_86003B5C->unk_004.unk_168 = 1;
-            GraphNode_TriggerAction(&D_86003B60->unk_000, 7);
-            D_86003B60->unk_000.unk_040.unk_08 = 0;
+            GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 7);
+            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
         } else {
             D_86003B5C->unk_004.unk_168 = 2;
-            GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-            D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
+            GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
         }
-        D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
     }
 
     j = 30;
     while (j > 0) {
         MiniHud_HandleInput();
-        func_86000564();
+        MiniHud_UpdateCamera();
 
         for (i = 0; i < 4; i++) {
-            func_860017C0(i);
+            MiniHud_UpdatePlayerState(i);
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             return;
         }
 
-        if (D_8780FC94 != 1) {
+        if (gResultMenuVisible != 1) {
             j -= 1;
         }
     }
@@ -1034,28 +1034,28 @@ void func_86001F64(void) {
 
     while (var_s5 != 0) {
         MiniHud_HandleInput();
-        func_86000564();
+        MiniHud_UpdateCamera();
 
         for (i = 0; i < 4; i++) {
-            func_860017C0(i);
+            MiniHud_UpdatePlayerState(i);
         }
 
         for (i = 0; i < 4; i++) {
-            D_86003B5C = &D_86002F58[i];
+            D_86003B5C = &gMiniHudPlayerStates[i];
             if (D_86003B5C->unk_17A & 0x8000) {
                 var_s5 = 0;
             }
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             return;
         }
     }
 }
 
-void func_86002264(void) {
+void MiniHud_Exit(void) {
     s32 i;
     s32 j;
 
@@ -1066,72 +1066,72 @@ void func_86002264(void) {
         MiniHud_HandleInput();
 
         for (j = 0; j < 4; j++) {
-            func_860017C0(j);
+            MiniHud_UpdatePlayerState(j);
         }
 
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 }
 
-void func_860022F8(s32 arg0) {
+void MiniHud_WaitFrames(s32 arg0) {
     s32 i;
 
-    D_86002F48 = 6;
+    gMiniHudState = 6;
 
     for (i = 0; i < arg0; i++) {
         MiniHud_HandleInput();
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 }
 
-void func_8600235C(void) {
+void MiniHud_WaitForExit(void) {
     s32 i;
 
-    D_86002F48 = 5;
+    gMiniHudState = 5;
 
-    while (D_8780FC96 == 0) {
-        if ((gMenuCursorX == 1) && (D_86002F4C > 0)) {
-            D_86002F4C -= 10;
-            if (D_86002F4C < 0) {
-                D_86002F4C = 0;
+    while (gResultExitPending == 0) {
+        if ((gMenuCursorX == 1) && (gMiniHudAlpha > 0)) {
+            gMiniHudAlpha -= 10;
+            if (gMiniHudAlpha < 0) {
+                gMiniHudAlpha = 0;
             }
         }
 
         for (i = 0; i < 4; i++) {
-            func_860017C0(i);
+            MiniHud_UpdatePlayerState(i);
         }
 
         MiniHud_HandleInput();
-        func_86000D88(D_86002F48);
+        MiniHud_MainLoop(gMiniHudState);
     }
 }
 
-void func_86002440(void) {
+void MiniHud_InitGraphics(void) {
     s32 i;
     MemoryBlock* temp_v0;
 
     temp_v0 = (MemoryBlock*)state_pool_try_init(main_pool_get_available(), 0);
-    D_86002F34 = (unk_D_86002F34*)process_geo_layout(temp_v0, D_86002B18);
+    gMiniHudMainGraph = (unk_D_86002F34*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    D_86002F4C = 0xFF;
-    D_86002F30 = (unk_D_86002F30*)GeoLayout_LoadById(0xAD);
+    gMiniHudAlpha = 0xFF;
+    gMiniHudGeoLayoutObj = (unk_D_86002F30*)GeoLayout_LoadById(0xAD);
 
     for (i = 0; i < 4; i++) {
-        D_86003B5C = &D_86002F58[i];
-        D_86003B60 = &D_86003B5C->unk_004;
+        D_86003B5C = &gMiniHudPlayerStates[i];
+        gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
-        Graph_AddToRootList0(&D_86003B60->unk_000);
-        GraphNode_InitChild(&D_86003B60->unk_000, 0, 0xAD, D_86002F30->unk_08->unk_00[0]);
+        Graph_AddToRootList0(&gCurrentPlayerGraph->unk_000);
+        GraphNode_InitChild(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
 
-        D_86003B60->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
+        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
 
-        D_86003B60->unk_000.unk_024.y = 0.0f;
-        D_86003B60->unk_000.unk_024.z = 0.0f;
-        D_86003B60->unk_000.unk_030.x = 0.8f;
-        D_86003B60->unk_000.unk_030.y = 0.8f;
-        D_86003B60->unk_000.unk_030.z = 0.8f;
+        gCurrentPlayerGraph->unk_000.unk_024.y = 0.0f;
+        gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
+        gCurrentPlayerGraph->unk_000.unk_030.x = 0.8f;
+        gCurrentPlayerGraph->unk_000.unk_030.y = 0.8f;
+        gCurrentPlayerGraph->unk_000.unk_030.z = 0.8f;
 
         D_86003B5C->unk_182 = 0;
         D_86003B5C->unk_184 = 0;
@@ -1145,75 +1145,75 @@ void func_86002440(void) {
             D_86003B5C->unk_000 = gMenuState + 1;
         }
 
-        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
+        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
 
-        D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
-        D_86003B60->unk_000.unk_01E.y = -0x2800;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
+        gCurrentPlayerGraph->unk_000.unk_01E.y = -0x2800;
     }
 
-    D_86002F30 = (unk_D_86002F30*)GeoLayout_LoadById(0xAE);
+    gMiniHudGeoLayoutObj = (unk_D_86002F30*)GeoLayout_LoadById(0xAE);
 
     for (i = 0; i < 4; i++) {
-        D_86003B64 = &D_86003598[i];
-        D_86003B60 = D_86003B64;
+        gCurrentPlayerWheel = &D_86003598[i];
+        gCurrentPlayerGraph = gCurrentPlayerWheel;
 
-        Graph_AddToRootList0(&D_86003B60->unk_000);
-        GraphNode_InitChild(&D_86003B60->unk_000, 0, 0xAE, D_86002F30->unk_08->unk_00[0]);
-        D_86003B60->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
-        D_86003B60->unk_000.unk_024.z = 0.0f;
-        D_86003B60->unk_000.unk_024.y = 200.0f;
-        D_86003B60->unk_000.unk_01E.y = -0x8000;
-        D_86003B60->unk_000.unk_030.x = 1.4f;
-        D_86003B60->unk_000.unk_030.y = 1.4f;
-        D_86003B60->unk_000.unk_030.z = 1.4f;
-        D_86003B64->unk_168 = 0;
-        D_86003B64->unk_16A = 0;
-        D_86003B64->unk_16C = 0;
+        Graph_AddToRootList0(&gCurrentPlayerGraph->unk_000);
+        GraphNode_InitChild(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
+        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
+        gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
+        gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;
+        gCurrentPlayerGraph->unk_000.unk_01E.y = -0x8000;
+        gCurrentPlayerGraph->unk_000.unk_030.x = 1.4f;
+        gCurrentPlayerGraph->unk_000.unk_030.y = 1.4f;
+        gCurrentPlayerGraph->unk_000.unk_030.z = 1.4f;
+        gCurrentPlayerWheel->unk_168 = 0;
+        gCurrentPlayerWheel->unk_16A = 0;
+        gCurrentPlayerWheel->unk_16C = 0;
         HpWheel_SetDigits(i, 0);
-        D_86003B64->unk_000.modelPhase = i;
-        GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-        Anim_ClearChannelState(&D_86003B60->unk_000);
+        gCurrentPlayerWheel->unk_000.modelPhase = i;
+        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        Anim_ClearChannelState(&gCurrentPlayerGraph->unk_000);
     }
 
-    D_86002F50 = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
+    gMiniHudTilemap = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
     MiniHud_SetupCamera();
     Fragment2_1_Init();
 }
 
-void func_86002778(UNUSED s32 arg0, UNUSED s32 arg1) {
+void MiniHud_Init(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
 
     Gfx_InitBuffers(0x20000, 0);
     sp24 = (Stage*)Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86003B7C = Text_Init(0x36, 0);
+    gMiniHudTextObj = Text_Init(0x36, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    func_86002440();
+    MiniHud_InitGraphics();
     ResultScreen_Init();
     Stage_Set(sp24);
 
-    if (func_86000FD4() != -1) {
+    if (MiniHud_InitAndWait() != -1) {
         func_8004B9C4(0x3C);
-        func_860022F8(5);
-        func_86001204();
-        func_86001C90();
+        MiniHud_WaitFrames(5);
+        MiniHud_PlayIntro();
+        MiniHud_PlayGame();
 
-        if (D_8780FC92 == 0) {
-            func_86001F64();
+        if (gResultFlag_Special == 0) {
+            MiniHud_ResolveWinner();
         }
 
-        if (D_8780FC92 == 0) {
-            func_8600235C();
+        if (gResultFlag_Special == 0) {
+            MiniHud_WaitForExit();
         }
     }
 
-    func_86002264();
+    MiniHud_Exit();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

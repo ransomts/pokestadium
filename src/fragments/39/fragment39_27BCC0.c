@@ -2543,7 +2543,7 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
     s32 i;
 
     SelectionUI_Init(arg0, arg1);
-    func_8004B1CC(0x16);
+    ResultScreen_SetAnimation(0x16);
     Stage_FadeIn(0xF);
     gSelectionFrameCounter = 0;
 

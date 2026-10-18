@@ -1305,7 +1305,7 @@ Gfx* BattleIntroPanel_DrawSpriteAnim(void) {
 
 s32 BattleIntroPanel_SlideInAnim(void) {
     if (gFragment17TileStruct->unk_04 == 0) {
-        func_8004B1CC(0x3A);
+        ResultScreen_SetAnimation(0x3A);
     }
 
     gFragment17TileStruct->unk_04 = Math_ApproachS32(gFragment17TileStruct->unk_04, 0x3E, 0x19, 0x19);
@@ -1421,7 +1421,7 @@ void BattleIntroPanel_AnimSoundTick(void) {
 }
 
 void BattleIntroPanel_AnimResetIfDone(void) {
-    if (func_800174E4(&D_86B0EBDC->unk_170) == 1) {
+    if (GraphNode_IsAnimationFinished(&D_86B0EBDC->unk_170) == 1) {
         Anim_SetChannelBase(&D_86B0EBDC->unk_170, 0);
         GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
     }
@@ -1507,7 +1507,7 @@ s32 BattleIntroPanel_StateMachine(void) {
 
         case 6:
             func_86B02928();
-            if (func_800174E4(&D_86B0EBDC->unk_008) != 0) {
+            if (GraphNode_IsAnimationFinished(&D_86B0EBDC->unk_008) != 0) {
                 D_86B0EBDC->unk_2E4 = 0;
                 D_86B0EBDC->unk_2DC++;
             }
@@ -1515,7 +1515,7 @@ s32 BattleIntroPanel_StateMachine(void) {
 
         case 7:
             BattleIntroPanel_ResetState();
-            func_8004B1CC(0x13);
+            ResultScreen_SetAnimation(0x13);
             D_86B0EBDC->unk_2DC++;
             break;
 

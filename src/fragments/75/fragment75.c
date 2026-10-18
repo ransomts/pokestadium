@@ -64,14 +64,14 @@ void WaitFrames(s32 arg0) {
 }
 
 s32 IsSnapModeEnabled(void) {
-    return D_83407AE8;
+    return gGallerySpecialViewed;
 }
 
 s32 StickerStation_Run(s32 arg0, s32 arg1) {
     s32 i;
     AssetManager* temp_s0;
     Stage* temp_v0;
-    unk_D_83403C60* sp60 = (D_83407AE4 != 0) ? D_83407AC0 : D_83407ABC;
+    unk_D_83403C60* sp60 = (gGallerySpecialUnlocked != 0) ? gCurrentCamEntryPage : gCurrentCamEntry;
     u8 sp50[] = {
         0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01, 0x02, 0x02, 0x03, 0x03, 0x02, 0x02, 0x03, 0x03,
     };
@@ -79,7 +79,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
     u8 sp4E;
 
     if (IsSnapModeEnabled() == 0) {
-        if (CountDisplayableMonIndices(sp60, (D_83407AE4 != 0) ? 16 : 4, 0) != 0) {
+        if (CountDisplayableMonIndices(sp60, (gGallerySpecialUnlocked != 0) ? 16 : 4, 0) != 0) {
             StickerStation_SetCommand(0x10);
             return 0;
         }
@@ -122,7 +122,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
     sp4E = 0;
     for (i = 0; i < 16; i++) {
         if (IsSnapModeEnabled() == 0) {
-            if (D_83407AE4 != 0) {
+            if (gGallerySpecialUnlocked != 0) {
                 var_v0 = i;
             } else {
                 var_v0 = sp50[i];

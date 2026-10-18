@@ -3,14 +3,14 @@
 #include "src/2E110.h"
 #include "src/controller.h"
 
-extern u32 D_878067F0[];
-extern u32 D_87807690[];
-extern u32 D_87808530[];
-extern u32 D_878093D0[];
-extern u32 D_8780B110[];
-extern u32 D_8780BFB0[];
-extern u32 D_8780CE50[];
-extern u32 D_8780DCF0[];
+extern u32 gResultCubeTex_0[];
+extern u32 gResultCubeTex_1[];
+extern u32 gResultCubeTex_2[];
+extern u32 gResultCubeTex_3[];
+extern u32 gResultCubeTex_4[];
+extern u32 gResultCubeTex_5[];
+extern u32 gResultCubeTex_6[];
+extern u32 gResultCubeTex_7[];
 extern u32 D_8780A270[];
 extern u32 gBorderTexture_Left[];
 extern u32 gBorderTexture_Middle[];
@@ -187,8 +187,8 @@ void DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s16 gCurrentMenuIndex = -1;
-u32* gPositiveTextureBank[] = { D_878067F0, D_87807690, D_87808530, D_878093D0 };
-u32* gNegativeTextureBank[] = { D_8780B110, D_8780BFB0, D_8780CE50, D_8780DCF0, D_8780A270 };
+u32* gPositiveTextureBank[] = { gResultCubeTex_0, gResultCubeTex_1, gResultCubeTex_2, gResultCubeTex_3 };
+u32* gNegativeTextureBank[] = { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7, D_8780A270 };
 
 void func_878010C8(s16 arg0) {
     s32 i;

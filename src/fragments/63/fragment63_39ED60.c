@@ -395,7 +395,7 @@ void func_84B0B984(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0BBEC(unk_D_84B25A90* arg0) {
+void UI_UpdateElement(unk_D_84B25A90* arg0) {
     switch (arg0->unk_00) {
         case 1:
             func_84B0B05C(arg0);
@@ -415,7 +415,7 @@ void func_84B0BBEC(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0BC6C(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1) {
+void UI_AnimateBar(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->unk_04 = arg1;
@@ -449,7 +449,7 @@ void func_84B0BDCC(unk_D_84B25A90* arg0) {
     arg0->unk_00 = 4;
 }
 
-void func_84B0BE28(unk_D_84B25A90* arg0) {
+void UI_InitElement2(unk_D_84B25A90* arg0) {
     MemoryBlock* temp_v0;
 
     arg0->unk_00 = 0;

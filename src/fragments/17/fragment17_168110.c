@@ -26,21 +26,21 @@ void ComputeCameraTargetPos(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     CameraModeFlag sp20 = gCameraModeFlag;
 
     if (ByteArrayContains(gCameraTarget->unk_174, sp20.unk_00, 1) != 0) {
-        sp24 = D_86B10660.unk_04 / 1.5f;
+        sp24 = gMonsterStageData.unk_04 / 1.5f;
     }
 
-    if (D_86B10660.unk_08 != 0) {
+    if (gMonsterStageData.unk_08 != 0) {
         arg1->x = arg0->unk_004.unk_024.x;
         arg1->y = arg0->unk_004.unk_024.y + sp24;
         arg1->z = arg0->unk_004.unk_024.z;
     } else {
         arg1->x = arg0->unk_004.unk_024.x;
-        arg1->y = arg0->unk_004.unk_024.y + D_86B10660.unk_04;
+        arg1->y = arg0->unk_004.unk_024.y + gMonsterStageData.unk_04;
         arg1->z = arg0->unk_004.unk_024.z;
     }
 
     if (arg1->y < 0) {
-        arg1->y = D_86B10660.unk_04;
+        arg1->y = gMonsterStageData.unk_04;
     }
 }
 
@@ -50,14 +50,14 @@ void Camera_UpdateView(void) {
     Camera_SetViewParameters(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.eye, gCameraState->unk_20, gCameraState->unk_16,
                   GetCameraBaseY() + gCameraState->unk_18);
 
-    gCameraState->unk_00->unk_60.at.y += D_86B10660.unk_0C;
+    gCameraState->unk_00->unk_60.at.y += gMonsterStageData.unk_0C;
     if (gCameraState->unk_00->unk_60.eye.y <= 10.0f) {
         gCameraState->unk_00->unk_60.eye.y = 10.0f;
     }
 }
 
 f32 ClampFloatByScale(f32 arg0, f32 arg1) {
-    f32 temp_fv1 = D_86B10660.unk_00 * arg0;
+    f32 temp_fv1 = gMonsterStageData.unk_00 * arg0;
 
     if (arg1 < temp_fv1) {
         return arg1;
@@ -150,7 +150,7 @@ s32 func_86B08C44(CameraStruct* arg0) {
     Camera_SetViewParameters(&gCameraState->unk_04, &sp38, gCameraState->unk_30, gCameraState->unk_24,
                   GetCameraBaseY() + gCameraState->unk_26);
 
-    sp38.y += D_86B10660.unk_0C;
+    sp38.y += gMonsterStageData.unk_0C;
 
     func_86B01404(&sp5C, &arg0->unk_60.at);
     Matrix_Decompose(&sp5C, &sp38, &sp30, &sp2E, &sp2C);

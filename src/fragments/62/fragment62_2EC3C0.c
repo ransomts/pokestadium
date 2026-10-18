@@ -20,7 +20,7 @@ static unk_D_8438FF70 gAnimDataSetB0;
 static unk_D_8438FF70 gAnimDataSetB1;
 static unk_D_8438FF70 gAnimDataSetC0;
 static unk_D_8438FF70 gAnimDataSetC1;
-static unk_D_84384588 D_8438FFF0;
+static unk_D_84384588 gAnimExtraDataPlayer0;
 static unk_D_84384588 gAnimExtraDataPlayer1;
 unk_BattlePlayerEntity* D_84390010[2];
 unk_BattlePlayerEntity* gPrimaryPokemonEntity;
@@ -42,7 +42,7 @@ unk_D_8438FF70* gAnimDataSetC[] = {
     &gAnimDataSetC0,
     &gAnimDataSetC1,
 };
-unk_D_84384588* gAnimExtraDataByPlayer[] = { &D_8438FFF0, &gAnimExtraDataPlayer1 };
+unk_D_84384588* gAnimExtraDataByPlayer[] = { &gAnimExtraDataPlayer0, &gAnimExtraDataPlayer1 };
 u8 gSpecialMoveIDs[] = { 0x39, 0x67, 0x64, 0x6D, 0x28, 0x6E, 0x2A, 0x47 };
 static u8 gSpecialConditionIDs[] = { 0x64, 0x6E };
 static u8 gStatMaskIndices[] = {
@@ -87,10 +87,10 @@ static u8 gStatMaskEntry8[] = {
 static u8* gStatMaskTable[] = {
     gStatMaskEntry0, gStatMaskEntry1, gStatMaskEntry2, gStatMaskEntry3, gStatMaskEntry4, gStatMaskEntry5, gStatMaskEntry6, gStatMaskEntry7, gStatMaskEntry8,
 };
-u8 D_843845F0 = 0x8E;
-u8 D_843845F4 = 0x16;
-u8 D_843845F8 = 0x53;
-u8 D_843845FC[] = { 0x55, 0x54 };
+u8 gPokemonSfxId_0 = 0x8E;
+u8 gPokemonSfxId_1 = 0x16;
+u8 gPokemonSfxId_2 = 0x53;
+u8 gPokemonSfxId_3[] = { 0x55, 0x54 };
 
 char** gMessageBank_0x1E;
 char** gMessageBank_0x24;
@@ -106,7 +106,7 @@ void AnimStateQueue_ResetAll(void) {
     }
 }
 
-void func_84301B48(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void Anim_TriggerActionScriptMode3(unk_BattlePlayerEntity* arg0, s32 arg1) {
     InitActionScriptMode3(arg1, &arg0->unk_000, &arg0->unk_000, 0xFF, 0xFF);
 }
 
@@ -116,8 +116,8 @@ void AnimChannel_StartMoveAction(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s32 sp20;
 
     sp20 = IsPrimaryEntity(arg0) == 0;
-    sp24 = func_84307F24(arg0);
-    InitActionScriptSimple(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
+    sp24 = Anim_GetActionScriptId(arg0);
+    InitActionScriptSimple(arg1, arg0, D_84390010[sp20], sp24, Anim_GetActionScriptParam(arg0));
 }
 
 void AnimChannel_StartSpecialMoveAction(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -126,8 +126,8 @@ void AnimChannel_StartSpecialMoveAction(unk_BattlePlayerEntity* arg0, s32 arg1) 
     s32 sp20;
 
     sp20 = IsPrimaryEntity(arg0) == 0;
-    sp24 = func_84307F24(arg0);
-    InitActionScriptMode1(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
+    sp24 = Anim_GetActionScriptId(arg0);
+    InitActionScriptMode1(arg1, arg0, D_84390010[sp20], sp24, Anim_GetActionScriptParam(arg0));
 }
 
 void AnimChannel_StartAnotherMoveAction(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -170,7 +170,7 @@ void AnimChannel_CheckModelBaseY(unk_BattlePlayerEntity* arg0) {
     if (GetModelBaseY(arg0) != 0.0f) {
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
-        func_84301B48(arg0, gMoveAnimData[idx].unk_24);
+        Anim_TriggerActionScriptMode3(arg0, gMoveAnimData[idx].unk_24);
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
@@ -183,7 +183,7 @@ void Anim_ResetAllPlayers(unk_BattlePlayerEntity* arg0) {
     D_84390010[IsPrimaryEntity(arg0) == 0]->unk_4C4 = 0;
 }
 
-void func_84301F2C(unk_BattlePlayerEntity* arg0) {
+void Anim_SetEntityVisualFlags(unk_BattlePlayerEntity* arg0) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
 
     if (ptr->unk_5A == 0x46 || ptr->unk_5A == 0x9D || ptr->unk_5A == 0x58) {
@@ -192,7 +192,7 @@ void func_84301F2C(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void func_84301F80(unk_BattlePlayerEntity* arg0) {
+void Anim_ClearEntityVisualFlags(unk_BattlePlayerEntity* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_02 &= ~2;
     D_84390010[1]->unk_000.unk_000.unk_02 &= ~2;
 }
@@ -309,7 +309,7 @@ void ApplyStatMasksAndConditions(unk_BattlePlayerEntity* arg0, u16 arg1, unk_D_8
                     var_a0 = temp_s4->unk_0F[j / 8];
                 }
 
-                if (((var_a0 >> (j % 8)) & 1) && (func_80022A28(j) == temp_s5->unk_1F[i])) {
+                if (((var_a0 >> (j % 8)) & 1) && (GetPokemonType1(j) == temp_s5->unk_1F[i])) {
                     arg0->unk_654.unk_C1[i] = 0;
                 }
             }
@@ -439,7 +439,7 @@ void Pokemon_HandleFaint(unk_BattlePlayerEntity* arg0) {
 
     if (arg0->unk_720->unk_00 & 0x10) {
         arg0->unk_720->unk_00 &= ~0x90;
-        func_8430920C(arg0);
+        Pokemon_ApplyFaintTransform(arg0);
         RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
@@ -464,7 +464,7 @@ void Pokemon_StartMoveAnimation(unk_BattlePlayerEntity* arg0) {
     if (!(sp20->unk_34 & 2)) {
         arg0->unk_4C4 = 0;
 
-        if (func_84307B60(arg0) != 0) {
+        if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             tmp = IsPrimaryEntity(arg0);
             PlayMoveSoundEffect(tmp, sp24->unk_5A, 0xC8, 0);
         } else {
@@ -479,7 +479,7 @@ void Pokemon_StartMoveAnimation(unk_BattlePlayerEntity* arg0) {
             ClearEntityAnimFlags(arg0, 0x4000);
         }
 
-        func_84301F2C(arg0);
+        Anim_SetEntityVisualFlags(arg0);
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
         PlayAnimSoundIfApplicable(arg0, sp24->unk_5A - 1);
 
@@ -561,7 +561,7 @@ void AnimChannel_CheckAndAdvance(unk_BattlePlayerEntity* arg0) {
                 TriggerMoveEvent(arg0, sp24, 2);
             } else {
                 if ((sp24->unk_5A == 0x2D) || (sp24->unk_5A == 0x2E) || (sp24->unk_5A == 0x59)) {
-                    func_8431B290(arg0);
+                    Anim_HandleSpecificMoveEvent(arg0);
                 }
                 TriggerMoveEvent(arg0, sp24, 0);
                 AnimChannel_SetSubStateIfNeeded(arg0);
@@ -637,7 +637,7 @@ void Pokemon_GenericActionTrigger(unk_BattlePlayerEntity* arg0) {
 void Pokemon_PlayMoveEffect(unk_BattlePlayerEntity* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
     if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
-        func_800479C0(1, arg0->unk_000.unk_01A, 0);
+        Effect_TriggerMoveVisual(1, arg0->unk_000.unk_01A, 0);
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
@@ -656,7 +656,7 @@ void Pokemon_TriggerAnimIfUnlocked(unk_BattlePlayerEntity* arg0) {
 
     arg0->unk_4C4 = gCurrentAnimChannel->unk_06;
     if (!(sp20->unk_34 & 0x4000)) {
-        func_84301F2C(arg0);
+        Anim_SetEntityVisualFlags(arg0);
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
         Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_06);
         if (gCurrentAnimChannel->unk_01 != 0xFF) {
@@ -754,7 +754,7 @@ void Pokemon_EnterBattleState(unk_BattlePlayerEntity* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
 
     if (sp3C->unk_34 & 1) {
-        temp_v0 = func_84307AE0(temp_a1->unk_000.unk_01A, gSpecialConditionIDs, 2);
+        temp_v0 = Array_ContainsValue(temp_a1->unk_000.unk_01A, gSpecialConditionIDs, 2);
         if (temp_v0 != 0) {
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B20;
         }
@@ -772,11 +772,11 @@ void Pokemon_EnterBattleState(unk_BattlePlayerEntity* arg0) {
             PlayAnimSoundSimple(D_84390010[sp40], 0xA8, 1);
         }
 
-        if ((gAnimTimer >= 0xB) && (func_84307B60(D_84390010[sp40]) != 0)) {
+        if ((gAnimTimer >= 0xB) && (Pokemon_IsSpecialSpecies(D_84390010[sp40]) != 0)) {
             Audio_PlaySequence(0xC8, 6);
         }
 
-        if ((gAnimTimer == 0xA) && (func_84307B60(D_84390010[sp40]) != 0)) {
+        if ((gAnimTimer == 0xA) && (Pokemon_IsSpecialSpecies(D_84390010[sp40]) != 0)) {
             Audio_PlaySequence(0xC8, 5);
         }
 
@@ -902,7 +902,7 @@ void Pokemon_HandleSpecialMoveAnimation(unk_BattlePlayerEntity* arg0) {
 
     if ((temp_a0 == 0) && !(sp24->unk_34 & 0x4000) && (temp_a0 == 0)) {
         if (sp30->unk_05 & 7) {
-            if (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
+            if (Array_ContainsValue(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
                 gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unkA90[0x60];
             } else {
                 gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
@@ -915,12 +915,12 @@ void Pokemon_HandleSpecialMoveAnimation(unk_BattlePlayerEntity* arg0) {
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
 
         if (sp24->unk_34 & 0x200) {
-            if (func_84307B60(arg0) != 0) {
+            if (Pokemon_IsSpecialSpecies(arg0) != 0) {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1A);
             } else {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1A);
             }
-        } else if (func_84307B60(arg0) != 0) {
+        } else if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xA);
         } else {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xA);
@@ -957,19 +957,19 @@ void PlayBattleMusicAndSound(unk_BattlePlayerEntity* arg0) {
     } else if ((arg0->unk_4C4 == 1) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         if (arg0->unk_000.unk_01A >= 0x98) {
             Audio_PlaySequence(sp24->unk_BC, 3);
-        } else if (func_84307B60(arg0) != 0) {
+        } else if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             Audio_PlaySequence(0xC8, 3);
         } else {
             Audio_PlaySequence(arg0->unk_000.unk_01A, 3);
         }
 
         if (sp24->unk_34 & 0x200) {
-            if (func_84307B60(arg0) != 0) {
+            if (Pokemon_IsSpecialSpecies(arg0) != 0) {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
-        } else if (func_84307B60(arg0) != 0) {
+        } else if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
@@ -992,19 +992,19 @@ void PlayBattleMusicAndSoundAlt(unk_BattlePlayerEntity* arg0) {
         sp24 = &arg0->unk_654;
         if (arg0->unk_000.unk_01A >= 0x98) {
             Audio_PlaySequence(sp24->unk_BC, 4);
-        } else if (func_84307B60(arg0) != 0) {
+        } else if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             Audio_PlaySequence(0xC8, 4);
         } else {
             Audio_PlaySequence(arg0->unk_000.unk_01A, 4);
         }
 
         if (sp24->unk_34 & 0x200) {
-            if (func_84307B60(arg0) != 0) {
+            if (Pokemon_IsSpecialSpecies(arg0) != 0) {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0x1B);
             } else {
                 PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0x1B);
             }
-        } else if (func_84307B60(arg0) != 0) {
+        } else if (Pokemon_IsSpecialSpecies(arg0) != 0) {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, 0xC8, 0xB);
         } else {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
@@ -1022,7 +1022,7 @@ void Pokemon_HandleMoveHit(unk_BattlePlayerEntity* arg0) {
     if (AnimChannel_CheckAndReset(arg0) != 0) {
         arg0->unk_720->unk_02 = arg0->unk_654.unk_38.unk_0B;
         arg0->unk_4C4 = 0;
-        func_84301B48(arg0, gMoveAnimData[sp24].unk_24);
+        Anim_TriggerActionScriptMode3(arg0, gMoveAnimData[sp24].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
         arg0->unk_720->unk_04 = &arg0->unk_720->unk_08[temp_v1->unk_2B]->unk_01C[temp_v1->unk_18];
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
@@ -1034,7 +1034,7 @@ void Pokemon_HandleMoveHitSimple(unk_BattlePlayerEntity* arg0) {
     if ((arg0->unk_4C4 == 1) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         s32 idx = arg0->unk_4C0;
 
-        func_84301B48(arg0, gMoveAnimData[idx].unk_24);
+        Anim_TriggerActionScriptMode3(arg0, gMoveAnimData[idx].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
@@ -1048,7 +1048,7 @@ void Pokemon_HandleFaintEffect(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_720->unk_00 & 0x10) {
         arg0->unk_720->unk_00 &= ~0x90;
 
-        func_8430920C(arg0);
+        Pokemon_ApplyFaintTransform(arg0);
         RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
 
@@ -1061,7 +1061,7 @@ void Pokemon_HandleFaintEffect(unk_BattlePlayerEntity* arg0) {
 void Pokemon_ClearTransformFlag(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_720->unk_00 & 0x10) {
         arg0->unk_720->unk_00 &= ~0x90;
-        func_843092B4(arg0);
+        Pokemon_ClearFaintTransform(arg0);
     }
 }
 
@@ -1115,7 +1115,7 @@ void Pokemon_SetSpecialAnimChannel(unk_BattlePlayerEntity* arg0) {
     arg0->unk_4C4 = 0;
     if (!(arg0->unk_654.unk_34 & 2)) {
         if (ptr->unk_05 & 7) {
-            if (func_84307AE0(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
+            if (Array_ContainsValue(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0) {
                 sp1C = 0xAF;
             } else {
                 sp1C = 0xA5;
@@ -1255,12 +1255,12 @@ void UpdateAnimChannelForEntity(unk_BattlePlayerEntity* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
 
     if (sp3C->unk_34 & 1) {
-        if (func_84307AE0(sp30->unk_000.unk_01A, gSpecialConditionIDs, 2) != 0) {
+        if (Array_ContainsValue(sp30->unk_000.unk_01A, gSpecialConditionIDs, 2) != 0) {
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B20;
         }
     }
 
-    if ((sp3C->unk_34 & 1) && func_84307AE0(sp30->unk_000.unk_01A, gSpecialMoveIDs, 8)) {
+    if ((sp3C->unk_34 & 1) && Array_ContainsValue(sp30->unk_000.unk_01A, gSpecialMoveIDs, 8)) {
         sp48 = 0xAF;
     }
 
@@ -1502,7 +1502,7 @@ s32 CanAnimProceed(unk_BattlePlayerEntity* arg0, s32 arg1) {
     if (arg0->unk_000.unk_040.unk_00 == -1) {
         return 1;
     }
-    return func_800174E4(&arg0->unk_000);
+    return GraphNode_IsAnimationFinished(&arg0->unk_000);
 }
 
 s32 CanAnimProceedWithChannel(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -1520,7 +1520,7 @@ s32 CanAnimProceedWithChannel(unk_BattlePlayerEntity* arg0, s32 arg1) {
         if (arg0->unk_000.unk_040.unk_00 == -1) {
             return 1;
         }
-        return func_800174E4(&arg0->unk_000);
+        return GraphNode_IsAnimationFinished(&arg0->unk_000);
     }
 
     if (Battle_WaitForAnimation(gCurrentAnimChannel->unk_0A + 1) != 0) {
@@ -1579,7 +1579,7 @@ s32 EvaluateAnimStateAgainstBattle(unk_BattlePlayerEntity* arg0, s32 arg1) {
         return 0;
     }
 
-    return func_800174E4(&arg0->unk_000);
+    return GraphNode_IsAnimationFinished(&arg0->unk_000);
 }
 
 s32 EvaluateAnimStateWithAlternateChannel(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -1628,7 +1628,7 @@ s32 EvaluateAnimStateWithAlternateChannel(unk_BattlePlayerEntity* arg0, s32 arg1
         }
         return 0;
     }
-    return func_800174E4(&arg0->unk_000);
+    return GraphNode_IsAnimationFinished(&arg0->unk_000);
 }
 
 s32 CanAnimChannelA80Proceed(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -1649,7 +1649,7 @@ s32 CanAnimChannelA80Proceed(unk_BattlePlayerEntity* arg0, s32 arg1) {
         return 1;
     }
 
-    return func_800174E4(&arg0->unk_000);
+    return GraphNode_IsAnimationFinished(&arg0->unk_000);
 }
 
 void MaybeTriggerSpecialAnimEffect(unk_BattlePlayerEntity* arg0) {
@@ -1931,9 +1931,9 @@ void InitializeBattleEntities(unk_D_800AE540_1194* arg0) {
 void SetupEntityController(unk_BattlePlayerEntity* arg0) {
     Controller* sp24 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
 
-    func_843089DC(arg0, 0);
-    func_843089F4(arg0, 0);
-    func_843089FC(arg0, sp24);
+    Entity_InitController(arg0, 0);
+    Entity_InitPhysics(arg0, 0);
+    Entity_BindController(arg0, sp24);
     arg0->unk_728.unk_16C = 0;
 }
 
@@ -1943,8 +1943,8 @@ void InitEntityGraphNode(unk_BattlePlayerEntity* arg0) {
     s16 sp22;
 
     IsPrimaryEntity(arg0);
-    sp24 = func_843085C4(arg0, 0);
-    sp22 = func_843085E0(arg0, 0);
+    sp24 = GraphNode_GetModelRoot(arg0, 0);
+    sp22 = GraphNode_GetModelPhase(arg0, 0);
     Graph_AddToRootList0(&arg0->unk_000);
 
     if (arg0 == D_84390010[0]) {
@@ -1979,8 +1979,8 @@ void InitEntitySubObjectGraph(unk_BattlePlayerEntity* arg0) {
     unk_D_86002F58_004_000_004* sp28;
     s16 sp26;
 
-    sp28 = func_843085C4(arg0, 0);
-    sp26 = func_843085E0(arg0, 0);
+    sp28 = GraphNode_GetModelRoot(arg0, 0);
+    sp26 = GraphNode_GetModelPhase(arg0, 0);
     Graph_AddToRootList0(&ptr->unk_000);
 
     if (arg0 == D_84390010[0]) {
@@ -2003,8 +2003,8 @@ void InitEntityChildNodes(unk_BattlePlayerEntity* arg0, s32* arg1) {
     s32 i;
     unk_D_84390010_168* ptr;
 
-    sp44 = func_843085C4(arg0, 0);
-    sp42 = func_843085E0(arg0, 0);
+    sp44 = GraphNode_GetModelRoot(arg0, 0);
+    sp42 = GraphNode_GetModelPhase(arg0, 0);
 
     for (i = 0; i < 2; i++) {
         ptr = &arg0->unk_168[i];
@@ -2078,24 +2078,24 @@ void InitializeBattleScene(unk_D_800AE540_1194* arg0) {
         case 8:
         case 9:
         case 10:
-            func_8431AFB4(4, 0);
+            Battle_SetCamera(4, 0);
             break;
 
         case 16:
-            func_8431AFB4(1, 0x32);
-            func_8004B1CC(1);
+            Battle_SetCamera(1, 0x32);
+            ResultScreen_SetAnimation(1);
             break;
 
         default:
-            func_8431AFB4(4, 0);
+            Battle_SetCamera(4, 0);
             break;
     }
 
     ApplyAnimEffectToOpponent(D_84390010[0], 0, 0);
     ApplyAnimEffectToOpponent(D_84390010[1], 0, 0);
-    func_84319668();
-    func_843193F4(D_84390010[0]);
-    func_843193F4(D_84390010[1]);
+    Battle_InitCamera();
+    Battle_SetEntityPosition(D_84390010[0]);
+    Battle_SetEntityPosition(D_84390010[1]);
     SetTeamScoresFromActivePokemons();
     SetPlayerSidesFromActivePokemons();
 }
@@ -2124,17 +2124,17 @@ void InitMessageBanksAndAnimQueue(unk_D_800AE540_1194* arg0) {
     SetEntityOrientation(D_84390010[0], D_84390010[0], 1);
     SetEntityOrientation(D_84390010[1], D_84390010[1], -1);
     InitializeBattleScene(arg0);
-    func_8430D814();
+    Battle_InitLighting();
     ResetAllStatFlags(D_84390010[0]);
     ResetAllStatFlags(D_84390010[1]);
     Dialog_Clear();
 }
 
 void ResetEntityAnimStates(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    func_84308660(D_84390010[0], D_84390010[0]);
-    func_84308660(D_84390010[1], D_84390010[1]);
-    func_8430BC44(0);
-    func_8430BC44(1);
+    Battle_ResetEntityAnim(D_84390010[0], D_84390010[0]);
+    Battle_ResetEntityAnim(D_84390010[1], D_84390010[1]);
+    Battle_ClearAnimFlags(0);
+    Battle_ClearAnimFlags(1);
     MaybeTriggerSpecialAnimEffect(D_84390010[0]);
     MaybeTriggerSpecialAnimEffect(D_84390010[1]);
 }
@@ -2155,54 +2155,54 @@ s32 BattleInitDispatch(s32 arg0, unk_D_800AE540_1194* arg1) {
             break;
 
         case 5:
-            func_843196A4();
+            Battle_InitBattleEffects();
             break;
     }
 
     return 0;
 }
 
-void func_84307414(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_Idle(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430741C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_AttackStart(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307424(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_AttackHit(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430742C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_AttackEnd(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307434(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_DamageStart(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430743C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_DamageHit(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307444(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_DamageEnd(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430744C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_FaintStart(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307454(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_FaintEnd(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430745C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_StatusEffect(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307464(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_ItemUse(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_8430746C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_SwitchIn(unk_BattlePlayerEntity* arg0) {
 }
 
-void func_84307474(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void AnimHandler_SwitchOut(unk_BattlePlayerEntity* arg0, s32 arg1) {
 }
 
-void func_84307480(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void AnimHandler_Victory(unk_BattlePlayerEntity* arg0, s32 arg1) {
 }
 
-void func_8430748C(unk_BattlePlayerEntity* arg0) {
+void AnimHandler_Defeat(unk_BattlePlayerEntity* arg0) {
 }

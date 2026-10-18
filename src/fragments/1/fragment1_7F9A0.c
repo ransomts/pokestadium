@@ -2820,7 +2820,7 @@ void func_81206D9C(GbEmuState* arg0) {
   UpdateAudioModeIndices();
   DataPtr_TileGraphicsA = arg0->font1 + 0x90;
   DataPtr_TileGraphicsB = arg0->font2 + 0x90;
-  EmuMainInit(0, func_80029080(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
+  EmuMainInit(0, GetCurrentPokemonBank(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
 }
 
 void func_81206E64(GbEmuState* arg0) {

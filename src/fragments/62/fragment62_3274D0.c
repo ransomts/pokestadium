@@ -17,7 +17,7 @@ void func_8433CC10(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433CCFC(ParticleEffectInstance* arg0) {
+void ParticleEffect_CollisionHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433CC10(arg0);
@@ -451,7 +451,7 @@ void func_8433DBDC(ParticleEffectInstance* arg0) {
 void func_8433DC80(void) {
     ParticleDef_CreateNullType17(0x64, 1);
     ParticleDef_CreateDefault(0, 0x20, 3);
-    ParticleDef_CreateFull(0, 3, 8, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 2, 0, 0x25, 0);
+    ParticleDef_CreateFull(0, 3, 8, ParticleEffect_CollisionHandler, &gParticleEffectData[0x11], 8, 4, 2, 0, 0x25, 0);
     ParticleSystem_AddSpawnOffset(0x19);
     ParticleDef_CreateQuick(0, func_8433CEFC, &gParticleEffectData[0x15], 0xE, 1, 2, 0, 0x25, 0);
     ParticleDef_CreateQuick(0, func_8433CEFC, &gParticleEffectData[0x16], 0xE, 1, 2, 0, 0x25, 0);
@@ -502,7 +502,7 @@ void func_8433E33C(void) {
 }
 
 void func_8433E46C(void) {
-    ParticleDef_CreateFull(0, 4, 5, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 0x10, gParticleTexture_Default, 0x25, 0);
+    ParticleDef_CreateFull(0, 4, 5, ParticleEffect_CollisionHandler, &gParticleEffectData[0x11], 8, 4, 0x10, gParticleTexture_Default, 0x25, 0);
     ParticleDef_CreateFull(0, 1, 0x24, ParticleEffect_RandomDirectionHandler2, &gParticleEffectData[0x15], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 

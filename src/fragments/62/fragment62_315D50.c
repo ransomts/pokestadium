@@ -948,16 +948,16 @@ static func_D_84390320 gStateFunctionTable[] = {
     func_8432F998, ParticleEffect_RegisterDefault, SpawnLargeBurstIfNotActive, ParticleEffect_InitSmallExplosion, InitParticleEffectSet_Alt, func_8432F998, SpawnSmallGlowAndCustomEffect,
     ParticleEffect_SmallSetup, ParticleEffect_RegisterCombined, func_8432F998, ParticleEffect_RegisterHandlers_473BC, ParticleEffect_SmallNodeSetup, ParticleEffect_InitBurstEffect, ParticleEffect_DynamicStateSetup,
     ParticleEffect_Init, SpawnLargeBurstEffect, ParticleEffect_FullSetupA, ParticleEffect_PaletteBurst, func_8433DC80, func_8432F998, func_843378CC,
-    ParticleEffect_WaterAnimBurst, func_84336B8C, func_84336EE8, ParticleEffect_PaletteScriptBurst, func_8432F998, InitParticleEffectSet_Alt2, func_8432F998,
+    ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, func_84336EE8, ParticleEffect_PaletteScriptBurst, func_8432F998, InitParticleEffectSet_Alt2, func_8432F998,
     ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, func_8432F998, func_8432F998, ParticleEffect_RegisterSparkle,
-    func_843371C0, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
+    ParticleEffect_InitSmokeSetB, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
     func_8432F998, func_8432F998, func_8432F998, ParticleEffect_SetMode, func_8432F998, InitParticleEffectSet_WithTexture53, SpawnTimedFireballEffect,
     ParticleEffect_SimpleNodeEntry, ParticleEffect_RegisterAll_48630, func_8432F998, ParticleEffect_RegisterHandler_49628, ParticleEffect_RegisterEffectE0Alt2, func_8432F998, ParticleEffect_RegisterHandler_49830,
     ParticleEffect_AdditionalNodeSetup, ParticleEffect_SmallNodeSetupB, InitExplosionEffectSet, func_8433E124, ParticleEffect_GroupSetupA, ParticleEffect_HandleStateSetup, func_8432F998,
     ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, func_8432F998, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
     InitParticleEffectSet_WithDifferentTiming, ParticleEffect_RegisterHandler_49058, ParticleEffect_RegisterHandler_47448, func_8433E46C, ParticleEffect_RegisterHandler_49108, ParticleEffect_RegisterHandlers_Alternate, ParticleEffect_RegisterEffectE0Alt,
     InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, ParticleEffect_SimpleBurst,
-    func_843374A4, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
+    ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
     ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurst2, ParticleEffect_PaletteMultiBurst2, ParticleEffect_PaletteBurst4, ParticleEffect_PaletteBurst5,
     func_8432F998, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, ParticleSystem_ForceResetLock, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
     ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurst2, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
@@ -970,13 +970,13 @@ static func_D_84390320 gStateFunctionTable[] = {
 static func_D_84390320 gParticleStateFunctionTable[] = {
     func_8432F9A0, func_8432F9A0, InitComplexParticleSequence, ParticleEffect_SpecialCollisionSetup, ParticleEffect_MultiTextureSetup, ParticleEffect_DynamicCollisionSetup, ParticleEffect_RegisterPaletteVariants,
     ParticleEffect_PaletteMultiBurst, func_8433DECC, func_8432F9A0, ParticleEffect_RegisterAnimationCallbacks, func_8432F9A0, func_8432F9A0, ParticleEffect_RegisterSpecific,
-    ParticleEffect_InitializeGroup, func_843372D8, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, func_8432F9A0, InitParticleComboVariant,
-    ParticleEffect_RegisterModeSpecific, func_84337000, ParticleEffect_RegisterAll, func_8432F9A0, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
-    func_8433E33C, func_843375B0, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, func_8432F9A0, func_8432F9A0, InitParticleEffectGroup_Basic,
-    ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, func_8433766C, ParticleEffect_Trigger56A74,
+    ParticleEffect_InitializeGroup, ParticleEffect_InitExplosionSetB, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, func_8432F9A0, InitParticleComboVariant,
+    ParticleEffect_RegisterModeSpecific, ParticleEffect_InitExplosionSet, ParticleEffect_RegisterAll, func_8432F9A0, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
+    func_8433E33C, ParticleEffect_InitFireSet, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, func_8432F9A0, func_8432F9A0, InitParticleEffectGroup_Basic,
+    ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, ParticleEffect_InitSparkleSet, ParticleEffect_Trigger56A74,
     ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, func_8432F9A0,
-    ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurst2, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, func_84336DD8, ParticleEffect_SimpleNodeSetup,
-    func_84336C80, ParticleEffect_FullSetupB, func_8434A930, func_843378D4, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
+    ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurst2, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, ParticleEffect_InitSetC, ParticleEffect_SimpleNodeSetup,
+    ParticleEffect_InitSetB, ParticleEffect_FullSetupB, func_8434A930, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
     ParticleEffect_FireworkBurst, ParticleEffect_FireballBurst, ParticleEffect_FireworkEntry, ParticleEffect_SimpleNodeBurst, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, InitParticleEffectSet_Variant2,
     InitParticleEffectSet_WithComplex, InitParticleEffectSet_Variant3, func_8433DFF4, ParticleEffect_AlphaFirework2, ParticleEffect_AlphaFirework, ParticleEffect_MultiNodeAEntry, ParticleEffect_TriggerAnother,
     ParticleEffect_TriggerDefault2, ParticleEffect_RegisterHandlers_4967C, ParticleEffect_CreateColorVariant, ParticleEffect_ConfigVariantB, ParticleEffect_RegisterAll_489FC, ParticleEffect_RegisterAll_489FC, ParticleEffect_ConfigureAndTrigger_4917C,
@@ -4200,7 +4200,7 @@ void PlaySoundEffect_Error(void) {
 }
 
 void PlayBattleMusicOrDefault(unk_BattlePlayerEntity* arg0, s16 arg1) {
-    if (func_84307B60(arg0) != 0) {
+    if (Pokemon_IsSpecialSpecies(arg0) != 0) {
         Audio_PlaySequence(0xC8, 2);
     } else {
         Audio_PlaySequence(arg1, 2);
@@ -4219,7 +4219,7 @@ void ProcessEntityAudioInfo(unk_BattlePlayerEntity* arg0) {
 }
 
 void TriggerMoveEvent(unk_BattlePlayerEntity* arg0, unk_D_800FCB18* arg1, s32 arg2) {
-    func_800479C0(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
+    Effect_TriggerMoveVisual(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
     HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
 }
 
@@ -4435,7 +4435,7 @@ void ProcessBattleMenuSelection(void) {
 void RenderBattleMenuSelection(void) {
     switch (gBattleContext.unk_0000) {
         case 16:
-            func_8004B1CC(1);
+            ResultScreen_SetAnimation(1);
             break;
 
         case 0:
@@ -4597,7 +4597,7 @@ void RenderBattleMenuSelection(void) {
 void PlayBattleSoundEffect(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
-    if ((func_84307B60(arg0) != 0) && (arg1 == 0x32)) {
+    if ((Pokemon_IsSpecialSpecies(arg0) != 0) && (arg1 == 0x32)) {
         Audio_PlaySoundEffect(0x32, 0xC8, 0);
     } else if (arg1 == 0x14) {
         Audio_PlaySoundEffect(0x14, 0, 0);

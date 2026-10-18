@@ -144,10 +144,10 @@ void Particle_InitializeTwirl(ParticleEffectInstance* arg0) {
     Particle_SetRotationZ(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, 5.0f);
     Particle_SetShortAE(arg0, RandomMod(0x800) + 0xC00);
-    Particle_SetRotationDeltaX(arg0, func_81400B4C(0x800, 0x300));
-    Particle_SetShortB0(arg0, func_81400B4C(0x800, 0x300));
+    Particle_SetRotationDeltaX(arg0, Particle_GetRandomRotation(0x800, 0x300));
+    Particle_SetShortB0(arg0, Particle_GetRandomRotation(0x800, 0x300));
     Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
-    Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x800, 0x300));
+    Particle_SetRotationDeltaZ(arg0, Particle_GetRandomRotation(0x800, 0x300));
     Particle_AddVelocityYScaled(arg0, RandomMod(0x1E));
     Particle_SetTimerA6(arg0, sp26 * 2);
     Particle_DisableFlag4(arg0);
@@ -177,9 +177,9 @@ void Particle_UpdateComplexMovement(ParticleEffectInstance* arg0) {
 
         case 4:
             if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
-                Particle_SetRotationDeltaX(arg0, func_81400B4C(0x1000, 0x600));
-                Particle_SetShortB0(arg0, func_81400B4C(0x400, 0x400));
-                Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x1000, 0x600));
+                Particle_SetRotationDeltaX(arg0, Particle_GetRandomRotation(0x1000, 0x600));
+                Particle_SetShortB0(arg0, Particle_GetRandomRotation(0x400, 0x400));
+                Particle_SetRotationDeltaZ(arg0, Particle_GetRandomRotation(0x1000, 0x600));
                 arg0->unk_38.x += arg0->unk_50.x;
                 arg0->unk_50.x = 0;
                 arg0->unk_38.z += arg0->unk_50.z;
@@ -256,8 +256,8 @@ void Particle_InitializeBurst(ParticleEffectInstance* arg0) {
     Particle_SetSpeed(arg0, RandomMod(0x14) + 15.0f);
     Particle_SetShortAE(arg0, RandomMod(0x300) + 0x400);
     Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
-    Particle_SetRotationDeltaX(arg0, func_81400B4C(0x800, 0x400));
-    Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x800, 0x400));
+    Particle_SetRotationDeltaX(arg0, Particle_GetRandomRotation(0x800, 0x400));
+    Particle_SetRotationDeltaZ(arg0, Particle_GetRandomRotation(0x800, 0x400));
     Particle_SetTimerA6(arg0, sp26 * 2);
     Particle_DisableFlag4(arg0);
     Particle_IncrementState(arg0);

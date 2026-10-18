@@ -316,9 +316,9 @@ void Stage_MainLoop(s32 arg0) {
     Stage_FadeIn(0xB4);
 
     if (arg0 != 0) {
-        func_8004B1CC(0x42);
+        ResultScreen_SetAnimation(0x42);
     } else {
-        func_8004B1CC(0x43);
+        ResultScreen_SetAnimation(0x43);
     }
 
     Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);

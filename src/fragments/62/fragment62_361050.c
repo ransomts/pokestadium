@@ -6140,7 +6140,7 @@ void func_84384124(void) {
     }
 }
 
-s32 func_843841C4(s32 arg0, s32 arg1) {
+s32 Battle_GetEntityState(s32 arg0, s32 arg1) {
     unk_D_800FCB18* temp_s4 = &D_84390010[arg0]->unk_654.unk_38;
     unk_D_800FCB18* temp_s6 = &D_84390010[1 - arg0]->unk_654.unk_38;
     s32 var_s2 = 0;

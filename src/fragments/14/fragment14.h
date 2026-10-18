@@ -145,7 +145,7 @@ extern unk_D_86807180 gSushiItemDefs[];
 
 extern unk_D_86002F34* gSushiGoRoundGraphNode;
 extern s32 gSushiGoRoundTimer;
-extern unk_D_86807558 D_86807558[4];
+extern unk_D_86807558 gSushiEntities[4];
 
 extern unk_D_868084D8 gSushiInstances[12];
 
@@ -165,12 +165,12 @@ void InitSushiGoRound(void);
 void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1);
 
 
-void func_86805108(u16, s32);
-s32 func_868055D4(void);
+void Sushi_SetEntityInput(u16, s32);
+s32 Sushi_CheckAllIdle(void);
 void Sushi_InitSystem(s32);
-void func_86805974(void);
-void func_86805BD4(void);
-void func_86805CB4(void);
+void Sushi_MainUpdate(void);
+void Sushi_InitCamera(void);
+void Sushi_UpdateCameraPos(void);
 
 f32 Sushi_CalcTargetDelta(unk_D_868084D8*, Vec3f*, Vec3f*);
 void SushiInstance_SetMode(unk_D_868084D8*, s32, unk_D_86807558*);

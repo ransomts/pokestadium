@@ -291,7 +291,7 @@ void DrawPokemonSelectionEntries(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     for (i = 0; i < 6; i++) {
         temp_s0 = arg2->unk_00[i].unk_00;
         if (temp_s0 != NULL) {
-            Text_Print(arg0 + (i * 0x54) + 2, arg1 + 0x2A, func_83000020(temp_s0));
+            Text_Print(arg0 + (i * 0x54) + 2, arg1 + 0x2A, GetBattleModeMessage(temp_s0));
         }
     }
 

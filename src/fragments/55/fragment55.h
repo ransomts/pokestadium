@@ -42,13 +42,13 @@ typedef struct unk_D_83079E70 {
     /* 0x14 */ unk_D_83079E70_000 unk_14[6];
 } unk_D_83079E70; // size = 0xD4
 
-extern unk_D_83003CE0 D_83003CE0;
-extern unk_D_83003CE0 D_83003DE0;
+extern unk_D_83003CE0 gMenuStaticStrings;
+extern unk_D_83003CE0 gMenuOptionStrings;
 
 extern char** D_830039C0;
 
-char* func_83000020(s32 arg0);
-void func_83000058(void);
+char* GetBattleModeMessage(s32 arg0);
+void BattleMode_LoadAssets(void);
 void MenuInput_Update(void);
 s16* GetMenuOptionList(unk_D_800AE540* arg0);
 char* GetBattleModeTitle(s8 arg0);
@@ -56,7 +56,7 @@ char* GetBattleModeSubtitle(s8 arg0);
 s32 MenuOptionStringsMissing(s16* arg0);
 void FadeIn_Update(void);
 void MenuInput_HandleSelection(void);
-void func_83000710(void);
+void Menu_CheckDialogComplete(void);
 void FadeOut_Update(void);
 s32 FadeOut_IsComplete(void);
 void DrawBattleModeBackground(void);
@@ -65,14 +65,14 @@ void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void DrawColoredPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6);
 void DrawMenuIcon(s16 arg0, s16 arg1);
 void DrawMenuOptions(s16 arg0, s16 arg1);
-void func_830017C0(void);
-void func_83001A9C(void);
-void func_83001B64(void);
-void func_83001C4C(void);
-void func_83001CF8(void);
-s32 func_83002030(void);
-void func_830020D0(void);
-s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1);
+void DrawSelectionMenu(void);
+void BattleModeMenu_Render(void);
+void Menu_InitStaticStrings(void);
+void Menu_InitOptionStrings(void);
+void BattleModeMenu_Init(void);
+s32 BattleModeMenu_UpdateState(void);
+void BattleModeMenu_MainLoop(void);
+s32 BattleModeMenu_Entry(UNUSED s32 arg0, UNUSED s32 arg1);
 
 s32 GetStringLineCount(s8* arg0);
 void Dialog_UpdateOpening(void);

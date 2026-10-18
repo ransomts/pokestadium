@@ -250,7 +250,7 @@ ret_func_87A010C8 func_87A010C8(void) {
 s32 PlaySoundIfEnabled(s32 arg0, s32 arg1, s32 arg2) {
     s32 ret = 0;
 
-    if (D_8780FC92 == 0) {
+    if (gResultFlag_Special == 0) {
         ret = PlaySoundByCategory(arg0, arg1, arg2);
     }
 

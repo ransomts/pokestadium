@@ -609,7 +609,7 @@ void UpdateStageAnimationTimers(void) {
         gStageAnimTimer++;
     }
 
-    if ((gStageAnimTimer >= 0x96) && (func_800174E4(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 0)) {
+    if ((gStageAnimTimer >= 0x96) && (GraphNode_IsAnimationFinished(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 0)) {
         GraphNode_TriggerAction(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_00);
         Anim_SetChannelBase(&gStagePanelState->unk_004, 0);
         SetAnimStateIndex(&gStagePanelState->unk_004, 0);
@@ -617,7 +617,7 @@ void UpdateStageAnimationTimers(void) {
         gStageAnimStateFlag = 1;
     }
 
-    if ((func_800174E4(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 1)) {
+    if ((GraphNode_IsAnimationFinished(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 1)) {
         GraphNode_TriggerAction(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_00);
         Anim_SetChannelBase(&gStagePanelState->unk_004, 0);
         gStageAnimTimer = 0;

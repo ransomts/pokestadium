@@ -727,11 +727,11 @@ s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
             break;
 
         case 0x9000A:
-            func_8004B1CC(0x1A);
+            ResultScreen_SetAnimation(0x1A);
             break;
 
         case 0x9000B:
-            func_8004B1CC(0x1B);
+            ResultScreen_SetAnimation(0x1B);
             break;
 
         case 0x9000C:
@@ -952,7 +952,7 @@ s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2) {
 void func_8004D848(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 func_8004D858(s32 arg0, u32 arg1) {
+s32 ResultScreen_PlaySfx(s32 arg0, u32 arg1) {
     static s32 D_80079008 = 0x00000000;
     static s32 D_8007900C = 0x00000000;
     static s32 D_80079010 = 0x00000000;
@@ -1407,13 +1407,13 @@ s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 
         case 0x1200008:
             MusSetDurationScale(D_8007905C, 6);
-            func_8004B1CC(0x13);
+            ResultScreen_SetAnimation(0x13);
             D_80079064 = 1;
             break;
 
         case 0x1200009:
             if (D_80079064 != 0) {
-                func_8004B1CC(0x10);
+                ResultScreen_SetAnimation(0x10);
             }
             PlaySoundEffect(2);
             D_80079064 = 0;

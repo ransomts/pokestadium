@@ -23,19 +23,19 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static u8* D_81303FA0;
-static unk_D_81303FA8 D_81303FA8[4];
-static s16 D_81304000;
-static unk_D_81304008 D_81304008[4];
-static GraphNode* D_81304648;
+static u8* gMenuMiscAssets;
+static unk_D_81303FA8 gEntryStatus[4];
+static s16 gSelectedEntryIndex;
+static unk_D_81304008 gEntryGraphNodes[4];
+static GraphNode* gMenuGeoNode;
 static GraphNode* D_8130464C;
-static s16 D_81304650;
-static s32 D_81304654;
-static char** D_81304658;
-static char D_81304660[0x400];
-static s16 D_81304A60;
-static s16 D_81304A62;
-static s32 D_81304A64;
+static s16 gIsEntrySelectionActive;
+static s32 gPlayerNameLength;
+static char** gEntryMessageBank;
+static char gEntryIdBuffer[0x400];
+static s16 gPulseAlpha;
+static s16 gPrevSelectedEntryIndex;
+static s32 gEntryConfirmState;
 
 static u32 D_81303C20[] = {
     0xA4B3A4CE, 0xA5ABA1BC, 0xA5C8A5EA, 0x0AA5C3A5, 0xB8A4CFA1, 0xA2A4C4A4, 0xAB0AA4A8, 0xA4DEA4BB, 0xA4F3A1A3,
@@ -44,7 +44,7 @@ static u32 D_81303C20[] = {
     0xA4A40AA4, 0xDEA4BBA4, 0xF3A1A300, 0xA4BAA4AB, 0xA4F3A4AC, 0xA1A20AA4, 0xA2A4EAA4, 0xDEA4BBA4, 0xF3A1A300,
 };
 
-static s16 D_81303CB0 = 0;
+static s16 gMenuAnimTimer = 0;
 
 static u32 D_81303CB4[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
@@ -93,9 +93,9 @@ static u32 D_81303F08[] = {
     0x0000FF00,
 };
 
-static Color_RGB8 D_81303F14 = { 0x64, 0x1E, 0x1E };
+static Color_RGB8 gGradientColor = { 0x64, 0x1E, 0x1E };
 static s32 pad_D_81303F18 = 0;
-static u8* D_81303F1C[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
+static u8* gBgTextureSequence[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
 
 s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
     s32 idx;
@@ -113,9 +113,9 @@ s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
 
         gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
 
-        if (D_81304008[idx].unk_01C != NULL) {
-            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_81304008[idx].unk_01C));
-            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_81303EF4[D_81304008[idx].unk_002]));
+        if (gEntryGraphNodes[idx].unk_01C != NULL) {
+            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gEntryGraphNodes[idx].unk_01C));
+            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_81303EF4[gEntryGraphNodes[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
         func_80015684();
@@ -123,8 +123,8 @@ s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_813001C0(void) {
-    unk_func_8002A728 sp18;
+s32 GetPlayerNameLength(void) {
+    PlayerName sp18;
 
     GbsEnsureBankLoaded(2);
     GbsGetPlayerName(&sp18);
@@ -132,21 +132,21 @@ s32 func_813001C0(void) {
 }
 
 void StartEntrySelection(void) {
-    if (D_81304000 >= 0) {
-        D_81304008[D_81304000].unk_000 = 1;
-        D_81304008[D_81304000].unk_020 = -D_81304008[D_81304000].unk_028.unk_024.x / 20.0f;
-        D_81304008[D_81304000].unk_024 = 36.0f;
-        D_81304650 = 0;
+    if (gSelectedEntryIndex >= 0) {
+        gEntryGraphNodes[gSelectedEntryIndex].unk_000 = 1;
+        gEntryGraphNodes[gSelectedEntryIndex].unk_020 = -gEntryGraphNodes[gSelectedEntryIndex].unk_028.unk_024.x / 20.0f;
+        gEntryGraphNodes[gSelectedEntryIndex].unk_024 = 36.0f;
+        gIsEntrySelectionActive = 0;
     }
 }
 
 s32 GetEntryStatus(s32 arg0) {
-    unk_D_81303FA8* ptr = &D_81303FA8[arg0];
+    unk_D_81303FA8* ptr = &gEntryStatus[arg0];
     s32 var_v1;
 
     if (ptr->unk_01 != 0) {
         if (ptr->unk_00 == 0) {
-            if (func_8002539C(arg0) == 0) {
+            if (MenuItem_IsPokemonShiny(arg0) == 0) {
                 var_v1 = 0x16;
             } else if (ptr->unk_03 != 0) {
                 var_v1 = 0;
@@ -201,7 +201,7 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
     s16 tmp2;
     s16 tmp1;
 
-    if (D_81303FA8[arg0].unk_00 == 1) {
+    if (gEntryStatus[arg0].unk_00 == 1) {
         tmp1 = 0x80;
     } else {
         tmp1 = 0xFF;
@@ -213,10 +213,10 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
         DrawBorderedPanel(arg1, arg2, 0x78, 0x38, 0x64, 0x1E, 0x1E, tmp1);
     }
 
-    if ((arg0 == D_81304000) && (D_81304650 == 1) && (GetEntryMenuOption(arg0) > 0)) {
-        DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &D_81303F14, &D_81303F14);
+    if ((arg0 == gSelectedEntryIndex) && (gIsEntrySelectionActive == 1) && (GetEntryMenuOption(arg0) > 0)) {
+        DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &gGradientColor, &gGradientColor);
         tmp1 = arg1 + 0x28;
-        tmp2 = (SINS(D_81303CB0 * 2) * 2) + (arg2 + 0x8C);
+        tmp2 = (SINS(gMenuAnimTimer * 2) * 2) + (arg2 + 0x8C);
         func_81300870(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
     }
 
@@ -225,36 +225,36 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
     Text_SetFont(8, 0);
     Text_SetLineHeight(0x18);
 
-    if ((arg0 == D_81304000) && (D_81304650 == 1)) {
+    if ((arg0 == gSelectedEntryIndex) && (gIsEntrySelectionActive == 1)) {
         switch (GetEntryMenuOption(arg0)) {
             case 1:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xE));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0xE));
                 break;
 
             case 2:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xF));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0xF));
                 break;
 
             case 3:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x10));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0x10));
                 break;
 
             case 4:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0x11));
+                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0x11));
                 break;
         }
     }
 
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    if (D_81303FA8[arg0].unk_00 == 0) {
+    if (gEntryStatus[arg0].unk_00 == 0) {
         Text_SetFont(8, 0);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, D_81303FA8[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
-                      D_81303FA8[arg0].unk_08);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, gEntryStatus[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
+                      gEntryStatus[arg0].unk_08);
         Text_SetFont(4, 0);
-        sprintf(D_81304660, "ID %05d", D_81303FA8[arg0].unk_06);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, D_81304660) / 2)) + 0x3C, arg2 + 0x1E, D_81304660);
-    } else if (D_81303FA8[arg0].unk_00 != 1) {
+        sprintf(gEntryIdBuffer, "ID %05d", gEntryStatus[arg0].unk_06);
+        Text_Print((arg1 - (MeasureTextWidth(0, 0, gEntryIdBuffer) / 2)) + 0x3C, arg2 + 0x1E, gEntryIdBuffer);
+    } else if (gEntryStatus[arg0].unk_00 != 1) {
         Text_SetFont(8, 0);
         Text_Print((arg1 - (MeasureTextWidth(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
         Text_SetFont(4, 0);
@@ -313,10 +313,10 @@ void UpdatePulseAlpha(void) {
     D_81303F30 = 0x100;
 
     if (temp_v0 < D_81303F30) {
-        D_81304A60 = temp_v0;
+        gPulseAlpha = temp_v0;
         D_81303F30 = temp_v0;
     } else {
-        D_81304A60 = 0x1FF - temp_v0;
+        gPulseAlpha = 0x1FF - temp_v0;
         D_81303F30 = temp_v0;
     }
 }
@@ -339,7 +339,7 @@ void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f3
         v = 1024.0f / arg5;
 
         gDPSetCycleType(gfx++, G_CYC_1CYCLE);
-        gDPSetPrimColor(gfx++, 0, 0, 255, 255, 230, D_81304A60 & 0xFF);
+        gDPSetPrimColor(gfx++, 0, 0, 255, 255, 230, gPulseAlpha & 0xFF);
         gDPSetEnvColor(gfx++, 0, 50, 255, 0);
         gDPSetRenderMode(gfx++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
         gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE,
@@ -439,7 +439,7 @@ void RenderMenuScreen(void) {
     UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
-        func_81300870(D_81303F1C[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
+        func_81300870(gBgTextureSequence[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
         D_81303F3C = (D_81303F3C + 1) % 5;
         DrawTextureRectFlipped(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
         DrawTextureRectFlipped(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
@@ -448,58 +448,58 @@ void RenderMenuScreen(void) {
         DrawTextureRectFlipped(D_3005A18, 0x102, 0xAC, 0x40, 0x19, 2.0f, 1);
     }
 
-    if (D_81304000 >= 0) {
+    if (gSelectedEntryIndex >= 0) {
         DrawBorderedPanel(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
-        Text_Print(0x132 - (MeasureTextWidth(0, 0, GetMessageString(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
-                      GetMessageString(NULL, 0, D_81304658, 0x12));
+        Text_Print(0x132 - (MeasureTextWidth(0, 0, GetMessageString(NULL, 0, gEntryMessageBank, 0x12)) / 2), 0x1A1,
+                      GetMessageString(NULL, 0, gEntryMessageBank, 0x12));
         Text_SetupDL();
         DrawEntryPanel(0, 0x38, 0x2E);
         DrawEntryPanel(1, 0xBC, 0x2E);
         DrawEntryPanel(2, 0x140, 0x2E);
         DrawEntryPanel(3, 0x1C4, 0x2E);
-        if (D_81304650 == 1) {
-            DrawStatusIcon((SINS(D_81303CB0) * 5.0f) + ((D_81304000 * 0x84) + 0x38), 0x7E);
+        if (gIsEntrySelectionActive == 1) {
+            DrawStatusIcon((SINS(gMenuAnimTimer) * 5.0f) + ((gSelectedEntryIndex * 0x84) + 0x38), 0x7E);
         }
     } else {
         DrawBorderedPanel(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetLineHeight(0x1C);
-        Text_Print(0x5A, 0x15A, GetMessageString(NULL, 0, D_81304658, 0x13));
+        Text_Print(0x5A, 0x15A, GetMessageString(NULL, 0, gEntryMessageBank, 0x13));
         Text_SetupDL();
     }
-    D_81303CB0 += 0xB80;
+    gMenuAnimTimer += 0xB80;
 }
 
 void HandleEntryNavigation(void) {
-    if (D_81304650 == 0) {
+    if (gIsEntrySelectionActive == 0) {
         return;
     }
 
-    D_81304A62 = D_81304000;
+    gPrevSelectedEntryIndex = gSelectedEntryIndex;
 
     if (gPlayer1Controller->buttonPressed & 0x200) {
         while (true) {
-            D_81304000 = (D_81304000 + 3) % 4;
+            gSelectedEntryIndex = (gSelectedEntryIndex + 3) % 4;
 
-            if (D_81303FA8[D_81304000].unk_01 != 0 || GetEntryMenuOption(D_81304000) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || GetEntryMenuOption(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
     } else if (gPlayer1Controller->buttonPressed & 0x100) {
         while (true) {
-            D_81304000 = (D_81304000 + 1) % 4;
+            gSelectedEntryIndex = (gSelectedEntryIndex + 1) % 4;
 
-            if (D_81303FA8[D_81304000].unk_01 != 0 || GetEntryMenuOption(D_81304000) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || GetEntryMenuOption(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
     }
 
-    if (D_81304000 != D_81304A62) {
-        D_81303CB0 = 0;
+    if (gSelectedEntryIndex != gPrevSelectedEntryIndex) {
+        gMenuAnimTimer = 0;
         PlaySoundEffect(0x25);
     }
 }
@@ -507,34 +507,34 @@ void HandleEntryNavigation(void) {
 void HandleEntryConfirmCancel(void) {
     s32 var_v0;
 
-    if (D_81304650 > 0) {
-        if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_81304A64 != 1)) {
+    if (gIsEntrySelectionActive > 0) {
+        if ((gPlayer1Controller->buttonPressed & 0x8000) && (gEntryConfirmState != 1)) {
             var_v0 = 0;
-            if (D_81304000 < 0) {
+            if (gSelectedEntryIndex < 0) {
                 var_v0 = 1;
             }
 
-            if ((var_v0 == 0) && (GetEntryMenuOption(D_81304000) != 1)) {
+            if ((var_v0 == 0) && (GetEntryMenuOption(gSelectedEntryIndex) != 1)) {
                 if (gCurrentGameState == 0x25) {
                     PlaySoundEffect(0x2A);
                 } else {
                     PlaySoundEffect(0x2B);
                 }
-                D_81304A64 = 1;
+                gEntryConfirmState = 1;
                 StartEntrySelection();
             } else {
                 PlaySoundEffect(8);
             }
-        } else if ((gPlayer1Controller->buttonPressed & 0x4000) && (D_81304A64 != 2)) {
+        } else if ((gPlayer1Controller->buttonPressed & 0x4000) && (gEntryConfirmState != 2)) {
             PlaySoundEffect(3);
-            D_81304A64 = 2;
-        } else if (D_81304000 >= 0) {
+            gEntryConfirmState = 2;
+        } else if (gSelectedEntryIndex >= 0) {
             HandleEntryNavigation();
         }
     }
 }
 
-void func_81302498(void) {
+void Menu_InitInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -543,9 +543,9 @@ void func_81302498(void) {
 void func_813024C8(s32 arg0) {
     Stage_BeginDisplayList();
     if (gCurrentGameState == 0x25) {
-        func_8130306C(D_81303FA0);
+        Gfx_DrawBackgroundGrid(gMenuMiscAssets);
     } else {
-        func_8130337C();
+        Gfx_DrawMenuBackground();
     }
 
     if (arg0 != 0) {
@@ -557,7 +557,7 @@ void func_813024C8(s32 arg0) {
     Stage_Advance();
 }
 
-void func_81302548(void) {
+void Menu_UpdateEntryData(void) {
     s32 i;
     u8 temp_s3;
     Gen1StringDecodeBuffer sp48;
@@ -566,19 +566,19 @@ void func_81302548(void) {
 
     for (i = 0; i < 4; i++) {
         Controller_ReadInput(i, &sp48);
-        DecodeGen1StringToBuffer(D_81303FA8[i].unk_08, sp48.unk_02);
-        D_81303FA8[i].unk_06 = sp48.unk_00;
-        D_81303FA8[i].unk_01 = MenuItem_GetHeldItemId(i);
-        D_81303FA8[i].unk_00 = MenuItem_GetPokemonSpecies(i);
-        D_81303FA8[i].unk_03 = MenuItem_GetPokemonGender(i);
-        D_81303FA8[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        D_81303FA8[i].unk_02 = MenuItem_GetPokemonLevel(i);
+        DecodeGen1StringToBuffer(gEntryStatus[i].unk_08, sp48.unk_02);
+        gEntryStatus[i].unk_06 = sp48.unk_00;
+        gEntryStatus[i].unk_01 = MenuItem_GetHeldItemId(i);
+        gEntryStatus[i].unk_00 = MenuItem_GetPokemonSpecies(i);
+        gEntryStatus[i].unk_03 = MenuItem_GetPokemonGender(i);
+        gEntryStatus[i].unk_04 = (temp_s3 & (1 << i)) != 0;
+        gEntryStatus[i].unk_02 = MenuItem_GetPokemonLevel(i);
     }
 }
 
-void func_81302630(void) {
+void Menu_SelectDefaultEntry(void) {
     s32 i;
-    s32 sp28 = func_80024EF4();
+    s32 sp28 = GetActivePlayerMask();
     s32 var_s1 = 0;
 
     if (sp28 == 0) {
@@ -590,26 +590,26 @@ void func_81302630(void) {
     }
 
     if ((sp28 == 0) && (var_s1 == 0)) {
-        D_81304000 = -1;
+        gSelectedEntryIndex = -1;
         return;
     }
 
-    D_81304000 = func_80029080();
+    gSelectedEntryIndex = GetCurrentPokemonBank();
 
     if (sp28 == 0) {
-        D_81304000 = 0;
-        while (GetEntryMenuOption(D_81304000) != 1) {
-            D_81304000++;
+        gSelectedEntryIndex = 0;
+        while (GetEntryMenuOption(gSelectedEntryIndex) != 1) {
+            gSelectedEntryIndex++;
         }
-    } else if ((D_81304000 == -1) || (D_81303FA8[D_81304000].unk_01 == 0)) {
-        D_81304000 = 0;
-        while (D_81303FA8[D_81304000].unk_01 == 0) {
-            D_81304000++;
+    } else if ((gSelectedEntryIndex == -1) || (gEntryStatus[gSelectedEntryIndex].unk_01 == 0)) {
+        gSelectedEntryIndex = 0;
+        while (gEntryStatus[gSelectedEntryIndex].unk_01 == 0) {
+            gSelectedEntryIndex++;
         }
     }
 }
 
-void func_81302798(void) {
+void Menu_UpdateEntryAnimations(void) {
     static s16 D_81303F40[] = { 0x5C0, 0x680, 0x580, 0 };
 
     f32 var_fv0;
@@ -620,12 +620,12 @@ void func_81302798(void) {
     Fragment2_1GraphNode* var_v0;
     s32 i;
 
-    for (i = 0, var_s0 = &D_81304008[0]; i < 4; i++, var_s0++) {
+    for (i = 0, var_s0 = &gEntryGraphNodes[0]; i < 4; i++, var_s0++) {
         switch (var_s0->unk_000) {
             case 0:
-                if (i == D_81304000) {
+                if (i == gSelectedEntryIndex) {
                     var_fv0 = 1.5f;
-                    var_s0->unk_00A = D_81303CB0 + 0x4000;
+                    var_s0->unk_00A = gMenuAnimTimer + 0x4000;
                     var_a1 = 0;
                     var_fv1 = 0.06f;
                     var_s1 = 0x3000;
@@ -674,7 +674,7 @@ void func_81302798(void) {
     }
 }
 
-s32 func_81302A70(s32 arg0) {
+s32 Menu_RunScreen(s32 arg0) {
     s32 var_s0 = 1;
     s32 var_s1 = 0;
     s32 i;
@@ -682,21 +682,21 @@ s32 func_81302A70(s32 arg0) {
     Stage_FadeIn(8);
 
     while (Stage_GetFadeState() != 0) {
-        func_81302498();
-        func_81302798();
+        Menu_InitInput();
+        Menu_UpdateEntryAnimations();
         func_813024C8(0);
     }
 
     if (arg0 == 1) {
-        func_8004B1CC(9);
+        ResultScreen_SetAnimation(9);
     }
 
     while (var_s0 != 0) {
-        func_81302498();
-        func_81302798();
+        Menu_InitInput();
+        Menu_UpdateEntryAnimations();
         func_813024C8(1);
 
-        if (D_81304A64 > 0) {
+        if (gEntryConfirmState > 0) {
             if (gPlayer1Controller->buttonPressed & 0x8000) {
                 var_s0 = 0;
             } else if (gPlayer1Controller->buttonPressed & 0x4000) {
@@ -708,8 +708,8 @@ s32 func_81302A70(s32 arg0) {
 
     if (var_s1 != -1) {
         for (i = 0; i < 20; i++) {
-            func_81302498();
-            func_81302798();
+            Menu_InitInput();
+            Menu_UpdateEntryAnimations();
             func_813024C8(1);
         }
     }
@@ -722,78 +722,78 @@ s32 func_81302A70(s32 arg0) {
     Stage_FadeOut(8);
 
     while (Stage_GetFadeState() != 1) {
-        func_81302498();
-        func_81302798();
+        Menu_InitInput();
+        Menu_UpdateEntryAnimations();
         func_813024C8(0);
     }
 
-    if ((var_s1 != -1) && (D_81304000 >= 0)) {
-        func_8002908C(D_81304000);
+    if ((var_s1 != -1) && (gSelectedEntryIndex >= 0)) {
+        func_8002908C(gSelectedEntryIndex);
     }
 
     return var_s1;
 }
 
-void func_81302C20(void) {
+void Menu_InitEntryNodes(void) {
     static s16 D_81303F48[] = { 1, 2, 0, 3 };
 
     Fragment2_1GraphNode* ptr;
     s32 temp_s1;
     s32 i;
 
-    D_81304A64 = 0;
+    gEntryConfirmState = 0;
 
     for (i = 0; i < 4; i++) {
         temp_s1 = D_81303F48[i];
-        ptr = &D_81304008[temp_s1].unk_028;
+        ptr = &gEntryGraphNodes[temp_s1].unk_028;
 
         Graph_AddToRootList0(ptr);
         Vec3f_Set(&ptr->unk_024, ((temp_s1 * 0x84) + 0x7A) - 320.0f, 64.0f, -579.0f);
-        D_81304008[temp_s1].unk_002 = temp_s1;
-        D_81304008[temp_s1].unk_000 = 0;
+        gEntryGraphNodes[temp_s1].unk_002 = temp_s1;
+        gEntryGraphNodes[temp_s1].unk_000 = 0;
 
         switch (MenuItem_GetHeldItemId(temp_s1)) {
             case 1:
-                D_81304008[temp_s1].unk_01C = D_201E420;
+                gEntryGraphNodes[temp_s1].unk_01C = D_201E420;
                 break;
 
             case 2:
-                D_81304008[temp_s1].unk_01C = D_2020420;
+                gEntryGraphNodes[temp_s1].unk_01C = D_2020420;
                 break;
 
             case 3:
-                D_81304008[temp_s1].unk_01C = D_2022420;
+                gEntryGraphNodes[temp_s1].unk_01C = D_2022420;
                 break;
 
             case 7:
-                D_81304008[temp_s1].unk_01C = D_2024420;
+                gEntryGraphNodes[temp_s1].unk_01C = D_2024420;
                 break;
 
             default:
-                D_81304008[temp_s1].unk_01C = NULL;
+                gEntryGraphNodes[temp_s1].unk_01C = NULL;
                 if (GetEntryMenuOption(temp_s1) > 0) {
-                    D_81304008[temp_s1].unk_01C = D_3006668;
+                    gEntryGraphNodes[temp_s1].unk_01C = D_3006668;
                 }
                 break;
         }
 
-        GraphNode_InitChild(ptr, 0, 0, D_81304648);
+        GraphNode_InitChild(ptr, 0, 0, gMenuGeoNode);
         ptr->unk_000.unk_14 = temp_s1;
     }
 }
 
-void func_81302DD8(void) {
+void Menu_InitGeo(void) {
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_8130464C = process_geo_layout(sp1C, &D_81303CB4);
-    D_81304648 = process_geo_layout(sp1C, &D_81303EC0);
+    gMenuGeoNode = process_geo_layout(sp1C, &D_81303EC0);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
-    func_81302C20();
-    D_81304650 = 1;
+    Menu_InitEntryNodes();
+    gIsEntrySelectionActive = 1;
 }
 
-s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
+s32 Menu_EntrySelection_Init(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
     s32 sp20;
 
@@ -813,17 +813,17 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
 
     AssetManager_LoadArchives();
     SpriteAssets_Load();
-    func_81302548();
-    func_81302630();
+    Menu_UpdateEntryData();
+    Menu_SelectDefaultEntry();
     MessageBank_Init();
-    D_81304658 = GetMessageBank(0x1F);
-    func_81302DD8();
-    D_81304654 = func_813001C0();
+    gEntryMessageBank = GetMessageBank(0x1F);
+    Menu_InitGeo();
+    gPlayerNameLength = GetPlayerNameLength();
 
-    D_81303FA0 = ASSET_LOAD(0, fragment33_misc, 0);
+    gMenuMiscAssets = ASSET_LOAD(0, fragment33_misc, 0);
 
     Stage_Set(sp24);
-    sp20 = func_81302A70(arg0);
+    sp20 = Menu_RunScreen(arg0);
     Stage_Destroy();
     Gfx_FreeBuffers();
 
@@ -832,7 +832,7 @@ s32 func_81302E58(s32 arg0, UNUSED s32 arg1) {
     return sp20;
 }
 
-void func_8130306C(u8* arg0) {
+void Gfx_DrawBackgroundGrid(u8* arg0) {
     Gfx* gfx = gDisplayListHead;
     s32 i;
     s32 j;
@@ -864,7 +864,7 @@ void func_8130306C(u8* arg0) {
 
 // The nine texture strips are one 9-iteration loop: IDO unrolls it by 2 (one peeled iteration, then
 // four iterations of two copies), which is what made the target look like a hand-written 4-pass loop.
-void func_8130337C(void) {
+void Gfx_DrawMenuBackground(void) {
     Gfx* gfx = gDisplayListHead;
     u8* sp30;
     s32 i;
@@ -896,7 +896,7 @@ void func_8130337C(void) {
                             0x0400);
     }
 
-    switch (D_81304654) {
+    switch (gPlayerNameLength) {
         default:
             sp30 = D_3009678;
             break;

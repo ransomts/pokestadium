@@ -41,11 +41,11 @@ void Box_MarkSpeciesOwned(unk_func_88205880_00D0* arg0) {
     s32 temp_s3;
     PokemonData* tmp = arg0->unk_000;
 
-    temp_s3 = func_80029080();
+    temp_s3 = GetCurrentPokemonBank();
 
     for (i = 0; i < arg0->unk_690; i++, tmp++) {
         if ((tmp->unk_00.unk_00 > 0) && (tmp->unk_00.unk_00 < 0x98)) {
-            func_800256F4(temp_s3, tmp->unk_00.unk_00, 3);
+            SaveSlot_SetPokemonOwned(temp_s3, tmp->unk_00.unk_00, 3);
         }
     }
 }
@@ -53,7 +53,7 @@ void Box_MarkSpeciesOwned(unk_func_88205880_00D0* arg0) {
 void Box_SaveToGbs(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
     unk_func_80022C28_ret* sp1C = CreateGbsBlock(arg0, arg1, arg2, 1);
 
-    func_80022F24(arg3, arg3->unk_690, sp1C);
+    GbsBlock_WriteEntries(arg3, arg3->unk_690, sp1C);
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
         InvalidateAndFreeGbsBlock(sp1C);
@@ -115,10 +115,10 @@ s32 BoxList_IsEmpty(unk_func_88205880_A030* arg0) {
 }
 
 void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
-    static Color_RGBA8 D_88217C20 = { 0xF0, 0xF0, 0xF0, 0xFF };
-    static Color_RGBA8 D_88217C24 = { 0x28, 0x28, 0x64, 0xFF };
-    static Color_RGBA8 D_88217C28 = { 0x3C, 0x3C, 0x82, 0xFF };
-    static Color_RGBA8 D_88217C2C = { 0x78, 0x78, 0x96, 0xFF };
+    static Color_RGBA8 gSlotTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSlotBgColor1 = { 0x28, 0x28, 0x64, 0xFF };
+    static Color_RGBA8 gSlotBgColor2 = { 0x3C, 0x3C, 0x82, 0xFF };
+    static Color_RGBA8 gSlotBgColor3 = { 0x78, 0x78, 0x96, 0xFF };
     UNUSED s32 pad[2];
 
     gDPPipeSync(gDisplayListHead++);
@@ -126,27 +126,27 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     {
-        u32 color = GPACK_RGBA5551(D_88217C24.r, D_88217C24.g, D_88217C24.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColor1.r, gSlotBgColor1.g, gSlotBgColor1.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0 + 1, arg1 + 1, ((arg0 - 2) + arg5->unk_3C), arg1 + 0x31);
     }
 
     {
-        u32 color = GPACK_RGBA5551(D_88217C28.r, D_88217C28.g, D_88217C28.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColor2.r, gSlotBgColor2.g, gSlotBgColor2.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0 + 1, arg1 + 0x32, ((arg0 - 2) + arg5->unk_3C), arg1 + 0x49);
     }
 
     {
-        u32 color = GPACK_RGBA5551(D_88217C2C.r, D_88217C2C.g, D_88217C2C.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, arg1, ((arg5->unk_3C + arg0) - 1), arg1);
     }
     {
-        u32 color = GPACK_RGBA5551(D_88217C2C.r, D_88217C2C.g, D_88217C2C.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, ((arg1 + arg5->unk_3E) - 1), ((arg5->unk_3C + arg0) - 1),
@@ -156,7 +156,7 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
         gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 1, arg0, ((arg1 + arg5->unk_3E) - 2));
     }
     {
-        u32 color = GPACK_RGBA5551(D_88217C2C.r, D_88217C2C.g, D_88217C2C.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, ((arg5->unk_3C + arg0) - 1), arg1 + 1, ((arg5->unk_3C + arg0) - 1),
@@ -197,7 +197,7 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
         }
 
         Text_ResetState();
-        Text_SetEnvColor(D_88217C20.r, D_88217C20.g, D_88217C20.b, D_88217C20.a);
+        Text_SetEnvColor(gSlotTextColor.r, gSlotTextColor.g, gSlotTextColor.b, gSlotTextColor.a);
         Text_SetFont(8, 0);
         Text_Print(((arg5->unk_3C - MeasureTextWidth(0, 0, arg2->unk_00->unk_30)) / 2) + arg0, arg1 + 0x34,
                       arg2->unk_00->unk_30);
@@ -205,17 +205,17 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
     }
 }
 
-void func_88201DA0(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, FragmentEntry arg4,
+void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, FragmentEntry arg4,
                    unk_func_88205880_0098* arg5, MemoryPool* arg6) {
-    static Color_RGBA8 D_88217C30 = { 0x32, 0x64, 0x64, 0xFF };
+    static Color_RGBA8 gBoxListHeaderColor = { 0x32, 0x64, 0x64, 0xFF };
 
     UNUSED s32 pad[2];
     unk_func_88503298* sp44;
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88201DA0));
 
-    arg0->unk_00.unk_20 = func_88202254;
-    arg0->unk_00.unk_24 = func_88202228;
+    arg0->unk_00.unk_20 = BoxList_HandleInput;
+    arg0->unk_00.unk_24 = BoxList_UpdateSelection;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -232,7 +232,7 @@ void func_88201DA0(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_8800130
 
     arg0->unk_58 = mem_pool_alloc(arg6, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(arg0->unk_58, 0, 0, arg0->unk_2C->unk_00.unk_14.unk_00, 0x1C,
-                                                           D_88217C30);
+                                                           gBoxListHeaderColor);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_58);
 
     arg0->unk_50 = mem_pool_alloc(arg6, sizeof(unk_func_8850878C));
@@ -251,10 +251,10 @@ void func_88201DA0(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_8800130
     ((func88503298)Memmap_GetFragmentVaddr(Dialog_SetParent))(sp44, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp44);
 
-    func_88202228(&arg0->unk_00, 1);
+    BoxList_UpdateSelection(&arg0->unk_00, 1);
 }
 
-void func_88202054(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
+void BoxList_SetHeaderText(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
     static u16 gMoveSlotMessageIds[] = { 0x32, 0x33 };
     static Color_RGBA8 gTeamTextColors[] = {
         { 0x96, 0x64, 0x1E, 0xFF },
@@ -270,7 +270,7 @@ void func_88202054(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
     arg0->unk_58->unk_2C = gTeamTextColors[arg1 - 1];
 }
 
-void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2) {
+void BoxList_SetPokemon(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2) {
     PokemonData* ptr = arg1->unk_000;
     s32 i;
 
@@ -286,15 +286,15 @@ void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 ar
 
     ((func885063B8)Memmap_GetFragmentVaddr(Fragment_SetData))(arg0->unk_30, &arg0->unk_38);
 
-    func_88202054(arg0, arg2 >> 0x10, arg2 & 0xFFFF);
+    BoxList_SetHeaderText(arg0, arg2 >> 0x10, arg2 & 0xFFFF);
 }
 
-void func_88202228(unk_func_88203ED8* arg0, s32 arg1) {
+void BoxList_UpdateSelection(unk_func_88203ED8* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_30->unk_00.unk_24(arg0->unk_30, arg1);
 }
 
-s32 func_88202254(unk_func_88201DA0* arg0, Controller* arg1) {
+s32 BoxList_HandleInput(unk_func_88201DA0* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -324,7 +324,7 @@ s32 func_88202254(unk_func_88201DA0* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_88202394(unk_func_88201DA0* arg0, Controller* arg1) {
+void BoxList_WaitInput(unk_func_88201DA0* arg0, Controller* arg1) {
     s32 var_s0;
     s32 var_s1 = NULL;
 
@@ -332,7 +332,7 @@ void func_88202394(unk_func_88201DA0* arg0, Controller* arg1) {
 
     while (var_s1 == 0) {
         ControllerMsgQueue_SendAndRead(var_s1);
-        var_s0 = func_88202254(arg0, arg1);
+        var_s0 = BoxList_HandleInput(arg0, arg1);
         if (!(var_s0 & 1) && (var_s0 & 2)) {
             var_s0 |= 1;
             var_s1 = 1;
@@ -360,21 +360,21 @@ void DrawBoxMonCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8820253C(unk_func_8820253C* arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
+void BoxMonCount_Init(unk_func_8820253C* arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8820253C));
 
-    arg0->unk_00.unk_18 = func_882025B4;
+    arg0->unk_00.unk_18 = BoxMonCount_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
-    func_882025AC(arg0, arg3);
+    BoxMonCount_SetBox(arg0, arg3);
 }
 
-void func_882025AC(unk_func_8820253C* arg0, unk_func_88205880_00D0* arg1) {
+void BoxMonCount_SetBox(unk_func_8820253C* arg0, unk_func_88205880_00D0* arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_882025B4(unk_func_8820253C* arg0, s32 arg1, s32 arg2) {
+s32 BoxMonCount_Draw(unk_func_8820253C* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_2C != NULL) {
         DrawBoxMonCount(arg0->unk_2C, arg1, arg2);
     }
@@ -389,7 +389,7 @@ void BoxMove_Init(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg
 
     ((func88500668)Memmap_GetFragmentVaddr(ListNode_Init))(arg0, sizeof(unk_func_882025E0_1A9780));
 
-    arg0->unk_00.unk_14 = func_88202738;
+    arg0->unk_00.unk_14 = BoxMove_SetSelection;
     arg0->unk_00.unk_10 = BoxMove_HandleInput;
     arg0->unk_00.unk_18 = 0;
     arg0->unk_00.unk_1C = 0;
@@ -411,12 +411,12 @@ void BoxMove_Init(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg
     }
 }
 
-void func_88202738(unk_func_882025E0_1A9780* arg0, s32 arg1) {
+void BoxMove_SetSelection(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     arg0->unk_00.unk_18 = arg1;
-    func_88202758(arg0);
+    BoxMove_UpdateSelection(arg0);
 }
 
-void func_88202758(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_UpdateSelection(unk_func_882025E0_1A9780* arg0) {
     s32 i;
     s32 temp_s3 = arg0->unk_00.unk_18 & 0xFF;
     s32 temp_s4 = arg0->unk_00.unk_18 & 0xFF00;
@@ -431,12 +431,12 @@ void func_88202758(unk_func_882025E0_1A9780* arg0) {
     }
 }
 
-void func_882027F0(unk_func_882025E0_1A9780* arg0, s32 arg1) {
+void BoxMove_SetActiveList(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     arg0->unk_00.unk_1C = arg1;
-    func_88202758(arg0);
+    BoxMove_UpdateSelection(arg0);
 }
 
-void func_88202810(unk_func_882025E0_1A9780* arg0, unk_func_88205880_00D0** arg1, unk_func_88205880_00D0** arg2) {
+void BoxMove_GetSelectedPokemon(unk_func_882025E0_1A9780* arg0, unk_func_88205880_00D0** arg1, unk_func_88205880_00D0** arg2) {
     switch (arg0->unk_2C) {
         case 0:
             *arg1 = arg0->unk_24[0]->unk_2C->unk_00[arg0->unk_24[0]->unk_38];
@@ -455,7 +455,7 @@ void func_88202810(unk_func_882025E0_1A9780* arg0, unk_func_88205880_00D0** arg1
     }
 }
 
-void func_882028EC(unk_func_882025E0_1A9780* arg0, unk_func_88001300_000_010* arg1, unk_func_88001300_000_010* arg2) {
+void BoxMove_GetSelectedPositions(unk_func_882025E0_1A9780* arg0, unk_func_88001300_000_010* arg1, unk_func_88001300_000_010* arg2) {
     switch (arg0->unk_2C) {
         case 0:
             arg1->unk_00 = arg0->unk_24[0]->unk_00.unk_10.unk_00;
@@ -511,7 +511,7 @@ void BoxList_DisableNonEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     ((func88506CE4)Memmap_GetFragmentVaddr(Fragment_Update))(arg0);
 }
 
-void func_88202CBC(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_UpdateListAvailability(unk_func_882025E0_1A9780* arg0) {
     ((func8850628C)Memmap_GetFragmentVaddr(Fragment_ClearFlags))(arg0->unk_24[0]);
     ((func8850628C)Memmap_GetFragmentVaddr(Fragment_ClearFlags))(arg0->unk_24[1]);
 
@@ -533,28 +533,28 @@ void func_88202CBC(unk_func_882025E0_1A9780* arg0) {
 void BoxMove_SetPhase(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     switch (arg1) {
         case 0:
-            func_88202CBC(arg0);
+            BoxMove_UpdateListAvailability(arg0);
             ScrollableList_SetDirection(arg0->unk_24[0], 1);
             ScrollableList_SetDirection(arg0->unk_24[1], 1);
-            func_882027F0(arg0, 0);
+            BoxMove_SetActiveList(arg0, 0);
             SwapArrows_Hide(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 1:
             ScrollableList_SetDirection(arg0->unk_24[1], 0);
-            func_882027F0(arg0, 1);
+            BoxMove_SetActiveList(arg0, 1);
             SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 2:
             ScrollableList_SetDirection(arg0->unk_24[0], 0);
-            func_882027F0(arg0, 0);
+            BoxMove_SetActiveList(arg0, 0);
             SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 3:
             ScrollableList_SetDirection(arg0->unk_24[1], 0);
-            func_882027F0(arg0, 1);
+            BoxMove_SetActiveList(arg0, 1);
             SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
     }
@@ -566,7 +566,7 @@ void BoxMove_SetMoveMode(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     BoxMove_SetPhase(arg0, 0);
 }
 
-void func_88202E98(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_ResetPhase(unk_func_882025E0_1A9780* arg0) {
     BoxMove_SetPhase(arg0, 0);
 }
 
@@ -579,7 +579,7 @@ void BoxMove_SwapSides(unk_func_882025E0_1A9780* arg0) {
     arg0->unk_38 = !arg0->unk_38;
 }
 
-s32 func_88202ED8(unk_func_882025E0_1A9780* arg0) {
+s32 BoxMove_IsPhaseZero(unk_func_882025E0_1A9780* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_30 == 0) {
@@ -739,15 +739,15 @@ s32 BoxMove_HandleInput(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
     return var_a2;
 }
 
-static Color_RGBA8 D_88217C48 = { 0xF0, 0xF0, 0xF0, 0xFF };
-static Color_RGBA8 D_88217C4C = { 0x5A, 0x5A, 0xA6, 0xFF };
+static Color_RGBA8 gBoxPanelTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+static Color_RGBA8 gBoxPanelAccentColor = { 0x5A, 0x5A, 0xA6, 0xFF };
 static Color_RGBA8 gPanelBackgroundColor = { 0x40, 0x40, 0x74, 0xFF };
 static Color_RGBA8 gPanelGradientColors[] = {
     { 0x78, 0x78, 0xF1, 0xFF },
     { 0x5E, 0x5E, 0xBE, 0xFF },
 };
 
-void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
+void DrawBoxPanel(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
     Color_RGBA8 sp8C;
     Color_RGBA8 sp88;
     s32 pad[1];
@@ -788,7 +788,7 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     }
 
 
-    sp88 = D_88217C48;
+    sp88 = gBoxPanelTextColor;
     if (arg4 & 4) {
         sp88.a = 0x4C;
     }
@@ -814,7 +814,7 @@ void BoxListHeader_Init(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* ar
     arg0->unk_00.unk_18 = BoxListHeader_Draw;
     arg0->unk_00.unk_14.unk_00 = arg2->unk_00.unk_14.unk_00;
     arg0->unk_00.unk_14.unk_02 = arg2->unk_00.unk_14.unk_02;
-    arg0->unk_2C = GetMoveTargetType(MenuItem_GetHeldItemId(func_80029080()));
+    arg0->unk_2C = GetMoveTargetType(MenuItem_GetHeldItemId(GetCurrentPokemonBank()));
     arg0->unk_30 = arg1;
 }
 
@@ -870,7 +870,7 @@ s32 BoxListHeader_Draw(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_88205880_A030* arg3,
+void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_88205880_A030* arg3,
                    unk_func_88001300_000* arg4, unk_func_88201DA0* arg5, TextObject* arg6, char** arg7,
                    MemoryPool* arg8) {
     static Color_RGBA8 gMenuBackgroundColor = { 0x6C, 0x6C, 0x7E, 0xFF };
@@ -928,9 +928,9 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
             0,
         },
     };
-    static Color_RGBA8 D_88217CE4 = { 0xFF, 0xFF, 0x00, 0xFF };
-    static Color_RGBA8 D_88217CE8 = { 0x2D, 0x1A, 0x41, 0xFF };
-    static Color_RGBA8 D_88217CEC = { 0x6F, 0x5F, 0x7F, 0xFF };
+    static Color_RGBA8 gFlashingElementColor = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gBottomPanelColor1 = { 0x2D, 0x1A, 0x41, 0xFF };
+    static Color_RGBA8 gBottomPanelColor2 = { 0x6F, 0x5F, 0x7F, 0xFF };
     static Color_RGBA8* gMenuItemTextColors[5] = { gPanelTextureAlt1, gPanelTextureAlt2, gPanelTextureAlt3, gTexture_MainMenuOption1, gPanelTextureAlt4 };
 
     UNUSED s32 pad[6];
@@ -955,16 +955,16 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     UNUSED s32 pad2[4];
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88203ED8));
-    arg0->unk_00.unk_1C = func_88204BA8;
-    arg0->unk_00.unk_20 = func_88204C28;
-    arg0->unk_00.unk_24 = func_88204BFC;
+    arg0->unk_00.unk_1C = BoxPCMenu_UpdateContainer;
+    arg0->unk_00.unk_20 = BoxPCMenu_HandleInput;
+    arg0->unk_00.unk_24 = BoxPCMenu_SetSelection;
     // clang-format off
     arg0->unk_00.unk_10.unk_00 = arg1; arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format on
     arg0->unk_5C = arg5;
 
     arg0->unk_64 = mem_pool_alloc(arg8, sizeof(unk_func_88203ED8_064));
-    func_88204DC0(arg0->unk_64, arg0);
+    BoxPCMenuCursor_Init(arg0->unk_64, arg0);
 
     arg0->unk_2C = mem_pool_alloc(arg8, sizeof(unk_func_88001300_038));
     ((func88502274)Memmap_GetFragmentVaddr(Fragment_SetRect))(arg0->unk_2C, 0, 0, 0x228, 0x172);
@@ -1044,12 +1044,12 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_68, 0);
 
     temp_s0 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_03C_01C));
-    ((func88503340)Memmap_GetFragmentVaddr(UIFlashingElement_Create))(temp_s0, 0, 0, 0x10, 0x10, D_88217CE4);
+    ((func88503340)Memmap_GetFragmentVaddr(UIFlashingElement_Create))(temp_s0, 0, 0, 0x10, 0x10, gFlashingElementColor);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0);
     arg0->unk_68->unk_1C = temp_s0;
 
     temp_s0_2 = mem_pool_alloc(arg8, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(UIGradientRect_Create))(temp_s0_2, 0, 0x13E, 0x228, 0x34, D_88217CE8, D_88217CEC);
+    ((func8850143C)Memmap_GetFragmentVaddr(UIGradientRect_Create))(temp_s0_2, 0, 0x13E, 0x228, 0x34, gBottomPanelColor1, gBottomPanelColor2);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_58 = mem_pool_alloc(arg8, sizeof(unk_func_88500994));
@@ -1074,14 +1074,14 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     spB4 = MeasureTextWidth(4, 0, "00");
 
     arg0->unk_38 = mem_pool_alloc(arg8, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_38, 0xA, 0x24, func_88203538, 0xE9, 0x17, 0xC, 1,
+    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_38, 0xA, 0x24, DrawBoxPanel, 0xE9, 0x17, 0xC, 1,
                                                            arg8);
     ((func88506384)Memmap_GetFragmentVaddr(List_SetItems))(arg0->unk_38, &arg3[0], arg8);
     arg0->unk_38->unk_44->unk_00.unk_28 |= 0x100;
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_38);
 
     arg0->unk_3C = mem_pool_alloc(arg8, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_3C, 0x135, 0x24, func_88203538, 0xE9, 0x17, 0xC, 1,
+    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_3C, 0x135, 0x24, DrawBoxPanel, 0xE9, 0x17, 0xC, 1,
                                                            arg8);
     ((func88506384)Memmap_GetFragmentVaddr(List_SetItems))(arg0->unk_3C, &arg3[1], arg8);
     arg0->unk_3C->unk_44->unk_00.unk_28 |= 0x100;
@@ -1101,7 +1101,7 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_74[i]);
 
         arg0->unk_7C[i] = mem_pool_alloc(arg8, sizeof(unk_func_8820253C));
-        func_8820253C(arg0->unk_7C[i], 0xB4 - spB4, 0, 0);
+        BoxMonCount_Init(arg0->unk_7C[i], 0xB4 - spB4, 0, 0);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_74[i], arg0->unk_7C[i]);
 
         arg0->unk_70->unk_1C[i] = arg0->unk_74[i];
@@ -1130,19 +1130,19 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     if (spA8) {}
 }
 
-s32 func_88204BA8(unk_func_88203ED8* arg0) {
+s32 BoxPCMenu_UpdateContainer(unk_func_88203ED8* arg0) {
     if (arg0->unk_64->unk_00.unk_1C == 0) {
         ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_58, arg0->unk_68->unk_24);
     }
     return 0;
 }
 
-void func_88204BFC(unk_func_88203ED8* arg0, s32 arg1) {
+void BoxPCMenu_SetSelection(unk_func_88203ED8* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_64->unk_00.unk_14(arg0->unk_64, arg1);
 }
 
-s32 func_88204C28(unk_func_88203ED8* arg0, Controller* arg1) {
+s32 BoxPCMenu_HandleInput(unk_func_88203ED8* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -1153,27 +1153,27 @@ s32 func_88204C28(unk_func_88203ED8* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_88204C74(unk_func_88203ED8* arg0) {
+void BoxPCMenu_TogglePanelFills(unk_func_88203ED8* arg0) {
     Panel_ToggleFill(arg0->unk_44[0]);
     Panel_ToggleFill(arg0->unk_44[1]);
     Panel_ToggleFill(arg0->unk_44[2]);
     Panel_ToggleFill(arg0->unk_44[3]);
 }
 
-void func_88204CBC(unk_func_88203ED8* arg0) {
+void BoxPCMenu_ExecuteMove(unk_func_88203ED8* arg0) {
     unk_func_88205880_00D0* sp34;
     unk_func_88205880_00D0* sp30;
     unk_func_88001300_000_010 sp2C;
     unk_func_88001300_000_010 sp28;
 
-    func_88202810(arg0->unk_6C, &sp30, &sp34);
-    func_882028EC(arg0->unk_6C, &sp2C, &sp28);
+    BoxMove_GetSelectedPokemon(arg0->unk_6C, &sp30, &sp34);
+    BoxMove_GetSelectedPositions(arg0->unk_6C, &sp2C, &sp28);
 
-    func_882025AC(arg0->unk_7C[0], sp30);
+    BoxMonCount_SetBox(arg0->unk_7C[0], sp30);
     SlideAnim_Begin(arg0->unk_74[0], sp2C, sp28);
 
     if (sp34 != NULL) {
-        func_882025AC(arg0->unk_7C[1], sp34);
+        BoxMonCount_SetBox(arg0->unk_7C[1], sp34);
         SlideAnim_Begin(arg0->unk_74[1], sp28, sp2C);
     }
 
@@ -1184,7 +1184,7 @@ void func_88204CBC(unk_func_88203ED8* arg0) {
     arg0->unk_6C->unk_00.unk_14(arg0->unk_6C, 1);
 }
 
-void func_88204DC0(unk_func_88203ED8_064* arg0, unk_func_88203ED8* arg1) {
+void BoxPCMenuCursor_Init(unk_func_88203ED8_064* arg0, unk_func_88203ED8* arg1) {
     ((func8850BDF0)Memmap_GetFragmentVaddr(SelectableList_Init))(arg0);
 
     arg0->unk_00.unk_10 = BoxPCMenuCursor_HandleInput;
@@ -1218,7 +1218,7 @@ u32 Box_DiffersFromGbs(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg
 
 s32 MarkModifiedBoxes(unk_func_88203ED8* arg0) {
     s32 i;
-    s32 temp_s3 = func_80029080();
+    s32 temp_s3 = GetCurrentPokemonBank();
     s32 var_s2 = 0;
     u32 temp_v0;
     unk_func_88205880_00D0** var_s1;
@@ -1262,7 +1262,7 @@ s32 MarkModifiedBoxes(unk_func_88203ED8* arg0) {
 
 void SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1) {
     s32 i;
-    s32 temp_s3 = func_80029080();
+    s32 temp_s3 = GetCurrentPokemonBank();
     unk_func_88205880_00D0** var_s1;
 
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_84->unk_40, 2);
@@ -1290,7 +1290,7 @@ void SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1) {
     }
 
     if (arg1 & 2) {
-        func_80025540(temp_s3);
+        SaveSlot_UpdateOwnedPokemonBitmask(temp_s3);
         ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_84, temp_s3);
     }
 
@@ -1415,32 +1415,32 @@ s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1) {
                     case 0:
                     case 2:
                         PlaySoundEffect(0x18);
-                        func_88204CBC(arg0->unk_24);
+                        BoxPCMenu_ExecuteMove(arg0->unk_24);
                         BoxMove_SwapBetweenLists(arg0->unk_24->unk_6C);
-                        func_88202E98(arg0->unk_24->unk_6C);
+                        BoxMove_ResetPhase(arg0->unk_24->unk_6C);
                         sp34 = 0x80000081;
                         break;
 
                     case 1:
                         PlaySoundEffect(0x18);
-                        func_88204CBC(arg0->unk_24);
+                        BoxPCMenu_ExecuteMove(arg0->unk_24);
                         BoxMove_SwapWithinList(arg0->unk_24->unk_6C);
-                        func_88202E98(arg0->unk_24->unk_6C);
+                        BoxMove_ResetPhase(arg0->unk_24->unk_6C);
                         sp34 = 0x80000081;
                         break;
 
                     case 3:
                         PlaySoundEffect(2);
                         tmp = (arg0->unk_24->unk_6C->unk_38 != 0 ? 1 : 2) << 0x10;
-                        func_8820213C(arg0->unk_24->unk_5C,
+                        BoxList_SetPokemon(arg0->unk_24->unk_5C,
                         ((s32*)arg0->unk_24->unk_6C->unk_24[0]->unk_2C->unk_00)[arg0->unk_24->unk_6C->unk_24[0]->unk_38],
                         tmp | arg0->unk_24->unk_6C->unk_24[0]->unk_38);
 
                         arg0->unk_24->unk_6C->unk_24[0]->unk_00.unk_24(arg0->unk_24->unk_6C->unk_24[0], 0x100);
-                        func_88202394(arg0->unk_24->unk_5C, arg1);
+                        BoxList_WaitInput(arg0->unk_24->unk_5C, arg1);
 
                         arg0->unk_24->unk_6C->unk_24[0]->unk_00.unk_24(arg0->unk_24->unk_6C->unk_24[0], 1);
-                        func_88202E98(arg0->unk_24->unk_6C);
+                        BoxMove_ResetPhase(arg0->unk_24->unk_6C);
                         sp34 = 1;
                         break;
                 }
@@ -1458,7 +1458,7 @@ s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1) {
 
             case 1:
                 sp34 = 1;
-                if (func_88202ED8(arg0->unk_24->unk_6C) != 0) {
+                if (BoxMove_IsPhaseZero(arg0->unk_24->unk_6C) != 0) {
                     sp20 = sp24;
                 }
                 break;
@@ -1467,9 +1467,9 @@ s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1) {
         if (sp20 != arg0->unk_24->unk_6C->unk_38) {
             BoxMove_SwapSides(arg0->unk_24->unk_6C);
             if (arg0->unk_00.unk_1C == 1) {
-                func_88202CBC(arg0->unk_24->unk_6C);
+                BoxMove_UpdateListAvailability(arg0->unk_24->unk_6C);
             }
-            func_88204C74(arg0->unk_24);
+            BoxPCMenu_TogglePanelFills(arg0->unk_24);
             SwapArrows_ToggleDirection(arg0->unk_24->unk_40);
 
             ((func8850BFB0)Memmap_GetFragmentVaddr(SelectableList_UpdateVisuals))(arg0);
@@ -1502,10 +1502,10 @@ void BoxPCUI_Run(unk_func_88203ED8* arg0, Controller* arg1) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, MemoryPool* arg4, char** arg5,
+void BoxPC_InitScreen(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, MemoryPool* arg4, char** arg5,
                    char** arg6, char** arg7, char** arg8, char** arg9, char** argA, char** argB, char** argC) {
-    static Color_RGBA8 D_88217D04 = { 0x1E, 0x50, 0x50, 0xFF };
-    static Color_RGBA8 D_88217D08 = { 0x00, 0x0A, 0x0A, 0xFF };
+    static Color_RGBA8 gPcBackdropColorLight = { 0x1E, 0x50, 0x50, 0xFF };
+    static Color_RGBA8 gPcBackdropColorDark = { 0x00, 0x0A, 0x0A, 0xFF };
 
     unk_func_88001300_000* sp7C;
     unk_func_88001300_000* sp78;
@@ -1519,14 +1519,14 @@ void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, Memo
     unk_func_88509A2C* sp54;
     unk_func_88509E34* sp50;
 
-    sp60 = func_80029080();
+    sp60 = GetCurrentPokemonBank();
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(BoxPCScreen));
-    arg0->unk_0000.unk_20 = func_88205DD0;
+    arg0->unk_0000.unk_20 = BoxPC_HandleInput;
     arg0->unk_0000.unk_10.unk_00 = arg1;
     arg0->unk_0000.unk_10.unk_02 = arg2;
 
-    if (func_8002513C(sp60) == 0) {
-        func_80024208(sp60);
+    if (SaveSlot_GetPokemonBall(sp60) == 0) {
+        SetSaveDirtyFlag(sp60);
     }
 
     Boxes_LoadFromGbs(arg0->unk_00D0, 0x21, sp60, 0xC);
@@ -1548,8 +1548,8 @@ void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, Memo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp7C);
 
     sp5C = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp5C, 0, 0, 0x280, 0x1E0, gPcBackdropTile, D_88217D04,
-                                                           D_88217D08);
+    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp5C, 0, 0, 0x280, 0x1E0, gPcBackdropTile, gPcBackdropColorLight,
+                                                           gPcBackdropColorDark);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp7C, sp5C);
 
     sp58 = mem_pool_alloc(arg4, sizeof(unk_func_885088F4));
@@ -1558,7 +1558,7 @@ void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, Memo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp7C, sp58);
 
     sp54 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp54, 0x38, 0x22, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp54, 0x38, 0x22, GetCurrentPokemonBank(),
                                                            GetMessageString(NULL, 0, gItemMessageBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp58, sp54);
 
@@ -1593,17 +1593,17 @@ void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, Memo
     sp70(0, &arg0->unk_0098);
 
     arg0->unk_0094 = mem_pool_alloc(arg4, sizeof(unk_func_88201DA0));
-    func_88201DA0(arg0->unk_0094, 0x37, 0x52, sp78, sp70, &arg0->unk_0098, arg4);
+    BoxList_Init(arg0->unk_0094, 0x37, 0x52, sp78, sp70, &arg0->unk_0098, arg4);
 
     arg0->unk_002C = mem_pool_alloc(arg4, sizeof(unk_func_88203ED8));
-    func_88203ED8(arg0->unk_002C, 0x2C, 0x4C, &arg0->unk_A030, sp7C, arg0->unk_0094, arg3, arg5, arg4);
+    BoxPCMenu_Init(arg0->unk_002C, 0x2C, 0x4C, &arg0->unk_A030, sp7C, arg0->unk_0094, arg3, arg5, arg4);
 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp78, arg0->unk_002C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp74, arg0->unk_0094);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_0098.unk_08);
 }
 
-s32 func_88205DD0(BoxPCScreen* arg0, Controller* arg1) {
+s32 BoxPC_HandleInput(BoxPCScreen* arg0, Controller* arg1) {
     return arg0->unk_002C->unk_00.unk_20(arg0->unk_002C, arg1);
 }
 
@@ -1667,7 +1667,7 @@ void TextObject_Cancel(TextObject* arg0) {
     sp40 = GetMessageBank(0xB);
 
     sp68 = mem_pool_alloc(sp6C, sizeof(BoxPCScreen));
-    func_88205880(sp68, 0, 0, arg0, sp6C, sp5C, sp58, sp54, sp50, sp4C, sp48, sp44, sp40);
+    BoxPC_InitScreen(sp68, 0, 0, arg0, sp6C, sp5C, sp58, sp54, sp50, sp4C, sp48, sp44, sp40);
 
     sp60 = ALIGN16((u32)mem_pool_alloc(sp6C, sizeof(TextObjectThreadData)));
 

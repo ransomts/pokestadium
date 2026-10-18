@@ -7921,3 +7921,1103 @@ func_86201770	UpdatePlayerAnimProgress	w27		Updates player's animation progress 
 func_862022CC	UpdateFinishersAnim	w27		Updates animation for players who have finished, called after race ends	applied@ab6aaba
 func_86202C7C	TriggerWinnerAnim	w27		Triggers winner animation for players who finished and are marked as winner	applied@ab6aaba
 func_86202D5C	TriggerResultAnims	w27		Triggers result animations for all players at the end of the race	applied@ab6aaba
+func_80022A04	IsPokemonNameMatch	w28		compares a decoded Gen1 string buffer with a provided u16 array using bcmp	applied@60d28c0
+func_80022A28	GetPokemonType1	w28		indexes into D_80073230 which contains Pokemon type data	applied@60d28c0
+func_80022AF0	GbsBlock_InitStandard	w28		initializes Gbs block metadata using GbsGetBlockDataSize and GbsGetBlockEntryCount	applied@60d28c0
+func_80022B88	GbsBlock_InitExtended	w28		initializes Gbs block metadata using extended functions func_800249FC and func_80024A48	applied@60d28c0
+func_80022CC0	GbsBlock_CreateWithString	w28		creates a Gbs block and immediately sets a string and value via GbsSetBlockStringAndValue	applied@60d28c0
+func_80022DF4	GbsBlock_SetLimit	w28		caps the current index unk_0A to a maximum value arg1 if the block size allows	applied@60d28c0
+func_80022F24	GbsBlock_WriteEntries	w28		iteratively writes data to a Gbs block using GbsWriteBlockEntry or func_80024DAC	applied@60d28c0
+func_80023130	IsPokemonSave	w28		checks if the first 11 bytes of a buffer contain the character 'P'	applied@60d28c0
+func_800232D0	VerifySaveData	w28		compares a buffer against the gSaveHeader for equality	applied@60d28c0
+func_800233F4	VerifySaveChecksum	w28		reads save header from MBC and validates checksum against player save data	applied@60d28c0
+func_80023480	LoadAndVerifySave	w28		reads save header from MBC and validates checksum, updating player save data if valid	applied@60d28c0
+func_80023574	SaveAndVerifyHeader	w28		computes checksum and writes save header to MBC, then verifies the write	applied@60d28c0
+func_80023658	SaveAndVerifyFooter	w28		computes checksum and writes a footer/flag to MBC address 0x3520, then verifies	applied@60d28c0
+func_80023740	ReadSaveBoxData	w28		reads box data from MBC at 0x4000 or 0x6000 into player save data	applied@60d28c0
+func_800237C8	WriteAndVerifyBoxData	w28		writes box data to MBC at 0x4000 or 0x6000 and verifies the write	applied@60d28c0
+func_800238D8	PlayerSave_PoolFreeCallback	w28		callback for main_pool_alloc that clears flags in gPlayerSaveData when memory is freed	applied@60d28c0
+func_80023990	VerifySaveFlag	w28		checks if the save header flag unk_08A exists in the gValidSaveFlags table	applied@60d28c0
+func_80023A04	PlayerSave_InitAndLoad	w28		allocates memory for save data, initializes GB Pak, and loads the save header	applied@60d28c0
+func_80023B7C	PlayerSave_LoadBoxes	w28		allocates memory for box data and reads it from the GB Pak MBC	applied@60d28c0
+func_80023E34	PlayerSave_UpdateState	w28		state machine for GB Pak power, insertion, and ROM detection	applied@60d28c0
+func_80023F78	PlayerSave_Refresh	w28		resets save flags and attempts to reload save data and update status	applied@60d28c0
+func_80024040	PlayerSave_RequestRefresh	w28		sets the 0x20 flag and calls func_80023F78 for a specific player	applied@60d28c0
+func_80024208	SetSaveDirtyFlag	w28		sets the 0x8000 bit in the save data at offset 0x2CC	applied@60d28c0
+func_80024270	PlayerSave_WriteBoxes	w28		initializes GB Pak and writes box data back to the MBC	applied@60d28c0
+func_8002431C	PlayerSave_WriteHeader	w28		initializes GB Pak and writes the save header back to the MBC	applied@60d28c0
+func_800243D8	PlayerSave_FullSave	w28		performs a complete save sequence: footer, boxes, and header	applied@60d28c0
+func_8002447C	PlayerSave_VerifyPresence	w28		initializes GB Pak and checks if the save header is present and valid	applied@60d28c0
+func_800244F4	PlayerSave_PowerOff	w28		sets the GB Pak power state to 0	applied@60d28c0
+func_80024528	GetPokemonRecordPtr	w28		returns a pointer to a Pokemon record based on whether it is in the party or a box	applied@60d28c0
+func_80024624	LoadPartyPokemon	w28		deserializes a Pokemon from the party save data into a PokemonData struct	applied@60d28c0
+func_800246F8	SavePartyPokemon	w28		serializes a Pokemon from a struct into the party save data	applied@60d28c0
+func_800247C4	LoadBoxPokemon	w28		deserializes a Pokemon from the box save data into a PokemonData struct	applied@60d28c0
+func_80024884	SaveBoxPokemon	w28		serializes a Pokemon from a struct into the box save data	applied@60d28c0
+func_80024948	GetPokemonRecordId	w28		returns the ID of a Pokemon record from the save data	applied@60d28c0
+func_80024978	SetPokemonRecordId	w28		sets the ID of a Pokemon record and marks it as empty (0xFF)	applied@60d28c0
+func_800249B0	GetSaveBlockMaxEntries	w28		returns the maximum number of entries for a given save block type (32, 33, 34, 35)	applied@60d28c0
+func_800249FC	GetSaveBlockEntrySize	w28		returns the size of a single entry for a given save block type	applied@60d28c0
+func_80024A48	GetSaveBlockCurrentCount	w28		returns the current number of entries in a save block	applied@60d28c0
+func_80024AE0	SetSaveBlockCount	w28		sets the current count of a save block and marks the overflow entry as empty	applied@60d28c0
+func_80024BC4	IncrementSaveBlockCount	w28		increments the entry count of a save block if it is below the maximum	applied@60d28c0
+func_80024CB0	ReadSaveBlockEntry	w28		reads a specific entry from a save block into a PokemonData struct	applied@60d28c0
+func_80024DAC	WriteSaveBlockEntry	w28		writes a Pokemon struct into a save block entry and increments count if needed	applied@60d28c0
+func_80024EF4	GetActivePlayerMask	w28		returns the gActivePlayerMask	applied@60d28c0
+func_80024F24	GetPlayerBitmask	w28		returns a bitmask (1 << arg0) for the specified player index	applied@60d28c0
+D_80073230	gPokemonTypeTable	w28		table of Pokemon types used by func_80022A28	applied@60d28c0
+func_80024FB0	SaveSlot_LoadPokemonData	w28		copies Pokemon data from the save buffer (unk_50) to the active slot (unk_40) including a BE16 read of unk_085	applied@60d28c0
+func_80025084	SaveSlot_GetPokemonId	w28		reads a BE16 value from unk_085 in the save buffer, typically the Pokemon species ID	applied@60d28c0
+func_800250E0	SaveSlot_SetPokemonId	w28		writes a BE16 value to unk_085 in the save buffer	applied@60d28c0
+func_8002513C	SaveSlot_GetPokemonBall	w28		reads unk_2CC from the save buffer and extracts the ball ID (bit 8)	applied@60d28c0
+func_80025210	SaveSlot_EncodeTrainerName	w28		encodes the trainer name from the save buffer (unk_018) into a provided string buffer	applied@60d28c0
+func_8002526C	SaveSlot_GetNickname	w28		decodes the Pokemon nickname from the save buffer (unk_076)	applied@60d28c0
+func_800252CC	SaveSlot_EncodeNickname	w28		encodes the Pokemon nickname from the save buffer (unk_076) into a provided string buffer	applied@60d28c0
+func_80025328	SaveSlot_GetPokemonExperience	w28		returns the value at unk_441 in the save buffer, likely experience points	applied@60d28c0
+func_8002539C	MenuItem_IsPokemonShiny	w28		checks bit 0x2000 of the Pokemon status flags	applied@60d28c0
+func_800253C8	MenuItem_IsPokemonEgg	w28		checks bit 0x1000 of the Pokemon status flags	applied@60d28c0
+func_800253F4	SaveSlot_CopyPokemonStats	w28		copies Pokemon ID, level, and other stats from the save data to a temporary structure	applied@60d28c0
+func_80025540	SaveSlot_UpdateOwnedPokemonBitmask	w28		iterates through save data and calls MarkPokemonOwned to populate the gPlayerSaveData[arg0].unk_06 bitmask	applied@60d28c0
+func_8002564C	SaveSlot_CheckPokemonOwned	w28		checks if a specific Pokemon ID is marked as owned in any of the three bitmasks (unk_023, unk_036, unk_06)	applied@60d28c0
+func_800256F4	SaveSlot_SetPokemonOwned	w28		sets or clears the owned status for a Pokemon ID across the three bitmasks based on the value of arg2	applied@60d28c0
+func_80025840	SaveSlot_CountOwnedPokemon1	w28		counts set bits in the unk_036 bitmask for Pokemon IDs 0 to 0x96	applied@60d28c0
+func_80025988	SaveSlot_CountOwnedPokemon2	w28		counts set bits in the unk_023 bitmask for Pokemon IDs 0 to 0x96	applied@60d28c0
+func_80025AD0	SaveSlot_CountOwnedPokemon3	w28		counts set bits in the unk_06 bitmask for Pokemon IDs 0 to 0x96	applied@60d28c0
+func_8004473C	Audio_StopAllTracks	w28		writes 0 to multiple GB APU registers (0xFF10, 0xFF12, 0xFF17, 0xFF21, etc) and resets track state	applied@60d28c0
+func_80044568	Audio_PrepareTrack	w28		clears channel states and calls func_800448B4 to load track data	applied@60d28c0
+func_80044A50	Music_ResolveTrackOffsets	w28		converts relative offsets in the music table to absolute pointers	applied@60d28c0
+func_80044108	Audio_UpdateChannelVolume	w28		manipulates 0xFF25 and channel-specific volume registers	applied@60d28c0
+func_80043F04	Audio_ProcessEnvelope	w28		updates volume based on envelope start, end, and step values in D_800FCD98	applied@60d28c0
+func_80044180	Audio_FetchCommand	w28		reads a byte from the current program counter D_800FCE48 and increments it	applied@60d28c0
+func_800431DC	Audio_Command_ToggleLoop	w28		toggles bit 0 of the channel status flag D_800FCD58	applied@60d28c0
+func_8004327C	Audio_Command_SetVibrato	w28		sets vibrato parameters in D_800FCD98 and sets status bit 0x10	applied@60d28c0
+func_80043330	Audio_Command_SetTempo	w28		sets a tempo-related value in D_800FCE20	applied@60d28c0
+func_80043364	Audio_Command_SetBPM	w28		sets a 16-bit BPM value in D_800FCEB0 or D_800FCEB2	applied@60d28c0
+func_8004340C	Audio_Command_SetMasterVol	w28		sets the master volume level in D_800FCE40[1]	applied@60d28c0
+func_80043434	Audio_Command_ChangeTrack	w28		calls Audio_SelectTrack and manages track transition flags	applied@60d28c0
+func_80043488	Audio_Command_SetSustain	w28		sets sustain value in D_800FCE18 and sets status bit 0x40	applied@60d28c0
+func_800434E0	Audio_Command_SetGlobalVol	w28		writes a value to GB APU register 0xFF24	applied@60d28c0
+func_80043514	Audio_Command_EnableLoop	w28		sets bit 0 of the channel control flag D_800FCD60	applied@60d28c0
+func_80043534	Audio_Command_SetPitch	w28		sets pitch/frequency parameters in D_800FCEA8 and D_800FCE28	applied@60d28c0
+func_800435CC	Audio_Command_SetInstrument	w28		sets instrument index in D_800FCE38	applied@60d28c0
+func_800435E8	Audio_Command_PlayNote	w28		handles note playback, calling volume and pitch update functions	applied@60d28c0
+func_80043708	Audio_Command_NoteHandler	w28		dispatches note commands to func_800437A0 or writes to 0xFF10	applied@60d28c0
+func_800437A0	Audio_Command_NoteUpdate	w28		updates note parameters and handles track re-selection	applied@60d28c0
+func_80043838	Audio_CalculateNoteOffset	w28		calculates the memory offset for a note based on pitch and BPM	applied@60d28c0
+func_80043A10	Audio_UpdateNotePitch	w28		calculates and writes the final pitch value to the APU	applied@60d28c0
+func_80043B28	Audio_UpdateChannelPan	w28		updates the pan/volume register 0xFF25 based on channel index	applied@60d28c0
+func_80043C08	Audio_UpdateChannelFreq	w28		writes the calculated frequency to the channel's APU register	applied@60d28c0
+func_80043C74	Audio_WriteNoteData	w28		writes the low and high bytes of the note value to the APU	applied@60d28c0
+func_80043DB0	Audio_UpdateBPMOffset	w28		adjusts D_800FCEB2 based on the result of func_80043EC0	applied@60d28c0
+func_80043DF8	Audio_ApplyPitchBend	w28		applies a pitch offset to the note data written to the APU	applied@60d28c0
+func_80043E70	Audio_DecrementProgramCounter	w28		decrements the current command pointer D_800FCE48	applied@60d28c0
+func_80043EC0	Audio_IsTrackActive	w28		checks if the current track index is within the active range	applied@60d28c0
+func_80044058	Audio_SetEnvelopeTarget	w28		sets the target volume for the envelope and calculates the step	applied@60d28c0
+func_800441A4	Audio_GetApuRegister	w28		returns the base APU register address for a given channel and offset	applied@60d28c0
+func_800441F0	Audio_GetFrequencyValue	w28		converts a note index and octave into a frequency value using a lookup table	applied@60d28c0
+func_80044278	Audio_ResetAllChannels	w28		zeroes out all channel state, envelopes, and program counters	applied@60d28c0
+func_800448B4	Audio_LoadTrackData	w28		initializes channel pointers and status flags from the music table	applied@60d28c0
+D_800FCD48	gChannelActiveFlags	w28		array indicating if a channel is currently playing	applied@60d28c0
+D_800FCD50	gChannelWaitCounters	w28		counters used to delay command processing	applied@60d28c0
+D_800FCD58	gChannelStatus	w28		bitfield for channel states (looping, sustain, vibrato, etc)	applied@60d28c0
+D_800FCD60	gChannelControl	w28		bitfield for channel-specific control flags	applied@60d28c0
+D_800FCD68	gTrackTransitionFlag	w28		flag used to synchronize track changes	applied@60d28c0
+D_800FCD70	gEnvelopeState	w28		struct containing current and target envelope values	applied@60d28c0
+D_800FCD98	gVibratoState	w28		struct containing vibrato current, target, and step values	applied@60d28c0
+D_800FCE18	gChannelSustainValues	w28		stores sustain levels for each channel	applied@60d28c0
+D_800FCE20	gChannelTempoValues	w28		stores tempo/speed modifiers for each channel	applied@60d28c0
+D_800FCE28	gChannelPitchValues	w28		stores pitch modifiers for each channel	applied@60d28c0
+D_800FCE30	gChannelJumpCounters	w28		counters to prevent infinite loops in jump commands	applied@60d28c0
+D_800FCE38	gChannelInstruments	w28		stores the current instrument index for each channel	applied@60d28c0
+D_800FCE40	gMasterVolume	w28		stores master and global volume levels	applied@60d28c0
+D_800FCE48	gChannelProgramCounters	w28		pointers to the current command in the music data	applied@60d28c0
+D_800FCE68	gChannelPrevProgramCounters	w28		stores the previous PC for jump/loop returns	applied@60d28c0
+D_800FCE88	gChannelDataBases	w28		base addresses for the music data of each channel	applied@60d28c0
+D_800FCEA8	gChannelPitchBase	w28		base pitch values for each channel	applied@60d28c0
+D_800FCEB0	gBpmLow	w28		BPM value for channels 0-3	applied@60d28c0
+D_800FCEB2	gBpmHigh	w28		BPM value for channels 4-7	applied@60d28c0
+D_800FCEB4	gCurrentTrackId	w28		the ID of the currently playing music track	applied@60d28c0
+D_800FCEB6	gPitchModifiers	w28		fine-tuning pitch modifiers for specific channels	applied@60d28c0
+D_800FCEB8	gCustomWaveforms	w28		pointers to custom waveform data for channels 2 and 6	applied@60d28c0
+D_800FCEC0	gChannelNoteOffsets	w28		accumulated offsets for note timing	applied@60d28c0
+D_800FCEC8	gCurrentTrackData	w28		pointer to the current track's entry in the music table	applied@60d28c0
+D_800FCECC	gTrackPitchOffset	w28		global pitch offset for the current track	applied@60d28c0
+D_800FCECD	gTrackBpmOffset	w28		global BPM offset for the current track	applied@60d28c0
+D_80078590	gChannelPanLow	w28		lookup table for channel panning low values	applied@60d28c0
+D_80078598	gChannelPanHigh	w28		lookup table for channel panning high values	applied@60d28c0
+D_800785A0	gTrackRangeStart	w28		lower bound of track IDs that use specific loading logic	applied@60d28c0
+D_800785A4	gTrackRangeEnd	w28		upper bound of track IDs that use specific loading logic	applied@60d28c0
+D_800785A8	gTrackIdLimit	w28		limit for track ID selection logic	applied@60d28c0
+D_800785AC	gTrackIdMax	w28		maximum valid track ID	applied@60d28c0
+D_800785B0	gTrackMinId	w28		minimum valid track ID	applied@60d28c0
+D_800785B4	gTrackLoadStatus	w28		status flag for track loading process	applied@60d28c0
+D_800785B8	gDefaultWaveform	w28		default waveform data for channel 6	applied@60d28c0
+unk_D_800FCD70	EnvelopeState	w28		unk_D_800FCD70:EnvelopeState	applied@60d28c0
+unk_D_800FCD98	VibratoState	w28		unk_D_800FCD98:VibratoState	applied@60d28c0
+func_86400128	IsHealthSegmentMatch	w28		checks if the current health segment matches the player's HUD segment bounds	applied@60d28c0
+func_86400184	Hud_SetAnimationState	w28		sets animation parameters (action, index, etc) for a HUD state structure	applied@60d28c0
+func_864001A0	Hud_InitDefaultStates	w28		initializes player HUD states based on menu state and color defaults	applied@60d28c0
+func_86400220	ResultScreen_ResetAnim	w28		resets the result screen node animation if it has reached the end	applied@60d28c0
+func_86400258	GameState_UpdateAnim	w28		updates the game state animation and triggers health bar segment offsets	applied@60d28c0
+func_864002F8	Hud_UpdateAnimation	w28		calculates health percentages and triggers corresponding HUD animations and sounds	applied@60d28c0
+func_864005EC	Hud_HandlePlayerElimination	w28		manages player elimination sequence, score incrementing, and HUD state updates	applied@60d28c0
+func_86400860	Hud_RenderHealthBars	w28		allocates Gfx buffers and renders health bar display lists and damage overlays	applied@60d28c0
+func_86400BE8	ResultScreen_Update	w28		updates health segment matching, alpha blending, and result screen timing	applied@60d28c0
+func_86400EB4	ResultScreen_HandleInput	w28		handles button presses to subtract health and update segment counters	applied@60d28c0
+func_86401544	ResultScreen_DrawUI	w28		renders the result screen panels, borders, and text strings from gItemNamesBank	applied@60d28c0
+func_86401B3C	ResultScreen_IntroSequence	w28		handles the initial fade-in and wait loop before the main result interaction	applied@60d28c0
+func_86401EEC	ResultScreen_OutroSequence	w28		handles the fade-out and audio volume fade when exiting the result screen	applied@60d28c0
+func_86401F74	ResultScreen_SetupCamera	w28		configures the camera view parameters, FOV, and position for the result screen	applied@60d28c0
+func_8640203C	Hud_CreateBillboards	w28		creates billboard nodes for each player's HUD and adds them to the graph root	applied@60d28c0
+func_86402130	ResultScreen_InitScene	w28		loads geo layouts, initializes graph nodes for players and game state, and sets spawn info	applied@60d28c0
+func_864025A0	ResultScreen_Main	w28		main entry point that sets up the stage, loads assets, and runs the result screen sequences	applied@60d28c0
+D_86402844	gPlayerButtonPressed	w28		stores whether the current player has pressed the required button	applied@60d28c0
+unk_D_86404778	HudState	w28		structure tracking player HUD animation state, health, and segment offsets	applied@60d28c0
+unk_D_86405158	ResultGameState	w28		structure tracking the overall game state and main result graph node	applied@60d28c0
+func_868026B8	Sushi_GetScaleType	w28		returns 2 if arg0 < 0x32, else 1; used in Sushi_InitEntity for scale logic	applied@60d28c0
+func_868026E0	Sushi_CalcScaleFactor	w28		calculates a float based on arg0 with a 0.5f floor; used in Sushi_InitEntity	applied@60d28c0
+func_86802728	Sushi_ResetPhysics	w28		zeroes out physics-related fields (velocity, acceleration) in the entity struct	applied@60d28c0
+func_86802D28	Sushi_CalcSoundPan	w28		calculates a 0-512 value based on X distance from D_86808498 for PlaySoundByCategory	applied@60d28c0
+func_86803038	Sushi_GetEntityByInstance	w28		finds the Sushi entity associated with a specific gSushiInstance	applied@60d28c0
+func_86803374	Sushi_FindTargetByPriority	w28		searches for targets based on type (unk_05C) and then by gSushiOrderIndices	applied@60d28c0
+func_868035FC	Sushi_FindSpecialTarget	w28		searches for targets with specific flags (unk_0C == 1 or unk_02 & 2)	applied@60d28c0
+func_86803BC4	Sushi_CalcAnimationWeight	w28		interpolates a value based on frame counts in D_86807114/D_8680711C	applied@60d28c0
+func_86804634	Sushi_FindNearbyInstance	w28		finds a gSushiInstance within distance D_86806FBC of the entity's position	applied@60d28c0
+func_86804700	Sushi_CheckCollision	w28		checks if entity is animating or colliding with other entities in D_86807558	applied@60d28c0
+D_86806F90	gSushiMoveSpeed	w28		array of movement speed constants used in Sushi_UpdateAI	applied@60d28c0
+D_86806F9C	gSushiTurnSpeedFast	w28		constant used for fast rotation/movement in Sushi_UpdateAI	applied@60d28c0
+D_86806FA0	gSushiTurnSpeedSlow	w28		constant used for slow rotation/movement in Sushi_UpdateAI	applied@60d28c0
+D_86806FA4	gSushiTurnSpeedMed	w28		constant used for medium rotation/movement in Sushi_UpdateAI	applied@60d28c0
+D_86806FA8	gSushiGravity	w28		constant -5.0f applied to Y velocity in Sushi_UpdateAI	applied@60d28c0
+D_86806FAC	gSushiRotationLerp	w28		constant 0.9f used to interpolate entity facing direction	applied@60d28c0
+D_86806FB0	gSushiCollisionRadiusY	w28		constant 130.0f used in collision check func_86804700	applied@60d28c0
+D_86806FB4	gSushiCollisionOffset	w28		constant 20.0f used in collision check func_86804700	applied@60d28c0
+D_86806FB8	gSushiMaxRadius	w28		constant 130.0f used in Sushi_ClampPosition and Sushi_InitEntity	applied@60d28c0
+D_86806FBC	gSushiSearchRadius	w28		constant 30.0f used in func_86804634 to find nearby instances	applied@60d28c0
+D_86806FC0	gSushiCollisionRadiusX	w28		constant 20.0f used in collision check func_86804700	applied@60d28c0
+D_86807010	gSushiRenderDL	w28		display list for rendering the sushi entity texture	applied@60d28c0
+D_868070AC	gSushiControllerMap	w28		array of pointers to player controllers indexed by entity ID	applied@60d28c0
+D_868070BC	gSushiStateTable	w28		table used to determine entity behavior based on gMenuState	applied@60d28c0
+D_86807550	gSushiGraphData	w28		pointer to graph node data used in Sushi_InitEntity	applied@60d28c0
+D_86807558	gSushiEntities	w28		array of 4 sushi entity structures	applied@60d28c0
+D_86808438	gSushiInstanceIds	w28		array of IDs associated with sushi instances	applied@60d28c0
+D_86808448	gSushiActiveCount	w28		global counter for active sushi entities	applied@60d28c0
+D_86808450	gSushiDefaultController	w28		default controller state used when AI is disabled	applied@60d28c0
+D_86808474	gSushiGraphNode	w28		pointer to the graph node used for sushi entity initialization	applied@60d28c0
+D_86808478	gSushiFirstEntityId	w28		stores the ID of the first initialized sushi entity	applied@60d28c0
+D_8680847A	gSushiEntityIndex	w28		current index for assigning sushi entities	applied@60d28c0
+D_8680847C	gSushiTotalEntities	w28		total count of sushi entities created	applied@60d28c0
+D_8680847E	gSushiMaxEntities	w28		maximum number of sushi entities allowed	applied@60d28c0
+D_86808480	gSushiSpecialEntityCount	w28		counter for entities with special behavior (arg0->unk_008 == 4)	applied@60d28c0
+D_86808490	gSushiCamera	w28		pointer to the camera structure used for sushi rendering	applied@60d28c0
+D_86808498	gSushiWorldOrientation	w28		structure containing world orientation vectors for stick calculation	applied@60d28c0
+func_86804884	Sushi_UpdateState	w28		updates state based on SushiInstance mode and internal flags	applied@60d28c0
+func_868049C0	Sushi_UpdateAnimationState	w28		manages animation state machine transitions (cases 2-6) using Anim_HasReachedEnd	applied@60d28c0
+func_86804BD0	Sushi_FaceTarget	w28		calculates direction to D_86808498 and orthonormalizes orientation	applied@60d28c0
+func_86804D38	Sushi_ApplyRepulsion	w28		calculates repulsion forces between entities in D_86807558 based on distance	applied@60d28c0
+func_86804F2C	Sushi_ApplyMovement	w28		applies accumulated velocity to position and calls Sushi_ClampPosition	applied@60d28c0
+func_86805000	Sushi_SyncGraphNode	w28		updates Fragment2_1GraphNode position, rotation, and triggers actions	applied@60d28c0
+func_86805108	Sushi_SetEntityInput	w28		maps input flags to entity indices in D_86808438	applied@60d28c0
+func_868051E0	Sushi_UpdateRankings	w28		sorts entities by unk_018 and updates player scores via IncrementPlayerScore	applied@60d28c0
+func_86805428	Sushi_HandleInputEvent	w28		updates entity flags based on input state in D_86808438	applied@60d28c0
+func_86805518	Sushi_UpdateProgress	w28		increments progress and plays sounds 0x5000B/0x5000C based on thresholds	applied@60d28c0
+func_868055D4	Sushi_CheckAllIdle	w28		returns 1 if all entities in D_86807558 have no active instance or state	applied@60d28c0
+func_86805620	Sushi_UpdateEntityEffect	w28		manages a timed state machine for visual/logic effects (cases 0-4)	applied@60d28c0
+func_86805974	Sushi_MainUpdate	w28		main loop updating AI, movement, repulsion, and graph node syncing	applied@60d28c0
+func_86805AF0	Sushi_UpdateCameraMatrix	w28		calculates camera forward and right vectors based on eye and at positions	applied@60d28c0
+func_86805BD4	Sushi_InitCamera	w28		sets up gMiniCameraPtr and initial view parameters	applied@60d28c0
+func_86805CB4	Sushi_UpdateCameraPos	w28		updates camera eye and at positions based on D_86808498	applied@60d28c0
+func_86B06008	MonsterNode_Reset	w28		initially clears callbacks and resets the 'MONS' pool state before calling MonsterNode_Init	applied@60d28c0
+func_86B0630C	MonsterNode_UpdateYPos	w28		calculates vertical movement and checks if a target Y coordinate (arg2) is crossed	applied@60d28c0
+func_86B06394	MonsterNode_EaseYPos	w28		performs a damped vertical movement towards a target Y coordinate	applied@60d28c0
+func_86B065C4	MonsterNode_SpawnParticles	w28		creates multiple particles based on the monster's current health/state (gCameraTarget->unk_178)	applied@60d28c0
+func_86B069D8	MonsterNode_UpdateIdleAnim	w28		triggers idle animations and sounds based on a timer (gCameraTarget->unk_178 % 50)	applied@60d28c0
+func_86B06B38	BattleUI_InitElements	w28		initializes UI elements (D_86B0FA50 series) based on gBattleContext state	applied@60d28c0
+func_86B06E34	MonsterNode_SetupDefault	w28		resets monster indices and initializes the node with default values	applied@60d28c0
+func_86B06E80	MiniCamera_InitDefault	w28		sets the mini camera to the default configuration from gMiniCameraStruct	applied@60d28c0
+func_86B06EC8	MonsterNode_SetupCustom	w28		sets monster indices to 6 and loads the monster by ID	applied@60d28c0
+func_86B06F18	MiniCamera_InitMonster	w28		sets the mini camera to the monster-specific configuration	applied@60d28c0
+func_86B06F60	BattleUI_SetStateActive	w28		sets the UI state index (D_86B0FA50->unk_90) to 3	applied@60d28c0
+func_86B06F74	BattleContext_SyncMonsterData	w28		syncs D_86B10690 and D_86B10694 from gBattleContext based on active combatant	applied@60d28c0
+func_86B06FCC	BattleInput_Update	w28		reads controller inputs and initializes menu input state	applied@60d28c0
+func_86B06FFC	BattleSequence_Update	w28		manages the state machine for the monster intro sequence (cases 0-9)	applied@60d28c0
+func_86B07450	UIElement_UpdatePos	w28		calculates the sliding/bouncing movement for UI elements using a spring-like formula	applied@60d28c0
+func_86B07DF4	BattleScene_Render	w28		handles screen clearing, UI rendering, and particle rendering for the battle scene	applied@60d28c0
+func_86B07EA0	BattleScene_RenderBlank	w28		renders a blank screen with a specific window rectangle	applied@60d28c0
+func_86B07F14	BattleSequence_IntroFade	w28		handles the initial fade-in and input polling before the main sequence	applied@60d28c0
+func_86B07FA4	BattleSequence_MainLoop	w28		the main loop that updates particles, the sequence state machine, and renders the scene	applied@60d28c0
+func_86B08034	BattleSequence_Outro	w28		handles the fade-out and final frames of the monster sequence	applied@60d28c0
+func_86B0819C	BattleSequence_Init	w28		allocates memory for camera, targets, and UI elements, and loads the required models	applied@60d28c0
+D_86B0DCE0	gUIElementColors	w28		table of SpriteColorParams used to initialize UI element colors	applied@60d28c0
+D_86B0DD40	gUIElementColorFlat	w28		flat color array used for UI elements in specific states (case 2 of BattleUI_Render)	applied@60d28c0
+D_86B0DE48	gMonsterModelIds	w28		lookup table mapping gBattleContext.unk_0001 to model IDs	applied@60d28c0
+D_86B0F9D0	gBattleOverlayRect	w28		ColorRectNode used for the screen overlay	applied@60d28c0
+D_86B0F9F0	gMiniCameraRoot0	w28		GraphRootNode for the first part of the mini camera geometry	applied@60d28c0
+D_86B0FA08	gMiniCameraRoot1	w28		GraphRootNode for the second part of the mini camera geometry	applied@60d28c0
+D_86B0FA20	gMiniCameraRoot2	w28		GraphRootNode for the third part of the mini camera geometry	applied@60d28c0
+D_86B0FA38	gMiniCameraBgColor	w28		stores the background fill color for the mini camera scene	applied@60d28c0
+D_86B0FA40	gMonsterSfxTriggered	w28		flag to ensure the spawn sound effect plays only once	applied@60d28c0
+D_86B0FA42	gCurrentMonsterModelId	w28		the model ID of the monster currently being loaded/displayed	applied@60d28c0
+D_86B0FA44	gCurrentMonsterSpawnIdx	w28		index into gMonsterSpawnInfo for the current monster	applied@60d28c0
+D_86B0FA46	gMonsterLandingState	w28		tracks the phase of the MonsterLandingSequence (0-3)	applied@60d28c0
+D_86B0FA48	gMonsterLandingYVel	w28		vertical velocity used during the monster landing sequence	applied@60d28c0
+D_86B0FA4C	gMonsterModelArchive	w28		pointer to the loaded model archive for the monster	applied@60d28c0
+D_86B0FA50	gUIElementName	w28		UI element used for displaying the monster's name	applied@60d28c0
+D_86B0FA54	gUIElementHealthBar	w28		UI element used for the health bar background/fill	applied@60d28c0
+D_86B0FA58	gUIElementHealthFill	w28		UI element used for the active health fill	applied@60d28c0
+D_86B0FA5C	gUIElementStatus	w28		UI element used for status indicators	applied@60d28c0
+D_86B0FA60	gUIElementBorder	w28		UI element used for the UI border/frame	applied@60d28c0
+D_86B0FA66	gCameraZoomPitch	w28		pitch value for the camera during the final sequence phase	applied@60d28c0
+D_86B0FA68	gCameraZoomYaw	w28		yaw value for the camera during the final sequence phase	applied@60d28c0
+D_86B0FA6C	gCameraZoomFov	w28		FOV value for the camera during the final sequence phase	applied@60d28c0
+D_86B0FA70	gBattleSequenceFrameCount	w28		frame counter for the battle sequence	applied@60d28c0
+D_86B0FA74	gBattleSequenceType	w28		determines the type of sequence to run (0, 1, or 2)	applied@60d28c0
+D_86B10660	gMonsterStageData	w28		buffer for stage-specific monster data loaded via DMA	applied@60d28c0
+D_86B10670	gMonsterStageParams	w28		buffer for stage-specific monster parameters loaded via DMA	applied@60d28c0
+D_86B10690	gMonsterDataPtr	w28		pointer to the monster data structure containing names and IDs	applied@60d28c0
+D_86B10694	gMonsterContextPtr	w28		pointer to the battle context for the current monster	applied@60d28c0
+func_86E004FC	MiniActor_ResetCompState	w28		resets unk_244 and compState if the actor is a computer opponent	applied@60d28c0
+func_86E00F60	MiniActor_SyncAnimTransform	w28		updates the GraphNode position and rotation to match the MiniActor's totalPos and totalRot	applied@60d28c0
+func_86E00FD8	MiniActor_SyncAllAnimTransforms	w28		loops through all 4 miniMetapods and calls func_86E00F60 to sync their transforms	applied@60d28c0
+D_86E03DB0	gMetapodTextureDefs	w28		table of texture definitions (type, width, height, size, pointer) for Metapod	applied@60d28c0
+D_86E03DD8	gMetapodTilingDL	w28		display list for loading and rendering Metapod texture tiles	applied@60d28c0
+D_86E03E10	gMetapodTilingDL2	w28		second display list for loading and rendering Metapod texture tiles	applied@60d28c0
+D_86E03E48	gMetapodTilingDL3	w28		third display list for loading and rendering Metapod texture tiles	applied@60d28c0
+D_86E03E88	gMetapodVertices1	w28		vertex data for the first part of the Metapod model	applied@60d28c0
+D_86E04088	gMetapodVertices2	w28		vertex data for the second part of the Metapod model	applied@60d28c0
+D_86E04288	gMetapodVertices3	w28		vertex data for the third part of the Metapod model	applied@60d28c0
+D_86E04488	gMetapodVertices4	w28		vertex data for the fourth part of the Metapod model	applied@60d28c0
+D_86E04688	gMetapodFloorVertices	w28		vertex data for the floor/ground plane	applied@60d28c0
+D_86E046C8	gMetapodRockVertices	w28		vertex data for the rocks thrown at Metapods	applied@60d28c0
+D_86E047C8	gMetapodRockDL	w28		display list to render the rock model using gMetapodRockVertices	applied@60d28c0
+D_86E04840	gMetapodFloorDL	w28		display list to render the floor using gMetapodFloorVertices	applied@60d28c0
+D_86E04870	gMetapodModelDL	w28		main display list for rendering the Metapod model using multiple vertex arrays	applied@60d28c0
+D_86E049F8	gMetapodGfxSequence	w28		sequence of Gfx commands for loading and rendering Metapod assets	applied@60d28c0
+D_86E04AE0	gMetapodGfxRoot	w28		root structure for the Metapod graphics setup	applied@60d28c0
+D_86E04B20	gRockWaveIndex	w28		index tracking the current wave of rocks	applied@60d28c0
+D_86E04B24	gRocksPerWave	w28		number of rocks to throw per wave	applied@60d28c0
+D_86E04B34	gMetapodSceneGraph	w28		scene graph definition for the Metapod minigame	applied@60d28c0
+D_86E04C5C	gMetapodAudioEvents1	w28		table of audio event pointers and lengths for Metapod	applied@60d28c0
+D_86E04C84	gMetapodAudioEvents2	w28		second table of audio event pointers and lengths for Metapod	applied@60d28c0
+func_80029080	GetCurrentPokemonBank	w28		called by Box_MarkSpeciesOwned to get a bank handle for marking species	applied@60d28c0
+func_88201DA0	BoxList_Init	w28		initializes a fragment containing a scrollable list of pokemon and a dialog	applied@60d28c0
+func_88202054	BoxList_SetHeaderText	w28		sets the header text of the box list based on team and slot number	applied@60d28c0
+func_8820213C	BoxList_SetPokemon	w28		populates the scrollable list with PokemonData from a box	applied@60d28c0
+func_88202228	BoxList_UpdateSelection	w28		updates the selection state of the UI button/list	applied@60d28c0
+func_88202254	BoxList_HandleInput	w28		handles controller input for the pokemon list, including selection and confirmation	applied@60d28c0
+func_88202394	BoxList_WaitInput	w28		loops and waits for input for the BoxList fragment	applied@60d28c0
+func_8820253C	BoxMonCount_Init	w28		initializes the pokemon count display for a box	applied@60d28c0
+func_882025AC	BoxMonCount_SetBox	w28		associates a box with the count display	applied@60d28c0
+func_882025B4	BoxMonCount_Draw	w28		calls DrawBoxMonCount to render the number of pokemon in a box	applied@60d28c0
+func_88202738	BoxMove_SetSelection	w28		sets the current selection index for the box move operation	applied@60d28c0
+func_88202758	BoxMove_UpdateSelection	w28		updates the visual selection state of the two lists in BoxMove	applied@60d28c0
+func_882027F0	BoxMove_SetActiveList	w28		sets which of the two lists is currently active for input	applied@60d28c0
+func_88202810	BoxMove_GetSelectedPokemon	w28		retrieves the selected pokemon pointers based on the current move mode	applied@60d28c0
+func_882028EC	BoxMove_GetSelectedPositions	w28		calculates the screen positions of the selected pokemon for animation	applied@60d28c0
+func_88202CBC	BoxMove_UpdateListAvailability	w28		disables empty or non-empty boxes in the lists based on the move mode	applied@60d28c0
+func_88202E98	BoxMove_ResetPhase	w28		resets the BoxMove state to phase 0	applied@60d28c0
+func_88202ED8	BoxMove_IsPhaseZero	w28		checks if the BoxMove operation is currently in phase 0	applied@60d28c0
+func_88203538	DrawBoxPanel	w28		renders a panel background with a box number and pokemon count	applied@60d28c0
+func_88203ED8	BoxPCMenu_Init	w28		initializes the main Box PC menu with panels, buttons, and the BoxMove system	applied@60d28c0
+func_88204BA8	BoxPCMenu_UpdateContainer	w28		updates the child count of the UI container in the Box PC menu	applied@60d28c0
+func_88204BFC	BoxPCMenu_SetSelection	w28		sets the current selection in the Box PC menu	applied@60d28c0
+func_88204C28	BoxPCMenu_HandleInput	w28		handles controller input for the Box PC menu	applied@60d28c0
+func_88204C74	BoxPCMenu_TogglePanelFills	w28		toggles the fill state of the menu panels	applied@60d28c0
+func_88204CBC	BoxPCMenu_ExecuteMove	w28		executes the pokemon move animation and logic between boxes	applied@60d28c0
+func_88204DC0	BoxPCMenuCursor_Init	w28		initializes the selectable list cursor for the Box PC menu	applied@60d28c0
+D_88217C20	gSlotTextColor	w28		text color used for pokemon names in slots	applied@60d28c0
+D_88217C24	gSlotBgColor1	w28		first background color for pokemon slots	applied@60d28c0
+D_88217C28	gSlotBgColor2	w28		second background color for pokemon slots	applied@60d28c0
+D_88217C2C	gSlotBgColor3	w28		third background color for pokemon slots	applied@60d28c0
+D_88217C30	gBoxListHeaderColor	w28		color used for the box list header	applied@60d28c0
+D_88217C48	gBoxPanelTextColor	w28		text color for the box panel header	applied@60d28c0
+D_88217C4C	gBoxPanelAccentColor	w28		accent color for the box panel	applied@60d28c0
+D_88217CE4	gFlashingElementColor	w28		color for the flashing UI element in the PC menu	applied@60d28c0
+D_88217CE8	gBottomPanelColor1	w28		first color for the bottom gradient panel	applied@60d28c0
+D_88217CEC	gBottomPanelColor2	w28		second color for the bottom gradient panel	applied@60d28c0
+func_88205DD0	BoxPC_HandleInput	w28		delegates input handling to the menu's internal input function	applied@60d28c0
+func_88205880	BoxPC_InitScreen	w28		initializes the BoxPCScreen, loads boxes from GBS, and creates UI elements	applied@60d28c0
+D_88217D04	gPcBackdropColorLight	w28		light blue-green color used for the PC backdrop texture	applied@60d28c0
+D_88217D08	gPcBackdropColorDark	w28		dark blue-green color used for the PC backdrop texture	applied@60d28c0
+D_878067F0	gResultCubeTex_0	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_87807690	gResultCubeTex_1	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_87808530	gResultCubeTex_2	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_878093D0	gResultCubeTex_3	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_8780B110	gResultCubeTex_4	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_8780BFB0	gResultCubeTex_5	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_8780CE50	gResultCubeTex_6	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_8780DCF0	gResultCubeTex_7	w28		texture data for a 3D cube used on the result screen	applied@60d28c0
+D_8780F904	gResultCubeScaleIndices	w28		index table for gResultScaleFactors	applied@60d28c0
+D_8780F910	gResultCubeTextureTable	w28		2x4 table of pointers to the result cube textures	applied@60d28c0
+D_8780F930	gResultCubeRotationScale	w28		floating point scale factors for cube rotation	applied@60d28c0
+func_8004D858	ResultScreen_PlaySfx	w28		plays sound effects based on the provided ID and variant (0 or 1)	applied@60d28c0
+func_8004B1CC	ResultScreen_SetAnimation	w28		triggers specific result screen animations based on the ID passed	applied@60d28c0
+func_800280D4	ResultScreen_SetRandomSeed	w28		sets a seed for the result screen's random effects	applied@60d28c0
+D_8780F990	gResultOptionCount_Mode0	w28		table of option counts for result screen mode 0	applied@60d28c0
+D_8780F99C	gResultOptionCount_Mode1	w28		table of option counts for result screen mode 1	applied@60d28c0
+D_8780F9A8	gResultOptionCount_Mode2	w28		table of option counts for result screen mode 2	applied@60d28c0
+D_8780F9B0	gResultStateMessageIds	w28		IDs for messages displayed based on gMenuState	applied@60d28c0
+D_8780FC44	gResultFlag_Win	w28		flag indicating a win condition was met	applied@60d28c0
+D_8780FC48	gResultFrameCounter	w28		frame counter used for timing and animation offsets	applied@60d28c0
+D_8780FC4C	gResultScoreThresholdMet	w28		flag indicating if any player reached the score threshold	applied@60d28c0
+D_8780FC50	gResultPlayerScored	w28		array indicating if players have scored points	applied@60d28c0
+D_8780FC54	gResultPlayerMaxScore	w28		array tracking the maximum score reached by each player	applied@60d28c0
+D_8780FC58	gResultPlayerCurrentScore	w28		array tracking current score increments for each player	applied@60d28c0
+D_8780FC5C	gResultSelectedOption	w28		index of the currently selected menu option on the result screen	applied@60d28c0
+D_8780FC5D	gResultOptionLimit	w28		maximum number of options available in the current result menu	applied@60d28c0
+D_8780FC60	gResultAnimTimer_0	w28		timer for the first result animation sequence	applied@60d28c0
+D_8780FC64	gResultAnimTimer_1	w28		timer for the second result animation sequence	applied@60d28c0
+D_8780FC68	gResultAnimTimer_2	w28		timer for the third result animation sequence	applied@60d28c0
+D_8780FC6C	gResultSpecialWinActive	w28		flag indicating the special win message is being displayed	applied@60d28c0
+D_8780FC70	gResultMenuActive	w28		flag indicating the result menu is currently visible	applied@60d28c0
+D_8780FC74	gResultCubesActive	w28		flag indicating the score cubes are being rendered	applied@60d28c0
+D_8780FC78	gResultLowestScorerCount	w28		number of players tied for the lowest score	applied@60d28c0
+D_8780FC80	gResultIsLowestScorer	w28		boolean array marking players with the lowest score	applied@60d28c0
+D_8780FC88	gResultLowestScorerIndices	w28		list of player indices who have the lowest score	applied@60d28c0
+D_8780FC90	gResultCubeCycleIndex	w28		index used to cycle through players when rendering cubes	applied@60d28c0
+D_8780FC92	gResultFlag_Special	w28		flag for a special result state	applied@60d28c0
+D_8780FC94	gResultMenuVisible	w28		flag indicating the result menu is currently drawn	applied@60d28c0
+D_8780FC96	gResultExitPending	w28		flag indicating the result screen is transitioning out	applied@60d28c0
+D_8780FC98	gResultConfirmPressed	w28		flag indicating the A button was pressed to confirm	applied@60d28c0
+D_8780FC9A	gResultStickUp	w28		cached state of the analog stick pointing up	applied@60d28c0
+D_8780FC9B	gResultStickDown	w28		cached state of the analog stick pointing down	applied@60d28c0
+D_8780FC9C	gResultController	w28		pointer to the controller used for result screen navigation	applied@60d28c0
+D_8780FCA0	gResultDeltaTime	w28		calculated time delta between frames	applied@60d28c0
+D_8780FCA1	gResultDeltaTimeInit	w28		initialization flag for the delta time calculation	applied@60d28c0
+D_8780FCA2	gResultAnimFrame	w28		current frame of the result graphics animation	applied@60d28c0
+D_8780FCA3	gResultAnimState	w28		state index for the result screen's complex animations	applied@60d28c0
+D_8780FCA4	gResultAnimYOffset	w28		vertical offset for animating result elements	applied@60d28c0
+D_8780FCA6	gResultAnimStep	w28		step counter for result animation transitions	applied@60d28c0
+D_8780FCA7	gResultBankSyncDone	w28		flag indicating the GBS bank sync has completed	applied@60d28c0
+D_8780FCA8	gResultAnimTimer	w28		general purpose timer for result screen animations	applied@60d28c0
+D_8780FCAC	gResultCubeAnimFrame	w28		animation frame index for the score cubes	applied@60d28c0
+D_8780FCB0	gResultCubeAnimTimer	w28		timer for the score cube animation cycle	applied@60d28c0
+D_8780FCB8	gResultTiledTexX	w28		X-coordinate offsets for tiled texture rendering	applied@60d28c0
+D_8780FCCC	gResultTiledTexY	w28		Y-coordinate offsets for tiled texture rendering	applied@60d28c0
+unk_D_8780FCD8	ResultCubeState	w28		struct containing position and rotation for a score cube	applied@60d28c0
+D_8780FCD8	gResultCubes	w28		array of states for all score cubes (4 players, up to 9 cubes each)	applied@60d28c0
+D_8780FDF8	gResultSfxTriggered	w28		flag to ensure a sound effect only plays once during a transition	applied@60d28c0
+D_8780FDFC	gResultCubeStateFlag	w28		state flags for cube animations (e.g., spinning, falling)	applied@60d28c0
+D_8780FE00	gResultAnimCountdown	w28		countdown timer for result screen transitions	applied@60d28c0
+D_8780FE01	gResultMusicChangePending	w28		flag indicating music needs to change based on menu state	applied@60d28c0
+D_8780FE08	gResultMenuStrings_0	w28		pointers to strings for the first menu column	applied@60d28c0
+D_8780FE18	gResultMenuStrings_1	w28		pointers to strings for the second menu column	applied@60d28c0
+D_8780FE28	gResultMenuStrings_2	w28		pointers to strings for the third menu column	applied@60d28c0
+D_8780FE30	gResultMenuWidth_0	w28		calculated maximum width of strings in menu column 0	applied@60d28c0
+D_8780FE32	gResultMenuWidth_1	w28		calculated maximum width of strings in menu column 1	applied@60d28c0
+D_8780FE34	gResultMenuWidth_2	w28		calculated maximum width of strings in menu column 2	applied@60d28c0
+D_8780FE36	gResultMenuWidth_3	w28		calculated maximum width of strings in menu column 3	applied@60d28c0
+func_813001C0	GetPlayerNameLength	w28		calls GbsGetPlayerName and returns the length of the name	applied@60d28c0
+func_81302498	Menu_InitInput	w28		calls Cont_ReadInputs and MenuInput_Init	applied@60d28c0
+func_81302548	Menu_UpdateEntryData	w28		reads controller inputs and fetches Pokemon/Item data for 4 entries	applied@60d28c0
+func_81302630	Menu_SelectDefaultEntry	w28		determines which entry index (0-3) should be highlighted by default	applied@60d28c0
+func_81302798	Menu_UpdateEntryAnimations	w28		updates positions and scales of entry graph nodes based on selection	applied@60d28c0
+func_81302A70	Menu_RunScreen	w28		manages the fade-in, main interaction loop, and fade-out of the menu	applied@60d28c0
+func_81302C20	Menu_InitEntryNodes	w28		initializes GraphNodes for the 4 entries and assigns textures based on held items	applied@60d28c0
+func_81302DD8	Menu_InitGeo	w28		processes geo layouts for the menu and initializes graph roots	applied@60d28c0
+func_81302E58	Menu_EntrySelection_Init	w28		sets up the stage, loads assets, and runs the entry selection screen	applied@60d28c0
+func_8130306C	Gfx_DrawBackgroundGrid	w28		draws a 15x20 grid of texture blocks from a provided buffer	applied@60d28c0
+func_8130337C	Gfx_DrawMenuBackground	w28		draws the background gradient and decorative texture strips	applied@60d28c0
+D_81303FA0	gMenuMiscAssets	w28		pointer to assets loaded from fragment33_misc	applied@60d28c0
+D_81303FA8	gEntryStatus	w28		array of structs tracking Pokemon species, ID, and held item status	applied@60d28c0
+D_81304000	gSelectedEntryIndex	w28		index of the currently highlighted menu entry	applied@60d28c0
+D_81304008	gEntryGraphNodes	w28		array of structs managing the animation and graph nodes for entries	applied@60d28c0
+D_81304648	gMenuGeoNode	w28		GraphNode for the menu's geometry	applied@60d28c0
+D_81304650	gIsEntrySelectionActive	w28		flag indicating if the entry selection process is active	applied@60d28c0
+D_81304654	gPlayerNameLength	w28		stores the length of the player name returned by func_813001C0	applied@60d28c0
+D_81304658	gEntryMessageBank	w28		pointer to the message bank for entry selection strings	applied@60d28c0
+D_81304660	gEntryIdBuffer	w28		buffer used to format the "ID XXXXX" string	applied@60d28c0
+D_81304A60	gPulseAlpha	w28		stores the current alpha value for pulsing effects	applied@60d28c0
+D_81304A62	gPrevSelectedEntryIndex	w28		stores the previously selected entry index for sound triggers	applied@60d28c0
+D_81304A64	gEntryConfirmState	w28		tracks if the user has confirmed or cancelled the selection	applied@60d28c0
+D_81303CB0	gMenuAnimTimer	w28		timer used for sine-wave animations in the menu	applied@60d28c0
+D_81303F14	gGradientColor	w28		RGB8 color used for the gradient panel	applied@60d28c0
+D_81303F1C	gBgTextureSequence	w28		array of pointers to textures used in the background animation	applied@60d28c0
+func_8140419C	Gfx_LoadTextureBlockI_ClampWrapper	w28		calls Gfx_LoadTextureBlockI_Clamp	applied@60d28c0
+func_814041BC	Gfx_LoadTextureTileI_ClampWrapper	w28		calls Gfx_LoadTextureTileI_Clamp	applied@60d28c0
+func_8140437C	Gfx_LoadTextureBlockI4b_ClampWrapper	w28		calls Gfx_LoadTextureBlockI4b_Clamp	applied@60d28c0
+func_8140439C	Gfx_LoadTextureTileI4b_ClampWrapper	w28		calls Gfx_LoadTextureTileI4b_Clamp	applied@60d28c0
+func_814044FC	Gfx_LoadMultiBlockI4b_WrapCustom	w28		custom shifts/shiftt for Gfx_LoadMultiBlock4b	applied@60d28c0
+func_81404C34	Gfx_DrawQuadRotatedXY	w28		calls Matrix_SubmitRotateTranslateScaleXY and draws quad	applied@60d28c0
+func_81404EEC	Gfx_DrawQuadBillboardY	w28		calls Matrix_SubmitBillboardY and draws quad	applied@60d28c0
+func_81405024	Gfx_DrawTriangleBillboard	w28		calls Matrix_SubmitBillboard and draws triangle	applied@60d28c0
+func_814050BC	Gfx_DrawTriangleBillboardRoll	w28		calls Matrix_SubmitBillboardRoll and draws triangle	applied@60d28c0
+func_81405814	Gfx_DrawTiledTextureI4bTile	w28		similar to Gfx_DrawTiledTextureI4b but uses Gfx_LoadTextureTileI4b_Clamp	applied@60d28c0
+func_81405C04	Gfx_SetPrimColorAlpha	w28		sets white prim color with variable alpha and combine mode	applied@60d28c0
+func_81405D38	Gfx_SetPrimAndEnvColorNoise	w28		sets prim and env colors with NOISE combine mode	applied@60d28c0
+func_81405FAC	Gfx_SetPrimAndEnvColorLODSimple	w28		similar to Gfx_SetPrimAndEnvColorLOD but with different combine mode	applied@60d28c0
+func_81406314	Gfx_ScrollTextureY	w28		sets tile size with constant X and scrolling Y	applied@60d28c0
+func_81406388	Gfx_ScrollTextureY1	w28		sets tile size with constant X and scrolling Y on tile 1	applied@60d28c0
+func_81406404	Gfx_SetTileSizeDynamic	w28		calculates tile size based on GetTileSizeByIndex	applied@60d28c0
+func_814064B0	Gfx_SetTileSizeDynamic1	w28		calculates tile size based on GetTileSizeByIndex for tile 1	applied@60d28c0
+func_81406564	Gfx_LoadTextureBlock4bGeneric	w28		generic wrapper for gDPLoadTextureBlock_4b	applied@60d28c0
+func_8140679C	Gfx_LoadTextureBlockI_ClampGeneric	w28		calls func_81406564 with G_IM_FMT_I	applied@60d28c0
+func_814067F0	Gfx_LoadMultiTileGeneric	w28		handles multiple texture formats (RGBA, IA, I) for multi-tile loading	applied@60d28c0
+func_814072B0	Gfx_SetupTextureAndTiling	w28		selects texture and calls func_814067F0 and func_81406404/B0	applied@60d28c0
+func_81407410	Gfx_SetupTexturePrimary	w28		calls func_814072B0 with tmem 0 and RENDERTILE	applied@60d28c0
+func_8140743C	Gfx_SetupTextureSecondary	w28		calls func_814072B0 with tmem 0x100 and tile 1	applied@60d28c0
+func_81407484	Gfx_SetCombineModeCustom	w28		sets combine mode using GCCc0w0/1 macros	applied@60d28c0
+func_81407590	Gfx_ApplyTextureState	w28		sets prim/env colors, texture gen, and calls setup functions	applied@60d28c0
+func_81407874	Gfx_ApplyColorLerp	w28		calls func_81407590 when arg0 is 5	applied@60d28c0
+D_8140DA50	gDL_Default3DState	w28		standard 3D setup: ZBUFFER, SHADE, CULL_BACK, BILERP	applied@60d28c0
+D_8140DB80	gDL_TextureBasicState	w28		basic texture perspective and filter settings	applied@60d28c0
+D_8140DBD0	gDL_UI_DecalState	w28		sets combine mode to G_CC_DECALRGBA and enables texture	applied@60d28c0
+D_8140DC20	gDL_UI_ModulateState	w28		sets combine mode to G_CC_MODULATEIA and enables texture	applied@60d28c0
+D_8140DE30	gDL_CycleCopy	w28		sets cycle type to G_CYC_COPY	applied@60d28c0
+D_8140DE48	gDL_Cycle1	w28		sets cycle type to G_CYC_1CYCLE	applied@60d28c0
+D_8140DE60	gDL_Cycle2	w28		sets cycle type to G_CYC_2CYCLE	applied@60d28c0
+D_8140DE78	gVtx_UI_SmallQuad	w28		small quad vertices for UI elements	applied@60d28c0
+D_8140DEF8	gVtx_UI_LargeQuad	w28		larger quad vertices for UI elements	applied@60d28c0
+D_8140DF78	gVtx_UI_TriangleSmall	w28		small triangle vertices	applied@60d28c0
+D_8140DFA8	gVtx_UI_TriangleLarge	w28		large triangle vertices	applied@60d28c0
+D_8140DFD8	gVtx_UI_MediumQuad	w28		medium quad vertices	applied@60d28c0
+D_8140E058	gVtx_UI_RectHorizontal	w28		horizontal rectangle vertices	applied@60d28c0
+D_8140E098	gVtx_UI_RectVertical	w28		vertical rectangle vertices	applied@60d28c0
+D_8140E0D8	gVtx_UI_TriangleDown	w28		downward pointing triangle vertices	applied@60d28c0
+D_8140E108	gVtx_UI_ColorQuad	w28		quad with vertex colors (RGB)	applied@60d28c0
+D_8140E148	gVtx_UI_PanelQuad	w28		quad used by gDL_PanelBackground	applied@60d28c0
+D_8140E178	gVtx_UI_RectTall	w28		tall rectangle vertices	applied@60d28c0
+D_8140E1B8	gVtx_UI_RectWide	w28		wide rectangle vertices	applied@60d28c0
+D_8140E1F8	gVtx_UI_Square	w28		square vertices	applied@60d28c0
+D_8140E238	gVtx_UI_ComplexQuad	w28		complex quad/two-quad vertex set	applied@60d28c0
+D_8140E2B8	gVtx_UI_GridQuad	w28		grid-like quad vertex set	applied@60d28c0
+D_8140E3F8	gDL_DrawTriangle	w28		submits one triangle	applied@60d28c0
+D_8140E408	gDL_DrawQuad	w28		submits two triangles to form a quad	applied@60d28c0
+D_8140E430	gDL_PanelQuad	w28		draws D_8140DEF8 using gDL_DrawQuad	applied@60d28c0
+D_8140E448	gDL_UITransformQuad	w28		draws gMatrix_UITransform using gDL_DrawQuad	applied@60d28c0
+func_82300C7C	DrawFilledRectWithBorderSmall	w28		draws a filled rectangle with a smaller 8px border using textures D_2028A60/AA0/9E0/A20	applied@60d28c0
+func_8230147C	DrawFilledRectWithBorderThin	w28		draws a filled rectangle with a thin 8px border using textures D_2000B40/B80/BC0/C00	applied@60d28c0
+func_82301794	DrawMenuHeaderIcons	w28		draws two specific RGBA16 sprites D_2006C00 and D_2007500 at the top of the menu	applied@60d28c0
+func_82301868	DrawMenuTopBar	w28		draws a horizontal bar with rounded ends using D_20003C0 and D_20005C0	applied@60d28c0
+func_82301B0C	DrawMenuPanelAnimated	w28		handles animation and drawing of a panel with a message string from gMessageBankMain	applied@60d28c0
+func_82301C30	UpdatePanelAnimation	w28		updates the vertical offset (unk_02) of a panel based on its state (unk_00)	applied@60d28c0
+func_82301C98	InitPanelAnimation	w28		initializes the position and state for a panel animation	applied@60d28c0
+func_82301FF0	UpdateMenuItemAnimation	w28		updates the X position (unk_08) of a menu item based on its animation state	applied@60d28c0
+func_82302188	DrawStatIcon	w28		draws a small stat icon with a background using func_8230147C	applied@60d28c0
+func_82302268	DrawTrainerStatPanel	w28		draws a border and 6 stat icons for a trainer's team	applied@60d28c0
+func_823023F8	DrawStatThresholdWindow	w28		draws a window with a pulsing alpha (SINS) and a message about stat thresholds	applied@60d28c0
+func_823025B8	DrawTrainerInfoPanel	w28		draws trainer name, ID, and 6 Pokemon icons with their stats	applied@60d28c0
+func_82302998	UpdateTrainerPanelAnimation	w28		updates the X position (unk_000C) of the trainer panel based on state	applied@60d28c0
+func_82302A6C	InitTrainerInfoPanel	w28		initializes trainer name, ID, and Pokemon data for the info panel	applied@60d28c0
+func_82302B78	CheckPokemonValidForStats	w28		checks if a Pokemon's species ID is within a valid range (below 0xA6)	applied@60d28c0
+func_82302BB4	CalculateStatThresholds	w28		checks Pokemon stats against gStatThresholds to determine if they meet criteria	applied@60d28c0
+func_82302E34	SetStatThresholds	w28		sets the current threshold index and triggers the calculation func_82302BB4	applied@60d28c0
+func_82302E6C	DrawStatBarPanel	w28		draws a panel with 4 segmented bars using textures from D_302C000	applied@60d28c0
+func_82303248	InitStatBarPanel	w28		initializes the position and state of the stat bar panel	applied@60d28c0
+func_82303274	StartStatBarAnimation	w28		sets the animation state to 1 for the stat bar panel	applied@60d28c0
+func_8230340C	UpdateResultPanelAnimation	w28		updates the height (unk_02) of the result panel based on its state	applied@60d28c0
+func_82303478	InitResultPanel	w28		initializes the position and text for a result panel	applied@60d28c0
+func_823034AC	DrawMenuTextLine	w28		prints a line of text with specific colors based on the current selection	applied@60d28c0
+func_82303614	DrawBattleTimerBar	w28		draws a timer bar using textures D_30242C0 and D_30243A0	applied@60d28c0
+func_82303710	DrawAnimatedTimerIcon	w28		draws a pulsing icon (SINS) at the end of the timer bar	applied@60d28c0
+func_8230391C	DrawBattleSettingsPanel	w28		draws the battle settings menu including timer bars and options	applied@60d28c0
+func_82303CA0	UpdateBattleSettingsInput	w28		handles D-pad and button input for changing battle timer limits	applied@60d28c0
+func_82303F58	InitBattleSettingsPanel	w28		initializes the battle settings panel and loads current gBattleTimerLimits	applied@60d28c0
+func_82303FB4	OpenBattleSettingsPanel	w28		plays sound 4 and sets the animation state to open the settings panel	applied@60d28c0
+func_82303FE8	DrawMenuBackground	w28		draws the full-screen background texture D_302EBC0	applied@60d28c0
+func_82304358	UpdateMainMenu	w28		main update loop for the menu: input and animation updates for all panels	applied@60d28c0
+func_8230443C	HandleMenuNavigation	w28		handles the high-level state machine and navigation between menu options	applied@60d28c0
+D_82305A30	gPanelAnimState	w28		tracks animation state, height, and position of a generic panel	applied@60d28c0
+D_82305A38	gStatBarAnimState	w28		tracks animation state and position of the stat bar panel	applied@60d28c0
+D_82305A40	gBattleSettingsState	w28		tracks the state, timer values, and selection for battle settings	applied@60d28c0
+D_82305A50	gMenuItems	w28		array of 6 menu item structures containing labels and positions	applied@60d28c0
+D_82305AF8	gTrainerPanels	w28		array of 2 trainer info panels containing team and stat data	applied@60d28c0
+D_8230F528	gResultPanels	w28		array of 3 result panels for displaying match outcomes	applied@60d28c0
+func_823045D8	EventBattle_EnterMenu	w28		handles music change, fade in, and initializing menu item visibility	applied@60d28c0
+func_823046C8	EventBattle_ExitMenu	w28		handles menu item cleanup, music stop, and fade out	applied@60d28c0
+func_823047B0	EventBattle_SelectOption	w28		checks panel collision via func_82302E34 and updates state to 4	applied@60d28c0
+func_8230495C	EventBattle_ReturnToMenu	w28		resets UI elements and returns state to 3 (menu loop)	applied@60d28c0
+func_82304AB0	EventBattle_ConfirmSelection	w28		similar to SelectOption, handles confirmation logic and state transition	applied@60d28c0
+func_82304BEC	EventBattle_CheckHeldItem	w28		checks if Pokemon has item 7 and specific species 0x19 to apply a flag	applied@60d28c0
+func_82304C7C	EventBattle_RegisterParty	w28		registers player and adds 6 party Pokemon to the battle engine	applied@60d28c0
+func_82304D30	EventBattle_StartBattle	w28		initializes battle with Battle_Init and registers players	applied@60d28c0
+func_82304EA0	EventBattle_HandleInput	w28		handles D-pad/button input to navigate menu options (state 4)	applied@60d28c0
+func_82305038	EventBattle_ProcessTransition	w28		handles a transition period using func_82303FB4 and returns to menu	applied@60d28c0
+func_8230519C	EventBattle_CancelBattle	w28		initializes battle state but sets return code 0x12 (cancel)	applied@60d28c0
+func_8230527C	EventBattle_StateMachine	w28		main switch case driving the event battle logic based on arg0->unk_00	applied@60d28c0
+func_82305370	EventBattle_InitUI	w28		initializes menu items and text labels using GetMessageString	applied@60d28c0
+func_834002C4	Gallery_IsUnlocked	w28		checks if bit 0 of the flag field (unk_6C) is set	applied@60d28c0
+func_834002E4	Gallery_IsViewed	w28		checks if bit 1 of the flag field (unk_6C) is set	applied@60d28c0
+func_83400304	Gallery_CompareEntries	w28		wraps bcmp to compare two gallery entry structures	applied@60d28c0
+func_83400334	Gallery_CheckForChanges	w28		compares current gallery data against backup buffers D_83405010 and D_83406F40	applied@60d28c0
+func_83400570	Gallery_ClearEntry	w28		zeroes out a gallery entry structure	applied@60d28c0
+func_83400590	Gallery_SwapEntries	w28		swaps two gallery entry structures	applied@60d28c0
+func_83400660	Gallery_IsEntryEqual	w28		uses bcmp to check if two gallery entries are identical	applied@60d28c0
+func_83400694	Gallery_SetCurrentEntry	w28		sets the global pointer D_83402E2C to the specified entry	applied@60d28c0
+func_834006A0	Gallery_GetCurrentEntry	w28		returns the current entry and optionally clears the global pointer	applied@60d28c0
+func_834006CC	Text_CountLines	w28		counts occurrences of newline characters in a string	applied@60d28c0
+func_834008DC	Gallery_DrawGradientPanel	w28		draws a panel with a blue-to-cyan gradient using DrawGradientPanel	applied@60d28c0
+func_83400928	Gallery_DrawBorderedRect	w28		draws a rectangle with textured corners and filled edges	applied@60d28c0
+func_83401818	Gallery_DrawShadow	w28		draws a semi-transparent black rectangle offset by 4 pixels	applied@60d28c0
+func_834018C0	Gallery_DrawTextureList	w28		renders a list of texture tiles vertically with an optional border	applied@60d28c0
+func_83401B48	Gallery_DrawAnimatedCorners	w28		draws four corner sprites that oscillate in position using SINS	applied@60d28c0
+func_83401D0C	Gallery_DrawCursor	w28		draws a cursor sprite from either D_300AE38 or D_3009E38	applied@60d28c0
+func_834020D8	Gallery_ClearActiveCamera	w28		checks if current camera is in state 2 and calls Cam_ClearActive2	applied@60d28c0
+func_83402124	Gallery_CountDisplayableInPage	w28		counts how many entries in a specific page are marked as displayable	applied@60d28c0
+func_834021D8	Gallery_SyncSelectionToCam	w28		copies current camera page and index to a selection structure	applied@60d28c0
+func_834021EC	Gallery_SyncCamToSelection	w28		copies selection page and index back to the camera list state	applied@60d28c0
+func_83402210	Gallery_GetPageAndIndex	w28		calculates page (div) and index (mod) based on total entries per page	applied@60d28c0
+func_83402280	Gallery_GetGlobalIndex	w28		converts page and index back into a flat global index	applied@60d28c0
+func_83402298	Gallery_UpdateCameraAssets	w28		updates the AssetManager and BinArchive pointers for all cameras in the list	applied@60d28c0
+D_83403C60	gGalleryEntries	w28		main table of 36 gallery entries read from Gbs block 0x16	applied@60d28c0
+D_83405010	gGalleryEntriesBackup	w28		backup of gGalleryEntries used to detect changes for saving	applied@60d28c0
+D_834063C0	gGalleryCamEntries	w28		table of 21 camera entries read from Gbs block 0x17	applied@60d28c0
+D_83406F40	gGalleryCamEntriesBackup	w28		backup of gGalleryCamEntries used to detect changes for saving	applied@60d28c0
+D_83407ABC	gCurrentCamEntry	w28		pointer to the currently active camera entry in gGalleryCamEntries	applied@60d28c0
+D_83407AC0	gCurrentCamEntryPage	w28		pointer to the start of the current page of camera entries	applied@60d28c0
+D_83407AC4	gCurrentCamEntrySpecial	w28		pointer to the 21st camera entry (index 20) used for special flags	applied@60d28c0
+D_83407AE4	gGallerySpecialUnlocked	w28		flag indicating if the special camera entry is unlocked	applied@60d28c0
+D_83407AE8	gGallerySpecialViewed	w28		flag indicating if the special camera entry has been viewed	applied@60d28c0
+D_83407AEC	gGalleryAudioStateFlag	w28		flag set if GBAudio_ResetState returns 0x1F8	applied@60d28c0
+D_83407AF8	gGallerySelection	w28		selection state for the gallery menu	applied@60d28c0
+D_83407B08	gGallerySubSelection	w28		secondary selection state for gallery navigation	applied@60d28c0
+D_83407B10	gGalleryTertiarySelection	w28		third selection state for gallery navigation	applied@60d28c0
+D_83407B18	gGalleryFinalSelection	w28		fourth selection state for gallery navigation	applied@60d28c0
+D_83407B30	gGalleryMainSelection	w28		primary selection state for the gallery	applied@60d28c0
+D_83407B38	gGalleryCamList	w28		the CamList structure managing gallery camera objects	applied@60d28c0
+D_83402E2C	gCurrentGalleryEntryPtr	w28		global pointer to the currently selected gallery entry	applied@60d28c0
+func_83000020	GetBattleModeMessage	w28		returns a message string from bank D_830039C4 based on an index	applied@60d28c0
+func_83000058	BattleMode_LoadAssets	w28		loads background and battle header assets based on gBattleContext.unk_0000	applied@60d28c0
+D_83003C88	gBattleAssetArchive	w28		BinArchive pointer used to load battle-related files via BinArchive_GetFile	applied@60d28c0
+D_83003C8C	gBattleBackgroundAtlas	w28		pointer to the loaded texture atlas for the battle mode background	applied@60d28c0
+D_830039C8	gBattleModeAssetIndices	w28		table mapping battle mode IDs to asset indices in the BinArchive	applied@60d28c0
+D_830039D4	gMenuOptions_Mode1_S1	w28		menu option ID list for battle mode 1, state 1	applied@60d28c0
+D_830039E8	gMenuOptions_Mode1_S10	w28		menu option ID list for battle mode 1, state 10	applied@60d28c0
+D_830039FC	gMenuOptions_Mode1_S0	w28		menu option ID list for battle mode 1, state 0	applied@60d28c0
+D_83003A10	gMenuOptions_Mode2_S2	w28		menu option ID list for battle mode 2, state 2	applied@60d28c0
+D_83003A24	gMenuOptions_Mode2_S10	w28		menu option ID list for battle mode 2, state 10	applied@60d28c0
+D_83003A38	gMenuOptions_Mode2_S0	w28		menu option ID list for battle mode 2, state 0	applied@60d28c0
+D_83003A84	gMenuOptions_Mode4_S4	w28		menu option ID list for battle mode 4, state 4	applied@60d28c0
+D_83003A9C	gMenuOptions_Mode4_S10	w28		menu option ID list for battle mode 4, state 10	applied@60d28c0
+D_83003AB4	gMenuOptions_Mode4_S0	w28		menu option ID list for battle mode 4, state 0	applied@60d28c0
+D_83003ACC	gMenuOptions_Mode5_S5	w28		menu option ID list for battle mode 5, state 5	applied@60d28c0
+D_83003AE0	gMenuOptions_Mode5_S10	w28		menu option ID list for battle mode 5, state 10	applied@60d28c0
+D_83003AF4	gMenuOptions_Mode5_S0	w28		menu option ID list for battle mode 5, state 0	applied@60d28c0
+D_83003B04	gMenuOptions_Mode6_S6	w28		menu option ID list for battle mode 6, state 6	applied@60d28c0
+D_83003B14	gMenuOptions_Mode6_S10	w28		menu option ID list for battle mode 6, state 10	applied@60d28c0
+D_83003B24	gMenuOptions_Mode6_S0	w28		menu option ID list for battle mode 6, state 0	applied@60d28c0
+D_83003B34	gMenuOptions_Mode0_S0	w28		menu option ID list for battle mode 0, state 0	applied@60d28c0
+D_83003B44	gMenuOptions_Mode7_S7	w28		menu option ID list for battle mode 7, state 7	applied@60d28c0
+D_83003B54	gMenuOptions_Mode8_S8	w28		menu option ID list for battle mode 8, state 8	applied@60d28c0
+D_83003CAC	gBattleModeTitle_0	w28		string pointer for battle mode 0 title	applied@60d28c0
+D_83003CA8	gBattleModeTitle_Default	w28		string pointer for battle modes 1-6 title	applied@60d28c0
+D_83003CB4	gBattleModeTitle_7	w28		string pointer for battle mode 7 title	applied@60d28c0
+D_83003CB8	gBattleModeTitle_8	w28		string pointer for battle mode 8 title	applied@60d28c0
+D_83003CB0	gBattleModeTitle_10	w28		string pointer for battle mode 10 title	applied@60d28c0
+D_83003CBC	gBattleModeSubtitle_0	w28		string pointer for battle mode 0 subtitle	applied@60d28c0
+D_83003CC0	gBattleModeSubtitle_1	w28		string pointer for battle mode 1 subtitle	applied@60d28c0
+D_83003CC4	gBattleModeSubtitle_2	w28		string pointer for battle mode 2 subtitle	applied@60d28c0
+D_83003CC8	gBattleModeSubtitle_3	w28		string pointer for battle mode 3 subtitle	applied@60d28c0
+D_83003CCC	gBattleModeSubtitle_4	w28		string pointer for battle mode 4 subtitle	applied@60d28c0
+D_83003CD0	gBattleModeSubtitle_5	w28		string pointer for battle mode 5 subtitle	applied@60d28c0
+D_83003CD4	gBattleModeSubtitle_6	w28		string pointer for battle mode 6 subtitle	applied@60d28c0
+D_83003CD8	gBattleModeSubtitle_7	w28		string pointer for battle mode 7 subtitle	applied@60d28c0
+D_83003CDC	gBattleModeSubtitle_8	w28		string pointer for battle mode 8 subtitle	applied@60d28c0
+D_83003C82	gMenuFadeTimer	w28		timer used for calculating fade-in and fade-out alpha	applied@60d28c0
+D_83003C90	gMenuBackgroundTimer	w28		timer for background display or transition	applied@60d28c0
+D_83003C92	gMenuFadeAlpha	w28		calculated alpha value for the fade effect	applied@60d28c0
+D_83003C94	gLoadingBarProgress	w28		value used to determine the width of the loading bar	applied@60d28c0
+D_83003C98	gCurrentBattleModeTitle	w28		pointer to the title string of the current battle mode	applied@60d28c0
+D_83003C9C	gCurrentBattleModeSubtitle	w28		pointer to the subtitle string of the current battle mode	applied@60d28c0
+D_83003CA0	gCurrentMenuOptionIds	w28		pointer to the current list of option IDs for the menu	applied@60d28c0
+D_83003CA4	gCurrentMenuOptionCount	w28		number of options in the current menu list	applied@60d28c0
+D_83003CA6	gCurrentMenuSelectedIndex	w28		index of the currently highlighted menu option	applied@60d28c0
+D_83003CE0	gMenuStaticStrings	w28		structure containing cached message strings for the menu	applied@60d28c0
+D_83003DE0	gMenuOptionStrings	w28		structure containing the actual text for the menu options	applied@60d28c0
+D_830039C4	gBattleModeMessageBank	w28		pointer to the message bank containing battle mode strings	applied@60d28c0
+func_83000710	Menu_CheckDialogComplete	w28		sets state to 1 if dialog is inactive and a specific condition is met	applied@60d28c0
+func_830017C0	DrawSelectionMenu	w28		renders the selection menu including panels, icons, and options	applied@60d28c0
+func_83001A9C	BattleModeMenu_Render	w28		main render loop for the battle mode menu, handles background and dialogs	applied@60d28c0
+func_83001B64	Menu_InitStaticStrings	w28		populates gMenuStaticStrings with messages from the bank	applied@60d28c0
+func_83001C4C	Menu_InitOptionStrings	w28		populates gMenuOptionStrings with messages from the bank	applied@60d28c0
+func_83001CF8	BattleModeMenu_Init	w28		initializes menu state, loads strings, and sets up the option list	applied@60d28c0
+func_83002030	BattleModeMenu_UpdateState	w28		updates the menu state machine (FadeIn -> Selection -> Dialog -> FadeOut)	applied@60d28c0
+func_830020D0	BattleModeMenu_MainLoop	w28		executes the main loop of the battle mode menu until completion	applied@60d28c0
+func_83002120	BattleModeMenu_Entry	w28		entry point for the battle mode menu, loads UI assets and starts the loop	applied@60d28c0
+func_86000564	MiniHud_UpdateCamera	w28		calls Camera_SetViewParameters with MiniHud camera globals	applied@60d28c0
+func_86000D88	MiniHud_MainLoop	w28		handles frame rendering, UI, and stage advancement for the MiniHud	applied@60d28c0
+func_86000E54	MiniHud_UpdateAnimations	w28		updates Y positions and state machines for player-related graph nodes	applied@60d28c0
+func_86000FD4	MiniHud_InitAndWait	w28		initializes MiniHud state, triggers actions, and waits for player input	applied@60d28c0
+func_86001204	MiniHud_PlayIntro	w28		triggers intro animations and waits for Fragment2_1 result	applied@60d28c0
+func_86001360	MiniHud_TriggerAction_5	w28		triggers action 8 and plays sound based on input index	applied@60d28c0
+func_86001464	MiniHud_TriggerAction_6	w28		triggers action 9 and sets state to 6	applied@60d28c0
+func_860014B8	MiniHud_TriggerAction_7	w28		triggers action 0xA and sets state to 7	applied@60d28c0
+func_8600150C	MiniHud_TriggerAction_8	w28		triggers action 0xB and sets state to 8	applied@60d28c0
+func_86001560	MiniHud_TriggerAction_9	w28		triggers action 0xC and sets state to 9	applied@60d28c0
+func_860015B4	MiniHud_TriggerAction_10	w28		triggers action 0xD and sets state to 0xA	applied@60d28c0
+func_86001608	MiniHud_TriggerAction_11	w28		triggers action 0xE and sets state to 0xB	applied@60d28c0
+func_8600165C	MiniHud_HandleActionTimeout	w28		checks for input or triggers action 5 as a fallback	applied@60d28c0
+func_860016FC	MiniHud_TriggerAction_6_Alt	w28		triggers action 6 and sets state to 0xD	applied@60d28c0
+func_86001760	MiniHud_TriggerAction_0_Alt	w28		triggers action 0 and sets state to 0	applied@60d28c0
+func_860017C0	MiniHud_UpdatePlayerState	w28		manages the state machine for player animations and HP wheel updates	applied@60d28c0
+func_86001C90	MiniHud_PlayGame	w28		main game loop for the mini-game, handling timing and scoring	applied@60d28c0
+func_86001EEC	MiniHud_CheckAllIdle	w28		returns true if all 4 players are in a non-active state	applied@60d28c0
+func_86001F64	MiniHud_ResolveWinner	w28		determines the winner based on HP wheel values and updates scores	applied@60d28c0
+func_86002264	MiniHud_Exit	w28		fades out and cleans up the MiniHud stage	applied@60d28c0
+func_860022F8	MiniHud_WaitFrames	w28		waits for a specified number of frames in state 6	applied@60d28c0
+func_8600235C	MiniHud_WaitForExit	w28		waits for a specific flag while allowing cursor movement	applied@60d28c0
+func_86002440	MiniHud_InitGraphics	w28		loads geo layouts and initializes player graph nodes	applied@60d28c0
+func_86002778	MiniHud_Init	w28		sets up the stage, memory pool, and calls graphics initialization	applied@60d28c0
+D_86002920	gMiniHudRandomChanceTable	w28		table of s16 values used with GetRandomMod to trigger animations	applied@60d28c0
+D_86002A98	gMiniHudTextureRects	w28		defines texture coordinates for player indicators	applied@60d28c0
+D_86002AC8	gMiniHudDL_Panel1	w28		display list data for UI panel elements	applied@60d28c0
+D_86002AF0	gMiniHudDL_Panel2	w28		display list data for UI panel elements	applied@60d28c0
+D_86002B18	gMiniHudGeoLayout	w28		geo layout definition for the mini-game stage	applied@60d28c0
+D_86002F30	gMiniHudGeoLayoutObj	w28		pointer to the loaded geo layout object	applied@60d28c0
+D_86002F34	gMiniHudMainGraph	w28		pointer to the main graph node for the mini-game	applied@60d28c0
+D_86002F38	gMiniHudCamera	w28		pointer to the active camera for the mini-game	applied@60d28c0
+D_86002F3C	gMiniHudCamAtY	w28		camera target Y coordinate	applied@60d28c0
+D_86002F3E	gMiniHudCamAtZ	w28		camera target Z coordinate	applied@60d28c0
+D_86002F40	gMiniHudCamDist	w28		camera distance from target	applied@60d28c0
+D_86002F42	gMiniHudFrameCount	w28		frame counter for the mini-game	applied@60d28c0
+D_86002F44	gMiniHudWinnerCount	w28		number of players who tied for the win	applied@60d28c0
+D_86002F48	gMiniHudState	w28		current state of the mini-game (0=Init, 1=Intro, 2=Play, etc)	applied@60d28c0
+D_86002F4C	gMiniHudAlpha	w28		alpha value for UI elements	applied@60d28c0
+D_86002F50	gMiniHudTilemap	w28		pointer to the loaded tilemap for the background	applied@60d28c0
+D_86002F58	gMiniHudPlayerStates	w28		array of state structures for the 4 players	applied@60d28c0
+D_86003B58	gMiniHudGameTimer	w28		timer used to track game progress and end conditions	applied@60d28c0
+D_86003B60	gCurrentPlayerGraph	w28		temporary pointer to the player graph node	applied@60d28c0
+D_86003B64	gCurrentPlayerWheel	w28		temporary pointer to the player's HP wheel graph node	applied@60d28c0
+D_86003B68	gMiniHudIntroActive	w28		flag indicating if the intro sequence is running	applied@60d28c0
+D_86003B6A	gMiniHudIntroTimer	w28		timer for the intro sequence	applied@60d28c0
+D_86003B70	gMiniHudActionFlags	w28		flags to prevent repeated action triggers	applied@60d28c0
+D_86003B7C	gMiniHudTextObj	w28		pointer to the text object for UI rendering	applied@60d28c0
+D_86003B80	gMiniHudMaxWheelValue	w28		highest value reached by any player's HP wheel	applied@60d28c0
+D_86003B84	gMiniHudWheelNodes	w28		graph nodes for the HP wheels	applied@60d28c0
+func_842082D0	DrawBoxBorder	w28		draws a bordered box using Gfx_DrawSpriteI4 and Gfx_DrawTextureRect	applied@60d28c0
+func_84208410	DrawSlotIcon	w28		draws a sprite with alpha based on arg3, likely a slot icon	applied@60d28c0
+func_842084BC	DrawPokemonSlots	w28		draws a series of 13 slot icons and a selection highlight	applied@60d28c0
+func_84208820	CountActiveSlots	w28		counts how many slots in the array have a non-zero value	applied@60d28c0
+func_84208870	GetBorderColorIndex	w28		returns a color index (0, 1, or 2) based on the value of unk_2692	applied@60d28c0
+func_84208F64	DrawPokemonEntry	w28		draws a pokemon entry including a colored box, sprite, and text (nickname/level)	applied@60d28c0
+func_84209340	DrawPokemonMenu	w28		main draw loop for the pokemon selection menu, handling scrolling and layout	applied@60d28c0
+func_84209CF4	GetPokemonNode	w28		traverses a linked list of pokemon nodes by a given offset	applied@60d28c0
+func_84209D18	CheckHeldItemEffect	w28		checks if a pokemon is holding item 7 and modifies a flag based on a decode buffer	applied@60d28c0
+func_84209DB8	LoadPokemonIntoSlots	w28		reads pokemon data from GBS blocks or memory into the menu slot structures	applied@60d28c0
+func_8420A0A4	ResetMenuPosition	w28		resets the menu Y coordinates to default values	applied@60d28c0
+func_8420A0BC	ResetMenuPositionAndState	w28		resets Y coordinates and updates state from unk_00002	applied@60d28c0
+func_8420A0E4	HandleMoveSelection	w28		updates menu state based on the selected move index	applied@60d28c0
+func_8420A1B0	ScrollMenuUp	w28		increments a counter and shifts the menu Y coordinate upwards	applied@60d28c0
+func_8420A228	ScrollMenuDown	w28		increments a counter and shifts the menu Y coordinate downwards	applied@60d28c0
+func_8420A288	SelectPokemon	w28		triggers MoveScreen_Start and plays a sound effect when a pokemon is selected	applied@60d28c0
+func_8420A3E4	MoveCursorUp	w28		decrements the current slot index and handles page wrapping	applied@60d28c0
+func_8420A4B8	MoveCursorDown	w28		increments the current slot index and handles page wrapping	applied@60d28c0
+func_8420A594	MoveCursorLeft	w28		decrements the horizontal index (unk_0000C)	applied@60d28c0
+func_8420A604	MoveCursorRight	w28		increments the horizontal index (unk_0000C)	applied@60d28c0
+func_8420A678	SwitchPageRight	w28		cycles to the next available page of pokemon and updates the list	applied@60d28c0
+func_8420A7D8	SwitchPageLeft	w28		cycles to the previous available page of pokemon and updates the list	applied@60d28c0
+func_8420A938	HandleCancelAction	w28		handles the B button press to return to a previous state	applied@60d28c0
+func_8420A9B8	HandleStartAction	w28		handles the Start button press to change menu state	applied@60d28c0
+func_8420AB50	UpdateScrollAnimation	w28		updates the scroll offset (unk_00018) until it reaches the target (unk_0001A)	applied@60d28c0
+func_8420ABC4	CheckPokemonValidity	w28		checks if a pokemon has valid moves (below 0xA6)	applied@60d28c0
+func_8420AC00	CheckPokemonStatRange	w28		checks if a pokemon's stats fall within specified ranges	applied@60d28c0
+func_8420ACA8	FilterPokemonByStat	w28		reads pokemon from GBS and filters them based on stat ranges	applied@60d28c0
+func_8420AF1C	InitPokemonMenu	w28		initializes the menu state, linked lists, and loads initial pokemon	applied@60d28c0
+func_8420B0C8	UpdateMenuState	w28		state machine that calls specific update functions based on unk_00001	applied@60d28c0
+func_8420B1D0	TriggerScrollUp	w28		sets state to 5 and initializes scroll distance	applied@60d28c0
+func_8420B20C	TriggerScrollDown	w28		sets state to 5 and initializes scroll distance	applied@60d28c0
+func_8420B238	TriggerSelectionAnim	w28		sets state to 6 and initializes animation timer	applied@60d28c0
+func_8420B264	SetMenuActive	w28		sets the menu activity flag (unk_00009) to 2	applied@60d28c0
+func_8420B270	FindNextValidPokemon	w28		searches for the next pokemon that satisfies a condition	applied@60d28c0
+func_8420B334	RequestNextPokemon	w28		calls FindNextValidPokemon if the menu is in state 4	applied@60d28c0
+func_8420B37C	IsMenuInState2	w28		returns true if the menu state (unk_00001) is 2	applied@60d28c0
+func_84301B48	Anim_TriggerActionScriptMode3	w28		calls InitActionScriptMode3 with entity and a move-related ID	applied@60d28c0
+func_84307F24	Anim_GetActionScriptId	w28		called to retrieve a script ID for InitActionScriptSimple	applied@60d28c0
+func_84307F68	Anim_GetActionScriptParam	w28		called to retrieve a script parameter for InitActionScriptSimple	applied@60d28c0
+func_84301F2C	Anim_SetEntityVisualFlags	w28		sets bit 2 of unk_02 based on specific pokemon species/type IDs	applied@60d28c0
+func_84301F80	Anim_ClearEntityVisualFlags	w28		clears bit 2 of unk_02 for both battle entities	applied@60d28c0
+func_84307B60	Pokemon_IsSpecialSpecies	w28		checked before playing specific move sound effects (0xC8)	applied@60d28c0
+func_8430920C	Pokemon_ApplyFaintTransform	w28		called during Pokemon_HandleFaint and Pokemon_HandleFaintEffect	applied@60d28c0
+func_843092B4	Pokemon_ClearFaintTransform	w28		called by Pokemon_ClearTransformFlag to reset faint visuals	applied@60d28c0
+func_84307AE0	Array_ContainsValue	w28		checks if a pokemon's ID exists within gSpecialMoveIDs or gSpecialConditionIDs	applied@60d28c0
+func_8431B290	Anim_HandleSpecificMoveEvent	w28		called in AnimChannel_CheckAndAdvance for moves 0x2D, 0x2E, 0x59	applied@60d28c0
+func_800479C0	Effect_TriggerMoveVisual	w28		called by Pokemon_PlayMoveEffect to trigger a visual effect	applied@60d28c0
+D_8438FFF0	gAnimExtraDataPlayer0	w28		first entry of gAnimExtraDataByPlayer	applied@60d28c0
+D_843845F0	gPokemonSfxId_0	w28		magic constant 0x8E used in grounded animation checks	applied@60d28c0
+D_843845F4	gPokemonSfxId_1	w28		magic constant 0x16 used in grounded animation checks	applied@60d28c0
+D_843845F8	gPokemonSfxId_2	w28		magic constant 0x53 used in grounded animation checks	applied@60d28c0
+D_843845FC	gPokemonSfxId_3	w28		magic constants 0x55, 0x54 used in grounded animation checks	applied@60d28c0
+func_800174E4	GraphNode_IsAnimationFinished	w28		checks if the current animation on a graph node has completed	applied@60d28c0
+func_8431AFB4	Battle_SetCamera	w28		sets the battle camera based on the provided parameters	applied@60d28c0
+func_84319668	Battle_InitCamera	w28		initializes the battle camera system	applied@60d28c0
+func_843193F4	Battle_SetEntityPosition	w28		sets the initial position of a battle entity	applied@60d28c0
+func_8430D814	Battle_InitLighting	w28		initializes the lighting for the battle scene	applied@60d28c0
+func_84308660	Battle_ResetEntityAnim	w28		resets the animation state for a specific battle entity	applied@60d28c0
+func_8430BC44	Battle_ClearAnimFlags	w28		clears animation flags for a specific player index	applied@60d28c0
+func_843196A4	Battle_InitBattleEffects	w28		initializes global battle effect states	applied@60d28c0
+func_843089DC	Entity_InitController	w28		initializes the controller logic for a battle entity	applied@60d28c0
+func_843089F4	Entity_InitPhysics	w28		initializes physics properties for a battle entity	applied@60d28c0
+func_843089FC	Entity_BindController	w28		binds a specific controller to a battle entity	applied@60d28c0
+func_843085C4	GraphNode_GetModelRoot	w28		returns the root node of the model for a battle entity	applied@60d28c0
+func_843085E0	GraphNode_GetModelPhase	w28		returns the current phase of the model for a battle entity	applied@60d28c0
+func_84307414	AnimHandler_Idle	w28		empty animation handler function	applied@60d28c0
+func_8430741C	AnimHandler_AttackStart	w28		empty animation handler function	applied@60d28c0
+func_84307424	AnimHandler_AttackHit	w28		empty animation handler function	applied@60d28c0
+func_8430742C	AnimHandler_AttackEnd	w28		empty animation handler function	applied@60d28c0
+func_84307434	AnimHandler_DamageStart	w28		empty animation handler function	applied@60d28c0
+func_8430743C	AnimHandler_DamageHit	w28		empty animation handler function	applied@60d28c0
+func_84307444	AnimHandler_DamageEnd	w28		empty animation handler function	applied@60d28c0
+func_8430744C	AnimHandler_FaintStart	w28		empty animation handler function	applied@60d28c0
+func_84307454	AnimHandler_FaintEnd	w28		empty animation handler function	applied@60d28c0
+func_8430745C	AnimHandler_StatusEffect	w28		empty animation handler function	applied@60d28c0
+func_84307464	AnimHandler_ItemUse	w28		empty animation handler function	applied@60d28c0
+func_8430746C	AnimHandler_SwitchIn	w28		empty animation handler function	applied@60d28c0
+func_84307474	AnimHandler_SwitchOut	w28		takes entity and a value, likely for transition timing	applied@60d28c0
+func_84307480	AnimHandler_Victory	w28		takes entity and a value, likely for victory pose selection	applied@60d28c0
+func_8430748C	AnimHandler_Defeat	w28		empty animation handler function	applied@60d28c0
+func_8430CC20	Battle_InitTimers	w28		sets gPhaseTimer and other timer variables based on gBattleContext	applied@60d28c0
+func_8430CC84	Battle_AlignPhaseTimer	w28		aligns gPhaseTimer to 30-frame increments	applied@60d28c0
+func_8430CDAC	Battle_GetMoveScore	w28		computes a score (1-3) based on move stats (unk_02 and unk_26)	applied@60d28c0
+func_8430D02C	Battle_UpdateResultPhase	w28		handles the transition of gBattleResultPhase and calls Battle_ComputeWinner	applied@60d28c0
+func_8430D124	Battle_TickHPBarTimer	w28		plays sound effects at specific intervals of gHPBarTimer	applied@60d28c0
+func_8430D268	Battle_ResetHPBarTimer	w28		initializes gHPBarTimer from gBattleContext	applied@60d28c0
+func_8430D294	Battle_TickBattleTimer	w28		decrements gHPBarTimer and increments gBattleTimer	applied@60d28c0
+func_8430D30C	Battle_ResetAllTimers	w28		resets gBattleTimer and calls Battle_ResetHPBarTimer	applied@60d28c0
+func_8430D334	Battle_UpdateAnimFrame	w28		increments animation frame offset if state is 3	applied@60d28c0
+func_8430D364	Battle_UpdateHPScale	w28		updates player scale factors and Pokemon HP based on gBattleUpdateHPFlag	applied@60d28c0
+func_8430D434	Battle_CheckMoveAvailability	w28		checks if any moves are available to be executed	applied@60d28c0
+func_8430D574	Battle_IsMoveInvalid	w28		checks if a specific move slot is invalid or disabled	applied@60d28c0
+func_8430D5BC	Battle_SelectFirstAvailableMove	w28		finds and selects the first valid move slot	applied@60d28c0
+func_8430D638	Battle_SelectNextValidMove	w28		searches for the next valid move slot in the Pokemon's move list	applied@60d28c0
+func_8430D6D0	Battle_UpdateControllerRef	w28		updates the controller reference based on the active player entity	applied@60d28c0
+func_8430D710	Battle_HandleConfirmInput	w28		handles A button press to confirm move selection	applied@60d28c0
+func_8430D8C4	Battle_HasAnyValidMoves	w28		checks if the entity has any moves that can be executed	applied@60d28c0
+func_8430D9EC	Battle_HandleSimultaneousInput	w28		handles logic when both players provide input simultaneously	applied@60d28c0
+func_8430DB58	Battle_SetIdleAnim	w28		sets the entity to an idle animation state	applied@60d28c0
+func_8430DBA0	Battle_HandleMoveTimeout_Player1	w28		handles move selection timeout for the first player	applied@60d28c0
+func_8430DCD4	Battle_HandleMoveTimeout_Player2	w28		handles move selection timeout for the second player	applied@60d28c0
+func_8430DE20	Battle_HandleMoveTimeout_Random	w28		handles random move selection when timeout occurs	applied@60d28c0
+func_8430DF60	Battle_RandomizeMoveSlot	w28		picks a random move slot using func_84383B5C	applied@60d28c0
+func_8430DFCC	Battle_UpdateMoveSelection	w28		main state machine for move selection and timeout logic	applied@60d28c0
+func_8430E1CC	Battle_HandleMenuNavigation	w28		handles D-pad input for selecting winners or menu options	applied@60d28c0
+func_8430E490	Battle_ClearMoveSelection	w28		resets move selection state and calls func_843193F4	applied@60d28c0
+func_8430E504	Battle_ValidateMoveSelection	w28		checks if the currently selected move is valid	applied@60d28c0
+func_8430E580	Battle_InvalidMoveFeedback	w28		triggers error animation/sound for invalid move	applied@60d28c0
+func_8430E5AC	Battle_UpdateActiveController	w28		determines which controller is currently controlling the entity	applied@60d28c0
+func_8430E72C	Battle_HandleMoveSelectionInput	w28		maps D-pad and buttons to move slot selection	applied@60d28c0
+func_8430E8E8	Battle_UpdateInputState	w28		processes controller input for move selection and confirmation	applied@60d28c0
+func_8430EB1C	Battle_ApplyMoveAnimation	w28		sets animation parameters based on the selected move	applied@60d28c0
+func_8430EBA8	Battle_CheckInputTimeout	w28		checks if the player is idling and triggers timeout logic	applied@60d28c0
+func_8430ED88	Battle_HandleMoveError	w28		plays error sound and resets animation on invalid move selection	applied@60d28c0
+func_8430EE50	Battle_HandleQuickSelectInput	w28		maps specific buttons to quick-select move slots	applied@60d28c0
+func_8430EF4C	Battle_ProcessMoveInput	w28		handles the high-level input loop for move selection	applied@60d28c0
+func_8430F044	Battle_UpdateMoveInputState	w28		wraps Battle_ProcessMoveInput with state flags	applied@60d28c0
+func_8430F080	Battle_TriggerMoveAnim	w28		triggers the animation for the selected move	applied@60d28c0
+func_8430F0C0	Battle_HandleCancelInput	w28		handles B button or cancel inputs during move selection	applied@60d28c0
+func_8430F27C	Battle_UpdateEntityState	w28		main update loop for a battle entity's input and animation	applied@60d28c0
+func_8430F350	Battle_UpdateDualEntityState	w28		coordinates state updates between two battle entities	applied@60d28c0
+func_8430F598	Battle_SyncMoveFlags	w28		synchronizes move-related flags between two entities	applied@60d28c0
+func_8430F5F4	Battle_DemoUpdate	w28		updates the battle demo using scripted inputs	applied@60d28c0
+D_8439012C	gBattlePhaseTimerMax	w28		calculated max value for phase timer based on context	applied@60d28c0
+D_84390130	gPhaseTimerInitial	w28		initial value for gPhaseTimer	applied@60d28c0
+D_8439013C	gRandomMoveSelectedFlag	w28		flag indicating if a random move has been selected for the turn	applied@60d28c0
+D_84390144	gBattleControllerId	w28		stores the ID of the active controller	applied@60d28c0
+D_84390148	gActiveController1	w28		pointer to the first active controller	applied@60d28c0
+D_8439014C	gActiveController2	w28		pointer to the second active controller	applied@60d28c0
+D_84390150	gDemoController	w28		controller structure used for demo scripted input	applied@60d28c0
+func_8430F794	Battle_UpdateEntityInteraction	w28		checks entity states and calls interaction functions like func_8430F044 and func_8430EF4C	applied@60d28c0
+func_8430F8B8	Battle_UpdateEntities	w28		iterates through D_84390010 entities, handles damage via gCurrentDamage, and calls DetermineTurnOrder	applied@60d28c0
+func_8430FB20	Battle_UpdateMain	w28		manages gBattleUpdateHPFlag and decides between func_8430F5F4 and Battle_UpdateEntities	applied@60d28c0
+func_8430FB68	Battle_UpdateFrame	w28		calls Battle_UpdateMain, Battle_TickPhaseTimer, and func_8430D294	applied@60d28c0
+func_843841C4	Battle_GetEntityState	w28		returns a value based on entity index (0 or 1) and a state offset	applied@60d28c0
+func_84310334	DrawColoredRectWrapper	w28		calls DrawColoredRect with the same arguments	applied@60d28c0
+func_84310DC4	DrawTextBoxAnimated	w28		draws a colored box and text with color modulation based on COSS(arg4)	applied@60d28c0
+func_84310FA4	DrawPokemonMoveBox	w28		calls DrawTextBox or DrawTextBoxAnimated based on a flag and entity state	applied@60d28c0
+func_843112C4	DrawTextureRect	w28		loads a texture block and calls Gfx_DrawTextureRect2	applied@60d28c0
+func_843116D8	DrawHPBarTimer	w28		draws a timer window with colors changing based on gHPBarTimer	applied@60d28c0
+func_843118A8	DrawPhaseTimer	w28		draws a timer window showing minutes and seconds based on gPhaseTimer	applied@60d28c0
+func_84311A38	DrawPokemonStatusIcons	w28		draws a row of status icons based on PokemonData and entity position	applied@60d28c0
+func_84311F30	DrawBattleInfoWindowLeft	w28		draws a complex UI layout including Pokemon info, move boxes, and borders on the left	applied@60d28c0
+func_843128A0	DrawBattleInfoWindowRight	w28		draws a complex UI layout including Pokemon info, move boxes, and borders on the right	applied@60d28c0
+func_84313148	DrawBattleMenuThreeOptions	w28		draws a window with three paletted icons and corresponding text strings	applied@60d28c0
+func_843133B4	DrawBattleMenuTwoOptions	w28		draws a window with two paletted icons and corresponding text strings	applied@60d28c0
+func_843135B8	DrawBattleMenuOneOption	w28		draws a window with one paletted icon and corresponding text string	applied@60d28c0
+func_84313A74	DrawMovePPWindows	w28		draws move PP counters and move icons for the active Pokemon	applied@60d28c0
+D_8438587C	gBoxColorPrimaryAlt	w28		table of Color_RGB8 used for UI boxes	applied@60d28c0
+D_84385888	gBoxColorBlue	w28		table of Color_RGB8 containing blue shades	applied@60d28c0
+D_84385894	gBoxColorLightBlue	w28		table of Color_RGB8 containing light blue shades	applied@60d28c0
+D_843858A0	gBoxColorGreen	w28		table of Color_RGB8 containing green shades	applied@60d28c0
+D_843858AC	gBoxColorLightGreen	w28		table of Color_RGB8 containing light green shades	applied@60d28c0
+D_843858B8	gBoxColorRed	w28		table of Color_RGB8 containing red shades	applied@60d28c0
+D_843858C4	gBoxColorLightRed	w28		table of Color_RGB8 containing light red shades	applied@60d28c0
+D_843858D0	gBoxColorBrown	w28		table of Color_RGB8 containing brown shades	applied@60d28c0
+D_843858DC	gBoxColorLightBrown	w28		table of Color_RGB8 containing light brown shades	applied@60d28c0
+func_8431AD68	Battle_WaitFrames	w28		increments gBattleState.unk_00->unk_10 and returns 1 when it reaches arg0	applied@60d28c0
+func_8431ADF0	Battle_WaitFramesNonBlocking	w28		increments gBattleState.unk_00->unk_14 and returns 1 when it reaches arg0	applied@60d28c0
+func_8431AE20	Battle_IsAnimationFinished	w28		checks if gBattleState.unk_00->unk_14 has reached arg0	applied@60d28c0
+func_8431AFD0	Camera_SetClippingPlanes	w28		sets near and far planes in CameraStruct	applied@60d28c0
+func_8431AFE4	Battle_SetTurnTimer	w28		sets gBattleState.unk_00->unk_30 and unk_2E	applied@60d28c0
+func_8431B004	Battle_UpdateTurnIndex	w28		updates gBattleState.unk_00->unk_2C based on turn state and player index	applied@60d28c0
+func_8431B174	Battle_ApplyCameraShake	w28		uses COSS/SINS and Math_ExponentialApproach to offset camera eye and at positions	applied@60d28c0
+func_8431B2B8	Math_IsAngleWithinRange	w28		checks if the difference between two angles is within a specific threshold (0xE38)	applied@60d28c0
+func_8431B34C	Camera_SmoothPanToAngle	w28		interpolates gBattleState.unk_00->unk_58 and calls Camera_SetViewParameters	applied@60d28c0
+func_8431B42C	Camera_CheckPanFinished	w28		checks if gBattleState.unk_00->unk_58 has reached target arg2	applied@60d28c0
+func_8431B4C0	Camera_SetPanTargets	w28		sets gBattleState.unk_00->unk_56, unk_58, and unk_5C	applied@60d28c0
+func_8431BAB4	Camera_SetLookAtPosition	w28		sets view parameters and offsets Y by GetModelDepth	applied@60d28c0
+func_8431BB24	Camera_SetEyePosition	w28		sets view parameters using arg1 as the eye position	applied@60d28c0
+func_8431BB80	Camera_SetEyePositionOffset	w28		sets view parameters using arg1 as eye and offsets Y by arg5	applied@60d28c0
+func_8431BBDC	Camera_SetViewAndOffsetEye	w28		sets view parameters and offsets eye Y by arg4	applied@60d28c0
+func_8431BC38	Camera_SetEyeAndPanTargets	w28		calls func_8431B4C0 and sets eye position with offset	applied@60d28c0
+func_8431BCA4	Camera_SetAtAndPanTargets	w28		calls func_8431B4C0 and sets at position with offset	applied@60d28c0
+func_8431BD94	Camera_UpdateFocusOnEntity	w28		adjusts FOV and position based on entity model width and type	applied@60d28c0
+func_8431C594	Camera_SmoothAdjustDistance	w28		interpolates distance between eye and at positions using Math_ApproachF32	applied@60d28c0
+func_8431C750	Battle_AdvanceCameraTimelineFast	w28		calls focus update with 90.0f and distance adjustment	applied@60d28c0
+func_8431C784	Battle_AdvanceCameraTimelineSlow	w28		calls focus update with 50.0f	applied@60d28c0
+func_8431C7A4	Camera_FocusEntityWithOffset	w28		calculates entity ground position and applies a scaled distance offset	applied@60d28c0
+func_8431CB54	Camera_SmoothFocusEntity	w28		interpolates camera at position based on entity ground position and model params	applied@60d28c0
+func_8431CC38	Camera_SmoothFocusEntityY	w28		interpolates camera at Y and eye Y based on entity height	applied@60d28c0
+func_8431CCFC	Camera_SmoothPanToEntity	w28		interpolates eye and at positions to focus on entity center	applied@60d28c0
+func_8431CEF0	Camera_SetDistanceToEntity	w28		sets camera at position based on distance to entity ground position	applied@60d28c0
+func_8431CFA4	Camera_SmoothZoomOut	w28		interpolates distance to a larger target and adjusts angle	applied@60d28c0
+func_8431D048	Camera_SmoothZoomIn	w28		calls func_8431EF54 and reduces distance by half	applied@60d28c0
+func_8431D704	CameraPreset_SetAngles	w28		sets angles in gCameraPreset	applied@60d28c0
+func_8431D750	CameraPreset_SetDistances	w28		sets distance values in gCameraPreset	applied@60d28c0
+func_8431D764	CameraPreset_SetSecondaryAngles	w28		sets secondary angles in gCameraPreset	applied@60d28c0
+func_8431D7B0	CameraPreset_SetSecondaryDistances	w28		sets secondary distance values in gCameraPreset	applied@60d28c0
+func_8431D7C4	CameraPreset_SetTimelineParams	w28		sets timeline distance and interpolation in gCameraPreset	applied@60d28c0
+func_8431DA38	Camera_SmoothFocusEntitySide	w28		interpolates camera to a side-view of the entity	applied@60d28c0
+func_8431DBEC	Battle_CheckEntityHeightDiff	w28		checks if the Y difference between the two battle entities exceeds 35.0f	applied@60d28c0
+func_8431DC78	Camera_SetEntityView	w28		sets camera to look at a specific entity with height adjustment	applied@60d28c0
+func_8431DE30	Camera_SmoothFocusOpponent	w28		interpolates camera to focus on the opponent entity	applied@60d28c0
+func_8431E118	Camera_SetEntityWideView	w28		sets a wide distance view of the entity	applied@60d28c0
+func_8431E1DC	Camera_TransitionToEntity	w28		sets up a transition from a wide view to a close-up of an entity	applied@60d28c0
+func_8431E368	Camera_TransitionToEntitySide	w28		similar to func_8431E1DC but with a side-angle offset (0x71C)	applied@60d28c0
+func_8431E4DC	Camera_TransitionToEntityBack	w28		similar to func_8431E1DC but with a back-angle offset (0xE38)	applied@60d28c0
+func_8431E63C	Camera_TransitionToEntityLow	w28		similar to func_8431E1DC but with a negative Y offset based on model height	applied@60d28c0
+D_84385B50	gBattleFrameCounter	w28		static s32 used for frame tracking	applied@60d28c0
+func_8431BA5C	Battle_ResetCameraState	w28		called before most camera setup functions to initialize state	applied@60d28c0
+func_8431D5C8	Battle_UpdateCameraMatrix	w28		called after applying camera settings to finalize the view matrix	applied@60d28c0
+func_84308548	Battle_GetEntityHeight	w28		used to calculate camera Y offset based on entity scale/model	applied@60d28c0
+func_8431E7D0	Battle_SetCameraMoveDefault	w28		standard camera setup for move execution with timeline advancement	applied@60d28c0
+func_8431E90C	Battle_SetCameraMoveStatic	w28		similar to default but without timeline advancement	applied@60d28c0
+func_8431EA1C	Battle_SetCameraPreset	w28		plays a transition and applies settings from gBattleCameraPresetTable	applied@60d28c0
+func_8431EAB8	Battle_SetCameraOpponentStandard	w28		sets camera for opponent move with standard distance and yaw	applied@60d28c0
+func_8431EBD0	Battle_SetCameraOpponentOffset	w28		sets camera for opponent move with a specific X offset (0x1555)	applied@60d28c0
+func_8431ECEC	Battle_SetCameraOpponentHigh	w28		sets camera for opponent move with height offset based on entity	applied@60d28c0
+func_8431EE08	Battle_SetCameraOpponentLow	w28		sets camera for opponent move with negative height offset and Y clamp	applied@60d28c0
+func_8431EF54	Battle_SetCameraOpponentClose	w28		sets camera for opponent move with closer distance (3.5f)	applied@60d28c0
+func_8431F050	Battle_SetCameraMoveDynamic	w28		sets camera with a current distance offset and yaw adjustment	applied@60d28c0
+func_8431F194	Battle_SetCameraMoveSimple	w28		basic camera setup for move execution without timeline or presets	applied@60d28c0
+func_84333210	Particle_FireBurstSmall_Update	w28		handles rotation and timer logic for FireBurstSmall particles	applied@60d28c0
+func_843332B4	Particle_FireBurstSmall_Handler	w28		state machine for FireBurstSmall, calls Particle_FireBurstSmall and Particle_FireBurstSmall_Update	applied@60d28c0
+func_84333570	Particle_FireBurstLarge_Update	w28		handles rotation and timer logic for FireBurstLarge particles	applied@60d28c0
+func_84333600	Particle_FireBurstLarge_Handler	w28		state machine for FireBurstLarge, calls Particle_FireBurstLarge and Particle_FireBurstLarge_Update	applied@60d28c0
+func_84333884	Particle_SmokePuff_Update	w28		handles rotation and timer logic for SmokePuff particles	applied@60d28c0
+func_84333A20	Particle_FireBurstTiny	w28		initializes a small fire burst particle with scale 0.2f	applied@60d28c0
+func_84333B04	Particle_FireBurstTiny_Update	w28		handles rotation and timer logic for FireBurstTiny particles	applied@60d28c0
+func_84333BA8	Particle_FireBurstTiny_Handler	w28		state machine for FireBurstTiny, calls Particle_FireBurstTiny and Particle_FireBurstTiny_Update	applied@60d28c0
+func_84333DC4	Particle_SootPuff_Init	w28		initializes a soot/smoke particle with backward velocity and alpha 0xC8	applied@60d28c0
+func_84333E28	Particle_SootPuff_Handler	w28		state machine for soot particles, handles scaling and alpha fading	applied@60d28c0
+func_84333EE8	Particle_SootPuff_Handler_Alt	w28		variant of soot handler with different scaling and rotation	applied@60d28c0
+func_84333FBC	Particle_SootPuff_Handler_Sooty	w28		variant of soot handler that can spawn additional particles via func_8140D658	applied@60d28c0
+func_84334350	Particle_Spark_Handler	w28		state machine for Spark particles, handles scaling and yaw movement	applied@60d28c0
+func_843343F8	Particle_Spark_Long_Init	w28		initializes a spark particle with scale 1.0f and 0 timer	applied@60d28c0
+func_843344A0	Particle_Spark_Long_Handler	w28		state machine for long spark particles, handles alpha fading	applied@60d28c0
+func_84334558	Particle_SmokeSoot_Init	w28		initializes a dark smoke particle with alpha 0xA0	applied@60d28c0
+func_843345A0	Particle_SmokeSoot_Handler	w28		state machine for SmokeSoot particles, handles alpha and scaling	applied@60d28c0
+func_84334654	Particle_Ember_Init	w28		initializes an ember particle with speed 8.0f and color 0x29	applied@60d28c0
+func_843346BC	Particle_Ember_Handler	w28		state machine for Ember particles, spawns SmokeSoot particles	applied@60d28c0
+func_843347A4	Particle_Dust_Init	w28		initializes a dust particle with speed 0.2f and color 0x1D	applied@60d28c0
+func_84334808	Particle_Dust_Handler	w28		state machine for Dust particles, handles scaling and alpha	applied@60d28c0
+func_843348DC	Particle_Dust_Cloud_Init	w28		initializes a dust cloud particle with random rotation and alpha 0x64	applied@60d28c0
+func_84334994	Particle_Dust_Cloud_Handler	w28		state machine for DustCloud particles, handles scaling and alpha	applied@60d28c0
+func_84334B0C	Particle_SetColorByVariant	w28		sets particle colors based on the variant index in ShortCF	applied@60d28c0
+func_84334D7C	Particle_Explosion_Handler	w28		state machine for Explosion particles, handles scaling and alpha	applied@60d28c0
+func_843351C8	Particle_Sparkle_Handler	w28		state machine for Sparkle particles, handles scaling and alpha	applied@60d28c0
+func_843352AC	Particle_Glitter_Init_Alt	w28		initializes a glitter-like particle with random velocity and alpha 0xC8	applied@60d28c0
+func_843353C4	Particle_Glitter_Init_Alt_Handler	w28		state machine for the alternative glitter particle	applied@60d28c0
+func_84335668	Particle_Star_Handler	w28		state machine for Star particles, handles scaling and alpha	applied@60d28c0
+func_84335848	Particle_Twinkle_Handler	w28		state machine for Twinkle particles, handles scaling and alpha	applied@60d28c0
+func_84335A84	Particle_Glitter_Handler	w28		state machine for Glitter particles, handles scaling and alpha	applied@60d28c0
+func_84335BA0	Particle_Star_Tiny_Init	w28		initializes a tiny star particle with scale 0.1f and random rotation	applied@60d28c0
+func_84335D10	Particle_Star_Tiny_Handler	w28		state machine for StarTiny particles	applied@60d28c0
+func_84335EF8	Particle_FireRingUpdate	w28		handles the state machine for the FireRing effect, including scaling and alpha fades	applied@60d28c0
+func_81400B4C	Particle_GetRandomRotation	w28		returns a random value within a range, used for Y rotation in ExplosionVariant	applied@60d28c0
+func_8433617C	Particle_ExplosionUpdate	w28		handles the state machine for ExplosionVariant, managing alpha and scale transitions	applied@60d28c0
+func_84336320	Particle_ExplosionVariant0	w28		wrapper that calls Particle_ExplosionUpdate with variant index 0	applied@60d28c0
+func_84336340	Particle_ExplosionVariant1	w28		wrapper that calls Particle_ExplosionUpdate with variant index 1	applied@60d28c0
+func_84336360	Particle_ExplosionInit	w28		initializes velocity, rotation, and color for an explosion particle	applied@60d28c0
+func_84336480	Particle_RotationUpdate	w28		updates rotation and increments flag counters based on unk_B8 state	applied@60d28c0
+func_84336520	Particle_ExplosionStateUpdate	w28		manages the state machine for explosion particles, calling Particle_ExplosionInit and Particle_RotationUpdate	applied@60d28c0
+func_8433661C	Particle_SparkleInit	w28		initializes velocity and rotation for sparkle-like particles based on variant index	applied@60d28c0
+func_8433679C	Particle_SparkleRotationUpdate	w28		updates rotation and applies B568 transforms for sparkle particles	applied@60d28c0
+func_84336830	Particle_SparkleUpdate	w28		manages the state machine for sparkle particles, handling initialization and fading	applied@60d28c0
+func_843369AC	Particle_DustInit	w28		initializes random velocity and color for dust-like particles	applied@60d28c0
+func_84336A58	Particle_DustUpdate	w28		manages the state machine for dust particles, handling initialization and fading	applied@60d28c0
+func_84336B8C	ParticleEffect_InitSetA	w28		defines a set of particle effects using CreateQuick and CreateBC20CDAlt	applied@60d28c0
+func_84336C80	ParticleEffect_InitSetB	w28		defines a set of particle effects including FireRing and other full-setup particles	applied@60d28c0
+func_84336DD8	ParticleEffect_InitSetC	w28		defines a set of particle effects including FireRing and specific full-setup particles	applied@60d28c0
+func_84337000	ParticleEffect_InitExplosionSet	w28		defines a complex set of explosion and basic setup particles	applied@60d28c0
+func_843371C0	ParticleEffect_InitSmokeSetB	w28		defines smoke puff effects similar to func_84336EE8 but with different flags	applied@60d28c0
+func_843372D8	ParticleEffect_InitExplosionSetB	w28		defines a complex set of explosion particles with modified parameters	applied@60d28c0
+func_843374A4	ParticleEffect_InitSmokeSetC	w28		defines smoke puff effects with different durations and counts	applied@60d28c0
+func_843375B0	ParticleEffect_InitFireSet	w28		defines fire-related particles including ParticleEffect_FireUpdate	applied@60d28c0
+func_8433766C	ParticleEffect_InitSparkleSet	w28		defines a set of sparkle and dust particles using various handlers	applied@60d28c0
+func_843378D4	ParticleEffect_InitCombinedSet	w28		defines a large set of particles combining Sparkle and Dust updates	applied@60d28c0
+func_8434F888	Particle_SetupSpecialColorOffsets	w28		similar to Particle_SetupSpecialOffsets but includes random velocity and color pair logic based on sp24	applied@60d28c0
+func_8434FB3C	Particle_CollisionInit_Standard	w28		initializes particle state on collision, handles species 0x42 specifically	applied@60d28c0
+func_8434FCC4	Particle_CollisionInit_ExplosionAlt	w28		initializes particle state on collision for explosion alt, handles species 0x42 specifically	applied@60d28c0
+func_8434FE58	Particle_DirectionalInit	w28		initializes directional particles with Y velocity based on sp26	applied@60d28c0
+func_843501CC	Particle_SootInit	w28		initializes a particle with low speed, alpha 0x64, and timer based on sp26	applied@60d28c0
+func_84350260	Particle_HandleState_Soot	w28		state machine for soot particles, includes backward velocity target	applied@60d28c0
+func_84350330	Particle_SparkInit	w28		initializes a particle with random Y offset, rotation based on sp26, and speed	applied@60d28c0
+func_8435043C	Particle_HandleState_Spark	w28		state machine for spark particles, applies B278 XZ copy	applied@60d28c0
+func_84350520	Particle_SparkAltInit	w28		similar to Particle_SparkInit but with different scale and speed ranges	applied@60d28c0
+func_84350634	Particle_HandleState_SparkAlt	w28		state machine for spark alt particles, applies B278 XZ copy	applied@60d28c0
+func_84350728	Particle_ElectricInit	w28		initializes particle with color 0x32, high speed, and rotation based on sp24	applied@60d28c0
+func_84350828	Particle_HandleState_Electric	w28		state machine for electric particles, applies B278 XZ copy	applied@60d28c0
+func_843508F0	Particle_GlowInit	w28		initializes particle with color 0xA, alpha 0x64, and random velocity	applied@60d28c0
+func_84350A04	Particle_HandleState_Glow	w28		state machine for glow particles, applies B278 XZ copy	applied@60d28c0
+func_84350AFC	Particle_DebrisInit	w28		initializes particle with color 0x32, high Y velocity, and random speed	applied@60d28c0
+func_84350BE4	Particle_HandleState_Debris	w28		state machine for debris particles, includes ground check	applied@60d28c0
+func_84350CD8	Particle_FireworkInit	w28		initializes particle with color 0xA, Y acceleration, and rotation based on sp26	applied@60d28c0
+func_84350EC8	Particle_SmokeInit	w28		initializes smoke particles with different scales/velocities based on sp24	applied@60d28c0
+func_84350FC0	Particle_HandleState_Smoke	w28		state machine for smoke particles, includes ground check	applied@60d28c0
+func_84351090	Particle_FlashInit	w28		initializes particle with white prim color, orange env color, and timer	applied@60d28c0
+func_84351144	Particle_HandleState_Flash	w28		state machine for flash particles, transitions colors and alpha	applied@60d28c0
+func_84351264	Particle_SmallDotInit	w28		initializes a very small particle with color 0x14	applied@60d28c0
+func_843512AC	Particle_HandleState_SmallDot	w28		state machine for small dot particles, scales up and fades out	applied@60d28c0
+func_84351330	Particle_RandomDotInit	w28		initializes small particle with random rotation and color 0x15	applied@60d28c0
+func_843513F4	Particle_HandleState_RandomDot	w28		state machine for random dot particles, applies B2B4 add all	applied@60d28c0
+func_843514B4	Particle_ColoredDotInit	w28		initializes small particle with random rotation and color based on sp26	applied@60d28c0
+func_843515C8	Particle_HandleState_ColoredDot	w28		state machine for colored dot particles, applies B2B4 add all	applied@60d28c0
+func_843516A0	Particle_MultiColorDotInit	w28		initializes particle with various colors (8, 9, 5) and speeds based on sp26	applied@60d28c0
+func_84351984	Particle_HandleState_MultiColorDot	w28		state machine for multi-color dot particles, applies B2B4 add all	applied@60d28c0
+func_84351ADC	Particle_SpiralInit	w28		initializes particle with color 0x17, rotation delta Z, and speed 8.0	applied@60d28c0
+func_84351BCC	Particle_HandleState_Spiral	w28		state machine for spiral particles, handles rotation and target velocity	applied@60d28c0
+func_84351D20	Particle_HandleState_ExplosionNode	w28		state machine that triggers ParticleNode_CreateExplosion	applied@60d28c0
+func_84351D70	Particle_ComplexInit	w28		initializes particle with complex behavior (12 cases) based on sp2C	applied@60d28c0
+func_8435226C	Particle_HandleState_Complex	w28		state machine for complex particles, handles scale factor 2 transitions	applied@60d28c0
+func_84352754	ParticleEffect_FireworkMainInit	w28		called by ParticleEffect_FireworkMain case 1, handles various speed/scale based on short CE	applied@60d28c0
+func_8432D8E8	Particle_CreateChildParticles	w28		called by ParticleEffect_FireworkMain2, takes a callback and data from gParticleEffectData	applied@60d28c0
+func_84355330	ParticleEffect_DirectionalHandler	w28		handles directional initialization and small scatter node creation	applied@60d28c0
+func_843553BC	ParticleEffect_BasicHandler	w28		handles basic setup, animation loops, and scale/velocity updates	applied@60d28c0
+func_84355B8C	ParticleEffect_SparkleHandlerState	w28		manages the state machine for sparkle effects and complex sequence spawning	applied@60d28c0
+func_8433CCFC	ParticleEffect_CollisionHandler	w28		used in collision setup for specific particle definitions	applied@60d28c0
+func_80027FE0	BattleProgress_Save	w28		saves gBattleProgress structure to GBS bank 0x11F2	applied@60d28c0
+func_84B0345C	BattleResult_ProcessGraphics	w28		called in Battle_ProcessResult when arg0 is 5	applied@60d28c0
+func_84B03814	Battle_UpdateInputBuffer	w28		processes gInputBuffer for battle state	applied@60d28c0
+func_84B07CF8	UI_SetupGraphNodes	w28		initializes UI graph nodes using gBattleGraphics.unk_0004	applied@60d28c0
+func_84B07AB8	UI_WaitUntilFinished	w28		loops until UI state machine returns non-zero	applied@60d28c0
+func_84B04A7C	ErrorScreen_Update	w28		updates the TransferPak error screen state D_84B259A8	applied@60d28c0
+func_84B04F78	ErrorScreen_SetupNodes	w28		sets up graph nodes for the error screen	applied@60d28c0
+func_84B0509C	ErrorScreen_Finish	w28		finalizes error screen animation state	applied@60d28c0
+func_84B017AC	Battle_ErrorSequence	w28		handles the sequence for TransferPak errors including fades and music 0x33	applied@60d28c0
+func_84B01994	Battle_CheckPokemonSpecies	w28		checks Pokemon species (0x19) and moves for specific battle flags	applied@60d28c0
+func_84B0A1F4	UI_UpdateState	w28		updates the state of UI element D_84B25A58	applied@60d28c0
+func_84B0BBEC	UI_UpdateElement	w28		updates UI element D_84B25A90	applied@60d28c0
+func_84B0D4B4	UI_UpdateBar	w28		updates bar elements D_84B25AC0 and D_84B26080	applied@60d28c0
+func_84B0F8E8	UI_UpdatePanel	w28		updates menu panels in gBattleMenuState	applied@60d28c0
+func_84B0A9D0	UI_InitElement	w28		initializes UI element D_84B25A58	applied@60d28c0
+func_84B0BE28	UI_InitElement2	w28		initializes UI element D_84B25A90	applied@60d28c0
+func_84B0D7A8	UI_SetBarPosition	w28		sets the position/value of bars D_84B25AC0 and D_84B26080	applied@60d28c0
+func_84B0A544	UI_Setup	w28		sets up UI element D_84B25A58 with texture gBattleGraphics.unk_B40C	applied@60d28c0
+func_84B0A634	UI_WaitUntilReady	w28		loops until UI element D_84B25A58 is ready	applied@60d28c0
+func_84B0D54C	UI_LinkBarToNode	w28		links UI bars to specific graph nodes in gBattleGraphics.unk_0008	applied@60d28c0
+func_84B0D718	UI_ResetElement	w28		resets UI elements D_84B26080 and D_84B25AC0	applied@60d28c0
+func_84B0BC6C	UI_AnimateBar	w28		animates UI element D_84B25A90 using graph nodes	applied@60d28c0
+func_84B0F950	Menu_SetOption	w28		sets the current option for a menu panel	applied@60d28c0
+func_84B0FADC	Menu_GetInput	w28		polls input for a menu panel and returns the selected option	applied@60d28c0
+func_84B022A0	Battle_HandleMenuNext	w28		handles "Next" menu logic, increments battle count gBattleContext.unk_0003	applied@60d28c0
+func_84B023C0	Battle_HandleMenuPrev	w28		handles "Previous" menu logic, decrements battle count gBattleContext.unk_11F3	applied@60d28c0
+func_84B02474	Battle_HandleExit	w28		handles exiting the battle sequence, triggers fades and UI resets	applied@60d28c0
+func_84B025D0	Battle_HandleWait	w28		waits for BTN_A before exiting the battle sequence	applied@60d28c0
+func_84B02654	Battle_ProcessBattleStep	w28		main state machine for battle steps, handles Pokemon names and progress	applied@60d28c0
+func_84B02984	Battle_ProcessSpecialStep	w28		handles special battle steps including money updates and progress flags	applied@60d28c0
+func_84B02C40	Battle_ProcessFinalStep	w28		handles the final step of the battle sequence and GBS money updates	applied@60d28c0
+func_84B02DF8	Battle_CheckPokemonReady	w28		checks if the player's Pokemon are ready (non-zero species)	applied@60d28c0
+func_84B02E5C	Battle_RunStateDispatcher	w28		dispatches to different battle step functions based on gBattleContext.unk_0000	applied@60d28c0
+func_84B02F60	Battle_ExitSequence	w28		handles the final exit animation and fade out	applied@60d28c0
+func_84B03064	Battle_InitGraphRoots	w28		initializes graph roots and adds gBattleGraphics.unk_0008 nodes to root list	applied@60d28c0
+D_84B259A8	gErrorScreenState	w28		state structure for the TransferPak error screen	applied@60d28c0
+D_84B259E8	gErrorScreenAnim	w28		animation state for the TransferPak error screen	applied@60d28c0
+D_84B25A28	gUIState	w28		main state structure for the battle UI	applied@60d28c0
+D_84B25A58	gUIElementA	w28		UI element state for a specific battle menu component	applied@60d28c0
+D_84B25A90	gUIElementB	w28		UI element state for a specific battle menu component	applied@60d28c0
+D_84B25AC0	gUIBarA	w28		state for the first battle progress/health bar	applied@60d28c0
+D_84B26080	gUIBarB	w28		state for the second battle progress/health bar	applied@60d28c0
+D_84B26678	gBattleMessageTable	w28		table of strings used for battle messages	applied@60d28c0
+unk_func_8002A728	PlayerName	w28		typedef for player name structure used in GbsGetPlayerName	applied@60d28c0
+func_84B038F8	Input_UpdateBuffer	w28		updates gInputBuffer state	applied@60d28c0
+func_84B0FACC	BattleMenu_UpdateState	w28		updates battle menu state fields in gBattleMenuState	applied@60d28c0
+func_84B08D54	InitDoubleBattleHealthBarGraphNodes_Alt	w28		Initializes graph nodes for double battle health bars, mirroring the logic of InitHealthBarGraphNodes but for different indices.	applied@60d28c0
+func_84B08F7C	InitDoubleBattleHealthBarGraphNodes_Alt2	w28		Initializes graph nodes for double battle health bars with different Y offsets and indices.	applied@60d28c0
+func_84B091A0	AnimateHealthBarSlideIn	w28		Moves health bar nodes vertically and calls DrawPlayerHealthBars.	applied@60d28c0
+func_84B09268	AnimateDoubleHealthBarSlideIn	w28		Moves double battle health bar nodes vertically and calls DrawDoubleBattleHealthBars.	applied@60d28c0
+func_84B09354	AnimateHealthBarDrain	w28		Reduces health bar width over time and sets critical flags via SetHPBarCriticalFlag.	applied@60d28c0
+func_84B09444	AnimateDoubleHealthBarDrain	w28		Reduces double battle health bar width over time and sets critical flags via SetDoubleBattleHPBarCriticalFlag.	applied@60d28c0
+func_84B09534	AnimateHealthBarDrainFast	w28		Similar to AnimateHealthBarDrain but with a different reduction rate (5 instead of 4).	applied@60d28c0
+func_84B0962C	AnimateDoubleHealthBarDrainFast	w28		Similar to AnimateDoubleHealthBarDrain but with a different reduction rate (5 instead of 4).	applied@60d28c0
+func_84B09720	AnimateHealthBarEntry	w28		Handles the entry animation of health bars based on Pokemon presence in gBattleContext.	applied@60d28c0
+func_84B099D8	AnimateDoubleHealthBarEntry	w28		Handles the entry animation of double battle health bars based on Pokemon presence.	applied@60d28c0
+func_84B09F60	UpdateHealthBarAnimation	w28		State machine that calls slide-in, drain, and entry animations based on frame counter (unk_01).	applied@60d28c0
+func_84B0A244	SetupSingleBattleSpriteSlots	w28		Allocates depth buffer and sets up sprite slots for single battle Pokemon.	applied@60d28c0
+func_84B0A36C	SetupDoubleBattleSpriteSlots	w28		Allocates depth buffer and sets up sprite slots for double battle Pokemon.	applied@60d28c0
+func_84B0A738	UpdateSingleBattleSpriteImages	w28		Updates sprite images for single battle Pokemon using func_8001B0DC.	applied@60d28c0
+func_84B0A82C	UpdateDoubleBattleSpriteImages	w28		Updates sprite images for double battle Pokemon using func_8001B0DC.	applied@60d28c0
+D_84B14DC8	gHealthBarNodeData	w28		Data table containing function pointers and DL references for health bar rendering.	applied@60d28c0
+D_84B14E00	gHealthBarVtx	w28		Vertex data for the main health bar quad.	applied@60d28c0
+D_84B14EC0	gHealthBarSegmentVtx0	w28		Vertex data for the first segment of the health bar.	applied@60d28c0
+D_84B14F40	gHealthBarSegmentVtx1	w28		Vertex data for the second segment of the health bar.	applied@60d28c0
+D_84B14FC0	gHealthBarSegmentVtx2	w28		Vertex data for the third segment of the health bar.	applied@60d28c0
+D_84B15040	gHealthBarSegmentVtx3	w28		Vertex data for the fourth segment of the health bar.	applied@60d28c0
+D_84B150C0	gHealthBarSegmentVtx4	w28		Vertex data for the fifth segment of the health bar.	applied@60d28c0
+D_84B15140	gHealthBarSegmentVtx5	w28		Vertex data for the sixth segment of the health bar.	applied@60d28c0
+D_84B151C0	gHealthBarBackVtx	w28		Vertex data for the health bar background.	applied@60d28c0
+D_84B15200	gHealthBarDL_Segments	w28		Display list for rendering health bar segments.	applied@60d28c0
+D_84B15618	gHealthBarBackDL	w28		Display list for rendering the health bar background.	applied@60d28c0
+D_84B15688	gHealthBarNodeData_Status	w28		Data table for status icon rendering.	applied@60d28c0
+D_84B156C8	gItemIconVtx	w28		Vertex data for item icons.	applied@60d28c0
+D_84B15808	gItemIconBackVtx	w28		Vertex data for item icon background.	applied@60d28c0
+D_84B15848	gItemIconDL	w28		Display list for rendering item icons.	applied@60d28c0
+D_84B159B0	gItemIconBackDL	w28		Display list for rendering item icon background.	applied@60d28c0
+D_84B15A20	gItemIconNodeData	w28		Data table for item icon rendering.	applied@60d28c0
+D_84B15A60	gHPBarSegmentVtx	w28		Vertex data for HP bar segments.	applied@60d28c0
+D_84B15AE0	gHPBarSegmentVtx0	w28		Vertex data for HP bar segment 0.	applied@60d28c0
+D_84B15B60	gHPBarSegmentVtx1	w28		Vertex data for HP bar segment 1.	applied@60d28c0
+D_84B15BE0	gHPBarSegmentVtx2	w28		Vertex data for HP bar segment 2.	applied@60d28c0
+D_84B15C60	gHPBarBackVtx	w28		Vertex data for HP bar background.	applied@60d28c0
+D_84B15CA0	gHPBarSegmentDL	w28		Display list for rendering HP bar segments.	applied@60d28c0
+D_84B15EE0	gHPBarBackDL	w28		Display list for rendering HP bar background.	applied@60d28c0
+D_84B15F50	gHPBarNodeData	w28		Data table for HP bar rendering.	applied@60d28c0
+D_84B15FA8	gHPBarNodeData_Alt	w28		Alternative data table for HP bar rendering.	applied@60d28c0
+D_84B16000	gHPBarSegmentVtxAlt	w28		Alternative vertex data for HP bar segments.	applied@60d28c0
+D_84B16100	gHPBarBackVtxAlt	w28		Alternative vertex data for HP bar background.	applied@60d28c0
+D_84B16140	gHPBarSegmentDLAlt	w28		Alternative display list for HP bar segments.	applied@60d28c0
+D_84B16268	gHPBarBackDLAlt	w28		Alternative display list for HP bar background.	applied@60d28c0
+D_84B162D8	gHPBarNodeDataAlt	w28		Data table for alternative HP bar rendering.	applied@60d28c0
+D_84B16330	gHPBarNodeDataAlt2	w28		Second alternative data table for HP bar rendering.	applied@60d28c0
+func_84800D08	DrawPanelContents	w28		draws sprites and text for the current panel state, including Pokemon data	applied@60d28c0
+func_8480218C	DrawPanelHeader	w28		draws a small panel with a centered header string from the Pokemon's data	applied@60d28c0
+func_8480225C	Panel_DrawState	w28		dispatches to ModeSelectionPanel_Draw, ResultMessage_Draw, CenteredMessage_Draw, or PokemonInfo_Draw based on state	applied@60d28c0
+func_84802350	Panel_UpdateInputTimer	w28		manages a countdown timer (D_84816450) and checks for button presses via D_848035E0	applied@60d28c0
+func_84802430	Panel_IsPokemonSelected	w28		checks if a specific Pokemon index (arg1) is currently in the selection list (unk_000C)	applied@60d28c0
+func_8480247C	Panel_CheckSelectionLimit	w28		calculates total value of selected Pokemon and compares against limits based on stadium mode (3, 4, or 5)	applied@60d28c0
+func_848025A0	Panel_IsSelectionComplete	w28		checks if the number of selected Pokemon (unk_000B) meets the required count for the current mode	applied@60d28c0
+func_84802614	Panel_SelectPokemon	w28		handles selecting a Pokemon, playing sound effects, and updating the selection record	applied@60d28c0
+func_84802740	Panel_ClearSelection	w28		resets the selection list (unk_000B = 0) and calls SelectionState_Reset	applied@60d28c0
+func_848027F0	Panel_HandleSelectionInput	w28		processes controller input for selecting Pokemon (A, B, C-pad) and toggling flags with R	applied@60d28c0
+func_8480290C	Panel_HandleModeInput	w28		processes controller input for switching players (L/R) and confirming selection (A)	applied@60d28c0
+func_84802A44	Panel_HandleCancelInput	w28		processes A or B button to clear the current selection and reset state	applied@60d28c0
+func_84802A90	Panel_HandlePokemonDeselect	w28		checks if the currently highlighted Pokemon's corresponding button is pressed to deselect it	applied@60d28c0
+func_84802B70	Panel_ProcessInput	w28		dispatches to specific input handlers (func_848027F0, etc) based on the current panel state	applied@60d28c0
+func_84802C40	Panel_MainLoop	w28		main update loop: reads inputs, updates timers, draws panels, and handles the TransferPak error screen	applied@60d28c0
+func_84802D84	Panel_UpdatePokemonOrder	w28		swaps Pokemon in the active list based on the selection state	applied@60d28c0
+func_84802DC8	Panel_SortSelection	w28		sorts the indices of selected Pokemon into the unk_000C array	applied@60d28c0
+func_84802E18	Panel_SyncSelectionToData	w28		copies selected Pokemon data back to the main game state structures	applied@60d28c0
+D_84803760	gSelectionStates	w28		array of selection state structures used by PlayerPanel_DrawLeft/Right	applied@60d28c0
+D_84803780	gBinArchive	w28		pointer to the current binary archive	applied@60d28c0
+D_84803784	gPanelTextureAtlas	w28		texture atlas used for drawing panel backgrounds and clipped regions	applied@60d28c0
+D_8480378C	gModeNames	w28		table of stadium mode names used in PokemonInfo_Draw	applied@60d28c0
+D_84803794	gPanelStrings	w28		string bank for panel-specific labels (e.g., "Lv.")	applied@60d28c0
+D_84803798	gTransferPakErrorTimer	w28		timer for displaying the TransferPak error screen	applied@60d28c0
+D_8480379A	gTransferPakScrollPos	w28		vertical scroll position for the TransferPak message	applied@60d28c0
+D_8480379C	gPanelCount	w28		number of active panels to process in the main loop	applied@60d28c0
+D_848037A0	gPanels	w28		array of panel state structures	applied@60d28c0
+D_84816428	gPanelController	w28		virtual controller used for panel input simulation	applied@60d28c0
+D_8481644C	gInputTimerIndex	w28		index into the input timing table D_848035E0	applied@60d28c0
+D_84816450	gInputTimerValue	w28		current remaining frames for the input timer	applied@60d28c0
+D_84816458	gStatusIconFrames	w28		frame counters for animated status icons	applied@60d28c0
+D_84803540	gPanelColors	w28		table of color values used by DrawPanelAlt	applied@60d28c0
+D_848035E0	gInputTimingTable	w28		table of timing and button-press data for panel interactions	applied@60d28c0
+D_848035FC	gModeColors	w28		table of RGB colors and textures associated with stadium modes	applied@60d28c0

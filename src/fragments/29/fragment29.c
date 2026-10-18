@@ -242,9 +242,9 @@ void Dialog_Run(unk_func_889000C4* arg0, s32 arg1) {
     s32 temp_v0;
     s32 var_s7 = 0;
 
-    func_8002447C(arg1);
+    PlayerSave_VerifyPresence(arg1);
 
-    while (func_800243D8(arg1) == 0) {
+    while (PlayerSave_FullSave(arg1) == 0) {
         if (var_s7 == 0) {
             DialogOption_Enable(arg0->unk_44);
             var_s7 = 1;
@@ -254,7 +254,7 @@ void Dialog_Run(unk_func_889000C4* arg0, s32 arg1) {
         var_s0 = 2;
         temp_v0 = 0;
         while (temp_v0 != 2) {
-            temp_v0 = func_80023E34(arg1);
+            temp_v0 = PlayerSave_UpdateState(arg1);
             switch (temp_v0) {
                 case 1:
                     var_s0 = 1;
@@ -278,7 +278,7 @@ void Dialog_Run(unk_func_889000C4* arg0, s32 arg1) {
     if (var_s7 != 0) {
         DialogOption_Reset(arg0->unk_44);
     }
-    func_800244F4(arg1);
+    PlayerSave_PowerOff(arg1);
 }
 
 void Dialog_CreateOptionPanel(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* arg2, MemoryPool* arg3) {

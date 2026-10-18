@@ -1671,15 +1671,15 @@ void MiniGame_PlaySoundEvent(s16 arg0, s16 arg1) {
             break;
 
         case 13:
-            func_8004B1CC(0x21);
+            ResultScreen_SetAnimation(0x21);
             break;
 
         case 14:
-            func_8004B1CC(0xBD);
+            ResultScreen_SetAnimation(0xBD);
             break;
 
         case 15:
-            func_8004B1CC(0xBE);
+            ResultScreen_SetAnimation(0xBE);
             break;
 
         case 16:
@@ -3109,7 +3109,7 @@ void miniEkansMinigameStateMachine(void) {
             break;
 
         case 6:
-            if (D_8780FC96 != 0) {
+            if (gResultExitPending != 0) {
                 minigameState++;
                 D_87903DAC = 1;
             }
@@ -3285,7 +3285,7 @@ void MiniEkansTutoScreenMain(void) {
 }
 
 void MiniEkansTutoScreenOrResult(s32 arg0) {
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         MiniEkansTutoScreenMain(); // HUB
     }
 
@@ -3306,7 +3306,7 @@ void MiniEkansDrawShadows(void) {
     sp74.y = 0;
     sp74.z = 0;
 
-    func_8140419C(ekansShadowTexture, 0x40, 0x40);
+    Gfx_LoadTextureBlockI_ClampWrapper(ekansShadowTexture, 0x40, 0x40);
 
     for (i = 0; i < 4; i++, ekans++) {
         if (ekans->mainState == 2) {
@@ -3317,7 +3317,7 @@ void MiniEkansDrawShadows(void) {
 
             sp7C.y = 5.0f;
 
-            Gfx_DrawQuadRotated(sp7C, sp74, 0.7f, D_8140E2B8);
+            Gfx_DrawQuadRotated(sp7C, sp74, 0.7f, gVtx_UI_GridQuad);
         }
     }
 
@@ -3328,7 +3328,7 @@ void MiniEkansMainDisplayList(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
@@ -3377,7 +3377,7 @@ void miniEkansTutoScreenControls(void) {
         if ((miniDebugMode == false) && (Stage_GetFadeState() == 0)) {
             if (ekansMinigameCountdownStarted) {
                 if ((gPlayer1Controller->buttonPressed != 0) || (miniEkansCountdown == 0x28)) {
-                    SetResultFlag(2); //	D_8780FC92 = 1
+                    SetResultFlag(2); //	gResultFlag_Special = 1
                 }
             } else if (miniShowHUB == false) {
                 if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
@@ -3387,12 +3387,12 @@ void miniEkansTutoScreenControls(void) {
                     MiniGame_QueueSoundEvent(0x10, 0);
                 } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
                     MiniGame_QueueSoundEvent(0x11, 0);
-                    SetResultFlag(2); //	D_8780FC92 = 1
+                    SetResultFlag(2); //	gResultFlag_Special = 1
                 }
             }
         }
 
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();
@@ -3400,7 +3400,7 @@ void miniEkansTutoScreenControls(void) {
             MiniEkansDebugAndCameraUpdate();
         }
 
-        if ((miniDebugMode == false) && ((D_87903DAC != 0) || (D_8780FC92 != 0))) {
+        if ((miniDebugMode == false) && ((D_87903DAC != 0) || (gResultFlag_Special != 0))) {
             var_s1 = 0;
         }
 
@@ -3421,7 +3421,7 @@ void ekansMinigameUpdate(void) {
 
     for (i = 0; i < 30; i++) {
         MiniGame_ReadInputs(); //	input
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();

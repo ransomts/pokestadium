@@ -16,12 +16,12 @@ static s32 pad_D_84390290[4];
 void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
     f32 sp3C;
 
-    func_8431AFD0(arg0, 20.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
     GetEntityCenterPosition(D_84390010[gCurrentEntityIndex], &gBattleState.unk_00->unk_D0);
     sp3C = ClampScaledDistance(D_84390010[gCurrentEntityIndex], 3.5f, 300.0f);
-    func_8431BAB4(D_84390010[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]),
+    Camera_SetLookAtPosition(D_84390010[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]),
                   0.0f, 0.0f);
-    func_8431BBDC(arg0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]), sp3C, 0.0f);
+    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]), sp3C, 0.0f);
 
     if (D_84390010[0]) {}
     gBattleState.unk_00->unk_20 += 1;
@@ -31,11 +31,11 @@ void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
 void InitializeCameraForPlayerEntity(CameraStruct* arg0) {
     f32 sp3C;
 
-    func_8431AFD0(arg0, 20.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
     GetEntityCenterPosition(D_84390010[0], &gBattleState.unk_00->unk_D0);
     sp3C = ClampScaledDistance(D_84390010[0], 3.5f, 300.0f);
-    func_8431BAB4(D_84390010[0], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(*D_84390010), 0.0f, 0.0f);
-    func_8431BBDC(arg0, 0, GetPlayerSideYaw(*D_84390010), sp3C, 0.0f);
+    Camera_SetLookAtPosition(D_84390010[0], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(*D_84390010), 0.0f, 0.0f);
+    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(*D_84390010), sp3C, 0.0f);
 
     if (D_84390010[0]) {}
     gBattleState.unk_00->unk_20 += 1;
@@ -128,7 +128,7 @@ void Battle_StartSequence(CameraStruct* arg0) {
             if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     Battle_SetAnimChannelFlag(2);
-                    func_8430CC84();
+                    Battle_AlignPhaseTimer();
                 }
                 ClearAnimFlagIfState6A(D_84390010[0]);
                 ClearAnimFlagIfState6A(D_84390010[1]);
@@ -212,7 +212,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     Battle_SetAnimChannelFlag(2);
-                    func_8430CC84();
+                    Battle_AlignPhaseTimer();
                 }
                 ClearAnimFlagIfState6A(D_84390010[0]);
                 ClearAnimFlagIfState6A(D_84390010[1]);
@@ -687,7 +687,7 @@ void func_8432ABBC(CameraStruct* arg0) {
 
 void Battle_Update(CameraStruct* arg0) {
     Battle_RunSequence(arg0);
-    func_8431B004();
+    Battle_UpdateTurnIndex();
     ProcessBattleState(arg0);
 
     switch (gBattleState.unk_00->unk_1C) {
@@ -721,7 +721,7 @@ void Battle_Update(CameraStruct* arg0) {
     Anim_ProcessQueue();
     ProcessEntityPostMoveEffects(gPrimaryPokemonEntity);
     ProcessEntityPostMoveEffects(gPokemonEntityUnused);
-    func_8431B174(arg0);
+    Battle_ApplyCameraShake(arg0);
     func_8431B830(arg0);
     func_8431BD10(arg0);
     Camera_PreventDegenerateView(arg0);

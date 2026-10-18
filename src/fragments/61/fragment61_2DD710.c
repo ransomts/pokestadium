@@ -180,7 +180,7 @@ void ClearSlotItem(unk_D_84211B50* arg0) {
 void MarkSlotForRemoval(unk_D_84211B50* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
-    if (func_8420B334(arg0->unk_4D40) != 0) {
+    if (RequestNextPokemon(arg0->unk_4D40) != 0) {
         if (arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 != 0) {
             arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 = 0;
             arg0->unk_0030[sp1E].raw = 0;
@@ -200,10 +200,10 @@ s32 GbsSyncItemData(unk_D_84211B50* arg0) {
 
     temp_v0 = func_80028E68();
     if (temp_v0 < 0xA) {
-        temp_s3 = func_80022CC0(0x10, 0, temp_v0, arg0->unk_001E, arg0->unk_001E, arg0->unk_001C);
+        temp_s3 = GbsBlock_CreateWithString(0x10, 0, temp_v0, arg0->unk_001E, arg0->unk_001E, arg0->unk_001C);
 
         for (i = 0; i < arg0->unk_0006; i++) {
-            func_80022F24(&arg0->unk_0030[i].unk_004.unk_00.unk_00, 1, temp_s3);
+            GbsBlock_WriteEntries(&arg0->unk_0030[i].unk_004.unk_00.unk_00, 1, temp_s3);
         }
 
         CommitAndFreeGbsBlock(temp_s3);
@@ -300,7 +300,7 @@ void HandleItemMoveResult(unk_D_84211B50* arg0) {
     s32 temp_v0 = GetSelectedMoveIndex(arg0->unk_4D44);
 
     if (temp_v0 == 1) {
-        func_8420B334(arg0->unk_4D40);
+        RequestNextPokemon(arg0->unk_4D40);
         arg0->unk_0004 = 0;
         arg0->unk_0001 = 3;
     } else if (temp_v0 == 2) {
@@ -459,7 +459,7 @@ void func_8420720C(unk_D_84211B50* arg0) {
             break;
 
         case 1:
-            func_8420B238(arg0->unk_4D40);
+            TriggerSelectionAnim(arg0->unk_4D40);
             arg0->unk_000A = 0;
             arg0->unk_0001 = 5;
             break;
@@ -486,7 +486,7 @@ void func_8420720C(unk_D_84211B50* arg0) {
                 arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
             }
 
-            func_8420B264(arg0->unk_4D40);
+            SetMenuActive(arg0->unk_4D40);
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
@@ -517,7 +517,7 @@ void func_842073A4(unk_D_84211B50* arg0) {
             break;
 
         case 1:
-            func_8420B238(arg0->unk_4D40);
+            TriggerSelectionAnim(arg0->unk_4D40);
             func_84210A48(arg0->unk_4D48, arg0->unk_001C, arg0->unk_001E, arg0->unk_0030);
             arg0->unk_0001 = 3;
             break;
@@ -536,7 +536,7 @@ void func_842073A4(unk_D_84211B50* arg0) {
                 arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
             }
 
-            func_8420B264(arg0->unk_4D40);
+            SetMenuActive(arg0->unk_4D40);
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
@@ -596,7 +596,7 @@ void func_84207634(unk_D_84211B50* arg0) {
 
     func_8420DA28(2, cont);
     if (func_8420DB48(2) >= 0) {
-        func_8420B238(arg0->unk_4D40);
+        TriggerSelectionAnim(arg0->unk_4D40);
         arg0->unk_000A = 0;
         arg0->unk_0001 = 5;
     }
@@ -767,7 +767,7 @@ s32 func_84207A1C(unk_D_84211B50* arg0) {
         arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
     }
 
-    func_8420B264(arg0->unk_4D40);
+    SetMenuActive(arg0->unk_4D40);
     arg0->unk_0006 = 0;
     arg0->unk_0008 = 6;
     arg0->unk_0010 = 0;

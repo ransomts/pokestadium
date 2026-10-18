@@ -39,7 +39,7 @@ void func_8004B1C0(s32 arg0) {
     gMusicFadeDuration = arg0;
 }
 
-s32 func_8004B1CC(s32 arg0) {
+s32 ResultScreen_SetAnimation(s32 arg0) {
     u32 sp2C;
     s32 var_a2;
     UNUSED s32 pad;
@@ -513,7 +513,7 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
     if ((arg0 == 0) || (arg0 == 0xFF)) {
         arg0 = 1;
         if ((arg1 == 0xE)) {    
-            return func_8004B1CC(2U);
+            return ResultScreen_SetAnimation(2U);
         }
     }
     switch (arg1) {
@@ -522,7 +522,7 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078E83 + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078E83 + arg0));
         break;
     case 6:
     case 7:
@@ -530,25 +530,25 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078E8B + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078E8B + arg0));
         break;
     case 9:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078E93 + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078E93 + arg0));
         break;
     case 5:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078E9B + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078E9B + arg0));
         break;
     case 4:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078EA3 + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078EA3 + arg0));
         break;
     case 0:
     case 1:
@@ -556,31 +556,31 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078EAB + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078EAB + arg0));
         break;
     case 3:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078EB3 + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078EB3 + arg0));
         break;
     case 12:
         if (arg0 >= 0x21U) {
             return 0;
         }
-        ret = func_8004B1CC(*(D_80078EBC + ((arg0 - 1) & 3)));
+        ret = ResultScreen_SetAnimation(*(D_80078EBC + ((arg0 - 1) & 3)));
         break;
     case 13:
         if (arg0 >= 6U) {
             return 0;
         }
-        ret = func_8004B1CC(*(&D_80078EBF + arg0));
+        ret = ResultScreen_SetAnimation(*(&D_80078EBF + arg0));
         break;
     case 15:
-        ret = func_8004B1CC(0x14U);
+        ret = ResultScreen_SetAnimation(0x14U);
         break;
     default:
-        ret = func_8004B1CC(2U);
+        ret = ResultScreen_SetAnimation(2U);
     }
     return ret;
 }
@@ -593,7 +593,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
             switch (D_80078ED4) {
                 case 0:
                     D_80078ED4 = 1;
-                    return func_8004B1CC(0x1E);
+                    return ResultScreen_SetAnimation(0x1E);
 
                 case 1:
                     return 0;
@@ -605,7 +605,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
                     if (MusHandleAsk(D_80078EDC) == 0) {
                         D_80078ED4 = 1;
                         if (arg1 == 0) {
-                            return func_8004B1CC(0x1E);
+                            return ResultScreen_SetAnimation(0x1E);
                         }
                         return 0;
                     }
@@ -664,7 +664,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
             }
 
             func_8004B1C0(var_a3);
-            D_80078ED8 = func_8004B1CC(0x1F);
+            D_80078ED8 = ResultScreen_SetAnimation(0x1F);
             return D_80078ED8;
 
         case 32:
@@ -683,7 +683,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
                         } else {
                             func_8004B1C0(0x46);
                             D_80078ED4 = 3;
-                            D_80078EDC = func_8004B1CC(0x20);
+                            D_80078EDC = ResultScreen_SetAnimation(0x20);
                             return D_80078EDC;
                         }
                     }

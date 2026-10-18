@@ -736,22 +736,22 @@ void UpdateFrame(s32 arg0) {
         case 12:
         case 13:
         case 14:
-            if ((gPauseState == 0) && (D_8780FC94 != 0)) {
+            if ((gPauseState == 0) && (gResultMenuVisible != 0)) {
                 Pause_Start();
             }
 
-            if ((gPauseState != 0) && (D_8780FC94 == 0)) {
+            if ((gPauseState != 0) && (gResultMenuVisible == 0)) {
                 Pause_End();
             }
 
-            gPauseState = D_8780FC94;
+            gPauseState = gResultMenuVisible;
             break;
     }
 
     Stage_BeginDisplayList();
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
@@ -760,7 +760,7 @@ void UpdateFrame(s32 arg0) {
 
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
 
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         DrawPlayerBorders(arg0);
 
         switch (arg0) {
@@ -1542,7 +1542,7 @@ void RunMatchLoop_Fragment7(void) {
         func_8004BC84(0x1E, 0);
         func_8004BC84(0x20, gUnusedBC);
 
-        if (D_8780FC94 == 0) {
+        if (gResultMenuVisible == 0) {
             switch (gResultScreenState) {
                 case 2:
                     if (func_86101F20() != 0) {
@@ -1626,7 +1626,7 @@ void RunMatchLoop_Fragment7(void) {
             }
         }
 
-        if (D_8780FC92 != 0) {
+        if (gResultFlag_Special != 0) {
             break;
         }
 
@@ -1640,7 +1640,7 @@ void ShowResultScreen_Fragment7(void) {
 
     gResultScreenState = 0xF;
 
-    while ((D_8780FC94 != 0) || (func_8004BFB0() != 1)) {
+    while ((gResultMenuVisible != 0) || (func_8004BFB0() != 1)) {
         func_8004BC84(0x1E, 1);
         func_8004BC84(0x20, 0);
         UpdateFrame(gResultScreenState);
@@ -1717,7 +1717,7 @@ void WaitFrames_Fragment7(s32 arg0) {
 void WaitForResultInput_Fragment7(void) {
     gResultScreenState = 0x11;
 
-    while (D_8780FC96 == 0) {
+    while (gResultExitPending == 0) {
         if ((gMenuCursorX == 1) && (gResultScreenAlpha > 0)) {
             gResultScreenAlpha -= 0xA;
             if (gResultScreenAlpha < 0) {
@@ -1902,10 +1902,10 @@ void Fragment7_MainEntrypoint(UNUSED s32 arg0, UNUSED s32 arg1) {
         gPlayerItemRows = 0xA;
         InitRandomItemPairs();
         func_86101BB4();
-        gPauseState = D_8780FC94;
+        gPauseState = gResultMenuVisible;
         RunMatchLoop_Fragment7();
 
-        if (D_8780FC92 == 0) {
+        if (gResultFlag_Special == 0) {
             gUnusedA2 = GetWinningPlayer_Fragment7();
             ShowResultScreen_Fragment7();
             WaitForResultInput_Fragment7();

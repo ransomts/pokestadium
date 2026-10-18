@@ -4247,7 +4247,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
       if (1)
       {
       }
-      D_88826A56 = GetMoveTargetType(MenuItem_GetHeldItemId(func_80029080()));
+      D_88826A56 = GetMoveTargetType(MenuItem_GetHeldItemId(GetCurrentPokemonBank()));
       switch (D_88826A56)
       {
         case 0:

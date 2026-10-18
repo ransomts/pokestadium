@@ -118,7 +118,7 @@ void InitMonData(PokemonData* arg0) {
     bzero(arg0, sizeof(PokemonData));
 
     arg0->unk_00.unk_00 = func_8002816C() & 0xFF;
-    var_a2 = MenuItem_GetHeldItemId(func_80029080());
+    var_a2 = MenuItem_GetHeldItemId(GetCurrentPokemonBank());
     i = 0;
     if (var_a2 == 7) {
         var_a2 = 1;
@@ -1127,7 +1127,7 @@ void MoveTargetSelector_Init(unk_func_88208C5C* arg0, unk_func_8850143C* arg1) {
     arg0->unk_00.unk_14.unk_00 = arg1->unk_00.unk_14.unk_00;
     arg0->unk_00.unk_14.unk_02 = arg1->unk_00.unk_14.unk_02;
     arg0->unk_2C = arg1;
-    arg0->unk_30 = GetMoveTargetType(MenuItem_GetHeldItemId(func_80029080()));
+    arg0->unk_30 = GetMoveTargetType(MenuItem_GetHeldItemId(GetCurrentPokemonBank()));
     arg0->unk_34 = -1;
     arg0->unk_38 = -1;
 }
@@ -1917,7 +1917,7 @@ s32 GetChangedBankMask(TextObjectRenderer* arg0) {
     s32 var_s4;
     unk_func_8820BE14_06C_000* var_s1;
 
-    temp_s2 = func_80029080();
+    temp_s2 = GetCurrentPokemonBank();
     var_s4 = 0;
 
     var_s1 = arg0->unk_8C[0].unk_00;
@@ -1960,7 +1960,7 @@ void WritePokemonGbsBlock(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_03
     temp_s3 = CreateGbsBlock(arg0, arg1, arg2, 1);
 
     for (i = 0; i < arg3->unk_08; i++) {
-        func_80022F24(sp28[i], 1, temp_s3);
+        GbsBlock_WriteEntries(sp28[i], 1, temp_s3);
     }
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
@@ -1976,7 +1976,7 @@ void MonList_MarkSpeciesOwned(unk_func_88200FA0_030_038* arg0, s32 arg1) {
 
     for (i = 0; i < arg0->unk_08; i++) {
         if ((tmp[i]->unk_000[0].unk_00.unk_00 > 0) && (tmp[i]->unk_000[0].unk_00.unk_00 < 0x98)) {
-            func_800256F4(arg1, tmp[i]->unk_000[0].unk_00.unk_00, 3);
+            SaveSlot_SetPokemonOwned(arg1, tmp[i]->unk_000[0].unk_00.unk_00, 3);
         }
     }
 }
@@ -1986,7 +1986,7 @@ void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1) {
     s32 temp_s5;
     unk_func_8820BE14_06C_000* temp_s4;
 
-    temp_s5 = func_80029080();
+    temp_s5 = GetCurrentPokemonBank();
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_84->unk_40, 2);
     ControllerMsgQueue_SendAndRead(NULL);
 
@@ -2024,7 +2024,7 @@ void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1) {
     }
 
     if (arg1 & 3) {
-        func_80025540(temp_s5);
+        SaveSlot_UpdateOwnedPokemonBitmask(temp_s5);
         ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_84, temp_s5);
     }
 
@@ -2283,7 +2283,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
-    spB4 = func_80029080();
+    spB4 = GetCurrentPokemonBank();
 
     var_s1 = mem_pool_alloc(arg4, sizeof(unk_func_882062E4) * (6 + (12 * 20) * 2));
     bzero(var_s1, sizeof(unk_func_882062E4) * (6 + (12 * 20) * 2));
@@ -2310,8 +2310,8 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         PtrList_Init(&ptr[i].unk_04, 20, arg4);
     }
 
-    if (func_8002513C(spB4) == 0) {
-        func_80024208(spB4);
+    if (SaveSlot_GetPokemonBall(spB4) == 0) {
+        SetSaveDirtyFlag(spB4);
     }
 
     ptr = var_s4 = arg0->unk_6C.unk_00;
@@ -2383,7 +2383,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(spC4, temp_s2);
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(temp_s1, 0x38, 0x22, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(temp_s1, 0x38, 0x22, GetCurrentPokemonBank(),
                                                            GetMessageString(NULL, 0, gMessageBank_2A, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s2, temp_s1);
 

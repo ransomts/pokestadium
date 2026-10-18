@@ -381,7 +381,7 @@ s32 Anim_IsFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
     return var_a2;
 }
 
-s32 func_800174E4(Fragment2_1GraphNode* arg0) {
+s32 GraphNode_IsAnimationFinished(Fragment2_1GraphNode* arg0) {
     return Anim_IsFrameInRange(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 

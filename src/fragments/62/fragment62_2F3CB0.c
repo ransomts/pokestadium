@@ -461,7 +461,7 @@ void func_8430A8DC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
 
     func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE);
 
-    if (func_84307AE0(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
+    if (Array_ContainsValue(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
         sp30 = 10.3f;
         sp34 = 10.0f;
         sp2C = 0.035f;
@@ -472,9 +472,9 @@ void func_8430A8DC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 
     Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
-    Math_ExponentialApproach(&arg0->unk_000.unk_024.y, -(func_84308548(arg1) * sp30), sp2C);
+    Math_ExponentialApproach(&arg0->unk_000.unk_024.y, -(Battle_GetEntityHeight(arg1) * sp30), sp2C);
 
-    if (arg0->unk_000.unk_024.y <= -(func_84308548(arg1) * sp34)) {
+    if (arg0->unk_000.unk_024.y <= -(Battle_GetEntityHeight(arg1) * sp34)) {
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
         func_84309F0C(arg1);
         Entity_ResetSubObjectFlags(arg1);
@@ -925,7 +925,7 @@ void func_8430BBE4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
 void func_8430BC38(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
-void func_8430BC44(s32 arg0) {
+void Battle_ClearAnimFlags(s32 arg0) {
     unk_BattlePlayerEntity* temp_a1 = D_84390010[arg0];
     unk_BattlePlayerEntity* temp_a2 = D_84390010[arg0];
 
@@ -1680,13 +1680,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         5,
         {
-            func_8430741C,
+            AnimHandler_AttackStart,
             AnimChannel_HandleBattleState,
             Anim_NullHandler,
-            func_84307424,
-            func_8430742C,
-            func_84307434,
-            func_8430743C,
+            AnimHandler_AttackHit,
+            AnimHandler_AttackEnd,
+            AnimHandler_DamageStart,
+            AnimHandler_DamageHit,
         },
         255,
         255,
@@ -1695,13 +1695,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         6,
         {
-            func_8430741C,
+            AnimHandler_AttackStart,
             AnimChannel_HandleBattleState,
             Anim_NullHandler,
-            func_84307464,
-            func_8430745C,
-            func_84307454,
-            func_8430744C,
+            AnimHandler_ItemUse,
+            AnimHandler_StatusEffect,
+            AnimHandler_FaintEnd,
+            AnimHandler_FaintStart,
         },
         255,
         255,
@@ -1714,8 +1714,8 @@ unk_D_84385384 gMoveAnimData[] = {
             Anim_NullHandler,
             Anim_NullHandler,
             AnimChannel_SetupAndTrigger,
-            func_8430748C,
-            func_84307444,
+            AnimHandler_Defeat,
+            AnimHandler_DamageEnd,
             Pokemon_HandleAirborneAnim,
         },
         167,

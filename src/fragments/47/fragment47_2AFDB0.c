@@ -79,7 +79,7 @@ void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, PokemonData* arg1) {
         Controller_ReadInput(arg0->unk_0018, &sp28);
         _bcopy(arg1->unk_46, sp28.unk_14, sizeof(arg1->unk_46));
         sp28.unk_12 = arg1->unk_0E;
-        if (func_80022A04(&sp28.unk_12, &sp28) != 0) {
+        if (IsPokemonNameMatch(&sp28.unk_12, &sp28) != 0) {
             arg1->unk_52 |= 0x80;
         }
     }
@@ -117,7 +117,7 @@ s32 SnapSelect_FillPokemonInfo(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, 
                 i = arg2 * 3;
                 for (j = 0; j < 3; j++) {
                     if (i < temp_s3->unk_00) {
-                        if (func_80022DF4(var_v0, temp_s3->unk_02[i++]) != 0) {
+                        if (GbsBlock_SetLimit(var_v0, temp_s3->unk_02[i++]) != 0) {
                             var_s4 += GbsBlock_ReadPokemon(&arg1->unk_0000[j].unk_004, 1, var_v0);
                         }
                     }

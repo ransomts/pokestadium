@@ -156,7 +156,7 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
 
         case 2:
             if (poke->unk_26C == 0) {
-                if (func_800174E4(&poke->unk_000) != 0) {
+                if (GraphNode_IsAnimationFinished(&poke->unk_000) != 0) {
                     poke->unk_248++;
                 }
             } else {

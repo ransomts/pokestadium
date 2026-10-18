@@ -757,8 +757,8 @@ void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
     unk_func_8830867C_02C_144_000* var_s5;
 
     var_s5 = arg0->unk_00;
-    if (func_8002513C(var_s5[1].unk_04) == 0) {
-        func_80024208(var_s5[1].unk_04);
+    if (SaveSlot_GetPokemonBall(var_s5[1].unk_04) == 0) {
+        SetSaveDirtyFlag(var_s5[1].unk_04);
     }
 
     for (i = 0; i < arg0->unk_08; i++, var_s5++) {
@@ -910,11 +910,11 @@ void WriteBoxMonsToGbs(unk_func_8830867C_02C_144* arg0, s32 arg1) {
                 temp_s3 = CreateGbsBlock(var_s2->unk_00, var_s2->unk_04, j, 1);
 
                 for (x = 0; x < var_s4->unk_10.unk_08; x++, var_s0++) {
-                    func_80022F24(&var_s0->unk_00->unk_08, 1, temp_s3);
+                    GbsBlock_WriteEntries(&var_s0->unk_00->unk_08, 1, temp_s3);
                     if ((var_s2->unk_00 == 0x20) || (var_s2->unk_00 == 0x21)) {
                         if ((var_s0->unk_00->unk_08.unk_00.unk_00 > 0) &&
                             (var_s0->unk_00->unk_08.unk_00.unk_00 < 0x98)) {
-                            func_800256F4(var_s2->unk_04, var_s0->unk_00->unk_08.unk_00.unk_00, 3);
+                            SaveSlot_SetPokemonOwned(var_s2->unk_04, var_s0->unk_00->unk_08.unk_00.unk_00, 3);
                         }
                     }
                 }
@@ -941,7 +941,7 @@ void InitItemSources(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     s32 i;
 
     arg0->unk_00 = 0x23;
-    arg0->unk_01 = func_80029080();
+    arg0->unk_01 = GetCurrentPokemonBank();
     arg0->unk_02 = 0;
     arg0->unk_04 = 1;
     List_Init(&arg0[0].unk_0C, 2, 0x14, arg1);
@@ -988,7 +988,7 @@ void ItemSource_ReadFromGbs(unk_func_8830867C_02C_154* arg0) {
 void ItemSource_WriteToGbs(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
 
-    func_80022F24(arg0->unk_0C, arg0->unk_14, sp24);
+    GbsBlock_WriteEntries(arg0->unk_0C, arg0->unk_14, sp24);
     CommitAndFreeGbsBlock(sp24);
     arg0->unk_08 = 0;
 }

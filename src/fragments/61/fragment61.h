@@ -265,15 +265,15 @@ s32 func_8420804C(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
 s32 func_842081A8(unk_D_84211B50* arg0);
 void func_842081B4(unk_D_84211B50* arg0, PokemonData* arg1, s16 arg2);
 
-void func_84209340(unk_D_842168A0*, s32);
-s32 func_8420AF1C(unk_D_842168A0*, unk_D_84211B50*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
-s32 func_8420B0C8(unk_D_842168A0*);
-s32 func_8420B1D0(unk_D_842168A0*, s16);
-s32 func_8420B20C(unk_D_842168A0*);
-s32 func_8420B238(unk_D_842168A0*);
-void func_8420B264(unk_D_842168A0*);
-s32 func_8420B334(unk_D_842168A0*);
-s32 func_8420B37C(unk_D_842168A0*);
+void DrawPokemonMenu(unk_D_842168A0*, s32);
+s32 InitPokemonMenu(unk_D_842168A0*, unk_D_84211B50*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
+s32 UpdateMenuState(unk_D_842168A0*);
+s32 TriggerScrollUp(unk_D_842168A0*, s16);
+s32 TriggerScrollDown(unk_D_842168A0*);
+s32 TriggerSelectionAnim(unk_D_842168A0*);
+void SetMenuActive(unk_D_842168A0*);
+s32 RequestNextPokemon(unk_D_842168A0*);
+s32 IsMenuInState2(unk_D_842168A0*);
 
 void PrintMoveEntry(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s8* arg4);
 void DrawMoveList(s16 arg0, s16 arg1, s16 arg2, s16 arg3);

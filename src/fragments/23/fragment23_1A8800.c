@@ -235,7 +235,7 @@ void ItemInfoScreenCreate(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3,
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp4C, arg0->unk_2C);
 
     sp44 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp44, 0x38, 0x22, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp44, 0x38, 0x22, GetCurrentPokemonBank(),
                                                            GetMessageString(NULL, 0, gFragment23ItemNameBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp44);
 

@@ -720,7 +720,7 @@ void func_88302C7C(unk_func_8830867C_02C* arg0, MemoryPool* arg1) {
     UNUSED s32 pad;
 
     arg0->unk_0E4[0].unk_00 = 0x20;
-    arg0->unk_0E4[0].unk_04 = func_80029080();
+    arg0->unk_0E4[0].unk_04 = GetCurrentPokemonBank();
     arg0->unk_0E4[0].unk_08 = 0;
     arg0->unk_0E4[0].unk_1C = 6;
     List_Init(&arg0->unk_0E4[0].unk_0C, 0x1C, 1, arg1);
@@ -1878,7 +1878,7 @@ void func_88305CDC(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_03
         var_a0 = arg1->unk_00[0]->unk_00 - 0x92;
     }
 
-    ptr->unk_09[arg2] = func_80022A28(var_a0);
+    ptr->unk_09[arg2] = GetPokemonType1(var_a0);
     ptr->unk_20[arg2] = GetMoveBattleDataEntry(ptr->unk_09[arg2])->unk_05;
 
     if (arg1->unk_00[0]->unk_00 >= 0xC9) {
@@ -2458,7 +2458,7 @@ void func_88306FEC(unk_func_8830867C_02C_048* arg0, unk_func_8830867C_02C* arg1)
 }
 
 void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
-    s32 sp24 = func_80029080();
+    s32 sp24 = GetCurrentPokemonBank();
 
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_0B0->unk_40, 2);
 
@@ -2472,7 +2472,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
 
     if (arg1 & 0xF) {
         if (arg1 & 5) {
-            func_80025540(sp24);
+            SaveSlot_UpdateOwnedPokemonBitmask(sp24);
         }
         ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_0B0, sp24);
     }
@@ -3090,7 +3090,7 @@ void func_8830867C(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp8C->unk_00, &sp7C->unk_00.unk_00);
 
     sp78 = mem_pool_alloc(arg3, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp78, 0x38, 0x22, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp78, 0x38, 0x22, GetCurrentPokemonBank(),
                                                            GetMessageString(NULL, 0, D_8831A4C0, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp78->unk_00.unk_00);
 

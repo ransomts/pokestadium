@@ -1165,7 +1165,7 @@ void RenderHealthBar(s32 arg0) {
                 }
             } else {
                 if (gCurrentHealthBar->unk_004 == 0) {
-                    if (D_8780FC94 == 0) {
+                    if (gResultMenuVisible == 0) {
                         if (gCurrentHealthBar->unk_17C->unk_28 > 0.0f) {
                             gCurrentHealthBar->unk_17C->unk_28 -= 0.003f;
                         }
@@ -1177,7 +1177,7 @@ void RenderHealthBar(s32 arg0) {
 
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.unk_0EC;
                 } else if (gCurrentHealthBar->unk_004 == 1) {
-                    if (D_8780FC94 == 0) {
+                    if (gResultMenuVisible == 0) {
                         if (gCurrentHealthBar->unk_17C->unk_28 > 0.0f) {
                             gCurrentHealthBar->unk_17C->unk_28 -= 0.0036f;
                         }
@@ -1191,7 +1191,7 @@ void RenderHealthBar(s32 arg0) {
                 }
             }
 
-            if (D_8780FC94 == 0) {
+            if (gResultMenuVisible == 0) {
                 if (HealthBar_ValueToPixel(2) == 0) {
                     for (j = 0; j < 12; j++) {
                         if (gHealthBarEffectData->unk_00[j].unk_00 == -1) {
@@ -1220,7 +1220,7 @@ void RenderHealthBar(s32 arg0) {
                 gSP2Triangles(var_s1++, 0, 3, 1, 0, 0, 2, 3, 0);
                 gSPPopMatrix(var_s1++, G_MTX_MODELVIEW);
 
-                if (D_8780FC94 == 0) {
+                if (gResultMenuVisible == 0) {
                     if (gHealthBarEffectData->unk_00[j].unk_00 == 7) {
                         gHealthBarEffectData->unk_00[j].unk_00 = -1;
                     } else {

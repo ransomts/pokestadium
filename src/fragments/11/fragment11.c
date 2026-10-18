@@ -140,7 +140,7 @@ void HealthBar_Update(void) {
     UNUSED s32 pad;
     u32 var_s0_2;
 
-    if (D_8780FC94 != 1) {
+    if (gResultMenuVisible != 1) {
         for (i = 0; i < 4; i++) {
             gCurrentHealthBar = &gHealthBarData[i];
             sp58 = gCurrentHealthBar->unk_008;
@@ -194,17 +194,17 @@ void HealthBar_Update(void) {
                        ((gCurrentHealthBar->unk_008 == 0) || (gCurrentHealthBar->unk_008 == 3))) {
                 gCurrentHealthBar->unk_008 = 1;
                 var_s1 = 1;
-                if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                     PlaySoundByCategory(0x80001, i, 0);
                 }
             } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E < 3) && (gCurrentHealthBar->unk_008 == 2)) {
                 gCurrentHealthBar->unk_008 = 3;
                 var_s1 = 1;
-                if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                     PlaySoundByCategory(0x80001, i, 5);
                 }
             } else {
-                if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+                if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                     temp_ft2 = ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012);
 
                     if (temp_ft2 >= 0x4B) {
@@ -342,7 +342,7 @@ void HealthBar_DetermineWinner(void) {
 
             D_87B000D4++;
 
-            if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
+            if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                 PlaySoundByCategory(0x80003, i, 0);
             }
         }
@@ -369,7 +369,7 @@ void HealthBar_FrameUpdate(UNUSED s32 arg0) {
 void HealthBar_HandleInput(void) {
     u8 i;
 
-    if ((D_8780FC92 != 0) || (D_8780FC94 != 0) || (D_87B000C8 != 0)) {
+    if ((gResultFlag_Special != 0) || (gResultMenuVisible != 0) || (D_87B000C8 != 0)) {
         return;
     }
 
@@ -527,20 +527,20 @@ void ResultScreen_RenderFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         Gfx_FinishFrame();
     }
 
     Graph_SetTextureState(D_87B000E8);
 
-    if (D_8780FC98 == 0) {
+    if (gResultConfirmPressed == 0) {
         ResultScreen_Draw(arg0);
     }
 
     ResultScreen_UpdateAndRender();
     Stage_Advance();
 
-    if (D_8780FC94 == 0) {
+    if (gResultMenuVisible == 0) {
         D_87B000C0++;
 
         if (arg0 == 2) {
@@ -574,14 +574,14 @@ void ResultScreen_RenderFrame(s32 arg0) {
                     case 0x5B:
                     case 0x6F:
                     case 0x83:
-                        if ((D_87B000D4 != 4) && (D_8780FC92 == 0)) {
+                        if ((D_87B000D4 != 4) && (gResultFlag_Special == 0)) {
                             PlaySoundByCategory(0x80004, 0, 0);
                             PlaySoundByCategory(0x80005, 0, 0);
                         }
                         break;
 
                     case 0x96:
-                        if ((D_87B000D4 != 4) && (D_8780FC92 == 0)) {
+                        if ((D_87B000D4 != 4) && (gResultFlag_Special == 0)) {
                             PlaySoundByCategory(0x80006, 0, 0);
                         }
                         break;
@@ -630,7 +630,7 @@ void ResultScreen_MainLoop(void) {
 
     func_8004B9C4(0x3C);
 
-    if (D_8780FC92 == 0) {
+    if (gResultFlag_Special == 0) {
         while (true) {
             if (D_87B000C4 <= 0) {
                 break;
@@ -661,7 +661,7 @@ void HealthBar_MainLoop(void) {
 
     s32 var_s0 = 1;
 
-    if (D_8780FC92 == 0) {
+    if (gResultFlag_Special == 0) {
         HealthBar_Init();
         PlaySoundByCategory(0x80008, 0, 0);
         MenuInput_FrameUpdate();
@@ -670,12 +670,12 @@ void HealthBar_MainLoop(void) {
         ResultScreen_RenderFrame(2);
 
         while (var_s0 != 0) {
-            if (D_8780FC92 != 0) {
+            if (gResultFlag_Special != 0) {
                 break;
             }
 
             if ((D_86502E7C == 0) && (Fragment2_1_GetResult() == -2)) {
-                func_8004B1CC(0x1D);
+                ResultScreen_SetAnimation(0x1D);
                 D_86502E7C = 1;
             }
 
@@ -684,7 +684,7 @@ void HealthBar_MainLoop(void) {
 
             if (D_87B000C8 == 0) {
                 HealthBar_HandleInput();
-            } else if (D_8780FC96 != 0) {
+            } else if (gResultExitPending != 0) {
                 var_s0 = 0;
             }
 

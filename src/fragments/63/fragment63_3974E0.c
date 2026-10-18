@@ -14,7 +14,7 @@ s16 func_84B033E0(void) {
     return temp_fv0;
 }
 
-void func_84B0345C(unk_D_84B19910* arg0) {
+void BattleResult_ProcessGraphics(unk_D_84B19910* arg0) {
     Vtx* temp_v0_12;
     s32 i;
     unk_D_84B19910_002* ptr2;
@@ -48,7 +48,7 @@ void func_84B0345C(unk_D_84B19910* arg0) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84B03814(unk_D_84B19910* arg0) {
+void Battle_UpdateInputBuffer(unk_D_84B19910* arg0) {
     s32 temp_s0;
     s32 temp_v0;
     s32 i;
@@ -68,7 +68,7 @@ void func_84B03814(unk_D_84B19910* arg0) {
     }
 }
 
-void func_84B038F8(unk_D_84B19910* arg0) {
+void Input_UpdateBuffer(unk_D_84B19910* arg0) {
     s32 temp_s0;
     s32 temp_v0;
     s32 i;

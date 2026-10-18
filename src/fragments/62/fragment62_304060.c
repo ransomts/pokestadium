@@ -187,11 +187,11 @@ void Camera_SetCloseView(CameraStruct* arg0) {
     Battle_FinishTurn();
     arg0->unk_24.fovy = 50.0f;
     if (Camera_IsCloseViewCondition() != 0) {
-        func_8431BB24(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, gCameraCloseSettings, 0x5B0, 0, 550.0f, 0.0f);
+        Camera_SetEyePosition(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
+        Camera_SetEyeAndPanTargets(arg0, gCameraCloseSettings, 0x5B0, 0, 550.0f, 0.0f);
     } else {
-        func_8431BB24(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, gCameraFarSettings, 0x5B0, 0, 550.0f, 0.0f);
+        Camera_SetEyePosition(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
+        Camera_SetEyeAndPanTargets(arg0, gCameraFarSettings, 0x5B0, 0, 550.0f, 0.0f);
     }
     arg0->unk_60.eye.z *= 0.6;
     gBattleState.unk_00->unk_20++;
@@ -201,11 +201,11 @@ void Camera_SetFarView(CameraStruct* arg0) {
     Battle_FinishTurn();
     arg0->unk_24.fovy = 30.0f;
     if (Camera_IsCloseViewCondition() != 0) {
-        func_8431BB24(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, gCameraCloseSettings, 0x1A4E, 0, 1000.0f, 0.0f);
+        Camera_SetEyePosition(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
+        Camera_SetEyeAndPanTargets(arg0, gCameraCloseSettings, 0x1A4E, 0, 1000.0f, 0.0f);
     } else {
-        func_8431BB24(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, gCameraFarSettings, 0x1A4E, 0, 1000.0f, 0.0f);
+        Camera_SetEyePosition(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
+        Camera_SetEyeAndPanTargets(arg0, gCameraFarSettings, 0x1A4E, 0, 1000.0f, 0.0f);
     }
     gBattleState.unk_00->unk_20++;
 }
@@ -221,7 +221,7 @@ void func_84319C58(CameraStruct* arg0, s32 arg1) {
     unk_BattlePlayerEntity* temp_s0;
 
     sp44 = &D_84390010[arg1]->unk_654;
-    func_8431BA5C();
+    Battle_ResetCameraState();
     SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
@@ -240,16 +240,16 @@ void func_84319C58(CameraStruct* arg0, s32 arg1) {
         }
 
         sp3E = Math_RandomU16Scaled(4);
-        sp4C = func_84308548(temp_s0) * sp3E;
+        sp4C = Battle_GetEntityHeight(temp_s0) * sp3E;
         sp4A = Math_RandomU16Scaled(0xB4);
 
         if (sp44->unk_34 & 0x200) {
             sp4C = 0.0f;
         }
 
-        func_8431BAB4(temp_s0, arg0, gBattleState.unk_00->unk_D0, 0, 0, 0, 0.0f);
-        func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, 0x4000 - (sp4A * 0xB6), sp50, sp4C);
-        func_8431D5C8(arg0);
+        Camera_SetLookAtPosition(temp_s0, arg0, gBattleState.unk_00->unk_D0, 0, 0, 0, 0.0f);
+        Camera_SetEyePositionOffset(arg0, gBattleState.unk_00->unk_D0, 0, 0x4000 - (sp4A * 0xB6), sp50, sp4C);
+        Battle_UpdateCameraMatrix(arg0);
         ConfigureCameraForModel(temp_s0, arg0);
 
         if (temp_s0->unk_000.unk_01A == 0x5F) {
@@ -267,7 +267,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
     s32 var_a0;
     unk_BattlePlayerEntity* temp_s0;
 
-    func_8431BA5C();
+    Battle_ResetCameraState();
     SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
@@ -285,7 +285,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
         GetEntityCenterPosition(temp_s0, &gCameraPreset.unk_00);
         Battle_PlayCameraTransition(sp24, arg0, temp_s0);
         Battle_ApplyCameraSettings(arg0, temp_s0, 1);
-        func_8431D5C8(arg0);
+        Battle_UpdateCameraMatrix(arg0);
         gBattleState.unk_00->unk_20++;
     }
 }
@@ -305,7 +305,7 @@ void func_8431A098(CameraStruct* arg0) {
         gBattleState.unk_00->unk_54 = 0;
         Camera_UpdateStateMachine(arg0);
     } else {
-        func_8431DC78(arg0, gBattleState.unk_00->unk_2C);
+        Camera_SetEntityView(arg0, gBattleState.unk_00->unk_2C);
         gBattleState.unk_00->unk_20++;
     }
 }
@@ -316,7 +316,7 @@ void func_8431A130(CameraStruct* arg0) {
     if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
         Camera_UpdateStateMachine(arg0);
     } else {
-        func_8431DC78(arg0, gBattleState.unk_00->unk_2C);
+        Camera_SetEntityView(arg0, gBattleState.unk_00->unk_2C);
         gBattleState.unk_00->unk_20++;
     }
 }
@@ -352,7 +352,7 @@ void func_8431A2C8(CameraStruct* arg0, s32 arg1) {
     s16 tmp3;
     f32 tmp2;
 
-    func_8431AFD0(arg0, 10.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 10.0f, 12800.0f);
     arg0->unk_24.fovy = 60.0f;
     SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[arg1];
@@ -391,9 +391,9 @@ void Camera_UpdateStateMachine(CameraStruct* arg0) {
         0x00000006, 0x00000002, 0x00000016, 0x00000018, 0x000000FF,
     };
 
-    func_8431AFD0(arg0, 20.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
     arg0->unk_24.fovy = 30.0f;
-    if ((gBattleState.unk_00->unk_54 != 0) && (func_8431DBEC(arg0) != 0)) {
+    if ((gBattleState.unk_00->unk_54 != 0) && (Battle_CheckEntityHeightDiff(arg0) != 0)) {
         gBattleState.unk_00->unk_20 = 0x10;
     } else {
         gBattleState.unk_00->unk_54 = 0;
@@ -465,7 +465,7 @@ void Camera_UpdateStateMachine(CameraStruct* arg0) {
 
 void func_8431A718(CameraStruct* arg0) {
     arg0->unk_24.fovy = 50.0f;
-    if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
+    if (Camera_SmoothPanToAngle(arg0, 0xB6, 0x78DC) != 0) {
         Camera_UpdateStateMachine(arg0);
     } else {
         arg0->unk_60.eye.z *= 0.6;
@@ -473,7 +473,7 @@ void func_8431A718(CameraStruct* arg0) {
 }
 
 void func_8431A780(CameraStruct* arg0) {
-    if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
+    if (Camera_SmoothPanToAngle(arg0, 0xB6, 0x78DC) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
@@ -488,14 +488,14 @@ void func_8431A7B8(CameraStruct* arg0) {
     }
 
     if (!(sp18->unk_34 & 0x200)) {
-        func_8431C784(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
+        Battle_AdvanceCameraTimelineSlow(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
     }
 
     if ((sp18->unk_34 & 1) || (sp18->unk_34 & 2) || (D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_01A == 0x98)) {
         if (Battle_WaitForAnimation(0x5A) != 0) {
             Camera_UpdateStateMachine(arg0);
         }
-    } else if (func_800174E4(&D_84390010[gBattleState.unk_00->unk_2C]->unk_000) != 0) {
+    } else if (GraphNode_IsAnimationFinished(&D_84390010[gBattleState.unk_00->unk_2C]->unk_000) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
@@ -524,7 +524,7 @@ void func_8431A94C(CameraStruct* arg0) {
 }
 
 void func_8431A9E0(CameraStruct* arg0) {
-    if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
+    if (Camera_SmoothFocusOpponent(arg0, gBattleState.unk_00->unk_2C) != 0) {
         s32 idx = gBattleState.unk_00->unk_2C == 0;
 
         gBattleState.unk_00->unk_2C = idx;
@@ -534,7 +534,7 @@ void func_8431A9E0(CameraStruct* arg0) {
 }
 
 void func_8431AA3C(CameraStruct* arg0) {
-    if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
+    if (Camera_SmoothFocusOpponent(arg0, gBattleState.unk_00->unk_2C) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
@@ -546,7 +546,7 @@ void func_8431AA78(CameraStruct* arg0) {
 }
 
 void func_8431AAAC(CameraStruct* arg0) {
-    func_8431AFD0(arg0, 10.0f, 12800.0f);
+    Camera_SetClippingPlanes(arg0, 10.0f, 12800.0f);
     arg0->unk_24.fovy = 60.0f;
     if (Battle_WaitForAnimation(0x3C) != 0) {
         Camera_UpdateStateMachine(arg0);
@@ -555,14 +555,14 @@ void func_8431AAAC(CameraStruct* arg0) {
 
 void Camera_MainUpdate(CameraStruct* arg0) {
     if ((gBattleContext.unk_0000 == 0x10) && (gBattleState.unk_00->unk_1C == 1)) {
-        func_8430FB68();
+        Battle_UpdateFrame();
     } else if (gBattleState.unk_00->unk_1C == 1) {
         if ((gBattleState.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17) &&
             (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103)) {
-            func_8430FB68();
+            Battle_UpdateFrame();
         } else if ((gBattleState.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C < 0xE) &&
                    (D_84390010[1]->unk_728.unk_168->unk_1C >= 0x10D)) {
-            func_8430D30C();
+            Battle_ResetAllTimers();
         }
     }
 

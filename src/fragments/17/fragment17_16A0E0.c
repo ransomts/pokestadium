@@ -321,14 +321,14 @@ s32 BattleCutscene_Process(void) {
 
         case 1:
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0xA) {
-                func_8004B1CC(0x38);
+                ResultScreen_SetAnimation(0x38);
             }
 
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0x72) {
                 D_86B10BD0.unk_08 = 0;
                 D_86B10850.unk_000.unk_02 &= 0xFFDF;
                 MessageState_Clear();
-                func_8004B1CC(0x13);
+                ResultScreen_SetAnimation(0x13);
                 D_86B10BD0.unk_00++;
             }
             break;
@@ -343,7 +343,7 @@ s32 BattleCutscene_Process(void) {
             break;
 
         case 3:
-            if (func_800174E4(&D_86B10850) != 0) {
+            if (GraphNode_IsAnimationFinished(&D_86B10850) != 0) {
                 D_86B10BD0.unk_00++;
             }
             break;

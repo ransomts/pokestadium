@@ -494,7 +494,7 @@ void DrawPartyScreenSubsystems(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (gSubsystemEnableMask & 2) {
-        func_84209340(&gControllerInfo, temp_s0);
+        DrawPokemonMenu(&gControllerInfo, temp_s0);
     }
 
     if (gSubsystemEnableMask & 4) {
@@ -546,7 +546,7 @@ void UpdatePartyScreenSubsystems(UNUSED s16 arg0, UNUSED s32 arg1) {
     }
 
     if (gSubsystemEnableMask & 2) {
-        var_a1 |= func_8420B0C8(&gControllerInfo);
+        var_a1 |= UpdateMenuState(&gControllerInfo);
     }
 
     if (gSubsystemEnableMask & 4) {
@@ -572,7 +572,7 @@ void PartyScreenTransition(s16 arg0, s32 arg1, s16 arg2) {
         func_84210A18(&gPokemonData);
     } else {
         func_842079B4(&gPartyInfo, 0);
-        func_8420B1D0(&gControllerInfo, 0);
+        TriggerScrollUp(&gControllerInfo, 0);
     }
     Game_UpdateInputs();
     UpdatePartyScreenSubsystems(arg0, 0);
@@ -593,7 +593,7 @@ void PartyScreenInputLoop(s16 arg0, s16 arg1, s16 arg2) {
             var_s0 = func_84210B54(&gPokemonData) == 0;
         } else {
             var_s0 = !func_842081A8(&gPartyInfo);
-            var_s0 |= !func_8420B37C(&gControllerInfo);
+            var_s0 |= !IsMenuInState2(&gControllerInfo);
         }
     }
 }
@@ -644,7 +644,7 @@ void SetupBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
     }
 
     gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
-    gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->unk_02, arg1, gBattleSelectionControllerInfo);
+    gSubsystemEnableMask |= InitPokemonMenu(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->unk_02, arg1, gBattleSelectionControllerInfo);
 }
 
 s32 CommitBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
@@ -789,8 +789,8 @@ s32 RunBattleSelectionMode(void) {
 
                 if (var_s2 < 4) {
                     SnapSelect_SetCameraMode(var_s2);
-                    func_80024208(var_s2);
-                    gBattleContext.unk_11F0 = func_80025328(var_s2);
+                    SetSaveDirtyFlag(var_s2);
+                    gBattleContext.unk_11F0 = SaveSlot_GetPokemonExperience(var_s2);
                 } else {
                     gBattleContext.unk_11F0 = 0;
                 }
@@ -875,8 +875,8 @@ s32 RunBattleSelectionModeAlt(void) {
 
                 if (var_s2 < 4) {
                     SnapSelect_SetCameraMode(var_s2);
-                    func_80024208(var_s2);
-                    gBattleContext.unk_11F0 = func_80025328(var_s2);
+                    SetSaveDirtyFlag(var_s2);
+                    gBattleContext.unk_11F0 = SaveSlot_GetPokemonExperience(var_s2);
                 } else {
                     gBattleContext.unk_11F0 = 0;
                 }
@@ -921,7 +921,7 @@ void RunRegistrationMode(void) {
 
         if (temp_v0 < 4) {
             SnapSelect_SetCameraMode(temp_v0);
-            func_80024208(temp_v0);
+            SetSaveDirtyFlag(temp_v0);
             Controller_ReadInput(temp_v0, &sp60);
             DecodeGen1String(sp74, sp60.unk_02);
             var_s1 = sp60.unk_00;
@@ -933,7 +933,7 @@ void RunRegistrationMode(void) {
         ptr = &gPokemonData;
         gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 3, 0x2C, 0xBC, 0);
         gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
-        gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 1, 0x68, 0xE4, 0, temp_v0, gBattleSelectionControllerInfo);
+        gSubsystemEnableMask |= InitPokemonMenu(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 1, 0x68, 0xE4, 0, temp_v0, gBattleSelectionControllerInfo);
 
         PartyScreenTransition(temp_v0, 1, 0);
         PartyScreenInputLoop(temp_v0, 1, 0);

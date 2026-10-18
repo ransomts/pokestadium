@@ -40,7 +40,7 @@ s32 Anim_SetChannel(Fragment2_1GraphNode* arg0, s16 arg1, void* arg2, s32 arg3);
 s32 Anim_SetChannelOffset(Fragment2_1GraphNode* arg0, s32 arg1);
 void Anim_SetChannelBase(Fragment2_1GraphNode* arg0, s16 arg1);
 s32 Anim_IsFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1);
-s32 func_800174E4(Fragment2_1GraphNode* arg0);
+s32 GraphNode_IsAnimationFinished(Fragment2_1GraphNode* arg0);
 s32 Anim_HasReachedEnd(Fragment2_1GraphNode* arg0);
 
 

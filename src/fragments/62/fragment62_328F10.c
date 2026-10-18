@@ -228,32 +228,32 @@ void func_8433EE10(ParticleEffectInstance* arg0) {
         case 0:
             Particle_SetShortAE(arg0, RandomModPlus(0x14, 0x14));
             Particle_SetShortB0(arg0, 0);
-            sp36 = func_81400B4C(0x200, 0x200);
-            sp34 = func_81400B4C(0x200, 0x200);
+            sp36 = Particle_GetRandomRotation(0x200, 0x200);
+            sp34 = Particle_GetRandomRotation(0x200, 0x200);
             Particle_SetTimerA8(arg0, 8);
             break;
 
         case 1:
             Particle_SetShortAE(arg0, RandomModPlus(0x28, 0x14));
             Particle_SetShortB0(arg0, 1);
-            sp36 = func_81400B4C(0x200, 0x200);
-            sp34 = func_81400B4C(0x200, 0x200);
+            sp36 = Particle_GetRandomRotation(0x200, 0x200);
+            sp34 = Particle_GetRandomRotation(0x200, 0x200);
             Particle_SetTimerA8(arg0, 0x10);
             break;
 
         case 2:
             Particle_SetShortAE(arg0, RandomModPlus(0x1E, 0x14));
             Particle_SetShortB0(arg0, 2);
-            sp36 = func_81400B4C(0x200, 0x200);
-            sp34 = func_81400B4C(0x200, 0x200);
+            sp36 = Particle_GetRandomRotation(0x200, 0x200);
+            sp34 = Particle_GetRandomRotation(0x200, 0x200);
             Particle_SetTimerA8(arg0, 0xA);
             break;
 
         case 3:
             Particle_SetShortAE(arg0, 0x1E - sp32);
             Particle_SetShortB0(arg0, 2);
-            sp36 = func_81400B4C(0x200, 0x200);
-            sp34 = func_81400B4C(0x200, 0x200);
+            sp36 = Particle_GetRandomRotation(0x200, 0x200);
+            sp34 = Particle_GetRandomRotation(0x200, 0x200);
             Particle_SetTimerA8(arg0, 0xA);
             break;
     }
@@ -341,7 +341,7 @@ void func_8433F270(ParticleEffectInstance* arg0) {
 
         case 3:
             Particle_ApproachScaleFactor1(arg0, 0.25f, 0.5f);
-            func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 6, 0x18, 7);
+            Particle_CreateChildParticles(arg0, Particle_HandleState_Complex, &gParticleEffectData[0x42], 6, 0x18, 7);
             if (Particle_ProcessTimer80(arg0, 6) != 0) {
                 Particle_SetByteCC(arg0, 9);
             }
@@ -350,7 +350,7 @@ void func_8433F270(ParticleEffectInstance* arg0) {
         case 4:
             Particle_AddScaledVelocityY(arg0, 15.0f);
             Particle_ProcessTimer80(arg0, 0xA);
-            func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 6, 0x18, 7);
+            Particle_CreateChildParticles(arg0, Particle_HandleState_Complex, &gParticleEffectData[0x42], 6, 0x18, 7);
             break;
 
         case 5:
@@ -402,7 +402,7 @@ void func_8433F4CC(void) {
 }
 
 void func_8433F4EC(void) {
-    ParticleDef_CreateFull(0xB, 1, 5, func_8435226C, &gParticleEffectData[0x42], 0, 5, 0x1E, 0, func_8433F3B4(), 8);
+    ParticleDef_CreateFull(0xB, 1, 5, Particle_HandleState_Complex, &gParticleEffectData[0x42], 0, 5, 0x1E, 0, func_8433F3B4(), 8);
     ParticleDef_Create32E6CAlt(0xA, 2, 0x16, 7, 0xFF);
     ParticleSystem_SetSpawnOffset(0x10);
     ParticleDef_CreateQuick(0, func_8433ED3C, &gParticleEffectData[0x1C], 0, 0x40, 0x1E, 0, 0xA, 0);

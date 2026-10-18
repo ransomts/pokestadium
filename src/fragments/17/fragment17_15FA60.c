@@ -248,7 +248,7 @@ void func_86B00688(void) {
         (gFragment17State->unk_04.unk_4C != 8)) {
         if (gFragment17State->unk_04.unk_44 != 4) {
             while (gFragment17ObjectDefs[gFragment17State->unk_04.unk_44][i].unk_0C != 0x98) {
-                if (func_800174E4(&gFragment17Objects[i].unk_004) != 0) {
+                if (GraphNode_IsAnimationFinished(&gFragment17Objects[i].unk_004) != 0) {
                     Anim_SetChannelBase(&gFragment17Objects[i].unk_004, 0);
                 }
                 i++;
@@ -410,7 +410,7 @@ s32 StateMachine_Update(void) {
 
         case 7:
             if (gFragment17State->unk_04.unk_44 == 4) {
-                if (func_800174E4(&gFragment17Objects[0].unk_004) != 0) {
+                if (GraphNode_IsAnimationFinished(&gFragment17Objects[0].unk_004) != 0) {
                     func_86B00904();
                 }
             } else {
@@ -437,7 +437,7 @@ s32 StateMachine_Update(void) {
                 gFragment17State->unk_04.unk_4C = 6;
                 gFragment17State->unk_04.unk_50 = 0;
                 Fragment_LoadObjectsForPreset(gFragment17State->unk_04.unk_44);
-                func_8004B1CC(0x29);
+                ResultScreen_SetAnimation(0x29);
             }
             break;
 

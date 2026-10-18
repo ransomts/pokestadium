@@ -520,7 +520,7 @@ void func_84B0D450(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D4B4(unk_D_84B25AC0* arg0) {
+void UI_UpdateBar(unk_D_84B25AC0* arg0) {
     switch (arg0->unk_5A0) {
         case 1:
             func_84B0CCFC(arg0);
@@ -548,7 +548,7 @@ void func_84B0D4B4(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D54C(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1, Fragment2_1GraphNode* arg2) {
+void UI_LinkBarToNode(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1, Fragment2_1GraphNode* arg2) {
     s32 i;
     s32 j;
 
@@ -596,7 +596,7 @@ void func_84B0D54C(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1, Fragment2_1
     }
 }
 
-void func_84B0D718(unk_D_84B25AC0* arg0) {
+void UI_ResetElement(unk_D_84B25AC0* arg0) {
     arg0->unk_5A1 = 0;
     if (arg0->unk_5A2 == -1) {
         arg0->unk_5A0 = 7;
@@ -618,7 +618,7 @@ void func_84B0D718(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D7A8(unk_D_84B25AC0* arg0, s8 arg1, s8 arg2) {
+void UI_SetBarPosition(unk_D_84B25AC0* arg0, s8 arg1, s8 arg2) {
     GraphNode* var_v0;
     MemoryBlock* temp_v0;
 

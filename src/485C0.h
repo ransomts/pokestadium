@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-s32 func_800479C0(s32, s32, s32);
+s32 Effect_TriggerMoveVisual(s32, s32, s32);
 void ResetSoundDurations(void);
 
 #endif // _485C0_H_

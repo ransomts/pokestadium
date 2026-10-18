@@ -57,8 +57,8 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
         return;
     }
 
-    if (func_8002513C(arg1) == 0) {
-        func_80024208(arg1);
+    if (SaveSlot_GetPokemonBall(arg1) == 0) {
+        SetSaveDirtyFlag(arg1);
     }
 
     D_82F20A04 = arg0;

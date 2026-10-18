@@ -290,7 +290,7 @@ void UpdateControllerInfo(void) {
         ptr->unk_01 = MenuItem_GetHeldItemId(i);
         ptr->unk_00 = MenuItem_GetPokemonSpecies(i);
         ptr->unk_03 = MenuItem_GetPokemonGender(i);
-        ptr->unk_04 = func_8002539C(i);
+        ptr->unk_04 = MenuItem_IsPokemonShiny(i);
         ptr->unk_05 = (temp_s2 & (1 << i)) != 0;
         ptr->unk_02 = MenuItem_GetPokemonLevel(i);
     }
@@ -597,7 +597,7 @@ s32 func_82F0109C(void) {
 
 void func_82F01180(void) {
     Stage_FadeIn(0x10);
-    func_8004B1CC(0x10);
+    ResultScreen_SetAnimation(0x10);
     MenuInput_SetController(gPlayer1Controller);
 
     gPollControllerFlag = 1;

@@ -12,116 +12,116 @@
 #include "src/stage_loader.h"
 
 static s16 D_83003C80;
-static s16 D_83003C82;
+static s16 gMenuFadeTimer;
 static u16 D_83003C84;
-static BinArchive* D_83003C88;
-static void* D_83003C8C;
-static s16 D_83003C90;
-static s16 D_83003C92;
-static s16 D_83003C94;
-static s32 D_83003C98;
-static char* D_83003C9C;
-static s16* D_83003CA0;
-static s16 D_83003CA4;
-static s16 D_83003CA6;
-static char* D_83003CA8;
-static char* D_83003CAC;
-static char* D_83003CB0;
-static char* D_83003CB4;
-static char* D_83003CB8;
-static char* D_83003CBC;
-static char* D_83003CC0;
-static char* D_83003CC4;
-static char* D_83003CC8;
-static char* D_83003CCC;
-static char* D_83003CD0;
-static char* D_83003CD4;
-static char* D_83003CD8;
-static char* D_83003CDC;
-unk_D_83003CE0 D_83003CE0;
-unk_D_83003CE0 D_83003DE0;
+static BinArchive* gBattleAssetArchive;
+static void* gBattleBackgroundAtlas;
+static s16 gMenuBackgroundTimer;
+static s16 gMenuFadeAlpha;
+static s16 gLoadingBarProgress;
+static s32 gCurrentBattleModeTitle;
+static char* gCurrentBattleModeSubtitle;
+static s16* gCurrentMenuOptionIds;
+static s16 gCurrentMenuOptionCount;
+static s16 gCurrentMenuSelectedIndex;
+static char* gBattleModeTitle_Default;
+static char* gBattleModeTitle_0;
+static char* gBattleModeTitle_10;
+static char* gBattleModeTitle_7;
+static char* gBattleModeTitle_8;
+static char* gBattleModeSubtitle_0;
+static char* gBattleModeSubtitle_1;
+static char* gBattleModeSubtitle_2;
+static char* gBattleModeSubtitle_3;
+static char* gBattleModeSubtitle_4;
+static char* gBattleModeSubtitle_5;
+static char* gBattleModeSubtitle_6;
+static char* gBattleModeSubtitle_7;
+static char* gBattleModeSubtitle_8;
+unk_D_83003CE0 gMenuStaticStrings;
+unk_D_83003CE0 gMenuOptionStrings;
 
 char** D_830039C0 = NULL;
-static char** D_830039C4 = NULL;
-static u8 D_830039C8[] = {
+static char** gBattleModeMessageBank = NULL;
+static u8 gBattleModeAssetIndices[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F,
 };
-static s16 D_830039D4[] = {
+static s16 gMenuOptions_Mode1_S1[] = {
     0x0007, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 D_830039E8[] = {
+static s16 gMenuOptions_Mode1_S10[] = {
     0x0007, 0x0000, 0x0001, 0x001D, 0x0003, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 D_830039FC[] = {
+static s16 gMenuOptions_Mode1_S0[] = {
     0x0007, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003A10[] = {
+static s16 gMenuOptions_Mode2_S2[] = {
     0x000B, 0x0000, 0x0001, 0x000A, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003A24[] = {
+static s16 gMenuOptions_Mode2_S10[] = {
     0x000B, 0x0000, 0x0001, 0x001E, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003A38[] = {
+static s16 gMenuOptions_Mode2_S0[] = {
     0x000B, 0x0000, 0x0001, 0x000A, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x000C, 0x000D,
     0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x001F, 0x000D, 0x0004, 0x0005, 0x0009,
     0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x000C, 0x000D, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003A84[] = {
+static s16 gMenuOptions_Mode4_S4[] = {
     0x0013, 0x0000, 0x0001, 0x000F, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 D_83003A9C[] = {
+static s16 gMenuOptions_Mode4_S10[] = {
     0x0013, 0x0000, 0x0001, 0x0020, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 D_83003AB4[] = {
+static s16 gMenuOptions_Mode4_S0[] = {
     0x0013, 0x0000, 0x0001, 0x000F, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003ACC[] = {
+static s16 gMenuOptions_Mode5_S5[] = {
     0x0000, 0x0001, 0x0016, 0x0017, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003AE0[] = {
+static s16 gMenuOptions_Mode5_S10[] = {
     0x0000, 0x0001, 0x0021, 0x0017, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003AF4[] = {
+static s16 gMenuOptions_Mode5_S0[] = {
     0x0000, 0x0001, 0x0016, 0x0017, 0x0004, 0x0005, 0x0023, 0xFFFF,
 };
-static s16 D_83003B04[] = {
+static s16 gMenuOptions_Mode6_S6[] = {
     0x0015, 0x0000, 0x0001, 0x0024, 0x0004, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 D_83003B14[] = {
+static s16 gMenuOptions_Mode6_S10[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0004, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 D_83003B24[] = {
+static s16 gMenuOptions_Mode6_S0[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0004, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 D_83003B34[] = {
+static s16 gMenuOptions_Mode0_S0[] = {
     0x0015, 0x001A, 0x0014, 0x0025, 0x0022, 0x0026, 0x0023, 0xFFFF,
 };
-static s16 D_83003B44[] = {
+static s16 gMenuOptions_Mode7_S7[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0019, 0x0004, 0x0023, 0xFFFF,
 };
-static s16 D_83003B54[] = {
+static s16 gMenuOptions_Mode8_S8[] = {
     0x0015, 0x001C, 0x001B, 0x0014, 0x0023, 0xFFFF,
 };
 
-char* func_83000020(s32 arg0) {
-    return GetMessageString(NULL, 0, D_830039C4, arg0 - 1);
+char* GetBattleModeMessage(s32 arg0) {
+    return GetMessageString(NULL, 0, gBattleModeMessageBank, arg0 - 1);
 }
 
-void func_83000058(void) {
+void BattleMode_LoadAssets(void) {
     unk_func_80027FA0 sp20;
 
     if (gBattleContext.unk_0000 != 0xA) {
-        D_83003C88 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
+        gBattleAssetArchive = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
         if (gBattleContext.unk_0000 == 7) {
             GbsEnsureBankLoaded(2);
             GBAudio_ResetState(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
-                D_83003C8C = BinArchive_GetFile(D_83003C88, 0xD);
+                gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0xD);
             } else {
-                D_83003C8C = BinArchive_GetFile(D_83003C88, 0x10);
+                gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0x10);
             }
         } else {
-            D_83003C8C = BinArchive_GetFile(D_83003C88, D_830039C8[gBattleContext.unk_0000]);
+            gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, gBattleModeAssetIndices[gBattleContext.unk_0000]);
         }
     }
 }
@@ -139,13 +139,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 1:
             switch (arg0->unk_0000) {
                 case 1:
-                    var_v1 = D_830039D4;
+                    var_v1 = gMenuOptions_Mode1_S1;
                     break;
                 case 10:
-                    var_v1 = D_830039E8;
+                    var_v1 = gMenuOptions_Mode1_S10;
                     break;
                 case 0:
-                    var_v1 = D_830039FC;
+                    var_v1 = gMenuOptions_Mode1_S0;
                     break;
             }
             break;
@@ -153,13 +153,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 2:
             switch (arg0->unk_0000) {
                 case 2:
-                    var_v1 = D_83003A10;
+                    var_v1 = gMenuOptions_Mode2_S2;
                     break;
                 case 10:
-                    var_v1 = D_83003A24;
+                    var_v1 = gMenuOptions_Mode2_S10;
                     break;
                 case 0:
-                    var_v1 = D_83003A38;
+                    var_v1 = gMenuOptions_Mode2_S0;
                     break;
             }
             break;
@@ -167,13 +167,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 3:
             switch (arg0->unk_0000) {
                 case 3:
-                    var_v1 = D_830039D4;
+                    var_v1 = gMenuOptions_Mode1_S1;
                     break;
                 case 10:
-                    var_v1 = D_830039E8;
+                    var_v1 = gMenuOptions_Mode1_S10;
                     break;
                 case 0:
-                    var_v1 = D_830039FC;
+                    var_v1 = gMenuOptions_Mode1_S0;
                     break;
             }
             break;
@@ -181,13 +181,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 4:
             switch (arg0->unk_0000) {
                 case 4:
-                    var_v1 = D_83003A84;
+                    var_v1 = gMenuOptions_Mode4_S4;
                     break;
                 case 10:
-                    var_v1 = D_83003A9C;
+                    var_v1 = gMenuOptions_Mode4_S10;
                     break;
                 case 0:
-                    var_v1 = D_83003AB4;
+                    var_v1 = gMenuOptions_Mode4_S0;
                     break;
             }
             break;
@@ -195,13 +195,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 5:
             switch (arg0->unk_0000) {
                 case 5:
-                    var_v1 = D_83003ACC;
+                    var_v1 = gMenuOptions_Mode5_S5;
                     break;
                 case 10:
-                    var_v1 = D_83003AE0;
+                    var_v1 = gMenuOptions_Mode5_S10;
                     break;
                 case 0:
-                    var_v1 = D_83003AF4;
+                    var_v1 = gMenuOptions_Mode5_S0;
                     break;
             }
             break;
@@ -209,13 +209,13 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 6:
             switch (arg0->unk_0000) {
                 case 6:
-                    var_v1 = D_83003B04;
+                    var_v1 = gMenuOptions_Mode6_S6;
                     break;
                 case 10:
-                    var_v1 = D_83003B14;
+                    var_v1 = gMenuOptions_Mode6_S10;
                     break;
                 case 0:
-                    var_v1 = D_83003B24;
+                    var_v1 = gMenuOptions_Mode6_S0;
                     break;
             }
             break;
@@ -223,7 +223,7 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 0:
             switch (arg0->unk_0000) {
                 case 0:
-                    var_v1 = D_83003B34;
+                    var_v1 = gMenuOptions_Mode0_S0;
                     break;
             }
             break;
@@ -231,7 +231,7 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 7:
             switch (arg0->unk_0000) {
                 case 7:
-                    var_v1 = D_83003B44;
+                    var_v1 = gMenuOptions_Mode7_S7;
                     break;
             }
             break;
@@ -239,7 +239,7 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
         case 8:
             switch (arg0->unk_0000) {
                 case 8:
-                    var_v1 = D_83003B54;
+                    var_v1 = gMenuOptions_Mode8_S8;
                     break;
             }
             break;
@@ -253,7 +253,7 @@ char* GetBattleModeTitle(s8 arg0) {
 
     switch (arg0) {
         case 0:
-            ret = D_83003CAC;
+            ret = gBattleModeTitle_0;
             break;
 
         case 1:
@@ -262,19 +262,19 @@ char* GetBattleModeTitle(s8 arg0) {
         case 4:
         case 5:
         case 6:
-            ret = D_83003CA8;
+            ret = gBattleModeTitle_Default;
             break;
 
         case 7:
-            ret = D_83003CB4;
+            ret = gBattleModeTitle_7;
             break;
 
         case 8:
-            ret = D_83003CB8;
+            ret = gBattleModeTitle_8;
             break;
 
         case 10:
-            ret = D_83003CB0;
+            ret = gBattleModeTitle_10;
             break;
 
         default:
@@ -290,39 +290,39 @@ char* GetBattleModeSubtitle(s8 arg0) {
 
     switch (arg0) {
         case 0:
-            ret = D_83003CBC;
+            ret = gBattleModeSubtitle_0;
             break;
 
         case 1:
-            ret = D_83003CC0;
+            ret = gBattleModeSubtitle_1;
             break;
 
         case 2:
-            ret = D_83003CC4;
+            ret = gBattleModeSubtitle_2;
             break;
 
         case 3:
-            ret = D_83003CC8;
+            ret = gBattleModeSubtitle_3;
             break;
 
         case 4:
-            ret = D_83003CCC;
+            ret = gBattleModeSubtitle_4;
             break;
 
         case 5:
-            ret = D_83003CD0;
+            ret = gBattleModeSubtitle_5;
             break;
 
         case 6:
-            ret = D_83003CD4;
+            ret = gBattleModeSubtitle_6;
             break;
 
         case 7:
-            ret = D_83003CD8;
+            ret = gBattleModeSubtitle_7;
             break;
 
         case 8:
-            ret = D_83003CDC;
+            ret = gBattleModeSubtitle_8;
             break;
 
         default:
@@ -337,7 +337,7 @@ s32 MenuOptionStringsMissing(s16* arg0) {
     s32 ret = 0;
 
     while (*arg0 != -1) {
-        if (D_83003DE0.unk_00[*arg0] == '\x00') {
+        if (gMenuOptionStrings.unk_00[*arg0] == '\x00') {
             ret = 1;
             break;
         }
@@ -350,47 +350,47 @@ s32 MenuOptionStringsMissing(s16* arg0) {
 void FadeIn_Update(void) {
     s32 temp_lo;
 
-    D_83003C82--;
+    gMenuFadeTimer--;
 
-    D_83003C92 = temp_lo = ((0xA - D_83003C82) << 0xA) / 10;
+    gMenuFadeAlpha = temp_lo = ((0xA - gMenuFadeTimer) << 0xA) / 10;
 
     if (D_83003C84 & 4) {
-        D_83003C94 = temp_lo;
+        gLoadingBarProgress = temp_lo;
     }
 
-    if (D_83003C82 <= 0) {
+    if (gMenuFadeTimer <= 0) {
         D_83003C80 = 1;
-        D_83003C90 = 2;
+        gMenuBackgroundTimer = 2;
     }
 }
 
 void MenuInput_HandleSelection(void) {
-    s16 tmp = D_83003CA6;
+    s16 tmp = gCurrentMenuSelectedIndex;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        D_83003CA6--;
-        if (D_83003CA6 < 0) {
-            D_83003CA6 = D_83003CA4 - 1;
+        gCurrentMenuSelectedIndex--;
+        if (gCurrentMenuSelectedIndex < 0) {
+            gCurrentMenuSelectedIndex = gCurrentMenuOptionCount - 1;
         }
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        D_83003CA6++;
-        if (D_83003CA6 >= D_83003CA4) {
-            D_83003CA6 = 0;
+        gCurrentMenuSelectedIndex++;
+        if (gCurrentMenuSelectedIndex >= gCurrentMenuOptionCount) {
+            gCurrentMenuSelectedIndex = 0;
         }
     }
 
-    if (D_83003CA6 != tmp) {
+    if (gCurrentMenuSelectedIndex != tmp) {
         PlaySoundEffect(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         D_83003C80 = 2;
-        D_83003C82 = 0;
+        gMenuFadeTimer = 0;
 
-        if (D_83003DE0.unk_00[D_83003CA0[D_83003CA6]] != NULL) {
-            Dialog_Start(D_83003CA0[D_83003CA6]);
+        if (gMenuOptionStrings.unk_00[gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]] != NULL) {
+            Dialog_Start(gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]);
         } else {
             func_830038DC();
             PlaySoundEffect(4);
@@ -399,13 +399,13 @@ void MenuInput_HandleSelection(void) {
         PlaySoundEffect(2);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         D_83003C80 = 3;
-        D_83003C82 = 0xA;
-        D_83003C90 = -1;
+        gMenuFadeTimer = 0xA;
+        gMenuBackgroundTimer = -1;
         PlaySoundEffect(3);
     }
 }
 
-void func_83000710(void) {
+void Menu_CheckDialogComplete(void) {
     if ((Dialog_IsActive() == 0) && (func_83003988() == 0)) {
         D_83003C80 = 1;
     }
@@ -414,26 +414,26 @@ void func_83000710(void) {
 void FadeOut_Update(void) {
     s32 temp_lo;
 
-    D_83003C82--;
-    temp_lo = (D_83003C82 << 0xA) / 10;
+    gMenuFadeTimer--;
+    temp_lo = (gMenuFadeTimer << 0xA) / 10;
 
-    D_83003C92 = temp_lo;
+    gMenuFadeAlpha = temp_lo;
     if (D_83003C84 & 4) {
-        D_83003C94 = temp_lo;
+        gLoadingBarProgress = temp_lo;
     }
 
-    if (D_83003C82 <= 0) {
+    if (gMenuFadeTimer <= 0) {
         D_83003C80 = 4;
-        D_83003C82 = 2;
-        D_83003C90 = -1;
+        gMenuFadeTimer = 2;
+        gMenuBackgroundTimer = -1;
     }
 }
 
 s32 FadeOut_IsComplete(void) {
     s32 var_v1 = 0;
 
-    D_83003C82--;
-    if (D_83003C82 <= 0) {
+    gMenuFadeTimer--;
+    if (gMenuFadeTimer <= 0) {
         var_v1 = 1;
     }
     return var_v1;
@@ -464,12 +464,12 @@ void DrawLoadingBar(void) {
     s16 temp_s1;
     s16 spD8;
 
-    if (D_83003C94 == 0) {
+    if (gLoadingBarProgress == 0) {
         return;
     }
 
-    temp_s1 = (((-D_83003C94 * 0x10) + 0x4000) / 1024) + 0x28;
-    spD8 = (D_83003C94 << 5) / 1024;
+    temp_s1 = (((-gLoadingBarProgress * 0x10) + 0x4000) / 1024) + 0x28;
+    spD8 = (gLoadingBarProgress << 5) / 1024;
 
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, 100, 100, 200, 255);
@@ -486,7 +486,7 @@ void DrawLoadingBar(void) {
     Gfx_DrawTextureRect(0x240, temp_s1, 0x10, spD8, 0, 0, 0x400, 0x8000 / spD8, 0);
     Gfx_DrawTextureRect(0x48, temp_s1, 0x1F8, spD8, 0, 0, 0, 0x8000 / spD8, 0);
 
-    if (D_83003C94 < 0x400) {
+    if (gLoadingBarProgress < 0x400) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -499,12 +499,12 @@ void DrawLoadingBar(void) {
         Text_ResetState();
         Text_SetFont(0x10, 0);
 
-        if (D_83003C98 != 0) {
+        if (gCurrentBattleModeTitle != 0) {
             char sp48[0x40];
             char* temp_v0_21;
 
             Text_SetEnvColor(0, 0, 0, 0xFF);
-            MessageBank_SetPointer_0x14_0x2A(0x26, D_83003C98);
+            MessageBank_SetPointer_0x14_0x2A(0x26, gCurrentBattleModeTitle);
             temp_v0_21 = GetMessageString(sp48, sizeof(sp48), D_830039C0, 0);
             Text_Print(0x6A, temp_s1 + 4, temp_v0_21);
             Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
@@ -568,52 +568,52 @@ void DrawMenuOptions(s16 arg0, s16 arg1) {
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    if (D_83003C9C != NULL) {
-        if (D_83003C9C != D_83003CBC) {
-            MessageBank_SetPointer_0x14_0x2A(0x27, D_83003C9C);
+    if (gCurrentBattleModeSubtitle != NULL) {
+        if (gCurrentBattleModeSubtitle != gBattleModeSubtitle_0) {
+            MessageBank_SetPointer_0x14_0x2A(0x27, gCurrentBattleModeSubtitle);
             Text_Print(arg0 + 0x10, arg1 + 4, GetMessageString(sp48, sizeof(sp48), D_830039C0, 1));
         } else {
-            Text_Print(arg0 + 0x10, arg1 + 4, D_83003C9C);
+            Text_Print(arg0 + 0x10, arg1 + 4, gCurrentBattleModeSubtitle);
         }
     }
 
     Text_Print(arg0 + 0x30, arg1 + 0x134, GetMessageString(NULL, 0, D_830039C0, 2));
     Text_SetFont(8, 0);
 
-    for (i = 0; i < D_83003CA4; i++) {
-        if (i != D_83003CA6) {
+    for (i = 0; i < gCurrentMenuOptionCount; i++) {
+        if (i != gCurrentMenuSelectedIndex) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
-        tmp = D_83003CA0[i];
-        Text_Print(arg0 + 0x54, arg1 + 0x26 + i * 0x18, D_83003CE0.unk_00[tmp]);
+        tmp = gCurrentMenuOptionIds[i];
+        Text_Print(arg0 + 0x54, arg1 + 0x26 + i * 0x18, gMenuStaticStrings.unk_00[tmp]);
     }
 }
 
-void func_830017C0(void) {
+void DrawSelectionMenu(void) {
     static s16 D_83003B60 = 0;
 
     s32 i;
     s16 temp_s3;
     s16 temp_s2;
 
-    if (D_83003C92 == 0) {
+    if (gMenuFadeAlpha == 0) {
         return;
     }
 
-    temp_s3 = (((-D_83003C92 * 0xA8) + 0x2A000) / 1024) + 0x5C;
-    temp_s2 = (D_83003C92 * 0x150) / 1024;
+    temp_s3 = (((-gMenuFadeAlpha * 0xA8) + 0x2A000) / 1024) + 0x5C;
+    temp_s2 = (gMenuFadeAlpha * 0x150) / 1024;
     func_83000F10(0x38, temp_s3, 0x210, temp_s2);
 
-    if (D_83003C92 >= 0x400) {
+    if (gMenuFadeAlpha >= 0x400) {
         DrawColoredPanel(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
         DrawColoredPanel(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
         DrawColoredPanel(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
         if ((Dialog_GetAnimProgress() == 0) && (func_830039AC() == 0)) {
             s16 sins = SINS(D_83003B60) * 3.0f;
 
-            DrawStatusIcon(sins + 0x48, temp_s3 + (D_83003CA6 * 0x18) + 0x2A);
+            DrawStatusIcon(sins + 0x48, temp_s3 + (gCurrentMenuSelectedIndex * 0x18) + 0x2A);
             D_83003B60 += 0x1000;
         }
 
@@ -621,7 +621,7 @@ void func_830017C0(void) {
 
         Gfx_DrawSpriteRGBA16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
 
-        for (i = 0; i < D_83003CA4; i++) {
+        for (i = 0; i < gCurrentMenuOptionCount; i++) {
             DrawMenuIcon(0x74, temp_s3 + 0x28 + i * 0x18);
         }
 
@@ -633,24 +633,24 @@ void func_830017C0(void) {
     }
 }
 
-void func_83001A9C(void) {
+void BattleModeMenu_Render(void) {
     Stage_BeginDisplayList();
-    if (D_83003C90 != 0) {
+    if (gMenuBackgroundTimer != 0) {
         if (gBattleContext.unk_0000 == 0xA) {
             DrawBattleModeBackground();
         } else {
-            Gfx_DrawTextureAtlas(D_83003C8C);
+            Gfx_DrawTextureAtlas(gBattleBackgroundAtlas);
         }
 
         DrawLoadingBar();
 
-        if (D_83003C90 > 0) {
-            D_83003C90--;
+        if (gMenuBackgroundTimer > 0) {
+            gMenuBackgroundTimer--;
         }
     }
 
     if ((Dialog_GetAnimProgress() < 0x400) && (func_830039AC() < 0x400)) {
-        func_830017C0();
+        DrawSelectionMenu();
     }
 
     Dialog_Render();
@@ -658,26 +658,26 @@ void func_83001A9C(void) {
     Stage_Advance();
 }
 
-void func_83001B64(void) {
+void Menu_InitStaticStrings(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        D_83003CE0.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, i + 4);
+        gMenuStaticStrings.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, i + 4);
     }
 
-    D_83003CE0.unk_74 = D_83003CE0.unk_00[2];
-    D_83003CE0.unk_78 = D_83003CE0.unk_00[10];
-    D_83003CE0.unk_7C = D_83003CE0.unk_00[12];
-    D_83003CE0.unk_80 = D_83003CE0.unk_00[15];
-    D_83003CE0.unk_84 = D_83003CE0.unk_00[22];
-    D_83003CE0.unk_88 = D_83003CE0.unk_00[27];
-    D_83003CE0.unk_8C = GetMessageString(NULL, 0, D_830039C0, 0x21);
-    D_83003CE0.unk_90 = D_83003CE0.unk_00[20];
-    D_83003CE0.unk_94 = D_83003CE0.unk_00[4];
-    D_83003CE0.unk_98 = GetMessageString(NULL, 0, D_830039C0, 0x22);
+    gMenuStaticStrings.unk_74 = gMenuStaticStrings.unk_00[2];
+    gMenuStaticStrings.unk_78 = gMenuStaticStrings.unk_00[10];
+    gMenuStaticStrings.unk_7C = gMenuStaticStrings.unk_00[12];
+    gMenuStaticStrings.unk_80 = gMenuStaticStrings.unk_00[15];
+    gMenuStaticStrings.unk_84 = gMenuStaticStrings.unk_00[22];
+    gMenuStaticStrings.unk_88 = gMenuStaticStrings.unk_00[27];
+    gMenuStaticStrings.unk_8C = GetMessageString(NULL, 0, D_830039C0, 0x21);
+    gMenuStaticStrings.unk_90 = gMenuStaticStrings.unk_00[20];
+    gMenuStaticStrings.unk_94 = gMenuStaticStrings.unk_00[4];
+    gMenuStaticStrings.unk_98 = GetMessageString(NULL, 0, D_830039C0, 0x22);
 }
 
-void func_83001C4C(void) {
+void Menu_InitOptionStrings(void) {
     s32 i;
     s32 var_s2 = 0;
 
@@ -688,72 +688,72 @@ void func_83001C4C(void) {
             case 14:
             case 19:
             case 24:
-                D_83003DE0.unk_00[i] = NULL;
+                gMenuOptionStrings.unk_00[i] = NULL;
                 break;
 
             default:
-                D_83003DE0.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, var_s2 + 0x23);
+                gMenuOptionStrings.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, var_s2 + 0x23);
                 var_s2++;
                 break;
         }
     }
 }
 
-void func_83001CF8(void) {
+void BattleModeMenu_Init(void) {
     D_83003C80 = 0;
-    D_83003C82 = 0xA;
-    D_83003C90 = -1;
-    D_83003C92 = 0;
+    gMenuFadeTimer = 0xA;
+    gMenuBackgroundTimer = -1;
+    gMenuFadeAlpha = 0;
     PlaySoundEffect(4);
-    D_83003C98 = 0;
-    D_83003C9C = NULL;
-    D_83003CA6 = 0;
+    gCurrentBattleModeTitle = 0;
+    gCurrentBattleModeSubtitle = NULL;
+    gCurrentMenuSelectedIndex = 0;
     D_83003C84 = 0;
 
-    D_83003CA0 = GetMenuOptionList(&gBattleContext);
-    if (D_83003CA0 == 0) {
-        D_83003CA4 = 0;
+    gCurrentMenuOptionIds = GetMenuOptionList(&gBattleContext);
+    if (gCurrentMenuOptionIds == 0) {
+        gCurrentMenuOptionCount = 0;
     } else {
-        D_83003CA4 = 0;
-        while (D_83003CA0[D_83003CA4] != -1) {
-            D_83003CA4++;
+        gCurrentMenuOptionCount = 0;
+        while (gCurrentMenuOptionIds[gCurrentMenuOptionCount] != -1) {
+            gCurrentMenuOptionCount++;
         }
     }
 
-    func_83001B64();
-    func_83001C4C();
+    Menu_InitStaticStrings();
+    Menu_InitOptionStrings();
 
-    D_83003CA8 = GetMessageString(NULL, 0, D_830039C0, 0x46);
-    D_83003CAC = GetMessageString(NULL, 0, D_830039C0, 0x45);
-    D_83003CB0 = GetMessageString(NULL, 0, D_830039C0, 0x49);
-    D_83003CB4 = GetMessageString(NULL, 0, D_830039C0, 0x47);
-    D_83003CB8 = GetMessageString(NULL, 0, D_830039C0, 0x48);
-    D_83003CBC = GetMessageString(NULL, 0, D_830039C0, 0x4A);
-    D_83003CC0 = GetMessageString(NULL, 0, D_830039C0, 0x4D);
-    D_83003CC4 = GetMessageString(NULL, 0, D_830039C0, 0x4C);
-    D_83003CC8 = GetMessageString(NULL, 0, D_830039C0, 0x4B);
-    D_83003CCC = GetMessageString(NULL, 0, D_830039C0, 0x4E);
-    D_83003CD0 = GetMessageString(NULL, 0, D_830039C0, 0x4F);
-    D_83003CD4 = GetMessageString(NULL, 0, D_830039C0, 0x50);
+    gBattleModeTitle_Default = GetMessageString(NULL, 0, D_830039C0, 0x46);
+    gBattleModeTitle_0 = GetMessageString(NULL, 0, D_830039C0, 0x45);
+    gBattleModeTitle_10 = GetMessageString(NULL, 0, D_830039C0, 0x49);
+    gBattleModeTitle_7 = GetMessageString(NULL, 0, D_830039C0, 0x47);
+    gBattleModeTitle_8 = GetMessageString(NULL, 0, D_830039C0, 0x48);
+    gBattleModeSubtitle_0 = GetMessageString(NULL, 0, D_830039C0, 0x4A);
+    gBattleModeSubtitle_1 = GetMessageString(NULL, 0, D_830039C0, 0x4D);
+    gBattleModeSubtitle_2 = GetMessageString(NULL, 0, D_830039C0, 0x4C);
+    gBattleModeSubtitle_3 = GetMessageString(NULL, 0, D_830039C0, 0x4B);
+    gBattleModeSubtitle_4 = GetMessageString(NULL, 0, D_830039C0, 0x4E);
+    gBattleModeSubtitle_5 = GetMessageString(NULL, 0, D_830039C0, 0x4F);
+    gBattleModeSubtitle_6 = GetMessageString(NULL, 0, D_830039C0, 0x50);
 
-    D_83003CD8 = D_83003CB4;
-    D_83003CDC = D_83003CB8;
+    gBattleModeSubtitle_7 = gBattleModeTitle_7;
+    gBattleModeSubtitle_8 = gBattleModeTitle_8;
 
-    D_83003C98 = GetBattleModeTitle(gBattleContext.unk_0000);
-    D_83003C9C = GetBattleModeSubtitle(gBattleContext.unk_0001);
+    gCurrentBattleModeTitle = GetBattleModeTitle(gBattleContext.unk_0000);
+    gCurrentBattleModeSubtitle = GetBattleModeSubtitle(gBattleContext.unk_0001);
 
     if (gBattleContext.unk_11F2 != 0) {
         D_83003C84 |= 1;
     }
 
-    if (MenuOptionStringsMissing(D_83003CA0) != 0) {
+    if (MenuOptionStringsMissing(gCurrentMenuOptionIds) != 0) {
         D_83003C84 |= 2;
     }
 
     if (D_83003C84 & 4) {
-        D_83003C94 = 0;
+        gLoadingBarProgress = 0;
     } else {
-        D_83003C94 = 0x400;
+        gLoadingBarProgress = 0x400;
     }
 
     Dialog_CloseImmediately();
@@ -761,7 +761,7 @@ void func_83001CF8(void) {
     func_830032D8((D_83003C84 & 2) ? 1 : 0);
 }
 
-s32 func_83002030(void) {
+s32 BattleModeMenu_UpdateState(void) {
     s32 sp1C = 1;
 
     switch (D_83003C80) {
@@ -774,7 +774,7 @@ s32 func_83002030(void) {
             break;
 
         case 2:
-            func_83000710();
+            Menu_CheckDialogComplete();
             break;
 
         case 3:
@@ -790,17 +790,17 @@ s32 func_83002030(void) {
     return sp1C;
 }
 
-void func_830020D0(void) {
-    func_83001CF8();
+void BattleModeMenu_MainLoop(void) {
+    BattleModeMenu_Init();
     do {
         MenuInput_Update();
         Dialog_UpdateStateMachine();
         func_830033F0();
-        func_83001A9C();
-    } while (func_83002030() != 0);
+        BattleModeMenu_Render();
+    } while (BattleModeMenu_UpdateState() != 0);
 }
 
-s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 BattleModeMenu_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
     main_pool_push_state('EXPL');
 
     Text_Init(0x1C, 0);
@@ -810,13 +810,13 @@ s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
     ASSET_LOAD(D_04000000, rental_rules_ui, 0);
 
-    func_83000058();
+    BattleMode_LoadAssets();
     SpriteAssets_Load();
     MessageBank_Init();
     D_830039C0 = GetMessageBank(0x20);
-    D_830039C4 = GetMessageBank(0x24);
+    gBattleModeMessageBank = GetMessageBank(0x24);
     func_80007754();
-    func_830020D0();
+    BattleModeMenu_MainLoop();
     Stage_Terminate();
 
     main_pool_pop_state('EXPL');

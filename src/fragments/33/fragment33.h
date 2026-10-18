@@ -34,7 +34,7 @@ typedef struct unk_D_81303FA8 {
 } unk_D_81303FA8; // size = 0x16
 
 s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1);
-s32 func_813001C0(void);
+s32 GetPlayerNameLength(void);
 void StartEntrySelection(void);
 s32 GetEntryStatus(s32 arg0);
 s32 GetEntryMenuOption(s32 arg0);
@@ -46,16 +46,16 @@ void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5,
 void RenderMenuScreen(void);
 void HandleEntryNavigation(void);
 void HandleEntryConfirmCancel(void);
-void func_81302498(void);
+void Menu_InitInput(void);
 void func_813024C8(s32 arg0);
-void func_81302548(void);
-void func_81302630(void);
-void func_81302798(void);
-s32 func_81302A70(s32 arg0);
-void func_81302C20(void);
-void func_81302DD8(void);
-s32 func_81302E58(s32 arg0, s32 arg1);
-void func_8130306C(u8* arg0);
-void func_8130337C(void);
+void Menu_UpdateEntryData(void);
+void Menu_SelectDefaultEntry(void);
+void Menu_UpdateEntryAnimations(void);
+s32 Menu_RunScreen(s32 arg0);
+void Menu_InitEntryNodes(void);
+void Menu_InitGeo(void);
+s32 Menu_EntrySelection_Init(s32 arg0, s32 arg1);
+void Gfx_DrawBackgroundGrid(u8* arg0);
+void Gfx_DrawMenuBackground(void);
 
 #endif // _FRAGMENT33_H_

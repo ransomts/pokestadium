@@ -24,7 +24,7 @@ void Fragment46_InitCamera(void) {
     gFragment46_State = 0;
     sp28 = AssetManager_Create(1);
     Cam_CallInit318B8();
-    gFragment46_Camera = Cam_Create(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, func_834006A0(1));
+    gFragment46_Camera = Cam_Create(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, Gallery_GetCurrentEntry(1));
 }
 
 void func_83700090(void) {
@@ -35,7 +35,7 @@ void Fragment46_DrawFrame(void) {
 
     Stage_BeginDisplayList();
     if (gFragment46_Camera->unk_00 == 2) {
-        func_834018C0(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->unk_04, gFragment46_Camera->unk_06, 1, 0);
+        Gallery_DrawTextureList(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->unk_04, gFragment46_Camera->unk_06, 1, 0);
     }
     Stage_Advance();
     gFragment46_FrameCounter += 0x1000;

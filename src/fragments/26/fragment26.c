@@ -2308,7 +2308,7 @@ void TrainerMoveInfoFragment_Create(unk_func_88509A2C* arg0, s32 arg1, s32 arg2,
             arg0->unk_30 = 1;
         } else {
             arg0->unk_30 = 0;
-            arg0->unk_38 = func_80025084(arg3);
+            arg0->unk_38 = SaveSlot_GetPokemonId(arg3);
             SaveSlot_GetTrainerName(arg3, arg0->unk_40);
         }
         arg0->unk_34 = GetMoveTargetType(MenuItem_GetHeldItemId(arg3));

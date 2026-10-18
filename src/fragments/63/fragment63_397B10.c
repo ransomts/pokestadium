@@ -943,7 +943,7 @@ void func_84B0492C(unk_D_84B259A8* arg0) {
     arg0->unk_01++;
 }
 
-void func_84B04A7C(unk_D_84B259A8* arg0) {
+void ErrorScreen_Update(unk_D_84B259A8* arg0) {
     switch (arg0->unk_00) {
         case 1:
             func_84B04628(arg0);
@@ -1050,7 +1050,7 @@ void func_84B04E94(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B04F78(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
+void ErrorScreen_SetupNodes(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->unk_20 = arg1;
@@ -1071,7 +1071,7 @@ void func_84B04F78(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     }
 }
 
-void func_84B0509C(unk_D_84B259A8* arg0) {
+void ErrorScreen_Finish(unk_D_84B259A8* arg0) {
     arg0->unk_01 = 0;
     arg0->unk_00 = 3;
 }

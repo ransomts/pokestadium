@@ -9,10 +9,10 @@ s32 RenderPanelBackground(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 
 void RenderIconMasked(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_LoadTextureBlockIA8_Clamp(gWaterTexture[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
-    func_814044FC(gWaterTexture[0x77], 0x40, 0x40, 2, 1);
+    Gfx_LoadMultiBlockI4b_WrapCustom(gWaterTexture[0x77], 0x40, 0x40, 2, 1);
     Gfx_ScrollTexture1(0, 0xA, 0x40, 0x40);
-    func_81405FAC(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E1F8);
+    Gfx_SetPrimAndEnvColorLODSimple(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
+    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_Square);
 }
 
 void RenderPanelWithIcon(ParticleEffectInstance* arg0, CameraStruct* arg1) {
@@ -121,7 +121,7 @@ void func_84330B40(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x1A] + (arg0->unk_C7 << 9), 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1A] + (arg0->unk_C7 << 9), 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
@@ -164,7 +164,7 @@ void func_84330F4C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x1D], 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1D], 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     sp40.x = arg0->unk_94.x + 0x4000;
     sp40.y = arg0->unk_94.y + 0x4000;
@@ -180,7 +180,7 @@ void func_84331094(UNUSED ParticleEffectInstance* arg0, UNUSED CameraStruct* arg
 void RenderTimerDigits(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
 
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
@@ -194,7 +194,7 @@ void RenderTimerDigitsAlt(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gPanelBarSmallVerts);
 
@@ -205,7 +205,7 @@ void func_84331314(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gPanelMiscVerts);
 
@@ -216,7 +216,7 @@ void RenderTimerNumber(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelBarVerts, arg0->unk_94.z);
 
@@ -227,7 +227,7 @@ void func_8433157C(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelBarSmallVerts, arg0->unk_94.z);
 
@@ -238,7 +238,7 @@ void func_843316A8(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelMiscVerts, arg0->unk_94.z);
 
@@ -249,9 +249,9 @@ void func_843317D4(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x1B], 0x10, 0x100);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1B], 0x10, 0x100);
     Gfx_SetPrimAndEnvColor(0xFF, 0xFF, 0xFF, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
-    Gfx_DrawTriangleRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140DF78);
+    Gfx_DrawTriangleRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_TriangleSmall);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -260,9 +260,9 @@ void func_843318F8(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x1B], 0x10, 0x100);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1B], 0x10, 0x100);
     Gfx_SetPrimAndEnvColor(0xFF, 0xFF, 0xFF, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
-    Gfx_DrawTriangleRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140DFA8);
+    Gfx_DrawTriangleRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_TriangleLarge);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -271,9 +271,9 @@ void func_84331A1C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0x13] + ((gTimerShift1 & 7) * 0x600), 0x20, 0x60);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x13] + ((gTimerShift1 & 7) * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(0xFF, 0xFF, 0xFF, 0, 0x64, 0xC8, 0xFF);
-    Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E238);
+    Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_ComplexQuad);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -281,7 +281,7 @@ void func_84331A1C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
 void func_84331B58(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
-    func_8140437C(gWaterTexture[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
@@ -290,9 +290,9 @@ void func_84331C34(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(gWaterTexture[0xA9], 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0xA9], 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404C34(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, arg0->unk_20, D_8140E098);
+    Gfx_DrawQuadRotatedXY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, arg0->unk_20, gVtx_UI_RectVertical);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }

@@ -43,14 +43,14 @@ void Music_ChangeTrack(s32 arg0) {
         if (gCurrentMusicId >= 0) {
             func_8004B9C4(0);
         }
-        func_8004B1CC(arg0);
+        ResultScreen_SetAnimation(arg0);
         gCurrentMusicId = arg0;
     }
 }
 
 void Music_SetTrack(s32 arg0) {
     if (arg0 != gCurrentMusicId) {
-        func_8004B1CC(arg0);
+        ResultScreen_SetAnimation(arg0);
         gCurrentMusicId = arg0;
     }
 }

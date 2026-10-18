@@ -141,7 +141,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
                     if (gItemSelectMode == 2) {
                         gItemSelectState = 3;
                         PlaySoundEffect(0xD);
-                        D_83407B30.unk_04 = arg0->unk_04;
+                        gGalleryMainSelection.unk_04 = arg0->unk_04;
                     } else {
                         PlaySoundEffect(2);
                     }
@@ -155,7 +155,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
         } else if ((sp54 * 3) < 6) {
             if (sp3C != arg0->unk_04) {
                 PlaySoundEffect(0x29);
-                func_83400590(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
+                Gallery_SwapEntries(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
 
                 tmp = gSlotStatusFlags[sp3C];
                 gSlotStatusFlags[sp3C] = gSlotStatusFlags[arg0->unk_04];
@@ -176,7 +176,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
         if (arg0->unk_04 == -1) {
             sp64 = 1;
             if (gItemSelectMode == 2) {
-                GallerySelection_Init(&D_83407B30);
+                GallerySelection_Init(&gGalleryMainSelection);
             }
         } else {
             arg0->unk_04 = -1;
@@ -189,7 +189,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
         if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(ptr) != 0)) {
             sp64 = 2;
             PlaySoundEffect(0x19);
-            func_83400694(ptr->unk_18);
+            Gallery_SetCurrentEntry(ptr->unk_18);
         } else {
             PlaySoundEffect(8);
         }
@@ -221,20 +221,20 @@ void ItemSelect_Init(s32 arg0, s32 arg1) {
     ItemSelect_ResultAnimTimer = 0;
 
     tmp = AssetManager_Create(5);
-    CamList_Init(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, D_83403C60, 0x24, 1);
+    CamList_Init(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, gGalleryEntries, 0x24, 1);
     if (gItemSelectMode == 2) {
-        func_834021EC(&gItemSelectContext, &D_83407B18.unk_00);
+        Gallery_SyncCamToSelection(&gItemSelectContext, &gGalleryFinalSelection.unk_00);
     } else if (arg1 == 0) {
-        func_834021EC(&gItemSelectContext, &D_83407B10);
+        Gallery_SyncCamToSelection(&gItemSelectContext, &gGalleryTertiarySelection);
     }
 
     for (i = 0; i < 36; i++) {
-        unk_D_83403C60* ptr = &D_83403C60[i];
+        unk_D_83403C60* ptr = &gGalleryEntries[i];
 
         gSlotStatusFlags[i] = 0;
         if (IsMonIndexDisplayable(ptr) != 0) {
             for (j = 0; j < 21; j++) {
-                if ((IsMonIndexDisplayable(&D_834063C0[j]) != 0) && (func_83400660(&D_834063C0[j], ptr) != 0)) {
+                if ((IsMonIndexDisplayable(&gGalleryCamEntries[j]) != 0) && (Gallery_IsEntryEqual(&gGalleryCamEntries[j], ptr) != 0)) {
                     if (j < 4) {
                         gSlotStatusFlags[i] |= 1;
                     } else {
@@ -516,7 +516,7 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         var_s4 = 0;
         if ((temp_s3 != arg2->unk_04) && (Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
             var_s4 = 1;
-            func_834018C0(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
+            Gallery_DrawTextureList(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -535,13 +535,13 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         s32 sp64;
         f32 sp60;
 
-        func_83402210(arg2, &sp70, &sp6C, arg2->unk_00);
+        Gallery_GetPageAndIndex(arg2, &sp70, &sp6C, arg2->unk_00);
 
         ptr = arg2->unk_B0;
         if ((Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
             if (sp6C < 2) {
-                func_83401818((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
-                func_834018C0(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
+                Gallery_DrawShadow((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
+                Gallery_DrawTextureList(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
                               0x66, 8, 1);
             } else {
                 CalcResultPanelSize(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
@@ -589,7 +589,7 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_t1);
 
-    func_83401D0C((arg1 - temp_s0) - 0x21, arg2 + 6, 0);
+    Gallery_DrawCursor((arg1 - temp_s0) - 0x21, arg2 + 6, 0);
 
     if (arg0->unk_08 < (arg0->unk_0C - 1)) {
         temp_s0 = sp54;
@@ -602,7 +602,7 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_t1);
 
-    func_83401D0C(arg1 + temp_s0 + 0x19C, arg2 + 6, 1);
+    Gallery_DrawCursor(arg1 + temp_s0 + 0x19C, arg2 + 6, 1);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     temp_s0 = 0x1B6 - MeasureTextWidth(0x10, 0, sp5C);
@@ -916,7 +916,7 @@ void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
     }
 
     temp_s3 = (spFC - MeasureTextWidth(0, 0, spD8)) / 2;
-    temp_s2 = (spF8 - (func_834006CC(spD8) * 0x14)) / 2;
+    temp_s2 = (spF8 - (Text_CountLines(spD8) * 0x14)) / 2;
 
     Text_ResetState();
     Text_SetFont(8, 0);
@@ -952,7 +952,7 @@ char* GetGridHelpString(unk_D_83407B38* arg0) {
 void DrawGridHelpBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     char* sp1C = GetGridHelpString(arg0);
 
-    func_834008DC(arg1, arg2, 0x13F, 0x4C);
+    Gallery_DrawGradientPanel(arg1, arg2, 0x13F, 0x4C);
     if (sp1C != NULL) {
         Text_ResetState();
         Text_SetFont(8, 0);
@@ -994,11 +994,11 @@ void DrawGridSelectionHighlight(unk_D_83407B38* arg0) {
     }
 
     if (temp_lo < 2) {
-        func_83401B48((temp_hi * 0xA0) + var_v0 + 0x67, (temp_lo * 0x76) + var_v0 + 0x4A, 0x90, 0x6E);
+        Gallery_DrawAnimatedCorners((temp_hi * 0xA0) + var_v0 + 0x67, (temp_lo * 0x76) + var_v0 + 0x4A, 0x90, 0x6E);
     } else if (arg0->unk_04 != -1) {
-        func_83401B48(0x41, 0x15A, 0x4C, 0x3B);
+        Gallery_DrawAnimatedCorners(0x41, 0x15A, 0x4C, 0x3B);
     } else {
-        func_83401B48(0x1E1, 0x172, 0x6C, 0x45);
+        Gallery_DrawAnimatedCorners(0x1E1, 0x172, 0x6C, 0x45);
     }
 }
 
@@ -1017,7 +1017,7 @@ void ItemSelect_MainDraw(void) {
     f32 sp24;
     f32 var_fv1;
 
-    func_83402210(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
+    Gallery_GetPageAndIndex(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
     Stage_BeginDisplayList();
     DrawHighlightBars();
     DrawGridBackground(0x1E, 0x2A, &gItemSelectContext);
@@ -1061,7 +1061,7 @@ void ItemSelect_MainDraw(void) {
 void AdvanceResultAnim(unk_D_83407B38* arg0) {
     ItemSelect_ResultAnimTimer++;
     if (ItemSelect_ResultAnimTimer >= 0x15) {
-        func_83400570(arg0->unk_20[arg0->unk_04]->unk_18);
+        Gallery_ClearEntry(arg0->unk_20[arg0->unk_04]->unk_18);
         gSlotStatusFlags[arg0->unk_04] = 0;
         arg0->unk_04 = -1;
         gItemSelectState = 1;
@@ -1158,7 +1158,7 @@ void ItemSelect_Loop(void) {
         }
 
         ItemSelect_MainDraw();
-        func_834020D8();
+        Gallery_ClearActiveCamera();
     } while (ItemSelect_StateMachine() != 0);
 }
 
@@ -1180,16 +1180,16 @@ s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0) {
             break;
     }
 
-    if (func_834006A0(0) != 0) {
+    if (Gallery_GetCurrentEntry(0) != 0) {
         sp1C = 4;
     }
 
     if (gItemSelectMode == 2) {
-        func_834021D8(arg0, &D_83407B18.unk_00);
+        Gallery_SyncSelectionToCam(arg0, &gGalleryFinalSelection.unk_00);
     } else {
-        func_834021D8(arg0, &D_83407B10);
+        Gallery_SyncSelectionToCam(arg0, &gGalleryTertiarySelection);
         if (sp1C == 0) {
-            Selection_Reset(&D_83407B10);
+            Selection_Reset(&gGalleryTertiarySelection);
         }
     }
 
