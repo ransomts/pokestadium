@@ -640,7 +640,7 @@ void Cam_Initialize(Camera* arg0) {
     temp_s1 = (unk_D_83403C60_raw*)arg0->unk_18;
     Cam_ConvertStateToInput(&sp30, &temp_s1->unk_70);
     Vec3f_Set(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
-    arg0->unk_20->unk_0A6 = 0xFE;
+    arg0->unk_20->modelPhase = 0xFE;
     sp94 = sp30.unk_00.unk_00;
     if (sp30.unk_00.unk_00 == 0x99) {
         sp30.unk_00.unk_00 = 0x19;

@@ -1195,7 +1195,7 @@ void func_84B03064(void) {
 
     for (i = 0, ptr2 = &gBattleGraphics.unk_0008[0]; i < 128; ptr2++, i++) {
         Graph_AddToRootList0(ptr2);
-        gBattleGraphics.unk_0008[i].unk_0A6 = i;
+        gBattleGraphics.unk_0008[i].modelPhase = i;
     }
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);

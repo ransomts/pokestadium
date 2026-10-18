@@ -149,7 +149,7 @@ typedef struct Fragment2_1GraphNode {
     /* 0x060 */ MtxF unk_060;
     /* 0x0A0 */ Color_RGBA8_u32 unk_0A0;    //  vertex color ?
     /* 0x0A4 */ char unk0A4[2];
-    /* 0x0A6 */ u8 unk_0A6;
+    /* 0x0A6 */ u8 modelPhase;
     /* 0x0A7 */ u8 unk_0A7;
     /* 0x0A8 */ unk_D_86002F58_004_000_0A8 unk_0A8[1];
     /* 0x0B8 */ char unk0B8[0x24];
@@ -472,14 +472,14 @@ typedef struct GbEmuState {
     /* 0x0000 */ OSThread thread;
     /* 0x01B0 */ char unk01B0[0x10];
     /* 0x01C0 */ OSMesgQueue queue1;
-    /* 0x01D8 */ struct GbEmuState* unk_01D8;
-    /* 0x01DC */ s32 unk_01DC;
+    /* 0x01D8 */ struct GbEmuState* next;
+    /* 0x01DC */ s32 threadState;
     /* 0x01E0 */ char unk01E0[0x2000];
     /* 0x21E0 */ OSMesg mesg;
     /* 0x21E4 */ OSMesgQueue queue2;
     /* 0x21FC */ u8* font1;
     /* 0x2200 */ u8* font2;
-    /* 0x2204 */ UnkInputStruct8000D738 unk_2204;
+    /* 0x2204 */ UnkInputStruct8000D738 inputConfig;
     /* 0x220C */ char unk220C[4];
 } GbEmuState; // size = 0x2210
 

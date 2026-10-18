@@ -461,9 +461,9 @@ void func_84308DB8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg
     GraphNode_ClearCallback(&arg1->unk_000);
 
     if (arg0 == D_84390010[0]) {
-        arg1->unk_000.unk_0A6 = 0;
+        arg1->unk_000.modelPhase = 0;
     } else {
-        arg1->unk_000.unk_0A6 = 1;
+        arg1->unk_000.modelPhase = 1;
     }
 
     GraphNode_InitChild(&arg1->unk_000, 0, arg2, sp20);
@@ -495,9 +495,9 @@ void func_84308ED4(unk_D_84390010* arg0, unk_D_84390010_728* arg1, s16 arg2) {
     GraphNode_ClearCallback(&arg1->unk_000);
 
     if (arg0 == D_84390010[0]) {
-        arg1->unk_000.unk_0A6 = 0xFF;
+        arg1->unk_000.modelPhase = 0xFF;
     } else {
-        arg1->unk_000.unk_0A6 = 0xFF;
+        arg1->unk_000.modelPhase = 0xFF;
     }
 
     if (arg0 == D_84390010[0]) {
@@ -523,9 +523,9 @@ void func_84308F94(unk_D_84390010* arg0, s16 arg1) {
 
         GraphNode_ClearCallback(&var_s0->unk_000);
         if (arg0 == D_84390010[0]) {
-            var_s0->unk_000.unk_0A6 = 0xFF;
+            var_s0->unk_000.modelPhase = 0xFF;
         } else {
-            var_s0->unk_000.unk_0A6 = 0xFF;
+            var_s0->unk_000.modelPhase = 0xFF;
         }
 
         GraphNode_InitChild(&var_s0->unk_000, 0, arg1, sp58);

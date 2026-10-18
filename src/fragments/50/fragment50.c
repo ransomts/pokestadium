@@ -1792,7 +1792,7 @@ s32 func_826007F0(s32 arg0, unk_D_86002F34_alt18* arg1) {
         arg1->a = (D_82608550 * 0x28) / 5;
 
         *ptr = (D_82608550 * 0xFF) / 5;
-        D_826083D0.unk_0A6 = *ptr;
+        D_826083D0.modelPhase = *ptr;
     }
     return 0;
 }
@@ -2102,7 +2102,7 @@ void func_82602300(s16 arg0) {
         return;
     }
 
-    temp_s0->unk_008.unk_0A6 = 0xFF;
+    temp_s0->unk_008.modelPhase = 0xFF;
     GraphNode_InitChild(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->unk_00[0]);
 
     if (temp_s0->unk_000 == 0x90) {
@@ -2573,7 +2573,7 @@ void func_82603800(s32 arg0, f32 arg1) {
     if ((D_82607420[arg0].unk_000 != 151) || (func_826007C8(151) != 0)) {
         Fragment2_1GraphNode* temp_s0 = &D_82607B60[arg0];
 
-        temp_s0->unk_0A6 = arg0;
+        temp_s0->modelPhase = arg0;
         GraphNode_InitChild(temp_s0, 0, 0xB6, D_82608538->unk_08->unk_00[0]);
         temp_s0->unk_000.unk_02 &= ~0x40;
         temp_s0->unk_01E.x = 0;

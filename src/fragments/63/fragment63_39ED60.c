@@ -140,7 +140,7 @@ s32 SetBattleBackgroundTexture0(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = (gDefaultGraphRoot->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
+        tmp = (gDefaultGraphRoot->modelPhase - temp_v0->unk_04->modelPhase) % 8;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F,
@@ -158,7 +158,7 @@ s32 func_84B0AD48(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = (gDefaultGraphRoot->unk_0A6 - temp_v0->unk_04->unk_0A6) % 8;
+        tmp = (gDefaultGraphRoot->modelPhase - temp_v0->unk_04->modelPhase) % 8;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F,
@@ -176,7 +176,7 @@ s32 func_84B0AE30(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a3 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = (gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6) - 0x10;
+        tmp = (gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase) - 0x10;
 
         if (temp_a3->unk_28[tmp] >= 0) {
             gDPPipeSync(gDisplayListHead++);

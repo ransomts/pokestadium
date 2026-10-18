@@ -822,7 +822,7 @@ void func_86B026C0(void) {
     AssetManager_LoadArchives();
 
     D_86B0EBDC->unk_000 = GeoLayout_LoadById(0xD3);
-    D_86B0EBDC->unk_008.unk_0A6 = 0xFF;
+    D_86B0EBDC->unk_008.modelPhase = 0xFF;
 
     GraphNode_InitChild(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B0EBDC->unk_008, 0);
@@ -830,7 +830,7 @@ void func_86B026C0(void) {
     AssetManager_LoadArchives();
 
     D_86B0EBDC->unk_004 = GeoLayout_LoadById(D_86B0EBDC->unk_2EC);
-    D_86B0EBDC->unk_170.unk_0A6 = 0;
+    D_86B0EBDC->unk_170.modelPhase = 0;
     GraphNode_InitChild(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
     D_86B0EBDC->unk_170.unk_000.unk_02 &= ~0x40;

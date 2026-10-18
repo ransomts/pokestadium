@@ -2811,21 +2811,21 @@ reset:
 
 void func_81206D9C(GbEmuState* arg0) {
   D_8122C4FC = 0;
-  D_8122C4E2 = arg0->unk_2204.unk_02;
+  D_8122C4E2 = arg0->inputConfig.unk_02;
   if ((D_8122C4E2 < 0) || (D_8122C4E2 >= 3)) {
       D_8122C4E2 = 0;
   }
-  D_8122C4FA.unk_00 = ((arg0->unk_2204.unk_00 & 0xFF00) >> 8);
-  D_8122C4FA.unk_01 = (arg0->unk_2204.unk_00 + 1) & 0xFF;
+  D_8122C4FA.unk_00 = ((arg0->inputConfig.unk_00 & 0xFF00) >> 8);
+  D_8122C4FA.unk_01 = (arg0->inputConfig.unk_00 + 1) & 0xFF;
   func_81203E30();
   D_8122C740 = arg0->font1 + 0x90;
   D_8122C744 = arg0->font2 + 0x90;
-  func_812033F4(0, func_80029080(), 5, 0x50, &gSIEventMesgQueue, arg0->unk_2204.unk_04);
+  func_812033F4(0, func_80029080(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
 }
 
 void func_81206E64(GbEmuState* arg0) {
   if (func_8120572C(0) != 0) {
-      arg0->unk_2204.unk_00 = ((D_8122C4FA.unk_01 - 1) & 0xFF) | (D_8122C4FA.unk_00 << 8);
+      arg0->inputConfig.unk_00 = ((D_8122C4FA.unk_01 - 1) & 0xFF) | (D_8122C4FA.unk_00 << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
       osSendMesg(&arg0->queue2, D_8122B2FC, 0);
   }

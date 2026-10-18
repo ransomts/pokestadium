@@ -88,7 +88,7 @@ s32 HealthBar_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
         if (temp_v1 < 5) {
             var_a1 = ((arg1->unk_00.unk_14 * 3) + temp_v1) - 2;
             sp30 = D_300C000;
@@ -114,7 +114,7 @@ s32 PowerGauge_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_a3 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
         if (temp_v1 < 5) {
             var_a1 = (arg1->unk_00.unk_14 * 2) + (((temp_v1 - 1) / 2) * 6) + ((temp_v1 - 1) % 2);
             sp30 = D_300F000;
@@ -137,7 +137,7 @@ s32 SpriteDisplay_DrawSegment(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v1 = (unk_D_84B25A28*)gDefaultGraphRoot->unk_000.unk_14;
-        if (temp_v1->unk_04->unk_0A6 == gDefaultGraphRoot->unk_0A6) {
+        if (temp_v1->unk_04->modelPhase == gDefaultGraphRoot->modelPhase) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;

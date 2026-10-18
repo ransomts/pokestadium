@@ -7,7 +7,7 @@ void Stage_SetHpWheelDigitTensMatrix(Gfx* gfx) {
     Mtx* mtx;
     u8 angle;
 
-    angle = gDefaultGraphRoot->unk_0A6 & 3;
+    angle = gDefaultGraphRoot->modelPhase & 3;
     mtx = GfxAlloc(0x40);
     guRotate(mtx, gHpWheelDigitOffsetTens[angle], 1.0f, 0.0f, 0.0f);
     gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);

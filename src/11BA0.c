@@ -340,7 +340,7 @@ Fragment2_1GraphNode* func_80011938(MainPoolState* arg0, Fragment2_1GraphNode* a
         arg1->unk_01E = *arg4;
         arg1->unk_01D = 0xFF;
         arg1->unk_01C = 0;
-        arg1->unk_0A6 = 0;
+        arg1->modelPhase = 0;
         arg1->unk_0A0.rgba = 0xFFFFFF00;
         arg1->unk_03C.rgba = 0xFFFFFF00;
         arg1->unk_040.unk_00 = 0;

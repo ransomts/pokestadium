@@ -23,7 +23,7 @@ void Graph_InitRoots(void) {
 void Graph_AddToRootList0(Fragment2_1GraphNode* arg0) {
     func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot0, &arg0->unk_000);
-    arg0->unk_0A6 = 0;
+    arg0->modelPhase = 0;
     arg0->unk_000.unk_01 &= ~1;
 }
 

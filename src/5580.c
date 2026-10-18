@@ -124,21 +124,21 @@ void RspTask_Finish(UnkStruct80001380* arg0) {
 void MessageQueue_Create(UnkStruct80083CA0_2* arg0, s32 arg1, s32 arg2) {
     arg0->unk_1DC = arg1;
     arg0->unk_1D8 = 0;
-    osCreateMesgQueue(&arg0->unk_1C0, &arg0->unk_1B0, arg2);
+    osCreateMesgQueue(&arg0->messageQueue, &arg0->unk_1B0, arg2);
 }
 
 s32 MessageQueue_Recv(UnkStruct80083CA0_2* arg0) {
     void* sp1C;
 
-    osRecvMesg(&arg0->unk_1C0, &sp1C, 1);
+    osRecvMesg(&arg0->messageQueue, &sp1C, 1);
     return sp1C;
 }
 
 s32 MessageQueue_TryRecv(UnkStruct80083CA0_2* arg0) {
     u32 sp1C = 'NULL';
 
-    if (arg0->unk_1C0.validCount != 0) {
-        osRecvMesg(&arg0->unk_1C0, &sp1C, 1);
+    if (arg0->messageQueue.validCount != 0) {
+        osRecvMesg(&arg0->messageQueue, &sp1C, 1);
     }
 
     return sp1C;
@@ -164,13 +164,13 @@ void ThreadList_SendMessage(u32 arg0) {
 
     while (var_s0 != NULL) {
         if (gRspTaskManager.unk_A38 == 0) {
-            if (var_s0->unk_01DC != 2) {
+            if (var_s0->threadState != 2) {
                 osSendMesg(&var_s0->queue1, arg0, 0);
             }
-        } else if (var_s0->unk_01DC != 0) {
+        } else if (var_s0->threadState != 0) {
             osSendMesg(&var_s0->queue1, arg0, 0);
         }
-        var_s0 = var_s0->unk_01D8;
+        var_s0 = var_s0->next;
     }
 }
 
@@ -203,10 +203,10 @@ void func_80004F08(void) {
     GbEmuState* var_s0 = gRspTaskManager.unk_A10;
 
     while (var_s0 != NULL) {
-        if (var_s0->unk_01DC == 0) {
+        if (var_s0->threadState == 0) {
             osStopThread(&var_s0->thread);
         }
-        var_s0 = var_s0->unk_01D8;
+        var_s0 = var_s0->next;
     }
     gRspTaskManager.unk_A38 = 1;
     Audio_FadeAllChannelsFast();
@@ -343,15 +343,15 @@ void ThreadList_Add(GbEmuState* arg0) {
         gRspTaskManager.unk_A10 = arg0;
     } else {
         var_v1 = gRspTaskManager.unk_A10;
-        var_a1 = var_v1->unk_01D8;
+        var_a1 = var_v1->next;
 
         while (var_a1 != NULL) {
             var_v1 = var_a1;
-            var_a1 = var_a1->unk_01D8;
+            var_a1 = var_a1->next;
         }
-        var_v1->unk_01D8 = arg0;
+        var_v1->next = arg0;
     }
-    arg0->unk_01D8 = NULL;
+    arg0->next = NULL;
 }
 
 void ThreadList_Remove(GbEmuState* arg0) {
@@ -360,11 +360,11 @@ void ThreadList_Remove(GbEmuState* arg0) {
 
     while (var_v1 != NULL) {
         if (var_v1 == arg0) {
-            *var_v0 = var_v1->unk_01D8;
+            *var_v0 = var_v1->next;
             break;
         }
-        var_v0 = &var_v1->unk_01D8;
-        var_v1 = var_v1->unk_01D8;
+        var_v0 = &var_v1->next;
+        var_v1 = var_v1->next;
     }
 }
 

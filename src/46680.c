@@ -120,7 +120,7 @@ s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
 }
 
 /*
- * Read n bits (LSB first) from the 0x400-word ring buffer at arg0->unk_1598.
+ * Read n bits (LSB first) from the 0x400-word ring buffer at arg0->bitstreamRingBuffer.
  * bits = current word shifted down, left = bits remaining in it, pos = bit
  * position of the current word (low 5 bits are stale once a refill happened).
  */
@@ -132,7 +132,7 @@ s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
     } else {                                                      \
         dst = bits & ((1 << left) - 1);                           \
         pos += 32;                                                \
-        bits = ((u32*)arg0->unk_1598)[(pos >> 5) & 0x3FF];        \
+        bits = ((u32*)arg0->bitstreamRingBuffer)[(pos >> 5) & 0x3FF];        \
         if (left != (n)) {                                        \
             dst |= (bits & ((1 << ((n) - left)) - 1)) << left;    \
         }                                                         \
@@ -162,8 +162,8 @@ s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState* arg0, void* arg1) {
     s32 pos;
     UNUSED s32 pad[2]; // matches the frame; probably two locals removed from the original
 
-    pos = arg0->unk_25BC;
-    bits = ((u32*)arg0->unk_1598)[(pos >> 5) & 0x3FF] >> (pos & 0x1F);
+    pos = arg0->bitReadPosition;
+    bits = ((u32*)arg0->bitstreamRingBuffer)[(pos >> 5) & 0x3FF] >> (pos & 0x1F);
     left = 32 - (pos & 0x1F);
 
     if ((arg0->unk_0000.unk_18A == 0) && (arg0->unk_0000.unk_18C == 0)) {
@@ -212,6 +212,6 @@ s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState* arg0, void* arg1) {
         AnimFrame_ProcessSubframes((AnimProcessor*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
     }
 
-    arg0->unk_25BC = (pos & ~0x1F) - left + 32;
+    arg0->bitReadPosition = (pos & ~0x1F) - left + 32;
     return 0;
 }

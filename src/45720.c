@@ -132,13 +132,13 @@ void Audio_ProcessChannels(void) {
         }
 
         AudioChannel_Update(gAudioChannel[i]);
-        if ((u8) gAudioChannel[i]->unk_25D1 == 2) {
+        if ((u8) gAudioChannel[i]->streamState == 2) {
             osWritebackDCache(gAudioChannelBuffer[i], 0x1140);
             AudioChannel_StartPlayback(gAudioChannel[i]);
             gAudioTransferPending = 1;
             gAudioChannelStopFlag[i] = 0;
         } else {
-            if ((gAudioChannelState[i] != 0) && (gAudioChannelState[i] != 3) && ((u8) gAudioChannel[i]->unk_25D1 == 4)) {
+            if ((gAudioChannelState[i] != 0) && (gAudioChannelState[i] != 3) && ((u8) gAudioChannel[i]->streamState == 4)) {
                 if (gAudioChannelStopFlag[i] == 0) {
                     AudioChannel_Stop(gAudioChannel[i]);
                     gAudioChannelStopFlag[i] = 1;
@@ -152,7 +152,7 @@ void Audio_ProcessChannels(void) {
 
         AudioChannel_Consume(gAudioChannel[i], var_s7);
 
-        temp_a2 = gAudioChannel[i]->unk_25C8 - var_s7;
+        temp_a2 = gAudioChannel[i]->playbackSamplePosition - var_s7;
         for (j = 0; j < var_s7; j++) {
             temp = (gAudioSampleData[i][(temp_a2 + j) % 2560] * gAudioChannelVolume[i]) >> 7;
             gAudioChannelBuffer[i]->unk_000[(gAudioChannelWritePos[i] + (j << 1) + 1) % 2208] = temp;
@@ -241,25 +241,25 @@ void AudioChannel_Init(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
     bzero(&arg0->unk_0000, sizeof(unk_D_800FCED8_0000));
 
     arg0->unk_0000.unk_166 = 0x28;
-    arg0->unk_0190 = arg2;
-    arg0->unk_0194 = arg1;
+    arg0->dmaCallback = arg2;
+    arg0->sourceBaseAddress = arg1;
 
-    osCreateMesgQueue(&arg0->unk_25A0, &arg0->unk_25B8, 1);
+    osCreateMesgQueue(&arg0->dmaQueue, &arg0->dmaMessage, 1);
 
     if ((arg1 == 0) || (arg2 == 0)) {
-        arg0->unk_25D1 = 0;
+        arg0->streamState = 0;
     } else {
-        arg0->unk_25D1 = 1;
+        arg0->streamState = 1;
     }
 
-    arg0->unk_25D0 = 0;
-    arg0->unk_2598 = arg0->unk_259C = arg0->unk_259A = 0;
-    arg0->unk_25BC = 0;
-    arg0->unk_25C4 = 0;
-    arg0->unk_25C0 = 0;
-    arg0->unk_25CC = 0;
-    arg0->unk_25C8 = 0;
-    arg0->unk_25D2 = 2;
+    arg0->dmaPending = 0;
+    arg0->framesRemaining = arg0->inputWordsRemaining = arg0->unk_259A = 0;
+    arg0->bitReadPosition = 0;
+    arg0->bitstreamWriteOffset = 0;
+    arg0->bitstreamReadOffset = 0;
+    arg0->decodedSamplePosition = 0;
+    arg0->playbackSamplePosition = 0;
+    arg0->decodeFrameLimit = 2;
 }
 
 void AudioChannel_Update(GbAudioChannelState* arg0) {
@@ -267,56 +267,56 @@ void AudioChannel_Update(GbAudioChannelState* arg0) {
     s32 var_s2;
     u32 var_v1;
 
-    var_s2 = arg0->unk_25D2;
+    var_s2 = arg0->decodeFrameLimit;
 
-    if ((arg0->unk_25D0 != 0) && (osRecvMesg(&arg0->unk_25A0, NULL, 0) >= 0)) {
-        if (arg0->unk_25C4 == 0) {
-            arg0->unk_2598 = (arg0->unk_1598[0].unk_04 >> 0x10) & 0xFFFF;
-            arg0->unk_259A = arg0->unk_1598[0].unk_04 & 0xFFFF;
-            arg0->unk_259C = arg0->unk_15A0 & 0xFFFFFF;
-            arg0->unk_25BC = 0x60;
+    if ((arg0->dmaPending != 0) && (osRecvMesg(&arg0->dmaQueue, NULL, 0) >= 0)) {
+        if (arg0->bitstreamWriteOffset == 0) {
+            arg0->framesRemaining = (arg0->bitstreamRingBuffer[0].unk_04 >> 0x10) & 0xFFFF;
+            arg0->unk_259A = arg0->bitstreamRingBuffer[0].unk_04 & 0xFFFF;
+            arg0->inputWordsRemaining = arg0->unk_15A0 & 0xFFFFFF;
+            arg0->bitReadPosition = 0x60;
         }
 
-        arg0->unk_25C4 += 0x400;
-        if (arg0->unk_259C >= 0x100) {
-            arg0->unk_259C -= 0x100;
+        arg0->bitstreamWriteOffset += 0x400;
+        if (arg0->inputWordsRemaining >= 0x100) {
+            arg0->inputWordsRemaining -= 0x100;
         } else {
-            arg0->unk_259C = 0;
+            arg0->inputWordsRemaining = 0;
         }
-        arg0->unk_25D0 = 0;
+        arg0->dmaPending = 0;
     }
 
-    if ((arg0->unk_25D0 == 0) && ((arg0->unk_25D1 == 1) || (arg0->unk_25D1 == 2) || (arg0->unk_25D1 == 3))) {
-        if ((arg0->unk_25C4 - arg0->unk_25C0) < 0xC01) {
-            if (arg0->unk_25C4 == 0) {
+    if ((arg0->dmaPending == 0) && ((arg0->streamState == 1) || (arg0->streamState == 2) || (arg0->streamState == 3))) {
+        if ((arg0->bitstreamWriteOffset - arg0->bitstreamReadOffset) < 0xC01) {
+            if (arg0->bitstreamWriteOffset == 0) {
                 var_a2 = 0x400;
-            } else if (arg0->unk_259C >= 0x101) {
+            } else if (arg0->inputWordsRemaining >= 0x101) {
                 var_a2 = 0x400;
             } else {
-                var_a2 = arg0->unk_259C * 4;
+                var_a2 = arg0->inputWordsRemaining * 4;
             }
 
             if (var_a2 > 0) {
-                arg0->unk_25D0 = 1;
-                arg0->unk_0190(arg0->unk_0194 + arg0->unk_25C4, &arg0->unk_1598[(arg0->unk_25C4 & 0xFFF) >> 3], var_a2,
-                               &arg0->unk_25A0);
+                arg0->dmaPending = 1;
+                arg0->dmaCallback(arg0->sourceBaseAddress + arg0->bitstreamWriteOffset, &arg0->bitstreamRingBuffer[(arg0->bitstreamWriteOffset & 0xFFF) >> 3], var_a2,
+                               &arg0->dmaQueue);
             }
         }
     }
 
-    var_v1 = arg0->unk_25CC - arg0->unk_25C8;
-    while ((var_v1 < 0x960) && ((arg0->unk_25D1 == 1) || (arg0->unk_2598 > 0)) &&
-           ((arg0->unk_25C4 - arg0->unk_25C0) >= 0x25) && (var_s2 > 0)) {
-        GbAudio_DecodeSpeechFrame(arg0, arg0->unk_0198.unk_0000 + (((arg0->unk_25CC % 2560) >> 2) * 8));
-        arg0->unk_25C0 = (arg0->unk_25BC >> 3) & ~3;
-        arg0->unk_25CC += 0xA0;
-        arg0->unk_2598--;
-        var_v1 = arg0->unk_25CC - arg0->unk_25C8;
+    var_v1 = arg0->decodedSamplePosition - arg0->playbackSamplePosition;
+    while ((var_v1 < 0x960) && ((arg0->streamState == 1) || (arg0->framesRemaining > 0)) &&
+           ((arg0->bitstreamWriteOffset - arg0->bitstreamReadOffset) >= 0x25) && (var_s2 > 0)) {
+        GbAudio_DecodeSpeechFrame(arg0, arg0->pcmRingBuffer.unk_0000 + (((arg0->decodedSamplePosition % 2560) >> 2) * 8));
+        arg0->bitstreamReadOffset = (arg0->bitReadPosition >> 3) & ~3;
+        arg0->decodedSamplePosition += 0xA0;
+        arg0->framesRemaining--;
+        var_v1 = arg0->decodedSamplePosition - arg0->playbackSamplePosition;
         var_s2--;
     }
 
-    if ((arg0->unk_25D1 == 1) && (var_v1 >= 0x8C0)) {
-        arg0->unk_25D1 = 2;
+    if ((arg0->streamState == 1) && (var_v1 >= 0x8C0)) {
+        arg0->streamState = 2;
     }
 }
 
@@ -324,17 +324,17 @@ u32 AudioChannel_Consume(GbAudioChannelState* arg0, u32 arg1) {
     u32 temp_v0;
     u32 var_a2;
 
-    if (arg0->unk_25D1 == 3) {
-        temp_v0 = arg0->unk_25CC - arg0->unk_25C8;
+    if (arg0->streamState == 3) {
+        temp_v0 = arg0->decodedSamplePosition - arg0->playbackSamplePosition;
         if (arg1 < temp_v0) {
             var_a2 = arg1;
         } else {
             var_a2 = temp_v0;
-            if (arg0->unk_2598 <= 0) {
-                arg0->unk_25D1 = 4;
+            if (arg0->framesRemaining <= 0) {
+                arg0->streamState = 4;
             }
         }
-        arg0->unk_25C8 += var_a2;
+        arg0->playbackSamplePosition += var_a2;
         return var_a2;
     }
 
@@ -342,11 +342,11 @@ u32 AudioChannel_Consume(GbAudioChannelState* arg0, u32 arg1) {
 }
 
 void AudioChannel_StartPlayback(GbAudioChannelState* arg0) {
-    if (arg0->unk_25D1 == 2) {
-        arg0->unk_25D1 = 3;
+    if (arg0->streamState == 2) {
+        arg0->streamState = 3;
     }
 }
 
 void AudioChannel_Stop(GbAudioChannelState* arg0) {
-    arg0->unk_25D1 = 4;
+    arg0->streamState = 4;
 }

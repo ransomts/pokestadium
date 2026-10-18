@@ -62,7 +62,7 @@ void GbEmu_Create(UnkInputStruct8000D738* arg0) {
 
     gGbEmuState->font1 = BinArchive_GetFile(temp_v0, 0);
     gGbEmuState->font2 = BinArchive_GetFile(temp_v0, 1);
-    gGbEmuState->unk_2204 = *arg0;
+    gGbEmuState->inputConfig = *arg0;
     osCreateMesgQueue(&gGbEmuState->queue2, &gGbEmuState->mesg, 1);
     osCreateThread(&gGbEmuThreadInfo->thread, 10, GbAudio_ThreadMain, NULL, (u32)gGbEmuThreadInfo + 0x21E0, 0x11);
     osCreateThread(&gGbEmuState->thread, 8, GbEmu_ThreadMain, NULL, (u32)gGbEmuState + 0x21E0, 0xF);
@@ -78,7 +78,7 @@ OSMesg* GbEmu_RecvMessage(void) {
 }
 
 void GbEmu_Shutdown(UnkInputStruct8000D738* arg0) {
-    *arg0 = gGbEmuState->unk_2204;
+    *arg0 = gGbEmuState->inputConfig;
     func_8000B318(gGbEmuThreadId);
     osViBlack(1U);
     func_80001C64();

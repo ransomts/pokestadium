@@ -1170,7 +1170,7 @@ void func_86002440(void) {
         D_86003B64->unk_16A = 0;
         D_86003B64->unk_16C = 0;
         HpWheel_SetDigits(i, 0);
-        D_86003B64->unk_000.unk_0A6 = i;
+        D_86003B64->unk_000.modelPhase = i;
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         Anim_ClearChannelState(&D_86003B60->unk_000);
     }

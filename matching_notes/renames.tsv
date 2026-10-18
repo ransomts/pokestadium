@@ -3582,3 +3582,29 @@ D_8FA00A24	gBackgroundData	w24		receives the file pointer from BinArchive_GetFil
 D_8FA009F0	gBackgroundIndices	w24		static array of 16 bytes used as indices into the background archive, mapping loop counters to background IDs	applied@eb2f9df
 func_8FB00020	Fragment76_CallFragment67	w24		Calls FRAGMENT_LOAD_AND_CALL2 to load and execute fragment67, indicating this function triggers fragment 67 from fragment 76	applied@eb2f9df
 func_8FC00020	Fragment77_Execute	w24		loads fragment67 via FRAGMENT_LOAD_AND_CALL2 and returns constant 0x80, likely a status code	applied@eb2f9df
+GbAudioChannelState.unk_0190	GbAudioChannelState.dmaCallback	c1		called with the source address, ring buffer destination, transfer size, and message queue when input data is requested	applied@9614c25
+GbAudioChannelState.unk_0194	GbAudioChannelState.sourceBaseAddress	c1		added to unk_25C4 to form the first argument passed to the DMA callback	applied@9614c25
+GbAudioChannelState.unk_0198	GbAudioChannelState.pcmRingBuffer	c1		its storage is passed to GbAudio_DecodeSpeechFrame at a position derived from the decoded sample position modulo 2560	applied@9614c25
+GbAudioChannelState.unk_1598	GbAudioChannelState.bitstreamRingBuffer	c1		the declaration spans the input buffer region and src/46680.c explicitly reads it as a 0x400-word ring buffer using a bit position	applied@9614c25
+GbAudioChannelState.unk_2598	GbAudioChannelState.framesRemaining	c1		loaded from the upper 16 bits of the input header, tested before decoding, and decremented after every decoded speech frame	applied@9614c25
+GbAudioChannelState.unk_259C	GbAudioChannelState.inputWordsRemaining	c1		loaded from a 24-bit header value, reduced by 0x100 per transfer, and multiplied by 4 to obtain a byte transfer size	applied@9614c25
+GbAudioChannelState.unk_25A0	GbAudioChannelState.dmaQueue	c1		initialized by osCreateMesgQueue, polled by osRecvMesg, and passed to the asynchronous data transfer callback	applied@9614c25
+GbAudioChannelState.unk_25B8	GbAudioChannelState.dmaMessage	c1		used as the single-message backing storage when unk_25A0 is initialized by osCreateMesgQueue	applied@9614c25
+GbAudioChannelState.unk_25BC	GbAudioChannelState.bitReadPosition	c1		used as the bit position for reading the bitstream ring buffer and updated from the final decoder position and remaining bits	applied@9614c25
+GbAudioChannelState.unk_25C0	GbAudioChannelState.bitstreamReadOffset	c1		updated from bitReadPosition converted to an aligned byte offset and subtracted from the input write offset to measure buffered data	applied@9614c25
+GbAudioChannelState.unk_25C4	GbAudioChannelState.bitstreamWriteOffset	c1		incremented by 0x400 for input transfers and used both in the source address and modulo ring buffer destination calculations	applied@9614c25
+GbAudioChannelState.unk_25C8	GbAudioChannelState.playbackSamplePosition	c1		subtracted from the decoded sample position to measure queued audio and advanced by the number of samples consumed	applied@9614c25
+GbAudioChannelState.unk_25CC	GbAudioChannelState.decodedSamplePosition	c1		incremented by 0xA0 after each decoded frame and used modulo 2560 to select the PCM ring buffer destination	applied@9614c25
+GbAudioChannelState.unk_25D0	GbAudioChannelState.dmaPending	c1		set before invoking the DMA callback and cleared after a message is received from the transfer queue	applied@9614c25
+GbAudioChannelState.unk_25D1	GbAudioChannelState.streamState	c1		initialized from source availability, tested through several numeric states during streaming, and transitioned from state 1 to state 2 as decoded audio accumulates	applied@9614c25
+GbAudioChannelState.unk_25D2	GbAudioChannelState.decodeFrameLimit	c1		initialized to 2 and copied into the local counter that is decremented once for each speech frame decoded in an update	applied@9614c25
+UnkStruct80083CA0_2.unk_1C0	UnkStruct80083CA0_2.messageQueue	c1		osCreateMesgQueue initializes this field and MessageQueue_Recv, MessageQueue_TryRecv, and intro code receive from or inspect it	applied@9614c25
+UnkStruct80083CA0_2.unk_9E0	UnkStruct80083CA0_2.framebufferImage	c1		FramebufferImage_Allocate stores the image here and its img_p is passed to osViSwapBuffer and used for framebuffer access	applied@9614c25
+UnkStruct80083CA0_2.unk_A8A	UnkStruct80083CA0_2.waitingForMessage	c1		this field is set to 1 immediately before the thread blocks in osRecvMesg and cleared to 0 immediately after the message arrives	applied@9614c25
+UnkStruct80083CA0_2.unk_A8C	UnkStruct80083CA0_2.pendingTask	c1		this descriptor receives newly requested task state and is consumed by RdpTask_StartWithData before being moved into unk_A9C	applied@9614c25
+UnkStruct80083CA0_2.unk_A9C	UnkStruct80083CA0_2.currentTask	c1		this descriptor supplies the framebuffer and VI mode currently being presented and receives unk_A8C when task states advance	applied@9614c25
+UnkStruct80083CA0_2.unk_AAC	UnkStruct80083CA0_2.previousTask	c1		this descriptor receives unk_A9C when task states advance and is compared against the current and pending descriptors	applied@9614c25
+Fragment2_1GraphNode.unk_0A6	Fragment2_1GraphNode.modelPhase	c1		initialized to zero and passed with unk_01A to ModelPhase_Advance and ModelPhase_UpdateStatus	applied@9614c25
+GbEmuState.unk_01D8	GbEmuState.next	c1		traversed as the next pointer and updated during linked-list insertion and removal in src/5580.c	applied@9614c25
+GbEmuState.unk_01DC	GbEmuState.threadState	c1		compared against state values 0 and 2 to decide whether to send messages or stop the associated thread	applied@9614c25
+GbEmuState.unk_2204	GbEmuState.inputConfig	c1		copied from the initialization argument, returned on shutdown, and its members configure input-related setup	applied@9614c25

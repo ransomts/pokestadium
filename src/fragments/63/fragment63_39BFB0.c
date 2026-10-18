@@ -371,7 +371,7 @@ s32 DrawPokemonFrontSprite(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
-        if (temp_v1->unk_04->unk_0A6 == gDefaultGraphRoot->unk_0A6) {
+        if (temp_v1->unk_04->modelPhase == gDefaultGraphRoot->modelPhase) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;
@@ -393,7 +393,7 @@ s32 DrawPokemonStatusIcon(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
-        temp_t2 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_t2 = gDefaultGraphRoot->modelPhase - temp_t1->unk_04->modelPhase;
         if (temp_t2 < 4) {
             var_a3 = D_3006000;
         } else {
@@ -423,7 +423,7 @@ s32 DrawPokemonItemIcon(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a3 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
-        temp_t0 = (gDefaultGraphRoot->unk_0A6 - temp_a3->unk_04->unk_0A6) % 8;
+        temp_t0 = (gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase) % 8;
         if (temp_t0 < 4) {
             var_a0 = D_3006000;
         } else {
@@ -447,7 +447,7 @@ s32 DrawHPBarSegment(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
-        temp_a1 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_a1 = gDefaultGraphRoot->modelPhase - temp_t1->unk_04->modelPhase;
 
         if (temp_a1 >= 0x10) {
             temp_a1 = (temp_a1 - 0x10) % 12;
@@ -484,7 +484,7 @@ s32 DrawHPBarSegmentAlt(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
-        temp_a3 = gDefaultGraphRoot->unk_0A6 - temp_t1->unk_04->unk_0A6;
+        temp_a3 = gDefaultGraphRoot->modelPhase - temp_t1->unk_04->modelPhase;
 
         if (temp_a3 >= 0x10) {
             temp_a3 = (temp_a3 - 0x10) % 12;

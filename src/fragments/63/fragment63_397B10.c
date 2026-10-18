@@ -680,7 +680,7 @@ s32 SetNodeZFromAnim(s32 arg0, unk_D_86002F34_alt5* arg1) {
     if (arg0 == 2) {
         temp_a0 = (unk_D_84B259A8*)gDefaultGraphRoot->unk_000.unk_14;
 
-        arg1->unk_24.z = temp_a0->unk_02[(gDefaultGraphRoot->unk_0A6 - temp_a0->unk_20->unk_0A6) - 9];
+        arg1->unk_24.z = temp_a0->unk_02[(gDefaultGraphRoot->modelPhase - temp_a0->unk_20->modelPhase) - 9];
     }
     return 0;
 }
@@ -1269,7 +1269,7 @@ s32 RenderUI_BarSegment(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->unk_08->modelPhase) % 8) - 4;
         tmp2 = (arg1->unk_00.unk_14 * 4) + tmp;
 
         gDPPipeSync(gDisplayListHead++);
@@ -1291,7 +1291,7 @@ s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8) - 4;
         tmp2 = tmp + arg1->unk_00.unk_14 * 4;
 
         if ((temp_v0->unk_02 != 0) && ((tmp2 + 1) == gBattleContext.unk_0003)) {
@@ -1320,7 +1320,7 @@ s32 RenderUI_SegmentImage(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_a0->unk_08->unk_0A6) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->unk_08->modelPhase) % 8) - 4;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1341,7 +1341,7 @@ s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->unk_0A6 - temp_v0->unk_08->unk_0A6) % 8);
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8);
         tmp -= 4;
 
         if ((temp_v0->unk_02 != 0) && ((tmp + 1) == gBattleContext.unk_0003)) {

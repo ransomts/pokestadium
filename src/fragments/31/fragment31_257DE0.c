@@ -7,7 +7,7 @@ void func_81002B20(Gfx* gfx) {
     Mtx* mtx;
     u8 angle;
 
-    angle = gDefaultGraphRoot->unk_0A6 & 3;
+    angle = gDefaultGraphRoot->modelPhase & 3;
     mtx = (Mtx*)GfxAlloc(sizeof(Mtx));
     guRotate(mtx, gHpWheelDigitOffsetOnes[angle], 1.0f, 0.0f, 0.0f);
     gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);

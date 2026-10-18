@@ -81,20 +81,20 @@ void Vi_SetMode(s8 arg0, s8 arg1) {
 
 void IntroTask_SetPendingBuffer(struct UnkArray4* arg0) {
     if (arg0 == NULL) {
-        gIntroTaskState.unk_A8C.unk_04 = 0;
-        gIntroTaskState.unk_A8C.unk_08 = 0;
-        gIntroTaskState.unk_A8C.unk_0C = NULL;
-        gIntroTaskState.unk_A8C.unk_01 = gIntroTaskState.unk_A9C.unk_01;
-        gIntroTaskState.unk_A8C.unk_02 = gIntroTaskState.unk_A9C.unk_02;
-        gIntroTaskState.unk_A8C.unk_00 = gIntroTaskState.unk_A9C.unk_00;
+        gIntroTaskState.pendingTask.unk_04 = 0;
+        gIntroTaskState.pendingTask.unk_08 = 0;
+        gIntroTaskState.pendingTask.unk_0C = NULL;
+        gIntroTaskState.pendingTask.unk_01 = gIntroTaskState.currentTask.unk_01;
+        gIntroTaskState.pendingTask.unk_02 = gIntroTaskState.currentTask.unk_02;
+        gIntroTaskState.pendingTask.unk_00 = gIntroTaskState.currentTask.unk_00;
     } else {
-        gIntroTaskState.unk_A8C.unk_01 = arg0->unk_01;
-        gIntroTaskState.unk_A8C.unk_02 = arg0->unk_02;
-        gIntroTaskState.unk_A8C.unk_00 = arg0->unk_00;
-        gIntroTaskState.unk_A8C.unk_04 = arg0->unk_04;
-        gIntroTaskState.unk_A8C.unk_08 = arg0->unk_08;
-        gIntroTaskState.unk_A8C.unk_0C = arg0->unk_0C;
-        gIntroTaskState.unk_A8C.unk_03 = arg0->unk_03;
+        gIntroTaskState.pendingTask.unk_01 = arg0->unk_01;
+        gIntroTaskState.pendingTask.unk_02 = arg0->unk_02;
+        gIntroTaskState.pendingTask.unk_00 = arg0->unk_00;
+        gIntroTaskState.pendingTask.unk_04 = arg0->unk_04;
+        gIntroTaskState.pendingTask.unk_08 = arg0->unk_08;
+        gIntroTaskState.pendingTask.unk_0C = arg0->unk_0C;
+        gIntroTaskState.pendingTask.unk_03 = arg0->unk_03;
     }
 }
 
@@ -102,59 +102,59 @@ void IntroTask_ProcessFrame(void) {
     s32 i;
     s32 sp20 = 0;
 
-    if (gIntroTaskState.unk_A9C.unk_04 != 0) {
+    if (gIntroTaskState.currentTask.unk_04 != 0) {
         RspTaskYield(&gIntroTaskState.unk_A20);
     }
 
-    if ((gIntroTaskState.unk_A8C.unk_04 != 0) && (gIntroTaskState.unk_AAC.unk_0C != gIntroTaskState.unk_A8C.unk_0C) &&
-        (gIntroTaskState.unk_AAC.unk_03 != gIntroTaskState.unk_A8C.unk_03)) {
-        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.unk_A8C, 1);
+    if ((gIntroTaskState.pendingTask.unk_04 != 0) && (gIntroTaskState.previousTask.unk_0C != gIntroTaskState.pendingTask.unk_0C) &&
+        (gIntroTaskState.previousTask.unk_03 != gIntroTaskState.pendingTask.unk_03)) {
+        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 1);
         sp20 = 1;
     }
 
-    for (i = 1; i < gIntroTaskState.unk_AAC.unk_00; i++) {
+    for (i = 1; i < gIntroTaskState.previousTask.unk_00; i++) {
         MessageQueue_Recv(&gIntroTaskState);
     }
 
-    while (gIntroTaskState.unk_1C0.validCount > 0) {
+    while (gIntroTaskState.messageQueue.validCount > 0) {
         MessageQueue_TryRecv(&gIntroTaskState);
     }
 
-    if (gIntroTaskState.unk_A9C.unk_0C != NULL) {
-        osViSwapBuffer(gIntroTaskState.unk_A9C.unk_0C->img_p);
+    if (gIntroTaskState.currentTask.unk_0C != NULL) {
+        osViSwapBuffer(gIntroTaskState.currentTask.unk_0C->img_p);
         osViRepeatLine(0);
-        if ((gIntroTaskState.unk_A9C.unk_01 != gIntroTaskState.unk_AAC.unk_01) ||
-            (gIntroTaskState.unk_A9C.unk_02 != gIntroTaskState.unk_AAC.unk_02)) {
-            Vi_SetMode((s8)gIntroTaskState.unk_A9C.unk_01, (s8)gIntroTaskState.unk_A9C.unk_02);
+        if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
+            (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
+            Vi_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
         }
         if (gForceBlackScreen != 0) {
             osViBlack(1U);
         } else {
             osViBlack(0U);
         }
-        crash_screen_set_draw_info((u16*)gIntroTaskState.unk_A9C.unk_0C->img_p, gIntroTaskState.unk_A9C.unk_0C->width, 0x10);
+        crash_screen_set_draw_info((u16*)gIntroTaskState.currentTask.unk_0C->img_p, gIntroTaskState.currentTask.unk_0C->width, 0x10);
     } else {
         osViRepeatLine(1);
-        osViSwapBuffer(gIntroTaskState.unk_9E0->img_p);
-        if ((gIntroTaskState.unk_A9C.unk_01 != gIntroTaskState.unk_AAC.unk_01) ||
-            (gIntroTaskState.unk_A9C.unk_02 != gIntroTaskState.unk_AAC.unk_02)) {
-            Vi_SetMode((s8)gIntroTaskState.unk_A9C.unk_01, (s8)gIntroTaskState.unk_A9C.unk_02);
+        osViSwapBuffer(gIntroTaskState.framebufferImage->img_p);
+        if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
+            (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
+            Vi_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
         }
     }
 
-    if ((sp20 == 0) && (gIntroTaskState.unk_A8C.unk_04 != 0)) {
-        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.unk_A8C, 0);
+    if ((sp20 == 0) && (gIntroTaskState.pendingTask.unk_04 != 0)) {
+        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 0);
     }
 
-    gIntroTaskState.unk_AAC = gIntroTaskState.unk_A9C;
-    gIntroTaskState.unk_A9C = gIntroTaskState.unk_A8C;
+    gIntroTaskState.previousTask = gIntroTaskState.currentTask;
+    gIntroTaskState.currentTask = gIntroTaskState.pendingTask;
     profiler_log_thread5_time(THREAD5_END);
     MessageQueue_Recv(&gIntroTaskState);
 }
 
 void func_800017E4(void) {
     MessageQueue_Recv(&gIntroTaskState);
-    while (gIntroTaskState.unk_1C0.validCount > 0) {
+    while (gIntroTaskState.messageQueue.validCount > 0) {
         MessageQueue_TryRecv(&gIntroTaskState);
     }
     MessageQueue_Recv(&gIntroTaskState);
@@ -162,8 +162,8 @@ void func_800017E4(void) {
 
 void IntroTask_ThreadMain(UNUSED void* arg) {
     __osSetFpcCsr(0x01000C01);
-    IntroBuffer_SetParams(&gIntroTaskState.unk_AAC, 0, 1, 2, 0xFF, 0, 0, 0);
-    IntroBuffer_SetParams(&gIntroTaskState.unk_A9C, 0, 1, 2, 0xFF, 0, 0, 0);
+    IntroBuffer_SetParams(&gIntroTaskState.previousTask, 0, 1, 2, 0xFF, 0, 0, 0);
+    IntroBuffer_SetParams(&gIntroTaskState.currentTask, 0, 1, 2, 0xFF, 0, 0, 0);
     MessageQueue_Create(&gIntroTaskState.thread, 0, 4);
     ThreadList_Add(&gIntroTaskState);
     RdpTask_Init(&gIntroTaskState.unk_A20);
@@ -174,9 +174,9 @@ void IntroTask_ThreadMain(UNUSED void* arg) {
             continue;
         }
         profiler_log_thread5_time(THREAD5_START);
-        gIntroTaskState.unk_A8A = 1;
+        gIntroTaskState.waitingForMessage = 1;
         osRecvMesg(&gIntroTaskState.unk_9EC, &sp4C, 1);
-        gIntroTaskState.unk_A8A = 0;
+        gIntroTaskState.waitingForMessage = 0;
         profiler_log_thread5_time(UNK_EVENT_1);
         profiler_log_thread5_time(UNK_EVENT_2);
         IntroTask_SetPendingBuffer(sp4C);
@@ -199,13 +199,13 @@ void IntroTask_Init(void) {
             break;
     }
 
-    osCreateThread(&gIntroTaskState.thread, 5, IntroTask_ThreadMain, NULL, &gIntroTaskState.unk_9E0, 0x28);
+    osCreateThread(&gIntroTaskState.thread, 5, IntroTask_ThreadMain, NULL, &gIntroTaskState.framebufferImage, 0x28);
     osStartThread(&gIntroTaskState.thread);
     osCreateMesgQueue(&gIntroTaskState.unk_9EC, &gIntroTaskState.unk_9E4, 1);
     osCreateMesgQueue(&gIntroTaskState.unk_A04, &gIntroTaskState.unk_9E8, 1);
     gIntroTaskState.unk_A88 = 0;
-    gIntroTaskState.unk_A8A = 0;
-    gIntroTaskState.unk_9E0 = FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
+    gIntroTaskState.waitingForMessage = 0;
+    gIntroTaskState.framebufferImage = FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
     Gfx_SetFrameFillColor(1);
     DmaCopyAsyncRange(&gRdpBootUcode, 0xB0000B70, 0xB0000C70, 0);
 }
@@ -215,24 +215,24 @@ void IntroTask_Init(void) {
  */
 void Gfx_SetFrameFillColor(u16 color) {
     s32 width = 640;
-    u16* buf = (u16*)gIntroTaskState.unk_9E0->img_p;
+    u16* buf = (u16*)gIntroTaskState.framebufferImage->img_p;
 
     while (width-- > 0) {
         *(buf)++ = color;
     }
 
-    osWritebackDCache(gIntroTaskState.unk_9E0->img_p, 0x500);
+    osWritebackDCache(gIntroTaskState.framebufferImage->img_p, 0x500);
 }
 
 u16 Gfx_GetFrameFillColor(void) {
-    u16* ptr = (u16*)gIntroTaskState.unk_9E0->img_p;
+    u16* ptr = (u16*)gIntroTaskState.framebufferImage->img_p;
     return *ptr;
 }
 
 s32 IsSoftResetPending(void) {
     s32 result = 0;
 
-    if (osViGetCurrentFramebuffer() == gIntroTaskState.unk_9E0->img_p) {
+    if (osViGetCurrentFramebuffer() == gIntroTaskState.framebufferImage->img_p) {
         result = 1;
     }
 
@@ -265,17 +265,17 @@ void IntroBuffer_SetParams(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8
 }
 
 s32 GetFramebufferInfo(void) {
-    return (s32)gIntroTaskState.unk_AAC.unk_0C;
+    return (s32)gIntroTaskState.previousTask.unk_0C;
 }
 
 void func_80001C64(void) {
-    Vi_SetMode((s8)gIntroTaskState.unk_AAC.unk_01, (s8)gIntroTaskState.unk_AAC.unk_02);
+    Vi_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.unk_02);
 }
 
 s32 RspTaskYielded(void) {
     s32 result = 1;
 
-    if (gIntroTaskState.unk_A9C.unk_04 != 0) {
+    if (gIntroTaskState.currentTask.unk_04 != 0) {
         result = gIntroTaskState.unk_A20.queue.validCount > 0;
     }
     return result;

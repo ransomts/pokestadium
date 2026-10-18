@@ -247,7 +247,7 @@ void MonsterNode_Init(void) {
     gCameraTarget->unk_000 = func_80019D90(&D_86B10690->unk_01C[gCameraTarget->unk_17C]);
     GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
-    gCameraTarget->unk_004.unk_0A6 = 0;
+    gCameraTarget->unk_004.modelPhase = 0;
     LoadStageResources();
     gCameraTarget->unk_004.unk_024.y += D_86B10660.unk_08;
     gCameraTarget->unk_170 = 0;

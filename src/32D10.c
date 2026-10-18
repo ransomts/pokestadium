@@ -128,7 +128,7 @@ s32 ModelPhase_IsIdle(void) {
 }
 
 u8 GraphRoot_GetCurrentModelSlot(void) {
-    u8 ret = *(u8*)Memmap_GetSegmentVaddr(&gDefaultGraphRoot->unk_0A6);
+    u8 ret = *(u8*)Memmap_GetSegmentVaddr(&gDefaultGraphRoot->modelPhase);
     return ret;
 }
 
@@ -140,7 +140,7 @@ s16 func_800325E0(void) {
 void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0) {
     void (*func)(void*);
     s32 unk1A = arg0->unk_01A;
-    s32 idx = arg0->unk_0A6;
+    s32 idx = arg0->modelPhase;
 
     gTextureOffsetScale = 0;
 

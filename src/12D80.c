@@ -799,9 +799,9 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
             func_80016344(arg->unk_0A0, arg->unk_01D, arg->unk_01C);
 
             if ((gCurrentTextureNode->unk_18 < 0) && (arg->unk_01A > 0)) {
-                ModelPhase_Advance(arg->unk_0A6, arg->unk_01A);
+                ModelPhase_Advance(arg->modelPhase, arg->unk_01A);
                 Graph_VisitVisibleChildren(arg0);
-                ModelPhase_UpdateStatus(arg->unk_0A6, arg->unk_01A);
+                ModelPhase_UpdateStatus(arg->modelPhase, arg->unk_01A);
             } else {
                 Graph_VisitVisibleChildren(arg0);
             }

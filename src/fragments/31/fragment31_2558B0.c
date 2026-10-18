@@ -79,7 +79,7 @@ static s32 D_81004B54;
 
 
 void Particle_ClearSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
-    u8 var_v0 = arg0->unk_0A6;
+    u8 var_v0 = arg0->modelPhase;
     s32 pad[2];
     Vec3f sp50 = gVecZero;
     Vec3f sp44 = D_81004118;
@@ -322,13 +322,13 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
     Camera_CopyMatrixF(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
     var_v0 = gDefaultGraphRoot;
-    if (var_v0->unk_0A6 == 0xFE) {
+    if (var_v0->modelPhase == 0xFE) {
         guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     } else {
         guScale(&sp250, var_v0->unk_030.x * arg1->scale.x * 0.1f, var_v0->unk_030.y * arg1->scale.y * 0.1f, var_v0->unk_030.z * arg1->scale.z * 0.1f);
     }
 
-    if (gDefaultGraphRoot->unk_0A6 == 0xFF) {
+    if (gDefaultGraphRoot->modelPhase == 0xFF) {
         if ((gDefaultGraphRoot->unk_01A == 0x5C) || (gDefaultGraphRoot->unk_01A == 0x6D) || (gDefaultGraphRoot->unk_01A == 0x6E)) {
             Matrix_Copy(&sp10C, Matrix_GetRelative(0));
             guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
@@ -399,7 +399,7 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
         switch (var_v0->unk_01A) {
         case 0x6D:
         case 0x6E:
-            if (var_v0->unk_0A6 != 0xFF) {
+            if (var_v0->modelPhase != 0xFF) {
                 arg1->position.y += 0.5f * var_v0->unk_030.y;
                 arg1->misc++;
                 arg1->scale.x += 0.1f;
@@ -411,7 +411,7 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
             }
             break;
         case 0x5C:
-            if (var_v0->unk_0A6 == 0xFF) {
+            if (var_v0->modelPhase == 0xFF) {
                 arg1->misc += 2;
             } else {
                 arg1->misc++;
@@ -526,7 +526,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
             state->gfx = GfxAlloc(0x80);
         }
         gfx = state->gfx;
-        temp_v1 = gDefaultGraphRoot->unk_0A6;
+        temp_v1 = gDefaultGraphRoot->modelPhase;
         if (temp_v1 == 0xFF) {
             temp_v0 = gDefaultGraphRoot->unk_01A;
             switch (gDefaultGraphRoot->unk_01A) {

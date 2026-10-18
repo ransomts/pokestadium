@@ -443,7 +443,7 @@ void Stage_Init(void) {
     GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_00);
 
     D_8690A69C->unk_004.unk_024.y += gCameraConfig.unk_08;
-    D_8690A69C->unk_004.unk_0A6 = 0;
+    D_8690A69C->unk_004.modelPhase = 0;
 }
 
 void WaitForRSPAndCleanup(void) {

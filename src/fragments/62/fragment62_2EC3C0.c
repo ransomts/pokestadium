@@ -1948,9 +1948,9 @@ void func_84306C8C(unk_D_84390010* arg0) {
     Graph_AddToRootList0(&arg0->unk_000);
 
     if (arg0 == D_84390010[0]) {
-        arg0->unk_000.unk_0A6 = 0;
+        arg0->unk_000.modelPhase = 0;
     } else {
-        arg0->unk_000.unk_0A6 = 1;
+        arg0->unk_000.modelPhase = 1;
     }
 
     GraphNode_InitChild(&arg0->unk_000, 0, sp22, sp24);
@@ -1984,10 +1984,10 @@ void func_84306DA8(unk_D_84390010* arg0) {
     Graph_AddToRootList0(&ptr->unk_000);
 
     if (arg0 == D_84390010[0]) {
-        ptr->unk_000.unk_0A6 = -1;
+        ptr->unk_000.modelPhase = -1;
         GraphNode_InitChild(&ptr->unk_000, 1, sp26, sp28);
     } else {
-        ptr->unk_000.unk_0A6 = -1;
+        ptr->unk_000.modelPhase = -1;
         GraphNode_InitChild(&ptr->unk_000, 2, sp26, sp28);
     }
 
@@ -2012,9 +2012,9 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
         Graph_AddToRootList0(ptr);
 
         if (arg0 == D_84390010[0]) {
-            ptr->unk_000.unk_0A6 = 0xFF;
+            ptr->unk_000.modelPhase = 0xFF;
         } else {
-            ptr->unk_000.unk_0A6 = 0xFF;
+            ptr->unk_000.modelPhase = 0xFF;
         }
 
         GraphNode_InitChild(ptr, 0, sp42, sp44);
@@ -2037,7 +2037,7 @@ void func_84306FB8(unk_D_84390010* arg0) {
     unk_D_86002F58_004_000_004* sp20 = arg0->unk_720->unk_18;
 
     Graph_AddToRootList0(ptr);
-    ptr->unk_0A6 = 0xFF;
+    ptr->modelPhase = 0xFF;
     GraphNode_InitChild(ptr, 0, 0x9A, sp20);
     GraphNode_TriggerAction(ptr, 0);
 

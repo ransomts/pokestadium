@@ -150,9 +150,9 @@ void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     GraphNode_TriggerAction(&arg0->unk_004, arg1->unk_10);
 
     if (arg1->unk_0C == 6) {
-        arg0->unk_004.unk_0A6 = 0;
+        arg0->unk_004.modelPhase = 0;
     } else {
-        arg0->unk_004.unk_0A6 = 0xFF;
+        arg0->unk_004.modelPhase = 0xFF;
     }
 
     Anim_SetChannelBase(&arg0->unk_004, 0);
