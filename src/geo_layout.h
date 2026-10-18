@@ -65,10 +65,10 @@ typedef struct unk_D_800ABE00_cmd6 {
     /* 0x01 */ char pad[3];
 } unk_D_800ABE00_cmd6; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd7 {
+typedef struct GeoCmd_AddNode {
     /* 0x00 */ u8 cmd;
     /* 0x04 */ unk_D_8690A610* unk_04;
-} unk_D_800ABE00_cmd7; // size = 0x8
+} GeoCmd_AddNode; // size = 0x8
 
 typedef struct unk_D_800ABE00_cmd8 {
     /* 0x00 */ u8 cmd;
@@ -319,11 +319,11 @@ void geo_layout_cmd_branch(void); // cmd  3
 void geo_layout_cmd_return(void); // cmd  4
 void geo_layout_cmd_open_node(void); // cmd  5
 void geo_layout_cmd_close_node(void); // cmd  6
-void func_80017B28(void); // cmd  7
-void func_80017B60(void); // cmd  8
-void func_80017BBC(void); // cmd  9
-void func_80017BFC(void); // cmd 10
-void func_80017C48(void); // cmd 11
+void GeoLayoutCmd_AddNodeFromCmd(void); // cmd  7
+void GeoLayoutCmd_SetNodeCallback(void); // cmd  8
+void GeoLayoutCmd_AllocNode(void); // cmd  9
+void GeoLayoutCmd_AllocAltNodeWithParent(void); // cmd 10
+void GeoLayoutCmd_CreateCameraNode(void); // cmd 11
 void func_80017D94(void); // cmd 12
 void func_80017DE0(void); // cmd 13
 void func_80017E2C(void); // cmd 14
@@ -331,20 +331,20 @@ void func_80017E78(void); // cmd 15
 void func_80017EC4(void); // cmd 16
 void func_80017F1C(void); // cmd 17
 void func_80017F5C(void); // cmd 18
-void func_80017F64(void); // cmd 19
-void func_80017FD4(void); // cmd 20
+void GeoLayoutCmd_CreateColorRectNode(void); // cmd 19
+void GeoLayoutCmd_CreateColoredVertexNode(void); // cmd 20
 void func_800180BC(void); // cmd 21
 void func_800180D4(void); // cmd 22
-void func_8001812C(void); // cmd 23
+void GeoLayoutCmd_CreateMeshNode(void); // cmd 23
 void func_8001819C(void); // cmd 24
 void func_800181FC(void); // cmd 25
 void func_8001824C(void); // cmd 26
-void func_8001829C(void); // cmd 27
-void func_800183C4(void); // cmd 28
+void GeoLayoutCmd_CreateTransformNode(void); // cmd 27
+void GeoLayoutCmd_CreateScaleNode(void); // cmd 28
 void func_80018490(void); // cmd 29
-void func_800185A8(void); // cmd 30
-void func_80018600(void); // cmd 31
-void func_8001878C(void); // cmd 32
+void GeoLayoutCmd_CreateDisplayListNode(void); // cmd 30
+void GeoLayoutCmd_CreateShadowNode(void); // cmd 31
+void GeoLayoutCmd_CreateBillboardNode(void); // cmd 32
 void func_800188C8(void); // cmd 33
 void func_80018968(void); // cmd 34
 void func_800189B8(void); // cmd 35

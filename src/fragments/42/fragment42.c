@@ -1052,7 +1052,7 @@ void func_833029F0(void) {
 
         if (var_a2 != 0) {
             D_833032E4 = 8;
-            func_80007990(0xFFFF);
+            Stage_SetFillColor(0xFFFF);
             func_80006CB4(0xF);
             if (D_8330326C[D_83402E28] == 8) {
                 func_8004B9C4(0xF);
@@ -1067,7 +1067,7 @@ void func_83302ACC(void) {
         func_83402D74(4);
         func_83400410(0, D_8330343C);
         D_833032E4 = 8;
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         func_80006CB4(0xF);
         if (D_8330326C[D_83402E28] == 8) {
             func_8004B9C4(0xF);
@@ -1092,7 +1092,7 @@ s32 func_83302B5C(void) {
 
     switch (D_833032E4) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_833032AC--;
                 if (D_833032AC <= 0) {
                     switch (D_833032E0) {
@@ -1128,12 +1128,12 @@ s32 func_83302B5C(void) {
             if (temp_v0_2 != 0) {
                 D_833032E4 = 8;
                 if (temp_v0_2 == 2) {
-                    func_80007990(1);
+                    Stage_SetFillColor(1);
                     sp18 = 8;
                 } else {
                     sp18 = 0xF;
                     if (sp18) {}
-                    func_80007990(0xFFFF);
+                    Stage_SetFillColor(0xFFFF);
                 }
                 func_80006CB4(sp18);
                 if (D_8330326C[D_83402E28] == 8) {
@@ -1150,7 +1150,7 @@ s32 func_83302B5C(void) {
         case 3:
             if (HandlePokemonGridInput(GetActiveMenu()) != 0) {
                 D_833032E4 = 8;
-                func_80007990(1);
+                Stage_SetFillColor(1);
                 func_80006CB4(1);
             }
             break;
@@ -1172,7 +1172,7 @@ s32 func_83302B5C(void) {
             break;
 
         case 8:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp28 = 0;
             }
             break;

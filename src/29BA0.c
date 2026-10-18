@@ -685,7 +685,7 @@ void Game_GoToTitle(void) {
     Stage_Set(Stage_Create(0, 1, 3, 1, 2, 1));
 
     if (func_800290E4(0x12) == 2) {
-        func_80006CF8(1);
+        Stage_SetFadeState(1);
         Stage_AdvanceN(2);
     }
 
@@ -1318,7 +1318,7 @@ void func_8002B274(s32 arg0, s32 arg1) {
 }
 
 void func_8002B310(void) {
-    func_80000DF4();
+    Rsp_ResetLeo();
 }
 
 void Game_Thread(UNUSED LEODiskID* arg) {

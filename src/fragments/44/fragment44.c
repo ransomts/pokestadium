@@ -1075,7 +1075,7 @@ void func_83503968(unk_D_83407B38* arg0) {
     if ((Cam_IsMonIndexDisplayable(sp1C) != 0) && (sp1C->unk_00 == 2)) {
         D_83503FC0 = 4;
         D_83504088 = 0xFFFF;
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         func_80006CB4(0xF);
     }
 }
@@ -1089,7 +1089,7 @@ s32 func_835039C8(void) {
 
     switch (D_83503FC0) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_83503F64--;
                 if (D_83503F64 <= 0) {
                     D_83503FC0 = 1;
@@ -1104,10 +1104,10 @@ s32 func_835039C8(void) {
                 D_83503FC0 = 4;
                 D_83504088 = 0xFFFF;
                 if (temp_v0_2 != 2) {
-                    func_80007990(0xFFFF);
+                    Stage_SetFillColor(0xFFFF);
                     var_a0 = 0xF;
                 } else {
-                    func_80007990(1);
+                    Stage_SetFillColor(1);
                     var_a0 = 1;
                 }
                 func_80006CB4(var_a0);
@@ -1123,7 +1123,7 @@ s32 func_835039C8(void) {
             break;
 
         case 4:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;

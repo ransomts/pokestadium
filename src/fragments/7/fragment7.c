@@ -509,7 +509,7 @@ void func_86100A80(void) {
 }
 
 void func_86100AEC(void) {
-    if (func_80007604() == 0) {
+    if (Stage_GetFadeState() == 0) {
         D_861054BA = 1;
         Cont_StartReadInputs();
         Cont_ReadInputs();

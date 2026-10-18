@@ -362,7 +362,7 @@ s32 Battle_MainLoop(void) {
     }
 
     Music_StopTrack(0x20);
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {
@@ -441,7 +441,7 @@ s32 func_84B017AC(void) {
     }
 
     Music_StopTrack(0x20);
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {
@@ -677,7 +677,7 @@ void func_84B021FC(void) {
     s32 i;
 
     Music_StopTrack(0x3C);
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {
@@ -1164,7 +1164,7 @@ s32 func_84B02F60(void) {
         func_84B014DC();
     }
 
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0x10);
 
     for (i = 0; i < 18; i++) {

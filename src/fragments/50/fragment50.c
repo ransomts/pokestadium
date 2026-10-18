@@ -2522,7 +2522,7 @@ void func_8260365C(void) {
         Music_ChangeTrack(0xF);
     }
 
-    while (func_80007604() != 0) {
+    while (Stage_GetFadeState() != 0) {
         func_82600D04();
         func_82602294();
     }
@@ -2559,11 +2559,11 @@ void func_8260365C(void) {
         D_82608552 = tmp;
     }
 
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(0x16);
     func_8004B9C4(0x3C);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         func_82600D04();
         func_82602294();
     }

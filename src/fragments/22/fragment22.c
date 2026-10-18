@@ -2985,7 +2985,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     UNUSED s32 pad;
     func88506074 temp_s0;
 
-    while (func_80007604() != 0) {
+    while (Stage_GetFadeState() != 0) {
         ControllerMsgQueue_SendAndRead(NULL);
     }
 
@@ -2994,7 +2994,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     }
 
     if (arg0->unk_40 == -1) {
-        func_80007990(1);
+        Stage_SetFillColor(1);
         func_80006CB4(8);
 
         i = 10;
@@ -3038,7 +3038,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     arg0->unk_00.unk_24(arg0, 1);
     sp34 = func_88001D94(arg0);
 
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(8);
 
     if ((sp34 == 0x11) || (sp34 == 0x10001)) {

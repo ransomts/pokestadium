@@ -129,7 +129,7 @@ s32 func_83A00880(void) {
 
     switch (D_83A00B70) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_83A00B68--;
                 if (D_83A00B68 <= 0) {
                     D_83A00B70 = 1;
@@ -155,7 +155,7 @@ s32 func_83A00880(void) {
             break;
 
         case 2:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;

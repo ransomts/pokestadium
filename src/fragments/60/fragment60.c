@@ -404,9 +404,9 @@ s32 func_82E00CF0(void) {
             func_82E0045C(2, i);
         }
     } else {
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         func_80006CB4(8);
-        while (func_80007604() != 1) {
+        while (Stage_GetFadeState() != 1) {
             func_82E00020();
             func_82E0045C(1, 0);
         }

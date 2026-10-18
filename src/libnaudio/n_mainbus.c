@@ -24,8 +24,8 @@
 
 extern u8 gMusicFadeStepActive;
 extern u8 gAudioProcessChannelsFlag;
-extern s16* D_800FC6D8;
-extern u32 D_800FD6F0;
+extern s16* gMusicFadeBuffer;
+extern u32 gMusicFadePos;
 
 Acmd* n_alMainBusPull(s32 sampleOffset, Acmd* p) {
     Acmd* ptr = p;
@@ -40,12 +40,12 @@ Acmd* n_alMainBusPull(s32 sampleOffset, Acmd* p) {
 
     if (gMusicFadeStepActive != 0) {
         aClearBuffer(ptr++, 0x7C0, 0x2E0);
-        n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(&D_800FC6D8[D_800FD6F0]));
-        n_aLoadBuffer(ptr++, 0x170, 0x930, osVirtualToPhysical(&D_800FC6D8[D_800FD6F0]));
+        n_aLoadBuffer(ptr++, 0x170, 0x7C0, osVirtualToPhysical(&gMusicFadeBuffer[gMusicFadePos]));
+        n_aLoadBuffer(ptr++, 0x170, 0x930, osVirtualToPhysical(&gMusicFadeBuffer[gMusicFadePos]));
 
-        D_800FD6F0 += 0xB8;
-        if (D_800FD6F0 >= 0xB80) {
-            D_800FD6F0 = 0;
+        gMusicFadePos += 0xB8;
+        if (gMusicFadePos >= 0xB80) {
+            gMusicFadePos = 0;
         }
         aMix(ptr++, 0, 0x7fff, N_AL_AUX_L_OUT, N_AL_MAIN_L_OUT);
         aMix(ptr++, 0, 0x7fff, N_AL_AUX_R_OUT, N_AL_MAIN_R_OUT);

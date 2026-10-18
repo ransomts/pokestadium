@@ -14,30 +14,30 @@
 OSThread gRspThread;
 u8 unk_80081AB0[0x2000];
 u8 gRspThreadStack[0x9C];
-OSMesg D_80083B4C;
+OSMesg gLeoManagerMsg;
 u8 unk_80083B50[0x3C];
-OSMesg D_80083B8C;
+OSMesg gRspQueue1Msgs;
 u8 unk_80083B90[0x3C];
-OSMesg D_80083BCC;
-struct UnkStruct80083BD0 D_80083BD0;
-s16 D_80083C1C;
+OSMesg gRspQueue2Msgs;
+struct UnkStruct80083BD0 gRspIo;
+s16 gRspLeoInitSuccess;
 
-s32 func_800005C0(void) {
+s32 Rsp_CreateLeoManager(void) {
     UNUSED s32 unused;
     UNUSED s32 unused2[6];
     s32 result;
 
-    result = LeoCJCreateLeoManager(0x95, 0x96, &D_80083B4C, 0x10);
+    result = LeoCJCreateLeoManager(0x95, 0x96, &gLeoManagerMsg, 0x10);
     if (result == 0) {
         if (osGetMemSize() >= 0x800000U) {
-            D_80083C1C = 1;
+            gRspLeoInitSuccess = 1;
         }
     }
-    D_80083C1C = !result;
+    gRspLeoInitSuccess = !result;
     return result;
 }
 
-OSPiHandle* func_80000628(void) {
+OSPiHandle* Rsp_GetSramHandle(void) {
     static OSPiHandle sramHandle;
 
     void* baseAddr = OS_PHYSICAL_TO_K1(SRAM_START_ADDR);
@@ -57,39 +57,39 @@ OSPiHandle* func_80000628(void) {
     return &sramHandle;
 }
 
-s32 func_800006C4(struct UnkStruct800006C4_2* arg0) {
+s32 Rsp_ReadSram(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg msg;
-    OSPiHandle* handle = func_80000628();
+    OSPiHandle* handle = Rsp_GetSramHandle();
 
     msg.hdr.pri = 0;
-    msg.hdr.retQueue = &D_80083BD0.queue2;
+    msg.hdr.retQueue = &gRspIo.queue2;
     msg.dramAddr = arg0->vaddr;
     msg.devAddr = arg0->unk1C;
     msg.size = arg0->size;
 
     osInvalDCache(arg0->vaddr, arg0->size);
     osEPiStartDma(handle, &msg, 0);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, 1);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, 1);
     return 0;
 }
 
-s32 func_8000074C(struct UnkStruct800006C4_2* arg0) {
+s32 Rsp_WriteSram(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg msg;
-    OSPiHandle* handle = func_80000628();
+    OSPiHandle* handle = Rsp_GetSramHandle();
 
     msg.hdr.pri = 0;
-    msg.hdr.retQueue = &D_80083BD0.queue2;
+    msg.hdr.retQueue = &gRspIo.queue2;
     msg.dramAddr = arg0->vaddr;
     msg.devAddr = arg0->unk1C;
     msg.size = arg0->size;
 
     osWritebackDCache(arg0->vaddr, arg0->size);
     osEPiStartDma(handle, &msg, 1);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, OS_MESG_BLOCK);
     return 0;
 }
 
-s32 func_800007D4(struct UnkStruct800006C4_2* arg0, s32 arg1) {
+s32 Rsp_ReadRom(struct UnkStruct800006C4_2* arg0, s32 arg1) {
     OSIoMesg msg;
     OSPiHandle* handle;
 
@@ -100,138 +100,138 @@ s32 func_800007D4(struct UnkStruct800006C4_2* arg0, s32 arg1) {
     }
 
     msg.hdr.pri = 0;
-    msg.hdr.retQueue = &D_80083BD0.queue2;
+    msg.hdr.retQueue = &gRspIo.queue2;
     msg.dramAddr = arg0->vaddr;
     msg.devAddr = arg0->unk1C;
     msg.size = arg0->size;
 
     osInvalDCache(arg0->vaddr, arg0->size);
     osEPiStartDma(handle, &msg, 0);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, OS_MESG_BLOCK);
     return 0;
 }
 
-s32 func_8000087C(struct UnkStruct800006C4_2* arg0) {
+s32 Rsp_WriteRom(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg msg;
     OSPiHandle* handle;
 
     handle = osCartRomInit();
 
     msg.hdr.pri = 0;
-    msg.hdr.retQueue = &D_80083BD0.queue2;
+    msg.hdr.retQueue = &gRspIo.queue2;
     msg.dramAddr = arg0->vaddr;
     msg.devAddr = arg0->unk1C;
     msg.size = arg0->size;
 
     osWritebackDCache(arg0->vaddr, arg0->size);
     osEPiStartDma(handle, &msg, 1);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, OS_MESG_BLOCK);
     return 0;
 }
 
-s32 func_80000904(struct UnkStruct800006C4_2* arg0) {
+s32 Rsp_ReadFlash(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg sp20;
 
     osInvalDCache(arg0->vaddr, 0x80);
-    Flash_ReadArray(&sp20, 0, arg0->unk1C, arg0->vaddr, 1, &D_80083BD0.queue2);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
+    Flash_ReadArray(&sp20, 0, arg0->unk1C, arg0->vaddr, 1, &gRspIo.queue2);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, OS_MESG_BLOCK);
     return 0;
 }
 
-s32 func_80000974(struct UnkStruct800006C4_2* arg0) {
+s32 Rsp_WriteFlash(struct UnkStruct800006C4_2* arg0) {
     OSIoMesg sp20;
     UNUSED s32 pad;
 
-    Flash_WriteBuffer(&sp20, 0, arg0->vaddr, &D_80083BD0.queue2);
-    osRecvMesg(&D_80083BD0.queue2, &D_80083BD0.unk0, OS_MESG_BLOCK);
+    Flash_WriteBuffer(&sp20, 0, arg0->vaddr, &gRspIo.queue2);
+    osRecvMesg(&gRspIo.queue2, &gRspIo.unk0, OS_MESG_BLOCK);
     return 0;
 }
 
-void* func_800009C8(void) {
+void* Rsp_RecvMessage(void) {
     void* msg;
 
-    osRecvMesg(&D_80083BD0.queue2, &msg, OS_MESG_BLOCK);
+    osRecvMesg(&gRspIo.queue2, &msg, OS_MESG_BLOCK);
     return msg;
 }
 
-void* func_800009F8(struct UnkStruct800006C4_2* arg0) {
-    LeoReadWrite(arg0, 0, arg0->unk1C, arg0->vaddr, arg0->size, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoRead(struct UnkStruct800006C4_2* arg0) {
+    LeoReadWrite(arg0, 0, arg0->unk1C, arg0->vaddr, arg0->size, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
-void* func_80000A3C(struct UnkStruct800006C4_2* arg0) {
-    LeoReadWrite(arg0, 1, arg0->unk1C, arg0->vaddr, arg0->size, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoWrite(struct UnkStruct800006C4_2* arg0) {
+    LeoReadWrite(arg0, 1, arg0->unk1C, arg0->vaddr, arg0->size, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
-void* func_80000A80(struct UnkStruct80000A80* arg0) {
-    LeoReadDiskID(&arg0->cmd, arg0->addr, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoReadDiskID(struct UnkStruct80000A80* arg0) {
+    LeoReadDiskID(&arg0->cmd, arg0->addr, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
-void* func_80000AB0(struct UnkStruct80000A80* arg0) {
-    LeoSeek(&arg0->cmd, arg0->lba, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoSeek(struct UnkStruct80000A80* arg0) {
+    LeoSeek(&arg0->cmd, arg0->lba, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
-void* func_80000AE0(struct UnkStruct80000A80* arg0) {
-    LeoSpdlMotor(&arg0->cmd, arg0->mode, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoSpdlMotor(struct UnkStruct80000A80* arg0) {
+    LeoSpdlMotor(&arg0->cmd, arg0->mode, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
-void* func_80000B10(struct UnkStruct80000A80* arg0) {
+void* Rsp_LeoReadRTC(struct UnkStruct80000A80* arg0) {
     void* temp_v0;
 
-    LeoReadRTC(&arg0->cmd, &D_80083BD0.queue2);
-    temp_v0 = func_800009C8();
+    LeoReadRTC(&arg0->cmd, &gRspIo.queue2);
+    temp_v0 = Rsp_RecvMessage();
     if (temp_v0 == NULL) {
         *(LEODiskTime*)arg0->addr = arg0->cmd.data.time;
     }
     return temp_v0;
 }
 
-void* func_80000B74(struct UnkStruct80000A80* arg0) {
-    LeoSetRTC(&arg0->cmd, arg0->addr, &D_80083BD0.queue2);
-    return func_800009C8();
+void* Rsp_LeoSetRTC(struct UnkStruct80000A80* arg0) {
+    LeoSetRTC(&arg0->cmd, arg0->addr, &gRspIo.queue2);
+    return Rsp_RecvMessage();
 }
 
 void thread20_rsp(UNUSED void* arg) {
     struct UnkStruct800006C4_2* sp2C;
     OSMesg var_v0;
 
-    func_800005C0();
+    Rsp_CreateLeoManager();
     Flash_Init();
 
     while (true) {
-        osRecvMesg(&D_80083BD0.queue1, (void*)&sp2C, OS_MESG_BLOCK);
+        osRecvMesg(&gRspIo.queue1, (void*)&sp2C, OS_MESG_BLOCK);
 
         switch (sp2C->unk0) {
             case 0xF0:
-                var_v0 = (OSMesg)INT2VOID(func_800007D4(sp2C, 0));
+                var_v0 = (OSMesg)INT2VOID(Rsp_ReadRom(sp2C, 0));
                 break;
             case 0xF1:
-                var_v0 = (OSMesg)INT2VOID(func_800007D4(sp2C, 1));
+                var_v0 = (OSMesg)INT2VOID(Rsp_ReadRom(sp2C, 1));
                 break;
             case 0xF2:
-                var_v0 = (OSMesg)INT2VOID(func_800006C4(sp2C));
+                var_v0 = (OSMesg)INT2VOID(Rsp_ReadSram(sp2C));
                 break;
             case 0xF3:
-                var_v0 = (OSMesg)INT2VOID(func_8000074C(sp2C));
+                var_v0 = (OSMesg)INT2VOID(Rsp_WriteSram(sp2C));
                 break;
             case 0xF4:
-                var_v0 = (OSMesg)INT2VOID(func_8000087C(sp2C));
+                var_v0 = (OSMesg)INT2VOID(Rsp_WriteRom(sp2C));
                 break;
             case 0xF5:
-                var_v0 = (OSMesg)INT2VOID(func_80000904(sp2C));
+                var_v0 = (OSMesg)INT2VOID(Rsp_ReadFlash(sp2C));
                 break;
             case 0xF6:
-                var_v0 = (OSMesg)INT2VOID(func_80000974(sp2C));
+                var_v0 = (OSMesg)INT2VOID(Rsp_WriteFlash(sp2C));
                 break;
             case 0x5:
-                var_v0 = (OSMesg)func_800009F8(sp2C);
+                var_v0 = (OSMesg)Rsp_LeoRead(sp2C);
                 break;
             case 0x6:
-                var_v0 = (OSMesg)func_80000A3C(sp2C);
+                var_v0 = (OSMesg)Rsp_LeoWrite(sp2C);
                 break;
             case 0xC:
                 /*
@@ -239,19 +239,19 @@ void thread20_rsp(UNUSED void* arg) {
                  * there is very tenuous aliasing going on due to s16 and u8 overlap where
                  * there should be word loads. What is going on here?
                  */
-                var_v0 = (OSMesg)func_80000A80((struct UnkStruct80000A80*)sp2C);
+                var_v0 = (OSMesg)Rsp_LeoReadDiskID((struct UnkStruct80000A80*)sp2C);
                 break;
             case 0x7:
-                var_v0 = (OSMesg)func_80000AB0((struct UnkStruct80000A80*)sp2C);
+                var_v0 = (OSMesg)Rsp_LeoSeek((struct UnkStruct80000A80*)sp2C);
                 break;
             case 0x8:
-                var_v0 = (OSMesg)func_80000AE0((struct UnkStruct80000A80*)sp2C);
+                var_v0 = (OSMesg)Rsp_LeoSpdlMotor((struct UnkStruct80000A80*)sp2C);
                 break;
             case 0xD:
-                var_v0 = (OSMesg)func_80000B10((struct UnkStruct80000A80*)sp2C);
+                var_v0 = (OSMesg)Rsp_LeoReadRTC((struct UnkStruct80000A80*)sp2C);
                 break;
             case 0xE:
-                var_v0 = (OSMesg)func_80000B74((struct UnkStruct80000A80*)sp2C);
+                var_v0 = (OSMesg)Rsp_LeoSetRTC((struct UnkStruct80000A80*)sp2C);
                 break;
         }
 
@@ -264,24 +264,24 @@ void thread20_rsp(UNUSED void* arg) {
 }
 
 void rsp_init(void) {
-    osCreateMesgQueue(&D_80083BD0.queue2, &D_80083BCC, 1);
-    osCreateMesgQueue(&D_80083BD0.queue1, &D_80083B8C, 16);
-    osCreatePiManager(0x96, (void*)&D_80083BD0.unk4, (OSMesg)&gRspThreadStack[0x1C], 0x20);
+    osCreateMesgQueue(&gRspIo.queue2, &gRspQueue2Msgs, 1);
+    osCreateMesgQueue(&gRspIo.queue1, &gRspQueue1Msgs, 16);
+    osCreatePiManager(0x96, (void*)&gRspIo.unk4, (OSMesg)&gRspThreadStack[0x1C], 0x20);
     osCreateThread(&gRspThread, 20, thread20_rsp, NULL, gRspThreadStack, 90);
     osStartThread(&gRspThread);
 }
 
-void func_80000DF4(void) {
-    if (D_80083C1C != 0) {
+void Rsp_ResetLeo(void) {
+    if (gRspLeoInitSuccess != 0) {
         LeoReset();
-        D_80083C1C = 0;
+        gRspLeoInitSuccess = 0;
     }
 }
 
-void func_80000E2C(void* arg0, s32 arg1) {
+void Rsp_SendMessage(void* arg0, s32 arg1) {
     if (arg1 == 1) {
-        osJamMesg(&D_80083BD0.queue1, arg0, OS_MESG_BLOCK);
+        osJamMesg(&gRspIo.queue1, arg0, OS_MESG_BLOCK);
         return;
     }
-    osSendMesg(&D_80083BD0.queue1, arg0, OS_MESG_BLOCK);
+    osSendMesg(&gRspIo.queue1, arg0, OS_MESG_BLOCK);
 }

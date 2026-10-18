@@ -119,6 +119,6 @@ void func_811007F8(s32 arg0, s32 arg1) {
     Stage_Set(temp_s0);
 
     while (true) {
-        func_800078D4(func_811007AC, 8, 8);
+        Stage_RunFadeSequence(func_811007AC, 8, 8);
     }
 }

@@ -494,7 +494,7 @@ void RenderSushiGoRoundFrame(void) {
 void HandleSushiGoRoundInput(void) {
     func_878001E8(0x80);
 
-    if (func_80007604() == 0) {
+    if (Stage_GetFadeState() == 0) {
         if (D_8680753E != 0) {
             D_8680750C = 1;
             D_86807510 = 0x1C2;
@@ -543,7 +543,7 @@ s32 UpdateSushiGoRoundState(void) {
 
     sp18 = 0;
     if ((D_8680753E != 0) && (gPlayer1Controller->buttonPressed != 0)) {
-        if (func_80007604() == 0) {
+        if (Stage_GetFadeState() == 0) {
             sp18 = 1;
         }
     }

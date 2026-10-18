@@ -1456,3 +1456,104 @@ D_80071E58	gMoveName_10	w8		used as the string for move ID 10 in the gMoveString
 D_80072330	gCommentString	w8		contains the ASCII string "comment" used as a placeholder literal	applied@b3b6010
 D_80072AF4	gZeroBuffer12	w8		12?byte zero?filled buffer likely used as a placeholder or padding	applied@b3b6010
 D_800795C0	gViMode	w8		OSViMode configuration struct for the game's video output settings	applied@b3b6010
+D_80068B70	gForceBlackScreen	w9		Used as a flag to select osViBlack in Vi_SetMode and toggled by func_80001CB8/func_80001CC8, indicating a forced black screen	applied@222e65d
+D_80068B74	gViModeIndexTable	w9		Array indexed to select entries from osViModeTable in Vi_SetMode, serving as a lookup table of video mode indices	applied@222e65d
+D_8007AF10	gViYScaleTable	w9		Float table where the first element is used as Y?scale for NTSC (osTvType==0) in Vi_SetMode, thus a Y?scale table for video output	applied@222e65d
+D_80083CA0	gIntroTaskState	w9		Global struct holding RSP task, message queues, framebuffers and scheduling state for the intro, acting as the main intro task state	applied@222e65d
+D_80084760	gRdpBootUcode	w9		Array assigned to task.t.ucode_boot for the RDP task, representing the boot microcode buffer	applied@222e65d
+D_80084860	gRdpDramStack	w9		Array used as task.t.dram_stack after ALIGN16, providing the DRAM stack for the RDP task	applied@222e65d
+D_80084C68	gRdpYieldData	w9		Array assigned to task.t.yield_data, supplying the yield data buffer for the RDP task	applied@222e65d
+D_80085870	gRdpOutputBuffer	w9		Array used as task.t.output_buff for the RDP task, storing the output framebuffer data	applied@222e65d
+func_80001380	RdpTask_Init	w9		Initialises the fields of a RDP task struct (ucode, stack, buffers) before starting, so it creates a RDP task	applied@222e65d
+func_80001444	RdpTask_StartWithData	w9		Sets task data_ptr and data_size from a UnkArray4 then calls RspTaskStart, effectively starting a RDP task with supplied data	applied@222e65d
+func_8000152C	IntroTask_SetPendingBuffer	w9		Copies a UnkArray4 (or clears it) into the pending buffer fields of the global intro task state, updating the pending frame data	applied@222e65d
+func_800015A8	IntroTask_ProcessFrame	w9		Handles frame processing: yields tasks, swaps buffers, updates video mode, and sends completion messages, i.e., processes an intro frame	applied@222e65d
+func_8000183C	IntroTask_ThreadMain	w9		Thread entry function that creates queues, adds the task to the scheduler, initializes the RDP task and loops processing messages, representing the intro task thread main loop	applied@222e65d
+func_800019C8	IntroTask_Init	w9		Sets up the intro task by creating the thread, allocating the framebuffer, initializing video fill color and copying microcode, i.e., intro initialization	applied@222e65d
+func_80001C1C	IntroBuffer_SetParams	w9		Assigns mode and buffer parameters into a UnkArray4 structure, used to configure video mode and framebuffer for the intro	applied@222e65d
+D_800AA670	gGbMbcRamBankMap	w9		tracks the current RAM bank for each Transfer Pak channel used by the MBC functions	applied@222e65d
+func_8000A630	GbPak_VerifyBlock	w9		Verifies a 0x20?byte block read from the GB pak matches the supplied buffer and checks the RSTB_STATUS flag	applied@222e65d
+func_8000A6D8	GbPak_TestMemory	w9		Writes test patterns (0x55, 0xAA, timestamps) to the GB pak and verifies them using GbPak_VerifyBlock	applied@222e65d
+func_8000A798	GbPak_InitAndTest	w9		Initialises the GB pak, enables RAM, runs GbPak_TestMemory and marks the slot as ready	applied@222e65d
+func_8000A888	GbPak_SetPowerState	w9		Powers the GB pak off when arg1 is zero and clears the ready flag for the slot	applied@222e65d
+func_8000A9D0	GbPak_IsSupportedPokemonCart	w9		Checks the GB cartridge title against the four supported Pok?mon RED/GREEN/BLUE/YELLOW strings	applied@222e65d
+func_8000AA7C	GbPak_InitAll	w9		Detects plugged GB paks, initialises each, validates supported cartridges and builds present/valid masks	applied@222e65d
+func_8000AC7C	GbPak_IsCartRemoved	w9		Returns true when the GBCART_ON status bit is not set, indicating no cartridge present	applied@222e65d
+func_8000ACF4	GbPak_IsCartInserted	w9		Returns true when the GBCART_ON status bit is set, indicating a cartridge is inserted	applied@222e65d
+func_8000AD68	GbPak_ReinitSlot	w9		Re?initialises a single GB pak slot and returns whether the cartridge is now ready	applied@222e65d
+func_8000AE28	GbPak_VerifyBlockNoDetect	w9		Verifies a 0x20?byte block without triggering detection, using osGbpakGetStatus and the RSTB_DETECTION flag	applied@222e65d
+func_8000AEBC	GbPak_MbcRead	w9		Wrapper for osGbmbcReadWrite with the read flag (0) after confirming the slot is valid	applied@222e65d
+func_8000AF40	GbPak_MbcWrite	w9		Wrapper for osGbmbcReadWrite with the write flag (1) after confirming the slot is valid	applied@222e65d
+func_8000AFC4	GbPak_Read	w9		Wrapper for osGbpakReadWrite with the read flag (0) after confirming the slot is valid	applied@222e65d
+func_8000B048	GbPak_Write	w9		Wrapper for osGbpakReadWrite with the write flag (1) after confirming the slot is valid	applied@222e65d
+func_8000B1C4	GbPak_WriteDataAligned	w9		Writes data to the GB pak handling 0x4000?byte boundaries and alignment, using GbPak_Write for each segment	applied@222e65d
+D_800A8100	gGbPakPfs	w9		Array of OSPfs structures used by all osGbpak* calls, one per GB slot	applied@222e65d
+D_800A82A0	gGbPakReady	w9		Per?slot flag set to 1 after successful GB pak initialisation and RAM enable	applied@222e65d
+D_800A82A4	gGbPakPresentMask	w9		Bitmask of slots where a GB pak controller is detected (set in GbPak_InitAll)	applied@222e65d
+D_800A82A5	gGbPakValidMask	w9		Bitmask of slots containing a valid (supported) Pok?mon cartridge (set in GbPak_InitAll)	applied@222e65d
+D_800A82A6	gGbPakPlugMask	w9		Result of osPfsIsPlug indicating which controller ports have a GB pak plugged in	applied@222e65d
+D_800A82A7	gGbPakReadMask	w9		Mask used by Cont_FinishRead to track which slots are currently being read; set by GbPak_SetReadMask	applied@222e65d
+D_800A82A8	gGbPakReadErrorFlag	w9		Global flag set after three consecutive read errors to stop further GB pak reads	applied@222e65d
+D_800A82AC	gGbPakReadErrorCount	w9		Per?slot counter of consecutive read errors used by Cont_FinishRead	applied@222e65d
+func_80017AC4	GraphNode_AddToCurrent	w9		Adds a graph node to the current hierarchy, setting root if index is 0 and otherwise adding as a child.	applied@222e65d
+func_80017B28	GeoLayoutCmd_AddNodeFromCmd	w9		Parses a cmd7 structure and adds its node to the graph via GraphNode_AddToCurrent.	applied@222e65d
+func_80017B60	GeoLayoutCmd_SetNodeCallback	w9		Extracts callback and argument from a cmd8 structure and calls GraphNode_SetCallback on the current node.	applied@222e65d
+func_80017BBC	GeoLayoutCmd_AllocNode	w9		Allocates a generic GraphNode with GraphNode_AllocInit and adds it to the hierarchy.	applied@222e65d
+func_80017BFC	GeoLayoutCmd_AllocAltNodeWithParent	w9		Allocates a GraphNodeAlt with a parent reference from a cmdA structure and adds it to the hierarchy.	applied@222e65d
+func_80017C48	GeoLayoutCmd_CreateCameraNode	w9		Creates a CameraNode via CameraNode_Create, sets FOV and position from a cmdB structure, then adds it.	applied@222e65d
+func_80017F64	GeoLayoutCmd_CreateColorRectNode	w9		Creates a ColorRectNode using parameters from a cmd13 structure and adds it to the graph.	applied@222e65d
+func_80017FD4	GeoLayoutCmd_CreateColoredVertexNode	w9		Creates a ColoredVertexNode with color and angle parameters from a cmd14 structure and adds it.	applied@222e65d
+func_8001812C	GeoLayoutCmd_CreateMeshNode	w9		Creates a MeshNode from a cmd17 structure with multiple mesh parameters and adds it to the hierarchy.	applied@222e65d
+func_8001829C	GeoLayoutCmd_CreateTransformNode	w9		Builds a TransformNode using position and rotation vectors from a cmd1B structure and adds it.	applied@222e65d
+func_800183C4	GeoLayoutCmd_CreateScaleNode	w9		Generates a scaling node from a cmd1C structure (float scale values) via func_800117A8 and adds it.	applied@222e65d
+func_800185A8	GeoLayoutCmd_CreateDisplayListNode	w9		Creates a DisplayListNode from a cmd1E structure with display list parameters and adds it.	applied@222e65d
+func_80018600	GeoLayoutCmd_CreateShadowNode	w9		Calls func_80011938 (likely a shadow node creator) with position, rotation, and scale from a cmd1F structure and adds it.	applied@222e65d
+func_8001878C	GeoLayoutCmd_CreateBillboardNode	w9		Calls func_80011ABC (billboard node creator) with parameters from a cmd20 structure and adds it.	applied@222e65d
+unk_D_800ABE00_cmd7	GeoCmd_AddNode	w9		Structure used by func_80017B28 to hold a node pointer that is added to the graph hierarchy.	applied@222e65d
+D_80100848	gPadBuffer	w9		pad buffer of 8 bytes used for alignment in ECC code	applied@222e65d
+D_80100938	gUnusedBuffer	w9		unused 8?byte buffer declared in the file	applied@222e65d
+D_80079520	gLeoCmdDispatchTable	w9		array mapping LEO command IDs to their handler functions, indexed in leomain for command execution	applied@222e65d
+D_800FC6D8	gMusicFadeBuffer	w9		used as the source sample buffer for music fade processing in n_alMainBusPull	applied@222e65d
+D_800FD6F0	gMusicFadePos	w9		holds the current offset (incremented by 0xB8, wraps at 0xB80) into gMusicFadeBuffer for fade handling	applied@222e65d
+func_80007A58	IsScreenUpscaled	w9		Returns non?zero when the game is in double?size (high?resolution) mode, causing UI coordinates to be multiplied by two in draw_profiler_rect and draw_profiler.	applied@222e65d
+func_8000559C	SoftReset_UpdateFadeColor	w9		sets the framebuffer fill color each frame based on gSoftResetRed/Green/Blue and gSoftResetLineNum, indicating it updates the soft?reset fade color	applied@222e65d
+D_800A6D20	gSoftResetThread	w9		global UnkStruct800A6D20 holds the soft?reset thread and line counter, so it represents the soft?reset thread state	applied@222e65d
+func_80001C58	GetFramebufferInfo	w9		returned struct contains a width field (unk_04) compared to 320 and a pointer (unk_08) used as a framebuffer address, suggesting it retrieves current framebuffer info	applied@222e65d
+func_80001B40	IsSoftResetPending	w9		called when no framebuffer info is available and its non?zero result triggers the soft?reset color update, implying it checks whether a soft reset is	applied@222e65d
+func_800005C0	Rsp_CreateLeoManager	w9		Rsp_CreateLeoManager initializes the Leo manager and sets the init flag based on LeoCJCreateLeoManager result	applied@222e65d
+func_80000628	Rsp_GetSramHandle	w9		Rsp_GetSramHandle returns a static OSPiHandle configured for SRAM access, matching the SRAM_* constants	applied@222e65d
+func_800006C4	Rsp_ReadSram	w9		Rsp_ReadSram performs a DMA read from SRAM (osInvalDCache then osEPiStartDma with direction 0)	applied@222e65d
+func_8000074C	Rsp_WriteSram	w9		Rsp_WriteSram performs a DMA write to SRAM (osWritebackDCache then osEPiStartDma with direction 1)	applied@222e65d
+func_800007D4	Rsp_ReadRom	w9		Rsp_ReadRom reads from cartridge or drive ROM depending on arg1, using osCartRomInit/osDriveRomInit and DMA read	applied@222e65d
+func_8000087C	Rsp_WriteRom	w9		Rsp_WriteRom writes to cartridge ROM using osCartRomInit and DMA write (direction 1)	applied@222e65d
+func_80000904	Rsp_ReadFlash	w9		Rsp_ReadFlash calls Flash_ReadArray to read 0x80 bytes from flash into the buffer	applied@222e65d
+func_80000974	Rsp_WriteFlash	w9		Rsp_WriteFlash calls Flash_WriteBuffer to write the buffer to flash	applied@222e65d
+func_800009C8	Rsp_RecvMessage	w9		Rsp_RecvMessage receives a message from D_80083BD0.queue2 and returns it	applied@222e65d
+func_800009F8	Rsp_LeoRead	w9		Rsp_LeoRead invokes LeoReadWrite with read flag 0 and returns the resulting message	applied@222e65d
+func_80000A3C	Rsp_LeoWrite	w9		Rsp_LeoWrite invokes LeoReadWrite with write flag 1 and returns the resulting message	applied@222e65d
+func_80000A80	Rsp_LeoReadDiskID	w9		Rsp_LeoReadDiskID calls LeoReadDiskID to obtain the disc ID and returns the message	applied@222e65d
+func_80000AB0	Rsp_LeoSeek	w9		Rsp_LeoSeek calls LeoSeek to position the disc read head and returns the message	applied@222e65d
+func_80000AE0	Rsp_LeoSpdlMotor	w9		Rsp_LeoSpdlMotor calls LeoSpdlMotor to control the SPDL motor and returns the message	applied@222e65d
+func_80000B10	Rsp_LeoReadRTC	w9		Rsp_LeoReadRTC calls LeoReadRTC, stores the time on success, and returns the message	applied@222e65d
+func_80000B74	Rsp_LeoSetRTC	w9		Rsp_LeoSetRTC calls LeoSetRTC to set the real?time clock and returns the message	applied@222e65d
+func_80000DF4	Rsp_ResetLeo	w9		Rsp_ResetLeo resets the Leo subsystem if it was previously initialized (gRspLeoInitSuccess flag)	applied@222e65d
+func_80000E2C	Rsp_SendMessage	w9		Rsp_SendMessage enqueues a message to D_80083BD0.queue1, using jam or send based on the flag	applied@222e65d
+D_80083B4C	gLeoManagerMsg	w9		gLeoManagerMsg is passed to LeoCJCreateLeoManager as the message buffer	applied@222e65d
+D_80083B8C	gRspQueue1Msgs	w9		gRspQueue1Msgs is the message buffer array used for D_80083BD0.queue1 creation	applied@222e65d
+D_80083BCC	gRspQueue2Msgs	w9		gRspQueue2Msgs is the message buffer array used for D_80083BD0.queue2 creation	applied@222e65d
+D_80083BD0	gRspIo	w9		gRspIo holds the two OSMessageQueue structures and related fields for RSP communication	applied@222e65d
+D_80083C1C	gRspLeoInitSuccess	w9		gRspLeoInitSuccess flags whether the Leo manager was successfully created	applied@222e65d
+func_800069F0	Stage_DrawFadeOverlay	w9		draws a fullscreen env?color overlay based on gCurrentStage->unk_11 and uses display list D_80068C68	applied@222e65d
+func_80006C04	Stage_StartFade	w9		sets gCurrentStage->unk_11 to a fade state (2 or 3), resets counters and stores the fade duration arg0	applied@222e65d
+func_80006CF8	Stage_SetFadeState	w9		directly assigns gCurrentStage->unk_11 to the given value and resets related counters	applied@222e65d
+func_80006D28	Profiler_SetVisibility	w9		updates the global flags gShowCPUProfiler and gShowMEMProfiler based on the two arguments	applied@222e65d
+func_80006F34	Gfx_SetupDefaultGeometry	w9		clears and sets geometry mode flags and disables texture generation for the display list	applied@222e65d
+func_80006FE8	Stage_BeginRender	w9		configures the framebuffer, projection matrices, viewport and scissor, then calls Stage_DrawFadeOverlay	applied@222e65d
+func_80007234	Gfx_SwapAndBeginFrame	w9		swaps the current display list and immediately starts a new frame via Gfx_BeginFrame	applied@222e65d
+func_8000725C	Stage_CaptureRenderInfo	w9		stores current stage parameters into the temporary struct D_800A7450 and advances the frame index	applied@222e65d
+func_800075F8	Stage_GetCurrent	w9		returns the global pointer gCurrentStage representing the active stage	applied@222e65d
+func_80007604	Stage_GetFadeState	w9		returns gCurrentStage->unk_11 which encodes the current fade state of the stage	applied@222e65d
+func_80007614	Stage_CopyState	w9		copies fade?related fields (unk_11, unk_12, unk_13, unk_14) and frame index from the current stage to another Stage object	applied@222e65d
+func_800078D4	Stage_RunFadeSequence	w9		coordinates a fade sequence using two callbacks and the Stage_StartFade/Stage_SetFadeState functions	applied@222e65d
+func_80007990	Stage_SetFillColor	w9		updates gCurrentStage->unk_14 and the graphics fill color used for screen clears	applied@222e65d
+D_80068CB0	gOverlayTextureData	w9		texture data array used in func_80007A80 to load a 96?48 IA4 overlay texture	applied@222e65d

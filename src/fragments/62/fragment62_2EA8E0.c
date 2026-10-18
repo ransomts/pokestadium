@@ -623,7 +623,7 @@ s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
     func_84301430(sp24);
     Stage_Set(sp24);
     Stage_AdvanceN(1);
-    func_800078D4(func_843010EC, 0x20, 0x10);
+    Stage_RunFadeSequence(func_843010EC, 0x20, 0x10);
     Stage_AdvanceN(2);
     Stage_Destroy();
     Gfx_FreeBuffers();

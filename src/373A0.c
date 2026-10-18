@@ -81,7 +81,7 @@ MoveSoundTable* gMoveSoundTables[3];
 unk_D_800FC6CC* D_800FC6CC;
 u8* D_800FC6D0;
 unk_D_800FC6D4* D_800FC6D4;
-s16* D_800FC6D8;
+s16* gMusicFadeBuffer;
 u8* gMoveSoundTempBuffer;
 u32* D_800FC6E0;
 File1Header* D_800FC6E4;
@@ -673,7 +673,7 @@ s32 Audio_Initialize(void) {
     func_8004ADB0(gAudioSeqBank->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(D_800FC714, gAudioSeqBank->seqArray[2].offset);
 
-    D_800FC6D8 = alHeapAlloc(audio_heap, 0xB80, 2);
+    gMusicFadeBuffer = alHeapAlloc(audio_heap, 0xB80, 2);
 
     // load the 5th main archive at 0x1FBA260
     D_800FC6D4 = alHeapAlloc(audio_heap, 0x1388, 1);

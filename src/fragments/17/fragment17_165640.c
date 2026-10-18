@@ -849,7 +849,7 @@ void func_86B07F14(void) {
         func_86B06FCC();
 
         if (i < 3) {
-            func_80007990(1);
+            Stage_SetFillColor(1);
             func_80006C6C(0x10);
             func_86B07EA0();
         }

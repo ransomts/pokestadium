@@ -557,7 +557,7 @@ s32 func_82F0109C(void) {
 
     switch (D_82F14428) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 func_82F00AC8(1);
             }
             break;
@@ -587,7 +587,7 @@ s32 func_82F0109C(void) {
             break;
 
         case 7:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;

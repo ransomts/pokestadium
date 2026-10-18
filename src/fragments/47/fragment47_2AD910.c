@@ -120,7 +120,7 @@ s32 SnapSelect_Process(void) {
 
     switch (gSnapSelectState) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_83804CB8--;
                 if (D_83804CB8 <= 0) {
                     gSnapSelectState = 1;
@@ -193,7 +193,7 @@ s32 SnapSelect_Process(void) {
             break;
 
         case 4:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp7C = 0;
             }
             break;

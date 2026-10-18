@@ -286,7 +286,7 @@ s32 func_86B00848(s32 arg0) {
 }
 
 void func_86B008C4(void) {
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0xC);
     D_86B0E5D4->unk_04.unk_4C = 0;
     D_86B0E5D4->unk_04.unk_50 = 0;
@@ -399,7 +399,7 @@ s32 func_86B00C34(void) {
 
         case 6:
             if (D_86B0E5D4->unk_04.unk_50++ >= 4) {
-                func_80007990(1);
+                Stage_SetFillColor(1);
                 func_80006C6C(0x20);
                 D_86B0E5D4->unk_04.unk_4C = 7;
                 if ((D_86B0E5D4->unk_04.unk_44 == 0) || (D_86B0E5D4->unk_04.unk_44 == 1)) {

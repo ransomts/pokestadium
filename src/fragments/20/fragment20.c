@@ -1722,7 +1722,7 @@ void func_86E0296C(void) {
 }
 
 void miniMetapodTutoScreenControls(void) {
-    if ((miniDebugMode == false) && (miniShowHUB == false) && (func_80007604() == 0)) {
+    if ((miniDebugMode == false) && (miniShowHUB == false) && (Stage_GetFadeState() == 0)) {
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
             miniTutoScreenState = 1;
             minigameState = 1;

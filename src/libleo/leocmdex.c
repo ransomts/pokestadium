@@ -18,7 +18,7 @@ void leoReadTimer(void);
 void leoSetTimer(void);
 void leoClr_reset(void);
 
-void (*D_80079520[16])(void) = { NULL, &leoClr_queue, &leoInquiry, &leoTest_unit_rdy, &leoRezero, &leoRead, &leoWrite, &leoSeek, &leoStart_stop, &leoRd_capacity, &leoTranslate, &leoMode_sel, &leoReadDiskId, &leoReadTimer, &leoSetTimer, &leoClr_reset };
+void (*gLeoCmdDispatchTable[16])(void) = { NULL, &leoClr_queue, &leoInquiry, &leoTest_unit_rdy, &leoRezero, &leoRead, &leoWrite, &leoSeek, &leoStart_stop, &leoRd_capacity, &leoTranslate, &leoMode_sel, &leoReadDiskId, &leoReadTimer, &leoSetTimer, &leoClr_reset };
 LEOCmdRead leo_sys_read_cmd = { { 5, 0, 0, 0, 0, 0, 0, 0, NULL }, 0xC, 1, NULL, 0 };
 
 // D_8007DA40
@@ -184,7 +184,7 @@ void leomain(void* arg0) {
                     LEOdrive_flag = -1;
             }
         }
-        D_80079520[LEOcur_command->header.command]();
+        gLeoCmdDispatchTable[LEOcur_command->header.command]();
     post_exe:
         if (LEOcur_command->header.control & LEO_CONTROL_POST) {
             osSendMesg(LEOcur_command->header.post, (OSMesg)LEOcur_command->header.sense, OS_MESG_BLOCK);

@@ -360,7 +360,7 @@ void func_86B0B810(void) {
     s32 i;
     s32 var_s2 = 1;
 
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006C6C(0xA);
 
     for (i = 0; i < 10; i++) {
@@ -376,7 +376,7 @@ void func_86B0B810(void) {
         func_86B0B650();
     }
 
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(8);
 
     for (i = 0; i < 8; i++) {

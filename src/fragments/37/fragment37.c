@@ -617,7 +617,7 @@ s32 func_822026BC(void) {
         D_82203150.unk_06 += 0x19;
         if (D_82203150.unk_06 >= 0xFF) {
             D_82203150.unk_06 = 0xFF;
-            func_80007990(1);
+            Stage_SetFillColor(1);
             func_80006CB4(1);
             var_a1 = 5;
         }
@@ -634,7 +634,7 @@ s32 func_82202758(void) {
         gFadeStepCounter += 0x40;
     } else if (gFadeStepCounter == 0x200) {
         gFadeStepCounter += 0x40;
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         func_80006CB4(2);
         var_a1 = 6;
     } else if (gFadeStepCounter < 0x280) {
@@ -647,12 +647,12 @@ s32 func_82202758(void) {
 }
 
 s32 func_822027E8(void) {
-    s32 temp_v0 = func_80007604();
+    s32 temp_v0 = Stage_GetFadeState();
     s16 var_v1 = 4;
 
     switch (temp_v0) {
         case 0:
-            func_80007990(0xFFFF);
+            Stage_SetFillColor(0xFFFF);
             func_80006CB4(0x10);
             var_v1 = 4;
             break;
@@ -706,7 +706,7 @@ s32 func_82202A6C(void) {
     s16 var_v1 = 8;
 
     D_822031D8 = 8;
-    if (func_80007604() == 0) {
+    if (Stage_GetFadeState() == 0) {
         gOverlayAlpha += 4;
         if (gOverlayAlpha == 0x100) {
             gBattleContext.unk_11F5 &= 0xFFFB;
@@ -724,7 +724,7 @@ void func_82202AFC(void) {
     Music_ChangeTrack(0x50);
     func_80006C6C(0xA);
 
-    while (func_80007604() != 0) {
+    while (Stage_GetFadeState() != 0) {
         func_82202374();
         func_82202980(0);
     }

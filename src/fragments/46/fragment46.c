@@ -62,7 +62,7 @@ s32 func_83700174(void) {
 
     switch (D_837004C0) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_837004B8--;
                 if (D_837004B8 <= 0) {
                     D_837004C0 = 1;
@@ -79,7 +79,7 @@ s32 func_83700174(void) {
             break;
 
         case 2:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;

@@ -165,9 +165,9 @@ void func_82B00B3C(s16 arg0) {
 }
 
 void func_82B00BC8(void) {
-    if (func_80007604 != NULL) {
+    if (Stage_GetFadeState != NULL) {
         func_80006C6C(8);
-        while (func_80007604() != 0) {
+        while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
             func_82B00B3C(0);
         }
@@ -179,10 +179,10 @@ void func_82B00C24(void) {
         Music_StopTrack(0x10);
     }
 
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(8);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();
         func_82B00B3C(0);
     }

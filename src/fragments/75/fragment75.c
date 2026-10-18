@@ -112,7 +112,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     func_8FA0047C(0xC8);
     func_80006C6C(1);
 
-    while (func_80007604() != 0) {
+    while (Stage_GetFadeState() != 0) {
         Stage_Advance();
     }
 

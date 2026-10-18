@@ -1107,7 +1107,7 @@ s32 func_84802C40(s32 arg0) {
     if (arg0 == 0) {
         if (var_s2 == D_8480379C) {
             sp30 = 1;
-            func_80007990(0xFFFF);
+            Stage_SetFillColor(0xFFFF);
             Music_StopTrack(0x10);
         }
 
@@ -1275,7 +1275,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     func_84803110(&gBattleContext);
     Music_ChangeTrack(7);
     Stage_Set(sp24);
-    func_800078D4(func_84802C40, 8, 8);
+    Stage_RunFadeSequence(func_84802C40, 8, 8);
     Stage_Destroy();
     func_84802E18();
     FontManager_Free();

@@ -28,7 +28,7 @@ void Fragment23_Terminate(void) {
 
 s32 Fragment23_Execute(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_8820C700(Fragment23_Init(), 1);
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(0xA);
     Fragment23_Terminate();
 

@@ -488,7 +488,7 @@ void func_83200FF8(void) {
     GraphNode_TriggerSound(D_83202028, 0);
     D_83201F50 = 1;
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x46);
-    func_80006C04(0x1E);
+    Stage_StartFade(0x1E);
     Music_StopTrack(0x3C);
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x1E);
 }
@@ -501,7 +501,7 @@ void func_832010BC(void) {
     Music_ChangeTrack(0x4A);
     func_83200934(GetMessageString(NULL, 0, D_83202020, 0xF));
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xF), 0x98);
-    func_80006C04(0x1E);
+    Stage_StartFade(0x1E);
     func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xF), 0x1E);
 }
 
@@ -706,7 +706,7 @@ void func_83201B60(void) {
 
     Music_ChangeTrack(0x49);
     Stage_AdvanceN(2);
-    func_80006C04(0x28);
+    Stage_StartFade(0x28);
     Stage_AdvanceUntil(0xA, func_8320058C);
     func_8320118C();
     if (func_8320126C() != 0) {

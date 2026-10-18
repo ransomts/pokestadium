@@ -84,7 +84,7 @@ extern MoveSoundTable* gMoveSoundTables[3];
 extern unk_D_800FC6CC* D_800FC6CC;
 extern u8* D_800FC6D0;
 extern unk_D_800FC6D4* D_800FC6D4;
-extern s16* D_800FC6D8;
+extern s16* gMusicFadeBuffer;
 extern u8* gMoveSoundTempBuffer;
 extern u32* D_800FC6E0;
 extern File1Header* D_800FC6E4;

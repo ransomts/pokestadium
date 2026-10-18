@@ -477,7 +477,7 @@ void func_84A01DAC(void) {
 
         D_84A030E4--;
         if ((D_84A030E4 == 0) && ((D_84A030E0 == 8) || (D_84A030E0 == 9))) {
-            func_80007990(1);
+            Stage_SetFillColor(1);
             func_80006CB4(8);
         }
     }
@@ -542,7 +542,7 @@ s32 func_84A0207C(void) {
         Game_UpdateInputs();
 
         if (func_84A02074() == 0) {
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 if (D_84A030E4 == 0) {
                     D_84A03188 = D_84A030E0;
                     if (D_84A030E0 == 0xB) {
@@ -577,7 +577,7 @@ s32 func_84A0207C(void) {
                         D_84A030E4 = 3;
                     }
                 }
-            } else if (func_80007604() == 1) {
+            } else if (Stage_GetFadeState() == 1) {
                 if (D_84A030E0 == 8) {
                     D_84A030E0 = 0xA;
                 }
@@ -779,7 +779,7 @@ s32 func_84A02898(void) {
 s16 func_84A02A34(s16 arg0) {
     s16 i;
 
-    if (func_80007604() == 1) {
+    if (Stage_GetFadeState() == 1) {
         func_80006C6C(8);
         for (i = 0; i < 9; i++) {
             Game_UpdateInputs();

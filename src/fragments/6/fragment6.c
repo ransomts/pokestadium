@@ -269,7 +269,7 @@ void func_86000020(void) {
 }
 
 s32 func_86000410(void) {
-    if (func_80007604() != 0) {
+    if (Stage_GetFadeState() != 0) {
         return -1;
     }
 

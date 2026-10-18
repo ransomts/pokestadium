@@ -6174,25 +6174,25 @@ void func_88804020(void) {
 
     D_88826940->unk_38->unk_00.unk_24(&D_88826940->unk_38->unk_00, 0x100);
     D_88826940->unk_40->unk_00.unk_24(&D_88826940->unk_40->unk_00, 0x100);
-    func_80006C04(8);
+    Stage_StartFade(8);
     Stage_AdvanceUntil(8, func_88803FB0);
     Stage_AdvanceN(2);
-    func_80007614(D_88826928);
+    Stage_CopyState(D_88826928);
     Stage_AdvanceN(2);
     sp2C = func_88801030(D_88826940->unk_38->unk_2C) + 1;
     func_88807D04(sp2C, D_88826930, 0x70800, D_88826934, 0x4B000, GetMessageString(NULL, 0, D_888267A4, sp2C - 1),
                   D_888267B0);
-    func_80006C04(8);
+    Stage_StartFade(8);
     Stage_AdvanceUntil(0xA, func_8880725C);
 }
 
 void func_8880412C(void) {
-    func_80006C04(8);
+    Stage_StartFade(8);
     Stage_AdvanceUntil(8, func_8880725C);
     Stage_AdvanceN(2);
-    func_80007614(D_88826924);
+    Stage_CopyState(D_88826924);
     func_8880812C();
-    func_80006C04(8);
+    Stage_StartFade(8);
     Stage_AdvanceUntil(0xA, func_88803FB0);
 }
 
@@ -6298,7 +6298,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('BOOK');
 
-    D_88826924 = func_800075F8();
+    D_88826924 = Stage_GetCurrent();
     D_88826928 = Stage_Create(0, 1, 2, 1, 2, 0);
     func_88804370();
     func_80025540(D_88826938);
@@ -6336,7 +6336,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_80006C6C(8);
     Stage_AdvanceUntil(8, func_88804218);
     func_88804288();
-    func_80007990(1);
+    Stage_SetFillColor(1);
     func_80006CB4(8);
     Stage_AdvanceUntil(0xA, func_88804218);
     func_8000771C();

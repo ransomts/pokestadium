@@ -929,7 +929,7 @@ void func_84101EC8(void) {
     func_84101BFC();
     gSelectedMenuIndex = 0;
     func_80006C6C(0xA);
-    while (func_80007604() != 0) {
+    while (Stage_GetFadeState() != 0) {
         Game_UpdateInputs();
         func_841014E4(0, 0, 0.0f);
     }
@@ -966,10 +966,10 @@ void func_84101EC8(void) {
         func_841014E4(0, 0, 1.0f);
         func_841014E4(0, 0, 1.0f);
     } else {
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         Music_StopTrack(0x14);
         func_80006CB4(0xA);
-        while (func_80007604() != 1) {
+        while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
             func_841014E4(0xA, 0, 0.0f);
         }

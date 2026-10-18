@@ -7,36 +7,36 @@
 // gb_tower.c
 // dont forget to pass -signed when compiling
 
-OSPfs D_800A8100[4];
-u8 D_800A82A0[4];
-u8 D_800A82A4;
-u8 D_800A82A5;
-u8 D_800A82A6;
-u8 D_800A82A7;
-s32 D_800A82A8;
-u8 D_800A82AC[4];
+OSPfs gGbPakPfs[4];
+u8 gGbPakReady[4];
+u8 gGbPakPresentMask;
+u8 gGbPakValidMask;
+u8 gGbPakPlugMask;
+u8 gGbPakReadMask;
+s32 gGbPakReadErrorFlag;
+u8 gGbPakReadErrorCount[4];
 
 // these first 4 funcs might be part of a hal_libc file or something instead of GB Tower.
 
-s32 func_8000AEBC(s32 arg0, void* arg1, u16 arg2, u16 arg3);
-s32 func_8000AF40(s32 arg0, void* arg1, u16 arg2, u16 arg3);
+s32 GbPak_MbcRead(s32 arg0, void* arg1, u16 arg2, u16 arg3);
+s32 GbPak_MbcWrite(s32 arg0, void* arg1, u16 arg2, u16 arg3);
 
 // TODO: These 0x20 sizes probably belong to a struct size or something. Use
 // that instead of assuming sizeof is the same
-s32 func_8000A630(s32 arg0, void* arg1) {
+s32 GbPak_VerifyBlock(s32 arg0, void* arg1) {
     u8 sp47;
     u8 sp24[0x20];
     s32 sp20 = 0;
     UNUSED u8 padding[8];
 
-    if ((func_8000AF40(arg0, arg1, 0, 0x20) == 0) && (func_8000AEBC(arg0, (uintptr_t)&sp24, 0, 0x20) == 0) &&
-        (bcmp(&sp24, arg1, 0x20) == 0) && (osGbpakGetStatus(&D_800A8100[arg0], &sp47) == 0)) {
+    if ((GbPak_MbcWrite(arg0, arg1, 0, 0x20) == 0) && (GbPak_MbcRead(arg0, (uintptr_t)&sp24, 0, 0x20) == 0) &&
+        (bcmp(&sp24, arg1, 0x20) == 0) && (osGbpakGetStatus(&gGbPakPfs[arg0], &sp47) == 0)) {
         sp20 = ((sp47 & 4) != 0) == 0;
     }
     return sp20;
 }
 
-s32 func_8000A6D8(s32 arg0, u8* arg1) {
+s32 GbPak_TestMemory(s32 arg0, u8* arg1) {
     s32 var_s0 = 0;
     u8 sp34[0x20];
 
@@ -44,55 +44,55 @@ s32 func_8000A6D8(s32 arg0, u8* arg1) {
         arg1 = sp34;
     }
     HAL_Memset((char*)arg1, 0x55, 0x20);
-    if (func_8000A630(arg0, arg1) != 0) {
+    if (GbPak_VerifyBlock(arg0, arg1) != 0) {
         HAL_Memset((char*)arg1, 0xAA, 0x20);
-        if (func_8000A630(arg0, arg1) != 0) {
+        if (GbPak_VerifyBlock(arg0, arg1) != 0) {
             s32 i;
             for (i = 0; i < ARRAY_COUNT(sp34); i++) {
                 arg1[i] = osGetCount();
             }
-            var_s0 = func_8000A630(arg0, arg1);
+            var_s0 = GbPak_VerifyBlock(arg0, arg1);
         }
     }
     return var_s0;
 }
 
-s32 func_8000A798(s32 arg0, u8* arg1, u8* arg2) {
+s32 GbPak_InitAndTest(s32 arg0, u8* arg1, u8* arg2) {
     u8 status;
     OSGbpakId gbpakId;
     s32 sp28 = 0;
 
     if (arg1 != NULL) {
-        *arg1 = D_800A82A0[arg0];
+        *arg1 = gGbPakReady[arg0];
     }
 
-    if (D_800A82A0[arg0] == 1) {
+    if (gGbPakReady[arg0] == 1) {
         return 1;
     }
 
-    if (osGbpakReadId(&D_800A8100[arg0], &gbpakId, &status) != 0) {
+    if (osGbpakReadId(&gGbPakPfs[arg0], &gbpakId, &status) != 0) {
         func_8002B274(arg0, 1);
     }
-    if ((status & OS_GBPAK_RSTB_STATUS) && (osGbpakCheckConnector(&D_800A8100[arg0], &status) == 0)) {
-        osGbmbcRamEnable(&D_800A8100[arg0]);
-        sp28 = func_8000A6D8(arg0, arg2);
+    if ((status & OS_GBPAK_RSTB_STATUS) && (osGbpakCheckConnector(&gGbPakPfs[arg0], &status) == 0)) {
+        osGbmbcRamEnable(&gGbPakPfs[arg0]);
+        sp28 = GbPak_TestMemory(arg0, arg2);
     }
-    D_800A82A0[arg0] = 1;
+    gGbPakReady[arg0] = 1;
     return sp28;
 }
 
-s32 func_8000A888(s32 arg0, u8 arg1) {
+s32 GbPak_SetPowerState(s32 arg0, u8 arg1) {
     u8 status;
     s32 temp_v1;
 
-    if (osGbpakGetStatus(&D_800A8100[arg0], &status) != 0) {
+    if (osGbpakGetStatus(&gGbPakPfs[arg0], &status) != 0) {
         func_8002B274(arg0, 1);
     }
 
     temp_v1 = !((status & OS_GBPAK_RSTB_DETECTION) != 0);
     if (arg1 == 0) {
-        osGbpakPower(&D_800A8100[arg0], 0);
-        D_800A82A0[arg0] = 0;
+        osGbpakPower(&gGbPakPfs[arg0], 0);
+        gGbPakReady[arg0] = 0;
     }
     return temp_v1;
 }
@@ -101,14 +101,14 @@ void func_8000A924(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_800A82A4 & (1 << i)) {
-            osGbpakPower(&D_800A8100[i], 0);
-            D_800A82A0[i] = 0;
+        if (gGbPakPresentMask & (1 << i)) {
+            osGbpakPower(&gGbPakPfs[i], 0);
+            gGbPakReady[i] = 0;
         }
     }
 }
 
-s32 func_8000A9D0(OSGbpakId* header) {
+s32 GbPak_IsSupportedPokemonCart(OSGbpakId* header) {
     // make sure its 0 terminated. dont want those dirty hackers abusing a Strcmp exploit
     header->game_title[15] = '\0';
 
@@ -132,44 +132,44 @@ s32 func_8000A9D0(OSGbpakId* header) {
     return 0;
 }
 
-s32 func_8000AA7C(void) {
+s32 GbPak_InitAll(void) {
     s32 i;
     s32 temp_v0;
     u8 status;
     OSGbpakId sp4C;
 
-    D_800A82A5 = 0;
-    D_800A82A4 = 0;
-    D_800A82A7 = 0;
-    D_800A82A8 = 0;
-    osPfsIsPlug(&gSIEventMesgQueue, &D_800A82A6);
+    gGbPakValidMask = 0;
+    gGbPakPresentMask = 0;
+    gGbPakReadMask = 0;
+    gGbPakReadErrorFlag = 0;
+    osPfsIsPlug(&gSIEventMesgQueue, &gGbPakPlugMask);
 
     for (i = 0; i < 4; i++) {
-        if ((D_800A82A6 & (1 << i)) && ((i != 3) || (IsStickerStationConnected() == 0))) {
-            if (osGbpakInit(&gSIEventMesgQueue, &D_800A8100[i], i) == 0) {
-                D_800A82A4 |= (1 << i);
-                temp_v0 = osGbpakReadId(&D_800A8100[i], &sp4C, &status);
+        if ((gGbPakPlugMask & (1 << i)) && ((i != 3) || (IsStickerStationConnected() == 0))) {
+            if (osGbpakInit(&gSIEventMesgQueue, &gGbPakPfs[i], i) == 0) {
+                gGbPakPresentMask |= (1 << i);
+                temp_v0 = osGbpakReadId(&gGbPakPfs[i], &sp4C, &status);
                 if (temp_v0 == 0) {
                     if (!(status & 8)) {
                         func_8002B274(i, 2);
                     }
-                    if (func_8000A9D0(&sp4C) != 0) {
+                    if (GbPak_IsSupportedPokemonCart(&sp4C) != 0) {
                         if (temp_v0 == 4) {
                             // what. the redundant temp_v0 functionless check is apparently needed to match.
                         }
-                        if (osGbpakCheckConnector(&D_800A8100[i], &status) == 0) {
-                            osGbmbcRamEnable(&D_800A8100[i]);
-                            D_800A82A0[i] = 1;
-                            D_800A82A5 |= (1 << i);
+                        if (osGbpakCheckConnector(&gGbPakPfs[i], &status) == 0) {
+                            osGbmbcRamEnable(&gGbPakPfs[i]);
+                            gGbPakReady[i] = 1;
+                            gGbPakValidMask |= (1 << i);
                         } else {
                             func_8002B274(i, 2);
                         }
                     } else {
-                        D_800A82A5 |= (1 << i);
-                        D_800A82A0[i] = 1;
+                        gGbPakValidMask |= (1 << i);
+                        gGbPakReady[i] = 1;
                     }
                 } else {
-                    D_800A82A0[i] = 0;
+                    gGbPakReady[i] = 0;
                     if (temp_v0 == 4) {
                         func_8002B274(i, 2);
                     }
@@ -177,12 +177,12 @@ s32 func_8000AA7C(void) {
             }
         }
     }
-    return (D_800A82A5 << 0x10) | D_800A82A4;
+    return (gGbPakValidMask << 0x10) | gGbPakPresentMask;
 }
 
-s32 func_8000AC7C(s32 arg0) {
+s32 GbPak_IsCartRemoved(s32 arg0) {
     u8 status;
-    s32 ret = osGbpakGetStatus(&D_800A8100[arg0], &status);
+    s32 ret = osGbpakGetStatus(&gGbPakPfs[arg0], &status);
     UNUSED u8 filler;
 
     // check the error code returned (if applicable) by the osGbpakGetStatus
@@ -193,9 +193,9 @@ s32 func_8000AC7C(s32 arg0) {
     return !((status & OS_GBPAK_GBCART_ON) != 0);
 }
 
-s32 func_8000ACF4(s32 arg0) {
+s32 GbPak_IsCartInserted(s32 arg0) {
     u8 status;
-    s32 ret = osGbpakGetStatus(&D_800A8100[arg0], &status);
+    s32 ret = osGbpakGetStatus(&gGbPakPfs[arg0], &status);
 
     if ((ret == PFS_ERR_NOPACK) || (ret == PFS_ERR_DEVICE) || (ret == PFS_ERR_CONTRFAIL)) {
         func_8002B274(arg0, 1);
@@ -203,72 +203,72 @@ s32 func_8000ACF4(s32 arg0) {
     return ((status & OS_GBPAK_GBCART_ON) != 0);
 }
 
-s32 func_8000AD68(s32 arg0) {
+s32 GbPak_ReinitSlot(s32 arg0) {
     UNUSED u8 filler[4];
     u8 status;
     OSGbpakId sp28;
 
-    D_800A82A0[arg0] = 0;
-    if ((osGbpakInit(&gSIEventMesgQueue, &D_800A8100[arg0], arg0) == 0) &&
-        (osGbpakReadId(&D_800A8100[arg0], &sp28, &status) == 0) && (status & OS_GBPAK_RSTB_STATUS) &&
-        (osGbpakCheckConnector(&D_800A8100[arg0], &status) == 0)) {
+    gGbPakReady[arg0] = 0;
+    if ((osGbpakInit(&gSIEventMesgQueue, &gGbPakPfs[arg0], arg0) == 0) &&
+        (osGbpakReadId(&gGbPakPfs[arg0], &sp28, &status) == 0) && (status & OS_GBPAK_RSTB_STATUS) &&
+        (osGbpakCheckConnector(&gGbPakPfs[arg0], &status) == 0)) {
 
-        osGbmbcRamEnable(&D_800A8100[arg0]);
-        D_800A82A0[arg0] = 1;
+        osGbmbcRamEnable(&gGbPakPfs[arg0]);
+        gGbPakReady[arg0] = 1;
     }
 
-    return D_800A82A0[arg0] == 1;
+    return gGbPakReady[arg0] == 1;
 }
 
-s32 func_8000AE28(s32 arg0, void* arg1) {
+s32 GbPak_VerifyBlockNoDetect(s32 arg0, void* arg1) {
     u8 status;
     u8 sp1C[0x20];
     s32 sp18;
 
     sp18 = 0;
-    if ((func_8000AEBC(arg0, (uintptr_t)&sp1C, 0, 0x20) == 0) && (bcmp(&sp1C, arg1, 0x20) == 0) &&
-        (osGbpakGetStatus(&D_800A8100[arg0], &status) == 0) && !(status & OS_GBPAK_RSTB_DETECTION)) {
+    if ((GbPak_MbcRead(arg0, (uintptr_t)&sp1C, 0, 0x20) == 0) && (bcmp(&sp1C, arg1, 0x20) == 0) &&
+        (osGbpakGetStatus(&gGbPakPfs[arg0], &status) == 0) && !(status & OS_GBPAK_RSTB_DETECTION)) {
         sp18 = 1;
     }
     return sp18;
 }
 
-s32 func_8000AEBC(s32 arg0, void* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_MbcRead(s32 arg0, void* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
-    if (D_800A82A5 & (1 << arg0)) {
-        var_v1 = osGbmbcReadWrite(&D_800A8100[arg0], 0, arg2, arg1, arg3);
+    if (gGbPakValidMask & (1 << arg0)) {
+        var_v1 = osGbmbcReadWrite(&gGbPakPfs[arg0], 0, arg2, arg1, arg3);
     }
     return var_v1;
 }
 
-s32 func_8000AF40(s32 arg0, void* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_MbcWrite(s32 arg0, void* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
-    if (D_800A82A5 & (1 << arg0)) {
-        var_v1 = osGbmbcReadWrite(&D_800A8100[arg0], 1, arg2, (uintptr_t)arg1, arg3);
+    if (gGbPakValidMask & (1 << arg0)) {
+        var_v1 = osGbmbcReadWrite(&gGbPakPfs[arg0], 1, arg2, (uintptr_t)arg1, arg3);
     }
     return var_v1;
 }
 
-s32 func_8000AFC4(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_Read(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
-    if (D_800A82A5 & (1 << arg0)) {
-        var_v1 = osGbpakReadWrite(&D_800A8100[arg0], 0, arg2, arg1, arg3);
+    if (gGbPakValidMask & (1 << arg0)) {
+        var_v1 = osGbpakReadWrite(&gGbPakPfs[arg0], 0, arg2, arg1, arg3);
     }
     return var_v1;
 }
 
-s32 func_8000B048(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_Write(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
-    if (D_800A82A5 & (1 << arg0)) {
-        var_v1 = osGbpakReadWrite(&D_800A8100[arg0], 1, arg2, arg1, arg3);
+    if (gGbPakValidMask & (1 << arg0)) {
+        var_v1 = osGbpakReadWrite(&gGbPakPfs[arg0], 1, arg2, arg1, arg3);
     }
     return var_v1;
 }
@@ -281,24 +281,24 @@ int func_8000B0CC(s32 arg0, s32 arg1) {
     for (i = 0; i < 0x20; i++) {
         sp28[i] = 0;
     }
-    ret = func_8000B048(arg0, sp28, 0x5000U, 0x20U);
+    ret = GbPak_Write(arg0, sp28, 0x5000U, 0x20U);
     if (ret) {
         return ret;
     }
     for (i = 0; i < 0x20; i++) {
         sp28[i] = (arg1 / 32);
     }
-    ret = func_8000B048(arg0, sp28, 0x4000U, 0x20U);
+    ret = GbPak_Write(arg0, sp28, 0x4000U, 0x20U);
     if (ret) {
         return ret;
     }
     for (i = 0; i < 0x20; i++) {
         sp28[i] = (arg1 % 32);
     }
-    return func_8000B048(arg0, sp28, 0x2000U, 0x20U);
+    return GbPak_Write(arg0, sp28, 0x2000U, 0x20U);
 }
 
-s32 func_8000B1C4(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
+s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
     s32 ret = 1;
     u32 temp_s1 = (arg2 & ~0x1F);
     u32 temp_s4 = ((arg2 + arg3) + 0x1F) & ~0x1F;
@@ -315,7 +315,7 @@ s32 func_8000B1C4(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
             var_v1_2 = 0x4000;
         }
         temp_v0_4 = var_v1_2 - temp_s1;
-        ret = func_8000AFC4(arg0, arg1, temp_s1, temp_v0_4);
+        ret = GbPak_Read(arg0, arg1, temp_s1, temp_v0_4);
         if (ret != 0) {
             return ret;
         }
@@ -334,7 +334,7 @@ s32 func_8000B1C4(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
         if (ret != 0) {
             return ret;
         }
-        ret = func_8000AFC4(arg0, arg1, ((temp_s1 & 0x3FFF) + 0x4000) & 0xFFFF, temp_s1_2);
+        ret = GbPak_Read(arg0, arg1, ((temp_s1 & 0x3FFF) + 0x4000) & 0xFFFF, temp_s1_2);
         if (ret != 0) {
             return ret;
         }
@@ -345,9 +345,9 @@ s32 func_8000B1C4(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
 }
 
 u8 func_8000B318(u8 arg0) {
-    u8 temp_v0 = D_800A82A7;
+    u8 temp_v0 = gGbPakReadMask;
 
-    D_800A82A7 = arg0;
+    gGbPakReadMask = arg0;
     return temp_v0;
 }
 
@@ -355,14 +355,14 @@ void Cont_FinishRead(void) {
     u8 sp1F;
     static s32 D_800697D0 = 0; // .data
 
-    if (D_800A82A8 == 0) {
-        if (D_800A82A7 & (1 << D_800697D0)) {
-            if (osGbpakGetStatus(&D_800A8100[D_800697D0], &sp1F) == 0) {
-                D_800A82AC[D_800697D0] = 0;
+    if (gGbPakReadErrorFlag == 0) {
+        if (gGbPakReadMask & (1 << D_800697D0)) {
+            if (osGbpakGetStatus(&gGbPakPfs[D_800697D0], &sp1F) == 0) {
+                gGbPakReadErrorCount[D_800697D0] = 0;
             } else {
-                D_800A82AC[D_800697D0]++;
-                if (D_800A82AC[D_800697D0] == 3) {
-                    D_800A82A8 = 1;
+                gGbPakReadErrorCount[D_800697D0]++;
+                if (gGbPakReadErrorCount[D_800697D0] == 3) {
+                    gGbPakReadErrorFlag = 1;
                     func_8002B274(D_800697D0, 1);
                 }
             }

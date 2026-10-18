@@ -668,7 +668,7 @@ void func_840023B8(void) {
 void func_84002430(void) {
     s32 i;
 
-    if (func_80007604() == 1) {
+    if (Stage_GetFadeState() == 1) {
         func_80006C6C(8);
 
         for (i = 0; i < 10; i++) {
@@ -682,10 +682,10 @@ void func_84002430(void) {
 
 void func_840024B0(void) {
     Music_StopTrack(0x10);
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(8);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();
         Stage_BeginDisplayList();
         Gfx_DrawTextureAtlas(D_84002D0C);

@@ -534,7 +534,7 @@ s32 func_831016D0(void) {
 
     switch (D_83101EE8) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_83101EE8 = 1;
                 D_83101EEA = 0;
                 func_831010E0(D_83102210, 1);
@@ -558,7 +558,7 @@ s32 func_831016D0(void) {
                             D_83101EE8 = 2;
                             D_83101EEA = 0;
                             func_83100C78(0xF);
-                            func_80007990(1);
+                            Stage_SetFillColor(1);
                         }
                         break;
                 }

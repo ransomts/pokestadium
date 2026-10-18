@@ -444,7 +444,7 @@ s8 DetectPokemonRom(s32 arg0) {
     RomHeader sp28;
     s8 var_s0 = POKEMON_ROM_NONE;
 
-    if ((func_8000B1C4(arg0, &sp28, 0x120, sizeof(RomHeader)) == 0) && (sp28.country_code == 1)) {
+    if ((GbPak_WriteDataAligned(arg0, &sp28, 0x120, sizeof(RomHeader)) == 0) && (sp28.country_code == 1)) {
         sp28.game_title[7] = '\x0';
         sp28.game_title[16] = '\x0';
 
@@ -468,7 +468,7 @@ s32 func_800233F4(s32 arg0) {
     UNUSED s32 pad;
     s32 sp18 = 0;
 
-    if ((func_8000AEBC(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
+    if ((GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
         (ValidateChecksum(&gSaveHeader.unk_018, &gSaveHeader.unk_FA0.unk_03) != 0)) {
         sp18 = gSaveHeader.unk_FA0.unk_03 == gPlayerSaveData[arg0].unk_04;
     }
@@ -482,7 +482,7 @@ s32 func_80023480(s32 arg0) {
 
     sp30 = NULL;
 
-    if (func_8000AEBC(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
+    if (GbPak_MbcRead(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
         for (i = 0; i < 3; i++) {
             sp30 = ValidateChecksum(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
             if (sp30 != 0) {
@@ -509,8 +509,8 @@ s32 func_80023574(s32 arg0) {
     gPlayerSaveData[arg0].unk_04 = temp_s1->unk_FA0.unk_03;
 
     for (i = 0; i < 4; i++) {
-        if ((func_8000AF40(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-            (func_8000AEBC(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
+        if ((GbPak_MbcWrite(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
+            (GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
             (func_800232D0(temp_s1, sizeof(unk_D_800AC910_050)) != 0)) {
             return 1;
         }
@@ -526,8 +526,8 @@ s32 func_80023658(s32 arg0) {
     temp_s3->unk_FA0.unk_03 ^= 0xFF;
 
     for (i = 0; i < 4; i++) {
-        if ((func_8000AF40(arg0, &temp_s3->unk_FA0, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
-            (func_8000AEBC(arg0, &gSaveHeader, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
+        if ((GbPak_MbcWrite(arg0, &temp_s3->unk_FA0, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
+            (GbPak_MbcRead(arg0, &gSaveHeader, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
             (func_800232D0(&temp_s3->unk_FA0, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
             return 1;
         }
@@ -539,7 +539,7 @@ s32 func_80023740(s32 arg0, s32 arg1) {
     UNUSED s32 pad[2];
     unk_D_800AC910_054_000_000* sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[arg1];
 
-    return func_8000AEBC(arg0, sp1C, (arg1 == 0) ? 0x4000 : 0x6000, 0x1A60) == 0;
+    return GbPak_MbcRead(arg0, sp1C, (arg1 == 0) ? 0x4000 : 0x6000, 0x1A60) == 0;
 }
 
 s32 func_800237C8(s32 arg0, s32 arg1) {
@@ -556,8 +556,8 @@ s32 func_800237C8(s32 arg0, s32 arg1) {
     var_v0 &= 0xFFFF;
 
     for (i = 0; i < 4; i++) {
-        if ((func_8000AF40(arg0, temp_s2, var_v0, 0x1A60) == 0) &&
-            (func_8000AEBC(arg0, &gSaveHeader, var_v0, 0x1A60) == 0) && (func_800232D0(temp_s2, 0x1A60) != 0)) {
+        if ((GbPak_MbcWrite(arg0, temp_s2, var_v0, 0x1A60) == 0) &&
+            (GbPak_MbcRead(arg0, &gSaveHeader, var_v0, 0x1A60) == 0) && (func_800232D0(temp_s2, 0x1A60) != 0)) {
             return 1;
         }
     }
@@ -608,12 +608,12 @@ s32 func_80023A04(s32 arg0) {
 
     if (gPlayerSaveData[arg0].unk_50 != NULL) {
         gPlayerSaveData[arg0].unk_00 |= 1;
-        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
         sp28 = func_80023480(arg0);
-        if (func_8000A888(arg0, sp2F) == 0) {
+        if (GbPak_SetPowerState(arg0, sp2F) == 0) {
             func_8002B274(arg0, 2);
         }
 
@@ -658,7 +658,7 @@ s32 func_80023B7C(s32 arg0) {
     if (gPlayerSaveData[arg0].unk_54 != NULL) {
         gPlayerSaveData[arg0].unk_00 |= 2;
         if (func_8002513C(arg0) > 0) {
-            if (func_8000A798(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
+            if (GbPak_InitAndTest(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
                 func_8002B274(arg0, 2);
             }
 
@@ -666,7 +666,7 @@ s32 func_80023B7C(s32 arg0) {
                 sp2C = func_80023740(arg0, 1);
             }
 
-            if (func_8000A888(arg0, sp37) == 0) {
+            if (GbPak_SetPowerState(arg0, sp37) == 0) {
                 func_8002B274(arg0, 2);
             }
 
@@ -693,14 +693,14 @@ s32 func_80023D60(s32 arg0) {
 
     if ((1 << arg0) & gActivePlayerMask) {
         if (gPlayerSaveData[arg0].unk_03 == 0) {
-            if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+            if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
                 func_8002B274(arg0, 2);
             }
 
             temp_s1 = SaveSlot_Load(arg0);
             temp_s1 &= func_80023B7C(arg0);
 
-            if (func_8000A888(arg0, sp2F) == 0) {
+            if (GbPak_SetPowerState(arg0, sp2F) == 0) {
                 func_8002B274(arg0, 2);
             }
 
@@ -720,28 +720,28 @@ s32 func_80023E34(s32 arg0) {
 
     switch (gPlayerInitState[arg0]) {
         case 0:
-            func_8000A888(arg0, 0);
+            GbPak_SetPowerState(arg0, 0);
             gPlayerInitState[arg0] += 1;
             // fallthrough
 
         case 1:
-            if (func_8000AC7C(arg0) != 0) {
+            if (GbPak_IsCartRemoved(arg0) != 0) {
                 gPlayerInitState[arg0] += 1;
             }
             break;
 
         case 2:
-            if (func_8000ACF4(arg0) != 0) {
+            if (GbPak_IsCartInserted(arg0) != 0) {
                 gPlayerInitState[arg0] += 1;
             }
             sp24 = 1;
             break;
 
         case 3:
-            if (func_8000AD68(arg0) != 0) {
+            if (GbPak_ReinitSlot(arg0) != 0) {
                 sp24 = 3;
                 if (DetectPokemonRom(arg0) == gPlayerSaveData[arg0].unk_02) {
-                    if (func_8000AE28(arg0, gPlayerSaveData[arg0].unk_19) != 0) {
+                    if (GbPak_VerifyBlockNoDetect(arg0, gPlayerSaveData[arg0].unk_19) != 0) {
                         sp24 = 2;
                     }
                 }
@@ -784,7 +784,7 @@ void func_80024040(s32 arg0) {
 s32 InitializePlayers(void) {
     s32 i;
     s32 j;
-    s32 temp_v0 = func_8000AA7C();
+    s32 temp_v0 = GbPak_InitAll();
 
     gControllerPortMask = temp_v0 & 0xFF;
     gControllerPortStatus = (temp_v0 >> 0x10) & 0xFF;
@@ -810,12 +810,12 @@ s32 InitializePlayers(void) {
             var_s0->unk_02 = DetectPokemonRom(i);
             if (var_s0->unk_02) {
                 gActivePlayerMask |= (1 << i);
-                if (func_8000A6D8(i, var_s0->unk_19) == 0) {
+                if (GbPak_TestMemory(i, var_s0->unk_19) == 0) {
                     func_8002B274(i, 2);
                 }
                 func_80023F78(i);
             }
-            func_8000A888(i, 0);
+            GbPak_SetPowerState(i, 0);
         }
     }
 
@@ -839,7 +839,7 @@ s32 func_80024270(s32 arg0) {
     s32 sp28 = 0;
 
     if (gPlayerSaveData[arg0].unk_00 & 2) {
-        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
@@ -848,7 +848,7 @@ s32 func_80024270(s32 arg0) {
         if (sp28 != 0) {
             sp28 = func_800237C8(arg0, 1);
         }
-        sp28 &= func_8000A888(arg0, sp2F);
+        sp28 &= GbPak_SetPowerState(arg0, sp2F);
     }
     return sp28;
 }
@@ -858,12 +858,12 @@ s32 func_8002431C(s32 arg0) {
     s32 sp28 = 0;
 
     if (gPlayerSaveData[arg0].unk_00 & 1) {
-        if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             func_8002B274(arg0, 2);
         }
 
         sp28 = func_80023574(arg0);
-        sp28 &= func_8000A888(arg0, sp2F);
+        sp28 &= GbPak_SetPowerState(arg0, sp2F);
 
         if (sp28 != 0) {
             func_80024FB0(arg0);
@@ -877,7 +877,7 @@ s32 func_800243D8(s32 arg0) {
     u8 sp2F;
     s32 sp28;
 
-    if (func_8000A798(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+    if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
         func_8002B274(arg0, 2);
     }
 
@@ -890,14 +890,14 @@ s32 func_800243D8(s32 arg0) {
         }
     }
 
-    sp28 &= func_8000A888(arg0, sp2F);
+    sp28 &= GbPak_SetPowerState(arg0, sp2F);
     return sp28;
 }
 
 void func_8002447C(s32 arg0) {
     u8 sp27;
 
-    if (func_8000A798(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
+    if (GbPak_InitAndTest(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
         func_8002B274(arg0, 2);
     }
 
@@ -907,7 +907,7 @@ void func_8002447C(s32 arg0) {
 }
 
 void func_800244F4(s32 arg0) {
-    if (func_8000A888(arg0, 0) == 0) {
+    if (GbPak_SetPowerState(arg0, 0) == 0) {
         func_8002B274(arg0, 2);
     }
 }

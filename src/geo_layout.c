@@ -11,11 +11,11 @@ static GeoLayoutCommandProc GeoLayoutJumpTable[] = {
     geo_layout_cmd_return,
     geo_layout_cmd_open_node,
     geo_layout_cmd_close_node,
-    func_80017B28,
-    func_80017B60,
-    func_80017BBC,
-    func_80017BFC,
-    func_80017C48,
+    GeoLayoutCmd_AddNodeFromCmd,
+    GeoLayoutCmd_SetNodeCallback,
+    GeoLayoutCmd_AllocNode,
+    GeoLayoutCmd_AllocAltNodeWithParent,
+    GeoLayoutCmd_CreateCameraNode,
     func_80017D94,
     func_80017DE0,
     func_80017E2C,
@@ -23,20 +23,20 @@ static GeoLayoutCommandProc GeoLayoutJumpTable[] = {
     func_80017EC4,
     func_80017F1C,
     func_80017F5C,
-    func_80017F64,
-    func_80017FD4,
+    GeoLayoutCmd_CreateColorRectNode,
+    GeoLayoutCmd_CreateColoredVertexNode,
     func_800180BC,
     func_800180D4,
-    func_8001812C,
+    GeoLayoutCmd_CreateMeshNode,
     func_8001819C,
     func_800181FC,
     func_8001824C,
-    func_8001829C,
-    func_800183C4,
+    GeoLayoutCmd_CreateTransformNode,
+    GeoLayoutCmd_CreateScaleNode,
     func_80018490,
-    func_800185A8,
-    func_80018600,
-    func_8001878C,
+    GeoLayoutCmd_CreateDisplayListNode,
+    GeoLayoutCmd_CreateShadowNode,
+    GeoLayoutCmd_CreateBillboardNode,
     func_800188C8,
     func_80018968,
     func_800189B8,
@@ -122,7 +122,7 @@ void geo_layout_cmd_close_node(void) {
     gGeoLayoutCommand += 0x04 << CMD_SIZE_SHIFT;
 }
 
-void func_80017AC4(GraphNode* arg0) {
+void GraphNode_AddToCurrent(GraphNode* arg0) {
     if (arg0 != NULL) {
         gCurGraphNodeList[gCurGraphNodeIndex] = arg0;
         if (gCurGraphNodeIndex == 0) {
@@ -135,15 +135,15 @@ void func_80017AC4(GraphNode* arg0) {
     }
 }
 
-void func_80017B28(void) {
-    unk_D_800ABE00_cmd7* cmd = (unk_D_800ABE00_cmd7*)gGeoLayoutCommand;
+void GeoLayoutCmd_AddNodeFromCmd(void) {
+    GeoCmd_AddNode* cmd = (GeoCmd_AddNode*)gGeoLayoutCommand;
 
-    func_80017AC4(&cmd->unk_04->unk_00);
+    GraphNode_AddToCurrent(&cmd->unk_04->unk_00);
 
-    gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd7);
+    gGeoLayoutCommand += sizeof(GeoCmd_AddNode);
 }
 
-void func_80017B60(void) {
+void GeoLayoutCmd_SetNodeCallback(void) {
     unk_D_800ABE00_cmd8* cmd = (unk_D_800ABE00_cmd8*)gGeoLayoutCommand;
 
     if (gCurGraphNodeList[gCurGraphNodeIndex] != NULL) {
@@ -153,21 +153,21 @@ void func_80017B60(void) {
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd8);
 }
 
-void func_80017BBC(void) {
-    func_80017AC4(GraphNode_AllocInit(gGraphNodePool, NULL));
+void GeoLayoutCmd_AllocNode(void) {
+    GraphNode_AddToCurrent(GraphNode_AllocInit(gGraphNodePool, NULL));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd9);
 }
 
-void func_80017BFC(void) {
+void GeoLayoutCmd_AllocAltNodeWithParent(void) {
     unk_D_800ABE00_cmdA* cmd = (unk_D_800ABE00_cmdA*)gGeoLayoutCommand;
 
-    func_80017AC4(GraphNodeAlt_AllocInitParent(gGraphNodePool, NULL, cmd->unk_04));
+    GraphNode_AddToCurrent(GraphNodeAlt_AllocInitParent(gGraphNodePool, NULL, cmd->unk_04));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdA);
 }
 
-void func_80017C48(void) {
+void GeoLayoutCmd_CreateCameraNode(void) {
     unk_D_800ABE00_cmdB* cmd = (unk_D_800ABE00_cmdB*)gGeoLayoutCommand;
     unk_D_86002F34_00C* temp_v0 =
         CameraNode_Create(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06, cmd->unk_08, cmd->unk_0A);
@@ -179,7 +179,7 @@ void func_80017C48(void) {
                       (cmd->unk_14 << 0xF) / 180);
     }
 
-    func_80017AC4(&temp_v0->unk_00);
+    GraphNode_AddToCurrent(&temp_v0->unk_00);
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdB);
 }
@@ -187,7 +187,7 @@ void func_80017C48(void) {
 void func_80017D94(void) {
     unk_D_800ABE00_cmdC* cmd = (unk_D_800ABE00_cmdC*)gGeoLayoutCommand;
 
-    func_80017AC4(func_800111A4(gGraphNodePool, NULL, cmd->unk_02));
+    GraphNode_AddToCurrent(func_800111A4(gGraphNodePool, NULL, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdC);
 }
@@ -195,7 +195,7 @@ void func_80017D94(void) {
 void func_80017DE0(void) {
     unk_D_800ABE00_cmdD* cmd = (unk_D_800ABE00_cmdD*)gGeoLayoutCommand;
 
-    func_80017AC4(func_800111FC(gGraphNodePool, NULL, cmd->unk_02));
+    GraphNode_AddToCurrent(func_800111FC(gGraphNodePool, NULL, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdD);
 }
@@ -203,7 +203,7 @@ void func_80017DE0(void) {
 void func_80017E2C(void) {
     unk_D_800ABE00_cmdE* cmd = (unk_D_800ABE00_cmdE*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011258(gGraphNodePool, NULL, cmd->unk_02));
+    GraphNode_AddToCurrent(func_80011258(gGraphNodePool, NULL, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdE);
 }
@@ -211,7 +211,7 @@ void func_80017E2C(void) {
 void func_80017E78(void) {
     unk_D_800ABE00_cmdF* cmd = (unk_D_800ABE00_cmdF*)gGeoLayoutCommand;
 
-    func_80017AC4(func_800112BC(gGraphNodePool, NULL, cmd->unk_02));
+    GraphNode_AddToCurrent(func_800112BC(gGraphNodePool, NULL, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmdF);
 }
@@ -219,13 +219,13 @@ void func_80017E78(void) {
 void func_80017EC4(void) {
     unk_D_800ABE00_cmd10* cmd = (unk_D_800ABE00_cmd10*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011320(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02, cmd->unk_03));
+    GraphNode_AddToCurrent(func_80011320(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02, cmd->unk_03));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd10);
 }
 
 void func_80017F1C(void) {
-    func_80017AC4(func_800113AC(gGraphNodePool, NULL));
+    GraphNode_AddToCurrent(func_800113AC(gGraphNodePool, NULL));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd11);
 }
@@ -233,18 +233,18 @@ void func_80017F1C(void) {
 void func_80017F5C(void) {
 }
 
-void func_80017F64(void) {
+void GeoLayoutCmd_CreateColorRectNode(void) {
     unk_D_800ABE00_cmd13* cmd = (unk_D_800ABE00_cmd13*)gGeoLayoutCommand;
 
-    func_80017AC4(ColorRectNode_Create(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06, cmd->r, cmd->g, cmd->b, 0xFF));
+    GraphNode_AddToCurrent(ColorRectNode_Create(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06, cmd->r, cmd->g, cmd->b, 0xFF));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd13);
 }
 
-void func_80017FD4(void) {
+void GeoLayoutCmd_CreateColoredVertexNode(void) {
     unk_D_800ABE00_cmd14* cmd = (unk_D_800ABE00_cmd14*)gGeoLayoutCommand;
 
-    func_80017AC4(ColoredVertexNode_Create(gGraphNodePool, NULL, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, cmd->r,
+    GraphNode_AddToCurrent(ColoredVertexNode_Create(gGraphNodePool, NULL, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, cmd->r,
                                 cmd->g, cmd->b, cmd->a));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd14);
@@ -257,15 +257,15 @@ void func_800180BC(void) {
 void func_800180D4(void) {
     unk_D_800ABE00_cmd16* cmd = (unk_D_800ABE00_cmd16*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011504(gGraphNodePool, NULL, cmd->r, cmd->g, cmd->b));
+    GraphNode_AddToCurrent(func_80011504(gGraphNodePool, NULL, cmd->r, cmd->g, cmd->b));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd16);
 }
 
-void func_8001812C(void) {
+void GeoLayoutCmd_CreateMeshNode(void) {
     unk_D_800ABE00_cmd17* cmd = (unk_D_800ABE00_cmd17*)gGeoLayoutCommand;
 
-    func_80017AC4(MeshNode_Create(gGraphNodePool, NULL, cmd->unk_02, cmd->unk_08, cmd->unk_04, cmd->unk_0C, cmd->unk_06,
+    GraphNode_AddToCurrent(MeshNode_Create(gGraphNodePool, NULL, cmd->unk_02, cmd->unk_08, cmd->unk_04, cmd->unk_0C, cmd->unk_06,
                                 cmd->unk_10));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd17);
@@ -274,7 +274,7 @@ void func_8001812C(void) {
 void func_8001819C(void) {
     unk_D_800ABE00_cmd18* cmd = (unk_D_800ABE00_cmd18*)gGeoLayoutCommand;
 
-    func_80017AC4(func_800115F0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_06, cmd->unk_02));
+    GraphNode_AddToCurrent(func_800115F0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_06, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd18);
 }
@@ -282,7 +282,7 @@ void func_8001819C(void) {
 void func_800181FC(void) {
     unk_D_800ABE00_cmd19* cmd = (unk_D_800ABE00_cmd19*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011660(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06));
+    GraphNode_AddToCurrent(func_80011660(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd19);
 }
@@ -290,12 +290,12 @@ void func_800181FC(void) {
 void func_8001824C(void) {
     unk_D_800ABE00_cmd1A* cmd = (unk_D_800ABE00_cmd1A*)gGeoLayoutCommand;
 
-    func_80017AC4(func_800116C0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02));
+    GraphNode_AddToCurrent(func_800116C0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1A);
 }
 
-void func_8001829C(void) {
+void GeoLayoutCmd_CreateTransformNode(void) {
     Vec3s sp30;
     Vec3f sp24;
     UNUSED s32 pad;
@@ -303,19 +303,19 @@ void func_8001829C(void) {
 
     GraphNode_SetPositionFromVec3s(&sp24, &cmd->unk_0A);
     Vec3s_Set(&sp30, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
-    func_80017AC4(TransformNode_Create(gGraphNodePool, NULL, &sp24, &sp30));
+    GraphNode_AddToCurrent(TransformNode_Create(gGraphNodePool, NULL, &sp24, &sp30));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1B);
 }
 
-void func_800183C4(void) {
+void GeoLayoutCmd_CreateScaleNode(void) {
     Vec3f sp24;
     unk_D_800ABE00_cmd1C* cmd = (unk_D_800ABE00_cmd1C*)gGeoLayoutCommand;
 
     sp24.x = cmd->unk_04 / 65536.0f;
     sp24.y = cmd->unk_08 / 65536.0f;
     sp24.z = cmd->unk_0C / 65536.0f;
-    func_80017AC4(func_800117A8(gGraphNodePool, NULL, &sp24));
+    GraphNode_AddToCurrent(func_800117A8(gGraphNodePool, NULL, &sp24));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1C);
 }
@@ -337,21 +337,21 @@ void func_80018490(void) {
         var_a3 |= 2;
     }
 
-    func_80017AC4(
+    GraphNode_AddToCurrent(
         func_80011814(gGraphNodePool, NULL, cmd->unk_01, var_a3, cmd->unk_03, &cmd->unk_04, &cmd->unk_0A, &sp3C));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1D);
 }
 
-void func_800185A8(void) {
+void GeoLayoutCmd_CreateDisplayListNode(void) {
     unk_D_800ABE00_cmd1E* cmd = (unk_D_800ABE00_cmd1E*)gGeoLayoutCommand;
 
-    func_80017AC4(DisplayListNode_Create(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_02));
+    GraphNode_AddToCurrent(DisplayListNode_Create(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1E);
 }
 
-void func_80018600(void) {
+void GeoLayoutCmd_CreateShadowNode(void) {
     Vec3s sp40;
     Vec3f sp34;
     Vec3f sp28;
@@ -366,12 +366,12 @@ void func_80018600(void) {
 
     Vec3s_Set(&sp40, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
     tmp = func_80011938(gGraphNodePool, NULL, cmd->unk_02, &sp34, &sp40, &sp28);
-    func_80017AC4(tmp);
+    GraphNode_AddToCurrent(tmp);
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd1F);
 }
 
-void func_8001878C(void) {
+void GeoLayoutCmd_CreateBillboardNode(void) {
     Vec3f sp34;
     Vec3s sp2C;
     unk_D_86002F34_alt8* tmp;
@@ -380,7 +380,7 @@ void func_8001878C(void) {
     GraphNode_SetPositionFromVec3s(&sp34, &cmd->unk_0A);
     Vec3s_Set(&sp2C, (cmd->unk_04 << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
     tmp = func_80011ABC(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_10, &sp34, &sp2C);
-    func_80017AC4(tmp);
+    GraphNode_AddToCurrent(tmp);
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd20);
 }
@@ -392,7 +392,7 @@ void func_800188C8(void) {
 
     GraphNode_SetPositionFromVec3s(&sp2C, &cmd->unk_02);
     tmp = BillboardNode_Create(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_0C, &sp2C, cmd->unk_08 / 65536.0f);
-    func_80017AC4(tmp);
+    GraphNode_AddToCurrent(tmp);
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd21);
 }
@@ -400,7 +400,7 @@ void func_800188C8(void) {
 void func_80018968(void) {
     unk_D_800ABE00_cmd22* cmd = (unk_D_800ABE00_cmd22*)gGeoLayoutCommand;
 
-    func_80017AC4(SimpleGfxNode_Create(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04));
+    GraphNode_AddToCurrent(SimpleGfxNode_Create(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd22);
 }
@@ -408,7 +408,7 @@ void func_80018968(void) {
 void func_800189B8(void) {
     unk_D_800ABE00_cmd23* cmd = (unk_D_800ABE00_cmd23*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011BF4(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02, cmd->unk_04, cmd->unk_08, cmd->unk_0A,
+    GraphNode_AddToCurrent(func_80011BF4(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_02, cmd->unk_04, cmd->unk_08, cmd->unk_0A,
                                 cmd->r, cmd->g, cmd->b, cmd->a));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd23);
@@ -417,7 +417,7 @@ void func_800189B8(void) {
 void func_80018A40(void) {
     unk_D_800ABE00_cmd24* cmd = (unk_D_800ABE00_cmd24*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011C98(gGraphNodePool, NULL, cmd->unk_02));
+    GraphNode_AddToCurrent(func_80011C98(gGraphNodePool, NULL, cmd->unk_02));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd24);
 }
@@ -435,7 +435,7 @@ void func_80018A8C(void) {
 void func_80018AD0(void) {
     unk_D_800ABE00_cmd26* cmd = (unk_D_800ABE00_cmd26*)gGeoLayoutCommand;
 
-    func_80017AC4(func_80011CF0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_06, cmd->unk_08, cmd->unk_0A,
+    GraphNode_AddToCurrent(func_80011CF0(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_04, cmd->unk_06, cmd->unk_08, cmd->unk_0A,
                                 cmd->unk_02, cmd->unk_03, cmd->unk_0C, cmd->r, cmd->g, cmd->b, cmd->a));
 
     gGeoLayoutCommand += sizeof(unk_D_800ABE00_cmd26);

@@ -75,7 +75,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     GbsEnsureBankLoaded(2);
     Stage_Set(sp2C);
-    func_80006C04(1);
+    Stage_StartFade(1);
     Stage_AdvanceUntil(3, func_820002B4);
     MessageBank_Init();
     LoadNameSlots();
@@ -98,7 +98,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     sp30 = osGetTime();
     func_8200036C();
     func_820002F0(sp30);
-    func_80006C04(0x10);
+    Stage_StartFade(0x10);
     Stage_AdvanceUntil(0x10, func_820002B4);
     Stage_Destroy();
     Gfx_FreeBuffers();

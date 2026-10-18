@@ -103,7 +103,7 @@ static s32 D_80068CA8 = 0;
 
 static s32 D_80068CAC_Pad[1] = { 0 };
 
-static u32 D_80068CB0[] = {
+static u32 gOverlayTextureData[] = {
     0x00000000, 0xF1000F1F, 0x10000000, 0x00F10000, 0x00000FF1, 0x0000F100, 0x000F100F, 0x10000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xF1000F1F, 0x100F1F10, 0x0FFFF1F1, 0x00F1F11F, 0x1000F100,
     0x00F11001, 0xF100F100, 0xF100F100, 0x00000000, 0x00000000, 0x000000F1, 0x00000000, 0xF1000111, 0x10FFFFF1,
@@ -176,11 +176,11 @@ static Mtx D_800A7468;
 static char pad_D_800A74A8[0x8];
 static Gfx* D_800A74B0;
 
-s32 func_80007A58(void);
+s32 IsScreenUpscaled(void);
 void func_80007FC4(Gfx**, s32);
 void func_800080E0(void);
 
-void func_800069F0(void) {
+void Stage_DrawFadeOverlay(void) {
     u8 a;
     u8 b;
     u8 g;
@@ -232,7 +232,7 @@ void func_800069F0(void) {
     }
 }
 
-s32 func_80006C04(s32 arg0) {
+s32 Stage_StartFade(s32 arg0) {
     s32 ret = 0;
 
     if ((gCurrentStage != NULL) && ((gCurrentStage->unk_11 == 1) || (gCurrentStage->unk_11 == 0))) {
@@ -254,7 +254,7 @@ s32 func_80006C6C(s32 arg0) {
     s32 ret = 0;
 
     if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 1)) {
-        ret = func_80006C04(arg0);
+        ret = Stage_StartFade(arg0);
     }
 
     return ret;
@@ -264,13 +264,13 @@ s32 func_80006CB4(s32 arg0) {
     s32 ret = 0;
 
     if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 0)) {
-        ret = func_80006C04(arg0);
+        ret = Stage_StartFade(arg0);
     }
 
     return ret;
 }
 
-void func_80006CF8(s32 arg0) {
+void Stage_SetFadeState(s32 arg0) {
     if (gCurrentStage != NULL) {
         gCurrentStage->unk_11 = arg0;
         gCurrentStage->unk_13 = 0;
@@ -278,7 +278,7 @@ void func_80006CF8(s32 arg0) {
     }
 }
 
-void func_80006D28(u32 arg0, u32 arg1) {
+void Profiler_SetVisibility(u32 arg0, u32 arg1) {
     if (arg0 < 3) {
         gShowCPUProfiler = arg0;
     }
@@ -307,7 +307,7 @@ void Gfx_SetDefaultState(void) {
     gDPPipeSync(gDisplayListHead++);
 }
 
-void func_80006F34(void) {
+void Gfx_SetupDefaultGeometry(void) {
     gSPClearGeometryMode(gDisplayListHead++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                                                  G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
     gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
@@ -319,14 +319,14 @@ void Gfx_BeginFrame(void) {
     Memmap_SetSegmentMap(0, 0x80000000, osMemSize);
     Memmap_SetSegments(&gDisplayListHead);
     Gfx_SetDefaultState();
-    func_80006F34();
+    Gfx_SetupDefaultGeometry();
 }
 
-void func_80006FE8(void) {
+void Stage_BeginRender(void) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
     guOrtho(&D_800A7468, 0.0f, 320.0f, 0.0f, 240.0f, -2.0f, 2.0f, 1.0f);
     Gfx_SetDefaultState();
-    func_80006F34();
+    Gfx_SetupDefaultGeometry();
 
     gSPMatrix(gDisplayListHead++, (u32)&D_80068BC8 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gDisplayListHead++, (u32)&D_800A7468 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -339,13 +339,13 @@ void func_80006FE8(void) {
     }
 
     Gfx_SetScissorRect(&gDisplayListHead, 0, 0, gCurrentStage->unk_00, gCurrentStage->unk_02);
-    func_800069F0();
+    Stage_DrawFadeOverlay();
 
     if (gShowCPUProfiler != 0) {
         print_profiler_metrics();
     }
 
-    func_80007FC4(&gDisplayListHead, func_80007A58());
+    func_80007FC4(&gDisplayListHead, IsScreenUpscaled());
 
     if (gShowCPUProfiler != 0) {
         draw_profiler(gShowCPUProfiler - 1);
@@ -361,13 +361,13 @@ void func_80006FE8(void) {
     GfxAlloc(0);
 }
 
-void func_80007234(void) {
+void Gfx_SwapAndBeginFrame(void) {
     Gfx_SwapDisplayList();
     Gfx_BeginFrame();
 }
 
-void func_8000725C(void) {
-    func_80006FE8();
+void Stage_CaptureRenderInfo(void) {
+    Stage_BeginRender();
     D_800A7450.unk_00 = gCurrentStage->unk_10;
     D_800A7450.unk_01 = gCurrentStage->unk_0C;
     D_800A7450.unk_02 = gCurrentStage->unk_0D;
@@ -442,15 +442,15 @@ Stage* Stage_Create(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 arg5) {
     return temp_v0;
 }
 
-Stage* func_800075F8(void) {
+Stage* Stage_GetCurrent(void) {
     return gCurrentStage;
 }
 
-s32 func_80007604(void) {
+s32 Stage_GetFadeState(void) {
     return gCurrentStage->unk_11;
 }
 
-void func_80007614(Stage* arg0) {
+void Stage_CopyState(Stage* arg0) {
     arg0->unk_11 = gCurrentStage->unk_11;
     arg0->unk_12 = gCurrentStage->unk_12;
     arg0->unk_13 = gCurrentStage->unk_13;
@@ -470,13 +470,13 @@ void Stage_Set(Stage* arg0) {
     Sched_SendFrame(NULL);
     Sched_WaitFrame();
     Gfx_SetFrameFillColor(arg0->unk_14);
-    func_80007234();
+    Gfx_SwapAndBeginFrame();
 }
 
 void Stage_Destroy(void) {
     if (gCurrentStage != NULL) {
         Stage_ClearScreen();
-        func_8000725C();
+        Stage_CaptureRenderInfo();
         Sched_SendFrame(&D_800A7450);
         Sched_WaitFrame();
         Sched_RunFrames(2);
@@ -493,19 +493,19 @@ void func_80007754(void) {
 }
 
 s32 Stage_Advance(void) {
-    func_8000725C();
+    Stage_CaptureRenderInfo();
     Sched_SendFrame(&D_800A7450);
     Sched_WaitFrame();
-    func_80007234();
+    Gfx_SwapAndBeginFrame();
 }
 
 void Stage_AdvanceN(s32 arg0) {
     while (arg0-- > 0) {
         Stage_ClearScreen();
-        func_8000725C();
+        Stage_CaptureRenderInfo();
         Sched_SendFrame(&D_800A7450);
         Sched_WaitFrame();
-        func_80007234();
+        Gfx_SwapAndBeginFrame();
     }
 }
 
@@ -529,7 +529,7 @@ s32 Stage_AdvanceUntil(u32 arg0, s32 (*arg1)(u8)) {
     return var_s1;
 }
 
-s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
+s32 Stage_RunFadeSequence(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
     s32 temp_v0;
     s32 var_s0;
     s32 var_s2;
@@ -554,7 +554,7 @@ s32 func_800078D4(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
     return var_s2;
 }
 
-void func_80007990(u16 arg0) {
+void Stage_SetFillColor(u16 arg0) {
     if (gCurrentStage != NULL) {
         gCurrentStage->unk_14 = arg0;
         Gfx_SetFrameFillColor(arg0);
@@ -579,7 +579,7 @@ FramebufferImage* Stage_GetFrameBuffer(void) {
     return ret;
 }
 
-s32 func_80007A58(void) {
+s32 IsScreenUpscaled(void) {
     s32 ret = 0;
 
     if (gCurrentStage != NULL) {
@@ -597,7 +597,7 @@ void func_80007A80(void) {
     gDPSetPrimColor(D_800A74B0++, 0, 0, 255, 255, 255, 255);
     gDPSetRenderMode(D_800A74B0++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
     gDPSetCombineMode(D_800A74B0++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPLoadTextureBlock_4b(D_800A74B0++, (u32)D_80068CB0 & 0x1FFFFFFF, G_IM_FMT_IA, 96, 48, 0,
+    gDPLoadTextureBlock_4b(D_800A74B0++, (u32)gOverlayTextureData & 0x1FFFFFFF, G_IM_FMT_IA, 96, 48, 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 }
 

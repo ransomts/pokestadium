@@ -91,7 +91,7 @@ s32 func_86B0A37C(void) {
     }
 
     if ((D_86B106B8.unk_040.unk_08 >> 0x10) == 0x64) {
-        func_80007990(1);
+        Stage_SetFillColor(1);
         func_80006CB4(3);
     }
 

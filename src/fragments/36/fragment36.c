@@ -318,9 +318,9 @@ s32 func_821009B4(void) {
 }
 
 void func_82100AB8(void) {
-    if (func_80007604() == 1) {
+    if (Stage_GetFadeState() == 1) {
         func_80006C6C(0xA);
-        while (func_80007604() != 0) {
+        while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
             func_821005EC();
         }
@@ -329,14 +329,14 @@ void func_82100AB8(void) {
 
 void func_82100B1C(s32 arg0) {
     if (arg0 == 3) {
-        func_80007990(1);
+        Stage_SetFillColor(1);
     } else {
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
     }
 
     func_80006CB4(8);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();
         func_821005EC();
     }
@@ -366,7 +366,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
 
     D_82100EC4 = arg1;
 
-    if (func_800075F8() == NULL) {
+    if (Stage_GetCurrent() == NULL) {
         main_pool_push_state('TITL');
 
         Gfx_InitBuffers(0x10000, 0);

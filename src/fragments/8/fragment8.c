@@ -258,7 +258,7 @@ void func_862002F4(void) {
 
 void func_862004D8(void) {
     D_8620471A = 0;
-    if (func_80007604() == 0) {
+    if (Stage_GetFadeState() == 0) {
         D_8620471A = 1;
         Cont_StartReadInputs();
         Cont_ReadInputs();
@@ -580,7 +580,7 @@ void func_862013C0(void) {
 
         func_862004D8();
 
-        if ((D_86204718 == 1) && (func_80007604() == 0) &&
+        if ((D_86204718 == 1) && (Stage_GetFadeState() == 0) &&
             ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed |
               gPlayer3Controller->buttonPressed | (gPlayer4Controller->buttonPressed != 0)) != 0)) {
             func_80006CB4(0x1E);

@@ -3374,7 +3374,7 @@ void miniEkansTutoScreenControls(void) {
     while (var_s1 != 0) {
         MiniGame_ReadInputs(); //	input
 
-        if ((miniDebugMode == false) && (func_80007604() == 0)) {
+        if ((miniDebugMode == false) && (Stage_GetFadeState() == 0)) {
             if (ekansMinigameCountdownStarted) {
                 if ((gPlayer1Controller->buttonPressed != 0) || (miniEkansCountdown == 0x28)) {
                     SetResultFlag(2); //	D_8780FC92 = 1

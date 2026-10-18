@@ -87,7 +87,7 @@ u8 D_800FD6E1;
 f32 D_800FD6E4;
 s32 D_800FD6E8;
 static u8 D_800FD6EC[0x4]; // pad
-u32 D_800FD6F0;
+u32 gMusicFadePos;
 u32 D_800FD6F4;
 s16 D_800FD6F8[0x1140];
 u32 D_800FF978;
@@ -201,11 +201,11 @@ void func_80049A60(u32 arg0) {
     var_s4 = 1;
     arg0 >>= 1;
 
-    if ((tmp2 = D_800FD6F4) < D_800FD6F0) {
-        if ((0xB80 - (arg0 * 4)) < (D_800FD6F0 - tmp2)) {
+    if ((tmp2 = D_800FD6F4) < gMusicFadePos) {
+        if ((0xB80 - (arg0 * 4)) < (gMusicFadePos - tmp2)) {
             arg0++;
         }
-    } else if ((tmp2 - D_800FD6F0) < (arg0 * 4)) {
+    } else if ((tmp2 - gMusicFadePos) < (arg0 * 4)) {
         arg0++;
     }
 
@@ -249,8 +249,8 @@ void func_80049A60(u32 arg0) {
             }
         }
 
-        D_800FC6D8[tmp2 + 0] = var_a0;
-        D_800FC6D8[D_800FD6F4 + 1] = var_a0;
+        gMusicFadeBuffer[tmp2 + 0] = var_a0;
+        gMusicFadeBuffer[D_800FD6F4 + 1] = var_a0;
 
         D_800FD6F4 += 2;
         if (D_800FD6F4 >= 0xB80) {
@@ -860,9 +860,9 @@ void func_8004ACD0(void) {
     s32 i;
 
     for (i = 0; i < 0xB80; i++) {
-        D_800FC6D8[i] = 0;
+        gMusicFadeBuffer[i] = 0;
     }
-    D_800FD6F0 = 0;
+    gMusicFadePos = 0;
     D_800FD6F4 = 0;
 }
 

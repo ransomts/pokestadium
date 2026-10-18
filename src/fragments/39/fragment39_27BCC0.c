@@ -2054,7 +2054,7 @@ void func_82503020(void) {
     } else if (D_82508AF8->unk_04 & 0x4000) {
         D_8250A26C = 7;
         D_8250A288.unk_06 = -1;
-        func_80007990(1);
+        Stage_SetFillColor(1);
         func_80006CB4(0xF);
         func_8004B9C4(0xF);
         PlaySoundEffect(3);
@@ -2533,7 +2533,7 @@ void func_825042A4(void) {
 
     if (func_82501D70(D_8250A240[4], 0) >= 3) {
         D_8250A26C = 7;
-        func_80007990(1);
+        Stage_SetFillColor(1);
         func_80006CB4(0xA);
     }
 }
@@ -2556,7 +2556,7 @@ void func_82504370(s16 arg0, s16 arg1) {
 
         switch (D_8250A26C) {
             case 0:
-                if (func_80007604() == 0) {
+                if (Stage_GetFadeState() == 0) {
                     switch (D_8250A26E) {
                         case 0:
                             func_82502FAC();
@@ -2607,7 +2607,7 @@ void func_82504370(s16 arg0, s16 arg1) {
                 break;
 
             case 7:
-                if (func_80007604() == 1) {
+                if (Stage_GetFadeState() == 1) {
                     var_s6 = 0;
                 }
                 break;

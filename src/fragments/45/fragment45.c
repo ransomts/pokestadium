@@ -774,7 +774,7 @@ void func_83602C14(void) {
 void func_83602D98(void) {
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         gSelectionState = 3;
-        func_80007990(0xFFFF);
+        Stage_SetFillColor(0xFFFF);
         func_80006CB4(0xF);
         PlaySoundEffect(0x1D);
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
@@ -792,7 +792,7 @@ s32 func_83602E14(void) {
 
     switch (gSelectionState) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 D_836032D0--;
                 if (D_836032D0 <= 0) {
                     gSelectionState = 1;
@@ -805,10 +805,10 @@ s32 func_83602E14(void) {
             if (temp_v0_2 != 0) {
                 gSelectionState = 3;
                 if (temp_v0_2 == 2) {
-                    func_80007990(1);
+                    Stage_SetFillColor(1);
                     func_80006CB4(1);
                 } else {
-                    func_80007990(0xFFFF);
+                    Stage_SetFillColor(0xFFFF);
                     func_80006CB4(0xF);
                 }
             }
@@ -819,7 +819,7 @@ s32 func_83602E14(void) {
             break;
 
         case 3:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;

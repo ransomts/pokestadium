@@ -1253,10 +1253,10 @@ void func_823046C8(unk_D_82305A28* arg0) {
     }
 
     Music_StopTrack(0x10);
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(8);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         func_82304358();
         func_82304224(-1);
     }
@@ -1412,10 +1412,10 @@ void func_82304D30(unk_D_82305A28* arg0) {
     }
 
     Music_StopTrack(0x10);
-    func_80007990(0xFFFF);
+    Stage_SetFillColor(0xFFFF);
     func_80006CB4(8);
 
-    while (func_80007604() != 1) {
+    while (Stage_GetFadeState() != 1) {
         func_82304358();
         func_82304224(-1);
     }

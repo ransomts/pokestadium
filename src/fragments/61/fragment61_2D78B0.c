@@ -688,7 +688,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
 void func_8420305C(s32 arg0) {
     s32 i;
 
-    func_80007990(1);
+    Stage_SetFillColor(1);
     Music_StopTrack(0x10);
     func_80006CB4(8);
 
@@ -708,7 +708,7 @@ void func_8420305C(s32 arg0) {
 void func_84203100(void) {
     s32 i;
 
-    if (func_80007604() == 1) {
+    if (Stage_GetFadeState() == 1) {
         func_80006C6C(8);
         for (i = 0; i < 10; i++) {
             Game_UpdateInputs();

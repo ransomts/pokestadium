@@ -157,7 +157,7 @@ s32 Gallery_Debugger_MainLoop(void) {
 
     switch (gGalleryState) {
         case 0:
-            if (func_80007604() == 0) {
+            if (Stage_GetFadeState() == 0) {
                 gGalleryState = 1;
             }
             break;
@@ -170,7 +170,7 @@ s32 Gallery_Debugger_MainLoop(void) {
             break;
 
         case 2:
-            if (func_80007604() == 1) {
+            if (Stage_GetFadeState() == 1) {
                 sp1C = 0;
             }
             break;
