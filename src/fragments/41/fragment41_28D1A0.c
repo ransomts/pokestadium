@@ -253,7 +253,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         func_82F05920(arg0->unk_04, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
         DrawHealthBar(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+        gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
         Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
         Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);

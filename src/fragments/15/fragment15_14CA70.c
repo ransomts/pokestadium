@@ -669,7 +669,7 @@ void HandleSnapshotButton(void) {
             D_83402EE0[D_8690B344].unk_08 = D_8690A69C->unk_004.unk_054.unk_00;
             D_83402EE0[D_8690B344].unk_09 = D_8690A69C->unk_004.unk_054.unk_08;
 
-            func_81002174(D_83402EE0[D_8690B344].unk_0A);
+            Particle_Serialize(D_83402EE0[D_8690B344].unk_0A);
             Cam_ConvertInputToState(&D_83402EE0[D_8690B344].unk_70, &D_8690A6A0);
         }
 

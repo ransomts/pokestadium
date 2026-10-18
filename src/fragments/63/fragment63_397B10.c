@@ -1451,7 +1451,7 @@ void func_84B05FCC(unk_D_84B259E8* arg0) {
         if (gBattleContext.unk_0000 == 7) {
             Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[gBattleContext.unk_0003 - 1]);
 
-            gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+            gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
             Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x208], 0x40, 0x200000);
             Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x1008], 0x40, 0x200000);
@@ -1537,7 +1537,7 @@ void func_84B06364(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
 void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[arg1]);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
     Gfx_DrawSpriteRGBA16(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);

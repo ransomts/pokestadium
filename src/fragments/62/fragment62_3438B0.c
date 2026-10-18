@@ -18,21 +18,21 @@ void func_84359000(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
 
 void func_843590E0(unk_D_86002F34_00C* arg0) {
     func_8432CF74(arg0);
-    D_8140E620 = GfxAlloc(sizeof(unk_D_8140E620));
-    D_8140E624 = 0;
+    gMatrixBuffer = GfxAlloc(sizeof(unk_D_8140E620));
+    gMatrixBufferIdx = 0;
     D_843902A4 += 1;
 
     gSPDisplayList(gDisplayListHead++, D_8140DB30);
 
     Gfx_SetPrimColor(D_84390382, D_84390384, D_84390386, D_84390388);
-    func_81405A90(D_84390392, D_84390394, D_84390396, D_84390398);
+    Gfx_SetFogColor(D_84390392, D_84390394, D_84390396, D_84390398);
     Gfx_SetEnvColor(D_8439038A, D_8439038C, D_8439038E, D_84390390);
     func_81405B00(D_8439039A, D_8439039C, D_8439039E, D_843903A0);
     func_84300184(D_8439037A, D_8439037C, D_8439037E);
     func_8140C204(arg0);
-    guOrtho(&D_8140E620->unk_5B80, 0.0f, 320.0f, 240.0f, 0.0f, -2.0f, 2.0f, 1.0f);
+    guOrtho(&gMatrixBuffer->unk_5B80, 0.0f, 320.0f, 240.0f, 0.0f, -2.0f, 2.0f, 1.0f);
 
-    gSPMatrix(gDisplayListHead++, (u32)&D_8140E620->unk_5B80 & 0x1FFFFFFF,
+    gSPMatrix(gDisplayListHead++, (u32)&gMatrixBuffer->unk_5B80 & 0x1FFFFFFF,
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPDisplayList(gDisplayListHead++, D_8140DD78);
 

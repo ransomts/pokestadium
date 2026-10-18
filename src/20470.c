@@ -70,7 +70,7 @@ Gfx D_8006F4C0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8006F4E0[] = {
+Gfx gTransferPakErrorBorderDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_COPY),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -379,7 +379,7 @@ void DrawSimplePanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void DrawStatusIcon(s32 arg0, s32 arg1) {
     if (IsScreenUpscaled() != 0) {
-        gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+        gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
         Gfx_DrawSpriteRGBA16(arg0, arg1, 0x20, 0x16, D_10031D0, 0x20, 0x200000);
     } else {
         gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -564,7 +564,7 @@ void DrawBadgeIcon(s32 arg0, s32 arg1, s32 arg2) {
         var_t4 = D_2004000;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
     gDPLoadTextureBlock(gDisplayListHead++, var_t4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 0x13) << 2, (arg1 + 0x13) << 2,
@@ -586,7 +586,7 @@ void DrawHealthBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         spDC = D_1003B70;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_1003930, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,

@@ -232,7 +232,7 @@ void func_84B00D3C(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(0, 0, 0x40, 0x20, arg3, 0x40, 0x200000);
     Gfx_DrawSpriteRGBA16(0, 0x20, 0x40, 0x20, arg3 + 0x1000, 0x40, 0x200000);

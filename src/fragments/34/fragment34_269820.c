@@ -1251,15 +1251,15 @@ void func_8140A674(unk_D_8140E720* arg0, s16 arg1) {
 }
 
 void func_8140A690(unk_D_8140E720* arg0) {
-    func_814005EC(&arg0->unk_94.x, arg0->unk_A0.x, arg0->unk_9A.x);
+    ApproachU16Wrap(&arg0->unk_94.x, arg0->unk_A0.x, arg0->unk_9A.x);
 }
 
 void func_8140A6BC(unk_D_8140E720* arg0) {
-    func_814005EC(&arg0->unk_94.y, arg0->unk_A0.y, arg0->unk_9A.y);
+    ApproachU16Wrap(&arg0->unk_94.y, arg0->unk_A0.y, arg0->unk_9A.y);
 }
 
 void func_8140A6E8(unk_D_8140E720* arg0) {
-    func_814005EC(&arg0->unk_94.z, arg0->unk_A0.z, arg0->unk_9A.z);
+    ApproachU16Wrap(&arg0->unk_94.z, arg0->unk_A0.z, arg0->unk_9A.z);
 }
 
 void func_8140A714(unk_D_8140E720* arg0) {
@@ -1274,11 +1274,11 @@ void func_8140A73C(unk_D_8140E720* arg0) {
 }
 
 void func_8140A76C(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
-    func_814005EC(&arg0->unk_94.x, arg1, arg2);
+    ApproachU16Wrap(&arg0->unk_94.x, arg1, arg2);
 }
 
 void func_8140A7A4(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
-    func_814005EC(&arg0->unk_94.y, arg1, arg2);
+    ApproachU16Wrap(&arg0->unk_94.y, arg1, arg2);
 }
 
 s32 func_8140A7DC(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
@@ -1856,7 +1856,7 @@ void func_8140BF4C(unk_D_8140E720* arg0, s16 arg1) {
 }
 
 s32 func_8140BF60(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
-    return func_81400550(&arg0->unk_AE, arg1, arg2);
+    return ApproachS16Signed(&arg0->unk_AE, arg1, arg2);
 }
 
 s32 func_8140BF98(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
@@ -1873,7 +1873,7 @@ void func_8140BFEC(unk_D_8140E720* arg0, s16 arg1) {
 }
 
 s32 func_8140C000(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
-    return func_81400550(&arg0->unk_B0, arg1, arg2);
+    return ApproachS16Signed(&arg0->unk_B0, arg1, arg2);
 }
 
 s16 func_8140C038(unk_D_8140E720* arg0) {

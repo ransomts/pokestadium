@@ -651,7 +651,7 @@ void Cam_Initialize(unk_func_80031270* arg0) {
     AssetManager_WaitLoadQueue(arg0->unk_10);
     GraphNode_ClearCallback(arg0->unk_20);
     GraphNode_InitChild(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
-    sp28 = Util_ConvertAddrToVirtAddr(&func_81002260);
+    sp28 = Util_ConvertAddrToVirtAddr(&Particle_Deserialize);
     sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->unk_00.unk_09[1]));
     GraphNode_TriggerAction(arg0->unk_20, temp_s1->unk_00.unk_05);
     Anim_SetChannelBase(arg0->unk_20, temp_s1->unk_00.unk_06);

@@ -6,7 +6,7 @@
 extern Gfx D_8006F470[];
 extern Gfx gPrefDL_Fill[];
 extern Gfx D_8006F4C0[];
-extern Gfx D_8006F4E0[];
+extern Gfx gTransferPakErrorBorderDL[];
 extern Gfx gPrefDL_Border[];
 extern Gfx D_8006F558[];
 extern Gfx D_8006F5A0[];

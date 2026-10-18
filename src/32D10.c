@@ -15,7 +15,7 @@ s16 gHpWheelDigitOffsetTensSmooth[4];
 s16 gHpWheelDigitOffsetHundredsSmooth[4];
 s32 gPrevAnimationFrame;
 s16 gAnimationFrameUnchangedFlag;
-s16 D_800AF7AE;
+s16 gTextureOffsetScale;
 s16 gModelUpdateFlag[2];
 s16 gModelReadyFlag[2];
 
@@ -142,12 +142,12 @@ void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0) {
     s32 unk1A = arg0->unk_01A;
     s32 idx = arg0->unk_0A6;
 
-    D_800AF7AE = 0;
+    gTextureOffsetScale = 0;
 
     if (unk1A < 0x98) {
         gModelPhase[idx & 1] = 0;
         ModelSlot_Reset(idx & 1);
-        func = Util_ConvertAddrToVirtAddr(func_810007A8);
+        func = Util_ConvertAddrToVirtAddr(Particle_ClearAllSlots);
         func(arg0);
     }
 }
@@ -156,7 +156,7 @@ void ModelPhase_Advance(u32 arg0, u32 arg1) {
     s32 (*func)(void);
 
     gModelUpdateFlag[arg0 & 1] = 0;
-    func = Util_ConvertAddrToVirtAddr(func_810007F8);
+    func = Util_ConvertAddrToVirtAddr(Particle_ResetCounters);
     func();
 
     if ((arg0 < 2) && (arg1 != 0) && (arg1 < 0x98)) {
@@ -181,7 +181,7 @@ void ModelPhase_Advance(u32 arg0, u32 arg1) {
 
 void ModelPhase_UpdateStatus(u32 arg0, u32 arg1) {
     if (ModelPhase_IsIdle() == 0) {
-        D_800AF7AE++;
+        gTextureOffsetScale++;
     }
 
     if ((arg1 != 0) && (arg0 < 2)) {

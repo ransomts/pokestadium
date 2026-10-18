@@ -10,7 +10,7 @@ extern s16 gHpWheelDigitOffsetHundreds[4];
 extern s16 gHpWheelDigitOffsetOnesSmooth[4];
 extern s16 gHpWheelDigitOffsetTensSmooth[4];
 extern s16 gHpWheelDigitOffsetHundredsSmooth[4];
-extern s16 D_800AF7AE;
+extern s16 gTextureOffsetScale;
 extern s16 gModelUpdateFlag[2];
 
 void HpWheel_SetDigits(u8 arg0, s16 arg1);

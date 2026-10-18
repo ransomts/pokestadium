@@ -21,7 +21,7 @@ typedef struct TextureState {
     /* 0x18 */ Gfx* gfx;
 } TextureState; // size = 0x1C
 
-void func_81002830(Gfx* gfx, unk_arg1_func_81002830* arg1) {
+void LoadTextureBlockWithTileSize(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     s32 var_a5;
     unk_arg1_func_81002830* ptr;
     s32 var_a4;
@@ -31,7 +31,7 @@ void func_81002830(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     var_a4 = 1;
     if (gDefaultGraphRoot->unk_01C == 0) {
         ptr = arg1;
-        var_a3 = D_800AF7AE;
+        var_a3 = gTextureOffsetScale;
         temp_v0 = 0x4000 - (ptr->unk_00 * var_a3);
         if (var_a4) {}
         var_a4 = var_a3;
@@ -44,7 +44,7 @@ void func_81002830(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81002968(s32 arg0, unk_arg1_func_81002968* arg1) {
+void PrepareTextureDisplayList(s32 arg0, unk_arg1_func_81002968* arg1) {
     s32 temp_v0;
     s32 sp18;
 
@@ -52,17 +52,17 @@ void func_81002968(s32 arg0, unk_arg1_func_81002968* arg1) {
         sp18 = arg1->unk_14;
         temp_v0 = GfxAlloc(0x50);
         arg1->unk_18 = temp_v0;
-        func_81002830(temp_v0, sp18);
+        LoadTextureBlockWithTileSize(temp_v0, sp18);
     }
 }
 
-Gfx* func_810029B0(Gfx* gfx, u32* textures, s32 index) {
+Gfx* LoadTextureFromArray(Gfx* gfx, u32* textures, s32 index) {
     gDPLoadTextureBlock(gfx++, textures[index + 1], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
     return gfx;
 }
 
-void func_81002A68(s32 arg0, TextureState* state) {
+void LoadTextureStateForMode(s32 arg0, TextureState* state) {
     s32 index;
     u32* textures;
 
@@ -85,6 +85,6 @@ void func_81002A68(s32 arg0, TextureState* state) {
         } else {
             index = gAnimationFrame & 7;
         }
-        func_810029B0(state->gfx, textures, index);
+        LoadTextureFromArray(state->gfx, textures, index);
     }
 }

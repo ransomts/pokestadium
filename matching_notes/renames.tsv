@@ -2143,3 +2143,101 @@ func_810004E0	Gfx_AppendTwoSegments	w14		adds two segment display lists to the c
 func_81000518	Gfx_CreateTwoSegmentDL	w14		allocates a 0x18?byte display list and fills it with two segments via Gfx_AppendTwoSegments when arg0 equals 2	applied@f19efe7
 func_81000560	Gfx_ConditionalAppendSegment	w14		conditionally appends a single display list address if gDefaultGraphRoot->unk_01C is zero, then ends the list	applied@f19efe7
 func_8100059C	Gfx_CreateConditionalDL	w14		allocates a 0x50?byte display list and populates it with a conditional segment via Gfx_ConditionalAppendSegment when arg0 equals 2	applied@f19efe7
+func_810005F0	Particle_ClearSlot	w15		Clears a particle slot by zeroing active, misc, position, velocity and setting scale to (1,1,1) for the slot indexed by arg1	applied@2402ae2
+func_810007A8	Particle_ClearAllSlots	w15		Iterates over the 10 particle slots and calls func_810005F0 to clear each one	applied@2402ae2
+func_810007F8	Particle_ResetCounters	w15		Resets the two global counters D_81004B50 and D_81004B54 to zero	applied@2402ae2
+func_8100080C	Particle_Activate	w15		Initializes a particle (sets position, velocity, scale, misc and marks active) based on the current graph root state	applied@2402ae2
+func_81000E78	Particle_TryActivate	w15		Decides whether to spawn a particle by calling func_8100080C under various random or condition checks	applied@2402ae2
+func_810010BC	Particle_Render	w15		Renders a single particle using its position, scale, texture and color settings	applied@2402ae2
+func_81001D80	Particle_RenderAll	w15		Loops through the 10 particles and renders each active one via func_810010BC	applied@2402ae2
+func_81001E24	Particle_Process	w15		Main particle system update: allocates display list, possibly spawns particles, renders them and updates counters	applied@2402ae2
+func_81002174	Particle_Serialize	w15		Serializes the active particles' position, velocity and misc fields into a byte buffer	applied@2402ae2
+func_81002260	Particle_Deserialize	w15		Deserializes particle data from a buffer, restoring active flag, position and scale based on the current mode	applied@2402ae2
+D_81003FE0	gParticleConditionTable	w15		Table of condition values used by func_81000E78 to match against the graph root's unk_08 field for particle activation	applied@2402ae2
+D_810040B8	gParticleConditionIndexSeq	w15		Sequence of indices (0?17) used to step through D_81003FE0 in a rotating fashion for particle conditions	applied@2402ae2
+D_810040DC	gParticleScaleTable	w15		Array of 12 scaling factors (0.5?0.35) applied to particles of certain types in func_810010BC and related code	applied@2402ae2
+D_8100410C	gVecZero	w15		Zero vector (0,0,0) used as default position in particle initialization	applied@2402ae2
+D_81004124	gVecOne	w15		Unit vector (1,1,1) used as default scale for particles	applied@2402ae2
+func_81002830	LoadTextureBlockWithTileSize	w15		Loads a texture block from arg1->unk_04 and sets the tile size using arg1->unk_00 and the global D_800AF7AE, indicating it prepares a texture with custom tile dimensions.	applied@2402ae2
+func_81002968	PrepareTextureDisplayList	w15		When arg0 equals 2 it allocates a display?list, stores it in arg1->unk_18 and calls func_81002830, so it prepares a texture display list.	applied@2402ae2
+func_810029B0	LoadTextureFromArray	w15		Loads a texture from the textures array at index+1 into the given Gfx list and ends the list, thus it loads a texture by index.	applied@2402ae2
+func_81002A68	LoadTextureStateForMode	w15		For arg0 == 2 it allocates a Gfx list, chooses an index based on animation frame or graph?root values, then calls func_810029B0, so it selects and loads a texture for a given TextureState.	applied@2402ae2
+D_800AF7AE	gTextureOffsetScale	w15		Used as a multiplier for ptr->unk_00 when computing the tile offset and also as a mask for selecting an entry in ptr->unk_04, suggesting it is a texture offset scaling factor.	applied@2402ae2
+func_81002C00	Stage_SetHpWheelDigitTensMatrix	w15		The function rotates a matrix using gHpWheelDigitOffsetTens based on the graph root angle and appends it to the display list, indicating it sets the HP wheel digit?tens matrix.	applied@2402ae2
+func_81002CA0	Stage_CreateHpWheelDigitTens	w15		The function allocates a display list and calls the HP wheel digit?tens matrix setup when arg0 equals 2, indicating it creates the HP wheel digit?tens UI element.	applied@2402ae2
+func_81002CE0	HpWheel_DrawHundredsDigit	w15		rotates a matrix using gHpWheelDigitOffsetHundreds based on gDefaultGraphRoot->unk_0A6 and emits it to the display list	applied@2402ae2
+func_81002D80	HpWheel_InitHundredsDigit	w15		allocates graphics memory when arg0==2, stores it in DisplayListState and calls HpWheel_DrawHundredsDigit	applied@2402ae2
+func_81002F38	Fragment31_Tex0StateHandler	w15		Handles arg0 cases 0 and 2 to reset and load texture0, acting as a state handler for texture0.	applied@2402ae2
+func_81003138	Fragment31_Tex1StateHandler	w15		Handles arg0 cases 0 and 2 to reset and load texture1, acting as a state handler for texture1.	applied@2402ae2
+func_81003338	Fragment31_Tex2StateHandler	w15		Handles arg0 cases 0 and 2 to reset and load texture2, acting as a state handler for texture2.	applied@2402ae2
+func_81003538	Fragment31_Tex3StateHandler	w15		Handles arg0 cases 0 and 2 to reset and load texture3, acting as a state handler for texture3.	applied@2402ae2
+func_81003D2C	Fragment31_NumberDigitStateHandler	w15		Allocates a display list and calls Fragment31_DrawNumberDigit, serving as the state handler for drawing number digits.	applied@2402ae2
+D_81004190	gFragment31_AnimatedTileCounter	w15		Static u8 used as a frame counter for the animated tile in Fragment31_DrawAnimatedTile.	applied@2402ae2
+D_81004194	gFragment31_ColorCyclePhase	w15		Static u8 used as a phase offset for tile size calculations in Fragment31_AnimateColorCycle.	applied@2402ae2
+D_81004198	gFragment31_ColorCycleFrame	w15		Static u8 incremented each frame to select the current color keyframe in Fragment31_AnimateColorCycle.	applied@2402ae2
+D_8100419C	gFragment31_ColorCycleKeyframes	w15		Static array of Keyframe structs defining color transitions for Fragment31_AnimateColorCycle.	applied@2402ae2
+D_81004BB8	gFragment31_NumberStringBuffer	w15		Char buffer used with sprintf to build a padded string for number drawing in Fragment31_DrawNumberDigit.	applied@2402ae2
+func_81003D70	Gfx_AllocateAndInitSmallDL	w15		allocates a 0x10?byte display list and writes two RDP mode commands based on global flag D_86402848	applied@2402ae2
+D_86402848	gUseAlphaBlend	w15		global flag selects between two RDP mode command values (0xFF13FFFF vs 0xFFFDF638) indicating blend mode	applied@2402ae2
+func_81003E00	GraphFlag_UpdateOnMatch	w15		Sets or clears the low?bit flag in arg1->unk_04 based on whether gDefaultGraphRoot's current node matches the range stored in arg1->unk_14.	applied@2402ae2
+func_81003E90	GraphFlag_SetIfOutOfRange	w15		Sets the low?bit flag when the current graph node is NOT within the range stored in arg1->unk_14, otherwise clears it.	applied@2402ae2
+func_81003F20	GraphOverlay_Draw	w15		Allocates a small display list and draws a primitive overlay using colors derived from gDefaultGraphRoot, indicating a UI element for arg0 == 2.	applied@2402ae2
+unk_arg1_func_81003E00_14	GraphNodeRange	w15		Structure holding three u16 values compared to gDefaultGraphRoot->unk_040 fields, representing a graph node ID and a start/end range.	applied@2402ae2
+unk_arg1_func_81003E00_04	GraphFlag	w15		Structure containing a single byte flag (unk_01) that is bit?masked in the functions, representing a visibility flag.	applied@2402ae2
+unk_arg1_func_81003E00	GraphCondition	w15		Container struct that stores a pointer to a flag struct and a pointer to a range struct, used by the graph?node check functions.	applied@2402ae2
+D_81100930	gErrorMenuSelection	w15		gErrorMenuSelection is set from the first argument of func_811007F8 and later used as an index into the sp80 array to draw the selected option in func_81100368	applied@2402ae2
+D_81100934	gErrorMessageId	w15		gErrorMessageId is set from the second argument of func_811007F8 and passed to func_811002D4, where it selects the string printed by GetMessageString	applied@2402ae2
+D_81100938	gErrorMessageBank	w15		gErrorMessageBank receives the result of GetMessageBank(0xD) in func_811007F8 and is used as the message bank argument for GetMessageString in func_811002D4	applied@2402ae2
+func_81100020	DrawTransferPakErrorBackground	w15		DrawTransferPakErrorBackground loops over the screen drawing 0x40?0x10 sprites from D_2000000, clearly rendering a tiled background before the UI is drawn	applied@2402ae2
+func_811001C0	DrawTransferPakErrorIcon	w15		DrawTransferPakErrorIcon draws a 0x18?0x18 sprite from D_2002000 at the supplied coordinates, indicating it renders an error?icon graphic	applied@2402ae2
+func_811002D4	DrawTransferPakErrorMessagePanel	w15		DrawTransferPakErrorMessagePanel calls DrawPanel, then DrawTransferPakErrorIcon, resets text state and prints a message from the error message bank	applied@2402ae2
+func_81100368	DrawTransferPakErrorOptions	w15		DrawTransferPakErrorOptions draws several UI elements and uses the argument as an index into sp80 to highlight the currently selected option	applied@2402ae2
+func_811007AC	TransferPakError_RenderFrame	w15		TransferPakError_RenderFrame is invoked each frame by Stage_RunFadeSequence, begins a display list and calls the background, panel and options draw functions	applied@2402ae2
+func_811007F8	TransferPakError_Init	w15		TransferPakError_Init loads UI assets, creates the stage, initializes text, obtains the error message bank and stores the selection/message IDs before entering the fade loop	applied@2402ae2
+D_2002000	gTransferPakErrorIconTexture	w15		gTransferPakErrorIconTexture is the texture used by DrawTransferPakErrorIcon (func_811001C0) to draw the 0x18?0x18 icon	applied@2402ae2
+D_8006F4E0	gTransferPakErrorBorderDL	w15		gTransferPakErrorBorderDL is a display list inserted after a texture rectangle in func_81100368, serving as a border for the error UI	applied@2402ae2
+D_20068A0	gTransferPakErrorCursorTexture	w15		gTransferPakErrorCursorTexture is the 8?8 sprite drawn near the options after the border in func_81100368, likely representing a cursor graphic	applied@2402ae2
+D_2006920	gTransferPakErrorHighlightTexture	w15		gTransferPakErrorHighlightTexture is used in func_81100368 to draw the selection highlight for the currently chosen option (sp80[arg0])	applied@2402ae2
+D_2006820	gTransferPakErrorHighlightOverlay	w15		gTransferPakErrorHighlightOverlay is drawn after the highlight texture in func_81100368, providing an overlay for the selected option	applied@2402ae2
+func_81300020	GraphNode_RenderMenu	w15		Used as a callback for node type?5 in D_81303EC0, setting scissor, env color and drawing the node?s display list, indicating it renders a menu graph node	applied@2402ae2
+func_813001EC	StartEntrySelection	w15		Marks the selected entry?s state (unk_000?=?1) and initializes its motion parameters, called after a selection is confirmed, thus starting the entry selection animation	applied@2402ae2
+func_81300254	GetEntryStatus	w15		Examines fields of D_81303FA8 (player entry) and returns status codes (0x13?0x16,?1,?2) based on presence and flags, determining the entry?s current status	applied@2402ae2
+func_81300314	GetEntryMenuOption	w15		Calls GetEntryStatus and maps specific status bits to small integers (1?4) used for UI option selection, providing the menu option for an entry	applied@2402ae2
+func_813003B4	DrawEntryPanel	w15		Draws the UI panel for a given entry index, invokes DrawBorderedPanel, prints text and optional gradient, therefore rendering an entry?s panel	applied@2402ae2
+func_81300DA4	UpdatePulseAlpha	w15		Updates D_81304A60 based on a timer to create a pulsating value that is later used as alpha in UI drawing, providing a pulse effect	applied@2402ae2
+func_81300DF8	DrawTextureRectFlipped	w15		Loads a texture block and draws a rectangle, optionally flipping it when arg6?<?0, used for various UI elements such as icons	applied@2402ae2
+func_81301668	DrawBorderedPanel	w15		Constructs a bordered rectangle with fill color using texture blocks and Gfx_FillRectRGBA, called for all menu panels and dialogs	applied@2402ae2
+func_81301E8C	RenderMenuScreen	w15		Central rendering routine that draws the background, entry panels, status icons and handles UI layout each frame, i.e., renders the whole menu screen	applied@2402ae2
+func_8130222C	HandleEntryNavigation	w15		Responds to controller bits?0x200 (right) and?0x100 (left) to change D_81304000, allowing the player to navigate between entries	applied@2402ae2
+func_8130237C	HandleEntryConfirmCancel	w15		Processes button bits?0x8000 (confirm) and?0x4000 (cancel), updates D_81304A64 and triggers selection or cancellation logic	applied@2402ae2
+func_814000E0	ApproachFloatDown	w15		Decrements a float toward a target value, mirroring ApproachFloatUp	applied@2402ae2
+func_8140018C	ApproachS16Up	w15		Increments a signed 16?bit value toward a target, similar to ApproachIntUp	applied@2402ae2
+func_814001DC	ApproachU16Up	w15		Increments an unsigned 16?bit value toward a target, analogous to ApproachIntUp	applied@2402ae2
+func_81400220	ApproachS16Down	w15		Decrements a signed 16?bit value toward a target, mirroring ApproachS16Up	applied@2402ae2
+func_81400270	ApproachU16Down	w15		Decrements an unsigned 16?bit value toward a target using a signed delta	applied@2402ae2
+func_814002A4	ApproachFloatUpPtr	w15		Increments a float toward a target by the amount pointed to by a second float pointer	applied@2402ae2
+func_814002F0	ApproachFloatDownPtr	w15		Decrements a float toward a target by the amount pointed to by a second float pointer	applied@2402ae2
+func_8140033C	ApproachS32UpPtr	w15		Increments a signed 32?bit value toward a target by the amount pointed to by a second pointer	applied@2402ae2
+func_81400374	ApproachS32DownPtr	w15		Decrements a signed 32?bit value toward a target by the amount pointed to by a second pointer	applied@2402ae2
+func_814003AC	ApproachS16UpPtr	w15		Increments a signed 16?bit value toward a target by the amount pointed to by a second pointer	applied@2402ae2
+func_814003F4	ApproachS16DownPtr	w15		Decrements a signed 16?bit value toward a target by the amount pointed to by a second pointer	applied@2402ae2
+func_81400550	ApproachS16Signed	w15		Approaches a signed 16?bit target using a signed delta that may be positive or negative	applied@2402ae2
+func_814005EC	ApproachU16Wrap	w15		Handles wrap?around when approaching a 16?bit target, adjusting across the 0x8000 boundary	applied@2402ae2
+D_8140E710	gRandomSeedCounter	w15		Incremented each call to RandomMod, serving as a per?frame random seed modifier	applied@2402ae2
+D_8140E624	gMatrixBufferIdx	w15		Used as an index into D_8140E620->unk_0000 when uploading matrices in func_81401394	applied@2402ae2
+D_8140E620	gMatrixBuffer	w15		Pointer to a structure whose unk_0000 array holds matrices for rendering, referenced by matrix upload functions	applied@2402ae2
+func_81403A20	Gfx_LoadTextureBlockRGBA32_Clamp	w15		Gfx_LoadTextureBlockRGBA32 called with G_TX_NOMIRROR|G_TX_CLAMP for both S and T, indicating a clamp?only RGBA32 block load	applied@2402ae2
+func_81403A6C	Gfx_LoadTextureTileRGBA32_Clamp	w15		Gfx_LoadTextureTileRGBA32 called with G_TX_NOMIRROR|G_TX_CLAMP for both S and T, indicating a clamp?only RGBA32 tile load	applied@2402ae2
+func_81403AB8	Gfx_LoadTextureBlockRGBA16_Clamp	w15		Gfx_LoadTextureBlockRGBA16 called with G_TX_NOMIRROR|G_TX_CLAMP for both S and T, indicating a clamp?only RGBA16 block load	applied@2402ae2
+func_81403B04	Gfx_LoadMultiTextureRGBA16	w15		Uses gDPLoadMultiTile twice to load two RGBA16 textures into consecutive tiles, setting up a multi?texture material	applied@2402ae2
+func_81403D20	Gfx_LoadTextureBlockRGBA16_MirrorWrapS	w15		Calls Gfx_LoadTextureBlockRGBA16 with G_TX_MIRROR|G_TX_WRAP on S and clamp on T, indicating mirror?wrap on the S axis	applied@2402ae2
+func_81403D80	Gfx_LoadTextureBlockRGBA16_MirrorWrapT	w15		Calls Gfx_LoadTextureBlockRGBA16 with clamp on S and G_TX_MIRROR|G_TX_WRAP on T, indicating mirror?wrap on the T axis	applied@2402ae2
+func_81403DE0	Gfx_LoadTextureBlockRGBA16_MirrorWrapST	w15		Calls Gfx_LoadTextureBlockRGBA16 with G_TX_MIRROR|G_TX_WRAP on both S and T, indicating mirror?wrap on both axes	applied@2402ae2
+func_81403E50	Gfx_LoadTextureBlockRGBA16_MaskS	w15		Passes a custom masks value for S while loading an RGBA16 block, indicating a masked?S load	applied@2402ae2
+func_81403F8C	Gfx_LoadTextureBlockIA8_Clamp	w15		Gfx_LoadTextureBlockIA8 called with G_TX_NOMIRROR|G_TX_CLAMP for both S and T, indicating a clamp?only IA8 block load	applied@2402ae2
+func_81404094	Gfx_LoadTextureBlockI_Clamp	w15		Gfx_LoadTextureBlock called with format G_IM_FMT_I and G_TX_NOMIRROR|G_TX_CLAMP, indicating a clamp?only intensity block load	applied@2402ae2
+func_814040E0	Gfx_LoadTextureBlockI_MirrorWrap	w15		Gfx_LoadTextureBlock called with format G_IM_FMT_I and G_TX_MIRROR|G_TX_WRAP for both axes, indicating mirror?wrap intensity block load	applied@2402ae2
+func_81404580	Gfx_LoadTextureBlockCI_Clamp	w15		Gfx_LoadTextureBlock called with format G_IM_FMT_CI and clamp flags, indicating a clamp?only color?indexed block load	applied@2402ae2
+func_81404670	Gfx_SetupMultiTextureCI_RGBA16	w15		Sets combine mode then loads a CI texture via gDPLoadMultiBlock and an RGBA16 texture via gDPLoadTextureBlock, configuring a dual?texture material	applied@2402ae2
+func_81405A90	Gfx_SetFogColor	w15		Calls gDPSetFogColor after a pipe sync, directly setting the fog color	applied@2402ae2
+func_81405B70	Gfx_SetPrimColorCombinePrimitive	w15		Sets primitive color and then configures the combine mode to use PRIMITIVE and TEXEL0, indicating a primitive?only combine setup	applied@2402ae2

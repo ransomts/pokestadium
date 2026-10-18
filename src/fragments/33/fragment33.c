@@ -80,7 +80,7 @@ static Gfx D_81303DD8[] = {
 
 static u32 D_81303EC0[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_81303D18, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_81300020, D_81303DD8, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, GraphNode_RenderMenu, D_81303DD8, 0x06000000, 0x01000000,
 };
 
 static u32 D_81303EF4[] = {
@@ -97,7 +97,7 @@ static Color_RGB8 D_81303F14 = { 0x64, 0x1E, 0x1E };
 static s32 pad_D_81303F18 = 0;
 static u8* D_81303F1C[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
 
-s32 func_81300020(s32 arg0, GraphNode* arg1) {
+s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
     s32 idx;
 
     if (arg0 == 5) {
@@ -131,7 +131,7 @@ s32 func_813001C0(void) {
     return sp18.unk_00;
 }
 
-void func_813001EC(void) {
+void StartEntrySelection(void) {
     if (D_81304000 >= 0) {
         D_81304008[D_81304000].unk_000 = 1;
         D_81304008[D_81304000].unk_020 = -D_81304008[D_81304000].unk_028.unk_024.x / 20.0f;
@@ -140,7 +140,7 @@ void func_813001EC(void) {
     }
 }
 
-s32 func_81300254(s32 arg0) {
+s32 GetEntryStatus(s32 arg0) {
     unk_D_81303FA8* ptr = &D_81303FA8[arg0];
     s32 var_v1;
 
@@ -166,10 +166,10 @@ s32 func_81300254(s32 arg0) {
     return var_v1;
 }
 
-s32 func_81300314(s32 arg0) {
+s32 GetEntryMenuOption(s32 arg0) {
     UNUSED s32 pad;
     s32 sp18 = 0;
-    s32 temp_v0 = func_81300254(arg0);
+    s32 temp_v0 = GetEntryStatus(arg0);
 
     if (gCurrentGameState == 0x25) {
         if (temp_v0 & 0x10) {
@@ -197,7 +197,7 @@ s32 func_81300314(s32 arg0) {
     return sp18;
 }
 
-void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
+void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
     s16 tmp2;
     s16 tmp1;
 
@@ -207,13 +207,13 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
         tmp1 = 0xFF;
     }
 
-    if (func_81300314(arg0) == 0) {
-        func_81301668(arg1, arg2, 0x78, 0x38, 0x1E, 0x1E, 0x82, tmp1);
+    if (GetEntryMenuOption(arg0) == 0) {
+        DrawBorderedPanel(arg1, arg2, 0x78, 0x38, 0x1E, 0x1E, 0x82, tmp1);
     } else {
-        func_81301668(arg1, arg2, 0x78, 0x38, 0x64, 0x1E, 0x1E, tmp1);
+        DrawBorderedPanel(arg1, arg2, 0x78, 0x38, 0x64, 0x1E, 0x1E, tmp1);
     }
 
-    if ((arg0 == D_81304000) && (D_81304650 == 1) && (func_81300314(arg0) > 0)) {
+    if ((arg0 == D_81304000) && (D_81304650 == 1) && (GetEntryMenuOption(arg0) > 0)) {
         DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &D_81303F14, &D_81303F14);
         tmp1 = arg1 + 0x28;
         tmp2 = (SINS(D_81303CB0 * 2) * 2) + (arg2 + 0x8C);
@@ -226,7 +226,7 @@ void func_813003B4(s32 arg0, s32 arg1, s32 arg2) {
     Text_SetLineHeight(0x18);
 
     if ((arg0 == D_81304000) && (D_81304650 == 1)) {
-        switch (func_81300314(arg0)) {
+        switch (GetEntryMenuOption(arg0)) {
             case 1:
                 Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, D_81304658, 0xE));
                 break;
@@ -304,7 +304,7 @@ void func_81300870(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5) {
     gDisplayListHead = gfx;
 }
 
-void func_81300DA4(void) {
+void UpdatePulseAlpha(void) {
     static s16 D_81303F30 = 0;
     static u16 D_81303F34[] = { 0, 0x6400, 0, 0xFF00 };
 
@@ -321,7 +321,7 @@ void func_81300DA4(void) {
     }
 }
 
-void func_81300DF8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6) {
+void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6) {
     Gfx* gfx = gDisplayListHead;
     u16 tmpa1;
     u16 tmpa2;
@@ -365,7 +365,7 @@ void func_81300DF8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s
     }
 }
 
-void func_81301668(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -433,37 +433,37 @@ void func_81301668(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_81301E8C(void) {
+void RenderMenuScreen(void) {
     static s32 D_81303F3C = 0;
 
-    func_81300DA4();
+    UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
         func_81300870(D_81303F1C[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
         D_81303F3C = (D_81303F3C + 1) % 5;
-        func_81300DF8(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
-        func_81300DF8(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
-        func_81300DF8(D_30055B0, 0x1AA, 0xEE, 0x20, 0x23, 2.0f, -1);
-        func_81300DF8(D_3004EF0, 0x172, 0xFC, 0x28, 0x2B, 2.0f, -1);
-        func_81300DF8(D_3005A18, 0x102, 0xAC, 0x40, 0x19, 2.0f, 1);
+        DrawTextureRectFlipped(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
+        DrawTextureRectFlipped(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
+        DrawTextureRectFlipped(D_30055B0, 0x1AA, 0xEE, 0x20, 0x23, 2.0f, -1);
+        DrawTextureRectFlipped(D_3004EF0, 0x172, 0xFC, 0x28, 0x2B, 2.0f, -1);
+        DrawTextureRectFlipped(D_3005A18, 0x102, 0xAC, 0x40, 0x19, 2.0f, 1);
     }
 
     if (D_81304000 >= 0) {
-        func_81301668(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
+        DrawBorderedPanel(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_Print(0x132 - (MeasureTextWidth(0, 0, GetMessageString(NULL, 0, D_81304658, 0x12)) / 2), 0x1A1,
                       GetMessageString(NULL, 0, D_81304658, 0x12));
         Text_SetupDL();
-        func_813003B4(0, 0x38, 0x2E);
-        func_813003B4(1, 0xBC, 0x2E);
-        func_813003B4(2, 0x140, 0x2E);
-        func_813003B4(3, 0x1C4, 0x2E);
+        DrawEntryPanel(0, 0x38, 0x2E);
+        DrawEntryPanel(1, 0xBC, 0x2E);
+        DrawEntryPanel(2, 0x140, 0x2E);
+        DrawEntryPanel(3, 0x1C4, 0x2E);
         if (D_81304650 == 1) {
             DrawStatusIcon((SINS(D_81303CB0) * 5.0f) + ((D_81304000 * 0x84) + 0x38), 0x7E);
         }
     } else {
-        func_81301668(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
+        DrawBorderedPanel(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetLineHeight(0x1C);
@@ -473,7 +473,7 @@ void func_81301E8C(void) {
     D_81303CB0 += 0xB80;
 }
 
-void func_8130222C(void) {
+void HandleEntryNavigation(void) {
     if (D_81304650 == 0) {
         return;
     }
@@ -484,7 +484,7 @@ void func_8130222C(void) {
         while (true) {
             D_81304000 = (D_81304000 + 3) % 4;
 
-            if (D_81303FA8[D_81304000].unk_01 != 0 || func_81300314(D_81304000) > 0) {
+            if (D_81303FA8[D_81304000].unk_01 != 0 || GetEntryMenuOption(D_81304000) > 0) {
                 break;
             }
         }
@@ -492,7 +492,7 @@ void func_8130222C(void) {
         while (true) {
             D_81304000 = (D_81304000 + 1) % 4;
 
-            if (D_81303FA8[D_81304000].unk_01 != 0 || func_81300314(D_81304000) > 0) {
+            if (D_81303FA8[D_81304000].unk_01 != 0 || GetEntryMenuOption(D_81304000) > 0) {
                 break;
             }
         }
@@ -504,7 +504,7 @@ void func_8130222C(void) {
     }
 }
 
-void func_8130237C(void) {
+void HandleEntryConfirmCancel(void) {
     s32 var_v0;
 
     if (D_81304650 > 0) {
@@ -514,14 +514,14 @@ void func_8130237C(void) {
                 var_v0 = 1;
             }
 
-            if ((var_v0 == 0) && (func_81300314(D_81304000) != 1)) {
+            if ((var_v0 == 0) && (GetEntryMenuOption(D_81304000) != 1)) {
                 if (gCurrentGameState == 0x25) {
                     PlaySoundEffect(0x2A);
                 } else {
                     PlaySoundEffect(0x2B);
                 }
                 D_81304A64 = 1;
-                func_813001EC();
+                StartEntrySelection();
             } else {
                 PlaySoundEffect(8);
             }
@@ -529,7 +529,7 @@ void func_8130237C(void) {
             PlaySoundEffect(3);
             D_81304A64 = 2;
         } else if (D_81304000 >= 0) {
-            func_8130222C();
+            HandleEntryNavigation();
         }
     }
 }
@@ -549,10 +549,10 @@ void func_813024C8(s32 arg0) {
     }
 
     if (arg0 != 0) {
-        func_8130237C();
+        HandleEntryConfirmCancel();
     }
 
-    func_81301E8C();
+    RenderMenuScreen();
     Graph_SetTextureState(D_8130464C);
     Stage_Advance();
 }
@@ -583,7 +583,7 @@ void func_81302630(void) {
 
     if (sp28 == 0) {
         for (i = 0; i < 4; i++) {
-            if (func_81300314(i) == 1) {
+            if (GetEntryMenuOption(i) == 1) {
                 var_s1++;
             }
         }
@@ -598,7 +598,7 @@ void func_81302630(void) {
 
     if (sp28 == 0) {
         D_81304000 = 0;
-        while (func_81300314(D_81304000) != 1) {
+        while (GetEntryMenuOption(D_81304000) != 1) {
             D_81304000++;
         }
     } else if ((D_81304000 == -1) || (D_81303FA8[D_81304000].unk_01 == 0)) {
@@ -771,7 +771,7 @@ void func_81302C20(void) {
 
             default:
                 D_81304008[temp_s1].unk_01C = NULL;
-                if (func_81300314(temp_s1) > 0) {
+                if (GetEntryMenuOption(temp_s1) > 0) {
                     D_81304008[temp_s1].unk_01C = D_3006668;
                 }
                 break;

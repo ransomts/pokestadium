@@ -2081,8 +2081,8 @@ void func_86F013B8(void) {
         case 2:
             ApproachF32(&gMiniCameraDistanceBackup, 250.0f, 1.0f);
             ApproachF32(&gMiniCameraCoordsBackup.y, 34.0f, 1.8f);
-            func_81400550(&gMiniCameraXRotBackup, 0x600, 0xCC);
-            func_81400550(&miniHudTransparency, 0, 0x30);
+            ApproachS16Signed(&gMiniCameraXRotBackup, 0x600, 0xCC);
+            ApproachS16Signed(&miniHudTransparency, 0, 0x30);
             break;
     }
 

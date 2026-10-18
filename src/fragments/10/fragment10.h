@@ -35,7 +35,7 @@ typedef struct unk_D_86405158 {
     /* 0x16D */ u8 unk_16D;
 } unk_D_86405158; // size = 0x170
 
-extern u8 D_86402848;
+extern u8 gUseAlphaBlend;
 extern u16 gGaugeSegmentLengths[4][14][8];
 extern Gfx gHealthBarDL[];
 extern Gfx gHealthBarQuadDL[];

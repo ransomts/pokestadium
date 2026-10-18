@@ -254,7 +254,7 @@ void func_83200684(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 void func_83200700(s16 arg0, s16 arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x18, 0xE, Util_ConvertAddrToVirtAddr(D_8C200090), 0x18, 0x200000);
 

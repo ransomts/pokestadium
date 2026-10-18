@@ -21,7 +21,7 @@ static u8 pad_D_81004B98[0x8];
 static s32 gFragment31_Tex3Counter;
 static u8 pad_D_81004BA8[0x8];
 static s32 gFragment31_NumberDrawPhase;
-static char D_81004BB8[0x28];
+static char gFragment31_NumberStringBuffer[0x28];
 
 void Fragment31_LoadTexture0(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
@@ -32,7 +32,7 @@ void Fragment31_LoadTexture0(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81002F38(s32 arg0, DisplayListState* state) {
+void Fragment31_Tex0StateHandler(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -59,7 +59,7 @@ void Fragment31_LoadTexture1(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81003138(s32 arg0, DisplayListState* state) {
+void Fragment31_Tex1StateHandler(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -86,7 +86,7 @@ void Fragment31_LoadTexture2(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81003338(s32 arg0, DisplayListState* state) {
+void Fragment31_Tex2StateHandler(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -113,7 +113,7 @@ void Fragment31_LoadTexture3(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81003538(s32 arg0, DisplayListState* state) {
+void Fragment31_Tex3StateHandler(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -132,27 +132,27 @@ void func_81003538(s32 arg0, DisplayListState* state) {
 }
 
 void Fragment31_DrawAnimatedTile(s32 arg0, DisplayListState* state) {
-    static u8 D_81004190 = 0;
+    static u8 gFragment31_AnimatedTileCounter = 0;
     s32 temp_a1;
     s32 temp_a2;
     Gfx* gfx;
 
     if (arg0 == 2) {
         gfx = GfxAlloc(0x10);
-        temp_a1 = D_81004190 * 3;
-        temp_a2 = D_81004190 * -6;
+        temp_a1 = gFragment31_AnimatedTileCounter * 3;
+        temp_a2 = gFragment31_AnimatedTileCounter * -6;
         state->gfx = gfx;
         {    Gfx *_gfx = (Gfx *)(gfx++); _gfx->words.w0 = (((temp_a1 & 0xFFF) << 0xC) | 0xF2000000 | (temp_a2 & 0xFFF));    _gfx->words.w1 = ((((0x27F << (temp_a1 + 2)) & 0xFFF) << 0xC) | ((0x7F << (temp_a2 + 2)) & 0xFFF));    }
         gSPEndDisplayList(gfx++);
-        D_81004190++;
-        D_81004190 &= 0x7F;
+        gFragment31_AnimatedTileCounter++;
+        gFragment31_AnimatedTileCounter &= 0x7F;
     }
 }
 
 void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
-    static u8 D_81004194 = 0;
-    static u8 D_81004198 = 0;
-    static Keyframe D_8100419C[6] = {
+    static u8 gFragment31_ColorCyclePhase = 0;
+    static u8 gFragment31_ColorCycleFrame = 0;
+    static Keyframe gFragment31_ColorCycleKeyframes[6] = {
         { { 0xFF, 0x32, 0x32 }, 0  },
         { { 0xC8, 0xC8, 0x00 }, 10 },
         { { 0x64, 0xFF, 0x00 }, 20 },
@@ -170,29 +170,29 @@ void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
         gfx = GfxAlloc(sizeof(Gfx) * 4);
         state->gfx = gfx;
         for (i = 0; i < 5; i++) {
-            if (D_81004198 == D_8100419C[i].frameStart) {
+            if (gFragment31_ColorCycleFrame == gFragment31_ColorCycleKeyframes[i].frameStart) {
                 for(c = 0; c < 3; c++) {
-                    sp48[c] = D_8100419C[i].rgb0[c];
+                    sp48[c] = gFragment31_ColorCycleKeyframes[i].rgb0[c];
                 }
                 break;
             }
-            if (D_8100419C[i].frameStart < D_81004198 && D_81004198 < D_8100419C[i + 1].frameStart) {
+            if (gFragment31_ColorCycleKeyframes[i].frameStart < gFragment31_ColorCycleFrame && gFragment31_ColorCycleFrame < gFragment31_ColorCycleKeyframes[i + 1].frameStart) {
                 for(c = 0; c < 3; c++) {
-                    sp48[c] = (s32) (((f32) ((D_8100419C[i + 1].rgb0[c] - D_8100419C[i].rgb0[c]) * (D_81004198 - D_8100419C[i].frameStart)) / (f32) (D_8100419C[i + 1].frameStart - D_8100419C[i].frameStart)) + D_8100419C[i].rgb0[c] + 0.5f);
+                    sp48[c] = (s32) (((f32) ((gFragment31_ColorCycleKeyframes[i + 1].rgb0[c] - gFragment31_ColorCycleKeyframes[i].rgb0[c]) * (gFragment31_ColorCycleFrame - gFragment31_ColorCycleKeyframes[i].frameStart)) / (f32) (gFragment31_ColorCycleKeyframes[i + 1].frameStart - gFragment31_ColorCycleKeyframes[i].frameStart)) + gFragment31_ColorCycleKeyframes[i].rgb0[c] + 0.5f);
                 }
                 break;
             }
         }
         gDPSetPrimColor(gfx++, 0, 0x80, sp48[0], sp48[1], sp48[2], 180);
-        gDPSetTileSize(gfx++, 0, -2 * D_81004194, 0, (320 - 1) << ((-2 * D_81004194) + 2), (64 - 1) << 2);
-        gDPSetTileSize(gfx++, 1, 2 * D_81004194, 0, (320 - 1) << ((2 * D_81004194) + 2), (64 - 1) << 2);
+        gDPSetTileSize(gfx++, 0, -2 * gFragment31_ColorCyclePhase, 0, (320 - 1) << ((-2 * gFragment31_ColorCyclePhase) + 2), (64 - 1) << 2);
+        gDPSetTileSize(gfx++, 1, 2 * gFragment31_ColorCyclePhase, 0, (320 - 1) << ((2 * gFragment31_ColorCyclePhase) + 2), (64 - 1) << 2);
         gSPEndDisplayList(gfx++);
-        D_81004194++;
-        D_81004194 &= 0x7F;
-        D_81004198++;
-        D_81004198 &= 0xFF;
-        if ((s32) D_81004198 >= 0x32) {
-            D_81004198 = 0;
+        gFragment31_ColorCyclePhase++;
+        gFragment31_ColorCyclePhase &= 0x7F;
+        gFragment31_ColorCycleFrame++;
+        gFragment31_ColorCycleFrame &= 0xFF;
+        if ((s32) gFragment31_ColorCycleFrame >= 0x32) {
+            gFragment31_ColorCycleFrame = 0;
         }
     }
 }
@@ -255,9 +255,9 @@ void Fragment31_DrawNumberDigit(Gfx* gfx) {
     default:
         {
         sp34 = GetMessageString(0, 0, D_8267E760, temp_t0);
-        sprintf(D_81004BB8, "%s     ", sp34);
+        sprintf(gFragment31_NumberStringBuffer, "%s     ", sp34);
         temp_v1 = gFragment31_NumberDrawPhase - 3;
-        sp4D = GetCharIndexFromFontTables((u8) D_81004BB8[temp_v1]);
+        sp4D = GetCharIndexFromFontTables((u8) gFragment31_NumberStringBuffer[temp_v1]);
         sp2C = 0xA - StringLength((s8*)sp34);
         sp30 = GfxAlloc(sizeof(Mtx));
         guTranslate(sp30, (f32) sp2C * 32.0f, 0.0f, 0.0f);
@@ -280,7 +280,7 @@ void Fragment31_CreateOverlay(s32 arg0, DisplayListState* state) {
     }
 }
 
-void func_81003D2C(s32 arg0, DisplayListState* state) {
+void Fragment31_NumberDigitStateHandler(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {

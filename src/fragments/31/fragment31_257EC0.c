@@ -3,7 +3,7 @@
 #include "src/12D80.h"
 #include "src/32D10.h"
 
-void func_81002C00(Gfx* gfx) {
+void Stage_SetHpWheelDigitTensMatrix(Gfx* gfx) {
     Mtx* mtx;
     u8 angle;
 
@@ -14,12 +14,12 @@ void func_81002C00(Gfx* gfx) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81002CA0(s32 arg0, DisplayListState* state) {
+void Stage_CreateHpWheelDigitTens(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
         gfx = GfxAlloc(0x50);
         state->gfx = gfx;
-        func_81002C00(gfx);
+        Stage_SetHpWheelDigitTensMatrix(gfx);
     }
 }

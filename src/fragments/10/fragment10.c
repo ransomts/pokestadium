@@ -31,7 +31,7 @@ static unk_D_864027C0 gPlayerSpawnInfo[] = {
 static u16 D_86402840 = 0;
 static u16 D_86402844 = 0;
 
-u8 D_86402848 = 0;
+u8 gUseAlphaBlend = 0;
 
 static u8 gHealthBarSegmentTable[][8] = {
     { 0x12, 0x13, 0x14, 0x15, 0x3A, 0x3B, 0x3C, 0x3D }, { 0x10, 0x11, 0x12, 0x13, 0x34, 0x35, 0x36, 0x37 },
@@ -381,13 +381,13 @@ void func_86400BE8(s32 arg0) {
                 }
             }
 
-            D_86402848 = 0;
+            gUseAlphaBlend = 0;
 
             if (D_87B000C8 == 0) {
                 for (i = 0; i < 8; i++) {
                     temp = gCurrentHealthSegment;
                     if ((temp + 1) == gHealthBarSegmentTable[D_864052CC->unk_000][i]) {
-                        D_86402848 = 1;
+                        gUseAlphaBlend = 1;
                         break;
                     }
                 }

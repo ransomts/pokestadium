@@ -33,19 +33,19 @@ typedef struct unk_D_81303FA8 {
     /* 0x09 */ char unk09[0xD];
 } unk_D_81303FA8; // size = 0x16
 
-s32 func_81300020(s32 arg0, GraphNode* arg1);
+s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1);
 s32 func_813001C0(void);
-void func_813001EC(void);
-s32 func_81300254(s32 arg0);
-s32 func_81300314(s32 arg0);
-void func_813003B4(s32 arg0, s32 arg1, s32 arg2);
+void StartEntrySelection(void);
+s32 GetEntryStatus(s32 arg0);
+s32 GetEntryMenuOption(s32 arg0);
+void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2);
 void func_81300870(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5);
-void func_81300DA4(void);
-void func_81300DF8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6);
-void func_81301668(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-void func_81301E8C(void);
-void func_8130222C(void);
-void func_8130237C(void);
+void UpdatePulseAlpha(void);
+void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6);
+void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
+void RenderMenuScreen(void);
+void HandleEntryNavigation(void);
+void HandleEntryConfirmCancel(void);
 void func_81302498(void);
 void func_813024C8(s32 arg0);
 void func_81302548(void);

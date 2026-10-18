@@ -34,7 +34,7 @@ typedef struct unk_D_81004160 {
 } unk_D_81004160; // size = 0x10
 
 // .data
-unk_D_81003FE0 D_81003FE0[18] = {
+unk_D_81003FE0 gParticleConditionTable[18] = {
     { 0x002C, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
     { 0x0020, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
     { 0x0024, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
@@ -54,17 +54,17 @@ unk_D_81003FE0 D_81003FE0[18] = {
     { 0x002C, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
     { 0x0024, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
 };
-s16 D_810040B8[18] = {
+s16 gParticleConditionIndexSeq[18] = {
     0x0011, 0x0007, 0x0006, 0x0005, 0x0004, 0x0003, 0x0002, 0x0001, 0x0000,
     0x0010, 0x000F, 0x000E, 0x000D, 0x000C, 0x000B, 0x000A, 0x0009, 0x0008,
 };
-f32 D_810040DC[12] = {
+f32 gParticleScaleTable[12] = {
     0.5f, 0.6499999762f, 0.8000000119f, 0.9499999881f, 0.875f, 0.8000000119f,
     0.7250000238f, 0.6499999762f, 0.5749999881f, 0.5f, 0.4250000119f, 0.349999994f,
 };
-Vec3f D_8100410C = { 0.0f, 0.0f, 0.0f };
+Vec3f gVecZero = { 0.0f, 0.0f, 0.0f };
 Vec3f D_81004118 = { 0.0f, 0.0f, 0.0f };
-Vec3f D_81004124 = { 1.0f, 1.0f, 1.0f };
+Vec3f gVecOne = { 1.0f, 1.0f, 1.0f };
 Vec3f D_81004130 = { 2.0f, 2.0f, 2.0f };
 Vec3f D_8100413C = { 0.0f, 10.0f, 0.0f };
 Vec3f D_81004148 = { 10000.0f, 10000.0f, 10000.0f };
@@ -78,12 +78,12 @@ static s32 D_81004B50;
 static s32 D_81004B54;
 
 
-void func_810005F0(Fragment2_1GraphNode* arg0, s32 arg1) {
+void Particle_ClearSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
     u8 var_v0 = arg0->unk_0A6;
     s32 pad[2];
-    Vec3f sp50 = D_8100410C;
+    Vec3f sp50 = gVecZero;
     Vec3f sp44 = D_81004118;
-    Vec3f sp38 = D_81004124;
+    Vec3f sp38 = gVecOne;
     Vec3f sp2C = D_81004130;
     Vec3f sp20 = D_8100413C;
     Vec3f sp14 = D_81004148;
@@ -102,20 +102,20 @@ void func_810005F0(Fragment2_1GraphNode* arg0, s32 arg1) {
     D_810047E0[var_v0 & 1][arg1].scale = sp38;
 }
 
-void func_810007A8(Fragment2_1GraphNode* arg0) {
+void Particle_ClearAllSlots(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        func_810005F0(arg0, i);
+        Particle_ClearSlot(arg0, i);
     }
 }
 
-void func_810007F8(void) {
+void Particle_ResetCounters(void) {
     D_81004B50 = 0;
     D_81004B54 = 0;
 }
 
-void func_8100080C(unk_D_810047E0* arg0) {
+void Particle_Activate(unk_D_810047E0* arg0) {
     s32 var_v0;
     Vec3f sp90;
     Vec3f sp84;
@@ -172,18 +172,18 @@ void func_8100080C(unk_D_810047E0* arg0) {
         break;
     case 0x90:
         var_fs0 = 0.0f;
-        sp64.x = D_810040DC[0];
-        sp64.y = D_810040DC[0];
-        sp64.z = D_810040DC[0];
+        sp64.x = gParticleScaleTable[0];
+        sp64.y = gParticleScaleTable[0];
+        sp64.z = gParticleScaleTable[0];
         sp84.x += (f32) ((guRandom() % 20) - 0xA) * sp60;
         sp84.y += (f32) ((guRandom() % 20) - 0xA) * sp5C;
         sp84.z += (f32) ((guRandom() % 20) - 0xA) * sp58;
         break;
     case 0x86:
         var_fs0 = 0.0f;
-        sp64.x = D_810040DC[0];
-        sp64.y = D_810040DC[0];
-        sp64.z = D_810040DC[0];
+        sp64.x = gParticleScaleTable[0];
+        sp64.y = gParticleScaleTable[0];
+        sp64.z = gParticleScaleTable[0];
         sp84.x += (f32) ((guRandom() % 60) - 0x1E) * sp60;
         sp84.y += (f32) ((guRandom() % 40) - 0xA) * sp5C;
         sp84.z += (f32) ((guRandom() % 60) - 0x1E) * sp58;
@@ -226,7 +226,7 @@ void func_8100080C(unk_D_810047E0* arg0) {
     }
 }
 
-void func_81000E78(unk_D_810047E0* arg0) {
+void Particle_TryActivate(unk_D_810047E0* arg0) {
     s32 pad[1];
     s16 temp_v1;
     s32 var_a1;
@@ -239,20 +239,20 @@ void func_81000E78(unk_D_810047E0* arg0) {
     case 0x6D:
     case 0x6E:
         temp_v1 = gDefaultGraphRoot->unk_040.unk_00;
-        temp_a0 = D_810040B8[D_81004B54 % 18];
+        temp_a0 = gParticleConditionIndexSeq[D_81004B54 % 18];
         switch(temp_v1) {
         case 4:
-            if (var_a1 == D_81003FE0[temp_a0].unk_02) {
-                func_8100080C(arg0);
+            if (var_a1 == gParticleConditionTable[temp_a0].unk_02) {
+                Particle_Activate(arg0);
                 return;
             }
             break;
         case 3:
                 var_v0 = 0;
-                var_v1 = &D_81003FE0[temp_a0].unk_00;
+                var_v1 = &gParticleConditionTable[temp_a0].unk_00;
                 do {
                     if (var_a1 == var_v1[2]) {
-                        func_8100080C(arg0);
+                        Particle_Activate(arg0);
                     }
                     var_v0 += 2;
                     var_v1 ++;
@@ -260,14 +260,14 @@ void func_81000E78(unk_D_810047E0* arg0) {
                 return;
             break;
         case 2:
-            if (var_a1 == D_81003FE0[temp_a0].unk_0A) {
-                func_8100080C(arg0);
+            if (var_a1 == gParticleConditionTable[temp_a0].unk_0A) {
+                Particle_Activate(arg0);
                 return;
             }
             break;
         default:
-            if (var_a1 == D_81003FE0[temp_a0].unk_00) {
-                func_8100080C(arg0);
+            if (var_a1 == gParticleConditionTable[temp_a0].unk_00) {
+                Particle_Activate(arg0);
                 return;
             }
             return;
@@ -275,35 +275,35 @@ void func_81000E78(unk_D_810047E0* arg0) {
         break;
     case 0x92:
         if ((guRandom() % 60) == 0) {
-            func_8100080C(arg0);
+            Particle_Activate(arg0);
             return;
         }
         break;
     case 0x90:
         if ((guRandom() % 30) == 0) {
-            func_8100080C(arg0);
+            Particle_Activate(arg0);
             return;
         }
         break;
     case 0x86:
         if ((guRandom() % 7) == 0) {
-            func_8100080C(arg0);
+            Particle_Activate(arg0);
             return;
         }
         break;
     case 0x5C:
-        func_8100080C(arg0);
+        Particle_Activate(arg0);
         return;
     case 0x4D:
     case 0x4E:
         if ((guRandom() % 7) == 0) {
-            func_8100080C(arg0);
+            Particle_Activate(arg0);
         }
         break;
     }
 }
 
-Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
+Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
     Mtx* sp294;
     Mtx sp250;
     Mtx sp210;
@@ -453,7 +453,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
         case 0x90:
             arg1->position.y -= 0.5f * var_v0->unk_030.y;
             arg1->misc++;
-            temp_f = D_810040DC[arg1->misc % 12];
+            temp_f = gParticleScaleTable[arg1->misc % 12];
             arg1->scale.x = temp_f;
             arg1->scale.y = temp_f;
             arg1->scale.z = temp_f;
@@ -463,7 +463,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
             break;
         case 0x86:
             arg1->misc++;
-            temp_f = D_810040DC[arg1->misc % 12];
+            temp_f = gParticleScaleTable[arg1->misc % 12];
             arg1->scale.x = temp_f;
             arg1->scale.y = temp_f;
             arg1->scale.z = temp_f;
@@ -489,18 +489,18 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     return gfx;
 }
 
-Gfx* func_81001D80(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
+Gfx* Particle_RenderAll(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
     s32 i;
 
     for (i = 0; i < 10; i++, arg1++) {
         if (arg1->active == 1) {
-            gfx = func_810010BC(gfx, arg1, arg2, arg3);
+            gfx = Particle_Render(gfx, arg1, arg2, arg3);
         }
     }
     return gfx;
 }
 
-void func_81001E24(s32 arg0, DisplayListState* state) {
+void Particle_Process(s32 arg0, DisplayListState* state) {
     s32 pad[2];
     s32 sp5C;
     unk_D_810047E0* sp1C;
@@ -531,40 +531,40 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
             temp_v0 = gDefaultGraphRoot->unk_01A;
             switch (gDefaultGraphRoot->unk_01A) {
                 case 0x5C:
-                    func_81000E78(&D_810047E0);
+                    Particle_TryActivate(&D_810047E0);
                     if (D_81004B54 == 0) {
-                        gfx = func_81001D80(gfx, &D_810047E0, sp5C, 0);
+                        gfx = Particle_RenderAll(gfx, &D_810047E0, sp5C, 0);
                     }
                     break;
                 case 0x6D:
                 case 0x6E:
                     var_a3 = 0;
                     temp_v0_2 = gDefaultGraphRoot->unk_040.unk_00;
-                    temp_a2 = D_810040B8[D_81004B54 % 18];
+                    temp_a2 = gParticleConditionIndexSeq[D_81004B54 % 18];
                     temp_a1 = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
                     switch (temp_v0_2) {
                     case 4:
-                        temp_a0 = D_81003FE0[temp_a2].unk_02;
+                        temp_a0 = gParticleConditionTable[temp_a2].unk_02;
                         if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                             var_a3 = 1;
                         }
                         break;
                     case 3:
                         for (i = 0; i < 3; i++) {
-                            temp_a0 = D_81003FE0[temp_a2].unk_04[i];
+                            temp_a0 = gParticleConditionTable[temp_a2].unk_04[i];
                             if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                                 var_a3 = 1;
                             }
                         }
                         break;
                     case 2:
-                        temp_a0 = D_81003FE0[temp_a2].unk_0A;
+                        temp_a0 = gParticleConditionTable[temp_a2].unk_0A;
                         if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                             var_a3 = 1;
                         }
                         break;
                     default:
-                        temp_a0 = D_81003FE0[temp_a2].unk_00;
+                        temp_a0 = gParticleConditionTable[temp_a2].unk_00;
                         if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                             var_a3 = 1;
                         }
@@ -573,22 +573,22 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
                     if (var_a3 == 1) {
                         temp_a1_2 = &D_810047E0[0][D_81004B50];
                         if (temp_a1_2->active == 1) {
-                            gfx = func_810010BC(gfx, temp_a1_2, sp5C, 0);
+                            gfx = Particle_Render(gfx, temp_a1_2, sp5C, 0);
                         }
                     }
                     break;
             }
         } else if (temp_v1 == 0xFE) {
             if (D_81004B54 == 0) {
-                gfx = func_81001D80(gfx, &D_810047E0, sp5C, 0);
+                gfx = Particle_RenderAll(gfx, &D_810047E0, sp5C, 0);
             }
         } else if (((s32) temp_v1 < 2) && (D_81004B50 >= 0) && (D_81004B50 < 0xB)) {
             temp_a1_3 = &D_810047E0[temp_v1 & 1][0];
             sp1C = temp_a1_3;
             sp18 = (s32) temp_v1;
-            func_81000E78(temp_a1_3);
+            Particle_TryActivate(temp_a1_3);
             if (D_81004B54 == 0) {
-                gfx = func_81001D80(gfx, temp_a1_3, sp5C, (s16) temp_v1);
+                gfx = Particle_RenderAll(gfx, temp_a1_3, sp5C, (s16) temp_v1);
             }
         }
         gSPEndDisplayList(gfx);
@@ -596,7 +596,7 @@ void func_81001E24(s32 arg0, DisplayListState* state) {
     D_81004B54 += 1;
 }
 
-void func_81002174(u8* arg0) {
+void Particle_Serialize(u8* arg0) {
     s32 i;
     s16 var_a1;
     s16 var_a2;
@@ -642,7 +642,7 @@ void func_81002174(u8* arg0) {
     }
 }
 
-void func_81002260(unk_arg0_func_81002260* arg0, u8* arg1) {
+void Particle_Deserialize(unk_arg0_func_81002260* arg0, u8* arg1) {
     unk_D_810047E0* var_v1;
     f32 var_fv0;
     s16 var_a2;
@@ -689,7 +689,7 @@ void func_81002260(unk_arg0_func_81002260* arg0, u8* arg1) {
             break;
         case 0x86:
         case 0x90:
-            var_fv0 = D_810040DC[var_v1->misc % 12];
+            var_fv0 = gParticleScaleTable[var_v1->misc % 12];
             break;
         case 0x6D:
         case 0x6E:

@@ -3,9 +3,9 @@
 #include "src/F420.h"
 #include "src/math_util.h"
 
-unk_D_8140E620* D_8140E620;
-s32 D_8140E624;
-s32 D_8140E624;
+unk_D_8140E620* gMatrixBuffer;
+s32 gMatrixBufferIdx;
+s32 gMatrixBufferIdx;
 unk_D_8140E634 D_8140E628;
 unk_D_8140E634_010* D_8140E6B4;
 u32 D_8140E6B8;
@@ -30,7 +30,7 @@ s32 D_8140E700;
 s32 D_8140E704;
 s32 D_8140E708;
 s32 D_8140E70C;
-s32 D_8140E710;
+s32 gRandomSeedCounter;
 static s32 pad_D_8140E714[2];
 unk_D_8140E720* gParticleInstances;
 unk_D_8140E724* D_8140E724;
@@ -82,7 +82,7 @@ s32 ApproachFloatUp(f32* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_814000E0(f32* arg0, f32 arg1, f32 arg2) {
+s32 ApproachFloatDown(f32* arg0, f32 arg1, f32 arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -121,7 +121,7 @@ s32 ApproachIntDown(s32* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_8140018C(s16* arg0, s16 arg1, s16 arg2) {
+s32 ApproachS16Up(s16* arg0, s16 arg1, s16 arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -134,7 +134,7 @@ s32 func_8140018C(s16* arg0, s16 arg1, s16 arg2) {
     return var_v1;
 }
 
-s32 func_814001DC(u16* arg0, u16 arg1, u16 arg2) {
+s32 ApproachU16Up(u16* arg0, u16 arg1, u16 arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -147,7 +147,7 @@ s32 func_814001DC(u16* arg0, u16 arg1, u16 arg2) {
     return var_v1;
 }
 
-s32 func_81400220(s16* arg0, s16 arg1, s16 arg2) {
+s32 ApproachS16Down(s16* arg0, s16 arg1, s16 arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -160,7 +160,7 @@ s32 func_81400220(s16* arg0, s16 arg1, s16 arg2) {
     return var_v1;
 }
 
-s32 func_81400270(u16* arg0, s32 arg1, s32 arg2) {
+s32 ApproachU16Down(u16* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
     s32 temp_v0 = *arg0;
 
@@ -175,7 +175,7 @@ s32 func_81400270(u16* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_814002A4(f32* arg0, f32 arg1, f32* arg2) {
+s32 ApproachFloatUpPtr(f32* arg0, f32 arg1, f32* arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -188,7 +188,7 @@ s32 func_814002A4(f32* arg0, f32 arg1, f32* arg2) {
     return var_v1;
 }
 
-s32 func_814002F0(f32* arg0, f32 arg1, f32* arg2) {
+s32 ApproachFloatDownPtr(f32* arg0, f32 arg1, f32* arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -201,7 +201,7 @@ s32 func_814002F0(f32* arg0, f32 arg1, f32* arg2) {
     return var_v1;
 }
 
-s32 func_8140033C(s32* arg0, s32 arg1, s32* arg2) {
+s32 ApproachS32UpPtr(s32* arg0, s32 arg1, s32* arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -214,7 +214,7 @@ s32 func_8140033C(s32* arg0, s32 arg1, s32* arg2) {
     return var_v1;
 }
 
-s32 func_81400374(s32* arg0, s32 arg1, s32* arg2) {
+s32 ApproachS32DownPtr(s32* arg0, s32 arg1, s32* arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -227,7 +227,7 @@ s32 func_81400374(s32* arg0, s32 arg1, s32* arg2) {
     return var_v1;
 }
 
-s32 func_814003AC(s16* arg0, s16 arg1, s16* arg2) {
+s32 ApproachS16UpPtr(s16* arg0, s16 arg1, s16* arg2) {
     s32 var_v1 = 0;
 
     if (*arg0 < arg1) {
@@ -240,7 +240,7 @@ s32 func_814003AC(s16* arg0, s16 arg1, s16* arg2) {
     return var_v1;
 }
 
-s32 func_814003F4(s16* arg0, s16 arg1, s16* arg2) {
+s32 ApproachS16DownPtr(s16* arg0, s16 arg1, s16* arg2) {
     s32 var_v1 = 0;
 
     if (arg1 < *arg0) {
@@ -311,7 +311,7 @@ s32 ApproachU8(u8* arg0, u8 arg1, u8 arg2) {
     return var_v1;
 }
 
-s32 func_81400550(s16* arg0, s16 arg1, s16 arg2) {
+s32 ApproachS16Signed(s16* arg0, s16 arg1, s16 arg2) {
     s32 var_v1 = 0;
     s32 var_a3 = *arg0;
 
@@ -345,7 +345,7 @@ s32 func_81400550(s16* arg0, s16 arg1, s16 arg2) {
     return var_v1;
 }
 
-s32 func_814005EC(s16* arg0, s16 arg1, s16 arg2) {
+s32 ApproachU16Wrap(s16* arg0, s16 arg1, s16 arg2) {
     s32 a0 = *(u16*)arg0;
     s32 var_v1 = 0;
     s32 var_a1 = (u16)arg1;
@@ -516,11 +516,11 @@ s32 IsWithinRadius2D(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 
 void func_81400A60(void) {
-    D_8140E710++;
+    gRandomSeedCounter++;
 }
 
 u32 RandomMod(s32 arg0) {
-    u32 temp_a0 = guRandom() + D_8140E710;
+    u32 temp_a0 = guRandom() + gRandomSeedCounter;
     u32 var_v1;
 
     if (arg0 == 0) {
@@ -726,13 +726,13 @@ void func_8140138C(void) {
 }
 
 void func_81401394(MtxF* arg0) {
-    if (D_8140E624 < 0x16C) {
-        Matrix_ConvertToMtx(&D_8140E620->unk_0000[D_8140E624], arg0);
+    if (gMatrixBufferIdx < 0x16C) {
+        Matrix_ConvertToMtx(&gMatrixBuffer->unk_0000[gMatrixBufferIdx], arg0);
 
-        gSPMatrix(gDisplayListHead++, (u32)&D_8140E620->unk_0000[D_8140E624] & 0x1FFFFFFF,
+        gSPMatrix(gDisplayListHead++, (u32)&gMatrixBuffer->unk_0000[gMatrixBufferIdx] & 0x1FFFFFFF,
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        D_8140E624++;
+        gMatrixBufferIdx++;
     }
 }
 

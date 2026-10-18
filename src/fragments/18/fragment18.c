@@ -2242,7 +2242,7 @@ void miniEkansCompControls(MiniActor* compEkans) {
         case 2: //	comp L R
             if (func_86C00B0C(compEkans) != 0) {
                 compEkans->compState = 1;
-            } else if (func_81400550(&compEkans->yRot_2, compEkans->unk_222, compEkans->ySpinSpeed) != 0) {
+            } else if (ApproachS16Signed(&compEkans->yRot_2, compEkans->unk_222, compEkans->ySpinSpeed) != 0) {
                 compEkans->unk_29E = func_86C01408();
                 compEkans->compState++;
             }
@@ -2512,7 +2512,7 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
             ekans->position_2.y = -50.0f;
             ekans->antiAcceleration = 0.0f;
             ekans->ySpeed = 0.0f;
-            func_81400550(&ekans->ySpinSpeed, 0, 0x100);
+            ApproachS16Signed(&ekans->ySpinSpeed, 0, 0x100);
         }
 
         if (ekans->unk_29E < 6) {
@@ -2610,7 +2610,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
         case 0x64: //	start win animation
             ApproachF32(&ekans->position_2.x, 0.0f, 4.0f);
             ApproachF32(&ekans->position_2.z, 0.0f, 4.0f);
-            if (func_81400550(&ekans->yRot_2, -0x8000, 0x400) != 0) {
+            if (ApproachS16Signed(&ekans->yRot_2, -0x8000, 0x400) != 0) {
                 ekans->mainState++;
                 GraphNode_TriggerAction(&ekans->unk_000, 2);
             }
@@ -3312,7 +3312,7 @@ void func_86C03ED4(void) {
         if (ekans->mainState == 2) {
             gSPDisplayList(gDisplayListHead++, D_8140DD58);
 
-            func_81405B70(playerColors[i].r, playerColors[i].g, playerColors[i].b, (ekans->unk_000.unk_01D / 2) & 0xFF);
+            Gfx_SetPrimColorCombinePrimitive(playerColors[i].r, playerColors[i].g, playerColors[i].b, (ekans->unk_000.unk_01D / 2) & 0xFF);
             func_80015390(&ekans->unk_000, 0xA, &sp7C);
 
             sp7C.y = 5.0f;

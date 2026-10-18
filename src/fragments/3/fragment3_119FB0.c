@@ -208,8 +208,8 @@ void ParticleRender_SetupMiniCamera(void) {
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_24.mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_60.p_mtxf, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
-    D_8140E620 = GfxAlloc(sizeof(unk_D_8140E620));
-    D_8140E624 = 0;
+    gMatrixBuffer = GfxAlloc(sizeof(unk_D_8140E620));
+    gMatrixBufferIdx = 0;
 
     gSPDisplayList(gDisplayListHead++, D_8140DB30);
 

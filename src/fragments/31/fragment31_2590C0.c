@@ -2,29 +2,29 @@
 #include "src/6A40.h"
 #include "src/12D80.h"
 
-typedef struct unk_arg1_func_81003E00_14 {
+typedef struct GraphNodeRange {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
-} unk_arg1_func_81003E00_14; // size = 0x6
+} GraphNodeRange; // size = 0x6
 
-typedef struct unk_arg1_func_81003E00_04 {
+typedef struct GraphFlag {
     /* 0x00 */ char unk00[0x1];
     /* 0x01 */ u8 unk_01;
-} unk_arg1_func_81003E00_04; // size = 0x2
+} GraphFlag; // size = 0x2
 
-typedef struct unk_arg1_func_81003E00 {
+typedef struct GraphCondition {
     /* 0x00 */ char unk00[0x4];
-    /* 0x04 */ unk_arg1_func_81003E00_04* unk_04;
+    /* 0x04 */ GraphFlag* unk_04;
     /* 0x08 */ char unk08[0xC];
-    /* 0x14 */ unk_arg1_func_81003E00_14* unk_14;
-} unk_arg1_func_81003E00; // size = 0x18
+    /* 0x14 */ GraphNodeRange* unk_14;
+} GraphCondition; // size = 0x18
 
-void func_81003E00(s32 arg0, unk_arg1_func_81003E00* arg1) {
+void GraphFlag_UpdateOnMatch(s32 arg0, GraphCondition* arg1) {
     s32 temp_a2;
     s32 var_v1;
-    unk_arg1_func_81003E00_14* temp_v0;
-    unk_arg1_func_81003E00_04* temp_v0_2;
+    GraphNodeRange* temp_v0;
+    GraphFlag* temp_v0_2;
 
     if (arg0 == 2) {
         temp_v0 = arg1->unk_14;
@@ -45,11 +45,11 @@ void func_81003E00(s32 arg0, unk_arg1_func_81003E00* arg1) {
     }
 }
 
-void func_81003E90(s32 arg0, unk_arg1_func_81003E00* arg1) {
+void GraphFlag_SetIfOutOfRange(s32 arg0, GraphCondition* arg1) {
     s32 temp_a2;
     s32 var_v1;
-    unk_arg1_func_81003E00_14* temp_v0;
-    unk_arg1_func_81003E00_04* temp_v0_2;
+    GraphNodeRange* temp_v0;
+    GraphFlag* temp_v0_2;
 
     if (arg0 == 2) {
         temp_v0 = arg1->unk_14;
@@ -70,7 +70,7 @@ void func_81003E90(s32 arg0, unk_arg1_func_81003E00* arg1) {
     }
 }
 
-void func_81003F20(s32 arg0, DisplayListState* state) {
+void GraphOverlay_Draw(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {

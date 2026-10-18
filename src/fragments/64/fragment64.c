@@ -106,7 +106,7 @@ static u8* D_848036D8 = D_30084C0;
 void func_84800020(void) {
     Gfx_DrawTextureAtlas(D_84803784);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(0x71, 0x1A8, 0x20, 0x18, D_3002220, 0x20, 0x200000);
     Gfx_DrawSpriteRGBA16(0x162, 0x1A8, 0x20, 0x18, D_3002820, 0x20, 0x200000);
@@ -270,7 +270,7 @@ void func_848007B8(void) {
         var_s2 = 0x4A;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(0x2D, var_s2, 0x20, 0xC, D_3003C80, 0x20, 0x200000);
     Gfx_DrawSpriteRGBA16(0x2D, var_s2 + 0xC, 0x20, 0x17, D_30050C0, 0x20, 0x200000);
@@ -305,7 +305,7 @@ void func_848009E8(void) {
         var_s2 = 0xE6;
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(0x2D, var_s2, 0x28, 0x2C, D_3003F80, 0x28, 0x200000);
     Gfx_DrawSpriteRGBA16(0x2D, var_s2 + 0x2C, 0x20, 0x17, D_30050C0, 0x20, 0x200000);
@@ -363,7 +363,7 @@ void func_84800D08(unk_D_848037A0* arg0) {
 
     func_84800CA4(temp_s7, temp_fp, 0x1D7, 0x5E, arg0->unk_0001);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4E0);
+    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
     Gfx_DrawSpriteRGBA16(temp_s7 + 7, temp_fp + 0xB, 0x1A, 0x1A, &D_30005B0, 0x1C, 0x200000);
     Gfx_DrawSpriteRGBA16(temp_s7 + 0xA1, temp_fp + 0xB, 0x1A, 0x1A, &D_3001110, 0x1C, 0x200000);

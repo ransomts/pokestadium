@@ -45,19 +45,19 @@ static u8 D_8140E550[][2] = {
 };
 
 void func_8140C760(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_81403AB8(texture, 32, 32);
+    Gfx_LoadTextureBlockRGBA16_Clamp(texture, 32, 32);
 }
 
 void func_8140C78C(unk_D_8140E720* arg0, u8* texture) {
-    func_81403F8C(&texture[arg0->unk_C7 * 32 * 32], 32, 32);
+    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 32], 32, 32);
 }
 
 void func_8140C7C0(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_81403F8C(texture, 32, 32);
+    Gfx_LoadTextureBlockIA8_Clamp(texture, 32, 32);
 }
 
 void func_8140C7EC(unk_D_8140E720* arg0, u8* texture) {
-    func_81403F8C(&texture[arg0->unk_C7 * 32 * 64], 32, 64);
+    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 64], 32, 64);
 }
 
 void func_8140C820(UNUSED unk_D_8140E720* arg0, u8* texture) {
@@ -125,7 +125,7 @@ void func_8140CB64(UNUSED unk_D_8140E720* arg0, u8* texture) {
 }
 
 void func_8140CB90(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    func_81405B70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+    Gfx_SetPrimColorCombinePrimitive(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
     func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018);
 }
 

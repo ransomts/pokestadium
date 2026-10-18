@@ -8,7 +8,7 @@ s32 func_84330170(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
 }
 
 void func_84330218(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    func_81403F8C(D_843920C0[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
+    Gfx_LoadTextureBlockIA8_Clamp(D_843920C0[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
     func_814044FC(D_843920C0[0x77], 0x40, 0x40, 2, 1);
     func_81406168(0, 0xA, 0x40, 0x40);
     func_81405FAC(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
@@ -45,7 +45,7 @@ s32 func_843304AC(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 
     gSPDisplayList(gDisplayListHead++, D_8140DBA8);
 
-    func_81403AB8(D_843920C0[0xBC], 0x20, 0x20);
+    Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0xBC], 0x20, 0x20);
 
     gSPDisplayList(gDisplayListHead++, D_843920C0[0xBD]);
 }
@@ -132,7 +132,7 @@ void func_84330C70(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DC00);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_81403AB8(D_843920C0[0x1C], 0x20, 0x20);
+    Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0x1C], 0x20, 0x20);
     func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
@@ -142,7 +142,7 @@ void func_84330D64(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DC00);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_81403AB8(D_843920C0[0x1E], 0x20, 0x20);
+    Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0x1E], 0x20, 0x20);
     func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
@@ -152,7 +152,7 @@ void func_84330E58(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DC00);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_81403AB8(D_843920C0[0xC3], 0x20, 0x20);
+    Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0xC3], 0x20, 0x20);
     func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
