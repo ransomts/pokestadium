@@ -353,7 +353,7 @@ void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         func_84A003BC(0x1F6, 0x160, 0x60, 0x30, 0x60, arg0->unk_24, 1.5f);
         func_84A003BC(0x1F6, 0x190, 0x60, 0x30, 0x60, arg0->unk_24 + 0x1000, 1.5f);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F558);
+        gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
         gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
 
         Gfx_DrawSpriteIA16(0x166, 0x174, 0x10, 0x4C, D_300C290, 0x10, 0);
@@ -401,7 +401,7 @@ void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     func_84A003BC(0x1D6, 0x18C, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x2EE0, 1.28f);
     func_84A003BC(0x1D6, 0x1A6, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x3E80, 1.28f);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
     gDPLoadTextureBlock(gDisplayListHead++, D_300C290, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 76, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

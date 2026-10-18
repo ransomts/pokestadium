@@ -157,8 +157,8 @@ void WaterParticle_UpdateSystem(WaterParticleSystem* arg0) {
     f32 var_fv0;
     f32 var_fv1;
 
-    func_8432FBBC(&sp58);
-    func_8432FC14(&sp4C);
+    GetPrimaryEffectCenterOrNode(&sp58);
+    GetSecondaryEntityNode9Position(&sp4C);
     if (sp4C.y > 200.0f) {
         sp4C.y = 200.0f;
     }
@@ -240,7 +240,7 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     temp_v1 = &arg1->unk_07C;
     temp_v0 = &arg1->unk_081;
 
-    if (func_8432E8B0() == 1) {
+    if (GetParticleSpecialFlag() == 1) {
         if (arg1->unk_094 >= arg1->unk_002) {
             arg1->unk_002 = arg1->unk_094 + 1;
         }

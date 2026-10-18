@@ -82,16 +82,16 @@ Vec3f gCameraClampCenterMode = { 0.0f, 0.0f, 0.0f };
 Vec3f gCameraConstraintCenter = { 0.0f, 0.0f, 0.0f };
 Vec3f gCameraConstraintCenterMode = { 0.0f, 0.0f, 0.0f };
 
-Color_RGB8 D_86908C50 = { 0, 0, 150 };
-Color_RGB8 D_86908C54 = { 0, 0, 250 };
+Color_RGB8 gStagePanelBlueColor = { 0, 0, 150 };
+Color_RGB8 gStagePanelWhiteColor = { 0, 0, 250 };
 
-char* D_86908C58[] = {
+char* gStagePanelLabelStrings[] = {
     D_8690A520, D_8690A52C, D_8690A538, D_8690A544, D_8690A550, D_8690A55C, D_8690A568, D_8690A574,
     D_8690A584, D_8690A594, D_8690A5A0, D_8690A5AC, D_8690A5B8, D_8690A5C8, D_8690A5D8, D_8690A5E8,
 };
 
-Color_RGB8 D_86908C98 = { 0, 100, 255 };
-Color_RGB8 D_86908C9C = { 100, 255, 255 };
+Color_RGB8 gStagePanelGradientStartColor = { 0, 100, 255 };
+Color_RGB8 gStagePanelGradientEndColor = { 100, 255, 255 };
 
 static unk_D_86908CA0 gStageCameraConfig[] = {
     { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 5.0f },
@@ -135,12 +135,12 @@ static unk_D_86908CA0 gStageCameraConfig[] = {
     { 0xAB, 0xAC, -8.0f },
 };
 
-static unk_D_86909168 D_86909168[] = {
+static unk_D_86909168 gTutorialTextTimers[] = {
     { 0x1A, 0x60 },   { 0x7F, 0x117 },  { 0x135, 0x230 }, { 0x24A, 0x361 }, { 0x387, 0x46C },
     { 0x48D, 0x543 }, { 0x564, 0x653 }, { 0x673, 0x6D0 }, { 0x76C, 0x858 }, { 0x87D, 0x1FCC },
 };
 
-static unk_D_869091B8 D_869091B8[] = {
+static unk_D_869091B8 gControllerScriptInputs[] = {
     { 0xC4, 0, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 4, 0x8000, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 0xD, 0, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
@@ -292,52 +292,52 @@ static unk_D_869091B8 D_869091B8[] = {
     { 1, 0x1000, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 
-static unk_D_8690A610 D_8690A610;
-static GraphRootNode D_8690A630;
-static GraphRootNode D_8690A648;
-static GraphRootNode D_8690A660;
-char** D_8690A678;
-static s32 D_8690A67C;
-static s32 D_8690A680;
+static unk_D_8690A610 gStagePanelRootNode;
+static GraphRootNode gStagePanelGraphRoot0;
+static GraphRootNode gStagePanelGraphRoot1;
+static GraphRootNode gStagePanelGraphRoot2;
+char** gMessageBankPtr;
+static s32 gStageReturnCode;
+static s32 gCameraNavRepeatCounter;
 static s32 pad_D_8690A684;
-static u32 D_8690A688;
+static u32 gStagePanelFillColor;
 static Color_RGBA8_u32 gGlobalColorRGBA;
 static s32 pad_D_8690A690;
 static s32 pad_D_8690A694;
 static BinArchive* D_8690A698;
-static unk_D_8690A69C* D_8690A69C;
-static PokemonData D_8690A6A0;
-static s32 D_8690A6F4;
-static s32 D_8690A6F8;
-static s32 D_8690A6FC;
-static s32 D_8690A700;
-static s32 D_8690A704;
+static unk_D_8690A69C* gStagePanelState;
+static PokemonData gStagePanelPlayerData;
+static s32 gStageAnimTimer;
+static s32 gStageSoundTimer;
+static s32 gStageAnimStateFlag;
+static s32 gStageAnimIndexA;
+static s32 gStageAnimIndexB;
 f32 gCameraZoomOffset;
-static s32 D_8690A70C;
+static s32 gStagePanelMode;
 unk_D_8690A710* gCameraParams;
-static unk_D_8690A718 D_8690A718[190];
+static unk_D_8690A718 gStageAnimScriptTable[190];
 unk_D_8690B2F8 gCameraConfig;
-unk_D_8690B308 D_8690B308;
-static s32 D_8690B340;
-s32 D_8690B344;
-s32 D_8690B348;
-unk_D_8690B350 D_8690B350;
-unk_D_8690B360 D_8690B360;
-static unk_func_80027FA0 D_8690B378;
-s32 D_8690B380;
-s32 D_8690B384;
-s32 D_8690B388;
-s32 D_8690B38C;
+unk_D_8690B308 gStagePanelAnimData;
+static s32 gStagePanelTransitionTimer;
+s32 gStageSnapshotCount;
+s32 gStagePanelStateIndex;
+unk_D_8690B350 gStagePanelFadeData;
+unk_D_8690B360 gStagePanelAnimState;
+static unk_func_80027FA0 gStagePanelGbAudioState;
+s32 gCameraNavActiveFlag;
+s32 gCameraNavSubIndex;
+s32 gCameraNavTransition;
+s32 gCameraNavMaxIndex;
 Controller gControllerInput;
-static u16 D_8690B3B4;
-static s32 D_8690B3B8;
-static u16 D_8690B3BC;
-unk_D_8690B3C0 D_8690B3C0;
-s8 D_8690B3D0[255];
-static s8 D_8690B4D0[0x100];
-static Controller D_8690B5D0;
-static s32 D_8690B5F4;
-static s32 D_8690B5F8;
+static u16 gControllerScriptButtonPrev;
+static s32 gControllerScriptIndex;
+static u16 gControllerScriptButtonTimer;
+unk_D_8690B3C0 gTutorialTextBoxState;
+s8 gTutorialTextBoxCharBuffer[255];
+static s8 gTutorialTextBoxStringBuffer[0x100];
+static Controller gControllerScriptTemp;
+static s32 gTutorialMessageIndex;
+static s32 gTutorialMessageTimer;
 
 s32 CameraNode_SetAnglesFromCurrent(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
@@ -384,27 +384,27 @@ void SetGlobalRGBA(u8 arg0, u8 arg1, u8 arg2) {
     gGlobalColorRGBA.b = arg2;
 
     if (v == 0xFF) {
-        if (D_8690A610.unk_00.unk_14 == 1) {
-            D_8690A610.unk_00.unk_01 |= 1;
+        if (gStagePanelRootNode.unk_00.unk_14 == 1) {
+            gStagePanelRootNode.unk_00.unk_01 |= 1;
         }
     } else {
-        D_8690A610.unk_00.unk_01 &= ~1;
+        gStagePanelRootNode.unk_00.unk_01 &= ~1;
     }
 }
 
 void LoadStageDataDMA(void) {
     UNUSED s32 pad[2];
-    u8* temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[D_8690A69C->unk_16C - 1] & 0xFFFFFF);
+    u8* temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[gStagePanelState->unk_16C - 1] & 0xFFFFFF);
     u8* sp20 = (u32)_70D3A0_ROM_START +
-               (((D_8690A69C->unk_16C * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
+               (((gStagePanelState->unk_16C * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
     u8* sp1C = sp20 + sizeof(unk_70D3A0);
 
-    if (D_8690A69C->unk_16C == 153) {
+    if (gStagePanelState->unk_16C == 153) {
         sp20 = (u32)_70D3A0_ROM_START + ((u32)D_70290 & 0xFFFFFF);
         sp1C = sp20 + sizeof(unk_70D3A0);
     }
 
-    DmaCopyAsyncRange(&D_8690A718->unk_00, temp_a1, temp_a1 + 0xBC0, 0);
+    DmaCopyAsyncRange(&gStageAnimScriptTable->unk_00, temp_a1, temp_a1 + 0xBC0, 0);
     DmaCopyAsyncRange(&gCameraConfig, sp20, sp1C, 0);
 }
 
@@ -422,36 +422,36 @@ unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(PokemonData* arg0) {
 }
 
 void Stage_Init(void) {
-    Cam_ConvertStateToInput(&D_8690A6A0, &D_83407AC8);
-    D_8690A69C->unk_16C = D_83407AC8.unk_02;
+    Cam_ConvertStateToInput(&gStagePanelPlayerData, &D_83407AC8);
+    gStagePanelState->unk_16C = D_83407AC8.unk_02;
 
-    gCameraZoomOffset = gStageCameraConfig[D_8690A69C->unk_16C - 1].unk_04;
-    D_8690A700 = gStageCameraConfig[D_8690A69C->unk_16C - 1].unk_00 - 6;
-    D_8690A704 = gStageCameraConfig[D_8690A69C->unk_16C - 1].unk_01 - 6;
+    gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_04;
+    gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_00 - 6;
+    gStageAnimIndexB = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_01 - 6;
 
-    Graph_AddToRootList0(&D_8690A69C->unk_004);
+    Graph_AddToRootList0(&gStagePanelState->unk_004);
     AssetManager_LoadArchives();
 
-    if (D_8690A69C->unk_16C == 153) {
-        D_8690A69C->unk_000 = CreatePlayerStatNode(&D_8690A6A0);
+    if (gStagePanelState->unk_16C == 153) {
+        gStagePanelState->unk_000 = CreatePlayerStatNode(&gStagePanelPlayerData);
     } else {
-        D_8690A69C->unk_000 = func_80019D90(&D_8690A6A0);
+        gStagePanelState->unk_000 = func_80019D90(&gStagePanelPlayerData);
     }
 
-    GraphNode_InitChild(&D_8690A69C->unk_004, 0, D_8690A69C->unk_16C, D_8690A69C->unk_000->unk_08->unk_00[0]);
+    GraphNode_InitChild(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->unk_08->unk_00[0]);
     LoadStageDataDMA();
-    GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_00);
+    GraphNode_TriggerAction(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_00);
 
-    D_8690A69C->unk_004.unk_024.y += gCameraConfig.unk_08;
-    D_8690A69C->unk_004.modelPhase = 0;
+    gStagePanelState->unk_004.unk_024.y += gCameraConfig.unk_08;
+    gStagePanelState->unk_004.modelPhase = 0;
 }
 
 void WaitForRSPAndCleanup(void) {
     while (RspTaskYielded() == 0) {}
 
-    GraphNode_AllocInit(NULL, &D_8690A630);
-    GraphNode_AllocInit(NULL, &D_8690A648);
-    GraphNode_AllocInit(NULL, &D_8690A660);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot0);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot1);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot2);
 
     main_pool_pop_state('BACK');
 }
@@ -469,31 +469,31 @@ void LoadStageFragmentByIndex(s32 arg0) {
 
     temp_v0 = sp18(0, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&D_8690A630, process_geo_layout(sp1C, temp_v0));
+        GraphNode_AddChild(&gStagePanelGraphRoot0, process_geo_layout(sp1C, temp_v0));
     }
 
     temp_v0 = sp18(1, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&D_8690A648, process_geo_layout(sp1C, temp_v0));
+        GraphNode_AddChild(&gStagePanelGraphRoot1, process_geo_layout(sp1C, temp_v0));
     }
 
     temp_v0 = sp18(3, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&D_8690A660, process_geo_layout(sp1C, temp_v0));
+        GraphNode_AddChild(&gStagePanelGraphRoot2, process_geo_layout(sp1C, temp_v0));
     }
 
-    D_8690A688 = sp18(2, 0);
+    gStagePanelFillColor = sp18(2, 0);
     mem_pool_resize_block(sp1C);
 
     temp_v1 = sp18(4, 0);
     if (temp_v1 == NULL) {
-        D_8690A610.unk_00.unk_14 = 0;
-        D_8690A610.unk_00.unk_01 &= ~1;
+        gStagePanelRootNode.unk_00.unk_14 = 0;
+        gStagePanelRootNode.unk_00.unk_01 &= ~1;
     } else {
-        D_8690A610.unk_18.unk_00 = temp_v1->unk_00;
-        D_8690A610.unk_18.unk_02 = temp_v1->unk_02;
-        D_8690A610.unk_18.unk_04.rgba = temp_v1->unk_04.rgba;
-        D_8690A610.unk_00.unk_14 = 1;
+        gStagePanelRootNode.unk_18.unk_00 = temp_v1->unk_00;
+        gStagePanelRootNode.unk_18.unk_02 = temp_v1->unk_02;
+        gStagePanelRootNode.unk_18.unk_04.rgba = temp_v1->unk_04.rgba;
+        gStagePanelRootNode.unk_00.unk_14 = 1;
     }
 
     SetGlobalRGBA(0xFF, 0xFF, 0xFF);
@@ -502,10 +502,10 @@ void LoadStageFragmentByIndex(s32 arg0) {
 void Graphics_Init(void) {
     MemoryBlock* sp2C;
 
-    ColorRectNode_Create(0, &D_8690A610, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    GraphNode_AllocInit(NULL, &D_8690A630);
-    GraphNode_AllocInit(NULL, &D_8690A648);
-    GraphNode_AllocInit(NULL, &D_8690A660);
+    ColorRectNode_Create(0, &gStagePanelRootNode, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot0);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot1);
+    GraphNode_AllocInit(NULL, &gStagePanelGraphRoot2);
     SetGlobalRGBA(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     gMiniCameraStruct = process_geo_layout(sp2C, &gMiniCameraGeoLayout);
@@ -521,47 +521,47 @@ void ComputeOffsetFromAngle(f32* arg0, f32* arg1, s16* arg2, f32 arg3, f32 arg4,
 }
 
 void StageState_Reset(void) {
-    D_8690B340 = 0;
-    if (D_8690A70C == 1) {
-        D_8690B344 = 0;
+    gStagePanelTransitionTimer = 0;
+    if (gStagePanelMode == 1) {
+        gStageSnapshotCount = 0;
     } else {
-        D_8690B344 = D_83402E20;
+        gStageSnapshotCount = D_83402E20;
     }
 
     gCameraParams->unk_014 = 1;
-    D_8690B380 = 0;
-    D_8690B384 = 0;
-    D_8690B388 = 0;
+    gCameraNavActiveFlag = 0;
+    gCameraNavSubIndex = 0;
+    gCameraNavTransition = 0;
     gCameraParams->unk_00C = 0;
-    D_8690A6F4 = 0;
-    D_8690A6F8 = 0;
-    D_8690A6FC = 0;
-    D_8690B348 = 0;
+    gStageAnimTimer = 0;
+    gStageSoundTimer = 0;
+    gStageAnimStateFlag = 0;
+    gStagePanelStateIndex = 0;
 
-    D_8690B360.unk_02 = 0;
-    D_8690B360.unk_06 = 0;
-    D_8690B360.unk_0A = 0;
+    gStagePanelAnimState.unk_02 = 0;
+    gStagePanelAnimState.unk_06 = 0;
+    gStagePanelAnimState.unk_0A = 0;
 
-    D_8690B308.unk_00[0] = 0xA0;
-    D_8690B308.unk_00[4] = -0x14;
-    D_8690B308.unk_00[1] = 0x14A;
-    D_8690B308.unk_00[5] = 0x78;
-    D_8690B308.unk_00[2] = 0xA0;
-    D_8690B308.unk_00[6] = 0x104;
-    D_8690B308.unk_00[3] = -0xA;
-    D_8690B308.unk_00[7] = 0x78;
+    gStagePanelAnimData.unk_00[0] = 0xA0;
+    gStagePanelAnimData.unk_00[4] = -0x14;
+    gStagePanelAnimData.unk_00[1] = 0x14A;
+    gStagePanelAnimData.unk_00[5] = 0x78;
+    gStagePanelAnimData.unk_00[2] = 0xA0;
+    gStagePanelAnimData.unk_00[6] = 0x104;
+    gStagePanelAnimData.unk_00[3] = -0xA;
+    gStagePanelAnimData.unk_00[7] = 0x78;
 
-    ComputeOffsetFromAngle(&D_8690B308.unk_10, &D_8690B308.unk_20, &D_8690B308.unk_30, 0.0f, 0.0f, 12.5f, 15.5f, 0);
-    ComputeOffsetFromAngle(&D_8690B308.unk_14, &D_8690B308.unk_24, &D_8690B308.unk_32, 320.0f, 0.0f, 307.5f, 15.5f, -0x8000);
-    ComputeOffsetFromAngle(&D_8690B308.unk_18, &D_8690B308.unk_28, &D_8690B308.unk_34, 320.0f, 240.0f, 308.8f, 224.5f, 0);
-    ComputeOffsetFromAngle(&D_8690B308.unk_1C, &D_8690B308.unk_2C, &D_8690B308.unk_36, 0.0f, 240.0f, 12.5f, 224.5f, -0x8000);
+    ComputeOffsetFromAngle(&gStagePanelAnimData.unk_10, &gStagePanelAnimData.unk_20, &gStagePanelAnimData.unk_30, 0.0f, 0.0f, 12.5f, 15.5f, 0);
+    ComputeOffsetFromAngle(&gStagePanelAnimData.unk_14, &gStagePanelAnimData.unk_24, &gStagePanelAnimData.unk_32, 320.0f, 0.0f, 307.5f, 15.5f, -0x8000);
+    ComputeOffsetFromAngle(&gStagePanelAnimData.unk_18, &gStagePanelAnimData.unk_28, &gStagePanelAnimData.unk_34, 320.0f, 240.0f, 308.8f, 224.5f, 0);
+    ComputeOffsetFromAngle(&gStagePanelAnimData.unk_1C, &gStagePanelAnimData.unk_2C, &gStagePanelAnimData.unk_36, 0.0f, 240.0f, 12.5f, 224.5f, -0x8000);
 
-    D_8690B3C0.unk_00 = 0xFF;
-    D_8690B3B8 = 0;
-    D_8690B3BC = D_869091B8[0].unk_00;
-    D_8690B3B4 = 0;
-    D_8690B5F4 = 0;
-    D_8690B5F8 = 0;
+    gTutorialTextBoxState.unk_00 = 0xFF;
+    gControllerScriptIndex = 0;
+    gControllerScriptButtonTimer = gControllerScriptInputs[0].unk_00;
+    gControllerScriptButtonPrev = 0;
+    gTutorialMessageIndex = 0;
+    gTutorialMessageTimer = 0;
 }
 
 void CopyControllerState(Controller* arg0, Controller* arg1) {
@@ -573,24 +573,24 @@ void CopyControllerState(Controller* arg0, Controller* arg1) {
 }
 
 void SimulateControllerInputFromScript(void) {
-    Controller* c = &D_8690B5D0;
+    Controller* c = &gControllerScriptTemp;
 
-    D_8690B3B4 = D_869091B8[D_8690B3B8].unk_02;
-    if (D_8690B3BC == 0) {
-        D_8690B3B8++;
-        D_8690B3BC = D_869091B8[D_8690B3B8].unk_00;
+    gControllerScriptButtonPrev = gControllerScriptInputs[gControllerScriptIndex].unk_02;
+    if (gControllerScriptButtonTimer == 0) {
+        gControllerScriptIndex++;
+        gControllerScriptButtonTimer = gControllerScriptInputs[gControllerScriptIndex].unk_00;
     }
 
-    c->stickMag = D_869091B8[D_8690B3B8].unk_04;
-    c->stickY = D_869091B8[D_8690B3B8].unk_0C;
-    c->buttonPressed = D_869091B8[D_8690B3B8].unk_02 & (D_869091B8[D_8690B3B8].unk_02 ^ D_8690B3B4);
-    c->buttonDown = D_869091B8[D_8690B3B8].unk_02;
+    c->stickMag = gControllerScriptInputs[gControllerScriptIndex].unk_04;
+    c->stickY = gControllerScriptInputs[gControllerScriptIndex].unk_0C;
+    c->buttonPressed = gControllerScriptInputs[gControllerScriptIndex].unk_02 & (gControllerScriptInputs[gControllerScriptIndex].unk_02 ^ gControllerScriptButtonPrev);
+    c->buttonDown = gControllerScriptInputs[gControllerScriptIndex].unk_02;
 
-    if (D_8690B3BC > 0) {
-        D_8690B3BC--;
+    if (gControllerScriptButtonTimer > 0) {
+        gControllerScriptButtonTimer--;
     }
 
-    CopyControllerState(&gControllerInput, &D_8690B5D0);
+    CopyControllerState(&gControllerInput, &gControllerScriptTemp);
 }
 
 void ApplyPolarOffset(f32* arg0, f32* arg1, s16 arg2, s16 arg3) {
@@ -605,79 +605,79 @@ void UpdateControllerAndMenuInput(void) {
 }
 
 void UpdateStageAnimationTimers(void) {
-    if (D_8690A6F4 <= 0x96) {
-        D_8690A6F4++;
+    if (gStageAnimTimer <= 0x96) {
+        gStageAnimTimer++;
     }
 
-    if ((D_8690A6F4 >= 0x96) && (func_800174E4(&D_8690A69C->unk_004) != 0) && (D_8690A6FC == 0)) {
-        GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A704].unk_00);
-        Anim_SetChannelBase(&D_8690A69C->unk_004, 0);
-        SetAnimStateIndex(&D_8690A69C->unk_004, 0);
-        GraphNode_TriggerSound(&D_8690A69C->unk_004, D_8690A718[D_8690A704].unk_01);
-        D_8690A6FC = 1;
+    if ((gStageAnimTimer >= 0x96) && (func_800174E4(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 0)) {
+        GraphNode_TriggerAction(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_00);
+        Anim_SetChannelBase(&gStagePanelState->unk_004, 0);
+        SetAnimStateIndex(&gStagePanelState->unk_004, 0);
+        GraphNode_TriggerSound(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_01);
+        gStageAnimStateFlag = 1;
     }
 
-    if ((func_800174E4(&D_8690A69C->unk_004) != 0) && (D_8690A6FC == 1)) {
-        GraphNode_TriggerAction(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_00);
-        Anim_SetChannelBase(&D_8690A69C->unk_004, 0);
-        D_8690A6F4 = 0;
-        D_8690A6FC = 0;
+    if ((func_800174E4(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 1)) {
+        GraphNode_TriggerAction(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_00);
+        Anim_SetChannelBase(&gStagePanelState->unk_004, 0);
+        gStageAnimTimer = 0;
+        gStageAnimStateFlag = 0;
     }
 }
 
 void UpdateStageSoundTimer(void) {
-    D_8690A6F8++;
-    if (D_8690A6F8 == 60) {
-        D_8690A6F8 = 0;
-        if (D_8690A6FC == 0) {
-            SetAnimStateIndex(&D_8690A69C->unk_004, 0);
-            GraphNode_TriggerSound(&D_8690A69C->unk_004, D_8690A718[D_8690A700].unk_01);
+    gStageSoundTimer++;
+    if (gStageSoundTimer == 60) {
+        gStageSoundTimer = 0;
+        if (gStageAnimStateFlag == 0) {
+            SetAnimStateIndex(&gStagePanelState->unk_004, 0);
+            GraphNode_TriggerSound(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_01);
         }
     }
 }
 
 void ResetAnimStateIfSecondLast(void) {
-    if ((D_8690A69C->unk_004.unk_054.unk_00 != -1) && (IsAnimStateSecondLast(&D_8690A69C->unk_004) == 1)) {
-        SetAnimStateIndex(&D_8690A69C->unk_004, 0);
-        GraphNode_TriggerSound(&D_8690A69C->unk_004, -1);
+    if ((gStagePanelState->unk_004.unk_054.unk_00 != -1) && (IsAnimStateSecondLast(&gStagePanelState->unk_004) == 1)) {
+        SetAnimStateIndex(&gStagePanelState->unk_004, 0);
+        GraphNode_TriggerSound(&gStagePanelState->unk_004, -1);
     }
 }
 
 void HandleSnapshotButton(void) {
-    if ((gControllerInput.buttonPressed & 0x8000) && (D_8690B344 < 0x18)) {
+    if ((gControllerInput.buttonPressed & 0x8000) && (gStageSnapshotCount < 0x18)) {
         PlaySoundEffect(0x2C);
-        D_8690B340 = 0xA;
-        if (D_8690A70C != 1) {
-            Vec3f_Set(&D_83402EE0[D_8690B344].unk_50, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y,
+        gStagePanelTransitionTimer = 0xA;
+        if (gStagePanelMode != 1) {
+            Vec3f_Set(&D_83402EE0[gStageSnapshotCount].unk_50, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y,
                           gMiniCameraPtr->unk_60.eye.z);
-            Vec3f_Set(&D_83402EE0[D_8690B344].unk_5C, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y,
+            Vec3f_Set(&D_83402EE0[gStageSnapshotCount].unk_5C, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y,
                           gMiniCameraPtr->unk_60.at.z);
-            D_83402EE0[D_8690B344].unk_6C = 0;
+            D_83402EE0[gStageSnapshotCount].unk_6C = 0;
 
-            D_83402EE0[D_8690B344].unk_6C = gCameraParams->unk_014 * 4;
+            D_83402EE0[gStageSnapshotCount].unk_6C = gCameraParams->unk_014 * 4;
             if (gCameraParams->unk_008 == 25.0f) {
-                D_83402EE0[D_8690B344].unk_6C |= 2;
+                D_83402EE0[gStageSnapshotCount].unk_6C |= 2;
             }
 
-            D_83402EE0[D_8690B344].unk_6C |= gCameraParams->unk_00C * 0x10;
-            D_83402EE0[D_8690B344].unk_68 = gTimerCounter;
+            D_83402EE0[gStageSnapshotCount].unk_6C |= gCameraParams->unk_00C * 0x10;
+            D_83402EE0[gStageSnapshotCount].unk_68 = gTimerCounter;
 
-            D_83402EE0[D_8690B344].unk_00 = D_8690A69C->unk_004.unk_024.y;
-            D_83402EE0[D_8690B344].unk_04 = D_8690A69C->unk_16C;
-            D_83402EE0[D_8690B344].unk_06 = D_8690A69C->unk_004.unk_040.unk_08 >> 0x10;
-            D_83402EE0[D_8690B344].unk_05 = D_8690A69C->unk_004.unk_040.unk_00;
-            D_83402EE0[D_8690B344].unk_08 = D_8690A69C->unk_004.unk_054.unk_00;
-            D_83402EE0[D_8690B344].unk_09 = D_8690A69C->unk_004.unk_054.unk_08;
+            D_83402EE0[gStageSnapshotCount].unk_00 = gStagePanelState->unk_004.unk_024.y;
+            D_83402EE0[gStageSnapshotCount].unk_04 = gStagePanelState->unk_16C;
+            D_83402EE0[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.unk_08 >> 0x10;
+            D_83402EE0[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.unk_00;
+            D_83402EE0[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.unk_00;
+            D_83402EE0[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.unk_08;
 
-            Particle_Serialize(D_83402EE0[D_8690B344].unk_0A);
-            Cam_ConvertInputToState(&D_83402EE0[D_8690B344].unk_70, &D_8690A6A0);
+            Particle_Serialize(D_83402EE0[gStageSnapshotCount].unk_0A);
+            Cam_ConvertInputToState(&D_83402EE0[gStageSnapshotCount].unk_70, &gStagePanelPlayerData);
         }
 
-        D_8690B360.unk_00 = 0x14;
+        gStagePanelAnimState.unk_00 = 0x14;
 
-        D_8690B344++;
-        if (D_8690A70C != 1) {
-            D_83402E20 = D_8690B344;
+        gStageSnapshotCount++;
+        if (gStagePanelMode != 1) {
+            D_83402E20 = gStageSnapshotCount;
         }
 
         Stage_AdvanceN(1);
@@ -688,66 +688,66 @@ void LoadFragmentIfFlag(u16 arg0) {
     if (arg0 & 0xC00) {
         WaitForRSPAndCleanup();
         LoadStageFragmentByIndex(gCameraParams->unk_00C);
-        D_8690B340 = 5;
+        gStagePanelTransitionTimer = 5;
     }
 }
 
 s32 ProcessCameraNavigationInput(void) {
     u16 sp1E;
 
-    if ((gControllerInput.buttonPressed & 0x8020) && (D_8690B380 == 1)) {
-        D_8690B380 = ~D_8690B380 + 2;
+    if ((gControllerInput.buttonPressed & 0x8020) && (gCameraNavActiveFlag == 1)) {
+        gCameraNavActiveFlag = ~gCameraNavActiveFlag + 2;
         PlaySoundEffect(3);
         return 1;
     }
 
     if (gControllerInput.buttonPressed & 0x20) {
-        D_8690B380 = ~D_8690B380 + 2;
+        gCameraNavActiveFlag = ~gCameraNavActiveFlag + 2;
         PlaySoundEffect(2);
     }
 
-    if (D_8690B380 == 0) {
+    if (gCameraNavActiveFlag == 0) {
         return 0;
     }
 
     if (!(gControllerInput.buttonDown & 0xC00)) {
-        D_8690A680 = -1;
+        gCameraNavRepeatCounter = -1;
         return 1;
     }
 
     sp1E = gControllerInput.buttonDown;
-    D_8690A680++;
-    if ((D_8690A680 >= 8) || (D_8690A680 == 0)) {
+    gCameraNavRepeatCounter++;
+    if ((gCameraNavRepeatCounter >= 8) || (gCameraNavRepeatCounter == 0)) {
         PlaySoundEffect(1);
-        if (D_8690A680 != 0) {
-            D_8690A680 = 6;
+        if (gCameraNavRepeatCounter != 0) {
+            gCameraNavRepeatCounter = 6;
         }
     } else {
         return 1;
     }
 
-    D_8690B38C = 0xF;
-    if (D_8690B378.unk_07 == 0) {
-        if (D_8690B378.unk_04 == 8) {
-            D_8690B38C--;
-        } else if (D_8690B378.unk_04 == 7) {
-            D_8690B38C -= 2;
+    gCameraNavMaxIndex = 0xF;
+    if (gStagePanelGbAudioState.unk_07 == 0) {
+        if (gStagePanelGbAudioState.unk_04 == 8) {
+            gCameraNavMaxIndex--;
+        } else if (gStagePanelGbAudioState.unk_04 == 7) {
+            gCameraNavMaxIndex -= 2;
         } else {
-            D_8690B38C -= 2;
-            D_8690B38C += D_8690B378.unk_04 - 7;
+            gCameraNavMaxIndex -= 2;
+            gCameraNavMaxIndex += gStagePanelGbAudioState.unk_04 - 7;
         }
     }
 
-    if ((sp1E & 0x800) && (D_8690B388 == 0) && (D_8690B384 == 0) && (gCameraParams->unk_00C == 0)) {
-        D_8690B384 = D_8690B38C - 4;
-        gCameraParams->unk_00C = D_8690B38C;
-        D_8690B388 = 4;
+    if ((sp1E & 0x800) && (gCameraNavTransition == 0) && (gCameraNavSubIndex == 0) && (gCameraParams->unk_00C == 0)) {
+        gCameraNavSubIndex = gCameraNavMaxIndex - 4;
+        gCameraParams->unk_00C = gCameraNavMaxIndex;
+        gCameraNavTransition = 4;
         LoadFragmentIfFlag(sp1E);
-    } else if ((sp1E & 0x400) && (D_8690B388 == 4) && (D_8690B384 == (D_8690B38C - 4)) &&
-               (D_8690B38C == gCameraParams->unk_00C)) {
-        D_8690B384 = 0;
+    } else if ((sp1E & 0x400) && (gCameraNavTransition == 4) && (gCameraNavSubIndex == (gCameraNavMaxIndex - 4)) &&
+               (gCameraNavMaxIndex == gCameraParams->unk_00C)) {
+        gCameraNavSubIndex = 0;
         gCameraParams->unk_00C = 0;
-        D_8690B388 = 0;
+        gCameraNavTransition = 0;
         LoadFragmentIfFlag(sp1E);
     } else {
         if (sp1E & 0x800) {
@@ -757,25 +757,25 @@ s32 ProcessCameraNavigationInput(void) {
         }
 
         if (sp1E & 0x400) {
-            if (gCameraParams->unk_00C < D_8690B38C) {
+            if (gCameraParams->unk_00C < gCameraNavMaxIndex) {
                 gCameraParams->unk_00C++;
             }
         }
 
-        if ((sp1E & 0x800) && (D_8690B388 == 0) && (D_8690B384 > 0)) {
-            D_8690B384--;
+        if ((sp1E & 0x800) && (gCameraNavTransition == 0) && (gCameraNavSubIndex > 0)) {
+            gCameraNavSubIndex--;
         }
 
-        if ((sp1E & 0x400) && (D_8690B388 == 4) && (D_8690B384 < (D_8690B38C - 4))) {
-            D_8690B384++;
+        if ((sp1E & 0x400) && (gCameraNavTransition == 4) && (gCameraNavSubIndex < (gCameraNavMaxIndex - 4))) {
+            gCameraNavSubIndex++;
         }
 
-        if ((sp1E & 0x800) && (D_8690B388 > 0)) {
-            D_8690B388--;
+        if ((sp1E & 0x800) && (gCameraNavTransition > 0)) {
+            gCameraNavTransition--;
         }
 
-        if ((sp1E & 0x400) && (D_8690B388 < 4)) {
-            D_8690B388++;
+        if ((sp1E & 0x400) && (gCameraNavTransition < 4)) {
+            gCameraNavTransition++;
         }
 
         LoadFragmentIfFlag(sp1E);
@@ -787,42 +787,42 @@ s32 ProcessCameraNavigationInput(void) {
 void UpdateTutorialText(void) {
     s32 i;
 
-    if ((D_8690A70C == 1) && (gTutorialMessageIds[D_8690B5F4] != 0xFF)) {
-        D_8690B5F8++;
-        if (D_8690B5F8 == D_86909168[D_8690B5F4].unk_00) {
-            D_8690B3C0.unk_00 = 0;
+    if ((gStagePanelMode == 1) && (gTutorialMessageIds[gTutorialMessageIndex] != 0xFF)) {
+        gTutorialMessageTimer++;
+        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].unk_00) {
+            gTutorialTextBoxState.unk_00 = 0;
         }
 
-        if (D_8690B5F8 == D_86909168[D_8690B5F4].unk_04) {
-            D_8690B3C0.unk_00 = 0xFF;
-            D_8690B5F4++;
+        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].unk_04) {
+            gTutorialTextBoxState.unk_00 = 0xFF;
+            gTutorialMessageIndex++;
         }
 
-        switch (D_8690B3C0.unk_00) {
+        switch (gTutorialTextBoxState.unk_00) {
             case 0x0:
-                D_8690B3C0.unk_04 = 0;
-                D_8690B3C0.unk_08 = 0xC8;
-                D_8690B3C0.unk_0C = 0x14;
+                gTutorialTextBoxState.unk_04 = 0;
+                gTutorialTextBoxState.unk_08 = 0xC8;
+                gTutorialTextBoxState.unk_0C = 0x14;
 
                 // clang-format off
-                for (i = 0; i < 255; i++) { D_8690B3D0[i] = 0; }
+                for (i = 0; i < 255; i++) { gTutorialTextBoxCharBuffer[i] = 0; }
                 // clang-format on
 
-                sprintf(D_8690B4D0, GetMessageString(NULL, 0, D_8690A678, gTutorialMessageIds[D_8690B5F4]));
-                D_8690B3C0.unk_00++;
+                sprintf(gTutorialTextBoxStringBuffer, GetMessageString(NULL, 0, gMessageBankPtr, gTutorialMessageIds[gTutorialMessageIndex]));
+                gTutorialTextBoxState.unk_00++;
                 break;
 
             case 0x1:
-                D_8690B3C0.unk_0C = Math_ApproachS32(D_8690B3C0.unk_0C, 0x23, 0xA, 0xA);
-                if (D_8690B3C0.unk_0C == 0x23) {
-                    D_8690B3C0.unk_00++;
+                gTutorialTextBoxState.unk_0C = Math_ApproachS32(gTutorialTextBoxState.unk_0C, 0x23, 0xA, 0xA);
+                if (gTutorialTextBoxState.unk_0C == 0x23) {
+                    gTutorialTextBoxState.unk_00++;
                 }
                 break;
 
             case 0x2:
-                if (D_8690B4D0[D_8690B3C0.unk_04] != 0) {
-                    D_8690B3D0[D_8690B3C0.unk_04] = D_8690B4D0[D_8690B3C0.unk_04];
-                    D_8690B3C0.unk_04++;
+                if (gTutorialTextBoxStringBuffer[gTutorialTextBoxState.unk_04] != 0) {
+                    gTutorialTextBoxCharBuffer[gTutorialTextBoxState.unk_04] = gTutorialTextBoxStringBuffer[gTutorialTextBoxState.unk_04];
+                    gTutorialTextBoxState.unk_04++;
                     PlaySoundEffect(0x3C);
                 }
                 break;
@@ -836,24 +836,24 @@ void UpdateTutorialText(void) {
 s32 StageMainUpdate(void) {
     UpdateTutorialText();
 
-    if (D_8690B360.unk_00 != 0) {
-        D_8690B360.unk_02 -= 3;
+    if (gStagePanelAnimState.unk_00 != 0) {
+        gStagePanelAnimState.unk_02 -= 3;
     }
 
-    D_8690B360.unk_00 = Math_ApproachS32(D_8690B360.unk_00, 0, 2, 2);
+    gStagePanelAnimState.unk_00 = Math_ApproachS32(gStagePanelAnimState.unk_00, 0, 2, 2);
 
-    if (D_8690B340) {
-        D_8690B340--;
+    if (gStagePanelTransitionTimer) {
+        gStagePanelTransitionTimer--;
         return 0;
     }
 
-    if (D_8690B344 && D_8690B344 && D_8690B344) {}
+    if (gStageSnapshotCount && gStageSnapshotCount && gStageSnapshotCount) {}
 
-    if (D_8690B344 == 0x18) {
-        D_8690B360.unk_00 = 0x14;
-        D_8690B350.unk_04 = 0;
-        D_8690B348 = 1;
-        D_8690B344--;
+    if (gStageSnapshotCount == 0x18) {
+        gStagePanelAnimState.unk_00 = 0x14;
+        gStagePanelFadeData.unk_04 = 0;
+        gStagePanelStateIndex = 1;
+        gStageSnapshotCount--;
         PlaySoundEffect(0x2D);
         return 0;
     }
@@ -868,14 +868,14 @@ s32 StageMainUpdate(void) {
 
     if (gPlayer1Controller->buttonPressed & 0x4000) {
         PlaySoundEffect(3);
-        D_8690A67C = 1;
-        return D_8690A67C;
+        gStageReturnCode = 1;
+        return gStageReturnCode;
     }
 
     if (gControllerInput.buttonPressed & 0x1000) {
         PlaySoundEffect(0x2E);
-        D_8690A67C = 2;
-        return D_8690A67C;
+        gStageReturnCode = 2;
+        return gStageReturnCode;
     }
 
     if (gControllerInput.buttonPressed & 0x2000) {
@@ -898,71 +898,71 @@ s32 StageMainUpdate(void) {
 }
 
 s32 func_8690172C(void) {
-    D_8690B360.unk_04 = 0;
-    D_8690B360.unk_02 += 4;
+    gStagePanelAnimState.unk_04 = 0;
+    gStagePanelAnimState.unk_02 += 4;
 
-    if (D_8690B360.unk_00 == 0) {
-        if (D_8690B344 != 0) {
-            D_8690B344--;
-            D_8690B360.unk_00 = 0x14;
+    if (gStagePanelAnimState.unk_00 == 0) {
+        if (gStageSnapshotCount != 0) {
+            gStageSnapshotCount--;
+            gStagePanelAnimState.unk_00 = 0x14;
         } else {
-            D_8690B348 = 2;
+            gStagePanelStateIndex = 2;
             PlaySoundEffect(0x2E);
-            D_8690B360.unk_08 = 0xE38;
+            gStagePanelAnimState.unk_08 = 0xE38;
         }
     }
 
-    D_8690B360.unk_00 = Math_ApproachS32(D_8690B360.unk_00, 0, 0xF, 0xF);
+    gStagePanelAnimState.unk_00 = Math_ApproachS32(gStagePanelAnimState.unk_00, 0, 0xF, 0xF);
     return 0;
 }
 
 s32 func_869017D0(void) {
-    D_8690B360.unk_02 += 4;
-    D_8690B360.unk_04 = Math_ApproachS32(D_8690B360.unk_04, 0x30, 0xA, 0xA);
+    gStagePanelAnimState.unk_02 += 4;
+    gStagePanelAnimState.unk_04 = Math_ApproachS32(gStagePanelAnimState.unk_04, 0x30, 0xA, 0xA);
 
-    if (D_8690B360.unk_04 >= 0x30) {
-        D_8690B360.unk_08 = Math_ApproachS32(D_8690B360.unk_08, 0, 0xC8, 0xC8);
-        D_8690B360.unk_0A -= 0x31C7;
-        D_8690B360.unk_06 = SINS(D_8690B360.unk_0A) * D_8690B360.unk_08;
-        if (D_8690B360.unk_08 == 0) {
-            D_8690B360.unk_06 = 0;
-            D_8690B348 = 3;
+    if (gStagePanelAnimState.unk_04 >= 0x30) {
+        gStagePanelAnimState.unk_08 = Math_ApproachS32(gStagePanelAnimState.unk_08, 0, 0xC8, 0xC8);
+        gStagePanelAnimState.unk_0A -= 0x31C7;
+        gStagePanelAnimState.unk_06 = SINS(gStagePanelAnimState.unk_0A) * gStagePanelAnimState.unk_08;
+        if (gStagePanelAnimState.unk_08 == 0) {
+            gStagePanelAnimState.unk_06 = 0;
+            gStagePanelStateIndex = 3;
         }
     }
     return 0;
 }
 
 s32 func_869018A0(void) {
-    D_8690B350.unk_04 = Math_ApproachS32(D_8690B350.unk_04, 0x50, 0xA, 0xA);
-    if (D_8690B350.unk_04 == 0x50) {
-        D_8690B350.unk_0C = 0xAA;
-        D_8690B350.unk_0E = 0xA;
-        D_8690B350.unk_08 = 0xA0 - (D_8690B350.unk_0C / 2);
-        D_8690B350.unk_0A = 0x78;
-        D_8690B350.unk_00 = 0;
-        D_8690B348 = 4;
+    gStagePanelFadeData.unk_04 = Math_ApproachS32(gStagePanelFadeData.unk_04, 0x50, 0xA, 0xA);
+    if (gStagePanelFadeData.unk_04 == 0x50) {
+        gStagePanelFadeData.unk_0C = 0xAA;
+        gStagePanelFadeData.unk_0E = 0xA;
+        gStagePanelFadeData.unk_08 = 0xA0 - (gStagePanelFadeData.unk_0C / 2);
+        gStagePanelFadeData.unk_0A = 0x78;
+        gStagePanelFadeData.unk_00 = 0;
+        gStagePanelStateIndex = 4;
         PlaySoundEffect(0x30);
     }
     return 0;
 }
 
 s32 func_8690193C(void) {
-    D_8690B350.unk_0E = Math_ApproachS32(D_8690B350.unk_0E, 0x32, 0xA, 0xA);
+    gStagePanelFadeData.unk_0E = Math_ApproachS32(gStagePanelFadeData.unk_0E, 0x32, 0xA, 0xA);
 
-    if (D_8690B350.unk_0E == 0x32) {
-        D_8690B350.unk_00++;
+    if (gStagePanelFadeData.unk_0E == 0x32) {
+        gStagePanelFadeData.unk_00++;
     }
 
-    if (D_8690B350.unk_00 == 0x32) {
-        D_8690A67C = 2;
-        return D_8690A67C;
+    if (gStagePanelFadeData.unk_00 == 0x32) {
+        gStageReturnCode = 2;
+        return gStageReturnCode;
     }
 
     return 0;
 }
 
 s32 func_869019BC(void) {
-    switch (D_8690B348) {
+    switch (gStagePanelStateIndex) {
         case 0:
             return StageMainUpdate();
 
@@ -983,10 +983,10 @@ s32 func_869019BC(void) {
 void func_86901A44(void) {
     Stage_BeginDisplayList();
 
-    if ((D_8690A688 == -1) || (D_8690A688 == 0)) {
+    if ((gStagePanelFillColor == -1) || (gStagePanelFillColor == 0)) {
         Gfx_FillScreen(&gDisplayListHead, 1);
-    } else if (D_8690A688 < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, D_8690A688);
+    } else if (gStagePanelFillColor < 0x10000) {
+        Gfx_FillScreen(&gDisplayListHead, gStagePanelFillColor);
     } else {
         Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
@@ -998,7 +998,7 @@ void func_86901A44(void) {
     RenderHPBar();
     func_86908418();
     func_869089AC();
-    RenderMessageBox(D_8690A6A0.unk_30);
+    RenderMessageBox(gStagePanelPlayerData.unk_30);
     RenderMainMenu(gCameraParams->unk_00C);
     Stage_Advance();
 }
@@ -1013,9 +1013,9 @@ void func_86901B28(void) {
     s16 var_s3 = 0;
 
     Stage_FadeIn(0x14);
-    D_8690B360.unk_10 -= 0.8;
-    D_8690B360.unk_14 = 0.0f;
-    D_8690B360.unk_0C = 351.0f;
+    gStagePanelAnimState.unk_10 -= 0.8;
+    gStagePanelAnimState.unk_14 = 0.0f;
+    gStagePanelAnimState.unk_0C = 351.0f;
 
     for (i = 0; i < 15; i++) {
         UpdateControllerAndMenuInput();
@@ -1031,36 +1031,36 @@ void func_86901B28(void) {
     while (true) {
         UpdateControllerAndMenuInput();
         var_s3 = Math_ApproachS32(var_s3, 0x46, 0xA, 0xA);
-        D_8690B308.unk_00[0] = Math_ApproachS32(D_8690B308.unk_00[0], 0xA0, 0xA, 0xA);
-        D_8690B308.unk_00[4] = Math_ApproachS32(D_8690B308.unk_00[4], 0x24, 0xA, 0xA);
-        D_8690B308.unk_00[1] = Math_ApproachS32(D_8690B308.unk_00[1], 0x120, 0xA, 0xA);
-        D_8690B308.unk_00[5] = Math_ApproachS32(D_8690B308.unk_00[5], 0x78, 0xA, 0xA);
-        D_8690B308.unk_00[2] = Math_ApproachS32(D_8690B308.unk_00[2], 0xA0, 0xA, 0xA);
-        D_8690B308.unk_00[6] = Math_ApproachS32(D_8690B308.unk_00[6], 0xCC, 0xA, 0xA);
-        D_8690B308.unk_00[3] = Math_ApproachS32(D_8690B308.unk_00[3], 0x20, 0xA, 0xA);
-        D_8690B308.unk_00[7] = Math_ApproachS32(D_8690B308.unk_00[7], 0x78, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[0] = Math_ApproachS32(gStagePanelAnimData.unk_00[0], 0xA0, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[4] = Math_ApproachS32(gStagePanelAnimData.unk_00[4], 0x24, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[1] = Math_ApproachS32(gStagePanelAnimData.unk_00[1], 0x120, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[5] = Math_ApproachS32(gStagePanelAnimData.unk_00[5], 0x78, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[2] = Math_ApproachS32(gStagePanelAnimData.unk_00[2], 0xA0, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[6] = Math_ApproachS32(gStagePanelAnimData.unk_00[6], 0xCC, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[3] = Math_ApproachS32(gStagePanelAnimData.unk_00[3], 0x20, 0xA, 0xA);
+        gStagePanelAnimData.unk_00[7] = Math_ApproachS32(gStagePanelAnimData.unk_00[7], 0x78, 0xA, 0xA);
 
         if (var_s3 < 0x3D) {
-            ApplyPolarOffset(&D_8690B308.unk_10, &D_8690B308.unk_20, D_8690B308.unk_30 + 0x8000, 0xA);
-            ApplyPolarOffset(&D_8690B308.unk_14, &D_8690B308.unk_24, D_8690B308.unk_32, 0xA);
-            ApplyPolarOffset(&D_8690B308.unk_18, &D_8690B308.unk_28, D_8690B308.unk_34 + 0x8000, 0xA);
-            ApplyPolarOffset(&D_8690B308.unk_1C, &D_8690B308.unk_2C, D_8690B308.unk_36, 0xA);
+            ApplyPolarOffset(&gStagePanelAnimData.unk_10, &gStagePanelAnimData.unk_20, gStagePanelAnimData.unk_30 + 0x8000, 0xA);
+            ApplyPolarOffset(&gStagePanelAnimData.unk_14, &gStagePanelAnimData.unk_24, gStagePanelAnimData.unk_32, 0xA);
+            ApplyPolarOffset(&gStagePanelAnimData.unk_18, &gStagePanelAnimData.unk_28, gStagePanelAnimData.unk_34 + 0x8000, 0xA);
+            ApplyPolarOffset(&gStagePanelAnimData.unk_1C, &gStagePanelAnimData.unk_2C, gStagePanelAnimData.unk_36, 0xA);
         }
 
-        D_8690B360.unk_10 = -tmp1;
+        gStagePanelAnimState.unk_10 = -tmp1;
 
-        temp_fv0 = -(D_8690B360.unk_0C - (tmp4 + 251.0f));
+        temp_fv0 = -(gStagePanelAnimState.unk_0C - (tmp4 + 251.0f));
         if (temp_fv0 >= 0.0) {
-            D_8690B360.unk_10 -= tmp2 * (0.0 - temp_fv0);
+            gStagePanelAnimState.unk_10 -= tmp2 * (0.0 - temp_fv0);
         }
 
-        D_8690B360.unk_10 *= tmp3;
-        D_8690B360.unk_14 += D_8690B360.unk_10;
-        D_8690B360.unk_14 *= tmp3;
+        gStagePanelAnimState.unk_10 *= tmp3;
+        gStagePanelAnimState.unk_14 += gStagePanelAnimState.unk_10;
+        gStagePanelAnimState.unk_14 *= tmp3;
 
-        D_8690B360.unk_0C += D_8690B360.unk_14;
+        gStagePanelAnimState.unk_0C += gStagePanelAnimState.unk_14;
 
-        if ((D_8690B360.unk_14 >= 0.0f) && (D_8690B360.unk_14 <= 1.0f)) {
+        if ((gStagePanelAnimState.unk_14 >= 0.0f) && (gStagePanelAnimState.unk_14 <= 1.0f)) {
             break;
         }
 
@@ -1068,7 +1068,7 @@ void func_86901B28(void) {
     }
 
     UpdateControllerAndMenuInput();
-    D_8690B360.unk_0C = 251.0f;
+    gStagePanelAnimState.unk_0C = 251.0f;
     func_86901A44();
 }
 
@@ -1079,7 +1079,7 @@ void func_86901ECC(void) {
     while (var_s0 != 0) {
         UpdateControllerAndMenuInput();
 
-        if (D_8690A70C != 1) {
+        if (gStagePanelMode != 1) {
             CopyControllerState(&gControllerInput, gPlayer1Controller);
         } else {
             SimulateControllerInputFromScript();
@@ -1111,11 +1111,11 @@ void func_86901FB4(void) {
 }
 
 void func_86902004(s32 arg0) {
-    D_8690A70C = arg0;
+    gStagePanelMode = arg0;
     Graphics_Init();
 
-    D_8690A69C = main_pool_alloc(sizeof(unk_D_8690A69C), 0);
-    bzero(D_8690A69C, sizeof(unk_D_8690A69C));
+    gStagePanelState = main_pool_alloc(sizeof(unk_D_8690A69C), 0);
+    bzero(gStagePanelState, sizeof(unk_D_8690A69C));
 
     gCameraParams = main_pool_alloc(sizeof(unk_D_8690A710), 0);
     bzero(gCameraParams, sizeof(unk_D_8690A710));
@@ -1140,11 +1140,11 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     GbsEnsureBankLoaded(2);
-    GBAudio_ResetState(&D_8690B378, 0);
+    GBAudio_ResetState(&gStagePanelGbAudioState, 0);
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
-    D_8690A678 = GetMessageBank(0x2B);
+    gMessageBankPtr = GetMessageBank(0x2B);
     func_86902004(arg0);
     Stage_Set(sp24);
     func_86901B28();
@@ -1156,5 +1156,5 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_pop_state('SNAP');
 
-    return D_8690A67C;
+    return gStageReturnCode;
 }

@@ -255,7 +255,7 @@ s32 SnapSelect_Run(s32 arg0, s32 arg1) {
 
     Gfx_InitBuffers(0x20000, 0);
     sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    D_8250A304 = Text_Init(0x1C, 0);
+    gTextObjectHandle = Text_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);

@@ -539,7 +539,7 @@ void AnimateRectangle(s16 arg0, s16 arg1, s16 arg2) {
     xh = xl + (arg2 << 2);
     yh = yl + (arg2 << 2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 0, 255);
     gDPLoadTextureBlock(gDisplayListHead++, D_302E440, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

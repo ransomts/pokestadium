@@ -239,7 +239,7 @@ void UIContainer_SetChildCount(unk_func_88500994* arg0, s32 arg1) {
 // loop (3091), if (1) {} in loops (5326/6149), assignment-in-argument (3664). Good permuter candidate.
 // Round 8 (agent-6): without a compiler temp the frame collapses to 0x40 (the _g slots only exist because
 // the arg0+arg2 temp at 0x34 is numbered after every local), so the temp must stay. In the target the sums
-// are evaluated inside the scissor in t8/v0 (t8 stored straight to 0x34, never in an s-reg; v0 also feeds
+// are evaluated inside the scissor in t8/v0 (t8 stored straight to 0x34, never in an s-reg; v0 BattleAnimDataEntry feeds
 // the y guard and sp88's home) and the scissor _g gets s1; ours gives the sums s4/s2 and _g v0. Dead ends
 // (identical or worse): s16/u16 params (callee then sign-extends), commuted sums in the scissor and/or
 // statements, u32 sp34/sp88, sp34 declared in a block / in the outer loop / in a for-init, while and

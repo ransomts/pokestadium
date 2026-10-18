@@ -4,17 +4,17 @@
 #include "src/334D0.h"
 #include "src/F420.h"
 
-void TriggerPokemonAnimAndAction(unk_D_84390010* arg0) {
+void TriggerPokemonAnimAndAction(unk_BattlePlayerEntity* arg0) {
     Anim_SetChannelBase(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
     GraphNode_TriggerAction(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
     func_8430753C(arg0->unk_728.unk_168);
 }
 
-void ClearPokemonActiveFlag(unk_D_84390010* arg0) {
+void ClearPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 0;
 }
 
-void SetPokemonActiveFlag(unk_D_84390010* arg0) {
+void SetPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 1;
 }
 
@@ -32,7 +32,7 @@ void func_8430753C(unk_D_84390010_728_0168* arg0) {
     arg0->unk_00.unk_01 |= 0x10;
 }
 
-void LoadPokemonModelParams(unk_D_84390010* arg0) {
+void LoadPokemonModelParams(unk_BattlePlayerEntity* arg0) {
     s32 var_v0;
 
     if (arg0 == D_84390010[0]) {
@@ -41,18 +41,18 @@ void LoadPokemonModelParams(unk_D_84390010* arg0) {
         var_v0 = 1;
     }
 
-    arg0->unk_728.unk_168->unk_20 = D_843847BC[var_v0].unk_04;
-    arg0->unk_728.unk_168->unk_1C = D_843847BC[var_v0].unk_00;
-    arg0->unk_728.unk_168->unk_1E = D_843847BC[var_v0].unk_02;
+    arg0->unk_728.unk_168->unk_20 = gEntityInitParams[var_v0].unk_04;
+    arg0->unk_728.unk_168->unk_1C = gEntityInitParams[var_v0].unk_00;
+    arg0->unk_728.unk_168->unk_1E = gEntityInitParams[var_v0].unk_02;
 
-    arg0->unk_728.unk_178 = D_843847BC[var_v0].unk_14;
+    arg0->unk_728.unk_178 = gEntityInitParams[var_v0].unk_14;
 
-    arg0->unk_728.unk_168->unk_34 = D_843847BC[var_v0].unk_0C;
-    arg0->unk_728.unk_168->unk_38 = D_843847BC[var_v0].unk_10;
-    arg0->unk_728.unk_168->unk_2C = D_843847BC[var_v0].unk_08;
+    arg0->unk_728.unk_168->unk_34 = gEntityInitParams[var_v0].unk_0C;
+    arg0->unk_728.unk_168->unk_38 = gEntityInitParams[var_v0].unk_10;
+    arg0->unk_728.unk_168->unk_2C = gEntityInitParams[var_v0].unk_08;
 }
 
-void SetupPokemonForBattle(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void SetupPokemonForBattle(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (gBattleState.unk_00->unk_1C == 1) {
         SetAllPokemonActiveFlags();
     } else {
@@ -65,7 +65,7 @@ void SetupPokemonForBattle(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 void func_84307630(void) {
 }
 
-void UpdatePokemonTransform(unk_D_84390010* arg0) {
+void UpdatePokemonTransform(unk_BattlePlayerEntity* arg0) {
     s32 temp_v0;
     unk_D_84390010_728_0168* sp30;
     f32 tmp;
@@ -93,11 +93,11 @@ void UpdatePokemonTransform(unk_D_84390010* arg0) {
                   arg0->unk_728.unk_000.unk_024.z, arg0->unk_728.unk_188, arg0->unk_728.unk_184, arg0->unk_728.unk_186);
 }
 
-void RefreshPokemonTransform(unk_D_84390010* arg0) {
+void RefreshPokemonTransform(unk_BattlePlayerEntity* arg0) {
     UpdatePokemonTransform(arg0);
 }
 
-void AssignPokemonModels(CameraStruct* arg0, unk_D_84390010* arg1, CameraStruct* arg2, unk_D_84390010* arg3) {
+void AssignPokemonModels(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, CameraStruct* arg2, unk_BattlePlayerEntity* arg3) {
     arg1->unk_728.unk_168 = arg0;
     arg3->unk_728.unk_168 = arg2;
     SetupPokemonForBattle(arg1, arg3);
@@ -105,7 +105,7 @@ void AssignPokemonModels(CameraStruct* arg0, unk_D_84390010* arg1, CameraStruct*
     RefreshPokemonTransform(arg3);
 }
 
-void UpdatePokemonTurn(unk_D_84390010* arg0, s32 arg1) {
+void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s16 var_a0;
     unk_D_84390010_728_0168* temp_v0;
 
@@ -136,7 +136,7 @@ void UpdatePokemonTurn(unk_D_84390010* arg0, s32 arg1) {
     }
 }
 
-void ResetPokemonTurn(unk_D_84390010* arg0, s32 arg1) {
+void ResetPokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     if (arg0->unk_728.unk_178 == 1) {
         arg0->unk_728.unk_18C = 0;
         arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
@@ -154,7 +154,7 @@ void ResetPokemonTurn(unk_D_84390010* arg0, s32 arg1) {
     }
 }
 
-void ProcessPokemonTurnState(unk_D_84390010* arg0) {
+void ProcessPokemonTurnState(unk_BattlePlayerEntity* arg0) {
     switch (arg0->unk_728.unk_170) {
         case 0:
             ResetPokemonTurn(arg0, 9);
@@ -166,7 +166,7 @@ void ProcessPokemonTurnState(unk_D_84390010* arg0) {
     }
 }
 
-void UpdatePokemonTurnIfBattleActive(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void UpdatePokemonTurnIfBattleActive(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (gBattleContext.unk_0000 != 0x10) {
         ProcessPokemonTurnState(arg0);
         ProcessPokemonTurnState(arg1);

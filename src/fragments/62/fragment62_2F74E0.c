@@ -217,8 +217,8 @@ void func_8430D30C(void) {
     func_8430D268();
 }
 
-s32 func_8430D334(unk_D_84390010* arg0) {
-    unk_D_84390010_654* temp_v1 = &arg0->unk_654;
+s32 func_8430D334(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* temp_v1 = &arg0->unk_654;
 
     if (arg0->unk_654.unk_10 == 3) {
         temp_v1->unk_1E += 0x38E;
@@ -230,8 +230,8 @@ s32 func_8430D334(unk_D_84390010* arg0) {
 void func_8430D364(void) {
     unk_D_800FCB18* temp_a2;
     unk_D_800FCB18* temp_a3;
-    unk_D_84390010_654* ptr1;
-    unk_D_84390010_654* ptr2;
+    unk_BattlePlayerAnimState* ptr1;
+    unk_BattlePlayerAnimState* ptr2;
     PokemonData* ptr3;
     PokemonData* ptr4;
 
@@ -243,7 +243,7 @@ void func_8430D364(void) {
     ptr3 = &D_84390010[0]->unk_724->unk_01C[ptr1->unk_08];
     ptr4 = &D_84390010[1]->unk_724->unk_01C[ptr2->unk_08];
 
-    if (D_84390288 != 0) {
+    if (gBattleUpdateHPFlag != 0) {
         gPlayerScaleFactors[0] = temp_a2->unk_0C = temp_a2->unk_28;
         gPlayerScaleFactors[1] = temp_a3->unk_0C = temp_a3->unk_28;
 
@@ -252,10 +252,10 @@ void func_8430D364(void) {
     }
 }
 
-s32 func_8430D434(unk_D_84390010* arg0) {
+s32 func_8430D434(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 var_v1;
-    unk_D_84390010_654* temp_v1;
+    unk_BattlePlayerAnimState* temp_v1;
     unk_D_800FCB18* temp_v0;
 
     temp_v1 = &arg0->unk_654;
@@ -285,7 +285,7 @@ s32 func_8430D434(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_8430D574(unk_D_84390010* arg0, s32 arg1) {
+s32 func_8430D574(unk_BattlePlayerEntity* arg0, s32 arg1) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[arg1] & 0x3F)) {
@@ -299,9 +299,9 @@ s32 func_8430D574(unk_D_84390010* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8430D5BC(unk_D_84390010* arg0) {
+void func_8430D5BC(unk_BattlePlayerEntity* arg0) {
     s32 i;
-    unk_D_84390010_654* temp_v0 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
 
     if (func_8430D434(arg0) == 0) {
         for (i = 0; i < 4; i++) {
@@ -316,9 +316,9 @@ void func_8430D5BC(unk_D_84390010* arg0) {
     }
 }
 
-void func_8430D638(unk_D_84390010* arg0) {
+void func_8430D638(unk_BattlePlayerEntity* arg0) {
     s32 i;
-    unk_D_84390010_654* sp1C = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
 
     for (i = 0; i < arg0->unk_720->unk_08[0]->unk_002; i++) {
         if ((arg0->unk_720->unk_08[0]->unk_01C[i].unk_02 != 0) && (i != sp1C->unk_08)) {
@@ -334,16 +334,16 @@ void func_8430D638(unk_D_84390010* arg0) {
     func_8430D5BC(arg0);
 }
 
-void func_8430D6D0(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr = &arg0->unk_654;
+void func_8430D6D0(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
     ptr->unk_2C = ptr->unk_2B;
     ptr->unk_C8 = &gControllers[arg0->unk_720->unk_08[ptr->unk_2C]->unk_001];
 }
 
 void func_8430D710(s32 arg0) {
-    unk_D_84390010_654* sp2C;
-    unk_D_84390010_654* sp28;
+    unk_BattlePlayerAnimState* sp2C;
+    unk_BattlePlayerAnimState* sp28;
     UNUSED s32 pad;
     Controller* cont;
 
@@ -384,7 +384,7 @@ void func_8430D814(void) {
     ResetBattleAfterMove(1, 0);
 }
 
-s32 func_8430D8C4(unk_D_84390010* arg0) {
+s32 func_8430D8C4(unk_BattlePlayerEntity* arg0) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
     s32 i;
     s32 var_v1 = 0;
@@ -409,10 +409,10 @@ s32 func_8430D8C4(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_8430D9EC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+s32 func_8430D9EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad[2];
-    unk_D_84390010_654* sp1C = &arg0->unk_654;
-    unk_D_84390010_654* temp_v0 = &arg1->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_v0 = &arg1->unk_654;
 
     if ((arg0->unk_654.unk_2D == 0x10) && (arg1->unk_654.unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
@@ -456,8 +456,8 @@ s32 func_8430D9EC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8430DB58(unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
-    unk_D_84390010_654* ptr = &arg0->unk_654;
+void func_8430DB58(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
     func_8430D334(arg0);
     ptr->unk_2A = 1;
@@ -466,9 +466,9 @@ void func_8430DB58(unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
     ptr->unk_10 = 3;
 }
 
-void func_8430DBA0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_84390010_654* sp20 = &arg1->unk_654;
-    unk_D_84390010_654* sp1C = &arg0->unk_654;
+void func_8430DBA0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    unk_BattlePlayerAnimState* sp20 = &arg1->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
 
     func_8430D334(arg0);
     sp1C->unk_2A = 1;
@@ -490,9 +490,9 @@ void func_8430DBA0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430DCD4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_84390010_654* sp18;
-    unk_D_84390010_654* sp14;
+void func_8430DCD4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    unk_BattlePlayerAnimState* sp18;
+    unk_BattlePlayerAnimState* sp14;
     s32 var_v0;
 
     sp18 = &arg0->unk_654;
@@ -526,9 +526,9 @@ void func_8430DCD4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-s32 func_8430DE20(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_84390010_654* sp1C = &arg0->unk_654;
-    unk_D_84390010_654* sp18 = &arg1->unk_654;
+s32 func_8430DE20(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &arg1->unk_654;
 
     if ((gBattleTimer == 30.0f) && (gRandomMoveSlot >= 4)) {
         PlaySoundEffect_Cancel();
@@ -558,19 +558,19 @@ s32 func_8430DE20(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8430DF60(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18* arg1, UNUSED unk_D_84390010_654* arg2,
-                   UNUSED unk_D_84390010_654* arg3, UNUSED unk_D_84390010* arg4) {
+void func_8430DF60(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
+                   UNUSED unk_BattlePlayerAnimState* arg3, UNUSED unk_BattlePlayerEntity* arg4) {
     if ((gBattleTimer == 1.0f) && (D_8439013C == 0)) {
         D_8439013C = 1;
         gRandomMoveSlot = func_84383B5C(0);
     }
 }
 
-s32 func_8430DFCC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+s32 func_8430DFCC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* sp34 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* sp30 = &arg1->unk_654.unk_38;
-    unk_D_84390010_654* sp2C = &arg0->unk_654;
-    unk_D_84390010_654* sp28 = &arg1->unk_654;
+    unk_BattlePlayerAnimState* sp2C = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp28 = &arg1->unk_654;
 
     if (func_8430D9EC(arg0, arg1) != 0) {
         return 0;
@@ -627,9 +627,9 @@ s32 func_8430DFCC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8430E1CC(unk_D_84390010* arg0) {
-    unk_D_84390010_654* sp18 = &arg0->unk_654;
-    unk_D_84390010_654* temp_a0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
+void func_8430E1CC(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* sp18 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_a0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
         D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
@@ -675,8 +675,8 @@ void func_8430E1CC(unk_D_84390010* arg0) {
     }
 }
 
-void func_8430E490(unk_D_84390010* arg0) {
-    unk_D_84390010_654* temp_v0 = &arg0->unk_654;
+void func_8430E490(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
     unk_D_800FCB18* temp_v1 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
@@ -691,7 +691,7 @@ void func_8430E490(unk_D_84390010* arg0) {
     func_843193F4(arg0);
 }
 
-s32 func_8430E504(unk_D_84390010* arg0) {
+s32 func_8430E504(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_18].unk_02 != 0) {
         return 1;
     }
@@ -702,12 +702,12 @@ s32 func_8430E504(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_8430E580(unk_D_84390010* arg0) {
+void func_8430E580(unk_BattlePlayerEntity* arg0) {
     func_843193F4(arg0);
     func_84319408(arg0, 4);
 }
 
-void func_8430E5AC(unk_D_84390010* arg0, s32 arg1) {
+void func_8430E5AC(unk_BattlePlayerEntity* arg0, s32 arg1) {
     if (arg1 == 1) {
         D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
         D_8439014C = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
@@ -733,8 +733,8 @@ void func_8430E5AC(unk_D_84390010* arg0, s32 arg1) {
     }
 }
 
-void func_8430E72C(unk_D_84390010* arg0, Controller* arg1) {
-    unk_D_84390010_654* sp1C;
+void func_8430E72C(unk_BattlePlayerEntity* arg0, Controller* arg1) {
+    unk_BattlePlayerAnimState* sp1C;
     unk_D_800AE540_0004* temp_a1;
 
     sp1C = &arg0->unk_654;
@@ -794,10 +794,10 @@ void func_8430E72C(unk_D_84390010* arg0, Controller* arg1) {
     }
 }
 
-void func_8430E8E8(unk_D_84390010* arg0) {
+void func_8430E8E8(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 idx;
-    unk_D_84390010_654* sp18 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &arg0->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
         D_84390148 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
@@ -832,8 +832,8 @@ void func_8430E8E8(unk_D_84390010* arg0) {
     }
 }
 
-void func_8430EB1C(unk_D_84390010* arg0) {
-    unk_D_84390010_654* temp_v0 = &arg0->unk_654;
+void func_8430EB1C(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
     unk_D_800FCB18* temp_v1 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_14 != 4) {
@@ -855,11 +855,11 @@ void func_8430EB1C(unk_D_84390010* arg0) {
     func_843193F4(arg0);
 }
 
-s32 func_8430EBA8(unk_D_84390010* arg0) {
+s32 func_8430EBA8(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 temp_a1;
     s32 var_v1;
-    unk_D_84390010_654* temp_v0;
+    unk_BattlePlayerAnimState* temp_v0;
     unk_D_800FCB18* temp_a0;
     Controller* cont;
 
@@ -905,9 +905,9 @@ s32 func_8430EBA8(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_8430ED88(unk_D_84390010* arg0) {
+s32 func_8430ED88(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
-    unk_D_84390010_654* sp24 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp24 = &arg0->unk_654;
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[sp24->unk_14] & 0x3F)) {
@@ -931,7 +931,7 @@ s32 func_8430ED88(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_8430EE50(unk_D_84390010* arg0) {
+void func_8430EE50(unk_BattlePlayerEntity* arg0) {
     Controller* cont = arg0->unk_654.unk_C8;
 
     if ((cont->buttonPressed & 8) != 0) {
@@ -972,10 +972,10 @@ void func_8430EE50(unk_D_84390010* arg0) {
     }
 }
 
-void func_8430EF4C(unk_D_84390010* arg0) {
+void func_8430EF4C(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     Controller* sp1C = arg0->unk_654.unk_C8;
-    unk_D_84390010_654* temp_v0 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
 
     if ((temp_v0->unk_04 == 1) && (func_8430EBA8(arg0) == 0)) {
         if (arg0->unk_8C4.unk_00 != 0) {
@@ -1005,15 +1005,15 @@ void func_8430EF4C(unk_D_84390010* arg0) {
     }
 }
 
-s32 func_8430F044(unk_D_84390010* arg0, UNUSED Controller* arg1) {
+s32 func_8430F044(unk_BattlePlayerEntity* arg0, UNUSED Controller* arg1) {
     arg0->unk_654.unk_2A = 1;
     func_8430EF4C(arg0);
     arg0->unk_654.unk_2A = 1;
     return 0;
 }
 
-void func_8430F080(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr = &arg0->unk_654;
+void func_8430F080(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
 
     func_8430D334(arg0);
     ptr->unk_2A = 1;
@@ -1021,9 +1021,9 @@ void func_8430F080(unk_D_84390010* arg0) {
     ptr->unk_0C = ptr->unk_14;
 }
 
-void func_8430F0C0(unk_D_84390010* arg0) {
-    unk_D_84390010_654* temp_v1 = &arg0->unk_654;
-    unk_D_84390010_654* temp_t0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
+void func_8430F0C0(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* temp_v1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_t0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->unk_720->unk_01 == 1) {
@@ -1052,7 +1052,7 @@ void func_8430F0C0(unk_D_84390010* arg0) {
     }
 }
 
-s32 func_8430F27C(unk_D_84390010* arg0) {
+s32 func_8430F27C(unk_BattlePlayerEntity* arg0) {
     IsPrimaryEntity(arg0);
 
     if (func_8430D334(arg0) != 0) {
@@ -1085,9 +1085,9 @@ s32 func_8430F27C(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_8430F350(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_84390010_654* sp1C = &arg0->unk_654;
-    unk_D_84390010_654* temp_v0 = &arg1->unk_654;
+s32 func_8430F350(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    unk_BattlePlayerAnimState* sp1C = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_v0 = &arg1->unk_654;
 
     if ((sp1C->unk_2D == 0x10) && (temp_v0->unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
@@ -1158,7 +1158,7 @@ void DemoFeedScriptedInput(void) {
     }
 }
 
-void func_8430F598(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430F598(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* temp_v1 = &arg1->unk_654.unk_38;
 
@@ -1174,8 +1174,8 @@ void func_8430F598(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430F5F4(void) {
-    unk_D_84390010_654* sp24 = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp20 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
     unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
     Controller* cont = &D_84390150;
@@ -1226,7 +1226,7 @@ void func_8430F5F4(void) {
     }
 }
 
-void func_8430F794(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430F794(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad;
     unk_D_800FCB18* sp20 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* sp1C = &arg1->unk_654.unk_38;
@@ -1262,8 +1262,8 @@ void func_8430F794(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430F8B8(void) {
-    unk_D_84390010_654* sp24 = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp20 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
     unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
 
@@ -1317,7 +1317,7 @@ void func_8430F8B8(void) {
 }
 
 void func_8430FB20(void) {
-    D_84390288 = 0;
+    gBattleUpdateHPFlag = 0;
     if (gBattleContext.unk_0000 == 0x10) {
         func_8430F5F4();
     } else {
@@ -1326,8 +1326,8 @@ void func_8430FB20(void) {
 }
 
 void func_8430FB68(void) {
-    unk_D_84390010_654* sp1C = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
 
     if (func_8430D02C() == 0) {
         D_84390010[0]->unk_4C8 = 0;

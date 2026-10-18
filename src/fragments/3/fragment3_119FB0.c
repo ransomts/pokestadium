@@ -258,7 +258,7 @@ void func_87901F04(ParticleEffectInstance* arg0) {
 
 void func_87901FA0(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.25f);
-    func_8140A594(arg0, RandomMod(0x10000));
+    Particle_RotateY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
     Particle_SetAccelerationY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     SetPrimEnvColorFromPair(arg0, 0xA);
@@ -295,7 +295,7 @@ void func_87902068(ParticleEffectInstance* arg0) {
 
 void func_8790215C(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.25f);
-    func_8140A594(arg0, RandomMod(0x10000));
+    Particle_RotateY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 2.0f);
     Particle_SetAccelerationY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     SetPrimEnvColorFromPair(arg0, 0xA);
@@ -333,7 +333,7 @@ void func_87902224(ParticleEffectInstance* arg0) {
 void func_87902318(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.5f);
     Particle_SetRandomVelocityXYZ(arg0, 3, 0, 3);
-    func_8140A594(arg0, RandomMod(0x10000));
+    Particle_RotateY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 3.0f);
     Particle_SetAccelerationY(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
     SetPrimEnvColorFromPair(arg0, 0xA);

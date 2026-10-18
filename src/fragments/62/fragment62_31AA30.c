@@ -60,7 +60,7 @@ void RenderStatusBar(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Gfx_ScrollTexture(2, -2, 0x40, 0x40);
     Gfx_LoadMultiBlockI4b_Wrap(gWaterTexture[0x28], 0x40, 0x40);
     Gfx_ScrollTexture1(0, -1, 0x40, 0x40);
-    Gfx_DrawQuad(D_84385DC0);
+    Gfx_DrawQuad(gPanelBgVerts);
 }
 
 void func_84330688(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
@@ -73,7 +73,7 @@ void func_84330688(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Gfx_ScrollTexture(1, -3, 0x40, 0x40);
     Gfx_LoadMultiBlockI4b_Wrap(gWaterTexture[0x28], 0x40, 0x40);
     Gfx_ScrollTexture1(-2, -2, 0x40, 0x40);
-    Gfx_DrawQuad(D_84385E00);
+    Gfx_DrawQuad(gPanelBgLargeVerts);
 }
 
 void RenderMultiBlockIcon(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
@@ -106,7 +106,7 @@ void func_84330A18(ParticleEffectInstance* arg0, u8* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawTiledTextureI4b(arg1, D_84385C80, 0x40, 0x40, 0x40, 0x40);
+    Gfx_DrawTiledTextureI4b(arg1, gPanelQuadVerts, 0x40, 0x40, 0x40, 0x40);
 }
 
 void func_84330AF0(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
@@ -185,7 +185,7 @@ void RenderTimerDigits(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) 
 
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_84385CC0);
+    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gPanelBarVerts);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -196,7 +196,7 @@ void RenderTimerDigitsAlt(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_84385D00);
+    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gPanelBarSmallVerts);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -207,7 +207,7 @@ void func_84331314(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_84385D40);
+    Gfx_DrawQuadRotatedScaleY(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gPanelMiscVerts);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -218,7 +218,7 @@ void RenderTimerNumber(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, D_84385CC0, arg0->unk_94.z);
+    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelBarVerts, arg0->unk_94.z);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -229,7 +229,7 @@ void func_8433157C(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, D_84385D00, arg0->unk_94.z);
+    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelBarSmallVerts, arg0->unk_94.z);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -240,7 +240,7 @@ void func_843316A8(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, D_84385D40, arg0->unk_94.z);
+    Gfx_DrawQuadBillboardRollScaleY(arg1, arg0->unk_2C, arg0->unk_1C, gPanelMiscVerts, arg0->unk_94.z);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }

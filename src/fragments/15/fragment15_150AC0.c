@@ -153,7 +153,7 @@ void LoadTextureTileAndDrawRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4
     gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, 0, 0, 0, arg2 - 1, arg3 - 1, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    DrawClippedTextureRect(arg0, arg1, arg2, arg3, D_8690B360.unk_02 << 5, 0, 0x400, 0x400);
+    DrawClippedTextureRect(arg0, arg1, arg2, arg3, gStagePanelAnimState.unk_02 << 5, 0, 0x400, 0x400);
 }
 
 void DrawTexture2Cycle(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -193,7 +193,7 @@ void DrawSpriteRotated(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     spA8 = GfxAlloc(sizeof(MtxF) * 1);
     spA4 = GfxAlloc(sizeof(Vp) * 1);
 
-    Vec3s_Set(&spD8, 0, 0, D_8690B360.unk_06);
+    Vec3s_Set(&spD8, 0, 0, gStagePanelAnimState.unk_06);
 
     Vec3f_Set(&spCC, (f32)arg1 + (arg3 / 2), (f32)arg2 + arg4, 0.0f);
     Vec3f_Set(&spC0, 1.0f, 1.0f, 1.0f);
@@ -214,7 +214,7 @@ void DrawSpriteRotated(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    if (D_8690B360.unk_06 == 0) {
+    if (gStagePanelAnimState.unk_06 == 0) {
         gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
         gDPSetRenderMode(gDisplayListHead++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
     } else {
@@ -543,12 +543,12 @@ void RenderMainMenu(UNUSED s32 arg0) {
     s32 i;
     s32 var_v1;
 
-    if (D_8690B380 != 0) {
+    if (gCameraNavActiveFlag != 0) {
         DrawBorderedRect(0x55, 0x20, 0x96, 0x8C, 0, 0, 0x8C, 0x64);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        if (D_8690B384 != 0) {
+        if (gCameraNavSubIndex != 0) {
             var_v1 = 0xFF;
         } else {
             var_v1 = 0x37;
@@ -558,7 +558,7 @@ void RenderMainMenu(UNUSED s32 arg0) {
 
         Gfx_DrawSpriteIA8(0x93, 0x20, 0x18, 0xF, &D_50017E8, 0x18, 0);
 
-        if ((D_8690B38C - 4) != D_8690B384) {
+        if ((gCameraNavMaxIndex - 4) != gCameraNavSubIndex) {
             var_v1 = 0xFF;
         } else {
             var_v1 = 0x37;
@@ -569,23 +569,23 @@ void RenderMainMenu(UNUSED s32 arg0) {
         Gfx_DrawSpriteIA8(0x93, 0x9C, 0x18, 0xF, &D_5001680, 0x18, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
-        gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+        gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-        Gfx_DrawSpriteRGBA16Paletted(0x59, (D_8690B388 * 0x14) + 0x35, 0x18, 0xE, D_5000000, &D_50002A0, 0x18, 0x100000);
+        Gfx_DrawSpriteRGBA16Paletted(0x59, (gCameraNavTransition * 0x14) + 0x35, 0x18, 0xE, D_5000000, &D_50002A0, 0x18, 0x100000);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
         Text_SetFont(4, 0);
 
-        for (i = D_8690B384; i < D_8690B384 + 5; i++) {
-            if (D_8690B388 == (i - D_8690B384)) {
+        for (i = gCameraNavSubIndex; i < gCameraNavSubIndex + 5; i++) {
+            if (gCameraNavTransition == (i - gCameraNavSubIndex)) {
                 Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(0xA0 - (MeasureTextWidth(4, 0, D_86908C58[i]) / 2), ((i - D_8690B384) * 0x14) + 0x36,
-                          D_86908C58[i]);
+            Text_Print(0xA0 - (MeasureTextWidth(4, 0, gStagePanelLabelStrings[i]) / 2), ((i - gCameraNavSubIndex) * 0x14) + 0x36,
+                          gStagePanelLabelStrings[i]);
         }
 
         Text_SetupDL();
@@ -596,123 +596,123 @@ void RenderMainMenu(UNUSED s32 arg0) {
 void RenderGradientPanel(void) {
     s32 sp3C;
     s32 sp38;
-    Color_RGB8 sp34 = D_86908C98;
-    Color_RGB8 sp30 = D_86908C9C;
+    Color_RGB8 sp34 = gStagePanelGradientStartColor;
+    Color_RGB8 sp30 = gStagePanelGradientEndColor;
 
-    if (D_8690B348 >= 3) {
-        DrawPanelBackground(0, 0, 0x140, 0xF0, D_8690B350.unk_04);
+    if (gStagePanelStateIndex >= 3) {
+        DrawPanelBackground(0, 0, 0x140, 0xF0, gStagePanelFadeData.unk_04);
     }
 
-    if (D_8690B348 == 4) {
-        if (D_8690B350.unk_0E < 0x15) {
-            DrawGradientPanel(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
-                          D_8690B350.unk_0E, &sp34, &sp34);
+    if (gStagePanelStateIndex == 4) {
+        if (gStagePanelFadeData.unk_0E < 0x15) {
+            DrawGradientPanel(gStagePanelFadeData.unk_08, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
+                          gStagePanelFadeData.unk_0E, &sp34, &sp34);
         } else {
-            DrawGradientPanel(D_8690B350.unk_08, D_8690B350.unk_0A - (D_8690B350.unk_0E / 2), D_8690B350.unk_0C,
-                          D_8690B350.unk_0E, &sp34, &sp30);
+            DrawGradientPanel(gStagePanelFadeData.unk_08, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
+                          gStagePanelFadeData.unk_0E, &sp34, &sp30);
         }
 
-        if (D_8690B350.unk_0E >= 0x1F) {
+        if (gStagePanelFadeData.unk_0E >= 0x1F) {
             Text_ResetState();
             Text_SetFont(4, 0);
-            sp3C = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_8690A678, 0));
-            sp38 = GetMessageString(NULL, 0, D_8690A678, 0);
-            Text_Print((D_8690B350.unk_08 - (sp3C / 2)) + (D_8690B350.unk_0C / 2), D_8690B350.unk_0A - 8, sp38);
+            sp3C = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMessageBankPtr, 0));
+            sp38 = GetMessageString(NULL, 0, gMessageBankPtr, 0);
+            Text_Print((gStagePanelFadeData.unk_08 - (sp3C / 2)) + (gStagePanelFadeData.unk_0C / 2), gStagePanelFadeData.unk_0A - 8, sp38);
             Text_SetupDL();
         }
     }
 }
 
 s16 GetUIElementXPosOrMax(s16 arg0) {
-    if ((arg0 - D_8690B360.unk_04) <= (D_8690B360.unk_0C + 15.0f)) {
+    if ((arg0 - gStagePanelAnimState.unk_04) <= (gStagePanelAnimState.unk_0C + 15.0f)) {
         return 1000;
     }
-    return arg0 - D_8690B360.unk_04;
+    return arg0 - gStagePanelAnimState.unk_04;
 }
 
 void RenderHPBar(void) {
-    s16 sp4E = D_8690B360.unk_0C;
+    s16 sp4E = gStagePanelAnimState.unk_0C;
     char sp40[12];
     char sp34[12];
     s16 sp32;
     s16 sp24 = sp4E + 0x17;
 
-    if (D_8690B348 >= 2) {
+    if (gStagePanelStateIndex >= 2) {
         return;
     }
 
     DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 8), 0x18, 8, 0x1E);
     DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x10), 0x18, 8, 0x1E);
 
-    if (D_8690B348 == 0) {
-        if (D_8690B360.unk_00 == 0) {
-            sprintf(&sp40, "%d", 0x18 - D_8690B344);
+    if (gStagePanelStateIndex == 0) {
+        if (gStagePanelAnimState.unk_00 == 0) {
+            sprintf(&sp40, "%d", 0x18 - gStageSnapshotCount);
 
             Text_ResetState();
             Text_SetFont(2, 0);
 
-            if ((0x18 - D_8690B344) >= 0xB) {
+            if ((0x18 - gStageSnapshotCount) >= 0xB) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0xFF, 0, 0, 0xFF);
             }
 
             sp32 = 0;
-            if ((0x18 - D_8690B344) < 0xA) {
+            if ((0x18 - gStageSnapshotCount) < 0xA) {
                 sp32 = 3;
             }
 
             Text_Print(sp24 + sp32 + 9, 0x21, &sp40);
             Text_SetupDL();
         } else {
-            sprintf(&sp40, "%d", 0x19 - D_8690B344);
-            sprintf(&sp34, "%d", 0x18 - D_8690B344);
+            sprintf(&sp40, "%d", 0x19 - gStageSnapshotCount);
+            sprintf(&sp34, "%d", 0x18 - gStageSnapshotCount);
 
             Text_ResetState();
             Text_SetFont(2, 0);
 
-            if ((0x19 - D_8690B344) >= 0xB) {
+            if ((0x19 - gStageSnapshotCount) >= 0xB) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0xFF, 0, 0, 0xFF);
             }
 
             sp32 = 0;
-            if ((0x18 - D_8690B344) < 0xA) {
+            if ((0x18 - gStageSnapshotCount) < 0xA) {
                 sp32 = 3;
             }
 
-            Text_Print((sp24 - D_8690B360.unk_00) + sp32 + 0x1D, 0x21, &sp40);
+            Text_Print((sp24 - gStagePanelAnimState.unk_00) + sp32 + 0x1D, 0x21, &sp40);
 
-            if ((0x18 - D_8690B344) >= 0xB) {
+            if ((0x18 - gStageSnapshotCount) >= 0xB) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0xFF, 0, 0, 0xFF);
             }
 
             sp32 = 0;
-            if ((0x18 - D_8690B344) < 0xA) {
+            if ((0x18 - gStageSnapshotCount) < 0xA) {
                 sp32 = 3;
             }
 
-            Text_Print((sp24 - D_8690B360.unk_00) + sp32 + 9, 0x21, &sp34);
+            Text_Print((sp24 - gStagePanelAnimState.unk_00) + sp32 + 9, 0x21, &sp34);
             Text_SetupDL();
         }
-    } else if (D_8690B360.unk_00 == 0) {
-        if (D_8690B344 != 0) {
-            sprintf(&sp40, "%d", 0x18 - D_8690B344);
+    } else if (gStagePanelAnimState.unk_00 == 0) {
+        if (gStageSnapshotCount != 0) {
+            sprintf(&sp40, "%d", 0x18 - gStageSnapshotCount);
 
             Text_ResetState();
             Text_SetFont(2, 0);
 
-            if ((0x18 - D_8690B344) >= 0xB) {
+            if ((0x18 - gStageSnapshotCount) >= 0xB) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0xFF, 0, 0, 0xFF);
             }
 
             sp32 = 0;
-            if ((0x18 - D_8690B344) < 0xA) {
+            if ((0x18 - gStageSnapshotCount) < 0xA) {
                 sp32 = 3;
             }
 
@@ -720,37 +720,37 @@ void RenderHPBar(void) {
             Text_SetupDL();
         }
     } else {
-        sprintf(&sp40, "%d", 0x17 - D_8690B344);
-        sprintf(&sp34, "%d", 0x18 - D_8690B344);
+        sprintf(&sp40, "%d", 0x17 - gStageSnapshotCount);
+        sprintf(&sp34, "%d", 0x18 - gStageSnapshotCount);
 
         Text_ResetState();
         Text_SetFont(2, 0);
 
-        if ((0x19 - D_8690B344) >= 0xB) {
+        if ((0x19 - gStageSnapshotCount) >= 0xB) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0, 0, 0xFF);
         }
 
         sp32 = 0;
-        if ((0x18 - D_8690B344) < 0xA) {
+        if ((0x18 - gStageSnapshotCount) < 0xA) {
             sp32 = 3;
         }
 
-        Text_Print((sp24 + D_8690B360.unk_00 + sp32) - 0xB, 0x21, &sp40);
+        Text_Print((sp24 + gStagePanelAnimState.unk_00 + sp32) - 0xB, 0x21, &sp40);
 
-        if ((0x18 - D_8690B344) >= 0xB) {
+        if ((0x18 - gStageSnapshotCount) >= 0xB) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0, 0, 0xFF);
         }
 
         sp32 = 0;
-        if ((0x18 - D_8690B344) < 0xA) {
+        if ((0x18 - gStageSnapshotCount) < 0xA) {
             sp32 = 3;
         }
 
-        Text_Print(sp24 + D_8690B360.unk_00 + sp32 + 9, 0x21, &sp34);
+        Text_Print(sp24 + gStagePanelAnimState.unk_00 + sp32 + 9, 0x21, &sp34);
         Text_SetupDL();
     }
 
@@ -762,10 +762,10 @@ void RenderHPBar(void) {
 }
 
 void func_86908418(void) {
-    s16 sp30 = D_8690B360.unk_0C;
+    s16 sp30 = gStagePanelAnimState.unk_0C;
     s16 sp2E;
 
-    if (D_8690B348 < 2) {
+    if (gStagePanelStateIndex < 2) {
         return;
     }
 
@@ -799,29 +799,29 @@ void func_86908418(void) {
 }
 
 void func_86908668(void) {
-    if (D_8690B348 == 0) {
-        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[0], D_8690B308.unk_00[4], 0x30, 0x19, 0, 0);
-        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[1], D_8690B308.unk_00[5], 0x30, 0x19, 0x4000, 1);
-        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[2], D_8690B308.unk_00[6], 0x30, 0x19, -0x8000, 1);
-        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[3], D_8690B308.unk_00[7], 0x30, 0x19, -0x4000, 1);
-        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 0);
-        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 1);
-        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
-        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
-        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
-        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
-        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
-        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
+    if (gStagePanelStateIndex == 0) {
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[0], gStagePanelAnimData.unk_00[4], 0x30, 0x19, 0, 0);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[1], gStagePanelAnimData.unk_00[5], 0x30, 0x19, 0x4000, 1);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[2], gStagePanelAnimData.unk_00[6], 0x30, 0x19, -0x8000, 1);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[3], gStagePanelAnimData.unk_00[7], 0x30, 0x19, -0x4000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, gStagePanelAnimData.unk_10, gStagePanelAnimData.unk_20, 0x18, 0x38, 0, 0);
+        DrawRotatedSpriteOffset(&D_5000C90, gStagePanelAnimData.unk_10, gStagePanelAnimData.unk_20, 0x18, 0x38, 0, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, gStagePanelAnimData.unk_14, gStagePanelAnimData.unk_24, 0x18, 0x38, 0x4000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, gStagePanelAnimData.unk_14, gStagePanelAnimData.unk_24, 0x18, 0x38, 0x4000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, gStagePanelAnimData.unk_18, gStagePanelAnimData.unk_28, 0x18, 0x38, -0x8000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, gStagePanelAnimData.unk_18, gStagePanelAnimData.unk_28, 0x18, 0x38, -0x8000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, gStagePanelAnimData.unk_1C, gStagePanelAnimData.unk_2C, 0x18, 0x38, -0x4000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, gStagePanelAnimData.unk_1C, gStagePanelAnimData.unk_2C, 0x18, 0x38, -0x4000, 1);
     }
 }
 
 void func_869089AC(void) {
-    if (D_8690B3C0.unk_00 != 0xFF) {
-        DrawBorderedRect(0x3C, 0x9B - (D_8690B3C0.unk_0C / 2), D_8690B3C0.unk_08, D_8690B3C0.unk_0C, 0, 0, 0x9B, 0x7D);
+    if (gTutorialTextBoxState.unk_00 != 0xFF) {
+        DrawBorderedRect(0x3C, 0x9B - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxState.unk_08, gTutorialTextBoxState.unk_0C, 0, 0, 0x9B, 0x7D);
         Text_ResetState();
         Text_SetFont(2, 0);
         Text_SetLineHeight(0xC);
-        Text_Print(0x46, 0x9F - (D_8690B3C0.unk_0C / 2), D_8690B3D0);
+        Text_Print(0x46, 0x9F - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxCharBuffer);
         Text_SetupDL();
     }
 }

@@ -3,12 +3,12 @@
 #include "src/18140.h"
 #include "src/1C720.h"
 
-void HandleMoveHitAnimation(unk_D_84390010* arg0) {
+void HandleMoveHitAnimation(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     PokemonData* ptr;
-    unk_D_84390010_654* sp2C;
+    unk_BattlePlayerAnimState* sp2C;
     unk_D_800FCB18* sp28;
-    unk_D_8438E7B0_A50* sp20;
+    unk_BattleAnimDataEntry* sp20;
     s32 idx = IsPrimaryEntity(arg0);
 
     sp28 = &arg0->unk_654.unk_38;
@@ -28,56 +28,56 @@ void HandleMoveHitAnimation(unk_D_84390010* arg0) {
         SetAnimStateIndex(&arg0->unk_000, 3);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
         SetEntityAnimFlags(arg0, 2);
-        func_8432C7A0(1, arg0);
+        Battle_ApplyAnimChannelEffect(1, arg0);
         PlayBattleSoundEffect(arg0, 0x13);
     }
 }
 
-void TriggerCurrentAnimAction(unk_D_84390010* arg0) {
-    unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
+void TriggerCurrentAnimAction(unk_BattlePlayerEntity* arg0) {
+    unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     GraphNode_TriggerAction(&arg0->unk_000, ptr->unk_00);
 }
 
-void StartMoveAnimation(unk_D_84390010* arg0) {
+void StartMoveAnimation(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_654.unk_34 & 2) {
-        func_8432C80C(1, arg0);
+        RunParticleEffectScript(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
 
-void ResetMoveStateAndStartAnimation(unk_D_84390010* arg0) {
+void ResetMoveStateAndStartAnimation(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 2) {
         ptr->unk_05 = 0;
-        func_8432C80C(1, arg0);
+        RunParticleEffectScript(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
 
-void ResumeMoveAnimationIfNotTriggered(unk_D_84390010* arg0) {
+void ResumeMoveAnimationIfNotTriggered(unk_BattlePlayerEntity* arg0) {
     if ((arg0->unk_654.unk_34 & 2) && !(arg0->unk_654.unk_38.unk_15 & 0x20)) {
-        func_8432C80C(1, arg0);
+        RunParticleEffectScript(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
 
-void HandleItemOrStatusEffect(unk_D_84390010* arg0) {
-    unk_D_84390010_654* sp24 = &arg0->unk_654;
+void HandleItemOrStatusEffect(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* sp24 = &arg0->unk_654;
     unk_D_800FCB18* sp28 = &sp24->unk_38;
     PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((gBattleState.unk_00->unk_38 != 0xB) || (gBattleState.unk_00->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->unk_654.unk_34 & 1)) {
             PlayAnimSoundSimple(arg0, 0xAF, 2);
-            func_8432C7A0(3, arg0);
+            Battle_ApplyAnimChannelEffect(3, arg0);
             PlayBattleSoundEffect(arg0, 0x32);
             SetEntityAnimFlags(arg0, 1);
         }
@@ -89,13 +89,13 @@ void HandleItemOrStatusEffect(unk_D_84390010* arg0) {
             } else {
                 PlayAnimSoundSimple(arg0, 0xB8, 1);
             }
-            func_8432C80C(3, arg0);
+            RunParticleEffectScript(3, arg0);
             ClearEntityAnimFlags(arg0, 1);
         }
     }
 }
 
-void ProcessStatusEffectEnd(unk_D_84390010* arg0) {
+void ProcessStatusEffectEnd(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 1) {
@@ -106,14 +106,14 @@ void ProcessStatusEffectEnd(unk_D_84390010* arg0) {
         } else {
             PlayAnimSoundSimple(arg0, 0xB8, 1);
         }
-        func_8432C80C(3, arg0);
+        RunParticleEffectScript(3, arg0);
         ClearEntityAnimFlags(arg0, 1);
     }
 }
 
-void FinalizeStatusEffect(unk_D_84390010* arg0) {
+void FinalizeStatusEffect(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_654.unk_34 & 1) {
-        func_8432C80C(3, arg0);
+        RunParticleEffectScript(3, arg0);
         ClearEntityAnimFlags(arg0, 1);
     }
 }

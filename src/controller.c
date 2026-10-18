@@ -216,8 +216,8 @@ void Cont_InitEepromQueue(void) {
 /*
  * Setup the controllers for initial use by initializing the EEPROM queue
  * and SI Event queues. EEPROM probing was handled by game_init.c in Super
- * Mario 64 which also handled the controllers in the same file. Since
- * Nintendo EAD is also credited with co-developing Pokemon Stadium, this
+ * Mario 64 which BattleAnimDataEntry handled the controllers in the same file. Since
+ * Nintendo EAD is BattleAnimDataEntry credited with co-developing Pokemon Stadium, this
  * organization may be a holdover from that era.
  */
 u8 Cont_SetupControllers(void) {

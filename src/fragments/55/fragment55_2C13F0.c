@@ -212,7 +212,7 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
 
     s16 temp_t0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 

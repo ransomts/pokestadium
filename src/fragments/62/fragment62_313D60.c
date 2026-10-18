@@ -10,7 +10,7 @@
 unk_D_84390240 gBattleState;
 static s32 pad_D_84390280;
 static s32 gCurrentEntityIndex;
-s32 D_84390288;
+s32 gBattleUpdateHPFlag;
 static s32 pad_D_84390290[4];
 
 void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
@@ -41,7 +41,7 @@ void InitializeCameraForPlayerEntity(CameraStruct* arg0) {
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void BattleCamera_RunState(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D_84390010* arg2) {
+void BattleCamera_RunState(CameraStruct* arg0, UNUSED unk_BattlePlayerEntity* arg1, UNUSED unk_BattlePlayerEntity* arg2) {
     gBattleState.unk_00->unk_40 = 0;
     gBattleState.unk_00->unk_60 = 30.0f;
     gBattleState.unk_00->unk_6C = 10.0f;
@@ -127,7 +127,7 @@ void Battle_StartSequence(CameraStruct* arg0) {
         case 5:
             if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
-                    func_8432E9D8(2);
+                    Battle_SetAnimChannelFlag(2);
                     func_8430CC84();
                 }
                 ClearAnimFlagIfState6A(D_84390010[0]);
@@ -211,7 +211,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
         case 8:
             if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
-                    func_8432E9D8(2);
+                    Battle_SetAnimChannelFlag(2);
                     func_8430CC84();
                 }
                 ClearAnimFlagIfState6A(D_84390010[0]);
@@ -249,7 +249,7 @@ void Battle_RunSequence(CameraStruct* arg0) {
     }
 }
 
-u16 IsPointInTriangle(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
+u16 IsPointInTriangle(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -264,7 +264,7 @@ u16 IsPointInTriangle(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* 
     s16 sp46;
     s16 sp44;
     f32 sp40;
-    unk_D_84390010* arg2;
+    unk_BattlePlayerEntity* arg2;
     f32 sp38;
     s32 sp34 = 0;
 
@@ -291,7 +291,7 @@ u16 IsPointInTriangle(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* 
     return sp34;
 }
 
-u16 IsPointInTriangleAndWithinRange(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
+u16 IsPointInTriangleAndWithinRange(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp94;
     f32 sp90;
@@ -301,7 +301,7 @@ u16 IsPointInTriangleAndWithinRange(unk_D_84390010* arg0, CameraStruct* arg1, un
     UNUSED s32 pad2;
     f32 sp7C;
     f32 sp78;
-    unk_D_84390010* arg2;
+    unk_BattlePlayerEntity* arg2;
     f32 sp70;
     s16 sp6E;
     s16 sp6C;
@@ -355,7 +355,7 @@ void UpdateEntityVisibilityFromCamera(CameraStruct* arg0) {
 }
 
 void UpdateOppositeEntityVisibility(CameraStruct* arg0) {
-    unk_D_84390010* sp24 = D_84390010[!gBattleState.unk_00->unk_2C];
+    unk_BattlePlayerEntity* sp24 = D_84390010[!gBattleState.unk_00->unk_2C];
 
     if (IsPointInTriangleAndWithinRange(sp24, arg0, sp24, 0x2AA8, 2500.0f) != 0) {
         sp24->unk_000.unk_000.unk_01 |= 1;
@@ -373,18 +373,18 @@ void SetAllEntitiesActiveFlag(void) {
 }
 
 void DeactivateOppositeEntity(void) {
-    func_843087F8(D_84390010[!gBattleState.unk_00->unk_2C]);
+    Battle_ApplyAnimEffect(D_84390010[!gBattleState.unk_00->unk_2C]);
     D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
 }
 
 void DeactivateCurrentEntity(void) {
     D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-    func_843087F8(D_84390010[gBattleState.unk_00->unk_2C]);
+    Battle_ApplyAnimEffect(D_84390010[gBattleState.unk_00->unk_2C]);
 }
 
 void ClearEntityFlagIfInState(void) {
-    unk_D_84390010* ptr1 = D_84390010[0];
-    unk_D_84390010* ptr2 = D_84390010[1];
+    unk_BattlePlayerEntity* ptr1 = D_84390010[0];
+    unk_BattlePlayerEntity* ptr2 = D_84390010[1];
 
     if ((ptr1->unk_654.unk_2D == 0x10) || ((ptr1 = D_84390010[0])->unk_654.unk_2D == 0x13)) {
         ptr1->unk_000.unk_000.unk_01 &= ~1;
@@ -397,9 +397,9 @@ void ClearEntityFlagIfInState(void) {
 
 void ProcessBattleState(CameraStruct* arg0) {
     UNUSED s32 pad;
-    unk_D_84390010_654* sp40 = &gCurrentPlayer->unk_654;
+    unk_BattlePlayerAnimState* sp40 = &gCurrentPlayer->unk_654;
     s32 temp_lo;
-    unk_D_84390010_654* sp38 = &gOpponentPlayer->unk_654;
+    unk_BattlePlayerAnimState* sp38 = &gOpponentPlayer->unk_654;
     f32 sp34;
     s16 sp32;
     s16 sp30;
@@ -469,7 +469,7 @@ void ProcessBattleState(CameraStruct* arg0) {
                                 DeactivateOppositeEntity();
                             } else if (((gBattleState.unk_00->unk_3C == 0) || (gBattleState.unk_00->unk_3C == 1)) &&
                                        (gBattleState.unk_00->unk_48 == 0) && (gBattleState.unk_00->unk_1A != 1)) {
-                                func_843087F8(gCurrentPlayer);
+                                Battle_ApplyAnimEffect(gCurrentPlayer);
                                 gCurrentPlayer->unk_000.unk_01D = 0;
                             } else {
                                 if (sp40->unk_34 & 0x4000) {
@@ -701,7 +701,7 @@ void Battle_Update(CameraStruct* arg0) {
 
         case 2:
             Battle_TickPhaseTimer();
-            func_84328734(arg0);
+            Battle_StateMachineMain(arg0);
             break;
 
         case 3:

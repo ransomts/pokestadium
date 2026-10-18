@@ -1293,7 +1293,7 @@ s32 func_883047CC(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
 // Remaining diffs are global register allocation in the first half: target has
 // gDisplayListHead address in t0, color webs in a3 / a0, s1 = var_s1, s2 = arg2, s3 = x, arg0 + 0x84
 // spilled to 0x50 (ours keeps it in s0 and spills temp_s7 to 0x48), li a3,3 / lui ra,0xF600 issued
-// in block 2. Target also reads arg0 into s6 for (arg0 + 0x25, temp_s7) but reloads arg0 for the
+// in block 2. Target BattleAnimDataEntry reads arg0 into s6 for (arg0 + 0x25, temp_s7) but reloads arg0 for the
 // FillRectangle w1 words. Dead ends: x/var_s6/temp_s7 = arg0 copies (copy-propagated, identical),
 // ternary for var_s1, s16 var_s1, (arg3 & 1) * 2 indexing of a 1D D_883171D0, 2D cast lvalue,
 // temp_s7 as an inline expression (worse), separate temp var for the case offsets (identical).

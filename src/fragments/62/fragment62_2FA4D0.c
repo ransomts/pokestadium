@@ -406,8 +406,8 @@ void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
     Text_SetupDL();
 }
 
-void func_84310FA4(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
-    unk_D_84390010_654* ptr = &arg0->unk_654;
+void func_84310FA4(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
+    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
     s32 var_t0 = 0;
     s32 i;
 
@@ -424,7 +424,7 @@ void func_84310FA4(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
     }
 }
 
-void DrawPokemonInfoWindow(unk_D_84390010* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
+void DrawPokemonInfoWindow(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA) {
     s32 sp34;
     s32 temp_a2;
@@ -577,7 +577,7 @@ void func_843118A8(s16 arg0, s16 arg1) {
     DrawWindowBackground(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
 }
 
-void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
+void func_84311A38(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     u8* sp74[] = { D_3006170, D_30061D0, D_3006230 };
     UNUSED s32 pad;
     s32 i;
@@ -663,7 +663,7 @@ void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void func_84311F30(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -751,7 +751,7 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     func_84311A38(arg0, arg1, arg2 + 0x62);
 }
 
-void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void func_843128A0(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -838,13 +838,13 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
     func_84311A38(arg0, arg1 + 0x41, arg2 - 7);
 }
 
-void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_84313148(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     func_84310334(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0xC6, 0x10);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
@@ -861,13 +861,13 @@ void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
 
-void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_843133B4(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     func_84310334(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x7D, 0x10);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
@@ -882,13 +882,13 @@ void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
 
-void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_843135B8(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 pad[2];
 
     func_84310334(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x47, 0x10);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
@@ -993,7 +993,7 @@ s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_84313A74(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s32 sp64[] = { 0, 0, 0, 0 };
     u8 sp60[4];
@@ -1057,7 +1057,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x5D, arg2 + 6, 0x10, 0xE, &D_3006A70, &D_3006C30, 0x10, 0x100000);
     Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x6C, arg2 + 0x16, 0x10, 0xE, &D_3006290, &D_3006450, 0x10, 0x100000);
@@ -1228,7 +1228,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_Print(arg0 + 0x81, arg1 + 0x18, "はい");
     Text_SetupDL();
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
 
@@ -1245,7 +1245,7 @@ void func_84314B20(s16 arg0, s16 arg1, char* arg2) {
     Text_SetupDL();
 }
 
-void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void func_84314B6C(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1253,7 +1253,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
     DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     if (arg5 == 0) {
         Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
@@ -1300,7 +1300,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     }
 }
 
-void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void func_84314F60(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1308,7 +1308,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
     DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     if (arg5 == 0) {
         Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
@@ -1344,7 +1344,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     }
 }
 
-void func_8431524C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
+void func_8431524C(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
     UNUSED s32 pad[2];
     Color_RGB8* sp88[] = {
         D_84385888,
@@ -1389,7 +1389,7 @@ void func_8431524C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
     DrawWindowBackground(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
 }
 
-void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_84315550(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     unk_D_800AE540_0004* temp_s0;
     unk_D_800AE540_0004* temp_s1;
     PokemonData* ptr = &arg0->unk_724->unk_01C[0];
@@ -1461,11 +1461,11 @@ void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
 }
 
-void func_8431595C(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_8431595C(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad;
     Color_RGB8* var_v0;
     u32 var_t0;
-    unk_D_84390010_654* temp_v0;
+    unk_BattlePlayerAnimState* temp_v0;
     u16 tmp;
     PokemonData* sp40;
 
@@ -1521,7 +1521,7 @@ void func_84315C28(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
     s16 sp2C;
     s16 sp28;
     Color_RGB8* temp_v0;
-    unk_D_84390010* temp_v1;
+    unk_BattlePlayerEntity* temp_v1;
     unk_D_800AE540_0004* tmp;
 
     temp_v1 = D_84390010[arg0->unk_0C];
@@ -1617,7 +1617,7 @@ void func_843162E4(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
-void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void func_843163C8(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad;
     s32 sp48;
     UNUSED s32 pad2[2];
@@ -1631,7 +1631,7 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_Print(arg1 + 0x7A, arg2 + 0x14, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA2));
     Text_SetupDL();
 
-    gSPDisplayList(gDisplayListHead++, D_8006F5A0);
+    gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     Gfx_DrawSpriteRGBA16Paletted(arg1 + (arg0->unk_654.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
                   0x100000);
@@ -1774,7 +1774,7 @@ void func_8431712C(void) {
     }
 }
 
-void func_843172A0(unk_D_84390010* arg0, unk_D_84390010_654* arg1) {
+void func_843172A0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1) {
     unk_D_800AE540_0004* sp34 = arg0->unk_720->unk_08[arg0->unk_728.unk_16C];
     UNUSED s32 pad;
     s32 var_v1;
@@ -1834,7 +1834,7 @@ void func_843172A0(unk_D_84390010* arg0, unk_D_84390010_654* arg1) {
     }
 }
 
-void func_84317558(unk_D_84390010* arg0, unk_D_84390010_654* arg1) {
+void func_84317558(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1) {
     unk_D_800AE540_0004* sp24 = arg0->unk_720->unk_08[arg0->unk_728.unk_16C];
     s32 sp20;
 

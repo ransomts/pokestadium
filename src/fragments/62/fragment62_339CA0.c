@@ -16,26 +16,26 @@ void Particle_SetDirectionOffsets(ParticleEffectInstance* arg0) {
 
         case 1:
             func_8140A578(arg0, -0x3000);
-            func_8140A594(arg0, 0x4000);
-            func_8140A5B0(arg0, 0x2000);
+            Particle_RotateY(arg0, 0x4000);
+            Particle_RotateX(arg0, 0x2000);
             break;
 
         case 2:
             func_8140A578(arg0, 0x2000);
-            func_8140A594(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x2000);
+            Particle_RotateY(arg0, 0x2000);
+            Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
             func_8140A578(arg0, -0x8000);
-            func_8140A594(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x6000);
+            Particle_RotateY(arg0, 0x2000);
+            Particle_RotateX(arg0, 0x6000);
             break;
 
         case 4:
             func_8140A578(arg0, -0x4000);
-            func_8140A594(arg0, 0x4000);
-            func_8140A5B0(arg0, 0x4000);
+            Particle_RotateY(arg0, 0x4000);
+            Particle_RotateX(arg0, 0x4000);
             break;
     }
 
@@ -75,20 +75,20 @@ void Particle_SetupSpecialOffsets(ParticleEffectInstance* arg0) {
     switch (sp26) {
         case 0:
             func_8140A578(arg0, 0x5800);
-            func_8140A594(arg0, 0x5800);
-            func_8140A5B0(arg0, -0x6000);
+            Particle_RotateY(arg0, 0x5800);
+            Particle_RotateX(arg0, -0x6000);
             break;
 
         case 1:
             func_8140A578(arg0, 0x6000);
-            func_8140A594(arg0, 0);
-            func_8140A5B0(arg0, 0x5800);
+            Particle_RotateY(arg0, 0);
+            Particle_RotateX(arg0, 0x5800);
             break;
 
         case 2:
             func_8140A578(arg0, 0x2000);
-            func_8140A594(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x2000);
+            Particle_RotateY(arg0, 0x2000);
+            Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
@@ -97,14 +97,14 @@ void Particle_SetupSpecialOffsets(ParticleEffectInstance* arg0) {
 
         case 4:
             func_8140A578(arg0, 0);
-            func_8140A594(arg0, 0);
-            func_8140A5B0(arg0, 0);
+            Particle_RotateY(arg0, 0);
+            Particle_RotateX(arg0, 0);
             break;
 
         case 5:
             func_8140A578(arg0, 0x6000);
-            func_8140A594(arg0, 0x2800);
-            func_8140A5B0(arg0, 0x5800);
+            Particle_RotateY(arg0, 0x2800);
+            Particle_RotateX(arg0, 0x5800);
             break;
     }
 
@@ -151,20 +151,20 @@ void func_8434F888(ParticleEffectInstance* arg0) {
     switch (sp26) {
         case 0:
             func_8140A578(arg0, 0x5800);
-            func_8140A594(arg0, 0x5800);
-            func_8140A5B0(arg0, -0x6000);
+            Particle_RotateY(arg0, 0x5800);
+            Particle_RotateX(arg0, -0x6000);
             break;
 
         case 1:
             func_8140A578(arg0, 0x6000);
-            func_8140A594(arg0, 0);
-            func_8140A5B0(arg0, 0x5800);
+            Particle_RotateY(arg0, 0);
+            Particle_RotateX(arg0, 0x5800);
             break;
 
         case 2:
             func_8140A578(arg0, 0x2000);
-            func_8140A594(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x2000);
+            Particle_RotateY(arg0, 0x2000);
+            Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
@@ -173,14 +173,14 @@ void func_8434F888(ParticleEffectInstance* arg0) {
 
         case 4:
             func_8140A578(arg0, 0);
-            func_8140A594(arg0, 0);
-            func_8140A5B0(arg0, 0);
+            Particle_RotateY(arg0, 0);
+            Particle_RotateX(arg0, 0);
             break;
 
         case 5:
             func_8140A578(arg0, 0x6000);
-            func_8140A594(arg0, 0x2800);
-            func_8140A5B0(arg0, 0x5800);
+            Particle_RotateY(arg0, 0x2800);
+            Particle_RotateX(arg0, 0x5800);
             break;
     }
 
@@ -236,9 +236,9 @@ void func_8434FB3C(ParticleEffectInstance* arg0) {
 
     if (sp26 == 0x42) {
         Particle_SetVelocityScaledXYZ(arg0, 320.0f, 0.0f, 0.0f);
-        func_8140A5B0(arg0, -0x2800);
+        Particle_RotateX(arg0, -0x2800);
     } else {
-        func_8140A5B0(arg0, 0x2500);
+        Particle_RotateX(arg0, 0x2500);
     }
     Particle_IncrementState(arg0);
 }
@@ -276,10 +276,10 @@ void func_8434FCC4(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 1.0f);
 
     if (sp26 == 0x42) {
-        func_8140A5B0(arg0, 0x2500);
+        Particle_RotateX(arg0, 0x2500);
     } else {
         Particle_SetVelocityScaledXYZ(arg0, 320.0f, 0.0f, 0.0f);
-        func_8140A5B0(arg0, -0x2800);
+        Particle_RotateX(arg0, -0x2800);
     }
 
     SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
@@ -323,10 +323,10 @@ void func_8434FE58(ParticleEffectInstance* arg0) {
 
     if (sp22 == 0x42) {
         func_8140A578(arg0, -0x2000);
-        func_8140A594(arg0, 0x4000);
+        Particle_RotateY(arg0, 0x4000);
     } else {
         func_8140A578(arg0, 0x2000);
-        func_8140A594(arg0, 0x4000);
+        Particle_RotateY(arg0, 0x4000);
     }
 
     switch (sp26) {
@@ -375,10 +375,10 @@ void Particle_HandleState_Directional_Scale(ParticleEffectInstance* arg0) {
 
     if (sp22 == 0x42) {
         func_8140A578(arg0, -0x2000);
-        func_8140A594(arg0, 0x4000);
+        Particle_RotateY(arg0, 0x4000);
     } else {
         func_8140A578(arg0, 0x2000);
-        func_8140A594(arg0, 0x4000);
+        Particle_RotateY(arg0, 0x4000);
     }
 
     switch (sp26) {
@@ -462,7 +462,7 @@ void func_84350330(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.25f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
-    func_8140A594(arg0, 0x1800 - ((0x3000 / Particle_GetShortAA(arg0)) * sp26));
+    Particle_RotateY(arg0, 0x1800 - ((0x3000 / Particle_GetShortAA(arg0)) * sp26));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 3.0f);
     SetPrimEnvColorFromPair(arg0, sp24);
     Particle_SetPrimAlpha(arg0, 0xB4);
@@ -499,7 +499,7 @@ void func_84350520(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.5f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
-    func_8140A594(arg0, 0x1800 - ((0x3000 / Particle_GetShortAA(arg0)) * sp26));
+    Particle_RotateY(arg0, 0x1800 - ((0x3000 / Particle_GetShortAA(arg0)) * sp26));
     Particle_SetSpeed(arg0, (MathUtil_Random_ZeroOne() * 2.5f) + 3.0f);
     SetPrimEnvColorFromPair(arg0, sp24);
     Particle_SetPrimAlpha(arg0, 0xB4);
@@ -538,7 +538,7 @@ void func_84350728(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.25f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.4f;
-    func_8140A594(arg0, 0x800 - ((0x1000 / Particle_GetShortAA(arg0)) * sp24));
+    Particle_RotateY(arg0, 0x800 - ((0x1000 / Particle_GetShortAA(arg0)) * sp24));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 5.0f);
     SetPrimEnvColorFromPair(arg0, 0x32);
     Particle_SetPrimAlpha(arg0, 0xFF);
@@ -571,7 +571,7 @@ void func_843508F0(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.4f);
     Particle_SetRandomVelocityXYZ(arg0, 0, 0, 0xA);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
-    func_8140A594(arg0, 0x2000 - ((0x4000 / Particle_GetShortAA(arg0)) * sp26));
+    Particle_RotateY(arg0, 0x2000 - ((0x4000 / Particle_GetShortAA(arg0)) * sp26));
     Particle_SetSpeed(arg0, MathUtil_Random_ZeroOne() + 1.0f);
     SetPrimEnvColorFromPair(arg0, 0xA);
     Particle_SetPrimAlpha(arg0, 0x64);
@@ -649,7 +649,7 @@ void func_84350CD8(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.25f);
-    func_8140A594(arg0, sp26 << 0xC);
+    Particle_RotateY(arg0, sp26 << 0xC);
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 6.0f);
     Particle_SetAccelerationY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     SetPrimEnvColorFromPair(arg0, 0xA);
@@ -658,7 +658,7 @@ void func_84350CD8(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_84350DAC(ParticleEffectInstance* arg0) {
+void ParticleEffect_StateHandler_50DAC(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_84350CD8(arg0);
@@ -2701,141 +2701,141 @@ void ParticleEffect_ExplosionVariant(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_InitializeGroup(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 7, 0, 7);
-    func_8432EC28(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 7, 1, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 7, 0, 7);
+    ParticleDef_CreateQuick(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 7, 1, 0);
 }
 
 void ParticleEffect_ConfigB(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 7, 0, 6);
-    func_8432EC28(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 7, 1, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 7, 0, 6);
+    ParticleDef_CreateQuick(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 7, 1, 0);
 }
 
 void ParticleEffect_ConfigA(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 8);
-    func_8432EC28(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 2, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 8);
+    ParticleDef_CreateQuick(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 2, 0);
 }
 
 void ParticleEffect_ConfigVariantA(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
-    func_8432EC28(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 0, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
+    ParticleDef_CreateQuick(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 0, 0);
 }
 
 void ParticleEffect_ConfigVariantB(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 0x10);
-    func_8432EC28(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 0, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 0x10);
+    ParticleDef_CreateQuick(2, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 0, 0);
 }
 
 void ParticleEffect_SpecialSetupA(void) {
-    func_8432EC28(0, ParticleEffect_ModeSpecificHandler, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_ModeSpecificHandler, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 0);
 }
 
 void ParticleEffect_SpecialSetupB(void) {
-    func_8432EC28(0, ParticleEffect_ModeSpecificHandler, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 4, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_ModeSpecificHandler, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 4, 0);
 }
 
 void ParticleEffect_SpecialSetupC(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 7, 0x11, 9, 1, 0xC);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 7, 0x11, 9, 1, 0xC);
 }
 
 void ParticleEffect_TextureSetup(void) {
     s32 temp_s1 = gParticleTexture_Default & 0xFF;
 
-    func_8432ECA0(0, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
-    func_8432ECA0(1, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
-    func_8432ECA0(2, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
-    func_8432ECA0(4, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
-    func_8432ECA0(0, 6, 0xC, func_84350FC0, &gParticleEffectData[0x4A], 0, 2, 0x11, temp_s1, 1, 0);
-    func_8432ECA0(1, 6, 0xA, func_84350FC0, &gParticleEffectData[0x4A], 0, 2, 0x11, temp_s1, 1, 0);
+    ParticleDef_CreateFull(0, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
+    ParticleDef_CreateFull(1, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
+    ParticleDef_CreateFull(2, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
+    ParticleDef_CreateFull(4, 8, 6, func_8435226C, &gParticleEffectData[0x42], 0, 8, 0x11, temp_s1, 0x18, 2);
+    ParticleDef_CreateFull(0, 6, 0xC, func_84350FC0, &gParticleEffectData[0x4A], 0, 2, 0x11, temp_s1, 1, 0);
+    ParticleDef_CreateFull(1, 6, 0xA, func_84350FC0, &gParticleEffectData[0x4A], 0, 2, 0x11, temp_s1, 1, 0);
 }
 
 void ParticleEffect_ModeSetup(void) {
     UNUSED s32 pad;
 
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 5);
-    func_8432EC28(2, func_84350FC0, &gParticleEffectData[0x3D], 0, 8, 0x10, 0x64, 0, 0);
-    func_8432EC28(3, func_84350FC0, &gParticleEffectData[0x3D], 0, 8, 0x10, 0x64, 0, 0);
-    func_8432EC28(4, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x18, 0);
-    func_8432EC28(8, func_8435226C, &gParticleEffectData[0x42], 0, 4, 9, 0, 0x18, 0);
-    func_8432EC28(0xC, func_8435226C, &gParticleEffectData[0x42], 0, 4, 9, 0, 0x18, 0);
-    func_8432F2C8(0, 0x35, 0xE0, 0, 0x20);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 5);
+    ParticleDef_CreateQuick(2, func_84350FC0, &gParticleEffectData[0x3D], 0, 8, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateQuick(3, func_84350FC0, &gParticleEffectData[0x3D], 0, 8, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateQuick(4, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x18, 0);
+    ParticleDef_CreateQuick(8, func_8435226C, &gParticleEffectData[0x42], 0, 4, 9, 0, 0x18, 0);
+    ParticleDef_CreateQuick(0xC, func_8435226C, &gParticleEffectData[0x42], 0, 4, 9, 0, 0x18, 0);
+    ParticleDef_Create31EAC(0, 0x35, 0xE0, 0, 0x20);
 }
 
 void ParticleEffect_CollisionSetup(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 5);
-    func_8432EC28(4, ParticleEffect_SparkleHandler, &gParticleEffectData[0x40], 0, 1, 0x10, 0x64, 0, 0);
-    func_8432ECA0(0, 4, 5, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 2, 0, 0, 0);
-    func_8432EE5C(0, 0, 0x40, 0xA, 0xC8);
-    func_8432F2C8(0, 0x19, 0xE1, 0, 0x40);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 5);
+    ParticleDef_CreateQuick(4, ParticleEffect_SparkleHandler, &gParticleEffectData[0x40], 0, 1, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateFull(0, 4, 5, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 2, 0, 0, 0);
+    ParticleDef_CreateBC20CDAlt(0, 0, 0x40, 0xA, 0xC8);
+    ParticleDef_Create31EAC(0, 0x19, 0xE1, 0, 0x40);
 }
 
 void ParticleEffect_TextureAssign(void) {
-    func_8432EC28(0, func_84351144, &gParticleEffectData[0x34], 0, 5, 0x11, gParticleTexture_Default, 0, 0);
+    ParticleDef_CreateQuick(0, func_84351144, &gParticleEffectData[0x34], 0, 5, 0x11, gParticleTexture_Default, 0, 0);
 }
 
 void ParticleEffect_AdditionalSetupA(void) {
-    func_8432ECA0(0, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
-    func_8432ECA0(0x28, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateFull(0, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateFull(0x28, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_AdditionalSetupB(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 0);
-    func_8432EC28(0, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
-    func_8432ECA0(4, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 0);
+    ParticleDef_CreateQuick(0, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
+    ParticleDef_CreateFull(4, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_CombinedSetupA(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 5, 0x11, 0x64, 9, 0);
-    func_8432EC28(8, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
-    func_8432ECA0(0xC, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 5, 0x11, 0x64, 9, 0);
+    ParticleDef_CreateQuick(8, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
+    ParticleDef_CreateFull(0xC, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_CombinedSetupB(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 5, 0xA, 0, 0xA, 0);
-    func_8432EC28(8, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
-    func_8432ECA0(0xC, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 5, 0xA, 0, 0xA, 0);
+    ParticleDef_CreateQuick(8, func_843512AC, &gParticleEffectData[0x36], 0, 1, 0xA, 0, 0, 0);
+    ParticleDef_CreateFull(0xC, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_SimpleSetup(void) {
-    func_8432EC28(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 7, 0xA, 0, 0xB, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireworkMain2, &gParticleEffectData[0x34], 0, 7, 0xA, 0, 0xB, 0);
 }
 
 void ParticleEffect_SmallSetup(void) {
-    func_8432ED0C(0, 8, 0x22);
+    ParticleDef_CreateDefault(0, 8, 0x22);
 }
 
 void ParticleEffect_MultiHandleSetup(void) {
-    func_8432EC28(0xC, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x17, 1);
-    func_8432EC28(0x12, func_8435226C, &gParticleEffectData[0x42], 0, 0xA, 9, 0, 0x17, 1);
-    func_8432EC28(0x20, func_8435226C, &gParticleEffectData[0x42], 0, 5, 9, 0, 0x17, 1);
-    func_8432EC28(0, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
-    func_8432EC28(3, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
-    func_8432EC28(5, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
-    func_8432EC28(8, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
+    ParticleDef_CreateQuick(0xC, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x17, 1);
+    ParticleDef_CreateQuick(0x12, func_8435226C, &gParticleEffectData[0x42], 0, 0xA, 9, 0, 0x17, 1);
+    ParticleDef_CreateQuick(0x20, func_8435226C, &gParticleEffectData[0x42], 0, 5, 9, 0, 0x17, 1);
+    ParticleDef_CreateQuick(0, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
+    ParticleDef_CreateQuick(3, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
+    ParticleDef_CreateQuick(5, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
+    ParticleDef_CreateQuick(8, func_84351D20, &gParticleDefaultCallback, 0, 2, 9, 0, 0, 0);
 }
 
 void ParticleEffect_ExtraNodeSetup(void) {
-    func_8432ECA0(0, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateFull(0, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_TextureNodeSetup(void) {
-    func_8432ECA0(0, 3, 2, func_8435043C, &gParticleEffectData[0x4A], 0, 3, 0x11, gParticleTexture_Default, 0x11, 0);
-    func_8432ECA0(0, 4, 2, func_84350634, &gParticleEffectData[0x4A], 0, 2, 0x11, gParticleTexture_Default, 0x11, 0);
+    ParticleDef_CreateFull(0, 3, 2, func_8435043C, &gParticleEffectData[0x4A], 0, 3, 0x11, gParticleTexture_Default, 0x11, 0);
+    ParticleDef_CreateFull(0, 4, 2, func_84350634, &gParticleEffectData[0x4A], 0, 2, 0x11, gParticleTexture_Default, 0x11, 0);
 }
 
 void ParticleEffect_HandleStateSetup(void) {
     UNUSED s32 pad;
 
-    func_8432EC28(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 0);
-    func_8432EC28(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 1);
-    func_8432EC28(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 2);
-    func_8432EC28(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
-    func_8432EDE8(0x23, 0, 0x10, 0x14);
+    ParticleDef_CreateQuick(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 0);
+    ParticleDef_CreateQuick(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 1);
+    ParticleDef_CreateQuick(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xB, 2);
+    ParticleDef_CreateQuick(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
+    ParticleDef_CreateBC20CD(0x23, 0, 0x10, 0x14);
 }
 
 void ParticleEffect_HandleCollisionSetup(void) {
-    func_8432EE5C(0, 2, 0x10, 0x14, 0xFF);
-    func_8432EC28(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
-    func_8432EC28(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
+    ParticleDef_CreateBC20CDAlt(0, 2, 0x10, 0x14, 0xFF);
+    ParticleDef_CreateQuick(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
+    ParticleDef_CreateQuick(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
 }
 
 void ParticleEffect_DynamicStateSetup(void) {
@@ -2846,11 +2846,11 @@ void ParticleEffect_DynamicStateSetup(void) {
         return;
     }
 
-    func_8432EC28(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 0);
-    func_8432EC28(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 1);
-    func_8432EC28(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 2);
-    func_8432EC28(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
-    func_8432EDE8(0x23, 0, 0x10, 0x14);
+    ParticleDef_CreateQuick(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 0);
+    ParticleDef_CreateQuick(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 1);
+    ParticleDef_CreateQuick(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 3, 0x10, gParticleTexture_Default, 0xB, 2);
+    ParticleDef_CreateQuick(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
+    ParticleDef_CreateBC20CD(0x23, 0, 0x10, 0x14);
 }
 
 void ParticleEffect_DynamicCollisionSetup(void) {
@@ -2861,11 +2861,11 @@ void ParticleEffect_DynamicCollisionSetup(void) {
         return;
     }
 
-    func_8432EE5C(0, 2, 0x10, 0x14, 0xFF);
-    func_8432EC28(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 0);
-    func_8432EC28(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 1);
-    func_8432EC28(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
-    func_8432EC28(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
+    ParticleDef_CreateBC20CDAlt(0, 2, 0x10, 0x14, 0xFF);
+    ParticleDef_CreateQuick(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 0);
+    ParticleDef_CreateQuick(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 1);
+    ParticleDef_CreateQuick(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
+    ParticleDef_CreateQuick(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
 }
 
 void ParticleEffect_ConditionalStateSetup(void) {
@@ -2877,267 +2877,267 @@ void ParticleEffect_ConditionalStateSetup(void) {
         sp3A = 1;
     }
 
-    func_8432EC28(0, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 0);
-    func_8432EC28(4, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 1);
-    func_8432EC28(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 2);
+    ParticleDef_CreateQuick(0, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 0);
+    ParticleDef_CreateQuick(4, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 1);
+    ParticleDef_CreateQuick(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, sp3A, 0x10, gParticleTexture_Default, 0xB, 2);
 
     if (sp3C == 0x7B) {
-        func_8432EC28(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateQuick(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
     } else {
-        func_8432EC28(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateQuick(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
     }
-    func_8432EDE8(0x23, 0, 0x10, 0x14);
+    ParticleDef_CreateBC20CD(0x23, 0, 0x10, 0x14);
 }
 
 void ParticleEffect_CollisionResponseSwitch(void) {
     s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
-        func_8432EC28(0, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateQuick(0, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
     } else {
-        func_8432EC28(0, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateQuick(0, Particle_HandleCollisionResponse, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
     }
-    func_8432EE5C(5, 0, 8, 0x14, 0x80);
+    ParticleDef_CreateBC20CDAlt(5, 0, 8, 0x14, 0x80);
 }
 
 void ParticleEffect_CollisionAndBurstSetup(void) {
     s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
-        func_8432EE5C(0, 2, 8, 0x14, 0x80);
-        func_8432EC28(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
-        func_8432EC28(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateBC20CDAlt(0, 2, 8, 0x14, 0x80);
+        ParticleDef_CreateQuick(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
+        ParticleDef_CreateQuick(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
     } else {
-        func_8432EE5C(0, 2, 8, 0x14, 0x80);
-        func_8432EC28(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 0);
-        func_8432EC28(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 1);
-        func_8432EC28(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
-        func_8432EC28(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
+        ParticleDef_CreateBC20CDAlt(0, 2, 8, 0x14, 0x80);
+        ParticleDef_CreateQuick(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 0);
+        ParticleDef_CreateQuick(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 1);
+        ParticleDef_CreateQuick(3, Particle_HandleState_Directional_ScaleAlt, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0x10, 2);
+        ParticleDef_CreateQuick(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x28], 0, 1, 0x18, 0, 0xF, 0);
     }
 }
 
 void ParticleEffect_StateCollisionSetupA(void) {
     UNUSED s32 pad;
 
-    func_8432EC28(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 0);
-    func_8432EC28(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 1);
-    func_8432EC28(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 2);
-    func_8432EC28(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xD, 1);
-    func_8432EDE8(0x23, 0, 0x10, 0x29);
+    ParticleDef_CreateQuick(0, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 0);
+    ParticleDef_CreateQuick(4, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 1);
+    ParticleDef_CreateQuick(0xA, Particle_HandleState, &gParticleEffectData[0x29], 0, 1, 0x10, gParticleTexture_Default, 0xD, 2);
+    ParticleDef_CreateQuick(0x1E, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xD, 1);
+    ParticleDef_CreateBC20CD(0x23, 0, 0x10, 0x29);
 }
 
 void ParticleEffect_StateCollisionSetupB(void) {
     UNUSED s32 pad;
 
-    func_8432EE5C(0, 2, 0x10, 0x29, 0xFF);
-    func_8432EC28(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0xD, 2);
-    func_8432EC28(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xD, 1);
-    func_8432ECA0(0, 1, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 2, 0xE, 0, 0, 0);
-    func_8432ECA0(0, 1, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 2, 0xE, 0, 0, 0);
-    func_8432ECA0(0, 2, 0xF, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 1, 0xE, 0, 0, 0);
+    ParticleDef_CreateBC20CDAlt(0, 2, 0x10, 0x29, 0xFF);
+    ParticleDef_CreateQuick(3, Particle_HandleState_Directional, &gParticleEffectData[0x2A], 0, 1, 0x10, gParticleTexture_Default, 0xD, 2);
+    ParticleDef_CreateQuick(3, Particle_HandleCollisionResponse_ExplosionAlt, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xD, 1);
+    ParticleDef_CreateFull(0, 1, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 2, 0xE, 0, 0, 0);
+    ParticleDef_CreateFull(0, 1, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 2, 0xE, 0, 0, 0);
+    ParticleDef_CreateFull(0, 2, 0xF, Particle_UpdateBurstState, &gParticleEffectData[0x2B], 0, 1, 0xE, 0, 0, 0);
 }
 
 void ParticleEffect_AdditionalNodeSetup(void) {
-    func_8432ECA0(0, 1, 0x24, ParticleEffect_RandomDirectionHandler, &gParticleEffectData[0x46], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    func_8432EC28(0, ParticleEffect_SmallBurstHandler, &gParticleEffectData[0x40], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
+    ParticleDef_CreateFull(0, 1, 0x24, ParticleEffect_RandomDirectionHandler, &gParticleEffectData[0x46], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_SmallBurstHandler, &gParticleEffectData[0x40], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
 }
 
 void ParticleEffect_SpecialCollisionSetup(void) {
-    func_8432EC28(0, Particle_HandleState_Special, &gParticleEffectData[0x29], 0, 6, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateQuick(0, Particle_HandleState_Special, &gParticleEffectData[0x29], 0, 6, 0x10, 0x64, 0, 0);
 }
 
 void ParticleEffect_SmallNodeSetup(void) {
-    func_8432ED0C(0, 8, 0x28);
+    ParticleDef_CreateDefault(0, 8, 0x28);
 }
 
 void ParticleEffect_MultiTextureSetup(void) {
-    func_8432EC28(0, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 0, 0);
-    func_8432EC28(0x10, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 0xA, 0x10, 9, 0, 0);
-    func_8432ED0C(0x46, 4, 0xA);
+    ParticleDef_CreateQuick(0, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 0, 0);
+    ParticleDef_CreateQuick(0x10, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 0xA, 0x10, 9, 0, 0);
+    ParticleDef_CreateDefault(0x46, 4, 0xA);
 }
 
 void ParticleEffect_SmallNodeSetupB(void) {
-    func_8432ED0C(0, 8, 0x17);
+    ParticleDef_CreateDefault(0, 8, 0x17);
 }
 
 void ParticleEffect_MultiNodeSetup(void) {
-    func_8432EB2C(0x10);
-    func_8432EC28(0, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
-    func_8432EC28(0x10, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
-    func_8432EC28(0x20, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
-    func_8432EC28(0x30, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
+    ParticleSystem_AddSpawnOffset(0x10);
+    ParticleDef_CreateQuick(0, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
+    ParticleDef_CreateQuick(0x10, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
+    ParticleDef_CreateQuick(0x20, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
+    ParticleDef_CreateQuick(0x30, Particle_HandleState_SpecialColor, &gParticleEffectData[0x29], 0, 8, 0x10, 9, 1, 0);
 }
 
 void ParticleEffect_ModeSpecificSetup(void) {
     switch (GetActionScriptId()) {
         case 0x4D:
-            func_8432F344(0, 0x64, 0x3E, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x3E, 0, 0xA0, 4);
             break;
 
         case 0x4E:
-            func_8432F344(0, 0x64, 0x19, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x19, 0, 0xA0, 4);
             break;
 
         case 0x4F:
-            func_8432F344(0, 0x64, 0x2F, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x2F, 0, 0xA0, 4);
             break;
 
         case 0x93:
-            func_8432F344(0, 0x64, 0x19, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x19, 0, 0xA0, 4);
             break;
 
         case 0x7B:
-            func_8432F344(0, 0x64, 0x3E, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x3E, 0, 0xA0, 4);
             break;
 
         case 0x8B:
-            func_8432F344(0, 0x64, 0x3E, 0, 0xA0, 4);
+            ParticleDef_Create31FAC(0, 0x64, 0x3E, 0, 0xA0, 4);
             break;
     }
-    func_8432EC28(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 7, 0x10, 0x64, 1, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 7, 0x10, 0x64, 1, 0);
 }
 
 void ParticleEffect_ComplexNodeSetup(void) {
-    func_8432ECA0(0, 2, 3, func_84350828, &gParticleEffectData[0x49], 0, 8, 0x11, gParticleTexture_Default, 0, 0);
-    func_8432ECA0(0, 3, 2, func_8435043C, &gParticleEffectData[0x47], 0, 6, 0x11, gParticleTexture_Default, 0x31, 0);
-    func_8432ECA0(0, 4, 2, func_84350634, &gParticleEffectData[0x47], 0, 4, 0x11, gParticleTexture_Default, 0x31, 0);
+    ParticleDef_CreateFull(0, 2, 3, func_84350828, &gParticleEffectData[0x49], 0, 8, 0x11, gParticleTexture_Default, 0, 0);
+    ParticleDef_CreateFull(0, 3, 2, func_8435043C, &gParticleEffectData[0x47], 0, 6, 0x11, gParticleTexture_Default, 0x31, 0);
+    ParticleDef_CreateFull(0, 4, 2, func_84350634, &gParticleEffectData[0x47], 0, 4, 0x11, gParticleTexture_Default, 0x31, 0);
 }
 
 void ParticleEffect_SimpleNodeSetup(void) {
-    func_8432EC28(0, func_84350BE4, &gParticleEffectData[0x49], 0, 5, 0x10, 0x64, 0, 0);
-    func_8432EC28(3, func_84350BE4, &gParticleEffectData[0x49], 0, 5, 0x10, 0x64, 0, 0);
-    func_8432EC28(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 7, 0x10, 0x64, 1, 0);
+    ParticleDef_CreateQuick(0, func_84350BE4, &gParticleEffectData[0x49], 0, 5, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateQuick(3, func_84350BE4, &gParticleEffectData[0x49], 0, 5, 0x10, 0x64, 0, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 7, 0x10, 0x64, 1, 0);
 }
 
 void ParticleEffect_AdvancedModeSetup(void) {
-    func_8432F7A0(0, 0xFF, 0x30, 6);
-    func_8432F7A0(0x24, 0, 0, 0xFF);
-    func_8432F2C8(0, 0x23, 0, 0xFF, 8);
-    func_8432EB2C(6);
-    func_8432EC28(2, ParticleEffect_SimpleColorHandler, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x2F, 0);
-    func_8432ECA0(0, 8, 4, ParticleEffect_RandomSpeedHandler, &gParticleEffectData[0x3D], 0, 3, 9, 0, 0x30, 0);
+    ParticleDef_CreateAlphaMode(0, 0xFF, 0x30, 6);
+    ParticleDef_CreateAlphaMode(0x24, 0, 0, 0xFF);
+    ParticleDef_Create31EAC(0, 0x23, 0, 0xFF, 8);
+    ParticleSystem_AddSpawnOffset(6);
+    ParticleDef_CreateQuick(2, ParticleEffect_SimpleColorHandler, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x2F, 0);
+    ParticleDef_CreateFull(0, 8, 4, ParticleEffect_RandomSpeedHandler, &gParticleEffectData[0x3D], 0, 3, 9, 0, 0x30, 0);
 }
 
 void ParticleEffect_FullSetupA(void) {
-    func_8432ED0C(0, 0x20, 6);
-    func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
-    func_8432EF40(0xC, 5, 0x10, 0xA);
-    func_8432EC28(0xC, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
-    func_8432EB2C(0x21);
-    func_8432EDE8(0, 0, 0x10, 0xA);
-    func_8432ED0C(0, 0x10, 0xA);
-    func_8432F2C8(0, 0xA, 0xFF, 0, 0x10);
+    ParticleDef_CreateDefault(0, 0x20, 6);
+    ParticleDef_Create31EAC(8, 0xA, 0, 0xFF, 0x40);
+    ParticleDef_Create32E6C(0xC, 5, 0x10, 0xA);
+    ParticleDef_CreateQuick(0xC, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
+    ParticleSystem_AddSpawnOffset(0x21);
+    ParticleDef_CreateBC20CD(0, 0, 0x10, 0xA);
+    ParticleDef_CreateDefault(0, 0x10, 0xA);
+    ParticleDef_Create31EAC(0, 0xA, 0xFF, 0, 0x10);
 }
 
 void ParticleEffect_FullSetupB(void) {
-    func_8432ED0C(0, 0x20, 6);
-    func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
-    func_8432EDE8(0, 0, 0x10, 0xA);
-    func_8432EB2C(0x21);
-    func_8432ED0C(0, 0x10, 0xA);
-    func_8432F2C8(0, 0xA, 0xFF, 0, 0x10);
+    ParticleDef_CreateDefault(0, 0x20, 6);
+    ParticleDef_Create31EAC(8, 0xA, 0, 0xFF, 0x40);
+    ParticleDef_CreateBC20CD(0, 0, 0x10, 0xA);
+    ParticleSystem_AddSpawnOffset(0x21);
+    ParticleDef_CreateDefault(0, 0x10, 0xA);
+    ParticleDef_Create31EAC(0, 0xA, 0xFF, 0, 0x10);
 }
 
 void ParticleEffect_FinalSetupA(void) {
     UNUSED s32 pad;
 
-    func_8432F344(0, 1, 0xC, 0, 0xC8, 0x10);
-    func_8432ECA0(6, 4, 0xE, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x1A, 0);
-    func_8432ECA0(7, 8, 7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x1A, 0);
-    func_8432EC28(0, func_84334154, &gParticleEffectData[0x4F], 0, 0x20, 7, 0, 0, 0);
+    ParticleDef_Create31FAC(0, 1, 0xC, 0, 0xC8, 0x10);
+    ParticleDef_CreateFull(6, 4, 0xE, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x1A, 0);
+    ParticleDef_CreateFull(7, 8, 7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x1A, 0);
+    ParticleDef_CreateQuick(0, ParticleEffect_FireUpdate, &gParticleEffectData[0x4F], 0, 0x20, 7, 0, 0, 0);
     ParticleEffect_InitLargeExplosion();
 }
 
 void ParticleEffect_FinalSetupB(void) {
-    func_8432F344(0, 1, 0xC, 0, 0xC8, 4);
-    func_8432ECA0(4, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
-    func_8432ECA0(6, 4, 0xE, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x33, 7);
-    func_8432ECA0(7, 8, 7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x33, 7);
+    ParticleDef_Create31FAC(0, 1, 0xC, 0, 0xC8, 4);
+    ParticleDef_CreateFull(4, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateFull(6, 4, 0xE, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x33, 7);
+    ParticleDef_CreateFull(7, 8, 7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, 7, 0x33, 7);
 }
 
 void ParticleEffect_FinalSetupC(void) {
-    func_8432ED0C(0, 0x20, 6);
-    func_8434AC8C();
-    func_8432ECA0(8, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateDefault(0, 0x20, 6);
+    ParticleEffect_PortraitBurst();
+    ParticleDef_CreateFull(8, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_AdditionalNodeA(void) {
-    func_8432ECA0(4, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
+    ParticleDef_CreateFull(4, 3, 2, ParticleEffect_StateHandler_50DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
 void ParticleEffect_MultiNodeA(void) {
-    func_8432EC28(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(6, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(8, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
-    func_8432EC28(0x10, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
+    ParticleDef_CreateQuick(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(6, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(8, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
+    ParticleDef_CreateQuick(0x10, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
 }
 
 void ParticleEffect_MultiNodeB(void) {
-    func_8432EC28(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(6, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
-    func_8432EC28(8, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
-    func_8432EC28(0x10, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
+    ParticleDef_CreateQuick(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(6, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 8, 0xA, 0, 0x33, 1);
+    ParticleDef_CreateQuick(8, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
+    ParticleDef_CreateQuick(0x10, ParticleEffect_FireworkMain, &gParticleEffectData[0x51], 0, 5, 0x11, 9, 0x17, 0xE);
 }
 
 void ParticleEffect_MultiNodeC(void) {
-    func_8432EC28(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
-    func_8432EC28(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
-    func_8432EC28(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
-    func_8432EC28(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(8, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 2, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(8, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
 }
 
 void ParticleEffect_MultiNodeD(void) {
-    func_8432F2C8(4, 0xA, 0, 0xFF, 0x40);
-    func_8432F2C8(9, 0xA, 0xFF, 0, 0x40);
-    func_8432EC28(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(1, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(2, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
-    func_8432EC28(8, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_Create31EAC(4, 0xA, 0, 0xFF, 0x40);
+    ParticleDef_Create31EAC(9, 0xA, 0xFF, 0, 0x40);
+    ParticleDef_CreateQuick(0, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(1, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(2, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(4, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
+    ParticleDef_CreateQuick(8, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 8, 0xE, 0, 0x33, 2);
 }
 
 void ParticleEffect_CreateMultipleNodes(s32 arg0) {
-    func_8432ECA0(0, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(8, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(0x10, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(0x18, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(0x20, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(0x30, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    func_8432ECA0(0x3C, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(8, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x10, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x18, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x20, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x30, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x3C, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
 }
 
 void ParticleEffect_GroupSetupA(void) {
-    func_8432ED0C(0, 8, 6);
+    ParticleDef_CreateDefault(0, 8, 6);
     ParticleEffect_CreateMultipleNodes(0xE);
-    func_8432ED0C(0x64, 0x20, 0xA);
+    ParticleDef_CreateDefault(0x64, 0x20, 0xA);
 }
 
 void ParticleEffect_GroupSetupB(void) {
-    func_8432ED0C(0, 8, 6);
+    ParticleDef_CreateDefault(0, 8, 6);
     ParticleEffect_CreateMultipleNodes(0x17);
-    func_8432EC28(0xA, ParticleEffect_SpeedAndAlpha, &gParticleEffectData[0x3C], 0x1A, 1, 5, 0, 0x33, 0);
-    func_8432ED0C(0x64, 0x20, 0xA);
+    ParticleDef_CreateQuick(0xA, ParticleEffect_SpeedAndAlpha, &gParticleEffectData[0x3C], 0x1A, 1, 5, 0, 0x33, 0);
+    ParticleDef_CreateDefault(0x64, 0x20, 0xA);
 }
 
 void ParticleEffect_SimpleGroupSetup(void) {
-    func_8432F344(0xA, 1, 0xA, 0, 0xFF, 0x20);
+    ParticleDef_Create31FAC(0xA, 1, 0xA, 0, 0xFF, 0x20);
 }
 
 void ParticleEffect_ComplexGroupSetup(void) {
-    func_8432ED0C(0, 8, 6);
+    ParticleDef_CreateDefault(0, 8, 6);
     ParticleEffect_CreateMultipleNodes(0xC);
-    func_8432F728(4, 0x32, 0x20, 0xA0);
-    func_8432ECA0(4, 8, 5, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0xC, 9);
+    ParticleDef_CreateComplexColor(4, 0x32, 0x20, 0xA0);
+    ParticleDef_CreateFull(4, 8, 5, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0xC, 9);
 }
 
 void ParticleEffect_FinalGroupSetup(void) {
-    func_8432F2C8(0, 0xA, 0xFF, 0, 0x20);
-    func_8432ECA0(4, 2, 2, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x17, 1);
+    ParticleDef_Create31EAC(0, 0xA, 0xFF, 0, 0x20);
+    ParticleDef_CreateFull(4, 2, 2, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x17, 1);
 }

@@ -318,7 +318,7 @@ void func_82F01FE4(unk_D_82F144D0* arg0) {
         arg0->unk_0014 = 0;
         arg0->unk_0016 ^= 1;
         arg0->unk_0004 = 0x64;
-        func_82F13B4C(2);
+        MenuPanel_SetStateVar(2);
     }
 }
 
@@ -330,7 +330,7 @@ void func_82F020B4(unk_D_82F144D0* arg0) {
             if (arg0->unk_0002 != -1) {
                 arg0->unk_0002 = -1;
             }
-            func_82F13B4C(-1);
+            MenuPanel_SetStateVar(-1);
         }
     } else if (arg0->unk_0020 != 0) {
         arg0->unk_0000 = 5;
@@ -784,7 +784,7 @@ void UpdateAndRenderPicker(unk_D_82F144D0* arg0) {
                 if (spF4 == 2) {
                     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
                 } else {
-                    gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+                    gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
                 }
 
                 for (i = 0; i < 20; i++) {

@@ -73,9 +73,9 @@ extern Vec3f gCameraClampCenter;
 extern Vec3f gCameraClampCenterMode;
 extern Vec3f gCameraConstraintCenter;
 extern Vec3f gCameraConstraintCenterMode;
-extern char* D_86908C58[];
-extern Color_RGB8 D_86908C98;
-extern Color_RGB8 D_86908C9C;
+extern char* gStagePanelLabelStrings[];
+extern Color_RGB8 gStagePanelGradientStartColor;
+extern Color_RGB8 gStagePanelGradientEndColor;
 
 extern const char D_8690A520[];
 extern const char D_8690A52C[];
@@ -94,23 +94,23 @@ extern const char D_8690A5C8[];
 extern const char D_8690A5D8[];
 extern const char D_8690A5E8[];
 
-extern char** D_8690A678;
+extern char** gMessageBankPtr;
 extern f32 gCameraZoomOffset;
 extern unk_D_8690A710* gCameraParams;
 extern unk_D_8690B2F8 gCameraConfig;
-extern unk_D_8690B308 D_8690B308;
-extern s32 D_8690B344;
-extern s32 D_8690B348;
-extern unk_D_8690B350 D_8690B350;
-extern unk_D_8690B360 D_8690B360;
+extern unk_D_8690B308 gStagePanelAnimData;
+extern s32 gStageSnapshotCount;
+extern s32 gStagePanelStateIndex;
+extern unk_D_8690B350 gStagePanelFadeData;
+extern unk_D_8690B360 gStagePanelAnimState;
 
-extern s32 D_8690B384;
-extern s32 D_8690B388;
-extern s32 D_8690B380;
-extern s32 D_8690B38C;
+extern s32 gCameraNavSubIndex;
+extern s32 gCameraNavTransition;
+extern s32 gCameraNavActiveFlag;
+extern s32 gCameraNavMaxIndex;
 extern Controller gControllerInput;
-extern unk_D_8690B3C0 D_8690B3C0;
-extern s8 D_8690B3D0[255];
+extern unk_D_8690B3C0 gTutorialTextBoxState;
+extern s8 gTutorialTextBoxCharBuffer[255];
 
 s32 CameraNode_SetAnglesFromCurrent(s32 arg0, GraphNode* arg1);
 s32 CameraNode_SetAnglesNegated(s32 arg0, GraphNode* arg1);

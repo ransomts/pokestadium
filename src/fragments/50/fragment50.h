@@ -38,14 +38,14 @@ void func_82602AD4(void);
 void func_82602B00(s32 arg0);
 s32 func_82602B60(s16* arg0);
 s32 func_82602F18(void);
-s32 func_82603254(void);
-s32 func_8260332C(void);
-s32 func_82603414(void);
-s32 func_826034EC(void);
-s32 func_826035D4(void);
-void func_8260365C(void);
-void func_82603800(s32 arg0, f32 arg1);
-void func_82603924(void);
-s32 func_82603D20(s32 arg0, s32 arg1);
+s32 Fragment50_SlideRight(void);
+s32 Fragment50_SlideLeft(void);
+s32 Fragment50_SlideRightFast(void);
+s32 Fragment50_SlideLeftFast(void);
+s32 Fragment50_WaitAssetLoad(void);
+void Fragment50_MainSequence(void);
+void Fragment50_InitGraphNode(s32 arg0, f32 arg1);
+void Fragment50_InitAssets(void);
+s32 Fragment50_MainEntry(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT50_H_

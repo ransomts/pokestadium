@@ -5,11 +5,11 @@
 
 extern Gfx gMenuDL_BackgroundFill[];
 extern Gfx gPrefDL_Fill[];
-extern Gfx D_8006F4C0[];
+extern Gfx gDL_FillCycle[];
 extern Gfx gTransferPakErrorBorderDL[];
 extern Gfx gPrefDL_Border[];
-extern Gfx D_8006F558[];
-extern Gfx D_8006F5A0[];
+extern Gfx gDL_XluBorder[];
+extern Gfx gDL_PalettedIcon[];
 extern Gfx gFontCharTableExtended[];
 extern Gfx gPrefDL_End[];
 extern Gfx gDL_TextResetState[];

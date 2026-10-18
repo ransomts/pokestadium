@@ -187,7 +187,7 @@ void WaterEffect_UpdateParticles(unk_D_843C3508* arg0) {
             temp_fs2 =
                 __sinf((((spA8 + temp_s4) % (temp_s1 + 20)) * 6.2831854820251465) / (temp_s1 + 20)) * (10.0 * temp_fs1);
             temp_fs1_2 = __sinf((((spA8 + temp_s4) % temp_s1) * 6.2831854820251465) / temp_s1) * 10.0;
-            func_8432FBBC(&sp98);
+            GetPrimaryEffectCenterOrNode(&sp98);
             var_s0->unk_0C.x = sp98.x;
             var_s0->unk_0C.y = sp98.y + temp_fs2;
             var_s0->unk_0C.z = sp98.z + temp_fs1_2;

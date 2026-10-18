@@ -58,14 +58,14 @@ typedef struct ActorOriginPosition {
 static MiniActor miniDigletts[9];
 static MiniActor miniDiglettHoles[9];
 static MiniActor miniEkanses[4];
-static TextObject* D_86C12000;
+static TextObject* gMinigameTextObject;
 static ActiveDiglettInfo activeDigletts[3];
-static s32 D_86C12034;
-static s16 D_86C12038;
-static s16 D_86C12040[9][4];
+static s32 gMinigameStateVar1;
+static s16 gMinigameStateVar2;
+static s16 gMinigameScoreTable[9][4];
 static s16 ekansMinigameCountdownStarted;
 
-static u32 D_86C04840[] = {
+static u32 gDiglettMinigamePatternTable[] = {
     0x07070707, 0x07070707, 0x07070707, 0x07070707, 0x07070708, 0x08080808, 0x08080808, 0x08080808, 0x08080808,
     0x08080805, 0x05050505, 0x05050505, 0x05050505, 0x05050505, 0x05050506, 0x06060606, 0x06060606, 0x06060606,
     0x06060606, 0x06060606, 0x06060606, 0x06060606, 0x06060606, 0x06060606, 0x06060607, 0x07070707, 0x07070707,
@@ -80,9 +80,9 @@ static u32 D_86C04840[] = {
     0x08080808,
 };
 
-static u32 D_86C049D0[] = {
+static u32 gDiglettMinigameConfigTable[] = {
     0x00500000, 0x00500050, 0x005000A0, 0x005000F0, 0x00500140,
-    0x00010000, 0x00000000, 0x00050050, D_86C049D0, D_86C04840,
+    0x00010000, 0x00000000, 0x00050050, gDiglettMinigameConfigTable, gDiglettMinigamePatternTable,
 };
 
 static u32 redDiglettTileTexture[] = {
@@ -854,7 +854,7 @@ static u32 sceneDecorationTextureYellow[] = {
 };
 
 //  unused or unshown decoration texture?
-static u32 D_86C0B1F8[] = {
+static u32 gUnusedDecorationTexture[] = {
     0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1C4F1, 0xC4EFBCAD, 0xAC2993E5, 0x83617B1D, 0x72DB6A9B, 0x6ADB72DB,
     0x7B1D8B61, 0x9BE5AC69, 0xBCADC4EF, 0xC4F1CCF1, 0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1CCF1,
     0xCCF1CCF1, 0xC4EFBCAD, 0xA4298B61, 0x6A995A57, 0x5A576257, 0x6A996ADB, 0x6A9B6A99, 0x62595A57, 0x5A576A99,
@@ -989,11 +989,11 @@ static unk_D_86002F34_018 sceneTextures[] = {
         32,
         32,
         1024,
-        D_86C0B1F8,
+        gUnusedDecorationTexture,
     },
 };
 
-static Gfx D_86C0BA70[] = {
+static Gfx gMinigameTileSetupDL16[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1004,7 +1004,7 @@ static Gfx D_86C0BA70[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x007C, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx D_86C0BAA8[] = {
+static Gfx gMinigameTileSetupDL32[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_32b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1016,7 +1016,7 @@ static Gfx D_86C0BAA8[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x04FC, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx D_86C0BAE8[] = {
+static Gfx gMinigameTileSetupDL16Wide[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1028,7 +1028,7 @@ static Gfx D_86C0BAE8[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x0DFC, 0x027C),
     gsSPEndDisplayList(),
 };
-static Gfx D_86C0BB28[] = {
+static Gfx gMinigameTileSetupDL16Large[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 6, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1227,7 +1227,7 @@ static Vtx sceneGeometry_13[] = {
     VTX(-1114, 148, -1247, 149, 874, 0xC1, 0xB5, 0x45, 0xFF),
 };
 
-static Gfx D_86C0C9F8[] = {
+static Gfx Gfx_BlueLeftDecorationDL[] = {
     gsSPVertex(sceneGeometry_13, 14, 0),        gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),     gsSP2Triangles(3, 1, 0, 0, 5, 6, 4, 0),
     gsSP2Triangles(5, 4, 3, 0, 6, 5, 7, 0),     gsSP2Triangles(8, 0, 2, 0, 9, 3, 0, 0),
@@ -1236,7 +1236,7 @@ static Gfx D_86C0C9F8[] = {
     gsSP2Triangles(13, 9, 12, 0, 10, 13, 7, 0), gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CA58[] = {
+static Gfx Gfx_BlueRightDecorationDL[] = {
     gsSPVertex(sceneGeometry_12, 14, 0),        gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),     gsSP2Triangles(3, 1, 0, 0, 5, 6, 4, 0),
     gsSP2Triangles(5, 4, 3, 0, 6, 5, 7, 0),     gsSP2Triangles(8, 0, 2, 0, 9, 3, 0, 0),
@@ -1245,7 +1245,7 @@ static Gfx D_86C0CA58[] = {
     gsSP2Triangles(13, 9, 12, 0, 10, 13, 7, 0), gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CAB8[] = {
+static Gfx Gfx_YellowLeftDecorationDL[] = {
     gsSPVertex(sceneGeometry_11, 14, 0),        gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),     gsSP2Triangles(3, 1, 0, 0, 5, 6, 4, 0),
     gsSP2Triangles(5, 4, 3, 0, 6, 5, 7, 0),     gsSP2Triangles(8, 0, 2, 0, 9, 3, 0, 0),
@@ -1254,7 +1254,7 @@ static Gfx D_86C0CAB8[] = {
     gsSP2Triangles(13, 9, 12, 0, 10, 13, 7, 0), gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CB18[] = {
+static Gfx Gfx_YellowRightDecorationDL[] = {
     gsSPVertex(sceneGeometry_10, 14, 0),        gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),     gsSP2Triangles(3, 1, 0, 0, 5, 6, 4, 0),
     gsSP2Triangles(5, 4, 3, 0, 6, 5, 7, 0),     gsSP2Triangles(8, 0, 2, 0, 9, 3, 0, 0),
@@ -1263,7 +1263,7 @@ static Gfx D_86C0CB18[] = {
     gsSP2Triangles(13, 9, 12, 0, 10, 13, 7, 0), gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CB78[] = {
+static Gfx Gfx_RedLeftDecorationDL[] = {
     gsSPVertex(sceneGeometry_9, 14, 0),         gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),     gsSP2Triangles(3, 1, 0, 0, 5, 6, 4, 0),
     gsSP2Triangles(5, 4, 3, 0, 6, 5, 7, 0),     gsSP2Triangles(8, 0, 2, 0, 9, 3, 0, 0),
@@ -1272,7 +1272,7 @@ static Gfx D_86C0CB78[] = {
     gsSP2Triangles(13, 9, 12, 0, 10, 13, 7, 0), gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CBD8[] = {
+static Gfx Gfx_RedRightDecorationDL[] = {
     gsSPVertex(sceneGeometry_7, 16, 0),           gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),       gsSP2Triangles(3, 2, 4, 0, 3, 4, 5, 0),
     gsSP2Triangles(5, 4, 6, 0, 5, 6, 7, 0),       gsSP2Triangles(7, 6, 8, 0, 7, 8, 9, 0),
@@ -1280,7 +1280,7 @@ static Gfx D_86C0CBD8[] = {
     gsSP2Triangles(15, 14, 1, 0, 15, 1, 0, 0),    gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CC28[] = {
+static Gfx Gfx_CenterDecorationDL[] = {
     gsSPVertex(sceneGeometry_8, 18, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
@@ -1292,7 +1292,7 @@ static Gfx D_86C0CC28[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CC70[] = {
+static Gfx Gfx_MainArenaDL[] = {
     gsSPVertex(sceneGeometry_1, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -1312,7 +1312,7 @@ static Gfx D_86C0CC70[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CCF8[] = {
+static Gfx Gfx_ArenaSideDL[] = {
     gsSPVertex(sceneGeometry_3, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
@@ -1330,7 +1330,7 @@ static Gfx D_86C0CCF8[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_86C0CD70[] = {
+static Gfx Gfx_ArenaBackDL[] = {
     gsSPVertex(sceneGeometry_5, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
@@ -1348,28 +1348,28 @@ static Gfx D_86C0CD70[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_86C0CDE8[] = {
+static u32 gMiniEkansArenaScript[] = {
     0x09000000, 0x05000000, 0x1D070100, 0x00000000, 0xFB500000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
     0x05000000, 0x1D060101, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000,
-    0x2301FFFF, D_86C0BB28, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CC70, 0x2301FFFF, D_86C0BB28, 0x0001FFFF,
-    0xFFFFFFFF, 0x22010000, D_86C0CCF8, 0x2301FFFF, D_86C0BB28, 0x0002FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CD70,
+    0x2301FFFF, gMinigameTileSetupDL16Large, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, Gfx_MainArenaDL, 0x2301FFFF, gMinigameTileSetupDL16Large, 0x0001FFFF,
+    0xFFFFFFFF, 0x22010000, Gfx_ArenaSideDL, 0x2301FFFF, gMinigameTileSetupDL16Large, 0x0002FFFF, 0xFFFFFFFF, 0x22010000, Gfx_ArenaBackDL,
     0x1D050102, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
-    D_86C0BAE8, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CBD8, 0x2301FFFF, D_86C0BAA8, 0x0004FFFF, 0xFFFFFFFF,
-    0x22010000, D_86C0CC28, 0x1D040103, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
-    0x05000000, 0x23010004, D_86C0BA70, 0x0005FFFF, 0xFFFFFFFF, 0x22010000, D_86C0C9F8, 0x06000000, 0x1D030104,
-    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010002, D_86C0BA70,
-    0x0008FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CAB8, 0x06000000, 0x1D020105, 0x00000000, 0x00000000, 0x00000000,
-    0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010000, D_86C0BA70, 0x0007FFFF, 0xFFFFFFFF, 0x22010000,
-    D_86C0CB78, 0x06000000, 0x1D010106, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
-    0x05000000, 0x23010001, D_86C0BA70, 0x0006FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CB18, 0x06000000, 0x1D000107,
-    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010003, D_86C0BA70,
-    0x0005FFFF, 0xFFFFFFFF, 0x22010000, D_86C0CA58, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000,
+    gMinigameTileSetupDL16Wide, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, Gfx_RedRightDecorationDL, 0x2301FFFF, gMinigameTileSetupDL32, 0x0004FFFF, 0xFFFFFFFF,
+    0x22010000, Gfx_CenterDecorationDL, 0x1D040103, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
+    0x05000000, 0x23010004, gMinigameTileSetupDL16, 0x0005FFFF, 0xFFFFFFFF, 0x22010000, Gfx_BlueLeftDecorationDL, 0x06000000, 0x1D030104,
+    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010002, gMinigameTileSetupDL16,
+    0x0008FFFF, 0xFFFFFFFF, 0x22010000, Gfx_YellowLeftDecorationDL, 0x06000000, 0x1D020105, 0x00000000, 0x00000000, 0x00000000,
+    0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010000, gMinigameTileSetupDL16, 0x0007FFFF, 0xFFFFFFFF, 0x22010000,
+    Gfx_RedLeftDecorationDL, 0x06000000, 0x1D010106, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
+    0x05000000, 0x23010001, gMinigameTileSetupDL16, 0x0006FFFF, 0xFFFFFFFF, 0x22010000, Gfx_YellowRightDecorationDL, 0x06000000, 0x1D000107,
+    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x23010003, gMinigameTileSetupDL16,
+    0x0005FFFF, 0xFFFFFFFF, 0x22010000, Gfx_BlueRightDecorationDL, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000,
     0x04000000,
 };
 
-static u32 D_86C0D008[] = {
+static u32 gMiniEkansArenaSetup[] = {
     0x1700000A, 0x000000E9, sceneTextures, 0x00000000, sceneGeometry_1, 0x05000000, 0x1C000000, 0x000023D7,
-    0x000023D7, 0x000023D7, 0x05000000,    0x03000000, D_86C0CDE8,      0x06000000, 0x06000000, 0x01000000,
+    0x000023D7, 0x000023D7, 0x05000000,    0x03000000, gMiniEkansArenaScript,      0x06000000, 0x06000000, 0x01000000,
 };
 
 static u32 ekansShadowTexture[] = {
@@ -1525,14 +1525,14 @@ static s16 miniEkansDifficulties[4][4] = {
     },
 };
 
-static s16 D_86C0E0A4[] = { 0, 1, 2, 2 };
-static s32 D_86C0E0AC[] = { 0, 1, 2, 4, 5, 6, 8, 9, 0xA };
+static s16 gMiniEkansDefaultDifficulty[] = { 0, 1, 2, 2 };
+static s32 gMiniDiglettGoldScoreTable[] = { 0, 1, 2, 4, 5, 6, 8, 9, 0xA };
 
-static u32 D_86C0E0D0[] = {
+static u32 gMiniEkansGameScript[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x05000000,
-    0x00000000, D_86C0D008, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
+    0x00000000, gMiniEkansArenaSetup, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
     0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
 };
 
@@ -1554,15 +1554,15 @@ static ActorOriginPosition diglettActorInfo[] = {
     { { 0.0f, 0.0f, -225.0f }, { 0, 0, 0, 0, 0, 0 }, 0xA, 0x23 },
     { { 75.0f, 0.0f, -225.0f }, { 0, 0, 0, 0, 0, 0 }, 0xA, 0x23 },
 };
-static unk_func_87801684 D_86C0E2A4[] = {
+static unk_func_87801684 gMiniEkansAnimTable[] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
     { D_030397C0, 0xE },  { D_0303A400, 4 }, { D_0303B040, 4 }, { D_0303A400, 4 }, { D_030397C0, 0xE },
     { D_030366C0, 4 },    { D_03037300, 4 }, { D_030366C0, 4 }, { NULL, 0 },
 };
-static unk_func_87801684 D_86C0E314[] = {
+static unk_func_87801684 gMiniDiglettAnimTable[] = {
     { D_030397C0, 0xE }, { D_03034E40, 4 }, { D_03035A80, 0xE }, { D_0303D500, 2 }, { NULL, 0 },
 };
-static unk_func_87801684 D_86C0E33C[] = {
+static unk_func_87801684 gMiniDiglettHoleAnimTable[] = {
     { D_03042E00, 0xE }, { D_03043520, 4 }, { D_03043C40, 8 }, { D_03043520, 4 }, { D_03042E00, 0xE },
     { D_03041FC0, 4 },   { D_030426E0, 8 }, { D_03041FC0, 4 }, { NULL, 0 },
 };
@@ -1600,7 +1600,7 @@ void miniDiglettGoldCheck(s16 nDiglett, s32* isGold, s32* arg2) {
         *isGold = 0;
     }
 
-    *arg2 = D_86C0E0AC[ActiveDiglettId];
+    *arg2 = gMiniDiglettGoldScoreTable[ActiveDiglettId];
 }
 
 void MiniGame_PlaySoundEvent(s16 arg0, s16 arg1) {
@@ -1764,11 +1764,11 @@ void initEkans(MiniActor* ekans, s16 player) {
     if (ekansMinigameCountdownStarted == false) {
         ekans->unk_2AE = miniEkansDifficulties[miniDifficulty][player];
     } else {
-        ekans->unk_2AE = D_86C0E0A4[player];
+        ekans->unk_2AE = gMiniEkansDefaultDifficulty[player];
     }
 
     // clang-format off
-    for (i = 0; i < 9; i++){ D_86C12040[i][player] = 0; }
+    for (i = 0; i < 9; i++){ gMinigameScoreTable[i][player] = 0; }
     // clang-format on
 }
 
@@ -1937,7 +1937,7 @@ void miniEkansHumanControls(MiniActor* ekans) {
     }
 }
 
-void func_86C00AA4(void) {
+void MiniEkans_CompSetState1All(void) {
     MiniActor* ekans = miniEkanses;
     s32 i;
 
@@ -1949,7 +1949,7 @@ void func_86C00AA4(void) {
     }
 }
 
-s32 func_86C00B0C(MiniActor* compEkans) {
+s32 MiniEkans_CompShouldSwitchTarget(MiniActor* compEkans) {
     s32 ret = 0;
     s32 idx = compEkans->collidingActorId;
     s32 i;
@@ -1966,7 +1966,7 @@ s32 func_86C00B0C(MiniActor* compEkans) {
     return ret;
 }
 
-s16 func_86C00BB4(void) {
+s16 MiniEkans_CompPickRandomActiveDiglett(void) {
     s32 i;
     s32 var_v1 = GetRandomMod(0x64) % 3;
     s16 var_t0 = -1;
@@ -1986,7 +1986,7 @@ s16 func_86C00BB4(void) {
     return var_t0;
 }
 
-s16 func_86C00C40(MiniActor* arg0) {
+s16 MiniEkans_CompPickGoldOrActiveDiglett(MiniActor* arg0) {
     s32 i;
     s32 var_a0;
     s16 sp1E = -1;
@@ -2024,7 +2024,7 @@ s16 func_86C00C40(MiniActor* arg0) {
     return sp1E;
 }
 
-s16 func_86C00D50(MiniActor* arg0) {
+s16 MiniEkans_CompPickUniqueActiveDiglett(MiniActor* arg0) {
     s32 i;
     s32 j;
     s32 sp1C;
@@ -2075,25 +2075,25 @@ s16 func_86C00D50(MiniActor* arg0) {
     return var_a0;
 }
 
-s32 func_86C00EF8(MiniActor* compEkans) {
+s32 MiniEkans_CompPickTarget(MiniActor* compEkans) {
     switch (compEkans->unk_2AE) {
         case 0:
-            compEkans->collidingActorId = func_86C00BB4();
+            compEkans->collidingActorId = MiniEkans_CompPickRandomActiveDiglett();
             break;
 
         case 1:
-            compEkans->collidingActorId = func_86C00C40(compEkans);
+            compEkans->collidingActorId = MiniEkans_CompPickGoldOrActiveDiglett(compEkans);
             break;
 
         case 2:
-            compEkans->collidingActorId = func_86C00D50(compEkans);
+            compEkans->collidingActorId = MiniEkans_CompPickUniqueActiveDiglett(compEkans);
             break;
     }
 
     return compEkans->collidingActorId;
 }
 
-void func_86C00F70(MiniActor* compEkans) {
+void MiniEkans_CompAimAtDiglett(MiniActor* compEkans) {
     Vec3f sp3C;
     MiniActor* tempDiglett;
     s16 sp36;
@@ -2182,7 +2182,7 @@ void miniEkansCompGetForce(MiniActor* compEkans) {
     compEkans->stickMagnitude1 = force;
 }
 
-s16 func_86C01408(void) {
+s16 MiniEkans_CompHoldDelay(void) {
     s16 sp1E;
 
     switch (miniDifficulty) {
@@ -2206,7 +2206,7 @@ s16 func_86C01408(void) {
     return sp1E;
 }
 
-s16 func_86C014A0(void) {
+s16 MiniEkans_CompRepeatDelay(void) {
     s16 sp1E;
 
     switch (miniDifficulty) {
@@ -2233,23 +2233,23 @@ s16 func_86C014A0(void) {
 void miniEkansCompControls(MiniActor* compEkans) {
     switch (compEkans->compState) {
         case 1:
-            if (func_86C00EF8(compEkans) >= 0) {
-                func_86C00F70(compEkans);
+            if (MiniEkans_CompPickTarget(compEkans) >= 0) {
+                MiniEkans_CompAimAtDiglett(compEkans);
                 compEkans->compState++;
             }
             break;
 
         case 2: //	comp L R
-            if (func_86C00B0C(compEkans) != 0) {
+            if (MiniEkans_CompShouldSwitchTarget(compEkans) != 0) {
                 compEkans->compState = 1;
             } else if (ApproachS16Signed(&compEkans->yRot_2, compEkans->unk_222, compEkans->ySpinSpeed) != 0) {
-                compEkans->unk_29E = func_86C01408();
+                compEkans->unk_29E = MiniEkans_CompHoldDelay();
                 compEkans->compState++;
             }
             break;
 
         case 3: //	comp holding back
-            if (func_86C00B0C(compEkans) != 0) {
+            if (MiniEkans_CompShouldSwitchTarget(compEkans) != 0) {
                 compEkans->compState = 1;
             } else {
                 compEkans->unk_29E--;
@@ -2271,7 +2271,7 @@ void miniEkansCompControls(MiniActor* compEkans) {
 
         case 5: //	comp launch force
             if (compEkans->mainState == 0) {
-                compEkans->unk_29E = func_86C014A0();
+                compEkans->unk_29E = MiniEkans_CompRepeatDelay();
                 compEkans->compState++;
             }
             break;
@@ -2285,7 +2285,7 @@ void miniEkansCompControls(MiniActor* compEkans) {
     }
 }
 
-void func_86C016C8(MiniActor* ekans) {
+void MiniEkans_ApplyLaunchPhysics(MiniActor* ekans) {
     ekans->antiAcceleration = 1.0f;
     ekans->xSpeed = (SINS(ekans->totalRot.y) * (26.0f + ekans->launchForce)) / 10.0f;
     ekans->ySpeed = (ekans->launchForce + 70.0f) * 0.125f;
@@ -2364,7 +2364,7 @@ void checkCollitionWithDigletts(MiniActor* ekans, s32 nPlayer) {
     }
 }
 
-void func_86C01AF8(void) {
+void MiniEkans_ResolveHoopConflicts(void) {
     UNUSED s32 pad[3];
     Vec3f sp88;
     Vec3f sp7C;
@@ -2403,7 +2403,7 @@ void func_86C01AF8(void) {
     }
 }
 
-void func_86C01D2C(MiniActor* ekans, s32 nPlayer) {
+void MiniEkansHandleDiglettCollision(MiniActor* ekans, s32 nPlayer) {
     Vec3f diglettColl;
     Vec3f ekansColl;
     f32 xDist;
@@ -2466,7 +2466,7 @@ void func_86C01D2C(MiniActor* ekans, s32 nPlayer) {
 
     activeDiglett->gotHoop = true;
     activeDiglett->collidingActorId = nPlayer;
-    D_86C12040[activeDiglett->diglettId][nPlayer] = 1;
+    gMinigameScoreTable[activeDiglett->diglettId][nPlayer] = 1;
 
     ekans->unk_296 = 1;
     if (ekans->midAirState == 0) {
@@ -2546,7 +2546,7 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
     ekans->yRot_3 += ekans->ySpinSpeed;
 }
 
-void func_86C021FC(MiniActor* ekans) {
+void MiniEkansApplyStickMovement(MiniActor* ekans) {
     if (ekans->stickMagnitude1 > 5.0f) {
         ApproachF32(&ekans->position_2.x, (-SINS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
         ApproachF32(&ekans->position_2.z, (-COSS(ekans->totalRot.y) * ekans->stickMagnitude1) / 3.0f, 4.0f);
@@ -2569,11 +2569,11 @@ void miniEkansAnycontrols(MiniActor* ekans) {
 void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
     switch (ekans->mainState) {
         case 0x0: //	pull back
-            func_86C021FC(ekans);
+            MiniEkansApplyStickMovement(ekans);
             break;
 
         case 0x1: //  launch
-            func_86C016C8(ekans);
+            MiniEkans_ApplyLaunchPhysics(ekans);
             miniChangeActorAnim(ekans, 1, -1, 0);
             ekans->ekansIsMidAir = 1;
             ekans->midAirState = 0;
@@ -2582,7 +2582,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             break;
 
         case 0x2: //	on freefall
-            func_86C01D2C(ekans, nPlayer);
+            MiniEkansHandleDiglettCollision(ekans, nPlayer);
             miniGetCloser2Diglett(ekans, nPlayer);
             break;
 
@@ -2645,7 +2645,7 @@ void miniEkansPlayersUpdate(void) {
         miniControllerPtr++;
     }
 
-    func_86C01AF8();
+    MiniEkans_ResolveHoopConflicts();
     miniEkansPtr = miniEkanses;
 
     for (i = 0; i < 4; i++) {
@@ -2696,7 +2696,7 @@ void initDiglettHole(MiniActor* hole, s32 arg1) {
     hole->unk_000.unk_000.unk_02 &= ~0x40;
 }
 
-void func_86C0276C(void) {
+void ActiveDigletts_Reset(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -2717,10 +2717,10 @@ void func_86C027AC(void) {
 void func_86C027B4(void) {
 }
 
-void func_86C027BC(void) {
+void ActiveDigletts_SetInactive(void) {
     s32 i;
 
-    func_86C0276C();
+    ActiveDigletts_Reset();
 
     for (i = 0; i < 3; i++) {
         activeDigletts[i].state = 3;
@@ -2744,7 +2744,7 @@ void initDigletts(void) {
         miniDiglettHolePtr = &miniDiglettHolePtr[1];
     }
 
-    func_86C0276C();
+    ActiveDigletts_Reset();
 }
 
 s16 miniEkansChooseRandDiglett(UNUSED s16 activeDiglett) {
@@ -2794,15 +2794,15 @@ s16 miniEkansChooseRandDiglett(UNUSED s16 activeDiglett) {
     return rand;
 }
 
-void func_86C02A1C(MiniActor* diglett) {
+void MiniDiglettMaybeSetGold(MiniActor* diglett) {
     s32 temp_v0;
     s32 sp18 = 0;
 
-    if (D_86C12038 != 0) {
-        D_86C12038 = 0;
+    if (gMinigameStateVar2 != 0) {
+        gMinigameStateVar2 = 0;
         sp18 = 1;
     } else if (ekansMinigameCountdownStarted == false) {
-        if ((miniEkansCountdown < 0xA) && (D_86C12034 == 0)) {
+        if ((miniEkansCountdown < 0xA) && (gMinigameStateVar1 == 0)) {
             sp18 = 1;
         } else {
             sp18 = 0;
@@ -2825,7 +2825,7 @@ void func_86C02A1C(MiniActor* diglett) {
     }
 
     if (sp18 != 0) {
-        D_86C12034 += 1;
+        gMinigameStateVar1 += 1;
         diglett->diglettIsGold = true;
         diglett->unk_000.unk_01C = 1;
     }
@@ -2897,7 +2897,7 @@ void miniDiglettStateMachine(void) {
                     miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
                     miniDiglettPtr->unk_000.unk_000.unk_01 |= 1;
                     MiniGame_QueueSoundEvent(7, i);
-                    func_86C02A1C(miniDiglettPtr);
+                    MiniDiglettMaybeSetGold(miniDiglettPtr);
                     miniChangeActorAnim_alt2(miniDiglettPtr, 1, -1, 1);
                 }
                 break;
@@ -2954,7 +2954,7 @@ void miniDiglettStateMachine(void) {
     }
 }
 
-void func_86C03008(void) {
+void MiniDiglettsUpdateAll(void) {
     s32 i;
 
     miniDiglettStateMachine();
@@ -2977,11 +2977,11 @@ void ekansMinigameInitObjects(void) {
 
     miniEkansCountdown = 0x3C;
     D_879060C0 = miniEkansCountdown * 0x1E;
-    D_86C12038 = 0;
-    D_86C12034 = 0;
+    gMinigameStateVar2 = 0;
+    gMinigameStateVar1 = 0;
 }
 
-s32 func_86C030EC(void) {
+s32 MiniEkansAllIdleCheck(void) {
     MiniActor* ekans = miniEkanses;
     s32 ret = 1;
     s32 i;
@@ -2995,7 +2995,7 @@ s32 func_86C030EC(void) {
     return ret;
 }
 
-void func_86C03128(void) {
+void MiniEkansAwardWinner(void) {
     s32 i;
     s32 var_s2;
     MiniActor* ekans;
@@ -3019,7 +3019,7 @@ void func_86C03128(void) {
     }
 }
 
-s32 func_86C031E4(void) {
+s32 MiniEkansHandleResultSound(void) {
     s32 sp1C = 0;
     s32 sp18 = Fragment2_1_GetResult();
 
@@ -3037,7 +3037,7 @@ s32 func_86C031E4(void) {
     return sp1C;
 }
 
-s32 func_86C03258(void) {
+s32 MiniEkansCountdownTick(void) {
     s32 sp1C = 0;
 
     D_879060C0--;
@@ -3078,16 +3078,16 @@ void miniEkansMinigameStateMachine(void) {
             break;
 
         case 3: //	main game loop
-            if (func_86C031E4() != 0) {
-                func_86C027BC();
-                func_86C00AA4();
+            if (MiniEkansHandleResultSound() != 0) {
+                ActiveDigletts_SetInactive();
+                MiniEkans_CompSetState1All();
                 minigameInputLock = 1;
                 minigameState++;
             }
             break;
 
         case 4: //	main countdown ends, adds a little wait
-            if (func_86C03258() != 0) {
+            if (MiniEkansCountdownTick() != 0) {
                 miniTutoScreenState = 4;
                 miniInputLockTimer = 0x32;
                 minigameInputLock = 0;
@@ -3100,8 +3100,8 @@ void miniEkansMinigameStateMachine(void) {
             if (miniInputLockTimer < 0) {
                 miniInputLockTimer = 0;
             }
-            if ((func_86C030EC() != 0) && (miniInputLockTimer == 0)) {
-                func_86C03128();
+            if ((MiniEkansAllIdleCheck() != 0) && (miniInputLockTimer == 0)) {
+                MiniEkansAwardWinner();
                 SetResultFlag(1);
                 MiniTutoScreen_Reset();
                 minigameState++;
@@ -3149,12 +3149,12 @@ void miniEkansInitCam(void) {
     D_87906110.y = 1.0f;
 }
 
-void func_86C035E0(void) {
+void MiniEkansDebugAndCameraUpdate(void) {
     minigameDebuggModeControl();
     miniUpdateCamera();
 }
 
-void func_86C03608(void) {
+void MiniEkansDrawTutoTextPanel(void) {
     UNUSED s32 pad;
     s32 sp38;
     s32 sp34;
@@ -3169,7 +3169,7 @@ void func_86C03608(void) {
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (GetTextWidth(D_86C12000, GetMessageString(NULL, 0, gItemNamesBank, 0x3E)) / 2), 0x20,
+    Text_Print(0xA0 - (GetTextWidth(gMinigameTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x3E)) / 2), 0x20,
                   GetMessageString(NULL, 0, gItemNamesBank, 0x3E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -3203,17 +3203,17 @@ void func_86C03608(void) {
     Text_SetupDL();
 }
 
-void func_86C03AB8(void) {
+void MiniEkansTutoScreenUpdate(void) {
     switch (D_87903DCC) {
         case 3:
-            func_86C03608();
+            MiniEkansDrawTutoTextPanel();
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             func_87801F48(1, 0x19, 0xA6);
-            func_87801C8C(0x56, 0xAC, D_86C0E33C);
-            func_87801D5C(1, 0xC2, 0xA8, D_86C0E314);
-            func_87801824(0x74, 0xC6, D_86C0E2A4);
+            func_87801C8C(0x56, 0xAC, gMiniDiglettHoleAnimTable);
+            func_87801D5C(1, 0xC2, 0xA8, gMiniDiglettAnimTable);
+            func_87801824(0x74, 0xC6, gMiniEkansAnimTable);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
@@ -3275,18 +3275,18 @@ void miniEkansDrawHub(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86C03E4C(void) {
+void MiniEkansTutoScreenMain(void) {
     MiniTutoScreen_Start();
-    func_86C03AB8();
+    MiniEkansTutoScreenUpdate();
 
     if (miniShowHUB) {
         miniEkansDrawHub();
     }
 }
 
-void func_86C03E8C(s32 arg0) {
+void MiniEkansTutoScreenOrResult(s32 arg0) {
     if (D_8780FC98 == 0) {
-        func_86C03E4C(); // HUB
+        MiniEkansTutoScreenMain(); // HUB
     }
 
     if (ekansMinigameCountdownStarted == false) {
@@ -3294,7 +3294,7 @@ void func_86C03E8C(s32 arg0) {
     }
 }
 
-void func_86C03ED4(void) {
+void MiniEkansDrawShadows(void) {
     MiniActor* ekans = miniEkanses;
     s32 i;
     Vec3f sp7C;
@@ -3324,7 +3324,7 @@ void func_86C03ED4(void) {
     gSPDisplayList(gDisplayListHead++, gDL_End3D);
 }
 
-void func_86C040B4(s32 arg0) {
+void MiniEkansMainDisplayList(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
@@ -3334,10 +3334,10 @@ void func_86C040B4(s32 arg0) {
 
     Graph_SetTextureState(&gMiniCameraStruct->unk_00);
     ParticleRender_SetupMiniCamera();
-    func_86C03ED4();
+    MiniEkansDrawShadows();
 
     if (miniDebugMode == false) {
-        func_86C03E8C(arg0);
+        MiniEkansTutoScreenOrResult(arg0);
     }
 
     if (miniDebugMode) {
@@ -3396,15 +3396,15 @@ void miniEkansTutoScreenControls(void) {
             Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();
-            func_86C03008();
-            func_86C035E0();
+            MiniDiglettsUpdateAll();
+            MiniEkansDebugAndCameraUpdate();
         }
 
         if ((miniDebugMode == false) && ((D_87903DAC != 0) || (D_8780FC92 != 0))) {
             var_s1 = 0;
         }
 
-        func_86C040B4(1);
+        MiniEkansMainDisplayList(1);
     }
 }
 
@@ -3425,10 +3425,10 @@ void ekansMinigameUpdate(void) {
             Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();
-            func_86C03008();
-            func_86C035E0();
+            MiniDiglettsUpdateAll();
+            MiniEkansDebugAndCameraUpdate();
         }
-        func_86C040B4(2);
+        MiniEkansMainDisplayList(2);
     }
 
     while (Audio_CalcLoadScore() != 0) {}
@@ -3436,12 +3436,12 @@ void ekansMinigameUpdate(void) {
     MiniGame_QueueSoundEvent(0x14, 0);
 }
 
-void func_86C044B4(void) {
+void MiniEkansInitSceneGraph(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     unk_D_86002F30* temp_s1;
     s32 i;
 
-    gMiniCameraStruct = process_geo_layout(temp_v0, D_86C0E0D0);
+    gMiniCameraStruct = process_geo_layout(temp_v0, gMiniEkansGameScript);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 
@@ -3500,13 +3500,13 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x20000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86C12000 = Text_Init(0x1E, 0);
+    gMinigameTextObject = Text_Init(0x1E, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    func_86C044B4(); // memory
+    MiniEkansInitSceneGraph(); // memory
     Stage_Set(sp24);
     initEkansMinigameAssets();
     miniEkansTutoScreenControls();

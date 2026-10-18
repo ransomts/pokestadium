@@ -71,7 +71,7 @@ void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 
             var_v1->unk_008.b = arg8;
             var_v1->unk_010 = argA;
 
-            if (func_8432FA0C() == 0xD) {
+            if (GetSpeciesPrimaryEffect() == 0xD) {
                 var_v1->unk_418 = 0.08f;
                 var_v1->unk_00C = argC * 0.5f;
             } else {
@@ -79,7 +79,7 @@ void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 
                 var_v1->unk_00C = argC;
             }
 
-            var_v1->unk_018 = func_8432FD70(sp64, 2);
+            var_v1->unk_018 = ParticleNode_CreateWhiteFlash(sp64, 2);
             if (arg3 < 0.0) {
                 var_v1->unk_006 = -1;
             } else {
@@ -137,7 +137,7 @@ void ParticleSystem_UpdateEmitter(unk_D_843ACA10* arg0) {
                 }
             }
 
-            func_8432FDF0(arg0->unk_018, var_s0->unk_0C);
+            ParticleNode_SetPosition(arg0->unk_018, var_s0->unk_0C);
 
             var_s0->unk_04 += 2.0;
             if (arg0->unk_00C < var_s0->unk_04) {

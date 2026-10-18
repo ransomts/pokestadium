@@ -255,10 +255,10 @@ void Menu_PrintItem(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
 void func_8420C844(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x16));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x17));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 3, func_84200130(0x18));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x16));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, GetMessageBank1AString(0x17));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 3, GetMessageBank1AString(0x18));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -269,9 +269,9 @@ void func_8420C844(unk_D_84211704* arg0) {
 void func_8420C930(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x19));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1A));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1B));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x19));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x1A));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, GetMessageBank1AString(0x1B));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -282,9 +282,9 @@ void func_8420C930(unk_D_84211704* arg0) {
 void func_8420CA00(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x15));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x17));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x18));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x17));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, GetMessageBank1AString(0x18));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -295,9 +295,9 @@ void func_8420CA00(unk_D_84211704* arg0) {
 void func_8420CAD0(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1C));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x1D));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, func_84200130(0x1E));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1C));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x1D));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 2, GetMessageBank1AString(0x1E));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -308,8 +308,8 @@ void func_8420CAD0(unk_D_84211704* arg0) {
 void func_8420CBA0(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x1F));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1F));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x20));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -320,7 +320,7 @@ void func_8420CBA0(unk_D_84211704* arg0) {
 void func_8420CC54(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_Print(arg0->unk_00 + 0x2D, arg0->unk_02 + 0x38, func_84200130(0x21));
+    Text_Print(arg0->unk_00 + 0x2D, arg0->unk_02 + 0x38, GetMessageBank1AString(0x21));
     Text_SetupDL();
 }
 
@@ -335,7 +335,7 @@ void func_8420CCAC(unk_D_84211704* arg0) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_Print(arg0->unk_00 + 0x78, arg0->unk_02 + 0x38, func_84200130(0x22));
+    Text_Print(arg0->unk_00 + 0x78, arg0->unk_02 + 0x38, GetMessageBank1AString(0x22));
     Text_SetupDL();
 }
 
@@ -351,7 +351,7 @@ void func_8420CE24(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetLineHeight(0x1E);
-    Text_Print(arg0->unk_00 + 0x78, arg0->unk_02 + arg0->unk_08 + 0x29, func_84200130(0x23));
+    Text_Print(arg0->unk_00 + 0x78, arg0->unk_02 + arg0->unk_08 + 0x29, GetMessageBank1AString(0x23));
     Text_SetupDL();
 }
 
@@ -367,7 +367,7 @@ void func_8420CFC4(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetLineHeight(0x1C);
-    Text_Print(arg0->unk_00 + 0x68, arg0->unk_02 + 0x14, func_84200130(0x24));
+    Text_Print(arg0->unk_00 + 0x68, arg0->unk_02 + 0x14, GetMessageBank1AString(0x24));
     Text_SetupDL();
 }
 
@@ -382,15 +382,15 @@ void func_8420D144(unk_D_84211704* arg0) {
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_Print(arg0->unk_00 + 0x68, arg0->unk_02 + 0x22, func_84200130(0x25));
+    Text_Print(arg0->unk_00 + 0x68, arg0->unk_02 + 0x22, GetMessageBank1AString(0x25));
     Text_SetupDL();
 }
 
 void func_8420D2BC(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, func_84200130(0x26));
-    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, func_84200130(0x20));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x26));
+    Menu_PrintItem(arg0->unk_00, arg0->unk_02, 1, GetMessageBank1AString(0x20));
     Text_SetupDL();
 
     if (D_8423E58A >= 0) {
@@ -407,10 +407,10 @@ void func_8420D370(unk_D_84211704* arg0, s16 arg1) {
     Text_SetFont(0x10, 0);
     Text_SetLineHeight(0x1C);
     MessageBank_SetPointer_1_9(2, arg1);
-    sp20 = func_84200190(sp28, sizeof(sp28), 0x27);
+    sp20 = GetMessageBank1AStringCustomBuf(sp28, sizeof(sp28), 0x27);
     tmp = ((arg0->unk_04 - MeasureTextWidth(0, 0, sp20)) / 2);
     Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, sp20);
-    sp20 = func_84200130(0x28);
+    sp20 = GetMessageBank1AString(0x28);
     tmp = ((arg0->unk_04 - MeasureTextWidth(0, 0, sp20)) / 2);
     Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x56, sp20);
     Text_SetupDL();
@@ -420,9 +420,9 @@ void func_8420D464(unk_D_84211704* arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     if (arg1 == 0) {
-        Text_Print(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, func_84200130(0x29));
+        Text_Print(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, GetMessageBank1AString(0x29));
     } else {
-        Text_Print(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, func_84200130(0x2A));
+        Text_Print(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, GetMessageBank1AString(0x2A));
     }
     Text_SetupDL();
 }

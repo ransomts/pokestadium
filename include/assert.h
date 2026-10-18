@@ -30,7 +30,7 @@ extern "C" {
  *   IF ANY NEW IDENTIFIERS ARE ADDED TO THIS AREA UNLESS THEY ARE IN ANSI's
  *   RESERVED NAMESPACE. (i.e., unless they are prefixed by __[a-z] or
  *   _[A-Z].  For external objects, identifiers with the prefix _[a-z] 
- *   are also reserved.)
+ *   are BattleAnimDataEntry reserved.)
  */
 
 #ifdef NDEBUG

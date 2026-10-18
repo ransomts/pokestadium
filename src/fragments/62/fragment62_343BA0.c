@@ -92,23 +92,23 @@ void func_843593C8(void) {
 }
 
 void func_843593D0(Vec3f* arg0) {
-    func_8432FB90(arg0);
+    GetSecondaryEntityNodePosition(arg0);
 }
 
 void func_843593F0(Vec3f* arg0) {
-    func_8432FBBC(arg0);
+    GetPrimaryEffectCenterOrNode(arg0);
 }
 
 void func_84359410(Vec3f* arg0) {
-    func_8432FB90(arg0);
+    GetSecondaryEntityNodePosition(arg0);
 }
 
 void func_84359430(Vec3f* arg0) {
-    func_8432FB64(arg0);
+    GetPrimaryEffectNodePosition(arg0);
 }
 
 f32 func_84359450(void) {
-    return func_8432FD1C();
+    return GetSecondaryEntityScale();
 }
 
 f32 func_84359470(void) {
@@ -820,7 +820,7 @@ void StartParticleSystemI(void) {
     sp5C.x = sp58;
     sp5C.y = sp54;
     sp5C.z = sp50;
-    func_8432FD70(sp5C, 1);
+    ParticleNode_CreateWhiteFlash(sp5C, 1);
 }
 
 s32 UpdateParticleSystemI(void) {

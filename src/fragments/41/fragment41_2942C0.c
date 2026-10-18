@@ -24,7 +24,7 @@ void Gfx_DrawScisTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s
                             arg5, arg6, arg7);
 }
 
-void func_82F0C630(void) {
+void MenuBar_ResetState(void) {
     unk_D_82F211A0* var_v1;
     s32 i;
 
@@ -132,7 +132,7 @@ void MenuBar_UpdateParticles(unk_D_82F211A0* arg0) {
     }
 }
 
-void func_82F0CA7C(unk_D_82F211A0* arg0) {
+void MenuBar_UpdateSlide(unk_D_82F211A0* arg0) {
     s32 idx = arg0 - D_82F211A0;
 
     if (arg0->unk_0E > 0) {
@@ -142,7 +142,7 @@ void func_82F0CA7C(unk_D_82F211A0* arg0) {
     if ((arg0->unk_02 < 0xA0) || (arg0->unk_02 >= 0x1C3)) {
         if (arg0->unk_0E == 0) {
             arg0->unk_00 = 0;
-            func_82F0EFC4(idx ^ 1, 6);
+            MenuPanel_SetState(idx ^ 1, 6);
         }
     } else {
         if (arg0->unk_06 > 0) {
@@ -179,7 +179,7 @@ void MenuBar_ProcessAll(void) {
                 break;
 
             case 3:
-                func_82F0CA7C(var_s0);
+                MenuBar_UpdateSlide(var_s0);
                 break;
         }
     }
@@ -250,7 +250,7 @@ void MenuBar_Render(void) {
     }
 }
 
-void func_82F0D084(void) {
+void ScreenTransition_Reset(void) {
     gScreenTransition.unk_02 = 0;
 }
 
@@ -298,7 +298,7 @@ void ScreenTransition_Start(s16 arg0) {
     func_800256F4(ptr->unk_04, ptr->unk_24->unk_00.unk_00, 3);
 }
 
-void func_82F0D27C(unk_D_82F21238* arg0) {
+void ScreenTransition_UpdateAnim(unk_D_82F21238* arg0) {
     Fragment2_1GraphNode* sp24 = arg0->unk_2C->unk_24;
 
     if ((Anim_HasReachedEnd(sp24) != 0) && (arg0->unk_06 == 2)) {
@@ -309,7 +309,7 @@ void func_82F0D27C(unk_D_82F21238* arg0) {
     arg0->unk_20 = func_8001B9D4(arg0->unk_2C);
 }
 
-void func_82F0D2F4(unk_D_82F21238* arg0) {
+void ScreenTransition_Expand(unk_D_82F21238* arg0) {
     if (arg0->unk_12 < 0xC0) {
         arg0->unk_12 += 0x20;
         if (arg0->unk_12 >= 0xC1) {
@@ -325,7 +325,7 @@ void func_82F0D2F4(unk_D_82F21238* arg0) {
     arg0->unk_0E = ((arg0->unk_12 * -0x60) / 192) + 0x140;
     arg0->unk_10 = ((arg0->unk_14 * -0x60) / 192) + 0xC4;
 
-    func_82F0D27C(arg0);
+    ScreenTransition_UpdateAnim(arg0);
 
     if ((arg0->unk_12 == 0xC0) && (arg0->unk_14 == 0xC0)) {
         arg0->unk_02 = 2;
@@ -335,7 +335,7 @@ void func_82F0D2F4(unk_D_82F21238* arg0) {
     }
 }
 
-s32 func_82F0D3F4(s32 arg0) {
+s32 IsSpecialPokemonId(s32 arg0) {
     s32 var_v1 = 0;
 
     if ((arg0 == 0x40) || (arg0 == 0x43) || (arg0 == 0x4B) || (arg0 == 0x5D)) {
@@ -344,8 +344,8 @@ s32 func_82F0D3F4(s32 arg0) {
     return var_v1;
 }
 
-void func_82F0D428(unk_D_82F21238* arg0) {
-    func_82F0D27C(arg0);
+void ScreenTransition_HandleInput(unk_D_82F21238* arg0) {
+    ScreenTransition_UpdateAnim(arg0);
 
     if (arg0->unk_08 != 0) {
         arg0->unk_0C -= 1;
@@ -357,7 +357,7 @@ void func_82F0D428(unk_D_82F21238* arg0) {
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (func_82F0D3F4(arg0->unk_24->unk_00.unk_00) != 0) {
+        if (IsSpecialPokemonId(arg0->unk_24->unk_00.unk_00) != 0) {
             arg0->unk_02 = 3;
             arg0->unk_08 = 1;
             arg0->unk_0C = 0x3C;
@@ -378,9 +378,9 @@ void func_82F0D428(unk_D_82F21238* arg0) {
     }
 }
 
-void func_82F0D51C(unk_D_82F21238* arg0) {
+void ScreenTransition_Shrink(unk_D_82F21238* arg0) {
     arg0->unk_0C--;
-    func_82F0D27C(arg0);
+    ScreenTransition_UpdateAnim(arg0);
     arg0->unk_16 = (arg0->unk_0C * 0xFF) / 60;
 
     switch (arg0->unk_0A) {
@@ -402,7 +402,7 @@ void func_82F0D51C(unk_D_82F21238* arg0) {
     }
 }
 
-s32 func_82F0D64C(s16 arg0, s8* arg1) {
+s32 MessageString_Equals(s16 arg0, s8* arg1) {
     s32 sp64;
     s8* var_v1;
     char sp20[64];
@@ -423,16 +423,16 @@ s32 func_82F0D64C(s16 arg0, s8* arg1) {
     return sp64;
 }
 
-void func_82F0D6D0(s16 arg0, PokemonData* arg1) {
+void PokemonData_UpdateNameIfSpecial(s16 arg0, PokemonData* arg1) {
     s16 sp2E = 0;
 
-    if (func_82F0D3F4(arg1->unk_00.unk_00) != 0) {
+    if (IsSpecialPokemonId(arg1->unk_00.unk_00) != 0) {
         sp2E = arg1->unk_00.unk_00;
         arg1->unk_00.unk_00++;
     }
 
     if (sp2E != 0) {
-        if (func_82F0D64C(sp2E, arg1->unk_30) != 0) {
+        if (MessageString_Equals(sp2E, arg1->unk_30) != 0) {
             StrCopy(arg1->unk_30, GetMessageStringBank24(arg1->unk_00.unk_00));
         }
         CalculatePokemonStats(arg1);
@@ -440,7 +440,7 @@ void func_82F0D6D0(s16 arg0, PokemonData* arg1) {
     }
 }
 
-void func_82F0D76C(unk_D_82F21238* arg0) {
+void ScreenTransition_ApplyPokemonUpdate(unk_D_82F21238* arg0) {
     arg0->unk_0C--;
     if (arg0->unk_0C <= 0) {
         main_pool_pop_state('intr');
@@ -453,7 +453,7 @@ void func_82F0D76C(unk_D_82F21238* arg0) {
             arg0->unk_1C = 0xF0;
         }
         arg0->unk_20 = 0;
-        func_82F0D6D0(arg0->unk_04, arg0->unk_24);
+        PokemonData_UpdateNameIfSpecial(arg0->unk_04, arg0->unk_24);
         func_82F05210(arg0->unk_00, arg0->unk_24);
         ScreenTransition_Init(arg0, 1);
         arg0->unk_30.unk_00 = 0x38;
@@ -464,11 +464,11 @@ void func_82F0D76C(unk_D_82F21238* arg0) {
     }
 }
 
-void func_82F0D834(unk_D_82F21238* arg0) {
+void ScreenTransition_ShrinkReverse(unk_D_82F21238* arg0) {
     s16 var_v1;
     unk_D_82F20A40_00E* ptr = &arg0->unk_30;
 
-    func_82F0D27C(arg0);
+    ScreenTransition_UpdateAnim(arg0);
     arg0->unk_0C--;
     arg0->unk_16 = ((0x3C - arg0->unk_0C) * 0xFF) / 60;
 
@@ -500,7 +500,7 @@ void func_82F0D834(unk_D_82F21238* arg0) {
     }
 }
 
-void func_82F0DA60(unk_D_82F21238* arg0) {
+void ScreenTransition_Collapse(unk_D_82F21238* arg0) {
     unk_D_82F20A40_00E* temp_v0_2 = &arg0->unk_30;
 
     if (arg0->unk_0C > 0) {
@@ -528,7 +528,7 @@ void func_82F0DA60(unk_D_82F21238* arg0) {
 
     arg0->unk_0E = ((arg0->unk_12 * -0x60) / 192) + 0x140;
     arg0->unk_10 = ((arg0->unk_14 * -0x60) / 192) + 0xC4;
-    func_82F0D27C(arg0);
+    ScreenTransition_UpdateAnim(arg0);
 
     if ((arg0->unk_12 == 0) && (arg0->unk_14 == 0)) {
         if (arg0->unk_0C <= 0) {
@@ -550,32 +550,32 @@ void ScreenTransition_Process(void) {
             break;
 
         case 1:
-            func_82F0D2F4(&gScreenTransition);
+            ScreenTransition_Expand(&gScreenTransition);
             break;
 
         case 2:
-            func_82F0D428(&gScreenTransition);
+            ScreenTransition_HandleInput(&gScreenTransition);
             break;
 
         case 3:
-            func_82F0D51C(&gScreenTransition);
+            ScreenTransition_Shrink(&gScreenTransition);
             break;
 
         case 4:
-            func_82F0D76C(&gScreenTransition);
+            ScreenTransition_ApplyPokemonUpdate(&gScreenTransition);
             break;
 
         case 5:
-            func_82F0D834(&gScreenTransition);
+            ScreenTransition_ShrinkReverse(&gScreenTransition);
             break;
 
         case 6:
-            func_82F0DA60(&gScreenTransition);
+            ScreenTransition_Collapse(&gScreenTransition);
             break;
     }
 }
 
-void func_82F0DD90(s16 arg0, s16 arg1, s16 arg2) {
+void DrawTransitionOverlay(s16 arg0, s16 arg1, s16 arg2) {
     static Gfx D_82F13F90[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -635,7 +635,7 @@ void func_82F0DD90(s16 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_82F0E5C8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawMenuPanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 tmp = (arg1 + (arg3 / 2)) - 8;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -660,7 +660,7 @@ void func_82F0E5C8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82F0E97C(unk_D_82F21238* arg0) {
+void DrawTransitionImage(unk_D_82F21238* arg0) {
     UNUSED s32 pad;
     s16 i;
     s32 sp5C;
@@ -709,7 +709,7 @@ void func_82F0E97C(unk_D_82F21238* arg0) {
 void func_82F0ECA4(void) {
 }
 
-void func_82F0ECAC(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
+void DrawTransitionText(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
     s16 spC6;
     s8 sp44[0x80];
     char* sp40;
@@ -721,7 +721,7 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
     sp3C = NULL;
     sp40 = NULL;
 
-    if (func_82F0D3F4(arg1->unk_00.unk_00 - 1) != 0) {
+    if (IsSpecialPokemonId(arg1->unk_00.unk_00 - 1) != 0) {
         sp40 = GetMessageStringBank24(arg1->unk_00.unk_00 - 1);
         sp3C = GetMessageStringBank24(arg1->unk_00.unk_00);
     }
@@ -746,7 +746,7 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
     }
 }
 
-void func_82F0EE58(void) {
+void ScreenTransition_Render(void) {
     unk_D_82F21238* ptr = &gScreenTransition;
     UNUSED s32 pad;
     s32 sp24;
@@ -758,9 +758,9 @@ void func_82F0EE58(void) {
                 sp24 = 1;
                 Gfx_SetScissorRect(&gDisplayListHead, ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
                 if (ptr->unk_20 != 0) {
-                    func_82F0E97C(&gScreenTransition);
+                    DrawTransitionImage(&gScreenTransition);
                 }
-                func_82F0DD90(0xE0, 0x64, ptr->unk_16);
+                DrawTransitionOverlay(0xE0, 0x64, ptr->unk_16);
             }
         }
 
@@ -768,15 +768,15 @@ void func_82F0EE58(void) {
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         }
 
-        func_82F0E5C8(ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
+        DrawMenuPanelBorder(ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
 
         if (ptr->unk_30.unk_04 != -1) {
-            func_82F0ECAC(&ptr->unk_30, ptr->unk_24);
+            DrawTransitionText(&ptr->unk_30, ptr->unk_24);
         }
     }
 }
 
-void func_82F0EF68(void) {
+void MenuPanel_ResetState(void) {
     s32 i;
     unk_D_82F21160* var_v1;
 
@@ -797,7 +797,7 @@ void func_82F0EF68(void) {
     }
 }
 
-void func_82F0EFC4(s32 arg0, s16 arg1) {
+void MenuPanel_SetState(s32 arg0, s16 arg1) {
     static s16 D_82F13FD0[] = { 0x64, 0x2C8 };
     static s16 D_82F13FD4[] = { 0x50, 0x236, 0, 0, 0x3F80, 0 };
 
@@ -896,14 +896,14 @@ void func_82F0EFC4(s32 arg0, s16 arg1) {
     }
 }
 
-void func_82F0F260(unk_D_82F21160* arg0) {
+void MenuPanel_UpdateFade(unk_D_82F21160* arg0) {
     arg0->unk_06 -= 2;
     if (arg0->unk_06 < 0xBF) {
-        func_82F0EFC4(arg0 - gMenuPanels, 2);
+        MenuPanel_SetState(arg0 - gMenuPanels, 2);
     }
 }
 
-void func_82F0F2AC(unk_D_82F21160* arg0) {
+void MenuPanel_UpdatePulse(unk_D_82F21160* arg0) {
     arg0->unk_04 = D_82F21140.unk_02 + arg0->unk_02;
     arg0->unk_06 = (s16)ROUND_MAX(SINS(arg0->unk_12) * 3.0f) + 0xBE;
 
@@ -915,7 +915,7 @@ void func_82F0F2AC(unk_D_82F21160* arg0) {
     }
 }
 
-void func_82F0F374(unk_D_82F21160* arg0) {
+void MenuPanel_UpdateExpand(unk_D_82F21160* arg0) {
     f32 one = 1.0f;
     s16 var_v0;
     s16 tmp1;
@@ -947,17 +947,17 @@ void func_82F0F374(unk_D_82F21160* arg0) {
     arg0->unk_14 = ((var_v0 * 0.25f) / arg0->unk_10) + 0.75f;
 
     if (temp_a1 >= -0x13) {
-        func_82F0EFC4(temp_a3, 4);
+        MenuPanel_SetState(temp_a3, 4);
     }
 }
 
-void func_82F0F578(unk_D_82F21160* arg0) {
+void MenuPanel_UpdateBounce(unk_D_82F21160* arg0) {
     arg0->unk_04 = D_82F21140.unk_02 + arg0->unk_02;
     arg0->unk_06 = (s16)ROUND_MAX(2.0f * SINS(arg0->unk_12)) + 0xD2;
     arg0->unk_12 += 0x800;
 }
 
-void func_82F0F600(unk_D_82F21160* arg0) {
+void MenuPanel_SlideOut(unk_D_82F21160* arg0) {
     arg0->unk_04 = D_82F21140.unk_02 + arg0->unk_02;
     arg0->unk_12--;
     arg0->unk_06 += arg0->unk_12;
@@ -967,7 +967,7 @@ void func_82F0F600(unk_D_82F21160* arg0) {
     }
 }
 
-void func_82F0F654(unk_D_82F21160* arg0) {
+void MenuPanel_SlideIn(unk_D_82F21160* arg0) {
     s16 idx;
 
     arg0->unk_12++;
@@ -984,13 +984,13 @@ void func_82F0F654(unk_D_82F21160* arg0) {
     }
 }
 
-void func_82F0F714(unk_D_82F21160* arg0) {
+void MenuPanel_BounceLoop(unk_D_82F21160* arg0) {
     arg0->unk_04 = D_82F21140.unk_02 + arg0->unk_02;
     arg0->unk_06 = (s16)ROUND_MAX(2.0f * SINS(arg0->unk_12)) + 0xD2;
     arg0->unk_12 += 0x800;
 }
 
-void func_82F0F79C(unk_D_82F21160* arg0) {
+void MenuPanel_ShrinkOut(unk_D_82F21160* arg0) {
     if (arg0->unk_1C < 9.0f) {
         arg0->unk_04 = D_82F21140.unk_02 + arg0->unk_02;
         arg0->unk_06 = (s16)ROUND_MAX(2.0f * SINS(arg0->unk_12)) + 0xD2;
@@ -1010,7 +1010,7 @@ void func_82F0F79C(unk_D_82F21160* arg0) {
     }
 }
 
-void func_82F0F89C(void) {
+void MenuPanel_ProcessAll(void) {
     s32 var_s1;
     unk_D_82F21160* var_s0;
     s32 i;
@@ -1026,35 +1026,35 @@ void func_82F0F89C(void) {
                 break;
 
             case 1:
-                func_82F0F260(var_s0);
+                MenuPanel_UpdateFade(var_s0);
                 break;
 
             case 2:
-                func_82F0F2AC(var_s0);
+                MenuPanel_UpdatePulse(var_s0);
                 break;
 
             case 3:
-                func_82F0F374(var_s0);
+                MenuPanel_UpdateExpand(var_s0);
                 break;
 
             case 4:
-                func_82F0F578(var_s0);
+                MenuPanel_UpdateBounce(var_s0);
                 break;
 
             case 5:
-                func_82F0F600(var_s0);
+                MenuPanel_SlideOut(var_s0);
                 break;
 
             case 6:
-                func_82F0F654(var_s0);
+                MenuPanel_SlideIn(var_s0);
                 break;
 
             case 7:
-                func_82F0F714(var_s0);
+                MenuPanel_BounceLoop(var_s0);
                 break;
 
             case 8:
-                func_82F0F79C(var_s0);
+                MenuPanel_ShrinkOut(var_s0);
                 break;
         }
 
@@ -1071,7 +1071,7 @@ void func_82F0F89C(void) {
     }
 }
 
-void func_82F0F9E0(s16 arg0, s16 arg1, f32 arg2, s16 arg3) {
+void DrawMenuPanel(s16 arg0, s16 arg1, f32 arg2, s16 arg3) {
     static u8* D_82F13FE0[] = {
         D_300D868, D_300EA68, D_300FC68, D_3010E68, D_3012068, D_3013268, D_3013268, D_3013268,
         D_3013268, D_3013268, D_3013268, D_3013268, D_3012068, D_3010E68, D_300FC68, D_300EA68,
@@ -1111,7 +1111,7 @@ void func_82F0F9E0(s16 arg0, s16 arg1, f32 arg2, s16 arg3) {
     }
 }
 
-void func_82F0FCC0(void) {
+void MenuPanel_RenderAll(void) {
     s32 i;
     s32 var_s3 = 0;
     unk_D_82F21160* var_s0;
@@ -1130,7 +1130,7 @@ void func_82F0FCC0(void) {
             Gfx_SetScissorRect(&gDisplayListHead, var_s0->unk_08, var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E);
         }
 
-        func_82F0F9E0(var_s0->unk_04, var_s0->unk_06, var_s0->unk_14, var_s0->unk_18);
+        DrawMenuPanel(var_s0->unk_04, var_s0->unk_06, var_s0->unk_14, var_s0->unk_18);
     }
 
     if (var_s3 != 0) {
@@ -1138,7 +1138,7 @@ void func_82F0FCC0(void) {
     }
 }
 
-s32 func_82F0FDCC(void) {
+s32 MenuPanel_IsAnimating(void) {
     s32 var_v1 = 0;
 
     if (D_82F21140.unk_0E != 0) {
@@ -1147,7 +1147,7 @@ s32 func_82F0FDCC(void) {
     return var_v1;
 }
 
-void func_82F0FDEC(s16 arg0) {
+void MenuPanel_SetMainState(s16 arg0) {
     UNUSED s32 pad;
     unk_D_82F21140* ptr = &D_82F21140;
     unk_D_82F21160* ptr2;
@@ -1203,14 +1203,14 @@ void func_82F0FDEC(s16 arg0) {
             ptr2 = &gMenuPanels[0];
             for (i = 0; i < 2; i++, ptr2++) {
                 if (ptr2->unk_00 != 0) {
-                    func_82F0EFC4(i, 3);
+                    MenuPanel_SetState(i, 3);
                 }
             }
             break;
 
         case 11:
-            func_82F0EFC4(0, 8);
-            func_82F0EFC4(1, 8);
+            MenuPanel_SetState(0, 8);
+            MenuPanel_SetState(1, 8);
             break;
 
         case 12:
@@ -1231,25 +1231,25 @@ void func_82F0FDEC(s16 arg0) {
             break;
 
         case 19:
-            func_82F0EFC4(0, 1);
+            MenuPanel_SetState(0, 1);
             PlaySoundEffect(0x01200004);
             break;
 
         case 20:
-            func_82F0EFC4(1, 1);
+            MenuPanel_SetState(1, 1);
             PlaySoundEffect(0x01200004);
             break;
 
         case 21:
             if (1) {}
             if (1) {}
-            func_82F0EFC4(0, 5);
-            func_82F0EFC4(1, 5);
+            MenuPanel_SetState(0, 5);
+            MenuPanel_SetState(1, 5);
             break;
     }
 }
 
-void func_82F10034(unk_D_82F21140* arg0) {
+void MenuPanel_UpdateState(unk_D_82F21140* arg0) {
     if (func_82F07A74() != 0) {
         switch (func_82F07A74()) {
             case 1:
@@ -1280,16 +1280,16 @@ void func_82F10034(unk_D_82F21140* arg0) {
     }
 }
 
-void func_82F10110(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateIntro(unk_D_82F21140* arg0) {
     arg0->unk_18--;
     arg0->unk_14 = ((arg0->unk_18 * 0x60) / 30) + 0x20;
     arg0->unk_16 = ((arg0->unk_18 * -0x40) / 30) + 0x80;
     if (arg0->unk_18 <= 0) {
-        func_82F0FDEC(2);
+        MenuPanel_SetMainState(2);
     }
 }
 
-void func_82F101C8(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateSlide(unk_D_82F21140* arg0) {
     s16 var_v0;
 
     arg0->unk_18--;
@@ -1305,14 +1305,14 @@ void func_82F101C8(unk_D_82F21140* arg0) {
 
     if (arg0->unk_18 <= 0) {
         if (arg0->unk_00 == 4) {
-            func_82F0FDEC(5);
+            MenuPanel_SetMainState(5);
         } else {
-            func_82F0FDEC(3);
+            MenuPanel_SetMainState(3);
         }
     }
 }
 
-void func_82F10348(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateWait(unk_D_82F21140* arg0) {
     if (arg0->unk_18 > 0) {
         arg0->unk_18--;
     }
@@ -1339,20 +1339,20 @@ void func_82F10348(unk_D_82F21140* arg0) {
             break;
     }
 
-    if (func_82F13964(4) != 0) {
-        func_82F0FDEC(6);
+    if (MenuPanel_CheckState(4) != 0) {
+        MenuPanel_SetMainState(6);
     }
 }
 
-void func_82F10400(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateExit(unk_D_82F21140* arg0) {
     arg0->unk_18--;
     arg0->unk_02 = ((arg0->unk_18 * 0x1F8) / 10) - 0x15E;
     if (arg0->unk_18 <= 0) {
-        func_82F0FDEC(7);
+        MenuPanel_SetMainState(7);
     }
 }
 
-void func_82F10454(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateWait2(unk_D_82F21140* arg0) {
     if (arg0->unk_18 > 0) {
         arg0->unk_18--;
     }
@@ -1379,12 +1379,12 @@ void func_82F10454(unk_D_82F21140* arg0) {
             break;
     }
 
-    if (func_82F13964(5) != 0) {
-        func_82F0FDEC(9);
+    if (MenuPanel_CheckState(5) != 0) {
+        MenuPanel_SetMainState(9);
     }
 }
 
-void func_82F1050C(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateSlideOut(unk_D_82F21140* arg0) {
     arg0->unk_18--;
     arg0->unk_02 = ((arg0->unk_18 * -0x14A) / 10) - 0x14;
     arg0->unk_04 = ((arg0->unk_18 * -0x43) / 10) + 0x18;
@@ -1393,14 +1393,14 @@ void func_82F1050C(unk_D_82F21140* arg0) {
 
     if (arg0->unk_18 <= 0) {
         if (arg0->unk_00 == 8) {
-            func_82F0FDEC(5);
+            MenuPanel_SetMainState(5);
         } else {
-            func_82F0FDEC(0xA);
+            MenuPanel_SetMainState(0xA);
         }
     }
 }
 
-void func_82F10674(unk_D_82F21140* arg0) {
+void MenuPanel_HandleBarConfirm(unk_D_82F21140* arg0) {
     if (func_82F0C16C() == 2) {
         arg0->unk_0C &= ~0x10;
         arg0->unk_0C &= ~2;
@@ -1408,7 +1408,7 @@ void func_82F10674(unk_D_82F21140* arg0) {
         arg0->unk_0C |= 0x12;
     }
 
-    if (func_82F13964(7) != 0) {
+    if (MenuPanel_CheckState(7) != 0) {
         if (!(arg0->unk_0C & 0x40)) {
             arg0->unk_0C |= 0x40;
             MenuBar_SetState(0, 1);
@@ -1418,13 +1418,13 @@ void func_82F10674(unk_D_82F21140* arg0) {
     }
 }
 
-void func_82F10710(unk_D_82F21140* arg0) {
-    if (func_82F13964(7) != 0) {
-        func_82F0FDEC(5);
+void MenuPanel_WaitForBarConfirm(unk_D_82F21140* arg0) {
+    if (MenuPanel_CheckState(7) != 0) {
+        MenuPanel_SetMainState(5);
     }
 }
 
-void func_82F10744(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateFadeOutLeft(unk_D_82F21140* arg0) {
     s16 var_v1 = arg0->unk_18;
 
     arg0->unk_18--;
@@ -1435,18 +1435,18 @@ void func_82F10744(unk_D_82F21140* arg0) {
     arg0->unk_02 = ((var_v1 * -0x1E4) / 10) + 0x1D0;
     arg0->unk_04 = ((var_v1 * 0) / 10) + 0x18;
     if (arg0->unk_18 < -5) {
-        func_82F0FDEC(0xD);
+        MenuPanel_SetMainState(0xD);
         ScreenTransition_Start(0);
     }
 }
 
-void func_82F10818(unk_D_82F21140* arg0) {
-    if (func_82F13964(0xB) != 0) {
-        func_82F0FDEC(0xE);
+void MenuPanel_WaitForScreenTransitionLeft(unk_D_82F21140* arg0) {
+    if (MenuPanel_CheckState(0xB) != 0) {
+        MenuPanel_SetMainState(0xE);
     }
 }
 
-void func_82F1084C(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateFadeOutRight(unk_D_82F21140* arg0) {
     s16 var_v1 = arg0->unk_18;
 
     arg0->unk_18--;
@@ -1457,42 +1457,42 @@ void func_82F1084C(unk_D_82F21140* arg0) {
     arg0->unk_02 = ((var_v1 * 0x3A0) / 10) - 0x1D0;
     arg0->unk_04 = ((var_v1 * 0) / 10) + 0x18;
     if (arg0->unk_18 < -5) {
-        func_82F0FDEC(0xF);
+        MenuPanel_SetMainState(0xF);
         ScreenTransition_Start(1);
     }
 }
 
-void func_82F1091C(unk_D_82F21140* arg0) {
-    if (func_82F13964(0xB) != 0) {
-        func_82F0FDEC(0x10);
+void MenuPanel_WaitForScreenTransitionRight(unk_D_82F21140* arg0) {
+    if (MenuPanel_CheckState(0xB) != 0) {
+        MenuPanel_SetMainState(0x10);
     }
 }
 
-void func_82F10950(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateExitDown(unk_D_82F21140* arg0) {
     arg0->unk_18--;
     arg0->unk_02 = ((arg0->unk_18 * -0x1BC) / 10) - 0x14;
     arg0->unk_04 = ((arg0->unk_18 * 0) / 10) + 0x18;
     if (arg0->unk_18 <= 0) {
-        func_82F0FDEC(0x11);
-        func_82F0EFC4(0, 8);
-        func_82F0EFC4(1, 8);
+        MenuPanel_SetMainState(0x11);
+        MenuPanel_SetState(0, 8);
+        MenuPanel_SetState(1, 8);
     }
 }
 
-void func_82F10A24(unk_D_82F21140* arg0) {
+void MenuPanel_AnimateOutro(unk_D_82F21140* arg0) {
     s32 i;
 
     if (arg0->unk_00 == 5) {
         for (i = 0; i < 2; i++) {
             if (gMenuPanels[i].unk_00 == 4) {
-                func_82F0EFC4(i, 8);
+                MenuPanel_SetState(i, 8);
             }
         }
 
         if ((gMenuPanels->unk_00 != 0) || (gMenuPanels[1].unk_00 != 0)) {
             return;
         }
-    } else if ((arg0->unk_00 == 0x11) && (func_82F13964(9) == 0)) {
+    } else if ((arg0->unk_00 == 0x11) && (MenuPanel_CheckState(9) == 0)) {
         return;
     }
 
@@ -1505,11 +1505,11 @@ void func_82F10A24(unk_D_82F21140* arg0) {
     arg0->unk_14 = ((arg0->unk_18 * -0x60) / 30) + 0x80;
     arg0->unk_16 = ((arg0->unk_18 << 6) / 30) + 0x40;
     if (arg0->unk_18 <= 0) {
-        func_82F0FDEC(0);
+        MenuPanel_SetMainState(0);
     }
 }
 
-void func_82F10BB4(s16 arg0, s16 arg1, f32 arg2) {
+void MenuPanel_DrawMainBG(s16 arg0, s16 arg1, f32 arg2) {
     s16 sp58;
     s16 temp_ft1;
     s16 temp_ft2;
@@ -1532,7 +1532,7 @@ void func_82F10BB4(s16 arg0, s16 arg1, f32 arg2) {
     }
 }
 
-void func_82F10ED0(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void MenuPanel_DrawLargeButton(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s16 sp6E;
     s16 sp6C;
     s16 sp6A;
@@ -1556,7 +1556,7 @@ void func_82F10ED0(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x5E0, 0, temp_fv1_4, sp5C, 0);
 }
 
-void func_82F11264(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void MenuPanel_DrawMediumButton(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s16 sp6E;
     s16 sp6C;
     s16 sp6A;
@@ -1580,7 +1580,7 @@ void func_82F11264(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x2E0, 0, temp_fv1_4, sp5C, 0);
 }
 
-void func_82F115F8(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void MenuPanel_DrawSmallButton(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s16 sp6E;
     s16 sp6C;
     s16 sp6A;
@@ -1604,7 +1604,7 @@ void func_82F115F8(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x1E0, 0, temp_fv1_4, sp5C, 0);
 }
 
-void func_82F1198C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void MenuPanel_DrawTallBar(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s16 spB6;
     s16 i;
     s32 sp60;
@@ -1647,8 +1647,8 @@ void func_82F1198C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     }
 }
 
-void func_82F11D68(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    static Gfx D_82F14020[] = {
+void MenuPanel_DrawTallBarHighlight(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
+    static Gfx gMenuPanelTallBarHighlightDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -1684,7 +1684,7 @@ void func_82F11D68(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s
     var_fp = D_300B768;
     i = 0x83;
 
-    gSPDisplayList(gDisplayListHead++, D_82F14020);
+    gSPDisplayList(gDisplayListHead++, gMenuPanelTallBarHighlightDL);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 100, 100, 255, arg6);
 
     for (; i > 0;) {
@@ -1713,7 +1713,7 @@ void func_82F11D68(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s
     }
 }
 
-void func_82F1228C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void MenuPanel_DrawSquareBG(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s16 sp76;
     s16 sp74;
     s16 sp72;
@@ -1738,12 +1738,12 @@ void func_82F1228C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     Gfx_DrawScisTextureRect(arg0 + sp70, arg1 + sp6E, sp76, sp74, 0x7E0, 0, sp5C, sp60, 0);
 }
 
-void func_82F12614(void) {
-    static f32 D_82F14050 = 0.0f;
-    static f32 D_82F14054 = 0.0f;
-    static f32 D_82F14058 = 0.0f;
-    static f32 D_82F1405C = 0.0f;
-    static Gfx D_82F14060[] = {
+void MenuPanel_DrawAnimatedBG(void) {
+    static f32 gMenuPanelBGScrollX = 0.0f;
+    static f32 gMenuPanelBGScrollY = 0.0f;
+    static f32 gMenuPanelBGScrollX2 = 0.0f;
+    static f32 gMenuPanelBGScrollY2 = 0.0f;
+    static Gfx gMenuPanelBGDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
@@ -1761,39 +1761,39 @@ void func_82F12614(void) {
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, gMenuFramebuffer);
 
-    gSPDisplayList(gDisplayListHead++, D_82F14060);
+    gSPDisplayList(gDisplayListHead++, gMenuPanelBGDL);
 
     gDPLoadMultiBlock_4b(gDisplayListHead++, D_3009BC0, 0x0100, 1, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 1);
 
-    temp_fa8 = D_82F14058 + 31.0f;
-    temp_faC = D_82F1405C + 31.0f;
+    temp_fa8 = gMenuPanelBGScrollX2 + 31.0f;
+    temp_faC = gMenuPanelBGScrollY2 + 31.0f;
     if (1) {}
-    gDPSetTileSize(gDisplayListHead++, 1, D_82F14058 * 4.0f, D_82F1405C * 4.0f, temp_fa8 * 4.0f, temp_faC * 4.0f);
+    gDPSetTileSize(gDisplayListHead++, 1, gMenuPanelBGScrollX2 * 4.0f, gMenuPanelBGScrollY2 * 4.0f, temp_fa8 * 4.0f, temp_faC * 4.0f);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30099B8, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 2);
 
-    temp_fa0 = D_82F14050 + 31.0f;
-    temp_fa4 = D_82F14054 + 31.0f;
-    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, D_82F14050 * 4.0f, D_82F14054 * 4.0f, temp_fa0 * 4.0f,
+    temp_fa0 = gMenuPanelBGScrollX + 31.0f;
+    temp_fa4 = gMenuPanelBGScrollY + 31.0f;
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, gMenuPanelBGScrollX * 4.0f, gMenuPanelBGScrollY * 4.0f, temp_fa0 * 4.0f,
                    temp_fa4 * 4.0f);
 
     Gfx_DrawTextureRect(0, 0, 0x20, 0x20, 0, 0, 0x400, 0x400, 0x100000);
 
-    D_82F14050 += 0.75f;
-    if (D_82F14050 >= 32.0f) {
-        D_82F14050 -= 32.0f;
+    gMenuPanelBGScrollX += 0.75f;
+    if (gMenuPanelBGScrollX >= 32.0f) {
+        gMenuPanelBGScrollX -= 32.0f;
     }
 
-    D_82F14054 += 5.75f;
-    if (D_82F14054 >= 32.0f) {
-        D_82F14054 -= 32.0f;
+    gMenuPanelBGScrollY += 5.75f;
+    if (gMenuPanelBGScrollY >= 32.0f) {
+        gMenuPanelBGScrollY -= 32.0f;
     }
 
-    D_82F1405C -= 2.5f;
-    if (D_82F1405C < 0.0f) {
-        D_82F1405C += 32.0f;
+    gMenuPanelBGScrollY2 -= 2.5f;
+    if (gMenuPanelBGScrollY2 < 0.0f) {
+        gMenuPanelBGScrollY2 += 32.0f;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -1801,8 +1801,8 @@ void func_82F12614(void) {
     Stage_BeginDisplayList();
 }
 
-void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    static Gfx D_82F14098[] = {
+void MenuPanel_DrawSquareBGWithAlpha(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+    static Gfx gMenuPanelSquareBGAlphaDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -1820,7 +1820,7 @@ void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s32 temp_fa0_3;
     s32 sp80;
 
-    func_82F12614();
+    MenuPanel_DrawAnimatedBG();
 
     sp96 = ROUND_MAX(64.0f * arg2);
     sp94 = ROUND_MAX(64.0f * arg2);
@@ -1830,7 +1830,7 @@ void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     sp80 = ROUND_MAX(1024.0f / arg2);
     temp_fa0_3 = ROUND_MAX(-1024.0f / arg2);
 
-    gSPDisplayList(gDisplayListHead++, D_82F14098);
+    gSPDisplayList(gDisplayListHead++, gMenuPanelSquareBGAlphaDL);
     gDPLoadMultiBlock(gDisplayListHead++, gMenuFramebuffer->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30081A8, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -1840,85 +1840,85 @@ void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     Gfx_DrawScisTextureRect(arg0 + sp90, arg1 + sp8E, sp96, sp94, 0x7E0, 0, temp_fa0_3, sp80, 0x100000);
 }
 
-void func_82F13278(void) {
-    func_82F0FDEC(0);
-    func_82F0EF68();
-    func_82F0C630();
-    func_82F0D084();
+void MenuPanel_Init(void) {
+    MenuPanel_SetMainState(0);
+    MenuPanel_ResetState();
+    MenuBar_ResetState();
+    ScreenTransition_Reset();
     gMenuFramebuffer = FramebufferImage_Allocate(0, 2, 0x20, 0x20, 1);
 }
 
-void func_82F132D0(void) {
+void MenuPanel_Update(void) {
     switch (D_82F21140.unk_00) {
         case 0:
-            func_82F10034(&D_82F21140);
+            MenuPanel_UpdateState(&D_82F21140);
             break;
 
         case 1:
-            func_82F10110(&D_82F21140);
+            MenuPanel_AnimateIntro(&D_82F21140);
             break;
 
         case 2:
         case 4:
-            func_82F101C8(&D_82F21140);
+            MenuPanel_AnimateSlide(&D_82F21140);
             break;
 
         case 3:
-            func_82F10348(&D_82F21140);
+            MenuPanel_AnimateWait(&D_82F21140);
             break;
 
         case 6:
-            func_82F10400(&D_82F21140);
+            MenuPanel_AnimateExit(&D_82F21140);
             break;
 
         case 7:
-            func_82F10454(&D_82F21140);
+            MenuPanel_AnimateWait2(&D_82F21140);
             break;
 
         case 8:
         case 9:
-            func_82F1050C(&D_82F21140);
+            MenuPanel_AnimateSlideOut(&D_82F21140);
             break;
 
         case 10:
-            func_82F10674(&D_82F21140);
+            MenuPanel_HandleBarConfirm(&D_82F21140);
             break;
 
         case 11:
-            func_82F10710(&D_82F21140);
+            MenuPanel_WaitForBarConfirm(&D_82F21140);
             break;
 
         case 12:
-            func_82F10744(&D_82F21140);
+            MenuPanel_AnimateFadeOutLeft(&D_82F21140);
             break;
 
         case 13:
-            func_82F10818(&D_82F21140);
+            MenuPanel_WaitForScreenTransitionLeft(&D_82F21140);
             break;
 
         case 14:
-            func_82F1084C(&D_82F21140);
+            MenuPanel_AnimateFadeOutRight(&D_82F21140);
             break;
 
         case 15:
-            func_82F1091C(&D_82F21140);
+            MenuPanel_WaitForScreenTransitionRight(&D_82F21140);
             break;
 
         case 16:
-            func_82F10950(&D_82F21140);
+            MenuPanel_AnimateExitDown(&D_82F21140);
             break;
 
         case 5:
         case 17:
-            func_82F10A24(&D_82F21140);
+            MenuPanel_AnimateOutro(&D_82F21140);
             break;
     }
-    func_82F0F89C();
+    MenuPanel_ProcessAll();
     MenuBar_ProcessAll();
     ScreenTransition_Process();
 }
 
-void func_82F13414(void) {
+void MenuPanel_Render(void) {
     unk_D_82F21140* ptr = &D_82F21140;
     u8 sp83;
     s32 var_v0_2;
@@ -1932,7 +1932,7 @@ void func_82F13414(void) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, ptr->unk_14, ptr->unk_14, ptr->unk_14, 255);
 
-    func_82F10BB4(ptr->unk_02, ptr->unk_04, ptr->unk_10);
+    MenuPanel_DrawMainBG(ptr->unk_02, ptr->unk_04, ptr->unk_10);
     tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = (ptr->unk_16 * tmp1) / 63u;
     if (gFragment41FrameCounter & 0x40) {
@@ -1954,13 +1954,13 @@ void func_82F13414(void) {
 
     if (ptr->unk_0C & 0x10) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp83);
-        func_82F10ED0(ptr->unk_02, ptr->unk_04, ptr->unk_10, ptr->unk_06, ptr->unk_08, ptr->unk_0A);
+        MenuPanel_DrawLargeButton(ptr->unk_02, ptr->unk_04, ptr->unk_10, ptr->unk_06, ptr->unk_08, ptr->unk_0A);
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-    func_82F0FCC0();
+    MenuPanel_RenderAll();
     MenuBar_Render();
 
     tmp1 = gFragment41FrameCounter & 0x3F;
@@ -1982,11 +1982,11 @@ void func_82F13414(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp83);
 
     if (ptr->unk_0C & 2) {
-        func_82F11264(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0xB4, 0xFA, 0x73);
+        MenuPanel_DrawMediumButton(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0xB4, 0xFA, 0x73);
     }
 
     if (ptr->unk_0C & 4) {
-        func_82F115F8(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0xD4, 0xE4, 2);
+        MenuPanel_DrawSmallButton(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0xD4, 0xE4, 2);
     }
 
     if (ptr->unk_0C & 4) {
@@ -1995,29 +1995,29 @@ void func_82F13414(void) {
         } else {
             var_v0_2 = 0x32;
         }
-        func_82F11D68(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x81, 0xE5, 0, var_v0_2);
+        MenuPanel_DrawTallBarHighlight(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x81, 0xE5, 0, var_v0_2);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp83);
 
         if (!(ptr->unk_0C & 0x40)) {
-            func_82F1198C(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x81, 0xE5, 0);
+            MenuPanel_DrawTallBar(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x81, 0xE5, 0);
         }
     }
 
     if (ptr->unk_0C & 8) {
         if (ptr->unk_0C & 0x20) {
-            func_82F12DE4(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x23, 0x164, 0x68);
+            MenuPanel_DrawSquareBGWithAlpha(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x23, 0x164, 0x68);
         } else {
-            func_82F1228C(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x23, 0x164, 0x68);
+            MenuPanel_DrawSquareBG(ptr->unk_02, ptr->unk_04, ptr->unk_10, 0x23, 0x164, 0x68);
         }
     }
 
-    func_82F0EE58();
+    ScreenTransition_Render();
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-s32 func_82F13964(s16 arg0) {
+s32 MenuPanel_CheckState(s16 arg0) {
     unk_D_82F21160* ptr = &gMenuPanels[0];
     s32 var_v1 = 0;
 
@@ -2093,10 +2093,10 @@ s32 func_82F13964(s16 arg0) {
     return var_v1;
 }
 
-void func_82F13B4C(s16 arg0) {
+void MenuPanel_SetStateVar(s16 arg0) {
     D_82F21140.unk_0E = arg0;
 }
 
-s16 func_82F13B64(void) {
+s16 MenuPanel_GetState(void) {
     return D_82F21140.unk_00;
 }

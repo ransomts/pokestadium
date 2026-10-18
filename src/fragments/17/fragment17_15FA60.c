@@ -28,12 +28,12 @@ typedef struct unk_D_86B0E5D8 {
     /* 0x0A */ s16 unk_0A;
 } unk_D_86B0E5D8; // size = 0xC
 
-extern u32 D_86B0BD60[];
+extern u32 gFragment17MaskTable[];
 extern unk_D_86B0C4C8* gFragment17ObjectDefs[];
 extern unk_D_86B0C160 gFragment17AnimData[];
 extern unk_D_86B0C264 gFragment17PresetData[];
-extern u32 D_86B0CF9C[];
-extern u32 D_86B0DA9C[];
+extern u32 gFragment17StageLayout0[];
+extern u32 gFragment17StageLayout1[];
 
 s32 Callback_UpdateColorAndPos(s32, GraphNode*);
 s32 Callback_SetScaleLarge(s32, GraphNode*);
@@ -48,9 +48,9 @@ static u32 gFragment17GeoLayoutCommands[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  Callback_SetObjectState, 0x00000000,    0x05000000,
     0x0F000002, 0x05000000, 0x06000000, 0x0F000002, 0x05000000,  0x06000000,    0x0F000002,    0x05000000,
     0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleLarge,
-    0x00000000, 0x05000000, 0x00000000, D_86B0CF9C, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
+    0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout0, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
     0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleNormal,
-    0x00000000, 0x05000000, 0x00000000, D_86B0DA9C, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
+    0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout1, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
     0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    Callback_UpdateColorAndPos, 0x00000000,
     0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,    0x06000000,    0x06000000,
     0x06000000, 0x01000000,
@@ -265,7 +265,7 @@ void func_86B00794(void) {
 
 void func_86B007EC(void) {
     if (gFragment17State->unk_04.unk_44 == 2) {
-        func_86B01D8C(&D_86B0BD60, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
+        func_86B01D8C(&gFragment17MaskTable, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
     }
 }
 

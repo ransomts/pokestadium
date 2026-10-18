@@ -804,7 +804,7 @@ void DrawBackground(void) {
     Gfx_DrawTextureRect(gBackgroundStartX, 0, var_ra - gBackgroundStartX, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
-    gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+    gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
     gDPFillRectangle(gDisplayListHead++, 0, 0, gBackgroundStartX - 1, 479);
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);

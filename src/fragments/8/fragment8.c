@@ -30,7 +30,7 @@ typedef struct unk_D_86203CEC {
     /* 0x6 */ s16 unk_06;
 } unk_D_86203CEC; // size = 0x8
 
-static u32 D_862038C0[] = {
+static u32 gRaceTextTable[] = {
     0xFFFFFFD8, 0xFFFFFF65, 0x00000056, 0x00000097, 0xA4CFA4B7, 0xA4ECA5B3, 0xA5E9A5C3, 0xA5BF0000, 0xA1A1A1A1,
     0xA1A1A1A1, 0xA4F2A4EC, 0xA4F3A4C0, 0xA4B7A4C6, 0xA1A1A4CF, 0xA4B7A4ED, 0xA4A6A1A3, 0x00000000, 0xA5CFA1BC,
     0xA5C9A5EB, 0xA4CFA1A1, 0xA1A1A1A1, 0xA1A1A1A1, 0xA1A1A1A1, 0xA4CE20A4, 0xA6A4A8A4, 0xF2A1A1A4, 0xAAA4B7A4,
@@ -61,12 +61,12 @@ static f32 gLaneBaseY[4][10] = {
     { 60.0f, 61.0f, 62.0f, 63.0f, 64.0f, 65.0f, 66.0f, 67.0f, 68.0f, 69.0f },
 };
 
-static u32 D_86203C40[] = {
+static u32 gRacePanelParams[] = {
     0x001C000E, 0xFFFFFFFF, 0x0000FFFF, 0x0062000E, 0xFFFFFFFF, 0x00FF00FF, 0x00A8000E,
     0xFFFFFFFF, 0xFF0000FF, 0x00EE000E, 0xFFFFFFFF, 0xFFFF00FF, 0x00000000,
 };
 
-static unk_func_87801684 D_86203C74[] = {
+static unk_func_87801684 gRacePanelAnim1[] = {
     {
         0x303ED80,
         0x02,
@@ -89,7 +89,7 @@ static unk_func_87801684 D_86203C74[] = {
     },
 };
 
-static unk_func_87801684 D_86203C9C[] = {
+static unk_func_87801684 gRacePanelAnim2[] = {
     {
         0x3040580,
         0x12,
@@ -106,18 +106,18 @@ static unk_func_87801684 D_86203C9C[] = {
     { 0x0, 0x0 },
 };
 
-static unk_func_87801684 D_86203CC4[] = {
+static unk_func_87801684 gRacePanelAnim3[] = {
     { 0x03042E00, 0x0E }, { 0x03044360, 0x02 }, { 0x03044A80, 0x06 }, { 0x03044360, 0x02 }, { 0, 0 },
 };
 
-static unk_D_86203CEC D_86203CEC[] = {
+static unk_D_86203CEC gRaceAIDifficultyTable[] = {
     { D_87A01190, 0x0019, 0x000F },
     { gTextTable_StageSubtitles, 0x0019, 0x0014 },
     { D_87A01180, 0x001E, 0x0028 },
     { D_87A011A4, 0x0028, 0x005A },
 };
 
-static u32 D_86203D0C[] = {
+static u32 gRaceStageScript[] = {
     0x0C00FFFF,       (u32)&D_5000000, 0x0B00001E,      0x00000000,      0x014000F0,      0x0000000F,
     0x00000000,       0x00000000,      (u32)&D_5000000, 0x0D000000,      (u32)&D_5000000, 0x14000000,
     0x002B0012,       0xFFFFFF32,      0x16FFFFFF,      0x0F000003,      (u32)&D_5000000, 0x0A000000,
@@ -128,42 +128,42 @@ static u32 D_86203D0C[] = {
 };
 
 // Unused rodata strings
-const char D_86203DC0[] = " %dP";
-const char D_86203DC8[] = "%s";
+const char gRaceNumPlayersFmt[] = " %dP";
+const char gRaceStringFmt[] = "%s";
 
-static unk_D_86002F30* D_86203E30;
-static unk_D_86002F30* D_86203E34;
-static unk_D_86002F34* D_86203E38;
-static CameraStruct* D_86203E3C;
-static s16 D_86203E40;
-static s16 D_86203E42;
-static s16 D_86203E44;
-static u16 D_86203E46;
-static s32 D_86203E48;
-static s16 D_86203E4C;
-static unk_D_86203E50 D_86203E50[4];
-static unk_D_86203E50* D_86204590;
-static Fragment2_1GraphNode* D_86204594;
-static Fragment2_1GraphNode D_86204598;
-static s16 D_86204700;
-static u32 D_86204704;
-static s16 D_86204708;
-static s16 D_8620470A;
-static s16 D_8620470C;
-static s16 D_8620470E;
-static f32 D_86204710;
-static TextObject* D_86204714;
-static s16 D_86204718;
-static s16 D_8620471A;
-static s16 D_8620471C;
-static unk_D_86204720 D_86204720[4][10];
-static unk_D_86204720* D_86208280;
-static s32 D_86208288[4];
-static s32 D_86208298;
-static s16 D_8620829C;
-u32 D_862082A0[4];
+static unk_D_86002F30* gRaceStageData;
+static unk_D_86002F30* gRaceStageAssets;
+static unk_D_86002F34* gRaceGraphRoot;
+static CameraStruct* gRaceCamera;
+static s16 gRaceCameraDist;
+static s16 gRaceCameraYaw;
+static s16 gRaceCameraPitch;
+static u16 gRaceFrameCounter;
+static s32 gRacePhase;
+static s16 gRaceFinishOrder;
+static unk_D_86203E50 gRacePlayerStates[4];
+static unk_D_86203E50* gRacePlayerState;
+static Fragment2_1GraphNode* gRacePlayerGraphNode;
+static Fragment2_1GraphNode gRacePlayerGraphNodeTemp;
+static s16 gRaceResultScreenActive;
+static u32 gRaceFinishFrame;
+static s16 gRaceWinnersCount;
+static s16 gRaceMultipleWinners;
+static s16 gRaceUnusedFlag1;
+static s16 gRaceUnusedFlag2;
+static f32 gRaceBestFinishTime;
+static TextObject* gRaceTextObject;
+static s16 gRaceIsResultScreen;
+static s16 gRaceStageReady;
+static s16 gRaceLaneIndex;
+static unk_D_86204720 gRaceObstacles[4][10];
+static unk_D_86204720* gRaceObstaclePtr;
+static s32 gRaceFinishOrderTable[4];
+static s32 gRaceFinishCount;
+static s16 gRaceCameraInitFlag;
+u32 gRacePlayerScreenY[4];
 
-void func_86200020(unk_D_86203E50* arg0) {
+void SetAIPlayerState(unk_D_86203E50* arg0) {
     arg0->unk_002 = gMenuState + 1;
 }
 
@@ -174,14 +174,14 @@ void RenderPlayerPanels(void) {
     s32 i;
     UNUSED s32 pad2[1];
 
-    Camera_CopyMatrixF(&spDC, &D_86203E3C->unk_60.mtxf);
+    Camera_CopyMatrixF(&spDC, &gRaceCamera->unk_60.mtxf);
     guMtxF2L(spDC.mf, &sp98);
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
-        if (D_86204590->unk_19E == 2) {
-            switch (D_86204590->unk_1B2) {
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
+        if (gRacePlayerState->unk_19E == 2) {
+            switch (gRacePlayerState->unk_1B2) {
                 case 0:
                     gDisplayListHead = Gfx_DrawTexturedQuad(gDisplayListHead, &sp98, -(i - 1.5f) * 40.0f, 5.0f, 30.0f, 0.25f,
                                                      &D_4000008, 0x20, 0x20);
@@ -206,7 +206,7 @@ void RenderPlayerPanels(void) {
     }
 }
 
-void func_862002EC(void) {
+void Race_Stub(void) {
 }
 
 void ProcessPlayerInputs(void) {
@@ -222,26 +222,26 @@ void ProcessPlayerInputs(void) {
     sp60[2] = gPlayer3Controller->buttonPressed;
     sp60[3] = gPlayer4Controller->buttonPressed;
 
-    if (D_86203E48 == 2) {
+    if (gRacePhase == 2) {
         for (i = 0; i < 4; i++) {
-            D_86204590 = &D_86203E50[i];
+            gRacePlayerState = &gRacePlayerStates[i];
 
-            if (D_86204590->unk_002 == 0) {
-                D_86204590->unk_170 = sp60[i];
+            if (gRacePlayerState->unk_002 == 0) {
+                gRacePlayerState->unk_170 = sp60[i];
             } else {
-                D_86204590->unk_170 = 0;
-                if (D_86204590->unk_002 > 0) {
-                    temp_s0 = &D_86203CEC[D_86204590->unk_002 - 1];
+                gRacePlayerState->unk_170 = 0;
+                if (gRacePlayerState->unk_002 > 0) {
+                    temp_s0 = &gRaceAIDifficultyTable[gRacePlayerState->unk_002 - 1];
 
                     if (GetRandomMod(0x64) < temp_s0->unk_04) {
-                        D_86204590->unk_170 |= 0x8000;
+                        gRacePlayerState->unk_170 |= 0x8000;
                     }
 
                     if (GetRandomMod(0x64) < temp_s0->unk_06) {
-                        temp_fv0 = D_86204590->unk_1A8;
-                        temp_fv1 = D_86204590->unk_1A4;
+                        temp_fv0 = gRacePlayerState->unk_1A8;
+                        temp_fv1 = gRacePlayerState->unk_1A4;
                         if (((temp_fv0 + 10.0f) < temp_fv1) && (temp_fv1 < (temp_fv0 + 20.0f))) {
-                            D_86204590->unk_170 |= 0x800;
+                            gRacePlayerState->unk_170 |= 0x800;
                         }
                     }
                 }
@@ -252,14 +252,14 @@ void ProcessPlayerInputs(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        D_86203E50[i].unk_170 = sp60[i];
+        gRacePlayerStates[i].unk_170 = sp60[i];
     }
 }
 
 void PollInputsWhenStageReady(void) {
-    D_8620471A = 0;
+    gRaceStageReady = 0;
     if (Stage_GetFadeState() == 0) {
-        D_8620471A = 1;
+        gRaceStageReady = 1;
         Cont_StartReadInputs();
         Cont_ReadInputs();
         MenuInput_Init();
@@ -268,114 +268,114 @@ void PollInputsWhenStageReady(void) {
 }
 
 void InitCameraParameters(void) {
-    D_8620829C = 0;
-    D_86203E3C = D_86203E38->unk_00.unk_0C;
+    gRaceCameraInitFlag = 0;
+    gRaceCamera = gRaceGraphRoot->unk_00.unk_0C;
 
-    SetProjectionInfo(D_86203E3C);
-    D_86203E40 = 0x1300;
-    D_86203E42 = -0x6700;
-    D_86203E44 = 0x14A;
+    SetProjectionInfo(gRaceCamera);
+    gRaceCameraDist = 0x1300;
+    gRaceCameraYaw = -0x6700;
+    gRaceCameraPitch = 0x14A;
 
-    D_86203E3C->unk_24.near = 50.0f;
-    D_86203E3C->unk_24.far = 6400.0f;
-    D_86203E3C->unk_24.fovy = 30.0f;
+    gRaceCamera->unk_24.near = 50.0f;
+    gRaceCamera->unk_24.far = 6400.0f;
+    gRaceCamera->unk_24.fovy = 30.0f;
 
-    D_86203E3C->unk_60.at.x = 0.0f;
-    D_86203E3C->unk_60.at.y = 0.0f;
-    D_86203E3C->unk_60.at.z = 5.0f;
+    gRaceCamera->unk_60.at.x = 0.0f;
+    gRaceCamera->unk_60.at.y = 0.0f;
+    gRaceCamera->unk_60.at.z = 5.0f;
 
-    Camera_SetViewParameters(&D_86203E3C->unk_60.at, &D_86203E3C->unk_60.eye, D_86203E44, D_86203E40, D_86203E42);
+    Camera_SetViewParameters(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraPitch, gRaceCameraDist, gRaceCameraYaw);
 }
 
 void UpdateCameraForPhase(void) {
-    switch (D_86203E48) {
+    switch (gRacePhase) {
         case 0:
-            D_86203E40 = 0xD00;
-            D_86203E42 = -0x1D00;
-            D_86203E44 = 0x1F4;
+            gRaceCameraDist = 0xD00;
+            gRaceCameraYaw = -0x1D00;
+            gRaceCameraPitch = 0x1F4;
             break;
 
         case 1:
-            if (D_86203E40 > 0x1300) {
-                D_86203E40 -= 0x20;
+            if (gRaceCameraDist > 0x1300) {
+                gRaceCameraDist -= 0x20;
             }
 
-            if (D_86203E42 > 0x9900u) {
-                D_86203E42 -= 0x100;
-                if (D_86203E42 < 0x9900u) {
-                    D_86203E42 = -0x6700;
+            if (gRaceCameraYaw > 0x9900u) {
+                gRaceCameraYaw -= 0x100;
+                if (gRaceCameraYaw < 0x9900u) {
+                    gRaceCameraYaw = -0x6700;
                 }
             }
 
-            if (D_86203E44 > 0x14A) {
-                D_86203E44 -= 2;
+            if (gRaceCameraPitch > 0x14A) {
+                gRaceCameraPitch -= 2;
             }
             break;
 
         case 2:
             if (D_8780FC94 == 0) {
-                if (D_86203E44 > 0x14A) {
-                    D_86203E44 -= 2;
+                if (gRaceCameraPitch > 0x14A) {
+                    gRaceCameraPitch -= 2;
                 }
 
-                D_86203E42 += 0x20;
-                if ((u16)D_86203E42 < 0xC000) {
-                    D_86203E40 += 0xA;
+                gRaceCameraYaw += 0x20;
+                if ((u16)gRaceCameraYaw < 0xC000) {
+                    gRaceCameraDist += 0xA;
 
-                    if (D_86203E40 > 0x1500) {
-                        D_86203E40 = 0x1500;
+                    if (gRaceCameraDist > 0x1500) {
+                        gRaceCameraDist = 0x1500;
                     }
-                } else if ((D_86203E40 & 0xFFFF) > 0xA00) {
-                    D_86203E40 -= 0xA;
+                } else if ((gRaceCameraDist & 0xFFFF) > 0xA00) {
+                    gRaceCameraDist -= 0xA;
                 }
             }
             break;
 
         case 3:
         case 4:
-            if (D_86203E44 > 0xF0) {
-                D_86203E44 -= 1;
-                if (D_86203E44 < 0xF0) {
-                    D_86203E44 = 0xF0;
+            if (gRaceCameraPitch > 0xF0) {
+                gRaceCameraPitch -= 1;
+                if (gRaceCameraPitch < 0xF0) {
+                    gRaceCameraPitch = 0xF0;
                 }
             }
 
-            if ((D_86203E40 & 0xFFFF) > 0x2FC) {
-                D_86203E40 -= 0x1E;
-                if ((D_86203E40 & 0xFFFF) < 0x2FC) {
-                    D_86203E40 = 0x2FC;
+            if ((gRaceCameraDist & 0xFFFF) > 0x2FC) {
+                gRaceCameraDist -= 0x1E;
+                if ((gRaceCameraDist & 0xFFFF) < 0x2FC) {
+                    gRaceCameraDist = 0x2FC;
                 }
             }
-            D_86203E42 += 0x40;
+            gRaceCameraYaw += 0x40;
             break;
 
         case 5:
-            D_86203E42 += 0x60;
+            gRaceCameraYaw += 0x60;
             break;
 
         default:
             break;
     }
 
-    if (D_86203E40 > 0x3F00) {
-        D_86203E40 = 0x3F00;
+    if (gRaceCameraDist > 0x3F00) {
+        gRaceCameraDist = 0x3F00;
     }
 
-    if (D_86203E40 < 0) {
-        D_86203E40 = 0;
+    if (gRaceCameraDist < 0) {
+        gRaceCameraDist = 0;
     }
 
-    if (D_86203E44 < 0x32) {
-        D_86203E44 = 0x32;
+    if (gRaceCameraPitch < 0x32) {
+        gRaceCameraPitch = 0x32;
     }
 
-    Camera_SetViewParameters(&D_86203E3C->unk_60.at, &D_86203E3C->unk_60.eye, D_86203E44, D_86203E40, D_86203E42);
+    Camera_SetViewParameters(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraPitch, gRaceCameraDist, gRaceCameraYaw);
 }
 
 void func_86200938(void) {
 }
 
-void func_86200940(s32 arg0) {
+void Race_DrawPanelAndText(s32 arg0) {
     UNUSED s32 pad;
     UNUSED u8 sp50[3] = { 0, 0, 30 };
     UNUSED u8 sp4C[3] = { 0, 0, 150 };
@@ -409,7 +409,7 @@ void func_86200940(s32 arg0) {
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(D_86204714, GetMessageString(NULL, 0, gItemNamesBank, 0x23)) / 2), 0x20,
+            Text_Print(0xA0 - (GetTextWidth(gRaceTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x23)) / 2), 0x20,
                           GetMessageString(NULL, 0, gItemNamesBank, 0x23));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -457,20 +457,20 @@ void func_86200940(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == 0) {
-        func_87801C8C(0x56, 0xAC, D_86203CC4);
-        func_87801684(0xCC, 0xB0, D_86203C74);
-        func_87801824(0x74, 0xC6, D_86203C9C);
+        func_87801C8C(0x56, 0xAC, gRacePanelAnim3);
+        func_87801684(0xCC, 0xB0, gRacePanelAnim1);
+        func_87801824(0x74, 0xC6, gRacePanelAnim2);
         func_87801F48(2, 0x19, 0xA6);
-    } else if (D_86204718 == 1) {
+    } else if (gRaceIsResultScreen == 1) {
         Stage_SetBorderFadeParams(0x1E, 0x17);
     }
 }
 
-void func_86200EC4(s32 arg0) {
+void Race_RenderFrame(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_862082A0[i] = D_86203E50[i].unk_190 * 36.0f;
+        gRacePlayerScreenY[i] = gRacePlayerStates[i].unk_190 * 36.0f;
     }
 
     Stage_BeginDisplayList();
@@ -481,22 +481,22 @@ void func_86200EC4(s32 arg0) {
     }
 
     Fragment2_1_Update();
-    Graph_SetTextureState(D_86203E38);
+    Graph_SetTextureState(gRaceGraphRoot);
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
     RenderPlayerPanels();
 
     if (D_8780FC98 == 0) {
-        func_86200940(arg0);
+        Race_DrawPanelAndText(arg0);
     }
 
-    if (D_86204718 == 0) {
+    if (gRaceIsResultScreen == 0) {
         ResultScreen_UpdateAndRender();
     } else {
         UpdateScrollingMessage();
     }
 
     Stage_Advance();
-    D_86203E46++;
+    gRaceFrameCounter++;
 }
 
 s32 RunRaceStartSequence(void) {
@@ -507,36 +507,36 @@ s32 RunRaceStartSequence(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
-        GraphNode_TriggerAction(D_86204594, 0);
-        InitAnimState(D_86204594);
-        D_86204594->unk_040.unk_0C = 0x10000;
-        D_86204594->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
+        GraphNode_TriggerAction(gRacePlayerGraphNode, 0);
+        InitAnimState(gRacePlayerGraphNode);
+        gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
+        gRacePlayerGraphNode->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
     }
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        if ((gMiniHudColorDefaults[i] == 0) && (D_86204718 == 0)) {
-            D_86204590->unk_002 = 0;
+        gRacePlayerState = &gRacePlayerStates[i];
+        if ((gMiniHudColorDefaults[i] == 0) && (gRaceIsResultScreen == 0)) {
+            gRacePlayerState->unk_002 = 0;
         } else {
-            func_86200020(D_86204590);
+            SetAIPlayerState(gRacePlayerState);
         }
     }
 
-    D_86203E48 = 0;
-    if (D_86204718 == 0) {
+    gRacePhase = 0;
+    if (gRaceIsResultScreen == 0) {
         var_s1_3 = 1;
     } else {
         UpdateCameraForPhase();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
         return 0;
     }
 
     while (var_s1_3 == 1) {
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
-        if (D_8620471A == 1) {
+        if (gRaceStageReady == 1) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s1_3 = 0;
             }
@@ -547,7 +547,7 @@ s32 RunRaceStartSequence(void) {
                 return -1;
             }
         }
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 
     return 0;
@@ -559,14 +559,14 @@ void HandleResultScreen(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
-        GraphNode_TriggerAction(&D_86203E50[i].unk_008, 0);
+        GraphNode_TriggerAction(&gRacePlayerStates[i].unk_008, 0);
     }
 
-    D_86204700 = 1;
+    gRaceResultScreenActive = 1;
     Fragment2_1_SetStartFlag(1);
-    D_86203E48 = 1;
+    gRacePhase = 1;
 
-    while (D_86204700 == 1) {
+    while (gRaceResultScreenActive == 1) {
         switch (Fragment2_1_GetResult()) {
             case 1:
             case 2:
@@ -574,27 +574,27 @@ void HandleResultScreen(void) {
                 PlaySoundIfEnabled(0x60001, 0, 0);
                 break;
             case 0:
-                D_86204700 = 0;
+                gRaceResultScreenActive = 0;
                 break;
         }
 
         PollInputsWhenStageReady();
 
-        if ((D_86204718 == 1) && (Stage_GetFadeState() == 0) &&
+        if ((gRaceIsResultScreen == 1) && (Stage_GetFadeState() == 0) &&
             ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed |
               gPlayer3Controller->buttonPressed | (gPlayer4Controller->buttonPressed != 0)) != 0)) {
             Stage_FadeOut(0x1E);
             Music_StartVolumeFade(0x1E);
-            D_86204700 = 0;
+            gRaceResultScreenActive = 0;
 
             for (i = 0; i < 30; i++) {
                 UpdateCameraForPhase();
-                func_86200EC4(D_86203E48);
+                Race_RenderFrame(gRacePhase);
             }
 
             while (Audio_CalcLoadScore() != 0) {
                 UpdateCameraForPhase();
-                func_86200EC4(D_86203E48);
+                Race_RenderFrame(gRacePhase);
             }
 
             Music_EndVolumeFade();
@@ -602,11 +602,11 @@ void HandleResultScreen(void) {
         }
 
         UpdateCameraForPhase();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 }
 
-void func_862015A0(unk_D_86203E50* arg0) {
+void UpdatePlayerZAndScreenY(unk_D_86203E50* arg0) {
     f32 temp_fv0 = arg0->unk_178 - 30.0f;
 
     arg0->unk_008.unk_024.z = temp_fv0;
@@ -622,7 +622,7 @@ void ResetPlayerState(unk_D_86203E50* arg0) {
     arg0->unk_174 = 0.0f;
     arg0->unk_178 = 0.0f;
     arg0->unk_198 = -1.0f;
-    func_862015A0(arg0);
+    UpdatePlayerZAndScreenY(arg0);
     arg0->unk_190 = 0.0f - arg0->unk_194;
 }
 
@@ -660,7 +660,7 @@ s32 CheckPlayerObstacleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1) {
     return -1;
 }
 
-void func_86201770(unk_D_86203E50* arg0) {
+void UpdatePlayerAnimProgress(unk_D_86203E50* arg0) {
     arg0->unk_008.unk_040.unk_0C = (arg0->unk_178 * 196608.0f) / arg0->unk_180;
 }
 
@@ -677,7 +677,7 @@ void SetPlayerState(unk_D_86203E50* arg0, s32 arg1) {
         case 0:
             arg0->unk_19C = 0;
             GraphNode_TriggerAction(temp_s0, 1);
-            func_86201770(arg0);
+            UpdatePlayerAnimProgress(arg0);
             break;
 
         case 1:
@@ -705,68 +705,68 @@ void UpdateObstaclesForPlayer(unk_D_86203E50* arg0) {
     f32 unk_190;
 
     for (i = 0; i < 10; i++) {
-        D_86208280 = &D_86204720[arg0_unk000][i];
-        temp_s1 = &D_86208280->unk_004;
-        D_86208280->unk_000 = 0;
+        gRaceObstaclePtr = &gRaceObstacles[arg0_unk000][i];
+        temp_s1 = &gRaceObstaclePtr->unk_004;
+        gRaceObstaclePtr->unk_000 = 0;
         unk_190 = arg0->unk_190;
-        temp_fs1 = gLaneBaseY[D_8620471C][i] * 10.44f * 1.7f;
+        temp_fs1 = gLaneBaseY[gRaceLaneIndex][i] * 10.44f * 1.7f;
 
         if (((temp_fs1 - 30.0f) <= unk_190) && (unk_190 <= ((temp_fs1 - 30.0f) + 67.64706f))) {
 
-            switch (D_86208280->unk_002) {
+            switch (gRaceObstaclePtr->unk_002) {
                 case 0:
                     if ((unk_190 - (temp_fs1 - 30.0f)) < 5.0f) {
-                        D_86208280->unk_002 = 1;
-                        GraphNode_InitChild(temp_s1, 0, 0xB0, D_86203E34->unk_08->unk_00[arg0_unk000]);
+                        gRaceObstaclePtr->unk_002 = 1;
+                        GraphNode_InitChild(temp_s1, 0, 0xB0, gRaceStageAssets->unk_08->unk_00[arg0_unk000]);
                     }
                     break;
 
                 case 2:
-                    D_86208280->unk_17A++;
-                    if (D_86208280->unk_17A >= 5) {
-                        D_86208280->unk_17A = 0;
-                        D_86208280->unk_002 = 3;
+                    gRaceObstaclePtr->unk_17A++;
+                    if (gRaceObstaclePtr->unk_17A >= 5) {
+                        gRaceObstaclePtr->unk_17A = 0;
+                        gRaceObstaclePtr->unk_002 = 3;
                     }
                     break;
 
                 case 3:
-                    D_86208280->unk_17A++;
-                    if (D_86208280->unk_17A >= 5) {
-                        D_86208280->unk_17A = 0;
-                        D_86208280->unk_002 = 2;
+                    gRaceObstaclePtr->unk_17A++;
+                    if (gRaceObstaclePtr->unk_17A >= 5) {
+                        gRaceObstaclePtr->unk_17A = 0;
+                        gRaceObstaclePtr->unk_002 = 2;
                     }
                     break;
             }
 
-            if ((D_86208280->unk_002 > 0) && ((unk_190 - (temp_fs1 - 30.0f)) > 64.70588f)) {
-                D_86208280->unk_002 = 0;
+            if ((gRaceObstaclePtr->unk_002 > 0) && ((unk_190 - (temp_fs1 - 30.0f)) > 64.70588f)) {
+                gRaceObstaclePtr->unk_002 = 0;
                 GraphNode_ClearCallback(temp_s1);
             }
 
-            if (D_86208280->unk_002 >= 2) {
-                D_86208280->unk_178++;
-                if (D_86208280->unk_178 >= 0x1F) {
-                    D_86208280->unk_002 = 0;
+            if (gRaceObstaclePtr->unk_002 >= 2) {
+                gRaceObstaclePtr->unk_178++;
+                if (gRaceObstaclePtr->unk_178 >= 0x1F) {
+                    gRaceObstaclePtr->unk_002 = 0;
                     GraphNode_ClearCallback(temp_s1);
                 }
             }
 
             temp_v0 = ((unk_190 - temp_fs1) + 30.0f) * 1.7f * 65536.0f;
-            temp_s1->unk_040.unk_08 = (D_86208280->unk_16C + temp_v0) >> 1;
-            D_86208280->unk_16C = temp_v0;
+            temp_s1->unk_040.unk_08 = (gRaceObstaclePtr->unk_16C + temp_v0) >> 1;
+            gRaceObstaclePtr->unk_16C = temp_v0;
 
-            if (D_86208280->unk_002 == 1) {
+            if (gRaceObstaclePtr->unk_002 == 1) {
                 GraphNode_TriggerAction(temp_s1, 0);
                 temp_s1->unk_01D = 0xFF;
-            } else if (D_86208280->unk_002 == 3) {
+            } else if (gRaceObstaclePtr->unk_002 == 3) {
                 GraphNode_TriggerAction(temp_s1, 0);
                 temp_s1->unk_01D = 0x80;
-            } else if ((D_86208280->unk_002 == 0) || (D_86208280->unk_002 == 2)) {
+            } else if ((gRaceObstaclePtr->unk_002 == 0) || (gRaceObstaclePtr->unk_002 == 2)) {
                 temp_s1->unk_040.unk_08 = 0x730000;
             }
 
             temp_s1->unk_040.unk_0C = 0;
-            D_86208280->unk_000 = 1;
+            gRaceObstaclePtr->unk_000 = 1;
         }
     }
 
@@ -783,153 +783,153 @@ s16 UpdatePlayersAndCheckFinish(void) {
     sp86 = 0;
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
 
-        D_86204590->unk_1A0 = 0;
+        gRacePlayerState->unk_1A0 = 0;
 
-        if (D_86204590->unk_178 < D_86204590->unk_174) {
-            var_fa0 = D_86204590->unk_174 - D_86204590->unk_178;
+        if (gRacePlayerState->unk_178 < gRacePlayerState->unk_174) {
+            var_fa0 = gRacePlayerState->unk_174 - gRacePlayerState->unk_178;
             if (var_fa0 < 1.0f) {
-                D_86204590->unk_178 += var_fa0;
+                gRacePlayerState->unk_178 += var_fa0;
             } else {
-                D_86204590->unk_178 += 1.0f;
+                gRacePlayerState->unk_178 += 1.0f;
             }
-        } else if (D_86204590->unk_174 < D_86204590->unk_178) {
-            var_fa0 = D_86204590->unk_178 - D_86204590->unk_174;
+        } else if (gRacePlayerState->unk_174 < gRacePlayerState->unk_178) {
+            var_fa0 = gRacePlayerState->unk_178 - gRacePlayerState->unk_174;
             if (var_fa0 < 1.0f) {
-                D_86204590->unk_178 -= var_fa0;
+                gRacePlayerState->unk_178 -= var_fa0;
             } else {
-                D_86204590->unk_178 -= 1.0f;
+                gRacePlayerState->unk_178 -= 1.0f;
             }
         }
 
-        if (D_86204590->unk_19E == 0) {
-            switch (D_86204590->unk_19C) {
+        if (gRacePlayerState->unk_19E == 0) {
+            switch (gRacePlayerState->unk_19C) {
                 case 0:
-                    if (D_86204590->unk_170 & 0x800) {
-                        SetPlayerState(D_86204590, 1);
+                    if (gRacePlayerState->unk_170 & 0x800) {
+                        SetPlayerState(gRacePlayerState, 1);
                     } else {
-                        if (D_86204590->unk_170 & 0x8000) {
-                            D_86204590->unk_174 += D_86204590->unk_188;
-                            if (D_86204590->unk_174 < D_86204590->unk_184) {
-                                D_86204590->unk_174 = D_86204590->unk_184;
+                        if (gRacePlayerState->unk_170 & 0x8000) {
+                            gRacePlayerState->unk_174 += gRacePlayerState->unk_188;
+                            if (gRacePlayerState->unk_174 < gRacePlayerState->unk_184) {
+                                gRacePlayerState->unk_174 = gRacePlayerState->unk_184;
                             }
                         }
 
-                        D_86204590->unk_174 -= (D_86204590->unk_188 / 10.0f);
+                        gRacePlayerState->unk_174 -= (gRacePlayerState->unk_188 / 10.0f);
 
-                        if (D_86204590->unk_180 < D_86204590->unk_174) {
-                            D_86204590->unk_174 = D_86204590->unk_180;
-                            D_86204590->unk_1A2 = 5;
+                        if (gRacePlayerState->unk_180 < gRacePlayerState->unk_174) {
+                            gRacePlayerState->unk_174 = gRacePlayerState->unk_180;
+                            gRacePlayerState->unk_1A2 = 5;
                         } else {
-                            D_86204590->unk_1A2 -= 1;
-                            if (D_86204590->unk_1A2 < 0) {
-                                D_86204590->unk_1A2 = 0;
+                            gRacePlayerState->unk_1A2 -= 1;
+                            if (gRacePlayerState->unk_1A2 < 0) {
+                                gRacePlayerState->unk_1A2 = 0;
                             }
                         }
 
-                        if (D_86204590->unk_174 < 0.0f) {
-                            D_86204590->unk_174 = 0.0f;
+                        if (gRacePlayerState->unk_174 < 0.0f) {
+                            gRacePlayerState->unk_174 = 0.0f;
                         }
 
-                        func_86201770(D_86204590);
+                        UpdatePlayerAnimProgress(gRacePlayerState);
                     }
 
-                    if (D_86204590->unk_174 <= D_86204590->unk_17C) {
-                        SetPlayerState(D_86204590, 3);
+                    if (gRacePlayerState->unk_174 <= gRacePlayerState->unk_17C) {
+                        SetPlayerState(gRacePlayerState, 3);
                     }
                     break;
 
                 case 1:
-                    if (Anim_HasReachedEnd(D_86204594) != 0) {
-                        SetPlayerState(D_86204590, 0);
+                    if (Anim_HasReachedEnd(gRacePlayerGraphNode) != 0) {
+                        SetPlayerState(gRacePlayerState, 0);
                     }
                     break;
 
                 case 2:
-                    D_86204590->unk_174 = 0.0f;
-                    if (Anim_HasReachedEnd(D_86204594) != 0) {
-                        SetPlayerState(D_86204590, 3);
+                    gRacePlayerState->unk_174 = 0.0f;
+                    if (Anim_HasReachedEnd(gRacePlayerGraphNode) != 0) {
+                        SetPlayerState(gRacePlayerState, 3);
                     }
                     break;
 
                 case 3:
-                    D_86204590->unk_174 = 0.0f;
-                    if (D_86204590->unk_170 & 0x8000) {
-                        D_86204590->unk_174 = D_86204590->unk_184;
-                        SetPlayerState(D_86204590, 0);
+                    gRacePlayerState->unk_174 = 0.0f;
+                    if (gRacePlayerState->unk_170 & 0x8000) {
+                        gRacePlayerState->unk_174 = gRacePlayerState->unk_184;
+                        SetPlayerState(gRacePlayerState, 0);
                     }
                     break;
             }
 
-            D_86204590->unk_18C = D_86204590->unk_190;
-            D_86204590->unk_190 += D_86204590->unk_178 * 0.05f;
+            gRacePlayerState->unk_18C = gRacePlayerState->unk_190;
+            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
 
-            func_862015A0(D_86204590);
+            UpdatePlayerZAndScreenY(gRacePlayerState);
 
             for (j = 0; j < 10; j++) {
-                D_86208280 = &D_86204720[i][j];
+                gRaceObstaclePtr = &gRaceObstacles[i][j];
 
-                if ((D_86208280->unk_002 == 1) && (CheckPlayerObstacleCollision(D_86204590, D_86208280) != 0)) {
-                    SetPlayerState(D_86204590, 2);
-                    D_86208280->unk_002 = 2;
-                    D_86208280->unk_17A = 0;
-                    D_86204590->unk_1AC += 1;
+                if ((gRaceObstaclePtr->unk_002 == 1) && (CheckPlayerObstacleCollision(gRacePlayerState, gRaceObstaclePtr) != 0)) {
+                    SetPlayerState(gRacePlayerState, 2);
+                    gRaceObstaclePtr->unk_002 = 2;
+                    gRaceObstaclePtr->unk_17A = 0;
+                    gRacePlayerState->unk_1AC += 1;
                 }
             }
 
-            if (D_86204590->unk_190 + D_86204590->unk_194 >= 885.0f) {
+            if (gRacePlayerState->unk_190 + gRacePlayerState->unk_194 >= 885.0f) {
                 var_fa0 = 0.0f;
-                if (D_86204590->unk_178 > 0.0f) {
-                    f32 var_fa1 = (885.0f - D_86204590->unk_18C);
+                if (gRacePlayerState->unk_178 > 0.0f) {
+                    f32 var_fa1 = (885.0f - gRacePlayerState->unk_18C);
 
-                    var_fa0 = var_fa1 / (D_86204590->unk_178 * 0.05f);
+                    var_fa0 = var_fa1 / (gRacePlayerState->unk_178 * 0.05f);
                 }
 
-                D_86204590->unk_198 = D_86204704 + var_fa0;
-                D_86204590->unk_19E = 1;
-                D_86204590->unk_174 = D_86204590->unk_180;
-                D_86204590->unk_178 = D_86204590->unk_174;
+                gRacePlayerState->unk_198 = gRaceFinishFrame + var_fa0;
+                gRacePlayerState->unk_19E = 1;
+                gRacePlayerState->unk_174 = gRacePlayerState->unk_180;
+                gRacePlayerState->unk_178 = gRacePlayerState->unk_174;
 
-                GraphNode_TriggerAction(D_86204594, 2);
-                D_86204594->unk_040.unk_0C = 0x10000;
+                GraphNode_TriggerAction(gRacePlayerGraphNode, 2);
+                gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
 
-                switch (D_86208298) {
+                switch (gRaceFinishCount) {
                     case 0:
-                        PlaySoundIfEnabled(0x60006, D_86204590->unk_000, 0);
+                        PlaySoundIfEnabled(0x60006, gRacePlayerState->unk_000, 0);
                         break;
 
                     case 3:
-                        PlaySoundIfEnabled(0x60008, D_86204590->unk_000, 0);
+                        PlaySoundIfEnabled(0x60008, gRacePlayerState->unk_000, 0);
                         break;
 
                     default:
-                        PlaySoundIfEnabled(0x60007, D_86204590->unk_000, 0);
+                        PlaySoundIfEnabled(0x60007, gRacePlayerState->unk_000, 0);
                         break;
                 }
 
-                D_86208288[D_86208298] = i;
-                D_86208298++;
-                D_86204590->unk_1A0 = 1;
+                gRaceFinishOrderTable[gRaceFinishCount] = i;
+                gRaceFinishCount++;
+                gRacePlayerState->unk_1A0 = 1;
                 sp86++;
             } else {
-                D_86204590->unk_18C = D_86204590->unk_190 + D_86204590->unk_194;
+                gRacePlayerState->unk_18C = gRacePlayerState->unk_190 + gRacePlayerState->unk_194;
             }
         } else {
-            D_86204590->unk_190 += D_86204590->unk_178 * 0.05f;
+            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
 
-            if (D_86204590->unk_190 > 910.0f) {
-                D_86204590->unk_190 = 910.0f;
-                D_86204590->unk_19E = 2;
+            if (gRacePlayerState->unk_190 > 910.0f) {
+                gRacePlayerState->unk_190 = 910.0f;
+                gRacePlayerState->unk_19E = 2;
             }
 
-            func_862015A0(D_86204590);
+            UpdatePlayerZAndScreenY(gRacePlayerState);
 
-            if (Anim_HasReachedEnd(D_86204594) != 0) {
-                GraphNode_TriggerAction(D_86204594, 0);
-                D_86204594->unk_040.unk_08 = 0;
-                D_86204594->unk_040.unk_0C = 0x10000;
+            if (Anim_HasReachedEnd(gRacePlayerGraphNode) != 0) {
+                GraphNode_TriggerAction(gRacePlayerGraphNode, 0);
+                gRacePlayerGraphNode->unk_040.unk_08 = 0;
+                gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
             }
         }
     }
@@ -937,26 +937,26 @@ s16 UpdatePlayersAndCheckFinish(void) {
     return sp86;
 }
 
-void func_862022CC(void) {
+void UpdateFinishersAnim(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
 
-        if (D_86204590->unk_19E == 1) {
-            D_86204590->unk_190 += D_86204590->unk_178 * 0.05f;
-            if (D_86204590->unk_190 > 910.0f) {
-                D_86204590->unk_190 = 910.0f;
-                D_86204590->unk_19E = 2;
+        if (gRacePlayerState->unk_19E == 1) {
+            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
+            if (gRacePlayerState->unk_190 > 910.0f) {
+                gRacePlayerState->unk_190 = 910.0f;
+                gRacePlayerState->unk_19E = 2;
             }
 
-            func_862015A0(D_86204590);
+            UpdatePlayerZAndScreenY(gRacePlayerState);
 
-            if (Anim_HasReachedEnd(D_86204594) != 0) {
-                GraphNode_TriggerAction(D_86204594, 0);
-                D_86204594->unk_040.unk_08 = 0;
-                D_86204594->unk_040.unk_0C = 0x10000;
+            if (Anim_HasReachedEnd(gRacePlayerGraphNode) != 0) {
+                GraphNode_TriggerAction(gRacePlayerGraphNode, 0);
+                gRacePlayerGraphNode->unk_040.unk_08 = 0;
+                gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
             }
         }
     }
@@ -979,7 +979,7 @@ void func_862023F8(void) {
     spA4 = 1;
 
     for (i = 0; i < 4; i++) {
-        temp_s1 = &D_86203E50[i];
+        temp_s1 = &gRacePlayerStates[i];
         var_s2 = &temp_s1->unk_008;
 
         GraphNode_TriggerAction(var_s2, 1);
@@ -992,14 +992,14 @@ void func_862023F8(void) {
         temp_s1->unk_198 = -1.0f;
     }
 
-    D_86204704 = 0;
-    D_86203E4C = 0;
+    gRaceFinishFrame = 0;
+    gRaceFinishOrder = 0;
     PlaySoundIfEnabled(0x60002, 0, 0);
-    D_86203E48 = 2;
-    D_86203E46 = 0;
+    gRacePhase = 2;
+    gRaceFrameCounter = 0;
 
     sp8C = 0;
-    D_86204710 = 99999.0f;
+    gRaceBestFinishTime = 99999.0f;
 
     while (spA4 != 0) {
         PollInputsWhenStageReady();
@@ -1010,53 +1010,53 @@ void func_862023F8(void) {
         }
 
         if (D_8780FC94 == 0) {
-            if (D_86204704 >= 0x708) {
+            if (gRaceFinishFrame >= 0x708) {
                 spA4 = 0;
             }
 
-            if (D_86204718 == 1) {
+            if (gRaceIsResultScreen == 1) {
                 if ((gPlayer1Controller->buttonPressed != 0) && (sp8C == 0)) {
-                    D_86204704 = 0x1C2;
+                    gRaceFinishFrame = 0x1C2;
                     sp8C = 1;
                 }
 
-                if (D_86204704 == 0x1C2) {
+                if (gRaceFinishFrame == 0x1C2) {
                     Stage_FadeOut(0x1E);
                     Music_StartVolumeFade(0x1E);
                 }
 
-                if (D_86204704 >= 0x1E0) {
+                if (gRaceFinishFrame >= 0x1E0) {
                     SetResultFlag(2);
                     spA4 = 0;
                 }
             }
 
-            if (D_86204704 == 0xF) {
+            if (gRaceFinishFrame == 0xF) {
                 func_8004B1CC(0x19);
             }
 
             temp_s1_2 = UpdatePlayersAndCheckFinish();
 
             for (i = 0; i < 4; i++) {
-                UpdateObstaclesForPlayer(&D_86203E50[i]);
+                UpdateObstaclesForPlayer(&gRacePlayerStates[i]);
             }
 
             if (temp_s1_2 > 0) {
                 var_v0_2 = 0;
                 for (i = 0; i < 4; i++) {
-                    var_s0_3 = &D_86203E50[i];
+                    var_s0_3 = &gRacePlayerStates[i];
                     if (var_s0_3->unk_1A0 == 1) {
                         f32 tmp = var_s0_3->unk_198;
 
-                        if (tmp < D_86204710) {
-                            D_86204710 = tmp;
+                        if (tmp < gRaceBestFinishTime) {
+                            gRaceBestFinishTime = tmp;
                         }
                         sp78[var_v0_2++] = var_s0_3;
                     }
                 }
 
                 if (temp_s1_2 == 1) {
-                    sp78[0]->unk_1B2 = D_86203E4C;
+                    sp78[0]->unk_1B2 = gRaceFinishOrder;
                     sp78[0]->unk_1A0 = 0;
                 } else {
                     for (i = 0; i < temp_s1_2 - 1; i++) {
@@ -1069,12 +1069,12 @@ void func_862023F8(void) {
                         }
                     }
 
-                    sp78[0]->unk_1B2 = D_86203E4C;
+                    sp78[0]->unk_1B2 = gRaceFinishOrder;
                     for (i = 1; i < temp_s1_2; i++) {
                         if (sp78[i - 1]->unk_198 < sp78[i]->unk_198) {
-                            D_86203E4C++;
+                            gRaceFinishOrder++;
                         }
-                        sp78[i]->unk_1B2 = D_86203E4C;
+                        sp78[i]->unk_1B2 = gRaceFinishOrder;
                     }
 
                     for (i = 0; i < temp_s1_2; i++) {
@@ -1082,12 +1082,12 @@ void func_862023F8(void) {
                     }
                 }
 
-                D_86203E4C++;
+                gRaceFinishOrder++;
             }
 
             var_s3 = 0;
             for (i = 0; i < 4; i++) {
-                if (D_86203E50[i].unk_19E == 2) {
+                if (gRacePlayerStates[i].unk_19E == 2) {
                     var_s3++;
                 }
             }
@@ -1096,15 +1096,15 @@ void func_862023F8(void) {
                 spA4 = 0;
             }
 
-            D_86204704++;
+            gRaceFinishFrame++;
         }
 
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 
     var_s3 = 0;
     for (i = 0; i < 4; i++) {
-        if (D_86203E50[i].unk_19E == 1) {
+        if (gRacePlayerStates[i].unk_19E == 1) {
             var_s3++;
         }
     }
@@ -1115,34 +1115,34 @@ void func_862023F8(void) {
         if (D_8780FC92 == 0) {
             if (D_8780FC94 == 0) {
                 var_s3 = 0;
-                func_862022CC();
+                UpdateFinishersAnim();
 
                 for (i = 0; i < 4; i++) {
-                    UpdateObstaclesForPlayer(&D_86203E50[i]);
+                    UpdateObstaclesForPlayer(&gRacePlayerStates[i]);
                 }
 
                 for (i = 0; i < 4; i++) {
-                    if (D_86203E50[i].unk_19E == 1) {
+                    if (gRacePlayerStates[i].unk_19E == 1) {
                         var_s3++;
                     }
                 }
             }
 
-            func_86200EC4(D_86203E48);
+            Race_RenderFrame(gRacePhase);
         } else {
             return;
         }
     }
 
     var_s3 = 0;
-    D_86204708 = 0;
+    gRaceWinnersCount = 0;
 
     for (i = 0; i < 4; i++) {
-        temp_s1 = &D_86203E50[i];
+        temp_s1 = &gRacePlayerStates[i];
 
         if ((temp_s1->unk_19E > 0) && (temp_s1->unk_1B2 == 0)) {
             IncrementPlayerScore(i);
-            D_86204708++;
+            gRaceWinnersCount++;
             temp_s1->unk_1C8 = 1;
             if (temp_s1->unk_002 == 0) {
                 var_s3 = 1;
@@ -1150,8 +1150,8 @@ void func_862023F8(void) {
         }
     }
 
-    if (D_86204708 != 1) {
-        D_8620470A = 1;
+    if (gRaceWinnersCount != 1) {
+        gRaceMultipleWinners = 1;
     } else if (var_s3 == 1) {
         func_8004B1CC(0xBD);
     } else {
@@ -1159,68 +1159,68 @@ void func_862023F8(void) {
     }
 }
 
-void func_86202C7C(void) {
+void TriggerWinnerAnim(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
 
-        if ((D_86204590->unk_19E > 0) && (D_86204590->unk_1C8 == 1)) {
+        if ((gRacePlayerState->unk_19E > 0) && (gRacePlayerState->unk_1C8 == 1)) {
             continue;
         }
 
-        if ((Anim_HasReachedEnd(D_86204594) == 0) && (D_86204594->unk_040.unk_08 < 0x340000)) {
+        if ((Anim_HasReachedEnd(gRacePlayerGraphNode) == 0) && (gRacePlayerGraphNode->unk_040.unk_08 < 0x340000)) {
             continue;
         }
 
-        GraphNode_TriggerAction(D_86204594, 5);
-        D_86204594->unk_040.unk_08 = 0x270000;
+        GraphNode_TriggerAction(gRacePlayerGraphNode, 5);
+        gRacePlayerGraphNode->unk_040.unk_08 = 0x270000;
     }
 }
 
-void func_86202D5C(void) {
+void TriggerResultAnims(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        D_86204594 = &D_86204590->unk_008;
-        if ((D_86204590->unk_19E > 0) && (D_86204590->unk_1C8 == 1)) {
-            GraphNode_TriggerAction(D_86204594, 4);
-            D_86204594->unk_040.unk_0C = 0x10000;
+        gRacePlayerState = &gRacePlayerStates[i];
+        gRacePlayerGraphNode = &gRacePlayerState->unk_008;
+        if ((gRacePlayerState->unk_19E > 0) && (gRacePlayerState->unk_1C8 == 1)) {
+            GraphNode_TriggerAction(gRacePlayerGraphNode, 4);
+            gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
         } else {
-            GraphNode_TriggerAction(D_86204594, 5);
-            D_86204594->unk_040.unk_08 = 0;
-            D_86204594->unk_040.unk_0C = 0x10000;
-            GraphNode_TriggerSound(D_86204594, 0);
+            GraphNode_TriggerAction(gRacePlayerGraphNode, 5);
+            gRacePlayerGraphNode->unk_040.unk_08 = 0;
+            gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
+            GraphNode_TriggerSound(gRacePlayerGraphNode, 0);
         }
     }
 
     while (D_8780FC94 != 0) {
         PollInputsWhenStageReady();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 
     SetResultFlag(1);
-    D_86203E48 = 3;
+    gRacePhase = 3;
 
     for (i = 0; i < 120; i++) {
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 
     for (i = 0; i < 30; i++) {
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 }
 
 void func_86202EE4(void) {
     while (Audio_CalcLoadScore() != 0) {
         PollInputsWhenStageReady();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
     Music_EndVolumeFade();
 }
@@ -1233,36 +1233,36 @@ void func_86202F3C(void) {
 
     for (i = 0; i < 30; i++) {
         PollInputsWhenStageReady();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 }
 
 void func_86202FA4(s32 arg0) {
     s32 i;
 
-    D_86203E48 = 6;
+    gRacePhase = 6;
 
     for (i = 0; i < arg0; i++) {
         PollInputsWhenStageReady();
-        func_86200EC4(D_86203E48);
+        Race_RenderFrame(gRacePhase);
     }
 }
 
 void func_86203008(void) {
-    D_86203E48 = 5;
+    gRacePhase = 5;
 
     while (D_8780FC96 == 0) {
-        if ((gMenuCursorX == 1) && (D_8620470E > 0)) {
-            D_8620470E -= 0xA;
-            if (D_8620470E < 0) {
-                D_8620470E = 0;
+        if ((gMenuCursorX == 1) && (gRaceUnusedFlag2 > 0)) {
+            gRaceUnusedFlag2 -= 0xA;
+            if (gRaceUnusedFlag2 < 0) {
+                gRaceUnusedFlag2 = 0;
             }
         }
 
         PollInputsWhenStageReady();
         UpdateCameraForPhase();
-        func_86202C7C();
-        func_86200EC4(D_86203E48);
+        TriggerWinnerAnim();
+        Race_RenderFrame(gRacePhase);
     }
 }
 
@@ -1272,26 +1272,26 @@ void func_862030D0(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     Fragment2_1GraphNode* temp_s0;
 
-    D_86203E38 = process_geo_layout(temp_v0, &D_86203D0C);
+    gRaceGraphRoot = process_geo_layout(temp_v0, &gRaceStageScript);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    D_8620470E = 0xFF;
-    D_8620471A = 0;
-    D_86203E30 = GeoLayout_LoadById(0xB8);
-    Graph_AddToRootList0(&D_86204598);
-    GraphNode_InitChild(&D_86204598, 0, 0xB8, D_86203E30->unk_08->unk_00[0]);
-    D_86204598.unk_024.y = -26.0f;
-    D_86203E30 = GeoLayout_LoadById(0xAF);
+    gRaceUnusedFlag2 = 0xFF;
+    gRaceStageReady = 0;
+    gRaceStageData = GeoLayout_LoadById(0xB8);
+    Graph_AddToRootList0(&gRacePlayerGraphNodeTemp);
+    GraphNode_InitChild(&gRacePlayerGraphNodeTemp, 0, 0xB8, gRaceStageData->unk_08->unk_00[0]);
+    gRacePlayerGraphNodeTemp.unk_024.y = -26.0f;
+    gRaceStageData = GeoLayout_LoadById(0xAF);
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        temp_s0 = &D_86204590->unk_008;
-        D_86204590->unk_000 = i;
+        gRacePlayerState = &gRacePlayerStates[i];
+        temp_s0 = &gRacePlayerState->unk_008;
+        gRacePlayerState->unk_000 = i;
 
-        func_86200020(D_86204590);
+        SetAIPlayerState(gRacePlayerState);
         Graph_AddToRootList0(temp_s0);
-        GraphNode_InitChild(temp_s0, 0, 0xAF, D_86203E30->unk_08->unk_00[0]);
+        GraphNode_InitChild(temp_s0, 0, 0xAF, gRaceStageData->unk_08->unk_00[0]);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_030.x = 1.0f;
@@ -1299,21 +1299,21 @@ void func_862030D0(void) {
         temp_s0->unk_030.z = 1.0f;
         GraphNode_TriggerAction(temp_s0, 0);
         InitAnimState(temp_s0);
-        ResetPlayerState(D_86204590);
+        ResetPlayerState(gRacePlayerState);
         temp_s0->unk_040.unk_0C = 0x20000;
     }
 
-    D_86203E34 = GeoLayout_LoadById(0xB0);
+    gRaceStageAssets = GeoLayout_LoadById(0xB0);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            D_86208280 = &D_86204720[i][j];
-            temp_s0 = &D_86208280->unk_004;
+            gRaceObstaclePtr = &gRaceObstacles[i][j];
+            temp_s0 = &gRaceObstaclePtr->unk_004;
 
             Graph_AddToRootList0(temp_s0);
 
-            D_86208280->unk_000 = 0;
-            D_86208280->unk_002 = 0;
+            gRaceObstaclePtr->unk_000 = 0;
+            gRaceObstaclePtr->unk_002 = 0;
             temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
             temp_s0->unk_024.y = -25.0f;
             temp_s0->unk_040.unk_08 = 0x730000;
@@ -1330,25 +1330,25 @@ void func_86203380(void) {
     s32 j;
     Fragment2_1GraphNode* temp_s0;
 
-    D_86208298 = 0;
-    D_8620470A = 0;
-    D_8620471C = GetRandomMod(3);
+    gRaceFinishCount = 0;
+    gRaceMultipleWinners = 0;
+    gRaceLaneIndex = GetRandomMod(3);
 
     for (i = 0; i < 4; i++) {
-        D_86204590 = &D_86203E50[i];
-        temp_s0 = &D_86204590->unk_008;
+        gRacePlayerState = &gRacePlayerStates[i];
+        temp_s0 = &gRacePlayerState->unk_008;
 
-        D_86204590->unk_000 = i;
-        D_86204590->unk_19E = 0;
-        func_86200020(D_86204590);
-        D_86204590->unk_1A2 = 0;
-        D_86204590->unk_1AE = 0;
-        D_86204590->unk_1B0 = 0;
-        D_86204590->unk_1AC = 0;
-        D_86204590->unk_1B2 = 4;
-        D_86204590->unk_1B4 = 0;
-        D_86204590->unk_170 = 0;
-        ResetPlayerState(D_86204590);
+        gRacePlayerState->unk_000 = i;
+        gRacePlayerState->unk_19E = 0;
+        SetAIPlayerState(gRacePlayerState);
+        gRacePlayerState->unk_1A2 = 0;
+        gRacePlayerState->unk_1AE = 0;
+        gRacePlayerState->unk_1B0 = 0;
+        gRacePlayerState->unk_1AC = 0;
+        gRacePlayerState->unk_1B2 = 4;
+        gRacePlayerState->unk_1B4 = 0;
+        gRacePlayerState->unk_170 = 0;
+        ResetPlayerState(gRacePlayerState);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_030.x = 1.0f;
@@ -1359,13 +1359,13 @@ void func_86203380(void) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            D_86208280 = &D_86204720[i][j];
-            temp_s0 = &D_86208280->unk_004;
+            gRaceObstaclePtr = &gRaceObstacles[i][j];
+            temp_s0 = &gRaceObstaclePtr->unk_004;
 
-            D_86208280->unk_000 = 0;
-            D_86208280->unk_002 = 0;
-            D_86208280->unk_178 = 0;
-            D_86208280->unk_170 = 0;
+            gRaceObstaclePtr->unk_000 = 0;
+            gRaceObstaclePtr->unk_002 = 0;
+            gRaceObstaclePtr->unk_178 = 0;
+            gRaceObstaclePtr->unk_170 = 0;
             temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
             temp_s0->unk_024.y = -25.0f;
             temp_s0->unk_040.unk_08 = 0x730000;
@@ -1378,10 +1378,10 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
-        D_86204718 = 1;
+        gRaceIsResultScreen = 1;
         func_878010C8(3);
     } else {
-        D_86204718 = 0;
+        gRaceIsResultScreen = 0;
     }
 
     main_pool_push_state('MINI');
@@ -1389,7 +1389,7 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     Gfx_InitBuffers(0x10000, 0);
 
     sp24 = Stage_Create(0, 0, 3, 1, 2, 1);
-    D_86204714 = Text_Init(0x16, 0);
+    gRaceTextObject = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_04000000, run_rattata_run_flag_gfx, 0);
@@ -1407,13 +1407,13 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
         func_86202FA4(5);
         HandleResultScreen();
         func_862023F8();
-        if ((D_8780FC92 == 0) && (D_86204718 == 0)) {
-            func_86202D5C();
+        if ((D_8780FC92 == 0) && (gRaceIsResultScreen == 0)) {
+            TriggerResultAnims();
             func_86203008();
         }
     }
 
-    if (D_86204718 == 0) {
+    if (gRaceIsResultScreen == 0) {
         func_86202F3C();
     } else {
         func_86202EE4();

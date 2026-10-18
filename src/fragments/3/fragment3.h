@@ -19,7 +19,7 @@ typedef struct MiniActor {
     /* 0x1CC */ f32 dist2DiglettLevelX;	//	1,2,4
     /* 0x1D0 */ f32 dist2DiglettLevelY;	//	unused
     /* 0x1D4 */ f32 dist2DiglettLevelZ;	//	1,2,4
-    /* 0x1D8 */ Vec3f unk_1D8;		//	also position, unused
+    /* 0x1D8 */ Vec3f unk_1D8;		//	BattleAnimDataEntry position, unused
     /* 0x1E4 */ f32 middleHeight;
     /* 0x1E8 */ char unk1E8[0x4];	//	unused ?
     /* 0x1EC */ f32 unk_1EC;		//	always zero

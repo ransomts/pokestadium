@@ -134,7 +134,7 @@ s32 Trail_Update(void) {
         }
     }
 
-    func_8432FB38(&sp7C);
+    GetPrimaryEntityNodePosition(&sp7C);
     sp98 = sp7C.x;
     sp94 = sp7C.y;
     sp90 = sp7C.z;
@@ -631,7 +631,7 @@ void func_84361744(unk_D_84398F50* arg0) {
     s32 i;
     Vec3f sp28;
 
-    func_8432FBBC(&sp28);
+    GetPrimaryEffectCenterOrNode(&sp28);
 
     switch (arg0->unk_008) {
         case 0:

@@ -241,7 +241,7 @@ void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8432DE0C(ParticleEffectInstance* arg0) {
+void ParticleNode_UpdateBehaviorAlt(ParticleEffectInstance* arg0) {
     Vec3f sp3C;
     Vec3f sp30;
     Vec3s sp28;
@@ -310,19 +310,19 @@ void func_8432DE0C(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8432E0A4(ParticleEffectInstance* arg0) {
+void ParticleNode_UpdateScale(ParticleEffectInstance* arg0) {
     if ((arg0->unk_10 == NULL) || (Particle_HasFlag(arg0, 0x108) != 0)) {
         gParticleScaleFactor.unk_00.x = 1.0f;
         gParticleScaleFactor.unk_00.y = 1.0f;
         gParticleScaleFactor.unk_00.z = 1.0f;
     } else if (Particle_CanSetFlag(arg0, 0x800) != 0) {
-        gParticleScaleFactor.unk_00.x = func_8432FC94(arg0->unk_10);
-        gParticleScaleFactor.unk_00.y = func_8432FC94(arg0->unk_10);
-        gParticleScaleFactor.unk_00.z = func_8432FC94(arg0->unk_10);
+        gParticleScaleFactor.unk_00.x = GetEntityScaleFactor(arg0->unk_10);
+        gParticleScaleFactor.unk_00.y = GetEntityScaleFactor(arg0->unk_10);
+        gParticleScaleFactor.unk_00.z = GetEntityScaleFactor(arg0->unk_10);
     }
 }
 
-void func_8432E144(ParticleEffectInstance* arg0) {
+void ParticleNode_UpdateOrDestroy(ParticleEffectInstance* arg0) {
     if (Particle_IsInactive(arg0) != 0) {
         ParticleNode_Destroy(arg0);
     } else {
@@ -336,15 +336,15 @@ void ParticleSystem_Update(void) {
 
     for (i = 0; i < 300; i++, var_s0++) {
         if (var_s0->unk_D0 != 0) {
-            func_8432DE0C(var_s0);
-            func_8432E0A4(var_s0);
+            ParticleNode_UpdateBehaviorAlt(var_s0);
+            ParticleNode_UpdateScale(var_s0);
             var_s0->unk_08(var_s0);
-            func_8432E144(var_s0);
+            ParticleNode_UpdateOrDestroy(var_s0);
         }
     }
 }
 
-void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_D_84390010* arg1, ParticleDef* arg2, s16 arg3) {
+void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_BattlePlayerEntity* arg1, ParticleDef* arg2, s16 arg3) {
     if ((u32)arg0 == -1) {
         return;
     }
@@ -388,7 +388,7 @@ void ParticleDef_SpawnInstances(ParticleDef* arg0, s32 arg1) {
     s16 var_s2;
     ParticleEffectData* temp_a2 = arg0->unk_04;
     ParticleRenderSettings* temp_a3 = arg0->unk_04->unk_04.a;
-    unk_D_84390010* tmp08 = arg0->unk_08;
+    unk_BattlePlayerEntity* tmp08 = arg0->unk_08;
     s16 tmp12 = arg0->unk_12;
 
     switch (arg1) {
@@ -412,25 +412,25 @@ void ParticleDef_SpawnInstances(ParticleDef* arg0, s32 arg1) {
     }
 }
 
-void func_8432E434(ParticleDef* arg0) {
+void ParticleDef_SpawnAll(ParticleDef* arg0) {
     ParticleDef_SpawnInstances(arg0, 0);
 }
 
-void func_8432E454(ParticleDef* arg0) {
+void ParticleDef_SpawnBurst(ParticleDef* arg0) {
     ParticleDef_SpawnInstances(arg0, 1);
 }
 
-void func_8432E474(ParticleDef* arg0) {
+void ParticleDef_SpawnSingle(ParticleDef* arg0) {
     UNUSED s32 pad;
-    unk_D_84390010* sp18 = arg0->unk_08;
+    unk_BattlePlayerEntity* sp18 = arg0->unk_08;
 
     ParticleInstance_Configure(Particle_AllocateInstance(), sp18, arg0, 0);
 }
 
-void func_8432E4B0(ParticleDef* arg0) {
+void ParticleDef_SpawnByType(ParticleDef* arg0) {
     switch (arg0->unk_16) {
         case 18:
-            func_8432E454(arg0);
+            ParticleDef_SpawnBurst(arg0);
             break;
 
         case 22:
@@ -442,19 +442,19 @@ void func_8432E4B0(ParticleDef* arg0) {
             break;
 
         case 23:
-            func_8432F9A8(arg0->unk_19);
+            SetGameStateFlag(arg0->unk_19);
             break;
 
         case 25:
-            func_8432C768(arg0->unk_19);
+            InitWaterEffect(arg0->unk_19);
             break;
 
         case 26:
-            func_8432E474(arg0);
+            ParticleDef_SpawnSingle(arg0);
             break;
 
         default:
-            func_8432E434(arg0);
+            ParticleDef_SpawnAll(arg0);
             break;
     }
 }
@@ -468,7 +468,7 @@ void ParticleDefs_Update(void) {
             var_s0->unk_0E--;
             if (var_s0->unk_0E <= 0) {
                 if (var_s0->unk_14 >= 0) {
-                    func_8432E4B0(var_s0);
+                    ParticleDef_SpawnByType(var_s0);
                     if (var_s0->unk_14 != 0x7F) {
                         var_s0->unk_14--;
                     }
@@ -480,7 +480,7 @@ void ParticleDefs_Update(void) {
                     }
                 } else if (var_s0->unk_14 == -1) {
                     var_s0->unk_0E = var_s0->unk_0C;
-                    func_8432E4B0(var_s0);
+                    ParticleDef_SpawnByType(var_s0);
                 }
             }
         }
@@ -492,12 +492,12 @@ void Particles_UpdateAll(void) {
     ParticleSystem_Update();
 }
 
-void func_8432E6B4(void) {
+void ParticleSystem_ResetKeepSpecial(void) {
     s32 i;
     ParticleDef* var_s0 = gParticleDefs;
     ParticleEffectInstance* var_s2 = gParticleInstances;
 
-    func_8432EB14();
+    ParticleSystem_ResetSpawnOffset();
 
     for (i = 0; i < 300; i++, var_s0++) {
         if (var_s0->unk_15 != 0) {
@@ -516,7 +516,7 @@ void func_8432E6B4(void) {
     }
 }
 
-void func_8432E784(void) {
+void ParticleSystem_ResetKeepType4(void) {
     s32 i;
     ParticleDef* var_s0 = gParticleDefs;
     ParticleEffectInstance* var_s2 = gParticleInstances;
@@ -543,11 +543,11 @@ void func_8432E784(void) {
     gSavedPrimColorR = gSavedPrimColorG;
 }
 
-s32 func_8432E8B0(void) {
+s32 GetParticleSpecialFlag(void) {
     return D_84390340;
 }
 
-void func_8432E8BC(void) {
+void SetParticleSpecialFlagFromGlobal(void) {
     if (gSpecialFlag != 0) {
         D_84390340 = 1;
     } else {
@@ -555,7 +555,7 @@ void func_8432E8BC(void) {
     }
 }
 
-void func_8432E8EC(void) {
+void ParticleCameraCallbacks_Clear(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -568,7 +568,7 @@ void func_8432E8EC(void) {
     D_84390340 = 0;
 }
 
-s32 func_8432E97C(void) {
+s32 ParticleSystem_IsResettable(void) {
     s32 var_v1 = 0;
 
     if (D_843902F8 == 0) {
@@ -577,38 +577,38 @@ s32 func_8432E97C(void) {
     return var_v1;
 }
 
-void func_8432E99C(void) {
+void ParticleSystem_SetResetLock(void) {
     D_843902F8 = 1;
 }
 
-void func_8432E9AC(void) {
+void ParticleSystem_ClearResetLock(void) {
     D_843902F8 = 0;
 }
 
-void func_8432E9B8(void) {
-    func_8432E99C();
+void ParticleSystem_ForceResetLock(void) {
+    ParticleSystem_SetResetLock();
 }
 
-void func_8432E9D8(s32 arg0) {
-    func_8432EB14();
+void Battle_SetAnimChannelFlag(s32 arg0) {
+    ParticleSystem_ResetSpawnOffset();
     switch (arg0) {
         case 1:
-            func_8432E6B4();
-            if (func_8432E97C() != 0) {
-                func_8432E8EC();
+            ParticleSystem_ResetKeepSpecial();
+            if (ParticleSystem_IsResettable() != 0) {
+                ParticleCameraCallbacks_Clear();
             }
             break;
 
         case 2:
-            func_8432E784();
-            func_8432E8EC();
-            func_8432E9AC();
+            ParticleSystem_ResetKeepType4();
+            ParticleCameraCallbacks_Clear();
+            ParticleSystem_ClearResetLock();
             func_84359380();
             break;
     }
 }
 
-void func_8432EA60(u8 arg0, unk_D_84390010* arg1) {
+void ParticleNode_TriggerByEntity(u8 arg0, unk_BattlePlayerEntity* arg1) {
     s32 i;
     ParticleEffectInstance* var_s0 = gParticleInstances;
 
@@ -620,24 +620,24 @@ void func_8432EA60(u8 arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8432EB14(void) {
+void ParticleSystem_ResetSpawnOffset(void) {
     D_843902A8 = 0;
 }
 
-void func_8432EB20(s32 arg0) {
+void ParticleSystem_SetSpawnOffset(s32 arg0) {
     D_843902A8 = arg0;
 }
 
-void func_8432EB2C(s32 arg0) {
+void ParticleSystem_AddSpawnOffset(s32 arg0) {
     D_843902A8 += arg0;
 }
 
-void func_8432EB44(void) {
-    func_8432EB14();
+void ParticleSystem_ResetSpawnOffset2(void) {
+    ParticleSystem_ResetSpawnOffset();
 }
 
 ParticleDef* ParticleDef_Create(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, ParticleEffectData* arg4,
-                              unk_D_84390010* arg5, s16 arg6, s16 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB) {
+                              unk_BattlePlayerEntity* arg5, s16 arg6, s16 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB) {
     ParticleDef* sp1C = ParticleDef_Allocate();
 
     if ((u32)sp1C != -1) {
@@ -659,125 +659,125 @@ ParticleDef* ParticleDef_Create(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724
     return sp1C;
 }
 
-ParticleDef* func_8432EC28(s32 arg0, func_unk_D_8140E724 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4, u8 arg5,
+ParticleDef* ParticleDef_CreateQuick(s32 arg0, func_unk_D_8140E724 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4, u8 arg5,
                               u8 arg6, u8 arg7, u8 arg8) {
     return ParticleDef_Create(arg0, 0, 1, arg1, arg2, gParticleEffectEntityA, arg3, arg4, arg5, arg6, arg7, arg8);
 }
 
-ParticleDef* func_8432ECA0(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, ParticleEffectData* arg4, s16 arg5,
+ParticleDef* ParticleDef_CreateFull(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, ParticleEffectData* arg4, s16 arg5,
                               s16 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
     return ParticleDef_Create(arg0, arg1, arg2, arg3, arg4, gParticleEffectEntityA, arg5, arg6, arg7, arg8, arg9, argA);
 }
 
-ParticleDef* func_8432ED0C(s32 arg0, s16 arg1, u8 arg2) {
+ParticleDef* ParticleDef_CreateDefault(s32 arg0, s16 arg1, u8 arg2) {
     return ParticleDef_Create(arg0, 0, 1, func_84331DC8, &gParticleDefaultCallback, NULL, 0, arg1, 0x16, 0, arg2, 0);
 }
 
-ParticleDef* func_8432ED74(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
+ParticleDef* ParticleDef_CreateBC20(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20Variant, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
-ParticleDef* func_8432EDE8(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
+ParticleDef* ParticleDef_CreateBC20CD(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
 }
 
-ParticleDef* func_8432EE5C(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
+ParticleDef* ParticleDef_CreateBC20CDAlt(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
-ParticleDef* func_8432EED0(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
+ParticleDef* ParticleDef_CreateBC20CDFull(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
     return ParticleDef_Create(arg0, arg1, arg2, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
 }
 
-ParticleDef* func_8432EF40(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
+ParticleDef* ParticleDef_Create32E6C(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
     return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
 }
 
-ParticleDef* func_8432EFB4(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
+ParticleDef* ParticleDef_Create32E6CAlt(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
-ParticleDef* func_8432F028(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
+ParticleDef* ParticleDef_Create32E6CFull(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
     return ParticleDef_Create(arg0, arg1, arg2, func_84332E6C, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
 }
 
-ParticleDef* func_8432F098(s32 arg0, s16 arg1, u8 arg2) {
+ParticleDef* ParticleDef_Create32F30(s32 arg0, s16 arg1, u8 arg2) {
     return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, 0xFF, arg2, 0);
 }
 
-ParticleDef* func_8432F104(s32 arg0, s16 arg1, u8 arg2, u8 arg3) {
+ParticleDef* ParticleDef_Create32F30Alt(s32 arg0, s16 arg1, u8 arg2, u8 arg3) {
     return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, arg3, arg2, 0);
 }
 
-ParticleDef* func_8432F174(s32 arg0, s32 arg1, s8 arg2, s16 arg3, u8 arg4, u8 arg5) {
+ParticleDef* ParticleDef_Create32F30Full(s32 arg0, s32 arg1, s8 arg2, s16 arg3, u8 arg4, u8 arg5) {
     return ParticleDef_Create(arg0, arg1, arg2, func_84332F30, &gParticleEffectData[37], NULL, arg3, 0, 0x16, arg5, arg4, 0);
 }
 
-ParticleDef* func_8432F1E0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create32FD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_84332FD0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
-ParticleDef* func_8432F254(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create330A0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_843330A0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
-ParticleDef* func_8432F2C8(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create31EAC(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_84331EAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg2, arg4, 0x1A, arg3, arg1, 0);
 }
 
-ParticleDef* func_8432F344(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
+ParticleDef* ParticleDef_Create31FAC(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
     return ParticleDef_Create(arg0, 0, 1, func_84331FAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg5, 0x1A, arg4, arg2, arg3);
 }
 
-ParticleDef* func_8432F3C4(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create320A4(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_843320A4, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg4, 0x1A, 0, arg2, arg3);
 }
 
-ParticleDef* func_8432F440(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create321BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
-ParticleDef* func_8432F4BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+ParticleDef* ParticleDef_Create321BCAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
-ParticleDef* func_8432F538(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+ParticleDef* ParticleDef_Create323BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
-ParticleDef* func_8432F5B8(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+ParticleDef* ParticleDef_Create323BCAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
-ParticleDef* func_8432F638(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+ParticleDef* ParticleDef_Create32604(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     return ParticleDef_Create(arg0, 0, 1, func_84332604, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
-ParticleDef* func_8432F6B8(s32 arg0, s16 arg1, u8 arg2) {
+ParticleDef* ParticleDef_Create327B8(s32 arg0, s16 arg1, u8 arg2) {
     return ParticleDef_Create(arg0, 0, 1, func_843327B8, &gParticleDefaultCallback, gParticleEffectEntityA, 0, arg1, 0x1A, arg2, 0, 0);
 }
 
-ParticleDef* func_8432F728(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
+ParticleDef* ParticleDef_CreateComplexColor(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ComplexColorMode, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg2, 0x1A, arg3, 0, 0);
 }
 
-ParticleDef* func_8432F7A0(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
+ParticleDef* ParticleDef_CreateAlphaMode(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg3, 0x1A, arg2, 0, 0);
 }
 
-ParticleDef* func_8432F818(s32 arg0) {
+ParticleDef* ParticleDef_CreateAlphaModeFF(s32 arg0) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
 }
 
-ParticleDef* func_8432F884(s32 arg0) {
+ParticleDef* ParticleDef_CreateAlphaModeZero(s32 arg0) {
     return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, 0, 0xFF, 0x1A, 0, 0, 0);
 }
 
-ParticleDef* func_8432F8E8(s32 arg0, u8 arg1) {
+ParticleDef* ParticleDef_CreateNullType17(s32 arg0, u8 arg1) {
     return ParticleDef_Create(arg0, 0, 1, NULL, NULL, 0, 0, 0, 0x17, arg1, 0, 0);
 }
 
-ParticleDef* func_8432F93C(s32 arg0, u8 arg1) {
+ParticleDef* ParticleDef_CreateNullType19(s32 arg0, u8 arg1) {
     return ParticleDef_Create(arg0, 0, 1, NULL, NULL, gParticleEffectEntityA, 0, 0, 0x19, arg1, 0, 0);
 }
 
@@ -787,19 +787,19 @@ void func_8432F998(void) {
 void func_8432F9A0(void) {
 }
 
-void func_8432F9A8(s32 arg0) {
+void SetGameStateFlag(s32 arg0) {
     gGameStateFlag = arg0;
 }
 
-void func_8432F9B4(void) {
+void ClearGameStateFlag(void) {
     gGameStateFlag = 0;
 }
 
-s32 func_8432F9C0(void) {
+s32 GetGameStateFlag(void) {
     return gGameStateFlag;
 }
 
-s32 func_8432F9CC(s32 arg0) {
+s32 IsEntityASpecies(s32 arg0) {
     s32 sp1C = 0;
 
     if (GetSpecies(gParticleEffectEntityA) == arg0) {
@@ -808,15 +808,15 @@ s32 func_8432F9CC(s32 arg0) {
     return sp1C;
 }
 
-s32 func_8432FA0C(void) {
+s32 GetSpeciesPrimaryEffect(void) {
     return GetSpecies(gParticleEffectData_42);
 }
 
-s32 func_8432FA30(void) {
+s32 GetSpeciesSecondaryEffect(void) {
     return GetSpecies(gParticleEffectEntityB);
 }
 
-void Model_GetNodePosition(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
+void Model_GetNodePosition(unk_BattlePlayerEntity* arg0, s16 arg1, Vec3f* arg2) {
     s32 sp24 = 0;
 
     if (arg0 != NULL) {
@@ -844,19 +844,19 @@ void Model_GetNodePosition(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
     }
 }
 
-void func_8432FB38(Vec3f* arg0) {
+void GetPrimaryEntityNodePosition(Vec3f* arg0) {
     Model_GetNodePosition(gParticleEffectEntityA, 0x64, arg0);
 }
 
-void func_8432FB64(Vec3f* arg0) {
+void GetPrimaryEffectNodePosition(Vec3f* arg0) {
     Model_GetNodePosition(gParticleEffectData_42, 0x64, arg0);
 }
 
-void func_8432FB90(Vec3f* arg0) {
+void GetSecondaryEntityNodePosition(Vec3f* arg0) {
     Model_GetNodePosition(gParticleEffectEntityB, 0x64, arg0);
 }
 
-void func_8432FBBC(Vec3f* arg0) {
+void GetPrimaryEffectCenterOrNode(Vec3f* arg0) {
     if (gParticleEffectPrimaryId == 0xFF) {
         GetEntityCenterPosition(gParticleEffectData_42, arg0);
     } else {
@@ -864,49 +864,49 @@ void func_8432FBBC(Vec3f* arg0) {
     }
 }
 
-void func_8432FC14(Vec3f* arg0) {
+void GetSecondaryEntityNode9Position(Vec3f* arg0) {
     Model_GetNodePosition(gParticleEffectEntityB, 9, arg0);
 }
 
-void func_8432FC40(unk_D_84390010* arg0, Vec3f* arg1) {
+void GetEntityDirectionVector(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
     func_84308094(arg0, arg1);
 }
 
-f32 func_8432FC60(unk_D_84390010* arg0) {
+f32 GetEntityCameraDistance(unk_BattlePlayerEntity* arg0) {
     f32 ret = gCamDistances[arg0->unk_000.unk_01A] * 0.01f;
 
     return ret;
 }
 
-f32 func_8432FC94(unk_D_84390010* arg0) {
-    return func_8432FC60(arg0);
+f32 GetEntityScaleFactor(unk_BattlePlayerEntity* arg0) {
+    return GetEntityCameraDistance(arg0);
 }
 
-void func_8432FCB4(unk_D_84390010* arg0) {
-    func_8432FC60(arg0);
+void ComputeEntityScaleFactor(unk_BattlePlayerEntity* arg0) {
+    GetEntityCameraDistance(arg0);
 }
 
 f32 GetPrimaryEntityScale(void) {
-    return func_8432FC94(gParticleEffectData_42);
+    return GetEntityScaleFactor(gParticleEffectData_42);
 }
 
-void func_8432FCF8(void) {
-    func_8432FCB4(gParticleEffectData_42);
+void ComputePrimaryEffectScale(void) {
+    ComputeEntityScaleFactor(gParticleEffectData_42);
 }
 
-f32 func_8432FD1C(void) {
-    return func_8432FC94(gParticleEffectEntityB);
+f32 GetSecondaryEntityScale(void) {
+    return GetEntityScaleFactor(gParticleEffectEntityB);
 }
 
-void func_8432FD40(void) {
-    func_8432FCB4(gParticleEffectEntityB);
+void ComputeSecondaryEntityScale(void) {
+    ComputeEntityScaleFactor(gParticleEffectEntityB);
 }
 
 CameraStruct* GetBattleCamera(void) {
     return gParticleScaleFactor.unk_0C;
 }
 
-ParticleEffectInstance* func_8432FD70(Vec3f arg0, u8 arg1) {
+ParticleEffectInstance* ParticleNode_CreateWhiteFlash(Vec3f arg0, u8 arg1) {
     ParticleEffectInstance* sp1C = Particle_AllocateInstance();
 
     if ((u32)sp1C != -1) {
@@ -921,7 +921,7 @@ ParticleEffectInstance* func_8432FD70(Vec3f arg0, u8 arg1) {
     return sp1C;
 }
 
-void func_8432FDF0(ParticleEffectInstance* arg0, Vec3f arg1) {
+void ParticleNode_SetPosition(ParticleEffectInstance* arg0, Vec3f arg1) {
     if ((u32)arg0 != -1) {
         arg0->unk_68.x = arg1.x;
         arg0->unk_68.y = arg1.y;
@@ -929,11 +929,11 @@ void func_8432FDF0(ParticleEffectInstance* arg0, Vec3f arg1) {
     }
 }
 
-void func_8432FE24(ParticleEffectInstance* arg0) {
+void ParticleNode_ClearActiveFlag(ParticleEffectInstance* arg0) {
     Particle_ClearActiveFlag(arg0);
 }
 
-s16 func_8432FE44(ParticleEffectInstance* arg0) {
+s16 ParticleNode_GetAngleToSecondary(ParticleEffectInstance* arg0) {
     Vec3f sp24;
     s16 ret;
 
@@ -942,13 +942,13 @@ s16 func_8432FE44(ParticleEffectInstance* arg0) {
     return ret;
 }
 
-void func_8432FEC4(ParticleEffectInstance* arg0) {
+void ParticleNode_SavePrimColor(ParticleEffectInstance* arg0) {
     gSavedPrimColorR = arg0->prim_r;
     gSavedPrimColorG = arg0->prim_g;
     gSavedPrimColorB = arg0->prim_b;
 }
 
-void func_8432FEEC(ParticleEffectInstance* arg0) {
+void ParticleNode_RestorePrimColor(ParticleEffectInstance* arg0) {
     arg0->prim_r = gSavedPrimColorR;
     arg0->prim_g = gSavedPrimColorG;
     arg0->prim_b = gSavedPrimColorB;

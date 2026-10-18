@@ -109,7 +109,7 @@ void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
 
     temp_v0 = func_84208870(arg2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, D_842115D0[temp_v0].r, D_842115D0[temp_v0].g, D_842115D0[temp_v0].b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, D_842115DC[temp_v0].r, D_842115DC[temp_v0].g, D_842115DC[temp_v0].b, 255);
@@ -125,16 +125,16 @@ void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
 
     switch (arg2->unk_2692) {
         case 0:
-            sp54 = func_84200130(0x12);
+            sp54 = GetMessageBank1AString(0x12);
             break;
 
         case 13:
-            sp54 = func_84200130(0x13);
+            sp54 = GetMessageBank1AString(0x13);
             break;
 
         default:
             MessageBank_SetPointer_1_9(1, arg2->unk_2692);
-            sp54 = func_84200190(sp58, 0x100, 0x14);
+            sp54 = GetMessageBank1AStringCustomBuf(sp58, 0x100, 0x14);
             break;
     }
 
@@ -175,7 +175,7 @@ void func_84208B04(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
 
     Gfx_FillRect(arg0, arg1, 0x18, 0xCC, 0x3C, 0x3C, 0xA0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
@@ -245,7 +245,7 @@ void func_84208F64(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168
             Text_SetFont(4, 0);
             Text_Print(arg1 + (i * 0x84) + 0x2C, arg2 + 5, arg3->unk_0000[i].unk_004.unk_30);
             Text_SetFont(4, 0);
-            Text_Print(arg1 + (i * 0x84) + 0x2C, arg2 + 0x17, "%s%d", func_84200160(0x15),
+            Text_Print(arg1 + (i * 0x84) + 0x2C, arg2 + 0x17, "%s%d", GetMessageBank06String(0x15),
                           arg3->unk_0000[i].unk_004.unk_24);
         }
     }
@@ -352,7 +352,7 @@ void func_84209340(unk_D_842168A0* arg0, s32 arg1) {
             } else {
                 tmp2 = (tmp2 + ((arg0->unk_00018 * 0x2C) / 4) + 0x2C);
             }
-            func_84200738(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
+            DrawAnimatedGoldBorder(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
         } else if (arg0->unk_00001 == 9) {
             s16 tmp1 = (arg0->unk_0000C * 0x84) + 0x24;
             s16 tmp2 = (arg0->unk_0000E * 0x2C) + 0x20;
@@ -362,12 +362,12 @@ void func_84209340(unk_D_842168A0* arg0, s32 arg1) {
             } else {
                 tmp1 = (tmp1 + ((arg0->unk_00018 * 0x84) / 4) + 0x84);
             }
-            func_84200738(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
+            DrawAnimatedGoldBorder(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
         } else if ((arg0->unk_00001 == 3) || (arg0->unk_00001 == 8)) {
             s16 tmp1 = (arg0->unk_0000C * 0x84) + 0x24;
             s16 tmp2 = (arg0->unk_0000E * 0x2C) + 0x20;
 
-            func_84200738(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
+            DrawAnimatedGoldBorder(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
         }
 
         if (arg0->unk_00009 > 0) {

@@ -106,7 +106,7 @@ typedef struct unk_D_8250A498 {
     /* 0x14 */ char** unk_14;
 } unk_D_8250A498; // size = 0x18
 
-extern TextObject* D_8250A304;
+extern TextObject* gTextObjectHandle;
 
 s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1);
 s32 DrawComputerSelection(s32 arg0, GraphNode* arg1);

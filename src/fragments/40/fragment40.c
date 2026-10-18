@@ -305,7 +305,7 @@ void func_83100784(void) {
     }
 
     if ((D_83102218.unk_08 <= 0.0f) || (D_83102218.unk_00 == 2)) {
-        gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+        gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, 0, 0, 639, 479);
         return;
@@ -330,7 +330,7 @@ void func_83100784(void) {
     var_t3 = sp38;
     var_t0 = sp40;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+    gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
     gDPSetFillColor(gDisplayListHead++, 0x00010001);
 
     var_t4 = sp38 + sp9E;

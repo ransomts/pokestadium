@@ -25,7 +25,7 @@ void Intro_CheckPlayerReady(UNUSED CameraStruct* arg0) {
     if ((func_8431ADF0(0xA) != 0) && (AnimChannel_CheckAndReset(D_84390010[0]) != 0)) {
         D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
         D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-        func_84308654(D_84390010[0], 1, 0);
+        ApplyAnimEffectToOpponent(D_84390010[0], 1, 0);
         Audio_PlaySoundEffect(1, 0xFE, 0);
         InitActionScriptMode3(8, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
         gBattleState.unk_00->unk_20 += 1;
@@ -38,7 +38,7 @@ void Intro_PlayerEnter(UNUSED CameraStruct* arg0) {
     if (D_84390010[0]->unk_4EC.unk_024.y == 0.0f) {
         ProcessBattleMenuSelection();
         Audio_PlaySoundEffect(1, 1, 0);
-        func_84308654(D_84390010[1], 1, 0);
+        ApplyAnimEffectToOpponent(D_84390010[1], 1, 0);
         InitActionScriptMode3(0xA, D_84390010[1], D_84390010[1], 0xFF, 0xFF);
         gBattleState.unk_00->unk_20 += 1;
     }
@@ -52,7 +52,7 @@ void Intro_OpponentEnter(CameraStruct* arg0) {
 
     if (D_84390010[1]->unk_4EC.unk_024.y == 0.0f) {
         arg0->unk_24.fovy = 30.0f;
-        func_84308654(D_84390010[0], 2, 0);
+        ApplyAnimEffectToOpponent(D_84390010[0], 2, 0);
         InitActionScriptMode3(0xB, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
         Vec3f_Set(&sp3C, -150.0f, 5.0f, 0.0f);
         func_8431BAB4(D_84390010[0], arg0, sp3C, 0, 0, 0.0f, 0.0f);
@@ -87,7 +87,7 @@ void Intro_WaitForAnimCompletion(UNUSED CameraStruct* arg0) {
 }
 
 void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
-    unk_D_84390010_654* sp2C = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp2C = &D_84390010[0]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[0]->unk_720->unk_08[sp2C->unk_2C];
 
     D_84390010[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
@@ -102,7 +102,7 @@ void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
     ExecuteAnimStateHandlers(D_84390010[0], 0x10);
     gBattleState.unk_00->unk_2C = 0;
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
-    WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
+    WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x21);
     Dialog_SetMode(0xC);
     ProcessEntityAudioInfo(D_84390010[0]);
     gBattleState.unk_00->unk_10 = 0;
@@ -125,7 +125,7 @@ void Intro_PostInfoDelay(CameraStruct* arg0) {
 }
 
 void Opponent_DisplayPokemonInfo(CameraStruct* arg0) {
-    unk_D_84390010_654* sp2C = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp2C = &D_84390010[1]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[1]->unk_720->unk_08[sp2C->unk_2C];
 
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
@@ -140,7 +140,7 @@ void Opponent_DisplayPokemonInfo(CameraStruct* arg0) {
     gBattleState.unk_00->unk_10 = 0;
     gBattleState.unk_00->unk_2C = 1;
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
-    WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
+    WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x21);
     if (gBattleContext.unk_0000 != 8) {
         Dialog_SetMode(0xC);
     }

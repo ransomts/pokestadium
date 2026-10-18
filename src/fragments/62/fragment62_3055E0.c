@@ -8,7 +8,7 @@ f32 gCameraDistCurrent;
 
 static s32 D_84385B50 = 0;
 
-f32 ClampScaledDistance(unk_D_84390010* arg0, f32 arg1, f32 arg2) {
+f32 ClampScaledDistance(unk_BattlePlayerEntity* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv1 = func_84308598(arg0) * arg1;
 
     if (arg2 < temp_fv1) {
@@ -58,7 +58,7 @@ void Battle_FinishTurn(void) {
     gBattleState.unk_00->unk_14 = 0;
 }
 
-void func_8431AE6C(void) {
+void Battle_AdvanceTurnState(void) {
     gBattleState.unk_00->unk_10 = 0;
 }
 
@@ -67,7 +67,7 @@ void SetCameraPositionAndView(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, 
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg4, arg5, arg6);
 }
 
-void GetEntityGroundPosition(unk_D_84390010* arg0, Vec3f* arg1) {
+void GetEntityGroundPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
     UNUSED s32 pad;
     u8 sp18[] = {
         0x52, 0x73, 0x59, 0x91, 0x5F, 0x82, 0x58, 0x66, 0x0A,
@@ -80,7 +80,7 @@ void GetEntityGroundPosition(unk_D_84390010* arg0, Vec3f* arg1) {
     }
 }
 
-void ResolveEntityPosition(unk_D_84390010* arg0, Vec3f* arg1, s32 arg2) {
+void ResolveEntityPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1, s32 arg2) {
     if (func_80015390(&arg0->unk_000, arg2, arg1) == NULL) {
         GetEntityCenterPosition(arg0, arg1);
         arg1->x = GetEntityXOffset(arg0);
@@ -116,7 +116,7 @@ void func_8431B004(void) {
     }
 }
 
-void func_8431B078(unk_D_84390010* arg0) {
+void Battle_ApplyOpponentAnimEffects(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     gBattleState.unk_00->unk_68 = ((ptr->unk_02 - arg0->unk_654.unk_38.unk_0C) / 996.0f) * 1400.0f;
@@ -131,7 +131,7 @@ void func_8431B078(unk_D_84390010* arg0) {
 
     gBattleState.unk_00->unk_7A = 0;
 
-    if (D_84390288 != 0) {
+    if (gBattleUpdateHPFlag != 0) {
         gBattleState.unk_00->unk_68 = 25.0f;
     }
 }
@@ -155,7 +155,7 @@ void func_8431B174(CameraStruct* arg0) {
     arg0->unk_60.at.x += temp_fv0 * SINS(sp2A + 0x4000);
 }
 
-void func_8431B290(UNUSED unk_D_84390010* arg0) {
+void func_8431B290(UNUSED unk_BattlePlayerEntity* arg0) {
     gBattleState.unk_00->unk_68 = 30.0f;
     gBattleState.unk_00->unk_7A = 0;
 }
@@ -233,9 +233,9 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     static u8 gDefaultModelId = 0x5F;
     static u16 gDefaultModelParam = 0x38F;
 
-    unk_D_84390010_654* sp6C;
+    unk_BattlePlayerAnimState* sp6C;
     UNUSED s32 pad;
-    unk_D_84390010* temp_s0;
+    unk_BattlePlayerEntity* temp_s0;
     Vec3f sp58;
     f32 sp54;
     UNUSED u16 pad2;
@@ -289,7 +289,7 @@ void func_8431B830(CameraStruct* arg0) {
     }
 }
 
-void ConfigureCameraForModel(unk_D_84390010* arg0, CameraStruct* arg1) {
+void ConfigureCameraForModel(unk_BattlePlayerEntity* arg0, CameraStruct* arg1) {
     unk_D_84390010_448* sp38 = &arg0->unk_448;
     UNUSED s32 pad[5];
     f32 sp3C = 0.0f;
@@ -321,7 +321,7 @@ void func_8431BA5C(void) {
     Vec3f_Set(&gBattleState.unk_00->unk_A0, 0.0f, 0.0f, 0.0f);
 }
 
-void func_8431BAB4(unk_D_84390010* arg0, CameraStruct* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
+void func_8431BAB4(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
     Camera_SetViewParameters(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
     arg1->unk_60.at.y += arg6;
     arg1->unk_60.at.y += GetModelDepth(arg0);
@@ -375,7 +375,7 @@ void SmoothFloatPair(f32* arg0, f32* arg1) {
     }
 }
 
-void func_8431BD94(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED f32 arg2) {
+void func_8431BD94(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, UNUSED f32 arg2) {
     unk_D_84390010_448* sp2C = &arg1->unk_448;
     f32 var_fv1;
     Vec3f sp64;
@@ -545,7 +545,7 @@ void func_8431BD94(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED f32 arg2) {
     SmoothFloatPair(&arg0->unk_60.at.z, &arg0->unk_60.eye.z);
 }
 
-void func_8431C594(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431C594(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad[5];
     f32 var_fv0_2;
     f32 sp44;
@@ -580,21 +580,21 @@ void func_8431C594(CameraStruct* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
 }
 
-void Battle_AdvanceCameraTimeline(CameraStruct* arg0, unk_D_84390010* arg1) {
+void Battle_AdvanceCameraTimeline(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     func_8431BD94(arg0, arg1, 50.0f);
     func_8431C594(arg0, arg1);
 }
 
-void func_8431C750(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431C750(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     func_8431BD94(arg0, arg1, 90.0f);
     func_8431C594(arg0, arg1);
 }
 
-void func_8431C784(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431C784(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     func_8431BD94(arg0, arg1, 50.0f);
 }
 
-void func_8431C7A4(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431C7A4(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     UNUSED s32 pad;
     Vec3f sp54;
@@ -624,7 +624,7 @@ void func_8431C7A4(CameraStruct* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
 }
 
-s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f sp84;
     UNUSED s32 pad[3];
     Vec3f sp6C;
@@ -677,7 +677,7 @@ s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8431CB54(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431CB54(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp58;
     Vec3f sp4C;
@@ -696,7 +696,7 @@ void func_8431CB54(CameraStruct* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&sp34, &arg0->unk_60.at, gBattleState.unk_00->unk_94.z * sp30, sp2A, sp28);
 }
 
-void func_8431CC38(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431CC38(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp60;
     Vec3f sp54;
@@ -714,7 +714,7 @@ void func_8431CC38(CameraStruct* arg0, unk_D_84390010* arg1) {
     Math_ExponentialApproach(&arg0->unk_60.eye.y, func_84308548(arg1) * 4.0f, 0.04f);
 }
 
-void func_8431CCFC(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431CCFC(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f sp74;
     Vec3f sp68;
     Vec3f sp5C;
@@ -742,7 +742,7 @@ void func_8431CCFC(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, sp4E, sp52, gCameraDistTarget, 0.0f);
 }
 
-void func_8431CEF0(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED s32 arg2) {
+void func_8431CEF0(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, UNUSED s32 arg2) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp50;
     Vec3f sp44;
@@ -759,7 +759,7 @@ void func_8431CEF0(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED s32 arg2) {
     Camera_SetViewParameters(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
 }
 
-void func_8431CFA4(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431CFA4(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     s16 sp26;
     s16 sp24;
 
@@ -770,7 +770,7 @@ void func_8431CFA4(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, sp26, sp24, gCameraDistCurrent, 0.0f);
 }
 
-s32 func_8431D048(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 func_8431D048(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f sp3C;
     Vec3f sp30;
     f32 sp2C;
@@ -790,7 +790,7 @@ s32 func_8431D048(CameraStruct* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-s32 Battle_CheckPlayerAction(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
+s32 Battle_CheckPlayerAction(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
     Vec3f sp60;
     Vec3f sp54;
@@ -830,7 +830,7 @@ s32 Battle_CheckPlayerAction(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2,
     return 0;
 }
 
-s32 Battle_ApplySpecialCamera(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 Battle_ApplySpecialCamera(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f sp6C;
     Vec3f sp60;
     Vec3f sp54;
@@ -890,7 +890,7 @@ void func_8431D5C8(UNUSED CameraStruct* arg0) {
     if (arg0) {}
 }
 
-void Battle_ApplyCameraSettings(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void Battle_ApplyCameraSettings(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     func_8431BB24(arg0, gCameraPreset.unk_00, gCameraPreset.unk_0C, gCameraPreset.unk_0E, gCameraPreset.unk_18, 0.0f);
     if (arg2 == 1) {
         arg0->unk_60.at.y += GetModelDepth(arg1);
@@ -929,7 +929,7 @@ void func_8431D7C4(f32 arg0, f32 arg1) {
     gCameraPreset.unk_38 = arg1;
 }
 
-void Battle_PlayCameraTransition(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D_84390010* arg2) {
+void Battle_PlayCameraTransition(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* arg2) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -992,7 +992,7 @@ void Battle_ApplyCameraPreset(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     func_8431D7C4(arg0->unk_28, arg0->unk_2C);
 }
 
-s32 func_8431DA38(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 func_8431DA38(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f sp64;
     Vec3f sp58;
     Vec3f sp4C;
@@ -1045,7 +1045,7 @@ void func_8431DC78(CameraStruct* arg0, s32 arg1) {
     Vec3f sp60;
     Vec3f sp54;
     Vec3f sp48;
-    unk_D_84390010* sp40;
+    unk_BattlePlayerEntity* sp40;
 
     func_8431BA5C();
     arg0->unk_24.fovy = 30.0f;
@@ -1099,7 +1099,7 @@ s32 func_8431DE30(CameraStruct* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8431DF98(CameraStruct* arg0, unk_D_84390010* arg1) {
+void Battle_ApplyPlayerAnimEffects(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
 
     gBattleState.unk_00->unk_D0.x = GetEntityXOffset(arg1);
@@ -1122,7 +1122,7 @@ void func_8431DF98(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
 }
 
-void func_8431E118(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431E118(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     f32 sp3C;
 
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
@@ -1131,7 +1131,7 @@ void func_8431E118(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, 0, arg1->unk_4B0 << 0xE, sp3C, 0.0f);
 }
 
-void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E1DC(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1148,7 +1148,7 @@ void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
-void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E368(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1164,7 +1164,7 @@ void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
-void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E4DC(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1179,7 +1179,7 @@ void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
-void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E63C(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     UNUSED s32 pad[4];
     s16 sp3E;
 
@@ -1199,7 +1199,7 @@ void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
-void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E7D0(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
@@ -1213,7 +1213,7 @@ void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
-void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E90C(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
@@ -1223,9 +1223,9 @@ void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     }
 }
 
-void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
+void func_8431EA1C(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     GetEntityCenterPosition(arg1, &gCameraPreset.unk_00);
-    Battle_PlayCameraTransition(&D_843849C0[arg2], arg0, arg1);
+    Battle_PlayCameraTransition(&gBattleCameraPresetTable[arg2], arg0, arg1);
     Battle_ApplyCameraSettings(arg0, arg1, 1);
     func_8431D5C8(arg0);
     if (arg3 == 1) {
@@ -1233,7 +1233,7 @@ void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3)
     }
 }
 
-void func_8431EAB8(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431EAB8(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     func_8431BA5C();
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
@@ -1242,7 +1242,7 @@ void func_8431EAB8(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EBD0(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431EBD0(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     func_8431BA5C();
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
@@ -1251,7 +1251,7 @@ void func_8431EBD0(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431ECEC(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431ECEC(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
@@ -1259,7 +1259,7 @@ void func_8431ECEC(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EE08(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431EE08(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
@@ -1270,7 +1270,7 @@ void func_8431EE08(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EF54(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431EF54(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
@@ -1278,7 +1278,7 @@ void func_8431EF54(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431F050(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431F050(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 0.5f, 100.0f);
@@ -1289,7 +1289,7 @@ void func_8431F050(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     }
 }
 
-void func_8431F194(CameraStruct* arg0, unk_D_84390010* arg1) {
+void func_8431F194(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
@@ -1297,7 +1297,7 @@ void func_8431F194(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void Battle_ExecuteMove(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
+void Battle_ExecuteMove(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1354,7 +1354,7 @@ void Battle_ExecuteMove(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 
     }
 }
 
-void Battle_PlayMoveEffect(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
+void Battle_PlayMoveEffect(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1378,7 +1378,7 @@ void Battle_PlayMoveEffect(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     }
 }
 
-void Battle_QueueOpponentMove(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
+void Battle_QueueOpponentMove(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:

@@ -382,14 +382,14 @@ void Battle_UpdateAndRender(void) {
     Game_UpdateInputs();
     func_84B03814(gInputBuffer);
     func_84B04A7C(&D_84B259A8);
-    func_84B062E4(&D_84B259E8);
+    UpdateErrorScreenAnimation(&D_84B259E8);
     UI_StateMachine(&D_84B25A28);
     Battle_BeginFrame();
 }
 
 void Battle_InitGraphics(void) {
-    func_84B05728(&D_84B259A8);
-    func_84B06A54(&D_84B259E8, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
+    ResetBarSegmentState(&D_84B259A8);
+    InitTransferPakErrorScreen(&D_84B259E8, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
     func_84B07CF8(&D_84B25A28, gBattleGraphics.unk_0004->unk_0C);
 }
 
@@ -418,7 +418,7 @@ s32 func_84B017AC(void) {
     }
 
     func_84B04F78(&D_84B259A8, &gBattleGraphics.unk_0008[0x10]);
-    func_84B06364(&D_84B259E8, gBattleGraphics.unk_0008, 0);
+    SetupErrorScreenGraphNodes(&D_84B259E8, gBattleGraphics.unk_0008, 0);
     Music_ChangeTrack(0x33);
 
     for (i = 0; i < var_s1; i++) {
@@ -499,7 +499,7 @@ void func_84B01AA0(void) {
     Game_UpdateInputs();
     func_84B03814(gInputBuffer);
     func_84B0A1F4(&D_84B25A58);
-    func_84B062E4(&D_84B259E8);
+    UpdateErrorScreenAnimation(&D_84B259E8);
     func_84B0BBEC(&D_84B25A90);
     func_84B0D4B4(&D_84B25AC0);
     func_84B0D4B4(&D_84B26080);
@@ -514,7 +514,7 @@ void func_84B01B40(void) {
     s32 tmp;
 
     func_84B0A9D0(&D_84B25A58);
-    func_84B06A54(&D_84B259E8, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
+    InitTransferPakErrorScreen(&D_84B259E8, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
     func_84B0BE28(&D_84B25A90);
 
     if (gBattleGraphics.unk_0003 != 0) {
@@ -617,7 +617,7 @@ void func_84B01F94(void) {
 
     func_84B0D718(&D_84B26080);
     tmp = gBattleGraphics.unk_0001 == 0;
-    func_84B06364(&D_84B259E8, gBattleGraphics.unk_0008, tmp + 1);
+    SetupErrorScreenGraphNodes(&D_84B259E8, gBattleGraphics.unk_0008, tmp + 1);
 
     while ((D_84B259E8.unk_00 != 0) || (D_84B26080.unk_5A0 != 0)) {
         func_84B01AA0();
@@ -1153,7 +1153,7 @@ s32 func_84B02F60(void) {
         var_s1 = 0x4B;
     }
 
-    func_84B05728(&D_84B259A8);
+    ResetBarSegmentState(&D_84B259A8);
     func_84B050AC(&D_84B259A8, &gBattleGraphics.unk_0008[0x10]);
     Music_ChangeTrack(0x3F);
 

@@ -186,21 +186,21 @@ void DrawMoveList(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
         switch (arg2) {
             case 1:
-                Text_Print(arg0 + 0x19C, arg1 + 0x20, func_84200130(0));
+                Text_Print(arg0 + 0x19C, arg1 + 0x20, GetMessageBank1AString(0));
                 break;
 
             case 2:
-                Text_Print(arg0 + 0x19C, arg1 + 0x20, func_84200130(1));
+                Text_Print(arg0 + 0x19C, arg1 + 0x20, GetMessageBank1AString(1));
                 break;
 
             case 3:
-                Text_Print(arg0 + 0x19C, arg1 + 0xA, func_84200130(2));
+                Text_Print(arg0 + 0x19C, arg1 + 0xA, GetMessageBank1AString(2));
                 break;
         }
 
         Text_SetFont(8, 0);
-        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x3A, 0, arg3, func_84200130(3));
-        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x50, 1, arg3, func_84200130(4));
+        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x3A, 0, arg3, GetMessageBank1AString(3));
+        PrintMoveEntry(arg0 + 0x1CE, arg1 + 0x50, 1, arg3, GetMessageBank1AString(4));
         Text_SetupDL();
     }
 }
@@ -306,35 +306,35 @@ void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
             Text_SetFont(8, 0);
             Text_Print(temp_s4 + 0xC, temp_s5 + 8, temp_s6->unk_30);
             Text_SetFont(8, 0);
-            Text_Print(temp_s4 + 0x84, temp_s5 + 8, "%s %d", func_84200160(0x15), temp_s6->unk_24);
+            Text_Print(temp_s4 + 0x84, temp_s5 + 8, "%s %d", GetMessageBank06String(0x15), temp_s6->unk_24);
             Text_SetFont(4, 0);
-            Text_Print(temp_s4 + 0xE8, temp_s5 + 0xC, "%s%03d", func_84200160(0x16), temp_s6->unk_00.unk_00);
+            Text_Print(temp_s4 + 0xE8, temp_s5 + 0xC, "%s%03d", GetMessageBank06String(0x16), temp_s6->unk_00.unk_00);
             Text_SetFont(4, 0);
-            Text_Print(temp_s4 + 0x13C, temp_s5 + 0xC, func_84200088(temp_s6->unk_00.unk_00));
+            Text_Print(temp_s4 + 0x13C, temp_s5 + 0xC, GetMessageBank24String(temp_s6->unk_00.unk_00));
             Text_SetFont(8, 0);
-            Text_Print(temp_s4 + 0x76, temp_s5 + 0x5A, "%s", func_84200160(8));
+            Text_Print(temp_s4 + 0x76, temp_s5 + 0x5A, "%s", GetMessageBank06String(8));
             Text_SetFont(8, 0);
             Text_Print(temp_s4 + 0xA4, temp_s5 + 0x5A, "%3d", temp_s6->unk_26);
             Text_SetFont(4, 0);
-            Text_Print(temp_s4 + 0x116, temp_s5 + 0x25, func_84200130(5));
-            Text_Print(temp_s4 + 0x116, temp_s5 + 0x38, func_84200130(6));
-            Text_Print(temp_s4 + 0x116, temp_s5 + 0x4B, func_84200130(7));
-            Text_Print(temp_s4 + 0x116, temp_s5 + 0x5E, func_84200130(8));
+            Text_Print(temp_s4 + 0x116, temp_s5 + 0x25, GetMessageBank1AString(5));
+            Text_Print(temp_s4 + 0x116, temp_s5 + 0x38, GetMessageBank1AString(6));
+            Text_Print(temp_s4 + 0x116, temp_s5 + 0x4B, GetMessageBank1AString(7));
+            Text_Print(temp_s4 + 0x116, temp_s5 + 0x5E, GetMessageBank1AString(8));
             Text_SetFont(4, 0);
             Text_Print(temp_s4 + 0x15E, temp_s5 + 0x25, "%3d", temp_s6->unk_28);
             Text_Print(temp_s4 + 0x15E, temp_s5 + 0x38, "%3d", temp_s6->unk_2A);
             Text_Print(temp_s4 + 0x15E, temp_s5 + 0x4B, "%3d", temp_s6->unk_2C);
             Text_Print(temp_s4 + 0x15E, temp_s5 + 0x5E, "%3d", temp_s6->unk_2E);
             Text_SetFont(4, 0);
-            temp_v0_8 = func_84200130(9);
+            temp_v0_8 = GetMessageBank1AString(9);
             Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0x90, temp_s5 + 0x26, temp_v0_8);
-            temp_v0_8 = func_842000F8(RemapStadiumModeIndex(temp_s6->unk_06));
+            temp_v0_8 = GetStadiumModeString(RemapStadiumModeIndex(temp_s6->unk_06));
             Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0x90, temp_s5 + 0x3A, temp_v0_8);
 
             if (temp_s6->unk_06 != temp_s6->unk_07) {
-                temp_v0_8 = func_84200130(0xA);
+                temp_v0_8 = GetMessageBank1AString(0xA);
                 Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0xE0, temp_s5 + 0x26, temp_v0_8);
-                temp_v0_8 = func_842000F8(RemapStadiumModeIndex(temp_s6->unk_07));
+                temp_v0_8 = GetStadiumModeString(RemapStadiumModeIndex(temp_s6->unk_07));
                 Text_Print((temp_s4 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0xE0, temp_s5 + 0x3A, temp_v0_8);
             }
 
@@ -351,9 +351,9 @@ void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
                         break;
                     }
                     color = &gMoveColorInfoTable[gMoveStrings[temp_a0 - 1].unk_01].unk_00[2];
-                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], func_842000C0(temp_a0));
+                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_a0));
                     Text_SetEnvColor(color->r, color->g, color->b, 0xFF);
-                    Text_Print(temp_s4 + sp80, gMoveTextYOffsets[i] + temp_s5, func_842000C0(temp_s6->unk_09[i]));
+                    Text_Print(temp_s4 + sp80, gMoveTextYOffsets[i] + temp_s5, GetMessageBank25String(temp_s6->unk_09[i]));
                 }
 
                 Text_SetupDL();
@@ -365,7 +365,7 @@ void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
                         break;
                     }
 
-                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], func_842000C0(temp_s6->unk_09[i]));
+                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_s6->unk_09[i]));
                     Gfx_DrawSpriteRGBA16((temp_s4 + sp80) - 0x18, gMoveTextYOffsets[i] + temp_s5, 0x14, 0x14,
                                   gMoveColorInfoTable[gMoveStrings[temp_s6->unk_09[i] - 1].unk_01].unk_0C, 0x14, 0);
                 }

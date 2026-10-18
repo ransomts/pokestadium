@@ -47,31 +47,31 @@ typedef struct unk_D_86203E50 {
     /* 0x1CA */ char pad1CA[6];
 } unk_D_86203E50; // size = 0x1D0
 
-extern u32 D_862082A0[4];
+extern u32 gRacePlayerScreenY[4];
 
-void func_86200020(unk_D_86203E50* arg0);
+void SetAIPlayerState(unk_D_86203E50* arg0);
 void RenderPlayerPanels(void);
-void func_862002EC(void);
+void Race_Stub(void);
 void ProcessPlayerInputs(void);
 void PollInputsWhenStageReady(void);
 void InitCameraParameters(void);
 void UpdateCameraForPhase(void);
 void func_86200938(void);
-void func_86200940(s32 arg0);
-void func_86200EC4(s32 arg0);
+void Race_DrawPanelAndText(s32 arg0);
+void Race_RenderFrame(s32 arg0);
 s32 RunRaceStartSequence(void);
 void HandleResultScreen(void);
-void func_862015A0(unk_D_86203E50* arg0);
+void UpdatePlayerZAndScreenY(unk_D_86203E50* arg0);
 void ResetPlayerState(unk_D_86203E50* arg0);
 s32 CheckPlayerObstacleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1);
-void func_86201770(unk_D_86203E50* arg0);
+void UpdatePlayerAnimProgress(unk_D_86203E50* arg0);
 void SetPlayerState(unk_D_86203E50* arg0, s32 arg1);
 void UpdateObstaclesForPlayer(unk_D_86203E50* arg0);
 s16 UpdatePlayersAndCheckFinish(void);
-void func_862022CC(void);
+void UpdateFinishersAnim(void);
 void func_862023F8(void);
-void func_86202C7C(void);
-void func_86202D5C(void);
+void TriggerWinnerAnim(void);
+void TriggerResultAnims(void);
 void func_86202EE4(void);
 void func_86202F3C(void);
 void func_86202FA4(s32 arg0);

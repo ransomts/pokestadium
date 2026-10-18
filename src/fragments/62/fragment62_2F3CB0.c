@@ -5,14 +5,14 @@
 
 static f32 gDefaultScales[] = { 1.0f, 2.0f };
 
-void Entity_SetLaunchVelocity(unk_D_84390010* arg0, f32 arg1, s16 arg2) {
+void Entity_SetLaunchVelocity(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
     arg0->unk_498 = arg1;
     arg0->unk_448.unk_0C.z = COSS(arg2) * arg1;
     arg0->unk_448.unk_0C.y = SINS(arg2) * arg1;
     arg0->unk_49C = 0.01f;
 }
 
-void Entity_UpdateMovement(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4) {
+void Entity_UpdateMovement(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -50,7 +50,7 @@ void Entity_UpdateMovement(unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2,
     Vec3f_Add(&arg0->unk_000.unk_024, &sp3C);
 }
 
-void Entity_UpdateMovementFast(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
+void Entity_UpdateMovementFast(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -87,7 +87,7 @@ void Entity_UpdateMovementFast(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1
     Vec3f_Add(&arg1->unk_4EC.unk_024, &sp3C);
 }
 
-void Entity_ResetSubObjectFlags(unk_D_84390010* arg0) {
+void Entity_ResetSubObjectFlags(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -97,7 +97,7 @@ void Entity_ResetSubObjectFlags(unk_D_84390010* arg0) {
     }
 }
 
-void Entity_InitSubObjects(unk_D_84390010* arg0) {
+void Entity_InitSubObjects(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s16 sp64[] = { 0x0, 0xE38, 0xF1C8 }; // D_84384608
 
@@ -112,7 +112,7 @@ void Entity_InitSubObjects(unk_D_84390010* arg0) {
     }
 }
 
-void Entity_AnimateSubObjects(unk_D_84390010* arg0) {
+void Entity_AnimateSubObjects(unk_BattlePlayerEntity* arg0) {
     s32 i;
     f32 tmp;
     Vec3f sp5C = { 0.0f, 0.0f, 0.0f };         // D_84384610
@@ -136,7 +136,7 @@ void Entity_AnimateSubObjects(unk_D_84390010* arg0) {
     }
 }
 
-void Entity_ActivateSubObjects(unk_D_84390010* arg0) {
+void Entity_ActivateSubObjects(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -149,7 +149,7 @@ void Entity_ActivateSubObjects(unk_D_84390010* arg0) {
     }
 }
 
-s32 Entity_ScaleSubObjects(unk_D_84390010* arg0) {
+s32 Entity_ScaleSubObjects(unk_BattlePlayerEntity* arg0) {
     s32 i;
     f32 temp_fv0_2;
     f32 sp5C[] = { 0.007f, 0.005f, 0.039f }; // D_8438462C
@@ -173,7 +173,7 @@ s32 Entity_ScaleSubObjects(unk_D_84390010* arg0) {
     return 0;
 }
 
-void Entity_SetSubObjectCameraOffsets(unk_D_84390010* arg0) {
+void Entity_SetSubObjectCameraOffsets(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -190,7 +190,7 @@ void Entity_SetSubObjectCameraOffsets(unk_D_84390010* arg0) {
     }
 }
 
-void Entity_UpdateCameraFromSubObject(unk_D_84390010* arg0, s16 arg1) {
+void Entity_UpdateCameraFromSubObject(unk_BattlePlayerEntity* arg0, s16 arg1) {
     s32 i;
     f32 sp90;
     s16 sp8E;
@@ -208,11 +208,11 @@ void Entity_UpdateCameraFromSubObject(unk_D_84390010* arg0, s16 arg1) {
     }
 }
 
-void func_84309F0C(unk_D_84390010* arg0) {
-    func_84308654(arg0, 0, 0);
+void func_84309F0C(unk_BattlePlayerEntity* arg0) {
+    ApplyAnimEffectToOpponent(arg0, 0, 0);
 }
 
-void Entity_LaunchProjectile(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void Entity_LaunchProjectile(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4EC.unk_000.unk_01 |= 1;
     if (arg1 == D_84390010[0]) {
         Vec3f_Set(&arg1->unk_4EC.unk_024, 35.0f, 50.0f, -250.0f);
@@ -225,7 +225,7 @@ void Entity_LaunchProjectile(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) 
     Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
-void Entity_HandleProjectileLanding(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void Entity_HandleProjectileLanding(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (arg1 == gPrimaryPokemonEntity) {
         Entity_UpdateMovementFast(arg0, arg1, 0, 0, 0x1FFE, 0x4440);
     } else {
@@ -243,7 +243,7 @@ void Entity_HandleProjectileLanding(unk_D_84390010* arg0, unk_D_84390010* arg1) 
     }
 }
 
-void Entity_StateMachine_Dispatch(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void Entity_StateMachine_Dispatch(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             Entity_LaunchProjectile(arg0, arg1);
@@ -254,7 +254,7 @@ void Entity_StateMachine_Dispatch(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A0E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A0E4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_4EC.unk_024, arg1->unk_4B0 * -150.0f, 100.0f, 0.0f);
     arg1->unk_4B8++;
     Entity_SetLaunchVelocity(arg1, 0.0f, 0x3FFC);
@@ -263,7 +263,7 @@ void func_8430A0E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
-void func_8430A17C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A17C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4EC.unk_01E.x += 0x1555;
     arg1->unk_4EC.unk_01E.z += 0xE38;
 
@@ -283,7 +283,7 @@ void func_8430A17C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A22C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A22C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430A0E4(arg0, arg1);
@@ -294,7 +294,7 @@ void func_8430A22C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A280(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A280(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
@@ -302,7 +302,7 @@ void func_8430A280(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430A308(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A308(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_UpdateMovement(arg0, arg1, 1.45f, 0.015f, 0x4000);
     Entity_UpdateCameraFromSubObject(arg1, 0);
     if (arg0->unk_000.unk_024.y >= 200.0f) {
@@ -312,7 +312,7 @@ void func_8430A308(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A390(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A390(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430A280(arg0, arg1);
@@ -323,14 +323,14 @@ void func_8430A390(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A3E4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A3E4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
     arg1->unk_4B8++;
 }
 
-void func_8430A464(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A464(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_UpdateMovement(arg0, arg1, 2.0f, 0.002f, 0x4000);
     if ((arg0->unk_000.unk_024.y - GetModelBaseY(arg1)) >= 90.0f) {
         arg1->unk_4B8++;
@@ -338,10 +338,10 @@ void func_8430A464(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A4E0(UNUSED unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
+void func_8430A4E0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
-void func_8430A4EC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A4EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430A3E4(arg0, arg1);
@@ -356,7 +356,7 @@ void func_8430A4EC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-s32 func_8430A558(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
+s32 func_8430A558(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     arg0->unk_000.unk_01E.y -= arg1;
 
     if (arg1 > 0) {
@@ -370,7 +370,7 @@ s32 func_8430A558(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-void func_8430A5D4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A5D4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_SetSubObjectCameraOffsets(arg1);
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
@@ -378,7 +378,7 @@ void func_8430A5D4(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430A618(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A618(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
 
     if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
@@ -392,7 +392,7 @@ void func_8430A618(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A6AC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A6AC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp = 0x4000 - arg0->unk_000.unk_01E.y;
     f32 var_fa1;
     s16 sp26;
@@ -417,7 +417,7 @@ void func_8430A6AC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A7BC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A7BC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430A5D4(arg0, arg1);
@@ -432,14 +432,14 @@ void func_8430A7BC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A828(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A828(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430A848(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A848(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
 
     if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
@@ -452,7 +452,7 @@ void func_8430A848(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430A8DC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430A8DC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -481,7 +481,7 @@ void func_8430A8DC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AA18(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AA18(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430A828(arg0, arg1);
@@ -496,7 +496,7 @@ void func_8430AA18(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AA84(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AA84(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
@@ -507,7 +507,7 @@ void func_8430AA84(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430AB00(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AB00(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f }; // D_84384654
 
@@ -524,7 +524,7 @@ void func_8430AB00(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430ABF0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430ABF0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f };
 
@@ -546,7 +546,7 @@ void func_8430ABF0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AD10(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AD10(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430AA84(arg0, arg1);
@@ -561,7 +561,7 @@ void func_8430AD10(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AD7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AD7C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_InitSubObjects(arg1);
     arg1->unk_4AC = 0;
     UpdateEntityBasePosition(arg1);
@@ -569,7 +569,7 @@ void func_8430AD7C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430ADE8(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430ADE8(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_AnimateSubObjects(arg1);
     arg1->unk_4AC++;
     if (arg1->unk_4AC == 0x3C) {
@@ -578,7 +578,7 @@ void func_8430ADE8(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AE3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AE3C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430AD7C(arg0, arg1);
@@ -589,7 +589,7 @@ void func_8430AE3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430AE90(unk_D_84390010* arg0) {
+void func_8430AE90(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     CameraStruct* sp18 = gBattleState.unk_00->unk_DC;
 
@@ -599,7 +599,7 @@ void func_8430AE90(unk_D_84390010* arg0) {
     func_84309F0C(arg0);
 }
 
-void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AF08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A8 = 0;
     arg1->unk_4A4 = 0;
@@ -610,7 +610,7 @@ void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430AF80(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430AF80(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     CameraStruct* temp_s0 = gBattleState.unk_00->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
@@ -645,7 +645,7 @@ void func_8430AF80(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B104(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B104(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430AF08(arg0, arg1);
@@ -656,7 +656,7 @@ void func_8430B104(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B158(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B158(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (arg0->unk_000.unk_030.y != 1.0f) {
         func_84309F0C(arg1);
     } else {
@@ -665,7 +665,7 @@ void func_8430B158(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B1B8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B1B8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 temp_fv0;
 
     temp_fv0 = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
@@ -681,7 +681,7 @@ void func_8430B1B8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B244(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B244(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430B158(arg0, arg1);
@@ -692,11 +692,11 @@ void func_8430B244(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B298(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B298(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B2AC(unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
+void func_8430B2AC(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
     arg0->unk_000.unk_030.x = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
     arg0->unk_000.unk_030.y = Math_ApproachF32(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
     arg0->unk_000.unk_030.z = Math_ApproachF32(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
@@ -706,7 +706,7 @@ void func_8430B2AC(unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B374(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B374(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430B298(arg0, arg1);
@@ -717,7 +717,7 @@ void func_8430B374(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B3C8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B3C8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A4 = 0x16C;
     arg1->unk_4A6 = 0;
     arg1->unk_4A8 = 0;
@@ -728,7 +728,7 @@ void func_8430B3C8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B40C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B40C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 var_fv0;
 
     // clang-format off
@@ -757,7 +757,7 @@ void func_8430B40C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B550(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B550(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 var_fv0;
     f32 var_fv1;
 
@@ -788,7 +788,7 @@ void func_8430B550(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B68C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B68C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430B3C8(arg0, arg1);
@@ -803,7 +803,7 @@ void func_8430B68C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B6F8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B6F8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A8 = 0x71C;
     arg1->unk_4A0 = 0.4f;
     arg1->unk_448.unk_0C.x = arg0->unk_000.unk_030.x;
@@ -812,7 +812,7 @@ void func_8430B6F8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B734(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B734(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* temp_a0 = &arg1->unk_654.unk_38;
     s16 sp22;
 
@@ -845,7 +845,7 @@ void func_8430B734(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B8FC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B8FC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430B6F8(arg0, arg1);
@@ -856,12 +856,12 @@ void func_8430B8FC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430B950(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B950(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4AC = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430B968(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430B968(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* ptr = &arg1->unk_654.unk_38;
     UNUSED s32 pad;
     f32 temp_fs0;
@@ -879,7 +879,7 @@ void func_8430B968(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430BAB8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BAB8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430B950(arg0, arg1);
@@ -890,12 +890,12 @@ void func_8430BAB8(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430BB0C(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BB0C(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4C0 = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430BB24(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BB24(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 sp24;
     f32 sp20;
 
@@ -911,7 +911,7 @@ void func_8430BB24(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430BBE4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BBE4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
             func_8430BB0C(arg0, arg1);
@@ -922,12 +922,12 @@ void func_8430BBE4(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430BC38(UNUSED unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
+void func_8430BC38(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
 void func_8430BC44(s32 arg0) {
-    unk_D_84390010* temp_a1 = D_84390010[arg0];
-    unk_D_84390010* temp_a2 = D_84390010[arg0];
+    unk_BattlePlayerEntity* temp_a1 = D_84390010[arg0];
+    unk_BattlePlayerEntity* temp_a2 = D_84390010[arg0];
 
     switch (D_84390010[arg0]->unk_4B4) {
         case 0:
@@ -1000,23 +1000,23 @@ void func_8430BC44(s32 arg0) {
     }
 }
 
-void func_8430BD9C(unk_D_84390010* arg0, u8 arg1, u8 arg2) {
+void func_8430BD9C(unk_BattlePlayerEntity* arg0, u8 arg1, u8 arg2) {
     arg0->unk_4E8 = arg1;
     arg0->unk_4E9 = arg2;
 }
 
-void func_8430BDB0(unk_D_84390010* arg0) {
+void func_8430BDB0(unk_BattlePlayerEntity* arg0) {
     arg0->unk_4E8 = 0;
     arg0->unk_4E9 = 0;
 }
 
-void func_8430BDBC(unk_D_84390010* arg0, f32 arg1, s16 arg2) {
+void func_8430BDBC(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
     arg0->unk_4E4 = arg1;
     arg0->unk_4D8.z = COSS(arg2) * arg1;
     arg0->unk_4D8.y = SINS(arg2) * arg1;
 }
 
-void func_8430BE08(unk_D_84390010* arg0, unk_D_84390010* arg1, UNUSED f32 arg2, UNUSED f32 arg3, UNUSED s32 arg4) {
+void func_8430BE08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, UNUSED f32 arg2, UNUSED f32 arg3, UNUSED s32 arg4) {
     f32 tmp1 = 0.01f;
     f32 tmp2 = 18.0f;
     Vec3f sp2C;
@@ -1035,14 +1035,14 @@ void func_8430BE08(unk_D_84390010* arg0, unk_D_84390010* arg1, UNUSED f32 arg2, 
     Vec3f_Add(&arg0->unk_000.unk_024, &sp2C);
 }
 
-void func_8430BEC0(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BEC0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_4CC, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_4D8, 0.0f, 0.0f, 0.0f);
     func_8430BDBC(arg1, 23.0f, 0x2E36);
     arg1->unk_4E9++;
 }
 
-void func_8430BF3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BF3C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     func_8430BE08(arg0, arg1, 0, 0, 0x2E36);
     if (arg1->unk_000.unk_024.y < GetModelBaseY(arg1)) {
         arg1->unk_4D8.y = 0.0f;
@@ -1051,7 +1051,7 @@ void func_8430BF3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430BFB0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void func_8430BFB0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4E9) {
         case 0:
             func_8430BEC0(arg0, arg1);
@@ -1062,12 +1062,12 @@ void func_8430BFB0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 }
 
-void func_8430C004(UNUSED unk_D_84390010* arg0, UNUSED unk_D_84390010* arg1) {
+void func_8430C004(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
 void func_8430C010(s32 arg0) {
-    unk_D_84390010* temp_v0 = D_84390010[arg0];
-    unk_D_84390010* temp_v1 = D_84390010[arg0];
+    unk_BattlePlayerEntity* temp_v0 = D_84390010[arg0];
+    unk_BattlePlayerEntity* temp_v1 = D_84390010[arg0];
 
     if (temp_v1->unk_4E8 == 0xB) {
         func_8430BFB0(temp_v0, temp_v1);
@@ -1086,7 +1086,7 @@ s16 gAnimLookupTable[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    0xAE, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0,
 };
 
-unk_D_843847BC D_843847BC[2] = {
+unk_D_843847BC gEntityInitParams[2] = {
     {
         0xFFB8,
         0x0048,
@@ -1223,7 +1223,7 @@ unk_D_86B0C160 gCameraPosA = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 0, 0, 0.0f, 3.5f, 0.20000000298023224f, 0.05999999865889549f, 200.0f,
 };
 
-unk_D_86B0C160 D_843849C0[] = {
+unk_D_86B0C160 gBattleCameraPresetTable[] = {
     {
         0,
         0,
@@ -1340,11 +1340,11 @@ unk_D_86B0C160 D_843849C0[] = {
     },
 };
 
-unk_D_86B0C160 D_84384AF8 = {
+unk_D_86B0C160 gBattleCameraPresetE = {
     0, 0, 0, 2184, 0, 0.0f, 10.5f, 0, 0, 0, 182, 0, 0.0f, 2.0f, 0.20000000298023224f, 0.014999999664723873f, 50.0f,
 };
 
-unk_D_86B0C160 D_84384B2C[] = {
+unk_D_86B0C160 gBattleCameraPresetTable2[] = {
     {
         0,
         0,

@@ -69,7 +69,7 @@ void CreateParticleEmitter(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32
             var_v1->unk_01C = sp64;
             var_v1->unk_00C = argC;
             var_v1->unk_010 = argA;
-            var_v1->unk_034 = func_8432FD70(sp64, 2);
+            var_v1->unk_034 = ParticleNode_CreateWhiteFlash(sp64, 2);
 
             if (arg3 < 0.0) {
                 var_v1->unk_006 = -1;
@@ -141,10 +141,10 @@ void UpdateParticleEmitter(ParticleEmitter* arg0) {
             var_s0->unk_0C.y += var_ft4;
             arg0->unk_014 = (MathUtil_Atan2s(var_s0->unk_18.x, var_s0->unk_18.y + var_ft4) * 360.0) / 65535.0;
 
-            func_8432FDF0(arg0->unk_034, var_s0->unk_0C);
+            ParticleNode_SetPosition(arg0->unk_034, var_s0->unk_0C);
 
             if (arg0->unk_002 == 1) {
-                func_8432FD70(var_s0->unk_0C, 1);
+                ParticleNode_CreateWhiteFlash(var_s0->unk_0C, 1);
             }
 
             var_s0->unk_04 += 2.0;
@@ -175,7 +175,7 @@ s32 TickParticleEmitters(void) {
             var_s0->unk_002 += 1;
             if (var_s0->unk_004 < var_s0->unk_002) {
                 var_s0->unk_000 = 0;
-                func_8432FE24(var_s0->unk_034);
+                ParticleNode_ClearActiveFlag(var_s0->unk_034);
             } else {
                 UpdateParticleEmitter(var_s0);
             }

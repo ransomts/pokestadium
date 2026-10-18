@@ -5,7 +5,7 @@
 
 struct ParticleEffectInstance;
 struct ParticleRenderSettings;
-struct unk_D_84390010;
+struct unk_BattlePlayerEntity;
 struct ParticleDef;
 
 typedef void (*func_unk_D_8140E724_008)(struct ParticleEffectInstance*);
@@ -64,7 +64,7 @@ typedef struct ParticleEffectInstance {
     /* 0x04 */ struct ParticleEffectInstance* prev;
     /* 0x08 */ func_unk_D_8140E724_008 unk_08;
     /* 0x0C */ ParticleEffectData* unk_0C;
-    /* 0x10 */ struct unk_D_84390010* unk_10;
+    /* 0x10 */ struct unk_BattlePlayerEntity* unk_10;
     /* 0x14 */ Fragment2_1GraphNode* unk_14;
     /* 0x18 */ u32 unk_18;
     /* 0x1C */ f32 unk_1C;
@@ -121,7 +121,7 @@ typedef void (*func_unk_D_8140E724)(struct ParticleEffectInstance*);
 typedef struct ParticleDef {
     /* 0x00 */ func_unk_D_8140E724 unk_00;
     /* 0x04 */ ParticleEffectData* unk_04;
-    /* 0x08 */ struct unk_D_84390010* unk_08;
+    /* 0x08 */ struct unk_BattlePlayerEntity* unk_08;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -672,8 +672,8 @@ void Particle_AddRotationDeltaZ(ParticleEffectInstance* arg0);
 void Particle_AddRotationDeltaVec(ParticleEffectInstance* arg0, Vec3s arg1);
 void Particle_AddRotationDeltaXYZ(ParticleEffectInstance* arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_8140A578(ParticleEffectInstance* arg0, s16 arg1);
-void func_8140A594(ParticleEffectInstance* arg0, s16 arg1);
-void func_8140A5B0(ParticleEffectInstance* arg0, s16 arg1);
+void Particle_RotateY(ParticleEffectInstance* arg0, s16 arg1);
+void Particle_RotateX(ParticleEffectInstance* arg0, s16 arg1);
 void Particle_AddTargetRotationXY(ParticleEffectInstance* arg0, s16 arg1, s16 arg2);
 void Particle_SubtractRotationDeltaVec(ParticleEffectInstance* arg0, Vec3s arg1);
 void Particle_SubtractRotationDeltaX(ParticleEffectInstance* arg0, s16 arg1);

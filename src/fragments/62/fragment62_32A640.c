@@ -82,7 +82,7 @@ void Particle_UpdateStateAndScale(ParticleEffectInstance* arg0) {
             Particle_AddScaledVelocityY(arg0, 1.0f);
             Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, 0x1000);
             func_8140A578(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x3000);
+            Particle_RotateX(arg0, 0x3000);
             break;
 
         case 2:
@@ -90,7 +90,7 @@ void Particle_UpdateStateAndScale(ParticleEffectInstance* arg0) {
             Particle_AddScaledVelocityY(arg0, -2.0f);
             Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, 0x1000);
             func_8140A578(arg0, 0x2000);
-            func_8140A5B0(arg0, 0x3000);
+            Particle_RotateX(arg0, 0x3000);
             break;
     }
 }
@@ -131,7 +131,7 @@ void Particle_HandleCollisionAndFade(ParticleEffectInstance* arg0) {
 
     if (Particle_HasFlag4(arg0) != 0) {
         Particle_ApplyB2B4AndAddAll(arg0);
-        func_8140A5B0(arg0, 0x2000);
+        Particle_RotateX(arg0, 0x2000);
     }
 }
 
@@ -219,7 +219,7 @@ void Particle_UpdateComplexMovement(ParticleEffectInstance* arg0) {
 
     if (Particle_HasFlag4(arg0) != 0) {
         Particle_AddRotationDeltaX(arg0);
-        func_8140A594(arg0, arg0->unk_B0);
+        Particle_RotateY(arg0, arg0->unk_B0);
         Particle_AddRotationDeltaZ(arg0);
         if (arg0->unk_2C.y < 0.0f) {
             Particle_ClearActiveFlag(arg0);
@@ -315,24 +315,24 @@ void func_84340AC4(void) {
 }
 
 void RegisterParticleEffects_62_32A640(void) {
-    func_8432F8E8(0x80, 1);
-    func_8432EC28(0, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(2, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(4, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(8, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 8, 0xA, 0, 0, 0);
-    func_8432EB2C(0x3A);
-    func_8432EC28(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    ParticleDef_CreateNullType17(0x80, 1);
+    ParticleDef_CreateQuick(0, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    ParticleDef_CreateQuick(2, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    ParticleDef_CreateQuick(4, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    ParticleDef_CreateQuick(8, Particle_UpdateStateAndScale, &gParticleEffectData[0x2B], 0, 8, 0xA, 0, 0, 0);
+    ParticleSystem_AddSpawnOffset(0x3A);
+    ParticleDef_CreateQuick(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    ParticleDef_CreateQuick(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    ParticleDef_CreateQuick(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    ParticleDef_CreateQuick(0, Particle_HandleCollisionAndFade, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
 }
 
 void RegisterParticleEffect_ComplexMovement(void) {
-    func_8432ECA0(0, 2, 0x14, Particle_UpdateComplexMovement, &gParticleEffectData[0x2C], 0, 4, 0xE, 0, 0, 0);
+    ParticleDef_CreateFull(0, 2, 0x14, Particle_UpdateComplexMovement, &gParticleEffectData[0x2C], 0, 4, 0xE, 0, 0, 0);
     ParticleEffect_MultiNodeSetup();
 }
 
 void RegisterParticleEffect_Burst(void) {
-    func_8432ECA0(0, 2, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
-    func_8432ECA0(0, 4, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
+    ParticleDef_CreateFull(0, 2, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
+    ParticleDef_CreateFull(0, 4, 5, Particle_UpdateBurstState, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
 }

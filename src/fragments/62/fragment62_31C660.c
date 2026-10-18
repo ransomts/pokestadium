@@ -2,7 +2,7 @@
 #include "src/1C720.h"
 
 void func_84331DA0(ParticleEffectInstance* arg0) {
-    func_8432FEEC(arg0);
+    ParticleNode_RestorePrimColor(arg0);
     Particle_IncrementState(arg0);
 }
 
@@ -23,7 +23,7 @@ void func_84331DC8(ParticleEffectInstance* arg0) {
             break;
     }
 
-    func_8432FEC4(arg0);
+    ParticleNode_SavePrimColor(arg0);
 }
 
 void Fragment_SetPrimColorFromPaletteAndRender(ParticleEffectInstance* arg0) {

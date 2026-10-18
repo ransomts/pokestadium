@@ -3566,7 +3566,7 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // still reloads arg2 instead of holding it in t4.
 // Slot evidence says tmp/tmp2 were NOT named locals: target 0x44 = arg1+arg3 and 0x30 =
 // arg2+arg4 sit in the compiler-temp area (top temp slot), and the matched sibling
-// func_8880123C (fragment28_214920.c) writes `(arg0 + arg2)` inline. Writing both inline
+// TrainerCardDrawRectBorder (fragment28_214920.c) writes `(arg0 + arg2)` inline. Writing both inline
 // (+ `UNUSED s32 pad[3]` after temp_v0, + y5) gives frame 0x228 and every temp slot exactly
 // target-8 (target has 2 more never-stored temps at 0x24-0x2C), score 15173: arg2 still
 // reloaded 7x, tmp gets t5 in the first block (target: never in a register), arg4 gets a3.
@@ -3578,7 +3578,7 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // grows) changes the full version's 7 arg2 loads. y5 with a 2nd def in case 1 (target uses
 // t0 for both (arg2-5)<<2 and (arg2-0xC)<<2): 13109-13562.
 // Round 8 second pass (agent-11, from farm lead h2/5565): arg2 is held in t4 because the source
-// copies it into a local AFTER strlen (`y5 = arg2;`, arg2 also used before the call so it stays a
+// copies it into a local AFTER strlen (`y5 = arg2;`, arg2 BattleAnimDataEntry used before the call so it stays a
 // memory variable) and later reassigns that local (`y5 = y5 - 5;`), which stops uopt from
 // copy-propagating it back into arg2 (a never-reassigned copy is folded into arg2 -> s1). Later
 // arg2 offsets are written relative to the new y5 (y5 + 8 == arg2 + 3; uopt refolds them onto t4):
@@ -3592,7 +3592,7 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // one extra compiler temp slot (frame +8), y5 kept unshifted in t2 (target keeps only (arg2-5)<<2 in t0
 // and computes arg2+2 / arg2-0xC / arg2+3 from t4), arg5 not kept in v1 across the arg6 block.
 // Farm lead m1/3595: a second def of the copy inside the `arg5 == 2` rect branch (`y5 = arg2;`, a
-// semantic no-op; `y5 = y5;` gives the same code) -> 4879. The farm also used noise (`(arg1 + 2) << 1 << 1`).
+// semantic no-op; `y5 = y5;` gives the same code) -> 4879. The farm BattleAnimDataEntry used noise (`(arg1 + 2) << 1 << 1`).
 // The same no-op def in the else (arg5 0/1) branch as well: 4879 -> 4687 (sweep of every other
 // statement position between the copy and `y5 = y5 - 5`: no change or worse).
 // Round 8 fourth pass (agent-16): 4687 -> 4600 (fd.sh; 4692 -> 4630 without -s): tmp2 assigned before
@@ -3929,7 +3929,7 @@ s32 func_888071C8(s32 arg0) {
     return ret;
 }
 
-s32 func_8880725C(UNUSED u8 arg0) {
+s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
     char* spF4;
     s32 i;
     char spD0[32];
@@ -4092,7 +4092,7 @@ s32 func_8880725C(UNUSED u8 arg0) {
     return 0;
 }
 
-s32 func_88807AC0(void) {
+s32 PictureQuiz_CheckResultsInput(void) {
     if ((gPlayer1Controller->buttonPressed & 0x4000) && (D_88826A52 == 0)) {
         return -1;
     }
@@ -4155,7 +4155,7 @@ s32 func_88807AC0(void) {
     return 0;
 }
 
-// func_88807D04: score 705, 6 diff lines, all as1 scheduling in the block after
+// PictureQuiz_ShowSpeciesInfo: score 705, 6 diff lines, all as1 scheduling in the block after
 // `if (D_88826564[i] >= 0)` (temp_s0 compute). Draft hoists `lui %hi(D_8882651C)` and
 // `lui %hi(D_88826CF0)` above the bltz (into the lh stall) and puts `addu s0` in the
 // jal delay slot; target hoists nothing and puts `sll s4,s1,2` (i*4 for the table switch)
@@ -4172,7 +4172,7 @@ s32 func_88807AC0(void) {
 // Root cause found by feeding `cc -S` output through as0+as1 by hand (global sched on):
 // the target is reproduced EXACTLY when the if-body block (first insn after the bltz) has a
 // second predecessor (a label there plus any branch to it) - as1 then hoists nothing above
-// the bltz and the jal delay slot gets `sll s4`. Making t0/t3 live at the bltz target also
+// the bltz and the jal delay slot gets `sll s4`. Making t0/t3 live at the bltz target BattleAnimDataEntry
 // blocks those two hoists (s4 still hoists). A branch to the very next insn, unreferenced
 // labels, .loc/.livereg/nop changes do NOT block it. So the original source most likely has
 // some control flow entering the if-body start (or the taken target keeps t0/t3/s4 live).
@@ -4190,7 +4190,7 @@ s32 func_88807AC0(void) {
 // dies in as1 (dead code after the if-body), e.g. a strength-reduced `s4 += 4` that the
 // body's own `sll s4` makes dead. Dead C statements there (else-branch / after the if)
 // are removed by uopt, and a function-local `static` D_88826564 changes nothing.
-void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
+void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
 {
   s32 i;
   CameraStruct *ptr;
@@ -4217,7 +4217,7 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   D_88826CE0 = GetMessageString(0, 0, D_88826A3C, 9);
   D_88826CE4 = GetMessageString(0, 0, D_88826A3C, 0x37);
   D_88826CD4 = main_pool_alloc(0x3200, 0);
-  func_88803BCC(D_88826CD4, arg0);
+  TrainerCardExportSprite(D_88826CD4, arg0);
   Asset_Load((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
   func_80019F0C(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
   D_88826A48 = BinArchive_GetFile(Asset_Load2(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
@@ -4306,6 +4306,6 @@ void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, 
   ptr->unk_60.eye = D_88826288;
 }
 
-void func_8880812C(void) {
+void PictureQuiz_CleanupResults(void) {
     main_pool_pop_state('MAPV');
 }

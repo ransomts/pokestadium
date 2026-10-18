@@ -355,7 +355,7 @@ void OptionMenu_Render(void) {
 
         if (gMenuSelectedOption == -1) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x140 - (GetTextWidth(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
+            Text_Print(0x140 - (GetTextWidth(gTextObjectHandle, sp34) / 2), ptr->unk_0A + 0xA, sp34);
         }
         Text_SetupDL();
     }

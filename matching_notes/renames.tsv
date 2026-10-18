@@ -6442,3 +6442,1482 @@ D_8439039A	gBlendColorR	h1		Passed with its G/B/A siblings as the four arguments
 D_8439039C	gBlendColorG	h1		Green component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f
 D_8439039E	gBlendColorB	h1		Blue component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f
 D_843903A0	gBlendColorA	h1		Alpha component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f
+D_8006F4C0	gDL_FillCycle	w27		Used with gSPDisplayList before gDPSetFillColor, sets up fill cycle for rectangles	applied@ab6aaba
+D_8006F558	gDL_XluBorder	w27		Used as display list for translucent border, sets up 1-cycle, xlu surf, env color, prim color	applied@ab6aaba
+D_8006F5A0	gDL_PalettedIcon	w27		Used as display list before Gfx_DrawSpriteRGBA16Paletted for status icon, sets up 2-cycle, paletted	applied@ab6aaba
+D_8006F5D8	gDL_ExpBarPalCycle	w27		Used for paletted exp bar, sets up 2-cycle, env/prim color, combine mode for exp bar	applied@ab6aaba
+D_8006F650	gCharMapTable	w27		Used as a lookup table for character mapping, 0x100 bytes, matches text subsystem conventions	applied@ab6aaba
+D_8006F7E0	gPmName_001	w27		First entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F7EC	gPmName_002	w27		Second entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F7F8	gPmName_003	w27		Third entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F804	gPmName_004	w27		Fourth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F810	gPmName_005	w27		Fifth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F81C	gPmName_006	w27		Sixth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F828	gPmName_007	w27		Seventh entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F834	gPmName_008	w27		Eighth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F840	gPmName_009	w27		Ninth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F84C	gPmName_010	w27		Tenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F858	gPmName_011	w27		Eleventh entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F864	gPmName_012	w27		Twelfth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F870	gPmName_013	w27		Thirteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F87C	gPmName_014	w27		Fourteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F888	gPmName_015	w27		Fifteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F894	gPmName_016	w27		Sixteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8A0	gPmName_017	w27		Seventeenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8AC	gPmName_018	w27		Eighteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8B8	gPmName_019	w27		Nineteenth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8C4	gPmName_020	w27		Twentieth entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8D0	gPmName_021	w27		21st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8DC	gPmName_022	w27		22nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8E8	gPmName_023	w27		23rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F8F4	gPmName_024	w27		24th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F900	gPmName_025	w27		25th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F90C	gPmName_026	w27		26th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F918	gPmName_027	w27		27th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F924	gPmName_028	w27		28th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F930	gPmName_029	w27		29th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F93C	gPmName_030	w27		30th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F948	gPmName_031	w27		31st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F954	gPmName_032	w27		32nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F960	gPmName_033	w27		33rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F96C	gPmName_034	w27		34th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F978	gPmName_035	w27		35th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F984	gPmName_036	w27		36th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F990	gPmName_037	w27		37th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F99C	gPmName_038	w27		38th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9A8	gPmName_039	w27		39th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9B4	gPmName_040	w27		40th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9C0	gPmName_041	w27		41st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9CC	gPmName_042	w27		42nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9D8	gPmName_043	w27		43rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9E4	gPmName_044	w27		44th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9F0	gPmName_045	w27		45th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006F9FC	gPmName_046	w27		46th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA08	gPmName_047	w27		47th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA14	gPmName_048	w27		48th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA20	gPmName_049	w27		49th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA2C	gPmName_050	w27		50th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA38	gPmName_051	w27		51st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA44	gPmName_052	w27		52nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA50	gPmName_053	w27		53rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA5C	gPmName_054	w27		54th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA68	gPmName_055	w27		55th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA74	gPmName_056	w27		56th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA80	gPmName_057	w27		57th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA8C	gPmName_058	w27		58th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FA98	gPmName_059	w27		59th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAA4	gPmName_060	w27		60th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAB0	gPmName_061	w27		61st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FABC	gPmName_062	w27		62nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAC8	gPmName_063	w27		63rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAD4	gPmName_064	w27		64th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAE0	gPmName_065	w27		65th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAEC	gPmName_066	w27		66th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FAF8	gPmName_067	w27		67th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB04	gPmName_068	w27		68th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB10	gPmName_069	w27		69th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB1C	gPmName_070	w27		70th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB28	gPmName_071	w27		71st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB34	gPmName_072	w27		72nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB40	gPmName_073	w27		73rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB4C	gPmName_074	w27		74th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB58	gPmName_075	w27		75th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB64	gPmName_076	w27		76th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB70	gPmName_077	w27		77th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB7C	gPmName_078	w27		78th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB88	gPmName_079	w27		79th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FB94	gPmName_080	w27		80th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBA0	gPmName_081	w27		81st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBAC	gPmName_082	w27		82nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBB8	gPmName_083	w27		83rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBC4	gPmName_084	w27		84th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBD0	gPmName_085	w27		85th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBDC	gPmName_086	w27		86th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBE8	gPmName_087	w27		87th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FBF4	gPmName_088	w27		88th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC00	gPmName_089	w27		89th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC0C	gPmName_090	w27		90th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC18	gPmName_091	w27		91st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC24	gPmName_092	w27		92nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC30	gPmName_093	w27		93rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC3C	gPmName_094	w27		94th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC48	gPmName_095	w27		95th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC54	gPmName_096	w27		96th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC60	gPmName_097	w27		97th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC6C	gPmName_098	w27		98th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC78	gPmName_099	w27		99th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC84	gPmName_100	w27		100th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC90	gPmName_101	w27		101st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FC9C	gPmName_102	w27		102nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCA8	gPmName_103	w27		103rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCB4	gPmName_104	w27		104th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCC0	gPmName_105	w27		105th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCCC	gPmName_106	w27		106th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCD8	gPmName_107	w27		107th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCE4	gPmName_108	w27		108th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCF0	gPmName_109	w27		109th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FCFC	gPmName_110	w27		110th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD08	gPmName_111	w27		111th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD14	gPmName_112	w27		112th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD20	gPmName_113	w27		113th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD2C	gPmName_114	w27		114th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD38	gPmName_115	w27		115th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD44	gPmName_116	w27		116th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD50	gPmName_117	w27		117th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD5C	gPmName_118	w27		118th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD68	gPmName_119	w27		119th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD74	gPmName_120	w27		120th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD80	gPmName_121	w27		121st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD8C	gPmName_122	w27		122nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FD98	gPmName_123	w27		123rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDA4	gPmName_124	w27		124th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDB0	gPmName_125	w27		125th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDBC	gPmName_126	w27		126th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDC8	gPmName_127	w27		127th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDD4	gPmName_128	w27		128th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDE0	gPmName_129	w27		129th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDEC	gPmName_130	w27		130th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FDF8	gPmName_131	w27		131st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE04	gPmName_132	w27		132nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE10	gPmName_133	w27		133rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE1C	gPmName_134	w27		134th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE28	gPmName_135	w27		135th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE34	gPmName_136	w27		136th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE40	gPmName_137	w27		137th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE4C	gPmName_138	w27		138th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE58	gPmName_139	w27		139th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE64	gPmName_140	w27		140th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE70	gPmName_141	w27		141st entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE7C	gPmName_142	w27		142nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE88	gPmName_143	w27		143rd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FE94	gPmName_144	w27		144th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEA0	gPmName_145	w27		145th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEAC	gPmName_146	w27		146th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEB8	gPmName_147	w27		147th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEC4	gPmName_148	w27		148th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FED0	gPmName_149	w27		149th entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEDC	gPmName_150_151	w27		Two consecutive pmname_xxx entries for 150 and 151, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_8006FEF4	gPmName_152	w27		152nd entry in the pmname_xxx array, used as species name string storage in gSpeciesDisplayTable	applied@ab6aaba
+D_80071E60	gMoveName_11	w27		Referenced as the move name in gMoveStrings, index 10 (moveId 11)	applied@ab6aaba
+D_80071E68	gMoveName_12	w27		Referenced as the move name in gMoveStrings, index 11 (moveId 12)	applied@ab6aaba
+D_80071E70	gMoveName_13	w27		Referenced as the move name in gMoveStrings, index 12 (moveId 13)	applied@ab6aaba
+D_80071E78	gMoveName_14	w27		Referenced as the move name in gMoveStrings, index 13 (moveId 14)	applied@ab6aaba
+D_80071E80	gMoveName_15	w27		Referenced as the move name in gMoveStrings, index 14 (moveId 15)	applied@ab6aaba
+D_80071E88	gMoveName_16	w27		Referenced as the move name in gMoveStrings, index 15 (moveId 16)	applied@ab6aaba
+D_80071E90	gMoveName_17	w27		Referenced as the move name in gMoveStrings, index 16 (moveId 17)	applied@ab6aaba
+D_80071E98	gMoveName_18	w27		Referenced as the move name in gMoveStrings, index 17 (moveId 18)	applied@ab6aaba
+D_80071EA0	gMoveName_19	w27		Referenced as the move name in gMoveStrings, index 18 (moveId 19)	applied@ab6aaba
+D_80071EA8	gMoveName_20	w27		Referenced as the move name in gMoveStrings, index 19 (moveId 20)	applied@ab6aaba
+D_80071EB0	gMoveName_21	w27		Referenced as the move name in gMoveStrings, index 20 (moveId 21)	applied@ab6aaba
+D_80071EB8	gMoveName_22	w27		Referenced as the move name in gMoveStrings, index 21 (moveId 22)	applied@ab6aaba
+D_80071EC0	gMoveName_23	w27		Referenced as the move name in gMoveStrings, index 22 (moveId 23)	applied@ab6aaba
+D_80071EC8	gMoveName_24	w27		Referenced as the move name in gMoveStrings, index 23 (moveId 24)	applied@ab6aaba
+D_80071ED0	gMoveName_25	w27		Referenced as the move name in gMoveStrings, index 24 (moveId 25)	applied@ab6aaba
+D_80071ED8	gMoveName_26	w27		Referenced as the move name in gMoveStrings, index 25 (moveId 26)	applied@ab6aaba
+D_80071EE0	gMoveName_27	w27		Referenced as the move name in gMoveStrings, index 26 (moveId 27)	applied@ab6aaba
+D_80071EE8	gMoveName_28	w27		Referenced as the move name in gMoveStrings, index 27 (moveId 28)	applied@ab6aaba
+D_80071EF0	gMoveName_29	w27		Referenced as the move name in gMoveStrings, index 28 (moveId 29)	applied@ab6aaba
+D_80071EF8	gMoveName_30	w27		Referenced as the move name in gMoveStrings, index 29 (moveId 30)	applied@ab6aaba
+D_80071F00	gMoveName_31	w27		Referenced as the move name in gMoveStrings, index 30 (moveId 31)	applied@ab6aaba
+D_80071F08	gMoveName_32	w27		Referenced as the move name in gMoveStrings, index 31 (moveId 32)	applied@ab6aaba
+D_80071F10	gMoveName_33	w27		Referenced as the move name in gMoveStrings, index 32 (moveId 33)	applied@ab6aaba
+D_80071F18	gMoveName_34	w27		Referenced as the move name in gMoveStrings, index 33 (moveId 34)	applied@ab6aaba
+D_80071F20	gMoveName_35	w27		Referenced as the move name in gMoveStrings, index 34 (moveId 35)	applied@ab6aaba
+D_80071F28	gMoveName_36	w27		Referenced as the move name in gMoveStrings, index 35 (moveId 36)	applied@ab6aaba
+D_80071F30	gMoveName_37	w27		Referenced as the move name in gMoveStrings, index 36 (moveId 37)	applied@ab6aaba
+D_80071F38	gMoveName_38	w27		Referenced as the move name in gMoveStrings, index 37 (moveId 38)	applied@ab6aaba
+D_80071F40	gMoveName_39	w27		Referenced as the move name in gMoveStrings, index 38 (moveId 39)	applied@ab6aaba
+D_80071F48	gMoveName_40	w27		Referenced as the move name in gMoveStrings, index 39 (moveId 40)	applied@ab6aaba
+D_80071F50	gMoveName_41	w27		Referenced as the move name in gMoveStrings, index 40 (moveId 41)	applied@ab6aaba
+D_80071F58	gMoveName_42	w27		Referenced as the move name in gMoveStrings, index 41 (moveId 42)	applied@ab6aaba
+D_80071F60	gMoveName_43	w27		Referenced as the move name in gMoveStrings, index 42 (moveId 43)	applied@ab6aaba
+D_80071F68	gMoveName_44	w27		Referenced as the move name in gMoveStrings, index 43 (moveId 44)	applied@ab6aaba
+D_80071F70	gMoveName_45	w27		Referenced as the move name in gMoveStrings, index 44 (moveId 45)	applied@ab6aaba
+D_80071F78	gMoveName_46	w27		Referenced as the move name in gMoveStrings, index 45 (moveId 46)	applied@ab6aaba
+D_80071F80	gMoveName_47	w27		Referenced as the move name in gMoveStrings, index 46 (moveId 47)	applied@ab6aaba
+D_80071F88	gMoveName_48	w27		Referenced as the move name in gMoveStrings, index 47 (moveId 48)	applied@ab6aaba
+D_80071F90	gMoveName_49	w27		Referenced as the move name in gMoveStrings, index 48 (moveId 49)	applied@ab6aaba
+D_80071F98	gMoveName_50	w27		Referenced as the move name in gMoveStrings, index 49 (moveId 50)	applied@ab6aaba
+D_80071FA0	gMoveName_51	w27		Referenced as the move name in gMoveStrings, index 50 (moveId 51)	applied@ab6aaba
+D_80071FA8	gMoveName_52	w27		Referenced as the move name in gMoveStrings, index 51 (moveId 52)	applied@ab6aaba
+D_80071FB0	gMoveName_53	w27		Referenced as the move name in gMoveStrings, index 52 (moveId 53)	applied@ab6aaba
+D_80071FB8	gMoveName_54	w27		Referenced as the move name in gMoveStrings, index 53 (moveId 54)	applied@ab6aaba
+D_80071FC0	gMoveName_55	w27		Referenced as the move name in gMoveStrings, index 54 (moveId 55)	applied@ab6aaba
+D_80071FC8	gMoveName_56	w27		Referenced as the move name in gMoveStrings, index 55 (moveId 56)	applied@ab6aaba
+D_80071FD0	gMoveName_57	w27		Referenced as the move name in gMoveStrings, index 56 (moveId 57)	applied@ab6aaba
+D_80071FD8	gMoveName_58	w27		Referenced as the move name in gMoveStrings, index 57 (moveId 58)	applied@ab6aaba
+D_80071FE0	gMoveName_59	w27		Referenced as the move name in gMoveStrings, index 58 (moveId 59)	applied@ab6aaba
+D_80071FE8	gMoveName_60	w27		Referenced as the move name in gMoveStrings, index 59 (moveId 60)	applied@ab6aaba
+D_80071FF0	gMoveName_61	w27		Referenced as the move name in gMoveStrings, index 60 (moveId 61)	applied@ab6aaba
+D_80071FF8	gMoveName_62	w27		Referenced as the move name in gMoveStrings, index 61 (moveId 62)	applied@ab6aaba
+D_80072000	gMoveName_63	w27		Referenced as the move name in gMoveStrings, index 62 (moveId 63)	applied@ab6aaba
+D_80072008	gMoveName_64	w27		Referenced as the move name in gMoveStrings, index 63 (moveId 64)	applied@ab6aaba
+D_80072010	gMoveName_65	w27		Referenced as the move name in gMoveStrings, index 64 (moveId 65)	applied@ab6aaba
+D_80072018	gMoveName_66	w27		Referenced as the move name in gMoveStrings, index 65 (moveId 66)	applied@ab6aaba
+D_80072020	gMoveName_67	w27		Referenced as the move name in gMoveStrings, index 66 (moveId 67)	applied@ab6aaba
+D_80072028	gMoveName_68	w27		Referenced as the move name in gMoveStrings, index 67 (moveId 68)	applied@ab6aaba
+D_80072030	gMoveName_69	w27		Referenced as the move name in gMoveStrings, index 68 (moveId 69)	applied@ab6aaba
+D_80072038	gMoveName_70	w27		Referenced as the move name in gMoveStrings, index 69 (moveId 70)	applied@ab6aaba
+D_80072040	gMoveName_71	w27		Referenced as the move name in gMoveStrings, index 70 (moveId 71)	applied@ab6aaba
+D_80072048	gMoveName_72	w27		Referenced as the move name in gMoveStrings, index 71 (moveId 72)	applied@ab6aaba
+D_80072050	gMoveName_73	w27		Referenced as the move name in gMoveStrings, index 72 (moveId 73)	applied@ab6aaba
+D_80072058	gMoveName_74	w27		Referenced as the move name in gMoveStrings, index 73 (moveId 74)	applied@ab6aaba
+D_80072060	gMoveName_75	w27		Referenced as the move name in gMoveStrings, index 74 (moveId 75)	applied@ab6aaba
+D_80072068	gMoveName_76	w27		Referenced as the move name in gMoveStrings, index 75 (moveId 76)	applied@ab6aaba
+D_80072070	gMoveName_77	w27		Referenced as the move name in gMoveStrings, index 76 (moveId 77)	applied@ab6aaba
+D_80072078	gMoveName_78	w27		Referenced as the move name in gMoveStrings, index 77 (moveId 78)	applied@ab6aaba
+D_80072080	gMoveName_79	w27		Referenced as the move name in gMoveStrings, index 78 (moveId 79)	applied@ab6aaba
+D_80072088	gMoveName_80	w27		Referenced as the move name in gMoveStrings, index 79 (moveId 80)	applied@ab6aaba
+D_80072090	gMoveName_81	w27		Referenced as the move name in gMoveStrings, index 80 (moveId 81)	applied@ab6aaba
+D_80072098	gMoveName_82	w27		Referenced as the move name in gMoveStrings, index 81 (moveId 82)	applied@ab6aaba
+D_800720A0	gMoveName_83	w27		Referenced as the move name in gMoveStrings, index 82 (moveId 83)	applied@ab6aaba
+D_800720A8	gMoveName_84	w27		Referenced as the move name in gMoveStrings, index 83 (moveId 84)	applied@ab6aaba
+D_800720B0	gMoveName_85	w27		Referenced as the move name in gMoveStrings, index 84 (moveId 85)	applied@ab6aaba
+D_800720B8	gMoveName_86	w27		Referenced as the move name in gMoveStrings, index 85 (moveId 86)	applied@ab6aaba
+D_800720C0	gMoveName_87	w27		Referenced as the move name in gMoveStrings, index 86 (moveId 87)	applied@ab6aaba
+D_800720C8	gMoveName_88	w27		Referenced as the move name in gMoveStrings, index 87 (moveId 88)	applied@ab6aaba
+D_800720D0	gMoveName_89	w27		Referenced as the move name in gMoveStrings, index 88 (moveId 89)	applied@ab6aaba
+D_800720D8	gMoveName_90	w27		Referenced as the move name in gMoveStrings, index 89 (moveId 90)	applied@ab6aaba
+D_800720E0	gMoveName_91	w27		Referenced as the move name in gMoveStrings, index 90 (moveId 91)	applied@ab6aaba
+D_800720E8	gMoveName_92	w27		Referenced as the move name in gMoveStrings, index 91 (moveId 92)	applied@ab6aaba
+D_800720F0	gMoveName_93	w27		Referenced as the move name in gMoveStrings, index 92 (moveId 93)	applied@ab6aaba
+D_800720F8	gMoveName_94	w27		Referenced as the move name in gMoveStrings, index 93 (moveId 94)	applied@ab6aaba
+D_80072100	gMoveName_95	w27		Referenced as the move name in gMoveStrings, index 94 (moveId 95)	applied@ab6aaba
+D_80072108	gMoveName_96	w27		Referenced as the move name in gMoveStrings, index 95 (moveId 96)	applied@ab6aaba
+D_80072110	gMoveName_97	w27		Referenced as the move name in gMoveStrings, index 96 (moveId 97)	applied@ab6aaba
+D_80072118	gMoveName_98	w27		Referenced as the move name in gMoveStrings, index 97 (moveId 98)	applied@ab6aaba
+D_80072120	gMoveName_99	w27		Referenced as the move name in gMoveStrings, index 98 (moveId 99)	applied@ab6aaba
+D_80072128	gMoveName_100	w27		Referenced as the move name in gMoveStrings, index 99 (moveId 100)	applied@ab6aaba
+D_80072130	gMoveName_101	w27		Referenced as the move name in gMoveStrings, index 100 (moveId 101)	applied@ab6aaba
+D_80072138	gMoveName_102	w27		Referenced as the move name in gMoveStrings, index 101 (moveId 102)	applied@ab6aaba
+D_80072140	gMoveName_103	w27		Referenced as the move name in gMoveStrings, index 102 (moveId 103)	applied@ab6aaba
+D_80072148	gMoveName_104	w27		Referenced as the move name in gMoveStrings, index 103 (moveId 104)	applied@ab6aaba
+D_80072150	gMoveName_105	w27		Referenced as the move name in gMoveStrings, index 104 (moveId 105)	applied@ab6aaba
+D_80072158	gMoveName_106	w27		Referenced as the move name in gMoveStrings, index 105 (moveId 106)	applied@ab6aaba
+D_80072160	gMoveName_107	w27		Referenced as the move name in gMoveStrings, index 106 (moveId 107)	applied@ab6aaba
+D_80072168	gMoveName_108	w27		Referenced as the move name in gMoveStrings, index 107 (moveId 108)	applied@ab6aaba
+D_80072170	gMoveName_109	w27		Referenced as the move name in gMoveStrings, index 108 (moveId 109)	applied@ab6aaba
+D_80072178	gMoveName_110	w27		Referenced as the move name in gMoveStrings, index 109 (moveId 110)	applied@ab6aaba
+D_80072180	gMoveName_111	w27		Referenced as the move name in gMoveStrings, index 110 (moveId 111)	applied@ab6aaba
+D_80072188	gMoveName_112	w27		Referenced as the move name in gMoveStrings, index 111 (moveId 112)	applied@ab6aaba
+D_80072190	gMoveName_113	w27		Referenced as the move name in gMoveStrings, index 112 (moveId 113)	applied@ab6aaba
+D_80072198	gMoveName_114	w27		Referenced as the move name in gMoveStrings, index 113 (moveId 114)	applied@ab6aaba
+D_800721A0	gMoveName_115	w27		Referenced as the move name in gMoveStrings, index 114 (moveId 115)	applied@ab6aaba
+D_800721A8	gMoveName_116	w27		Referenced as the move name in gMoveStrings, index 115 (moveId 116)	applied@ab6aaba
+D_800721B0	gMoveName_117	w27		Referenced as the move name in gMoveStrings, index 116 (moveId 117)	applied@ab6aaba
+D_800721B8	gMoveName_118	w27		Referenced as the move name in gMoveStrings, index 117 (moveId 118)	applied@ab6aaba
+D_800721C0	gMoveName_119	w27		Referenced as the move name in gMoveStrings, index 118 (moveId 119)	applied@ab6aaba
+D_800721C8	gMoveName_120	w27		Referenced as the move name in gMoveStrings, index 119 (moveId 120)	applied@ab6aaba
+D_800721D0	gMoveName_121	w27		Referenced as the move name in gMoveStrings, index 120 (moveId 121)	applied@ab6aaba
+D_800721D8	gMoveName_122	w27		Referenced as the move name in gMoveStrings, index 121 (moveId 122)	applied@ab6aaba
+D_800721E0	gMoveName_123	w27		Referenced as the move name in gMoveStrings, index 122 (moveId 123)	applied@ab6aaba
+D_800721E8	gMoveName_124	w27		Referenced as the move name in gMoveStrings, index 123 (moveId 124)	applied@ab6aaba
+D_800721F0	gMoveName_125	w27		Referenced as the move name in gMoveStrings, index 124 (moveId 125)	applied@ab6aaba
+D_800721F8	gMoveName_126	w27		Referenced as the move name in gMoveStrings, index 125 (moveId 126)	applied@ab6aaba
+D_80072200	gMoveName_127	w27		Referenced as the move name in gMoveStrings, index 126 (moveId 127)	applied@ab6aaba
+D_80072208	gMoveName_128	w27		Referenced as the move name in gMoveStrings, index 127 (moveId 128)	applied@ab6aaba
+D_80072210	gMoveName_129	w27		Referenced as the move name in gMoveStrings, index 128 (moveId 129)	applied@ab6aaba
+D_80072218	gMoveName_130	w27		Referenced as the move name in gMoveStrings, index 129 (moveId 130)	applied@ab6aaba
+D_80072220	gMoveName_131	w27		Referenced as the move name in gMoveStrings, index 130 (moveId 131)	applied@ab6aaba
+D_80072228	gMoveName_132	w27		Referenced as the move name in gMoveStrings, index 131 (moveId 132)	applied@ab6aaba
+D_80072230	gMoveName_133	w27		Referenced as the move name in gMoveStrings, index 132 (moveId 133)	applied@ab6aaba
+D_80072238	gMoveName_134	w27		Referenced as the move name in gMoveStrings, index 133 (moveId 134)	applied@ab6aaba
+D_80072240	gMoveName_135	w27		Referenced as the move name in gMoveStrings, index 134 (moveId 135)	applied@ab6aaba
+D_80072248	gMoveName_136	w27		Referenced as the move name in gMoveStrings, index 135 (moveId 136)	applied@ab6aaba
+D_80072250	gMoveName_137	w27		Referenced as the move name in gMoveStrings, index 136 (moveId 137)	applied@ab6aaba
+D_80072258	gMoveName_138	w27		Referenced as the move name in gMoveStrings, index 137 (moveId 138)	applied@ab6aaba
+D_80072260	gMoveName_139	w27		Referenced as the move name in gMoveStrings, index 138 (moveId 139)	applied@ab6aaba
+D_80072268	gMoveName_140	w27		Referenced as the move name in gMoveStrings, index 139 (moveId 140)	applied@ab6aaba
+D_80072270	gMoveName_141	w27		Referenced as the move name in gMoveStrings, index 140 (moveId 141)	applied@ab6aaba
+D_80072278	gMoveName_142	w27		Referenced as the move name in gMoveStrings, index 141 (moveId 142)	applied@ab6aaba
+D_80072280	gMoveName_143	w27		Referenced as the move name in gMoveStrings, index 142 (moveId 143)	applied@ab6aaba
+D_80072288	gMoveName_144	w27		Referenced as the move name in gMoveStrings, index 143 (moveId 144)	applied@ab6aaba
+D_80072290	gMoveName_145	w27		Referenced as the move name in gMoveStrings, index 144 (moveId 145)	applied@ab6aaba
+D_80072298	gMoveName_146	w27		Referenced as the move name in gMoveStrings, index 145 (moveId 146)	applied@ab6aaba
+D_800722A0	gMoveName_147	w27		Referenced as the move name in gMoveStrings, index 146 (moveId 147)	applied@ab6aaba
+D_800722A8	gMoveName_148	w27		Referenced as the move name in gMoveStrings, index 147 (moveId 148)	applied@ab6aaba
+D_800722B0	gMoveName_149	w27		Referenced as the move name in gMoveStrings, index 148 (moveId 149)	applied@ab6aaba
+D_800722B8	gMoveName_150	w27		Referenced as the move name in gMoveStrings, index 149 (moveId 150)	applied@ab6aaba
+D_800722C0	gMoveName_151	w27		Referenced as the move name in gMoveStrings, index 150 (moveId 151)	applied@ab6aaba
+D_800722C8	gMoveName_152	w27		Referenced as the move name in gMoveStrings, index 151 (moveId 152)	applied@ab6aaba
+D_800722D0	gMoveName_153	w27		Referenced as the move name in gMoveStrings, index 152 (moveId 153)	applied@ab6aaba
+D_800722D8	gMoveName_154	w27		Referenced as the move name in gMoveStrings, index 153 (moveId 154)	applied@ab6aaba
+D_800722E0	gMoveName_155	w27		Referenced as the move name in gMoveStrings, index 154 (moveId 155)	applied@ab6aaba
+D_800722E8	gMoveName_156	w27		Referenced as the move name in gMoveStrings, index 155 (moveId 156)	applied@ab6aaba
+D_800722F0	gMoveName_157	w27		Referenced as the move name in gMoveStrings, index 156 (moveId 157)	applied@ab6aaba
+D_800722F8	gMoveName_158	w27		Referenced as the move name in gMoveStrings, index 157 (moveId 158)	applied@ab6aaba
+D_80072300	gMoveName_159	w27		Referenced as the move name in gMoveStrings, index 158 (moveId 159)	applied@ab6aaba
+D_80072308	gMoveName_160	w27		Referenced as the move name in gMoveStrings, index 159 (moveId 160)	applied@ab6aaba
+D_80072310	gMoveName_161	w27		Referenced as the move name in gMoveStrings, index 160 (moveId 161)	applied@ab6aaba
+D_80072318	gMoveName_162	w27		Referenced as the move name in gMoveStrings, index 161 (moveId 162)	applied@ab6aaba
+D_80072320	gMoveName_163	w27		Referenced as the move name in gMoveStrings, index 162 (moveId 163)	applied@ab6aaba
+D_80072328	gMoveName_164	w27		Referenced as the move name in gMoveStrings, index 163 (moveId 164)	applied@ab6aaba
+D_8007BB50	gGen1BoxSprite0	w27		used as a u8[] and grouped with other D_8007BBxx as sprite data for Gen 1 box/stadium sprites	applied@ab6aaba
+D_8007BB60	gGen1BoxSprite1	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BB70	gGen1BoxSprite2	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BB80	gGen1BoxSprite3	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BB94	gGen1BoxSprite4	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBA4	gGen1BoxSprite5	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBB0	gGen1BoxSprite6	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBBC	gGen1BoxSprite7	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBCC	gGen1BoxSprite8	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBDC	gGen1BoxSprite9	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBE8	gGen1BoxSprite10	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BBF4	gGen1BoxSprite11	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC04	gGen1BoxSprite12	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC14	gGen1BoxSprite13	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC24	gGen1BoxSprite14	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC30	gGen1BoxSprite15	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC44	gGen1BoxSprite16	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC58	gGen1BoxSprite17	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC6C	gGen1BoxSprite18	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC7C	gGen1BoxSprite19	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC88	gGen1BoxSprite20	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BC98	gGen1BoxSprite21	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BCA8	gGen1BoxSprite22	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BCB8	gGen1BoxSprite23	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BCCC	gGen1BoxSprite24	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BCDC	gGen1BoxSprite25	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BCEC	gGen1BoxSprite26	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD00	gGen1BoxSprite27	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD10	gGen1BoxSprite28	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD20	gGen1BoxSprite29	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD34	gGen1BoxSprite30	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD44	gGen1BoxSprite31	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD54	gGen1BoxSprite32	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD64	gGen1BoxSprite33	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD70	gGen1BoxSprite34	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD80	gGen1BoxSprite35	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD8C	gGen1BoxSprite36	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BD9C	gGen1BoxSprite37	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDAC	gGen1BoxSprite38	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDB8	gGen1BoxSprite39	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDC8	gGen1BoxSprite40	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDD8	gGen1BoxSprite41	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDE8	gGen1BoxSprite42	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BDF8	gGen1BoxSprite43	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE04	gGen1BoxSprite44	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE14	gGen1BoxSprite45	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE24	gGen1BoxSprite46	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE34	gGen1BoxSprite47	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE40	gGen1BoxSprite48	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE4C	gGen1BoxSprite49	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE5C	gGen1BoxSprite50	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE70	gGen1BoxSprite51	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE80	gGen1BoxSprite52	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BE90	gGen1BoxSprite53	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BEA4	gGen1BoxSprite54	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BEB8	gGen1BoxSprite55	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BECC	gGen1BoxSprite56	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BEE0	gGen1BoxSprite57	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BEF4	gGen1BoxSprite58	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BEFC	gGen1BoxSprite59	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF0C	gGen1BoxSprite60	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF1C	gGen1BoxSprite61	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF2C	gGen1BoxSprite62	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF3C	gGen1BoxSprite63	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF4C	gGen1BoxSprite64	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF5C	gGen1BoxSprite65	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF6C	gGen1BoxSprite66	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF78	gGen1BoxSprite67	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF8C	gGen1BoxSprite68	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BF9C	gGen1BoxSprite69	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BFAC	gGen1BoxSprite70	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BFC0	gGen1BoxSprite71	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BFD0	gGen1BoxSprite72	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BFE0	gGen1BoxSprite73	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007BFF4	gGen1BoxSprite74	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C008	gGen1BoxSprite75	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C018	gGen1BoxSprite76	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C028	gGen1BoxSprite77	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C038	gGen1BoxSprite78	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C048	gGen1BoxSprite79	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C058	gGen1BoxSprite80	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C06C	gGen1BoxSprite81	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_8007C080	gGen1BoxSprite82	w27		see above, sequential, likely next sprite	applied@ab6aaba
+D_86908C50	gStagePanelBlueColor	w27		Color_RGB8 used for blue panel, referenced in panel rendering routines	applied@ab6aaba
+D_86908C54	gStagePanelWhiteColor	w27		Color_RGB8 used for white panel, referenced in panel rendering routines	applied@ab6aaba
+D_86908C58	gStagePanelLabelStrings	w27		Array of char* used for panel labels, matches up with D_8690A520+ offsets	applied@ab6aaba
+D_86908C98	gStagePanelGradientStartColor	w27		Color_RGB8 used as gradient start, referenced in gradient panel rendering	applied@ab6aaba
+D_86908C9C	gStagePanelGradientEndColor	w27		Color_RGB8 used as gradient end, referenced in gradient panel rendering	applied@ab6aaba
+D_86909168	gTutorialTextTimers	w27		Array of unk_D_86909168, used for tutorial timing in UpdateTutorialText	applied@ab6aaba
+D_869091B8	gControllerScriptInputs	w27		Array of unk_D_869091B8, used for scripted controller input in SimulateControllerInputFromScript	applied@ab6aaba
+D_8690A610	gStagePanelRootNode	w27		unk_D_8690A610 struct, passed to ColorRectNode_Create and used as root for panel rendering	applied@ab6aaba
+D_8690A630	gStagePanelGraphRoot0	w27		GraphRootNode, passed to GraphNode_AllocInit and used as root for geo layout child	applied@ab6aaba
+D_8690A648	gStagePanelGraphRoot1	w27		GraphRootNode, passed to GraphNode_AllocInit and used as root for geo layout child	applied@ab6aaba
+D_8690A660	gStagePanelGraphRoot2	w27		GraphRootNode, passed to GraphNode_AllocInit and used as root for geo layout child	applied@ab6aaba
+D_8690A678	gMessageBankPtr	w27		char**, result of GetMessageBank(0x2B), used for message string lookups	applied@ab6aaba
+D_8690A67C	gStageReturnCode	w27		s32, set and returned by StageMainUpdate and func_8690193C, used as return code	applied@ab6aaba
+D_8690A680	gCameraNavRepeatCounter	w27		s32, incremented in ProcessCameraNavigationInput for repeat logic	applied@ab6aaba
+D_8690A688	gStagePanelFillColor	w27		u32, set in LoadStageFragmentByIndex and used for Gfx_FillScreen in func_86901A44	applied@ab6aaba
+D_8690A69C	gStagePanelState	w27		unk_D_8690A69C*, allocated and used as main state struct for the stage panel	applied@ab6aaba
+D_8690A6A0	gStagePanelPlayerData	w27		PokemonData, passed to CreatePlayerStatNode and used for player data in panel	applied@ab6aaba
+D_8690A6F4	gStageAnimTimer	w27		s32, incremented in UpdateStageAnimationTimers for animation timing	applied@ab6aaba
+D_8690A6F8	gStageSoundTimer	w27		s32, incremented in UpdateStageSoundTimer for sound timing	applied@ab6aaba
+D_8690A6FC	gStageAnimStateFlag	w27		s32, used as a flag for animation state in UpdateStageAnimationTimers and UpdateStageSoundTimer	applied@ab6aaba
+D_8690A700	gStageAnimIndexA	w27		s32, set from gStageCameraConfig in Stage_Init, used as index into D_8690A718 for animation	applied@ab6aaba
+D_8690A704	gStageAnimIndexB	w27		s32, set from gStageCameraConfig in Stage_Init, used as index into D_8690A718 for animation	applied@ab6aaba
+D_8690A70C	gStagePanelMode	w27		s32, set in func_86902004, used to distinguish between normal and tutorial mode	applied@ab6aaba
+D_8690A718	gStageAnimScriptTable	w27		unk_D_8690A718[190], used for animation scripts, indexed by D_8690A700/D_8690A704	applied@ab6aaba
+D_8690B308	gStagePanelAnimData	w27		unk_D_8690B308, used for animation data in panel transitions and effects	applied@ab6aaba
+D_8690B340	gStagePanelTransitionTimer	w27		s32, used as a timer for panel transitions in StageMainUpdate and related funcs	applied@ab6aaba
+D_8690B344	gStageSnapshotCount	w27		s32, incremented in HandleSnapshotButton, used as snapshot index/count	applied@ab6aaba
+D_8690B348	gStagePanelStateIndex	w27		s32, used as state index for panel state machine in func_869019BC and related funcs	applied@ab6aaba
+D_8690B350	gStagePanelFadeData	w27		unk_D_8690B350, used for fade-in/fade-out animation data in panel transitions	applied@ab6aaba
+D_8690B360	gStagePanelAnimState	w27		unk_D_8690B360, used for animation state in panel transitions and effects	applied@ab6aaba
+D_8690B378	gStagePanelGbAudioState	w27		unk_func_80027FA0, passed to GBAudio_ResetState, used for GB audio state in panel	applied@ab6aaba
+D_8690B380	gCameraNavActiveFlag	w27		s32, used as flag for camera navigation state in ProcessCameraNavigationInput	applied@ab6aaba
+D_8690B384	gCameraNavSubIndex	w27		s32, used as sub-index for camera navigation in ProcessCameraNavigationInput	applied@ab6aaba
+D_8690B388	gCameraNavTransition	w27		s32, used for camera navigation transition state in ProcessCameraNavigationInput	applied@ab6aaba
+D_8690B38C	gCameraNavMaxIndex	w27		s32, computed in ProcessCameraNavigationInput as max index for navigation	applied@ab6aaba
+D_8690B3B4	gControllerScriptButtonPrev	w27		u16, stores previous button state for scripted input in SimulateControllerInputFromScript	applied@ab6aaba
+D_8690B3B8	gControllerScriptIndex	w27		s32, index into D_869091B8 for scripted controller input	applied@ab6aaba
+D_8690B3BC	gControllerScriptButtonTimer	w27		u16, timer for button press duration in scripted input	applied@ab6aaba
+D_8690B3C0	gTutorialTextBoxState	w27		unk_D_8690B3C0, used for state of tutorial text box in UpdateTutorialText	applied@ab6aaba
+D_8690B3D0	gTutorialTextBoxCharBuffer	w27		s8[255], buffer for text box characters in UpdateTutorialText	applied@ab6aaba
+D_8690B4D0	gTutorialTextBoxStringBuffer	w27		s8[0x100], buffer for text box string in UpdateTutorialText	applied@ab6aaba
+D_8690B5D0	gControllerScriptTemp	w27		Controller, temp controller struct for scripted input in SimulateControllerInputFromScript	applied@ab6aaba
+D_8690B5F4	gTutorialMessageIndex	w27		s32, index into gTutorialMessageIds for tutorial progression	applied@ab6aaba
+D_8690B5F8	gTutorialMessageTimer	w27		s32, timer for tutorial message display in UpdateTutorialText	applied@ab6aaba
+D_86A06190	w27	w27		GraphNode used as the root node for the stage scene graph, see GraphNode_AllocInit and GraphNode_AddChild	applied@ab6aaba
+D_86B0BD60	gFragment17MaskTable	w27		Used as a mask table for animation or object selection, accessed via index, matches other mask tables in fragment17	applied@ab6aaba
+D_86B0C2F0	gFragment17ObjDef0	w27		First object definition array for fragment 17, used in gFragment17ObjectDefs	applied@ab6aaba
+D_86B0C354	gFragment17ObjDef1	w27		Second object definition array for fragment 17, used in gFragment17ObjectDefs	applied@ab6aaba
+D_86B0C3B8	gFragment17ObjDef2	w27		Third object definition array for fragment 17, used in gFragment17ObjectDefs	applied@ab6aaba
+D_86B0C41C	gFragment17ObjDef3	w27		Fourth object definition array for fragment 17, used in gFragment17ObjectDefs	applied@ab6aaba
+D_86B0C480	gFragment17ObjDef4	w27		Fifth object definition array for fragment 17, used in gFragment17ObjectDefs	applied@ab6aaba
+D_86B0C4E0	gFragment17TileData0	w27		Tile data used in D_86B0CCE0 and D_86B0CEF8, matches GfxTileParams usage	applied@ab6aaba
+D_86B0CCE0	gFragment17GfxTileParams0	w27		Struct of type unk_D_86002F34_018, used as tile params for fragment 17 graphics	applied@ab6aaba
+D_86B0CCF0	gFragment17GfxSetupDL0	w27		Display list for setting up tile graphics, used in D_86B0CF40	applied@ab6aaba
+D_86B0CD28	gFragment17TileVerts0	w27		Vertex array for tile geometry, used in D_86B0CE28 and D_86B0CF9C	applied@ab6aaba
+D_86B0CE28	gFragment17TileDrawDL0	w27		Display list for drawing tile geometry, used in D_86B0CF40	applied@ab6aaba
+D_86B0CEB8	gFragment17TileAttr0	w27		Attribute data for tile, used in D_86B0CEF8	applied@ab6aaba
+D_86B0CECC	gFragment17TileAttr1	w27		Attribute data for tile, used in D_86B0CF18	applied@ab6aaba
+D_86B0CEE0	gFragment17TileMisc0	w27		Miscellaneous tile data, used in D_86B0CEF8	applied@ab6aaba
+D_86B0CEEC	gFragment17TileMisc1	w27		Miscellaneous tile data, used in D_86B0CF18	applied@ab6aaba
+D_86B0CEF8	gFragment17TileAttrTable0	w27		Array of pointers to tile attribute/misc data, used in D_86B0CF38	applied@ab6aaba
+D_86B0CF18	gFragment17TileAttrTable1	w27		Array of pointers to tile attribute/misc data, used in D_86B0CF38	applied@ab6aaba
+D_86B0CF38	gFragment17TileAttrSet	w27		Struct containing pointers to tile attribute tables, used in D_86B0CF40	applied@ab6aaba
+D_86B0CF40	gFragment17TileLayout0	w27		Tile layout data, used in D_86B0CF9C	applied@ab6aaba
+D_86B0CF9C	gFragment17StageLayout0	w27		Stage layout data, references D_86B0CCE0, D_86B0CD28, D_86B0CF40, etc.	applied@ab6aaba
+D_86B0CFE0	gFragment17MaskTable1	w27		Mask table for tile/graphic, used in D_86B0D7E0, D_86B0D9F8, etc.	applied@ab6aaba
+D_86B0D7E0	gFragment17GfxTileParams1	w27		Struct of type unk_D_86002F34_018, used as tile params for fragment 17 graphics	applied@ab6aaba
+D_86B0D7F0	gFragment17GfxSetupDL1	w27		Display list for setting up tile graphics, used in D_86B0DA40	applied@ab6aaba
+D_86B0D828	gFragment17TileVerts1	w27		Vertex array for tile geometry, used in D_86B0D928 and D_86B0DA9C	applied@ab6aaba
+D_86B0D928	gFragment17TileDrawDL1	w27		Display list for drawing tile geometry, used in D_86B0DA40	applied@ab6aaba
+D_86B0D9B8	gFragment17TileAttr2	w27		Attribute data for tile, used in D_86B0D9F8	applied@ab6aaba
+D_86B0D9CC	gFragment17TileAttr3	w27		Attribute data for tile, used in D_86B0DA18	applied@ab6aaba
+D_86B0D9E0	gFragment17TileMisc2	w27		Miscellaneous tile data, used in D_86B0D9F8	applied@ab6aaba
+D_86B0D9EC	gFragment17TileMisc3	w27		Miscellaneous tile data, used in D_86B0DA18	applied@ab6aaba
+D_86B0D9F8	gFragment17TileAttrTable2	w27		Array of pointers to tile attribute/misc data, used in D_86B0DA38	applied@ab6aaba
+D_86B0DA18	gFragment17TileAttrTable3	w27		Array of pointers to tile attribute/misc data, used in D_86B0DA38	applied@ab6aaba
+D_86B0DA38	gFragment17TileAttrSet1	w27		Struct containing pointers to tile attribute tables, used in D_86B0DA40	applied@ab6aaba
+D_86B0DA40	gFragment17TileLayout1	w27		Tile layout data, used in D_86B0DA9C	applied@ab6aaba
+D_86B0DA9C	gFragment17StageLayout1	w27		Stage layout data, references D_86B0D7E0, D_86B0D828, D_86B0DA40, etc.	applied@ab6aaba
+D_86B0DAE0	gFragment17TileParams	w27		Array of GfxTileParams, used for tile setup in func_86B0299C	applied@ab6aaba
+D_86B0DB70	gFragment17MsgId_Intro	w27		Message ID for intro text, used in GetMessageString in func_86B03048	applied@ab6aaba
+D_86B0DB74	gFragment17MsgId_Confirm	w27		Message ID for confirmation text, used in GetMessageString in func_86B03048	applied@ab6aaba
+D_86B0DB78	gFragment17MsgId_Success	w27		Message ID for success text, used in GetMessageString in func_86B03048	applied@ab6aaba
+D_86B0DB7C	gFragment17MsgId_Intro2	w27		Message ID for alternate intro text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB80	gFragment17MsgId_Confirm2	w27		Message ID for alternate confirmation text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB84	gFragment17MsgId_Success2	w27		Message ID for alternate success text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB88	gFragment17MsgId_Failure	w27		Message ID for failure text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB8C	gFragment17MsgId_Timeout	w27		Message ID for timeout text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB90	gFragment17MsgId_Complete	w27		Message ID for completion text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB94	gFragment17MsgId_Extra	w27		Message ID for extra text, used in GetMessageString in func_86B034AC	applied@ab6aaba
+D_86B0DB98	gFragment17MsgBankTable	w27		Table of message banks and counts, used for text progression in func_86B02B50	applied@ab6aaba
+D_86B0DBC0	gFragment17RandomTable	w27		Table of random values for selection, used in func_86B025A4 for D_86B0EBDC->unk_2EC	applied@ab6aaba
+D_86B0DBCC	gFragment17ObjPresetTable	w27		Table of object preset positions/scales, used in func_86B026C0 for object placement	applied@ab6aaba
+D_86B0DC5C	gFragment17CameraScript	w27		Camera script data, contains Camera_UpdatePrimaryAngles/SecondaryAngles and gGraphRoot0, used for camera setup	applied@ab6aaba
+D_86B0EBC0	gFragment17GraphRoot	w27		Pointer to GraphNode root for fragment 17, used in func_86B02A78	applied@ab6aaba
+D_86B0EBC4	gFragment17Camera	w27		Pointer to CameraStruct for fragment 17, set from D_86B0EBC0->unk_0C	applied@ab6aaba
+D_86B0EBC8	gFragment17CameraAngleY	w27		Camera Y angle, set in func_86B02A78	applied@ab6aaba
+D_86B0EBCA	gFragment17CameraAngleX	w27		Camera X angle, set in func_86B02A78	applied@ab6aaba
+D_86B0EBCC	gFragment17CameraDist	w27		Camera distance, set in func_86B02A78	applied@ab6aaba
+D_86B0EBD0	gFragment17MsgBank0	w27		Pointer to message bank 0, used in GetMessageString calls	applied@ab6aaba
+D_86B0EBD4	gFragment17MsgBank1	w27		Pointer to message bank 1, used in GetMessageString calls	applied@ab6aaba
+D_86B0EBD8	gFragment17TileStruct	w27		Pointer to unk_D_86B0EBD8, used for tile/graphic state	applied@ab6aaba
+D_86B0EBE0	gFragment17TextState	w27		Pointer to unk_D_86B0EBE0, state for text progression and display	applied@ab6aaba
+D_86B0EBE8	gFragment17StageBuffer	w27		Buffer for stage DMA, used in func_86B026C0 for DmaCopyAsyncRange	applied@ab6aaba
+D_86B0F648	gFragment17ActionTable	w27		Table of actions for GraphNode_TriggerAction, used in func_86B03048	applied@ab6aaba
+D_86B0F7C8	gFragment17TextBuffer	w27		Buffer for text display, used in func_86B02B50 and text functions	applied@ab6aaba
+D_86B0F8C8	gFragment17TextBuffer2	w27		Secondary buffer for text display, used in func_86B02B50 and text functions	applied@ab6aaba
+D_86B0F9C8	gFragment17RandomIdx	w27		Random index for object selection, set in func_86B025A4	applied@ab6aaba
+func_86B03B9C	Gfx_DrawBattleIntroPanels	w27		Draws two UI panels using Gfx_DrawTexturedRect with menu/cup textures, evidence: D_30074E0/D_30092E0, panel sizes, and RGBA32 usage	applied@ab6aaba
+func_86B03DF4	BattleIntroPanel_ApproachColorAnim	w27		Animates panel color/alpha via Math_ApproachS32, evidence: 11 color/alpha fields, D_86B0DAE0 palette table, increments D_86B0EBD8->unk_18	applied@ab6aaba
+func_86B040C0	BattleIntroPanel_DrawSpriteAnim	w27		Draws a sprite animation frame using Gfx_DrawSpriteRGBA32, advances frame index, evidence: gPrefDL_Border, gPrefDL_End, D_86B0DB98 sprite table	applied@ab6aaba
+func_86B04200	BattleIntroPanel_SlideInAnim	w27		Animates panel sliding in by approaching target positions, evidence: Math_ApproachS32 to 0x3E/0x82, triggers sound at start	applied@ab6aaba
+func_86B042B4	BattleIntroPanel_SlideOutAnim	w27		Animates panel sliding out by approaching offscreen positions, evidence: Math_ApproachS32 to -0x32/0x122	applied@ab6aaba
+func_86B0434C	BattleIntro_CameraApproachAnim	w27		Animates camera position/eye/at with Math_ApproachF32, triggers state when z >= 85/190, evidence: Vec3f, camera fields, calls func_86B02928	applied@ab6aaba
+func_86B044A0	BattleIntroPanel_ResetState	w27		Sets D_86B0EBE0->unk_00 = 0, evidence: resets panel state machine	applied@ab6aaba
+func_86B044B0	BattleIntroPanel_SetupChoice	w27		Sets D_86B0EBE0->unk_00 = 0xB and clears D_86B0F8C8 array, evidence: for (i=0; i<255; i++) D_86B0F8C8[i]=0	applied@ab6aaba
+func_86B04500	BattleIntroPanel_HandleChoiceInput	w27		Handles A/B input for Yes/No choice, updates D_86B0EBDC->unk_2F0, triggers sound and message updates, evidence: buttonPressed checks, PlaySoundEffect, MessageBank_SetPointer	applied@ab6aaba
+func_86B04740	BattleIntroPanel_HandleConfirmInput	w27		Handles confirm input (A button) to exit panel, sets D_86B0EBE0->unk_18=0, evidence: buttonPressed & 0x8000, PlaySoundEffect(1)	applied@ab6aaba
+func_86B04794	BattleIntroPanel_AnimSoundTick	w27		Animates sound/animation state every 60 frames, triggers GraphNode_TriggerSound, evidence: D_86B0EBDC->unk_304 % 60, D_86B0EBE8[2641]	applied@ab6aaba
+func_86B04880	BattleIntroPanel_AnimResetIfDone	w27		Resets animation state if func_800174E4 returns 1, evidence: Anim_SetChannelBase, GraphNode_TriggerAction	applied@ab6aaba
+func_86B048D8	BattleIntroPanel_AnimClamp	w27		Clamps animation channel value if negative, evidence: checks unk_040.unk_0C, adjusts unk_040.unk_08	applied@ab6aaba
+func_86B04914	BattleIntroPanel_InputInit	w27		Initializes controller and menu input, evidence: Cont_StartReadInputs, Cont_ReadInputs, MenuInput_Init	applied@ab6aaba
+func_86B04944	BattleIntroPanel_StateMachine	w27		Main state machine for intro panel, evidence: switch on D_86B0EBDC->unk_2DC, calls all anim/input handlers, returns 1 on completion	applied@ab6aaba
+func_86B04C9C	BattleIntroPanel_DrawFrame	w27		Draws the current frame: calls anim draw, panel draw, sprite anim draw, evidence: func_86B034AC/func_86B03048, func_86B03B9C, func_86B040C0	applied@ab6aaba
+func_86B04CF4	BattleIntroPanel_DrawFrameWrapper	w27		Wrapper for drawing a frame, sets up display list, calls func_86B04C9C, advances stage, evidence: Stage_BeginDisplayList, Gfx_FillScreen, Stage_Advance	applied@ab6aaba
+func_86B04D48	BattleIntroPanel_FadeInSequence	w27		Fades in and draws intro panel for 16 frames, evidence: Stage_FadeIn, loop 16x, calls func_86B04CF4	applied@ab6aaba
+func_86B04D98	BattleIntroPanel_MainLoop	w27		Main loop for intro panel, runs state machine until done, evidence: while(var_s0!=0), calls func_86B04944, func_86B04CF4	applied@ab6aaba
+func_86B04DF0	BattleIntroPanel_FadeOutSequence	w27		Fades out and cleans up after intro panel, evidence: Stage_FadeOut, 10 frame loop, calls GbsCommitBankBlock, GbsSyncBank	applied@ab6aaba
+func_86B04EBC	BattleIntroPanel_AllocAndInit	w27		Allocates and zeroes all intro panel state structs, evidence: main_pool_alloc, bzero, calls func_86B025A4 etc	applied@ab6aaba
+func_86B025A4	BattleIntroPanel_InitAnimTables	w27		Initializes animation tables for panel, evidence: called in alloc/init, before anim logic	applied@ab6aaba
+func_86B026C0	BattleIntroPanel_InitSpriteTables	w27		Initializes sprite animation tables, evidence: called in alloc/init, before sprite anim logic	applied@ab6aaba
+func_86B02A78	BattleIntroPanel_InitColorTables	w27		Initializes color/alpha animation tables, evidence: called in alloc/init, before color anim logic	applied@ab6aaba
+func_86B028F8	BattleIntroPanel_InitSoundTables	w27		Initializes sound animation tables, evidence: called in alloc/init, before sound tick logic	applied@ab6aaba
+func_86B02908	BattleIntroPanel_InitInputTables	w27		Initializes input tables for panel, evidence: called in alloc/init, before input logic	applied@ab6aaba
+func_86B0299C	BattleIntroPanel_InitCameraTables	w27		Initializes camera animation tables, evidence: called in alloc/init, before camera anim logic	applied@ab6aaba
+D_86C04840	gDiglettMinigamePatternTable	w27		Used as a pattern table for Diglett minigame, referenced by D_86C049D0 and pattern logic	applied@ab6aaba
+D_86C049D0	gDiglettMinigameConfigTable	w27		Used as a config/lookup table for Diglett minigame, contains pointers to itself and D_86C04840	applied@ab6aaba
+D_86C0B1F8	gUnusedDecorationTexture	w27		Unused or unshown decoration texture, referenced as such in comment and sceneTextures	applied@ab6aaba
+D_86C0BA70	gMinigameTileSetupDL16	w27		Setup display list for 16bpp tile, referenced by G_IM_SIZ_16b and used for tile setup	applied@ab6aaba
+D_86C0BAA8	gMinigameTileSetupDL32	w27		Setup display list for 32bpp tile, referenced by G_IM_SIZ_32b and used for tile setup	applied@ab6aaba
+D_86C0BAE8	gMinigameTileSetupDL16Wide	w27		Setup display list for 16bpp tile, wide variant, referenced by extra gsDPSetTileSize and comments	applied@ab6aaba
+D_86C0BB28	gMinigameTileSetupDL16Large	w27		Setup display list for 16bpp tile, large variant, referenced by extra gsDPSetTileSize and comments	applied@ab6aaba
+D_86C12000	gMinigameTextObject	w27		TextObject pointer for minigame, referenced as D_86C12000 and used for text rendering	applied@ab6aaba
+D_86C12034	gMinigameStateVar1	w27		32-bit state variable for minigame, referenced as D_86C12034 and used for state logic	applied@ab6aaba
+D_86C12038	gMinigameStateVar2	w27		16-bit state variable for minigame, referenced as D_86C12038 and used for state logic	applied@ab6aaba
+D_86C12040	gMinigameScoreTable	w27		9x4 table of s16, referenced as D_86C12040 and used for score/logic table	applied@ab6aaba
+D_86C0C9F8	Gfx_BlueLeftDecorationDL	w27		gsSPVertex uses sceneGeometry_13 (blue left decoration), matches comment and order	applied@ab6aaba
+D_86C0CA58	Gfx_BlueRightDecorationDL	w27		gsSPVertex uses sceneGeometry_12 (blue right decoration), matches comment and order	applied@ab6aaba
+D_86C0CAB8	Gfx_YellowLeftDecorationDL	w27		gsSPVertex uses sceneGeometry_11, follows blue decorations, likely yellow left	applied@ab6aaba
+D_86C0CB18	Gfx_YellowRightDecorationDL	w27		gsSPVertex uses sceneGeometry_10, follows blue decorations, likely yellow right	applied@ab6aaba
+D_86C0CB78	Gfx_RedLeftDecorationDL	w27		gsSPVertex uses sceneGeometry_9, follows yellow, likely red left	applied@ab6aaba
+D_86C0CBD8	Gfx_RedRightDecorationDL	w27		gsSPVertex uses sceneGeometry_7, 16 verts, follows red left, likely red right	applied@ab6aaba
+D_86C0CC28	Gfx_CenterDecorationDL	w27		gsSPVertex uses sceneGeometry_8, 18 verts, likely center decoration	applied@ab6aaba
+D_86C0CC70	Gfx_MainArenaDL	w27		gsSPVertex uses sceneGeometry_1 and sceneGeometry_2, main arena geometry	applied@ab6aaba
+D_86C0CCF8	Gfx_ArenaSideDL	w27		gsSPVertex uses sceneGeometry_3 and sceneGeometry_4, side arena geometry	applied@ab6aaba
+D_86C0CD70	Gfx_ArenaBackDL	w27		gsSPVertex uses sceneGeometry_5 and sceneGeometry_6, back arena geometry	applied@ab6aaba
+D_86C0CDE8	gMiniEkansArenaScript	w27		Used as a script table, contains pointers to display lists and arena data, referenced by D_86C0D008	applied@ab6aaba
+D_86C0D008	gMiniEkansArenaSetup	w27		Pointer table for arena setup, contains sceneTextures, sceneGeometry_1, and gMiniEkansArenaScript	applied@ab6aaba
+D_86C0E0A4	gMiniEkansDefaultDifficulty	w27		Used as fallback difficulty in initEkans, 4-entry table, matches player count	applied@ab6aaba
+D_86C0E0AC	gMiniDiglettGoldScoreTable	w27		Used in miniDiglettGoldCheck to assign score/arg2 for gold digletts, 9 entries	applied@ab6aaba
+D_86C0E0D0	gMiniEkansGameScript	w27		Script table for minigame, contains pointers to display lists, arena setup, and other resources	applied@ab6aaba
+D_86C0E2A4	gMiniEkansAnimTable	w27		Table of animation function pointers and params, used for ekans animations	applied@ab6aaba
+D_86C0E314	gMiniDiglettAnimTable	w27		Table of animation function pointers and params, used for diglett animations	applied@ab6aaba
+D_86C0E33C	gMiniDiglettHoleAnimTable	w27		Table of animation function pointers and params, used for diglett hole animations	applied@ab6aaba
+func_86C00AA4	MiniEkans_CompSetState1All	w27		Sets compState=1 for all comp Ekans, used for AI reset, matches usage	applied@ab6aaba
+func_86C00B0C	MiniEkans_CompShouldSwitchTarget	w27		Checks if comp Ekans should switch diglett target, used in comp logic	applied@ab6aaba
+func_86C00BB4	MiniEkans_CompPickRandomActiveDiglett	w27		Picks a random active diglett, used in comp targeting logic	applied@ab6aaba
+func_86C00C40	MiniEkans_CompPickGoldOrActiveDiglett	w27		Picks gold diglett if available, else random active, used in comp logic	applied@ab6aaba
+func_86C00D50	MiniEkans_CompPickUniqueActiveDiglett	w27		Picks active diglett not targeted by other comps, used in comp logic	applied@ab6aaba
+func_86C00EF8	MiniEkans_CompPickTarget	w27		Dispatches to comp diglett targeting logic based on difficulty, used in comp logic	applied@ab6aaba
+func_86C00F70	MiniEkans_CompAimAtDiglett	w27		Sets comp Ekans aim/ySpinSpeed towards target diglett, used in comp logic	applied@ab6aaba
+func_86C01408	MiniEkans_CompHoldDelay	w27		Returns delay for comp holding back before launching, based on difficulty	applied@ab6aaba
+func_86C014A0	MiniEkans_CompRepeatDelay	w27		Returns delay for comp repeat state, based on difficulty	applied@ab6aaba
+func_86C016C8	MiniEkans_ApplyLaunchPhysics	w27		Sets Ekans launch velocities based on current rotation and launchForce	applied@ab6aaba
+func_86C01AF8	MiniEkans_ResolveHoopConflicts	w27		Resolves multiple Ekans attempting to hoop the same diglett, disables one	applied@ab6aaba
+func_86C01D2C	MiniEkansHandleDiglettCollision	w27		Called when Ekans collides with Diglett, updates state/score, sets flags, evidence: sets ekans->midAirState, diglett->gotHoop, D_86C12040, ekans->ekansDiglettHitScore, called from state machine on collision	applied@ab6aaba
+func_86C021FC	MiniEkansApplyStickMovement	w27		Applies stick input to Ekans movement, evidence: uses stickMagnitude1, modifies position_2, called in state 0 (pull back)	applied@ab6aaba
+func_86C0276C	ActiveDigletts_Reset	w27		Resets all activeDigletts to default state, evidence: sets state, diglettId, gotHoop, etc. for all 3 activeDigletts	applied@ab6aaba
+func_86C027BC	ActiveDigletts_SetInactive	w27		Resets all activeDigletts to state 3 (inactive), evidence: calls func_86C0276C, then sets state=3, diglettId=-1 for all 3	applied@ab6aaba
+func_86C02A1C	MiniDiglettMaybeSetGold	w27		Sets diglett as gold based on random chance and countdown, evidence: sets diglett->diglettIsGold, diglett->unk_000.unk_01C, uses D_86C12038, D_86C12034, miniEkansCountdown	applied@ab6aaba
+func_86C03008	MiniDiglettsUpdateAll	w27		Updates all miniDigletts: runs state machine, updates transforms, colliders, anims, evidence: calls miniDiglettStateMachine, loops over 9 miniDigletts	applied@ab6aaba
+func_86C030EC	MiniEkansAllIdleCheck	w27		Returns 1 if all Ekans are in mainState 0, evidence: loops over 4 miniEkanses, checks mainState, used to check if all are idle	applied@ab6aaba
+func_86C03128	MiniEkansAwardWinner	w27		Finds highest ekansScore, sets isWinner and mainState for winners, evidence: increments player score, sets isWinner, mainState=0x64	applied@ab6aaba
+func_86C031E4	MiniEkansHandleResultSound	w27		Plays result sound based on Fragment2_1_GetResult, evidence: calls MiniGame_QueueSoundEvent with result-dependent IDs	applied@ab6aaba
+func_86C03258	MiniEkansCountdownTick	w27		Decrements countdown timer, triggers sound events at thresholds, evidence: manipulates D_879060C0, miniEkansCountdown, plays sounds at certain values	applied@ab6aaba
+func_86C035E0	MiniEkansDebugAndCameraUpdate	w27		Handles debug camera controls and updates camera, evidence: calls minigameDebuggModeControl, miniUpdateCamera	applied@ab6aaba
+func_86C03608	MiniEkansDrawTutoTextPanel	w27		Draws tutorial text panels and messages, evidence: DrawPanel, Text_Print, uses gItemNamesBank and message IDs, called in func_86C03AB8	applied@ab6aaba
+func_86C03AB8	MiniEkansTutoScreenUpdate	w27		Handles tutorial screen state and rendering, evidence: switch on D_87903DCC, calls func_86C03608, MiniTutoScreen_StartTimerWithDelay, etc.	applied@ab6aaba
+func_86C03E4C	MiniEkansTutoScreenMain	w27		Starts tutorial screen and draws HUD if enabled, evidence: calls MiniTutoScreen_Start, func_86C03AB8, miniEkansDrawHub	applied@ab6aaba
+func_86C03E8C	MiniEkansTutoScreenOrResult	w27		Handles tutorial or result screen rendering, evidence: calls func_86C03E4C, ResultScreen_UpdateAndRender depending on state	applied@ab6aaba
+func_86C03ED4	MiniEkansDrawShadows	w27		Draws shadows for Ekans in state 2, evidence: gSPDisplayList(gDL_Begin3D), Gfx_DrawQuadRotated, uses ekansShadowTexture, playerColors	applied@ab6aaba
+func_86C040B4	MiniEkansMainDisplayList	w27		Main display list function for Ekans minigame, evidence: Stage_BeginDisplayList, Gfx_FillScreen, calls func_86C03ED4, func_86C03E8C, Stage_Advance	applied@ab6aaba
+func_86C044B4	MiniEkansInitSceneGraph	w27		Initializes scene graph and geo layouts for Ekans minigame, evidence: process_geo_layout, Graph_AddToRootList0, GeoLayout_LoadById, GraphNode_InitChild	applied@ab6aaba
+D_86F02690	gFragment21Texture0	w27		Texture pointer in D_86F08E90[0], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F03690	gFragment21Texture1	w27		Texture pointer in D_86F08E90[1], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F03E90	gFragment21Texture2	w27		Texture pointer in D_86F08E90[2], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F04690	gFragment21Texture3	w27		Texture pointer in D_86F08E90[3], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F04E90	gFragment21Texture4	w27		Texture pointer in D_86F08E90[4], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F05690	gFragment21Texture5	w27		Texture pointer in D_86F08E90[5], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F06690	gFragment21Texture6	w27		Texture pointer in D_86F08E90[6], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F06E90	gFragment21Texture7	w27		Texture pointer in D_86F08E90[7], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F07E90	gFragment21Texture8	w27		Texture pointer in D_86F08E90[8], used as a graphics asset in this fragment	applied@ab6aaba
+D_86F08E90	gFragment21TextureInfoTable	w27		Array of 9 structs, each describing a texture (see D_86F02690 etc), used for graphics setup	applied@ab6aaba
+D_86F08F00	gFragment21GfxSetup0	w27		First Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F08F38	gFragment21GfxSetup1	w27		Second Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F08F70	gFragment21GfxSetup2	w27		Third Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F08FB0	gFragment21GfxSetup3	w27		Fourth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F08FF0	gFragment21GfxSetup4	w27		Fifth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F09030	gFragment21GfxSetup5	w27		Sixth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F09070	gFragment21GfxSetup6	w27		Seventh Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F090B0	gFragment21GfxSetup7	w27		Eighth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F090F0	gFragment21GfxSetup8	w27		Ninth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F09130	gFragment21GfxSetup9	w27		Tenth Gfx display list, sets up tile and loads block for texture, used for rendering in this fragment	applied@ab6aaba
+D_86F09170	gFragment21VtxGround	w27		Array of Vtx, used for ground mesh in this fragment's geometry	applied@ab6aaba
+D_86F09210	gFragment21VtxGroundWall	w27		Array of Vtx, used for ground wall mesh in this fragment's geometry	applied@ab6aaba
+D_86F09310	gFragment21VtxRock1	w27		Array of Vtx, used for first rock mesh in this fragment's geometry	applied@ab6aaba
+D_86F093F0	gFragment21VtxRock2	w27		Array of Vtx, used for second rock mesh in this fragment's geometry	applied@ab6aaba
+D_86F09520	gFragment21VtxRock3	w27		Array of Vtx, used for third rock mesh in this fragment's geometry	applied@ab6aaba
+D_86F09610	gFragment21VtxWallA	w27		Array of Vtx, used for wall mesh A in this fragment's geometry	applied@ab6aaba
+D_86F09650	gFragment21VtxWallB	w27		Array of Vtx, used for wall mesh B in this fragment's geometry	applied@ab6aaba
+D_86F09690	gFragment21VtxWallC	w27		Array of Vtx, used for wall mesh C in this fragment's geometry	applied@ab6aaba
+D_86F096D0	gFragment21VtxSmallRockA	w27		Array of Vtx, used for small rock mesh A in this fragment's geometry	applied@ab6aaba
+D_86F09760	gFragment21VtxSmallRockB	w27		Array of Vtx, used for small rock mesh B in this fragment's geometry	applied@ab6aaba
+D_86F09810	gFragment21VtxSmallRockC	w27		Array of Vtx, used for small rock mesh C in this fragment's geometry	applied@ab6aaba
+D_86F098D0	gFragment21VtxSandPatchA	w27		Array of Vtx, used for sand patch mesh A in this fragment's geometry	applied@ab6aaba
+D_86F09AD0	gFragment21VtxSandPatchB	w27		Array of Vtx, used for sand patch mesh B in this fragment's geometry	applied@ab6aaba
+D_86F09CB0	gFragment21VtxSandPatchC	w27		Array of Vtx, used for sand patch mesh C in this fragment's geometry	applied@ab6aaba
+D_86F09E90	gFragment21VtxSandPatchD	w27		Array of Vtx, used for sand patch mesh D in this fragment's geometry	applied@ab6aaba
+D_86F0A070	gFragment21VtxSandPatchE	w27		Array of Vtx, used for sand patch mesh E in this fragment's geometry	applied@ab6aaba
+D_86F0A270	gFragment21VtxSandPatchF	w27		Array of Vtx, used for sand patch mesh F in this fragment's geometry	applied@ab6aaba
+D_86F0A450	gFragment21VtxSandPatchG	w27		Array of Vtx, used for sand patch mesh G in this fragment's geometry	applied@ab6aaba
+D_86F0A610	gSandshrewHoleVerts	w27		Sandshrew minigame: Vtx for sandshrew hole, used with D_86F0A9C8 display list	applied@ab6aaba
+D_86F0A730	gSandshrewStageDisplayList	w27		Gfx: main sandshrew minigame stage display list, references all Vtx arrays for the stage	applied@ab6aaba
+D_86F0A9C8	gSandshrewHoleDisplayList	w27		Gfx: display list for sandshrew hole, uses D_86F0A610 Vtx	applied@ab6aaba
+D_86F0AA18	gSandshrewMiniActorDisplayList1	w27		Gfx: display list for sandshrew mini actor, uses D_86F09810 Vtx	applied@ab6aaba
+D_86F0AA60	gSandshrewMiniActorDisplayList2	w27		Gfx: display list for sandshrew mini actor, uses D_86F09760 Vtx	applied@ab6aaba
+D_86F0AAA8	gSandshrewMiniActorDisplayList3	w27		Gfx: display list for sandshrew mini actor, uses D_86F096D0 Vtx	applied@ab6aaba
+D_86F0AAE0	gSandshrewMiniActorDisplayList4	w27		Gfx: display list for sandshrew mini actor, uses D_86F09690 Vtx	applied@ab6aaba
+D_86F0AB00	gSandshrewMiniActorDisplayList5	w27		Gfx: display list for sandshrew mini actor, uses D_86F09650 Vtx	applied@ab6aaba
+D_86F0AB20	gSandshrewMiniActorDisplayList6	w27		Gfx: display list for sandshrew mini actor, uses D_86F09610 Vtx	applied@ab6aaba
+D_86F0AB40	gSandshrewMiniActorDisplayList7	w27		Gfx: display list for sandshrew mini actor, uses D_86F09520 Vtx	applied@ab6aaba
+D_86F0AB98	gSandshrewMiniActorDisplayList8	w27		Gfx: display list for sandshrew mini actor, uses D_86F093F0 Vtx	applied@ab6aaba
+D_86F0AC10	gSandshrewMiniActorDisplayList9	w27		Gfx: display list for sandshrew mini actor, uses D_86F09310 Vtx	applied@ab6aaba
+D_86F0AC60	gSandshrewMiniActorDisplayList10	w27		Gfx: display list for sandshrew mini actor, uses D_86F09170 Vtx	applied@ab6aaba
+D_86F0AC98	gSandshrewMiniActorDisplayList11	w27		Gfx: display list for sandshrew mini actor, uses D_86F09210 Vtx	applied@ab6aaba
+D_86F0ACE0	gSandshrewStageObjectTable	w27		Appears to be a table of pointers and params for stage objects, references display lists and Vtx	applied@ab6aaba
+D_86F0AFB8	gSandshrewStageInitTable	w27		Table of pointers and params for stage init, references D_86F0ACE0 and display lists	applied@ab6aaba
+D_86F0B004	gSandshrewStageScript	w27		Table of u32, references D_86F0AFB8, gGraphRoot0, gFragment2_1DisplayList, used for stage scripting	applied@ab6aaba
+D_86F0B0D8	gSandshrewTutoAnimTable1	w27		Table of unk_func_87801684, used in func_86F01C40 for tutorial animations	applied@ab6aaba
+D_86F0B100	gSandshrewTutoAnimTable2	w27		Table of unk_func_87801684, used in func_86F01C40 for tutorial animations	applied@ab6aaba
+D_86F0B128	gSandshrewTutoAnimTable3	w27		Table of unk_func_87801684, used in func_86F01C40 for tutorial animations	applied@ab6aaba
+D_86F0B170	gSandshrewHudPanelRect	w27		Array of 4 s32, used for HUD panel rectangle in minigame	applied@ab6aaba
+func_86F0174C	MiniGame_UpdateSandshrewAI	w27		Called in main loop after Timer_UpdateCounters, likely updates Sandshrew AI logic in the minigame	applied@ab6aaba
+func_86F00D04	MiniGame_UpdateSandshrewPhysics	w27		Called in main loop after Timer_UpdateCounters, likely updates Sandshrew movement/physics	applied@ab6aaba
+func_86F01014	MiniGame_UpdateSandshrewHoles	w27		Called in main loop after Timer_UpdateCounters, likely updates hole state for Sandshrew minigame	applied@ab6aaba
+func_86F012B8	MiniGame_UpdateSandshrewGeisers	w27		Called in main loop after Timer_UpdateCounters, likely updates geiser state for Sandshrew minigame	applied@ab6aaba
+func_86F018E4	MiniGame_UpdateSandshrewScore	w27		Called in main loop after Timer_UpdateCounters, likely updates score or points in Sandshrew minigame	applied@ab6aaba
+func_86F01488	MiniGame_UpdateSandshrewHUD	w27		Called in main loop after Timer_UpdateCounters, likely updates HUD elements for Sandshrew minigame	applied@ab6aaba
+func_86F01F58	MiniGame_WaitForFrame	w27		Called at end of main loop and fadeout loop, likely waits for next frame or handles frame sync	applied@ab6aaba
+func_86F02230	MiniGame_FadeOutAndWaitAudio	w27		Handles fadeout, waits for audio to finish, called at end of minigame	applied@ab6aaba
+func_86F02320	MiniGame_InitSandshrewObjects	w27		Initializes camera, geometry, and root nodes for Sandshrew minigame objects (Sandshrews, holes, geisers)	applied@ab6aaba
+func_86F0204C	MiniGame_ShowTutorial	w27		Called after minigame object init and before fadeout, likely shows tutorial screen	applied@ab6aaba
+D_88605B80	gSummaryNatureColors	w27		Color_RGBA8 array indexed by arg2 in func_88604F80, used for summary UI color theme	applied@ab6aaba
+D_88605B90	gSummaryUnusedEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator in summary UI	applied@ab6aaba
+D_886061B8	gSummaryBallIconEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ball icon	applied@ab6aaba
+D_886067E0	gSummaryAbilityIconEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ability icon	applied@ab6aaba
+D_88606E08	gSummaryRibbonsIconEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbons icon	applied@ab6aaba
+D_88606E10	gSummaryRibbonBar1Tex	w27		Used as a texture, matches the ribbon bar graphics in the summary UI	applied@ab6aaba
+D_88606E50	gSummaryRibbonBar1EndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar 1	applied@ab6aaba
+D_88606E58	gSummaryRibbonBar2Tex	w27		Used as a texture, matches the ribbon bar graphics in the summary UI	applied@ab6aaba
+D_88606E98	gSummaryRibbonBar2EndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar 2	applied@ab6aaba
+D_88606EA0	gSummaryRibbonBar3Tex	w27		Used as a texture, matches the ribbon bar graphics in the summary UI	applied@ab6aaba
+D_88606EE0	gSummaryRibbonBar3EndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar 3	applied@ab6aaba
+D_88606EE8	gSummaryRibbonBar4Tex	w27		Used as a texture, matches the ribbon bar graphics in the summary UI	applied@ab6aaba
+D_88606F28	gSummaryRibbonBar4EndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar 4	applied@ab6aaba
+D_88606F30	gSummaryBallIconMaskTex	w27		Used as a mask texture for the summary ball icon, matches UI mask usage	applied@ab6aaba
+D_88607730	gSummaryBallIconMaskEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ball icon mask	applied@ab6aaba
+D_88607738	gSummaryBallIconPaletteTex	w27		Palette texture for the summary ball icon, matches palette usage in UI	applied@ab6aaba
+D_88607A58	gSummaryBallIconPaletteEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ball icon palette	applied@ab6aaba
+D_88607A60	gSummaryAbilityIconMaskTex	w27		Used as a mask texture for the summary ability icon, matches UI mask usage	applied@ab6aaba
+D_88607D80	gSummaryAbilityIconMaskEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ability icon mask	applied@ab6aaba
+D_88607D88	gSummaryAbilityIconPaletteTex	w27		Palette texture for the summary ability icon, matches palette usage in UI	applied@ab6aaba
+D_886080A8	gSummaryAbilityIconPaletteEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ability icon palette	applied@ab6aaba
+D_886080B0	gSummaryRibbonsIconMaskTex	w27		Used as a mask texture for the summary ribbons icon, matches UI mask usage	applied@ab6aaba
+D_886083D0	gSummaryRibbonsIconMaskEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbons icon mask	applied@ab6aaba
+D_886083D8	gSummaryRibbonsIconPaletteTex	w27		Palette texture for the summary ribbons icon, matches palette usage in UI	applied@ab6aaba
+D_886086F8	gSummaryRibbonsIconPaletteEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbons icon palette	applied@ab6aaba
+D_88608700	gSummaryRibbonBarMaskTex	w27		Used as a mask texture for the summary ribbon bar, matches UI mask usage	applied@ab6aaba
+D_88608A20	gSummaryRibbonBarMaskEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar mask	applied@ab6aaba
+D_88608A28	gSummaryRibbonBarPaletteTex	w27		Palette texture for the summary ribbon bar, matches palette usage in UI	applied@ab6aaba
+D_88608D48	gSummaryRibbonBarPaletteEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for ribbon bar palette	applied@ab6aaba
+D_88608D50	gSummaryNatureIconTex	w27		Used as a texture for the summary nature icon, matches UI icon usage	applied@ab6aaba
+D_88609070	gSummaryNatureIconEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for nature icon	applied@ab6aaba
+D_88609078	gSummaryNatureIconMaskTex	w27		Used as a mask texture for the summary nature icon, matches UI mask usage	applied@ab6aaba
+D_88609398	gSummaryNatureIconMaskEndDL	w27		Static Gfx array with gsSPEndDisplayList, used as a DL terminator for nature icon mask	applied@ab6aaba
+D_886093A0	gSummaryNatureIconPaletteTex	w27		Palette texture for the summary nature icon, matches palette usage in UI	applied@ab6aaba
+D_886096C0	gMoveTypeIconDisplayList	w27		gsSPEndDisplayList(), used in gMoveTypeIconTextures as a Gfx* for move type icons	applied@ab6aaba
+D_886099E8	gMoveTypeIconDisplayList2	w27		gsSPEndDisplayList(), used in gMoveTypeIconTextures as a Gfx* for move type icons	applied@ab6aaba
+D_88609D10	gMoveTypeIconDisplayList3	w27		gsSPEndDisplayList(), used in gMoveTypeIconTextures as a Gfx* for move type icons	applied@ab6aaba
+D_8860A038	gMoveTypeIconDisplayList4	w27		gsSPEndDisplayList(), used in gMoveTypeIconTextures as a Gfx* for move type icons	applied@ab6aaba
+D_8860A360	gMoveTypeIconDisplayList5	w27		gsSPEndDisplayList(), used in gMoveTypeIconTextures as a Gfx* for move type icons	applied@ab6aaba
+D_8860A6C8	gMoveTypeIconDisplayList6	w27		gsSPEndDisplayList(), follows the pattern of other move type icon display lists	applied@ab6aaba
+D_888267B8	gTrainerCardGraphNode	w27		Used as a Fragment2_1GraphNode for trainer card UI, matches context	applied@ab6aaba
+D_88826924	gTrainerCardStage	w27		Used as a Stage* in trainer card context, matches naming pattern	applied@ab6aaba
+D_8882692C	gTrainerCardAssetManager	w27		Passed to SpriteDisplay_Alloc, used for asset management in trainer card	applied@ab6aaba
+D_888269A0	gTrainerCardUnusedInt	w27		Unused s32, only padding follows, matches pattern for unused/pad variables	applied@ab6aaba
+D_888269A8	gTrainerCardGfxState	w27		unk_func_8002D860, used for graphics state in trainer card, matches naming pattern	applied@ab6aaba
+D_88808150	gSpeciesDisplayOrder	w27		Used as a 151-entry reorder table for species display, matches usage in for-loops and index mapping	applied@ab6aaba
+D_888081E8	gTrainerCardTextColor	w27		Used as Color_RGBA8 for text color in trainer card UI, matches usage in Text_SetEnvColor	applied@ab6aaba
+D_888081EC	gTrainerCardHeaderColors	w27		Used as Color_RGBA8[2] for header colors in trainer card UI, matches usage in color selection logic	applied@ab6aaba
+D_888081F4	gTrainerCardBorderColor	w27		Used as Color_RGBA8 for border color in trainer card UI, matches usage in Text_SetPrimColor and fill rectangles	applied@ab6aaba
+D_888081F8	gTrainerCardStatTextColor	w27		Used as Color_RGBA8 for stat text color in trainer card, matches usage in Text_SetEnvColor	applied@ab6aaba
+D_888081FC	gTrainerCardStatBgColor	w27		Used as Color_RGBA8 for stat background color in trainer card, matches usage in fill rectangles	applied@ab6aaba
+D_88808200	gTrainerCardFrameColor	w27		Used as Color_RGBA8 for UIFrame_Create in trainer card, matches usage	applied@ab6aaba
+D_88808204	gTrainerCardNameColor	w27		Used as Color_RGBA8 for trainer name text, matches usage in Text_SetEnvColor	applied@ab6aaba
+D_88808208	gTrainerCardButtonTextColor	w27		Used as Color_RGBA8 for button text color in trainer card, matches usage in Text_SetEnvColor	applied@ab6aaba
+D_8880820C	gTrainerCardButtonBgColor	w27		Used as Color_RGBA8 for button background color in trainer card, matches usage in fill rectangles	applied@ab6aaba
+D_88808210	gTrainerCardListFrameColor	w27		Used as Color_RGBA8 for UIFrame_Create for list frame, matches usage	applied@ab6aaba
+D_88808214	gTrainerCardDexLabelColor	w27		Used as Color_RGBA8 for dex label color in trainer card, matches usage in Text_SetEnvColor	applied@ab6aaba
+D_88808218	gTrainerCardDexBgColor	w27		Used as Color_RGBA8 for dex background color in trainer card, matches usage in fill rectangles	applied@ab6aaba
+D_8880821C	gTrainerCardDexFrameColor	w27		Used as Color_RGBA8 for UIFrame_Create for dex frame, matches usage	applied@ab6aaba
+D_88808220	gTrainerCardDexDescFrameColor	w27		Used as Color_RGBA8 for UIFrame_Create for dex description frame, matches usage	applied@ab6aaba
+D_88808224	gTrainerCardSpriteTileParams	w27		unk_func_88500020, used for DrawTiledTextureRect, matches usage for sprite tile rendering	applied@ab6aaba
+D_88808234	gTrainerCardUnusedGfxArray	w27		Unused static u32[3], only referenced as unused, matches naming pattern	applied@ab6aaba
+D_88808240	gTrainerCardUnusedGfxDL	w27		Unused static Gfx array with gsSPEndDisplayList, matches naming pattern for unused display lists	applied@ab6aaba
+D_88808248	gTrainerCardSpriteTileData	w27		Used as u8* for sprite tile data in D_88808224, matches usage in DrawTiledTextureRect	applied@ab6aaba
+func_888002F8	TrainerCardDrawDexEntryBg	w27		Function draws background rectangles for dex entry, uses species index and unlock state, called as draw callback	applied@ab6aaba
+func_88800A3C	TrainerCardDrawSpeciesListRow	w27		Function draws a row in the species list, prints dex number and species name, used as row draw callback	applied@ab6aaba
+func_88800E20	TrainerCardInitSpeciesList	w27		Initializes the species list fragment, sets up display order and pointer arrays, called from menu setup	applied@ab6aaba
+func_88801030	TrainerCardGetSelectedSpecies	w27		Returns the currently selected species index from the species list, used in menu logic	applied@ab6aaba
+func_88801054	TrainerCardToggleSpeciesOrder	w27		Toggles between normal and alternate species order in the list, called on input	applied@ab6aaba
+func_88801164	TrainerCardInitSpeciesListFragment	w27		Initializes the species list fragment container, sets up child and memory pool, called from menu setup	applied@ab6aaba
+func_88801214	TrainerCardSpeciesListInput	w27		Handles input for the species list fragment, called as input handler	applied@ab6aaba
+func_8880123C	TrainerCardDrawRectBorder	w27		Draws a border rectangle with a given color, used for UI backgrounds and stat boxes	applied@ab6aaba
+func_888018E0	TrainerCardInitStatsBox	w27		Initializes the stats box fragment, sets up draw callback and position, called from menu setup	applied@ab6aaba
+func_8880193C	TrainerCardLoadTrainerStats	w27		Loads trainer stats (ID, name, wins, losses, draws) from save slot, called during stats box setup	applied@ab6aaba
+func_888019A4	TrainerCardDrawStatsBox	w27		Draws the stats box UI, prints trainer name, ID, and stats, called as draw callback	applied@ab6aaba
+func_88801CB4	TrainerCardInitStatsFrame	w27		Initializes the stats frame fragment, sets up UIFrame and child stats box, called from menu setup	applied@ab6aaba
+func_88801DB8	TrainerCardInitNameSelector	w27		Initializes the name selector fragment, sets up draw callback and state, called from menu setup	applied@ab6aaba
+func_88801E1C	TrainerCardDrawNameSelector	w27		Draws the name selector UI, prints trainer name and alternate names, called as draw callback	applied@ab6aaba
+func_88802228	TrainerCardToggleNameSelector	w27		Toggles the name selector state, called on input	applied@ab6aaba
+func_88802238	TrainerCardDrawButton	w27		Draws a button with centered text, used for UI button rendering, called as button draw callback	applied@ab6aaba
+func_8880231C	TrainerCardInitButtonList	w27		Initializes the button list fragment, sets up UIFrame and button items, called from menu setup	applied@ab6aaba
+func_88802598	TrainerCardButtonListInput	w27		Handles input for the button list fragment, called as input handler	applied@ab6aaba
+func_888025C0	TrainerCardInitDexEntryBox	w27		Initializes the dex entry box fragment, sets up draw callback and position, called from menu setup	applied@ab6aaba
+func_8880261C	TrainerCardSetDexSpecies	w27		Sets the current species index for the dex entry box, called during navigation	applied@ab6aaba
+func_88802624	TrainerCardPrintDexHeight	w27		Prints the height string for a species in the dex entry, uses GetMessageString for units	applied@ab6aaba
+func_888026D8	TrainerCardPrintDexWeight	w27		Prints the weight string for a species in the dex entry, formats as X.Y kg, called in dex entry rendering	applied@ab6aaba
+func_8880276C	TrainerCardDrawDexEntryBox	w27		Draws the dex entry box UI, prints species info, type, and stats, called as draw callback	applied@ab6aaba
+func_88802B88	TrainerCardInitDexEntryFrame	w27		Initializes the dex entry frame fragment, sets up UIFrame and child dex entry box, called from menu setup	applied@ab6aaba
+func_88802C80	TrainerCardInitDexDescFrame	w27		Initializes the dex description frame fragment, sets up UIFrame and text object, called from menu setup	applied@ab6aaba
+func_88802DAC	TrainerCardSetDexDescText	w27		Sets the dex description text for the selected species, uses GetMessageString for dex entry	applied@ab6aaba
+func_88802E68	TrainerCardInitSpriteTileBox	w27		Initializes the sprite tile box fragment, sets up draw callback and position, called from menu setup	applied@ab6aaba
+func_88802EC4	TrainerCardSetSpriteTileSpecies	w27		Sets the species for the sprite tile box, loads sprite and unlock state, called during navigation	applied@ab6aaba
+func_88802F10	TrainerCardDrawSpriteTileBox	w27		Draws the sprite tile box UI, renders sprite tile with alpha based on unlock state, called as draw callback	applied@ab6aaba
+func_8880316C	TrainerCardInitSpriteTileFrame	w27		Initializes the sprite tile frame fragment, sets up child sprite tile box, called from menu setup	applied@ab6aaba
+func_888031FC	TrainerCardMenuInit	w27		Initializes the main trainer card menu, sets up all fragments and UI elements, called at menu entry	applied@ab6aaba
+func_88803614	TrainerCardMenuLoopSpecies	w27		Main loop for trainer card menu in species list state, handles input and rendering, called from menu state machine	applied@ab6aaba
+func_888038E0	TrainerCardMenuLoopButtons	w27		Main loop for trainer card menu in button list state, handles input and rendering, called from menu state machine	applied@ab6aaba
+func_88803BCC	TrainerCardExportSprite	w27		Exports the current species sprite to a buffer, uses SpriteDisplay_Alloc and _bcopy, called for icon export	applied@ab6aaba
+func_88807D04	PictureQuiz_ShowSpeciesInfo	w27		called with species index, trainer card state, substates, and message banks, shows species info after quiz	applied@ab6aaba
+func_8880725C	PictureQuiz_DrawResults	w27		called as a frame callback during results fade and input, draws the results screen	applied@ab6aaba
+func_88807AC0	PictureQuiz_CheckResultsInput	w27		returns nonzero if input is detected to advance from results, used in results input loop	applied@ab6aaba
+func_8880812C	PictureQuiz_CleanupResults	w27		called after copying state and before fade out, likely cleans up results resources	applied@ab6aaba
+D_825073F0	gStatusIconDescriptor	w27		Contains pointer to gStatusBarVertices0 and DrawStatusIconForPlayer, used as a display list descriptor for status icons	applied@ab6aaba
+D_82507428	gComputerSelectionBarVertices0	w27		Used as vertex buffer for the first bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507468	gComputerSelectionBarVertices1	w27		Used as vertex buffer for the second bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825074A8	gComputerSelectionBarVertices2	w27		Used as vertex buffer for the third bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825074E8	gComputerSelectionBarVertices3	w27		Used as vertex buffer for the fourth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507528	gComputerSelectionBarVertices4	w27		Used as vertex buffer for the fifth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507568	gComputerSelectionBarVertices5	w27		Used as vertex buffer for the sixth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825075A8	gComputerSelectionBarVertices6	w27		Used as vertex buffer for the seventh bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825075E8	gComputerSelectionBarVertices7	w27		Used as vertex buffer for the eighth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507628	gComputerSelectionBarVertices8	w27		Used as vertex buffer for the ninth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507668	gComputerSelectionBarVertices9	w27		Used as vertex buffer for the tenth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825076A8	gComputerSelectionBarVertices10	w27		Used as vertex buffer for the eleventh bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825076E8	gComputerSelectionBarVertices11	w27		Used as vertex buffer for the twelfth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507728	gComputerSelectionBarVertices12	w27		Used as vertex buffer for the thirteenth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82507768	gComputerSelectionBarVertices13	w27		Used as vertex buffer for the fourteenth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825077A8	gComputerSelectionBarVertices14	w27		Used as vertex buffer for the fifteenth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_825077E8	gComputerSelectionBarVertices15	w27		Used as vertex buffer for the sixteenth bar in gComputerSelectionDL and gComputerRootDL, matches naming of other bar vertex arrays	applied@ab6aaba
+D_82508730	gIconQuadVertices	w27		Used as the vertex buffer for gIconDL and UI_DrawIcon, defines a 32x22 quad for icon rendering	applied@ab6aaba
+D_8250A304	gTextObjectHandle	w27		Used as a pointer to a TextObject, matches naming of other text object handles	applied@ab6aaba
+func_82F0C630	MenuBar_ResetState	w27		Resets both entries of D_82F211A0 (menu bar state struct) to zero, called at menu init	applied@ab6aaba
+func_82F0CA7C	MenuBar_UpdateSlide	w27		Handles the sliding animation for menu bar, called in MenuBar_ProcessAll case 3	applied@ab6aaba
+func_82F0D084	ScreenTransition_Reset	w27		Sets gScreenTransition.unk_02 to 0, called before transition begins	applied@ab6aaba
+func_82F0D27C	ScreenTransition_UpdateAnim	w27		Updates animation state for transition, calls Anim_HasReachedEnd and GraphNode_TriggerAction	applied@ab6aaba
+func_82F0D2F4	ScreenTransition_Expand	w27		Handles transition expansion animation, increments unk_12/unk_14, sets state to 2 when done	applied@ab6aaba
+func_82F0D3F4	IsSpecialPokemonId	w27		Returns true if arg0 is one of 0x40, 0x43, 0x4B, 0x5D (special Pok?mon IDs)	applied@ab6aaba
+func_82F0D428	ScreenTransition_HandleInput	w27		Handles A button press during transition, sets state to 3 or 6, plays SFX	applied@ab6aaba
+func_82F0D51C	ScreenTransition_Shrink	w27		Handles shrinking animation, fades out, sets state to 4 when done	applied@ab6aaba
+func_82F0D64C	MessageString_Equals	w27		Compares message string from bank 24 with arg1, returns 1 if equal	applied@ab6aaba
+func_82F0D6D0	PokemonData_UpdateNameIfSpecial	w27		If Pok?mon is special, updates its name string from message bank and recalculates stats	applied@ab6aaba
+func_82F0D76C	ScreenTransition_ApplyPokemonUpdate	w27		Handles transition to state 5, updates Pok?mon data, re-inits transition, plays SFX	applied@ab6aaba
+func_82F0D834	ScreenTransition_ShrinkReverse	w27		Handles reverse shrinking animation, sets state to 2 when done	applied@ab6aaba
+func_82F0DA60	ScreenTransition_Collapse	w27		Handles collapse animation, decrements size, pops pool state when done	applied@ab6aaba
+func_82F0DD90	DrawTransitionOverlay	w27		Draws animated overlay during transition using D_82F13F90 and animated tile offsets	applied@ab6aaba
+func_82F0E5C8	DrawMenuPanelBorder	w27		Draws border and corners for a menu panel using RGBA16 sprites and textures	applied@ab6aaba
+func_82F0E97C	DrawTransitionImage	w27		Draws the transition image with optional sine distortion, uses gScreenTransition.unk_20	applied@ab6aaba
+func_82F0ECAC	DrawTransitionText	w27		Draws text message during transition, centers text using MeasureTextWidth, uses message banks	applied@ab6aaba
+func_82F0EE58	ScreenTransition_Render	w27		Renders the transition, including image, overlay, and text, sets scissor rects	applied@ab6aaba
+func_82F0EF68	MenuPanel_ResetState	w27		Resets both entries of gMenuPanels (menu panel state struct) to zero, called at menu init	applied@ab6aaba
+func_82F0EFC4	MenuPanel_SetState	w27		Sets state and parameters for a menu panel in gMenuPanels, called by transitions	applied@ab6aaba
+func_82F0F260	MenuPanel_UpdateFade	w27		Decrements height, sets state to 2 when below threshold, called in state 1	applied@ab6aaba
+func_82F0F2AC	MenuPanel_UpdatePulse	w27		Animates panel height with sine, decreases scale, clamps at 1.0f, called in state 2	applied@ab6aaba
+func_82F0F374	MenuPanel_UpdateExpand	w27		Animates panel expanding with sine and scale, sets state to 4 when done, called in state 3	applied@ab6aaba
+func_82F0F578	MenuPanel_UpdateBounce	w27		Animates panel with sine bounce, called in state 4	applied@ab6aaba
+func_82F0F600	MenuPanel_SlideOut	w27		Animates panel sliding out, sets state to 0 when offscreen, called in state 5	applied@ab6aaba
+func_82F0F654	MenuPanel_SlideIn	w27		Animates panel sliding in, sets state to 7 when at target, called in state 6	applied@ab6aaba
+func_82F0F714	MenuPanel_BounceLoop	w27		Animates panel with sine bounce, called in state 7	applied@ab6aaba
+func_82F0F79C	MenuPanel_ShrinkOut	w27		Animates panel shrinking out, sets state to 0 when done, called in state 8	applied@ab6aaba
+func_82F0F89C	MenuPanel_ProcessAll	w27		Processes all menu panels, calls update functions based on state, handles animation step	applied@ab6aaba
+func_82F0F9E0	DrawMenuPanel	w27		Draws a menu panel using RGBA16 textures, handles scaling and vertical tiling	applied@ab6aaba
+func_82F0FCC0	MenuPanel_RenderAll	w27		Renders all menu panels, sets scissor rects, calls DrawMenuPanel	applied@ab6aaba
+func_82F0FDCC	MenuPanel_IsAnimating	w27		Returns 1 if D_82F21140.unk_0E is nonzero (panel animating), else 0	applied@ab6aaba
+func_82F0FDEC	MenuPanel_SetMainState	w27		Sets D_82F21140 state and parameters, plays SFX, called with arg0 < 0x12	applied@ab6aaba
+func_82F10034	MenuPanel_UpdateState	w27		Updates menu panel state based on func_82F07A74/func_82F0C16C return, sets flags in arg0->unk_0C and unk_0E	applied@ab6aaba
+func_82F10110	MenuPanel_AnimateIntro	w27		Animates intro by decrementing unk_18, updates position/scaling, calls func_82F0FDEC when done	applied@ab6aaba
+func_82F101C8	MenuPanel_AnimateSlide	w27		Animates sliding transition, updates position/scaling, calls func_82F0FDEC with 3 or 5 when done	applied@ab6aaba
+func_82F10348	MenuPanel_AnimateWait	w27		Waits for picker state, decrements unk_18, updates flags, calls func_82F0FDEC(6) if func_82F13964(4)	applied@ab6aaba
+func_82F10400	MenuPanel_AnimateExit	w27		Animates exit by decrementing unk_18, updates position, calls func_82F0FDEC(7) when done	applied@ab6aaba
+func_82F10454	MenuPanel_AnimateWait2	w27		Waits for picker state, decrements unk_18, updates flags, calls func_82F0FDEC(9) if func_82F13964(5)	applied@ab6aaba
+func_82F1050C	MenuPanel_AnimateSlideOut	w27		Animates slide out, updates position/scaling, calls func_82F0FDEC(5 or 0xA) when done	applied@ab6aaba
+func_82F10674	MenuPanel_HandleBarConfirm	w27		Handles menu bar confirm, sets flags, calls MenuBar_SetState and PlaySoundEffect if func_82F13964(7)	applied@ab6aaba
+func_82F10710	MenuPanel_WaitForBarConfirm	w27		Waits for bar confirm, calls func_82F0FDEC(5) if func_82F13964(7)	applied@ab6aaba
+func_82F10744	MenuPanel_AnimateFadeOutLeft	w27		Animates fade out to left, updates position, calls func_82F0FDEC(0xD) and ScreenTransition_Start(0) when done	applied@ab6aaba
+func_82F10818	MenuPanel_WaitForScreenTransitionLeft	w27		Waits for screen transition left, calls func_82F0FDEC(0xE) if func_82F13964(0xB)	applied@ab6aaba
+func_82F1084C	MenuPanel_AnimateFadeOutRight	w27		Animates fade out to right, updates position, calls func_82F0FDEC(0xF) and ScreenTransition_Start(1) when done	applied@ab6aaba
+func_82F1091C	MenuPanel_WaitForScreenTransitionRight	w27		Waits for screen transition right, calls func_82F0FDEC(0x10) if func_82F13964(0xB)	applied@ab6aaba
+func_82F10950	MenuPanel_AnimateExitDown	w27		Animates exit down, updates position, calls func_82F0FDEC(0x11) and resets panels when done	applied@ab6aaba
+func_82F10A24	MenuPanel_AnimateOutro	w27		Animates outro, handles panel state, plays sound, calls func_82F0FDEC(0) when done	applied@ab6aaba
+func_82F10BB4	MenuPanel_DrawMainBG	w27		Draws main menu panel background using D_3000008 texture, 11 tiles, Gfx_DrawScisTextureRect	applied@ab6aaba
+func_82F10ED0	MenuPanel_DrawLargeButton	w27		Draws large button using D_3005D28 texture, Gfx_DrawScisTextureRect, scaling/positioning	applied@ab6aaba
+func_82F11264	MenuPanel_DrawMediumButton	w27		Draws medium button using D_300D108 texture, Gfx_DrawScisTextureRect, scaling/positioning	applied@ab6aaba
+func_82F115F8	MenuPanel_DrawSmallButton	w27		Draws small button using D_300D278 texture, Gfx_DrawScisTextureRect, scaling/positioning	applied@ab6aaba
+func_82F1198C	MenuPanel_DrawTallBar	w27		Draws tall bar using D_3006000 texture, 0x83 tiles, Gfx_DrawScisTextureRect	applied@ab6aaba
+func_82F11D68	MenuPanel_DrawTallBarHighlight	w27		Draws highlighted tall bar using D_3009DC8/D_300B768, sets prim color, alpha arg6	applied@ab6aaba
+func_82F1228C	MenuPanel_DrawSquareBG	w27		Draws square background using D_30079A0 texture, Gfx_DrawScisTextureRect	applied@ab6aaba
+func_82F12614	MenuPanel_DrawAnimatedBG	w27		Draws animated menu background using D_3009BC0/D_30099B8, updates scroll offsets, Gfx_SetupFrameBuffer	applied@ab6aaba
+func_82F12DE4	MenuPanel_DrawSquareBGWithAlpha	w27		Draws square background with alpha using gMenuFramebuffer and D_30081A8, Gfx_DrawScisTextureRect	applied@ab6aaba
+func_82F13278	MenuPanel_Init	w27		Initializes menu panel state, calls FramebufferImage_Allocate for gMenuFramebuffer	applied@ab6aaba
+func_82F132D0	MenuPanel_Update	w27		Main update function for menu panel, calls state-specific animators and processes bars/transitions	applied@ab6aaba
+func_82F13414	MenuPanel_Render	w27		Main render function for menu panel, draws backgrounds, buttons, bars, handles alpha fades	applied@ab6aaba
+func_82F13964	MenuPanel_CheckState	w27		Checks menu panel and bar states for transitions, returns 1 if condition met for arg0	applied@ab6aaba
+func_82F13B4C	MenuPanel_SetStateVar	w27		Sets D_82F21140.unk_0E to arg0, used to control panel state transitions	applied@ab6aaba
+func_82F13B64	MenuPanel_GetState	w27		Returns D_82F21140.unk_00, current menu panel state	applied@ab6aaba
+D_82F14020	gMenuPanelTallBarHighlightDL	w27		DisplayList for highlighted tall bar, used in MenuPanel_DrawTallBarHighlight	applied@ab6aaba
+D_82F14050	gMenuPanelBGScrollX	w27		Static float for animated BG scroll X, used in MenuPanel_DrawAnimatedBG	applied@ab6aaba
+D_82F14054	gMenuPanelBGScrollY	w27		Static float for animated BG scroll Y, used in MenuPanel_DrawAnimatedBG	applied@ab6aaba
+D_82F14058	gMenuPanelBGScrollX2	w27		Static float for animated BG scroll X2, used in MenuPanel_DrawAnimatedBG	applied@ab6aaba
+D_82F1405C	gMenuPanelBGScrollY2	w27		Static float for animated BG scroll Y2, used in MenuPanel_DrawAnimatedBG	applied@ab6aaba
+D_82F14060	gMenuPanelBGDL	w27		DisplayList for menu panel animated BG, used in MenuPanel_DrawAnimatedBG	applied@ab6aaba
+D_82F14098	gMenuPanelSquareBGAlphaDL	w27		DisplayList for square BG with alpha, used in MenuPanel_DrawSquareBGWithAlpha	applied@ab6aaba
+D_83504080	ItemSelect_ShowResult	w27		Controls whether result screen is shown, set in ItemSelect_Init and checked in ItemSelect_MainDraw	applied@ab6aaba
+D_83504088	ItemSelect_HighlightFlags	w27		Bitmask used in DrawHighlightBars to determine which highlight bars to draw	applied@ab6aaba
+D_8350408C	ItemSelect_FadeInFlag	w27		Controls fade-in speed, set in ItemSelect_Init and used in func_83503B2C	applied@ab6aaba
+D_835040D8	ItemSelect_ResultAnimTimer	w27		Timer for result animation, incremented in func_835038DC and reset in several places	applied@ab6aaba
+func_83500758	DrawGridCellTexture	w27		Draws a single grid cell background using D_04001000 texture, called in func_835023F0	applied@ab6aaba
+func_83500924	DrawGridPanelTexture	w27		Draws panel background using D_4003900, called in func_835023F0	applied@ab6aaba
+func_83500AF4	DrawResultPanelTexture	w27		Draws result panel background using D_4002900, called in func_835023F0	applied@ab6aaba
+func_83500D9C	DrawResultPanelHighlight	w27		Draws highlight overlay for result panel using D_04002800, called in func_835023F0	applied@ab6aaba
+func_83500FE8	DrawGridPageCounter	w27		Draws the "page" counter (99/99) at the top of the grid, uses Text_GetMessageString_Bank2C(0x3A)	applied@ab6aaba
+func_83501204	DrawGridCellBorder	w27		Draws the border and corners for a grid cell, uses D_400D780 and D_400D9C0	applied@ab6aaba
+func_83501340	DrawSlotStatusIcons	w27		Draws icons for slot status flags (4/16), uses D_4011638 and prints numbers	applied@ab6aaba
+func_83501594	CalcResultPanelSize	w27		Calculates size/scale for result panel animation, used in ItemSelect_DrawGrid	applied@ab6aaba
+func_83501718	DrawResultPanelImage	w27		Draws the selected mon's image in the result panel, uses scaling from CalcResultPanelSize	applied@ab6aaba
+func_835022F0	DrawGridHelpPrompt	w27		Draws the help prompt with icon at the bottom of the grid, uses D_30099B8 and Text_GetMessageString_Bank2C(0x3C)	applied@ab6aaba
+func_835023F0	DrawGridBackground	w27		Draws the full grid background, calls DrawGridCellTexture, DrawGridPanelTexture, etc	applied@ab6aaba
+func_835028D0	DrawAnimatedMonPanel	w27		Draws animated mon panel using D_4015080/D_4011BF8 and cycling overlays, called in ItemSelect_MainDraw	applied@ab6aaba
+func_835034A8	GetGridHelpString	w27		Returns the help string for the current grid selection, uses Text_GetMessageString_Bank2C	applied@ab6aaba
+func_8350355C	DrawGridHelpBox	w27		Draws the help box with the string from GetGridHelpString, calls func_834008DC for box	applied@ab6aaba
+func_8350365C	DrawGridSelectionHighlight	w27		Draws highlight around the current grid selection, calls func_83401B48	applied@ab6aaba
+func_835038DC	AdvanceResultAnim	w27		Advances result animation timer, resets selection and slot flags when done	applied@ab6aaba
+func_83503968	BeginFadeOutAfterResult	w27		Sets state and triggers fade out after result, sets D_83504088 and calls Stage_FadeOut	applied@ab6aaba
+func_835039C8	ItemSelect_StateMachine	w27		Main state machine for item select, advances state based on fade and input	applied@ab6aaba
+func_83503AFC	ItemSelect_ReadInputs	w27		Reads controller input and initializes menu input, called in main loop	applied@ab6aaba
+func_83503B2C	ItemSelect_Loop	w27		Main loop for item select, handles fade in, input, update, and draw	applied@ab6aaba
+func_83503BD4	ItemSelect_ApplySelection	w27		Applies selection to context, resets selection if needed, returns selection result code	applied@ab6aaba
+D_82603E80	gFragment50TextTable	w27		Contains Japanese text encoded as u32, with English fallback strings like "dummy-kunn", "dummy-oya", and dialogue, used for text rendering in this fragment	applied@ab6aaba
+D_826040E0	gFragment50TextEntry1	w27		First of several small u32 arrays with Japanese text, likely short messages or menu labels, used for text rendering	applied@ab6aaba
+D_826040FC	gFragment50TextEntry2	w27		Second small u32 array with Japanese text, similar to D_826040E0, used for text rendering	applied@ab6aaba
+D_82604118	gFragment50TextEntry3	w27		Third small u32 array with Japanese text, similar to D_826040E0, used for text rendering	applied@ab6aaba
+D_82604134	gFragment50TextEntry4	w27		Fourth small u32 array with Japanese text, shorter than previous, used for text rendering	applied@ab6aaba
+D_82604148	gFragment50TextEntry5	w27		Fifth small u32 array with Japanese text, used for text rendering	applied@ab6aaba
+D_82604158	gFragment50TextEntry6	w27		Sixth small u32 array with Japanese text, used for text rendering	applied@ab6aaba
+D_82604168	gFragment50TextEntry7	w27		Seventh small u32 array with Japanese text, used for text rendering	applied@ab6aaba
+D_82604180	gFragment50StageParams	w27		Array of structs with floats and shorts, likely per-stage or per-object parameters (positions, angles, etc), used for stage/object setup	applied@ab6aaba
+D_82607418	gFragment50GraphRoot	w27		GraphNode* used as the root for scene graph in this fragment, matches naming in other fragments	applied@ab6aaba
+D_8260741C	gFragment50AssetManager	w27		AssetManager* for this fragment, used for asset loading/unloading	applied@ab6aaba
+D_82607420	gFragment50GraphNodes	w27		Array of 5 structs containing GraphNode and pointer fields, used for managing scene nodes in this fragment	applied@ab6aaba
+D_82607B60	gFragment50GraphNodeArray	w27		Array of 5 Fragment2_1GraphNode, likely for managing multiple objects or sub-scenes	applied@ab6aaba
+D_82608268	gFragment50GraphNodeA	w27		Single Fragment2_1GraphNode, used as a node in the scene graph	applied@ab6aaba
+D_826083D0	gFragment50GraphNodeB	w27		Single Fragment2_1GraphNode, used as a node in the scene graph	applied@ab6aaba
+D_82608538	gFragment50ObjData	w27		Pointer to unk_D_86002F30, likely object or entity data for this fragment	applied@ab6aaba
+D_82608558	gFragment50Camera	w27		CameraStruct* for this fragment, used for camera control in the scene	applied@ab6aaba
+D_82608568	gFragment50ImageBuffer	w27		2D u16 array [151][0x640], likely a framebuffer or image buffer for rendering or effects	applied@ab6aaba
+D_8267E4F8	gFragment50FloatBuffer	w27		Array of 150 floats, likely used for per-object or per-frame calculations (positions, timers, etc)	applied@ab6aaba
+D_8267E75C	gFragment50StringTable	w27		char** pointer, likely to a table of strings for text rendering in this fragment	applied@ab6aaba
+D_82604D50	gEmptyDisplayList50	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82604D58	gPokedexPanelTextureA	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 32x32 RGBA16	applied@ab6aaba
+D_82605558	gEmptyDisplayList51	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82605560	gPokedexPanelTextureB	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 32x32 RGBA16	applied@ab6aaba
+D_82605D60	gEmptyDisplayList52	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82605D68	gPokedexPanelTextureC	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 16x16 RGBA16	applied@ab6aaba
+D_82605F68	gEmptyDisplayList53	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82605F70	gPokedexPanelTextureD	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 32x32 RGBA16	applied@ab6aaba
+D_82606770	gEmptyDisplayList54	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82606778	gPokedexPanelTextureE	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 32x32 RGBA16	applied@ab6aaba
+D_82606F78	gEmptyDisplayList55	w27		gsSPEndDisplayList only, matches pattern for empty display list	applied@ab6aaba
+D_82606F80	gPokedexPanelTextureF	w27		used as a texture in func_82600160, loaded with gDPLoadTextureBlock, 16x16 RGBA16	applied@ab6aaba
+D_82607180	gPokedexPanelTexturePtrs	w27		array of pointers to D_826040E0...D_82604168, used as texture sources	applied@ab6aaba
+D_8260719C	gPokedexPanelTextureWidths	w27		array of s32, matches number of entries in D_82607180, used for texture width	applied@ab6aaba
+D_826071B8	gPokedexPanelSetupDL	w27		used as display list in func_82600160, sets up render state for panel	applied@ab6aaba
+D_82607228	gPokedexPanelScript	w27		contains function pointers func_826007F0, func_82600A34, and gGraphRoot0, used as a script table	applied@ab6aaba
+D_826072B0	gPokedexPanelMainDL	w27		used as display list in func_82600F78, sets up render state for main panel	applied@ab6aaba
+D_82607328	gPokedexPanelFillTexture	w27		2x2 IA16 texture, used as fill in func_8260125C and similar	applied@ab6aaba
+D_82607330	gPokedexPanelColorA	w27		Color_RGB8 {0x00, 0x00, 0x1E}, used as color in func_8260125C	applied@ab6aaba
+D_82607334	gPokedexPanelColorB	w27		Color_RGB8 {0x00, 0x00, 0x96}, used as color in func_8260125C	applied@ab6aaba
+D_82607B50	gPokedexPanelGraphNodeIndex	w27		used as index into D_82607420, updated in func_82602B60 and others	applied@ab6aaba
+D_82607B52	gPokedexPanelGraphNodeIndex2	w27		used as index into D_82607420, set in func_82602614 and func_826026D4	applied@ab6aaba
+D_82607B54	gPokedexPanelCurrentMonIndex	w27		used as current mon index, modulo D_8267E4F0 for 151 mons, see func_82600020	applied@ab6aaba
+D_8260853C	gPokedexPanelCameraFovY	w27		set to 0x450 (1104) in func_82600C10, used as camera FOV Y param	applied@ab6aaba
+D_8260853E	gPokedexPanelCameraFovZ	w27		set to 0 in func_82600C10, used as camera FOV Z param	applied@ab6aaba
+D_82608540	gPokedexPanelCameraFovX	w27		set to 0x578 (1400) in func_82600C10, used as camera FOV X param	applied@ab6aaba
+D_82608542	gPokedexPanelShowInfo	w27		checked for 1 in func_8260125C, controls info panel rendering	applied@ab6aaba
+D_82608544	gPokedexPanelShowList	w27		checked for 1 in func_8260125C, controls list panel rendering	applied@ab6aaba
+D_82608546	gPokedexPanelModelId	w27		set as unk_008.unk_01C in func_82602300, used as model id param	applied@ab6aaba
+D_82608548	gPokedexPanelShowDebug	w27		checked for 1 in func_8260125C, controls debug panel rendering	applied@ab6aaba
+D_8260854C	gPokedexPanelLoadState	w27		used as load state, set to 1 in func_82600020 and func_82602B00	applied@ab6aaba
+D_8260854E	gPokedexPanelLoadTimer	w27		countdown timer for load, set to 5 in func_82602B00, decremented in func_82602F18	applied@ab6aaba
+D_82608550	gPokedexPanelHighlightPhase	w27		used for highlight animation, increments/decrements in func_826007F0	applied@ab6aaba
+D_82608552	gPokedexPanelInputState	w27		checked for value 2 in func_8260125C, controls input state	applied@ab6aaba
+D_8267E4E8	gPokedexPanelListActive	w27		checked for 1 in func_8260125C, controls list animation	applied@ab6aaba
+D_8267E4EA	gPokedexPanelMessageBankId	w27		passed to MessageBank_SetPointer_1_9 in func_8260125C	applied@ab6aaba
+D_8267E4EC	gPokedexPanelListAnimFrame	w27		incremented in func_82600F78, used for list animation	applied@ab6aaba
+D_8267E4F0	gPokedexPanelMonCount	w27		used as mod divisor for 151 mons, see func_82600020 and func_8260125C	applied@ab6aaba
+D_8267E4F4	gPokedexPanelListAnimCounter	w27		incremented in func_82600F78, used for list animation timing	applied@ab6aaba
+D_8267E750	gPokedexPanelAllMonsSeen	w27		set to 1 in func_82600020 if all 151 mons are seen, checked in func_82600F78	applied@ab6aaba
+D_8267E754	gPokedexPanelAllMonsSeenTimer	w27		countdown timer for all-mons-seen animation, decremented in func_82602F18	applied@ab6aaba
+D_8267E758	gPokedexPanelListAnimAlpha	w27		used as alpha animation counter for list, see func_8260125C	applied@ab6aaba
+func_82603254	Fragment50_SlideRight	w27		slides all 5 D_82607420 graph nodes right by 50 units in 12 steps, calls func_82602578(2) at i==11	applied@ab6aaba
+func_8260332C	Fragment50_SlideLeft	w27		slides all 5 D_82607420 graph nodes left by 50 units in 12 steps, calls func_82602578(-2) at i==11	applied@ab6aaba
+func_82603414	Fragment50_SlideRightFast	w27		slides all 5 D_82607420 graph nodes right by 100 units in 6 steps, calls func_82602578(2) at i==5	applied@ab6aaba
+func_826034EC	Fragment50_SlideLeftFast	w27		slides all 5 D_82607420 graph nodes left by 100 units in 6 steps, calls func_82602578(-2) at i==5	applied@ab6aaba
+func_826035D4	Fragment50_WaitAssetLoad	w27		loops until AssetManager_TryProcessLoadQueue(D_8260741C) returns nonzero, then updates D_82607420[D_82607B52].unk_004	applied@ab6aaba
+func_8260365C	Fragment50_MainSequence	w27		main state machine for fragment 50, handles fades, music, and step transitions via tmp and func_82602F18 etc	applied@ab6aaba
+func_82603800	Fragment50_InitGraphNode	w27		initializes D_82607B60[arg0] graph node if D_82607420[arg0].unk_000 != 151 or func_826007C8(151) != 0	applied@ab6aaba
+func_82603924	Fragment50_InitAssets	w27		initializes pools, geo layouts, graph nodes, asset manager, and sets up D_82607420/D_82607B60 structures	applied@ab6aaba
+func_82603D20	Fragment50_MainEntry	w27		entry point for fragment 50, sets up stage, loads assets, runs main sequence, returns D_8267E750	applied@ab6aaba
+D_8260854A	gFragment50EnableSlide	w27		set to 1 in Fragment50_InitAssets, checked in slide logic for enabling slide/pan	applied@ab6aaba
+func_84200020	CheckPIIdleAndReturnArg	w27		Calls osSetIntMask, checks PI_STATUS_REG for DMA/IO busy, returns arg0 or -0x80 if not idle	applied@ab6aaba
+func_84200088	GetMessageBank24String	w27		Calls GetMessageString with D_84211B3C (GetMessageBank(0x24))	applied@ab6aaba
+func_842000C0	GetMessageBank25String	w27		Calls GetMessageString with D_84211B40 (GetMessageBank(0x25))	applied@ab6aaba
+func_842000F8	GetStadiumModeString	w27		Calls GetMessageString with gMessageBank_26 and RemapStadiumModeIndex	applied@ab6aaba
+func_84200130	GetMessageBank1AString	w27		Calls GetMessageString with D_84211B48 (GetMessageBank(0x1A))	applied@ab6aaba
+func_84200160	GetMessageBank06String	w27		Calls GetMessageString with gMessageBank_06 (GetMessageBank(6))	applied@ab6aaba
+func_84200190	GetMessageBank1AStringCustomBuf	w27		Calls GetMessageString with D_84211B48 and custom buf/bufsize	applied@ab6aaba
+func_84200738	DrawAnimatedGoldBorder	w27		Animates border corners using SINS, draws with D_2000C80/etc, sets gold color	applied@ab6aaba
+func_84202208	WaitForMenuConfirm	w27		Waits for func_8420DB48 to return not -1, draws options, updates input, called on A press in menu	applied@ab6aaba
+func_84202284	UpdateMenuSelectionInput	w27		Handles BTN_A/B/UP/DOWN, updates gMenuSelectionIndex, returns 'btnA', 'btnB', or 'exec'	applied@ab6aaba
+func_842024DC	DrawPartyTopPanel	w27		Calls func_84201BC4 and DrawTopPanel or DrawAlternateTopPanel, draws icon if var_t0 set	applied@ab6aaba
+func_84202718	DrawPartyScreenSubsystems	w27		Calls Stage_BeginDisplayList, draws various panels based on gSubsystemEnableMask	applied@ab6aaba
+func_84202844	RunPartyMenuSelection	w27		Loops Menu_Start/Menu_GetSelectedIndex, calls func_84202718, returns selected index	applied@ab6aaba
+func_84202974	UpdatePartyScreenSubsystems	w27		Calls UpdateItemStateMachine, func_8420B0C8, func_842106FC, MoveScreen_Update, etc.	applied@ab6aaba
+func_84202A64	PartyScreenTransition	w27		Handles transition logic for party screen, calls func_84210A18 or party/controller setup	applied@ab6aaba
+func_84202AF4	PartyScreenInputLoop	w27		Loops on input, updates party/controller, waits for func_84210B54 or party/controller ready	applied@ab6aaba
+func_84202C20	InitBattleSelectionSlots	w27		Initializes D_8423D3D8 slots for battle selection, sets .unk_00/.unk_01/.unk_02/.unk_04	applied@ab6aaba
+func_84202D18	SetupBattleSelectionSlot	w27		Handles controller input/name for slot, calls func_8421089C/func_842078C0/func_8420AF1C	applied@ab6aaba
+func_84202EB0	CommitBattleSelectionSlot	w27		Copies party info to slot, calls Battle_AddPartyMon, handles rental/party logic	applied@ab6aaba
+func_8420305C	FadeOutPartyScreen	w27		Calls Stage_SetFillColor, Music_StopTrack, Stage_FadeOut, draws atlas, advances stage	applied@ab6aaba
+func_84203100	FadeInPartyScreen	w27		Checks Stage_GetFadeState, calls Stage_FadeIn, draws atlas, advances stage	applied@ab6aaba
+func_8420318C	ShowSelectedMonInfo	w27		Calls func_84210C80 or func_842081B4 to show info for selected mon in slot	applied@ab6aaba
+func_842034E4	RunBattleSelectionModeAlt	w27		Like RunBattleSelectionMode, but skips some checks, used for alternate flow	applied@ab6aaba
+func_842037AC	RunRegistrationMode	w27		Handles registration menu, controller input, calls func_8421089C/func_842078C0/etc	applied@ab6aaba
+func_842039B4	RunRentalSelectionMode	w27		Sets up rental selection, loops on func_84210B54, updates party screen	applied@ab6aaba
+func_84203AB8	RunTradeSelectionMode	w27		Sets up trade selection, loops on func_84210B54, updates party screen	applied@ab6aaba
+func_84203BBC	RunMainPartyMenu	w27		Main menu loop for party screen, handles selection of registration/rental/trade	applied@ab6aaba
+func_84203C90	LoadBattleSelectionControllerAssets	w27		Loads BinArchive for controller info, sets D_84211B38 via BinArchive_GetFile	applied@ab6aaba
+func_84203D74	LoadBattleSelectionBackground	w27		Loads backgrounds archive, sets D_84211B34 to correct background for mode	applied@ab6aaba
+func_84203E6C	RunPartyScreenMain	w27		Top-level entry for party screen, loads assets, message banks, runs menu loop	applied@ab6aaba
+D_84211B30	gBattleSelectionBackgroundArchive	w27		Holds BinArchive* for backgrounds, set in func_84203D74	applied@ab6aaba
+D_84211B34	gPartyScreenBackground	w27		Holds pointer to background texture, set in func_84203D74	applied@ab6aaba
+D_84211B38	gBattleSelectionControllerInfo	w27		Holds pointer to controller info struct, set in func_84203C90	applied@ab6aaba
+D_8423D3A8	gMoveScreenInfo	w27		Passed to MoveScreen_Create, DrawPokemonMoveInfo, etc.	applied@ab6aaba
+D_8423D3D8	gBattleSelectionSlots	w27		Array of 4, used for battle selection slot state	applied@ab6aaba
+D_84210D48	gPartyScreenIconAnimTimer	w27		Used for animating icon panel in func_842024DC	applied@ab6aaba
+D_843847BC	gEntityInitParams	w27		array of structs with initial values for entity setup, used for initialization	applied@ab6aaba
+D_843849C0	gBattleCameraPresetTable	w27		Array of camera preset structs, matches camera param table usage for battle scenes	applied@ab6aaba
+D_84384AF8	gBattleCameraPresetE	w27		Single camera preset struct, used as a preset for special battle scenes	applied@ab6aaba
+D_84384B2C	gBattleCameraPresetTable2	w27		Array of camera preset structs, used for alternate battle camera modes/presets	applied@ab6aaba
+D_84390208	gBattleUnusedFloat_84390208	w27		f32, not referenced in shown code, static, naming for unused/pad convention	applied@ab6aaba
+D_84390228	gBattleUnusedInt_84390228	w27		s32, static, not referenced in shown code, naming for unused/pad convention	applied@ab6aaba
+D_84390288	gBattleUpdateHPFlag	w27		s32, checked in UpdatePokemonHP to skip HP update, matches usage as a flag	applied@ab6aaba
+func_8432E9D8	Battle_SetAnimChannelFlag	w27		sets animation channel flag for the current player, called with 1 or 2 in turn start/end logic	applied@ab6aaba
+func_843087F8	Battle_ApplyAnimEffect	w27		applies animation effect to the given player, called after camera transitions and move effects	applied@ab6aaba
+func_84370ADC	Battle_ApplyAnimStateEffects	w27		applies animation state effects to the given player, called in many battle phase handlers	applied@ab6aaba
+func_8431AE6C	Battle_AdvanceTurnState	w27		advances the turn state, called after finishing turn and resetting substates	applied@ab6aaba
+func_8431B078	Battle_ApplyOpponentAnimEffects	w27		applies animation effects to the opponent player, called in opponent turn logic	applied@ab6aaba
+func_84307FAC	GetOpponentAnimScriptId	w27		returns animation script id for the opponent, used in dual-target action script setup	applied@ab6aaba
+func_84307FE0	GetOpponentAnimScriptParam	w27		returns animation script parameter for the opponent, used in dual-target action script setup	applied@ab6aaba
+func_84308654	ApplyAnimEffectToOpponent	w27		applies animation effect to the opponent, called with 0x10 in dual-target action script setup	applied@ab6aaba
+func_8432C7A0	Battle_ApplyAnimChannelEffect	w27		applies animation channel effect, called with 7 in Battle_ProcessMovePhase2	applied@ab6aaba
+func_84308D98	GetPlayerDefeatMessageId	w27		returns defeat message id for the player, used in QueuePlayerDefeatMessage in Battle_FinalPhaseHandler	applied@ab6aaba
+func_8431DF98	Battle_ApplyPlayerAnimEffects	w27		applies animation effects to the player, called in Battle_PlayerMoveAnimationAlt	applied@ab6aaba
+unk_D_84390010	unk_BattlePlayerEntity	w27	also:BattlePlayerEntity	struct for player entity, contains unk_654 and other fields used in battle logic	applied@ab6aaba
+unk_D_84390010_654	unk_BattlePlayerAnimState	w27	also:BattlePlayerAnimState	substruct for animation state, contains fields like unk_34, unk_2D, unk_30, unk_38	applied@ab6aaba
+unk_D_8438E7B0_A50	unk_BattleAnimDataEntry	w27	also:BattleAnimDataEntry	substruct for animation data, fields like unk_04, unk_06, unk_0A used for animation timing	applied@ab6aaba
+func_84325CAC	StartMoveAnimationAndStatus	w27		Called in func_84325CDC, runs StartMoveAnimation, ProcessStatusEffectEnd, and func_84370ADC	applied@ab6aaba
+func_84325E94	Battle_PlayerSwitchIn	w27		Case 12 in Battle state machine, handles animation and camera for Pokemon switch-in, then HP update	applied@ab6aaba
+func_843261CC	Battle_PlayerSwitchOut	w27		Case 13 in Battle state machine, handles animation and camera for Pokemon switch-out, then HP update	applied@ab6aaba
+func_84326460	Battle_PlayerSwitchOutAlt	w27		Case 14 in Battle state machine, similar to switch-out but with alternate animation path	applied@ab6aaba
+func_84326570	Battle_PlayerSwitchInAlt	w27		Case 17 in Battle state machine, alternate switch-in logic, updates HP and camera	applied@ab6aaba
+func_843266D4	Battle_OpponentActionInit	w27		Case 20 in Battle state machine, sets up for opponent action, resets anim state, queues move	applied@ab6aaba
+func_8432691C	Battle_PlayerDefeatAnim	w27		Case 31 in Battle state machine, handles defeat animation and HP update for player	applied@ab6aaba
+func_84326AC4	Battle_OpponentSwitchIn	w27		Case 16 in Battle state machine, handles opponent switch-in animation and HP update	applied@ab6aaba
+func_84326CB4	Battle_OpponentMoveAnimation	w27		Case 8 in Battle state machine, handles opponent move animation, status, and HP update	applied@ab6aaba
+func_84326E84	Battle_OpponentDefeatAnim	w27		Case 6 in Battle state machine, handles defeat animation and HP update for opponent	applied@ab6aaba
+func_8432734C	Battle_OpponentSwitchOut	w27		Case 9 in Battle state machine, handles opponent switch-out animation and HP update	applied@ab6aaba
+func_843275F8	Battle_OpponentDefeatAnimAlt	w27		Case 10 in Battle state machine, alternate defeat animation for opponent, HP update	applied@ab6aaba
+func_84327720	Battle_OpponentSwitchOutAlt	w27		Case 35 in Battle state machine, alternate switch-out for opponent, HP update	applied@ab6aaba
+func_84327B90	Battle_OpponentDefeatAnimFinal	w27		Case 33 in Battle state machine, final defeat animation for opponent, HP update	applied@ab6aaba
+func_84327D98	StartMoveAnimationAndFinalizeStatus	w27		Called in func_84327DC0, runs StartMoveAnimation and FinalizeStatusEffect	applied@ab6aaba
+func_84327DC0	Battle_PlayerDefeatSequence	w27		Case 11 in Battle state machine, handles defeat sequence for player, including camera and animation	applied@ab6aaba
+func_84328250	Battle_PlayerDefeatSequenceAlt	w27		Case 18 in Battle state machine, alternate defeat sequence for player, including camera and animation	applied@ab6aaba
+func_84328734	Battle_StateMachineMain	w27		Top-level state machine dispatcher, switches on gBattleState.unk_00->unk_38 and calls appropriate handler	applied@ab6aaba
+D_84385C80	gPanelQuadVerts	w27		used as Vtx array for panel rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385CC0	gPanelBarVerts	w27		used as Vtx array for panel bar rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385D00	gPanelBarSmallVerts	w27		used as Vtx array for small panel bar rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385D40	gPanelMiscVerts	w27		used as Vtx array for miscellaneous panel rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385DC0	gPanelBgVerts	w27		used as Vtx array for panel background rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385E00	gPanelBgLargeVerts	w27		used as Vtx array for large panel background rendering, matches vertex naming conventions and usage in panel rendering	applied@ab6aaba
+D_84385E40	gParticleRenderSettingsTable	w27		used as the main table for particle render settings, matches particle system naming and usage in gParticleEffectData	applied@ab6aaba
+D_84385BB0	gPanelDrawCountArray	w27		used as an array of draw counts for panels, matches naming and usage as a draw count array	applied@ab6aaba
+D_84386968	gBattleScriptCmd_00	w27		Based on usage as the first entry in many battle script pointer arrays and matching the pattern of gBattleScriptCmd_XX naming for script commands	applied@ab6aaba
+D_8438687C	gBattleScriptCmd_46	w27		Used in script pointer arrays with other gBattleScriptCmd_XX, likely command 46	applied@ab6aaba
+D_843869D8	gBattleScriptCmd_4D	w27		Used in script pointer arrays with other gBattleScriptCmd_XX, likely command 4D	applied@ab6aaba
+D_843869E0	gBattleScriptCmd_4E	w27		Used in script pointer arrays with other gBattleScriptCmd_XX, likely command 4E	applied@ab6aaba
+D_84386848	gBattleScriptTable_48	w27		Used in script jump cases, passed as a table pointer in action script logic	applied@ab6aaba
+D_84386860	gBattleScriptTable_60	w27		Passed in script entries for menu selection, likely a table of script pointers	applied@ab6aaba
+D_84386884	gBattleScriptTable_84	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_843868A4	gBattleScriptTable_A4	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_843868B4	gBattleScriptTable_B4	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_843868D0	gBattleScriptTable_D0	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386904	gBattleScriptTable_904	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386918	gBattleScriptTable_918	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_843869BC	gBattleScriptTable_9BC	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_843869F0	gBattleScriptTable_9F0	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A3C	gBattleScriptTable_A3C	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A40	gBattleScriptTable_A40	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A44	gBattleScriptTable_A44	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A50	gBattleScriptTable_A50	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A5C	gBattleScriptTable_A5C	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A74	gBattleScriptTable_A74	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A7C	gBattleScriptTable_A7C	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A80	gBattleScriptTable_A80	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A88	gBattleScriptTable_A88	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386A98	gBattleScriptTable_A98	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+D_84386B60	gBattleScriptTable_B60	w27		Passed as a table pointer in script entries, used for menu logic	applied@ab6aaba
+func_8432C768	InitWaterEffect	w27		Sets gPendingActionScriptFlag2, gWaterEffectTimerMax, gWaterEffectParam, and particle effect IDs, all water/particle related	applied@ab6aaba
+func_8432C80C	RunParticleEffectScript	w27		Calls func_8432EA60 with same args, which is likely the main runner for particle effect scripts	applied@ab6aaba
+D_84392040	gWaterAnimParams	w27		Struct with .unk_0C and .unk_10, set to 1.0f in ResetGameGlobals, used for water animation parameters	applied@ab6aaba
+D_843903B0	gGraphNodePoolInitFlag	w27		Set to 0 in ResetGameGlobals, used as an init flag for graph node pool	applied@ab6aaba
+D_843903B4	gParticleNodePoolInitFlag	w27		Set to 0 in ResetGameGlobals, used as an init flag for particle node pool	applied@ab6aaba
+func_8432DE0C	ParticleNode_UpdateBehaviorAlt	w27		Alternate behavior update for particle nodes, similar to ParticleNode_UpdateBehavior but with different switch cases	applied@ab6aaba
+func_8432E0A4	ParticleNode_UpdateScale	w27		Updates gParticleScaleFactor based on entity and flags, sets scale for particle rendering	applied@ab6aaba
+func_8432E144	ParticleNode_UpdateOrDestroy	w27		Calls ParticleNode_Destroy if inactive, else updates transform, see Particle_IsInactive and Particle_UpdateTransform	applied@ab6aaba
+func_8432E434	ParticleDef_SpawnAll	w27		Spawns all instances for a particle def, calls ParticleDef_SpawnInstances with mode 0	applied@ab6aaba
+func_8432E454	ParticleDef_SpawnBurst	w27		Spawns burst instances for a particle def, calls ParticleDef_SpawnInstances with mode 1	applied@ab6aaba
+func_8432E474	ParticleDef_SpawnSingle	w27		Spawns a single instance for a particle def, calls ParticleInstance_Configure with one instance	applied@ab6aaba
+func_8432E4B0	ParticleDef_SpawnByType	w27		Dispatches particle spawning based on type in unk_16, calls various spawn functions or ParticleInstance_Configure	applied@ab6aaba
+func_8432E6B4	ParticleSystem_ResetKeepSpecial	w27		Resets all particle defs and instances except those with special types (4,7), see checks on unk_17/unk_CA	applied@ab6aaba
+func_8432E784	ParticleSystem_ResetKeepType4	w27		Resets all particle defs and instances except those with type 4, see checks on unk_17/unk_CA	applied@ab6aaba
+func_8432E8B0	GetParticleSpecialFlag	w27		Returns D_84390340, used as a special flag for particle system state	applied@ab6aaba
+func_8432E8BC	SetParticleSpecialFlagFromGlobal	w27		Sets D_84390340 based on gSpecialFlag, see conditional assignment	applied@ab6aaba
+func_8432E8EC	ParticleCameraCallbacks_Clear	w27		Clears gCameraCallbackFuncs and gCameraUpdateFuncs, resets D_84390340	applied@ab6aaba
+func_8432E97C	ParticleSystem_IsResettable	w27		Returns 1 if D_843902F8 is 0, used as a resettable check	applied@ab6aaba
+func_8432E99C	ParticleSystem_SetResetLock	w27		Sets D_843902F8 to 1, locks reset	applied@ab6aaba
+func_8432E9AC	ParticleSystem_ClearResetLock	w27		Sets D_843902F8 to 0, unlocks reset	applied@ab6aaba
+func_8432E9B8	ParticleSystem_ForceResetLock	w27		Calls ParticleSystem_SetResetLock, wrapper function	applied@ab6aaba
+func_8432EA60	ParticleNode_TriggerByEntity	w27		Triggers particle nodes of type 4 with matching entity and cb, sets flags and increments state	applied@ab6aaba
+func_8432EB14	ParticleSystem_ResetSpawnOffset	w27		Sets D_843902A8 to 0, resets spawn offset for timing	applied@ab6aaba
+func_8432EB20	ParticleSystem_SetSpawnOffset	w27		Sets D_843902A8 to arg0, sets spawn offset for timing	applied@ab6aaba
+func_8432EB2C	ParticleSystem_AddSpawnOffset	w27		Adds arg0 to D_843902A8, increments spawn offset	applied@ab6aaba
+func_8432EB44	ParticleSystem_ResetSpawnOffset2	w27		Calls ParticleSystem_ResetSpawnOffset, wrapper function	applied@ab6aaba
+func_8432EC28	ParticleDef_CreateQuick	w27		Creates a ParticleDef with default entityA, calls ParticleDef_Create with fixed args	applied@ab6aaba
+func_8432ECA0	ParticleDef_CreateFull	w27		Creates a ParticleDef with entityA, calls ParticleDef_Create with full arg set	applied@ab6aaba
+func_8432ED0C	ParticleDef_CreateDefault	w27		Creates a ParticleDef with default callback and data, calls ParticleDef_Create with fixed args	applied@ab6aaba
+func_8432ED74	ParticleDef_CreateBC20	w27		Creates a ParticleDef with Fragment_ProcessBC20Variant and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432EDE8	ParticleDef_CreateBC20CD	w27		Creates a ParticleDef with Fragment_ProcessBC20WithCDMode and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432EE5C	ParticleDef_CreateBC20CDAlt	w27		Creates a ParticleDef with Fragment_ProcessBC20WithCDMode and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432EED0	ParticleDef_CreateBC20CDFull	w27		Creates a ParticleDef with Fragment_ProcessBC20WithCDMode and gParticleEffectData[37], calls ParticleDef_Create with more args	applied@ab6aaba
+func_8432EF40	ParticleDef_Create32E6C	w27		Creates a ParticleDef with func_84332E6C and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432EFB4	ParticleDef_Create32E6CAlt	w27		Creates a ParticleDef with func_84332E6C and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432F028	ParticleDef_Create32E6CFull	w27		Creates a ParticleDef with func_84332E6C and gParticleEffectData[37], calls ParticleDef_Create with more args	applied@ab6aaba
+func_8432F098	ParticleDef_Create32F30	w27		Creates a ParticleDef with func_84332F30 and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432F104	ParticleDef_Create32F30Alt	w27		Creates a ParticleDef with func_84332F30 and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432F174	ParticleDef_Create32F30Full	w27		Creates a ParticleDef with func_84332F30 and gParticleEffectData[37], calls ParticleDef_Create with more args	applied@ab6aaba
+func_8432F1E0	ParticleDef_Create32FD0	w27		Creates a ParticleDef with func_84332FD0 and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432F254	ParticleDef_Create330A0	w27		Creates a ParticleDef with func_843330A0 and gParticleEffectData[37], calls ParticleDef_Create	applied@ab6aaba
+func_8432F2C8	ParticleDef_Create31EAC	w27		Creates a ParticleDef with func_84331EAC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F344	ParticleDef_Create31FAC	w27		Creates a ParticleDef with func_84331FAC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F3C4	ParticleDef_Create320A4	w27		Creates a ParticleDef with func_843320A4 and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F440	ParticleDef_Create321BC	w27		Creates a ParticleDef with func_843321BC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F4BC	ParticleDef_Create321BCAlt	w27		Creates a ParticleDef with func_843321BC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F538	ParticleDef_Create323BC	w27		Creates a ParticleDef with func_843323BC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F5B8	ParticleDef_Create323BCAlt	w27		Creates a ParticleDef with func_843323BC and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F638	ParticleDef_Create32604	w27		Creates a ParticleDef with func_84332604 and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F6B8	ParticleDef_Create327B8	w27		Creates a ParticleDef with func_843327B8 and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F728	ParticleDef_CreateComplexColor	w27		Creates a ParticleDef with Fragment_ComplexColorMode and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F7A0	ParticleDef_CreateAlphaMode	w27		Creates a ParticleDef with Fragment_ProcessAlphaMode and gParticleDefaultCallback, calls ParticleDef_Create	applied@ab6aaba
+func_8432F818	ParticleDef_CreateAlphaModeFF	w27		Creates a ParticleDef with Fragment_ProcessAlphaMode and gParticleDefaultCallback, args set to 0xFF	applied@ab6aaba
+func_8432F884	ParticleDef_CreateAlphaModeZero	w27		Creates a ParticleDef with Fragment_ProcessAlphaMode and gParticleDefaultCallback, args set to 0	applied@ab6aaba
+func_8432F8E8	ParticleDef_CreateNullType17	w27		Creates a ParticleDef with NULL callback/data, type 0x17, calls ParticleDef_Create	applied@ab6aaba
+func_8432F93C	ParticleDef_CreateNullType19	w27		Creates a ParticleDef with NULL callback/data, type 0x19, calls ParticleDef_Create	applied@ab6aaba
+func_8432F9A8	SetGameStateFlag	w27		Sets gGameStateFlag to arg0, used for global state in particle system	applied@ab6aaba
+func_8432F9B4	ClearGameStateFlag	w27		Sets gGameStateFlag to 0, clears global state flag	applied@ab6aaba
+func_8432F9C0	GetGameStateFlag	w27		Returns gGameStateFlag, gets global state flag	applied@ab6aaba
+func_8432F9CC	IsEntityASpecies	w27		Returns 1 if GetSpecies(gParticleEffectEntityA) matches arg0, used for entity checks	applied@ab6aaba
+func_8432FA0C	GetSpeciesPrimaryEffect	w27		Returns GetSpecies(gParticleEffectData_42), gets species for primary effect entity	applied@ab6aaba
+func_8432FA30	GetSpeciesSecondaryEffect	w27		Returns GetSpecies(gParticleEffectEntityB), gets species for secondary effect entity	applied@ab6aaba
+func_8432FB38	GetPrimaryEntityNodePosition	w27		Calls Model_GetNodePosition with gParticleEffectEntityA, node 0x64, writes to arg0	applied@ab6aaba
+func_8432FB64	GetPrimaryEffectNodePosition	w27		Calls Model_GetNodePosition with gParticleEffectData_42, node 0x64, writes to arg0	applied@ab6aaba
+func_8432FB90	GetSecondaryEntityNodePosition	w27		Calls Model_GetNodePosition with gParticleEffectEntityB, node 0x64, writes to arg0	applied@ab6aaba
+func_8432FBBC	GetPrimaryEffectCenterOrNode	w27		Calls GetEntityCenterPosition or Model_GetNodePosition for gParticleEffectData_42 depending on gParticleEffectPrimaryId	applied@ab6aaba
+func_8432FC14	GetSecondaryEntityNode9Position	w27		Calls Model_GetNodePosition with gParticleEffectEntityB, node 9, writes to arg0	applied@ab6aaba
+func_8432FC40	GetEntityDirectionVector	w27		Calls func_84308094 with arg0 and arg1, gets direction vector for entity	applied@ab6aaba
+func_8432FC60	GetEntityCameraDistance	w27		Returns gCamDistances[arg0->unk_000.unk_01A] * 0.01f, gets camera distance for entity	applied@ab6aaba
+func_8432FC94	GetEntityScaleFactor	w27		Returns func_8432FC60(arg0), gets scale factor for entity	applied@ab6aaba
+func_8432FCB4	ComputeEntityScaleFactor	w27		Calls func_8432FC60, computes scale factor for entity	applied@ab6aaba
+func_8432FCF8	ComputePrimaryEffectScale	w27		Calls ComputeEntityScaleFactor for gParticleEffectData_42, computes scale for primary effect entity	applied@ab6aaba
+func_8432FD1C	GetSecondaryEntityScale	w27		Returns GetEntityScaleFactor for gParticleEffectEntityB, gets scale for secondary entity	applied@ab6aaba
+func_8432FD40	ComputeSecondaryEntityScale	w27		Calls ComputeEntityScaleFactor for gParticleEffectEntityB, computes scale for secondary entity	applied@ab6aaba
+func_8432FD70	ParticleNode_CreateWhiteFlash	w27		Creates a particle node at position with white flash handler, sets up for gParticleEffectData_42	applied@ab6aaba
+func_8432FDF0	ParticleNode_SetPosition	w27		Sets position of particle node arg0 to arg1, if arg0 is valid	applied@ab6aaba
+func_8432FE24	ParticleNode_ClearActiveFlag	w27		Calls Particle_ClearActiveFlag for arg0, clears active flag on node	applied@ab6aaba
+func_8432FE44	ParticleNode_GetAngleToSecondary	w27		Returns angle Y from arg0 to gParticleEffectEntityB center, adds arg0->unk_94.y	applied@ab6aaba
+func_8432FEC4	ParticleNode_SavePrimColor	w27		Saves arg0's prim_r/g/b to gSavedPrimColorR/G/B, used for color state	applied@ab6aaba
+func_8432FEEC	ParticleNode_RestorePrimColor	w27		Restores prim_r/g/b from gSavedPrimColorR/G/B to arg0, restores color state	applied@ab6aaba
+func_843416B0	ParticleEffect_StateHandlerA	w27		Called as a state handler for a particle effect, switches on arg0->unk_B2 and calls ParticleEffect_ConfigureState	applied@ab6aaba
+func_8434171C	ParticleEffect_StateHandlerB	w27		Called as a state handler for a particle effect, checks unk_B2==1 and calls ParticleEffect_ConfigureState	applied@ab6aaba
+func_8434174C	ParticleEffect_StateHandlerC	w27		Called as a state handler for a particle effect, handles alpha approach in state 2	applied@ab6aaba
+func_843417AC	ParticleEffect_StateHandlerD	w27		Called as a state handler for a particle effect, handles state transitions and resets	applied@ab6aaba
+func_84341830	ParticleEffect_StateHandlerE	w27		Called as a state handler for a particle effect, checks unk_B2==1 and calls ParticleEffect_ConfigureState with 2	applied@ab6aaba
+func_84341860	ParticleEffect_StateHandlerF	w27		Called as a state handler for a particle effect, handles alpha approach in state 2 with arg1=2	applied@ab6aaba
+func_843441F8	ParticleEffect_PaletteFadeHandler	w27		Calls ParticleEffect_SetPaletteColors, then fades alpha with Particle_ApproachPrimAlphaWithCallback	applied@ab6aaba
+func_8140A5B0	Particle_RotateX	w27		Applies X-axis rotation to a particle, used in ParticleEffect_FireworksState	applied@ab6aaba
+func_8140A594	Particle_RotateY	w27		Applies Y-axis rotation to a particle, used in ParticleEffect_ConfigureFromPalette	applied@ab6aaba
+func_8434669C	ParticleEffect_StateHandler_4669C	w27		Called as a state handler in ParticleEffect_RegisterHandlers_Default and _Alternate, follows state handler conventions	applied@ab6aaba
+func_84348C6C	ParticleEffect_Noop_48C6C	w27		Empty function, likely a no-op placeholder, matches naming for similar no-op handlers	applied@ab6aaba
+func_84348C78	ParticleEffect_Noop_48C78	w27		Empty function, likely a no-op placeholder, matches naming for similar no-op handlers	applied@ab6aaba
+func_84334F84	ParticleEffect_StateHandler_34F84	w27		Passed as a state handler in registration, matches naming for state handlers	applied@ab6aaba
+func_84350DAC	ParticleEffect_StateHandler_50DAC	w27		Passed as a state handler in registration, matches naming for state handlers	applied@ab6aaba
+func_84349F80	Gfx_ParticlePaletteCallback	w27		Calls GfxAlloc and Gfx_DrawParticlePaletteBased, sets up DL for palette-based particle	applied@ab6aaba
+func_8434A18C	Gfx_ParticlePaletteCallback2	w27		Calls GfxAlloc and func_84349FC8, sets up DL for palette-based particle	applied@ab6aaba
+func_8434A1D4	Particle_GetPaletteIndex	w27		Returns 0-3 based on GetActionScriptId, used as palette index	applied@ab6aaba
+func_8434A244	Particle_GetPaletteColorA	w27		Returns color value based on GetActionScriptId, used as color arg	applied@ab6aaba
+func_8434A2B4	Particle_GetPaletteColorB	w27		Returns color value based on GetActionScriptId, used as color arg	applied@ab6aaba
+func_8434A324	ParticleEffect_PaletteBurst	w27		Calls func_8432EC28 with ParticleEffect_StateHandler_49AE8 and palette index	applied@ab6aaba
+func_8434A384	ParticleEffect_PaletteMultiBurst	w27		Calls func_8432EC28 multiple times with palette indices and color values	applied@ab6aaba
+func_8434A574	ParticleEffect_SpeciesAdjustA	w27		Adjusts alpha/velocity based on species, calls Particle_SetPrimAlpha/AddVelocityYScaled	applied@ab6aaba
+func_8434A654	Gfx_ParticleTextureTileCallback	w27		Calls Gfx_LoadParticleTextureTileFromStruct, sets up DL for particle texture tile	applied@ab6aaba
+func_8434A6D8	Gfx_ParticleTextureTileCallback2	w27		Calls GfxAlloc and func_8434A654, sets up DL for particle texture tile	applied@ab6aaba
+func_8434A720	Gfx_ParticleRedPrimCallback	w27		Sets prim color to red, uses prim_a from ParticleEffectInstance	applied@ab6aaba
+func_8434A794	Gfx_ParticleRedPrimCallback2	w27		Calls GfxAlloc and func_8434A720, sets up DL for red prim particle	applied@ab6aaba
+func_8434A7DC	ParticleEffect_SimpleBurst	w27		Calls func_8432ED0C and func_8432EC28 with specific params for simple burst	applied@ab6aaba
+func_8434A844	ParticleEffect_SimpleCallback	w27		Calls func_8432EC28 with func_843416B0 and specific params	applied@ab6aaba
+func_8434A898	ParticleEffect_SimpleBurstScript	w27		Sets param based on GetActionScriptId and calls burst setup	applied@ab6aaba
+func_8434A9CC	ParticleEffect_MultiNodeAEntry	w27		Just calls func_8434A930, acts as entry point	applied@ab6aaba
+func_8434AA6C	ParticleEffect_MultiNodeC2	w27		Similar to func_8434A9EC, different params, calls ParticleEffect_MultiNodeC	applied@ab6aaba
+func_8434AAEC	Gfx_PokemonPortraitCallback	w27		Loads portrait texture from gPokemonPortraitImage0/1 based on IsPrimaryEntity	applied@ab6aaba
+func_8434AC44	Gfx_PokemonPortraitCallback2	w27		Calls GfxAlloc and func_8434AAEC, sets up DL for portrait particle	applied@ab6aaba
+func_8434AC8C	ParticleEffect_PortraitBurst	w27		Calls func_8432ECA0 with func_843416B0 and gParticleDefaultCallback for portrait burst	applied@ab6aaba
+func_8434ACEC	ParticleEffect_PortraitBurstInit	w27		Calls func_8432ED0C and func_8434AC8C, sets up portrait burst	applied@ab6aaba
+func_8434AD1C	ParticleEffect_PortraitBurstNode	w27		Calls func_8432EC28 with func_8434171C for portrait burst node	applied@ab6aaba
+func_8434AD70	ParticleEffect_PortraitBurstCheck	w27		Checks func_8432F9CC for several IDs, sets up burst if none active	applied@ab6aaba
+func_8434AE68	ParticleEffect_SpeciesAdjustB	w27		Adjusts velocity/scale based on species, calls Particle_AddVelocityYScaled	applied@ab6aaba
+func_8434B000	ParticleEffect_SimpleBurst2	w27		Calls func_8432EC28 and func_8432ED0C for simple burst effect	applied@ab6aaba
+func_8434B064	ParticleEffect_SimpleBurst3	w27		Calls func_8432F344 and func_8432EC28 for simple burst effect	applied@ab6aaba
+func_8434B0D8	ParticleEffect_SpeciesAdjustC	w27		Adjusts velocity based on species, calls Particle_AddVelocityYScaled	applied@ab6aaba
+func_8434B14C	ParticleEffect_PaletteInit	w27		Sets up node/texture based on Particle_GetByteCD, sets scale/alpha, increments state	applied@ab6aaba
+func_8434B21C	ParticleEffect_PaletteStateHandler	w27		Handles state transitions for palette-based particle, calls func_8434B14C and alpha approach	applied@ab6aaba
+func_8434B2B8	Gfx_PaletteParticleDL	w27		Sets up DL for palette-based particle, loads texture, sets prim/env color, scrolls texture	applied@ab6aaba
+func_8434BA28	Gfx_PaletteParticleDLCallback	w27		Calls GfxAlloc and func_8434B2B8, sets up DL for palette particle	applied@ab6aaba
+func_8434BA70	ParticleEffect_PaletteMultiBurst2	w27		Calls func_8432EC28 multiple times for multi-palette burst, then func_8432ED0C	applied@ab6aaba
+func_8434BCD4	ParticleEffect_PaletteMultiBurst3	w27		Calls func_8432EC28 with func_843416B0 for multi-palette burst	applied@ab6aaba
+func_8434BF2C	ParticleEffect_PaletteScriptBurst	w27		Selects burst setup based on GetActionScriptId, calls func_8432ED0C/func_8432EC28	applied@ab6aaba
+func_8434C070	ParticleEffect_PaletteBurst4	w27		Calls func_8432EC28 with func_8434B21C for palette burst	applied@ab6aaba
+func_8434C0C4	ParticleEffect_PaletteBurst5	w27		Calls func_8432EC28, func_8432ED0C, func_8432EB2C, func_8432EDE8 for burst setup	applied@ab6aaba
+func_8434C144	ParticleEffect_FireworkBurst	w27		Calls func_8432EDE8, func_8432F2C8, func_8432EC28, func_8432ECA0 for firework burst	applied@ab6aaba
+func_8434C214	ParticleEffect_WaterAnimInit	w27		Allocates node, inits water anim, sets scale/prim/env/alpha, increments state	applied@ab6aaba
+func_8434C29C	ParticleEffect_WaterAnimStateHandler	w27		Handles state transitions for water anim, approaches alpha/AE, sets rotation from camera	applied@ab6aaba
+func_8434C320	ParticleEffect_WaterAnimInit2	w27		Allocates node, inits water anim, sets anim channel, scale, prim/env, AE, increments state	applied@ab6aaba
+func_8434C3A8	ParticleEffect_WaterAnimStateHandler2	w27		Handles state for water anim, sets rotation from camera, calls func_8434C320	applied@ab6aaba
+func_8434C3F0	Gfx_WaterAnimPrimEnvDL	w27		Sets prim/env color for water anim, sets combine mode, ends DL	applied@ab6aaba
+func_8434C548	Gfx_WaterAnimPrimEnvDLCallback	w27		Calls GfxAlloc and func_8434C3F0, sets up DL for water anim particle	applied@ab6aaba
+func_8434C590	ParticleEffect_WaterAnimBurst	w27		Calls func_8432ED0C and func_8432EC28 for water anim burst	applied@ab6aaba
+func_8434C5F0	ParticleEffect_WaterAnimBurst2	w27		Calls func_8432ED0C with specific params for water anim burst	applied@ab6aaba
+func_8434C618	ParticleEffect_WaterAnimFirework	w27		Calls func_8432EC28, func_8432ED0C, func_8432F2C8, func_8432EF40, func_8432ECA0, func_8432EB2C, func_8432EDE8 for firework burst	applied@ab6aaba
+func_8434C720	ParticleEffect_WaterAnimFirework2	w27		Calls func_8432EC28, func_8432EDE8, func_8432ED0C, func_8432F2C8, func_8432ECA0, func_8432EB2C for firework burst	applied@ab6aaba
+func_8434C814	Gfx_WaterAnimDL	w27		Sets up DL for water anim, loads texture, sets prim color, calls func_81406314/func_81406388	applied@ab6aaba
+func_8434CA48	Gfx_WaterAnimDLCallback	w27		Calls GfxAlloc and func_8434C814, sets up DL for water anim particle	applied@ab6aaba
+func_8434CA90	ParticleEffect_SpeciesAdjustD	w27		Returns scale based on species, used for water anim particle	applied@ab6aaba
+func_8434CAD8	ParticleEffect_BasicMultiBurst	w27		Calls func_8432EC28 and func_8432ECA0 for multiple basic burst effects	applied@ab6aaba
+func_8434CC68	ParticleEffect_FireballBurst	w27		Calls func_8432EC28, func_8432F440, func_8432ECA0 for fireball burst setup	applied@ab6aaba
+func_8434CE14	ParticleEffect_BasicMultiBurst2	w27		Calls func_8432EB2C and func_8432ECA0 for multiple basic burst effects	applied@ab6aaba
+func_8434CF64	ParticleEffect_AdvancedMultiBurst	w27		Calls func_8432ECA0 for advanced burst setup, including firework and type0 effects	applied@ab6aaba
+func_8434D0F8	ParticleEffect_SimpleBurst4	w27		Calls func_8432EC28 and func_8432EDE8 for simple burst effect	applied@ab6aaba
+func_8434D168	ParticleEffect_SimpleStateInit	w27		Sets scale, prim/env color, alpha, increments state for simple effect	applied@ab6aaba
+func_8434D1B0	ParticleEffect_SimpleStateHandler	w27		Handles state transitions for simple effect, anim loop, alpha approach, scale approach	applied@ab6aaba
+func_8434D260	ParticleEffect_RotationInit	w27		Sets scale, rotation, disables flag4, increments state for rotation effect	applied@ab6aaba
+func_8434D2E0	ParticleEffect_RotationStateHandler	w27		Handles state transitions for rotation effect, timer, node creation, flag4, etc	applied@ab6aaba
+func_8434D448	ParticleEffect_RotationEntry	w27		Calls func_8432EC28 with func_8434D2E0 for rotation effect entry	applied@ab6aaba
+func_8434D4A0	ParticleEffect_FireworkInit	w27		Sets scale, velocity, rotation, speed, increments state, allocates node, inits texture	applied@ab6aaba
+func_8434D530	ParticleEffect_FireworkStateHandler	w27		Handles state transitions for firework effect, node creation, rotation, timer, reset	applied@ab6aaba
+func_8434D5EC	ParticleEffect_FireworkEntry	w27		Calls func_8432EC28 with func_8434D530 and other firework-related effects	applied@ab6aaba
+func_8434D6C0	ParticleEffect_SimpleNodeInit	w27		Allocates node, inits texture, sets scale/alpha, increments state for simple node	applied@ab6aaba
+func_8434D72C	ParticleEffect_SimpleNodeStateHandler	w27		Handles state transitions for simple node, approaches alpha	applied@ab6aaba
+func_8434D77C	Gfx_SimpleNodeDL	w27		Sets up DL for simple node, sets prim color, loads texture tile, calls Gfx_LoadParticleTextureTileFromStruct	applied@ab6aaba
+func_8434D890	Gfx_SimpleNodeDLCallback	w27		Calls GfxAlloc and func_8434D77C, sets up DL for simple node particle	applied@ab6aaba
+func_8434D8D8	ParticleEffect_SimpleNodeEntry	w27		Calls func_8432ED0C and func_8432EC28 for simple node effect entry	applied@ab6aaba
+func_8434D938	ParticleEffect_SimpleNodeBurst	w27		Calls func_8432F344, func_8432EC28, func_8432ECA0 for simple node burst effect	applied@ab6aaba
+func_8434D9F8	ParticleEffect_AlphaStateHandler	w27		Handles state transitions for alpha approach, timer, reset for particle effect	applied@ab6aaba
+func_8434DA94	ParticleEffect_AlphaBurst	w27		Calls func_8432ED0C, func_8432EC28, func_8432F344, func_8432ED74 for alpha burst effect	applied@ab6aaba
+func_8434DB40	ParticleEffect_AlphaBurst2	w27		Calls func_8432ED0C, func_8432EC28, func_8432ED74, func_8432F344 for alpha burst effect	applied@ab6aaba
+func_8434DBEC	ParticleEffect_AlphaFirework	w27		Calls func_8432ED0C, func_8432EC28, func_8432ECA0, func_8432F2C8, func_8432EDE8, func_8432EB2C for alpha firework burst	applied@ab6aaba
+func_8434DD08	ParticleEffect_AlphaFirework2	w27		Calls func_8432ED0C, func_8432EC28, func_8432ECA0, func_8432F2C8 for alpha firework burst	applied@ab6aaba
+func_84334154	ParticleEffect_FireUpdate	w27		Passed as callback to ParticleEffect_Spawn, likely update handler for fire effects	applied@ab6aaba
+func_8434E7CC	ParticleEffect_AlphaFadeHandler	w27		Used as callback for ParticleEffect_Spawn, handles alpha fading and state transitions	applied@ab6aaba
+D_8438ACB0	gMoveEffectImmunityList	w27		Used in IsByteInArray for move effect immunity checks, passed as array of 5 to check move effect codes	applied@ab6aaba
+D_8438ADEC	gBattleMoveEffectTable1	w27		Used as a table of move effect bitmasks, 4 u32 entries, referenced in move effect logic	applied@ab6aaba
+D_8438ADFC	gBattleMoveEffectTable2	w27		Used as a table of move effect bitmasks, single u32 entry, referenced in move effect logic	applied@ab6aaba
+D_8438AE00	gBattleMoveEffectTable3	w27		Used as a table of move effect bitmasks, single u32 entry, referenced in move effect logic	applied@ab6aaba
+D_8438AE04	gBattleMoveEffectTable4	w27		Used as a table of move effect bitmasks, 7 u32 entries, referenced in move effect logic	applied@ab6aaba
+D_8438AE20	gBattleMoveEffectTable5	w27		Used as a table of move effect bitmasks, 3 u32 entries, referenced in move effect logic	applied@ab6aaba
+D_8438AE2C	gBattleMoveEffectTable6	w27		Used as a table of move effect bitmasks, 4 u32 entries, referenced in move effect logic	applied@ab6aaba
+D_8438AE3C	gBattleRngSeed1	w27		Used as a seed for GetRandomU8, updated with LCG and xor logic	applied@ab6aaba
+D_8438AE40	gBattleRngSeed2	w27		Used as a seed for GetRandomU8, updated with xor/shift logic	applied@ab6aaba
+D_8438AE44	gBattleRngSeed3	w27		Used as a seed for GetRandomU8_Alt, updated with LCG logic	applied@ab6aaba
+D_8438AE48	gBattleRngSeed4	w27		Used as a seed for GetRandomU8_Alt, updated with xor/shift logic	applied@ab6aaba
+D_8438AE4C	gBattleTypeEffectivenessParams	w27		Used as a 4-byte array for type effectiveness, referenced in type matchup logic	applied@ab6aaba
+D_843C4DA0	gAccumulatedDamage	w27		Used to accumulate damage over turns, updated in func_8437114C	applied@ab6aaba
+D_843C4DA2	gAccuracyCheckRandom	w27		Assigned result of GetRandomU8_Alt for accuracy checks	applied@ab6aaba
+D_843C4DA3	gBattleMessageFlag	w27		Set to 1 after ResetBattleAfterMove, used as a flag for message display	applied@ab6aaba
+D_843C4DA5	gBattleEffectType	w27		Used as a switch/case for effect types in func_84371080, also checked for 0xFF in func_843712CC	applied@ab6aaba
+D_843C4DA6	gBattleUnusedFlag1	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DA7	gBattleUnusedFlag2	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DA8	gBattleUnusedFlag3	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DA9	gBattleUnusedFlag4	w27		Unused/unknown, u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAA	gBattleUnusedFlag5	w27		Unused/unknown, u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAB	gBattleUnusedFlag6	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAC	gBattleUnusedFlag7	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAD	gBattleUnusedFlag8	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAE	gBattleUnusedFlag9	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DAF	gBattleUnusedFlag10	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB0	gBattleUnusedFlag11	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB1	gBattleUnusedFlag12	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB2	gBattleUnusedFlag13	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB3	gTypeEffectivenessMsgState	w27		Used as a state for type effectiveness messages, bit 0x80 set for STAB, lower bits for effectiveness	applied@ab6aaba
+D_843C4DB4	gBattleUnusedFlag14	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB5	gBattleUnusedFlag15	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB6	gBattleUnusedFlag16	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB7	gBattleUnusedFlag17	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB8	gBattleUnusedFlag18	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DB9	gBattleUnusedFlag19	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBA	gBattleUnusedFlag20	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBB	gBattleUnusedFlag21	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBC	gBattleUnusedFlag22	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBD	gBattleUnusedFlag23	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBE	gBattleUnusedFlag24	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DBF	gBattleUnusedFlag25	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DC0	gBattleUnusedFlag26	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DC1	gBattleUnusedFlag27	w27		Unused/unknown, static u8, not referenced in shown code	applied@ab6aaba
+D_843C4DC2	gMoveEffectIndex	w27		Used as an index for move effect selection, set to 0 in ResetBattleAfterMove	applied@ab6aaba
+D_843C4DC6	gMovePower	w27		Set to gCurrentBattleEntity->unk_44.unk_02 in InitBattleParameters, used as move base power	applied@ab6aaba
+D_843C4DC8	gAttackerStat	w27		Set to gCurrentBattleEntity->unk_38 or .unk_30, used as attack stat for damage calculation	applied@ab6aaba
+D_843C4DCA	gDefenderStat	w27		Set to gDefenderBattleEntity->unk_2C or .unk_30, used as defense stat for damage calculation	applied@ab6aaba
+D_843C4DCC	gAttackerLevel	w27		Set to gCurrentBattleEntity->unk_26, used as attacker level in damage formula	applied@ab6aaba
+D_843C5240	gBattleTempEntities	w27		Temporary array of two unk_D_800FCB18, used for move effect calculations	applied@ab6aaba
+func_84371DCC	ProcessBattleEntityStatus	w27		Handles all status checks and updates for the current battle entity, including confusion, sleep, and other flags, as evidenced by the bitmask checks and message writes.	applied@ab6aaba
+D_843901A0	gBattleMessageBuffers	w27		Struct holding pointers to message buffers for battle text, as shown by WriteMessageCharOrString calls.	applied@ab6aaba
+D_8438DC00	gFmtInt	w27		Format string "%d" used for sprintf in battle message construction.	applied@ab6aaba
+func_84372670	ProcessBattleTurn	w27		Main battle turn processor, dispatches move logic, handles status, and applies effects.	applied@ab6aaba
+func_84372B48	ResetBattleEntityStatus	w27		Resets status fields for a battle entity, called after fainting or switching.	applied@ab6aaba
+func_84372C40	CheckAllPartyFainted_HP	w27		Checks if all party members have fainted by HP, calls ResetBattleEntityStatus or continues battle.	applied@ab6aaba
+func_84372D88	CheckAllPartyFainted_Status	w27		Checks if all party members have fainted by status, calls ResetBattleEntityStatus or continues battle.	applied@ab6aaba
+func_84372ED0	CheckAllPartyFainted_PP	w27		Checks if all party members have fainted by PP, calls ResetBattleEntityStatus or continues battle.	applied@ab6aaba
+func_84373018	CheckAllPartyFainted_Level	w27		Checks if all party members have fainted by level, calls ResetBattleEntityStatus or continues battle.	applied@ab6aaba
+func_84373160	CheckBattleEntityFaintStatus	w27		Checks faint status for a battle entity based on flags and party state, returns 1 if fainted.	applied@ab6aaba
+func_843732B8	ProcessFaintChecks	w27		Processes faint checks for both battle entities and dispatches to appropriate handlers.	applied@ab6aaba
+func_8437345C	BeginBattleMainLoop	w27		Sets up main battle loop, resets state, and starts turn processing.	applied@ab6aaba
+func_84373570	BeginBattleForEntity	w27		Sets up battle state for a specific entity, resets and initializes relevant fields.	applied@ab6aaba
+D_84B0FC54	gBattleModeBackgroundTextures	w27		Used as a table of pointers for background textures in func_84B05184, indexed by battle mode	applied@ab6aaba
+D_84B0FC6C	gBattleSubModeBackgroundTextures	w27		Used as a table of pointers for background textures in func_84B05184, indexed by battle submode	applied@ab6aaba
+D_84B0FC90	gBattleSubModeExtraTextures	w27		Used as a table of pointers for extra textures in func_84B05184, indexed by gBattleContext.unk_0003	applied@ab6aaba
+D_84B0FCAC	gBattleModeExtraTextures	w27		Used as a table of pointers for extra textures in func_84B05184, indexed by gBattleContext.unk_0002	applied@ab6aaba
+D_84B0FCBC	gBattleModeBarColors	w27		Color table used for UI bars, matches color usage for bar segments	applied@ab6aaba
+D_84B0FCFC	gBattleModeBarHighlightColors	w27		Color table used for highlighted UI bars, matches highlight color usage	applied@ab6aaba
+D_84B0FD40	gUIBarTopVerts	w27		Vertex array for top segment of UI bar, used in D_84B10040 display list	applied@ab6aaba
+D_84B0FE40	gUIBarMiddleVerts	w27		Vertex array for middle segment of UI bar, used in D_84B10040 display list	applied@ab6aaba
+D_84B0FF40	gUIBarBottomVerts	w27		Vertex array for bottom segment of UI bar, used in D_84B10040 display list	applied@ab6aaba
+D_84B10040	gUIBarDisplayList	w27		Display list for rendering UI bar, references gUIBarTopVerts/Middle/Bottom	applied@ab6aaba
+D_84B10378	gUIBarGeoLayout	w27		Geo layout array for UI bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B103B0	gUIBarSmallTopVerts	w27		Vertex array for small top segment of UI bar, used in D_84B10470 display list	applied@ab6aaba
+D_84B10410	gUIBarSmallBottomVerts	w27		Vertex array for small bottom segment of UI bar, used in D_84B10498 display list	applied@ab6aaba
+D_84B10470	gUIBarSmallTopDisplayList	w27		Display list for rendering small top segment of UI bar, references gUIBarSmallTopVerts	applied@ab6aaba
+D_84B10498	gUIBarSmallBottomDisplayList	w27		Display list for rendering small bottom segment of UI bar, references gUIBarSmallBottomVerts	applied@ab6aaba
+D_84B10568	gUIBarSmallTopGeoLayout	w27		Geo layout array for small top bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B105A8	gUIBarSmallBottomGeoLayout	w27		Geo layout array for small bottom bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B105F8	gUIBarWideTopVerts	w27		Vertex array for wide top segment of UI bar, used in D_84B106F8 display list	applied@ab6aaba
+D_84B10678	gUIBarWideBottomVerts	w27		Vertex array for wide bottom segment of UI bar, used in D_84B10718 display list	applied@ab6aaba
+D_84B106F8	gUIBarWideTopDisplayList	w27		Display list for rendering wide top segment of UI bar, references gUIBarWideTopVerts	applied@ab6aaba
+D_84B10718	gUIBarWideBottomDisplayList	w27		Display list for rendering wide bottom segment of UI bar, references gUIBarWideBottomVerts	applied@ab6aaba
+D_84B10838	gUIBarWideTopGeoLayout	w27		Geo layout array for wide top bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B10878	gUIBarWideBottomGeoLayout	w27		Geo layout array for wide bottom bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B108C8	gUIBarMidVerts	w27		Vertex array for middle segment of UI bar, used in D_84B10948 display list	applied@ab6aaba
+D_84B10948	gUIBarMidDisplayList	w27		Display list for rendering middle segment of UI bar, references gUIBarMidVerts	applied@ab6aaba
+D_84B109F0	gUIBarMidGeoLayout	w27		Geo layout array for middle bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B10A40	gUIBarTwoLayerVerts	w27		Vertex array for two-layer bar, used in D_84B10B00 display list	applied@ab6aaba
+D_84B10B00	gUIBarTwoLayerDisplayList	w27		Display list for rendering two-layer bar, references gUIBarTwoLayerVerts	applied@ab6aaba
+D_84B10BE8	gUIBarTwoLayerGeoLayout	w27		Geo layout array for two-layer bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B10C48	gUIBarMiniVerts	w27		Vertex array for mini bar, used in D_84B10CC8 display list	applied@ab6aaba
+D_84B10CC8	gUIBarMiniDisplayList	w27		Display list for rendering mini bar, references gUIBarMiniVerts	applied@ab6aaba
+D_84B10D70	gUIBarMiniGeoLayout	w27		Geo layout array for mini bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B10DD0	gUIBarMiniAltDisplayList	w27		Alternate display list for mini bar, references gUIBarMiniVerts, uses different texture	applied@ab6aaba
+D_84B10E78	gUIBarMiniAltGeoLayout	w27		Geo layout array for mini bar alternate, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B10EB8	gUIBarSpecialVerts	w27		Vertex array for special bar, used in D_84B10F78 display list	applied@ab6aaba
+D_84B10F78	gUIBarSpecialDisplayList	w27		Display list for rendering special bar, references gUIBarSpecialVerts	applied@ab6aaba
+D_84B11060	gUIBarSpecialGeoLayout	w27		Geo layout array for special bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B110C0	gUIBarBarSegmentVerts	w27		Vertex array for bar segment, used in D_84B113C0 display list	applied@ab6aaba
+D_84B111C0	gUIBarBarSegmentDetailVerts	w27		Vertex array for bar segment details, used in D_84B114F8 display list	applied@ab6aaba
+D_84B113C0	gUIBarBarSegmentDisplayList	w27		Display list for rendering bar segment, references gUIBarBarSegmentVerts	applied@ab6aaba
+D_84B114F8	gUIBarBarSegmentDetailDisplayList	w27		Display list for rendering bar segment details, references gUIBarBarSegmentDetailVerts	applied@ab6aaba
+D_84B11640	gUIBarBarSegmentGeoLayout	w27		Geo layout array for bar segment, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+D_84B116E0	gUIBarLargeVerts	w27		Vertex array for large bar, used in D_84B119A0 display list	applied@ab6aaba
+D_84B117A0	gUIBarLargeDetailVerts	w27		Vertex array for large bar details, used in D_84B11A88 display list	applied@ab6aaba
+D_84B119A0	gUIBarLargeDisplayList	w27		Display list for rendering large bar, references gUIBarLargeVerts	applied@ab6aaba
+D_84B11A88	gUIBarLargeDetailDisplayList	w27		Display list for rendering large bar details, references gUIBarLargeDetailVerts	applied@ab6aaba
+D_84B11BD0	gUIBarLargeGeoLayout	w27		Geo layout array for large bar, used in process_geo_layout in func_84B053F4	applied@ab6aaba
+func_84B055B8	SetBarSegmentColors	w27		Sets vertex colors for two halves of a bar segment using Color_RGBA8 arrays, evidence: loops over Vtx, assigns color channels from arg1/arg2	applied@ab6aaba
+func_84B05668	UpdateBarSegmentColors	w27		Calls SetBarSegmentColors for four bar segments using color arrays indexed by battle context, evidence: calls func_84B055B8 with D_84B0FCBC/D_84B0FCFC	applied@ab6aaba
+func_84B05728	ResetBarSegmentState	w27		Resets state and updates all bar segment colors, evidence: zeroes fields, calls color and state update functions	applied@ab6aaba
+func_84B06720	AlignMemoryBlockTo64	w27		Aligns a memory block pointer to 64 bytes, reallocates and copies, evidence: bitmasking, main_pool_realloc, block copy	applied@ab6aaba
+func_84B067B4	LoadTransferPakErrorImages	w27		Loads error images for Transfer Pak from BinArchive, evidence: BinArchive_GetFile, assigns to arg0->unk_10, calls DrawTransferPakError	applied@ab6aaba
+func_84B06A54	InitTransferPakErrorScreen	w27		Initializes framebuffer and geo layout for Transfer Pak error, evidence: allocates FramebufferImage, process_geo_layout, calls LoadTransferPakErrorImages	applied@ab6aaba
+func_84B05DD0	ResetErrorScreenGraphNodes	w27		Resets and initializes error screen graph nodes, evidence: GraphNode_ClearCallback, GraphNode_Reset, GraphNode_InitChild	applied@ab6aaba
+func_84B05E64	AnimateErrorScreenSlideIn	w27		Animates error screen nodes sliding in, evidence: increments unk_01, updates unk_024.x, resets after 0xA	applied@ab6aaba
+func_84B05F18	AnimateErrorScreenSlideOut	w27		Animates error screen nodes sliding out, evidence: increments unk_01, updates unk_024.x negatively, resets after 0xA	applied@ab6aaba
+func_84B05FCC	AnimateErrorScreenShow	w27		Animates error screen showing, plays SFX, draws error, evidence: increments unk_01, plays SFX, calls DrawTransferPakError	applied@ab6aaba
+func_84B06204	AnimateErrorScreenHide	w27		Animates error screen hiding, decrements unk_01E.x, resets after 0x10, evidence: PlayUISfx, func_84B05DD0	applied@ab6aaba
+func_84B062E4	UpdateErrorScreenAnimation	w27		Dispatches error screen animation state, evidence: switch on unk_00, calls animation functions	applied@ab6aaba
+func_84B06364	SetupErrorScreenGraphNodes	w27		Initializes error screen graph nodes for animation, evidence: GraphNode_InitChild, Vec3f_Set, sets animation state	applied@ab6aaba
+D_84B11C18	gBarHighlightAnimPhase	w27		Animation phase for bar highlight, evidence: static s16, incremented in RenderUI_HighlightedBar, used for SINS	applied@ab6aaba
+D_84B11C1C	gSegmentHighlightAnimPhase	w27		Animation phase for segment highlight, evidence: static s16, incremented in RenderUI_HighlightedSegment, used for SINS	applied@ab6aaba
+D_86104640	gPatternTileData	w27		used as a tile/pattern data table for drawing rectangles in func_86100480 and DrawPatternRect	applied@ab6aaba
+D_861047B8	gWeightedItemTable	w27		struct used in WeightedRandomSelect and InitRandomItemPairs, appears to be a weighted item/pair table	applied@ab6aaba
+D_86104984	gPlayerIconPositions	w27		used in RenderResultScreenUI and DrawPlayerBorders as icon positions for each player	applied@ab6aaba
+D_861049B4	gPlayerAIParams	w27		used in func_86102750 as AI decision parameters for players, indexed by player type	applied@ab6aaba
+D_861049F0	gItemPairCounts	w27		used as a count table for item pairs in InitRandomItemPairs, matches usage as a count array	applied@ab6aaba
+D_861049F4	gResultScreenAnim1	w27		passed to func_87801824 in RenderResultScreenUI as an animation table	applied@ab6aaba
+D_86104A1C	gResultScreenAnim2	w27		passed to func_87801C8C in RenderResultScreenUI as an animation table	applied@ab6aaba
+D_86104AA4	gResultScreenParams	w27		used as a parameter/config table for result screen rendering, referenced in UI code	applied@ab6aaba
+D_86104B3C	gPatternTilePtrs	w27		used in func_86100480 as a 2D array of pointers to pattern tile data for drawing rectangles	applied@ab6aaba
+D_86104B5C	gResultScreenDLParams1	w27		used as a struct for display list parameters in RenderResultScreenUI	applied@ab6aaba
+D_86104B60	gResultScreenDLParams2	w27		used as a struct for display list parameters in RenderResultScreenUI	applied@ab6aaba
+D_86104B70	gEmptyDL1	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104B78	gPatternTileMask	w27		used in DrawPatternRect as the texture for the pattern rectangle	applied@ab6aaba
+D_86104BF8	gEmptyDL2	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104C00	gPatternTile0	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_86104CF0	gEmptyDL3	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104CF8	gPatternTile1	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_86104DE8	gEmptyDL4	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104DF0	gPatternTile2	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_86104EE0	gEmptyDL5	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104EE8	gPatternTile3	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_86104FD8	gEmptyDL6	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_86104FE0	gPatternTile4	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_861050D0	gEmptyDL7	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_861050D8	gPatternTile5	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_861051C8	gEmptyDL8	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_861051D0	gPatternTile6	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_861052C0	gEmptyDL9	w27		gsSPEndDisplayList only, used as an empty display list	applied@ab6aaba
+D_861052C8	gPatternTile7	w27		used as a pattern tile in D_86104B3C for drawing rectangles	applied@ab6aaba
+D_86105480	gFragment7Struct1	w27		pointer to unk_D_86002F30, used as a global state struct for this fragment	applied@ab6aaba
+D_86105484	gFragment7Struct2	w27		pointer to unk_D_86002F34, used as a global state struct for this fragment	applied@ab6aaba
+D_86105488	gFragment7Camera	w27		pointer to CameraStruct, set in SetupCamera and used for projection	applied@ab6aaba
+D_8610548C	gFragment7Struct3	w27		pointer to unk_D_86002F30, used in InitRandomItemPairs for item data	applied@ab6aaba
+D_86105490	gCameraX	w27		set in SetupCamera, used as camera X position	applied@ab6aaba
+D_86105492	gCameraY	w27		set in SetupCamera, used as camera Y position	applied@ab6aaba
+D_86105494	gCameraZ	w27		set in SetupCamera, used as camera Z position	applied@ab6aaba
+D_86105498	gResultScreenState	w27		used as a state variable for the result screen state machine	applied@ab6aaba
+D_8610549C	gResultScreenTimer	w27		used as a timer/counter for result screen transitions	applied@ab6aaba
+D_861054A0	gPlayerItemCount	w27		set in InitRandomItemPairs, used as the number of items per player	applied@ab6aaba
+D_861054A2	gUnusedA2	w27		declared but not referenced in shown code, likely unused or padding	applied@ab6aaba
+D_861054A4	gPlayerItemRows	w27		used as the number of item rows per player in func_86102184 and func_8610228C	applied@ab6aaba
+D_861054A6	gResultScreenFlag	w27		used as a flag for result screen state in RunMatchLoop	applied@ab6aaba
+D_861054A8	gResultScreenAlpha	w27		used as alpha value in RenderResultScreenUI for gDPSetEnvColor	applied@ab6aaba
+D_861054AC	gUnusedAC	w27		declared but not referenced in shown code, likely unused or padding	applied@ab6aaba
+D_861054B0	gUnusedB0	w27		declared but not referenced in shown code, likely unused or padding	applied@ab6aaba
+D_861054B4	gResultScreenTextObj	w27		used as a TextObject pointer in RenderResultScreenUI and text functions	applied@ab6aaba
+D_861054B8	gPlayerType	w27		used as a player type or index in WeightedRandomSelect and RunMatchLoop	applied@ab6aaba
+D_861054BA	gInputReadyFlag	w27		used as a flag for input readiness in PrepareInputIfNotFading and RunMatchLoop	applied@ab6aaba
+D_861054BC	gUnusedBC	w27		declared but not referenced in shown code, likely unused or padding	applied@ab6aaba
+D_861054C0	gPlayerStates	w27		array of unk_D_861054C0, holds per-player state for the result screen and input	applied@ab6aaba
+D_86105BC0	gResultScreenBarMax	w27		used as a max value for a result screen bar in DrawPlayerBorders and func_86102510	applied@ab6aaba
+D_86105BC4	gCurrentPlayerState	w27		pointer to current player state struct, used throughout for per-player logic	applied@ab6aaba
+D_86105BC8	gCurrentPlayerGraphNode	w27		pointer to current player's Fragment2_1GraphNode, used in animation logic	applied@ab6aaba
+D_86105BCC	gResultScreenActionFlag	w27		used as an action flag for result screen state machine in func_86101BB4	applied@ab6aaba
+D_86105BCE	gResultScreenActionTimer	w27		used as a timer for result screen actions in func_86101BB4	applied@ab6aaba
+D_86105BD0	gResultScreenGraphNode1	w27		Fragment2_1GraphNode used for result screen animation/actions	applied@ab6aaba
+D_86105D38	gResultScreenGraphNode2	w27		Fragment2_1GraphNode used for result screen animation/actions	applied@ab6aaba
+D_86105EA0	gResultScreenGraphNodes	w27		array of unk_D_86105EA0, used for result screen graph node management	applied@ab6aaba
+D_86106450	gItemPairStates	w27		array of unk_D_86106450, used for item pair state in InitRandomItemPairs and related logic	applied@ab6aaba
+D_86107590	gPauseState	w27		used as a pause state flag in UpdateFrame and RunMatchLoop	applied@ab6aaba
+func_86102370	PauseScreen_ClearItems	w27		called from Pause_Start, clears item callbacks for pause screen	applied@ab6aaba
+func_861023E4	PauseScreen_RestoreItems	w27		called from Pause_End, restores item callbacks for pause screen	applied@ab6aaba
+func_86102460	GetRandomItemDirection	w27		returns a random direction for item assignment, used in func_86102750	applied@ab6aaba
+func_861029E0	AdvanceMatchState_Fragment7	w27		Increments D_8610549C and returns -1 if >= 0x1E; called in match state machine cases 9 and 10	applied@ab6aaba
+func_86102A10	CheckPlayersActive_Fragment7	w27		Checks if all 4 D_861054C0[i] are inactive; used in match state 10	applied@ab6aaba
+func_86102B2C	InitPlayerLoseAnim_Fragment7	w27		Sets up lose animation for inactive players; called after CheckPlayersActive_Fragment7	applied@ab6aaba
+func_86102C24	CheckPlayerLoseAnimDone_Fragment7	w27		Checks if lose anims are done for all; advances state; used in match state 11	applied@ab6aaba
+func_86102CC0	GetMaxPlayerScore_Fragment7	w27		Finds max score among D_861054C0[i]; used to set D_861054BC	applied@ab6aaba
+func_86102F30	InitScoreTally_Fragment7	w27		Sets up for score tally animation; called after lose anims	applied@ab6aaba
+func_86102FDC	ScoreTallyStep_Fragment7	w27		Handles per-frame tallying of scores; advances state when done; used in match state 12	applied@ab6aaba
+func_861032D8	DecrementPlayerScore_Fragment7	w27		Decrements D_86105BC4->unk_1A8 and triggers lose anim if reaches 0; called in tally logic	applied@ab6aaba
+func_86103374	ResetLastPlayerScore_Fragment7	w27		Resets score for last remaining player; called in tally logic	applied@ab6aaba
+func_86103450	AdvanceToNextRound_Fragment7	w27		Sets D_86105498 to 0xD and increments D_861054A6; called after tally done	applied@ab6aaba
+func_86103474	SetupWinAnim_Fragment7	w27		Sets up win animation for players with score > 0; used in match state 13	applied@ab6aaba
+func_861035B0	HandleWinAnim_Fragment7	w27		Handles win animation and triggers lose anim if needed; used in match state 14	applied@ab6aaba
+func_86103868	RunMatchLoop_Fragment7	w27		Main match loop state machine; calls all state handlers; called from func_86104474	applied@ab6aaba
+func_86103AB4	ShowResultScreen_Fragment7	w27		Handles result screen animation and winner display; called after match loop	applied@ab6aaba
+func_86103D28	FadeOutStage_Fragment7	w27		Fades out stage and waits 30 frames; called after result screen	applied@ab6aaba
+func_86103D88	WaitFrames_Fragment7	w27		Waits arg0 frames with input prep; called after fade out	applied@ab6aaba
+func_86103DEC	WaitForResultInput_Fragment7	w27		Waits for D_8780FC96 to be set, handles cursor animation; called after result screen	applied@ab6aaba
+func_86103E9C	InitFragment7Stage	w27		Initializes all stage/graph nodes and assets for this fragment; called at start of func_86104474	applied@ab6aaba
+func_8610426C	RenderFragment7Stage	w27		Sets up display list and positions result icons; called after InitFragment7Stage	applied@ab6aaba
+func_86104380	GetWinningPlayer_Fragment7	w27		Returns index of player with highest score; used to set D_861054A2	applied@ab6aaba
+func_86104474	Fragment7_MainEntrypoint	w27		Main entrypoint for this fragment/minigame; sets up, runs match, result, cleanup	applied@ab6aaba
+D_862038C0	gRaceTextTable	w27		Table of 4-byte values, many are Shift-JIS codepoints, used as text table for race/obstacle names (see D_87A01190 etc.)	applied@ab6aaba
+D_86203C40	gRacePanelParams	w27		Panel parameter table, used in func_87801C8C/func_87801684/func_87801824 for panel rendering	applied@ab6aaba
+D_86203C74	gRacePanelAnim1	w27		Array of structs with anim addresses/counts, used in func_87801684 for panel animation	applied@ab6aaba
+D_86203C9C	gRacePanelAnim2	w27		Array of structs with anim addresses/counts, used in func_87801824 for panel animation	applied@ab6aaba
+D_86203CC4	gRacePanelAnim3	w27		Array of structs with anim addresses/counts, used in func_87801C8C for panel animation	applied@ab6aaba
+D_86203CEC	gRaceAIDifficultyTable	w27		Table of AI difficulty parameters (ptr, s16, s16), used in ProcessPlayerInputs for AI input chance	applied@ab6aaba
+D_86203D0C	gRaceStageScript	w27		Table of stage script/params, contains pointers to D_5000000, gGraphRoot0, D_6000000, etc.	applied@ab6aaba
+D_86203DC0	gRaceNumPlayersFmt	w27		" %dP" string, unused, likely for displaying number of players	applied@ab6aaba
+D_86203DC8	gRaceStringFmt	w27		"%s" string, unused, generic string format	applied@ab6aaba
+D_86203E30	gRaceStageData	w27		Pointer to stage data struct, used in Graph_SetTextureState and other stage functions	applied@ab6aaba
+D_86203E34	gRaceStageAssets	w27		Pointer to stage asset struct, used for obstacle/character models in UpdateObstaclesForPlayer	applied@ab6aaba
+D_86203E38	gRaceGraphRoot	w27		Pointer to Fragment2_1GraphNode root, used in Graph_SetTextureState and rendering	applied@ab6aaba
+D_86203E3C	gRaceCamera	w27		CameraStruct pointer, used throughout for camera manipulation	applied@ab6aaba
+D_86203E40	gRaceCameraDist	w27		Camera distance param, set in InitCameraParameters/UpdateCameraForPhase	applied@ab6aaba
+D_86203E42	gRaceCameraYaw	w27		Camera yaw param, set in InitCameraParameters/UpdateCameraForPhase	applied@ab6aaba
+D_86203E44	gRaceCameraPitch	w27		Camera pitch param, set in InitCameraParameters/UpdateCameraForPhase	applied@ab6aaba
+D_86203E46	gRaceFrameCounter	w27		Frame counter, incremented every frame in func_86200EC4	applied@ab6aaba
+D_86203E48	gRacePhase	w27		Race phase/state, controls camera and input logic (see UpdateCameraForPhase)	applied@ab6aaba
+D_86203E4C	gRaceFinishOrder	w27		Finish order index, incremented as players finish (see UpdatePlayersAndCheckFinish)	applied@ab6aaba
+D_86203E50	gRacePlayerStates	w27		Array of 4 player state structs, main per-player state for race logic	applied@ab6aaba
+D_86204590	gRacePlayerState	w27		Pointer to current player state struct, used in per-player loops	applied@ab6aaba
+D_86204594	gRacePlayerGraphNode	w27		Pointer to current player's Fragment2_1GraphNode, used for animation/graph actions	applied@ab6aaba
+D_86204598	gRacePlayerGraphNodeTemp	w27		Temp Fragment2_1GraphNode, used for intermediate graph node operations	applied@ab6aaba
+D_86204700	gRaceResultScreenActive	w27		Flag for result screen active state, set in HandleResultScreen	applied@ab6aaba
+D_86204704	gRaceFinishFrame	w27		Frame counter for finish sequence, used in UpdatePlayersAndCheckFinish and func_862023F8	applied@ab6aaba
+D_86204708	gRaceWinnersCount	w27		Number of race winners, set in func_862023F8	applied@ab6aaba
+D_8620470A	gRaceMultipleWinners	w27		Flag for multiple winners, set in func_862023F8	applied@ab6aaba
+D_8620470C	gRaceUnusedFlag1	w27		Unused s16, set in func_862023F8, likely a leftover flag	applied@ab6aaba
+D_8620470E	gRaceUnusedFlag2	w27		Unused s16, not referenced in shown code, likely a leftover flag	applied@ab6aaba
+D_86204710	gRaceBestFinishTime	w27		Best finish time (lowest), set in func_862023F8 when sorting finishers	applied@ab6aaba
+D_86204714	gRaceTextObject	w27		TextObject pointer, used in text rendering in func_86200940	applied@ab6aaba
+D_86204718	gRaceIsResultScreen	w27		Flag for result screen mode, checked in many places for alternate flow	applied@ab6aaba
+D_8620471A	gRaceStageReady	w27		Flag for stage ready/input polling, set in PollInputsWhenStageReady	applied@ab6aaba
+D_8620471C	gRaceLaneIndex	w27		Current lane index, used as index into gLaneBaseY in UpdateObstaclesForPlayer	applied@ab6aaba
+D_86204720	gRaceObstacles	w27		4x10 array of obstacle state structs, per-player per-obstacle	applied@ab6aaba
+D_86208280	gRaceObstaclePtr	w27		Pointer to current obstacle struct, used in per-obstacle loops	applied@ab6aaba
+D_86208288	gRaceFinishOrderTable	w27		Array of 4 s32, stores player indices in finish order	applied@ab6aaba
+D_86208298	gRaceFinishCount	w27		Number of players finished, incremented in UpdatePlayersAndCheckFinish	applied@ab6aaba
+D_8620829C	gRaceCameraInitFlag	w27		Camera init flag, set in InitCameraParameters	applied@ab6aaba
+D_862082A0	gRacePlayerScreenY	w27		Array of 4 u32, stores Y screen position for each player, set in func_86200EC4	applied@ab6aaba
+func_86200020	SetAIPlayerState	w27		Sets AI player state for a player (unk_002 = gMenuState + 1), called for AI players	applied@ab6aaba
+func_862002EC	Race_Stub	w27		Empty stub function, likely placeholder for future logic	applied@ab6aaba
+func_86200940	Race_DrawPanelAndText	w27		Draws main panel and renders text for the race, uses gItemNamesBank and message strings	applied@ab6aaba
+func_86200EC4	Race_RenderFrame	w27		Renders one frame of the race, including player panels, obstacles, and result screen	applied@ab6aaba
+func_862015A0	UpdatePlayerZAndScreenY	w27		Updates player's Z position and screen Y value, used for rendering and progress	applied@ab6aaba
+func_86201770	UpdatePlayerAnimProgress	w27		Updates player's animation progress based on their position, used in SetPlayerState	applied@ab6aaba
+func_862022CC	UpdateFinishersAnim	w27		Updates animation for players who have finished, called after race ends	applied@ab6aaba
+func_86202C7C	TriggerWinnerAnim	w27		Triggers winner animation for players who finished and are marked as winner	applied@ab6aaba
+func_86202D5C	TriggerResultAnims	w27		Triggers result animations for all players at the end of the race	applied@ab6aaba

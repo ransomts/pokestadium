@@ -20,9 +20,9 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-BinArchive* D_84211B30;
-void* D_84211B34;
-unk_D_842168A0_0013C* D_84211B38;
+BinArchive* gBattleSelectionBackgroundArchive;
+void* gPartyScreenBackground;
+unk_D_842168A0_0013C* gBattleSelectionControllerInfo;
 char** D_84211B3C;
 char** D_84211B40;
 char** gMessageBank_26;
@@ -31,18 +31,18 @@ char** gMessageBank_06;
 unk_D_84211B50 gPartyInfo;
 unk_D_842168A0 gControllerInfo;
 unk_D_84229EB0 gPokemonData;
-unk_D_8423D3A8 D_8423D3A8;
-unk_D_8423D3D8 D_8423D3D8[4];
+unk_D_8423D3A8 gMoveScreenInfo;
+unk_D_8423D3D8 gBattleSelectionSlots[4];
 s16 gMenuSelectionIndex;
 
 s16 gFrameTimer = 2;
 s16 gSubsystemEnableMask = 0x20;
-s16 D_84210D48 = 0;
+s16 gPartyScreenIconAnimTimer = 0;
 u8 gStadiumModeTextureIndices[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F,
 };
 
-s32 func_84200020(s32 arg0) {
+s32 CheckPIIdleAndReturnArg(s32 arg0) {
     u32 temp_a0 = osSetIntMask(1);
 
     if (!(IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY)) &&
@@ -53,27 +53,27 @@ s32 func_84200020(s32 arg0) {
     return arg0;
 }
 
-char* func_84200088(s32 arg0) {
+char* GetMessageBank24String(s32 arg0) {
     return GetMessageString(NULL, 0, D_84211B3C, arg0 - 1);
 }
 
-char* func_842000C0(s32 arg0) {
+char* GetMessageBank25String(s32 arg0) {
     return GetMessageString(NULL, 0, D_84211B40, arg0 - 1);
 }
 
-char* func_842000F8(s32 arg0) {
+char* GetStadiumModeString(s32 arg0) {
     return GetMessageString(NULL, 0, gMessageBank_26, RemapStadiumModeIndex(arg0));
 }
 
-char* func_84200130(s32 arg0) {
+char* GetMessageBank1AString(s32 arg0) {
     return GetMessageString(NULL, 0, D_84211B48, arg0);
 }
 
-char* func_84200160(s32 arg0) {
+char* GetMessageBank06String(s32 arg0) {
     return GetMessageString(NULL, 0, gMessageBank_06, arg0);
 }
 
-char* func_84200190(char* arg0, s32 arg1, s32 arg2) {
+char* GetMessageBank1AStringCustomBuf(char* arg0, s32 arg1, s32 arg2) {
     return GetMessageString(arg0, arg1, D_84211B48, arg2);
 }
 
@@ -112,7 +112,7 @@ void DrawColoredBox(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84200738(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawAnimatedGoldBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     static s16 D_84210D58 = 0;
 
     s16 sp56 = SINS(D_84210D58) * 2;
@@ -277,7 +277,7 @@ void DrawIconPanel(s16 arg0, s16 arg1, s16 arg2) {
 }
 
 void func_84201BC4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, arg3->r, arg3->g, arg3->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4->r, arg4->g, arg4->b, 255);
 
@@ -303,9 +303,9 @@ void SetupBattleSelectionUI(void) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(0x6A, 0x2C, func_84200130(D_84210D70[gBattleContext.unk_0000]));
+    Text_Print(0x6A, 0x2C, GetMessageBank1AString(D_84210D70[gBattleContext.unk_0000]));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(0x68, 0x2A, func_84200130(D_84210D70[gBattleContext.unk_0000]));
+    Text_Print(0x68, 0x2A, GetMessageBank1AString(D_84210D70[gBattleContext.unk_0000]));
     Text_SetupDL();
 }
 
@@ -325,7 +325,7 @@ void DrawOptionsScreen(s16 arg0, s16 arg1, s16 arg2) {
     s16 temp_v0;
 
     Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(D_84211B34);
+    Gfx_DrawTextureAtlas(gPartyScreenBackground);
     SetupBattleSelectionUI();
     if (arg2 > 0) {
         temp_a3 = (((arg2 * 0x9A) - 0x9A) / 8) + 0x10;
@@ -340,11 +340,11 @@ void DrawOptionsScreen(s16 arg0, s16 arg1, s16 arg2) {
             AnimateIconOffset(0x79, (gMenuSelectionIndex * 0x1E) + 0xAD);
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            Text_Print(0x7D, 0x8B, "%s %s", func_84200130(gBattleContext.unk_0001 + 0x3F), func_84200130(0x48));
-            PrintMenuOption(0x6D, 0x81, 0, func_84200130(0x49));
-            PrintMenuOption(0x6D, 0x81, 1, func_84200130(0x4A));
-            PrintMenuOption(0x6D, 0x81, 2, func_84200130(0x4B));
-            PrintMenuOption(0x6D, 0x81, 3, func_84200130(0x4C));
+            Text_Print(0x7D, 0x8B, "%s %s", GetMessageBank1AString(gBattleContext.unk_0001 + 0x3F), GetMessageBank1AString(0x48));
+            PrintMenuOption(0x6D, 0x81, 0, GetMessageBank1AString(0x49));
+            PrintMenuOption(0x6D, 0x81, 1, GetMessageBank1AString(0x4A));
+            PrintMenuOption(0x6D, 0x81, 2, GetMessageBank1AString(0x4B));
+            PrintMenuOption(0x6D, 0x81, 3, GetMessageBank1AString(0x4C));
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetLineHeight(0x18);
@@ -356,7 +356,7 @@ void DrawOptionsScreen(s16 arg0, s16 arg1, s16 arg2) {
     Stage_Advance();
 }
 
-void func_84202208(void) {
+void WaitForMenuConfirm(void) {
     PlaySoundEffect(8);
     func_8420DA28(0x10, gPlayer1Controller);
 
@@ -367,12 +367,12 @@ void func_84202208(void) {
     }
 }
 
-s32 func_84202284(void) {
+s32 UpdateMenuSelectionInput(void) {
     s32 sp1C = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         if ((gMenuSelectionIndex == 0) && (func_80028E68() == 0xA)) {
-            func_84202208();
+            WaitForMenuConfirm();
         } else {
             if (gMenuSelectionIndex < 3) {
                 PlaySoundEffect(0x1C);
@@ -415,7 +415,7 @@ s16 RunMenuSelection(void) {
 
     do {
         Game_UpdateInputs();
-        temp_s0 = func_84202284();
+        temp_s0 = UpdateMenuSelectionInput();
         DrawOptionsScreen(0x8C, 0xBC, 9);
     } while (temp_s0 == 'exec');
 
@@ -425,22 +425,22 @@ s16 RunMenuSelection(void) {
     }
 
     DrawOptionsScreen(0x8C, 0xBC, 0);
-    return func_84200020(gMenuSelectionIndex);
+    return CheckPIIdleAndReturnArg(gMenuSelectionIndex);
 }
 
-void func_842024DC(s16 arg0, s16 arg1) {
+void DrawPartyTopPanel(s16 arg0, s16 arg1) {
     Color_RGBA8 sp34;
     Color_RGBA8 sp30;
     s32 var_t0 = 0;
 
     if ((gBattleContext.unk_0000 == 0) && (arg1 >= 0)) {
-        if (D_84210D48 == 0) {
+        if (gPartyScreenIconAnimTimer == 0) {
             var_t0 = 1;
         } else {
-            if ((D_84210D48 % 12) >= 5) {
+            if ((gPartyScreenIconAnimTimer % 12) >= 5) {
                 var_t0 = 1;
             }
-            D_84210D48--;
+            gPartyScreenIconAnimTimer--;
         }
     }
 
@@ -474,15 +474,15 @@ void func_842024DC(s16 arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
+void DrawPartyScreenSubsystems(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     s32 temp_s0 = gFrameTimer > 0;
 
     Stage_BeginDisplayList();
 
     if (temp_s0 != 0) {
         gFrameTimer--;
-        Gfx_DrawTextureAtlas(D_84211B34);
-        func_842024DC(arg1, arg2);
+        Gfx_DrawTextureAtlas(gPartyScreenBackground);
+        DrawPartyTopPanel(arg1, arg2);
     }
 
     if (gSubsystemEnableMask & 8) {
@@ -502,7 +502,7 @@ void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (gSubsystemEnableMask & 0x10) {
-        DrawPokemonMoveInfo(&D_8423D3A8, temp_s0);
+        DrawPokemonMoveInfo(&gMoveScreenInfo, temp_s0);
     }
 
     if (gSubsystemEnableMask & 0x20) {
@@ -512,15 +512,15 @@ void func_84202718(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     Stage_Advance();
 }
 
-s16 func_84202844(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
+s16 RunPartyMenuSelection(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 temp_s1 = -1;
     s16 i;
 
-    D_84210D48 = 0x27;
+    gPartyScreenIconAnimTimer = 0x27;
 
     for (i = 0; i < 4; i++) {
         gFrameTimer = 2;
-        func_84202718(-1, arg1, arg2);
+        DrawPartyScreenSubsystems(-1, arg1, arg2);
     }
 
     Menu_Start(arg0, arg3);
@@ -531,14 +531,14 @@ s16 func_84202844(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         func_8420D9B0();
         temp_s1 = Menu_GetSelectedIndex();
         gFrameTimer = 2;
-        func_84202718(-1, arg1, arg2);
+        DrawPartyScreenSubsystems(-1, arg1, arg2);
     }
 
-    func_84202718(-1, arg1, arg2);
+    DrawPartyScreenSubsystems(-1, arg1, arg2);
     return temp_s1;
 }
 
-void func_84202974(UNUSED s16 arg0, UNUSED s32 arg1) {
+void UpdatePartyScreenSubsystems(UNUSED s16 arg0, UNUSED s32 arg1) {
     s32 var_a1 = 0;
 
     if (gSubsystemEnableMask & 1) {
@@ -554,7 +554,7 @@ void func_84202974(UNUSED s16 arg0, UNUSED s32 arg1) {
     }
 
     if (gSubsystemEnableMask & 0x10) {
-        var_a1 |= MoveScreen_Update(&D_8423D3A8);
+        var_a1 |= MoveScreen_Update(&gMoveScreenInfo);
     }
 
     if (gSubsystemEnableMask & 0x20) {
@@ -566,7 +566,7 @@ void func_84202974(UNUSED s16 arg0, UNUSED s32 arg1) {
     }
 }
 
-void func_84202A64(s16 arg0, s32 arg1, s16 arg2) {
+void PartyScreenTransition(s16 arg0, s32 arg1, s16 arg2) {
     PlaySoundEffect(4);
     if (arg0 == 4) {
         func_84210A18(&gPokemonData);
@@ -575,19 +575,19 @@ void func_84202A64(s16 arg0, s32 arg1, s16 arg2) {
         func_8420B1D0(&gControllerInfo, 0);
     }
     Game_UpdateInputs();
-    func_84202974(arg0, 0);
-    func_84202718(arg0, arg1, arg2);
+    UpdatePartyScreenSubsystems(arg0, 0);
+    DrawPartyScreenSubsystems(arg0, arg1, arg2);
 }
 
-void func_84202AF4(s16 arg0, s16 arg1, s16 arg2) {
+void PartyScreenInputLoop(s16 arg0, s16 arg1, s16 arg2) {
     s32 var_s0 = 1;
 
     MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     while (var_s0 != 0) {
         Game_UpdateInputs();
-        func_84202974(arg0, MenuInput_ReadDirection() & 0xFFFF);
-        func_84202718(arg0, arg1, arg2);
+        UpdatePartyScreenSubsystems(arg0, MenuInput_ReadDirection() & 0xFFFF);
+        DrawPartyScreenSubsystems(arg0, arg1, arg2);
 
         if (arg0 == 4) {
             var_s0 = func_84210B54(&gPokemonData) == 0;
@@ -598,39 +598,39 @@ void func_84202AF4(s16 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_84202C20(void) {
+void InitBattleSelectionSlots(void) {
     s16 i;
     unk_D_800AE540_0004* var_v0 = gBattleContext.unk_0004;
 
     for (i = 0; i < 4; i++) {
-        D_8423D3D8[i].unk_00 = 0;
-        D_8423D3D8[i].unk_01 = i;
-        D_8423D3D8[i].unk_02 = i;
+        gBattleSelectionSlots[i].unk_00 = 0;
+        gBattleSelectionSlots[i].unk_01 = i;
+        gBattleSelectionSlots[i].unk_02 = i;
     }
 
     for (i = 0; i < 4; i++, var_v0++) {
         if (var_v0->unk_000 & 1) {
             if (!(var_v0->unk_000 & 2)) {
-                D_8423D3D8[var_v0->unk_001].unk_00 = 1;
-                D_8423D3D8[var_v0->unk_001].unk_04 = var_v0;
+                gBattleSelectionSlots[var_v0->unk_001].unk_00 = 1;
+                gBattleSelectionSlots[var_v0->unk_001].unk_04 = var_v0;
             } else if (gBattleContext.unk_0000 == 0) {
-                D_8423D3D8[var_v0->unk_001].unk_00 = 1;
-                D_8423D3D8[var_v0->unk_001].unk_04 = var_v0;
-                D_8423D3D8[var_v0->unk_001].unk_01 = 4;
-                D_8423D3D8[var_v0->unk_001].unk_02 = 0;
+                gBattleSelectionSlots[var_v0->unk_001].unk_00 = 1;
+                gBattleSelectionSlots[var_v0->unk_001].unk_04 = var_v0;
+                gBattleSelectionSlots[var_v0->unk_001].unk_01 = 4;
+                gBattleSelectionSlots[var_v0->unk_001].unk_02 = 0;
             }
         }
     }
 }
 
-void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
+void SetupBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
     char sp50[16];
     UNUSED s32 pad;
     u16 var_v1;
     Gen1StringDecodeBuffer sp38;
 
     if (arg1 == 4) {
-        gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 0, 0x2C, 0x54, arg0->unk_02);
+        gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 0, 0x2C, 0x54, arg0->unk_02);
         return;
     }
 
@@ -643,11 +643,11 @@ void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
         var_v1 = 0;
     }
 
-    gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &D_8423D3A8, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
-    gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &D_8423D3A8, 0, 0x68, 0xE4, arg0->unk_02, arg1, D_84211B38);
+    gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
+    gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->unk_02, arg1, gBattleSelectionControllerInfo);
 }
 
-s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
+s32 CommitBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
     s32 temp_s3;
     s32 var_s0 = 0;
     unk_D_84229EB0_00024* sp34;
@@ -685,7 +685,7 @@ s32 func_84202EB0(unk_D_8423D3D8* arg0, s16 arg1) {
     return var_s0;
 }
 
-void func_8420305C(s32 arg0) {
+void FadeOutPartyScreen(s32 arg0) {
     s32 i;
 
     Stage_SetFillColor(1);
@@ -695,9 +695,9 @@ void func_8420305C(s32 arg0) {
     for (i = 0; i < 8; i++) {
         Game_UpdateInputs();
         Stage_BeginDisplayList();
-        Gfx_DrawTextureAtlas(D_84211B34);
+        Gfx_DrawTextureAtlas(gPartyScreenBackground);
         if (arg0 != 0) {
-            func_842024DC(0, -1);
+            DrawPartyTopPanel(0, -1);
         }
         Stage_Advance();
     }
@@ -705,7 +705,7 @@ void func_8420305C(s32 arg0) {
     Stage_AdvanceN(2);
 }
 
-void func_84203100(void) {
+void FadeInPartyScreen(void) {
     s32 i;
 
     if (Stage_GetFadeState() == 1) {
@@ -713,15 +713,15 @@ void func_84203100(void) {
         for (i = 0; i < 10; i++) {
             Game_UpdateInputs();
             Stage_BeginDisplayList();
-            Gfx_DrawTextureAtlas(D_84211B34);
-            func_842024DC(0, -1);
+            Gfx_DrawTextureAtlas(gPartyScreenBackground);
+            DrawPartyTopPanel(0, -1);
             Stage_Advance();
         }
     }
 }
 
-void func_8420318C(s16 arg0, s16 arg1) {
-    unk_D_800AE540_0004* temp_v1 = D_8423D3D8[arg0].unk_04;
+void ShowSelectedMonInfo(s16 arg0, s16 arg1) {
+    unk_D_800AE540_0004* temp_v1 = gBattleSelectionSlots[arg0].unk_04;
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {
@@ -737,7 +737,7 @@ s32 RunBattleSelectionMode(void) {
     s16 var_s2;
 
     if ((gBattleContext.unk_0000 == 7) && (gBattleContext.unk_0002 == 9)) {
-        func_8420305C(0);
+        FadeOutPartyScreen(0);
         Battle_ClearSelectedMonIndices();
         return 1;
     }
@@ -760,22 +760,22 @@ s32 RunBattleSelectionMode(void) {
             break;
     }
 
-    func_84202C20();
-    func_84203100();
+    InitBattleSelectionSlots();
+    FadeInPartyScreen();
 
     gSubsystemEnableMask |= func_84205C18(0);
-    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
+    gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     while (var_s1 >= 0 && var_s1 < 4) {
-        if (D_8423D3D8[var_s1].unk_00 != 0) {
-            var_s2 = func_84202844(D_8423D3D8[var_s1].unk_02, 0, D_8423D3D8[var_s1].unk_01, 1);
-            D_8423D3D8[var_s1].unk_04->unk_002 = 0;
+        if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
+            var_s2 = RunPartyMenuSelection(gBattleSelectionSlots[var_s1].unk_02, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
+            gBattleSelectionSlots[var_s1].unk_04->unk_002 = 0;
 
             if (var_s2 < 0) {
                 var_s1 -= 1;
                 while (var_s1 >= 0) {
-                    if (D_8423D3D8[var_s1].unk_00 != 0) {
-                        var_s2 = (D_8423D3D8[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
+                    if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
+                        var_s2 = (gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
                         break;
                     }
                     var_s1--;
@@ -795,12 +795,12 @@ s32 RunBattleSelectionMode(void) {
                     gBattleContext.unk_11F0 = 0;
                 }
 
-                func_84202D18(&D_8423D3D8[(unsigned long)idx], var_s2);
-                func_8420318C(var_s1, var_s2);
-                func_84202A64(var_s2, 0, D_8423D3D8[var_s1].unk_01);
-                func_84202AF4(var_s2, 0, D_8423D3D8[var_s1].unk_01);
+                SetupBattleSelectionSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
+                ShowSelectedMonInfo(var_s1, var_s2);
+                PartyScreenTransition(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
+                PartyScreenInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
 
-                if (func_84202EB0(&D_8423D3D8[(unsigned long)idx], var_s2) != 0) {
+                if (CommitBattleSelectionSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2) != 0) {
                     var_s1++;
                 }
 
@@ -815,12 +815,12 @@ s32 RunBattleSelectionMode(void) {
         return 0;
     }
 
-    func_8420305C(1);
+    FadeOutPartyScreen(1);
     Battle_ClearSelectedMonIndices();
     return 1;
 }
 
-s32 func_842034E4(void) {
+s32 RunBattleSelectionModeAlt(void) {
     s16 var_s1 = 0;
     s16 var_s2;
 
@@ -842,26 +842,26 @@ s32 func_842034E4(void) {
             break;
     }
 
-    func_84202C20();
-    func_84203100();
+    InitBattleSelectionSlots();
+    FadeInPartyScreen();
 
     gSubsystemEnableMask |= func_84205C18(0);
-    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
+    gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     while ((var_s1 >= 0) && (var_s1 < 4)) {
-        if (D_8423D3D8[var_s1].unk_00 != 0) {
-            if (D_8423D3D8[var_s1].unk_04->unk_002 == 0) {
-                var_s2 = func_84202844(D_8423D3D8[var_s1].unk_02, 0, D_8423D3D8[var_s1].unk_01, 1);
+        if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
+            if (gBattleSelectionSlots[var_s1].unk_04->unk_002 == 0) {
+                var_s2 = RunPartyMenuSelection(gBattleSelectionSlots[var_s1].unk_02, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
             } else {
-                var_s2 = ((D_8423D3D8[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4);
+                var_s2 = ((gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4);
             }
 
             if (var_s2 < 0) {
                 var_s1--;
 
                 while (var_s1 >= 0) {
-                    if (D_8423D3D8[var_s1].unk_00 != 0) {
-                        var_s2 = (D_8423D3D8[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
+                    if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
+                        var_s2 = (gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
                         break;
                     }
                     var_s1--;
@@ -880,11 +880,11 @@ s32 func_842034E4(void) {
                 } else {
                     gBattleContext.unk_11F0 = 0;
                 }
-                func_84202D18(&D_8423D3D8[(unsigned long)idx], var_s2);
-                func_8420318C(var_s1, var_s2);
-                func_84202A64(var_s2, 0, D_8423D3D8[var_s1].unk_01);
-                func_84202AF4(var_s2, 0, D_8423D3D8[var_s1].unk_01);
-                if (func_84202EB0(&D_8423D3D8[(unsigned long)idx], var_s2) != 0) {
+                SetupBattleSelectionSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
+                ShowSelectedMonInfo(var_s1, var_s2);
+                PartyScreenTransition(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
+                PartyScreenInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
+                if (CommitBattleSelectionSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2) != 0) {
                     var_s1++;
                 }
 
@@ -899,12 +899,12 @@ s32 func_842034E4(void) {
         return 0;
     }
 
-    func_8420305C(1);
+    FadeOutPartyScreen(1);
     Battle_ClearSelectedMonIndices();
     return 1;
 }
 
-void func_842037AC(void) {
+void RunRegistrationMode(void) {
     unk_D_84229EB0* ptr;
     char sp74[16];
     s16 temp_v0;
@@ -912,7 +912,7 @@ void func_842037AC(void) {
     Gen1StringDecodeBuffer sp60;
 
     while (true) {
-        temp_v0 = func_84202844(0, 1, 0, 1);
+        temp_v0 = RunPartyMenuSelection(0, 1, 0, 1);
         if (temp_v0 < 0) {
             return;
         }
@@ -931,12 +931,12 @@ void func_842037AC(void) {
         }
 
         ptr = &gPokemonData;
-        gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 3, 0x2C, 0xBC, 0);
-        gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &D_8423D3A8, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
-        gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &D_8423D3A8, 1, 0x68, 0xE4, 0, temp_v0, D_84211B38);
+        gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 3, 0x2C, 0xBC, 0);
+        gSubsystemEnableMask |= func_842078C0(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
+        gSubsystemEnableMask |= func_8420AF1C(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 1, 0x68, 0xE4, 0, temp_v0, gBattleSelectionControllerInfo);
 
-        func_84202A64(temp_v0, 1, 0);
-        func_84202AF4(temp_v0, 1, 0);
+        PartyScreenTransition(temp_v0, 1, 0);
+        PartyScreenInputLoop(temp_v0, 1, 0);
 
         main_pool_pop_state('regi');
 
@@ -946,57 +946,57 @@ void func_842037AC(void) {
     }
 }
 
-void func_842039B4(void) {
-    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 1, 0x2C, 0x54, 0);
+void RunRentalSelectionMode(void) {
+    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 1, 0x2C, 0x54, 0);
 
     func_84210A18(&gPokemonData);
     Game_UpdateInputs();
-    func_84202974(4, 0);
-    func_84202718(4, 2, 0);
+    UpdatePartyScreenSubsystems(4, 0);
+    DrawPartyScreenSubsystems(4, 2, 0);
     MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     do {
         Game_UpdateInputs();
-        func_84202974(4, MenuInput_ReadDirection() & 0xFFFF);
-        func_84202718(4, 2, 0);
+        UpdatePartyScreenSubsystems(4, MenuInput_ReadDirection() & 0xFFFF);
+        DrawPartyScreenSubsystems(4, 2, 0);
     } while (func_84210B54(&gPokemonData) == 0);
 }
 
-void func_84203AB8(void) {
-    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 2, 0x2C, 0x54, 0);
+void RunTradeSelectionMode(void) {
+    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 2, 0x2C, 0x54, 0);
 
     func_84210A18(&gPokemonData);
     Game_UpdateInputs();
-    func_84202974(4, 0);
-    func_84202718(4, 3, 0);
+    UpdatePartyScreenSubsystems(4, 0);
+    DrawPartyScreenSubsystems(4, 3, 0);
     MenuInput_SetController(&gControllers[gControllerInfo.unk_00003]);
 
     do {
         Game_UpdateInputs();
-        func_84202974(4, MenuInput_ReadDirection() & 0xFFFF);
-        func_84202718(4, 3, 0);
+        UpdatePartyScreenSubsystems(4, MenuInput_ReadDirection() & 0xFFFF);
+        DrawPartyScreenSubsystems(4, 3, 0);
     } while (func_84210B54(&gPokemonData) == 0);
 }
 
-s32 func_84203BBC(void) {
+s32 RunMainPartyMenu(void) {
     s16 temp_v0;
 
     gSubsystemEnableMask |= func_84205C18(1);
-    gSubsystemEnableMask |= MoveScreen_Create(&D_8423D3A8);
+    gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     do {
         temp_v0 = RunMenuSelection();
         switch (temp_v0) {
             case 0:
-                func_842037AC();
+                RunRegistrationMode();
                 break;
 
             case 1:
-                func_842039B4();
+                RunRentalSelectionMode();
                 break;
 
             case 2:
-                func_84203AB8();
+                RunTradeSelectionMode();
                 break;
         }
     } while (temp_v0 != 3);
@@ -1004,7 +1004,7 @@ s32 func_84203BBC(void) {
     return 1;
 }
 
-void func_84203C90(void) {
+void LoadBattleSelectionControllerAssets(void) {
     BinArchive* temp_a0;
     s16 var_a1;
 
@@ -1053,37 +1053,37 @@ void func_84203C90(void) {
     }
 
     if (var_a1 == 0) {
-        D_84211B38 = NULL;
+        gBattleSelectionControllerInfo = NULL;
     } else {
         if (gBattleContext.unk_11F2 != 0) {
             var_a1 += 0x1F;
         }
-        D_84211B38 = BinArchive_GetFile(temp_a0, var_a1);
+        gBattleSelectionControllerInfo = BinArchive_GetFile(temp_a0, var_a1);
     }
 }
 
-void func_84203D74(void) {
+void LoadBattleSelectionBackground(void) {
     unk_func_80027FA0 sp20;
 
-    D_84211B30 = ASSET_LOAD2(backgrounds, 1, 1);
+    gBattleSelectionBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
     if (gBattleContext.unk_0000 == 7) {
         if (gBattleContext.unk_0002 >= 8) {
-            D_84211B34 = BinArchive_GetFile(D_84211B30, 0xE);
+            gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0xE);
         } else {
             GbsEnsureBankLoaded(2);
             GBAudio_ResetState(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
-                D_84211B34 = BinArchive_GetFile(D_84211B30, 0xD);
+                gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0xD);
             } else {
-                D_84211B34 = BinArchive_GetFile(D_84211B30, 0x10);
+                gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0x10);
             }
         }
     } else {
-        D_84211B34 = BinArchive_GetFile(D_84211B30, gStadiumModeTextureIndices[gBattleContext.unk_0000]);
+        gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, gStadiumModeTextureIndices[gBattleContext.unk_0000]);
     }
 }
 
-s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
+s32 RunPartyScreenMain(s32 arg0, UNUSED s32 arg1) {
     s32 var_v1;
 
     main_pool_push_state('PICK');
@@ -1104,15 +1104,15 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
     GbsEnsureBankLoaded(gBattleContext.unk_0001 / 4);
     func_80028C48(gBattleContext.unk_0001);
     func_80028EB8();
-    func_84203D74();
+    LoadBattleSelectionBackground();
     SpriteAssets_Load();
-    func_84203C90();
+    LoadBattleSelectionControllerAssets();
     func_80007754();
 
     if (arg0 == 1) {
-        var_v1 = func_84203BBC();
+        var_v1 = RunMainPartyMenu();
     } else if (gBattleContext.unk_11F6 & 0x20) {
-        var_v1 = func_842034E4();
+        var_v1 = RunBattleSelectionModeAlt();
         gBattleContext.unk_11F6 = gBattleContext.unk_11F6 & 0xFFDF;
     } else {
         gBattleContext.unk_11F5 &= 0xFFFD;

@@ -330,7 +330,7 @@ void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void DrawFilledRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+    gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -886,7 +886,7 @@ void SelectionScreen_Main(s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x10000, 0);
     sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    D_8250A304 = Text_Init(0x18, 0);
+    gTextObjectHandle = Text_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);

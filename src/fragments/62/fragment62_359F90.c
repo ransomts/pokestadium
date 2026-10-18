@@ -27,45 +27,45 @@ typedef struct unk_D_843C4DA0 {
     /* 0x2E */ char unk2E[0x1E];
 } unk_D_843C4DA0; // size = 0x4C
 
-static u16 D_843C4DA0;
-static u8 D_843C4DA2;
-static u8 D_843C4DA3;
+static u16 gAccumulatedDamage;
+static u8 gAccuracyCheckRandom;
+static u8 gBattleMessageFlag;
 u8 gSpecialFlag;
-u8 D_843C4DA5;
-static u8 D_843C4DA6;
-static u8 D_843C4DA7;
-static u8 D_843C4DA8;
-u8 D_843C4DA9;
-u8 D_843C4DAA;
-static u8 D_843C4DAB;
-static u8 D_843C4DAC;
-static u8 D_843C4DAD;
-static u8 D_843C4DAE;
-static u8 D_843C4DAF;
-static u8 D_843C4DB0;
-static u8 D_843C4DB1;
-static u8 D_843C4DB2;
-static u8 D_843C4DB3;
-static u8 D_843C4DB4;
-static u8 D_843C4DB5;
-static u8 D_843C4DB6;
-static u8 D_843C4DB7;
-static u8 D_843C4DB8;
-static u8 D_843C4DB9;
-static u8 D_843C4DBA;
-static u8 D_843C4DBB;
-static u8 D_843C4DBC;
-static u8 D_843C4DBD;
-static u8 D_843C4DBE;
-static u8 D_843C4DBF;
-static u8 D_843C4DC0;
-static u8 D_843C4DC1;
-static u8 D_843C4DC2;
+u8 gBattleEffectType;
+static u8 gBattleUnusedFlag1;
+static u8 gBattleUnusedFlag2;
+static u8 gBattleUnusedFlag3;
+u8 gBattleUnusedFlag4;
+u8 gBattleUnusedFlag5;
+static u8 gBattleUnusedFlag6;
+static u8 gBattleUnusedFlag7;
+static u8 gBattleUnusedFlag8;
+static u8 gBattleUnusedFlag9;
+static u8 gBattleUnusedFlag10;
+static u8 gBattleUnusedFlag11;
+static u8 gBattleUnusedFlag12;
+static u8 gBattleUnusedFlag13;
+static u8 gTypeEffectivenessMsgState;
+static u8 gBattleUnusedFlag14;
+static u8 gBattleUnusedFlag15;
+static u8 gBattleUnusedFlag16;
+static u8 gBattleUnusedFlag17;
+static u8 gBattleUnusedFlag18;
+static u8 gBattleUnusedFlag19;
+static u8 gBattleUnusedFlag20;
+static u8 gBattleUnusedFlag21;
+static u8 gBattleUnusedFlag22;
+static u8 gBattleUnusedFlag23;
+static u8 gBattleUnusedFlag24;
+static u8 gBattleUnusedFlag25;
+static u8 gBattleUnusedFlag26;
+static u8 gBattleUnusedFlag27;
+static u8 gMoveEffectIndex;
 u16 gCurrentDamage;
-static u16 D_843C4DC6;
-static u16 D_843C4DC8;
-static u16 D_843C4DCA;
-static u16 D_843C4DCC;
+static u16 gMovePower;
+static u16 gAttackerStat;
+static u16 gDefenderStat;
+static u16 gAttackerLevel;
 static s32 pad_D_843C4DD0;
 static s32 pad_D_843C4DD4;
 static s32 pad_D_843C4DD8;
@@ -80,7 +80,7 @@ u8 gAnimStateFlag;
 static s32 pad_D_843C4E48[252];
 unk_D_800FCB18* gCurrentBattleEntity;
 unk_D_800FCB18* gDefenderBattleEntity;
-static unk_D_800FCB18 D_843C5240[2];
+static unk_D_800FCB18 gBattleTempEntities[2];
 
 u8 D_8438AC60[] = {
     0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x0E, 0x4A, 0x00, 0x00,
@@ -89,7 +89,7 @@ u8 D_8438AC60[] = {
     0x2F, 0x40, 0x44, 0x46, 0x47, 0x51, 0x59, 0x5A, 0x5B, 0x5C, 0x67, 0x6A, 0x6B, 0x6E, 0x6F, 0x76,
     0x7A, 0x80, 0x84, 0x8B, 0x8D, 0x91, 0x94, 0x96, 0x97, 0x9A, 0x9C, 0x9F, 0xA3, 0xA4, 0x00, 0x00,
 };
-static u8 D_8438ACB0[] = { 1, 0x20, 0x43, 0x54, 0x56 };
+static u8 gMoveEffectImmunityList[] = { 1, 0x20, 0x43, 0x54, 0x56 };
 StatStageMultiplier gStatStageMultipliers[] = {
     { 0x19, 0x64 }, { 0x1C, 0x64 }, { 0x21, 0x64 }, { 0x28, 0x64 }, { 0x32, 0x64 }, { 0x42, 0x64 }, { 0x01, 0x01 },
     { 0x0F, 0x0A }, { 0x02, 0x01 }, { 0x19, 0x0A }, { 0x03, 0x01 }, { 0x23, 0x0A }, { 0x04, 0x01 },
@@ -114,37 +114,37 @@ u8 gTypeEffectivenessTable[] = {
     5,    7,    0x14, 5,    0x19, 0x14, 8,    0,    0,    8,    0x18, 0,    0x14, 0x1A, 5,    0x15, 0x1A, 5,
     0x17, 0x1A, 5,    0x16, 0x1A, 5,    0x19, 0x1A, 0x14, 0x1A, 0x1A, 0x14, 0xFF, 0,    0,
 };
-static u32 D_8438ADEC[] = {
+static u32 gBattleMoveEffectTable1[] = {
     0x18191C2E,
     0x2F313839,
     0x40414243,
     0x4F525455,
 };
-static u32 D_8438ADFC[] = {
+static u32 gBattleMoveEffectTable2[] = {
     0x1B000000,
 };
-static u32 D_8438AE00[] = {
+static u32 gBattleMoveEffectTable3[] = {
     0x28290000,
 };
-static u32 D_8438AE04[] = {
+static u32 gBattleMoveEffectTable4[] = {
     0x010A0B0C, 0x0D0E0F12, 0x13141516, 0x171A2032, 0x33343536, 0x373A3B3C, 0x3D3E3F00,
 };
-static u32 D_8438AE20[] = {
+static u32 gBattleMoveEffectTable5[] = {
     0x03070810,
     0x1D1E2C30,
     0x4D510000,
 };
-static u32 D_8438AE2C[] = {
+static u32 gBattleMoveEffectTable6[] = {
     0x03070810,
     0x111D1E27,
     0x28292B2C,
     0x2D301B00,
 };
-static s32 D_8438AE3C = 0x4D2;
-static u32 D_8438AE40 = 0x1A85;
-static u32 D_8438AE44 = 0x3039;
-static u32 D_8438AE48 = 0x10932;
-static u8 D_8438AE4C[] = { 2, 0x4B, 0x98, 0xA3 };
+static s32 gBattleRngSeed1 = 0x4D2;
+static u32 gBattleRngSeed2 = 0x1A85;
+static u32 gBattleRngSeed3 = 0x3039;
+static u32 gBattleRngSeed4 = 0x10932;
+static u8 gBattleTypeEffectivenessParams[] = { 2, 0x4B, 0x98, 0xA3 };
 
 void func_8436F6D0(void) {
 }
@@ -156,15 +156,15 @@ u8 GetRandomU8(void) {
     var_v1 = (osGetCount() & 0xFF0) >> 4;
 
     while (var_v1 > 0) {
-        D_8438AE3C = (D_8438AE3C * 0x41C64E6D) + 0x303B;
-        if (D_8438AE40 & 1) {
-            D_8438AE40 ^= 0x11020;
+        gBattleRngSeed1 = (gBattleRngSeed1 * 0x41C64E6D) + 0x303B;
+        if (gBattleRngSeed2 & 1) {
+            gBattleRngSeed2 ^= 0x11020;
         }
-        D_8438AE40 >>= 1;
+        gBattleRngSeed2 >>= 1;
         var_v1--;
     }
 
-    ret = D_8438AE3C ^ D_8438AE40;
+    ret = gBattleRngSeed1 ^ gBattleRngSeed2;
     return ret;
 }
 
@@ -175,21 +175,21 @@ u8 GetRandomU8_Alt(void) {
     var_v1 = (osGetCount() & 0xFF0) >> 4;
 
     while (var_v1 > 0) {
-        D_8438AE44 = (D_8438AE44 * 0x41C64E6D) + 0x303B;
-        if (D_8438AE48 & 1) {
-            D_8438AE48 ^= 0x11020;
+        gBattleRngSeed3 = (gBattleRngSeed3 * 0x41C64E6D) + 0x303B;
+        if (gBattleRngSeed4 & 1) {
+            gBattleRngSeed4 ^= 0x11020;
         }
-        D_8438AE48 >>= 1;
+        gBattleRngSeed4 >>= 1;
         var_v1--;
     }
-    ret = D_8438AE44 ^ D_8438AE48;
+    ret = gBattleRngSeed3 ^ gBattleRngSeed4;
     return ret;
 }
 
 void ShowDamageMessage(s32 arg0, s32 arg1) {
     unk_D_800AE540_0004* temp_a3;
     unk_D_800FCB18* temp_a2_2;
-    unk_D_84390010_654* temp_v1;
+    unk_BattlePlayerAnimState* temp_v1;
     s32 sp18;
 
     temp_v1 = &D_84390010[arg0]->unk_654;
@@ -198,7 +198,7 @@ void ShowDamageMessage(s32 arg0, s32 arg1) {
 
     if (temp_a2_2->unk_0C == 0) {
         MessageBank_SetPointer_0x14_0x2A(0x19, temp_a3->unk_01C[temp_v1->unk_18].unk_30);
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x21);
         return;
     }
 
@@ -208,13 +208,13 @@ void ShowDamageMessage(s32 arg0, s32 arg1) {
     MessageBank_SetPointer_0x14_0x2A(0x19, temp_a3->unk_01C[temp_v1->unk_18].unk_30);
 
     if (sp18 >= 0x46) {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x21);
     } else if (sp18 >= 0x28) {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x22);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x22);
     } else if (sp18 >= 0xA) {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x23);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x23);
     } else {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x24);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x24);
     }
 }
 
@@ -223,8 +223,8 @@ void ResetBattleAfterMove(s32 arg0, s32 arg1) {
     unk_D_800FCB18* sp18 = &D_84390010[arg1]->unk_654.unk_38;
 
     ShowDamageMessage(arg0, arg1);
-    D_843C4DC2 = 0;
-    D_843C4DB3 = 0;
+    gMoveEffectIndex = 0;
+    gTypeEffectivenessMsgState = 0;
     sp1C->unk_44.unk_00 = 0;
     sp1C->unk_58 = 0;
     sp18->unk_58 = 0;
@@ -237,12 +237,12 @@ void ResetBattleAfterMove(s32 arg0, s32 arg1) {
     sp1C->unk_57 = 0;
     sp1C->unk_56 = 0;
     sp18->unk_4C &= ~0x20;
-    D_843C4DA3 = 1;
+    gBattleMessageFlag = 1;
 }
 
-void func_8436FA80(unk_D_84390010* arg0) {
-    unk_D_84390010_654* sp1C = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
+void func_8436FA80(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
     unk_D_800FCB18* temp_a1 = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* temp_a2 = &D_84390010[1]->unk_654.unk_38;
     s32 var_v0;
@@ -254,17 +254,17 @@ void func_8436FA80(unk_D_84390010* arg0) {
     }
 
     if (var_v0 == 0) {
-        WriteMessageCharOrString(D_843901A0->unk_1C8, 0x25);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_1C8, 0x25);
     } else if (var_v0 < 0x1E) {
-        WriteMessageCharOrString(D_843901A0->unk_1C8, 0x26);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_1C8, 0x26);
     } else if (var_v0 < 0x46) {
-        WriteMessageCharOrString(D_843901A0->unk_1C8, 0x27);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_1C8, 0x27);
     } else {
-        WriteMessageCharOrString(D_843901A0->unk_1C8, 0x28);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_1C8, 0x28);
     }
 
     if (sp1C->unk_2D == 0x10) {
-        WriteMessageCharOrString(D_843901A0->unk_1C8, 0);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_1C8, 0);
     }
 }
 
@@ -280,7 +280,7 @@ void ApplyDamageRandomFactor(void) {
     }
 }
 
-u16 CompareMovePriority(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+u16 CompareMovePriority(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* ptr1 = &arg0->unk_654.unk_38;
     unk_D_800FCB18* ptr2 = &arg1->unk_654.unk_38;
 
@@ -326,7 +326,7 @@ s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2) {
 }
 
 void func_8436FD9C(void) {
-    D_843C5240[0].unk_5A = D_843C5240[0].unk_1F[D_843C4DC2];
+    gBattleTempEntities[0].unk_5A = gBattleTempEntities[0].unk_1F[gMoveEffectIndex];
 }
 
 s32 func_8436FDBC(void) {
@@ -379,7 +379,7 @@ void ComputePokemonStat(s32 arg0, PokemonData* arg1) {
         }
     }
 
-    tmp = D_843C5240[0].unk_24;
+    tmp = gBattleTempEntities[0].unk_24;
 
     switch (arg0) {
         case 1:
@@ -447,47 +447,47 @@ void ComputeAllPokemonStats(PokemonData* arg0) {
 
 void InitBattleParameters(void) {
     gCurrentDamage = 0;
-    D_843C4DC6 = gCurrentBattleEntity->unk_44.unk_02;
-    if (D_843C4DC6) {
+    gMovePower = gCurrentBattleEntity->unk_44.unk_02;
+    if (gMovePower) {
         if (gCurrentBattleEntity->unk_44.unk_03 < 0x14) {
-            D_843C4DCA = gDefenderBattleEntity->unk_2C;
+            gDefenderStat = gDefenderBattleEntity->unk_2C;
             if (gDefenderBattleEntity->unk_4E & 4) {
-                D_843C4DCA *= 2;
+                gDefenderStat *= 2;
             }
 
-            if (D_843C4DA5 != 0) {
-                D_843C4DCA = gDefenderBattleEntity->unk_3A;
-                D_843C4DC8 = gCurrentBattleEntity->unk_38;
+            if (gBattleEffectType != 0) {
+                gDefenderStat = gDefenderBattleEntity->unk_3A;
+                gAttackerStat = gCurrentBattleEntity->unk_38;
             } else {
-                D_843C4DC8 = gCurrentBattleEntity->unk_2A;
+                gAttackerStat = gCurrentBattleEntity->unk_2A;
             }
         } else {
-            D_843C4DCA = gDefenderBattleEntity->unk_30;
+            gDefenderStat = gDefenderBattleEntity->unk_30;
             if (gDefenderBattleEntity->unk_4E & 2) {
-                D_843C4DCA *= 2;
+                gDefenderStat *= 2;
             }
 
-            if (D_843C4DA5 != 0) {
-                D_843C4DCA = gDefenderBattleEntity->unk_3E;
-                D_843C4DC8 = gCurrentBattleEntity->unk_3E;
+            if (gBattleEffectType != 0) {
+                gDefenderStat = gDefenderBattleEntity->unk_3E;
+                gAttackerStat = gCurrentBattleEntity->unk_3E;
             } else {
-                D_843C4DC8 = gCurrentBattleEntity->unk_30;
+                gAttackerStat = gCurrentBattleEntity->unk_30;
             }
         }
 
-        if (D_843C4DC8 & 0xFF00) {
-            if (D_843C4DCA & 0xFF00) {
-                D_843C4DC8 >>= 2;
-                D_843C4DCA >>= 2;
-                if (D_843C4DC8 == 0) {
-                    D_843C4DC8 = 1;
+        if (gAttackerStat & 0xFF00) {
+            if (gDefenderStat & 0xFF00) {
+                gAttackerStat >>= 2;
+                gDefenderStat >>= 2;
+                if (gAttackerStat == 0) {
+                    gAttackerStat = 1;
                 }
             }
         }
 
-        D_843C4DCC = gCurrentBattleEntity->unk_26;
-        if (D_843C4DA5 != 0) {
-            D_843C4DCC *= 2;
+        gAttackerLevel = gCurrentBattleEntity->unk_26;
+        if (gBattleEffectType != 0) {
+            gAttackerLevel *= 2;
         }
     }
 }
@@ -496,9 +496,9 @@ s32 UpdateDamageAccumulator(void) {
     s32 temp_v0 = gCurrentBattleEntity->unk_44.unk_01;
 
     if (temp_v0 == 7) {
-        D_843C4DCA >>= 1;
-        if (D_843C4DCA == 0) {
-            D_843C4DCA = 1;
+        gDefenderStat >>= 1;
+        if (gDefenderStat == 0) {
+            gDefenderStat = 1;
         }
     }
 
@@ -507,12 +507,12 @@ s32 UpdateDamageAccumulator(void) {
             return func_8436FDBC();
         }
 
-        if (D_843C4DC6 == 0) {
+        if (gMovePower == 0) {
             return 0;
         }
     }
 
-    gCurrentDamage += (((((D_843C4DCC * 2) / 5) + 2) * D_843C4DC6 * D_843C4DC8) / D_843C4DCA) / 50;
+    gCurrentDamage += (((((gAttackerLevel * 2) / 5) + 2) * gMovePower * gAttackerStat) / gDefenderStat) / 50;
     if (gCurrentDamage > 0x3E4) {
         gCurrentDamage = 0x3E4;
     }
@@ -525,11 +525,11 @@ void ProcessTurnEnd(void) {
     if (gDefenderBattleEntity->unk_4D & 0x10) {
         if (gBattleState.unk_00->unk_48 == 0x14) {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_208, 0x2B);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_208, 0x2B);
             if (gDefenderBattleEntity->unk_59 < gCurrentDamage) {
                 gDefenderBattleEntity->unk_4D &= 0xFFEF;
                 MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-                WriteMessageCharOrString(D_843901A0->unk_208, 0x2C);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_208, 0x2C);
 
                 if ((D_8438AC60[0] == 1) && (gCurrentBattleEntity->unk_44.unk_01 == 0x1D)) {
                     SpAttack_Main();
@@ -546,11 +546,11 @@ void ProcessTurnEnd(void) {
             }
         } else {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_208, 0x2B);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_208, 0x2B);
             if (gDefenderBattleEntity->unk_59 < gCurrentDamage) {
                 gDefenderBattleEntity->unk_4D &= 0xFFEF;
                 MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
-                WriteMessageCharOrString(D_843901A0->unk_208, 0x2C);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_208, 0x2C);
 
                 if ((D_8438AC60[0] == 1) && (gCurrentBattleEntity->unk_44.unk_01 == 0x1D)) {
                     SpAttack_Main();
@@ -566,7 +566,7 @@ void ProcessTurnEnd(void) {
                 gDefenderBattleEntity->unk_59 -= gCurrentDamage;
             }
         }
-    } else if (D_84390288 == 0) {
+    } else if (gBattleUpdateHPFlag == 0) {
         if (gCurrentDamage < gDefenderBattleEntity->unk_0C) {
             gDefenderBattleEntity->unk_0C -= gCurrentDamage;
         } else {
@@ -578,7 +578,7 @@ void ProcessTurnEnd(void) {
 
 void DecrementMovePP(s32 arg0) {
     unk_D_800FCB18* temp_v0;
-    unk_D_84390010_654* temp_a1;
+    unk_BattlePlayerAnimState* temp_a1;
     PokemonData* temp_a2;
 
     temp_v0 = &D_84390010[arg0]->unk_654.unk_38;
@@ -649,7 +649,7 @@ void HandleMoveEffectFlags(void) {
         }
 
         if (gCurrentBattleEntity->unk_44.unk_01 == 3 || gCurrentBattleEntity->unk_44.unk_01 == 8 ||
-            ((D_8438AC60[0] == 1) && (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ACB0, 5) != 0))) {
+            ((D_8438AC60[0] == 1) && (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gMoveEffectImmunityList, 5) != 0))) {
             MarkAttackFailed();
             return;
         }
@@ -672,25 +672,25 @@ void HandleMoveEffectFlags(void) {
                 ApplyAccuracyStageMultipliers();
             }
 
-            D_843C4DA2 = GetRandomU8_Alt();
-            if (D_843C4DA2 == 0xFF) {
-                D_843C4DA2 = GetRandomU8_Alt();
+            gAccuracyCheckRandom = GetRandomU8_Alt();
+            if (gAccuracyCheckRandom == 0xFF) {
+                gAccuracyCheckRandom = GetRandomU8_Alt();
             }
 
-            if (D_843C4DA2 >= gCurrentBattleEntity->unk_44.unk_04) {
+            if (gAccuracyCheckRandom >= gCurrentBattleEntity->unk_44.unk_04) {
                 MarkAttackFailed();
             }
         }
     }
 }
 
-void func_84370ADC(unk_D_84390010* arg0) {
+void Battle_ApplyAnimStateEffects(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     ptr->unk_05 = arg0->unk_654.unk_38.unk_15;
 }
 
-void ApplyParalysisSpeedCut(unk_D_84390010* arg0) {
+void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_38.unk_15 & 0x40) {
@@ -701,7 +701,7 @@ void ApplyParalysisSpeedCut(unk_D_84390010* arg0) {
     }
 }
 
-void ApplyBurnAttackCut(unk_D_84390010* arg0) {
+void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
     unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_38.unk_15 & 0x10) {
@@ -712,8 +712,8 @@ void ApplyBurnAttackCut(unk_D_84390010* arg0) {
     }
 }
 
-void func_84370B7C(unk_D_84390010* arg0) {
-    unk_D_84390010_654* sp28;
+void func_84370B7C(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* sp28;
     unk_D_800FCB18* sp24;
     PokemonData* sp34;
     s32 i;
@@ -789,7 +789,7 @@ void func_84370B7C(unk_D_84390010* arg0) {
     // clang-format on
 }
 
-s32 func_84370E30(unk_D_84390010* arg0) {
+s32 func_84370E30(unk_BattlePlayerEntity* arg0) {
     if (arg0->unk_724->unk_01C[arg0->unk_654.unk_18 - 1].unk_02 != 0) {
         return 1;
     }
@@ -822,7 +822,7 @@ void func_84370F40(void) {
         gCurrentBattleEntity->unk_44.unk_01 = 10;
 
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_348, 0x1F);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_348, 0x1F);
         Battle_ApplyStatIncrease();
 
         gCurrentBattleEntity->unk_44.unk_00 = 0x63;
@@ -833,29 +833,29 @@ void func_84370F40(void) {
 }
 
 void func_84371010(void) {
-    gAnimTimer = D_843C4DB3 & 0x7F;
+    gAnimTimer = gTypeEffectivenessMsgState & 0x7F;
     if (gAnimTimer >= 0xB) {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x29);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x29);
     } else if (gAnimTimer < 0xA) {
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x2A);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x2A);
     }
 }
 
 void func_84371080(void) {
     unk_D_800FCB18* sp1C = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    switch (D_843C4DA5) {
+    switch (gBattleEffectType) {
         case 1:
-            WriteMessageCharOrString(D_843901A0->unk_148, 0x1D);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_148, 0x1D);
             gBattleState.unk_00->unk_1A = 2;
             break;
         case 2:
-            WriteMessageCharOrString(D_843901A0->unk_148, 0x1E);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_148, 0x1E);
             gBattleState.unk_00->unk_1A = 2;
             break;
     }
-    sp1C->unk_5B = D_843C4DA5;
-    D_843C4DA5 = 0;
+    sp1C->unk_5B = gBattleEffectType;
+    gBattleEffectType = 0;
 }
 
 void func_8437114C(void) {
@@ -904,9 +904,9 @@ void func_8437114C(void) {
         default:
             if (gCurrentBattleEntity->unk_44.unk_02 != 0) {
                 if (gCurrentBattleEntity->unk_4C & 4) {
-                    D_843C4DA0 += gCurrentDamage;
+                    gAccumulatedDamage += gCurrentDamage;
                 } else {
-                    D_843C4DA0 = gCurrentDamage;
+                    gAccumulatedDamage = gCurrentDamage;
                 }
                 break;
             }
@@ -921,20 +921,20 @@ void func_8437114C(void) {
 void func_843712CC(void) {
     unk_D_800FCB18* sp1C;
 
-    if (D_843C4DB3 & 0x7F) {
-        if (D_843C4DA5 == 0xFF) {
+    if (gTypeEffectivenessMsgState & 0x7F) {
+        if (gBattleEffectType == 0xFF) {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_088, 0x19);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x19);
         } else {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_088, 0x1A);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x1A);
         }
     } else {
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[!gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x1B);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x1B);
     }
 
-    D_843C4DA5 = 0;
+    gBattleEffectType = 0;
 
     if (gCurrentBattleEntity->unk_44.unk_01 == 0x2D) {
         gBattleState.unk_00->unk_48 = 0x10;
@@ -944,7 +944,7 @@ void func_843712CC(void) {
         }
 
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x1C);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x1C);
 
         sp1C = gCurrentBattleEntity;
         gCurrentBattleEntity = gDefenderBattleEntity;
@@ -960,7 +960,7 @@ void func_843712CC(void) {
 void func_843714D8(void) {
     unk_D_800FCB18* ptr;
     PokemonData* temp_a0;
-    unk_D_84390010_654* temp_a1;
+    unk_BattlePlayerAnimState* temp_a1;
 
     ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     temp_a0 =
@@ -1059,10 +1059,10 @@ s32 func_8437176C(void) {
     if (gCurrentBattleEntity->unk_15 & 0x18) {
         if (gCurrentBattleEntity->unk_15 & 8) {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_248, 0);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_248, 0);
         } else {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_248, 1);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_248, 1);
         }
         func_843715C0();
         gDefenderBattleEntity->unk_0E = gDefenderBattleEntity->unk_0C;
@@ -1071,7 +1071,7 @@ s32 func_8437176C(void) {
     if (gCurrentBattleEntity->unk_4D & 0x80) {
         func_8437166C();
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_288, 2);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_288, 2);
     }
 
     if (gCurrentBattleEntity->unk_0C != 0) {
@@ -1085,10 +1085,10 @@ void func_843718DC(void) {
 
 s32 func_843718E4(void) {
     if ((gDefenderBattleEntity->unk_58 == 0x77) || (gDefenderBattleEntity->unk_58 == 0)) {
-        D_843901A0->unk_388[0] = 0;
-        D_843901A0->unk_388[1] = 0;
+        gBattleMessageBuffers->unk_388[0] = 0;
+        gBattleMessageBuffers->unk_388[1] = 0;
         gBattleState.unk_00->unk_48 = 0x1C;
-        WriteMessageCharOrString(D_843901A0->unk_088, 0x20);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x20);
         return 0;
     }
 
@@ -1120,7 +1120,7 @@ void func_84371974(void) {
     if ((D_8438AC60[0] != 1) || (gCurrentBattleEntity->unk_44.unk_00 != 0xA5)) {
         if ((temp_t1 == temp_a1) || (temp_t1 == temp_a3)) {
             gCurrentDamage += gCurrentDamage >> 1;
-            D_843C4DB3 |= 0x80;
+            gTypeEffectivenessMsgState |= 0x80;
         }
 
         var_a3 = &gTypeEffectivenessTable[0];
@@ -1146,7 +1146,7 @@ void func_84371974(void) {
         switch (var_v0) {
             case 1:
             case 2:
-                D_843C4DB3 = (D_843C4DB3 & 0x80) + 5;
+                gTypeEffectivenessMsgState = (gTypeEffectivenessMsgState & 0x80) + 5;
                 break;
 
             case 3:
@@ -1154,7 +1154,7 @@ void func_84371974(void) {
 
             case 4:
             case 5:
-                D_843C4DB3 = (D_843C4DB3 & 0x80) + 0x14;
+                gTypeEffectivenessMsgState = (gTypeEffectivenessMsgState & 0x80) + 0x14;
                 break;
         }
     }
@@ -1187,7 +1187,7 @@ s32 func_84371B3C(void) {
         }
 
         gSpecialFlag = 0;
-        D_843C4DA5 = 0;
+        gBattleEffectType = 0;
         HandleMoveEffectFlags();
         return 0;
     }
@@ -1198,7 +1198,7 @@ s32 func_84371C18(void) {
     UNUSED s32 pad;
     s32 sp18;
 
-    D_843C4DA5 = 0;
+    gBattleEffectType = 0;
     if (D_8438AC60[0] == 1) {
         sp18 = (D_80070F84[gCurrentBattleEntity->unk_0B].baseDefense + 0x4C) >> 2;
     } else {
@@ -1216,7 +1216,7 @@ s32 func_84371C18(void) {
             sp18 *= 2;
         }
 
-        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, D_8438AE4C, 4) != 0) {
+        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, gBattleTypeEffectivenessParams, 4) != 0) {
             sp18 *= 4;
         } else {
             sp18 >>= 1;
@@ -1231,7 +1231,7 @@ s32 func_84371C18(void) {
             }
         }
 
-        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, D_8438AE4C, 4) != 0) {
+        if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_00, gBattleTypeEffectivenessParams, 4) != 0) {
             sp18 *= 4;
             if (sp18 >= 0x100) {
                 sp18 = 0xFF;
@@ -1249,17 +1249,17 @@ s32 func_84371C18(void) {
         sp18 = 1;
     }
 
-    D_843C4DA2 = GetRandomU8();
-    if (D_843C4DA2 >= sp18) {
+    gAccuracyCheckRandom = GetRandomU8();
+    if (gAccuracyCheckRandom >= sp18) {
         return 0;
     }
-    D_843C4DA5 = 1;
+    gBattleEffectType = 1;
     return 1;
 }
 
-s32 func_84371DCC(void) {
+s32 ProcessBattleEntityStatus(void) {
     unk_D_800FCB18* sp2C;
-    unk_D_84390010_654* temp_v0;
+    unk_BattlePlayerAnimState* temp_v0;
     u16 sp26;
     u8 sp25;
     unk_D_800FCB18* temp_v1;
@@ -1275,11 +1275,11 @@ s32 func_84371DCC(void) {
 
         if (gCurrentBattleEntity->unk_15 != 0) {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_088, 5);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 5);
             gBattleState.unk_00->unk_48 = 0x11;
         } else {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_088, 6);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 6);
             gBattleState.unk_00->unk_48 = 0x11;
         }
 
@@ -1289,7 +1289,7 @@ s32 func_84371DCC(void) {
 
     if (gCurrentBattleEntity->unk_15 & 0x20) {
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 7);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 7);
         gCurrentBattleEntity->unk_58 = 0;
         gBattleState.unk_00->unk_48 = 0x11;
         return 0;
@@ -1297,14 +1297,14 @@ s32 func_84371DCC(void) {
 
     if (gDefenderBattleEntity->unk_4C & 0x20) {
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 8);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 8);
         gBattleState.unk_00->unk_48 = 0x11;
         return 0;
     }
 
     if (gCurrentBattleEntity->unk_4C & 8) {
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 9);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 9);
         gCurrentBattleEntity->unk_4D &= 0xFFDF;
         gCurrentBattleEntity->unk_4C &= 0xFFF7;
         gBattleState.unk_00->unk_48 = 0x1C;
@@ -1318,7 +1318,7 @@ s32 func_84371DCC(void) {
         }
         gBattleState.unk_00->unk_48 = 0x11;
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_088, 0xA);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0xA);
         return 0;
     }
 
@@ -1328,7 +1328,7 @@ s32 func_84371DCC(void) {
             gCurrentBattleEntity->unk_52 = 0;
             gCurrentBattleEntity->unk_57 = 0;
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_388, 0xB);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0xB);
         }
     }
 
@@ -1337,23 +1337,23 @@ s32 func_84371DCC(void) {
         if (gCurrentBattleEntity->unk_50 == 0) {
             gCurrentBattleEntity->unk_4C &= 0xFF7F;
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_188, 0xC);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_188, 0xC);
         } else {
             func_84317EDC();
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_188, 0xD);
-            D_843C4DA2 = GetRandomU8();
-            if (D_843C4DA2 >= 0x80) {
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_188, 0xD);
+            gAccuracyCheckRandom = GetRandomU8();
+            if (gAccuracyCheckRandom >= 0x80) {
                 func_843180AC();
                 gBattleState.unk_00->unk_48 = 0x14;
                 gCurrentBattleEntity->unk_4C &= 0x80;
-                WriteMessageCharOrString(D_843901A0->unk_148, 0xE);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_148, 0xE);
 
                 sp26 = gDefenderBattleEntity->unk_2C;
                 gDefenderBattleEntity->unk_2C = gCurrentBattleEntity->unk_2C;
                 sp25 = gCurrentBattleEntity->unk_44.unk_01;
                 gCurrentBattleEntity->unk_44.unk_01 = 0;
-                D_843C4DA5 = 0;
+                gBattleEffectType = 0;
                 gCurrentBattleEntity->unk_44.unk_02 = 0x28;
                 gCurrentBattleEntity->unk_44.unk_03 = 0;
                 InitBattleParameters();
@@ -1375,16 +1375,16 @@ s32 func_84371DCC(void) {
     if ((gCurrentBattleEntity->unk_57 != 0) && (gCurrentBattleEntity->unk_57 == gCurrentBattleEntity->unk_5A)) {
         gCurrentBattleEntity->unk_4C &= 0xFFEF;
         MessageBank_SetPointer_0x14_0x2A(0x1D, (u32)gMoveStrings[gCurrentBattleEntity->unk_5A - 1].unk_04);
-        WriteMessageCharOrString(D_843901A0->unk_088, 0xF);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0xF);
         gBattleState.unk_00->unk_48 = 0x11;
         return 0;
     }
 
     if (gCurrentBattleEntity->unk_15 & 0x40) {
-        D_843C4DA2 = GetRandomU8();
-        if (D_843C4DA2 < 0x3F) {
+        gAccuracyCheckRandom = GetRandomU8();
+        if (gAccuracyCheckRandom < 0x3F) {
             MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-            WriteMessageCharOrString(D_843901A0->unk_088, 0x10);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_088, 0x10);
             gBattleState.unk_00->unk_48 = 0x1F;
             gCurrentDamage = 0;
         label1:
@@ -1403,7 +1403,7 @@ s32 func_84371DCC(void) {
         }
         gCurrentBattleEntity->unk_4C &= 0xFFFE;
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_0C8, 0x11);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x11);
         gCurrentBattleEntity->unk_44.unk_02 = 1;
 
         gCurrentDamage = gCurrentBattleEntity->unk_54 * 2;
@@ -1423,13 +1423,13 @@ s32 func_84371DCC(void) {
     if (gCurrentBattleEntity->unk_4C & 2) {
         gCurrentBattleEntity->unk_44.unk_00 = 0x25;
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_0C8, 0x12);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x12);
         gCurrentBattleEntity->unk_4F -= 1;
         if (gCurrentBattleEntity->unk_4F != 0) {
             return 4;
         }
 
-        WriteMessageCharOrString(D_843901A0->unk_188, -0x45);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_188, -0x45);
         gCurrentBattleEntity->unk_4C &= 0xFFFD;
         gCurrentBattleEntity->unk_4C |= 0x80;
         gCurrentBattleEntity->unk_50 = (GetRandomU8() & 3) + 2;
@@ -1438,7 +1438,7 @@ s32 func_84371DCC(void) {
 
     if (gCurrentBattleEntity->unk_4C & 0x20) {
         MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
-        WriteMessageCharOrString(D_843901A0->unk_0C8, 0x13);
+        WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x13);
         gCurrentBattleEntity->unk_4F -= 1;
         return 6;
     }
@@ -1450,20 +1450,20 @@ s32 func_84371DCC(void) {
     return 2;
 }
 
-static const char D_8438DC00[] = "%d";
+static const char gFmtInt[] = "%d";
 static const char D_8438DC04[] = " SpAttackTbl6\n";
 
-void func_84372670(void) {
+void ProcessBattleTurn(void) {
     UNUSED s32 pad;
     char sp2C[8];
 
     if (gCurrentBattleEntity->unk_5A != 0xFF) {
         gSpecialFlag = 0;
-        D_843C4DB5 = 0;
-        D_843C4DA9 = 0;
-        D_843C4DB3 = 0xA;
+        gBattleUnusedFlag15 = 0;
+        gBattleUnusedFlag4 = 0;
+        gTypeEffectivenessMsgState = 0xA;
 
-        switch (func_84371DCC()) {
+        switch (ProcessBattleEntityStatus()) {
             case 2:
                 func_84370E80();
                 if (gCurrentBattleEntity->unk_4C & 0x10) {
@@ -1487,7 +1487,7 @@ void func_84372670(void) {
                 DetermineMessageCategoryAndDisplay();
                 DecrementMovePP(gBattleState.unk_00->unk_2C);
 
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ADEC, 0x10) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable1, 0x10) != 0) {
                     if (D_8438AC60[0] == 1) {
                         gCurrentDamage = 0;
                     }
@@ -1495,12 +1495,12 @@ void func_84372670(void) {
                     return;
                 }
 
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438ADFC, 1) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable2, 1) != 0) {
                     SpAttack_Main();
                 }
 
             case 4:
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE00, 2) == 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable3, 2) == 0) {
                     func_84371C18();
                     if (func_84371B3C() == 0) {
                         goto case_5;
@@ -1539,7 +1539,7 @@ void func_84372670(void) {
                         if (func_843718E4() == 0) {
                             goto end;
                         }
-                        D_843C4DB5 = 0;
+                        gBattleUnusedFlag15 = 0;
                         goto block_5;
 
                     case 0x53:
@@ -1547,7 +1547,7 @@ void func_84372670(void) {
                         goto block_5;
                 }
 
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE04, 0x1B) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable4, 0x1B) != 0) {
                     SpAttack_Main();
                     return;
                 }
@@ -1562,10 +1562,10 @@ void func_84372670(void) {
                     func_8437114C();
                     func_84371080();
                     func_84371010();
-                    D_843C4DA9 = 1;
+                    gBattleUnusedFlag4 = 1;
                 }
 
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE20, 0xA) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable5, 0xA) != 0) {
                     SpAttack_Main();
                 }
 
@@ -1588,19 +1588,19 @@ void func_84372670(void) {
                         goto loop_4F;
                     }
                     gCurrentBattleEntity->unk_4C &= ~4;
-                    sprintf(sp2C, D_8438DC00, gCurrentBattleEntity->unk_54);
+                    sprintf(sp2C, gFmtInt, gCurrentBattleEntity->unk_54);
                     MessageBank_SetPointer_1_9(2, gCurrentBattleEntity->unk_54);
-                    WriteMessageCharOrString(D_843901A0->unk_3C8, 4);
+                    WriteMessageCharOrString(gBattleMessageBuffers->unk_3C8, 4);
                     gBattleState.unk_00->unk_1A = 1;
                     gCurrentBattleEntity->unk_54 = 0;
-                    gCurrentDamage = D_843C4DA0;
+                    gCurrentDamage = gAccumulatedDamage;
                 }
 
                 if (gCurrentBattleEntity->unk_44.unk_01 == 0) {
                     goto end;
                 }
 
-                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, D_8438AE2C, 0xF) != 0) {
+                if (IsByteInArray(gCurrentBattleEntity->unk_44.unk_01, gBattleMoveEffectTable6, 0xF) != 0) {
                     goto end;
                 }
 
@@ -1609,12 +1609,12 @@ void func_84372670(void) {
         }
     }
 end:
-    D_843C4DB7 = 0;
+    gBattleUnusedFlag17 = 0;
 }
 
-void func_84372B48(unk_D_84390010* arg0) {
+void ResetBattleEntityStatus(unk_BattlePlayerEntity* arg0) {
     s32 sp1C = IsPrimaryEntity(arg0);
-    unk_D_84390010_654* temp_a10;
+    unk_BattlePlayerAnimState* temp_a10;
     unk_D_800FCB18* temp_a11;
     unk_D_800FCB18* temp_a01;
 
@@ -1642,11 +1642,11 @@ void func_84372B48(unk_D_84390010* arg0) {
 
     func_8436FA80(arg0);
     MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[sp1C]));
-    WriteMessageCharOrString(D_843901A0->unk_448[sp1C], 3);
+    WriteMessageCharOrString(gBattleMessageBuffers->unk_448[sp1C], 3);
 }
 
-void func_84372C40(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr1 = &arg0->unk_654;
+void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1671,12 +1671,12 @@ void func_84372C40(unk_D_84390010* arg0) {
         func_8436FA80(arg0);
         ptr1->unk_2D = 0x12;
     } else {
-        func_84372B48(arg0);
+        ResetBattleEntityStatus(arg0);
     }
 }
 
-void func_84372D88(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr1 = &arg0->unk_654;
+void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1701,12 +1701,12 @@ void func_84372D88(unk_D_84390010* arg0) {
         func_8436FA80(arg0);
         ptr1->unk_2D = 0x12;
     } else {
-        func_84372B48(arg0);
+        ResetBattleEntityStatus(arg0);
     }
 }
 
-void func_84372ED0(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr1 = &arg0->unk_654;
+void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1731,12 +1731,12 @@ void func_84372ED0(unk_D_84390010* arg0) {
         func_8436FA80(arg0);
         ptr1->unk_2D = 0x12;
     } else {
-        func_84372B48(arg0);
+        ResetBattleEntityStatus(arg0);
     }
 }
 
-void func_84373018(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr1 = &arg0->unk_654;
+void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1761,12 +1761,12 @@ void func_84373018(unk_D_84390010* arg0) {
         func_8436FA80(arg0);
         ptr1->unk_2D = 0x12;
     } else {
-        func_84372B48(arg0);
+        ResetBattleEntityStatus(arg0);
     }
 }
 
-s32 func_84373160(unk_D_84390010* arg0) {
-    unk_D_84390010_654* ptr1 = &arg0->unk_654;
+s32 CheckBattleEntityFaintStatus(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2;
@@ -1790,41 +1790,41 @@ s32 func_84373160(unk_D_84390010* arg0) {
                 ptr1->unk_2D = 0x12;
                 return 1;
             }
-            func_84372B48(arg0);
+            ResetBattleEntityStatus(arg0);
         }
         return 1;
     }
     return 0;
 }
 
-s32 func_843732B8(void) {
+s32 ProcessFaintChecks(void) {
     if (gDefenderBattleEntity->unk_0C == 0) {
-        func_84373018(D_84390010[!gBattleState.unk_00->unk_2C]);
+        CheckAllPartyFainted_Level(D_84390010[!gBattleState.unk_00->unk_2C]);
     }
 
     if (gCurrentBattleEntity->unk_0C == 0) {
-        func_84373018(D_84390010[gBattleState.unk_00->unk_2C]);
+        CheckAllPartyFainted_Level(D_84390010[gBattleState.unk_00->unk_2C]);
     }
 
     if ((gCurrentBattleEntity->unk_0C != 0) && (gDefenderBattleEntity->unk_0C != 0) && (gCurrentBattleEntity->unk_12 == 0)) {
-        func_84372ED0(D_84390010[gBattleState.unk_00->unk_2C]);
+        CheckAllPartyFainted_PP(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
     } else if ((gCurrentBattleEntity->unk_0C != 0) && (gDefenderBattleEntity->unk_0C != 0) && (gCurrentBattleEntity->unk_15 & 0x18) &&
                (gCurrentBattleEntity->unk_0E == 0)) {
-        func_84372C40(D_84390010[gBattleState.unk_00->unk_2C]);
+        CheckAllPartyFainted_HP(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
     } else if ((gCurrentBattleEntity->unk_0C != 0) && (gDefenderBattleEntity->unk_0C != 0) && (gCurrentBattleEntity->unk_4D & 0x80) &&
                (gCurrentBattleEntity->unk_10 == 0)) {
-        func_84372D88(D_84390010[gBattleState.unk_00->unk_2C]);
+        CheckAllPartyFainted_Status(D_84390010[gBattleState.unk_00->unk_2C]);
         return 0;
     }
 }
 
-void func_8437345C(void) {
+void BeginBattleMainLoop(void) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
-    unk_D_84390010_654* ptr1 = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* ptr2 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* ptr2 = &D_84390010[1]->unk_654;
 
     ptr1->unk_2A = 0;
     ptr2->unk_2A = 0;
@@ -1840,25 +1840,25 @@ void func_8437345C(void) {
     sp1C->unk_12 = 0xFFFF;
     sp18->unk_12 = 0xFFFF;
 
-    D_843C4DA0 = 0;
+    gAccumulatedDamage = 0;
 
     ResetDialogBuffers();
-    func_84370ADC(D_84390010[0]);
-    func_84370ADC(D_84390010[1]);
+    Battle_ApplyAnimStateEffects(D_84390010[0]);
+    Battle_ApplyAnimStateEffects(D_84390010[1]);
 
     gCurrentBattleEntity = sp1C;
     gDefenderBattleEntity = sp18;
-    func_84372670();
+    ProcessBattleTurn();
     func_8437176C();
 
-    if (D_84390288 == 0) {
-        func_843732B8();
+    if (gBattleUpdateHPFlag == 0) {
+        ProcessFaintChecks();
     }
 }
 
-void func_84373570(unk_D_84390010* arg0) {
-    unk_D_84390010_654* sp24;
-    unk_D_84390010_654* sp20;
+void BeginBattleForEntity(unk_BattlePlayerEntity* arg0) {
+    unk_BattlePlayerAnimState* sp24;
+    unk_BattlePlayerAnimState* sp20;
     unk_D_800FCB18* ptr1;
     unk_D_800FCB18* ptr2;
 

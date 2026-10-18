@@ -306,27 +306,27 @@ void DrawMainMenuScreen(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetFont(0x10, 0);
 
-    temp_v0 = func_84200130(0xB);
+    temp_v0 = GetMessageBank1AString(0xB);
     tmp = MeasureTextWidth(0x10, 0, temp_v0) / 2;
     Text_Print(0x140 - tmp, 0x198, temp_v0);
     Text_SetFont(8, 0);
 
     if (gMenuMode == 0) {
-        temp_v0 = func_84200130(0xC);
+        temp_v0 = GetMessageBank1AString(0xC);
     } else {
-        temp_v0 = func_84200130(0xD);
+        temp_v0 = GetMessageBank1AString(0xD);
     }
 
     tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
     Text_Print(0x1C0 - tmp, 0x102, temp_v0);
 
     if (gMenuMode == 0) {
-        temp_v0 = func_84200130(0xE);
+        temp_v0 = GetMessageBank1AString(0xE);
         tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
         Text_Print(0xC0 - tmp, 0xF6, temp_v0);
         Text_SetEnvColor(0xFF, 0xBA, 0xCC, 0xFF);
         MessageBank_SetPointer_1_9(2, gMessageId);
-        temp_v0 = func_84200190(sp20, sizeof(sp20), 0xF);
+        temp_v0 = GetMessageBank1AStringCustomBuf(sp20, sizeof(sp20), 0xF);
         tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
         Text_Print(0xC0 - tmp, 0x10E, temp_v0);
     }

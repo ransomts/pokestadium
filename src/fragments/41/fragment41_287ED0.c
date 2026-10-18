@@ -102,12 +102,12 @@ void ResetProgressBar(void) {
 void UpdateProgressBar(void) {
     unk_D_82F144B0* ptr = &D_82F144B0;
 
-    if ((ptr->unk_00 != 0) && (func_82F0FDCC() != 0)) {
+    if ((ptr->unk_00 != 0) && (MenuPanel_IsAnimating() != 0)) {
         if (ptr->unk_00 > 0) {
             ptr->unk_00--;
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F4C0);
+        gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, ptr->unk_02, ptr->unk_04, (ptr->unk_02 + ptr->unk_06) - 1,
                          (ptr->unk_04 + ptr->unk_08) - 1);
@@ -333,7 +333,7 @@ void InitFragment41(void) {
     gPoolStatePushed = 0;
     ResetProgressBar();
     InitTextBox();
-    func_82F13278();
+    MenuPanel_Init();
     UpdateControllerInfo();
     InitMenuGraphics();
     func_82F04FD4();
@@ -343,8 +343,8 @@ void InitFragment41(void) {
 void RenderFragment41Frame(void) {
     Stage_BeginDisplayList();
     UpdateProgressBar();
-    if (func_82F0FDCC() != 0) {
-        func_82F13414();
+    if (MenuPanel_IsAnimating() != 0) {
+        MenuPanel_Render();
     }
     DrawTextBox();
     func_82F09E30();
@@ -399,7 +399,7 @@ void func_82F00AC8(s32 arg0) {
 void func_82F00C14(s16 arg0) {
     gSelectedOptionId = arg0;
     func_82F00AC8(3);
-    func_82F0FDEC(gSelectedOptionId);
+    MenuPanel_SetMainState(gSelectedOptionId);
 }
 
 void func_82F00C50(void) {
@@ -433,13 +433,13 @@ void func_82F00D3C(void) {
 
     switch (gSelectedOptionId) {
         case 1:
-            if (func_82F13964(1) != 0) {
+            if (MenuPanel_CheckState(1) != 0) {
                 func_82F00AC8(4);
             }
             break;
 
         case 19:
-            if (func_82F13964(2) != 0) {
+            if (MenuPanel_CheckState(2) != 0) {
                 func_82F00AC8(4);
             }
             break;
@@ -447,26 +447,26 @@ void func_82F00D3C(void) {
         case 4:
         case 8:
         case 11:
-            if (func_82F13964(3) != 0) {
+            if (MenuPanel_CheckState(3) != 0) {
                 func_82F00AC8(2);
             }
             break;
 
         case 20:
-            if (func_82F13964(6) != 0) {
+            if (MenuPanel_CheckState(6) != 0) {
                 func_82F00AC8(5);
             }
             break;
 
         case 21:
-            if (func_82F13964(8) != 0) {
+            if (MenuPanel_CheckState(8) != 0) {
                 SwapPlayerSelections();
                 func_82F00C14(0xC);
             }
             break;
 
         case 12:
-            if (func_82F13964(0xC) != 0) {
+            if (MenuPanel_CheckState(0xC) != 0) {
                 if (D_82F144B0.unk_00 == -1) {
                     D_82F144B0.unk_00 = 5;
                 }
@@ -474,7 +474,7 @@ void func_82F00D3C(void) {
                 D_82F144B0.unk_00 = -1;
             }
 
-            if (func_82F13964(0xA) != 0) {
+            if (MenuPanel_CheckState(0xA) != 0) {
                 func_82F00AC8(6);
             }
             break;
@@ -610,7 +610,7 @@ void func_82F01180(void) {
         UpdateMenuStateMachine();
         func_82F0504C();
         func_82F0C254();
-        func_82F132D0();
+        MenuPanel_Update();
         RenderFragment41Frame();
         gFragment41FrameCounter++;
     } while (func_82F0109C() != 0);

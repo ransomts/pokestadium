@@ -13,7 +13,7 @@
 #include "src/memory.h"
 #include "stdarg.h"
 
-unk_D_843901A0* D_843901A0;
+unk_D_843901A0* gBattleMessageBuffers;
 
 static u8 D_84385990[] = { 0xE, 0x4A };
 static u8 D_84385994[] = { 0x60, 0x69, 0x75, 0x78, 0x85 };
@@ -25,44 +25,44 @@ static u8 D_843859A4[] = {
 };
 
 void ResetDialogBuffers(void) {
-    D_843901A0->unk_088[0] = 0;
-    D_843901A0->unk_088[1] = 0;
-    D_843901A0->unk_0C8[0] = 0;
-    D_843901A0->unk_0C8[1] = 0;
-    D_843901A0->unk_108[0] = 0;
-    D_843901A0->unk_108[1] = 0;
-    D_843901A0->unk_148[0] = 0;
-    D_843901A0->unk_148[1] = 0;
-    D_843901A0->unk_188[0] = 0;
-    D_843901A0->unk_188[1] = 0;
-    D_843901A0->unk_1C8[0] = 0;
-    D_843901A0->unk_1C8[1] = 0;
-    D_843901A0->unk_448[0][0] = 0;
-    D_843901A0->unk_448[0][1] = 0;
-    D_843901A0->unk_448[1][0] = 0;
-    D_843901A0->unk_448[1][1] = 0;
-    D_843901A0->unk_208[0] = 0;
-    D_843901A0->unk_208[1] = 0;
-    D_843901A0->unk_308[0] = 0;
-    D_843901A0->unk_308[1] = 0;
-    D_843901A0->unk_2C8[0] = 0;
-    D_843901A0->unk_2C8[1] = 0;
-    D_843901A0->unk_348[0] = 0;
-    D_843901A0->unk_348[1] = 0;
-    D_843901A0->unk_388[0] = 0;
-    D_843901A0->unk_388[1] = 0;
-    D_843901A0->unk_3C8[0] = 0;
-    D_843901A0->unk_3C8[1] = 0;
-    D_843901A0->unk_408[0] = 0;
-    D_843901A0->unk_408[1] = 0;
+    gBattleMessageBuffers->unk_088[0] = 0;
+    gBattleMessageBuffers->unk_088[1] = 0;
+    gBattleMessageBuffers->unk_0C8[0] = 0;
+    gBattleMessageBuffers->unk_0C8[1] = 0;
+    gBattleMessageBuffers->unk_108[0] = 0;
+    gBattleMessageBuffers->unk_108[1] = 0;
+    gBattleMessageBuffers->unk_148[0] = 0;
+    gBattleMessageBuffers->unk_148[1] = 0;
+    gBattleMessageBuffers->unk_188[0] = 0;
+    gBattleMessageBuffers->unk_188[1] = 0;
+    gBattleMessageBuffers->unk_1C8[0] = 0;
+    gBattleMessageBuffers->unk_1C8[1] = 0;
+    gBattleMessageBuffers->unk_448[0][0] = 0;
+    gBattleMessageBuffers->unk_448[0][1] = 0;
+    gBattleMessageBuffers->unk_448[1][0] = 0;
+    gBattleMessageBuffers->unk_448[1][1] = 0;
+    gBattleMessageBuffers->unk_208[0] = 0;
+    gBattleMessageBuffers->unk_208[1] = 0;
+    gBattleMessageBuffers->unk_308[0] = 0;
+    gBattleMessageBuffers->unk_308[1] = 0;
+    gBattleMessageBuffers->unk_2C8[0] = 0;
+    gBattleMessageBuffers->unk_2C8[1] = 0;
+    gBattleMessageBuffers->unk_348[0] = 0;
+    gBattleMessageBuffers->unk_348[1] = 0;
+    gBattleMessageBuffers->unk_388[0] = 0;
+    gBattleMessageBuffers->unk_388[1] = 0;
+    gBattleMessageBuffers->unk_3C8[0] = 0;
+    gBattleMessageBuffers->unk_3C8[1] = 0;
+    gBattleMessageBuffers->unk_408[0] = 0;
+    gBattleMessageBuffers->unk_408[1] = 0;
 }
 
 void ResetMessageIndices(void) {
-    D_843901A0->unk_004 = 0;
-    D_843901A0->unk_048[0] = 0;
-    D_843901A0->unk_048[1] = 0;
-    D_843901A0->unk_008[0] = 0;
-    D_843901A0->unk_008[1] = 0;
+    gBattleMessageBuffers->unk_004 = 0;
+    gBattleMessageBuffers->unk_048[0] = 0;
+    gBattleMessageBuffers->unk_048[1] = 0;
+    gBattleMessageBuffers->unk_008[0] = 0;
+    gBattleMessageBuffers->unk_008[1] = 0;
 }
 
 void SimpleStringFormat(s8* arg0, s8* arg1, ...) {
@@ -111,12 +111,12 @@ void WriteMessageCharOrString(s8* arg0, s8 arg1) {
 
 void InitDialogHeader(char* arg0, s32 arg1) {
     UNUSED s32 pad[3];
-    unk_D_84390010_654* sp28 = &D_84390010[arg1]->unk_654;
+    unk_BattlePlayerAnimState* sp28 = &D_84390010[arg1]->unk_654;
     UNUSED s32 pad2[2];
 
     ResetMessageIndices();
-    D_843901A0->unk_000 = D_84390010[arg1]->unk_720->unk_08[sp28->unk_2B]->unk_001;
-    SimpleStringFormat(D_843901A0->unk_048, arg0 + 1);
+    gBattleMessageBuffers->unk_000 = D_84390010[arg1]->unk_720->unk_08[sp28->unk_2B]->unk_001;
+    SimpleStringFormat(gBattleMessageBuffers->unk_048, arg0 + 1);
     *arg0 = 0;
 }
 
@@ -124,8 +124,8 @@ void func_84317B38(void) {
 }
 
 void InitBattleDialogParameters(void) {
-    unk_D_84390010* ptr1 = D_84390010[0];
-    unk_D_84390010* ptr2 = D_84390010[1];
+    unk_BattlePlayerEntity* ptr1 = D_84390010[0];
+    unk_BattlePlayerEntity* ptr2 = D_84390010[1];
 
     if ((gBattleContext.unk_0000 != 0x10) && (gBattleState.unk_00->unk_30 == 0)) {
         func_8431595C(ptr1, 0x15, 0xF, ptr1->unk_720->unk_08[ptr1->unk_728.unk_16C]->unk_001);
@@ -157,23 +157,23 @@ void DetermineMessageCategoryAndDisplay(void) {
 
         switch (sp1C) {
             case 0:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x14);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x14);
                 break;
 
             case 1:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x15);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x15);
                 break;
 
             case 2:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x16);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x16);
                 break;
 
             case 3:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x17);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x17);
                 break;
 
             case 4:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x18);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x18);
                 break;
         }
     } else {
@@ -182,23 +182,23 @@ void DetermineMessageCategoryAndDisplay(void) {
 
         switch (sp1C) {
             case 0:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x14);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x14);
                 break;
 
             case 1:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x15);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x15);
                 break;
 
             case 2:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x16);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x16);
                 break;
 
             case 3:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x17);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x17);
                 break;
 
             case 4:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x18);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x18);
                 break;
         }
     }
@@ -226,23 +226,23 @@ void func_84317EDC(void) {
 
     switch (sp24) {
         case 0:
-            WriteMessageCharOrString(D_843901A0->unk_0C8, 0x14);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x14);
             break;
 
         case 1:
-            WriteMessageCharOrString(D_843901A0->unk_0C8, 0x15);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x15);
             break;
 
         case 2:
-            WriteMessageCharOrString(D_843901A0->unk_0C8, 0x16);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x16);
             break;
 
         case 3:
-            WriteMessageCharOrString(D_843901A0->unk_0C8, 0x17);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x17);
             break;
 
         case 4:
-            WriteMessageCharOrString(D_843901A0->unk_0C8, 0x18);
+            WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x18);
             break;
     }
 }
@@ -278,23 +278,23 @@ void func_843180AC(void) {
 
         switch (sp2C) {
             case 0:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x14);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x14);
                 break;
 
             case 1:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x15);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x15);
                 break;
 
             case 2:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x16);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x16);
                 break;
 
             case 3:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x17);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x17);
                 break;
 
             case 4:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x18);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x18);
                 break;
         }
 
@@ -305,23 +305,23 @@ void func_843180AC(void) {
 
         switch (sp2C) {
             case 0:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x14);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x14);
                 break;
 
             case 1:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x15);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x15);
                 break;
 
             case 2:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x16);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x16);
                 break;
 
             case 3:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x17);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x17);
                 break;
 
             case 4:
-                WriteMessageCharOrString(D_843901A0->unk_388, 0x18);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_388, 0x18);
                 break;
         }
     } else {
@@ -330,37 +330,37 @@ void func_843180AC(void) {
 
         switch (sp2C) {
             case 0:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x14);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x14);
                 break;
 
             case 1:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x15);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x15);
                 break;
 
             case 2:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x16);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x16);
                 break;
 
             case 3:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x17);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x17);
                 break;
 
             case 4:
-                WriteMessageCharOrString(D_843901A0->unk_0C8, 0x18);
+                WriteMessageCharOrString(gBattleMessageBuffers->unk_0C8, 0x18);
                 break;
         }
     }
 }
 
 void Dialog_SetMode(s32 arg0) {
-    unk_D_843901A0_4C8* ptr = &D_843901A0->unk_4C8;
+    unk_D_843901A0_4C8* ptr = &gBattleMessageBuffers->unk_4C8;
 
     ptr->unk_00 = 0;
     ptr->unk_04 = arg0;
 }
 
 void Dialog_Clear(void) {
-    unk_D_843901A0_4C8* ptr = &D_843901A0->unk_4C8;
+    unk_D_843901A0_4C8* ptr = &gBattleMessageBuffers->unk_4C8;
 
     ptr->unk_00 = 0xFF;
 }
@@ -405,98 +405,98 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     switch (arg0->unk_04) {
         case 0:
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_388[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_388[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_0C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_0C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_188[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_188[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 3:
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 1:
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_3C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_3C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
             if ((arg0->unk_10 < 3) &&
-                (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
+                (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 2:
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 4:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_248[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_248[1], arg1 + 4, arg2 + 3);
             break;
 
         case 5:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_288[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_288[1], arg1 + 4, arg2 + 3);
             break;
 
         case 6:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_408[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_408[1], arg1 + 4, arg2 + 3);
             break;
 
         case 7:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_348[1], arg1 + 4, arg2 + 3);
-            Dialog_PrintLineIfSet(&D_843901A0->unk_2C8[1], arg1 + 4, arg2 + 0x10);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_348[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_2C8[1], arg1 + 4, arg2 + 0x10);
             break;
 
         case 8:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_448[arg0->unk_0C][1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_448[arg0->unk_0C][1], arg1 + 4, arg2 + 3);
             break;
 
         case 9:
         case 10:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_1C8[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_1C8[1], arg1 + 4, arg2 + 3);
             break;
 
         case 11:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + 3);
             break;
 
         case 12:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + 3);
             break;
 
         case 13:
@@ -509,7 +509,7 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 15:
-            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3);
+            Dialog_PrintLineIfSet(&gBattleMessageBuffers->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3);
             break;
     }
 
@@ -524,22 +524,22 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
 
     switch (arg0->unk_04) {
         case 0:
-            if ((D_843901A0->unk_0C8[1] == 0) && (D_843901A0->unk_388[1] == 0) && (D_843901A0->unk_188[1] == 0)) {
+            if ((gBattleMessageBuffers->unk_0C8[1] == 0) && (gBattleMessageBuffers->unk_388[1] == 0) && (gBattleMessageBuffers->unk_188[1] == 0)) {
                 arg0->unk_00 = 0xFF;
                 return 1;
             }
 
             arg0->unk_0C = gBattleState.unk_00->unk_2C;
-            if (D_843901A0->unk_0C8[1] != 0) {
-                ProcessMessageCommand(D_843901A0->unk_0C8);
+            if (gBattleMessageBuffers->unk_0C8[1] != 0) {
+                ProcessMessageCommand(gBattleMessageBuffers->unk_0C8);
             }
 
-            if (D_843901A0->unk_388[1] != 0) {
-                ProcessMessageCommand(D_843901A0->unk_388);
+            if (gBattleMessageBuffers->unk_388[1] != 0) {
+                ProcessMessageCommand(gBattleMessageBuffers->unk_388);
             }
 
-            if (D_843901A0->unk_188[1] != 0) {
-                ProcessMessageCommand(D_843901A0->unk_188);
+            if (gBattleMessageBuffers->unk_188[1] != 0) {
+                ProcessMessageCommand(gBattleMessageBuffers->unk_188);
             }
             arg0->unk_00 += 1;
             break;
@@ -547,13 +547,13 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
         case 1:
         case 3:
             arg0->unk_0C = gBattleState.unk_00->unk_2C;
-            ProcessMessageCommand(D_843901A0->unk_088);
-            ProcessMessageCommand(D_843901A0->unk_148);
-            ProcessMessageCommand(D_843901A0->unk_208);
-            ProcessMessageCommand(D_843901A0->unk_3C8);
-            ProcessMessageCommand(D_843901A0->unk_308);
-            if ((D_843901A0->unk_088[1] == 0) && (D_843901A0->unk_148[1] == 0) && (D_843901A0->unk_208[1] == 0) &&
-                (D_843901A0->unk_3C8[1] == 0) && (D_843901A0->unk_308[1] == 0)) {
+            ProcessMessageCommand(gBattleMessageBuffers->unk_088);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_148);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_208);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_3C8);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_308);
+            if ((gBattleMessageBuffers->unk_088[1] == 0) && (gBattleMessageBuffers->unk_148[1] == 0) && (gBattleMessageBuffers->unk_208[1] == 0) &&
+                (gBattleMessageBuffers->unk_3C8[1] == 0) && (gBattleMessageBuffers->unk_308[1] == 0)) {
                 arg0->unk_00 = 0xFF;
                 return 1;
             }
@@ -562,10 +562,10 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
 
         case 2:
             arg0->unk_0C = gBattleState.unk_00->unk_2C;
-            ProcessMessageCommand(D_843901A0->unk_088);
-            ProcessMessageCommand(D_843901A0->unk_148);
-            ProcessMessageCommand(D_843901A0->unk_208);
-            if ((D_843901A0->unk_088[1] == 0) && (D_843901A0->unk_148[1] == 0) && (D_843901A0->unk_208[1] == 0)) {
+            ProcessMessageCommand(gBattleMessageBuffers->unk_088);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_148);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_208);
+            if ((gBattleMessageBuffers->unk_088[1] == 0) && (gBattleMessageBuffers->unk_148[1] == 0) && (gBattleMessageBuffers->unk_208[1] == 0)) {
                 arg0->unk_00 = 0xFF;
                 return 1;
             }
@@ -574,8 +574,8 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
 
         case 15:
             arg0->unk_0C = gBattleState.unk_00->unk_2C;
-            ProcessMessageCommand(D_843901A0->unk_088);
-            if (D_843901A0->unk_088[1] == 0) {
+            ProcessMessageCommand(gBattleMessageBuffers->unk_088);
+            if (gBattleMessageBuffers->unk_088[1] == 0) {
                 arg0->unk_00 = 0xFF;
                 return 1;
             }
@@ -583,7 +583,7 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
             break;
 
         case 8:
-            if (D_843901A0->unk_448[arg0->unk_0C][1] == 0) {
+            if (gBattleMessageBuffers->unk_448[arg0->unk_0C][1] == 0) {
                 arg0->unk_00 = 0xFF;
                 return 1;
             }
@@ -601,9 +601,9 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
         case 4:
         case 5:
         case 6:
-            ProcessMessageCommand(D_843901A0->unk_248);
-            ProcessMessageCommand(D_843901A0->unk_288);
-            ProcessMessageCommand(D_843901A0->unk_408);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_248);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_288);
+            ProcessMessageCommand(gBattleMessageBuffers->unk_408);
             arg0->unk_00 += 1;
             break;
 
@@ -624,7 +624,7 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
 }
 
 void Dialog_RunWindowSequence(s16 arg0, s16 arg1) {
-    unk_D_843901A0_4C8* temp_s0 = &D_843901A0->unk_4C8;
+    unk_D_843901A0_4C8* temp_s0 = &gBattleMessageBuffers->unk_4C8;
 
     if (gBattleContext.unk_0000 == 0x10) {
         return;
@@ -651,11 +651,11 @@ void Dialog_RunWindowSequence(s16 arg0, s16 arg1) {
                 }
             } else {
                 if (temp_s0->unk_04 == 0xE) {
-                    ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
+                    ProcessAudioCommandQueue(GetPlayerDefeatMessageId(D_84390010[temp_s0->unk_0C]));
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
                 } else if (Dialog_ZoomColoredWindow(temp_s0, arg0, arg1) != 0) {
-                    ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
+                    ProcessAudioCommandQueue(GetPlayerDefeatMessageId(D_84390010[temp_s0->unk_0C]));
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
                 }
@@ -688,21 +688,21 @@ void Dialog_RunWindowSequence(s16 arg0, s16 arg1) {
     }
 }
 
-void func_843193F4(unk_D_84390010* arg0) {
+void func_843193F4(unk_BattlePlayerEntity* arg0) {
     arg0->unk_8C4.unk_00 = 0;
     arg0->unk_8C4.unk_04 = 0;
     arg0->unk_8C4.unk_48[0] = 0;
     arg0->unk_8C4.unk_08[0] = 0;
 }
 
-void func_84319408(unk_D_84390010* arg0, s32 arg1) {
-    D_843901A0->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
+void func_84319408(unk_BattlePlayerEntity* arg0, s32 arg1) {
+    gBattleMessageBuffers->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
     arg0->unk_8C4.unk_00 = 1;
     MessageBank_SetPointer_0x14_0x2A(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
     GetMessageString(arg0->unk_8C4.unk_48, 0x40, gMessageBank_0x1E, arg1);
 }
 
-void func_843194A0(unk_D_84390010* arg0) {
+void func_843194A0(unk_BattlePlayerEntity* arg0) {
     unk_D_800AE540_0004* temp_t0 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C];
 
     if (arg0->unk_8C4.unk_48[arg0->unk_8C4.unk_04] != '\x00') {
@@ -727,8 +727,8 @@ void func_843194A0(unk_D_84390010* arg0) {
 }
 
 void func_84319564(void) {
-    unk_D_84390010_654* sp1C = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
 
     if ((gBattleContext.unk_11ED != 0) && (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103) &&
         (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17)) {
@@ -746,19 +746,19 @@ void func_84319564(void) {
 }
 
 void func_8431962C(void) {
-    D_843901A0 = main_pool_alloc(sizeof(unk_D_843901A0), 0);
-    bzero(D_843901A0, sizeof(unk_D_843901A0));
+    gBattleMessageBuffers = main_pool_alloc(sizeof(unk_D_843901A0), 0);
+    bzero(gBattleMessageBuffers, sizeof(unk_D_843901A0));
 }
 
 void func_84319668(void) {
-    D_843901A0->unk_004 = 0;
-    D_843901A0->unk_008[D_843901A0->unk_004] = 0;
+    gBattleMessageBuffers->unk_004 = 0;
+    gBattleMessageBuffers->unk_008[gBattleMessageBuffers->unk_004] = 0;
     ResetMessageIndices();
 }
 
 void func_843196A4(void) {
-    unk_D_84390010_654* sp1C = &D_84390010[0]->unk_654;
-    unk_D_84390010_654* sp18 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
 
     if (1) {}
 

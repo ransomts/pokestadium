@@ -162,8 +162,8 @@ s32 Camera_IsCloseViewCondition(void) {
     return 0;
 }
 
-s32 func_84319878(UNUSED unk_D_84390010* arg0, CameraStruct* arg1) {
-    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+s32 func_84319878(UNUSED unk_BattlePlayerEntity* arg0, CameraStruct* arg1) {
+    unk_BattlePlayerAnimState* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || ((ptr->unk_34 & 0x4000) != 0)) {
         Camera_UpdateStateMachine(arg1);
@@ -172,10 +172,10 @@ s32 func_84319878(UNUSED unk_D_84390010* arg0, CameraStruct* arg1) {
     return 0;
 }
 
-s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED CameraStruct* arg1) {
-    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+s32 func_843198EC(UNUSED unk_BattlePlayerEntity* arg0, UNUSED CameraStruct* arg1) {
+    unk_BattlePlayerAnimState* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     s32 idx = gBattleState.unk_00->unk_2C == 0;
-    unk_D_84390010_654* ptr2 = &D_84390010[idx]->unk_654;
+    unk_BattlePlayerAnimState* ptr2 = &D_84390010[idx]->unk_654;
 
     if ((ptr->unk_34 & 0x4000) || (ptr2->unk_34 & 0x4000)) {
         return 1;
@@ -215,10 +215,10 @@ void func_84319C58(CameraStruct* arg0, s32 arg1) {
     f32 sp50;
     f32 sp4C;
     s16 sp4A;
-    unk_D_84390010_654* sp44;
+    unk_BattlePlayerAnimState* sp44;
     UNUSED s32 pad2;
     u16 sp3E;
-    unk_D_84390010* temp_s0;
+    unk_BattlePlayerEntity* temp_s0;
 
     sp44 = &D_84390010[arg1]->unk_654;
     func_8431BA5C();
@@ -265,7 +265,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[2];
     unk_D_86B0C160* sp24;
     s32 var_a0;
-    unk_D_84390010* temp_s0;
+    unk_BattlePlayerEntity* temp_s0;
 
     func_8431BA5C();
     SetCurrentPlayerIndex(arg1);
@@ -346,7 +346,7 @@ void Camera_SetFromBattleContext(CameraStruct* arg0) {
 void func_8431A2C8(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[5];
     s32 var_v1;
-    unk_D_84390010* temp_s0;
+    unk_BattlePlayerEntity* temp_s0;
     f32 tmp1;
     s16 tmp4;
     s16 tmp3;
@@ -404,8 +404,8 @@ void Camera_UpdateStateMachine(CameraStruct* arg0) {
         gBattleState.unk_00->unk_0C++;
     }
 
-    func_843087F8(*D_84390010);
-    func_843087F8(D_84390010[1]);
+    Battle_ApplyAnimEffect(*D_84390010);
+    Battle_ApplyAnimEffect(D_84390010[1]);
     Battle_FinishTurn();
 
     switch (gBattleState.unk_00->unk_20) {
@@ -480,7 +480,7 @@ void func_8431A780(CameraStruct* arg0) {
 
 void func_8431A7B8(CameraStruct* arg0) {
     UNUSED s32 pad;
-    unk_D_84390010_654* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((sp18->unk_2D == 0x10) || ((sp18->unk_34 & 0x4000) != 0)) {
         Camera_UpdateStateMachine(arg0);
@@ -501,7 +501,7 @@ void func_8431A7B8(CameraStruct* arg0) {
 }
 
 void func_8431A8B0(CameraStruct* arg0) {
-    unk_D_84390010* sp1C = D_84390010[gBattleState.unk_00->unk_2C];
+    unk_BattlePlayerEntity* sp1C = D_84390010[gBattleState.unk_00->unk_2C];
 
     if ((sp1C->unk_654.unk_2D == 0x10) || (sp1C->unk_654.unk_34 & 0x4000)) {
         Camera_UpdateStateMachine(arg0);
@@ -511,7 +511,7 @@ void func_8431A8B0(CameraStruct* arg0) {
 }
 
 void func_8431A94C(CameraStruct* arg0) {
-    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+    unk_BattlePlayerAnimState* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || (ptr->unk_34 & 0x4000)) {
         Camera_UpdateStateMachine(arg0);

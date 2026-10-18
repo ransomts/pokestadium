@@ -2204,7 +2204,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 //   0x64 and reloaded for `spBA * func_843776FC(..)`, is the same shape), i.e. the original
 //   produced a CSE temp holding temp_t0's value for the `/ 2` multiply and the `-= ` in the
 //   if; not reproduced yet.
-// - Closest shapes found (not kept): `var_s5 = +temp_t0;` (also `temp_t0 - 0`, `temp_t0 | 0`)
+// - Closest shapes found (not kept): `var_s5 = +temp_t0;` (BattleAnimDataEntry `temp_t0 - 0`, `temp_t0 | 0`)
 //   at the block top blocks the propagation and gives X = s5 with a spill before the first call
 //   and `lw s5` after it, exactly the target's shape, and moves temp_t0's slot to 0x6c and sp78's
 //   to 0x78 as in the target - but X is reloaded with its own `lbu 0x6f` (the u8 narrowing)
@@ -2294,7 +2294,7 @@ u8 func_8437AEA4(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3) {
 // saved as matching_notes/func_8437B0CC_best5479.c). Its carrying edits are NOT just the second
 // u64 AND - that alone is 10054 uncapped (fd.sh's -s + 1000-line cap made it LOOK like 4213; the
 // cap illusion bit three times today: always score uncapped, no -s, forced rebuild). The candidate
-// also rewrites several condition paren groupings, `var_s1 += spBA` -> spB7, an extra
+// BattleAnimDataEntry rewrites several condition paren groupings, `var_s1 += spBA` -> spB7, an extra
 // `func_843776FC(..., 0x49)` + `var_s1 -= spC0` block in a == 2 path, and `!= 0` spelling - needs
 // careful decomposition. The farm keeps exploring from it.
 // Round 9 post-adoption (integrator, ~11:30): state 5479 = farm x1 candidate (53f383c) verbatim;

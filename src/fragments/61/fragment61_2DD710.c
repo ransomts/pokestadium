@@ -54,16 +54,16 @@ void DrawSelectionRect(unk_D_84211B50* arg0) {
         } else {
             temp_a1 = (temp_a1 + ((arg0->unk_000C * 0x2C) / 4) + 0x2C);
         }
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     } else if (arg0->unk_0001 == 0xC) {
         if (arg0->unk_000C > 0) {
             temp_s0 = ((temp_s0 + ((arg0->unk_000C * 0x84) / 4)) - 0x84);
         } else {
             temp_s0 = (temp_s0 + ((arg0->unk_000C * 0x84) / 4) + 0x84);
         }
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     } else if (arg0->unk_0001 == 8) {
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     }
 }
 
@@ -100,34 +100,34 @@ void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1) {
         if (((gBattleContext.unk_0001 == 0) || (gBattleContext.unk_0001 == 8)) && (arg0->unk_0004 != 0) &&
             (arg0->unk_0006 > 0) && (arg0->unk_0006 < 6)) {
             Text_SetFont(8, 0);
-            temp_v0_4 = func_84200130(arg0->unk_0006 + 0x2A);
+            temp_v0_4 = GetMessageBank1AString(arg0->unk_0006 + 0x2A);
             Text_Print((arg0->unk_0018 - (MeasureTextWidth(8, 0, temp_v0_4) / 2)) + 0x3C, arg0->unk_001A + 8,
                           temp_v0_4);
             if (arg0->unk_0000 == 0) {
-                temp_v0_5 = func_84200130(0x31);
+                temp_v0_5 = GetMessageBank1AString(0x31);
                 Text_Print((arg0->unk_0018 - (MeasureTextWidth(8, 0, temp_v0_5) / 2)) + 0x3C, arg0->unk_001A + 0x1C,
                               temp_v0_5);
             } else {
-                temp_v0_6 = func_84200130(0x32);
+                temp_v0_6 = GetMessageBank1AString(0x32);
                 Text_Print((arg0->unk_0018 - (MeasureTextWidth(8, 0, temp_v0_6) / 2)) + 0x3C, arg0->unk_001A + 0x1C,
                               temp_v0_6);
             }
             Text_SetFont(4, 0);
-            temp_v0_7 = func_84200130(0x33);
+            temp_v0_7 = GetMessageBank1AString(0x33);
             Text_Print((arg0->unk_0018 - (MeasureTextWidth(4, 0, temp_v0_7) / 2)) + 0x3C, arg0->unk_001A + 0x46,
                           temp_v0_7);
         } else {
             Text_SetFont(4, 0);
             if (arg0->unk_0000 == 0) {
-                temp_v0_8 = func_84200130(0x34);
+                temp_v0_8 = GetMessageBank1AString(0x34);
                 Text_Print((arg0->unk_0018 - (MeasureTextWidth(4, 0, temp_v0_8) / 2)) + 0x3C, arg0->unk_001A + 9,
                               temp_v0_8);
             } else {
-                temp_v0_9 = func_84200130(0x35);
+                temp_v0_9 = GetMessageBank1AString(0x35);
                 Text_Print((arg0->unk_0018 - (MeasureTextWidth(4, 0, temp_v0_9) / 2)) + 0x3C, arg0->unk_001A + 9,
                               temp_v0_9);
             }
-            temp_v0_10 = func_84200130(0x36);
+            temp_v0_10 = GetMessageBank1AString(0x36);
             Text_Print((arg0->unk_0018 - (MeasureTextWidth(4, 0, temp_v0_10) / 2)) + 0x3C, arg0->unk_001A + 0x1A,
                           temp_v0_10);
             Text_SetFont(8, 0);
@@ -154,7 +154,7 @@ void DrawItemInfoPanel(unk_D_84211B50* arg0, s32 arg1) {
             if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
                 sp42 = gSlotPosXOffsets[i] + arg0->unk_0018 + 0x2C;
                 sp40 = gSlotPosYOffsets[i] + arg0->unk_001A + 0x17;
-                Text_Print(sp42, sp40, "%s %d", func_84200160(0x15), arg0->unk_0030[i].unk_004.unk_24);
+                Text_Print(sp42, sp40, "%s %d", GetMessageBank06String(0x15), arg0->unk_0030[i].unk_004.unk_24);
             }
         }
 

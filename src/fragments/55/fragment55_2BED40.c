@@ -471,7 +471,7 @@ void DrawLoadingBar(void) {
     temp_s1 = (((-D_83003C94 * 0x10) + 0x4000) / 1024) + 0x28;
     spD8 = (D_83003C94 << 5) / 1024;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, 100, 100, 200, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 40, 40, 140, 255);
 

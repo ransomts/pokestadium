@@ -163,7 +163,7 @@ void DrawPokemonSlot(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00
         if (arg3->unk_0000[var_s1].unk_004.unk_00.unk_00 != 0) {
             temp_s2 = D_84211870[var_s1] + arg1 + 0x2C;
             temp_s3 = D_8421187C[var_s1] + arg2 + 0x17;
-            Text_Print(temp_s2, temp_s3, "%s%d", func_84200160(0x15), arg3->unk_0000[var_s1].unk_004.unk_24);
+            Text_Print(temp_s2, temp_s3, "%s%d", GetMessageBank06String(0x15), arg3->unk_0000[var_s1].unk_004.unk_24);
         }
     }
 
@@ -171,10 +171,10 @@ void DrawPokemonSlot(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00
 }
 
 void DrawHeaderBar(s16 arg0, s16 arg1) {
-    char* sp54 = func_84200130(gBattleContext.unk_0001 + 0x3F);
+    char* sp54 = GetMessageBank1AString(gBattleContext.unk_0001 + 0x3F);
     s32 sp50 = MeasureTextWidth(8, 0, sp54);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, 170, 60, 150, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 80, 40, 60, 255);
@@ -187,7 +187,7 @@ void DrawHeaderBar(s16 arg0, s16 arg1) {
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    Text_Print(arg0 + 8, arg1 + 3, func_84200130(0xE));
+    Text_Print(arg0 + 8, arg1 + 3, GetMessageBank1AString(0xE));
     Text_Print((arg0 - sp50) + 0x20E, arg1 + 3, sp54);
     Text_SetupDL();
 }
@@ -224,7 +224,7 @@ void DrawVerticalScrollBar(unk_D_84229EB0* arg0) {
             sp66 = (arg0->unk_0000D * 0xF8) / (sp64 - 1);
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F558);
+        gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
         gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
         gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 
@@ -258,9 +258,9 @@ void DrawBottomBar(unk_D_84229EB0* arg0) {
         } else {
             temp_a1 = (temp_a1 + ((arg0->unk_00018 * 0x5C) / 4) + 0x5C);
         }
-        func_84200738(sp1E, temp_a1, 0x200, 0x58);
+        DrawAnimatedGoldBorder(sp1E, temp_a1, 0x200, 0x58);
     } else if ((arg0->unk_00001 == 2) || (arg0->unk_00001 == 0xC)) {
-        func_84200738(sp1E, temp_a1, 0x200, 0x58);
+        DrawAnimatedGoldBorder(sp1E, temp_a1, 0x200, 0x58);
     }
 }
 
@@ -274,16 +274,16 @@ void DrawSideBar(unk_D_84229EB0* arg0) {
         } else {
             temp_a1 = (temp_a1 + ((arg0->unk_00018 * 0x2C) / 4) + 0x2C);
         }
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     } else if (arg0->unk_00001 == 9) {
         if (arg0->unk_00018 > 0) {
             temp_s0 = ((temp_s0 + ((arg0->unk_00018 * 0x84) / 4)) - 0x84);
         } else {
             temp_s0 = (temp_s0 + ((arg0->unk_00018 * 0x84) / 4) + 0x84);
         }
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     } else if (arg0->unk_00001 == 8) {
-        func_84200738(temp_s0, temp_a1, 0x84, 0x2C);
+        DrawAnimatedGoldBorder(temp_s0, temp_a1, 0x84, 0x2C);
     }
 }
 
@@ -360,7 +360,7 @@ void UpdateAndRenderPokemonListScreen(unk_D_84229EB0* arg0, s32 arg1) {
             DrawSmallTiledBorder(0x38, 0x190, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x96);
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            temp_v0_3 = func_84200130(0x10);
+            temp_v0_3 = GetMessageBank1AString(0x10);
             Text_Print(0x140 - (MeasureTextWidth(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
             Text_SetupDL();
         }
@@ -369,7 +369,7 @@ void UpdateAndRenderPokemonListScreen(unk_D_84229EB0* arg0, s32 arg1) {
             DrawSmallTiledBorder(0x38, 0x190, 0x210, 0x28, 0x64, 0x1E, 0x1E, 0x96);
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            temp_v0_3 = func_84200130(0x11);
+            temp_v0_3 = GetMessageBank1AString(0x11);
             Text_Print(0x140 - (MeasureTextWidth(0x10, 0, temp_v0_3) / 2), 0x198, temp_v0_3);
             Text_SetupDL();
         }

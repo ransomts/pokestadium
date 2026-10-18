@@ -561,7 +561,7 @@ void func_83803A80(s32 arg0, s32 arg1, unk_D_838067F0* arg2) {
 
     Gfx_FillRect(arg0, arg1, 0x18, 0x124, 0x3C, 0x3C, 0xA0);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, 130, 130, 220, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 60, 60, 150, 255);
 
@@ -631,7 +631,7 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
     s32 tmp;
     s32 temp_v0 = func_83803F04(arg2);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, D_83805544[temp_v0].r, D_83805544[temp_v0].g, D_83805544[temp_v0].b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, D_83805550[temp_v0].r, D_83805550[temp_v0].g, D_83805550[temp_v0].b, 255);
 
@@ -801,7 +801,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
     {
       var_v1 += ((ptr->unk_002C * 0x2C) / 4) + 0x2C;
     }
-    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+    DrawAnimatedGoldBorder(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
   }
   else
     if (ptr->unk_0000 == 5)
@@ -816,12 +816,12 @@ void SnapSelect_UpdateCameraState(s32 arg0)
     {
       var_v0 += ((ptr->unk_002C * 0x84) / 4) + 0x84;
     }
-    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+    DrawAnimatedGoldBorder(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
   }
   else
   {
     unsigned long var_v0 = (ptr->unk_0024 * 0x84) + arg0;
     s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
-    func_84200738(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
+    DrawAnimatedGoldBorder(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
   }
 }

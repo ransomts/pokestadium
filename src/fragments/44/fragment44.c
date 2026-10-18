@@ -16,12 +16,12 @@
 static s32 gItemSelectState;
 static unk_D_83407B38 gItemSelectContext;
 static s32 gItemSelectMode;
-static s32 D_83504080;
+static s32 ItemSelect_ShowResult;
 static BinArchive* gStadiumModelArchive;
-static u16 D_83504088;
-static s32 D_8350408C;
+static u16 ItemSelect_HighlightFlags;
+static s32 ItemSelect_FadeInFlag;
 static u16 gSlotStatusFlags[0x24];
-static s32 D_835040D8;
+static s32 ItemSelect_ResultAnimTimer;
 
 s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
     s32 sp64;
@@ -50,7 +50,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
     sp4C = 0;
     sp48 = 0;
 
-    if (D_83504080 != 0) {
+    if (ItemSelect_ShowResult != 0) {
         sp50 = 3;
     } else {
         sp50 = 2;
@@ -169,7 +169,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
             arg0->unk_04 = -1;
         } else {
             gItemSelectState = 2;
-            D_835040D8 = 0;
+            ItemSelect_ResultAnimTimer = 0;
             PlayResultScreenSfx(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
@@ -206,19 +206,19 @@ void ItemSelect_Init(s32 arg0, s32 arg1) {
     gItemSelectMode = arg0;
 
     if (arg1 != 0) {
-        D_8350408C = 1;
+        ItemSelect_FadeInFlag = 1;
     } else {
-        D_8350408C = 0;
+        ItemSelect_FadeInFlag = 0;
     }
 
     if (gItemSelectMode != 2) {
-        D_83504080 = 1;
+        ItemSelect_ShowResult = 1;
     } else {
-        D_83504080 = 0;
+        ItemSelect_ShowResult = 0;
     }
 
-    D_83504088 = -1;
-    D_835040D8 = 0;
+    ItemSelect_HighlightFlags = -1;
+    ItemSelect_ResultAnimTimer = 0;
 
     tmp = AssetManager_Create(5);
     CamList_Init(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, D_83403C60, 0x24, 1);
@@ -246,7 +246,7 @@ void ItemSelect_Init(s32 arg0, s32 arg1) {
     }
 }
 
-void func_83500758(s32 arg0, s32 arg1) {
+void DrawGridCellTexture(s32 arg0, s32 arg1) {
     s32 temp_v0;
     s32 i;
     s32 tmp = 8;
@@ -265,7 +265,7 @@ void func_83500758(s32 arg0, s32 arg1) {
     }
 }
 
-void func_83500924(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawGridPanelTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 155, 140, 155, 255);
@@ -276,7 +276,7 @@ void func_83500924(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_83500AF4(s32 arg0, s32 arg1, s32 arg2) {
+void DrawResultPanelTexture(s32 arg0, s32 arg1, s32 arg2) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 195, 175, 175, 255);
@@ -290,7 +290,7 @@ void func_83500AF4(s32 arg0, s32 arg1, s32 arg2) {
     Gfx_DrawTextureRect(arg0 + 0x40, arg1, arg2 - 0x80, 0x40, 0, 0, 0, 0x400, 0);
 }
 
-void func_83500D9C(s32 arg0, s32 arg1, s32 arg2) {
+void DrawResultPanelHighlight(s32 arg0, s32 arg1, s32 arg2) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 100, 100, 200, 255);
@@ -303,7 +303,7 @@ void func_83500D9C(s32 arg0, s32 arg1, s32 arg2) {
     Gfx_DrawTextureRect((arg0 + arg2) - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void DrawGridPageCounter(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     s32 temp_s1;
     s32 temp_v1;
     char* temp_v0;
@@ -337,7 +337,7 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     Text_SetupDL();
 }
 
-void func_83501204(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawGridCellBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     arg0 -= 4;
@@ -351,7 +351,7 @@ void func_83501204(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Gfx_DrawTextureRect((arg0 + arg2) - 0x18, (arg1 + arg3) - 0x14, 0x18, 0x18, 0x2E0, 0, -0x400, 0x400, 0);
 }
 
-void func_83501340(s32 arg0, s32 arg1, u16 arg2) {
+void DrawSlotStatusIcons(s32 arg0, s32 arg1, u16 arg2) {
     s32 var_s2;
     s8* var_s0;
     s32 i;
@@ -398,7 +398,7 @@ void func_83501340(s32 arg0, s32 arg1, u16 arg2) {
     Text_SetupDL();
 }
 
-void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
+void CalcResultPanelSize(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
     static f32 D_83503E70 = 69.0f;
     static f32 D_83503E74 = 5.3f;
     static f32 D_83503E78 = -0.6f;
@@ -444,7 +444,7 @@ void func_83501594(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
 
 // tmp2 is computed before the early return and the x position is written as arg1 + tmp2 at each use
 // (no named x): that is what puts its spilled CSE temp at 0x90 below six unused temp slots.
-void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
+void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
     s32 tmp;
     f32 a;
@@ -521,10 +521,10 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        func_83501204(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
+        DrawGridCellBorder(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
 
         if ((var_s4 != 0) && (gSlotStatusFlags[temp_s3] != 0)) {
-            func_83501340(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, gSlotStatusFlags[temp_s3]);
+            DrawSlotStatusIcons(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, gSlotStatusFlags[temp_s3]);
         }
     }
 
@@ -544,8 +544,8 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
                 func_834018C0(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
                               0x66, 8, 1);
             } else {
-                func_83501594(D_835040D8, &sp68, &sp64, &sp60);
-                func_83501718(ptr->unk_08->img_p, sp68, sp64, 0x88, 0x66, sp60);
+                CalcResultPanelSize(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
+                DrawResultPanelImage(ptr->unk_08->img_p, sp68, sp64, 0x88, 0x66, sp60);
             }
         }
     }
@@ -616,7 +616,7 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     D_83503E94 += 0x1000;
 }
 
-void func_835022F0(s32 arg0) {
+void DrawGridHelpPrompt(s32 arg0) {
     char* sp2C;
     s32 sp28;
     s32 temp_v1;
@@ -635,25 +635,25 @@ void func_835022F0(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_835023F0(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void DrawGridBackground(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     s32 i;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 6; i++) {
-        func_83500758(arg0, arg1 + i * 0x30);
+        DrawGridCellTexture(arg0, arg1 + i * 0x30);
     }
 
-    func_83500924(arg0 + 0x40, arg1, 0x1E7, 0x120);
-    func_83500AF4(arg0 + 0x20, arg1 + 0x113, 0x207);
-    func_83500D9C(arg0 + 0x20, arg1, 0x207);
+    DrawGridPanelTexture(arg0 + 0x40, arg1, 0x1E7, 0x120);
+    DrawResultPanelTexture(arg0 + 0x20, arg1 + 0x113, 0x207);
+    DrawResultPanelHighlight(arg0 + 0x20, arg1, 0x207);
     ItemSelect_DrawHeader(&gItemSelectContext, 0x65, 0x24);
 
     if (gItemSelectContext.unk_04 == -1) {
-        func_835022F0(arg1 + 0x108);
+        DrawGridHelpPrompt(arg1 + 0x108);
     }
 
-    func_83500FE8(&gItemSelectContext, arg0, arg1);
+    DrawGridPageCounter(&gItemSelectContext, arg0, arg1);
 }
 
 void DrawHighlightBars(void) {
@@ -680,7 +680,7 @@ void DrawHighlightBars(void) {
     for (i = 0; i < end; i += 0x40, idx++) {
         temp_v0_11 = CLAMP_MIN(end - i, 0x40);
 
-        if (D_83504088 & (1 << idx)) {
+        if (ItemSelect_HighlightFlags & (1 << idx)) {
             r = (((D_83503EA0.r - D_83503E98.r) * idx) / 8) + D_83503E98.r;
             g = (((D_83503EA0.g - D_83503E98.g) * idx) / 8) + D_83503E98.g;
             b = (((D_83503EA0.b - D_83503E98.b) * idx) / 8) + D_83503E98.b;
@@ -705,7 +705,7 @@ typedef struct unk_D_83503EA8 {
     /* 0x04 */ s32 unk_04;
 } unk_D_83503EA8; // size = 0x8
 
-void func_835028D0(s32 arg0, s32 arg1, s32 arg2) {
+void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
     static unk_D_83503EA8 D_83503EA8[] = {
         {
             NULL,
@@ -931,7 +931,7 @@ void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
     Text_SetupDL();
 }
 
-char* func_835034A8(unk_D_83407B38* arg0) {
+char* GetGridHelpString(unk_D_83407B38* arg0) {
     s32 tmp = arg0->unk_00 / 3;
     char* var_v0;
 
@@ -949,8 +949,8 @@ char* func_835034A8(unk_D_83407B38* arg0) {
     return var_v0;
 }
 
-void func_8350355C(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    char* sp1C = func_835034A8(arg0);
+void DrawGridHelpBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+    char* sp1C = GetGridHelpString(arg0);
 
     func_834008DC(arg1, arg2, 0x13F, 0x4C);
     if (sp1C != NULL) {
@@ -980,7 +980,7 @@ f32 UpdateFadeTimer(s32* arg0, u32* arg1, s32 arg2) {
     return tmp;
 }
 
-void func_8350365C(unk_D_83407B38* arg0) {
+void DrawGridSelectionHighlight(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 var_v0;
@@ -1020,14 +1020,14 @@ void ItemSelect_MainDraw(void) {
     func_83402210(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
     Stage_BeginDisplayList();
     DrawHighlightBars();
-    func_835023F0(0x1E, 0x2A, &gItemSelectContext);
-    if (D_83504080 != 0) {
+    DrawGridBackground(0x1E, 0x2A, &gItemSelectContext);
+    if (ItemSelect_ShowResult != 0) {
         if (gItemSelectContext.unk_04 == -1) {
             var_a2 = 1;
         } else {
             var_a2 = 0;
         }
-        func_835028D0(0x35, 0x15E, var_a2);
+        DrawAnimatedMonPanel(0x35, 0x15E, var_a2);
 
         switch (gItemSelectMode) {
             case 0:
@@ -1053,34 +1053,34 @@ void ItemSelect_MainDraw(void) {
         DrawResultScreen(0x1E1, 0x172, sp38, var_fv1);
     }
     ItemSelect_DrawGrid(0x6B, 0x4E, &gItemSelectContext);
-    func_8350365C(&gItemSelectContext);
-    func_8350355C(&gItemSelectContext, 0x9E, 0x16B);
+    DrawGridSelectionHighlight(&gItemSelectContext);
+    DrawGridHelpBox(&gItemSelectContext, 0x9E, 0x16B);
     Stage_Advance();
 }
 
-void func_835038DC(unk_D_83407B38* arg0) {
-    D_835040D8++;
-    if (D_835040D8 >= 0x15) {
+void AdvanceResultAnim(unk_D_83407B38* arg0) {
+    ItemSelect_ResultAnimTimer++;
+    if (ItemSelect_ResultAnimTimer >= 0x15) {
         func_83400570(arg0->unk_20[arg0->unk_04]->unk_18);
         gSlotStatusFlags[arg0->unk_04] = 0;
         arg0->unk_04 = -1;
         gItemSelectState = 1;
-        D_835040D8 = 0;
+        ItemSelect_ResultAnimTimer = 0;
     }
 }
 
-void func_83503968(unk_D_83407B38* arg0) {
+void BeginFadeOutAfterResult(unk_D_83407B38* arg0) {
     Camera* sp1C = arg0->unk_B0;
 
     if ((Cam_IsMonIndexDisplayable(sp1C) != 0) && (sp1C->unk_00 == 2)) {
         gItemSelectState = 4;
-        D_83504088 = 0xFFFF;
+        ItemSelect_HighlightFlags = 0xFFFF;
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(0xF);
     }
 }
 
-s32 func_835039C8(void) {
+s32 ItemSelect_StateMachine(void) {
     static s32 D_83503F64 = 2;
 
     s32 sp1C = 1;
@@ -1098,11 +1098,11 @@ s32 func_835039C8(void) {
             break;
 
         case 1:
-            D_83504088 &= 0xFF60;
+            ItemSelect_HighlightFlags &= 0xFF60;
             temp_v0_2 = ItemSelect_HandleInput(&gItemSelectContext);
             if (temp_v0_2 != 0) {
                 gItemSelectState = 4;
-                D_83504088 = 0xFFFF;
+                ItemSelect_HighlightFlags = 0xFFFF;
                 if (temp_v0_2 != 2) {
                     Stage_SetFillColor(0xFFFF);
                     var_a0 = 0xF;
@@ -1115,11 +1115,11 @@ s32 func_835039C8(void) {
             break;
 
         case 2:
-            func_835038DC(&gItemSelectContext);
+            AdvanceResultAnim(&gItemSelectContext);
             break;
 
         case 3:
-            func_83503968(&gItemSelectContext);
+            BeginFadeOutAfterResult(&gItemSelectContext);
             break;
 
         case 4:
@@ -1131,21 +1131,21 @@ s32 func_835039C8(void) {
     return sp1C;
 }
 
-void func_83503AFC(void) {
+void ItemSelect_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-void func_83503B2C(void) {
-    if (D_8350408C != 0) {
+void ItemSelect_Loop(void) {
+    if (ItemSelect_FadeInFlag != 0) {
         Stage_FadeIn(7);
     } else {
         Stage_FadeIn(1);
     }
 
     do {
-        func_83503AFC();
+        ItemSelect_ReadInputs();
 
         switch (gItemSelectState) {
             case 0:
@@ -1159,10 +1159,10 @@ void func_83503B2C(void) {
 
         ItemSelect_MainDraw();
         func_834020D8();
-    } while (func_835039C8() != 0);
+    } while (ItemSelect_StateMachine() != 0);
 }
 
-s32 func_83503BD4(unk_D_83407B38* arg0) {
+s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0) {
     UNUSED s32 pad[2];
     s32 sp1C;
 
@@ -1203,7 +1203,7 @@ void func_83503C9C(s32 arg0, s32 arg1) {
 
     Gfx_InitBuffers(0x10000, 0);
     sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    D_8250A304 = Text_Init(0x18, 0);
+    gTextObjectHandle = Text_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -1218,12 +1218,12 @@ void func_83503C9C(s32 arg0, s32 arg1) {
     Text_LoadMessageBanks();
     ItemSelect_Init(arg0, arg1);
     Stage_Set(sp24);
-    func_83503B2C();
+    ItemSelect_Loop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('ALBM');
 
-    func_83503BD4(&gItemSelectContext);
+    ItemSelect_ApplySelection(&gItemSelectContext);
 }
