@@ -311,3 +311,24 @@
 0	src/fragments/31/fragment31_2577F0.c
 1	src/fragments/34/fragment34_26F9B0.c
 0	src/util.c
+## wave 22
+687	src/fragments/62/fragment62_315D50.c
+432	src/fragments/16/fragment16_158A00.c
+416	src/fragments/62/fragment62_32B680.c
+375	src/fragments/16/fragment16_15AD80.c
+296	src/fragments/24/fragment24_1D7B40.c
+259	src/fragments/23/fragment23_1B4EA0.c
+244	src/fragments/62/fragment62_339CA0.c
+233	src/fragments/62/fragment62_309ED0.c
+223	src/fragments/34/fragment34_269820.c
+210	src/fragments/62/fragment62_2EC3C0.c
+207	src/fragments/23/fragment23_1AE680.c
+180	src/fragments/26/fragment26.c
+180	src/fragments/57/fragment57.c
+178	src/3D140_2.c
+178	src/fragments/39/fragment39_27BCC0.c
+174	src/fragments/62/fragment62_343BA0.c
+167	src/fragments/27/fragment27.c
+165	src/3D140.c
+165	src/fragments/62/fragment62_3223B0.c
+163	src/fragments/1/fragment1_7F9A0.c
