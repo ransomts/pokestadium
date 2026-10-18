@@ -83,6 +83,14 @@ def fixup(rows, batch, log):
         if not m:
             log(f"  drop {old!r}: malformed field row")
             continue
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*", new):
+            log(f"  drop {old} -> {new!r}: new side must be Type.field")
+            continue
+        new_field = new.split(".", 1)[1]
+        if new_field.startswith("unk_"):
+            log(f"  drop {old}: new field still a placeholder")
+            continue
+        new = f"{m.group(1)}.{new_field}"
         tname, field = m.group(1), m.group(2)
         if (tname, field) not in safe:
             log(f"  drop {old}: {field} not in the safe list of {tname}")

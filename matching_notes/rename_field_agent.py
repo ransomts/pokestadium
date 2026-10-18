@@ -169,7 +169,8 @@ def main():
         old, new = parts[0], parts[1]
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*\.unk_[0-9A-Fa-f]+w?", old):
             continue
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", new) or new.startswith("unk_"):
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*", new) \
+                or new.split(".")[1].startswith("unk_"):
             continue
         just = parts[4].encode("ascii", "replace").decode().strip()
         rows.append((old, new, args.batch, "", just))
