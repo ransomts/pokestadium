@@ -185,12 +185,12 @@ extern unk_D_8122EEA8 D_8122EEA8;
 extern OSMesgQueue gGbAudioMesgQueue;
 extern OSMesg D_8122EEC8;
 extern s16* D_812346E0[3];
-extern volatile s32 D_812346C8;
+extern volatile s32 gAudioTaskPending;
 extern s32 D_812346D0;
-extern s32 D_812346D4;
+extern s32 gAudioTaskId;
 extern u32 D_812346F4;
 extern volatile u32 D_812346FC;
-extern s16 D_81234690[];
+extern s16 gAudioConfig[];
 extern s16 D_812346EC[];
 
 void func_81207330(void) {
@@ -1086,11 +1086,11 @@ s32 GbAudio_Update(void) {
     s16** bufPtr;
     s16* p;
 
-    D_812346C8++;
+    gAudioTaskPending++;
     D_812346D0 ^= 1;
-    D_812346D4++;
-    D_812346D4 %= 3;
-    idx = (D_812346D4 + 2) % 3;
+    gAudioTaskId++;
+    gAudioTaskId %= 3;
+    idx = (gAudioTaskId + 2) % 3;
     aiLen = osAiGetLength() >> 2;
     // Fake: buf aliasing D_812346F4 (read once below) keeps &D_812346F4 in v1 for the final stores, and
     // `if (bufPtr) {}` / `if (!p) {}` shape the -1 branch; all three are load-bearing (farm candidate x16).
@@ -1121,16 +1121,16 @@ s32 GbAudio_Update(void) {
         D_812346FC++;
     }
 
-    idx = D_812346D4;
+    idx = gAudioTaskId;
     bufPtr = &D_812346E0[idx];
     len = &D_812346EC[idx];
     buf = *bufPtr;
-    *len = ((D_81234690[3] - aiLen + 0x80) & 0xFFF0) + 0x10;
-    if (*len < D_81234690[5]) {
-        *len = D_81234690[5];
+    *len = ((gAudioConfig[3] - aiLen + 0x80) & 0xFFF0) + 0x10;
+    if (*len < gAudioConfig[5]) {
+        *len = gAudioConfig[5];
     }
-    if (D_81234690[4] < *len) {
-        *len = D_81234690[4];
+    if (gAudioConfig[4] < *len) {
+        *len = gAudioConfig[4];
     }
     if (gGbAudioMode == 0) {
         GbAudio_MixChannels(*len, buf);
@@ -1138,8 +1138,8 @@ s32 GbAudio_Update(void) {
         GbAudio_RenderStream(*len, (s16(*)[2])buf);
     }
     osWritebackDCache(buf, *len * 4);
-    D_812346F4 = osGetCount() * (D_812346F4 + D_812346C8);
-    D_812346F4 = (*bufPtr)[D_812346C8 & 0xFF] + D_812346F4;
+    D_812346F4 = osGetCount() * (D_812346F4 + gAudioTaskPending);
+    D_812346F4 = (*bufPtr)[gAudioTaskPending & 0xFF] + D_812346F4;
     return 0;
 }
 

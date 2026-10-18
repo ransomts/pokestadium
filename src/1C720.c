@@ -20,20 +20,20 @@ void Graph_InitRoots(void) {
     GraphNode_AllocInit(0, &gGraphRoot1);
 }
 
-void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0) {
+void Graph_AddToRootList0(Fragment2_1GraphNode* arg0) {
     func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot0, &arg0->unk_000);
     arg0->unk_0A6 = 0;
     arg0->unk_000.unk_01 &= ~1;
 }
 
-void Graph_AddToRootList1(unk_D_86002F58_004_000* arg0) {
+void Graph_AddToRootList1(Fragment2_1GraphNode* arg0) {
     func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot1, &arg0->unk_000);
     arg0->unk_000.unk_01 &= ~1;
 }
 
-void GraphNode_InitChild(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
+void GraphNode_InitChild(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
     GraphNode_AddChild(&arg0->unk_000, arg3);
     Matrix_Identity(&arg0->unk_060);
     arg0->unk_018 = arg1;
@@ -63,12 +63,12 @@ void GraphNode_InitChild(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D
     }
 }
 
-void GraphNode_ClearCallback(unk_D_86002F58_004_000* arg0) {
+void GraphNode_ClearCallback(Fragment2_1GraphNode* arg0) {
     arg0->unk_000.unk_0C = NULL;
     arg0->unk_000.unk_01 &= ~1;
 }
 
-s32 GraphNode_TriggerAction(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 GraphNode_TriggerAction(Fragment2_1GraphNode* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C* tmp = arg0->unk_000.unk_0C;
     unk_D_86002F58_004_000_00C_028* temp_v0 = tmp->unk_28(0, 0);
 
@@ -82,7 +82,7 @@ s32 GraphNode_TriggerAction(unk_D_86002F58_004_000* arg0, s32 arg1) {
     return 0;
 }
 
-s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 GraphNode_TriggerSound(Fragment2_1GraphNode* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C* temp_v0 = arg0->unk_000.unk_0C;
     unk_D_86002F58_004_000_00C_028* temp_v1 = temp_v0->unk_28(0, 0);
 
@@ -96,19 +96,19 @@ s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1) {
     return 0;
 }
 
-void GraphNode_SetColorRGBA(unk_D_86002F58_004_000* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+void GraphNode_SetColorRGBA(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     GfxColor_SetRGBA(&arg0->unk_0A0, arg1, arg2, arg3, arg4);
 }
 
-void GraphNode_SetState(unk_D_86002F58_004_000* arg0, u8 arg1) {
+void GraphNode_SetState(Fragment2_1GraphNode* arg0, u8 arg1) {
     arg0->unk_01D = arg1;
 }
 
-void GraphNode_SetSubState(unk_D_86002F58_004_000* arg0, u8 arg1) {
+void GraphNode_SetSubState(Fragment2_1GraphNode* arg0, u8 arg1) {
     arg0->unk_01C = arg1;
 }
 
-unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(unk_D_86002F58_004_000* arg0, s32 arg1) {
+unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(Fragment2_1GraphNode* arg0, s32 arg1) {
     unk_D_86002F58_004_000_00C_028* var_v1 = NULL;
 
     if (arg0 == NULL) {

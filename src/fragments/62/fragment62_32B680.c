@@ -1548,7 +1548,7 @@ void func_84343EB4(unk_D_8140E720* arg0) {
 }
 
 void func_84343FA4(Gfx* arg0, u16 arg1) {
-    unk_D_86002F58_004_000* tmp = gDefaultGraphRoot;
+    Fragment2_1GraphNode* tmp = gDefaultGraphRoot;
 
     gDPPipeSync(arg0++);
 
@@ -3608,7 +3608,7 @@ void func_84349F80(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_86002F58_004_000* sp24 = gDefaultGraphRoot;
+    Fragment2_1GraphNode* sp24 = gDefaultGraphRoot;
     s32 tmp = func_8432CB60(gDefaultGraphRoot);
     UNUSED u8 sp1F;
     UNUSED u8 sp1E;

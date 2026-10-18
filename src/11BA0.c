@@ -326,10 +326,10 @@ unk_D_86002F34_alt7* DisplayListNode_Create(MainPoolState* arg0, unk_D_86002F34_
     return arg1;
 }
 
-unk_D_86002F58_004_000* func_80011938(MainPoolState* arg0, unk_D_86002F58_004_000* arg1, s16 arg2, Vec3f* arg3,
+Fragment2_1GraphNode* func_80011938(MainPoolState* arg0, Fragment2_1GraphNode* arg1, s16 arg2, Vec3f* arg3,
                                       Vec3s* arg4, Vec3f* arg5) {
     if (arg0 != 0) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F58_004_000), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(Fragment2_1GraphNode), 4);
     }
 
     if (arg1 != NULL) {
@@ -403,9 +403,9 @@ unk_D_86002F34_alt9* BillboardNode_Create(MainPoolState* arg0, unk_D_86002F34_al
     return arg1;
 }
 
-unk_func_80011B94* SimpleGfxNode_Create(MainPoolState* arg0, unk_func_80011B94* arg1, s32 arg2, Gfx* arg3) {
+SimpleGfxNode* SimpleGfxNode_Create(MainPoolState* arg0, SimpleGfxNode* arg1, s32 arg2, Gfx* arg3) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_func_80011B94), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(SimpleGfxNode), 4);
     }
 
     if (arg1 != NULL) {

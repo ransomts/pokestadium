@@ -7,7 +7,7 @@ void func_82505FA0(void) {
 }
 
 void func_82505FC8(s16 arg0) {
-    D_87806338 = arg0;
+    gCurrentMenuIndex = arg0;
 }
 
 void func_82505FE0(s16 arg0) {
@@ -20,12 +20,12 @@ void func_82505FE0(s16 arg0) {
 
     switch (arg0) {
         case 0:
-            D_87806338 = -1;
+            gCurrentMenuIndex = -1;
             D_8780FA2A = 0;
             D_8780FA2C = 0;
 
             for (i = 0; i < 4; i++) {
-                D_8780FA30[i] = 1;
+                gMiniHudColorDefaults[i] = 1;
             }
 
             D_8780FA38 = 1;
@@ -69,5 +69,5 @@ s16 func_825060E0(void) {
         }
     }
 
-    return sp24[func_878001E8(var_a2)];
+    return sp24[GetRandomMod(var_a2)];
 }

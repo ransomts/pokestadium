@@ -134,7 +134,7 @@ typedef struct unk_D_86002F58_004_000_0A8 {
     /* 0x04 */ Vec3f unk_04;
 } unk_D_86002F58_004_000_0A8; // size = 0x10
 
-typedef struct unk_D_86002F58_004_000 {
+typedef struct Fragment2_1GraphNode {
     /* 0x000 */ GraphRootNode unk_000;
     /* 0x018 */ s16 unk_018;
     /* 0x01A */ s16 unk_01A;
@@ -159,15 +159,15 @@ typedef struct unk_D_86002F58_004_000 {
     /* 0x0F8 */ char unk0F8[0x4];
     /* 0x0FC */ Vec3f unk_0FC;
     /* 0x108 */ char unk108[0x60];
-} unk_D_86002F58_004_000; // size = 0x168
+} Fragment2_1GraphNode; // size = 0x168
 
-typedef struct unk_D_86002F34_000_014_004 {
+typedef struct ColorLerpEntry5 {
     /* 0x00 */ u8 unk_00[5];
-} unk_D_86002F34_000_014_004; // size = 0x5
+} ColorLerpEntry5; // size = 0x5
 
-typedef struct unk_D_86002F34_000_014_010 {
+typedef struct ColorLerpEntry4 {
     /* 0x00 */ u8 unk_00[4];
-} unk_D_86002F34_000_014_010; // size = 0x4
+} ColorLerpEntry4; // size = 0x4
 
 typedef struct unk_D_86002F34_000_014 {
     /* 0x00 */ u8* unk_00;

@@ -79,7 +79,7 @@ static Gfx D_84B12420[] = {
     gsSPEndDisplayList(),
 };
 
-s32 func_84B06B50(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B06B50(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_a3;
     u8* sp30;
     s32 temp_v1;
@@ -105,7 +105,7 @@ s32 func_84B06B50(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B06C7C(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B06C7C(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_a3;
     u8* sp30;
     s32 temp_v1;
@@ -131,7 +131,7 @@ s32 func_84B06C7C(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B06E08(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B06E08(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_v1;
     u8* var_a3;
 
@@ -152,7 +152,7 @@ s32 func_84B06E08(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B06ED0(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B06ED0(s32 arg0, SimpleGfxNode* arg1) {
     static s32 D_84B12490 = 0x80;
 
     s32 var_v0;
@@ -914,7 +914,7 @@ void func_84B07978(unk_D_84B25A28* arg0) {
     Vec3f_Set(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
 }
 
-s32 func_84B07AB8(unk_D_84B25A28* arg0, unk_D_86002F58_004_000* arg1) {
+s32 func_84B07AB8(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
     s16 var_a1;
 

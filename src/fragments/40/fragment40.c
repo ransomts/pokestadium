@@ -118,7 +118,7 @@ static unk_D_83101E6C D_83101E6C[] = {
     { -1, 2.0f, 0xC8, 0xC8, 0x1E, 0, 0, 0 },
 };
 
-void func_83100020(unk_D_86002F58_004_000* arg0) {
+void func_83100020(Fragment2_1GraphNode* arg0) {
     unk_D_83101F00* ptr = (unk_D_83101F00*)arg0;
     f32 temp_fv0;
     s32 sp1C;

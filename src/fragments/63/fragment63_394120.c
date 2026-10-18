@@ -144,7 +144,7 @@ s32 Battle_ProcessResult(s32 arg0, unk_D_86002F34_alt8* arg1) {
     }
 }
 
-void GraphNode_Reset(unk_D_86002F58_004_000* arg0) {
+void GraphNode_Reset(Fragment2_1GraphNode* arg0) {
     GraphNode_ClearCallback(arg0);
     Vec3f_Set(&arg0->unk_024, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg0->unk_030, 1.0f, 1.0f, 1.0f);
@@ -1180,7 +1180,7 @@ s32 func_84B02F60(void) {
 void func_84B03064(void) {
     MemoryBlock* temp_v0;
     unk_D_86002F34_00C* ptr;
-    unk_D_86002F58_004_000* ptr2;
+    Fragment2_1GraphNode* ptr2;
     s32 i;
 
     gBattleGraphics.unk_0001 = 0;

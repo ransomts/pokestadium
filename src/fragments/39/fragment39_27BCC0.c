@@ -938,7 +938,7 @@ void UI_Cursor_Init(void) {
     ptr->unk_01 &= ~1;
 }
 
-void UI_Cursor_Update(unk_D_86002F58_004_000* a0) {
+void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
     unk_D_8250A308* arg0 = (unk_D_8250A308*)a0;
     s32 var_v0;
 
@@ -1174,7 +1174,7 @@ s32 func_82500FD0(s16 arg0, s32 arg1) {
 
 void func_82501034(void) {
     D_8250A296 = 0x78;
-    D_8250A298 = func_878001E8(3);
+    D_8250A298 = GetRandomMod(3);
 }
 
 void func_82501064(unk_D_82508B30* arg0) {
@@ -1229,13 +1229,13 @@ void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 4; i++) {
-        if (D_8780FA30[i] == 0) {
+        if (gMiniHudColorDefaults[i] == 0) {
             temp_fv1 = ROUND_MAX((temp_fs3 - 1.0f) * 36.0f * 0.5f);
             temp_fa0 = ROUND_MAX((temp_fs4 - 1.0f) * 26.0f * 0.5f);
 
-            func_87801400(i, ((i * 0x48) - temp_fv1) + 0x1A, 0x1A - temp_fa0, temp_fs3, temp_fs4);
+            DrawScaledTextureRect(i, ((i * 0x48) - temp_fv1) + 0x1A, 0x1A - temp_fa0, temp_fs3, temp_fs4);
         } else {
-            func_87801644(-5, (i * 0x48) + 0x1A, 0x1A, 1.0f);
+            DrawUniformScaledTextureRect(-5, (i * 0x48) + 0x1A, 0x1A, 1.0f);
         }
     }
 
@@ -1736,7 +1736,7 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
 
         case 1:
             func_8250244C(0, arg1);
-            if (D_8780FA30[D_8780FA48] == 0) {
+            if (gMiniHudColorDefaults[D_8780FA48] == 0) {
                 D_8250A292 = -1;
             } else {
                 D_8250A292 = func_825060E0();
@@ -1882,10 +1882,10 @@ void func_8250281C(void) {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
             var_a2_2 = D_8780FA48;
-            if (D_8780FA30[var_a2_2] == 0) {
-                func_87801644(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
+            if (gMiniHudColorDefaults[var_a2_2] == 0) {
+                DrawUniformScaledTextureRect(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             } else {
-                func_87801644(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
+                DrawUniformScaledTextureRect(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             }
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1941,7 +1941,7 @@ void func_82502C78(void) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x140 - (func_878013D4(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
+            Text_Print(0x140 - (GetTextWidth(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
                           D_8250A2A0.unk_0A + 0x18, GetMessageString(NULL, 0, D_8250A47C, 2));
 
             if (D_82508AF0 & 1) {
@@ -1960,7 +1960,7 @@ void func_82502C78(void) {
                 } else {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
-                Text_Print(0x140 - (func_878013D4(D_8250A304, var_v0[i]) / 2),
+                Text_Print(0x140 - (GetTextWidth(D_8250A304, var_v0[i]) / 2),
                               D_8250A2A0.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
             }
 
@@ -2010,7 +2010,7 @@ void func_82503020(void) {
         return;
     }
 
-    func_878001E8(0x80);
+    GetRandomMod(0x80);
 
     tmp = D_8250A288.unk_00;
     if (D_82508AF8->unk_04 & 0x800) {
@@ -2038,7 +2038,7 @@ void func_82503020(void) {
         D_8250A288.unk_02 = 0;
 
         for (i = 0; i < 4; i++) {
-            D_8780FA30[i] = 1;
+            gMiniHudColorDefaults[i] = 1;
         }
 
         D_8250A230[0]->unk_06 |= 1;
@@ -2087,14 +2087,14 @@ void func_825032BC(void) {
     D_8250A230[1]->unk_0A = D_8780FA2A;
     if ((UI_Element_IsState(D_8250A230[0], 2) != 0) && (func_82504838() == 2)) {
         var_v1 = D_8250A288.unk_02;
-        if ((D_82508AF8->unk_04 & 0x800) && (D_8780FA30[0] == 0)) {
+        if ((D_82508AF8->unk_04 & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.unk_02--;
             if (D_8250A288.unk_02 < 0) {
                 D_8250A288.unk_02 = 1;
             }
         }
 
-        if ((D_82508AF8->unk_04 & 0x400) && (D_8780FA30[0] == 0)) {
+        if ((D_82508AF8->unk_04 & 0x400) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.unk_02++;
             if (D_8250A288.unk_02 >= 2) {
                 D_8250A288.unk_02 = 0;
@@ -2109,14 +2109,14 @@ void func_825032BC(void) {
         switch (D_8250A288.unk_02) {
             case 0:
                 for (i = 0; i < 4; i++) {
-                    if ((D_82508B00[i].unk_04 & 0x8000) && (D_8780FA30[i] != 0)) {
+                    if ((D_82508B00[i].unk_04 & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
                         var_s4 = 1;
-                        D_8780FA30[i] = 0;
+                        gMiniHudColorDefaults[i] = 0;
                         PlaySoundEffect(0xD);
                     } else if (D_82508B00[i].unk_04 & 0x4000) {
-                        if (D_8780FA30[i] != 1) {
+                        if (gMiniHudColorDefaults[i] != 1) {
                             var_s4 = 1;
-                            D_8780FA30[i] = 1;
+                            gMiniHudColorDefaults[i] = 1;
                             PlaySoundEffect(3);
                         }
                     }
@@ -2129,7 +2129,7 @@ void func_825032BC(void) {
                     D_8780FA2C = 0;
 
                     for (i = 0; i < 4; i++) {
-                        if (D_8780FA30[i] == 0) {
+                        if (gMiniHudColorDefaults[i] == 0) {
                             D_8780FA2C++;
                         }
                     }
@@ -2430,9 +2430,9 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
 
     sp68 = 0;
     if (arg1 >= 0) {
-        func_878001E8(2);
+        GetRandomMod(2);
         if ((arg1 % 6) == 0) {
-            *arg0 = func_878001E8(9);
+            *arg0 = GetRandomMod(9);
             func_825057A8(*arg0);
 
             if (arg1 != 0) {
@@ -2445,7 +2445,7 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
                 if (arg1 != 0) {
                     switch (D_8250A298) {
                         case 0:
-                            tmp = func_878001E8(9);
+                            tmp = GetRandomMod(9);
                             temp_s3 = D_8250A240[i]->unk_0C;
                             func_82501C88(D_8250A240[i], D_8250A240[tmp]->unk_0C, 0);
                             D_8250A240[tmp]->unk_0C = temp_s3;
@@ -2483,7 +2483,7 @@ void func_8250416C(void) {
     s32 var_a2;
     s32 var_v1;
 
-    func_878001D0();
+    IncrementRandomCounter();
     if (UI_Element_IsState(D_8250A240[0], 2) != 0) {
         sp1C = 0;
         sp18 = 0;
@@ -2520,7 +2520,7 @@ void func_825042A4(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_8780FA30[i] != 0) {
+        if (gMiniHudColorDefaults[i] != 0) {
             continue;
         }
 
@@ -2647,7 +2647,7 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
     D_8250A264 = ASSET_LOAD2(backgrounds, 1, 1);
 
     D_8250A268 = BinArchive_GetFile(D_8250A264, 4);
-    D_8250A47C = D_87806330;
+    D_8250A47C = gItemNamesBank;
     GbsEnsureBankLoaded(2);
     func_825045C0();
     Stage_Set(sp24);

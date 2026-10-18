@@ -355,7 +355,7 @@ void GeoLayoutCmd_CreateShadowNode(void) {
     Vec3s sp40;
     Vec3f sp34;
     Vec3f sp28;
-    unk_D_86002F58_004_000* tmp;
+    Fragment2_1GraphNode* tmp;
     unk_D_800ABE00_cmd1F* cmd = (unk_D_800ABE00_cmd1F*)gGeoLayoutCommand;
 
     GraphNode_SetPositionFromVec3s(&sp34, &cmd->unk_0A);

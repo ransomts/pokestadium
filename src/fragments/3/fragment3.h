@@ -7,7 +7,7 @@
 #include "src/controller.h"
 
 typedef struct MiniActor {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;		// collider ? model ?
+    /* 0x000 */ Fragment2_1GraphNode unk_000;		// collider ? model ?
     /* 0x168 */ unk_D_86002F30* unk_168;
     /* 0x16C */ Vec3f scale;
     /* 0x178 */ char unk178[0x18];	//	unused
@@ -150,8 +150,8 @@ extern s16 D_87903DCC;
 extern s16 D_87903DD0;
 extern s16 D_87903DD4;
 
-extern unk_D_87903E10 D_87903E10;
-extern unk_D_87903E10 D_87903E28;
+extern unk_D_87903E10 gMiniTutoScreenNode0;
+extern unk_D_87903E10 gMiniTutoScreenNode1;
 extern unk_D_87903E10 D_87903E40;
 extern unk_D_87903E10 D_87903E58;
 extern s16 miniInputLockTimer;
@@ -160,7 +160,7 @@ extern s16 miniShowHUB;
 extern s16 miniDifficulty;
 extern s16 D_87906048;
 extern s16 D_8790604A;
-extern unk_D_86002F34_00C* D_87906050;      // geo layout
+extern unk_D_86002F34_00C* gMiniCameraStruct;      // geo layout
 extern unk_D_86002F34_00C* gMiniCameraPtr;
 extern s16 miniCameraXRot;
 extern s16 miniCameraYRot;
@@ -169,9 +169,9 @@ extern s16 miniCameraFov;
 extern s16 miniCameraNear;
 extern s16 miniCameraFar;
 extern Vec3s miniCameraCoords;
-extern s16 D_87906072;
+extern s16 gMiniCameraNearBackup;
 extern s16 gMiniCameraXRotBackup;
-extern s16 D_87906078;
+extern s16 gMiniCameraYRotBackup;
 extern f32 gMiniCameraDistanceBackup;
 extern f32 gMiniCameraFovBackup;
 extern Vec3f gMiniCameraCoordsBackup;
@@ -181,10 +181,10 @@ extern s16 gMiniCamDistDelta;
 extern s16 gMiniCamFovDelta;
 extern Vec3s gMiniCamPosDelta;
 
-extern s16 D_879060A2;
+extern s16 gMiniCamBaseRotX;
 extern s16 gMiniCamBaseRotY;
-extern s16 D_879060A6;
-extern s16 D_879060A8;
+extern s16 gMiniCamBaseDist;
+extern s16 gMiniCamBaseFov;
 extern Vec3s gMiniCamBasePos;
 
 extern s16 miniDebugMode;
@@ -197,7 +197,7 @@ extern s16 miniHudTransparency;
 extern s16 gMiniDebugCameraMode;
 
 extern Vec3f gMiniDebugBasePos;
-extern Vec3f D_87906100;
+extern Vec3f gMiniDebugCamVelocity;
 extern Vec3f D_87906110;
 
 ret_func_80004454 func_87900020(void);
@@ -210,7 +210,7 @@ void miniChangeActorAnim_alt1(MiniActor* arg0, s16 arg1, s16 arg2, s16 arg3, s16
 void miniChangeActorAnim_alt2(MiniActor* arg0, s16 arg1, s16 arg2, s16 arg3);
 s32 miniPokeIsIdleCheck(MiniActor* arg0);
 void MiniActor_ProcessAnim(MiniActor* poke);
-void MiniActor_SetAnimToLastFrame(unk_D_86002F58_004_000* arg0);
+void MiniActor_SetAnimToLastFrame(Fragment2_1GraphNode* arg0);
 void MiniGame_ReadInputs(void);
 void hideMiniGameHUD(void);
 void MiniActor_ResetPosition(MiniActor* actor);
@@ -231,19 +231,19 @@ void showDebuggCameraInfo(void);
 void showDebuggJoystickInfo(void);
 void MiniDebugCamera_Control(void);
 
-void func_87901620(void);
-s32 func_8790168C(void);
-void func_87901720(unk_D_8140E728* arg0);
-void func_87901804(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5, u8 arg6, u8 arg7);
-void func_879018B0(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7, unk_D_8140E728_01C* arg8, s16 arg9, u8 argA, u8 argB);
-void func_87901958(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2);
-void func_87901A28(unk_D_8140E728* arg0);
-void func_87901ADC(unk_D_8140E728* arg0);
-void func_87901B08(void);
+void ParticleSystem_Init(void);
+s32 ParticleEmitter_Allocate(void);
+void ParticleEmitter_Reset(unk_D_8140E728* arg0);
+void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5, u8 arg6, u8 arg7);
+void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7, unk_D_8140E728_01C* arg8, s16 arg9, u8 argA, u8 argB);
+void ParticleInstance_PopulateFromEmitter(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2);
+void ParticleEmitter_GenerateParticles(unk_D_8140E728* arg0);
+void ParticleEmitter_Tick(unk_D_8140E728* arg0);
+void ParticleEmitters_UpdateAll(void);
 void func_87901BB0(unk_D_8140E720* arg0);
 void func_87901BD4(unk_D_8140E720* arg0);
-void func_87901C20(void);
-void func_87901C98(void);
+void ParticleSystem_UpdateAndRender(void);
+void ParticleRender_SetupMiniCamera(void);
 void func_87901DA0(unk_D_8140E720* arg0);
 void func_87901F04(unk_D_8140E720* arg0);
 void func_87901FA0(unk_D_8140E720* arg0);
@@ -265,20 +265,20 @@ void func_87902F80(s32 arg0, arg1_func_87902F80* arg1);
 void func_87902FC8(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2);
 void func_8790320C(s32 arg0, arg1_func_87902F80* arg1);
 
-void func_87903260(void);
-void func_87903294(void);
-void func_879032BC(s16 arg0);
-void func_87903358(s16 arg0, s16 arg1);
-void func_879033FC(MiniActor* arg0);
-void func_8790354C(void);
+void MiniTutoScreen_Start(void);
+void MiniTutoScreen_Reset(void);
+void MiniTutoScreen_StartCountdown(s16 arg0);
+void MiniTutoScreen_StartTimerWithDelay(s16 arg0, s16 arg1);
+void MiniTutoScreen_DrawWinners(MiniActor* arg0);
+void MiniTutoScreen_PrintDifficulty(void);
 
-void func_87903600(void);
-void func_879036B4(MiniActor* arg0);
-void func_8790370C(void);
-void func_879037D0(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
-void func_87903838(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
-void func_879038AC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
-Gfx* func_87903920(Gfx* arg0, arg1_func_87903D64_014* arg1);
-void func_87903D64(s32 arg0, arg1_func_87903D64* arg1);
+void MiniActorArray_Create(void);
+void MiniActor_StartAnimation(MiniActor* arg0);
+void MiniActorArray_Update(void);
+void MiniActor_ConfigureFirst(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
+void MiniActor_ConfigureSecond(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
+void MiniActor_ConfigureThird(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
+Gfx* Gfx_SetLerpPrimEnvColor(Gfx* arg0, arg1_func_87903D64_014* arg1);
+void ColorLerp_DisplayListHook(s32 arg0, arg1_func_87903D64* arg1);
 
 #endif // _FRAGMENT3_H_

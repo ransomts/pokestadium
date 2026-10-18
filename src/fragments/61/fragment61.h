@@ -199,7 +199,7 @@ void func_84203C90(void);
 void func_84203D74(void);
 s32 func_84203E6C(s32 arg0, UNUSED s32 arg1);
 
-s32 func_84204070(s32 arg0, unk_func_80011B94* arg1);
+s32 func_84204070(s32 arg0, SimpleGfxNode* arg1);
 void func_84204210(void);
 void func_84204294(s32 arg0);
 void func_8420448C(void);

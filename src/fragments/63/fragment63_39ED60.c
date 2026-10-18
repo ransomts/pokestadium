@@ -134,7 +134,7 @@ static u32 D_84B16A38[] = {
     0x22050000, D_84B169C0, 0x25000000, 0x06000000, 0x01000000,
 };
 
-s32 func_84B0AC60(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0AC60(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_v0;
     s32 tmp;
 
@@ -152,7 +152,7 @@ s32 func_84B0AC60(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B0AD48(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0AD48(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_v0;
     s32 tmp;
 
@@ -170,7 +170,7 @@ s32 func_84B0AD48(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B0AE30(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0AE30(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_a3;
     s32 tmp;
 
@@ -195,7 +195,7 @@ s32 func_84B0AE30(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B0AF48(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0AF48(s32 arg0, SimpleGfxNode* arg1) {
     UNUSED s32 pad[2];
     s16 sp1E;
     f32 temp_fv0;
@@ -323,7 +323,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0B6EC(unk_D_84B25A90* arg0, unk_D_86002F58_004_000* arg1, s16 arg2) {
+void func_84B0B6EC(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
     u16 sp26;
     f32 temp_fv0;
 
@@ -415,7 +415,7 @@ void func_84B0BBEC(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0BC6C(unk_D_84B25A90* arg0, unk_D_86002F58_004_000* arg1) {
+void func_84B0BC6C(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->unk_04 = arg1;

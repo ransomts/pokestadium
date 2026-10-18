@@ -223,7 +223,7 @@ void func_82F07004(s16 arg0) {
 
     var_s0 = &D_82F20A88[0];
     for (i = 0; i < D_82F210D0; i++, var_s0++) {
-        unk_D_86002F58_004_000* ptr = &var_s0->unk_028;
+        Fragment2_1GraphNode* ptr = &var_s0->unk_028;
 
         Graph_AddToRootList0(ptr);
         GraphNode_InitChild(ptr, 0, 0, D_82F210CC);
@@ -233,7 +233,7 @@ void func_82F07004(s16 arg0) {
 }
 
 void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
-    unk_D_86002F58_004_000* temp_v0 = &arg0->unk_028;
+    Fragment2_1GraphNode* temp_v0 = &arg0->unk_028;
 
     arg0->unk_000 = arg1;
 
@@ -424,7 +424,7 @@ void func_82F077E0(void) {
         }
 
         if (var_s0->unk_000 != 0) {
-            unk_D_86002F58_004_000* ptr = &var_s0->unk_028;
+            Fragment2_1GraphNode* ptr = &var_s0->unk_028;
 
             Vec3f_Set(&ptr->unk_024, var_s0->unk_006 - 320.0f, 240.0f - var_s0->unk_008, -579.0f);
             ptr->unk_01E.z = var_s0->unk_012;

@@ -135,7 +135,7 @@ static s16 D_86002F4C;
 static s32 D_86002F50;
 
 typedef struct unk_D_86002F58_004 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ s16 unk_168;
     /* 0x16A */ u16 unk_16A;
     /* 0x16C */ s16 unk_16C;
@@ -171,7 +171,7 @@ static s16 D_86003B70[4];
 static s16 D_86003B78;
 static TextObject* D_86003B7C;
 static s32 D_86003B80;
-static unk_D_86002F58_004_000 D_86003B84[4];
+static Fragment2_1GraphNode D_86003B84[4];
 
 void func_86000020(void) {
     s32 i;
@@ -202,42 +202,42 @@ void func_86000020(void) {
                 case 0:
                 case 12:
                 case 13:
-                    if (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_06) {
+                    if (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_06) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 5:
                 case 7:
-                    if (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_04) {
+                    if (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_04) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
 
                 case 8:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0x90000) &&
-                        (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xD0000) &&
-                        (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xB0000) &&
-                        (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xF0000) &&
-                        (func_878001E8(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -286,7 +286,7 @@ s32 func_86000410(void) {
 
 void func_86000478(void) {
     D_86002F38 = D_86002F34->unk_00.unk_0C;
-    func_87A00020(D_86002F38);
+    SetProjectionInfo(D_86002F38);
     D_86002F3C = 0x600;
     D_86002F3E = 0;
     D_86002F40 = 1000;
@@ -327,9 +327,9 @@ void func_860005B8(s32 arg0) {
             unk_D_86002A98* tmp = &D_86002A98[i];
 
             if (D_86002F58[i].unk_000 == 0) {
-                func_87801644(i, tmp->unk_00, tmp->unk_02, 0.75f);
+                DrawUniformScaledTextureRect(i, tmp->unk_00, tmp->unk_02, 0.75f);
             } else {
-                func_87801644(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
+                DrawUniformScaledTextureRect(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
             }
         }
 
@@ -359,43 +359,43 @@ void func_860005B8(s32 arg0) {
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Text_Print(0xA0 - (func_878013D4(D_86003B7C, GetMessageString(NULL, 0, D_87806330, 0x15)) / 2), 0x20,
-                          GetMessageString(NULL, 0, D_87806330, 0x15));
+            Text_Print(0xA0 - (GetTextWidth(D_86003B7C, GetMessageString(NULL, 0, gItemNamesBank, 0x15)) / 2), 0x20,
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x15));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x16));
-            Text_Print(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x17));
-            Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, D_87806330, 0x18));
+            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x16));
+            Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x17));
+            Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, gItemNamesBank, 0x18));
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
 
-            temp_s0_2 = GetMessageString(NULL, 0, D_87806330, 0x5F);
+            temp_s0_2 = GetMessageString(NULL, 0, gItemNamesBank, 0x5F);
 
-            func_87801290(&sp50, &sp4C, GetMessageString(NULL, 0, D_87806330, 0x16), temp_s0_2, 0xC);
+            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x16), temp_s0_2, 0xC);
             if (sp50 >= 0) {
                 Text_Print(sp50 + 0x28, sp4C + 0x34, temp_s0_2);
             }
 
-            func_87801290(&sp50, &sp4C, GetMessageString(NULL, 0, D_87806330, 0x17), temp_s0_2, 0xC);
+            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x17), temp_s0_2, 0xC);
             if (sp50 >= 0) {
                 Text_Print(sp50 + 0x28, sp4C + 0x58, temp_s0_2);
             }
 
-            func_87801290(&sp50, &sp4C, GetMessageString(NULL, 0, D_87806330, 0x18), temp_s0_2, 0xC);
+            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x18), temp_s0_2, 0xC);
             if (sp50 >= 0) {
                 Text_Print(sp50 + 0x28, sp4C + 0x7C, temp_s0_2);
             }
 
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-            Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x19));
+            Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x19));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
             Text_EndRender();
             break;
 
@@ -404,8 +404,8 @@ void func_860005B8(s32 arg0) {
             Text_SetFont(0x20, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0x1E, 0x1E, 0xFF, 0xFF);
-            Text_Print(0xA0 - (func_878013D4(D_86003B7C, GetMessageString(NULL, 0, D_87806330, 0x5A)) / 2), 0x64,
-                          GetMessageString(NULL, 0, D_87806330, 0x5A));
+            Text_Print(0xA0 - (GetTextWidth(D_86003B7C, GetMessageString(NULL, 0, gItemNamesBank, 0x5A)) / 2), 0x64,
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x5A));
             Text_EndRender();
             break;
     }
@@ -500,7 +500,7 @@ void func_86000C18(void) {
 void func_86000D88(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    func_87A00DB8(D_86002F50);
+    Gfx_DrawTilemap(D_86002F50);
 
     if (D_8780FC94 != 1) {
         Gfx_FinishFrame();
@@ -508,14 +508,14 @@ void func_86000D88(s32 arg0) {
 
     Fragment2_1_Update();
     Graph_SetTextureState(D_86002F34);
-    gDisplayListHead = func_87A0002C(gDisplayListHead);
+    gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
     func_86000C18();
 
     if (D_8780FC98 == 0) {
         func_860005B8(arg0);
     }
 
-    func_87804FD4();
+    ResultScreen_UpdateAndRender();
     Stage_Advance();
 
     D_86002F42++;
@@ -568,13 +568,13 @@ s32 func_86000FD4(void) {
         D_86003B60 = &D_86003B5C->unk_004;
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
-        D_86003B60->unk_000.unk_040.unk_08 = (func_878001E8(0x14) << 0x10);
+        D_86003B60->unk_000.unk_040.unk_08 = (GetRandomMod(0x14) << 0x10);
         D_86003B70[i] = 0;
     }
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
-        D_86003B5C->unk_000 = (D_8780FA30[i] == 0) ? 0 : D_8780FA38 + 1;
+        D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : D_8780FA38 + 1;
     }
 
     D_86002F48 = 0;
@@ -607,7 +607,7 @@ void func_86001204(void) {
         D_86003B60 = &D_86003B5C->unk_004;
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
-        D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(0x14) << 0x10;
+        D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
         D_86003B70[i] = 0;
     }
 
@@ -621,7 +621,7 @@ void func_86001204(void) {
             case 1:
             case 2:
             case 3:
-                func_87A010D4(0x20001, 0, 0);
+                PlaySoundIfEnabled(0x20001, 0, 0);
                 break;
 
             case 0:
@@ -639,15 +639,15 @@ void func_86001360(s16 arg0) {
     switch (arg0) {
         case 0:
         case 1:
-            func_87A010D4(0x20006, D_86003B5C->unk_18A + 1, 4);
+            PlaySoundIfEnabled(0x20006, D_86003B5C->unk_18A + 1, 4);
             break;
 
         case 2:
-            func_87A010D4(0x20005, D_86003B5C->unk_18A + 1, 4);
+            PlaySoundIfEnabled(0x20005, D_86003B5C->unk_18A + 1, 4);
             break;
 
         default:
-            func_87A010D4(0x20004, D_86003B5C->unk_18A + 1, 4);
+            PlaySoundIfEnabled(0x20004, D_86003B5C->unk_18A + 1, 4);
             break;
     }
 
@@ -835,7 +835,7 @@ void func_860017C0(s32 arg0) {
                 GraphNode_TriggerAction(&D_86003B64->unk_000, 0);
                 D_86003B64->unk_000.unk_040.unk_0C = 0x10000;
                 D_86003B64->unk_000.unk_040.unk_08 = 0;
-                func_87A010D4(0x20008, arg0, 4);
+                PlaySoundIfEnabled(0x20008, arg0, 4);
             }
         }
 
@@ -858,7 +858,7 @@ void func_86001C90(void) {
     s32 temp_v1;
     s32 var_s6 = 1;
 
-    func_87A010D4(0x20002, 0, 0);
+    PlaySoundIfEnabled(0x20002, 0, 0);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
@@ -894,14 +894,14 @@ void func_86001C90(void) {
 
             D_86003B58++;
             if (D_86003B58 >= 0x258) {
-                func_87A010D4(0x20009, 0, 0);
+                PlaySoundIfEnabled(0x20009, 0, 0);
                 var_s6 = 0;
             } else {
                 temp_v1 = 0x258 - D_86003B58;
                 if ((temp_v1 % 30) == 0) {
                     temp_lo = temp_v1 / 30;
                     if ((temp_lo < 6) && (temp_lo > 0)) {
-                        func_87A010D4(0x2000A, 0, 0);
+                        PlaySoundIfEnabled(0x2000A, 0, 0);
                         if (1) {}
                         if (1) {}
                         if (1) {}
@@ -1005,7 +1005,7 @@ void func_86001F64(void) {
         } else {
             D_86003B5C->unk_004.unk_168 = 2;
             GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
-            D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(5) << 0x10;
+            D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
         }
         D_86003B60->unk_000.unk_040.unk_0C = 0x10000;
     }
@@ -1147,7 +1147,7 @@ void func_86002440(void) {
 
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);
 
-        D_86003B60->unk_000.unk_040.unk_08 = func_878001E8(5) << 0x10;
+        D_86003B60->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
         D_86003B60->unk_000.unk_01E.y = -0x2800;
     }
 

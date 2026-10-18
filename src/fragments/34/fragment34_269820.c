@@ -33,7 +33,7 @@ void func_814078B0(unk_D_8140E720* arg0) {
 unk_D_8140E720* Particle_Allocate(void) {
     s32 i;
     s32 var_v0 = D_8140E72C;
-    unk_D_8140E720* var_a0 = &D_8140E720[var_v0];
+    unk_D_8140E720* var_a0 = &gParticleInstances[var_v0];
 
     for (i = 0; i < 0x12C; i++) {
         if (var_a0->unk_D0 == 0) {
@@ -43,7 +43,7 @@ unk_D_8140E720* Particle_Allocate(void) {
         var_v0++;
         if (var_v0 >= 0x12C) {
             var_v0 = 0;
-            var_a0 = &D_8140E720[0];
+            var_a0 = &gParticleInstances[0];
         } else {
             var_a0++;
         }
@@ -131,7 +131,7 @@ unk_D_8140E720* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_814
     return sp1C;
 }
 
-unk_D_8140E720* Particle_CreateFromEntity(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2,
+unk_D_8140E720* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2,
                               s16 arg3, s16 arg4, s16 arg5) {
     unk_D_8140E720* sp1C = func_81407B3C();
 
@@ -182,7 +182,7 @@ void func_81407E30(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg
     }
 }
 
-void func_81407F24(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void func_81407F24(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
                    s16 arg4) {
     s32 i;
 
@@ -193,7 +193,7 @@ void func_81407F24(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, u
     }
 }
 
-void func_81407FC8(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void func_81407FC8(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
                    s16 arg4, s16 arg5) {
     s32 i;
 
@@ -207,7 +207,7 @@ void func_81407FC8(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, u
 s32 Particle_CountActive(void) {
     s32 i;
     s32 var_v1 = 0;
-    unk_D_8140E720* ptr = D_8140E720;
+    unk_D_8140E720* ptr = gParticleInstances;
 
     for (i = 0; i < 0x12C; i++, ptr++) {
         if (ptr->unk_D0 != 0) {
@@ -1964,7 +1964,7 @@ void func_8140C1E4(unk_D_8140E720* arg0, s16 arg1) {
 void func_8140C204(unk_D_86002F34_00C* arg0) {
     s32 i;
     unk_D_8140E720* var_s0;
-    unk_D_8140E720* var_s2 = D_8140E720;
+    unk_D_8140E720* var_s2 = gParticleInstances;
 
     for (i = 0; i < 0x12C; i++, var_s2++) {
         if ((var_s2->unk_D0 != 0) && (var_s2->prev == NULL) && (func_81408308(var_s2, 8) != 0)) {
@@ -1982,7 +1982,7 @@ void func_8140C204(unk_D_86002F34_00C* arg0) {
 
 void func_8140C2D8(unk_D_86002F34_00C* arg0) {
     s32 i;
-    unk_D_8140E720* var_s0 = D_8140E720;
+    unk_D_8140E720* var_s0 = gParticleInstances;
 
     for (i = 0; i < 0x12C; i++, var_s0++) {
         if ((var_s0->unk_D0 != 0) && (Particle_HasFlag(var_s0, 8) != 0)) {

@@ -4,10 +4,10 @@
 #include "global.h"
 #include "src/memory.h"
 
-typedef struct unk_func_80011B94 {
+typedef struct SimpleGfxNode {
     /* 0x00 */ GraphRootNode unk_00;
     /* 0x18 */ Gfx* unk_18;
-} unk_func_80011B94; // size = 0x1C
+} SimpleGfxNode; // size = 0x1C
 
 typedef struct unk_D_8690A610_018 {
     /* 0x00 */ s16 unk_00;
@@ -44,12 +44,12 @@ unk_D_86002F34_alt5* TransformNode_Create(MainPoolState* arg0, unk_D_86002F34_al
 unk_D_86002F34_alt22* func_800117A8(MainPoolState* arg0, unk_D_86002F34_alt22* arg1, Vec3f* arg2);
 unk_D_86002F34_alt6* func_80011814(MainPoolState* arg0, unk_D_86002F34_alt6* arg1, s16 arg2, s16 arg3, s16 arg4, Vec3s* arg5, Vec3s* arg6, Vec3f* arg7);
 unk_D_86002F34_alt7* DisplayListNode_Create(MainPoolState* arg0, unk_D_86002F34_alt7* arg1, s32 arg2, Gfx* arg3, s16 arg4);
-unk_D_86002F58_004_000* func_80011938(MainPoolState* arg0, unk_D_86002F58_004_000* arg1, s16 arg2, Vec3f* arg3,
+Fragment2_1GraphNode* func_80011938(MainPoolState* arg0, Fragment2_1GraphNode* arg1, s16 arg2, Vec3f* arg3,
                                       Vec3s* arg4, Vec3f* arg5);
 unk_D_86002F34_alt8* MatrixNode_Create(MainPoolState* arg0, unk_D_86002F34_alt8* arg1, s32 arg2, Gfx* arg3, MtxF* arg4);
 unk_D_86002F34_alt8* func_80011ABC(MainPoolState* arg0, unk_D_86002F34_alt8* arg1, s32 arg2, Gfx* arg3, Vec3f* arg4, Vec3s* arg5);
 unk_D_86002F34_alt9* BillboardNode_Create(MainPoolState* arg0, unk_D_86002F34_alt9* arg1, s32 arg2, Gfx* arg3, Vec3f* arg4, f32 arg5);
-unk_func_80011B94* SimpleGfxNode_Create(MainPoolState* arg0, unk_func_80011B94* arg1, s32 arg2, Gfx* arg3);
+SimpleGfxNode* SimpleGfxNode_Create(MainPoolState* arg0, SimpleGfxNode* arg1, s32 arg2, Gfx* arg3);
 unk_D_86002F34_alt10* func_80011BF4(MainPoolState* arg0, unk_D_86002F34_alt10* arg1, s16 arg2, s16 arg3, Gfx* arg4, s16 arg5, s16 arg6, u8 r, u8 g, u8 b, u8 a);
 unk_D_86002F34_alt23* func_80011C98(MainPoolState* arg0, unk_D_86002F34_alt23* arg1, s16 arg2);
 unk_D_86002F34_alt24* func_80011CF0(MainPoolState* arg0, unk_D_86002F34_alt24* arg1, s32 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8, s32 arg9, 

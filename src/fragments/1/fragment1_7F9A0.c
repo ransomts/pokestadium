@@ -186,7 +186,7 @@ extern u32 D_8122C76C;
 extern u8 D_8122C770;
 extern u8 D_8122C771;
 
-s32 func_81200020(unk_D_8122B2C0* arg0) {
+s32 GbPak_CheckConnector(unk_D_8122B2C0* arg0) {
   s32 result;
 
   result = osGbpakCheckConnector(&arg0->pfs, &arg0->status);
@@ -196,7 +196,7 @@ s32 func_81200020(unk_D_8122B2C0* arg0) {
   return result;
 }
 
-s32 func_81200078(unk_D_8122B2C0* arg0, u16 arg1, s32 arg2) {
+s32 GbPak_WriteRegister(unk_D_8122B2C0* arg0, u16 arg1, s32 arg2) {
   s32 i;
   for (i = 0x1F; i >= 0; i--) {
       D_8122C500[i] = arg2;
@@ -204,12 +204,12 @@ s32 func_81200078(unk_D_8122B2C0* arg0, u16 arg1, s32 arg2) {
   return osGbpakReadWrite(&arg0->pfs, 1, arg1, &D_8122C500, 0x20);
 }
 
-s32 func_812000DC(unk_D_8122B2C0* arg0) {
+s32 GbPak_Initialize(unk_D_8122B2C0* arg0) {
   s32 ret;
 
-  if (!(ret = func_81200078(arg0, 0, 0xA))    && !(ret = func_81200078(arg0, 0x6000, 1))
-   && !(ret = func_81200078(arg0, 0x4000, 0)) && !(ret = func_81200078(arg0, 0x6000, 0))
-   && !(ret = func_81200078(arg0, 0x4000, 0)) && !(ret = func_81200078(arg0, 0x2100, 1))) {
+  if (!(ret = GbPak_WriteRegister(arg0, 0, 0xA))    && !(ret = GbPak_WriteRegister(arg0, 0x6000, 1))
+   && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x6000, 0))
+   && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x2100, 1))) {
       arg0->unk_5DA2 = 1;
       arg0->unk_5DCE = 0;
       arg0->unk_5DCF = 0;
@@ -218,7 +218,7 @@ s32 func_812000DC(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 func_8120019C(unk_D_8122B2C0* arg0) {
+s32 GbPak_GetStatus(unk_D_8122B2C0* arg0) {
   s32 ret;
 
   ret = osGbpakGetStatus(&arg0->pfs, &arg0->status);
@@ -228,7 +228,7 @@ s32 func_8120019C(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 func_812001E4(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_SetReadBank(unk_D_8122B2C0* arg0, s32 arg1) {
   s32 temp_a2;
   s32 var_v1;
 
@@ -236,7 +236,7 @@ s32 func_812001E4(unk_D_8122B2C0* arg0, s32 arg1) {
   arg0->unk_5DCE = 0xFF;
   if (arg0->unk_5DCF != 0) {
       arg0->unk_5DA2 = 0xFFFFU;
-      var_v1 = func_81200078(arg0, 0x6000, 0);
+      var_v1 = GbPak_WriteRegister(arg0, 0x6000, 0);
       if (var_v1 == 0) {
           arg0->unk_5DCF = 0U;
       }
@@ -246,11 +246,11 @@ s32 func_812001E4(unk_D_8122B2C0* arg0, s32 arg1) {
           temp_a2 = arg1 / 32;
           if (temp_a2 != ((s32) arg0->unk_5DA2 / 32)) {
               arg0->unk_5DA2 = 0xFFFEU;
-              var_v1 = func_81200078(arg0, 0x4000, temp_a2);
+              var_v1 = GbPak_WriteRegister(arg0, 0x4000, temp_a2);
           }
           if (var_v1 == 0) {
               arg0->unk_5DA2 = 0xFFFDU;
-              var_v1 = func_81200078(arg0, 0x2100, arg1);
+              var_v1 = GbPak_WriteRegister(arg0, 0x2100, arg1);
               if (var_v1 == 0) {
                   arg0->unk_5DA2 = (u16) arg1;
               }
@@ -260,20 +260,20 @@ s32 func_812001E4(unk_D_8122B2C0* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 func_812002BC(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_SetWriteBank(unk_D_8122B2C0* arg0, s32 arg1) {
   s32 var_v1;
 
   var_v1 = 0;
   arg0->unk_5DA2 = 0xFFFF;
   if (arg0->unk_5DCF != 1) {
       arg0->unk_5DCE = 0xFFU;
-      var_v1 = func_81200078(arg0, 0x6000, 1);
+      var_v1 = GbPak_WriteRegister(arg0, 0x6000, 1);
       if (var_v1 == 0) {
           arg0->unk_5DCF = 1U;
       }
   }
   if ((var_v1 == 0) && (arg1 != arg0->unk_5DCE)) {
-      var_v1 = func_81200078(arg0, 0x4000, arg1);
+      var_v1 = GbPak_WriteRegister(arg0, 0x4000, arg1);
       if (var_v1 == 0) {
           arg0->unk_5DCE = arg1;
       }
@@ -281,10 +281,10 @@ s32 func_812002BC(unk_D_8122B2C0* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 func_81200358(unk_D_8122B2C0* arg0) {
+s32 GbPak_VerifyChecksum(unk_D_8122B2C0* arg0) {
   s32 ret;
 
-  ret = func_812002BC(arg0, arg0->unk_5DA0 / 8192);
+  ret = GbPak_SetWriteBank(arg0, arg0->unk_5DA0 / 8192);
   if (ret == 0) {
       ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), D_8122C520, sizeof(D_8122C520));
       if (ret == 0) {
@@ -325,7 +325,7 @@ s32 func_812004B8(unk_D_8122B2C0* arg0) {
     count = 3;
     do {
         func_812003EC(arg0, count);
-        ret = func_812002BC(arg0, arg0->unk_5DA0 / 8192);
+        ret = GbPak_SetWriteBank(arg0, arg0->unk_5DA0 / 8192);
         if (ret == 0) {
             ret = osGbpakReadWrite(&arg0->pfs, 1, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), &arg0->unk_5D80, sizeof(D_8122C520));
             if (ret == 0) {
@@ -346,21 +346,21 @@ s32 func_812004B8(unk_D_8122B2C0* arg0) {
     return ret;
 }
 
-s32 func_812005D8(unk_D_8122B2C0* arg0) {
+s32 GbPak_Init(unk_D_8122B2C0* arg0) {
   s32 ret;
 
   ret = 0;
   if (!(arg0->status & 1)) {
-    ret = func_81200020(arg0);
+    ret = GbPak_CheckConnector(arg0);
       if (ret == 0) {
-        ret = func_812000DC(arg0);
+        ret = GbPak_Initialize(arg0);
           if (ret == 0) {
             ret = osGbpakReadId(&arg0->pfs, &arg0->gbpakId, &arg0->status);
               if (ret == 0) {
                 ret = bcmp(&arg0->unk_5C5C, &arg0->gbpakId, sizeof(arg0->unk_5C5C));
                   if ((ret == 0) && (arg0->unk_5DC4 != 0)) {
                       arg0->unk_5DC4 = 0U;
-                      ret = func_81200358(arg0);
+                      ret = GbPak_VerifyChecksum(arg0);
                       if (ret == 0) {
                         ret = func_812004B8(arg0);
                       }
@@ -376,7 +376,7 @@ s32 func_812005D8(unk_D_8122B2C0* arg0) {
   return ret;
 }
 
-s32 func_812006AC(unk_D_8122B2C0* arg0) {
+s32 GbPak_ReadDataAndAccumulate(unk_D_8122B2C0* arg0) {
     s32 var_s1 = 0;
     s32 var_s2;
     s32 var_s2_2;
@@ -387,7 +387,7 @@ s32 func_812006AC(unk_D_8122B2C0* arg0) {
     u32 offset;
     s32 i;
     u32 temp;
-    var_v1 = func_812005D8(arg0);
+    var_v1 = GbPak_Init(arg0);
     var_s0 = arg0->transferBuffer;
     var_s3 = arg0->gbAddress;
     var_s4 = arg0->transferSize;
@@ -417,7 +417,7 @@ s32 func_812006AC(unk_D_8122B2C0* arg0) {
     }
 
     while (var_v1 == 0 && var_s4 != 0) {
-        var_v1 = func_812001E4(arg0, var_s3 >> 14);
+        var_v1 = GbPak_SetReadBank(arg0, var_s3 >> 14);
         if (var_v1 == 0) {
             offset = var_s3 & 0x3FFF;
             temp = offset;
@@ -446,7 +446,7 @@ s32 func_812006AC(unk_D_8122B2C0* arg0) {
     }
 
     if (var_v1 == 0) {
-        var_v1 = func_8120019C(arg0);
+        var_v1 = GbPak_GetStatus(arg0);
         if (var_v1 == 0) {
             arg0->unk_5D70[0] += var_s1;
         }
@@ -455,7 +455,7 @@ s32 func_812006AC(unk_D_8122B2C0* arg0) {
     return var_v1;
 }
 
-s32 func_812008C8(unk_D_8122B2C0* arg0, s32 arg1) {
+s32 GbPak_ReadWriteLoop(unk_D_8122B2C0* arg0, s32 arg1) {
   s32 temp_v0;
   s32 var_s0;
   s32 var_s1;
@@ -464,13 +464,13 @@ s32 func_812008C8(unk_D_8122B2C0* arg0, s32 arg1) {
   s32 var_v1;
   u32 var_s2;
 
-  var_v0 = func_812005D8(arg0);
+  var_v0 = GbPak_Init(arg0);
   var_v1 = var_v0;
   var_s3 = arg0->transferBuffer;
   var_s2 = arg0->gbAddress;
   var_s1 = arg0->transferSize;
   while ((var_v0 == 0) && (var_s1 != 0)) {
-      var_v0 = func_812002BC(arg0, var_s2 >> 0xD);
+      var_v0 = GbPak_SetWriteBank(arg0, var_s2 >> 0xD);
       var_v1 = var_v0;
       if (var_v0 == 0) {
           temp_v0 = var_s2 & 0x1FFF;
@@ -487,7 +487,7 @@ s32 func_812008C8(unk_D_8122B2C0* arg0, s32 arg1) {
       }
   }
   if (var_v0 == 0) {
-      var_v1 = func_8120019C(arg0);
+      var_v1 = GbPak_GetStatus(arg0);
   }
   return var_v1;
 }
@@ -556,16 +556,16 @@ void func_81200AA8(s32 arg0) {
                 if (osGbpakReadId((OSPfs*)&emu->pfs, &emu->unk_5C5C, &emu->status) != 0) {
                     goto retry;
                 }
-                if (func_81200020(emu) != 0) {
+                if (GbPak_CheckConnector(emu) != 0) {
                     goto retry;
                 }
-                if (func_812000DC(emu) != 0) {
+                if (GbPak_Initialize(emu) != 0) {
                     goto retry;
                 }
                 emu->transferBuffer = emu->unk_5DA4;
                 emu->gbAddress = 0x9C000;
                 emu->transferSize = 0x20;
-                if (func_812006AC(emu) != 0) {
+                if (GbPak_ReadDataAndAccumulate(emu) != 0) {
                     goto retry;
                 }
                 if (!(emu->status & 1)) {
@@ -578,27 +578,27 @@ void func_81200AA8(s32 arg0) {
                 switch (emu->unk_5DC7) {
                     case 1:
                         emu->unk_5DCD -= 0x17;
-                        if (func_812006AC(emu) != 0) {
+                        if (GbPak_ReadDataAndAccumulate(emu) != 0) {
                             goto retry;
                         }
                         break;
                     case 2:
                         emu->unk_5DCD -= 0x17;
-                        if (func_812008C8(emu, 0) != 0) {
+                        if (GbPak_ReadWriteLoop(emu, 0) != 0) {
                             goto retry;
                         }
                         break;
                     case 3:
                         emu->unk_5DCD -= 0x17;
-                        if (func_812008C8(emu, 1) != 0) {
+                        if (GbPak_ReadWriteLoop(emu, 1) != 0) {
                             goto retry;
                         }
                         break;
                     case 5:
                         emu->transferBuffer = D_8122C540;
                         emu->transferSize = 0x100;
-                        if ((func_812008C8(emu, 1) == 0) &&
-                            (emu->transferBuffer = D_8122C640, func_812008C8(emu, 0) == 0) &&
+                        if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
+                            (emu->transferBuffer = D_8122C640, GbPak_ReadWriteLoop(emu, 0) == 0) &&
                             (bcmp(D_8122C540, D_8122C640, 0x100) == 0)) {
                             if (emu->unk_5A2C[emu->gbAddress >> 8] != 0) {
                                 emu->unk_5A2C[emu->gbAddress >> 8] = 2;
@@ -620,7 +620,7 @@ void func_81200AA8(s32 arg0) {
                                     emu->gbAddress = (value & 0xF) << 13;
                                     emu->transferBuffer = (u8*)emu + emu->gbAddress + 0x12DF0;
                                     emu->transferSize = 0x2000;
-                                    if (func_812008C8(emu, 0) != 0) {
+                                    if (GbPak_ReadWriteLoop(emu, 0) != 0) {
                                         goto disconnect;
                                     }
                                     emu->unk_559C[entry[0] & 0xF] = 0xFF;
@@ -631,7 +631,7 @@ void func_81200AA8(s32 arg0) {
                                     emu->gbAddress = value << 14;
                                     emu->transferBuffer = (u8*)emu->unk_53BC + emu->gbAddress;
                                     emu->transferSize = 0x4000;
-                                    if (func_812006AC(emu) != 0) {
+                                    if (GbPak_ReadDataAndAccumulate(emu) != 0) {
                                         goto retry;
                                     }
                                     sum = 0;
@@ -659,7 +659,7 @@ void func_81200AA8(s32 arg0) {
                         break;
                     case 8:
                         emu->unk_5DC4 = 0;
-                        if (func_812005D8(emu) != 0) {
+                        if (GbPak_Init(emu) != 0) {
                             goto retry;
                         }
                         if (func_812004B8(emu) != 0) {
@@ -667,7 +667,7 @@ void func_81200AA8(s32 arg0) {
                         }
                         break;
                     case 7:
-                        if (func_8120019C(emu) != 0) {
+                        if (GbPak_GetStatus(emu) != 0) {
                             goto retry;
                         }
                         break;
@@ -689,7 +689,7 @@ void func_81200AA8(s32 arg0) {
                 if (emu->unk_5DC7 != 7) {
                     break;
                 }
-                if (func_8120019C(emu) != 0) {
+                if (GbPak_GetStatus(emu) != 0) {
                     if (--retries == 0) {
                         retries = 5;
                         emu->unk_5DC9 = 9;
@@ -702,9 +702,9 @@ void func_81200AA8(s32 arg0) {
                 if (osGbpakInit(D_8122C4D8, (OSPfs*)&emu->pfs, emu->unk_5DCC) != 0) {
                     retries = 5;
                 } else {
-                    if (func_8120019C(emu) == 0) {
+                    if (GbPak_GetStatus(emu) == 0) {
                         if (--retries == 0) {
-                            i = func_812005D8(emu);
+                            i = GbPak_Init(emu);
                             if (i != 0) {
                                 goto power_off;
                             } else if (i == 0) {
@@ -718,8 +718,8 @@ void func_81200AA8(s32 arg0) {
                 break;
             case 10:
                 emu->transferBuffer = D_8122C540;
-                if ((func_812008C8(emu, 1) == 0) &&
-                    (emu->transferBuffer = D_8122C640, func_812008C8(emu, 0) == 0) &&
+                if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
+                    (emu->transferBuffer = D_8122C640, GbPak_ReadWriteLoop(emu, 0) == 0) &&
                     (bcmp(D_8122C540, D_8122C640, 0x100) == 0)) {
                     if (emu->unk_5A2C[emu->gbAddress >> 8] != 0) {
                         emu->unk_5A2C[emu->gbAddress >> 8] = 2;

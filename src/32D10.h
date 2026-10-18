@@ -19,7 +19,7 @@ void AnimationFrame_StallCheck(void);
 s32 ModelPhase_IsIdle(void);
 u8 GraphRoot_GetCurrentModelSlot(void);
 s16 func_800325E0(void);
-void GraphNode_EnableTransform(unk_D_86002F58_004_000* arg0);
+void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0);
 void ModelPhase_Advance(u32 arg0, u32 arg1);
 void ModelPhase_UpdateStatus(u32 arg0, u32 arg1);
 void Gfx_SetCombineRaw(Gfx*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);

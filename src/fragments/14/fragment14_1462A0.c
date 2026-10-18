@@ -98,7 +98,7 @@ static unk_D_86002F34_00C* D_86808490;
 unk_D_86808498 D_86808498;
 
 void func_86801FC0(unk_D_86807558* arg0) {
-    unk_D_86002F58_004_000* ptr = &arg0->unk_24C;
+    Fragment2_1GraphNode* ptr = &arg0->unk_24C;
 
     if (arg0->unk_0DC != 0) {
         ptr->unk_030.x = (SINS(arg0->unk_0E2 + 0x0000) * 0.3f) + 1.0f;
@@ -191,7 +191,7 @@ s32 func_86802204(unk_D_86807558_098* arg0) {
     return 0;
 }
 
-s16 func_8680262C(unk_D_86002F58_004_000* arg0, s16 arg1) {
+s16 func_8680262C(Fragment2_1GraphNode* arg0, s16 arg1) {
     s32 i;
     s16 sp2A;
 
@@ -243,14 +243,14 @@ void func_86802728(unk_D_86807558_040* arg0) {
 
 void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     s32 i;
-    unk_D_86002F58_004_000* sp24;
+    Fragment2_1GraphNode* sp24;
     s16 angle;
     f32 sqrt;
 
     arg0->unk_000 = arg1;
     arg0->unk_002 = 0;
 
-    if (D_8780FA30[arg0->unk_000] == 1) {
+    if (gMiniHudColorDefaults[arg0->unk_000] == 1) {
         arg0->unk_002 |= 4;
     }
 
@@ -270,7 +270,7 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
 
         D_8680847A++;
 
-        if ((arg2 != 0) && (func_878001E8(4) == 0) && (D_86808480 <= 0)) {
+        if ((arg2 != 0) && (GetRandomMod(4) == 0) && (D_86808480 <= 0)) {
             arg0->unk_008 = 4;
             D_86808480++;
         }
@@ -344,7 +344,7 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     func_86802204(&arg0->unk_098);
 
     arg0->unk_0BC = 0;
-    arg0->unk_0BE = func_878001E8(0x5B) + 0x1E;
+    arg0->unk_0BE = GetRandomMod(0x5B) + 0x1E;
     arg0->unk_0C0 = 0;
     arg0->unk_0C4 = 0;
     arg0->unk_0CC = 0;
@@ -365,7 +365,7 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     GraphNode_InitChild(sp24, 0, 0xA0, D_86807550->unk_08->unk_00[0]);
     GraphNode_TriggerAction(sp24, arg0->unk_0C0);
 
-    sp24->unk_040.unk_08 = func_878001E8(0x1E) << 0x10;
+    sp24->unk_040.unk_08 = GetRandomMod(0x1E) << 0x10;
 
     GraphNode_InitChild(&arg0->unk_24C, 0, 0, D_86808474);
 
@@ -373,11 +373,11 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_24C.unk_000.unk_02 |= 8;
 
     if (arg2 != 0) {
-        arg0->unk_3B4 = D_8780633C[arg0->unk_000];
+        arg0->unk_3B4 = gPositiveTextureBank[arg0->unk_000];
     } else if (arg0->unk_002 & 4) {
-        arg0->unk_3B4 = D_8780634C[arg0->unk_000];
+        arg0->unk_3B4 = gNegativeTextureBank[arg0->unk_000];
     } else {
-        arg0->unk_3B4 = D_8780633C[arg0->unk_000];
+        arg0->unk_3B4 = gPositiveTextureBank[arg0->unk_000];
     }
 }
 
@@ -1000,7 +1000,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
             }
 
             if (!(arg0->unk_006 & 0xF)) {
-                arg0->unk_0E0 = func_878001E8(0x10000) & 0xFFFF;
+                arg0->unk_0E0 = GetRandomMod(0x10000) & 0xFFFF;
             }
 
             spAC = COSS(arg0->unk_0E0) * spB8;
@@ -1010,7 +1010,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    func_81407D48(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &D_87903E10, 4);
+                    func_81407D48(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &gMiniTutoScreenNode0, 4);
                 }
             } else {
                 arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
@@ -1116,12 +1116,12 @@ void func_86803C6C(unk_D_86807558* arg0) {
     arg0->unk_0BE--;
     if (arg0->unk_0BE == 0) {
         if (arg0->unk_0BC == 0) {
-            arg0->unk_0BC = func_878001E8(3) + 1;
+            arg0->unk_0BC = GetRandomMod(3) + 1;
             arg0->unk_0BE = 0xF;
         } else {
             arg0->unk_0BC--;
             if (arg0->unk_0BC == 0) {
-                arg0->unk_0BE = func_878001E8(0x5B) + 0x1E;
+                arg0->unk_0BE = GetRandomMod(0x5B) + 0x1E;
             } else {
                 arg0->unk_0BE = 0xF;
             }
@@ -1412,7 +1412,7 @@ void func_86804F2C(unk_D_86807558* arg0) {
 void func_86805000(unk_D_86807558* arg0) {
     UNUSED s32 pad[3];
     f32 var_fv0;
-    unk_D_86002F58_004_000* ptr = &arg0->unk_0E4;
+    Fragment2_1GraphNode* ptr = &arg0->unk_0E4;
 
     ptr->unk_024 = arg0->unk_068;
 
@@ -1655,7 +1655,7 @@ void func_86805858(s32 arg0) {
     mem_pool_resize_block(temp_v0);
     D_8680847A = 0;
     D_8680847E = 4 - D_8780FA2C;
-    D_8680847C = func_878001E8(D_8680847E);
+    D_8680847C = GetRandomMod(D_8680847E);
     D_86808480 = 0;
 
     for (i = 0; i < 4; i++) {

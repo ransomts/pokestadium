@@ -24,7 +24,7 @@ static u32 D_86B0E250[] = {
 
 static unk_D_86002F30* D_86B106B0;
 static GraphNode* D_86B106B4;
-static unk_D_86002F58_004_000 D_86B106B8;
+static Fragment2_1GraphNode D_86B106B8;
 static unk_D_86002F34_00C* D_86B10820;
 static BinArchive* D_86B10824;
 static u8* D_86B10828;

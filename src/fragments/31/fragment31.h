@@ -22,7 +22,7 @@ typedef struct unk_arg0_func_81002260 {
 
 extern const Gfx D_810041D0[];
 
-void func_810007A8(unk_D_86002F58_004_000*);
+void func_810007A8(Fragment2_1GraphNode*);
 void func_810007F8(void);
 void func_81002174(u8*);
 void func_81002260(unk_arg0_func_81002260*, u8*);

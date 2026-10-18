@@ -197,7 +197,7 @@ s32 func_86B05D18(s32 arg0, GraphNode* arg1) {
 }
 
 s32 func_86B05D84(s32 arg0, GraphNode* arg1) {
-    unk_D_86002F58_004_000* ptr = (unk_D_86002F58_004_000*)arg1;
+    Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
         ptr->unk_03C.rgba = D_86B0FA3C.rgba;
@@ -307,7 +307,7 @@ void func_86B061E8(void) {
     }
 }
 
-s32 func_86B0630C(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
+s32 func_86B0630C(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     if (arg1 > 0) {
         arg0->unk_01E.y -= arg1;
         if ((arg0->unk_01E.y < arg2) && ((arg2 - arg1) < arg0->unk_01E.y)) {
@@ -322,7 +322,7 @@ s32 func_86B0630C(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-s32 func_86B06394(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
+s32 func_86B06394(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     if ((((arg0->unk_01E.y - arg2) / 182) < 0x3D) && (((arg0->unk_01E.y - arg2) / 182) >= 0)) {
         arg1 = (arg0->unk_01E.y - arg2) / 9;
     }
@@ -497,7 +497,7 @@ void func_86B06E34(void) {
 }
 
 void func_86B06E80(void) {
-    D_86B0FA7C->unk_00 = D_87906050->unk_00.unk_0C;
+    D_86B0FA7C->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
     gMiniCameraPtr = D_86B0FA7C->unk_00;
     func_86B06050();
 }
@@ -513,7 +513,7 @@ void func_86B06EC8(void) {
 }
 
 void func_86B06F18(void) {
-    D_86B0FA7C->unk_00 = D_87906050->unk_00.unk_0C;
+    D_86B0FA7C->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
     gMiniCameraPtr = D_86B0FA7C->unk_00;
     func_86B061E8();
 }
@@ -827,9 +827,9 @@ void func_86B07DF4(void) {
     }
 
     Gfx_FinishFrame();
-    Graph_SetTextureState(&D_87906050->unk_00);
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
     func_86B075EC();
-    func_87901C98();
+    ParticleRender_SetupMiniCamera();
     Stage_Advance();
 }
 
@@ -837,7 +837,7 @@ void func_86B07EA0(void) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     Gfx_FinishFrame();
-    Graph_SetTextureState(&D_87906050->unk_00);
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
     Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
     Stage_Advance();
 }
@@ -871,7 +871,7 @@ void func_86B07FA4(void) {
         D_86B0FA70++;
 
         func_86B06FCC();
-        func_87901C20();
+        ParticleSystem_UpdateAndRender();
 
         if (func_86B06FFC() != 0) {
             var_s0 = 0;
@@ -890,7 +890,7 @@ void func_86B08034(void) {
     if (gBattleContext.unk_0001 == 7) {
         for (i = 0; i < 100; i++) {
             func_86B06FCC();
-            func_87901C20();
+            ParticleSystem_UpdateAndRender();
 
             temp_s2();
 
@@ -910,12 +910,12 @@ void func_86B08034(void) {
     for (i = 0; i < var_s1; i++) {
         if (gBattleContext.unk_0001 == 7) {
             func_86B06FCC();
-            func_87901C20();
+            ParticleSystem_UpdateAndRender();
             temp_s2();
             func_86B07DF4();
         } else {
             func_86B06FCC();
-            func_87901C20();
+            ParticleSystem_UpdateAndRender();
             func_86B06FFC();
             temp_s2();
             func_86B07DF4();
@@ -925,7 +925,7 @@ void func_86B08034(void) {
     if (gBattleContext.unk_0001 == 7) {
         for (i = 0; i < 30; i++) {
             func_86B06FCC();
-            func_87901C20();
+            ParticleSystem_UpdateAndRender();
 
             temp_s2();
 
@@ -984,7 +984,7 @@ void func_86B0819C(void) {
     GraphNode_AllocInit(NULL, &D_86B0FA08);
     GraphNode_AllocInit(NULL, &D_86B0FA20);
     sp34 = state_pool_try_init(main_pool_get_available(), 0);
-    D_87906050 = process_geo_layout(sp34, D_86B0DE5C);
+    gMiniCameraStruct = process_geo_layout(sp34, D_86B0DE5C);
 
     temp_v0_3 = sp2C(0, 0);
     if (temp_v0_3 != NULL) {
@@ -1017,7 +1017,7 @@ void func_86B0819C(void) {
 
     Graph_InitRoots();
     func_86B05DA0(0xFF, 0xFF, 0xFF);
-    func_87901620();
+    ParticleSystem_Init();
 
     D_86B0FA78 = main_pool_alloc(sizeof(unk_D_86B0FA78), 0);
     bzero(D_86B0FA78, sizeof(unk_D_86B0FA78));

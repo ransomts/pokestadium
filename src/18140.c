@@ -84,12 +84,12 @@ void GetAnimStackCurrentFramePtr(unk_D_86002F34_alt11_018** arg0, unk_D_86002F34
     }
 }
 
-void InitAnimState(unk_D_86002F58_004_000* arg0) {
+void InitAnimState(Fragment2_1GraphNode* arg0) {
     arg0->unk_054.unk_00 = -1;
     arg0->unk_054.unk_04 = 0;
 }
 
-s16 SetAnimStateTable(unk_D_86002F58_004_000* arg0, s16 arg1, s32 arg2) {
+s16 SetAnimStateTable(Fragment2_1GraphNode* arg0, s16 arg1, s32 arg2) {
     unk_D_86002F58_004_000_054_004* temp_v0 = Util_ConvertAddrToVirtAddr(arg2);
     unk_D_86002F58_004_000_054* ptr = &arg0->unk_054;
 
@@ -102,18 +102,18 @@ s16 SetAnimStateTable(unk_D_86002F58_004_000* arg0, s16 arg1, s32 arg2) {
     return ptr->unk_08;
 }
 
-void SetAnimStateIndex(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void SetAnimStateIndex(Fragment2_1GraphNode* arg0, s16 arg1) {
     arg0->unk_054.unk_08 = arg1 - 1;
 }
 
-s32 IsAnimStateAtIndex(unk_D_86002F58_004_000* arg0, s16 arg1) {
+s32 IsAnimStateAtIndex(Fragment2_1GraphNode* arg0, s16 arg1) {
     return (arg0->unk_054.unk_08 + 1) == arg1;
 }
 
-s32 IsAnimStateSecondLast(unk_D_86002F58_004_000* arg0) {
+s32 IsAnimStateSecondLast(Fragment2_1GraphNode* arg0) {
     return (arg0->unk_054.unk_08 + 2) == arg0->unk_054.unk_04->unk_0A;
 }
 
-s32 IsAnimStateLast(unk_D_86002F58_004_000* arg0) {
+s32 IsAnimStateLast(Fragment2_1GraphNode* arg0) {
     return (arg0->unk_054.unk_08 + 1) == arg0->unk_054.unk_04->unk_0A;
 }

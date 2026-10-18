@@ -118,7 +118,7 @@ static Color_RGBA8 D_84B16EEC[] = { {
                                         0x80,
                                     } };
 
-s32 func_84B0BF10(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0BF10(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0* temp_a0;
     u8* var_a0;
 
@@ -139,7 +139,7 @@ s32 func_84B0BF10(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B0BFE4(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0BFE4(s32 arg0, SimpleGfxNode* arg1) {
     UNUSED s32 pad;
 
     if (arg0 == 5) {
@@ -152,7 +152,7 @@ s32 func_84B0BFE4(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_84B0C094(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0C094(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0_000* temp_a0;
 
     if (arg0 == 5) {
@@ -183,8 +183,8 @@ void func_84B0C174(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16
 
 void func_84B0C278(unk_D_84B25AC0_000* arg0) {
     s16 temp_v0;
-    unk_D_86002F58_004_000* temp_v1;
-    unk_D_86002F58_004_000* temp_v1_2;
+    Fragment2_1GraphNode* temp_v1;
+    Fragment2_1GraphNode* temp_v1_2;
 
     if (arg0->unk_04 < 0x10) {
         arg0->unk_0C = Memmap_GetSegmentVaddr(((s32*)Memmap_GetSegmentVaddr(D_2023240))[(arg0->unk_04 / 2)]);
@@ -198,7 +198,7 @@ void func_84B0C278(unk_D_84B25AC0_000* arg0) {
     }
 }
 
-s32 func_84B0C3A4(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84B0C3A4(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0_0A0* temp_v1;
 
     if (arg0 == 5) {
@@ -548,7 +548,7 @@ void func_84B0D4B4(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D54C(unk_D_84B25AC0* arg0, unk_D_86002F58_004_000* arg1, unk_D_86002F58_004_000* arg2) {
+void func_84B0D54C(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1, Fragment2_1GraphNode* arg2) {
     s32 i;
     s32 j;
 

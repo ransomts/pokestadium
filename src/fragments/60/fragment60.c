@@ -18,8 +18,8 @@ static void* D_82E019B4;
 static GraphNode* D_82E019B8;
 static GraphNode* D_82E019BC;
 static GraphNode* D_82E019C0;
-static unk_D_86002F58_004_000 D_82E019C8[4];
-static unk_D_86002F58_004_000 D_82E01F68[3];
+static Fragment2_1GraphNode D_82E019C8[4];
+static Fragment2_1GraphNode D_82E01F68[3];
 static unk_func_80027FA0 D_82E023A0;
 static s16 D_82E023A8;
 static s16 D_82E023AA;
@@ -216,7 +216,7 @@ void func_82E00058(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_82E01994 += 0x2000;
 }
 
-s32 func_82E00274(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_82E00274(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
     s32 var_t0;
 
@@ -238,7 +238,7 @@ s32 func_82E00274(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_82E0036C(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_82E0036C(s32 arg0, SimpleGfxNode* arg1) {
     s32 var_a3;
 
     if (arg0 == 5) {
@@ -333,8 +333,8 @@ void func_82E0045C(s32 arg0, s32 arg1) {
 
 void func_82E00A54(void) {
     s32 i;
-    unk_D_86002F58_004_000* var_s1;
-    unk_D_86002F58_004_000* var_s2;
+    Fragment2_1GraphNode* var_s1;
+    Fragment2_1GraphNode* var_s2;
 
     for (var_s1 = &D_82E019C8[0], i = 0; i < 4; i++, var_s1++) {
         GraphNode_InitChild(var_s1, 0, 0, D_82E019BC);
@@ -418,7 +418,7 @@ s32 func_82E00CF0(void) {
 void func_82E00E2C(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     s32 i;
-    unk_D_86002F58_004_000* var_s2;
+    Fragment2_1GraphNode* var_s2;
 
     D_82E019B8 = process_geo_layout(temp_v0, &D_82E01110);
     D_82E019BC = process_geo_layout(temp_v0, &D_82E01800);

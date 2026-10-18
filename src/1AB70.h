@@ -20,7 +20,7 @@ typedef struct unk_func_8001B1FC {
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ unk_D_86002F58_004_000_010* unk_1C;
     /* 0x20 */ GraphNode* unk_20;
-    /* 0x24 */ unk_D_86002F58_004_000* unk_24;
+    /* 0x24 */ Fragment2_1GraphNode* unk_24;
     /* 0x28 */ FramebufferImage* unk_28;
     /* 0x2C */ FramebufferImage* unk_2C;
 } unk_func_8001B1FC; // size = 0x30
@@ -52,7 +52,7 @@ typedef struct unk_func_8001A024 {
     /* 0x04 */ unk_D_86002F58_004_000_010* unk_04;
     /* 0x08 */ unk_func_8001A024_008* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
-    /* 0x10 */ unk_D_86002F58_004_000* unk_10;
+    /* 0x10 */ Fragment2_1GraphNode* unk_10;
     /* 0x14 */ FramebufferImage* unk_14;
     /* 0x18 */ unk_D_8006FF00* unk_18;
 } unk_func_8001A024; // size = 0x1C
@@ -61,7 +61,7 @@ typedef struct unk_D_84B25A28 {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
-    /* 0x04 */ unk_D_86002F58_004_000* unk_04;
+    /* 0x04 */ Fragment2_1GraphNode* unk_04;
     /* 0x08 */ unk_D_86002F34_00C* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ GraphNode* unk_10;

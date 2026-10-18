@@ -4,20 +4,20 @@
 #include "src/memory.h"
 #include "src/12D80.h"
 
-void func_87901620(void) {
-    D_8140E720 = main_pool_alloc(sizeof(unk_D_8140E720) * 300, 0);
-    bzero(D_8140E720, sizeof(unk_D_8140E720) * 300);
+void ParticleSystem_Init(void) {
+    gParticleInstances = main_pool_alloc(sizeof(unk_D_8140E720) * 300, 0);
+    bzero(gParticleInstances, sizeof(unk_D_8140E720) * 300);
     D_8140E72C = 0;
 
-    D_8140E728 = main_pool_alloc(sizeof(unk_D_8140E728) * 128, 0);
-    bzero(D_8140E728, sizeof(unk_D_8140E728) * 128);
-    D_8140E734 = 0;
+    gParticleEmitters = main_pool_alloc(sizeof(unk_D_8140E728) * 128, 0);
+    bzero(gParticleEmitters, sizeof(unk_D_8140E728) * 128);
+    gParticleEmitterNextIdx = 0;
 }
 
-s32 func_8790168C(void) {
+s32 ParticleEmitter_Allocate(void) {
     s32 i;
-    s32 var_v0 = D_8140E734;
-    unk_D_8140E728* var_v1 = &D_8140E728[var_v0];
+    s32 var_v0 = gParticleEmitterNextIdx;
+    unk_D_8140E728* var_v1 = &gParticleEmitters[var_v0];
 
     for (i = 0; i < 0x80; i++) {
         if (var_v1->unk_2B == 0) {
@@ -27,7 +27,7 @@ s32 func_8790168C(void) {
         var_v0++;
         if (var_v0 >= 0x80) {
             var_v0 = 0;
-            var_v1 = D_8140E728;
+            var_v1 = gParticleEmitters;
         } else {
             var_v1++;
         }
@@ -38,24 +38,24 @@ s32 func_8790168C(void) {
     } else {
         var_v1->unk_2B = 1;
     
-        D_8140E734 = var_v0 + 1;
-        if (D_8140E734 >= 0x80) {
-            D_8140E734 = 0;
+        gParticleEmitterNextIdx = var_v0 + 1;
+        if (gParticleEmitterNextIdx >= 0x80) {
+            gParticleEmitterNextIdx = 0;
         }
     }
     return var_v1;
 }
 
-void func_87901720(unk_D_8140E728* arg0) {
+void ParticleEmitter_Reset(unk_D_8140E728* arg0) {
     arg0->unk_28 = 0;
     arg0->unk_2B = 0;
     arg0->unk_2A = 0;
     arg0->unk_26 = arg0->unk_28;
 }
 
-s32 func_87901738(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, Vec3s arg7, func_unk_D_8140E724_008 arg9,
+s32 ParticleEmitter_Create(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, Vec3s arg7, func_unk_D_8140E724_008 arg9,
                   unk_D_8140E728_01C* argA, s32 argB, u8 argC, s16 argD, u8 argE, u8 argF, u8 arg10) {
-    unk_D_8140E728* temp_v0 = (unk_D_8140E728*)func_8790168C();
+    unk_D_8140E728* temp_v0 = (unk_D_8140E728*)ParticleEmitter_Allocate();
 
     if ((s32)temp_v0 != -1) {
         temp_v0->unk_28 = arg0;
@@ -85,25 +85,25 @@ s32 func_87901738(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, Vec3s arg7,
     return (s32)temp_v0;
 }
 
-void func_87901804(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
+void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
                    u8 arg6, u8 arg7) {
     Vec3s sp50;
 
     sp50.x = sp50.y = sp50.z = 0;
 
-    func_87901738(arg0, 0, 1, arg1, arg2, sp50, arg3, arg4, 0, 0, arg5, arg6, arg7, 0);
+    ParticleEmitter_Create(arg0, 0, 1, arg1, arg2, sp50, arg3, arg4, 0, 0, arg5, arg6, arg7, 0);
 }
 
-void func_879018B0(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7,
+void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7,
                    unk_D_8140E728_01C* arg8, s16 arg9, u8 argA, u8 argB) {
     Vec3s sp50;
 
     sp50.x = sp50.y = sp50.z = 0;
 
-    func_87901738(arg0, arg1, arg2, arg3, arg4, sp50, arg7, arg8, 0, 0, arg9, argA, argB, 0);
+    ParticleEmitter_Create(arg0, arg1, arg2, arg3, arg4, sp50, arg7, arg8, 0, 0, arg9, argA, argB, 0);
 }
 
-void func_87901958(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2) {
+void ParticleInstance_PopulateFromEmitter(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2) {
     if ((s32)arg0 != -1) {
         while (arg0 != NULL) {
             arg0->unk_28 = arg1->unk_00;
@@ -126,7 +126,7 @@ void func_87901958(unk_D_8140E720* arg0, unk_D_8140E728* arg1, s16 arg2) {
     }
 }
 
-void func_87901A28(unk_D_8140E728* arg0) {
+void ParticleEmitter_GenerateParticles(unk_D_8140E728* arg0) {
     s16 i;
     s16 sp2C;
     unk_D_8140E728_01C* temp_v0 = arg0->unk_1C;
@@ -134,33 +134,33 @@ void func_87901A28(unk_D_8140E728* arg0) {
     unk_D_8140E728_01C_004_1* unk_04 = temp_v0->unk_04.a;
 
     if ((temp_v0->unk_00 == 1) && (unk_04->unk_00 == 1)) {
-        func_87901958(func_81407B5C(temp_v1), arg0, 0);
+        ParticleInstance_PopulateFromEmitter(func_81407B5C(temp_v1), arg0, 0);
     } else {
         for (i = 0; i < sp2C; i++) {
-            func_87901958(func_81407B3C(), arg0, i);
+            ParticleInstance_PopulateFromEmitter(func_81407B3C(), arg0, i);
         }
     }
 }
 
-void func_87901ADC(unk_D_8140E728* arg0) {
+void ParticleEmitter_Tick(unk_D_8140E728* arg0) {
     if (arg0->unk_2C == 0) {
-        func_87901A28(arg0);
+        ParticleEmitter_GenerateParticles(arg0);
     }
 }
 
-void func_87901B08(void) {
+void ParticleEmitters_UpdateAll(void) {
     s32 i;
-    unk_D_8140E728* var_s0 = D_8140E728;
+    unk_D_8140E728* var_s0 = gParticleEmitters;
 
     for (i = 0; i < 0x80; i++, var_s0++) {
         if (var_s0->unk_2B != 0) {
             var_s0->unk_28--;
             if (var_s0->unk_28 < 0) {
-                func_87901ADC(var_s0);
+                ParticleEmitter_Tick(var_s0);
                 if (var_s0->unk_2A > 0) {
                     var_s0->unk_2A--;
                     if (var_s0->unk_2A == 0) {
-                        func_87901720(var_s0);
+                        ParticleEmitter_Reset(var_s0);
                     }
                 } else {
                     var_s0->unk_28 = var_s0->unk_26;
@@ -186,11 +186,11 @@ void func_87901BD4(unk_D_8140E720* arg0) {
     }
 }
 
-void func_87901C20(void) {
+void ParticleSystem_UpdateAndRender(void) {
     s32 i;
-    unk_D_8140E720* var_s0 = D_8140E720;
+    unk_D_8140E720* var_s0 = gParticleInstances;
 
-    func_87901B08();
+    ParticleEmitters_UpdateAll();
 
     for (i = 0; i < 0x12C; i++, var_s0++) {
         if (var_s0->unk_D0 != 0) {
@@ -203,7 +203,7 @@ void func_87901C20(void) {
     }
 }
 
-void func_87901C98(void) {
+void ParticleRender_SetupMiniCamera(void) {
     gSPPerspNormalize(gDisplayListHead++, gMiniCameraPtr->unk_24.perspNorm);
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_24.mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_60.p_mtxf, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);

@@ -88,7 +88,7 @@ s32 func_86B000D0(s32 arg0, GraphNode* arg1) {
 
 s32 func_86B00158(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
-        unk_D_86002F58_004_000* ptr = (unk_D_86002F58_004_000*)arg1;
+        Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
         ptr->unk_030.x = 1.5f;
         ptr->unk_030.y = 1.5f;
@@ -101,7 +101,7 @@ s32 func_86B00158(s32 arg0, GraphNode* arg1) {
 
 s32 func_86B00188(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
-        unk_D_86002F58_004_000* ptr = (unk_D_86002F58_004_000*)arg1;
+        Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
         ptr->unk_030.x = 1.0f;
         ptr->unk_030.y = 1.0f;

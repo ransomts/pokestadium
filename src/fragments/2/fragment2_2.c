@@ -13,7 +13,7 @@
 #include "src/6A40.h"
 #include "src/5580.h"
 
-u32 D_878064F0[] = {
+u32 gBorderTexture_Left[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x000100DD, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD,
     0x00010925, 0x09250925, 0x09250925, 0x09250925, 0x0001092F, 0x092F092F, 0x092F092F, 0x092F092F,
     0x00010925, 0x09250925, 0x09250925, 0x09250925, 0x000100DD, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD,
@@ -22,7 +22,7 @@ u32 D_878064F0[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-u32 D_878065B0[] = {
+u32 gBorderTexture_Fill[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD,
     0x09250925, 0x09250925, 0x09250925, 0x09250925, 0x092F092F, 0x092F092F, 0x092F092F, 0x092F092F,
     0x09250925, 0x09250925, 0x09250925, 0x09250925, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD,
@@ -31,7 +31,7 @@ u32 D_878065B0[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-u32 D_87806670[] = {
+u32 gBorderTexture_Middle[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD, 0x00DD0001,
     0x09250925, 0x09250925, 0x09250925, 0x09250001, 0x092F092F, 0x092F092F, 0x092F092F, 0x092F0001,
     0x09250925, 0x09250925, 0x09250925, 0x09250001, 0x00DD00DD, 0x00DD00DD, 0x00DD00DD, 0x00DD0001,
@@ -40,7 +40,7 @@ u32 D_87806670[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-u32 D_87806730[] = {
+u32 gBorderTexture_Right[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0xC5C7C5C7, 0xC5C7C5C7, 0xC5C7C5C7, 0xC5C7C5C7,
     0xF709F709, 0xF709F709, 0xF709F709, 0xF709F709, 0xF7CBF7CB, 0xF7CBF7CB, 0xF7CBF7CB, 0xF7CBF7CB,
     0xF709F709, 0xF709F709, 0xF709F709, 0xF709F709, 0xC5C7C5C7, 0xC5C7C5C7, 0xC5C7C5C7, 0xC5C7C5C7,
@@ -1012,7 +1012,7 @@ u32 D_8780DCF0[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-static Vp D_8780EB90 = {
+static Vp gResultScreenViewport = {
     {
         {
             0x280,
@@ -1029,7 +1029,7 @@ static Vp D_8780EB90 = {
     },
 };
 
-static Gfx D_8780EBA0[] = {
+static Gfx gResultScreenSetupDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_LIGHTING),
@@ -1037,11 +1037,11 @@ static Gfx D_8780EBA0[] = {
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsSPPerspNormalize(0xFFFF),
-    gsSPViewport(&D_8780EB90),
+    gsSPViewport(&gResultScreenViewport),
     gsSPEndDisplayList(),
 };
 
-static u32 D_8780EBE8[] = {
+static u32 gResultScreenTextureData[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x08011841, 0x310151C1, 0x6A818B41, 0x9BC1AC85, 0xA4859403,
     0x7B016281, 0x41C120C1, 0x08010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00011881, 0x39414181, 0x51C16A81, 0x7B017AC1, 0x8B419C43, 0xA4859C45, 0x8B818341, 0x6AC15201,
@@ -1102,7 +1102,7 @@ static u32 D_8780EBE8[] = {
 };
 
 // Meant to be 32, this is only 30, it uses 2 vertices from the next list
-static Vtx D_8780F3E8[] = {
+static Vtx gResultCubeVertexData1[] = {
     VTX(0, 0, -11, 512, 566, 0x2D, 0x18, 0x94, 0xFF),    VTX(0, 50, 0, 512, 0, 0x2D, 0x18, 0x94, 0xFF),
     VTX(15, 21, 0, 677, 326, 0x2D, 0x18, 0x94, 0xFF),    VTX(15, 21, 0, 677, 326, 0x2D, 0x18, 0x6C, 0xFF),
     VTX(0, 50, 0, 512, 0, 0x2D, 0x18, 0x6C, 0xFF),       VTX(0, 0, 11, 512, 566, 0x2D, 0x18, 0x6C, 0xFF),
@@ -1120,7 +1120,7 @@ static Vtx D_8780F3E8[] = {
     VTX(48, 15, 0, 1024, 391, 0x24, 0xDD, 0x6C, 0xFF),   VTX(0, 0, 11, 512, 566, 0x24, 0xDD, 0x6C, 0xFF),
 };
 
-static Vtx D_8780F5C8[] = {
+static Vtx gResultCubeVertexData2[] = {
     VTX(0, 0, 11, 512, 566, 0x32, 0x07, 0x6C, 0xFF),     VTX(29, -40, 0, 828, 1023, 0x32, 0x07, 0x6C, 0xFF),
     VTX(25, -8, 0, 779, 657, 0x32, 0x07, 0x6C, 0xFF),    VTX(25, -8, 0, 779, 657, 0x32, 0x07, 0x94, 0xFF),
     VTX(29, -40, 0, 828, 1023, 0x32, 0x07, 0x94, 0xFF),  VTX(0, 0, -11, 512, 566, 0x32, 0x07, 0x94, 0xFF),
@@ -1138,7 +1138,7 @@ static Vtx D_8780F5C8[] = {
     VTX(-29, -40, 0, 195, 1023, 0x16, 0xD2, 0x94, 0xFF), VTX(0, 0, -11, 512, 566, 0x16, 0xD2, 0x94, 0xFF),
 };
 
-static Gfx D_8780F7A8[] = {
+static Gfx gResultCubeSetupDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -1150,20 +1150,20 @@ static Gfx D_8780F7A8[] = {
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsSPPerspNormalize(0xFFFF),
-    gsSPViewport(&D_8780EB90),
-    gsDPLoadTextureBlock(D_8780EBE8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gsSPViewport(&gResultScreenViewport),
+    gsDPLoadTextureBlock(gResultScreenTextureData, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, 1, 1),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8780F840[] = {
-    gsSPVertex(D_8780F3E8, 32, 0),
+static Gfx gResultCubeRenderDL[] = {
+    gsSPVertex(gResultCubeVertexData1, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSP2Triangles(6, 7, 8, 0, 9, 10, 11, 0),
     gsSP2Triangles(12, 13, 14, 0, 15, 16, 17, 0),
     gsSP2Triangles(18, 19, 20, 0, 21, 22, 23, 0),
     gsSP2Triangles(24, 25, 26, 0, 27, 28, 29, 0),
-    gsSPVertex(D_8780F5C8, 30, 0),
+    gsSPVertex(gResultCubeVertexData2, 30, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSP2Triangles(6, 7, 8, 0, 9, 10, 11, 0),
     gsSP2Triangles(12, 13, 14, 0, 15, 16, 17, 0),
@@ -1177,9 +1177,9 @@ static s32 pad_D_8780F8A8[] = {
     0x00000000,
 };
 
-static f32 D_8780F8B0[] = { 0.8f, 0.75f, 0.7f, 0.75f, 0.8f, 0.75f, 0.7f, 0.65f, 0.6f, 0.55f, 0.5f };
+static f32 gResultScaleFactors[] = { 0.8f, 0.75f, 0.7f, 0.75f, 0.8f, 0.75f, 0.7f, 0.65f, 0.6f, 0.55f, 0.5f };
 
-static f32 D_8780F8DC[] = { 1.0f, 1.1f, 1.0f, 1.57f, 2.14f, 2.71f, 3.29f, 3.86f, 4.43f, 5.0f };
+static f32 gResultRotationAngles[] = { 1.0f, 1.1f, 1.0f, 1.57f, 2.14f, 2.71f, 3.29f, 3.86f, 4.43f, 5.0f };
 
 static u8 D_8780F904[] = {
     0xFF, 0xFF, 0xFF, 0xE2, 0xC4, 0xA7, 0x8A, 0x6D, 0x4F, 0x32,
@@ -1310,14 +1310,14 @@ void ResultScreen_Init(void) {
     D_8780FE01 = 0;
     D_8780FE00 = 0xC;
 
-    D_8780FE08[0] = D_8780FE28[0] = GetMessageString(NULL, 0, D_87806330, 0x51);
+    D_8780FE08[0] = D_8780FE28[0] = GetMessageString(NULL, 0, gItemNamesBank, 0x51);
 
-    D_8780FE08[1] = GetMessageString(NULL, 0, D_87806330, 0x52);
+    D_8780FE08[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x52);
 
-    D_8780FE08[2] = D_8780FE18[2] = D_8780FE28[1] = GetMessageString(NULL, 0, D_87806330, 0x53);
+    D_8780FE08[2] = D_8780FE18[2] = D_8780FE28[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x53);
 
-    D_8780FE18[0] = GetMessageString(NULL, 0, D_87806330, 0x54);
-    D_8780FE18[1] = GetMessageString(NULL, 0, D_87806330, 0x55);
+    D_8780FE18[0] = GetMessageString(NULL, 0, gItemNamesBank, 0x54);
+    D_8780FE18[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x55);
 
     Text_SetFont(4, 0);
 
@@ -1390,8 +1390,8 @@ void CheckScoreThreshold(void) {
 }
 
 s32 IsSpecialWinCondition(void) {
-    if ((D_8780FA2A == 1) && (D_8780FA3A >= 5) && (D_8780FA38 == 2) && (D_8780FA30[0] == 0) && (D_8780FA30[1] == 1) &&
-        (D_8780FA30[2] == 1) && (D_8780FA30[3] == 1) && (*D_8780FC58 == 5) && !(D_8780FA28 & 1)) {
+    if ((D_8780FA2A == 1) && (D_8780FA3A >= 5) && (D_8780FA38 == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
+        (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*D_8780FC58 == 5) && !(D_8780FA28 & 1)) {
         return 1;
     }
     return 0;
@@ -1448,9 +1448,9 @@ s32 GetCurrentOptionCount(void) {
     return sp1C;
 }
 
-void func_87803200(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
+void ResultScreen_DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
     DrawGradientPanel(arg0, arg1, arg2, arg3, arg4, arg5);
-    func_8780118C(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
+    FillRect(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
 }
 
 void CreateScaledTranslationMatrix(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
@@ -1503,7 +1503,7 @@ void RenderScoreCubes(s16 arg0) {
 
     gSPLookAtX(gDisplayListHead++, &temp_s2->l[0]);
     gSPLookAtY(gDisplayListHead++, &temp_s2->l[1]);
-    gSPDisplayList(gDisplayListHead++, D_8780F7A8);
+    gSPDisplayList(gDisplayListHead++, gResultCubeSetupDL);
 
     guOrtho(temp_s3, -160.0f, 160.0f, -120.0f, 120.0f, -100.0f, 100.0f, 1.0f);
 
@@ -1559,12 +1559,12 @@ void RenderScoreCubes(s16 arg0) {
                           (D_8780FCD8[i][j].unk_00 + arg0) - 0xA0, 0x78 - D_8780FCD8[i][j].unk_02, 0.0f);
 
             gSPMatrix(gDisplayListHead++, (u32)spC8++ & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(gDisplayListHead++, D_8780F840);
+            gSPDisplayList(gDisplayListHead++, gResultCubeRenderDL);
         }
     }
 }
 
-void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, f32 arg8, f32 arg9,
+void ResultScreen_RenderScaledTexture(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, f32 arg8, f32 arg9,
                    f32 argA, f32 argB, f32 argC, f32 argD, f32 argE) {
     u8 i;
     s16 sp64 = (arg4 + arg6) / 2;
@@ -1586,7 +1586,7 @@ void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s1
 
     CreateScaledTranslationMatrix(spC4, arg8, arg9, argA, argB, argC, argD, argE, 0.0f, 0.0f, 0.0f);
 
-    gSPDisplayList(gDisplayListHead++, D_8780EBA0);
+    gSPDisplayList(gDisplayListHead++, gResultScreenSetupDL);
 
     gDPLoadTextureBlock(gDisplayListHead++, arg1, G_IM_FMT_RGBA, G_IM_SIZ_32b, arg2, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -1611,7 +1611,7 @@ void func_878038B8(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s1
     }
 }
 
-void func_87803EAC(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 arg5, u8 arg6) {
+void ResultScreen_DrawTiledTexture(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 arg5, u8 arg6) {
     u8 j;
     u8 i;
     Vtx* temp_fp = GfxAlloc(sizeof(Vtx) * (arg5 * arg6));
@@ -1638,7 +1638,7 @@ void func_87803EAC(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 
     }
 }
 
-void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
+void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     u8 i;
     Mtx* temp_v0;
     f32 var_fv1;
@@ -1648,16 +1648,16 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     temp_v0 = GfxAlloc(sizeof(Mtx) * 1);
     temp_s2 = arg1 + arg2 + arg3 + arg4;
 
-    gSPDisplayList(gDisplayListHead++, D_8780EBA0);
+    gSPDisplayList(gDisplayListHead++, gResultScreenSetupDL);
 
     if (temp_s2 == -4) {
-        var_fv1 = D_8780F8DC[arg0];
+        var_fv1 = gResultRotationAngles[arg0];
 
         gDPSetCombineLERP(gDisplayListHead++, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
                           ENVIRONMENT, 0);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, D_8780F904[arg0]);
     } else {
-        var_fv1 = D_8780F8B0[arg0];
+        var_fv1 = gResultScaleFactors[arg0];
 
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     }
@@ -1687,14 +1687,14 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCCC[1] = 0x1F;
         D_8780FCCC[2] = 0x3D;
 
-        func_87803EAC(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 3);
+        ResultScreen_DrawTiledTexture(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 3);
 
         D_8780FCCC[0] = 0x3D;
         D_8780FCCC[1] = 0x5C;
 
-        func_87803EAC(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 2);
+        ResultScreen_DrawTiledTexture(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 2);
     } else if (temp_s2 == 0) {
-        if ((arg0 == 0xA) && (D_87806338 != 2)) {
+        if ((arg0 == 0xA) && (gCurrentMenuIndex != 2)) {
             func_8004B1CC(0x1B);
         }
         D_8780FCB8[0] = 0;
@@ -1709,13 +1709,13 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCCC[1] = 0x1A;
         D_8780FCCC[2] = 0x34;
 
-        func_87803EAC(&D_3016E80, 0xB4, 0x34, 0x5A, 0x1A, 7, 3);
+        ResultScreen_DrawTiledTexture(&D_3016E80, 0xB4, 0x34, 0x5A, 0x1A, 7, 3);
     } else {
         Vtx* spAC;
         u16 spA4[4];
         s8 spA0[4];
 
-        if ((arg0 == 0xA) && (D_87806338 != 2)) {
+        if ((arg0 == 0xA) && (gCurrentMenuIndex != 2)) {
             func_8004B1CC(0x1A);
         }
 
@@ -1729,7 +1729,7 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
         D_8780FCCC[1] = 0x1A;
         D_8780FCCC[2] = 0x34;
 
-        func_87803EAC(&D_3010000, 0x88, 0x34, 0x23, 0x1A, 5, 3);
+        ResultScreen_DrawTiledTexture(&D_3010000, 0x88, 0x34, 0x23, 0x1A, 5, 3);
 
         spAC = GfxAlloc(sizeof(Vtx) * 4 * temp_s2);
 
@@ -1761,7 +1761,7 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
                 SetTileVertex(&spAC[var_s4 * 4 + 3], -0x1B, spA4[var_s4] + 0x34, 0, 0x480, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 gSPVertex(gDisplayListHead++, &spAC[var_s4 * 4 + 0], 4, 0);
-                gDPLoadTextureBlock(gDisplayListHead++, D_8780F910[D_8780FA30[i]][i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 36,
+                gDPLoadTextureBlock(gDisplayListHead++, D_8780F910[gMiniHudColorDefaults[i]][i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 36,
                                     26, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                                     G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
@@ -1774,7 +1774,7 @@ void func_87804320(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4) {
     }
 }
 
-void func_87804AD0(s16 arg0) {
+void ResultScreen_DrawScoreCubes(s16 arg0) {
     s32 var_a0;
     u8 i;
 
@@ -1811,7 +1811,7 @@ void func_87804AD0(s16 arg0) {
                 }
             }
         }
-        func_878038B8(var_a0, D_8780F910[D_8780FA30[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
+        ResultScreen_RenderScaledTexture(var_a0, D_8780F910[gMiniHudColorDefaults[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
                       ((i * 0x36) + arg0) + 0x62, 0xD9, D_8780F930[D_8780FCAC[i]], D_8780F930[D_8780FCAC[i]],
                       D_8780F930[D_8780FCAC[i]], D_8780F940[D_8780FCB0[i]], 0.0f, 0.0f, 1.0f);
     }
@@ -1846,20 +1846,20 @@ void func_87804AD0(s16 arg0) {
         char sp8C[0x60];
         char* var_s0_3;
 
-        var_s0_3 = GetMessageString(sp8C, 0x60, D_87806330, 0x13);
+        var_s0_3 = GetMessageString(sp8C, 0x60, gItemNamesBank, 0x13);
 
-        if ((D_8780FA30[0] + D_8780FA30[1] + D_8780FA30[2] + D_8780FA30[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, D_87806330, D_8780F9B0[D_8780FA38]));
+        if ((gMiniHudColorDefaults[0] + gMiniHudColorDefaults[1] + gMiniHudColorDefaults[2] + gMiniHudColorDefaults[3]) != 0) {
+            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, gItemNamesBank, D_8780F9B0[D_8780FA38]));
             var_s0_3 = sp8C;
         }
 
-        Text_Print((arg0 - (func_878013D4(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
+        Text_Print((arg0 - (GetTextWidth(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
         Text_EndRender();
         Text_SetupDL();
     }
 }
 
-s32 func_87804FD4(void) {
+s32 ResultScreen_UpdateAndRender(void) {
     static s32 D_8780FE3C;
     static s32 D_8780FE40;
     static s32 D_8780FE44;
@@ -2066,7 +2066,7 @@ s32 func_87804FD4(void) {
                         D_8780FCA8 = 0x2F;
                     } else {
                         D_8780FC40 = 4;
-                        D_8780FE3C = 0x60 - func_878001E8(0x20);
+                        D_8780FE3C = 0x60 - GetRandomMod(0x20);
                         D_8780FC90 = 0;
                     }
                 } else {
@@ -2113,7 +2113,7 @@ s32 func_87804FD4(void) {
     }
 
     if (D_8780FC94 != 0) {
-        func_87803200(((0x140 - D_8780FE30) / 2) - 0xA, 0x61, D_8780FE30 + 0x14, 0x30, &sp70[0], &sp70[3]);
+        ResultScreen_DrawGradientPanel(((0x140 - D_8780FE30) / 2) - 0xA, 0x61, D_8780FE30 + 0x14, 0x30, &sp70[0], &sp70[3]);
         Text_ResetState();
         Text_SetFont(4, 0);
 
@@ -2139,7 +2139,7 @@ s32 func_87804FD4(void) {
             if (D_8780FCA2 > 0) {
                 D_8780FCA2--;
             }
-            func_87804320(D_8780FCA2, D_8780FC50[0], D_8780FC50[1], D_8780FC50[2], D_8780FC50[3]);
+            ResultScreen_RenderResultGraphics(D_8780FCA2, D_8780FC50[0], D_8780FC50[1], D_8780FC50[2], D_8780FC50[3]);
         }
 
         if ((D_8780FC40 != 0) && (D_8780FC40 != 1)) {
@@ -2177,7 +2177,7 @@ s32 func_87804FD4(void) {
                 }
             }
 
-            func_87804AD0(D_8780FCAA);
+            ResultScreen_DrawScoreCubes(D_8780FCAA);
             RenderScoreCubes(D_8780FCAA);
         }
 
@@ -2202,14 +2202,14 @@ s32 func_87804FD4(void) {
                     if (D_8780FCA6 > 0) {
                         D_8780FCA6--;
                     }
-                    func_87804320(D_8780FCA6, -1, -1, -1, -1);
+                    ResultScreen_RenderResultGraphics(D_8780FCA6, -1, -1, -1, -1);
                     break;
             }
         }
 
         if (D_8780FC6C != 0) {
-            sp60 = GetMessageString(0, 0, D_87806330, 0x57);
-            sp5C = GetMessageString(0, 0, D_87806330, 0x58);
+            sp60 = GetMessageString(0, 0, gItemNamesBank, 0x57);
+            sp5C = GetMessageString(0, 0, gItemNamesBank, 0x58);
             sp44 = CountTextLines(sp60);
             tmp = CountTextLines(sp5C);
             tmp = sp44 + tmp;
@@ -2217,7 +2217,7 @@ s32 func_87804FD4(void) {
             temp_t0 += tmp * 2;
             temp_t0 -= 2;
             sp55 = (0xF0 - temp_t0) >> 1;
-            func_87803200(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
+            ResultScreen_DrawGradientPanel(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
             Text_ResetState();
             Text_BeginRender();
             Text_SetEnvColor(0xFF, 0xFD, 0xD4, 0xFF);
@@ -2234,12 +2234,12 @@ s32 func_87804FD4(void) {
         if (D_8780FC70 != 0) {
             if (D_8780FC4C == 0) {
                 if (D_8780FA2A == 0) {
-                    func_87803200(((0x140 - D_8780FE32) / 2) - 0xA, 0x58, D_8780FE32 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    ResultScreen_DrawGradientPanel(((0x140 - D_8780FE32) / 2) - 0xA, 0x58, D_8780FE32 + 0x14, 0x42, &sp70[0], &sp70[3]);
                 } else {
-                    func_87803200(((0x140 - D_8780FE34) / 2) - 0xA, 0x58, D_8780FE34 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    ResultScreen_DrawGradientPanel(((0x140 - D_8780FE34) / 2) - 0xA, 0x58, D_8780FE34 + 0x14, 0x42, &sp70[0], &sp70[3]);
                 }
             } else {
-                func_87803200(((0x140 - D_8780FE36) / 2) - 0xA, 0x61, D_8780FE36 + 0x14, 0x30, &sp70[0], &sp70[3]);
+                ResultScreen_DrawGradientPanel(((0x140 - D_8780FE36) / 2) - 0xA, 0x61, D_8780FE36 + 0x14, 0x30, &sp70[0], &sp70[3]);
             }
             Text_ResetState();
             Text_SetFont(4, 0);
@@ -2271,8 +2271,8 @@ s32 func_87804FD4(void) {
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Text_Print(0xA0 - (func_878013D4(NULL, GetMessageString(0, 0, D_87806330, 0x56)) / 2), 0x6C,
-                          GetMessageString(0, 0, D_87806330, 0x56));
+            Text_Print(0xA0 - (GetTextWidth(NULL, GetMessageString(0, 0, gItemNamesBank, 0x56)) / 2), 0x6C,
+                          GetMessageString(0, 0, gItemNamesBank, 0x56));
             Text_EndRender();
             Text_SetupDL();
         }

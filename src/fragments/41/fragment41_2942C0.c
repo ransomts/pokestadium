@@ -299,7 +299,7 @@ void func_82F0D160(s16 arg0) {
 }
 
 void func_82F0D27C(unk_D_82F21238* arg0) {
-    unk_D_86002F58_004_000* sp24 = arg0->unk_2C->unk_24;
+    Fragment2_1GraphNode* sp24 = arg0->unk_2C->unk_24;
 
     if ((Anim_HasReachedEnd(sp24) != 0) && (arg0->unk_06 == 2)) {
         arg0->unk_06 = 1;

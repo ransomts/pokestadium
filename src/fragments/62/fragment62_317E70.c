@@ -7,9 +7,9 @@
 
 void func_8432D5B0(void) {
     D_8140E724 = main_pool_alloc(sizeof(*D_8140E724) * 300, 0);
-    D_8140E720 = main_pool_alloc(sizeof(*D_8140E720) * 300, 0);
+    gParticleInstances = main_pool_alloc(sizeof(*gParticleInstances) * 300, 0);
     bzero(D_8140E724, sizeof(*D_8140E724) * 300);
-    bzero(D_8140E720, sizeof(*D_8140E720) * 300);
+    bzero(gParticleInstances, sizeof(*gParticleInstances) * 300);
     D_8140E730 = 0;
     D_8140E72C = 0;
 }
@@ -332,7 +332,7 @@ void func_8432E144(unk_D_8140E720* arg0) {
 
 void func_8432E184(void) {
     s32 i;
-    unk_D_8140E720* var_s0 = D_8140E720;
+    unk_D_8140E720* var_s0 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if (var_s0->unk_D0 != 0) {
@@ -495,7 +495,7 @@ void func_8432E68C(void) {
 void func_8432E6B4(void) {
     s32 i;
     unk_D_8140E724* var_s0 = D_8140E724;
-    unk_D_8140E720* var_s2 = D_8140E720;
+    unk_D_8140E720* var_s2 = gParticleInstances;
 
     func_8432EB14();
 
@@ -519,7 +519,7 @@ void func_8432E6B4(void) {
 void func_8432E784(void) {
     s32 i;
     unk_D_8140E724* var_s0 = D_8140E724;
-    unk_D_8140E720* var_s2 = D_8140E720;
+    unk_D_8140E720* var_s2 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_15 != 0) && (var_s0->unk_17 != 4)) {
@@ -610,7 +610,7 @@ void func_8432E9D8(s32 arg0) {
 
 void func_8432EA60(u8 arg0, unk_D_84390010* arg1) {
     s32 i;
-    unk_D_8140E720* var_s0 = D_8140E720;
+    unk_D_8140E720* var_s0 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_D0 != 0) && (var_s0->unk_CA == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {

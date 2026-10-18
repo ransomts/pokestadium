@@ -7,52 +7,52 @@ void func_8140CDDC();
 void func_8140C7C0();
 void func_8140C8B8();
 
-extern u32 D_87903E80[];
-extern u32 D_87904E80[];
-extern u32 D_87905280[];
-extern u32 D_87905680[];
+extern u32 gMiniTutoScreenTilemap[];
+extern u32 gMiniTutoScreenPalette[];
+extern u32 gMiniTutoScreenSettings[];
+extern u32 gMiniTutoScreenGraphics[];
 
-unk_D_87903E00 D_87903E00 = {
+unk_D_87903E00 gMiniTutoScreenConfig0 = {
     0x00000001,
     func_8140C84C,
     func_8140CDDC,
-    D_87903E80,
+    gMiniTutoScreenTilemap,
 };
 
-unk_D_87903E10 D_87903E10 = {
+unk_D_87903E10 gMiniTutoScreenNode0 = {
     0x00000001,
-    &D_87903E00,
+    &gMiniTutoScreenConfig0,
 };
 
-unk_D_87903E00 D_87903E18 = {
+unk_D_87903E00 gMiniTutoScreenConfig1 = {
     0x01000001,
     func_8140C7C0,
     func_8140CDDC,
-    D_87904E80,
+    gMiniTutoScreenPalette,
 };
 
-unk_D_87903E10 D_87903E28 = {
+unk_D_87903E10 gMiniTutoScreenNode1 = {
     0x00000001,
-    &D_87903E18,
+    &gMiniTutoScreenConfig1,
 };
 
-unk_D_87903E00 D_87903E30 = {
+unk_D_87903E00 gMiniTutoScreenConfig2 = {
     0x01000002,
     func_8140C7C0,
     func_8140CDDC,
-    D_87905280,
+    gMiniTutoScreenSettings,
 };
 
 unk_D_87903E10 D_87903E40 = {
     0x00000001,
-    &D_87903E30,
+    &gMiniTutoScreenConfig2,
 };
 
 unk_D_87903E00 D_87903E48 = {
     0x00000001,
     func_8140C8B8,
     func_8140CDDC,
-    D_87905680,
+    gMiniTutoScreenGraphics,
 };
 
 unk_D_87903E10 D_87903E58 = {
@@ -60,14 +60,14 @@ unk_D_87903E10 D_87903E58 = {
     &D_87903E48,
 };
 
-s16 D_87903E60[4][4] = {
+s16 gMiniActorPosOffsets[4][4] = {
     { 0x006E, 0x006E, 0x006E, 0x006E },
     { 0x0060, 0x007C, 0x006E, 0x006E },
     { 0x0054, 0x006E, 0x0088, 0x006E },
     { 0x0046, 0x0060, 0x007C, 0x0096 },
 };
 
-u32 D_87903E80[] = {
+u32 gMiniTutoScreenTilemap[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -184,7 +184,7 @@ u32 D_87903E80[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 D_87904E80[] = {
+u32 gMiniTutoScreenPalette[] = {
     0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0,
     0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0,
     0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xE0E0D0C0, 0xE0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0,
@@ -216,7 +216,7 @@ u32 D_87904E80[] = {
     0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0,
 };
 
-u32 D_87905280[] = {
+u32 gMiniTutoScreenSettings[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -248,7 +248,7 @@ u32 D_87905280[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 D_87905680[] = {
+u32 gMiniTutoScreenGraphics[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00013000, 0x00000000, 0x00000000, 0x00000000, 0x0012A000, 0x00000000, 0x00000000, 0x00000000, 0x00284000,
@@ -308,7 +308,7 @@ u32 D_87905680[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-void func_87903260(void) {
+void MiniTutoScreen_Start(void) {
     if (miniTutoScreenState > 0) {
         D_87903DCC = miniTutoScreenState;
         miniTutoScreenState = -2;
@@ -316,14 +316,14 @@ void func_87903260(void) {
     }
 }
 
-void func_87903294(void) {
+void MiniTutoScreen_Reset(void) {
     miniTutoScreenState = -1;
     D_87903DC0 = 0;
     D_87903DCC = 0;
     D_87903DD0 = 0;
 }
 
-void func_879032BC(s16 arg0) {
+void MiniTutoScreen_StartCountdown(s16 arg0) {
     switch (D_87903DC0) {
         case 1:
             D_87903DD0 = 0x18;
@@ -334,13 +334,13 @@ void func_879032BC(s16 arg0) {
         case 2:
             D_87903DC8--;
             if (D_87903DC8 == 0) {
-                func_87903294();
+                MiniTutoScreen_Reset();
             }
             break;
     }
 }
 
-void func_87903358(s16 arg0, s16 arg1) {
+void MiniTutoScreen_StartTimerWithDelay(s16 arg0, s16 arg1) {
     switch (D_87903DC0) {
         case 1:
             D_87903DD0 = arg0; // 0x11
@@ -351,13 +351,13 @@ void func_87903358(s16 arg0, s16 arg1) {
         case 2:
             D_87903DC8--;
             if (D_87903DC8 == 0) {
-                func_87903294();
+                MiniTutoScreen_Reset();
             }
             break;
     }
 }
 
-void func_879033FC(MiniActor* arg0) {
+void MiniTutoScreen_DrawWinners(MiniActor* arg0) {
     s32 i;
     s16 temp_a2;
     s32 var_s2;
@@ -370,11 +370,11 @@ void func_879033FC(MiniActor* arg0) {
     var_s2 = 0;
     for (i = 0; i < 4; i++) {
         if (arg0[i].isWinner != 0) {
-            temp_a2 = D_87903E60[D_87903DD4][var_s2];
+            temp_a2 = gMiniActorPosOffsets[D_87903DD4][var_s2];
             if (arg0[i].isComp != 0) {
-                func_87801644(-1 - i, 0x78, temp_a2, 1.0f);
+                DrawUniformScaledTextureRect(-1 - i, 0x78, temp_a2, 1.0f);
             } else {
-                func_87801644(i, 0x78, temp_a2, 1.0f);
+                DrawUniformScaledTextureRect(i, 0x78, temp_a2, 1.0f);
             }
             var_s2++;
         }
@@ -383,7 +383,7 @@ void func_879033FC(MiniActor* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_8790354C(void) {
+void MiniTutoScreen_PrintDifficulty(void) {
     switch (miniDifficulty) {
         case 0:
             Text_Print(0xC8, 0x20, "(EASY)");

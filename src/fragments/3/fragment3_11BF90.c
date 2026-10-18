@@ -4,14 +4,14 @@
 #include "src/12D80.h"
 #include "src/memory.h"
 
-static MiniActor* D_87906120;
+static MiniActor* gMiniActorArray;
 
-void func_87903600(void) {
+void MiniActorArray_Create(void) {
     s32 i;
     MiniActor* ptr;
 
-    D_87906120 = main_pool_alloc(sizeof(MiniActor) * 3, 0);
-    ptr = D_87906120;
+    gMiniActorArray = main_pool_alloc(sizeof(MiniActor) * 3, 0);
+    ptr = gMiniActorArray;
 
     for (i = 0; i < 3; i++, ptr++) {
         Graph_AddToRootList0(&ptr->unk_000);
@@ -23,7 +23,7 @@ void func_87903600(void) {
     }
 }
 
-void func_879036B4(MiniActor* arg0) {
+void MiniActor_StartAnimation(MiniActor* arg0) {
     if (arg0->mainState == 1) {
         arg0->unk_000.unk_000.unk_01 |= 1;
         miniChangeActorAnim(arg0, 0, -1, 0);
@@ -31,21 +31,21 @@ void func_879036B4(MiniActor* arg0) {
     }
 }
 
-void func_8790370C(void) {
+void MiniActorArray_Update(void) {
     s32 i;
-    MiniActor* ptr = D_87906120;
+    MiniActor* ptr = gMiniActorArray;
 
     func_8140C5D0();
 
     for (i = 0; i < 3; i++, ptr++) {
-        func_879036B4(ptr);
+        MiniActor_StartAnimation(ptr);
         MiniActor_ProcessAnim(ptr);
         miniActorUpdateTransform(ptr);
         MiniActor_UpdateCollider(ptr);
     }
 }
 
-void func_87903778(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8) {
+void MiniActor_SetTransformAndState(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8) {
     arg0->scale.x = arg1;
     arg0->scale.y = arg1;
     arg0->scale.z = arg1;
@@ -60,28 +60,28 @@ void func_87903778(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 
     arg0->mainState = 1;
 }
 
-void func_879037D0(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = D_87906120;
+void MiniActor_ConfigureFirst(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+    MiniActor* sp34 = gMiniActorArray;
 
-    func_87903778(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 0);
+    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 0);
     sp34->unk_000.unk_000.unk_14 = 0;
 }
 
-void func_87903838(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = &D_87906120[1];
+void MiniActor_ConfigureSecond(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+    MiniActor* sp34 = &gMiniActorArray[1];
 
-    func_87903778(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1);
+    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1);
     sp34->unk_000.unk_000.unk_14 = 1;
 }
 
-void func_879038AC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = &D_87906120[2];
+void MiniActor_ConfigureThird(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+    MiniActor* sp34 = &gMiniActorArray[2];
 
-    func_87903778(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 2);
+    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 2);
     sp34->unk_000.unk_000.unk_14 = 2;
 }
 
-Gfx* func_87903920(Gfx* gfx, arg1_func_87903D64_014* arg1) {
+Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, arg1_func_87903D64_014* arg1) {
     u8 tmp1;
     u8 tmp2;
     u8 tmp3;
@@ -94,10 +94,10 @@ Gfx* func_87903920(Gfx* gfx, arg1_func_87903D64_014* arg1) {
     u32 sp38;
     u32 sp34;
     u32 sp30;
-    unk_D_86002F34_000_014_004* sp2C;
-    unk_D_86002F34_000_014_004* sp28;
-    unk_D_86002F34_000_014_010* sp24;
-    unk_D_86002F34_000_014_010* sp20;
+    ColorLerpEntry5* sp2C;
+    ColorLerpEntry5* sp28;
+    ColorLerpEntry4* sp24;
+    ColorLerpEntry4* sp20;
     u32 pad;
     u32 temp_a2;
     u32 temp_a3;
@@ -187,10 +187,10 @@ Gfx* func_87903920(Gfx* gfx, arg1_func_87903D64_014* arg1) {
     return gfx;
 }
 
-void func_87903D64(s32 arg0, arg1_func_87903D64* arg1) {
+void ColorLerp_DisplayListHook(s32 arg0, arg1_func_87903D64* arg1) {
     if (arg0 == 5) {
         arg1_func_87903D64_014* tmp = arg1->unk_14;
 
-        gDisplayListHead = func_87903920(gDisplayListHead, tmp);
+        gDisplayListHead = Gfx_SetLerpPrimEnvColor(gDisplayListHead, tmp);
     }
 }

@@ -12,7 +12,7 @@
 #include "src/geo_layout.h"
 #include "src/memory.h"
 
-static unk_D_86002F58_004_000* gCameraNode;
+static Fragment2_1GraphNode* gCameraNode;
 static s32 gDebugMode;
 
 s32 SetCurrentCameraNode(s32, GraphNode*);

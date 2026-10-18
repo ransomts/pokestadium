@@ -101,7 +101,7 @@ s32 func_843000C0(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-s32 func_8430012C(s32 arg0, unk_D_86002F58_004_000* arg1) {
+s32 func_8430012C(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 2) {
         Vec3f_Set(&arg1->unk_030, D_8438E7A8, D_8438E7A8, D_8438E7A8);
         arg1->unk_03C.rgba = D_8438E7A4.rgba;

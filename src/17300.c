@@ -331,12 +331,12 @@ void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
     }
 }
 
-void Anim_ClearChannelState(unk_D_86002F58_004_000* arg0) {
+void Anim_ClearChannelState(Fragment2_1GraphNode* arg0) {
     arg0->unk_040.unk_00 = -1;
     arg0->unk_040.unk_04 = NULL;
 }
 
-s32 Anim_SetChannel(unk_D_86002F58_004_000* arg0, s16 arg1, void* arg2, s32 arg3) {
+s32 Anim_SetChannel(Fragment2_1GraphNode* arg0, s16 arg1, void* arg2, s32 arg3) {
     unk_D_86002F58_004_000_040_004* temp_v0 = Util_ConvertAddrToVirtAddr(arg2);
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
 
@@ -350,16 +350,16 @@ s32 Anim_SetChannel(unk_D_86002F58_004_000* arg0, s16 arg1, void* arg2, s32 arg3
     return ptr->unk_08 >> 0x10;
 }
 
-s32 Anim_SetChannelOffset(unk_D_86002F58_004_000* arg0, s32 arg1) {
+s32 Anim_SetChannelOffset(Fragment2_1GraphNode* arg0, s32 arg1) {
     arg0->unk_040.unk_0C = arg1;
     return arg0->unk_040.unk_08 >> 0x10;
 }
 
-void Anim_SetChannelBase(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void Anim_SetChannelBase(Fragment2_1GraphNode* arg0, s16 arg1) {
     arg0->unk_040.unk_08 = (arg1 << 0x10) - arg0->unk_040.unk_0C;
 }
 
-s32 Anim_IsFrameInRange(unk_D_86002F58_004_000* arg0, s16 arg1) {
+s32 Anim_IsFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
     s32 temp_v0 = ptr->unk_08 + ptr->unk_0C;
     s32 arg = arg1 << 0x10;
@@ -381,10 +381,10 @@ s32 Anim_IsFrameInRange(unk_D_86002F58_004_000* arg0, s16 arg1) {
     return var_a2;
 }
 
-s32 func_800174E4(unk_D_86002F58_004_000* arg0) {
+s32 func_800174E4(Fragment2_1GraphNode* arg0) {
     return Anim_IsFrameInRange(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 Anim_HasReachedEnd(unk_D_86002F58_004_000* arg0) {
+s32 Anim_HasReachedEnd(Fragment2_1GraphNode* arg0) {
     return arg0->unk_040.unk_08 >= ((arg0->unk_040.unk_04->unk_0A - 1) << 0x10);
 }

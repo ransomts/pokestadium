@@ -60,8 +60,8 @@ typedef struct unk_D_86B0EBD8 {
 typedef struct unk_D_86B0EBDC {
     /* 0x000 */ unk_D_86002F30* unk_000;
     /* 0x004 */ unk_D_86002F30* unk_004;
-    /* 0x008 */ unk_D_86002F58_004_000 unk_008;
-    /* 0x170 */ unk_D_86002F58_004_000 unk_170;
+    /* 0x008 */ Fragment2_1GraphNode unk_008;
+    /* 0x170 */ Fragment2_1GraphNode unk_170;
     /* 0x2D8 */ s32 unk_2D8;
     /* 0x2DC */ s32 unk_2DC;
     /* 0x2E0 */ char unk2E0[0x4];
@@ -848,7 +848,7 @@ void func_86B026C0(void) {
     temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
     DmaCopyAsyncRange(D_86B0EBE8, temp_a1, temp_a1 + 0xBC0, 0);
     D_86B0EBDC->unk_308 = 0;
-    func_87903600();
+    MiniActorArray_Create();
 }
 
 void func_86B028F8(void) {
@@ -1481,15 +1481,15 @@ s32 func_86B04944(void) {
                 Vec3f_Set(&D_86B0EBC4->unk_60.eye, 0.0f, 80.0f, 90.0f);
 
                 if (D_86B0EBDC->unk_2E4 == 0x1F) {
-                    func_879037D0(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
+                    MiniActor_ConfigureFirst(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
                 }
 
                 if (D_86B0EBDC->unk_2E4 == 0x3C) {
-                    func_87903838(0.2f, 100.0f, 125.0f, -235.0f, 0x7D2, -0xE38, 0);
+                    MiniActor_ConfigureSecond(0.2f, 100.0f, 125.0f, -235.0f, 0x7D2, -0xE38, 0);
                 }
 
                 if (D_86B0EBDC->unk_2E4 == 0x5A) {
-                    func_879038AC(0.2f, -100.0f, 125.0f, -235.0f, 0x7D2, 0xE38, 0);
+                    MiniActor_ConfigureThird(0.2f, -100.0f, 125.0f, -235.0f, 0x7D2, 0xE38, 0);
                 }
             }
 
@@ -1575,7 +1575,7 @@ void func_86B04D98(void) {
 
     while (var_s0 != 0) {
         func_86B04914();
-        func_8790370C();
+        MiniActorArray_Update();
 
         if (func_86B04944() != 0) {
             var_s0 = 0;

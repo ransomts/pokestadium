@@ -61,7 +61,7 @@ typedef struct unk_D_86B0C160 {
 
 typedef struct unk_D_86B0E5F0 {
     /* 0x000 */ unk_D_86002F30* unk_000;
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
 } unk_D_86B0E5F0; // size = 0x170
 
@@ -95,7 +95,7 @@ typedef struct unk_D_86B0DAE0 {
 
 typedef struct unk_D_86B0FA78 {
     /* 0x000 */ unk_D_86002F30* unk_000;
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
     /* 0x170 */ s32 unk_170;
     /* 0x174 */ s32 unk_174;
@@ -202,7 +202,7 @@ u16 Math_RandomU16Range(s32);
 Vec3f* func_86B01404(Vec3f*, Vec3f*);
 void Math_ApproachFloat(f32*, f32, f32);
 
-u16 func_86B01670(unk_D_86002F34_00C* arg0, unk_D_86002F58_004_000* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);
+u16 func_86B01670(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);
 void func_86B01898(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 void func_86B018D4(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
 void func_86B018E8(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
@@ -268,8 +268,8 @@ void func_86B06008(void);
 void func_86B06050(void);
 void func_86B06100(void);
 void func_86B061E8(void);
-s32 func_86B0630C(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2);
-s32 func_86B06394(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2);
+s32 func_86B0630C(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2);
+s32 func_86B06394(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2);
 s32 func_86B06440(void);
 void func_86B065C4(void);
 void func_86B06960(void);

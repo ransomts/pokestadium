@@ -46,7 +46,7 @@ static u32 D_86301650[] = {
 typedef struct unk_D_86301730 {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ Vec3f unk_16C;
     /* 0x178 */ s8 unk_178;
     /* 0x179 */ s8 unk_179;
@@ -68,11 +68,11 @@ static TextObject* D_86301728;
 static unk_D_86301730 D_86301730[4];
 static u32 D_86301D40;
 static unk_D_86301730* D_86301D44;
-static unk_D_86002F58_004_000* D_86301D48;
+static Fragment2_1GraphNode* D_86301D48;
 static s16 D_86301D4C;
 static s16 D_86301D4E;
 static s16 D_86301D50[4];
-static unk_D_86002F58_004_000 D_86301D58;
+static Fragment2_1GraphNode D_86301D58;
 
 void func_86300020(void) {
     s32 i;
@@ -154,17 +154,17 @@ void func_86300238(s32 arg0) {
             Text_SetFont(4, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xC8, 0xC8, 0x64, 0xFF);
-            Text_Print(0xA0 - (func_878013D4(D_86301728, D_86301600) / 2), 0x46, D_86301600);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301600) / 2), 0x46, D_86301600);
             Text_SetFont(2, -2);
-            Text_Print(0xA0 - (func_878013D4(D_86301728, (char*)D_87A01110) / 2), 0x5A, (char*)D_87A01110);
-            Text_Print(0xA0 - (func_878013D4(D_86301728, D_86301614) / 2), 0x6E, D_86301614);
-            Text_Print(0xA0 - (func_878013D4(D_86301728, D_86301634) / 2), 0x7D, D_86301634);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, (char*)gTextTable_StageNames) / 2), 0x5A, (char*)gTextTable_StageNames);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301614) / 2), 0x6E, D_86301614);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301634) / 2), 0x7D, D_86301634);
 
             if (D_86301722 & 0x10) {
                 Text_SetFont(4, -2);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Text_SetPrimColor(5, 5, 0xFF, 0xFF);
-                Text_Print(0xA0 - (func_878013D4(D_86301728, "PUSH START") / 2), 0xAA, "PUSH START");
+                Text_Print(0xA0 - (GetTextWidth(D_86301728, "PUSH START") / 2), 0xAA, "PUSH START");
             }
 
             Text_EndRender();
@@ -209,7 +209,7 @@ void func_863006D8(s32 arg0) {
     Gfx_FinishFrame();
     Graph_SetTextureState(D_86301714);
     func_86300238(arg0);
-    func_87804FD4();
+    ResultScreen_UpdateAndRender();
     Stage_Advance();
     D_86301722++;
 }
@@ -227,7 +227,7 @@ s32 func_86300764(void) {
         GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
-        D_86301D48->unk_040.unk_08 = func_878001E8(0x14) << 0x10;
+        D_86301D48->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
 
         D_86301D50[i] = 0;
     }
@@ -272,7 +272,7 @@ void func_863008C0(void) {
         GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
-        D_86301D48->unk_040.unk_08 = func_878001E8(0x14) << 0x10;
+        D_86301D48->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
 
         D_86301D50[i] = 0;
     }
@@ -430,7 +430,7 @@ void func_86300C50(s32 arg0) {
         D_86301D44->unk_16C.x *= -1.0f;
     }
 
-    if (func_878001E8(0x64) == 0) {
+    if (GetRandomMod(0x64) == 0) {
         InitAnimState(D_86301D48);
         GraphNode_TriggerSound(D_86301D48, 3);
     }
@@ -550,7 +550,7 @@ void func_86301234(void) {
         GraphNode_TriggerAction(D_86301D48, 2);
         InitAnimState(D_86301D48);
 
-        D_86301D48->unk_040.unk_08 = func_878001E8(5) << 0x10;
+        D_86301D48->unk_040.unk_08 = GetRandomMod(5) << 0x10;
     }
 
     AssetManager_LoadArchives();

@@ -20,19 +20,19 @@
 #include "src/stage_loader.h"
 #include "src/controller.h"
 
-static unk_D_86002F58_004_000 D_865092E0;
-static unk_D_86002F58_004_000 D_86509448;
-static unk_D_86002F58_004_000 D_865095B0;
-static unk_D_86002F58_004_000 D_86509718;
-static unk_D_86002F58_004_000 D_86509880;
-static unk_D_86002F58_004_000 D_865099E8;
-static unk_D_86002F58_004_000 D_86509B50;
-static unk_D_86002F58_004_000 D_86509CB8;
-static unk_D_86002F58_004_000 D_86509E20;
-static unk_D_86002F58_004_000 D_86509F88;
-static unk_D_86002F58_004_000 D_8650A0F0;
-static unk_D_86002F58_004_000 D_8650A258;
-static unk_D_86002F58_004_000 D_8650A3C0;
+static Fragment2_1GraphNode D_865092E0;
+static Fragment2_1GraphNode D_86509448;
+static Fragment2_1GraphNode D_865095B0;
+static Fragment2_1GraphNode D_86509718;
+static Fragment2_1GraphNode D_86509880;
+static Fragment2_1GraphNode D_865099E8;
+static Fragment2_1GraphNode D_86509B50;
+static Fragment2_1GraphNode D_86509CB8;
+static Fragment2_1GraphNode D_86509E20;
+static Fragment2_1GraphNode D_86509F88;
+static Fragment2_1GraphNode D_8650A0F0;
+static Fragment2_1GraphNode D_8650A258;
+static Fragment2_1GraphNode D_8650A3C0;
 
 static unk_D_864027C0 D_86502C20[] = {
     { -60.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, 0xA00, 0 },
@@ -41,7 +41,7 @@ static unk_D_864027C0 D_86502C20[] = {
     { 60.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, -0xA00, 0 },
 };
 
-static unk_D_86002F58_004_000* D_86502CA0[] = {
+static Fragment2_1GraphNode* D_86502CA0[] = {
     &D_865092E0, &D_86509448, &D_865095B0, &D_86509718, &D_86509880, &D_865099E8, &D_86509B50,
     &D_86509CB8, &D_86509E20, &D_86509F88, &D_8650A0F0, &D_8650A258, &D_8650A3C0,
 };
@@ -77,7 +77,7 @@ static u8 D_86502E70 = 0;
 
 unk_D_8650A528 D_8650A528[4];
 unk_D_8650A528* gCurrentHealthBar;
-static unk_D_86002F58_004_000* D_8650AB2C;
+static Fragment2_1GraphNode* D_8650AB2C;
 unk_D_8650AB30 D_8650AB30[4];
 unk_D_8650AB30* gHealthBarEffectData;
 
@@ -100,7 +100,7 @@ void func_865000C0(void) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_8780FA30[i] == 0) {
+        if (gMiniHudColorDefaults[i] == 0) {
             D_8650A528[i].unk_000 = 4;
         } else {
             D_8650A528[i].unk_000 = D_8780FA38;
@@ -457,9 +457,9 @@ void func_86500D38(s32 arg0) {
 
         for (i = 0; i < 4; i++) {
             if (D_8650A528[i].unk_000 == 4) {
-                func_87801644(i, sp5C[i], 0xC6, 0.75f);
+                DrawUniformScaledTextureRect(i, sp5C[i], 0xC6, 0.75f);
             } else {
-                func_87801644(-1 - i, sp5C[i], 0xC6, 0.75f);
+                DrawUniformScaledTextureRect(-1 - i, sp5C[i], 0xC6, 0.75f);
             }
         }
 
@@ -470,7 +470,7 @@ void func_86500D38(s32 arg0) {
         for (i = 0; i < 4; i++) {
             gCurrentHealthBar = &D_8650A528[i];
 
-            func_8780024C((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->unk_012 + 1);
+            DrawBorderRect((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->unk_012 + 1);
         }
     }
 
@@ -481,40 +481,40 @@ void func_86500D38(s32 arg0) {
         s32 temp_s0;
         s32 sp48;
         s32 sp44;
-        char* sp40 = GetMessageString(NULL, 0, D_87806330, 0x2D);
+        char* sp40 = GetMessageString(NULL, 0, gItemNamesBank, 0x2D);
 
         Text_SetFont(2, 0);
         Text_SetLineHeight(0xC);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (func_878013D4(D_87B000E0, GetMessageString(NULL, 0, D_87806330, 0x2C)) / 2), 0x20,
-                      GetMessageString(NULL, 0, D_87806330, 0x2C));
+        Text_Print(0xA0 - (GetTextWidth(D_87B000E0, GetMessageString(NULL, 0, gItemNamesBank, 0x2C)) / 2), 0x20,
+                      GetMessageString(NULL, 0, gItemNamesBank, 0x2C));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_Print(0x28, 0x34, sp40);
 
         temp_s0 = (CountTextLines(sp40) * 0xC) + 0xC;
-        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2E));
+        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x2E));
 
-        temp_s0 += (CountTextLines(GetMessageString(NULL, 0, D_87806330, 0x2E)) * 0xC) + 0xC;
-        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x2F));
+        temp_s0 += (CountTextLines(GetMessageString(NULL, 0, gItemNamesBank, 0x2E)) * 0xC) + 0xC;
+        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x2F));
 
-        Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-        Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+        Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+        Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        func_87801290(&sp48, &sp44, sp40, GetMessageString(NULL, 0, D_87806330, 0x5F), 0xC);
-        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
+        ParseStringAndMeasure(&sp48, &sp44, sp40, GetMessageString(NULL, 0, gItemNamesBank, 0x5F), 0xC);
+        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
         Text_SetEnvColor(0xC8, 0xFA, 0xD2, 0xFF);
         Text_SetPrimColor(0x32, 0xE6, 0x82, 0xFF);
-        func_87801290(&sp48, &sp44, sp40, GetMessageString(NULL, 0, D_87806330, 0x60), 0xC);
-        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x60));
+        ParseStringAndMeasure(&sp48, &sp44, sp40, GetMessageString(NULL, 0, gItemNamesBank, 0x60), 0xC);
+        Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x60));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x30));
+        Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x30));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-        Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+        Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
     }
 
     Text_EndRender();
@@ -537,7 +537,7 @@ void func_865013D4(s32 arg0) {
         func_86500D38(arg0);
     }
 
-    func_87804FD4();
+    ResultScreen_UpdateAndRender();
     Stage_Advance();
 
     if (D_8780FC94 == 0) {

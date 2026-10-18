@@ -51,7 +51,7 @@ extern unk_D_86002F34_alt1* gCurrentTextureNode;
 extern unk_D_86002F34_alt1* gCurrentLightNode;
 extern unk_D_86002F34_00C* D_8006F094;
 extern unk_D_86002F34_alt1* D_8006F098;
-extern unk_D_86002F58_004_000* gDefaultGraphRoot;
+extern Fragment2_1GraphNode* gDefaultGraphRoot;
 extern unk_D_86002F34_alt11* D_8006F0A0;
 
 void Matrix_ResetStack(void);
@@ -105,7 +105,7 @@ void func_80015220(GraphNode* arg0, s32 arg1);
 void Gfx_SetRenderMode(s32 arg0);
 void Gfx_FinishFrame(void);
 s32 func_80015360(void);
-Vec3f* func_80015390(unk_D_86002F58_004_000* arg0, s16 arg1, Vec3f* arg2);
+Vec3f* func_80015390(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* arg2);
 void func_80015400(Gfx* arg0, arg1_func_81407874_014_000_010* arg1);
 void func_8001550C(void);
 void Graph_SetRenderMode(void);

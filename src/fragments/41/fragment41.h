@@ -129,7 +129,7 @@ typedef struct unk_D_82F20A88 {
     /* 0x01C */ f32 unk_01C;
     /* 0x020 */ f32 unk_020;
     /* 0x024 */ u8* unk_024;
-    /* 0x028 */ unk_D_86002F58_004_000 unk_028;
+    /* 0x028 */ Fragment2_1GraphNode unk_028;
 } unk_D_82F20A88; // size = 0x190
 
 typedef struct unk_D_82F210E0 {

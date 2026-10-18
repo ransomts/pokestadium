@@ -52,10 +52,10 @@ typedef struct unk_D_88826444 {
     /* 0x00 */ s16 unk_02;
 } unk_D_88826444; // size = 0x4
 
-static unk_func_80011B94 D_888269C0;
-static unk_func_80011B94 D_888269E0;
-static unk_func_80011B94 D_88826A00;
-static unk_func_80011B94 D_88826A20;
+static SimpleGfxNode D_888269C0;
+static SimpleGfxNode D_888269E0;
+static SimpleGfxNode D_88826A00;
+static SimpleGfxNode D_88826A20;
 static char** D_88826A3C;
 static s32 pad_D_88826A40;
 static GraphNode* D_88826A44;

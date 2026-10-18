@@ -10,7 +10,7 @@ s16 miniDifficulty;
 s16 D_87906048; //  unused?
 s16 D_8790604A;
 s32 pad_D_8790604C; //	unused?
-unk_D_86002F34_00C* D_87906050;
+unk_D_86002F34_00C* gMiniCameraStruct;
 unk_D_86002F34_00C* gMiniCameraPtr;
 s32 pad_D_87906058[2]; //	unused?
 s16 miniCameraXRot;
@@ -20,10 +20,10 @@ s16 miniCameraFov;
 s16 miniCameraNear;
 s16 miniCameraFar;
 Vec3s miniCameraCoords;
-s16 D_87906072;
+s16 gMiniCameraNearBackup;
 s16 pad_D_87906074;
 s16 gMiniCameraXRotBackup;
-s16 D_87906078;
+s16 gMiniCameraYRotBackup;
 f32 gMiniCameraDistanceBackup;
 f32 gMiniCameraFovBackup;
 s32 pad_D_87906084;
@@ -33,10 +33,10 @@ s16 gMiniCamRotYDelta;
 s16 gMiniCamDistDelta;
 s16 gMiniCamFovDelta;
 Vec3s gMiniCamPosDelta;
-s16 D_879060A2;
+s16 gMiniCamBaseRotX;
 s16 gMiniCamBaseRotY;
-s16 D_879060A6;
-s16 D_879060A8;
+s16 gMiniCamBaseDist;
+s16 gMiniCamBaseFov;
 Vec3s gMiniCamBasePos;
 s32 pad_D_879060B4;
 s32 pad_D_879060B8;
@@ -49,28 +49,28 @@ s16 gMiniDebugCameraMode;
 s32 pad_D_879060D0[4];
 Vec3f gMiniDebugBasePos;
 Vec3f pad_D_879060F0;
-Vec3f D_87906100;
+Vec3f gMiniDebugCamVelocity;
 Vec3f D_87906110;
 
 void MiniCamera_ApplyOffsets(void) {
-    miniCameraXRot = D_879060A2 + gMiniCamRotXDelta;
+    miniCameraXRot = gMiniCamBaseRotX + gMiniCamRotXDelta;
     miniCameraYRot = gMiniCamBaseRotY + gMiniCamRotYDelta;
 
     miniCameraCoords.x = gMiniCamBasePos.x + gMiniCamPosDelta.x;
     miniCameraCoords.y = gMiniCamBasePos.y + gMiniCamPosDelta.y;
     miniCameraCoords.z = gMiniCamBasePos.z + gMiniCamPosDelta.z;
 
-    miniCameraDistance = D_879060A6 + gMiniCamDistDelta;
-    miniCameraFov = D_879060A8 + gMiniCamFovDelta;
+    miniCameraDistance = gMiniCamBaseDist + gMiniCamDistDelta;
+    miniCameraFov = gMiniCamBaseFov + gMiniCamFovDelta;
 
     if (miniCameraDistance < 0x32) {
         miniCameraDistance = 0x32;
-        gMiniCamDistDelta = miniCameraDistance - D_879060A6;
+        gMiniCamDistDelta = miniCameraDistance - gMiniCamBaseDist;
     }
 
     if (miniCameraFov < 0xA) {
         miniCameraFov = 0xA;
-        gMiniCamFovDelta = miniCameraFov - D_879060A8;
+        gMiniCamFovDelta = miniCameraFov - gMiniCamBaseFov;
     }
 }
 
@@ -230,19 +230,19 @@ void MiniDebugCamera_Control(void) {
     switch (gMiniDebugCameraMode) {
         case 0:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-                D_87906100.x -= 0.1f;
+                gMiniDebugCamVelocity.x -= 0.1f;
             }
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT)) {
-                D_87906100.x += 0.1f;
+                gMiniDebugCamVelocity.x += 0.1f;
             }
             break;
 
         case 1:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-                D_87906100.y -= 0.1;
+                gMiniDebugCamVelocity.y -= 0.1;
             }
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT)) {
-                D_87906100.y += 0.1;
+                gMiniDebugCamVelocity.y += 0.1;
             }
             break;
 
@@ -280,8 +280,8 @@ void MiniDebugCamera_Control(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_Print(0x7C, 0x8C + (gMiniDebugCameraMode * 0xC), "@");
 
-    Text_Print(0x82, 0x8C, "VX:%2.2f", D_87906100.x);
-    Text_Print(0x82, 0x98, "VY:%2.2f", D_87906100.y);
+    Text_Print(0x82, 0x8C, "VX:%2.2f", gMiniDebugCamVelocity.x);
+    Text_Print(0x82, 0x98, "VY:%2.2f", gMiniDebugCamVelocity.y);
     Text_Print(0x82, 0xA4, "BX:%2.2f", gMiniDebugBasePos.x);
     Text_Print(0x82, 0xB0, "BY:%2.2f", gMiniDebugBasePos.y);
     Text_Print(0x82, 0xBC, "GV:%2.2f", D_87906110.y);

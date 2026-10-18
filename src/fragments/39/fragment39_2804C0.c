@@ -355,7 +355,7 @@ void func_82505C10(void) {
 
         if (D_8780FA48 == -1) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x140 - (func_878013D4(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
+            Text_Print(0x140 - (GetTextWidth(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
         }
         Text_SetupDL();
     }

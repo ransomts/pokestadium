@@ -23,16 +23,16 @@ typedef struct unk_func_8001C248 {
 } unk_func_8001C248; // size >= 0x28
 
 void Graph_InitRoots(void);
-void Graph_AddToRootList0(unk_D_86002F58_004_000* arg0);
-void Graph_AddToRootList1(unk_D_86002F58_004_000* arg0);
-void GraphNode_InitChild(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
-void GraphNode_ClearCallback(unk_D_86002F58_004_000* arg0);
-s32 GraphNode_TriggerAction(unk_D_86002F58_004_000* arg0, s32 arg1);
-s32 GraphNode_TriggerSound(unk_D_86002F58_004_000* arg0, s32 arg1);
-void GraphNode_SetColorRGBA(unk_D_86002F58_004_000* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
-void GraphNode_SetState(unk_D_86002F58_004_000* arg0, u8 arg1);
-void GraphNode_SetSubState(unk_D_86002F58_004_000* arg0, u8 arg1);
-unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(unk_D_86002F58_004_000* arg0, s32 arg1);
+void Graph_AddToRootList0(Fragment2_1GraphNode* arg0);
+void Graph_AddToRootList1(Fragment2_1GraphNode* arg0);
+void GraphNode_InitChild(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
+void GraphNode_ClearCallback(Fragment2_1GraphNode* arg0);
+s32 GraphNode_TriggerAction(Fragment2_1GraphNode* arg0, s32 arg1);
+s32 GraphNode_TriggerSound(Fragment2_1GraphNode* arg0, s32 arg1);
+void GraphNode_SetColorRGBA(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
+void GraphNode_SetState(Fragment2_1GraphNode* arg0, u8 arg1);
+void GraphNode_SetSubState(Fragment2_1GraphNode* arg0, u8 arg1);
+unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(Fragment2_1GraphNode* arg0, s32 arg1);
 arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026268_arg0* arg1);
 void GetPokemonStatFromEntry(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2);
 void ProcessPokemonSelection(unk_D_800AE540_1194* arg0);

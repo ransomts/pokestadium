@@ -27,7 +27,7 @@ unk_D_86002F34_alt1* gCurrentTextureNode = NULL;
 unk_D_86002F34_alt1* gCurrentLightNode = NULL;
 unk_D_86002F34_00C* D_8006F094 = NULL;
 unk_D_86002F34_alt1* D_8006F098 = NULL;
-unk_D_86002F58_004_000* gDefaultGraphRoot = NULL;
+Fragment2_1GraphNode* gDefaultGraphRoot = NULL;
 unk_D_86002F34_alt11* D_8006F0A0 = NULL;
 static func_D_8006F0A4 D_8006F0A4[] = {
     Graph_VisitVisibleChildren, Graph_VisitNodePre, Graph_SetupCamera, TextureNode_VisitChildren, Graph_SetupLights, CameraNode_SetProjection, CameraNode_SetLookAtProjection,
@@ -768,7 +768,7 @@ void Graph_DrawModel(GraphNode* arg0) {
 void Graph_RenderComplexObject(GraphNode* arg0) {
     MtxF sp38;
     Color_RGBA8_u32 sp34;
-    unk_D_86002F58_004_000* arg = (unk_D_86002F58_004_000*)arg0;
+    Fragment2_1GraphNode* arg = (Fragment2_1GraphNode*)arg0;
 
     if (gCurrentLightNode->unk_18 == arg->unk_018) {
         arg->unk_0A7 = 0;
@@ -1084,11 +1084,11 @@ s32 func_80015360(void) {
     return var_v1;
 }
 
-Vec3f* func_80015390(unk_D_86002F58_004_000* arg0, s16 arg1, Vec3f* arg2) {
+Vec3f* func_80015390(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* arg2) {
     s32 i;
     s32 var_v0;
     u8 temp_v1;
-    unk_D_86002F58_004_000* var_a2;
+    Fragment2_1GraphNode* var_a2;
 
     for (i = 0; i < arg0->unk_0A7; i++) {
         if (arg1 == arg0->unk_0A8[i].unk_00) {

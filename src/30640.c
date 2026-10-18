@@ -59,7 +59,7 @@ s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1);
 s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1);
 s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1);
 s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1);
-s32 Cam_SetActiveNode(s32 arg0, unk_D_86002F58_004_000* arg1);
+s32 Cam_SetActiveNode(s32 arg0, Fragment2_1GraphNode* arg1);
 s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1);
 s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1);
 
@@ -354,7 +354,7 @@ s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1) {
     return 0;
 }
 
-s32 Cam_SetActiveNode(s32 arg0, unk_D_86002F58_004_000* arg1) {
+s32 Cam_SetActiveNode(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 0) {
         gCamPrimary->unk_20 = arg1;
     }

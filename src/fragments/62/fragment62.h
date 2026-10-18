@@ -21,7 +21,7 @@ typedef struct unk_D_84390010_654_0AC {
 } unk_D_84390010_654_0AC; // size = 0x10
 
 typedef struct unk_D_84390010_168 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ char unk168[0x1];
     /* 0x169 */ u8 unk_169;
     /* 0x16A */ s16 unk_16A;
@@ -78,7 +78,7 @@ typedef struct unk_D_84390010_728_0168 {
 } unk_D_84390010_728_0168; // size >= 0xC0
 
 typedef struct unk_D_84390010_728 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ unk_D_84390010_728_0168* unk_168;
     /* 0x16C */ s32 unk_16C;
     /* 0x170 */ s32 unk_170;
@@ -132,7 +132,7 @@ typedef struct unk_D_84390010_448 {
 } unk_D_84390010_448; // size >= 0x50
 
 typedef struct unk_D_84390010 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ unk_D_84390010_168 unk_168[2];
     /* 0x448 */ unk_D_84390010_448 unk_448;
     /* 0x498 */ f32 unk_498;
@@ -154,7 +154,7 @@ typedef struct unk_D_84390010 {
     /* 0x4E4 */ f32 unk_4E4;
     /* 0x4E8 */ u8 unk_4E8;
     /* 0x4E9 */ u8 unk_4E9;
-    /* 0x4EC */ unk_D_86002F58_004_000 unk_4EC;
+    /* 0x4EC */ Fragment2_1GraphNode unk_4EC;
     /* 0x654 */ unk_D_84390010_654 unk_654;
     /* 0x720 */ unk_D_800AE540_1194* unk_720;
     /* 0x724 */ unk_D_800AE540_0004* unk_724;
@@ -1042,7 +1042,7 @@ extern arg1_func_80019420* D_843924E0[40];
 s32 func_84300020(s32 arg0, GraphNode* arg1);
 s32 func_84300058(s32 arg0, unk_D_86002F34_alt18* arg1);
 s32 func_843000C0(s32 arg0, unk_D_86002F34_alt18* arg1);
-s32 func_8430012C(s32 arg0, unk_D_86002F58_004_000* arg1);
+s32 func_8430012C(s32 arg0, Fragment2_1GraphNode* arg1);
 void func_84300184(u8 arg0, u8 arg1, u8 arg2);
 void func_843001FC(f32 arg0);
 u16 func_84300208(u16 arg0);
@@ -1824,17 +1824,17 @@ void func_8432C9C0(unk_D_800AE540_1194* arg0, s16 arg1);
 void func_8432CA48(void);
 void func_8432CAA8(unk_D_800AE540_1194* arg0);
 void func_8432CAD0(void);
-unk_D_8140E720* func_8432CB60(unk_D_86002F58_004_000* arg0);
-unk_D_86002F58_004_000* func_8432CB68(unk_D_8140E720* arg0);
-void func_8432CBF8(unk_D_86002F58_004_000* arg0);
-unk_D_86002F58_004_000* func_8432CC54(unk_D_8140E720* arg0);
-void func_8432CD14(unk_D_86002F58_004_000* arg0);
-void func_8432CD70(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2);
-void func_8432CDD8(unk_D_86002F58_004_000* arg0, s16 arg1);
-void func_8432CE00(unk_D_86002F58_004_000* arg0, s16 arg1);
-void func_8432CE3C(unk_D_86002F58_004_000* arg0, s16 arg1);
-void func_8432CE78(unk_D_86002F58_004_000* arg0, s16 arg1);
-s32 func_8432CED4(unk_D_86002F58_004_000* arg0);
+unk_D_8140E720* func_8432CB60(Fragment2_1GraphNode* arg0);
+Fragment2_1GraphNode* func_8432CB68(unk_D_8140E720* arg0);
+void func_8432CBF8(Fragment2_1GraphNode* arg0);
+Fragment2_1GraphNode* func_8432CC54(unk_D_8140E720* arg0);
+void func_8432CD14(Fragment2_1GraphNode* arg0);
+void func_8432CD70(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2);
+void func_8432CDD8(Fragment2_1GraphNode* arg0, s16 arg1);
+void func_8432CE00(Fragment2_1GraphNode* arg0, s16 arg1);
+void func_8432CE3C(Fragment2_1GraphNode* arg0, s16 arg1);
+void func_8432CE78(Fragment2_1GraphNode* arg0, s16 arg1);
+s32 func_8432CED4(Fragment2_1GraphNode* arg0);
 void func_8432CEF0(UNUSED unk_D_86002F34_00C* arg0);
 void func_8432CF74(UNUSED unk_D_86002F34_00C* arg0);
 void func_8432CFCC(unk_D_86002F34_00C* arg0);

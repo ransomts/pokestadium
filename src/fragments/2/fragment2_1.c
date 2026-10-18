@@ -9,7 +9,7 @@ static Gfx gFragment2_1EmptyDL[] = {
     gsSPEndDisplayList(),
 };
 
-u32 D_87806398[] = {
+u32 gFragment2_1DisplayList[] = {
     0x0B00001E, 0x00000000, 0x014000F0, 0x00000000,  0x000016A8, 0x00000190, 0x05000000, 0x0D000000, 0x05000000,
     0x0F000002, 0x05000000, 0x0A000000, &gGraphRoot1, 0x06000000, 0x06000000, 0x06000000, 0x04000000, 0x00000000,
 };
@@ -31,8 +31,8 @@ static s16 gFragment2_1RemainingSteps;
 static s16 gFragment2_1StepTimer;
 static s16 gFragment2_1Phase;
 static s16 gFragment2_1StartFlag;
-static unk_D_86002F58_004_000 gFragment2_1GraphNode;
-static unk_func_80011B94* gFragment2_1DisplayNode;
+static Fragment2_1GraphNode gFragment2_1GraphNode;
+static SimpleGfxNode* gFragment2_1DisplayNode;
 
 void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
     f32 var_fv0;

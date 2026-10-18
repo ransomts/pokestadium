@@ -175,7 +175,7 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
     }
 }
 
-void MiniActor_SetAnimToLastFrame(unk_D_86002F58_004_000* arg0) {
+void MiniActor_SetAnimToLastFrame(Fragment2_1GraphNode* arg0) {
     Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
@@ -306,7 +306,7 @@ void MiniActor_UpdateCollider(MiniActor* arg0) {
 }
 
 void MiniGame_ResetState(void) {
-    s16* ptr = D_8780FA30;
+    s16* ptr = gMiniHudColorDefaults;
 
     minigameInputLock = 0;
     D_87903DA8 = 0;
@@ -319,7 +319,7 @@ void MiniGame_ResetState(void) {
     D_87903DC8 = 0;
     D_87903DCC = 0;
     D_87903DD0 = 0;
-    D_87906072 = 0;
+    gMiniCameraNearBackup = 0;
 
     ResultScreen_Init();
     Fragment2_1_Init();
@@ -341,7 +341,7 @@ void MiniGame_SaveCameraState(void) {
     gMiniCameraCoordsBackup.z = miniCameraCoords.z;
 
     gMiniCameraXRotBackup = miniCameraXRot;
-    D_87906078 = miniCameraYRot;
+    gMiniCameraYRotBackup = miniCameraYRot;
 }
 
 void MiniGame_RestoreCameraState(void) {
@@ -353,5 +353,5 @@ void MiniGame_RestoreCameraState(void) {
     miniCameraCoords.z = gMiniCameraCoordsBackup.z;
 
     miniCameraXRot = gMiniCameraXRotBackup;
-    miniCameraYRot = D_87906078;
+    miniCameraYRot = gMiniCameraYRotBackup;
 }

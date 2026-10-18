@@ -26,7 +26,7 @@
 typedef struct unk_D_82607420 {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ unk_D_86002F58_004_000_010_024* unk_004;
-    /* 0x008 */ unk_D_86002F58_004_000 unk_008;
+    /* 0x008 */ Fragment2_1GraphNode unk_008;
 } unk_D_82607420; // size = 0x170
 
 typedef struct unk_D_82604180 {
@@ -46,9 +46,9 @@ static s16 D_82607B50;
 static s16 D_82607B52;
 static s16 D_82607B54;
 static s32 pad_D_82607B58[2];
-static unk_D_86002F58_004_000 D_82607B60[5];
-static unk_D_86002F58_004_000 D_82608268;
-static unk_D_86002F58_004_000 D_826083D0;
+static Fragment2_1GraphNode D_82607B60[5];
+static Fragment2_1GraphNode D_82608268;
+static Fragment2_1GraphNode D_826083D0;
 static unk_D_86002F30* D_82608538;
 static s16 D_8260853C;
 static s16 D_8260853E;
@@ -2571,7 +2571,7 @@ void func_8260365C(void) {
 
 void func_82603800(s32 arg0, f32 arg1) {
     if ((D_82607420[arg0].unk_000 != 151) || (func_826007C8(151) != 0)) {
-        unk_D_86002F58_004_000* temp_s0 = &D_82607B60[arg0];
+        Fragment2_1GraphNode* temp_s0 = &D_82607B60[arg0];
 
         temp_s0->unk_0A6 = arg0;
         GraphNode_InitChild(temp_s0, 0, 0xB6, D_82608538->unk_08->unk_00[0]);
@@ -2595,7 +2595,7 @@ void func_82603924(void) {
     s16 j;
     MemoryBlock* temp_v0;
     unk_D_86002F30* temp_s0;
-    unk_D_86002F58_004_000* ptr;
+    Fragment2_1GraphNode* ptr;
 
     D_82608546 = 0;
     D_82608548 = 0;

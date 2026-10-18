@@ -27,7 +27,7 @@ static GraphNode* D_83202014;
 static unk_D_86002F30* D_83202018;
 static char** D_8320201C;
 static char** D_83202020;
-static unk_D_86002F58_004_000 D_83202028[4];
+static Fragment2_1GraphNode D_83202028[4];
 static unk_D_832025C8 D_832025C8;
 static unk_D_832027C8 D_832027C8;
 
@@ -42,7 +42,7 @@ static u32 D_83201F5C[] = {
     &gGraphRoot0, 0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
-s32 func_83200020(s32 arg0, unk_D_86002F58_004_000* arg1) {
+s32 func_83200020(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 2) {
         arg1->unk_01E.z -= 0x80;
         arg1->unk_024.x = D_83202028->unk_024.x;
@@ -718,7 +718,7 @@ void func_83201B60(void) {
     Stage_AdvanceN(2);
 }
 
-void func_83201BD8(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void func_83201BD8(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, s16 arg3) {
     GraphNode_InitChild(arg0, 0, 0, D_83202014);
     Anim_SetChannel(arg0, 0, D_8C2011C4, 0x10000);
     arg0->unk_000.unk_01 &= ~1;

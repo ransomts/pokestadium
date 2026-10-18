@@ -43,7 +43,7 @@ static void* gMenuTextureAtlas;
 static void* gCurrentBackgroundTexture;
 static Vtx* gTileMapVertices;
 static GraphNode* gMenuGeoRoot;
-static unk_D_86002F58_004_000 gMenuGraphNodes[6];
+static Fragment2_1GraphNode gMenuGraphNodes[6];
 static s16 gSelectedMenuIndex;
 static FramebufferImage* gMenuBackgroundImages[6];
 static GraphNode* gMenuBarGraphNode;
@@ -701,7 +701,7 @@ void func_84100F04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_8410342C += 0x2000;
 }
 
-s32 func_84101120(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84101120(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         s32 idx = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -979,8 +979,8 @@ void func_84101EC8(void) {
 
 void func_84102140(void) {
     s32 i;
-    unk_D_86002F58_004_000* ptr;
-    unk_D_86002F58_004_000* ptr2;
+    Fragment2_1GraphNode* ptr;
+    Fragment2_1GraphNode* ptr2;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     gMenuGeoRoot = process_geo_layout(temp_v0, D_8410254C);

@@ -241,7 +241,7 @@ s32 func_86806100(void) {
         var_v0 = D_86809A0C - gSushiItemDefs[1].unk_12;
     }
 
-    temp_v0 = func_878001E8(var_v0);
+    temp_v0 = GetRandomMod(var_v0);
     var_a1 = 0;
 
     for (i = 0; i < 9; i++) {
@@ -289,7 +289,7 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
         arg1->unk_2C = 0.0f;
         arg1->unk_38 = arg3;
 
-        if ((s16)func_878001E8(100) < gSushiItemDefs[arg1->unk_0C].unk_10) {
+        if ((s16)GetRandomMod(100) < gSushiItemDefs[arg1->unk_0C].unk_10) {
             arg1->unk_02 |= 2;
         }
 
@@ -505,7 +505,7 @@ void func_86806A50(void) {
     s32 i;
     MainPoolState* temp_s2;
     unk_D_868084D8* var_s0;
-    unk_func_80011B94* temp_a1;
+    SimpleGfxNode* temp_a1;
     unk_D_86808808* ptr;
     Gfx* gfx = gSushiEmptyDL;
 

@@ -25,21 +25,21 @@ extern s32 D_812286F0;
 // .rodata
 
 // .bss
-extern u64 D_81231450[0x640];
-extern u64 D_81234650[0x6];
-extern unk_func_81206FA0 D_81234680;
-extern unk_D_81234690 D_81234690;
-extern volatile s32 D_812346C8;
-extern s32 D_812346D4;
-extern f32 D_812346D8;
-extern s32 D_812346DC;
+extern u64 gAudioArenaBuffer[0x640];
+extern u64 gAudioWorkBuffer[0x6];
+extern unk_func_81206FA0 gAudioArena;
+extern unk_D_81234690 gAudioConfig;
+extern volatile s32 gAudioTaskPending;
+extern s32 gAudioTaskId;
+extern f32 gAudioTimer;
+extern s32 gAudioFramesPerSec;
 extern s16* D_812346E0[3];
 extern s16 D_812346EC[3];
 extern s16 D_812346F2;
 extern s32 D_81234700;
 extern volatile u32 D_812346FC;
 
-u32 func_81206FA0(unk_func_81206FA0* arg0, s32 arg1) {
+u32 AudioArena_AllocZero(unk_func_81206FA0* arg0, s32 arg1) {
   s32 temp_v0;
   u32 temp_a2;
   u32 var_a1;
@@ -58,7 +58,7 @@ u32 func_81206FA0(unk_func_81206FA0* arg0, s32 arg1) {
   return temp_a2;
 }
 
-s32 func_81207020(unk_func_81206FA0* arg0, s32 arg1) {
+s32 AudioArena_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
   s32 temp_a2;
   u32 temp_v0;
 
@@ -73,7 +73,7 @@ s32 func_81207020(unk_func_81206FA0* arg0, s32 arg1) {
   return temp_a2;
 }
 
-void func_81207078(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
+void AudioArena_Init(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
   arg0->unk_00 = ALIGN16(arg1);
   arg0->unk_04 = ALIGN16(arg1);
   arg0->unk_08 = (s32) (arg2 - (arg1 & 0xF));
@@ -90,10 +90,10 @@ void func_812070A0(void) {
 
     D_812346FC = 0;
     for (i = 0; i < D_812286EC / 8; i++) {
-        D_81231450[i] = 0;
+        gAudioArenaBuffer[i] = 0;
     }
-    var_v0_2 = D_81234650;
-    var_v1 = (u32) ((s32) &D_81234700 - (s32) D_81234650) >> 3;
+    var_v0_2 = gAudioWorkBuffer;
+    var_v1 = (u32) ((s32) &D_81234700 - (s32) gAudioWorkBuffer) >> 3;
     if ((s32) var_v1 >= 0) {
         do {
             var_v1--;
@@ -101,24 +101,24 @@ void func_812070A0(void) {
             ++var_v0_2;
         } while ((s32) var_v1 >= 0);
     }
-    D_812346D8 = 16.713f;
-    D_812346DC = 0x3C;
+    gAudioTimer = 16.713f;
+    gAudioFramesPerSec = 0x3C;
     do {} while (0);
-    D_81234690.unk_02 = 0xBB80;
-    D_81234690.unk_04 = osAiSetFrequency(D_81234690.unk_02);
-    D_81234690.unk_06 = (s16) (((D_81234690.unk_02 / D_812346DC) + 0xF) & ~0xF);
+    gAudioConfig.unk_02 = 0xBB80;
+    gAudioConfig.unk_04 = osAiSetFrequency(gAudioConfig.unk_02);
+    gAudioConfig.unk_06 = (s16) (((gAudioConfig.unk_02 / gAudioFramesPerSec) + 0xF) & ~0xF);
     var_v1_2 = (s16*) &D_812346EC;
-    D_81234690.unk_0A = (s16) (D_81234690.unk_06 - 0x10);
-    D_81234690.unk_08 = (s16) (D_81234690.unk_06 + 0x10);
+    gAudioConfig.unk_0A = (s16) (gAudioConfig.unk_06 - 0x10);
+    gAudioConfig.unk_08 = (s16) (gAudioConfig.unk_06 + 0x10);
     do {
         *var_v1_2 = 0xA0;
         var_v1_2++;
     } while (var_v1_2 < (s16*) &D_812346F2);
-    D_812346C8 = 0;
-    D_812346D4 = 0;
-    func_81207078(&D_81234680, (s32) D_81231450, D_812286F0);
+    gAudioTaskPending = 0;
+    gAudioTaskId = 0;
+    AudioArena_Init(&gAudioArena, (s32) gAudioArenaBuffer, D_812286F0);
     for (i = 0; i < 3; i++) {
-        D_812346E0[i] = (s16*) func_81207020(&D_81234680, 0xFC0);
+        D_812346E0[i] = (s16*) AudioArena_Alloc(&gAudioArena, 0xFC0);
         var_v1_3 = D_812346E0[i];
         for (var_a0 = 0; var_a0 != 0xFC0 / 2; var_a0++) {
             *var_v1_3 = 0;

@@ -32,12 +32,12 @@ s32 D_8140E708;
 s32 D_8140E70C;
 s32 D_8140E710;
 static s32 pad_D_8140E714[2];
-unk_D_8140E720* D_8140E720;
+unk_D_8140E720* gParticleInstances;
 unk_D_8140E724* D_8140E724;
-unk_D_8140E728* D_8140E728;
+unk_D_8140E728* gParticleEmitters;
 s32 D_8140E72C;
 s32 D_8140E730;
-s32 D_8140E734;
+s32 gParticleEmitterNextIdx;
 
 void SetBits(s32* arg0, s32 arg1) {
     *arg0 |= arg1;

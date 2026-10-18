@@ -12,20 +12,20 @@ extern u32 D_8780BFB0[];
 extern u32 D_8780CE50[];
 extern u32 D_8780DCF0[];
 extern u32 D_8780A270[];
-extern u32 D_878064F0[];
-extern u32 D_87806670[];
-extern u32 D_878065B0[];
-extern u32 D_87806730[];
+extern u32 gBorderTexture_Left[];
+extern u32 gBorderTexture_Middle[];
+extern u32 gBorderTexture_Fill[];
+extern u32 gBorderTexture_Right[];
 
-char** D_87806330 = NULL;
+char** gItemNamesBank = NULL;
 
-static s32 D_8780FA20;
-static char** D_8780FA24;
+static s32 gRandomCounter;
+static char** gMoveNamesBank;
 u16 D_8780FA28;
 s16 D_8780FA2A;
 s16 D_8780FA2C;
 
-s16 D_8780FA30[4];
+s16 gMiniHudColorDefaults[4];
 s16 D_8780FA38;
 s16 D_8780FA3A;
 s16 D_8780FA40[4];
@@ -36,31 +36,31 @@ static s32 pad_D_8780FA4C;
 s16 D_8780FA50[9];
 s16 D_8780FA68[4];
 
-void func_87800020(void) {
+void InitMessageBanks(void) {
     MessageBank_Init();
-    D_87806330 = GetMessageBank(0x1D);
-    D_8780FA24 = GetMessageBank(0x14);
+    gItemNamesBank = GetMessageBank(0x1D);
+    gMoveNamesBank = GetMessageBank(0x14);
 }
 
-void func_8780005C(void) {
+void UpdateScrollingMessage(void) {
     static s32 D_87806334 = 0;
 
     s32 sp24;
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_8780FA24, 0));
+        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMoveNamesBank, 0));
         temp_s0 = 0x50 - D_87806334;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
         Text_ResetState();
         Text_SetFont(4, 0);
-        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
+        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMoveNamesBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_8780FA24, 0));
+            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMoveNamesBank, 0));
         }
 
         Text_SetupDL();
@@ -74,12 +74,12 @@ void func_8780005C(void) {
     }
 }
 
-void func_878001D0(void) {
-    D_8780FA20++;
+void IncrementRandomCounter(void) {
+    gRandomCounter++;
 }
 
-u32 func_878001E8(u32 arg0) {
-    u32 temp_a0 = guRandom() + D_8780FA20;
+u32 GetRandomMod(u32 arg0) {
+    u32 temp_a0 = guRandom() + gRandomCounter;
     u32 var_v1;
 
     if (arg0 == 0) {
@@ -91,7 +91,7 @@ u32 func_878001E8(u32 arg0) {
     return var_v1;
 }
 
-void func_8780024C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DrawBorderRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     UNUSED s32 pad;
     s32 spF0 = arg2 - 2;
     s32 temp_lo = ((arg4 - arg3) * spF0) / arg4;
@@ -108,14 +108,14 @@ void func_8780024C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
                         G_TX_RENDERTILE, 0, 0, 0, 0);
 
     gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    gDPLoadTextureBlock(gDisplayListHead++, D_878064F0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Left, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
     gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 2) << 2, (arg1 + 0xC) << 2, G_TX_RENDERTILE,
                         0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_87806670, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Middle, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
@@ -123,7 +123,7 @@ void func_8780024C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
                         (arg1 + 0xC) << 2, G_TX_RENDERTILE, 0x00C0, 0, 0x0400, 0x0400);
 
     if (sp1C > 0) {
-        gDPLoadTextureBlock(gDisplayListHead++, D_87806730, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Right, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (arg0 + 2) << 2, arg1 << 2, ((arg0 + 2) + sp1C) << 2, (arg1 + 0xC) << 2,
@@ -131,7 +131,7 @@ void func_8780024C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     }
 
     if (temp_lo > 0) {
-        gDPLoadTextureBlock(gDisplayListHead++, D_878065B0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Fill, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, ((arg0 + 2) + sp1C) << 2, arg1 << 2,
@@ -141,28 +141,28 @@ void func_8780024C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_878009BC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u32* spCC;
     s32 temp_lo = ((arg3 - arg2) * 0x30) / arg3;
     s32 sp14 = 0x30 - temp_lo;
 
     if (arg2 < ((arg3 * 0xA) / 48)) {
-        spCC = D_87806730;
+        spCC = gBorderTexture_Right;
     } else if (arg2 < ((arg3 * 0x1B) / 48)) {
-        spCC = D_87806730;
+        spCC = gBorderTexture_Right;
     } else {
-        spCC = D_878065B0;
+        spCC = gBorderTexture_Fill;
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_878064F0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 5, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Left, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 5, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 0x10) << 2, (arg1 + 5) << 2, G_TX_RENDERTILE,
                         0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_87806670, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 5, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gBorderTexture_Middle, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 5, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg0 + 0x40) << 2, arg1 << 2, (arg0 + 0x41) << 2, (arg1 + 5) << 2,
@@ -186,19 +186,19 @@ void func_878009BC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-s16 D_87806338 = -1;
-u32* D_8780633C[] = { D_878067F0, D_87807690, D_87808530, D_878093D0 };
-u32* D_8780634C[] = { D_8780B110, D_8780BFB0, D_8780CE50, D_8780DCF0, D_8780A270 };
+s16 gCurrentMenuIndex = -1;
+u32* gPositiveTextureBank[] = { D_878067F0, D_87807690, D_87808530, D_878093D0 };
+u32* gNegativeTextureBank[] = { D_8780B110, D_8780BFB0, D_8780CE50, D_8780DCF0, D_8780A270 };
 
 void func_878010C8(s16 arg0) {
     s32 i;
     D_8780FA28 = 0;
-    D_87806338 = arg0;
+    gCurrentMenuIndex = arg0;
     D_8780FA2A = 0;
     D_8780FA2C = 0;
 
     for (i = 0; i < 4; i++) {
-        D_8780FA30[i] = 1;
+        gMiniHudColorDefaults[i] = 1;
     }
 
     if (arg0 == 3) {
@@ -218,10 +218,10 @@ void func_878010C8(s16 arg0) {
         D_8780FA68[i] = 0;
         i++;
     } while (i < 4);
-    func_87800020();
+    InitMessageBanks();
 }
 
-void func_8780118C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetRenderMode(gDisplayListHead++,
                      IM_RD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | FORCE_BL |
@@ -233,7 +233,7 @@ void func_8780118C(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + arg2, arg1 + arg3);
 }
 
-void func_87801290(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
+void ParseStringAndMeasure(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
     s32 var_a1;
     s32 var_t2;
     s8 sp38[0x100];
@@ -297,11 +297,11 @@ void func_87801290(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
     }
 }
 
-s32 func_878013D4(UNUSED TextObject* arg0, char* arg1) {
+s32 GetTextWidth(UNUSED TextObject* arg0, char* arg1) {
     return MeasureTextWidth(0, 0, arg1);
 }
 
-void func_87801400(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
+void DrawScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     static u32* D_8780FA70;
 
     f32 temp_fa0;
@@ -313,9 +313,9 @@ void func_87801400(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     if ((arg3 != 0.0f) && (arg4 != 0.0f)) {
         if (arg0 < 0) {
             arg0 = -1 - arg0;
-            D_8780FA70 = D_8780634C[arg0];
+            D_8780FA70 = gNegativeTextureBank[arg0];
         } else {
-            D_8780FA70 = D_8780633C[arg0 % 4];
+            D_8780FA70 = gPositiveTextureBank[arg0 % 4];
         }
 
         gDPLoadTextureBlock(gDisplayListHead++, D_8780FA70, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 26, 0,
@@ -329,8 +329,8 @@ void func_87801400(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     }
 }
 
-void func_87801644(s32 arg0, s16 arg1, s16 arg2, f32 _scale) {
-    func_87801400(arg0, arg1, arg2, _scale, _scale);
+void DrawUniformScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 _scale) {
+    DrawScaledTextureRect(arg0, arg1, arg2, _scale, _scale);
 }
 
 void func_87801684(s16 arg0, s16 arg1, unk_func_87801684* arg2) {
@@ -531,9 +531,9 @@ void func_87801D5C(s16 arg0, s16 arg1, s16 arg2, unk_func_87801684* arg3) {
 }
 
 void func_87801F48(s16 arg0, s16 arg1, s16 arg2) {
-    static u32 D_87806380[] = { 0x03049CA0, 0x0304B1C0, 0x0304C6E0, 0x0304DC00 };
+    static u32 gDualTexturePanelIds[] = { 0x03049CA0, 0x0304B1C0, 0x0304C6E0, 0x0304DC00 };
 
-    u32 sp34 = D_87806380[arg0];
+    u32 sp34 = gDualTexturePanelIds[arg0];
 
     gDPLoadTextureTile(gDisplayListHead++, sp34, G_IM_FMT_RGBA, G_IM_SIZ_16b, 52, 0, 0, 0, 51, 25, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,

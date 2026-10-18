@@ -33,7 +33,7 @@ void func_8690232C(void) {
 }
 
 void Camera_Init(void) {
-    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
     gCameraYaw = 0;
     gCameraPitch = 0;
     gCameraDistance = ScaleCameraDistance(4.0f);

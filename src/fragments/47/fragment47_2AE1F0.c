@@ -26,7 +26,7 @@ typedef struct unk_D_83806778 {
 static GraphNode* D_83805670;
 static unk_D_86002F58_004_000_004* D_83805678[6];
 static unk_D_86002F58_004_000_004* D_83805690;
-static unk_D_86002F58_004_000 D_83805698[2][6];
+static Fragment2_1GraphNode D_83805698[2][6];
 static unk_D_83806778 D_83806778[4];
 static u8* D_838067C8[4];
 static s32 D_838067D8;
@@ -370,7 +370,7 @@ void func_83800EFC(void) {
     MemoryBlock* temp_s1;
     s32 i;
     unk_D_86002F58_004_000_004* temp_v0_2;
-    unk_D_86002F58_004_000* ptr;
+    Fragment2_1GraphNode* ptr;
 
     temp_s1 = state_pool_try_init(main_pool_get_available(), 0);
     D_838067D8 = 0;

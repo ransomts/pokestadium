@@ -96,8 +96,8 @@ typedef struct unk_D_86807558 {
     /* 0x0DC */ unk_D_868084D8* unk_0DC;
     /* 0x0E0 */ s16 unk_0E0;
     /* 0x0E2 */ s16 unk_0E2;
-    /* 0x0E4 */ unk_D_86002F58_004_000 unk_0E4;
-    /* 0x24C */ unk_D_86002F58_004_000 unk_24C;
+    /* 0x0E4 */ Fragment2_1GraphNode unk_0E4;
+    /* 0x24C */ Fragment2_1GraphNode unk_24C;
     /* 0x3B4 */ u32* unk_3B4;
 } unk_D_86807558; // size = 0x3B8
 

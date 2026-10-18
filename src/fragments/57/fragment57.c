@@ -21,7 +21,7 @@
 #include "PR/rcp.h"
 
 static GraphNode* D_82D09FF0;
-static unk_D_86002F58_004_000 D_82D09FF8[8];
+static Fragment2_1GraphNode D_82D09FF8[8];
 static unk_D_82D0AB38 D_82D0AB38[4];
 static unk_func_80027FA0 D_82D0AB90;
 static u16 D_82D0AB98;
@@ -1169,7 +1169,7 @@ void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_82D09EEC += 0x2000;
 }
 
-s32 func_82D01758(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_82D01758(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         s32 var_a3 = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -1183,7 +1183,7 @@ s32 func_82D01758(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_82D0180C(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_82D0180C(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
@@ -1195,7 +1195,7 @@ s32 func_82D0180C(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 func_82D018AC(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_82D018AC(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
@@ -2017,7 +2017,7 @@ void func_82D04D24(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
     arg0->unk_0A = arg2;
 }
 
-s32 func_82D04D50(s32 arg0, UNUSED unk_func_80011B94* arg1) {
+s32 func_82D04D50(s32 arg0, UNUSED SimpleGfxNode* arg1) {
     static Gfx* D_82D09EF8[] = {
         D_82D08C70, D_82D09850, D_82D09CF0, D_82D09340, D_82D09850, D_82D09CF0, D_82D09CF0,
     };
@@ -2758,7 +2758,7 @@ void func_82D06AB0(void) {
 void func_82D06B98(void) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    unk_D_86002F58_004_000* var_s1;
+    Fragment2_1GraphNode* var_s1;
 
     D_82D09FF0 = process_geo_layout(temp_v0, &D_82D06FA4);
     D_82D0ABAC = process_geo_layout(temp_v0, &D_82D07710);

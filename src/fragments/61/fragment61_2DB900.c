@@ -27,7 +27,7 @@ typedef struct unk_D_8423E518 {
 } unk_D_8423E518; // size = 0x14
 
 GraphNode* D_8423D400;
-unk_D_86002F58_004_000 D_8423D408[2][6];
+Fragment2_1GraphNode D_8423D408[2][6];
 unk_D_86002F58_004_000_004* D_8423E4E8[6];
 unk_D_86002F58_004_000_004* D_8423E500;
 u8* D_8423E508[4];
@@ -209,7 +209,7 @@ s16 D_8421158C[] = {
     0x64, 0x6E, 0x82, 0x96, 0xA0, 0xA0, 0x78, 0x50, 0x32, 0x1E, 0xA, 5,
 };
 
-s32 func_84204070(s32 arg0, unk_func_80011B94* arg1) {
+s32 func_84204070(s32 arg0, SimpleGfxNode* arg1) {
     u32 var_a0;
     u8* var_a3;
 
@@ -761,7 +761,7 @@ void func_84205B3C(void) {
 s32 func_84205C18(s16 arg0) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    unk_D_86002F58_004_000* var_s2;
+    Fragment2_1GraphNode* var_s2;
 
     D_8423D400 = process_geo_layout(temp_v0, D_84210DF4);
     D_8423E56A = arg0;

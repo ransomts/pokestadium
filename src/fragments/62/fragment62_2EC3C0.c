@@ -2033,7 +2033,7 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
 }
 
 void func_84306FB8(unk_D_84390010* arg0) {
-    unk_D_86002F58_004_000* ptr = &arg0->unk_4EC;
+    Fragment2_1GraphNode* ptr = &arg0->unk_4EC;
     unk_D_86002F58_004_000_004* sp20 = arg0->unk_720->unk_18;
 
     Graph_AddToRootList0(ptr);

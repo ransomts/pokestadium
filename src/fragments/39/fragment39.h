@@ -72,7 +72,7 @@ typedef struct unk_D_82508B30 {
 } unk_D_82508B30; // size = 0x1A4
 
 typedef struct unk_D_8250A308 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ s16 unk_168;
     /* 0x16A */ s16 unk_16A;
     /* 0x16C */ s16 unk_16C;
@@ -113,7 +113,7 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1);
 s32 func_82500388(s32 arg0, GraphNode* arg1);
 s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1);
 void UI_Cursor_Init(void);
-void UI_Cursor_Update(unk_D_86002F58_004_000* a0);
+void UI_Cursor_Update(Fragment2_1GraphNode* a0);
 s32 UI_DrawIcon(s32 arg0, GraphNode* arg1);
 void ControllerInput_Clear(void);
 void ControllerInput_Update(void);

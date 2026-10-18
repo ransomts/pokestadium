@@ -1467,7 +1467,7 @@ static u32 D_86F0B004[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFE0000, 0x00640064, 0x00640000, 0x05000000,
     0x00000000, D_86F0AFB8, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
-    0x06000000, 0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
+    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
 };
 static Vec3f sandshrewPositions[4] = {
     {
@@ -1811,19 +1811,19 @@ void func_86F00920(MiniActor* sandshrew) {
         case 0x3: //  diggin
             if (sandshrew->diggingAccel2 != 0) {
                 if (D_8140E6CC == 0) {
-                    func_81407F24(&sandshrew->unk_000, func_87902608, &D_87903E28, 1, 1); //	perticles
-                    func_81407F24(&sandshrew->unk_000, func_87902608, &D_87903E28, 1, 2); //	particles
+                    func_81407F24(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 1); //	perticles
+                    func_81407F24(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 2); //	particles
                 }
 
                 if (D_8140E6CC == 0) {
                     if (sandshrew->totalPos.y > -10.0f) {
-                        func_81407D48(1.0f, sandshrew->totalPos, sandshrew->totalRot, func_87902224, &D_87903E10,
+                        func_81407D48(1.0f, sandshrew->totalPos, sandshrew->totalRot, func_87902224, &gMiniTutoScreenNode0,
                                       1); //	particles
                     } else {
                         sp48.x = sandshrew->totalPos.x;
                         sp48.y = -5.0f;
                         sp48.z = sandshrew->totalPos.z;
-                        func_81407D48(1.0f, sp48, sandshrew->totalRot, func_879023EC, &D_87903E10,
+                        func_81407D48(1.0f, sp48, sandshrew->totalRot, func_879023EC, &gMiniTutoScreenNode0,
                                       1); //	particles
                     }
                 }
@@ -2055,7 +2055,7 @@ void func_86F012B8(void) {
 }
 
 void func_86F0132C(void) {
-    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0x1600;
     miniCameraYRot = 0;
@@ -2072,10 +2072,10 @@ void func_86F0132C(void) {
 }
 
 void func_86F013B8(void) {
-    switch (D_87906072) {
+    switch (gMiniCameraNearBackup) {
         case 1:
             MiniGame_SaveCameraState();
-            D_87906072++;
+            gMiniCameraNearBackup++;
             break;
 
         case 2:
@@ -2086,7 +2086,7 @@ void func_86F013B8(void) {
             break;
     }
 
-    if (D_87906072 != 0) {
+    if (gMiniCameraNearBackup != 0) {
         MiniGame_RestoreCameraState();
     }
 }
@@ -2199,7 +2199,7 @@ void func_86F0174C(void) {
             if (func_86F014F8() != 0) {
                 func_86F0164C();
                 minigameInputLock = false;
-                D_87906072 = 1;
+                gMiniCameraNearBackup = 1;
                 minigameState++;
                 miniInputLockTimer = 0x28;
             }
@@ -2209,7 +2209,7 @@ void func_86F0174C(void) {
             miniInputLockTimer--;
             if (miniInputLockTimer == 0) {
                 SetResultFlag(1);
-                func_87903294();
+                MiniTutoScreen_Reset();
                 func_86F00188(0xC, 0xB4);
                 minigameState++;
             }
@@ -2226,7 +2226,7 @@ void func_86F0174C(void) {
 }
 
 void func_86F018E4(void) {
-    func_87901C20();
+    ParticleSystem_UpdateAndRender();
 }
 
 void func_86F01904(void) {
@@ -2242,26 +2242,26 @@ void func_86F01904(void) {
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (func_878013D4(D_86F0D264, GetMessageString(NULL, 0, D_87806330, 0x4A)) / 2), 0x20,
-                  GetMessageString(NULL, 0, D_87806330, 0x4A));
+    Text_Print(0xA0 - (GetTextWidth(D_86F0D264, GetMessageString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
+                  GetMessageString(NULL, 0, gItemNamesBank, 0x4A));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x4B));
-    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x4C));
-    Text_Print(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x4D));
+    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x4B));
+    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x4C));
+    Text_Print(0x28, 0x70, GetMessageString(NULL, 0, gItemNamesBank, 0x4D));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x4B), GetMessageString(NULL, 0, D_87806330, 0x63),
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x4B), GetMessageString(NULL, 0, gItemNamesBank, 0x63),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x63));
-    Text_Print(0xB8, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x63));
+    Text_Print(0xB8, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Text_Print(0xCF, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x4E));
+    Text_Print(0xCF, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x4E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
     Text_EndRender();
     Text_SetFont(4, -2);
     Text_SetupDL();
@@ -2283,14 +2283,14 @@ void func_86F01C40(void) {
             break;
 
         case 5:
-            func_879032BC(0x3E8);
+            MiniTutoScreen_StartCountdown(0x3E8);
             break;
     }
 
     if (miniTutoScreenState == -2) {
         Text_SetFont(0x10, -2);
         if (D_87903DD0 == 0x18) {
-            func_879033FC(miniSandshrews);
+            MiniTutoScreen_DrawWinners(miniSandshrews);
         }
         Text_SetFont(4, -2);
     }
@@ -2307,9 +2307,9 @@ void fixSandshrewMinigameHUD(void) {
         s16 yPos = playerIconsScreenYPos[i];
 
         if (gMiniHudColors[i] == 0) { //	if ai player
-            func_87801644(i, xPos, yPos, 0.75f);
+            DrawUniformScaledTextureRect(i, xPos, yPos, 0.75f);
         } else { //	if human player
-            func_87801644(-1 - i, xPos, yPos, 0.75f);
+            DrawUniformScaledTextureRect(-1 - i, xPos, yPos, 0.75f);
         }
     }
 
@@ -2317,7 +2317,7 @@ void fixSandshrewMinigameHUD(void) {
 }
 
 void func_86F01EB4(void) {
-    func_87903260();
+    MiniTutoScreen_Start();
     func_86F01C40();
 
     if (miniShowHUB != 0) {
@@ -2350,14 +2350,14 @@ void func_86F01F58(s32 arg0) {
         Gfx_FinishFrame();
     }
 
-    Graph_SetTextureState(&D_87906050->unk_00);
-    func_87901C98();
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
+    ParticleRender_SetupMiniCamera();
 
     if (miniDebugMode == 0) {
         if (D_8780FC98 == 0) {
             func_86F01EF4(arg0);
         }
-        func_87804FD4();
+        ResultScreen_UpdateAndRender();
     } else {
         showDebuggCameraInfo();
         showDebuggJoystickInfo();
@@ -2377,7 +2377,7 @@ void sandshrewMinigameInit(void) {
 void func_86F0204C(void) {
     s32 var_s5 = 1;
 
-    func_87901620();
+    ParticleSystem_Init();
     hideMiniGameHUD();
 
     while (var_s5 != 0) {
@@ -2455,7 +2455,7 @@ void func_86F02320(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     unk_D_86002F30* temp_s1;
 
-    D_87906050 = process_geo_layout(temp_v0, D_86F0B004);
+    gMiniCameraStruct = process_geo_layout(temp_v0, D_86F0B004);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 

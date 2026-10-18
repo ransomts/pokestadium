@@ -462,7 +462,7 @@ static u32 D_86E04B34[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF,  0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFE0000, 0x00640064, 0x00640000,  0x05000000,
     0x00000000, D_86E04AE0, 0x06000000, 0x06000000, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,
-    0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
+    0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
 };
 static Vec3f miniMetapodInfo[] = {
     { -54.0f, 0.0f, 0.0f },
@@ -698,8 +698,8 @@ s32 func_86E00518(UNUSED MiniActor* metapod, s32 arg1) {
             break;
     }
 
-    sp18 = func_878001E8(0x64);
-    temp_v0 = func_878001E8(0x64);
+    sp18 = GetRandomMod(0x64);
+    temp_v0 = GetRandomMod(0x64);
 
     if (sp18 < sp1C) {
         var_v1 = 0;
@@ -716,32 +716,32 @@ void func_86E0063C(MiniActor* metapod, s32 arg1) {
     s32 sp2C;
     s32 sp28;
     u32 sp24;
-    u32 temp_s1 = func_878001E8(arg1);
+    u32 temp_s1 = GetRandomMod(arg1);
 
     switch (miniDifficulty) {
         case 0:
-            sp2C = func_878001E8(0xA) + 2;
+            sp2C = GetRandomMod(0xA) + 2;
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
-            sp24 = func_878001E8(3);
+            sp24 = GetRandomMod(3);
             break;
 
         case 1:
-            sp2C = func_878001E8(5) + 2;
+            sp2C = GetRandomMod(5) + 2;
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
             break;
 
         case 2:
-            sp2C = func_878001E8(4);
+            sp2C = GetRandomMod(4);
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
             break;
 
         case 3:
-            sp2C = func_878001E8(3);
+            sp2C = GetRandomMod(3);
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
@@ -767,8 +767,8 @@ void func_86E0073C(MiniActor* arg0, s32 arg1) {
         var_a2 = arg1;
     } else {
         sp1C = arg1 - 4;
-        sp2C = func_878001E8(sp1C);
-        temp_v0_2 = func_878001E8(sp1C - sp2C);
+        sp2C = GetRandomMod(sp1C);
+        temp_v0_2 = GetRandomMod(sp1C - sp2C);
         var_a0 = temp_v0_2 + 2;
         var_a2 = ((arg1 - sp2C) - temp_v0_2) - 2;
     }
@@ -1094,19 +1094,19 @@ void func_86E01188(void) {
             break;
 
         case 0:
-            var_s5 = func_878001E8(0x14) + 0xF;
+            var_s5 = GetRandomMod(0x14) + 0xF;
             break;
 
         case 1:
-            var_s5 = func_878001E8(0x14) + 0xA;
+            var_s5 = GetRandomMod(0x14) + 0xA;
             break;
 
         case 2:
-            var_s5 = func_878001E8(0x1E) + 5;
+            var_s5 = GetRandomMod(0x1E) + 5;
             break;
 
         case 3:
-            var_s5 = func_878001E8(0x1E) + 5;
+            var_s5 = GetRandomMod(0x1E) + 5;
             break;
     }
 
@@ -1194,7 +1194,7 @@ void miniRockStateMachine(MiniActor* rock) {
                     rock->ySpeed = 5.0f;
                     rock->zSpeed = 1.5f;
                     func_86E01414(rock);
-                    func_81407D48(1.0f, rock->totalPos, rock->totalRot, func_87901F04, &D_87903E28, 4);
+                    func_81407D48(1.0f, rock->totalPos, rock->totalRot, func_87901F04, &gMiniTutoScreenNode1, 4);
                 } else {
                     rock->mainState++;
                 }
@@ -1209,7 +1209,7 @@ void miniRockStateMachine(MiniActor* rock) {
             sp3C.y = 0.0f;
             sp3C.z = rock->totalPos.z;
 
-            func_81407D48(1.0f, sp3C, rock->totalRot, func_87902068, &D_87903E10, 4);
+            func_81407D48(1.0f, sp3C, rock->totalRot, func_87902068, &gMiniTutoScreenNode0, 4);
             rock->mainState++;
             break;
 
@@ -1289,7 +1289,7 @@ void miniUpdateRocksPositions(void) {
 }
 
 void func_86E01904(void) {
-    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = -0x200;
     miniCameraYRot = 0;
@@ -1572,14 +1572,14 @@ void miniMetapodMinigameStateMachine(void) {
 }
 
 void func_86E02150(void) {
-    func_87901C20();
+    ParticleSystem_UpdateAndRender();
 }
 
 void miniDrawMetapodHealth(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_8780024C(0x1A + i * 0x4A, 0xD0, 0x32, miniMetapods[i].miniHealth, miniMetapods[i].miniMaxHealth);
+        DrawBorderRect(0x1A + i * 0x4A, 0xD0, 0x32, miniMetapods[i].miniHealth, miniMetapods[i].miniMaxHealth);
     }
 }
 
@@ -1592,9 +1592,9 @@ void miniDrawMetapodHeads(void) {
 
     for (i = 0, tmp = 0x26; i < 4; tmp += 0x4A, i++) {
         if (gMiniHudColors[i] == 0) {
-            func_87801644(i, tmp, 0xD6, 0.7f); //  draw player icon
+            DrawUniformScaledTextureRect(i, tmp, 0xD6, 0.7f); //  draw player icon
         } else {
-            func_87801644(-1 - i, tmp, 0xD6, 0.7f); //  draw player icon
+            DrawUniformScaledTextureRect(-1 - i, tmp, 0xD6, 0.7f); //  draw player icon
         }
     }
 
@@ -1614,30 +1614,30 @@ void func_86E02308(void) {
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (func_878013D4(D_86E08E44, GetMessageString(NULL, 0, D_87806330, 0x44)) / 2), 0x20,
-                  GetMessageString(NULL, 0, D_87806330, 0x44));
+    Text_Print(0xA0 - (GetTextWidth(D_86E08E44, GetMessageString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
+                  GetMessageString(NULL, 0, gItemNamesBank, 0x44));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x45));
-    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x46));
-    Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, D_87806330, 0x47));
-    Text_Print(0x28, 0x94, GetMessageString(NULL, 0, D_87806330, 0x48));
+    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x45));
+    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x46));
+    Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, gItemNamesBank, 0x47));
+    Text_Print(0x28, 0x94, GetMessageString(NULL, 0, gItemNamesBank, 0x48));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x45), GetMessageString(NULL, 0, D_87806330, 0x5F),
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x45), GetMessageString(NULL, 0, gItemNamesBank, 0x5F),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x5F));
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x46), GetMessageString(NULL, 0, D_87806330, 0x5F),
+    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x46), GetMessageString(NULL, 0, gItemNamesBank, 0x5F),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x58, GetMessageString(NULL, 0, D_87806330, 0x5F));
-    Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    Text_Print(sp38 + 0x28, sp34 + 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
+    Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, D_87806330, 0x49));
+    Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x49));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
     Text_EndRender();
     Text_SetupDL();
 }
@@ -1657,7 +1657,7 @@ void func_86E026D0(void) {
             break;
 
         case 5:
-            func_879032BC(0x3E8);
+            MiniTutoScreen_StartCountdown(0x3E8);
             break;
     }
 
@@ -1668,7 +1668,7 @@ void func_86E026D0(void) {
 }
 
 void func_86E027D4(void) {
-    func_87903260();
+    MiniTutoScreen_Start();
     func_86E026D0();
 }
 
@@ -1695,14 +1695,14 @@ void func_86E02880(s32 arg0) {
         Gfx_FinishFrame();
     }
 
-    Graph_SetTextureState(&D_87906050->unk_00);
-    func_87901C98();
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
+    ParticleRender_SetupMiniCamera();
 
     if (miniDebugMode == false) {
         if (D_8780FC98 == 0) {
             miniMetapodDrawPlayerHUBs(arg0);
         }
-        func_87804FD4();
+        ResultScreen_UpdateAndRender();
     } else {
         showDebuggCameraInfo();
     }
@@ -1748,7 +1748,7 @@ void func_86E02A64(void) {
 
     D_87903DBC = 0;
 
-    func_87901620();
+    ParticleSystem_Init();
     hideMiniGameHUD();
 
     while (var_s1 != 0) {
@@ -1817,7 +1817,7 @@ void func_86E02C5C(void) {
     s32 randN;
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    D_87906050 = process_geo_layout(temp_v0, D_86E04B34);
+    gMiniCameraStruct = process_geo_layout(temp_v0, D_86E04B34);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 
@@ -1834,7 +1834,7 @@ void func_86E02C5C(void) {
     for (i = 0; i < 4; i++) {
         randN = D_8780FA68[i] - 1;
         if (D_8780FA68[i] == 0) {
-            randN = func_878001E8(2);
+            randN = GetRandomMod(2);
         }
 
         miniMetapods[i].unk_23C = playerVariations[randN][0];

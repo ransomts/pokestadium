@@ -1557,3 +1557,130 @@ func_80007614	Stage_CopyState	w9		copies fade?related fields (unk_11, unk_12, un
 func_800078D4	Stage_RunFadeSequence	w9		coordinates a fade sequence using two callbacks and the Stage_StartFade/Stage_SetFadeState functions	applied@222e65d
 func_80007990	Stage_SetFillColor	w9		updates gCurrentStage->unk_14 and the graphics fill color used for screen clears	applied@222e65d
 D_80068CB0	gOverlayTextureData	w9		texture data array used in func_80007A80 to load a 96?48 IA4 overlay texture	applied@222e65d
+func_81200020	GbPak_CheckConnector	w10		GbPak_CheckConnector checks the GB pak connector status and returns error?0x63 if required bits are not set, used during initialization	applied@76da8da
+func_81200078	GbPak_WriteRegister	w10		GbPak_WriteRegister fills D_8122C500 with a value then calls osGbpakReadWrite with write flag, used to write GB pak registers	applied@76da8da
+func_812000DC	GbPak_Initialize	w10		GbPak_Initialize writes a series of initialization registers to the GB pak and sets internal flags, called from GbPak_Init	applied@76da8da
+func_8120019C	GbPak_GetStatus	w10		GbPak_GetStatus calls osGbpakGetStatus and extracts status bits, used to query GB pak status	applied@76da8da
+func_812001E4	GbPak_SetReadBank	w10		GbPak_SetReadBank sets the read bank and address registers (0x4000,?0x2100) before reading, used for GB pak reads	applied@76da8da
+func_812002BC	GbPak_SetWriteBank	w10		GbPak_SetWriteBank sets the write bank register (0x4000) for GB pak writes	applied@76da8da
+func_81200358	GbPak_VerifyChecksum	w10		GbPak_VerifyChecksum reads a block from the GB pak and compares it to a stored checksum to verify data integrity	applied@76da8da
+func_812005D8	GbPak_Init	w10		GbPak_Init performs the full GB pak initialization sequence, including connector check, ID read and checksum verification	applied@76da8da
+func_812006AC	GbPak_ReadDataAndAccumulate	w10		GbPak_ReadDataAndAccumulate reads data from the GB pak, sums bytes for statistics and updates counters	applied@76da8da
+func_812008C8	GbPak_ReadWriteLoop	w10		GbPak_ReadWriteLoop is a generic loop that reads or writes arbitrary?sized blocks from the GB pak handling bank switching	applied@76da8da
+func_81206FA0	AudioArena_AllocZero	w10		allocates zero?filled memory from the audio arena, returns old pointer	applied@76da8da
+func_81207020	AudioArena_Alloc	w10		allocates raw memory from the audio arena, returns old pointer	applied@76da8da
+func_81207078	AudioArena_Init	w10		initialises the audio arena with base address and size	applied@76da8da
+D_81231450	gAudioArenaBuffer	w10		raw memory pool for the audio arena	applied@76da8da
+D_81234650	gAudioWorkBuffer	w10		temporary work area cleared during audio init	applied@76da8da
+D_81234680	gAudioArena	w10		instance of AudioArena used for audio buffers	applied@76da8da
+D_81234690	gAudioConfig	w10		holds AI frequency and derived audio parameters	applied@76da8da
+D_812346C8	gAudioTaskPending	w10		volatile flag cleared at audio init start	applied@76da8da
+D_812346D4	gAudioTaskId	w10		zeroed task identifier during audio init	applied@76da8da
+D_812346D8	gAudioTimer	w10		float set to 16.713f during audio init	applied@76da8da
+D_812346DC	gAudioFramesPerSec	w10		integer set to 0x3C (60) during audio init	applied@76da8da
+func_87800020	InitMessageBanks	w10		initializes message banks and stores them in globals D_87806330 and D_8780FA24	applied@76da8da
+func_8780005C	UpdateScrollingMessage	w10		handles controller input to scroll and render a message, updating a timer variable	applied@76da8da
+func_878001D0	IncrementRandomCounter	w10		increments the static counter D_8780FA20 used for random calculations	applied@76da8da
+func_878001E8	GetRandomMod	w10		returns (guRandom()+D_8780FA20) modulo the argument, used for random selection	applied@76da8da
+func_8780024C	DrawBorderRect	w10		draws a UI border using left, middle, right and fill textures	applied@76da8da
+func_878009BC	DrawProgressBar	w10		draws a progress bar using border and fill textures, selecting texture based on fill level	applied@76da8da
+func_8780118C	FillRect	w10		fills a rectangle with a solid color using gDPFillRectangle	applied@76da8da
+func_87801290	ParseStringAndMeasure	w10		parses a string for newline, measures its width and line count for layout	applied@76da8da
+func_878013D4	GetTextWidth	w10		returns the width of a text string via MeasureTextWidth	applied@76da8da
+func_87801400	DrawScaledTextureRect	w10		draws a texture rectangle scaled by given X/Y factors using Gfx_DrawTextureRect	applied@76da8da
+func_87801644	DrawUniformScaledTextureRect	w10		wraps DrawScaledTextureRect with equal X and Y scale factors	applied@76da8da
+D_87806330	gItemNamesBank	w10		assigned from GetMessageBank(0x1D) which stores item name strings	applied@76da8da
+D_8780FA24	gMoveNamesBank	w10		assigned from GetMessageBank(0x14) used for rendering move name text	applied@76da8da
+D_8780FA20	gRandomCounter	w10		static counter incremented by IncrementRandomCounter and added to random seed	applied@76da8da
+D_878064F0	gBorderTexture_Left	w10		used as the left edge texture when drawing borders in DrawBorderRect	applied@76da8da
+D_87806670	gBorderTexture_Middle	w10		used as the middle segment texture for borders in DrawBorderRect	applied@76da8da
+D_87806730	gBorderTexture_Right	w10		used as the right edge/fill texture for borders and progress bars	applied@76da8da
+D_878065B0	gBorderTexture_Fill	w10		used as the fill texture for remaining border area in DrawBorderRect	applied@76da8da
+D_8780633C	gPositiveTextureBank	w10		array of four texture pointers selected when arg0 >= 0 in DrawScaledTextureRect	applied@76da8da
+D_8780634C	gNegativeTextureBank	w10		array of five texture pointers selected when arg0 is negative in DrawScaledTextureRect	applied@76da8da
+D_87806338	gCurrentMenuIndex	w10		initialized to -1 and likely stores the current menu or UI state index	applied@76da8da
+D_87806380	gDualTexturePanelIds	w10		static array of four texture IDs indexed by arg0 in DrawTwoPartTexture	applied@76da8da
+D_87806398	gFragment2_1DisplayList	w10		array of u32 command words (0x0B...,0x014000F0) typical of a display list, defined but not used elsewhere, likely the DL for this fragment	applied@76da8da
+unk_D_86002F58_004_000	Fragment2_1GraphNode	w10		type of gFragment2_1GraphNode which is passed to Graph_AddToRootList1 and has fields .unk_000, .unk_030, indicating a graph node structure	applied@76da8da
+unk_func_80011B94	SimpleGfxNode	w10		type of gFragment2_1DisplayNode returned by SimpleGfxNode_Create and accessed via .unk_18 and .unk_00, representing a simple graphics node	applied@76da8da
+func_87803200	ResultScreen_DrawGradientPanel	w10		Draws a gradient panel with a border by calling DrawGradientPanel and func_8780118C.	applied@76da8da
+func_878038B8	ResultScreen_RenderScaledTexture	w10		Creates a scaled translation matrix and renders a textured quad, used for result screen graphics.	applied@76da8da
+func_87803EAC	ResultScreen_DrawTiledTexture	w10		Sets up tiled vertices and draws a texture tile grid, invoked by func_87804320 for result graphics.	applied@76da8da
+func_87804320	ResultScreen_RenderResultGraphics	w10		Handles rendering of result screen elements (textures, animations) based on game state flags.	applied@76da8da
+func_87804AD0	ResultScreen_DrawScoreCubes	w10		Draws the score cubes and their numeric labels, called from the main render loop.	applied@76da8da
+func_87804FD4	ResultScreen_UpdateAndRender	w10		Main update/render function that drives the result screen state machine and drawing.	applied@76da8da
+D_8780EB90	gResultScreenViewport	w10		Viewport structure used in rendering setup (gsSPViewport) for the result screen.	applied@76da8da
+D_8780EBA0	gResultScreenSetupDL	w10		Display list that configures rendering state (pipeline sync, cycle type, texture settings) for the result screen.	applied@76da8da
+D_8780EBE8	gResultScreenTextureData	w10		Texture data loaded in D_8780F7A8 via gDPLoadTextureBlock for result screen graphics.	applied@76da8da
+D_8780F3E8	gResultCubeVertexData1	w10		First vertex array (32 vertices) used by RenderScoreCubes to draw the cubes.	applied@76da8da
+D_8780F5C8	gResultCubeVertexData2	w10		Second vertex array (30 vertices) used by RenderScoreCubes for additional cube geometry.	applied@76da8da
+D_8780F7A8	gResultCubeSetupDL	w10		Display list that sets up the rendering pipeline for drawing the result cubes (2?cycle mode, texture loading).	applied@76da8da
+D_8780F840	gResultCubeRenderDL	w10		Display list that issues the vertex commands and triangle draws for the result cubes.	applied@76da8da
+D_8780F8B0	gResultScaleFactors	w10		Array of scaling factors (0.8f ? 0.5f) used in func_87804320 to animate result graphics.	applied@76da8da
+D_8780F8DC	gResultRotationAngles	w10		Array of rotation angles (1.0f ? 5.0f) used in func_87804320 for result graphic animation.	applied@76da8da
+D_8780FA30	gMiniHudColorDefaults	w10		used as source array for HUD colors in MiniGame_ResetState	applied@76da8da
+D_87906078	gMiniCameraYRotBackup	w10		stores miniCameraYRot in MiniGame_SaveCameraState and restores it in MiniGame_RestoreCameraState	applied@76da8da
+D_879060A2	gMiniCamBaseRotX	w10		used as the base X rotation added to gMiniCamRotXDelta in MiniCamera_ApplyOffsets	applied@76da8da
+D_879060A6	gMiniCamBaseDist	w10		used as the base camera distance added to gMiniCamDistDelta in MiniCamera_ApplyOffsets	applied@76da8da
+D_879060A8	gMiniCamBaseFov	w10		used as the base field?of?view added to gMiniCamFovDelta in MiniCamera_ApplyOffsets	applied@76da8da
+D_87906100	gMiniDebugCamVelocity	w10		updated by joystick controls and printed as VX/VY in MiniDebugCamera_Control	applied@76da8da
+D_87906072	gMiniCameraNearBackup	w10		placed before gMiniCameraXRotBackup and likely mirrors the near?plane backup for the mini camera	applied@76da8da
+D_87906050	gMiniCameraStruct	w10		typed as unk_D_86002F34_00C* and parallels gMiniCameraPtr, suggesting it holds the mini?camera data structure	applied@76da8da
+func_87901620	ParticleSystem_Init	w10		allocates D_8140E720 and D_8140E728 pools and zeroes them, indicating initialization of particle system	applied@76da8da
+func_8790168C	ParticleEmitter_Allocate	w10		scans D_8140E728 for an entry with unk_2B == 0 and marks it active, thus allocating a free particle emitter	applied@76da8da
+func_87901720	ParticleEmitter_Reset	w10		clears several fields of a particle emitter struct, resetting its state	applied@76da8da
+func_87901738	ParticleEmitter_Create	w10		fills many emitter fields (position, rotation, callbacks) after allocating a free emitter, creating a new emitter	applied@76da8da
+func_87901804	ParticleEmitter_SpawnSimple	w10		calls func_87901738 with zero rotation and default parameters, providing a simplified emitter spawn	applied@76da8da
+func_879018B0	ParticleEmitter_Spawn	w10		calls func_87901738 with full parameter set, acting as the general emitter spawn function	applied@76da8da
+func_87901958	ParticleInstance_PopulateFromEmitter	w10		copies data from an emitter into a linked list of particle instances, linking them together	applied@76da8da
+func_87901A28	ParticleEmitter_GenerateParticles	w10		checks emitter type and calls func_87901958 for each particle, generating particles from an emitter	applied@76da8da
+func_87901ADC	ParticleEmitter_Tick	w10		calls func_87901A28 when emitter flag unk_2C == 0, updating the emitter each tick	applied@76da8da
+func_87901B08	ParticleEmitters_UpdateAll	w10		iterates over all 0x80 emitters, decrements timers, and handles expiration, updating all emitters each frame	applied@76da8da
+func_87901C20	ParticleSystem_UpdateAndRender	w10		calls func_87901B08 then iterates over 0x12C particle instances to update, render and free them, representing the main particle system tick	applied@76da8da
+func_87901C98	ParticleRender_SetupMiniCamera	w10		sets up the mini?camera matrices and allocates a Gfx buffer for particle rendering, preparing the render state	applied@76da8da
+D_8140E720	gParticleInstances	w10		allocated as an array of unk_D_8140E720 structs (size 0x12C) used for particle instances throughout the file	applied@76da8da
+D_8140E728	gParticleEmitters	w10		allocated as an array of unk_D_8140E728 structs (size 0x80) representing particle emitters	applied@76da8da
+D_8140E734	gParticleEmitterNextIdx	w10		stores the current index for the next emitter allocation in func_8790168C, acting as the emitter ring buffer pointer	applied@76da8da
+func_87903260	MiniTutoScreen_Start	w10		Starts the mini?tutorial screen by saving the current state and initializing the screen timer	applied@76da8da
+func_87903294	MiniTutoScreen_Reset	w10		Resets all mini?tutorial screen state variables to their default values	applied@76da8da
+func_879032BC	MiniTutoScreen_StartCountdown	w10		Initializes a fixed?length countdown (0x18 frames) for the mini?tutorial screen	applied@76da8da
+func_87903358	MiniTutoScreen_StartTimerWithDelay	w10		Sets a custom timer (arg0 frames) with an initial delay (arg1) for the mini?tutorial screen	applied@76da8da
+func_879033FC	MiniTutoScreen_DrawWinners	w10		Draws the border and winner icons for each MiniActor on the tutorial screen	applied@76da8da
+func_8790354C	MiniTutoScreen_PrintDifficulty	w10		Displays the difficulty label "(EASY)/(NORMAL)/(HARD)/(SUPER)" based on miniDifficulty	applied@76da8da
+D_87903E60	gMiniActorPosOffsets	w10		4?4 array of s16 offsets used to position winner icons in MiniTutoScreen_DrawWinners	applied@76da8da
+D_87903E80	gMiniTutoScreenTilemap	w10		Large u32 array of tile indices referenced by the tutorial screen configuration structs	applied@76da8da
+D_87904E80	gMiniTutoScreenPalette	w10		Palette data (repeating 0xF0F0F0F0 pattern) used by the mini?tutorial screen graphics	applied@76da8da
+D_87905280	gMiniTutoScreenSettings	w10		Configuration values (flags, IDs) referenced by the tutorial screen structs for behavior control	applied@76da8da
+D_87905680	gMiniTutoScreenGraphics	w10		Graphics data (sprite IDs, coordinates) referenced by the tutorial screen structs	applied@76da8da
+D_87903E00	gMiniTutoScreenConfig0	w10		First tutorial screen entry: flags, init function, common update function, and tilemap pointer	applied@76da8da
+D_87903E10	gMiniTutoScreenNode0	w10		Node linking to gMiniTutoScreenConfig0 with a flag field	applied@76da8da
+D_87903E18	gMiniTutoScreenConfig1	w10		Second tutorial screen entry with distinct flag and init function	applied@76da8da
+D_87903E28	gMiniTutoScreenNode1	w10		Node linking to gMiniTutoScreenConfig1 with a flag field	applied@76da8da
+D_87903E30	gMiniTutoScreenConfig2	w10		Third tutorial screen entry using the same init as config1 but different flag	applied@76da8da
+D_87906120	gMiniActorArray	w10		gives a global array of three MiniActor structs allocated in func_87903600	applied@76da8da
+func_87903600	MiniActorArray_Create	w10		allocates three MiniActor structs, adds them to the graph root and loads their geo layout	applied@76da8da
+func_879036B4	MiniActor_StartAnimation	w10		sets animation flag, calls miniChangeActorAnim and advances mainState when state is 1	applied@76da8da
+func_8790370C	MiniActorArray_Update	w10		loops over the three MiniActors, updates animation, transform and collider each frame	applied@76da8da
+func_87903778	MiniActor_SetTransformAndState	w10		sets scale, position, rotation, collidingActorId and mainState for a MiniActor	applied@76da8da
+func_879037D0	MiniActor_ConfigureFirst	w10		configures the first MiniActor (index 0) and sets its unk_14 field to 0	applied@76da8da
+func_87903838	MiniActor_ConfigureSecond	w10		configures the second MiniActor (index 1) and sets its unk_14 field to 1	applied@76da8da
+func_879038AC	MiniActor_ConfigureThird	w10		configures the third MiniActor (index 2) and sets its unk_14 field to 2	applied@76da8da
+func_87903920	Gfx_SetLerpPrimEnvColor	w10		interpolates between two color entries based on graph root state and writes prim and env colors	applied@76da8da
+func_87903D64	ColorLerp_DisplayListHook	w10		when arg0==5 extracts a ColorLerpEntry and passes it to Gfx_SetLerpPrimEnvColor	applied@76da8da
+unk_D_86002F34_000_014_004	ColorLerpEntry5	w10		struct holding five color components used for primitive color interpolation	applied@76da8da
+unk_D_86002F34_000_014_010	ColorLerpEntry4	w10		struct holding four color components used for environment color interpolation	applied@76da8da
+D_87A011C0	gQuadVtx	w10		Vertex array defining a 50?50 square used for textured quad rendering in func_87A00098	applied@76da8da
+D_87A01200	gQuadDL	w10		Display list that sets up rendering state for the quad defined by gQuadVtx, used in func_87A00098	applied@76da8da
+D_87A01268	gColorRectVtx	w10		Vertex array defining a 100?50 rectangle with per?vertex color, used in func_87A00268	applied@76da8da
+D_87A012A8	gColorRectDL	w10		Display list configuring modulate?IA combine mode for the rectangle drawn by func_87A00268	applied@76da8da
+D_87A01330	gProjectionInfo	w10		Global pointer set by SetProjectionInfo and read for perspective normalization and matrices in Gfx_ApplyProjection	applied@76da8da
+func_87A00020	SetProjectionInfo	w10		Sets the global gProjectionInfo pointer used for later projection matrix setup	applied@76da8da
+func_87A0002C	Gfx_ApplyProjection	w10		Applies perspective normalization and projection matrices from gProjectionInfo to the current display list	applied@76da8da
+func_87A00098	Gfx_DrawTexturedQuad	w10		Draws a textured rectangle with translation, scaling and a supplied texture, using gQuadDL	applied@76da8da
+func_87A00268	Gfx_DrawColoredRect	w10		Draws a colored rectangle with per?vertex RGBA values supplied via arg9, using gColorRectDL	applied@76da8da
+func_87A005BC	Gfx_DrawScaledTextureRect	w10		Draws a texture rectangle scaled by a float factor, loading the texture block and issuing a texture rectangle command	applied@76da8da
+func_87A009F0	Gfx_DrawBackgroundStrips	w10		Loops 40 times to load 320?6 texture strips and render them as stacked rectangles, likely drawing a scrolling background	applied@76da8da
+func_87A00DB8	Gfx_DrawTilemap	w10		Nested loops render a 15?20 grid of 16?16 tiles by loading each tile texture and drawing a rectangle, typical of a tilemap renderer	applied@76da8da
+func_87A010D4	PlaySoundIfEnabled	w10		Plays a sound via PlaySoundByCategory only when global D_8780FC92 is zero, acting as a conditional sound wrapper	applied@76da8da
+D_87A01110	gTextTable_StageNames	w10		Array of u32 containing Shift?JIS encoded strings (e.g., 0xA5B2?) suggesting a table of stage name text	applied@76da8da
+D_87A01178	gTextTable_StageSubtitles	w10		Small u32 array with similar Shift?JIS patterns, likely holding subtitle or secondary text for stages	applied@76da8da

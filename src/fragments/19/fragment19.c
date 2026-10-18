@@ -19,7 +19,7 @@ static u32 D_86D00530[] = {
 };
 
 void func_86D00020(void) {
-    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0xA00;
     miniCameraYRot = 0;
@@ -44,7 +44,7 @@ void miniUnkDrawHUB(UNUSED s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     Gfx_FinishFrame();
-    Graph_SetTextureState(&D_87906050->unk_00);
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
 
     if (miniDebugMode != 0) {
         showDebuggCameraInfo();
@@ -65,15 +65,15 @@ void miniUnkControls(void) {
         MiniGame_ReadInputs();
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-            func_879037D0(0.2f, 0.0f, 50.0f, 50.0f, 0x2000, 0, 0x1000);
+            MiniActor_ConfigureFirst(0.2f, 0.0f, 50.0f, 50.0f, 0x2000, 0, 0x1000);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-            func_87903838(0.2f, 50.0f, 50.0f, 50.0f, 0, 0, 0);
+            MiniActor_ConfigureSecond(0.2f, 50.0f, 50.0f, 50.0f, 0, 0, 0);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-            func_879038AC(0.2f, -50.0f, 50.0f, 50.0f, -0x6000, 0, 0x2000);
+            MiniActor_ConfigureThird(0.2f, -50.0f, 50.0f, 50.0f, -0x6000, 0, 0x2000);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_Z)) {
@@ -84,7 +84,7 @@ void miniUnkControls(void) {
             minigameState = 1;
         }
 
-        func_8790370C();
+        MiniActorArray_Update();
         miniUnkUpdateCamera();
 
         if ((miniDebugMode == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_CDOWN)) {
@@ -110,11 +110,11 @@ void func_86D0037C(void) {
     UNUSED s32 pad[2];
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_87906050 = process_geo_layout(sp1C, &D_86D00530);
+    gMiniCameraStruct = process_geo_layout(sp1C, &D_86D00530);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    func_87903600();
+    MiniActorArray_Create();
     func_86D00020();
 }
 

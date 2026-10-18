@@ -5,7 +5,7 @@
 #include "src/geo_layout.h"
 
 typedef struct unk_D_83101F00 {
-    /* 0x000 */ unk_D_86002F58_004_000 unk_000;
+    /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ s16 unk_168;
     /* 0x16A */ s16 unk_16A;
     /* 0x16C */ s16 unk_16C;
@@ -21,7 +21,7 @@ typedef struct unk_D_83101F00 {
     /* 0x184 */ f32 unk_184;
 } unk_D_83101F00; // size = 0x188
 
-void func_83100020(unk_D_86002F58_004_000* arg0);
+void func_83100020(Fragment2_1GraphNode* arg0);
 s32 func_83100180(s32 arg0, UNUSED GraphNode* arg1);
 void func_8310024C(unk_D_83101F00* arg0);
 s32 func_83100578(s32 arg0, GraphNode* arg1);

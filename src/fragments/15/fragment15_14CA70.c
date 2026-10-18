@@ -27,7 +27,7 @@
 
 typedef struct unk_D_8690A69C {
     /* 0x000 */ unk_D_86002F58_004_000_010_024* unk_000;
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
 } unk_D_8690A69C; // size = 0x170
 
@@ -368,7 +368,7 @@ s32 CameraNode_SetAnglesNegated(s32 arg0, GraphNode* arg1) {
 }
 
 s32 GraphNode_ApplyGlobalColor(s32 arg0, GraphNode* arg1) {
-    unk_D_86002F58_004_000* ptr = (unk_D_86002F58_004_000*)arg1;
+    Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
         ptr->unk_03C.rgba = D_8690A68C.rgba;
@@ -508,7 +508,7 @@ void Graphics_Init(void) {
     GraphNode_AllocInit(NULL, &D_8690A660);
     SetGlobalRGBA(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
-    D_87906050 = process_geo_layout(sp2C, &D_86908ABC);
+    gMiniCameraStruct = process_geo_layout(sp2C, &D_86908ABC);
     mem_pool_resize_block(sp2C);
     Graph_InitRoots();
 }
@@ -992,7 +992,7 @@ void func_86901A44(void) {
     }
 
     Gfx_FinishFrame();
-    Graph_SetTextureState(D_87906050);
+    Graph_SetTextureState(gMiniCameraStruct);
     func_86908668();
     func_86907B78();
     func_86907D94();

@@ -24,7 +24,7 @@ typedef struct unk_D_861054C0 {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ char pad4[4];
-    /* 0x008 */ unk_D_86002F58_004_000 unk_008;
+    /* 0x008 */ Fragment2_1GraphNode unk_008;
     /* 0x170 */ s16 unk_170;
     /* 0x172 */ u16 unk_172;
     /* 0x174 */ s16 unk_174[0xC];
@@ -45,13 +45,13 @@ typedef struct unk_D_861054C0 {
 
 typedef struct unk_D_86105EA0 {
     /* 0x000 */ char unk000[0x4];
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
 } unk_D_86105EA0; // size = 0x16C
 
 typedef struct unk_D_86106450 {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
-    /* 0x004 */ unk_D_86002F58_004_000 unk_004;
+    /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ unk_D_86002F58_004_000_004* unk_16C;
 } unk_D_86106450; // size = 0x170
 
@@ -318,11 +318,11 @@ static s32 D_861054BC;
 static unk_D_861054C0 D_861054C0[4];
 static s32 D_86105BC0;
 static unk_D_861054C0* D_86105BC4;
-static unk_D_86002F58_004_000* D_86105BC8;
+static Fragment2_1GraphNode* D_86105BC8;
 static s16 D_86105BCC;
 static s16 D_86105BCE;
-static unk_D_86002F58_004_000 D_86105BD0;
-static unk_D_86002F58_004_000 D_86105D38;
+static Fragment2_1GraphNode D_86105BD0;
+static Fragment2_1GraphNode D_86105D38;
 static unk_D_86105EA0 D_86105EA0[4];
 static unk_D_86106450 D_86106450[12];
 static s16 D_86107590;
@@ -368,7 +368,7 @@ unk_D_861047B8* func_86100084(s32 arg0, s32 arg1) {
             }
         }
 
-        val = func_878001E8(arg1);
+        val = GetRandomMod(arg1);
         if (val < temp_s1) {
             sp34 = var_s0;
             break;
@@ -523,7 +523,7 @@ void func_86100AEC(void) {
 
 void func_86100B48(void) {
     D_86105488 = D_86105484->unk_00.unk_0C;
-    func_87A00020(D_86105488);
+    SetProjectionInfo(D_86105488);
 
     D_86105490 = 0x600;
     D_86105492 = 0;
@@ -559,9 +559,9 @@ void func_86100C30(s32 arg0) {
             unk_D_86104984* ptr = &D_86104984[i];
 
             if (D_861054C0[i].unk_000 == 0) {
-                func_87801644(i, ptr->unk_00, ptr->unk_02, 0.75f);
+                DrawUniformScaledTextureRect(i, ptr->unk_00, ptr->unk_02, 0.75f);
             } else {
-                func_87801644(-1 - i, ptr->unk_00, ptr->unk_02, 0.75f);
+                DrawUniformScaledTextureRect(-1 - i, ptr->unk_00, ptr->unk_02, 0.75f);
             }
         }
 
@@ -588,54 +588,54 @@ void func_86100C30(s32 arg0) {
             Text_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Text_Print(0xA0 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1A)) / 2), 0x20,
-                          GetMessageString(NULL, 0, D_87806330, 0x1A));
+            Text_Print(0xA0 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x1A)) / 2), 0x20,
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x1A));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x1B));
-            Text_Print(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x1C));
+            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x1B));
+            Text_Print(0x28, 0x70, GetMessageString(NULL, 0, gItemNamesBank, 0x1C));
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            func_87801290(&sp48, &sp44, GetMessageString(NULL, 0, D_87806330, 0x1B),
-                          GetMessageString(NULL, 0, D_87806330, 0x61), 0xC);
+            ParseStringAndMeasure(&sp48, &sp44, GetMessageString(NULL, 0, gItemNamesBank, 0x1B),
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x61), 0xC);
 
             if (sp48 >= 0) {
-                Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x61));
+                Text_Print(sp48 + 0x28, sp44 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x61));
             }
 
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x1D));
+            Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x1D));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
-            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
+            Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
             Text_EndRender();
             break;
 
         case 3:
             Text_SetFont(4, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1E)) / 2), 0x40,
-                          GetMessageString(NULL, 0, D_87806330, 0x1E));
+            Text_Print(0xA4 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x1E)) / 2), 0x40,
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x1E));
             break;
 
         case 5:
             Text_SetFont(4, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x1F)) / 2), 0x40,
-                          GetMessageString(NULL, 0, D_87806330, 0x1F));
+            Text_Print(0xA4 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x1F)) / 2), 0x40,
+                          GetMessageString(NULL, 0, gItemNamesBank, 0x1F));
             break;
 
         case 8:
             if (D_8610549C < 0x3C) {
                 Text_SetFont(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x20)) / 2), 0x40,
-                              GetMessageString(NULL, 0, D_87806330, 0x20));
+                Text_Print(0xA4 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x20)) / 2), 0x40,
+                              GetMessageString(NULL, 0, gItemNamesBank, 0x20));
             }
             break;
 
@@ -644,8 +644,8 @@ void func_86100C30(s32 arg0) {
             if (D_8610549C < 0x3C) {
                 Text_SetFont(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x21)) / 2), 0x40,
-                              GetMessageString(NULL, 0, D_87806330, 0x21));
+                Text_Print(0xA4 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x21)) / 2), 0x40,
+                              GetMessageString(NULL, 0, gItemNamesBank, 0x21));
             }
             break;
 
@@ -653,8 +653,8 @@ void func_86100C30(s32 arg0) {
             if ((D_8610549C >= 0x10) && (D_8610549C < 0x3C)) {
                 Text_SetFont(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Text_Print(0xA4 - (func_878013D4(D_861054B4, GetMessageString(NULL, 0, D_87806330, 0x22)) / 2), 0x40,
-                              GetMessageString(NULL, 0, D_87806330, 0x22));
+                Text_Print(0xA4 - (GetTextWidth(D_861054B4, GetMessageString(NULL, 0, gItemNamesBank, 0x22)) / 2), 0x40,
+                              GetMessageString(NULL, 0, gItemNamesBank, 0x22));
             }
             break;
     }
@@ -711,11 +711,11 @@ void func_86101718(s32 arg0) {
         unk_D_86104984* ptr = &D_86104984[i];
 
         D_86105BC4 = &D_861054C0[i];
-        func_8780024C(ptr->unk_00 - 0xE, ptr->unk_02 - 5, 0x32, D_86105BC4->unk_1A8, D_86105BC4->unk_1AA);
+        DrawBorderRect(ptr->unk_00 - 0xE, ptr->unk_02 - 5, 0x32, D_86105BC4->unk_1A8, D_86105BC4->unk_1AA);
     }
 
     if ((arg0 == 8) && (D_86105BC0 != 0)) {
-        func_8780024C(0x78, 0x37, 0x50, D_86105BC0 - D_8610549C, D_86105BC0);
+        DrawBorderRect(0x78, 0x37, 0x50, D_86105BC0 - D_8610549C, D_86105BC0);
     }
 }
 
@@ -758,7 +758,7 @@ void func_861017E4(s32 arg0) {
     Fragment2_1_Update();
     Graph_SetTextureState(D_86105484);
 
-    gDisplayListHead = func_87A0002C(gDisplayListHead);
+    gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
 
     if (D_8780FC98 == 0) {
         func_86101718(arg0);
@@ -778,7 +778,7 @@ void func_861017E4(s32 arg0) {
         func_86100C30(arg0);
     }
 
-    func_87804FD4();
+    ResultScreen_UpdateAndRender();
     Stage_Advance();
     D_86105496 += 1;
 }
@@ -805,7 +805,7 @@ s32 func_8610197C(void) {
 
     for (i = 0; i < 4; i++) {
         D_86105BC4 = &D_861054C0[i];
-        if (D_8780FA30[i] == 0) {
+        if (gMiniHudColorDefaults[i] == 0) {
             D_86105BC4->unk_000 = 0;
         } else {
             D_86105BC4->unk_000 = D_861054B8 + 1;
@@ -817,7 +817,7 @@ s32 func_8610197C(void) {
     D_86105498 = 0;
 
     while (var_s0 == 1) {
-        func_878001E8(0x3E8);
+        GetRandomMod(0x3E8);
 
         temp_v1 = gPlayer1Controller->buttonPressed;
         if (temp_v1 & 0x1000) {
@@ -862,16 +862,16 @@ void func_86101BB4(void) {
     while (D_86105BCC == 1) {
         switch (Fragment2_1_GetResult()) {
             case 3:
-                func_87A010D4(0x90001, 0, 0);
+                PlaySoundIfEnabled(0x90001, 0, 0);
                 break;
 
             case 1:
             case 2:
-                func_87A010D4(0x90001, 0, 0);
+                PlaySoundIfEnabled(0x90001, 0, 0);
                 break;
 
             case 0:
-                func_87A010D4(0x90001, 0, 0);
+                PlaySoundIfEnabled(0x90001, 0, 0);
                 D_86105BCC = 0;
                 break;
         }
@@ -903,8 +903,8 @@ void func_86101DD4(void) {
 void func_86101DEC(void) {
     D_86105498 = 3;
     D_8610549C = 0;
-    func_87A010D4(0x90005, 0, 0);
-    func_87A010D4(0x90003, 0, 0);
+    PlaySoundIfEnabled(0x90005, 0, 0);
+    PlaySoundIfEnabled(0x90003, 0, 0);
     GraphNode_TriggerAction(&D_86105BD0, 1);
     InitAnimState(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
@@ -913,7 +913,7 @@ void func_86101DEC(void) {
 
 void func_86101E70(void) {
     s32 i;
-    unk_D_86002F58_004_000* temp_s0;
+    Fragment2_1GraphNode* temp_s0;
 
     D_86105498 = 4;
     D_8610549C = 0;
@@ -953,7 +953,7 @@ s32 func_86101F88(void) {
 
 s32 func_86101FD0(void) {
     s32 i;
-    unk_D_86002F58_004_000* temp_s0;
+    Fragment2_1GraphNode* temp_s0;
 
     for (i = 0; i < 4; i++) {
         temp_s0 = &D_861054C0[i].unk_008;
@@ -976,7 +976,7 @@ s32 func_86101FD0(void) {
 void func_86102088(void) {
     D_86105498 = 5;
     D_8610549C = 0;
-    func_87A010D4(0x90006, 0, 0);
+    PlaySoundIfEnabled(0x90006, 0, 0);
     GraphNode_TriggerAction(&D_86105BD0, 2);
     InitAnimState(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
@@ -1067,10 +1067,10 @@ s16 func_86102460(s32 arg0) {
     s16 var_v1;
     u32 temp_v0;
 
-    if (func_878001E8(0x64) < arg0) {
+    if (GetRandomMod(0x64) < arg0) {
         var_v1 = D_86106450[D_86105BC4->unk_18C].unk_000;
     } else {
-        temp_v0 = func_878001E8(4);
+        temp_v0 = GetRandomMod(4);
         switch (temp_v0) {
             case 0:
                 var_v1 = 0;
@@ -1103,7 +1103,7 @@ void func_86102510(void) {
     D_86105498 = 8;
     D_86105BC0 = (D_861054A0 * 0xF) + 0x1E;
     D_8610549C = 0;
-    func_87A010D4(0x90007, 0, 0);
+    PlaySoundIfEnabled(0x90007, 0, 0);
 
     for (i = 0; i < 4; i++) {
         D_86105BC4 = &D_861054C0[i];
@@ -1124,8 +1124,8 @@ void func_86102614(void) {
     GraphNode_TriggerAction(&D_86105BD0, 1);
     InitAnimState(&D_86105BD0);
     D_86105BD0.unk_040.unk_08 = 0;
-    func_87A010D4(0x90008, 0, 0);
-    func_87A010D4(0x90003, 0, 0);
+    PlaySoundIfEnabled(0x90008, 0, 0);
+    PlaySoundIfEnabled(0x90003, 0, 0);
 }
 
 void func_8610268C(void) {
@@ -1188,7 +1188,7 @@ s32 func_86102750(void) {
                             var_s0 = func_86102460(D_861049B4[D_86105BC4->unk_000 - 1][3]);
                         }
 
-                        D_86105BC4->unk_1B0 = func_878001E8(0xA) + D_861049B4[D_86105BC4->unk_000 - 1][5] + 5;
+                        D_86105BC4->unk_1B0 = GetRandomMod(0xA) + D_861049B4[D_86105BC4->unk_000 - 1][5] + 5;
                     }
                 }
 
@@ -1380,7 +1380,7 @@ s32 func_86102FDC(void) {
             }
         }
 
-        func_87A010D4(0x9000C, temp_lo + 1, 0);
+        PlaySoundIfEnabled(0x9000C, temp_lo + 1, 0);
     }
 
     D_8610549C++;
@@ -1426,7 +1426,7 @@ void func_86103450(void) {
 
 s32 func_86103474(void) {
     s32 var_v1 = 0;
-    unk_D_86002F58_004_000* temp_s0;
+    Fragment2_1GraphNode* temp_s0;
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -1501,7 +1501,7 @@ s32 func_861035B0(void) {
                 D_86105BC8 = &D_86105BC4->unk_008;
                 if (D_86105EA0[i].unk_004.unk_040.unk_08 == 0xD0000) {
                     if (var_s5 == 0) {
-                        func_87A010D4(0x90004, 0, 0);
+                        PlaySoundIfEnabled(0x90004, 0, 0);
                         var_s5 = 1;
                     }
                     GraphNode_TriggerAction(D_86105BC8, 9);
@@ -1669,9 +1669,9 @@ void func_86103AB4(void) {
     }
 
     if (D_861054A2 == -2) {
-        func_87A010D4(0x9000B, 0, 0);
+        PlaySoundIfEnabled(0x9000B, 0, 0);
     } else {
-        func_87A010D4(0x9000A, 0, 0);
+        PlaySoundIfEnabled(0x9000A, 0, 0);
     }
 
     if (D_861054A0 >= 0xD) {
@@ -1756,7 +1756,7 @@ void func_86103E9C(void) {
         }
 
         D_86105BC4->unk_002 = i;
-        D_86105BC4->unk_1B0 = func_878001E8(0xA) + 0xA;
+        D_86105BC4->unk_1B0 = GetRandomMod(0xA) + 0xA;
         D_86105BC8 = &D_86105BC4->unk_008;
 
         Graph_AddToRootList0(D_86105BC8);

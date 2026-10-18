@@ -65,7 +65,7 @@ typedef struct unk_D_8140E720 {
     /* 0x08 */ func_unk_D_8140E724_008 unk_08;
     /* 0x0C */ unk_D_8140E728_01C* unk_0C;
     /* 0x10 */ struct unk_D_84390010* unk_10;
-    /* 0x14 */ unk_D_86002F58_004_000* unk_14;
+    /* 0x14 */ Fragment2_1GraphNode* unk_14;
     /* 0x18 */ u32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ f32 unk_20;
@@ -138,12 +138,12 @@ typedef struct unk_D_8140E724 {
 
 typedef struct arg1_func_87903D64_014 {
     /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_86002F34_000_014_004* unk_04;
-    /* 0x08 */ unk_D_86002F34_000_014_004* unk_08;
-    /* 0x0C */ unk_D_86002F34_000_014_004* unk_0C;
-    /* 0x10 */ unk_D_86002F34_000_014_010* unk_10;
-    /* 0x14 */ unk_D_86002F34_000_014_010* unk_14;
-    /* 0x18 */ unk_D_86002F34_000_014_010* unk_18;
+    /* 0x04 */ ColorLerpEntry5* unk_04;
+    /* 0x08 */ ColorLerpEntry5* unk_08;
+    /* 0x0C */ ColorLerpEntry5* unk_0C;
+    /* 0x10 */ ColorLerpEntry4* unk_10;
+    /* 0x14 */ ColorLerpEntry4* unk_14;
+    /* 0x18 */ ColorLerpEntry4* unk_18;
 } arg1_func_87903D64_014; // size = 0x1C
 
 // Possibly unk_D_86002F34_alt7, unk_D_86002F34_alt8,
@@ -324,12 +324,12 @@ extern s32 D_8140E704;
 extern s32 D_8140E708;
 extern s32 D_8140E70C;
 extern s32 D_8140E710;
-extern unk_D_8140E720* D_8140E720;
+extern unk_D_8140E720* gParticleInstances;
 extern unk_D_8140E724* D_8140E724;
-extern unk_D_8140E728* D_8140E728;
+extern unk_D_8140E728* gParticleEmitters;
 extern s32 D_8140E72C;
 extern s32 D_8140E730;
-extern s32 D_8140E734;
+extern s32 gParticleEmitterNextIdx;
 
 void SetBits(s32* arg0, s32 arg1);
 void ClearBits(s32* arg0, s32 arg1);
@@ -524,8 +524,8 @@ unk_D_8140E720* func_81407B3C(void);
 unk_D_8140E720* func_81407B5C(u8 arg0);
 void func_81407D48(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5);
 void func_81407E30(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5, s16 arg6);
-void func_81407F24(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4);
-void func_81407FC8(unk_D_86002F58_004_000* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4, s16 arg5);
+void func_81407F24(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4);
+void func_81407FC8(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4, s16 arg5);
 s32 Particle_CountActive(void);
 s32 func_814080EC(void);
 void Particle_Init(unk_D_8140E720* arg0);

@@ -78,9 +78,9 @@ s32 pad_D_843903A8[2];
 static s32 D_843903B0;
 static s32 D_843903B4;
 s32 pad_D_843903B8[6];
-static unk_D_86002F58_004_000 D_843903D0[16];
+static Fragment2_1GraphNode D_843903D0[16];
 static s32 D_84391A50[16];
-static unk_D_86002F58_004_000 D_84391A90[4];
+static Fragment2_1GraphNode D_84391A90[4];
 static s32 D_84392030[4];
 static unk_D_84392040 D_84392040;
 f32 D_84392058[26];
@@ -4924,14 +4924,14 @@ void func_8432CAD0(void) {
     }
 }
 
-unk_D_8140E720* func_8432CB60(unk_D_86002F58_004_000* arg0) {
+unk_D_8140E720* func_8432CB60(Fragment2_1GraphNode* arg0) {
     return arg0->unk_000.unk_14;
 }
 
-unk_D_86002F58_004_000* func_8432CB68(unk_D_8140E720* arg0) {
+Fragment2_1GraphNode* func_8432CB68(unk_D_8140E720* arg0) {
     s32 i;
     s32 var_v0 = -1;
-    unk_D_86002F58_004_000* temp_a0;
+    Fragment2_1GraphNode* temp_a0;
 
     for (i = 0; i < 16; i++) {
         if (D_84391A50[i] == 0) {
@@ -4950,7 +4950,7 @@ unk_D_86002F58_004_000* func_8432CB68(unk_D_8140E720* arg0) {
     return temp_a0;
 }
 
-void func_8432CBF8(unk_D_86002F58_004_000* arg0) {
+void func_8432CBF8(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -4965,10 +4965,10 @@ void func_8432CBF8(unk_D_86002F58_004_000* arg0) {
     }
 }
 
-unk_D_86002F58_004_000* func_8432CC54(unk_D_8140E720* arg0) {
+Fragment2_1GraphNode* func_8432CC54(unk_D_8140E720* arg0) {
     s32 i;
     s32 var_a2 = -1;
-    unk_D_86002F58_004_000* sp1C;
+    Fragment2_1GraphNode* sp1C;
 
     for (i = 0; i < 4; i++) {
         if (D_84392030[i] == 0) {
@@ -4988,7 +4988,7 @@ unk_D_86002F58_004_000* func_8432CC54(unk_D_8140E720* arg0) {
     return sp1C;
 }
 
-void func_8432CD14(unk_D_86002F58_004_000* arg0) {
+void func_8432CD14(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -5003,29 +5003,29 @@ void func_8432CD14(unk_D_86002F58_004_000* arg0) {
     }
 }
 
-void func_8432CD70(unk_D_86002F58_004_000* arg0, s16 arg1, s16 arg2) {
+void func_8432CD70(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
     Anim_SetChannel(arg0, 0, D_843920C0[arg2], 0x10000);
 }
 
-void func_8432CDD8(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void func_8432CDD8(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannelBase(arg0, arg1);
 }
 
-void func_8432CE00(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void func_8432CE00(Fragment2_1GraphNode* arg0, s16 arg1) {
     GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
 }
 
-void func_8432CE3C(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void func_8432CE3C(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannel(arg0, 0, D_843920C0[arg1], 0x10000);
 }
 
-void func_8432CE78(unk_D_86002F58_004_000* arg0, s16 arg1) {
+void func_8432CE78(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannel(arg0, 0, D_843920C0[arg1], -0x10000);
     Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 func_8432CED4(unk_D_86002F58_004_000* arg0) {
+s32 func_8432CED4(Fragment2_1GraphNode* arg0) {
     s32 ret = 0;
 
     if (arg0->unk_040.unk_08 == 0) {

@@ -78,7 +78,7 @@ static s32 D_81004B50;
 static s32 D_81004B54;
 
 
-void func_810005F0(unk_D_86002F58_004_000* arg0, s32 arg1) {
+void func_810005F0(Fragment2_1GraphNode* arg0, s32 arg1) {
     u8 var_v0 = arg0->unk_0A6;
     s32 pad[2];
     Vec3f sp50 = D_8100410C;
@@ -102,7 +102,7 @@ void func_810005F0(unk_D_86002F58_004_000* arg0, s32 arg1) {
     D_810047E0[var_v0 & 1][arg1].scale = sp38;
 }
 
-void func_810007A8(unk_D_86002F58_004_000* arg0) {
+void func_810007A8(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
@@ -316,7 +316,7 @@ Gfx* func_810010BC(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s
     f32 sp104;
     f32 sp100;
     f32 spFC;
-    unk_D_86002F58_004_000* var_v0;
+    Fragment2_1GraphNode* var_v0;
 
     sp294 = GfxAlloc(0x40);
     Camera_CopyMatrixF(&sp14C, &gCurrentCameraNode->unk_60.mtxf);

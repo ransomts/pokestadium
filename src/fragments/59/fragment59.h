@@ -11,7 +11,7 @@ void func_841003F0(void);
 void func_8410048C(FramebufferImage* arg0, s16 arg1, s16 arg2);
 void func_84100704(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 void func_84100F04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-s32 func_84101120(s32 arg0, unk_func_80011B94* arg1);
+s32 func_84101120(s32 arg0, SimpleGfxNode* arg1);
 void func_84101210(s16 arg0);
 void func_841014E4(s32 arg0, s32 arg1, f32 arg2);
 FramebufferImage* func_84101894(u8* arg0, s16 arg1);

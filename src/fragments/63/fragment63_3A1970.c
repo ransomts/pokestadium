@@ -149,7 +149,7 @@ void func_84B0D970(unk_D_84B26640_010* arg0) {
     }
 }
 
-void func_84B0D9D8(unk_D_84B26640_010* arg0, unk_D_86002F58_004_000* arg1) {
+void func_84B0D9D8(unk_D_84B26640_010* arg0, Fragment2_1GraphNode* arg1) {
     arg0->unk_04 = arg1;
     arg0->unk_01 = 0;
     arg0->unk_00 = 2;

@@ -617,7 +617,7 @@ void func_81302798(void) {
     s16 var_a1;
     s32 var_s1;
     unk_D_81304008* var_s0;
-    unk_D_86002F58_004_000* var_v0;
+    Fragment2_1GraphNode* var_v0;
     s32 i;
 
     for (i = 0, var_s0 = &D_81304008[0]; i < 4; i++, var_s0++) {
@@ -737,7 +737,7 @@ s32 func_81302A70(s32 arg0) {
 void func_81302C20(void) {
     static s16 D_81303F48[] = { 1, 2, 0, 3 };
 
-    unk_D_86002F58_004_000* ptr;
+    Fragment2_1GraphNode* ptr;
     s32 temp_s1;
     s32 i;
 

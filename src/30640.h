@@ -105,7 +105,7 @@ typedef struct unk_func_80031270 {
     /* 0x14 */ BinArchive* unk_14;
     /* 0x18 */ unk_D_83403C60* unk_18;
     /* 0x1C */ GraphNode* unk_1C;
-    /* 0x20 */ unk_D_86002F58_004_000* unk_20;
+    /* 0x20 */ Fragment2_1GraphNode* unk_20;
     /* 0x24 */ unk_func_80031270_024* unk_24;
     /* 0x28 */ GraphNode* unk_28;
     /* 0x2C */ GraphNode* unk_2C;

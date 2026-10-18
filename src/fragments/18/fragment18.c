@@ -1533,7 +1533,7 @@ static u32 D_86C0E0D0[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x05000000,
     0x00000000, D_86C0D008, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
-    0x06000000, 0x06000000, 0x06000000, 0x03000000, D_87806398, 0x06000000, 0x01000000,
+    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
 };
 
 static ActorOriginPosition skansActorInfo[] = {
@@ -1968,7 +1968,7 @@ s32 func_86C00B0C(MiniActor* compEkans) {
 
 s16 func_86C00BB4(void) {
     s32 i;
-    s32 var_v1 = func_878001E8(0x64) % 3;
+    s32 var_v1 = GetRandomMod(0x64) % 3;
     s16 var_t0 = -1;
 
     for (i = 0; i < 3; i++) {
@@ -1997,7 +1997,7 @@ s16 func_86C00C40(MiniActor* arg0) {
     } else {
         sp18 = 0;
         sp1E = -1;
-        var_a0 = func_878001E8(0x64) % 3;
+        var_a0 = GetRandomMod(0x64) % 3;
     }
 
     for (i = 0; i < 3; i++) {
@@ -2041,7 +2041,7 @@ s16 func_86C00D50(MiniActor* arg0) {
         }
     }
 
-    var_a0 = func_878001E8(0x64) % 3;
+    var_a0 = GetRandomMod(0x64) % 3;
 
     for (i = 0; i < 3; i++) {
         if (activeDigletts[var_a0].state == 6) {
@@ -2131,7 +2131,7 @@ void func_86C00F70(MiniActor* compEkans) {
     sp3C.z = tempDiglett->totalPos.z - compEkans->totalPos.z;
 
     compEkans->unk_222 = func_86C00668(compEkans, func_81400BBC(sp3C) + RandomRangeSigned(sp36) + 0x8000);
-    compEkans->ySpinSpeed = func_878001E8(sp32) + sp34;
+    compEkans->ySpinSpeed = GetRandomMod(sp32) + sp34;
 }
 
 void miniEkansCompGetForce(MiniActor* compEkans) {
@@ -2141,41 +2141,41 @@ void miniEkansCompGetForce(MiniActor* compEkans) {
     switch (miniDifficulty) {
         case 0:
             if (diglettId < 3) {
-                force = func_878001E8(0x28) + 0x14;
+                force = GetRandomMod(0x28) + 0x14;
             } else if (diglettId < 6) {
-                force = func_878001E8(0x23) + 0x14;
+                force = GetRandomMod(0x23) + 0x14;
             } else {
-                force = func_878001E8(0x19) + 0x28;
+                force = GetRandomMod(0x19) + 0x28;
             }
             break;
 
         case 1:
             if (diglettId < 3) {
-                force = func_878001E8(0x1E) + 0x14;
+                force = GetRandomMod(0x1E) + 0x14;
             } else if (diglettId < 6) {
-                force = func_878001E8(0x1E) + 0x1E;
+                force = GetRandomMod(0x1E) + 0x1E;
             } else {
-                force = func_878001E8(0xF) + 0x32;
+                force = GetRandomMod(0xF) + 0x32;
             }
             break;
 
         case 2:
             if (diglettId < 3) {
-                force = func_878001E8(0xF) + 0x18;
+                force = GetRandomMod(0xF) + 0x18;
             } else if (diglettId < 6) {
-                force = func_878001E8(0xF) + 0x28;
+                force = GetRandomMod(0xF) + 0x28;
             } else {
-                force = func_878001E8(0xA) + 0x36;
+                force = GetRandomMod(0xA) + 0x36;
             }
             break;
 
         case 3:
             if (diglettId < 3) {
-                force = func_878001E8(0xA) + 0x1C;
+                force = GetRandomMod(0xA) + 0x1C;
             } else if (diglettId < 6) {
-                force = func_878001E8(0xA) + 0x2A;
+                force = GetRandomMod(0xA) + 0x2A;
             } else {
-                force = func_878001E8(6) + 0x3A;
+                force = GetRandomMod(6) + 0x3A;
             }
             break;
     }
@@ -2767,12 +2767,12 @@ s16 miniEkansChooseRandDiglett(UNUSED s16 activeDiglett) {
     }
 
     if (var_s0 == 0) {
-        rand = func_878001E8(0x64) % 9;
+        rand = GetRandomMod(0x64) % 9;
     } else {
         var_s3 = 0;
         while (true) {
             var_s0 = 0;
-            rand = func_878001E8(0x64) % 9;
+            rand = GetRandomMod(0x64) % 9;
             while (true) {
                 s16 tmp = var_s0 + 1;
                 if (rand == sp44[var_s0]) {
@@ -2806,7 +2806,7 @@ void func_86C02A1C(MiniActor* diglett) {
             sp18 = 1;
         } else {
             sp18 = 0;
-            temp_v0 = func_878001E8(0x64);
+            temp_v0 = GetRandomMod(0x64);
             if ((miniEkansCountdown < 0xA) && (temp_v0 < 0x14)) {
                 sp18 = 1;
             } else if ((miniEkansCountdown < 0x14) && (temp_v0 < 0xF)) {
@@ -2818,7 +2818,7 @@ void func_86C02A1C(MiniActor* diglett) {
             }
         }
     } else {
-        temp_v0 = func_878001E8(0x64);
+        temp_v0 = GetRandomMod(0x64);
         if ((miniEkansCountdown < 0x2D) && (temp_v0 < 5)) {
             sp18 = 1;
         }
@@ -2885,7 +2885,7 @@ void miniDiglettStateMachine(void) {
 
             case 3: //	get random time delay
                 activeDigletts[i].state = 4;
-                activeDigletts[i].timer = func_878001E8(0x14);
+                activeDigletts[i].timer = GetRandomMod(0x14);
                 break;
 
             case 4:                        // pre-spawn
@@ -3103,7 +3103,7 @@ void miniEkansMinigameStateMachine(void) {
             if ((func_86C030EC() != 0) && (miniInputLockTimer == 0)) {
                 func_86C03128();
                 SetResultFlag(1);
-                func_87903294();
+                MiniTutoScreen_Reset();
                 minigameState++;
             }
             break;
@@ -3123,7 +3123,7 @@ void func_86C034F8(void) {
 }
 
 void miniEkansInitCam(void) {
-    gMiniCameraPtr = D_87906050->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0x1800;
     miniCameraYRot = 0;
@@ -3143,8 +3143,8 @@ void miniEkansInitCam(void) {
     gMiniDebugBasePos.x = 26.0f;
     gMiniDebugBasePos.y = 70.0f;
 
-    D_87906100.x = 10.0f;
-    D_87906100.y = 8.0f;
+    gMiniDebugCamVelocity.x = 10.0f;
+    gMiniDebugCamVelocity.y = 8.0f;
 
     D_87906110.y = 1.0f;
 }
@@ -3169,36 +3169,36 @@ void func_86C03608(void) {
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (func_878013D4(D_86C12000, GetMessageString(NULL, 0, D_87806330, 0x3E)) / 2), 0x20,
-                  GetMessageString(NULL, 0, D_87806330, 0x3E));
+    Text_Print(0xA0 - (GetTextWidth(D_86C12000, GetMessageString(NULL, 0, gItemNamesBank, 0x3E)) / 2), 0x20,
+                  GetMessageString(NULL, 0, gItemNamesBank, 0x3E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, D_87806330, 0x3F));
-    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, D_87806330, 0x40));
-    Text_Print(0x28, 0x70, GetMessageString(NULL, 0, D_87806330, 0x41));
+    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x3F));
+    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x40));
+    Text_Print(0x28, 0x70, GetMessageString(NULL, 0, gItemNamesBank, 0x41));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x3F), GetMessageString(NULL, 0, D_87806330, 0x61),
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x3F), GetMessageString(NULL, 0, gItemNamesBank, 0x61),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x61));
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x3F), GetMessageString(NULL, 0, D_87806330, 0x62),
+    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x61));
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x3F), GetMessageString(NULL, 0, gItemNamesBank, 0x62),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, D_87806330, 0x62));
-    func_87801290(&sp38, &sp34, GetMessageString(NULL, 0, D_87806330, 0x41), GetMessageString(NULL, 0, D_87806330, 0x62),
+    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x62));
+    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x41), GetMessageString(NULL, 0, gItemNamesBank, 0x62),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x70, GetMessageString(NULL, 0, D_87806330, 0x62));
-    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
-    Text_Print(0xE5, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x5C));
+    Text_Print(sp38 + 0x28, sp34 + 0x70, GetMessageString(NULL, 0, gItemNamesBank, 0x62));
+    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Text_Print(0x75, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Text_Print(0xE5, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x42));
+    Text_Print(0x8C, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x42));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Text_Print(0xFC, 0xB0, GetMessageString(NULL, 0, D_87806330, 0x43));
+    Text_Print(0xFC, 0xB0, GetMessageString(NULL, 0, gItemNamesBank, 0x43));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, D_87806330, 0x14));
+    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
     Text_EndRender();
     Text_SetupDL();
 }
@@ -3219,11 +3219,11 @@ void func_86C03AB8(void) {
             break;
 
         case 4:
-            func_87903358(0x11, 0x32);
+            MiniTutoScreen_StartTimerWithDelay(0x11, 0x32);
             break;
 
         case 5:
-            func_879032BC(0x3E8);
+            MiniTutoScreen_StartCountdown(0x3E8);
             break;
     }
 
@@ -3236,7 +3236,7 @@ void func_86C03AB8(void) {
 void miniEkansDrawCountdown(void) {
     Text_SetEnvColor(0xFF, 0xC8, 0x32, 0xFF);                               // set color
     Text_SetFont(8, 0);                                                 // set style
-    Text_Print(0x80, 0x14, GetMessageString(NULL, 0, D_87806330, 0x5D)); // TIME text
+    Text_Print(0x80, 0x14, GetMessageString(NULL, 0, gItemNamesBank, 0x5D)); // TIME text
     Text_Print(0xAA, 0x14, "%d", miniEkansCountdown);
 }
 
@@ -3262,12 +3262,12 @@ void miniEkansDrawHub(void) {
 
         if (ekansMinigameCountdownStarted == false) {
             if (ekans->isComp != 0) {
-                func_87801644(-1 - i, tmp, 0xCC, 0.75f);
+                DrawUniformScaledTextureRect(-1 - i, tmp, 0xCC, 0.75f);
             } else {
-                func_87801644(i, tmp, 0xCC, 0.75f);
+                DrawUniformScaledTextureRect(i, tmp, 0xCC, 0.75f);
             }
         } else {
-            func_87801644(i, tmp, 0xCC, 0.75f);
+            DrawUniformScaledTextureRect(i, tmp, 0xCC, 0.75f);
         }
         Text_Print(tmp + 0x14, 0xCC, "  %d", miniEkanses[i].ekansScore);
     }
@@ -3276,7 +3276,7 @@ void miniEkansDrawHub(void) {
 }
 
 void func_86C03E4C(void) {
-    func_87903260();
+    MiniTutoScreen_Start();
     func_86C03AB8();
 
     if (miniShowHUB) {
@@ -3290,7 +3290,7 @@ void func_86C03E8C(s32 arg0) {
     }
 
     if (ekansMinigameCountdownStarted == false) {
-        func_87804FD4();
+        ResultScreen_UpdateAndRender();
     }
 }
 
@@ -3332,8 +3332,8 @@ void func_86C040B4(s32 arg0) {
         Gfx_FinishFrame();
     }
 
-    Graph_SetTextureState(&D_87906050->unk_00);
-    func_87901C98();
+    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
+    ParticleRender_SetupMiniCamera();
     func_86C03ED4();
 
     if (miniDebugMode == false) {
@@ -3346,7 +3346,7 @@ void func_86C040B4(s32 arg0) {
     }
 
     if (ekansMinigameCountdownStarted) {
-        func_8780005C();
+        UpdateScrollingMessage();
     }
 
     Stage_Advance();
@@ -3355,7 +3355,7 @@ void func_86C040B4(s32 arg0) {
 void initEkansMinigameAssets(void) {
     ekansMinigameInitObjects(); //	init game objects
     hideMiniGameHUD();
-    func_87901620(); //	memory something
+    ParticleSystem_Init(); //	memory something
     Stage_AdvanceN(0xA);
     func_80006C6C(0x10);
 
@@ -3441,7 +3441,7 @@ void func_86C044B4(void) {
     unk_D_86002F30* temp_s1;
     s32 i;
 
-    D_87906050 = process_geo_layout(temp_v0, D_86C0E0D0);
+    gMiniCameraStruct = process_geo_layout(temp_v0, D_86C0E0D0);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 

@@ -33,7 +33,7 @@ static u32* gHealthBarPalettes[] = {
 
 const char D_865092C0[] = "%d : TIME = %d\n";
 
-static unk_func_80011B94* gHealthBarNode;
+static SimpleGfxNode* gHealthBarNode;
 u8 gHealthBarTimer;
 u8 gHealthBarDuration;
 
