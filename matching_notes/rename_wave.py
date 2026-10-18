@@ -370,7 +370,7 @@ def run_wave(qwave, args, facts):
     if n == 0:
         n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     short = ", ".join(os.path.basename(f) for f in files[:4]) + (", ..." if len(files) > 4 else "")
-    add_cmd = ["git", "add"] + touched + [LEDGER]
+    add_cmd = ["git", "add"] + [t for t in touched if "/asm/" not in t] + [LEDGER]
     r = sh(add_cmd, 60)
     r = sh(["git", "commit", "-m", f"rename: {batch} ({n} symbols; {short})"], 120)
     if r.returncode != 0:
