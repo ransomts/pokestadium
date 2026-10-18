@@ -398,8 +398,9 @@ class Rewriter:
             t2, k1 = re.subn(r"(\.)" + re.escape(old_field) + r"(?![A-Za-z0-9_])", r"\g<1>" + new_field, t)
             t2, k2 = re.subn(r"(->)" + re.escape(old_field) + r"(?![A-Za-z0-9_])", r"\g<1>" + new_field, t2)
             if f.endswith(".h"):
-                t2, k3 = re.subn(r"^(\s*[A-Za-z_][A-Za-z0-9_ ]*?\s)" + re.escape(old_field) + r"\s*;",
-                                 r"\g<1>" + new_field + ";", t2, flags=re.M)
+                t2, k3 = re.subn(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s)"
+                                 + re.escape(old_field) + r"((?:\[[^\]]*\])*)\s*;",
+                                 r"\g<1>" + new_field + r"\g<2>;", t2, flags=re.M)
             else:
                 k3 = 0
             if k1 + k2 + k3:
