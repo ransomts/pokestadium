@@ -220,9 +220,9 @@ s32 AnimChannel_CheckAndReset(unk_D_84390010* arg0) {
 
 void AnimChannel_HandleBattleState(unk_D_84390010* arg0) {
     if (gBattleState.unk_00->unk_48 == 0xE) {
-        SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
+        SetMessageFromId(arg0->unk_720, GetCurrentMoveId(arg0));
     } else {
-        SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
+        SetMessageFromId(arg0->unk_720, GetCurrentMoveId(arg0));
     }
 }
 
@@ -233,7 +233,7 @@ void AnimChannel_TriggerMoveEffect(unk_D_84390010* arg0) {
 }
 
 void AnimChannel_TriggerGenericEffect(unk_D_84390010* arg0) {
-    SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
+    SetMessageFromId(arg0->unk_720, GetCurrentMoveId(arg0));
 }
 
 void AnimChannel_SetFlags28(unk_D_84390010* arg0) {
@@ -1374,7 +1374,7 @@ void ApplyAnimStateEffect(unk_D_84390010* arg0) {
     }
 }
 
-void func_843056DC(unk_D_84390010* arg0) {
+void Anim_NullHandler(unk_D_84390010* arg0) {
 }
 
 void ReplaceAnimQueueEntry(unk_D_84390010* arg0, unk_D_84385384_func arg1) {
@@ -2127,7 +2127,7 @@ void InitMessageBanksAndAnimQueue(unk_D_800AE540_1194* arg0) {
     func_8430D814();
     ResetAllStatFlags(D_84390010[0]);
     ResetAllStatFlags(D_84390010[1]);
-    func_843184FC();
+    Dialog_Clear();
 }
 
 void ResetEntityAnimStates(unk_D_84390010* arg0, unk_D_84390010* arg1) {

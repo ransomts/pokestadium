@@ -1,7 +1,7 @@
 #include "fragment34.h"
 #include "src/12D80.h"
 
-unk_D_8140E728_01C gParticleDefaultCallback = { 3, Particle_NoOp };
+ParticleEffectData gParticleDefaultCallback = { 3, Particle_NoOp };
 
 void Particle_ResetDefaults(ParticleEffectInstance* arg0) {
     Particle_Init(arg0);
@@ -110,7 +110,7 @@ ParticleEffectInstance* Particle_AllocateChain(u8 arg0) {
     return sp28;
 }
 
-ParticleEffectInstance* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4,
+ParticleEffectInstance* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4,
                               s16 arg5, s16 arg6, s16 arg7) {
     ParticleEffectInstance* sp1C = Particle_AllocateInstance();
 
@@ -118,7 +118,7 @@ ParticleEffectInstance* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_u
         sp1C->unk_28 = arg0;
 
         Vec3f_Copy(&sp1C->unk_68, &arg1);
-        func_8140094C(&sp1C->unk_94, &arg2);
+        Vec3s_CopyTo(&sp1C->unk_94, &arg2);
 
         sp1C->unk_08 = arg3;
         sp1C->unk_0C = arg4;
@@ -131,7 +131,7 @@ ParticleEffectInstance* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_u
     return sp1C;
 }
 
-ParticleEffectInstance* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2,
+ParticleEffectInstance* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2,
                               s16 arg3, s16 arg4, s16 arg5) {
     ParticleEffectInstance* sp1C = Particle_AllocateInstance();
 
@@ -161,7 +161,7 @@ ParticleEffectInstance* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, fu
     return sp1C;
 }
 
-void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5) {
+void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5) {
     s32 i;
 
     for (i = 0; i < arg5; i++) {
@@ -171,7 +171,7 @@ void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E7
     }
 }
 
-void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
+void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5,
                    s16 arg6) {
     s32 i;
 
@@ -182,7 +182,7 @@ void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk
     }
 }
 
-void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3,
                    s16 arg4) {
     s32 i;
 
@@ -193,7 +193,7 @@ void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_81
     }
 }
 
-void Particle_CreateFromEntityMultipleWithExtra(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void Particle_CreateFromEntityMultipleWithExtra(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3,
                    s16 arg4, s16 arg5) {
     s32 i;
 
@@ -710,7 +710,7 @@ void Particle_AddAnotherDirection(ParticleEffectInstance* arg0, f32 arg1) {
 void Particle_AddRotatedOffset(ParticleEffectInstance* arg0, Vec3f arg1) {
     Vec3f sp24;
 
-    func_81400D00(&sp24, arg1, arg0->unk_94);
+    Vec3f_RotateY(&sp24, arg1, arg0->unk_94);
     Particle_AddVelocityScaledVec(arg0, sp24);
 }
 
@@ -800,7 +800,7 @@ void Particle_SetRandomRotatedVelocityXY(ParticleEffectInstance* arg0, s32 arg1,
     sp2C.y = RandomRangeSigned(arg2);
     sp2C.z = 0.0f;
 
-    func_81400D00(&sp20, sp2C, arg0->unk_94);
+    Vec3f_RotateY(&sp20, sp2C, arg0->unk_94);
 
     arg0->unk_38.x = sp20.x * gParticleScaleFactor.unk_00.y;
     arg0->unk_38.y = sp20.y * gParticleScaleFactor.unk_00.y;
@@ -844,7 +844,7 @@ void Particle_SetVelocityZ(ParticleEffectInstance* arg0, f32 arg1) {
 }
 
 void Particle_ScaleVelocity(ParticleEffectInstance* arg0, f32 arg1) {
-    func_814010D8(&arg0->unk_50, arg1 * gParticleScaleFactor.unk_00.y);
+    Vec3f_SetRandomDirection(&arg0->unk_50, arg1 * gParticleScaleFactor.unk_00.y);
 }
 
 void Particle_AddVelocity(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
@@ -1334,7 +1334,7 @@ void Particle_RandomizeRotationXY(ParticleEffectInstance* arg0, s32 arg1, s32 ar
 }
 
 void Particle_RandomizeRotationXWithMaskY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    func_8140A578(arg0, func_81400B28(arg1, 0x8000));
+    func_8140A578(arg0, RandomRangeSignedPlus(arg1, 0x8000));
     func_8140A594(arg0, RandomRangeSigned(arg2));
 }
 
@@ -1343,7 +1343,7 @@ void Particle_RandomizeRotationY(ParticleEffectInstance* arg0, s32 arg1) {
 }
 
 void Particle_RandomizeRotationYWithMask(ParticleEffectInstance* arg0, s32 arg1) {
-    func_8140A594(arg0, func_81400B28(arg1, 0x8000));
+    func_8140A594(arg0, RandomRangeSignedPlus(arg1, 0x8000));
 }
 
 void Particle_RandomizeRotationXYFixedY(ParticleEffectInstance* arg0) {
@@ -2014,7 +2014,7 @@ void Particle_RenderUIOverlay(s16 arg0) {
     }
 }
 
-void Particle_ExecuteCallbackBasedOnType(ParticleEffectInstance* arg0, unk_D_8140E728_01C_004_1* arg1) {
+void Particle_ExecuteCallbackBasedOnType(ParticleEffectInstance* arg0, ParticleRenderSettings* arg1) {
     switch (arg1->unk_01) {
         case 0:
             arg1->unk_04(arg0, arg1->unk_0C.arg, arg1);
@@ -2028,7 +2028,7 @@ void Particle_ExecuteCallbackBasedOnType(ParticleEffectInstance* arg0, unk_D_814
 
 void Particle_HandleDisplayList(ParticleEffectInstance* arg0) {
     UNUSED s32 pad;
-    unk_D_8140E728_01C_004_1* sp18 = arg0->unk_0C->unk_04.a;
+    ParticleRenderSettings* sp18 = arg0->unk_0C->unk_04.a;
 
     if (arg0->unk_0C->unk_00 == 1) {
         Particle_RenderUIOverlay(sp18->unk_02);
@@ -2040,7 +2040,7 @@ void Particle_HandleDisplayList(ParticleEffectInstance* arg0) {
 
 void Particle_RenderWithCamera(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     UNUSED s32 pad;
-    unk_D_8140E728_01C_004_1* sp18 = arg0->unk_0C->unk_04.a;
+    ParticleRenderSettings* sp18 = arg0->unk_0C->unk_04.a;
 
     switch (arg0->unk_0C->unk_00) {
         case 1:

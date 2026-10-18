@@ -84,7 +84,7 @@ static Gfx gTransitionMaskCleanupDL[] = {
     gsSPEndDisplayList(),
 };
 
-void func_8436EEF0(s32 arg0, s32 arg1) {
+void ScreenTransition_SetState(s32 arg0, s32 arg1) {
     gTransitionState = arg0;
     gTransitionSpeed = arg1;
 

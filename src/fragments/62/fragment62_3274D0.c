@@ -43,7 +43,7 @@ void func_8433CCFC(ParticleEffectInstance* arg0) {
 void func_8433CDAC(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x6:
             sp1C = 15.0f;
             break;

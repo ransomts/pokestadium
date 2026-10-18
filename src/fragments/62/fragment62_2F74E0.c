@@ -36,7 +36,7 @@ void func_8430CC84(void) {
     gPhaseTimer = tmp;
 }
 
-s32 func_8430CCC8(void) {
+s32 Battle_TickPhaseTimer(void) {
     if (gPhaseTimer == 0.0f) {
         return 1;
     }
@@ -45,7 +45,7 @@ s32 func_8430CCC8(void) {
     return 0;
 }
 
-s32 func_8430CD0C(void) {
+s32 Battle_TickCountdownTimer(void) {
     if (gBattleContext.unk_11ED == 0) {
         return 0;
     }
@@ -74,7 +74,7 @@ s32 func_8430CDAC(s32 arg0, s32 arg1) {
     return 3;
 }
 
-s32 func_8430CE00(void) {
+s32 Battle_ComputeWinner(void) {
     PokemonData* ptr;
     s32 i;
     s32 var_s3 = 0;
@@ -134,10 +134,10 @@ s32 func_8430D02C(void) {
         return 0;
     }
 
-    if (func_8430CD0C() != 0) {
+    if (Battle_TickCountdownTimer() != 0) {
         switch (gBattleResultPhase) {
             case 1:
-                func_843184E4(0xD);
+                Dialog_SetMode(0xD);
                 gBattleResultPhase = 2;
                 Audio_PlaySoundEffect(0x3F, 0, 0);
                 QueueEndTurnSound();
@@ -155,7 +155,7 @@ s32 func_8430D02C(void) {
                 gBattleTimer += 1.0f;
 
                 if (var_v0 != 0) {
-                    gBattleState.unk_00->unk_40 = func_8430CE00();
+                    gBattleState.unk_00->unk_40 = Battle_ComputeWinner();
                     func_8004B9C4(0x14);
                 }
                 break;
@@ -1121,21 +1121,21 @@ s32 func_8430F350(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8430F458(void) {
+void Entities_ShowAllModels(void) {
     D_84390010[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
     D_84390010[0]->unk_728.unk_000.unk_000.unk_01 |= 1;
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
     D_84390010[1]->unk_728.unk_000.unk_000.unk_01 |= 1;
 }
 
-void func_8430F4AC(void) {
+void Entities_HideAllModels(void) {
     D_84390010[0]->unk_728.unk_168->unk_00.unk_01 &= ~1;
     D_84390010[0]->unk_728.unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 &= ~1;
     D_84390010[1]->unk_728.unk_000.unk_000.unk_01 &= ~1;
 }
 
-void func_8430F500(void) {
+void DemoFeedScriptedInput(void) {
     static u16 D_84385758[][3] = {
         { 0x17C, 0, 0 },        { 0xA, BTN_L, 0 },  { 0xA, BTN_R, 0 }, { 0xC8, BTN_START, 0 },
         { 0xC8, BTN_START, 0 }, { 0xDC, BTN_A, 0 }, { 0, 0, 0 },
@@ -1180,18 +1180,18 @@ void func_8430F5F4(void) {
     unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
     Controller* cont = &D_84390150;
 
-    func_8430F500();
+    DemoFeedScriptedInput();
     func_8430F598(D_84390010[0], D_84390010[1]);
     func_8430F598(D_84390010[1], D_84390010[0]);
 
     if (cont->buttonPressed & 0x20) {
-        func_8430F458();
+        Entities_ShowAllModels();
         TriggerPokemonAnimAndAction(D_84390010[0]);
         TriggerPokemonAnimAndAction(D_84390010[1]);
     }
 
     if (cont->buttonPressed & 0x10) {
-        func_8430F4AC();
+        Entities_HideAllModels();
     }
 
     if (cont->buttonPressed & 0x1000) {
@@ -1284,7 +1284,7 @@ void func_8430F8B8(void) {
     }
 
     if ((sp24->unk_10 == 3) && (sp20->unk_10 == 3)) {
-        if (func_8430CD0C() != 0) {
+        if (Battle_TickCountdownTimer() != 0) {
             gBattleResultPhase = 1;
         }
 
@@ -1342,7 +1342,7 @@ void func_8430FB68(void) {
         }
 
         func_8430FB20();
-        func_8430CCC8();
+        Battle_TickPhaseTimer();
         func_8430D294();
     }
 }

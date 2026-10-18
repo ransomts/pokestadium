@@ -449,7 +449,7 @@ s32 DrawItemBackground(unk_func_8830867C_034_034* arg0, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
-    gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_30 != 0) ? D_883186E8 : gCheckerboardPattern, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+    gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_30 != 0) ? gCheckerboardPattern2 : gCheckerboardPattern, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                         12, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                         G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0xA) << 2, (arg2 + 0x11) << 2,
@@ -2221,8 +2221,8 @@ void InitPokemonSelectFragment(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, 
     spCC = ((arg0->unk_74 < spB0) ? spB0 : arg0->unk_74) + spC4 + 0x30;
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_040));
 
-    arg0->unk_00.unk_20 = func_8831067C;
-    arg0->unk_00.unk_24 = func_88310650;
+    arg0->unk_00.unk_20 = HandleMoveSelectionInput;
+    arg0->unk_00.unk_24 = SetMoveSelection;
     // clang-format off
     arg0->unk_00.unk_10.unk_00 = arg1; arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format on
@@ -2332,7 +2332,7 @@ void InitPokemonSelectFragment(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, temp_s0_4);
 }
 
-void func_883103CC(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1) {
+void UpdateMoveSelectionDisplay(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1) {
     static Color_RGBA8 gColor_TextWhiteFullAlt = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 gColor_TextWhiteSemiAlt = { 0xF0, 0xF0, 0xF0, 0x4D };
 
@@ -2371,7 +2371,7 @@ void func_883103CC(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* a
     }
 }
 
-void func_883105D4(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1) {
+void GetSelectedMoves(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1) {
     s32 var_v0 = 0;
     s32 i;
 
@@ -2384,12 +2384,12 @@ void func_883105D4(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* a
     arg1->unk_04 = var_v0;
 }
 
-void func_88310650(unk_func_8830867C_040* arg0, s32 arg1) {
+void SetMoveSelection(unk_func_8830867C_040* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_5C->unk_00.unk_14(arg0->unk_5C, arg1);
 }
 
-s32 func_8831067C(unk_func_8830867C_040* arg0, Controller* arg1) {
+s32 HandleMoveSelectionInput(unk_func_8830867C_040* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -3289,7 +3289,7 @@ s32 GetFragmentModeFromSelection(unk_func_8830867C_04C* arg0, s32* arg1) {
 
 void SubFragment_Init(unk_func_8830867C_04C_080* arg0, unk_func_8830867C_04C* arg1) {
     ((func8850BDF0)Memmap_GetFragmentVaddr(SelectableList_Init))(arg0);
-    arg0->unk_00.unk_10 = func_883125B4;
+    arg0->unk_00.unk_10 = SubFragment_HandleInput;
     arg0->unk_24 = arg1;
 }
 
@@ -3351,7 +3351,7 @@ void SetupMoveListForFragment(unk_func_8830867C_04C_080* arg0) {
     }
 }
 
-s32 func_883125B4(unk_func_8830867C_04C_080* arg0, Controller* arg1) {
+s32 SubFragment_HandleInput(unk_func_8830867C_04C_080* arg0, Controller* arg1) {
     s32 i;
     s32 var_s0;
     unk_func_8830867C_04C_080* var_a0;
@@ -3612,28 +3612,28 @@ void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, 
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_048));
 
-    arg0->unk_00.unk_20 = func_88313B90;
-    arg0->unk_00.unk_24 = func_88313B64;
+    arg0->unk_00.unk_20 = BoxMoveDialog_HandleInput;
+    arg0->unk_00.unk_24 = BoxMoveDialog_SetSelection;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     arg0->unk_48 = mem_pool_alloc(arg4, sizeof(unk_func_8830867C_048_048));
-    func_88313C24(arg0->unk_48, arg0);
+    BoxMoveController_Init(arg0->unk_48, arg0);
     spBC = CalculateMenuWidth();
 
-    func_883139E8(arg0, 0, 0);
+    SetBoxMoveHeaderText(arg0, 0, 0);
     temp_v0_2 = MeasureTextWidth(8, 0, arg0->unk_50);
     if (spBC < temp_v0_2) {
         spBC = temp_v0_2;
     }
 
-    func_883139E8(arg0, 1, 0xB);
+    SetBoxMoveHeaderText(arg0, 1, 0xB);
     temp_v0_2 = MeasureTextWidth(8, 0, arg0->unk_50);
     if (spBC < temp_v0_2) {
         spBC = temp_v0_2;
     }
 
-    func_883139E8(arg0, 2, 0xB);
+    SetBoxMoveHeaderText(arg0, 2, 0xB);
     temp_v0_2 = MeasureTextWidth(8, 0, arg0->unk_50);
     if (spBC < temp_v0_2) {
         spBC = temp_v0_2;
@@ -3757,7 +3757,7 @@ void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp68);
 }
 
-void func_88313740(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1) {
+void BoxMoveDialog_Link(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1) {
     unk_func_8830867C_02C_144_000_alt* sp24;
 
     ((func885063B8)Memmap_GetFragmentVaddr(Fragment_SetData))(arg0->unk_34, arg1);
@@ -3775,7 +3775,7 @@ typedef struct unk_func_88313894 {
     /* 0x40 */ unk_func_88313894_020 unk_40;
 } unk_func_88313894; // size >= 0x60
 
-void func_883137C4(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1,
+void MarkUnavailableBoxEntries(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1,
                    unk_func_88313894_020* arg2) {
     unk_func_8830867C_02C_0CC_000_000* sp24 = arg2->unk_0C;
     s32 i;
@@ -3791,7 +3791,7 @@ void func_883137C4(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C
     }
 }
 
-void func_88313894(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1) {
+void BoxMoveDialog_DisableInvalidEntries(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1) {
     u16* temp_v0_2;
     u16* temp_v0_3;
     unk_func_88313894* temp_s1;
@@ -3807,11 +3807,11 @@ void func_88313894(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* a
         arg0->unk_34->unk_34[0] |= 4;
     }
 
-    func_883137C4(arg0->unk_38[0], arg1, &temp_s1->unk_20);
-    func_883137C4(arg0->unk_38[1], arg1, &temp_s1->unk_40);
+    MarkUnavailableBoxEntries(arg0->unk_38[0], arg1, &temp_s1->unk_20);
+    MarkUnavailableBoxEntries(arg0->unk_38[1], arg1, &temp_s1->unk_40);
 }
 
-void func_88313950(char* arg0, s32 arg1, s32 arg2) {
+void FormatBoxLabel(char* arg0, s32 arg1, s32 arg2) {
     static u16 gStatMessageIds[4] = { 0x3B, 0x62, 0x63, 0 };
 
     HAL_Strcpy(arg0, GetMessageString(NULL, 0, gMoveListMessageTable, gStatMessageIds[arg1]));
@@ -3820,26 +3820,26 @@ void func_88313950(char* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_883139E8(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2) {
+void SetBoxMoveHeaderText(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2) {
     char sp18[32];
 
-    func_88313950(sp18, arg1, arg2);
+    FormatBoxLabel(sp18, arg1, arg2);
     MessageBank_SetPointer_0x14_0x2A(0x25, sp18);
     GetMessageString(arg0->unk_50, 0x80, gMoveListMessageTable, 0x3A);
 }
 
-void func_88313A34(unk_func_8830867C_048* arg0) {
+void SyncBoxListSelection(unk_func_8830867C_048* arg0) {
     s32 sp24 = arg0->unk_34->unk_38;
 
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_44, sp24);
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_40, sp24);
 }
 
-void func_88313A94(unk_func_8830867C_048* arg0) {
+void BoxMoveDialog_Open(unk_func_8830867C_048* arg0) {
     ((func88506CE4)Memmap_GetFragmentVaddr(Fragment_Update))(arg0->unk_34);
     ((func88506CE4)Memmap_GetFragmentVaddr(Fragment_Update))(arg0->unk_38[0]);
     ((func88506CE4)Memmap_GetFragmentVaddr(Fragment_Update))(arg0->unk_38[1]);
-    func_88313A34(arg0);
+    SyncBoxListSelection(arg0);
     ((func8850C064)Memmap_GetFragmentVaddr(Fragment_SetActive))(arg0->unk_48, 0);
 
     arg0->unk_48->unk_00.unk_14(arg0->unk_48, 1);
@@ -3848,26 +3848,26 @@ void func_88313A94(unk_func_8830867C_048* arg0) {
     ((func88502C98)Memmap_GetFragmentVaddr(UIAnimatedElement_WaitForInput))(arg0->unk_30);
 }
 
-void func_88313B4C(unk_func_8830867C_048* arg0) {
+void BoxMoveDialog_Close(unk_func_8830867C_048* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
     arg0->unk_30->unk_2C = 0xB;
 }
 
-void func_88313B64(unk_func_8830867C_048* arg0, s32 arg1) {
+void BoxMoveDialog_SetSelection(unk_func_8830867C_048* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_48->unk_00.unk_14(arg0->unk_48, arg1);
 }
 
-s32 func_88313B90(unk_func_8830867C_048* arg0, Controller* arg1) {
+s32 BoxMoveDialog_HandleInput(unk_func_8830867C_048* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
         var_v1 = arg0->unk_48->unk_00.unk_10(arg0->unk_48, arg1);
         if (!(var_v1 & 1)) {
             if (var_v1 & 2) {
-                func_88313B4C(arg0);
+                BoxMoveDialog_Close(arg0);
             } else if (var_v1 & 4) {
-                func_88313B4C(arg0);
+                BoxMoveDialog_Close(arg0);
             }
         }
     } else {
@@ -3876,13 +3876,13 @@ s32 func_88313B90(unk_func_8830867C_048* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_88313C24(unk_func_8830867C_048_048* arg0, unk_func_8830867C_048* arg1) {
+void BoxMoveController_Init(unk_func_8830867C_048_048* arg0, unk_func_8830867C_048* arg1) {
     ((func8850BDF0)Memmap_GetFragmentVaddr(SelectableList_Init))(arg0);
-    arg0->unk_00.unk_10 = func_88313C70;
+    arg0->unk_00.unk_10 = BoxMoveController_HandleInput;
     arg0->unk_24 = arg1;
 }
 
-s32 func_88313C70(unk_func_8830867C_048_048* arg0, Controller* arg1) {
+s32 BoxMoveController_HandleInput(unk_func_8830867C_048_048* arg0, Controller* arg1) {
     s32 var_a2;
     s32 i;
     unk_func_8830867C_048_048* var_a0;
@@ -3903,7 +3903,7 @@ s32 func_88313C70(unk_func_8830867C_048_048* arg0, Controller* arg1) {
         case 0:
             if (var_a2 & 1) {
                 if (var_a2 & 8) {
-                    func_88313A34(arg0->unk_24);
+                    SyncBoxListSelection(arg0->unk_24);
                 }
             } else if (arg1->buttonPressed & 0x8000) {
                 if (arg0->unk_24->unk_34->unk_38 != 0) {
@@ -3937,12 +3937,12 @@ s32 func_88313C70(unk_func_8830867C_048_048* arg0, Controller* arg1) {
     return var_a2;
 }
 
-s32 func_88313E50(unk_func_8830867C_048* arg0, Controller* arg1) {
+s32 BoxMoveDialog_Run(unk_func_8830867C_048* arg0, Controller* arg1) {
     s32 temp_v0;
     s32 var_s0;
     s32 var_s1 = 0;
 
-    func_88313A94(arg0);
+    BoxMoveDialog_Open(arg0);
 
     while (var_s1 == 0) {
         ControllerMsgQueue_SendAndRead(var_s1);
@@ -3959,11 +3959,11 @@ s32 func_88313E50(unk_func_8830867C_048* arg0, Controller* arg1) {
         ((func8850BC94)Memmap_GetFragmentVaddr(Fragment_HandleResult))(var_s0);
     }
 
-    func_88313B4C(arg0);
+    BoxMoveDialog_Close(arg0);
     return var_s1 - 1;
 }
 
-void func_88313F24(s32 arg0, s32 arg1, s8* arg2, s32 arg3) {
+void ReturnToMenuDialog_DrawItem(s32 arg0, s32 arg1, s8* arg2, s32 arg3) {
     static Color_RGBA8 gTextColor_Default = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Text_ResetState();
@@ -3973,7 +3973,7 @@ void func_88313F24(s32 arg0, s32 arg1, s8* arg2, s32 arg3) {
     Text_SetupDL();
 }
 
-void func_88313FA0(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void ReturnToMenuDialog_Create(YesNoDialog* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     static Color_RGBA8 gListBgColor2 = { 0x64, 0x96, 0xB4, 0xFF };
     static Color_RGBA8 gListHighlightColor2 = { 0x3C, 0x64, 0x78, 0xFF };
     static Color_RGBA8 gFrameColor2 = { 0xA0, 0x96, 0x64, 0xFF };
@@ -4000,7 +4000,7 @@ void func_88313FA0(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp54, sp4C);
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, 0x40);
 
-    arg0->unk_00.unk_20 = func_883142F4;
+    arg0->unk_00.unk_20 = ReturnToMenuDialog_HandleInput;
     arg0->unk_00.unk_10.unk_00 = (arg2 - sp5C) / 2;
     arg0->unk_00.unk_10.unk_02 = arg1;
 
@@ -4017,7 +4017,7 @@ void func_88313FA0(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp48);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_8830867C_02C_0B4_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_30, 0, 4, func_88313F24, sp68, 0x1C, 2, 1, arg3);
+    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_30, 0, 4, ReturnToMenuDialog_DrawItem, sp68, 0x1C, 2, 1, arg3);
 
     PtrList_Init(&arg0->unk_34, 2, arg3);
     PtrList_Insert(&arg0->unk_34, GetMessageString(NULL, 0, gMoveListMessageTable, 0x5A), 0);
@@ -4027,7 +4027,7 @@ void func_88313FA0(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp48, arg0->unk_30);
 }
 
-s32 func_883142F4(unk_func_8830867C_02C_0B4* arg0, Controller* arg1) {
+s32 ReturnToMenuDialog_HandleInput(YesNoDialog* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -4038,7 +4038,7 @@ s32 func_883142F4(unk_func_8830867C_02C_0B4* arg0, Controller* arg1) {
     return var_v1;
 }
 
-s32 func_88314340(unk_func_8830867C_02C_0B4* arg0, Controller* arg1) {
+s32 ReturnToMenuDialog_Run(YesNoDialog* arg0, Controller* arg1) {
     s32 temp_v0_3;
     s32 var_s0;
     s32 var_s1 = 0;
@@ -4076,10 +4076,10 @@ s32 func_88314340(unk_func_8830867C_02C_0B4* arg0, Controller* arg1) {
     return var_s1 - 1;
 }
 
-void func_88314484(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void MoveChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
-    arg0->unk_00.unk_1C = func_88314518;
-    arg0->unk_00.unk_18 = func_88314574;
+    arg0->unk_00.unk_1C = MoveChangeBanner_Update;
+    arg0->unk_00.unk_18 = MoveChangeBanner_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -4088,7 +4088,7 @@ void func_88314484(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_00.unk_28 &= ~1;
 }
 
-s32 func_88314518(unk_func_882173EC* arg0) {
+s32 MoveChangeBanner_Update(unk_func_882173EC* arg0) {
     if (arg0->unk_2C >= 0x3C) {
         arg0->unk_00.unk_28 &= ~0x101;
         return 0;
@@ -4102,7 +4102,7 @@ s32 func_88314518(unk_func_882173EC* arg0) {
     return 0;
 }
 
-s32 func_88314574(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
+s32 MoveChangeBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gProgressBarColors[] = {
         { 0x00, 0x00, 0x00, 0xFF },
         { 0x32, 0x32, 0x32, 0xFF },
@@ -4163,7 +4163,7 @@ s32 func_88314574(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88314920(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3) {
+void MoveChangeBanner_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3) {
     arg0->unk_2C = 0;
     *(s32*)&arg0->unk_30 = arg1;
     *(s32*)&arg0->unk_34 = arg2;
@@ -4171,10 +4171,10 @@ void func_88314920(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_8800130
     arg0->unk_00.unk_28 |= 1;
 }
 
-void func_88314950(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_02C_0C0));
-    arg0->unk_00.unk_00.unk_1C = func_883149E4;
-    arg0->unk_00.unk_00.unk_18 = func_88314A38;
+void PpChangeBanner_Init(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(PpChangeBanner));
+    arg0->unk_00.unk_00.unk_1C = PpChangeBanner_Update;
+    arg0->unk_00.unk_00.unk_18 = PpChangeBanner_Draw;
     arg0->unk_00.unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_00.unk_14.unk_00 = arg3;
@@ -4183,7 +4183,7 @@ void func_88314950(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_00.unk_00.unk_28 &= ~1;
 }
 
-s32 func_883149E4(unk_func_8830867C_02C_0C0* arg0) {
+s32 PpChangeBanner_Update(PpChangeBanner* arg0) {
     if (arg0->unk_00.unk_2C >= 0x5C) {
         arg0->unk_00.unk_00.unk_28 &= ~1;
         return 0;
@@ -4197,7 +4197,7 @@ s32 func_883149E4(unk_func_8830867C_02C_0C0* arg0) {
     return 0;
 }
 
-s32 func_88314A38(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2) {
+s32 PpChangeBanner_Draw(PpChangeBanner* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gTextColor_ProgressBar = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 gProgressBarFillColors[] = {
         { 0x00, 0x00, 0x00, 0xFF },
@@ -4297,7 +4297,7 @@ s32 func_88314A38(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_883151B8(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88001300_000_010 arg4) {
+void PpChangeBanner_Start(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88001300_000_010 arg4) {
     arg0->unk_00.unk_2C = 0;
     *(s32*)&arg0->unk_00.unk_30 = arg1;
     *(s32*)&arg0->unk_00.unk_34 = arg2;
@@ -4306,10 +4306,10 @@ void func_883151B8(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_00.unk_00.unk_28 |= 0x101;
 }
 
-void func_883151E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void LevelChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
-    arg0->unk_00.unk_1C = func_8831527C;
-    arg0->unk_00.unk_18 = func_883152D0;
+    arg0->unk_00.unk_1C = LevelChangeBanner_Update;
+    arg0->unk_00.unk_18 = LevelChangeBanner_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -4318,7 +4318,7 @@ void func_883151E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_00.unk_28 &= ~1;
 }
 
-s32 func_8831527C(unk_func_882173EC* arg0) {
+s32 LevelChangeBanner_Update(unk_func_882173EC* arg0) {
     if (arg0->unk_2C >= 0x28) {
         arg0->unk_00.unk_28 &= ~1;
         return 0;
@@ -4330,7 +4330,7 @@ s32 func_8831527C(unk_func_882173EC* arg0) {
     return 0;
 }
 
-s32 func_883152D0(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
+s32 LevelChangeBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gTextColor_Small = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 gSmallBarColors[] = {
         { 0x00, 0x00, 0x00, 0xFF },
@@ -4389,7 +4389,7 @@ s32 func_883152D0(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_883156B8(unk_func_882173EC* arg0, char* arg1, char* arg2, unk_func_88001300_000_010 arg3) {
+void LevelChangeBanner_Start(unk_func_882173EC* arg0, char* arg1, char* arg2, unk_func_88001300_000_010 arg3) {
     arg0->unk_2C = 0;
     *(char**)&arg0->unk_30 = arg1;
     *(char**)&arg0->unk_34 = arg2;
@@ -4397,11 +4397,11 @@ void func_883156B8(unk_func_882173EC* arg0, char* arg1, char* arg2, unk_func_880
     arg0->unk_00.unk_28 |= 0x101;
 }
 
-void func_883156E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void BoxMoveBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
 
-    arg0->unk_00.unk_1C = func_8831577C;
-    arg0->unk_00.unk_18 = func_88315A6C;
+    arg0->unk_00.unk_1C = BoxMoveBanner_Update;
+    arg0->unk_00.unk_18 = BoxMoveBanner_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -4410,7 +4410,7 @@ void func_883156E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_00.unk_28 &= ~1;
 }
 
-s32 func_8831577C(unk_func_882173EC* arg0) {
+s32 BoxMoveBanner_Update(unk_func_882173EC* arg0) {
     if (arg0->unk_2C >= 0x3C) {
         arg0->unk_00.unk_28 &= ~1;
         return 0;
@@ -4422,7 +4422,7 @@ s32 func_8831577C(unk_func_882173EC* arg0) {
     return 0;
 }
 
-void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+void DrawBoxLabel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     static Color_RGBA8 gTextColor_Default2 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Color_RGBA8 sp2C;
@@ -4434,7 +4434,7 @@ void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 
     switch (arg4) {
         case 32:
-            sp2C = (0, D_8831727C);
+            sp2C = (0, gPartyLabelColor);
             Text_SetEnvColor(sp2C.r, sp2C.g, sp2C.b, arg6);
             Text_Print(arg0 + 4, ((arg3 - 0x10) / 2) + arg1, GetMessageString(NULL, 0, gMoveListMessageTable, 0x14));
             break;
@@ -4444,7 +4444,7 @@ void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
             sprintf(sp24, "%d", arg5 + 1);
             Text_Print(((arg0 + arg2) - MeasureTextWidth(0, 0, sp24)) - 4, ((arg3 - 0x10) / 2) + arg1, sp24);
 
-            sp2C = (0, D_88317280);
+            sp2C = (0, gGbLabelColor);
             Text_SetEnvColor(sp2C.r, sp2C.g, sp2C.b, arg6);
             Text_Print(arg0 + 4, ((arg3 - 0x10) / 2) + arg1, GetMessageString(NULL, 0, gMoveListMessageTable, 0x15));
             break;
@@ -4454,7 +4454,7 @@ void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
             sprintf(sp24, "%d", arg5 + 1);
             Text_Print(((arg0 + arg2) - MeasureTextWidth(0, 0, sp24)) - 4, ((arg3 - 0x10) / 2) + arg1, sp24);
 
-            sp2C = (0, D_88317284);
+            sp2C = (0, gN64LabelColor);
             Text_SetEnvColor(sp2C.r, sp2C.g, sp2C.b, arg6);
             Text_Print(arg0 + 4, ((arg3 - 0x10) / 2) + arg1, GetMessageString(NULL, 0, gMoveListMessageTable, 0x16));
             break;
@@ -4462,7 +4462,7 @@ void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     Text_SetupDL();
 }
 
-s32 func_88315A6C(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
+s32 BoxMoveBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     static s32 gModeCodes[] = { 0x20, 0x21, 0x11 };
     static Color_RGBA8 gBarFillColors[] = {
         { 0x00, 0x00, 0x00, 0xFF },
@@ -4497,12 +4497,12 @@ s32 func_88315A6C(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
         var_v0 = *(s32*)&arg0->unk_34;
     }
 
-    func_883157D0(arg1, arg2, arg0->unk_00.unk_14.unk_00, arg0->unk_00.unk_14.unk_02, gModeCodes[var_v0 >> 0x10],
+    DrawBoxLabel(arg1, arg2, arg0->unk_00.unk_14.unk_00, arg0->unk_00.unk_14.unk_02, gModeCodes[var_v0 >> 0x10],
                   var_v0 & 0xFFFF, var_v1);
     return 0;
 }
 
-void func_88315C98(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3) {
+void BoxMoveBanner_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3) {
     arg0->unk_2C = 0;
     *(s32*)&arg0->unk_30 = arg1;
     *(s32*)&arg0->unk_34 = arg2;

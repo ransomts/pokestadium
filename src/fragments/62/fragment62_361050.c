@@ -205,7 +205,7 @@ void func_84376B38(void) {
 }
 
 void func_84376B9C(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
-    unk_D_8438ACF0* var_v0;
+    TypeEffectivenessEntry* var_v0;
     u8 tmp1 = arg0->unk_16[6];
     u8 tmp2 = arg0->unk_16[7];
     u8 tmp11 = arg1->unk_16[6];
@@ -217,7 +217,7 @@ void func_84376B9C(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
             D_843C613A += D_843C613A >> 1;
         }
 
-        var_v0 = D_8438ACF0;
+        var_v0 = gTypeEffectivenessTable;
         while (var_v0->unk_00 != 0xFF) {
             if ((var_v0->unk_00 == tmp3) && ((var_v0->unk_01 == tmp11) || (var_v0->unk_01 == tmp21))) {
                 D_843C613A = (D_843C613A * var_v0->unk_02) / 10;
@@ -477,7 +477,7 @@ u16 func_84377354(unk_D_800FCB18* arg0) {
 }
 
 f32 func_8437738C(u8 arg0, unk_D_800FCB18* arg1) {
-    unk_D_8438ACF0* var_v0 = &D_8438ACF0[0];
+    TypeEffectivenessEntry* var_v0 = &gTypeEffectivenessTable[0];
     u8 temp_v1 = arg1->unk_16[6];
     u8 temp_a2 = arg1->unk_16[7];
     f32 var_fv1 = 1.0f;
@@ -1420,7 +1420,7 @@ void func_8437921C(void) {
 u8 func_84379224(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, u8 arg3) {
     s32 var_t0;
     s32 var_a3;
-    unk_D_8438ACB8* var_a0;
+    StatStageMultiplier* var_a0;
     s32 tmp1;
     s32 tmp2;
 
@@ -1429,9 +1429,9 @@ u8 func_84379224(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, u8 arg3) {
     }
 
     if (D_8438AC60[0] == 1) {
-        var_a0 = D_8438ACD4;
+        var_a0 = gStatStageMultipliersAlt;
     } else {
-        var_a0 = &D_8438ACB8->unk_00;
+        var_a0 = &gStatStageMultipliers->unk_00;
     }
 
     tmp1 = arg0->unk_5C[4];
@@ -4244,7 +4244,7 @@ s32 func_8437F068(unk_D_843C60A4* arg0, u8* arg1, u8 arg2) {
     unk_func_8437F068_sp28 sp28[3];
     f32 var_fv0;
     s32 var_a2;
-    unk_D_8438ACF0* var_a3;
+    TypeEffectivenessEntry* var_a3;
 
     for (j = 0; j < arg2; j++) {
         sp28[j].unk_00 = arg0->unk_14[arg1[j]].unk_12.unk_16[6];
@@ -4257,7 +4257,7 @@ s32 func_8437F068(unk_D_843C60A4* arg0, u8* arg1, u8 arg2) {
         for (j = 0; j < arg2; j++) {
             var_fv0 = 1.0f;
 
-            var_a3 = &D_8438ACF0[0];
+            var_a3 = &gTypeEffectivenessTable[0];
             while (var_a3->unk_00 != 0xFF) {
                 if ((var_a3->unk_00 == i) &&
                     ((var_a3->unk_01 == sp28[j].unk_00) || (var_a3->unk_01 == sp28[j].unk_01))) {
@@ -4286,7 +4286,7 @@ s32 func_8437F068(unk_D_843C60A4* arg0, u8* arg1, u8 arg2) {
         for (j = 0; j < arg2; j++) {
             var_fv0 = 1.0f;
 
-            var_a3 = &D_8438ACF0[0];
+            var_a3 = &gTypeEffectivenessTable[0];
             while (var_a3->unk_00 != 0xFF) {
                 if ((var_a3->unk_00 == i) &&
                     ((var_a3->unk_01 == sp28[j].unk_00) || (var_a3->unk_01 == sp28[j].unk_01))) {
@@ -5305,7 +5305,7 @@ u8 func_84381584(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_D_843C60A4* arg
 }
 
 u16 func_84381BD4(u16* arg0, u16 arg1, u8 arg2) {
-    *arg0 = (arg1 * D_8438ACB8[arg2 - 1].unk_00) / D_8438ACB8[arg2 - 1].unk_01;
+    *arg0 = (arg1 * gStatStageMultipliers[arg2 - 1].unk_00) / gStatStageMultipliers[arg2 - 1].unk_01;
 
     if (*arg0 == 0) {
         *arg0 = 1;
@@ -5991,8 +5991,8 @@ void func_8438363C(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
             } else {
                 D_843C60B8->unk_3C = D_843C60B8->unk_2E;
             }
-            D_843C60B8->unk_3C = (D_843C60B8->unk_3C * D_8438ACB8[D_843C60B8->unk_5C[2] - 1].unk_01) /
-                                 D_8438ACB8[D_843C60B8->unk_5C[2] - 1].unk_00;
+            D_843C60B8->unk_3C = (D_843C60B8->unk_3C * gStatStageMultipliers[D_843C60B8->unk_5C[2] - 1].unk_01) /
+                                 gStatStageMultipliers[D_843C60B8->unk_5C[2] - 1].unk_00;
         }
     }
 
@@ -6004,8 +6004,8 @@ void func_8438363C(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
             } else {
                 D_843C60B8->unk_3C = D_843C60B8->unk_2E;
             }
-            D_843C60B8->unk_3C = (D_843C60B8->unk_3C * D_8438ACB8[D_843C60B8->unk_5C[2] - 1].unk_01) /
-                                 D_8438ACB8[D_843C60B8->unk_5C[2] - 1].unk_00;
+            D_843C60B8->unk_3C = (D_843C60B8->unk_3C * gStatStageMultipliers[D_843C60B8->unk_5C[2] - 1].unk_01) /
+                                 gStatStageMultipliers[D_843C60B8->unk_5C[2] - 1].unk_00;
         }
     }
 

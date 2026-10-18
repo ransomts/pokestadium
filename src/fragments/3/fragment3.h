@@ -233,12 +233,12 @@ void MiniDebugCamera_Control(void);
 
 void ParticleSystem_Init(void);
 s32 ParticleEmitter_Allocate(void);
-void ParticleEmitter_Reset(unk_D_8140E728* arg0);
-void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5, u8 arg6, u8 arg7);
-void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7, unk_D_8140E728_01C* arg8, s16 arg9, u8 argA, u8 argB);
-void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, unk_D_8140E728* arg1, s16 arg2);
-void ParticleEmitter_GenerateParticles(unk_D_8140E728* arg0);
-void ParticleEmitter_Tick(unk_D_8140E728* arg0);
+void ParticleEmitter_Reset(ParticleSpawner* arg0);
+void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5, u8 arg6, u8 arg7);
+void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7, ParticleEffectData* arg8, s16 arg9, u8 argA, u8 argB);
+void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, ParticleSpawner* arg1, s16 arg2);
+void ParticleEmitter_GenerateParticles(ParticleSpawner* arg0);
+void ParticleEmitter_Tick(ParticleSpawner* arg0);
 void ParticleEmitters_UpdateAll(void);
 void func_87901BB0(ParticleEffectInstance* arg0);
 void func_87901BD4(ParticleEffectInstance* arg0);
@@ -278,7 +278,7 @@ void MiniActorArray_Update(void);
 void MiniActor_ConfigureFirst(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
 void MiniActor_ConfigureSecond(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
 void MiniActor_ConfigureThird(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6);
-Gfx* Gfx_SetLerpPrimEnvColor(Gfx* arg0, arg1_func_87903D64_014* arg1);
-void ColorLerp_DisplayListHook(s32 arg0, arg1_func_87903D64* arg1);
+Gfx* Gfx_SetLerpPrimEnvColor(Gfx* arg0, ColorLerpData* arg1);
+void ColorLerp_DisplayListHook(s32 arg0, ColorLerpHook* arg1);
 
 #endif // _FRAGMENT3_H_

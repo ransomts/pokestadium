@@ -269,7 +269,7 @@ void func_8436643C(void) {
     f32 temp_fv1;
 
     D_843A06A0.unk_0010 = GfxAlloc(sizeof(Mtx) * 1);
-    temp_v0 = func_8432FD64();
+    temp_v0 = GetBattleCamera();
 
     tmp4 = temp_v0->unk_60.at.x;
     tmp5 = temp_v0->unk_60.at.y;

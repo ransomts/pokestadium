@@ -14,15 +14,15 @@ void Timer_UpdateCounters(void) {
     gTimerShift4 = gTimerCounter >> 4;
     gTimerShift3 = gTimerCounter >> 3;
     gTimerShift2 = gTimerCounter >> 2;
-    D_8140E6EC = gTimerCounter / 3;
-    D_8140E6F0 = gTimerCounter >> 1;
-    D_8140E6F4 = gTimerShift6 & 1;
-    D_8140E6F8 = gTimerShift5 & 1;
-    D_8140E6FC = gTimerShift4 & 1;
-    D_8140E700 = gTimerShift3 & 1;
-    D_8140E704 = gTimerShift2 & 1;
-    D_8140E708 = D_8140E6EC & 1;
-    D_8140E70C = D_8140E6F0 & 1;
+    gTimerDiv3 = gTimerCounter / 3;
+    gTimerShift1 = gTimerCounter >> 1;
+    gTimerBit6 = gTimerShift6 & 1;
+    gTimerBit5 = gTimerShift5 & 1;
+    gTimerBit4 = gTimerShift4 & 1;
+    gTimerBit3 = gTimerShift3 & 1;
+    gTimerBit2 = gTimerShift2 & 1;
+    gTimerDiv3Parity = gTimerDiv3 & 1;
+    gTimerBit1 = gTimerShift1 & 1;
 }
 
 void Timer_Tick(void) {

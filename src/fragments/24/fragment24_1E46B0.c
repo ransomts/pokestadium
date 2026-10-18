@@ -144,7 +144,7 @@ u32 gCheckerboardPattern[] = {
 static Gfx D_883186E0[] = {
     gsSPEndDisplayList(),
 };
-u32 D_883186E8[] = {
+u32 gCheckerboardPattern2[] = {
     0x52895289, 0x5289FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDB5287, 0xFFFEFFFE,
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
     0x5289FFD9, 0xFFDBFFDB, 0xFFDB5287, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDBFFDB, 0xFFDBFFDB,
@@ -343,7 +343,7 @@ u32 gFontBitmapData[] = {
     0x435F435E, 0x435E435E,
 };
 
-s32 ComparePointers(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 ComparePointers(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     return (arg0 == arg1) ? 0 : (arg0 < arg1) ? -1 : 1;
 }
 
@@ -359,7 +359,7 @@ s32 func_88315CFC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* ar
     return var_v1;
 }
 
-s32 CompareByField2C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2C(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_2C - arg1->unk_2C;
     s32 ret;
 
@@ -371,7 +371,7 @@ s32 CompareByField2C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88315D8C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2CDescending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_2C - arg0->unk_2C;
     s32 ret;
 
@@ -383,7 +383,7 @@ s32 func_88315D8C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 CompareByField2E(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2E(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_2E - arg1->unk_2E;
     s32 ret;
 
@@ -395,7 +395,7 @@ s32 CompareByField2E(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88315E14(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2EDescending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_2E - arg0->unk_2E;
     s32 ret;
 
@@ -407,7 +407,7 @@ s32 func_88315E14(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 CompareByField30(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField30(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_30 - arg1->unk_30;
     s32 ret;
 
@@ -419,7 +419,7 @@ s32 CompareByField30(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88315E9C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField30Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_30 - arg0->unk_30;
     s32 ret;
 
@@ -431,7 +431,7 @@ s32 func_88315E9C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 CompareByField32(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField32(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_32 - arg1->unk_32;
     s32 ret;
 
@@ -443,7 +443,7 @@ s32 CompareByField32(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88315F24(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField32Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_32 - arg0->unk_32;
     s32 ret;
 
@@ -455,7 +455,7 @@ s32 func_88315F24(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 CompareByField34(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField34(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_34 - arg1->unk_34;
     s32 ret;
 
@@ -467,7 +467,7 @@ s32 CompareByField34(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88315FAC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField34Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_34 - arg0->unk_34;
     s32 ret;
 
@@ -479,7 +479,7 @@ s32 func_88315FAC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 CompareByField36(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField36(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_36 - arg1->unk_36;
     s32 ret;
 
@@ -491,7 +491,7 @@ s32 CompareByField36(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88316034(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField36Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_36 - arg0->unk_36;
     s32 ret;
 
@@ -503,7 +503,7 @@ s32 func_88316034(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88316078(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField16(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_16 - arg1->unk_16;
     s32 ret;
 
@@ -519,7 +519,7 @@ s32 func_883160BC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* ar
     return func_88315CFC(arg0, arg1);
 }
 
-s32 func_883160DC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField43(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0;
     s32 ret;
 
@@ -532,7 +532,7 @@ s32 func_883160DC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return ret;
 }
 
-s32 func_88316128(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField38(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0;
     s32 ret;
 
@@ -580,10 +580,10 @@ s32 CompareSpeciesID(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC*
     return ret;
 }
 
-unk_D_8831A1F8 D_8831A1F8[] = {
-    ComparePointers, func_883160BC, CompareByField2C, func_88315D8C, CompareByField2E, func_88315E14, CompareByField30,
-    func_88315E9C, CompareByField32, func_88315F24, CompareByField34, func_88315FAC, CompareByField36, func_88316034,
-    func_88316078, func_883160DC, func_88316128, CompareSpeciesOrder, CompareSpeciesID,
+SortComparatorFunc gListSortComparators[] = {
+    ComparePointers, func_883160BC, CompareByField2C, CompareByField2CDescending, CompareByField2E, CompareByField2EDescending, CompareByField30,
+    CompareByField30Descending, CompareByField32, CompareByField32Descending, CompareByField34, CompareByField34Descending, CompareByField36, CompareByField36Descending,
+    CompareByField16, CompareByField43, CompareByField38, CompareSpeciesOrder, CompareSpeciesID,
 };
 
 typedef struct unk_func_88316214 {
@@ -591,7 +591,7 @@ typedef struct unk_func_88316214 {
     /* 0x2C */ u8 unk_2C;
 } unk_func_88316214; // size >= 0x30
 
-int func_88316214(unk_func_8830867C_02C_0CC* a0, u8* arg1) {
+int PokemonIsWithinLevelRange(unk_func_8830867C_02C_0CC* a0, u8* arg1) {
     unk_func_88316214* arg0 = a0;
     return (arg0->unk_2C >= arg1[0]) && (arg1[1] >= arg0->unk_2C);
 }
@@ -659,11 +659,11 @@ s32 PokemonHasMoves(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024
     return 1;
 }
 
-s32 func_883163A4(unk_func_8830867C_02C_0CC* arg0, s32* arg1) {
+s32 PokemonMatchesSpecies(unk_func_8830867C_02C_0CC* arg0, s32* arg1) {
     return *(u8*)&arg0->unk_08 == *arg1;
 }
 
-s32 func_883163B8(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* a1) {
+s32 PokemonHasExactTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* a1) {
     UNUSED s32 pad;
     s32 i;
     s32 j;
@@ -700,7 +700,7 @@ s32 func_883163B8(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014
     return 1;
 }
 
-s32 func_88316480(unk_func_88316128* arg0, u8* arg1) {
+s32 PokemonAllowedInCup(PokemonListEntry* arg0, u8* arg1) {
     static u8 D_8831A244[] = {
         0x03, 0x04, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     };
@@ -712,7 +712,7 @@ typedef struct unk_func_883164C0 {
     /* 0x00 */ char unk00[0x5C];
 } unk_func_883164C0; // size = 0x5C
 
-void func_883164C0(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void MonSlots_Init(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
     s32 j;
     s32 temp_lo;
@@ -747,7 +747,7 @@ void func_883164C0(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPo
     }
 }
 
-void func_883166A0(unk_func_8830867C_02C_144* arg0) {
+void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
     s32 i;
     s32 j;
     s32 var_s1;
@@ -791,7 +791,7 @@ void func_883166A0(unk_func_8830867C_02C_144* arg0) {
     }
 }
 
-void func_883167CC(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_144* arg1) {
+void CollectMonEntryPtrs(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_144* arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -840,7 +840,7 @@ s32 func_88316874(s32 arg0) {
     return ret;
 }
 
-s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
+s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
     s32 var_s7 = 0;
     s32 j;
     s32 x;
@@ -886,7 +886,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
     return var_s7;
 }
 
-void func_88316A58(unk_func_8830867C_02C_144* arg0, s32 arg1) {
+void WriteBoxMonsToGbs(unk_func_8830867C_02C_144* arg0, s32 arg1) {
     UNUSED s32 pad[4];
     s32 i;
     s32 j;
@@ -932,7 +932,7 @@ void func_88316A58(unk_func_8830867C_02C_144* arg0, s32 arg1) {
     }
 }
 
-void func_88316BEC(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
+void InitItemSources(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     UNUSED s32 pad;
     s32 temp_s1;
     char sp54[4];
@@ -976,7 +976,7 @@ void func_88316BEC(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     }
 }
 
-void func_88316D5C(unk_func_8830867C_02C_154* arg0) {
+void ItemSource_ReadFromGbs(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24;
 
     sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
@@ -985,7 +985,7 @@ void func_88316D5C(unk_func_8830867C_02C_154* arg0) {
     arg0->unk_08 = 0;
 }
 
-void func_88316DB8(unk_func_8830867C_02C_154* arg0) {
+void ItemSource_WriteToGbs(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
 
     func_80022F24(arg0->unk_0C, arg0->unk_14, sp24);
@@ -1039,7 +1039,7 @@ s32 func_88316F68(unk_func_88200FA0_030_038* arg0, unk_func_88200FA0_030_038* ar
     return (arg0->unk_08 - arg1->unk_08 != 0) ? arg0->unk_08 - arg1->unk_08 : (s32)arg0[1].unk_00 - (s32)arg1[1].unk_00;
 }
 
-void func_88316F98(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* arg1, unk_func_8830867C_02C_154* arg2,
+void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* arg1, unk_func_8830867C_02C_154* arg2,
                    s32 arg3, s32 arg4) {
     unk_func_88205880_00D0** var_s6;
     unk_func_8830867C_02C_154* var_s4;
@@ -1099,7 +1099,7 @@ void func_88316F98(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* a
     PtrArray_Sort(arg0, func_88316F68);
 }
 
-void func_88317144(unk_func_8830867C_04C_030_02C_000* arg0) {
+void ConsumeUsedItem(unk_func_8830867C_04C_030_02C_000* arg0) {
     if ((IsStageSpecial(arg0->unk_00[0]->unk_00) != 0) || (arg0->unk_00[0]->unk_01 < 2)) {
         s32 tmp = arg0->unk_00[1]->unk_0C.unk_00;
 

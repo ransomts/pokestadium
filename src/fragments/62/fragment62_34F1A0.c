@@ -305,7 +305,7 @@ void WaterSurface_CalcViewMatrix(void) {
     f32 temp_fv1;
 
     D_8439E680.unk_0010 = GfxAlloc(sizeof(Mtx) * 1);
-    temp_v0 = func_8432FD64();
+    temp_v0 = GetBattleCamera();
 
     tmp4 = temp_v0->unk_60.at.x;
     tmp5 = temp_v0->unk_60.at.y;
@@ -338,7 +338,7 @@ void WaterSurface_CalcViewMatrix(void) {
     func_80031C6C(D_8439E680.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
 }
 
-Gfx* func_84365558(Gfx* arg0) {
+Gfx* WaterSurface_DrawLit(Gfx* arg0) {
     s32 i;
     s32 j;
     unk_D_8439E680_0014* var_s2;

@@ -9,15 +9,15 @@ void ParticleSystem_Init(void) {
     bzero(gParticleInstances, sizeof(ParticleEffectInstance) * 300);
     gParticleAllocIndex = 0;
 
-    gParticleEmitters = main_pool_alloc(sizeof(unk_D_8140E728) * 128, 0);
-    bzero(gParticleEmitters, sizeof(unk_D_8140E728) * 128);
+    gParticleEmitters = main_pool_alloc(sizeof(ParticleSpawner) * 128, 0);
+    bzero(gParticleEmitters, sizeof(ParticleSpawner) * 128);
     gParticleEmitterNextIdx = 0;
 }
 
 s32 ParticleEmitter_Allocate(void) {
     s32 i;
     s32 var_v0 = gParticleEmitterNextIdx;
-    unk_D_8140E728* var_v1 = &gParticleEmitters[var_v0];
+    ParticleSpawner* var_v1 = &gParticleEmitters[var_v0];
 
     for (i = 0; i < 0x80; i++) {
         if (var_v1->unk_2B == 0) {
@@ -46,7 +46,7 @@ s32 ParticleEmitter_Allocate(void) {
     return var_v1;
 }
 
-void ParticleEmitter_Reset(unk_D_8140E728* arg0) {
+void ParticleEmitter_Reset(ParticleSpawner* arg0) {
     arg0->unk_28 = 0;
     arg0->unk_2B = 0;
     arg0->unk_2A = 0;
@@ -54,8 +54,8 @@ void ParticleEmitter_Reset(unk_D_8140E728* arg0) {
 }
 
 s32 ParticleEmitter_Create(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, Vec3s arg7, func_unk_D_8140E724_008 arg9,
-                  unk_D_8140E728_01C* argA, s32 argB, u8 argC, s16 argD, u8 argE, u8 argF, u8 arg10) {
-    unk_D_8140E728* temp_v0 = (unk_D_8140E728*)ParticleEmitter_Allocate();
+                  ParticleEffectData* argA, s32 argB, u8 argC, s16 argD, u8 argE, u8 argF, u8 arg10) {
+    ParticleSpawner* temp_v0 = (ParticleSpawner*)ParticleEmitter_Allocate();
 
     if ((s32)temp_v0 != -1) {
         temp_v0->unk_28 = arg0;
@@ -85,7 +85,7 @@ s32 ParticleEmitter_Create(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, Ve
     return (s32)temp_v0;
 }
 
-void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
+void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5,
                    u8 arg6, u8 arg7) {
     Vec3s sp50;
 
@@ -95,7 +95,7 @@ void ParticleEmitter_SpawnSimple(s32 arg0, f32 arg1, Vec3f arg2, func_unk_D_8140
 }
 
 void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, func_unk_D_8140E724_008 arg7,
-                   unk_D_8140E728_01C* arg8, s16 arg9, u8 argA, u8 argB) {
+                   ParticleEffectData* arg8, s16 arg9, u8 argA, u8 argB) {
     Vec3s sp50;
 
     sp50.x = sp50.y = sp50.z = 0;
@@ -103,13 +103,13 @@ void ParticleEmitter_Spawn(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, fu
     ParticleEmitter_Create(arg0, arg1, arg2, arg3, arg4, sp50, arg7, arg8, 0, 0, arg9, argA, argB, 0);
 }
 
-void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, unk_D_8140E728* arg1, s16 arg2) {
+void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, ParticleSpawner* arg1, s16 arg2) {
     if ((s32)arg0 != -1) {
         while (arg0 != NULL) {
             arg0->unk_28 = arg1->unk_00;
 
             Vec3f_Copy(&arg0->unk_68, &arg1->unk_04);
-            func_8140094C(&arg0->unk_94, &arg1->unk_10);
+            Vec3s_CopyTo(&arg0->unk_94, &arg1->unk_10);
 
             arg0->unk_AC = arg2++;
 
@@ -126,12 +126,12 @@ void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, unk_D_81
     }
 }
 
-void ParticleEmitter_GenerateParticles(unk_D_8140E728* arg0) {
+void ParticleEmitter_GenerateParticles(ParticleSpawner* arg0) {
     s16 i;
     s16 sp2C;
-    unk_D_8140E728_01C* temp_v0 = arg0->unk_1C;
+    ParticleEffectData* temp_v0 = arg0->unk_1C;
     s16 temp_v1 = arg0->unk_24;
-    unk_D_8140E728_01C_004_1* unk_04 = temp_v0->unk_04.a;
+    ParticleRenderSettings* unk_04 = temp_v0->unk_04.a;
 
     if ((temp_v0->unk_00 == 1) && (unk_04->unk_00 == 1)) {
         ParticleInstance_PopulateFromEmitter(Particle_AllocateChain(temp_v1), arg0, 0);
@@ -142,7 +142,7 @@ void ParticleEmitter_GenerateParticles(unk_D_8140E728* arg0) {
     }
 }
 
-void ParticleEmitter_Tick(unk_D_8140E728* arg0) {
+void ParticleEmitter_Tick(ParticleSpawner* arg0) {
     if (arg0->unk_2C == 0) {
         ParticleEmitter_GenerateParticles(arg0);
     }
@@ -150,7 +150,7 @@ void ParticleEmitter_Tick(unk_D_8140E728* arg0) {
 
 void ParticleEmitters_UpdateAll(void) {
     s32 i;
-    unk_D_8140E728* var_s0 = gParticleEmitters;
+    ParticleSpawner* var_s0 = gParticleEmitters;
 
     for (i = 0; i < 0x80; i++, var_s0++) {
         if (var_s0->unk_2B != 0) {
@@ -211,11 +211,11 @@ void ParticleRender_SetupMiniCamera(void) {
     gMatrixBuffer = GfxAlloc(sizeof(unk_D_8140E620));
     gMatrixBufferIdx = 0;
 
-    gSPDisplayList(gDisplayListHead++, D_8140DB30);
+    gSPDisplayList(gDisplayListHead++, gDL_Begin3D);
 
     Particle_UpdateForCamera(gMiniCameraPtr);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DAE0);
+    gSPDisplayList(gDisplayListHead++, gDL_End3D);
 }
 
 void func_87901DA0(ParticleEffectInstance* arg0) {
@@ -578,12 +578,12 @@ void func_87902D3C(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gDPLoadTextureTile(arg0++, arg1->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 12, G_TX_NOLOD);
 
-    func_81406204(arg0++, 0xA, 0xE, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, 0xA, 0xE, 0x20, 0x20);
 
     gDPLoadMultiTile(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, G_TX_NOLOD);
 
-    func_81406288(arg0++, 5, 7, 0x20, 0x20);
+    Gfx_ScrollTexture1ToDL(arg0++, 5, 7, 0x20, 0x20);
 
     gSPEndDisplayList(arg0++);
 }
@@ -606,12 +606,12 @@ void func_87902FC8(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gDPLoadTextureTile(arg0++, arg1->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 15, 1);
 
-    func_81406204(arg0++, 2, 6, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, 2, 6, 0x20, 0x20);
 
     gDPLoadMultiTile(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, G_TX_NOLOD);
 
-    func_81406288(arg0++, -2, 0xC, 0x20, 0x20);
+    Gfx_ScrollTexture1ToDL(arg0++, -2, 0xC, 0x20, 0x20);
 
     gSPEndDisplayList(arg0++);
 }

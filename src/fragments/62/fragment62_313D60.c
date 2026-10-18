@@ -17,11 +17,11 @@ void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     func_8431AFD0(arg0, 20.0f, 12800.0f);
-    func_843081F0(D_84390010[gCurrentEntityIndex], &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(D_84390010[gCurrentEntityIndex], &gBattleState.unk_00->unk_D0);
     sp3C = ClampScaledDistance(D_84390010[gCurrentEntityIndex], 3.5f, 300.0f);
-    func_8431BAB4(D_84390010[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(D_84390010[gCurrentEntityIndex]),
+    func_8431BAB4(D_84390010[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]),
                   0.0f, 0.0f);
-    func_8431BBDC(arg0, 0, func_84308190(D_84390010[gCurrentEntityIndex]), sp3C, 0.0f);
+    func_8431BBDC(arg0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]), sp3C, 0.0f);
 
     if (D_84390010[0]) {}
     gBattleState.unk_00->unk_20 += 1;
@@ -32,16 +32,16 @@ void InitializeCameraForPlayerEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     func_8431AFD0(arg0, 20.0f, 12800.0f);
-    func_843081F0(D_84390010[0], &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(D_84390010[0], &gBattleState.unk_00->unk_D0);
     sp3C = ClampScaledDistance(D_84390010[0], 3.5f, 300.0f);
-    func_8431BAB4(D_84390010[0], arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(*D_84390010), 0.0f, 0.0f);
-    func_8431BBDC(arg0, 0, func_84308190(*D_84390010), sp3C, 0.0f);
+    func_8431BAB4(D_84390010[0], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(*D_84390010), 0.0f, 0.0f);
+    func_8431BBDC(arg0, 0, GetPlayerSideYaw(*D_84390010), sp3C, 0.0f);
 
     if (D_84390010[0]) {}
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void func_843296B8(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D_84390010* arg2) {
+void BattleCamera_RunState(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D_84390010* arg2) {
     gBattleState.unk_00->unk_40 = 0;
     gBattleState.unk_00->unk_60 = 30.0f;
     gBattleState.unk_00->unk_6C = 10.0f;
@@ -71,7 +71,7 @@ void func_843296B8(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D
     gBattleState.unk_00->unk_DC = arg0;
 }
 
-void func_843297AC(void) {
+void BattleState_Allocate(void) {
     gBattleState.unk_00 = main_pool_alloc(sizeof(unk_D_84390240_000), 0);
     bzero(gBattleState.unk_00, sizeof(unk_D_84390240_000));
 }
@@ -82,7 +82,7 @@ void func_843297E8(UNUSED CameraStruct* arg0) {
 void func_843297F0(UNUSED CameraStruct* arg0) {
 }
 
-void func_843297F8(CameraStruct* arg0) {
+void Camera_PreventDegenerateView(CameraStruct* arg0) {
     if (Math_2DDistance(arg0->unk_60.at.x, arg0->unk_60.at.z, arg0->unk_60.eye.x, arg0->unk_60.eye.z) < 0.0001f) {
         arg0->unk_60.at.z += 0.001f;
     }
@@ -176,7 +176,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             break;
 
         case 3:
-            func_8436EEF0(3, 0x1E);
+            ScreenTransition_SetState(3, 0x1E);
             ScreenTransition_Update();
             gBattleState.unk_00->unk_18 = 0;
             gBattleState.unk_00->unk_30 += 1;
@@ -217,7 +217,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
                 ClearAnimFlagIfState6A(D_84390010[0]);
                 ClearAnimFlagIfState6A(D_84390010[1]);
                 gBattleState.unk_00->unk_18 = 2;
-                func_8436EEF0(2, 0x1E);
+                ScreenTransition_SetState(2, 0x1E);
                 ScreenTransition_Update();
                 arg0->unk_24.fovy = 30.0f;
                 gBattleState.unk_00->unk_60 = 30.0f;
@@ -700,7 +700,7 @@ void Battle_Update(CameraStruct* arg0) {
             break;
 
         case 2:
-            func_8430CCC8();
+            Battle_TickPhaseTimer();
             func_84328734(arg0);
             break;
 
@@ -724,13 +724,13 @@ void Battle_Update(CameraStruct* arg0) {
     func_8431B174(arg0);
     func_8431B830(arg0);
     func_8431BD10(arg0);
-    func_843297F8(arg0);
+    Camera_PreventDegenerateView(arg0);
 }
 
 s32 func_8432AEE4(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 0:
-            func_843297AC();
+            BattleState_Allocate();
             break;
 
         case 1:
@@ -739,7 +739,7 @@ s32 func_8432AEE4(s32 arg0, CameraStruct* arg1) {
             break;
 
         case 3:
-            func_843296B8(arg1, D_84390010[0], D_84390010[1]);
+            BattleCamera_RunState(arg1, D_84390010[0], D_84390010[1]);
             break;
     }
     return gBattleState.unk_00->unk_40;

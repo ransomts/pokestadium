@@ -6096,3 +6096,349 @@ func_8435CA08	RenderCombinedWaterEffectD	w26		Loads gEffectMatrix, calls func_84
 D_8438D3D0	gCalcVectorATtoDMErrorMsg	w26		String used when CalcVectorATtoDM normalizes a zero vector	applied@c66beed
 D_8438D3F8	gCalcVectorATtoDM2ErrorMsg	w26		String used when CalcVectorATtoDM2 normalizes a zero vector	applied@c66beed
 D_843925CA	gParticleSpawnTimerD0	w26		Timer variable used by StartParticleEffectD and UpdateParticleEffectD	applied@c66beed
+D_86A06248	gCreditsCameraPivot	h1		Vec3f set to {0, height, 0} by func_86A01CF0 for camera variants 6-8 and used as the fixed center in both Camera_SetViewParameters calls of func_86A00464	applied@40e805f
+D_86A04328	sCreditsMovingCameras	h1	unk_D_86A04328:CreditsMovingCamera	per-stadium flythrough keyframes (start/end eye positions with degree angles, fovy start/end, near, far) indexed by func_86A018D0 for camera variants 9-0xB	applied@40e805f
+D_86A03D40	sCreditsPivotCameras	h1		[18][3] camera presets for variants 6-8, same shape as D_86A03170 but orbiting the fixed pivot D_86A06248 instead of the field center	applied@40e805f
+func_86A00434	Credits_UpdateInputs	h1		verbatim copy of Game_UpdateInputs in src/29BA0.c (Cont_StartReadInputs, Cont_ReadInputs, MenuInput_Init) called once per credits frame	applied@40e805f
+func_86A0056C	Credits_DrawFadeIn	h1		draws the full-screen Text_DrawWindowRect fade: alpha ramps from D_86A025CC over the first 8 frames of a shot, or the last 0x28 frames of the shortened shot 7	applied@40e805f
+func_86A00788	Credits_RenderFrame	h1		frame renderer: Stage_BeginDisplayList, Gfx_FillScreen with the stage color D_86A025C8, border fade or Graph_SetTextureState plus overlays, then Stage_Advance	applied@40e805f
+func_86A00D00	Credits_InitCamera	h1		takes the CameraStruct from the scene root (D_86A061E4->unk_0C), sets near 50 / far 6400 and initial pitch/yaw/distance, and calls Camera_SetViewParameters	applied@40e805f
+func_86A00DAC	Credits_InitScene	h1		scene setup: ASSET_LOAD2(stadium_models), ColorRectNode_Create background, process_geo_layout of D_86A025D0, Graph_InitRoots, camera init and func_86A013C8 for the text	applied@40e805f
+D_86A025CC	gCreditsShotTimer	h1		frame counter within the current camera shot, advanced by D_86A06210, compared against the shot duration and driving the fade-in ramp	applied@40e805f
+D_86A061E4	sSceneGraphRoot	h1		GraphNode returned by process_geo_layout(&D_86A025D0), passed to Graph_SetTextureState each frame, whose unk_0C holds the scene CameraStruct	applied@40e805f
+D_86A061E8	sSceneCamera	h1		CameraStruct taken from D_86A061E4->unk_0C in func_86A00D00 whose eye/at/fovy/near/far are driven by the credits camera setup and update functions	applied@40e805f
+D_86A061EC	sCameraPitch	h1		s16 passed as the pitch argument of every Camera_SetViewParameters call in func_86A00464 and func_86A00D00, loaded from unk_06 of the camera tables	applied@40e805f
+D_86A061EE	sCameraYaw	h1		s16 orbit yaw written through D_86A0625C by func_86A01CF0, advanced by func_86A02164, and passed as the yaw argument of Camera_SetViewParameters	applied@40e805f
+D_86A061F0	sCameraDistance	h1		s16 camera distance set from unk_08 of the camera tables in func_86A01CF0 and passed as the dist argument of Camera_SetViewParameters	applied@40e805f
+D_86A06218	sCreditsMessageBank	h1		static char** holding GetMessageBank(0x2D), indexed by GetMessageString for all 0xBB staff-roll strings in func_86A013C8	applied@40e805f
+D_86A06220	sCameraElapsed	h1		camera-motion frame counter shared by the orbit and flythrough updaters, advanced by D_86A06210 and compared against D_86A06222	applied@40e805f
+D_86A06222	sCameraDuration	h1		target frame count of the current camera move, set from the shot duration arg1 in func_86A018D0 and func_86A01CF0	applied@40e805f
+D_86A06228	sCameraEyeStep	h1		per-frame eye position delta (end minus start over duration) computed in func_86A018D0 and accumulated in func_86A01BEC	applied@40e805f
+D_86A06238	sCameraAtStep	h1		per-frame look-at target delta (end minus start over duration) computed in func_86A018D0 and accumulated onto the CameraStruct at vector in func_86A01BEC	applied@40e805f
+D_86A06244	sCameraFovStep	h1		per-frame fovy delta (unk_2C minus unk_28 over duration) accumulated onto the CameraStruct fovy in func_86A01BEC	applied@40e805f
+D_86A06254	sCurrentCamera	h1		CameraStruct pointer cached by func_86A018D0 and func_86A01CF0 and mutated per frame by func_86A01BEC and func_86A02164	applied@40e805f
+D_86A06258	sCameraYawRate	h1		per-frame yaw increment with 16-bit wrap handling computed in func_86A01CF0 and applied as yaw += rate * D_86A06210 in func_86A02164	applied@40e805f
+D_86A0625C	sCameraYawPtr	h1		s16* stored from func_86A01CF0's arg1 (the scene camera yaw D_86A061EE) and dereferenced by each orbit update in func_86A02164	applied@40e805f
+D_86A05AD4	sStageGroupIndex	h1		counter incremented per stage pick in func_86A021C0 that indexes the ten stage lists in D_86A05B28 and picks the camera variant in the switch	applied@40e805f
+D_86A05AD8	sRemainingStageIds	h1		sixteen stadium ids {0,1,2,4..0xF,0x11} whose picked entries are set to -1 so func_86A021C0 never repeats a stadium across the credits	applied@40e805f
+D_86A05B28	sStageLists	h1		array of the ten per-group allowed-stage list pointers used with the sp38 length table to filter D_86A05AD8 in func_86A021C0	applied@40e805f
+D_86A05AE8	sStageList0	h1		allowed stadium list {0,1,2} referenced through D_86A05B28[0] with length 3 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05AEC	sStageList1	h1		allowed stadium list {0,1,2} referenced through D_86A05B28[1] with length 3 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05AF0	sStageList2	h1		allowed stadium list {4,5,6} referenced through D_86A05B28[2] with length 3 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05AF4	sStageList3	h1		allowed stadium list {7,8,9,0xA,0xB,0xC,0xD,0xE} referenced through D_86A05B28[3] with length 8 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05AFC	sStageList4	h1		allowed stadium list {7,8,9,0xA,0xB,0xC,0xD,0xE} referenced through D_86A05B28[4] with length 8 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05B04	sStageList5	h1		allowed stadium list {7,8,9,0xA,0xB,0xC,0xD,0xE} referenced through D_86A05B28[5] with length 8 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05B0C	sStageList6	h1		allowed stadium list {7,8,9,0xA,0xB,0xC,0xD,0xE} referenced through D_86A05B28[6] with length 8 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05B14	sStageList7	h1		allowed stadium list {7,9,0xA,0xB,0xC,0xE} referenced through D_86A05B28[7] with length 6 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05B1C	sStageList8	h1		allowed stadium list {0,2,4,5,6,0x11} referenced through D_86A05B28[8] with length 6 in the func_86A021C0 stage pick	applied@40e805f
+D_86A05B24	sStageList9	h1		allowed stadium list {0xF} referenced through D_86A05B28[9] with length 1 in the func_86A021C0 stage pick	applied@40e805f
+func_88201210	Box_MarkSpeciesOwned	h1		Iterates the box's PokemonData array and calls the save-slot species-bitflag setter func_800256F4(slot, species, 3) for every valid species, the same setter fragment41 and func_8820B480 use when registering Pokemon.	applied@40e805f
+func_88201294	Box_SaveToGbs	h1		Creates a write-mode GbsBlock, writes all box PokemonData entries through func_80022F24 (write counterpart of GbsBlock_ReadPokemon), then CommitAndFreeGbsBlock or InvalidateAndFreeGbsBlock for GB banks 0x10-0x12.	applied@40e805f
+func_8820130C	Box_LoadFromGbs	h1		Creates a read GbsBlock, GbsBlock_ReadPokemon's up to 20 mons into the box's PokemonData[20], stores the bank in unk_694 and index in unk_698, and returns the mon count.	applied@40e805f
+func_88201360	Boxes_LoadFromGbs	h1		Zeroes and fills an array of unk_func_88205880_00D0 boxes by calling func_8820130C once per box (12 boxes from banks 0x21 or 0x11) in the BoxPC_Init flow of fragment23_1A9780.c.	applied@40e805f
+func_882013F8	BoxList_HasNoEmptyBoxes	h1		Returns 1 only when every box in the unk_func_88205880_A030 array has a nonzero mon count, the check that blocks starting a cross-side box move when the destination side has no empty box in func_88202F70.	applied@40e805f
+func_88201440	BoxList_IsEmpty	h1		Returns 1 only when every box in the list has unk_690 == 0 mons, gating the no-Pokemon error message when a move is started from an empty side in func_88202F70 case 0.	applied@40e805f
+func_88204E0C	Box_DiffersFromGbs	h1		Re-reads the box's mons from a GbsBlock one at a time and bcmp's each against the in-memory PokemonData, returning 1 on the first difference so func_88204EE8 can flag the box dirty.	applied@40e805f
+func_88204EE8	MarkModifiedBoxes	h1		Walks all 12 boxes on both sides setting unk_69C dirty flags for boxes moved between banks or differing from GBS contents (via func_88204E0C) and returns the 2/4 bitmask of modified sides.	applied@40e805f
+func_8820508C	SaveModifiedBoxes	h1		Writes every dirty box back with func_88201294, marks its species owned via func_88201210, runs GbsSyncBank/GbsProcessBankWrites for the GB side, and opens the save dialog with Dialog_Run.	applied@40e805f
+func_882051EC	PromptToSaveBoxChanges	h1		When func_88204EE8 reports modified boxes it disables the menu, waits on Dialog_WaitForSelection, and on confirmation calls func_8820508C to write the boxes back.	applied@40e805f
+func_8820B480	MonList_MarkSpeciesOwned	h1		Loops the mon-pointer list calling func_800256F4(saveSlot, species, 3) for each entry whose first mon has a valid species id, applied by func_8820B504 after saving party and save-slot lists.	applied@40e805f
+func_8820399C	BoxListHeader_Init	h1		Creates the list-header widget whose draw func_88203A20 renders the icon and title string (bank 4 messages 0xB/0xC) above each box list in the BXPC screen.	applied@40e805f
+func_88203A20	BoxListHeader_Draw	h1		Draws the 24x26 game pak icon or 48x26 box icon from D_88223470/D_88223488 beside the header text fetched from gBattleMessageBank ids 0xB/0xC.	applied@40e805f
+func_88202450	DrawBoxMonCount	h1		Prints the box's mon count (sprintf of unk_690) right-aligned in the row and draws a menu texture when the box holds any mons, called from the box row renderer func_88203538.	applied@40e805f
+func_88205DF8	BoxPC_RunDisplayLoop	h1		Runs the Stage_BeginDisplayList/Stage_Advance render loop for the BXPC screen until ControllerMsgQueue_Recv delivers the result message, matching ScreenMessageLoopRun in fragment23_1A8800.c.	applied@40e805f
+func_88205E94	BoxPCThreadMain	h1		Thread entry that runs the box UI input loop func_882057B4, forwards the result via ControllerMsgQueue_SendAndRead and stops the thread, the BXPC twin of Fragment23ThreadMain.	applied@40e805f
+func_882057B4	BoxPCUI_Run	h1		Activates the box PC UI, loops ControllerMsgQueue_SendAndRead with its input handler until B, then closes the window (unk_2C = 0xB) like the other modal run loops.	applied@40e805f
+func_882052F4	BoxPCMenuCursor_HandleInput	h1		Handles the top menu of the BXPC screen: B triggers the save prompt func_882051EC, A dispatches the four box-move modes via func_88202E74, and R/L swaps the two list sides.	applied@40e805f
+func_882025E0	BoxMove_Init	h1		Initializes the two-list box-move controller wiring func_88202F70 as input, both scroll lists, the five mode messages, and the 12-box-per-side arrays of the BXPC screen.	applied@40e805f
+func_88202A2C	BoxList_DisableEmptyBoxes	h1		Sets row flag 4 on every box whose mon count is zero and refreshes via func_88506CE4, keeping empty boxes unselectable while moving a box across sides.	applied@40e805f
+func_88202B74	BoxList_DisableNonEmptyBoxes	h1		Sets row flag 4 on every box holding mons and refreshes, so only an empty destination box can be chosen when moving a box to the other side in mode 0.	applied@40e805f
+func_88202D60	BoxMove_SetPhase	h1		Switches the controller's interaction phase, setting scroll direction, active side and swap-arrow visibility per case before the box swap executes.	applied@40e805f
+func_88202E74	BoxMove_SetMoveMode	h1		Stores which of the four top-menu move modes is active (set from the menu cases in func_882052F4) and resets the phase via func_88202D60.	applied@40e805f
+func_88202EB8	BoxMove_SwapSides	h1		Exchanges the two list-widget pointers and flips the side flag, executed when R/L swaps which side each box list is displayed on.	applied@40e805f
+func_88202EF4	BoxMove_SwapWithinList	h1		Swaps the box pointer at the list-0 cursor with the one at the stored index, the within-side reorder performed in move mode 1.	applied@40e805f
+func_88202F2C	BoxMove_SwapBetweenLists	h1		Swaps the cursor box pointers of list 0 and list 1, moving a box of Pokemon between the save-slot side and the GB side in mode 3.	applied@40e805f
+func_88202F70	BoxMove_HandleInput	h1		State machine for box moves: checks func_88201440/func_882013F8, plays the error messages for empty or full sides, and drives the phase transitions through func_88202D60.	applied@40e805f
+func_88209A88	MonPreview_SetMon	h1		Points the preview at a mon container and advances its double-buffered sprite (func_8001B0DC), called whenever the list selection changes.	applied@40e805f
+func_8820CBA0	ItemListHeader_Init	h1		Creates the item-list header widget whose draw func_8820CC30 renders icon plus title strings from the spE8 list (trainer bag, storage and game pak), tracking the shown list index.	applied@40e805f
+func_8820CC30	ItemListHeader_Draw	h1		Draws the 24x26 game pak icon (D_88223470) or 48x26 icon (D_88223488) beside the item list title string and selection-dependent box number.	applied@40e805f
+func_88213738	ItemPCUI_ToggleModeButtons	h1		Flips Panel_ToggleFill on three of the six menu button panels, refreshing the mode-button state when the two item lists swap sides in func_88213CA0.	applied@40e805f
+func_88213CA0	ItemPCMenuCursor_HandleInput	h1		Handles the item screen's top menu: B runs the save prompt func_88213B90, A dispatches withdraw/deposit via the side selector and func_88210234, mode picks via func_88210D2C, and R/L swaps sides.	applied@40e805f
+func_88214720	ItemPC_RunDisplayLoop	h1		Runs the Stage_BeginDisplayList/Stage_Advance render loop for the item screen until ControllerMsgQueue_Recv delivers the result, matching func_88205DF8 and func_8820C510.	applied@40e805f
+func_88217460	SlideAnim_Update	h1		Advances the slide animation one frame, computing the eased offset along the normalized start-to-end direction and clearing the widget's visible flag after 16 steps.	applied@40e805f
+func_882175F4	SlideAnim_Begin	h1		Sets the start and target positions, resets the frame counter and sets the widget visible, starting the cursor slide animation driven by func_88217460.	applied@40e805f
+func_88217740	SwapArrows_Init	h1		Creates the two-headed arrows indicator widget whose draw func_882177A8 renders the D_8821EE88 texture, shown between the lists while a side swap is possible.	applied@40e805f
+func_882177A8	SwapArrows_Draw	h1		Draws the 64x32 swap arrows texture D_8821EE88 in two halves tinted white and gray from D_88218238 depending on the widget's direction state.	applied@40e805f
+func_88217BAC	SwapArrows_Show	h1		Marks the swap arrows widget visible (unk_30 = 1), called when entering box or item move phases in func_88202D60 and func_88210BFC.	applied@40e805f
+func_88217BB8	SwapArrows_Hide	h1		Marks the swap arrows widget hidden (unk_30 = 0), called when returning to the idle phase of the box and item move controllers.	applied@40e805f
+func_88217BC0	SwapArrows_ToggleDirection	h1		Re-points the arrows at the opposite direction via func_88217BA0 whenever the two lists swap display sides in func_882052F4 and func_88213CA0.	applied@40e805f
+D_8821EE88	gSwapArrowsTexture	h1		64x32 IA16 texture loaded by func_882177A8 and drawn in two 32x20 halves as the list-swap direction indicator of the box and item screens.	applied@40e805f
+D_88223E48	gPcBackdropTile	h1		128x64 4bpp tile passed as the texture to func_88500EE4 for the full-screen backdrop of all four fragment 23 PC screens and fragment24_1CEA00.	applied@40e805f
+unk_func_8820EFD8	ItemBlockHeader	h1	unk_func_8820EFD8:ItemBlockHeader	Holds the bank-0x12 block record fields printed by func_8820EFD8: the trainer name at unk_08 and the 5-digit id at unk_04 matched in func_8820CAB4.	applied@40e805f
+unk_func_8821421C_07C	ItemBlockInfo	h1	unk_func_8821421C_07C:ItemBlockInfo	Four-entry array filled by func_8820CA2C with each bank-0x12 block's active flag, trainer id and name, then matched by trainer id and name in func_8820CAB4.	applied@40e805f
+unk_func_88205880	BoxPCScreen	h1	unk_func_88205880:BoxPCScreen	0xA048-byte screen struct holding twelve save-slot boxes plus twelve GB boxes loaded from GBS banks 0x21/0x11 and the box-move UI, created under the 'BXPC' main-pool state.	applied@40e805f
+unk_func_8821421C	ItemPCScreen	h1	unk_func_8821421C:ItemPCScreen	Screen struct whose three tracked lists hold item entries loaded from GBS banks 0x23, 0x22 and 0x12 in func_8821421C and drive the two-column item UI.	applied@40e805f
+unk_func_8821421C_034	YesNoPanel	h1	unk_func_8821421C_034:YesNoPanel	Panel built by func_8820D0F4 around the literal "Do?" title with two option buttons and a yellow cursor, run by func_8820D620 for item confirmations.	applied@40e805f
+unk_func_8820E99C	QuantityEntry	h1	unk_func_8820E99C:QuantityEntry	Widget created by func_8820E99C pairing a label with the two-digit number entry whose value is read as the moved item quantity by func_882118CC and func_882110E0.	applied@40e805f
+func_88315D8C	CompareByField2CDescending	h1		Returns arg1->unk_2C - arg0->unk_2C, the reversed counterpart of CompareByField2C, tying back to ComparePointers as in the D_8831A1F8 sort table.	applied@40e805f
+func_88315E14	CompareByField2EDescending	h1		Returns arg1->unk_2E - arg0->unk_2E, the descending counterpart of CompareByField2E, with ComparePointers as tiebreaker.	applied@40e805f
+func_88315E9C	CompareByField30Descending	h1		Returns arg1->unk_30 - arg0->unk_30, the descending counterpart of CompareByField30, with ComparePointers as tiebreaker.	applied@40e805f
+func_88315F24	CompareByField32Descending	h1		Returns arg1->unk_32 - arg0->unk_32, the descending counterpart of CompareByField32, with ComparePointers as tiebreaker.	applied@40e805f
+func_88315FAC	CompareByField34Descending	h1		Returns arg1->unk_34 - arg0->unk_34, the descending counterpart of CompareByField34, with ComparePointers as tiebreaker.	applied@40e805f
+func_88316034	CompareByField36Descending	h1		Returns arg1->unk_36 - arg0->unk_36, the descending counterpart of CompareByField36, with ComparePointers as tiebreaker.	applied@40e805f
+func_88316078	CompareByField16	h1		Compares arg0->unk_16 - arg1->unk_16 with ComparePointers as tiebreaker, the ascending pattern of the already-named CompareByField2C family.	applied@40e805f
+func_883160DC	CompareByField43	h1		Sorts with StringCompare_WithMask on the 11-byte string at offset 0x43 of the list entry, falling back to ComparePointers.	applied@40e805f
+func_88316128	CompareByField38	h1		Sorts with StringCompare_WithMask on the 11-byte string at offset 0x38 of the list entry, falling back to ComparePointers.	applied@40e805f
+func_88316214	PokemonIsWithinLevelRange	h1		Filter predicate returning whether the entry's level byte at offset 0x2C (PokemonData+0x24, the value drawn with the L badge in fragment23_1A9780) lies within arg1[0]..arg1[1].	applied@40e805f
+func_883163A4	PokemonMatchesSpecies	h1		Filter predicate returning *(u8*)&arg0->unk_08 == *arg1, comparing the entry's species byte against the requested species id.	applied@40e805f
+func_883163B8	PokemonHasExactTypes	h1		Unlike PokemonHasTypes it also requires the mon's gSpeciesBaseStats type count to equal arg1->unk_00 so the type pair must match exactly.	applied@40e805f
+func_88316480	PokemonAllowedInCup	h1		Tests the gSpeciesDisplayTable[species-1].unk_0C bit selected by the 5-entry map D_8831A244, matching the five PETIT/PIKA/POKe CUP labels built in func_883112B0.	applied@40e805f
+func_883164C0	MonSlots_Init	h1		Allocates unk_04*arg1 zeroed 0x5C mon entries plus a pointer grid and wires each storage list with PtrArray_Init, called with 6 party or 20 box slots.	applied@40e805f
+func_883166A0	LoadBoxMonsFromGbs	h1		Iterates every box descriptor, opens CreateGbsBlock handles, and GbsBlock_ReadPokemon's each mon into the cached 0x5C list entries.	applied@40e805f
+func_883167CC	CollectMonEntryPtrs	h1		Flattens the cached per-box mon entry pointers into arg0's unk_00 array and stores the total in arg0->unk_08.	applied@40e805f
+func_883168B4	DetectGbsDataChanges	h1		bcmp's each cached mon against freshly read GBS data, marks mismatched boxes with unk_0C=1, and returns source-kind bit flags via func_88316874.	applied@40e805f
+func_88316A58	WriteBoxMonsToGbs	h1		Writes each cached mon back through func_80022F24 into CreateGbsBlock handles and applies the func_800256F4 party-count fixup for banks 0x20/0x21.	applied@40e805f
+func_88316BEC	InitItemSources	h1		Sets up the three 2-byte-entry item sources (banks 0x23, 0x22, 0x12) with List_Init capacities 20, 50, and 100 plus MenuScroll_Init.	applied@40e805f
+func_88316D5C	ItemSource_ReadFromGbs	h1		Opens the source's GBS block and GbsBlock_ReadPokemon's the 2-byte item entries into unk_0C, storing the read count in unk_14.	applied@40e805f
+func_88316DB8	ItemSource_WriteToGbs	h1		Opens the source's GBS block in write mode, func_80022F24's the item list back, and commits with CommitAndFreeGbsBlock.	applied@40e805f
+func_88316F98	BuildUsableItemList	h1		Scans all item sources, converts each id via the TM/HM, vitamin, and PP Up mappers, and PtrArray_Sort's the filled usable-item pointer array.	applied@40e805f
+func_88317144	ConsumeUsedItem	h1		Removes the used item's entry with S16List_RemoveAt when its count is below two or it is a special id, otherwise decrements the count and flags the source dirty.	applied@40e805f
+func_883103CC	UpdateMoveSelectionDisplay	h1		Fills the four move slot labels from the selected-move list using the move-names bank D_8831A4CC and GetMoveCategoryColorGradient colors, mirroring func_8830EE58.	applied@40e805f
+func_883105D4	GetSelectedMoves	h1		Collects the non-NULL move ids from the four displayed slots into arg1's move array and count, mirroring GetSelectedMoveCategories.	applied@40e805f
+func_88310650	SetMoveSelection	h1		Stores the selection index and forwards it to the move-group subfragment's unk_14 callback, mirroring SetMoveCategorySelection.	applied@40e805f
+func_8831067C	HandleMoveSelectionInput	h1		Forwards controller input to the move-group subfragment when its panel is active, mirroring HandleMoveCategoryInput.	applied@40e805f
+func_883125B4	SubFragment_HandleInput	h1		Input callback installed by func_88312298 that drives the item/move-list flow on A and B and transitions between the dialog states of func_8831239C.	applied@40e805f
+func_88313740	BoxMoveDialog_Link	h1		Wires the box-move dialog's group list and both box lists to the storage data via func885063B8, mirroring ItemListUI_Link.	applied@40e805f
+func_883137C4	MarkUnavailableBoxEntries	h1		Sets flag 4 on box list entries that hold the mon being moved (sp24 == arg1->unk_00) or whose entry count reached the group capacity unk_1C.	applied@40e805f
+func_88313894	BoxMoveDialog_DisableInvalidEntries	h1		Marks the group list's current entry unavailable for the mon being moved and applies func_883137C4 to both box sublists.	applied@40e805f
+func_88313950	FormatBoxLabel	h1		Builds the PARTY / GB BOX n / 64 BOX n label from message ids 0x3B, 0x62, and 0x63 of bank D_8831A4C4, appending the box number for non-party groups.	applied@40e805f
+func_883139E8	SetBoxMoveHeaderText	h1		Formats the box label into message slot 0x25 and expands header message 0x3A (Move from ... to where?) into arg0->unk_50 via GetMessageString.	applied@40e805f
+func_88313A34	SyncBoxListSelection	h1		Applies the group list's selected index to both box list widgets with func88500A6C.	applied@40e805f
+func_88313A94	BoxMoveDialog_Open	h1		Activates the group and box lists with func88506CE4, syncs the selection, resets the subfragment controller, and shows both dialog panels.	applied@40e805f
+func_88313B4C	BoxMoveDialog_Close	h1		Hides the dialog's two panels by setting both widget states to 0xB.	applied@40e805f
+func_88313B64	BoxMoveDialog_SetSelection	h1		Stores the selection index and forwards it to the dialog subfragment's unk_14 callback.	applied@40e805f
+func_88313B90	BoxMoveDialog_HandleInput	h1		Forwards controller input to the dialog subfragment and closes the dialog on cancel or confirm via func_88313B4C.	applied@40e805f
+func_88313C24	BoxMoveController_Init	h1		Initializes the dialog's subfragment controller and installs func_88313C70 as its input callback, mirroring SubFragment_Init.	applied@40e805f
+func_88313C70	BoxMoveController_HandleInput	h1		State machine that navigates the group list, opens the box sublists on A, and returns the chosen box as 0x80000004 on confirm or 0x80000003 on cancel.	applied@40e805f
+func_88313E50	BoxMoveDialog_Run	h1		Runs the dialog's input loop over ControllerMsgQueue until cancel or confirm, then closes it and returns the exit cause, mirroring Fragment_MainLoop.	applied@40e805f
+func_88313F24	ReturnToMenuDialog_DrawItem	h1		Renders one option of the dialog by Text_Print'ing the passed string with the static white color D_88317684.	applied@40e805f
+func_88313FA0	ReturnToMenuDialog_Create	h1		Builds the small dialog with header message 0x59 (Return to Menu?) and PtrList options 0x5A and 0x5B (Yes and No) from bank D_8831A4C4.	applied@40e805f
+func_883142F4	ReturnToMenuDialog_HandleInput	h1		Forwards controller input to the dialog's option list when its panel is active.	applied@40e805f
+func_88314340	ReturnToMenuDialog_Run	h1		Runs the dialog loop returning 2 on B and selection+1 on A, matching the Yes/No option order under the Return to Menu? header.	applied@40e805f
+func_88314484	MoveChangeBanner_Init	h1		Installs func_88314518 and func_88314574 as the update/draw callbacks of the striped banner widget with a 0x3C frame counter.	applied@40e805f
+func_88314518	MoveChangeBanner_Update	h1		Advances the frame counter to 0x3C, clearing the widget's active flags at the end and skipping ahead when the old move id is -1.	applied@40e805f
+func_88314574	MoveChangeBanner_Draw	h1		Fills the striped background and prints the old then new move names from bank D_8831A4CC with fading alpha across the counter phases.	applied@40e805f
+func_88314920	MoveChangeBanner_Start	h1		Starts the banner with unk_30 = old move (or -1 for a free slot), unk_34 = new move, and enables the widget's flags.	applied@40e805f
+func_88314950	PpChangeBanner_Init	h1		Initializes the second change-notification widget with func_883149E4 and func_88314A38 callbacks and a 0x5C frame counter.	applied@40e805f
+func_883149E4	PpChangeBanner_Update	h1		Advances the counter to 0x5C, dropping the visible flag at 0x5B and clearing the active flags when finished.	applied@40e805f
+func_88314A38	PpChangeBanner_Draw	h1		Draws the striped background, the move name from D_8831A4CC sliding in with compressed spacing, and two stacked numeric values scrolling upward.	applied@40e805f
+func_883151B8	PpChangeBanner_Start	h1		Starts the banner with the move id in unk_30 and the two before/after values in unk_34 and unk_38.	applied@40e805f
+func_883151E8	LevelChangeBanner_Init	h1		Installs func_8831527C and func_883152D0 as the update/draw callbacks of the banner with a 0x28 frame counter.	applied@40e805f
+func_8831527C	LevelChangeBanner_Update	h1		Advances the counter to 0x28, dropping the visible flag at 0x27 and clearing the active flags when done.	applied@40e805f
+func_883152D0	LevelChangeBanner_Draw	h1		Draws the striped background and the two numeric values in unk_30 and unk_34, sliding them upward after frame 0x14.	applied@40e805f
+func_883156B8	LevelChangeBanner_Start	h1		Starts the banner with the two before/after values in unk_30 and unk_34 and enables the widget's flags.	applied@40e805f
+func_883156E8	BoxMoveBanner_Init	h1		Installs func_8831577C and func_88315A6C as the update/draw callbacks of the box-label banner with a 0x3C counter.	applied@40e805f
+func_8831577C	BoxMoveBanner_Update	h1		Advances the counter to 0x3C, dropping the visible flag at 0x3B and clearing the active flags when done.	applied@40e805f
+func_883157D0	DrawBoxLabel	h1		Prints the PARTY, GB n, or N64 n label with its per-source color for box kinds 0x20, 0x21, and 0x11.	applied@40e805f
+func_88315A6C	BoxMoveBanner_Draw	h1		Fills the striped background and draws the destination box label via func_883157D0 from the kind/index pair packed in unk_30.	applied@40e805f
+func_88315C98	BoxMoveBanner_Start	h1		Starts the banner with the box kind and index packed as (kind << 16) | index in unk_30 and enables the widget's flags.	applied@40e805f
+D_8831A1F8	gListSortComparators	h1	unk_D_8831A1F8:SortComparatorFunc	Table of the 19 Compare* functions defined in fragment24_1E46B0.c, consumed as the PtrArray_Sort comparator for the list's sort orders.	applied@40e805f
+D_883186E8	gCheckerboardPattern2	h1		Second 12x18 RGBA16 checkerboard texture selected by DrawItemBackground when the row's unk_30 flag is set, alongside gCheckerboardPattern.	applied@40e805f
+D_8831727C	gPartyLabelColor	h1		Color_RGBA8 applied to the PARTY label text in func_883157D0's box-kind case 32.	applied@40e805f
+D_88317280	gGbLabelColor	h1		Color_RGBA8 applied to the GB label text in func_883157D0's box-kind case 33.	applied@40e805f
+D_88317284	gN64LabelColor	h1		Color_RGBA8 applied to the N64 label text in func_883157D0's box-kind case 17.	applied@40e805f
+unk_func_88316128	PokemonListEntry	h1	unk_func_88316128:PokemonListEntry	Row struct compared by the D_8831A1F8 sort functions, holding the species byte at 0x08, sortable u16s at 0x16 and 0x2C-0x36, and two 11-byte strings.	applied@40e805f
+unk_func_8830867C_02C_0C0	PpChangeBanner	h1	unk_func_8830867C_02C_0C0:PpChangeBanner	Widget type used only by func_88314950, func_883149E4, func_88314A38, and func_883151B8, wrapping the animated banner base plus the second numeric value.	applied@40e805f
+unk_func_8830867C_02C_0B4	YesNoDialog	h1	unk_func_8830867C_02C_0B4:YesNoDialog	Widget type used only by func_88313FA0, func_883142F4, and func_88314340, the dialog listing the Yes and No options under the Return to Menu? header.	applied@40e805f
+unk_D_8140E724	ParticleDef	h1	unk_D_8140E724:ParticleDef	Fragment 62 renames every function operating on this type ParticleDef_Allocate, ParticleDef_Reset, ParticleDef_Create, and ParticleDef_SpawnInstances, and func_8432D5B0 allocates 300 of them.	applied@40e805f
+unk_D_8140E728	ParticleSpawner	h1	unk_D_8140E728:ParticleSpawner	Holds a spawn position, rotation, interval timer unk_26, repeat count unk_2A, and active flag unk_2B, and ParticleEmitters_UpdateAll calls ParticleEmitter_Tick each interval to spawn particles through ParticleEmitter_GenerateParticles.	applied@40e805f
+unk_D_8140E728_01C	ParticleEffectData	h1	unk_D_8140E728_01C:ParticleEffectData	fragment62.h declares gParticleEffectData[86] with this exact type and passes its entries as the effect-settings argument to ParticleDef_Create and ParticleNode_CreateMultiple.	applied@40e805f
+unk_D_8140E728_01C_004_1	ParticleRenderSettings	h1	unk_D_8140E728_01C_004_1:ParticleRenderSettings	This struct holds the texture-load callback unk_04, draw callback unk_08, display-list selector unk_02, and texture pointer unk_0C consumed by func_8140C4CC and func_8140C530, and fragment 62 fills D_84385E40 with these entries.	applied@40e805f
+unk_D_8140E634_010	ParticleCameraInfo	h1	unk_D_8140E634_010:ParticleCameraInfo	func_8432CFCC fills this struct with the camera view matrix, eye, at, and normalized view directions, and fragment 62 reads it through D_8140E6B4 to place effects along the view ray.	applied@40e805f
+arg1_func_87903D64	ColorLerpHook	h1	arg1_func_87903D64:ColorLerpHook	The decompiler derived this name from func_87903D64, which symbol_addrs_code.txt identifies as ColorLerp_DisplayListHook, and that hook applies this struct's lerped prim and env colors when its opcode argument equals 5.	applied@40e805f
+arg1_func_87903D64_014	ColorLerpData	h1	arg1_func_87903D64_014:ColorLerpData	Gfx_SetLerpPrimEnvColor selects ColorLerpEntry5 and ColorLerpEntry4 keyframe arrays from this struct by graph-root phase and blends between the two entries, so it holds the lerp table set.	applied@40e805f
+D_8140E724	gParticleDefs	h1		func_8432D5B0 allocates this as an array of 300 unk_D_8140E724 particle definitions that ParticleDef_Allocate scans starting from index D_8140E730.	applied@40e805f
+D_8140E730	gParticleDefNextIdx	h1		ParticleDef_Allocate uses it as the rotating start index into the 300-entry def array exactly as the existing gParticleEmitterNextIdx does for gParticleEmitters in ParticleEmitter_Allocate.	applied@40e805f
+D_8140E6B4	gParticleCameraInfo	h1		func_8432CFCC assigns it &D_8140E628.unk_10 after copying the camera matrix, eye, and at into that struct, and 26 uses across fragment 62 read view directions and angles from it.	applied@40e805f
+D_8140E6EC	gTimerDiv3	h1		Timer_UpdateCounters assigns gTimerCounter divided by 3 to it and GetTileSizeByIndex returns it for tile index 3, extending the existing gTimerMod3 naming.	applied@40e805f
+D_8140E6F0	gTimerShift1	h1		Timer_UpdateCounters assigns gTimerCounter >> 1 to it, extending the existing gTimerShift2 through gTimerShift6 family, and water texture code reads it masked with 7 for half-speed animation.	applied@40e805f
+D_8140E6F4	gTimerBit6	h1		Timer_UpdateCounters assigns gTimerShift6 & 1 to it, exposing bit 6 of gTimerCounter.	applied@40e805f
+D_8140E6F8	gTimerBit5	h1		Timer_UpdateCounters assigns gTimerShift5 & 1 to it, exposing bit 5 of gTimerCounter.	applied@40e805f
+D_8140E6FC	gTimerBit4	h1		Timer_UpdateCounters assigns gTimerShift4 & 1 to it, exposing bit 4 of gTimerCounter.	applied@40e805f
+D_8140E700	gTimerBit3	h1		Timer_UpdateCounters assigns gTimerShift3 & 1 to it, exposing bit 3 of gTimerCounter.	applied@40e805f
+D_8140E704	gTimerBit2	h1		Timer_UpdateCounters assigns gTimerShift2 & 1 to it, exposing bit 2 of gTimerCounter.	applied@40e805f
+D_8140E708	gTimerDiv3Parity	h1		Timer_UpdateCounters assigns D_8140E6EC & 1 to it, the parity of the divide-by-three timer.	applied@40e805f
+D_8140E70C	gTimerBit1	h1		Timer_UpdateCounters assigns D_8140E6F0 & 1 to it, exposing bit 1 of gTimerCounter.	applied@40e805f
+D_8140DAE0	gDL_End3D	h1		Displayed to close the mini-camera particle section in ParticleRender_SetupMiniCamera, the Ekans section in fragment18.c, and Ui_DrawPanel, restoring 2-cycle shade, cull, and dither defaults after D_8140DB30 opens the block.	applied@40e805f
+D_8140DB30	gDL_Begin3D	h1		Displayed at the start of ParticleRender_SetupMiniCamera, func_86C03ED4, and Ui_DrawPanel to enable ZBUFFER, SHADE, and CULL_BACK with textures off before 3D or panel drawing.	applied@40e805f
+D_8140DD78	gDL_BeginUIOverlay	h1		Ui_DrawPanel displays it immediately before drawing the overlay particles through func_8140C2D8, switching to the no-texture, no-cull, RM_NOOP state used for the orthographic UI overlay.	applied@40e805f
+D_8140DDD8	gDL_EndColorFill	h1		RenderPrimColorRect in fragment62_3438B0.c displays it after its fullscreen texture rectangle to return to 2-cycle mode with alpha compare disabled.	applied@40e805f
+D_8140DDF8	gDL_BeginColorFill	h1		RenderPrimColorRect displays it before Gfx_SetPrimColor and its fullscreen gSPTextureRectangle, setting the PRIMITIVE combine mode with AA_XLU_SURF and point filtering.	applied@40e805f
+D_8140E3B8	gFullscreenQuadVtx	h1		Its four vertices span x from -160 to 160 and y from -120 to 120 with 0 to 1024 UVs, forming the 320x240 screen rectangle that RenderMultiBlockIcon draws through func_81404A6C.	applied@40e805f
+D_8140E378	gGroundQuadVtx	h1		Its four vertices form a 128x128 quad on the y=0 plane tinted dark blue, drawn with the particle's rotation by func_8140D404 for flat ground effects.	applied@40e805f
+func_814008B0	BounceS16	h1		Identical to BounceFloat in the same file but operating on s16, adding a delta each call and reversing it when the value passes the low or high bound.	applied@40e805f
+func_8140094C	Vec3s_CopyTo	h1		Copies the three s16 components from the source into the destination, and ParticleNode_Init and ParticleInstance_PopulateFromEmitter use it to copy rotation vectors.	applied@40e805f
+func_81400968	Vec3f_Offset	h1		Adds the source vector component-wise onto the destination, and ParticleNode_UpdateBehavior and func_814091B4 use it to add computed offsets to positions and velocities.	applied@40e805f
+func_8140099C	Vec3s_Offset	h1		Adds the source Vec3s component-wise onto the destination, the short counterpart of func_81400968 in the same file.	applied@40e805f
+func_81400ADC	RandomModPlus	h1		Returns RandomMod(arg0) plus arg1, giving a random value in [arg1, arg1+arg0), as when fragment62_3223B0.c calls it with (0xC, 0x20) for a value from 0x20 to 0x2B.	applied@40e805f
+func_81400B28	RandomRangeSignedPlus	h1		Returns RandomRangeSigned(arg0) plus arg1, giving a signed random value centered on arg1, as used for rotation targets like func_81400B28(0x400, 0xE00) in fragment62_31D9F0.c.	applied@40e805f
+func_81400B8C	Vec3f_AngleX	h1		Returns MathUtil_Atan2s(v.y, v.z), the same expression Vec3f_ToAngles stores into the x component of the angle vector.	applied@40e805f
+func_81400BBC	Vec3f_AngleY	h1		Returns MathUtil_Atan2s(v.z, v.x), the same expression Vec3f_ToAngles stores into the y component of the angle vector.	applied@40e805f
+func_81400BEC	Vec3f_AngleZ	h1		Returns MathUtil_Atan2s(v.x, v.y), the same expression Vec3f_ToAngles stores into the z component of the angle vector.	applied@40e805f
+func_81400D00	Vec3f_RotateY	h1		Rotates the vector by the yaw angle arg2.y with the x and z sine-cosine pattern ParticleNode_UpdateBehavior uses to rotate offsets by a model's yaw.	applied@40e805f
+func_81400D6C	Vec3f_SetPolarXZ	h1		Builds (len*sin(angle), 0, len*cos(angle)), converting a radius and yaw into a horizontal vector exactly as ParticleNode_UpdateBehavior case 11 does for model-relative offsets.	applied@40e805f
+func_81400DC0	Vec3f_RotateXY	h1		Applies the x-axis and y-axis rotations that func_814010D8 uses to produce random 3D directions and func_814091B4 uses to rotate offsets by particle pitch and yaw.	applied@40e805f
+func_81400E8C	Vec3f_Dist	h1		Returns the Euclidean distance via sqrtf of the squared component differences, compared against another point's distance at fragment18.c:2389 for hitbox proximity.	applied@40e805f
+func_81400EF0	Vec3f_DistXZ	h1		Returns the same square-root distance as func_81400E8C but omits the y term, used for the 2D distance between Ekans and Diglett hitbox positions at fragment18.c:2346.	applied@40e805f
+func_81400F44	Vec3f_GetDirection	h1		Computes b minus a and normalizes it, as used to derive the eye-to-at view direction stored into D_8140E6B4->unk_58 at fragment62_315D50.c:5067.	applied@40e805f
+func_814010D8	Vec3f_SetRandomDirection	h1		Rotates a (0, 0, len) vector by random 0x10000-range x and y angles through func_81400DC0, producing a uniformly random direction of the given length.	applied@40e805f
+func_81401168	Vec3f_Scale	h1		Multiplies all three components of the vector by the scalar in place.	applied@40e805f
+func_8140119C	Vec3f_AngleXTo	h1		Returns MathUtil_Atan2s(b.y-a.y, b.z-a.z), the x-axis angle from point a to point b, used at fragment62_3223B0.c:314 to aim toward a target.	applied@40e805f
+func_814011E0	Vec3f_AngleYTo	h1		Returns MathUtil_Atan2s(b.z-a.z, b.x-a.x), the y-axis angle from point a to point b, added to a particle's yaw at fragment62_317E70.c:941.	applied@40e805f
+func_81401224	Vec3f_AngleZTo	h1		Returns MathUtil_Atan2s(b.x-a.x, b.y-a.y), the z-axis angle from point a to point b, completing the trio with func_8140119C and func_814011E0.	applied@40e805f
+func_81401394	Matrix_SendToDisplayList	h1		Converts the MtxF to an Mtx inside gMatrixBuffer with Matrix_ConvertToMtx, emits gSPMatrix with G_MTX_LOAD, and advances gMatrixBufferIdx, and every submit helper in this file funnels through it.	applied@40e805f
+func_814015A0	Matrix_Submit2DRotateTranslateScale	h1		Builds the 2D rotate-translate-uniform-scale matrix through func_81401430 with the rotation offset by 0x8000 and submits it, drawing flat UI sprites like RenderStatusBar's quad at fragment62_31AA30.c:54.	applied@40e805f
+func_814015F8	Matrix_Submit2DRotateTranslateScaleY	h1		Like func_814015A0 but builds through func_814014E8, which scales only the transformed Y row, used by func_84330A18 for vertically stretched water sprites.	applied@40e805f
+func_81401ABC	Matrix_ComposeBillboard	h1		Transposes the camera matrix arg1->unk_60.mtxf, scales it uniformly, and sets the translation row, so geometry drawn with the result always faces the camera.	applied@40e805f
+func_81401B6C	Matrix_ComposeBillboardY	h1		Like func_81401ABC but scales only the Y output row by arg3, keeping the X and Z rows unscaled.	applied@40e805f
+func_81401C04	Matrix_ComposeBillboardRoll	h1		Like func_81401ABC but additionally rotates by the s16 arg4 roll and applies the uniform scale arg3 to every row.	applied@40e805f
+func_81401D50	Matrix_ComposeBillboardRollY	h1		Combines the transposed camera matrix with the s16 arg4 roll rotation and Y-row-only scaling of arg3.	applied@40e805f
+func_81401FC0	Matrix_SubmitRotateTranslateScale	h1		Builds the full XYZ rotation matrix with func_81401650 and submits it, used by RenderItemIcon to orient item sprites in 3D space.	applied@40e805f
+func_8140203C	Matrix_SubmitRotateTranslateScaleY	h1		Like func_81401FC0 but builds through func_814017E0, which scales only the Y row of the rotation.	applied@40e805f
+func_814020B8	Matrix_SubmitRotateTranslateScaleXY	h1		Submits the func_81401940 matrix that takes separate XZ and Y scale factors for stretched billboards.	applied@40e805f
+func_8140213C	Matrix_SubmitBillboard	h1		Submits the func_81401ABC camera-facing matrix built from arg0->unk_60.mtxf with the particle position and scale, as in func_84330388's overlay sprite.	applied@40e805f
+func_814021A4	Matrix_SubmitBillboardRoll	h1		Submits the func_81401C04 billboard matrix with the extra s16 roll applied around the view axis.	applied@40e805f
+func_81402214	Matrix_SubmitBillboardY	h1		Submits the func_81401B6C billboard matrix whose Y output row alone is scaled.	applied@40e805f
+func_8140227C	Matrix_SubmitBillboardRollY	h1		Submits the func_81401D50 billboard matrix combining the roll rotation with Y-row-only scaling.	applied@40e805f
+func_81403EA8	Gfx_LoadTextureTileRGBA16_Clamp	h1		Wraps Gfx_LoadTextureTileRGBA16 with G_IM_FMT_RGBA and clamp on both axes, the tile counterpart of the existing Gfx_LoadTextureBlockRGBA16_Clamp.	applied@40e805f
+func_81403EF4	Gfx_LoadTextureBlockIA16_Clamp	h1		Calls Gfx_LoadTextureBlockRGBA16 with G_IM_FMT_IA 16-bit and clamp on both axes, loading IA16 textures as func_81405308 does for tiled sprites.	applied@40e805f
+func_81403F40	Gfx_LoadTextureTileIA16_Clamp	h1		Calls Gfx_LoadTextureTileRGBA16 with G_IM_FMT_IA 16-bit and clamp on both axes, the tile counterpart of func_81403EF4.	applied@40e805f
+func_81403FD8	Gfx_LoadTextureTileIA8_Clamp	h1		Calls Gfx_LoadTextureTileIA8 with G_IM_FMT_IA and clamp on both axes, the tile counterpart of the existing Gfx_LoadTextureBlockIA8_Clamp.	applied@40e805f
+func_81404024	Gfx_LoadTextureBlockIA8_MirrorWrap	h1		Calls Gfx_LoadTextureBlockIA8 with mirror and wrap on both axes with log2 masks, the IA8 counterpart of the existing Gfx_LoadTextureBlockI_MirrorWrap used by func_8140CB64.	applied@40e805f
+func_81404150	Gfx_LoadTextureTileI_Clamp	h1		Calls Gfx_LoadTextureTileIA8 with G_IM_FMT_I and clamp on both axes, the tile counterpart of the existing Gfx_LoadTextureBlockI_Clamp.	applied@40e805f
+func_814041DC	Gfx_LoadTextureTileIA4b_Clamp	h1		Calls Gfx_LoadTextureTile4b with G_IM_FMT_IA and clamp on both axes, loading 4-bit IA textures as tiles.	applied@40e805f
+func_81404228	Gfx_LoadTextureTileI4b_Clamp	h1		Calls Gfx_LoadTextureTile4b with G_IM_FMT_I and clamp on both axes, the 4-bit tile counterpart of func_81404150.	applied@40e805f
+func_81404274	Gfx_LoadTextureBlockIA4b_Clamp	h1		Calls Gfx_LoadTextureBlock4b with G_IM_FMT_IA and clamp on both axes, loading 4-bit IA textures as blocks.	applied@40e805f
+func_814042C0	Gfx_LoadTextureBlockI4b_Clamp	h1		Calls Gfx_LoadTextureBlock4b with G_IM_FMT_I and clamp on both axes, the 4-bit counterpart of the existing Gfx_LoadTextureBlockI_Clamp.	applied@40e805f
+func_8140430C	Gfx_LoadTextureBlockI4b_MirrorWrap	h1		Calls Gfx_LoadTextureBlock4b with G_IM_FMT_I and mirror plus wrap on both axes with log2 masks, the 4-bit counterpart of the existing Gfx_LoadTextureBlockI_MirrorWrap.	applied@40e805f
+func_814043BC	Gfx_LoadTextureBlockI4b_MirrorWrapS	h1		Calls Gfx_LoadTextureBlock4b with G_IM_FMT_I, mirror plus wrap on S, clamp on T, and a log2 S mask.	applied@40e805f
+func_8140441C	Gfx_LoadTextureBlockI4b_Wrap	h1		Calls Gfx_LoadTextureBlock4b with G_IM_FMT_I and plain wrap on both axes with log2 masks, used for gWaterTexture entries at fragment62_31AA30.c:35 and :59.	applied@40e805f
+func_81404484	Gfx_LoadMultiBlockI4b_Wrap	h1		Calls Gfx_LoadMultiBlock4b at tmem 0x100 tile 1 with G_IM_FMT_I and wrap on both axes, loading the second texture of two-layer water sprites at fragment62_31AA30.c:61.	applied@40e805f
+func_814045CC	Gfx_LoadTextureBlockCI_MirrorWrapS	h1		Calls Gfx_LoadTextureBlockIA8 with G_IM_FMT_CI, mirror plus wrap on S, clamp on T, and an explicit masks parameter, the S-mirror counterpart of the existing Gfx_LoadTextureBlockCI_Clamp.	applied@40e805f
+func_81404624	Gfx_LoadTextureTileCI_Clamp	h1		Calls Gfx_LoadTextureTileIA8 with G_IM_FMT_CI and clamp on both axes, the tile counterpart of the existing Gfx_LoadTextureBlockCI_Clamp.	applied@40e805f
+func_81404A6C	Gfx_DrawQuad	h1		Emits gSPVertex for four vertices followed by the two-triangle D_8140E408 quad display list, used to draw pre-transformed quads like D_8140E3B8 in RenderMultiBlockIcon.	applied@40e805f
+func_81404ABC	Gfx_DrawQuadRotated	h1		Submits the particle's full rotation matrix through func_81401FC0 then draws the four-vertex quad, used for rotated sprites like the Ekans bodies drawn at fragment18.c:3320.	applied@40e805f
+func_81404B78	Gfx_DrawQuadRotatedScaleY	h1		Submits the Y-scaled rotation matrix through func_8140203C then draws the four-vertex quad, as at fragment62_31AA30.c:188.	applied@40e805f
+func_81404CF8	Gfx_DrawTriangleRotated	h1		Submits the rotation matrix through func_81401FC0 then draws three vertices with the single-triangle D_8140E3F8 list, used with the D_8140DF78 and D_8140DFA8 triangles at fragment62_31AA30.c:254.	applied@40e805f
+func_81404DB4	Gfx_DrawQuadBillboard	h1		Submits the camera-facing billboard matrix through func_8140213C then draws the four-vertex quad.	applied@40e805f
+func_81404E4C	Gfx_DrawQuadBillboardRoll	h1		Submits the billboard matrix with the s16 roll through func_814021A4 then draws the quad, as at fragment62_31AA30.c:286.	applied@40e805f
+func_81404F84	Gfx_DrawQuadBillboardRollScaleY	h1		Submits the func_8140227C billboard matrix with roll and Y-row scaling then draws the four-vertex quad.	applied@40e805f
+func_8140515C	Gfx_DrawTiledTextureI	h1		Loops Gfx_LoadTextureBlockI_Clamp across width by height tiles, drawing each with four vertices from the supplied Vtx array and advancing the texture pointer.	applied@40e805f
+func_81405308	Gfx_DrawTiledTextureIA16	h1		Like func_8140515C but loads each tile with func_81403EF4 and advances the texture pointer by two bytes per pixel.	applied@40e805f
+func_814054B4	Gfx_DrawTiledTextureIA8	h1		Like func_8140515C but loads each tile with Gfx_LoadTextureBlockIA8_Clamp and advances one byte per pixel.	applied@40e805f
+func_81405660	Gfx_DrawTiledTextureI4b	h1		Like func_8140515C but loads 4-bit tiles with func_814042C0 and advances half a byte per pixel, used for the water texture at fragment62_31AA30.c:109.	applied@40e805f
+func_81405B00	Gfx_SetBlendColor	h1		Emits gDPPipeSync followed by gDPSetBlendColor with the four color arguments, the blend-color counterpart of Gfx_SetPrimColor and Gfx_SetEnvColor.	applied@40e805f
+func_81405C70	Gfx_SetPrimAndEnvColor	h1		Emits pipe sync, gDPSetPrimColor, gDPSetEnvColor, and the modulating combine mode, called throughout fragment62_31AA30.c with a particle's prim and env colors.	applied@40e805f
+func_81405E04	Gfx_SetPrimAndEnvColorRGBA	h1		Like func_81405C70 but takes and applies a full env alpha as well, called with eight explicit color components at fragment62_31AA30.c:37.	applied@40e805f
+func_81405ED8	Gfx_SetPrimAndEnvColorLOD	h1		Like func_81405C70 but takes the l LOD fraction and selects the PRIM_LOD_FRAC combine used for distance-blended water sprites at fragment62_31AA30.c:58.	applied@40e805f
+func_814060D4	Gfx_ScrollTexture	h1		Emits gDPSetTileSize for G_TX_RENDERTILE with coordinates offset by gTimerCounter times the per-frame scroll speeds, animating the texture inside the given width and height window.	applied@40e805f
+func_81406168	Gfx_ScrollTexture1	h1		Writes the same timer-scrolled gDPSetTileSize as func_814060D4 but for tile 1, the second texture of two-layer water sprites at fragment62_31AA30.c:62.	applied@40e805f
+func_81406204	Gfx_ScrollTextureToDL	h1		Writes the scrolling gDPSetTileSize for G_TX_RENDERTILE into the provided Gfx pointer instead of the display list head, used while building persistent water display lists in func_87902D3C.	applied@40e805f
+func_81406288	Gfx_ScrollTexture1ToDL	h1		Writes the tile 1 scrolling gDPSetTileSize into the provided Gfx pointer, used alongside func_81406204 in the fragment 3 water display lists.	applied@40e805f
+func_8140C84C	LoadTexture_CI4_32x32_ByIndex	h1		Loads the unk_C7-indexed 32x32 4-bit frame through func_8140437C, the CI4 counterpart of the existing LoadTexture_IA8_32x32_ByIndex.	applied@40e805f
+func_8140C9B0	LoadTexture_CI4_24x24_ByIndex	h1		Loads the unk_C7-indexed 24x24 4-bit frame through func_8140439C, matching the 24-texel quad vertices in D_8140DFD8.	applied@40e805f
+func_8140CA30	LoadTexture_CI4_32x64_ByIndex	h1		Loads the unk_C7-indexed 32x64 4-bit frame through func_8140437C with a 1024-byte frame stride.	applied@40e805f
+func_8140CB04	LoadTexture_CI4_64x64_ByIndex	h1		Loads the unk_C7-indexed 64x64 4-bit frame through func_8140437C with a 2048-byte frame stride.	applied@40e805f
+func_8140CDDC	RenderBillboardQuad	h1		Sets prim and env colors from the particle with func_81405C70 and draws the billboard quad with the gMatrix_UITransform vertices, referenced 34 times in the fragment 62 effect tables.	applied@40e805f
+func_8140CB90	RenderBillboardQuadPrimColor	h1		Applies Gfx_SetPrimColorCombinePrimitive with the particle's prim color then draws the billboard quad with the gMatrix_UITransform vertices.	applied@40e805f
+func_8140CFBC	RenderBillboardQuadRoll	h1		Sets prim and env colors then draws the billboard quad rolled by unk_94.z through func_81404E4C with the gMatrix_UITransform vertices.	applied@40e805f
+func_8140CC04	RenderBillboardQuad24	h1		Sets prim and env colors then draws the billboard quad with the 24-texel D_8140DFD8 vertices.	applied@40e805f
+func_8140CE68	RenderBillboardQuadGradient	h1		Sets white prim with alpha through func_81405C04 and draws the vertex-colored gradient quad D_8140E108 rolled by unk_94.z.	applied@40e805f
+func_8140CF30	RenderBillboardQuadNoise	h1		Applies the noise-based combine mode func_81405D38 with the particle's colors then draws the billboard quad with the gMatrix_UITransform vertices.	applied@40e805f
+func_8140D0E4	RenderBillboardQuad64	h1		Sets prim and env colors then draws the billboard quad with the 64-texel D_8140E178 vertices.	applied@40e805f
+func_8140D170	RenderBillboardQuad64OffsetY	h1		Sets prim and env colors then draws the billboard quad with the Y-offset D_8140E1B8 vertices spanning 64 texels.	applied@40e805f
+func_8140CED4	RenderBillboardQuadOffsetY	h1		Draws the billboard quad with the Y-offset D_8140E058 vertices without changing the color state.	applied@40e805f
+func_8140CC90	RenderRotatedQuad24	h1		Clears back-face culling, sets prim and env colors, and draws the particle-rotated 24-texel quad through func_81404ABC, restoring culling afterward.	applied@40e805f
+func_8140D288	RenderBillboardQuadTriple	h1		Sets prim and env colors then draws the three-quad D_8140E2B8 sprite as a billboard.	applied@40e805f
+func_8140D314	RenderRotatedQuadTriple	h1		Clears back-face culling and draws the three-quad D_8140E2B8 sprite with the particle's own rotation through func_81404ABC.	applied@40e805f
+func_8140D404	RenderGroundQuad	h1		Sets prim and env colors and draws the horizontal 128x128 D_8140E378 quad with the particle's rotation for flat ground effects.	applied@40e805f
+func_8140D5F0	SetPrimColorFromPreset	h1		Applies SetPrimColorFromPalette with gPrimColorPalette[arg1], selecting one of the six curated palette color indices.	applied@40e805f
+func_8140D624	SetEnvColorFromPreset	h1		Applies SetEnvColorFromPalette with gPrimColorPalette[arg1], the env counterpart of func_8140D5F0.	applied@40e805f
+func_8140D750	SetRandomPrimColor	h1		Picks a random entry of the five-color D_8140E548 table with RandomMod(5) and applies it as the prim color.	applied@40e805f
+func_8140D78C	SetRandomEnvColor	h1		Picks a random entry of the five-color D_8140E548 table with RandomMod(5) and applies it as the env color, called repeatedly in fragment62_3223B0.c.	applied@40e805f
+func_84300810	Gfx_DrawClippedTextureRect	h1		Builds a ClipRect via Gfx_MakeClipRect/Gfx_IntersectClip and emits an gSPTextureRectangle for the given screen rect.	applied@40e805f
+func_84300938	Gfx_LoadTextureDrawClippedRect	h1		gDPLoadTextureBlock of an RGBA16 strip followed by Gfx_DrawClippedTextureRect; used by RenderPokemonPortraits to blit four portrait slices.	applied@40e805f
+func_843010EC	PokemonSelectScreen_Update	h1		Stage_RunFadeSequence callback that runs ProcessPokemonSelection for both players and returns 1 to end the select screen with AudioFrameUpdate and fade out.	applied@40e805f
+func_843013E4	PokemonSelection_InitPlayer	h1		Initializes one D_8438E798 player struct (party pointer, flags) then calls ProcessPokemonSelection; sibling of PokemonSelection_ClearFlags and PokemonSelection_AssignIndices.	applied@40e805f
+func_84301A2C	BattleScreen_Run	h1		Fragment entry: pushes the BATL pool state, Stage_Create, BattleScreen_Init, runs the fade select loop via Stage_RunFadeSequence, then Stage_Destroy.	applied@40e805f
+func_8430C59C	Math_StepTowardsProportional	h1		Math_StepTowards variant whose per-frame step is the remaining distance scaled by a factor, clamped between 40 and 1092 angle units.	applied@40e805f
+func_8430C718	Math_ExponentialApproach	h1		Exponential smoothing (value += (target - value) * factor with snap to zero) used for camera distances, complementing the linear Math_ApproachF32.	applied@40e805f
+func_8430CCC8	Battle_TickPhaseTimer	h1		Decrements gPhaseTimer each call and returns 1 once it reaches zero; initialized by func_8430CC20 from gBattleContext.	applied@40e805f
+func_8430CD0C	Battle_TickCountdownTimer	h1		Ticks gPhaseTimer, beeping via Audio_PlaySoundEffect(0x3E) every 30 units, and reports expiry; used for the battle countdown.	applied@40e805f
+func_8430CE00	Battle_ComputeWinner	h1		Counts non-fainted party members per side then grades remaining HP, returning 1/2/3 which is stored into gBattleState.unk_00->unk_40 as the outcome.	applied@40e805f
+func_8431AE4C	SetCurrentPlayerIndex	h1		Writes gBattleState.unk_00->unk_2C, the index used everywhere to select D_84390010[unk_2C] as the acting player.	applied@40e805f
+func_84310368	DrawHPBar	h1		Draws the 16x5 HP bar texture choosing green/yellow/red palettes (D_1003EA0/D_1003EC8/D_1003EF0) from the current/max HP ratio passed in.	applied@40e805f
+func_843184E4	Dialog_SetMode	h1		Sets D_843901A0->unk_4C8 to {0, arg0}, the mode RenderDialogBox switches on to choose which message buffers get drawn.	applied@40e805f
+func_843184FC	Dialog_Clear	h1		Marks D_843901A0->unk_4C8.unk_00 = 0xFF, the idle sentinel func_84318CE4 checks before rendering dialog lines.	applied@40e805f
+func_843296B8	BattleCamera_RunState	h1		Dispatches gBattleState.unk_00->unk_1C to InitializeCameraForCurrentEntity, Camera_UpdateStateMachine, func_84321184, or Intro_SetupCamera, storing the camera in unk_DC.	applied@40e805f
+func_843297AC	BattleState_Allocate	h1		main_pool_allocs and zeroes the unk_D_84390240_000 struct that gBattleState.unk_00 points at for the whole battle.	applied@40e805f
+func_843297F8	Camera_PreventDegenerateView	h1		Nudges at.z by 0.001 when eye and at coincide in XZ so subsequent MathUtil_Atan2s camera math stays valid.	applied@40e805f
+func_8432D5B0	ParticlePools_Allocate	h1		main_pool_allocs the two 300-entry pools D_8140E724 and gParticleInstances and zeroes them plus their counters.	applied@40e805f
+func_8432E5A4	ParticleDefs_Update	h1		Decrements each live D_8140E724 def timer and respawns instances via func_8432E4B0 when they expire.	applied@40e805f
+func_8432E68C	Particles_UpdateAll	h1		Runs ParticleDefs_Update then ParticleSystem_Update, the per-frame particle update invoked from MainUpdateLoop.	applied@40e805f
+func_8432FCD4	GetPrimaryEntityScale	h1		Returns gCamDistances[species] * 0.01 for gParticleEffectData_42, the scale applied to water and particle effects.	applied@40e805f
+func_8432FD64	GetBattleCamera	h1		Returns D_8140E628.unk_0C, the CameraStruct stored by ParticleSystem_SetCamera and used for guLookAtReflect and water view matrices.	applied@40e805f
+func_843056DC	Anim_NullHandler	h1		Empty function aliased as D_84385380, the sentinel stored into gAnimStateQueue slots to mark them idle.	applied@40e805f
+func_8430808C	GetCurrentMoveId	h1		Returns arg0->unk_654.unk_38.unk_5A, the id used everywhere as gMoveBattleData[unk_5A - 1] to fetch current move data.	applied@40e805f
+func_84308164	GetCurrentHP	h1		Returns the party PokemonData->unk_02 current-HP field that func_84370B7C copies into the entity unk_0C.	applied@40e805f
+func_84308190	GetPlayerSideYaw	h1		Returns unk_4B0 << 0xE (0 or 0x4000), the per-side base yaw combined into camera angles by SetupBattleCamera callers.	applied@40e805f
+func_843081A4	GetSpeciesOfPlayerIndex	h1		Returns D_84390010[arg0]->unk_000.unk_01A, the species field also used to index gCamDistances.	applied@40e805f
+func_843081BC	GetSpecies	h1		Returns arg0->unk_000.unk_01A which indexes gCamDistances and gates species-specific battle position and height logic.	applied@40e805f
+func_843081D4	GetEntityPosition	h1		Copies the entity translation unk_024 into the out Vec3f; the plain-position case of Model_GetNodePosition.	applied@40e805f
+func_843081F0	GetEntityCenterPosition	h1		Returns model center (position plus species/status height offset) and serves as the camera look-at target gCameraPreset.unk_00 and ResolveEntityPosition fallback.	applied@40e805f
+func_8430862C	GetPokemonName	h1		Returns the party PokemonData->unk_30 string printed with Text_Print/MeasureTextWidth and installed as message bank pointer for battle text.	applied@40e805f
+func_84307EAC	SetEntityScale	h1		Sets the entity scale vector unk_030 uniformly to arg1, complementing the GetModelWidth/GetModelHeight getters.	applied@40e805f
+func_84365558	WaterSurface_DrawLit	h1		Renders the D_8439E680 radial-wave water surface with the lit gsSPSetLights2 DL D_84389458, twin of WaterSurface_Draw for the other surface.	applied@40e805f
+func_8436EEF0	ScreenTransition_SetState	h1		Sets gTransitionState/gTransitionSpeed and the initial wipe offset; sibling of ScreenTransition_GetState, Update, Draw and Apply.	applied@40e805f
+func_8436E920	GlowEmitters_Reset	h1		Zeroes both D_843C49C0 glow-emitter slots; invoked from stage-effect init func_84359380 alongside the texture setup.	applied@40e805f
+func_8436E944	GlowEmitter_Allocate	h1		Returns the index of a free D_843C49C0 emitter after clearing its 20 particles; the handle stored as unk_01E by func_8435CAE8.	applied@40e805f
+func_8436EB54	GlowEmitter_Update	h1		Ages the 20 particles of a D_843C49C0 emitter, killing expired ones and applying gravity (y -= 0.75).	applied@40e805f
+func_8436ECB0	GlowParticle_Draw	h1		Builds scale and translate matrices for one Particle and emits the gParticleRenderDL soft radial-textured quad.	applied@40e805f
+func_84369C80	ParticleSystem_UpdateEmitter	h1		Advances the 15 segments of an unk_D_843ACA10 emitter, the update step between ParticleSystem_Spawn and ParticleSystem_TickAll.	applied@40e805f
+func_8436A808	WaterParticle_CalcOffsetRoll	h1		guRotateRPYF(90, roll, roll) offset variant of WaterParticle_CalcOffset used when packing water-splash vertices.	applied@40e805f
+func_8436B140	WaterParticlePool_InitAlt	h1		Resets the second 50-slot D_843B8340 pool of unk_D_843ADA80, mirroring WaterParticlePool_Init in fragment62_354CD0.	applied@40e805f
+func_8436B270	WaterParticlePool_SpawnAlt	h1		Spawn counterpart for the D_843B8340 pool, a twin of WaterParticlePool_Spawn with the same 20-particle setup.	applied@40e805f
+func_8436BFB8	WaterParticleSystems_Spawn	h1		42-argument spawner filling a free WaterParticleSystem slot; invoked from stage effects func_8435C2C4 and func_8435C4EC with CalcVectorATtoDM positions.	applied@40e805f
+func_8436C3CC	WaterParticle_UpdateSystem	h1		Updates one WaterParticleSystem spray, sibling of WaterParticle_DrawPass and WaterParticle_LoadTextureTiles for the same type.	applied@40e805f
+func_8436CE34	WaterParticleSystems_Render	h1		Renders all live WaterParticleSystems via WaterParticle_DrawPass/LoadTextureTiles; called from the stage draw callback func_8435CA08.	applied@40e805f
+func_84370790	ApplyAccuracyStageMultipliers	h1		Multiplies accuracy unk_44.unk_04 through the D_8438ACB8/D_8438ACD4 stage ratio tables indexed by the attacker accuracy and defender evasion stages.	applied@40e805f
+func_843708A0	MarkAttackFailed	h1		Zeroes gCurrentDamage and sets D_843C4DA4, the failure flag checked by UpdateDamageAccumulator and HandleMoveEffectFlags paths.	applied@40e805f
+func_8436FC10	ApplyDamageRandomFactor	h1		Multiplies gCurrentDamage by a random 0xD9-0xFF over 255, the standard 85-100 percent damage spread of the battle engine.	applied@40e805f
+func_84370B0C	ApplyParalysisSpeedCut	h1		Quarters the speed stat unk_2E when the status word unk_15 has bit 0x40 set, matching Gen 1 paralysis.	applied@40e805f
+func_84370B44	ApplyBurnAttackCut	h1		Halves the attack stat unk_2A when the status word unk_15 has bit 0x10 set, matching Gen 1 burn.	applied@40e805f
+D_8438ACB8	gStatStageMultipliers	h1	unk_D_8438ACB8:StatStageMultiplier	Thirteen numerator/denominator pairs (25/100 up to 4/1) indexed by stat stage in ScaleStatValue and func_84370790.	applied@40e805f
+D_8438ACD4	gStatStageMultipliersAlt	h1		Alternative stage ratio pairs selected in func_84370790 when D_8438AC60[0] is 1, replacing the default gStatStageMultipliers entries.	applied@40e805f
+D_8438ACF0	gTypeEffectivenessTable	h1	unk_D_8438ACF0:TypeEffectivenessEntry	Triples of attacker type, defender type and multiplier/10 walked in func_84371974 until the 0xFF terminator to scale gCurrentDamage.	applied@40e805f
+D_8438E778	gPokemonPortraitImage0	h1		Assigned the img_p of the first 0x4C x 0x4C FramebufferImage and used as the 76x76 portrait texture source for player 0 in func_8434AAEC.	applied@40e805f
+D_8438E77C	gPokemonPortraitImage1	h1		Assigned the img_p of the second 0x4C x 0x4C FramebufferImage and used as the 76x76 portrait texture source for player 1 in func_8434AAEC.	applied@40e805f
+D_843C523C	gDefenderBattleEntity	h1		Assigned the target entity beside gCurrentBattleEntity in func_84373570 and swapped with it for counter-attacks; its HP and stats take the damage.	applied@40e805f
+func_8430F500	DemoFeedScriptedInput	h1		Steps the D_84385758 wait/button table injecting buttonPressed/buttonDown into the D_84390150 Controller for automated playback.	applied@40e805f
+func_8430F458	Entities_ShowAllModels	h1		Sets visibility bit 1 on both entities' main and unk_728 graph nodes, the show counterpart of func_8430F4AC.	applied@40e805f
+func_8430F4AC	Entities_HideAllModels	h1		Clears visibility bit 1 on both entities' main and unk_728 graph nodes; triggered with the demo hide button.	applied@40e805f
+func_843109F4	DrawLevelNumber	h1		sprintf-formats arg2 and draws it as 8x6 digit sprites from D_300B870, always called with PokemonData->unk_24 level.	applied@40e805f
+func_84313750	Text_PrintRightAligned	h1		Text_Print shifted left by strlen * 6 chars, used to right-align move names and the ?????? prompts in the battle UI.	applied@40e805f
+func_8431379C	DrawCounterLeftToRight	h1		Draws a "%3d/%3d" ratio as 8x6 digit sprites from D_300B870 advancing rightward; used for the four move PP counters.	applied@40e805f
+func_84313908	DrawCounterRightToLeft	h1		Draws the same "%3d/%3d" digit-sprite ratio advancing leftward from the start x, right-aligning the PP counters.	applied@40e805f
+func_84315BC0	Dialog_PrintLineIfSet	h1		Prints a dialog line with Text_Print only when the buffer is non-empty and returns 1; the per-line helper of RenderDialogBox.	applied@40e805f
+func_84315D88	Dialog_OpenColoredWindow	h1		Computes the window fov via Matrix_Decompose and starts the 30-percent zoom of the player-colored dialog window drawn by func_84315C28.	applied@40e805f
+func_84315EC0	Dialog_ZoomColoredWindow	h1		Approaches the full window fov with Math_ApproachF32 and redraws the colored window, returning 1 when the zoom completes.	applied@40e805f
+func_843160C0	Dialog_OpenDarkWindow	h1		Opens the black Text_DrawWindowRect variant at a fixed 0xA0 x 0x78 center used for dialog mode 0xD.	applied@40e805f
+func_843161F8	Dialog_ZoomDarkWindow	h1		Zoom tick for the dark dialog window, returning 1 once the fov reaches its target so RenderDialogBox can take over.	applied@40e805f
+func_843190A8	Dialog_RunWindowSequence	h1		Three-state driver that opens the colored or dark window, zooms it via the Dialog_Zoom functions, then holds RenderDialogBox for 0x46 or 0x2D frames.	applied@40e805f
+D_8439037A	gSavedPrimColorR	h1		Captured prim red saved from a particle by func_8432FEC4, restored by func_8432FEEC and fed to ColorRectNode_SetColor for the stage rect.	applied@40e805f
+D_8439037C	gSavedPrimColorG	h1		Captured prim green component saved and restored alongside gSavedPrimColorR by the particle color capture pair.	applied@40e805f
+D_8439037E	gSavedPrimColorB	h1		Captured prim blue component saved and restored alongside gSavedPrimColorR by the particle color capture pair.	applied@40e805f
+D_8439039A	gBlendColorR	h1		Passed with its G/B/A siblings as the four arguments of the gDPSetBlendColor wrapper func_81405B00 in Ui_DrawPanel, beside the named gPrimColor/gEnvColor/gFogColor groups.	applied@40e805f
+D_8439039C	gBlendColorG	h1		Green component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f
+D_8439039E	gBlendColorB	h1		Blue component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f
+D_843903A0	gBlendColorA	h1		Alpha component of the blend color group fed to gDPSetBlendColor by Ui_DrawPanel.	applied@40e805f

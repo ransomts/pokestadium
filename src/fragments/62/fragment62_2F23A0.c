@@ -90,7 +90,7 @@ f32 GetEntityXOffset(unk_D_84390010* arg0) {
     return 150.0f;
 }
 
-void func_84307EAC(unk_D_84390010* arg0, f32 arg1) {
+void SetEntityScale(unk_D_84390010* arg0, f32 arg1) {
     arg0->unk_000.unk_030.x = arg1;
     arg0->unk_000.unk_030.y = arg1;
     arg0->unk_000.unk_030.z = arg1;
@@ -151,7 +151,7 @@ f32 func_84308058(unk_D_84390010* arg0) {
     return (GetModelHeight(arg0) * 2) / 50.0f;
 }
 
-s16 func_8430808C(unk_D_84390010* arg0) {
+s16 GetCurrentMoveId(unk_D_84390010* arg0) {
     return arg0->unk_654.unk_38.unk_5A;
 }
 
@@ -167,21 +167,21 @@ void func_84308148(unk_D_84390010* arg0, Vec3s* arg1) {
     arg1->z = arg0->unk_000.unk_01E.z;
 }
 
-u16 func_84308164(unk_D_84390010* arg0) {
+u16 GetCurrentHP(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     return ptr->unk_02;
 }
 
-s16 func_84308190(unk_D_84390010* arg0) {
+s16 GetPlayerSideYaw(unk_D_84390010* arg0) {
     return arg0->unk_4B0 << 0xE;
 }
 
-s32 func_843081A4(s32 arg0) {
+s32 GetSpeciesOfPlayerIndex(s32 arg0) {
     return D_84390010[arg0]->unk_000.unk_01A;
 }
 
-s32 func_843081BC(unk_D_84390010* arg0) {
+s32 GetSpecies(unk_D_84390010* arg0) {
     return arg0->unk_000.unk_01A;
 }
 
@@ -190,13 +190,13 @@ u8 func_843081C4(unk_D_84390010* arg0) {
     return ret;
 }
 
-void func_843081D4(unk_D_84390010* arg0, Vec3f* arg1) {
+void GetEntityPosition(unk_D_84390010* arg0, Vec3f* arg1) {
     arg1->x = arg0->unk_000.unk_024.x;
     arg1->y = arg0->unk_000.unk_024.y;
     arg1->z = arg0->unk_000.unk_024.z;
 }
 
-void func_843081F0(unk_D_84390010* arg0, Vec3f* arg1) {
+void GetEntityCenterPosition(unk_D_84390010* arg0, Vec3f* arg1) {
     f32 var_fs0 = 0.0f;
 
     if (func_84307AE0(arg0->unk_000.unk_01A, &D_843845F0, 1) != 0) {
@@ -273,7 +273,7 @@ char* GetPokemonMessageString(unk_D_84390010* arg0) {
     return GetMessageString(NULL, 0, gPokemonMessageBank, arg0->unk_654.unk_38.unk_5A - 1);
 }
 
-u8* func_8430862C(unk_D_84390010* arg0) {
+u8* GetPokemonName(unk_D_84390010* arg0) {
     return arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30;
 }
 

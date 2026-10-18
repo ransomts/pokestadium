@@ -125,7 +125,7 @@ s32 Math_StepTowards(s16* arg0, s16 arg1, s16 arg2) {
     return 1;
 }
 
-s32 func_8430C59C(s16* arg0, s16 arg1, f32 arg2) {
+s32 Math_StepTowardsProportional(s16* arg0, s16 arg1, f32 arg2) {
     f32 var_fv0;
     s16 temp_v0;
 
@@ -174,7 +174,7 @@ s32 func_8430C59C(s16* arg0, s16 arg1, f32 arg2) {
     return 1;
 }
 
-void func_8430C718(f32* arg0, f32 arg1, f32 arg2) {
+void Math_ExponentialApproach(f32* arg0, f32 arg1, f32 arg2) {
     *arg0 = *arg0 + ((arg1 - *arg0) * arg2);
     if ((*arg0 < 0.001) && (*arg0 > -0.001)) {
         *arg0 = 0.0f;

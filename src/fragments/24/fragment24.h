@@ -47,17 +47,17 @@ typedef struct unk_func_8830867C_02C_0B4_030 {
     /* 0x3C */ char unk3C[0x18];
 } unk_func_8830867C_02C_0B4_030; // size = 0x54
 
-typedef struct unk_func_8830867C_02C_0B4 {
+typedef struct YesNoDialog {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_8830867C_02C_0B4_030* unk_30;
     /* 0x34 */ unk_func_88200FA0_030_038 unk_34;
-} unk_func_8830867C_02C_0B4; // size = 0x40
+} YesNoDialog; // size = 0x40
 
-typedef struct unk_func_8830867C_02C_0C0 {
+typedef struct PpChangeBanner {
     /* 0x00 */ unk_func_882173EC unk_00;
     /* 0x38 */ s32 unk_38;
-} unk_func_8830867C_02C_0C0; // size = 0x3C
+} PpChangeBanner; // size = 0x3C
 
 typedef struct unk_func_8830867C_034_03C_038_02C_000 {
     /* 0x00 */ char unk00[0x8];
@@ -438,10 +438,10 @@ typedef struct unk_func_8830867C_02C {
     /* 0x0A8 */ unk_func_8830867C_048* unk_0A8;
     /* 0x0AC */ unk_func_8830867C_04C* unk_0AC;
     /* 0x0B0 */ unk_func_889000C4* unk_0B0;
-    /* 0x0B4 */ unk_func_8830867C_02C_0B4* unk_0B4;
+    /* 0x0B4 */ YesNoDialog* unk_0B4;
     /* 0x0B8 */ unk_func_8850CD44* unk_0B8;
     /* 0x0BC */ unk_func_882173EC* unk_0BC;
-    /* 0x0C0 */ unk_func_8830867C_02C_0C0* unk_0C0;
+    /* 0x0C0 */ PpChangeBanner* unk_0C0;
     /* 0x0C4 */ unk_func_882173EC* unk_0C4;
     /* 0x0C8 */ unk_func_882173EC* unk_0C8;
     /* 0x0CC */ unk_func_88200FA0_030_038 unk_0CC;
@@ -574,7 +574,7 @@ typedef struct unk_func_88313894_020 {
     /* 0x1C */ s32 unk_1C;
 } unk_func_88313894_020; // size = 0x20
 
-typedef struct unk_func_88316128 {
+typedef struct PokemonListEntry {
     /* 0x00 */ char unk00[0x8];
     /* 0x08 */ u8 unk_08;
     /* 0x09 */ char unk09[0xD];
@@ -589,7 +589,7 @@ typedef struct unk_func_88316128 {
     /* 0x38 */ u8 unk_38;
     /* 0x39 */ char unk39[0xA];
     /* 0x43 */ u8 unk_43;
-} unk_func_88316128; // size >= 0x44
+} PokemonListEntry; // size >= 0x44
 
 extern char** D_8831A4C0;
 extern char** gMoveListMessageTable;
@@ -598,17 +598,17 @@ extern char** gMoveNamesTable;
 extern char** D_8831A4D0;
 extern char** gMessageBank_MoveNames;
 extern char** gMsgBank_StatNames;
-extern Color_RGBA8 D_8831727C;
-extern Color_RGBA8 D_88317280;
-extern Color_RGBA8 D_88317284;
+extern Color_RGBA8 gPartyLabelColor;
+extern Color_RGBA8 gGbLabelColor;
+extern Color_RGBA8 gN64LabelColor;
 extern u32 D_883176D8[];
 extern u32 D_88317920[];
 extern u32 D_88317F28[];
 extern u32 gCheckerboardPattern[];
-extern u32 D_883186E8[];
+extern u32 gCheckerboardPattern2[];
 extern u32 gTitleScreenImage[];
 extern u32 gFontBitmapData[];
-extern unk_D_8831A1F8 D_8831A1F8[];
+extern SortComparatorFunc gListSortComparators[];
 
 void func_88300020(unk_func_88001300_000* arg0, s32 arg1, s32 arg2);
 s32 func_88300090(unk_func_88001300_000* arg0, s32 arg1, s32 arg2);
@@ -773,10 +773,10 @@ void UnusedFragmentFunctionA(void);
 void func_8830FA18(void);
 void SetListItemText(unk_func_8830867C_040* arg0, unk_func_8850878C* arg1, char* arg2);
 void InitPokemonSelectFragment(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4);
-void func_883103CC(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1);
-void func_883105D4(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1);
-void func_88310650(unk_func_8830867C_040* arg0, s32 arg1);
-s32 func_8831067C(unk_func_8830867C_040* arg0, Controller* arg1);
+void UpdateMoveSelectionDisplay(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1);
+void GetSelectedMoves(unk_func_8830867C_040* arg0, unk_func_8830867C_02C_C54_024* arg1);
+void SetMoveSelection(unk_func_8830867C_040* arg0, s32 arg1);
+s32 HandleMoveSelectionInput(unk_func_8830867C_040* arg0, Controller* arg1);
 s32 Fragment_HandleControllerInput(unk_func_8830867C_040* arg0, Controller* arg1);
 void MenuItem_InitCallback(unk_func_8830867C_040_05C* arg0, unk_func_8830867C_040* arg1);
 s32 MenuItem_ProcessInput(unk_func_8830867C_040_05C* arg0, Controller* arg1);
@@ -798,7 +798,7 @@ void SubFragment_Init(unk_func_8830867C_04C_080* arg0, unk_func_8830867C_04C* ar
 s32 HandleFragmentTransition(unk_func_8830867C_04C_080* arg0);
 s32 ProcessFragmentStateMachine(unk_func_8830867C_04C_080* arg0);
 void SetupMoveListForFragment(unk_func_8830867C_04C_080* arg0);
-s32 func_883125B4(unk_func_8830867C_04C_080* arg0, Controller* arg1);
+s32 SubFragment_HandleInput(unk_func_8830867C_04C_080* arg0, Controller* arg1);
 s32 IsFragmentReady(unk_func_8830867C_04C* arg0, Controller* arg1);
 void Fragment_Reset(unk_func_8830867C_04C* arg0);
 void Fragment_Close(unk_func_8830867C_04C* arg0);
@@ -806,76 +806,76 @@ s32 Fragment_MainLoop(unk_func_8830867C_04C* arg0, Controller* arg1);
 void DrawNumberedSelectionBox(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030_1CEA00* arg5);
 void DrawLabelSelectionBox(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030_1CEA00* arg5);
 void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4);
-void func_88313740(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1);
-void func_883137C4(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1, unk_func_88313894_020* arg2);
-void func_88313894(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1);
-void func_88313950(char* arg0, s32 arg1, s32 arg2);
-void func_883139E8(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2);
-void func_88313A34(unk_func_8830867C_048* arg0);
-void func_88313A94(unk_func_8830867C_048* arg0);
-void func_88313B4C(unk_func_8830867C_048* arg0);
-void func_88313B64(unk_func_8830867C_048* arg0, s32 arg1);
-s32 func_88313B90(unk_func_8830867C_048* arg0, Controller* arg1);
-void func_88313C24(unk_func_8830867C_048_048* arg0, unk_func_8830867C_048* arg1);
-s32 func_88313C70(unk_func_8830867C_048_048* arg0, Controller* arg1);
-s32 func_88313E50(unk_func_8830867C_048* arg0, Controller* arg1);
-void func_88313F24(s32 arg0, s32 arg1, s8* arg2, s32 arg3);
-void func_88313FA0(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-s32 func_883142F4(unk_func_8830867C_02C_0B4* arg0, Controller* arg1);
-s32 func_88314340(unk_func_8830867C_02C_0B4* arg0, Controller* arg1);
-void func_88314484(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-s32 func_88314518(unk_func_882173EC* arg0);
-s32 func_88314574(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
-void func_88314920(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3);
-void func_88314950(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-s32 func_883149E4(unk_func_8830867C_02C_0C0* arg0);
-s32 func_88314A38(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2);
-void func_883151B8(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88001300_000_010 arg4);
-void func_883151E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-s32 func_8831527C(unk_func_882173EC* arg0);
-s32 func_883152D0(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
-void func_883156B8(unk_func_882173EC* arg0, char* arg1, char* arg2, unk_func_88001300_000_010 arg3);
-void func_883156E8(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-s32 func_8831577C(unk_func_882173EC* arg0);
-void func_883157D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
-s32 func_88315A6C(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
-void func_88315C98(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3);
+void BoxMoveDialog_Link(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1);
+void MarkUnavailableBoxEntries(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1, unk_func_88313894_020* arg2);
+void BoxMoveDialog_DisableInvalidEntries(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1);
+void FormatBoxLabel(char* arg0, s32 arg1, s32 arg2);
+void SetBoxMoveHeaderText(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2);
+void SyncBoxListSelection(unk_func_8830867C_048* arg0);
+void BoxMoveDialog_Open(unk_func_8830867C_048* arg0);
+void BoxMoveDialog_Close(unk_func_8830867C_048* arg0);
+void BoxMoveDialog_SetSelection(unk_func_8830867C_048* arg0, s32 arg1);
+s32 BoxMoveDialog_HandleInput(unk_func_8830867C_048* arg0, Controller* arg1);
+void BoxMoveController_Init(unk_func_8830867C_048_048* arg0, unk_func_8830867C_048* arg1);
+s32 BoxMoveController_HandleInput(unk_func_8830867C_048_048* arg0, Controller* arg1);
+s32 BoxMoveDialog_Run(unk_func_8830867C_048* arg0, Controller* arg1);
+void ReturnToMenuDialog_DrawItem(s32 arg0, s32 arg1, s8* arg2, s32 arg3);
+void ReturnToMenuDialog_Create(YesNoDialog* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
+s32 ReturnToMenuDialog_HandleInput(YesNoDialog* arg0, Controller* arg1);
+s32 ReturnToMenuDialog_Run(YesNoDialog* arg0, Controller* arg1);
+void MoveChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 MoveChangeBanner_Update(unk_func_882173EC* arg0);
+s32 MoveChangeBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
+void MoveChangeBanner_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3);
+void PpChangeBanner_Init(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 PpChangeBanner_Update(PpChangeBanner* arg0);
+s32 PpChangeBanner_Draw(PpChangeBanner* arg0, s32 arg1, s32 arg2);
+void PpChangeBanner_Start(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88001300_000_010 arg4);
+void LevelChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 LevelChangeBanner_Update(unk_func_882173EC* arg0);
+s32 LevelChangeBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
+void LevelChangeBanner_Start(unk_func_882173EC* arg0, char* arg1, char* arg2, unk_func_88001300_000_010 arg3);
+void BoxMoveBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 BoxMoveBanner_Update(unk_func_882173EC* arg0);
+void DrawBoxLabel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
+s32 BoxMoveBanner_Draw(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
+void BoxMoveBanner_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_func_88001300_000_010 arg3);
 
-s32 ComparePointers(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField2C(unk_func_88316128*, unk_func_88316128*);
-s32 func_88315D8C(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField2E(unk_func_88316128*, unk_func_88316128*);
-s32 func_88315E14(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField30(unk_func_88316128*, unk_func_88316128*);
-s32 func_88315E9C(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField32(unk_func_88316128*, unk_func_88316128*);
-s32 func_88315F24(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField34(unk_func_88316128*, unk_func_88316128*);
-s32 func_88315FAC(unk_func_88316128*, unk_func_88316128*);
-s32 CompareByField36(unk_func_88316128*, unk_func_88316128*);
-s32 func_88316034(unk_func_88316128*, unk_func_88316128*);
-s32 func_88316078(unk_func_88316128*, unk_func_88316128*);
+s32 ComparePointers(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField2C(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField2CDescending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField2E(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField2EDescending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField30(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField30Descending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField32(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField32Descending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField34(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField34Descending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField36(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField36Descending(PokemonListEntry*, PokemonListEntry*);
+s32 CompareByField16(PokemonListEntry*, PokemonListEntry*);
 s32 func_883160BC(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
-s32 func_883160DC(unk_func_88316128* arg0, unk_func_88316128* arg1);
-s32 func_88316128(unk_func_88316128*, unk_func_88316128*);
+s32 CompareByField43(PokemonListEntry* arg0, PokemonListEntry* arg1);
+s32 CompareByField38(PokemonListEntry*, PokemonListEntry*);
 s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
 s32 CompareSpeciesID(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
-int func_88316214(unk_func_8830867C_02C_0CC* arg0, u8* arg1);
+int PokemonIsWithinLevelRange(unk_func_8830867C_02C_0CC* arg0, u8* arg1);
 s32 PokemonHasTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C* arg1);
 s32 PokemonHasMoves(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_024* arg1);
-s32 func_883163A4(unk_func_8830867C_02C_0CC* arg0, s32* arg1);
-s32 func_883163B8(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* arg1);
-s32 func_88316480(unk_func_88316128* arg0, u8* arg1);
-void func_883164C0(unk_func_8830867C_02C_0E4*, s32, s32, MemoryPool*);
-void func_883166A0(unk_func_8830867C_02C_144*);
-void func_883167CC(unk_func_88200FA0_030_038*, unk_func_8830867C_02C_144*);
-s32 func_883168B4(unk_func_8830867C_02C_144*);
-void func_88316A58(unk_func_8830867C_02C_144*, s32);
-void func_88316BEC(unk_func_8830867C_02C_154*, MemoryPool* arg1);
-void func_88316D5C(unk_func_8830867C_02C_154*);
-void func_88316DB8(unk_func_8830867C_02C_154*);
-void func_88316F98(unk_func_88200FA0_030_038*, unk_func_8830867C_02C_1A8*, unk_func_8830867C_02C_154*, s32, s32);
-void func_88317144(unk_func_8830867C_04C_030_02C_000*);
+s32 PokemonMatchesSpecies(unk_func_8830867C_02C_0CC* arg0, s32* arg1);
+s32 PokemonHasExactTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* arg1);
+s32 PokemonAllowedInCup(PokemonListEntry* arg0, u8* arg1);
+void MonSlots_Init(unk_func_8830867C_02C_0E4*, s32, s32, MemoryPool*);
+void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144*);
+void CollectMonEntryPtrs(unk_func_88200FA0_030_038*, unk_func_8830867C_02C_144*);
+s32 DetectGbsDataChanges(unk_func_8830867C_02C_144*);
+void WriteBoxMonsToGbs(unk_func_8830867C_02C_144*, s32);
+void InitItemSources(unk_func_8830867C_02C_154*, MemoryPool* arg1);
+void ItemSource_ReadFromGbs(unk_func_8830867C_02C_154*);
+void ItemSource_WriteToGbs(unk_func_8830867C_02C_154*);
+void BuildUsableItemList(unk_func_88200FA0_030_038*, unk_func_8830867C_02C_1A8*, unk_func_8830867C_02C_154*, s32, s32);
+void ConsumeUsedItem(unk_func_8830867C_04C_030_02C_000*);
 
 
 #endif // _FRAGMENT24_H_

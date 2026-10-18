@@ -50,7 +50,7 @@ s32 func_8431AE20(s32 arg0) {
     return 0;
 }
 
-void func_8431AE4C(s32 arg0) {
+void SetCurrentPlayerIndex(s32 arg0) {
     gBattleState.unk_00->unk_2C = arg0;
 }
 
@@ -82,7 +82,7 @@ void GetEntityGroundPosition(unk_D_84390010* arg0, Vec3f* arg1) {
 
 void ResolveEntityPosition(unk_D_84390010* arg0, Vec3f* arg1, s32 arg2) {
     if (func_80015390(&arg0->unk_000, arg2, arg1) == NULL) {
-        func_843081F0(arg0, arg1);
+        GetEntityCenterPosition(arg0, arg1);
         arg1->x = GetEntityXOffset(arg0);
         arg1->z = 0.0f;
     }
@@ -145,7 +145,7 @@ void func_8431B174(CameraStruct* arg0) {
 
     Math_CalcDistAndAngles(&arg0->unk_60.eye, &arg0->unk_60.at, &sp30, &sp28, &sp2A);
     gBattleState.unk_00->unk_7A += 0x38E0;
-    func_8430C718(&gBattleState.unk_00->unk_68, 0.0f, 0.18f);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_68, 0.0f, 0.18f);
 
     temp_fv0 = COSS(gBattleState.unk_00->unk_7A) * gBattleState.unk_00->unk_68;
 
@@ -252,7 +252,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     arg0->unk_24.fovy = 60.0f;
 
     Battle_FinishTurn();
-    func_843081F0(temp_s0, &sp58);
+    GetEntityCenterPosition(temp_s0, &sp58);
 
     sp58.y /= 3.0f;
     if (temp_s0->unk_654.unk_34 & 0x4000) {
@@ -267,7 +267,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
 
     temp_s0 = D_84390010[arg1];
     if (temp_s0->unk_448.unk_24.unk_0C.x == 0.0f) {
-        func_843081F0(temp_s0, &sp58);
+        GetEntityCenterPosition(temp_s0, &sp58);
     } else {
         Vector_Copy(&sp58, &temp_s0->unk_448.unk_24.unk_0C);
         sp58.y += temp_s0->unk_000.unk_024.y - GetModelBaseY(temp_s0);
@@ -275,11 +275,11 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
 
     sp54 = ClampScaledDistance(temp_s0, 3.0f, 300.0f);
     if ((func_84307AE0(temp_s0->unk_000.unk_01A, &sp50, 1) != 0) && (arg1 == 1)) {
-        func_8431BB80(arg0, sp58, 0, func_84308190(temp_s0) - (temp_s0->unk_4B0 * 0x6AA4), sp54, 20.0f);
+        func_8431BB80(arg0, sp58, 0, GetPlayerSideYaw(temp_s0) - (temp_s0->unk_4B0 * 0x6AA4), sp54, 20.0f);
     } else if (func_84307AE0(temp_s0->unk_000.unk_01A, (u8*)&sp4C, 2) != 0) {
-        func_8431BB80(arg0, sp58, 0, func_84308190(temp_s0) - (temp_s0->unk_4B0 * 0x6AA4), sp54, 20.0f);
+        func_8431BB80(arg0, sp58, 0, GetPlayerSideYaw(temp_s0) - (temp_s0->unk_4B0 * 0x6AA4), sp54, 20.0f);
     } else {
-        func_8431BB80(arg0, sp58, 0, func_84308190(temp_s0) - (temp_s0->unk_4B0 * 0x754E), sp54, 0.0f);
+        func_8431BB80(arg0, sp58, 0, GetPlayerSideYaw(temp_s0) - (temp_s0->unk_4B0 * 0x754E), sp54, 0.0f);
     }
 }
 
@@ -538,7 +538,7 @@ void func_8431BD94(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED f32 arg2) {
         var_fv1 = 1.0f;
     }
 
-    func_8430C718(&sp40.y, sp58.y, var_fv1);
+    Math_ExponentialApproach(&sp40.y, sp58.y, var_fv1);
     arg0->unk_60.at.y = sp40.y;
     SmoothFloatPair(&arg0->unk_60.at.x, &arg0->unk_60.eye.x);
     SmoothFloatPair(&arg0->unk_60.at.y, &arg0->unk_60.eye.y);
@@ -655,9 +655,9 @@ s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_D_84390010* arg1) {
         func_8431C7A4(arg0, arg1);
     }
 
-    func_843081F0(arg1, &sp84);
+    GetEntityCenterPosition(arg1, &sp84);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BB80(arg0, sp84, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BB80(arg0, sp84, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
 
     if (arg0->unk_60.eye.y <= 13.0f) {
         arg0->unk_60.eye.y = 13.0f;
@@ -665,10 +665,10 @@ s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_D_84390010* arg1) {
 
     Math_CalcDistAndAngles(&sp84, &arg0->unk_60.eye, &gCameraDistCurrent, &sp4C, &sp50);
     Math_CalcDistAndAngles(&sp84, &sp60, &gCameraDistTarget, &sp4E, &sp52);
-    func_8430C718(&gCameraDistTarget, gCameraDistCurrent, 0.2f);
-    func_8430C718(&gBattleState.unk_00->unk_94.z, 0.2f, 0.03f);
-    func_8430C59C(&sp52, sp50, gBattleState.unk_00->unk_94.z);
-    func_8430C59C(&sp4E, sp4C, gBattleState.unk_00->unk_94.z);
+    Math_ExponentialApproach(&gCameraDistTarget, gCameraDistCurrent, 0.2f);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, 0.2f, 0.03f);
+    Math_StepTowardsProportional(&sp52, sp50, gBattleState.unk_00->unk_94.z);
+    Math_StepTowardsProportional(&sp4E, sp4C, gBattleState.unk_00->unk_94.z);
     func_8431BB80(arg0, sp84, sp4E, sp52, gCameraDistTarget, 0.0f);
 
     if ((sp4C == sp4E) && (sp50 == sp52)) {
@@ -707,11 +707,11 @@ void func_8431CC38(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vector_Copy(&sp3C, &arg0->unk_60.at);
     GetEntityGroundPosition(arg1, &sp60);
     Camera_SetViewParameters(&sp60, &sp54, ptr->unk_4C, ptr->unk_44, ptr->unk_46);
-    func_8430C718(&arg0->unk_60.at.y, sp54.y, 0.1f);
+    Math_ExponentialApproach(&arg0->unk_60.at.y, sp54.y, 0.1f);
     if (arg0->unk_60.at.y < -10.0f) {
         arg0->unk_60.at.y = -10.0f;
     }
-    func_8430C718(&arg0->unk_60.eye.y, func_84308548(arg1) * 4.0f, 0.04f);
+    Math_ExponentialApproach(&arg0->unk_60.eye.y, func_84308548(arg1) * 4.0f, 0.04f);
 }
 
 void func_8431CCFC(CameraStruct* arg0, unk_D_84390010* arg1) {
@@ -728,13 +728,13 @@ void func_8431CCFC(CameraStruct* arg0, unk_D_84390010* arg1) {
 
     Vector_Copy(&sp68, &arg0->unk_60.at);
     Vector_Copy(&sp5C, &arg0->unk_60.eye);
-    func_843081F0(arg1, &sp74);
+    GetEntityCenterPosition(arg1, &sp74);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BAB4(arg1, arg0, sp74, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, sp74, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, sp74, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, sp74, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
     Math_CalcDistAndAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &gCameraDistCurrent, &sp4C, &sp50);
     Math_CalcDistAndAngles(&sp68, &sp5C, &gCameraDistTarget, &sp4E, &sp52);
-    func_8430C718(&gCameraDistTarget, gCameraDistCurrent, 0.05f);
+    Math_ExponentialApproach(&gCameraDistTarget, gCameraDistCurrent, 0.05f);
     Math_StepTowards(&sp52, sp50, 0x108);
     Math_StepTowards(&sp4E, sp4C, 0xB6);
     Math_CalcDistAndAngles(&sp68, &arg0->unk_60.at, &sp58, &sp56, &sp54);
@@ -765,7 +765,7 @@ void func_8431CFA4(CameraStruct* arg0, unk_D_84390010* arg1) {
 
     gCameraDistTarget = ClampScaledDistance(arg1, 8.0f, 500.0f);
     Math_CalcDistAndAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &gCameraDistCurrent, &sp26, &sp24);
-    func_8430C718(&gCameraDistCurrent, gCameraDistTarget, 0.03f);
+    Math_ExponentialApproach(&gCameraDistCurrent, gCameraDistTarget, 0.03f);
     Math_StepTowards(&sp26, 0xE38, 0x5B);
     func_8431BBDC(arg0, sp26, sp24, gCameraDistCurrent, 0.0f);
 }
@@ -804,12 +804,12 @@ s32 Battle_CheckPlayerAction(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2,
     if (gCameraPreset.unk_3C != 200.0f) {
         arg0->unk_24.fovy = gCameraPreset.unk_3C;
     } else if (arg3 == 1) {
-        func_8430C718(&arg0->unk_24.fovy, 30.0f, 0.06f);
+        Math_ExponentialApproach(&arg0->unk_24.fovy, 30.0f, 0.06f);
     } else {
         arg0->unk_24.fovy = 30.0f;
     }
 
-    func_8430C718(&gBattleState.unk_00->unk_94.z, gCameraPreset.unk_34, gCameraPreset.unk_38);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, gCameraPreset.unk_34, gCameraPreset.unk_38);
     Camera_SetViewParameters(&gCameraPreset.unk_00, &sp54, gCameraPreset.unk_30, gCameraPreset.unk_26, gCameraPreset.unk_28);
     Vector_Copy(&sp48, &arg0->unk_60.eye);
     Math_CalcDistAndAngles(&sp48, &sp54, &sp38, &sp32, &sp30);
@@ -848,7 +848,7 @@ s32 Battle_ApplySpecialCamera(CameraStruct* arg0, unk_D_84390010* arg1) {
         arg0->unk_24.fovy = 30.0f;
     }
 
-    func_8430C718(&gBattleState.unk_00->unk_94.z, gCameraPreset.unk_34, gCameraPreset.unk_38);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, gCameraPreset.unk_34, gCameraPreset.unk_38);
     GetEntityGroundPosition(arg1, &sp6C);
     Matrix_Decompose(&gCameraPreset.unk_00, &sp6C, &sp44, &sp36, &sp34);
 
@@ -951,14 +951,14 @@ void Battle_PlayCameraTransition(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D
     sp30 = ClampScaledDistance(arg2, arg0->unk_20, 500.0f);
     sp2C = ClampScaledDistance(arg2, arg0->unk_10, 500.0f);
     sp28 = ClampScaledDistance(arg2, arg0->unk_24, 500.0f);
-    sp20 = func_84308190(arg2);
+    sp20 = GetPlayerSideYaw(arg2);
 
     func_8431D704(arg0->unk_00, sp20 - (arg0->unk_02 * arg2->unk_4B0), arg0->unk_14,
-                  func_84308190(arg2) - (arg0->unk_16 * arg2->unk_4B0));
+                  GetPlayerSideYaw(arg2) - (arg0->unk_16 * arg2->unk_4B0));
     func_8431D750(sp34, sp30);
-    sp20 = func_84308190(arg2);
+    sp20 = GetPlayerSideYaw(arg2);
     func_8431D764(arg0->unk_06, sp20 - (arg0->unk_08 * arg2->unk_4B0), arg0->unk_1A,
-                  func_84308190(arg2) - (arg0->unk_1C * arg2->unk_4B0));
+                  GetPlayerSideYaw(arg2) - (arg0->unk_1C * arg2->unk_4B0));
     func_8431D7B0(sp2C, sp28);
     func_8431D7C4(arg0->unk_28, arg0->unk_2C);
 }
@@ -1003,14 +1003,14 @@ s32 func_8431DA38(CameraStruct* arg0, unk_D_84390010* arg1) {
     s16 sp2A;
     s16 sp28;
 
-    func_8430C718(&arg0->unk_24.fovy, 30.0f, 0.06f);
+    Math_ExponentialApproach(&arg0->unk_24.fovy, 30.0f, 0.06f);
     Vec3f_Set(&sp64, arg1->unk_4B0 * -150.0f, 5.0f, 0.0f);
-    func_8430C718(&gBattleState.unk_00->unk_94.z, 0.2f, 0.06f);
-    Camera_SetViewParameters(&sp64, &sp4C, 100.0f, 0, func_84308190(arg1));
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, 0.2f, 0.06f);
+    Camera_SetViewParameters(&sp64, &sp4C, 100.0f, 0, GetPlayerSideYaw(arg1));
     Vector_Copy(&sp40, &arg0->unk_60.eye);
     Math_CalcDistAndAngles(&sp40, &sp4C, &sp30, &sp2A, &sp28);
     Camera_SetViewParameters(&sp40, &arg0->unk_60.eye, gBattleState.unk_00->unk_94.z * sp30, sp2A, sp28);
-    Camera_SetViewParameters(&sp64, &sp34, 0.0f, 0, func_84308190(arg1));
+    Camera_SetViewParameters(&sp64, &sp34, 0.0f, 0, GetPlayerSideYaw(arg1));
     Vector_Copy(&sp58, &arg0->unk_60.at);
     Math_CalcDistAndAngles(&sp58, &sp34, &sp30, &sp2A, &sp28);
 
@@ -1026,8 +1026,8 @@ s32 func_8431DBEC(UNUSED CameraStruct* arg0) {
     Vec3f sp20;
     f32 var_fv0;
 
-    func_843081F0(D_84390010[0], &sp2C);
-    func_843081F0(D_84390010[1], &sp20);
+    GetEntityCenterPosition(D_84390010[0], &sp2C);
+    GetEntityCenterPosition(D_84390010[1], &sp20);
 
     var_fv0 = sp2C.y - sp20.y;
     if (sp2C.y < sp20.y) {
@@ -1051,13 +1051,13 @@ void func_8431DC78(CameraStruct* arg0, s32 arg1) {
     arg0->unk_24.fovy = 30.0f;
 
     sp40 = D_84390010[arg1];
-    func_843081F0(sp40, &sp60);
+    GetEntityCenterPosition(sp40, &sp60);
     func_8431BB80(arg0, sp60, 0, sp40->unk_4B0 << 0xE, 100.0f, 0.0f);
-    func_843081F0(D_84390010[arg1], &sp54);
+    GetEntityCenterPosition(D_84390010[arg1], &sp54);
 
-    func_843081F0(D_84390010[arg1 == 0], &sp48);
+    GetEntityCenterPosition(D_84390010[arg1 == 0], &sp48);
     sp40 = D_84390010[arg1 == 0];
-    func_843081F0(sp40, &sp60);
+    GetEntityCenterPosition(sp40, &sp60);
 
     if (sp48.y < sp54.y) {
         sp60.y = sp54.y * 1.8f;
@@ -1078,14 +1078,14 @@ s32 func_8431DE30(CameraStruct* arg0, s32 arg1) {
     s16 sp2E;
     s16 sp2C;
 
-    func_8430C718(&gBattleState.unk_00->unk_94.z, 0.1f, 0.05f);
-    func_843081F0(D_84390010[arg1], &sp40);
-    func_843081F0(D_84390010[!arg1], &sp34);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, 0.1f, 0.05f);
+    GetEntityCenterPosition(D_84390010[arg1], &sp40);
+    GetEntityCenterPosition(D_84390010[!arg1], &sp34);
 
     if (sp34.y < sp40.y) {
-        func_843081F0(D_84390010[!arg1], &sp4C);
+        GetEntityCenterPosition(D_84390010[!arg1], &sp4C);
     } else {
-        func_843081F0(D_84390010[!arg1], &sp4C);
+        GetEntityCenterPosition(D_84390010[!arg1], &sp4C);
         sp4C.y *= 1.3f;
     }
 
@@ -1100,7 +1100,7 @@ s32 func_8431DE30(CameraStruct* arg0, s32 arg1) {
 }
 
 void func_8431DF98(CameraStruct* arg0, unk_D_84390010* arg1) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
 
     gBattleState.unk_00->unk_D0.x = GetEntityXOffset(arg1);
     gBattleState.unk_00->unk_D0.z = 0.0f;
@@ -1118,25 +1118,25 @@ void func_8431DF98(CameraStruct* arg0, unk_D_84390010* arg1) {
         gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     }
 
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
 }
 
 void func_8431E118(CameraStruct* arg0, unk_D_84390010* arg1) {
     f32 sp3C;
 
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     sp3C = ClampScaledDistance(arg1, 8.0f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
     func_8431BBDC(arg0, 0, arg1->unk_4B0 << 0xE, sp3C, 0.0f);
 }
 
 void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1) - (arg1->unk_4B0 * 0x31C7), gCameraDistCurrent, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1) - (arg1->unk_4B0 * 0x31C7), gCameraDistCurrent, 0.0f);
 
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
@@ -1149,11 +1149,11 @@ void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
 }
 
 void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0x71C, func_84308190(arg1) - (arg1->unk_4B0 * 0x1555), gCameraDistCurrent,
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0x71C, GetPlayerSideYaw(arg1) - (arg1->unk_4B0 * 0x1555), gCameraDistCurrent,
                   0.0f);
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
@@ -1165,11 +1165,11 @@ void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
 }
 
 void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0xE38, func_84308190(arg1), gCameraDistCurrent, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0xE38, GetPlayerSideYaw(arg1), gCameraDistCurrent, 0.0f);
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
@@ -1183,11 +1183,11 @@ void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     UNUSED s32 pad[4];
     s16 sp3E;
 
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
-    sp3E = func_84308190(arg1);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
+    sp3E = GetPlayerSideYaw(arg1);
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, sp3E - (arg1->unk_4B0 * 0x1555), gCameraDistCurrent,
                   -func_84308548(arg1) * 0.8);
     if (arg2 == 1) {
@@ -1200,10 +1200,10 @@ void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
 }
 
 void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
@@ -1214,17 +1214,17 @@ void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
 }
 
 void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     }
 }
 
 void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
-    func_843081F0(arg1, &gCameraPreset.unk_00);
+    GetEntityCenterPosition(arg1, &gCameraPreset.unk_00);
     Battle_PlayCameraTransition(&D_843849C0[arg2], arg0, arg1);
     Battle_ApplyCameraSettings(arg0, arg1, 1);
     func_8431D5C8(arg0);
@@ -1235,7 +1235,7 @@ void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3)
 
 void func_8431EAB8(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BA5C();
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 * 0xE38, gCameraDistTarget, 0.0f);
@@ -1244,7 +1244,7 @@ void func_8431EAB8(CameraStruct* arg0, unk_D_84390010* arg1) {
 
 void func_8431EBD0(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BA5C();
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0x1555, arg1->unk_4B0 * 0xE38, gCameraDistTarget, 0.0f);
@@ -1252,7 +1252,7 @@ void func_8431EBD0(CameraStruct* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8431ECEC(CameraStruct* arg0, unk_D_84390010* arg1) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 * 0xE38, gCameraDistTarget, 2.0f * func_84308548(arg1));
@@ -1260,7 +1260,7 @@ void func_8431ECEC(CameraStruct* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8431EE08(CameraStruct* arg0, unk_D_84390010* arg1) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 * 0xE38, gCameraDistTarget, -func_84308548(arg1) * 0.8f);
@@ -1271,29 +1271,29 @@ void func_8431EE08(CameraStruct* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8431EF54(CameraStruct* arg0, unk_D_84390010* arg1) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
     ConfigureCameraForModel(arg1, arg0);
 }
 
 void func_8431F050(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 0.5f, 100.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistCurrent, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1) - (arg1->unk_4B0 * 0x1555), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistCurrent, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1) - (arg1->unk_4B0 * 0x1555), gCameraDistTarget, 0.0f);
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     }
 }
 
 void func_8431F194(CameraStruct* arg0, unk_D_84390010* arg1) {
-    func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
+    GetEntityCenterPosition(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
-    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
-    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
+    func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), 0.0f, 0.0f);
+    func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(arg1), gCameraDistTarget, 0.0f);
     ConfigureCameraForModel(arg1, arg0);
 }
 

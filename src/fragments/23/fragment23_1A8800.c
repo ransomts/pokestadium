@@ -223,7 +223,7 @@ void ItemInfoScreenCreate(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3,
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp4C);
 
     sp48 = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp48, 0, 0, 0x280, 0x1E0, D_88223E48, gFragment23BackgroundColorTop,
+    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp48, 0, 0, 0x280, 0x1E0, gPcBackdropTile, gFragment23BackgroundColorTop,
                                                            gFragment23BackgroundColorBottom);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp4C, sp48);
 

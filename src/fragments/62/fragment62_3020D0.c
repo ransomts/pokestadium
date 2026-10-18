@@ -152,7 +152,7 @@ void DetermineMessageCategoryAndDisplay(void) {
     }
 
     if ((sp18->unk_44.unk_00 == 0x76) || (sp18->unk_44.unk_00 == 0x77)) {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
         MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
         switch (sp1C) {
@@ -177,7 +177,7 @@ void DetermineMessageCategoryAndDisplay(void) {
                 break;
         }
     } else {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
         MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
         switch (sp1C) {
@@ -221,7 +221,7 @@ void func_84317EDC(void) {
         sp24 = 4;
     }
 
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+    MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
     MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
     switch (sp24) {
@@ -273,7 +273,7 @@ void func_843180AC(void) {
 
         sp24->unk_5A = tmp;
 
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
         MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
         switch (sp2C) {
@@ -300,7 +300,7 @@ void func_843180AC(void) {
 
         sp24->unk_5A = 0x76;
 
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
         MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
         switch (sp2C) {
@@ -325,7 +325,7 @@ void func_843180AC(void) {
                 break;
         }
     } else {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        MessageBank_SetPointer_0x14_0x2A(0x19, GetPokemonName(D_84390010[gBattleState.unk_00->unk_2C]));
         MessageBank_SetPointer_0x14_0x2A(0x1D, GetPokemonMessageString(D_84390010[gBattleState.unk_00->unk_2C]));
 
         switch (sp2C) {
@@ -352,14 +352,14 @@ void func_843180AC(void) {
     }
 }
 
-void func_843184E4(s32 arg0) {
+void Dialog_SetMode(s32 arg0) {
     unk_D_843901A0_4C8* ptr = &D_843901A0->unk_4C8;
 
     ptr->unk_00 = 0;
     ptr->unk_04 = arg0;
 }
 
-void func_843184FC(void) {
+void Dialog_Clear(void) {
     unk_D_843901A0_4C8* ptr = &D_843901A0->unk_4C8;
 
     ptr->unk_00 = 0xFF;
@@ -405,103 +405,103 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     switch (arg0->unk_04) {
         case 0:
-            if (func_84315BC0(&D_843901A0->unk_388[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_388[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_0C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_0C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_188[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_188[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 3:
-            if (func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 1:
-            if (func_84315BC0(&D_843901A0->unk_3C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_3C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
             if ((arg0->unk_10 < 3) &&
-                (func_84315BC0(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
+                (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 2:
-            if (func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_148[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
-            if (func_84315BC0(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Dialog_PrintLineIfSet(&D_843901A0->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 4:
-            func_84315BC0(&D_843901A0->unk_248[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_248[1], arg1 + 4, arg2 + 3);
             break;
 
         case 5:
-            func_84315BC0(&D_843901A0->unk_288[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_288[1], arg1 + 4, arg2 + 3);
             break;
 
         case 6:
-            func_84315BC0(&D_843901A0->unk_408[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_408[1], arg1 + 4, arg2 + 3);
             break;
 
         case 7:
-            func_84315BC0(&D_843901A0->unk_348[1], arg1 + 4, arg2 + 3);
-            func_84315BC0(&D_843901A0->unk_2C8[1], arg1 + 4, arg2 + 0x10);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_348[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_2C8[1], arg1 + 4, arg2 + 0x10);
             break;
 
         case 8:
-            func_84315BC0(&D_843901A0->unk_448[arg0->unk_0C][1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_448[arg0->unk_0C][1], arg1 + 4, arg2 + 3);
             break;
 
         case 9:
         case 10:
-            func_84315BC0(&D_843901A0->unk_1C8[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_1C8[1], arg1 + 4, arg2 + 3);
             break;
 
         case 11:
-            func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
             break;
 
         case 12:
-            func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + 3);
             break;
 
         case 13:
             temp_s1 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA4)) / 2;
-            func_84315BC0(GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA4), 0xA1 - temp_s1, 0x71);
+            Dialog_PrintLineIfSet(GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA4), 0xA1 - temp_s1, 0x71);
             break;
 
         case 14:
@@ -509,7 +509,7 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 15:
-            func_84315BC0(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3);
+            Dialog_PrintLineIfSet(&D_843901A0->unk_088[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3);
             break;
     }
 
@@ -623,7 +623,7 @@ s32 func_84318CE4(unk_D_843901A0_4C8* arg0) {
     return 0;
 }
 
-void func_843190A8(s16 arg0, s16 arg1) {
+void Dialog_RunWindowSequence(s16 arg0, s16 arg1) {
     unk_D_843901A0_4C8* temp_s0 = &D_843901A0->unk_4C8;
 
     if (gBattleContext.unk_0000 == 0x10) {
@@ -634,18 +634,18 @@ void func_843190A8(s16 arg0, s16 arg1) {
         case 0:
             temp_s0->unk_08 = 0;
             if (temp_s0->unk_04 == 0xD) {
-                func_843160C0(temp_s0, 0xA0, 0x78);
+                Dialog_OpenDarkWindow(temp_s0, 0xA0, 0x78);
                 temp_s0->unk_00++;
             } else if (temp_s0->unk_04 == 0xE) {
                 func_84318CE4(temp_s0);
             } else if (func_84318CE4(temp_s0) == 0) {
-                func_84315D88(temp_s0, arg0, arg1);
+                Dialog_OpenColoredWindow(temp_s0, arg0, arg1);
             }
             break;
 
         case 1:
             if (temp_s0->unk_04 == 0xD) {
-                if (func_843161F8(temp_s0, 0xA0, 0x78) != 0) {
+                if (Dialog_ZoomDarkWindow(temp_s0, 0xA0, 0x78) != 0) {
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
                 }
@@ -654,7 +654,7 @@ void func_843190A8(s16 arg0, s16 arg1) {
                     ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
-                } else if (func_84315EC0(temp_s0, arg0, arg1) != 0) {
+                } else if (Dialog_ZoomColoredWindow(temp_s0, arg0, arg1) != 0) {
                     ProcessAudioCommandQueue(func_84308D98(D_84390010[temp_s0->unk_0C]));
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                     temp_s0->unk_00++;
@@ -664,7 +664,7 @@ void func_843190A8(s16 arg0, s16 arg1) {
 
         case 2:
             if (temp_s0->unk_04 == 0xD) {
-                func_843161F8(temp_s0, 0xA0, 0x78);
+                Dialog_ZoomDarkWindow(temp_s0, 0xA0, 0x78);
                 RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
 
                 temp_s0->unk_08++;
@@ -675,7 +675,7 @@ void func_843190A8(s16 arg0, s16 arg1) {
                 if (temp_s0->unk_04 == 0xE) {
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
                 } else {
-                    func_84315EC0(temp_s0, arg0, arg1);
+                    Dialog_ZoomColoredWindow(temp_s0, arg0, arg1);
                     RenderDialogBox(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
 
                     temp_s0->unk_08++;
@@ -762,7 +762,7 @@ void func_843196A4(void) {
 
     if (1) {}
 
-    func_843190A8(0xA0, 0xC8);
+    Dialog_RunWindowSequence(0xA0, 0xC8);
 
     if (gBattleContext.unk_0000 == 0x10) {
         func_8431712C();

@@ -46,7 +46,7 @@ void WaterParticleSystem_ResetAll(void) {
     WaterParticleEmitter* var_a2;
     WaterParticleParticle* var_v0;
 
-    temp_fa0 = func_8432FCD4() * 0.75f;
+    temp_fa0 = GetPrimaryEntityScale() * 0.75f;
     var_a2 = &gWaterParticleEmitters[0];
 
     for (i = 0; i < 4; i++, var_a2++) {

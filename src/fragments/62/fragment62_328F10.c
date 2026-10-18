@@ -226,7 +226,7 @@ void func_8433EE10(ParticleEffectInstance* arg0) {
 
     switch (sp2E) {
         case 0:
-            Particle_SetShortAE(arg0, func_81400ADC(0x14, 0x14));
+            Particle_SetShortAE(arg0, RandomModPlus(0x14, 0x14));
             Particle_SetShortB0(arg0, 0);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
@@ -234,7 +234,7 @@ void func_8433EE10(ParticleEffectInstance* arg0) {
             break;
 
         case 1:
-            Particle_SetShortAE(arg0, func_81400ADC(0x28, 0x14));
+            Particle_SetShortAE(arg0, RandomModPlus(0x28, 0x14));
             Particle_SetShortB0(arg0, 1);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
@@ -242,7 +242,7 @@ void func_8433EE10(ParticleEffectInstance* arg0) {
             break;
 
         case 2:
-            Particle_SetShortAE(arg0, func_81400ADC(0x1E, 0x14));
+            Particle_SetShortAE(arg0, RandomModPlus(0x1E, 0x14));
             Particle_SetShortB0(arg0, 2);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);

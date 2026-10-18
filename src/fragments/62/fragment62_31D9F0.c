@@ -6,7 +6,7 @@ void Particle_FireBurstSmall(ParticleEffectInstance* arg0, s16 arg1) {
     s16 sp22 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.25f);
-    func_8140A578(arg0, func_81400B28(0x400, 0xE00));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x400, 0xE00));
     func_8140A594(arg0, RandomRangeSigned(0x400));
     Particle_SetSpeed(arg0, 2.5f);
 
@@ -193,7 +193,7 @@ void Particle_SmokePuff(ParticleEffectInstance* arg0) {
     s16 sp20 = Particle_GetShortCF(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.4f);
-    func_8140A578(arg0, func_81400B28(0x200, 0xE00));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     func_8140A594(arg0, RandomRangeSigned(0x1800));
     Particle_SetSpeed(arg0, 2.0f);
 
@@ -268,7 +268,7 @@ void func_84333A20(ParticleEffectInstance* arg0, s16 arg1) {
     s16 sp22 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.2f);
-    func_8140A578(arg0, func_81400B28(0x200, 0xE00));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     func_8140A594(arg0, RandomRangeSigned(0x2000));
     Particle_SetSpeed(arg0, 2.0f);
 
@@ -697,7 +697,7 @@ void func_843348DC(ParticleEffectInstance* arg0) {
     Particle_GetShortAC(arg0);
     Particle_SetScaleFactor1(arg0, 0.45f);
     sp28.x = RandomRangeSigned(0x2000);
-    sp28.y = func_81400B28(0x3000, 0);
+    sp28.y = RandomRangeSignedPlus(0x3000, 0);
     sp28.z = 0;
     Particle_AddRotationDeltaVec(arg0, sp28);
     SetPrimEnvColorFromPair(arg0, 0x1D);
@@ -870,7 +870,7 @@ void Particle_Firefly(ParticleEffectInstance* arg0) {
     sp2A = Particle_GetShortAC(arg0);
     sp28 = Particle_GetShortCF(arg0);
     sp2C.x = RandomRangeSigned(0xA);
-    sp2C.y = func_81400B28(0xF, 0xA);
+    sp2C.y = RandomRangeSignedPlus(0xF, 0xA);
     sp2C.z = RandomRangeSigned(0xF);
     Particle_AddVelocityScaledVec(arg0, sp2C);
     Particle_SetSpeed(arg0, (RandomMod(5) * 0.25f) + 3.0f);
@@ -922,7 +922,7 @@ void Particle_Sparkle(ParticleEffectInstance* arg0) {
     sp22 = Particle_GetShortAC(arg0);
     sp20 = Particle_GetShortCF(arg0);
     sp24.x = RandomRangeSigned(0xA);
-    sp24.y = func_81400B28(0xA, 5);
+    sp24.y = RandomRangeSignedPlus(0xA, 5);
     sp24.z = RandomRangeSigned(0xA);
     Particle_AddVelocityScaledVec(arg0, sp24);
     Particle_SetScaleFactor1(arg0, 1.0f);
@@ -1022,7 +1022,7 @@ void Particle_Star(ParticleEffectInstance* arg0) {
     Vec3f sp24;
 
     sp24.x = RandomRangeSigned(0x19);
-    sp24.y = func_81400B28(0xF, 5);
+    sp24.y = RandomRangeSignedPlus(0xF, 5);
     sp24.z = RandomRangeSigned(0xA);
     Particle_AddVelocityScaledVec(arg0, sp24);
     Particle_SetScaleFactor1(arg0, 0.15f);
@@ -1175,7 +1175,7 @@ void func_84335BA0(ParticleEffectInstance* arg0) {
 
     sp36 = Particle_GetShortAC(arg0);
     sp24.x = RandomRangeSigned(0x14);
-    sp24.y = func_81400B28(0xF, 0xA);
+    sp24.y = RandomRangeSignedPlus(0xF, 0xA);
     sp24.z = RandomRangeSigned(0xF);
     Particle_AddVelocityScaledVec(arg0, sp24);
     Particle_SetScaleFactor1(arg0, 0.1f);
@@ -1284,7 +1284,7 @@ void Particle_ExplosionVariant(ParticleEffectInstance* arg0, s16 arg1, s16 arg2)
     switch (arg1) {
         case 0:
             func_8140A578(arg0, RandomRangeSigned(0x800));
-            func_8140A594(arg0, func_81400B28(0x1000, 0x8000));
+            func_8140A594(arg0, RandomRangeSignedPlus(0x1000, 0x8000));
             break;
 
         case 1:
@@ -1374,8 +1374,8 @@ void func_84336360(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.4f);
     Particle_AddVelocityForward(arg0, 15.0f);
-    func_8140A578(arg0, func_81400B28(0x200, 0xE00));
-    func_8140A594(arg0, func_81400B28(0x3800, 0x8000));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
+    func_8140A594(arg0, RandomRangeSignedPlus(0x3800, 0x8000));
     Particle_SetTargetRotationX(arg0, -0x4000);
     Particle_SetRotationDeltaX(arg0, 0x1000);
     Particle_SetSpeed(arg0, 3.0f);

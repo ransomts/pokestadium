@@ -222,11 +222,11 @@ void func_84319C58(CameraStruct* arg0, s32 arg1) {
 
     sp44 = &D_84390010[arg1]->unk_654;
     func_8431BA5C();
-    func_8431AE4C(arg1);
+    SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
     if (func_84319878(temp_s0, arg0) == 0) {
-        func_843081F0(temp_s0, &gBattleState.unk_00->unk_D0);
+        GetEntityCenterPosition(temp_s0, &gBattleState.unk_00->unk_D0);
         if (!(sp44->unk_34 & 2)) {
             ExecuteAnimStateHandlers(temp_s0, 1);
         }
@@ -268,7 +268,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
     unk_D_84390010* temp_s0;
 
     func_8431BA5C();
-    func_8431AE4C(arg1);
+    SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
     if (func_84319878(temp_s0, arg0) == 0) {
@@ -282,7 +282,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
             sp24 = &gCameraFovyPresetRandom[var_a0];
         }
         arg0->unk_24.fovy = sp24->unk_30;
-        func_843081F0(temp_s0, &gCameraPreset.unk_00);
+        GetEntityCenterPosition(temp_s0, &gCameraPreset.unk_00);
         Battle_PlayCameraTransition(sp24, arg0, temp_s0);
         Battle_ApplyCameraSettings(arg0, temp_s0, 1);
         func_8431D5C8(arg0);
@@ -292,7 +292,7 @@ void func_84319F10(CameraStruct* arg0, s32 arg1) {
 
 void func_8431A024(CameraStruct* arg0, s32 arg1) {
     arg0->unk_24.fovy = 30.0f;
-    func_8431AE4C(arg1);
+    SetCurrentPlayerIndex(arg1);
     if (func_84319878(D_84390010[arg1], arg0) == 0) {
         SetupBattleCamera(arg0, arg1);
         gBattleState.unk_00->unk_20++;
@@ -300,7 +300,7 @@ void func_8431A024(CameraStruct* arg0, s32 arg1) {
 }
 
 void func_8431A098(CameraStruct* arg0) {
-    func_8431AE4C(gBattleState.unk_00->unk_54 - 1);
+    SetCurrentPlayerIndex(gBattleState.unk_00->unk_54 - 1);
     if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
         gBattleState.unk_00->unk_54 = 0;
         Camera_UpdateStateMachine(arg0);
@@ -311,7 +311,7 @@ void func_8431A098(CameraStruct* arg0) {
 }
 
 void func_8431A130(CameraStruct* arg0) {
-    func_8431AE4C(gBattleState.unk_00->unk_2C);
+    SetCurrentPlayerIndex(gBattleState.unk_00->unk_2C);
     gBattleState.unk_00->unk_54 = 0;
     if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
         Camera_UpdateStateMachine(arg0);
@@ -354,7 +354,7 @@ void func_8431A2C8(CameraStruct* arg0, s32 arg1) {
 
     func_8431AFD0(arg0, 10.0f, 12800.0f);
     arg0->unk_24.fovy = 60.0f;
-    func_8431AE4C(arg1);
+    SetCurrentPlayerIndex(arg1);
     temp_s0 = D_84390010[arg1];
 
     if (func_84319878(temp_s0, arg0) == 0) {
@@ -376,7 +376,7 @@ void func_8431A2C8(CameraStruct* arg0, s32 arg1) {
 
         tmp1 = gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_00.x * gCameraOffsetTable[var_v1].x;
         tmp4 = gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_0C;
-        tmp3 = (temp_s0->unk_4B0 * gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
+        tmp3 = (temp_s0->unk_4B0 * gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_0E) + GetPlayerSideYaw(temp_s0);
 
         Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
         gBattleState.unk_00->unk_20++;

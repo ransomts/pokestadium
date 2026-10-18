@@ -64,11 +64,11 @@ void func_84359340(void) {
 }
 
 void func_84359348(void) {
-    RenderPrimColorRect(D_8439037A, D_8439037C, D_8439037E, 0xFF);
+    RenderPrimColorRect(gSavedPrimColorR, gSavedPrimColorG, gSavedPrimColorB, 0xFF);
 }
 
 void func_84359380(void) {
-    func_8436E920();
+    GlowEmitters_Reset();
 }
 
 void func_843593A0(void) {
@@ -112,7 +112,7 @@ f32 func_84359450(void) {
 }
 
 f32 func_84359470(void) {
-    return func_8432FCD4();
+    return GetPrimaryEntityScale();
 }
 
 void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
@@ -571,7 +571,7 @@ void RenderParticleEffectE(void) {
 void StartEffectF(void) {
     gParticleSpawnTimerF = 0;
     InitEffectMatrix();
-    func_8436B140();
+    WaterParticlePool_InitAlt();
 }
 
 s32 UpdateEffectF(void) {
@@ -595,7 +595,7 @@ s32 UpdateEffectF(void) {
         if (sp5C > 0.0) {
             var_fv0 = -var_fv0;
         }
-        func_8436B270(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
+        WaterParticlePool_SpawnAlt(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
     }
     WaterParticle_UpdateAll();
     return 0;
@@ -679,7 +679,7 @@ s32 UpdateWaterSurfaceVariant(void) {
 void RenderWaterSurfaceVariant(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_84365558(gDisplayListHead);
+    gDisplayListHead = WaterSurface_DrawLit(gDisplayListHead);
 }
 
 void InitWaterEffectVariant(void) {
@@ -891,10 +891,10 @@ void ConfigureWaterParticleSystemCombine(void) {
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x8F, 0x8F, 6, 0xA, 0xF, 0xE,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x8F, 0x8F, 6, 0xA, 0xF, 0xE,
                   -3, 5, 0, 0xF, &D_84387FC0, &D_84387FE0, 0xFF, 0xFF, 0, 0x96, 0x64, 0xFF, 0, 0xC8, 0x32, 0xFF, 0x96,
                   0xFF, 0x78);
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x8F, 0x90, 2, 6, 0, 0xF, -4,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x8F, 0x90, 2, 6, 0, 0xF, -4,
                   2, 0, 0, &D_84388000, &D_84388020, 0, 0xFF, 0x64, 0x96, 0x64, 0x64, 0, 0xFF, 0xC8, 0, 0, 0, 0);
 }
 
@@ -911,7 +911,7 @@ s32 UpdateWaterParticleSystemsCombined(void) {
 void RenderCombinedWaterEffect(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436CE34(gDisplayListHead);
+    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
 }
 
 void SpawnWaterEffectVariant1(void) {
@@ -975,10 +975,10 @@ void ConfigureWaterEffectVariant2(void) {
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x93, 0x93, 5, 0xA, 0xF, 0xF,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x93, 0x93, 5, 0xA, 0xF, 0xF,
                   -5, 5, 0xF, 0xF, &D_84388080, &D_843880A0, 0xC8, 0xC8, 0, 0x64, 0, 0, 0xC8, 0, 0xFF, 0, 0xFF, 0,
                   0x5A);
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x91, 0x91, -2, 0xA, 0xF,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x91, 0x91, -2, 0xA, 0xF,
                   0xF, 5, 0xF, 0xF, 0xF, &D_843880C0, &D_843880E0, 0xFF, 0x32, 0x64, 0xC8, 0, 0x64, 0x32, 0xFF, 0xFF, 0,
                   0, 0, 0);
 }
@@ -996,7 +996,7 @@ s32 UpdateWaterEffectVariant2(void) {
 void RenderWaterEffectVariant2(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436CE34(gDisplayListHead);
+    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
 }
 
 void ConfigureWaterEffectVariant3(void) {
@@ -1016,10 +1016,10 @@ void ConfigureWaterEffectVariant3(void) {
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x97, 0x98, -5, 0x14, 0xF,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x97, 0x98, -5, 0x14, 0xF,
                   0xD, -5, 0x14, 0, 0xE, &D_84388100, &D_84388120, 0xFF, 0xFF, 0xFF, 0x32, 0x64, 0x64, 0, 0xFF, 0xFF,
                   0xC8, 0xFF, 0xFF, 0x96);
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x98, 5, 0xF, 0xF, 0xE,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x98, 5, 0xF, 0xF, 0xE,
                   0, 0xF, 0xF, 0xF, &D_84388140, &D_84388160, 0xFF, 0xFF, 0xFF, 0x32, 0x64, 0x64, 0x64, 0xFF, 0xFF, 0,
                   0, 0, 0);
 }
@@ -1037,7 +1037,7 @@ s32 UpdateWaterEffectVariant3(void) {
 void RenderWaterEffectVariant3(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436CE34(gDisplayListHead);
+    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
 }
 
 void ConfigureWaterEffectVariant4(void) {
@@ -1055,7 +1055,7 @@ void ConfigureWaterEffectVariant4(void) {
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x94, 0, 0x14, 0xE,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x94, 0, 0x14, 0xE,
                   0xF, 0, 0x14, 0xF, 0xE, &D_84388180, &D_843881A0, 0xFF, 0xFF, 0xFF, 0x96, 0x96, 0xFF, 0xFF, 0, 0xFF,
                   0xFF, 0xFF, 0, 0x96);
 }
@@ -1073,7 +1073,7 @@ s32 UpdateWaterEffectVariant4(void) {
 void RenderWaterEffectVariant4(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436CE34(gDisplayListHead);
+    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
 }
 
 void ConfigureWaterEffectVariant5(void) {
@@ -1101,10 +1101,10 @@ void ConfigureWaterEffectVariant5(void) {
     spA8 *= 12.0f;
     spA4 *= 12.0f;
     spA0 *= 12.0f;
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x91, 0x92, 5, 0x1E, 0, 0xD,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x91, 0x92, 5, 0x1E, 0, 0xD,
                   -5, 0x1E, 0xF, 0xD, &D_843881C0, &D_843881E0, 0xFF, 0xFF, 0, 0xFF, 0x96, 0x32, 0, 0, 0xFF, 0xFF, 0xC8,
                   0x64, 0xC8);
-    func_8436BFB8(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x96, 6, 0x14, 0xE,
+    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x96, 6, 0x14, 0xE,
                   0xF, -3, 0xA, 0, 0xF, &D_84388200, &D_84388220, 0xFF, 0xFF, 0x64, 0x96, 0xFF, 0xFF, 0x64, 0, 0xC8, 0,
                   0, 0, 0);
 }
@@ -1157,6 +1157,6 @@ s32 UpdateWaterEffectD(void) {
 void RenderCombinedWaterEffectD(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436CE34(gDisplayListHead);
+    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
     gDisplayListHead = WaterEffect_RenderAll(gDisplayListHead);
 }

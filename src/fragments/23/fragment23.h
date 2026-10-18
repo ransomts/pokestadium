@@ -10,18 +10,18 @@
 
 struct unk_func_8821421C_038_04C_000;
 struct unk_func_8820B12C_02C;
-struct unk_func_8821421C_034;
+struct YesNoPanel;
 struct unk_func_8821421C_038;
 struct unk_func_8821421C_03C;
-struct unk_func_8821421C_07C;
-struct unk_func_8820E99C;
+struct ItemBlockInfo;
+struct QuantityEntry;
 struct unk_func_8821421C_02C;
 
-typedef struct unk_func_8820EFD8 {
+typedef struct ItemBlockHeader {
     /* 0x00 */ char unk00[0x4];
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ char* unk_08;
-} unk_func_8820EFD8; // size >= 0xC
+} ItemBlockHeader; // size >= 0xC
 
 typedef struct unk_func_88200FA0_030 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
@@ -37,7 +37,7 @@ typedef struct unk_func_88200FA0 {
     /* 0x30 */ unk_func_88200FA0_030* unk_30;
 } unk_func_88200FA0; // size = 0x34
 
-typedef struct unk_func_88205880 {
+typedef struct BoxPCScreen {
     /* 0x0000 */ unk_func_88001300_000 unk_0000;
     /* 0x002C */ unk_func_88203ED8* unk_002C;
     /* 0x0030 */ char unk0030[0x64];
@@ -48,7 +48,7 @@ typedef struct unk_func_88205880 {
     /* 0x9FD0 */ unk_func_88205880_00D0* unk_9FD0[12];
     /* 0xA000 */ unk_func_88205880_00D0* unk_A000[12];
     /* 0xA030 */ unk_func_88205880_A030 unk_A030[2];
-} unk_func_88205880; // size = 0xA048
+} BoxPCScreen; // size = 0xA048
 
 typedef struct unk_func_882062E4 {
     /* 0x0000 */ char unk_00[0x54];
@@ -239,19 +239,19 @@ typedef struct unk_func_8820E99C_030 {
     /* 0x44 */ unk_func_8820E99C_030_044* unk_44;
 } unk_func_8820E99C_030; // size = 0x48
 
-typedef struct unk_func_8820E99C {
+typedef struct QuantityEntry {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_8820E99C_030* unk_30;
     /* 0x34 */ s32 unk_34;
-} unk_func_8820E99C; // size = 0x38
+} QuantityEntry; // size = 0x38
 
-typedef struct unk_func_8821421C_034 {
+typedef struct YesNoPanel {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88001300_03C* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
-} unk_func_8821421C_034; // size = 0x38
+} YesNoPanel; // size = 0x38
 
 typedef struct unk_func_8821421C_038_02C {
     /* 0x00 */ unk_func_88001300_000 unk_00;
@@ -293,9 +293,9 @@ typedef struct unk_func_8821421C_02C_06C_02C {
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ unk_func_8820BE14_02C_038* unk_20[2];
-    /* 0x28 */ struct unk_func_8820E99C* unk_28;
+    /* 0x28 */ struct QuantityEntry* unk_28;
     /* 0x2C */ unk_func_8820BE14_02C_038* unk_2C[2];
-    /* 0x34 */ struct unk_func_8820E99C* unk_34;
+    /* 0x34 */ struct QuantityEntry* unk_34;
     /* 0x38 */ s32 unk_38;
     /* 0x3C */ s32 unk_3C;
     /* 0x40 */ s32 unk_40;
@@ -357,9 +357,9 @@ typedef struct unk_func_8821421C_02C {
     /* 0x78 */ struct unk_func_8821421C_03C* unk_7C;
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ struct unk_func_8821421C_038* unk_84;
-    /* 0x88 */ struct unk_func_8821421C_034* unk_88;
+    /* 0x88 */ struct YesNoPanel* unk_88;
     /* 0x8C */ TextObjectGraphics* unk_8C;
-    /* 0x90 */ struct unk_func_8821421C_07C* unk_90;
+    /* 0x90 */ struct ItemBlockInfo* unk_90;
     /* 0x94 */ unk_func_882025E0_03C unk_94[1];
     /* 0xA0 */ unk_func_889000C4* unk_A0;
 } unk_func_8821421C_02C; // size = 0xA4
@@ -389,12 +389,12 @@ typedef struct unk_func_8821421C_03C {
     /* 0x04 */ unk_func_8820BE14_06C unk_04;
 } unk_func_8821421C_03C; // size = 0x14
 
-typedef struct unk_func_8821421C_07C {
+typedef struct ItemBlockInfo {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ char unk_08[4]; // unk size
     /* 0x0C */ char unk0C[0x8];
-} unk_func_8821421C_07C; // size = 0x14
+} ItemBlockInfo; // size = 0x14
 
 typedef struct unk_func_8821421C_038 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
@@ -405,7 +405,7 @@ typedef struct unk_func_8821421C_038 {
     /* 0x3C */ unk_func_88500994* unk_3C;
     /* 0x40 */ unk_func_8850878C* unk_40;
     /* 0x44 */ unk_func_88001300_038* unk_44;
-    /* 0x48 */ unk_func_8821421C_034* unk_48;
+    /* 0x48 */ YesNoPanel* unk_48;
     /* 0x4C */ unk_func_8821421C_038_04C* unk_4C;
     /* 0x50 */ unk_func_8821421C_038_050* unk_50[1];
     /* 0x54 */ char unk54[0xC];
@@ -414,16 +414,16 @@ typedef struct unk_func_8821421C_038 {
     /* 0x74 */ char unk74[0x4];
 } unk_func_8821421C_038; // size = 0x78
 
-typedef struct unk_func_8821421C {
+typedef struct ItemPCScreen {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ unk_func_8821421C_02C* unk_2C;
     /* 0x34 */ TextObjectGraphics* unk_30;
-    /* 0x34 */ unk_func_8821421C_034* unk_34;
+    /* 0x34 */ YesNoPanel* unk_34;
     /* 0x38 */ unk_func_8821421C_038* unk_38;
     /* 0x3C */ unk_func_8821421C_03C unk_3C[3];
     /* 0x78 */ s32 unk_78;
-    /* 0x7C */ unk_func_8821421C_07C unk_7C[4];
-} unk_func_8821421C; // size = 0xCC
+    /* 0x7C */ ItemBlockInfo unk_7C[4];
+} ItemPCScreen; // size = 0xCC
 
 extern Color_RGBA8 gPanelAccentTexture1[2];
 extern Color_RGBA8 gPanelAccentTexture2[2];
@@ -452,14 +452,14 @@ extern u32 gPanelBackgroundTexture2[];
 extern u32 gPanelBackgroundTexture4[];
 extern u32 gTexture_PanelB[];
 extern u32 D_8821D378[];
-extern u32 D_8821EE88[];
+extern u32 gSwapArrowsTexture[];
 extern u32 D_882220D8[];
 extern u32 D_882225C0[];
 extern u32 D_88222AA8[];
 extern u32 D_88222F90[];
 extern u32* gTexture_MoveTargetSmall[];
 extern u32 gTexture_MoveTargetLarge[];
-extern u32 D_88223E48[];
+extern u32 gPcBackdropTile[];
 
 TextObject* Fragment23_Init(void);
 void Fragment23_Terminate(void);
@@ -480,55 +480,55 @@ s32 ScreenMessageLoopRun(unk_func_88200FA0* arg0);
 void Fragment23ThreadMain(unk_func_88200FA0* arg0);
 s32 Fragment23_GetNextState(s32 arg0, UNUSED s32 arg1);
 
-void func_88201210(unk_func_88205880_00D0* arg0);
-void func_88201294(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3);
-s32 func_8820130C(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s32 arg4);
-void func_88201360(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3);
-s32 func_882013F8(unk_func_88205880_A030* arg0);
-s32 func_88201440(unk_func_88205880_A030* arg0);
+void Box_MarkSpeciesOwned(unk_func_88205880_00D0* arg0);
+void Box_SaveToGbs(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3);
+s32 Box_LoadFromGbs(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s32 arg4);
+void Boxes_LoadFromGbs(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3);
+s32 BoxList_HasNoEmptyBoxes(unk_func_88205880_A030* arg0);
+s32 BoxList_IsEmpty(unk_func_88205880_A030* arg0);
 void func_88202054(unk_func_88201DA0* arg0, u32 arg1, u32 arg2);
 void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2);
 void func_88202228(unk_func_88203ED8* arg0, s32 arg1);
 s32 func_88202254(unk_func_88201DA0* arg0, Controller* arg1);
 void func_88202394(unk_func_88201DA0* arg0, Controller* arg1);
-void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2);
+void DrawBoxMonCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2);
 void func_8820253C(unk_func_8820253C* arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3);
 void func_882025AC(unk_func_8820253C* arg0, unk_func_88205880_00D0* arg1);
 s32 func_882025B4(unk_func_8820253C* arg0, s32 arg1, s32 arg2);
-void func_882025E0(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg1, unk_func_88200FA0_030_030* arg2, unk_func_88203ED8* arg3, MemoryPool* arg4);
+void BoxMove_Init(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg1, unk_func_88200FA0_030_030* arg2, unk_func_88203ED8* arg3, MemoryPool* arg4);
 void func_88202738(unk_func_882025E0_1A9780* arg0, s32 arg1);
 void func_88202758(unk_func_882025E0_1A9780* arg0);
 void func_882027F0(unk_func_882025E0_1A9780* arg0, s32 arg1);
 void func_88202810(unk_func_882025E0_1A9780* arg0, unk_func_88205880_00D0** arg1, unk_func_88205880_00D0** arg2);
 void func_882028EC(unk_func_882025E0_1A9780* arg0, unk_func_88001300_000_010* arg1, unk_func_88001300_000_010* arg2);
-void func_88202A2C(unk_func_88200FA0_030_030* arg0);
-void func_88202B74(unk_func_88200FA0_030_030* arg0);
+void BoxList_DisableEmptyBoxes(unk_func_88200FA0_030_030* arg0);
+void BoxList_DisableNonEmptyBoxes(unk_func_88200FA0_030_030* arg0);
 void func_88202CBC(unk_func_882025E0_1A9780* arg0);
-void func_88202D60(unk_func_882025E0_1A9780* arg0, s32 arg1);
-void func_88202E74(unk_func_882025E0_1A9780* arg0, s32 arg1);
+void BoxMove_SetPhase(unk_func_882025E0_1A9780* arg0, s32 arg1);
+void BoxMove_SetMoveMode(unk_func_882025E0_1A9780* arg0, s32 arg1);
 void func_88202E98(unk_func_882025E0_1A9780* arg0);
-void func_88202EB8(unk_func_882025E0_1A9780* arg0);
+void BoxMove_SwapSides(unk_func_882025E0_1A9780* arg0);
 s32 func_88202ED8(unk_func_882025E0_1A9780* arg0);
-void func_88202EF4(unk_func_882025E0_1A9780* arg0);
-void func_88202F2C(unk_func_882025E0_1A9780* arg0);
-s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1);
-void func_8820399C(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2);
-s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2);
+void BoxMove_SwapWithinList(unk_func_882025E0_1A9780* arg0);
+void BoxMove_SwapBetweenLists(unk_func_882025E0_1A9780* arg0);
+s32 BoxMove_HandleInput(unk_func_882025E0_1A9780* arg0, Controller* arg1);
+void BoxListHeader_Init(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2);
+s32 BoxListHeader_Draw(unk_func_8820399C* arg0, s32 arg1, s32 arg2);
 s32 func_88204BA8(unk_func_88203ED8* arg0);
 void func_88204BFC(unk_func_88203ED8* arg0, s32 arg1);
 s32 func_88204C28(unk_func_88203ED8* arg0, Controller* arg1);
 void func_88204C74(unk_func_88203ED8* arg0);
 void func_88204CBC(unk_func_88203ED8* arg0);
 void func_88204DC0(unk_func_88203ED8_064* arg0, unk_func_88203ED8* arg1);
-u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3);
-s32 func_88204EE8(unk_func_88203ED8* arg0);
-void func_8820508C(unk_func_88203ED8* arg0, s32 arg1);
-s32 func_882051EC(unk_func_88203ED8* arg0, Controller* arg1);
-s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1);
-void func_882057B4(unk_func_88203ED8* arg0, Controller* arg1);
-s32 func_88205DD0(unk_func_88205880* arg0, Controller* arg1);
-void func_88205DF8(unk_func_88205880* arg0);
-void func_88205E94(unk_func_88205880* arg0);
+u32 Box_DiffersFromGbs(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3);
+s32 MarkModifiedBoxes(unk_func_88203ED8* arg0);
+void SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1);
+s32 PromptToSaveBoxChanges(unk_func_88203ED8* arg0, Controller* arg1);
+s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1);
+void BoxPCUI_Run(unk_func_88203ED8* arg0, Controller* arg1);
+s32 func_88205DD0(BoxPCScreen* arg0, Controller* arg1);
+void BoxPC_RunDisplayLoop(BoxPCScreen* arg0);
+void BoxPCThreadMain(BoxPCScreen* arg0);
 
 void InitMonData(PokemonData* arg0);
 s32 LoadPokemonFromSave(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
@@ -573,7 +573,7 @@ void Scroll_SetOffset(unk_func_88208C5C* arg0, u32 arg1);
 void MoveIconList_Init(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2);
 void DrawMoveName(s32 arg0, s32 arg1, ret_func_8002ED08* arg2, s32 arg3);
 s32 RenderMoveInfoPanel(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2);
-void func_88209A88(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
+void MonPreview_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
 s32 FindFirstIncompleteSlot(unk_func_8820BE14_06C* arg0);
 s32 UIState_Update(TextObjectRenderer* arg0);
 s32 UI_HandleInput(TextObjectRenderer* arg0, Controller* arg1);
@@ -585,7 +585,7 @@ s32 CheckPokemonDataChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2,
 s32 GetChangedBankMask(TextObjectRenderer* arg0);
 s32 IsFirstBankEmpty(TextObjectRenderer* arg0);
 void WritePokemonGbsBlock(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038* arg3);
-void func_8820B480(unk_func_88200FA0_030_038* arg0, s32 arg1);
+void MonList_MarkSpeciesOwned(unk_func_88200FA0_030_038* arg0, s32 arg1);
 void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1);
 s32 ShowChangeDialog(TextObjectRenderer* arg0, Controller* arg1);
 s32 MainScreen_HandleInput(unk_func_8820B12C* arg0, Controller* arg1);
@@ -596,17 +596,17 @@ void TextObject_Show(TextObject* arg0, s32 arg1);
 
 void TryReadPokemonBlock(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3);
 void TryReadPokemonBlockEx(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3, s32 arg4, char* arg5, s32 arg6);
-void UpdateBlockInfo_12(unk_func_8821421C_07C* arg0);
-s32 FindBlockIndexByIdAndName(unk_func_8821421C_07C* arg0, s32 arg1, char* arg2);
-void func_8820CBA0(unk_func_8821421C_02C_030* arg0, unk_func_8850143C* arg1, spE8_func_882121E0* arg2);
-s32 func_8820CC30(unk_func_8821421C_02C_030* arg0, s32 arg1, s32 arg2);
+void UpdateBlockInfo_12(ItemBlockInfo* arg0);
+s32 FindBlockIndexByIdAndName(ItemBlockInfo* arg0, s32 arg1, char* arg2);
+void ItemListHeader_Init(unk_func_8821421C_02C_030* arg0, unk_func_8850143C* arg1, spE8_func_882121E0* arg2);
+s32 ItemListHeader_Draw(unk_func_8821421C_02C_030* arg0, s32 arg1, s32 arg2);
 s32 MoveTargetSelector_GetSelectedIndex(unk_func_8821421C_02C_030* arg0);
 void MoveTargetSelector_SetSelectedIndex(unk_func_8821421C_02C_030* arg0, s32 arg1);
-void NumericInput_Init(unk_func_8821421C_034* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-s32 NumericInput_HandleInput(unk_func_8821421C_034* arg0, Controller* arg1);
-void NumericInput_SetValue(unk_func_8821421C_034* arg0, s32 arg1);
-void NumericInput_SetPrompt(unk_func_8821421C_034* arg0, char* arg1);
-s32 NumericInput_Process(unk_func_8821421C_034* arg0, Controller* arg1);
+void NumericInput_Init(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
+s32 NumericInput_HandleInput(YesNoPanel* arg0, Controller* arg1);
+void NumericInput_SetValue(YesNoPanel* arg0, s32 arg1);
+void NumericInput_SetPrompt(YesNoPanel* arg0, char* arg1);
+s32 NumericInput_Process(YesNoPanel* arg0, Controller* arg1);
 s32 MeasureMaxTextWidth(spE8_func_882121E0* arg0, s32 arg1);
 void ListItem_Draw(s32 arg0, s32 arg1, s8* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5);
 s32 func_8820DB98(unk_func_8821421C_02C_070* arg0, Controller* arg1);
@@ -628,17 +628,17 @@ void NumberInput_SetSelection(unk_func_8820E99C_030* arg0, s32 arg1);
 s32 NumberInput_CalcOffset(unk_func_8820E99C_030* arg0);
 s32 NumberInput_DrawDigits(unk_func_8820E99C_030* arg0, s32 arg1, s32 arg2);
 s32 NumberInput_HandleController(unk_func_8820E99C_030* arg0, Controller* arg1);
-void NumberInput_Setup(unk_func_8820E99C* arg0, s32 arg1, s32 arg2);
-void NumericEntry_Create(unk_func_8820E99C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-void NumericEntry_SetSelection(unk_func_8820E99C* arg0, s32 arg1);
-s32 NumericEntry_HandleInput(unk_func_8820E99C* arg0, Controller* arg1);
-void NumericEntry_Reset(unk_func_8820E99C* arg0);
-void NumericEntry_Finish(unk_func_8820E99C* arg0);
+void NumberInput_Setup(QuantityEntry* arg0, s32 arg1, s32 arg2);
+void NumericEntry_Create(QuantityEntry* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
+void NumericEntry_SetSelection(QuantityEntry* arg0, s32 arg1);
+s32 NumericEntry_HandleInput(QuantityEntry* arg0, Controller* arg1);
+void NumericEntry_Reset(QuantityEntry* arg0);
+void NumericEntry_Finish(QuantityEntry* arg0);
 void LabelComponent_Init(unk_func_8821421C_038_02C* arg0, unk_func_8850143C* arg1);
 s32 LabelComponent_Draw(unk_func_8821421C_038_02C* arg0, s32 arg1, s32 arg2);
 void LabelComponent_SetLabel(unk_func_8821421C_038_02C* arg0, unk_func_8821421C_038_050* arg1);
-void ItemInfo_Draw(s32 arg0, s32 arg1, unk_func_8820EFD8* arg2, s32 arg3, s32 arg4, unk_func_8821421C_038_034* arg5);
-void func_8820FFF8(unk_func_8821421C_038* arg0, unk_func_8821421C_07C* arg1);
+void ItemInfo_Draw(s32 arg0, s32 arg1, ItemBlockHeader* arg2, s32 arg3, s32 arg4, unk_func_8821421C_038_034* arg5);
+void func_8820FFF8(unk_func_8821421C_038* arg0, ItemBlockInfo* arg1);
 s32 MainMenuFragment_Update(unk_func_8821421C_038* arg0);
 s32 MainMenuFragment_HandleInput(unk_func_8821421C_038* arg0, Controller* arg1);
 void MainMenuFragment_SetSelection(unk_func_8821421C_038* arg0, s32 arg1);
@@ -663,7 +663,7 @@ void List_RemoveItem(unk_func_8820BE14_02C_038* arg0, s32 arg1);
 void List_RemoveLastItem(unk_func_8820BE14_02C_038* arg0);
 void List_AdjustCounts(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2);
 void List_DecreaseItemCount(unk_func_8820BE14_02C_038* arg0, s32 arg1);
-void List_TransferItem(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_02C_038* arg1, unk_func_8820E99C* arg2);
+void List_TransferItem(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_02C_038* arg1, QuantityEntry* arg2);
 s32 SplitValueBetweenEntries(unk_func_8821421C_02C_06C_02C_060_02C_000* arg0, unk_func_8821421C_02C_06C_02C_060_02C_000* arg1);
 void List_SwapEntries(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2);
 void List_SwapBetweenLists(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_02C_038* arg1);
@@ -676,16 +676,16 @@ s32 func_8821347C(unk_func_8821421C_02C* arg0);
 s32 func_882135D4(unk_func_8821421C_02C* arg0, Controller* arg1);
 s32 Menu_WaitForSelection(unk_func_8821421C_02C* arg0, Controller* arg1);
 void Menu_SetState(unk_func_8821421C_02C* arg0, s32 arg1);
-void func_88213738(unk_func_8821421C_02C* arg0);
+void ItemPCUI_ToggleModeButtons(unk_func_8821421C_02C* arg0);
 void Menu_SetParent(unk_func_8821421C_02C_06C* arg0, unk_func_8821421C_02C* arg1);
 s32 GbsBlock_CompareAndUpdate(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 arg3);
 s32 Menu_GetDirtyFlags(unk_func_8821421C_02C* arg0);
 void Menu_CommitChanges(unk_func_8821421C_02C* arg0, s32 arg1);
 s32 Menu_HandleDialog(unk_func_8821421C_02C* arg0, Controller* arg1);
-s32 func_88213CA0(unk_func_8821421C_02C_06C* arg0, Controller* arg1);
-void Menu_Create(unk_func_8821421C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3, s32 arg4, char** arg5);
-void func_88214720(unk_func_8821421C* arg0);
-void Menu_ThreadEntry(unk_func_8821421C* arg0);
+s32 ItemPCMenuCursor_HandleInput(unk_func_8821421C_02C_06C* arg0, Controller* arg1);
+void Menu_Create(ItemPCScreen* arg0, s32 arg1, s32 arg2, MemoryPool* arg3, s32 arg4, char** arg5);
+void ItemPC_RunDisplayLoop(ItemPCScreen* arg0);
+void Menu_ThreadEntry(ItemPCScreen* arg0);
 void TextObject_Confirm(TextObject* arg0);
 
 void Panel_Init(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, Color_RGBA8 arg7, Color_RGBA8 arg8, Color_RGBA8 arg9);
@@ -705,17 +705,17 @@ void ItemSlot_Init(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE1
 void Cursor_Draw(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 s32 func_8821738C(unk_func_882170A8* arg0, s32 arg1, s32 arg2);
 void Button_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
-s32 func_88217460(unk_func_882173EC* arg0);
-void func_882175F4(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2);
+s32 SlideAnim_Update(unk_func_882173EC* arg0);
+void SlideAnim_Begin(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2);
 void Button_Create(unk_func_8821421C_02C_06C_02C_068* arg0, s32 arg1, s32 arg2);
 s32 func_882176C4(unk_func_8821421C_02C_06C_02C_068* arg0);
 void func_88217718(unk_func_8821421C_02C_06C_02C_068* arg0, unk_func_88001300_000_010 arg1);
-void func_88217740(unk_func_88217740* arg0, s32 arg1, s32 arg2);
-s32 func_882177A8(unk_func_88217740* arg0, s32 arg1, s32 arg2);
+void SwapArrows_Init(unk_func_88217740* arg0, s32 arg1, s32 arg2);
+s32 SwapArrows_Draw(unk_func_88217740* arg0, s32 arg1, s32 arg2);
 void func_88217BA0(unk_func_88217740* arg0, s32 arg1);
-void func_88217BAC(unk_func_88217740* arg0);
-void func_88217BB8(unk_func_88217740* arg0);
-void func_88217BC0(unk_func_88217740* arg0);
+void SwapArrows_Show(unk_func_88217740* arg0);
+void SwapArrows_Hide(unk_func_88217740* arg0);
+void SwapArrows_ToggleDirection(unk_func_88217740* arg0);
 
 
 #endif // _FRAGMENT23_H_

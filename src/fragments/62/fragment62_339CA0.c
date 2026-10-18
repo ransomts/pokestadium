@@ -229,7 +229,7 @@ void Particle_HandleState_SpecialColor(ParticleEffectInstance* arg0) {
 }
 
 void func_8434FB3C(ParticleEffectInstance* arg0) {
-    s16 sp26 = func_843081BC(gParticleEffectData_42);
+    s16 sp26 = GetSpecies(gParticleEffectData_42);
 
     Particle_SetScaleFactor1(arg0, 1.0f);
     SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
@@ -271,7 +271,7 @@ void Particle_HandleCollisionResponse(ParticleEffectInstance* arg0) {
 }
 
 void func_8434FCC4(ParticleEffectInstance* arg0) {
-    s16 sp26 = func_843081BC(gParticleEffectData_42);
+    s16 sp26 = GetSpecies(gParticleEffectData_42);
 
     Particle_SetScaleFactor1(arg0, 1.0f);
 
@@ -317,7 +317,7 @@ void Particle_HandleCollisionResponse_ExplosionAlt(ParticleEffectInstance* arg0)
 void func_8434FE58(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCE(arg0);
     s16 sp24 = Particle_GetShortCF(arg0);
-    s16 sp22 = func_843081BC(gParticleEffectData_42);
+    s16 sp22 = GetSpecies(gParticleEffectData_42);
 
     Particle_SetScaleFactor1(arg0, 1.0f);
 
@@ -369,7 +369,7 @@ void Particle_HandleState_Directional(ParticleEffectInstance* arg0) {
 void Particle_HandleState_Directional_Scale(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCE(arg0);
     s16 sp24 = Particle_GetShortCF(arg0);
-    s16 sp22 = func_843081BC(gParticleEffectData_42);
+    s16 sp22 = GetSpecies(gParticleEffectData_42);
 
     Particle_SetScaleFactor1(arg0, 1.0f);
 
@@ -852,7 +852,7 @@ void func_843514B4(ParticleEffectInstance* arg0) {
     Particle_GetShortAC(arg0);
 
     sp28.x = RandomRangeSigned(0x2000);
-    sp28.y = func_81400B28(0x2000, 0x8000);
+    sp28.y = RandomRangeSignedPlus(0x2000, 0x8000);
     sp28.z = 0;
     Particle_AddRotationDeltaVec(arg0, sp28);
 
@@ -911,7 +911,7 @@ void func_843516A0(ParticleEffectInstance* arg0) {
             Particle_SetPrimAlpha(arg0, 0x64);
             Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
-            sp28.y = func_81400B28(0x2000, 0x8000);
+            sp28.y = RandomRangeSignedPlus(0x2000, 0x8000);
             sp28.z = 0;
             Particle_AddRotationDeltaVec(arg0, sp28);
             break;
@@ -921,7 +921,7 @@ void func_843516A0(ParticleEffectInstance* arg0) {
             Particle_SetPrimAlpha(arg0, 0x64);
             Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
-            sp28.y = func_81400B28(0x2000, 0x8000);
+            sp28.y = RandomRangeSignedPlus(0x2000, 0x8000);
             sp28.z = 0;
             Particle_AddRotationDeltaVec(arg0, sp28);
             break;
@@ -932,7 +932,7 @@ void func_843516A0(ParticleEffectInstance* arg0) {
             Particle_SetVelocityYScaled(arg0, -10.0f);
             Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
-            sp28.y = func_81400B28(0x2000, 0x8000);
+            sp28.y = RandomRangeSignedPlus(0x2000, 0x8000);
             sp28.z = 0;
             Particle_AddRotationDeltaVec(arg0, sp28);
             break;
@@ -942,7 +942,7 @@ void func_843516A0(ParticleEffectInstance* arg0) {
             Particle_SetPrimAlpha(arg0, 0x96);
             Particle_SetSpeed(arg0, 3.0f);
             sp28.x = RandomRangeSigned(0x2000);
-            sp28.y = func_81400B28(0x2000, 0x8000);
+            sp28.y = RandomRangeSignedPlus(0x2000, 0x8000);
             sp28.z = 0;
             Particle_AddRotationDeltaVec(arg0, sp28);
             break;
@@ -952,7 +952,7 @@ void func_843516A0(ParticleEffectInstance* arg0) {
             Particle_SetPrimAlpha(arg0, 0x96);
             Particle_SetSpeed(arg0, 4.0f);
             sp28.x = RandomRangeSigned(0x3000);
-            sp28.y = func_81400B28(0x3000, 0x8000);
+            sp28.y = RandomRangeSignedPlus(0x3000, 0x8000);
             sp28.z = 0;
             Particle_AddRotationDeltaVec(arg0, sp28);
             break;
@@ -1097,7 +1097,7 @@ void func_84351D70(ParticleEffectInstance* arg0) {
 
     switch (sp2C) {
         case 0:
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x1E, 0xA));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x1E, 0xA));
             Particle_SetScaleFactor2(arg0, 0.2f);
             break;
 
@@ -1105,7 +1105,7 @@ void func_84351D70(ParticleEffectInstance* arg0) {
             if (arg0->unk_68.y < 0) {
                 arg0->unk_68.y = 0;
             }
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x28, 0xA));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x28, 0xA));
             Particle_SetScaleFactor2(arg0, 0.3f);
             Particle_SetScaleFactor3(arg0, 0.04f);
             break;
@@ -1113,14 +1113,14 @@ void func_84351D70(ParticleEffectInstance* arg0) {
         case 2:
             Particle_SetScaleFactor2(arg0, 0.1f);
             Particle_SetScaleFactor3(arg0, 0.03f);
-            Particle_AddComplexDirection(arg0, func_81400ADC(0xC, 5));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0xC, 5));
             Particle_SetTimerA6(arg0, sp2E * 1);
             break;
 
         case 3:
             Particle_SetSpeed(arg0, 0.2f);
             Particle_SetScaleFactor1(arg0, 0.1f);
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x14, 0x1E));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x14, 0x1E));
             Particle_SetTimerA6(arg0, sp2E * 4);
             break;
 
@@ -1133,12 +1133,12 @@ void func_84351D70(ParticleEffectInstance* arg0) {
             break;
 
         case 6:
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x1E, 0x14));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x1E, 0x14));
             Particle_SetSpeed(arg0, 0.3f);
             break;
 
         case 8:
-            Particle_AddComplexDirection(arg0, func_81400ADC(8, 2));
+            Particle_AddComplexDirection(arg0, RandomModPlus(8, 2));
             Particle_SetScaleFactor2(arg0, 0.1f);
             Particle_SetScaleFactor3(arg0, 0.04f);
             Particle_SetSpeed(arg0, 0.4f);
@@ -1146,14 +1146,14 @@ void func_84351D70(ParticleEffectInstance* arg0) {
             break;
 
         case 7:
-            Particle_AddComplexDirection(arg0, func_81400ADC(0xA, 2));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0xA, 2));
             Particle_SetScaleFactor2(arg0, 0.2f);
             Particle_SetScaleFactor3(arg0, 0.025f);
             Particle_SetSpeed(arg0, 1.0f);
             break;
 
         case 9:
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x1E, 0x14));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x1E, 0x14));
             Particle_SetScaleFactor2(arg0, 0.3f);
             Particle_SetScaleFactor3(arg0, 0.025f);
             Particle_SetSpeed(arg0, 0.0f);
@@ -1161,13 +1161,13 @@ void func_84351D70(ParticleEffectInstance* arg0) {
             break;
 
         case 10:
-            Particle_AddComplexDirection(arg0, func_81400ADC(0x19, 5));
+            Particle_AddComplexDirection(arg0, RandomModPlus(0x19, 5));
             Particle_AddVelocityYScaled(arg0, 10.0f);
             Particle_SetScaleFactor2(arg0, 0.2f);
             break;
 
         case 11:
-            Particle_AddComplexDirection(arg0, func_81400ADC(5, 5));
+            Particle_AddComplexDirection(arg0, RandomModPlus(5, 5));
             Particle_SetSpeed(arg0, RandomMod(5) + 5.0f);
             break;
     }
@@ -1953,7 +1953,7 @@ void ParticleEffect_ApplyModeSpecifics(ParticleEffectInstance* arg0) {
     f32 sp20 = 0.0f;
     s32 sp1C = 0;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x9:
             sp20 = 5.0f;
             break;
@@ -2186,7 +2186,7 @@ void ParticleEffect_AdjustLifetime(ParticleEffectInstance* arg0) {
     f32 sp1C = 50.0f;
     f32 sp18 = 30.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 3:
             sp1C = 40.0f;
             break;
@@ -2353,8 +2353,8 @@ void ParticleEffect_SmallScatter(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCF(arg0);
 
     Particle_GetShortAC(arg0);
-    sp28.x = func_81400B28(0x1000, -0x2000);
-    sp28.y = func_81400B28(0x1000, 0x8000);
+    sp28.x = RandomRangeSignedPlus(0x1000, -0x2000);
+    sp28.y = RandomRangeSignedPlus(0x1000, 0x8000);
     sp28.z = 0;
     Particle_AddRotationDeltaVec(arg0, sp28);
     Particle_SetScaleFactor1(arg0, 0.05f);
@@ -2839,7 +2839,7 @@ void ParticleEffect_HandleCollisionSetup(void) {
 }
 
 void ParticleEffect_DynamicStateSetup(void) {
-    s16 tmp = func_843081BC(gParticleEffectData_42);
+    s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
         ParticleEffect_HandleStateSetup();
@@ -2854,7 +2854,7 @@ void ParticleEffect_DynamicStateSetup(void) {
 }
 
 void ParticleEffect_DynamicCollisionSetup(void) {
-    s16 tmp = func_843081BC(gParticleEffectData_42);
+    s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
         ParticleEffect_HandleCollisionSetup();
@@ -2870,7 +2870,7 @@ void ParticleEffect_DynamicCollisionSetup(void) {
 
 void ParticleEffect_ConditionalStateSetup(void) {
     UNUSED s16 pad;
-    s16 sp3C = func_843081BC(gParticleEffectData_42);
+    s16 sp3C = GetSpecies(gParticleEffectData_42);
     s16 sp3A = 3;
 
     if (sp3C == 0x7B) {
@@ -2890,7 +2890,7 @@ void ParticleEffect_ConditionalStateSetup(void) {
 }
 
 void ParticleEffect_CollisionResponseSwitch(void) {
-    s16 tmp = func_843081BC(gParticleEffectData_42);
+    s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
         func_8432EC28(0, Particle_HandleCollisionResponse, &gParticleEffectData[0x41], 0, 1, 0x18, 0, 0xF, 0);
@@ -2901,7 +2901,7 @@ void ParticleEffect_CollisionResponseSwitch(void) {
 }
 
 void ParticleEffect_CollisionAndBurstSetup(void) {
-    s16 tmp = func_843081BC(gParticleEffectData_42);
+    s16 tmp = GetSpecies(gParticleEffectData_42);
 
     if (tmp == 0x7B) {
         func_8432EE5C(0, 2, 8, 0x14, 0x80);

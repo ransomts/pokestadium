@@ -80,7 +80,7 @@ void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     Vec3f sp64;
     f32 temp_fv1;
 
-    temp_fv1 = func_8432FCD4() * 0.5f;
+    temp_fv1 = GetPrimaryEntityScale() * 0.5f;
 
     sp7C.x = arg0;
     sp7C.y = (80.0f * temp_fv1) + arg1;
@@ -130,7 +130,7 @@ void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-void func_8436A808(f32 arg0, Vec3f* arg1, f32 arg2) {
+void WaterParticle_CalcOffsetRoll(f32 arg0, Vec3f* arg1, f32 arg2) {
     MtxF sp30;
     f32 temp_fv0 = (arg0 * 360.0) / 6.2831854820251465;
 
@@ -261,7 +261,7 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
 
             var_s0 = var_s5->unk_020;
             for (j = 0; j < 10; j++) {
-                func_8436A808(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
+                WaterParticle_CalcOffsetRoll(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -277,7 +277,7 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                func_8436A808(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
+                WaterParticle_CalcOffsetRoll(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {

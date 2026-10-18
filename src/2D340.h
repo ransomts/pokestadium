@@ -131,7 +131,7 @@ typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
 } unk_func_8830867C_04C_030_02C_000_000_00C; // size >= 0xC
 
 typedef s32 (*func_func_8002D1AC)(unk_func_8830867C_02C_0CC_000*, s32*);
-typedef s32 (*unk_D_8831A1F8)(s32, s32);
+typedef s32 (*SortComparatorFunc)(s32, s32);
 
 void SubList_Init(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);
 void List_Init(unk_func_8820BE14_06C*, s32, s32, MemoryPool*);
@@ -142,7 +142,7 @@ void PtrArray_Init(unk_func_88205880_A030*, void**, s32, s32);
 void PtrList_Init(unk_func_88200FA0_030_038*, s32, MemoryPool*);
 void PtrList_Insert(unk_func_88200FA0_030_038*, char*, s32);
 void PtrArray_RemoveAt(unk_func_8830867C_02C_0CC*, s32);
-void PtrArray_Sort(unk_func_8830867C_02C_0CC*, unk_D_8831A1F8);
+void PtrArray_Sort(unk_func_8830867C_02C_0CC*, SortComparatorFunc);
 void PtrArray_Filter(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*, func_func_8002D1AC, s32*);
 s32 StringCompare_WithMask(u8*, u8*);
 void Vector2_Normalize(f32*);

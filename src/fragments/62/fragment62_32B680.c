@@ -33,7 +33,7 @@ static f32 gParticleYOffsetTable[] = {
 void Camera_SetLookAtReflect(void) {
     Mtx* sp3C = GfxAlloc(sizeof(Mtx) * 1);
     LookAt* sp38 = GfxAlloc(sizeof(LookAt) * 1);
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
 
     guLookAtReflect(sp3C, sp38, temp_v0->unk_60.eye.x, temp_v0->unk_60.eye.y, temp_v0->unk_60.eye.z,
                     temp_v0->unk_60.at.x, temp_v0->unk_60.at.y, temp_v0->unk_60.at.z, temp_v0->unk_60.up.x,
@@ -184,7 +184,7 @@ void ParticleEffect_ConfigureState(ParticleEffectInstance* arg0, s32 arg1) {
             sp2A = 0x9D;
             sp28 = 0x9E;
 
-            switch (func_843081BC(arg0->unk_10)) {
+            switch (GetSpecies(arg0->unk_10)) {
                 case 0x5F:
                     Particle_AddVelocityBackward(arg0, 15.0f);
                     Particle_SetVelocityYScaled(arg0, 15.0f);
@@ -455,12 +455,12 @@ Gfx* Gfx_LoadParticleTextureTile(Gfx* arg0, u8* arg1, s16 arg2, s16 arg3, s16 ar
     gDPLoadTextureTile_4b(arg0++, arg1, G_IM_FMT_I, arg2, 0, 0, 0, arg2 - 1, arg2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, arg6, arg7);
 
-    func_81406204(arg0++, arg4, arg5, arg2, arg2);
+    Gfx_ScrollTextureToDL(arg0++, arg4, arg5, arg2, arg2);
 
     gDPLoadMultiTile_4b(arg0++, arg1, 0x0100, 1, G_IM_FMT_I, arg2, 0, 0, 0, arg2 - 1, arg2 - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, argA, argB);
 
-    func_81406288(arg0++, arg8, arg9, arg2, arg2);
+    Gfx_ScrollTexture1ToDL(arg0++, arg8, arg9, arg2, arg2);
     return arg0;
 }
 
@@ -469,11 +469,11 @@ Gfx* Gfx_LoadParticleTextureTileFromStruct(Gfx* arg0, arg1_func_8434E21C* arg1, 
     gDPLoadTextureTile_4b(arg0++, arg1->unk_00, G_IM_FMT_I, arg2, arg2, 0, 0, arg2 - 1, arg2 - 1, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, arg6, arg7);
 
-    func_81406204(arg0++, arg4, arg5, arg2, arg2);
+    Gfx_ScrollTextureToDL(arg0++, arg4, arg5, arg2, arg2);
 
     gDPLoadMultiTile_4b(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_I, arg2, arg2, 0, 0, arg2 - 1, arg2 - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, argA, argB);
-    func_81406288(arg0++, arg8, arg9, arg2, arg2);
+    Gfx_ScrollTexture1ToDL(arg0++, arg8, arg9, arg2, arg2);
     return arg0;
 }
 
@@ -560,12 +560,12 @@ void Gfx_DrawParticleTextureWithParams(Gfx* arg0, arg1_func_8434E21C* arg1, UNUS
     gDPLoadTextureTile_4b(arg0++, arg1->unk_00, G_IM_FMT_I, w, h, 0, 0, w - 1, h - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, mask, mask, sp30, sp2E);
 
-    func_81406204(arg0++, sp3C, sp3A, w, h);
+    Gfx_ScrollTextureToDL(arg0++, sp3C, sp3A, w, h);
 
     gDPLoadMultiTile_4b(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_I, w, h, 0, 0, w - 1, h - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, mask, mask, sp2C, sp2A);
 
-    func_81406288(arg0++, sp38, sp36, w, h);
+    Gfx_ScrollTexture1ToDL(arg0++, sp38, sp36, w, h);
 
     gSPEndDisplayList(arg0++);
 }
@@ -615,7 +615,7 @@ void ParticleEffect_SetGravityByMoveId(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x2D:
             sp1C = 15.0f;
             break;
@@ -769,7 +769,7 @@ void ParticleEffect_SetParamsByMoveId(ParticleEffectInstance* arg0) {
     f32 sp20 = 0.0f;
     f32 sp1C = 0.12f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x4:
             sp24 = 5.0f;
             break;
@@ -910,7 +910,7 @@ void ParticleEffect_RegisterDefault(void) {
 void ParticleEffect_SetVerticalOffsetByMoveId(ParticleEffectInstance* arg0) {
     f32 var_fs0 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0xF:
             var_fs0 = -13.0f;
             break;
@@ -1104,7 +1104,7 @@ void ParticleEffect_SetScaleAndSpeedByMoveId(ParticleEffectInstance* arg0) {
     f32 sp1C = 10.0f;
     f32 sp18 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x5:
             sp18 = 10.0f;
             break;
@@ -1484,7 +1484,7 @@ void ParticleEffect_CreateDisplayList(s32 arg0, arg1_func_84344CE8* arg1) {
 void ParticleEffect_ConfigureScale(ParticleEffectInstance* arg0) {
     f32 sp24 = 1.2f;
     f32 sp20 = 0.0f;
-    s32 temp_v0 = func_843081BC(arg0->unk_10);
+    s32 temp_v0 = GetSpecies(arg0->unk_10);
 
     if (temp_v0 < 0x98) {
         sp24 = D_84387B00[temp_v0];
@@ -1554,8 +1554,8 @@ void ParticleEffect_DrawOverlay(Gfx* arg0, u16 arg1) {
 
     gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, tmp->unk_01D);
 
-    func_81406204(arg0++, 1, 1, 0x20, 0x20);
-    func_81406288(arg0++, 2, 2, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, 1, 1, 0x20, 0x20);
+    Gfx_ScrollTexture1ToDL(arg0++, 2, 2, 0x20, 0x20);
 
     gSPEndDisplayList(arg0++);
 }
@@ -1692,7 +1692,7 @@ void ParticleEffect_FireworksInit(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.5f);
     Particle_SetSpeed(arg0, 4.5f);
-    Particle_AddRotationDeltaXYZ(arg0, func_81400B28(0x800, -0x3800), RandomRangeSigned(0x1400), 0);
+    Particle_AddRotationDeltaXYZ(arg0, RandomRangeSignedPlus(0x800, -0x3800), RandomRangeSigned(0x1400), 0);
     Particle_SetTimerA6(arg0, sp2E * 2);
     Particle_DisableFlag4(arg0);
     Particle_IncrementState(arg0);
@@ -1739,7 +1739,7 @@ void ParticleEffect_FireworksState(ParticleEffectInstance* arg0) {
 void ParticleEffect_AdjustHeight(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
-    if (func_843081BC(arg0->unk_10) == 0x8C) {
+    if (GetSpecies(arg0->unk_10) == 0x8C) {
         sp1C = 5.0f;
     }
     Particle_AddVelocityYScaled(arg0, sp1C);
@@ -1965,7 +1965,7 @@ void func_84345490(void) {
 void ParticleEffect_GetVerticalOffset(ParticleEffectInstance* arg0) {
     f32 sp1C = 5.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0xF:
             sp1C = -10.0f;
             break;
@@ -2268,8 +2268,8 @@ void ParticleEffect_DrawSpecial(Gfx* arg0, s32 arg1, u16 arg2) {
     UNUSED s32 pad;
     ParticleEffectInstance* sp28 = GetGraphNodeData(gDefaultGraphRoot);
 
-    func_81406204(arg0++, 1, 0x28, 0x20, 0x20);
-    func_81406288(arg0++, -1, 0x1E, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, 1, 0x28, 0x20, 0x20);
+    Gfx_ScrollTexture1ToDL(arg0++, -1, 0x1E, 0x20, 0x20);
 
     gDPPipeSync(arg0++);
 
@@ -2419,7 +2419,7 @@ void Particle_ConfigureScaleSpeed(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.6f;
     f32 sp18 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x3:
             sp1C = 1.0f;
             sp18 = 5.0f;
@@ -2686,7 +2686,7 @@ void ParticleEffect_RegisterHandler_47448(void) {
 void ParticleEffect_AdjustParametersByAnimId(ParticleEffectInstance* arg0) {
     f32 var_fs0 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x5:
             Particle_AddVelocityBackward(arg0, 10.0f);
             break;
@@ -3244,9 +3244,9 @@ void ParticleEffect_StateHandler_48D4C(ParticleEffectInstance* arg0) {
     }
 
     if (Particle_IsActive(arg0) != 0) {
-        if (func_843081BC(arg0->unk_10) == 0x5F) {
+        if (GetSpecies(arg0->unk_10) == 0x5F) {
             sp20 = 1;
-        } else if (func_843081BC(arg0->unk_10) == 0x82) {
+        } else if (GetSpecies(arg0->unk_10) == 0x82) {
             sp20 = 1;
         }
 
@@ -3347,7 +3347,7 @@ void ParticleEffect_RegisterHandler_49384(void) {
 f32 ParticleEffect_GetScaleFactorByAnimId(ParticleEffectInstance* arg0) {
     f32 sp1C = 1.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x3B:
             sp1C = 1.45f;
             break;
@@ -3386,7 +3386,7 @@ void ParticleEffect_RegisterHandlers_49504(void) {
 }
 
 void ParticleEffect_ApplySpecialEffect_495F0(ParticleEffectInstance* arg0) {
-    if (func_843081BC(arg0->unk_10) == 0x5F) {
+    if (GetSpecies(arg0->unk_10) == 0x5F) {
         Particle_AddVelocityLeft(arg0, 20.0f);
     }
 }
@@ -3405,7 +3405,7 @@ void ParticleEffect_RegisterHandlers_4967C(void) {
 void ParticleEffect_AdjustVerticalOffset_497A8(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x57:
             sp1C = -20.0f;
             Particle_AddVelocityLeft(arg0, 10.0f);
@@ -3434,7 +3434,7 @@ void ParticleEffect_AdjustSizeByAnimId(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x3B:
             sp1C = 30.0f;
             break;
@@ -3554,7 +3554,7 @@ void Gfx_DrawParticlePaletteBased(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     gDPLoadTextureBlock(arg0++, arg1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_81406204(arg0++, 5, 0, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, 5, 0, 0x20, 0x20);
 
     switch (sp2E) {
         case 0:
@@ -3771,7 +3771,7 @@ f32 func_8434A574(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.5f;
     f32 sp18 = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x57:
             sp18 = -15.0f;
             break;
@@ -3881,9 +3881,9 @@ void func_8434AAEC(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
     s32 idx = arg1 * 0xB48;
 
     if (IsPrimaryEntity(GetGraphNodeData(gDefaultGraphRoot)->unk_10) == 0) {
-        var_a3 = D_8438E778 + idx;
+        var_a3 = gPokemonPortraitImage0 + idx;
     } else {
-        var_a3 = D_8438E77C + idx;
+        var_a3 = gPokemonPortraitImage1 + idx;
     }
 
     gDPLoadTextureTile(arg0++, var_a3, G_IM_FMT_RGBA, G_IM_SIZ_16b, 76, 0, 0, 0, 75, 18, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -3938,7 +3938,7 @@ f32 func_8434AE68(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 1.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x24:
             sp18 = 1.2f;
             sp1C = 10.0f;
@@ -4009,7 +4009,7 @@ void func_8434B064(void) {
 void func_8434B0D8(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
-    switch (func_843081BC(arg0->unk_10)) {
+    switch (GetSpecies(arg0->unk_10)) {
         case 0x34:
             sp1C = 12.0f;
             break;
@@ -4287,12 +4287,12 @@ void func_8434B2B8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     gDPLoadTextureTile_4b(arg0++, arg1, G_IM_FMT_I, var_s1, var_s1, 0, 0, var_s1 - 1, var_s1 - 1, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, var_t2, var_t1, spB2, spB0);
 
-    func_81406204(arg0++, spC4, spC2, var_s1, var_s1);
+    Gfx_ScrollTextureToDL(arg0++, spC4, spC2, var_s1, var_s1);
 
     gDPLoadMultiTile_4b(arg0++, a1, 0x0100, 1, G_IM_FMT_I, var_s1, var_s1, 0, 0, var_s1 - 1, var_s1 - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, var_t2, var_t1, spAE, spAC);
 
-    func_81406288(arg0++, spC0, spBE, var_s1, var_s1);
+    Gfx_ScrollTexture1ToDL(arg0++, spC0, spBE, var_s1, var_s1);
 
     gSPEndDisplayList(arg0++);
 }
@@ -4512,7 +4512,7 @@ void func_8434CA48(s32 arg0, arg1_func_84344CE8* arg1) {
 f32 func_8434CA90(ParticleEffectInstance* arg0) {
     f32 sp1C = 2.5f;
 
-    if (func_843081BC(arg0->unk_10) == 0x5F) {
+    if (GetSpecies(arg0->unk_10) == 0x5F) {
         sp1C = 1.75f;
     }
     return sp1C;
@@ -4807,7 +4807,7 @@ void func_8434DD08(void) {
 f32 GetParticleScaleForEffect(ParticleEffectInstance* arg0) {
     f32 sp1C = 1.0f;
 
-    if (func_843081BC(arg0->unk_10) == 0x34) {
+    if (GetSpecies(arg0->unk_10) == 0x34) {
         sp1C = 1.75f;
     }
     return sp1C;
@@ -4960,12 +4960,12 @@ void ParticleEffect_DrawQuad(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg
     gDPLoadTextureTile_4b(arg0++, arg1->unk_00, G_IM_FMT_I, 32, 32, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, sp7A, sp78);
 
-    func_81406204(arg0++, sp82, sp80, 0x20, 0x20);
+    Gfx_ScrollTextureToDL(arg0++, sp82, sp80, 0x20, 0x20);
 
     gDPLoadMultiTile_4b(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_I, var_s1, 0, 0, 0, var_s1 - 1, var_s1 - 1, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, var_t5, var_t5, sp76, sp74);
 
-    func_81406288(arg0++, sp7E, sp7C, var_s1, var_s1);
+    Gfx_ScrollTexture1ToDL(arg0++, sp7E, sp7C, var_s1, var_s1);
 
     gSPEndDisplayList(arg0++);
 }

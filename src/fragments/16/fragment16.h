@@ -34,7 +34,7 @@ typedef struct unk_D_86A03170 {
     /* 0x18 */ f32 unk_18;
 } unk_D_86A03170; // size = 0x1C
 
-typedef struct unk_D_86A04328 {
+typedef struct CreditsMovingCamera {
     /* 0x00 */ Vec3f unk_00;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -45,7 +45,7 @@ typedef struct unk_D_86A04328 {
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
     /* 0x34 */ f32 unk_34;
-} unk_D_86A04328; // size = 0x38
+} CreditsMovingCamera; // size = 0x38
 
 extern unk_D_86A03170 gStageCameraPositions[17][6];
 
@@ -428,7 +428,7 @@ extern char D_86A06134;
 extern u8 gPhaseDelta;
 extern u8 gUnusedTimer1;
 
-extern Vec3f D_86A06248;
+extern Vec3f gCreditsCameraPivot;
 
 s32 NodeColorSetter(s32 arg0, GraphNode* arg1);
 void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2);

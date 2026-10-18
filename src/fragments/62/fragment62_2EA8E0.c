@@ -23,8 +23,8 @@ static GraphNode D_8438E568;
 static GraphNode D_8438E580;
 static CameraStruct D_8438E598;
 static CameraStruct D_8438E688;
-u8* D_8438E778;
-u8* D_8438E77C;
+u8* gPokemonPortraitImage0;
+u8* gPokemonPortraitImage1;
 static void* D_8438E780;
 static GraphNode* D_8438E784;
 static GraphNode* D_8438E788;
@@ -212,7 +212,7 @@ void FramebufferNode_Init(GraphNode* arg0, FramebufferImage* arg1) {
     }
 }
 
-void func_84300810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_DrawClippedTextureRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     ClipRect sp38;
     u16 tmp5;
     u16 tmp6;
@@ -235,12 +235,12 @@ void func_84300810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_84300938(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
+void Gfx_LoadTextureDrawClippedRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg5, (arg3 * 2) + 2, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    func_84300810(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    Gfx_DrawClippedTextureRect(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
 void RenderPokemonPortraits(GraphNode* arg0, FramebufferImage* arg1) {
@@ -264,13 +264,13 @@ void RenderPokemonPortraits(GraphNode* arg0, FramebufferImage* arg1) {
     gDPSetTextureFilter(gDisplayListHead++, G_TF_AVERAGE);
 
     img = arg1->img_p;
-    func_84300938(temp_s2, temp_s3, 0x25, 0xA, img, 0x4C);
+    Gfx_LoadTextureDrawClippedRect(temp_s2, temp_s3, 0x25, 0xA, img, 0x4C);
     img = arg1->img_p + 0xBE0;
-    func_84300938(temp_s2, temp_s3 + 0xA, 0x25, 0xA, img, 0x4C);
+    Gfx_LoadTextureDrawClippedRect(temp_s2, temp_s3 + 0xA, 0x25, 0xA, img, 0x4C);
     img = arg1->img_p + 0x17C0;
-    func_84300938(temp_s2, temp_s3 + 0x14, 0x25, 0xA, img, 0x4C);
+    Gfx_LoadTextureDrawClippedRect(temp_s2, temp_s3 + 0x14, 0x25, 0xA, img, 0x4C);
     img = arg1->img_p + 0x23A0;
-    func_84300938(temp_s2, temp_s3 + 0x1E, 0x25, 7, img, 0x4C);
+    Gfx_LoadTextureDrawClippedRect(temp_s2, temp_s3 + 0x1E, 0x25, 7, img, 0x4C);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -385,7 +385,7 @@ void func_84301094(void) {
     }
 }
 
-s32 func_843010EC(s32 arg0) {
+s32 PokemonSelectScreen_Update(s32 arg0) {
     s32 sp1C = 0;
 
     Cont_StartReadInputs();
@@ -479,7 +479,7 @@ void func_8430128C(void) {
     }
 }
 
-void func_843013E4(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
+void PokemonSelection_InitPlayer(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
     unk_D_800AE540_0004* temp_v0 = arg0->unk_08[0];
 
     arg0->unk_18 = arg1->unk_08->unk_00[0];
@@ -523,8 +523,8 @@ void BattleScreen_Init(Stage* arg0) {
     FramebufferImage_AttachDepth(D_8438E790, sp2C);
     FramebufferImage_AttachDepth(D_8438E794, sp2C);
 
-    D_8438E778 = D_8438E790->img_p;
-    D_8438E77C = D_8438E794->img_p;
+    gPokemonPortraitImage0 = D_8438E790->img_p;
+    gPokemonPortraitImage1 = D_8438E794->img_p;
 
     FRAGMENT_LOAD(fragment31);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
@@ -547,8 +547,8 @@ void BattleScreen_Init(Stage* arg0) {
 
     sp28 = GeoLayout_LoadById(0x9A);
     func_8430128C();
-    func_843013E4(&D_8438E798[0], sp28);
-    func_843013E4(&D_8438E798[1], sp28);
+    PokemonSelection_InitPlayer(&D_8438E798[0], sp28);
+    PokemonSelection_InitPlayer(&D_8438E798[1], sp28);
 
     PokemonSelection_ClearFlags();
     CameraNode_Create(NULL, &D_8438E440, 0, 0, 0x140, 0xF0);
@@ -610,7 +610,7 @@ void BattleScreen_Init(Stage* arg0) {
 void func_84301A24(void) {
 }
 
-s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
+s32 BattleScreen_Run(s32 arg0, unk_D_800AE540* arg1) {
     Stage* sp24;
 
     D_8438E798 = gBattleContext.unk_1194;
@@ -623,7 +623,7 @@ s32 func_84301A2C(s32 arg0, unk_D_800AE540* arg1) {
     BattleScreen_Init(sp24);
     Stage_Set(sp24);
     Stage_AdvanceN(1);
-    Stage_RunFadeSequence(func_843010EC, 0x20, 0x10);
+    Stage_RunFadeSequence(PokemonSelectScreen_Update, 0x20, 0x10);
     Stage_AdvanceN(2);
     Stage_Destroy();
     Gfx_FreeBuffers();

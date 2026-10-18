@@ -651,7 +651,7 @@ s32 func_8821738C(unk_func_882170A8* arg0, s32 arg1, s32 arg2) {
 void Button_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
 
-    arg0->unk_00.unk_1C = func_88217460;
+    arg0->unk_00.unk_1C = SlideAnim_Update;
     arg0->unk_30.unk_00 = arg1;
     arg0->unk_30.unk_02 = arg2;
     arg0->unk_2C = 0x10;
@@ -663,7 +663,7 @@ typedef struct unk_func_88217460 {
     /* 0x04 */ f32 unk_04;
 } unk_func_88217460; // size >= 0x8
 
-s32 func_88217460(unk_func_882173EC* arg0) {
+s32 SlideAnim_Update(unk_func_882173EC* arg0) {
     f32 temp_fa1;
     f32 temp_ft4;
     f32 tmp = 15.0f;
@@ -716,7 +716,7 @@ s32 func_88217460(unk_func_882173EC* arg0) {
     return 0;
 }
 
-void func_882175F4(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2) {
+void SlideAnim_Begin(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2) {
     unk_func_88001300_000_010 tmp = arg1;
 
     arg0->unk_30 = tmp;
@@ -756,17 +756,17 @@ void func_88217718(unk_func_8821421C_02C_06C_02C_068* arg0, unk_func_88001300_00
     arg0->unk_2C = 0;
 }
 
-void func_88217740(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
+void SwapArrows_Init(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88217740));
 
-    arg0->unk_00.unk_18 = func_882177A8;
+    arg0->unk_00.unk_18 = SwapArrows_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     func_88217BA0(arg0, 1);
 }
 
-s32 func_882177A8(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
+s32 SwapArrows_Draw(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp6C;
 
     gDPPipeSync(gDisplayListHead++);
@@ -776,7 +776,7 @@ s32 func_882177A8(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM);
-    gDPLoadTextureBlock(gDisplayListHead++, D_8821EE88, G_IM_FMT_IA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(gDisplayListHead++, gSwapArrowsTexture, G_IM_FMT_IA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     sp6C = D_88218238[(arg0->unk_2C != 0) ? 0 : 1];
@@ -801,14 +801,14 @@ void func_88217BA0(unk_func_88217740* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-void func_88217BAC(unk_func_88217740* arg0) {
+void SwapArrows_Show(unk_func_88217740* arg0) {
     arg0->unk_30 = 1;
 }
 
-void func_88217BB8(unk_func_88217740* arg0) {
+void SwapArrows_Hide(unk_func_88217740* arg0) {
     arg0->unk_30 = 0;
 }
 
-void func_88217BC0(unk_func_88217740* arg0) {
+void SwapArrows_ToggleDirection(unk_func_88217740* arg0) {
     func_88217BA0(arg0, arg0->unk_2C == 0);
 }

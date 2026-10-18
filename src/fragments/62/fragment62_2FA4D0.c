@@ -248,7 +248,7 @@ void func_84310334(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
 void func_84310360(void) {
 }
 
-void func_84310368(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
+void DrawHPBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
     u8* spCC;
     s32 temp_ft2 = ((arg3 - arg2) * 48.0f) / arg3;
     s32 sp14 = 0x30 - temp_ft2;
@@ -295,7 +295,7 @@ void func_84310368(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
 void func_843109EC(void) {
 }
 
-void func_843109F4(s32 arg0, s32 arg1, s32 arg2) {
+void DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     s8* var_s2;
     s8 sp58[2];
@@ -440,14 +440,14 @@ void DrawPokemonInfoWindow(unk_D_84390010* arg0, PokemonData* arg1, unk_D_843857
         Text_DrawWindowRect(arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
     }
 
-    func_843109F4(arg3 + 3, arg4 + 0x10, arg1->unk_24);
-    func_84310368(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[IsPrimaryEntity(arg0)], arg1->unk_26);
+    DrawLevelNumber(arg3 + 3, arg4 + 0x10, arg1->unk_24);
+    DrawHPBar(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[IsPrimaryEntity(arg0)], arg1->unk_26);
     DrawFractionNumber(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
     Text_ResetState();
     Text_SetFont(2, 0);
 
-    sp34 = MeasureTextWidth(2, 0, func_8430862C(arg0)) / 2;
-    Text_Print((arg3 - sp34) + 0x23, arg4 + 2, func_8430862C(arg0));
+    sp34 = MeasureTextWidth(2, 0, GetPokemonName(arg0)) / 2;
+    Text_Print((arg3 - sp34) + 0x23, arg4 + 2, GetPokemonName(arg0));
     sp34 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
 
     if (sp34 >= 0x28) {
@@ -901,11 +901,11 @@ void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
 }
 
-void func_84313750(s32 arg0, s32 arg1, char* arg2) {
+void Text_PrintRightAligned(s32 arg0, s32 arg1, char* arg2) {
     Text_Print(arg0 - (strlen(arg2) * 6), arg1, arg2);
 }
 
-s32 func_8431379C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 DrawCounterLeftToRight(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     s32 i;
@@ -949,7 +949,7 @@ s32 func_8431379C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-s32 func_84313908(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     s32 i;
@@ -1025,35 +1025,35 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            sp64[0] = func_84313908(arg1 + 0x52, arg2 + 0xF, temp_s0->unk_32[0], sp60[0]);
+            sp64[0] = DrawCounterRightToLeft(arg1 + 0x52, arg2 + 0xF, temp_s0->unk_32[0], sp60[0]);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            sp64[1] = func_8431379C(arg1 + 0x7C, arg2 + 0x1C, temp_s0->unk_32[1], sp60[1]);
+            sp64[1] = DrawCounterLeftToRight(arg1 + 0x7C, arg2 + 0x1C, temp_s0->unk_32[1], sp60[1]);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            sp64[2] = func_8431379C(arg1 + 0x70, arg2 + 0x30, temp_s0->unk_32[2], sp60[2]);
+            sp64[2] = DrawCounterLeftToRight(arg1 + 0x70, arg2 + 0x30, temp_s0->unk_32[2], sp60[2]);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            sp64[3] = func_84313908(arg1 + 0x44, arg2 + 0x23, temp_s0->unk_32[3], sp60[3]);
+            sp64[3] = DrawCounterRightToLeft(arg1 + 0x44, arg2 + 0x23, temp_s0->unk_32[3], sp60[3]);
         }
     } else {
         if ((sp58->unk_09[0] != 0) && (sp58->unk_09[0] < 0xA6)) {
-            sp64[0] = func_84313908(arg1 + 0x52, arg2 + 0xF, sp58->unk_20[0], sp60[0]);
+            sp64[0] = DrawCounterRightToLeft(arg1 + 0x52, arg2 + 0xF, sp58->unk_20[0], sp60[0]);
         }
 
         if ((sp58->unk_09[1] != 0) && (sp58->unk_09[1] < 0xA6)) {
-            sp64[1] = func_8431379C(arg1 + 0x7C, arg2 + 0x1C, sp58->unk_20[1], sp60[1]);
+            sp64[1] = DrawCounterLeftToRight(arg1 + 0x7C, arg2 + 0x1C, sp58->unk_20[1], sp60[1]);
         }
 
         if ((sp58->unk_09[2] != 0) && (sp58->unk_09[2] < 0xA6)) {
-            sp64[2] = func_8431379C(arg1 + 0x70, arg2 + 0x30, sp58->unk_20[2], sp60[2]);
+            sp64[2] = DrawCounterLeftToRight(arg1 + 0x70, arg2 + 0x30, sp58->unk_20[2], sp60[2]);
         }
 
         if ((sp58->unk_09[3] != 0) && (sp58->unk_09[3] < 0xA6)) {
-            sp64[3] = func_84313908(arg1 + 0x44, arg2 + 0x23, sp58->unk_20[3], sp60[3]);
+            sp64[3] = DrawCounterRightToLeft(arg1 + 0x44, arg2 + 0x23, sp58->unk_20[3], sp60[3]);
         }
     }
 
@@ -1121,7 +1121,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1148,7 +1148,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1157,7 +1157,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1184,14 +1184,14 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            func_84313750(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     }
 
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (temp_s0->unk_1F[0] >= 0xA6) {
-        func_84313750(arg1 + 0x5A, arg2 + 4, "？？？？？");
+        Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, "？？？？？");
     }
 
     if (temp_s0->unk_1F[1] >= 0xA6) {
@@ -1203,7 +1203,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 
     if (temp_s0->unk_1F[3] >= 0xA6) {
-        func_84313750(arg1 + 0x4C, arg2 + 0x18, "？？？？？");
+        Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, "？？？？？");
     }
 
     Text_SetupDL();
@@ -1249,8 +1249,8 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
                    s32 arg5) {
     s32 var_t0;
 
-    func_843109F4(arg3 + 3, arg4 + 4, arg2->unk_24);
-    func_84310368(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
+    DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
+    DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
     DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -1304,8 +1304,8 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
                    s32 arg5) {
     s32 var_t0;
 
-    func_843109F4(arg3 + 3, arg4 + 4, arg2->unk_24);
-    func_84310368(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
+    DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
+    DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
     DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -1506,7 +1506,7 @@ void func_84315ADC(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
     DrawWindowBackground(arg1 - 2, arg2 - 1, 0xF4, 0x29, 0);
 }
 
-s32 func_84315BC0(char* arg0, s16 arg1, s16 arg2) {
+s32 Dialog_PrintLineIfSet(char* arg0, s16 arg1, s16 arg2) {
     if (*(s8*)arg0 == 0) {
         return 0;
     }
@@ -1536,7 +1536,7 @@ void func_84315C28(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
     DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
-void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+void Dialog_OpenColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp4C;
     Vec3f sp40;
     Vec3f sp34;
@@ -1553,7 +1553,7 @@ void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     func_84315C28(arg0, arg1, arg2, sp4C);
 }
 
-s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+s32 Dialog_ZoomColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 
@@ -1574,7 +1574,7 @@ void func_84315FAC(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
     DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
-void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+void Dialog_OpenDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp4C;
     Vec3f sp40;
     Vec3f sp34;
@@ -1591,7 +1591,7 @@ void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     func_84315FAC(arg0, arg1, arg2, sp4C);
 }
 
-s32 func_843161F8(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+s32 Dialog_ZoomDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 

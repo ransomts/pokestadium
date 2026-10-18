@@ -21,7 +21,7 @@ static Gfx D_8140DA50[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DAE0[] = {
+Gfx gDL_End3D[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetColorDither(G_CD_MAGICSQ),
@@ -34,7 +34,7 @@ Gfx D_8140DAE0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DB30[] = {
+Gfx gDL_Begin3D[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -152,7 +152,7 @@ Gfx gDL_OverlayUI[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD78[] = {
+Gfx gDL_BeginUIOverlay[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -167,14 +167,14 @@ Gfx D_8140DD78[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DDD8[] = {
+Gfx gDL_EndColorFill[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetAlphaCompare(G_AC_NONE),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DDF8[] = {
+Gfx gDL_BeginColorFill[] = {
     gsDPPipeSync(),
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -312,14 +312,14 @@ Vtx D_8140E2B8[] = {
     VTX(31, 0, 0, 2016, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E378[] = {
+Vtx gGroundQuadVtx[] = {
     VTX(-64, 0, 63, 0, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(63, 0, 63, 4064, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(63, 0, -64, 4064, 4064, 0x00, 0x00, 0x78, 0xFF),
     VTX(-64, 0, -64, 0, 4064, 0x00, 0x00, 0x78, 0xFF),
 };
 
-Vtx D_8140E3B8[] = {
+Vtx gFullscreenQuadVtx[] = {
     VTX(-160, -120, 0, 0, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(160, -120, 0, 1024, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(160, 120, 0, 1024, 0, 0x00, 0x00, 0x78, 0xFF),
@@ -504,17 +504,17 @@ void Gfx_LoadTextureBlockRGBA16_MaskS(u8* texture, s32 width, s32 height, s32 ma
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81403EA8(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileRGBA16_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTileRGBA16(texture, G_IM_FMT_RGBA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81403EF4(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockIA16_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureBlockRGBA16(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81403F40(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileIA16_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTileRGBA16(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
@@ -524,12 +524,12 @@ void Gfx_LoadTextureBlockIA8_Clamp(u8* texture, s32 width, s32 height) {
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81403FD8(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileIA8_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTileIA8(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404024(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockIA8_MirrorWrap(u8* texture, s32 width, s32 height) {
     s32 masks = GetLog2(width);
     s32 maskt = GetLog2(height);
 
@@ -550,7 +550,7 @@ void Gfx_LoadTextureBlockI_MirrorWrap(u8* texture, s32 width, s32 height) {
                   G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404150(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileI_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTileIA8(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
@@ -560,30 +560,30 @@ void func_8140419C(u8* texture, s32 width, s32 height) {
 }
 
 void func_814041BC(u8* texture, s32 width, s32 height) {
-    func_81404150(texture, width, height);
+    Gfx_LoadTextureTileI_Clamp(texture, width, height);
 }
 
-void func_814041DC(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileIA4b_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTile4b(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404228(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileI4b_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTile4b(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404274(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockIA4b_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureBlock4b(texture, G_IM_FMT_IA, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_814042C0(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockI4b_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_8140430C(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockI4b_MirrorWrap(u8* texture, s32 width, s32 height) {
     s32 masks = GetLog2(width);
     s32 maskt = GetLog2(height);
 
@@ -592,21 +592,21 @@ void func_8140430C(u8* texture, s32 width, s32 height) {
 }
 
 void func_8140437C(u8* texture, s32 width, s32 height) {
-    func_814042C0(texture, width, height);
+    Gfx_LoadTextureBlockI4b_Clamp(texture, width, height);
 }
 
 void func_8140439C(u8* texture, s32 width, s32 height) {
-    func_81404228(texture, width, height);
+    Gfx_LoadTextureTileI4b_Clamp(texture, width, height);
 }
 
-void func_814043BC(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockI4b_MirrorWrapS(u8* texture, s32 width, s32 height) {
     s32 masks = GetLog2(width);
 
     Gfx_LoadTextureBlock4b(texture, G_IM_FMT_I, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_8140441C(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureBlockI4b_Wrap(u8* texture, s32 width, s32 height) {
     s32 masks = GetLog2(width);
     s32 maskt = GetLog2(height);
 
@@ -614,7 +614,7 @@ void func_8140441C(u8* texture, s32 width, s32 height) {
                   maskt, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404484(u8* texture, s32 width, s32 height) {
+void Gfx_LoadMultiBlockI4b_Wrap(u8* texture, s32 width, s32 height) {
     s32 tmem = 0x100;
     s32 rtile = 1;
     s32 masks = GetLog2(width);
@@ -639,12 +639,12 @@ void Gfx_LoadTextureBlockCI_Clamp(u8* texture, s32 width, s32 height) {
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_814045CC(u8* texture, s32 width, s32 height, s32 masks) {
+void Gfx_LoadTextureBlockCI_MirrorWrapS(u8* texture, s32 width, s32 height, s32 masks) {
     Gfx_LoadTextureBlockIA8(texture, G_IM_FMT_CI, width, height, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_CLAMP, masks,
                   G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
 
-void func_81404624(u8* texture, s32 width, s32 height) {
+void Gfx_LoadTextureTileCI_Clamp(u8* texture, s32 width, s32 height) {
     Gfx_LoadTextureTileIA8(texture, G_IM_FMT_CI, width, height, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                   G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 }
@@ -666,7 +666,7 @@ void Gfx_SetupMultiTextureCI_RGBA16(u8* texture1, u8* texture2, s32 width, s32 h
     gDPSetTileSize(gDisplayListHead++, 1, 0, 0, (width - 1) << 2, (height - 1) << 2);
 }
 
-void func_81404A6C(Vtx* arg0) {
+void Gfx_DrawQuad(Vtx* arg0) {
     gSPVertex(gDisplayListHead++, arg0, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
@@ -674,77 +674,77 @@ void func_81404A6C(Vtx* arg0) {
 void func_81404AB4(void) {
 }
 
-void func_81404ABC(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {
-    func_81401FC0(arg0, arg1, arg2);
+void Gfx_DrawQuadRotated(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {
+    Matrix_SubmitRotateTranslateScale(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
-void func_81404B78(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4) {
-    func_8140203C(arg0, arg1, arg3);
+void Gfx_DrawQuadRotatedScaleY(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4) {
+    Matrix_SubmitRotateTranslateScaleY(arg0, arg1, arg3);
 
     gSPVertex(gDisplayListHead++, arg4, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
 void func_81404C34(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3, Vtx* arg4) {
-    func_814020B8(arg0, arg1, arg2, arg3);
+    Matrix_SubmitRotateTranslateScaleXY(arg0, arg1, arg2, arg3);
 
     gSPVertex(gDisplayListHead++, arg4, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
-void func_81404CF8(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {
-    func_81401FC0(arg0, arg1, arg2);
+void Gfx_DrawTriangleRotated(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {
+    Matrix_SubmitRotateTranslateScale(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E3F8);
 }
 
-void func_81404DB4(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
-    func_8140213C(arg0, arg1, arg2);
+void Gfx_DrawQuadBillboard(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
+    Matrix_SubmitBillboard(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
-void func_81404E4C(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
-    func_814021A4(arg0, arg1, arg2, arg4);
+void Gfx_DrawQuadBillboardRoll(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
+    Matrix_SubmitBillboardRoll(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
 void func_81404EEC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
-    func_81402214(arg0, arg1, arg2);
+    Matrix_SubmitBillboardY(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
-void func_81404F84(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
-    func_8140227C(arg0, arg1, arg2, arg4);
+void Gfx_DrawQuadBillboardRollScaleY(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
+    Matrix_SubmitBillboardRollY(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E408);
 }
 
 void func_81405024(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
-    func_8140213C(arg0, arg1, arg2);
+    Matrix_SubmitBillboard(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E3F8);
 }
 
 void func_814050BC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
-    func_814021A4(arg0, arg1, arg2, arg4);
+    Matrix_SubmitBillboardRoll(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
     gSPDisplayList(gDisplayListHead++, D_8140E3F8);
 }
 
-void func_8140515C(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
+void Gfx_DrawTiledTextureI(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
     s32 i;
     s32 j;
     s32 var_s4 = 0;
@@ -765,7 +765,7 @@ void func_8140515C(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
     gSPTexture(gDisplayListHead++, 0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_81405308(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
+void Gfx_DrawTiledTextureIA16(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
     s32 i;
     s32 j;
     s32 var_s4 = 0;
@@ -773,7 +773,7 @@ void func_81405308(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
 
     for (i = 0; i < arg3 / height; i++) {
         for (j = 0; j < arg2 / width; j++) {
-            func_81403EF4(var_s3, width, height);
+            Gfx_LoadTextureBlockIA16_Clamp(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
             gSPDisplayList(gDisplayListHead++, D_8140E408);
@@ -786,7 +786,7 @@ void func_81405308(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
     gSPTexture(gDisplayListHead++, 0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_814054B4(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
+void Gfx_DrawTiledTextureIA8(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
     s32 i;
     s32 j;
     s32 var_s4 = 0;
@@ -807,7 +807,7 @@ void func_814054B4(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
     gSPTexture(gDisplayListHead++, 0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_81405660(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
+void Gfx_DrawTiledTextureI4b(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
     s32 i;
     s32 j;
     s32 var_s4 = 0;
@@ -815,7 +815,7 @@ void func_81405660(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
 
     for (i = 0; i < arg3 / height; i++) {
         for (j = 0; j < arg2 / width; j++) {
-            func_814042C0(var_s3, width, height);
+            Gfx_LoadTextureBlockI4b_Clamp(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
             gSPDisplayList(gDisplayListHead++, D_8140E408);
@@ -836,7 +836,7 @@ void func_81405814(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 hei
 
     for (i = 0; i < arg3 / height; i++) {
         for (j = 0; j < arg2 / width; j++) {
-            func_81404228(var_s3, width, height);
+            Gfx_LoadTextureTileI4b_Clamp(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
             gSPDisplayList(gDisplayListHead++, D_8140E408);
@@ -863,7 +863,7 @@ void Gfx_SetFogColor(u8 r, u8 g, u8 b, u8 a) {
     gDPSetFogColor(gDisplayListHead++, r, g, b, a);
 }
 
-void func_81405B00(u8 r, u8 g, u8 b, u8 a) {
+void Gfx_SetBlendColor(u8 r, u8 g, u8 b, u8 a) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetBlendColor(gDisplayListHead++, r, g, b, a);
 }
@@ -882,7 +882,7 @@ void func_81405C04(u8 a) {
                       COMBINED);
 }
 
-void func_81405C70(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b, u8 prim_a) {
+void Gfx_SetPrimAndEnvColor(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b, u8 prim_a) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, prim_r, prim_g, prim_b, prim_a);
     gDPSetEnvColor(gDisplayListHead++, env_r, env_g, env_b, 0);
@@ -898,7 +898,7 @@ void func_81405D38(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b
                       ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
 }
 
-void func_81405E04(u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b, u8 env_a) {
+void Gfx_SetPrimAndEnvColorRGBA(u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b, u8 env_a) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, prim_r, prim_g, prim_b, prim_a);
     gDPSetEnvColor(gDisplayListHead++, env_r, env_g, env_b, env_a);
@@ -906,7 +906,7 @@ void func_81405E04(u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_
                       COMBINED, 0, SHADE, 0, COMBINED, 0, SHADE, 0);
 }
 
-void func_81405ED8(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b) {
+void Gfx_SetPrimAndEnvColorLOD(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetPrimColor(gDisplayListHead++, 0, l, prim_r, prim_g, prim_b, prim_a);
     gDPSetEnvColor(gDisplayListHead++, env_r, env_g, env_b, 0);
@@ -927,11 +927,11 @@ u32 GetTileSizeByIndex(s32 arg0) {
 
     switch (arg0) {
         case 2:
-            ret = D_8140E6F0;
+            ret = gTimerShift1;
             break;
 
         case 3:
-            ret = D_8140E6EC;
+            ret = gTimerDiv3;
             break;
 
         case 4:
@@ -942,22 +942,22 @@ u32 GetTileSizeByIndex(s32 arg0) {
     return ret;
 }
 
-void func_814060D4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_ScrollTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, arg0 * gTimerCounter, -arg1 * gTimerCounter,
                    (((arg0 * gTimerCounter) + arg2) - 1) << 2, (((-arg1 * gTimerCounter) + arg3) - 1) << 2);
 }
 
-void func_81406168(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_ScrollTexture1(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetTileSize(gDisplayListHead++, 1, arg0 * gTimerCounter, -arg1 * gTimerCounter,
                    (((arg0 * gTimerCounter) + arg2) - 1) << 2, (((-arg1 * gTimerCounter) + arg3) - 1) << 2);
 }
 
-void func_81406204(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Gfx_ScrollTextureToDL(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gDPSetTileSize(gfx, G_TX_RENDERTILE, arg1 * gTimerCounter, -arg2 * gTimerCounter, (((arg1 * gTimerCounter) + arg3) - 1) << 2,
                    (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
 
-void func_81406288(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Gfx_ScrollTexture1ToDL(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gDPSetTileSize(gfx, 1, arg1 * gTimerCounter, -arg2 * gTimerCounter, (((arg1 * gTimerCounter) + arg3) - 1) << 2,
                    (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
@@ -1179,7 +1179,7 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
     return arg0;
 }
 
-void func_81407874(s32 arg0, arg1_func_87903D64* arg1) {
+void func_81407874(s32 arg0, ColorLerpHook* arg1) {
     if (arg0 == 5) {
         arg1_func_81407874_014* tmp = arg1->unk_14;
 

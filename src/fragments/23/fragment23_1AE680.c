@@ -74,7 +74,7 @@ void LevelLabelFragment_SetData(unk_func_882079D8* arg0, unk_func_88205880_00D0*
 s32 LevelLabelFragment_DrawIfData(unk_func_882079D8*, s32, s32);
 s32 MenuList_ProcessInput(unk_func_8820BE14_02C_078*, Controller*);
 s32 MoveTargetSelector_Draw(unk_func_88208C5C*, s32, s32);
-void func_88209A88(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
+void MonPreview_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
 s32 RenderMoveInfoPanel(unk_func_8820BE14_02C_070*, s32, s32);
 
 static char** gMessageBank_2A;
@@ -798,7 +798,7 @@ void MenuDualList_HandleStateTransition(unk_func_8820B12C_02C* arg0, s32 arg1) {
             ScrollableList_SetDirection(&arg0->unk_20[0]->unk_00, 1);
             ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 1);
             MenuDualList_SetActiveSublist(arg0, 0);
-            func_88217BB8(arg0->unk_38);
+            SwapArrows_Hide(arg0->unk_38);
             break;
 
         case 1:
@@ -806,21 +806,21 @@ void MenuDualList_HandleStateTransition(unk_func_8820B12C_02C* arg0, s32 arg1) {
             ScrollableList_SetActive(arg0->unk_20[1], 0);
             ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 0);
             MenuDualList_SetActiveSublist(arg0, 1);
-            func_88217BAC(arg0->unk_38);
+            SwapArrows_Show(arg0->unk_38);
             break;
 
         case 2:
             arg0->unk_20[arg0->unk_1C]->unk_00.unk_34[arg0->unk_20[arg0->unk_1C]->unk_00.unk_38] |= 2;
             ScrollableList_SetDirection(&arg0->unk_20[arg0->unk_1C]->unk_00, 0);
             arg0->unk_30 = arg0->unk_20[arg0->unk_1C]->unk_00.unk_38;
-            func_88217BAC(arg0->unk_38);
+            SwapArrows_Show(arg0->unk_38);
             break;
 
         case 3:
             arg0->unk_20[0]->unk_00.unk_34[arg0->unk_20[0]->unk_00.unk_38] |= 2;
             ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 0);
             MenuDualList_SetActiveSublist(arg0, 1);
-            func_88217BAC(arg0->unk_38);
+            SwapArrows_Show(arg0->unk_38);
             break;
     }
 
@@ -885,7 +885,7 @@ void MenuDualList_Update(unk_func_8820B12C_02C* arg0, Controller* arg1) {
     MenuDualList_GetCurrentAndSecondary(arg0, &sp30, &sp34);
     LevelLabelFragment_SetData(arg0->unk_54[0], sp30);
     MenuDualList_CalcItemPositions(arg0, &sp2C, &sp28);
-    func_882175F4(arg0->unk_4C[0], sp2C, sp28);
+    SlideAnim_Begin(arg0->unk_4C[0], sp2C, sp28);
 
     arg0->unk_14(arg0, 0);
 
@@ -907,8 +907,8 @@ void MenuDualList_UpdateWithSwapFlag(unk_func_8820B12C_02C* arg0, Controller* ar
     LevelLabelFragment_SetData(arg0->unk_54[0], sp30);
     LevelLabelFragment_SetData(arg0->unk_54[1], sp34);
     MenuDualList_CalcItemPositions(arg0, &sp2C, &sp28);
-    func_882175F4(arg0->unk_4C[0], sp2C, sp28);
-    func_882175F4(arg0->unk_4C[1], sp28, sp2C);
+    SlideAnim_Begin(arg0->unk_4C[0], sp2C, sp28);
+    SlideAnim_Begin(arg0->unk_4C[1], sp28, sp2C);
 
     arg0->unk_14(arg0, 0);
 
@@ -1212,7 +1212,7 @@ void MoveIconList_Init(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
     arg0->unk_0000.unk_10.unk_00 = arg1;
     arg0->unk_0000.unk_10.unk_02 = arg2;
 
-    func_88209A88(arg0, NULL);
+    MonPreview_SetMon(arg0, NULL);
 
     arg0->unk_0030 = 0;
 }
@@ -1344,7 +1344,7 @@ s32 RenderMoveInfoPanel(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88209A88(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1) {
+void MonPreview_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1) {
     arg0->unk_002C = arg1;
     if (arg1 != NULL) {
         arg0->unk_0030 = (arg0->unk_0030 + 1) & 1;
@@ -1581,7 +1581,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(spE8[1], arg0->unk_30[1]);
 
     arg0->unk_40 = mem_pool_alloc(argA, sizeof(unk_func_88217740));
-    func_88217740(arg0->unk_40, 0xF4, 0xA);
+    SwapArrows_Init(arg0->unk_40, 0xF4, 0xA);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_40);
 
     if (arg3 != NULL) {
@@ -1806,7 +1806,7 @@ s32 UIState_Update(TextObjectRenderer* arg0) {
                 ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 0);
                 ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_68, arg0->unk_74->unk_28->unk_24);
             } else {
-                func_88209A88(arg0->unk_70, MenuDualList_GetSelectedItem(arg0->unk_74->unk_2C));
+                MonPreview_SetMon(arg0->unk_70, MenuDualList_GetSelectedItem(arg0->unk_74->unk_2C));
                 ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 2);
             }
             break;
@@ -1970,7 +1970,7 @@ void WritePokemonGbsBlock(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_03
     }
 }
 
-void func_8820B480(unk_func_88200FA0_030_038* arg0, s32 arg1) {
+void MonList_MarkSpeciesOwned(unk_func_88200FA0_030_038* arg0, s32 arg1) {
     s32 i;
     unk_func_88205880_00D0** tmp = arg0->unk_00;
 
@@ -1994,7 +1994,7 @@ void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1) {
     for (i = 0; i < 1; i++) {
         if (temp_s4[i].unk_00 != 0) {
             WritePokemonGbsBlock(0x20, temp_s5, i, &temp_s4[i].unk_04);
-            func_8820B480(&temp_s4[i].unk_04, temp_s5);
+            MonList_MarkSpeciesOwned(&temp_s4[i].unk_04, temp_s5);
         }
     }
 
@@ -2002,7 +2002,7 @@ void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1) {
     for (i = 0; i < 12; i++) {
         if (temp_s4[i].unk_00 != 0) {
             WritePokemonGbsBlock(0x21, temp_s5, i, &temp_s4[i].unk_04);
-            func_8820B480(&temp_s4[i].unk_04, temp_s5);
+            MonList_MarkSpeciesOwned(&temp_s4[i].unk_04, temp_s5);
         }
     }
 
@@ -2214,7 +2214,7 @@ s32 MainScreen_HandleInput(unk_func_8820B12C* arg0, Controller* arg1) {
         if (sp58 != arg0->unk_2C->unk_34) {
             MenuDualList_SwapSublists(arg0->unk_2C);
             Panel_ToggleAllFills(arg0->unk_00.unk_24);
-            func_88217BC0(arg0->unk_00.unk_24->unk_40);
+            SwapArrows_ToggleDirection(arg0->unk_00.unk_24->unk_40);
             ((func8850BFB0)Memmap_GetFragmentVaddr(SelectableList_UpdateVisuals))(arg0);
             var_s1 = 0x80000005;
         }
@@ -2373,7 +2373,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, spC4);
 
     temp_s0 = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(temp_s0, 0, 0, 0x280, 0x1E0, D_88223E48, gUIBorderColor,
+    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(temp_s0, 0, 0, 0x280, 0x1E0, gPcBackdropTile, gUIBorderColor,
                                                            gUIBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(spC4, temp_s0);
 

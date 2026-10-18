@@ -7,7 +7,7 @@ unk_D_8140E620* gMatrixBuffer;
 s32 gMatrixBufferIdx;
 s32 gMatrixBufferIdx;
 unk_D_8140E634 gParticleScaleFactor;
-unk_D_8140E634_010* D_8140E6B4;
+ParticleCameraInfo* gParticleCameraInfo;
 u32 gTimerCounter;
 s32 gTimerMask6;
 s32 gTimerMask5;
@@ -21,22 +21,22 @@ u32 gTimerShift5;
 u32 gTimerShift4;
 u32 gTimerShift3;
 u32 gTimerShift2;
-u32 D_8140E6EC;
-u32 D_8140E6F0;
-s32 D_8140E6F4;
-s32 D_8140E6F8;
-s32 D_8140E6FC;
-s32 D_8140E700;
-s32 D_8140E704;
-s32 D_8140E708;
-s32 D_8140E70C;
+u32 gTimerDiv3;
+u32 gTimerShift1;
+s32 gTimerBit6;
+s32 gTimerBit5;
+s32 gTimerBit4;
+s32 gTimerBit3;
+s32 gTimerBit2;
+s32 gTimerDiv3Parity;
+s32 gTimerBit1;
 s32 gRandomSeedCounter;
 static s32 pad_D_8140E714[2];
 ParticleEffectInstance* gParticleInstances;
-unk_D_8140E724* D_8140E724;
-unk_D_8140E728* gParticleEmitters;
+ParticleDef* gParticleDefs;
+ParticleSpawner* gParticleEmitters;
 s32 gParticleAllocIndex;
-s32 D_8140E730;
+s32 gParticleDefNextIdx;
 s32 gParticleEmitterNextIdx;
 
 void SetBits(s32* arg0, s32 arg1) {
@@ -465,7 +465,7 @@ void BounceFloat(f32* arg0, f32 arg1, f32 arg2, f32* arg3) {
     }
 }
 
-void func_814008B0(s16* arg0, s16 arg1, s16 arg2, s16* arg3) {
+void BounceS16(s16* arg0, s16 arg1, s16 arg2, s16* arg3) {
     *arg0 += *arg3;
     if (*arg3 >= 0) {
         if (*arg0 >= arg2) {
@@ -484,19 +484,19 @@ void Vec3f_Copy(Vec3f* arg0, Vec3f* arg1) {
     arg0->z = arg1->z;
 }
 
-void func_8140094C(Vec3s* arg0, Vec3s* arg1) {
+void Vec3s_CopyTo(Vec3s* arg0, Vec3s* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
 }
 
-void func_81400968(Vec3f* arg0, Vec3f* arg1) {
+void Vec3f_Offset(Vec3f* arg0, Vec3f* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
 }
 
-void func_8140099C(Vec3s* arg0, Vec3s* arg1) {
+void Vec3s_Offset(Vec3s* arg0, Vec3s* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
@@ -531,7 +531,7 @@ u32 RandomMod(s32 arg0) {
     return var_v1;
 }
 
-s32 func_81400ADC(s32 arg0, s32 arg1) {
+s32 RandomModPlus(s32 arg0, s32 arg1) {
     return RandomMod(arg0) + arg1;
 }
 
@@ -539,7 +539,7 @@ s32 RandomRangeSigned(s32 arg0) {
     return RandomMod(arg0 * 2) - arg0;
 }
 
-s32 func_81400B28(s32 arg0, s32 arg1) {
+s32 RandomRangeSignedPlus(s32 arg0, s32 arg1) {
     return RandomRangeSigned(arg0) + arg1;
 }
 
@@ -557,15 +557,15 @@ s32 func_81400B4C(s32 arg0, s32 arg1) {
 void func_81400B84(UNUSED s32 arg0) {
 }
 
-s16 func_81400B8C(Vec3f arg0) {
+s16 Vec3f_AngleX(Vec3f arg0) {
     return MathUtil_Atan2s(arg0.y, arg0.z);
 }
 
-s16 func_81400BBC(Vec3f arg0) {
+s16 Vec3f_AngleY(Vec3f arg0) {
     return MathUtil_Atan2s(arg0.z, arg0.x);
 }
 
-s16 func_81400BEC(Vec3f arg0) {
+s16 Vec3f_AngleZ(Vec3f arg0) {
     return MathUtil_Atan2s(arg0.x, arg0.y);
 }
 
@@ -583,7 +583,7 @@ f32 func_81400CC0(f32 arg0, f32 arg1, s16 arg2) {
     return (SINS(arg2) * arg0) + (COSS(arg2) * arg1);
 }
 
-Vec3f* func_81400D00(Vec3f* arg0, Vec3f arg1, Vec3s arg2) {
+Vec3f* Vec3f_RotateY(Vec3f* arg0, Vec3f arg1, Vec3s arg2) {
     f32 temp_fv0 = SINS(arg2.y);
     f32 temp_fv1 = COSS(arg2.y);
 
@@ -594,7 +594,7 @@ Vec3f* func_81400D00(Vec3f* arg0, Vec3f arg1, Vec3s arg2) {
     return arg0;
 }
 
-Vec3f* func_81400D6C(Vec3f* arg0, f32 arg1, s16 arg2) {
+Vec3f* Vec3f_SetPolarXZ(Vec3f* arg0, f32 arg1, s16 arg2) {
     f32 temp_fv0 = SINS(arg2);
     f32 temp_fv1 = COSS(arg2);
 
@@ -605,7 +605,7 @@ Vec3f* func_81400D6C(Vec3f* arg0, f32 arg1, s16 arg2) {
     return arg0;
 }
 
-Vec3f* func_81400DC0(Vec3f* arg0, Vec3f arg1, Vec3s arg4) {
+Vec3f* Vec3f_RotateXY(Vec3f* arg0, Vec3f arg1, Vec3s arg4) {
     f32 x = arg1.x;
     f32 y = arg1.y;
     f32 z = arg1.z;
@@ -621,15 +621,15 @@ Vec3f* func_81400DC0(Vec3f* arg0, Vec3f arg1, Vec3s arg4) {
     return arg0;
 }
 
-f32 func_81400E8C(Vec3f arg0, Vec3f arg1) {
+f32 Vec3f_Dist(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.y - arg0.y) + SQ(arg1.z - arg0.z));
 }
 
-f32 func_81400EF0(Vec3f arg0, Vec3f arg1) {
+f32 Vec3f_DistXZ(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.z - arg0.z));
 }
 
-Vec3f* func_81400F44(Vec3f* arg0, Vec3f arg1, Vec3f arg2) {
+Vec3f* Vec3f_GetDirection(Vec3f* arg0, Vec3f arg1, Vec3f arg2) {
     arg0->x = arg2.x - arg1.x;
     arg0->y = arg2.y - arg1.y;
     arg0->z = arg2.z - arg1.z;
@@ -640,7 +640,7 @@ Vec3f* func_81400F44(Vec3f* arg0, Vec3f arg1, Vec3f arg2) {
 }
 
 s32 func_81400FA4(Vec3f arg0, Vec3f arg1, f32 arg2) {
-    return func_81400E8C(arg0, arg1) / arg2;
+    return Vec3f_Dist(arg0, arg1) / arg2;
 }
 
 s32 Particle_ComputeLifespan(Vec3f* arg0, Vec3f arg1, Vec3f arg2, f32 arg3) {
@@ -659,7 +659,7 @@ s32 Particle_ComputeLifespan(Vec3f* arg0, Vec3f arg1, Vec3f arg2, f32 arg3) {
     return 1.0f / temp_fv1;
 }
 
-Vec3f* func_814010D8(Vec3f* arg0, f32 arg1) {
+Vec3f* Vec3f_SetRandomDirection(Vec3f* arg0, f32 arg1) {
     Vec3f sp2C;
     Vec3s sp24;
 
@@ -670,11 +670,11 @@ Vec3f* func_814010D8(Vec3f* arg0, f32 arg1) {
     sp24.x = RandomMod(0x10000);
     sp24.y = RandomMod(0x10000);
 
-    func_81400DC0(arg0, sp2C, sp24);
+    Vec3f_RotateXY(arg0, sp2C, sp24);
     return arg0;
 }
 
-Vec3f* func_81401168(Vec3f* arg0, f32 arg1) {
+Vec3f* Vec3f_Scale(Vec3f* arg0, f32 arg1) {
     arg0->x *= arg1;
     arg0->y *= arg1;
     arg0->z *= arg1;
@@ -682,15 +682,15 @@ Vec3f* func_81401168(Vec3f* arg0, f32 arg1) {
     return arg0;
 }
 
-s16 func_8140119C(Vec3f arg0, Vec3f arg1) {
+s16 Vec3f_AngleXTo(Vec3f arg0, Vec3f arg1) {
     return MathUtil_Atan2s(arg1.y - arg0.y, arg1.z - arg0.z);
 }
 
-s16 func_814011E0(Vec3f arg0, Vec3f arg1) {
+s16 Vec3f_AngleYTo(Vec3f arg0, Vec3f arg1) {
     return MathUtil_Atan2s(arg1.z - arg0.z, arg1.x - arg0.x);
 }
 
-s16 func_81401224(Vec3f arg0, Vec3f arg1) {
+s16 Vec3f_AngleZTo(Vec3f arg0, Vec3f arg1) {
     return MathUtil_Atan2s(arg1.x - arg0.x, arg1.y - arg0.y);
 }
 
@@ -725,7 +725,7 @@ s16 func_81401268(s16 arg0, s16 arg1) {
 void func_8140138C(void) {
 }
 
-void func_81401394(MtxF* arg0) {
+void Matrix_SendToDisplayList(MtxF* arg0) {
     if (gMatrixBufferIdx < 0x16C) {
         Matrix_ConvertToMtx(&gMatrixBuffer->unk_0000[gMatrixBufferIdx], arg0);
 
@@ -786,18 +786,18 @@ void func_814014E8(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_814015A0(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
+void Matrix_Submit2DRotateTranslateScale(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     MtxF sp20;
 
     func_81401430(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
-    func_81401394(&sp20);
+    Matrix_SendToDisplayList(&sp20);
 }
 
-void func_814015F8(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
+void Matrix_Submit2DRotateTranslateScaleY(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     MtxF sp20;
 
     func_814014E8(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
-    func_81401394(&sp20);
+    Matrix_SendToDisplayList(&sp20);
 }
 
 void func_81401650(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
@@ -914,7 +914,7 @@ void func_81401940(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3, f32 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401ABC(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
+void Matrix_ComposeBillboard(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
     arg0->mf[0][0] = arg1->mf[0][0] * arg3;
     arg0->mf[0][1] = arg1->mf[1][0] * arg3;
     arg0->mf[0][2] = arg1->mf[2][0] * arg3;
@@ -936,7 +936,7 @@ void func_81401ABC(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401B6C(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
+void Matrix_ComposeBillboardY(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
     arg0->mf[0][0] = arg1->mf[0][0];
     arg0->mf[0][1] = arg1->mf[1][0];
     arg0->mf[0][2] = arg1->mf[2][0];
@@ -958,7 +958,7 @@ void func_81401B6C(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401C04(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4) {
+void Matrix_ComposeBillboardRoll(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4) {
     f32 temp_fv0 = SINS(arg4);
     f32 temp_fv1 = COSS(arg4);
 
@@ -983,7 +983,7 @@ void func_81401C04(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401D50(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4) {
+void Matrix_ComposeBillboardRollY(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4) {
     f32 temp_fv0 = SINS(arg4);
     f32 temp_fv1 = COSS(arg4);
 
@@ -1041,53 +1041,53 @@ void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401FC0(Vec3f arg0, Vec3s arg1, f32 arg2) {
+void Matrix_SubmitRotateTranslateScale(Vec3f arg0, Vec3s arg1, f32 arg2) {
     MtxF sp28;
 
     func_81401650(&sp28, arg0, arg1, arg2);
-    func_81401394(&sp28);
+    Matrix_SendToDisplayList(&sp28);
 }
 
-void func_8140203C(Vec3f arg0, Vec3s arg1, f32 arg2) {
+void Matrix_SubmitRotateTranslateScaleY(Vec3f arg0, Vec3s arg1, f32 arg2) {
     MtxF sp28;
 
     func_814017E0(&sp28, arg0, arg1, arg2);
-    func_81401394(&sp28);
+    Matrix_SendToDisplayList(&sp28);
 }
 
-void func_814020B8(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3) {
+void Matrix_SubmitRotateTranslateScaleXY(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3) {
     MtxF sp28;
 
     func_81401940(&sp28, arg0, arg1, arg2, arg3);
-    func_81401394(&sp28);
+    Matrix_SendToDisplayList(&sp28);
 }
 
-void func_8140213C(CameraStruct* arg0, Vec3f arg1, f32 arg4) {
+void Matrix_SubmitBillboard(CameraStruct* arg0, Vec3f arg1, f32 arg4) {
     MtxF sp20;
 
-    func_81401ABC(&sp20, &arg0->unk_60.mtxf, arg1, arg4);
-    func_81401394(&sp20);
+    Matrix_ComposeBillboard(&sp20, &arg0->unk_60.mtxf, arg1, arg4);
+    Matrix_SendToDisplayList(&sp20);
 }
 
-void func_814021A4(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5) {
+void Matrix_SubmitBillboardRoll(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5) {
     MtxF sp28;
 
-    func_81401C04(&sp28, &arg0->unk_60.mtxf, arg1, arg4, arg5);
-    func_81401394(&sp28);
+    Matrix_ComposeBillboardRoll(&sp28, &arg0->unk_60.mtxf, arg1, arg4, arg5);
+    Matrix_SendToDisplayList(&sp28);
 }
 
-void func_81402214(CameraStruct* arg0, Vec3f arg1, f32 arg4) {
+void Matrix_SubmitBillboardY(CameraStruct* arg0, Vec3f arg1, f32 arg4) {
     MtxF sp20;
 
-    func_81401B6C(&sp20, &arg0->unk_60.mtxf, arg1, arg4);
-    func_81401394(&sp20);
+    Matrix_ComposeBillboardY(&sp20, &arg0->unk_60.mtxf, arg1, arg4);
+    Matrix_SendToDisplayList(&sp20);
 }
 
-void func_8140227C(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5) {
+void Matrix_SubmitBillboardRollY(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5) {
     MtxF sp28;
 
-    func_81401D50(&sp28, &arg0->unk_60.mtxf, arg1, arg4, arg5);
-    func_81401394(&sp28);
+    Matrix_ComposeBillboardRollY(&sp28, &arg0->unk_60.mtxf, arg1, arg4, arg5);
+    Matrix_SendToDisplayList(&sp28);
 }
 
 void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5) {
@@ -1099,12 +1099,12 @@ void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5) {
     sp28.z = arg3.z;
 
     func_81401650(&sp30, arg0, sp28, arg5);
-    func_81401394(&sp30);
+    Matrix_SendToDisplayList(&sp30);
 }
 
 void func_8140238C(Vec3f arg0, Vec3f arg3, f32 arg6) {
     MtxF sp30;
 
     func_81401E84(&sp30, arg3, arg0, 0, arg6);
-    func_81401394(&sp30);
+    Matrix_SendToDisplayList(&sp30);
 }

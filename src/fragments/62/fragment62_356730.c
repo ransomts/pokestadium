@@ -49,7 +49,7 @@ void WaterParticleSystems_ResetAll(void) {
     }
 }
 
-void func_8436BFB8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
+void WaterParticleSystems_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
                    f32 argA, s16 argB, s32 argC, s32 argD, s16 argE, s16 argF, s16 arg10, s16 arg11, s16 arg12,
                    s16 arg13, s16 arg14, s16 arg15, CombineParams* arg16, CombineParams* arg17, u8 arg18,
                    u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22,
@@ -146,7 +146,7 @@ void WaterParticle_ComputeOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_8436C3CC(WaterParticleSystem* arg0) {
+void WaterParticle_UpdateSystem(WaterParticleSystem* arg0) {
     WaterParticleVertex* var_v0;
     UNUSED s32 pad;
     s32 i;
@@ -220,7 +220,7 @@ s32 WaterParticleSystems_Tick(void) {
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
             var_s0->unk_002 += 1;
-            func_8436C3CC(var_s0);
+            WaterParticle_UpdateSystem(var_s0);
         }
     }
 
@@ -297,7 +297,7 @@ Gfx* WaterParticle_LoadTextureTiles(Gfx* arg0, WaterParticleSystem* arg1) {
     return arg0;
 }
 
-Gfx* func_8436CE34(Gfx* arg0) {
+Gfx* WaterParticleSystems_Render(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -311,7 +311,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
     UNUSED s32 pad[3];
     Vtx* var_s0;
 
-    spD8 = func_8432FD64();
+    spD8 = GetBattleCamera();
     var_fp = &D_843C2C00[0];
 
     for (i = 0; i < 4; i++, var_fp++) {

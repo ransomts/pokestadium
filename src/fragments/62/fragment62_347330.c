@@ -243,7 +243,7 @@ void func_8435CAE8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
             ptr->unk_01A = 0x3C;
             ptr->unk_020 = 1.5f;
             ParticleEmitter_SetColors(&D_843925E0[var_v1], 0xFF, 0xFF, 0xC8, 0x20, 0x20, 0xFF, 0x80, 0x80, 0xFF);
-            ptr->unk_01E = func_8436E944();
+            ptr->unk_01E = GlowEmitter_Allocate();
             break;
 
         case 1:
@@ -515,7 +515,7 @@ s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
         tmp2 = __sinf(temp_fa0) * sp9C;
 
         ParticleEmitter_AddParticle(arg0->unk_01E, sp80 + tmp1, sp7C + sp84, sp78 + tmp2, 0xA, 0.75f);
-        func_8436EB54(arg0->unk_01E);
+        GlowEmitter_Update(arg0->unk_01E);
     }
 
     if (var_s5 >= 0x1F) {
@@ -650,7 +650,7 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
 }
 
 void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
-    CameraStruct* spB4 = func_8432FD64();
+    CameraStruct* spB4 = GetBattleCamera();
     f32 spB0;
     f32 spAC;
     f32 spA8;

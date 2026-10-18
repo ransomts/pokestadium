@@ -10,7 +10,7 @@ void ParticleEffect_Type0_Stage1(ParticleEffectInstance* arg0) {
     Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, 5.0f);
     Particle_SetAcceleration(arg0, RandomMod(0xF) + 5.0f);
-    Particle_SetShortAE(arg0, func_81400ADC(0x1000, 0x800));
+    Particle_SetShortAE(arg0, RandomModPlus(0x1000, 0x800));
     SetPrimEnvColorFromPair(arg0, sp24);
     Particle_SetTimerA6(arg0, sp26);
     Particle_DisableFlag4(arg0);
@@ -54,7 +54,7 @@ void ParticleEffect_Type1_Stage1(ParticleEffectInstance* arg0, s16 arg1) {
     Particle_SetByteCA(arg0, 7);
     Particle_SetScaleFactor1(arg0, 0.1f);
     Particle_AddRotationDeltaXYZ(arg0, RandomRangeSigned(0xC00), RandomRangeSigned(0x1000), 0);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetSpeed(arg0, (RandomMod(6) * 0.5f) + 4.0f);
     Particle_SetTimerA6(arg0, sp2E * 2);
     Particle_DisableFlag4(arg0);
@@ -97,12 +97,12 @@ void ParticleEffect_Type2_Stage1(ParticleEffectInstance* arg0) {
     Particle_GetShortCF(arg0);
     Particle_SetScaleFactor1(arg0, 0.05f);
     Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
-    func_8140A578(arg0, func_81400B28(0x200, 0xE00));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     Particle_SetRotationDeltaX(arg0, RandomMod(0x1000) + 0x100);
     Particle_SetShortB0(arg0, -0x1800 - RandomMod(0x1000));
     func_8140A594(arg0, RandomRangeSigned(0x3000));
     Particle_SetSpeed(arg0, (RandomMod(0xF) * 0.1f) + 1.0f);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetTimerA6(arg0, sp22 * 2);
     Particle_DisableFlag4(arg0);
     Particle_IncrementState(arg0);
@@ -167,7 +167,7 @@ void ParticleEffect_Type3_Stage1(ParticleEffectInstance* arg0) {
     sp2E = -MathUtil_Atan2s(var_fa0, sp30.y - sp3C.y);
     Particle_AddRotationDeltaXYZ(arg0, sp2E + RandomRangeSigned(0x800), RandomRangeSigned(0x800), 0);
     Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetSpeed(arg0, (RandomMod(6) * 0.5f) + 5.0f);
     Particle_SetTimerA6(arg0, sp56 * 2);
     Particle_DisableFlag4(arg0);
@@ -246,7 +246,7 @@ void ParticleEffect_Type4_Stage1(ParticleEffectInstance* arg0) {
     }
 
     Particle_SetSpeed(arg0, 5.25f);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetTimerA6(arg0, sp30 * 2);
     Particle_DisableFlag4(arg0);
     Particle_IncrementState(arg0);
@@ -311,7 +311,7 @@ void ParticleEffect_Type5_Stage1(ParticleEffectInstance* arg0) {
     func_8432FBBC(&sp40);
     func_8432FC14(&sp34);
 
-    temp_v1 = func_8140119C(sp40, sp34);
+    temp_v1 = Vec3f_AngleXTo(sp40, sp34);
 
     switch (sp4E) {
         case 0:
@@ -595,7 +595,7 @@ void ParticleEffect_FadeOut_Stage1(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
-    func_8140A578(arg0, func_81400B28(0x200, -0xE00));
+    func_8140A578(arg0, RandomRangeSignedPlus(0x200, -0xE00));
     Particle_SetRotationDeltaX(arg0, RandomMod(0x400) + 0x100);
     Particle_SetShortB0(arg0, RandomMod(0x1000) + 0x1000);
     func_8140A594(arg0, RandomRangeSigned(0x1800));
@@ -820,7 +820,7 @@ void ParticleEffect_Fireball_Stage1(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 2.0f);
     Particle_AddVelocityBackward(arg0, 10.0f);
     SetPrimColorFromPalette(arg0, 0xA);
-    func_8140D624(arg0, sp24 % 6);
+    SetEnvColorFromPreset(arg0, sp24 % 6);
     Particle_SetParamC7(arg0, 1);
     Particle_SetTimerA6(arg0, sp24 * 2);
     func_8140A5B0(arg0, (sp24 << 0x10) / 10);
@@ -963,7 +963,7 @@ void ParticleEffect_RandomColor_Stage1(ParticleEffectInstance* arg0) {
     switch (Particle_GetShortCF(arg0)) {
         case 0:
             SetPrimColorFromPalette(arg0, 0xA);
-            func_8140D624(arg0, RandomMod(6));
+            SetEnvColorFromPreset(arg0, RandomMod(6));
             break;
 
         case 1:
@@ -1007,7 +1007,7 @@ void ParticleEffect_RandomColor_Main(ParticleEffectInstance* arg0) {
 
         switch (sp2E) {
             case 0:
-                func_8140D624(arg0, RandomMod(6));
+                SetEnvColorFromPreset(arg0, RandomMod(6));
                 break;
 
             case 1:
@@ -1139,7 +1139,7 @@ void ParticleEffect_MediumBurst_Stage1(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_SetSpeed(arg0, 2.5f);
     Particle_AddRotationDeltaXYZ(arg0, RandomRangeSigned(0x2000), RandomRangeSigned(0x2000), 0);
-    func_8140D750(arg0);
+    SetRandomPrimColor(arg0);
     Particle_SetPrimAlpha(arg0, 0xC8);
     Particle_SetTimerA6(arg0, sp2E * 4);
     Particle_DisableFlag4(arg0);
@@ -1183,7 +1183,7 @@ void ParticleEffect_BrightBurst_Stage1(ParticleEffectInstance* arg0) {
     Particle_SetSpeed(arg0, 2.5f);
     Particle_AddRotationDeltaXYZ(arg0, RandomRangeSigned(0x2000), RandomRangeSigned(0x2000), 0);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetTimerA6(arg0, sp2E * 4);
     Particle_DisableFlag4(arg0);
     Particle_IncrementState(arg0);
@@ -1228,7 +1228,7 @@ void ParticleEffect_InitRotationAndSpeed(ParticleEffectInstance* arg0) {
     sp28.y = func_81400B4C(0x3000, 0x1000);
     sp28.z = 0;
     Particle_AddRotationDeltaVec(arg0, sp28);
-    func_8140D78C(arg0);
+    SetRandomEnvColor(arg0);
     Particle_SetTimerA6(arg0, RandomMod(0x10) + 8);
     Particle_SetSpeed(arg0, 4.0f);
     Particle_IncrementState(arg0);
@@ -1245,7 +1245,7 @@ void ParticleEffect_UpdateStateMachine(ParticleEffectInstance* arg0) {
             Particle_ApproachSpeedScaled(arg0, 1.0f, 0.7f);
             Particle_ApproachRotationYWrap(arg0);
             if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
-                Particle_SetTimerA6(arg0, func_81400ADC(0xC, 0x20));
+                Particle_SetTimerA6(arg0, RandomModPlus(0xC, 0x20));
                 if (arg0->unk_94.y >= arg0->unk_A0.y) {
                     Particle_SetTargetRotationX(arg0, -0x4000);
                 } else {

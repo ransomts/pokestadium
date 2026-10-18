@@ -108,7 +108,7 @@ void CalcRotatedOffsetX(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void func_84369C80(unk_D_843ACA10* arg0) {
+void ParticleSystem_UpdateEmitter(unk_D_843ACA10* arg0) {
     s32 i;
     unk_D_843ACA10_01C* var_s0 = &arg0->unk_01C[0];
 
@@ -168,7 +168,7 @@ s32 ParticleSystem_TickAll(void) {
             if (var_s0->unk_004 < var_s0->unk_002) {
                 var_s0->unk_000 = 0;
             } else {
-                func_84369C80(var_s0);
+                ParticleSystem_UpdateEmitter(var_s0);
             }
         }
     }

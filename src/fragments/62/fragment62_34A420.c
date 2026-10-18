@@ -285,7 +285,7 @@ void func_843605C0(void) {
     unk_D_84398F50* var_a2;
     unk_D_84398F50_048* var_v1;
 
-    temp_v0 = func_8436E944();
+    temp_v0 = GlowEmitter_Allocate();
     var_a2 = &D_84398F50[0];
 
     for (i = 0; i < 10; i++) {
@@ -787,7 +787,7 @@ s32 func_84361FB0(void) {
                 func_84361744(var_s0);
                 var_s2++;
             }
-            func_8436EB54(var_s0->unk_002);
+            GlowEmitter_Update(var_s0->unk_002);
         }
     }
 

@@ -697,11 +697,11 @@ s32 func_88302968(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
 void func_88302BB4(unk_func_8830867C_02C* arg0, MemoryPool* arg1) {
     s32 i;
 
-    func_88316BEC(arg0->unk_154, arg1);
+    InitItemSources(arg0->unk_154, arg1);
 
     for (i = 0; i < 3; i++) {
         if (arg0->unk_154[i].unk_04 != 0) {
-            func_88316D5C(&arg0->unk_154[i]);
+            ItemSource_ReadFromGbs(&arg0->unk_154[i]);
         }
     }
 }
@@ -711,7 +711,7 @@ void func_88302C18(unk_func_8830867C_02C* arg0) {
 
     for (i = 0; i < 3; i++) {
         if ((arg0->unk_154[i].unk_04 != 0) && (arg0->unk_154[i].unk_08 != 0)) {
-            func_88316DB8(&arg0->unk_154[i]);
+            ItemSource_WriteToGbs(&arg0->unk_154[i]);
         }
     }
 }
@@ -724,21 +724,21 @@ void func_88302C7C(unk_func_8830867C_02C* arg0, MemoryPool* arg1) {
     arg0->unk_0E4[0].unk_08 = 0;
     arg0->unk_0E4[0].unk_1C = 6;
     List_Init(&arg0->unk_0E4[0].unk_0C, 0x1C, 1, arg1);
-    func_883164C0(&arg0->unk_0E4[0], 6, 1, arg1);
+    MonSlots_Init(&arg0->unk_0E4[0], 6, 1, arg1);
 
     arg0->unk_0E4[1].unk_00 = 0x21;
     arg0->unk_0E4[1].unk_04 = arg0->unk_0E4[0].unk_04;
     arg0->unk_0E4[1].unk_08 = 1;
     arg0->unk_0E4[1].unk_1C = 0x14;
     List_Init(&arg0->unk_0E4[1].unk_0C, 0x1C, 0xC, arg1);
-    func_883164C0(&arg0->unk_0E4[1], 0x14, 0, arg1);
+    MonSlots_Init(&arg0->unk_0E4[1], 0x14, 0, arg1);
 
     arg0->unk_0E4[2].unk_00 = 0x11;
     arg0->unk_0E4[2].unk_04 = 0;
     arg0->unk_0E4[2].unk_08 = 2;
     arg0->unk_0E4[2].unk_1C = 0x14;
     List_Init(&arg0->unk_0E4[2].unk_0C, 0x1C, 0xC, arg1);
-    func_883164C0(&arg0->unk_0E4[2], 0x14, 0, arg1);
+    MonSlots_Init(&arg0->unk_0E4[2], 0x14, 0, arg1);
 
     SubList_Init(&arg0->unk_144, arg0->unk_0E4, 0x20, 3, 3);
 }
@@ -927,15 +927,15 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
     func_88302C7C(arg0, argF);
     PtrList_Init(&arg0->unk_03C, 0x1E6, argF);
     PtrList_Init(&arg0->unk_0CC, 0x1E6, argF);
-    func_883166A0(&arg0->unk_144);
+    LoadBoxMonsFromGbs(&arg0->unk_144);
 
     arg0->unk_0DC = D_8831721C;
 
-    func_883167CC(&arg0->unk_03C, &arg0->unk_144);
+    CollectMonEntryPtrs(&arg0->unk_03C, &arg0->unk_144);
     func_88302BB4(arg0, argF);
 
     PtrList_Init(&arg0->unk_C48, 0xAA, argF);
-    func_88316F98(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
+    BuildUsableItemList(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
 
     arg0->unk_08C = arg4;
     arg0->unk_094 = arg5;
@@ -1107,11 +1107,11 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func88503298)Memmap_GetFragmentVaddr(Dialog_SetParent))(sp50, arg0->unk_02C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp50);
 
-    arg0->unk_0B4 = mem_pool_alloc(argF, sizeof(unk_func_8830867C_02C_0B4));
-    func_88313FA0(arg0->unk_0B4, 0x65, 0x228, argF);
+    arg0->unk_0B4 = mem_pool_alloc(argF, sizeof(YesNoDialog));
+    ReturnToMenuDialog_Create(arg0->unk_0B4, 0x65, 0x228, argF);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_0B4);
 
-    func_88313740(arg0->unk_0A8, &arg0->unk_144);
+    BoxMoveDialog_Link(arg0->unk_0A8, &arg0->unk_144);
 
     arg0->unk_08C->unk_4C = 0x228;
     arg0->unk_08C->unk_50 = 0x13E;
@@ -1129,23 +1129,23 @@ void func_883036AC(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func8850CD44)Memmap_GetFragmentVaddr(Panel_Setup))(arg0->unk_0B8, 4, argF);
 
     arg0->unk_0BC = mem_pool_alloc(argF, sizeof(unk_func_882173EC));
-    func_88314484(arg0->unk_0BC, 0, 0, D_88317234[0], 0x14);
+    MoveChangeBanner_Init(arg0->unk_0BC, 0, 0, D_88317234[0], 0x14);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_034, arg0->unk_0BC);
     arg0->unk_0B8->unk_1C[0] = arg0->unk_0BC;
 
-    arg0->unk_0C0 = mem_pool_alloc(argF, sizeof(unk_func_8830867C_02C_0C0));
-    func_88314950(arg0->unk_0C0, 0, 0, D_88317234[0], 0x14);
+    arg0->unk_0C0 = mem_pool_alloc(argF, sizeof(PpChangeBanner));
+    PpChangeBanner_Init(arg0->unk_0C0, 0, 0, D_88317234[0], 0x14);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_034, arg0->unk_0C0);
     arg0->unk_0B8->unk_1C[1] = &arg0->unk_0C0->unk_00;
 
     arg0->unk_0C4 = mem_pool_alloc(argF, sizeof(unk_func_882173EC));
-    func_883151E8(arg0->unk_0C4, 0, 0, D_88317244[0], 0x14);
+    LevelChangeBanner_Init(arg0->unk_0C4, 0, 0, D_88317244[0], 0x14);
 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_034, arg0->unk_0C4);
     arg0->unk_0B8->unk_1C[2] = arg0->unk_0C4;
 
     arg0->unk_0C8 = mem_pool_alloc(argF, sizeof(unk_func_882173EC));
-    func_883156E8(arg0->unk_0C8, 0, 0, D_88317228[0], 0x14);
+    BoxMoveBanner_Init(arg0->unk_0C8, 0, 0, D_88317228[0], 0x14);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_034, arg0->unk_0C8);
     arg0->unk_0B8->unk_1C[3] = arg0->unk_0C8;
     arg0->unk_CB8 = 0;
@@ -1210,12 +1210,12 @@ void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
     }
 }
 
-Color_RGBA8 D_8831727C = { 0xF0, 0x96, 0x96, 0xFF };
-Color_RGBA8 D_88317280 = { 0xF0, 0xD2, 0x8C, 0xFF };
-Color_RGBA8 D_88317284 = { 0x96, 0xDC, 0xB4, 0xFF };
+Color_RGBA8 gPartyLabelColor = { 0xF0, 0x96, 0x96, 0xFF };
+Color_RGBA8 gGbLabelColor = { 0xF0, 0xD2, 0x8C, 0xFF };
+Color_RGBA8 gN64LabelColor = { 0x96, 0xDC, 0xB4, 0xFF };
 
 void func_883045C0(s32 arg0, s32 arg1, s32 arg2, unk_func_88304850_arg2* arg3) {
-    func_883157D0(arg0, arg1, arg2, 0x14, *(s32*)arg3->unk_00[0], arg3->unk_00[1], 0xFF);
+    DrawBoxLabel(arg0, arg1, arg2, 0x14, *(s32*)arg3->unk_00[0], arg3->unk_00[1], 0xFF);
 }
 
 void func_88304608(s32 arg0, s32 arg1, s8* arg2, s32 arg3) {
@@ -1601,7 +1601,7 @@ void func_88305270(unk_func_8830867C_02C* arg0) {
 
     if (arg0->unk_C54.unk_04 != 0) {
         if (arg0->unk_C54.unk_04 & 1) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316214, &arg0->unk_C54.unk_08);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonIsWithinLevelRange, &arg0->unk_C54.unk_08);
             ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0->unk_034, &arg0->unk_0CC);
         }
 
@@ -1616,26 +1616,26 @@ void func_88305270(unk_func_8830867C_02C* arg0) {
         }
 
         if (arg0->unk_C54.unk_04 & 8) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163A4, &arg0->unk_C54.unk_10);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonMatchesSpecies, &arg0->unk_C54.unk_10);
             ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 0x10) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_883163B8, &arg0->unk_C54.unk_14);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonHasExactTypes, &arg0->unk_C54.unk_14);
             ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 0x20) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316480, &arg0->unk_C54.unk_2C);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonAllowedInCup, &arg0->unk_C54.unk_2C);
             ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0->unk_034, &arg0->unk_0CC);
         }
     }
 
-    PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+    PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, gListSortComparators[arg0->unk_C54.unk_00]);
 }
 
 s32 func_88305458(unk_func_8830867C_02C* arg0) {
-    s32 var_a0 = func_883168B4(&arg0->unk_144);
+    s32 var_a0 = DetectGbsDataChanges(&arg0->unk_144);
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -1706,13 +1706,13 @@ void func_88305520(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* a
     sp78.unk_00 = arg0->unk_0DC->unk_08 + (s32)arg0->unk_0DC->unk_00 + arg0->unk_0DC->unk_04 + 0x84;
     sp78.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
-    func_88315C98(arg0->unk_0C8, sp80, sp7C, sp78);
+    BoxMoveBanner_Start(arg0->unk_0C8, sp80, sp7C, sp78);
     PlaySoundEffect(0x0120000D);
 
     ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_0B8, arg2);
 
     PlaySoundEffect(0x29);
-    func_883167CC(&arg0->unk_03C, &arg0->unk_144);
+    CollectMonEntryPtrs(&arg0->unk_03C, &arg0->unk_144);
     func_88305270(arg0);
     func_883051B0(arg0);
 
@@ -1720,9 +1720,9 @@ void func_88305520(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* a
     if (sp70 == -1) {
         ((func88507C0C)Memmap_GetFragmentVaddr(ScrollListFragment_SetRowAndOffset))(arg0->unk_034, sp90, sp8C);
         MessageBank_SetPointer_0x14_0x2A(0x1A, arg1->unk_38);
-        func_88313950(sp50, sp80 >> 0x10, sp80 & 0xFFFF);
+        FormatBoxLabel(sp50, sp80 >> 0x10, sp80 & 0xFFFF);
         MessageBank_SetPointer_0x14_0x2A(0x25, sp50);
-        func_88313950(sp30, sp88, sp84);
+        FormatBoxLabel(sp30, sp88, sp84);
         MessageBank_SetPointer_0x14_0x2A(0x28, sp30);
         GetMessageString(arg0->unk_CCC->unk_40, 0x140, gMoveListMessageTable, 0x5C);
         ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(arg0->unk_090, arg0->unk_CCC, 0, 0);
@@ -1832,7 +1832,7 @@ s32 func_883058C4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030
             break;
     }
 
-    func_88317144(arg1);
+    ConsumeUsedItem(arg1);
     arg0->unk_00->unk_0C = 1;
     return sp34;
 }
@@ -1855,7 +1855,7 @@ void func_88305BC4(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_03
 
     ptr->unk_20[arg2] += var_v1 + 0x40;
 
-    func_88317144(arg1);
+    ConsumeUsedItem(arg1);
 
     arg0->unk_00->unk_0C = 1;
 }
@@ -1882,7 +1882,7 @@ void func_88305CDC(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_03
     ptr->unk_20[arg2] = GetMoveBattleDataEntry(ptr->unk_09[arg2])->unk_05;
 
     if (arg1->unk_00[0]->unk_00 >= 0xC9) {
-        func_88317144(arg1);
+        ConsumeUsedItem(arg1);
     }
     arg0->unk_00->unk_0C = 1;
 }
@@ -1917,7 +1917,7 @@ void func_88305DF4(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
     ItemListUI_Link(arg0->unk_094, &arg0->unk_144);
     if (ItemListUI_Run(arg0->unk_094, arg1) == 1) {
-        func_883167CC(&arg0->unk_03C, &arg0->unk_144);
+        CollectMonEntryPtrs(&arg0->unk_03C, &arg0->unk_144);
         func_88305270(arg0);
     }
 
@@ -1977,7 +1977,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         spC8.unk_00 = (arg0->unk_0DC->unk_18 * spC0) + 0x84;
         spC8.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
-        func_88314920(arg0->unk_0BC, spBC, spD8->unk_08.unk_09[spC0], spC8);
+        MoveChangeBanner_Start(arg0->unk_0BC, spBC, spD8->unk_08.unk_09[spC0], spC8);
         func_88303520(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_0B8, gPlayer1Controller);
         func_88305270(arg0);
@@ -2004,7 +2004,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
 
         spB8.unk_00 = (arg0->unk_0DC->unk_18 * spB4) + 0x84;
         spB8.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
-        func_883151B8(arg0->unk_0C0, spD8->unk_08.unk_09[spB4], spB0, spAC, spB8);
+        PpChangeBanner_Start(arg0->unk_0C0, spD8->unk_08.unk_09[spB4], spB0, spAC, spB8);
         func_88303520(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_0B8, gPlayer1Controller);
     } else {
@@ -2019,7 +2019,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
         spA8.unk_00 = (arg0->unk_0DC->unk_28 * sp40) + 0x84;
         spA8.unk_02 = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
-        func_883156B8(arg0->unk_0C4, sp48, sp44, spA8);
+        LevelChangeBanner_Start(arg0->unk_0C4, sp48, sp44, spA8);
         func_88303520(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_0B8, gPlayer1Controller);
 
@@ -2040,7 +2040,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
             ((func88507C0C)Memmap_GetFragmentVaddr(ScrollListFragment_SetRowAndOffset))(arg0->unk_034, spD4, spCC);
         }
     }
-    func_88316F98(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
+    BuildUsableItemList(&arg0->unk_C48, arg0->unk_1A8, arg0->unk_154, 3, 0xAA);
 }
 
 s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
@@ -2083,7 +2083,7 @@ s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
         case 1:
             func_883050CC(arg0);
             func_88305268(arg0, 0x11);
-            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, gListSortComparators[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0->unk_034, 0);
             sp24 = 0;
             break;
@@ -2091,7 +2091,7 @@ s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
         case 2:
             func_883050CC(arg0);
             func_88305268(arg0, 0x12);
-            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, gListSortComparators[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0->unk_034, 0);
             sp24 = 0;
             break;
@@ -2379,7 +2379,7 @@ s32 func_88306C70(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 
 
             func_883050CC(arg0);
             func_88305268(arg0, sp50);
-            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, gListSortComparators[arg0->unk_C54.unk_00]);
             ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0->unk_034, 0);
             var_s0 = 0;
             break;
@@ -2413,7 +2413,7 @@ s32 func_88306C70(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 
 
             func_883050CC(arg0);
             func_88305268(arg0, sp50);
-            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, D_8831A1F8[arg0->unk_C54.unk_00]);
+            PtrArray_Sort(arg0->unk_034->unk_00.unk_2C, gListSortComparators[arg0->unk_C54.unk_00]);
 
             ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0->unk_034, 0);
             var_s0 = 0;
@@ -2463,7 +2463,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_0B0->unk_40, 2);
 
     ControllerMsgQueue_SendAndRead(NULL);
-    func_88316A58(&arg0->unk_144, arg1);
+    WriteBoxMonsToGbs(&arg0->unk_144, arg1);
     func_88302C18(arg0);
 
     if (arg1 & 0x30) {
@@ -2540,7 +2540,7 @@ s32 func_88307264(unk_func_8830867C_02C* arg0, Controller* arg1, s32 arg2) {
         arg0->unk_048->unk_00.unk_14(arg0->unk_048, 1);
     } else if ((arg2 == 0) && (arg0->unk_CB8 != 0)) {
         arg0->unk_048->unk_00.unk_14(arg0->unk_048, 0);
-        if (func_88314340(arg0->unk_0B4, arg1) == 1) {
+        if (ReturnToMenuDialog_Run(arg0->unk_0B4, arg1) == 1) {
             sp34 = 0;
         }
         arg0->unk_048->unk_00.unk_14(arg0->unk_048, 1);
@@ -2678,14 +2678,14 @@ s32 func_8830772C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                 if (temp_v0 == 1) {
                     sp24 = arg0->unk_24->unk_034->unk_00.unk_2C->unk_00[arg0->unk_24->unk_034->unk_00.unk_38];
 
-                    func_883139E8(arg0->unk_24->unk_0A8, sp24->unk_00->unk_00->unk_08, sp24->unk_00->unk_04);
-                    func_88313894(arg0->unk_24->unk_0A8, sp24);
+                    SetBoxMoveHeaderText(arg0->unk_24->unk_0A8, sp24->unk_00->unk_00->unk_08, sp24->unk_00->unk_04);
+                    BoxMoveDialog_DisableInvalidEntries(arg0->unk_24->unk_0A8, sp24);
 
                     arg0->unk_24->unk_034->unk_00.unk_00.unk_24(&arg0->unk_24->unk_034->unk_00.unk_00, 0x100);
 
                     ControllerMsgQueue_SendAndRead(NULL);
                     ControllerMsgQueue_SendAndRead(NULL);
-                    if (func_88313E50(arg0->unk_24->unk_0A8, arg1) == 1) {
+                    if (BoxMoveDialog_Run(arg0->unk_24->unk_0A8, arg1) == 1) {
                         func_88305520(arg0->unk_24, sp24, arg1);
                     }
                     ControllerMsgQueue_SendAndRead(NULL);
@@ -2826,7 +2826,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                             ControllerMsgQueue_SendAndRead(NULL);
                             ControllerMsgQueue_SendAndRead(NULL);
                             if (ItemListUI_Run(arg0->unk_24->unk_094, arg1) == 1) {
-                                func_883167CC(&arg0->unk_24->unk_03C, &arg0->unk_24->unk_144);
+                                CollectMonEntryPtrs(&arg0->unk_24->unk_03C, &arg0->unk_24->unk_144);
                                 func_88305270(arg0->unk_24);
                                 func_883051B0(arg0->unk_24);
                             }
@@ -2976,7 +2976,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
 
                 case 7:
                     PlaySoundEffect(2);
-                    func_883103CC(arg0->unk_24->unk_0A0, &arg0->unk_24->unk_C54.unk_24);
+                    UpdateMoveSelectionDisplay(arg0->unk_24->unk_0A0, &arg0->unk_24->unk_C54.unk_24);
 
                     arg0->unk_24->unk_04C->unk_14(arg0->unk_24->unk_04C, 0x100);
 
@@ -2987,7 +2987,7 @@ s32 func_88307C2C(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
                     if (temp_s0_27 != 0) {
                         if (temp_s0_27 == 1) {
                             func_883050CC(arg0->unk_24);
-                            func_883105D4(arg0->unk_24->unk_0A0, &arg0->unk_24->unk_C54.unk_24);
+                            GetSelectedMoves(arg0->unk_24->unk_0A0, &arg0->unk_24->unk_C54.unk_24);
                             if (arg0->unk_24->unk_C54.unk_24.unk_04 == 0) {
                                 func_88305240(arg0->unk_24, 4);
                             } else {

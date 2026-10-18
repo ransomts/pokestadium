@@ -72,7 +72,7 @@ void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 a
     Vec3f sp5C;
     f32 temp_fv0;
 
-    temp_fv0 = func_8432FCD4();
+    temp_fv0 = GetPrimaryEntityScale();
 
     sp74.x = arg0;
     sp74.y = arg1 + 10.0f + 25.0f;

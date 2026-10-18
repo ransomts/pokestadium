@@ -81,7 +81,7 @@ void MiniActor_ConfigureThird(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, 
     sp34->unk_000.unk_000.unk_14 = 2;
 }
 
-Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, arg1_func_87903D64_014* arg1) {
+Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, ColorLerpData* arg1) {
     u8 tmp1;
     u8 tmp2;
     u8 tmp3;
@@ -187,9 +187,9 @@ Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, arg1_func_87903D64_014* arg1) {
     return gfx;
 }
 
-void ColorLerp_DisplayListHook(s32 arg0, arg1_func_87903D64* arg1) {
+void ColorLerp_DisplayListHook(s32 arg0, ColorLerpHook* arg1) {
     if (arg0 == 5) {
-        arg1_func_87903D64_014* tmp = arg1->unk_14;
+        ColorLerpData* tmp = arg1->unk_14;
 
         gDisplayListHead = Gfx_SetLerpPrimEnvColor(gDisplayListHead, tmp);
     }

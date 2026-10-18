@@ -2130,7 +2130,7 @@ void func_86C00F70(MiniActor* compEkans) {
     sp3C.x = tempDiglett->totalPos.x - compEkans->totalPos.x;
     sp3C.z = tempDiglett->totalPos.z - compEkans->totalPos.z;
 
-    compEkans->unk_222 = Ekans_ClampYRotation(compEkans, func_81400BBC(sp3C) + RandomRangeSigned(sp36) + 0x8000);
+    compEkans->unk_222 = Ekans_ClampYRotation(compEkans, Vec3f_AngleY(sp3C) + RandomRangeSigned(sp36) + 0x8000);
     compEkans->ySpinSpeed = GetRandomMod(sp32) + sp34;
 }
 
@@ -2343,7 +2343,7 @@ void checkCollitionWithDigletts(MiniActor* ekans, s32 nPlayer) {
         for (i = 0; i < 3; i++) {
             if ((activeDigletts[i].unk_06 != 0) && (activeDigletts[i].gotHoop == false)) {
                 func_80015390(&miniDigletts[activeDigletts[i].diglettId].unk_000, 0xA, &tempDiglettHitboxPos);
-                distance2d = func_81400EF0(tempEkansHitboxPos, tempDiglettHitboxPos);
+                distance2d = Vec3f_DistXZ(tempEkansHitboxPos, tempDiglettHitboxPos);
 
                 xDist = tempEkansHitboxPos.x - tempDiglettHitboxPos.x;
                 yDist = tempEkansHitboxPos.y - tempDiglettHitboxPos.y;
@@ -2386,7 +2386,7 @@ void func_86C01AF8(void) {
                     func_80015390(&miniEkanses[j].unk_000, 0xA, &sp70);
                     func_80015390(&diglett->unk_000, 0xA, &sp88);
 
-                    if (func_81400E8C(sp7C, sp88) > func_81400E8C(sp70, sp88)) {
+                    if (Vec3f_Dist(sp7C, sp88) > Vec3f_Dist(sp70, sp88)) {
                         ekans->ekansAbbleToHoop = false;
                         break;
                     } else {
@@ -3300,7 +3300,7 @@ void func_86C03ED4(void) {
     Vec3f sp7C;
     Vec3s sp74;
 
-    gSPDisplayList(gDisplayListHead++, D_8140DB30);
+    gSPDisplayList(gDisplayListHead++, gDL_Begin3D);
 
     sp74.x = -0x4000;
     sp74.y = 0;
@@ -3317,11 +3317,11 @@ void func_86C03ED4(void) {
 
             sp7C.y = 5.0f;
 
-            func_81404ABC(sp7C, sp74, 0.7f, D_8140E2B8);
+            Gfx_DrawQuadRotated(sp7C, sp74, 0.7f, D_8140E2B8);
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8140DAE0);
+    gSPDisplayList(gDisplayListHead++, gDL_End3D);
 }
 
 void func_86C040B4(s32 arg0) {

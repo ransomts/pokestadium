@@ -32,11 +32,11 @@ static s8 gCurrentStageId;
 static u8 gCurrentSubStageId;
 static BinArchive* gStageArchive;
 static Color_RGBA8_u32 gGlobalBackgroundColor;
-static GraphNode* D_86A061E4;
-static CameraStruct* D_86A061E8;
-static s16 D_86A061EC;
-static s16 D_86A061EE;
-static s16 D_86A061F0;
+static GraphNode* sSceneGraphRoot;
+static CameraStruct* sSceneCamera;
+static s16 sCameraPitch;
+static s16 sCameraYaw;
+static s16 sCameraDistance;
 static s32 pad_D_86A061F8[2];
 static TextObject* gStageTextObject;
 static s32 pad_D_86A06208[2];
@@ -94,7 +94,7 @@ StagePhaseInfo gStagePhases[9] = {
 };
 u8 gCurrentPhaseIndex = 0;
 u32 gScreenFadeAlpha = 0;
-u16 D_86A025CC = 0;
+u16 gCreditsShotTimer = 0;
 u32 gStageDisplayListCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000,    0x07000000, &gStageFragmentState, 0x14000000, 0x002D0019,  0xFFFFFF28,
@@ -184,22 +184,22 @@ void Stage_LoadResources(s8 arg0, u8 arg1) {
     SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
-        Camera_SetupForPhase(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
     } else if (arg1 < 9) {
-        Camera_SetupForPhase(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
     } else if (arg1 < 0xF) {
         if (gCurrentPhaseIndex == 7) {
-            Camera_AdjustForStage(D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
+            Camera_AdjustForStage(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
         } else {
-            Camera_AdjustForStage(D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+            Camera_AdjustForStage(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
         }
     } else {
-        D_86A061E8->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
-        D_86A061F0 = gStageCameraPositions[arg0][gCurrentSubStageId].unk_08;
+        sSceneCamera->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
+        sCameraDistance = gStageCameraPositions[arg0][gCurrentSubStageId].unk_08;
     }
 }
 
-void func_86A00434(void) {
+void Credits_UpdateInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -207,27 +207,27 @@ void func_86A00434(void) {
 
 void Camera_UpdateForPhase(void) {
     if (gCurrentSubStageId < 6) {
-        Camera_SetViewParameters(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
+        Camera_SetViewParameters(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
     } else if (gCurrentSubStageId < 9) {
-        Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
-        Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.at, D_86A061F0 + 500.0f, D_86A061EC, D_86A061EE);
+        Camera_SetViewParameters(&gCreditsCameraPivot, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+        Camera_SetViewParameters(&gCreditsCameraPivot, &sSceneCamera->unk_60.at, sCameraDistance + 500.0f, sCameraPitch, sCameraYaw);
     }
 }
 
-void func_86A0056C(void) {
+void Credits_DrawFadeIn(void) {
     u8 temp_v1_2;
 
     if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
-        if (D_86A025CC < 8) {
-            temp_v1_2 = (s8)ROUND_MAX(((-(f32)D_86A025CC / 8) + 1.0f) * 255.0f);
+        if (gCreditsShotTimer < 8) {
+            temp_v1_2 = (s8)ROUND_MAX(((-(f32)gCreditsShotTimer / 8) + 1.0f) * 255.0f);
             if (temp_v1_2 != 0) {
                 Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
             }
         } else {
-            if ((gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28) < D_86A025CC) {
+            if ((gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28) < gCreditsShotTimer) {
                 s32 tmp = gStagePhases[gCurrentPhaseIndex].unk_02;
 
-                temp_v1_2 = (s32)ROUND_MAX((((D_86A025CC - tmp) + 0x28) * 255.0f) / 40.0f);
+                temp_v1_2 = (s32)ROUND_MAX((((gCreditsShotTimer - tmp) + 0x28) * 255.0f) / 40.0f);
                 if (temp_v1_2 != 0) {
                     Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
                 }
@@ -238,14 +238,14 @@ void func_86A0056C(void) {
 
 void Stage_HandleFadeAndTransition(u8 arg0) {
     if ((arg0 == 1) || (arg0 == 2)) {
-        func_86A0056C();
-        if ((gCurrentPhaseIndex != 0) || (D_86A025CC >= 0xF0)) {
+        Credits_DrawFadeIn();
+        if ((gCurrentPhaseIndex != 0) || (gCreditsShotTimer >= 0xF0)) {
             Stage_TriggerNextPhase();
         }
     }
 }
 
-void func_86A00788(u8 arg0) {
+void Credits_RenderFrame(u8 arg0) {
     Stage_BeginDisplayList();
 
     if ((gScreenFadeAlpha == -1) || (gScreenFadeAlpha == 0)) {
@@ -259,7 +259,7 @@ void func_86A00788(u8 arg0) {
     if (arg0 == 0) {
         Stage_DrawBorderFade(0);
     } else {
-        Graph_SetTextureState(D_86A061E4);
+        Graph_SetTextureState(sSceneGraphRoot);
         Stage_HandleFadeAndTransition(arg0);
     }
 
@@ -301,8 +301,8 @@ void Stage_IntroFadeSequence(void) {
         }
 
         for (j = 0; j < var_s1; j++) {
-            func_86A00434();
-            func_86A00788(0);
+            Credits_UpdateInputs();
+            Credits_RenderFrame(0);
         }
     }
 }
@@ -337,14 +337,14 @@ void Stage_MainLoop(s32 arg0) {
                 }
             }
 
-            if (D_86A025CC >= gStagePhases[gCurrentPhaseIndex].unk_02) {
+            if (gCreditsShotTimer >= gStagePhases[gCurrentPhaseIndex].unk_02) {
                 gCurrentPhaseIndex++;
                 if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
                     gStagePhases[gCurrentPhaseIndex].unk_02 =
-                        gStagePhases[gCurrentPhaseIndex - 1].unk_02 + (gStagePhases[gCurrentPhaseIndex].unk_02 - D_86A025CC);
+                        gStagePhases[gCurrentPhaseIndex - 1].unk_02 + (gStagePhases[gCurrentPhaseIndex].unk_02 - gCreditsShotTimer);
                 }
 
-                D_86A025CC = 0;
+                gCreditsShotTimer = 0;
 
                 if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
                     Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
@@ -363,14 +363,14 @@ void Stage_MainLoop(s32 arg0) {
                     }
                 }
             } else if ((gCurrentPhaseIndex == 3) && (D_86A026F8 < 2) &&
-                       (D_86A025CC >= (((gStagePhases[gCurrentPhaseIndex].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
+                       (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
                 Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
                 Stage_LoadResources(gCurrentStageId, 0xFF);
                 D_86A026F8++;
             }
         }
 
-        func_86A00434();
+        Credits_UpdateInputs();
         Camera_UpdateForPhase();
 
         if (gBorderFadeCycleCount >= 0x2D1) {
@@ -380,10 +380,10 @@ void Stage_MainLoop(s32 arg0) {
             var_s6 = 0;
         }
 
-        func_86A00788(1);
+        Credits_RenderFrame(1);
 
         if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
-            D_86A025CC += gPhaseDelta;
+            gCreditsShotTimer += gPhaseDelta;
         }
     }
 }
@@ -1407,25 +1407,25 @@ void Stage_FadeOutAndAdvance(void) {
     Stage_FadeOut(0x78);
 
     for (i = 0; i < 120; i++) {
-        func_86A00434();
-        func_86A00788(2);
+        Credits_UpdateInputs();
+        Credits_RenderFrame(2);
     }
 
     Stage_AdvanceN(0x3C);
 }
 
-void func_86A00D00(void) {
-    D_86A061E8 = D_86A061E4->unk_0C;
-    D_86A061EC = 0x100;
-    D_86A061EE = 0;
-    D_86A061F0 = 0x78;
+void Credits_InitCamera(void) {
+    sSceneCamera = sSceneGraphRoot->unk_0C;
+    sCameraPitch = 0x100;
+    sCameraYaw = 0;
+    sCameraDistance = 0x78;
 
-    D_86A061E8->unk_24.near = 50.0f;
-    D_86A061E8->unk_24.far = 6400.0f;
-    Camera_SetViewParameters(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
+    sSceneCamera->unk_24.near = 50.0f;
+    sSceneCamera->unk_24.far = 6400.0f;
+    Camera_SetViewParameters(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
 }
 
-void func_86A00DAC(s32 arg0) {
+void Credits_InitScene(s32 arg0) {
     MemoryBlock* sp2C;
     MemoryBlock* temp_v0;
 
@@ -1436,10 +1436,10 @@ void func_86A00DAC(s32 arg0) {
     GraphNode_AllocInit(NULL, &gStageForegroundNode);
     SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
-    D_86A061E4 = process_geo_layout(sp2C, &gStageDisplayListCommands);
+    sSceneGraphRoot = process_geo_layout(sp2C, &gStageDisplayListCommands);
     mem_pool_resize_block(sp2C);
     Graph_InitRoots();
-    func_86A00D00();
+    Credits_InitCamera();
     MessageSequence_Init(1, arg0, gStageCameraConfigs);
     gCurrentStageId = -1;
 
@@ -1459,7 +1459,7 @@ s32 Fragment16_Main(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, kids_club_game_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_86A00DAC(arg1);
+    Credits_InitScene(arg1);
     Stage_Set(sp24);
     Stage_IntroFadeSequence();
     Stage_MainLoop(arg1);
@@ -1536,7 +1536,7 @@ s32 ComputeGradientColors(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
 }
 
 void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
-    static char** D_86A06218;
+    static char** sCreditsMessageBank;
 
     u16 i;
     u16 sp2C;
@@ -1544,10 +1544,10 @@ void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
 
     sp2C = GetFragment16Constant();
     MessageBank_Init();
-    D_86A06218 = GetMessageBank(0x2D);
+    sCreditsMessageBank = GetMessageBank(0x2D);
 
     for (i = 0, ptr = gMessageDecompressTable; i < sp2C; i++, ptr++) {
-        ptr->unk_04[0] = GetMessageString(NULL, 0, D_86A06218, i);
+        ptr->unk_04[0] = GetMessageString(NULL, 0, sCreditsMessageBank, i);
     }
 
     gPhaseDelta = arg0;

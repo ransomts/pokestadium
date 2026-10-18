@@ -114,7 +114,7 @@ void WaterEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
                    UNUSED f32 arg7) {
     UNUSED s32 pad[36];
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
     f32 sp6C;
     f32 sp68;
     f32 sp64;
@@ -307,7 +307,7 @@ Gfx* WaterEffect_RenderAll(Gfx* arg0) {
     Vtx* var_s1;
     s32 pad[12];
 
-    func_8432FD64();
+    GetBattleCamera();
 
     var_s6 = &gWaterEffects[0];
     for (i = 0; i < 6; i++, var_s6++) {

@@ -4,14 +4,14 @@
 #include "global.h"
 
 struct ParticleEffectInstance;
-struct unk_D_8140E728_01C_004_1;
+struct ParticleRenderSettings;
 struct unk_D_84390010;
-struct unk_D_8140E724;
+struct ParticleDef;
 
 typedef void (*func_unk_D_8140E724_008)(struct ParticleEffectInstance*);
 typedef void (*func_unk_D_8140E724_00C)(struct ParticleEffectInstance*, CameraStruct*);
-typedef void (*unk_D_8140E728_01C_004_1_04)(struct ParticleEffectInstance*, s32, struct unk_D_8140E728_01C_004_1*);
-typedef void (*unk_D_8140E728_01C_004_1_08)(struct ParticleEffectInstance*, s32, struct unk_D_8140E728_01C_004_1*);
+typedef void (*unk_D_8140E728_01C_004_1_04)(struct ParticleEffectInstance*, s32, struct ParticleRenderSettings*);
+typedef void (*unk_D_8140E728_01C_004_1_08)(struct ParticleEffectInstance*, s32, struct ParticleRenderSettings*);
 
 typedef struct unk_D_8140E728_01C_00C_1 {
     /* 0x00 */ s32 arg;
@@ -22,31 +22,31 @@ typedef union unk_D_8140E728_01C_00C {
     unk_D_8140E728_01C_00C_1* s;
 } unk_D_8140E728_01C_00C;
 
-typedef struct unk_D_8140E728_01C_004_1 {
+typedef struct ParticleRenderSettings {
     /* 0x00 */ u8 unk_00;
     /* 0x00 */ u8 unk_01;
     /* 0x00 */ s16 unk_02;
     /* 0x04 */ unk_D_8140E728_01C_004_1_04 unk_04;
     /* 0x08 */ unk_D_8140E728_01C_004_1_08 unk_08;
     /* 0x0C */ unk_D_8140E728_01C_00C unk_0C;
-} unk_D_8140E728_01C_004_1; // size = 0x10
+} ParticleRenderSettings; // size = 0x10
 
 typedef union unk_D_8140E728_01C_004 {
-    unk_D_8140E728_01C_004_1* a;
+    ParticleRenderSettings* a;
     func_unk_D_8140E724_00C func;
 } unk_D_8140E728_01C_004;
 
-typedef struct unk_D_8140E728_01C {
+typedef struct ParticleEffectData {
     /* 0x00 */ s32 unk_00; /* unk_04: 1 = a, 3 = func */
     /* 0x04 */ unk_D_8140E728_01C_004 unk_04;
-} unk_D_8140E728_01C; // size = 0x08
+} ParticleEffectData; // size = 0x08
 
-typedef struct unk_D_8140E728 {
+typedef struct ParticleSpawner {
     /* 0x00 */ f32 unk_00;
     /* 0x04 */ Vec3f unk_04;
     /* 0x10 */ Vec3s unk_10;
     /* 0x18 */ func_unk_D_8140E724_008 unk_18;
-    /* 0x1C */ unk_D_8140E728_01C* unk_1C;
+    /* 0x1C */ ParticleEffectData* unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ u16 unk_24;
     /* 0x26 */ s16 unk_26;
@@ -57,13 +57,13 @@ typedef struct unk_D_8140E728 {
     /* 0x2D */ u8 unk_2D;
     /* 0x2E */ u8 unk_2E;
     /* 0x2F */ u8 unk_2F;
-} unk_D_8140E728; // size = 0x30
+} ParticleSpawner; // size = 0x30
 
 typedef struct ParticleEffectInstance {
     /* 0x00 */ struct ParticleEffectInstance* next;
     /* 0x04 */ struct ParticleEffectInstance* prev;
     /* 0x08 */ func_unk_D_8140E724_008 unk_08;
-    /* 0x0C */ unk_D_8140E728_01C* unk_0C;
+    /* 0x0C */ ParticleEffectData* unk_0C;
     /* 0x10 */ struct unk_D_84390010* unk_10;
     /* 0x14 */ Fragment2_1GraphNode* unk_14;
     /* 0x18 */ u32 unk_18;
@@ -118,9 +118,9 @@ typedef struct ParticleEffectInstance {
 
 typedef void (*func_unk_D_8140E724)(struct ParticleEffectInstance*);
 
-typedef struct unk_D_8140E724 {
+typedef struct ParticleDef {
     /* 0x00 */ func_unk_D_8140E724 unk_00;
-    /* 0x04 */ unk_D_8140E728_01C* unk_04;
+    /* 0x04 */ ParticleEffectData* unk_04;
     /* 0x08 */ struct unk_D_84390010* unk_08;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -134,9 +134,9 @@ typedef struct unk_D_8140E724 {
     /* 0x19 */ u8 unk_19;
     /* 0x1A */ u8 unk_1A;
     /* 0x1B */ u8 unk_1B;
-} unk_D_8140E724; // size = 0x1C
+} ParticleDef; // size = 0x1C
 
-typedef struct arg1_func_87903D64_014 {
+typedef struct ColorLerpData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ ColorLerpEntry5* unk_04;
     /* 0x08 */ ColorLerpEntry5* unk_08;
@@ -144,15 +144,15 @@ typedef struct arg1_func_87903D64_014 {
     /* 0x10 */ ColorLerpEntry4* unk_10;
     /* 0x14 */ ColorLerpEntry4* unk_14;
     /* 0x18 */ ColorLerpEntry4* unk_18;
-} arg1_func_87903D64_014; // size = 0x1C
+} ColorLerpData; // size = 0x1C
 
 // Possibly unk_D_86002F34_alt7, unk_D_86002F34_alt8,
 // unk_D_86002F34_alt9 or unk_D_86002F34_alt2
-typedef struct arg1_func_87903D64 {
+typedef struct ColorLerpHook {
     /* 0x00 */ char unk00[0x14];
-    /* 0x14 */ arg1_func_87903D64_014* unk_14;
+    /* 0x14 */ ColorLerpData* unk_14;
     /* 0x18 */ Gfx* unk_18;
-} arg1_func_87903D64; // size >= 0x1C
+} ColorLerpHook; // size >= 0x1C
 
 typedef struct arg1_func_81407874_014_000_014_000_000 {
     /* 0x00 */ Color_RGBA8 color;
@@ -229,7 +229,7 @@ typedef struct arg1_func_81407874 {
     /* 0x00 */ arg1_func_81407874_014* unk_14;
 } arg1_func_81407874; // size >= 0x18
 
-typedef struct unk_D_8140E634_010 {
+typedef struct ParticleCameraInfo {
     /* 0x00 */ MtxF unk_00;
     /* 0x40 */ Vec3f unk_40;
     /* 0x4C */ Vec3f unk_4C;
@@ -240,12 +240,12 @@ typedef struct unk_D_8140E634_010 {
     /* 0x74 */ char unk74[0x2];
     /* 0x76 */ s16 unk_76;
     /* 0x78 */ s16 unk_78;
-} unk_D_8140E634_010; // size = 0x7C
+} ParticleCameraInfo; // size = 0x7C
 
 typedef struct unk_D_8140E634 {
     /* 0x00 */ Vec3f unk_00;
     /* 0x0C */ CameraStruct* unk_0C;
-    /* 0x10 */ unk_D_8140E634_010 unk_10;
+    /* 0x10 */ ParticleCameraInfo unk_10;
 } unk_D_8140E634; // size = 0x8C
 
 typedef struct unk_D_8140E620 {
@@ -255,8 +255,8 @@ typedef struct unk_D_8140E620 {
     /* 0x5BC0 */ char unk5BC0[0x20];
 } unk_D_8140E620; // size = 0x5BE0
 
-extern Gfx D_8140DAE0[];
-extern Gfx D_8140DB30[];
+extern Gfx gDL_End3D[];
+extern Gfx gDL_Begin3D[];
 extern Gfx gDL_ItemIcon[];
 extern Gfx gDL_BaseUI2[];
 extern Gfx D_8140DC58[];
@@ -268,9 +268,9 @@ extern Gfx D_8140DCF8[];
 extern Gfx D_8140DD18[];
 extern Gfx D_8140DD38[];
 extern Gfx gDL_OverlayUI[];
-extern Gfx D_8140DD78[];
-extern Gfx D_8140DDD8[];
-extern Gfx D_8140DDF8[];
+extern Gfx gDL_BeginUIOverlay[];
+extern Gfx gDL_EndColorFill[];
+extern Gfx gDL_BeginColorFill[];
 extern Vtx D_8140DE78[];
 extern Vtx D_8140DEF8[];
 extern Vtx D_8140DF78[];
@@ -287,12 +287,12 @@ extern Vtx D_8140E1B8[];
 extern Vtx D_8140E1F8[];
 extern Vtx D_8140E238[];
 extern Vtx D_8140E2B8[];
-extern Vtx D_8140E378[];
-extern Vtx D_8140E3B8[];
+extern Vtx gGroundQuadVtx[];
+extern Vtx gFullscreenQuadVtx[];
 extern Gfx gDL_PanelBackground[];
 extern Gfx D_8140E430[];
 extern Gfx D_8140E448[];
-extern unk_D_8140E728_01C gParticleDefaultCallback;
+extern ParticleEffectData gParticleDefaultCallback;
 
 extern u8 gPrimColorPalette[];
 
@@ -300,7 +300,7 @@ extern unk_D_8140E620* gMatrixBuffer;
 extern s32 gMatrixBufferIdx;
 extern s32 gMatrixBufferIdx;
 extern unk_D_8140E634 gParticleScaleFactor;
-extern unk_D_8140E634_010* D_8140E6B4;
+extern ParticleCameraInfo* gParticleCameraInfo;
 extern u32 gTimerCounter;
 extern s32 gTimerMask6;
 extern s32 gTimerMask5;
@@ -314,21 +314,21 @@ extern u32 gTimerShift5;
 extern u32 gTimerShift4;
 extern u32 gTimerShift3;
 extern u32 gTimerShift2;
-extern u32 D_8140E6EC;
-extern u32 D_8140E6F0;
-extern s32 D_8140E6F4;
-extern s32 D_8140E6F8;
-extern s32 D_8140E6FC;
-extern s32 D_8140E700;
-extern s32 D_8140E704;
-extern s32 D_8140E708;
-extern s32 D_8140E70C;
+extern u32 gTimerDiv3;
+extern u32 gTimerShift1;
+extern s32 gTimerBit6;
+extern s32 gTimerBit5;
+extern s32 gTimerBit4;
+extern s32 gTimerBit3;
+extern s32 gTimerBit2;
+extern s32 gTimerDiv3Parity;
+extern s32 gTimerBit1;
 extern s32 gRandomSeedCounter;
 extern ParticleEffectInstance* gParticleInstances;
-extern unk_D_8140E724* D_8140E724;
-extern unk_D_8140E728* gParticleEmitters;
+extern ParticleDef* gParticleDefs;
+extern ParticleSpawner* gParticleEmitters;
 extern s32 gParticleAllocIndex;
-extern s32 D_8140E730;
+extern s32 gParticleDefNextIdx;
 extern s32 gParticleEmitterNextIdx;
 
 void SetBits(s32* arg0, s32 arg1);
@@ -357,61 +357,61 @@ s32 ApproachU16Wrap(s16* arg0, s16 arg1, s16 arg2);
 s32 ApproachS32(s32* arg0, s32 arg1, s32 arg2);
 s32 ApproachF32(f32* arg0, f32 arg1, f32 arg2);
 void BounceFloat(f32* arg0, f32 arg1, f32 arg2, f32* arg3);
-void func_814008B0(s16* arg0, s16 arg1, s16 arg2, s16* arg3);
+void BounceS16(s16* arg0, s16 arg1, s16 arg2, s16* arg3);
 void Vec3f_Copy(Vec3f* arg0, Vec3f* arg1);
-void func_8140094C(Vec3s* arg0, Vec3s* arg1);
-void func_81400968(Vec3f* arg0, Vec3f* arg1);
-void func_8140099C(Vec3s* arg0, Vec3s* arg1);
+void Vec3s_CopyTo(Vec3s* arg0, Vec3s* arg1);
+void Vec3f_Offset(Vec3f* arg0, Vec3f* arg1);
+void Vec3s_Offset(Vec3s* arg0, Vec3s* arg1);
 f32 Vec3f_Dot(Vec3f arg0, Vec3f arg1);
 s32 IsWithinRadius2D(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4);
 void func_81400A60(void);
 u32 RandomMod(s32 arg0);
-s32 func_81400ADC(s32 arg0, s32 arg1);
+s32 RandomModPlus(s32 arg0, s32 arg1);
 s32 RandomRangeSigned(s32 arg0);
-s32 func_81400B28(s32 arg0, s32 arg1);
+s32 RandomRangeSignedPlus(s32 arg0, s32 arg1);
 s32 func_81400B4C(s32 arg0, s32 arg1);
 void func_81400B84(UNUSED s32 arg0);
-s16 func_81400B8C(Vec3f arg0);
-s16 func_81400BBC(Vec3f arg0);
-s16 func_81400BEC(Vec3f arg0);
+s16 Vec3f_AngleX(Vec3f arg0);
+s16 Vec3f_AngleY(Vec3f arg0);
+s16 Vec3f_AngleZ(Vec3f arg0);
 void Vec3f_ToAngles(Vec3s* arg0, Vec3f arg1);
 f32 func_81400C80(f32 arg0, f32 arg1, s16 arg2);
 f32 func_81400CC0(f32 arg0, f32 arg1, s16 arg2);
-Vec3f* func_81400D00(Vec3f* arg0, Vec3f arg1, Vec3s arg4);
-Vec3f* func_81400D6C(Vec3f* arg0, f32 arg1, s16 arg2);
-Vec3f* func_81400DC0(Vec3f* arg0, Vec3f arg1, Vec3s arg4);
-f32 func_81400E8C(Vec3f arg0, Vec3f arg1);
-f32 func_81400EF0(Vec3f arg0, Vec3f arg1);
-Vec3f* func_81400F44(Vec3f* arg0, Vec3f arg1, Vec3f arg2);
+Vec3f* Vec3f_RotateY(Vec3f* arg0, Vec3f arg1, Vec3s arg4);
+Vec3f* Vec3f_SetPolarXZ(Vec3f* arg0, f32 arg1, s16 arg2);
+Vec3f* Vec3f_RotateXY(Vec3f* arg0, Vec3f arg1, Vec3s arg4);
+f32 Vec3f_Dist(Vec3f arg0, Vec3f arg1);
+f32 Vec3f_DistXZ(Vec3f arg0, Vec3f arg1);
+Vec3f* Vec3f_GetDirection(Vec3f* arg0, Vec3f arg1, Vec3f arg2);
 s32 func_81400FA4(Vec3f arg0, Vec3f arg1, f32 arg2);
 s32 Particle_ComputeLifespan(Vec3f* arg0, Vec3f arg1, Vec3f arg2, f32 arg3);
-Vec3f* func_814010D8(Vec3f* arg0, f32 arg1);
-Vec3f* func_81401168(Vec3f* arg0, f32 arg1);
-s16 func_8140119C(Vec3f arg0, Vec3f arg1);
-s16 func_814011E0(Vec3f arg0, Vec3f arg1);
-s16 func_81401224(Vec3f arg0, Vec3f arg1);
+Vec3f* Vec3f_SetRandomDirection(Vec3f* arg0, f32 arg1);
+Vec3f* Vec3f_Scale(Vec3f* arg0, f32 arg1);
+s16 Vec3f_AngleXTo(Vec3f arg0, Vec3f arg1);
+s16 Vec3f_AngleYTo(Vec3f arg0, Vec3f arg1);
+s16 Vec3f_AngleZTo(Vec3f arg0, Vec3f arg1);
 s16 func_81401268(s16 arg0, s16 arg1);
 void func_8140138C(void);
-void func_81401394(MtxF* arg0);
+void Matrix_SendToDisplayList(MtxF* arg0);
 void func_81401430(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4);
 void func_814014E8(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4);
-void func_814015A0(s16 arg0, s16 arg1, s16 arg2, f32 arg3);
-void func_814015F8(s16 arg0, s16 arg1, s16 arg2, f32 arg3);
+void Matrix_Submit2DRotateTranslateScale(s16 arg0, s16 arg1, s16 arg2, f32 arg3);
+void Matrix_Submit2DRotateTranslateScaleY(s16 arg0, s16 arg1, s16 arg2, f32 arg3);
 void func_81401650(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3);
 void func_814017E0(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3);
 void func_81401940(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3, f32 arg4);
-void func_81401ABC(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3);
-void func_81401B6C(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3);
-void func_81401C04(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4);
-void func_81401D50(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4);
+void Matrix_ComposeBillboard(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3);
+void Matrix_ComposeBillboardY(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3);
+void Matrix_ComposeBillboardRoll(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4);
+void Matrix_ComposeBillboardRollY(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, s16 arg4);
 void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4);
-void func_81401FC0(Vec3f arg0, Vec3s arg1, f32 arg2);
-void func_8140203C(Vec3f arg0, Vec3s arg1, f32 arg2);
-void func_814020B8(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3);
-void func_8140213C(CameraStruct* arg0, Vec3f arg1, f32 arg4);
-void func_814021A4(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
-void func_81402214(CameraStruct* arg0, Vec3f arg1, f32 arg4);
-void func_8140227C(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
+void Matrix_SubmitRotateTranslateScale(Vec3f arg0, Vec3s arg1, f32 arg2);
+void Matrix_SubmitRotateTranslateScaleY(Vec3f arg0, Vec3s arg1, f32 arg2);
+void Matrix_SubmitRotateTranslateScaleXY(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3);
+void Matrix_SubmitBillboard(CameraStruct* arg0, Vec3f arg1, f32 arg4);
+void Matrix_SubmitBillboardRoll(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
+void Matrix_SubmitBillboardY(CameraStruct* arg0, Vec3f arg1, f32 arg4);
+void Matrix_SubmitBillboardRollY(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
 void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5);
 void func_8140238C(Vec3f arg0, Vec3f arg3, f32 arg6);
 
@@ -444,65 +444,65 @@ void Gfx_LoadTextureBlockRGBA16_MirrorWrapS(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockRGBA16_MirrorWrapT(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockRGBA16_MirrorWrapST(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockRGBA16_MaskS(u8* texture, s32 width, s32 height, s32 masks);
-void func_81403EA8(u8* texture, s32 width, s32 height);
-void func_81403EF4(u8* texture, s32 width, s32 height);
-void func_81403F40(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileRGBA16_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockIA16_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileIA16_Clamp(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockIA8_Clamp(u8* texture, s32 width, s32 height);
-void func_81403FD8(u8* texture, s32 width, s32 height);
-void func_81404024(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileIA8_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockIA8_MirrorWrap(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockI_Clamp(u8* texture, s32 width, s32 height);
 void Gfx_LoadTextureBlockI_MirrorWrap(u8* texture, s32 width, s32 height);
-void func_81404150(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileI_Clamp(u8* texture, s32 width, s32 height);
 void func_8140419C(u8* texture, s32 width, s32 height);
 void func_814041BC(u8* texture, s32 width, s32 height);
-void func_814041DC(u8* texture, s32 width, s32 height);
-void func_81404228(u8* texture, s32 width, s32 height);
-void func_81404274(u8* texture, s32 width, s32 height);
-void func_814042C0(u8* texture, s32 width, s32 height);
-void func_8140430C(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileIA4b_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureTileI4b_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockIA4b_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockI4b_Clamp(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockI4b_MirrorWrap(u8* texture, s32 width, s32 height);
 void func_8140437C(u8* texture, s32 width, s32 height);
 void func_8140439C(u8* texture, s32 width, s32 height);
-void func_814043BC(u8* texture, s32 width, s32 height);
-void func_8140441C(u8* texture, s32 width, s32 height);
-void func_81404484(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockI4b_MirrorWrapS(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockI4b_Wrap(u8* texture, s32 width, s32 height);
+void Gfx_LoadMultiBlockI4b_Wrap(u8* texture, s32 width, s32 height);
 void func_814044FC(u8* texture, s32 width, s32 height, s32 shifts, s32 shiftt);
 void Gfx_LoadTextureBlockCI_Clamp(u8* texture, s32 width, s32 height);
-void func_814045CC(u8* texture, s32 width, s32 height, s32 masks);
-void func_81404624(u8* texture, s32 width, s32 height);
+void Gfx_LoadTextureBlockCI_MirrorWrapS(u8* texture, s32 width, s32 height, s32 masks);
+void Gfx_LoadTextureTileCI_Clamp(u8* texture, s32 width, s32 height);
 void Gfx_SetupMultiTextureCI_RGBA16(u8* texture1, u8* texture2, s32 width, s32 height);
-void func_81404A6C(Vtx* arg0);
+void Gfx_DrawQuad(Vtx* arg0);
 void func_81404AB4(void);
-void func_81404ABC(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
-void func_81404B78(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4);
+void Gfx_DrawQuadRotated(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
+void Gfx_DrawQuadRotatedScaleY(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4);
 void func_81404C34(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3, Vtx* arg4);
-void func_81404CF8(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
-void func_81404DB4(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
-void func_81404E4C(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
+void Gfx_DrawTriangleRotated(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
+void Gfx_DrawQuadBillboard(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
+void Gfx_DrawQuadBillboardRoll(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
 void func_81404EEC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
-void func_81404F84(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
+void Gfx_DrawQuadBillboardRollScaleY(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
 void func_81405024(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
 void func_814050BC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
-void func_8140515C(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
-void func_81405308(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
-void func_814054B4(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
-void func_81405660(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
+void Gfx_DrawTiledTextureI(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
+void Gfx_DrawTiledTextureIA16(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
+void Gfx_DrawTiledTextureIA8(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
+void Gfx_DrawTiledTextureI4b(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
 void func_81405814(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
 void Gfx_SetPrimColor(u8 r, u8 g, u8 b, u8 a);
 void Gfx_SetEnvColor(u8 r, u8 g, u8 b, u8 a);
 void Gfx_SetFogColor(u8 r, u8 g, u8 b, u8 a);
-void func_81405B00(u8 r, u8 g, u8 b, u8 a);
+void Gfx_SetBlendColor(u8 r, u8 g, u8 b, u8 a);
 void Gfx_SetPrimColorCombinePrimitive(u8 r, u8 g, u8 b, u8 a);
 void func_81405C04(u8 a);
-void func_81405C70(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b, u8 prim_a);
+void Gfx_SetPrimAndEnvColor(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b, u8 prim_a);
 void func_81405D38(u8 prim_r, u8 prim_g, u8 prim_b, u8 env_r, u8 env_g, u8 env_b, u8 prim_a);
-void func_81405E04(u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b, u8 env_a);
-void func_81405ED8(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b);
+void Gfx_SetPrimAndEnvColorRGBA(u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b, u8 env_a);
+void Gfx_SetPrimAndEnvColorLOD(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b);
 void func_81405FAC(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u8 env_g, u8 env_b);
 u32 GetTileSizeByIndex(s32 arg0);
-void func_814060D4(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_81406168(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_81406204(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_81406288(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void Gfx_ScrollTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Gfx_ScrollTexture1(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Gfx_ScrollTextureToDL(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void Gfx_ScrollTexture1ToDL(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_81406314(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_81406388(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void func_81406404(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7);
@@ -514,7 +514,7 @@ Gfx* func_81407410(Gfx* arg0, arg1_func_81407874_014* arg1);
 Gfx* func_8140743C(Gfx* arg0, arg1_func_81407874_014* arg1);
 void func_81407484(Gfx* arg0, arg1_func_81407874_014_000_010* arg1);
 Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1);
-void func_81407874(s32 arg0, arg1_func_87903D64* arg1);
+void func_81407874(s32 arg0, ColorLerpHook* arg1);
 
 
 void Particle_ResetDefaults(ParticleEffectInstance* arg0);
@@ -522,10 +522,10 @@ ParticleEffectInstance* Particle_Allocate(void);
 void Particle_Free(ParticleEffectInstance* arg0);
 ParticleEffectInstance* Particle_AllocateInstance(void);
 ParticleEffectInstance* Particle_AllocateChain(u8 arg0);
-void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5);
-void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5, s16 arg6);
-void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4);
-void Particle_CreateFromEntityMultipleWithExtra(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4, s16 arg5);
+void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5);
+void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, ParticleEffectData* arg4, s16 arg5, s16 arg6);
+void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4);
+void Particle_CreateFromEntityMultipleWithExtra(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4, s16 arg5);
 s32 Particle_CountActive(void);
 s32 Particle_GetActiveCount(void);
 void Particle_Init(ParticleEffectInstance* arg0);
@@ -797,7 +797,7 @@ void Particle_SetShortB0IfValid(ParticleEffectInstance* arg0, s16 arg1);
 void Particle_UpdateForCamera(CameraStruct* arg0);
 void Particle_ProcessAllForCamera(CameraStruct* arg0);
 void Particle_RenderUIOverlay(s16 arg0);
-void Particle_ExecuteCallbackBasedOnType(ParticleEffectInstance* arg0, unk_D_8140E728_01C_004_1* arg1);
+void Particle_ExecuteCallbackBasedOnType(ParticleEffectInstance* arg0, ParticleRenderSettings* arg1);
 void Particle_HandleDisplayList(ParticleEffectInstance* arg0);
 void Particle_RenderWithCamera(ParticleEffectInstance* arg0, CameraStruct* arg1);
 void Particle_NoOp(UNUSED ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1);
@@ -812,50 +812,50 @@ void LoadTexture_IA8_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void LoadTexture_IA8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void LoadTexture_IA8_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void LoadTexture_CI4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture);
-void func_8140C84C(ParticleEffectInstance* arg0, u8* texture);
+void LoadTexture_CI4_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void func_8140C880(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140C8B8(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140C8F4(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140C930(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140C96C(UNUSED ParticleEffectInstance* arg0, u8* texture);
-void func_8140C9B0(ParticleEffectInstance* arg0, u8* texture);
+void LoadTexture_CI4_24x24_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void func_8140C9EC(UNUSED ParticleEffectInstance* arg0, u8* texture);
-void func_8140CA30(ParticleEffectInstance* arg0, u8* texture);
+void LoadTexture_CI4_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void func_8140CA64(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140CA90(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140CAC8(UNUSED ParticleEffectInstance* arg0, u8* texture);
-void func_8140CB04(ParticleEffectInstance* arg0, u8* texture);
+void LoadTexture_CI4_64x64_ByIndex(ParticleEffectInstance* arg0, u8* texture);
 void func_8140CB38(UNUSED ParticleEffectInstance* arg0, u8* texture);
 void func_8140CB64(UNUSED ParticleEffectInstance* arg0, u8* texture);
-void func_8140CB90(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CC04(ParticleEffectInstance* arg0, CameraStruct* arg1);
-s32 func_8140CC90(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1);
+void RenderBillboardQuadPrimColor(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuad24(ParticleEffectInstance* arg0, CameraStruct* arg1);
+s32 RenderRotatedQuad24(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1);
 void func_8140CD80(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CDDC(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CE68(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CED4(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CF30(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140CFBC(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuad(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuadGradient(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuadOffsetY(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuadNoise(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuadRoll(ParticleEffectInstance* arg0, CameraStruct* arg1);
 void func_8140D050(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140D0E4(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140D170(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuad64(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuad64OffsetY(ParticleEffectInstance* arg0, CameraStruct* arg1);
 void func_8140D1FC(ParticleEffectInstance* arg0, CameraStruct* arg1);
-void func_8140D288(ParticleEffectInstance* arg0, CameraStruct* arg1);
-s32 func_8140D314(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1);
-void func_8140D404(ParticleEffectInstance* arg0, CameraStruct* arg1);
+void RenderBillboardQuadTriple(ParticleEffectInstance* arg0, CameraStruct* arg1);
+s32 RenderRotatedQuadTriple(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1);
+void RenderGroundQuad(ParticleEffectInstance* arg0, CameraStruct* arg1);
 void GetPaletteColor(u8* arg0, u16 arg1);
 void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2);
 void SetPrimColorFromPalette(ParticleEffectInstance* arg0, u16 arg1);
 void SetEnvColorFromPalette(ParticleEffectInstance* arg0, u16 arg1);
 void SetPrimEnvColorFromPair(ParticleEffectInstance* arg0, u16 arg1);
-void func_8140D5F0(ParticleEffectInstance* arg0, s16 arg1);
-void func_8140D624(ParticleEffectInstance* arg0, s16 arg1);
+void SetPrimColorFromPreset(ParticleEffectInstance* arg0, s16 arg1);
+void SetEnvColorFromPreset(ParticleEffectInstance* arg0, s16 arg1);
 void func_8140D658(ParticleEffectInstance* arg0, s16 arg1);
 void func_8140D68C(ParticleEffectInstance* arg0, s16 arg1);
 void func_8140D6C0(ParticleEffectInstance* arg0, s16 arg1);
 void func_8140D708(ParticleEffectInstance* arg0, s16 arg1);
-void func_8140D750(ParticleEffectInstance* arg0);
-void func_8140D78C(ParticleEffectInstance* arg0);
+void SetRandomPrimColor(ParticleEffectInstance* arg0);
+void SetRandomEnvColor(ParticleEffectInstance* arg0);
 s32 IsPrimColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2);
 s32 IsEnvColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2);
 s32 AreBothColorsSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2);

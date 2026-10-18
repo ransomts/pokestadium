@@ -115,7 +115,7 @@ u32 gBeamTexture[] = {
     0x00000000, 0x00000000,
 };
 
-void func_8436E920(void) {
+void GlowEmitters_Reset(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -123,7 +123,7 @@ void func_8436E920(void) {
     }
 }
 
-s16 func_8436E944(void) {
+s16 GlowEmitter_Allocate(void) {
     unk_D_843C49C0* var_a0;
     Particle* var_v1;
     s32 i;
@@ -169,7 +169,7 @@ void ParticleEmitter_AddParticle(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg
     }
 }
 
-void func_8436EB54(s16 arg0) {
+void GlowEmitter_Update(s16 arg0) {
     unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
     Particle* var_v1;
     s32 i;
@@ -188,7 +188,7 @@ void func_8436EB54(s16 arg0) {
     }
 }
 
-Gfx* func_8436ECB0(Gfx* arg0, Particle* arg1, MtxF* arg2) {
+Gfx* GlowParticle_Draw(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     f32 spCC;
     f32 spC8;
     f32 spC4;
@@ -235,7 +235,7 @@ Gfx* ParticleEmitter_RenderAll(s16 arg0, Gfx* arg1) {
     var_s0 = &temp_s3->unk_004;
     for (i = 0; i < 20; i++, var_s0++) {
         if (var_s0->unk_00 == 1) {
-            arg1 = func_8436ECB0(arg1, var_s0, &sp38);
+            arg1 = GlowParticle_Draw(arg1, var_s0, &sp38);
         }
     }
 

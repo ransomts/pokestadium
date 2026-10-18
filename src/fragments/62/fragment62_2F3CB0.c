@@ -472,7 +472,7 @@ void func_8430A8DC(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     }
 
     Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
-    func_8430C718(&arg0->unk_000.unk_024.y, -(func_84308548(arg1) * sp30), sp2C);
+    Math_ExponentialApproach(&arg0->unk_000.unk_024.y, -(func_84308548(arg1) * sp30), sp2C);
 
     if (arg0->unk_000.unk_024.y <= -(func_84308548(arg1) * sp34)) {
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
@@ -511,7 +511,7 @@ void func_8430AB00(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f }; // D_84384654
 
-    func_8430C718(&arg1->unk_4A0, 50.0f, 0.1f);
+    Math_ExponentialApproach(&arg1->unk_4A0, 50.0f, 0.1f);
     arg1->unk_4A6 += 0xE38;
     tmp = SINS(arg1->unk_4A6) * arg1->unk_4A0;
     Vector_SetXZFromPolar(&sp20, tmp, arg0->unk_000.unk_01E.y);
@@ -528,7 +528,7 @@ void func_8430ABF0(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f };
 
-    func_8430C718(&arg1->unk_4A0, 0.0f, 0.1f);
+    Math_ExponentialApproach(&arg1->unk_4A0, 0.0f, 0.1f);
     arg1->unk_4A6 += 0xE38;
 
     tmp = SINS(arg1->unk_4A6) * arg1->unk_4A0;
@@ -868,14 +868,14 @@ void func_8430B968(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
     if (ptr->unk_56 == 0) {
         temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.6f;
-        func_8430C718(&arg0->unk_000.unk_030.x, 1.0f - temp_fs0, 0.5f);
-        func_8430C718(&arg0->unk_000.unk_030.y, 1.0f + temp_fs0, 0.5f);
-        func_8430C718(&arg0->unk_000.unk_030.z, 1.0f - temp_fs0, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.x, 1.0f - temp_fs0, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.y, 1.0f + temp_fs0, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.z, 1.0f - temp_fs0, 0.5f);
     } else {
         temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.3f;
-        func_8430C718(&arg0->unk_000.unk_030.x, 0.8 - temp_fs0, 0.5f);
-        func_8430C718(&arg0->unk_000.unk_030.y, temp_fs0 + 0.8, 0.5f);
-        func_8430C718(&arg0->unk_000.unk_030.z, 0.8 - temp_fs0, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.x, 0.8 - temp_fs0, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.y, temp_fs0 + 0.8, 0.5f);
+        Math_ExponentialApproach(&arg0->unk_000.unk_030.z, 0.8 - temp_fs0, 0.5f);
     }
 }
 
@@ -1600,14 +1600,14 @@ Vec3f gCameraOffsetTable[] = {
     { 0.4000000059604645f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f },
 };
-unk_D_84385384_func gAnimStateIdle = func_843056DC;
+unk_D_84385384_func gAnimStateIdle = Anim_NullHandler;
 unk_D_84385384 gMoveAnimData[] = {
     {
         0,
         {
             AnimChannel_TriggerMoveEffect,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             AnimChannel_SetupAndTrigger,
             AnimChannel_CheckModelBaseY,
             Pokemon_HandleGroundedAnim,
@@ -1624,9 +1624,9 @@ unk_D_84385384 gMoveAnimData[] = {
             ResetAnimChannelToDefault,
             Anim_ResetPlayer,
             PlayBattleMusicIfReady,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         166,
         255,
@@ -1635,13 +1635,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         2,
         {
-            func_843056DC,
+            Anim_NullHandler,
             AnimChannel_TriggerMoveEffect,
-            func_843056DC,
+            Anim_NullHandler,
             Pokemon_HandleMoveHit,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         2,
@@ -1651,12 +1651,12 @@ unk_D_84385384 gMoveAnimData[] = {
         3,
         {
             Pokemon_StartMoveAnimation,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_HandleMoveCompletion,
             AnimChannel_CheckAndAdvance,
             AnimChannel_HandleSpecialMoves,
-            func_843056DC,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1666,12 +1666,12 @@ unk_D_84385384 gMoveAnimData[] = {
         4,
         {
             Pokemon_EnterBattleState,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_HandleSwitchIn,
             Pokemon_HandleSwitchOut,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1682,7 +1682,7 @@ unk_D_84385384 gMoveAnimData[] = {
         {
             func_8430741C,
             AnimChannel_HandleBattleState,
-            func_843056DC,
+            Anim_NullHandler,
             func_84307424,
             func_8430742C,
             func_84307434,
@@ -1697,7 +1697,7 @@ unk_D_84385384 gMoveAnimData[] = {
         {
             func_8430741C,
             AnimChannel_HandleBattleState,
-            func_843056DC,
+            Anim_NullHandler,
             func_84307464,
             func_8430745C,
             func_84307454,
@@ -1711,8 +1711,8 @@ unk_D_84385384 gMoveAnimData[] = {
         7,
         {
             AnimChannel_TriggerMoveEffect,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             AnimChannel_SetupAndTrigger,
             func_8430748C,
             func_84307444,
@@ -1726,12 +1726,12 @@ unk_D_84385384 gMoveAnimData[] = {
         8,
         {
             Pokemon_TriggerAnimByLookup,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_HandleSpecialMoveEffect,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1742,11 +1742,11 @@ unk_D_84385384 gMoveAnimData[] = {
         {
             Pokemon_SetSpecialAnimChannel,
             Pokemon_HandleSpecialCondition,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1755,13 +1755,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         10,
         {
-            func_843056DC,
+            Anim_NullHandler,
             AnimChannel_TriggerMoveEffect,
-            func_843056DC,
+            Anim_NullHandler,
             Pokemon_HandleMoveHit,
             Pokemon_HandleFaint,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         3,
@@ -1771,12 +1771,12 @@ unk_D_84385384 gMoveAnimData[] = {
         11,
         {
             UpdateAnimChannelForEntity,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_HandleSwitchIn,
             ApplyAnimStateEffect,
             TriggerAnimStateSound,
-            func_843056DC,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1787,11 +1787,11 @@ unk_D_84385384 gMoveAnimData[] = {
         {
             Anim_ResetPlayer,
             Pokemon_TriggerAnimIfMatch,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1801,12 +1801,12 @@ unk_D_84385384 gMoveAnimData[] = {
         13,
         {
             Pokemon_PlaySoundBasedOnFlags,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1816,12 +1816,12 @@ unk_D_84385384 gMoveAnimData[] = {
         14,
         {
             UpdateAnimChannelForEntity,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             ProcessAnimStateMatch,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1831,12 +1831,12 @@ unk_D_84385384 gMoveAnimData[] = {
         15,
         {
             Pokemon_StartBattleIntro,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1849,9 +1849,9 @@ unk_D_84385384 gMoveAnimData[] = {
             ResetAnimChannelToDefault,
             Anim_ResetPlayer,
             PlayBattleMusicAndSound,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         166,
         255,
@@ -1860,13 +1860,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         17,
         {
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
             AnimChannel_SetupAndTrigger,
             CheckAnimStateCompletion,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         177,
         255,
@@ -1879,9 +1879,9 @@ unk_D_84385384 gMoveAnimData[] = {
             ResetAnimChannelToDefault,
             Anim_ResetPlayer,
             PlayBattleMusicAndSoundAlt,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         166,
         255,
@@ -1891,12 +1891,12 @@ unk_D_84385384 gMoveAnimData[] = {
         19,
         {
             Pokemon_TriggerAnimIfUnlocked,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_HandleMoveEnd,
             Pokemon_HandleSpecialMoveEnd,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,
@@ -1905,13 +1905,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         20,
         {
-            func_843056DC,
+            Anim_NullHandler,
             AnimChannel_TriggerMoveEffect,
-            func_843056DC,
+            Anim_NullHandler,
             Pokemon_HandleMoveHit,
             Pokemon_HandleFaintEffect,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         1,
@@ -1921,12 +1921,12 @@ unk_D_84385384 gMoveAnimData[] = {
         21,
         {
             Pokemon_GenericActionTrigger,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
             Pokemon_PlayMoveEffect,
-            func_843056DC,
-            func_843056DC,
-            func_843056DC,
+            Anim_NullHandler,
+            Anim_NullHandler,
+            Anim_NullHandler,
         },
         255,
         255,

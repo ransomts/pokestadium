@@ -41,7 +41,7 @@ static Gfx gWaterParticleTextureDL[] = {
     gsSPEndDisplayList(),
 };
 
-void func_8436B140(void) {
+void WaterParticlePool_InitAlt(void) {
     unk_D_843ADA80* var_v0 = &D_843B8340[0];
     unk_D_843ADA80_040* var_a0;
     s32 i;
@@ -69,7 +69,7 @@ void func_8436B140(void) {
     }
 }
 
-void func_8436B270(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void WaterParticlePool_SpawnAlt(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     unk_D_843ADA80* var_v1;
     unk_D_843ADA80_040* var_s0;
@@ -80,7 +80,7 @@ void func_8436B270(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u
     Vec3f sp64;
     f32 temp_fv1;
 
-    temp_fv1 = func_8432FCD4() * 0.5f;
+    temp_fv1 = GetPrimaryEntityScale() * 0.5f;
 
     sp7C.x = arg0;
     sp7C.y = (80.0f * temp_fv1) + arg1;

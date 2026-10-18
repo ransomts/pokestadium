@@ -36,7 +36,7 @@ extern u8 D_4006A08[];
 static char** gItemMessageBank;
 static char** gBattleMessageBank;
 
-void func_88201210(unk_func_88205880_00D0* arg0) {
+void Box_MarkSpeciesOwned(unk_func_88205880_00D0* arg0) {
     s32 i;
     s32 temp_s3;
     PokemonData* tmp = arg0->unk_000;
@@ -50,7 +50,7 @@ void func_88201210(unk_func_88205880_00D0* arg0) {
     }
 }
 
-void func_88201294(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
+void Box_SaveToGbs(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
     unk_func_80022C28_ret* sp1C = CreateGbsBlock(arg0, arg1, arg2, 1);
 
     func_80022F24(arg3, arg3->unk_690, sp1C);
@@ -62,7 +62,7 @@ void func_88201294(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
     }
 }
 
-s32 func_8820130C(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s32 arg4) {
+s32 Box_LoadFromGbs(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s32 arg4) {
     s32 sp1C;
     unk_func_80022C28_ret* sp18;
 
@@ -75,20 +75,20 @@ s32 func_8820130C(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s3
     return sp1C;
 }
 
-void func_88201360(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Boxes_LoadFromGbs(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     s32 temp_v0;
 
     for (i = 0; i < arg3; i++, arg0++) {
         bzero(arg0->unk_000, sizeof(PokemonData) * 20);
-        arg0->unk_690 = func_8820130C(arg1, arg2, i, arg0, 0x14);
+        arg0->unk_690 = Box_LoadFromGbs(arg1, arg2, i, arg0, 0x14);
         arg0->unk_694 = arg1;
         arg0->unk_698 = i;
         arg0->unk_69C = 0;
     }
 }
 
-s32 func_882013F8(unk_func_88205880_A030* arg0) {
+s32 BoxList_HasNoEmptyBoxes(unk_func_88205880_A030* arg0) {
     s32 i;
     unk_func_88205880_00D0** var_a0 = arg0->unk_00;
 
@@ -101,7 +101,7 @@ s32 func_882013F8(unk_func_88205880_A030* arg0) {
     return 1;
 }
 
-s32 func_88201440(unk_func_88205880_A030* arg0) {
+s32 BoxList_IsEmpty(unk_func_88205880_A030* arg0) {
     s32 i;
     unk_func_88205880_00D0** var_a0 = arg0->unk_00;
 
@@ -342,7 +342,7 @@ void func_88202394(unk_func_88201DA0* arg0, Controller* arg1) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
+void DrawBoxMonCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gItemCountTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char sp28[8];
@@ -376,11 +376,11 @@ void func_882025AC(unk_func_8820253C* arg0, unk_func_88205880_00D0* arg1) {
 
 s32 func_882025B4(unk_func_8820253C* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_2C != NULL) {
-        func_88202450(arg0->unk_2C, arg1, arg2);
+        DrawBoxMonCount(arg0->unk_2C, arg1, arg2);
     }
 }
 
-void func_882025E0(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg1, unk_func_88200FA0_030_030* arg2,
+void BoxMove_Init(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg1, unk_func_88200FA0_030_030* arg2,
                    unk_func_88203ED8* arg3, MemoryPool* arg4) {
     static Color_RGBA8 gMenuTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
@@ -390,7 +390,7 @@ void func_882025E0(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* ar
     ((func88500668)Memmap_GetFragmentVaddr(ListNode_Init))(arg0, sizeof(unk_func_882025E0_1A9780));
 
     arg0->unk_00.unk_14 = func_88202738;
-    arg0->unk_00.unk_10 = func_88202F70;
+    arg0->unk_00.unk_10 = BoxMove_HandleInput;
     arg0->unk_00.unk_18 = 0;
     arg0->unk_00.unk_1C = 0;
     arg0->unk_24[0] = arg1;
@@ -483,7 +483,7 @@ void func_882028EC(unk_func_882025E0_1A9780* arg0, unk_func_88001300_000_010* ar
     }
 }
 
-void func_88202A2C(unk_func_88200FA0_030_030* arg0) {
+void BoxList_DisableEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     s32 i;
     s32 count = arg0->unk_2C->unk_08;
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->unk_00;
@@ -497,7 +497,7 @@ void func_88202A2C(unk_func_88200FA0_030_030* arg0) {
     ((func88506CE4)Memmap_GetFragmentVaddr(Fragment_Update))(arg0);
 }
 
-void func_88202B74(unk_func_88200FA0_030_030* arg0) {
+void BoxList_DisableNonEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     s32 i;
     s32 count = arg0->unk_2C->unk_08;
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->unk_00;
@@ -517,60 +517,60 @@ void func_88202CBC(unk_func_882025E0_1A9780* arg0) {
 
     switch (arg0->unk_2C) {
         case 0:
-            func_88202A2C(arg0->unk_24[0]);
-            func_88202B74(arg0->unk_24[1]);
+            BoxList_DisableEmptyBoxes(arg0->unk_24[0]);
+            BoxList_DisableNonEmptyBoxes(arg0->unk_24[1]);
             break;
 
         case 1:
         case 2:
         case 3:
-            func_88202A2C(arg0->unk_24[0]);
-            func_88202A2C(arg0->unk_24[1]);
+            BoxList_DisableEmptyBoxes(arg0->unk_24[0]);
+            BoxList_DisableEmptyBoxes(arg0->unk_24[1]);
             break;
     }
 }
 
-void func_88202D60(unk_func_882025E0_1A9780* arg0, s32 arg1) {
+void BoxMove_SetPhase(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     switch (arg1) {
         case 0:
             func_88202CBC(arg0);
             ScrollableList_SetDirection(arg0->unk_24[0], 1);
             ScrollableList_SetDirection(arg0->unk_24[1], 1);
             func_882027F0(arg0, 0);
-            func_88217BB8(arg0->unk_00.unk_20->unk_40);
+            SwapArrows_Hide(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 1:
             ScrollableList_SetDirection(arg0->unk_24[1], 0);
             func_882027F0(arg0, 1);
-            func_88217BAC(arg0->unk_00.unk_20->unk_40);
+            SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 2:
             ScrollableList_SetDirection(arg0->unk_24[0], 0);
             func_882027F0(arg0, 0);
-            func_88217BAC(arg0->unk_00.unk_20->unk_40);
+            SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
 
         case 3:
             ScrollableList_SetDirection(arg0->unk_24[1], 0);
             func_882027F0(arg0, 1);
-            func_88217BAC(arg0->unk_00.unk_20->unk_40);
+            SwapArrows_Show(arg0->unk_00.unk_20->unk_40);
             break;
     }
     arg0->unk_30 = arg1;
 }
 
-void func_88202E74(unk_func_882025E0_1A9780* arg0, s32 arg1) {
+void BoxMove_SetMoveMode(unk_func_882025E0_1A9780* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
-    func_88202D60(arg0, 0);
+    BoxMove_SetPhase(arg0, 0);
 }
 
 void func_88202E98(unk_func_882025E0_1A9780* arg0) {
-    func_88202D60(arg0, 0);
+    BoxMove_SetPhase(arg0, 0);
 }
 
-void func_88202EB8(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_SwapSides(unk_func_882025E0_1A9780* arg0) {
     unk_func_88200FA0_030_030* temp_t6 = arg0->unk_24[0];
 
     arg0->unk_24[0] = arg0->unk_24[1];
@@ -588,7 +588,7 @@ s32 func_88202ED8(unk_func_882025E0_1A9780* arg0) {
     return var_v1;
 }
 
-void func_88202EF4(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_SwapWithinList(unk_func_882025E0_1A9780* arg0) {
     unk_func_88205880_00D0** temp_v0 = &arg0->unk_24[0]->unk_2C->unk_00[arg0->unk_34];
     unk_func_88205880_00D0** temp_a2 = &arg0->unk_24[0]->unk_2C->unk_00[arg0->unk_24[0]->unk_38];
     unk_func_88205880_00D0* temp_a3;
@@ -598,7 +598,7 @@ void func_88202EF4(unk_func_882025E0_1A9780* arg0) {
     *temp_v0 = temp_a3;
 }
 
-void func_88202F2C(unk_func_882025E0_1A9780* arg0) {
+void BoxMove_SwapBetweenLists(unk_func_882025E0_1A9780* arg0) {
     unk_func_88205880_00D0* temp_a3;
     unk_func_88205880_00D0** temp_v0 = &arg0->unk_24[0]->unk_2C->unk_00[arg0->unk_24[0]->unk_38];
     unk_func_88205880_00D0** temp_a1 = &arg0->unk_24[1]->unk_2C->unk_00[arg0->unk_24[1]->unk_38];
@@ -608,7 +608,7 @@ void func_88202F2C(unk_func_882025E0_1A9780* arg0) {
     *temp_v0 = temp_a3;
 }
 
-s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
+s32 BoxMove_HandleInput(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
     s32 var_a2;
 
     var_a2 = arg0->unk_24[arg0->unk_00.unk_1C]->unk_00.unk_20(arg0->unk_24[arg0->unk_00.unk_1C], arg1);
@@ -633,14 +633,14 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
             } else if (var_a2 & 4) {
                 switch (arg0->unk_2C) {
                     case 0:
-                        if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
+                        if (BoxList_IsEmpty(arg0->unk_24[0]->unk_2C) != 0) {
                             PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[0].unk_00, arg0->unk_3C[0].unk_04,
                                 arg0->unk_3C[0].unk_08);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(Menu_WaitForConfirm))(arg0->unk_00.unk_20->unk_60, arg1);
                             var_a2 = 1;
-                        } else if (func_882013F8(arg0->unk_24[1]->unk_2C) != 0) {
+                        } else if (BoxList_HasNoEmptyBoxes(arg0->unk_24[1]->unk_2C) != 0) {
                             PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[4].unk_00, arg0->unk_3C[4].unk_04,
@@ -649,13 +649,13 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
                             var_a2 = 1;
                         } else {
                             arg0->unk_24[0]->unk_34[arg0->unk_24[0]->unk_38] |= 2;
-                            func_88202D60(arg0, 1);
+                            BoxMove_SetPhase(arg0, 1);
                             var_a2 |= 1;
                         }
                         break;
 
                     case 1:
-                        if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
+                        if (BoxList_IsEmpty(arg0->unk_24[0]->unk_2C) != 0) {
                             PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[1].unk_00, arg0->unk_3C[1].unk_04,
@@ -666,14 +666,14 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
                             arg0->unk_34 = arg0->unk_24[0]->unk_38;
                             ((func8850628C)Memmap_GetFragmentVaddr(Fragment_ClearFlags))(arg0->unk_24[0]);
                             arg0->unk_24[0]->unk_34[arg0->unk_24[0]->unk_38] |= 2;
-                            func_88202D60(arg0, 2);
+                            BoxMove_SetPhase(arg0, 2);
                             var_a2 |= 1;
                         }
                         break;
 
                     case 2:
-                        if ((func_88201440(arg0->unk_24[0]->unk_2C) != 0) ||
-                            (func_88201440(arg0->unk_24[1]->unk_2C) != 0)) {
+                        if ((BoxList_IsEmpty(arg0->unk_24[0]->unk_2C) != 0) ||
+                            (BoxList_IsEmpty(arg0->unk_24[1]->unk_2C) != 0)) {
                             PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[2].unk_00, arg0->unk_3C[2].unk_04,
@@ -682,13 +682,13 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
                             var_a2 = 1;
                         } else {
                             arg0->unk_24[0]->unk_34[arg0->unk_24[0]->unk_38] |= 2;
-                            func_88202D60(arg0, 3);
+                            BoxMove_SetPhase(arg0, 3);
                             var_a2 |= 1;
                         }
                         break;
 
                     case 3:
-                        if (func_88201440(arg0->unk_24[0]->unk_2C) != 0) {
+                        if (BoxList_IsEmpty(arg0->unk_24[0]->unk_2C) != 0) {
                             PlaySoundEffect(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(TextBox_Configure))(
                                 arg0->unk_00.unk_20->unk_60, arg0->unk_3C[3].unk_00, arg0->unk_3C[3].unk_04,
@@ -703,7 +703,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
         case 1:
             if (var_a2 & 2) {
-                func_88202D60(arg0, 0);
+                BoxMove_SetPhase(arg0, 0);
                 var_a2 |= 1;
             } else if (var_a2 & 4) {
                 arg0->unk_24[0]->unk_34[arg0->unk_24[0]->unk_38] |= 0x100;
@@ -712,7 +712,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
         case 2:
             if (var_a2 & 2) {
-                func_88202D60(arg0, 0);
+                BoxMove_SetPhase(arg0, 0);
                 var_a2 |= 1;
             } else if (var_a2 & 4) {
                 if (arg0->unk_34 == arg0->unk_24[0]->unk_38) {
@@ -727,7 +727,7 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
         case 3:
             if (var_a2 & 2) {
-                func_88202D60(arg0, 0);
+                BoxMove_SetPhase(arg0, 0);
                 var_a2 |= 1;
             } else if (var_a2 & 4) {
                 arg0->unk_24[1]->unk_34[arg0->unk_24[1]->unk_38] |= 2;
@@ -804,21 +804,21 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     Text_Print(((arg0 + sp78 + sp74) - MeasureTextWidth(0, 0, sp7C)) + 0x19, arg1 + 2, sp7C);
     Text_SetupDL();
     if (!(arg4 & 0x100)) {
-        func_88202450(arg2, ((arg5->unk_3C + arg0) - sp70) - 0x35, arg1);
+        DrawBoxMonCount(arg2, ((arg5->unk_3C + arg0) - sp70) - 0x35, arg1);
     }
 }
 
-void func_8820399C(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2) {
+void BoxListHeader_Init(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8820399C));
 
-    arg0->unk_00.unk_18 = func_88203A20;
+    arg0->unk_00.unk_18 = BoxListHeader_Draw;
     arg0->unk_00.unk_14.unk_00 = arg2->unk_00.unk_14.unk_00;
     arg0->unk_00.unk_14.unk_02 = arg2->unk_00.unk_14.unk_02;
     arg0->unk_2C = GetMoveTargetType(MenuItem_GetHeldItemId(func_80029080()));
     arg0->unk_30 = arg1;
 }
 
-s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
+s32 BoxListHeader_Draw(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gHeaderTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* sp2C;
@@ -1008,15 +1008,15 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp8C);
 
     arg0->unk_30 = mem_pool_alloc(arg8, sizeof(unk_func_8820399C));
-    func_8820399C(arg0->unk_30, 0, sp88);
+    BoxListHeader_Init(arg0->unk_30, 0, sp88);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp88, arg0->unk_30);
 
     arg0->unk_34 = mem_pool_alloc(arg8, sizeof(unk_func_8820399C));
-    func_8820399C(arg0->unk_34, 1, sp8C);
+    BoxListHeader_Init(arg0->unk_34, 1, sp8C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp8C, arg0->unk_34);
 
     arg0->unk_40 = mem_pool_alloc(arg8, sizeof(unk_func_88217740));
-    func_88217740(arg0->unk_40, 0xF4, 0xA);
+    SwapArrows_Init(arg0->unk_40, 0xF4, 0xA);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_40);
 
     for (j = 0; j < 5U; j++) {
@@ -1088,7 +1088,7 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_3C);
 
     arg0->unk_6C = mem_pool_alloc(arg8, sizeof(unk_func_882025E0_1A9780));
-    func_882025E0(arg0->unk_6C, arg0->unk_38, arg0->unk_3C, arg0, arg8);
+    BoxMove_Init(arg0->unk_6C, arg0->unk_38, arg0->unk_3C, arg0, arg8);
     ((func8850BF80)Memmap_GetFragmentVaddr(Screen_SetFragment))(arg0->unk_64, arg0->unk_6C);
 
     arg0->unk_70 = mem_pool_alloc(arg8, sizeof(unk_func_8850CD44));
@@ -1170,11 +1170,11 @@ void func_88204CBC(unk_func_88203ED8* arg0) {
     func_882028EC(arg0->unk_6C, &sp2C, &sp28);
 
     func_882025AC(arg0->unk_7C[0], sp30);
-    func_882175F4(arg0->unk_74[0], sp2C, sp28);
+    SlideAnim_Begin(arg0->unk_74[0], sp2C, sp28);
 
     if (sp34 != NULL) {
         func_882025AC(arg0->unk_7C[1], sp34);
-        func_882175F4(arg0->unk_74[1], sp28, sp2C);
+        SlideAnim_Begin(arg0->unk_74[1], sp28, sp2C);
     }
 
     arg0->unk_6C->unk_00.unk_14(arg0->unk_6C, 0);
@@ -1187,11 +1187,11 @@ void func_88204CBC(unk_func_88203ED8* arg0) {
 void func_88204DC0(unk_func_88203ED8_064* arg0, unk_func_88203ED8* arg1) {
     ((func8850BDF0)Memmap_GetFragmentVaddr(SelectableList_Init))(arg0);
 
-    arg0->unk_00.unk_10 = func_882052F4;
+    arg0->unk_00.unk_10 = BoxPCMenuCursor_HandleInput;
     arg0->unk_24 = arg1;
 }
 
-u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
+u32 Box_DiffersFromGbs(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     u32 sp90 = 0;
     unk_func_80022C28_ret* temp_v0 = CreateGbsBlock(arg1, arg2, arg3, 0);
@@ -1216,7 +1216,7 @@ u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     return sp90;
 }
 
-s32 func_88204EE8(unk_func_88203ED8* arg0) {
+s32 MarkModifiedBoxes(unk_func_88203ED8* arg0) {
     s32 i;
     s32 temp_s3 = func_80029080();
     s32 var_s2 = 0;
@@ -1232,7 +1232,7 @@ s32 func_88204EE8(unk_func_88203ED8* arg0) {
                 var_s1[i]->unk_69C = 1;
             }
         } else if (var_s1[i]->unk_69C != 0) {
-            temp_v0 = func_88204E0C(var_s1[i], 0x21, temp_s3, i);
+            temp_v0 = Box_DiffersFromGbs(var_s1[i], 0x21, temp_s3, i);
             var_s1[i]->unk_69C = temp_v0;
             if (temp_v0 != 0) {
                 var_s2 |= 2;
@@ -1249,7 +1249,7 @@ s32 func_88204EE8(unk_func_88203ED8* arg0) {
                 var_s1[i]->unk_69C = 1;
             }
         } else if (var_s1[i]->unk_69C != 0) {
-            temp_v0 = func_88204E0C(var_s1[i], 0x11, 0, i);
+            temp_v0 = Box_DiffersFromGbs(var_s1[i], 0x11, 0, i);
             var_s1[i]->unk_69C = temp_v0;
             if (temp_v0 != 0) {
                 var_s2 |= 4;
@@ -1260,7 +1260,7 @@ s32 func_88204EE8(unk_func_88203ED8* arg0) {
     return var_s2;
 }
 
-void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
+void SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1) {
     s32 i;
     s32 temp_s3 = func_80029080();
     unk_func_88205880_00D0** var_s1;
@@ -1272,8 +1272,8 @@ void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
 
     for (i = 0; i < 12; i++) {
         if (var_s1[i]->unk_69C != 0) {
-            func_88201294(0x21, temp_s3, i, var_s1[i]);
-            func_88201210(var_s1[i]);
+            Box_SaveToGbs(0x21, temp_s3, i, var_s1[i]);
+            Box_MarkSpeciesOwned(var_s1[i]);
         }
     }
 
@@ -1281,7 +1281,7 @@ void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
 
     for (i = 0; i < 12; i++) {
         if (var_s1[i]->unk_69C != 0) {
-            func_88201294(0x11, 0, i, var_s1[i]);
+            Box_SaveToGbs(0x11, 0, i, var_s1[i]);
         }
     }
 
@@ -1300,9 +1300,9 @@ void func_8820508C(unk_func_88203ED8* arg0, s32 arg1) {
     }
 }
 
-s32 func_882051EC(unk_func_88203ED8* arg0, Controller* arg1) {
+s32 PromptToSaveBoxChanges(unk_func_88203ED8* arg0, Controller* arg1) {
     s32 sp24 = 1;
-    s32 sp20 = func_88204EE8(arg0);
+    s32 sp20 = MarkModifiedBoxes(arg0);
     s32 temp_v0_2;
 
     if (sp20 != 0) {
@@ -1311,7 +1311,7 @@ s32 func_882051EC(unk_func_88203ED8* arg0, Controller* arg1) {
         temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(Dialog_WaitForSelection))(arg0->unk_84, arg1, 1);
 
         if (temp_v0_2 == 0) {
-            func_8820508C(arg0, sp20);
+            SaveModifiedBoxes(arg0, sp20);
             ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_84);
         } else if (temp_v0_2 == 1) {
             ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_84);
@@ -1326,7 +1326,7 @@ s32 func_882051EC(unk_func_88203ED8* arg0, Controller* arg1) {
     return sp24;
 }
 
-s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
+s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1) {
     s32 sp34;
     s32 tmp;
     s32 i;
@@ -1362,7 +1362,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
             case 0:
                 PlaySoundEffect(3);
                 sp34 = 2;
-                if (func_882051EC(arg0->unk_24, arg1) == 0) {
+                if (PromptToSaveBoxChanges(arg0->unk_24, arg1) == 0) {
                     sp34 = 3;
                 }
                 break;
@@ -1377,25 +1377,25 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
             case 0:
                 switch (arg0->unk_24->unk_68->unk_24) {
                     case 0:
-                        func_88202E74(arg0->unk_24->unk_6C, 0);
+                        BoxMove_SetMoveMode(arg0->unk_24->unk_6C, 0);
                         ((func8850C064)Memmap_GetFragmentVaddr(Fragment_SetActive))(arg0, 1);
                         sp34 |= 1;
                         break;
 
                     case 1:
-                        func_88202E74(arg0->unk_24->unk_6C, 1);
+                        BoxMove_SetMoveMode(arg0->unk_24->unk_6C, 1);
                         ((func8850C064)Memmap_GetFragmentVaddr(Fragment_SetActive))(arg0, 1);
                         sp34 |= 1;
                         break;
 
                     case 2:
-                        func_88202E74(arg0->unk_24->unk_6C, 2);
+                        BoxMove_SetMoveMode(arg0->unk_24->unk_6C, 2);
                         ((func8850C064)Memmap_GetFragmentVaddr(Fragment_SetActive))(arg0, 1);
                         sp34 |= 1;
                         break;
 
                     case 3:
-                        func_88202E74(arg0->unk_24->unk_6C, 3);
+                        BoxMove_SetMoveMode(arg0->unk_24->unk_6C, 3);
                         ((func8850C064)Memmap_GetFragmentVaddr(Fragment_SetActive))(arg0, 1);
                         sp34 |= 1;
                         break;
@@ -1403,7 +1403,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                     case 4:
                         PlaySoundEffect(3);
                         sp34 = 2;
-                        if (func_882051EC(arg0->unk_24, arg1) == 0) {
+                        if (PromptToSaveBoxChanges(arg0->unk_24, arg1) == 0) {
                             sp34 = 3;
                         }
                         break;
@@ -1416,7 +1416,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                     case 2:
                         PlaySoundEffect(0x18);
                         func_88204CBC(arg0->unk_24);
-                        func_88202F2C(arg0->unk_24->unk_6C);
+                        BoxMove_SwapBetweenLists(arg0->unk_24->unk_6C);
                         func_88202E98(arg0->unk_24->unk_6C);
                         sp34 = 0x80000081;
                         break;
@@ -1424,7 +1424,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
                     case 1:
                         PlaySoundEffect(0x18);
                         func_88204CBC(arg0->unk_24);
-                        func_88202EF4(arg0->unk_24->unk_6C);
+                        BoxMove_SwapWithinList(arg0->unk_24->unk_6C);
                         func_88202E98(arg0->unk_24->unk_6C);
                         sp34 = 0x80000081;
                         break;
@@ -1465,12 +1465,12 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
         }
 
         if (sp20 != arg0->unk_24->unk_6C->unk_38) {
-            func_88202EB8(arg0->unk_24->unk_6C);
+            BoxMove_SwapSides(arg0->unk_24->unk_6C);
             if (arg0->unk_00.unk_1C == 1) {
                 func_88202CBC(arg0->unk_24->unk_6C);
             }
             func_88204C74(arg0->unk_24);
-            func_88217BC0(arg0->unk_24->unk_40);
+            SwapArrows_ToggleDirection(arg0->unk_24->unk_40);
 
             ((func8850BFB0)Memmap_GetFragmentVaddr(SelectableList_UpdateVisuals))(arg0);
 
@@ -1480,7 +1480,7 @@ s32 func_882052F4(unk_func_88203ED8_064* arg0, Controller* arg1) {
     return sp34;
 }
 
-void func_882057B4(unk_func_88203ED8* arg0, Controller* arg1) {
+void BoxPCUI_Run(unk_func_88203ED8* arg0, Controller* arg1) {
     s32 var_s1 = 0;
     s32 temp_v0;
 
@@ -1502,7 +1502,7 @@ void func_882057B4(unk_func_88203ED8* arg0, Controller* arg1) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3, MemoryPool* arg4, char** arg5,
+void func_88205880(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, MemoryPool* arg4, char** arg5,
                    char** arg6, char** arg7, char** arg8, char** arg9, char** argA, char** argB, char** argC) {
     static Color_RGBA8 D_88217D04 = { 0x1E, 0x50, 0x50, 0xFF };
     static Color_RGBA8 D_88217D08 = { 0x00, 0x0A, 0x0A, 0xFF };
@@ -1520,7 +1520,7 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
     unk_func_88509E34* sp50;
 
     sp60 = func_80029080();
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88205880));
+    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(BoxPCScreen));
     arg0->unk_0000.unk_20 = func_88205DD0;
     arg0->unk_0000.unk_10.unk_00 = arg1;
     arg0->unk_0000.unk_10.unk_02 = arg2;
@@ -1529,8 +1529,8 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
         func_80024208(sp60);
     }
 
-    func_88201360(arg0->unk_00D0, 0x21, sp60, 0xC);
-    func_88201360(arg0->unk_5050, 0x11, 0, 0xC);
+    Boxes_LoadFromGbs(arg0->unk_00D0, 0x21, sp60, 0xC);
+    Boxes_LoadFromGbs(arg0->unk_5050, 0x11, 0, 0xC);
 
     for (i = 0; i < 12; i++) {
         arg0->unk_9FD0[i] = &arg0->unk_00D0[i];
@@ -1548,7 +1548,7 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp7C);
 
     sp5C = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp5C, 0, 0, 0x280, 0x1E0, D_88223E48, D_88217D04,
+    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp5C, 0, 0, 0x280, 0x1E0, gPcBackdropTile, D_88217D04,
                                                            D_88217D08);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp7C, sp5C);
 
@@ -1603,11 +1603,11 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_0098.unk_08);
 }
 
-s32 func_88205DD0(unk_func_88205880* arg0, Controller* arg1) {
+s32 func_88205DD0(BoxPCScreen* arg0, Controller* arg1) {
     return arg0->unk_002C->unk_00.unk_20(arg0->unk_002C, arg1);
 }
 
-void func_88205DF8(unk_func_88205880* arg0) {
+void BoxPC_RunDisplayLoop(BoxPCScreen* arg0) {
     s32 sp34 = 0;
 
     while (sp34 == 0) {
@@ -1621,9 +1621,9 @@ void func_88205DF8(unk_func_88205880* arg0) {
     }
 }
 
-void func_88205E94(unk_func_88205880* arg0) {
+void BoxPCThreadMain(BoxPCScreen* arg0) {
     MenuInput_SetController(gPlayer1Controller);
-    func_882057B4(arg0->unk_002C, gPlayer1Controller);
+    BoxPCUI_Run(arg0->unk_002C, gPlayer1Controller);
 
     while (arg0->unk_002C->unk_2C->unk_00.unk_28 & 1) {
         ControllerMsgQueue_SendAndRead(NULL);
@@ -1635,7 +1635,7 @@ void func_88205E94(unk_func_88205880* arg0) {
 
 void TextObject_Cancel(TextObject* arg0) {
     MemoryPool* sp6C;
-    unk_func_88205880* sp68;
+    BoxPCScreen* sp68;
     u8* sp64;
     TextObjectThreadData* sp60;
     char** sp5C;
@@ -1666,18 +1666,18 @@ void TextObject_Cancel(TextObject* arg0) {
     sp44 = GetMessageBank(0x29);
     sp40 = GetMessageBank(0xB);
 
-    sp68 = mem_pool_alloc(sp6C, sizeof(unk_func_88205880));
+    sp68 = mem_pool_alloc(sp6C, sizeof(BoxPCScreen));
     func_88205880(sp68, 0, 0, arg0, sp6C, sp5C, sp58, sp54, sp50, sp4C, sp48, sp44, sp40);
 
     sp60 = ALIGN16((u32)mem_pool_alloc(sp6C, sizeof(TextObjectThreadData)));
 
-    osCreateThread(&sp60->thread, 0x32, func_88205E94, sp68, sp64 + 0x1000, osGetThreadPri(NULL) - 1);
+    osCreateThread(&sp60->thread, 0x32, BoxPCThreadMain, sp68, sp64 + 0x1000, osGetThreadPri(NULL) - 1);
 
     ControllerMsgQueue_Init();
 
     osStartThread(&sp60->thread);
 
-    func_88205DF8(sp68);
+    BoxPC_RunDisplayLoop(sp68);
 
     osDestroyThread(&sp60->thread);
 

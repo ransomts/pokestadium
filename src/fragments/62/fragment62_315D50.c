@@ -54,9 +54,9 @@ static Vec3s gCameraAngles;
 static Vec3f gCameraPosOffset;
 static Vec3s gCameraRotOffset;
 static Vec3s gCameraTargetOffset;
-s16 D_8439037A;
-s16 D_8439037C;
-s16 D_8439037E;
+s16 gSavedPrimColorR;
+s16 gSavedPrimColorG;
+s16 gSavedPrimColorB;
 s16 D_84390380;
 s16 gPrimColorR;
 s16 gPrimColorG;
@@ -70,10 +70,10 @@ s16 gFogColorR;
 s16 gFogColorG;
 s16 gFogColorB;
 s16 gFogColorA;
-s16 D_8439039A;
-s16 D_8439039C;
-s16 D_8439039E;
-s16 D_843903A0;
+s16 gBlendColorR;
+s16 gBlendColorG;
+s16 gBlendColorB;
+s16 gBlendColorA;
 s32 pad_D_843903A8[2];
 static s32 D_843903B0;
 static s32 D_843903B4;
@@ -138,13 +138,13 @@ Vtx D_84385E00[] = {
     VTX(-160, 120, 0, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
 
-unk_D_8140E728_01C_004_1 D_84385E40[] = {
+ParticleRenderSettings D_84385E40[] = {
     {
         0x01,
         0x01,
         0x0000,
         func_8140C880,
-        func_8140CB90,
+        RenderBillboardQuadPrimColor,
         &gWaterTexture[4],
     },
     {
@@ -152,7 +152,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C930,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[5],
     },
     {
@@ -160,7 +160,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C9EC,
-        func_8140D0E4,
+        RenderBillboardQuad64,
         &gWaterTexture[20],
     },
     {
@@ -176,7 +176,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C930,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[5],
     },
     {
@@ -184,7 +184,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C930,
-        func_8140CE68,
+        RenderBillboardQuadGradient,
         &gWaterTexture[5],
     },
     {
@@ -199,8 +199,8 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CA30,
-        func_8140D0E4,
+        LoadTexture_CI4_32x64_ByIndex,
+        RenderBillboardQuad64,
         &gWaterTexture[9],
     },
     {
@@ -208,7 +208,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_CI4_32x32,
-        func_8140CB90,
+        RenderBillboardQuadPrimColor,
         &gWaterTexture[3],
     },
     {
@@ -216,7 +216,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C880,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[23],
     },
     {
@@ -224,7 +224,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         func_8140C8B8,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[14],
     },
     {
@@ -232,7 +232,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[17],
     },
     {
@@ -240,31 +240,31 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C880,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[14],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140C9B0,
-        func_8140CC04,
+        LoadTexture_CI4_24x24_ByIndex,
+        RenderBillboardQuad24,
         &gWaterTexture[8],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C9B0,
-        func_8140CC04,
+        LoadTexture_CI4_24x24_ByIndex,
+        RenderBillboardQuad24,
         &gWaterTexture[8],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C9B0,
-        func_8140CC90,
+        LoadTexture_CI4_24x24_ByIndex,
+        RenderRotatedQuad24,
         &gWaterTexture[8],
     },
     {
@@ -272,7 +272,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CA90,
-        func_8140D288,
+        RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
     {
@@ -280,7 +280,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[17],
     },
     {
@@ -288,7 +288,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[17],
     },
     {
@@ -296,7 +296,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C930,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[5],
     },
     {
@@ -304,7 +304,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CA90,
-        func_8140D288,
+        RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
     {
@@ -312,7 +312,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C880,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[23],
     },
     {
@@ -320,7 +320,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C880,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[13],
     },
     {
@@ -328,7 +328,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C8F4,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[13],
     },
     {
@@ -336,7 +336,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CAC8,
-        func_8140D288,
+        RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
     {
@@ -344,7 +344,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C8B8,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[23],
     },
     {
@@ -352,7 +352,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CA64,
-        func_8140D314,
+        RenderRotatedQuadTriple,
         &gWaterTexture[11],
     },
     {
@@ -360,7 +360,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[82],
     },
     {
@@ -368,7 +368,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_CI4_32x32,
-        func_8140CFBC,
+        RenderBillboardQuadRoll,
         &gWaterTexture[16],
     },
     {
@@ -376,7 +376,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[84],
     },
     {
@@ -384,7 +384,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_CI4_32x32,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[169],
     },
     {
@@ -392,7 +392,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_CI4_32x32,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[172],
     },
     {
@@ -400,7 +400,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_CI4_32x32,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[166],
     },
     {
@@ -408,31 +408,31 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_CI4_32x32,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[167],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140C84C,
-        func_8140CDDC,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuad,
         &gWaterTexture[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140C84C,
-        func_8140CDDC,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuad,
         &gWaterTexture[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140CB04,
-        func_8140D288,
+        LoadTexture_CI4_64x64_ByIndex,
+        RenderBillboardQuadTriple,
         &gWaterTexture[89],
     },
     {
@@ -440,7 +440,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32,
-        func_8140CFBC,
+        RenderBillboardQuadRoll,
         &gWaterTexture[95],
     },
     {
@@ -456,7 +456,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[2],
     },
     {
@@ -464,39 +464,39 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[100],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140C84C,
-        func_8140CF30,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuadNoise,
         &gWaterTexture[83],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C84C,
-        func_8140CF30,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuadNoise,
         &gWaterTexture[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        func_8140C84C,
-        func_8140CDDC,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuad,
         &gWaterTexture[101],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C84C,
-        func_8140CDDC,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuad,
         &gWaterTexture[83],
     },
     {
@@ -504,7 +504,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CB38,
-        func_8140D404,
+        RenderGroundQuad,
         &gWaterTexture[63],
     },
     {
@@ -512,15 +512,15 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140CB64,
-        func_8140D404,
+        RenderGroundQuad,
         &gWaterTexture[112],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C84C,
-        func_8140CED4,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuadOffsetY,
         &gWaterTexture[83],
     },
     {
@@ -528,7 +528,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x64_ByIndex,
-        func_8140D170,
+        RenderBillboardQuad64OffsetY,
         &gWaterTexture[117],
     },
     {
@@ -536,7 +536,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[122],
     },
     {
@@ -544,7 +544,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[82],
     },
     {
@@ -552,7 +552,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32,
-        func_8140CFBC,
+        RenderBillboardQuadRoll,
         &gWaterTexture[95],
     },
     {
@@ -560,7 +560,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CFBC,
+        RenderBillboardQuadRoll,
         &gWaterTexture[82],
     },
     {
@@ -568,15 +568,15 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CFBC,
+        RenderBillboardQuadRoll,
         &gWaterTexture[82],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C84C,
-        func_8140CDDC,
+        LoadTexture_CI4_32x32_ByIndex,
+        RenderBillboardQuad,
         &gWaterTexture[83],
     },
     {
@@ -584,7 +584,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         func_8140C8B8,
-        func_8140CDDC,
+        RenderBillboardQuad,
         &gWaterTexture[14],
     },
     {
@@ -592,12 +592,12 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
-        func_8140CE68,
+        RenderBillboardQuadGradient,
         &gWaterTexture[17],
     },
 };
 
-unk_D_8140E728_01C gParticleEffectData[] = {
+ParticleEffectData gParticleEffectData[] = {
     {
         0x00000001,
         &D_84385E40[0],
@@ -4724,7 +4724,7 @@ void ProcessPendingActionScripts(void) {
 void MainUpdateLoop(UNUSED CameraStruct* arg0) {
     Timer_UpdateCounters();
     ProcessPendingActionScripts();
-    func_8432E68C();
+    Particles_UpdateAll();
     func_843592E0();
 }
 
@@ -5057,15 +5057,15 @@ void RunCameraCallbacks(UNUSED CameraStruct* arg0) {
 
 void UpdateCameraGlobals(CameraStruct* arg0) {
     gParticleScaleFactor.unk_0C = arg0;
-    D_8140E6B4 = &gParticleScaleFactor.unk_10;
+    gParticleCameraInfo = &gParticleScaleFactor.unk_10;
 
-    Matrix_Copy(&D_8140E6B4->unk_00, &arg0->unk_60.mtxf);
-    Vec3f_Copy(&D_8140E6B4->unk_40, &arg0->unk_60.eye);
-    Vec3f_Copy(&D_8140E6B4->unk_4C, &arg0->unk_60.at);
-    GetCameraPitchYawFromAtToEye(&D_8140E6B4->unk_70, &D_8140E6B4->unk_72);
-    GetCameraPitchYawFromEyeToAt(&D_8140E6B4->unk_76, &D_8140E6B4->unk_78);
-    func_81400F44(&D_8140E6B4->unk_58, D_8140E6B4->unk_40, D_8140E6B4->unk_4C);
-    func_81400F44(&D_8140E6B4->unk_64, D_8140E6B4->unk_4C, D_8140E6B4->unk_40);
+    Matrix_Copy(&gParticleCameraInfo->unk_00, &arg0->unk_60.mtxf);
+    Vec3f_Copy(&gParticleCameraInfo->unk_40, &arg0->unk_60.eye);
+    Vec3f_Copy(&gParticleCameraInfo->unk_4C, &arg0->unk_60.at);
+    GetCameraPitchYawFromAtToEye(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->unk_72);
+    GetCameraPitchYawFromEyeToAt(&gParticleCameraInfo->unk_76, &gParticleCameraInfo->unk_78);
+    Vec3f_GetDirection(&gParticleCameraInfo->unk_58, gParticleCameraInfo->unk_40, gParticleCameraInfo->unk_4C);
+    Vec3f_GetDirection(&gParticleCameraInfo->unk_64, gParticleCameraInfo->unk_4C, gParticleCameraInfo->unk_40);
 }
 
 s32 HandleCameraMode(s32 arg0, CameraStruct* arg1) {
@@ -5094,7 +5094,7 @@ s32 HandleCameraMode(s32 arg0, CameraStruct* arg1) {
 }
 
 void InitGameState(void) {
-    func_8432D5B0();
+    ParticlePools_Allocate();
     ResetGameGlobals();
 }
 
@@ -5116,9 +5116,9 @@ void ResetGameGlobals(void) {
         gCameraUpdateFuncs[i] = NULL;
     }
 
-    D_8439037A = 0xFF;
-    D_8439037C = 0xFF;
-    D_8439037E = 0xFF;
+    gSavedPrimColorR = 0xFF;
+    gSavedPrimColorG = 0xFF;
+    gSavedPrimColorB = 0xFF;
     gPrimColorA = 0xFF;
     gPrimColorR = 0xFF;
     gPrimColorG = 0xFF;
@@ -5144,13 +5144,13 @@ void ResetGameGlobals(void) {
 }
 
 void GetCameraOffsetPosition(Vec3f* arg0, f32 arg1) {
-    arg0->x = D_8140E6B4->unk_40.x + (arg1 * D_8140E6B4->unk_58.x);
-    arg0->y = D_8140E6B4->unk_40.y + (arg1 * D_8140E6B4->unk_58.y);
-    arg0->z = D_8140E6B4->unk_40.z + (arg1 * D_8140E6B4->unk_58.z);
+    arg0->x = gParticleCameraInfo->unk_40.x + (arg1 * gParticleCameraInfo->unk_58.x);
+    arg0->y = gParticleCameraInfo->unk_40.y + (arg1 * gParticleCameraInfo->unk_58.y);
+    arg0->z = gParticleCameraInfo->unk_40.z + (arg1 * gParticleCameraInfo->unk_58.z);
 }
 
 void GetCameraPitchYawFromEyeToAt(s16* arg0, s16* arg1) {
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
     f32 sp20 = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 sp1C = temp_v0->unk_60.eye.y - temp_v0->unk_60.at.y;
     f32 sp18 = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
@@ -5160,7 +5160,7 @@ void GetCameraPitchYawFromEyeToAt(s16* arg0, s16* arg1) {
 }
 
 void GetCameraYawFromEyeToAt(s16* arg0) {
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
     f32 x = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 z = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
 
@@ -5168,7 +5168,7 @@ void GetCameraYawFromEyeToAt(s16* arg0) {
 }
 
 void GetCameraPitchYawFromAtToEye(s16* arg0, s16* arg1) {
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
     f32 sp20 = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 sp1C = temp_v0->unk_60.at.y - temp_v0->unk_60.eye.y;
     f32 sp18 = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
@@ -5178,7 +5178,7 @@ void GetCameraPitchYawFromAtToEye(s16* arg0, s16* arg1) {
 }
 
 void GetCameraYawFromAtToEye(s16* arg0) {
-    CameraStruct* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = GetBattleCamera();
     f32 x = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 z = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
 
@@ -5186,19 +5186,19 @@ void GetCameraYawFromAtToEye(s16* arg0) {
 }
 
 void GetCameraStoredPitchYaw(s16* arg0, s16* arg1) {
-    *arg0 = D_8140E6B4->unk_76;
-    *arg1 = D_8140E6B4->unk_78;
+    *arg0 = gParticleCameraInfo->unk_76;
+    *arg1 = gParticleCameraInfo->unk_78;
 }
 
 void GetCameraStoredYaw(s16* arg0) {
-    *arg0 = D_8140E6B4->unk_78;
+    *arg0 = gParticleCameraInfo->unk_78;
 }
 
 void GetCameraStoredRollPitch(s16* arg0, s16* arg1) {
-    *arg0 = D_8140E6B4->unk_70;
-    *arg1 = D_8140E6B4->unk_72;
+    *arg0 = gParticleCameraInfo->unk_70;
+    *arg1 = gParticleCameraInfo->unk_72;
 }
 
 void GetCameraStoredPitch(s16* arg0) {
-    *arg0 = D_8140E6B4->unk_72;
+    *arg0 = gParticleCameraInfo->unk_72;
 }

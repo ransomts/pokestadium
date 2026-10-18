@@ -67,7 +67,7 @@ void Intro_CameraPanAndZoom(CameraStruct* arg0) {
     Vec3f_Set(&sp2C, -150.0f, 5.0f, 0.0f);
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-    func_8430C718(&gBattleState.unk_00->unk_84, 40.0f, 0.1f);
+    Math_ExponentialApproach(&gBattleState.unk_00->unk_84, 40.0f, 0.1f);
     Math_StepTowards(&gBattleState.unk_00->unk_56, 0xB6, 0x1E);
     func_8431BB80(arg0, sp2C, gBattleState.unk_00->unk_56, 0x4000, gBattleState.unk_00->unk_84, 0.0f);
 
@@ -103,7 +103,7 @@ void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
     gBattleState.unk_00->unk_2C = 0;
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
     WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
-    func_843184E4(0xC);
+    Dialog_SetMode(0xC);
     ProcessEntityAudioInfo(D_84390010[0]);
     gBattleState.unk_00->unk_10 = 0;
     gBattleState.unk_00->unk_20 += 1;
@@ -142,7 +142,7 @@ void Opponent_DisplayPokemonInfo(CameraStruct* arg0) {
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
     WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
     if (gBattleContext.unk_0000 != 8) {
-        func_843184E4(0xC);
+        Dialog_SetMode(0xC);
     }
     ProcessEntityAudioInfo(D_84390010[1]);
     gBattleState.unk_00->unk_20 += 1;

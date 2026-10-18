@@ -2,8 +2,8 @@
 #include "src/fragments/2/fragment2.h"
 #include "src/1CF30.h"
 
-void func_8140C84C();
-void func_8140CDDC();
+void LoadTexture_CI4_32x32_ByIndex();
+void RenderBillboardQuad();
 void LoadTexture_IA8_32x32();
 void func_8140C8B8();
 
@@ -14,8 +14,8 @@ extern u32 gMiniTutoScreenGraphics[];
 
 unk_D_87903E00 gMiniTutoScreenConfig0 = {
     0x00000001,
-    func_8140C84C,
-    func_8140CDDC,
+    LoadTexture_CI4_32x32_ByIndex,
+    RenderBillboardQuad,
     gMiniTutoScreenTilemap,
 };
 
@@ -27,7 +27,7 @@ unk_D_87903E10 gMiniTutoScreenNode0 = {
 unk_D_87903E00 gMiniTutoScreenConfig1 = {
     0x01000001,
     LoadTexture_IA8_32x32,
-    func_8140CDDC,
+    RenderBillboardQuad,
     gMiniTutoScreenPalette,
 };
 
@@ -39,7 +39,7 @@ unk_D_87903E10 gMiniTutoScreenNode1 = {
 unk_D_87903E00 gMiniTutoScreenConfig2 = {
     0x01000002,
     LoadTexture_IA8_32x32,
-    func_8140CDDC,
+    RenderBillboardQuad,
     gMiniTutoScreenSettings,
 };
 
@@ -51,7 +51,7 @@ unk_D_87903E10 D_87903E40 = {
 unk_D_87903E00 D_87903E48 = {
     0x00000001,
     func_8140C8B8,
-    func_8140CDDC,
+    RenderBillboardQuad,
     gMiniTutoScreenGraphics,
 };
 
