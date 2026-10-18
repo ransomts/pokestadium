@@ -40,12 +40,14 @@ Rules:
 - The justification column MUST cite concrete evidence visible in the code: call sites, string
   literals, magic constants, struct fields, table shapes, libultra calls. If the evidence is weak
   or you are guessing, SKIP the symbol entirely. A skipped symbol costs nothing; a wrong name
-  costs a revert. Aim for 10-15 solid proposals, not 30 shaky ones.
+  costs a revert. Aim for roughly MAXNUM solid proposals; never pad with shaky ones.
 - NEVER propose renames for: symbols already human-named (anything not matching func_XXXXXXXX /
   D_XXXXXXXX / unk_*), jtbl_*, the five open functions (func_8004A89C, func_80034348,
   func_8437B0CC, func_88304850, func_88805AEC) or anything inside their NON_MATCHING drafts.
 - Prefer names a Pokemon Stadium modder would recognize (GB APU, HP, moves, items, save data,
   rental, gym leader, stadium modes).
+- Aim for MAXNUM solid proposals; never pad with shaky ones. When the file has more obvious
+  targets than MAXNUM, prefer the ones with the strongest evidence.
 
 OUTPUT FORMAT: exactly one TSV line per proposal, SIX tab-separated fields, no header, no code
 fences, no commentary. Field 3 is the literal batch tag shown below, field 4 is empty unless a
@@ -56,32 +58,56 @@ The justification must be one sentence with the evidence, ASCII characters only.
 """
 
 
-def call_model(model, system, user, temperature=0.2, max_tokens=4096, retries=2):
+def call_model(model, system, user, temperature=0.2, max_tokens=4096, retries=2, max_turns=5):
     key = open(KEY_PATH).read().strip()
-    body = json.dumps({
-        "model": model,
-        "messages": [{"role": "system", "content": system},
-                     {"role": "user", "content": user}],
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-    }).encode()
-    req = urllib.request.Request(GATEWAY, data=body, method="POST",
-                                 headers={"Authorization": "Bearer " + key,
-                                          "Content-Type": "application/json"})
+
+    def post(messages):
+        body = json.dumps({
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }).encode()
+        req = urllib.request.Request(GATEWAY, data=body, method="POST",
+                                     headers={"Authorization": "Bearer " + key,
+                                              "Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=300) as r:
+            return json.load(r)
+
+    messages = [{"role": "system", "content": system},
+                {"role": "user", "content": user}]
+    parts = []
     last_err = None
-    for attempt in range(retries):
-        try:
-            with urllib.request.urlopen(req, timeout=300) as r:
-                data = json.load(r)
-            content = data["choices"][0]["message"]["content"]
-            if content is None:
-                finish = data["choices"][0].get("finish_reason", "?")
-                last_err = f"model returned no content (finish_reason={finish})"
+    for turn in range(max_turns):
+        content = finish = None
+        for _ in range(retries):
+            try:
+                data = post(messages)
+            except Exception as e:  # noqa: BLE001 - retry transport hiccups
+                last_err = f"{type(e).__name__}: {e}"
                 continue
-            return content
-        except Exception as e:  # noqa: BLE001 - retry any transport/API hiccup
-            last_err = f"{type(e).__name__}: {e}"
-    raise RuntimeError(f"gateway call failed after {retries} attempts: {last_err}")
+            choice = data["choices"][0]
+            content = choice["message"]["content"]
+            finish = choice.get("finish_reason")
+            if content is None and finish == "length":
+                # token cap too low to emit any content (reasoning ate the budget)
+                last_err = "content empty at finish_reason=length (max_tokens too small)"
+                continue
+            break
+        if content is None:
+            if turn == 0:
+                raise RuntimeError(f"gateway call failed after {retries} attempts: {last_err}")
+            break  # keep what earlier turns produced
+        parts.append(content)
+        if finish != "length":
+            break
+        # output was truncated: continue the TSV where it stopped
+        messages.append({"role": "assistant", "content": content})
+        messages.append({"role": "user", "content":
+                         "Your output was cut off. Continue the TSV list EXACTLY where it "
+                         "stopped: do not repeat earlier rows, no preamble, no commentary, "
+                         "same 6 tab-separated fields per line."})
+    return "\n".join(parts)
 
 
 def main():
@@ -90,6 +116,7 @@ def main():
     ap.add_argument("--batch", required=True)
     ap.add_argument("--model", default="gptoss-120b")
     ap.add_argument("--max", type=int, default=15)
+    ap.add_argument("--max-tokens", type=int, default=4096)
     ap.add_argument("--out", required=True)
     ap.add_argument("--chunk-lines", type=int, default=1200,
                     help="files longer than this are proposed in multiple gateway calls")
@@ -114,7 +141,8 @@ def main():
                 f"Propose up to {args.max} renames.\n{protected_hint}\n```c\n" +
                 "\n".join(chunk) + "\n```")
         print(f"[{args.batch}] {args.file}{part}: {len(chunk)} lines -> {args.model}", flush=True)
-        out = call_model(args.model, SYSTEM.replace("BATCH", args.batch), user)
+        system = SYSTEM.replace("BATCH", args.batch).replace("MAXNUM", str(args.max))
+        out = call_model(args.model, system, user, max_tokens=args.max_tokens)
         raws.append(out)
 
         rows = []
@@ -131,12 +159,12 @@ def main():
             if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", new):
                 continue
             batch = parts[2] if len(parts) >= 6 and parts[2] == args.batch else args.batch
-            if len(parts) >= 6:
+            if len(parts) >= 5:
                 also, just = parts[3], parts[4]
-            elif len(parts) == 5:
-                also, just = parts[2] if parts[2] != args.batch else "", parts[3]
+            elif len(parts) == 4:
+                also, just = "", parts[3]
             else:
-                also, just = "", parts[2]
+                also, just = "", (parts[2] if parts[2] != args.batch else "")
             just = just.encode("ascii", "replace").decode().strip()
             also = also.encode("ascii", "replace").decode().strip()
             rows.append((old, new, batch, also, just))

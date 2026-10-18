@@ -257,9 +257,9 @@ def run_wave(qwave, args, facts):
     def run_agent(f):
         cmd = [PY, os.path.join(HERE, "rename_agent.py"), "--file", f,
                "--batch", batch, "--model", args.model, "--max", str(args.max),
-               "--out", wdir]
+               "--max-tokens", str(args.max_tokens), "--out", wdir]
         try:
-            r = sh(cmd, 1800)
+            r = sh(cmd, 2400)
             return f, r.returncode, (r.stdout + r.stderr).strip()[-300:]
         except subprocess.TimeoutExpired:
             return f, 124, "TIMEOUT"
@@ -367,6 +367,7 @@ def main():
     ap.add_argument("--concurrency", type=int, default=16)
     ap.add_argument("--model", default="gptoss-120b")
     ap.add_argument("--max", type=int, default=15)
+    ap.add_argument("--max-tokens", type=int, default=4096)
     ap.add_argument("--stop-after-plan", action="store_true")
     args = ap.parse_args()
 
