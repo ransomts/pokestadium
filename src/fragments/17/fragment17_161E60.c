@@ -738,7 +738,7 @@ static u32 D_86B0DC5C[] = {
 };
 
 static GraphNode* D_86B0EBC0;
-static unk_D_86002F34_00C* D_86B0EBC4;
+static CameraStruct* D_86B0EBC4;
 static s16 D_86B0EBC8;
 static s16 D_86B0EBCA;
 static f32 D_86B0EBCC;

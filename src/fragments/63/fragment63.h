@@ -282,7 +282,7 @@ void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1);
 void func_84B07848(unk_D_84B25A28* arg0);
 void func_84B07978(unk_D_84B25A28* arg0);
 s32 func_84B07AB8(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1);
-void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1);
+void func_84B07CF8(unk_D_84B25A28* arg0, CameraStruct* arg1);
 
 s32 func_84B07EB0(s32 arg0, SimpleGfxNode* arg1);
 s32 func_84B07F78(s32 arg0, SimpleGfxNode* arg1);

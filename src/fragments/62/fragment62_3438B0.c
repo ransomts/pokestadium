@@ -7,7 +7,7 @@ void func_84358FF0(void) {
 void func_84358FF8(void) {
 }
 
-void func_84359000(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
+void RenderPrimColorRect(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     gSPDisplayList(gDisplayListHead++, D_8140DDF8);
 
     Gfx_SetPrimColor(arg0, arg1, arg2, arg3);
@@ -16,17 +16,17 @@ void func_84359000(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     gSPDisplayList(gDisplayListHead++, D_8140DDD8);
 }
 
-void func_843590E0(unk_D_86002F34_00C* arg0) {
+void Ui_DrawPanel(CameraStruct* arg0) {
     func_8432CF74(arg0);
     gMatrixBuffer = GfxAlloc(sizeof(unk_D_8140E620));
     gMatrixBufferIdx = 0;
-    D_843902A4 += 1;
+    gPanelDrawCount += 1;
 
     gSPDisplayList(gDisplayListHead++, D_8140DB30);
 
-    Gfx_SetPrimColor(D_84390382, D_84390384, D_84390386, D_84390388);
-    Gfx_SetFogColor(D_84390392, D_84390394, D_84390396, D_84390398);
-    Gfx_SetEnvColor(D_8439038A, D_8439038C, D_8439038E, D_84390390);
+    Gfx_SetPrimColor(gPrimColorR, gPrimColorG, gPrimColorB, gPrimColorA);
+    Gfx_SetFogColor(gFogColorR, gFogColorG, gFogColorB, gFogColorA);
+    Gfx_SetEnvColor(gEnvColorR, gEnvColorG, gEnvColorB, gEnvColorA);
     func_81405B00(D_8439039A, D_8439039C, D_8439039E, D_843903A0);
     ColorRectNode_SetColor(D_8439037A, D_8439037C, D_8439037E);
     func_8140C204(arg0);

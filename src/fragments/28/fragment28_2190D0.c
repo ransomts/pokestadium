@@ -3403,7 +3403,7 @@ void func_88804EC8(void) {
     Mtx spE0;
     Mtx* var_s1;
     s32 var_t5;
-    unk_D_86002F34_00C* temp_s2;
+    CameraStruct* temp_s2;
     unk_D_86002F34_00C_060* ptr;
     Gfx* temp_v0;
     s32 j;
@@ -3872,7 +3872,7 @@ void func_88806F20(Vec3f* arg0, Vec3f* arg1) {
 
 void func_88807090(void) {
     UNUSED s32 pad;
-    unk_D_86002F34_00C* node = D_88826A44->unk_0C;
+    CameraStruct* node = D_88826A44->unk_0C;
     Vec3f* vec;
     Vec3f sp28;
 
@@ -4193,7 +4193,7 @@ s32 func_88807AC0(void) {
 void func_88807D04(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
 {
   s32 i;
-  unk_D_86002F34_00C *ptr;
+  CameraStruct *ptr;
   MemoryBlock *sp4C;
   unk_D_88826CF0_004 *new_var2;
   s16 new_var;

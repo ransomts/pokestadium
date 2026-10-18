@@ -31,8 +31,8 @@ typedef struct unk_D_84397648 {
     /* 0x0C */ f32 unk_0C;
 } unk_D_84397648; // size = 0x10
 
-static unk_D_84397610 D_84397610;
-static unk_D_84397648 D_84397648[400];
+static unk_D_84397610 gTrailState;
+static unk_D_84397648 gTrailPoints[400];
 static s32 pad_D_84398F48[2];
 static unk_D_84398F50 D_84398F50[10];
 
@@ -40,15 +40,15 @@ static Gfx D_84389060[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_84389068[] = {
+static u32 gTrailTextureData[] = {
     0x08080808, 0x08080808, 0x0D0D0D0D, 0x0D0D0D0D, 0x2F2F2F2F, 0x2F2F2F2F, 0x6F6F6F6F, 0x6F6F6F6F,
     0x9F9F9F9F, 0x9F9F9F9F, 0xDFDFDFDF, 0xDFDFDFDF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
     0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xDFDFDFDF, 0xDFDFDFDF, 0x9F9F9F9F, 0x9F9F9F9F,
     0x6F6F6F6F, 0x6F6F6F6F, 0x2F2F2F2F, 0x2F2F2F2F, 0x0D0D0D0D, 0x0D0D0D0D, 0x08080808, 0x08080808,
 };
 
-void func_8435FB90(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
-    unk_D_84397610* ptr1 = &D_84397610;
+void Trail_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
+    unk_D_84397610* ptr1 = &gTrailState;
     unk_D_84397648* ptr2;
     s32 i;
 
@@ -73,7 +73,7 @@ void func_8435FB90(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
     ptr1->unk_33.g = arg8;
     ptr1->unk_33.b = arg9;
 
-    ptr2 = &D_84397648[0];
+    ptr2 = &gTrailPoints[0];
     for (i = 0; i < 400; i++, ptr2++) {
         ptr2->unk_00 = arg0;
         ptr2->unk_04 = arg1;
@@ -82,8 +82,8 @@ void func_8435FB90(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
     }
 }
 
-f32 func_8435FCD0(void) {
-    unk_D_84397610* ptr = &D_84397610;
+f32 Trail_GetWidthScale(void) {
+    unk_D_84397610* ptr = &gTrailState;
     f32 tmp;
     s32 tmp2 = ptr->unk_00;
 
@@ -95,11 +95,11 @@ f32 func_8435FCD0(void) {
         return 1.0f;
     }
 
-    tmp = (D_84397648[ptr->unk_06 * 0].unk_0C * 2.0f) / (ptr->unk_14 + ptr->unk_18);
+    tmp = (gTrailPoints[ptr->unk_06 * 0].unk_0C * 2.0f) / (ptr->unk_14 + ptr->unk_18);
     return tmp;
 }
 
-s32 func_8435FD50(void) {
+s32 Trail_Update(void) {
     s32 i;
     f32 spB8;
     f32 temp_fs0_2;
@@ -108,7 +108,7 @@ s32 func_8435FD50(void) {
     f32 temp_ft0;
     f32 var_fs1;
     unk_D_84397648* var_s0;
-    unk_D_84397610* ptr = &D_84397610;
+    unk_D_84397610* ptr = &gTrailState;
     f32 sp98;
     f32 sp94;
     f32 sp90;
@@ -151,7 +151,7 @@ s32 func_8435FD50(void) {
         }
     }
 
-    var_s0 = &D_84397648[0];
+    var_s0 = &gTrailPoints[0];
 
     for (i = 0; i < ptr->unk_28; i++) {
         tmp00 = ptr->unk_00;
@@ -203,7 +203,7 @@ s32 func_8435FD50(void) {
     return 0;
 }
 
-Gfx* func_8436032C(Gfx* arg0) {
+Gfx* Trail_Render(Gfx* arg0) {
     static Gfx D_843890E8[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_1CYCLE),
@@ -216,7 +216,7 @@ Gfx* func_8436032C(Gfx* arg0) {
         gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT,
                            TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0),
         gsDPSetColorDither(G_CD_NOISE),
-        gsDPLoadTextureBlock(D_84389068, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gsDPLoadTextureBlock(gTrailTextureData, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                              G_TX_NOMIRROR | G_TX_WRAP, 3, 4, G_TX_NOLOD, G_TX_NOLOD),
         gsDPPipeSync(),
         gsSPEndDisplayList(),
@@ -225,14 +225,14 @@ Gfx* func_8436032C(Gfx* arg0) {
     Vtx* vtx;
     s32 i;
     unk_D_84397648* var_a0;
-    unk_D_84397610* ptr = &D_84397610;
+    unk_D_84397610* ptr = &gTrailState;
 
     if (ptr->unk_28 < 2) {
         return arg0;
     }
     ptr->unk_2C = GfxAlloc(ptr->unk_28 * 2 * sizeof(Vtx));
     vtx = ptr->unk_2C;
-    var_a0 = &D_84397648[0];
+    var_a0 = &gTrailPoints[0];
 
     for (i = 0; i < ptr->unk_28; i++) {
         vtx->v.ob[0] = var_a0->unk_00;
@@ -312,7 +312,7 @@ void func_843605C0(void) {
     }
 }
 
-void func_843606D0(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void ParticleEmitter_AddSimple(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_a1_2;
@@ -366,7 +366,7 @@ void func_843606D0(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s
     }
 }
 
-void func_8436090C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void ParticleEmitter_AddSimpleNoFade(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_v1_2;
@@ -410,7 +410,7 @@ void func_8436090C(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s
     }
 }
 
-void func_84360B10(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void ParticleEmitter_AddRandomized(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, f32 argE, f32 argF, f32 arg10, s16 arg11) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_s0;
@@ -823,7 +823,7 @@ Gfx* func_84362084(Gfx* arg0) {
         gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT,
                            TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0),
         gsDPSetColorDither(G_CD_NOISE),
-        gsDPLoadTextureBlock(D_84389068, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gsDPLoadTextureBlock(gTrailTextureData, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                              G_TX_NOMIRROR | G_TX_WRAP, 3, 4, G_TX_NOLOD, G_TX_NOLOD),
         gsSPEndDisplayList(),
     };
@@ -840,9 +840,9 @@ Gfx* func_84362084(Gfx* arg0) {
         gsDPSetColorDither(G_CD_NOISE),
         gsSPEndDisplayList(),
     };
-    static u8 D_843892E0[] = { 0xFF, 0, 0xFF };
-    static u8 D_843892E4[] = { 0x20, 0x20, 0xFF };
-    static u8 D_843892E8[] = { 0, 0xFF, 0 };
+    static u8 gParticlePaletteR[] = { 0xFF, 0, 0xFF };
+    static u8 gParticlePaletteG[] = { 0x20, 0x20, 0xFF };
+    static u8 gParticlePaletteB[] = { 0, 0xFF, 0 };
     static f32 D_843892EC[] = { 1.0f, 1.73205f, 1.0f, 0.0f, 0.0f };
 
     s32 i;
@@ -1032,11 +1032,11 @@ Gfx* func_84362084(Gfx* arg0) {
                                     func_8436EA0C(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
                                 }
 
-                                vtx->v.cn[0] = ((D_843892E0[x] * (0xFF - var_s2->unk_04)) +
+                                vtx->v.cn[0] = ((gParticlePaletteR[x] * (0xFF - var_s2->unk_04)) +
                                                 (var_s2->unk_04 * 0xFF)) / 255;
-                                vtx->v.cn[1] = ((D_843892E4[x] * (0xFF - var_s2->unk_04)) +
+                                vtx->v.cn[1] = ((gParticlePaletteG[x] * (0xFF - var_s2->unk_04)) +
                                                 (var_s2->unk_04 * 0xFF)) / 255;
-                                vtx->v.cn[2] = ((D_843892E8[x] * (0xFF - var_s2->unk_04)) +
+                                vtx->v.cn[2] = ((gParticlePaletteB[x] * (0xFF - var_s2->unk_04)) +
                                                 (var_s2->unk_04 * 0xFF)) / 255;
                                 vtx->v.cn[3] = var_s2->unk_04;
                                 vtx++;

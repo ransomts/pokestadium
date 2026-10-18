@@ -9,7 +9,7 @@ struct unk_D_84390010;
 struct unk_D_8140E724;
 
 typedef void (*func_unk_D_8140E724_008)(struct unk_D_8140E720*);
-typedef void (*func_unk_D_8140E724_00C)(struct unk_D_8140E720*, unk_D_86002F34_00C*);
+typedef void (*func_unk_D_8140E724_00C)(struct unk_D_8140E720*, CameraStruct*);
 typedef void (*unk_D_8140E728_01C_004_1_04)(struct unk_D_8140E720*, s32, struct unk_D_8140E728_01C_004_1*);
 typedef void (*unk_D_8140E728_01C_004_1_08)(struct unk_D_8140E720*, s32, struct unk_D_8140E728_01C_004_1*);
 
@@ -244,7 +244,7 @@ typedef struct unk_D_8140E634_010 {
 
 typedef struct unk_D_8140E634 {
     /* 0x00 */ Vec3f unk_00;
-    /* 0x0C */ unk_D_86002F34_00C* unk_0C;
+    /* 0x0C */ CameraStruct* unk_0C;
     /* 0x10 */ unk_D_8140E634_010 unk_10;
 } unk_D_8140E634; // size = 0x8C
 
@@ -408,10 +408,10 @@ void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4);
 void func_81401FC0(Vec3f arg0, Vec3s arg1, f32 arg2);
 void func_8140203C(Vec3f arg0, Vec3s arg1, f32 arg2);
 void func_814020B8(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3);
-void func_8140213C(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg4);
-void func_814021A4(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg4, s16 arg5);
-void func_81402214(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg4);
-void func_8140227C(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg4, s16 arg5);
+void func_8140213C(CameraStruct* arg0, Vec3f arg1, f32 arg4);
+void func_814021A4(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
+void func_81402214(CameraStruct* arg0, Vec3f arg1, f32 arg4);
+void func_8140227C(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 arg5);
 void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5);
 void func_8140238C(Vec3f arg0, Vec3f arg3, f32 arg6);
 
@@ -476,12 +476,12 @@ void func_81404ABC(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
 void func_81404B78(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4);
 void func_81404C34(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3, Vtx* arg4);
 void func_81404CF8(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3);
-void func_81404DB4(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
-void func_81404E4C(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
-void func_81404EEC(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
-void func_81404F84(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
-void func_81405024(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
-void func_814050BC(unk_D_86002F34_00C* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
+void func_81404DB4(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
+void func_81404E4C(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
+void func_81404EEC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
+void func_81404F84(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
+void func_81405024(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3);
+void func_814050BC(CameraStruct* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4);
 void func_8140515C(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
 void func_81405308(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
 void func_814054B4(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height);
@@ -794,13 +794,13 @@ void func_8140C174(unk_D_8140E720* arg0, s16 arg1);
 void func_8140C194(unk_D_8140E720* arg0, u8 arg1);
 void func_8140C1C4(unk_D_8140E720* arg0, s16 arg1);
 void func_8140C1E4(unk_D_8140E720* arg0, s16 arg1);
-void func_8140C204(unk_D_86002F34_00C* arg0);
-void func_8140C2D8(unk_D_86002F34_00C* arg0);
+void func_8140C204(CameraStruct* arg0);
+void func_8140C2D8(CameraStruct* arg0);
 void func_8140C384(s16 arg0);
 void func_8140C468(unk_D_8140E720* arg0, unk_D_8140E728_01C_004_1* arg1);
 void func_8140C4CC(unk_D_8140E720* arg0);
-void func_8140C530(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140C5BC(UNUSED unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1);
+void func_8140C530(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140C5BC(UNUSED unk_D_8140E720* arg0, UNUSED CameraStruct* arg1);
 
 
 void Timer_UpdateCounters(void);
@@ -827,22 +827,22 @@ void func_8140CAC8(UNUSED unk_D_8140E720* arg0, u8* texture);
 void func_8140CB04(unk_D_8140E720* arg0, u8* texture);
 void func_8140CB38(UNUSED unk_D_8140E720* arg0, u8* texture);
 void func_8140CB64(UNUSED unk_D_8140E720* arg0, u8* texture);
-void func_8140CB90(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CC04(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-s32 func_8140CC90(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1);
-void func_8140CD80(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CDDC(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CE68(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CED4(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CF30(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140CFBC(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140D050(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140D0E4(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140D170(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140D1FC(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-void func_8140D288(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
-s32 func_8140D314(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1);
-void func_8140D404(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1);
+void func_8140CB90(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CC04(unk_D_8140E720* arg0, CameraStruct* arg1);
+s32 func_8140CC90(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1);
+void func_8140CD80(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CDDC(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CE68(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CED4(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CF30(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140CFBC(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140D050(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140D0E4(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140D170(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140D1FC(unk_D_8140E720* arg0, CameraStruct* arg1);
+void func_8140D288(unk_D_8140E720* arg0, CameraStruct* arg1);
+s32 func_8140D314(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1);
+void func_8140D404(unk_D_8140E720* arg0, CameraStruct* arg1);
 void GetPaletteColor(u8* arg0, u16 arg1);
 void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2);
 void SetPrimColorFromPalette(unk_D_8140E720* arg0, u16 arg1);

@@ -184,7 +184,7 @@ typedef struct GraphNode {
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ struct GraphNode* unk_04;
     /* 0x08 */ struct GraphNode* unk_08;
-    /* 0x0C */ struct unk_D_86002F34_00C* unk_0C;
+    /* 0x0C */ struct CameraStruct* unk_0C;
     /* 0x10 */ func_D_86002F34_000_010 unk_10;
     /* 0x14 */ void* unk_14;
 } GraphNode; // size = 0x18
@@ -244,7 +244,7 @@ typedef struct unk_D_86002F34_00C_0CC {
     /* 0x1C */ u8* texture;
 } unk_D_86002F34_00C_0CC; // size >= 0x20
 
-typedef struct unk_D_86002F34_00C {
+typedef struct CameraStruct {
     /* 0x00 */ GraphNode unk_00;
     /* 0x18 */ unk_D_86002F34_00C_018 unk_18;	//	viewPort
     /* 0x24 */ unk_D_86002F34_00C_024 unk_24;	//	projection
@@ -252,7 +252,7 @@ typedef struct unk_D_86002F34_00C {
     /* 0x60 */ unk_D_86002F34_00C_060 unk_60;	//	camera
     /* 0xCC */ unk_D_86002F34_00C_0CC unk_CC;
     /* 0xEC */ char unkEC[0x4];
-} unk_D_86002F34_00C; // size = 0xF0
+} CameraStruct; // size = 0xF0
 
 typedef struct unk_D_86002F34_alt1 {
     /* 0x00 */ GraphNode unk_00;

@@ -94,7 +94,7 @@ void Camera_SetApproachParams(f32 arg0, f32 arg1) {
     gCameraState->unk_3C = arg1;
 }
 
-void Camera_InitFromConfig(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1) {
+void Camera_InitFromConfig(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -120,7 +120,7 @@ void Camera_InitFromConfig(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1) {
     Camera_SetApproachParams(arg0->unk_28, arg0->unk_2C);
 }
 
-s32 func_86B08C44(unk_D_86002F34_00C* arg0) {
+s32 func_86B08C44(CameraStruct* arg0) {
     Vec3f sp5C;
     Vec3f sp50;
     Vec3f sp44;

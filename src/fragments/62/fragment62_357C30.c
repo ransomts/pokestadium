@@ -114,7 +114,7 @@ void func_8436D4A4(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f
 void func_8436D920(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
                    UNUSED f32 arg7) {
     UNUSED s32 pad[36];
-    unk_D_86002F34_00C* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = func_8432FD64();
     f32 sp6C;
     f32 sp68;
     f32 sp64;
@@ -267,12 +267,12 @@ Gfx* func_8436E0E8(Gfx* arg0, unk_D_843C3508* arg1) {
     UNUSED s32 pad[2];
 
     ptr = &arg1->unk_068;
-    gDPLoadTextureTile_4b(arg0++, D_843920C0[arg1->unk_020], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile_4b(arg0++, gWaterTexture[arg1->unk_020], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     ptr = &arg1->unk_074;
-    gDPLoadMultiTile_4b(arg0++, D_843920C0[arg1->unk_024], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gWaterTexture[arg1->unk_024], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 

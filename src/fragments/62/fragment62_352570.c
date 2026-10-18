@@ -226,7 +226,7 @@ Gfx* func_84368560(Gfx* arg0) {
     UNUSED s32 pad;
 
     gDPPipeSync(arg0++);
-    gDPLoadTextureBlock_4b(arg0++, D_843920C0[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(arg0++, gWaterTexture[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
     var_s4 = &D_843AA880[0];

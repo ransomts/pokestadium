@@ -20,7 +20,7 @@ typedef struct unk_D_84392040 {
 
 s32 D_843902A0;
 #include "prevent_bss_reordering.h"
-s32 D_843902A4;
+s32 gPanelDrawCount;
 s32 D_843902A8;
 static s32 D_843902AC;
 static s32 D_843902B0;
@@ -36,11 +36,11 @@ static s32 D_843902D4;
 static s32 D_843902D8;
 static s32 D_843902DC;
 static s8 D_843902E0;
-s16 D_843902E2;
+s16 gParticleTexture_Default;
 s16 D_843902E4;
 static s16 D_843902E6;
 unk_D_84390010* D_843902E8;
-unk_D_84390010* D_843902EC;
+unk_D_84390010* gParticleEffectData_42;
 unk_D_84390010* D_843902F0;
 s32 D_843902F4;
 s32 D_843902F8;
@@ -58,18 +58,18 @@ s16 D_8439037A;
 s16 D_8439037C;
 s16 D_8439037E;
 s16 D_84390380;
-s16 D_84390382;
-s16 D_84390384;
-s16 D_84390386;
-s16 D_84390388;
-s16 D_8439038A;
-s16 D_8439038C;
-s16 D_8439038E;
-s16 D_84390390;
-s16 D_84390392;
-s16 D_84390394;
-s16 D_84390396;
-s16 D_84390398;
+s16 gPrimColorR;
+s16 gPrimColorG;
+s16 gPrimColorB;
+s16 gPrimColorA;
+s16 gEnvColorR;
+s16 gEnvColorG;
+s16 gEnvColorB;
+s16 gEnvColorA;
+s16 gFogColorR;
+s16 gFogColorG;
+s16 gFogColorB;
+s16 gFogColorA;
 s16 D_8439039A;
 s16 D_8439039C;
 s16 D_8439039E;
@@ -145,7 +145,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C880,
         func_8140CB90,
-        &D_843920C0[4],
+        &gWaterTexture[4],
     },
     {
         0x00,
@@ -153,7 +153,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C930,
         func_8140CDDC,
-        &D_843920C0[5],
+        &gWaterTexture[5],
     },
     {
         0x00,
@@ -161,7 +161,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C9EC,
         func_8140D0E4,
-        &D_843920C0[20],
+        &gWaterTexture[20],
     },
     {
         0x00,
@@ -169,7 +169,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C9EC,
         func_8140D1FC,
-        &D_843920C0[20],
+        &gWaterTexture[20],
     },
     {
         0x00,
@@ -177,7 +177,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C930,
         func_8140CDDC,
-        &D_843920C0[5],
+        &gWaterTexture[5],
     },
     {
         0x00,
@@ -185,7 +185,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C930,
         func_8140CE68,
-        &D_843920C0[5],
+        &gWaterTexture[5],
     },
     {
         0x00,
@@ -193,7 +193,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C9EC,
         func_8140D1FC,
-        &D_843920C0[20],
+        &gWaterTexture[20],
     },
     {
         0x00,
@@ -201,7 +201,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CA30,
         func_8140D0E4,
-        &D_843920C0[9],
+        &gWaterTexture[9],
     },
     {
         0x00,
@@ -209,7 +209,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_CI4_32x32,
         func_8140CB90,
-        &D_843920C0[3],
+        &gWaterTexture[3],
     },
     {
         0x00,
@@ -217,7 +217,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C880,
         func_8140CDDC,
-        &D_843920C0[23],
+        &gWaterTexture[23],
     },
     {
         0x00,
@@ -225,7 +225,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C8B8,
         func_8140CDDC,
-        &D_843920C0[14],
+        &gWaterTexture[14],
     },
     {
         0x00,
@@ -233,7 +233,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[17],
+        &gWaterTexture[17],
     },
     {
         0x00,
@@ -241,7 +241,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C880,
         func_8140CDDC,
-        &D_843920C0[14],
+        &gWaterTexture[14],
     },
     {
         0x00,
@@ -249,7 +249,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C9B0,
         func_8140CC04,
-        &D_843920C0[8],
+        &gWaterTexture[8],
     },
     {
         0x00,
@@ -257,7 +257,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C9B0,
         func_8140CC04,
-        &D_843920C0[8],
+        &gWaterTexture[8],
     },
     {
         0x00,
@@ -265,7 +265,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C9B0,
         func_8140CC90,
-        &D_843920C0[8],
+        &gWaterTexture[8],
     },
     {
         0x00,
@@ -273,7 +273,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CA90,
         func_8140D288,
-        &D_843920C0[18],
+        &gWaterTexture[18],
     },
     {
         0x00,
@@ -281,7 +281,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[17],
+        &gWaterTexture[17],
     },
     {
         0x00,
@@ -289,7 +289,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[17],
+        &gWaterTexture[17],
     },
     {
         0x00,
@@ -297,7 +297,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C930,
         func_8140CDDC,
-        &D_843920C0[5],
+        &gWaterTexture[5],
     },
     {
         0x00,
@@ -305,7 +305,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CA90,
         func_8140D288,
-        &D_843920C0[18],
+        &gWaterTexture[18],
     },
     {
         0x00,
@@ -313,7 +313,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C880,
         func_8140CDDC,
-        &D_843920C0[23],
+        &gWaterTexture[23],
     },
     {
         0x00,
@@ -321,7 +321,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C880,
         func_8140CDDC,
-        &D_843920C0[13],
+        &gWaterTexture[13],
     },
     {
         0x00,
@@ -329,7 +329,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C8F4,
         func_8140CDDC,
-        &D_843920C0[13],
+        &gWaterTexture[13],
     },
     {
         0x00,
@@ -337,7 +337,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CAC8,
         func_8140D288,
-        &D_843920C0[18],
+        &gWaterTexture[18],
     },
     {
         0x00,
@@ -345,7 +345,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C8B8,
         func_8140CDDC,
-        &D_843920C0[23],
+        &gWaterTexture[23],
     },
     {
         0x00,
@@ -353,7 +353,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CA64,
         func_8140D314,
-        &D_843920C0[11],
+        &gWaterTexture[11],
     },
     {
         0x00,
@@ -361,7 +361,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[82],
+        &gWaterTexture[82],
     },
     {
         0x00,
@@ -369,7 +369,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_CI4_32x32,
         func_8140CFBC,
-        &D_843920C0[16],
+        &gWaterTexture[16],
     },
     {
         0x00,
@@ -377,7 +377,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32,
         func_8140CDDC,
-        &D_843920C0[84],
+        &gWaterTexture[84],
     },
     {
         0x00,
@@ -385,7 +385,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_CI4_32x32,
         func_8140CDDC,
-        &D_843920C0[169],
+        &gWaterTexture[169],
     },
     {
         0x00,
@@ -393,7 +393,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_CI4_32x32,
         func_8140CDDC,
-        &D_843920C0[172],
+        &gWaterTexture[172],
     },
     {
         0x00,
@@ -401,7 +401,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_CI4_32x32,
         func_8140CDDC,
-        &D_843920C0[166],
+        &gWaterTexture[166],
     },
     {
         0x00,
@@ -409,7 +409,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_CI4_32x32,
         func_8140CDDC,
-        &D_843920C0[167],
+        &gWaterTexture[167],
     },
     {
         0x00,
@@ -417,7 +417,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C84C,
         func_8140CDDC,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -425,7 +425,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C84C,
         func_8140CDDC,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -433,7 +433,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140CB04,
         func_8140D288,
-        &D_843920C0[89],
+        &gWaterTexture[89],
     },
     {
         0x00,
@@ -441,7 +441,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32,
         func_8140CFBC,
-        &D_843920C0[95],
+        &gWaterTexture[95],
     },
     {
         0x01,
@@ -449,7 +449,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32,
         RenderPanelBackground,
-        &D_843920C0[95],
+        &gWaterTexture[95],
     },
     {
         0x00,
@@ -457,7 +457,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[2],
+        &gWaterTexture[2],
     },
     {
         0x00,
@@ -465,7 +465,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[100],
+        &gWaterTexture[100],
     },
     {
         0x00,
@@ -473,7 +473,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C84C,
         func_8140CF30,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -481,7 +481,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C84C,
         func_8140CF30,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -489,7 +489,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         func_8140C84C,
         func_8140CDDC,
-        &D_843920C0[101],
+        &gWaterTexture[101],
     },
     {
         0x00,
@@ -497,7 +497,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C84C,
         func_8140CDDC,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -505,7 +505,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CB38,
         func_8140D404,
-        &D_843920C0[63],
+        &gWaterTexture[63],
     },
     {
         0x00,
@@ -513,7 +513,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140CB64,
         func_8140D404,
-        &D_843920C0[112],
+        &gWaterTexture[112],
     },
     {
         0x00,
@@ -521,7 +521,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C84C,
         func_8140CED4,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -529,7 +529,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x64_ByIndex,
         func_8140D170,
-        &D_843920C0[117],
+        &gWaterTexture[117],
     },
     {
         0x00,
@@ -537,7 +537,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[122],
+        &gWaterTexture[122],
     },
     {
         0x00,
@@ -545,7 +545,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CDDC,
-        &D_843920C0[82],
+        &gWaterTexture[82],
     },
     {
         0x00,
@@ -553,7 +553,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32,
         func_8140CFBC,
-        &D_843920C0[95],
+        &gWaterTexture[95],
     },
     {
         0x00,
@@ -561,7 +561,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0001,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CFBC,
-        &D_843920C0[82],
+        &gWaterTexture[82],
     },
     {
         0x00,
@@ -569,7 +569,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CFBC,
-        &D_843920C0[82],
+        &gWaterTexture[82],
     },
     {
         0x00,
@@ -577,7 +577,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C84C,
         func_8140CDDC,
-        &D_843920C0[83],
+        &gWaterTexture[83],
     },
     {
         0x00,
@@ -585,7 +585,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         func_8140C8B8,
         func_8140CDDC,
-        &D_843920C0[14],
+        &gWaterTexture[14],
     },
     {
         0x00,
@@ -593,7 +593,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x0000,
         LoadTexture_IA8_32x32_ByIndex,
         func_8140CE68,
-        &D_843920C0[17],
+        &gWaterTexture[17],
     },
 };
 
@@ -970,17 +970,17 @@ static func_D_84390320 D_84386480[] = {
 static func_D_84390320 D_843866C4[] = {
     func_8432F9A0, func_8432F9A0, func_8433B58C, func_84357A64, func_84357AE0, func_84357110, func_8434575C,
     func_8434A384, func_8433DECC, func_8432F9A0, func_84346BE0, func_8432F9A0, func_8432F9A0, func_84344BDC,
-    func_84355E58, func_843372D8, func_8434CF64, func_84342908, func_84357CC8, func_8432F9A0, func_8433BF54,
-    func_84345B84, func_84337000, func_843450B4, func_8432F9A0, func_8434E1B8, func_84340CB0, func_8433B7E4,
+    ParticleEffect_InitializeGroup, func_843372D8, func_8434CF64, func_84342908, func_84357CC8, func_8432F9A0, func_8433BF54,
+    func_84345B84, func_84337000, func_843450B4, func_8432F9A0, func_8434E1B8, RegisterParticleEffect_ComplexMovement, func_8433B7E4,
     func_8433E33C, func_843375B0, func_84356EF4, func_84344B04, func_8432F9A0, func_8432F9A0, func_8433B3D8,
-    func_84355EF0, func_84355F88, func_84356148, func_843561A0, func_843567F4, func_8433766C, func_8434915C,
+    ParticleEffect_ConfigB, ParticleEffect_ConfigA, func_84356148, func_843561A0, func_843567F4, func_8433766C, func_8434915C,
     func_8435643C, func_843565DC, func_84356020, func_843568C8, func_843569A0, func_843561F8, func_8432F9A0,
     func_84345B28, func_84346E50, func_8434C5F0, func_84356AF0, func_8433C3A0, func_84336DD8, func_84357F64,
     func_84336C80, func_843581FC, func_8434A930, func_843378D4, func_8434C720, func_8434B064, func_8434BCD4,
     func_8434C144, func_8434CC68, func_8434D5EC, func_8434D938, func_8433C06C, func_8433C284, func_8433C4EC,
     func_8433C604, func_8433C784, func_8433DFF4, func_8434DD08, func_8434DBEC, func_8434A9CC, func_8434E870,
     func_8434E940, func_8434967C, func_8434ECF4, func_843560B4, func_843489FC, func_843489FC, func_8434917C,
-    func_8434EA10, func_8435783C, func_8433CAFC, func_84340D14, func_843574FC, func_8432F9A0,
+    func_8434EA10, func_8435783C, func_8433CAFC, RegisterParticleEffect_Burst, func_843574FC, func_8432F9A0,
 };
 static u8 D_8438682C[] = {
     0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00,
@@ -4619,16 +4619,16 @@ void PlayBattleSoundEffect(unk_D_84390010* arg0, s32 arg1) {
 }
 
 void ExecuteStateFunction(s16 arg0) {
-    D_843902E2 = D_843902E4;
+    gParticleTexture_Default = D_843902E4;
     D_84386480[arg0]();
     if (D_843902E6 != 0xFF) {
-        D_843902E2 = D_843902E6;
+        gParticleTexture_Default = D_843902E6;
         D_84386480[arg0]();
     }
 }
 
 void func_8432C14C(s16 arg0) {
-    D_843902E2 = D_843902E4;
+    gParticleTexture_Default = D_843902E4;
     D_843866C4[arg0]();
 }
 
@@ -4721,7 +4721,7 @@ void func_8432C3F8(void) {
     }
 }
 
-void MainUpdateLoop(UNUSED unk_D_86002F34_00C* arg0) {
+void MainUpdateLoop(UNUSED CameraStruct* arg0) {
     Timer_UpdateCounters();
     func_8432C3F8();
     func_8432E68C();
@@ -4752,11 +4752,11 @@ void func_8432C550(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg
     func_8432C504(0);
     D_843902B0 = 1;
     D_843902AC = arg0;
-    D_843902A4 = 0;
+    gPanelDrawCount = 0;
     D_843902E4 = arg3;
     D_843902E6 = arg4;
     D_843902E8 = arg1;
-    D_843902EC = arg1;
+    gParticleEffectData_42 = arg1;
     D_843902F0 = arg2;
 }
 
@@ -4788,7 +4788,7 @@ void func_8432C6C4(s32 arg0, unk_D_84390010* arg1) {
     D_843902E4 = 0xFF;
     D_843902E6 = 0xFF;
     D_843902E8 = arg1;
-    D_843902EC = arg1;
+    gParticleEffectData_42 = arg1;
     D_843902F0 = arg1;
 }
 
@@ -4829,7 +4829,7 @@ void func_8432C830(arg1_func_80019420* arg0) {
     if (arg0 != NULL) {
         do {
             if (arg0->unk_02 != 0) {
-                D_843920C0[arg0->unk_02] = arg0->unk_04;
+                gWaterTexture[arg0->unk_02] = arg0->unk_04;
                 arg0++;
             }
         } while (arg0->unk_00 != 0);
@@ -4840,7 +4840,7 @@ void func_8432C86C(void) {
     s32 i;
 
     // clang-format off
-    for (i = 0; i < 256; i++) { D_843920C0[i] = NULL; }
+    for (i = 0; i < 256; i++) { gWaterTexture[i] = NULL; }
     // clang-format on
 
     func_8432C830(func_80019EA0(0));
@@ -5004,8 +5004,8 @@ void func_8432CD14(Fragment2_1GraphNode* arg0) {
 }
 
 void func_8432CD70(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
-    GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
-    Anim_SetChannel(arg0, 0, D_843920C0[arg2], 0x10000);
+    GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
+    Anim_SetChannel(arg0, 0, gWaterTexture[arg2], 0x10000);
 }
 
 void func_8432CDD8(Fragment2_1GraphNode* arg0, s16 arg1) {
@@ -5013,15 +5013,15 @@ void func_8432CDD8(Fragment2_1GraphNode* arg0, s16 arg1) {
 }
 
 void func_8432CE00(Fragment2_1GraphNode* arg0, s16 arg1) {
-    GraphNode_InitChild(arg0, 0, 0, D_843920C0[arg1]);
+    GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
 }
 
 void func_8432CE3C(Fragment2_1GraphNode* arg0, s16 arg1) {
-    Anim_SetChannel(arg0, 0, D_843920C0[arg1], 0x10000);
+    Anim_SetChannel(arg0, 0, gWaterTexture[arg1], 0x10000);
 }
 
 void func_8432CE78(Fragment2_1GraphNode* arg0, s16 arg1) {
-    Anim_SetChannel(arg0, 0, D_843920C0[arg1], -0x10000);
+    Anim_SetChannel(arg0, 0, gWaterTexture[arg1], -0x10000);
     Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
@@ -5034,7 +5034,7 @@ s32 func_8432CED4(Fragment2_1GraphNode* arg0) {
     return ret;
 }
 
-void func_8432CEF0(UNUSED unk_D_86002F34_00C* arg0) {
+void func_8432CEF0(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -5045,7 +5045,7 @@ void func_8432CEF0(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8432CF74(UNUSED unk_D_86002F34_00C* arg0) {
+void func_8432CF74(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -5055,7 +5055,7 @@ void func_8432CF74(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8432CFCC(unk_D_86002F34_00C* arg0) {
+void func_8432CFCC(CameraStruct* arg0) {
     D_8140E628.unk_0C = arg0;
     D_8140E6B4 = &D_8140E628.unk_10;
 
@@ -5068,7 +5068,7 @@ void func_8432CFCC(unk_D_86002F34_00C* arg0) {
     func_81400F44(&D_8140E6B4->unk_64, D_8140E6B4->unk_4C, D_8140E6B4->unk_40);
 }
 
-s32 func_8432D0D8(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 func_8432D0D8(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 1:
         case 3:
@@ -5086,7 +5086,7 @@ s32 func_8432D0D8(s32 arg0, unk_D_86002F34_00C* arg1) {
             break;
 
         case 5:
-            func_843590E0(arg1);
+            Ui_DrawPanel(arg1);
             break;
     }
 
@@ -5119,16 +5119,16 @@ void func_8432D178(void) {
     D_8439037A = 0xFF;
     D_8439037C = 0xFF;
     D_8439037E = 0xFF;
-    D_84390388 = 0xFF;
-    D_84390382 = 0xFF;
-    D_84390384 = 0xFF;
-    D_84390386 = 0xFF;
-    D_8439038A = 0xFF;
-    D_8439038C = 0xFF;
-    D_8439038E = 0x64;
-    D_84390392 = 0;
-    D_84390394 = 0;
-    D_84390396 = 0;
+    gPrimColorA = 0xFF;
+    gPrimColorR = 0xFF;
+    gPrimColorG = 0xFF;
+    gPrimColorB = 0xFF;
+    gEnvColorR = 0xFF;
+    gEnvColorG = 0xFF;
+    gEnvColorB = 0x64;
+    gFogColorR = 0;
+    gFogColorG = 0;
+    gFogColorB = 0;
     D_84390344 = 1.0f;
 
     Vec3f_Set(&D_84390360, 0.0f, 0.0f, 0.0f);
@@ -5150,7 +5150,7 @@ void func_8432D340(Vec3f* arg0, f32 arg1) {
 }
 
 void func_8432D398(s16* arg0, s16* arg1) {
-    unk_D_86002F34_00C* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = func_8432FD64();
     f32 sp20 = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 sp1C = temp_v0->unk_60.eye.y - temp_v0->unk_60.at.y;
     f32 sp18 = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
@@ -5160,7 +5160,7 @@ void func_8432D398(s16* arg0, s16* arg1) {
 }
 
 void func_8432D424(s16* arg0) {
-    unk_D_86002F34_00C* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = func_8432FD64();
     f32 x = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 z = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
 
@@ -5168,7 +5168,7 @@ void func_8432D424(s16* arg0) {
 }
 
 void func_8432D468(s16* arg0, s16* arg1) {
-    unk_D_86002F34_00C* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = func_8432FD64();
     f32 sp20 = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 sp1C = temp_v0->unk_60.at.y - temp_v0->unk_60.eye.y;
     f32 sp18 = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
@@ -5178,7 +5178,7 @@ void func_8432D468(s16* arg0, s16* arg1) {
 }
 
 void func_8432D4F4(s16* arg0) {
-    unk_D_86002F34_00C* temp_v0 = func_8432FD64();
+    CameraStruct* temp_v0 = func_8432FD64();
     f32 x = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 z = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
 

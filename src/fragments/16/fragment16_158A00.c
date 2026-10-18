@@ -33,7 +33,7 @@ static u8 D_86A061D9;
 static BinArchive* D_86A061DC;
 static Color_RGBA8_u32 D_86A061E0;
 static GraphNode* D_86A061E4;
-static unk_D_86002F34_00C* D_86A061E8;
+static CameraStruct* D_86A061E8;
 static s16 D_86A061EC;
 static s16 D_86A061EE;
 static s16 D_86A061F0;

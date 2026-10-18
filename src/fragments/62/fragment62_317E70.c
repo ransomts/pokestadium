@@ -809,7 +809,7 @@ s32 func_8432F9CC(s32 arg0) {
 }
 
 s32 func_8432FA0C(void) {
-    return func_843081BC(D_843902EC);
+    return func_843081BC(gParticleEffectData_42);
 }
 
 s32 func_8432FA30(void) {
@@ -849,7 +849,7 @@ void func_8432FB38(Vec3f* arg0) {
 }
 
 void func_8432FB64(Vec3f* arg0) {
-    Model_GetNodePosition(D_843902EC, 0x64, arg0);
+    Model_GetNodePosition(gParticleEffectData_42, 0x64, arg0);
 }
 
 void func_8432FB90(Vec3f* arg0) {
@@ -858,9 +858,9 @@ void func_8432FB90(Vec3f* arg0) {
 
 void func_8432FBBC(Vec3f* arg0) {
     if (D_843902E4 == 0xFF) {
-        func_843081F0(D_843902EC, arg0);
+        func_843081F0(gParticleEffectData_42, arg0);
     } else {
-        Model_GetNodePosition(D_843902EC, D_843902E2, arg0);
+        Model_GetNodePosition(gParticleEffectData_42, gParticleTexture_Default, arg0);
     }
 }
 
@@ -887,11 +887,11 @@ void func_8432FCB4(unk_D_84390010* arg0) {
 }
 
 f32 func_8432FCD4(void) {
-    return func_8432FC94(D_843902EC);
+    return func_8432FC94(gParticleEffectData_42);
 }
 
 void func_8432FCF8(void) {
-    func_8432FCB4(D_843902EC);
+    func_8432FCB4(gParticleEffectData_42);
 }
 
 f32 func_8432FD1C(void) {
@@ -902,7 +902,7 @@ void func_8432FD40(void) {
     func_8432FCB4(D_843902F0);
 }
 
-unk_D_86002F34_00C* func_8432FD64(void) {
+CameraStruct* func_8432FD64(void) {
     return D_8140E628.unk_0C;
 }
 
@@ -912,7 +912,7 @@ unk_D_8140E720* func_8432FD70(Vec3f arg0, u8 arg1) {
     if ((u32)sp1C != -1) {
         Vec3f_Copy(&sp1C->unk_68, &arg0);
         Particle_SetWhiteFlashHandler(sp1C, arg1);
-        sp1C->unk_10 = D_843902EC;
+        sp1C->unk_10 = gParticleEffectData_42;
         sp1C->unk_14 = NULL;
         sp1C->unk_CD = 0xFF;
         sp1C->unk_CC = 0x15;

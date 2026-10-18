@@ -58,7 +58,7 @@ typedef struct unk_D_86301730 {
 
 static unk_D_86002F30* D_86301710;
 static unk_D_86002F34* gStageRootNode;
-static unk_D_86002F34_00C* gCamera;
+static CameraStruct* gCamera;
 static s16 D_8630171C;
 static s16 D_8630171E;
 static s16 D_86301720;

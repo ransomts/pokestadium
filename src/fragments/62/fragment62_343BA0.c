@@ -4,22 +4,22 @@
 #include "include/math.h"
 #include "src/math_util.h"
 
-u8* D_843920C0[256];
+u8* gWaterTexture[256];
 s16 D_843924C0[0x10];
 arg1_func_80019420* D_843924E0[40];
-static s16 D_84392580;
-static s16 D_84392582;
-static Mtx D_84392588;
-static s16 D_843925C8;
+static s16 gEffectPhaseCounterA;
+static s16 gEffectPhaseCounterB;
+static Mtx gEffectMatrix;
+static s16 gParticleSpawnTimerI;
 static s16 D_843925CA;
-static s16 D_843925CC;
-static s16 D_843925CE;
-static s16 D_843925D0;
-static s16 D_843925D2;
-static s16 D_843925D4;
-static s16 D_843925D6;
-static s16 D_843925D8;
-static s16 D_843925DA;
+static s16 gParticleSpawnTimerH;
+static s16 gParticleSpawnTimerA;
+static s16 gParticleSpawnTimerB;
+static s16 gParticleSpawnTimerC;
+static s16 gParticleSpawnTimerD;
+static s16 gParticleSpawnTimerE;
+static s16 gParticleSpawnTimerF;
+static s16 gParticleSpawnTimerG;
 
 static const char D_8438D3D0[] = "calc_vector_ATtoDM() normal error!!!\n";
 static const char D_8438D3F8[] = "calc_vector_ATtoDM2() normal error!!!\n";
@@ -64,7 +64,7 @@ void func_84359340(void) {
 }
 
 void func_84359348(void) {
-    func_84359000(D_8439037A, D_8439037C, D_8439037E, 0xFF);
+    RenderPrimColorRect(D_8439037A, D_8439037C, D_8439037E, 0xFF);
 }
 
 void func_84359380(void) {
@@ -115,7 +115,7 @@ f32 func_84359470(void) {
     return func_8432FCD4();
 }
 
-void func_84359490(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
+void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
     Vec3f sp4C;
     Vec3f sp40;
     f32 sp3C;
@@ -149,7 +149,7 @@ void func_84359490(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* a
     *arg5 = sp1C;
 }
 
-void func_84359564(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
+void CalcVectorATtoDM2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
     Vec3f sp4C;
     Vec3f sp40;
     f32 sp3C;
@@ -189,106 +189,106 @@ void func_84359564(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* a
     *arg5 = sp1C;
 }
 
-void func_84359650(void) {
-    guRotateRPY(&D_84392588, 0.0f, 0.0f, 0.0f);
+void InitEffectMatrix(void) {
+    guRotateRPY(&gEffectMatrix, 0.0f, 0.0f, 0.0f);
 }
 
 void func_84359684(void) {
     Vec3f sp24;
     f32 sp20;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp24);
     sp20 = func_84359470();
-    func_8435CA70();
+    ParticleEmitters_Reset();
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
 }
 
 s32 func_843596DC(void) {
-    return func_8435D8C0();
+    return ParticleEmitters_Tick();
 }
 
 void func_843596FC(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8435DB14(gDisplayListHead);
+    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
 }
 
 void func_84359750(void) {
     Vec3f sp24;
     f32 sp20;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp24);
     sp20 = func_84359450();
-    func_8435CA70();
+    ParticleEmitters_Reset();
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 1);
 }
 
 s32 func_843597AC(void) {
-    return func_8435D8C0();
+    return ParticleEmitters_Tick();
 }
 
 void func_843597CC(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8435DB14(gDisplayListHead);
+    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
 }
 
 void func_84359820(void) {
     Vec3f sp24;
     f32 sp20;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp24);
     sp20 = func_84359450();
-    func_8435CA70();
+    ParticleEmitters_Reset();
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
 s32 func_8435989C(void) {
-    return func_8435D8C0();
+    return ParticleEmitters_Tick();
 }
 
 void func_843598BC(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8435DB14(gDisplayListHead);
+    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
 }
 
 void func_84359910(void) {
     Vec3f sp24;
     f32 sp20;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp24);
     sp20 = func_84359470();
-    func_8435CA70();
+    ParticleEmitters_Reset();
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
     func_8435CAE8(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
 s32 func_8435998C(void) {
-    return func_8435D8C0();
+    return ParticleEmitters_Tick();
 }
 
 void func_843599AC(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8435DB14(gDisplayListHead);
+    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
 }
 
 void func_84359A00(void) {
     Vec3f sp1C;
 
     func_843593F0(&sp1C);
-    func_84359650();
+    InitEffectMatrix();
 
     if (sp1C.x < 0.0) {
-        func_8435EB9C(1, 0, 0x4650);
+        WaterHeightMap_Init(1, 0, 0x4650);
     } else {
-        func_8435EB9C(-1, 0, 0x4650);
+        WaterHeightMap_Init(-1, 0, 0x4650);
     }
 }
 
@@ -297,9 +297,9 @@ s32 func_84359A6C(void) {
 }
 
 void func_84359A8C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8435EE78(gDisplayListHead);
+    gDisplayListHead = WaterSurface_Render(gDisplayListHead);
 }
 
 void func_84359AE0(void) {
@@ -323,7 +323,7 @@ void func_84359AF8(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    func_84359490(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
@@ -336,26 +336,26 @@ void func_84359AF8(void) {
 }
 
 void func_84359C84(void) {
-    D_843925CE = 0;
-    func_84359650();
+    gParticleSpawnTimerA = 0;
+    InitEffectMatrix();
     func_843605C0();
     func_84359AF8();
 }
 
 s32 func_84359CB8(void) {
-    D_843925CE++;
-    if (D_843925CE >= 0xB5) {
+    gParticleSpawnTimerA++;
+    if (gParticleSpawnTimerA >= 0xB5) {
         return -1;
     }
 
-    if ((D_843925CE < 0x78) && ((D_843925CE % 7) == 0)) {
+    if ((gParticleSpawnTimerA < 0x78) && ((gParticleSpawnTimerA % 7) == 0)) {
         func_84359AF8();
     }
     return func_84361FB0();
 }
 
 void func_84359D28(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
@@ -364,21 +364,21 @@ void func_84359D7C(void) {
     Vec3f sp34;
     f32 sp30;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359410(&sp34);
     sp30 = func_84359450();
-    func_84359650();
-    func_8435FB90(sp34.x, sp34.y, sp34.z, sp30, 0x64, 0xC8, 0xFF, 0, 0x64, 0xC8);
+    InitEffectMatrix();
+    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0x64, 0xC8, 0xFF, 0, 0x64, 0xC8);
 }
 
 s32 func_84359DF4(void) {
-    return func_8435FD50();
+    return Trail_Update();
 }
 
 void func_84359E14(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436032C(gDisplayListHead);
+    gDisplayListHead = Trail_Render(gDisplayListHead);
 }
 
 void func_84359E68(void) {
@@ -392,7 +392,7 @@ void func_84359E68(void) {
     f32 sp40;
 
     sp40 = func_84359470();
-    func_84359564(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
+    CalcVectorATtoDM2(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 20.0f;
     sp48 *= 20.0f;
     sp44 *= 20.0f;
@@ -403,19 +403,19 @@ void func_84359E68(void) {
 }
 
 void func_84359FE0(void) {
-    D_843925D0 = 0;
-    func_84359650();
+    gParticleSpawnTimerB = 0;
+    InitEffectMatrix();
     func_84366A10();
     func_84359E68();
 }
 
 s32 func_8435A014(void) {
-    D_843925D0++;
-    if (D_843925D0 >= 0x709) {
+    gParticleSpawnTimerB++;
+    if (gParticleSpawnTimerB >= 0x709) {
         return -1;
     }
 
-    if ((D_843925D0 < 0x6EA) && ((D_843925D0 % 3) == 0)) {
+    if ((gParticleSpawnTimerB < 0x6EA) && ((gParticleSpawnTimerB % 3) == 0)) {
         func_84359E68();
     }
 
@@ -423,7 +423,7 @@ s32 func_8435A014(void) {
 }
 
 void func_8435A084(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_843670C8(gDisplayListHead);
 }
@@ -439,32 +439,32 @@ void func_8435A0D8(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    func_84359490(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
     sp64 += 6.0f;
     sp5C = func_84359470();
     sp54 = guRandom();
-    func_84360B10(sp74, sp70, sp6C, sp68, (((sp54 % 5) * 0.1f) + sp64) - 0.2f,
+    ParticleEmitter_AddRandomized(sp74, sp70, sp6C, sp68, (((sp54 % 5) * 0.1f) + sp64) - 0.2f,
                   (sp60 - ((guRandom() % 5) * 0.3f)) + 0.6f, 3, 0xFF, 0xFF, 0xFF, 0x64, 0x64, 0x96, 0x96, 0.1f, sp5C,
                   3.0f * sp5C, 0x3C);
 }
 
 void func_8435A298(void) {
-    D_843925D2 = 0;
-    func_84359650();
+    gParticleSpawnTimerC = 0;
+    InitEffectMatrix();
     func_843605C0();
     func_8435A0D8();
 }
 
 s32 func_8435A2CC(void) {
-    D_843925D2++;
-    if (D_843925D2 >= 0xB5) {
+    gParticleSpawnTimerC++;
+    if (gParticleSpawnTimerC >= 0xB5) {
         return -1;
     }
 
-    if ((D_843925D2 < 0x78) && ((D_843925D2 % 7) == 0)) {
+    if ((gParticleSpawnTimerC < 0x78) && ((gParticleSpawnTimerC % 7) == 0)) {
         func_8435A0D8();
     }
 
@@ -472,7 +472,7 @@ s32 func_8435A2CC(void) {
 }
 
 void func_8435A33C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
@@ -481,42 +481,42 @@ void func_8435A390(void) {
     Vec3f sp34;
     f32 sp30;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp34);
     sp30 = func_84359450();
-    func_84359650();
-    func_8435FB90(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0xFF, 0x64, 0x96, 0x96);
+    InitEffectMatrix();
+    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0xFF, 0x64, 0x96, 0x96);
 }
 
 s32 func_8435A40C(void) {
-    return func_8435FD50();
+    return Trail_Update();
 }
 
 void func_8435A42C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436032C(gDisplayListHead);
+    gDisplayListHead = Trail_Render(gDisplayListHead);
 }
 
 void func_8435A480(void) {
     Vec3f sp34;
     f32 sp30;
 
-    func_84359650();
+    InitEffectMatrix();
     func_84359430(&sp34);
     sp30 = func_84359450();
-    func_84359650();
-    func_8435FB90(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0x64, 0x96, 0x96, 0);
+    InitEffectMatrix();
+    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0x64, 0x96, 0x96, 0);
 }
 
 s32 func_8435A4F8(void) {
-    return func_8435FD50();
+    return Trail_Update();
 }
 
 void func_8435A518(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_8436032C(gDisplayListHead);
+    gDisplayListHead = Trail_Render(gDisplayListHead);
 }
 
 void func_8435A56C(void) {
@@ -530,7 +530,7 @@ void func_8435A56C(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    func_84359490(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
@@ -543,19 +543,19 @@ void func_8435A56C(void) {
 }
 
 void func_8435A6F8(void) {
-    D_843925D6 = 0;
-    func_84359650();
+    gParticleSpawnTimerE = 0;
+    InitEffectMatrix();
     func_843605C0();
     func_8435A56C();
 }
 
 s32 func_8435A72C(void) {
-    D_843925D6++;
-    if (D_843925D6 >= 0xB5) {
+    gParticleSpawnTimerE++;
+    if (gParticleSpawnTimerE >= 0xB5) {
         return -1;
     }
 
-    if ((D_843925D6 < 0x78) && ((D_843925D6 % 7) == 0)) {
+    if ((gParticleSpawnTimerE < 0x78) && ((gParticleSpawnTimerE % 7) == 0)) {
         func_8435A56C();
     }
 
@@ -563,14 +563,14 @@ s32 func_8435A72C(void) {
 }
 
 void func_8435A79C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
 
 void func_8435A7F0(void) {
-    D_843925D8 = 0;
-    func_84359650();
+    gParticleSpawnTimerF = 0;
+    InitEffectMatrix();
     func_8436B140();
 }
 
@@ -584,8 +584,8 @@ s32 func_8435A81C(void) {
     f32 var_fv0;
     f32 sp44;
 
-    D_843925D8++;
-    if (!(D_843925D8 & 1)) {
+    gParticleSpawnTimerF++;
+    if (!(gParticleSpawnTimerF & 1)) {
         sp44 = func_84359470();
         func_843593F0(&sp60);
         sp5C = (((guRandom() % 50) - 0x19) * sp44) + sp60.x;
@@ -602,14 +602,14 @@ s32 func_8435A81C(void) {
 }
 
 void func_8435A99C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436B974(gDisplayListHead);
 }
 
 void func_8435A9F0(void) {
-    D_843925DA = 0;
-    func_84359650();
+    gParticleSpawnTimerG = 0;
+    InitEffectMatrix();
     func_8436A410();
 }
 
@@ -623,8 +623,8 @@ s32 func_8435AA1C(void) {
     f32 var_fv0;
     f32 sp44;
 
-    D_843925DA++;
-    if (!(D_843925DA & 1)) {
+    gParticleSpawnTimerG++;
+    if (!(gParticleSpawnTimerG & 1)) {
         sp44 = func_84359470();
         func_843593F0(&sp60);
         sp5C = (((guRandom() % 50) - 0x19) * sp44) + sp60.x;
@@ -641,7 +641,7 @@ s32 func_8435AA1C(void) {
 }
 
 void func_8435AB9C(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436AC44(gDisplayListHead);
 }
@@ -649,35 +649,35 @@ void func_8435AB9C(void) {
 void func_8435ABF0(void) {
     Vec3f sp1C;
 
-    func_84359650();
+    InitEffectMatrix();
     func_843593F0(&sp1C);
-    func_843638E0(0x708);
+    WaterSurface_Init(0x708);
 }
 
 s32 func_8435AC20(void) {
-    return func_843640A4();
+    return WaterSurface_Update();
 }
 
 void func_8435AC40(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_84364428(gDisplayListHead);
+    gDisplayListHead = WaterSurface_Draw(gDisplayListHead);
 }
 
 void func_8435AC94(void) {
     Vec3f sp1C;
 
-    func_84359650();
+    InitEffectMatrix();
     func_843593F0(&sp1C);
-    func_84364A18(0x708);
+    WaterSurface_Initialize(0x708);
 }
 
 s32 func_8435ACC4(void) {
-    return func_84365288();
+    return WaterSurface_Tick();
 }
 
 void func_8435ACE4(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84365558(gDisplayListHead);
 }
@@ -685,7 +685,7 @@ void func_8435ACE4(void) {
 void func_8435AD38(void) {
     Vec3f sp1C;
 
-    func_84359650();
+    InitEffectMatrix();
     func_843593F0(&sp1C);
     func_84365A10(0x708);
 }
@@ -695,14 +695,14 @@ s32 func_8435AD68(void) {
 }
 
 void func_8435AD88(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84366560(gDisplayListHead);
 }
 
 void func_8435ADDC(void) {
-    D_84392580 = 0;
-    func_84359650();
+    gEffectPhaseCounterA = 0;
+    InitEffectMatrix();
     func_84367CB0();
 }
 
@@ -717,18 +717,18 @@ s32 func_8435AE08(void) {
     f32 sp50;
     f32 sp4C;
 
-    D_84392580++;
-    if (D_84392580 >= 0x32) {
+    gEffectPhaseCounterA++;
+    if (gEffectPhaseCounterA >= 0x32) {
         return -1;
     }
 
-    if (D_84392580 < 4) {
+    if (gEffectPhaseCounterA < 4) {
         func_84359430(&sp68);
         sp64 = sp68.x;
         sp60 = sp68.y;
         sp5C = sp68.z;
         sp58 = 1.0f;
-        sp4C = (((D_84392580 % 3) * M_PI_F) / 3.0) + 0.5235987901687622;
+        sp4C = (((gEffectPhaseCounterA % 3) * M_PI_F) / 3.0) + 0.5235987901687622;
         sp54 = (f64)__sinf(sp4C);
         sp50 = (f64)__cosf(sp4C);
         Math_NormalizeVector(&sp58, &sp54, &sp50);
@@ -742,7 +742,7 @@ s32 func_8435AE08(void) {
                       2.0f, 13.0f, 0x28);
     }
 
-    if (D_84392580 >= 2) {
+    if (gEffectPhaseCounterA >= 2) {
         var_v1 = func_843684CC();
     } else {
         var_v1 = 0;
@@ -751,16 +751,16 @@ s32 func_8435AE08(void) {
 }
 
 void func_8435B048(void) {
-    if (D_84392580 >= 2) {
-        gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    if (gEffectPhaseCounterA >= 2) {
+        gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gDisplayListHead = func_84368560(gDisplayListHead);
     }
 }
 
 void func_8435B0B0(void) {
-    D_84392582 = 0;
-    func_84359650();
+    gEffectPhaseCounterB = 0;
+    InitEffectMatrix();
     func_84368AB0();
 }
 
@@ -774,17 +774,17 @@ s32 func_8435B0DC(void) {
     f32 sp4C;
     f32 sp48;
 
-    D_84392582++;
-    if (((D_84392582 >> 2) < 4) && !(D_84392582 & 3)) {
-        func_84359490(&sp60, &sp5C, &sp58, &sp54, &sp50, &sp4C);
-        sp48 = ((2 - (((D_84392582 >> 2) + 2) % 3)) * 0.5235988f) + 0.34906587f;
+    gEffectPhaseCounterB++;
+    if (((gEffectPhaseCounterB >> 2) < 4) && !(gEffectPhaseCounterB & 3)) {
+        CalcVectorATtoDM(&sp60, &sp5C, &sp58, &sp54, &sp50, &sp4C);
+        sp48 = ((2 - (((gEffectPhaseCounterB >> 2) + 2) % 3)) * 0.5235988f) + 0.34906587f;
         sp54 *= 7.0f * __cosf(sp48);
         sp50 = __sinf(sp48) * 10.0f;
         sp4C = 0.0f;
         func_84368C04(sp60, sp5C, sp58, sp54, sp50, 0.0f, 0xD0, 0xFF, 0xFF, 0x80, 0.8f, 2.0f, 4.0f, 0x28);
     }
 
-    if (D_84392582 >= 2) {
+    if (gEffectPhaseCounterB >= 2) {
         var_v1 = func_843692E8();
     } else {
         var_v1 = 0;
@@ -793,8 +793,8 @@ s32 func_8435B0DC(void) {
 }
 
 void func_8435B260(void) {
-    if (D_84392582 >= 2) {
-        gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    if (gEffectPhaseCounterB >= 2) {
+        gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gDisplayListHead = func_84369388(gDisplayListHead);
     }
@@ -809,10 +809,10 @@ void func_8435B2C8(void) {
     f32 sp48;
     f32 sp44;
 
-    D_843925C8 = 0;
-    func_84359650();
+    gParticleSpawnTimerI = 0;
+    InitEffectMatrix();
     func_843697F0();
-    func_84359490(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
+    CalcVectorATtoDM(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 5.0;
     sp48 *= 5.0;
     sp44 *= 5.0;
@@ -824,8 +824,8 @@ void func_8435B2C8(void) {
 }
 
 s32 func_8435B408(void) {
-    D_843925C8++;
-    if (D_843925C8 >= 0x32) {
+    gParticleSpawnTimerI++;
+    if (gParticleSpawnTimerI >= 0x32) {
         return -1;
     }
 
@@ -833,7 +833,7 @@ s32 func_8435B408(void) {
 }
 
 void func_8435B454(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84369FA0(gDisplayListHead);
 }
@@ -846,16 +846,16 @@ void func_8435B4A8(void) {
     f32 sp4C;
     f32 sp48;
 
-    func_84359490(&sp5C, &sp58, &sp54, &sp50, &sp4C, &sp48);
+    CalcVectorATtoDM(&sp5C, &sp58, &sp54, &sp50, &sp4C, &sp48);
     sp50 *= 6.0f;
     sp4C *= 6.0f;
     sp48 *= 6.0f;
-    func_843606D0(sp5C, sp58, sp54, sp50, sp4C, sp48, 8, 0xFF, 0xFF, 0xFF, 0xB4, 0.3f, 2.0f, 20.0f, 0x3C);
+    ParticleEmitter_AddSimple(sp5C, sp58, sp54, sp50, sp4C, sp48, 8, 0xFF, 0xFF, 0xFF, 0xB4, 0.3f, 2.0f, 20.0f, 0x3C);
 }
 
 void func_8435B580(void) {
     D_843925CA = 0;
-    func_84359650();
+    InitEffectMatrix();
     func_843605C0();
     func_8435B4A8();
 }
@@ -869,7 +869,7 @@ s32 func_8435B5B4(void) {
 }
 
 void func_8435B600(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
@@ -887,7 +887,7 @@ void func_8435B654(void) {
     f32 spA4;
     f32 spA0;
 
-    func_84359490(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
@@ -899,7 +899,7 @@ void func_8435B654(void) {
 }
 
 void func_8435B8E8(void) {
-    func_84359650();
+    InitEffectMatrix();
     func_8436BE70();
     func_8435B654();
 }
@@ -909,7 +909,7 @@ s32 func_8435B918(void) {
 }
 
 void func_8435B938(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
 }
@@ -925,7 +925,7 @@ void func_8435B98C(void) {
     f32 sp94;
     f32 sp90;
 
-    func_84359490(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
+    CalcVectorATtoDM(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
     sp94 += 0.2f * __cosf((RAND(10) * M_PI_F) / 10.0f);
     sp90 += 0.2f * __cosf((RAND(10) * M_PI_F) / 10.0f);
 
@@ -938,22 +938,22 @@ void func_8435B98C(void) {
 }
 
 void func_8435BB64(void) {
-    D_843925CC = 0;
-    func_84359650();
+    gParticleSpawnTimerH = 0;
+    InitEffectMatrix();
     func_8436D370();
     func_8435B98C();
 }
 
 s32 func_8435BB98(void) {
-    D_843925CC++;
-    if ((D_843925CC % 10) == 0) {
+    gParticleSpawnTimerH++;
+    if ((gParticleSpawnTimerH % 10) == 0) {
         func_8435B98C();
     }
     return func_8436DE60();
 }
 
 void func_8435BBEC(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436E3BC(gDisplayListHead);
 }
@@ -971,7 +971,7 @@ void func_8435BC40(void) {
     f32 spA4;
     f32 spA0;
 
-    func_84359490(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
@@ -984,7 +984,7 @@ void func_8435BC40(void) {
 }
 
 void func_8435BED8(void) {
-    func_84359650();
+    InitEffectMatrix();
     func_8436BE70();
     func_8435BC40();
 }
@@ -994,7 +994,7 @@ s32 func_8435BF08(void) {
 }
 
 void func_8435BF28(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
 }
@@ -1012,7 +1012,7 @@ void func_8435BF7C(void) {
     f32 spA4;
     f32 spA0;
 
-    func_84359490(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
@@ -1025,7 +1025,7 @@ void func_8435BF7C(void) {
 }
 
 void func_8435C220(void) {
-    func_84359650();
+    InitEffectMatrix();
     func_8436BE70();
     func_8435BF7C();
 }
@@ -1035,7 +1035,7 @@ s32 func_8435C250(void) {
 }
 
 void func_8435C270(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
 }
@@ -1051,7 +1051,7 @@ void func_8435C2C4(void) {
     f32 spA4;
     f32 spA0;
 
-    func_84359490(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
@@ -1061,7 +1061,7 @@ void func_8435C2C4(void) {
 }
 
 void func_8435C448(void) {
-    func_84359650();
+    InitEffectMatrix();
     func_8436BE70();
     func_8435C2C4();
 }
@@ -1071,7 +1071,7 @@ s32 func_8435C478(void) {
 }
 
 void func_8435C498(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
 }
@@ -1097,7 +1097,7 @@ void func_8435C4EC(void) {
     f32 spA4;
     f32 spA0;
 
-    func_84359490(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 12.0f;
     spA4 *= 12.0f;
     spA0 *= 12.0f;
@@ -1124,7 +1124,7 @@ void func_8435C790(void) {
     f32 sp94;
     f32 sp90;
 
-    func_84359490(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
+    CalcVectorATtoDM(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
 
     sp94 += (0.4f * __cosf((RAND(10) * M_PI_F) / 10));
     sp90 += (0.4f * __cosf((RAND(10) * M_PI_F) / 10));
@@ -1138,7 +1138,7 @@ void func_8435C790(void) {
 }
 
 void func_8435C96C(void) {
-    func_84359650();
+    InitEffectMatrix();
     func_8436BE70();
     func_8435C4EC();
     func_8436D370();
@@ -1146,8 +1146,8 @@ void func_8435C96C(void) {
 }
 
 s32 func_8435C9AC(void) {
-    D_843925D4++;
-    if ((D_843925D4 % 10) == 0) {
+    gParticleSpawnTimerD++;
+    if ((gParticleSpawnTimerD % 10) == 0) {
         func_8435C790();
     }
     func_8436DE60();
@@ -1155,7 +1155,7 @@ s32 func_8435C9AC(void) {
 }
 
 void func_8435CA08(void) {
-    gSPMatrix(gDisplayListHead++, &D_84392588, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_8436CE34(gDisplayListHead);
     gDisplayListHead = func_8436E3BC(gDisplayListHead);

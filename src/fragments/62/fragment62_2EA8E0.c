@@ -16,13 +16,13 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static unk_D_86002F34_00C D_8438E440;
+static CameraStruct D_8438E440;
 static unk_D_8690A610 D_8438E530;
 static GraphNode D_8438E550;
 static GraphNode D_8438E568;
 static GraphNode D_8438E580;
-static unk_D_86002F34_00C D_8438E598;
-static unk_D_86002F34_00C D_8438E688;
+static CameraStruct D_8438E598;
+static CameraStruct D_8438E688;
 u8* D_8438E778;
 u8* D_8438E77C;
 static void* D_8438E780;
@@ -191,7 +191,7 @@ void RenderBackgroundScreen(void) {
 }
 
 void FramebufferNode_Init(GraphNode* arg0, FramebufferImage* arg1) {
-    unk_D_86002F34_00C* sp2C = arg0->unk_0C;
+    CameraStruct* sp2C = arg0->unk_0C;
     unk_D_86002F34_00C_018 sp20;
 
     if (sp2C->unk_00.unk_01 & 0x10) {
@@ -246,7 +246,7 @@ void func_84300938(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, s32 arg5) {
 void RenderPokemonPortraits(GraphNode* arg0, FramebufferImage* arg1) {
     s32 temp_s2;
     s32 temp_s3;
-    unk_D_86002F34_00C* temp_v1 = arg0->unk_0C;
+    CameraStruct* temp_v1 = arg0->unk_0C;
     unk_D_86002F34_00C_018* ptr = &arg0->unk_0C->unk_18;
     s32 img;
 

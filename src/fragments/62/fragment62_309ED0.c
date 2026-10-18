@@ -329,16 +329,16 @@ void func_8431FF28(void) {
     gBattleState.unk_00->unk_3C = 1;
 }
 
-void Battle_SetPhase(UNUSED unk_D_86002F34_00C* arg0, s32 arg1) {
+void Battle_SetPhase(UNUSED CameraStruct* arg0, s32 arg1) {
     gBattleState.unk_00->unk_38 = arg1;
     gBattleState.unk_00->unk_20 = 0;
 }
 
-void func_8431FF5C(unk_D_86002F34_00C* arg0) {
+void func_8431FF5C(CameraStruct* arg0) {
     gBattleState.unk_00->unk_60 = arg0->unk_24.fovy;
 }
 
-void func_8431FF70(unk_D_86002F34_00C* arg0) {
+void func_8431FF70(CameraStruct* arg0) {
     arg0->unk_24.fovy = 30.0f;
     gBattleState.unk_00->unk_60 = 30.0f;
 }
@@ -533,7 +533,7 @@ s32 func_84320710(s32 arg0) {
     return 1;
 }
 
-void func_84320768(unk_D_86002F34_00C* arg0) {
+void func_84320768(CameraStruct* arg0) {
     gBattleState.unk_00->unk_2C = !gBattleState.unk_00->unk_2C;
     Battle_SetPhase(arg0, 5);
 }
@@ -650,7 +650,7 @@ void func_84320B48(void) {
     }
 }
 
-void func_84320C38(unk_D_86002F34_00C* arg0) {
+void func_84320C38(CameraStruct* arg0) {
     if ((gPlayer0ReadyFlag == 1) && (D_84390224 == 1)) {
         if (func_84308164(D_84390010[gBattleState.unk_00->unk_2C]) == 0) {
             func_84320768(arg0);
@@ -662,7 +662,7 @@ void func_84320C38(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84320CEC(unk_D_86002F34_00C* arg0) {
+void func_84320CEC(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
     gPlayer0ReadyFlag = UpdatePokemonHP(D_84390010[0]);
@@ -685,7 +685,7 @@ void func_84320CEC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84320E54(unk_D_86002F34_00C* arg0) {
+void func_84320E54(CameraStruct* arg0) {
     if ((gPlayer0ReadyFlag == 1) && (D_84390224 == 1)) {
         func_843184FC();
         func_84320CEC(arg0);
@@ -781,7 +781,7 @@ void func_8432113C(void) {
     gOpponentPlayer = D_84390010[idx];
 }
 
-void func_84321184(unk_D_86002F34_00C* arg0) {
+void func_84321184(CameraStruct* arg0) {
     AudioFrameUpdate(0);
     func_8431AFD0(arg0, 20.0f, 12800.0f);
     Battle_ResetSubstate();
@@ -793,7 +793,7 @@ void func_84321184(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20++;
 }
 
-void func_84321208(unk_D_86002F34_00C* arg0) {
+void func_84321208(CameraStruct* arg0) {
     unk_D_84390010_654* temp_t2 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_84390010_654* temp_t1 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     s16 sp2E = D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_01A;
@@ -880,7 +880,7 @@ s32 func_84321594(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_84321698(unk_D_86002F34_00C* arg0) {
+void func_84321698(CameraStruct* arg0) {
     if (func_8431F690(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) {
         func_84306200(D_84390010[!gBattleState.unk_00->unk_2C], 0x1800);
         ResetSoundDurations();
@@ -908,7 +908,7 @@ void func_84321698(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321860(unk_D_86002F34_00C* arg0) {
+void func_84321860(CameraStruct* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010_654* sp24 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_8438E7B0_A50* sp20 = &gAnimDataByPlayer[!gBattleState.unk_00->unk_2C]->unk_A70;
@@ -937,7 +937,7 @@ void func_84321860(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321A40(unk_D_86002F34_00C* arg0) {
+void func_84321A40(CameraStruct* arg0) {
     func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
     if (func_8431ADAC(0x19) != 0) {
         ResetSoundDurations();
@@ -945,7 +945,7 @@ void func_84321A40(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321AAC(unk_D_86002F34_00C* arg0) {
+void func_84321AAC(CameraStruct* arg0) {
     unk_D_84390010_654* temp_s0 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
     func_8431CEF0(arg0, D_84390010[!gBattleState.unk_00->unk_2C], 1);
@@ -966,7 +966,7 @@ void func_84321AAC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321B54(unk_D_86002F34_00C* arg0) {
+void func_84321B54(CameraStruct* arg0) {
     unk_D_84390010_654* sp24 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_84390010_654* sp20 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
@@ -1003,10 +1003,10 @@ void func_84321B54(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321D34(UNUSED unk_D_86002F34_00C* arg0) {
+void func_84321D34(UNUSED CameraStruct* arg0) {
 }
 
-void func_84321D3C(unk_D_86002F34_00C* arg0) {
+void func_84321D3C(CameraStruct* arg0) {
     unk_D_84390010* temp_s0;
     UNUSED s32 pad;
     f32 sp44;
@@ -1042,7 +1042,7 @@ void func_84321D3C(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321F2C(UNUSED unk_D_86002F34_00C* arg0) {
+void func_84321F2C(UNUSED CameraStruct* arg0) {
     if (func_8431ADAC(0x50) != 0) {
         gBattleState.unk_00->unk_40 = gBattleState.unk_00->unk_2C + 1;
         func_843184FC();
@@ -1050,14 +1050,14 @@ void func_84321F2C(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84321F74(UNUSED unk_D_86002F34_00C* arg0) {
+void func_84321F74(UNUSED CameraStruct* arg0) {
     if (func_8431ADAC(0x7D) != 0) {
         gBattleState.unk_00->unk_40 = gBattleState.unk_00->unk_2C + 1;
         func_8004B9C4(0x14);
     }
 }
 
-void func_84321FB8(unk_D_86002F34_00C* arg0) {
+void func_84321FB8(CameraStruct* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010_654* sp24 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_8438E7B0_A50* sp20 = &gAnimDataByPlayer[!gBattleState.unk_00->unk_2C]->unk_B10;
@@ -1088,7 +1088,7 @@ void func_84321FB8(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843221A8(unk_D_86002F34_00C* arg0) {
+void func_843221A8(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_84321698(arg0);
@@ -1132,7 +1132,7 @@ void func_843221A8(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84322284(UNUSED unk_D_86002F34_00C* arg0) {
+void func_84322284(UNUSED CameraStruct* arg0) {
     unk_D_84390010_654* sp1C = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
     if (func_8431ADAC(2) != 0) {
@@ -1150,7 +1150,7 @@ void func_84322284(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84322350(unk_D_86002F34_00C* arg0) {
+void func_84322350(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_84321698(arg0);
@@ -1199,7 +1199,7 @@ void func_843223FC(unk_D_84390010* arg0) {
     }
 }
 
-void func_843224C8(unk_D_86002F34_00C* arg0) {
+void func_843224C8(CameraStruct* arg0) {
     s32 sp24;
     unk_D_84390010_654* sp20 = &D_84390010[0]->unk_654;
     unk_D_84390010_654* sp1C = &D_84390010[1]->unk_654;
@@ -1226,13 +1226,13 @@ void func_843224C8(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20++;
 }
 
-void func_84322600(unk_D_86002F34_00C* arg0) {
+void func_84322600(CameraStruct* arg0) {
     if (func_8431D118(arg0, gCurrentPlayer, 0, 1) != 0) {
         Battle_SetPhase(arg0, 2);
     }
 }
 
-void func_84322640(unk_D_86002F34_00C* arg0) {
+void func_84322640(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_843224C8(arg0);
@@ -1248,13 +1248,13 @@ void func_84322698(unk_D_84390010* arg0) {
     arg0->unk_654.unk_30 = 0x800;
 }
 
-void func_843226A4(UNUSED unk_D_86002F34_00C* arg0) {
+void func_843226A4(UNUSED CameraStruct* arg0) {
     func_8432E9D8(2);
     func_84322698(gCurrentPlayer);
     func_8430203C(gCurrentPlayer);
 }
 
-void func_843226E0(unk_D_86002F34_00C* arg0) {
+void func_843226E0(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_84390010_654* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     s32 var_t0;
@@ -1310,7 +1310,7 @@ void func_843226E0(unk_D_86002F34_00C* arg0) {
     }
 }
 
-s32 func_843229A4(unk_D_86002F34_00C* arg0) {
+s32 func_843229A4(CameraStruct* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp20 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
@@ -1336,7 +1336,7 @@ s32 func_843229A4(unk_D_86002F34_00C* arg0) {
     return 1;
 }
 
-void func_84322B04(unk_D_86002F34_00C* arg0) {
+void func_84322B04(CameraStruct* arg0) {
     unk_D_84390010_654* sp1C = &gCurrentPlayer->unk_654;
 
     func_8430C718(&arg0->unk_24.fovy, 30.0f, 0.05f);
@@ -1419,7 +1419,7 @@ void func_84322B04(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84322E70(unk_D_86002F34_00C* arg0) {
+void func_84322E70(CameraStruct* arg0) {
     s32 temp_v0;
     s32 temp_t0;
 
@@ -1479,7 +1479,7 @@ void func_84322E70(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843230D8(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_843230D8(CameraStruct* arg0, s32 arg1) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     s32 sp18;
 
@@ -1546,7 +1546,7 @@ void func_843230D8(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-s32 func_843233E0(unk_D_86002F34_00C* arg0, s32 arg1) {
+s32 func_843233E0(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad;
     s32 sp18 = 0;
 
@@ -1575,7 +1575,7 @@ s32 func_843233E0(unk_D_86002F34_00C* arg0, s32 arg1) {
     return sp18;
 }
 
-void func_843234A0(UNUSED unk_D_86002F34_00C* arg0) {
+void func_843234A0(UNUSED CameraStruct* arg0) {
     func_84306584(gCurrentPlayer);
     func_84306200(gCurrentPlayer, 0x10);
     if (func_8432103C() == 0) {
@@ -1584,14 +1584,14 @@ void func_843234A0(UNUSED unk_D_86002F34_00C* arg0) {
     func_8432E9D8(1);
 }
 
-s32 func_843234FC(UNUSED unk_D_86002F34_00C* arg0) {
+s32 func_843234FC(UNUSED CameraStruct* arg0) {
     if (func_8431ADAC(func_843200B4(gCurrentPlayer)) != 0) {
         return 1;
     }
     return 0;
 }
 
-void func_84323538(unk_D_86002F34_00C* arg0) {
+void func_84323538(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_3C) {
         case 0:
             func_843233E0(arg0, 1);
@@ -1613,7 +1613,7 @@ void func_84323538(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843235F4(unk_D_86002F34_00C* arg0) {
+void func_843235F4(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_3C) {
         case 0:
             func_8431C71C(arg0, gCurrentPlayer);
@@ -1644,7 +1644,7 @@ void func_843235F4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323740(unk_D_86002F34_00C* arg0) {
+void func_84323740(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_3C) {
         case 0:
             if (func_8431ADAC(0xF) != 0) {
@@ -1666,7 +1666,7 @@ void func_84323740(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323808(unk_D_86002F34_00C* arg0) {
+void func_84323808(CameraStruct* arg0) {
     UNUSED s32 pad;
     unk_D_800FCB18* sp18 = &gCurrentPlayer->unk_654.unk_38;
 
@@ -1693,7 +1693,7 @@ void func_84323808(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323928(unk_D_86002F34_00C* arg0) {
+void func_84323928(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_3C) {
         case 0:
             func_8431AE5C();
@@ -1713,7 +1713,7 @@ void func_84323928(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843239EC(unk_D_86002F34_00C* arg0) {
+void func_843239EC(CameraStruct* arg0) {
     unk_D_84390010_654* temp_a2 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     u32 var_v1 = 0;
 
@@ -1769,7 +1769,7 @@ s32 func_84323B2C(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_84323B50(unk_D_86002F34_00C* arg0, s32* arg1, s32* arg2) {
+void func_84323B50(CameraStruct* arg0, s32* arg1, s32* arg2) {
     if ((*arg1 == 1) && (*arg2 == 1)) {
         func_843184FC();
         func_843087F8(gCurrentPlayer);
@@ -1782,7 +1782,7 @@ void func_84323B50(unk_D_86002F34_00C* arg0, s32* arg1, s32* arg2) {
     }
 }
 
-void func_84323BCC(unk_D_86002F34_00C* arg0) {
+void func_84323BCC(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_3C) {
         case 0:
             if (func_8431F7B0(gOpponentPlayer) == 0) {
@@ -1807,7 +1807,7 @@ void func_84323BCC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323CE4(unk_D_86002F34_00C* arg0) {
+void func_84323CE4(CameraStruct* arg0) {
     s32 sp1C;
 
     switch (gBattleState.unk_00->unk_3C) {
@@ -1837,7 +1837,7 @@ void func_84323CE4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323E44(unk_D_86002F34_00C* arg0) {
+void func_84323E44(CameraStruct* arg0) {
     unk_D_800FCB18* sp34 = &gCurrentPlayer->unk_654.unk_38;
     UNUSED s32 pad;
     UNUSED s16 pad2;
@@ -1869,7 +1869,7 @@ void func_84323E44(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84323FA0(unk_D_86002F34_00C* arg0) {
+void func_84323FA0(CameraStruct* arg0) {
     unk_D_800FCB18* sp24 = &gOpponentPlayer->unk_654.unk_38;
     UNUSED s32 pad;
     s32 sp1C;
@@ -1973,7 +1973,7 @@ void func_84324404(void) {
 void func_8432440C(void) {
 }
 
-void func_84324414(unk_D_86002F34_00C* arg0) {
+void func_84324414(CameraStruct* arg0) {
     unk_D_800FCB18* sp24 = &gCurrentPlayer->unk_654.unk_38;
     unk_D_8438E7B0_A50* temp_v1 = &gAnimDataByPlayer[IsPrimaryEntity(gOpponentPlayer)]->unk_000[sp24->unk_5A - 1];
     volatile s32 sp1C;
@@ -2088,7 +2088,7 @@ void func_84324414(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843248B8(unk_D_86002F34_00C* arg0) {
+void func_843248B8(CameraStruct* arg0) {
     func_8431FF70(arg0);
     func_84370ADC(D_84390010[!gBattleState.unk_00->unk_2C]);
     if (gBattleState.unk_00->unk_48 == 0x16) {
@@ -2104,7 +2104,7 @@ void func_843248B8(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84324988(unk_D_86002F34_00C* arg0) {
+void func_84324988(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_84322B04(arg0);
@@ -2120,7 +2120,7 @@ void func_84324988(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843249F8(unk_D_86002F34_00C* arg0) {
+void func_843249F8(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_84322B04(arg0);
@@ -2201,7 +2201,7 @@ s32 func_84324A68(void) {
     return 0;
 }
 
-void func_84324C28(unk_D_86002F34_00C* arg0) {
+void func_84324C28(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &gCurrentPlayer->unk_654.unk_38;
     unk_D_8438E7B0_A50* sp18 = &gAnimDataByPlayer[IsPrimaryEntity(gCurrentPlayer)]->unk_000[sp1C->unk_5A - 1];
 
@@ -2257,7 +2257,7 @@ void func_84324C28(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84324F1C(unk_D_86002F34_00C* arg0) {
+void func_84324F1C(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8431FF5C(arg0);
@@ -2288,7 +2288,7 @@ void func_84324F1C(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84325080(unk_D_86002F34_00C* arg0) {
+void func_84325080(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8431FF5C(arg0);
@@ -2319,7 +2319,7 @@ void func_84325080(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843251D4(unk_D_86002F34_00C* arg0) {
+void func_843251D4(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &gOpponentPlayer->unk_654.unk_38;
 
     switch (gBattleState.unk_00->unk_20) {
@@ -2405,7 +2405,7 @@ void func_843251D4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843255DC(unk_D_86002F34_00C* arg0) {
+void func_843255DC(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8431FF5C(arg0);
@@ -2434,7 +2434,7 @@ void func_843255DC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84325724(unk_D_86002F34_00C* arg0) {
+void func_84325724(CameraStruct* arg0) {
     UNUSED s32 pad[3];
     unk_D_800FCB18* sp30 = &gCurrentPlayer->unk_654.unk_38;
     unk_D_800FCB18* sp2C = &gOpponentPlayer->unk_654.unk_38;
@@ -2497,7 +2497,7 @@ void func_84325724(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84325A10(unk_D_86002F34_00C* arg0) {
+void func_84325A10(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_84390010_654* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
@@ -2555,7 +2555,7 @@ s32 func_84325CAC(unk_D_84390010* arg0) {
     func_84370ADC(arg0);
 }
 
-void func_84325CDC(unk_D_86002F34_00C* arg0) {
+void func_84325CDC(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8431FF5C(arg0);
@@ -2590,7 +2590,7 @@ void func_84325CDC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84325E94(unk_D_86002F34_00C* arg0) {
+void func_84325E94(CameraStruct* arg0) {
     unk_D_8438E7B0_A50* sp4C = &gAnimDataByPlayer[gBattleState.unk_00->unk_2C]->unk_B00;
     UNUSED s32 pad;
     Vec3f sp3C;
@@ -2644,7 +2644,7 @@ void func_84325E94(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843261CC(unk_D_86002F34_00C* arg0) {
+void func_843261CC(CameraStruct* arg0) {
     UNUSED s32 pad;
     f32 sp28;
     UNUSED s16 pad2;
@@ -2700,7 +2700,7 @@ void func_843261CC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84326460(unk_D_86002F34_00C* arg0) {
+void func_84326460(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_843230D8(arg0, 1);
@@ -2723,7 +2723,7 @@ void func_84326460(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84326570(unk_D_86002F34_00C* arg0) {
+void func_84326570(CameraStruct* arg0) {
     unk_D_84390010_654* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     switch (gBattleState.unk_00->unk_20) {
@@ -2754,7 +2754,7 @@ void func_84326570(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843266D4(unk_D_86002F34_00C* arg0) {
+void func_843266D4(CameraStruct* arg0) {
     func_8431FF70(arg0);
 
     switch (gBattleState.unk_00->unk_20) {
@@ -2804,7 +2804,7 @@ void func_843266D4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8432691C(unk_D_86002F34_00C* arg0) {
+void func_8432691C(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8431FF5C(arg0);
@@ -2834,7 +2834,7 @@ void func_8432691C(unk_D_86002F34_00C* arg0) {
 void func_84326A70(void) {
 }
 
-void func_84326A78(UNUSED unk_D_86002F34_00C* arg0) {
+void func_84326A78(UNUSED CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_8432056C();
@@ -2844,7 +2844,7 @@ void func_84326A78(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84326AC4(unk_D_86002F34_00C* arg0) {
+void func_84326AC4(CameraStruct* arg0) {
     UNUSED s32 pad;
     s32 idx = gBattleState.unk_00->unk_2C;
     unk_D_8438E7B0_A50* sp1C = &gAnimDataByPlayer[idx]->unk_A80;
@@ -2895,7 +2895,7 @@ void func_84326AC4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84326CB4(unk_D_86002F34_00C* arg0) {
+void func_84326CB4(CameraStruct* arg0) {
     unk_D_84390010_654* sp1C = &gOpponentPlayer->unk_654;
 
     switch (gBattleState.unk_00->unk_20) {
@@ -2941,7 +2941,7 @@ void func_84326CB4(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84326E84(unk_D_86002F34_00C* arg0) {
+void func_84326E84(CameraStruct* arg0) {
     unk_D_800FCB18* sp24 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_800FCB18* sp20 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
@@ -3036,7 +3036,7 @@ void func_84326E84(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8432734C(unk_D_86002F34_00C* arg0) {
+void func_8432734C(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
@@ -3092,7 +3092,7 @@ void func_8432734C(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_843275F8(unk_D_86002F34_00C* arg0) {
+void func_843275F8(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             func_843066E0(gCurrentPlayer);
@@ -3122,7 +3122,7 @@ void func_843275F8(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84327720(unk_D_86002F34_00C* arg0) {
+void func_84327720(CameraStruct* arg0) {
     unk_D_800FCB18* sp24 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_800FCB18* sp20 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
@@ -3209,7 +3209,7 @@ void func_84327720(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84327B90(unk_D_86002F34_00C* arg0) {
+void func_84327B90(CameraStruct* arg0) {
     unk_D_800FCB18* sp1C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_D_800FCB18* sp18 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
@@ -3255,7 +3255,7 @@ void func_84327D98(unk_D_84390010* arg0) {
     FinalizeStatusEffect(arg0);
 }
 
-void func_84327DC0(unk_D_86002F34_00C* arg0) {
+void func_84327DC0(CameraStruct* arg0) {
     unk_D_84390010_654* sp34 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_84390010* temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
     unk_D_800FCB18* sp2C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
@@ -3355,7 +3355,7 @@ void func_84327DC0(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84328250(unk_D_86002F34_00C* arg0) {
+void func_84328250(CameraStruct* arg0) {
     unk_D_84390010_654* sp3C = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     unk_D_84390010_654* sp38 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
     UNUSED s32 pad;
@@ -3456,7 +3456,7 @@ void func_84328250(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_84328734(unk_D_86002F34_00C* arg0) {
+void func_84328734(CameraStruct* arg0) {
     func_8432113C();
 
     switch (gBattleState.unk_00->unk_38) {

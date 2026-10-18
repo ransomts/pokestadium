@@ -1179,7 +1179,7 @@ s32 func_84B02F60(void) {
 
 void func_84B03064(void) {
     MemoryBlock* temp_v0;
-    unk_D_86002F34_00C* ptr;
+    CameraStruct* ptr;
     Fragment2_1GraphNode* ptr2;
     s32 i;
 

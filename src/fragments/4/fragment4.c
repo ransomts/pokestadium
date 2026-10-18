@@ -79,9 +79,9 @@ static Gfx gColorRectDL[] = {
 
 // Is this real?
 static u8 pad_D_87A01300[0x30];
-static unk_D_86002F34_00C* gProjectionInfo;
+static CameraStruct* gProjectionInfo;
 
-void SetProjectionInfo(unk_D_86002F34_00C* arg0) {
+void SetProjectionInfo(CameraStruct* arg0) {
     gProjectionInfo = arg0;
 }
 

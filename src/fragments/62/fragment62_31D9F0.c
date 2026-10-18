@@ -1,7 +1,7 @@
 #include "fragment62.h"
 #include "src/1C720.h"
 
-void func_84333130(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_FireBurstSmall(unk_D_8140E720* arg0, s16 arg1) {
     UNUSED s32 pad[3];
     s16 sp22 = func_8140C038(arg0);
 
@@ -51,7 +51,7 @@ void func_843332B4(unk_D_8140E720* arg0) {
 
     switch (arg0->unk_B2) {
         case 1:
-            func_84333130(arg0, sp2E);
+            Particle_FireBurstSmall(arg0, sp2E);
             break;
 
         case 2:
@@ -112,7 +112,7 @@ void func_843332B4(unk_D_8140E720* arg0) {
     }
 }
 
-void func_843334DC(unk_D_8140E720* arg0) {
+void Particle_FireBurstLarge(unk_D_8140E720* arg0) {
     UNUSED s32 pad[3];
     s16 sp22 = func_8140C038(arg0);
 
@@ -147,7 +147,7 @@ void func_84333570(unk_D_8140E720* arg0) {
 void func_84333600(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843334DC(arg0);
+            Particle_FireBurstLarge(arg0);
             break;
 
         case 2:
@@ -187,7 +187,7 @@ void func_84333600(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8433378C(unk_D_8140E720* arg0) {
+void Particle_SmokePuff(unk_D_8140E720* arg0) {
     UNUSED s32 pad[3];
     s16 sp22 = func_8140C038(arg0);
     s16 sp20 = func_8140C058(arg0);
@@ -234,10 +234,10 @@ void func_84333884(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84333928(unk_D_8140E720* arg0) {
+void Particle_SmokePuffHandler(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433378C(arg0);
+            Particle_SmokePuff(arg0);
             break;
 
         case 2:
@@ -473,7 +473,7 @@ void func_84333FBC(unk_D_8140E720* arg0) {
     }
 }
 
-void func_843340B8(unk_D_8140E720* arg0) {
+void Particle_Firework(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.5f);
@@ -489,7 +489,7 @@ void func_843340B8(unk_D_8140E720* arg0) {
 void func_84334154(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843340B8(arg0);
+            Particle_Firework(arg0);
             break;
 
         case 2:
@@ -517,7 +517,7 @@ void func_84334154(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84334294(unk_D_8140E720* arg0) {
+void Particle_Spark(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.5f);
@@ -534,7 +534,7 @@ void func_84334294(unk_D_8140E720* arg0) {
 void func_84334350(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84334294(arg0);
+            Particle_Spark(arg0);
             break;
 
         case 2:
@@ -730,7 +730,7 @@ void func_84334994(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84334A78(unk_D_8140E720* arg0, u8 arg1) {
+void Particle_SetColorByIndex(unk_D_8140E720* arg0, u8 arg1) {
     u16 sp1E;
 
     func_8140BEF8(arg0, arg1);
@@ -789,7 +789,7 @@ void func_84334B0C(unk_D_8140E720* arg0) {
     AreBothColorsSupported(arg0, sp1C, sp1A);
 }
 
-void func_84334BAC(unk_D_8140E720* arg0) {
+void Particle_Explosion(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
     s16 sp24 = func_8140C058(arg0);
     s16 sp22 = func_8140C040(arg0);
@@ -839,7 +839,7 @@ void func_84334BAC(unk_D_8140E720* arg0) {
 void func_84334D7C(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84334BAC(arg0);
+            Particle_Explosion(arg0);
             break;
 
         case 2:
@@ -862,7 +862,7 @@ void func_84334D7C(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84334E4C(unk_D_8140E720* arg0) {
+void Particle_Firefly(unk_D_8140E720* arg0) {
     Vec3f sp2C;
     s16 sp2A;
     s16 sp28;
@@ -887,7 +887,7 @@ void func_84334F84(unk_D_8140E720* arg0) {
 
     switch (arg0->unk_B2) {
         case 1:
-            func_84334E4C(arg0);
+            Particle_Firefly(arg0);
             break;
         case 2:
             if (func_8140BDD0(arg0) != 0) {
@@ -913,7 +913,7 @@ void func_84334F84(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8433507C(unk_D_8140E720* arg0) {
+void Particle_Sparkle(unk_D_8140E720* arg0) {
     Vec3s sp30;
     Vec3f sp24;
     s16 sp22;
@@ -942,7 +942,7 @@ void func_8433507C(unk_D_8140E720* arg0) {
 void func_843351C8(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433507C(arg0);
+            Particle_Sparkle(arg0);
             break;
 
         case 2:
@@ -1016,7 +1016,7 @@ void func_843353C4(unk_D_8140E720* arg0) {
     }
 }
 
-void func_843354E0(unk_D_8140E720* arg0) {
+void Particle_Star(unk_D_8140E720* arg0) {
     s16 sp36 = func_8140C038(arg0);
     Vec3s sp30;
     Vec3f sp24;
@@ -1033,7 +1033,7 @@ void func_843354E0(unk_D_8140E720* arg0) {
     func_8140A4F0(arg0, sp30);
     func_8140A5CC(arg0, sp30.x, sp30.y);
     Particle_SetRotationDeltaXY(arg0, 0, 0);
-    func_84334A78(arg0, (sp36 % 4) & 0xFF);
+    Particle_SetColorByIndex(arg0, (sp36 % 4) & 0xFF);
     func_8140BC20(arg0, 0xC8);
     func_8140BCA8(arg0, sp36 * 1);
     func_814083E8(arg0, 2);
@@ -1044,7 +1044,7 @@ void func_843354E0(unk_D_8140E720* arg0) {
 void func_84335668(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843354E0(arg0);
+            Particle_Star(arg0);
             break;
 
         case 2:
@@ -1066,7 +1066,7 @@ void func_84335668(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8433574C(unk_D_8140E720* arg0) {
+void Particle_Twinkle(unk_D_8140E720* arg0) {
     s16 sp36 = func_8140C038(arg0);
     Vec3s sp30;
     UNUSED s32 pad[3];
@@ -1078,7 +1078,7 @@ void func_8433574C(unk_D_8140E720* arg0) {
     sp30.y = RandomMod(0x10000);
     sp30.z = 0;
     func_8140A4F0(arg0, sp30);
-    func_84334A78(arg0, (sp36 % 4) & 0xFF);
+    Particle_SetColorByIndex(arg0, (sp36 % 4) & 0xFF);
     func_8140BC20(arg0, 0xC8);
     func_8140BCA8(arg0, 0);
     func_814083E8(arg0, 2);
@@ -1089,7 +1089,7 @@ void func_8433574C(unk_D_8140E720* arg0) {
 void func_84335848(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433574C(arg0);
+            Particle_Twinkle(arg0);
             break;
 
         case 2:
@@ -1116,7 +1116,7 @@ void func_84335848(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8433595C(unk_D_8140E720* arg0) {
+void Particle_Glitter(unk_D_8140E720* arg0) {
     s16 sp36 = func_8140C038(arg0);
     Vec3s sp30;
     UNUSED s32 pad[3];
@@ -1130,7 +1130,7 @@ void func_8433595C(unk_D_8140E720* arg0) {
     func_8140A4F0(arg0, sp30);
     func_8140A5CC(arg0, sp30.x, sp30.y);
     Particle_SetRotationDeltaXY(arg0, 0, 0);
-    func_84334A78(arg0, (sp36 % 4) & 0xFF);
+    Particle_SetColorByIndex(arg0, (sp36 % 4) & 0xFF);
     func_8140BC20(arg0, 0xC8);
     func_8140BCA8(arg0, sp36 * 3);
     func_81408348(arg0);
@@ -1140,7 +1140,7 @@ void func_8433595C(unk_D_8140E720* arg0) {
 void func_84335A84(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433595C(arg0);
+            Particle_Glitter(arg0);
             break;
 
         case 2:
@@ -1185,7 +1185,7 @@ void func_84335BA0(unk_D_8140E720* arg0) {
     func_8140A4F0(arg0, sp30);
     func_8140A5CC(arg0, sp30.x, sp30.y);
     Particle_SetRotationDeltaXY(arg0, 0, 0);
-    func_84334A78(arg0, (sp36 % 4) & 0xFF);
+    Particle_SetColorByIndex(arg0, (sp36 % 4) & 0xFF);
     func_8140BC20(arg0, 0xC8);
     func_8140BCA8(arg0, sp36 * 2);
     func_814083E8(arg0, 2);
@@ -1217,7 +1217,7 @@ void func_84335D10(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84335DEC(unk_D_8140E720* arg0) {
+void Particle_FireRing(unk_D_8140E720* arg0) {
     s16 temp_s1 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.75f);
@@ -1246,7 +1246,7 @@ void func_84335DEC(unk_D_8140E720* arg0) {
 void func_84335EF8(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84335DEC(arg0);
+            Particle_FireRing(arg0);
             break;
 
         case 2:
@@ -1272,7 +1272,7 @@ void func_84335EF8(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84336014(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
+void Particle_ExplosionVariant(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad[2];
     s16 sp26 = func_8140C038(arg0);
 
@@ -1314,7 +1314,7 @@ void func_8433617C(unk_D_8140E720* arg0, s32 arg1) {
 
     switch (arg0->unk_B2) {
         case 1:
-            func_84336014(arg0, arg1, temp_v0);
+            Particle_ExplosionVariant(arg0, arg1, temp_v0);
             break;
 
         case 2:
@@ -1605,9 +1605,9 @@ void func_84336A58(unk_D_8140E720* arg0) {
 
 void func_84336B8C(void) {
     func_8432EE5C(0, 0, 0x40, 0xA, 0xC8);
-    func_8432EC28(1, func_84334808, &gParticleEffectData[0x34], 0, 1, 0x10, D_843902E2, 0, 0);
-    func_8432EC28(2, func_84334994, &gParticleEffectData[0x3D], 0, 3, 0x11, D_843902E2, 0, 0);
-    func_8432EC28(4, func_843346BC, &gParticleEffectData[0x46], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432EC28(1, func_84334808, &gParticleEffectData[0x34], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
+    func_8432EC28(2, func_84334994, &gParticleEffectData[0x3D], 0, 3, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432EC28(4, func_843346BC, &gParticleEffectData[0x46], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 
 void func_84336C80(void) {
@@ -1630,9 +1630,9 @@ void func_84336DD8(void) {
 void func_84336EE8(void) {
     func_8432F8E8(0x64, 1);
     func_8432ED0C(0, 8, 6);
-    func_8432ECA0(0, 2, 0x3C, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432ECA0(0, 4, 0x1E, func_84333928, &gParticleEffectData[0x3D], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432ECA0(0, 4, 0x1E, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 2, 0x3C, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 4, 0x1E, Particle_SmokePuffHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 4, 0x1E, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 
 void func_84337000(void) {
@@ -1647,9 +1647,9 @@ void func_84337000(void) {
 
 void func_843371C0(void) {
     func_8432ED0C(0, 8, 6);
-    func_8432ECA0(0, 2, 0x3C, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 1, 0);
-    func_8432ECA0(0, 4, 0x1E, func_84333928, &gParticleEffectData[0x3D], 0, 1, 0x11, D_843902E2, 1, 0);
-    func_8432ECA0(0, 4, 0x1E, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 1, 0);
+    func_8432ECA0(0, 2, 0x3C, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
+    func_8432ECA0(0, 4, 0x1E, Particle_SmokePuffHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
+    func_8432ECA0(0, 4, 0x1E, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
 }
 
 void func_843372D8(void) {
@@ -1664,9 +1664,9 @@ void func_843372D8(void) {
 
 void func_843374A4(void) {
     func_8432ED0C(0, 8, 6);
-    func_8432ECA0(0, 2, 0x50, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432ECA0(0, 4, 0x28, func_84333928, &gParticleEffectData[0x3D], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432ECA0(0, 4, 0x28, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 2, 0x50, func_843332B4, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 4, 0x28, Particle_SmokePuffHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 4, 0x28, func_84333BA8, &gParticleEffectData[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 
 void func_843375B0(void) {

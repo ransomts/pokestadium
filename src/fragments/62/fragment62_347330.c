@@ -23,10 +23,10 @@ typedef struct unk_D_843951D0 {
 } unk_D_843951D0; // size >= 0x2410
 
 static unk_D_843925E0 D_843925E0[4];
-static s16 D_843951C0;
-static s16 D_843951C2;
+static s16 gWaterTexOffset0;
+static s16 gWaterTexOffset1;
 static s32 pad_D_843951C8[2];
-static unk_D_843951D0 D_843951D0;
+static unk_D_843951D0 gWaterHeightMap;
 static s16 D_843975E0;
 static s16 D_843975E2;
 static s16 D_843975E4;
@@ -176,7 +176,7 @@ static Gfx D_84388E40[] = {
     gsSPEndDisplayList(),
 };
 
-void func_8435CA70(void) {
+void ParticleEmitters_Reset(void) {
     unk_D_843925E0* ptr = &D_843925E0[0];
     s32 i;
 
@@ -186,7 +186,7 @@ void func_8435CA70(void) {
     }
 }
 
-void func_8435CAA8(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
+void ParticleEmitter_SetColors(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
                    s32 arg9) {
     arg0->unk_028 = arg1;
     arg0->unk_02C = arg2;
@@ -242,7 +242,7 @@ void func_8435CAE8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
             ptr->unk_008 = (arg4 * 0.0) + arg1;
             ptr->unk_01A = 0x3C;
             ptr->unk_020 = 1.5f;
-            func_8435CAA8(&D_843925E0[var_v1], 0xFF, 0xFF, 0xC8, 0x20, 0x20, 0xFF, 0x80, 0x80, 0xFF);
+            ParticleEmitter_SetColors(&D_843925E0[var_v1], 0xFF, 0xFF, 0xC8, 0x20, 0x20, 0xFF, 0x80, 0x80, 0xFF);
             ptr->unk_01E = func_8436E944();
             break;
 
@@ -251,7 +251,7 @@ void func_8435CAE8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
             ptr->unk_01A = 0x78;
             ptr->unk_008 = (arg4 * 100.0) + arg1;
             ptr->unk_020 = 1.5f;
-            func_8435CAA8(&D_843925E0[var_v1], 0xFF, 0xFF, 0xC8, 0xFF, 0x20, 0x20, 0x80, 0x80, 0);
+            ParticleEmitter_SetColors(&D_843925E0[var_v1], 0xFF, 0xFF, 0xC8, 0xFF, 0x20, 0x20, 0x80, 0x80, 0);
             break;
 
         default:
@@ -352,7 +352,7 @@ void func_8435CAE8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     }
 }
 
-void func_8435D1E8(unk_D_843925E0* arg0) {
+void ParticleEmitter_UpdateFade(unk_D_843925E0* arg0) {
     s32 var_v0;
 
     if (arg0->unk_01C >= 0) {
@@ -372,7 +372,7 @@ void func_8435D1E8(unk_D_843925E0* arg0) {
     }
 }
 
-s32 func_8435D24C(unk_D_843925E0* arg0) {
+s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
     unk_D_843925E0_430* temp_s0;
     unk_D_843925E0_430* temp_s1;
     unk_D_843925E0_430* ptr;
@@ -407,7 +407,7 @@ s32 func_8435D24C(unk_D_843925E0* arg0) {
     sp84 = arg0->unk_020 * tmp;
 
     var_s2 = &arg0->unk_050[0];
-    func_8435D1E8(arg0);
+    ParticleEmitter_UpdateFade(arg0);
 
     var_s5 = 0;
     sp94 = 0.0f;
@@ -524,18 +524,18 @@ s32 func_8435D24C(unk_D_843925E0* arg0) {
     return 0;
 }
 
-s32 func_8435D8C0(void) {
+s32 ParticleEmitters_Tick(void) {
     s32 i;
     s32 var_s2;
     unk_D_843925E0* ptr = &D_843925E0[0];
 
-    D_843951C0 = (D_843951C0 + 1) & 0x3FFF;
-    D_843951C2 = (D_843951C2 - 1) & 0x3FFF;
+    gWaterTexOffset0 = (gWaterTexOffset0 + 1) & 0x3FFF;
+    gWaterTexOffset1 = (gWaterTexOffset1 - 1) & 0x3FFF;
     var_s2 = -1;
 
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
-            if (func_8435D24C(ptr) == 0) {
+            if (ParticleEmitter_Update(ptr) == 0) {
                 var_s2 = 0;
             } else {
                 ptr->unk_000 = 0;
@@ -546,7 +546,7 @@ s32 func_8435D8C0(void) {
     return var_s2;
 }
 
-Gfx* func_8435D97C(Gfx* arg0, unk_D_843925E0* arg1) {
+Gfx* ParticleEmitter_BuildVertexBuffer(Gfx* arg0, unk_D_843925E0* arg1) {
     s32 i;
     Vtx* temp_v0 = GfxAlloc(sizeof(Vtx) * 62);
     Vtx* vtx = temp_v0;
@@ -567,7 +567,7 @@ Gfx* func_8435D97C(Gfx* arg0, unk_D_843925E0* arg1) {
     return arg0;
 }
 
-Gfx* func_8435DB14(Gfx* arg0) {
+Gfx* ParticleEmitters_Render(Gfx* arg0) {
     static Gfx D_84388E88[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -615,12 +615,12 @@ Gfx* func_8435DB14(Gfx* arg0) {
 
     gSPDisplayList(arg0++, D_84388E88);
     gDPPipeSync(arg0++);
-    gDPLoadTextureTile_4b(arg0++, D_843920C0[0x43], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureTile_4b(arg0++, gWaterTexture[0x43], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gDPSetTileSize(arg0++, G_TX_RENDERTILE, D_843951C0, 0, (D_843951C0 + 0x1F), 0x001F);
-    gDPLoadMultiTile_4b(arg0++, D_843920C0[0x44], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffset0, 0, (gWaterTexOffset0 + 0x1F), 0x001F);
+    gDPLoadMultiTile_4b(arg0++, gWaterTexture[0x44], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gDPSetTileSize(arg0++, 1, D_843951C2, 0, (D_843951C2 + 0x1F), 0x001F);
+    gDPSetTileSize(arg0++, 1, gWaterTexOffset1, 0, (gWaterTexOffset1 + 0x1F), 0x001F);
 
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
@@ -630,12 +630,12 @@ Gfx* func_8435DB14(Gfx* arg0) {
             gSPClearGeometryMode(arg0++, G_CULL_BACK);
             gSPSetGeometryMode(arg0++, G_CULL_FRONT);
 
-            arg0 = func_8435D97C(arg0, ptr);
+            arg0 = ParticleEmitter_BuildVertexBuffer(arg0, ptr);
 
             gSPClearGeometryMode(arg0++, G_CULL_FRONT);
             gSPSetGeometryMode(arg0++, G_CULL_BACK);
 
-            arg0 = func_8435D97C(arg0, ptr);
+            arg0 = ParticleEmitter_BuildVertexBuffer(arg0, ptr);
         }
     }
 
@@ -650,7 +650,7 @@ Gfx* func_8435DB14(Gfx* arg0) {
 }
 
 void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
-    unk_D_86002F34_00C* spB4 = func_8432FD64();
+    CameraStruct* spB4 = func_8432FD64();
     f32 spB0;
     f32 spAC;
     f32 spA8;
@@ -778,21 +778,21 @@ f32 func_8435E158(f32 arg0, f32 arg1, f32* arg2) {
         var_a0 = 0xE;
     }
 
-    spC0 = D_843951D0.unk_1010[var_v1][var_a0].unk_00;
-    spBC = D_843951D0.unk_1010[var_v1][var_a0].unk_04;
-    spB8 = D_843951D0.unk_1010[var_v1][var_a0].unk_08;
-    spB4 = D_843951D0.unk_1010[var_v1 + 1][var_a0].unk_00;
-    spB0 = D_843951D0.unk_1010[var_v1 + 1][var_a0].unk_04;
-    spAC = D_843951D0.unk_1010[var_v1 + 1][var_a0].unk_08;
-    spA8 = D_843951D0.unk_1010[var_v1][var_a0 + 1].unk_00;
-    spA4 = D_843951D0.unk_1010[var_v1][var_a0 + 1].unk_04;
-    spA0 = D_843951D0.unk_1010[var_v1][var_a0 + 1].unk_08;
-    sp9C = D_843951D0.unk_1010[var_v1 + 1][var_a0 + 1].unk_00;
-    sp98 = D_843951D0.unk_1010[var_v1 + 1][var_a0 + 1].unk_04;
-    sp94 = D_843951D0.unk_1010[var_v1 + 1][var_a0 + 1].unk_08;
+    spC0 = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_00;
+    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_04;
+    spB8 = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_08;
+    spB4 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_00;
+    spB0 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_04;
+    spAC = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_08;
+    spA8 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_00;
+    spA4 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_04;
+    spA0 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_08;
+    sp9C = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_00;
+    sp98 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_04;
+    sp94 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_08;
 
     temp_fv0 = spB4 - arg0;
-    spBC = D_843951D0.unk_1010[var_v1][var_a0].unk_04;
+    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_04;
     temp_fv1 = spAC - arg1;
     temp_fa0 = sp9C - arg0;
     temp_fa1 = sp94 - arg1;
@@ -829,7 +829,7 @@ f32 func_8435E158(f32 arg0, f32 arg1, f32* arg2) {
     return spC4;
 }
 
-s32 func_8435E530(void) {
+s32 WaterHeightMap_Update(void) {
     s32 i;
     s32 j;
     unk_D_843951D0_1010* ptr;
@@ -837,21 +837,21 @@ s32 func_8435E530(void) {
     s32 temp_v0;
     f32 tmp;
 
-    D_843951D0.unk_0000++;
-    if (D_843951D0.unk_000A < D_843951D0.unk_0000) {
+    gWaterHeightMap.unk_0000++;
+    if (gWaterHeightMap.unk_000A < gWaterHeightMap.unk_0000) {
         return -1;
     }
 
-    if (D_843951D0.unk_0000 < 0x3C) {
-        ptr = &D_843951D0.unk_1010[0][0];
+    if (gWaterHeightMap.unk_0000 < 0x3C) {
+        ptr = &gWaterHeightMap.unk_1010[0][0];
         for (j = 0; j < 16; j++) {
-            ptr->unk_04 += (30.0 * __sinf((((D_843951D0.unk_0000 + j) % 15) * TWO_PI_F) / 15.0f)) + 10.0;
+            ptr->unk_04 += (30.0 * __sinf((((gWaterHeightMap.unk_0000 + j) % 15) * TWO_PI_F) / 15.0f)) + 10.0;
             ptr++;
         }
-        D_843951D0.unk_0004 += 0.001;
+        gWaterHeightMap.unk_0004 += 0.001;
     } else {
-        if (((D_843951D0.unk_0000 - 0x3C) % 90) < 0x46) {
-            ptr = &D_843951D0.unk_1010[0][2];
+        if (((gWaterHeightMap.unk_0000 - 0x3C) % 90) < 0x46) {
+            ptr = &gWaterHeightMap.unk_1010[0][2];
             for (j = 0; j < 13; j++) {
                 if (0) {}
                 if (ptr->unk_04 > 0.0) {
@@ -863,20 +863,20 @@ s32 func_8435E530(void) {
                 ptr++;
             }
         } else {
-            ptr = &D_843951D0.unk_1010[0][2];
+            ptr = &gWaterHeightMap.unk_1010[0][2];
             for (j = 0; j < 13; j++) {
                 ptr->unk_04 += 30.0;
                 ptr++;
             }
         }
 
-        D_843951D0.unk_0004 += 0.04;
-        if (D_843951D0.unk_0004 > 0.3) {
-            D_843951D0.unk_0004 = 0.3f;
+        gWaterHeightMap.unk_0004 += 0.04;
+        if (gWaterHeightMap.unk_0004 > 0.3) {
+            gWaterHeightMap.unk_0004 = 0.3f;
         }
     }
 
-    ptr = &D_843951D0.unk_1010[0][0];
+    ptr = &gWaterHeightMap.unk_1010[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
             temp_v0 = 1;
@@ -885,29 +885,29 @@ s32 func_8435E530(void) {
             var_fv0 = 0.0f;
             if (i > 0) {
                 temp_v0 = 2;
-                var_fv0 += D_843951D0.unk_1010[i - 1][j].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i - 1][j].unk_04 - tmp;
             }
 
             if ((!ptr) && (!ptr)) {}
 
             if (j > 0) {
-                var_fv0 += D_843951D0.unk_1010[i][j - 1].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i][j - 1].unk_04 - tmp;
             }
 
             if (j < 0xF) {
-                var_fv0 += D_843951D0.unk_1010[i][j + 1].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i][j + 1].unk_04 - tmp;
             }
 
             temp_v0++;
             temp_v0++;
             if (temp_v0) {}
 
-            ptr->unk_0C = (var_fv0 * D_843951D0.unk_0004) + tmp;
+            ptr->unk_0C = (var_fv0 * gWaterHeightMap.unk_0004) + tmp;
             ptr++;
         }
     }
 
-    ptr = &D_843951D0.unk_1010[0][0];
+    ptr = &gWaterHeightMap.unk_1010[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++, ptr++) {
             ptr->unk_04 = ptr->unk_0C;
@@ -920,17 +920,17 @@ s32 func_8435E530(void) {
     return 0;
 }
 
-void func_8435EB9C(s32 arg0, s16 arg1, s16 arg2) {
+void WaterHeightMap_Init(s32 arg0, s16 arg1, s16 arg2) {
     s32 i;
     s32 j;
     unk_D_843951D0_1010* ptr;
 
-    D_843951D0.unk_000A = arg2;
-    D_843951D0.unk_0000 = 0;
-    D_843951D0.unk_0004 = 0.0f;
-    D_843951D0.unk_0008 = arg1;
+    gWaterHeightMap.unk_000A = arg2;
+    gWaterHeightMap.unk_0000 = 0;
+    gWaterHeightMap.unk_0004 = 0.0f;
+    gWaterHeightMap.unk_0008 = arg1;
 
-    ptr = &D_843951D0.unk_1010[0][0];
+    ptr = &gWaterHeightMap.unk_1010[0][0];
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++, ptr++) {
@@ -960,7 +960,7 @@ void func_8435EB9C(s32 arg0, s16 arg1, s16 arg2) {
 
     if (arg1 > 0) {
         for (i = 0; i < arg1; i++) {
-            func_8435E530();
+            WaterHeightMap_Update();
         }
 
         func_8435DED0(&D_843975E8, 50.0f);
@@ -969,7 +969,7 @@ void func_8435EB9C(s32 arg0, s16 arg1, s16 arg2) {
 
 s32 func_8435EDF8(void) {
     UNUSED s32 pad[2];
-    s32 sp1C = func_8435E530();
+    s32 sp1C = WaterHeightMap_Update();
 
     D_843975E0 = (D_843975E0 - 1) & 0x3FFF;
     D_843975E2 = (D_843975E2 - 1) & 0x3FFF;
@@ -981,7 +981,7 @@ s32 func_8435EDF8(void) {
 
 static s32 pad_D_84388F78[2] = { 0, 0 };
 
-Gfx* func_8435EE78(Gfx* arg0) {
+Gfx* WaterSurface_Render(Gfx* arg0) {
     static Gfx D_84388F80[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1037,9 +1037,9 @@ Gfx* func_8435EE78(Gfx* arg0) {
     s32 idx1;
     s32 idx2;
 
-    D_843951D0.unk_000C = GfxAlloc(sizeof(Vtx) * 16 * 16);
-    vtx = D_843951D0.unk_000C;
-    var_v1 = &D_843951D0.unk_1010[0][0];
+    gWaterHeightMap.unk_000C = GfxAlloc(sizeof(Vtx) * 16 * 16);
+    vtx = gWaterHeightMap.unk_000C;
+    var_v1 = &gWaterHeightMap.unk_1010[0][0];
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
@@ -1057,11 +1057,11 @@ Gfx* func_8435EE78(Gfx* arg0) {
     gSPDisplayList(arg0++, D_84388F80);
     gDPPipeSync(arg0++);
 
-    if (D_843951D0.unk_0000 < 0xA) {
+    if (gWaterHeightMap.unk_0000 < 0xA) {
         var_a2 = 0;
-        var_t0 = (D_843951D0.unk_0000 * 0xFF) / 10;
-    } else if (D_843951D0.unk_0000 < 0x14) {
-        var_a2 = ((D_843951D0.unk_0000 * 0xFF) - 0x9F6) / 10;
+        var_t0 = (gWaterHeightMap.unk_0000 * 0xFF) / 10;
+    } else if (gWaterHeightMap.unk_0000 < 0x14) {
+        var_a2 = ((gWaterHeightMap.unk_0000 * 0xFF) - 0x9F6) / 10;
         var_t0 = 0xFF;
     } else {
         var_a2 = 0xFF;
@@ -1072,15 +1072,15 @@ Gfx* func_8435EE78(Gfx* arg0) {
     gDPSetEnvColor(arg0++, 0, 0x64, 0xC8, var_a2);
     gDPSetBlendColor(arg0++, 255, 255, 255, 255);
 
-    gDPLoadTextureTile_4b(arg0++, D_843920C0[0xB8], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureTile_4b(arg0++, gWaterTexture[0xB8], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, D_843975E0, -D_843975E0, D_843975E0 + 0x1F, 0x1F - D_843975E0);
 
-    gDPLoadMultiTile_4b(arg0++, D_843920C0[0xB9], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gWaterTexture[0xB9], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPSetTileSize(arg0++, 1, D_843975E2, D_843975E2, D_843975E2 + 0x1F, D_843975E2 + 0x1F);
 
-    vtx = D_843951D0.unk_000C;
+    vtx = gWaterHeightMap.unk_000C;
     for (i = 0; i < 15; i++) {
         for (j = 0; j < 15; j++) {
             idx1 = (i + 0) * 16 + j;
@@ -1131,10 +1131,10 @@ Gfx* func_8435EE78(Gfx* arg0) {
         temp_v0[3].v.tc[1] = 0x3E0;
 
         gSPDisplayList(arg0++, D_84388FF8);
-        gDPLoadTextureTile_4b(arg0++, D_843920C0[0xBA], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gDPLoadTextureTile_4b(arg0++, gWaterTexture[0xBA], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                               G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 15, G_TX_NOLOD);
         gDPSetTileSize(arg0++, G_TX_RENDERTILE, D_843975E4, 0, D_843975E4 + 0x1F, 0x001F);
-        gDPLoadMultiTile_4b(arg0++, D_843920C0[0xBA], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+        gDPLoadMultiTile_4b(arg0++, gWaterTexture[0xBA], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 14, G_TX_NOLOD);
         gDPSetTileSize(arg0++, 1, -D_843975E4, 0, 0x1F - D_843975E4, 0x001F);
         gSPVertex(arg0++, temp_v0, 4, 0);

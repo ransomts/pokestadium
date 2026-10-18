@@ -1961,7 +1961,7 @@ void func_8140C1E4(unk_D_8140E720* arg0, s16 arg1) {
     }
 }
 
-void func_8140C204(unk_D_86002F34_00C* arg0) {
+void func_8140C204(CameraStruct* arg0) {
     s32 i;
     unk_D_8140E720* var_s0;
     unk_D_8140E720* var_s2 = gParticleInstances;
@@ -1980,7 +1980,7 @@ void func_8140C204(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8140C2D8(unk_D_86002F34_00C* arg0) {
+void func_8140C2D8(CameraStruct* arg0) {
     s32 i;
     unk_D_8140E720* var_s0 = gParticleInstances;
 
@@ -2038,7 +2038,7 @@ void func_8140C4CC(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8140C530(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+void func_8140C530(unk_D_8140E720* arg0, CameraStruct* arg1) {
     UNUSED s32 pad;
     unk_D_8140E728_01C_004_1* sp18 = arg0->unk_0C->unk_04.a;
 
@@ -2056,5 +2056,5 @@ void func_8140C530(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     }
 }
 
-void func_8140C5BC(UNUSED unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+void func_8140C5BC(UNUSED unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
 }

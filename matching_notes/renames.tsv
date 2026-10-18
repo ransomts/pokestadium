@@ -3144,3 +3144,142 @@ func_84332D68	Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20	w20		Sets pr
 func_84332DB0	Fragment_ProcessBC20WithCDMode	w20		Switches on unk_B2 to render with CD-specific BC20, BDD0, or conditional BC2C, then renders or sets node color RGBA	applied@66726e7
 func_84332E2C	Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third	w20		Sets primary color from palette, calls func_8140BC20 with 0, then renders with func_814081BC	applied@66726e7
 D_8140E538	gPrimColorPalette	w20		Global array of primary colors used for random and fixed palette selections in fragment rendering	applied@66726e7
+func_84333130	Particle_FireBurstSmall	w21		Uses SetPrimEnvColorFromPair with palette indices 0x17/0x18, sets speed to 2.5f and scales by sp22*2, indicating a small fire burst effect	applied@966d7f0
+func_843334DC	Particle_FireBurstLarge	w21		Uses SetPrimEnvColorFromPair 0x17, speed from D_84392058[0] and similar scaling, suggesting a larger fire burst variant	applied@966d7f0
+func_8433378C	Particle_SmokePuff	w21		Selects prim/env color 0x1A or 6 based on state, sets speed to 2.0f and applies upward motion, typical of a smoke puff	applied@966d7f0
+func_84333928	Particle_SmokePuffHandler	w21		Dispatches based on arg0->unk_B2 calling Particle_SmokePuff and related functions, acting as the smoke puff state machine	applied@966d7f0
+func_843340B8	Particle_Firework	w21		Applies vertical acceleration (2.0f), random Y rotation delta, and prim/env color 0x1A, matching firework particle behavior	applied@966d7f0
+func_84334294	Particle_Spark	w21		Uses func_81408CA0(10.0f) for upward motion, acceleration Y 1.0f, and rotation delta derived from sp26, characteristic of spark particles	applied@966d7f0
+func_84334A78	Particle_SetColorByIndex	w21		Maps input arg1 values 0?3 to specific palette pairs (0x1A,0x2A,0x24,0x2C) and applies them via SetPrimEnvColorFromPair	applied@966d7f0
+func_84334BAC	Particle_Explosion	w21		Positions particle based on sp26 cases, scales with sp22, and sets prim/env color from sp24, fitting an explosion effect	applied@966d7f0
+func_84334E4C	Particle_Firefly	w21		Randomizes position, speed (3.0f?4.0f), and uses prim/env color from func_8140C058, typical of firefly?like particles	applied@966d7f0
+func_8433507C	Particle_Sparkle	w21		Generates random vector, speed 0.5f, and sets prim/env color from sp20, matching a sparkle particle implementation	applied@966d7f0
+func_843354E0	Particle_Star	w21		Selects color via func_84334A78 based on (sp36 % 4) and scales by sp36, consistent with a star?shaped particle effect	applied@966d7f0
+func_8433574C	Particle_Twinkle	w21		Uses func_84334A78 for color, speed 1.0f, and no scaling, representing a twinkling particle	applied@966d7f0
+func_8433595C	Particle_Glitter	w21		Applies color via func_84334A78, speed 1.0f, and scales by sp36*3, indicating a glittering particle effect	applied@966d7f0
+func_84335DEC	Particle_FireRing	w21		SetPrimEnvColorFromPair 0x17, speed 0.75f, and scales by temp_s1*4, typical of a circular fire ring particle	applied@966d7f0
+func_84336014	Particle_ExplosionVariant	w21		Takes arg1 to choose speed/random range and arg2 to select color (0x1A or 6), then applies acceleration and scaling, defining a variant explosion particle	applied@966d7f0
+func_84338A2C	ParticleEffect_SmallGlow	w21		SetPrimEnvColorFromPair and modest size scaling indicate a subtle glowing particle effect, likely used for small glows.	applied@966d7f0
+func_84338C84	ParticleEffect_DirectionalBurst	w21		The switch on sp2E adjusts BF4C/BFEC offsets and sets a fixed speed, suggesting a burst directed along one of four angles.	applied@966d7f0
+func_84338D28	ParticleEffect_FastFlash	w21		B938 0.7f with a high speed of 12.0f and full intensity color (0x28) imply a quick, bright flash particle.	applied@966d7f0
+func_84338D84	ParticleEffect_ComplexExplosion	w21		This function creates multiple particle nodes (including func_84338B44) and sets up a layered effect, typical of an explosion.	applied@966d7f0
+func_84338E6C	ParticleEffect_SlowGlow	w21		Low speed (0.5f) and gentle color (0x27) with small scaling suggest a slow, lingering glow particle.	applied@966d7f0
+func_84338EF0	ParticleEffect_FadeOut	w21		Case 2 reduces scale and color intensity (BC2C 0x20,0xC) and calls func_81408E90 with -0.5f, indicating a fading effect.	applied@966d7f0
+func_84338FA4	ParticleEffect_GravityVariant	w21		Calls func_81408F38 with different gravity values based on sp26, indicating variants with differing gravity strength.	applied@966d7f0
+func_8433903C	ParticleEffect_GravityWithColor	w21		Combines gravity adjustment (func_81408F38) with a color check (BC2C) to produce a colored gravity-affected particle.	applied@966d7f0
+func_843390E0	ParticleEffect_HighSpeedFlash	w21		B938 0.2f, speed 10.0f, full intensity color (0x28) and BC20 0xFF denote a fast, bright flash particle.	applied@966d7f0
+func_8433958C	ParticleEffect_LargeBurst	w21		B938 1.0f, B95C 2.0f, B974 0.75f and color from func_8140C058 create a large, prominent burst effect.	applied@966d7f0
+func_84339628	ParticleEffect_MediumBurst	w21		B938 0.4f, B95C 0.7f, B974 0.1f with palette-derived color indicate a medium-sized burst particle.	applied@966d7f0
+func_84339710	ParticleEffect_RotatingBurst	w21		Sets rotation Z randomly and uses moderate speed, typical for a burst that spins around its axis.	applied@966d7f0
+func_84339874	ParticleEffect_LargeFireball	w21		B938 2.0f, func_81408F38 10.0f, and full color intensity (0xFF) match a large fireball-like particle.	applied@966d7f0
+func_84339A30	ParticleEffect_TimedFireball	w21		Uses timer mask checks (gTimerMask4) to conditionally apply random spin, indicating a fireball with timed behavior.	applied@966d7f0
+D_843902E2	gParticleTexture_Default	w21		Passed as a texture pointer to many particle effect initializations, suggesting it is the default particle texture.	applied@966d7f0
+func_8433FD80	Particle_SetWhiteColor	w21		Sets the particle's primary color to white (0xFF,0xFF,0xFF) and calls init functions.	applied@966d7f0
+func_8433FDC0	Particle_StateHandler	w21		Uses arg0->unk_B2 as a state machine and ends with func_8140B7C8(arg0,32.0f,0x400), indicating it handles particle state transitions.	applied@966d7f0
+func_8433FE80	Particle_InitializeBasic	w21		Initializes many particle properties (acceleration, random rotations, speed) after reading a value with func_8140C038, suggesting a basic particle initializer.	applied@966d7f0
+func_8433FF44	Particle_UpdateStateAndScale	w21		Switches on arg0->unk_B2 and arg0->unk_B8 to adjust particle behavior and scaling, acting as an update routine.	applied@966d7f0
+func_843400BC	Particle_SetPaletteColors24	w21		Sets both primary and environment colors from palette index 0x24 after configuring speed and acceleration, indicating palette?based color setup.	applied@966d7f0
+func_8434016C	Particle_HandleCollisionAndFade	w21		After handling states, checks func_81408368 and calls func_81409D0C and func_8140A5B0, implying collision handling and fade out.	applied@966d7f0
+func_84340230	Particle_InitializeTwirl	w21		Configures acceleration, random rotations, speed and uses func_8140BF4C and func_81400B4C, typical of a twirling particle effect initializer.	applied@966d7f0
+func_843403D8	Particle_UpdateComplexMovement	w21		Contains multiple state cases, modifies position vectors and rotation deltas, and updates based on arg0->unk_7C.y, indicating complex movement updates.	applied@966d7f0
+func_84340690	Particle_InitializeBurst	w21		Sets acceleration, random rotations, speed and uses func_8140BF4C with random ranges, characteristic of a burst?type particle initializer.	applied@966d7f0
+func_84340940	Particle_UpdateBurstState	w21		Handles state cases, uses sp26 from func_8140C040 and adjusts particle lifetime with func_8140BCA8, representing a burst state updater.	applied@966d7f0
+func_84340ACC	RegisterParticleEffects_62_32A640	w21		Calls func_8432EC28 with various IDs and the effect functions, registering particle effects for this fragment.	applied@966d7f0
+func_84340CB0	RegisterParticleEffect_ComplexMovement	w21		Calls func_8432ECA0 with func_843403D8 and effect data, registering the complex movement particle effect.	applied@966d7f0
+func_84340D14	RegisterParticleEffect_Burst	w21		Calls func_8432ECA0 with func_84340940 and effect data, registering the burst particle effect.	applied@966d7f0
+func_84340E40	ParticleEffect_ConfigureState	w21		ParticleEffect_ConfigureState contains a large switch on func_8140C058 that selects animation IDs, colors, speeds and other parameters, configuring a particle effect based on its state.	applied@966d7f0
+func_8434F3E0	Particle_SetDirectionOffsets	w21		Uses func_8140C040 to select case and calls func_8140A578/func_8140A594/func_8140A5B0 to set positional offsets before scaling and color, indicating direction?based offset setup	applied@966d7f0
+func_8434F554	Particle_HandleState	w21		Dispatches on arg0->unk_B2 and calls state?specific functions (e.g., func_8434F3E0) to configure particle behavior, showing it handles particle state transitions	applied@966d7f0
+func_8434F610	Particle_SetupSpecialOffsets	w21		Similar to func_8434F3E0 but with different offset values and calls SetPrimEnvColorFromPair, indicating a special offset configuration for particles	applied@966d7f0
+func_8434FBE4	Particle_HandleCollisionResponse	w21		Reads sp26 = func_8140C040 and selects behavior based on arg0->unk_B2, calling functions that adjust position and color, suggesting it handles collision?related particle response	applied@966d7f0
+func_84351CE4	ParticleNode_CreateExplosion	w21		Calls ParticleNode_CreateMultiple with func_84351BCC and &gParticleEffectData[0x42], creating multiple particles for an explosion effect	applied@966d7f0
+func_84352A8C	ParticleEffect_FireworkColors	w21		Switches on func_8140C058 to set primitive/environment colors and speeds for various cases, typical of firework color variations	applied@966d7f0
+func_84353F08	ParticleEffect_ApplyModeSpecifics	w21		Adjusts particle parameters (speed, color, acceleration) based on func_843081BC(arg0->unk_10) mode values, indicating mode?specific particle tweaks	applied@966d7f0
+func_843540FC	ParticleEffect_BasicSetup	w21		Uses sp2C = func_8140C040 to select speed, color, and size, then sets prim/env colors and texture parameters, a generic particle setup routine	applied@966d7f0
+func_84355B08	ParticleEffect_Sparkle	w21		Sets prim color from palette 0xA, env color from palette 0x35, and uses high speed (100.0f) with a short lifetime, matching a sparkle particle	applied@966d7f0
+func_84355D70	ParticleEffect_ExplosionVariant	w21		Handles multiple arg0->unk_B2 cases, invoking func_84355C54 or other functions, and adjusts acceleration based on particle state, indicating an explosion variant effect	applied@966d7f0
+func_84355F88	ParticleEffect_ConfigA	w21		Calls func_8432EC28 with func_843529D8 and func_84351984, configuring particle effect data indices and parameters, representing a specific particle configuration	applied@966d7f0
+func_84355EF0	ParticleEffect_ConfigB	w21		Similar to func_84355F88 but with different parameters (e.g., D_843902E2, 0x11), configuring an alternative particle setup	applied@966d7f0
+func_84355E58	ParticleEffect_InitializeGroup	w21		Registers particle effect groups via func_8432EC28 for indices 0 and 2, establishing initial particle groups for the stage	applied@966d7f0
+D_843902EC	gParticleEffectData_42	w21		Passed to func_843081BC and used as address of a particle effect data entry (also referenced as &gParticleEffectData[0x42]), indicating it is the data for effect 0x42	applied@966d7f0
+func_84359000	RenderPrimColorRect	w21		draws a colored rectangle by setting prim color then issuing a texture rectangle command	applied@966d7f0
+func_843590E0	Ui_DrawPanel	w21		sets up matrix, colors, orthographic projection and draws several display lists, typical of a UI panel rendering routine	applied@966d7f0
+D_843902A4	gPanelDrawCount	w21		incremented each time func_843590E0 runs, likely counting panel draws	applied@966d7f0
+D_84390382	gPrimColorR	w21		used as the red component argument to Gfx_SetPrimColor	applied@966d7f0
+D_84390384	gPrimColorG	w21		used as the green component argument to Gfx_SetPrimColor	applied@966d7f0
+D_84390386	gPrimColorB	w21		used as the blue component argument to Gfx_SetPrimColor	applied@966d7f0
+D_84390388	gPrimColorA	w21		used as the alpha component argument to Gfx_SetPrimColor	applied@966d7f0
+D_84390392	gFogColorR	w21		used as the red component argument to Gfx_SetFogColor	applied@966d7f0
+D_84390394	gFogColorG	w21		used as the green component argument to Gfx_SetFogColor	applied@966d7f0
+D_84390396	gFogColorB	w21		used as the blue component argument to Gfx_SetFogColor	applied@966d7f0
+D_84390398	gFogColorA	w21		used as the alpha component argument to Gfx_SetFogColor	applied@966d7f0
+D_8439038A	gEnvColorR	w21		used as the red component argument to Gfx_SetEnvColor	applied@966d7f0
+D_8439038C	gEnvColorG	w21		used as the green component argument to Gfx_SetEnvColor	applied@966d7f0
+D_8439038E	gEnvColorB	w21		used as the blue component argument to Gfx_SetEnvColor	applied@966d7f0
+D_84390390	gEnvColorA	w21		used as the alpha component argument to Gfx_SetEnvColor	applied@966d7f0
+D_84392588	gEffectMatrix	w21		used by guRotateRPY to set rotation and then passed to gSPMatrix for many particle effect draws	applied@966d7f0
+D_843925CE	gParticleSpawnTimerA	w21		initialized to 0 in func_84359C84 and incremented in func_84359CB8 to control spawning frequency	applied@966d7f0
+D_843925D0	gParticleSpawnTimerB	w21		initialized to 0 in func_84359FE0 and incremented in func_8435A014 to limit effect duration	applied@966d7f0
+D_843925D2	gParticleSpawnTimerC	w21		reset to 0 in func_8435A298 and incremented in func_8435A2CC similar to other timers	applied@966d7f0
+D_843925D4	gParticleSpawnTimerD	w21		incremented in func_8435C9AC and triggers func_8435C790 every 10 frames	applied@966d7f0
+D_843925D6	gParticleSpawnTimerE	w21		reset in func_8435A6F8 and incremented in func_8435A72C to manage effect timing	applied@966d7f0
+D_843925D8	gParticleSpawnTimerF	w21		set to 0 in func_8435A7F0 and used in func_8435A81C to spawn particles every other frame	applied@966d7f0
+D_843925DA	gParticleSpawnTimerG	w21		reset in func_8435AA1C and used in func_8435AA1C to spawn particles on alternating frames	applied@966d7f0
+D_843925CC	gParticleSpawnTimerH	w21		cleared in func_8435BB64 and incremented in func_8435BB98 with periodic spawning	applied@966d7f0
+D_843925C8	gParticleSpawnTimerI	w21		cleared in func_8435B2C8 and incremented in func_8435B408 to drive effect progression	applied@966d7f0
+D_84392580	gEffectPhaseCounterA	w21		incremented in func_8435AE08 and spawns four particles during the first four frames	applied@966d7f0
+D_84392582	gEffectPhaseCounterB	w21		incremented in func_8435B0DC and spawns particles every fourth frame for the first four cycles	applied@966d7f0
+func_84359490	CalcVectorATtoDM	w21		computes origin and normalized direction vector and matches error string "calc_vector_ATtoDM() normal error!!!"	applied@966d7f0
+func_84359564	CalcVectorATtoDM2	w21		similar to func_84359490 but clamps Y and matches error string "calc_vector_ATtoDM2() normal error!!!"	applied@966d7f0
+func_84359650	InitEffectMatrix	w21		calls guRotateRPY with zero rotation to reset the effect matrix before particle rendering	applied@966d7f0
+func_8435CA70	ParticleEmitters_Reset	w21		Iterates over D_843925E0 and clears each entry?s active flag and timer, effectively resetting all particle emitters.	applied@966d7f0
+func_8435CAA8	ParticleEmitter_SetColors	w21		Sets the nine color?related fields (unk_028?unk_044) of a single emitter, which are later used with gDPSetPrimColor and gDPSetEnvColor.	applied@966d7f0
+func_8435D1E8	ParticleEmitter_UpdateFade	w21		Adjusts the emitter?s env?color intensity (unk_044) based on its direction flag (unk_01C) each frame, creating a fade?in/out effect.	applied@966d7f0
+func_8435D24C	ParticleEmitter_Update	w21		Updates the positions, colors and lifetimes of the 31 particle vertices belonging to an emitter and writes them into the vertex buffer.	applied@966d7f0
+func_8435D8C0	ParticleEmitters_Tick	w21		Advances the global texture offsets, iterates over D_843925E0 and calls ParticleEmitter_Update for each active emitter.	applied@966d7f0
+func_8435D97C	ParticleEmitter_BuildVertexBuffer	w21		Copies the 62 vertices of an emitter?s particle data into a temporary buffer and issues the necessary gSPVertex/gSP2Triangles commands.	applied@966d7f0
+func_8435DB14	ParticleEmitters_Render	w21		Sets up rendering state, loads water textures, applies per?emitter prim and env colors, and draws each active emitter?s geometry.	applied@966d7f0
+D_843951C0	gWaterTexOffset0	w21		Used as the X offset for the first water texture tile (gDPSetTileSize) and is incremented each frame with a 0x3FFF mask.	applied@966d7f0
+D_843951C2	gWaterTexOffset1	w21		Used as the X offset for the second water texture tile (gDPSetTileSize) and is incremented each frame with a 0x3FFF mask.	applied@966d7f0
+D_843951D0	gWaterHeightMap	w21		Contains a 16?16 grid of unk_D_843951D0_1010 structs storing height values; functions manipulate this grid to simulate water waves.	applied@966d7f0
+func_8435E530	WaterHeightMap_Update	w21		Advances D_843951D0.unk_0000, applies sinusoidal perturbations and computes new heights for the 16?16 water height map each tick.	applied@966d7f0
+func_8435EB9C	WaterHeightMap_Init	w21		Initializes the height?map grid with base positions, sets edge flags, and primes the simulation before the first update.	applied@966d7f0
+func_8435EE78	WaterSurface_Render	w21		Allocates a vertex buffer from the height map, sets up texture offsets, computes surface normals via func_8435E158, and draws the water surface with blending.	applied@966d7f0
+func_8435FB90	Trail_Init	w21		initializes the global trail state and point array with position, size and color parameters	applied@966d7f0
+func_8435FCD0	Trail_GetWidthScale	w21		calculates a width scaling factor for the trail based on point data, returning 1.0 in early frames	applied@966d7f0
+func_8435FD50	Trail_Update	w21		updates trail counters and moves each point using sinusoidal offsets each frame	applied@966d7f0
+func_8436032C	Trail_Render	w21		allocates vertex buffer from the trail points and issues display list commands to draw the trail	applied@966d7f0
+D_84397610	gTrailState	w21		global struct holding parameters for the current trail effect	applied@966d7f0
+D_84397648	gTrailPoints	w21		array of point structs used by the trail rendering code	applied@966d7f0
+D_84389068	gTrailTextureData	w21		texture data array used for the trail's gradient shading	applied@966d7f0
+func_843606D0	ParticleEmitter_AddSimple	w21		creates a new particle emitter with specified start/end positions, colors and lifetimes	applied@966d7f0
+func_8436090C	ParticleEmitter_AddSimpleNoFade	w21		creates a particle emitter similar to func_843606D0 but without per?particle fade handling	applied@966d7f0
+func_84360B10	ParticleEmitter_AddRandomized	w21		creates a particle emitter with randomised motion parameters for varied visual effects	applied@966d7f0
+D_843892E0	gParticlePaletteR	w21		RGB component array for the first particle color palette	applied@966d7f0
+D_843892E4	gParticlePaletteG	w21		RGB component array for the second particle color palette	applied@966d7f0
+D_843892E8	gParticlePaletteB	w21		RGB component array for the third particle color palette	applied@966d7f0
+func_843638E0	WaterSurface_Init	w21		Initializes the 16?16 vertex grid, texture coordinates and animation parameters for the water surface mesh.	applied@966d7f0
+func_84363A5C	WaterSurface_CalcNormal	w21		Computes a normal vector for a water surface vertex by cross?product of adjacent grid points.	applied@966d7f0
+func_84363FF0	WaterSurface_FillVertex	w21		Transfers a WaterSurfaceVertex into a Vtx, scaling its normal to color and applying the current alpha.	applied@966d7f0
+func_843640A4	WaterSurface_Update	w21		Advances the water animation frame, updates alpha and wave amplitude, animates vertex heights and recomputes normals.	applied@966d7f0
+func_84364304	WaterSurface_SetupMatrix	w21		Allocates a matrix and builds a look?at matrix from the current camera to position the water surface.	applied@966d7f0
+func_84364428	WaterSurface_Draw	w21		Allocates vertex data, fills it, loads the water texture, sets prim color and issues triangle draws for the 16?16 water mesh.	applied@966d7f0
+D_8439CA60	gWaterSurface	w21		Static struct holding frame counter, duration, alpha, wave amplitude, matrix, vertex buffer and the 16?16 grid used by all water?surface functions.	applied@966d7f0
+D_84389300	gWaterSurfaceLights	w21		Lights2 definition passed to gsSPSetLights2 in the water rendering display lists, defining the lighting for the water surface.	applied@966d7f0
+D_84389328	gWaterSurfaceDL	w21		Display list that sets MODULATEIA combine mode, XLU surface render mode and is used in WaterSurface_Draw to render the mesh.	applied@966d7f0
+D_843893A8	gWaterSurfaceShadingDL	w21		Display list configuring shading, texture detail and render mode, likely the alternate shading pass for the water surface.	applied@966d7f0
+unk_D_8439CA60_0014	WaterSurfaceVertex	w21		Struct storing position, normal, texture coordinates for each grid point of the water mesh.	applied@966d7f0
+unk_D_8439E680	WaterSurface	w21		Struct holds a 16?16 grid of vertex data (positions, normals, texcoords) used for a water surface mesh	applied@966d7f0
+D_843894D8	gWaterSurfaceDL_Unlit	w21		Alternative display list with back?face culling and unlit shading for the water surface	applied@966d7f0
+func_843648E0	WaterSurface_UpdateAngles	w21		Updates each vertex's angle (unk_1C) based on distance from a point, driving wave propagation	applied@966d7f0
+func_84364A18	WaterSurface_Initialize	w21		Initializes the water surface grid positions, texture coordinates and runs initial wave updates	applied@966d7f0
+func_84364C50	WaterSurface_CalculateNormal	w21		Computes per?vertex normal vectors from neighboring vertices and stores them in unk_0C?0C14	applied@966d7f0
+func_843651D4	WaterSurface_VertexFromData	w21		Copies WaterSurface vertex data into an N64 Vtx struct, converting normals to color and setting texcoords	applied@966d7f0
+func_84365288	WaterSurface_Tick	w21		Advances the water animation each frame, updating angles, alpha and recomputing normals	applied@966d7f0
+func_84365434	WaterSurface_CalcViewMatrix	w21		Creates a transformation matrix for the water surface based on the current camera view	applied@966d7f0
+D_843920C0	gWaterTexture	w21		Texture data array used for the water surface (loaded with gDPLoadTextureBlock)	applied@966d7f0
+func_84365B88	WaterSurface_CalcVertexNormal	w21		Computes the normal vector for a grid vertex by averaging cross products of neighboring vertices.	applied@966d7f0
+func_8436611C	WaterSurface_PackVertex	w21		Copies a WaterSurfaceVertex into a N64 Vtx, converting its normal to vertex color and applying current alpha.	applied@966d7f0
+D_84389608	gWaterSurfaceAltDL	w21		Alternative display list configuring a different render mode (unused in this file) for the water surface.	applied@966d7f0
+unk_D_8439CA60	WaterSurfaceData	w21		Structure type that stores the overall water surface data, including the vertex grid and animation counters.	applied@966d7f0
+unk_D_86002F34_00C	CameraStruct	w21		Structure type containing camera eye and target vectors used to build the water surface view matrix.	applied@966d7f0

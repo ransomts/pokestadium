@@ -285,12 +285,12 @@ Gfx* func_8436CB60(Gfx* arg0, unk_D_843C2C00* arg1) {
     unk_D_843C2C00_064* ptr;
 
     ptr = &arg1->unk_064;
-    gDPLoadTextureTile_4b(arg0++, D_843920C0[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile_4b(arg0++, gWaterTexture[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     ptr = &arg1->unk_070;
-    gDPLoadMultiTile_4b(arg0++, D_843920C0[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gWaterTexture[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
@@ -307,7 +307,7 @@ Gfx* func_8436CE34(Gfx* arg0) {
     Vec3f spF4;
     Vec3f spE8;
     Vec3f spDC;
-    unk_D_86002F34_00C* spD8;
+    CameraStruct* spD8;
     UNUSED s32 pad[3];
     Vtx* var_s0;
 

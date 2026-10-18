@@ -1,7 +1,7 @@
 #include "fragment17.h"
 #include "src/F420.h"
 
-u16 IsPointInSector(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+u16 IsPointInSector(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -78,7 +78,7 @@ void SetCameraSmoothing(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
 
 void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86B0E5D4_04* ptr = &arg1->unk_04;
-    unk_D_86002F34_00C* ptr2 = arg1->unk_00;
+    CameraStruct* ptr2 = arg1->unk_00;
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -106,14 +106,14 @@ void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
 }
 
 void ApplyCameraViewParameters(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
-    unk_D_86002F34_00C* sp2C = arg1->unk_00;
+    CameraStruct* sp2C = arg1->unk_00;
 
     Camera_SetViewParameters(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
     Camera_SetViewParameters(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
 s32 UpdateCameraTransition(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
-    unk_D_86002F34_00C* temp_s2 = arg1->unk_00;
+    CameraStruct* temp_s2 = arg1->unk_00;
     Vec3f sp58;
     Vec3f sp4C;
     UNUSED s32 pad[3];

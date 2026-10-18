@@ -591,7 +591,7 @@ void func_8430AE3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
 void func_8430AE90(unk_D_84390010* arg0) {
     UNUSED s32 pad;
-    unk_D_86002F34_00C* sp18 = gBattleState.unk_00->unk_DC;
+    CameraStruct* sp18 = gBattleState.unk_00->unk_DC;
 
     UpdateEntityBasePosition(arg0);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
@@ -611,7 +611,7 @@ void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430AF80(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_86002F34_00C* temp_s0 = gBattleState.unk_00->unk_DC;
+    CameraStruct* temp_s0 = gBattleState.unk_00->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
     f32 temp_ft4;
@@ -867,12 +867,12 @@ void func_8430B968(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     f32 temp_fs0;
 
     if (ptr->unk_56 == 0) {
-        temp_fs0 = (1.0f - func_8435FCD0()) * 0.6f;
+        temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.6f;
         func_8430C718(&arg0->unk_000.unk_030.x, 1.0f - temp_fs0, 0.5f);
         func_8430C718(&arg0->unk_000.unk_030.y, 1.0f + temp_fs0, 0.5f);
         func_8430C718(&arg0->unk_000.unk_030.z, 1.0f - temp_fs0, 0.5f);
     } else {
-        temp_fs0 = (1.0f - func_8435FCD0()) * 0.3f;
+        temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.3f;
         func_8430C718(&arg0->unk_000.unk_030.x, 0.8 - temp_fs0, 0.5f);
         func_8430C718(&arg0->unk_000.unk_030.y, temp_fs0 + 0.8, 0.5f);
         func_8430C718(&arg0->unk_000.unk_030.z, 0.8 - temp_fs0, 0.5f);

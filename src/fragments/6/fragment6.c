@@ -124,7 +124,7 @@ static u32 D_86002B18[] = {
 
 static unk_D_86002F30* D_86002F30;
 static unk_D_86002F34* D_86002F34;
-static unk_D_86002F34_00C* D_86002F38;
+static CameraStruct* D_86002F38;
 static s16 D_86002F3C;
 static s16 D_86002F3E;
 static s16 D_86002F40;

@@ -3207,11 +3207,11 @@ static f32 D_86A06234;
 static Vec3f D_86A06238;
 static f32 D_86A06244;
 Vec3f D_86A06248;
-static unk_D_86002F34_00C* D_86A06254;
+static CameraStruct* D_86A06254;
 static s16 D_86A06258;
 static s16* D_86A0625C;
 
-void func_86A018D0(unk_D_86002F34_00C* arg0, u16 arg1, s8 arg2, u8 arg3) {
+void func_86A018D0(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     f32 scale = 1.0f;
     unk_D_86A04328* ptr = &D_86A04328[arg2 - 1][arg3 - 3];
     Vec3f sp3C;
@@ -3256,7 +3256,7 @@ void func_86A01BEC(void) {
     }
 }
 
-void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, unk_D_86002F34_00C* arg3, u16 arg4, s8 arg5, u8 arg6) {
+void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u16 arg4, s8 arg5, u8 arg6) {
     D_86A0625C = arg1;
     D_86A06254 = arg3;
     D_86A06220 = 0;

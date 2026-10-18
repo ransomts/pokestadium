@@ -7,7 +7,7 @@
 #include "src/memory.h"
 #include "src/util.h"
 
-void Intro_SetupCamera(unk_D_86002F34_00C* arg0) {
+void Intro_SetupCamera(CameraStruct* arg0) {
     func_8431AE5C();
     func_8431AFD0(arg0, 20.0f, 12800.0f);
     func_8432C9C0(D_84390010[0]->unk_720, 3);
@@ -21,7 +21,7 @@ void Intro_SetupCamera(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void Intro_CheckPlayerReady(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_CheckPlayerReady(UNUSED CameraStruct* arg0) {
     if ((func_8431ADF0(0xA) != 0) && (func_84302000(D_84390010[0]) != 0)) {
         D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
         D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
@@ -32,7 +32,7 @@ void Intro_CheckPlayerReady(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_PlayerEnter(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_PlayerEnter(UNUSED CameraStruct* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     if (D_84390010[0]->unk_4EC.unk_024.y == 0.0f) {
@@ -44,7 +44,7 @@ void Intro_PlayerEnter(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_OpponentEnter(unk_D_86002F34_00C* arg0) {
+void Intro_OpponentEnter(CameraStruct* arg0) {
     Vec3f sp3C;
 
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
@@ -61,7 +61,7 @@ void Intro_OpponentEnter(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_CameraPanAndZoom(unk_D_86002F34_00C* arg0) {
+void Intro_CameraPanAndZoom(CameraStruct* arg0) {
     Vec3f sp2C;
 
     Vec3f_Set(&sp2C, -150.0f, 5.0f, 0.0f);
@@ -78,7 +78,7 @@ void Intro_CameraPanAndZoom(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_WaitForAnimCompletion(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_WaitForAnimCompletion(UNUSED CameraStruct* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     if (func_800174E4(&D_84390010[0]->unk_4EC) == 1) {
@@ -86,7 +86,7 @@ void Intro_WaitForAnimCompletion(UNUSED unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
+void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
     unk_D_84390010_654* sp2C = &D_84390010[0]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[0]->unk_720->unk_08[sp2C->unk_2C];
 
@@ -109,7 +109,7 @@ void Intro_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void Intro_PostInfoDelay(unk_D_86002F34_00C* arg0) {
+void Intro_PostInfoDelay(CameraStruct* arg0) {
     if (gBattleState.unk_00->unk_10++ == 1) {
         func_8431F420(D_84390010[0], arg0, 3);
     }
@@ -124,7 +124,7 @@ void Intro_PostInfoDelay(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Opponent_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
+void Opponent_DisplayPokemonInfo(CameraStruct* arg0) {
     unk_D_84390010_654* sp2C = &D_84390010[1]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[1]->unk_720->unk_08[sp2C->unk_2C];
 
@@ -148,7 +148,7 @@ void Opponent_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void Opponent_PostInfoDelay(unk_D_86002F34_00C* arg0) {
+void Opponent_PostInfoDelay(CameraStruct* arg0) {
     if (gBattleState.unk_00->unk_10++ == 1) {
         func_8431F420(D_84390010[1], arg0, 3);
     }
@@ -162,13 +162,13 @@ void Opponent_PostInfoDelay(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Intro_End(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_End(UNUSED CameraStruct* arg0) {
 }
 
 void UnusedFunction(void) {
 }
 
-void Intro_StateMachine(unk_D_86002F34_00C* arg0) {
+void Intro_StateMachine(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_20) {
         case 0:
             Intro_SetupCamera(arg0);

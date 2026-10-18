@@ -963,7 +963,7 @@ s32 func_84B07AB8(unk_D_84B25A28* arg0, Fragment2_1GraphNode* arg1) {
     return arg0->unk_00 == 3;
 }
 
-void func_84B07CF8(unk_D_84B25A28* arg0, unk_D_86002F34_00C* arg1) {
+void func_84B07CF8(unk_D_84B25A28* arg0, CameraStruct* arg1) {
     MemoryBlock* temp_s1;
 
     arg0->unk_08 = arg1;

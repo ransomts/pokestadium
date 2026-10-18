@@ -507,7 +507,7 @@ void func_832010BC(void) {
 
 void func_8320118C(void) {
     s32 i;
-    unk_D_86002F34_00C* temp_s1 = D_83202010->unk_0C;
+    CameraStruct* temp_s1 = D_83202010->unk_0C;
 
     D_83202028->unk_01E.y = 0x1000;
 

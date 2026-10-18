@@ -97,7 +97,7 @@ void RefreshPokemonTransform(unk_D_84390010* arg0) {
     UpdatePokemonTransform(arg0);
 }
 
-void AssignPokemonModels(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, unk_D_86002F34_00C* arg2, unk_D_84390010* arg3) {
+void AssignPokemonModels(CameraStruct* arg0, unk_D_84390010* arg1, CameraStruct* arg2, unk_D_84390010* arg3) {
     arg1->unk_728.unk_168 = arg0;
     arg3->unk_728.unk_168 = arg2;
     SetupPokemonForBattle(arg1, arg3);
@@ -173,7 +173,7 @@ void UpdatePokemonTurnIfBattleActive(unk_D_84390010* arg0, unk_D_84390010* arg1)
     }
 }
 
-s32 HandleBattlePhase(s32 arg0, unk_D_86002F34_00C* arg1, unk_D_86002F34_00C* arg2) {
+s32 HandleBattlePhase(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
     switch (arg0) {
         case 0:
             func_84307630();

@@ -169,7 +169,7 @@ void GeoLayoutCmd_AllocAltNodeWithParent(void) {
 
 void GeoLayoutCmd_CreateCameraNode(void) {
     unk_D_800ABE00_cmdB* cmd = (unk_D_800ABE00_cmdB*)gGeoLayoutCommand;
-    unk_D_86002F34_00C* temp_v0 =
+    CameraStruct* temp_v0 =
         CameraNode_Create(gGraphNodePool, NULL, cmd->unk_04, cmd->unk_06, cmd->unk_08, cmd->unk_0A);
 
     if (temp_v0 != NULL) {

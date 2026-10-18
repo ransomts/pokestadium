@@ -162,7 +162,7 @@ s32 Camera_IsCloseViewCondition(void) {
     return 0;
 }
 
-s32 func_84319878(UNUSED unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
+s32 func_84319878(UNUSED unk_D_84390010* arg0, CameraStruct* arg1) {
     unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || ((ptr->unk_34 & 0x4000) != 0)) {
@@ -172,7 +172,7 @@ s32 func_84319878(UNUSED unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
     return 0;
 }
 
-s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED CameraStruct* arg1) {
     unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     s32 idx = gBattleState.unk_00->unk_2C == 0;
     unk_D_84390010_654* ptr2 = &D_84390010[idx]->unk_654;
@@ -183,7 +183,7 @@ s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED unk_D_86002F34_00C* arg1) 
     return 0;
 }
 
-void Camera_SetCloseView(unk_D_86002F34_00C* arg0) {
+void Camera_SetCloseView(CameraStruct* arg0) {
     func_8431AE5C();
     arg0->unk_24.fovy = 50.0f;
     if (Camera_IsCloseViewCondition() != 0) {
@@ -197,7 +197,7 @@ void Camera_SetCloseView(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20++;
 }
 
-void Camera_SetFarView(unk_D_86002F34_00C* arg0) {
+void Camera_SetFarView(CameraStruct* arg0) {
     func_8431AE5C();
     arg0->unk_24.fovy = 30.0f;
     if (Camera_IsCloseViewCondition() != 0) {
@@ -210,7 +210,7 @@ void Camera_SetFarView(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20++;
 }
 
-void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_84319C58(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad;
     f32 sp50;
     f32 sp4C;
@@ -261,7 +261,7 @@ void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-void func_84319F10(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_84319F10(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[2];
     unk_D_86B0C160* sp24;
     s32 var_a0;
@@ -290,7 +290,7 @@ void func_84319F10(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-void func_8431A024(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_8431A024(CameraStruct* arg0, s32 arg1) {
     arg0->unk_24.fovy = 30.0f;
     func_8431AE4C(arg1);
     if (func_84319878(D_84390010[arg1], arg0) == 0) {
@@ -299,7 +299,7 @@ void func_8431A024(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-void func_8431A098(unk_D_86002F34_00C* arg0) {
+void func_8431A098(CameraStruct* arg0) {
     func_8431AE4C(gBattleState.unk_00->unk_54 - 1);
     if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
         gBattleState.unk_00->unk_54 = 0;
@@ -310,7 +310,7 @@ void func_8431A098(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A130(unk_D_86002F34_00C* arg0) {
+void func_8431A130(CameraStruct* arg0) {
     func_8431AE4C(gBattleState.unk_00->unk_2C);
     gBattleState.unk_00->unk_54 = 0;
     if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
@@ -321,7 +321,7 @@ void func_8431A130(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Camera_SetFromBattleContext(unk_D_86002F34_00C* arg0) {
+void Camera_SetFromBattleContext(CameraStruct* arg0) {
     s16 var_v1;
 
     func_8431AE5C();
@@ -343,7 +343,7 @@ void Camera_SetFromBattleContext(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20++;
 }
 
-void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_8431A2C8(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[5];
     s32 var_v1;
     unk_D_84390010* temp_s0;
@@ -383,7 +383,7 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-void Camera_UpdateStateMachine(unk_D_86002F34_00C* arg0) {
+void Camera_UpdateStateMachine(CameraStruct* arg0) {
     UNUSED s32 pad[2];
     s32 sp20[] = {
         // D_84385B20
@@ -463,7 +463,7 @@ void Camera_UpdateStateMachine(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A718(unk_D_86002F34_00C* arg0) {
+void func_8431A718(CameraStruct* arg0) {
     arg0->unk_24.fovy = 50.0f;
     if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
         Camera_UpdateStateMachine(arg0);
@@ -472,13 +472,13 @@ void func_8431A718(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A780(unk_D_86002F34_00C* arg0) {
+void func_8431A780(CameraStruct* arg0) {
     if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
 
-void func_8431A7B8(unk_D_86002F34_00C* arg0) {
+void func_8431A7B8(CameraStruct* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
@@ -500,7 +500,7 @@ void func_8431A7B8(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A8B0(unk_D_86002F34_00C* arg0) {
+void func_8431A8B0(CameraStruct* arg0) {
     unk_D_84390010* sp1C = D_84390010[gBattleState.unk_00->unk_2C];
 
     if ((sp1C->unk_654.unk_2D == 0x10) || (sp1C->unk_654.unk_34 & 0x4000)) {
@@ -510,7 +510,7 @@ void func_8431A8B0(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A94C(unk_D_86002F34_00C* arg0) {
+void func_8431A94C(CameraStruct* arg0) {
     unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || (ptr->unk_34 & 0x4000)) {
@@ -523,7 +523,7 @@ void func_8431A94C(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431A9E0(unk_D_86002F34_00C* arg0) {
+void func_8431A9E0(CameraStruct* arg0) {
     if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
         s32 idx = gBattleState.unk_00->unk_2C == 0;
 
@@ -533,19 +533,19 @@ void func_8431A9E0(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void func_8431AA3C(unk_D_86002F34_00C* arg0) {
+void func_8431AA3C(CameraStruct* arg0) {
     if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
 
-void func_8431AA78(unk_D_86002F34_00C* arg0) {
+void func_8431AA78(CameraStruct* arg0) {
     if (func_8431ADAC(0x78) != 0) {
         Camera_UpdateStateMachine(arg0);
     }
 }
 
-void func_8431AAAC(unk_D_86002F34_00C* arg0) {
+void func_8431AAAC(CameraStruct* arg0) {
     func_8431AFD0(arg0, 10.0f, 12800.0f);
     arg0->unk_24.fovy = 60.0f;
     if (func_8431ADAC(0x3C) != 0) {
@@ -553,7 +553,7 @@ void func_8431AAAC(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Camera_MainUpdate(unk_D_86002F34_00C* arg0) {
+void Camera_MainUpdate(CameraStruct* arg0) {
     if ((gBattleContext.unk_0000 == 0x10) && (gBattleState.unk_00->unk_1C == 1)) {
         func_8430FB68();
     } else if (gBattleState.unk_00->unk_1C == 1) {

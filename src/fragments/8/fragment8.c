@@ -134,7 +134,7 @@ const char D_86203DC8[] = "%s";
 static unk_D_86002F30* D_86203E30;
 static unk_D_86002F30* D_86203E34;
 static unk_D_86002F34* D_86203E38;
-static unk_D_86002F34_00C* D_86203E3C;
+static CameraStruct* D_86203E3C;
 static s16 D_86203E40;
 static s16 D_86203E42;
 static s16 D_86203E44;

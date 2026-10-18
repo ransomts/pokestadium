@@ -437,9 +437,9 @@ void func_86A014F0(void);
 
 u16 func_86A018C0(void);
 
-void func_86A018D0(unk_D_86002F34_00C*, u16, s8, u8);
+void func_86A018D0(CameraStruct*, u16, s8, u8);
 void func_86A01BEC(void);
-void func_86A01CF0(s16*, s16*, s16*, unk_D_86002F34_00C*, u16, s8, u8);
+void func_86A01CF0(s16*, s16*, s16*, CameraStruct*, u16, s8, u8);
 void func_86A02164(void);
 void func_86A021C0(s8*, u8*);
 

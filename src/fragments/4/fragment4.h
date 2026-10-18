@@ -9,7 +9,7 @@ extern u32 D_87A01180[];
 extern u32 D_87A01190[];
 extern u32 D_87A011A4[];
 
-void SetProjectionInfo(unk_D_86002F34_00C*);
+void SetProjectionInfo(CameraStruct*);
 Gfx* Gfx_ApplyProjection(Gfx*);
 Gfx* Gfx_DrawTexturedQuad(Gfx*, Mtx*, f32, f32, f32, f32, void*, s32, s32);
 void Gfx_DrawTilemap(s32);

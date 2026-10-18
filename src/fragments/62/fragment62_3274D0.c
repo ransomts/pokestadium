@@ -502,8 +502,8 @@ void func_8433E33C(void) {
 }
 
 void func_8433E46C(void) {
-    func_8432ECA0(0, 4, 5, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 0x10, D_843902E2, 0x25, 0);
-    func_8432ECA0(0, 1, 0x24, func_8435375C, &gParticleEffectData[0x15], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 4, 5, func_8433CCFC, &gParticleEffectData[0x11], 8, 4, 0x10, gParticleTexture_Default, 0x25, 0);
+    func_8432ECA0(0, 1, 0x24, func_8435375C, &gParticleEffectData[0x15], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 
 void func_8433E524(void) {

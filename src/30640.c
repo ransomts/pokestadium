@@ -54,13 +54,13 @@ extern u32 gCamGeoLayoutCmdTable[];
 extern u32 gCamGeoLayoutIndices[];
 extern unk_D_800761B0 gCamQuadVertices[12];
 
-s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1);
+s32 Cam_SetupCameraParams(s32 arg0, CameraStruct* arg1);
 s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1);
 s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1);
 s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1);
 s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1);
 s32 Cam_SetActiveNode(s32 arg0, Fragment2_1GraphNode* arg1);
-s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1);
+s32 Cam_SetupDefaultCamera(s32 arg0, CameraStruct* arg1);
 s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1);
 
 s16 gCamDistances[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80, 120, 60, 70, 100, 70, 130, 170, 80, 110, 65, 160, 120, 180, 85, 105, 100, 130, 80, 100, 160, 100, 120, 160, 100, 140, 80, 130, 90, 120, 110, 160, 90, 100, 160, 80, 125, 130, 150, 60, 120, 70, 105, 105, 170, 90, 120, 100, 190, 100, 140, 170, 90, 150, 150, 80, 120, 160, 80, 165, 170, 140, 160, 120, 140, 160, 110, 170, 140, 160, 80, 110, 100, 140, 150, 110, 90, 140, 220, 85, 170, 150, 180, 150, 250, 120, 160, 102, 160, 100, 130, 110, 160, 60, 100, 150, 140, 150, 110, 140, 130, 200, 150, 120, 220, 80, 140, 80, 140, 90, 110, 140, 160, 140, 130, 130, 150, 160, 90, 270, 250, 100, 65, 120, 120, 110, 120, 70, 120, 90, 140, 200, 180, 170, 180, 180, 100, 200, 180, 180, 85, 100, 40, 0, 0, 0, 0, 0, 0 };
@@ -301,7 +301,7 @@ s32 Cam_GetActive(s32 arg0) {
     return 0;
 }
 
-s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 Cam_SetupCameraParams(s32 arg0, CameraStruct* arg1) {
     s32 pad;
     unk_D_83403C60_050_00C* src;
 
@@ -316,7 +316,7 @@ s32 Cam_SetupCameraParams(s32 arg0, unk_D_86002F34_00C* arg1) {
     return 0;
 }
 
-s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 Cam_SetupDefaultCamera(s32 arg0, CameraStruct* arg1) {
     if (Cam_GetActive(arg0) != 0) {
         if (arg0 == 2) {
             Viewport_SetRect(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);

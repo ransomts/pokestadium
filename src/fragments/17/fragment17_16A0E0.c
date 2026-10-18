@@ -49,7 +49,7 @@ static char** D_86B10840;
 static unk_D_86002F30* D_86B10844;
 static GraphNode* D_86B10848;
 static Fragment2_1GraphNode D_86B10850;
-static unk_D_86002F34_00C* D_86B109B8;
+static CameraStruct* D_86B109B8;
 static BinArchive* D_86B109BC;
 static u8* D_86B109C0;
 static s8 D_86B109C8[0x100];

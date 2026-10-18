@@ -62,7 +62,7 @@ void func_8431AE6C(void) {
     gBattleState.unk_00->unk_10 = 0;
 }
 
-void SetCameraPositionAndView(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6) {
+void SetCameraPositionAndView(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6) {
     Vec3f_Set(&arg0->unk_60.at, arg1, arg2, arg3);
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg4, arg5, arg6);
 }
@@ -93,7 +93,7 @@ void func_8431AFB4(s32 arg0, s32 arg1) {
     gBattleState.unk_00->unk_20 = arg1;
 }
 
-void func_8431AFD0(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2) {
+void func_8431AFD0(CameraStruct* arg0, f32 arg1, f32 arg2) {
     arg0->unk_24.near = arg1;
     arg0->unk_24.far = arg2;
 }
@@ -136,7 +136,7 @@ void func_8431B078(unk_D_84390010* arg0) {
     }
 }
 
-void func_8431B174(unk_D_86002F34_00C* arg0) {
+void func_8431B174(CameraStruct* arg0) {
     UNUSED s32 pad;
     f32 sp30;
     f32 temp_fv0;
@@ -188,7 +188,7 @@ s32 func_8431B2B8(s16 arg0, s16 arg1) {
     return 0;
 }
 
-s32 func_8431B34C(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2) {
+s32 func_8431B34C(CameraStruct* arg0, s16 arg1, s16 arg2) {
     if (arg1 > 0) {
         gBattleState.unk_00->unk_58 -= arg1;
         if ((gBattleState.unk_00->unk_58 < arg2) && ((arg2 - arg1) < gBattleState.unk_00->unk_58)) {
@@ -208,7 +208,7 @@ s32 func_8431B34C(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-s32 func_8431B42C(UNUSED unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2) {
+s32 func_8431B42C(UNUSED CameraStruct* arg0, s16 arg1, s16 arg2) {
     gBattleState.unk_00->unk_58 -= arg1;
 
     if (arg1 > 0) {
@@ -229,7 +229,7 @@ void func_8431B4C0(s16 arg0, s16 arg1, f32 arg2) {
     gBattleState.unk_00->unk_5C = arg2;
 }
 
-void SetupBattleCamera(unk_D_86002F34_00C* arg0, s32 arg1) {
+void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     static u8 gDefaultModelId = 0x5F;
     static u16 gDefaultModelParam = 0x38F;
 
@@ -283,13 +283,13 @@ void SetupBattleCamera(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-void func_8431B830(unk_D_86002F34_00C* arg0) {
+void func_8431B830(CameraStruct* arg0) {
     if (arg0->unk_60.eye.y <= 13.0f) {
         arg0->unk_60.eye.y = 13.0f;
     }
 }
 
-void ConfigureCameraForModel(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
+void ConfigureCameraForModel(unk_D_84390010* arg0, CameraStruct* arg1) {
     unk_D_84390010_448* sp38 = &arg0->unk_448;
     UNUSED s32 pad[5];
     f32 sp3C = 0.0f;
@@ -321,40 +321,40 @@ void func_8431BA5C(void) {
     Vec3f_Set(&gBattleState.unk_00->unk_A0, 0.0f, 0.0f, 0.0f);
 }
 
-void func_8431BAB4(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
+void func_8431BAB4(unk_D_84390010* arg0, CameraStruct* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
     Camera_SetViewParameters(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
     arg1->unk_60.at.y += arg6;
     arg1->unk_60.at.y += GetModelDepth(arg0);
 }
 
-void func_8431BB24(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+void func_8431BB24(CameraStruct* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     Camera_SetViewParameters(&arg1, &arg0->unk_60.at, arg4, arg2, arg3);
     arg0->unk_60.at.y += arg5;
 }
 
-void func_8431BB80(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+void func_8431BB80(CameraStruct* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     Camera_SetViewParameters(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
     arg0->unk_60.eye.y += arg5;
 }
 
-void func_8431BBDC(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
+void func_8431BBDC(CameraStruct* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
     arg0->unk_60.eye.y += arg4;
 }
 
-void func_8431BC38(unk_D_86002F34_00C* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+void func_8431BC38(CameraStruct* arg0, Vec3f arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     func_8431B4C0(arg2, arg3, arg4);
     Camera_SetViewParameters(&arg1, &arg0->unk_60.eye, arg4, arg2, arg3);
     arg0->unk_60.eye.y += arg5;
 }
 
-void func_8431BCA4(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
+void func_8431BCA4(CameraStruct* arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     func_8431B4C0(arg1, arg2, arg3);
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, arg3, arg1, arg2);
     arg0->unk_60.eye.y += arg4;
 }
 
-void func_8431BD10(UNUSED unk_D_86002F34_00C* arg0) {
+void func_8431BD10(UNUSED CameraStruct* arg0) {
 }
 
 void SmoothFloatPair(f32* arg0, f32* arg1) {
@@ -375,7 +375,7 @@ void SmoothFloatPair(f32* arg0, f32* arg1) {
     }
 }
 
-void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 arg2) {
+void func_8431BD94(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED f32 arg2) {
     unk_D_84390010_448* sp2C = &arg1->unk_448;
     f32 var_fv1;
     Vec3f sp64;
@@ -545,7 +545,7 @@ void func_8431BD94(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED f32 ar
     SmoothFloatPair(&arg0->unk_60.at.z, &arg0->unk_60.eye.z);
 }
 
-void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431C594(CameraStruct* arg0, unk_D_84390010* arg1) {
     UNUSED s32 pad[5];
     f32 var_fv0_2;
     f32 sp44;
@@ -580,21 +580,21 @@ void func_8431C594(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
 }
 
-void func_8431C71C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431C71C(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BD94(arg0, arg1, 50.0f);
     func_8431C594(arg0, arg1);
 }
 
-void func_8431C750(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431C750(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BD94(arg0, arg1, 90.0f);
     func_8431C594(arg0, arg1);
 }
 
-void func_8431C784(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431C784(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BD94(arg0, arg1, 50.0f);
 }
 
-void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431C7A4(CameraStruct* arg0, unk_D_84390010* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     UNUSED s32 pad;
     Vec3f sp54;
@@ -624,7 +624,7 @@ void func_8431C7A4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
 }
 
-s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+s32 func_8431C8E0(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp84;
     UNUSED s32 pad[3];
     Vec3f sp6C;
@@ -677,7 +677,7 @@ s32 func_8431C8E0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431CB54(CameraStruct* arg0, unk_D_84390010* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp58;
     Vec3f sp4C;
@@ -696,7 +696,7 @@ void func_8431CB54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&sp34, &arg0->unk_60.at, gBattleState.unk_00->unk_94.z * sp30, sp2A, sp28);
 }
 
-void func_8431CC38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431CC38(CameraStruct* arg0, unk_D_84390010* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp60;
     Vec3f sp54;
@@ -714,7 +714,7 @@ void func_8431CC38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8430C718(&arg0->unk_60.eye.y, func_84308548(arg1) * 4.0f, 0.04f);
 }
 
-void func_8431CCFC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431CCFC(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp74;
     Vec3f sp68;
     Vec3f sp5C;
@@ -742,7 +742,7 @@ void func_8431CCFC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, sp4E, sp52, gCameraDistTarget, 0.0f);
 }
 
-void func_8431CEF0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED s32 arg2) {
+void func_8431CEF0(CameraStruct* arg0, unk_D_84390010* arg1, UNUSED s32 arg2) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp50;
     Vec3f sp44;
@@ -759,7 +759,7 @@ void func_8431CEF0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, UNUSED s32 ar
     Camera_SetViewParameters(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
 }
 
-void func_8431CFA4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431CFA4(CameraStruct* arg0, unk_D_84390010* arg1) {
     s16 sp26;
     s16 sp24;
 
@@ -770,7 +770,7 @@ void func_8431CFA4(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, sp26, sp24, gCameraDistCurrent, 0.0f);
 }
 
-s32 func_8431D048(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+s32 func_8431D048(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp3C;
     Vec3f sp30;
     f32 sp2C;
@@ -790,7 +790,7 @@ s32 func_8431D048(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-s32 func_8431D118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
+s32 func_8431D118(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
     Vec3f sp60;
     Vec3f sp54;
@@ -830,7 +830,7 @@ s32 func_8431D118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 
     return 0;
 }
 
-s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+s32 func_8431D318(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp6C;
     Vec3f sp60;
     Vec3f sp54;
@@ -886,11 +886,11 @@ s32 func_8431D318(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-void func_8431D5C8(UNUSED unk_D_86002F34_00C* arg0) {
+void func_8431D5C8(UNUSED CameraStruct* arg0) {
     if (arg0) {}
 }
 
-void func_8431D5D0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431D5D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431BB24(arg0, gCameraPreset.unk_00, gCameraPreset.unk_0C, gCameraPreset.unk_0E, gCameraPreset.unk_18, 0.0f);
     if (arg2 == 1) {
         arg0->unk_60.at.y += GetModelDepth(arg1);
@@ -929,7 +929,7 @@ void func_8431D7C4(f32 arg0, f32 arg1) {
     gCameraPreset.unk_38 = arg1;
 }
 
-void func_8431D7D8(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010* arg2) {
+void func_8431D7D8(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D_84390010* arg2) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -963,7 +963,7 @@ void func_8431D7D8(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1, unk_D_8439001
     func_8431D7C4(arg0->unk_28, arg0->unk_2C);
 }
 
-void func_8431D968(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1) {
+void func_8431D968(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     f32 sp2C;
     f32 sp28;
     f32 sp24;
@@ -992,7 +992,7 @@ void func_8431D968(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1) {
     func_8431D7C4(arg0->unk_28, arg0->unk_2C);
 }
 
-s32 func_8431DA38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+s32 func_8431DA38(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp64;
     Vec3f sp58;
     Vec3f sp4C;
@@ -1021,7 +1021,7 @@ s32 func_8431DA38(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     return 1;
 }
 
-s32 func_8431DBEC(UNUSED unk_D_86002F34_00C* arg0) {
+s32 func_8431DBEC(UNUSED CameraStruct* arg0) {
     Vec3f sp2C;
     Vec3f sp20;
     f32 var_fv0;
@@ -1040,7 +1040,7 @@ s32 func_8431DBEC(UNUSED unk_D_86002F34_00C* arg0) {
     return 0;
 }
 
-void func_8431DC78(unk_D_86002F34_00C* arg0, s32 arg1) {
+void func_8431DC78(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad;
     Vec3f sp60;
     Vec3f sp54;
@@ -1068,7 +1068,7 @@ void func_8431DC78(unk_D_86002F34_00C* arg0, s32 arg1) {
     }
 }
 
-s32 func_8431DE30(unk_D_86002F34_00C* arg0, s32 arg1) {
+s32 func_8431DE30(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad;
     Vec3f sp58;
     Vec3f sp4C;
@@ -1099,7 +1099,7 @@ s32 func_8431DE30(unk_D_86002F34_00C* arg0, s32 arg1) {
     return 0;
 }
 
-void func_8431DF98(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431DF98(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
 
     gBattleState.unk_00->unk_D0.x = GetEntityXOffset(arg1);
@@ -1122,7 +1122,7 @@ void func_8431DF98(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), gCameraDistTarget, 0.0f);
 }
 
-void func_8431E118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431E118(CameraStruct* arg0, unk_D_84390010* arg1) {
     f32 sp3C;
 
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
@@ -1131,7 +1131,7 @@ void func_8431E118(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     func_8431BBDC(arg0, 0, arg1->unk_4B0 << 0xE, sp3C, 0.0f);
 }
 
-void func_8431E1DC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1148,7 +1148,7 @@ void func_8431E1DC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431C71C(arg0, arg1);
 }
 
-void func_8431E368(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1164,7 +1164,7 @@ void func_8431E368(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431C71C(arg0, arg1);
 }
 
-void func_8431E4DC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 5.0f, 300.0f);
@@ -1179,7 +1179,7 @@ void func_8431E4DC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431C71C(arg0, arg1);
 }
 
-void func_8431E63C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     UNUSED s32 pad[4];
     s16 sp3E;
 
@@ -1199,7 +1199,7 @@ void func_8431E63C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431C71C(arg0, arg1);
 }
 
-void func_8431E7D0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
@@ -1213,7 +1213,7 @@ void func_8431E7D0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431C71C(arg0, arg1);
 }
 
-void func_8431E90C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
@@ -1223,7 +1223,7 @@ void func_8431E90C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     }
 }
 
-void func_8431EA1C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
+void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
     func_843081F0(arg1, &gCameraPreset.unk_00);
     func_8431D7D8(&D_843849C0[arg2], arg0, arg1);
     func_8431D5D0(arg0, arg1, 1);
@@ -1233,7 +1233,7 @@ void func_8431EA1C(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2, s32
     }
 }
 
-void func_8431EAB8(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431EAB8(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BA5C();
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
@@ -1242,7 +1242,7 @@ void func_8431EAB8(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EBD0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431EBD0(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BA5C();
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
@@ -1251,7 +1251,7 @@ void func_8431EBD0(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431ECEC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431ECEC(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
@@ -1259,7 +1259,7 @@ void func_8431ECEC(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EE08(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431EE08(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 5.0f, 400.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, arg1->unk_4B0 << 0xE, 0.0f, 0.0f);
@@ -1270,7 +1270,7 @@ void func_8431EE08(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431EF54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431EF54(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
@@ -1278,7 +1278,7 @@ void func_8431EF54(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431F050(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
+void func_8431F050(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     gCameraDistCurrent = ClampScaledDistance(arg1, 0.5f, 100.0f);
@@ -1289,7 +1289,7 @@ void func_8431F050(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1, s32 arg2) {
     }
 }
 
-void func_8431F194(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
+void func_8431F194(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_843081F0(arg1, &gBattleState.unk_00->unk_D0);
     gCameraDistTarget = ClampScaledDistance(arg1, 3.5f, 300.0f);
     func_8431BAB4(arg1, arg0, gBattleState.unk_00->unk_D0, 0, func_84308190(arg1), 0.0f, 0.0f);
@@ -1297,7 +1297,7 @@ void func_8431F194(unk_D_86002F34_00C* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431F290(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, s32 arg2, s32 arg3) {
+void func_8431F290(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1354,7 +1354,7 @@ void func_8431F290(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, s32 arg2, s32
     }
 }
 
-void func_8431F420(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, s32 arg2) {
+void func_8431F420(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1378,7 +1378,7 @@ void func_8431F420(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, s32 arg2) {
     }
 }
 
-void func_8431F500(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, s32 arg2) {
+void func_8431F500(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:

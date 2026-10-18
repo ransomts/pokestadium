@@ -3,7 +3,7 @@
 #include "src/30640.h"
 #include "src/6A40.h"
 
-static unk_D_8439E680 D_8439E680;
+static WaterSurface D_8439E680;
 
 static Lights2 D_84389430 = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
 static Gfx D_84389458[] = {
@@ -23,7 +23,7 @@ static Gfx D_84389458[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_843894D8[] = {
+static Gfx gWaterSurfaceDL_Unlit[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -43,7 +43,7 @@ static Gfx D_843894D8[] = {
     gsSPEndDisplayList(),
 };
 
-void func_843648E0(s16 arg0, s16 arg1) {
+void WaterSurface_UpdateAngles(s16 arg0, s16 arg1) {
     unk_D_8439E680_0014* var_s0 = &D_8439E680.unk_0014[0][0];
     s32 i;
     s32 j;
@@ -64,7 +64,7 @@ void func_843648E0(s16 arg0, s16 arg1) {
     }
 }
 
-void func_84364A18(s16 arg0) {
+void WaterSurface_Initialize(s16 arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -97,12 +97,12 @@ void func_84364A18(s16 arg0) {
         }
     }
 
-    func_843648E0(8, 8);
+    WaterSurface_UpdateAngles(8, 8);
 
     for (k = 0; k < 10; k++) {
         s16 rand1 = RAND(16);
         s16 rand2 = RAND(16);
-        func_843648E0(rand1, rand2);
+        WaterSurface_UpdateAngles(rand1, rand2);
     }
 
     var_v0 = &D_8439E680.unk_0014[0][0];
@@ -114,7 +114,7 @@ void func_84364A18(s16 arg0) {
     }
 }
 
-void func_84364C50(s32 arg0, s32 arg1) {
+void WaterSurface_CalculateNormal(s32 arg0, s32 arg1) {
     f32 sp84;
     f32 sp80;
     f32 sp7C;
@@ -221,7 +221,7 @@ void func_84364C50(s32 arg0, s32 arg1) {
     }
 }
 
-void func_843651D4(unk_D_8439E680_0014* arg0, Vtx* arg1) {
+void WaterSurface_VertexFromData(unk_D_8439E680_0014* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -243,7 +243,7 @@ void func_843651D4(unk_D_8439E680_0014* arg0, Vtx* arg1) {
     arg1->v.cn[3] = D_8439E680.unk_0004;
 }
 
-s32 func_84365288(void) {
+s32 WaterSurface_Tick(void) {
     unk_D_8439E680_0014* var_s1;
     s32 i;
     s32 j;
@@ -280,15 +280,15 @@ s32 func_84365288(void) {
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            func_84364C50(i, j);
+            WaterSurface_CalculateNormal(i, j);
         }
     }
 
     return 0;
 }
 
-void func_84365434(void) {
-    unk_D_86002F34_00C* temp_v0;
+void WaterSurface_CalcViewMatrix(void) {
+    CameraStruct* temp_v0;
     f32 tmp1;
     f32 tmp2;
     f32 tmp3;
@@ -353,15 +353,15 @@ Gfx* func_84365558(Gfx* arg0) {
     var_s2 = &D_8439E680.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            func_843651D4(var_s2, vtx);
+            WaterSurface_VertexFromData(var_s2, vtx);
             var_s2++;
             vtx++;
         }
     }
 
-    func_84365434();
+    WaterSurface_CalcViewMatrix();
 
-    gDPLoadTextureBlock(arg0++, D_843920C0[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(arg0++, gWaterTexture[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gSPDisplayList(arg0++, D_84389458);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, D_8439E680.unk_0004);

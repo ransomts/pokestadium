@@ -22,10 +22,10 @@ typedef struct unk_D_800AA8C8 {
 
 s32 gRenderFrameCounter = 0;
 u16 gAnimationFrame = 0;
-unk_D_86002F34_00C* gCurrentCameraNode = NULL;
+CameraStruct* gCurrentCameraNode = NULL;
 unk_D_86002F34_alt1* gCurrentTextureNode = NULL;
 unk_D_86002F34_alt1* gCurrentLightNode = NULL;
-unk_D_86002F34_00C* D_8006F094 = NULL;
+CameraStruct* D_8006F094 = NULL;
 unk_D_86002F34_alt1* D_8006F098 = NULL;
 Fragment2_1GraphNode* gDefaultGraphRoot = NULL;
 unk_D_86002F34_alt11* D_8006F0A0 = NULL;
@@ -413,7 +413,7 @@ void Graph_VisitNodePre(GraphNode* arg0) {
 
 void Graph_SetupCamera(GraphNode* arg0) {
     UNUSED MtxF pad_mtx;
-    unk_D_86002F34_00C* arg = (unk_D_86002F34_00C*)arg0;
+    CameraStruct* arg = (CameraStruct*)arg0;
     unk_D_86002F34_00C_040* temp_s2 = &arg->unk_40;
     unk_D_86002F34_00C_060* temp_s1 = &arg->unk_60;
     unk_D_86002F34_00C_024* sp48 = &arg->unk_24;
@@ -493,7 +493,7 @@ void Graph_SetupLights(GraphNode* arg0) {
 }
 
 void CameraNode_Render(GraphNode* arg0) {
-    unk_D_86002F34_00C* arg = (unk_D_86002F34_00C*)arg0;
+    CameraStruct* arg = (CameraStruct*)arg0;
 
     if ((D_8006F094 == NULL) && (arg->unk_00.unk_0C != NULL)) {
         D_8006F094 = arg;

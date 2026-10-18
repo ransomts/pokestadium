@@ -24,7 +24,7 @@ void GraphNode_Init(GraphNode* arg0, u8 arg1);
 void GraphNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2);
 GraphNode* GraphNode_AllocInit(MainPoolState* arg0, GraphNode* arg1);
 unk_D_86002F34_alt2* GraphNodeAlt_AllocInitParent(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2);
-unk_D_86002F34_00C* CameraNode_Create(MemoryBlock* arg0, unk_D_86002F34_00C* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5);
+CameraStruct* CameraNode_Create(MemoryBlock* arg0, CameraStruct* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5);
 unk_D_86002F34_alt13* func_800111A4(MemoryBlock* arg0, unk_D_86002F34_alt13* arg1, s16 arg2);
 unk_D_86002F34_alt1* func_800111FC(MemoryBlock* arg0, unk_D_86002F34_alt1* arg1, s16 arg2);
 unk_D_86002F34_alt14* func_80011258(MainPoolState* arg0, unk_D_86002F34_alt14* arg1, s16 arg2);
@@ -54,11 +54,11 @@ unk_D_86002F34_alt10* func_80011BF4(MainPoolState* arg0, unk_D_86002F34_alt10* a
 unk_D_86002F34_alt23* func_80011C98(MainPoolState* arg0, unk_D_86002F34_alt23* arg1, s16 arg2);
 unk_D_86002F34_alt24* func_80011CF0(MainPoolState* arg0, unk_D_86002F34_alt24* arg1, s32 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8, s32 arg9, 
                                     u8 r, u8 g, u8 b, u8 a);
-void Viewport_SetRect(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
-void Perspective_SetParams(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3);
-void Camera_SetLookAt(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7);
-void Background_SetColor(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5);
-void Texture_SetDefault(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4);
+void Viewport_SetRect(CameraStruct* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+void Perspective_SetParams(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3);
+void Camera_SetLookAt(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7);
+void Background_SetColor(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5);
+void Texture_SetDefault(CameraStruct* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4);
 void GraphNode_AddChild(GraphNode* arg0, GraphNode* arg1);
 
 #endif // _11BA0_H_

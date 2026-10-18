@@ -33,7 +33,7 @@ void SpriteDisplay_InitGeoLayout(SpriteDisplay* arg0, s16 arg1, s16 arg2) {
         SpriteDisplay_SetCameraNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
     };
 
-    unk_D_86002F34_00C* sp24;
+    CameraStruct* sp24;
     MemoryBlock* sp20 = state_pool_try_init(main_pool_get_available(), 0);
 
     arg0->unk_0C = process_geo_layout(sp20, sSpriteGeoLayoutCommands);
@@ -206,7 +206,7 @@ void SpriteImage_Transform(FramebufferImage* arg0, arg1_func_80010CA8 arg1) {
 
 void SpriteDisplay_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     Vec3s sp38;
-    unk_D_86002F34_00C* sp34;
+    CameraStruct* sp34;
     unk_func_8001A024_008* temp_s1;
     unk_D_86002F58_004_000_004* sp2C;
 

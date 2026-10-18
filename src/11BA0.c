@@ -56,9 +56,9 @@ unk_D_86002F34_alt2* GraphNodeAlt_AllocInitParent(MainPoolState* arg0, unk_D_860
     return arg1;
 }
 
-unk_D_86002F34_00C* CameraNode_Create(MemoryBlock* arg0, unk_D_86002F34_00C* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+CameraStruct* CameraNode_Create(MemoryBlock* arg0, CameraStruct* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_00C), 4);
+        arg1 = state_pool_alloc_aligned(arg0, sizeof(CameraStruct), 4);
     }
 
     if (arg1 != NULL) {
@@ -471,7 +471,7 @@ unk_D_86002F34_alt24* func_80011CF0(MainPoolState* arg0, unk_D_86002F34_alt24* a
     return arg1;
 }
 
-void Viewport_SetRect(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void Viewport_SetRect(CameraStruct* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_18.x = arg1;
     arg0->unk_18.y = arg2;
     arg0->unk_18.width = arg3;
@@ -486,7 +486,7 @@ void Viewport_SetRect(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s16 arg3, s1
     arg0->unk_40.scale = 1.0f;
 }
 
-void Perspective_SetParams(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Perspective_SetParams(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_24.aspect = (f32)arg0->unk_18.width / arg0->unk_18.height;
     arg0->unk_24.fovy = arg1;
     arg0->unk_24.near = arg2;
@@ -494,7 +494,7 @@ void Perspective_SetParams(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg
     arg0->unk_24.scale = 1.0f;
 }
 
-void Camera_SetLookAt(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7) {
+void Camera_SetLookAt(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7) {
     unk_D_86002F34_00C_060* sp1C = &arg0->unk_60;
     f32 sp28 = arg4 - arg1;
     f32 sp24 = arg6 - arg3;
@@ -508,7 +508,7 @@ void Camera_SetLookAt(unk_D_86002F34_00C* arg0, f32 arg1, f32 arg2, f32 arg3, f3
     Vec3f_Set(&sp1C->up, SINS(arg7) * sp24, COSS(arg7), -SINS(arg7) * sp28);
 }
 
-void Background_SetColor(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5) {
+void Background_SetColor(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5) {
     unk_D_86002F34_00C_0CC* ptr = &arg0->unk_CC;
 
     if (arg2 < 2) {
@@ -527,7 +527,7 @@ void Background_SetColor(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, u8 arg3, 
     }
 }
 
-void Texture_SetDefault(unk_D_86002F34_00C* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4) {
+void Texture_SetDefault(CameraStruct* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4) {
     unk_D_86002F34_00C_0CC* ptr = &arg0->unk_CC;
     ptr->unk_0C = arg1;
     ptr->unk_0E = arg2;
@@ -564,12 +564,12 @@ void GraphNode_AddChild(GraphNode* arg0, GraphNode* arg1) {
 void GraphNode_RemoveChild(GraphNode* arg0, GraphNode* arg1) {    
     arg1->unk_04->unk_08 = arg1->unk_08;
     arg1->unk_08->unk_04 = arg1->unk_04;
-    if ((unk_D_86002F34_00C*)arg1 == arg0->unk_0C) {
+    if ((CameraStruct*)arg1 == arg0->unk_0C) {
         if (arg1 == arg1->unk_08) {
             arg0->unk_0C = NULL;
             return;
         }
-        arg0->unk_0C = (unk_D_86002F34_00C*)arg1->unk_08;
+        arg0->unk_0C = (CameraStruct*)arg1->unk_08;
     }
 }
 

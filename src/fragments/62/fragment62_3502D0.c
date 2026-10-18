@@ -3,7 +3,7 @@
 #include "src/30640.h"
 #include "src/6A40.h"
 
-static unk_D_8439CA60 D_843A06A0;
+static WaterSurfaceData D_843A06A0;
 
 static Lights2 D_84389560 = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
 static Gfx D_84389588[] = {
@@ -22,7 +22,7 @@ static Gfx D_84389588[] = {
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
-static Gfx D_84389608[] = {
+static Gfx gWaterSurfaceAltDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -43,7 +43,7 @@ static Gfx D_84389608[] = {
 };
 
 void func_84365A10(s16 arg0) {
-    unk_D_8439CA60_0014* var_v0;
+    WaterSurfaceVertex* var_v0;
     s32 i;
     s32 j;
     s16 tmp1;
@@ -75,7 +75,7 @@ void func_84365A10(s16 arg0) {
     }
 }
 
-void func_84365B88(s32 arg0, s32 arg1) {
+void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
     f32 sp84;
     f32 sp80;
     f32 sp7C;
@@ -182,7 +182,7 @@ void func_84365B88(s32 arg0, s32 arg1) {
     }
 }
 
-void func_8436611C(unk_D_8439CA60_0014* arg0, Vtx* arg1) {
+void WaterSurface_PackVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -205,7 +205,7 @@ void func_8436611C(unk_D_8439CA60_0014* arg0, Vtx* arg1) {
 }
 
 s32 func_843661D0(void) {
-    unk_D_8439CA60_0014* var_s1;
+    WaterSurfaceVertex* var_s1;
     s32 i;
     s32 j;
     f32 temp_fv1_2;
@@ -244,7 +244,7 @@ s32 func_843661D0(void) {
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            func_84365B88(i, j);
+            WaterSurface_CalcVertexNormal(i, j);
         }
     }
 
@@ -252,7 +252,7 @@ s32 func_843661D0(void) {
 }
 
 void func_8436643C(void) {
-    unk_D_86002F34_00C* temp_v0;
+    CameraStruct* temp_v0;
     f32 tmp1;
     f32 tmp2;
     f32 tmp3;
@@ -305,7 +305,7 @@ void func_8436643C(void) {
 Gfx* func_84366560(Gfx* arg0) {
     s32 i;
     s32 j;
-    unk_D_8439CA60_0014* var_s2;
+    WaterSurfaceVertex* var_s2;
     s32 var_s4;
     Vtx* vtx;
     s32 idx;
@@ -317,7 +317,7 @@ Gfx* func_84366560(Gfx* arg0) {
     var_s2 = &D_843A06A0.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            func_8436611C(var_s2, vtx);
+            WaterSurface_PackVertex(var_s2, vtx);
             var_s2++;
             vtx++;
         }
@@ -325,7 +325,7 @@ Gfx* func_84366560(Gfx* arg0) {
 
     func_8436643C();
 
-    gDPLoadTextureBlock(arg0++, D_843920C0[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(arg0++, gWaterTexture[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gSPDisplayList(arg0++, D_84389588);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, D_843A06A0.unk_0004);

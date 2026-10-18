@@ -94,7 +94,7 @@ static s16 D_8680847C;
 static s16 D_8680847E;
 static s16 D_86808480;
 static s32 pad_D_86808488[2];
-static unk_D_86002F34_00C* D_86808490;
+static CameraStruct* D_86808490;
 unk_D_86808498 D_86808498;
 
 void Sushi_UpdateScale(unk_D_86807558* arg0) {

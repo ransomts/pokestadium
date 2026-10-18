@@ -64,7 +64,7 @@ static s16 D_82608550;
 static s16 D_82608552;
 static s16 D_82608554;
 static s16 D_82608556;
-static unk_D_86002F34_00C* D_82608558;
+static CameraStruct* D_82608558;
 static s32 pad_D_82608560[2];
 static u16 D_82608568[151][0x640];
 static s16 D_8267E4E8;

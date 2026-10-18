@@ -25,7 +25,7 @@ static u32 gStageGeoLayoutCommands[] = {
 static unk_D_86002F30* gStageGeoLayout;
 static GraphNode* gStageRootGraphNode;
 static Fragment2_1GraphNode gStageRootFragmentNode;
-static unk_D_86002F34_00C* gStageCamera;
+static CameraStruct* gStageCamera;
 static BinArchive* D_86B10824;
 static u8* gBackgroundTextureData;
 static u8 gStageFadeAlpha;

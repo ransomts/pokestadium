@@ -13,7 +13,7 @@ static s32 gCurrentEntityIndex;
 s32 D_84390288;
 static s32 pad_D_84390290[4];
 
-void InitializeCameraForCurrentEntity(unk_D_86002F34_00C* arg0) {
+void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     func_8431AFD0(arg0, 20.0f, 12800.0f);
@@ -28,7 +28,7 @@ void InitializeCameraForCurrentEntity(unk_D_86002F34_00C* arg0) {
     if (gCurrentEntityIndex) {}
 }
 
-void InitializeCameraForPlayerEntity(unk_D_86002F34_00C* arg0) {
+void InitializeCameraForPlayerEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     func_8431AFD0(arg0, 20.0f, 12800.0f);
@@ -41,7 +41,7 @@ void InitializeCameraForPlayerEntity(unk_D_86002F34_00C* arg0) {
     gBattleState.unk_00->unk_20 += 1;
 }
 
-void func_843296B8(unk_D_86002F34_00C* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D_84390010* arg2) {
+void func_843296B8(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D_84390010* arg2) {
     gBattleState.unk_00->unk_40 = 0;
     gBattleState.unk_00->unk_60 = 30.0f;
     gBattleState.unk_00->unk_6C = 10.0f;
@@ -76,19 +76,19 @@ void func_843297AC(void) {
     bzero(gBattleState.unk_00, sizeof(unk_D_84390240_000));
 }
 
-void func_843297E8(UNUSED unk_D_86002F34_00C* arg0) {
+void func_843297E8(UNUSED CameraStruct* arg0) {
 }
 
-void func_843297F0(UNUSED unk_D_86002F34_00C* arg0) {
+void func_843297F0(UNUSED CameraStruct* arg0) {
 }
 
-void func_843297F8(unk_D_86002F34_00C* arg0) {
+void func_843297F8(CameraStruct* arg0) {
     if (Math_2DDistance(arg0->unk_60.at.x, arg0->unk_60.at.z, arg0->unk_60.eye.x, arg0->unk_60.eye.z) < 0.0001f) {
         arg0->unk_60.at.z += 0.001f;
     }
 }
 
-void Battle_StartSequence(unk_D_86002F34_00C* arg0) {
+void Battle_StartSequence(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_30) {
         case 0:
             gBattleState.unk_00->unk_18 = 0;
@@ -156,7 +156,7 @@ void Battle_StartSequence(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Battle_TransitionSequence(unk_D_86002F34_00C* arg0) {
+void Battle_TransitionSequence(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_30) {
         case 0:
             gBattleState.unk_00->unk_18 = 0;
@@ -241,7 +241,7 @@ void Battle_TransitionSequence(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void Battle_RunSequence(unk_D_86002F34_00C* arg0) {
+void Battle_RunSequence(CameraStruct* arg0) {
     if (gBattleState.unk_00->unk_2E == 0) {
         Battle_StartSequence(arg0);
     } else {
@@ -249,7 +249,7 @@ void Battle_RunSequence(unk_D_86002F34_00C* arg0) {
     }
 }
 
-u16 IsPointInTriangle(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
+u16 IsPointInTriangle(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -291,7 +291,7 @@ u16 IsPointInTriangle(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_8439
     return sp34;
 }
 
-u16 IsPointInTriangleAndWithinRange(unk_D_84390010* arg0, unk_D_86002F34_00C* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
+u16 IsPointInTriangleAndWithinRange(unk_D_84390010* arg0, CameraStruct* arg1, unk_D_84390010* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp94;
     f32 sp90;
@@ -340,7 +340,7 @@ u16 IsPointInTriangleAndWithinRange(unk_D_84390010* arg0, unk_D_86002F34_00C* ar
     return sp5C;
 }
 
-void UpdateEntityVisibilityFromCamera(unk_D_86002F34_00C* arg0) {
+void UpdateEntityVisibilityFromCamera(CameraStruct* arg0) {
     if (IsPointInTriangle(D_84390010[0], arg0, D_84390010[0], 0x2AA8, 2500.0f) != 0) {
         D_84390010[0]->unk_000.unk_000.unk_01 |= 1;
     } else {
@@ -354,7 +354,7 @@ void UpdateEntityVisibilityFromCamera(unk_D_86002F34_00C* arg0) {
     }
 }
 
-void UpdateOppositeEntityVisibility(unk_D_86002F34_00C* arg0) {
+void UpdateOppositeEntityVisibility(CameraStruct* arg0) {
     unk_D_84390010* sp24 = D_84390010[!gBattleState.unk_00->unk_2C];
 
     if (IsPointInTriangleAndWithinRange(sp24, arg0, sp24, 0x2AA8, 2500.0f) != 0) {
@@ -395,7 +395,7 @@ void ClearEntityFlagIfInState(void) {
     }
 }
 
-void ProcessBattleState(unk_D_86002F34_00C* arg0) {
+void ProcessBattleState(CameraStruct* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp40 = &gCurrentPlayer->unk_654;
     s32 temp_lo;
@@ -624,7 +624,7 @@ void ProcessBattleState(unk_D_86002F34_00C* arg0) {
     ClearEntityFlagIfInState();
 }
 
-void func_8432ABBC(unk_D_86002F34_00C* arg0) {
+void func_8432ABBC(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_1C) {
         case 1:
             SetAllEntitiesActiveFlag();
@@ -685,7 +685,7 @@ void func_8432ABBC(unk_D_86002F34_00C* arg0) {
     ClearEntityFlagIfInState();
 }
 
-void Battle_Update(unk_D_86002F34_00C* arg0) {
+void Battle_Update(CameraStruct* arg0) {
     Battle_RunSequence(arg0);
     func_8431B004();
     ProcessBattleState(arg0);
@@ -727,7 +727,7 @@ void Battle_Update(unk_D_86002F34_00C* arg0) {
     func_843297F8(arg0);
 }
 
-s32 func_8432AEE4(s32 arg0, unk_D_86002F34_00C* arg1) {
+s32 func_8432AEE4(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 0:
             func_843297AC();

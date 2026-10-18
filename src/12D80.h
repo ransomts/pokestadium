@@ -46,10 +46,10 @@ typedef struct unk_D_800ABB10 {
 
 extern s32 gRenderFrameCounter;
 extern u16 gAnimationFrame;
-extern unk_D_86002F34_00C* gCurrentCameraNode;
+extern CameraStruct* gCurrentCameraNode;
 extern unk_D_86002F34_alt1* gCurrentTextureNode;
 extern unk_D_86002F34_alt1* gCurrentLightNode;
-extern unk_D_86002F34_00C* D_8006F094;
+extern CameraStruct* D_8006F094;
 extern unk_D_86002F34_alt1* D_8006F098;
 extern Fragment2_1GraphNode* gDefaultGraphRoot;
 extern unk_D_86002F34_alt11* D_8006F0A0;
