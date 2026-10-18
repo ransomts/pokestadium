@@ -366,7 +366,7 @@ void Pref_MainLoop(void) {
     s16 i;
     s16 var_s1 = 0;
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
     while (Stage_GetFadeState() != 0) {
         Game_UpdateInputs();
         func_82C00D98(0, 0, 0, 0);
@@ -400,7 +400,7 @@ void Pref_MainLoop(void) {
     }
 
     Stage_SetFillColor(0xFFFF);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();

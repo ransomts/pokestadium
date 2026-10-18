@@ -2995,7 +2995,7 @@ void func_8800233C(unk_func_88001300* arg0) {
 
     if (arg0->unk_40 == -1) {
         Stage_SetFillColor(1);
-        func_80006CB4(8);
+        Stage_FadeOut(8);
 
         i = 10;
         while (i-- > 0) {
@@ -3039,7 +3039,7 @@ void func_8800233C(unk_func_88001300* arg0) {
     sp34 = func_88001D94(arg0);
 
     Stage_SetFillColor(1);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     if ((sp34 == 0x11) || (sp34 == 0x10001)) {
         func_8004B9C4(0x10);
@@ -3117,7 +3117,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     osStartThread(&sp30->thread);
 
     func_80007754();
-    func_80006C6C(8);
+    Stage_FadeIn(8);
     sp3C = func_880025D8(sp38);
     func_8000771C();
 

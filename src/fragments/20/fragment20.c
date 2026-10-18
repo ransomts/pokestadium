@@ -1713,7 +1713,7 @@ void func_86E02880(s32 arg0) {
 void metapodMinigameInit(void) {
     initMetapodMinigameAssets();
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
     miniDifficulty = D_8780FA38;
 }
@@ -1788,7 +1788,7 @@ void func_86E02A64(void) {
 void func_86E02BB0(void) {
     s32 i;
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
     if (D_86E08E40 != 0) {
         func_86E001A0(0xF, 0x1E);
     } else {

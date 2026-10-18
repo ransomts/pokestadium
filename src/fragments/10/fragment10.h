@@ -41,7 +41,7 @@ extern Gfx gHealthBarDL[];
 extern Gfx gHealthBarQuadDL[];
 extern Gfx gDamageOverlayDL[];
 
-void func_86400020(void);
+void UpdateHealthBarSegmentOffsets(void);
 u16 func_86400128(u8 arg0);
 void func_86400184(unk_D_86404778* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
 void func_864001A0(void);

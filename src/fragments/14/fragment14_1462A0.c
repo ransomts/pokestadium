@@ -97,7 +97,7 @@ static s32 pad_D_86808488[2];
 static unk_D_86002F34_00C* D_86808490;
 unk_D_86808498 D_86808498;
 
-void func_86801FC0(unk_D_86807558* arg0) {
+void Sushi_UpdateScale(unk_D_86807558* arg0) {
     Fragment2_1GraphNode* ptr = &arg0->unk_24C;
 
     if (arg0->unk_0DC != 0) {
@@ -115,14 +115,14 @@ void func_86801FC0(unk_D_86807558* arg0) {
     }
 }
 
-void func_86802084(s32 arg0, UNUSED s32 arg1) {
+void Sushi_Render(s32 arg0, UNUSED s32 arg1) {
     UNUSED s32 pad;
     s32 idx;
 
     switch (arg0) {
         case 2:
             idx = gDefaultGraphRoot->unk_000.unk_14;
-            func_86801FC0(&D_86807558[idx]);
+            Sushi_UpdateScale(&D_86807558[idx]);
             break;
 
         case 5:
@@ -145,7 +145,7 @@ void func_86802084(s32 arg0, UNUSED s32 arg1) {
     }
 }
 
-s32 func_86802204(unk_D_86807558_098* arg0) {
+s32 Orientation_Orthonormalize(unk_D_86807558_098* arg0) {
     f32 temp_fs0;
 
     arg0->unk_00.x = ABS_NORMALIZED(arg0->unk_00.x);
@@ -191,7 +191,7 @@ s32 func_86802204(unk_D_86807558_098* arg0) {
     return 0;
 }
 
-s16 func_8680262C(Fragment2_1GraphNode* arg0, s16 arg1) {
+s16 Anim_FindFirstFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
     s32 i;
     s16 sp2A;
 
@@ -241,7 +241,7 @@ void func_86802728(unk_D_86807558_040* arg0) {
     arg0->unk_10 = 0.0f;
 }
 
-void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
+void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     s32 i;
     Fragment2_1GraphNode* sp24;
     s16 angle;
@@ -341,7 +341,7 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_098.unk_0C.y = 1.0f;
     arg0->unk_098.unk_0C.z = 0.0f;
 
-    func_86802204(&arg0->unk_098);
+    Orientation_Orthonormalize(&arg0->unk_098);
 
     arg0->unk_0BC = 0;
     arg0->unk_0BE = GetRandomMod(0x5B) + 0x1E;
@@ -381,7 +381,7 @@ void func_86802750(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-f32 func_86802BE4(s16 arg0) {
+f32 Controller_NormalizeAxis(s16 arg0) {
     f32 temp_fv0;
     s16 var_v1;
     s32 var_v0 = 0;
@@ -411,7 +411,7 @@ f32 func_86802BE4(s16 arg0) {
     return temp_fv0;
 }
 
-s32 func_86802C6C(unk_D_86807558* arg0) {
+s32 Sushi_ClampPosition(unk_D_86807558* arg0) {
     s32 sp1C = 0;
     f32 temp_fa0 = SQ(arg0->unk_068.x) + SQ(arg0->unk_068.z);
 
@@ -459,7 +459,7 @@ s32 func_86802D28(unk_D_86807558* arg0) {
     return var_v1;
 }
 
-void func_86802E18(unk_D_86807558* arg0, u32 arg1) {
+void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
     arg0->unk_060 = arg1;
 
     switch (arg1) {
@@ -509,7 +509,7 @@ void func_86802E18(unk_D_86807558* arg0, u32 arg1) {
     }
 }
 
-s32 func_86802FB0(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
+s32 Sushi_IsInstanceAvailable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
     if (arg0 == NULL) {
         return 1;
     }
@@ -548,7 +548,7 @@ unk_D_86807558* func_86803038(unk_D_86807558* arg0, unk_D_868084D8* arg1) {
     return ret;
 }
 
-unk_D_868084D8* func_86803078(unk_D_86807558* arg0) {
+unk_D_868084D8* Sushi_FindNearestTarget(unk_D_86807558* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -573,7 +573,7 @@ unk_D_868084D8* func_86803078(unk_D_86807558* arg0) {
     var_fs0 = 1e9f;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if (func_86802FB0(var_s0, var_s6, var_s4) == 0) {
+        if (Sushi_IsInstanceAvailable(var_s0, var_s6, var_s4) == 0) {
             continue;
         }
 
@@ -596,7 +596,7 @@ unk_D_868084D8* func_86803078(unk_D_86807558* arg0) {
     return var_s5;
 }
 
-unk_D_868084D8* func_868031A8(unk_D_86807558* arg0) {
+unk_D_868084D8* Sushi_FindBestTarget(unk_D_86807558* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -626,7 +626,7 @@ unk_D_868084D8* func_868031A8(unk_D_86807558* arg0) {
     var_s4 = NULL;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if (func_86802FB0(var_s0, var_s7, var_s5) == 0) {
+        if (Sushi_IsInstanceAvailable(var_s0, var_s7, var_s5) == 0) {
             continue;
         }
 
@@ -694,7 +694,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
 
     if (arg0->unk_05C != 0) {
         for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-            if ((func_86802FB0(var_s0, var_s6, var_s7) == 0) || (arg0->unk_05C != var_s0->unk_0C)) {
+            if ((Sushi_IsInstanceAvailable(var_s0, var_s6, var_s7) == 0) || (arg0->unk_05C != var_s0->unk_0C)) {
                 continue;
             }
 
@@ -731,7 +731,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
 
         if (var_s4 != 0) {
             for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-                if ((func_86802FB0(var_s0, var_s6, var_s7) == 0) || (var_s4 != var_s0->unk_0C)) {
+                if ((Sushi_IsInstanceAvailable(var_s0, var_s6, var_s7) == 0) || (var_s4 != var_s0->unk_0C)) {
                     continue;
                 }
 
@@ -754,7 +754,7 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
         }
 
         if (var_s5 == NULL) {
-            var_s5 = func_868031A8(arg0);
+            var_s5 = Sushi_FindBestTarget(arg0);
         }
     }
 
@@ -772,7 +772,7 @@ unk_D_868084D8* func_868035FC(unk_D_86807558* arg0) {
     var_s3 = NULL;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if ((func_86802FB0(var_s0, 0, 1) == 0) || (var_s0->unk_0C != 1)) {
+        if ((Sushi_IsInstanceAvailable(var_s0, 0, 1) == 0) || (var_s0->unk_0C != 1)) {
             continue;
         }
 
@@ -788,7 +788,7 @@ unk_D_868084D8* func_868035FC(unk_D_86807558* arg0) {
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if ((func_86802FB0(var_s0, 0, 1) == 0) || !(var_s0->unk_02 & 2)) {
+        if ((Sushi_IsInstanceAvailable(var_s0, 0, 1) == 0) || !(var_s0->unk_02 & 2)) {
             continue;
         }
 
@@ -803,7 +803,7 @@ unk_D_868084D8* func_868035FC(unk_D_86807558* arg0) {
     return var_s3;
 }
 
-void func_86803760(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3, f32 arg4) {
+void Controller_CalcStickFromVector(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3, f32 arg4) {
     unk_D_86808498* ptr = &D_86808498;
     f32 tmp1;
     f32 tmp2;
@@ -827,7 +827,7 @@ void func_86803760(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3, f32 arg4) {
     *arg3 = 74.0f * tmp2 * arg4;
 }
 
-void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
+void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
     s16 var_a1;
     s16 var_a2;
     f32 sp60;
@@ -859,7 +859,7 @@ void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
         arg0->unk_014 = sp40[D_8780FA38];
         arg0->unk_010 = NULL;
     } else {
-        if (func_86802FB0(arg0->unk_010, var_a1, var_a2) == 0) {
+        if (Sushi_IsInstanceAvailable(arg0->unk_010, var_a1, var_a2) == 0) {
             arg0->unk_010 = NULL;
         }
     }
@@ -867,7 +867,7 @@ void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
     if (sp50 != 0) {
         switch (arg0->unk_008) {
             case 1:
-                arg0->unk_010 = func_86803078(arg0);
+                arg0->unk_010 = Sushi_FindNearestTarget(arg0);
                 break;
 
             case 2:
@@ -875,7 +875,7 @@ void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
                 break;
 
             case 3:
-                arg0->unk_010 = func_868031A8(arg0);
+                arg0->unk_010 = Sushi_FindBestTarget(arg0);
                 break;
 
             case 4:
@@ -892,7 +892,7 @@ void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
 
             temp_fv0 = SQ(sp54.x) + SQ(sp54.z);
             if (temp_fv0 > 30.0f) {
-                func_86803760(&sp54, temp_fv0, &arg1->rawStickX, &arg1->rawStickY, 0.5f);
+                Controller_CalcStickFromVector(&sp54, temp_fv0, &arg1->rawStickX, &arg1->rawStickY, 0.5f);
             }
         }
     } else {
@@ -906,10 +906,10 @@ void func_868038A8(unk_D_86807558* arg0, Controller* arg1) {
             if (tmp >= 0.8f) {
                 arg1->buttonPressed |= 0x8000;
             } else {
-                func_86803760(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
+                Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
             }
         } else {
-            func_86803760(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
+            Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
         }
     }
 }
@@ -945,7 +945,7 @@ f32 func_86803BC4(s16 arg0, s32 arg1) {
     return ret;
 }
 
-void func_86803C6C(unk_D_86807558* arg0) {
+void Sushi_UpdateAI(unk_D_86807558* arg0) {
     s32 pad;
     s32 pad1;
     unk_D_86808498* ptr = &D_86808498;
@@ -966,7 +966,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
         if (!(arg0->unk_002 & 4)) {
             spA4 = arg0->unk_064;
         } else {
-            func_868038A8(arg0, &sp80);
+            Sushi_GenerateAIController(arg0, &sp80);
             spA4 = &sp80;
         }
     } else {
@@ -976,12 +976,12 @@ void func_86803C6C(unk_D_86807558* arg0) {
     switch (arg0->unk_060) {
         case 0:
             if (spA4->buttonPressed & 0x8000) {
-                func_86802E18(arg0, 1);
+                Sushi_SetState(arg0, 1);
                 return;
             }
 
-            spAC = func_86802BE4(spA4->rawStickX);
-            spA8 = func_86802BE4(spA4->rawStickY);
+            spAC = Controller_NormalizeAxis(spA4->rawStickX);
+            spA8 = Controller_NormalizeAxis(spA4->rawStickY);
             break;
 
         case 2:
@@ -995,7 +995,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
 
             if (arg0->unk_006 <= 0) {
                 arg0->unk_006 = 0;
-                func_86802E18(arg0, 0);
+                Sushi_SetState(arg0, 0);
                 return;
             }
 
@@ -1090,7 +1090,7 @@ void func_86803C6C(unk_D_86807558* arg0) {
     arg0->unk_068.y = arg0->unk_074.y + sp70.y;
     arg0->unk_068.z = arg0->unk_074.z + sp70.z;
 
-    func_86802C6C(arg0);
+    Sushi_ClampPosition(arg0);
 
     temp_fa0 = SQ(sp4C.x) + SQ(sp4C.z);
     if (temp_fa0 > 0.0001f) {
@@ -1226,11 +1226,11 @@ void func_86804884(unk_D_86807558* arg0) {
     func_86806868(arg0->unk_0DC, 0, NULL);
 
     if (sp20 == 1) {
-        func_86802E18(arg0, 2);
+        Sushi_SetState(arg0, 2);
     } else if ((sp24 != 0) && (arg0->unk_002 & 2)) {
-        func_86802E18(arg0, 3);
+        Sushi_SetState(arg0, 3);
     } else {
-        func_86802E18(arg0, 0);
+        Sushi_SetState(arg0, 0);
     }
 }
 
@@ -1246,7 +1246,7 @@ void func_868049C0(unk_D_86807558* arg0) {
             if (arg0->unk_0DC == NULL) {
                 arg0->unk_0DC = func_86804634(arg0);
                 if (arg0->unk_0DC != NULL) {
-                    arg0->unk_0CC = func_8680262C(&arg0->unk_0E4, 0xD);
+                    arg0->unk_0CC = Anim_FindFirstFrameInRange(&arg0->unk_0E4, 0xD);
                     func_86806868(arg0->unk_0DC, 3, arg0);
                 }
             }
@@ -1259,7 +1259,7 @@ void func_868049C0(unk_D_86807558* arg0) {
                         break;
 
                     case 3:
-                        if (func_8680262C(&arg0->unk_0E4, 0xD) < 3) {
+                        if (Anim_FindFirstFrameInRange(&arg0->unk_0E4, 0xD) < 3) {
                             arg0->unk_0C0 = 4;
                         } else {
                             arg0->unk_0C8 = -1.0f;
@@ -1281,7 +1281,7 @@ void func_868049C0(unk_D_86807558* arg0) {
 
         case 4:
             if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-                func_86802E18(arg0, 0);
+                Sushi_SetState(arg0, 0);
             }
             break;
 
@@ -1317,7 +1317,7 @@ void func_86804BD0(unk_D_86807558* arg0) {
         }
     } else if (arg0->unk_0C0 == 8) {
         if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-            func_86802E18(arg0, 0);
+            Sushi_SetState(arg0, 0);
         }
     } else {
         sp30.x = D_86808498.unk_0C.x - arg0->unk_068.x;
@@ -1331,7 +1331,7 @@ void func_86804BD0(unk_D_86807558* arg0) {
         arg0->unk_098.unk_00.x += sp30.x * 0.3f;
         arg0->unk_098.unk_00.z += sp30.z * 0.3f;
 
-        func_86802204(&arg0->unk_098);
+        Orientation_Orthonormalize(&arg0->unk_098);
 
         tmp = (sp30.x * arg0->unk_098.unk_00.x) + sp30.y + (sp30.z * arg0->unk_098.unk_00.z);
 
@@ -1400,7 +1400,7 @@ void func_86804F2C(unk_D_86807558* arg0) {
 
         arg0->unk_074 = arg0->unk_080;
 
-        func_86802C6C(arg0);
+        Sushi_ClampPosition(arg0);
 
         arg0->unk_002 &= ~1;
         arg0->unk_080.x = arg0->unk_080.y = arg0->unk_080.z = 0.0f;
@@ -1416,7 +1416,7 @@ void func_86805000(unk_D_86807558* arg0) {
 
     ptr->unk_024 = arg0->unk_068;
 
-    func_86802204(&arg0->unk_098);
+    Orientation_Orthonormalize(&arg0->unk_098);
 
     var_fv0 = 1.0f - arg0->unk_098.unk_00.z;
     var_fv0 = var_fv0 * 32768.0f * 0.5f;
@@ -1530,7 +1530,7 @@ void func_86805428(unk_D_86807558* arg0) {
 
         case 5:
             arg0->unk_002 &= ~2;
-            func_86802E18(arg0, 4);
+            Sushi_SetState(arg0, 4);
             break;
     }
 
@@ -1637,7 +1637,7 @@ void func_86805620(UNUSED unk_D_86807558* arg0, unk_D_86807558_040* arg1) {
     }
 }
 
-void func_86805858(s32 arg0) {
+void Sushi_InitSystem(s32 arg0) {
     s32 i;
     MemoryBlock* temp_v0;
 
@@ -1659,7 +1659,7 @@ void func_86805858(s32 arg0) {
     D_86808480 = 0;
 
     for (i = 0; i < 4; i++) {
-        func_86802750(&D_86807558[i], i, arg0);
+        Sushi_InitEntity(&D_86807558[i], i, arg0);
     }
 }
 
@@ -1686,7 +1686,7 @@ void func_86805974(void) {
             case 0:
             case 2:
             case 3:
-                func_86803C6C(var_s0);
+                Sushi_UpdateAI(var_s0);
                 break;
 
             case 1:
@@ -1747,7 +1747,7 @@ void func_86805AF0(unk_D_86808498* arg0) {
 }
 
 void func_86805BD4(void) {
-    gMiniCameraPtr = D_86808490 = D_86807500->unk_00.unk_0C;
+    gMiniCameraPtr = D_86808490 = gSushiGoRoundGraphNode->unk_00.unk_0C;
 
     D_86808498.unk_00.x = 0.0f;
     D_86808498.unk_00.y = 0.0f;

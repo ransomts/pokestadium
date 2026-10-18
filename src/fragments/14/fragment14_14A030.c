@@ -296,7 +296,7 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
         arg1->unk_40->unk_00.unk_01 |= 1;
 
         if (arg3->unk_006 >= 2) {
-            if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (D_86807510 >= 0x3D)) {
+            if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (gSushiGoRoundTimer >= 0x3D)) {
                 PlaySoundByCategory(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
             }
         }

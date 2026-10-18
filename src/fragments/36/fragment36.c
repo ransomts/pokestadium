@@ -319,7 +319,7 @@ s32 func_821009B4(void) {
 
 void func_82100AB8(void) {
     if (Stage_GetFadeState() == 1) {
-        func_80006C6C(0xA);
+        Stage_FadeIn(0xA);
         while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
             func_821005EC();
@@ -334,7 +334,7 @@ void func_82100B1C(s32 arg0) {
         Stage_SetFillColor(0xFFFF);
     }
 
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();

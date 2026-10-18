@@ -276,7 +276,7 @@ void func_88200FA0(unk_func_88200FA0* arg0) {
     sp24 = func_88200B60(arg0->unk_30, gPlayer1Controller);
     if (sp24 == 1) {
         arg0->unk_2C->unk_2C = 9;
-        func_80006CB4(8);
+        Stage_FadeOut(8);
 
         i = 10;
         while (i-- > 0) {
@@ -316,7 +316,7 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
 
     osStartThread(&sp28->thread);
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
     sp20 = func_88200F00(sp30);
 
     osDestroyThread(&sp28->thread);

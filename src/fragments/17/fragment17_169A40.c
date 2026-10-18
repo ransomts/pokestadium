@@ -92,7 +92,7 @@ s32 func_86B0A37C(void) {
 
     if ((D_86B106B8.unk_040.unk_08 >> 0x10) == 0x64) {
         Stage_SetFillColor(1);
-        func_80006CB4(3);
+        Stage_FadeOut(3);
     }
 
     var_v0 = func_800174E4(&D_86B106B8) != 0;
@@ -104,7 +104,7 @@ s32 func_86B0A37C(void) {
 void func_86B0A414(void) {
     s32 var_s0 = 1;
 
-    func_80006C6C(0xC);
+    Stage_FadeIn(0xC);
     Music_ChangeTrack(0x30);
 
     while (var_s0 != 0) {

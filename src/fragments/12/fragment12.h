@@ -3,9 +3,9 @@
 
 #include "global.h"
 
-void func_86600020(void);
+void MiniGame_PollInputs(void);
 void func_86600050(void);
-void func_866000FC(void);
+void MiniGame_UpdateCamera(void);
 void func_86600264(s32 arg0);
 void func_86600438(s32 arg0);
 void func_8660048C(void);

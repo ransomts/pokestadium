@@ -250,7 +250,7 @@ s32 Stage_StartFade(s32 arg0) {
     return ret;
 }
 
-s32 func_80006C6C(s32 arg0) {
+s32 Stage_FadeIn(s32 arg0) {
     s32 ret = 0;
 
     if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 1)) {
@@ -260,7 +260,7 @@ s32 func_80006C6C(s32 arg0) {
     return ret;
 }
 
-s32 func_80006CB4(s32 arg0) {
+s32 Stage_FadeOut(s32 arg0) {
     s32 ret = 0;
 
     if ((gCurrentStage != NULL) && (gCurrentStage->unk_11 == 0)) {
@@ -536,14 +536,14 @@ s32 Stage_RunFadeSequence(s32 (*arg0)(u8), s32 arg1, s32 arg2) {
 
     var_s2 = 0;
     var_s0 = 1;
-    func_80006C6C(arg1);
+    Stage_FadeIn(arg1);
 
     while (var_s0 != 0) {
         temp_v0 = arg0(gCurrentStage->unk_11);
         if (var_s2 == 0) {
             if (temp_v0 != 0) {
                 var_s2 = temp_v0;
-                func_80006CB4(arg2);
+                Stage_FadeOut(arg2);
             }
         } else if (gCurrentStage->unk_11 == 1) {
             var_s0 = 0;

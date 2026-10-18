@@ -3357,7 +3357,7 @@ void initEkansMinigameAssets(void) {
     hideMiniGameHUD();
     ParticleSystem_Init(); //	memory something
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     if (ekansMinigameCountdownStarted) {
         miniTutoScreenState = 1;
@@ -3411,7 +3411,7 @@ void miniEkansTutoScreenControls(void) {
 void ekansMinigameUpdate(void) {
     s32 i;
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     if (ekansMinigameCountdownStarted) {
         func_86C00368(0x13, 0x1E);

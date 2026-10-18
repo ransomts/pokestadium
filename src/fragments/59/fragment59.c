@@ -928,7 +928,7 @@ void func_84101EC8(void) {
     Music_ChangeTrack(0x15);
     func_84101BFC();
     gSelectedMenuIndex = 0;
-    func_80006C6C(0xA);
+    Stage_FadeIn(0xA);
     while (Stage_GetFadeState() != 0) {
         Game_UpdateInputs();
         func_841014E4(0, 0, 0.0f);
@@ -968,7 +968,7 @@ void func_84101EC8(void) {
     } else {
         Stage_SetFillColor(0xFFFF);
         Music_StopTrack(0x14);
-        func_80006CB4(0xA);
+        Stage_FadeOut(0xA);
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
             func_841014E4(0xA, 0, 0.0f);

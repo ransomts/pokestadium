@@ -280,7 +280,7 @@ void func_86A00840(void) {
         switch (i) {
             case 0:
                 sp35 = 0x1E;
-                func_80006C6C(sp35);
+                Stage_FadeIn(sp35);
                 var_s1 = 0x1E;
                 break;
 
@@ -291,7 +291,7 @@ void func_86A00840(void) {
 
             case 2:
                 sp35 = 0x78;
-                func_80006CB4(sp35);
+                Stage_FadeOut(sp35);
                 var_s1 = sp35;
                 break;
 
@@ -313,7 +313,7 @@ void func_86A0092C(s32 arg0) {
     s32 var_s6 = 1;
 
     Stage_AdvanceN(0x3C);
-    func_80006C6C(0xB4);
+    Stage_FadeIn(0xB4);
 
     if (arg0 != 0) {
         func_8004B1CC(0x42);
@@ -1404,7 +1404,7 @@ void func_86A00C90(void) {
 
     Audio_SetVolumeFadeAndDuration(1, 0x78);
     Audio_SetVolumeFadeAndDuration(2, 0x78);
-    func_80006CB4(0x78);
+    Stage_FadeOut(0x78);
 
     for (i = 0; i < 120; i++) {
         func_86A00434();

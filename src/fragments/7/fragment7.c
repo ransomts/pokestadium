@@ -327,15 +327,15 @@ static unk_D_86105EA0 D_86105EA0[4];
 static unk_D_86106450 D_86106450[12];
 static s16 D_86107590;
 
-void func_86100020(void) {
+void Pause_Start(void) {
     func_86102370();
 }
 
-void func_86100040(void) {
+void Pause_End(void) {
     func_861023E4();
 }
 
-void func_86100060(s32 arg0) {
+void SetAllPlayersAnimSpeed(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -343,7 +343,7 @@ void func_86100060(s32 arg0) {
     }
 }
 
-unk_D_861047B8* func_86100084(s32 arg0, s32 arg1) {
+unk_D_861047B8* WeightedRandomSelect(s32 arg0, s32 arg1) {
     UNUSED s32 pad[4];
     unk_D_861047B8* sp34;
     s32 var_v1;
@@ -382,7 +382,7 @@ unk_D_861047B8* func_86100084(s32 arg0, s32 arg1) {
     return sp34;
 }
 
-void func_86100170(void) {
+void InitRandomItemPairs(void) {
     unk_D_86106450* ptr;
     s32 var_a1;
     s32 var_s2;
@@ -413,7 +413,7 @@ void func_86100170(void) {
         }
     }
 
-    temp_v0_2 = func_86100084(var_s2, var_a3);
+    temp_v0_2 = WeightedRandomSelect(var_s2, var_a3);
 
     for (i = 0; i < 6; i++, ptr++) {
         ptr->unk_000 = temp_v0_2->unk_00[i];
@@ -421,9 +421,9 @@ void func_86100170(void) {
         ptr->unk_16C = D_8610548C->unk_08->unk_00[ptr->unk_000];
     }
 
-    var_v0 = func_86100084(var_s2, var_a3);
+    var_v0 = WeightedRandomSelect(var_s2, var_a3);
     while (var_v0 == temp_v0_2) {
-        var_v0 = func_86100084(var_s2, var_a3);
+        var_v0 = WeightedRandomSelect(var_s2, var_a3);
     }
 
     for (i = 0; i < 6; i++) {
@@ -468,7 +468,7 @@ void func_86100480(s16 arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     gDisplayListHead = gfx;
 }
 
-void func_86100798(s16 arg0, s16 arg1, f32 arg2) {
+void DrawPatternRect(s16 arg0, s16 arg1, f32 arg2) {
     Gfx* gfx = gDisplayListHead;
 
     if (arg2 != 0.0f) {
@@ -496,7 +496,7 @@ void func_86100798(s16 arg0, s16 arg1, f32 arg2) {
     }
 }
 
-void func_86100A80(void) {
+void UpdatePlayerInputStates(void) {
     D_861054C0[0].unk_172 = gPlayer1Controller->buttonPressed;
     D_861054C0[1].unk_172 = gPlayer2Controller->buttonPressed;
     D_861054C0[2].unk_172 = gPlayer3Controller->buttonPressed;
@@ -508,7 +508,7 @@ void func_86100A80(void) {
     D_861054C0[3].unk_170 = gPlayer4Controller->buttonDown;
 }
 
-void func_86100AEC(void) {
+void PrepareInputIfNotFading(void) {
     if (Stage_GetFadeState() == 0) {
         D_861054BA = 1;
         Cont_StartReadInputs();
@@ -518,10 +518,10 @@ void func_86100AEC(void) {
         D_861054BA = 0;
     }
 
-    func_86100A80();
+    UpdatePlayerInputStates();
 }
 
-void func_86100B48(void) {
+void SetupCamera(void) {
     D_86105488 = D_86105484->unk_00.unk_0C;
     SetProjectionInfo(D_86105488);
 
@@ -545,7 +545,7 @@ void func_86100B48(void) {
 void func_86100C28(void) {
 }
 
-void func_86100C30(s32 arg0) {
+void RenderResultScreenUI(s32 arg0) {
     s32 i;
     UNUSED unk_D_86104B5C sp60 = D_86104B5C;
     UNUSED unk_D_86104B5C sp5C = D_86104B60;
@@ -671,7 +671,7 @@ void func_86100C30(s32 arg0) {
     }
 }
 
-void func_86101434(void) {
+void DrawPlayerGrid(void) {
     s32 i;
     s32 j;
 
@@ -680,13 +680,13 @@ void func_86101434(void) {
 
         if (D_86105BC4->unk_1AC == 0) {
             for (j = 0; j < D_86105BC4->unk_1A6; j++) {
-                func_86100798(((j % 6) * 8) + (i * 0x46) + 0x28, ((j / 6) * 8) + 0x82, 1.0f);
+                DrawPatternRect(((j % 6) * 8) + (i * 0x46) + 0x28, ((j / 6) * 8) + 0x82, 1.0f);
             }
         }
     }
 }
 
-void func_86101560(void) {
+void DrawPlayerItems(void) {
     s32 i;
     s32 j;
 
@@ -704,7 +704,7 @@ void func_86101560(void) {
     }
 }
 
-void func_86101718(s32 arg0) {
+void DrawPlayerBorders(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -719,8 +719,8 @@ void func_86101718(s32 arg0) {
     }
 }
 
-void func_861017E4(s32 arg0) {
-    func_86100AEC();
+void UpdateFrame(s32 arg0) {
+    PrepareInputIfNotFading();
 
     switch (arg0) {
         case 2:
@@ -737,11 +737,11 @@ void func_861017E4(s32 arg0) {
         case 13:
         case 14:
             if ((D_86107590 == 0) && (D_8780FC94 != 0)) {
-                func_86100020();
+                Pause_Start();
             }
 
             if ((D_86107590 != 0) && (D_8780FC94 == 0)) {
-                func_86100040();
+                Pause_End();
             }
 
             D_86107590 = D_8780FC94;
@@ -761,21 +761,21 @@ void func_861017E4(s32 arg0) {
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
 
     if (D_8780FC98 == 0) {
-        func_86101718(arg0);
+        DrawPlayerBorders(arg0);
 
         switch (arg0) {
             case 8:
-                func_86101560();
+                DrawPlayerItems();
                 break;
 
             case 12:
             case 13:
             case 14:
-                func_86101434();
+                DrawPlayerGrid();
                 break;
         }
 
-        func_86100C30(arg0);
+        RenderResultScreenUI(arg0);
     }
 
     ResultScreen_UpdateAndRender();
@@ -783,13 +783,13 @@ void func_861017E4(s32 arg0) {
     D_86105496 += 1;
 }
 
-s32 func_8610197C(void) {
+s32 RunMatchLoop(void) {
     s32 var_s0;
     u16 temp_v1;
     s32 i;
 
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86105BC4 = &D_861054C0[i];
@@ -830,7 +830,7 @@ s32 func_8610197C(void) {
             return -1;
         }
 
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 
     return 0;
@@ -876,7 +876,7 @@ void func_86101BB4(void) {
                 break;
         }
 
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -965,7 +965,7 @@ s32 func_86101FD0(void) {
     }
 
     if (D_8610549C >= 0x19) {
-        func_86100060(0x10000);
+        SetAllPlayersAnimSpeed(0x10000);
         return -1;
     }
 
@@ -1115,7 +1115,7 @@ void func_86102510(void) {
         }
     }
 
-    func_86100060(0x10000);
+    SetAllPlayersAnimSpeed(0x10000);
 }
 
 void func_86102614(void) {
@@ -1630,7 +1630,7 @@ void func_86103868(void) {
             break;
         }
 
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -1643,11 +1643,11 @@ void func_86103AB4(void) {
     while ((D_8780FC94 != 0) || (func_8004BFB0() != 1)) {
         func_8004BC84(0x1E, 1);
         func_8004BC84(0x20, 0);
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 
     for (i = 0; i < 2; i++) {
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 
     SetResultFlag(1);
@@ -1688,7 +1688,7 @@ void func_86103AB4(void) {
     }
 
     for (j = 0; j < 0x5A; j++) {
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -1696,10 +1696,10 @@ void func_86103D28(void) {
     s32 i;
 
     func_8004B9C4(0x1E);
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -1709,8 +1709,8 @@ void func_86103D88(s32 arg0) {
     D_86105498 = 0x12;
 
     for (i = 0; i < arg0; i++) {
-        func_86100AEC();
-        func_861017E4(D_86105498);
+        PrepareInputIfNotFading();
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -1724,7 +1724,7 @@ void func_86103DEC(void) {
                 D_861054A8 = 0;
             }
         }
-        func_861017E4(D_86105498);
+        UpdateFrame(D_86105498);
     }
 }
 
@@ -1816,7 +1816,7 @@ void func_86103E9C(void) {
         D_86105BC8->unk_040.unk_08 = 0x320000;
     }
 
-    func_86100B48();
+    SetupCamera();
     Fragment2_1_Init();
 }
 
@@ -1896,11 +1896,11 @@ void func_86104474(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_8610426C();
 
-    if (func_8610197C() != -1) {
+    if (RunMatchLoop() != -1) {
         func_8004B9C4(0x3C);
         func_86103D88(5);
         D_861054A4 = 0xA;
-        func_86100170();
+        InitRandomItemPairs();
         func_86101BB4();
         D_86107590 = D_8780FC94;
         func_86103868();

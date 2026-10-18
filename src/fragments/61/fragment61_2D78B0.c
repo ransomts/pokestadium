@@ -690,7 +690,7 @@ void func_8420305C(s32 arg0) {
 
     Stage_SetFillColor(1);
     Music_StopTrack(0x10);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     for (i = 0; i < 8; i++) {
         Game_UpdateInputs();
@@ -709,7 +709,7 @@ void func_84203100(void) {
     s32 i;
 
     if (Stage_GetFadeState() == 1) {
-        func_80006C6C(8);
+        Stage_FadeIn(8);
         for (i = 0; i < 10; i++) {
             Game_UpdateInputs();
             Stage_BeginDisplayList();

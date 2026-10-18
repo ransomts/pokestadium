@@ -1012,7 +1012,7 @@ void func_86901B28(void) {
     s32 i;
     s16 var_s3 = 0;
 
-    func_80006C6C(0x14);
+    Stage_FadeIn(0x14);
     D_8690B360.unk_10 -= 0.8;
     D_8690B360.unk_14 = 0.0f;
     D_8690B360.unk_0C = 351.0f;
@@ -1102,7 +1102,7 @@ void func_86901ECC(void) {
 void func_86901FB4(void) {
     s32 i;
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
         func_86900B6C();

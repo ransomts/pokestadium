@@ -31,7 +31,7 @@ extern s32 gHealthBarPaletteIndex;
 extern s32 gHealthBarMode;
 extern u8 gHealthBarTimer;
 extern u8 gHealthBarDuration;
-extern unk_D_8650A528 D_8650A528[4];
+extern unk_D_8650A528 gHealthBarData[4];
 extern unk_D_8650A528* gCurrentHealthBar;
 extern unk_D_8650AB30 D_8650AB30[4];
 extern unk_D_8650AB30* gHealthBarEffectData;
@@ -41,7 +41,7 @@ extern u32 HealthBarPalette2[];
 extern u32 HealthBarPalette3[];
 extern u32 HealthBarPalette4[];
 
-s8 func_86501FC0(s32, s32);
+s8 HealthBar_GetAnimStateIndex(s32, s32);
 void RenderHealthBar(s32 arg0);
 void InitHealthBar(void);
 void HealthBar_Init(void);

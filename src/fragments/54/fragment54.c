@@ -166,7 +166,7 @@ void func_82B00B3C(s16 arg0) {
 
 void func_82B00BC8(void) {
     if (Stage_GetFadeState != NULL) {
-        func_80006C6C(8);
+        Stage_FadeIn(8);
         while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
             func_82B00B3C(0);
@@ -180,7 +180,7 @@ void func_82B00C24(void) {
     }
 
     Stage_SetFillColor(0xFFFF);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();

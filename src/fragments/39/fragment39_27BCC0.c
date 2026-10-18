@@ -2055,7 +2055,7 @@ void func_82503020(void) {
         D_8250A26C = 7;
         D_8250A288.unk_06 = -1;
         Stage_SetFillColor(1);
-        func_80006CB4(0xF);
+        Stage_FadeOut(0xF);
         func_8004B9C4(0xF);
         PlaySoundEffect(3);
     }
@@ -2534,7 +2534,7 @@ void func_825042A4(void) {
     if (func_82501D70(D_8250A240[4], 0) >= 3) {
         D_8250A26C = 7;
         Stage_SetFillColor(1);
-        func_80006CB4(0xA);
+        Stage_FadeOut(0xA);
     }
 }
 
@@ -2544,7 +2544,7 @@ void func_82504370(s16 arg0, s16 arg1) {
 
     SelectionUI_Init(arg0, arg1);
     func_8004B1CC(0x16);
-    func_80006C6C(0xF);
+    Stage_FadeIn(0xF);
     D_82508AF4 = 0;
 
     while (var_s6 != 0) {

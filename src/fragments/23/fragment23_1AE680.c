@@ -2454,7 +2454,7 @@ void func_8820C63C(unk_func_8820BE14* arg0) {
     s32 sp24;
     s32 var_s0;
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     var_s0 = 8;
     while (var_s0-- > 0) {
@@ -2467,7 +2467,7 @@ void func_8820C63C(unk_func_8820BE14* arg0) {
         ControllerMsgQueue_SendAndRead(NULL);
     }
 
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     var_s0 = 10;
     while (var_s0-- > 0) {

@@ -6333,11 +6333,11 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     func_888031FC(D_88826940, 0, 0, sp28, sp2C);
     func_80007754();
     Graph_InitRoots();
-    func_80006C6C(8);
+    Stage_FadeIn(8);
     Stage_AdvanceUntil(8, func_88804218);
     func_88804288();
     Stage_SetFillColor(1);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
     Stage_AdvanceUntil(0xA, func_88804218);
     func_8000771C();
     FontManager_Free();

@@ -850,7 +850,7 @@ void func_86B07F14(void) {
 
         if (i < 3) {
             Stage_SetFillColor(1);
-            func_80006C6C(0x10);
+            Stage_FadeIn(0x10);
             func_86B07EA0();
         }
     }
@@ -904,7 +904,7 @@ void func_86B08034(void) {
         var_s1 = 0xA;
     }
 
-    func_80006CB4(var_s1);
+    Stage_FadeOut(var_s1);
     func_8004B9C4(var_s1 - 2);
 
     for (i = 0; i < var_s1; i++) {

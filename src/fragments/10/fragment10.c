@@ -21,7 +21,7 @@
 #include "src/stage_loader.h"
 #include "src/controller.h"
 
-static unk_D_864027C0 D_864027C0[] = {
+static unk_D_864027C0 gPlayerSpawnInfo[] = {
     { -68.0f, 0.0f, 68.0f, 1.0f, 1.0f, 1.0f, 0, 0x5E80, 0 },
     { -68.0f, 0.0f, -68.0f, 1.0f, 1.0f, 1.0f, 0, 0x1F80, 0 },
     { 68.0f, 0.0f, -68.0f, 1.0f, 1.0f, 1.0f, 0, -0x2380, 0 },
@@ -33,7 +33,7 @@ static u16 D_86402844 = 0;
 
 u8 D_86402848 = 0;
 
-static u8 D_8640284C[][8] = {
+static u8 gHealthBarSegmentTable[][8] = {
     { 0x12, 0x13, 0x14, 0x15, 0x3A, 0x3B, 0x3C, 0x3D }, { 0x10, 0x11, 0x12, 0x13, 0x34, 0x35, 0x36, 0x37 },
     { 0x0E, 0x0F, 0x10, 0x11, 0x2E, 0x2F, 0x30, 0x31 }, { 0x0D, 0x0E, 0x0F, 0x10, 0x2B, 0x2C, 0x2D, 0x2E },
     { 0x0C, 0x0D, 0x0E, 0x0F, 0x28, 0x29, 0x2A, 0x2B }, { 0x0B, 0x0C, 0x0D, 0x0E, 0x25, 0x26, 0x27, 0x28 },
@@ -43,54 +43,54 @@ static u8 D_8640284C[][8] = {
     { 0x04, 0x05, 0x06, 0x07, 0x10, 0x11, 0x12, 0x13 }, { 0x03, 0x04, 0x05, 0x06, 0x0D, 0x0E, 0x0F, 0x10 },
 };
 
-static unk_func_87801684 D_864028BC[] = {
+static unk_func_87801684 gPrefLayoutTable1[] = {
     { 0x0303ED80, 14 }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
 
-static unk_func_87801684 D_864028E4[] = {
+static unk_func_87801684 gPrefLayoutTable2[] = {
     { 0x03040580, 18 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
-static u32 D_8640290C[] = {
+static u32 gGeoLayoutData[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000, 0x05000000,
     0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003, 0x05000000, 0x1F00FFFF,
     0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x06000000, 0x05000000, 0x0A000000, 0x800AC840,
     0x06000000, 0x06000000, 0x06000000, 0x03000000, 0x87806398, 0x06000000, 0x01000000,
 };
 
-static Fragment2_1GraphNode D_86404070;
+static Fragment2_1GraphNode gResultScreenNode;
 
-static Fragment2_1GraphNode D_864041D8[4];
+static Fragment2_1GraphNode gPlayerResultNodes[4];
 
-static unk_D_86404778 D_86404778[4];
+static unk_D_86404778 gPlayerHudStates[4];
 
-static unk_D_86405158 D_86405158;
+static unk_D_86405158 gGameState;
 
-static unk_D_86404778* D_864052C8;
+static unk_D_86404778* gCurrentHudState;
 static unk_D_86405158* D_864052CC;
-static Fragment2_1GraphNode* D_864052D0;
-static u8 D_864052D4;
-static s16 D_864052D6;
+static Fragment2_1GraphNode* gCurrentGraphNode;
+static u8 gHealthSegmentExactMatch;
+static s16 gCurrentHealthSegment;
 
-void func_86400020(void) {
+void UpdateHealthBarSegmentOffsets(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        D_864052C8 = &D_86404778[i];
+        gCurrentHudState = &gPlayerHudStates[i];
 
-        if (D_864052C8->unk_000 == 4) {
+        if (gCurrentHudState->unk_000 == 4) {
             continue;
         }
 
-        D_864052C8->unk_008 =
-            D_8640284C[D_864052CC->unk_000][2] + GetHealthBarSegmentOffset(D_864052CC->unk_000, D_864052C8->unk_000);
-        D_864052C8->unk_00A =
-            D_8640284C[D_864052CC->unk_000][6] + GetHealthBarSegmentOffset(D_864052CC->unk_000, D_864052C8->unk_000);
+        gCurrentHudState->unk_008 =
+            gHealthBarSegmentTable[D_864052CC->unk_000][2] + GetHealthBarSegmentOffset(D_864052CC->unk_000, gCurrentHudState->unk_000);
+        gCurrentHudState->unk_00A =
+            gHealthBarSegmentTable[D_864052CC->unk_000][6] + GetHealthBarSegmentOffset(D_864052CC->unk_000, gCurrentHudState->unk_000);
     }
 }
 
 u16 func_86400128(u8 arg0) {
-    if ((D_864052D6 == D_86404778[arg0].unk_008) || (D_864052D6 == D_86404778[arg0].unk_00A)) {
+    if ((gCurrentHealthSegment == gPlayerHudStates[arg0].unk_008) || (gCurrentHealthSegment == gPlayerHudStates[arg0].unk_00A)) {
         return 1;
     }
     return 0;
@@ -108,16 +108,16 @@ void func_864001A0(void) {
 
     for (i = 0; i < 4; i++) {
         if (gMiniHudColorDefaults[i] == 0) {
-            D_86404778[i].unk_000 = 4;
+            gPlayerHudStates[i].unk_000 = 4;
         } else {
-            D_86404778[i].unk_000 = D_8780FA38;
+            gPlayerHudStates[i].unk_000 = D_8780FA38;
         }
     }
 }
 
 void func_86400220(void) {
-    if (Anim_HasReachedEnd(&D_86404070) != 0) {
-        Anim_SetChannelBase(&D_86404070, 0);
+    if (Anim_HasReachedEnd(&gResultScreenNode) != 0) {
+        Anim_SetChannelBase(&gResultScreenNode, 0);
     }
 }
 
@@ -142,7 +142,7 @@ void func_86400258(unk_D_86405158* arg0) {
             Anim_SetChannelBase(&arg0->unk_004, 0);
         }
 
-        func_86400020();
+        UpdateHealthBarSegmentOffsets();
     }
 }
 
@@ -155,18 +155,18 @@ void func_864002F8(void) {
 
     if (D_8780FC94 == 0) {
         for (i = 0; i < 4; i++) {
-            D_864052C8 = &D_86404778[i];
+            gCurrentHudState = &gPlayerHudStates[i];
 
-            if ((Anim_HasReachedEnd(&D_864052C8->unk_028) != 0) ||
-                ((D_864052C8->unk_010 == 0) && (D_864052C8->unk_012 > 0)) ||
-                ((D_87B000C8 != 0) && (D_864052C8->unk_00C == 1) && (D_86402840 == 0x3C) && (D_87B000D4 == 1))) {
-                temp_s1 = D_864052C8->unk_004;
+            if ((Anim_HasReachedEnd(&gCurrentHudState->unk_028) != 0) ||
+                ((gCurrentHudState->unk_010 == 0) && (gCurrentHudState->unk_012 > 0)) ||
+                ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) && (D_86402840 == 0x3C) && (D_87B000D4 == 1))) {
+                temp_s1 = gCurrentHudState->unk_004;
 
-                if ((D_87B000C8 != 0) && (D_864052C8->unk_00C == 1) &&
-                    ((D_86402840 == 0x3C) || (D_864052C8->unk_004 == 6))) {
-                    D_864052C8->unk_004 = 6;
+                if ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) &&
+                    ((D_86402840 == 0x3C) || (gCurrentHudState->unk_004 == 6))) {
+                    gCurrentHudState->unk_004 = 6;
                 } else {
-                    temp_fv0 = (D_864052C8->unk_010 * 100.0f) / D_864052C8->unk_00E;
+                    temp_fv0 = (gCurrentHudState->unk_010 * 100.0f) / gCurrentHudState->unk_00E;
                     if (temp_fv0 > 0.0f) {
                         var_fv1 = 0.5f;
                     } else {
@@ -175,35 +175,35 @@ void func_864002F8(void) {
                     temp_ft2 = var_fv1 + temp_fv0;
 
                     if (temp_ft2 >= 0x51) {
-                        D_864052C8->unk_004 = 0;
+                        gCurrentHudState->unk_004 = 0;
                     } else if (temp_ft2 >= 0x3D) {
-                        D_864052C8->unk_004 = 1;
+                        gCurrentHudState->unk_004 = 1;
                     } else if (temp_ft2 >= 0x29) {
-                        D_864052C8->unk_004 = 2;
+                        gCurrentHudState->unk_004 = 2;
                     } else if (temp_ft2 >= 0x15) {
-                        D_864052C8->unk_004 = 3;
-                    } else if (D_864052C8->unk_010 != 0) {
-                        D_864052C8->unk_004 = 4;
+                        gCurrentHudState->unk_004 = 3;
+                    } else if (gCurrentHudState->unk_010 != 0) {
+                        gCurrentHudState->unk_004 = 4;
                     } else {
-                        D_864052C8->unk_004 = 5;
+                        gCurrentHudState->unk_004 = 5;
                     }
                 }
 
-                if (temp_s1 != D_864052C8->unk_004) {
-                    GraphNode_TriggerAction(&D_864052C8->unk_028, D_864052C8->unk_004);
-                    if (D_864052C8->unk_004 != 0) {
-                        GraphNode_TriggerSound(&D_864052C8->unk_028, D_864052C8->unk_004);
+                if (temp_s1 != gCurrentHudState->unk_004) {
+                    GraphNode_TriggerAction(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
+                    if (gCurrentHudState->unk_004 != 0) {
+                        GraphNode_TriggerSound(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
                     }
-                } else if (D_864052C8->unk_004 == 5) {
-                    Anim_SetChannelBase(&D_864052C8->unk_028, 0x18);
-                    SetAnimStateIndex(&D_864052C8->unk_028, 0x18);
-                } else if (D_864052C8->unk_004 == 6) {
-                    Anim_SetChannelBase(&D_864052C8->unk_028, 0x77);
-                    SetAnimStateIndex(&D_864052C8->unk_028, 0x77);
+                } else if (gCurrentHudState->unk_004 == 5) {
+                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0x18);
+                    SetAnimStateIndex(&gCurrentHudState->unk_028, 0x18);
+                } else if (gCurrentHudState->unk_004 == 6) {
+                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0x77);
+                    SetAnimStateIndex(&gCurrentHudState->unk_028, 0x77);
                 } else {
-                    Anim_SetChannelBase(&D_864052C8->unk_028, 0);
-                    if (D_864052C8->unk_004 != 0) {
-                        SetAnimStateIndex(&D_864052C8->unk_028, 0);
+                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0);
+                    if (gCurrentHudState->unk_004 != 0) {
+                        SetAnimStateIndex(&gCurrentHudState->unk_028, 0);
                     }
                 }
             }
@@ -225,9 +225,9 @@ void func_864005EC(u8 arg0) {
 
     for (i = 0; i < 4; i++) {
         if (i != arg0) {
-            D_864052C8 = &D_86404778[i];
+            gCurrentHudState = &gPlayerHudStates[i];
 
-            if ((D_864052C8->unk_010 <= 0) && (D_864052C8->unk_012 > 0)) {
+            if ((gCurrentHudState->unk_010 <= 0) && (gCurrentHudState->unk_012 > 0)) {
                 D_864029B4--;
                 sp40[i] = 1;
             }
@@ -235,11 +235,11 @@ void func_864005EC(u8 arg0) {
     }
 
     for (i = 0; i < 4; i++) {
-        D_864052C8 = &D_86404778[i];
+        gCurrentHudState = &gPlayerHudStates[i];
 
         if (sp40[i] != 0) {
-            D_864052C8->unk_00C = D_864029B4;
-            func_86400184(D_864052C8, 0, 0, 0, 0);
+            gCurrentHudState->unk_00C = D_864029B4;
+            func_86400184(gCurrentHudState, 0, 0, 0, 0);
         }
     }
 
@@ -251,25 +251,25 @@ void func_864005EC(u8 arg0) {
         func_8004B9C4(0xA);
 
         for (i = 0; i < 4; i++) {
-            D_864052C8 = &D_86404778[i];
+            gCurrentHudState = &gPlayerHudStates[i];
 
-            if (D_864052C8->unk_00C == 0) {
-                D_864052C8->unk_00C = 1;
-                func_86400184(D_864052C8, 0, 0, 0, 0);
+            if (gCurrentHudState->unk_00C == 0) {
+                gCurrentHudState->unk_00C = 1;
+                func_86400184(gCurrentHudState, 0, 0, 0, 0);
             }
         }
 
         D_87B000D4 = 0;
 
         for (i = 0; i < 4; i++) {
-            if (D_86404778[i].unk_00C == 1) {
+            if (gPlayerHudStates[i].unk_00C == 1) {
                 D_87B000D4++;
             }
         }
 
         if (D_87B000D4 == 1) {
             for (i = 0; i < 4; i++) {
-                if (D_86404778[i].unk_00C == 1) {
+                if (gPlayerHudStates[i].unk_00C == 1) {
                     IncrementPlayerScore(i);
                     break;
                 }
@@ -287,70 +287,70 @@ void func_86400860(UNUSED s32 arg0) {
     temp_fs0 = 0.1f;
 
     for (i = 0; i < 4; i++) {
-        D_864052C8 = &D_86404778[i];
+        gCurrentHudState = &gPlayerHudStates[i];
 
         temp_v0 = GfxAlloc(0x80);
-        D_864052C8->unk_190->unk_18 = temp_v0;
+        gCurrentHudState->unk_190->unk_18 = temp_v0;
 
-        if ((D_864052C8->unk_010 == 0) || (D_864052C8->unk_00C == 1)) {
-            temp_a3 = D_864052C8->unk_028.unk_040.unk_08 >> 0x10;
+        if ((gCurrentHudState->unk_010 == 0) || (gCurrentHudState->unk_00C == 1)) {
+            temp_a3 = gCurrentHudState->unk_028.unk_040.unk_08 >> 0x10;
 
             gSPDisplayList(temp_v0++, gDamageOverlayDL);
             gDPSetTileSize(temp_v0++, G_TX_RENDERTILE, 0x0000, (0x40 - (D_87B000C0 % 64)) << 2, 0x007C,
                            ((0x80 - (D_87B000C0 % 64)) & 0x3F) << 2);
             gSPDisplayList(temp_v0++, gHealthBarDL);
 
-            if ((D_864052C8->unk_004 == 5) && (temp_a3 >= 0x18)) {
-                if (D_864052C8->unk_015 == 0) {
-                    D_864052C8->unk_015 = 1;
+            if ((gCurrentHudState->unk_004 == 5) && (temp_a3 >= 0x18)) {
+                if (gCurrentHudState->unk_015 == 0) {
+                    gCurrentHudState->unk_015 = 1;
                     if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                         PlaySoundByCategory(0x70005, i + 1, 0);
                     }
                 }
-                D_864052C8->unk_190->unk_28 = temp_fs0;
-            } else if ((D_864052C8->unk_00C == 1) && (D_864052C8->unk_004 == 6) && (temp_a3 >= 0x77)) {
-                if (D_864052C8->unk_015 == 0) {
-                    D_864052C8->unk_015 = 1;
+                gCurrentHudState->unk_190->unk_28 = temp_fs0;
+            } else if ((gCurrentHudState->unk_00C == 1) && (gCurrentHudState->unk_004 == 6) && (temp_a3 >= 0x77)) {
+                if (gCurrentHudState->unk_015 == 0) {
+                    gCurrentHudState->unk_015 = 1;
                     if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                         PlaySoundByCategory(0x70006, i + 1, 0);
                     }
                 }
-                D_864052C8->unk_190->unk_28 = temp_fs0;
+                gCurrentHudState->unk_190->unk_28 = temp_fs0;
             } else {
-                D_864052C8->unk_190->unk_28 = 0.0f;
+                gCurrentHudState->unk_190->unk_28 = 0.0f;
             }
         } else {
             gSPDisplayList(temp_v0++, gHealthBarQuadDL);
 
-            if (D_864052C8->unk_018 == 2) {
-                switch (D_864052C8->unk_01C) {
+            if (gCurrentHudState->unk_018 == 2) {
+                switch (gCurrentHudState->unk_01C) {
                     default:
-                        D_864052C8->unk_190->unk_28 = 0.5f;
+                        gCurrentHudState->unk_190->unk_28 = 0.5f;
                         break;
 
                     case 20:
-                        D_864052C8->unk_190->unk_28 = temp_fs0;
+                        gCurrentHudState->unk_190->unk_28 = temp_fs0;
                         if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                             PlaySoundByCategory(0x70004, i + 1, 0);
                         }
                         break;
 
                     case 19:
-                        D_864052C8->unk_190->unk_28 = 0.2f;
+                        gCurrentHudState->unk_190->unk_28 = 0.2f;
                         break;
 
                     case 18:
-                        D_864052C8->unk_190->unk_28 = 0.3f;
+                        gCurrentHudState->unk_190->unk_28 = 0.3f;
                         break;
                 }
             } else {
-                D_864052C8->unk_190->unk_28 = 0.0f;
+                gCurrentHudState->unk_190->unk_28 = 0.0f;
             }
         }
 
         gSPEndDisplayList(temp_v0++);
 
-        D_864052C8->unk_190->unk_1C = D_864052C8->unk_028.unk_0A8[0].unk_04;
+        gCurrentHudState->unk_190->unk_1C = gCurrentHudState->unk_028.unk_0A8[0].unk_04;
     }
 }
 
@@ -370,13 +370,13 @@ void func_86400BE8(s32 arg0) {
         if (arg0 == 2) {
             static u8 D_864029C0 = 0;
 
-            D_864052D6 = D_864052CC->unk_004.unk_040.unk_08 >> 0x10;
-            D_864052D4 = 0;
+            gCurrentHealthSegment = D_864052CC->unk_004.unk_040.unk_08 >> 0x10;
+            gHealthSegmentExactMatch = 0;
 
             for (i = 0; i < 8; i++) {
-                temp = D_864052D6;
-                if (temp == D_8640284C[D_864052CC->unk_000][i]) {
-                    D_864052D4 = 1;
+                temp = gCurrentHealthSegment;
+                if (temp == gHealthBarSegmentTable[D_864052CC->unk_000][i]) {
+                    gHealthSegmentExactMatch = 1;
                     break;
                 }
             }
@@ -385,8 +385,8 @@ void func_86400BE8(s32 arg0) {
 
             if (D_87B000C8 == 0) {
                 for (i = 0; i < 8; i++) {
-                    temp = D_864052D6;
-                    if ((temp + 1) == D_8640284C[D_864052CC->unk_000][i]) {
+                    temp = gCurrentHealthSegment;
+                    if ((temp + 1) == gHealthBarSegmentTable[D_864052CC->unk_000][i]) {
                         D_86402848 = 1;
                         break;
                     }
@@ -394,13 +394,13 @@ void func_86400BE8(s32 arg0) {
             }
 
             for (i = 0; i < 4; i++) {
-                D_864052C8 = &D_86404778[i];
+                gCurrentHudState = &gPlayerHudStates[i];
 
-                D_864052C8->unk_012 = D_864052C8->unk_010;
+                gCurrentHudState->unk_012 = gCurrentHudState->unk_010;
 
-                if ((D_87B000C8 != 0) && (D_864052C8->unk_00C == 1) && (D_86402840 >= 0x3C) && (D_87B000D4 == 1) &&
+                if ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) && (D_86402840 >= 0x3C) && (D_87B000D4 == 1) &&
                     (D_864029C0 < 0x10)) {
-                    D_864052C8->unk_028.unk_01E.y += sp24[i];
+                    gCurrentHudState->unk_028.unk_01E.y += sp24[i];
                 }
             }
 
@@ -431,7 +431,7 @@ void func_86400BE8(s32 arg0) {
                 D_864029C4 = 0.0f;
             }
 
-            D_86405158.unk_004.unk_030.x = D_86405158.unk_004.unk_030.y = D_86405158.unk_004.unk_030.z = D_864029C4;
+            gGameState.unk_004.unk_030.x = gGameState.unk_004.unk_030.y = gGameState.unk_004.unk_030.z = D_864029C4;
         }
     }
 }
@@ -446,7 +446,7 @@ void func_86400EB4(void) {
 
     if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
         D_864052CC->unk_16D = D_864052CC->unk_16C;
-        if (D_864052D6 < (D_864052CC->unk_004.unk_040.unk_04->unk_0A / 2)) {
+        if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.unk_04->unk_0A / 2)) {
             D_864052CC->unk_16C = 0;
         } else {
             D_864052CC->unk_16C = 1;
@@ -456,118 +456,118 @@ void func_86400EB4(void) {
             PlaySoundByCategory(0x70003, 1 - D_864052CC->unk_16C, 0);
 
             for (i = 0; i < 4; i++) {
-                D_864052C8 = &D_86404778[i];
+                gCurrentHudState = &gPlayerHudStates[i];
 
-                if ((D_864052C8->unk_274 == 0) && (D_864052C8->unk_010 > 0)) {
+                if ((gCurrentHudState->unk_274 == 0) && (gCurrentHudState->unk_010 > 0)) {
                     if (D_864052CC->unk_16D != 0) {
-                        D_864052C8->unk_194[D_864052CC->unk_001][7]++;
+                        gCurrentHudState->unk_194[D_864052CC->unk_001][7]++;
                     } else {
-                        D_864052C8->unk_194[D_864052CC->unk_000][7]++;
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][7]++;
                     }
                 } else {
-                    D_864052C8->unk_274 = 0;
+                    gCurrentHudState->unk_274 = 0;
                 }
             }
         }
 
         for (i = 0; i < 4; i++) {
-            D_864052C8 = &D_86404778[i];
+            gCurrentHudState = &gPlayerHudStates[i];
 
-            if (D_864052C8->unk_012 != 0) {
-                if (D_864052C8->unk_01C >= 2) {
-                    D_864052C8->unk_01C--;
+            if (gCurrentHudState->unk_012 != 0) {
+                if (gCurrentHudState->unk_01C >= 2) {
+                    gCurrentHudState->unk_01C--;
                 } else {
-                    func_86400184(D_864052C8, D_864052C8->unk_020, D_864052C8->unk_024, 0, 0);
+                    func_86400184(gCurrentHudState, gCurrentHudState->unk_020, gCurrentHudState->unk_024, 0, 0);
                 }
 
-                if (D_864052C8->unk_000 == 4) {
+                if (gCurrentHudState->unk_000 == 4) {
                     D_86402844 = gControllers[i].buttonPressed & 0x8000;
                 } else {
                     D_86402844 = func_86400128(i);
                 }
 
                 if (D_86402844 != 0) {
-                    if (D_864052D4 != 0) {
-                        if (D_864052C8->unk_014 == 0) {
+                    if (gHealthSegmentExactMatch != 0) {
+                        if (gCurrentHudState->unk_014 == 0) {
                             if (D_864029C8 == 0) {
                                 PlaySoundByCategory(0x70009, 0, 0);
                                 D_864029C8 = 1;
                             }
 
-                            D_864052C8->unk_014 = 1;
-                            Anim_SetChannelBase(&D_864041D8[i], 0);
+                            gCurrentHudState->unk_014 = 1;
+                            Anim_SetChannelBase(&gPlayerResultNodes[i], 0);
 
                             for (j = 0; j < 4; j++) {
                                 if (i != j) {
-                                    D_86404778[j].unk_010 -= 2;
+                                    gPlayerHudStates[j].unk_010 -= 2;
                                 }
                             }
 
-                            if (D_864052C8->unk_018 == 0) {
-                                func_86400184(D_864052C8, 1, 0x14, 0, 0);
+                            if (gCurrentHudState->unk_018 == 0) {
+                                func_86400184(gCurrentHudState, 1, 0x14, 0, 0);
                             } else {
-                                func_86400184(D_864052C8, 0, 1, 1, 0x14);
+                                func_86400184(gCurrentHudState, 0, 1, 1, 0x14);
                             }
                         }
                     } else {
-                        D_864052C8->unk_010 -= 1;
-                        if (D_864052C8->unk_018 == 0) {
-                            func_86400184(D_864052C8, 2, 0x14, 0, 0);
+                        gCurrentHudState->unk_010 -= 1;
+                        if (gCurrentHudState->unk_018 == 0) {
+                            func_86400184(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            func_86400184(D_864052C8, 0, 1, 2, 0x14);
+                            func_86400184(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     }
 
-                    D_864052C8->unk_274 = 1;
+                    gCurrentHudState->unk_274 = 1;
                     if (D_864052CC->unk_16C == 0) {
                         var_a2 = 2;
                     } else {
                         var_a2 = 6;
                     }
 
-                    if ((D_8640284C[D_864052CC->unk_000][var_a2] - 3) >= D_864052D6) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][0]++;
-                    } else if ((D_864052D6 + 2) == D_8640284C[D_864052CC->unk_000][var_a2]) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][1]++;
-                    } else if ((D_864052D6 + 1) == D_8640284C[D_864052CC->unk_000][var_a2]) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][2]++;
-                    } else if (D_864052D6 == D_8640284C[D_864052CC->unk_000][var_a2]) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][3]++;
-                    } else if (D_864052D6 == (D_8640284C[D_864052CC->unk_000][var_a2] + 1)) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][4]++;
-                    } else if (D_864052D6 == (D_8640284C[D_864052CC->unk_000][var_a2] + 2)) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][5]++;
-                    } else if (D_864052D6 >= (D_8640284C[D_864052CC->unk_000][var_a2] + 3)) {
-                        D_864052C8->unk_194[D_864052CC->unk_000][6]++;
+                    if ((gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][0]++;
+                    } else if ((gCurrentHealthSegment + 2) == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][1]++;
+                    } else if ((gCurrentHealthSegment + 1) == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][2]++;
+                    } else if (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][3]++;
+                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 1)) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][4]++;
+                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 2)) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][5]++;
+                    } else if (gCurrentHealthSegment >= (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 3)) {
+                        gCurrentHudState->unk_194[D_864052CC->unk_000][6]++;
                     }
                 }
 
-                if ((D_864052D6 == D_8640284C[D_864052CC->unk_000][3]) ||
-                    (D_864052D6 == D_8640284C[D_864052CC->unk_000][7])) {
-                    if (D_864052C8->unk_014 == 0) {
-                        D_864052C8->unk_010--;
-                        if (D_864052C8->unk_018 == 0) {
-                            func_86400184(D_864052C8, 2, 0x14, 0, 0);
+                if ((gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][3]) ||
+                    (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][7])) {
+                    if (gCurrentHudState->unk_014 == 0) {
+                        gCurrentHudState->unk_010--;
+                        if (gCurrentHudState->unk_018 == 0) {
+                            func_86400184(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            func_86400184(D_864052C8, 0, 1, 2, 0x14);
+                            func_86400184(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     } else {
-                        D_864052C8->unk_014 = 0;
+                        gCurrentHudState->unk_014 = 0;
                     }
                 }
             }
         }
 
-        if ((D_864052D6 == D_8640284C[D_864052CC->unk_000][3]) || (D_864052D6 == D_8640284C[D_864052CC->unk_000][7])) {
+        if ((gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][3]) || (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][7])) {
             D_864029C8 = 0;
         }
 
         for (i = 0; i < 4; i++) {
-            D_864052C8 = &D_86404778[i];
+            gCurrentHudState = &gPlayerHudStates[i];
 
-            if (D_864052C8->unk_010 <= 0) {
-                D_864052C8->unk_010 = 0;
-                if ((D_864052C8->unk_012 > 0) && (D_864052C8->unk_00C == 0)) {
+            if (gCurrentHudState->unk_010 <= 0) {
+                gCurrentHudState->unk_010 = 0;
+                if ((gCurrentHudState->unk_012 > 0) && (gCurrentHudState->unk_00C == 0)) {
                     func_864005EC(i);
                 }
             }
@@ -583,8 +583,8 @@ void func_86401544(s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_87801F48(2, 0x19, 0xA6);
-        func_87801684(0x74, 0xB0, D_864028BC);
-        func_87801824(0x74, 0xC6, D_864028E4);
+        func_87801684(0x74, 0xB0, gPrefLayoutTable1);
+        func_87801824(0x74, 0xC6, gPrefLayoutTable2);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -607,7 +607,7 @@ void func_86401544(s32 arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
         for (i = 0; i < 4; i++) {
-            if (D_86404778[i].unk_000 == 4) {
+            if (gPlayerHudStates[i].unk_000 == 4) {
                 DrawUniformScaledTextureRect(i, sp74[i], sp6C[i], 0.75f);
             } else {
                 DrawUniformScaledTextureRect(-1 - i, sp74[i], sp6C[i], 0.75f);
@@ -630,7 +630,7 @@ void func_86401544(s32 arg0) {
         Text_SetLineHeight(0xC);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (GetTextWidth(D_87B000E0, GetMessageString(NULL, 0, gItemNamesBank, 0x28)) / 2), 0x20,
+        Text_Print(0xA0 - (GetTextWidth(gCurrentTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x28)) / 2), 0x20,
                       GetMessageString(NULL, 0, gItemNamesBank, 0x28));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -686,7 +686,7 @@ void func_86401B3C(void) {
     var_s1 = 0;
     var_s2 = 1;
     Stage_AdvanceN(5);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     while (var_s2 != 0) {
         if (var_s1 >= 0x11) {
@@ -700,7 +700,7 @@ void func_86401B3C(void) {
             }
         }
 
-        func_87B00020();
+        MenuInput_FrameUpdate();
         func_86400BE8(0);
         func_86400860(0);
         func_864002F8();
@@ -730,7 +730,7 @@ void func_86401B3C(void) {
 
             D_87B000C4--;
 
-            func_87B00020();
+            MenuInput_FrameUpdate();
             func_86400BE8(1);
             func_86400860(1);
             func_864002F8();
@@ -748,7 +748,7 @@ void func_86401D1C(void) {
 
     if (D_8780FC92 == 0) {
         PlaySoundByCategory(0x70002, 0, 0);
-        func_87B00020();
+        MenuInput_FrameUpdate();
         func_86400BE8(2);
         func_86400860(2);
         func_864002F8();
@@ -765,7 +765,7 @@ void func_86401D1C(void) {
                 D_864029DC = 1;
             }
 
-            func_87B00020();
+            MenuInput_FrameUpdate();
             func_86400BE8(2);
 
             if (D_87B000C8 == 0) {
@@ -800,10 +800,10 @@ void func_86401EEC(void) {
 
     Audio_SetVolumeFadeAndDuration(1, 0x1E);
     Audio_SetVolumeFadeAndDuration(2, 0x1E);
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_87B00020();
+        MenuInput_FrameUpdate();
         func_86400BE8(3);
         func_86400860(3);
         func_864002F8();
@@ -833,9 +833,9 @@ void func_8640203C(void) {
     MemoryBlock* temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
-        D_864052C8 = &D_86404778[i];
-        D_864052C8->unk_190 = BillboardNode_Create(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
-        GraphNode_AddChild(&gGraphRoot0, &D_864052C8->unk_190->unk_00);
+        gCurrentHudState = &gPlayerHudStates[i];
+        gCurrentHudState->unk_190 = BillboardNode_Create(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
+        GraphNode_AddChild(&gGraphRoot0, &gCurrentHudState->unk_190->unk_00);
     }
 
     mem_pool_resize_block(temp_s5);
@@ -847,97 +847,97 @@ void func_86402130(void) {
     u8 y;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_87B000E8 = process_geo_layout(temp_v0, D_8640290C);
+    D_87B000E8 = process_geo_layout(temp_v0, gGeoLayoutData);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();
     D_87B000E4 = GeoLayout_LoadById(0xC7);
-    D_864052D0 = &D_86404070;
-    Graph_AddToRootList0(D_864052D0);
-    GraphNode_InitChild(D_864052D0, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(D_864052D0, 0);
-    Anim_SetChannelBase(D_864052D0, 0);
+    gCurrentGraphNode = &gResultScreenNode;
+    Graph_AddToRootList0(gCurrentGraphNode);
+    GraphNode_InitChild(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(gCurrentGraphNode, 0);
+    Anim_SetChannelBase(gCurrentGraphNode, 0);
     D_87B000E4 = GeoLayout_LoadById(0xC4);
 
     for (i = 0; i < 4; i++) {
-        D_864052C8 = &D_86404778[i];
-        D_864052D0 = &D_864052C8->unk_028;
+        gCurrentHudState = &gPlayerHudStates[i];
+        gCurrentGraphNode = &gCurrentHudState->unk_028;
 
-        Graph_AddToRootList0(D_864052D0);
-        GraphNode_InitChild(D_864052D0, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
-        D_864052C8->unk_004 = 0;
-        GraphNode_TriggerAction(D_864052D0, D_864052C8->unk_004);
-        Anim_SetChannelBase(D_864052D0, func_87B00050(D_864052D0->unk_040.unk_04->unk_0A));
+        Graph_AddToRootList0(gCurrentGraphNode);
+        GraphNode_InitChild(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
+        gCurrentHudState->unk_004 = 0;
+        GraphNode_TriggerAction(gCurrentGraphNode, gCurrentHudState->unk_004);
+        Anim_SetChannelBase(gCurrentGraphNode, HealthBar_ValueToPixel(gCurrentGraphNode->unk_040.unk_04->unk_0A));
 
-        D_864052D0->unk_024.x = D_864027C0[i].unk_00;
-        D_864052D0->unk_024.y = D_864027C0[i].unk_04;
-        D_864052D0->unk_024.z = D_864027C0[i].unk_08;
+        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
+        gCurrentGraphNode->unk_024.y = gPlayerSpawnInfo[i].unk_04;
+        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
 
-        D_864052D0->unk_030.x = D_864027C0[i].unk_0C;
-        D_864052D0->unk_030.y = D_864027C0[i].unk_10;
-        D_864052D0->unk_030.z = D_864027C0[i].unk_14;
+        gCurrentGraphNode->unk_030.x = gPlayerSpawnInfo[i].unk_0C;
+        gCurrentGraphNode->unk_030.y = gPlayerSpawnInfo[i].unk_10;
+        gCurrentGraphNode->unk_030.z = gPlayerSpawnInfo[i].unk_14;
 
-        D_864052D0->unk_01E.x = D_864027C0[i].unk_18;
-        D_864052D0->unk_01E.y = D_864027C0[i].unk_1A;
-        D_864052D0->unk_01E.z = D_864027C0[i].unk_1C;
+        gCurrentGraphNode->unk_01E.x = gPlayerSpawnInfo[i].unk_18;
+        gCurrentGraphNode->unk_01E.y = gPlayerSpawnInfo[i].unk_1A;
+        gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;
 
-        D_864052C8->unk_00C = 0;
-        D_864052C8->unk_00E = 0x14A;
-        D_864052C8->unk_010 = D_864052C8->unk_00E;
-        D_864052C8->unk_014 = 0;
-        D_864052C8->unk_015 = 0;
+        gCurrentHudState->unk_00C = 0;
+        gCurrentHudState->unk_00E = 0x14A;
+        gCurrentHudState->unk_010 = gCurrentHudState->unk_00E;
+        gCurrentHudState->unk_014 = 0;
+        gCurrentHudState->unk_015 = 0;
 
-        func_86400184(D_864052C8, 0, 0, 0, 0);
+        func_86400184(gCurrentHudState, 0, 0, 0, 0);
 
         for (x = 0; x < 14; x++) {
             for (y = 0; y < 8; y++) {
-                D_864052C8->unk_194[x][y] = 0;
+                gCurrentHudState->unk_194[x][y] = 0;
             }
         }
 
-        D_864052C8->unk_274 = 0;
+        gCurrentHudState->unk_274 = 0;
     }
 
     D_87B000E4 = GeoLayout_LoadById(0xC3);
-    D_864052CC = &D_86405158;
-    D_864052D0 = &D_864052CC->unk_004;
-    Graph_AddToRootList0(D_864052D0);
-    GraphNode_InitChild(D_864052D0, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
+    D_864052CC = &gGameState;
+    gCurrentGraphNode = &D_864052CC->unk_004;
+    Graph_AddToRootList0(gCurrentGraphNode);
+    GraphNode_InitChild(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
 
     D_864052CC->unk_001 = D_864052CC->unk_000 = 0;
 
-    GraphNode_TriggerAction(D_864052D0, D_864052CC->unk_000);
-    Anim_SetChannelBase(D_864052D0, D_864052D0->unk_040.unk_04->unk_0A);
+    GraphNode_TriggerAction(gCurrentGraphNode, D_864052CC->unk_000);
+    Anim_SetChannelBase(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
 
-    D_864052D0->unk_024.y = 20.0f;
-    D_864052D0->unk_030.x = 1.0f;
-    D_864052D0->unk_030.y = 1.0f;
-    D_864052D0->unk_030.z = 1.0f;
-    D_864052D0->unk_01E.x = -0xB00;
+    gCurrentGraphNode->unk_024.y = 20.0f;
+    gCurrentGraphNode->unk_030.x = 1.0f;
+    gCurrentGraphNode->unk_030.y = 1.0f;
+    gCurrentGraphNode->unk_030.z = 1.0f;
+    gCurrentGraphNode->unk_01E.x = -0xB00;
 
     D_864052CC->unk_16C = 0;
     D_864052CC->unk_16D = 0;
     D_87B000E4 = GeoLayout_LoadById(0xD2);
 
     for (i = 0; i < 4; i++) {
-        D_864052D0 = &D_864041D8[i];
+        gCurrentGraphNode = &gPlayerResultNodes[i];
 
-        Graph_AddToRootList0(D_864052D0);
-        GraphNode_InitChild(D_864052D0, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(D_864052D0, 0);
-        Anim_SetChannelBase(D_864052D0, D_864052D0->unk_040.unk_04->unk_0A);
+        Graph_AddToRootList0(gCurrentGraphNode);
+        GraphNode_InitChild(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
+        GraphNode_TriggerAction(gCurrentGraphNode, 0);
+        Anim_SetChannelBase(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
 
-        D_864052D0->unk_024.x = D_864027C0[i].unk_00;
-        D_864052D0->unk_024.y = 25.0f;
-        D_864052D0->unk_024.z = D_864027C0[i].unk_08;
-        D_864052D0->unk_01E.x = D_864027C0[i].unk_18;
-        D_864052D0->unk_01E.y = D_864027C0[i].unk_1A;
-        D_864052D0->unk_01E.z = D_864027C0[i].unk_1C;
+        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
+        gCurrentGraphNode->unk_024.y = 25.0f;
+        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
+        gCurrentGraphNode->unk_01E.x = gPlayerSpawnInfo[i].unk_18;
+        gCurrentGraphNode->unk_01E.y = gPlayerSpawnInfo[i].unk_1A;
+        gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;
     }
 
     func_8640203C();
     func_864001A0();
-    func_86400020();
+    UpdateHealthBarSegmentOffsets();
     func_86401F74();
     Fragment2_1_Init();
     ResultScreen_Init();
@@ -950,7 +950,7 @@ void func_864025A0(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x18000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_87B000E0 = Text_Init(0x16, 0);
+    gCurrentTextObject = Text_Init(0x16, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     func_86402130();

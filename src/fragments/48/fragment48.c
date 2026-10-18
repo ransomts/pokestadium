@@ -165,7 +165,7 @@ s32 Gallery_Debugger_MainLoop(void) {
         case 1:
             if (Gallery_Debugger_HandleInput() != 0) {
                 gGalleryState = 2;
-                func_80006CB4(0xF);
+                Stage_FadeOut(0xF);
             }
             break;
 
@@ -185,7 +185,7 @@ void Gallery_Debugger_UpdateController(void) {
 }
 
 void Gallery_Debugger_Run(void) {
-    func_80006C6C(0xF);
+    Stage_FadeIn(0xF);
     do {
         Gallery_Debugger_UpdateController();
         Gallery_Debugger_Render();

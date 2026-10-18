@@ -143,8 +143,8 @@ typedef struct unk_D_86807180 {
 extern s32 gSushiOrderIndices[];
 extern unk_D_86807180 gSushiItemDefs[];
 
-extern unk_D_86002F34* D_86807500;
-extern s32 D_86807510;
+extern unk_D_86002F34* gSushiGoRoundGraphNode;
+extern s32 gSushiGoRoundTimer;
 extern unk_D_86807558 D_86807558[4];
 
 extern unk_D_868084D8 gSushiInstances[12];
@@ -167,7 +167,7 @@ void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1);
 
 void func_86805108(u16, s32);
 s32 func_868055D4(void);
-void func_86805858(s32);
+void Sushi_InitSystem(s32);
 void func_86805974(void);
 void func_86805BD4(void);
 void func_86805CB4(void);

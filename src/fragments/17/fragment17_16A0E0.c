@@ -361,7 +361,7 @@ void func_86B0B810(void) {
     s32 var_s2 = 1;
 
     Stage_SetFillColor(1);
-    func_80006C6C(0xA);
+    Stage_FadeIn(0xA);
 
     for (i = 0; i < 10; i++) {
         func_86B0B498();
@@ -377,7 +377,7 @@ void func_86B0B810(void) {
     }
 
     Stage_SetFillColor(0xFFFF);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     for (i = 0; i < 8; i++) {
         func_86B0B498();

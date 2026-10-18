@@ -1562,7 +1562,7 @@ void func_86B04CF4(UNUSED s32 arg0) {
 void func_86B04D48(void) {
     s32 i;
 
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 16; i++) {
         func_86B04914();
@@ -1588,7 +1588,7 @@ void func_86B04D98(void) {
 void func_86B04DF0(void) {
     s32 i;
 
-    func_80006CB4(0xA);
+    Stage_FadeOut(0xA);
     for (i = 0; i < 10; i++) {
         func_86B04914();
         func_86B048D8();

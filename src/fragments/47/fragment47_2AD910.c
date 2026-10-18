@@ -101,7 +101,7 @@ void SnapSelect_HandleResult(void) {
 
         if (D_83805660 != 2) {
             gSnapSelectState = 4;
-            func_80006CB4(0xF);
+            Stage_FadeOut(0xF);
         } else {
             gSnapSelectState = 1;
             func_83801190(D_83805664);
@@ -168,7 +168,7 @@ s32 SnapSelect_Process(void) {
 
             if (sp78 != 0) {
                 gSnapSelectState = 4;
-                func_80006CB4(0xF);
+                Stage_FadeOut(0xF);
             }
             break;
 
@@ -180,7 +180,7 @@ s32 SnapSelect_Process(void) {
                 D_83805668 = -1;
                 if (sp74 > 0) {
                     gSnapSelectState = 4;
-                    func_80006CB4(0xF);
+                    Stage_FadeOut(0xF);
                 } else {
                     gSnapSelectState = 1;
                     func_83801190(D_83805664);
@@ -208,7 +208,7 @@ void SnapSelect_ReadInputs(void) {
 }
 
 void SnapSelect_MainLoop(void) {
-    func_80006C6C(7);
+    Stage_FadeIn(7);
     do {
         SnapSelect_ReadInputs();
         func_83801D64();

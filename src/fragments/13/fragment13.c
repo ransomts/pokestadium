@@ -139,7 +139,7 @@ void MiniGame_RenderFrame(s32 arg0) {
 }
 
 void MiniGame_RunOpening(void) {
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     GraphNode_TriggerAction(&D_86700940, 8);
 
     while (Anim_HasReachedEnd(&D_86700940) == 0) {
@@ -185,7 +185,7 @@ void MiniGame_RunEnding(void) {
         MiniGame_RenderFrame(2);
     }
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
         MiniGame_PollController();
@@ -207,7 +207,7 @@ void MiniGame_InitGraph(void) {
     MiniGame_InitCamera();
 }
 
-s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 MiniGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');

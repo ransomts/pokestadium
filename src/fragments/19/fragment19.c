@@ -54,7 +54,7 @@ void miniUnkDrawHUB(UNUSED s32 arg0) {
 }
 
 void func_86D00134(void) {
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
 }
 
@@ -98,7 +98,7 @@ void miniUnkControls(void) {
 void func_86D0032C(void) {
     s32 i;
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
         MiniGame_ReadInputs(); //  inputs

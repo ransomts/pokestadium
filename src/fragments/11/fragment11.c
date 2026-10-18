@@ -34,105 +34,105 @@ static Fragment2_1GraphNode D_8650A0F0;
 static Fragment2_1GraphNode D_8650A258;
 static Fragment2_1GraphNode D_8650A3C0;
 
-static unk_D_864027C0 D_86502C20[] = {
+static unk_D_864027C0 gHealthBarPositions[] = {
     { -60.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, 0xA00, 0 },
     { -20.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, 0x300, 0 },
     { 20.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, -0x300, 0 },
     { 60.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, -0xA00, 0 },
 };
 
-static Fragment2_1GraphNode* D_86502CA0[] = {
+static Fragment2_1GraphNode* gHealthBarGraphNodePtrs[] = {
     &D_865092E0, &D_86509448, &D_865095B0, &D_86509718, &D_86509880, &D_865099E8, &D_86509B50,
     &D_86509CB8, &D_86509E20, &D_86509F88, &D_8650A0F0, &D_8650A258, &D_8650A3C0,
 };
 
-static u8 D_86502CD4 = 0;
-static u16 D_86502CD8 = 0;
+static u8 gHealthBarUpdateCounter = 0;
+static u16 gResultTimer = 0;
 
-static unk_func_87801684 D_86502CDC[] = {
+static unk_func_87801684 gResultScreenUIElements1[] = {
     { 0x0303F980, 2 }, { 0x0303FD80, 2 }, { 0x03040180, 2 },    { 0x0303FD80, 2 }, { 0x0303F980, 2 },
     { 0x0303FD80, 2 }, { 0x03040180, 2 }, { 0x0303FD80, 2 },    { 0x0303F980, 2 }, { 0x0303FD80, 2 },
     { 0x03040180, 2 }, { 0x0303FD80, 2 }, { 0x0303F980, 0x18 }, { NULL, 0 },
 };
 
-static unk_func_87801684 D_86502D4C[] = {
+static unk_func_87801684 gResultScreenUIElements2[] = {
     { 0x0303ED80, 0x18 }, { 0x0303F180, 2 }, { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 },
     { 0x0303F180, 2 },    { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { 0x0303F180, 2 },
     { 0x0303F580, 2 },    { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { NULL, 0 },
 };
 
-static unk_func_87801684 D_86502DBC[] = {
+static unk_func_87801684 gResultScreenUIElements3[] = {
     { 0x03040580, 0x12 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
-static u32 D_86502DE4[] = {
+static u32 gResultScreenGeoLayoutData[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000, 0x05000000,
     0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003, 0x05000000, 0x1F00FFFF,
     0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x06000000, 0x05000000, 0x0A000000, 0x800AC840,
     0x06000000, 0x06000000, 0x06000000, 0x03000000, 0x87806398, 0x06000000, 0x01000000,
 };
 
-static u8 D_86502E6C = 0;
-static u8 D_86502E70 = 0;
+static u8 gHealthBarAnimFlagA = 0;
+static u8 gHealthBarAnimFlagB = 0;
 
-unk_D_8650A528 D_8650A528[4];
+unk_D_8650A528 gHealthBarData[4];
 unk_D_8650A528* gCurrentHealthBar;
-static Fragment2_1GraphNode* D_8650AB2C;
+static Fragment2_1GraphNode* gCurrentHealthBarNode;
 unk_D_8650AB30 D_8650AB30[4];
 unk_D_8650AB30* gHealthBarEffectData;
 
-void func_86500020(unk_D_8650A528* arg0, u8 arg1) {
+void HealthBar_CalcNextDelay(unk_D_8650A528* arg0, u8 arg1) {
     if (arg0->unk_000 == 4) {
         arg0->unk_00D = 0;
         return;
     }
 
     if (arg1 == 0) {
-        arg0->unk_00D = func_87B00050(3);
+        arg0->unk_00D = HealthBar_ValueToPixel(3);
     } else if ((gHealthBarTimer + 1) == gHealthBarDuration) {
-        arg0->unk_00D = func_86501FC0(arg0->unk_000, 1);
+        arg0->unk_00D = HealthBar_GetAnimStateIndex(arg0->unk_000, 1);
     } else {
-        arg0->unk_00D = func_86501FC0(arg0->unk_000, 0);
+        arg0->unk_00D = HealthBar_GetAnimStateIndex(arg0->unk_000, 0);
     }
 }
 
-void func_865000C0(void) {
+void HealthBar_InitState(void) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
         if (gMiniHudColorDefaults[i] == 0) {
-            D_8650A528[i].unk_000 = 4;
+            gHealthBarData[i].unk_000 = 4;
         } else {
-            D_8650A528[i].unk_000 = D_8780FA38;
+            gHealthBarData[i].unk_000 = D_8780FA38;
         }
     }
 }
 
-void func_86500140(void) {
+void HealthBar_SetDirection(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
         switch (D_8780FA68[i]) {
             case 1:
-                D_8650A528[i].unk_004 = 1;
+                gHealthBarData[i].unk_004 = 1;
                 break;
 
             case 2:
-                D_8650A528[i].unk_004 = 0;
+                gHealthBarData[i].unk_004 = 0;
                 break;
 
             default:
-                if (func_87B00050(2) != 0) {
-                    D_8650A528[i].unk_004 = 0;
+                if (HealthBar_ValueToPixel(2) != 0) {
+                    gHealthBarData[i].unk_004 = 0;
                 } else {
-                    D_8650A528[i].unk_004 = 1;
+                    gHealthBarData[i].unk_004 = 1;
                 }
                 break;
         }
     }
 }
 
-void func_86500238(void) {
+void HealthBar_Update(void) {
     u8 i;
     s8 temp_ft2;
     u8 var_s1;
@@ -142,21 +142,21 @@ void func_86500238(void) {
 
     if (D_8780FC94 != 1) {
         for (i = 0; i < 4; i++) {
-            gCurrentHealthBar = &D_8650A528[i];
+            gCurrentHealthBar = &gHealthBarData[i];
             sp58 = gCurrentHealthBar->unk_008;
 
             var_s1 = 0;
             if (D_87B000C8 != 0) {
-                if (D_86502CD8 < 0x57) {
+                if (gResultTimer < 0x57) {
                     var_s1 = 2;
-                } else if (D_86502CD8 == 0x57) {
+                } else if (gResultTimer == 0x57) {
                     var_s1 = 1;
                     if (gCurrentHealthBar->unk_00C == 1) {
                         gCurrentHealthBar->unk_008 = 3;
                     } else {
                         gCurrentHealthBar->unk_008 = 4;
                     }
-                } else if (D_86502CD8 == 0xB4) {
+                } else if (gResultTimer == 0xB4) {
                     var_s1 = 1;
                     if (gCurrentHealthBar->unk_00C == 1) {
                         gCurrentHealthBar->unk_008 = 6;
@@ -168,9 +168,9 @@ void func_86500238(void) {
                         case 6:
                             var_s1 = 1;
                             if (gCurrentHealthBar->unk_004 == 0) {
-                                D_86502E6C = 1;
+                                gHealthBarAnimFlagA = 1;
                             } else if (gCurrentHealthBar->unk_004 == 1) {
-                                D_86502E70 = 1;
+                                gHealthBarAnimFlagB = 1;
                             }
                             break;
 
@@ -186,18 +186,18 @@ void func_86500238(void) {
                             break;
                     }
                 } else if ((gCurrentHealthBar->unk_008 == 6) &&
-                           (((D_86502E6C != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x37)) ||
-                            ((D_86502E70 != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x5E)))) {
+                           (((gHealthBarAnimFlagA != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x37)) ||
+                            ((gHealthBarAnimFlagB != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x5E)))) {
                     var_s1 = 1;
                 }
-            } else if ((D_86502CD4 == 0) && (gCurrentHealthBar->unk_00E >= 3) &&
+            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E >= 3) &&
                        ((gCurrentHealthBar->unk_008 == 0) || (gCurrentHealthBar->unk_008 == 3))) {
                 gCurrentHealthBar->unk_008 = 1;
                 var_s1 = 1;
                 if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
                     PlaySoundByCategory(0x80001, i, 0);
                 }
-            } else if ((D_86502CD4 == 0) && (gCurrentHealthBar->unk_00E < 3) && (gCurrentHealthBar->unk_008 == 2)) {
+            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E < 3) && (gCurrentHealthBar->unk_008 == 2)) {
                 gCurrentHealthBar->unk_008 = 3;
                 var_s1 = 1;
                 if ((D_8780FC92 == 0) && (D_8780FC94 == 0)) {
@@ -268,7 +268,7 @@ void func_86500238(void) {
     }
 }
 
-void func_8650077C(void) {
+void HealthBar_ResetAnimations(void) {
     u8 i;
     u32 var_a0;
 
@@ -284,12 +284,12 @@ void func_8650077C(void) {
             case 2:
             case 3:
             case 4:
-                if (D_8650A528[i - 1].unk_00C != 1) {
+                if (gHealthBarData[i - 1].unk_00C != 1) {
                     var_a0 = 1;
-                    if (D_8650A528[i - 1].unk_004 == 0) {
-                        D_86502CA0[i]->unk_024 = D_8650A528[i - 1].unk_014.unk_0EC;
-                    } else if (D_8650A528[i - 1].unk_004 == 1) {
-                        D_86502CA0[i]->unk_024 = D_8650A528[i - 1].unk_014.unk_0DC;
+                    if (gHealthBarData[i - 1].unk_004 == 0) {
+                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0EC;
+                    } else if (gHealthBarData[i - 1].unk_004 == 1) {
+                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0DC;
                     }
                 }
                 break;
@@ -298,7 +298,7 @@ void func_8650077C(void) {
             case 6:
             case 7:
             case 8:
-                if (D_8650A528[i - 5].unk_00C == 1) {
+                if (gHealthBarData[i - 5].unk_00C == 1) {
                     var_a0 = 1;
                 }
                 break;
@@ -307,26 +307,26 @@ void func_8650077C(void) {
             case 10:
             case 11:
             case 12:
-                if (D_8650A528[i - 9].unk_00C != 1) {
+                if (gHealthBarData[i - 9].unk_00C != 1) {
                     var_a0 = 1;
                 }
                 break;
         }
 
         if (var_a0 != 0) {
-            Anim_SetChannelBase(D_86502CA0[i], 0);
-            GraphNode_TriggerSound(D_86502CA0[i], 0);
-            SetAnimStateIndex(D_86502CA0[i], 0);
+            Anim_SetChannelBase(gHealthBarGraphNodePtrs[i], 0);
+            GraphNode_TriggerSound(gHealthBarGraphNodePtrs[i], 0);
+            SetAnimStateIndex(gHealthBarGraphNodePtrs[i], 0);
         }
     }
 }
 
-void func_86500904(void) {
+void HealthBar_DetermineWinner(void) {
     u8 i;
     s16 var_s4 = 0;
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &D_8650A528[i];
+        gCurrentHealthBar = &gHealthBarData[i];
 
         if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 < gCurrentHealthBar->unk_010)) {
             var_s4 = gCurrentHealthBar->unk_010;
@@ -334,7 +334,7 @@ void func_86500904(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &D_8650A528[i];
+        gCurrentHealthBar = &gHealthBarData[i];
 
         if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 == gCurrentHealthBar->unk_010)) {
             gCurrentHealthBar->unk_00C = 1;
@@ -349,7 +349,7 @@ void func_86500904(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &D_8650A528[i];
+        gCurrentHealthBar = &gHealthBarData[i];
 
         if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
             if (gCurrentHealthBar->unk_00C == 1) {
@@ -361,12 +361,12 @@ void func_86500904(void) {
     }
 }
 
-void func_86500AC4(UNUSED s32 arg0) {
+void HealthBar_FrameUpdate(UNUSED s32 arg0) {
     Fragment2_1_Update();
     HealthBar_BuildDisplayList();
 }
 
-void func_86500AEC(void) {
+void HealthBar_HandleInput(void) {
     u8 i;
 
     if ((D_8780FC92 != 0) || (D_8780FC94 != 0) || (D_87B000C8 != 0)) {
@@ -374,7 +374,7 @@ void func_86500AEC(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &D_8650A528[i];
+        gCurrentHealthBar = &gHealthBarData[i];
 
         if (gCurrentHealthBar->unk_000 == 4) {
             if ((gHealthBarPaletteIndex == 1) || (gHealthBarPaletteIndex == 3) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 1))) {
@@ -429,7 +429,7 @@ void func_86500AEC(void) {
     }
 }
 
-void func_86500D38(s32 arg0) {
+void ResultScreen_Draw(s32 arg0) {
     u8 i;
 
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
@@ -439,9 +439,9 @@ void func_86500D38(s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         func_87801F48(2, 0x19, 0xA6);
-        func_87801754(0x62, 0xB0, D_86502CDC);
-        func_87801684(0x74, 0xB0, D_86502D4C);
-        func_87801824(0x74, 0xC6, D_86502DBC);
+        func_87801754(0x62, 0xB0, gResultScreenUIElements1);
+        func_87801684(0x74, 0xB0, gResultScreenUIElements2);
+        func_87801824(0x74, 0xC6, gResultScreenUIElements3);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
@@ -456,7 +456,7 @@ void func_86500D38(s32 arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
         for (i = 0; i < 4; i++) {
-            if (D_8650A528[i].unk_000 == 4) {
+            if (gHealthBarData[i].unk_000 == 4) {
                 DrawUniformScaledTextureRect(i, sp5C[i], 0xC6, 0.75f);
             } else {
                 DrawUniformScaledTextureRect(-1 - i, sp5C[i], 0xC6, 0.75f);
@@ -468,7 +468,7 @@ void func_86500D38(s32 arg0) {
 
     if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
         for (i = 0; i < 4; i++) {
-            gCurrentHealthBar = &D_8650A528[i];
+            gCurrentHealthBar = &gHealthBarData[i];
 
             DrawBorderRect((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->unk_012 + 1);
         }
@@ -487,7 +487,7 @@ void func_86500D38(s32 arg0) {
         Text_SetLineHeight(0xC);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (GetTextWidth(D_87B000E0, GetMessageString(NULL, 0, gItemNamesBank, 0x2C)) / 2), 0x20,
+        Text_Print(0xA0 - (GetTextWidth(gCurrentTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x2C)) / 2), 0x20,
                       GetMessageString(NULL, 0, gItemNamesBank, 0x2C));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -521,7 +521,7 @@ void func_86500D38(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_865013D4(s32 arg0) {
+void ResultScreen_RenderFrame(s32 arg0) {
     u8 i;
 
     Stage_BeginDisplayList();
@@ -534,7 +534,7 @@ void func_865013D4(s32 arg0) {
     Graph_SetTextureState(D_87B000E8);
 
     if (D_8780FC98 == 0) {
-        func_86500D38(arg0);
+        ResultScreen_Draw(arg0);
     }
 
     ResultScreen_UpdateAndRender();
@@ -545,12 +545,12 @@ void func_865013D4(s32 arg0) {
 
         if (arg0 == 2) {
             if (D_87B000C8 == 0) {
-                D_86502CD4++;
-                if (D_86502CD4 >= 0xF) {
-                    D_86502CD4 = 0;
+                gHealthBarUpdateCounter++;
+                if (gHealthBarUpdateCounter >= 0xF) {
+                    gHealthBarUpdateCounter = 0;
 
                     for (i = 0; i < 4; i++) {
-                        gCurrentHealthBar = &D_8650A528[i];
+                        gCurrentHealthBar = &gHealthBarData[i];
 
                         gCurrentHealthBar->unk_010 += gCurrentHealthBar->unk_00D;
                         if (gCurrentHealthBar->unk_010 < 0) {
@@ -559,18 +559,18 @@ void func_865013D4(s32 arg0) {
                             D_87B000C8 = 1;
                         }
                         gCurrentHealthBar->unk_00E = gCurrentHealthBar->unk_00D;
-                        func_86500020(gCurrentHealthBar, 1);
+                        HealthBar_CalcNextDelay(gCurrentHealthBar, 1);
                     }
 
                     if (D_87B000C8 != 0) {
-                        func_86500904();
-                        func_8650077C();
+                        HealthBar_DetermineWinner();
+                        HealthBar_ResetAnimations();
                     }
                 }
-            } else if (D_86502CD8 < 0xC4) {
-                D_86502CD8++;
+            } else if (gResultTimer < 0xC4) {
+                gResultTimer++;
 
-                switch (D_86502CD8) {
+                switch (gResultTimer) {
                     case 0x5B:
                     case 0x6F:
                     case 0x83:
@@ -595,7 +595,7 @@ void func_865013D4(s32 arg0) {
     }
 }
 
-void func_86501668(void) {
+void ResultScreen_MainLoop(void) {
     u8 i;
     u8 var_s1;
     s32 var_s2;
@@ -604,7 +604,7 @@ void func_86501668(void) {
     var_s2 = 1;
 
     Stage_AdvanceN(5);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     while (var_s2 != 0) {
         if (var_s1 >= 0x11) {
@@ -618,10 +618,10 @@ void func_86501668(void) {
             }
         }
 
-        func_87B00020();
-        func_86500AC4(0);
-        func_86500238();
-        func_865013D4(0);
+        MenuInput_FrameUpdate();
+        HealthBar_FrameUpdate(0);
+        HealthBar_Update();
+        ResultScreen_RenderFrame(0);
 
         if (var_s1 < 0x11) {
             var_s1++;
@@ -648,15 +648,15 @@ void func_86501668(void) {
 
             D_87B000C4--;
 
-            func_87B00020();
-            func_86500AC4(1);
-            func_86500238();
-            func_865013D4(1);
+            MenuInput_FrameUpdate();
+            HealthBar_FrameUpdate(1);
+            HealthBar_Update();
+            ResultScreen_RenderFrame(1);
         }
     }
 }
 
-void func_86501828(void) {
+void HealthBar_MainLoop(void) {
     static u8 D_86502E7C = 0;
 
     s32 var_s0 = 1;
@@ -664,10 +664,10 @@ void func_86501828(void) {
     if (D_8780FC92 == 0) {
         HealthBar_Init();
         PlaySoundByCategory(0x80008, 0, 0);
-        func_87B00020();
-        func_86500AC4(2);
-        func_86500238();
-        func_865013D4(2);
+        MenuInput_FrameUpdate();
+        HealthBar_FrameUpdate(2);
+        HealthBar_Update();
+        ResultScreen_RenderFrame(2);
 
         while (var_s0 != 0) {
             if (D_8780FC92 != 0) {
@@ -679,39 +679,39 @@ void func_86501828(void) {
                 D_86502E7C = 1;
             }
 
-            func_87B00020();
-            func_86500AC4(2);
+            MenuInput_FrameUpdate();
+            HealthBar_FrameUpdate(2);
 
             if (D_87B000C8 == 0) {
-                func_86500AEC();
+                HealthBar_HandleInput();
             } else if (D_8780FC96 != 0) {
                 var_s0 = 0;
             }
 
             RenderHealthBar(2);
-            func_86500238();
-            func_865013D4(2);
+            HealthBar_Update();
+            ResultScreen_RenderFrame(2);
         }
     }
 }
 
-void func_86501964(void) {
+void ResultScreen_FadeAndLoop(void) {
     u8 i;
 
     Audio_SetVolumeFadeAndDuration(1, 0x1E);
     Audio_SetVolumeFadeAndDuration(2, 0x1E);
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_87B00020();
-        func_86500AC4(3);
+        MenuInput_FrameUpdate();
+        HealthBar_FrameUpdate(3);
         RenderHealthBar(3);
-        func_86500238();
-        func_865013D4(3);
+        HealthBar_Update();
+        ResultScreen_RenderFrame(3);
     }
 }
 
-void func_865019E4(void) {
+void Camera_SetupResultScreen(void) {
     D_87B000EC = D_87B000E8->unk_00.unk_0C;
 
     D_87B000F0 = -0x200;
@@ -733,12 +733,12 @@ void func_86501AAC(void) {
     MemoryBlock* temp_v0;
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    D_87B000E8 = process_geo_layout(temp_v0, D_86502DE4);
+    D_87B000E8 = process_geo_layout(temp_v0, gResultScreenGeoLayoutData);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    func_865000C0();
-    func_86500140();
+    HealthBar_InitState();
+    HealthBar_SetDirection();
 
     for (i = 0; i < 2; i++) {
         if (i == 0) {
@@ -748,43 +748,43 @@ void func_86501AAC(void) {
         }
 
         for (j = 0; j < 4; j++) {
-            if (i == D_8650A528[j].unk_004) {
-                gCurrentHealthBar = &D_8650A528[j];
-                D_8650AB2C = &gCurrentHealthBar->unk_014;
+            if (i == gHealthBarData[j].unk_004) {
+                gCurrentHealthBar = &gHealthBarData[j];
+                gCurrentHealthBarNode = &gCurrentHealthBar->unk_014;
 
-                Graph_AddToRootList0(D_8650AB2C);
+                Graph_AddToRootList0(gCurrentHealthBarNode);
 
                 if (i == 0) {
-                    GraphNode_InitChild(D_8650AB2C, 0, 0xC5, D_87B000E4->unk_08->unk_00[0]);
+                    GraphNode_InitChild(gCurrentHealthBarNode, 0, 0xC5, D_87B000E4->unk_08->unk_00[0]);
                 } else {
-                    GraphNode_InitChild(D_8650AB2C, 0, 0xC6, D_87B000E4->unk_08->unk_00[0]);
+                    GraphNode_InitChild(gCurrentHealthBarNode, 0, 0xC6, D_87B000E4->unk_08->unk_00[0]);
                 }
 
                 gCurrentHealthBar->unk_008 = 0;
-                GraphNode_TriggerAction(D_8650AB2C, gCurrentHealthBar->unk_008);
-                Anim_SetChannelBase(D_8650AB2C, func_87B00050(D_8650AB2C->unk_040.unk_04->unk_0A));
+                GraphNode_TriggerAction(gCurrentHealthBarNode, gCurrentHealthBar->unk_008);
+                Anim_SetChannelBase(gCurrentHealthBarNode, HealthBar_ValueToPixel(gCurrentHealthBarNode->unk_040.unk_04->unk_0A));
 
-                D_8650AB2C->unk_024.x = D_86502C20[j].unk_00;
-                D_8650AB2C->unk_024.y = D_86502C20[j].unk_04;
+                gCurrentHealthBarNode->unk_024.x = gHealthBarPositions[j].unk_00;
+                gCurrentHealthBarNode->unk_024.y = gHealthBarPositions[j].unk_04;
 
                 if (i == 0) {
-                    D_8650AB2C->unk_024.y += 0.15f;
+                    gCurrentHealthBarNode->unk_024.y += 0.15f;
                 }
 
-                D_8650AB2C->unk_024.z = D_86502C20[j].unk_08;
+                gCurrentHealthBarNode->unk_024.z = gHealthBarPositions[j].unk_08;
 
-                D_8650AB2C->unk_030.x = D_86502C20[j].unk_0C;
-                D_8650AB2C->unk_030.y = D_86502C20[j].unk_10;
-                D_8650AB2C->unk_030.z = D_86502C20[j].unk_14;
+                gCurrentHealthBarNode->unk_030.x = gHealthBarPositions[j].unk_0C;
+                gCurrentHealthBarNode->unk_030.y = gHealthBarPositions[j].unk_10;
+                gCurrentHealthBarNode->unk_030.z = gHealthBarPositions[j].unk_14;
 
-                D_8650AB2C->unk_01E.x = D_86502C20[j].unk_18;
-                D_8650AB2C->unk_01E.y = D_86502C20[j].unk_1A;
-                D_8650AB2C->unk_01E.z = D_86502C20[j].unk_1C;
+                gCurrentHealthBarNode->unk_01E.x = gHealthBarPositions[j].unk_18;
+                gCurrentHealthBarNode->unk_01E.y = gHealthBarPositions[j].unk_1A;
+                gCurrentHealthBarNode->unk_01E.z = gHealthBarPositions[j].unk_1C;
 
                 gCurrentHealthBar->unk_00C = 0;
                 gCurrentHealthBar->unk_00E = 0;
 
-                func_86500020(gCurrentHealthBar, 0);
+                HealthBar_CalcNextDelay(gCurrentHealthBar, 0);
 
                 gCurrentHealthBar->unk_010 = 0;
                 gCurrentHealthBar->unk_012 = 0x28;
@@ -802,18 +802,18 @@ void func_86501AAC(void) {
                 D_87B000E4 = GeoLayout_LoadById(sp5C[j]);
             }
 
-            D_8650AB2C = D_86502CA0[j];
+            gCurrentHealthBarNode = gHealthBarGraphNodePtrs[j];
 
-            Graph_AddToRootList0(D_8650AB2C);
-            GraphNode_InitChild(D_8650AB2C, 0, sp5C[j], D_87B000E4->unk_08->unk_00[0]);
-            GraphNode_TriggerAction(D_8650AB2C, 0);
-            Anim_SetChannelBase(D_8650AB2C, D_8650AB2C->unk_040.unk_04->unk_0A);
+            Graph_AddToRootList0(gCurrentHealthBarNode);
+            GraphNode_InitChild(gCurrentHealthBarNode, 0, sp5C[j], D_87B000E4->unk_08->unk_00[0]);
+            GraphNode_TriggerAction(gCurrentHealthBarNode, 0);
+            Anim_SetChannelBase(gCurrentHealthBarNode, gCurrentHealthBarNode->unk_040.unk_04->unk_0A);
         }
     }
 
     HealthBar_CreateNode();
     InitHealthBar();
-    func_865019E4();
+    Camera_SetupResultScreen();
     Fragment2_1_Init();
     ResultScreen_Init();
     func_87801684(0, 0, NULL);
@@ -827,16 +827,16 @@ void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x18000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_87B000E0 = Text_Init(0x16, 0);
+    gCurrentTextObject = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     func_86501AAC();
     Stage_Set(sp24);
-    func_86501668();
-    func_86501828();
-    func_86501964();
+    ResultScreen_MainLoop();
+    HealthBar_MainLoop();
+    ResultScreen_FadeAndLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();
@@ -848,15 +848,15 @@ void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
 
 static s32 pad_D_86502E98 = 0;
 
-s8 func_86501FC0(s32 arg0, s32 arg1) {
-    static u16 D_86502EA0[4][8] = {
+s8 HealthBar_GetAnimStateIndex(s32 arg0, s32 arg1) {
+    static u16 sHealthBarAnimStateTableNormal[4][8] = {
         { 0x0001, 0x0001, 0x0001, 0x0032, 0x0032, 0x0005, 0x0000, 0x0000 },
         { 0x0000, 0x0001, 0x0001, 0x0005, 0x0032, 0x0032, 0x0001, 0x0000 },
         { 0x0000, 0x0000, 0x0001, 0x0001, 0x0005, 0x005A, 0x001E, 0x0005 },
         { 0x0000, 0x0000, 0x0000, 0x0000, 0x0005, 0x001E, 0x005A, 0x000A },
     };
 
-    static u16 D_86502EE0[4][13] = {
+    static u16 sHealthBarAnimStateTableExtended[4][13] = {
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x0005, 0x0003, 0x0001, 0x0000, 0x0000, 0x0000 },
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x000A, 0x0005, 0x0003, 0x0001, 0x0000, 0x0000 },
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x000A, 0x000A, 0x0007, 0x0005, 0x0003, 0x0001 },
@@ -872,11 +872,11 @@ s8 func_86501FC0(s32 arg0, s32 arg1) {
     u16 temp_v0;
 
     if (arg1 == 0) {
-        sp24 = D_86502EA0[arg0];
+        sp24 = sHealthBarAnimStateTableNormal[arg0];
         sp23 = -1;
         sp22 = 8;
     } else if (arg1 == 1) {
-        sp24 = D_86502EE0[arg0];
+        sp24 = sHealthBarAnimStateTableExtended[arg0];
         sp23 = -8;
         sp22 = 0xD;
     }
@@ -887,7 +887,7 @@ s8 func_86501FC0(s32 arg0, s32 arg1) {
         var_a0 += sp24[i];
     }
 
-    temp_v0 = func_87B00050(var_a0);
+    temp_v0 = HealthBar_ValueToPixel(var_a0);
 
     var_a2 = 0;
     for (i = 0; i < sp22; i++) {

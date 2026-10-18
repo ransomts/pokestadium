@@ -150,7 +150,7 @@ s32 func_83A00880(void) {
             if ((D_83A00B7C == -1) && (func_83A00858() != 0)) {
                 D_83A00B70 = 2;
                 PlaySoundEffect(3);
-                func_80006CB4(8);
+                Stage_FadeOut(8);
             }
             break;
 
@@ -176,7 +176,7 @@ void func_83A009C8(void) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
     Gfx_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
     Stage_Advance();
-    func_80006C6C(8);
+    Stage_FadeIn(8);
     do {
         func_83A00990();
         func_83A00754();

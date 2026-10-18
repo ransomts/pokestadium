@@ -577,7 +577,7 @@ s32 func_831016D0(void) {
 
 void func_83101818(void) {
     func_83101608();
-    func_80006C6C(0xF);
+    Stage_FadeIn(0xF);
 
     do {
         func_831010B0();

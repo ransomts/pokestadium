@@ -20,24 +20,24 @@
 #include "src/stage_loader.h"
 
 // プリンのらくがき
-static char D_86301600[] = {
+static char gText_DrawInstructions[] = {
     0xA5, 0xD7, 0xA5, 0xEA, 0xA5, 0xF3, 0xA4, 0xCE, 0xA4, 0xE9,
     0xA4, 0xAF, 0xA4, 0xAC, 0xA4, 0xAD, 0x00, 0x00, 0x00, 0x00,
 };
 
 // ３Ｄスティックでジャンプして
-static char D_86301614[] = {
+static char gText_JumpWithCStick[] = {
     0xA3, 0xB3, 0xA3, 0xC4, 0xA5, 0xB9, 0xA5, 0xC6, 0xA5, 0xA3, 0xA5, 0xC3, 0xA5, 0xAF, 0xA4, 0xC7,
     0xA5, 0xB8, 0xA5, 0xE3, 0xA5, 0xF3, 0xA5, 0xD7, 0xA4, 0xB7, 0xA4, 0xC6, 0x00, 0x00, 0x00, 0x00,
 };
 
 // Ａボタンでらくがきしよう。
-static char D_86301634[] = {
+static char gText_DrawWithAButton[] = {
     0xA3, 0xC1, 0xA5, 0xDC, 0xA5, 0xBF, 0xA5, 0xF3, 0xA4, 0xC7, 0xA4, 0xE9, 0xA4, 0xAF,
     0xA4, 0xAC, 0xA4, 0xAD, 0xA4, 0xB7, 0xA4, 0xE8, 0xA4, 0xA6, 0xA1, 0xA3, 0x00, 0x00,
 };
 
-static u32 D_86301650[] = {
+static u32 gGeoLayout_StageCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000, 0x05000000,
     0x0D000000, 0x05000000, 0x0F000002, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003, 0x05000000,
     0x0A000000, 0x800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
@@ -57,12 +57,12 @@ typedef struct unk_D_86301730 {
 } unk_D_86301730; // size = 0x184
 
 static unk_D_86002F30* D_86301710;
-static unk_D_86002F34* D_86301714;
-static unk_D_86002F34_00C* D_86301718;
+static unk_D_86002F34* gStageRootNode;
+static unk_D_86002F34_00C* gCamera;
 static s16 D_8630171C;
 static s16 D_8630171E;
 static s16 D_86301720;
-static u16 D_86301722;
+static u16 gFrameCounter;
 static s32 D_86301724;
 static TextObject* D_86301728;
 static unk_D_86301730 D_86301730[4];
@@ -107,21 +107,21 @@ void func_8630011C(void) {
 }
 
 void func_86300154(void) {
-    D_86301718 = D_86301714->unk_00.unk_0C;
+    gCamera = gStageRootNode->unk_00.unk_0C;
 
     D_8630171C = 0x600;
     D_8630171E = 0;
     D_86301720 = 0x15E;
 
-    D_86301718->unk_24.near = 100.0f;
-    D_86301718->unk_24.far = 12800.0f;
-    D_86301718->unk_24.fovy = 30.0f;
+    gCamera->unk_24.near = 100.0f;
+    gCamera->unk_24.far = 12800.0f;
+    gCamera->unk_24.fovy = 30.0f;
 
-    D_86301718->unk_60.at.x = 0.0f;
-    D_86301718->unk_60.at.y = 70.0f;
-    D_86301718->unk_60.at.z = 0.0f;
+    gCamera->unk_60.at.x = 0.0f;
+    gCamera->unk_60.at.y = 70.0f;
+    gCamera->unk_60.at.z = 0.0f;
 
-    Camera_SetViewParameters(&D_86301718->unk_60.at, &D_86301718->unk_60.eye, D_86301720, D_8630171C, D_8630171E);
+    Camera_SetViewParameters(&gCamera->unk_60.at, &gCamera->unk_60.eye, D_86301720, D_8630171C, D_8630171E);
 }
 
 void func_86300230(void) {
@@ -154,13 +154,13 @@ void func_86300238(s32 arg0) {
             Text_SetFont(4, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xC8, 0xC8, 0x64, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301600) / 2), 0x46, D_86301600);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_DrawInstructions) / 2), 0x46, gText_DrawInstructions);
             Text_SetFont(2, -2);
             Text_Print(0xA0 - (GetTextWidth(D_86301728, (char*)gTextTable_StageNames) / 2), 0x5A, (char*)gTextTable_StageNames);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301614) / 2), 0x6E, D_86301614);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, D_86301634) / 2), 0x7D, D_86301634);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_JumpWithCStick) / 2), 0x6E, gText_JumpWithCStick);
+            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_DrawWithAButton) / 2), 0x7D, gText_DrawWithAButton);
 
-            if (D_86301722 & 0x10) {
+            if (gFrameCounter & 0x10) {
                 Text_SetFont(4, -2);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Text_SetPrimColor(5, 5, 0xFF, 0xFF);
@@ -207,18 +207,18 @@ void func_863006D8(s32 arg0) {
     Gfx_FillScreen(&gDisplayListHead, 0x53D);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_FinishFrame();
-    Graph_SetTextureState(D_86301714);
+    Graph_SetTextureState(gStageRootNode);
     func_86300238(arg0);
     ResultScreen_UpdateAndRender();
     Stage_Advance();
-    D_86301722++;
+    gFrameCounter++;
 }
 
 s32 func_86300764(void) {
     s32 i;
     s32 var_s5;
 
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86301D44 = &D_86301730[i];
@@ -263,7 +263,7 @@ s32 func_86300764(void) {
 void func_863008C0(void) {
     s32 i;
 
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86301D44 = &D_86301730[i];
@@ -502,7 +502,7 @@ void func_86301094(void) {
 void func_86301168(void) {
     s32 i;
 
-    func_80006CB4(30);
+    Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
         func_8630011C();
@@ -524,7 +524,7 @@ void func_86301234(void) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_86301714 = process_geo_layout(temp_v0, &D_86301650);
+    gStageRootNode = process_geo_layout(temp_v0, &gGeoLayout_StageCommands);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();

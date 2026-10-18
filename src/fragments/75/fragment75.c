@@ -110,7 +110,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     Stage_Set(temp_v0);
     StickerStation_SetCommand(1);
     func_8FA0047C(0xC8);
-    func_80006C6C(1);
+    Stage_FadeIn(1);
 
     while (Stage_GetFadeState() != 0) {
         Stage_Advance();

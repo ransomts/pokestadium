@@ -12,6 +12,6 @@ void MiniGame_RunOpening(void);
 void MiniGame_RunPlaying(void);
 void MiniGame_RunEnding(void);
 void MiniGame_InitGraph(void);
-s32 func_867006FC(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 MiniGame_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT13_H_

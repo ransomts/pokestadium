@@ -390,7 +390,7 @@ void func_82F00AC8(s32 arg0) {
 
         case 7:
             InitProgressBarRect(0);
-            func_80006CB4(0xF);
+            Stage_FadeOut(0xF);
             func_8004B9C4(0xF);
             break;
     }
@@ -596,7 +596,7 @@ s32 func_82F0109C(void) {
 }
 
 void func_82F01180(void) {
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     func_8004B1CC(0x10);
     MenuInput_SetController(gPlayer1Controller);
 

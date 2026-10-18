@@ -67,7 +67,7 @@ void func_828001D0(void) {
 void func_82800238(void) {
     s32 i;
 
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 16; i++) {
         func_82900020();
@@ -79,7 +79,7 @@ void func_82800238(void) {
         func_828001D0();
     } while (!(BTN_IS_PRESSED(gPlayer1Controller, BTN_A)));
 
-    func_80006CB4(0x10);
+    Stage_FadeOut(0x10);
 
     for (i = 0; i < 16; i++) {
         func_82900020();

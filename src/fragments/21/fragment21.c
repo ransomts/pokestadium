@@ -2369,7 +2369,7 @@ void func_86F01F58(s32 arg0) {
 void sandshrewMinigameInit(void) {
     sandshrewMinigameInitObjects();
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
     miniDifficulty = D_8780FA38;
 }
@@ -2423,7 +2423,7 @@ void func_86F0204C(void) {
 void func_86F02230(void) {
     s32 i;
 
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     if (D_86F0D260 != 0) {
         func_86F00188(0xA, 0x1E);

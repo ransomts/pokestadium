@@ -1684,3 +1684,128 @@ func_87A00DB8	Gfx_DrawTilemap	w10		Nested loops render a 15?20 grid of 16?16 til
 func_87A010D4	PlaySoundIfEnabled	w10		Plays a sound via PlaySoundByCategory only when global D_8780FC92 is zero, acting as a conditional sound wrapper	applied@76da8da
 D_87A01110	gTextTable_StageNames	w10		Array of u32 containing Shift?JIS encoded strings (e.g., 0xA5B2?) suggesting a table of stage name text	applied@76da8da
 D_87A01178	gTextTable_StageSubtitles	w10		Small u32 array with similar Shift?JIS patterns, likely holding subtitle or secondary text for stages	applied@76da8da
+func_86400020	UpdateHealthBarSegmentOffsets	w11		Iterates over all four players to compute unk_008 and unk_00A using GetHealthBarSegmentOffset, clearly updating health bar segment offsets	applied@fc8a26a
+D_864027C0	gPlayerSpawnInfo	w11		Used to initialize each player's position and orientation in func_86402130, indicating it stores spawn info for the four players	applied@fc8a26a
+D_8640284C	gHealthBarSegmentTable	w11		Array indexed by player and segment to compute health bar offsets in func_86400020, serving as a health bar segment lookup table	applied@fc8a26a
+D_864028BC	gPrefLayoutTable1	w11		Passed to func_87801684 for UI layout in func_86401544, representing the first preference layout table	applied@fc8a26a
+D_864028E4	gPrefLayoutTable2	w11		Passed to func_87801824 for UI layout in func_86401544, representing the second preference layout table	applied@fc8a26a
+D_8640290C	gGeoLayoutData	w11		Supplied to process_geo_layout in func_86402130 to construct geometry, thus it holds raw geo layout data	applied@fc8a26a
+D_86404070	gResultScreenNode	w11		Referenced in func_86400220 and added to the graph root in func_86402130, acting as the main result screen graph node	applied@fc8a26a
+D_864041D8	gPlayerResultNodes	w11		Array of four graph nodes created per player in func_86402130 and used for HUD animations, so it stores per?player result nodes	applied@fc8a26a
+D_86404778	gPlayerHudStates	w11		Array of structs representing per?player HUD state, accessed throughout the file (e.g., func_864002F8), thus it is the player HUD state table	applied@fc8a26a
+D_86405158	gGameState	w11		Single struct referenced as D_864052CC and holds fields like unk_004 used for animation timing, indicating it is the overall game state	applied@fc8a26a
+D_864052C8	gCurrentHudState	w11		Pointer set to each entry of D_86404778 before accessing its fields, serving as the current HUD state pointer	applied@fc8a26a
+D_864052D0	gCurrentGraphNode	w11		Pointer to various graph nodes (e.g., D_86404070, D_864041D8[i]) used for graph operations, thus it is the current graph node pointer	applied@fc8a26a
+D_864052D4	gHealthSegmentExactMatch	w11		Set to 1 when the current health segment matches any entry in D_8640284C in func_86400BE8, indicating an exact match flag	applied@fc8a26a
+D_864052D6	gCurrentHealthSegment	w11		Assigned from a shifted animation field (unk_040.unk_08) in func_86400BE8 and compared against segment tables, representing the current health segment index	applied@fc8a26a
+func_87B00050	HealthBar_ValueToPixel	w11		Converts the summed gauge length to a pixel offset used for health?bar segment selection in GetHealthBarSegmentOffset	applied@fc8a26a
+func_86500238	HealthBar_Update	w11		Updates health bar animation state, timer and triggers sounds each frame based on global health bar data.	applied@fc8a26a
+func_86500020	HealthBar_CalcNextDelay	w11		Calculates and sets the next delay value for a health bar entry using random and timer logic.	applied@fc8a26a
+func_865000C0	HealthBar_InitState	w11		Initializes each health bar's state field based on mini HUD color defaults.	applied@fc8a26a
+func_86500140	HealthBar_SetDirection	w11		Sets health bar direction flag according to player-specific settings and a random check.	applied@fc8a26a
+func_8650077C	HealthBar_ResetAnimations	w11		Resets animation channels for all health bar graph nodes based on current health bar conditions.	applied@fc8a26a
+func_86500904	HealthBar_DetermineWinner	w11		Finds the health bar with the highest value, marks it as winner, increments score and plays a sound.	applied@fc8a26a
+func_86500AC4	HealthBar_FrameUpdate	w11		Calls Fragment2_1_Update and builds the health bar display list each frame.	applied@fc8a26a
+func_86500AEC	HealthBar_HandleInput	w11		Processes player button input to manually adjust health bar values when in certain palette modes.	applied@fc8a26a
+func_86500D38	ResultScreen_Draw	w11		Draws result screen panels, UI elements and text based on the current result screen mode.	applied@fc8a26a
+func_865013D4	ResultScreen_RenderFrame	w11		Handles per?frame rendering of the result screen, including background fill, UI drawing and stage advance.	applied@fc8a26a
+func_86501668	ResultScreen_MainLoop	w11		Main loop for the result screen, waiting for player input and advancing frames.	applied@fc8a26a
+func_86501828	HealthBar_MainLoop	w11		Main loop for the health bar display after the result screen, handling input and rendering.	applied@fc8a26a
+func_86501964	ResultScreen_FadeAndLoop	w11		Fades audio volumes and runs a fixed?length loop rendering the result screen.	applied@fc8a26a
+func_865019E4	Camera_SetupResultScreen	w11		Configures camera parameters (FOV, near/far planes, position) for the result screen view.	applied@fc8a26a
+func_86501FC0	HealthBar_GetAnimStateIndex	w11		Returns an animation state index based on predefined tables for normal or extended health bar animations.	applied@fc8a26a
+D_86502C20	gHealthBarPositions	w11		Array of position vectors used to place each health bar graph node in the scene.	applied@fc8a26a
+D_86502CA0	gHealthBarGraphNodePtrs	w11		Array of pointers to the graph nodes representing health bar UI elements.	applied@fc8a26a
+D_86502CD4	gHealthBarUpdateCounter	w11		Frame counter incremented each update cycle to control health bar timing logic.	applied@fc8a26a
+D_86502CD8	gResultTimer	w11		Counter incremented after health bar completion to time result?screen events and sound cues.	applied@fc8a26a
+D_86502CDC	gResultScreenUIElements1	w11		Table of UI element definitions passed to func_87801754 for result screen layout.	applied@fc8a26a
+D_86502D4C	gResultScreenUIElements2	w11		Table of UI element definitions passed to func_87801684 for result screen layout.	applied@fc8a26a
+D_86502DBC	gResultScreenUIElements3	w11		Table of UI element definitions passed to func_87801824 for result screen layout.	applied@fc8a26a
+D_86502DE4	gResultScreenGeoLayoutData	w11		Geometry layout data array used by process_geo_layout to build the result screen scene graph.	applied@fc8a26a
+D_86502E6C	gHealthBarAnimFlagA	w11		Flag set when a health bar animation reaches a specific frame for the first animation channel.	applied@fc8a26a
+D_86502E70	gHealthBarAnimFlagB	w11		Flag set when a health bar animation reaches a specific frame for the second animation channel.	applied@fc8a26a
+D_8650A528	gHealthBarData	w11		Array of structs holding per?player health bar state (values, timers, animation nodes).	applied@fc8a26a
+D_8650AB2C	gCurrentHealthBarNode	w11		Pointer to the graph node of the currently processed health bar.	applied@fc8a26a
+D_86502EA0	sHealthBarAnimStateTableNormal	w11		Static table mapping normal health bar animation states to weighted ranges used in HealthBar_GetAnimStateIndex.	applied@fc8a26a
+D_86502EE0	sHealthBarAnimStateTableExtended	w11		Static table mapping extended health bar animation states to weighted ranges used in HealthBar_GetAnimStateIndex.	applied@fc8a26a
+D_86600850	gMiniGameGeoLayoutCommands	w11		Array passed to process_geo_layout to define the fragment's geometry layout, indicating it stores the mini?game GeoLayout commands	applied@fc8a26a
+D_86600940	gMiniGameGeoLayoutData	w11		Result of GeoLayout_LoadById(0x19) stored in D_86600940, so it holds the loaded GeoLayout data for the mini?game	applied@fc8a26a
+D_86600950	gMiniGameAnimNode	w11		Static Fragment2_1GraphNode added to the root list and used for animation actions, representing the mini?game animation node	applied@fc8a26a
+func_86600020	MiniGame_PollInputs	w11		Calls Cont_StartReadInputs, Cont_ReadInputs and MenuInput_Init each frame, so it polls controller input for the mini?game	applied@fc8a26a
+func_866000FC	MiniGame_UpdateCamera	w11		Adjusts D_86600AB8/ABA/ABC based on controller buttonDown flags and updates the camera, therefore it updates the mini?game camera each frame	applied@fc8a26a
+func_80006C6C	Stage_FadeIn	w11		Called with a short duration before the opening sequence and later paired with func_80006CB4 after ending, matching typical stage fade?in behavior	applied@fc8a26a
+func_80006CB4	Stage_FadeOut	w11		Called with a duration after the ending sequence, mirroring fade?out usage in other fragments, so it is the stage fade?out function	applied@fc8a26a
+func_867006FC	MiniGame_Main	w11		This function initializes graphics buffers, creates the stage, loads assets, runs the mini?game phases and returns 0, acting as the fragment?s entry point	applied@fc8a26a
+D_86806D68	gPlayer1ControllerPtr	w11		Given its initialization to &gPlayer1Controller, this variable stores a pointer to player?1?s controller.	applied@fc8a26a
+D_86806D6C	gPlayer2ControllerPtr	w11		Initialized to &gPlayer2Controller, it holds a pointer to player?2?s controller.	applied@fc8a26a
+D_86806D70	gPlayer3ControllerPtr	w11		Initialized to &gPlayer3Controller, it holds a pointer to player?3?s controller.	applied@fc8a26a
+D_86806D74	gPlayer4ControllerPtr	w11		Initialized to &gPlayer4Controller, it holds a pointer to player?4?s controller.	applied@fc8a26a
+D_86806D78	gPanelColumnX	w11		Used as the X coordinate for each panel column in RenderPanelColumns.	applied@fc8a26a
+D_86806D80	gPanelColumnY	w11		Used as the Y coordinate for each panel column in RenderPanelColumns.	applied@fc8a26a
+D_86806F40	gColorWhite	w11		Defined as {255,255,255}, the standard white RGB color used for UI text.	applied@fc8a26a
+D_86806F44	gPanelTextColors	w11		Array of four RGB colors applied to column?specific text rendering.	applied@fc8a26a
+D_86806F74	gResultSoundCategories	w11		Indexed to play sound categories for result outcomes in the state machine.	applied@fc8a26a
+D_86807500	gSushiGoRoundGraphNode	w11		Passed to Graph_SetTextureState, representing the stage?s texture graph node.	applied@fc8a26a
+D_86807504	gSushiGoRoundTextObject	w11		Created by Text_Init and used for all UI string rendering in the mode.	applied@fc8a26a
+D_86807508	gSushiGoRoundFrameCounter	w11		Incremented each loop iteration to track elapsed frames for UI animations.	applied@fc8a26a
+D_8680750C	gSushiGoRoundState	w11		Controls the main state machine of the Sushi?Go?Round mini?game.	applied@fc8a26a
+D_86807510	gSushiGoRoundTimer	w11		Counts down timers for various state transitions and fade effects.	applied@fc8a26a
+D_8680753E	gIsDemoMode	w11		When non?zero the code follows a demo/result path, altering UI and audio handling.	applied@fc8a26a
+D_8680753C	gSushiUIFlags	w11		Bitfield checked to decide which UI elements (panels, borders) are drawn.	applied@fc8a26a
+func_86801FC0	Sushi_UpdateScale	w11		Updates the graph node scale based on the entity's angle (uses SINS on unk_0E2) and increments the angle each frame, evidence from the function body.	applied@fc8a26a
+func_86802084	Sushi_Render	w11		Handles rendering of a sushi entity by setting the texture segment, pipe sync, render mode and issuing the display list D_86807010, as seen in the case 5 branch.	applied@fc8a26a
+func_86802204	Orientation_Orthonormalize	w11		Normalizes three vectors and computes an orthonormal basis for them, used on arg0->unk_098, indicating orientation processing.	applied@fc8a26a
+func_8680262C	Anim_FindFirstFrameInRange	w11		Iterates over animation frames to find the first frame where Anim_IsFrameInRange returns true, returning that index.	applied@fc8a26a
+func_86802750	Sushi_InitEntity	w11		Initializes all fields of a sushi entity, sets position, orientation, texture banks and registers graph nodes; called during system init.	applied@fc8a26a
+func_86802BE4	Controller_NormalizeAxis	w11		Converts raw controller stick values to a normalized -1.0..1.0 range using absolute value and sqrt, used for rawStickX/Y processing.	applied@fc8a26a
+func_86802C6C	Sushi_ClampPosition	w11		Limits the sushi's horizontal displacement to the maximum radius D_86806FB8 and prevents negative Y movement, as shown by the clamping logic.	applied@fc8a26a
+func_86802E18	Sushi_SetState	w11		Sets the sushi's state machine (unk_060) and resets related timers and visual parameters for each case (0?4).	applied@fc8a26a
+func_86802FB0	Sushi_IsInstanceAvailable	w11		Checks a sushi instance's flags (unk_0C, unk_10) against requested conditions, returning 1 only when the instance can be used.	applied@fc8a26a
+func_86803078	Sushi_FindNearestTarget	w11		Iterates over gSushiInstances, filters with Sushi_IsInstanceAvailable, and selects the instance with the smallest squared distance to the caller.	applied@fc8a26a
+func_868031A8	Sushi_FindBestTarget	w11		Selects a sushi instance based on a scoring function (func_86806930) and distance, preferring higher scores, as implemented in the loop.	applied@fc8a26a
+func_86803760	Controller_CalcStickFromVector	w11		Computes rawStickX/Y from a 3?D vector by projecting onto camera axes and scaling, used to generate controller input from AI movement.	applied@fc8a26a
+func_868038A8	Sushi_GenerateAIController	w11		Creates a synthetic Controller for a sushi entity, handling timing, target selection and stick calculation based on AI state.	applied@fc8a26a
+func_86803C6C	Sushi_UpdateAI	w11		Main per?frame AI routine that processes controller input, updates movement vectors, applies acceleration constants, and handles state transitions.	applied@fc8a26a
+func_86805858	Sushi_InitSystem	w11		Initializes the sushi subsystem: loads geometry, creates the sushi pool, sets random seeds, and calls Sushi_InitEntity for each player slot.	applied@fc8a26a
+func_87B00020	MenuInput_FrameUpdate	w11		updates controller input and initializes menu input each frame	applied@fc8a26a
+D_87B000E0	gCurrentTextObject	w11		global pointer to the currently active TextObject	applied@fc8a26a
+func_86000020	MiniHud_UpdateControllerInput	w11		Reads controller button states and updates per?player input fields, so it updates controller input for the mini HUD.	applied@fc8a26a
+func_86000410	MiniHud_HandleInput	w11		Checks stage fade, reads controller inputs and initializes menu input, thus handling input each frame.	applied@fc8a26a
+func_86000478	MiniHud_SetupCamera	w11		Sets up projection info and camera parameters for the mini HUD, so it sets up the camera.	applied@fc8a26a
+func_860005B8	MiniHud_RenderUI	w11		Draws UI panels, borders and texture rectangles based on argument, rendering the mini HUD UI.	applied@fc8a26a
+func_86000C18	MiniHud_DrawPlayerIndicators	w11		Iterates over four players, computes scaling and draws a textured rectangle for each, drawing player indicators.	applied@fc8a26a
+func_86100020	Pause_Start	w11		Called when the pause flag (D_8780FC94) becomes non?zero, matching the pause?start logic in func_861017E4.	applied@fc8a26a
+func_86100040	Pause_End	w11		Called when the pause flag clears, mirroring the un?pause handling in func_861017E4.	applied@fc8a26a
+func_86100060	SetAllPlayersAnimSpeed	w11		Loops over the four player structs and writes the argument into unk_008.unk_040.unk_0C, which is the animation speed field used elsewhere.	applied@fc8a26a
+func_86100084	WeightedRandomSelect	w11		Selects an entry from the D_861047B8 table based on the weight values in unk_06, a classic weighted?random algorithm.	applied@fc8a26a
+func_86100170	InitRandomItemPairs	w11		Uses WeightedRandomSelect twice to fill the D_86106450 array with two distinct random entries, initializing item pair data.	applied@fc8a26a
+func_86100798	DrawPatternRect	w11		Similar to DrawScaledTextureRect but always uses the pattern texture D_86104B78, drawing a fixed?size rectangle.	applied@fc8a26a
+func_86100A80	UpdatePlayerInputStates	w11		Copies buttonPressed and buttonDown from each gPlayerXController into the per?player structs D_861054C0[].	applied@fc8a26a
+func_86100AEC	PrepareInputIfNotFading	w11		Checks Stage_GetFadeState() before starting controller reads and initializing menu input, matching its purpose.	applied@fc8a26a
+func_86100B48	SetupCamera	w11		Sets projection info, near/far planes, FOV and camera eye/at vectors for the scene.	applied@fc8a26a
+func_86100C30	RenderResultScreenUI	w11		Draws UI panels, borders and text based on the argument state, using Text_* functions and texture tables.	applied@fc8a26a
+func_86101434	DrawPlayerGrid	w11		Iterates over players and calls func_86100798 to draw a uniform grid when the player?s unk_1AC flag is clear.	applied@fc8a26a
+func_86101560	DrawPlayerItems	w11		Loops over players and draws each item slot with func_86100480 using the player?s unk_174[] texture indices.	applied@fc8a26a
+func_86101718	DrawPlayerBorders	w11		Draws border rectangles around each player?s UI area and a progress bar when arg0==8, using DrawBorderRect.	applied@fc8a26a
+func_861017E4	UpdateFrame	w11		Main per?frame routine: handles pause state changes, begins the display list, updates graphics, calls Fragment2_1_Update, renders UI and advances the stage.	applied@fc8a26a
+func_8610197C	RunMatchLoop	w11		Core match loop: advances the stage, reads controller input, checks for cancel or result flags, and repeatedly calls func_861017E4.	applied@fc8a26a
+func_86200034	RenderPlayerPanels	w11		Draws textured quads for each player based on their state using texture IDs D_4000008/D_4000810/D_4001018/D_4001820	applied@fc8a26a
+func_862002F4	ProcessPlayerInputs	w11		Reads controller button presses into sp60 array and sets per?player input flags, applying random modifiers when D_86203E48==2	applied@fc8a26a
+func_862004D8	PollInputsWhenStageReady	w11		Sets D_8620471A when Stage_GetFadeState()==0, starts controller read, initializes menu input and calls ProcessPlayerInputs	applied@fc8a26a
+func_86200528	InitCameraParameters	w11		Initialises camera projection, near/far planes and view parameters for the race scene	applied@fc8a26a
+func_86200620	UpdateCameraForPhase	w11		Adjusts camera near, far and fovy values based on the current race phase stored in D_86203E48	applied@fc8a26a
+func_862011E8	RunRaceStartSequence	w11		Advances the stage, initializes player graph nodes, triggers actions, sets initial player states and loops waiting for start input before the race begins	applied@fc8a26a
+func_862013C0	HandleResultScreen	w11		Runs the result screen loop, processing fragment results, handling skip input, playing sounds and transitioning to the next phase	applied@fc8a26a
+func_862015C8	ResetPlayerState	w11		Initialises all player movement and animation fields to default values before a race starts	applied@fc8a26a
+func_86201640	CheckPlayerObstacleCollision	w11		Compares player Z position with obstacle data and sets obstacle->unk_170 when a collision condition is met, returning -1 on hit	applied@fc8a26a
+func_86201814	SetPlayerState	w11		Changes a player?s state machine (idle, start, active, finish) and triggers corresponding graph node actions and sounds	applied@fc8a26a
+func_86201900	UpdateObstaclesForPlayer	w11		Iterates over the 10 lane obstacles, updates their positions based on player progress, spawns and clears them according to distance thresholds	applied@fc8a26a
+func_86201CD8	UpdatePlayersAndCheckFinish	w11		Updates each player?s position, speed, state transitions and detects when a player reaches the finish line, returning the count of finishers	applied@fc8a26a
+D_86203BA0	gLaneBaseY	w11		4?10 table of base Y positions used in obstacle placement calculations (multiplied by 10.44f?1.7f) in UpdateObstaclesForPlayer	applied@fc8a26a
+D_86301600	gText_DrawInstructions	w11		Used in func_86300238 to render the ?draw? instruction text on the result screen	applied@fc8a26a
+D_86301614	gText_JumpWithCStick	w11		Used in func_86300238 to render the ?3D stick to jump? instruction text	applied@fc8a26a
+D_86301634	gText_DrawWithAButton	w11		Used in func_86300238 to render the ?A button to draw? instruction text	applied@fc8a26a
+D_86301650	gGeoLayout_StageCommands	w11		Passed to process_geo_layout in func_86301234 to build the stage geometry	applied@fc8a26a
+D_86301714	gStageRootNode	w11		Assigned the result of process_geo_layout and later used to access the camera node (D_86301718)	applied@fc8a26a
+D_86301718	gCamera	w11		Pointer to a camera struct whose near/far/fovy fields are set in func_86300154	applied@fc8a26a
+D_86301722	gFrameCounter	w11		Incremented each frame in func_863006D8 and checked for the ?PUSH START? prompt	applied@fc8a26a

@@ -16,7 +16,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static u32 D_86600850[] = {
+static u32 gMiniGameGeoLayoutCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000,
     0x00000000, 0x00640064, 0x00640000, 0x05000000, 0x00000000, 0x8D000020, 0x06000000, 0x06000000,
@@ -24,15 +24,15 @@ static u32 D_86600850[] = {
     0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static unk_D_86002F30* D_86600940;
+static unk_D_86002F30* gMiniGameGeoLayoutData;
 static GraphNode* D_86600944;
 static unk_D_86002F34_00C* D_86600948;
-static Fragment2_1GraphNode D_86600950;
+static Fragment2_1GraphNode gMiniGameAnimNode;
 static s16 D_86600AB8;
 static s16 D_86600ABA;
 static s16 D_86600ABC;
 
-void func_86600020(void) {
+void MiniGame_PollInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -51,7 +51,7 @@ void func_86600050(void) {
     Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
-void func_866000FC(void) {
+void MiniGame_UpdateCamera(void) {
     if (gPlayer1Controller->buttonDown & 0x800) {
         D_86600AB8 += 256;
     }
@@ -144,13 +144,13 @@ void func_86600438(s32 arg0) {
 }
 
 void func_8660048C(void) {
-    func_80006C6C(0x10);
-    GraphNode_TriggerAction(&D_86600950, 8);
-    if (Anim_HasReachedEnd(&D_86600950) == 0) {
+    Stage_FadeIn(0x10);
+    GraphNode_TriggerAction(&gMiniGameAnimNode, 8);
+    if (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
         do {
-            func_86600020();
+            MiniGame_PollInputs();
             func_86600438(0);
-        } while (Anim_HasReachedEnd(&D_86600950) == 0);
+        } while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0);
     }
 }
 
@@ -158,11 +158,11 @@ void func_866004F8(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
-    GraphNode_TriggerAction(&D_86600950, 0);
+    GraphNode_TriggerAction(&gMiniGameAnimNode, 0);
 
     while (var_s1 != 0) {
-        func_86600020();
-        func_866000FC();
+        MiniGame_PollInputs();
+        MiniGame_UpdateCamera();
 
         var_s0++;
 
@@ -172,8 +172,8 @@ void func_866004F8(void) {
 
         if (var_s0 == 60) {
             var_s0 = 0;
-            InitAnimState(&D_86600950);
-            GraphNode_TriggerSound(&D_86600950, 0xA);
+            InitAnimState(&gMiniGameAnimNode);
+            GraphNode_TriggerSound(&gMiniGameAnimNode, 0xA);
         }
 
         func_86600438(2);
@@ -183,18 +183,18 @@ void func_866004F8(void) {
 void func_866005B8(void) {
     s32 i;
 
-    GraphNode_TriggerAction(&D_86600950, 0xB);
-    GraphNode_TriggerSound(&D_86600950, 0xB);
+    GraphNode_TriggerAction(&gMiniGameAnimNode, 0xB);
+    GraphNode_TriggerSound(&gMiniGameAnimNode, 0xB);
 
-    while (Anim_HasReachedEnd(&D_86600950) == 0) {
-        func_86600020();
+    while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
+        MiniGame_PollInputs();
         func_86600438(3);
     }
 
-    func_80006CB4(30);
+    Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
-        func_86600020();
+        MiniGame_PollInputs();
         func_86600438(3);
     }
 }
@@ -202,14 +202,14 @@ void func_866005B8(void) {
 void func_86600658(void) {
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_86600944 = process_geo_layout(sp1C, &D_86600850);
+    D_86600944 = process_geo_layout(sp1C, &gMiniGameGeoLayoutCommands);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
-    Graph_AddToRootList0(&D_86600950);
+    Graph_AddToRootList0(&gMiniGameAnimNode);
     AssetManager_LoadArchives();
-    D_86600940 = GeoLayout_LoadById(0x19);
-    GraphNode_InitChild(&D_86600950, 0, 0x19, D_86600940->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_86600950, 0);
+    gMiniGameGeoLayoutData = GeoLayout_LoadById(0x19);
+    GraphNode_InitChild(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&gMiniGameAnimNode, 0);
     func_86600050();
 }
 

@@ -1053,7 +1053,7 @@ void func_833029F0(void) {
         if (var_a2 != 0) {
             D_833032E4 = 8;
             Stage_SetFillColor(0xFFFF);
-            func_80006CB4(0xF);
+            Stage_FadeOut(0xF);
             if (D_8330326C[D_83402E28] == 8) {
                 func_8004B9C4(0xF);
             }
@@ -1068,7 +1068,7 @@ void func_83302ACC(void) {
         func_83400410(0, D_8330343C);
         D_833032E4 = 8;
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(0xF);
+        Stage_FadeOut(0xF);
         if (D_8330326C[D_83402E28] == 8) {
             func_8004B9C4(0xF);
         }
@@ -1135,7 +1135,7 @@ s32 func_83302B5C(void) {
                     if (sp18) {}
                     Stage_SetFillColor(0xFFFF);
                 }
-                func_80006CB4(sp18);
+                Stage_FadeOut(sp18);
                 if (D_8330326C[D_83402E28] == 8) {
                     func_8004B9C4(sp18);
                 }
@@ -1151,7 +1151,7 @@ s32 func_83302B5C(void) {
             if (HandlePokemonGridInput(GetActiveMenu()) != 0) {
                 D_833032E4 = 8;
                 Stage_SetFillColor(1);
-                func_80006CB4(1);
+                Stage_FadeOut(1);
             }
             break;
 
@@ -1198,7 +1198,7 @@ void func_83302E6C(void) {
     } else {
         var_a0 = 7;
     }
-    func_80006C6C(var_a0);
+    Stage_FadeIn(var_a0);
 
     do {
         func_83302E3C();

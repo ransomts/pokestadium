@@ -618,7 +618,7 @@ s32 func_822026BC(void) {
         if (D_82203150.unk_06 >= 0xFF) {
             D_82203150.unk_06 = 0xFF;
             Stage_SetFillColor(1);
-            func_80006CB4(1);
+            Stage_FadeOut(1);
             var_a1 = 5;
         }
     } else {
@@ -635,7 +635,7 @@ s32 func_82202758(void) {
     } else if (gFadeStepCounter == 0x200) {
         gFadeStepCounter += 0x40;
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(2);
+        Stage_FadeOut(2);
         var_a1 = 6;
     } else if (gFadeStepCounter < 0x280) {
         gFadeStepCounter += 0x40;
@@ -653,7 +653,7 @@ s32 func_822027E8(void) {
     switch (temp_v0) {
         case 0:
             Stage_SetFillColor(0xFFFF);
-            func_80006CB4(0x10);
+            Stage_FadeOut(0x10);
             var_v1 = 4;
             break;
 
@@ -722,7 +722,7 @@ s32 func_82202A6C(void) {
 void func_82202AFC(void) {
     InitParticleTrail(D_822031D8);
     Music_ChangeTrack(0x50);
-    func_80006C6C(0xA);
+    Stage_FadeIn(0xA);
 
     while (Stage_GetFadeState() != 0) {
         func_82202374();

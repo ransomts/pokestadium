@@ -478,7 +478,7 @@ void func_84A01DAC(void) {
         D_84A030E4--;
         if ((D_84A030E4 == 0) && ((D_84A030E0 == 8) || (D_84A030E0 == 9))) {
             Stage_SetFillColor(1);
-            func_80006CB4(8);
+            Stage_FadeOut(8);
         }
     }
 
@@ -585,7 +585,7 @@ s32 func_84A0207C(void) {
                 if (D_84A030E0 == 9) {
                     D_84A030E0 = 7;
                 }
-                func_80006C6C(8);
+                Stage_FadeIn(8);
             }
         }
         func_84A01EE0();
@@ -780,7 +780,7 @@ s16 func_84A02A34(s16 arg0) {
     s16 i;
 
     if (Stage_GetFadeState() == 1) {
-        func_80006C6C(8);
+        Stage_FadeIn(8);
         for (i = 0; i < 9; i++) {
             Game_UpdateInputs();
             func_84A01EE0();

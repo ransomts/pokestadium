@@ -2511,7 +2511,7 @@ void func_8260365C(void) {
     D_82608552 = tmp;
 
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
     func_82600020();
 
     if (D_8267E750 == 1) {
@@ -2560,7 +2560,7 @@ void func_8260365C(void) {
     }
 
     Stage_SetFillColor(0xFFFF);
-    func_80006CB4(0x16);
+    Stage_FadeOut(0x16);
     func_8004B9C4(0x3C);
 
     while (Stage_GetFadeState() != 1) {

@@ -74,7 +74,7 @@ s32 func_83700174(void) {
             if (func_83700114() != 0) {
                 D_837004C0 = 2;
                 PlaySoundEffect(0x1A);
-                func_80006CB4(1);
+                Stage_FadeOut(1);
             }
             break;
 
@@ -98,7 +98,7 @@ void func_8370026C(void) {
         Cam_Update(D_837004B0);
     } while (D_837004B0->unk_00 != 2);
 
-    func_80006C6C(1);
+    Stage_FadeIn(1);
 
     do {
         func_8370023C();

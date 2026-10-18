@@ -36,13 +36,13 @@ static u32 gSushiGoRoundGeoLayout[] = {
     0x06000000, 0x06000000, 0x03000000, 0x87806398, 0x06000000, 0x01000000,
 };
 
-static Controller** D_86806D68 = &gPlayer1Controller;
-static Controller** D_86806D6C = &gPlayer2Controller;
-static Controller** D_86806D70 = &gPlayer3Controller;
-static Controller** D_86806D74 = &gPlayer4Controller;
+static Controller** gPlayer1ControllerPtr = &gPlayer1Controller;
+static Controller** gPlayer2ControllerPtr = &gPlayer2Controller;
+static Controller** gPlayer3ControllerPtr = &gPlayer3Controller;
+static Controller** gPlayer4ControllerPtr = &gPlayer4Controller;
 
-static s16 D_86806D78[] = { 0x1E, 0x1E, 0x108, 0x108 };
-static s16 D_86806D80[] = { 0xCC, 0x10, 0x10, 0xCC };
+static s16 gPanelColumnX[] = { 0x1E, 0x1E, 0x108, 0x108 };
+static s16 gPanelColumnY[] = { 0xCC, 0x10, 0x10, 0xCC };
 
 static unk_D_86806E20 D_86806D88 = { 0x400C800, 32, 8 };
 static unk_D_86806E20 D_86806D90 = { 0x400CA00, 32, 8 };
@@ -71,8 +71,8 @@ static unk_func_87801684 D_86806E88[] = {
     { 0x0303B040, 2 },   { 0x0303A400, 2 }, { 0x030397C0, 2 }, { 0x030366C0, 2 }, { 0x03037300, 2 }, { 0x030366C0, 2 },
     { 0x030397C0, 2 },   { 0x0303A400, 2 }, { 0x0303B040, 2 }, { 0x0303A400, 2 }, { NULL, 0 },
 };
-static Color_RGB8 D_86806F40 = { 255, 255, 255 };
-static Color_RGB8 D_86806F44[] = {
+static Color_RGB8 gColorWhite = { 255, 255, 255 };
+static Color_RGB8 gPanelTextColors[] = {
     { 0, 0, 0xFF },
     { 0, 0xFF, 0 },
     { 0xFF, 0, 0 },
@@ -94,20 +94,20 @@ static Color_RGB8 D_86806F68[] = {
     { 255, 255, 100 },
     { 0, 0, 0 },
 };
-static s32 D_86806F74[] = { 0x50002, 0x50002, 0x50001, 0x50002, 0, 0, 0 };
+static s32 gResultSoundCategories[] = { 0x50002, 0x50002, 0x50001, 0x50002, 0, 0, 0 };
 
-unk_D_86002F34* D_86807500;
-static TextObject* D_86807504;
-static u32 D_86807508;
-static s32 D_8680750C;
-s32 D_86807510;
+unk_D_86002F34* gSushiGoRoundGraphNode;
+static TextObject* gSushiGoRoundTextObject;
+static u32 gSushiGoRoundFrameCounter;
+static s32 gSushiGoRoundState;
+s32 gSushiGoRoundTimer;
 static Controller D_86807518;
-static u16 D_8680753C;
-static s16 D_8680753E;
+static u16 gSushiUIFlags;
+static s16 gIsDemoMode;
 static s16 D_86807540;
 
 void func_86800020(s32 arg0) {
-    if (D_8680753E == 0) {
+    if (gIsDemoMode == 0) {
         Audio_SetVolumeFadeAndDuration(1, arg0);
         Audio_SetVolumeFadeAndDuration(2, arg0);
     } else {
@@ -124,22 +124,22 @@ void ReadAllControllers(void) {
 
     bzero(&D_86807518, sizeof(Controller));
 
-    temp_v0 = *D_86806D68;
+    temp_v0 = *gPlayer1ControllerPtr;
     D_86807518.buttonDown |= temp_v0->buttonDown;
     D_86807518.buttonPressed |= temp_v0->buttonPressed;
     D_86807518.unk_0A |= temp_v0->unk_0A;
 
-    temp_v0 = *D_86806D6C;
+    temp_v0 = *gPlayer2ControllerPtr;
     D_86807518.buttonDown |= temp_v0->buttonDown;
     D_86807518.buttonPressed |= temp_v0->buttonPressed;
     D_86807518.unk_0A |= temp_v0->unk_0A;
 
-    temp_v0 = *D_86806D70;
+    temp_v0 = *gPlayer3ControllerPtr;
     D_86807518.buttonDown |= temp_v0->buttonDown;
     D_86807518.buttonPressed |= temp_v0->buttonPressed;
     D_86807518.unk_0A |= temp_v0->unk_0A;
 
-    temp_v0 = *D_86806D74;
+    temp_v0 = *gPlayer4ControllerPtr;
     D_86807518.buttonDown |= temp_v0->buttonDown;
     D_86807518.buttonPressed |= temp_v0->buttonPressed;
     D_86807518.unk_0A |= temp_v0->unk_0A;
@@ -197,7 +197,7 @@ void RenderPanelColumns(void) {
     unk_D_86807558* ptr;
 
     for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
-        var_s4 = DrawTextureStackColumn(var_s4, i / 2, D_86806D78[i], D_86806D80[i], ptr->unk_02A);
+        var_s4 = DrawTextureStackColumn(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
     }
 
     gDisplayListHead = var_s4;
@@ -212,11 +212,11 @@ void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s
     s32 tmp;
 
     if (arg2 >= 2) {
-        tmp = D_86807508 % arg3;
+        tmp = gSushiGoRoundFrameCounter % arg3;
         temp_fv0 = tmp;
         temp_fv0 /= arg3;
 
-        temp_a0 = (D_86807508 % (arg3 * arg2)) / arg3;
+        temp_a0 = (gSushiGoRoundFrameCounter % (arg3 * arg2)) / arg3;
 
         if (arg4 == 0) {
             var_v0 = &arg1[temp_a0];
@@ -265,12 +265,12 @@ void RenderSushiGoRoundUI(void) {
     Color_RGB8 spD8[4];
     Color_RGB8 spD0[2];
     Color_RGB8 spB8[2][4];
-    Color_RGB8 spB4 = D_86806F40;
+    Color_RGB8 spB4 = gColorWhite;
     s32 var_v0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    if (D_8680753C & 2) {
+    if (gSushiUIFlags & 2) {
         RenderPanelColumns();
         for (i = 0; i < 4; i++) {
             if ((i == 0) || (i == 3)) {
@@ -280,20 +280,20 @@ void RenderSushiGoRoundUI(void) {
             }
 
             if (!(D_86807558[i].unk_002 & 4)) {
-                DrawUniformScaledTextureRect(i, D_86806D78[i], D_86806D80[i] + var_v0, 0.75f);
+                DrawUniformScaledTextureRect(i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
             } else {
-                DrawUniformScaledTextureRect(-1 - i, D_86806D78[i], D_86806D80[i] + var_v0, 0.75f);
+                DrawUniformScaledTextureRect(-1 - i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
             }
         }
     }
 
-    if (D_8680753E != 0) {
+    if (gIsDemoMode != 0) {
         func_878021B4(0x1E, 0x17);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    if (D_8680753C & 1) {
+    if (gSushiUIFlags & 1) {
         DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
         DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
         FillRect(0x17, 0x16, 2, 0x90);
@@ -303,7 +303,7 @@ void RenderSushiGoRoundUI(void) {
     Text_ResetState();
     Text_BeginRender();
 
-    if (D_8680753C & 1) {
+    if (gSushiUIFlags & 1) {
         s32 spA4;
         s32 spA0;
         s32 sp9C;
@@ -313,7 +313,7 @@ void RenderSushiGoRoundUI(void) {
         Text_SetFont(2, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (GetTextWidth(D_86807504, GetMessageString(NULL, 0, gItemNamesBank, 0xC)) / 2), 0x20,
+        Text_Print(0xA0 - (GetTextWidth(gSushiGoRoundTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0xC)) / 2), 0x20,
                       GetMessageString(NULL, 0, gItemNamesBank, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -354,7 +354,7 @@ void RenderSushiGoRoundUI(void) {
         }
     }
 
-    switch (D_8680750C) {
+    switch (gSushiGoRoundState) {
         s32 var_s4;
         s32 var_s7;
         unk_D_86807558* ptr;
@@ -364,7 +364,7 @@ void RenderSushiGoRoundUI(void) {
 
         case 2:
         case 3:
-            if (D_8680753E == 0) {
+            if (gIsDemoMode == 0) {
                 Text_SetFont(4, 0);
                 for (i = 0, ptr = D_86807558; i < 4; i++, ptr++) {
                     if ((ptr->unk_040.unk_00 != 0) && (ptr->unk_040.unk_00 != 1)) {
@@ -382,7 +382,7 @@ void RenderSushiGoRoundUI(void) {
 
                         if (ptr->unk_03E < 5) {
                             Text_SetEnvColor(0xFF, 0xFF, 0xFF, ptr->unk_040.unk_18);
-                            Text_SetPrimColor(D_86806F44[i].r, D_86806F44[i].g, D_86806F44[i].b,
+                            Text_SetPrimColor(gPanelTextColors[i].r, gPanelTextColors[i].g, gPanelTextColors[i].b,
                                           ptr->unk_040.unk_18);
                         } else {
                             InterpolateColors(spD8, D_86806F68, 4, 4, 0);
@@ -390,8 +390,8 @@ void RenderSushiGoRoundUI(void) {
                             Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
 
-                        Text_Print((s16)ptr->unk_040.unk_08 + (D_86806D78[i] + var_s7),
-                                      (D_86806D80[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
+                        Text_Print((s16)ptr->unk_040.unk_08 + (gPanelColumnX[i] + var_s7),
+                                      (gPanelColumnY[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
                                       ptr->unk_03E);
                     }
                 }
@@ -406,7 +406,7 @@ void RenderSushiGoRoundUI(void) {
                 char sp78[16];
 
                 spD0[0] = spB4;
-                spD0[1] = D_86806F44[i];
+                spD0[1] = gPanelTextColors[i];
 
                 InterpolateColors(&spB8[0][i], spD0, 2, 0x1E, 0);
                 InterpolateColors(&spB8[1][i], spD0, 2, 0x1E, 1);
@@ -435,7 +435,7 @@ void RenderSushiGoRoundUI(void) {
                 }
 
                 MessageBank_SetPointer_1_9(6, ptr->unk_01C);
-                Text_Print(D_86806D78[i] + var_s7, D_86806D80[i] + var_s4,
+                Text_Print(gPanelColumnX[i] + var_s7, gPanelColumnY[i] + var_s4,
                               GetMessageString(&sp78, 0x20, gItemNamesBank, 0x5E));
             }
             break;
@@ -444,7 +444,7 @@ void RenderSushiGoRoundUI(void) {
     Text_EndRender();
     Text_SetupDL();
 
-    if (D_8680753C & 1) {
+    if (gSushiUIFlags & 1) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 8; i++) {
@@ -473,18 +473,18 @@ void RenderSushiGoRoundFrame(void) {
         Gfx_FinishFrame();
     }
 
-    Graph_SetTextureState(D_86807500);
+    Graph_SetTextureState(gSushiGoRoundGraphNode);
     ParticleRender_SetupMiniCamera();
 
     if (D_8780FC98 == 0) {
         RenderSushiGoRoundUI();
     }
 
-    if (D_8680753E == 0) {
+    if (gIsDemoMode == 0) {
         ResultScreen_UpdateAndRender();
     }
 
-    if (D_8680753E != 0) {
+    if (gIsDemoMode != 0) {
         UpdateScrollingMessage();
     }
 
@@ -495,23 +495,23 @@ void HandleSushiGoRoundInput(void) {
     GetRandomMod(0x80);
 
     if (Stage_GetFadeState() == 0) {
-        if (D_8680753E != 0) {
-            D_8680750C = 1;
-            D_86807510 = 0x1C2;
+        if (gIsDemoMode != 0) {
+            gSushiGoRoundState = 1;
+            gSushiGoRoundTimer = 0x1C2;
             D_86807540 = 0xF;
         } else if (gPlayer1Controller->buttonPressed & 0x1000) {
-            D_8680750C = 1;
-            D_8680753C &= ~1;
-            D_8680753C |= 2;
-            D_86807510 = 0x708;
+            gSushiGoRoundState = 1;
+            gSushiUIFlags &= ~1;
+            gSushiUIFlags |= 2;
+            gSushiGoRoundTimer = 0x708;
             D_86807540 = 0xF;
             func_8004B9C4(0x3C);
             func_86805108(0xF, 1);
         } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
             PlaySoundEffect(3);
-            D_8680750C = 7;
+            gSushiGoRoundState = 7;
             D_86807540 = 0x1E;
-            func_80006CB4(D_86807540);
+            Stage_FadeOut(D_86807540);
             func_86800020(D_86807540 / 2);
             SetResultFlag(2);
         }
@@ -521,11 +521,11 @@ void HandleSushiGoRoundInput(void) {
 s32 IsTimerExpired(void) {
     s32 var_v1 = 0;
 
-    if (D_8680753E == 0) {
-        if (D_86807510 <= 0) {
+    if (gIsDemoMode == 0) {
+        if (gSushiGoRoundTimer <= 0) {
             var_v1 = 1;
         }
-    } else if (D_86807510 <= 0) {
+    } else if (gSushiGoRoundTimer <= 0) {
         var_v1 = 1;
     }
     return var_v1;
@@ -542,20 +542,20 @@ s32 UpdateSushiGoRoundState(void) {
     sp1C = 0;
 
     sp18 = 0;
-    if ((D_8680753E != 0) && (gPlayer1Controller->buttonPressed != 0)) {
+    if ((gIsDemoMode != 0) && (gPlayer1Controller->buttonPressed != 0)) {
         if (Stage_GetFadeState() == 0) {
             sp18 = 1;
         }
     }
 
-    if (((D_8780FC92 != 0) || (sp18 != 0)) && (D_8680750C != 7)) {
-        D_8680750C = 7;
+    if (((D_8780FC92 != 0) || (sp18 != 0)) && (gSushiGoRoundState != 7)) {
+        gSushiGoRoundState = 7;
         D_86807540 = 0x1E;
-        func_80006CB4(D_86807540);
+        Stage_FadeOut(D_86807540);
         func_86800020(D_86807540 / 2);
     }
 
-    switch (D_8680750C) {
+    switch (gSushiGoRoundState) {
         case 0:
             HandleSushiGoRoundInput();
             break;
@@ -563,7 +563,7 @@ s32 UpdateSushiGoRoundState(void) {
         case 1:
             D_86807540 -= 1;
             if (D_86807540 <= 0) {
-                D_8680750C = 2;
+                gSushiGoRoundState = 2;
                 Fragment2_1_SetStartFlag(1);
             }
             break;
@@ -571,9 +571,9 @@ s32 UpdateSushiGoRoundState(void) {
         case 2:
             temp_v0 = Fragment2_1_GetResult();
             if ((temp_v0 >= 0) && (temp_v0 < 4)) {
-                PlaySoundByCategory(D_86806F74[temp_v0], 0, 0);
+                PlaySoundByCategory(gResultSoundCategories[temp_v0], 0, 0);
             } else if (temp_v0 == -2) {
-                D_8680750C = 3;
+                gSushiGoRoundState = 3;
                 func_86805108(0xF, 3);
                 func_86806964(1);
             }
@@ -581,26 +581,26 @@ s32 UpdateSushiGoRoundState(void) {
 
         case 3:
             if (D_8780FC94 == 0) {
-                D_86807510--;
-                if (((D_86807510 % 30) == 0) && (D_8680753E == 0)) {
-                    if (((D_86807510 / 30) > 0) && ((D_86807510 / 30) < 6)) {
+                gSushiGoRoundTimer--;
+                if (((gSushiGoRoundTimer % 30) == 0) && (gIsDemoMode == 0)) {
+                    if (((gSushiGoRoundTimer / 30) > 0) && ((gSushiGoRoundTimer / 30) < 6)) {
                         PlaySoundByCategory(0x50002, 0, 0);
                     }
                 }
             }
 
             if (IsTimerExpired() != 0) {
-                if (D_8680753E == 0) {
-                    D_8680750C = 4;
+                if (gIsDemoMode == 0) {
+                    gSushiGoRoundState = 4;
                     D_86807540 = 0x1E;
                     func_86805108(0xF, 2);
                     func_86806964(2);
                     func_8004B9C4(0xA);
                     PlaySoundByCategory(0x50004, 0, 0);
                 } else {
-                    D_8680750C = 7;
+                    gSushiGoRoundState = 7;
                     D_86807540 = 0x1E;
-                    func_80006CB4(D_86807540);
+                    Stage_FadeOut(D_86807540);
                     func_86800020(D_86807540 / 2);
                     SetResultFlag(2);
                 }
@@ -613,7 +613,7 @@ s32 UpdateSushiGoRoundState(void) {
             }
 
             if (D_86807540 <= 0) {
-                D_8680750C = 5;
+                gSushiGoRoundState = 5;
                 func_86805108(0xF, 4);
             }
             break;
@@ -629,7 +629,7 @@ s32 UpdateSushiGoRoundState(void) {
             }
 
             if ((var_a0 != 0) && (D_8780FC94 == 0)) {
-                D_8680750C = 6;
+                gSushiGoRoundState = 6;
                 func_86805108(0xF, 5);
                 SetResultFlag(1);
             }
@@ -637,9 +637,9 @@ s32 UpdateSushiGoRoundState(void) {
 
         case 6:
             if (D_8780FC96 != 0) {
-                D_8680750C = 7;
+                gSushiGoRoundState = 7;
                 D_86807540 = 0x1E;
-                func_80006CB4(D_86807540);
+                Stage_FadeOut(D_86807540);
                 func_86800020(D_86807540 / 2);
             }
             break;
@@ -663,8 +663,8 @@ void RunSushiGoRound(void) {
     s32 var_s0;
 
     Stage_AdvanceN(5);
-    func_80006C6C(0x10);
-    D_86807508 = 0;
+    Stage_FadeIn(0x10);
+    gSushiGoRoundFrameCounter = 0;
 
     var_s0 = 1;
     while (var_s0 != 0) {
@@ -680,7 +680,7 @@ void RunSushiGoRound(void) {
             var_s0 = 0;
         }
 
-        D_86807508++;
+        gSushiGoRoundFrameCounter++;
     }
 }
 
@@ -689,7 +689,7 @@ void InitSushiGoRound(void) {
     MemoryBlock* sp18;
 
     sp18 = state_pool_try_init(main_pool_get_available(), 0);
-    D_86807500 = (GraphNode*)process_geo_layout(sp18, &gSushiGoRoundGeoLayout);
+    gSushiGoRoundGraphNode = (GraphNode*)process_geo_layout(sp18, &gSushiGoRoundGeoLayout);
 
     mem_pool_resize_block(sp18);
     Graph_InitRoots();
@@ -697,19 +697,19 @@ void InitSushiGoRound(void) {
     Fragment2_1_Init();
     func_86806A50();
 
-    if (D_8680753E != 0) {
-        func_86805858(1);
+    if (gIsDemoMode != 0) {
+        Sushi_InitSystem(1);
     } else {
-        func_86805858(0);
+        Sushi_InitSystem(0);
     }
 
     func_86805BD4();
     ParticleSystem_Init();
     ResultScreen_Init();
 
-    D_8680750C = 0;
-    if (D_8680753E == 0) {
-        D_8680753C |= 1;
+    gSushiGoRoundState = 0;
+    if (gIsDemoMode == 0) {
+        gSushiUIFlags |= 1;
     }
 
     func_86805108(0xF, 2);
@@ -719,17 +719,17 @@ void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
-        D_8680753E = 1;
+        gIsDemoMode = 1;
         func_878010C8(9);
     } else {
-        D_8680753E = 0;
+        gIsDemoMode = 0;
     }
 
     main_pool_push_state('MINI');
 
     Gfx_InitBuffers(0x18000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86807504 = Text_Init(0x17, 0);
+    gSushiGoRoundTextObject = Text_Init(0x17, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_04000000, sushi_go_round_sprites, 0);

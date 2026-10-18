@@ -1553,7 +1553,7 @@ s32 func_82D03174(void) {
     s16 j;
 
     func_82D02FB8();
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     for (j = 0; j < 7; j++) {
         Game_UpdateInputs();
@@ -1592,7 +1592,7 @@ s32 func_82D03174(void) {
         PlaySoundEffect(3);
         Music_StopTrack(0x10);
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(8);
+        Stage_FadeOut(8);
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
             func_82D02ED0(i, 0xFF);
@@ -1897,7 +1897,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
         Battle_LoadStateFromSave();
         Music_StopTrack(0x10);
         Stage_SetFillColor(1);
-        func_80006CB4(8);
+        Stage_FadeOut(8);
 
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
@@ -1918,7 +1918,7 @@ s16 func_82D04590(unk_func_800281D4* arg0) {
 
     if (var_s1 != 0) {
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(8);
+        Stage_FadeOut(8);
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
             func_82D043CC(0, var_s0, arg0, 0, 0);
@@ -2657,7 +2657,7 @@ s16 func_82D067A0(void) {
     func_82D06014();
     D_82D06FA0 = 0;
     if (Stage_GetFadeState() != 0) {
-        func_80006C6C(8);
+        Stage_FadeIn(8);
         while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
             func_82D053F4(0, 0);
@@ -2727,7 +2727,7 @@ s16 func_82D067A0(void) {
 
     if ((D_82D0ABA8 == 0) || (D_82D06FA0 != 0)) {
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(8);
+        Stage_FadeOut(8);
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
             func_82D053F4(i, 0);

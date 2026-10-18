@@ -54,7 +54,7 @@ static u32 D_862038C0[] = {
     0x00000000, 0x00000000, 0x000A0005, 0x00020000,
 };
 
-static f32 D_86203BA0[4][10] = {
+static f32 gLaneBaseY[4][10] = {
     { 5.5f, 10.5f, 15.5f, 20.5f, 23.79999924f, 27.10000038f, 30.5f, 35.5f, 40.5f, 45.5f },
     { 5.5f, 8.5f, 17.5f, 19.5f, 24.5f, 26.5f, 34.5f, 37.5f, 45.5f, 47.5f },
     { 5.5f, 7.5f, 9.5f, 17.5f, 27.5f, 29.5f, 31.5f, 42.5f, 44.5f, 46.5f },
@@ -167,7 +167,7 @@ void func_86200020(unk_D_86203E50* arg0) {
     arg0->unk_002 = D_8780FA38 + 1;
 }
 
-void func_86200034(void) {
+void RenderPlayerPanels(void) {
     UNUSED s32 pad[3];
     MtxF spDC;
     Mtx sp98;
@@ -209,7 +209,7 @@ void func_86200034(void) {
 void func_862002EC(void) {
 }
 
-void func_862002F4(void) {
+void ProcessPlayerInputs(void) {
     UNUSED s32 pad[2];
     s32 i;
     unk_D_86203CEC* temp_s0;
@@ -256,18 +256,18 @@ void func_862002F4(void) {
     }
 }
 
-void func_862004D8(void) {
+void PollInputsWhenStageReady(void) {
     D_8620471A = 0;
     if (Stage_GetFadeState() == 0) {
         D_8620471A = 1;
         Cont_StartReadInputs();
         Cont_ReadInputs();
         MenuInput_Init();
-        func_862002F4();
+        ProcessPlayerInputs();
     }
 }
 
-void func_86200528(void) {
+void InitCameraParameters(void) {
     D_8620829C = 0;
     D_86203E3C = D_86203E38->unk_00.unk_0C;
 
@@ -287,7 +287,7 @@ void func_86200528(void) {
     Camera_SetViewParameters(&D_86203E3C->unk_60.at, &D_86203E3C->unk_60.eye, D_86203E44, D_86203E40, D_86203E42);
 }
 
-void func_86200620(void) {
+void UpdateCameraForPhase(void) {
     switch (D_86203E48) {
         case 0:
             D_86203E40 = 0xD00;
@@ -483,7 +483,7 @@ void func_86200EC4(s32 arg0) {
     Fragment2_1_Update();
     Graph_SetTextureState(D_86203E38);
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
-    func_86200034();
+    RenderPlayerPanels();
 
     if (D_8780FC98 == 0) {
         func_86200940(arg0);
@@ -499,12 +499,12 @@ void func_86200EC4(s32 arg0) {
     D_86203E46++;
 }
 
-s32 func_862011E8(void) {
+s32 RunRaceStartSequence(void) {
     s32 i;
     s32 var_s1_3;
 
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86204590 = &D_86203E50[i];
@@ -528,14 +528,14 @@ s32 func_862011E8(void) {
     if (D_86204718 == 0) {
         var_s1_3 = 1;
     } else {
-        func_86200620();
+        UpdateCameraForPhase();
         func_86200EC4(D_86203E48);
         return 0;
     }
 
     while (var_s1_3 == 1) {
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
         if (D_8620471A == 1) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s1_3 = 0;
@@ -553,10 +553,10 @@ s32 func_862011E8(void) {
     return 0;
 }
 
-void func_862013C0(void) {
+void HandleResultScreen(void) {
     s32 i;
 
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         GraphNode_TriggerAction(&D_86203E50[i].unk_008, 0);
@@ -578,22 +578,22 @@ void func_862013C0(void) {
                 break;
         }
 
-        func_862004D8();
+        PollInputsWhenStageReady();
 
         if ((D_86204718 == 1) && (Stage_GetFadeState() == 0) &&
             ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed |
               gPlayer3Controller->buttonPressed | (gPlayer4Controller->buttonPressed != 0)) != 0)) {
-            func_80006CB4(0x1E);
+            Stage_FadeOut(0x1E);
             Music_StartVolumeFade(0x1E);
             D_86204700 = 0;
 
             for (i = 0; i < 30; i++) {
-                func_86200620();
+                UpdateCameraForPhase();
                 func_86200EC4(D_86203E48);
             }
 
             while (Audio_CalcLoadScore() != 0) {
-                func_86200620();
+                UpdateCameraForPhase();
                 func_86200EC4(D_86203E48);
             }
 
@@ -601,7 +601,7 @@ void func_862013C0(void) {
             SetResultFlag(2);
         }
 
-        func_86200620();
+        UpdateCameraForPhase();
         func_86200EC4(D_86203E48);
     }
 }
@@ -613,7 +613,7 @@ void func_862015A0(unk_D_86203E50* arg0) {
     arg0->unk_194 = temp_fv0 / 3.0f;
 }
 
-void func_862015C8(unk_D_86203E50* arg0) {
+void ResetPlayerState(unk_D_86203E50* arg0) {
     arg0->unk_19C = 0;
     arg0->unk_180 = 30.0f;
     arg0->unk_184 = 30.0f;
@@ -626,7 +626,7 @@ void func_862015C8(unk_D_86203E50* arg0) {
     arg0->unk_190 = 0.0f - arg0->unk_194;
 }
 
-s32 func_86201640(unk_D_86203E50* arg0, unk_D_86204720* arg1) {
+s32 CheckPlayerObstacleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1) {
     f32 temp_fv0;
     f32 temp_fv1;
 
@@ -664,7 +664,7 @@ void func_86201770(unk_D_86203E50* arg0) {
     arg0->unk_008.unk_040.unk_0C = (arg0->unk_178 * 196608.0f) / arg0->unk_180;
 }
 
-void func_86201814(unk_D_86203E50* arg0, s32 arg1) {
+void SetPlayerState(unk_D_86203E50* arg0, s32 arg1) {
     Fragment2_1GraphNode* temp_s0 = &arg0->unk_008;
 
     switch (arg1) {
@@ -696,7 +696,7 @@ void func_86201814(unk_D_86203E50* arg0, s32 arg1) {
     }
 }
 
-void func_86201900(unk_D_86203E50* arg0) {
+void UpdateObstaclesForPlayer(unk_D_86203E50* arg0) {
     s32 i;
     f32 temp_fs1;
     u32 temp_v0;
@@ -709,7 +709,7 @@ void func_86201900(unk_D_86203E50* arg0) {
         temp_s1 = &D_86208280->unk_004;
         D_86208280->unk_000 = 0;
         unk_190 = arg0->unk_190;
-        temp_fs1 = D_86203BA0[D_8620471C][i] * 10.44f * 1.7f;
+        temp_fs1 = gLaneBaseY[D_8620471C][i] * 10.44f * 1.7f;
 
         if (((temp_fs1 - 30.0f) <= unk_190) && (unk_190 <= ((temp_fs1 - 30.0f) + 67.64706f))) {
 
@@ -773,7 +773,7 @@ void func_86201900(unk_D_86203E50* arg0) {
     if (arg0) {}
 }
 
-s16 func_86201CD8(void) {
+s16 UpdatePlayersAndCheckFinish(void) {
     s32 i;
     s32 j;
     s16 sp86;
@@ -808,7 +808,7 @@ s16 func_86201CD8(void) {
             switch (D_86204590->unk_19C) {
                 case 0:
                     if (D_86204590->unk_170 & 0x800) {
-                        func_86201814(D_86204590, 1);
+                        SetPlayerState(D_86204590, 1);
                     } else {
                         if (D_86204590->unk_170 & 0x8000) {
                             D_86204590->unk_174 += D_86204590->unk_188;
@@ -837,20 +837,20 @@ s16 func_86201CD8(void) {
                     }
 
                     if (D_86204590->unk_174 <= D_86204590->unk_17C) {
-                        func_86201814(D_86204590, 3);
+                        SetPlayerState(D_86204590, 3);
                     }
                     break;
 
                 case 1:
                     if (Anim_HasReachedEnd(D_86204594) != 0) {
-                        func_86201814(D_86204590, 0);
+                        SetPlayerState(D_86204590, 0);
                     }
                     break;
 
                 case 2:
                     D_86204590->unk_174 = 0.0f;
                     if (Anim_HasReachedEnd(D_86204594) != 0) {
-                        func_86201814(D_86204590, 3);
+                        SetPlayerState(D_86204590, 3);
                     }
                     break;
 
@@ -858,7 +858,7 @@ s16 func_86201CD8(void) {
                     D_86204590->unk_174 = 0.0f;
                     if (D_86204590->unk_170 & 0x8000) {
                         D_86204590->unk_174 = D_86204590->unk_184;
-                        func_86201814(D_86204590, 0);
+                        SetPlayerState(D_86204590, 0);
                     }
                     break;
             }
@@ -871,8 +871,8 @@ s16 func_86201CD8(void) {
             for (j = 0; j < 10; j++) {
                 D_86208280 = &D_86204720[i][j];
 
-                if ((D_86208280->unk_002 == 1) && (func_86201640(D_86204590, D_86208280) != 0)) {
-                    func_86201814(D_86204590, 2);
+                if ((D_86208280->unk_002 == 1) && (CheckPlayerObstacleCollision(D_86204590, D_86208280) != 0)) {
+                    SetPlayerState(D_86204590, 2);
                     D_86208280->unk_002 = 2;
                     D_86208280->unk_17A = 0;
                     D_86204590->unk_1AC += 1;
@@ -985,7 +985,7 @@ void func_862023F8(void) {
         GraphNode_TriggerAction(var_s2, 1);
         InitAnimState(var_s2);
         var_s2->unk_040.unk_08 = (GetRandomMod(5) * 0x3) << 0x10;
-        func_862015C8(temp_s1);
+        ResetPlayerState(temp_s1);
         temp_s1->unk_1C8 = 0;
         temp_s1->unk_1B2 = 4;
         temp_s1->unk_19E = 0;
@@ -1002,8 +1002,8 @@ void func_862023F8(void) {
     D_86204710 = 99999.0f;
 
     while (spA4 != 0) {
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
 
         if (D_8780FC92 != 0) {
             return;
@@ -1021,7 +1021,7 @@ void func_862023F8(void) {
                 }
 
                 if (D_86204704 == 0x1C2) {
-                    func_80006CB4(0x1E);
+                    Stage_FadeOut(0x1E);
                     Music_StartVolumeFade(0x1E);
                 }
 
@@ -1035,10 +1035,10 @@ void func_862023F8(void) {
                 func_8004B1CC(0x19);
             }
 
-            temp_s1_2 = func_86201CD8();
+            temp_s1_2 = UpdatePlayersAndCheckFinish();
 
             for (i = 0; i < 4; i++) {
-                func_86201900(&D_86203E50[i]);
+                UpdateObstaclesForPlayer(&D_86203E50[i]);
             }
 
             if (temp_s1_2 > 0) {
@@ -1110,15 +1110,15 @@ void func_862023F8(void) {
     }
 
     while (var_s3 > 0) {
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
         if (D_8780FC92 == 0) {
             if (D_8780FC94 == 0) {
                 var_s3 = 0;
                 func_862022CC();
 
                 for (i = 0; i < 4; i++) {
-                    func_86201900(&D_86203E50[i]);
+                    UpdateObstaclesForPlayer(&D_86203E50[i]);
                 }
 
                 for (i = 0; i < 4; i++) {
@@ -1197,7 +1197,7 @@ void func_86202D5C(void) {
     }
 
     while (D_8780FC94 != 0) {
-        func_862004D8();
+        PollInputsWhenStageReady();
         func_86200EC4(D_86203E48);
     }
 
@@ -1205,21 +1205,21 @@ void func_86202D5C(void) {
     D_86203E48 = 3;
 
     for (i = 0; i < 120; i++) {
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
         func_86200EC4(D_86203E48);
     }
 
     for (i = 0; i < 30; i++) {
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
         func_86200EC4(D_86203E48);
     }
 }
 
 void func_86202EE4(void) {
     while (Audio_CalcLoadScore() != 0) {
-        func_862004D8();
+        PollInputsWhenStageReady();
         func_86200EC4(D_86203E48);
     }
     Music_EndVolumeFade();
@@ -1229,10 +1229,10 @@ void func_86202F3C(void) {
     s32 i;
 
     func_8004B9C4(0x1E);
-    func_80006CB4(0x1E);
+    Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
-        func_862004D8();
+        PollInputsWhenStageReady();
         func_86200EC4(D_86203E48);
     }
 }
@@ -1243,7 +1243,7 @@ void func_86202FA4(s32 arg0) {
     D_86203E48 = 6;
 
     for (i = 0; i < arg0; i++) {
-        func_862004D8();
+        PollInputsWhenStageReady();
         func_86200EC4(D_86203E48);
     }
 }
@@ -1259,8 +1259,8 @@ void func_86203008(void) {
             }
         }
 
-        func_862004D8();
-        func_86200620();
+        PollInputsWhenStageReady();
+        UpdateCameraForPhase();
         func_86202C7C();
         func_86200EC4(D_86203E48);
     }
@@ -1299,7 +1299,7 @@ void func_862030D0(void) {
         temp_s0->unk_030.z = 1.0f;
         GraphNode_TriggerAction(temp_s0, 0);
         InitAnimState(temp_s0);
-        func_862015C8(D_86204590);
+        ResetPlayerState(D_86204590);
         temp_s0->unk_040.unk_0C = 0x20000;
     }
 
@@ -1321,7 +1321,7 @@ void func_862030D0(void) {
         }
     }
 
-    func_86200528();
+    InitCameraParameters();
     Fragment2_1_Init();
 }
 
@@ -1348,7 +1348,7 @@ void func_86203380(void) {
         D_86204590->unk_1B2 = 4;
         D_86204590->unk_1B4 = 0;
         D_86204590->unk_170 = 0;
-        func_862015C8(D_86204590);
+        ResetPlayerState(D_86204590);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_030.x = 1.0f;
@@ -1402,10 +1402,10 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
     Stage_Set(sp24);
     func_86203380();
 
-    if (func_862011E8() != -1) {
+    if (RunRaceStartSequence() != -1) {
         func_8004B9C4(0x3C);
         func_86202FA4(5);
-        func_862013C0();
+        HandleResultScreen();
         func_862023F8();
         if ((D_8780FC92 == 0) && (D_86204718 == 0)) {
             func_86202D5C();

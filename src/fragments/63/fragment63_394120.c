@@ -345,7 +345,7 @@ s32 Battle_MainLoop(void) {
         func_84B01538();
     }
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     while (func_84B07AB8(&D_84B25A28, gBattleGraphics.unk_0008) == 0) {
         func_84B01538();
@@ -363,7 +363,7 @@ s32 Battle_MainLoop(void) {
 
     Music_StopTrack(0x20);
     Stage_SetFillColor(1);
-    func_80006CB4(0x10);
+    Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
         func_84B01538();
@@ -411,7 +411,7 @@ s32 func_84B017AC(void) {
         func_84B016F4();
     }
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     for (i = 0; i < 20; i++) {
         func_84B016F4();
@@ -442,7 +442,7 @@ s32 func_84B017AC(void) {
 
     Music_StopTrack(0x20);
     Stage_SetFillColor(1);
-    func_80006CB4(0x10);
+    Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
         func_84B016F4();
@@ -549,7 +549,7 @@ void func_84B01C2C(void) {
         Music_ChangeTrack(0x32);
     }
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     while (func_84B0A634(&D_84B25A58, gBattleGraphics.unk_0008) == 0) {
         func_84B01AA0();
@@ -577,7 +577,7 @@ void func_84B01DBC(void) {
     }
 
     Music_ChangeTrack(0x32);
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     while (func_84B0A634(&D_84B25A58, gBattleGraphics.unk_0008) == 0) {
         func_84B01AA0();
@@ -678,7 +678,7 @@ void func_84B021FC(void) {
 
     Music_StopTrack(0x3C);
     Stage_SetFillColor(1);
-    func_80006CB4(0x10);
+    Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
         Game_UpdateInputs();
@@ -1165,7 +1165,7 @@ s32 func_84B02F60(void) {
     }
 
     Stage_SetFillColor(1);
-    func_80006CB4(0x10);
+    Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
         Game_UpdateInputs();

@@ -9,7 +9,7 @@ u8 D_87B000CC = 0;
 u8 D_87B000D0 = 0;
 u8 D_87B000D4 = 0;
 
-TextObject* D_87B000E0;
+TextObject* gCurrentTextObject;
 unk_D_86002F30* D_87B000E4;
 unk_D_86002F34* D_87B000E8;
 unk_D_86002F34_00C* D_87B000EC;
@@ -17,13 +17,13 @@ s16 D_87B000F0;
 s16 D_87B000F2;
 s16 D_87B000F4;
 
-void func_87B00020(void) {
+void MenuInput_FrameUpdate(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-u32 func_87B00050(u32 arg0) {
+u32 HealthBar_ValueToPixel(u32 arg0) {
     if (arg0 == 0) {
         return 0;
     }

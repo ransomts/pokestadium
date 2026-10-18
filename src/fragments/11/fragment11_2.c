@@ -40,7 +40,7 @@ u8 gHealthBarDuration;
 void HealthBar_Init(void) {
     switch (gHealthBarMode) {
         case 0:
-            gHealthBarPaletteIndex = func_87B00050(2) + 3;
+            gHealthBarPaletteIndex = HealthBar_ValueToPixel(2) + 3;
             break;
 
         case 1:
@@ -53,7 +53,7 @@ void HealthBar_Init(void) {
     }
 
     gHealthBarTimer = 0;
-    gHealthBarDuration = (func_87B00050(4) * 0xF) + 0x1E;
+    gHealthBarDuration = (HealthBar_ValueToPixel(4) * 0xF) + 0x1E;
 
     if (gHealthBarMode != 0) {
         PlaySoundEffect(0x11);

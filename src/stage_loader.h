@@ -38,8 +38,8 @@ typedef struct Stage {
 
 void Stage_DrawFadeOverlay(void);
 s32 Stage_StartFade(s32 arg0);
-s32 func_80006C6C(s32 arg0);
-s32 func_80006CB4(s32 arg0);
+s32 Stage_FadeIn(s32 arg0);
+s32 Stage_FadeOut(s32 arg0);
 void Stage_SetFadeState(s32 arg0);
 void Profiler_SetVisibility(u32 arg0, u32 arg1);
 void Gfx_SetDefaultState(void);

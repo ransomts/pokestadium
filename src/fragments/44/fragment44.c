@@ -1076,7 +1076,7 @@ void func_83503968(unk_D_83407B38* arg0) {
         D_83503FC0 = 4;
         D_83504088 = 0xFFFF;
         Stage_SetFillColor(0xFFFF);
-        func_80006CB4(0xF);
+        Stage_FadeOut(0xF);
     }
 }
 
@@ -1110,7 +1110,7 @@ s32 func_835039C8(void) {
                     Stage_SetFillColor(1);
                     var_a0 = 1;
                 }
-                func_80006CB4(var_a0);
+                Stage_FadeOut(var_a0);
             }
             break;
 
@@ -1139,9 +1139,9 @@ void func_83503AFC(void) {
 
 void func_83503B2C(void) {
     if (D_8350408C != 0) {
-        func_80006C6C(7);
+        Stage_FadeIn(7);
     } else {
-        func_80006C6C(1);
+        Stage_FadeIn(1);
     }
 
     do {

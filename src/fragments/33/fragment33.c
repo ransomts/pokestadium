@@ -679,7 +679,7 @@ s32 func_81302A70(s32 arg0) {
     s32 var_s1 = 0;
     s32 i;
 
-    func_80006C6C(8);
+    Stage_FadeIn(8);
 
     while (Stage_GetFadeState() != 0) {
         func_81302498();
@@ -719,7 +719,7 @@ s32 func_81302A70(s32 arg0) {
     }
 
     Stage_SetFillColor(1);
-    func_80006CB4(8);
+    Stage_FadeOut(8);
 
     while (Stage_GetFadeState() != 1) {
         func_81302498();

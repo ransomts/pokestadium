@@ -173,7 +173,7 @@ static TextObject* D_86003B7C;
 static s32 D_86003B80;
 static Fragment2_1GraphNode D_86003B84[4];
 
-void func_86000020(void) {
+void MiniHud_UpdateControllerInput(void) {
     s32 i;
     s32 j;
 
@@ -268,7 +268,7 @@ void func_86000020(void) {
     }
 }
 
-s32 func_86000410(void) {
+s32 MiniHud_HandleInput(void) {
     if (Stage_GetFadeState() != 0) {
         return -1;
     }
@@ -278,13 +278,13 @@ s32 func_86000410(void) {
     MenuInput_Init();
 
     if (D_8780FC94 != 1) {
-        func_86000020();
+        MiniHud_UpdateControllerInput();
     }
 
     return 0;
 }
 
-void func_86000478(void) {
+void MiniHud_SetupCamera(void) {
     D_86002F38 = D_86002F34->unk_00.unk_0C;
     SetProjectionInfo(D_86002F38);
     D_86002F3C = 0x600;
@@ -306,7 +306,7 @@ void func_86000564(void) {
     Camera_SetViewParameters(&D_86002F38->unk_60.at, &D_86002F38->unk_60.eye, D_86002F40, D_86002F3C, D_86002F3E);
 }
 
-void func_860005B8(s32 arg0) {
+void MiniHud_RenderUI(s32 arg0) {
     s32 i;
     UNUSED u8 sp68[] = {
         0,
@@ -472,7 +472,7 @@ static Gfx D_86002DD8[] = {
 void func_86000C10(void) {
 }
 
-void func_86000C18(void) {
+void MiniHud_DrawPlayerIndicators(void) {
     Gfx* gfx = gDisplayListHead;
     Mtx* var_s1 = (Mtx*)GfxAlloc(sizeof(MtxF) * 4);
     Mtx sp100;
@@ -509,10 +509,10 @@ void func_86000D88(s32 arg0) {
     Fragment2_1_Update();
     Graph_SetTextureState(D_86002F34);
     gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
-    func_86000C18();
+    MiniHud_DrawPlayerIndicators();
 
     if (D_8780FC98 == 0) {
-        func_860005B8(arg0);
+        MiniHud_RenderUI(arg0);
     }
 
     ResultScreen_UpdateAndRender();
@@ -561,7 +561,7 @@ s32 func_86000FD4(void) {
     s32 i;
 
     Stage_AdvanceN(0xA);
-    func_80006C6C(0x10);
+    Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
@@ -581,7 +581,7 @@ s32 func_86000FD4(void) {
 
     var_s0_2 = true;
     while (var_s0_2 == true) {
-        if (func_86000410() == 0) {
+        if (MiniHud_HandleInput() == 0) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s0_2 = false;
             }
@@ -630,7 +630,7 @@ void func_86001204(void) {
         }
 
         func_86000E54();
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000D88(D_86002F48);
     }
 }
@@ -878,7 +878,7 @@ void func_86001C90(void) {
     D_86002F48 = 2;
 
     while (var_s6 != 0) {
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000564();
 
         if (D_86003B58 == 0xF) {
@@ -960,7 +960,7 @@ void func_86001F64(void) {
     var_s1 = 1;
 
     while (var_s1 != 0) {
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000564();
 
         for (i = 0; i < 4; i++) {
@@ -1012,7 +1012,7 @@ void func_86001F64(void) {
 
     j = 30;
     while (j > 0) {
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000564();
 
         for (i = 0; i < 4; i++) {
@@ -1033,7 +1033,7 @@ void func_86001F64(void) {
     SetResultFlag(1);
 
     while (var_s5 != 0) {
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000564();
 
         for (i = 0; i < 4; i++) {
@@ -1060,10 +1060,10 @@ void func_86002264(void) {
     s32 j;
 
     func_8004B9C4(30);
-    func_80006CB4(30);
+    Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
-        func_86000410();
+        MiniHud_HandleInput();
 
         for (j = 0; j < 4; j++) {
             func_860017C0(j);
@@ -1079,7 +1079,7 @@ void func_860022F8(s32 arg0) {
     D_86002F48 = 6;
 
     for (i = 0; i < arg0; i++) {
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000D88(D_86002F48);
     }
 }
@@ -1101,7 +1101,7 @@ void func_8600235C(void) {
             func_860017C0(i);
         }
 
-        func_86000410();
+        MiniHud_HandleInput();
         func_86000D88(D_86002F48);
     }
 }
@@ -1176,7 +1176,7 @@ void func_86002440(void) {
     }
 
     D_86002F50 = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
-    func_86000478();
+    MiniHud_SetupCamera();
     Fragment2_1_Init();
 }
 
