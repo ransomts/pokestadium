@@ -11,21 +11,21 @@ s32 Math_RandomModulo(s32 arg0) {
 }
 
 void Stage_DrawBorderFade(u8 arg0) {
-    static u8 D_86A05B54 = 0;
+    static u8 sBorderFadeStep = 0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (!arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-    } else if (D_86A05B54 < 0x1E) {
-        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, (s32)ROUND_MAX((D_86A05B54 * 255.0f) / 30.0f));
-        D_86A05B54++;
+    } else if (sBorderFadeStep < 0x1E) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, (s32)ROUND_MAX((sBorderFadeStep * 255.0f) / 30.0f));
+        sBorderFadeStep++;
     } else {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
         gBorderFadeCycleCount++;
     }
 
-    func_878021B4(0x6E, 0x5C);
+    Stage_SetBorderFadeParams(0x6E, 0x5C);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }

@@ -6,7 +6,7 @@
 unk_D_8140E620* gMatrixBuffer;
 s32 gMatrixBufferIdx;
 s32 gMatrixBufferIdx;
-unk_D_8140E634 D_8140E628;
+unk_D_8140E634 gParticleScaleFactor;
 unk_D_8140E634_010* D_8140E6B4;
 u32 gTimerCounter;
 s32 gTimerMask6;
@@ -32,10 +32,10 @@ s32 D_8140E708;
 s32 D_8140E70C;
 s32 gRandomSeedCounter;
 static s32 pad_D_8140E714[2];
-unk_D_8140E720* gParticleInstances;
+ParticleEffectInstance* gParticleInstances;
 unk_D_8140E724* D_8140E724;
 unk_D_8140E728* gParticleEmitters;
-s32 D_8140E72C;
+s32 gParticleAllocIndex;
 s32 D_8140E730;
 s32 gParticleEmitterNextIdx;
 
@@ -643,7 +643,7 @@ s32 func_81400FA4(Vec3f arg0, Vec3f arg1, f32 arg2) {
     return func_81400E8C(arg0, arg1) / arg2;
 }
 
-s32 func_81401020(Vec3f* arg0, Vec3f arg1, Vec3f arg2, f32 arg3) {
+s32 Particle_ComputeLifespan(Vec3f* arg0, Vec3f arg1, Vec3f arg2, f32 arg3) {
     f32 temp_fv1;
 
     arg0->x = arg2.x - arg1.x;

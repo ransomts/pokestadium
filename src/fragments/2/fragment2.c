@@ -548,7 +548,7 @@ void func_87801F48(s16 arg0, s16 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg1, arg2 + 0x1A, 0x34, 0x1A, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_878021B4(s16 arg0, s16 arg1) {
+void Stage_SetBorderFadeParams(s16 arg0, s16 arg1) {
     u32* ptr = D_304F120;
     s32 i;
 

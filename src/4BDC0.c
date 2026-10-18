@@ -24,7 +24,7 @@ s32 gMusicHandle = 0;
 s32 D_80078E74 = 112;
 u8 D_80078E78 = 0;
 u8 D_80078E7C = 0;
-u8 D_80078E80 = 0;  // tail holds D_80078E83, D_80078E8B, D_80078E93, D_80078E9B, D_80078EA3, D_80078EAB, D_80078EB3 (linker-defined symbols)
+u8 gStadiumModeActive = 0;  // tail holds D_80078E83, D_80078E8B, D_80078E93, D_80078E9B, D_80078EA3, D_80078EAB, D_80078EB3 (linker-defined symbols)
 static u32 D_80078E80_tail[14] = { 0x2020203, 0x3030405, 0x23232325, 0x2525250E, 0x23232325, 0x25250E0D, 0x6060637, 0x37373B39, 0x3434342F, 0x2F2F2E35, 0xB0B0B0C, 0xC0C0C12, 0xB0B0B0C, 0xC0C1236 };
 u8 D_80078EBC[9] = { 0x22, 0x22, 0x22, 0x24, 0x24, 0x24, 0x24, 0x24, 0x26 };  // tail holds D_80078EBF (linker-defined symbols)
 s32 gMusicFadeDuration = -1;
@@ -88,17 +88,17 @@ s32 func_8004B1CC(s32 arg0) {
     }
 
     if (arg0 == 0x32) {
-        if ((D_80078404 < 0xC) && (D_80078390[0] > 0) && (D_80078390[1] == 0) && (D_80078408 == 8)) {
+        if ((gCurrentStadiumPhase < 0xC) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0) && (gStadiumPhaseSubstate == 8)) {
             arg0 = 0x3C;
-        } else if ((D_80078404 == 0xD) && (D_80078390[0] > 0) && (D_80078390[1] == 0) && (D_80078408 == 5)) {
+        } else if ((gCurrentStadiumPhase == 0xD) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0) && (gStadiumPhaseSubstate == 5)) {
             arg0 = 0x3E;
             D_800FF9B4 = 0x3E;
-        } else if ((D_80078404 == 0xF) && (D_80078390[0] > 0) && (D_80078390[1] == 0)) {
+        } else if ((gCurrentStadiumPhase == 0xF) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0)) {
             arg0 = 0x40;
         }
     }
 
-    if ((arg0 == 0x3F) && (D_80078404 == 0xD) && (D_80078408 == 5)) {
+    if ((arg0 == 0x3F) && (gCurrentStadiumPhase == 0xD) && (gStadiumPhaseSubstate == 5)) {
         arg0 = 0x41;
     }
 
@@ -115,13 +115,13 @@ s32 func_8004B1CC(s32 arg0) {
         case 0x0:
             D_80078E78 = 0;
             D_80078E7C = 0;
-            D_80078E80 = 1;
+            gStadiumModeActive = 1;
             sp20 = 0x98;
             break;
 
         case 0x1:
             sp20 = 0x68;
-            D_80078E80 = 1;
+            gStadiumModeActive = 1;
             ProcessMenuSelection(0, 0xF);
             break;
 
@@ -445,7 +445,7 @@ s32 func_8004B1CC(s32 arg0) {
 
         case 0x5A:
             sp20 = 0x50;
-            D_80078E80 = 0;
+            gStadiumModeActive = 0;
             sp2C = 2;
             break;
 
@@ -509,7 +509,7 @@ void func_8004B9C4(s32 arg0) {
 
 s32 func_8004BA88(s32 arg0, s32 arg1) {
     s32 ret;
-    D_80078E80 = 0;
+    gStadiumModeActive = 0;
     if ((arg0 == 0) || (arg0 == 0xFF)) {
         arg0 = 1;
         if ((arg1 == 0xE)) {    

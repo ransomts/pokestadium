@@ -627,7 +627,7 @@ void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
     char sp50[16];
     UNUSED s32 pad;
     u16 var_v1;
-    unk_D_800AC910_040 sp38;
+    Gen1StringDecodeBuffer sp38;
 
     if (arg1 == 4) {
         gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &D_8423D3A8, 0, 0x2C, 0x54, arg0->unk_02);
@@ -635,7 +635,7 @@ void func_84202D18(unk_D_8423D3D8* arg0, s16 arg1) {
     }
 
     if (arg1 < 4) {
-        func_80025040(arg1, &sp38);
+        Controller_ReadInput(arg1, &sp38);
         DecodeGen1String(sp50, sp38.unk_02);
         var_v1 = sp38.unk_00;
     } else {
@@ -909,7 +909,7 @@ void func_842037AC(void) {
     char sp74[16];
     s16 temp_v0;
     u16 var_s1;
-    unk_D_800AC910_040 sp60;
+    Gen1StringDecodeBuffer sp60;
 
     while (true) {
         temp_v0 = func_84202844(0, 1, 0, 1);
@@ -922,7 +922,7 @@ void func_842037AC(void) {
         if (temp_v0 < 4) {
             SnapSelect_SetCameraMode(temp_v0);
             func_80024208(temp_v0);
-            func_80025040(temp_v0, &sp60);
+            Controller_ReadInput(temp_v0, &sp60);
             DecodeGen1String(sp74, sp60.unk_02);
             var_s1 = sp60.unk_00;
         } else {
@@ -1071,7 +1071,7 @@ void func_84203D74(void) {
             D_84211B34 = BinArchive_GetFile(D_84211B30, 0xE);
         } else {
             GbsEnsureBankLoaded(2);
-            func_80027FA0(&sp20, gBattleContext.unk_11F2);
+            GBAudio_ResetState(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_84211B34 = BinArchive_GetFile(D_84211B30, 0xD);
             } else {

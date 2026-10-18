@@ -72,7 +72,7 @@ static Gfx D_8140DBD0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC00[] = {
+Gfx gDL_BaseUI2[] = {
     gsSPDisplayList(D_8140DBD0),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_TEX_EDGE2),
     gsDPSetTextureFilter(G_TF_BILERP),
@@ -96,7 +96,7 @@ Gfx D_8140DC58[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC78[] = {
+Gfx gDL_OverlayUI2[] = {
     gsSPDisplayList(D_8140DC20),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),

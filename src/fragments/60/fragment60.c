@@ -456,7 +456,7 @@ s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
         Text_Init(0x10, 0);
         GbsEnsureBankLoaded(2);
-        func_80027FA0(&D_82E023A0, gBattleContext.unk_11F2);
+        GBAudio_ResetState(&D_82E023A0, gBattleContext.unk_11F2);
         if (gBattleContext.unk_0000 == 3) {
             D_82E023AA = D_82E023A0.unk_05;
         } else {

@@ -16,7 +16,7 @@ static f32 D_84387B00[] = {
     1.1f, 1.0f,  1.2f,  1.0f, 0.8f, 1.2f, 1.2f,  1.2f,  1.2f,  1.2f,  1.2f, 1.35f, 1.2f, 0.8f,  0.8f, 1.2f, 0.9f,
     1.0f, 1.2f,  1.0f,  1.2f, 1.0f, 1.1f, 1.5f,  1.55f, 1.5f,  1.6f,  1.6f, 1.75f, 1.6f, 1.5f,  1.6f, 1.0f,
 };
-static f32 D_84387D60[] = {
+static f32 gParticleYOffsetTable[] = {
     0.0f,   0.0f,   -8.0f, 0.0f,   -5.0f,  0.0f,   -10.0f, 0.0f,   -10.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,
     -35.0f, 0.0f,   0.0f,  0.0f,   0.0f,   0.0f,   -10.0f, 0.0f,   0.0f,   -10.0f, -10.0f, -10.0f, -5.0f,  0.0f,
     -10.0f, -10.0f, 0.0f,  -10.0f, 0.0f,   0.0f,   -10.0f, 0.0f,   0.0f,   0.0f,   -15.0f, 0.0f,   0.0f,   0.0f,
@@ -30,7 +30,7 @@ static f32 D_84387D60[] = {
     0.0f,   0.0f,   0.0f,  0.0f,   0.0f,   -15.0f, 0.0f,   -10.0f, -25.0f, -20.0f, -20.0f, 0.0f,
 };
 
-void func_84340DC0(void) {
+void Camera_SetLookAtReflect(void) {
     Mtx* sp3C = GfxAlloc(sizeof(Mtx) * 1);
     LookAt* sp38 = GfxAlloc(sizeof(LookAt) * 1);
     CameraStruct* temp_v0 = func_8432FD64();
@@ -40,25 +40,25 @@ void func_84340DC0(void) {
                     temp_v0->unk_60.up.y, temp_v0->unk_60.up.z);
 }
 
-void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
+void ParticleEffect_ConfigureState(ParticleEffectInstance* arg0, s32 arg1) {
     f32 sp2C = 1.0f;
     s16 sp2A;
     s16 sp28;
     s16 sp26;
-    s16 sp24 = func_8140C048(arg0);
+    s16 sp24 = Particle_GetByteCD(arg0);
 
-    switch (func_8140C058(arg0)) {
+    switch (Particle_GetShortCF(arg0)) {
         case 30:
             sp2A = 0x23;
             sp28 = 0x24;
-            func_843432E4(arg0);
+            ParticleEffect_SetScaleAndSpeedByMoveId(arg0);
             break;
 
         case 0:
             sp2A = 0x66;
             sp28 = 0x67;
             sp2C = 0.5f;
-            func_843497A8(arg0);
+            ParticleEffect_AdjustVerticalOffset_497A8(arg0);
             break;
 
         case 1:
@@ -71,7 +71,7 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0x6A;
             sp28 = 0x6B;
             sp2C = 0.5f;
-            func_84349940(arg0);
+            ParticleEffect_AdjustSizeByAnimId(arg0);
             break;
 
         case 3:
@@ -84,7 +84,7 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0x78;
             sp28 = 0x79;
             Particle_SetPrimColor(arg0, 0x50, 0x46, 0x3C);
-            func_8140BB74(arg0, 0xFF, 0, 0);
+            Particle_SetEnvColor(arg0, 0xFF, 0, 0);
             break;
 
         case 5:
@@ -107,16 +107,16 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp28 = 0x82;
             sp2C = 5.0f;
             SetPrimEnvColorFromPair(arg0, 0x17);
-            func_8140BC20(arg0, 0x64);
+            Particle_SetPrimAlpha(arg0, 0x64);
             break;
 
         case 42:
             sp2A = 0x81;
             sp28 = 0x82;
-            func_81408F38(arg0, 300.0f);
+            Particle_AddVelocityBackward(arg0, 300.0f);
             sp2C = 5.0f;
             SetPrimEnvColorFromPair(arg0, 0xC);
-            func_8140BC20(arg0, 0x64);
+            Particle_SetPrimAlpha(arg0, 0x64);
             break;
 
         case 43:
@@ -124,14 +124,14 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp28 = 0x82;
             sp2C = 5.0f;
             SetPrimEnvColorFromPair(arg0, 0xF);
-            func_8140BC20(arg0, 0x32);
+            Particle_SetPrimAlpha(arg0, 0x32);
             break;
 
         case 9:
             sp2A = 0x83;
             sp28 = 0x84;
             Particle_SetFlag(arg0, 0x800);
-            func_81408E90(arg0, 5.0f);
+            Particle_AddVelocityYScaled(arg0, 5.0f);
             break;
 
         case 10:
@@ -171,13 +171,13 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
         case 14:
             sp2A = 0x9C;
             sp2C = func_8434CA90(arg0);
-            func_8140BC20(arg0, 0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 15:
             sp2A = 0x9C;
             sp2C = 1.5f;
-            func_8140BC20(arg0, 0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 16:
@@ -186,12 +186,12 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
 
             switch (func_843081BC(arg0->unk_10)) {
                 case 0x5F:
-                    func_81408F38(arg0, 15.0f);
-                    func_81408CA0(arg0, 15.0f);
+                    Particle_AddVelocityBackward(arg0, 15.0f);
+                    Particle_SetVelocityYScaled(arg0, 15.0f);
                     break;
 
                 case 0x82:
-                    func_81408F38(arg0, 15.0f);
+                    Particle_AddVelocityBackward(arg0, 15.0f);
                     break;
             }
             break;
@@ -221,55 +221,55 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
 
         case 21:
             sp2A = 0xAD;
-            func_8140BF4C(arg0, 0xBE);
-            func_8140BC20(arg0, 0);
+            Particle_SetShortAE(arg0, 0xBE);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 22:
             sp2A = 0x5C;
             sp28 = 0x5D;
-            func_843495F0(arg0);
+            ParticleEffect_ApplySpecialEffect_495F0(arg0);
             break;
 
         case 23:
             sp2A = 0xAE;
-            func_8140BC20(arg0, 0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 24:
             sp2A = 0xAE;
-            func_8140BC20(arg0, 0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 25:
             sp2A = 0xAF;
             sp28 = 0xB0;
             Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
-            func_8140BB74(arg0, 0xFF, 0, 0);
-            func_81408CA0(arg0, 10.0f);
+            Particle_SetEnvColor(arg0, 0xFF, 0, 0);
+            Particle_SetVelocityYScaled(arg0, 10.0f);
             break;
 
         case 26:
             sp2A = 0xB6;
-            sp2C = func_8434DE24(arg0);
-            func_8140BC20(arg0, 0);
+            sp2C = GetParticleScaleForEffect(arg0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 27:
             sp2A = 0xB3;
             sp28 = 0xB4;
-            func_8140BC20(arg0, 0x64);
+            Particle_SetPrimAlpha(arg0, 0x64);
             Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
-            func_8140BB74(arg0, 0xFF, 0, 0);
+            Particle_SetEnvColor(arg0, 0xFF, 0, 0);
             sp2C = 0.8f;
             break;
 
         case 28:
             sp2A = 0xB3;
             sp28 = 0xB5;
-            func_8140BC20(arg0, 0x64);
+            Particle_SetPrimAlpha(arg0, 0x64);
             Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0);
-            func_8140BB74(arg0, 0xFF, 0, 0);
+            Particle_SetEnvColor(arg0, 0xFF, 0, 0);
             sp2C = 0.8f;
             break;
 
@@ -282,7 +282,7 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0xC0;
             sp28 = 0xC1;
             SetPrimEnvColorFromPair(arg0, 0x17);
-            func_8140BC20(arg0, 0x32);
+            Particle_SetPrimAlpha(arg0, 0x32);
             sp2C = 1.2f;
             break;
 
@@ -290,7 +290,7 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
             sp2A = 0xB1;
             sp28 = 0xB2;
             SetPrimEnvColorFromPair(arg0, 0);
-            func_8140BC20(arg0, 0);
+            Particle_SetPrimAlpha(arg0, 0);
             break;
 
         case 33:
@@ -342,9 +342,9 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
         case 39:
             sp2A = 0x4D;
             sp28 = 0x4E;
-            func_8434749C(arg0);
+            ParticleEffect_AdjustParametersByAnimId(arg0);
             Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
-            func_8140BB74(arg0, 0x37, 0xFF, 0xFF);
+            Particle_SetEnvColor(arg0, 0x37, 0xFF, 0xFF);
             break;
 
         case 40:
@@ -355,34 +355,34 @@ void ParticleEffect_ConfigureState(unk_D_8140E720* arg0, s32 arg1) {
         case 41:
             sp2A = 0x5A;
             sp28 = 0x5B;
-            sp2C = func_84349424(arg0);
+            sp2C = ParticleEffect_GetScaleFactorByAnimId(arg0);
             break;
     }
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
         switch (arg1) {
             case 0:
-                func_8432CD70(arg0->unk_14, sp2A, sp28);
+                InitWaterAnimNode(arg0->unk_14, sp2A, sp28);
                 break;
 
             case 1:
-                func_8432CE00(arg0->unk_14, sp2A);
-                func_8432CE78(arg0->unk_14, sp28);
+                InitGraphNodeTexture(arg0->unk_14, sp2A);
+                InitReverseAnimNode(arg0->unk_14, sp28);
                 break;
 
             case 2:
-                func_8432CE00(arg0->unk_14, sp2A);
+                InitGraphNodeTexture(arg0->unk_14, sp2A);
                 break;
         }
-        func_8140B938(arg0, sp2C);
-        func_814081BC(arg0);
+        Particle_SetScaleFactor1(arg0, sp2C);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_843416B0(unk_D_8140E720* arg0) {
+void func_843416B0(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
@@ -390,67 +390,67 @@ void func_843416B0(unk_D_8140E720* arg0) {
 
         case 2:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_81408150(arg0);
+                Particle_ClearActiveFlag(arg0);
             }
             break;
     }
 }
 
-void func_8434171C(unk_D_8140E720* arg0) {
+void func_8434171C(ParticleEffectInstance* arg0) {
     if (arg0->unk_B2 == 1) {
         ParticleEffect_ConfigureState(arg0, 0);
     }
 }
 
-void func_8434174C(unk_D_8140E720* arg0) {
+void func_8434174C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, arg0->unk_A6, func_8140C040(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
             break;
     }
 }
 
-void func_843417AC(unk_D_8140E720* arg0) {
+void func_843417AC(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 1);
             break;
 
         case 2:
-            if (func_8432CED4(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+            if (IsAnimChannelFinished(arg0->unk_14) != 0) {
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84341830(unk_D_8140E720* arg0) {
+void func_84341830(ParticleEffectInstance* arg0) {
     if (arg0->unk_B2 == 1) {
         ParticleEffect_ConfigureState(arg0, 2);
     }
 }
 
-void func_84341860(unk_D_8140E720* arg0) {
+void func_84341860(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             break;
 
         case 2:
-            func_8140BC5C(arg0, arg0->unk_A6, func_8140C040(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
             break;
     }
 }
 
-Gfx* func_843418C0(Gfx* arg0, u8* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8, s16 arg9,
+Gfx* Gfx_LoadParticleTextureTile(Gfx* arg0, u8* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8, s16 arg9,
                    s16 argA, s16 argB) {
     gDPLoadTextureTile_4b(arg0++, arg1, G_IM_FMT_I, arg2, 0, 0, 0, arg2 - 1, arg2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, arg6, arg7);
@@ -464,7 +464,7 @@ Gfx* func_843418C0(Gfx* arg0, u8* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, 
     return arg0;
 }
 
-Gfx* func_84341B84(Gfx* arg0, arg1_func_8434E21C* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7,
+Gfx* Gfx_LoadParticleTextureTileFromStruct(Gfx* arg0, arg1_func_8434E21C* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7,
                    s16 arg8, s16 arg9, s16 argA, s16 argB) {
     gDPLoadTextureTile_4b(arg0++, arg1->unk_00, G_IM_FMT_I, arg2, arg2, 0, 0, arg2 - 1, arg2 - 1, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, arg3, arg3, arg6, arg7);
@@ -477,8 +477,8 @@ Gfx* func_84341B84(Gfx* arg0, arg1_func_8434E21C* arg1, s16 arg2, s16 arg3, s16 
     return arg0;
 }
 
-void func_84341E50(Gfx* arg0) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_SetParticlePrimEnvColors(Gfx* arg0) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -488,16 +488,16 @@ void func_84341E50(Gfx* arg0) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84341F08(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_AllocateGfxIfNeeded(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84341E50(arg1->unk_18);
+        Gfx_SetParticlePrimEnvColors(arg1->unk_18);
     }
 }
 
-void func_84341F44(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+void Gfx_DrawParticleTextureWithParams(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     s16 mask = 5;
-    unk_D_8140E720* sp40;
+    ParticleEffectInstance* sp40;
     s16 var_a2;
     s16 sp3C;
     s16 sp3A;
@@ -511,8 +511,8 @@ void func_84341F44(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     s16 sp2A;
     s32 temp_v0_2;
 
-    sp40 = func_8432CB60(gDefaultGraphRoot);
-    temp_v0_2 = func_8140C040(sp40);
+    sp40 = GetGraphNodeData(gDefaultGraphRoot);
+    temp_v0_2 = Particle_GetShortCE(sp40);
     var_a2 = 0x80;
 
     switch (temp_v0_2) {
@@ -570,48 +570,48 @@ void func_84341F44(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84342304(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_AllocateGfxAndDraw(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84341F44(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleTextureWithParams(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_8434234C(unk_D_8140E720* arg0) {
-    func_8140B938(arg0, 3.0f);
-    func_81408E90(arg0, 10.0f);
-    func_81408ED0(arg0, 15.0f);
+void ParticleEffect_ConfigDefaultParameters(ParticleEffectInstance* arg0) {
+    Particle_SetScaleFactor1(arg0, 3.0f);
+    Particle_AddVelocityYScaled(arg0, 10.0f);
+    Particle_AddVelocityForward(arg0, 15.0f);
     Particle_SetSpeed(arg0, -5.0f);
     SetPrimColorFromPalette(arg0, 0xA);
     SetEnvColorFromPalette(arg0, 0x19);
-    func_8140BC20(arg0, 0x96);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x96);
+    Particle_IncrementState(arg0);
 }
 
-void func_843423C8(unk_D_8140E720* arg0) {
+void ParticleEffect_StateMachineHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434234C(arg0);
+            ParticleEffect_ConfigDefaultParameters(arg0);
             break;
 
         case 2:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
-            func_8140BC5C(arg0, 0, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x20);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    func_8140B98C(arg0, 0.0f, 0.1f);
-    func_81409CBC(arg0);
+    Particle_ApproachScaleFactor1(arg0, 0.0f, 0.1f);
+    Particle_ApplyB278AndCopyXZAlt(arg0);
 }
 
-void func_84342478(unk_D_8140E720* arg0) {
+void ParticleEffect_SetGravityByMoveId(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 0.0f;
 
@@ -688,16 +688,16 @@ void func_84342478(unk_D_8140E720* arg0) {
             sp1C = 15.0f;
             break;
     }
-    func_81408ED0(arg0, sp1C);
-    func_81408E90(arg0, sp18);
+    Particle_AddVelocityForward(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp18);
 }
 
-void func_8434261C(unk_D_8140E720* arg0) {
+void ParticleEffect_ConfigByMoveId(ParticleEffectInstance* arg0) {
     Vec3f sp34;
     UNUSED s32 pad[2];
-    s16 sp2A = func_8140C048(arg0);
+    s16 sp2A = Particle_GetByteCD(arg0);
 
-    func_8140B938(arg0, 0.05f);
+    Particle_SetScaleFactor1(arg0, 0.05f);
 
     switch (sp2A) {
         case 0:
@@ -719,52 +719,52 @@ void func_8434261C(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_81408D78(arg0, sp34);
-    func_81408E90(arg0, 10.0f);
-    func_84342478(arg0);
+    Particle_AddVelocityScaledVec(arg0, sp34);
+    Particle_AddVelocityYScaled(arg0, 10.0f);
+    ParticleEffect_SetGravityByMoveId(arg0);
     Particle_SetSpeed(arg0, 0.0f);
     SetPrimColorFromPalette(arg0, 0xA);
     SetEnvColorFromPalette(arg0, 0x19);
-    func_8140BC20(arg0, 0x96);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x96);
+    Particle_IncrementState(arg0);
 }
 
-void func_84342758(unk_D_8140E720* arg0) {
+void ParticleEffect_HandleStateTransitions(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434261C(arg0);
+            ParticleEffect_ConfigByMoveId(arg0);
             break;
 
         case 2:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
-            func_8140BC5C(arg0, 0, 0x10);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    func_8140B98C(arg0, 10.0f, 0.05f);
-    func_81409CBC(arg0);
+    Particle_ApproachScaleFactor1(arg0, 10.0f, 0.05f);
+    Particle_ApplyB278AndCopyXZAlt(arg0);
 }
 
-void func_84342808(void) {
+void ParticleEffect_RegisterExplosion(void) {
     func_8432F8E8(0x55, 1);
-    func_8432ECA0(0, 8, 0xC, func_84342758, &gParticleEffectData[0x24], 0xA, 1, 4, 0, 0, 0);
-    func_8432ECA0(0, 8, 0xC, func_84342758, &gParticleEffectData[0x24], 0xA, 1, 4, 1, 0, 0);
-    func_8432ECA0(0, 8, 0xC, func_84342758, &gParticleEffectData[0x24], 0xA, 1, 4, 2, 0, 0);
+    func_8432ECA0(0, 8, 0xC, ParticleEffect_HandleStateTransitions, &gParticleEffectData[0x24], 0xA, 1, 4, 0, 0, 0);
+    func_8432ECA0(0, 8, 0xC, ParticleEffect_HandleStateTransitions, &gParticleEffectData[0x24], 0xA, 1, 4, 1, 0, 0);
+    func_8432ECA0(0, 8, 0xC, ParticleEffect_HandleStateTransitions, &gParticleEffectData[0x24], 0xA, 1, 4, 2, 0, 0);
 }
 
-void func_84342908(void) {
+void ParticleEffect_RegisterSmoke(void) {
     func_8432ED0C(0x30, 0x20, 0xA);
-    func_8432ECA0(0, 0xC, 0xA, func_843423C8, &gParticleEffectData[0x24], 0x14, 1, 4, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 0xC, 0xA, ParticleEffect_StateMachineHandler, &gParticleEffectData[0x24], 0x14, 1, 4, gParticleTexture_Default, 0, 0);
 }
 
-void func_84342980(unk_D_8140E720* arg0) {
+void ParticleEffect_SetParamsByMoveId(ParticleEffectInstance* arg0) {
     f32 sp24 = 0.0f;
     f32 sp20 = 0.0f;
     f32 sp1C = 0.12f;
@@ -875,39 +875,39 @@ void func_84342980(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_81408ED0(arg0, sp24 + 5.0f);
-    func_81408E90(arg0, sp20);
-    func_8140B938(arg0, sp1C);
+    Particle_AddVelocityForward(arg0, sp24 + 5.0f);
+    Particle_AddVelocityYScaled(arg0, sp20);
+    Particle_SetScaleFactor1(arg0, sp1C);
 }
 
-void func_84342C54(unk_D_8140E720* arg0) {
-    func_84342980(arg0);
-    func_814081BC(arg0);
+void ParticleEffect_StartWithParams(ParticleEffectInstance* arg0) {
+    ParticleEffect_SetParamsByMoveId(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84342C7C(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84342C54(arg0);
+            ParticleEffect_StartWithParams(arg0);
             break;
 
         case 3:
-            func_8140BC5C(arg0, 0, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x20);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
 
         case 2:
             break;
     }
 }
 
-void func_84342CF0(void) {
-    func_8432EC28(0, func_84342C7C, &gParticleEffectData[0x2F], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
+void ParticleEffect_RegisterDefault(void) {
+    func_8432EC28(0, ParticleEffect_StateHandler, &gParticleEffectData[0x2F], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
 }
 
-void func_84342D48(unk_D_8140E720* arg0) {
+void ParticleEffect_SetVerticalOffsetByMoveId(ParticleEffectInstance* arg0) {
     f32 var_fs0 = 0.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
@@ -916,15 +916,15 @@ void func_84342D48(unk_D_8140E720* arg0) {
             break;
         case 0x10:
             var_fs0 = -35.0f;
-            func_81408ED0(arg0, -5.0f);
+            Particle_AddVelocityForward(arg0, -5.0f);
             break;
         case 0x11:
             var_fs0 = -45.0f;
-            func_81408ED0(arg0, -10.0f);
+            Particle_AddVelocityForward(arg0, -10.0f);
             break;
         case 0x12:
             var_fs0 = -45.0f;
-            func_81408ED0(arg0, -10.0f);
+            Particle_AddVelocityForward(arg0, -10.0f);
             break;
         case 0x16:
             var_fs0 = -15.0f;
@@ -936,7 +936,7 @@ void func_84342D48(unk_D_8140E720* arg0) {
             var_fs0 = 10.0f;
             break;
         case 0x29:
-            func_81408ED0(arg0, -10.0f);
+            Particle_AddVelocityForward(arg0, -10.0f);
             var_fs0 = -60.0f;
             break;
         case 0x34:
@@ -977,14 +977,14 @@ void func_84342D48(unk_D_8140E720* arg0) {
             break;
         case 0x67:
             var_fs0 = 5.0f;
-            func_81408ED0(arg0, 10.0f);
+            Particle_AddVelocityForward(arg0, 10.0f);
             break;
         case 0x6C:
             var_fs0 = 10.0f;
             break;
         case 0x70:
             var_fs0 = 15.0f;
-            func_81408ED0(arg0, -10.0f);
+            Particle_AddVelocityForward(arg0, -10.0f);
             break;
         case 0x74:
             var_fs0 = -20.0f;
@@ -1009,11 +1009,11 @@ void func_84342D48(unk_D_8140E720* arg0) {
             break;
         case 0x82:
             var_fs0 = -10.0f;
-            func_8140B938(arg0, 0.15f);
+            Particle_SetScaleFactor1(arg0, 0.15f);
             break;
         case 0x86:
             var_fs0 = -5.0f;
-            func_8140901C(arg0, 5.0f);
+            Particle_AddVelocityLeft(arg0, 5.0f);
             break;
         case 0x87:
             var_fs0 = -15.0f;
@@ -1023,7 +1023,7 @@ void func_84342D48(unk_D_8140E720* arg0) {
             break;
         case 0x93:
             var_fs0 = 18.0f;
-            func_81408ED0(arg0, -15.0f);
+            Particle_AddVelocityForward(arg0, -15.0f);
             break;
         case 0x94:
             var_fs0 = 15.0f;
@@ -1032,20 +1032,20 @@ void func_84342D48(unk_D_8140E720* arg0) {
             var_fs0 = -13.0f;
             break;
     }
-    func_81408E90(arg0, var_fs0);
+    Particle_AddVelocityYScaled(arg0, var_fs0);
 }
 
-void func_84343064(unk_D_8140E720* arg0, s16 arg1) {
+void ParticleEffect_CreateBurstWithRotation(ParticleEffectInstance* arg0, s16 arg1) {
     Vec3f sp24;
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
 
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x21, 0x22);
-        func_8140B938(arg0, 0.2f);
-        func_84342D48(arg0);
+        InitWaterAnimNode(arg0->unk_14, 0x21, 0x22);
+        Particle_SetScaleFactor1(arg0, 0.2f);
+        ParticleEffect_SetVerticalOffsetByMoveId(arg0);
         Vec3f_Set(&sp24, (arg1 * 5.0f * 2) + -10.0f, 5.0f, 10.0f);
-        func_814091B4(arg0, sp24);
+        Particle_AddRotatedOffset(arg0, sp24);
 
         switch (arg1) {
             case 0:
@@ -1053,7 +1053,7 @@ void func_84343064(unk_D_8140E720* arg0, s16 arg1) {
                 break;
 
             case 1:
-                func_81408E90(arg0, 2.0f);
+                Particle_AddVelocityYScaled(arg0, 2.0f);
                 Particle_SetRotationZ(arg0, 0);
                 break;
 
@@ -1062,45 +1062,45 @@ void func_84343064(unk_D_8140E720* arg0, s16 arg1) {
                 break;
         }
 
-        func_814081BC(arg0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_843431B0(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C038(arg0);
+void ParticleEffect_HandleBurstState(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortAC(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
-            func_8140BCA8(arg0, sp26 * 8);
-            func_814081BC(arg0);
+            Particle_SetTimerA6(arg0, sp26 * 8);
+            Particle_IncrementState(arg0);
             break;
 
         case 2:
-            if (func_8140BDAC(arg0) != 0) {
-                func_84343064(arg0, sp26);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                ParticleEffect_CreateBurstWithRotation(arg0, sp26);
             }
             break;
 
         case 3:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84343288(void) {
+void ParticleEffect_InitBurstEffect(void) {
     func_8432F8E8(0x55, 1);
-    func_8432EC28(0, func_843431B0, &D_8140E460, 0x1E, 3, 6, 0, 0, 0);
+    func_8432EC28(0, ParticleEffect_HandleBurstState, &gParticleDefaultCallback, 0x1E, 3, 6, 0, 0, 0);
 }
 
-void func_843432E4(unk_D_8140E720* arg0) {
+void ParticleEffect_SetScaleAndSpeedByMoveId(ParticleEffectInstance* arg0) {
     f32 sp1C = 10.0f;
     f32 sp18 = 0.0f;
 
@@ -1164,12 +1164,12 @@ void func_843432E4(unk_D_8140E720* arg0) {
         case 0x2D:
             sp1C = 10.0f;
             sp18 = 15.0f;
-            func_8140901C(arg0, -1.0f);
+            Particle_AddVelocityLeft(arg0, -1.0f);
             break;
         case 0x30:
             sp18 = 30.0f;
             sp1C = -2.0f;
-            func_8140901C(arg0, -5.0f);
+            Particle_AddVelocityLeft(arg0, -5.0f);
             break;
         case 0x31:
             sp1C = 5.0f;
@@ -1273,7 +1273,7 @@ void func_843432E4(unk_D_8140E720* arg0) {
             sp18 = 5.0f;
             break;
         case 0x5F:
-            func_8140901C(arg0, 23.0f);
+            Particle_AddVelocityLeft(arg0, 23.0f);
             sp1C = -10.0f;
             sp18 = 0.0f;
             break;
@@ -1340,7 +1340,7 @@ void func_843432E4(unk_D_8140E720* arg0) {
         case 0x79:
             sp18 = 10.0f;
             sp1C = 5.0f;
-            func_8140901C(arg0, -3.0f);
+            Particle_AddVelocityLeft(arg0, -3.0f);
             break;
         case 0x7B:
             sp1C = 5.0f;
@@ -1357,12 +1357,12 @@ void func_843432E4(unk_D_8140E720* arg0) {
         case 0x80:
             sp18 = 5.0f;
             sp1C = -5.0f;
-            func_8140901C(arg0, 3.0f);
+            Particle_AddVelocityLeft(arg0, 3.0f);
             break;
         case 0x82:
             sp1C = 15.0f;
             sp18 = 20.0f;
-            func_8140901C(arg0, 3.0f);
+            Particle_AddVelocityLeft(arg0, 3.0f);
             break;
         case 0x83:
             sp18 = 10.0f;
@@ -1406,7 +1406,7 @@ void func_843432E4(unk_D_8140E720* arg0) {
             sp18 = 15.0f;
             break;
         case 0x95:
-            func_81408FAC(arg0, 1.0f);
+            Particle_AddVelocityRight(arg0, 1.0f);
             sp1C = 10.0f;
             sp18 = 15.0f;
             break;
@@ -1417,15 +1417,15 @@ void func_843432E4(unk_D_8140E720* arg0) {
         case 0x97:
             break;
     }
-    func_81408E90(arg0, sp1C);
-    func_81408ED0(arg0, sp18);
+    Particle_AddVelocityYScaled(arg0, sp1C);
+    Particle_AddVelocityForward(arg0, sp18);
 }
 
-void func_84343988(void) {
-    func_8432EC28(0, func_8434171C, &D_8140E460, 0x1E, 1, 0xB, 0, 0x1E, 0);
+void ParticleEffect_Init(void) {
+    func_8432EC28(0, func_8434171C, &gParticleDefaultCallback, 0x1E, 1, 0xB, 0, 0x1E, 0);
     func_8432EB2C(0xF);
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x70:
             func_8432ECA0(0, 0x10, 8, func_8435226C, &gParticleEffectData[0x44], 0, 4, 0xB, 0, 0x18, 5);
             break;
@@ -1446,10 +1446,10 @@ void func_84343988(void) {
     }
 }
 
-void func_84343B9C(Gfx* arg0, s32 arg1, u16 arg2) {
-    func_84340DC0();
+void ParticleEffect_Render(Gfx* arg0, s32 arg1, u16 arg2) {
+    Camera_SetLookAtReflect();
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x70:
             gDPPipeSync(arg0++);
             gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, 255);
@@ -1469,85 +1469,85 @@ void func_84343B9C(Gfx* arg0, s32 arg1, u16 arg2) {
             break;
     }
 
-    arg0 = func_843418C0(arg0, arg1, 0x20, 5, 0, 2, 0, 0, 0, 1, 0, 0);
+    arg0 = Gfx_LoadParticleTextureTile(arg0, arg1, 0x20, 5, 0, 2, 0, 0, 0, 1, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84343D24(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateDisplayList(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84343B9C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_Render(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84343D6C(unk_D_8140E720* arg0) {
+void ParticleEffect_ConfigureScale(ParticleEffectInstance* arg0) {
     f32 sp24 = 1.2f;
     f32 sp20 = 0.0f;
     s32 temp_v0 = func_843081BC(arg0->unk_10);
 
     if (temp_v0 < 0x98) {
         sp24 = D_84387B00[temp_v0];
-        sp20 = D_84387D60[temp_v0];
+        sp20 = gParticleYOffsetTable[temp_v0];
     }
 
     switch (temp_v0) {
         case 0x29:
-            func_81408E90(arg0, 35.0f);
+            Particle_AddVelocityYScaled(arg0, 35.0f);
             break;
 
         case 0x57:
-            func_81408E90(arg0, -10.0f);
+            Particle_AddVelocityYScaled(arg0, -10.0f);
             break;
 
         case 0x94:
-            func_8140901C(arg0, 15.0f);
+            Particle_AddVelocityLeft(arg0, 15.0f);
             break;
     }
 
-    func_8140B938(arg0, sp24);
-    func_81408ED0(arg0, sp20);
+    Particle_SetScaleFactor1(arg0, sp24);
+    Particle_AddVelocityForward(arg0, sp20);
 }
 
-void func_84343E44(unk_D_8140E720* arg0, UNUSED s16 arg1) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_Start(ParticleEffectInstance* arg0, UNUSED s16 arg1) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x25, 0x26);
-        func_84343D6C(arg0);
-        func_8140BCA8(arg0, 0x20);
-        func_814081BC(arg0);
+        InitWaterAnimNode(arg0->unk_14, 0x25, 0x26);
+        ParticleEffect_ConfigureScale(arg0);
+        Particle_SetTimerA6(arg0, 0x20);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84343EB4(unk_D_8140E720* arg0) {
-    s16 temp_a1 = func_8140C038(arg0);
+void ParticleEffect_UpdateState(ParticleEffectInstance* arg0) {
+    s16 temp_a1 = Particle_GetShortAC(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
-            func_84343E44(arg0, temp_a1);
+            ParticleEffect_Start(arg0, temp_a1);
             break;
 
         case 2:
-            if (func_8140BDAC(arg0) != 0) {
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 8, 0x18, 3);
-                func_8140BCA8(arg0, 0x10);
+                Particle_SetTimerA6(arg0, 0x10);
             }
             break;
 
         case 3:
-            func_8140B9D0(arg0, 0.0f, 0.05f);
-            func_8140BC2C(arg0, 0, 8);
+            Particle_ApproachScaleFactor1WithCallback(arg0, 0.0f, 0.05f);
+            Particle_ApproachPrimAlpha(arg0, 0, 8);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84343FA4(Gfx* arg0, u16 arg1) {
+void ParticleEffect_DrawOverlay(Gfx* arg0, u16 arg1) {
     Fragment2_1GraphNode* tmp = gDefaultGraphRoot;
 
     gDPPipeSync(arg0++);
@@ -1560,29 +1560,29 @@ void func_84343FA4(Gfx* arg0, u16 arg1) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84344050(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateOverlayDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 10);
-        func_84343FA4(arg1->unk_18, gAnimationFrame);
+        ParticleEffect_DrawOverlay(arg1->unk_18, gAnimationFrame);
     }
 }
 
-void func_84344094(void) {
-    func_8432EC28(0, func_84343EB4, &D_8140E460, 0x1E, 1, 7, 0, 0, 0);
-    func_8432EC28(0x14, Fragment_ProcessBC20Mode, &D_8140E460, 0x50, 1, 0, 0, 0x35, 0);
+void ParticleEffect_RegisterCallbacks(void) {
+    func_8432EC28(0, ParticleEffect_UpdateState, &gParticleDefaultCallback, 0x1E, 1, 7, 0, 0, 0);
+    func_8432EC28(0x14, Fragment_ProcessBC20Mode, &gParticleDefaultCallback, 0x50, 1, 0, 0, 0x35, 0);
 }
 
-void func_8434411C(unk_D_8140E720* arg0) {
+void ParticleEffect_SetPaletteColors(ParticleEffectInstance* arg0) {
     s16 sp26;
     u16 sp24;
     u16 sp22;
 
-    sp26 = func_8432C544();
+    sp26 = GetActionScriptId();
     sp24 = 0x19;
     sp22 = 0xA;
-    func_8140BECC(arg0, 7);
-    func_8140B938(arg0, 1.0f);
-    func_81408BE0(arg0, 160.0f, 120.0f, 0.0f);
+    Particle_SetByteCA(arg0, 7);
+    Particle_SetScaleFactor1(arg0, 1.0f);
+    Particle_SetVelocityScaledXYZ(arg0, 160.0f, 120.0f, 0.0f);
 
     switch (sp26) {
         case 0x4E:
@@ -1601,200 +1601,200 @@ void func_8434411C(unk_D_8140E720* arg0) {
 
     SetPrimColorFromPalette(arg0, sp24);
     SetEnvColorFromPalette(arg0, sp22);
-    func_8140BC20(arg0, 0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0);
+    Particle_IncrementState(arg0);
 }
 
-void func_843441F8(unk_D_8140E720* arg0) {
+void func_843441F8(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434411C(arg0);
+            ParticleEffect_SetPaletteColors(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0xFF, 4);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 4);
             break;
     }
 }
 
-void func_84344248(void) {
+void ParticleEffect_RegisterParticleNodes(void) {
     func_8432EC28(8, func_843441F8, &gParticleEffectData[0x32], 0, 1, 0x18, 0, 0, 0);
     func_8432EC28(8, func_843441F8, &gParticleEffectData[0x31], 0, 1, 0x18, 0, 0, 0);
-    func_8432ECA0(0, 3, 0x14, func_84353AEC, &gParticleEffectData[0x47], 0, 1, 0x10, 0x64, 0, 0);
+    func_8432ECA0(0, 3, 0x14, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 1, 0x10, 0x64, 0, 0);
 }
 
-void func_84344318(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_SetPrimEnvFromPair(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
 
-    func_8140BECC(arg0, 7);
-    func_8140B938(arg0, 1.0f);
-    func_81408BE0(arg0, 160.0f, 120.0f, 0.0f);
+    Particle_SetByteCA(arg0, 7);
+    Particle_SetScaleFactor1(arg0, 1.0f);
+    Particle_SetVelocityScaledXYZ(arg0, 160.0f, 120.0f, 0.0f);
     SetPrimEnvColorFromPair(arg0, sp26);
-    func_8140BC20(arg0, 0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84344390(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler2(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84344318(arg0);
+            ParticleEffect_SetPrimEnvFromPair(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0xB4, 8);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0xB4, 8);
             break;
     }
 }
 
-void func_843443E0(void) {
-    func_8432EC28(8, func_84344390, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1C, 0);
-    func_8432EC28(0, func_84353AEC, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+void ParticleEffect_RegisterEffectE0(void) {
+    func_8432EC28(8, ParticleEffect_StateHandler2, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1C, 0);
+    func_8432EC28(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
 }
 
-void func_84344474(void) {
-    func_8432EC28(8, func_84344390, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1E, 0);
-    func_8432EC28(0, func_84353AEC, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+void ParticleEffect_RegisterEffectE0Alt(void) {
+    func_8432EC28(8, ParticleEffect_StateHandler2, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1E, 0);
+    func_8432EC28(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
 }
 
-void func_84344508(void) {
-    func_8432EC28(8, func_84344390, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1D, 0);
-    func_8432EC28(0, func_84353AEC, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+void ParticleEffect_RegisterEffectE0Alt2(void) {
+    func_8432EC28(8, ParticleEffect_StateHandler2, &gParticleEffectData[0x33], 0, 1, 0x18, 0, 0x1D, 0);
+    func_8432EC28(0, ParticleEffect_ColorfulBurstHandler, &gParticleEffectData[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
 }
 
-void func_8434459C(unk_D_8140E720* arg0) {
-    func_8140B938(arg0, 0.2f);
+void ParticleEffect_InitializeSmall(ParticleEffectInstance* arg0) {
+    Particle_SetScaleFactor1(arg0, 0.2f);
     SetPrimEnvColorFromPair(arg0, 0xD);
-    func_8140BC20(arg0, 0xFF);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xFF);
+    Particle_IncrementState(arg0);
 }
 
-void func_843445E4(unk_D_8140E720* arg0) {
+void ParticleEffect_SmallStateHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434459C(arg0);
+            ParticleEffect_InitializeSmall(arg0);
             break;
 
         case 2:
-            func_814084D8(arg0, 0, 7, 1, 2, 0);
-            func_8140BC2C(arg0, 0x20, 0x18);
+            Particle_AnimLoopForwardComplete(arg0, 0, 7, 1, 2, 0);
+            Particle_ApproachPrimAlpha(arg0, 0x20, 0x18);
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    func_8140B98C(arg0, 0.1f, 0.01f);
+    Particle_ApproachScaleFactor1(arg0, 0.1f, 0.01f);
 }
 
-void func_84344698(unk_D_8140E720* arg0) {
-    s16 sp2E = func_8140C038(arg0);
+void ParticleEffect_FireworksInit(ParticleEffectInstance* arg0) {
+    s16 sp2E = Particle_GetShortAC(arg0);
 
-    func_8140B938(arg0, 0.5f);
+    Particle_SetScaleFactor1(arg0, 0.5f);
     Particle_SetSpeed(arg0, 4.5f);
-    func_8140A52C(arg0, func_81400B28(0x800, -0x3800), RandomRangeSigned(0x1400), 0);
-    func_8140BCA8(arg0, sp2E * 2);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_AddRotationDeltaXYZ(arg0, func_81400B28(0x800, -0x3800), RandomRangeSigned(0x1400), 0);
+    Particle_SetTimerA6(arg0, sp2E * 2);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84344734(unk_D_8140E720* arg0) {
+void ParticleEffect_FireworksState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84344698(arg0);
+            ParticleEffect_FireworksInit(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                arg0->unk_14 = func_8432CB68(arg0);
-                func_8432CE00(arg0->unk_14, 0x9F);
-                func_81408328(arg0);
-                func_8140BCA8(arg0, RandomMod(3));
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                arg0->unk_14 = AllocateGraphNode(arg0);
+                InitGraphNodeTexture(arg0->unk_14, 0x9F);
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, RandomMod(3));
             }
             break;
 
         case 3:
-            if (func_8140BDD0(arg0) != 0) {
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
                 func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 1, 0x17, 4);
             }
             break;
 
         case 4:
-            func_8140826C(arg0, 0x1E);
+            Particle_ProcessTimer80(arg0, 0x1E);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    if (func_81408368(arg0) != 0) {
-        func_8140A76C(arg0, 0x1800, 0x400);
-        func_81409D0C(arg0);
+    if (Particle_HasFlag4(arg0) != 0) {
+        Particle_ApproachRotationXWrapToTarget(arg0, 0x1800, 0x400);
+        Particle_ApplyB2B4AndAddAll(arg0);
         func_8140A5B0(arg0, 0x2000);
-        ParticleNode_CreateMultiple(arg0, func_843445E4, &gParticleEffectData[0x4A], 1);
+        ParticleNode_CreateMultiple(arg0, ParticleEffect_SmallStateHandler, &gParticleEffectData[0x4A], 1);
     }
 }
 
-void func_84344888(unk_D_8140E720* arg0) {
+void ParticleEffect_AdjustHeight(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
     if (func_843081BC(arg0->unk_10) == 0x8C) {
         sp1C = 5.0f;
     }
-    func_81408E90(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp1C);
 }
 
-void func_843448D8(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_RotatingInit(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x2B, 0x2C);
-        func_8140B938(arg0, 0.25f);
+        InitWaterAnimNode(arg0->unk_14, 0x2B, 0x2C);
+        Particle_SetScaleFactor1(arg0, 0.25f);
         Particle_SetRotationY(arg0, RandomMod(0x10000));
-        func_84344888(arg0);
-        func_814081BC(arg0);
+        ParticleEffect_AdjustHeight(arg0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434495C(unk_D_8140E720* arg0) {
+void ParticleEffect_RotatingState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8140BCA8(arg0, RandomMod(0x18));
-            func_814081BC(arg0);
+            Particle_SetTimerA6(arg0, RandomMod(0x18));
+            Particle_IncrementState(arg0);
             break;
 
         case 2:
-            if (func_8140BDAC(arg0) != 0) {
-                func_843448D8(arg0);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                ParticleEffect_RotatingInit(arg0);
                 func_8432EC28(0, func_8435226C, &gParticleEffectData[0x42], 0, 1, 0x10, arg0->unk_CD, 0x17, 4);
             }
             break;
 
         case 3:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
     }
 }
 
-void func_84344A4C(void) {
-    func_8432ECA0(0, 4, 5, func_84344734, &D_8140E460, 0, 2, 0x11, gParticleTexture_Default, 0, 0);
-    func_8432ECA0(0, 8, 3, func_84354A10, &gParticleEffectData[0x4A], 0, 1, 0x11, gParticleTexture_Default, 0x33, 6);
+void ParticleEffect_RegisterCombined(void) {
+    func_8432ECA0(0, 4, 5, ParticleEffect_FireworksState, &gParticleDefaultCallback, 0, 2, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432ECA0(0, 8, 3, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 1, 0x11, gParticleTexture_Default, 0x33, 6);
 }
 
-void func_84344B04(void) {
+void ParticleEffect_RegisterMultiple(void) {
     s32 i;
     s32 var_s2 = 0;
     s32 tmp;
-    s32 end = D_843902E8->unk_000.unk_0A7;
+    s32 end = gParticleEffectEntityA->unk_000.unk_0A7;
 
     if (end != 0) {
         for (i = 0; i < end; i++) {
-            tmp = D_843902E8->unk_000.unk_0A8[i].unk_00;
-            func_8432EC28(0, func_8434495C, &D_8140E460, 0, 1, 0x10, tmp, 0, 0);
+            tmp = gParticleEffectEntityA->unk_000.unk_0A8[i].unk_00;
+            func_8432EC28(0, ParticleEffect_RotatingState, &gParticleDefaultCallback, 0, 1, 0x10, tmp, 0, 0);
             var_s2++;
             if (var_s2 >= 8) {
                 break;
@@ -1803,166 +1803,166 @@ void func_84344B04(void) {
     }
 }
 
-void func_84344BDC(void) {
-    func_8432EC28(0, func_8434171C, &D_8140E460, 0, 1, 0xA, 0, 0x22, 0);
+void ParticleEffect_RegisterSpecific(void) {
+    func_8432EC28(0, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x22, 0);
     func_8432ECA0(4, 2, 4, func_8435226C, &gParticleEffectData[0x42], 0, 4, 9, 0, 0x17, 1);
 }
 
-void func_84344C7C(Gfx* arg0, u8* arg1) {
-    func_84340DC0();
-    arg0 = func_843418C0(arg0, arg1, 0x20, 5, 2, 0, 0, 0, 1, 0, 0, 0);
+void ParticleEffect_DrawSimple(Gfx* arg0, u8* arg1) {
+    Camera_SetLookAtReflect();
+    arg0 = Gfx_LoadParticleTextureTile(arg0, arg1, 0x20, 5, 2, 0, 0, 0, 1, 0, 0, 0);
     gSPEndDisplayList(arg0++);
 }
 
-void func_84344CE8(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateSimpleDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84344C7C(arg1->unk_18, arg1->unk_14);
+        ParticleEffect_DrawSimple(arg1->unk_18, arg1->unk_14);
     }
 }
 
-void func_84344D28(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CC54(arg0);
+void ParticleEffect_ExplosionInit(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateParticleNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x30);
+        InitGraphNodeTexture(arg0->unk_14, 0x30);
         Particle_SetFlag(arg0, 0x200);
-        func_8140B950(arg0, 5.3f);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        Particle_SetScaleRaw1(arg0, 5.3f);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84344DA4(unk_D_8140E720* arg0) {
+void ParticleEffect_ExplosionState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84344D28(arg0);
+            ParticleEffect_ExplosionInit(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0xFF, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 0x20);
             break;
     }
 
-    if (func_8140819C(arg0) != 0) {
-        func_8432D340(&arg0->unk_50, 3700.0f);
+    if (Particle_IsActive(arg0) != 0) {
+        GetCameraOffsetPosition(&arg0->unk_50, 3700.0f);
     }
 }
 
-void func_84344E20(unk_D_8140E720* arg0) {
+void ParticleEffect_SparkleInit(ParticleEffectInstance* arg0) {
     UNUSED s32 pad[2];
-    s16 sp26 = func_8140C038(arg0);
+    s16 sp26 = Particle_GetShortAC(arg0);
     UNUSED s16 pad2;
     s16 sp22;
 
-    func_8140C040(arg0);
-    sp22 = func_8140C058(arg0);
-    func_8140BCA8(arg0, sp26 * 2);
-    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
-    func_8140B938(arg0, 1.2f);
-    func_8140B95C(arg0, 1.0f);
-    func_8140B974(arg0, 0.02f);
-    func_8140959C(arg0, 5, 0xF, 0xF);
-    func_81408E90(arg0, 10.0f);
+    Particle_GetShortCE(arg0);
+    sp22 = Particle_GetShortCF(arg0);
+    Particle_SetTimerA6(arg0, sp26 * 2);
+    SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
+    Particle_SetScaleFactor1(arg0, 1.2f);
+    Particle_SetScaleFactor2(arg0, 1.0f);
+    Particle_SetScaleFactor3(arg0, 0.02f);
+    Particle_SetRandomVelocityXYZ(arg0, 5, 0xF, 0xF);
+    Particle_AddVelocityYScaled(arg0, 10.0f);
     Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     SetPrimEnvColorFromPair(arg0, sp22);
-    func_8140BC20(arg0, 0xC8);
-    func_8140BF4C(arg0, 4);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xC8);
+    Particle_SetShortAE(arg0, 4);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84344F58(unk_D_8140E720* arg0) {
+void ParticleEffect_SparkleState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84344E20(arg0);
+            ParticleEffect_SparkleInit(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 4);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 4);
             }
             break;
 
         case 3:
-            func_8140BA1C(arg0);
-            func_814084D8(arg0, 1, 7, 1, 2, 0);
-            func_81409EA0(arg0);
-            func_8140BC2C(arg0, 0x40, 8);
+            Particle_ApproachScaleFactor2(arg0);
+            Particle_AnimLoopForwardComplete(arg0, 1, 7, 1, 2, 0);
+            Particle_SetTargetVelocityBackward(arg0);
+            Particle_ApproachPrimAlpha(arg0, 0x40, 8);
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84345038(void) {
+void ParticleEffect_RegisterSparkle(void) {
     func_8432ED0C(0, 0x10, 0x35);
     func_8432EFB4(0, 0xFF, 0x10, 0xA, 0x96);
-    func_8432EC28(0, func_84344DA4, &D_8140E460, 0x1E, 1, 0x14, 0, 0, 0);
+    func_8432EC28(0, ParticleEffect_ExplosionState, &gParticleDefaultCallback, 0x1E, 1, 0x14, 0, 0, 0);
 }
 
-void func_843450B4(void) {
-    func_8432ECA0(0, 0xA, 2, func_843416B0, &D_8140E460, 0, 1, 0xC, 0, 0x2A, 0);
+void ParticleEffect_RegisterAll(void) {
+    func_8432ECA0(0, 0xA, 2, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xC, 0, 0x2A, 0);
     func_8432F538(4, 0xA, 0x35, 8, 0xC8, 0x18);
     func_8432EB20(4);
-    func_8432ECA0(0, 5, 5, func_84344F58, &gParticleEffectData[0x4A], 0, 4, 0xB, 9, 0x13, 0);
-    func_8432ECA0(0, 3, 8, func_84352464, &gParticleEffectData[0x44], 0, 4, 0xB, 9, 0x18, 0xB);
-    func_8432ECA0(0, 7, 3, func_84339ECC, &gParticleEffectData[0x19], 0, 6, 0x10, gParticleTexture_Default, 0x26, 0);
+    func_8432ECA0(0, 5, 5, ParticleEffect_SparkleState, &gParticleEffectData[0x4A], 0, 4, 0xB, 9, 0x13, 0);
+    func_8432ECA0(0, 3, 8, ParticleEffect_FireworkHandler, &gParticleEffectData[0x44], 0, 4, 0xB, 9, 0x18, 0xB);
+    func_8432ECA0(0, 7, 3, ParticleEffect_Fireball_Stage5, &gParticleEffectData[0x19], 0, 6, 0x10, gParticleTexture_Default, 0x26, 0);
     func_8432ED0C(0x32, 0x20, 0xA);
 }
 
-void func_8434523C(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void ParticleEffect_DrawNode(Gfx* arg0, s32 arg1, u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, temp_v0->prim_a);
 
-    arg0 = func_84341B84(arg0, arg1, 0x40, 6, -4, 0xF, 0, 0, -0xF, 5, 0, 0);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x40, 6, -4, 0xF, 0, 0, -0xF, 5, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_843452F0(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateNodeDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_8434523C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawNode(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84345338(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    arg0 = func_84341B84(arg0, arg1, 0x40, 6, -4, 0xF, 0, 0, -5, 5, 0, 0);
+void ParticleEffect_DrawNodeVariant(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x40, 6, -4, 0xF, 0, 0, -5, 5, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_8434539C(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateNodeVariantDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84345338(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawNodeVariant(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_843453E4(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    arg0 = func_843418C0(arg0, arg1, 0x20, 5, -8, -0x1E, 0, 0, -0xB, -0xA, 0, 0);
+void ParticleEffect_DrawSimple2(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+    arg0 = Gfx_LoadParticleTextureTile(arg0, arg1, 0x20, 5, -8, -0x1E, 0, 0, -0xB, -0xA, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84345448(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateSimple2DL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843453E4(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawSimple2(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
 void func_84345490(void) {
 }
 
-void func_84345498(unk_D_8140E720* arg0) {
+void ParticleEffect_GetVerticalOffset(ParticleEffectInstance* arg0) {
     f32 sp1C = 5.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
@@ -2000,7 +2000,7 @@ void func_84345498(unk_D_8140E720* arg0) {
 
         case 0x5F:
             sp1C = -20.0f;
-            func_8140901C(arg0, 10.0f);
+            Particle_AddVelocityLeft(arg0, 10.0f);
             break;
 
         case 0x64:
@@ -2019,19 +2019,19 @@ void func_84345498(unk_D_8140E720* arg0) {
             sp1C = -10.0f;
             break;
     }
-    func_81408E90(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp1C);
 }
 
-void func_84345618(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_ConfigureFromPalette(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
     s16 sp24;
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
 
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x31, 0x32);
-        func_8140B938(arg0, 0.25f);
-        func_84345498(arg0);
+        InitWaterAnimNode(arg0->unk_14, 0x31, 0x32);
+        Particle_SetScaleFactor1(arg0, 0.25f);
+        ParticleEffect_GetVerticalOffset(arg0);
         switch (sp26) {
             case 0:
                 sp24 = 0;
@@ -2047,41 +2047,41 @@ void func_84345618(unk_D_8140E720* arg0) {
         }
 
         func_8140A594(arg0, sp24);
-        func_814081BC(arg0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_843456DC(unk_D_8140E720* arg0) {
+void ParticleEffect_PaletteState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84345618(arg0);
+            ParticleEffect_ConfigureFromPalette(arg0);
             break;
 
         case 2:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_8434575C(void) {
-    func_8432EC28(0, func_843456DC, &D_8140E460, 0x1E, 1, 6, gParticleTexture_Default, 0, 0);
-    func_8432EC28(0, func_843456DC, &D_8140E460, 0x1E, 1, 6, gParticleTexture_Default, 1, 0);
-    func_8432EC28(0, func_843456DC, &D_8140E460, 0x1E, 1, 6, gParticleTexture_Default, 2, 0);
+void ParticleEffect_RegisterPaletteVariants(void) {
+    func_8432EC28(0, ParticleEffect_PaletteState, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 0, 0);
+    func_8432EC28(0, ParticleEffect_PaletteState, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 1, 0);
+    func_8432EC28(0, ParticleEffect_PaletteState, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 2, 0);
 }
 
-void func_84345838(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_SetupColorAndAnim(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
     u16 sp24;
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x47:
             sp24 = 0x18;
             break;
@@ -2097,59 +2097,59 @@ void func_84345838(unk_D_8140E720* arg0) {
 
     SetPrimEnvColorFromPair(arg0, sp24);
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x33);
+        InitGraphNodeTexture(arg0->unk_14, 0x33);
         if (sp26 == 0) {
-            func_8432CE3C(arg0->unk_14, 0x34);
+            SetAnimChannel(arg0->unk_14, 0x34);
         } else {
-            func_8432CE78(arg0->unk_14, 0x34);
+            InitReverseAnimNode(arg0->unk_14, 0x34);
         }
-        func_8140B938(arg0, 1.0f);
-        func_814081BC(arg0);
+        Particle_SetScaleFactor1(arg0, 1.0f);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84345920(unk_D_8140E720* arg0) {
+void ParticleEffect_ColorAnimState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84345838(arg0);
+            ParticleEffect_SetupColorAndAnim(arg0);
             break;
 
         case 2:
-            if (func_8432CED4(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+            if (IsAnimChannelFinished(arg0->unk_14) != 0) {
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_843459A0(unk_D_8140E720* arg0) {
+void ParticleEffect_ColorAnimStateAlt(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84345838(arg0);
+            ParticleEffect_SetupColorAndAnim(arg0);
             break;
 
         case 2:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84345A20(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void ParticleEffect_DrawColorNode(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2159,19 +2159,19 @@ void func_84345A20(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84345AE0(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateColorNodeDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84345A20(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawColorNode(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84345B28(void) {
-    func_8432EC28(0, func_84345920, &D_8140E460, 0, 1, 2, gParticleTexture_Default, 1, 0);
+void ParticleEffect_RegisterColorAnim(void) {
+    func_8432EC28(0, ParticleEffect_ColorAnimState, &gParticleDefaultCallback, 0, 1, 2, gParticleTexture_Default, 1, 0);
 }
 
-void func_84345B84(void) {
-    switch (func_8432C544()) {
+void ParticleEffect_RegisterModeSpecific(void) {
+    switch (GetActionScriptId()) {
         case 0x8D:
             func_8432F638(0, 0xC, 0x41, 2, 0xC8, 0x10);
             break;
@@ -2185,88 +2185,88 @@ void func_84345B84(void) {
             break;
     }
 
-    func_8432EC28(0, func_843459A0, &D_8140E460, 0, 1, 2, gParticleTexture_Default, 0, 0);
+    func_8432EC28(0, ParticleEffect_ColorAnimStateAlt, &gParticleDefaultCallback, 0, 1, 2, gParticleTexture_Default, 0, 0);
 }
 
-void func_84345C78(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_LargeExplosionInit(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x35);
-        func_8140B938(arg0, 5.0f);
-        func_81408E90(arg0, -100.0f);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        InitGraphNodeTexture(arg0->unk_14, 0x35);
+        Particle_SetScaleFactor1(arg0, 5.0f);
+        Particle_AddVelocityYScaled(arg0, -100.0f);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84345CF0(unk_D_8140E720* arg0) {
+void ParticleEffect_LargeExplosionState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84345C78(arg0);
+            ParticleEffect_LargeExplosionInit(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0x80, 0x10);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0x80, 0x10);
             break;
 
         case 3:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x20);
             break;
     }
 }
 
-void func_84345D74(void) {
-    func_8432EC28(0, func_84345CF0, &D_8140E460, 0xA, 1, 0xA, 0, 0, 0);
+void ParticleEffect_RegisterLargeExplosion(void) {
+    func_8432EC28(0, ParticleEffect_LargeExplosionState, &gParticleDefaultCallback, 0xA, 1, 0xA, 0, 0, 0);
 }
 
-void func_84345DC4(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_LargeExplosionInitDup(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x35);
-        func_8140B938(arg0, 5.0f);
-        func_81408E90(arg0, -100.0f);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        InitGraphNodeTexture(arg0->unk_14, 0x35);
+        Particle_SetScaleFactor1(arg0, 5.0f);
+        Particle_AddVelocityYScaled(arg0, -100.0f);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84345E3C(unk_D_8140E720* arg0) {
+void ParticleEffect_LargeExplosionStateDup(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84345DC4(arg0);
+            ParticleEffect_LargeExplosionInitDup(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0x80, 0x10);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0x80, 0x10);
             break;
 
         case 3:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x20);
             break;
     }
 }
 
-void func_84345EC0(void) {
-    func_8432EC28(0, func_84345E3C, &D_8140E460, 0x40, 1, 0xA, 0, 0, 0);
+void ParticleEffect_RegisterLargeExplosionAndEffects(void) {
+    func_8432EC28(0, ParticleEffect_LargeExplosionStateDup, &gParticleDefaultCallback, 0x40, 1, 0xA, 0, 0, 0);
     func_8432F7A0(0, 0xFF, 0, 0x10);
     func_8432F7A0(0x2D, 0, 0xFF, 0x20);
 }
 
-void func_84345F38(Gfx* arg0, s32 arg1, u16 arg2) {
+void ParticleEffect_DrawSpecial(Gfx* arg0, s32 arg1, u16 arg2) {
     UNUSED s32 pad;
-    unk_D_8140E720* sp28 = func_8432CB60(gDefaultGraphRoot);
+    ParticleEffectInstance* sp28 = GetGraphNodeData(gDefaultGraphRoot);
 
     func_81406204(arg0++, 1, 0x28, 0x20, 0x20);
     func_81406288(arg0++, -1, 0x1E, 0x20, 0x20);
@@ -2279,15 +2279,15 @@ void func_84345F38(Gfx* arg0, s32 arg1, u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84346014(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateSpecialDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84345F38(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawSpecial(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_8434605C(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void ParticleEffect_DrawSimpleColor(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2297,125 +2297,125 @@ void func_8434605C(Gfx* arg0, UNUSED s32 arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_843460EC(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_CreateSimpleColorDL(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_8434605C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawSimpleColor(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84346134(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_SetAnimByPalette(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
         if (sp26 == 0) {
-            func_8432CD70(arg0->unk_14, 0x36, 0x37);
-            func_8140B938(arg0, 0.75f);
+            InitWaterAnimNode(arg0->unk_14, 0x36, 0x37);
+            Particle_SetScaleFactor1(arg0, 0.75f);
         } else {
-            func_8432CD70(arg0->unk_14, 0x61, 0x62);
-            func_8140B938(arg0, 1.0f);
+            InitWaterAnimNode(arg0->unk_14, 0x61, 0x62);
+            Particle_SetScaleFactor1(arg0, 1.0f);
         }
-        func_814081BC(arg0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_843461D0(unk_D_8140E720* arg0) {
+void ParticleEffect_AnimState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84346134(arg0);
+            ParticleEffect_SetAnimByPalette(arg0);
             break;
 
         case 2:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84346250(unk_D_8140E720* arg0) {
-    u16 sp26 = func_8140C058(arg0);
+void ParticleEffect_SetOffsetsByPalette(ParticleEffectInstance* arg0) {
+    u16 sp26 = Particle_GetShortCF(arg0);
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x39, 0x3A);
-        func_8140B938(arg0, 0.5f);
+        InitWaterAnimNode(arg0->unk_14, 0x39, 0x3A);
+        Particle_SetScaleFactor1(arg0, 0.5f);
 
         switch (sp26) {
             case 0:
                 break;
 
             case 1:
-                func_81408E18(arg0, -10.0f, 0.0f, 20.0f);
+                Particle_AddVelocityScaledXYZ(arg0, -10.0f, 0.0f, 20.0f);
                 break;
 
             case 2:
-                func_81408E18(arg0, 10.0f, 0.0f, -20.0f);
+                Particle_AddVelocityScaledXYZ(arg0, 10.0f, 0.0f, -20.0f);
                 break;
 
             case 3:
-                func_81408E18(arg0, 20.0f, 0.0f, -20.0f);
+                Particle_AddVelocityScaledXYZ(arg0, 20.0f, 0.0f, -20.0f);
                 break;
 
             case 4:
-                func_81408E18(arg0, -20.0f, 0.0f, 20.0f);
+                Particle_AddVelocityScaledXYZ(arg0, -20.0f, 0.0f, 20.0f);
                 break;
 
             case 5:
-                func_81408E18(arg0, 15.0f, 0.0f, -25.0f);
+                Particle_AddVelocityScaledXYZ(arg0, 15.0f, 0.0f, -25.0f);
                 break;
 
             case 6:
-                func_81408E18(arg0, 20.0f, 0.0f, 30.0f);
+                Particle_AddVelocityScaledXYZ(arg0, 20.0f, 0.0f, 30.0f);
                 break;
 
             case 7:
-                func_81408E18(arg0, 15.0f, 0.0f, -10.0f);
+                Particle_AddVelocityScaledXYZ(arg0, 15.0f, 0.0f, -10.0f);
                 break;
 
             case 8:
-                func_8140B938(arg0, 1.5f);
+                Particle_SetScaleFactor1(arg0, 1.5f);
                 break;
         }
         Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
-        func_814081BC(arg0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_843463C8(unk_D_8140E720* arg0) {
+void ParticleEffect_OffsetState(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84346250(arg0);
+            ParticleEffect_SetOffsetsByPalette(arg0);
             break;
 
         case 2:
-            func_8140826C(arg0, 0xA);
+            Particle_ProcessTimer80(arg0, 0xA);
             break;
 
         case 3:
-            func_8140BAE4(arg0, 0, 0x10);
-            func_8140BB14(arg0, 0, 0x20);
+            Particle_ApproachPrimR(arg0, 0, 0x10);
+            Particle_ApproachPrimG(arg0, 0, 0x20);
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_814081BC(arg0);
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84346488(unk_D_8140E720* arg0) {
+void Particle_ConfigureScaleSpeed(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.6f;
     f32 sp18 = 0.0f;
 
@@ -2469,56 +2469,56 @@ void func_84346488(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140B938(arg0, sp1C);
-    func_81408F38(arg0, sp18);
+    Particle_SetScaleFactor1(arg0, sp1C);
+    Particle_AddVelocityBackward(arg0, sp18);
 }
 
-void func_84346634(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_InitWithResource(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x38);
-        func_84346488(arg0);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        InitGraphNodeTexture(arg0->unk_14, 0x38);
+        Particle_ConfigureScaleSpeed(arg0);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434669C(unk_D_8140E720* arg0) {
+void func_8434669C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84346634(arg0);
+            ParticleEffect_InitWithResource(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0xFF, 4);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 4);
             break;
     }
 }
 
-void func_843466EC(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleAlpha(Gfx* arg0, s32 arg1, u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
     gDPSetPrimColor(arg0++, 0, 0xC8, 255, 255, 255, temp_v0->prim_a);
     gDPSetEnvColor(arg0++, 255, 155, 0, 255);
 
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, 1, 0, 0, 0, -1, 0, 0, 0);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, 1, 0, 0, 0, -1, 0, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_843467B0(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_TypeA(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843466EC(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleAlpha(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_843467F8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleTexture4b(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2534,15 +2534,15 @@ void func_843467F8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84346960(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_Texture4b(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843467F8(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleTexture4b(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_843469A8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleGreenPrim(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2558,137 +2558,137 @@ void func_843469A8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_84346B10(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_GreenPrim(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843469A8(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleGreenPrim(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84346B58(void) {
-    func_8432EC28(0, func_843461D0, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
-    func_8432EC28(0, func_8434669C, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
+void ParticleEffect_RegisterHandlers_Default(void) {
+    func_8432EC28(0, ParticleEffect_AnimState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
+    func_8432EC28(0, func_8434669C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
 }
 
-void func_84346BE0(void) {
-    func_8432EC28(0, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 1, 0);
-    func_8432EC28(2, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 2, 0);
-    func_8432EC28(5, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 3, 0);
-    func_8432EC28(8, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
-    func_8432EC28(9, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 5, 0);
-    func_8432EC28(0xA, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 6, 0);
-    func_8432EC28(0xD, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 7, 0);
+void ParticleEffect_RegisterAnimationCallbacks(void) {
+    func_8432EC28(0, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 1, 0);
+    func_8432EC28(2, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 2, 0);
+    func_8432EC28(5, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 3, 0);
+    func_8432EC28(8, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
+    func_8432EC28(9, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 5, 0);
+    func_8432EC28(0xA, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 6, 0);
+    func_8432EC28(0xD, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 7, 0);
     func_8432ECA0(0xA, 3, 2, func_84350DAC, &gParticleEffectData[0x3F], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
-void func_84346DC4(void) {
-    func_8432EC28(0, func_843461D0, &D_8140E460, 0, 1, 0xA, 0, 1, 0);
-    func_8432EC28(0, func_8434669C, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
+void ParticleEffect_RegisterHandlers_Alternate(void) {
+    func_8432EC28(0, ParticleEffect_AnimState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 1, 0);
+    func_8432EC28(0, func_8434669C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
 }
 
-void func_84346E50(void) {
-    func_8432EC28(0, func_843463C8, &D_8140E460, 0, 1, 0xA, 0, 8, 0);
+void ParticleEffect_RegisterHandler_WithParticleData(void) {
+    func_8432EC28(0, ParticleEffect_OffsetState, &gParticleDefaultCallback, 0, 1, 0xA, 0, 8, 0);
     func_8432ECA0(0xA, 3, 2, func_84350DAC, &gParticleEffectData[0x3E], 0, 0x10, 0xA, 0, 0x11, 0);
 }
 
-void func_84346EEC(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xA, 0, 0x23, 0);
+void ParticleEffect_RegisterHandler_416B0(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x23, 0);
 }
 
-void func_84346F40(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xA, 0, 0x24, 0);
-    func_8432EC28(8, func_843416B0, &D_8140E460, 0, 1, 0xA, 1, 0x24, 0);
-    func_8432EC28(0x10, func_843416B0, &D_8140E460, 0, 1, 0xA, 2, 0x24, 0);
+void ParticleEffect_RegisterMultipleHandlers(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x24, 0);
+    func_8432EC28(8, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 1, 0x24, 0);
+    func_8432EC28(0x10, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 2, 0x24, 0);
     func_8432F344(0x5F, 0, 0xA, 0, 0xFF, 8);
     func_8432ECA0(0x5F, 8, 0xC, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x17, 6);
 }
 
-void func_84347080(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_InitLargeScale(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0x60);
-        func_8140BECC(arg0, 7);
+        InitGraphNodeTexture(arg0->unk_14, 0x60);
+        Particle_SetByteCA(arg0, 7);
         Particle_SetFlag(arg0, 0x200);
-        func_8140B950(arg0, 3.3f);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        Particle_SetScaleRaw1(arg0, 3.3f);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84347108(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_47108(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84347080(arg0);
+            ParticleEffect_InitLargeScale(arg0);
             break;
 
         case 2:
-            func_8140BC2C(arg0, 0x9B, 8);
+            Particle_ApproachPrimAlpha(arg0, 0x9B, 8);
             break;
 
         case 3:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 
-    if (func_8140819C(arg0) != 0) {
-        func_8432D340(&arg0->unk_50, 200.0f);
+    if (Particle_IsActive(arg0) != 0) {
+        GetCameraOffsetPosition(&arg0->unk_50, 200.0f);
     }
 }
 
-void func_8434719C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleCyanEnv(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+    GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetEnvColor(arg0++, 155, 255, 255, 255);
 
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, 2, 1, 0xE, 0xF, 0, 4, 0xC, 5);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, 2, 1, 0xE, 0xF, 0, 4, 0xC, 5);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84347254(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_CyanEnv(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_8434719C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleCyanEnv(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_8434729C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleBluePrim(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 255, 255, 255, temp_v0->prim_a);
     gDPSetEnvColor(arg0++, 0, 255, 255, 255);
 
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, -3, -5, 0xD, 3, 0, -2, 0xF, 2);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, -3, -5, 0xD, 3, 0, -2, 0xF, 2);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84347374(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_BluePrim(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_8434729C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleBluePrim(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_843473BC(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xE, 0, 0x25, 0);
-    func_8432EC28(0, func_84347108, &D_8140E460, 0, 1, 0x14, 0, 0, 0);
+void ParticleEffect_RegisterHandlers_473BC(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xE, 0, 0x25, 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_47108, &gParticleDefaultCallback, 0, 1, 0x14, 0, 0, 0);
 }
 
-void func_84347448(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xE, 0, 0x25, 0);
+void ParticleEffect_RegisterHandler_47448(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xE, 0, 0x25, 0);
 }
 
-void func_8434749C(unk_D_8140E720* arg0) {
+void ParticleEffect_AdjustParametersByAnimId(ParticleEffectInstance* arg0) {
     f32 var_fs0 = 0.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
         case 0x5:
-            func_81408F38(arg0, 10.0f);
+            Particle_AddVelocityBackward(arg0, 10.0f);
             break;
 
         case 0xC:
@@ -2697,7 +2697,7 @@ void func_8434749C(unk_D_8140E720* arg0) {
 
         case 0xD:
             var_fs0 = -5.0f;
-            func_81408F38(arg0, 15.0f);
+            Particle_AddVelocityBackward(arg0, 15.0f);
             break;
 
         case 0x34:
@@ -2710,12 +2710,12 @@ void func_8434749C(unk_D_8140E720* arg0) {
 
         case 0x4D:
             var_fs0 = 10.0f;
-            func_81408ED0(arg0, 10.0f);
+            Particle_AddVelocityForward(arg0, 10.0f);
             break;
 
         case 0x5A:
             var_fs0 = -5.0f;
-            func_81408ED0(arg0, 5.0f);
+            Particle_AddVelocityForward(arg0, 5.0f);
             break;
 
         case 0x66:
@@ -2740,160 +2740,160 @@ void func_8434749C(unk_D_8140E720* arg0) {
     }
 
     if (var_fs0 != 0.0f) {
-        func_81408E90(arg0, var_fs0);
+        Particle_AddVelocityYScaled(arg0, var_fs0);
     }
 }
 
-void func_84347670(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_47670(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
 
         case 2:
-            func_8140826C(arg0, arg0->unk_A6);
+            Particle_ProcessTimer80(arg0, arg0->unk_A6);
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_843476D8(unk_D_8140E720* arg0) {
-    func_8140B938(arg0, 2.0f);
-    func_81408F38(arg0, 10.0f);
-    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
-    func_8140BC20(arg0, 0xC8);
-    func_814083E8(arg0, 1);
+void ParticleEffect_InitStandard(ParticleEffectInstance* arg0) {
+    Particle_SetScaleFactor1(arg0, 2.0f);
+    Particle_AddVelocityBackward(arg0, 10.0f);
+    SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
+    Particle_SetPrimAlpha(arg0, 0xC8);
+    Particle_SetParamC7(arg0, 1);
     Particle_SetRotationZ(arg0, RandomMod(0x10000));
-    func_814081BC(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8434775C(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_4775C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843476D8(arg0);
+            ParticleEffect_InitStandard(arg0);
             break;
 
         case 2:
-            func_8140B9D0(arg0, 10.0f, 1.0f);
+            Particle_ApproachScaleFactor1WithCallback(arg0, 10.0f, 1.0f);
             break;
 
         case 3:
-            func_8140B9D0(arg0, 0.0f, 1.0f);
-            func_8140BC2C(arg0, 0x40, 0x20);
+            Particle_ApproachScaleFactor1WithCallback(arg0, 0.0f, 1.0f);
+            Particle_ApproachPrimAlpha(arg0, 0x40, 0x20);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_843477F8(unk_D_8140E720* arg0) {
+void ParticleEffect_InitRandomized(ParticleEffectInstance* arg0) {
     UNUSED s16 pad;
     s16 sp34;
     Vec3s sp2C;
     UNUSED s32 pad2[3];
 
-    func_8140C038(arg0);
-    sp34 = func_8140C058(arg0);
-    func_8140959C(arg0, 5, 5, 5);
-    func_8140B938(arg0, 1.5f);
+    Particle_GetShortAC(arg0);
+    sp34 = Particle_GetShortCF(arg0);
+    Particle_SetRandomVelocityXYZ(arg0, 5, 5, 5);
+    Particle_SetScaleFactor1(arg0, 1.5f);
     Particle_SetSpeed(arg0, 1.5f);
     sp2C.x = RandomMod(0x2000) - 0x1000;
     sp2C.y = RandomMod(0x10000);
     sp2C.z = 0;
-    func_8140A4F0(arg0, sp2C);
-    func_8140A5CC(arg0, sp2C.x, sp2C.y);
+    Particle_AddRotationDeltaVec(arg0, sp2C);
+    Particle_AddTargetRotationXY(arg0, sp2C.x, sp2C.y);
     Particle_SetRotationDeltaXY(arg0, 0, 0);
     SetPrimEnvColorFromPair(arg0, sp34);
-    func_8140BC20(arg0, 0x80);
-    func_8140BCA8(arg0, arg0->unk_AC * 2);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x80);
+    Particle_SetTimerA6(arg0, arg0->unk_AC * 2);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84347904(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_47904(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843477F8(arg0);
+            ParticleEffect_InitRandomized(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 0xA);
-                func_81408328(arg0);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 0xA);
+                Particle_EnableFlag4(arg0);
             }
             break;
 
         case 3:
-            func_814084D8(arg0, 0, 7, 1, 2, 0);
-            func_8140B98C(arg0, 2.5f, 0.25f);
-            func_81409D0C(arg0);
-            func_81408E90(arg0, 0.5f);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140BC2C(arg0, 0x20, 0x10);
-                func_8140BB14(arg0, 0, 0x14);
-                func_8140BB90(arg0, 0, 0x14);
+            Particle_AnimLoopForwardComplete(arg0, 0, 7, 1, 2, 0);
+            Particle_ApproachScaleFactor1(arg0, 2.5f, 0.25f);
+            Particle_ApplyB2B4AndAddAll(arg0);
+            Particle_AddVelocityYScaled(arg0, 0.5f);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachPrimAlpha(arg0, 0x20, 0x10);
+                Particle_ApproachPrimG(arg0, 0, 0x14);
+                Particle_ApproachEnvR(arg0, 0, 0x14);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84347A20(unk_D_8140E720* arg0) {
+void ParticleEffect_InitVariantA(ParticleEffectInstance* arg0) {
     UNUSED s32 pad[2];
     UNUSED s16 pad2;
     s16 sp24;
 
-    func_8140C038(arg0);
-    sp24 = func_8140C058(arg0);
-    func_8140C040(arg0);
-    func_8140B938(arg0, 1.0f);
-    func_8140959C(arg0, 0xF, 0xF, 0x14);
+    Particle_GetShortAC(arg0);
+    sp24 = Particle_GetShortCF(arg0);
+    Particle_GetShortCE(arg0);
+    Particle_SetScaleFactor1(arg0, 1.0f);
+    Particle_SetRandomVelocityXYZ(arg0, 0xF, 0xF, 0x14);
     Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.02f) + 1.0f);
     SetPrimEnvColorFromPair(arg0, sp24);
-    func_8140BC20(arg0, 0x80);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x80);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84347AF0(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_47AF0(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84347A20(arg0);
+            ParticleEffect_InitVariantA(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 5);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 5);
             }
             break;
 
         case 3:
-            func_814084D8(arg0, 0, 7, 1, 2, 0);
-            func_81409F60(arg0);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140BB14(arg0, 0, 0x14);
-                func_8140BB90(arg0, 0, 0x14);
-                func_8140BC2C(arg0, 0x20, 4);
+            Particle_AnimLoopForwardComplete(arg0, 0, 7, 1, 2, 0);
+            Particle_SetTargetVelocityY(arg0);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachPrimG(arg0, 0, 0x14);
+                Particle_ApproachEnvR(arg0, 0, 0x14);
+                Particle_ApproachPrimAlpha(arg0, 0x20, 4);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84347BF4(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleCustomColors(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -2902,263 +2902,263 @@ void func_84347BF4(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     gDPSetCombineLERP(arg0++, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, PRIMITIVE,
                       ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, ENVIRONMENT);
 
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, 2, 0xA, 0xD, 0xF, -2, 5, 0xE, 0xF);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, 2, 0xA, 0xD, 0xF, -2, 5, 0xE, 0xF);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84347D2C(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_CustomColors(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84347BF4(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleCustomColors(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84347D74(unk_D_8140E720* arg0) {
-    func_8140C040(arg0);
+void ParticleEffect_StateHandler_47D74(ParticleEffectInstance* arg0) {
+    Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
-            func_8140B938(arg0, 0.5f);
-            func_8140BFEC(arg0, 0x64);
+            Particle_SetScaleFactor1(arg0, 0.5f);
+            Particle_SetShortB0(arg0, 0x64);
             SetPrimEnvColorFromPair(arg0, 0x17);
-            func_8140BCA8(arg0, 5);
+            Particle_SetTimerA6(arg0, 5);
             break;
 
         case 2:
-            func_8140B98C(arg0, 7.0f, 0.25f);
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 5);
+            Particle_ApproachScaleFactor1(arg0, 7.0f, 0.25f);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 5);
             }
             break;
 
         case 3:
-            func_8140B98C(arg0, 7.0f, 0.25f);
+            Particle_ApproachScaleFactor1(arg0, 7.0f, 0.25f);
             AreBothColorsSupported(arg0, 0x1A, 0x19);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140C000(arg0, 0, 8);
-                func_8140BC5C(arg0, 0, 0x10);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachShortB0(arg0, 0, 8);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84347E9C(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C040(arg0);
+void ParticleEffect_StateHandler_47E9C(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
-            func_8140B938(arg0, 0.5f);
-            func_8140BFEC(arg0, 0x64);
+            Particle_SetScaleFactor1(arg0, 0.5f);
+            Particle_SetShortB0(arg0, 0x64);
             SetPrimEnvColorFromPair(arg0, 0x17);
-            func_8140BCA8(arg0, 5);
+            Particle_SetTimerA6(arg0, 5);
 
             switch (sp26) {
                 case 0:
-                    func_81408C88(arg0, 15.0f);
-                    func_81408CA0(arg0, 15.0f);
+                    Particle_SetVelocityXScaled(arg0, 15.0f);
+                    Particle_SetVelocityYScaled(arg0, 15.0f);
                     break;
 
                 case 1:
-                    func_81408C88(arg0, -15.0f);
-                    func_81408CB8(arg0, 15.0f);
-                    func_81408CA0(arg0, -10.0f);
+                    Particle_SetVelocityXScaled(arg0, -15.0f);
+                    Particle_SetVelocityZScaled(arg0, 15.0f);
+                    Particle_SetVelocityYScaled(arg0, -10.0f);
                     break;
 
                 case 2:
-                    func_81408C88(arg0, -10.0f);
-                    func_81408CB8(arg0, -15.0f);
+                    Particle_SetVelocityXScaled(arg0, -10.0f);
+                    Particle_SetVelocityZScaled(arg0, -15.0f);
                     break;
             }
             break;
 
         case 2:
-            func_8140B98C(arg0, 5.0f, 0.15f);
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 5);
+            Particle_ApproachScaleFactor1(arg0, 5.0f, 0.15f);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 5);
             }
             break;
 
         case 3:
-            func_8140B98C(arg0, 5.0f, 0.15f);
+            Particle_ApproachScaleFactor1(arg0, 5.0f, 0.15f);
             AreBothColorsSupported(arg0, 0x1A, 0x19);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140C000(arg0, 0, 8);
-                func_8140BC5C(arg0, 0, 0x10);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachShortB0(arg0, 0, 8);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84348058(unk_D_8140E720* arg0) {
-    func_8140C040(arg0);
+void ParticleEffect_StateHandler_48058(ParticleEffectInstance* arg0) {
+    Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
-            func_8140B938(arg0, 0.25f);
-            func_8140BFEC(arg0, 0x64);
+            Particle_SetScaleFactor1(arg0, 0.25f);
+            Particle_SetShortB0(arg0, 0x64);
             SetPrimEnvColorFromPair(arg0, 0x17);
-            func_8140BCA8(arg0, 5);
-            func_81408ED0(arg0, 30.0f);
+            Particle_SetTimerA6(arg0, 5);
+            Particle_AddVelocityForward(arg0, 30.0f);
             break;
 
         case 2:
-            func_8140B98C(arg0, 5.0f, 0.3f);
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 5);
+            Particle_ApproachScaleFactor1(arg0, 5.0f, 0.3f);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 5);
             }
             break;
 
         case 3:
-            func_8140B98C(arg0, 5.0f, 0.3f);
+            Particle_ApproachScaleFactor1(arg0, 5.0f, 0.3f);
             AreBothColorsSupported(arg0, 0x1A, 0x19);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140C000(arg0, 0, 8);
-                func_8140BC5C(arg0, 0, 0x10);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachShortB0(arg0, 0, 8);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_84348194(unk_D_8140E720* arg0) {
+void ParticleEffect_InitComplex_48194(ParticleEffectInstance* arg0) {
     UNUSED s32 pad[2];
-    s16 sp26 = func_8140C038(arg0);
+    s16 sp26 = Particle_GetShortAC(arg0);
 
-    func_8140C040(arg0);
-    func_8140C058(arg0);
-    func_8140BCA8(arg0, sp26 * 2);
-    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
-    func_8140B938(arg0, 1.2f);
-    func_8140B95C(arg0, 1.0f);
-    func_8140B974(arg0, 0.02f);
-    func_8140959C(arg0, 5, 0xF, 0xF);
-    func_81408E90(arg0, 10.0f);
+    Particle_GetShortCE(arg0);
+    Particle_GetShortCF(arg0);
+    Particle_SetTimerA6(arg0, sp26 * 2);
+    SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
+    Particle_SetScaleFactor1(arg0, 1.2f);
+    Particle_SetScaleFactor2(arg0, 1.0f);
+    Particle_SetScaleFactor3(arg0, 0.02f);
+    Particle_SetRandomVelocityXYZ(arg0, 5, 0xF, 0xF);
+    Particle_AddVelocityYScaled(arg0, 10.0f);
     Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     SetPrimColorFromPalette(arg0, 0x19);
     SetEnvColorFromPalette(arg0, 0x19);
-    func_8140BC20(arg0, 0xC8);
-    func_8140BF4C(arg0, 4);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xC8);
+    Particle_SetShortAE(arg0, 4);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_843482D4(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_482D4(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84348194(arg0);
+            ParticleEffect_InitComplex_48194(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 4);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 4);
             }
             break;
 
         case 3:
-            func_8140BA1C(arg0);
-            func_814084D8(arg0, 1, 7, 1, 2, 0);
-            func_81409EA0(arg0);
-            func_8140BB14(arg0, 0, 0x20);
-            func_8140BBF0(arg0, 0, 0x20);
-            if (func_8140BDAC(arg0) != 0) {
+            Particle_ApproachScaleFactor2(arg0);
+            Particle_AnimLoopForwardComplete(arg0, 1, 7, 1, 2, 0);
+            Particle_SetTargetVelocityBackward(arg0);
+            Particle_ApproachPrimG(arg0, 0, 0x20);
+            Particle_ApproachEnvG(arg0, 0, 0x20);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 break;
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_843483D4(unk_D_8140E720* arg0) {
+void ParticleEffect_InitComplex_483D4(ParticleEffectInstance* arg0) {
     UNUSED s32 pad[2];
-    s16 sp26 = func_8140C038(arg0);
+    s16 sp26 = Particle_GetShortAC(arg0);
     UNUSED s16 pad2;
     s16 sp22;
 
-    func_8140C040(arg0);
-    sp22 = func_8140C058(arg0);
-    func_8140BCA8(arg0, sp26 * 2);
-    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
-    func_8140B938(arg0, 1.0f);
-    func_8140B95C(arg0, 0.5f);
-    func_8140B974(arg0, 0.01f);
-    func_8140959C(arg0, 0xA, 0, 0xF);
-    func_81408ED0(arg0, 10.0f);
-    func_81408E90(arg0, 5.0f);
+    Particle_GetShortCE(arg0);
+    sp22 = Particle_GetShortCF(arg0);
+    Particle_SetTimerA6(arg0, sp26 * 2);
+    SetPrimEnvColorFromPair(arg0, Particle_GetShortCF(arg0));
+    Particle_SetScaleFactor1(arg0, 1.0f);
+    Particle_SetScaleFactor2(arg0, 0.5f);
+    Particle_SetScaleFactor3(arg0, 0.01f);
+    Particle_SetRandomVelocityXYZ(arg0, 0xA, 0, 0xF);
+    Particle_AddVelocityForward(arg0, 10.0f);
+    Particle_AddVelocityYScaled(arg0, 5.0f);
     Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.5f) + 8.0f);
     SetPrimEnvColorFromPair(arg0, sp22);
-    func_8140BC20(arg0, 0xB4);
-    func_8140BF4C(arg0, 4);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xB4);
+    Particle_SetShortAE(arg0, 4);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_84348514(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_48514(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843483D4(arg0);
+            ParticleEffect_InitComplex_483D4(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 4);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 4);
             }
             break;
 
         case 3:
-            func_8140BC5C(arg0, 0x40, 0x10);
-            if (func_8140BDAC(arg0) != 0) {
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0x40, 0x10);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 AreBothColorsSupported(arg0, 0x16, 0x20);
             }
-            func_8140ADBC(arg0, 4.0f, 0.5f);
-            func_81409EA0(arg0);
+            Particle_ApproachSpeedScaled(arg0, 4.0f, 0.5f);
+            Particle_SetTargetVelocityBackward(arg0);
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 
-    if (func_81408368(arg0) != 0) {
-        func_8140BA1C(arg0);
-        func_814083FC(arg0, 0, 7, 1, 2, 0);
+    if (Particle_HasFlag4(arg0) != 0) {
+        Particle_ApproachScaleFactor2(arg0);
+        Particle_AnimLoopForward(arg0, 0, 7, 1, 2, 0);
     }
 }
 
-void func_84348630(void) {
+void ParticleEffect_RegisterAll_48630(void) {
     func_8432ED0C(0, 0x10, 6);
-    func_8432EC28(0, func_84347670, &D_8140E460, 0x19, 1, 0xE, 0, 0x27, 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_47670, &gParticleDefaultCallback, 0x19, 1, 0xE, 0, 0x27, 0);
     func_8432EFB4(0, 0, 4, 0x1C, 0x80);
-    func_8432EC28(0x16, func_8434775C, &gParticleEffectData[0x54], 0, 1, 0xC, 0, 0x25, 0);
+    func_8432EC28(0x16, ParticleEffect_StateHandler_4775C, &gParticleEffectData[0x54], 0, 1, 0xC, 0, 0x25, 0);
     func_8432EE5C(0x1A, 3, 0x20, 0x1C, 0x96);
-    func_8432EC28(0x1B, func_84347D74, &D_8140E460, 0, 1, 9, 0, 0x21, 0);
-    func_8432EC28(0x1E, func_84347E9C, &D_8140E460, 0, 1, 9, 0, 0x21, 0);
-    func_8432EC28(0x22, func_84347E9C, &D_8140E460, 0, 1, 9, 0, 0x21, 1);
-    func_8432EC28(0x26, func_84347E9C, &D_8140E460, 0, 1, 9, 0, 0x21, 2);
-    func_8432EC28(0x28, func_84347904, &gParticleEffectData[0x48], 0, 6, 0x10, 9, 0x1A, 0);
-    func_8432ECA0(0x32, 2, 2, func_84347AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
-    func_8432ECA0(0x33, 2, 2, func_84347AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
-    func_8432ECA0(0x34, 2, 2, func_84347AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
-    func_8432ECA0(0x36, 2, 2, func_84347AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
+    func_8432EC28(0x1B, ParticleEffect_StateHandler_47D74, &gParticleDefaultCallback, 0, 1, 9, 0, 0x21, 0);
+    func_8432EC28(0x1E, ParticleEffect_StateHandler_47E9C, &gParticleDefaultCallback, 0, 1, 9, 0, 0x21, 0);
+    func_8432EC28(0x22, ParticleEffect_StateHandler_47E9C, &gParticleDefaultCallback, 0, 1, 9, 0, 0x21, 1);
+    func_8432EC28(0x26, ParticleEffect_StateHandler_47E9C, &gParticleDefaultCallback, 0, 1, 9, 0, 0x21, 2);
+    func_8432EC28(0x28, ParticleEffect_StateHandler_47904, &gParticleEffectData[0x48], 0, 6, 0x10, 9, 0x1A, 0);
+    func_8432ECA0(0x32, 2, 2, ParticleEffect_StateHandler_47AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
+    func_8432ECA0(0x33, 2, 2, ParticleEffect_StateHandler_47AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
+    func_8432ECA0(0x34, 2, 2, ParticleEffect_StateHandler_47AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
+    func_8432ECA0(0x36, 2, 2, ParticleEffect_StateHandler_47AF0, &gParticleEffectData[0x4A], 0, 1, 9, 0, 0x1A, 0);
     func_8432F2C8(0x16, 0xA, 0, 0xFF, 0x40);
     func_8432F2C8(0x24, 0xA, 0xFF, 0xDC, 0xC);
     func_8432F4BC(0x28, 0xA, 0x19, 0x10, 0xDC);
@@ -3167,14 +3167,14 @@ void func_84348630(void) {
     func_8432F2C8(0x48, 0x10, 0xDC, 0xB4, 6);
 }
 
-void func_843489FC(void) {
+void ParticleEffect_RegisterAll_489FC(void) {
     func_8432ED0C(0, 0xFF, 6);
-    func_8432EC28(0, func_84348058, &D_8140E460, 0, 1, 0xB, 0, 0x21, 0);
-    func_8432EC28(4, func_84348058, &D_8140E460, 0, 1, 0xB, 0, 0x21, 0);
-    func_8432ECA0(0xA, 8, 4, func_843416B0, &D_8140E460, 0, 1, 0xC, 0, 0x2B, 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_48058, &gParticleDefaultCallback, 0, 1, 0xB, 0, 0x21, 0);
+    func_8432EC28(4, ParticleEffect_StateHandler_48058, &gParticleDefaultCallback, 0, 1, 0xB, 0, 0x21, 0);
+    func_8432ECA0(0xA, 8, 4, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xC, 0, 0x2B, 0);
     func_8432ECA0(0xC, 8, 5, func_84334F84, &gParticleEffectData[0x46], 0, 5, 0x10, 9, 0x48, 0);
-    func_8432ECA0(0xC, 4, 0xA, func_843482D4, &gParticleEffectData[0x4A], 0, 4, 0xB, 9, 0, 0);
-    func_8432ECA0(0xC, 4, 0xA, func_84348514, &gParticleEffectData[0x4F], 0, 4, 0xE, 9, 0x1A, 0);
+    func_8432ECA0(0xC, 4, 0xA, ParticleEffect_StateHandler_482D4, &gParticleEffectData[0x4A], 0, 4, 0xB, 9, 0, 0);
+    func_8432ECA0(0xC, 4, 0xA, ParticleEffect_StateHandler_48514, &gParticleEffectData[0x4F], 0, 4, 0xE, 9, 0x1A, 0);
     func_8432F2C8(3, 0xA, 0, 0xFF, 0x40);
     func_8432F2C8(0xA, 0xA, 0xFF, 0xE6, 5);
     func_8432F4BC(0x10, 0xA, 0x19, 0x10, 0xDC);
@@ -3189,61 +3189,61 @@ void func_84348C6C(UNUSED s32 arg0, UNUSED s32 arg1) {
 void func_84348C78(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
-void func_84348C84(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_InitSparkle(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
 
-    arg0->unk_14 = func_8432CC54(arg0);
+    arg0->unk_14 = AllocateParticleNode(arg0);
     if (arg0->unk_14 != NULL) {
         if (sp26 == 0) {
-            func_8432CE00(arg0->unk_14, 0x55);
+            InitGraphNodeTexture(arg0->unk_14, 0x55);
         } else {
-            func_8432CE00(arg0->unk_14, 0x63);
+            InitGraphNodeTexture(arg0->unk_14, 0x63);
         }
-        func_8432CE3C(arg0->unk_14, 0x56);
+        SetAnimChannel(arg0->unk_14, 0x56);
         Particle_SetFlag(arg0, 0x200);
-        func_8140BECC(arg0, 7);
-        func_8140B950(arg0, 1.0f);
+        Particle_SetByteCA(arg0, 7);
+        Particle_SetScaleRaw1(arg0, 1.0f);
         SetPrimEnvColorFromPair(arg0, 0x24);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84348D4C(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void ParticleEffect_StateHandler_48D4C(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
     s32 sp20 = 0;
     f32 var_fv0;
 
     switch (arg0->unk_B2) {
         case 1:
-            func_84348C84(arg0);
+            ParticleEffect_InitSparkle(arg0);
             break;
 
         case 2:
-            func_8140826C(arg0, 0xE);
-            func_8140BB14(arg0, 0xFF, 7);
-            func_8140BB44(arg0, 0xFF, 0x13);
-            func_8140BBF0(arg0, 0xFF, 0x13);
-            func_8140BC2C(arg0, 0xFF, 0x13);
+            Particle_ProcessTimer80(arg0, 0xE);
+            Particle_ApproachPrimG(arg0, 0xFF, 7);
+            Particle_ApproachPrimB(arg0, 0xFF, 0x13);
+            Particle_ApproachEnvG(arg0, 0xFF, 0x13);
+            Particle_ApproachPrimAlpha(arg0, 0xFF, 0x13);
             break;
 
         case 3:
-            func_8140826C(arg0, 0x10);
-            func_8140BB44(arg0, 0, 0x11);
-            func_8140BBF0(arg0, 0, 0x11);
-            func_8140BC2C(arg0, 0, 0x11);
+            Particle_ProcessTimer80(arg0, 0x10);
+            Particle_ApproachPrimB(arg0, 0, 0x11);
+            Particle_ApproachEnvG(arg0, 0, 0x11);
+            Particle_ApproachPrimAlpha(arg0, 0, 0x11);
             break;
 
         case 4:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_81408150(arg0);
+                Particle_ClearActiveFlag(arg0);
             }
             break;
     }
 
-    if (func_8140819C(arg0) != 0) {
+    if (Particle_IsActive(arg0) != 0) {
         if (func_843081BC(arg0->unk_10) == 0x5F) {
             sp20 = 1;
         } else if (func_843081BC(arg0->unk_10) == 0x82) {
@@ -3256,95 +3256,95 @@ void func_84348D4C(unk_D_8140E720* arg0) {
             } else {
                 var_fv0 = 170.0f;
             }
-            func_8432D340(&arg0->unk_50, var_fv0);
+            GetCameraOffsetPosition(&arg0->unk_50, var_fv0);
         } else {
             if (sp20 != 0) {
                 var_fv0 = 90.0f;
             } else {
                 var_fv0 = 140.0f;
             }
-            func_8432D340(&arg0->unk_50, var_fv0);
+            GetCameraOffsetPosition(&arg0->unk_50, var_fv0);
         }
     }
 }
 
-void func_84348F24(Gfx* arg0, s32 arg1, u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+void Gfx_DrawParticleFromTempColors(Gfx* arg0, s32 arg1, u16 arg2) {
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
     gDPSetPrimColor(arg0++, 0, 0, temp_v0->prim_r, temp_v0->prim_g, temp_v0->prim_b, temp_v0->prim_a);
     gDPSetEnvColor(arg0++, temp_v0->env_r, temp_v0->env_g, temp_v0->env_b, 0);
 
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, 0, 0, 0, 0, 0, 0, 0, 0);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, 0, 0, 0, 0, 0, 0, 0, 0);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84349010(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_TempColors(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84348F24(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleFromTempColors(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84349058(void) {
-    func_8432EC28(0, func_84348D4C, &D_8140E460, 0, 1, 0x14, 0, 0, 0);
+void ParticleEffect_RegisterHandler_49058(void) {
+    func_8432EC28(0, ParticleEffect_StateHandler_48D4C, &gParticleDefaultCallback, 0, 1, 0x14, 0, 0, 0);
 }
 
-void func_843490A8(void) {
+void ParticleEffect_RegisterHandler_490A8(void) {
     func_8432ED0C(0, 0x20, 0);
-    func_8432EC28(0, func_84348D4C, &D_8140E460, 0, 1, 0x14, 0, 0, 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_48D4C, &gParticleDefaultCallback, 0, 1, 0x14, 0, 0, 0);
 }
 
-void func_84349108(void) {
-    func_8432EC28(0, func_84348D4C, &D_8140E460, 0, 1, 0x14, 0, 1, 0);
+void ParticleEffect_RegisterHandler_49108(void) {
+    func_8432EC28(0, ParticleEffect_StateHandler_48D4C, &gParticleDefaultCallback, 0, 1, 0x14, 0, 1, 0);
 }
 
-void func_8434915C(void) {
-    func_84356A74();
+void ParticleEffect_Trigger56A74(void) {
+    ParticleEffect_SimpleSetup();
 }
 
-void func_8434917C(void) {
+void ParticleEffect_ConfigureAndTrigger_4917C(void) {
     func_8432F2C8(0, 0xC, 0, 0xFF, 0x40);
-    func_84356A74();
+    ParticleEffect_SimpleSetup();
     func_8432F2C8(0x30, 0xC, 0xFF, 0, 2);
 }
 
-void func_843491D4(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    func_8432CB60(gDefaultGraphRoot);
-    arg0 = func_843418C0(arg0, arg1, 0x20, 5, -4, -4, 0xD, 6, 4, 4, 0xF, 1);
+void Gfx_DrawParticleVariant_D4(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+    GetGraphNodeData(gDefaultGraphRoot);
+    arg0 = Gfx_LoadParticleTextureTile(arg0, arg1, 0x20, 5, -4, -4, 0xD, 6, 4, 4, 0xF, 1);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_84349264(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_Variant_D4(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843491D4(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleVariant_D4(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_843492AC(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    func_8432CB60(gDefaultGraphRoot);
-    arg0 = func_843418C0(arg0, arg1, 0x20, 5, 1, -1, 0xE, 0xE, -1, 1, 2, 2);
+void Gfx_DrawParticleVariant_AC(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+    GetGraphNodeData(gDefaultGraphRoot);
+    arg0 = Gfx_LoadParticleTextureTile(arg0, arg1, 0x20, 5, 1, -1, 0xE, 0xE, -1, 1, 2, 2);
 
     gSPEndDisplayList(arg0++);
 }
 
-void func_8434933C(s32 arg0, arg1_func_84344CE8* arg1) {
+void Particle_CreateDisplayList_Variant_AC(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_843492AC(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleVariant_AC(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_84349384(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 2, 0, 0x28, 0);
+void ParticleEffect_RegisterHandler_49384(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 2, 0, 0x28, 0);
     func_8432ECA0(4, 8, 0xC, func_8435226C, &gParticleEffectData[0x42], 0, 8, 9, 0, 0x22, 6);
 }
 
-f32 func_84349424(unk_D_8140E720* arg0) {
+f32 ParticleEffect_GetScaleFactorByAnimId(ParticleEffectInstance* arg0) {
     f32 sp1C = 1.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
@@ -3353,7 +3353,7 @@ f32 func_84349424(unk_D_8140E720* arg0) {
             break;
 
         case 0x5F:
-            func_8140901C(arg0, 20.0f);
+            Particle_AddVelocityLeft(arg0, 20.0f);
             sp1C = 0.9f;
             break;
 
@@ -3364,7 +3364,7 @@ f32 func_84349424(unk_D_8140E720* arg0) {
     return sp1C;
 }
 
-void func_843494AC(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_494AC(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
@@ -3374,63 +3374,63 @@ void func_843494AC(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84349504(void) {
-    func_8432EC28(0, func_843494AC, &D_8140E460, 0, 1, 0xA, 0, 0x29, 0);
-    func_8432ECA0(5, 2, 0xA, func_84354D58, &gParticleEffectData[0x4A], 0, 2, 0xA, 0, 0x44, 9);
-    func_8432ECA0(0xA, 5, 6, func_84354E44, &gParticleEffectData[0x30], 0, 3, 0xA, 0, 0x44, 0xB);
+void ParticleEffect_RegisterHandlers_49504(void) {
+    func_8432EC28(0, ParticleEffect_StateHandler_494AC, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x29, 0);
+    func_8432ECA0(5, 2, 0xA, ParticleEffect_GravityAdjust, &gParticleEffectData[0x4A], 0, 2, 0xA, 0, 0x44, 9);
+    func_8432ECA0(0xA, 5, 6, ParticleEffect_ConditionalStop, &gParticleEffectData[0x30], 0, 3, 0xA, 0, 0x44, 0xB);
 }
 
-void func_843495F0(unk_D_8140E720* arg0) {
+void ParticleEffect_ApplySpecialEffect_495F0(ParticleEffectInstance* arg0) {
     if (func_843081BC(arg0->unk_10) == 0x5F) {
-        func_8140901C(arg0, 20.0f);
+        Particle_AddVelocityLeft(arg0, 20.0f);
     }
 }
 
-void func_84349628(void) {
-    func_8432EC28(0, func_8434171C, &D_8140E460, 0, 1, 0xA, 0, 0x16, 0);
+void ParticleEffect_RegisterHandler_49628(void) {
+    func_8432EC28(0, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x16, 0);
 }
 
-void func_8434967C(void) {
-    func_8432EC28(0, func_8434171C, &D_8140E460, 0, 1, 0xA, 0, 0x1D, 0);
-    func_8432ECA0(0, 3, 3, func_843529D8, &gParticleEffectData[0x34], 0, 1, 0xE, 9, 0, 0xF);
-    func_8432ECA0(4, 1, 4, func_84354D58, &gParticleEffectData[0x4A], 0, 8, 0x1B, 0, 0x44, 0xA);
-    func_8432EC28(4, func_84354E44, &gParticleEffectData[0x30], 0, 0xC, 0x1B, 0, 0x44, 0xB);
+void ParticleEffect_RegisterHandlers_4967C(void) {
+    func_8432EC28(0, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x1D, 0);
+    func_8432ECA0(0, 3, 3, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0xE, 9, 0, 0xF);
+    func_8432ECA0(4, 1, 4, ParticleEffect_GravityAdjust, &gParticleEffectData[0x4A], 0, 8, 0x1B, 0, 0x44, 0xA);
+    func_8432EC28(4, ParticleEffect_ConditionalStop, &gParticleEffectData[0x30], 0, 0xC, 0x1B, 0, 0x44, 0xB);
 }
 
-void func_843497A8(unk_D_8140E720* arg0) {
+void ParticleEffect_AdjustVerticalOffset_497A8(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
         case 0x57:
             sp1C = -20.0f;
-            func_8140901C(arg0, 10.0f);
+            Particle_AddVelocityLeft(arg0, 10.0f);
             break;
 
         case 0x5F:
             sp1C = -20.0f;
-            func_8140901C(arg0, 15.0f);
+            Particle_AddVelocityLeft(arg0, 15.0f);
             break;
     }
-    func_81408E90(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp1C);
 }
 
-void func_84349830(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xB, 0, 0, 0);
+void ParticleEffect_RegisterHandler_49830(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xB, 0, 0, 0);
     func_8432F93C(0x28, 1);
     func_8432ECA0(4, 4, 3, func_8435226C, &gParticleEffectData[0x42], 0, 4, 0xB, 0, 0x17, 0xA);
 }
 
-void func_843498D8(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 4, 0, 1, 0);
+void ParticleEffect_RegisterHandler_498D8(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 4, 0, 1, 0);
     func_8432EDE8(0x1D, 2, 0x20, 0x14);
 }
 
-void func_84349940(unk_D_8140E720* arg0) {
+void ParticleEffect_AdjustSizeByAnimId(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 0.0f;
 
@@ -3449,101 +3449,101 @@ void func_84349940(unk_D_8140E720* arg0) {
     }
 
     if (sp18 != 0.0f) {
-        func_81408ED0(arg0, sp18);
+        Particle_AddVelocityForward(arg0, sp18);
     }
 
     if (sp1C != 0.0f) {
-        func_81408CA0(arg0, sp1C);
+        Particle_SetVelocityYScaled(arg0, sp1C);
     }
 }
 
-void func_84349A14(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xB, gParticleTexture_Default, 2, 0);
+void ParticleEffect_RegisterDefaultTexture(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xB, gParticleTexture_Default, 2, 0);
 }
 
-void func_84349A70(unk_D_8140E720* arg0) {
-    func_8140C048(arg0);
-    arg0->unk_14 = func_8432CB68(arg0);
+void ParticleEffect_InitWithResource_A70(ParticleEffectInstance* arg0) {
+    Particle_GetByteCD(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x71, 0x72);
-        func_8140B938(arg0, 1.0f);
-        func_8140BCA8(arg0, 0x1E);
-        func_814081BC(arg0);
+        InitWaterAnimNode(arg0->unk_14, 0x71, 0x72);
+        Particle_SetScaleFactor1(arg0, 1.0f);
+        Particle_SetTimerA6(arg0, 0x1E);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84349AE8(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_49AE8(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84349A70(arg0);
+            ParticleEffect_InitWithResource_A70(arg0);
             break;
 
         case 2:
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_81408150(arg0);
+                Particle_ClearActiveFlag(arg0);
             }
             break;
     }
 }
 
-void func_84349B50(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C048(arg0);
+void ParticleEffect_InitWithOffsets_B50(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetByteCD(arg0);
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
         switch (sp26) {
             case 0:
-                func_81408BE0(arg0, 8.0f, 0.0f, -10.0f);
+                Particle_SetVelocityScaledXYZ(arg0, 8.0f, 0.0f, -10.0f);
                 break;
 
             case 1:
-                func_81408BE0(arg0, -10.0f, 0.0f, 12.0f);
+                Particle_SetVelocityScaledXYZ(arg0, -10.0f, 0.0f, 12.0f);
                 break;
 
             case 2:
-                func_81408BE0(arg0, 0.0f, 0.0f, -2.0f);
+                Particle_SetVelocityScaledXYZ(arg0, 0.0f, 0.0f, -2.0f);
                 break;
 
             case 3:
-                func_81408BE0(arg0, 15.0f, 0.0f, 3.0f);
+                Particle_SetVelocityScaledXYZ(arg0, 15.0f, 0.0f, 3.0f);
                 break;
         }
 
-        func_8432CD70(arg0->unk_14, 0x6E, 0x6F);
-        func_8140B938(arg0, 1.0f);
-        func_8140BCA8(arg0, 0x1E);
-        func_814081BC(arg0);
+        InitWaterAnimNode(arg0->unk_14, 0x6E, 0x6F);
+        Particle_SetScaleFactor1(arg0, 1.0f);
+        Particle_SetTimerA6(arg0, 0x1E);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_84349C74(unk_D_8140E720* arg0) {
+void ParticleEffect_StateHandler_49C74(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84349B50(arg0);
+            ParticleEffect_InitWithOffsets_B50(arg0);
             break;
 
         case 2:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
-            func_8140B9D0(arg0, 0.0f, 0.05f);
-            func_8140BC5C(arg0, 0, 0x10);
+            Particle_ApproachScaleFactor1WithCallback(arg0, 0.0f, 0.05f);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             break;
 
         case 4:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_84349D10(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+void Gfx_DrawParticlePaletteBased(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     UNUSED s32 pad[2];
-    s16 sp2E = func_8140C058(func_8432CB60(gDefaultGraphRoot));
+    s16 sp2E = Particle_GetShortCF(GetGraphNodeData(gDefaultGraphRoot));
     u8 sp2D;
     u8 sp2C;
     u8 sp2B;
@@ -3603,13 +3603,13 @@ void func_84349D10(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
 void func_84349F80(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_84349D10(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticlePaletteBased(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
 void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     Fragment2_1GraphNode* sp24 = gDefaultGraphRoot;
-    s32 tmp = func_8432CB60(gDefaultGraphRoot);
+    s32 tmp = GetGraphNodeData(gDefaultGraphRoot);
     UNUSED u8 sp1F;
     UNUSED u8 sp1E;
     u8 sp1D;
@@ -3619,7 +3619,7 @@ void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) 
     u8 sp19;
     u8 sp18;
 
-    switch (func_8140C058(tmp)) {
+    switch (Particle_GetShortCF(tmp)) {
         case 0:
             sp1D = 0xFF;
             sp1C = 0x96;
@@ -3675,7 +3675,7 @@ void func_8434A18C(s32 arg0, arg1_func_84344CE8* arg1) {
 s16 func_8434A1D4(void) {
     s16 sp1E;
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x7C:
             sp1E = 0;
             break;
@@ -3699,7 +3699,7 @@ s16 func_8434A1D4(void) {
 s16 func_8434A244(void) {
     s16 sp1E;
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x7C:
             sp1E = 0x12;
             break;
@@ -3723,7 +3723,7 @@ s16 func_8434A244(void) {
 s16 func_8434A2B4(void) {
     s16 sp1E;
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x7C:
             sp1E = 8;
             break;
@@ -3745,7 +3745,7 @@ s16 func_8434A2B4(void) {
 }
 
 void func_8434A324(void) {
-    func_8432EC28(0, func_84349AE8, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, func_8434A1D4(), 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_49AE8, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, func_8434A1D4(), 0);
 }
 
 void func_8434A384(void) {
@@ -3758,16 +3758,16 @@ void func_8434A384(void) {
     sp4A = func_8434A2B4();
 
     func_8432F2C8(4, sp44, 0, 0xFF, 0x10);
-    func_8432EC28(0, func_84349C74, &D_8140E460, 0, 1, 0xA, 0, sp4E, 0);
-    func_8432EC28(4, func_84349C74, &D_8140E460, 0, 1, 0xA, 1, sp4E, 0);
-    func_8432EC28(8, func_84349C74, &D_8140E460, 0, 1, 0xA, 2, sp4E, 0);
-    func_8432EC28(0xC, func_84349C74, &D_8140E460, 0, 1, 0xA, 3, sp4E, 0);
+    func_8432EC28(0, ParticleEffect_StateHandler_49C74, &gParticleDefaultCallback, 0, 1, 0xA, 0, sp4E, 0);
+    func_8432EC28(4, ParticleEffect_StateHandler_49C74, &gParticleDefaultCallback, 0, 1, 0xA, 1, sp4E, 0);
+    func_8432EC28(8, ParticleEffect_StateHandler_49C74, &gParticleDefaultCallback, 0, 1, 0xA, 2, sp4E, 0);
+    func_8432EC28(0xC, ParticleEffect_StateHandler_49C74, &gParticleDefaultCallback, 0, 1, 0xA, 3, sp4E, 0);
     func_8432F2C8(0x28, sp44, 0xFF, 0, 0x10);
-    func_8432ECA0(6, 4, 0xA, func_84354A10, &gParticleEffectData[0x3D], 0, 1, 9, 0, sp4A, 0);
-    func_8432ECA0(7, 8, 5, func_84354A10, &gParticleEffectData[0x3D], 0, 1, 9, 0, sp4A, 0);
+    func_8432ECA0(6, 4, 0xA, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 9, 0, sp4A, 0);
+    func_8432ECA0(7, 8, 5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 9, 0, sp4A, 0);
 }
 
-f32 func_8434A574(unk_D_8140E720* arg0) {
+f32 func_8434A574(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.5f;
     f32 sp18 = 0.0f;
 
@@ -3790,14 +3790,14 @@ f32 func_8434A574(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140BC20(arg0, 0);
-    func_81408E90(arg0, sp18 + 5.0f);
+    Particle_SetPrimAlpha(arg0, 0);
+    Particle_AddVelocityYScaled(arg0, sp18 + 5.0f);
     return sp1C;
 }
 
 void func_8434A654(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    func_8432CB60(gDefaultGraphRoot);
-    arg0 = func_84341B84(arg0, arg1, 0x20, 5, 0, 0, 1, 1, 0, -3, 1, 1);
+    GetGraphNodeData(gDefaultGraphRoot);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0, arg1, 0x20, 5, 0, 0, 1, 1, 0, -3, 1, 1);
 
     gSPEndDisplayList(arg0++);
 }
@@ -3810,7 +3810,7 @@ void func_8434A6D8(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434A720(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
 
@@ -3827,18 +3827,18 @@ void func_8434A794(s32 arg0, arg1_func_84344CE8* arg1) {
 
 void func_8434A7DC(void) {
     func_8432ED0C(0, 0x10, 6);
-    func_8432EC28(0, func_8434174C, &D_8140E460, 0x64, 1, 0xB, 0, 3, 6);
+    func_8432EC28(0, func_8434174C, &gParticleDefaultCallback, 0x64, 1, 0xB, 0, 3, 6);
 }
 
 void func_8434A844(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xA, 0, 0x26, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x26, 0);
 }
 
 void func_8434A898(void) {
     UNUSED s16 pad;
     s16 sp34;
 
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x59:
             sp34 = 0x10;
             break;
@@ -3849,13 +3849,13 @@ void func_8434A898(void) {
     }
 
     func_8432ED0C(0, 0x10, sp34);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xA, 0, 0x26, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x26, 0);
 }
 
 void func_8434A930(void) {
-    func_8432EC28(6, func_8434171C, &D_8140E460, 0, 1, 0xA, 0, 4, 2);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xA, 0, 5, 0);
-    func_84358598();
+    func_8432EC28(6, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 4, 2);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xA, 0, 5, 0);
+    ParticleEffect_MultiNodeA();
 }
 
 void func_8434A9CC(void) {
@@ -3865,22 +3865,22 @@ void func_8434A9CC(void) {
 void func_8434A9EC(void) {
     func_8432F2C8(4, 0xA, 0, 0xFF, 0x40);
     func_8432F884(8);
-    func_8432EC28(0xC, func_8434171C, &D_8140E460, 0, 1, 0xE, 0, 6, 0);
-    func_843588D8();
+    func_8432EC28(0xC, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xE, 0, 6, 0);
+    ParticleEffect_MultiNodeC();
 }
 
 void func_8434AA6C(void) {
     func_8432F2C8(6, 0xA, 0, 0xFF, 0x40);
     func_8432F884(0xA);
-    func_8432EC28(0xC, func_8434171C, &D_8140E460, 0, 1, 0xA, 0, 7, 0);
-    func_843588D8();
+    func_8432EC28(0xC, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 7, 0);
+    ParticleEffect_MultiNodeC();
 }
 
 void func_8434AAEC(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
     u8* var_a3;
     s32 idx = arg1 * 0xB48;
 
-    if (IsPrimaryEntity(func_8432CB60(gDefaultGraphRoot)->unk_10) == 0) {
+    if (IsPrimaryEntity(GetGraphNodeData(gDefaultGraphRoot)->unk_10) == 0) {
         var_a3 = D_8438E778 + idx;
     } else {
         var_a3 = D_8438E77C + idx;
@@ -3900,7 +3900,7 @@ void func_8434AC44(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434AC8C(void) {
-    func_8432ECA0(0, 8, 6, func_843416B0, &D_8140E460, 0, 1, 9, 0, 8, 0);
+    func_8432ECA0(0, 8, 6, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 8, 0);
 }
 
 void func_8434ACEC(void) {
@@ -3909,7 +3909,7 @@ void func_8434ACEC(void) {
 }
 
 void func_8434AD1C(void) {
-    func_8432EC28(0, func_8434171C, &D_8140E460, 0, 1, 0xE, 0, 9, 0);
+    func_8432EC28(0, func_8434171C, &gParticleDefaultCallback, 0, 1, 0xE, 0, 9, 0);
 }
 
 void func_8434AD70(void) {
@@ -3930,11 +3930,11 @@ void func_8434AD70(void) {
     }
 
     if (var_s0 == 0) {
-        func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x10, gParticleTexture_Default, 0xA, 0);
+        func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x10, gParticleTexture_Default, 0xA, 0);
     }
 }
 
-f32 func_8434AE68(unk_D_8140E720* arg0) {
+f32 func_8434AE68(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
     f32 sp18 = 1.0f;
 
@@ -3962,7 +3962,7 @@ f32 func_8434AE68(unk_D_8140E720* arg0) {
             break;
 
         case 0x5F:
-            func_8140901C(arg0, 15.0f);
+            Particle_AddVelocityLeft(arg0, 15.0f);
             sp1C = 10.0f;
             sp18 = 0.5f;
             break;
@@ -3992,21 +3992,21 @@ f32 func_8434AE68(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_81408E90(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp1C);
     return sp18;
 }
 
 void func_8434B000(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xB, 0, 0xB, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xB, 0, 0xB, 0);
     func_8432ED0C(0x2A, 0x10, 0x17);
 }
 
 void func_8434B064(void) {
     func_8432F344(0, 1, 0x18, 0xFF, 0, 8);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 9, 0, 0xC, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 0xC, 0);
 }
 
-void func_8434B0D8(unk_D_8140E720* arg0) {
+void func_8434B0D8(ParticleEffectInstance* arg0) {
     f32 sp1C = 0.0f;
 
     switch (func_843081BC(arg0->unk_10)) {
@@ -4018,34 +4018,34 @@ void func_8434B0D8(unk_D_8140E720* arg0) {
             sp1C = 20.0f;
             break;
     }
-    func_81408E90(arg0, sp1C);
+    Particle_AddVelocityYScaled(arg0, sp1C);
 }
 
-void func_8434B14C(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C048(arg0);
+void func_8434B14C(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetByteCD(arg0);
 
-    arg0->unk_14 = func_8432CB68(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
 
     if (arg0->unk_14 != NULL) {
         if ((sp26 == 0) || (sp26 == 1)) {
-            func_8432CE00(arg0->unk_14, 0x8C);
+            InitGraphNodeTexture(arg0->unk_14, 0x8C);
         } else if ((sp26 == 2) || (sp26 == 3)) {
-            func_8432CE00(arg0->unk_14, 0x8E);
+            InitGraphNodeTexture(arg0->unk_14, 0x8E);
         } else {
-            func_8432CE00(arg0->unk_14, 0x8D);
+            InitGraphNodeTexture(arg0->unk_14, 0x8D);
         }
 
-        func_8140B938(arg0, 1.0f);
+        Particle_SetScaleFactor1(arg0, 1.0f);
         func_8434B0D8(arg0);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434B21C(unk_D_8140E720* arg0) {
-    u32 temp_v0 = func_8140C048(arg0);
+void func_8434B21C(ParticleEffectInstance* arg0) {
+    u32 temp_v0 = Particle_GetByteCD(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
@@ -4054,11 +4054,11 @@ void func_8434B21C(unk_D_8140E720* arg0) {
 
         case 2:
             if ((temp_v0 == 0) || ((s32)temp_v0 == 1)) {
-                func_8140BC5C(arg0, 0x80, 8);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0x80, 8);
             } else if (temp_v0 == 3) {
-                func_8140BC5C(arg0, 0xFF, 0xFF);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 0xFF);
             } else {
-                func_8140BC5C(arg0, 0xFF, 4);
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 4);
             }
             break;
     }
@@ -4066,7 +4066,7 @@ void func_8434B21C(unk_D_8140E720* arg0) {
 
 void func_8434B2B8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     u8* a1;
-    unk_D_8140E720* spC8;
+    ParticleEffectInstance* spC8;
     u8 var_t0;
     s16 spC4;
     s16 spC2;
@@ -4085,8 +4085,8 @@ void func_8434B2B8(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     s16 var_t2;
     s16 var_t1;
 
-    spC8 = func_8432CB60(gDefaultGraphRoot);
-    temp_v0_2 = func_8140C048(spC8);
+    spC8 = GetGraphNodeData(gDefaultGraphRoot);
+    temp_v0_2 = Particle_GetByteCD(spC8);
     var_s1 = 0x20;
     var_t1 = 5;
     var_t2 = 5;
@@ -4305,57 +4305,57 @@ void func_8434BA28(s32 arg0, arg1_func_84344CE8* arg1) {
 }
 
 void func_8434BA70(void) {
-    func_8432EC28(0, func_8434B21C, &D_8140E460, 0, 1, 0xC, 0, 0, 0);
-    func_8432EC28(0, func_843417AC, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(4, func_843417AC, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(8, func_843417AC, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
-    func_8432EC28(0xC, func_843417AC, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(0x10, func_843417AC, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(0x14, func_843417AC, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
-    func_8432EC28(0x18, func_843417AC, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(0x1C, func_843417AC, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(0x20, func_843417AC, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0, func_8434B21C, &gParticleDefaultCallback, 0, 1, 0xC, 0, 0, 0);
+    func_8432EC28(0, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(4, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(8, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0xC, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(0x10, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(0x14, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0x18, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(0x1C, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(0x20, func_843417AC, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
     func_8432ED0C(0, 8, 0x35);
 }
 
 void func_8434BCD4(void) {
-    func_8432EC28(0, func_8434B21C, &D_8140E460, 0, 1, 0xC, 1, 0, 0);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(4, func_843416B0, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(8, func_843416B0, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
-    func_8432EC28(0xC, func_843416B0, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(0x10, func_843416B0, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(0x14, func_843416B0, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
-    func_8432EC28(0x18, func_843416B0, &D_8140E460, 0, 1, 9, 0, 0xD, 0);
-    func_8432EC28(0x1C, func_843416B0, &D_8140E460, 0, 1, 9, 1, 0xD, 0);
-    func_8432EC28(0x20, func_843416B0, &D_8140E460, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0, func_8434B21C, &gParticleDefaultCallback, 0, 1, 0xC, 1, 0, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(4, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(8, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0xC, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(0x10, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(0x14, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
+    func_8432EC28(0x18, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 0xD, 0);
+    func_8432EC28(0x1C, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 1, 0xD, 0);
+    func_8432EC28(0x20, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 2, 0xD, 0);
 }
 
 void func_8434BF2C(void) {
-    switch (func_8432C544()) {
+    switch (GetActionScriptId()) {
         case 0x8D:
             func_8432ED0C(0, 0x10, 6);
-            func_8432EC28(0, func_84341860, &D_8140E460, 0x80, 1, 0xC, 0xD, 0x1A, 0x20);
+            func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xD, 0x1A, 0x20);
             break;
 
         case 0x47:
             func_8432ED0C(0, 0x10, 0x3A);
-            func_8432EC28(0, func_84341860, &D_8140E460, 0x80, 1, 0xC, 0xB, 0x1A, 0x20);
+            func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xB, 0x1A, 0x20);
             break;
 
         case 0x48:
             func_8432ED0C(0, 0x10, 0x21);
-            func_8432EC28(0, func_84341860, &D_8140E460, 0x80, 1, 0xC, 0xC, 0x1A, 0x20);
+            func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xC, 0x1A, 0x20);
             break;
     }
 }
 
 void func_8434C070(void) {
-    func_8432EC28(0, func_8434B21C, &D_8140E460, 0, 1, 0xC, 4, 0, 0);
+    func_8432EC28(0, func_8434B21C, &gParticleDefaultCallback, 0, 1, 0xC, 4, 0, 0);
 }
 
 void func_8434C0C4(void) {
-    func_8432EC28(0, func_8434B21C, &D_8140E460, 0, 1, 0xC, 2, 0, 0);
+    func_8432EC28(0, func_8434B21C, &gParticleDefaultCallback, 0, 1, 0xC, 2, 0, 0);
     func_8432ED0C(0, 8, 0);
     func_8432EB2C(0x40);
     func_8432EDE8(0, 2, 0x10, 0xA);
@@ -4364,25 +4364,25 @@ void func_8434C0C4(void) {
 void func_8434C144(void) {
     func_8432EDE8(0, 2, 0x10, 0xA);
     func_8432F2C8(4, 0xA, 0xFF, 0, 8);
-    func_8432EC28(0, func_8434B21C, &D_8140E460, 0, 1, 0xC, 3, 0, 0);
-    func_8432ECA0(4, 4, 4, func_843529D8, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
+    func_8432EC28(0, func_8434B21C, &gParticleDefaultCallback, 0, 1, 0xC, 3, 0, 0);
+    func_8432ECA0(4, 4, 4, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
 }
 
-void func_8434C214(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void func_8434C214(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x42, 0xC2);
-        func_8140B938(arg0, 1.0f);
+        InitWaterAnimNode(arg0->unk_14, 0x42, 0xC2);
+        Particle_SetScaleFactor1(arg0, 1.0f);
         SetPrimEnvColorFromPair(arg0, 0x23);
-        func_8140BC20(arg0, 0);
-        func_8140BF4C(arg0, 0);
-        func_814081BC(arg0);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_SetShortAE(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434C29C(unk_D_8140E720* arg0) {
+void func_8434C29C(ParticleEffectInstance* arg0) {
     s16 sp26;
 
     switch (arg0->unk_B2) {
@@ -4391,41 +4391,41 @@ void func_8434C29C(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8140BC2C(arg0, 0xFF, 8);
-            func_8140BF60(arg0, 0xC8, 6);
+            Particle_ApproachPrimAlpha(arg0, 0xFF, 8);
+            Particle_ApproachShortAE(arg0, 0xC8, 6);
             break;
     }
 
-    func_8432D424(&sp26);
+    GetCameraYawFromEyeToAt(&sp26);
     Particle_SetRotationY(arg0, sp26);
 }
 
-void func_8434C320(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void func_8434C320(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CD70(arg0->unk_14, 0x42, 0xC2);
-        func_8432CDD8(arg0->unk_14, 0x28);
-        func_8140B938(arg0, 1.0f);
+        InitWaterAnimNode(arg0->unk_14, 0x42, 0xC2);
+        SetAnimChannelBase(arg0->unk_14, 0x28);
+        Particle_SetScaleFactor1(arg0, 1.0f);
         SetPrimEnvColorFromPair(arg0, 0x23);
-        func_8140BF4C(arg0, 0xFF);
-        func_814081BC(arg0);
+        Particle_SetShortAE(arg0, 0xFF);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434C3A8(unk_D_8140E720* arg0) {
+void func_8434C3A8(ParticleEffectInstance* arg0) {
     s16 sp1E;
 
     if (arg0->unk_B2 == 1) {
         func_8434C320(arg0);
     }
-    func_8432D424(&sp1E);
+    GetCameraYawFromEyeToAt(&sp1E);
     Particle_SetRotationY(arg0, sp1E);
 }
 
 void func_8434C3F0(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     switch (arg1) {
         case 0:
@@ -4455,7 +4455,7 @@ void func_8434C548(s32 arg0, arg1_func_84344CE8* arg1) {
 
 void func_8434C590(void) {
     func_8432ED0C(0, 8, 3);
-    func_8432EC28(0, func_8434C29C, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
+    func_8432EC28(0, func_8434C29C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
 }
 
 void func_8434C5F0(void) {
@@ -4463,28 +4463,28 @@ void func_8434C5F0(void) {
 }
 
 void func_8434C618(void) {
-    func_8432EC28(0, func_8434C29C, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
+    func_8432EC28(0, func_8434C29C, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
     func_8432ED0C(0, 0x20, 3);
     func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
     func_8432EF40(0xC, 5, 0x10, 0xA);
-    func_8432EC28(0xC, func_843529D8, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
+    func_8432EC28(0xC, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
     func_8432EB2C(0x21);
     func_8432EDE8(0, 0, 0x10, 0xA);
     func_8432F2C8(0, 0xA, 0xFF, 0, 0x10);
 }
 
 void func_8434C720(void) {
-    func_8432EC28(0, func_8434C3A8, &D_8140E460, 0, 1, 0xA, 0, 0, 0);
+    func_8432EC28(0, func_8434C3A8, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0, 0);
     func_8432EDE8(0, 0, 0x10, 0xA);
     func_8432ED0C(0, 0x20, 3);
     func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
-    func_8432EC28(0xC, func_843529D8, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
+    func_8432EC28(0xC, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 4, 9, 0, 0x18, 0xD);
     func_8432EB2C(0x21);
     func_8432F2C8(0, 0xA, 0xFF, 0, 0x10);
 }
 
 void func_8434C814(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0 = func_8432CB60(gDefaultGraphRoot);
+    ParticleEffectInstance* temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 100, 200, 255, temp_v0->prim_a);
@@ -4509,7 +4509,7 @@ void func_8434CA48(s32 arg0, arg1_func_84344CE8* arg1) {
     }
 }
 
-f32 func_8434CA90(unk_D_8140E720* arg0) {
+f32 func_8434CA90(ParticleEffectInstance* arg0) {
     f32 sp1C = 2.5f;
 
     if (func_843081BC(arg0->unk_10) == 0x5F) {
@@ -4519,136 +4519,136 @@ f32 func_8434CA90(unk_D_8140E720* arg0) {
 }
 
 void func_8434CAD8(void) {
-    func_8432EC28(0, func_84341860, &D_8140E460, 0xFF, 1, 0xC, 0, 0xE, 8);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0xFF, 1, 0xC, 0, 0xE, 8);
     func_8432EB2C(4);
-    func_8432ECA0(0, 4, 0x10, func_84354A10, &gParticleEffectData[0x4A], 0, 2, 0xE, 0, 0x4E, 3);
-    func_8432ECA0(0, 4, 0x10, func_84354A10, &gParticleEffectData[0x19], 0, 2, 0xE, 0, 0x4D, 3);
-    func_8432ECA0(0, 4, 0x10, func_84354A10, &gParticleEffectData[0xE], 0, 2, 0xE, 0, 0x4D, 3);
-    func_8432ECA0(0, 8, 5, func_84354A10, &gParticleEffectData[0xA], 0, 2, 0xE, 0, 0x4D, 4);
+    func_8432ECA0(0, 4, 0x10, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 2, 0xE, 0, 0x4E, 3);
+    func_8432ECA0(0, 4, 0x10, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x19], 0, 2, 0xE, 0, 0x4D, 3);
+    func_8432ECA0(0, 4, 0x10, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0xE], 0, 2, 0xE, 0, 0x4D, 3);
+    func_8432ECA0(0, 8, 5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0xA], 0, 2, 0xE, 0, 0x4D, 4);
 }
 
 void func_8434CC68(void) {
-    func_8432EC28(0, func_84341860, &D_8140E460, 0xFF, 1, 0xC, 0, 0xF, 0x40);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0xFF, 1, 0xC, 0, 0xF, 0x40);
     func_8432F440(4, 0xA, 0x35, 0xC, 0xFF);
     func_8432EC28(0, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, gParticleTexture_Default, 0x35, 0);
-    func_8432ECA0(0, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, gParticleTexture_Default, 0x4D, 0);
-    func_8432ECA0(0xA, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, gParticleTexture_Default, 0x4D, 0);
+    func_8432ECA0(0, 5, 3, ParticleEffect_Fireball_Stage3, &gParticleEffectData[0x19], 0, 8, 0x10, gParticleTexture_Default, 0x4D, 0);
+    func_8432ECA0(0xA, 1, 3, ParticleEffect_SmallBurst_Main, &gParticleEffectData[0x19], 0, 8, 0x11, gParticleTexture_Default, 0x4D, 0);
     func_8432EB2C(0x10);
-    func_8432ECA0(0, 4, 5, func_84354A10, &gParticleEffectData[0xA], 0, 1, 0xE, 0, 0x4D, 4);
+    func_8432ECA0(0, 4, 5, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0xA], 0, 1, 0xE, 0, 0x4D, 4);
 }
 
 void func_8434CE14(void) {
     func_8432EB2C(0x41);
-    func_8432ECA0(0, 4, 0x20, func_84354A10, &gParticleEffectData[0x4A], 0, 2, 7, 0, 0x33, 8);
-    func_8432ECA0(0, 4, 0x20, func_84354A10, &gParticleEffectData[0x19], 0, 2, 7, 0, 0xC, 8);
-    func_8432ECA0(0, 4, 0x20, func_84354A10, &gParticleEffectData[0xE], 0, 2, 7, 0, 0xC, 8);
-    func_8432ECA0(0, 8, 0xA, func_84354A10, &gParticleEffectData[0xA], 0, 2, 7, 0, 0xC, 4);
+    func_8432ECA0(0, 4, 0x20, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x4A], 0, 2, 7, 0, 0x33, 8);
+    func_8432ECA0(0, 4, 0x20, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x19], 0, 2, 7, 0, 0xC, 8);
+    func_8432ECA0(0, 4, 0x20, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0xE], 0, 2, 7, 0, 0xC, 8);
+    func_8432ECA0(0, 8, 0xA, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0xA], 0, 2, 7, 0, 0xC, 4);
 }
 
 void func_8434CF64(void) {
-    func_8432ECA0(0, 4, 4, func_84354BE4, &gParticleEffectData[0x4A], 0, 3, 0xE, 0, 0x33, 0xC);
-    func_8432ECA0(0, 4, 4, func_84354BE4, &gParticleEffectData[0x19], 0, 3, 0xE, 0, 0xC, 0xC);
-    func_8432ECA0(0, 4, 4, func_84354BE4, &gParticleEffectData[0xE], 0, 3, 0xE, 0, 0xC, 0xC);
-    func_8432ECA0(0, 4, 4, func_84354BE4, &gParticleEffectData[0xA], 0, 3, 0xE, 0, 0xC, 4);
-    func_8432ECA0(0, 2, 0xC, func_84337C6C, &gParticleEffectData[0x45], 0, 4, 0x11, 7, 0x33, 0);
+    func_8432ECA0(0, 4, 4, ParticleEffect_AdvancedSetup, &gParticleEffectData[0x4A], 0, 3, 0xE, 0, 0x33, 0xC);
+    func_8432ECA0(0, 4, 4, ParticleEffect_AdvancedSetup, &gParticleEffectData[0x19], 0, 3, 0xE, 0, 0xC, 0xC);
+    func_8432ECA0(0, 4, 4, ParticleEffect_AdvancedSetup, &gParticleEffectData[0xE], 0, 3, 0xE, 0, 0xC, 0xC);
+    func_8432ECA0(0, 4, 4, ParticleEffect_AdvancedSetup, &gParticleEffectData[0xA], 0, 3, 0xE, 0, 0xC, 4);
+    func_8432ECA0(0, 2, 0xC, ParticleEffect_Type0_Main, &gParticleEffectData[0x45], 0, 4, 0x11, 7, 0x33, 0);
 }
 
 void func_8434D0F8(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x13, gParticleTexture_Default, 0x10, 0);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x13, gParticleTexture_Default, 0x10, 0);
     func_8432EDE8(0x22, 0, 0x10, 0xA);
 }
 
-void func_8434D168(unk_D_8140E720* arg0) {
-    func_8140B938(arg0, 0.2f);
+void func_8434D168(ParticleEffectInstance* arg0) {
+    Particle_SetScaleFactor1(arg0, 0.2f);
     SetPrimEnvColorFromPair(arg0, 0x33);
-    func_8140BC20(arg0, 0xFF);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xFF);
+    Particle_IncrementState(arg0);
 }
 
-void func_8434D1B0(unk_D_8140E720* arg0) {
+void func_8434D1B0(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8434D168(arg0);
             break;
 
         case 2:
-            func_814084D8(arg0, 0, 7, 1, 2, 0);
-            func_8140BC2C(arg0, 0x20, 0x40);
+            Particle_AnimLoopForwardComplete(arg0, 0, 7, 1, 2, 0);
+            Particle_ApproachPrimAlpha(arg0, 0x20, 0x40);
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
-    func_8140B98C(arg0, 0.5f, 0.1f);
+    Particle_ApproachScaleFactor1(arg0, 0.5f, 0.1f);
 }
 
-void func_8434D260(unk_D_8140E720* arg0) {
-    func_8140C038(arg0);
-    func_8140B938(arg0, 0.3f);
-    func_8140A52C(arg0, -0x1000, 0, 0);
+void func_8434D260(ParticleEffectInstance* arg0) {
+    Particle_GetShortAC(arg0);
+    Particle_SetScaleFactor1(arg0, 0.3f);
+    Particle_AddRotationDeltaXYZ(arg0, -0x1000, 0, 0);
     Particle_SetTargetRotationY(arg0, func_8432FE44(arg0));
     Particle_SetRotationDeltaY(arg0, 0x80);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8434D2E0(unk_D_8140E720* arg0) {
+void func_8434D2E0(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8434D260(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                arg0->unk_14 = func_8432CB68(arg0);
-                func_8432CD70(arg0->unk_14, 0xA0, 0xA1);
-                func_81408328(arg0);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                arg0->unk_14 = AllocateGraphNode(arg0);
+                InitWaterAnimNode(arg0->unk_14, 0xA0, 0xA1);
+                Particle_EnableFlag4(arg0);
             }
             break;
 
         case 3:
-            if (func_8140826C(arg0, 0xA) != 0) {
+            if (Particle_ProcessTimer80(arg0, 0xA) != 0) {
                 Particle_SetSpeed(arg0, 8.0f);
                 ParticleNode_CreateMultiple(arg0, func_8434D1B0, &gParticleEffectData[0x4A], 1);
-                func_8432D8E8(arg0, func_84354FA8, &gParticleEffectData[0x3D], 0xC, 0x33, 0);
+                func_8432D8E8(arg0, ParticleEffect_RandomRotationHandler, &gParticleEffectData[0x3D], 0xC, 0x33, 0);
             }
             break;
 
         case 4:
             ParticleNode_CreateMultiple(arg0, func_8434D1B0, &gParticleEffectData[0x4A], 1);
-            func_8140A76C(arg0, 0x1000, 0x200);
+            Particle_ApproachRotationXWrapToTarget(arg0, 0x1000, 0x200);
             Particle_ApproachRotationYWrap(arg0);
-            func_8140826C(arg0, 0xF);
+            Particle_ProcessTimer80(arg0, 0xF);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    if (func_81408368(arg0) != 0) {
-        func_81409D0C(arg0);
+    if (Particle_HasFlag4(arg0) != 0) {
+        Particle_ApplyB2B4AndAddAll(arg0);
     }
 }
 
 void func_8434D448(void) {
-    func_8432EC28(0, func_8434D2E0, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432EC28(0, func_8434D2E0, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }
 
-void func_8434D4A0(unk_D_8140E720* arg0) {
-    func_8140C038(arg0);
-    func_8140B938(arg0, 0.4f);
-    func_81408CA0(arg0, 15.0f);
-    func_81408ED0(arg0, 50.0f);
-    func_8140A52C(arg0, 0x800, -0x8000, 0);
+void func_8434D4A0(ParticleEffectInstance* arg0) {
+    Particle_GetShortAC(arg0);
+    Particle_SetScaleFactor1(arg0, 0.4f);
+    Particle_SetVelocityYScaled(arg0, 15.0f);
+    Particle_AddVelocityForward(arg0, 50.0f);
+    Particle_AddRotationDeltaXYZ(arg0, 0x800, -0x8000, 0);
     Particle_SetSpeed(arg0, 8.0f);
-    func_814081BC(arg0);
-    arg0->unk_14 = func_8432CB68(arg0);
-    func_8432CE00(arg0->unk_14, 0xA0);
+    Particle_IncrementState(arg0);
+    arg0->unk_14 = AllocateGraphNode(arg0);
+    InitGraphNodeTexture(arg0->unk_14, 0xA0);
 }
 
-void func_8434D530(unk_D_8140E720* arg0) {
+void func_8434D530(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8434D4A0(arg0);
@@ -4656,58 +4656,58 @@ void func_8434D530(unk_D_8140E720* arg0) {
 
         case 2:
             ParticleNode_CreateMultiple(arg0, func_8434D1B0, &gParticleEffectData[0x4A], 1);
-            func_8140A76C(arg0, 0x1000, 0x80);
-            func_8140826C(arg0, 7);
+            Particle_ApproachRotationXWrapToTarget(arg0, 0x1000, 0x80);
+            Particle_ProcessTimer80(arg0, 7);
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    if (func_81408368(arg0) != 0) {
-        func_81409D0C(arg0);
+    if (Particle_HasFlag4(arg0) != 0) {
+        Particle_ApplyB2B4AndAddAll(arg0);
     }
 }
 
 void func_8434D5EC(void) {
-    func_8432EC28(0, func_8434D530, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    func_8432EC28(5, func_843529D8, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
+    func_8432EC28(0, func_8434D530, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    func_8432EC28(5, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
     func_8432EC28(7, func_84351984, &gParticleEffectData[0x3D], 0, 8, 0x11, 9, 0, 0);
 }
 
-void func_8434D6C0(unk_D_8140E720* arg0) {
-    arg0->unk_14 = func_8432CB68(arg0);
+void func_8434D6C0(ParticleEffectInstance* arg0) {
+    arg0->unk_14 = AllocateGraphNode(arg0);
     if (arg0->unk_14 != NULL) {
-        func_8432CE00(arg0->unk_14, 0xA2);
-        func_8140B938(arg0, 1.0f);
-        func_8140BC20(arg0, 0);
-        func_814081BC(arg0);
+        InitGraphNodeTexture(arg0->unk_14, 0xA2);
+        Particle_SetScaleFactor1(arg0, 1.0f);
+        Particle_SetPrimAlpha(arg0, 0);
+        Particle_IncrementState(arg0);
     } else {
-        func_81408158(arg0);
+        Particle_ResetState(arg0);
     }
 }
 
-void func_8434D72C(unk_D_8140E720* arg0) {
+void func_8434D72C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8434D6C0(arg0);
             break;
 
         case 2:
-            func_8140BC5C(arg0, 0x80, 8);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0x80, 8);
             break;
     }
 }
 
 void func_8434D77C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     UNUSED s32 pad;
-    unk_D_8140E720* sp48 = func_8432CB60(gDefaultGraphRoot);
+    ParticleEffectInstance* sp48 = GetGraphNodeData(gDefaultGraphRoot);
     UNUSED s16 pad2;
     s16 sp44;
     s16 sp42;
 
-    switch (func_8140C058(sp48)) {
+    switch (Particle_GetShortCF(sp48)) {
         case 0:
             sp44 = -5;
             sp42 = 3;
@@ -4722,7 +4722,7 @@ void func_8434D77C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     gDPPipeSync(arg0++);
     gDPSetPrimColor(arg0++, 0, 0x80, 55, 255, 255, sp48->prim_a);
 
-    arg0 = func_84341B84(arg0++, arg1, 0x20, 5, 1, sp44, 0xD, 0xC, -1, sp42, 0xB, 0xD);
+    arg0 = Gfx_LoadParticleTextureTileFromStruct(arg0++, arg1, 0x20, 5, 1, sp44, 0xD, 0xC, -1, sp42, 0xB, 0xD);
     gSPEndDisplayList(arg0++);
 }
 
@@ -4735,57 +4735,57 @@ void func_8434D890(s32 arg0, arg1_func_84344CE8* arg1) {
 
 void func_8434D8D8(void) {
     func_8432ED0C(0, 0x10, 0);
-    func_8432EC28(0, func_8434D72C, &D_8140E460, 0, 1, 9, 0, 0, 0);
+    func_8432EC28(0, func_8434D72C, &gParticleDefaultCallback, 0, 1, 9, 0, 0, 0);
 }
 
 void func_8434D938(void) {
     func_8432F344(0, 2, 0xA, 0xFF, 0, 0x10);
-    func_8432EC28(0, func_8434D72C, &D_8140E460, 0, 1, 9, 0, 1, 0);
-    func_8432ECA0(4, 4, 4, func_843529D8, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
+    func_8432EC28(0, func_8434D72C, &gParticleDefaultCallback, 0, 1, 9, 0, 1, 0);
+    func_8432ECA0(4, 4, 4, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
 }
 
-void func_8434D9F8(unk_D_8140E720* arg0) {
+void func_8434D9F8(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             break;
 
         case 2:
-            func_8140BC5C(arg0, arg0->unk_A6, func_8140C040(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
             break;
 
         case 3:
-            func_8140826C(arg0, 0x20);
+            Particle_ProcessTimer80(arg0, 0x20);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0xA);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0xA);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
 void func_8434DA94(void) {
     func_8432ED0C(0, 5, 0);
-    func_8432EC28(0, func_84341860, &D_8140E460, 0xFF, 1, 0xC, 8, 0x18, 5);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0xFF, 1, 0xC, 8, 0x18, 5);
     func_8432F344(0x32, 1, 0xA, 0, 0xFF, 0x20);
     func_8432ED74(0x32, 1, 0x20, 0xA, 0xFF);
 }
 
 void func_8434DB40(void) {
     func_8432ED0C(0, 6, 0);
-    func_8432EC28(0, func_84341860, &D_8140E460, 0xFF, 1, 0xC, 7, 0x17, 6);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0xFF, 1, 0xC, 7, 0x17, 6);
     func_8432ED74(0x32, 1, 0x20, 0xA, 0xFF);
     func_8432F344(0x32, 1, 0xA, 0, 0xFF, 0x20);
 }
 
 void func_8434DBEC(void) {
     func_8432ED0C(0, 0x40, 0);
-    func_8432EC28(0, func_8434D9F8, &D_8140E460, 0xFF, 1, 0xC, 8, 0x18, 0x20);
-    func_8432ECA0(4, 4, 4, func_843529D8, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
+    func_8432EC28(0, func_8434D9F8, &gParticleDefaultCallback, 0xFF, 1, 0xC, 8, 0x18, 0x20);
+    func_8432ECA0(4, 4, 4, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
     func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
     func_8432EDE8(0, 0, 0x10, 0xA);
     func_8432EB2C(0x21);
@@ -4795,8 +4795,8 @@ void func_8434DBEC(void) {
 
 void func_8434DD08(void) {
     func_8432ED0C(0, 0x40, 0);
-    func_8432EC28(0, func_8434D9F8, &D_8140E460, 0xFF, 1, 0xC, 7, 0x17, 0x20);
-    func_8432ECA0(4, 4, 4, func_843529D8, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
+    func_8432EC28(0, func_8434D9F8, &gParticleDefaultCallback, 0xFF, 1, 0xC, 7, 0x17, 0x20);
+    func_8432ECA0(4, 4, 4, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 3, 9, 0, 0x18, 0xD);
     func_8432F2C8(8, 0xA, 0, 0xFF, 0x40);
     func_8432EDE8(0, 0, 0x10, 0xA);
     func_8432EB2C(0x21);
@@ -4804,7 +4804,7 @@ void func_8434DD08(void) {
     func_8432ED0C(8, 4, 0xA);
 }
 
-f32 func_8434DE24(unk_D_8140E720* arg0) {
+f32 GetParticleScaleForEffect(ParticleEffectInstance* arg0) {
     f32 sp1C = 1.0f;
 
     if (func_843081BC(arg0->unk_10) == 0x34) {
@@ -4813,48 +4813,48 @@ f32 func_8434DE24(unk_D_8140E720* arg0) {
     return sp1C;
 }
 
-void func_8434DE6C(void) {
+void ParticleEffect_InitSmallExplosion(void) {
     s16 sp46 = 7;
 
     if (func_8432F9CC(0x14) != 0) {
         sp46 = gParticleTexture_Default;
     }
     func_8432ED0C(0, 0x10, 6);
-    func_8432EC28(0, func_84341860, &D_8140E460, 0x80, 1, 0xC, 0xA, 0x1A, 4);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xA, 0x1A, 4);
     func_8432F344(0, 1, 0xC, 0, 0xC8, 3);
-    func_8432ECA0(0x3C, 4, 0xE, func_84354A10, &gParticleEffectData[0x3D], 0, 1, 0x11, sp46, 0x33, 7);
-    func_8432ECA0(0x3D, 8, 7, func_84354A10, &gParticleEffectData[0x3D], 0, 1, 0x11, sp46, 0x33, 7);
+    func_8432ECA0(0x3C, 4, 0xE, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, sp46, 0x33, 7);
+    func_8432ECA0(0x3D, 8, 7, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 0x11, sp46, 0x33, 7);
 }
 
-void func_8434DFC0(void) {
+void ParticleEffect_InitLargeExplosion(void) {
     func_8432ED0C(0, 0x20, 6);
-    func_8432EC28(0, func_84341860, &D_8140E460, 0x80, 1, 0xC, 0xA, 0x1A, 0x20);
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xA, 0x1A, 0x20);
 }
 
-void func_8434E02C(void) {
-    func_84358C18(0xE);
+void ParticleEffect_InitFire(void) {
+    ParticleEffect_CreateMultipleNodes(0xE);
     func_8432ED0C(0, 2, 0x10);
     func_8432F2C8(0, 0xC, 0, 0xC8, 4);
     func_8432F440(0x32, 0xC, 0x19, 2, 0xC8);
     func_8432EC28(0x40, func_84334154, &gParticleEffectData[0x4F], 0, 0x20, 7, 0, 0, 0);
 }
 
-void func_8434E0CC(void) {
+void ParticleEffect_InitSmoke(void) {
     func_8432ED0C(0, 0x20, 6);
     func_8432F2C8(0, 0x14, 0, 0x80, 0x10);
     func_8432F7A0(0, 0xFF, 0, 0x10);
-    func_8432EC28(0, func_8434174C, &D_8140E460, 0xFF, 1, 9, gParticleTexture_Default, 0x12, 0x20);
-    func_8432ECA0(0, 1, 0xC, func_84354A10, &gParticleEffectData[0x3D], 0, 1, 9, 0, 0x16, 5);
+    func_8432EC28(0, func_8434174C, &gParticleDefaultCallback, 0xFF, 1, 9, gParticleTexture_Default, 0x12, 0x20);
+    func_8432ECA0(0, 1, 0xC, ParticleEffect_BasicSetupHandler, &gParticleEffectData[0x3D], 0, 1, 9, 0, 0x16, 5);
 }
 
-void func_8434E1B8(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 9, 0, 0x13, 0);
+void ParticleEffect_PlaySoundAndReset(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 9, 0, 0x13, 0);
     func_8432EB20(4);
-    func_8433C940();
+    InitParticleEffectSet_Variant4();
 }
 
-void func_8434E21C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
-    unk_D_8140E720* temp_v0;
+void ParticleEffect_DrawQuad(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+    ParticleEffectInstance* temp_v0;
     UNUSED s32 pad;
     s16 var_t2;
     s16 tmp;
@@ -4871,7 +4871,7 @@ void func_8434E21C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     UNUSED s16 pad2;
     s16 var_t5;
 
-    temp_v0 = func_8432CB60(gDefaultGraphRoot);
+    temp_v0 = GetGraphNodeData(gDefaultGraphRoot);
     var_t1 = 0x96;
     var_t2 = 0xFF;
     var_s1 = 0x20;
@@ -4970,105 +4970,105 @@ void func_8434E21C(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_8434E6AC(s32 arg0, arg1_func_84344CE8* arg1) {
+void ParticleEffect_AllocateDisplayList(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_8434E21C(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        ParticleEffect_DrawQuad(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
-void func_8434E6F4(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0xE, 5, 0x14, 0);
+void ParticleEffect_TriggerEffect(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0xE, 5, 0x14, 0);
 }
 
-void func_8434E74C(void) {
-    func_8432EC28(0, func_84341860, &D_8140E460, 0xBE, 1, 9, 6, 0x15, 2);
+void ParticleEffect_TriggerSpecial(void) {
+    func_8432EC28(0, func_84341860, &gParticleDefaultCallback, 0xBE, 1, 9, 6, 0x15, 2);
     func_8432F2C8(8, 0xA, 0, 0xFF, 4);
-    func_84358E24();
+    ParticleEffect_GroupSetupB();
 }
 
-void func_8434E7CC(unk_D_8140E720* arg0) {
+void func_8434E7CC(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
-            func_8140BCA8(arg0, 2);
+            Particle_SetTimerA6(arg0, 2);
             break;
 
         case 2:
-            func_8140BB14(arg0, 0, 0x20);
+            Particle_ApproachPrimG(arg0, 0, 0x20);
 
-            if (func_8140BDAC != NULL) {
-                func_8140BC2C(arg0, 0, 0x20);
+            if (Particle_DecrementTimerA6ToZero != NULL) {
+                Particle_ApproachPrimAlpha(arg0, 0, 0x20);
             }
 
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_81408150(arg0);
+                Particle_ClearActiveFlag(arg0);
             }
             break;
     }
 }
 
-void func_8434E870(void) {
+void ParticleEffect_TriggerAnother(void) {
     func_8432F2C8(4, 0xA, 0xFF, 0, 0x20);
-    func_8432EC28(4, func_8434E7CC, &D_8140E460, 0, 1, 9, 0, 0x19, 0);
+    func_8432EC28(4, func_8434E7CC, &gParticleDefaultCallback, 0, 1, 9, 0, 0x19, 0);
 }
 
-void func_8434E8E0(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
+void ParticleEffect_TriggerDefault1(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
 }
 
-void func_8434E940(void) {
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
+void ParticleEffect_TriggerDefault2(void) {
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
 }
 
-void func_8434E9A0(void) {
+void ParticleEffect_TriggerDefault3(void) {
     func_8432ED0C(0, 0x20, 0);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
 }
 
-void func_8434EA10(void) {
+void ParticleEffect_TriggerDefault4(void) {
     func_8432F2C8(0, 0xC, 0, 0xFF, 0x40);
-    func_8432EC28(0, func_843416B0, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
+    func_8432EC28(0, func_843416B0, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
     func_8432F2C8(0x30, 0xC, 0xFF, 0, 2);
 }
 
-void func_8434EAA8(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C040(arg0);
+void ParticleEffect_ColorStateHandler(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             if (sp26 == 1) {
-                func_8140B938(arg0, 1.5f);
-                func_81408F38(arg0, 40.0f);
+                Particle_SetScaleFactor1(arg0, 1.5f);
+                Particle_AddVelocityBackward(arg0, 40.0f);
             }
             break;
 
         case 2:
             AreBothColorsSupported(arg0, 0x33, 0x40);
-            func_8140BC5C(arg0, 0xFF, 0x40);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, 0x40);
             break;
 
         case 3:
             AreBothColorsSupported(arg0, 0, 0x40);
-            func_8140BC5C(arg0, 0, 0x40);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x40);
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_8434EBA0(void) {
-    func_8432ECA0(0, 2, 3, func_8434EAA8, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x20, 0);
+void ParticleEffect_CreateWithCallback(void) {
+    func_8432ECA0(0, 2, 3, ParticleEffect_ColorStateHandler, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x20, 0);
 }
 
-void func_8434EC08(void) {
-    func_8432EC28(0, func_8434EAA8, &D_8140E460, 0, 1, 0x11, gParticleTexture_Default, 0x20, 1);
+void ParticleEffect_CreateCallback(void) {
+    func_8432EC28(0, ParticleEffect_ColorStateHandler, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x20, 1);
 }
 
-void func_8434EC68(unk_D_8140E720* arg0) {
+void ParticleEffect_ColorStateHandler2(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
@@ -5076,165 +5076,165 @@ void func_8434EC68(unk_D_8140E720* arg0) {
 
         case 2:
             AreBothColorsSupported(arg0, 0x33, 0x24);
-            func_8140BC2C(arg0, 0xFF, 0x1D);
+            Particle_ApproachPrimAlpha(arg0, 0xFF, 0x1D);
             if (Anim_HasReachedEnd(arg0->unk_14) != 0) {
-                func_81408150(arg0);
+                Particle_ClearActiveFlag(arg0);
             }
             break;
     }
 }
 
-void func_8434ECF4(void) {
-    func_8432EC28(0, func_8434EC68, &D_8140E460, 0, 1, 0xA, 0, 0x1F, 0);
+void ParticleEffect_CreateColorVariant(void) {
+    func_8432EC28(0, ParticleEffect_ColorStateHandler2, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x1F, 0);
 }
 
-void func_8434ED48(void) {
+void ParticleEffect_SetMode(void) {
     func_8432ED0C(0, 8, 0x22);
 }
 
-void func_8434ED70(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C038(arg0);
-    s16 sp24 = func_8140C058(arg0);
+void ParticleEffect_ConfigureParameters(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortAC(arg0);
+    s16 sp24 = Particle_GetShortCF(arg0);
 
-    func_8140C040(arg0);
+    Particle_GetShortCE(arg0);
 
     switch (sp26) {
         case 0:
-            func_81408BE0(arg0, 0.0f, 0.0f, 0.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 0.0f, 0.0f);
             break;
 
         case 1:
-            func_81408BE0(arg0, 0.0f, 10.0f, 10.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 10.0f, 10.0f);
             break;
 
         case 2:
-            func_81408BE0(arg0, 0.0f, 15.0f, -15.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 15.0f, -15.0f);
             break;
     }
 
-    func_8140B938(arg0, 0.1f);
-    func_8140B95C(arg0, 2.0f);
-    func_8140B974(arg0, 0.0625f);
+    Particle_SetScaleFactor1(arg0, 0.1f);
+    Particle_SetScaleFactor2(arg0, 2.0f);
+    Particle_SetScaleFactor3(arg0, 0.0625f);
     SetPrimEnvColorFromPair(arg0, sp24);
-    func_8140BC20(arg0, 0xFF);
-    func_8140BCA8(arg0, sp26 * 8);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xFF);
+    Particle_SetTimerA6(arg0, sp26 * 8);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8434EEA4(unk_D_8140E720* arg0) {
+void ParticleEffect_MainStateHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434ED70(arg0);
+            ParticleEffect_ConfigureParameters(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 0xA);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 0xA);
             }
             break;
 
         case 3:
-            func_8140BA1C(arg0);
-            if (func_8140BDAC(arg0) != 0) {
-                func_8140BC5C(arg0, 0, 0x10);
+            Particle_ApproachScaleFactor2(arg0);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             }
             break;
 
         case 4:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_8434EF68(void) {
-    func_8432EC28(0, func_8434EEA4, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x45, 0);
+void ParticleEffect_CreateVariant45(void) {
+    func_8432EC28(0, ParticleEffect_MainStateHandler, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x45, 0);
 }
 
-void func_8434EFBC(void) {
-    func_8432EC28(0, func_8434EEA4, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x47, 0);
+void ParticleEffect_CreateVariant47(void) {
+    func_8432EC28(0, ParticleEffect_MainStateHandler, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x47, 0);
 }
 
-void func_8434F010(void) {
-    func_8432EC28(0, func_843431B0, &D_8140E460, 0x1E, 3, 6, 0, 0, 0);
+void ParticleEffect_CreateTypeX(void) {
+    func_8432EC28(0, ParticleEffect_HandleBurstState, &gParticleDefaultCallback, 0x1E, 3, 6, 0, 0, 0);
 }
 
-void func_8434F060(void) {
-    func_8432EC28(0, func_843529D8, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
+void ParticleEffect_CreateSmoke(void) {
+    func_8432EC28(0, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
 }
 
-void func_8434F0B8(void) {
-    func_8432EC28(0x10, func_843529D8, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
+void ParticleEffect_CreateSmokeHighPriority(void) {
+    func_8432EC28(0x10, ParticleEffect_FireworkMain, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 0, 6);
 }
 
-void func_8434F110(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C038(arg0);
-    s16 sp24 = func_8140C058(arg0);
+void ParticleEffect_ConfigureParameters_Slow(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortAC(arg0);
+    s16 sp24 = Particle_GetShortCF(arg0);
 
-    func_8140C040(arg0);
+    Particle_GetShortCE(arg0);
 
     switch (sp26) {
         case 0:
-            func_81408BE0(arg0, 0.0f, 0.0f, 0.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 0.0f, 0.0f);
             break;
 
         case 1:
-            func_81408BE0(arg0, 0.0f, 10.0f, 10.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 10.0f, 10.0f);
             break;
 
         case 2:
-            func_81408BE0(arg0, 0.0f, 15.0f, -15.0f);
+            Particle_SetVelocityScaledXYZ(arg0, 0.0f, 15.0f, -15.0f);
             break;
     }
 
-    func_8140B938(arg0, 0.01f);
-    func_8140B95C(arg0, 0.5f);
-    func_8140B974(arg0, 0.05f);
+    Particle_SetScaleFactor1(arg0, 0.01f);
+    Particle_SetScaleFactor2(arg0, 0.5f);
+    Particle_SetScaleFactor3(arg0, 0.05f);
     SetPrimEnvColorFromPair(arg0, sp24);
-    func_8140BC20(arg0, 0xFF);
-    func_8140BCA8(arg0, sp26 * 8);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0xFF);
+    Particle_SetTimerA6(arg0, sp26 * 8);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8434F248(unk_D_8140E720* arg0) {
+void func_8434F248(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8434F110(arg0);
+            ParticleEffect_ConfigureParameters_Slow(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_8140BCA8(arg0, 0xA);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_SetTimerA6(arg0, 0xA);
             }
             break;
 
         case 3:
-            func_8140BA1C(arg0);
-            func_814099E0(arg0, 1.0f);
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 0x10);
+            Particle_ApproachScaleFactor2(arg0);
+            Particle_AddScaledVelocityY(arg0, 1.0f);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 0x10);
             }
             break;
 
         case 4:
-            func_8140ADBC(arg0, 4.0f, 0.5f);
-            func_814099E0(arg0, arg0->unk_74);
-            func_8140BC2C(arg0, 0, 0x10);
-            if (func_8140BDD0(arg0) != 0) {
+            Particle_ApproachSpeedScaled(arg0, 4.0f, 0.5f);
+            Particle_AddScaledVelocityY(arg0, arg0->unk_74);
+            Particle_ApproachPrimAlpha(arg0, 0, 0x10);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
                 break;
             }
             break;
 
         case 5:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_8434F350(void) {
+void ParticleEffect_CreateDual(void) {
     func_8432EC28(0, func_8434F248, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
     func_8432EC28(0x10, func_8434F248, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
 }

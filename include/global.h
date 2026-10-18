@@ -514,10 +514,10 @@ typedef struct arg1_func_81407874_014_000_010 {
     /* 0x0F */ u8 unk_0F;
 } arg1_func_81407874_014_000_010; // size >= 0x10
 
-typedef struct func_88002628_sp38 {
+typedef struct TextObjectThreadData {
     /* 0x000 */ OSThread thread;
     /* 0x1B0 */ char unk1B0[0x10];
-} func_88002628_sp38; // size = 0x1C0
+} TextObjectThreadData; // size = 0x1C0
 
 typedef struct unk_func_88500020 {
     /* 0x00 */ s32 unk_00;

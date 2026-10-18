@@ -27,7 +27,7 @@ void HandleMoveHitAnimation(unk_D_84390010* arg0) {
         GraphNode_TriggerSound(&arg0->unk_000, sp20->unk_01);
         SetAnimStateIndex(&arg0->unk_000, 3);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
-        func_843061EC(arg0, 2);
+        SetEntityAnimFlags(arg0, 2);
         func_8432C7A0(1, arg0);
         PlayBattleSoundEffect(arg0, 0x13);
     }
@@ -43,7 +43,7 @@ void StartMoveAnimation(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 2) {
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        func_84306200(arg0, 2);
+        ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
@@ -55,7 +55,7 @@ void ResetMoveStateAndStartAnimation(unk_D_84390010* arg0) {
         ptr->unk_05 = 0;
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        func_84306200(arg0, 2);
+        ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
@@ -64,7 +64,7 @@ void ResumeMoveAnimationIfNotTriggered(unk_D_84390010* arg0) {
     if ((arg0->unk_654.unk_34 & 2) && !(arg0->unk_654.unk_38.unk_15 & 0x20)) {
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        func_84306200(arg0, 2);
+        ClearEntityAnimFlags(arg0, 2);
         TriggerCurrentAnimAction(arg0);
     }
 }
@@ -76,21 +76,21 @@ void HandleItemOrStatusEffect(unk_D_84390010* arg0) {
 
     if ((gBattleState.unk_00->unk_38 != 0xB) || (gBattleState.unk_00->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->unk_654.unk_34 & 1)) {
-            func_84305A74(arg0, 0xAF, 2);
+            PlayAnimSoundSimple(arg0, 0xAF, 2);
             func_8432C7A0(3, arg0);
             PlayBattleSoundEffect(arg0, 0x32);
-            func_843061EC(arg0, 1);
+            SetEntityAnimFlags(arg0, 1);
         }
 
         if (!(sp2C->unk_05 & 7) && (sp24->unk_34 & 1)) {
             if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
                 sp24->unk_36 = 0;
-                func_843058C4(arg0, 0xA5);
+                PlayAnimSoundIfApplicable(arg0, 0xA5);
             } else {
-                func_84305A74(arg0, 0xB8, 1);
+                PlayAnimSoundSimple(arg0, 0xB8, 1);
             }
             func_8432C80C(3, arg0);
-            func_84306200(arg0, 1);
+            ClearEntityAnimFlags(arg0, 1);
         }
     }
 }
@@ -102,18 +102,18 @@ void ProcessStatusEffectEnd(unk_D_84390010* arg0) {
         ptr->unk_05 = 0;
         if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
             arg0->unk_654.unk_36 = 0;
-            func_843058C4(arg0, 0xA5);
+            PlayAnimSoundIfApplicable(arg0, 0xA5);
         } else {
-            func_84305A74(arg0, 0xB8, 1);
+            PlayAnimSoundSimple(arg0, 0xB8, 1);
         }
         func_8432C80C(3, arg0);
-        func_84306200(arg0, 1);
+        ClearEntityAnimFlags(arg0, 1);
     }
 }
 
 void FinalizeStatusEffect(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 1) {
         func_8432C80C(3, arg0);
-        func_84306200(arg0, 1);
+        ClearEntityAnimFlags(arg0, 1);
     }
 }

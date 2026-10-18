@@ -47,7 +47,7 @@ extern u8 D_1003EF0[];
 extern u8 D_2004000[];
 extern u8 D_2004320[];
 
-Gfx D_8006F470[] = {
+Gfx gMenuDL_BackgroundFill[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2),

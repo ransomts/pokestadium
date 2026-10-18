@@ -114,7 +114,7 @@ void func_83000058(void) {
         D_83003C88 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
         if (gBattleContext.unk_0000 == 7) {
             GbsEnsureBankLoaded(2);
-            func_80027FA0(&sp20, gBattleContext.unk_11F2);
+            GBAudio_ResetState(&sp20, gBattleContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 D_83003C8C = BinArchive_GetFile(D_83003C88, 0xD);
             } else {

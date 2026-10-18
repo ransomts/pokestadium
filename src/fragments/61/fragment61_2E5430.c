@@ -101,7 +101,7 @@ void DrawPokemonSlot(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00
         }
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F470);
+    gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
     Gfx_FillRect(arg1, arg2 + 0x58, 0x200, 4, 0x32, 0x32, 0x32);
 
@@ -204,7 +204,7 @@ void DrawVerticalScrollBar(unk_D_84229EB0* arg0) {
     temp_s2 = arg0->unk_00014 + 0x20;
     sp64 = arg0->unk_0001C;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F470);
+    gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
     Gfx_FillRect(sp62 + 0, temp_s2, 0x18, arg0->unk_00016, 0x3C, 0x3C, 0xA0);
     Gfx_FillRect(sp62 + 0x18, temp_s2, 8, arg0->unk_00016, 0x32, 0x32, 0x32);

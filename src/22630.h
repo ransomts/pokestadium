@@ -190,12 +190,12 @@ typedef struct unk_D_800AC910_054 {
     /* 0x0000 */ unk_D_800AC910_054_000 unk_0000[2];
 } unk_D_800AC910_054; // size = 0x34C0
 
-typedef struct unk_D_800AC910_040 {
+typedef struct Gen1StringDecodeBuffer {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ char unk_02[11];
     /* 0x0D */ u8 unk_0D[2];
     /* 0x0F */ char unkF[0x1];
-} unk_D_800AC910_040; // size = 0x10
+} Gen1StringDecodeBuffer; // size = 0x10
 
 typedef struct unk_D_800AC910 {
     /* 0x00 */ u16 unk_00;
@@ -206,7 +206,7 @@ typedef struct unk_D_800AC910 {
     /* 0x06 */ u8 unk_06[0x13];
     /* 0x19 */ u8 unk_19[0x20];
     /* 0x39 */ char unk39[0x7];
-    /* 0x40 */ unk_D_800AC910_040 unk_40;
+    /* 0x40 */ Gen1StringDecodeBuffer unk_40;
     /* 0x50 */ unk_D_800AC910_050* unk_50;
     /* 0x54 */ unk_D_800AC910_054* unk_54;
 } unk_D_800AC910; // size = 0x58

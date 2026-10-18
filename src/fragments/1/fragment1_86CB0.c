@@ -207,7 +207,7 @@ void func_81207348(void) {
 void func_81207354(void) {
 }
 
-void func_8120735C(s32 arg0) {
+void SetAudioVolume(s32 arg0) {
     if (arg0 == 0) {
         D_8120EAC4 = 0x4578;
         D_8120EAC0 = 1500.0f;

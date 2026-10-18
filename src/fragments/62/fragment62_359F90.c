@@ -30,7 +30,7 @@ typedef struct unk_D_843C4DA0 {
 static u16 D_843C4DA0;
 static u8 D_843C4DA2;
 static u8 D_843C4DA3;
-u8 D_843C4DA4;
+u8 gSpecialFlag;
 u8 D_843C4DA5;
 static u8 D_843C4DA6;
 static u8 D_843C4DA7;
@@ -73,10 +73,10 @@ static s32 pad_D_843C4DDC;
 static s32 pad_D_843C4DE0;
 static s32 pad_D_843C4DE4;
 static s32 pad_D_843C4DE8;
-s32 D_843C4DEC;
+s32 gAnimTimer;
 static s32 pad_D_843C4DF0[21];
-u8 D_843C4E44;
-u8 D_843C4E45;
+u8 gIsBattleMode;
+u8 gAnimStateFlag;
 static s32 pad_D_843C4E48[252];
 unk_D_800FCB18* gCurrentBattleEntity;
 unk_D_800FCB18* D_843C523C;
@@ -332,7 +332,7 @@ void func_8436FD9C(void) {
 s32 func_8436FDBC(void) {
     SpAttack_Main();
 
-    if (D_843C4DA4 == 1) {
+    if (gSpecialFlag == 1) {
         return 0;
     }
     return 1;
@@ -540,7 +540,7 @@ void ProcessTurnEnd(void) {
                     gCurrentBattleEntity->unk_44.unk_01 = 0;
                 }
 
-                func_843061EC(D_84390010[gBattleState.unk_00->unk_2C], 0x1000);
+                SetEntityAnimFlags(D_84390010[gBattleState.unk_00->unk_2C], 0x1000);
             } else {
                 D_843C523C->unk_59 -= gCurrentDamage;
             }
@@ -561,7 +561,7 @@ void ProcessTurnEnd(void) {
                     gCurrentBattleEntity->unk_44.unk_01 = 0;
                 }
 
-                func_843061EC(D_84390010[!gBattleState.unk_00->unk_2C], 0x1000);
+                SetEntityAnimFlags(D_84390010[!gBattleState.unk_00->unk_2C], 0x1000);
             } else {
                 D_843C523C->unk_59 -= gCurrentDamage;
             }
@@ -627,7 +627,7 @@ void func_84370790(void) {
 
 void func_843708A0(void) {
     gCurrentDamage = 0;
-    D_843C4DA4 = 1;
+    gSpecialFlag = 1;
     gCurrentBattleEntity->unk_4C &= ~0x20;
 }
 
@@ -833,10 +833,10 @@ void func_84370F40(void) {
 }
 
 void func_84371010(void) {
-    D_843C4DEC = D_843C4DB3 & 0x7F;
-    if (D_843C4DEC >= 0xB) {
+    gAnimTimer = D_843C4DB3 & 0x7F;
+    if (gAnimTimer >= 0xB) {
         WriteMessageCharOrString(D_843901A0->unk_088, 0x29);
-    } else if (D_843C4DEC < 0xA) {
+    } else if (gAnimTimer < 0xA) {
         WriteMessageCharOrString(D_843901A0->unk_088, 0x2A);
     }
 }
@@ -1137,7 +1137,7 @@ void func_84371974(void) {
                 gCurrentDamage = (gCurrentDamage * var_a3->unk_02) / 10;
 
                 if (gCurrentDamage == 0) {
-                    D_843C4DA4 = 1;
+                    gSpecialFlag = 1;
                 }
             }
             var_a3++;
@@ -1165,7 +1165,7 @@ s32 func_84371B3C(void) {
         return 1;
     }
 
-    D_843C4DA4 = 1;
+    gSpecialFlag = 1;
 
     if (D_843C523C->unk_5A == 0x44) {
         return 0;
@@ -1186,7 +1186,7 @@ s32 func_84371B3C(void) {
             gCurrentDamage *= 2;
         }
 
-        D_843C4DA4 = 0;
+        gSpecialFlag = 0;
         D_843C4DA5 = 0;
         HandleMoveEffectFlags();
         return 0;
@@ -1408,11 +1408,11 @@ s32 func_84371DCC(void) {
 
         gCurrentDamage = gCurrentBattleEntity->unk_54 * 2;
         if (!gCurrentDamage) {
-            D_843C4DA4 = 1;
+            gSpecialFlag = 1;
         }
 
         if ((D_8438AC60[0] == 1) && (D_843C523C->unk_4C & 0x40)) {
-            D_843C4DA4 = 1;
+            gSpecialFlag = 1;
         }
 
         gCurrentBattleEntity->unk_54 = 0;
@@ -1458,7 +1458,7 @@ void func_84372670(void) {
     char sp2C[8];
 
     if (gCurrentBattleEntity->unk_5A != 0xFF) {
-        D_843C4DA4 = 0;
+        gSpecialFlag = 0;
         D_843C4DB5 = 0;
         D_843C4DA9 = 0;
         D_843C4DB3 = 0xA;
@@ -1468,7 +1468,7 @@ void func_84372670(void) {
                 func_84370E80();
                 if (gCurrentBattleEntity->unk_4C & 0x10) {
                     gCurrentBattleEntity->unk_4C &= ~0x50;
-                    func_843061EC(D_84390010[gBattleState.unk_00->unk_2C], 8);
+                    SetEntityAnimFlags(D_84390010[gBattleState.unk_00->unk_2C], 8);
                 } else {
                 block_5:
                     switch (gCurrentBattleEntity->unk_44.unk_01) {
@@ -1522,7 +1522,7 @@ void func_84372670(void) {
 
             case 5:
             case_5:
-                if (D_843C4DA4 != 0) {
+                if (gSpecialFlag != 0) {
                     switch (gCurrentBattleEntity->unk_44.unk_01) {
                         case 7:
                             break;
@@ -1552,7 +1552,7 @@ void func_84372670(void) {
                     return;
                 }
 
-                if (D_843C4DA4 != 0) {
+                if (gSpecialFlag != 0) {
                     func_843712CC();
 
                     if (gCurrentBattleEntity->unk_44.unk_01 != 7) {
@@ -1829,8 +1829,8 @@ void func_8437345C(void) {
     ptr1->unk_2A = 0;
     ptr2->unk_2A = 0;
 
-    D_843C4E44 = 1;
-    D_843C4E45 = 1;
+    gIsBattleMode = 1;
+    gAnimStateFlag = 1;
 
     gBattleState.unk_00->unk_1A = 0;
 
@@ -1874,8 +1874,8 @@ void func_84373570(unk_D_84390010* arg0) {
     ptr1->unk_12 = 0xFFFF;
     ptr2->unk_12 = 0xFFFF;
 
-    D_843C4E44 = 1;
-    D_843C4E45 = 1;
+    gIsBattleMode = 1;
+    gAnimStateFlag = 1;
 
     gBattleState.unk_00->unk_48 = 0;
     gBattleState.unk_00->unk_4C = 0;

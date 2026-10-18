@@ -297,7 +297,7 @@ void func_84308660(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     sp28 = &gAnimDataByPlayer[idx]->unk_AF0;
 
     if (!(sp20->unk_34 & 0x4002)) {
-        if ((func_84301FF0(arg0) == 0) && (arg1->unk_000.unk_040.unk_00 != -1) &&
+        if ((AnimChannel_GetFlagsFF0(arg0) == 0) && (arg1->unk_000.unk_040.unk_00 != -1) &&
             (Anim_HasReachedEnd(&arg1->unk_000) == 1)) {
             if (sp20->unk_34 & 0x200) {
                 GraphNode_TriggerAction(&arg1->unk_000, sp2C->unk_00);
@@ -312,7 +312,7 @@ void func_84308660(unk_D_84390010* arg0, unk_D_84390010* arg1) {
                 }
 
                 if (!(sp20->unk_34 & 1)) {
-                    func_84305A74(arg0, 0xA5, 1);
+                    PlayAnimSoundSimple(arg0, 0xA5, 1);
                 }
             }
 
@@ -336,7 +336,7 @@ void func_843087F8(unk_D_84390010* arg0) {
     idx = IsPrimaryEntity(arg0);
     sp2C = &gAnimDataByPlayer[idx]->unk_AF0;
 
-    if (!(sp24->unk_34 & 0x4002) && (func_84301FF0(arg0) == 0) && (arg0->unk_000.unk_040.unk_00 != -1)) {
+    if (!(sp24->unk_34 & 0x4002) && (AnimChannel_GetFlagsFF0(arg0) == 0) && (arg0->unk_000.unk_040.unk_00 != -1)) {
         Anim_SetChannelBase(&arg0->unk_000, 0);
         if (sp24->unk_34 & 0x200) {
             GraphNode_TriggerAction(&arg0->unk_000, sp30->unk_00);
@@ -350,7 +350,7 @@ void func_843087F8(unk_D_84390010* arg0) {
             }
 
             if (!(sp24->unk_34 & 1)) {
-                func_84305A74(arg0, 0xA5, 1);
+                PlayAnimSoundSimple(arg0, 0xA5, 1);
             }
         }
     }
@@ -467,7 +467,7 @@ void func_84308DB8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg
     }
 
     GraphNode_InitChild(&arg1->unk_000, 0, arg2, sp20);
-    func_84302658(arg0, arg3);
+    LoadPlayerAnimationData(arg0, arg3);
     Anim_SetChannelBase(&arg1->unk_000, 0);
     GraphNode_TriggerAction(&arg1->unk_000, 0);
 
@@ -548,7 +548,7 @@ void func_84308F94(unk_D_84390010* arg0, s16 arg1) {
 
 void func_84309110(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 1) {
-        func_843059C0(arg0, 0xAF, 2);
+        TryPlayAnimSoundAndSetState(arg0, 0xAF, 2);
     } else {
         arg0->unk_654.unk_36 = 0;
         SetAnimStateIndex(&arg0->unk_000, 0);

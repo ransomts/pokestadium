@@ -11,7 +11,7 @@ void func_8432D5B0(void) {
     bzero(D_8140E724, sizeof(*D_8140E724) * 300);
     bzero(gParticleInstances, sizeof(*gParticleInstances) * 300);
     D_8140E730 = 0;
-    D_8140E72C = 0;
+    gParticleAllocIndex = 0;
 }
 
 unk_D_8140E724* ParticleDef_Allocate(void) {
@@ -55,7 +55,7 @@ void ParticleDef_Reset(unk_D_8140E724* arg0) {
     arg0->unk_0C = arg0->unk_0E;
 }
 
-void ParticleNode_Init(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 arg4) {
+void ParticleNode_Init(ParticleEffectInstance* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 arg4) {
     while (arg0 != NULL) {
         Vec3f_Copy(&arg0->unk_68, &arg1);
         func_8140094C(&arg0->unk_94, &arg2);
@@ -69,7 +69,7 @@ void ParticleNode_Init(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s
     }
 }
 
-void ParticleNode_CopyFrom(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_D_8140E724_008 arg2, unk_D_8140E728_01C* arg3,
+void ParticleNode_CopyFrom(ParticleEffectInstance* arg0, ParticleEffectInstance* arg1, func_unk_D_8140E724_008 arg2, unk_D_8140E728_01C* arg3,
                    s32 arg4) {
     arg0->unk_08 = arg2;
     arg0->unk_0C = arg3;
@@ -82,7 +82,7 @@ void ParticleNode_CopyFrom(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_
     arg0->unk_CB = arg1->unk_CB;
     arg0->unk_74 = arg1->unk_74;
 
-    func_8140BED8(arg0, arg4);
+    Particle_SetShortAC(arg0, arg4);
 
     Vec3f_Copy(&arg0->unk_38, &arg1->unk_38);
     Vec3f_Copy(&arg0->unk_50, &arg1->unk_50);
@@ -96,12 +96,12 @@ void ParticleNode_CopyFrom(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_
     }
 }
 
-void ParticleNode_CreateMultiple(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3) {
+void ParticleNode_CreateMultiple(ParticleEffectInstance* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3) {
     s16 i;
-    unk_D_8140E720* temp_v0;
+    ParticleEffectInstance* temp_v0;
 
     for (i = 0; i < arg3; i++) {
-        temp_v0 = func_81407B3C();
+        temp_v0 = Particle_AllocateInstance();
         if ((u32)temp_v0 == -1) {
             break;
         }
@@ -109,13 +109,13 @@ void ParticleNode_CreateMultiple(unk_D_8140E720* arg0, func_unk_D_8140E724_008 a
     }
 }
 
-void func_8432D8E8(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4,
+void func_8432D8E8(ParticleEffectInstance* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4,
                    s16 arg5) {
     s16 i;
-    unk_D_8140E720* temp_v0;
+    ParticleEffectInstance* temp_v0;
 
     for (i = 0; i < arg3; i++) {
-        temp_v0 = func_81407B3C();
+        temp_v0 = Particle_AllocateInstance();
         if ((u32)temp_v0 == -1) {
             break;
         }
@@ -125,12 +125,12 @@ void func_8432D8E8(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_814
     }
 }
 
-unk_D_8140E720* ParticleNode_CreateAt(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
-    unk_D_8140E720* temp_v0 = func_81407B3C();
+ParticleEffectInstance* ParticleNode_CreateAt(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
+    ParticleEffectInstance* temp_v0 = Particle_AllocateInstance();
 
     if ((u32)temp_v0 != -1) {
         Vec3f_Set(&temp_v0->unk_38, arg0, arg1, 0.0f);
-        func_81408AF0(temp_v0);
+        Particle_UpdateTransform(temp_v0);
         Vec3s_Set(&temp_v0->unk_94, arg2, arg2, arg2);
         temp_v0->unk_1C = arg3;
         Particle_SetFlag(temp_v0, 0x108);
@@ -138,24 +138,24 @@ unk_D_8140E720* ParticleNode_CreateAt(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
     return temp_v0;
 }
 
-void ParticleNode_ProcessChild(unk_D_8140E720* arg0) {
+void ParticleNode_ProcessChild(ParticleEffectInstance* arg0) {
     if (arg0->unk_14 != NULL) {
         if (Particle_HasFlag(arg0, 0x400) != 0) {
-            func_8432CD14(arg0->unk_14);
+            FreeParticleNode(arg0->unk_14);
         } else {
-            func_8432CBF8(arg0->unk_14);
+            FreeGraphNode(arg0->unk_14);
         }
     }
 }
 
-void ParticleNode_Destroy(unk_D_8140E720* arg0) {
+void ParticleNode_Destroy(ParticleEffectInstance* arg0) {
     ParticleNode_ProcessChild(arg0);
     arg0->unk_18 = 0;
-    func_81408158(arg0);
+    Particle_ResetState(arg0);
     Particle_Free(arg0);
 }
 
-void ParticleNode_UpdateBehavior(unk_D_8140E720* arg0) {
+void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
     Vec3f sp3C;
     Vec3f sp30;
     Vec3s sp28;
@@ -241,7 +241,7 @@ void ParticleNode_UpdateBehavior(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8432DE0C(unk_D_8140E720* arg0) {
+void func_8432DE0C(ParticleEffectInstance* arg0) {
     Vec3f sp3C;
     Vec3f sp30;
     Vec3s sp28;
@@ -310,29 +310,29 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8432E0A4(unk_D_8140E720* arg0) {
+void func_8432E0A4(ParticleEffectInstance* arg0) {
     if ((arg0->unk_10 == NULL) || (Particle_HasFlag(arg0, 0x108) != 0)) {
-        D_8140E628.unk_00.x = 1.0f;
-        D_8140E628.unk_00.y = 1.0f;
-        D_8140E628.unk_00.z = 1.0f;
-    } else if (func_81408308(arg0, 0x800) != 0) {
-        D_8140E628.unk_00.x = func_8432FC94(arg0->unk_10);
-        D_8140E628.unk_00.y = func_8432FC94(arg0->unk_10);
-        D_8140E628.unk_00.z = func_8432FC94(arg0->unk_10);
+        gParticleScaleFactor.unk_00.x = 1.0f;
+        gParticleScaleFactor.unk_00.y = 1.0f;
+        gParticleScaleFactor.unk_00.z = 1.0f;
+    } else if (Particle_CanSetFlag(arg0, 0x800) != 0) {
+        gParticleScaleFactor.unk_00.x = func_8432FC94(arg0->unk_10);
+        gParticleScaleFactor.unk_00.y = func_8432FC94(arg0->unk_10);
+        gParticleScaleFactor.unk_00.z = func_8432FC94(arg0->unk_10);
     }
 }
 
-void func_8432E144(unk_D_8140E720* arg0) {
-    if (func_81408180(arg0) != 0) {
+void func_8432E144(ParticleEffectInstance* arg0) {
+    if (Particle_IsInactive(arg0) != 0) {
         ParticleNode_Destroy(arg0);
     } else {
-        func_81408AF0(arg0);
+        Particle_UpdateTransform(arg0);
     }
 }
 
 void ParticleSystem_Update(void) {
     s32 i;
-    unk_D_8140E720* var_s0 = gParticleInstances;
+    ParticleEffectInstance* var_s0 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if (var_s0->unk_D0 != 0) {
@@ -344,7 +344,7 @@ void ParticleSystem_Update(void) {
     }
 }
 
-void ParticleInstance_Configure(unk_D_8140E720* arg0, unk_D_84390010* arg1, unk_D_8140E724* arg2, s16 arg3) {
+void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_D_84390010* arg1, unk_D_8140E724* arg2, s16 arg3) {
     if ((u32)arg0 == -1) {
         return;
     }
@@ -403,12 +403,12 @@ void ParticleDef_SpawnInstances(unk_D_8140E724* arg0, s32 arg1) {
     }
 
     if ((temp_a2->unk_00 == 1) && (temp_a3->unk_00 == 1)) {
-        ParticleInstance_Configure(func_81407B5C(var_s2), tmp08, arg0, 0);
+        ParticleInstance_Configure(Particle_AllocateChain(var_s2), tmp08, arg0, 0);
         return;
     }
 
     for (i = 0; i < var_s2; i++) {
-        ParticleInstance_Configure(func_81407B3C(), tmp08, arg0, i);
+        ParticleInstance_Configure(Particle_AllocateInstance(), tmp08, arg0, i);
     }
 }
 
@@ -424,7 +424,7 @@ void func_8432E474(unk_D_8140E724* arg0) {
     UNUSED s32 pad;
     unk_D_84390010* sp18 = arg0->unk_08;
 
-    ParticleInstance_Configure(func_81407B3C(), sp18, arg0, 0);
+    ParticleInstance_Configure(Particle_AllocateInstance(), sp18, arg0, 0);
 }
 
 void func_8432E4B0(unk_D_8140E724* arg0) {
@@ -495,7 +495,7 @@ void func_8432E68C(void) {
 void func_8432E6B4(void) {
     s32 i;
     unk_D_8140E724* var_s0 = D_8140E724;
-    unk_D_8140E720* var_s2 = gParticleInstances;
+    ParticleEffectInstance* var_s2 = gParticleInstances;
 
     func_8432EB14();
 
@@ -519,7 +519,7 @@ void func_8432E6B4(void) {
 void func_8432E784(void) {
     s32 i;
     unk_D_8140E724* var_s0 = D_8140E724;
-    unk_D_8140E720* var_s2 = gParticleInstances;
+    ParticleEffectInstance* var_s2 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_15 != 0) && (var_s0->unk_17 != 4)) {
@@ -548,7 +548,7 @@ s32 func_8432E8B0(void) {
 }
 
 void func_8432E8BC(void) {
-    if (D_843C4DA4 != 0) {
+    if (gSpecialFlag != 0) {
         D_84390340 = 1;
     } else {
         D_84390340 = 0;
@@ -559,9 +559,9 @@ void func_8432E8EC(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        if (D_84390300[i] != NULL) {
-            D_84390300[i] = NULL;
-            D_84390320[i] = NULL;
+        if (gCameraCallbackFuncs[i] != NULL) {
+            gCameraCallbackFuncs[i] = NULL;
+            gCameraUpdateFuncs[i] = NULL;
         }
     }
 
@@ -610,12 +610,12 @@ void func_8432E9D8(s32 arg0) {
 
 void func_8432EA60(u8 arg0, unk_D_84390010* arg1) {
     s32 i;
-    unk_D_8140E720* var_s0 = gParticleInstances;
+    ParticleEffectInstance* var_s0 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_D0 != 0) && (var_s0->unk_CA == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {
             Particle_SetFlag(var_s0, 0x1000);
-            func_814081BC(var_s0);
+            Particle_IncrementState(var_s0);
         }
     }
 }
@@ -653,24 +653,24 @@ unk_D_8140E724* ParticleDef_Create(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E
         sp1C->unk_19 = arg9;
         sp1C->unk_1A = argB;
         sp1C->unk_1B = argA;
-        sp1C->unk_17 = func_8432C518();
-        sp1C->unk_18 = func_8432C538();
+        sp1C->unk_17 = GetActionScriptSubIndex();
+        sp1C->unk_18 = GetActionScriptMode();
     }
     return sp1C;
 }
 
 unk_D_8140E724* func_8432EC28(s32 arg0, func_unk_D_8140E724 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4, u8 arg5,
                               u8 arg6, u8 arg7, u8 arg8) {
-    return ParticleDef_Create(arg0, 0, 1, arg1, arg2, D_843902E8, arg3, arg4, arg5, arg6, arg7, arg8);
+    return ParticleDef_Create(arg0, 0, 1, arg1, arg2, gParticleEffectEntityA, arg3, arg4, arg5, arg6, arg7, arg8);
 }
 
 unk_D_8140E724* func_8432ECA0(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
                               s16 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
-    return ParticleDef_Create(arg0, arg1, arg2, arg3, arg4, D_843902E8, arg5, arg6, arg7, arg8, arg9, argA);
+    return ParticleDef_Create(arg0, arg1, arg2, arg3, arg4, gParticleEffectEntityA, arg5, arg6, arg7, arg8, arg9, argA);
 }
 
 unk_D_8140E724* func_8432ED0C(s32 arg0, s16 arg1, u8 arg2) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331DC8, &D_8140E460, NULL, 0, arg1, 0x16, 0, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84331DC8, &gParticleDefaultCallback, NULL, 0, arg1, 0x16, 0, arg2, 0);
 }
 
 unk_D_8140E724* func_8432ED74(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
@@ -722,55 +722,55 @@ unk_D_8140E724* func_8432F254(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) 
 }
 
 unk_D_8140E724* func_8432F2C8(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331EAC, &D_8140E460, D_843902E8, arg2, arg4, 0x1A, arg3, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84331EAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg2, arg4, 0x1A, arg3, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F344(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331FAC, &D_8140E460, D_843902E8, arg1, arg5, 0x1A, arg4, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, func_84331FAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg5, 0x1A, arg4, arg2, arg3);
 }
 
 unk_D_8140E724* func_8432F3C4(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843320A4, &D_8140E460, D_843902E8, arg1, arg4, 0x1A, 0, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, func_843320A4, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg4, 0x1A, 0, arg2, arg3);
 }
 
 unk_D_8140E724* func_8432F440(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F4BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F538(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F5B8(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F638(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332604, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_84332604, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F6B8(s32 arg0, s16 arg1, u8 arg2) {
-    return ParticleDef_Create(arg0, 0, 1, func_843327B8, &D_8140E460, D_843902E8, 0, arg1, 0x1A, arg2, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843327B8, &gParticleDefaultCallback, gParticleEffectEntityA, 0, arg1, 0x1A, arg2, 0, 0);
 }
 
 unk_D_8140E724* func_8432F728(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return ParticleDef_Create(arg0, 0, 1, Fragment_ComplexColorMode, &D_8140E460, D_843902E8, arg1, arg2, 0x1A, arg3, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ComplexColorMode, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg2, 0x1A, arg3, 0, 0);
 }
 
 unk_D_8140E724* func_8432F7A0(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, arg1, arg3, 0x1A, arg2, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg3, 0x1A, arg2, 0, 0);
 }
 
 unk_D_8140E724* func_8432F818(s32 arg0) {
-    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
 }
 
 unk_D_8140E724* func_8432F884(s32 arg0) {
-    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, 0, 0xFF, 0x1A, 0, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &gParticleDefaultCallback, gParticleEffectEntityA, 0, 0xFF, 0x1A, 0, 0, 0);
 }
 
 unk_D_8140E724* func_8432F8E8(s32 arg0, u8 arg1) {
@@ -778,7 +778,7 @@ unk_D_8140E724* func_8432F8E8(s32 arg0, u8 arg1) {
 }
 
 unk_D_8140E724* func_8432F93C(s32 arg0, u8 arg1) {
-    return ParticleDef_Create(arg0, 0, 1, NULL, NULL, D_843902E8, 0, 0, 0x19, arg1, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, NULL, NULL, gParticleEffectEntityA, 0, 0, 0x19, arg1, 0, 0);
 }
 
 void func_8432F998(void) {
@@ -788,21 +788,21 @@ void func_8432F9A0(void) {
 }
 
 void func_8432F9A8(s32 arg0) {
-    D_843902F4 = arg0;
+    gGameStateFlag = arg0;
 }
 
 void func_8432F9B4(void) {
-    D_843902F4 = 0;
+    gGameStateFlag = 0;
 }
 
 s32 func_8432F9C0(void) {
-    return D_843902F4;
+    return gGameStateFlag;
 }
 
 s32 func_8432F9CC(s32 arg0) {
     s32 sp1C = 0;
 
-    if (func_843081BC(D_843902E8) == arg0) {
+    if (func_843081BC(gParticleEffectEntityA) == arg0) {
         sp1C = 1;
     }
     return sp1C;
@@ -813,7 +813,7 @@ s32 func_8432FA0C(void) {
 }
 
 s32 func_8432FA30(void) {
-    return func_843081BC(D_843902F0);
+    return func_843081BC(gParticleEffectEntityB);
 }
 
 void Model_GetNodePosition(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
@@ -845,7 +845,7 @@ void Model_GetNodePosition(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
 }
 
 void func_8432FB38(Vec3f* arg0) {
-    Model_GetNodePosition(D_843902E8, 0x64, arg0);
+    Model_GetNodePosition(gParticleEffectEntityA, 0x64, arg0);
 }
 
 void func_8432FB64(Vec3f* arg0) {
@@ -853,11 +853,11 @@ void func_8432FB64(Vec3f* arg0) {
 }
 
 void func_8432FB90(Vec3f* arg0) {
-    Model_GetNodePosition(D_843902F0, 0x64, arg0);
+    Model_GetNodePosition(gParticleEffectEntityB, 0x64, arg0);
 }
 
 void func_8432FBBC(Vec3f* arg0) {
-    if (D_843902E4 == 0xFF) {
+    if (gParticleEffectPrimaryId == 0xFF) {
         func_843081F0(gParticleEffectData_42, arg0);
     } else {
         Model_GetNodePosition(gParticleEffectData_42, gParticleTexture_Default, arg0);
@@ -865,7 +865,7 @@ void func_8432FBBC(Vec3f* arg0) {
 }
 
 void func_8432FC14(Vec3f* arg0) {
-    Model_GetNodePosition(D_843902F0, 9, arg0);
+    Model_GetNodePosition(gParticleEffectEntityB, 9, arg0);
 }
 
 void func_8432FC40(unk_D_84390010* arg0, Vec3f* arg1) {
@@ -895,19 +895,19 @@ void func_8432FCF8(void) {
 }
 
 f32 func_8432FD1C(void) {
-    return func_8432FC94(D_843902F0);
+    return func_8432FC94(gParticleEffectEntityB);
 }
 
 void func_8432FD40(void) {
-    func_8432FCB4(D_843902F0);
+    func_8432FCB4(gParticleEffectEntityB);
 }
 
 CameraStruct* func_8432FD64(void) {
-    return D_8140E628.unk_0C;
+    return gParticleScaleFactor.unk_0C;
 }
 
-unk_D_8140E720* func_8432FD70(Vec3f arg0, u8 arg1) {
-    unk_D_8140E720* sp1C = func_81407B3C();
+ParticleEffectInstance* func_8432FD70(Vec3f arg0, u8 arg1) {
+    ParticleEffectInstance* sp1C = Particle_AllocateInstance();
 
     if ((u32)sp1C != -1) {
         Vec3f_Copy(&sp1C->unk_68, &arg0);
@@ -921,7 +921,7 @@ unk_D_8140E720* func_8432FD70(Vec3f arg0, u8 arg1) {
     return sp1C;
 }
 
-void func_8432FDF0(unk_D_8140E720* arg0, Vec3f arg1) {
+void func_8432FDF0(ParticleEffectInstance* arg0, Vec3f arg1) {
     if ((u32)arg0 != -1) {
         arg0->unk_68.x = arg1.x;
         arg0->unk_68.y = arg1.y;
@@ -929,26 +929,26 @@ void func_8432FDF0(unk_D_8140E720* arg0, Vec3f arg1) {
     }
 }
 
-void func_8432FE24(unk_D_8140E720* arg0) {
-    func_81408150(arg0);
+void func_8432FE24(ParticleEffectInstance* arg0) {
+    Particle_ClearActiveFlag(arg0);
 }
 
-s16 func_8432FE44(unk_D_8140E720* arg0) {
+s16 func_8432FE44(ParticleEffectInstance* arg0) {
     Vec3f sp24;
     s16 ret;
 
-    func_843081F0(D_843902F0, &sp24);
+    func_843081F0(gParticleEffectEntityB, &sp24);
     ret = func_814011E0(arg0->unk_68, sp24) + arg0->unk_94.y;
     return ret;
 }
 
-void func_8432FEC4(unk_D_8140E720* arg0) {
+void func_8432FEC4(ParticleEffectInstance* arg0) {
     D_8439037A = arg0->prim_r;
     D_8439037C = arg0->prim_g;
     D_8439037E = arg0->prim_b;
 }
 
-void func_8432FEEC(unk_D_8140E720* arg0) {
+void func_8432FEEC(ParticleEffectInstance* arg0) {
     arg0->prim_r = D_8439037A;
     arg0->prim_g = D_8439037C;
     arg0->prim_b = D_8439037E;

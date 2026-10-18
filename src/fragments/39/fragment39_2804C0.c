@@ -82,7 +82,7 @@ void func_82504A68(unk_D_8250A480* arg0) {
     }
 }
 
-void func_82504B38(void) {
+void SelectionScreen_HandleInput(void) {
     unk_D_8250A480* ptr = &gMessageBox;
 
     if (ptr->unk_00 != 0) {

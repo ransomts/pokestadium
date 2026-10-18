@@ -1,13 +1,13 @@
 #include "fragment62.h"
 
-s32 RenderPanelBackground(unk_D_8140E720* arg0, CameraStruct* arg1) {
+s32 RenderPanelBackground(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_8140213C(arg1, arg0->unk_2C, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_PanelBackground);
 }
 
-void RenderIconMasked(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void RenderIconMasked(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_LoadTextureBlockIA8_Clamp(gWaterTexture[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
     func_814044FC(gWaterTexture[0x77], 0x40, 0x40, 2, 1);
     func_81406168(0, 0xA, 0x40, 0x40);
@@ -15,19 +15,19 @@ void RenderIconMasked(unk_D_8140E720* arg0, CameraStruct* arg1) {
     func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E1F8);
 }
 
-void RenderPanelWithIcon(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void RenderPanelWithIcon(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     RenderIconMasked(arg0, arg1);
 }
 
-void RenderOverlayWithIcon(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void RenderOverlayWithIcon(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     RenderIconMasked(arg0, arg1);
 }
 
-void func_84330388(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void func_84330388(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     func_8140213C(arg1, arg0->unk_2C, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
@@ -40,7 +40,7 @@ void func_84330388(unk_D_8140E720* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gWaterTexture[0x20]);
 }
 
-s32 RenderItemIcon(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+s32 RenderItemIcon(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_81401FC0(arg0->unk_2C, arg0->unk_94, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_ItemIcon);
@@ -50,7 +50,7 @@ s32 RenderItemIcon(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gWaterTexture[0xBD]);
 }
 
-void RenderStatusBar(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void RenderStatusBar(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -63,7 +63,7 @@ void RenderStatusBar(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     func_81404A6C(D_84385DC0);
 }
 
-void func_84330688(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330688(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -76,7 +76,7 @@ void func_84330688(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     func_81404A6C(D_84385E00);
 }
 
-void RenderMultiBlockIcon(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void RenderMultiBlockIcon(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -89,7 +89,7 @@ void RenderMultiBlockIcon(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     func_81404A6C(D_8140E3B8);
 }
 
-void func_84330934(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330934(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -100,7 +100,7 @@ void func_84330934(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     func_81404A6C(D_8140E3B8);
 }
 
-void func_84330A18(unk_D_8140E720* arg0, u8* arg1) {
+void func_84330A18(ParticleEffectInstance* arg0, u8* arg1) {
     func_814015F8(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -109,15 +109,15 @@ void func_84330A18(unk_D_8140E720* arg0, u8* arg1) {
     func_81405660(arg1, D_84385C80, 0x40, 0x40, 0x40, 0x40);
 }
 
-void func_84330AF0(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330AF0(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_84330A18(arg0, gWaterTexture[0x19]);
 }
 
-void func_84330B18(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330B18(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     func_84330A18(arg0, gWaterTexture[0x5E]);
 }
 
-void func_84330B40(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330B40(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -128,8 +128,8 @@ void func_84330B40(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330C70(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DC00);
+void func_84330C70(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(gWaterTexture[0x1C], 0x20, 0x20);
@@ -138,8 +138,8 @@ void func_84330C70(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330D64(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DC00);
+void func_84330D64(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(gWaterTexture[0x1E], 0x20, 0x20);
@@ -148,8 +148,8 @@ void func_84330D64(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330E58(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DC00);
+void func_84330E58(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(gWaterTexture[0xC3], 0x20, 0x20);
@@ -158,7 +158,7 @@ void func_84330E58(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330F4C(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84330F4C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Vec3s sp40;
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -174,10 +174,10 @@ void func_84330F4C(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331094(UNUSED unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84331094(UNUSED ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
 }
 
-void RenderTimerDigits(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void RenderTimerDigits(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     func_8140437C(gWaterTexture[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -190,7 +190,7 @@ void RenderTimerDigits(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void RenderTimerDigitsAlt(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void RenderTimerDigitsAlt(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -201,7 +201,7 @@ void RenderTimerDigitsAlt(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331314(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84331314(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -212,7 +212,7 @@ void func_84331314(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void RenderTimerNumber(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void RenderTimerNumber(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -223,7 +223,7 @@ void RenderTimerNumber(unk_D_8140E720* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_8433157C(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void func_8433157C(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -234,7 +234,7 @@ void func_8433157C(unk_D_8140E720* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843316A8(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void func_843316A8(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -245,7 +245,7 @@ void func_843316A8(unk_D_8140E720* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843317D4(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_843317D4(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -256,7 +256,7 @@ void func_843317D4(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843318F8(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_843318F8(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -267,7 +267,7 @@ void func_843318F8(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331A1C(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84331A1C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -278,7 +278,7 @@ void func_84331A1C(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331B58(unk_D_8140E720* arg0, CameraStruct* arg1) {
+void func_84331B58(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     func_8140437C(gWaterTexture[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
@@ -286,7 +286,7 @@ void func_84331B58(unk_D_8140E720* arg0, CameraStruct* arg1) {
     func_81404E4C(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
-void func_84331C34(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84331C34(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -297,6 +297,6 @@ void func_84331C34(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331D60(unk_D_8140E720* arg0, UNUSED CameraStruct* arg1) {
+void func_84331D60(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     RenderPrimColorRect(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
 }

@@ -705,37 +705,37 @@ void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, Mem
 
     for (i = 0; i < 4; i++) {
         arg0->unk_7C[i] = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-        ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(arg0->unk_7C[i], D_88605B00[i].unk_00,
+        ((func885012A4)Memmap_GetFragmentVaddr(UIFrame_Create))(arg0->unk_7C[i], D_88605B00[i].unk_00,
                                                                D_88605B00[i].unk_02, 0xFB, 0x1E, D_88605B10);
         arg0->unk_7C[i]->unk_00.unk_28 &= ~1;
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_7C[i]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_7C[i]->unk_00.unk_00);
     }
 
     for (j = 0; j < 4; j++) {
         arg0->unk_2C[j] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_02C));
         func_88600E90(arg0->unk_2C[j], D_88605B14[j].unk_00, D_88605B14[j].unk_02, j);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_2C[j]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_2C[j]->unk_00.unk_00);
     }
 
     for (x = 0; x < 4; x++) {
         arg0->unk_6C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
         func_886018C8(arg0->unk_6C[x], D_88605B24[x].unk_00, D_88605B24[x].unk_02);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_6C[x]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_6C[x]->unk_00.unk_00);
 
         arg0->unk_5C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_05C));
         func_88601578(arg0->unk_5C[x], 0, 0);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_6C[x]->unk_00.unk_00,
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_6C[x]->unk_00.unk_00,
                                                                &arg0->unk_5C[x]->unk_00.unk_00);
     }
 
     for (y = 0; y < 4; y++) {
         arg0->unk_4C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
         func_886018C8(arg0->unk_4C[y], D_88605B34[y].unk_00, D_88605B34[y].unk_02);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_4C[y]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_4C[y]->unk_00.unk_00);
 
         arg0->unk_3C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_03C));
         func_8860115C(arg0->unk_3C[y], 0, 0);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_4C[y]->unk_00.unk_00,
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_4C[y]->unk_00.unk_00,
                                                                &arg0->unk_3C[y]->unk_00.unk_00);
     }
 }
@@ -762,13 +762,13 @@ void func_88602DFC(unk_func_88205880_0098_008_040* arg0, unk_func_88001300_03C_0
     arg2->unk_00.unk_18[2] = &arg0->unk_7C[2]->unk_00;
     arg2->unk_00.unk_18[3] = &arg0->unk_7C[3]->unk_00;
     arg2->unk_00.unk_1C = arg1;
-    ((func8850CAB4)Memmap_GetFragmentVaddr(func_8850CAB4))(&arg2->unk_00);
+    ((func8850CAB4)Memmap_GetFragmentVaddr(GridMenu_SelectFirstEnabled))(&arg2->unk_00);
 }
 
 void func_88602E60(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2) {
     s32 i;
 
-    ((func8850CD44)Memmap_GetFragmentVaddr(func_8850CD44))(arg1, 8, arg2);
+    ((func8850CD44)Memmap_GetFragmentVaddr(Panel_Setup))(arg1, 8, arg2);
 
     for (i = 0; i < 4; i++) {
         arg1->unk_1C[i] = arg0->unk_4C[i];
@@ -1002,21 +1002,21 @@ s32 func_886041F0(unk_func_88205880_0098_008_070* arg0, Controller* arg1) {
     if (var_v1 == 0) {
         if ((arg1->buttonPressed & 8) && (arg0->unk_40 > 0)) {
             if (arg0->unk_00.unk_18[0] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_00, 0);
+                ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_00, 0);
                 var_v1 = 0x80000009;
             }
         } else if ((arg1->buttonPressed & 1) && (arg0->unk_40 >= 2)) {
             if (arg0->unk_00.unk_18[1] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_00, 1);
+                ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_00, 1);
                 var_v1 = 0x80000009;
             }
         } else if ((arg1->buttonPressed & 4) && (arg0->unk_40 >= 3)) {
             if (arg0->unk_00.unk_18[2] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_00, 2);
+                ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_00, 2);
                 var_v1 = 0x80000009;
             }
         } else if ((arg1->buttonPressed & 2) && (arg0->unk_40 >= 4) && (arg0->unk_00.unk_18[3] != NULL)) {
-            ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_00, 3);
+            ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_00, 3);
             var_v1 = 0x80000009;
         }
     }
@@ -1060,158 +1060,158 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     arg0->unk_2C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_038));
-    ((func88502274)Memmap_GetFragmentVaddr(func_88502274))(arg0->unk_2C, 0, 0, 0x210, 0x148);
+    ((func88502274)Memmap_GetFragmentVaddr(Fragment_SetRect))(arg0->unk_2C, 0, 0, 0x210, 0x148);
     arg0->unk_2C->unk_00.unk_28 |= 0x200;
     arg0->unk_2C->unk_00.unk_28 |= 0x400;
     arg0->unk_2C->unk_00.unk_28 &= ~1;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_2C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_2C->unk_00.unk_00);
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
-    ((func88503118)Memmap_GetFragmentVaddr(func_88503118))(arg0->unk_30, 0, 0, 0x210, 0x148);
+    ((func88503118)Memmap_GetFragmentVaddr(UITimer_Create))(arg0->unk_30, 0, 0, 0x210, 0x148);
     arg0->unk_30->unk_2C = 0;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     arg0->unk_68 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(arg0->unk_68, 0, 0, 0x210, 0x24, D_88605B50);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_30->unk_00.unk_00, &arg0->unk_68->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00.unk_00, &arg0->unk_68->unk_00.unk_00);
 
     arg0->unk_44 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_044));
     func_88601AF8(arg0->unk_44, 0, 0);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_68->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_68->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
 
     sp8C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp8C, 0xE0, 0x24, 0x130, 0x1C, D_88605B54);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_30->unk_00.unk_00, &sp8C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00.unk_00, &sp8C->unk_00.unk_00);
 
     arg0->unk_48 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_048));
     func_88601D6C(arg0->unk_48, 0, 0, sp8C);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp8C->unk_00.unk_00, &arg0->unk_48->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp8C->unk_00.unk_00, &arg0->unk_48->unk_00.unk_00);
 
     arg0->unk_34 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
-    ((func88503118)Memmap_GetFragmentVaddr(func_88503118))(arg0->unk_34, 0, 0, 0x210, 0x148);
+    ((func88503118)Memmap_GetFragmentVaddr(UITimer_Create))(arg0->unk_34, 0, 0, 0x210, 0x148);
     arg0->unk_34->unk_2C = 0;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_34->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_34->unk_00.unk_00);
 
     arg0->unk_5C = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_5C, 0xE0, 0x40);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_34->unk_00.unk_00, &arg0->unk_5C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_34->unk_00.unk_00, &arg0->unk_5C->unk_00.unk_00);
 
     sp88 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp88, 0, 0, 0x130, 0x84, D_88605B58);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_5C, &sp88->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_5C, &sp88->unk_00);
 
     arg0->unk_4C = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_04C));
     func_88602114(arg0->unk_4C, 0, 0, sp88);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp88->unk_00.unk_00, &arg0->unk_4C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp88->unk_00.unk_00, &arg0->unk_4C->unk_00.unk_00);
 
     arg0->unk_58 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_058));
     func_886033E0(arg0->unk_58, 0, 0, 0x130, 0x84);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_5C, &arg0->unk_58->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_5C, &arg0->unk_58->unk_00);
 
     arg0->unk_38 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
-    ((func88503118)Memmap_GetFragmentVaddr(func_88503118))(arg0->unk_38, 0, 0, 0x210, 0x148);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_38->unk_00.unk_00);
+    ((func88503118)Memmap_GetFragmentVaddr(UITimer_Create))(arg0->unk_38, 0, 0, 0x210, 0x148);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_38->unk_00.unk_00);
 
     sp84 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp84, 0, 0xC4, 0x210, 0x60, D_88605B5C);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_38->unk_00.unk_00, &sp84->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_38->unk_00.unk_00, &sp84->unk_00.unk_00);
 
     arg0->unk_60 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_60, 0, 0);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp84->unk_00.unk_00, &arg0->unk_60->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp84->unk_00.unk_00, &arg0->unk_60->unk_00.unk_00);
 
     arg0->unk_54 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_054));
     func_88603028(arg0->unk_54, 0, 0);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_60, &arg0->unk_54->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_60, &arg0->unk_54->unk_00);
 
     arg0->unk_40 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_040));
     func_88602AB8(arg0->unk_40, 0, 0, arg5);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_60, &arg0->unk_40->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_60, &arg0->unk_40->unk_00);
 
     arg0->unk_70 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_070));
     func_88604198(arg0->unk_70, arg5);
 
     sp80 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C_01C));
-    ((func88504570)Memmap_GetFragmentVaddr(func_88504570))(sp80, 0, 0, 0x20, 0x20, D_88605B60);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_40->unk_00.unk_00, &sp80->unk_00.unk_00);
+    ((func88504570)Memmap_GetFragmentVaddr(UIButtonPrompt_Create))(sp80, 0, 0, 0x20, 0x20, D_88605B60);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_40->unk_00.unk_00, &sp80->unk_00.unk_00);
     func_88602DFC(arg0->unk_40, sp80, arg0->unk_70);
 
     arg0->unk_74 = mem_pool_alloc(arg5, sizeof(unk_func_8850CD44));
     func_88602E60(arg0->unk_40, arg0->unk_74, arg5);
 
     arg0->unk_3C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
-    ((func88503118)Memmap_GetFragmentVaddr(func_88503118))(arg0->unk_3C, 0, 0, 0x210, 0x148);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_3C->unk_00.unk_00);
+    ((func88503118)Memmap_GetFragmentVaddr(UITimer_Create))(arg0->unk_3C, 0, 0, 0x210, 0x148);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_3C->unk_00.unk_00);
 
     arg0->unk_64 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_64, 0, 0x124);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_3C->unk_00.unk_00, &arg0->unk_64->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_3C->unk_00.unk_00, &arg0->unk_64->unk_00.unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp78 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
     func_88600248(sp78, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp7C->unk_00.unk_00, &sp78->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp78->unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp74 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
     func_886006D8(sp74, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp7C->unk_00.unk_00, &sp74->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp74->unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp70 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
     func_88600A04(sp70, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp7C->unk_00.unk_00, &sp70->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp70->unk_00);
 
     arg0->unk_6C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C));
     ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_6C, 1, 2, arg5);
 
     sp6C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp6C, 0, 0, 0x210, 0x24, D_88605B68);
-    ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, &sp6C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp6C->unk_00);
 
     sp68 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(sp68, 0x14, 5, GetMessageString(NULL, 0, gMonSummaryStrings, 4), 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(sp68, 0x14, 5, GetMessageString(NULL, 0, gMonSummaryStrings, 4), 0x10);
     sp68->unk_30 = (0, D_88605B6C);
     sp68->unk_44 = sp68->unk_44;
     sp68->unk_34 = (0, D_88605B70);
     sp68->unk_44 = 1;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
     func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 5), D_88605B74, D_88605B78, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[0] = &sp64->unk_00;
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
     func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 6), D_88605B74, D_88605B78, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[1] = &sp64->unk_00;
-    ((func8850CAB4)Memmap_GetFragmentVaddr(func_8850CAB4))(arg0->unk_6C);
+    ((func8850CAB4)Memmap_GetFragmentVaddr(GridMenu_SelectFirstEnabled))(arg0->unk_6C);
 
     sp60 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C_01C));
-    ((func88504570)Memmap_GetFragmentVaddr(func_88504570))(sp60, 0, 0, 0x10, 0x10, D_88605B7C);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp6C->unk_00.unk_00, &sp60->unk_00.unk_00);
+    ((func88504570)Memmap_GetFragmentVaddr(UIButtonPrompt_Create))(sp60, 0, 0, 0x10, 0x10, D_88605B7C);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp60->unk_00.unk_00);
     arg0->unk_6C->unk_1C = sp60;
 
     arg0->unk_50 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_050));
     func_88602604(arg0->unk_50, 0, 0x24, 0xE4, 0xE0, 0xA0, arg3);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_50->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_50->unk_00.unk_00);
 
     if (arg4 != NULL) {
         sp5C = mem_pool_alloc(arg5, sizeof(unk_func_88503298));
-        ((func88503298)Memmap_GetFragmentVaddr(func_88503298))(sp5C, arg0->unk_2C, arg4);
-        ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &sp5C->unk_00.unk_00);
+        ((func88503298)Memmap_GetFragmentVaddr(Dialog_SetParent))(sp5C, arg0->unk_2C, arg4);
+        ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &sp5C->unk_00.unk_00);
     }
 
     arg0->unk_88 = 0;
@@ -1252,7 +1252,7 @@ s32 func_88605058(unk_func_88205880_0098_008* arg0) {
 
 void func_88605060(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_34->unk_2C = 0;
-    ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_5C, 1);
+    ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_5C, 1);
     func_88603460(arg0->unk_58, arg0->unk_78->unk_09[arg1]);
 }
 
@@ -1262,27 +1262,27 @@ void func_886050C0(unk_func_88205880_0098_008* arg0, s32 arg1) {
     switch (arg1) {
         case 0:
             arg0->unk_34->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_5C, 0);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_5C, 0);
             arg0->unk_3C->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_64, 0);
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_60, 0);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 0);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_60, 0);
             break;
 
         case 1:
             func_88605060(arg0, 0);
-            ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_70->unk_00, 0);
+            ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_70->unk_00, 0);
             arg0->unk_3C->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_64, 1);
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_60, 1);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 1);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_60, 1);
             arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 1);
             break;
 
         case 2:
             arg0->unk_34->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_5C, 0);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_5C, 0);
             arg0->unk_3C->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_64, 2);
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_60, 1);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 2);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_60, 1);
             arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 1);
             break;
 
@@ -1292,10 +1292,10 @@ void func_886050C0(unk_func_88205880_0098_008* arg0, s32 arg1) {
 
         case 4:
             arg0->unk_34->unk_2C = 0;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_5C, 0);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_5C, 0);
             arg0->unk_3C->unk_2C = -1;
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_64, 3);
-            ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_60, 1);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 3);
+            ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_60, 1);
             arg0->unk_6C->unk_14(arg0->unk_6C, 1);
             break;
     }
@@ -1315,7 +1315,7 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                 var_a2 = 0x80000005;
             } else if (arg1->buttonPressed & 0x1000) {
                 func_886050C0(arg0, 2);
-                ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(&arg0->unk_70->unk_00, 0);
+                ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_70->unk_00, 0);
                 var_a2 = 0x80000005;
             }
             break;
@@ -1359,7 +1359,7 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                     arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 0);
                     func_88602F04(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
 
-                    ((func8850CF00)Memmap_GetFragmentVaddr(func_8850CF00))(arg0->unk_74, arg1);
+                    ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_74, arg1);
 
                     func_88602FC0(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
                     func_88600214(arg0->unk_78, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
@@ -1417,7 +1417,7 @@ s32 func_88605718(unk_func_88205880_0098_008* arg0) {
 
     if (arg0->unk_88 != 0) {
         func_886050C0(arg0, 4);
-        ((func8850CB48)Memmap_GetFragmentVaddr(func_8850CB48))(arg0->unk_6C, 1);
+        ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_6C, 1);
         *((u16*)arg0->unk_50->unk_34) &= ~2;
         *((u16*)arg0->unk_50->unk_34) &= ~4;
     } else {
@@ -1427,7 +1427,7 @@ s32 func_88605718(unk_func_88205880_0098_008* arg0) {
         arg0->unk_8C = 0;
     }
 
-    ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
+    ((func88502C98)Memmap_GetFragmentVaddr(UIAnimatedElement_WaitForInput))(arg0->unk_2C);
 
     while (var_s1 == 0) {
         s32 temp_v0_5;
@@ -1443,7 +1443,7 @@ s32 func_88605718(unk_func_88205880_0098_008* arg0) {
             }
         }
 
-        ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(temp_v0_5);
+        ((func8850BC94)Memmap_GetFragmentVaddr(Fragment_HandleResult))(temp_v0_5);
     }
 
     arg0->unk_2C->unk_2C = 0xB;

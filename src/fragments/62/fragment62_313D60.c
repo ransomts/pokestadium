@@ -56,7 +56,7 @@ void func_843296B8(CameraStruct* arg0, UNUSED unk_D_84390010* arg1, UNUSED unk_D
             break;
 
         case 2:
-            func_84321184(arg0);
+            Battle_InitializeCameraAndAudio(arg0);
             Battle_SetPhase(arg0, 1);
             break;
 
@@ -116,22 +116,22 @@ void Battle_StartSequence(CameraStruct* arg0) {
         case 4:
             if (arg0->unk_CC.unk_0A == 0xA) {
                 Battle_ResetSubstate();
-                func_843062F0();
-                func_843066E0(D_84390010[0]);
-                func_843066E0(D_84390010[1]);
+                ProcessEntityAnimFlagUpdates();
+                UpdateEntityStateByMode(D_84390010[0]);
+                UpdateEntityStateByMode(D_84390010[1]);
                 gBattleState.unk_00->unk_30 += 1;
                 gBattleState.unk_00->unk_18 = 1;
             }
             break;
 
         case 5:
-            if ((func_8431FAB4() == 0) && (func_8431F998(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
+            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     func_8432E9D8(2);
                     func_8430CC84();
                 }
-                func_843058A8(D_84390010[0]);
-                func_843058A8(D_84390010[1]);
+                ClearAnimFlagIfState6A(D_84390010[0]);
+                ClearAnimFlagIfState6A(D_84390010[1]);
                 gBattleState.unk_00->unk_18 = 2;
                 Texture_SetDefault(arg0, 0xA, 0x12C, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
                 Background_SetColor(arg0, 4, 0xA, 0, 0, 0);
@@ -185,9 +185,9 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             ScreenTransition_Update();
             if (ScreenTransition_GetState() == 1) {
                 Battle_ResetSubstate();
-                func_843062F0();
-                func_843066E0(D_84390010[0]);
-                func_843066E0(D_84390010[1]);
+                ProcessEntityAnimFlagUpdates();
+                UpdateEntityStateByMode(D_84390010[0]);
+                UpdateEntityStateByMode(D_84390010[1]);
                 gBattleState.unk_00->unk_30 += 1;
                 gBattleState.unk_00->unk_18 = 1;
             }
@@ -209,13 +209,13 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             break;
 
         case 8:
-            if ((func_8431FAB4() == 0) && (func_8431F998(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
+            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     func_8432E9D8(2);
                     func_8430CC84();
                 }
-                func_843058A8(D_84390010[0]);
-                func_843058A8(D_84390010[1]);
+                ClearAnimFlagIfState6A(D_84390010[0]);
+                ClearAnimFlagIfState6A(D_84390010[1]);
                 gBattleState.unk_00->unk_18 = 2;
                 func_8436EEF0(2, 0x1E);
                 ScreenTransition_Update();
@@ -719,8 +719,8 @@ void Battle_Update(CameraStruct* arg0) {
 
     func_8432ABBC(arg0);
     Anim_ProcessQueue();
-    func_84306914(gPrimaryPokemonEntity);
-    func_84306914(D_8439001C);
+    ProcessEntityPostMoveEffects(gPrimaryPokemonEntity);
+    ProcessEntityPostMoveEffects(gPokemonEntityUnused);
     func_8431B174(arg0);
     func_8431B830(arg0);
     func_8431BD10(arg0);

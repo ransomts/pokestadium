@@ -68,7 +68,7 @@ static u32 D_84384514[] = {
 
 s32 CameraNode_UpdateCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
-        func_8432D0D8(5, &D_8438E440);
+        HandleCameraMode(5, &D_8438E440);
     }
     return 0;
 }
@@ -331,16 +331,16 @@ s32 func_84300E88(s32 arg0) {
 
     Gfx_FinishFrame();
     AnimationFrame_StallCheck();
-    func_84307394(2, D_8438E798);
+    BattleInitDispatch(2, D_8438E798);
     HandleBattlePhase(2, &D_8438E598, &D_8438E688);
     sp1C = func_8432AEE4(2, &D_8438E440);
-    func_8432D0D8(2, &D_8438E440);
+    HandleCameraMode(2, &D_8438E440);
     FramebufferNode_Init(D_8438E788, D_8438E790);
     FramebufferNode_Init(D_8438E78C, D_8438E794);
     Stage_BeginDisplayList();
     RenderBackgroundScreen();
     Graph_SetTextureState(D_8438E784);
-    func_84307394(5, D_8438E798);
+    BattleInitDispatch(5, D_8438E798);
     RenderPokemonPortraits(D_8438E788, D_8438E790);
     RenderPokemonPortraits(D_8438E78C, D_8438E794);
     PokemonSelection_AssignIndices();
@@ -366,7 +366,7 @@ s32 func_84300FBC(s32 arg0) {
         Stage_BeginDisplayList();
         RenderBackgroundScreen();
         Graph_SetTextureState(D_8438E784);
-        func_84307394(5, D_8438E798);
+        BattleInitDispatch(5, D_8438E798);
         RenderPokemonPortraits(D_8438E788, D_8438E790);
         RenderPokemonPortraits(D_8438E78C, D_8438E794);
     }
@@ -560,10 +560,10 @@ void BattleScreen_Init(Stage* arg0) {
     GraphNode_AllocInit(NULL, &D_8438E580);
     Perspective_SetParams(&D_8438E440, 30.0f, 192.0f, 24576.0f);
     Graph_InitRoots();
-    func_84307394(0, D_8438E798);
+    BattleInitDispatch(0, D_8438E798);
     HandleBattlePhase(0, &D_8438E598, &D_8438E688);
     func_8432AEE4(0, &D_8438E440);
-    func_8432D0D8(0, &D_8438E440);
+    HandleCameraMode(0, &D_8438E440);
 
     sp44 = state_pool_try_init(main_pool_get_available(), 0);
     D_8438E784 = process_geo_layout(sp44, D_84384364);
@@ -598,10 +598,10 @@ void BattleScreen_Init(Stage* arg0) {
         D_8438E530.unk_00.unk_14 = 1;
     }
 
-    func_84307394(3, D_8438E798);
+    BattleInitDispatch(3, D_8438E798);
     HandleBattlePhase(3, &D_8438E598, &D_8438E688);
     func_8432AEE4(3, &D_8438E440);
-    func_8432D0D8(3, &D_8438E440);
+    HandleCameraMode(3, &D_8438E440);
 
     D_8438E7A0 = 1;
     D_8438E79C = 0;

@@ -397,8 +397,8 @@ void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
     }
 
     if (sp22 > 0) {
-        sp24 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, D_843900B0, 0xAA)) / 2;
-        Text_Print((arg0 - sp24) + 0x23, arg1 + 2, GetMessageString(NULL, 0, D_843900B0, 0xAA));
+        sp24 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xAA)) / 2;
+        Text_Print((arg0 - sp24) + 0x23, arg1 + 2, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xAA));
     } else {
         Text_Print((arg0 - (MeasureTextWidth(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
     }
@@ -441,14 +441,14 @@ void DrawPokemonInfoWindow(unk_D_84390010* arg0, PokemonData* arg1, unk_D_843857
     }
 
     func_843109F4(arg3 + 3, arg4 + 0x10, arg1->unk_24);
-    func_84310368(arg3 + 2, arg4 + 0x19, D_843900A8[IsPrimaryEntity(arg0)], arg1->unk_26);
+    func_84310368(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[IsPrimaryEntity(arg0)], arg1->unk_26);
     DrawFractionNumber(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
     Text_ResetState();
     Text_SetFont(2, 0);
 
     sp34 = MeasureTextWidth(2, 0, func_8430862C(arg0)) / 2;
     Text_Print((arg3 - sp34) + 0x23, arg4 + 2, func_8430862C(arg0));
-    sp34 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, D_843900BC, arg2->unk_00));
+    sp34 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
 
     if (sp34 >= 0x28) {
         Text_SetFont(1, -1);
@@ -459,7 +459,7 @@ void DrawPokemonInfoWindow(unk_D_84390010* arg0, PokemonData* arg1, unk_D_843857
     }
 
     Text_SetEnvColor(arg2->unk_04.r, arg2->unk_04.g, arg2->unk_04.b, 0xFF);
-    Text_Print(sp34, arg4 + 0xE, GetMessageString(NULL, 0, D_843900BC, arg2->unk_00));
+    Text_Print(sp34, arg4 + 0xE, GetMessageString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
     Text_SetupDL();
 }
 
@@ -854,9 +854,9 @@ void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     Text_ResetState();
     Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0x9E));
-    Text_Print(arg1 + 0x58, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0x9F));
-    Text_Print(arg1 + 0x98, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA0));
+    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0x9E));
+    Text_Print(arg1 + 0x58, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0x9F));
+    Text_Print(arg1 + 0x98, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA0));
     Text_SetupDL();
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
@@ -876,8 +876,8 @@ void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     Text_ResetState();
     Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA9));
-    Text_Print(arg1 + 0x51, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA8));
+    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA9));
+    Text_Print(arg1 + 0x51, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA8));
     Text_SetupDL();
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
@@ -896,7 +896,7 @@ void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     Text_ResetState();
     Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA8));
+    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA8));
     Text_SetupDL();
     DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
 }
@@ -1625,10 +1625,10 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     Text_ResetState();
     Text_SetFont(2, 0);
-    sp48 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, D_843900B0, 0xA1)) / 2;
-    Text_Print((arg1 - sp48) + 0x61, arg2 + 5, GetMessageString(NULL, 0, D_843900B0, 0xA1));
-    Text_Print(arg1 + 0x32, arg2 + 0x14, GetMessageString(NULL, 0, D_843900B0, 0xA3));
-    Text_Print(arg1 + 0x7A, arg2 + 0x14, GetMessageString(NULL, 0, D_843900B0, 0xA2));
+    sp48 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA1)) / 2;
+    Text_Print((arg1 - sp48) + 0x61, arg2 + 5, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA1));
+    Text_Print(arg1 + 0x32, arg2 + 0x14, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA3));
+    Text_Print(arg1 + 0x7A, arg2 + 0x14, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA2));
     Text_SetupDL();
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);

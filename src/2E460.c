@@ -46,14 +46,14 @@ unk_func_88500020 gMenuTextureInfo_Alternates[] = {
 };
 
 void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1) {
-    if (func_80024F00(arg1) != 0) {
+    if (MenuItem_GetPokemonSpecies(arg1) != 0) {
         arg0->unk_00 = 1;
     } else {
         arg0->unk_00 = 0;
         arg0->unk_08 = func_80025084(arg1);
         SaveSlot_GetTrainerName(arg1, &arg0[1]);
     }
-    arg0->unk_04 = func_80024F68(arg1);
+    arg0->unk_04 = MenuItem_GetHeldItemId(arg1);
 }
 
 void DrawTextureRectFromInfo(unk_func_88500020* arg0, s32 arg1, s32 a2) {

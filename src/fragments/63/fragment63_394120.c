@@ -1216,7 +1216,7 @@ s32 Battle_Run(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('EYEC');
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&gBattleProgress, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&gBattleProgress, gBattleContext.unk_11F2);
     Gfx_InitBuffers(0x18000, 0);
     sp2C = Stage_Create(0, 1, 3, 1, 2, 1);
     Text_Init(0x17, 0);

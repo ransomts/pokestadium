@@ -22,38 +22,38 @@ s32 D_843902A0;
 #include "prevent_bss_reordering.h"
 s32 gPanelDrawCount;
 s32 D_843902A8;
-static s32 D_843902AC;
-static s32 D_843902B0;
+static s32 gCurrentActionScriptId;
+static s32 gPendingActionScriptFlag0;
 static s32 D_843902B4;
-static s32 D_843902B8;
-static s32 D_843902BC;
-static s32 D_843902C0;
-static s32 D_843902C4;
-static s32 D_843902C8;
-static s32 D_843902CC;
-static s32 D_843902D0;
-static s32 D_843902D4;
-static s32 D_843902D8;
-static s32 D_843902DC;
-static s8 D_843902E0;
+static s32 gCurrentActionScriptSubIndex;
+static s32 gWaterEffectCounter;
+static s32 gPendingActionScriptFlag3;
+static s32 gCurrentActionScriptMode;
+static s32 gPendingActionScriptFlag1;
+static s32 gCurrentActionScriptAltId;
+static s32 gCurrentActionScriptSubId;
+static s32 gPendingActionScriptFlag2;
+static s32 gWaterEffectParam;
+static s32 gWaterEffectTimerMax;
+static s8 gCurrentActionScriptType;
 s16 gParticleTexture_Default;
-s16 D_843902E4;
-static s16 D_843902E6;
-unk_D_84390010* D_843902E8;
+s16 gParticleEffectPrimaryId;
+static s16 gParticleEffectSecondaryId;
+unk_D_84390010* gParticleEffectEntityA;
 unk_D_84390010* gParticleEffectData_42;
-unk_D_84390010* D_843902F0;
-s32 D_843902F4;
+unk_D_84390010* gParticleEffectEntityB;
+s32 gGameStateFlag;
 s32 D_843902F8;
-static s8 D_843902FC;
-func_D_84390300 D_84390300[8];
-func_D_84390320 D_84390320[8];
+static s8 gStateCallbackSlot;
+func_D_84390300 gCameraCallbackFuncs[8];
+func_D_84390320 gCameraUpdateFuncs[8];
 s32 D_84390340;
-static f32 D_84390344;
-Vec3f D_84390348;
-static Vec3s D_84390354;
-static Vec3f D_84390360;
-static Vec3s D_8439036C;
-static Vec3s D_84390374;
+static f32 gWaterScale;
+Vec3f gCameraLookAtPos;
+static Vec3s gCameraAngles;
+static Vec3f gCameraPosOffset;
+static Vec3s gCameraRotOffset;
+static Vec3s gCameraTargetOffset;
 s16 D_8439037A;
 s16 D_8439037C;
 s16 D_8439037E;
@@ -79,9 +79,9 @@ static s32 D_843903B0;
 static s32 D_843903B4;
 s32 pad_D_843903B8[6];
 static Fragment2_1GraphNode D_843903D0[16];
-static s32 D_84391A50[16];
-static Fragment2_1GraphNode D_84391A90[4];
-static s32 D_84392030[4];
+static s32 gGraphNodeUsed[16];
+static Fragment2_1GraphNode gParticleNodePool[4];
+static s32 gParticleNodeUsed[4];
 static unk_D_84392040 D_84392040;
 f32 D_84392058[26];
 
@@ -944,43 +944,43 @@ unk_D_8140E728_01C gParticleEffectData[] = {
     },
 };
 
-static func_D_84390320 D_84386480[] = {
-    func_8432F998, func_84342CF0, func_8433B2E8, func_8434DE6C, func_8433BAA8, func_8432F998, func_8433B4AC,
-    func_84356AC8, func_84344A4C, func_8432F998, func_843473BC, func_84357AB8, func_84343288, func_84356FAC,
-    func_84343988, func_8433B290, func_8435811C, func_8434A324, func_8433DC80, func_8432F998, func_843378CC,
-    func_8434C590, func_84336B8C, func_84336EE8, func_8434BF2C, func_8432F998, func_8433BC38, func_8432F998,
-    func_843443E0, func_84358DE4, func_84358F6C, func_84357E60, func_8432F998, func_8432F998, func_84345038,
-    func_843371C0, func_8434CE14, func_8434A898, func_84342808, func_8433BD08, func_84345D74, func_84356254,
-    func_8432F998, func_8432F998, func_8432F998, func_8434ED48, func_8432F998, func_8433B988, func_8433B374,
-    func_8434D8D8, func_84348630, func_8432F998, func_84349628, func_84344508, func_8432F998, func_84349830,
-    func_843579C0, func_84357B80, func_8433B6FC, func_8433E124, func_84358DE4, func_84356DBC, func_8432F998,
-    func_84346B58, func_84346EEC, func_84344248, func_84346F40, func_8432F998, func_84349384, func_84349504,
-    func_8433BDFC, func_84349058, func_84347448, func_8433E46C, func_84349108, func_84346DC4, func_84344474,
-    func_8433BB78, func_8433BECC, func_843498D8, func_84349A14, func_84358034, func_84348630, func_8434A7DC,
-    func_843374A4, func_84358288, func_84345EC0, func_8434A9EC, func_8434AA6C, func_84358A5C, func_8434AC8C,
+static func_D_84390320 gStateFunctionTable[] = {
+    func_8432F998, ParticleEffect_RegisterDefault, SpawnLargeBurstIfNotActive, ParticleEffect_InitSmallExplosion, InitParticleEffectSet_Alt, func_8432F998, SpawnSmallGlowAndCustomEffect,
+    ParticleEffect_SmallSetup, ParticleEffect_RegisterCombined, func_8432F998, ParticleEffect_RegisterHandlers_473BC, ParticleEffect_SmallNodeSetup, ParticleEffect_InitBurstEffect, ParticleEffect_DynamicStateSetup,
+    ParticleEffect_Init, SpawnLargeBurstEffect, ParticleEffect_FullSetupA, func_8434A324, func_8433DC80, func_8432F998, func_843378CC,
+    func_8434C590, func_84336B8C, func_84336EE8, func_8434BF2C, func_8432F998, InitParticleEffectSet_Alt2, func_8432F998,
+    ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, func_8432F998, func_8432F998, ParticleEffect_RegisterSparkle,
+    func_843371C0, func_8434CE14, func_8434A898, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
+    func_8432F998, func_8432F998, func_8432F998, ParticleEffect_SetMode, func_8432F998, InitParticleEffectSet_WithTexture53, SpawnTimedFireballEffect,
+    func_8434D8D8, ParticleEffect_RegisterAll_48630, func_8432F998, ParticleEffect_RegisterHandler_49628, ParticleEffect_RegisterEffectE0Alt2, func_8432F998, ParticleEffect_RegisterHandler_49830,
+    ParticleEffect_AdditionalNodeSetup, ParticleEffect_SmallNodeSetupB, InitExplosionEffectSet, func_8433E124, ParticleEffect_GroupSetupA, ParticleEffect_HandleStateSetup, func_8432F998,
+    ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, func_8432F998, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
+    InitParticleEffectSet_WithDifferentTiming, ParticleEffect_RegisterHandler_49058, ParticleEffect_RegisterHandler_47448, func_8433E46C, ParticleEffect_RegisterHandler_49108, ParticleEffect_RegisterHandlers_Alternate, ParticleEffect_RegisterEffectE0Alt,
+    InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, func_8434A7DC,
+    func_843374A4, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, func_8434AA6C, ParticleEffect_MultiNodeD, func_8434AC8C,
     func_8434AD1C, func_8434AD70, func_8434C618, func_8434B000, func_8434BA70, func_8434C070, func_8434C0C4,
-    func_8432F998, func_8434CAD8, func_8434D0F8, func_8434D448, func_8432E9B8, func_8434E0CC, func_8434E02C,
-    func_8434E74C, func_8434DA94, func_8434DB40, func_8435674C, func_84358EA0, func_84358EDC, func_843490A8,
-    func_8434ACEC, func_8434E8E0, func_8435839C, func_843584C0, func_84358538, func_84357700, func_8434EBA0,
-    func_8434EC08, func_8433BB78, func_8434E9A0, func_8433FD30, func_8435727C, func_8435742C, func_84344094,
-    func_8433765C, func_8434EF68, func_8434EFBC, func_8434F010, func_8434F060, func_8434F0B8, func_8434F350,
-    func_8433FAF8, func_8433F758, func_8433F5D4, func_8432F998, func_84356CA4, func_84356D04, func_8433F414,
+    func_8432F998, func_8434CAD8, func_8434D0F8, func_8434D448, func_8432E9B8, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
+    ParticleEffect_TriggerSpecial, func_8434DA94, func_8434DB40, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
+    func_8434ACEC, ParticleEffect_TriggerDefault1, ParticleEffect_FinalSetupB, ParticleEffect_FinalSetupC, ParticleEffect_AdditionalNodeA, ParticleEffect_StateCollisionSetupA, ParticleEffect_CreateWithCallback,
+    ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, func_8433FD30, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
+    func_8433765C, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
+    func_8433FAF8, func_8433F758, func_8433F5D4, func_8432F998, ParticleEffect_ExtraNodeSetup, ParticleEffect_TextureNodeSetup, func_8433F414,
     func_8433F4CC, func_8433F4EC, func_8433F5B4, func_8433F974, func_8432F998,
 };
-static func_D_84390320 D_843866C4[] = {
-    func_8432F9A0, func_8432F9A0, func_8433B58C, func_84357A64, func_84357AE0, func_84357110, func_8434575C,
-    func_8434A384, func_8433DECC, func_8432F9A0, func_84346BE0, func_8432F9A0, func_8432F9A0, func_84344BDC,
-    ParticleEffect_InitializeGroup, func_843372D8, func_8434CF64, func_84342908, func_84357CC8, func_8432F9A0, func_8433BF54,
-    func_84345B84, func_84337000, func_843450B4, func_8432F9A0, func_8434E1B8, RegisterParticleEffect_ComplexMovement, func_8433B7E4,
-    func_8433E33C, func_843375B0, func_84356EF4, func_84344B04, func_8432F9A0, func_8432F9A0, func_8433B3D8,
-    ParticleEffect_ConfigB, ParticleEffect_ConfigA, func_84356148, func_843561A0, func_843567F4, func_8433766C, func_8434915C,
-    func_8435643C, func_843565DC, func_84356020, func_843568C8, func_843569A0, func_843561F8, func_8432F9A0,
-    func_84345B28, func_84346E50, func_8434C5F0, func_84356AF0, func_8433C3A0, func_84336DD8, func_84357F64,
-    func_84336C80, func_843581FC, func_8434A930, func_843378D4, func_8434C720, func_8434B064, func_8434BCD4,
-    func_8434C144, func_8434CC68, func_8434D5EC, func_8434D938, func_8433C06C, func_8433C284, func_8433C4EC,
-    func_8433C604, func_8433C784, func_8433DFF4, func_8434DD08, func_8434DBEC, func_8434A9CC, func_8434E870,
-    func_8434E940, func_8434967C, func_8434ECF4, func_843560B4, func_843489FC, func_843489FC, func_8434917C,
-    func_8434EA10, func_8435783C, func_8433CAFC, RegisterParticleEffect_Burst, func_843574FC, func_8432F9A0,
+static func_D_84390320 gParticleStateFunctionTable[] = {
+    func_8432F9A0, func_8432F9A0, InitComplexParticleSequence, ParticleEffect_SpecialCollisionSetup, ParticleEffect_MultiTextureSetup, ParticleEffect_DynamicCollisionSetup, ParticleEffect_RegisterPaletteVariants,
+    func_8434A384, func_8433DECC, func_8432F9A0, ParticleEffect_RegisterAnimationCallbacks, func_8432F9A0, func_8432F9A0, ParticleEffect_RegisterSpecific,
+    ParticleEffect_InitializeGroup, func_843372D8, func_8434CF64, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, func_8432F9A0, InitParticleComboVariant,
+    ParticleEffect_RegisterModeSpecific, func_84337000, ParticleEffect_RegisterAll, func_8432F9A0, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
+    func_8433E33C, func_843375B0, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, func_8432F9A0, func_8432F9A0, InitParticleEffectGroup_Basic,
+    ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, func_8433766C, ParticleEffect_Trigger56A74,
+    ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, func_8432F9A0,
+    ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, func_8434C5F0, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, func_84336DD8, ParticleEffect_SimpleNodeSetup,
+    func_84336C80, ParticleEffect_FullSetupB, func_8434A930, func_843378D4, func_8434C720, func_8434B064, func_8434BCD4,
+    func_8434C144, func_8434CC68, func_8434D5EC, func_8434D938, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, InitParticleEffectSet_Variant2,
+    InitParticleEffectSet_WithComplex, InitParticleEffectSet_Variant3, func_8433DFF4, func_8434DD08, func_8434DBEC, func_8434A9CC, ParticleEffect_TriggerAnother,
+    ParticleEffect_TriggerDefault2, ParticleEffect_RegisterHandlers_4967C, ParticleEffect_CreateColorVariant, ParticleEffect_ConfigVariantB, ParticleEffect_RegisterAll_489FC, ParticleEffect_RegisterAll_489FC, ParticleEffect_ConfigureAndTrigger_4917C,
+    ParticleEffect_TriggerDefault4, ParticleEffect_StateCollisionSetupB, InitParticleEffectSet_ThreeInstances, RegisterParticleEffect_Burst, ParticleEffect_CollisionAndBurstSetup, func_8432F9A0,
 };
 static u8 D_8438682C[] = {
     0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00,
@@ -1199,42 +1199,42 @@ static u8 D_843868D0[] = {
     0x00,
 
 };
-static u8 D_843868D4[] = {
+static u8 gBattleScriptCmd_28[] = {
     0x28,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868D8[] = {
+static u8 gBattleScriptCmd_29[] = {
     0x29,
     0x03,
     0x3F,
     0x00,
 
 };
-static u8 D_843868DC[] = {
+static u8 gBattleScriptCmd_2A[] = {
     0x2A,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868E0[] = {
+static u8 gBattleScriptCmd_2B[] = {
     0x2B,
     0x11,
     0x3F,
     0x00,
 
 };
-static u8 D_843868E4[] = {
+static u8 gBattleScriptCmd_17[] = {
     0x17,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868E8[] = {
+static u8 gBattleScriptCmd_09[] = {
     0x09,
     0x3F,
     0x00,
@@ -1245,28 +1245,28 @@ static u8 D_843868EC[] = {
     0x0B, 0x3F, 0x00, 0x00, 0x0E, 0x3F, 0x00, 0x00,
 
 };
-static u8 D_843868F4[] = {
+static u8 gBattleScriptCmd_14[] = {
     0x14,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868F8[] = {
+static u8 gBattleScriptCmd_15[] = {
     0x15,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868FC[] = {
+static u8 gBattleScriptCmd_1E[] = {
     0x1E,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386900[] = {
+static u8 gBattleScriptCmd_10[] = {
     0x10,
     0x3F,
     0x00,
@@ -1280,28 +1280,28 @@ static u8 D_84386904[] = {
     0x00,
 
 };
-static u8 D_84386908[] = {
+static u8 gBattleScriptCmd_0C[] = {
     0x0C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_8438690C[] = {
+static u8 gBattleScriptCmd_07[] = {
     0x07,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386910[] = {
+static u8 gBattleScriptCmd_36[] = {
     0x36,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386914[] = {
+static u8 gBattleScriptCmd_18[] = {
     0x18,
     0x0D,
     0x3F,
@@ -1312,7 +1312,7 @@ static u8 D_84386918[] = {
     0x03, 0x3F, 0x00, 0x00, 0x14, 0x3F, 0x00, 0x00,
 
 };
-static u8 D_84386920[] = {
+static u8 gBattleScriptCmd_2C[] = {
     0x2C,
     0x3F,
     0x00,
@@ -1326,112 +1326,112 @@ static u8 D_84386924[] = {
     0x00,
 
 };
-static u8 D_84386928[] = {
+static u8 gBattleScriptCmd_3C[] = {
     0x3C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_8438692C[] = {
+static u8 gBattleScriptCmd_2D[] = {
     0x2D,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386930[] = {
+static u8 gBattleScriptCmd_08[] = {
     0x08,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386934[] = {
+static u8 gBattleScriptCmd_2E[] = {
     0x2E,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386938[] = {
+static u8 gBattleScriptCmd_2F[] = {
     0x2F,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_8438693C[] = {
+static u8 gBattleScriptCmd_30[] = {
     0x30,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386940[] = {
+static u8 gBattleScriptCmd_31[] = {
     0x31,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386944[] = {
+static u8 gBattleScriptCmd_32[] = {
     0x32,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386948[] = {
+static u8 gBattleScriptCmd_33[] = {
     0x33,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_8438694C[] = {
+static u8 gBattleScriptCmd_34[] = {
     0x34,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386950[] = {
+static u8 gBattleScriptCmd_35[] = {
     0x35,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386954[] = {
+static u8 gBattleScriptCmd_37[] = {
     0x37,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386958[] = {
+static u8 gBattleScriptCmd_38[] = {
     0x38,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_8438695C[] = {
+static u8 gBattleScriptCmd_39[] = {
     0x39,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386960[] = {
+static u8 gBattleScriptCmd_3A[] = {
     0x3A,
     0x0B,
     0x3F,
     0x00,
 
 };
-static u8 D_84386964[] = {
+static u8 gBattleScriptCmd_3B[] = {
     0x3B,
     0x2C,
     0x3F,
@@ -1442,28 +1442,28 @@ static u8 D_84386968[] = {
     0x00, 0x00, 0x00, 0x00, 0x66, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386970[] = {
+static u8 gBattleScriptCmd_90[] = {
     0x90,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386974[] = {
+static u8 gBattleScriptCmd_01[] = {
     0x01,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386978[] = {
+static u8 gBattleScriptCmd_02[] = {
     0x02,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_8438697C[] = {
+static u8 gBattleScriptCmd_03[] = {
     0x03,
     0x00,
     0x00,
@@ -1474,7 +1474,7 @@ static u8 D_84386980[] = {
     0x66, 0x04, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386988[] = {
+static u8 gBattleScriptCmd_06[] = {
     0x06,
     0x00,
     0x00,
@@ -1488,7 +1488,7 @@ static u8 D_8438698C[] = {
     0x00,
 
 };
-static u8 D_84386990[] = {
+static u8 gBattleScriptJump_07[] = {
     0x66,
     0x07,
     0x00,
@@ -1499,7 +1499,7 @@ static u8 D_84386994[] = {
     0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
 
 };
-static u8 D_8438699C[] = {
+static u8 gBattleScriptCmd_0A[] = {
     0x0A,
     0x00,
     0x00,
@@ -1510,35 +1510,35 @@ static u8 D_843869A0[] = {
     0x66, 0x0B, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00,
 
 };
-static u8 D_843869A8[] = {
+static u8 gBattleScriptCmd_0D[] = {
     0x0D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869AC[] = {
+static u8 gBattleScriptCmd_7B[] = {
     0x7B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869B0[] = {
+static u8 gBattleScriptCmd_7C[] = {
     0x7C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869B4[] = {
+static u8 gBattleScriptCmd_0E[] = {
     0x0E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869B8[] = {
+static u8 gBattleScriptCmd_0F[] = {
     0x0F,
     0x00,
     0x00,
@@ -1552,14 +1552,14 @@ static u8 D_843869BC[] = {
     0x00,
 
 };
-static u8 D_843869C0[] = {
+static u8 gBattleScriptCmd_11[] = {
     0x11,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869C4[] = {
+static u8 gBattleScriptCmd_12[] = {
     0x12,
     0x00,
     0x00,
@@ -1577,7 +1577,7 @@ static u8 D_843869D0[] = {
     0x00,
 
 };
-static u8 D_843869D4[] = {
+static u8 gBattleScriptCmd_16[] = {
     0x16,
     0x00,
     0x00,
@@ -1602,14 +1602,14 @@ static u8 D_843869E0[] = {
     0x19, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00,
 
 };
-static u8 D_843869E8[] = {
+static u8 gBattleScriptCmd_1C[] = {
     0x1C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869EC[] = {
+static u8 gBattleScriptCmd_4C[] = {
     0x4C,
     0x00,
     0x00,
@@ -1620,63 +1620,63 @@ static u8 D_843869F0[] = {
     0x1D, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00,
 
 };
-static u8 D_843869F8[] = {
+static u8 gBattleScriptCmd_1F[] = {
     0x1F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_843869FC[] = {
+static u8 gBattleScriptCmd_20[] = {
     0x20,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A00[] = {
+static u8 gBattleScriptCmd_21[] = {
     0x21,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A04[] = {
+static u8 gBattleScriptCmd_22[] = {
     0x22,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A08[] = {
+static u8 gBattleScriptCmd_23[] = {
     0x23,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A0C[] = {
+static u8 gBattleScriptJump_24[] = {
     0x66,
     0x24,
     0x00,
     0x00,
 
 };
-static u8 D_84386A10[] = {
+static u8 gBattleScriptCmd_25[] = {
     0x25,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A14[] = {
+static u8 gBattleScriptCmd_26[] = {
     0x26,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A18[] = {
+static u8 gBattleScriptJump_27[] = {
     0x66,
     0x27,
     0x00,
@@ -1697,7 +1697,7 @@ static u8 D_84386A20[] = {
     0x00,
 
 };
-static u8 D_84386A24[] = {
+static u8 gBattleScriptJump_2A[] = {
     0x66,
     0x2A,
     0x00,
@@ -1718,11 +1718,11 @@ static u8 D_84386A2C[] = {
     0x00,
 
 };
-static u8 D_84386A30[] = {
+static u8 gBattleScriptJump_2D[] = {
     0x66, 0x2D, 0x00, 0x00, 0x2E, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386A38[] = {
+static u8 gBattleScriptJump_2F[] = {
     0x66,
     0x2F,
     0x00,
@@ -1750,14 +1750,14 @@ static u8 D_84386A44[] = {
     0x00,
 
 };
-static u8 D_84386A48[] = {
+static u8 gBattleScriptCmd_52[] = {
     0x52,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A4C[] = {
+static u8 gBattleScriptCmd_59[] = {
     0x59,
     0x00,
     0x00,
@@ -1782,28 +1782,28 @@ static u8 D_84386A60[] = {
     0x00,
 
 };
-static u8 D_84386A64[] = {
+static u8 gBattleScriptCmd_6A[] = {
     0x6A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A68[] = {
+static u8 gBattleScriptCmd_6B[] = {
     0x6B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A6C[] = {
+static u8 gBattleScriptCmd_1B[] = {
     0x1B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A70[] = {
+static u8 gBattleScriptCmd_56[] = {
     0x56,
     0x00,
     0x00,
@@ -1817,7 +1817,7 @@ static u8 D_84386A74[] = {
     0x00,
 
 };
-static u8 D_84386A78[] = {
+static u8 gBattleScriptCmd_5D[] = {
     0x5D,
     0x00,
     0x00,
@@ -1838,7 +1838,7 @@ static u8 D_84386A80[] = {
     0x00,
 
 };
-static u8 D_84386A84[] = {
+static u8 gBattleScriptCmd_40[] = {
     0x40,
     0x00,
     0x00,
@@ -1852,21 +1852,21 @@ static u8 D_84386A88[] = {
     0x00,
 
 };
-static u8 D_84386A8C[] = {
+static u8 gBattleScriptCmd_42[] = {
     0x42,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A90[] = {
+static u8 gBattleScriptCmd_5F[] = {
     0x5F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386A94[] = {
+static u8 gBattleScriptJump_4E[] = {
     0x66,
     0x4E,
     0x00,
@@ -1887,336 +1887,336 @@ static u8 D_84386A9C[] = {
     0x00,
 
 };
-static u8 D_84386AA0[] = {
+static u8 gBattleScriptJump_39[] = {
     0x66,
     0x39,
     0x00,
     0x00,
 
 };
-static u8 D_84386AA4[] = {
+static u8 gBattleScriptCmd_3D[] = {
     0x3D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AA8[] = {
+static u8 gBattleScriptCmd_3E[] = {
     0x3E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AAC[] = {
+static u8 gBattleScriptCmd_7D[] = {
     0x7D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AB0[] = {
+static u8 gBattleScriptCmd_7E[] = {
     0x7E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AB4[] = {
+static u8 gBattleScriptCmd_7F[] = {
     0x7F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AB8[] = {
+static u8 gBattleScriptCmd_80[] = {
     0x80,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386ABC[] = {
+static u8 gBattleScriptCmd_81[] = {
     0x81,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AC0[] = {
+static u8 gBattleScriptCmd_82[] = {
     0x82,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AC4[] = {
+static u8 gBattleScriptCmd_83[] = {
     0x83,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AC8[] = {
+static u8 gBattleScriptCmd_84[] = {
     0x84,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386ACC[] = {
+static u8 gBattleScriptCmd_8B[] = {
     0x8B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AD0[] = {
+static u8 gBattleScriptCmd_8C[] = {
     0x8C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AD4[] = {
+static u8 gBattleScriptCmd_8D[] = {
     0x8D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AD8[] = {
+static u8 gBattleScriptCmd_8E[] = {
     0x8E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386ADC[] = {
+static u8 gBattleScriptCmd_85[] = {
     0x85,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AE0[] = {
+static u8 gBattleScriptCmd_86[] = {
     0x86,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AE4[] = {
+static u8 gBattleScriptCmd_8F[] = {
     0x8F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AE8[] = {
+static u8 gBattleScriptCmd_87[] = {
     0x87,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AEC[] = {
+static u8 gBattleScriptCmd_88[] = {
     0x88,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AF0[] = {
+static u8 gBattleScriptCmd_89[] = {
     0x89,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AF4[] = {
+static u8 gBattleScriptCmd_8A[] = {
     0x8A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AF8[] = {
+static u8 gBattleScriptCmd_3F[] = {
     0x3F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386AFC[] = {
+static u8 gBattleScriptCmd_41[] = {
     0x41,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B00[] = {
+static u8 gBattleScriptCmd_43[] = {
     0x43,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B04[] = {
+static u8 gBattleScriptCmd_71[] = {
     0x71,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B08[] = {
+static u8 gBattleScriptCmd_79[] = {
     0x79,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B0C[] = {
+static u8 gBattleScriptCmd_44[] = {
     0x44,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B10[] = {
+static u8 gBattleScriptCmd_45[] = {
     0x45,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B14[] = {
+static u8 gBattleScriptJump_46[] = {
     0x66,
     0x46,
     0x00,
     0x00,
 
 };
-static u8 D_84386B18[] = {
+static u8 gBattleScriptCmd_47[] = {
     0x47,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B1C[] = {
+static u8 gBattleScriptCmd_6F[] = {
     0x6F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B20[] = {
+static u8 gBattleScriptCmd_48[] = {
     0x48,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B24[] = {
+static u8 gBattleScriptCmd_49[] = {
     0x49,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B28[] = {
+static u8 gBattleScriptCmd_4A[] = {
     0x4A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B2C[] = {
+static u8 gBattleScriptCmd_4B[] = {
     0x4B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B30[] = {
+static u8 gBattleScriptJump_78[] = {
     0x66,
     0x78,
     0x00,
     0x00,
 
 };
-static u8 D_84386B34[] = {
+static u8 gBattleScriptCmd_4F[] = {
     0x4F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B38[] = {
+static u8 gBattleScriptCmd_50[] = {
     0x50,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B3C[] = {
+static u8 gBattleScriptCmd_51[] = {
     0x51,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B40[] = {
+static u8 gBattleScriptCmd_53[] = {
     0x53,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B44[] = {
+static u8 gBattleScriptCmd_54[] = {
     0x54,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B48[] = {
+static u8 gBattleScriptCmd_55[] = {
     0x55,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B4C[] = {
+static u8 gBattleScriptCmd_72[] = {
     0x72,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B50[] = {
+static u8 gBattleScriptCmd_73[] = {
     0x73,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B54[] = {
+static u8 gBattleScriptCmd_74[] = {
     0x74,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B58[] = {
+static u8 gBattleScriptCmd_57[] = {
     0x57,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B5C[] = {
+static u8 gBattleScriptCmd_58[] = {
     0x58,
     0x00,
     0x00,
@@ -2230,154 +2230,154 @@ static u8 D_84386B60[] = {
     0x00,
 
 };
-static u8 D_84386B64[] = {
+static u8 gBattleScriptCmd_5A[] = {
     0x5A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B68[] = {
+static u8 gBattleScriptCmd_5B[] = {
     0x5B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B6C[] = {
+static u8 gBattleScriptCmd_5C[] = {
     0x5C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B70[] = {
+static u8 gBattleScriptCmd_5E[] = {
     0x5E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B74[] = {
+static u8 gBattleScriptCmd_60[] = {
     0x60,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B78[] = {
+static u8 gBattleScriptCmd_61[] = {
     0x61,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B7C[] = {
+static u8 gBattleScriptCmd_62[] = {
     0x62,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B80[] = {
+static u8 gBattleScriptCmd_63[] = {
     0x63,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B84[] = {
+static u8 gBattleScriptCmd_64[] = {
     0x64,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B88[] = {
+static u8 gBattleScriptCmd_65[] = {
     0x65,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B8C[] = {
+static u8 gBattleScriptJump_1A[] = {
     0x66,
     0x1A,
     0x00,
     0x00,
 
 };
-static u8 D_84386B90[] = {
+static u8 gBattleScriptCmd_67[] = {
     0x67,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B94[] = {
+static u8 gBattleScriptCmd_68[] = {
     0x68,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B98[] = {
+static u8 gBattleScriptCmd_69[] = {
     0x69,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386B9C[] = {
+static u8 gBattleScriptCmd_6C[] = {
     0x6C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BA0[] = {
+static u8 gBattleScriptCmd_6D[] = {
     0x6D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BA4[] = {
+static u8 gBattleScriptCmd_6E[] = {
     0x6E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BA8[] = {
+static u8 gBattleScriptCmd_70[] = {
     0x70,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BAC[] = {
+static u8 gBattleScriptCmd_75[] = {
     0x75,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BB0[] = {
+static u8 gBattleScriptCmd_76[] = {
     0x76,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BB4[] = {
+static u8 gBattleScriptCmd_77[] = {
     0x77,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BB8[] = {
+static u8 gBattleScriptCmd_7A[] = {
     0x7A,
     0x00,
     0x00,
@@ -2399,582 +2399,582 @@ static u8 D_84386BC8[] = {
     0x30, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386BD0[] = {
+static u8 Fragment62_Byte04[] = {
     0x04,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BD4[] = {
+static u8 Fragment62_Byte05[] = {
     0x05,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BD8[] = {
+static u8 Fragment62_Entry58_06[] = {
     0x58, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386BE0[] = {
+static u8 Fragment62_Byte07[] = {
     0x07,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BE4[] = {
+static u8 Fragment62_Byte08[] = {
     0x08,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BE8[] = {
+static u8 Fragment62_Byte48[] = {
     0x48,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BEC[] = {
+static u8 Fragment62_Byte09[] = {
     0x09,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BF0[] = {
+static u8 Fragment62_Bytes0A_0B_0C_0D[] = {
     0x0A, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386C00[] = {
+static u8 Fragment62_Byte0E[] = {
     0x0E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C04[] = {
+static u8 Fragment62_Byte23[] = {
     0x23,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C08[] = {
+static u8 Fragment62_Byte24[] = {
     0x24,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C0C[] = {
+static u8 Fragment62_Byte25[] = {
     0x25,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C10[] = {
+static u8 Fragment62_Bytes54_25[] = {
     0x54,
     0x25,
     0x00,
     0x00,
 
 };
-static u8 D_84386C14[] = {
+static u8 Fragment62_Bytes4D_0E[] = {
     0x4D,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 D_84386C18[] = {
+static u8 Fragment62_Byte26[] = {
     0x26,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C1C[] = {
+static u8 Fragment62_Byte0F[] = {
     0x0F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C20[] = {
+static u8 Fragment62_Byte10[] = {
     0x10,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C24[] = {
+static u8 Fragment62_Byte11[] = {
     0x11,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C28[] = {
+static u8 Fragment62_Bytes12_13_14[] = {
     0x12, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386C34[] = {
+static u8 Fragment62_Byte15[] = {
     0x15,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C38[] = {
+static u8 Fragment62_Byte16[] = {
     0x16,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C3C[] = {
+static u8 Fragment62_Byte17[] = {
     0x17,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C40[] = {
+static u8 Fragment62_Byte18[] = {
     0x18,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C44[] = {
+static u8 Fragment62_Byte19[] = {
     0x19,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C48[] = {
+static u8 Fragment62_Bytes0D_0E[] = {
     0x0D,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 D_84386C4C[] = {
+static u8 Fragment62_Byte03[] = {
     0x03,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C50[] = {
+static u8 Fragment62_Byte07b[] = {
     0x07,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C54[] = {
+static u8 Fragment62_Byte22[] = {
     0x22,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C58[] = {
+static u8 Fragment62_Byte35[] = {
     0x35,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C5C[] = {
+static u8 Fragment62_Bytes45_0E_04[] = {
     0x45, 0x00, 0x00, 0x00, 0x0E, 0x04, 0x00, 0x00,
 
 };
-static u8 D_84386C64[] = {
+static u8 Fragment62_Byte1A[] = {
     0x1A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C68[] = {
+static u8 Fragment62_Byte09b[] = {
     0x09,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C6C[] = {
+static u8 Fragment62_Bytes06_0E[] = {
     0x06,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 D_84386C70[] = {
+static u8 Fragment62_Bytes1B_1C[] = {
     0x1B, 0x00, 0x00, 0x00, 0x1C, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386C78[] = {
+static u8 Fragment62_Byte1D[] = {
     0x1D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C7C[] = {
+static u8 Fragment62_Byte1E[] = {
     0x1E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C80[] = {
+static u8 Fragment62_Byte55[] = {
     0x55,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C84[] = {
+static u8 Fragment62_Byte1F[] = {
     0x1F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C88[] = {
+static u8 Fragment62_Byte20[] = {
     0x20,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C8C[] = {
+static u8 Fragment62_Byte21[] = {
     0x21,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C90[] = {
+static u8 Fragment62_Bytes4F_27[] = {
     0x4F,
     0x27,
     0x00,
     0x00,
 
 };
-static u8 D_84386C94[] = {
+static u8 Fragment62_Byte28[] = {
     0x28,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C98[] = {
+static u8 Fragment62_Byte29[] = {
     0x29,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386C9C[] = {
+static u8 Fragment62_Byte2A[] = {
     0x2A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CA0[] = {
+static u8 Fragment62_Byte2B[] = {
     0x2B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CA4[] = {
+static u8 Fragment62_Byte2C[] = {
     0x2C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CA8[] = {
+static u8 Fragment62_Byte2D[] = {
     0x2D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CAC[] = {
+static u8 Fragment62_Bytes4F_2D[] = {
     0x4F,
     0x2D,
     0x00,
     0x00,
 
 };
-static u8 D_84386CB0[] = {
+static u8 Fragment62_Byte2E[] = {
     0x2E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CB4[] = {
+static u8 Fragment62_Byte2F[] = {
     0x2F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CB8[] = {
+static u8 Fragment62_Byte31[] = {
     0x31,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CBC[] = {
+static u8 Fragment62_Byte32[] = {
     0x32,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CC0[] = {
+static u8 Fragment62_Bytes3F_23_33[] = {
     0x3F, 0x23, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386CC8[] = {
+static u8 Fragment62_Byte34[] = {
     0x34,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CCC[] = {
+static u8 Fragment62_Byte36[] = {
     0x36,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CD0[] = {
+static u8 Fragment62_Byte37[] = {
     0x37,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CD4[] = {
+static u8 Fragment62_Byte39[] = {
     0x39,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CD8[] = {
+static u8 Fragment62_Byte49[] = {
     0x49,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CDC[] = {
+static u8 Fragment62_Byte4A[] = {
     0x4A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CE0[] = {
+static u8 Fragment62_Byte3A[] = {
     0x3A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CE4[] = {
+static u8 Fragment62_Byte4B[] = {
     0x4B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CE8[] = {
+static u8 Fragment62_Byte3B[] = {
     0x3B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CEC[] = {
+static u8 Fragment62_Byte3C[] = {
     0x3C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CF0[] = {
+static u8 Fragment62_Byte3D[] = {
     0x3D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CF4[] = {
+static u8 Fragment62_Byte3E[] = {
     0x3E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CF8[] = {
+static u8 Fragment62_Byte40[] = {
     0x40,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386CFC[] = {
+static u8 Fragment62_Bytes2D_1E[] = {
     0x2D,
     0x1E,
     0x00,
     0x00,
 
 };
-static u8 D_84386D00[] = {
+static u8 Fragment62_Byte41[] = {
     0x41,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D04[] = {
+static u8 Fragment62_Byte42[] = {
     0x42,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D08[] = {
+static u8 Fragment62_Byte43[] = {
     0x43,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D0C[] = {
+static u8 Fragment62_Byte44[] = {
     0x44,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D10[] = {
+static u8 Fragment62_Byte46[] = {
     0x46,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D14[] = {
+static u8 Fragment62_Byte47[] = {
     0x47,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D18[] = {
+static u8 Fragment62_Bytes50_4C[] = {
     0x50,
     0x4C,
     0x00,
     0x00,
 
 };
-static u8 D_84386D1C[] = {
+static u8 Fragment62_Bytes38_4D[] = {
     0x38, 0x00, 0x00, 0x00, 0x4D, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386D24[] = {
+static u8 Fragment62_Bytes4E_4F[] = {
     0x4E, 0x00, 0x00, 0x00, 0x4F, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386D2C[] = {
+static u8 Fragment62_Byte51[] = {
     0x51,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D30[] = {
+static u8 Fragment62_Byte52[] = {
     0x52,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D34[] = {
+static u8 Fragment62_Byte02[] = {
     0x02,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D38[] = {
+static u8 Fragment62_Byte56[] = {
     0x56,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D3C[] = {
+static u8 Fragment62_Byte53[] = {
     0x53,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386D40[] = {
+static u8 Fragment62_Bytes57_23[] = {
     0x57,
     0x23,
     0x00,
     0x00,
 };
-static u8* D_84386D44[][2] = {
+static u8* Fragment62_SubTablePtr2D[][2] = {
     {
         D_84386968,
         D_8438682C,
     },
     {
-        D_84386ADC,
-        D_84386920,
+        gBattleScriptCmd_85,
+        gBattleScriptCmd_2C,
     },
     {
-        D_84386AE0,
-        D_84386920,
+        gBattleScriptCmd_86,
+        gBattleScriptCmd_2C,
     },
     {
-        D_84386AE8,
+        gBattleScriptCmd_87,
         D_84386924,
     },
     {
-        D_84386AEC,
+        gBattleScriptCmd_88,
         D_84386924,
     },
     {
-        D_84386AF0,
-        D_8438692C,
+        gBattleScriptCmd_89,
+        gBattleScriptCmd_2D,
     },
     {
-        D_84386AF4,
+        gBattleScriptCmd_8A,
         D_8438682C,
     },
     {
@@ -2982,7 +2982,7 @@ static u8* D_84386D44[][2] = {
         D_8438682C,
     },
     {
-        D_84386ACC,
+        gBattleScriptCmd_8B,
         D_84386924,
     },
     {
@@ -2990,35 +2990,35 @@ static u8* D_84386D44[][2] = {
         D_84386870,
     },
     {
-        D_84386AD0,
-        D_84386928,
+        gBattleScriptCmd_8C,
+        gBattleScriptCmd_3C,
     },
     {
-        D_84386AD4,
-        D_84386928,
+        gBattleScriptCmd_8D,
+        gBattleScriptCmd_3C,
     },
     {
-        D_84386AE4,
-        D_84386920,
+        gBattleScriptCmd_8F,
+        gBattleScriptCmd_2C,
     },
     {
-        D_84386AD8,
-        D_84386928,
+        gBattleScriptCmd_8E,
+        gBattleScriptCmd_3C,
     },
     {
-        D_84386BB8,
+        gBattleScriptCmd_7A,
         D_8438682C,
     },
 };
-static u8* D_84386DBC[] = {
-    D_84386968, D_84386AAC, D_84386AB0, D_84386974, D_84386B10, D_84386AB4,
-    D_84386AB8, D_84386ABC, D_84386AC0, D_84386AC4, D_84386AC8, D_84386970,
+static u8* Fragment62_DataPtrArray[] = {
+    D_84386968, gBattleScriptCmd_7D, gBattleScriptCmd_7E, gBattleScriptCmd_01, gBattleScriptCmd_45, gBattleScriptCmd_7F,
+    gBattleScriptCmd_80, gBattleScriptCmd_81, gBattleScriptCmd_82, gBattleScriptCmd_83, gBattleScriptCmd_84, gBattleScriptCmd_90,
 };
-static u8* D_84386DEC[] = {
-    D_84386BBC, D_84386BC4, D_84386BEC, D_84386BC8, D_84386CB8,
+static u8* Fragment62_GroupPtrArray[] = {
+    D_84386BBC, D_84386BC4, Fragment62_Byte09, D_84386BC8, Fragment62_Byte31,
 };
-static u8* D_84386E00[] = { D_84386968, D_84386A2C };
-static u8* D_84386E08[][5] = {
+static u8* Fragment62_SpecialPairPtr[] = { D_84386968, D_84386A2C };
+static u8* Fragment62_ComplexPtrTable[][5] = {
     {
         D_84386968,
         D_84386968,
@@ -3029,124 +3029,124 @@ static u8* D_84386E08[][5] = {
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C00,
+        Fragment62_Byte0E,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C04,
+        Fragment62_Byte23,
         D_8438682C,
         D_84386894,
     },
     {
-        D_843869B8,
+        gBattleScriptCmd_0F,
         D_84386968,
-        D_84386D18,
+        Fragment62_Bytes50_4C,
         D_84386844,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C48,
+        Fragment62_Bytes0D_0E,
         D_8438682C,
-        D_843868E4,
+        gBattleScriptCmd_17,
     },
     {
         D_84386A9C,
         D_84386968,
-        D_84386CCC,
+        Fragment62_Byte36,
         D_84386874,
         D_84386894,
     },
     {
         D_84386A20,
         D_84386968,
-        D_84386C9C,
+        Fragment62_Byte2A,
         D_843868B0,
         D_84386894,
     },
     {
-        D_84386B24,
+        gBattleScriptCmd_49,
         D_84386968,
-        D_84386CA0,
+        Fragment62_Byte2B,
         D_8438686C,
         D_84386894,
     },
     {
-        D_843869A8,
+        gBattleScriptCmd_0D,
         D_84386968,
-        D_84386BD4,
+        Fragment62_Byte05,
         D_8438685C,
         D_8438682C,
     },
     {
-        D_84386B18,
+        gBattleScriptCmd_47,
         D_84386968,
-        D_84386C98,
-        D_84386930,
+        Fragment62_Byte29,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
-        D_84386B1C,
+        gBattleScriptCmd_6F,
         D_84386968,
-        D_84386D3C,
-        D_84386930,
+        Fragment62_Byte53,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
-        D_8438699C,
-        D_84386B20,
-        D_84386C4C,
-        D_843868E8,
+        gBattleScriptCmd_0A,
+        gBattleScriptCmd_48,
+        Fragment62_Byte03,
+        gBattleScriptCmd_09,
         D_843868EC,
     },
     {
-        D_84386B0C,
+        gBattleScriptCmd_44,
         D_84386968,
         D_84386BBC,
-        D_84386934,
+        gBattleScriptCmd_2E,
         D_8438682C,
     },
     {
-        D_84386AA4,
+        gBattleScriptCmd_3D,
         D_84386968,
-        D_84386C7C,
+        Fragment62_Byte1E,
         D_8438685C,
         D_8438682C,
     },
     {
-        D_8438699C,
+        gBattleScriptCmd_0A,
         D_84386968,
-        D_84386CB4,
+        Fragment62_Byte2F,
         D_84386854,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386D40,
+        Fragment62_Bytes57_23,
         D_84386858,
         D_84386894,
     },
     {
-        D_8438699C,
+        gBattleScriptCmd_0A,
         D_84386968,
         D_84386BBC,
         D_84386854,
@@ -3155,141 +3155,141 @@ static u8* D_84386E08[][5] = {
     {
         D_84386968,
         D_84386A1C,
-        D_84386CAC,
+        Fragment62_Bytes4F_2D,
         D_843868AC,
         D_84386894,
     },
     {
         D_843869C8,
         D_84386968,
-        D_84386BEC,
+        Fragment62_Byte09,
         D_8438682C,
         D_8438682C,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA8,
+        Fragment62_Byte2D,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386BAC,
+        gBattleScriptCmd_75,
         D_84386968,
-        D_84386C80,
+        Fragment62_Byte55,
         D_8438685C,
         D_84386858,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C90,
+        Fragment62_Bytes4F_27,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C04,
+        Fragment62_Byte23,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386978,
+        gBattleScriptCmd_02,
         D_84386968,
-        D_84386D18,
+        Fragment62_Bytes50_4C,
         D_84386844,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
-        D_843869F8,
+        gBattleScriptCmd_1F,
         D_84386968,
-        D_84386CD0,
+        Fragment62_Byte37,
         D_8438688C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C00,
+        Fragment62_Byte0E,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386BB4,
+        gBattleScriptCmd_77,
         D_84386968,
-        D_84386C0C,
+        Fragment62_Byte25,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386BB0,
+        gBattleScriptCmd_76,
         D_84386968,
-        D_84386CB4,
+        Fragment62_Byte2F,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B08,
+        gBattleScriptCmd_79,
         D_84386968,
-        D_84386C10,
+        Fragment62_Bytes54_25,
         D_84386850,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386B54,
+        gBattleScriptCmd_74,
         D_84386968,
-        D_84386CAC,
+        Fragment62_Bytes4F_2D,
         D_8438682C,
         D_84386894,
     },
     {
         D_843869C8,
         D_84386968,
-        D_84386BEC,
+        Fragment62_Byte09,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_84386B50,
+        gBattleScriptCmd_73,
         D_84386968,
-        D_84386CA4,
-        D_84386944,
+        Fragment62_Byte2C,
+        gBattleScriptCmd_32,
         D_84386894,
     },
     {
-        D_84386B4C,
+        gBattleScriptCmd_72,
         D_84386968,
-        D_84386CA8,
+        Fragment62_Byte2D,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386B50,
+        gBattleScriptCmd_73,
         D_84386968,
-        D_84386CA8,
-        D_84386944,
+        Fragment62_Byte2D,
+        gBattleScriptCmd_32,
         D_84386894,
     },
     {
@@ -3300,38 +3300,38 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386B00,
+        gBattleScriptCmd_43,
         D_84386968,
-        D_84386C18,
+        Fragment62_Byte26,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B00,
+        gBattleScriptCmd_43,
         D_84386968,
-        D_84386C18,
+        Fragment62_Byte26,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B00,
+        gBattleScriptCmd_43,
         D_84386968,
-        D_84386C0C,
+        Fragment62_Byte25,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B40,
+        gBattleScriptCmd_53,
         D_84386968,
         D_84386BBC,
-        D_8438693C,
+        gBattleScriptCmd_30,
         D_8438682C,
     },
     {
-        D_84386B28,
+        gBattleScriptCmd_4A,
         D_84386968,
-        D_84386C98,
-        D_84386930,
+        Fragment62_Byte29,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
@@ -3363,37 +3363,37 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386A30,
+        gBattleScriptJump_2D,
         D_84386968,
-        D_84386C04,
+        Fragment62_Byte23,
         D_843868C0,
         D_84386894,
     },
     {
-        D_84386B7C,
+        gBattleScriptCmd_62,
         D_84386968,
-        D_84386C8C,
+        Fragment62_Byte21,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_843869C0,
+        gBattleScriptCmd_11,
         D_84386968,
-        D_84386C50,
+        Fragment62_Byte07b,
         D_84386868,
         D_8438682C,
     },
     {
-        D_843869D4,
+        gBattleScriptCmd_16,
         D_84386968,
-        D_84386D1C,
+        Fragment62_Bytes38_4D,
         D_84386874,
         D_84386894,
     },
     {
         D_843869D8,
         D_84386968,
-        D_84386C38,
+        Fragment62_Byte16,
         D_84386874,
         D_84386894,
     },
@@ -3401,144 +3401,144 @@ static u8* D_84386E08[][5] = {
         D_84386A60,
         D_84386968,
         D_84386BBC,
-        D_843868F4,
+        gBattleScriptCmd_14,
         D_8438682C,
     },
     {
-        D_84386988,
+        gBattleScriptCmd_06,
         D_84386968,
-        D_84386D34,
+        Fragment62_Byte02,
         D_84386844,
         D_84386868,
     },
     {
         D_8438698C,
         D_84386968,
-        D_84386C70,
+        Fragment62_Bytes1B_1C,
         D_84386844,
         D_84386868,
     },
     {
-        D_84386A0C,
+        gBattleScriptJump_24,
         D_84386968,
-        D_84386C20,
+        Fragment62_Byte10,
         D_8438689C,
         D_84386844,
     },
     {
-        D_84386A38,
+        gBattleScriptJump_2F,
         D_84386968,
-        D_84386D08,
-        D_843868D8,
+        Fragment62_Byte43,
+        gBattleScriptCmd_29,
         D_8438682C,
     },
     {
-        D_84386A04,
+        gBattleScriptCmd_22,
         D_84386968,
-        D_84386C3C,
+        Fragment62_Byte17,
         D_84386898,
         D_84386844,
     },
     {
         D_84386980,
         D_84386968,
-        D_84386D0C,
+        Fragment62_Byte44,
         D_8438682C,
-        D_843868D8,
+        gBattleScriptCmd_29,
     },
     {
-        D_84386B30,
+        gBattleScriptJump_78,
         D_84386968,
-        D_84386C58,
+        Fragment62_Byte35,
         D_8438682C,
-        D_843868D8,
+        gBattleScriptCmd_29,
     },
     {
-        D_84386B8C,
+        gBattleScriptJump_1A,
         D_84386968,
-        D_84386C5C,
+        Fragment62_Bytes45_0E_04,
         D_8438682C,
-        D_843868D8,
+        gBattleScriptCmd_29,
     },
     {
-        D_84386A18,
+        gBattleScriptJump_27,
         D_84386968,
-        D_84386D10,
+        Fragment62_Byte46,
         D_843868A8,
-        D_843868D8,
+        gBattleScriptCmd_29,
     },
     {
-        D_84386BB0,
+        gBattleScriptCmd_76,
         D_84386968,
-        D_84386C0C,
+        Fragment62_Byte25,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B04,
+        gBattleScriptCmd_71,
         D_84386968,
-        D_84386C14,
+        Fragment62_Bytes4D_0E,
         D_84386850,
         D_84386894,
     },
     {
-        D_84386B9C,
+        gBattleScriptCmd_6C,
         D_84386968,
-        D_84386CB0,
+        Fragment62_Byte2E,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C08,
+        Fragment62_Byte24,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
     {
         D_843869E0,
         D_84386968,
-        D_84386CAC,
+        Fragment62_Bytes4F_2D,
         D_8438682C,
         D_84386894,
     },
     {
-        D_84386B2C,
+        gBattleScriptCmd_4B,
         D_84386968,
-        D_84386CBC,
+        Fragment62_Byte32,
         D_8438687C,
         D_8438682C,
     },
     {
         D_843869DC,
         D_84386968,
-        D_84386C34,
+        Fragment62_Byte15,
         D_84386880,
         D_843868CC,
     },
     {
         D_843869DC,
         D_84386968,
-        D_84386C34,
+        Fragment62_Byte15,
         D_84386880,
         D_843868CC,
     },
     {
         D_84386994,
         D_84386968,
-        D_84386C84,
+        Fragment62_Byte1F,
         D_8438684C,
         D_8438682C,
     },
     {
-        D_84386BA0,
+        gBattleScriptCmd_6D,
         D_84386968,
         D_84386BBC,
         D_8438682C,
@@ -3547,190 +3547,190 @@ static u8* D_84386E08[][5] = {
     {
         D_843869A0,
         D_84386968,
-        D_84386BD0,
+        Fragment62_Byte04,
         D_84386858,
         D_84386894,
     },
     {
-        D_84386B14,
-        D_84386B98,
-        D_84386D14,
-        D_843868F8,
-        D_843868D8,
+        gBattleScriptJump_46,
+        gBattleScriptCmd_69,
+        Fragment62_Byte47,
+        gBattleScriptCmd_15,
+        gBattleScriptCmd_29,
     },
     {
-        D_84386AFC,
+        gBattleScriptCmd_41,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_843868C8,
         D_84386894,
     },
     {
-        D_84386AFC,
+        gBattleScriptCmd_41,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_843868C8,
         D_84386894,
     },
     {
-        D_84386AFC,
+        gBattleScriptCmd_41,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_843868C8,
         D_84386894,
     },
     {
-        D_84386AA0,
+        gBattleScriptJump_39,
         D_84386968,
-        D_84386C64,
+        Fragment62_Byte1A,
         D_84386858,
         D_84386894,
     },
     {
-        D_84386A00,
+        gBattleScriptCmd_21,
         D_84386968,
-        D_84386C88,
+        Fragment62_Byte20,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_84386A08,
+        gBattleScriptCmd_23,
         D_84386968,
-        D_84386C1C,
+        Fragment62_Byte0F,
         D_84386874,
         D_84386894,
     },
     {
-        D_84386B44,
+        gBattleScriptCmd_54,
         D_84386968,
-        D_84386C78,
+        Fragment62_Byte1D,
         D_84386878,
         D_84386894,
     },
     {
         D_84386A98,
         D_84386968,
-        D_84386BE4,
+        Fragment62_Byte08,
         D_8438686C,
         D_8438682C,
     },
     {
-        D_843869C4,
+        gBattleScriptCmd_12,
         D_84386968,
-        D_84386BE4,
+        Fragment62_Byte08,
         D_8438686C,
         D_8438682C,
     },
     {
-        D_84386A14,
+        gBattleScriptCmd_26,
         D_84386968,
-        D_84386C24,
+        Fragment62_Byte11,
         D_843868A4,
         D_8438682C,
     },
     {
-        D_843869C4,
+        gBattleScriptCmd_12,
         D_84386968,
-        D_84386BE8,
+        Fragment62_Byte48,
         D_8438686C,
         D_8438682C,
     },
     {
-        D_84386AF8,
+        gBattleScriptCmd_3F,
         D_84386968,
-        D_84386BF0,
+        Fragment62_Bytes0A_0B_0C_0D,
         D_8438682C,
         D_8438687C,
     },
     {
-        D_84386A10,
+        gBattleScriptCmd_25,
         D_84386968,
-        D_84386CE4,
+        Fragment62_Byte4B,
         D_843868A0,
         D_84386894,
     },
     {
-        D_84386A10,
+        gBattleScriptCmd_25,
         D_84386968,
-        D_84386CE0,
+        Fragment62_Byte3A,
         D_843868A0,
         D_84386894,
     },
     {
         D_84386A50,
         D_84386968,
-        D_84386D24,
-        D_843868D4,
+        Fragment62_Bytes4E_4F,
+        gBattleScriptCmd_28,
         D_84386894,
     },
     {
-        D_843869C0,
+        gBattleScriptCmd_11,
         D_84386968,
-        D_84386BE0,
+        Fragment62_Byte07,
         D_84386868,
         D_8438682C,
     },
     {
-        D_84386A68,
+        gBattleScriptCmd_6B,
         D_84386968,
-        D_84386CD8,
+        Fragment62_Byte49,
         D_843868CC,
         D_84386894,
     },
     {
-        D_84386A64,
+        gBattleScriptCmd_6A,
         D_84386968,
-        D_84386CDC,
+        Fragment62_Byte4A,
         D_843868CC,
         D_84386894,
     },
     {
-        D_84386A24,
+        gBattleScriptJump_2A,
         D_84386968,
         D_84386BBC,
         D_843868B4,
         D_8438682C,
     },
     {
-        D_84386B74,
+        gBattleScriptCmd_60,
         D_84386968,
         D_84386BBC,
-        D_84386954,
+        gBattleScriptCmd_37,
         D_8438682C,
     },
     {
-        D_84386A6C,
+        gBattleScriptCmd_1B,
         D_84386968,
         D_84386BBC,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_84386B64,
+        gBattleScriptCmd_5A,
         D_84386968,
-        D_84386CA4,
-        D_84386944,
+        Fragment62_Byte2C,
+        gBattleScriptCmd_32,
         D_84386894,
     },
     {
-        D_84386B48,
+        gBattleScriptCmd_55,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_843868CC,
         D_84386894,
     },
     {
-        D_84386A70,
+        gBattleScriptCmd_56,
         D_84386968,
         D_84386BBC,
-        D_843868FC,
+        gBattleScriptCmd_1E,
         D_8438682C,
     },
     {
-        D_84386B78,
+        gBattleScriptCmd_61,
         D_84386968,
-        D_84386CC0,
-        D_84386958,
+        Fragment62_Bytes3F_23_33,
+        gBattleScriptCmd_38,
         D_84386894,
     },
     {
@@ -3741,21 +3741,21 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386A24,
+        gBattleScriptJump_2A,
         D_84386968,
         D_84386BBC,
         D_843868B4,
         D_8438682C,
     },
     {
-        D_84386A6C,
+        gBattleScriptCmd_1B,
         D_84386968,
         D_84386BBC,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_84386BA4,
+        gBattleScriptCmd_6E,
         D_84386968,
         D_84386BBC,
         D_8438682C,
@@ -3776,42 +3776,42 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_843869E8,
+        gBattleScriptCmd_1C,
         D_84386968,
         D_84386BBC,
         D_84386884,
         D_84386894,
     },
     {
-        D_84386A78,
+        gBattleScriptCmd_5D,
         D_84386968,
-        D_84386CEC,
-        D_84386900,
+        Fragment62_Byte3C,
+        gBattleScriptCmd_10,
         D_84386894,
     },
     {
-        D_84386B68,
+        gBattleScriptCmd_5B,
         D_84386968,
         D_84386BBC,
-        D_84386948,
+        gBattleScriptCmd_33,
         D_8438682C,
     },
     {
-        D_84386B58,
+        gBattleScriptCmd_57,
         D_84386968,
         D_84386BBC,
-        D_84386940,
+        gBattleScriptCmd_31,
         D_84386894,
     },
     {
-        D_843869B4,
+        gBattleScriptCmd_0E,
         D_84386968,
         D_84386BBC,
         D_84386860,
         D_8438682C,
     },
     {
-        D_843869B4,
+        gBattleScriptCmd_0E,
         D_84386968,
         D_84386BBC,
         D_84386860,
@@ -3828,125 +3828,125 @@ static u8* D_84386E08[][5] = {
         D_84386A80,
         D_84386968,
         D_84386BBC,
-        D_84386908,
+        gBattleScriptCmd_0C,
         D_8438682C,
     },
     {
-        D_8438697C,
+        gBattleScriptCmd_03,
         D_84386968,
         D_84386BBC,
         D_843868CC,
         D_8438682C,
     },
     {
-        D_84386B48,
+        gBattleScriptCmd_55,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_843868CC,
         D_84386894,
     },
     {
-        D_843869FC,
+        gBattleScriptCmd_20,
         D_84386968,
-        D_84386C40,
+        Fragment62_Byte18,
         D_8438682C,
         D_8438682C,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C40,
+        Fragment62_Byte18,
         D_8438682C,
         D_8438682C,
     },
     {
         D_84386A44,
         D_84386968,
-        D_84386D2C,
+        Fragment62_Byte51,
         D_843868D0,
         D_84386874,
     },
     {
-        D_84386A84,
+        gBattleScriptCmd_40,
         D_84386968,
-        D_84386C94,
-        D_8438690C,
+        Fragment62_Byte28,
+        gBattleScriptCmd_07,
         D_84386874,
     },
     {
-        D_84386B6C,
+        gBattleScriptCmd_5C,
         D_84386968,
-        D_84386BE0,
-        D_8438694C,
+        Fragment62_Byte07,
+        gBattleScriptCmd_34,
         D_84386868,
     },
     {
-        D_843869EC,
+        gBattleScriptCmd_4C,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_84386884,
         D_84386894,
     },
     {
-        D_843869C0,
+        gBattleScriptCmd_11,
         D_84386968,
-        D_84386BE0,
+        Fragment62_Byte07,
         D_84386868,
         D_8438682C,
     },
     {
-        D_84386B34,
+        gBattleScriptCmd_4F,
         D_84386968,
-        D_84386C00,
-        D_84386938,
+        Fragment62_Byte0E,
+        gBattleScriptCmd_2F,
         D_84386894,
     },
     {
         D_843869D8,
         D_84386968,
-        D_84386CE8,
+        Fragment62_Byte3B,
         D_84386874,
         D_84386894,
     },
     {
-        D_84386B80,
+        gBattleScriptCmd_63,
         D_84386968,
-        D_84386CF8,
-        D_8438695C,
+        Fragment62_Byte40,
+        gBattleScriptCmd_39,
         D_84386844,
     },
     {
-        D_84386B18,
+        gBattleScriptCmd_47,
         D_84386968,
-        D_84386C98,
-        D_84386930,
+        Fragment62_Byte29,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
-        D_84386990,
+        gBattleScriptJump_07,
         D_84386968,
-        D_84386CC8,
+        Fragment62_Byte34,
         D_84386848,
         D_84386894,
     },
     {
-        D_84386BA8,
+        gBattleScriptCmd_70,
         D_84386968,
-        D_84386D18,
-        D_84386944,
+        Fragment62_Bytes50_4C,
+        gBattleScriptCmd_32,
         D_84386894,
     },
     {
-        D_84386AA8,
+        gBattleScriptCmd_3E,
         D_84386968,
-        D_84386C0C,
+        Fragment62_Byte25,
         D_84386850,
         D_84386894,
     },
     {
         D_843869C8,
         D_84386968,
-        D_84386C68,
+        Fragment62_Byte09b,
         D_8438682C,
         D_8438682C,
     },
@@ -3961,71 +3961,71 @@ static u8* D_84386E08[][5] = {
         D_84386A5C,
         D_84386A2C,
         D_84386BBC,
-        D_843868DC,
+        gBattleScriptCmd_2A,
         D_843868BC,
     },
     {
-        D_84386A8C,
+        gBattleScriptCmd_42,
         D_84386968,
         D_84386BBC,
-        D_8438690C,
+        gBattleScriptCmd_07,
         D_8438682C,
     },
     {
-        D_84386B64,
+        gBattleScriptCmd_5A,
         D_84386968,
-        D_84386CA4,
-        D_84386944,
+        Fragment62_Byte2C,
+        gBattleScriptCmd_32,
         D_84386894,
     },
     {
-        D_84386B40,
+        gBattleScriptCmd_53,
         D_84386968,
         D_84386BBC,
-        D_8438693C,
+        gBattleScriptCmd_30,
         D_8438682C,
     },
     {
-        D_84386A90,
+        gBattleScriptCmd_5F,
         D_84386968,
-        D_84386CF4,
-        D_84386910,
+        Fragment62_Byte3E,
+        gBattleScriptCmd_36,
         D_8438682C,
     },
     {
-        D_843869E8,
+        gBattleScriptCmd_1C,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_84386884,
         D_84386894,
     },
     {
-        D_84386B88,
+        gBattleScriptCmd_65,
         D_84386968,
-        D_84386D00,
-        D_84386964,
+        Fragment62_Byte41,
+        gBattleScriptCmd_3B,
         D_84386894,
     },
     {
         D_843869DC,
         D_84386968,
-        D_84386C34,
+        Fragment62_Byte15,
         D_84386880,
         D_843868CC,
     },
     {
-        D_84386B70,
+        gBattleScriptCmd_5E,
         D_84386968,
-        D_84386CF0,
-        D_84386950,
+        Fragment62_Byte3D,
+        gBattleScriptCmd_35,
         D_8438682C,
     },
     {
-        D_84386B90,
-        D_84386B94,
-        D_84386C44,
-        D_843868E0,
-        D_843868D8,
+        gBattleScriptCmd_67,
+        gBattleScriptCmd_68,
+        Fragment62_Byte19,
+        gBattleScriptCmd_2B,
+        gBattleScriptCmd_29,
     },
     {
         D_84386B60,
@@ -4037,35 +4037,35 @@ static u8* D_84386E08[][5] = {
     {
         D_84386A3C,
         D_84386968,
-        D_84386C54,
+        Fragment62_Byte22,
         D_84386844,
         D_84386894,
     },
     {
         D_84386968,
         D_84386968,
-        D_84386C6C,
+        Fragment62_Bytes06_0E,
         D_8438682C,
-        D_84386914,
+        gBattleScriptCmd_18,
     },
     {
-        D_84386AFC,
+        gBattleScriptCmd_41,
         D_84386968,
-        D_84386C28,
+        Fragment62_Bytes12_13_14,
         D_843868C8,
         D_84386894,
     },
     {
         D_843869BC,
         D_84386968,
-        D_84386CD4,
+        Fragment62_Byte39,
         D_8438682C,
         D_84386894,
     },
     {
         D_84386A40,
         D_84386968,
-        D_84386D04,
+        Fragment62_Byte42,
         D_843868CC,
         D_84386894,
     },
@@ -4077,38 +4077,38 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386B3C,
+        gBattleScriptCmd_51,
         D_84386968,
         D_84386BBC,
         D_84386868,
         D_84386894,
     },
     {
-        D_84386B84,
+        gBattleScriptCmd_64,
         D_84386968,
-        D_84386CFC,
-        D_84386960,
+        Fragment62_Bytes2D_1E,
+        gBattleScriptCmd_3A,
         D_84386894,
     },
     {
-        D_84386A48,
+        gBattleScriptCmd_52,
         D_84386968,
-        D_84386D30,
+        Fragment62_Byte52,
         D_843868D0,
         D_84386874,
     },
     {
-        D_843869B0,
-        D_843869AC,
-        D_84386BD8,
+        gBattleScriptCmd_7C,
+        gBattleScriptCmd_7B,
+        Fragment62_Entry58_06,
         D_8438685C,
         D_8438682C,
     },
     {
-        D_84386B38,
+        gBattleScriptCmd_50,
         D_84386968,
-        D_84386CA4,
-        D_84386938,
+        Fragment62_Byte2C,
+        gBattleScriptCmd_2F,
         D_84386894,
     },
     {
@@ -4119,24 +4119,24 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386AF8,
+        gBattleScriptCmd_3F,
         D_84386968,
-        D_84386BF0,
+        Fragment62_Bytes0A_0B_0C_0D,
         D_8438682C,
         D_8438687C,
     },
     {
-        D_84386B28,
+        gBattleScriptCmd_4A,
         D_84386968,
-        D_84386C98,
-        D_84386930,
+        Fragment62_Byte29,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
-        D_84386B5C,
+        gBattleScriptCmd_58,
         D_84386968,
         D_84386BBC,
-        D_84386940,
+        gBattleScriptCmd_31,
         D_84386894,
     },
     {
@@ -4147,37 +4147,37 @@ static u8* D_84386E08[][5] = {
         D_8438682C,
     },
     {
-        D_84386A94,
+        gBattleScriptJump_4E,
         D_84386968,
-        D_84386D38,
+        Fragment62_Byte56,
         D_84386918,
         D_84386894,
     },
     {
-        D_84386B28,
+        gBattleScriptCmd_4A,
         D_84386968,
-        D_84386C98,
-        D_84386930,
+        Fragment62_Byte29,
+        gBattleScriptCmd_08,
         D_84386894,
     },
     {
-        D_843869A8,
+        gBattleScriptCmd_0D,
         D_84386968,
-        D_84386BD4,
+        Fragment62_Byte05,
         D_8438685C,
         D_8438682C,
     },
     {
-        D_84386A4C,
+        gBattleScriptCmd_59,
         D_84386968,
         D_84386BBC,
         D_8438682C,
         D_8438682C,
     },
     {
-        D_84386B4C,
+        gBattleScriptCmd_72,
         D_84386968,
-        D_84386CA4,
+        Fragment62_Byte2C,
         D_8438682C,
         D_84386894,
     },
@@ -4207,18 +4207,18 @@ void PlayBattleMusicOrDefault(unk_D_84390010* arg0, s16 arg1) {
     }
 }
 
-void func_8432B554(unk_D_84390010* arg0) {
+void PlayHeightBasedSoundEffect(unk_D_84390010* arg0) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
     GetModelHeight(arg0);
     Audio_PlaySoundEffect(0x33, sp1E, 0);
 }
 
-void func_8432B588(unk_D_84390010* arg0) {
+void ProcessEntityAudioInfo(unk_D_84390010* arg0) {
     ProcessAudioInfo(func_84308D98(arg0), &arg0->unk_654.unk_38);
 }
 
-void func_8432B5B8(unk_D_84390010* arg0, unk_D_800FCB18* arg1, s32 arg2) {
+void TriggerMoveEvent(unk_D_84390010* arg0, unk_D_800FCB18* arg1, s32 arg2) {
     func_800479C0(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
     HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
 }
@@ -4432,7 +4432,7 @@ void ProcessBattleMenuSelection(void) {
     }
 }
 
-void func_8432BBC0(void) {
+void RenderBattleMenuSelection(void) {
     switch (gBattleContext.unk_0000) {
         case 16:
             func_8004B1CC(1);
@@ -4619,205 +4619,205 @@ void PlayBattleSoundEffect(unk_D_84390010* arg0, s32 arg1) {
 }
 
 void ExecuteStateFunction(s16 arg0) {
-    gParticleTexture_Default = D_843902E4;
-    D_84386480[arg0]();
-    if (D_843902E6 != 0xFF) {
-        gParticleTexture_Default = D_843902E6;
-        D_84386480[arg0]();
+    gParticleTexture_Default = gParticleEffectPrimaryId;
+    gStateFunctionTable[arg0]();
+    if (gParticleEffectSecondaryId != 0xFF) {
+        gParticleTexture_Default = gParticleEffectSecondaryId;
+        gStateFunctionTable[arg0]();
     }
 }
 
-void func_8432C14C(s16 arg0) {
-    gParticleTexture_Default = D_843902E4;
-    D_843866C4[arg0]();
+void ExecuteParticleEffect(s16 arg0) {
+    gParticleTexture_Default = gParticleEffectPrimaryId;
+    gParticleStateFunctionTable[arg0]();
 }
 
 void RegisterStateCallbacks(func_D_84390300 arg0, func_D_84390320 arg1) {
-    if (D_843902FC >= 8) {
-        D_843902FC = 0;
+    if (gStateCallbackSlot >= 8) {
+        gStateCallbackSlot = 0;
     }
 
-    if (D_84390300[D_843902FC]) {}
+    if (gCameraCallbackFuncs[gStateCallbackSlot]) {}
 
-    D_84390300[D_843902FC] = arg0;
-    D_84390320[D_843902FC] = arg1;
-    D_843902FC++;
+    gCameraCallbackFuncs[gStateCallbackSlot] = arg0;
+    gCameraUpdateFuncs[gStateCallbackSlot] = arg1;
+    gStateCallbackSlot++;
 }
 
 void RunActionScript(s32 arg0, s32 arg1, s32 arg2) {
     u8* sp2C;
 
-    D_843902E0 = arg1;
+    gCurrentActionScriptType = arg1;
 
     if (arg2 == 1) {
         switch (arg1) {
             case 0:
-                sp2C = D_84386E08[arg0][0];
+                sp2C = Fragment62_ComplexPtrTable[arg0][0];
                 break;
 
             case 1:
-                sp2C = D_84386E08[arg0][1];
+                sp2C = Fragment62_ComplexPtrTable[arg0][1];
                 break;
 
             case 3:
-                sp2C = D_84386D44[arg0][0];
+                sp2C = Fragment62_SubTablePtr2D[arg0][0];
                 break;
 
             case 4:
-                sp2C = D_84386DBC[arg0];
+                sp2C = Fragment62_DataPtrArray[arg0];
                 break;
 
             case 9:
-                sp2C = D_84386E00[arg0];
+                sp2C = Fragment62_SpecialPairPtr[arg0];
                 break;
         }
 
         while (*sp2C != 0) {
             ExecuteStateFunction(*sp2C);
-            D_84388280[*sp2C]();
-            RegisterStateCallbacks(D_84388668[*sp2C], D_84388A50[*sp2C]);
+            gStateCallbackTable[*sp2C]();
+            RegisterStateCallbacks(gStateEnterCallbackTable[*sp2C], gStateExitCallbackTable[*sp2C]);
             sp2C++;
         }
     } else {
         switch (arg1) {
             case 2:
-                sp2C = D_84386E08[arg0][2];
+                sp2C = Fragment62_ComplexPtrTable[arg0][2];
                 break;
 
             case 6:
-                sp2C = D_84386DEC[arg0];
+                sp2C = Fragment62_GroupPtrArray[arg0];
                 break;
         }
 
         while (*sp2C != 0) {
-            func_8432C14C(*sp2C);
-            D_843884D8[*sp2C]();
-            RegisterStateCallbacks(D_843888C0[*sp2C], D_84388CA8[*sp2C]);
+            ExecuteParticleEffect(*sp2C);
+            gParticleCallbackTable[*sp2C]();
+            RegisterStateCallbacks(gParticleEnterCallbackTable[*sp2C], gParticleExitCallbackTable[*sp2C]);
             sp2C++;
         }
     }
 }
 
-void func_8432C3F8(void) {
-    if (D_843902B0 != 0) {
+void ProcessPendingActionScripts(void) {
+    if (gPendingActionScriptFlag0 != 0) {
         func_8432EB44();
-        RunActionScript(D_843902AC, D_843902B8, D_843902B0);
-        D_843902B0 = 0;
+        RunActionScript(gCurrentActionScriptId, gCurrentActionScriptSubIndex, gPendingActionScriptFlag0);
+        gPendingActionScriptFlag0 = 0;
     }
 
-    if (D_843902C8 != 0) {
-        RunActionScript(D_843902CC, D_843902D0, D_843902C8);
-        D_843902C8 = 0;
+    if (gPendingActionScriptFlag1 != 0) {
+        RunActionScript(gCurrentActionScriptAltId, gCurrentActionScriptSubId, gPendingActionScriptFlag1);
+        gPendingActionScriptFlag1 = 0;
     }
 
-    if (D_843902D4 != 0) {
-        RunActionScript(D_843902D8, D_843902DC, D_843902D4);
-        D_843902D4 = 0;
+    if (gPendingActionScriptFlag2 != 0) {
+        RunActionScript(gWaterEffectParam, gWaterEffectTimerMax, gPendingActionScriptFlag2);
+        gPendingActionScriptFlag2 = 0;
     }
 
-    if (D_843902C0 != 0) {
-        RunActionScript(D_843902C4, 4, D_843902C0);
-        D_843902C0 = 0;
+    if (gPendingActionScriptFlag3 != 0) {
+        RunActionScript(gCurrentActionScriptMode, 4, gPendingActionScriptFlag3);
+        gPendingActionScriptFlag3 = 0;
     }
 }
 
 void MainUpdateLoop(UNUSED CameraStruct* arg0) {
     Timer_UpdateCounters();
-    func_8432C3F8();
+    ProcessPendingActionScripts();
     func_8432E68C();
     func_843592E0();
 }
 
-void func_8432C504(u8 arg0) {
-    D_843902B8 = arg0;
+void SetActionScriptSubIndex(u8 arg0) {
+    gCurrentActionScriptSubIndex = arg0;
 }
 
-u8 func_8432C518(void) {
-    return D_843902E0;
+u8 GetActionScriptSubIndex(void) {
+    return gCurrentActionScriptType;
 }
 
-void func_8432C524(u8 arg0) {
-    D_843902C4 = arg0;
+void SetActionScriptMode(u8 arg0) {
+    gCurrentActionScriptMode = arg0;
 }
 
-u8 func_8432C538(void) {
-    return D_843902C4;
+u8 GetActionScriptMode(void) {
+    return gCurrentActionScriptMode;
 }
 
-s16 func_8432C544(void) {
-    return D_843902AC;
+s16 GetActionScriptId(void) {
+    return gCurrentActionScriptId;
 }
 
-void func_8432C550(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
-    func_8432C504(0);
-    D_843902B0 = 1;
-    D_843902AC = arg0;
+void InitActionScript(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
+    SetActionScriptSubIndex(0);
+    gPendingActionScriptFlag0 = 1;
+    gCurrentActionScriptId = arg0;
     gPanelDrawCount = 0;
-    D_843902E4 = arg3;
-    D_843902E6 = arg4;
-    D_843902E8 = arg1;
+    gParticleEffectPrimaryId = arg3;
+    gParticleEffectSecondaryId = arg4;
+    gParticleEffectEntityA = arg1;
     gParticleEffectData_42 = arg1;
-    D_843902F0 = arg2;
+    gParticleEffectEntityB = arg2;
 }
 
-void func_8432C5D4(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
-    func_8432C550(arg0, arg1, arg2, arg3, arg4);
+void InitActionScriptSimple(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
+    InitActionScript(arg0, arg1, arg2, arg3, arg4);
 }
 
-void func_8432C604(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
-    func_8432C550(arg0, arg1, arg2, arg3, arg4);
-    func_8432C504(2);
-    D_843902E8 = arg2;
-    D_843902B0 = 2;
+void InitDualTargetActionScript(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
+    InitActionScript(arg0, arg1, arg2, arg3, arg4);
+    SetActionScriptSubIndex(2);
+    gParticleEffectEntityA = arg2;
+    gPendingActionScriptFlag0 = 2;
 }
 
-void func_8432C654(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
-    func_8432C550(arg0, arg1, arg2, arg3, arg4);
-    func_8432C504(1);
+void InitActionScriptMode1(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
+    InitActionScript(arg0, arg1, arg2, arg3, arg4);
+    SetActionScriptSubIndex(1);
 }
 
-void func_8432C68C(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
-    func_8432C550(arg0, arg1, arg2, arg3, arg4);
-    func_8432C504(3);
+void InitActionScriptMode3(s32 arg0, unk_D_84390010* arg1, unk_D_84390010* arg2, s16 arg3, s16 arg4) {
+    InitActionScript(arg0, arg1, arg2, arg3, arg4);
+    SetActionScriptSubIndex(3);
 }
 
-void func_8432C6C4(s32 arg0, unk_D_84390010* arg1) {
-    D_843902C8 = 2;
-    D_843902CC = arg0;
-    D_843902D0 = 6;
-    D_843902E4 = 0xFF;
-    D_843902E6 = 0xFF;
-    D_843902E8 = arg1;
+void InitSingleEntityActionScript(s32 arg0, unk_D_84390010* arg1) {
+    gPendingActionScriptFlag1 = 2;
+    gCurrentActionScriptAltId = arg0;
+    gCurrentActionScriptSubId = 6;
+    gParticleEffectPrimaryId = 0xFF;
+    gParticleEffectSecondaryId = 0xFF;
+    gParticleEffectEntityA = arg1;
     gParticleEffectData_42 = arg1;
-    D_843902F0 = arg1;
+    gParticleEffectEntityB = arg1;
 }
 
-void func_8432C714(s32 arg0, unk_D_84390010* arg1) {
-    func_8432C6C4(arg0, arg1);
-    D_843902C8 = 1;
-    D_843902D0 = 5;
+void InitSingleEntityActionScriptVariant(s32 arg0, unk_D_84390010* arg1) {
+    InitSingleEntityActionScript(arg0, arg1);
+    gPendingActionScriptFlag1 = 1;
+    gCurrentActionScriptSubId = 5;
 }
 
 void func_8432C748(s32 arg0, unk_D_84390010* arg1) {
-    func_8432C6C4(arg0, arg1);
+    InitSingleEntityActionScript(arg0, arg1);
 }
 
 void func_8432C768(s32 arg0) {
-    D_843902D4 = 1;
-    D_843902DC = 9;
-    D_843902D8 = arg0;
-    D_843902E4 = 0xFF;
-    D_843902E6 = 0xFF;
+    gPendingActionScriptFlag2 = 1;
+    gWaterEffectTimerMax = 9;
+    gWaterEffectParam = arg0;
+    gParticleEffectPrimaryId = 0xFF;
+    gParticleEffectSecondaryId = 0xFF;
 }
 
 void func_8432C7A0(u8 arg0, unk_D_84390010* arg1) {
-    D_843902C0 = 1;
-    func_8432C524(arg0);
-    D_843902E8 = arg1;
-    D_843902E4 = 0xFF;
-    D_843902E6 = 0xFF;
+    gPendingActionScriptFlag3 = 1;
+    SetActionScriptMode(arg0);
+    gParticleEffectEntityA = arg1;
+    gParticleEffectPrimaryId = 0xFF;
+    gParticleEffectSecondaryId = 0xFF;
     if (arg0 == 3) {
-        D_843902E4 = 7;
+        gParticleEffectPrimaryId = 7;
     }
 }
 
@@ -4825,7 +4825,7 @@ void func_8432C80C(u8 arg0, unk_D_84390010* arg1) {
     func_8432EA60(arg0, arg1);
 }
 
-void func_8432C830(arg1_func_80019420* arg0) {
+void LoadWaterTexturesFromList(arg1_func_80019420* arg0) {
     if (arg0 != NULL) {
         do {
             if (arg0->unk_02 != 0) {
@@ -4836,105 +4836,105 @@ void func_8432C830(arg1_func_80019420* arg0) {
     }
 }
 
-void func_8432C86C(void) {
+void InitWaterTextures(void) {
     s32 i;
 
     // clang-format off
     for (i = 0; i < 256; i++) { gWaterTexture[i] = NULL; }
     // clang-format on
 
-    func_8432C830(func_80019EA0(0));
+    LoadWaterTexturesFromList(func_80019EA0(0));
 }
 
-void func_8432C8BC(s16 arg0) {
+void BuildMessageString(s16 arg0) {
     s32 var_v0 = 0;
-    u8* temp_a1 = D_84386E08[arg0][3];
+    u8* temp_a1 = Fragment62_ComplexPtrTable[arg0][3];
 
     while (*temp_a1 != 0x3F) {
-        D_843924C0[var_v0] = *temp_a1;
+        gMessageBuffer[var_v0] = *temp_a1;
         temp_a1++;
         var_v0++;
     }
 
-    temp_a1 = D_84386E08[arg0][4];
+    temp_a1 = Fragment62_ComplexPtrTable[arg0][4];
     while (*temp_a1 != 0x3F) {
-        D_843924C0[var_v0] = *temp_a1;
+        gMessageBuffer[var_v0] = *temp_a1;
         temp_a1++;
         var_v0++;
     }
 
-    D_843924C0[var_v0] = -1;
+    gMessageBuffer[var_v0] = -1;
 }
 
-void func_8432C958(unk_D_800AE540_1194* arg0, s16 arg1) {
+void SetMessageFromId(unk_D_800AE540_1194* arg0, s16 arg1) {
     if (arg1 != 0xFF) {
-        func_8432C8BC(arg1);
+        BuildMessageString(arg1);
         arg0->unk_1D |= 0x80;
-        arg0->unk_20 = D_843924C0;
-        arg0->unk_24 = D_843924E0;
+        arg0->unk_20 = gMessageBuffer;
+        arg0->unk_24 = gMessageStringLists;
     }
 }
 
-void func_8432C9C0(unk_D_800AE540_1194* arg0, s16 arg1) {
+void SetMessageFromAltTable(unk_D_800AE540_1194* arg0, s16 arg1) {
     s32 var_v0 = 0;
-    u8* var_v1 = D_84386D44[arg1][1];
+    u8* var_v1 = Fragment62_SubTablePtr2D[arg1][1];
 
     while (*var_v1 != 0x3F) {
-        D_843924C0[var_v0] = *var_v1;
+        gMessageBuffer[var_v0] = *var_v1;
         var_v1++;
         var_v0++;
     }
 
-    D_843924C0[var_v0] = -1;
-    arg0->unk_20 = D_843924C0;
+    gMessageBuffer[var_v0] = -1;
+    arg0->unk_20 = gMessageBuffer;
     arg0->unk_1D |= 0x80;
-    arg0->unk_24 = D_843924E0;
+    arg0->unk_24 = gMessageStringLists;
 }
 
-void func_8432CA48(void) {
+void ProcessWaterTextureLists(void) {
     s32 i = 0;
     arg1_func_80019420* var_v0;
-    arg1_func_80019420** var_s1 = D_843924E0;
+    arg1_func_80019420** var_s1 = gMessageStringLists;
 
     while (*var_s1 != NULL) {
         var_v0 = *var_s1;
         if (i) {}
-        func_8432C830(var_v0);
+        LoadWaterTexturesFromList(var_v0);
         var_s1++;
         i++;
     }
 }
 
-void func_8432CAA8(unk_D_800AE540_1194* arg0) {
+void ResetWaterEffect(unk_D_800AE540_1194* arg0) {
     arg0->unk_1D &= ~0x10;
-    func_8432CA48();
+    ProcessWaterTextureLists();
 }
 
-void func_8432CAD0(void) {
+void InitGraphNodePools(void) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
         Graph_AddToRootList0(&D_843903D0[i]);
-        D_84391A50[i] = 0;
+        gGraphNodeUsed[i] = 0;
     }
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList1(&D_84391A90[i]);
-        D_84392030[i] = 0;
+        Graph_AddToRootList1(&gParticleNodePool[i]);
+        gParticleNodeUsed[i] = 0;
     }
 }
 
-unk_D_8140E720* func_8432CB60(Fragment2_1GraphNode* arg0) {
+ParticleEffectInstance* GetGraphNodeData(Fragment2_1GraphNode* arg0) {
     return arg0->unk_000.unk_14;
 }
 
-Fragment2_1GraphNode* func_8432CB68(unk_D_8140E720* arg0) {
+Fragment2_1GraphNode* AllocateGraphNode(ParticleEffectInstance* arg0) {
     s32 i;
     s32 var_v0 = -1;
     Fragment2_1GraphNode* temp_a0;
 
     for (i = 0; i < 16; i++) {
-        if (D_84391A50[i] == 0) {
+        if (gGraphNodeUsed[i] == 0) {
             var_v0 = i;
             break;
         }
@@ -4942,7 +4942,7 @@ Fragment2_1GraphNode* func_8432CB68(unk_D_8140E720* arg0) {
 
     if (var_v0 >= 0) {
         temp_a0 = &D_843903D0[var_v0];
-        D_84391A50[var_v0] = 1;
+        gGraphNodeUsed[var_v0] = 1;
         temp_a0->unk_000.unk_14 = arg0;
     } else {
         temp_a0 = NULL;
@@ -4950,7 +4950,7 @@ Fragment2_1GraphNode* func_8432CB68(unk_D_8140E720* arg0) {
     return temp_a0;
 }
 
-void func_8432CBF8(Fragment2_1GraphNode* arg0) {
+void FreeGraphNode(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -4960,26 +4960,26 @@ void func_8432CBF8(Fragment2_1GraphNode* arg0) {
     }
 
     if (i != 16) {
-        D_84391A50[i] = 0;
+        gGraphNodeUsed[i] = 0;
         GraphNode_ClearCallback(arg0);
     }
 }
 
-Fragment2_1GraphNode* func_8432CC54(unk_D_8140E720* arg0) {
+Fragment2_1GraphNode* AllocateParticleNode(ParticleEffectInstance* arg0) {
     s32 i;
     s32 var_a2 = -1;
     Fragment2_1GraphNode* sp1C;
 
     for (i = 0; i < 4; i++) {
-        if (D_84392030[i] == 0) {
+        if (gParticleNodeUsed[i] == 0) {
             var_a2 = i;
             break;
         }
     }
 
     if (var_a2 >= 0) {
-        sp1C = &D_84391A90[var_a2];
-        D_84392030[var_a2] = 1;
+        sp1C = &gParticleNodePool[var_a2];
+        gParticleNodeUsed[var_a2] = 1;
         Particle_SetFlag(arg0, 0x400);
         sp1C->unk_000.unk_14 = arg0;
     } else {
@@ -4988,44 +4988,44 @@ Fragment2_1GraphNode* func_8432CC54(unk_D_8140E720* arg0) {
     return sp1C;
 }
 
-void func_8432CD14(Fragment2_1GraphNode* arg0) {
+void FreeParticleNode(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (arg0 == &D_84391A90[i]) {
+        if (arg0 == &gParticleNodePool[i]) {
             break;
         }
     }
 
     if (i != 4) {
-        D_84392030[i] = 0;
+        gParticleNodeUsed[i] = 0;
         GraphNode_ClearCallback(arg0);
     }
 }
 
-void func_8432CD70(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
+void InitWaterAnimNode(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
     Anim_SetChannel(arg0, 0, gWaterTexture[arg2], 0x10000);
 }
 
-void func_8432CDD8(Fragment2_1GraphNode* arg0, s16 arg1) {
+void SetAnimChannelBase(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannelBase(arg0, arg1);
 }
 
-void func_8432CE00(Fragment2_1GraphNode* arg0, s16 arg1) {
+void InitGraphNodeTexture(Fragment2_1GraphNode* arg0, s16 arg1) {
     GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
 }
 
-void func_8432CE3C(Fragment2_1GraphNode* arg0, s16 arg1) {
+void SetAnimChannel(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannel(arg0, 0, gWaterTexture[arg1], 0x10000);
 }
 
-void func_8432CE78(Fragment2_1GraphNode* arg0, s16 arg1) {
+void InitReverseAnimNode(Fragment2_1GraphNode* arg0, s16 arg1) {
     Anim_SetChannel(arg0, 0, gWaterTexture[arg1], -0x10000);
     Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 func_8432CED4(Fragment2_1GraphNode* arg0) {
+s32 IsAnimChannelFinished(Fragment2_1GraphNode* arg0) {
     s32 ret = 0;
 
     if (arg0->unk_040.unk_08 == 0) {
@@ -5034,41 +5034,41 @@ s32 func_8432CED4(Fragment2_1GraphNode* arg0) {
     return ret;
 }
 
-void func_8432CEF0(UNUSED CameraStruct* arg0) {
+void ClearCameraCallbacks(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        if ((D_84390300[i] != NULL) && (D_84390300[i]() != 0)) {
-            D_84390300[i] = NULL;
-            D_84390320[i] = 0;
+        if ((gCameraCallbackFuncs[i] != NULL) && (gCameraCallbackFuncs[i]() != 0)) {
+            gCameraCallbackFuncs[i] = NULL;
+            gCameraUpdateFuncs[i] = 0;
         }
     }
 }
 
-void func_8432CF74(UNUSED CameraStruct* arg0) {
+void RunCameraCallbacks(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        if (D_84390320[i] != NULL) {
-            D_84390320[i]();
+        if (gCameraUpdateFuncs[i] != NULL) {
+            gCameraUpdateFuncs[i]();
         }
     }
 }
 
-void func_8432CFCC(CameraStruct* arg0) {
-    D_8140E628.unk_0C = arg0;
-    D_8140E6B4 = &D_8140E628.unk_10;
+void UpdateCameraGlobals(CameraStruct* arg0) {
+    gParticleScaleFactor.unk_0C = arg0;
+    D_8140E6B4 = &gParticleScaleFactor.unk_10;
 
     Matrix_Copy(&D_8140E6B4->unk_00, &arg0->unk_60.mtxf);
     Vec3f_Copy(&D_8140E6B4->unk_40, &arg0->unk_60.eye);
     Vec3f_Copy(&D_8140E6B4->unk_4C, &arg0->unk_60.at);
-    func_8432D468(&D_8140E6B4->unk_70, &D_8140E6B4->unk_72);
-    func_8432D398(&D_8140E6B4->unk_76, &D_8140E6B4->unk_78);
+    GetCameraPitchYawFromAtToEye(&D_8140E6B4->unk_70, &D_8140E6B4->unk_72);
+    GetCameraPitchYawFromEyeToAt(&D_8140E6B4->unk_76, &D_8140E6B4->unk_78);
     func_81400F44(&D_8140E6B4->unk_58, D_8140E6B4->unk_40, D_8140E6B4->unk_4C);
     func_81400F44(&D_8140E6B4->unk_64, D_8140E6B4->unk_4C, D_8140E6B4->unk_40);
 }
 
-s32 func_8432D0D8(s32 arg0, CameraStruct* arg1) {
+s32 HandleCameraMode(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 1:
         case 3:
@@ -5076,13 +5076,13 @@ s32 func_8432D0D8(s32 arg0, CameraStruct* arg1) {
             break;
 
         case 0:
-            func_8432D150();
+            InitGameState();
             break;
 
         case 2:
-            func_8432CFCC(arg1);
+            UpdateCameraGlobals(arg1);
             MainUpdateLoop(arg1);
-            func_8432CEF0(arg1);
+            ClearCameraCallbacks(arg1);
             break;
 
         case 5:
@@ -5093,27 +5093,27 @@ s32 func_8432D0D8(s32 arg0, CameraStruct* arg1) {
     return 0;
 }
 
-void func_8432D150(void) {
+void InitGameState(void) {
     func_8432D5B0();
-    func_8432D178();
+    ResetGameGlobals();
 }
 
-void func_8432D178(void) {
+void ResetGameGlobals(void) {
     s32 i;
 
-    D_843902E8 = NULL;
-    D_843902BC = 0;
-    D_8140E628.unk_00.x = 1.0f;
-    D_8140E628.unk_00.y = 1.0f;
-    D_8140E628.unk_00.z = 1.0f;
-    D_843902F4 = 0;
+    gParticleEffectEntityA = NULL;
+    gWaterEffectCounter = 0;
+    gParticleScaleFactor.unk_00.x = 1.0f;
+    gParticleScaleFactor.unk_00.y = 1.0f;
+    gParticleScaleFactor.unk_00.z = 1.0f;
+    gGameStateFlag = 0;
     D_84392040.unk_0C = 1.0f;
     D_84392040.unk_10 = 1.0f;
-    D_843902FC = 0;
+    gStateCallbackSlot = 0;
 
     for (i = 0; i < 8; i++) {
-        D_84390300[i] = NULL;
-        D_84390320[i] = NULL;
+        gCameraCallbackFuncs[i] = NULL;
+        gCameraUpdateFuncs[i] = NULL;
     }
 
     D_8439037A = 0xFF;
@@ -5129,27 +5129,27 @@ void func_8432D178(void) {
     gFogColorR = 0;
     gFogColorG = 0;
     gFogColorB = 0;
-    D_84390344 = 1.0f;
+    gWaterScale = 1.0f;
 
-    Vec3f_Set(&D_84390360, 0.0f, 0.0f, 0.0f);
-    Vec3s_Set(&D_8439036C, 0, 0, 0);
-    Vec3s_Set(&D_84390374, 0, 0, 0);
-    Vec3f_Set(&D_84390348, 0.0f, 0.0f, 0.0f);
-    Vec3s_Set(&D_84390354, 0, 0, 0);
-    func_8432C86C();
-    func_8432CAD0();
+    Vec3f_Set(&gCameraPosOffset, 0.0f, 0.0f, 0.0f);
+    Vec3s_Set(&gCameraRotOffset, 0, 0, 0);
+    Vec3s_Set(&gCameraTargetOffset, 0, 0, 0);
+    Vec3f_Set(&gCameraLookAtPos, 0.0f, 0.0f, 0.0f);
+    Vec3s_Set(&gCameraAngles, 0, 0, 0);
+    InitWaterTextures();
+    InitGraphNodePools();
     D_843903B0 = 0;
     D_843903B4 = 0;
     func_8432E9AC();
 }
 
-void func_8432D340(Vec3f* arg0, f32 arg1) {
+void GetCameraOffsetPosition(Vec3f* arg0, f32 arg1) {
     arg0->x = D_8140E6B4->unk_40.x + (arg1 * D_8140E6B4->unk_58.x);
     arg0->y = D_8140E6B4->unk_40.y + (arg1 * D_8140E6B4->unk_58.y);
     arg0->z = D_8140E6B4->unk_40.z + (arg1 * D_8140E6B4->unk_58.z);
 }
 
-void func_8432D398(s16* arg0, s16* arg1) {
+void GetCameraPitchYawFromEyeToAt(s16* arg0, s16* arg1) {
     CameraStruct* temp_v0 = func_8432FD64();
     f32 sp20 = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 sp1C = temp_v0->unk_60.eye.y - temp_v0->unk_60.at.y;
@@ -5159,7 +5159,7 @@ void func_8432D398(s16* arg0, s16* arg1) {
     *arg1 = MathUtil_Atan2s(sp18, sp20);
 }
 
-void func_8432D424(s16* arg0) {
+void GetCameraYawFromEyeToAt(s16* arg0) {
     CameraStruct* temp_v0 = func_8432FD64();
     f32 x = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 z = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
@@ -5167,7 +5167,7 @@ void func_8432D424(s16* arg0) {
     *arg0 = MathUtil_Atan2s(z, x);
 }
 
-void func_8432D468(s16* arg0, s16* arg1) {
+void GetCameraPitchYawFromAtToEye(s16* arg0, s16* arg1) {
     CameraStruct* temp_v0 = func_8432FD64();
     f32 sp20 = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 sp1C = temp_v0->unk_60.at.y - temp_v0->unk_60.eye.y;
@@ -5177,7 +5177,7 @@ void func_8432D468(s16* arg0, s16* arg1) {
     *arg1 = MathUtil_Atan2s(sp18, sp20);
 }
 
-void func_8432D4F4(s16* arg0) {
+void GetCameraYawFromAtToEye(s16* arg0) {
     CameraStruct* temp_v0 = func_8432FD64();
     f32 x = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 z = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
@@ -5185,20 +5185,20 @@ void func_8432D4F4(s16* arg0) {
     *arg0 = MathUtil_Atan2s(z, x);
 }
 
-void func_8432D538(s16* arg0, s16* arg1) {
+void GetCameraStoredPitchYaw(s16* arg0, s16* arg1) {
     *arg0 = D_8140E6B4->unk_76;
     *arg1 = D_8140E6B4->unk_78;
 }
 
-void func_8432D55C(s16* arg0) {
+void GetCameraStoredYaw(s16* arg0) {
     *arg0 = D_8140E6B4->unk_78;
 }
 
-void func_8432D570(s16* arg0, s16* arg1) {
+void GetCameraStoredRollPitch(s16* arg0, s16* arg1) {
     *arg0 = D_8140E6B4->unk_70;
     *arg1 = D_8140E6B4->unk_72;
 }
 
-void func_8432D594(s16* arg0) {
+void GetCameraStoredPitch(s16* arg0) {
     *arg0 = D_8140E6B4->unk_72;
 }

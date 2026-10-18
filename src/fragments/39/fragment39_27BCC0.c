@@ -18,7 +18,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_8250A2A0 {
+typedef struct ItemSelectionCoords {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -27,400 +27,400 @@ typedef struct unk_D_8250A2A0 {
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
-} unk_D_8250A2A0; // size >= 0x10
+} ItemSelectionCoords; // size >= 0x10
 
 static u16 gSelectionFlags;
 static s32 gSelectionFrameCounter;
 static unk_D_82508B00* gControllerInputs;
 static unk_D_82508B00 gControllerStates[4];
-static unk_D_82508B30 gUIElements[14];
+static UIElement gUIElements[14];
 static unk_D_8250A228* gUIElementArray[2];
 static unk_D_8250A228* gComputerUIElements[2];
 static unk_D_8250A228* gComputerUIRoot;
 static unk_D_8250A228* gItemGridElements[9];
-static BinArchive* D_8250A264;
-static void* D_8250A268;
+static BinArchive* gItemArchive;
+static void* gItemDataPtr;
 static s16 D_8250A26C;
-static s16 D_8250A26E;
-static GraphNode* D_8250A270;
-static GraphNode* D_8250A274;
-static GraphNode* D_8250A278;
-static GraphNode* D_8250A27C;
-static GraphNode* D_8250A280;
-static GraphNode* D_8250A284;
+static s16 gSubMenuState;
+static GraphNode* gCursorNode;
+static GraphNode* gStatusIconNode;
+static GraphNode* gComputerSelectionNode;
+static GraphNode* gItemSelectionNode;
+static GraphNode* gBackgroundNode;
+static GraphNode* gSelectionHighlightNode;
 static unk_D_8250A288 D_8250A288;
-static s16 D_8250A292;
-static s16 D_8250A294;
-static s16 D_8250A296;
-static s16 D_8250A298;
-static unk_D_8250A2A0 D_8250A2A0;
+static s16 gSelectionTimer;
+static s16 gSelectionDelay;
+static s16 gItemSelectionTimer;
+static s16 gItemSelectionRandom;
+static ItemSelectionCoords gSelectionCoords;
 static s32 pad_D_8250A2B0[18];
 static s32 pad_D_8250A2F8;
-static s16 D_8250A2FC;
-static s16 D_8250A2FE;
-static s16 D_8250A300;
+static s16 gUnused0;
+static s16 gUnused1;
+static s16 gUnused2;
 TextObject* D_8250A304;
-static unk_D_8250A308 D_8250A308;
-static char** D_8250A47C;
+static unk_D_8250A308 gCursor;
+static char** gStringTable;
 
-static Vtx D_825061B0[] = {
+static Vtx gStatusBarVertices0[] = {
     VTX(0, 40, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 36, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 36, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 40, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Vtx D_825061F0[] = {
+static Vtx gStatusBarVertices1[] = {
     VTX(0, 36, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 32, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 32, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 36, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Vtx D_82506230[] = {
+static Vtx gStatusBarVertices2[] = {
     VTX(0, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 28, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 28, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 32, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506270[] = {
+static Vtx gStatusBarVertices3[] = {
     VTX(0, 28, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 24, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 24, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 28, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825062B0[] = {
+static Vtx gStatusBarVertices4[] = {
     VTX(0, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 20, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 20, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 24, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825062F0[] = {
+static Vtx gStatusBarVertices5[] = {
     VTX(0, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 16, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 16, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 20, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506330[] = {
+static Vtx gStatusBarVertices6[] = {
     VTX(0, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 12, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 12, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 16, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506370[] = {
+static Vtx gStatusBarVertices7[] = {
     VTX(0, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 8, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 8, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 12, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825063B0[] = {
+static Vtx gStatusBarVertices8[] = {
     VTX(0, 8, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 4, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 4, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 8, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825063F0[] = {
+static Vtx gStatusBarVertices9[] = {
     VTX(0, 4, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 0, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 4, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506430[] = {
+static Vtx gStatusBarVertices10[] = {
     VTX(0, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -4, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -4, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 0, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506470[] = {
+static Vtx gStatusBarVertices11[] = {
     VTX(0, -4, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -8, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -8, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -4, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825064B0[] = {
+static Vtx gStatusBarVertices12[] = {
     VTX(0, -8, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -12, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -12, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -8, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825064F0[] = {
+static Vtx gStatusBarVertices13[] = {
     VTX(0, -12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -16, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -16, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -12, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506530[] = {
+static Vtx gStatusBarVertices14[] = {
     VTX(0, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -20, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -20, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -16, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506570[] = {
+static Vtx gStatusBarVertices15[] = {
     VTX(0, -20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -24, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -24, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -20, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825065B0[] = {
+static Vtx gStatusBarVertices16[] = {
     VTX(0, -24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -28, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -28, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -24, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825065F0[] = {
+static Vtx gStatusBarVertices17[] = {
     VTX(0, -28, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -32, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -32, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -28, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506630[] = {
+static Vtx gStatusBarVertices18[] = {
     VTX(0, -32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -36, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -36, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -32, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506670[] = {
+static Vtx gStatusBarVertices19[] = {
     VTX(0, -36, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -40, 0, 0, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -40, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -36, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825066B0[] = {
+static Vtx gComputerSelectionVertices0[] = {
     VTX(130, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 25, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 35, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825066F0[] = {
+static Vtx gComputerSelectionVertices1[] = {
     VTX(130, 25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 15, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 25, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506730[] = {
+static Vtx gComputerSelectionVertices2[] = {
     VTX(130, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 5, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 15, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506770[] = {
+static Vtx gComputerSelectionVertices3[] = {
     VTX(130, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -5, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 5, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825067B0[] = {
+static Vtx gComputerSelectionVertices4[] = {
     VTX(130, -5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -15, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -5, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825067F0[] = {
+static Vtx gComputerSelectionVertices5[] = {
     VTX(130, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -25, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -15, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506830[] = {
+static Vtx gComputerSelectionVertices6[] = {
     VTX(130, -25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -35, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -35, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -25, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506870[] = {
+static Vtx gComputerSelectionVertices7[] = {
     VTX(150, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 25, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 35, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825068B0[] = {
+static Vtx gComputerSelectionVertices8[] = {
     VTX(150, 25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 15, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 25, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825068F0[] = {
+static Vtx gComputerSelectionVertices9[] = {
     VTX(150, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 5, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 15, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506930[] = {
+static Vtx gComputerSelectionVertices10[] = {
     VTX(150, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -5, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 5, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_82506970[] = {
+static Vtx gComputerSelectionVertices11[] = {
     VTX(150, -5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -15, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -5, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825069B0[] = {
+static Vtx gComputerSelectionVertices12[] = {
     VTX(150, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -25, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -15, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_825069F0[] = {
+static Vtx gComputerSelectionVertices13[] = {
     VTX(150, -25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -35, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -35, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -25, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Gfx D_82506A30[] = {
+static Gfx gStatusIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825061B0, 4, 0),
+    gsSPVertex(gStatusBarVertices0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000960, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825061F0, 4, 0),
+    gsSPVertex(gStatusBarVertices1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F0012C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506230, 4, 0),
+    gsSPVertex(gStatusBarVertices2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F001C20, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506270, 4, 0),
+    gsSPVertex(gStatusBarVertices3, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002580, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825062B0, 4, 0),
+    gsSPVertex(gStatusBarVertices4, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002EE0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825062F0, 4, 0),
+    gsSPVertex(gStatusBarVertices5, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F003840, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506330, 4, 0),
+    gsSPVertex(gStatusBarVertices6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F0041A0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506370, 4, 0),
+    gsSPVertex(gStatusBarVertices7, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F004B00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825063B0, 4, 0),
+    gsSPVertex(gStatusBarVertices8, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F005460, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825063F0, 4, 0),
+    gsSPVertex(gStatusBarVertices9, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F005DC0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506430, 4, 0),
+    gsSPVertex(gStatusBarVertices10, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F006720, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506470, 4, 0),
+    gsSPVertex(gStatusBarVertices11, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F007080, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825064B0, 4, 0),
+    gsSPVertex(gStatusBarVertices12, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F0079E0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825064F0, 4, 0),
+    gsSPVertex(gStatusBarVertices13, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F008340, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506530, 4, 0),
+    gsSPVertex(gStatusBarVertices14, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F008CA0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506570, 4, 0),
+    gsSPVertex(gStatusBarVertices15, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F009600, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825065B0, 4, 0),
+    gsSPVertex(gStatusBarVertices16, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F009F60, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825065F0, 4, 0),
+    gsSPVertex(gStatusBarVertices17, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F00A8C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506630, 4, 0),
+    gsSPVertex(gStatusBarVertices18, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F00B220, G_IM_FMT_RGBA, G_IM_SIZ_16b, 300, 0, 0, 0, 299, 3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506670, 4, 0),
+    gsSPVertex(gStatusBarVertices19, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_82506FF0[] = {
+static Gfx gStatusIconAnimDL[] = {
     gsDPLoadTextureTile(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825066B0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E000C80, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825066F0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E001900, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506730, 4, 0),
+    gsSPVertex(gComputerSelectionVertices2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002580, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506770, 4, 0),
+    gsSPVertex(gComputerSelectionVertices3, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003200, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825067B0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices4, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003E80, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825067F0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices5, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E004B00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506830, 4, 0),
+    gsSPVertex(gComputerSelectionVertices6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_825071F0[] = {
+static Gfx gStatusIconAltAnimDL[] = {
     gsDPLoadTextureTile(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506870, 4, 0),
+    gsSPVertex(gComputerSelectionVertices7, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E000898, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825068B0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices8, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E001130, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825068F0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices9, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E0019C8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506930, 4, 0),
+    gsSPVertex(gComputerSelectionVertices10, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002260, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_82506970, 4, 0),
+    gsSPVertex(gComputerSelectionVertices11, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002AF8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825069B0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices12, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003390, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(D_825069F0, 4, 0),
+    gsSPVertex(gComputerSelectionVertices13, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 
 static u32 D_825073F0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_825061B0, 0x05000000, 0x22040000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gStatusBarVertices0, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, DrawStatusIconForPlayer, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
@@ -521,7 +521,7 @@ static Vtx D_825077E8[] = {
     VTX(300, -35, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Gfx D_82507828[] = {
+static Gfx gComputerSelectionDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -592,12 +592,12 @@ static Gfx D_82507828[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_82507CC8[] = {
+static u32 gComputerSelectionDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82507428, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, DrawComputerSelection, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static Vtx D_82507D00[] = {
+static Vtx gComputerSelectionVertices[] = {
     VTX(0, 40, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),         VTX(0, 35, 0, 0, 160, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 35, 0, 9600, 160, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(300, 40, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),         VTX(0, 30, 0, 0, 160, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -631,7 +631,7 @@ static Vtx D_82507D00[] = {
     VTX(0, -35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(0, -40, 0, 0, 160, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -40, 0, 9600, 160, 0xFF, 0xFF, 0xFF, 0xFF), VTX(300, -35, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_82508100[] = {
+static Gfx gComputerRootDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -701,12 +701,12 @@ static Gfx D_82508100[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_825085A0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82507D00, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_82500388, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+static u32 gItemSelectionDescriptor[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gComputerSelectionVertices, 0x05000000, 0x22040000,
+    0x00000000, 0x08000000, DrawComputerRootUI, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static Vtx D_825085D8[][4] = {
+static Vtx gItemSelectionVertices[][4] = {
     {
         VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
         VTX(-32, 16, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -732,14 +732,14 @@ static Vtx D_825085D8[][4] = {
         VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     },
 };
-static Gfx D_825086D8[] = {
+static Gfx gItemSelectionBaseDL[] = {
     gsSPClearGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, TEXEL1, PRIM_LOD_FRAC, TEXEL1, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsSPEndDisplayList(),
 };
-static u32 D_825086F8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_825085D8, 0x05000000, 0x22040000,
+static u32 gItemSelectionUIDescriptor[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gItemSelectionVertices, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, DrawItemSelectionUI, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
@@ -749,7 +749,7 @@ static Vtx D_82508730[] = {
     VTX(0, 0, 0, 1024, 704, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 22, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_82508770[] = {
+static Gfx gIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -759,31 +759,31 @@ static Gfx D_82508770[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_825087D8[] = {
+static u32 gUIDrawIconDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82508730, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, UI_DrawIcon, 0x00000000, 0x06000000, 0x01000000,
 };
-static u32 D_8250880C[] = {
+static u32 gUILayoutConfig[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static s32 D_8250885C[] = { 1, 2, 3, 5, 6, 9, 0xD, 0xF, 0x10 };
-static u8* D_82508880[] = {
+static s32 gItemIdList[] = { 1, 2, 3, 5, 6, 9, 0xD, 0xF, 0x10 };
+static u8* gStatusIconTextures0[] = {
     D_0302EE00, D_03034580, D_03039D00, D_0303F480, D_03044C00,
     D_0304A380, D_0304FB00, D_03055280, D_0305AA00, D_03060180,
 };
-static u8* D_825088A8[] = {
+static u8* gStatusIconTextures1[] = {
     D_03065900, D_03069528, D_0306D150, D_03070D78, D_030749A0,
     D_030785C8, D_0307C1F0, D_0307FE18, D_03083A40, D_03087668,
 };
-static s16 D_825088D0[] = { 2, 1, 0, 0 };
-static s16 D_825088D8[] = { 3, 2, 1, 0 };
-static s16 D_825088E0[] = { 4, 0, 1, 6, 3, 2, 7, 8, 5, 0 };
-static s16 D_825088F4[] = { 2, 0, 1, 4, 5, 3, 8, 6, 7, 0, 0x8250, 0x8A20 };
-static u8* D_8250890C[] = { D_0300BB80, D_03017700 };
-static u8* D_82508914[9][4] = {
+static s16 gCategoryMapA[] = { 2, 1, 0, 0 };
+static s16 gCategoryMapB[] = { 3, 2, 1, 0 };
+static s16 gItemCategoryMap[] = { 4, 0, 1, 6, 3, 2, 7, 8, 5, 0 };
+static s16 gExtendedItemMap[] = { 2, 0, 1, 4, 5, 3, 8, 6, 7, 0, 0x8250, 0x8A20 };
+static u8* gIconTexturePointers[] = { D_0300BB80, D_03017700 };
+static u8* gItemSelectionIconTextures[9][4] = {
     D_0308B290, D_0308D290, D_0308F290, D_0308D290, D_03091290, D_03093290, D_03095290, D_03093290, D_03097290,
     D_03099290, D_0309B290, D_03099290, D_0309D290, D_0309F290, D_030A1290, D_0309F290, D_030A3290, D_030A5290,
     D_030A7290, D_030A5290, D_030A9290, D_030AB290, D_030AD290, D_030AB290, D_030AF290, D_030B1290, D_030B3290,
@@ -804,17 +804,17 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
         }
 
         if (tmp == 0) {
-            var_a2 = D_82508880[var_v0];
-            var_a3 = D_82506FF0;
+            var_a2 = gStatusIconTextures0[var_v0];
+            var_a3 = gStatusIconAnimDL;
         } else {
-            var_a2 = D_825088A8[var_v0];
-            var_a3 = D_825071F0;
+            var_a2 = gStatusIconTextures1[var_v0];
+            var_a3 = gStatusIconAltAnimDL;
         }
 
         gDPPipeSync(gDisplayListHead++);
-        gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_8250890C[tmp]));
+        gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gIconTexturePointers[tmp]));
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a2));
-        gSPDisplayList(gDisplayListHead++, D_82506A30);
+        gSPDisplayList(gDisplayListHead++, gStatusIconDL);
         gSPDisplayList(gDisplayListHead++, var_a3);
 
         func_80015684();
@@ -830,23 +830,23 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
 
         if (tmp == 0) {
             gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIElements[tmp]->unk_38->img_p & 0x1FFFFFFF);
-            gSPDisplayList(gDisplayListHead++, D_82507828);
+            gSPDisplayList(gDisplayListHead++, gComputerSelectionDL);
         } else {
             u8* var_a2;
             s32 temp_lo = (gSelectionFrameCounter % 30u) / 3;
             Gfx* var_a3;
 
             if (gComputerUIElements[1]->unk_0A == 0) {
-                var_a2 = D_82508880[temp_lo];
-                var_a3 = D_82506FF0;
+                var_a2 = gStatusIconTextures0[temp_lo];
+                var_a3 = gStatusIconAnimDL;
             } else {
-                var_a2 = D_825088A8[temp_lo];
-                var_a3 = D_825071F0;
+                var_a2 = gStatusIconTextures1[temp_lo];
+                var_a3 = gStatusIconAltAnimDL;
             }
 
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_3023280));
             gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a2));
-            gSPDisplayList(gDisplayListHead++, D_82507828);
+            gSPDisplayList(gDisplayListHead++, gComputerSelectionDL);
             gSPDisplayList(gDisplayListHead++, var_a3);
         }
         func_80015684();
@@ -855,11 +855,11 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_82500388(s32 arg0, GraphNode* arg1) {
+s32 DrawComputerRootUI(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIRoot->unk_38->img_p & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, D_82508100);
+        gSPDisplayList(gDisplayListHead++, gComputerRootDL);
 
         func_80015684();
     }
@@ -895,12 +895,12 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
             var_a2 = 0;
         }
 
-        ptr1 = D_82508914[idx2][var_a2];
-        ptr2 = D_82508914[idx3][var_a2];
+        ptr1 = gItemSelectionIconTextures[idx2][var_a2];
+        ptr2 = gItemSelectionIconTextures[idx3][var_a2];
 
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(ptr1));
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(ptr2));
-        gSPDisplayList(gDisplayListHead++, D_825086D8);
+        gSPDisplayList(gDisplayListHead++, gItemSelectionBaseDL);
 
         for (i = 0; i < 4; i++) {
             gDPPipeSync(gDisplayListHead++);
@@ -915,7 +915,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
             gDPLoadMultiBlock(gDisplayListHead++, 0x0E000000 + var_a2, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 16,
                               0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
-            gSPVertex(gDisplayListHead++, &D_825085D8[i], 4, 0);
+            gSPVertex(gDisplayListHead++, &gItemSelectionVertices[i], 4, 0);
             gSP2Triangles(gDisplayListHead++, 0, 1, 2, 0, 0, 2, 3, 0);
         }
 
@@ -925,16 +925,16 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
 }
 
 void UI_Cursor_Init(void) {
-    GraphRootNode* ptr = &D_8250A308.unk_000.unk_000;
+    GraphRootNode* ptr = &gCursor.unk_000.unk_000;
 
-    D_8250A308.unk_16C = 0;
-    D_8250A308.unk_168 = 0;
-    D_8250A308.unk_16A = 0;
-    D_8250A308.unk_16E = 0;
-    D_8250A308.unk_170 = 0;
-    Graph_AddToRootList0(&D_8250A308.unk_000);
-    Vec3f_Set(&D_8250A308.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
-    GraphNode_InitChild(&D_8250A308.unk_000, 0, 0, D_8250A284);
+    gCursor.unk_16C = 0;
+    gCursor.unk_168 = 0;
+    gCursor.unk_16A = 0;
+    gCursor.unk_16E = 0;
+    gCursor.unk_170 = 0;
+    Graph_AddToRootList0(&gCursor.unk_000);
+    Vec3f_Set(&gCursor.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
+    GraphNode_InitChild(&gCursor.unk_000, 0, 0, gSelectionHighlightNode);
     ptr->unk_01 &= ~1;
 }
 
@@ -972,7 +972,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 4:
-            if (D_8250A2A0.unk_00 == 2) {
+            if (gSelectionCoords.unk_00 == 2) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xF0;
                 if (gSelectionFlags & 1) {
@@ -1024,7 +1024,7 @@ s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
         case 5:
             gDPPipeSync(gDisplayListHead++);
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDefaultGraphRoot->unk_01D);
-            gSPDisplayList(gDisplayListHead++, D_82508770);
+            gSPDisplayList(gDisplayListHead++, gIconDL);
 
             func_80015684();
             break;
@@ -1121,7 +1121,7 @@ s32 GetSelectedItemId(void) {
     s32 sp1C;
 
     if ((D_8250A288.unk_06 >= 0) && (D_8250A288.unk_06 < 9)) {
-        sp1C = D_8250885C[D_8250A288.unk_06];
+        sp1C = gItemIdList[D_8250A288.unk_06];
     } else {
         sp1C = 0;
     }
@@ -1139,7 +1139,7 @@ s32 GetItemIndexById(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 9; i++) {
-        if (arg0 == D_8250885C[i]) {
+        if (arg0 == gItemIdList[i]) {
             ret = i;
             break;
         }
@@ -1156,10 +1156,10 @@ s32 GetCategoryIndex(s16 arg0, s32 arg1) {
 
     if (arg1 != 0) {
         var_v0 = 4;
-        var_a0 = D_825088D8;
+        var_a0 = gCategoryMapB;
     } else {
         var_v0 = 3;
-        var_a0 = D_825088D0;
+        var_a0 = gCategoryMapA;
     }
 
     for (i = 0; i < var_v0; i++) {
@@ -1173,11 +1173,11 @@ s32 GetCategoryIndex(s16 arg0, s32 arg1) {
 }
 
 void InitItemSelectionTimer(void) {
-    D_8250A296 = 0x78;
-    D_8250A298 = GetRandomMod(3);
+    gItemSelectionTimer = 0x78;
+    gItemSelectionRandom = GetRandomMod(3);
 }
 
-void ResetUIElement(unk_D_82508B30* arg0) {
+void ResetUIElement(UIElement* arg0) {
     arg0->unk_00C = 0;
     arg0->unk_000 = 0;
     arg0->unk_002 = 0;
@@ -1195,18 +1195,18 @@ void ResetUIElement(unk_D_82508B30* arg0) {
     arg0->unk_00A = arg0->unk_00C;
 }
 
-void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
-    static s16 D_825089A4 = 0;
-    static s16 D_825089A8 = 0x3200;
+void UI_AnimatedBackground_Draw(UIElement* arg0) {
+    static s16 gGradientPanelPhase = 0;
+    static s16 gGradientPanelPhaseOffset = 0x3200;
 
     u8* var_s2;
-    f32 temp_fs3 = (SINS(D_825089A4) * 0.2f) + 1.0f;
-    f32 temp_fs4 = (SINS(D_825089A4 + D_825089A8) * 0.2f) + 1.0f;
+    f32 temp_fs3 = (SINS(gGradientPanelPhase) * 0.2f) + 1.0f;
+    f32 temp_fs4 = (SINS(gGradientPanelPhase + gGradientPanelPhaseOffset) * 0.2f) + 1.0f;
     s16 temp_fa0;
     s16 temp_fv1;
     s32 i;
 
-    D_825089A4 += 0x2000;
+    gGradientPanelPhase += 0x2000;
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
     Gfx_FillScreen(&gDisplayListHead, 0);
@@ -1242,9 +1242,9 @@ void UI_AnimatedBackground_Draw(unk_D_82508B30* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-static const char D_82508A20[] = "コンピュータのつよさ";
+static const char gStr_ComputerStrength[] = "コンピュータのつよさ";
 
-void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
+void UI_GradientPanel_Draw(UIElement* arg0) {
     s32 var_v1;
     u8* var_s2;
     s16 temp_v0;
@@ -1270,7 +1270,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    if ((D_8250A2FC == 1) || (D_8250A2FC == 2)) {
+    if ((gUnused0 == 1) || (gUnused0 == 2)) {
         var_v1 = D_8250A288.unk_04 - 1;
         for (i = 0; i < 3; i++) {
             temp_v0 = var_v1++;
@@ -1295,7 +1295,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
         if (sp90[i] == -1) {
             continue;
         }
-        Text_Print(0x76, (D_8250A300 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
+        Text_Print(0x76, (gUnused2 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
     }
 
     Text_SetupDL();
@@ -1303,7 +1303,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
 
 unk_D_8250A228* UI_Element_Allocate(void) {
     s32 i;
-    unk_D_82508B30* var_v1 = gUIElements;
+    UIElement* var_v1 = gUIElements;
 
     for (i = 0; i < 14; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -1319,7 +1319,7 @@ unk_D_8250A228* UI_Element_Allocate(void) {
 
 unk_D_8250A228* UI_Element_Create(s16 arg0, s16 arg1, GraphNode* arg2) {
     unk_D_8250A228* temp_v0 = UI_Element_Allocate();
-    unk_D_82508B30_03C* temp_s1;
+    UIElementNode* temp_s1;
 
     if (temp_v0 == NULL) {
         return NULL;
@@ -1487,7 +1487,7 @@ s32 UI_Element_IsState(unk_D_8250A228* arg0, s16 arg1) {
     return ret;
 }
 
-void FadeOutUIElement(unk_D_82508B30* arg0) {
+void FadeOutUIElement(UIElement* arg0) {
     s32 i;
 
     arg0->unk_008 -= 1;
@@ -1515,7 +1515,7 @@ s32 CountUIElementColors(unk_D_8250A228* arg0, s16 arg1) {
     return var_v1;
 }
 
-s32 UpdateUIElementAnimation(unk_D_82508B30* arg0) {
+s32 UpdateUIElementAnimation(UIElement* arg0) {
     s16 var_v0;
     s32 var_a1;
     s32 var_v1;
@@ -1557,8 +1557,8 @@ void UpdateAllUIElements(void) {
     UNUSED s32 pad;
     s32 i;
     f32 temp_fa1;
-    unk_D_82508B30* var_s0 = &gUIElements;
-    unk_D_82508B30_03C* temp_v0;
+    UIElement* var_s0 = &gUIElements;
+    UIElementNode* temp_v0;
 
     for (i = 0; i < 14; i++, var_s0++) {
         temp_v0 = &var_s0->unk_03C;
@@ -1679,14 +1679,14 @@ void UpdateAllUIElements(void) {
 }
 
 void SelectionState_Clear(void) {
-    D_8250A2A0.unk_00 = 0;
-    D_8250A2A0.unk_02 = 0;
-    D_8250A2A0.unk_04 = 0;
-    D_8250A2A0.unk_06 = 0;
-    D_8250A2A0.unk_08 = 0;
-    D_8250A2A0.unk_0A = 0;
-    D_8250A2A0.unk_0C = 0;
-    D_8250A2A0.unk_0E = 0;
+    gSelectionCoords.unk_00 = 0;
+    gSelectionCoords.unk_02 = 0;
+    gSelectionCoords.unk_04 = 0;
+    gSelectionCoords.unk_06 = 0;
+    gSelectionCoords.unk_08 = 0;
+    gSelectionCoords.unk_0A = 0;
+    gSelectionCoords.unk_0C = 0;
+    gSelectionCoords.unk_0E = 0;
 }
 
 void SelectionState_InitDefaults(void) {
@@ -1702,7 +1702,7 @@ void SelectionState_InitDefaults(void) {
     }
 }
 
-void func_8250244C(s16 arg0, s16 arg1) {
+void SelectionCursor_Update(s16 arg0, s16 arg1) {
     D_8250A288.unk_00 = gMenuCursorX;
     D_8250A288.unk_02 = arg0;
     D_8250A288.unk_04 = gMenuSubState;
@@ -1713,9 +1713,9 @@ void func_8250244C(s16 arg0, s16 arg1) {
 void SelectionUI_Init(s16 arg0, s16 arg1) {
     s32 i;
     s32 j;
-    unk_D_82508B30* ptr;
+    UIElement* ptr;
 
-    D_8250A26E = arg0;
+    gSubMenuState = arg0;
     if (arg1 == 0) {
         UpdateMenuRandomSeed();
     }
@@ -1727,25 +1727,25 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
     }
 
     SelectionState_InitDefaults();
-    func_82505FE0(D_8250A26E);
-    D_8250A292 = -1;
+    func_82505FE0(gSubMenuState);
+    gSelectionTimer = -1;
 
-    switch (D_8250A26E) {
+    switch (gSubMenuState) {
         case 0:
             break;
 
         case 1:
-            func_8250244C(0, arg1);
+            SelectionCursor_Update(0, arg1);
             if (gMiniHudColorDefaults[gMenuSelectedOption] == 0) {
-                D_8250A292 = -1;
+                gSelectionTimer = -1;
             } else {
-                D_8250A292 = GetRandomUnusedMenuSlot();
-                D_8250A294 = 0x1E;
+                gSelectionTimer = GetRandomUnusedMenuSlot();
+                gSelectionDelay = 0x1E;
             }
             break;
 
         case 4:
-            func_8250244C(1, arg1);
+            SelectionCursor_Update(1, arg1);
             if (gMenuCursorX == 0) {
                 gMenuSelectedOption = 0;
             } else {
@@ -1765,22 +1765,22 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
     }
 
     for (i = 0; i < 2; i++) {
-        gUIElementArray[i] = UI_Element_Create(1, i, D_8250A274);
+        gUIElementArray[i] = UI_Element_Create(1, i, gStatusIconNode);
     }
 
     for (i = 0; i < 2; i++) {
-        gComputerUIElements[i] = UI_Element_Create(2, i, D_8250A278);
+        gComputerUIElements[i] = UI_Element_Create(2, i, gComputerSelectionNode);
     }
 
-    gComputerUIRoot = UI_Element_Create(3, 0, D_8250A27C);
+    gComputerUIRoot = UI_Element_Create(3, 0, gItemSelectionNode);
 
     for (i = 0; i < 9; i++) {
         if (i != 4) {
-            gItemGridElements[i] = UI_Element_Create(4, i, D_8250A280);
+            gItemGridElements[i] = UI_Element_Create(4, i, gBackgroundNode);
         }
     }
 
-    gItemGridElements[4] = UI_Element_Create(4, 4, D_8250A280);
+    gItemGridElements[4] = UI_Element_Create(4, 4, gBackgroundNode);
     LinkUIElementsForward(gUIElementArray[0], gComputerUIElements[0]);
 
     for (i = 0; i < 1; i++) {
@@ -1795,13 +1795,13 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
         SetUIElementNext(gItemGridElements[i], gItemGridElements[i + 1]);
     }
 
-    MessageBox_SetBank(D_8250A47C);
-    OptionMenu_Init(D_8250A47C);
+    MessageBox_SetBank(gStringTable);
+    OptionMenu_Init(gStringTable);
     SelectionState_Clear();
     UI_Cursor_Init();
 }
 
-void func_8250281C(void) {
+void UI_DrawStatusIcon(void) {
     u32 var_a2_2;
     s32 sp40;
     s32 pad3C;
@@ -1846,7 +1846,7 @@ void func_8250281C(void) {
             break;
 
         case 4:
-            if (D_8250A2A0.unk_00 == 2) {
+            if (gSelectionCoords.unk_00 == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
                 sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
@@ -1893,9 +1893,9 @@ void func_8250281C(void) {
     }
 }
 
-void func_82502BB0(void) {
+void UI_DrawPendingElements(void) {
     s32 i;
-    unk_D_82508B30* var_s0 = gUIElements;
+    UIElement* var_s0 = gUIElements;
 
     for (i = 0; i < 14; i++, var_s0++) {
         if (!(var_s0->unk_006 & 1)) {
@@ -1917,7 +1917,7 @@ void func_82502BB0(void) {
     }
 }
 
-void func_82502C78(void) {
+void UI_DrawGradientPanelWithText(void) {
     char** var_v0;
     s32 i;
     s32 var_s5;
@@ -1927,22 +1927,22 @@ void func_82502C78(void) {
     char* sp6C[3];
     char* sp5C[4];
 
-    sp6C[0] = GetMessageString(NULL, 0, D_8250A47C, 4);
-    sp6C[1] = GetMessageString(NULL, 0, D_8250A47C, 5);
-    sp6C[2] = GetMessageString(NULL, 0, D_8250A47C, 6);
-    sp5C[0] = GetMessageString(NULL, 0, D_8250A47C, 3);
-    sp5C[1] = GetMessageString(NULL, 0, D_8250A47C, 4);
-    sp5C[2] = GetMessageString(NULL, 0, D_8250A47C, 5);
-    sp5C[3] = GetMessageString(NULL, 0, D_8250A47C, 6);
+    sp6C[0] = GetMessageString(NULL, 0, gStringTable, 4);
+    sp6C[1] = GetMessageString(NULL, 0, gStringTable, 5);
+    sp6C[2] = GetMessageString(NULL, 0, gStringTable, 6);
+    sp5C[0] = GetMessageString(NULL, 0, gStringTable, 3);
+    sp5C[1] = GetMessageString(NULL, 0, gStringTable, 4);
+    sp5C[2] = GetMessageString(NULL, 0, gStringTable, 5);
+    sp5C[3] = GetMessageString(NULL, 0, gStringTable, 6);
 
-    if (D_8250A2A0.unk_00 != 0) {
-        DrawGradientPanel(D_8250A2A0.unk_08, D_8250A2A0.unk_0A, D_8250A2A0.unk_0C, D_8250A2A0.unk_0E, &sp80, &sp7C);
-        if (D_8250A2A0.unk_00 == 2) {
+    if (gSelectionCoords.unk_00 != 0) {
+        DrawGradientPanel(gSelectionCoords.unk_08, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
+        if (gSelectionCoords.unk_00 == 2) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x140 - (GetTextWidth(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
-                          D_8250A2A0.unk_0A + 0x18, GetMessageString(NULL, 0, D_8250A47C, 2));
+            Text_Print(0x140 - (GetTextWidth(D_8250A304, GetMessageString(NULL, 0, gStringTable, 2)) / 2),
+                          gSelectionCoords.unk_0A + 0x18, GetMessageString(NULL, 0, gStringTable, 2));
 
             if (gSelectionFlags & 1) {
                 var_s4 = 4;
@@ -1961,7 +1961,7 @@ void func_82502C78(void) {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
                 Text_Print(0x140 - (GetTextWidth(D_8250A304, var_v0[i]) / 2),
-                              D_8250A2A0.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
+                              gSelectionCoords.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
             }
 
             Text_SetupDL();
@@ -1969,19 +1969,19 @@ void func_82502C78(void) {
     }
 }
 
-void func_82502F44(void) {
-    func_82502BB0();
+void SelectionUI_Render(void) {
+    UI_DrawPendingElements();
     Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(D_8250A268);
-    Graph_SetTextureState(D_8250A270);
+    Gfx_DrawTextureAtlas(gItemDataPtr);
+    Graph_SetTextureState(gCursorNode);
     MessageBox_Render();
     OptionMenu_Render();
-    func_82502C78();
-    func_8250281C();
+    UI_DrawGradientPanelWithText();
+    UI_DrawStatusIcon();
     Stage_Advance();
 }
 
-void func_82502FAC(void) {
+void SelectionUI_Reset(void) {
     s16 tmp = D_8250A26C;
     s16 sp1C;
     s32 sp18;
@@ -1998,11 +1998,11 @@ void func_82502FAC(void) {
     if (sp18 == 0) {
         D_8250A288.unk_00 = sp1C;
     }
-    D_8250A26E = 0;
-    func_82505FE0(D_8250A26E);
+    gSubMenuState = 0;
+    func_82505FE0(gSubMenuState);
 }
 
-void func_82503020(void) {
+void UI_HandleMainSelectionInput(void) {
     s32 i;
     s32 tmp;
 
@@ -2061,7 +2061,7 @@ void func_82503020(void) {
     }
 }
 
-void func_825031FC(void) {
+void SelectionUI_ConfirmChoice(void) {
     MessageBox_SetState(3);
     if (D_8250A288.unk_00 == 0) {
         D_8250A26C = 5;
@@ -2069,16 +2069,16 @@ void func_825031FC(void) {
         OptionMenu_SetState(1, D_8250A288.unk_06);
     } else {
         D_8250A26C = 3;
-        D_8250A2FC = 0;
-        D_8250A2FE = 0;
-        D_8250A300 = 0;
+        gUnused0 = 0;
+        gUnused1 = 0;
+        gUnused2 = 0;
         LinkUIElementsForward(gComputerUIElements[0], gComputerUIRoot);
         LinkUIElementsForward(gComputerUIRoot, gItemGridElements[0]);
     }
     SetUIElementState(*gComputerUIElements, 3);
 }
 
-void func_825032BC(void) {
+void ComputerUI_HandleInput(void) {
     s32 temp_a1;
     s32 var_v1;
     s32 var_s4;
@@ -2137,7 +2137,7 @@ void func_825032BC(void) {
                     if (gMenuCursorY != 4) {
                         D_8250A26C = 4;
                     } else {
-                        func_825031FC();
+                        SelectionUI_ConfirmChoice();
                     }
                     PlaySoundEffect(0xE);
                 }
@@ -2145,7 +2145,7 @@ void func_825032BC(void) {
         }
 
         if ((var_s4 == 0) && (gControllerInputs->unk_04 & 0x4000)) {
-            func_82502FAC();
+            SelectionUI_Reset();
             MessageBox_SetState(3);
             SetUIElementState(gComputerUIElements[0], 8);
             PlaySoundEffect(3);
@@ -2157,30 +2157,30 @@ void func_825032BC(void) {
     }
 }
 
-void func_82503574(void) {
+void GradientPanel_Animate(void) {
     s32 var_a2;
     s32 var_v0;
     s32 tmp;
 
-    switch (D_8250A2A0.unk_00) {
+    switch (gSelectionCoords.unk_00) {
         case 0:
-            D_8250A2A0.unk_00 = 1;
-            D_8250A2A0.unk_02 = 0;
-            D_8250A2A0.unk_04 = 8;
-            D_8250A2A0.unk_06 = 0x12C;
-            D_8250A2A0.unk_08 = 0x140;
-            D_8250A2A0.unk_0A = 0xF0;
-            D_8250A2A0.unk_0C = D_8250A2A0.unk_0E = 0;
+            gSelectionCoords.unk_00 = 1;
+            gSelectionCoords.unk_02 = 0;
+            gSelectionCoords.unk_04 = 8;
+            gSelectionCoords.unk_06 = 0x12C;
+            gSelectionCoords.unk_08 = 0x140;
+            gSelectionCoords.unk_0A = 0xF0;
+            gSelectionCoords.unk_0C = gSelectionCoords.unk_0E = 0;
             break;
 
         case 1:
-            D_8250A2A0.unk_04 -= 1;
-            D_8250A2A0.unk_08 = ((D_8250A2A0.unk_04 * 0x8C) / 8) + 0xB4;
-            D_8250A2A0.unk_0A = ((D_8250A2A0.unk_04 * 0x54) / 8) + 0x9C;
-            D_8250A2A0.unk_0C = 0x118 - ((D_8250A2A0.unk_04 * 0x118) / 8);
-            D_8250A2A0.unk_0E = 0xA8 - ((D_8250A2A0.unk_04 * 0xA8) / 8);
-            if (D_8250A2A0.unk_04 <= 0) {
-                D_8250A2A0.unk_00 = 2;
+            gSelectionCoords.unk_04 -= 1;
+            gSelectionCoords.unk_08 = ((gSelectionCoords.unk_04 * 0x8C) / 8) + 0xB4;
+            gSelectionCoords.unk_0A = ((gSelectionCoords.unk_04 * 0x54) / 8) + 0x9C;
+            gSelectionCoords.unk_0C = 0x118 - ((gSelectionCoords.unk_04 * 0x118) / 8);
+            gSelectionCoords.unk_0E = 0xA8 - ((gSelectionCoords.unk_04 * 0xA8) / 8);
+            if (gSelectionCoords.unk_04 <= 0) {
+                gSelectionCoords.unk_00 = 2;
             }
             break;
 
@@ -2196,9 +2196,9 @@ void func_82503574(void) {
             }
 
             if (var_v0 == 0) {
-                D_8250A2A0.unk_06 = 0x12C;
-            } else if (D_8250A2A0.unk_06 > 0) {
-                D_8250A2A0.unk_06 -= 1;
+                gSelectionCoords.unk_06 = 0x12C;
+            } else if (gSelectionCoords.unk_06 > 0) {
+                gSelectionCoords.unk_06 -= 1;
             }
 
             tmp = D_8250A288.unk_08;
@@ -2222,40 +2222,40 @@ void func_82503574(void) {
 
             if (gControllerInputs->unk_04 & 0x8000) {
                 if (gSelectionFlags & 1) {
-                    gMenuState = D_825088D8[D_8250A288.unk_08];
+                    gMenuState = gCategoryMapB[D_8250A288.unk_08];
                 } else {
-                    gMenuState = D_825088D0[D_8250A288.unk_08];
+                    gMenuState = gCategoryMapA[D_8250A288.unk_08];
                 }
-                D_8250A2A0.unk_00 = 3;
-                D_8250A2A0.unk_02 = 1;
-                D_8250A2A0.unk_04 = 8;
-                D_8250A2A0.unk_08 = 0xB4;
-                D_8250A2A0.unk_0A = 0x9C;
-                D_8250A2A0.unk_0C = 0x118;
-                D_8250A2A0.unk_0E = 0xA8;
+                gSelectionCoords.unk_00 = 3;
+                gSelectionCoords.unk_02 = 1;
+                gSelectionCoords.unk_04 = 8;
+                gSelectionCoords.unk_08 = 0xB4;
+                gSelectionCoords.unk_0A = 0x9C;
+                gSelectionCoords.unk_0C = 0x118;
+                gSelectionCoords.unk_0E = 0xA8;
                 PlaySoundEffect(2);
             } else if (gControllerInputs->unk_04 & 0x4000) {
-                D_8250A2A0.unk_00 = 3;
-                D_8250A2A0.unk_02 = 0;
-                D_8250A2A0.unk_04 = 8;
-                D_8250A2A0.unk_08 = 0xB4;
-                D_8250A2A0.unk_0A = 0x9C;
-                D_8250A2A0.unk_0C = 0x118;
-                D_8250A2A0.unk_0E = 0xA8;
+                gSelectionCoords.unk_00 = 3;
+                gSelectionCoords.unk_02 = 0;
+                gSelectionCoords.unk_04 = 8;
+                gSelectionCoords.unk_08 = 0xB4;
+                gSelectionCoords.unk_0A = 0x9C;
+                gSelectionCoords.unk_0C = 0x118;
+                gSelectionCoords.unk_0E = 0xA8;
                 PlaySoundEffect(3);
             }
             break;
 
         case 3:
-            D_8250A2A0.unk_04 -= 1;
-            D_8250A2A0.unk_08 = ((D_8250A2A0.unk_04 * -0x8C) / 8) + 0x140;
-            D_8250A2A0.unk_0A = ((D_8250A2A0.unk_04 * -0x54) / 8) + 0xF0;
-            D_8250A2A0.unk_0C = (D_8250A2A0.unk_04 * 0x118) / 8;
-            D_8250A2A0.unk_0E = (D_8250A2A0.unk_04 * 0xA8) / 8;
-            if (D_8250A2A0.unk_04 <= 0) {
-                D_8250A2A0.unk_00 = 0;
-                if (D_8250A2A0.unk_02 != 0) {
-                    func_825031FC();
+            gSelectionCoords.unk_04 -= 1;
+            gSelectionCoords.unk_08 = ((gSelectionCoords.unk_04 * -0x8C) / 8) + 0x140;
+            gSelectionCoords.unk_0A = ((gSelectionCoords.unk_04 * -0x54) / 8) + 0xF0;
+            gSelectionCoords.unk_0C = (gSelectionCoords.unk_04 * 0x118) / 8;
+            gSelectionCoords.unk_0E = (gSelectionCoords.unk_04 * 0xA8) / 8;
+            if (gSelectionCoords.unk_04 <= 0) {
+                gSelectionCoords.unk_00 = 0;
+                if (gSelectionCoords.unk_02 != 0) {
+                    SelectionUI_ConfirmChoice();
                 } else {
                     D_8250A26C = 2;
                 }
@@ -2263,16 +2263,16 @@ void func_82503574(void) {
             break;
     }
 
-    if (D_8250A2A0.unk_00 != 2) {
+    if (gSelectionCoords.unk_00 != 2) {
         gComputerUIElements[0]->unk_06 |= 1;
     }
 }
 
-void func_825039AC(void) {
+void ComputerUIRoot_HandleInput(void) {
     s32 i;
 
     if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
-        switch (D_8250A2FC) {
+        switch (gUnused0) {
             case 0:
                 if (gControllerInputs->unk_04 & 0x8000) {
                     gMenuSubState = D_8250A288.unk_04;
@@ -2292,34 +2292,34 @@ void func_825039AC(void) {
                     SetUIElementState(gComputerUIRoot, 8);
                     PlaySoundEffect(3);
                 } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.unk_04 < 9)) {
-                    D_8250A2FC = 2;
-                    D_8250A2FE = 5;
+                    gUnused0 = 2;
+                    gUnused1 = 5;
                 } else if ((gControllerInputs->unk_08 & 0x400) && (D_8250A288.unk_04 >= 2)) {
-                    D_8250A2FC = 1;
-                    D_8250A2FE = 5;
+                    gUnused0 = 1;
+                    gUnused1 = 5;
                 }
 
-                if ((D_8250A2FC == 2) || (D_8250A2FC == 1)) {
+                if ((gUnused0 == 2) || (gUnused0 == 1)) {
                     PlaySoundEffect(0x10);
                 }
                 break;
 
             case 1:
-                D_8250A2FE -= 1;
-                D_8250A300 = ((D_8250A2FE * 0x1A) / 5) - 0x1A;
-                if (D_8250A2FE <= 0) {
-                    D_8250A2FC = 0;
-                    D_8250A300 = 0;
+                gUnused1 -= 1;
+                gUnused2 = ((gUnused1 * 0x1A) / 5) - 0x1A;
+                if (gUnused1 <= 0) {
+                    gUnused0 = 0;
+                    gUnused2 = 0;
                     D_8250A288.unk_04 -= 1;
                 }
                 break;
 
             case 2:
-                D_8250A2FE -= 1;
-                D_8250A300 = 0x1A - ((D_8250A2FE * 0x1A) / 5);
-                if (D_8250A2FE <= 0) {
-                    D_8250A2FC = 0;
-                    D_8250A300 = 0;
+                gUnused1 -= 1;
+                gUnused2 = 0x1A - ((gUnused1 * 0x1A) / 5);
+                if (gUnused1 <= 0) {
+                    gUnused0 = 0;
+                    gUnused2 = 0;
                     D_8250A288.unk_04 += 1;
                 }
                 break;
@@ -2328,7 +2328,7 @@ void func_825039AC(void) {
     }
 }
 
-s32 func_82503C50(s16* arg0, s16 arg1) {
+s32 ItemGrid_Navigate(s16* arg0, s16 arg1) {
     s32 var_a3;
     s32 var_t0;
     s32 sp2C;
@@ -2342,7 +2342,7 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
     var_a3 = *arg0 % 3;
     var_t0 = *arg0 / 3;
 
-    if (D_8250A292 == -1) {
+    if (gSelectionTimer == -1) {
         if (gControllerStates[arg1].unk_04 & 0x800) {
             var_t0 -= 1;
             if (var_t0 < 0) {
@@ -2374,7 +2374,7 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
         if (gControllerStates[arg1].unk_04 & 0x8000) {
             sp1E = 1;
         } else if (gControllerStates[arg1].unk_04 & 0x4000) {
-            switch (D_8250A26E) {
+            switch (gSubMenuState) {
                 case 0:
                     sp1E = -1;
                     break;
@@ -2383,24 +2383,24 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
                 case 4:
                     if (D_8250A288.unk_00 == 0) {
                         sp1E = -1;
-                        D_8250A26E = 0;
+                        gSubMenuState = 0;
                         LinkUIElementsForward(gComputerUIElements[0], gItemGridElements[0]);
                     }
                     break;
             }
         }
     } else {
-        D_8250A294 -= 1;
-        if (D_8250A294 <= 0) {
-            D_8250A294 = 0xF;
+        gSelectionDelay -= 1;
+        if (gSelectionDelay <= 0) {
+            gSelectionDelay = 0xF;
 
-            temp_v0_2 = (D_8250A292 % 3) - var_a3;
+            temp_v0_2 = (gSelectionTimer % 3) - var_a3;
             if (temp_v0_2 > 0) {
                 var_a3 += 1;
             } else if (temp_v0_2 < 0) {
                 var_a3 -= 1;
             } else {
-                temp_v0_2 = (D_8250A292 / 3) - var_t0;
+                temp_v0_2 = (gSelectionTimer / 3) - var_t0;
                 if (temp_v0_2 > 0) {
                     var_t0 += 1;
                 } else if (temp_v0_2 < 0) {
@@ -2421,7 +2421,7 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
     return sp1E;
 }
 
-s32 func_82503F00(s16* arg0, s16 arg1) {
+s32 SelectionScreen_ProcessRandomSelection(s16* arg0, s16 arg1) {
     s32 i;
     s32 sp68;
     s16 temp_s3;
@@ -2443,7 +2443,7 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
 
             for (i = 0; i < 9; i++) {
                 if (arg1 != 0) {
-                    switch (D_8250A298) {
+                    switch (gItemSelectionRandom) {
                         case 0:
                             tmp = GetRandomMod(9);
                             temp_s3 = gItemGridElements[i]->unk_0C;
@@ -2452,12 +2452,12 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
                             break;
 
                         case 1:
-                            tmp = D_825088E0[i];
+                            tmp = gItemCategoryMap[i];
                             SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
                             break;
 
                         case 2:
-                            tmp = D_825088F4[i];
+                            tmp = gExtendedItemMap[i];
                             SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
                             break;
                     }
@@ -2476,7 +2476,7 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
     return sp68;
 }
 
-void func_8250416C(void) {
+void SelectionScreen_HandleOptionUse(void) {
     s32 sp1C;
     s32 sp18;
     s32 temp_v0;
@@ -2488,7 +2488,7 @@ void func_8250416C(void) {
         sp1C = 0;
         sp18 = 0;
         if (gMenuSelectedOption >= 0) {
-            switch (func_82503C50(&D_8250A288.unk_06, gMenuSelectedOption)) {
+            switch (ItemGrid_Navigate(&D_8250A288.unk_06, gMenuSelectedOption)) {
                 case 1:
                     sp1C = 1;
 
@@ -2497,8 +2497,8 @@ void func_8250416C(void) {
                     break;
             }
         } else {
-            D_8250A296 -= 1;
-            sp1C = func_82503F00(&D_8250A288.unk_06, D_8250A296);
+            gItemSelectionTimer -= 1;
+            sp1C = SelectionScreen_ProcessRandomSelection(&D_8250A288.unk_06, gItemSelectionTimer);
         }
 
         if (sp1C != 0) {
@@ -2516,7 +2516,7 @@ void func_8250416C(void) {
     }
 }
 
-void func_825042A4(void) {
+void SelectionScreen_CheckMiniHudAndFade(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -2549,17 +2549,17 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
 
     while (var_s6 != 0) {
         ToggleInputUpdate();
-        func_82504B38();
+        SelectionScreen_HandleInput();
         OptionMenu_Update();
         UpdateAllUIElements();
-        func_82502F44();
+        SelectionUI_Render();
 
         switch (D_8250A26C) {
             case 0:
                 if (Stage_GetFadeState() == 0) {
-                    switch (D_8250A26E) {
+                    switch (gSubMenuState) {
                         case 0:
-                            func_82502FAC();
+                            SelectionUI_Reset();
                             SetUIElementState(gUIElementArray[0], 1);
                             break;
 
@@ -2583,27 +2583,27 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
                 break;
 
             case 1:
-                func_82503020();
+                UI_HandleMainSelectionInput();
                 break;
 
             case 2:
-                func_825032BC();
+                ComputerUI_HandleInput();
                 break;
 
             case 4:
-                func_82503574();
+                GradientPanel_Animate();
                 break;
 
             case 3:
-                func_825039AC();
+                ComputerUIRoot_HandleInput();
                 break;
 
             case 5:
-                func_8250416C();
+                SelectionScreen_HandleOptionUse();
                 break;
 
             case 6:
-                func_825042A4();
+                SelectionScreen_CheckMiniHudAndFade();
                 break;
 
             case 7:
@@ -2616,23 +2616,23 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
     }
 }
 
-void func_825045C0(void) {
+void SelectionScreen_InitResources(void) {
     MemoryBlock* temp_v0;
 
     gControllerInputs = &gControllerStates;
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    D_8250A270 = process_geo_layout(temp_v0, D_8250880C);
-    D_8250A274 = process_geo_layout(temp_v0, D_825073F0);
-    D_8250A278 = process_geo_layout(temp_v0, D_82507CC8);
-    D_8250A27C = process_geo_layout(temp_v0, D_825085A0);
-    D_8250A280 = process_geo_layout(temp_v0, D_825086F8);
-    D_8250A284 = process_geo_layout(temp_v0, D_825087D8);
+    gCursorNode = process_geo_layout(temp_v0, gUILayoutConfig);
+    gStatusIconNode = process_geo_layout(temp_v0, D_825073F0);
+    gComputerSelectionNode = process_geo_layout(temp_v0, gComputerSelectionDescriptor);
+    gItemSelectionNode = process_geo_layout(temp_v0, gItemSelectionDescriptor);
+    gBackgroundNode = process_geo_layout(temp_v0, gItemSelectionUIDescriptor);
+    gSelectionHighlightNode = process_geo_layout(temp_v0, gUIDrawIconDescriptor);
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     ControllerInput_Clear();
 }
 
-s32 func_825046AC(s32 arg0, s32 arg1) {
+s32 SelectionScreen_Entry(s32 arg0, s32 arg1) {
     Stage* sp24;
     BinArchive* temp_v0;
 
@@ -2644,12 +2644,12 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_select_ui, 0);
-    D_8250A264 = ASSET_LOAD2(backgrounds, 1, 1);
+    gItemArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
-    D_8250A268 = BinArchive_GetFile(D_8250A264, 4);
-    D_8250A47C = gItemNamesBank;
+    gItemDataPtr = BinArchive_GetFile(gItemArchive, 4);
+    gStringTable = gItemNamesBank;
     GbsEnsureBankLoaded(2);
-    func_825045C0();
+    SelectionScreen_InitResources();
     Stage_Set(sp24);
     RunSelectionScreen(arg0, arg1);
     Stage_AdvanceN(2);

@@ -171,7 +171,7 @@ void func_84208B04(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
         sp5E = (temp_a3 * 0x98) / (var_v1 - 1);
     }
 
-    gSPDisplayList(gDisplayListHead++, D_8006F470);
+    gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
     Gfx_FillRect(arg0, arg1, 0x18, 0xCC, 0x3C, 0x3C, 0xA0);
 
@@ -278,7 +278,7 @@ void func_84209340(unk_D_842168A0* arg0, s32 arg1) {
             Gfx_DrawSpriteRGBA16(spB0 + 0x1BA, temp_s7 + 0x6A, 0x30, 0x18, D_2009900, 0x30, 0);
         }
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         Gfx_FillRect(spB0 + 0x1C, temp_s7 + 4, 8, 0xCC, 0x32, 0x32, 0x32);
 
@@ -388,11 +388,11 @@ unk_D_838067F0_0168* func_84209CF4(unk_D_838067F0_0168* arg0, s32 arg1) {
 }
 
 void func_84209D18(unk_D_842168A0* arg0, PokemonData* arg1) {
-    unk_D_800AC910_040 sp38;
-    unk_D_800AC910_040 sp28;
+    Gen1StringDecodeBuffer sp38;
+    Gen1StringDecodeBuffer sp28;
 
-    if ((arg0->unk_00004 < 4) && (func_80024F68(arg0->unk_00004) == 7) && (arg1->unk_00.unk_00 == 0x19)) {
-        func_80025040(arg0->unk_00004, &sp28);
+    if ((arg0->unk_00004 < 4) && (MenuItem_GetHeldItemId(arg0->unk_00004) == 7) && (arg1->unk_00.unk_00 == 0x19)) {
+        Controller_ReadInput(arg0->unk_00004, &sp28);
         _bcopy(arg1->unk_46, sp38.unk_02, 11);
         sp38.unk_00 = arg1->unk_0E;
         if (func_80022A04(&sp38, &sp28) != 0) {

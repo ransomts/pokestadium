@@ -10,7 +10,7 @@
 #include "src/memory.h"
 #include "src/232C0.h"
 
-static Color_RGBA8 D_8850CF80 = { 0xF0, 0xF0, 0xF0, 0xFF };
+static Color_RGBA8 gDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
 void DrawTiledTextureRect(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
     s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
@@ -39,7 +39,7 @@ void DrawTiledTextureRect(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_88500338(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawTiledTextureRectWithFormat(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
     s32 var_t0;
     s32 var_t3 = arg0->unk_04;
@@ -65,19 +65,19 @@ void func_88500338(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_88500668(unk_func_88001300_000_000* arg0, s32 arg1) {
+void ListNode_Init(unk_func_88001300_000_000* arg0, s32 arg1) {
     arg0->unk_00 = arg1;
     arg0->unk_04 = NULL;
     arg0->unk_08 = NULL;
     arg0->unk_0C = NULL;
 }
 
-void func_8850067C(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* arg1) {
+void ListNode_AddChild(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* arg1) {
     arg1->unk_08 = arg0->unk_04;
     arg0->unk_04 = arg1;
 }
 
-void func_8850068C(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* arg1) {
+void Fragment_SetChild(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* arg1) {
     unk_func_88001300_000_000* var_a0;
     unk_func_88001300_000_000* var_v1;
 
@@ -97,12 +97,12 @@ void func_8850068C(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* a
     var_v1->unk_08 = arg1;
 }
 
-void func_885006CC(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
+void ListNode_FreeRecursive(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
     unk_func_88001300_000_000* temp_s1;
     unk_func_88001300_000_000* var_s0 = arg0->unk_04;
 
     while (var_s0 != NULL) {
-        func_885006CC(var_s0, arg1);
+        ListNode_FreeRecursive(var_s0, arg1);
         if (var_s0->unk_0C != NULL) {
             var_s0->unk_0C(var_s0, arg1);
         }
@@ -113,13 +113,13 @@ void func_885006CC(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
     arg0->unk_04 = NULL;
 }
 
-void func_8850074C(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
+void ListNode_DestroyRecursive(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
     unk_func_88001300_000_000* temp_s1;
     unk_func_88001300_000_000* var_s0 = arg0->unk_04;
 
     while (var_s0 != NULL) {
         temp_s1 = var_s0->unk_08;
-        func_8850074C(var_s0, arg1);
+        ListNode_DestroyRecursive(var_s0, arg1);
         var_s0 = temp_s1;
     }
 
@@ -130,7 +130,7 @@ void func_8850074C(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
 }
 
 void func_885007CC(unk_func_88001300_000* arg0, s32 arg1) {
-    func_88500668(&arg0->unk_00, arg1);
+    ListNode_Init(&arg0->unk_00, arg1);
     arg0->unk_10.unk_00 = 0;
     arg0->unk_10.unk_02 = 0;
     arg0->unk_14.unk_00 = 0x10;
@@ -138,12 +138,12 @@ void func_885007CC(unk_func_88001300_000* arg0, s32 arg1) {
     arg0->unk_18 = NULL;
     arg0->unk_1C = NULL;
     arg0->unk_20 = NULL;
-    arg0->unk_24 = func_8850093C;
+    arg0->unk_24 = UIElement_SetState;
     arg0->unk_28 = 1;
     arg0->unk_2A = 0;
 }
 
-void func_88500828(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+void TextObject_PostRender(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
     unk_func_88001300_000_000* var_s0;
 
@@ -158,14 +158,14 @@ void func_88500828(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
         if (var_v1 == 0) {
             var_s0 = arg0->unk_00.unk_04;
             while (var_s0 != NULL) {
-                func_88500828(var_s0, arg1, arg2);
+                TextObject_PostRender(var_s0, arg1, arg2);
                 var_s0 = var_s0->unk_08;
             }
         }
     }
 }
 
-void func_885008C4(unk_func_88001300_000* arg0) {
+void TextObject_Render(unk_func_88001300_000* arg0) {
     s32 var_v1 = 0;
     unk_func_88001300_000_000* var_s0;
 
@@ -177,14 +177,14 @@ void func_885008C4(unk_func_88001300_000* arg0) {
         if (var_v1 == 0) {
             var_s0 = arg0->unk_00.unk_04;
             while (var_s0 != NULL) {
-                func_885008C4(var_s0);
+                TextObject_Render(var_s0);
                 var_s0 = var_s0->unk_08;
             }
         }
     }
 }
 
-void func_8850093C(unk_func_88001300_000* arg0, s32 arg1) {
+void UIElement_SetState(unk_func_88001300_000* arg0, s32 arg1) {
     unk_func_88001300_000* var_s0 = arg0->unk_00.unk_04;
 
     arg0->unk_2A = arg1;
@@ -197,14 +197,14 @@ void func_8850093C(unk_func_88001300_000* arg0, s32 arg1) {
 
 void func_88500994(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88500994));
-    arg0->unk_00.unk_18 = func_885009E8;
+    arg0->unk_00.unk_18 = UIContainer_HandleInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_2C = 0;
     arg0->unk_30 = 0;
 }
 
-s32 func_885009E8(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
+s32 UIContainer_HandleInput(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
     s32 i;
     unk_func_88001300_000_000* var_a0;
 
@@ -214,17 +214,17 @@ s32 func_885009E8(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
         for (i = 0; i < arg0->unk_2C; i++) {
             var_a0 = var_a0->unk_08;
         }
-        func_88500828(var_a0, arg1, arg2);
+        TextObject_PostRender(var_a0, arg1, arg2);
     }
     return 1;
 }
 
-void func_88500A3C(unk_func_88500994* arg0, unk_func_88001300_000* arg1) {
-    func_8850068C(&arg0->unk_00.unk_00, &arg1->unk_00);
+void Fragment_AddToParent(unk_func_88500994* arg0, unk_func_88001300_000* arg1) {
+    Fragment_SetChild(&arg0->unk_00.unk_00, &arg1->unk_00);
     arg0->unk_30++;
 }
 
-void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
+void UIContainer_SetChildCount(unk_func_88500994* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
@@ -247,7 +247,7 @@ void func_88500A6C(unk_func_88500994* arg0, s32 arg1) {
 // arg2 += arg0 (both drop the temp: frame 0x40), sp34 = arg2; sp34 += arg0, const locals for 0x20 or
 // a "+ k" (k = 0) on the sums (frame grows, same regs), sp88 assigned before the scissor and used by it (2802
 // but the temp moves to 0x30).
-void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
+void DrawTiledBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 {
   s32 sp34;
   s32 y;
@@ -280,9 +280,9 @@ void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
   gDPSetScissor(gDisplayListHead++, 0, 0, 0, 640, 480);
 }
 
-void func_88500E34(unk_func_88500E34* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5) {
+void UITextureRect_Create(unk_func_88500E34* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88500E34));
-    arg0->unk_00.unk_18 = func_88500E9C;
+    arg0->unk_00.unk_18 = UITextureRect_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -290,15 +290,15 @@ void func_88500E34(unk_func_88500E34* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_2C = arg5;
 }
 
-s32 func_88500E9C(unk_func_88500E34* arg0, s32 arg1, s32 arg2) {
-    func_88500A74(arg1, arg2, arg0->unk_00.unk_14.unk_00, arg0->unk_00.unk_14.unk_02, arg0->unk_2C);
+s32 UITextureRect_Draw(unk_func_88500E34* arg0, s32 arg1, s32 arg2) {
+    DrawTiledBackground(arg1, arg2, arg0->unk_00.unk_14.unk_00, arg0->unk_00.unk_14.unk_02, arg0->unk_2C);
     return 0;
 }
 
-void func_88500EE4(unk_func_88500EE4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5, Color_RGBA8 arg6,
+void UIColoredTextureRect_Create(unk_func_88500EE4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5, Color_RGBA8 arg6,
                    Color_RGBA8 arg7) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88500EE4));
-    arg0->unk_00.unk_18 = func_88500F6C;
+    arg0->unk_00.unk_18 = UIColoredTextureRect_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -308,7 +308,7 @@ void func_88500EE4(unk_func_88500EE4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_34 = arg7;
 }
 
-s32 func_88500F6C(unk_func_88500EE4* arg0, s32 arg1, s32 arg2) {
+s32 UIColoredTextureRect_Draw(unk_func_88500EE4* arg0, s32 arg1, s32 arg2) {
     s32 h = 0x80;
     s32 w = 0x40;
 
@@ -332,9 +332,9 @@ s32 func_88500F6C(unk_func_88500EE4* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_885012A4(unk_func_885012A4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+void UIFrame_Create(unk_func_885012A4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_885012A4));
-    arg0->unk_00.unk_18 = func_88501314;
+    arg0->unk_00.unk_18 = UIFillRect_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -342,7 +342,7 @@ void func_885012A4(unk_func_885012A4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_2C = arg5;
 }
 
-s32 func_88501314(unk_func_885012A4* arg0, s32 arg1, s32 arg2) {
+s32 UIFillRect_Draw(unk_func_885012A4* arg0, s32 arg1, s32 arg2) {
     s32 temp_t1;
 
     gDPPipeSync(gDisplayListHead++);
@@ -360,10 +360,10 @@ s32 func_88501314(unk_func_885012A4* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_8850143C(unk_func_8850143C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
+void UIGradientRect_Create(unk_func_8850143C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
                    Color_RGBA8 arg6) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_8850143C));
-    arg0->unk_00.unk_18 = func_885014BC;
+    arg0->unk_00.unk_18 = UIGradientRect_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -372,7 +372,7 @@ void func_8850143C(unk_func_8850143C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_30 = arg6;
 }
 
-s32 func_885014BC(unk_func_8850143C* arg0, s32 arg1, s32 arg2) {
+s32 UIGradientRect_Draw(unk_func_8850143C* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
 
@@ -401,7 +401,7 @@ s32 func_885014BC(unk_func_8850143C* arg0, s32 arg1, s32 arg2) {
 
 void func_8850182C(unk_func_8850182C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_8850182C));
-    arg0->unk_00.unk_18 = func_8850189C;
+    arg0->unk_00.unk_18 = UIButton_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -409,7 +409,7 @@ void func_8850182C(unk_func_8850182C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_2C = arg5;
 }
 
-s32 func_8850189C(unk_func_8850182C* arg0, s32 arg1, s32 arg2) {
+s32 UIButton_Draw(unk_func_8850182C* arg0, s32 arg1, s32 arg2) {
     s32 w = 16;
     s32 h = 8;
 
@@ -469,12 +469,12 @@ s32 func_8850189C(unk_func_8850182C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88502274(unk_func_88001300_038* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Fragment_SetRect(unk_func_88001300_038* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_038));
 
-    arg0->unk_00.unk_18 = func_885023F4;
-    arg0->unk_00.unk_1C = func_8850230C;
-    arg0->unk_00.unk_20 = func_88502C24;
+    arg0->unk_00.unk_18 = UIAnimatedElement_Draw;
+    arg0->unk_00.unk_1C = UIAnimatedElement_UpdateState;
+    arg0->unk_00.unk_20 = UIAnimatedElement_GetSpeed;
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -486,7 +486,7 @@ void func_88502274(unk_func_88001300_038* arg0, s32 arg1, s32 arg2, s32 arg3, s3
     arg0->unk_00.unk_28 &= ~1;
 }
 
-s32 func_8850230C(unk_func_88001300_038* arg0) {
+s32 UIAnimatedElement_UpdateState(unk_func_88001300_038* arg0) {
     arg0->unk_2C++;
     if (arg0->unk_2C < 8) {
         arg0->unk_30 = 1;
@@ -513,7 +513,7 @@ s32 func_8850230C(unk_func_88001300_038* arg0) {
     return (arg0->unk_30 & 2) ? 0 : 1;
 }
 
-s32 func_885023F4(unk_func_88001300_038* arg0, s32 arg1, s32 arg2) {
+s32 UIAnimatedElement_Draw(unk_func_88001300_038* arg0, s32 arg1, s32 arg2) {
     s32 sp114;
     s32 sp110;
     s32 sp10C;
@@ -612,7 +612,7 @@ s32 func_885023F4(unk_func_88001300_038* arg0, s32 arg1, s32 arg2) {
     return (arg0->unk_30 & 2) ? 0 : 1;
 }
 
-s32 func_88502C24(unk_func_88001300_038* arg0, UNUSED Controller* arg1) {
+s32 UIAnimatedElement_GetSpeed(unk_func_88001300_038* arg0, UNUSED Controller* arg1) {
     s32 ret;
 
     if (arg0->unk_30 & 1) {
@@ -633,7 +633,7 @@ s32 func_88502C24(unk_func_88001300_038* arg0, UNUSED Controller* arg1) {
     return ret;
 }
 
-void func_88502C98(unk_func_88001300_038* arg0) {
+void UIAnimatedElement_WaitForInput(unk_func_88001300_038* arg0) {
     if ((arg0->unk_2C >= 0xB) && (arg0->unk_00.unk_28 & 1)) {
         do {
             ControllerMsgQueue_SendAndRead(NULL);
@@ -642,16 +642,16 @@ void func_88502C98(unk_func_88001300_038* arg0) {
     arg0->unk_00.unk_28 |= 1;
 }
 
-void func_88502D00(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void UIProgressBar_Create(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_885007CC(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_88502D60;
+    arg0->unk_18 = UIProgressBar_Draw;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
     arg0->unk_14.unk_00 = arg3;
     arg0->unk_14.unk_02 = 8;
 }
 
-s32 func_88502D60(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 UIProgressBar_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     s32 sp84;
     s32 sp80;
     s32 sp7C;
@@ -681,10 +681,10 @@ s32 func_88502D60(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88503118(unk_func_88001300_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void UITimer_Create(unk_func_88001300_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_02C));
-    arg0->unk_00.unk_18 = func_8850318C;
-    arg0->unk_00.unk_1C = func_885031B8;
+    arg0->unk_00.unk_18 = UITimer_IsReady;
+    arg0->unk_00.unk_1C = UITimer_Tick;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -692,11 +692,11 @@ void func_88503118(unk_func_88001300_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s3
     arg0->unk_2C = -1;
 }
 
-s32 func_8850318C(unk_func_88001300_02C* arg0, s32 arg1, s32 arg2) {
+s32 UITimer_IsReady(unk_func_88001300_02C* arg0, s32 arg1, s32 arg2) {
     return (arg0->unk_2C < 3) ? 0 : 1;
 }
 
-s32 func_885031B8(unk_func_88001300_02C* arg0) {
+s32 UITimer_Tick(unk_func_88001300_02C* arg0) {
     s32 var_v1 = 1;
 
     if (arg0->unk_2C < 0) {
@@ -708,33 +708,33 @@ s32 func_885031B8(unk_func_88001300_02C* arg0) {
     return var_v1;
 }
 
-void func_885031E8(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void UIElementBase_Create(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_885007CC(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_88503268;
-    arg0->unk_1C = func_88503254;
+    arg0->unk_18 = UIElementBase_IsVisible;
+    arg0->unk_1C = UIElementBase_ResetFlags;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
     arg0->unk_14.unk_00 = arg3;
     arg0->unk_14.unk_02 = arg4;
 }
 
-s32 func_88503254(unk_func_88001300_000* arg0) {
+s32 UIElementBase_ResetFlags(unk_func_88001300_000* arg0) {
     arg0->unk_28 &= ~0x300;
     return 0;
 }
 
-s32 func_88503268(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 UIElementBase_IsVisible(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return ((arg0->unk_28 & 0x100) || !(arg0->unk_28 & 0x200)) ? 0 : 1;
 }
 
-void func_88503298(unk_func_88503298* arg0, unk_func_88001300_038* arg1, unk_func_88001300_000* arg2) {
+void Dialog_SetParent(unk_func_88503298* arg0, unk_func_88001300_038* arg1, unk_func_88001300_000* arg2) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88503298));
-    arg0->unk_00.unk_1C = func_885032E4;
+    arg0->unk_00.unk_1C = UIComposite_Update;
     arg0->unk_2C = arg1;
     arg0->unk_30 = arg2;
 }
 
-s32 func_885032E4(unk_func_88503298* arg0) {
+s32 UIComposite_Update(unk_func_88503298* arg0) {
     if (!(arg0->unk_2C->unk_00.unk_28 & 1)) {
         return 0;
     }
@@ -748,11 +748,11 @@ s32 func_885032E4(unk_func_88503298* arg0) {
     return 0;
 }
 
-void func_88503340(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+void UIFlashingElement_Create(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_03C_01C));
-    arg0->unk_00.unk_18 = func_885033E8;
-    arg0->unk_00.unk_1C = func_885033CC;
-    arg0->unk_00.unk_24 = func_88503BA0;
+    arg0->unk_00.unk_18 = UIFlashingElement_Draw;
+    arg0->unk_00.unk_1C = UIFlashingElement_Tick;
+    arg0->unk_00.unk_24 = UIFlashingElement_SetState;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -761,13 +761,13 @@ void func_88503340(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_30 = 0;
 }
 
-s32 func_885033CC(unk_func_88001300_03C_01C* arg0) {
+s32 UIFlashingElement_Tick(unk_func_88001300_03C_01C* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 func_885033E8(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 UIFlashingElement_Draw(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     s32 sp104;
     s32 sp100;
     s32 spFC;
@@ -836,16 +836,16 @@ s32 func_885033E8(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88503BA0(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void UIFlashingElement_SetState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void func_88503BAC(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+void UIFlashingElementDual_Create(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_03C_01C));
-    arg0->unk_00.unk_18 = func_88503C54;
-    arg0->unk_00.unk_1C = func_88503C38;
-    arg0->unk_00.unk_24 = func_88504564;
+    arg0->unk_00.unk_18 = UIFlashingElementDual_Draw;
+    arg0->unk_00.unk_1C = UIFlashingElementDual_Tick;
+    arg0->unk_00.unk_24 = UIFlashingElementDual_SetState;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -854,13 +854,13 @@ void func_88503BAC(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_30 = 0;
 }
 
-s32 func_88503C38(unk_func_88001300_03C_01C* arg0) {
+s32 UIFlashingElementDual_Tick(unk_func_88001300_03C_01C* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 func_88503C54(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 UIFlashingElementDual_Draw(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     s32 sp10C;
     s32 sp108;
     s32 sp104;
@@ -929,16 +929,16 @@ s32 func_88503C54(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88504564(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void UIFlashingElementDual_SetState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void func_88504570(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+void UIButtonPrompt_Create(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_03C_01C));
-    arg0->unk_00.unk_18 = func_88504618;
-    arg0->unk_00.unk_1C = func_885045FC;
-    arg0->unk_00.unk_24 = func_88504F8C;
+    arg0->unk_00.unk_18 = UIButtonPrompt_Draw;
+    arg0->unk_00.unk_1C = UIButtonPrompt_Tick;
+    arg0->unk_00.unk_24 = UIButtonPrompt_SetState;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -947,13 +947,13 @@ void func_88504570(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_30 = 0;
 }
 
-s32 func_885045FC(unk_func_88001300_03C_01C* arg0) {
+s32 UIButtonPrompt_Tick(unk_func_88001300_03C_01C* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 func_88504618(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 UIButtonPrompt_Draw(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     s32 spFC;
     s32 spF8;
     s32 spF4;
@@ -1022,16 +1022,16 @@ s32 func_88504618(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88504F8C(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void UIButtonPrompt_SetState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void func_88504F98(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void UIHealthBar_Create(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_8820E99C_030_044));
-    arg0->unk_00.unk_18 = func_88505030;
-    arg0->unk_00.unk_1C = func_88505014;
-    arg0->unk_00.unk_24 = func_885054CC;
+    arg0->unk_00.unk_18 = UIHealthBar_Draw;
+    arg0->unk_00.unk_1C = UIHealthBar_Tick;
+    arg0->unk_00.unk_24 = UIHealthBar_SetState;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -1039,13 +1039,13 @@ void func_88504F98(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_30 = 0;
 }
 
-s32 func_88505014(unk_func_8820E99C_030_044* arg0) {
+s32 UIHealthBar_Tick(unk_func_8820E99C_030_044* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 func_88505030(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2) {
+s32 UIHealthBar_Draw(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     s32 var_t4;
     s32 sp80 = ((arg0->unk_00.unk_14.unk_00 - 0xE) / 2) + arg1;
@@ -1090,15 +1090,15 @@ s32 func_88505030(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_885054CC(unk_func_8820E99C_030_044* arg0, s32 arg1) {
+void UIHealthBar_SetState(unk_func_8820E99C_030_044* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void func_885054D8(unk_func_88001300_030* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+void UIStatusBar_Create(unk_func_88001300_030* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_030));
-    arg0->unk_00.unk_18 = func_8850562C;
-    arg0->unk_00.unk_1C = func_8850555C;
+    arg0->unk_00.unk_18 = UIStatusBar_Draw;
+    arg0->unk_00.unk_1C = UIStatusBar_Update;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -1108,7 +1108,7 @@ void func_885054D8(unk_func_88001300_030* arg0, s32 arg1, s32 arg2, s32 arg3, s3
     arg0->unk_34 = 0;
 }
 
-s32 func_8850555C(unk_func_88001300_030* arg0) {
+s32 UIStatusBar_Update(unk_func_88001300_030* arg0) {
     if (arg0->unk_30 >= 0xB) {
         arg0->unk_30 = 0;
         arg0->unk_34 = 0;
@@ -1133,7 +1133,7 @@ s32 func_8850555C(unk_func_88001300_030* arg0) {
     return (arg0->unk_34 & 2) ? 0 : 1;
 }
 
-s32 func_8850562C(unk_func_88001300_030* arg0, s32 arg1, s32 arg2) {
+s32 UIStatusBar_Draw(unk_func_88001300_030* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     s32 sp114;
     s32 sp110;
@@ -1220,7 +1220,7 @@ s32 func_8850562C(unk_func_88001300_030* arg0, s32 arg1, s32 arg2) {
     return (arg0->unk_34 & 2) ? 0 : 1;
 }
 
-void func_88505E2C(unk_func_88001300_034* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, Color_RGBA8 arg6,
+void MessageBox_Create(unk_func_88001300_034* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, Color_RGBA8 arg6,
                    TextObject* arg7) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88001300_034));
     arg0->unk_00.unk_18 = func_88505EF4;
@@ -1232,7 +1232,7 @@ void func_88505E2C(unk_func_88001300_034* arg0, s32 arg1, s32 arg2, s32 arg3, s3
     arg0->unk_36 = arg5;
     arg0->unk_38 = arg6;
     arg0->unk_3C = arg7;
-    func_88506074(arg0, NULL);
+    MessageBox_SetText(arg0, NULL);
 }
 
 s32 func_88505EC0(unk_func_88001300_034* arg0) {
@@ -1296,7 +1296,7 @@ s32 func_88505EF4(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88506074(unk_func_88001300_034* arg0, u8* arg1) {
+void MessageBox_SetText(unk_func_88001300_034* arg0, u8* arg1) {
     s32 var_v0;
     s32 val;
     u8* arg;
@@ -1319,18 +1319,18 @@ void func_88506074(unk_func_88001300_034* arg0, u8* arg1) {
     arg0->unk_30 = var_v0;
 }
 
-void func_885060BC(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
+void UIButton_Create(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, MemoryPool* arg8) {
-    static Color_RGBA8 D_8850CF84 = { 255, 255, 0, 255 };
+    static Color_RGBA8 Color_Yellow = { 255, 255, 0, 255 };
 
     s32 var_v0;
     unk_func_88001300_03C_01C* temp_v0;
 
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88200FA0_030_030));
 
-    arg0->unk_00.unk_18 = func_88506438;
-    arg0->unk_00.unk_20 = func_885065E0;
-    arg0->unk_00.unk_24 = func_885062D4;
+    arg0->unk_00.unk_18 = List_DrawItems;
+    arg0->unk_00.unk_20 = List_HandleInput;
+    arg0->unk_00.unk_24 = List_SetSelectionMode;
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -1366,20 +1366,20 @@ void func_885060BC(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2, unk_func
         var_v0 = 3;
     }
 
-    func_88504570(arg0->unk_44, 0, 0, (var_v0 << 1) + arg4, arg5 + 6, D_8850CF84);
+    UIButtonPrompt_Create(arg0->unk_44, 0, 0, (var_v0 << 1) + arg4, arg5 + 6, Color_Yellow);
     arg0->unk_44->unk_00.unk_28 &= ~1;
-    func_8850068C(&arg0->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
-    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0, 0);
+    Fragment_SetChild(&arg0->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
+    ((func88506BFC)Memmap_GetFragmentVaddr(Fragment_Refresh))(arg0, 0);
 }
 
-void func_88506238(unk_func_88200FA0_030_030* arg0, s32 arg1, MemoryPool* arg2) {
+void ScrollableList_SetItemHeight(unk_func_88200FA0_030_030* arg0, s32 arg1, MemoryPool* arg2) {
     if (arg0->unk_34 != NULL) {
         mem_pool_free(arg2, arg0->unk_34);
     }
     arg0->unk_34 = mem_pool_alloc(arg2, arg1 * 2);
 }
 
-void func_8850628C(unk_func_88200FA0_030_030* arg0) {
+void Fragment_ClearFlags(unk_func_88200FA0_030_030* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->unk_2C->unk_04; i++) {
@@ -1387,7 +1387,7 @@ void func_8850628C(unk_func_88200FA0_030_030* arg0) {
     }
 }
 
-void func_885062D4(unk_func_88200FA0_030_030* arg0, s32 arg1) {
+void List_SetSelectionMode(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
     arg0->unk_44->unk_00.unk_24(&arg0->unk_44->unk_00, arg1);
     arg0->unk_44->unk_00.unk_28 &= ~1;
@@ -1396,31 +1396,31 @@ void func_885062D4(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     }
 }
 
-void func_8850633C(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC* arg1) {
+void List_SetData(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC* arg1) {
     arg0->unk_2C = arg1;
     arg0->unk_30 = 0;
-    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0, 0);
-    func_8850628C(arg0);
+    ((func88506BFC)Memmap_GetFragmentVaddr(Fragment_Refresh))(arg0, 0);
+    Fragment_ClearFlags(arg0);
 }
 
-void func_88506384(unk_func_88200FA0_030_030* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
-    func_88506238(arg0, arg1->unk_04, arg2);
-    func_8850633C(arg0, arg1);
+void List_SetItems(unk_func_88200FA0_030_030* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
+    ScrollableList_SetItemHeight(arg0, arg1->unk_04, arg2);
+    List_SetData(arg0, arg1);
 }
 
-void func_885063B8(unk_func_88200FA0_030_030* arg0, unk_func_88201DA0_038* arg1) {
+void Fragment_SetData(unk_func_88200FA0_030_030* arg0, unk_func_88201DA0_038* arg1) {
     arg0->unk_2C = arg1;
     arg0->unk_30 = 1;
-    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0, 0);
-    func_8850628C(arg0);
+    ((func88506BFC)Memmap_GetFragmentVaddr(Fragment_Refresh))(arg0, 0);
+    Fragment_ClearFlags(arg0);
 }
 
-void func_88506404(unk_func_88200FA0_030_030* arg0, unk_func_8820BE14_06C* arg1, MemoryPool* arg2) {
-    func_88506238(arg0, arg1->unk_04, arg2);
-    func_885063B8(arg0, arg1);
+void List_InitFromData3(unk_func_88200FA0_030_030* arg0, unk_func_8820BE14_06C* arg1, MemoryPool* arg2) {
+    ScrollableList_SetItemHeight(arg0, arg1->unk_04, arg2);
+    Fragment_SetData(arg0, arg1);
 }
 
-s32 func_88506438(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2) {
+s32 List_DrawItems(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2) {
     s32 i;
     s16 temp_v1;
     s32 temp_lo;
@@ -1465,7 +1465,7 @@ s32 func_88506438(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
+s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
     s32 sp5C;
     s32 sp58;
     s32 sp54;
@@ -1604,7 +1604,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
     return sp5C;
 }
 
-void func_88506BFC(unk_func_88200FA0_030_030* arg0, s32 arg1) {
+void Fragment_Refresh(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_38 = arg1;
     arg0->unk_44->unk_00.unk_10.unk_00 = ((arg1 % arg0->unk_48) * arg0->unk_3C) + arg0->unk_50;
     arg0->unk_44->unk_00.unk_10.unk_02 = ((arg0->unk_38 / arg0->unk_48) * arg0->unk_3E) + arg0->unk_52;
@@ -1612,7 +1612,7 @@ void func_88506BFC(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_4E = arg0->unk_38 / arg0->unk_48;
 }
 
-s32 func_88506CE4(unk_func_88200FA0_030_030* arg0) {
+s32 Fragment_Update(unk_func_88200FA0_030_030* arg0) {
     s32 var_a1 = arg0->unk_38;
 
     if (arg0->unk_38 < arg0->unk_2C->unk_08) {
@@ -1625,7 +1625,7 @@ s32 func_88506CE4(unk_func_88200FA0_030_030* arg0) {
     }
 
     if (var_a1 < arg0->unk_2C->unk_08) {
-        func_88506BFC(arg0, var_a1);
+        Fragment_Refresh(arg0, var_a1);
         return var_a1;
     }
 
@@ -1640,19 +1640,19 @@ s32 func_88506CE4(unk_func_88200FA0_030_030* arg0) {
     }
 
     if (var_a1 >= 0) {
-        func_88506BFC(arg0, var_a1);
+        Fragment_Refresh(arg0, var_a1);
         return var_a1;
     }
 
     return -1;
 }
 
-void func_88506DCC(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
+void ScrollListFragment_Create(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
                    s32 arg5, s32 arg6, MemoryPool* arg7) {
-    func_885060BC(&arg0->unk_00, arg1, arg2, arg3, arg4, arg5, arg6, 1, arg7);
-    arg0->unk_00.unk_00.unk_1C = func_88507018;
-    arg0->unk_00.unk_00.unk_18 = func_8850734C;
-    arg0->unk_00.unk_00.unk_20 = func_885075BC;
+    UIButton_Create(&arg0->unk_00, arg1, arg2, arg3, arg4, arg5, arg6, 1, arg7);
+    arg0->unk_00.unk_00.unk_1C = ScrollListFragment_Update;
+    arg0->unk_00.unk_00.unk_18 = ScrollListFragment_Draw;
+    arg0->unk_00.unk_00.unk_20 = ScrollListFragment_HandleInput;
     arg0->unk_00.unk_4A = arg6;
     arg0->unk_54 = arg0->unk_56 = 0;
     arg0->unk_64 = (arg0->unk_00.unk_3E * 4) / 10;
@@ -1664,7 +1664,7 @@ void func_88506DCC(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2, unk_func
     arg0->unk_6C = 8;
 }
 
-void func_88506EE4(unk_func_8820BE14_02C_038* arg0, unk_func_88200FA0_030_038* arg1) {
+void ScrollListFragment_SetData(unk_func_8820BE14_02C_038* arg0, unk_func_88200FA0_030_038* arg1) {
     arg0->unk_00.unk_2C = arg1;
     arg0->unk_00.unk_30 = 0;
     arg0->unk_00.unk_38 = 0;
@@ -1672,15 +1672,15 @@ void func_88506EE4(unk_func_8820BE14_02C_038* arg0, unk_func_88200FA0_030_038* a
     arg0->unk_60 = 0;
     arg0->unk_58 = 0;
     arg0->unk_6C = 0;
-    func_8850628C(&arg0->unk_00);
+    Fragment_ClearFlags(&arg0->unk_00);
 }
 
-void func_88506F1C(unk_func_8830867C_02C_034* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
-    func_88506238(arg0, arg1->unk_04, arg2);
-    func_88506EE4(arg0, arg1);
+void ScrollListFragment_Init(unk_func_8830867C_02C_034* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
+    ScrollableList_SetItemHeight(arg0, arg1->unk_04, arg2);
+    ScrollListFragment_SetData(arg0, arg1);
 }
 
-void func_88506F50(unk_func_8821421C_038_034* arg0, unk_func_8821421C_038_050** arg1) {
+void ScrollListFragment_Init2(unk_func_8821421C_038_034* arg0, unk_func_8821421C_038_050** arg1) {
     arg0->unk_00.unk_2C = arg1;
     arg0->unk_00.unk_30 = 1;
     arg0->unk_00.unk_38 = 0;
@@ -1688,21 +1688,21 @@ void func_88506F50(unk_func_8821421C_038_034* arg0, unk_func_8821421C_038_050** 
     arg0->unk_60 = 0;
     arg0->unk_58 = 0;
     arg0->unk_6C = 0;
-    func_8850628C(&arg0->unk_00);
+    Fragment_ClearFlags(&arg0->unk_00);
 }
 
-void func_88506F8C(unk_func_8821421C_038_034* arg0, unk_func_8830867C_03C_0D0* arg1, MemoryPool* arg2) {
-    func_88506238(&arg0->unk_00, arg1->unk_04, arg2);
-    func_88506F50(arg0, arg1);
+void ScrollListFragment_Init3(unk_func_8821421C_038_034* arg0, unk_func_8830867C_03C_0D0* arg1, MemoryPool* arg2) {
+    ScrollableList_SetItemHeight(&arg0->unk_00, arg1->unk_04, arg2);
+    ScrollListFragment_Init2(arg0, arg1);
 }
 
-void func_88506FC0(unk_func_8820BE14_02C_038* arg0) {
+void ScrollListFragment_UpdateMinOffset(unk_func_8820BE14_02C_038* arg0) {
     if (arg0->unk_5C < arg0->unk_58) {
         arg0->unk_58 = arg0->unk_5C;
     }
 }
 
-void func_88506FE0(unk_func_8820BE14_02C_038* arg0) {
+void ScrollListFragment_UpdateMaxOffset(unk_func_8820BE14_02C_038* arg0) {
     s32 temp_v0 = (arg0->unk_5C - (arg0->unk_00.unk_3E * arg0->unk_00.unk_4A)) + 1;
 
     if (arg0->unk_58 < temp_v0) {
@@ -1710,7 +1710,7 @@ void func_88506FE0(unk_func_8820BE14_02C_038* arg0) {
     }
 }
 
-s32 func_88507018(unk_func_8821421C_038_034* arg0) {
+s32 ScrollListFragment_Update(unk_func_8821421C_038_034* arg0) {
     s32 sp24;
     s32 temp_a2_2;
     s32 sp1C;
@@ -1725,7 +1725,7 @@ s32 func_88507018(unk_func_8821421C_038_034* arg0) {
             sp24 = arg0->unk_00.unk_38 * arg0->unk_00.unk_3E;
             temp_a3 = arg0->unk_5C - sp24;
             arg0->unk_5C -= (temp_a3 < arg0->unk_64) ? temp_a3 : arg0->unk_64;
-            func_88506FC0(arg0);
+            ScrollListFragment_UpdateMinOffset(arg0);
             if (sp24 == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x800;
             }
@@ -1735,7 +1735,7 @@ s32 func_88507018(unk_func_8821421C_038_034* arg0) {
             sp1C = ((arg0->unk_00.unk_38 + 1) * arg0->unk_00.unk_3E) - 1;
             temp_a3_2 = sp1C - arg0->unk_5C;
             arg0->unk_5C += (temp_a3_2 < arg0->unk_64) ? temp_a3_2 : arg0->unk_64;
-            func_88506FE0(arg0);
+            ScrollListFragment_UpdateMaxOffset(arg0);
             if (sp1C == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x400;
                 arg0->unk_5C = (arg0->unk_5C - arg0->unk_00.unk_3E) + 1;
@@ -1784,7 +1784,7 @@ s32 func_88507018(unk_func_8821421C_038_034* arg0) {
     return 0;
 }
 
-s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
+s32 ScrollListFragment_Draw(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     s16 temp_v0_2;
     s32 temp_a0;
     s32 temp_lo;
@@ -1843,7 +1843,7 @@ s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-s32 func_885075BC(unk_func_8821421C_038_034* arg0, Controller* arg1) {
+s32 ScrollListFragment_HandleInput(unk_func_8821421C_038_034* arg0, Controller* arg1) {
     s32 temp_t0;
     s32 temp_t3;
     s32 var_t2;
@@ -1880,7 +1880,7 @@ s32 func_885075BC(unk_func_8821421C_038_034* arg0, Controller* arg1) {
         }
         arg0->unk_56 |= 0x800;
         arg0->unk_5C -= (arg0->unk_5C < arg0->unk_64) ? arg0->unk_5C : arg0->unk_64;
-        func_88506FC0(arg0);
+        ScrollListFragment_UpdateMinOffset(arg0);
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
         if (temp_t0 != arg0->unk_00.unk_38) {
             var_t2 = 0x80000000;
@@ -1898,7 +1898,7 @@ s32 func_885075BC(unk_func_8821421C_038_034* arg0, Controller* arg1) {
         temp_a3_2 = (temp_lo_2 - arg0->unk_5C) - 1;
         arg0->unk_56 |= 0x400;
         arg0->unk_5C += (temp_a3_2 < arg0->unk_64) ? temp_a3_2 : arg0->unk_64;
-        func_88506FE0(arg0);
+        ScrollListFragment_UpdateMaxOffset(arg0);
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
         if (temp_t0 != arg0->unk_00.unk_38) {
             var_t2 = 0x80000000;
@@ -1965,7 +1965,7 @@ s32 func_885075BC(unk_func_8821421C_038_034* arg0, Controller* arg1) {
     return var_t2;
 }
 
-void func_88507AE4(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
+void ScrollListFragment_SetRows(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     s32 temp_v1;
     s32 var_a3;
 
@@ -1995,7 +1995,7 @@ void func_88507AE4(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     }
 }
 
-void func_88507B80(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
+void ScrollListFragment_SetRowsAlt(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     s32 temp_a2;
     s32 temp_v0;
     s32 var_a1;
@@ -2020,7 +2020,7 @@ void func_88507B80(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     }
 }
 
-void func_88507C0C(unk_func_8830867C_02C_034* arg0, s32 arg1, s32 arg2) {
+void ScrollListFragment_SetRowAndOffset(unk_func_8830867C_02C_034* arg0, s32 arg1, s32 arg2) {
     s32 temp_a2;
     s32 temp_a2_2;
     s32 temp_lo;
@@ -2054,11 +2054,11 @@ void func_88507C0C(unk_func_8830867C_02C_034* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_88507CC4(unk_func_8820BE14_02C_038* arg0, unk_func_88205880_00D0* arg1) {
+void PtrList_InsertAtSelection(unk_func_8820BE14_02C_038* arg0, unk_func_88205880_00D0* arg1) {
     PtrList_Insert(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
 }
 
-void func_88507CEC(unk_func_8820BE14_02C_038* arg0) {
+void PtrList_RemoveCurrentAndAdjust(unk_func_8820BE14_02C_038* arg0) {
     s32 var_a1;
 
     PtrArray_RemoveAt(arg0->unk_00.unk_2C, arg0->unk_00.unk_38);
@@ -2067,12 +2067,12 @@ void func_88507CEC(unk_func_8820BE14_02C_038* arg0) {
         var_a1 = arg0->unk_00.unk_2C->unk_08 - 1;
         arg0->unk_00.unk_38 = var_a1;
     }
-    func_88507B80(arg0, var_a1);
+    ScrollListFragment_SetRowsAlt(arg0, var_a1);
 }
 
-void func_88507D4C(unk_func_88507D4C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_func_8820BE14_02C_038* arg5) {
+void ItemSlot_Create(unk_func_88507D4C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_func_8820BE14_02C_038* arg5) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88507D4C));
-    arg0->unk_00.unk_18 = func_88507DBC;
+    arg0->unk_00.unk_18 = MoveInfoFragment_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -2081,7 +2081,7 @@ void func_88507D4C(unk_func_88507D4C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_2C = arg5;
 }
 
-s32 func_88507DBC(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
+s32 MoveInfoFragment_Draw(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
     s32 sp12C;
     s32 temp_s0;
     s32 w = 8;
@@ -2146,22 +2146,22 @@ s32 func_88507DBC(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_8850878C(unk_func_8850878C* arg0, s32 arg1, s32 arg2, char* arg3, s32 arg4) {
-    Color_RGBA8 D_8850CF88 = { 240, 240, 240, 255 };
+void TextObject_Create(unk_func_8850878C* arg0, s32 arg1, s32 arg2, char* arg3, s32 arg4) {
+    Color_RGBA8 Color_TextDefault = { 240, 240, 240, 255 };
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8850878C));
-    arg0->unk_00.unk_18 = func_8850882C;
+    arg0->unk_00.unk_18 = SimpleTextFragment_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_40 = arg3;
     arg0->unk_2C = arg4;
-    arg0->unk_30 = D_8850CF88;
+    arg0->unk_30 = Color_TextDefault;
     arg0->unk_38 = 0;
     arg0->unk_3C = 0x28;
     arg0->unk_44 = 0;
 }
 
-s32 func_8850882C(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
+s32 SimpleTextFragment_Draw(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_40 == NULL) {
         return 0;
     }
@@ -2181,10 +2181,10 @@ s32 func_8850882C(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_885088F4(unk_func_885088F4* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void ProgressBarFragment_Create(unk_func_885088F4* arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_885088F4));
-    arg0->unk_00.unk_1C = func_8850897C;
-    arg0->unk_00.unk_18 = func_88508AA8;
+    arg0->unk_00.unk_1C = ProgressBarFragment_Update;
+    arg0->unk_00.unk_18 = ProgressBarFragment_Draw;
     arg0->unk_00.unk_10.unk_00 = 0;
     arg0->unk_00.unk_14.unk_00 = 0x280;
     arg0->unk_00.unk_14.unk_02 = arg1;
@@ -2195,7 +2195,7 @@ void func_885088F4(unk_func_885088F4* arg0, s32 arg1, s32 arg2, s32 arg3) {
     arg0->unk_38 = arg3;
 }
 
-s32 func_8850897C(unk_func_885088F4* arg0) {
+s32 ProgressBarFragment_Update(unk_func_885088F4* arg0) {
     arg0->unk_2C++;
     if (arg0->unk_2C < 6) {
         arg0->unk_30 = 1;
@@ -2229,10 +2229,10 @@ s32 func_8850897C(unk_func_885088F4* arg0) {
     return 0;
 }
 
-s32 func_88508AA8(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_8850CF8C = { 0x38, 0x38, 0x68, 0xFF };
+s32 ProgressBarFragment_Draw(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
+    static Color_RGBA8 Color_ProgressBarFill = { 0x38, 0x38, 0x68, 0xFF };
 
-    u32 color = RGBA5551(D_8850CF8C.r, D_8850CF8C.g, D_8850CF8C.b, 1);
+    u32 color = RGBA5551(Color_ProgressBarFill.r, Color_ProgressBarFill.g, Color_ProgressBarFill.b, 1);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
@@ -2255,7 +2255,7 @@ s32 func_88508AA8(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, D_8850CF8C.r, D_8850CF8C.g, D_8850CF8C.b, D_8850CF8C.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, Color_ProgressBarFill.r, Color_ProgressBarFill.g, Color_ProgressBarFill.b, Color_ProgressBarFill.a);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007948, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 5, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -2293,9 +2293,9 @@ s32 func_88508AA8(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88509A2C(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4) {
+void TrainerMoveInfoFragment_Create(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88509A2C));
-    arg0->unk_00.unk_18 = func_88509AF0;
+    arg0->unk_00.unk_18 = TrainerMoveInfoFragment_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format off
@@ -2304,27 +2304,27 @@ void func_88509A2C(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* 
     arg0->unk_2C = arg3;
 
     if (arg3 != -1) {
-        if (func_80024F00(arg3) != 0) {
+        if (MenuItem_GetPokemonSpecies(arg3) != 0) {
             arg0->unk_30 = 1;
         } else {
             arg0->unk_30 = 0;
             arg0->unk_38 = func_80025084(arg3);
             SaveSlot_GetTrainerName(arg3, arg0->unk_40);
         }
-        arg0->unk_34 = GetMoveTargetType(func_80024F68(arg3));
+        arg0->unk_34 = GetMoveTargetType(MenuItem_GetHeldItemId(arg3));
     }
     arg0->unk_3C = arg4;
 }
 
-s32 func_88509AF0(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
-    static Gfx* D_8850CF90[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
-    static Color_RGBA8 D_8850CFA0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+s32 TrainerMoveInfoFragment_Draw(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
+    static Gfx* Gfx_MoveTargetIcons[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
+    static Color_RGBA8 Color_TrainerInfoEnv = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* var_a2;
 
     if (arg0->unk_2C != -1) {
         Text_ResetState();
-        Text_SetEnvColor(D_8850CFA0.r, D_8850CFA0.g, D_8850CFA0.b, D_8850CFA0.a);
+        Text_SetEnvColor(Color_TrainerInfoEnv.r, Color_TrainerInfoEnv.g, Color_TrainerInfoEnv.b, Color_TrainerInfoEnv.a);
         Text_SetFont(0x10, 0);
         Text_Print(arg1 + 0x1A, arg2, "%dP", arg0->unk_2C + 1);
         if (arg0->unk_30 == 0) {
@@ -2347,7 +2347,7 @@ s32 func_88509AF0(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_8850CF90[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, Gfx_MoveTargetIcons[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 4) << 2, (arg1 + 0x13) << 2, (arg2 + 0x17) << 2,
@@ -2359,20 +2359,20 @@ s32 func_88509AF0(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88509E34(unk_func_88509E34* arg0, s32 arg1, s32 arg2, char* arg3) {
+void LabelFragment_Create(unk_func_88509E34* arg0, s32 arg1, s32 arg2, char* arg3) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_88509E34));
-    arg0->unk_00.unk_00.unk_18 = func_88509E8C;
+    arg0->unk_00.unk_00.unk_18 = LabelFragment_Draw;
     arg0->unk_00.unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_2C = arg3;
 }
 
-s32 func_88509E8C(unk_func_88509F0C* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_8850CFA4 = { 0xF0, 0xF0, 0xF0, 0xFF };
+s32 LabelFragment_Draw(unk_func_88509F0C* arg0, s32 arg1, s32 arg2) {
+    static Color_RGBA8 Color_LabelEnv = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Text_ResetState();
     Text_SetFont(8, 0);
-    Text_SetEnvColor(D_8850CFA4.r, D_8850CFA4.g, D_8850CFA4.b, D_8850CFA4.a);
+    Text_SetEnvColor(Color_LabelEnv.r, Color_LabelEnv.g, Color_LabelEnv.b, Color_LabelEnv.a);
     Text_Print(arg1 + 0x1AC, arg2 + 0x26, arg0->unk_2C);
     Text_SetupDL();
     return 0;
@@ -2383,11 +2383,11 @@ void func_88509F0C(unk_func_88509F0C* arg0) {
     arg0->unk_2C = 0;
 }
 
-void func_88509F48(unk_func_88509F48* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
+void TextObjectGraphics_Init(TextObjectGraphics* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
                    TextObject* arg6) {
-    static Color_RGBA8 D_8850CFA8 = { 0x64, 0x1E, 0x1E, 0xFF };
+    static Color_RGBA8 Color_DarkRed = { 0x64, 0x1E, 0x1E, 0xFF };
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88509F48));
+    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(TextObjectGraphics));
     arg0->unk_00.unk_20 = func_8850A29C;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -2395,23 +2395,23 @@ void func_88509F48(unk_func_88509F48* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_00.unk_14.unk_02 = arg4;
 
     arg0->unk_2C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_038));
-    ((func88502274)Memmap_GetFragmentVaddr(func_88502274))(arg0->unk_2C, 0, 0, 0x10, 0x10);
+    ((func88502274)Memmap_GetFragmentVaddr(Fragment_SetRect))(arg0->unk_2C, 0, 0, 0x10, 0x10);
     arg0->unk_2C->unk_00.unk_28 |= 0x200;
     arg0->unk_2C->unk_00.unk_28 |= 0x400;
     arg0->unk_2C->unk_00.unk_28 &= ~1;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_2C);
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(arg0->unk_30, 0, 0, 0x10, 0x10, D_8850CFA8);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_30);
+    ((func885012A4)Memmap_GetFragmentVaddr(UIFrame_Create))(arg0->unk_30, 0, 0, 0x10, 0x10, Color_DarkRed);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_30);
     arg0->unk_34 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_34, 0, 0, "-----", 0x10);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_30, arg0->unk_34);
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(arg0->unk_34, 0, 0, "-----", 0x10);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_30, arg0->unk_34);
     arg0->unk_34->unk_00.unk_28 &= ~1;
     arg0->unk_38 = arg6;
 }
 
-void func_8850A10C(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
+void TextBox_Configure(TextObjectGraphics* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
     s16 temp_v1;
 
     *arg0->unk_34 = *arg1;
@@ -2441,7 +2441,7 @@ void func_8850A10C(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s
     arg0->unk_34->unk_00.unk_10.unk_02 = temp_v1 / 2;
 }
 
-s32 func_8850A29C(unk_func_88509F48* arg0, Controller* arg1) {
+s32 func_8850A29C(TextObjectGraphics* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -2455,19 +2455,19 @@ s32 func_8850A29C(unk_func_88509F48* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_8850A2DC(unk_func_88509F48* arg0) {
-    func_88502C98(arg0->unk_2C);
+void Menu_ResetState(TextObjectGraphics* arg0) {
+    UIAnimatedElement_WaitForInput(arg0->unk_2C);
 }
 
-void func_8850A2FC(unk_func_88509F48* arg0) {
+void Menu_SetActiveFlag(TextObjectGraphics* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_8850A30C(unk_func_88509F48* arg0, Controller* arg1, s32 arg2) {
+void func_8850A30C(TextObjectGraphics* arg0, Controller* arg1, s32 arg2) {
     s32 temp_v0;
     s32 var_s0 = 0;
 
-    func_8850A2DC(arg0);
+    Menu_ResetState(arg0);
 
     while (var_s0 == 0) {
         ControllerMsgQueue_SendAndRead(var_s0);
@@ -2478,31 +2478,31 @@ void func_8850A30C(unk_func_88509F48* arg0, Controller* arg1, s32 arg2) {
         }
 
         if (arg2 != 0) {
-            ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(temp_v0);
+            ((func8850BC94)Memmap_GetFragmentVaddr(Fragment_HandleResult))(temp_v0);
         }
     }
 
-    func_8850A2FC(arg0);
+    Menu_SetActiveFlag(arg0);
 }
 
-void func_8850A3CC(unk_func_88509F48* arg0, Controller* arg1) {
+void Menu_WaitForConfirm(TextObjectGraphics* arg0, Controller* arg1) {
     func_8850A30C(arg0, arg1, 1);
 }
 
-void func_8850A3EC(unk_func_88509F48* arg0, Controller* arg1) {
+void Menu_WaitForCancel(TextObjectGraphics* arg0, Controller* arg1) {
     func_8850A30C(arg0, arg1, 0);
 }
 
-void func_8850A40C(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void WindowBorder_Init(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_8850A480;
+    arg0->unk_18 = WindowBorder_Draw;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
     arg0->unk_14.unk_00 = arg3;
     arg0->unk_14.unk_02 = arg4;
 }
 
-s32 func_8850A480(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 WindowBorder_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -2536,16 +2536,16 @@ s32 func_8850A480(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_8850AB48(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DialogBox_Init(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_8850ABBC;
+    arg0->unk_18 = DialogBox_Draw;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
     arg0->unk_14.unk_00 = arg3;
     arg0->unk_14.unk_02 = arg4;
 }
 
-s32 func_8850ABBC(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 DialogBox_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     s32 spE4;
     s32 spE0;
     s32 spDC;
@@ -2587,10 +2587,10 @@ s32 func_8850ABBC(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_8850B254(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
+void UIList_Create(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
                    Color_RGBA8 arg6) {
     func_885007CC(&arg0->unk_00, sizeof(unk_func_8850B254));
-    arg0->unk_00.unk_18 = func_8850B2D4;
+    arg0->unk_00.unk_18 = ColoredBox_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -2599,7 +2599,7 @@ void func_8850B254(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_30 = arg6;
 }
 
-s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
+s32 ColoredBox_Draw(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
     s32 h = 8;
     s32 w = 8;
 
@@ -2653,7 +2653,7 @@ s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_8850BC94(s32 arg0) {
+void Fragment_HandleResult(s32 arg0) {
     u32 var_a1 = 0;
 
     if (arg0 & 0x80000000) {
@@ -2692,14 +2692,14 @@ void func_8850BC94(s32 arg0) {
     }
 }
 
-void func_8850BD40(unk_func_8850BD40* arg0, unk_func_8821421C_038_034* arg1) {
-    func_88500668(arg0, sizeof(unk_func_8850BD40));
-    arg0->unk_10 = func_8850BD8C;
-    arg0->unk_14 = func_8850BDC8;
+void MenuItemList_Init(unk_func_8850BD40* arg0, unk_func_8821421C_038_034* arg1) {
+    ListNode_Init(arg0, sizeof(unk_func_8850BD40));
+    arg0->unk_10 = MenuItemList_GetResult;
+    arg0->unk_14 = MenuItemList_SetResult;
     arg0->unk_1C = arg1;
 }
 
-s32 func_8850BD8C(unk_func_8850BD40* arg0, Controller* arg1) {
+s32 MenuItemList_GetResult(unk_func_8850BD40* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_1C->unk_00.unk_00.unk_20 != NULL) {
@@ -2708,20 +2708,20 @@ s32 func_8850BD8C(unk_func_8850BD40* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_8850BDC8(unk_func_8850BD40* arg0, s32 arg1) {
+void MenuItemList_SetResult(unk_func_8850BD40* arg0, s32 arg1) {
     arg0->unk_1C->unk_00.unk_00.unk_24(&arg0->unk_1C->unk_00.unk_00, arg1);
 }
 
-void func_8850BDF0(unk_func_8830867C_02C_048_000* arg0) {
-    func_88500668(arg0, sizeof(unk_func_8830867C_02C_048_000));
-    arg0->unk_10 = func_8850BE3C;
-    arg0->unk_14 = func_8850BF60;
+void SelectableList_Init(unk_func_8830867C_02C_048_000* arg0) {
+    ListNode_Init(arg0, sizeof(unk_func_8830867C_02C_048_000));
+    arg0->unk_10 = SelectableList_Update;
+    arg0->unk_14 = SelectableList_SetSelected;
     arg0->unk_18 = 0;
     arg0->unk_1C = 0;
     arg0->unk_20 = 0;
 }
 
-s32 func_8850BE3C(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 SelectableList_Update(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
     s32 ret = 0;
 
     if (arg0->unk_20 > 0) {
@@ -2749,13 +2749,13 @@ s32 func_8850BE3C(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
     if (ret & 2) {
         if (arg0->unk_1C > 0) {
             arg0->unk_1C--;
-            func_8850BFB0(arg0);
+            SelectableList_UpdateVisuals(arg0);
             ret |= 1;
         }
     } else if (ret & 4) {
         if (arg0->unk_1C < (arg0->unk_20 - 1)) {
             arg0->unk_1C++;
-            func_8850BFB0(arg0);
+            SelectableList_UpdateVisuals(arg0);
             ret |= 1;
         }
     }
@@ -2763,17 +2763,17 @@ s32 func_8850BE3C(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
     return ret;
 }
 
-void func_8850BF60(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void SelectableList_SetSelected(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
-    func_8850BFB0(arg0);
+    SelectableList_UpdateVisuals(arg0);
 }
 
-void func_8850BF80(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000_000* arg1) {
-    func_8850068C(&arg0->unk_00, arg1);
+void Screen_SetFragment(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000_000* arg1) {
+    Fragment_SetChild(&arg0->unk_00, arg1);
     arg0->unk_20++;
 }
 
-void func_8850BFB0(unk_func_8830867C_02C_048_000* arg0) {
+void SelectableList_UpdateVisuals(unk_func_8830867C_02C_048_000* arg0) {
     s32 temp_s3;
     s32 temp_s4;
     s32 var_v0;
@@ -2799,13 +2799,13 @@ void func_8850BFB0(unk_func_8830867C_02C_048_000* arg0) {
     }
 }
 
-void func_8850C064(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void Fragment_SetActive(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
     arg0->unk_1C = arg1;
-    func_8850BFB0(arg0);
+    SelectableList_UpdateVisuals(arg0);
 }
 
-void func_8850C084(unk_func_8830867C_02C_048_000* arg0) {
-    func_88500668(arg0, sizeof(unk_func_8830867C_02C_048_000));
+void GridMenu_Init(unk_func_8830867C_02C_048_000* arg0) {
+    ListNode_Init(arg0, sizeof(unk_func_8830867C_02C_048_000));
     arg0->unk_10 = func_8850C0D0;
     arg0->unk_14 = func_8850C1B8;
     arg0->unk_18 = 0;
@@ -2858,7 +2858,7 @@ void func_8850C1B8(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
 }
 
 void func_8850C1D8(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000_000* arg1) {
-    func_8850068C(&arg0->unk_00, arg1);
+    Fragment_SetChild(&arg0->unk_00, arg1);
     arg0->unk_20++;
 }
 
@@ -2880,9 +2880,9 @@ void func_8850C208(unk_func_8830867C_02C_048_000* arg0) {
 void func_8850C284(unk_func_88001300_03C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
 
-    func_88500668(arg0, sizeof(unk_func_88001300_03C));
-    arg0->unk_10 = func_8850C3B8;
-    arg0->unk_14 = func_8850C904;
+    ListNode_Init(arg0, sizeof(unk_func_88001300_03C));
+    arg0->unk_10 = GridMenu_HandleInput;
+    arg0->unk_14 = GridMenu_SetItemCount;
     arg0->unk_18 = mem_pool_alloc(arg3, (arg2 * sizeof(unk_func_88001300_000*)) * arg1);
 
     for (i = 0; i < arg2 * arg1; i++) {
@@ -2903,7 +2903,7 @@ void func_8850C284(unk_func_88001300_03C* arg0, s32 arg1, s32 arg2, MemoryPool* 
     arg0->unk_3E = 6;
 }
 
-s32 func_8850C3B8(unk_func_88001300_03C* arg0, Controller* arg1) {
+s32 GridMenu_HandleInput(unk_func_88001300_03C* arg0, Controller* arg1) {
     s32 sp5C;
     UNUSED s32 pad1;
     s32 sp54;
@@ -3045,18 +3045,18 @@ s32 func_8850C3B8(unk_func_88001300_03C* arg0, Controller* arg1) {
         } else {
             arg0->unk_34 = sp4C;
         }
-        func_8850C924(arg0);
+        GridMenu_Update(arg0);
         sp5C = 0x80000009;
     }
     return sp5C;
 }
 
-void func_8850C904(unk_func_88001300_03C* arg0, s32 arg1) {
+void GridMenu_SetItemCount(unk_func_88001300_03C* arg0, s32 arg1) {
     arg0->unk_20 = arg1;
-    func_8850C924(arg0);
+    GridMenu_Update(arg0);
 }
 
-void func_8850C924(unk_func_88001300_03C* arg0) {
+void GridMenu_Update(unk_func_88001300_03C* arg0) {
     s32 i;
 
     if (arg0->unk_1C != NULL) {
@@ -3089,7 +3089,7 @@ void func_8850C924(unk_func_88001300_03C* arg0) {
     }
 }
 
-void func_8850CAB4(unk_func_88001300_03C* arg0) {
+void GridMenu_SelectFirstEnabled(unk_func_88001300_03C* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->unk_2C * arg0->unk_30; i++) {
@@ -3102,23 +3102,23 @@ void func_8850CAB4(unk_func_88001300_03C* arg0) {
     }
 }
 
-void func_8850CB48(unk_func_88001300_03C* arg0, s32 arg1) {
+void GridMenu_SetSelection(unk_func_88001300_03C* arg0, s32 arg1) {
     arg0->unk_24 = arg1;
     arg0->unk_34 = arg1 % arg0->unk_2C;
     arg0->unk_36 = arg1 / arg0->unk_2C;
-    func_8850C924(arg0);
+    GridMenu_Update(arg0);
 }
 
-void func_8850CBA8(unk_func_8830867C_02C_048_000* arg0) {
-    func_88500668(&arg0->unk_00, sizeof(unk_func_8830867C_02C_048_000));
-    arg0->unk_10 = func_8850CBF4;
-    arg0->unk_14 = func_8850CC54;
+void UISeparator_Create(unk_func_8830867C_02C_048_000* arg0) {
+    ListNode_Init(&arg0->unk_00, sizeof(unk_func_8830867C_02C_048_000));
+    arg0->unk_10 = List_GetResult;
+    arg0->unk_14 = List_SetResult;
     arg0->unk_18 = 0;
     arg0->unk_1C = 0;
     arg0->unk_20 = 0;
 }
 
-s32 func_8850CBF4(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 List_GetResult(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
     s32 i;
     s32 var_v1 = 0;
 
@@ -3133,17 +3133,17 @@ s32 func_8850CBF4(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_8850CC54(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void List_SetResult(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
-    func_8850CCA4(arg0);
+    List_UpdateVisuals(arg0);
 }
 
-void func_8850CC74(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000* arg1) {
-    func_8850068C(&arg0->unk_00.unk_00, &arg1->unk_00);
+void Fragment_LinkSiblingAlt(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000* arg1) {
+    Fragment_SetChild(&arg0->unk_00.unk_00, &arg1->unk_00);
     arg0->unk_20++;
 }
 
-void func_8850CCA4(unk_func_8830867C_02C_048_000* arg0) {
+void List_UpdateVisuals(unk_func_8830867C_02C_048_000* arg0) {
     s32 var_a1;
     s32 i;
     unk_func_8830867C_02C_048_000* var_s0 = arg0->unk_00.unk_04;
@@ -3159,17 +3159,17 @@ void func_8850CCA4(unk_func_8830867C_02C_048_000* arg0) {
     }
 }
 
-void func_8850CD24(unk_func_8830867C_02C_048* arg0, s32 arg1) {
+void UIList_SelectItem(unk_func_8830867C_02C_048* arg0, s32 arg1) {
     arg0->unk_00.unk_1C = arg1;
-    func_8850CCA4(&arg0->unk_00);
+    List_UpdateVisuals(&arg0->unk_00);
 }
 
-void func_8850CD44(unk_func_8850CD44* arg0, s32 arg1, MemoryPool* arg2) {
+void Panel_Setup(unk_func_8850CD44* arg0, s32 arg1, MemoryPool* arg2) {
     s32 i;
 
-    ((func88500668)Memmap_GetFragmentVaddr(func_88500668))(arg0, sizeof(unk_func_8850CD44));
-    arg0->unk_10 = func_8850CE30;
-    arg0->unk_14 = func_8850CE80;
+    ((func88500668)Memmap_GetFragmentVaddr(ListNode_Init))(arg0, sizeof(unk_func_8850CD44));
+    arg0->unk_10 = ItemArray_GetActiveFlag;
+    arg0->unk_14 = ItemArray_PropagateResult;
     arg0->unk_18 = 0;
     arg0->unk_20 = arg1;
     arg0->unk_1C = mem_pool_alloc(arg2, arg1 * 4);
@@ -3179,7 +3179,7 @@ void func_8850CD44(unk_func_8850CD44* arg0, s32 arg1, MemoryPool* arg2) {
     }
 }
 
-s32 func_8850CE30(unk_func_8850CD44* arg0, Controller* arg1) {
+s32 ItemArray_GetActiveFlag(unk_func_8850CD44* arg0, Controller* arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -3190,7 +3190,7 @@ s32 func_8850CE30(unk_func_8850CD44* arg0, Controller* arg1) {
     return 4;
 }
 
-void func_8850CE80(unk_func_8850CD44* arg0, s32 arg1) {
+void ItemArray_PropagateResult(unk_func_8850CD44* arg0, s32 arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -3198,7 +3198,7 @@ void func_8850CE80(unk_func_8850CD44* arg0, s32 arg1) {
     }
 }
 
-void func_8850CF00(unk_func_8850CD44* arg0, Controller* arg1) {
+void ItemArray_WaitForSelection(unk_func_8850CD44* arg0, Controller* arg1) {
     s32 temp_v0;
     s32 var_s0 = 0;
 

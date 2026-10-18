@@ -288,7 +288,7 @@ void RenderSushiGoRoundUI(void) {
     }
 
     if (gIsDemoMode != 0) {
-        func_878021B4(0x1E, 0x17);
+        Stage_SetBorderFadeParams(0x1E, 0x17);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);

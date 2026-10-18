@@ -57,7 +57,7 @@ typedef struct AMDMAState {
     /* 0x08 */ AMDMABuffer* firstFree;
 } AMDMAState; // size = 0xC
 
-typedef struct unk_D_800FCB48 {
+typedef struct HPHistoryEntry {
     /* 0x00 */ u16 unk_00[16];
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
@@ -70,12 +70,12 @@ typedef struct unk_D_800FCB48 {
     /* 0x78 */ u32 unk_78;
     /* 0x7C */ u32 unk_7C;
     /* 0x80 */ s32 unk_80;
-} unk_D_800FCB48; // size = 0x84
+} HPHistoryEntry; // size = 0x84
 
-typedef struct unk_D_80078548 {
+typedef struct AudioCommandMapEntry {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
-} unk_D_80078548;
+} AudioCommandMapEntry;
 
 // .data
 extern u8 gMusicEnabled[];// = { 0, 0, 0, 0 };
@@ -102,124 +102,124 @@ extern f32 gMusicChannel1Volume;
 extern f32 gMusicChannel1Step;
 extern u8 mus_sound_effect_blocked;
 
-extern u16 D_80077DF0[];
-extern u16 D_80077E00[];
-extern u16 D_80077E10[];
-extern u16 D_80077E18[];
-extern u16 D_80077E20[];
-extern u16 D_80077E28[];
-extern u16 D_80077E30[];
-extern u16 D_80077E38[];
-extern u16 D_80077E40[];
-extern u16 D_80077E48[];
-extern u16 D_80077E50[];
-extern u16 D_80077E58[];
-extern u16 D_80077E60[];
-extern u16 D_80077E68[];
-extern u16 D_80077E70[];
-extern u16 D_80077E78[];
-extern u16 D_80077E88[];
-extern u16 D_80077E90[];
-extern u16 D_80077E98[6];
-extern u16 D_80077EA4[7];
-extern u16 D_80077EB4[6];
-extern u16 D_80077EC0[6];
-extern u16 D_80077ECC[6];
-extern u16 D_80077ED8[5];
-extern u16 D_80077EE4[6];
-extern u16 D_80077EF0[4];
-extern u16 D_80077EF8[5];
-extern u16 D_80077F04[3];
-extern u16 D_80077F0C[4];
-extern u16 D_80077F14[3];
-extern u16 D_80077F1C[3];
-extern u16 D_80077F24[3];
-extern u16 D_80077F2C[3];
-extern u16 D_80077F34[3];
-extern u16 D_80077F3C[3];
-extern u16 D_80077F44[6];
-extern u16 D_80077F50[3];
-extern u16 D_80077F58[3];
-extern u16 D_80077F60[6];
-extern u16 D_80077F6C[];
-extern u16 D_80077F74[];
-extern u16 D_80077F7C[];
-extern u16 D_80077F88[];
-extern u16 D_80077F90[];
-extern u16 D_80077F98[];
-extern u16 D_80077FA4[];
-extern u16 D_80077FAC[];
-extern u16 D_80077FB4[];
-extern u16 D_80077FC0[];
-extern u16 D_80077FC8[];
-extern u16 D_80077FD0[];
-extern u16 D_80077FD8[];
-extern u16 D_80077FE4[];
-extern u16 D_80077FEC[];
-extern u16 D_80077FF4[];
-extern u16 D_80077FFC[];
-extern u16 D_80078004[];
-extern u16 D_8007800C[];
-extern u16 D_80078014[];
-extern u8 D_8007801C[8];
-extern u8 D_80078024[10];
-extern u8 D_80078030[6];
-extern u8 D_80078038[6];
-extern u16 D_80078040[];
-extern u16 D_80078048[];
-extern u16 D_80078050[3];
-extern u16 D_80078058[3];
-extern u16 D_80078060[3];
-extern u16 D_80078068[];
-extern u8 D_80078070[8];
-extern u16 D_80078078[3];
-extern u16 D_80078080[3];
-extern u16 D_80078088[3];
-extern u16 D_80078090[4];
-extern u16 D_80078098[3];
-extern u16 D_800780A0[3];
-extern u16 D_800780A8[];
+extern u16 gAudioCueTable_0x24F[];
+extern u16 gAudioCueTable_0x269[];
+extern u16 gAudioCueTable_0x281[];
+extern u16 gAudioCueTable_0x27E[];
+extern u16 gAudioCueTable_0x24D[];
+extern u16 gAudioCueTable_0x24C[];
+extern u16 gAudioCueTable_0x24B[];
+extern u16 gAudioCueTable_0x27C[];
+extern u16 gAudioCueTable_0x27A[];
+extern u16 gAudioCueTable_0x252[];
+extern u16 gAudioCueTable_0x284[];
+extern u16 gAudioCueTable_0x259[];
+extern u16 gAudioCueTable_0x25A[];
+extern u16 gAudioCueTable_0x24E[];
+extern u16 gAudioCueTable_0x251[];
+extern u16 gAudioCueTable_GenericLow[];
+extern u16 gAudioCueTable_GenericMid[];
+extern u16 gAudioCueTable_GenericZero[];
+extern u16 gAudioCueTable_ItemUse[6];
+extern u16 gAudioCueTable_ItemConsume[7];
+extern u16 gAudioCueTable_ItemEquip[6];
+extern u16 gAudioCueTable_ItemUnequip[6];
+extern u16 gAudioCueTable_ItemThrow[6];
+extern u16 gAudioCueTable_ItemPickup[5];
+extern u16 gAudioCueTable_ItemDrop[6];
+extern u16 gAudioCueTable_StatusA[4];
+extern u16 gAudioCueTable_StatusB[5];
+extern u16 gAudioCueTable_StatusC[3];
+extern u16 gAudioCueTable_StatusD[4];
+extern u16 gAudioCueTable_StatusE[3];
+extern u16 gAudioCueTable_StatusF[3];
+extern u16 gAudioCueTable_StatusG[3];
+extern u16 gAudioCueTable_StatusH[3];
+extern u16 gAudioCueTable_StatusI[3];
+extern u16 gAudioCueTable_StatusJ[3];
+extern u16 gAudioCueTable_ItemUseAlt[6];
+extern u16 gAudioCueTable_StatusK[3];
+extern u16 gAudioCueTable_StatusL[3];
+extern u16 gAudioCueTable_StatusM[6];
+extern u16 gAudioCueTable_ComboA[];
+extern u16 gAudioCueTable_ComboB[];
+extern u16 gAudioCueTable_ComboC[];
+extern u16 gAudioCueTable_ComboD[];
+extern u16 gAudioCueTable_ComboE[];
+extern u16 gAudioCueTable_ComboF[];
+extern u16 gAudioCueTable_ComboG[];
+extern u16 gAudioCueTable_ComboH[];
+extern u16 gAudioCueTable_ComboI[];
+extern u16 gAudioCueTable_ComboJ[];
+extern u16 gAudioCueTable_ComboK[];
+extern u16 gAudioCueTable_ComboL[];
+extern u16 gAudioCueTable_ComboM[];
+extern u16 gAudioCueTable_ComboN[];
+extern u16 gAudioCueTable_ComboO[];
+extern u16 gAudioCueTable_ComboP[];
+extern u16 gAudioCueTable_ComboQ[];
+extern u16 gAudioCueTable_ComboR[];
+extern u16 gAudioCueTable_ComboS[];
+extern u16 gAudioCueTable_ComboT[];
+extern u8 gMenuSoundMap_A[8];
+extern u8 gMenuSoundMap_B[10];
+extern u8 gMenuSoundMap_C[6];
+extern u8 gMenuSoundMap_D[6];
+extern u16 gMenuSoundMap_E[];
+extern u16 gMenuSoundMap_F[];
+extern u16 gMenuSoundMap_G[3];
+extern u16 gMenuSoundMap_H[3];
+extern u16 gMenuSoundMap_I[3];
+extern u16 gMenuSoundMap_J[];
+extern u8 gMenuSoundMap_K[8];
+extern u16 gMenuSoundMap_L[3];
+extern u16 gMenuSoundMap_M[3];
+extern u16 gMenuSoundMap_N[3];
+extern u16 gMenuSoundMap_O[4];
+extern u16 gMenuSoundMap_P[3];
+extern u16 gMenuSoundMap_Q[3];
+extern u16 gMenuSoundMap_R[];
 extern u8 D_800780B3[]; // needs addressing
-extern u8 D_800780B4[];
-extern u8 D_80078180[];
-extern u8 D_800781E0[];
-extern u8 D_800782A4[];
+extern u8 gMenuSoundMap_S[];
+extern u8 gMenuSoundMap_T[];
+extern u8 gMenuSoundMap_U[];
+extern u8 gMenuSoundMap_V[];
 extern s32 gAudioActiveFlag;
 extern u8 gTeamScores[4];
-extern u8 D_80078390[2];
+extern u8 gPlayerActiveFlag[2];
 extern u8 D_80078394[4];
 extern u8 gPlayerSideMap[4];
 extern u8 D_8007839C[];
-extern u8 D_800783A0;
-extern u32 D_800783A4[4];
-extern u32 D_800783B4;
-extern s32 D_800783B8;
-extern u8 D_800783BC;
-extern u8 D_800783C0;
-extern u8 D_800783C4;
-extern u32 D_800783C8;
-extern u32 D_800783CC;
-extern u8 D_800783D0;
-extern u8 D_800783D4;
-extern u8 D_800783D8;
+extern u8 gAudioQueueNeedsUpdate;
+extern u32 gAudioSeqQueue[4];
+extern u32 gAudioSeqTimer;
+extern s32 gAudioSeqIndex;
+extern u8 gAudioSeqActiveFlag;
+extern u8 gAudioSeqState;
+extern u8 gAudioSeqPlayedFlag;
+extern u32 gAudioSeqElapsed;
+extern u32 gAudioQueueMode;
+extern u8 gAudioQueueFlagD;
+extern u8 gAudioQueueFlagC;
+extern u8 gAudioQueueFlagA;
 extern u8 D_800783DC;
 extern u8 D_800783E0;
-extern u8 D_800783E4;
+extern u8 gAudioQueueFlagB;
 extern u8 D_800783E8;
-extern u8 D_800783EC;
+extern u8 gAudioQueueSpecialFlag;
 extern s16 D_800783F0;
 extern s16 D_800783F4;
 extern s16 D_800783F8;
-extern u8 D_800783FC;
+extern u8 gAudioSystemEnabled;
 extern u8 gAudioEffectId;
-extern u32 D_80078404;
-extern s32 D_80078408;
+extern u32 gCurrentStadiumPhase;
+extern s32 gStadiumPhaseSubstate;
 extern u8 D_8007840C;
 extern u16 MenuSelectionSoundTable[17][9];
 extern u16 D_80078446[1][9];
 extern u16 D_800784EA[1][9];
 extern u32 gCommandQueueCount;
-extern unk_D_80078548 AudioCommandMap[];
+extern AudioCommandMapEntry AudioCommandMap[];
 extern u8 AudioEffectTriggerIds[];
 extern u8 AudioEffectSecondaryIds[];
 
@@ -246,121 +246,121 @@ f32 gMusicChannel1Volume = 0.0f;
 f32 gMusicChannel1Step = 0.0f;
 u8 mus_sound_effect_blocked = 0;
 u32 D_80077DE8[2] = { 0, 0 };
-u16 D_80077DF0[8] = { 7, 0x24F, 0x250, 0x255, 0x271, 0x273, 0x289, 0x28F };
-u16 D_80077E00[8] = { 6, 0x269, 0x26C, 0x26D, 0x26E, 0x287, 0x288, 0 };
-u16 D_80077E10[4] = { 3, 0x281, 0x282, 0x283 };
-u16 D_80077E18[4] = { 3, 0x27E, 0x27F, 0x280 };
-u16 D_80077E20[4] = { 3, 0x24D, 0x278, 0x279 };
-u16 D_80077E28[4] = { 3, 0x24C, 0x274, 0x275 };
-u16 D_80077E30[4] = { 3, 0x24B, 0x276, 0x277 };
-u16 D_80077E38[4] = { 2, 0x27C, 0x27D, 0 };
-u16 D_80077E40[4] = { 2, 0x27A, 0x27B, 0 };
-u16 D_80077E48[4] = { 3, 0x252, 0x270, 0x272 };
-u16 D_80077E50[4] = { 3, 0x284, 0x285, 0x286 };
-u16 D_80077E58[4] = { 3, 0x259, 0x28B, 0x28C };
-u16 D_80077E60[4] = { 3, 0x25A, 0x28A, 0x28C };
-u16 D_80077E68[4] = { 3, 0x24E, 0x258, 0x28E };
-u16 D_80077E70[4] = { 2, 0x251, 0x28D, 0 };
-u16 D_80077E78[8] = { 6, 0x24F, 0x250, 0x255, 0x271, 0x289, 0x28F, 0 };
-u16 D_80077E88[4] = { 3, 0x253, 0x26F, 0x291 };
-u16 D_80077E90[4] = { 2, 0x252, 0x270, 0 };
-u16 D_80077E98[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
-u16 D_80077EA4[7] = { 6, 0x6D, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
-u16 D_80077EB4[6] = { 5, 0x6F, 0x70, 0x9F, 0xA0, 0xA1 };
-u16 D_80077EC0[6] = { 5, 0x60, 0x65, 0x92, 0x93, 0x94 };
-u16 D_80077ECC[6] = { 5, 0x61, 0x66, 0x95, 0x96, 0x97 };
-u16 D_80077ED8[5] = { 4, 0x69, 0x98, 0x99, 0x9A };
-u16 D_80077EE4[6] = { 5, 0x63, 0x64, 0x8F, 0x90, 0x91 };
-u16 D_80077EF0[4] = { 3, 0x6A, 0x9B, 0x9C };
-u16 D_80077EF8[5] = { 4, 0x6B, 0x6C, 0x9D, 0x9E };
-u16 D_80077F04[3] = { 2, 0x8A, 0x8B };
-u16 D_80077F0C[4] = { 3, 0x7C, 0x86, 0xAC };
-u16 D_80077F14[3] = { 2, 0x7E, 0x7F };
-u16 D_80077F1C[3] = { 2, 0xAE, 0xAF };
-u16 D_80077F24[3] = { 2, 0x82, 0x83 };
-u16 D_80077F2C[3] = { 2, 0x72, 0x8A };
-u16 D_80077F34[3] = { 2, 0x85, 0x84 };
-u16 D_80077F3C[3] = { 2, 0x88, 0x71 };
-u16 D_80077F44[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
-u16 D_80077F50[3] = { 2, 0x80, 0x81 };
-u16 D_80077F58[3] = { 2, 0xB3, 0xB4 };
-u16 D_80077F60[6] = { 5, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
-u16 D_80077F6C[4] = { 3, 0x1D, 0x1E, 0x1F };
-u16 D_80077F74[4] = { 3, 0x20, 0x21, 0x22 };
-u16 D_80077F7C[6] = { 4, 0x19, 0x1A, 0x1B, 0x1C, 0 };
-u16 D_80077F88[4] = { 2, 0x1A, 0x1B, 0 };
-u16 D_80077F90[4] = { 3, 0x18, 0x1B, 0x1C };
-u16 D_80077F98[6] = { 4, 0x14, 0x15, 0x16, 0x17, 0 };
-u16 D_80077FA4[4] = { 2, 0x10, 0x11, 0 };
-u16 D_80077FAC[4] = { 2, 0x12, 0x13, 0 };
-u16 D_80077FB4[6] = { 4, 0xB7, 0xB8, 0xB9, 0xBA, 0 };
-u16 D_80077FC0[4] = { 3, 0xBD, 0xBE, 0xBF };
-u16 D_80077FC8[4] = { 2, 0xC0, 0xC1, 0 };
-u16 D_80077FD0[4] = { 3, 0xBB, 0xC6, 0xC7 };
-u16 D_80077FD8[6] = { 4, 0x50, 0x51, 0x52, 0x53, 0 };
-u16 D_80077FE4[4] = { 2, 0x56, 0x57, 0 };
-u16 D_80077FEC[4] = { 2, 0x59, 0x5A, 0 };
-u16 D_80077FF4[4] = { 2, 0xB, 0xC, 0 };
-u16 D_80077FFC[4] = { 2, 4, 3, 0 };
-u16 D_80078004[4] = { 2, 5, 3, 0 };
-u16 D_8007800C[4] = { 2, 8, 0xD, 0 };
-u16 D_80078014[4] = { 2, 0xE, 0xF, 0 };
-u8 D_8007801C[8] = { 0, 3, 1, 0x81, 1, 0x9D, 1, 0x9E };
-u8 D_80078024[10] = { 0, 4, 1, 0x7C, 1, 0x82, 1, 0x9D, 1, 0x9E };
-u8 D_80078030[6] = { 0, 2, 1, 0x7C, 1, 0x9E };
-u8 D_80078038[6] = { 0, 2, 1, 0x80, 1, 0x98 };
-u16 D_80078040[4] = { 2, 0x180, 0x17C, 0 };
-u16 D_80078048[4] = { 3, 0x179, 0x19D, 0x19E };
-u16 D_80078050[3] = { 2, 0x177, 0x178 };
-u16 D_80078058[3] = { 2, 0x183, 0x184 };
-u16 D_80078060[3] = { 2, 0x184, 0x185 };
-u16 D_80078068[4] = { 3, 0x172, 0x173, 0x174 };
-u8 D_80078070[8] = { 0, 3, 0, 0x71, 0, 0xA8, 0, 0xA9 };
-u16 D_80078078[3] = { 2, 0x73, 0x74 };
-u16 D_80078080[3] = { 2, 0x175, 0x176 };
-u16 D_80078088[3] = { 2, 0x7D, 0xAA };
-u16 D_80078090[4] = { 3, 0x7D, 0xAA, 0xAB };
-u16 D_80078098[3] = { 2, 0x199, 0x19A };
-u16 D_800780A0[3] = { 2, 0x19B, 0x19C };
-u16 D_800780A8[6] = { 5, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F };
-u8 D_800780B4[204] = { 0, 0x28, 0, 0, 0x32, 0, 0x1D, 0xF, 0, 0x1D, 0x12, 0, 0, 0x50, 0, 0x10, 0x28, 0, 4, 0x4B, 0x14, 5, 0x4B, 0x19, 6, 0x4B, 0x17, 0, 0x28, 0, 0, 0x37, 0, 0x26, 1, 0, 0x27, 0x50, 0, 0x32, 0, 0, 0, 0x32, 0, 0, 0x28, 0, 0, 0x23, 2, 0x1C, 0, 0, 0x2B, 0x46, 2, 0x2A, 0xF, 0, 0, 0x50, 0, 0, 0x23, 0x16, 0x25, 0x41, 0, 0x2C, 0x1E, 1, 0, 0x78, 0, 0x2D, 0x46, 1, 0x25, 0x3C, 1, 0x16, 0, 0, 0x25, 0x46, 0, 0, 0x41, 0, 0x1D, 0xF, 0, 0x26, 1, 0, 0, 0x23, 0, 0x24, 0x55, 0, 0x2A, 0xF, 0, 0x30, 0x5A, 0, 0x1B, 0x5A, 0, 0x30, 0x64, 0, 0x13, 0, 0, 2, 0xF, 3, 0x4D, 0x19, 7, 0x1D, 0xE, 7, 0x13, 0, 0, 0x1F, 0x3C, 0, 0x12, 0, 0, 0x1C, 0, 0, 0x20, 0, 0, 0x31, 0, 0, 0x29, 1, 0, 0x56, 0, 0, 0x45, 0x28, 3, 4, 0x28, 0x14, 4, 0x5F, 0x14, 0x2E, 0, 0x19, 0, 0x28, 0x15, 0, 0x78, 0x15, 0, 0x5F, 0x15, 5, 0x5F, 0x19, 0x23, 0x78, 0x19, 0x4C, 0x41, 0x18, 0x46, 0x41, 0x15, 0x44, 0x41, 0x19, 0x50, 0x96, 0, 0, 0x23, 2, 0, 0x50, 2, 0x30, 0x50, 1, 0x25, 0x32, 1, 0, 1, 1 };
-u8 D_80078180[96] = { 0x29, 1, 1, 0, 0x50, 0, 3, 0x14, 0x16, 3, 0x28, 0x16, 0x54, 0, 0x16, 0xD, 0, 0, 0, 0x37, 0x16, 0x27, 0x78, 0x16, 0x42, 0, 3, 0x43, 0, 0x16, 0x20, 0, 0x16, 0x1B, 0x46, 0x16, 0x14, 0, 7, 0x29, 1, 0x1A, 0x2A, 0xF, 0x14, 6, 0x28, 0x17, 6, 0x5F, 0x17, 0x43, 0, 0x17, 6, 0x78, 0x17, 0, 0x32, 5, 0, 0x64, 4, 0x26, 1, 4, 0x27, 0x64, 4, 0x42, 0, 3, 0x4C, 0x32, 0x18, 0x47, 0x5A, 0x18, 0x20, 0, 0x18, 0xA, 0, 0x18, 0x34, 0, 0x18, 0, 0x28, 0, 0x51, 0x14, 0, 0x1C, 0, 0x18 };
-u8 D_800781E0[196] = { 0x29, 0, 8, 0x52, 0, 0, 0x3B, 0, 0, 0xF, 0, 0, 0x38, 0, 0, 0xB, 0, 0, 0xF, 0, 0, 0x16, 0, 0, 0x31, 0, 8, 0xB, 0, 0x15, 0xB, 0, 0, 0x33, 0, 0x18, 0x40, 0, 0x18, 0x19, 0, 0x19, 0x41, 0, 0x18, 0x2F, 0, 0, 0x1A, 0, 0, 0x53, 0, 0, 9, 0, 2, 7, 0x82, 0, 0, 0x64, 0, 0x24, 0x14, 8, 0x21, 0x14, 3, 0x21, 0x41, 3, 0x1F, 0x41, 4, 0x22, 0x78, 0x14, 0, 0x50, 0x15, 0x2A, 0x23, 0x15, 0x11, 0x3C, 0, 0x27, 0x64, 0, 0x1D, 0x14, 0, 0x46, 0xA, 0, 0x35, 0, 0x18, 0x16, 0, 0x18, 0x38, 0, 0, 0x2D, 0x55, 1, 0x43, 0, 0, 8, 0x64, 0x18, 0x42, 0, 3, 0x1D, 0xF, 0, 3, 0x14, 7, 0x20, 0, 0, 0x27, 0x8C, 2, 0x39, 0, 0, 0x46, 0x14, 0x15, 0, 0x46, 0, 0x20, 0, 0x16, 0x16, 0, 0, 0x29, 1, 0x18, 0x55, 0, 0, 0x33, 0, 3, 0, 0x5A, 0x15, 7, 0xAA, 0, 0x1D, 0x12, 0, 0x2C, 0x32, 4, 0x38, 0, 0x18, 0, 0x4B, 5, 0x1F, 0x50, 0, 0xA, 0, 0, 0x18, 0, 0, 0, 0x50, 0, 0x28, 1, 0, 0, 0x46, 0, 0x4F, 0, 0, 0x30, 0x32, 0, 0 };
-u8 D_800782A4[228] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 2, 2, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 0, 2, 0, 3, 2, 2, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2, 0, 0, 3, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 0, 2, 0, 2, 3, 0, 2, 0, 0, 2, 3, 2, 0, 2, 3, 0, 2, 0, 2, 2, 0, 3, 2, 0, 0, 3, 3, 0, 0, 3, 0, 3, 3, 0, 0, 0, 0, 3, 0, 2, 0, 2, 2, 2, 3, 1, 0, 0, 0, 0, 0, 3, 0, 0, 2, 2, 0, 0, 3, 2, 2, 0, 0, 3, 0, 3, 2, 0, 0, 3, 0, 1, 0, 2, 3, 0, 0, 0, 0, 0, 2, 3, 0, 3, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 2, 0, 0, 2, 3, 0, 0, 2, 0, 0, 3, 0, 0, 0, 3, 2, 0, 2, 3, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0 };
+u16 gAudioCueTable_0x24F[8] = { 7, 0x24F, 0x250, 0x255, 0x271, 0x273, 0x289, 0x28F };
+u16 gAudioCueTable_0x269[8] = { 6, 0x269, 0x26C, 0x26D, 0x26E, 0x287, 0x288, 0 };
+u16 gAudioCueTable_0x281[4] = { 3, 0x281, 0x282, 0x283 };
+u16 gAudioCueTable_0x27E[4] = { 3, 0x27E, 0x27F, 0x280 };
+u16 gAudioCueTable_0x24D[4] = { 3, 0x24D, 0x278, 0x279 };
+u16 gAudioCueTable_0x24C[4] = { 3, 0x24C, 0x274, 0x275 };
+u16 gAudioCueTable_0x24B[4] = { 3, 0x24B, 0x276, 0x277 };
+u16 gAudioCueTable_0x27C[4] = { 2, 0x27C, 0x27D, 0 };
+u16 gAudioCueTable_0x27A[4] = { 2, 0x27A, 0x27B, 0 };
+u16 gAudioCueTable_0x252[4] = { 3, 0x252, 0x270, 0x272 };
+u16 gAudioCueTable_0x284[4] = { 3, 0x284, 0x285, 0x286 };
+u16 gAudioCueTable_0x259[4] = { 3, 0x259, 0x28B, 0x28C };
+u16 gAudioCueTable_0x25A[4] = { 3, 0x25A, 0x28A, 0x28C };
+u16 gAudioCueTable_0x24E[4] = { 3, 0x24E, 0x258, 0x28E };
+u16 gAudioCueTable_0x251[4] = { 2, 0x251, 0x28D, 0 };
+u16 gAudioCueTable_GenericLow[8] = { 6, 0x24F, 0x250, 0x255, 0x271, 0x289, 0x28F, 0 };
+u16 gAudioCueTable_GenericMid[4] = { 3, 0x253, 0x26F, 0x291 };
+u16 gAudioCueTable_GenericZero[4] = { 2, 0x252, 0x270, 0 };
+u16 gAudioCueTable_ItemUse[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
+u16 gAudioCueTable_ItemConsume[7] = { 6, 0x6D, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
+u16 gAudioCueTable_ItemEquip[6] = { 5, 0x6F, 0x70, 0x9F, 0xA0, 0xA1 };
+u16 gAudioCueTable_ItemUnequip[6] = { 5, 0x60, 0x65, 0x92, 0x93, 0x94 };
+u16 gAudioCueTable_ItemThrow[6] = { 5, 0x61, 0x66, 0x95, 0x96, 0x97 };
+u16 gAudioCueTable_ItemPickup[5] = { 4, 0x69, 0x98, 0x99, 0x9A };
+u16 gAudioCueTable_ItemDrop[6] = { 5, 0x63, 0x64, 0x8F, 0x90, 0x91 };
+u16 gAudioCueTable_StatusA[4] = { 3, 0x6A, 0x9B, 0x9C };
+u16 gAudioCueTable_StatusB[5] = { 4, 0x6B, 0x6C, 0x9D, 0x9E };
+u16 gAudioCueTable_StatusC[3] = { 2, 0x8A, 0x8B };
+u16 gAudioCueTable_StatusD[4] = { 3, 0x7C, 0x86, 0xAC };
+u16 gAudioCueTable_StatusE[3] = { 2, 0x7E, 0x7F };
+u16 gAudioCueTable_StatusF[3] = { 2, 0xAE, 0xAF };
+u16 gAudioCueTable_StatusG[3] = { 2, 0x82, 0x83 };
+u16 gAudioCueTable_StatusH[3] = { 2, 0x72, 0x8A };
+u16 gAudioCueTable_StatusI[3] = { 2, 0x85, 0x84 };
+u16 gAudioCueTable_StatusJ[3] = { 2, 0x88, 0x71 };
+u16 gAudioCueTable_ItemUseAlt[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
+u16 gAudioCueTable_StatusK[3] = { 2, 0x80, 0x81 };
+u16 gAudioCueTable_StatusL[3] = { 2, 0xB3, 0xB4 };
+u16 gAudioCueTable_StatusM[6] = { 5, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
+u16 gAudioCueTable_ComboA[4] = { 3, 0x1D, 0x1E, 0x1F };
+u16 gAudioCueTable_ComboB[4] = { 3, 0x20, 0x21, 0x22 };
+u16 gAudioCueTable_ComboC[6] = { 4, 0x19, 0x1A, 0x1B, 0x1C, 0 };
+u16 gAudioCueTable_ComboD[4] = { 2, 0x1A, 0x1B, 0 };
+u16 gAudioCueTable_ComboE[4] = { 3, 0x18, 0x1B, 0x1C };
+u16 gAudioCueTable_ComboF[6] = { 4, 0x14, 0x15, 0x16, 0x17, 0 };
+u16 gAudioCueTable_ComboG[4] = { 2, 0x10, 0x11, 0 };
+u16 gAudioCueTable_ComboH[4] = { 2, 0x12, 0x13, 0 };
+u16 gAudioCueTable_ComboI[6] = { 4, 0xB7, 0xB8, 0xB9, 0xBA, 0 };
+u16 gAudioCueTable_ComboJ[4] = { 3, 0xBD, 0xBE, 0xBF };
+u16 gAudioCueTable_ComboK[4] = { 2, 0xC0, 0xC1, 0 };
+u16 gAudioCueTable_ComboL[4] = { 3, 0xBB, 0xC6, 0xC7 };
+u16 gAudioCueTable_ComboM[6] = { 4, 0x50, 0x51, 0x52, 0x53, 0 };
+u16 gAudioCueTable_ComboN[4] = { 2, 0x56, 0x57, 0 };
+u16 gAudioCueTable_ComboO[4] = { 2, 0x59, 0x5A, 0 };
+u16 gAudioCueTable_ComboP[4] = { 2, 0xB, 0xC, 0 };
+u16 gAudioCueTable_ComboQ[4] = { 2, 4, 3, 0 };
+u16 gAudioCueTable_ComboR[4] = { 2, 5, 3, 0 };
+u16 gAudioCueTable_ComboS[4] = { 2, 8, 0xD, 0 };
+u16 gAudioCueTable_ComboT[4] = { 2, 0xE, 0xF, 0 };
+u8 gMenuSoundMap_A[8] = { 0, 3, 1, 0x81, 1, 0x9D, 1, 0x9E };
+u8 gMenuSoundMap_B[10] = { 0, 4, 1, 0x7C, 1, 0x82, 1, 0x9D, 1, 0x9E };
+u8 gMenuSoundMap_C[6] = { 0, 2, 1, 0x7C, 1, 0x9E };
+u8 gMenuSoundMap_D[6] = { 0, 2, 1, 0x80, 1, 0x98 };
+u16 gMenuSoundMap_E[4] = { 2, 0x180, 0x17C, 0 };
+u16 gMenuSoundMap_F[4] = { 3, 0x179, 0x19D, 0x19E };
+u16 gMenuSoundMap_G[3] = { 2, 0x177, 0x178 };
+u16 gMenuSoundMap_H[3] = { 2, 0x183, 0x184 };
+u16 gMenuSoundMap_I[3] = { 2, 0x184, 0x185 };
+u16 gMenuSoundMap_J[4] = { 3, 0x172, 0x173, 0x174 };
+u8 gMenuSoundMap_K[8] = { 0, 3, 0, 0x71, 0, 0xA8, 0, 0xA9 };
+u16 gMenuSoundMap_L[3] = { 2, 0x73, 0x74 };
+u16 gMenuSoundMap_M[3] = { 2, 0x175, 0x176 };
+u16 gMenuSoundMap_N[3] = { 2, 0x7D, 0xAA };
+u16 gMenuSoundMap_O[4] = { 3, 0x7D, 0xAA, 0xAB };
+u16 gMenuSoundMap_P[3] = { 2, 0x199, 0x19A };
+u16 gMenuSoundMap_Q[3] = { 2, 0x19B, 0x19C };
+u16 gMenuSoundMap_R[6] = { 5, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F };
+u8 gMenuSoundMap_S[204] = { 0, 0x28, 0, 0, 0x32, 0, 0x1D, 0xF, 0, 0x1D, 0x12, 0, 0, 0x50, 0, 0x10, 0x28, 0, 4, 0x4B, 0x14, 5, 0x4B, 0x19, 6, 0x4B, 0x17, 0, 0x28, 0, 0, 0x37, 0, 0x26, 1, 0, 0x27, 0x50, 0, 0x32, 0, 0, 0, 0x32, 0, 0, 0x28, 0, 0, 0x23, 2, 0x1C, 0, 0, 0x2B, 0x46, 2, 0x2A, 0xF, 0, 0, 0x50, 0, 0, 0x23, 0x16, 0x25, 0x41, 0, 0x2C, 0x1E, 1, 0, 0x78, 0, 0x2D, 0x46, 1, 0x25, 0x3C, 1, 0x16, 0, 0, 0x25, 0x46, 0, 0, 0x41, 0, 0x1D, 0xF, 0, 0x26, 1, 0, 0, 0x23, 0, 0x24, 0x55, 0, 0x2A, 0xF, 0, 0x30, 0x5A, 0, 0x1B, 0x5A, 0, 0x30, 0x64, 0, 0x13, 0, 0, 2, 0xF, 3, 0x4D, 0x19, 7, 0x1D, 0xE, 7, 0x13, 0, 0, 0x1F, 0x3C, 0, 0x12, 0, 0, 0x1C, 0, 0, 0x20, 0, 0, 0x31, 0, 0, 0x29, 1, 0, 0x56, 0, 0, 0x45, 0x28, 3, 4, 0x28, 0x14, 4, 0x5F, 0x14, 0x2E, 0, 0x19, 0, 0x28, 0x15, 0, 0x78, 0x15, 0, 0x5F, 0x15, 5, 0x5F, 0x19, 0x23, 0x78, 0x19, 0x4C, 0x41, 0x18, 0x46, 0x41, 0x15, 0x44, 0x41, 0x19, 0x50, 0x96, 0, 0, 0x23, 2, 0, 0x50, 2, 0x30, 0x50, 1, 0x25, 0x32, 1, 0, 1, 1 };
+u8 gMenuSoundMap_T[96] = { 0x29, 1, 1, 0, 0x50, 0, 3, 0x14, 0x16, 3, 0x28, 0x16, 0x54, 0, 0x16, 0xD, 0, 0, 0, 0x37, 0x16, 0x27, 0x78, 0x16, 0x42, 0, 3, 0x43, 0, 0x16, 0x20, 0, 0x16, 0x1B, 0x46, 0x16, 0x14, 0, 7, 0x29, 1, 0x1A, 0x2A, 0xF, 0x14, 6, 0x28, 0x17, 6, 0x5F, 0x17, 0x43, 0, 0x17, 6, 0x78, 0x17, 0, 0x32, 5, 0, 0x64, 4, 0x26, 1, 4, 0x27, 0x64, 4, 0x42, 0, 3, 0x4C, 0x32, 0x18, 0x47, 0x5A, 0x18, 0x20, 0, 0x18, 0xA, 0, 0x18, 0x34, 0, 0x18, 0, 0x28, 0, 0x51, 0x14, 0, 0x1C, 0, 0x18 };
+u8 gMenuSoundMap_U[196] = { 0x29, 0, 8, 0x52, 0, 0, 0x3B, 0, 0, 0xF, 0, 0, 0x38, 0, 0, 0xB, 0, 0, 0xF, 0, 0, 0x16, 0, 0, 0x31, 0, 8, 0xB, 0, 0x15, 0xB, 0, 0, 0x33, 0, 0x18, 0x40, 0, 0x18, 0x19, 0, 0x19, 0x41, 0, 0x18, 0x2F, 0, 0, 0x1A, 0, 0, 0x53, 0, 0, 9, 0, 2, 7, 0x82, 0, 0, 0x64, 0, 0x24, 0x14, 8, 0x21, 0x14, 3, 0x21, 0x41, 3, 0x1F, 0x41, 4, 0x22, 0x78, 0x14, 0, 0x50, 0x15, 0x2A, 0x23, 0x15, 0x11, 0x3C, 0, 0x27, 0x64, 0, 0x1D, 0x14, 0, 0x46, 0xA, 0, 0x35, 0, 0x18, 0x16, 0, 0x18, 0x38, 0, 0, 0x2D, 0x55, 1, 0x43, 0, 0, 8, 0x64, 0x18, 0x42, 0, 3, 0x1D, 0xF, 0, 3, 0x14, 7, 0x20, 0, 0, 0x27, 0x8C, 2, 0x39, 0, 0, 0x46, 0x14, 0x15, 0, 0x46, 0, 0x20, 0, 0x16, 0x16, 0, 0, 0x29, 1, 0x18, 0x55, 0, 0, 0x33, 0, 3, 0, 0x5A, 0x15, 7, 0xAA, 0, 0x1D, 0x12, 0, 0x2C, 0x32, 4, 0x38, 0, 0x18, 0, 0x4B, 5, 0x1F, 0x50, 0, 0xA, 0, 0, 0x18, 0, 0, 0, 0x50, 0, 0x28, 1, 0, 0, 0x46, 0, 0x4F, 0, 0, 0x30, 0x32, 0, 0 };
+u8 gMenuSoundMap_V[228] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 2, 2, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 0, 2, 0, 3, 2, 2, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2, 0, 0, 3, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 0, 2, 0, 2, 3, 0, 2, 0, 0, 2, 3, 2, 0, 2, 3, 0, 2, 0, 2, 2, 0, 3, 2, 0, 0, 3, 3, 0, 0, 3, 0, 3, 3, 0, 0, 0, 0, 3, 0, 2, 0, 2, 2, 2, 3, 1, 0, 0, 0, 0, 0, 3, 0, 0, 2, 2, 0, 0, 3, 2, 2, 0, 0, 3, 0, 3, 2, 0, 0, 3, 0, 1, 0, 2, 3, 0, 0, 0, 0, 0, 2, 3, 0, 3, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 2, 0, 0, 2, 3, 0, 0, 2, 0, 0, 3, 0, 0, 0, 3, 2, 0, 2, 3, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0 };
 s32 gAudioActiveFlag = 1;
 u8 gTeamScores[4] = { 3, 3, 3, 3 };
-u8 D_80078390[2] = { 3, 3 };
+u8 gPlayerActiveFlag[2] = { 3, 3 };
 u8 D_80078394[4] = { 0, 1, 0, 0 };
 u8 gPlayerSideMap[4] = { 1, 2, 1, 2 };
 u8 D_8007839C[4] = { 0, 0, 0, 0 };
-u8 D_800783A0 = 0;
-u32 D_800783A4[4] = { 0, 0, 0, 0 };
-u32 D_800783B4 = 0;
-s32 D_800783B8 = 0;
-u8 D_800783BC = 0;
-u8 D_800783C0 = 0;
-u8 D_800783C4 = 0;
-u32 D_800783C8 = 0;
-u32 D_800783CC = 0;
-u8 D_800783D0 = 0;
-u8 D_800783D4 = 0;
-u8 D_800783D8 = 0;
+u8 gAudioQueueNeedsUpdate = 0;
+u32 gAudioSeqQueue[4] = { 0, 0, 0, 0 };
+u32 gAudioSeqTimer = 0;
+s32 gAudioSeqIndex = 0;
+u8 gAudioSeqActiveFlag = 0;
+u8 gAudioSeqState = 0;
+u8 gAudioSeqPlayedFlag = 0;
+u32 gAudioSeqElapsed = 0;
+u32 gAudioQueueMode = 0;
+u8 gAudioQueueFlagD = 0;
+u8 gAudioQueueFlagC = 0;
+u8 gAudioQueueFlagA = 0;
 u8 D_800783DC = 0;
 u8 D_800783E0 = 0;
-u8 D_800783E4 = 0;
+u8 gAudioQueueFlagB = 0;
 u8 D_800783E8 = 0;
-u8 D_800783EC = 0;
+u8 gAudioQueueSpecialFlag = 0;
 s16 D_800783F0 = 0;
 s16 D_800783F4 = 0;
 s16 D_800783F8 = 0;
-u8 D_800783FC = 1;
+u8 gAudioSystemEnabled = 1;
 u8 gAudioEffectId = 1;
-u32 D_80078404 = 0;
-s32 D_80078408 = 0;
+u32 gCurrentStadiumPhase = 0;
+s32 gStadiumPhaseSubstate = 0;
 u8 D_8007840C = 0;
 u16 MenuSelectionSoundTable[17][9] = { { 0x35, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2B, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2C, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2D, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x37, 0x2F, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x36, 0x2E, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x31, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x32, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x33, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0, 0x39, 0x4C, 0x4E, 0x3A, 0x4A, 0x4D, 0x4F, 0x3B }, { 0, 0x4B, 0x4C, 0x4E, 0x3C, 0x4A, 0x4D, 0x4F, 0x3D }, { 0, 0x4B, 0x4C, 0x4E, 0x3E, 0x4A, 0x4D, 0x4F, 0x3F }, { 0, 0x4B, 0x4C, 0x4E, 0x40, 0x4A, 0x4D, 0x4F, 0x41 }, { 0, 0x42, 0x43, 0x44, 0x45, 0x46, 0, 0, 0 } };  // tail holds D_80078446, D_800784EA (linker-defined symbols)
 u32 gCommandQueueCount = 0;
-unk_D_80078548 AudioCommandMap[6] = { { 3, 0x29 }, { 0x8C, 0x83 }, { 0x18, 0x1F }, { 0x9A, 4 }, { 0x9B, 0x2A }, { 0, 0 } };
+AudioCommandMapEntry AudioCommandMap[6] = { { 3, 0x29 }, { 0x8C, 0x83 }, { 0x18, 0x1F }, { 0x9A, 4 }, { 0x9B, 0x2A }, { 0, 0 } };
 u8 AudioEffectTriggerIds[20] = { 0xE, 0x36, 0x4A, 0x60, 0x61, 0x68, 0x6A, 0x6B, 0x6E, 0x6F, 0x70, 0x71, 0x73, 0x74, 0x85, 0x97, 0x9F, 0, 0, 0 };
 u8 AudioEffectSecondaryIds[24] = { 0x1C, 0x27, 0x2B, 0x2D, 0x51, 0x67, 0x6C, 0x86, 0x94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -409,46 +409,46 @@ extern u32 dmaBufferLen;
 extern OSPiHandle* gAudioPiHandle[4];
 // s32 D_800FCB0C[3];
 extern unk_D_800FCB18* gAudioInfoPtr[4];
-extern u32 D_800FCB28[2];
-extern u8 D_800FCB30[2];
-extern u8 D_800FCB38[2][8];
-extern unk_D_800FCB48 gHPHistory[2];
-extern s32 D_800FCC50[20];
-extern u8 D_800FCCA0;
-extern u8 D_800FCCA1;
-extern u8 D_800FCCA2;
-extern u32 D_800FCCA4;
-extern s32 D_800FCCA8;
-extern u8 D_800FCCAC;
-extern u8 D_800FCCAD;
-extern u8 D_800FCCAE;
-extern u8 D_800FCCAF;
-extern u8 D_800FCCB0;
+extern u32 PlayerCurrentHP[2];
+extern u8 MoveQueueFlag[2];
+extern u8 RecentMoveIDs[2][8];
+extern HPHistoryEntry gHPHistory[2];
+extern s32 gAudioRecentMessages[20];
+extern u8 gAudioGlobalFlag0;
+extern u8 gAudioGlobalFlag1;
+extern u8 gAudioQueueDelayCounter;
+extern u32 gAudioHPChangePercent;
+extern s32 gAudioPrevHPChangePercent;
+extern u8 gAudioCurrentMoveId;
+extern u8 gAudioCurrentCommandId;
+extern u8 gAudioSpecialCounter;
+extern u8 gAudioSpecialFlag0;
+extern u8 gAudioFlagUnused0;
 extern u8 D_800FCCB1;
-extern u8 D_800FCCB2;
-extern u8 D_800FCCB3;
-extern u8 D_800FCCB4;
-extern u8 D_800FCCB5;
-extern u8 D_800FCCB6;
-extern u8 D_800FCCB7;
-extern u8 D_800FCCB8[2];
-extern u8 D_800FCCBA[2];
-extern u8 D_800FCCBC[2];
-extern u8 D_800FCCBE[2];
-extern u8 D_800FCCC0[2];
-extern u8 D_800FCCC2[2];
+extern u8 gAudioQueueProcessingFlag;
+extern u8 gAudioFlagUnused1;
+extern u8 gAudioFlagUnused2;
+extern u8 gAudioFlagUnused3;
+extern u8 gAudioFlagUnused4;
+extern u8 gAudioFlagUnused5;
+extern u8 gAudioEffectState0[2];
+extern u8 gAudioEffectState1[2];
+extern u8 gAudioEffectState2[2];
+extern u8 gAudioEffectState3[2];
+extern u8 gAudioEffectState4[2];
+extern u8 gAudioEffectState5[2];
 extern u8 D_800FCCC4[2];
-extern u8 D_800FCCC6[2];
-extern u8 D_800FCCC8[2];
+extern u8 gAudioEffectToggle0[2];
+extern u8 gAudioEffectToggle1[2];
 extern u8 D_800FCCCA[2];
-extern u8 D_800FCCCC[2];
+extern u8 gAudioEffectToggle2[2];
 extern u8 D_800FCCCE[2];
-extern u8 D_800FCCD0[2];
-extern u8 D_800FCCD2[2];
-extern u8 D_800FCCD4[2];
-extern u8 D_800FCCD6[2];
-extern s8 D_800FCCD8[0x18];
-extern u32 D_800FCCF0[10];
+extern u8 gAudioEffectToggle3[2];
+extern u8 gAudioEffectToggle4[2];
+extern u8 gAudioEffectState6[2];
+extern u8 gAudioEffectState7[2];
+extern s8 gAudioEffectTriggeredMask[0x18];
+extern u32 gAudioCommandQueue[10];
 extern u8 D_800FCD18[0x28];
 
 // function prototypes
@@ -517,19 +517,19 @@ void ResetPlayerData(u8 arg0) {
         gHPHistory[arg0].unk_78 = 0;
         gHPHistory[arg0].unk_7C = 0;
         gHPHistory[arg0].unk_80 = 0;
-        D_800FCCBC[arg0] = 0;
-        D_800FCCBE[arg0] = 0;
+        gAudioEffectState2[arg0] = 0;
+        gAudioEffectState3[arg0] = 0;
         D_800FCCC4[arg0] = 0;
-        D_800FCCC6[arg0] = 0;
-        D_800FCCC8[arg0] = 0;
+        gAudioEffectToggle0[arg0] = 0;
+        gAudioEffectToggle1[arg0] = 0;
         D_800FCCCA[arg0] = 0;
-        D_800FCCCC[arg0] = 0;
+        gAudioEffectToggle2[arg0] = 0;
         D_800FCCCE[arg0] = 0;
-        D_800FCCD0[arg0] = 0;
-        D_800FCCD2[arg0] = 0;
-        D_800FCCD4[arg0] = 0;
-        D_800FCCC2[arg0] = 0;
-        D_800FCCC0[arg0] = 0;
+        gAudioEffectToggle3[arg0] = 0;
+        gAudioEffectToggle4[arg0] = 0;
+        gAudioEffectState6[arg0] = 0;
+        gAudioEffectState5[arg0] = 0;
+        gAudioEffectState4[arg0] = 0;
     }
 }
 
@@ -543,19 +543,19 @@ void SetPlayerSidesAndReset(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     gPlayerSideMap[3] = arg3;
     D_80078394[0] = 0xFF;
     D_80078394[1] = 0xFF;
-    D_80078390[0] = 0;
-    D_80078390[1] = 0;
+    gPlayerActiveFlag[0] = 0;
+    gPlayerActiveFlag[1] = 0;
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
             if (i + 1 == gPlayerSideMap[j]) {
-                D_80078390[i] += gTeamScores[j];
+                gPlayerActiveFlag[i] += gTeamScores[j];
             }
         }
     }
     gAudioInfoPtr[0] = 0;
     gAudioInfoPtr[1] = 0;
-    D_800FCB28[0] = 0;
-    D_800FCB28[1] = 0;
+    PlayerCurrentHP[0] = 0;
+    PlayerCurrentHP[1] = 0;
     ResetPlayerData(0);
     ResetPlayerData(1);
 }
@@ -566,11 +566,11 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
     u16 var_a0;
 
     ResetAudioState();
-    D_80078404 = arg1;
-    D_80078408 = arg0;
+    gCurrentStadiumPhase = arg1;
+    gStadiumPhaseSubstate = arg0;
 
     if (arg1 < 0x11) {
-        D_800783FC = 1;
+        gAudioSystemEnabled = 1;
         D_8007840C = 1;
 
         if ((arg0 == 0) && (arg1 != 0x10) && (arg1 != 0xF)) {
@@ -584,7 +584,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
         if (arg1 < 0xC) {
             if (arg0 < 9) {
                 var_a0 = MenuSelectionSoundTable[arg1][arg0];
-                D_800783FC = 1;
+                gAudioSystemEnabled = 1;
                 gAudioEffectId = 1;
             } else {
                 return;
@@ -592,7 +592,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
         } else if (arg1 == 0xC) {
             if ((arg0 < 0x21) && (arg0 != 0)) {
                 var_a0 = D_800784EA[(arg0 - 1) / 8][(arg0 - 1) % 8];
-                D_800783FC = 1;
+                gAudioSystemEnabled = 1;
                 gAudioEffectId = 0;
             } else {
                 return;
@@ -600,7 +600,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
         } else if (arg1 == 0xD) {
             if (arg0 < 6) {
                 var_a0 = D_80078446[arg1][arg0];
-                D_800783FC = 1;
+                gAudioSystemEnabled = 1;
                 gAudioEffectId = 0;
             } else {
                 return;
@@ -608,11 +608,11 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
         } else {
             if (arg1 == 0xE) {
                 var_a0 = 0x49;
-                D_800783FC = 1;
+                gAudioSystemEnabled = 1;
                 gAudioEffectId = 2;
             } else if (arg1 == 0xF) {
                 var_a0 = 0;
-                D_800783FC = 0;
+                gAudioSystemEnabled = 0;
                 gAudioEffectId = 0;
                 arg0 = 1;
             } else {
@@ -624,7 +624,7 @@ void ProcessMenuSelection(u32 arg0, u32 arg1) {
                     var_a0 = 0;
                     gAudioEffectId = 1;
                 }
-                D_800783FC = 1;
+                gAudioSystemEnabled = 1;
             }
         }
 
@@ -649,21 +649,21 @@ void AudioFrameUpdate(s32 arg0) {
 
     if (arg0 != 0) {
         var_v0 = osSetIntMask(1);
-        D_800783BC = 1;
-        D_800783C8 = 0;
-        D_800783C0 = 0;
-        D_800783C4 = 0;
+        gAudioSeqActiveFlag = 1;
+        gAudioSeqElapsed = 0;
+        gAudioSeqState = 0;
+        gAudioSeqPlayedFlag = 0;
         osSetIntMask(var_v0);
-        D_800783D4 = 0;
-        D_800783D8 = 0;
+        gAudioQueueFlagC = 0;
+        gAudioQueueFlagA = 0;
         D_800783DC = 0;
-        D_800FCCAE = 0;
-        D_800FCCAF = 0;
-        D_800FCCB2 = 0;
-        D_800FCCB6 = 0;
+        gAudioSpecialCounter = 0;
+        gAudioSpecialFlag0 = 0;
+        gAudioQueueProcessingFlag = 0;
+        gAudioFlagUnused4 = 0;
         D_800783E8 = 0;
-        D_800783EC = 0;
-        D_800FCCA4 = 0;
+        gAudioQueueSpecialFlag = 0;
+        gAudioHPChangePercent = 0;
         Audio_PlaySoundEffect(0x5A, gAudioEffectId, 0);
 
         if ((gAudioInfoPtr[0] == NULL) || (gAudioInfoPtr[1] == NULL)) {
@@ -671,11 +671,11 @@ void AudioFrameUpdate(s32 arg0) {
         }
 
         if (gAudioInfoPtr[0] != NULL) {
-            D_800FCB28[0] = gAudioInfoPtr[0]->unk_0C;
+            PlayerCurrentHP[0] = gAudioInfoPtr[0]->unk_0C;
         }
 
         if (gAudioInfoPtr[1] != NULL) {
-            D_800FCB28[1] = gAudioInfoPtr[1]->unk_0C;
+            PlayerCurrentHP[1] = gAudioInfoPtr[1]->unk_0C;
         }
 
         gHPHistory[0].unk_24++;
@@ -683,7 +683,7 @@ void AudioFrameUpdate(s32 arg0) {
         gHPHistory[1].unk_24++;
         gHPHistory[1].unk_00[gHPHistory[1].unk_24 & 0xF] = gAudioInfoPtr[1]->unk_0C;
 
-        if (D_800783CC == 0) {
+        if (gAudioQueueMode == 0) {
             return;
         }
 
@@ -703,29 +703,29 @@ void AudioFrameUpdate(s32 arg0) {
             var_t5 = 0;
         }
 
-        if (D_800783CC < 2) {
+        if (gAudioQueueMode < 2) {
             if ((gAudioInfoPtr[0]->unk_0C == 0) || (gAudioInfoPtr[1]->unk_0C == 0)) {
                 var_v0 = osSetIntMask(1);
-                D_800783C0 = 1;
+                gAudioSeqState = 1;
                 osSetIntMask(var_v0);
 
                 if (gAudioInfoPtr[0]->unk_0C == 0) {
-                    D_800FCCB0 = 1;
+                    gAudioFlagUnused0 = 1;
                 } else {
-                    D_800FCCB0 = 2;
+                    gAudioFlagUnused0 = 2;
                 }
 
                 if ((gAudioInfoPtr[0]->unk_0C == 0) && (gAudioInfoPtr[1]->unk_0C == 0)) {
-                    func_800420C0(D_80077E90);
+                    AudioPlayCueTable(gAudioCueTable_GenericZero);
                 } else {
-                    func_800420C0(D_80077E48);
+                    AudioPlayCueTable(gAudioCueTable_0x252);
                 }
                 return;
             }
 
             if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) < 0x1E) &&
                 ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) < 0x1E)) {
-                func_800420C0(D_80077E88);
+                AudioPlayCueTable(gAudioCueTable_GenericMid);
                 return;
             }
 
@@ -741,40 +741,40 @@ void AudioFrameUpdate(s32 arg0) {
 
             if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) >= 0x5B) &&
                 ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) >= 0x5B)) {
-                func_800420C0(D_80077E68);
+                AudioPlayCueTable(gAudioCueTable_0x24E);
             } else if (gAudioEffectId == 0) {
-                func_800420C0(D_80077E78);
+                AudioPlayCueTable(gAudioCueTable_GenericLow);
             } else {
-                func_800420C0(D_80077DF0);
+                AudioPlayCueTable(gAudioCueTable_0x24F);
             }
             return;
         }
 
         if ((gAudioInfoPtr[0]->unk_0C == 0) || (gAudioInfoPtr[1]->unk_0C == 0)) {
             var_v0 = osSetIntMask(1);
-            D_800783C0 = 1;
+            gAudioSeqState = 1;
             osSetIntMask(var_v0);
 
             if (gAudioInfoPtr[0]->unk_0C == 0) {
-                D_800FCCB0 = 1;
+                gAudioFlagUnused0 = 1;
             } else {
-                D_800FCCB0 = 2;
+                gAudioFlagUnused0 = 2;
             }
 
-            if (D_80078390[0] >= D_80078390[1]) {
-                var_v0 = D_80078390[0] - D_80078390[1];
+            if (gPlayerActiveFlag[0] >= gPlayerActiveFlag[1]) {
+                var_v0 = gPlayerActiveFlag[0] - gPlayerActiveFlag[1];
             } else {
-                var_v0 = D_80078390[1] - D_80078390[0];
+                var_v0 = gPlayerActiveFlag[1] - gPlayerActiveFlag[0];
             }
 
             if (var_v0 >= 2) {
-                func_800420C0(D_80077E70);
+                AudioPlayCueTable(gAudioCueTable_0x251);
                 return;
             }
 
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
-                if (D_800783E4 != 0) {
-                    D_800783E4 = 0;
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+                if (gAudioQueueFlagB != 0) {
+                    gAudioQueueFlagB = 0;
                     var_a0 = 0x290;
                 } else if ((osGetTime() % 2) != 0) {
                     var_a0 = 0x254;
@@ -783,19 +783,19 @@ void AudioFrameUpdate(s32 arg0) {
                 }
             block_53:
                 AudioQueueAdd(var_a0);
-            } else if (D_80078390[D_800FCCB0 - 1] == 1) {
+            } else if (gPlayerActiveFlag[gAudioFlagUnused0 - 1] == 1) {
                 AudioQueueAdd(0x26A);
             } else {
-                func_800420C0(D_80077E00);
+                AudioPlayCueTable(gAudioCueTable_0x269);
             }
             return;
         }
 
-        if (D_800FCCB0 != 0) {
-            if (((D_80078390[0] == 1) || (D_80078390[1] == 1)) && (D_80078390[0] < 4) &&
-                (D_80078390[1] < 4)) {
-                if (D_80078390[0] == 1) {
-                    switch (D_80078390[1]) {
+        if (gAudioFlagUnused0 != 0) {
+            if (((gPlayerActiveFlag[0] == 1) || (gPlayerActiveFlag[1] == 1)) && (gPlayerActiveFlag[0] < 4) &&
+                (gPlayerActiveFlag[1] < 4)) {
+                if (gPlayerActiveFlag[0] == 1) {
+                    switch (gPlayerActiveFlag[1]) {
                         case 1:
                             AudioQueueAdd(0x260);
                             AudioQueueAdd(0x266);
@@ -803,7 +803,7 @@ void AudioFrameUpdate(s32 arg0) {
 
                         case 2:
                             AudioQueueAdd(0x261);
-                            if (D_800FCCB0 == 1) {
+                            if (gAudioFlagUnused0 == 1) {
                                 AudioQueueAdd(0x265);
                             } else {
                                 AudioQueueAdd(0x267);
@@ -820,14 +820,14 @@ void AudioFrameUpdate(s32 arg0) {
                             break;
                     }
 
-                    D_800FCCB0 = 0;
+                    gAudioFlagUnused0 = 0;
                     return;
                 }
 
-                switch (D_80078390[0]) {
+                switch (gPlayerActiveFlag[0]) {
                     case 2:
                         AudioQueueAdd(0x25E);
-                        if (D_800FCCB0 == 2) {
+                        if (gAudioFlagUnused0 == 2) {
                             AudioQueueAdd(0x265);
                         } else {
                             AudioQueueAdd(0x267);
@@ -844,14 +844,14 @@ void AudioFrameUpdate(s32 arg0) {
                         break;
                 }
 
-                D_800FCCB0 = 0;
+                gAudioFlagUnused0 = 0;
                 return;
             }
 
             if (D_800FCCB1 != 0) {
                 if ((osGetTime() % 2) != 0) {
-                    D_800FCCB0 = 0;
-                    func_800420C0(D_80077E10);
+                    gAudioFlagUnused0 = 0;
+                    AudioPlayCueTable(gAudioCueTable_0x281);
                     return;
                 }
             }
@@ -860,17 +860,17 @@ void AudioFrameUpdate(s32 arg0) {
                 if (gAudioInfoPtr[0]->unk_16[6] != gAudioInfoPtr[1]->unk_16[7]) {
                     if ((gAudioInfoPtr[0]->unk_16[7] != gAudioInfoPtr[1]->unk_16[6]) &&
                         (gAudioInfoPtr[0]->unk_16[7] != gAudioInfoPtr[1]->unk_16[7])) {
-                        D_800FCCB0 = 0;
-                        func_800420C0(D_80077E18);
+                        gAudioFlagUnused0 = 0;
+                        AudioPlayCueTable(gAudioCueTable_0x27E);
                         return;
                     }
                 }
             }
 
-            D_800FCCB0 = 0;
-            switch (D_80078390[0]) {
+            gAudioFlagUnused0 = 0;
+            switch (gPlayerActiveFlag[0]) {
                 case 2:
-                    switch (D_80078390[1]) {
+                    switch (gPlayerActiveFlag[1]) {
                         case 2:
                             AudioQueueAdd(0x25D);
                             AudioQueueAdd(0x268);
@@ -888,7 +888,7 @@ void AudioFrameUpdate(s32 arg0) {
                     break;
 
                 case 3:
-                    if (D_80078390[1] == 2) {
+                    if (gPlayerActiveFlag[1] == 2) {
                         AudioQueueAdd(0x25B);
                         AudioQueueAdd(0x263);
                     } else {
@@ -898,9 +898,9 @@ void AudioFrameUpdate(s32 arg0) {
 
                 default:
                     if (gAudioEffectId == 0) {
-                        func_800420C0(D_80077E78);
+                        AudioPlayCueTable(gAudioCueTable_GenericLow);
                     } else {
-                        func_800420C0(D_80077DF0);
+                        AudioPlayCueTable(gAudioCueTable_0x24F);
                     }
                     break;
             }
@@ -908,21 +908,21 @@ void AudioFrameUpdate(s32 arg0) {
             return;
         }
 
-        if (D_800FCCB3 != 0) {
-            func_800420C0(D_80077E38);
-            D_800FCCB3 = 0;
+        if (gAudioFlagUnused1 != 0) {
+            AudioPlayCueTable(gAudioCueTable_0x27C);
+            gAudioFlagUnused1 = 0;
             return;
         }
 
-        if (D_800FCCB4 != 0) {
-            func_800420C0(D_80077E40);
-            D_800FCCB4 = 0;
+        if (gAudioFlagUnused2 != 0) {
+            AudioPlayCueTable(gAudioCueTable_0x27A);
+            gAudioFlagUnused2 = 0;
             return;
         }
 
-        if (D_800FCCB5 != 0) {
-            func_800420C0(D_80077E50);
-            D_800FCCB5 = 0;
+        if (gAudioFlagUnused3 != 0) {
+            AudioPlayCueTable(gAudioCueTable_0x284);
+            gAudioFlagUnused3 = 0;
             return;
         }
 
@@ -934,9 +934,9 @@ void AudioFrameUpdate(s32 arg0) {
                  gHPHistory[1].unk_00[gHPHistory[1].unk_24 & 0xF])) {
                 if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) < 0x14U) &&
                     ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) < 0x14U)) {
-                    func_800420C0(D_80077E60);
+                    AudioPlayCueTable(gAudioCueTable_0x25A);
                 } else {
-                    func_800420C0(D_80077E58);
+                    AudioPlayCueTable(gAudioCueTable_0x259);
                 }
                 return;
             }
@@ -953,7 +953,7 @@ void AudioFrameUpdate(s32 arg0) {
             (gAudioInfoPtr[0]->unk_0C != gAudioInfoPtr[0]->unk_28) && (gAudioInfoPtr[1]->unk_0C != gAudioInfoPtr[1]->unk_28)) {
             if ((gAudioInfoPtr[var_t5]->unk_28 * 0.6) < gAudioInfoPtr[var_t5]->unk_0C) {
                 if (gAudioInfoPtr[var_t0]->unk_0C < (gAudioInfoPtr[var_t0]->unk_28 * 0.4)) {
-                    func_800420C0(D_80077E20);
+                    AudioPlayCueTable(gAudioCueTable_0x24D);
                     return;
                 }
             }
@@ -970,7 +970,7 @@ void AudioFrameUpdate(s32 arg0) {
                 if (((gAudioInfoPtr[1]->unk_28 * 0.5) < gAudioInfoPtr[1]->unk_0C) &&
                     (gAudioInfoPtr[0]->unk_0C < gAudioInfoPtr[0]->unk_28) &&
                     (gAudioInfoPtr[1]->unk_0C < gAudioInfoPtr[1]->unk_28)) {
-                    func_800420C0(D_80077E30);
+                    AudioPlayCueTable(gAudioCueTable_0x24B);
                     return;
                 }
             }
@@ -985,36 +985,36 @@ void AudioFrameUpdate(s32 arg0) {
         if (var_v0 < 0xA) {
             if (gAudioInfoPtr[0]->unk_0C < (gAudioInfoPtr[0]->unk_28 * 0.3)) {
                 if (gAudioInfoPtr[1]->unk_0C < (gAudioInfoPtr[1]->unk_28 * 0.3)) {
-                    func_800420C0(D_80077E28);
+                    AudioPlayCueTable(gAudioCueTable_0x24C);
                     return;
                 }
             }
         }
 
         if (gAudioEffectId == 0) {
-            func_800420C0(D_80077E78);
+            AudioPlayCueTable(gAudioCueTable_GenericLow);
         } else {
-            func_800420C0(D_80077DF0);
+            AudioPlayCueTable(gAudioCueTable_0x24F);
         }
 
         return;
     }
 
     var_v0 = osSetIntMask(1);
-    D_800783BC = 0;
+    gAudioSeqActiveFlag = 0;
     osSetIntMask(var_v0);
     Audio_SetSfxDurationScale(0x5A, 0);
     Audio_SetSfxDurationScale(0x5B, 0);
 
     if (gAudioInfoPtr[0] != NULL) {
-        D_800FCB28[0] = gAudioInfoPtr[0]->unk_0C;
+        PlayerCurrentHP[0] = gAudioInfoPtr[0]->unk_0C;
     }
 
     if (gAudioInfoPtr[1] != NULL) {
-        D_800FCB28[1] = gAudioInfoPtr[1]->unk_0C;
+        PlayerCurrentHP[1] = gAudioInfoPtr[1]->unk_0C;
     }
 
-    D_800783CC++;
+    gAudioQueueMode++;
 
     for (i = 0; i < 2; i++) {
         gHPHistory[i].unk_78++;
@@ -1023,15 +1023,15 @@ void AudioFrameUpdate(s32 arg0) {
         }
     }
 
-    D_800FCCB4 = 0;
-    D_800FCCB3 = 0;
-    D_800FCCB5 = 0;
-    D_800783E4 = 0;
+    gAudioFlagUnused2 = 0;
+    gAudioFlagUnused1 = 0;
+    gAudioFlagUnused3 = 0;
+    gAudioQueueFlagB = 0;
 
     if ((gAudioInfoPtr[0] != NULL) && (gAudioInfoPtr[1] != NULL) && (D_8007840C != 0) &&
         (gAudioInfoPtr[0]->unk_0C != 0) && (gAudioInfoPtr[1]->unk_0C != 0) && (Audio_IsChannelActive(1) == 0)) {
         if ((osGetTime() % 2) == 0) {
-            func_800420C0(D_800780A8);
+            AudioPlayCueTable(gMenuSoundMap_R);
         }
     }
 }
@@ -1073,9 +1073,9 @@ void ProcessAudioInfo(s32 arg0, unk_D_800FCB18* arg1) {
 
     ResetPlayerData(side);
 
-    D_800FCCC8[side ^ 1] = 0;
+    gAudioEffectToggle1[side ^ 1] = 0;
 
-    D_800FCB28[side] = gAudioInfoPtr[side]->unk_0C;
+    PlayerCurrentHP[side] = gAudioInfoPtr[side]->unk_0C;
     gHPHistory[side].unk_24++;
     gHPHistory[side].unk_00[gHPHistory[side].unk_24 & 0xF] = gAudioInfoPtr[side]->unk_0C;
 
@@ -1085,22 +1085,22 @@ void ProcessAudioInfo(s32 arg0, unk_D_800FCB18* arg1) {
     }
 
     for (i = 0; i < D_8007839C[side]; i++) {
-        if (D_800FCB38[side][i] == value) {
+        if (RecentMoveIDs[side][i] == value) {
             goto found_value;
         }
     }
 
-    D_800FCB38[side][D_8007839C[side]] = value;
+    RecentMoveIDs[side][D_8007839C[side]] = value;
     D_8007839C[side]++;
     if (D_8007839C[side] >= 8) {
         D_8007839C[side] = 7;
     }
 
-    D_800FCB30[side] = 0;
-    if (D_800783CC != 0) {
+    MoveQueueFlag[side] = 0;
+    if (gAudioQueueMode != 0) {
         AudioQueueAdd(value + 0xCB);
         if (changed) {
-            func_800420C0(D_80077FEC);
+            AudioPlayCueTable(gAudioCueTable_ComboO);
         }
 
         if (gAudioInfoPtr[side ^ 1] == NULL) {
@@ -1109,34 +1109,34 @@ void ProcessAudioInfo(s32 arg0, unk_D_800FCB18* arg1) {
 
         if (((f32)gAudioInfoPtr[side ^ 1]->unk_26 - (f32)(gAudioInfoPtr[side])->unk_26) > ((f32)(gAudioInfoPtr[side])->unk_26 * 2.0f)) {
             D_800FCCB1 = 1;
-            D_800FCCBA[side] = 0;
+            gAudioEffectState1[side] = 0;
             return;
         }
 
         if (((f32)(gAudioInfoPtr[side])->unk_26 * 0.3f) < ((f32)gAudioInfoPtr[side ^ 1]->unk_26 - (f32)(gAudioInfoPtr[side])->unk_26)) {
             D_800FCCB1 = 1;
-            D_800FCCBA[side] = 0;
+            gAudioEffectState1[side] = 0;
             return;
         }
 
         if (((f32)gAudioInfoPtr[side ^ 1]->unk_26 * 0.3f) < ((f32)(gAudioInfoPtr[side])->unk_26 - (f32)gAudioInfoPtr[side ^ 1]->unk_26)) {
             D_800FCCB1 = 1;
-            if ((D_800FCCD6[side] != 0) && (D_800FCCBA[side] != 0)) {
+            if ((gAudioEffectState7[side] != 0) && (gAudioEffectState1[side] != 0)) {
                 if (changed == 0) {
-                    func_800420C0(D_80078014);
+                    AudioPlayCueTable(gAudioCueTable_ComboT);
                 }
             } else if (changed == 0) {
-                PlaySoundEffectOrQueue(9, D_80077FF4, &D_800FCCBA[side]);
+                PlaySoundEffectOrQueue(9, gAudioCueTable_ComboP, &gAudioEffectState1[side]);
             } else {
-                D_800FCCBA[side]++;
+                gAudioEffectState1[side]++;
             }
 
-            D_800FCCB8[side] = 0;
-            D_800FCCD6[side] = 0;
+            gAudioEffectState0[side] = 0;
+            gAudioEffectState7[side] = 0;
             return;
         }
 
-        if ((D_80078390[side] == 2) && (D_80078390[side ^ 1] == 3)) {
+        if ((gPlayerActiveFlag[side] == 2) && (gPlayerActiveFlag[side ^ 1] == 3)) {
             if ((((u32)gAudioInfoPtr[side ^ 1]->unk_0C * 100) / gAudioInfoPtr[side ^ 1]->unk_28) < 0x32) {
                 if (D_800783E0 == 0) {
                     if (changed == 0) {
@@ -1147,14 +1147,14 @@ void ProcessAudioInfo(s32 arg0, unk_D_800FCB18* arg1) {
             }
         }
     }
-    D_800FCCB8[side] = 0;
-    D_800FCCBA[side] = 0;
+    gAudioEffectState0[side] = 0;
+    gAudioEffectState1[side] = 0;
     return;
 
 found_value:
-    if (D_800FCB30[side] == 0) {
+    if (MoveQueueFlag[side] == 0) {
         if (D_800783DC == 0) {
-            if (D_80078390[side] < 2) {
+            if (gPlayerActiveFlag[side] < 2) {
                 if ((osGetTime() % 2) == 0) {
                     AudioQueueAdd(2);
                 } else {
@@ -1163,7 +1163,7 @@ found_value:
             } else {
                 AudioQueueAdd(0x50);
                 if (changed != 0) {
-                    func_800420C0(D_80077FEC);
+                    AudioPlayCueTable(gAudioCueTable_ComboO);
                 }
             }
             D_800783DC = 1;
@@ -1171,14 +1171,14 @@ found_value:
             AudioQueueAdd(0x58);
             D_800783DC = 0;
             if (changed != 0) {
-                func_800420C0(D_80077FEC);
+                AudioPlayCueTable(gAudioCueTable_ComboO);
             }
         }
     } else if (changed != 0) {
-        func_800420C0(D_80077FEC);
+        AudioPlayCueTable(gAudioCueTable_ComboO);
     }
 
-    D_800FCB30[side] = 0;
+    MoveQueueFlag[side] = 0;
 
     if (gAudioInfoPtr[side ^ 1] == NULL) {
         return;
@@ -1189,12 +1189,12 @@ found_value:
     }
 
     if ((gAudioInfoPtr[side])->unk_15 & 0x20) {
-        func_800420C0(D_80077FFC);
+        AudioPlayCueTable(gAudioCueTable_ComboQ);
         return;
     }
 
     if ((gAudioInfoPtr[side])->unk_15 & 7) {
-        func_800420C0(D_80078004);
+        AudioPlayCueTable(gAudioCueTable_ComboR);
         return;
     }
 
@@ -1209,7 +1209,7 @@ found_value:
     }
 
     if ((((f32)(gAudioInfoPtr[side])->unk_0C / (f32)(gAudioInfoPtr[side])->unk_28) < 0.2f) && ((gAudioInfoPtr[side])->unk_0C < gAudioInfoPtr[side ^ 1]->unk_0C)) {
-        func_800420C0(D_8007800C);
+        AudioPlayCueTable(gAudioCueTable_ComboS);
     }
 }
 
@@ -1226,48 +1226,48 @@ void RemovePlayer(u32 arg0) {
     }
     sp1F--;
     gTeamScores[arg0]--;
-    D_80078390[sp1F]--;
-    D_800FCB30[sp1F] = 0;
+    gPlayerActiveFlag[sp1F]--;
+    MoveQueueFlag[sp1F] = 0;
     if (gAudioInfoPtr[0] == 0 || gAudioInfoPtr[1] == 0) {
         return;
     }
     Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
-    if (D_800783D8 != 0) {
+    if (gAudioQueueFlagA != 0) {
         AudioQueueAdd(0xC3);
-        D_800783D8 = 0;
-        D_800783E4 = 1;
+        gAudioQueueFlagA = 0;
+        gAudioQueueFlagB = 1;
         return;
     }
-    D_800783D8 = 1;
-    if (D_800783D4 != 0) {
+    gAudioQueueFlagA = 1;
+    if (gAudioQueueFlagC != 0) {
         AudioQueueAdd(0xB9);
-        D_800783D4 = 0;
+        gAudioQueueFlagC = 0;
         return;
     }
-    if (D_800783CC < 2) {
+    if (gAudioQueueMode < 2) {
         if (osGetTime() % 2 == 0) {
             AudioQueueAdd(0xBC);
         } else {                
             AudioQueueAdd(0xC5);
         }
-    } else if (D_800783D0 != 0) {
+    } else if (gAudioQueueFlagD != 0) {
         AudioQueueAdd(0xC4);
-        D_800783D0 = 0;
-    } else if ((D_800FCCA4 >= 0x64U) && (D_800FCCB2 == 0) && (D_800783EC == 0)) {
+        gAudioQueueFlagD = 0;
+    } else if ((gAudioHPChangePercent >= 0x64U) && (gAudioQueueProcessingFlag == 0) && (gAudioQueueSpecialFlag == 0)) {
         if (((f32)gAudioInfoPtr[sp1F]->unk_26 * (3.0 / 10.0)) < ((f32)gAudioInfoPtr[sp1F ^ 1]->unk_26 - gAudioInfoPtr[sp1F]->unk_26)) {
-            func_800420C0(D_80077FC0);
+            AudioPlayCueTable(gAudioCueTable_ComboJ);
         } else {
-            func_800420C0(D_80077FD0);
+            AudioPlayCueTable(gAudioCueTable_ComboL);
         }
-        D_800FCCD6[sp1F] = 1;
-    } else if ((gHPHistory[sp1F].unk_78 >= 8U) && (D_800FCCB2 == 0)) {
-        if (((u32) D_800FCCA4 < 5U) && (D_800783E8 == 0)) {
+        gAudioEffectState7[sp1F] = 1;
+    } else if ((gHPHistory[sp1F].unk_78 >= 8U) && (gAudioQueueProcessingFlag == 0)) {
+        if (((u32) gAudioHPChangePercent < 5U) && (D_800783E8 == 0)) {
             AudioQueueAdd(0xC2);
         } else {
-            func_800420C0(D_80077FC8);
+            AudioPlayCueTable(gAudioCueTable_ComboK);
         }
     } else {
-        func_800420C0(D_80077FB4);
+        AudioPlayCueTable(gAudioCueTable_ComboI);
     }
 }
 
@@ -1295,8 +1295,8 @@ void PlayerDefeated(u32 arg0) {
        return; 
     }
     
-    D_800FCB30[temp_v0] = 1;
-    D_800FCCB5 = 1;
+    MoveQueueFlag[temp_v0] = 1;
+    gAudioFlagUnused3 = 1;
     
     if (D_800783DC != 0) {
         AudioQueueAdd(0x58);
@@ -1306,21 +1306,21 @@ void PlayerDefeated(u32 arg0) {
     
     D_800783DC = 1;
     
-    if (D_800783CC < 2) {
+    if (gAudioQueueMode < 2) {
         if (osGetTime() % 2 == 0) {
             AudioQueueAdd(0x54);
         } else {
             AudioQueueAdd(0x55);
         }
     } else if (gHPHistory[temp_v0].unk_78 < 2) {
-        func_800420C0(D_80077FE4);
+        AudioPlayCueTable(gAudioCueTable_ComboN);
     } else {
-        func_800420C0(D_80077FD8);
+        AudioPlayCueTable(gAudioCueTable_ComboM);
     }
 }
 
 void ProcessCommandQueue(u32 arg0) {
-    D_800FCCF0[gCommandQueueCount] = arg0;
+    gAudioCommandQueue[gCommandQueueCount] = arg0;
     gCommandQueueCount++;
     if (gCommandQueueCount >= 0xA) {
         gCommandQueueCount--;
@@ -1350,11 +1350,11 @@ void ProcessAudioCommandQueue(s32 arg0) {
     sp34 = 0;
     sp32 = 0;
     mask = osSetIntMask(1);
-    sp3C = D_800FCCA2;
-    D_800FCCA2 = 0;
+    sp3C = gAudioQueueDelayCounter;
+    gAudioQueueDelayCounter = 0;
     osSetIntMask(mask);
-    D_800783D0 = 0;
-    D_800FCCB2 = 0;
+    gAudioQueueFlagD = 0;
+    gAudioQueueProcessingFlag = 0;
     if (arg0 == 0 || arg0 >= 5U) {
         return;
     }
@@ -1368,22 +1368,22 @@ void ProcessAudioCommandQueue(s32 arg0) {
         return;
     }
     for (sp40 = 0; sp40 < gCommandQueueCount; sp40++) {
-        switch (D_800FCCF0[sp40]) {
+        switch (gAudioCommandQueue[sp40]) {
         case 0x1D:
             sp3A = 1;
-            D_800783A0 = 1;
+            gAudioQueueNeedsUpdate = 1;
             break;
         case 0x1E:
             sp37 = 1;
-            D_800783A0 = 1;
+            gAudioQueueNeedsUpdate = 1;
             break;
         case 0x29:
             sp39 = 1;
-            D_800783A0 = 1;
+            gAudioQueueNeedsUpdate = 1;
             break;
         case 0x2A:
             sp38 = 1;
-            D_800783A0 = 1;
+            gAudioQueueNeedsUpdate = 1;
             break;
         case 0x66:
             sp36 = 1;
@@ -1396,7 +1396,7 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gHPHistory[temp_s0].unk_24++;
             gHPHistory[temp_s0].unk_00[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
             mask = osSetIntMask(1);
-            D_800FCCA2 = sp3C;
+            gAudioQueueDelayCounter = sp3C;
             osSetIntMask(mask);
             break;
         case 0x6E:
@@ -1404,23 +1404,23 @@ void ProcessAudioCommandQueue(s32 arg0) {
         case 0x9E:
         case 0xAB:
             mask = osSetIntMask(1);
-            D_800FCCA2 = sp3C;
+            gAudioQueueDelayCounter = sp3C;
             osSetIntMask(mask);
             break;
         case 0x0:
         case 0x1:
         case 0x2:
-            D_800FCCB2 = 1;
-            D_800783EC = 1;
+            gAudioQueueProcessingFlag = 1;
+            gAudioQueueSpecialFlag = 1;
             break;
         case 0x9D:
-            D_800783D0 = 1;
-            D_800FCCB2 = 1;
+            gAudioQueueFlagD = 1;
+            gAudioQueueProcessingFlag = 1;
             break;
         case 0x6D:
             AudioQueueAdd(0x165);
             gCommandQueueCount = 0;
-            D_800FCCBE[temp_s0] = 0;
+            gAudioEffectState3[temp_s0] = 0;
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             return;
         case 0x6:
@@ -1433,8 +1433,8 @@ void ProcessAudioCommandQueue(s32 arg0) {
             }
             gCommandQueueCount = 0;
             gHPHistory[temp_s0].unk_7C = 0;
-            D_800FCCBC[temp_s0] = 0;
-            D_800FCCB4 = 0;
+            gAudioEffectState2[temp_s0] = 0;
+            gAudioFlagUnused2 = 0;
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             return;
         case 0xB:
@@ -1448,44 +1448,44 @@ void ProcessAudioCommandQueue(s32 arg0) {
             return;
         case 0x11:
             AudioQueueAdd(0x192);
-            D_800FCCD4[temp_s0] = 0;
+            gAudioEffectState6[temp_s0] = 0;
             gCommandQueueCount = 0;
             return;
         case 0x5:
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
-                PlaySoundEffectOrQueue(0x17D, &D_80078040, &D_800FCCBC[temp_s0]);
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+                PlaySoundEffectOrQueue(0x17D, &gMenuSoundMap_E, &gAudioEffectState2[temp_s0]);
             } else {
-                PlaySoundEffectOrQueue(0x17D, D_8007801C, &D_800FCCBC[temp_s0]);
+                PlaySoundEffectOrQueue(0x17D, gMenuSoundMap_A, &gAudioEffectState2[temp_s0]);
             }
             gCommandQueueCount = 0;
             return;
         case 0x7:
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
-                PlaySoundEffectOrQueue(0x17E, D_80078038, &D_800FCCBE[temp_s0]);
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+                PlaySoundEffectOrQueue(0x17E, gMenuSoundMap_D, &gAudioEffectState3[temp_s0]);
             } else {
-                PlaySoundEffectOrQueue(0x17E, D_80078024, &D_800FCCBE[temp_s0]);
+                PlaySoundEffectOrQueue(0x17E, gMenuSoundMap_B, &gAudioEffectState3[temp_s0]);
             }
             gCommandQueueCount = 0;
             return;
         case 0x10:
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
-                PlaySoundEffectOrQueue(0x17F, &D_80078040, &D_800FCCC0[temp_s0]);
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+                PlaySoundEffectOrQueue(0x17F, &gMenuSoundMap_E, &gAudioEffectState4[temp_s0]);
             } else {
-                PlaySoundEffectOrQueue(0x17F, D_80078030, &D_800FCCC0[temp_s0]);
+                PlaySoundEffectOrQueue(0x17F, gMenuSoundMap_C, &gAudioEffectState4[temp_s0]);
             }
             gCommandQueueCount = 0;
             return;
         case 0x8:
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
-                PlaySoundEffectOrQueue(0x17C, &D_80078040, &D_800FCCC2[temp_s0]);
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+                PlaySoundEffectOrQueue(0x17C, &gMenuSoundMap_E, &gAudioEffectState5[temp_s0]);
             } else {
-                PlaySoundEffectOrQueue(0x17C, &D_80078048, &D_800FCCC2[temp_s0]);
+                PlaySoundEffectOrQueue(0x17C, &gMenuSoundMap_F, &gAudioEffectState5[temp_s0]);
             }
             gCommandQueueCount = 0;
             return;
         case 0x9:
         case 0xA:
-            if ((D_80078390[0] == 1) && (D_80078390[1] == 1)) {
+            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
                 AudioQueueAdd(0x180);
             } else {
                 AudioQueueAdd(0x17C);
@@ -1493,8 +1493,8 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x13:
-            func_800420C0(D_80078050);
-            D_800FCCB6 = 1;
+            AudioPlayCueTable(gMenuSoundMap_G);
+            gAudioFlagUnused4 = 1;
             gCommandQueueCount = 0;
             return;
         case 0xF:
@@ -1502,11 +1502,11 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0xE:
-            D_800783D0 = 1;
+            gAudioQueueFlagD = 1;
             if (D_800FCCC4[temp_s0] != 0) {
-                func_800420C0(D_80078060);
+                AudioPlayCueTable(gMenuSoundMap_I);
             } else {
-                func_800420C0(D_80078058);
+                AudioPlayCueTable(gMenuSoundMap_H);
                 D_800FCCC4[temp_s0] = 1;
             }
             gCommandQueueCount = 0;
@@ -1524,48 +1524,48 @@ void ProcessAudioCommandQueue(s32 arg0) {
             return;
         case 0x71:
         case 0x77:
-            PlaySoundEffectOrQueue(0x16A, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16A, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x72:
         case 0x78:
-            PlaySoundEffectOrQueue(0x16B, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16B, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x73:
         case 0x79:
-            PlaySoundEffectOrQueue(0x16C, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16C, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x74:
         case 0x7A:
-            PlaySoundEffectOrQueue(0x16D, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16D, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x75:
         case 0x7B:
-            PlaySoundEffectOrQueue(0x16E, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16E, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x76:
         case 0x7C:
-            PlaySoundEffectOrQueue(0x16F, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x16F, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0xB5:
-            PlaySoundEffectOrQueue(0x170, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x170, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0xB7:
-            PlaySoundEffectOrQueue(0x171, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x171, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x9A:
-            PlaySoundEffectOrQueue(0x169, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x169, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0x9C:
-            PlaySoundEffectOrQueue(0x194, &D_80078068, &D_800FCCC6[temp_s0]);
+            PlaySoundEffectOrQueue(0x194, &gMenuSoundMap_J, &gAudioEffectToggle0[temp_s0]);
             gCommandQueueCount = 0;
             return;
         case 0xAE:
@@ -1574,84 +1574,84 @@ void ProcessAudioCommandQueue(s32 arg0) {
             return;
         case 0x7E:
         case 0x84:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA2, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA2, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x7F:
         case 0x85:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA3, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA3, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x80:
         case 0x86:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA7, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA7, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x81:
         case 0x87:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA4, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA4, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x82:
         case 0x88:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA5, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA5, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x83:
         case 0x89:
-            if (D_800FCCC8[temp_s0] < 3) {
-                PlaySoundEffectOrQueue(0xA6, D_80078070, &D_800FCCC8[temp_s0]);
+            if (gAudioEffectToggle1[temp_s0] < 3) {
+                PlaySoundEffectOrQueue(0xA6, gMenuSoundMap_K, &gAudioEffectToggle1[temp_s0]);
             } else {
-                func_800420C0(D_80078078);
+                AudioPlayCueTable(gMenuSoundMap_L);
             }
             gCommandQueueCount = 0;
             return;
         case 0x19:
         case 0x1B:
-            if ((D_800780B3[D_800FCCAC * 3] == 0) && ((gAudioInfoPtr[temp_s0]->unk_16[6] == 8) || (gAudioInfoPtr[temp_s0]->unk_16[7] == 8))) {
-                func_800420C0(D_80077F24);
+            if ((D_800780B3[gAudioCurrentMoveId * 3] == 0) && ((gAudioInfoPtr[temp_s0]->unk_16[6] == 8) || (gAudioInfoPtr[temp_s0]->unk_16[7] == 8))) {
+                AudioPlayCueTable(gAudioCueTable_StatusG);
             } else {
-                func_800420C0(D_80077F14);
+                AudioPlayCueTable(gAudioCueTable_StatusE);
             }
             gCommandQueueCount = 0;
             return;
         case 0x1A:
         case 0x1C:
-            if (D_800FCCD2[temp_s0 ^ 1] != 0) {
-                func_800420C0(D_80077F50);
+            if (gAudioEffectToggle4[temp_s0 ^ 1] != 0) {
+                AudioPlayCueTable(gAudioCueTable_StatusK);
             } else {
-                if ((D_800783D4 != 0) || ((D_80078390[temp_s0 ^ 1] == 1) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C < 0x13))) {
-                    func_800420C0(D_80077F1C);
+                if ((gAudioQueueFlagC != 0) || ((gPlayerActiveFlag[temp_s0 ^ 1] == 1) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C < 0x13))) {
+                    AudioPlayCueTable(gAudioCueTable_StatusF);
                     Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
                 } else {
-                    func_800420C0(D_80077F0C);
+                    AudioPlayCueTable(gAudioCueTable_StatusD);
                 }
-                D_800FCCD2[temp_s0 ^ 1] = 1;
+                gAudioEffectToggle4[temp_s0 ^ 1] = 1;
             }
             gCommandQueueCount = 0;
             return;
         case 0xA7:
-            func_800420C0(D_80077F0C);
+            AudioPlayCueTable(gAudioCueTable_StatusD);
             gCommandQueueCount = 0;
             return;
         case 0x20:
@@ -1668,7 +1668,7 @@ void ProcessAudioCommandQueue(s32 arg0) {
         case 0xB9:
         case 0xBA:
         case 0xBC:
-            func_800420C0(D_80078088);
+            AudioPlayCueTable(gMenuSoundMap_N);
             gCommandQueueCount = 0;
             return;
         case 0x64:
@@ -1684,7 +1684,7 @@ void ProcessAudioCommandQueue(s32 arg0) {
         case 0xA2:
         case 0xA3:
         case 0xAA:
-            func_800420C0(D_80078090);
+            AudioPlayCueTable(gMenuSoundMap_O);
             gCommandQueueCount = 0;
             return;
         case 0x1F:
@@ -1699,12 +1699,12 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x97:
-            PlaySoundEffectOrQueue(0x18A, D_80078098, &D_800FCCCE[temp_s0]);
+            PlaySoundEffectOrQueue(0x18A, gMenuSoundMap_P, &D_800FCCCE[temp_s0]);
             gCommandQueueCount = 0;
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             return;
         case 0x98:
-            PlaySoundEffectOrQueue(0x18B, D_800780A0, &D_800FCCD0[temp_s0]);
+            PlaySoundEffectOrQueue(0x18B, gMenuSoundMap_Q, &gAudioEffectToggle3[temp_s0]);
             gCommandQueueCount = 0;
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             return;
@@ -1713,21 +1713,21 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x2C:
-            func_800420C0(D_80078080);
+            AudioPlayCueTable(gMenuSoundMap_M);
             gCommandQueueCount = 0;
             return;
         case 0xBB:
             AudioQueueAdd(0x189);
             gCommandQueueCount = 0;
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
-            D_800783D0 = 1;
+            gAudioQueueFlagD = 1;
             return;
         case 0x68:
-            func_800420C0(D_80077F34);
+            AudioPlayCueTable(gAudioCueTable_StatusI);
             gCommandQueueCount = 0;
             return;
         case 0x69:
-            func_800420C0(D_80077F3C);
+            AudioPlayCueTable(gAudioCueTable_StatusJ);
             gCommandQueueCount = 0;
             return;
         case 0xA1:
@@ -1735,7 +1735,7 @@ void ProcessAudioCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0xA6:
-            func_800420C0(D_80077F2C);
+            AudioPlayCueTable(gAudioCueTable_StatusH);
             gCommandQueueCount = 0;
             return;
         case 0xAF:
@@ -1787,102 +1787,102 @@ void ProcessAudioCommandQueue(s32 arg0) {
 
     if (sp34 != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
         AudioQueueAdd(0x79);
-        D_800FCCB3 = 1;
+        gAudioFlagUnused1 = 1;
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
     } else if (sp36 != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
-        if (D_800FCCCC[temp_s0] != 0) {
+        if (gAudioEffectToggle2[temp_s0] != 0) {
             AudioQueueAdd(0xAD);
         } else {
             AudioQueueAdd(0x78);
         }
         gHPHistory[temp_s0].unk_7C = 1;
-        D_800FCCCC[temp_s0] = 1;
-        D_800FCCB4 = 1;
+        gAudioEffectToggle2[temp_s0] = 1;
+        gAudioFlagUnused2 = 1;
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
     } else if (sp37 != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
         D_800783E8 = 1;
         AudioQueueAdd(0x77);
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
     } else if (sp3A != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
         D_800783E8 = 1;
         if (sp39 != 0) {
-            if (D_800FCCA4 < 0xA) {
+            if (gAudioHPChangePercent < 0xA) {
                 if ((gAudioInfoPtr[temp_s0]->unk_0C > 0) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C >= 0xB)) {
-                    func_800420C0(D_80077EF0);
+                    AudioPlayCueTable(gAudioCueTable_StatusA);
                 } else {
-                    func_800420C0(D_80077F04);
+                    AudioPlayCueTable(gAudioCueTable_StatusC);
                 }
-            } else if (D_800783CC < 2) {
+            } else if (gAudioQueueMode < 2) {
                 AudioQueueAdd(0x68);
                 Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             } else {
-                if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (D_80078390[temp_s0 ^ 1] >= 2)) {
-                    func_800420C0(D_80077F58);
+                if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
+                    AudioPlayCueTable(gAudioCueTable_StatusL);
                 } else {
-                    func_800420C0(D_80077EE4);
+                    AudioPlayCueTable(gAudioCueTable_ItemDrop);
                 }
                 Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             }
-        } else if (D_800FCCA4 < 0xA) {
+        } else if (gAudioHPChangePercent < 0xA) {
             if ((gAudioInfoPtr[temp_s0]->unk_0C > 0) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C >= 0xB)) {
-                func_800420C0(D_80077EF0);
+                AudioPlayCueTable(gAudioCueTable_StatusA);
             } else {
-                func_800420C0(D_80077F04);
+                AudioPlayCueTable(gAudioCueTable_StatusC);
             }
         } else {
-            func_800420C0(D_80077EC0);
+            AudioPlayCueTable(gAudioCueTable_ItemUnequip);
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
         }
     } else if (sp39 != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
         D_800783E8 = 1;
-        if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (D_80078390[temp_s0 ^ 1] >= 2)) {
-            func_800420C0(D_80077F58);
+        if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
+            AudioPlayCueTable(gAudioCueTable_StatusL);
         } else {
-            func_800420C0(D_80077ECC);
+            AudioPlayCueTable(gAudioCueTable_ItemThrow);
         }
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
     } else if (sp38 != 0) {
         mask = osSetIntMask(1);
-        D_800FCCA2 = 0;
+        gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
-        if (D_800FCCA4 >= 0x29) {
-            func_800420C0(D_80077EF8);
+        if (gAudioHPChangePercent >= 0x29) {
+            AudioPlayCueTable(gAudioCueTable_StatusB);
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
         } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-            func_800420C0(D_80077ED8);
+            AudioPlayCueTable(gAudioCueTable_ItemPickup);
         } else {
-            func_800420C0(D_80077F04);
+            AudioPlayCueTable(gAudioCueTable_StatusC);
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
         }
-    } else if ((sp32 != 0) && (D_800FCCA4 != 0)) {
-        if (D_800FCCA4 >= 0x29) {
-            func_800420C0(D_80077E98);
+    } else if ((sp32 != 0) && (gAudioHPChangePercent != 0)) {
+        if (gAudioHPChangePercent >= 0x29) {
+            AudioPlayCueTable(gAudioCueTable_ItemUse);
             Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
-        } else if (D_800FCCA4 >= 6) {
+        } else if (gAudioHPChangePercent >= 6) {
             if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                func_800420C0(D_80077EA4);
+                AudioPlayCueTable(gAudioCueTable_ItemConsume);
             } else {
-                func_800420C0(D_80077F60);
+                AudioPlayCueTable(gAudioCueTable_StatusM);
             }
         } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-            func_800420C0(D_80077EB4);
+            AudioPlayCueTable(gAudioCueTable_ItemEquip);
         } else {
-            func_800420C0(D_80077F04);
+            AudioPlayCueTable(gAudioCueTable_StatusC);
         }
     }
 }
@@ -1912,11 +1912,11 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
         return;
     }
 
-    D_800FCCAC = arg1;
+    gAudioCurrentMoveId = arg1;
 
     switch (arg3) {
         case 1:
-            D_800FCCB7 = 0;
+            gAudioFlagUnused5 = 0;
             AudioQueueRemoveLast();
             sp40 ^= 1;
 
@@ -1927,22 +1927,22 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
                     if (arg1 == AudioCommandMap[i].unk_00) {
                         if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
                             tmp = (gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C);
-                            D_800FCCA4 = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
+                            gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
                         } else {
-                            D_800FCCA4 = 0;
+                            gAudioHPChangePercent = 0;
                         }
-                        D_800FCCAD = arg2;
+                        gAudioCurrentCommandId = arg2;
                         return;
                     }
 
                     if (arg1 == AudioCommandMap[i].unk_01) {
                         if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
                             tmp = gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
-                            D_800FCCA4 = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
+                            gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
                         } else {
-                            D_800FCCA4 = 0;
+                            gAudioHPChangePercent = 0;
                         }
-                        D_800FCCAD = arg2;
+                        gAudioCurrentCommandId = arg2;
                         return;
                     }
                 }
@@ -1950,18 +1950,18 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
 
             temp_v0 = osSetIntMask(sp2C);
 
-            D_800FCCA2 = 0x1E;
+            gAudioQueueDelayCounter = 0x1E;
             if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
                 tmp = gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
-                D_800FCCA4 = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
+                gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
             } else {
-                D_800FCCA4 = 0;
+                gAudioHPChangePercent = 0;
             }
-            D_800FCCAD = arg2;
+            gAudioCurrentCommandId = arg2;
 
             osSetIntMask(temp_v0);
 
-            if (D_800FCCA4 >= 0x29) {
+            if (gAudioHPChangePercent >= 0x29) {
                 Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
             }
             break;
@@ -1969,22 +1969,22 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
         case 0:
         case 2:
             AudioQueueRemoveLast();
-            D_800FCCC0[sp40] = 0;
-            D_800FCCC2[sp40] = 0;
+            gAudioEffectState4[sp40] = 0;
+            gAudioEffectState5[sp40] = 0;
 
             if (arg1 != 0x13) {
                 D_800FCCCE[sp40] = 0;
             }
 
             if (arg1 != 0x5B) {
-                D_800FCCD0[sp40] = 0;
+                gAudioEffectToggle3[sp40] = 0;
             }
 
             if (arg3 != 2) {
-                D_800FCCD2[sp40] = 0;
+                gAudioEffectToggle4[sp40] = 0;
             }
 
-            D_800FCCAE += 1;
+            gAudioSpecialCounter += 1;
 
             for (i = 0; i < 17; i++) {
                 if (arg1 == AudioEffectTriggerIds[i]) {
@@ -1992,7 +1992,7 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
                 }
             }
 
-            D_800FCCC6[sp40] = 0;
+            gAudioEffectToggle0[sp40] = 0;
         loop1_end:
 
             for (i = 0; i < 9; i++) {
@@ -2001,81 +2001,81 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
                 }
             }
 
-            D_800FCCC8[sp40] = 0;
+            gAudioEffectToggle1[sp40] = 0;
         loop2_end:
 
-            D_800FCCA2 = 0;
-            if (D_800FCCB7 == 0) {
+            gAudioQueueDelayCounter = 0;
+            if (gAudioFlagUnused5 == 0) {
                 tmp = CalculateMoveDamage(arg1, gAudioInfoPtr[sp40], gAudioInfoPtr[sp40 ^ 1]);
 
                 if (tmp == -1) {
-                    if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                    if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                         sp34 = arg1 + 0x1A2;
-                        SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                        SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                         AudioQueueAdd(sp34);
                     } else {
-                        func_800420C0(D_80077F6C);
+                        AudioPlayCueTable(gAudioCueTable_ComboA);
                     }
                 } else if (tmp == -2) {
-                    if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                    if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                         sp34 = arg1 + 0x1A2;
-                        SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                        SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                         AudioQueueAdd(sp34);
                     } else {
-                        func_800420C0(D_80077F74);
+                        AudioPlayCueTable(gAudioCueTable_ComboB);
                     }
                 } else if (tmp == -3) {
-                    D_800783D4 = 1;
-                    if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                    gAudioQueueFlagC = 1;
+                    if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                         sp34 = arg1 + 0x1A2;
-                        SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                        SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                         AudioQueueAdd(sp34);
                     } else {
                         AudioQueueAdd(0x187);
                     }
                 } else if (tmp == -4) {
-                    if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                    if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                         sp34 = arg1 + 0x1A2;
-                        SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                        SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                         AudioQueueAdd(sp34);
                     } else {
-                        func_800420C0(D_80077F98);
+                        AudioPlayCueTable(gAudioCueTable_ComboF);
                     }
                 } else if (tmp != -5) {
-                    if ((gHPHistory[sp40 ^ 1].unk_00[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) && (D_800FCCB6 == 0)) {
-                        if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                    if ((gHPHistory[sp40 ^ 1].unk_00[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) && (gAudioFlagUnused4 == 0)) {
+                        if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                             sp34 = arg1 + 0x1A2;
-                            SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                            SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                             AudioQueueAdd(sp34);
                         } else {
-                            func_800420C0(D_80077F90);
-                            D_800FCCB6 = 0;
+                            AudioPlayCueTable(gAudioCueTable_ComboE);
+                            gAudioFlagUnused4 = 0;
                         }
                     } else {
-                        D_800FCCB6 = 0;
+                        gAudioFlagUnused4 = 0;
                         temp_lo = (tmp * 0x64) / gAudioInfoPtr[sp40 ^ 1]->unk_28;
                         if (temp_lo >= 0x51) {
-                            if (D_800FCCAF == 0) {
-                                D_800FCCAF = 1;
-                                func_800420C0(D_80077F6C);
+                            if (gAudioSpecialFlag0 == 0) {
+                                gAudioSpecialFlag0 = 1;
+                                AudioPlayCueTable(gAudioCueTable_ComboA);
                             } else {
-                                func_800420C0(D_80077F74);
+                                AudioPlayCueTable(gAudioCueTable_ComboB);
                             }
                         } else if (temp_lo >= 0x33) {
-                            if (D_800783CC == 1) {
-                                func_800420C0(D_80077F88);
+                            if (gAudioQueueMode == 1) {
+                                AudioPlayCueTable(gAudioCueTable_ComboD);
                             } else {
-                                func_800420C0(D_80077F7C);
+                                AudioPlayCueTable(gAudioCueTable_ComboC);
                             }
                         } else if (Audio_IsChannelActive(1) == 0) {
-                            if (D_800783CC == 1) {
-                                if (D_800FCCAE == 2) {
-                                    func_800420C0(D_80077FAC);
+                            if (gAudioQueueMode == 1) {
+                                if (gAudioSpecialCounter == 2) {
+                                    AudioPlayCueTable(gAudioCueTable_ComboH);
                                 } else {
-                                    func_800420C0(D_80077FA4);
+                                    AudioPlayCueTable(gAudioCueTable_ComboG);
                                 }
                             } else {
-                                func_800420C0(D_80077F98);
+                                AudioPlayCueTable(gAudioCueTable_ComboF);
                             }
                         }
                     }
@@ -2084,45 +2084,45 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
             break;
 
         case 3:
-            if (D_800FCCB7 == 0) {
-                D_800FCCB7 = 1;
-                D_800FCCA2 = 0;
+            if (gAudioFlagUnused5 == 0) {
+                gAudioFlagUnused5 = 1;
+                gAudioQueueDelayCounter = 0;
                 tmp = CalculateMoveDamage(arg1, gAudioInfoPtr[sp40], gAudioInfoPtr[sp40 ^ 1]);
                 if ((tmp >> 0x10) == 0) {
                     tmp = tmp << 1;
 
                     if (gHPHistory[sp40 ^ 1].unk_00[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) {
-                        if (IsBitSetInArray(D_800FCCD8, arg1 - 1) == 0) {
+                        if (IsBitSetInArray(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                             sp34 = arg1 + 0x1A2;
-                            SetBitInArray(D_800FCCD8, arg1 - 1, 1);
+                            SetBitInArray(gAudioEffectTriggeredMask, arg1 - 1, 1);
                             AudioQueueAdd(sp34);
                         } else {
-                            func_800420C0(D_80077F90);
+                            AudioPlayCueTable(gAudioCueTable_ComboE);
                         }
                     } else {
                         temp_lo = (tmp * 0x64u) / gAudioInfoPtr[sp40 ^ 1]->unk_28;
                         if (temp_lo >= 0x51) {
-                            if (D_800FCCAF == 0) {
-                                D_800FCCAF = 1;
-                                func_800420C0(D_80077F6C);
+                            if (gAudioSpecialFlag0 == 0) {
+                                gAudioSpecialFlag0 = 1;
+                                AudioPlayCueTable(gAudioCueTable_ComboA);
                             } else {
-                                func_800420C0(D_80077F74);
+                                AudioPlayCueTable(gAudioCueTable_ComboB);
                             }
                         } else if (temp_lo >= 0x33) {
-                            if (D_800783CC == 1) {
-                                func_800420C0(D_80077F88);
+                            if (gAudioQueueMode == 1) {
+                                AudioPlayCueTable(gAudioCueTable_ComboD);
                             } else {
-                                func_800420C0(D_80077F7C);
+                                AudioPlayCueTable(gAudioCueTable_ComboC);
                             }
                         } else if (Audio_IsChannelActive(1) == 0) {
-                            if (D_800783CC == 1) {
-                                if (D_800FCCAE == 2) {
-                                    func_800420C0(D_80077FAC);
+                            if (gAudioQueueMode == 1) {
+                                if (gAudioSpecialCounter == 2) {
+                                    AudioPlayCueTable(gAudioCueTable_ComboH);
                                 } else {
-                                    func_800420C0(D_80077FA4);
+                                    AudioPlayCueTable(gAudioCueTable_ComboG);
                                 }
                             } else {
-                                func_800420C0(D_80077F98);
+                                AudioPlayCueTable(gAudioCueTable_ComboF);
                             }
                         }
                     }
@@ -2131,24 +2131,24 @@ void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3) {
             break;
 
         case 4:
-            D_800FCCAE += 1;
-            D_800FCCB7 = 0;
-            D_800FCCA2 = 0;
+            gAudioSpecialCounter += 1;
+            gAudioFlagUnused5 = 0;
+            gAudioQueueDelayCounter = 0;
             break;
 
         case 5:
-            D_800FCCB7 = 0;
-            D_800FCCA2 = 0;
+            gAudioFlagUnused5 = 0;
+            gAudioQueueDelayCounter = 0;
             break;
 
         default:
-            D_800FCCB7 = 0;
-            D_800FCCA2 = 0;
+            gAudioFlagUnused5 = 0;
+            gAudioQueueDelayCounter = 0;
             break;
     }
 }
 
-void func_800414B8(s32 arg0) {
+void QueuePlayerDefeatMessage(s32 arg0) {
     u8 temp_v0;
 
     if (arg0 == 0 || arg0 >= 5U) {
@@ -2160,39 +2160,39 @@ void func_800414B8(s32 arg0) {
         return;
     }
     temp_v0--;
-    if (D_800FCCD4[temp_v0] == 0) {
+    if (gAudioEffectState6[temp_v0] == 0) {
         AudioQueueAdd(0x190);
-        D_800FCCD4[temp_v0] = 1;
+        gAudioEffectState6[temp_v0] = 1;
     } else {
         AudioQueueAdd(0x191);   
     }
 }
 
-void func_8004153C(void) {
-    if (D_80078E80 == 0) {
+void HandleStadiumModeAudio(void) {
+    if (gStadiumModeActive == 0) {
         func_8004B1CC(0x3D);
         Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
-        if (D_80078404 == 0xC) {
-            if (!(D_80078408 & 3) && (*D_80078390 != 0)) {
+        if (gCurrentStadiumPhase == 0xC) {
+            if (!(gStadiumPhaseSubstate & 3) && (*gPlayerActiveFlag != 0)) {
                 AudioQueueAdd(0xCA);
                 return;
             }
             AudioQueueAdd(0xC8);
             return;
         }
-        if (D_80078404 == 0xD) {
-            if ((D_80078408 == 4) && (*D_80078390 != 0)) {
+        if (gCurrentStadiumPhase == 0xD) {
+            if ((gStadiumPhaseSubstate == 4) && (*gPlayerActiveFlag != 0)) {
                 AudioQueueAdd(0xCA);
                 return;
             }
-            if ((D_80078408 == 5) && (*D_80078390 != 0)) {
+            if ((gStadiumPhaseSubstate == 5) && (*gPlayerActiveFlag != 0)) {
                 AudioQueueAdd(0xCB);
                 return;
             }
             AudioQueueAdd(0xC8);
             return;
         }
-        if ((D_80078408 == 8) && (*D_80078390 != 0)) {
+        if ((gStadiumPhaseSubstate == 8) && (*gPlayerActiveFlag != 0)) {
             AudioQueueAdd(0xC9);
             return;
         }
@@ -2200,7 +2200,7 @@ void func_8004153C(void) {
     }
 }
 
-void func_80041688(void) {
+void QueueEndTurnSound(void) {
     Audio_PlaySoundEffect(0x16, gAudioEffectId, 0);
     AudioQueueAdd(0x1A2);
 }
@@ -2208,65 +2208,65 @@ void func_80041688(void) {
 void Audio_UpdateEffects(void) {
     u8* seq;
 
-    if ((D_800783B4 < D_800783B8) && (gAudioActiveFlag != 0) && (Audio_IsChannelActive(1) == 0)) {
-        if (D_800783A4[D_800783B4 & 3] != 0) {
-            seq = D_800FC714->seqArray[D_800783A4[D_800783B4 & 3] - 1].offset;
+    if ((gAudioSeqTimer < gAudioSeqIndex) && (gAudioActiveFlag != 0) && (Audio_IsChannelActive(1) == 0)) {
+        if (gAudioSeqQueue[gAudioSeqTimer & 3] != 0) {
+            seq = D_800FC714->seqArray[gAudioSeqQueue[gAudioSeqTimer & 3] - 1].offset;
             Audio_StartChannel(1, seq, 0x7E, 0);
         }
-        D_800783B4++;
+        gAudioSeqTimer++;
     }
 
-    if (D_800783BC != 0) {
-        if ((D_800783C8 >= 0x3E9) && (D_800783C0 == 0) && (D_800783CC != 0)) {
+    if (gAudioSeqActiveFlag != 0) {
+        if ((gAudioSeqElapsed >= 0x3E9) && (gAudioSeqState == 0) && (gAudioQueueMode != 0)) {
             AudioQueueAdd(0x248);
-            D_800783C0 = 1;
-        } else if ((D_800783C8 >= 0x7D1) && (D_800783C0 == 0) && (D_800783CC == 0)) {
+            gAudioSeqState = 1;
+        } else if ((gAudioSeqElapsed >= 0x7D1) && (gAudioSeqState == 0) && (gAudioQueueMode == 0)) {
             AudioQueueAdd(0x248);
-            D_800783C0 = 1;
-            D_800783C8 = 0x3E8;
-        } else if ((D_800783C8 >= 0x641) && (D_800783C0 == 1)) {
+            gAudioSeqState = 1;
+            gAudioSeqElapsed = 0x3E8;
+        } else if ((gAudioSeqElapsed >= 0x641) && (gAudioSeqState == 1)) {
             AudioQueueAdd(0x249);
-            if (D_800783C4 == 0) {
+            if (gAudioSeqPlayedFlag == 0) {
                 Audio_PlaySoundEffect(0x5B, gAudioEffectId, 0);
-                D_800783C4 = 1;
+                gAudioSeqPlayedFlag = 1;
             }
-            D_800783C0 = 2;
-        } else if ((D_800783C8 >= 0x899) && (D_800783C0 == 2)) {
+            gAudioSeqState = 2;
+        } else if ((gAudioSeqElapsed >= 0x899) && (gAudioSeqState == 2)) {
             AudioQueueAdd(0x24A);
-            D_800783C8 = 0x3E8;
-            D_800783C0 = 1;
+            gAudioSeqElapsed = 0x3E8;
+            gAudioSeqState = 1;
         }
 
-        D_800783C8++;
+        gAudioSeqElapsed++;
     }
 
-    if (D_800FCCA2 != 0) {
-        if (D_800FCCA2 == 1) {
-            if (D_800FCCA4 != 0) {
-                if (D_800FCCA4 >= 0x29) {
-                    if (((D_800FCCAD == 0x10) || (D_800FCCAD == 0x11) || (D_800FCCAD == 0x12) || (D_800FCCAD == 0x15) ||
-                         (D_800FCCAD == 0x16) || (D_800FCCAD == 0x53) || (D_800FCCAD == 0x54) ||
-                         (D_800FCCAD == 0x55)) &&
-                        ((D_800FCCAC == 0x34) || (D_800FCCAC == 0x35) || (D_800FCCAC == 0x7E))) {
-                        func_800420C0(D_80077F44);
+    if (gAudioQueueDelayCounter != 0) {
+        if (gAudioQueueDelayCounter == 1) {
+            if (gAudioHPChangePercent != 0) {
+                if (gAudioHPChangePercent >= 0x29) {
+                    if (((gAudioCurrentCommandId == 0x10) || (gAudioCurrentCommandId == 0x11) || (gAudioCurrentCommandId == 0x12) || (gAudioCurrentCommandId == 0x15) ||
+                         (gAudioCurrentCommandId == 0x16) || (gAudioCurrentCommandId == 0x53) || (gAudioCurrentCommandId == 0x54) ||
+                         (gAudioCurrentCommandId == 0x55)) &&
+                        ((gAudioCurrentMoveId == 0x34) || (gAudioCurrentMoveId == 0x35) || (gAudioCurrentMoveId == 0x7E))) {
+                        AudioPlayCueTable(gAudioCueTable_ItemUseAlt);
                     } else {
-                        func_800420C0(D_80077E98);
+                        AudioPlayCueTable(gAudioCueTable_ItemUse);
                     }
-                } else if (D_800FCCA4 >= 6) {
+                } else if (gAudioHPChangePercent >= 6) {
                     if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                        func_800420C0(D_80077EA4);
+                        AudioPlayCueTable(gAudioCueTable_ItemConsume);
                     } else {
-                        func_800420C0(D_80077F60);
+                        AudioPlayCueTable(gAudioCueTable_StatusM);
                     }
                 } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                    func_800420C0(D_80077EB4);
+                    AudioPlayCueTable(gAudioCueTable_ItemEquip);
                 } else {
-                    func_800420C0(D_80077F04);
+                    AudioPlayCueTable(gAudioCueTable_StatusC);
                 }
             }
-            D_800FCCA8 = D_800FCCA4;
+            gAudioPrevHPChangePercent = gAudioHPChangePercent;
         }
-        D_800FCCA2--;
+        gAudioQueueDelayCounter--;
     }
 }
 
@@ -2274,58 +2274,58 @@ void ResetAudioState(void) {
     s32 i;
     s32 j;
 
-    D_800783CC = 0;
+    gAudioQueueMode = 0;
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 8; j++) {
-            D_800FCB38[i][j] = 0;
+            RecentMoveIDs[i][j] = 0;
         }
     }
     D_8007839C[0] = 0;
     D_8007839C[1] = 0;
-    D_800FCCA0 = D_800FCCA1 = 0;
-    D_800FCCA2 = 0;
-    D_800FCCA4 = 0;
-    D_800FCCAC = 0;
+    gAudioGlobalFlag0 = gAudioGlobalFlag1 = 0;
+    gAudioQueueDelayCounter = 0;
+    gAudioHPChangePercent = 0;
+    gAudioCurrentMoveId = 0;
     D_800783E0 = 0;
-    D_800FCCAF = 0;
-    D_800FCCB0 = 0;
-    D_800FCCB2 = 0;
-    D_800FCCB3 = 0;
-    D_800FCCB4 = 0;
-    D_800FCCB5 = 0;
-    D_800FCCB7 = 0;
-    D_800FCCB6 = 0;
-    D_800783E4 = 0;
+    gAudioSpecialFlag0 = 0;
+    gAudioFlagUnused0 = 0;
+    gAudioQueueProcessingFlag = 0;
+    gAudioFlagUnused1 = 0;
+    gAudioFlagUnused2 = 0;
+    gAudioFlagUnused3 = 0;
+    gAudioFlagUnused5 = 0;
+    gAudioFlagUnused4 = 0;
+    gAudioQueueFlagB = 0;
     D_800783E8 = 0;
-    D_800783EC = 0;
+    gAudioQueueSpecialFlag = 0;
     D_800783F0 = 0;
     D_800783F4 = 0;
     D_800783F8 = 0;
     for (i = 0; i < 0x15; i++) {
-        D_800FCCD8[i] = 0;
+        gAudioEffectTriggeredMask[i] = 0;
     }
     for (i = 0; i < 20; i++) {
-        D_800FCC50[i] = 0;
+        gAudioRecentMessages[i] = 0;
     }
     for (i = 0; i < 2; i++) {
-        D_800FCCB8[i] = 0;
-        D_800FCCBA[i] = 0;
-        D_800FCCBC[i] = 0;
-        D_800FCCBE[i] = 0;
-        D_800FCCC0[i] = 0;
-        D_800FCCC2[i] = 0;
-        D_800FCCD4[i] = 0;
-        D_800FCCD6[i] = 0;
+        gAudioEffectState0[i] = 0;
+        gAudioEffectState1[i] = 0;
+        gAudioEffectState2[i] = 0;
+        gAudioEffectState3[i] = 0;
+        gAudioEffectState4[i] = 0;
+        gAudioEffectState5[i] = 0;
+        gAudioEffectState6[i] = 0;
+        gAudioEffectState7[i] = 0;
     }
 }
 
 void AudioQueueAdd(u32 arg0) {
     OSIntMask mask;
 
-    if ((gAudioActiveFlag != 0) && (D_800783FC != 0) && (arg0 != 0)) {
+    if ((gAudioActiveFlag != 0) && (gAudioSystemEnabled != 0) && (arg0 != 0)) {
         mask = osSetIntMask(OS_IM_NONE);
-        D_800783A4[D_800783B8 & 3] = arg0;
-        D_800783B8++;
+        gAudioSeqQueue[gAudioSeqIndex & 3] = arg0;
+        gAudioSeqIndex++;
         osSetIntMask(mask);
     }
 }
@@ -2333,14 +2333,14 @@ void AudioQueueAdd(u32 arg0) {
 void AudioQueueRemoveLast(void) {
     OSIntMask mask;
 
-    if ((gAudioActiveFlag != 0) && (D_800783FC != 0)) {
+    if ((gAudioActiveFlag != 0) && (gAudioSystemEnabled != 0)) {
         mask = osSetIntMask(OS_IM_NONE);
-        D_800783A4[(D_800783B8 - 1) & 3] = 0;
+        gAudioSeqQueue[(gAudioSeqIndex - 1) & 3] = 0;
         osSetIntMask(mask);
     }
 }
 
-void func_80041D50(u8* arg0, u8* arg1) {
+void SwapU8(u8* arg0, u8* arg1) {
     u8 temp_v0 = *arg0;
     u8 temp_v1 = *arg1;
 
@@ -2350,11 +2350,11 @@ void func_80041D50(u8* arg0, u8* arg1) {
     }
 }
 
-u16 func_80041D70(u16 arg0) {
+u16 IsMessageInRecentList(u16 arg0) {
     s32 i;
 
     for (i = 0; i < 20; i++) {
-        if (arg0 == D_800FCC50[i]) {
+        if (arg0 == gAudioRecentMessages[i]) {
             return 0;
         }
     }
@@ -2362,27 +2362,27 @@ u16 func_80041D70(u16 arg0) {
     return arg0;
 }
 
-void func_80041DF4(u16 arg0) {
+void AddMessageToRecent(u16 arg0) {
     u16 i;
 
     for (i = 0; i < 19; i++) {
-        D_800FCC50[i] = D_800FCC50[i + 1];
+        gAudioRecentMessages[i] = gAudioRecentMessages[i + 1];
     }
 
-    D_800FCC50[19] = arg0;
+    gAudioRecentMessages[19] = arg0;
 }
 
-void func_80041E40(u16 arg0) {
+void ShiftRecentMessages(u16 arg0) {
     u32 i;
 
     for (i = arg0; i > 0; i--) {
-        D_800FCC50[i] = D_800FCC50[i - 1];
+        gAudioRecentMessages[i] = gAudioRecentMessages[i - 1];
     }
 
-    D_800FCC50[0] = 0;
+    gAudioRecentMessages[0] = 0;
 }
 
-u32 func_80041EF4(u16* arg0) {
+u32 ShuffleIndices(u16* arg0) {
     u16 temp_v0 = *arg0;
     u32 i;
     u32 j;
@@ -2393,22 +2393,22 @@ u32 func_80041EF4(u16* arg0) {
     }
 
     for (i = 0; i < temp_v0 << 1; i++) {
-        func_80041D50(D_800FCD18, D_800FCD18 + (osGetTime() % (s32)temp_v0));
+        SwapU8(D_800FCD18, D_800FCD18 + (osGetTime() % (s32)temp_v0));
     }
 
     for (i = 0; i < temp_v0; i++) {
-        sp5A = func_80041D70(arg0[D_800FCD18[i]]);
+        sp5A = IsMessageInRecentList(arg0[D_800FCD18[i]]);
         if (sp5A != 0) {
-            func_80041DF4(sp5A);
+            AddMessageToRecent(sp5A);
             return sp5A;
         }
     }
 
     for (i = 0; i < 20; i++) {
         for (j = 1; j <= temp_v0; j++) {
-            if (D_800FCC50[i] == arg0[j]) {
-                func_80041E40(i);
-                func_80041DF4(arg0[j]);
+            if (gAudioRecentMessages[i] == arg0[j]) {
+                ShiftRecentMessages(i);
+                AddMessageToRecent(arg0[j]);
                 return arg0[j];
             }
         }
@@ -2417,8 +2417,8 @@ u32 func_80041EF4(u16* arg0) {
     return 0;
 }
 
-void func_800420C0(u16* arg0) {
-    u32 temp_v0 = func_80041EF4(arg0);
+void AudioPlayCueTable(u16* arg0) {
+    u32 temp_v0 = ShuffleIndices(arg0);
 
     if (temp_v0 != 0) {
         AudioQueueAdd(temp_v0);
@@ -2431,7 +2431,7 @@ void PlaySoundEffectOrQueue(u16 arg0, u16* arg1, u8* arg2) {
     if (*arg2 == 0) {
         AudioQueueAdd(arg0);
     } else {
-        func_800420C0(arg1);
+        AudioPlayCueTable(arg1);
     }
     temp_v0 = *arg2;
     if (temp_v0 < 0xFF) {
@@ -2479,7 +2479,7 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
         return 0;
     }
 
-    entry = &D_800780B4[(arg0 - 1) * 3];
+    entry = &gMenuSoundMap_S[(arg0 - 1) * 3];
     conv0 = GetTypeIndex(entry[2]);
     type = entry[0];
     power = entry[1];
@@ -2548,13 +2548,13 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
             return -4;
 
         case 0x1C:
-            if (D_800781E0 == &D_800780B4[arg0 * 3]) {
+            if (gMenuSoundMap_U == &gMenuSoundMap_S[arg0 * 3]) {
                 return -5;
             }
             return -4;
     }
 
-    if (D_80078180 == &D_800780B4[arg0 * 3]) {
+    if (gMenuSoundMap_T == &gMenuSoundMap_S[arg0 * 3]) {
         return -2;
     }
 
@@ -2575,7 +2575,7 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
     conv1 = GetTypeIndex(arg2->unk_16[6]);
     conv2 = GetTypeIndex(arg2->unk_16[7]);
 
-    mode = D_800782A4[conv0 * 15 + conv1];
+    mode = gMenuSoundMap_V[conv0 * 15 + conv1];
     switch (mode) {
         case 1:
             mulB = 0.0f;
@@ -2590,7 +2590,7 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
             mulB = 1.0f;
     }
 
-    mode = D_800782A4[conv0 * 15 + conv2];
+    mode = gMenuSoundMap_V[conv0 * 15 + conv2];
     switch (mode) {
         case 1:
             eff2 = 0.0f;
@@ -2618,7 +2618,7 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
         prevA = 1;
     }
     hpA = (u32)arg2->unk_28;
-    if (D_80078390[side ^ 1] == 1) {
+    if (gPlayerActiveFlag[side ^ 1] == 1) {
         mulA = 1.1f;
     } else {
         mulA = 1.0f;
@@ -2629,7 +2629,7 @@ u32 CalculateMoveDamage(u32 arg0, unk_D_800FCB18* arg1, unk_D_800FCB18* arg2) {
         prevB = 1;
     }
     hpB = (u32)arg1->unk_28;
-    if (D_80078390[side] == 1) {
+    if (gPlayerActiveFlag[side] == 1) {
         mulB = 1.1f;
     } else {
         mulB = 1.0f;

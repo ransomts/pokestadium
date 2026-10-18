@@ -1,272 +1,272 @@
 #include "fragment62.h"
 
-void func_8433E650(unk_D_8140E720* arg0) {
+void func_8433E650(ParticleEffectInstance* arg0) {
     Vec3s sp28;
-    s16 sp26 = func_8140C058(arg0);
-    s16 sp24 = func_8140C038(arg0);
+    s16 sp26 = Particle_GetShortCF(arg0);
+    s16 sp24 = Particle_GetShortAC(arg0);
 
-    func_81408CA0(arg0, 2.5f);
-    func_8140B938(arg0, 0.065789476f);
+    Particle_SetVelocityYScaled(arg0, 2.5f);
+    Particle_SetScaleFactor1(arg0, 0.065789476f);
     Particle_SetSpeed(arg0, 0.0f);
     sp28.x = RandomRangeSigned(0x5000);
     sp28.y = sp24 * (0x10000 / arg0->unk_AA);
     sp28.z = 0;
-    func_8140A4F0(arg0, sp28);
+    Particle_AddRotationDeltaVec(arg0, sp28);
     SetPrimColorFromPalette(arg0, sp26);
-    func_8140BC20(arg0, 0x80);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x80);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433E758(unk_D_8140E720* arg0) {
+void func_8433E758(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433E650(arg0);
             break;
 
         case 2:
-            if (func_8140826C(arg0, func_8140C038(arg0)) != 0) {
-                func_81408328(arg0);
+            if (Particle_ProcessTimer80(arg0, Particle_GetShortAC(arg0)) != 0) {
+                Particle_EnableFlag4(arg0);
             }
             break;
 
         case 3:
-            func_8140B98C(arg0, 1.3157895f, 0.16447368f);
-            func_8140BDD0(arg0);
+            Particle_ApproachScaleFactor1(arg0, 1.3157895f, 0.16447368f);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0x10);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
     func_8140A594(arg0, 0x400);
-    func_81409D0C(arg0);
+    Particle_ApplyB2B4AndAddAll(arg0);
 }
 
-void func_8433E840(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void func_8433E840(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
 
-    func_8140B938(arg0, 0.65789473f);
+    Particle_SetScaleFactor1(arg0, 0.65789473f);
     SetPrimEnvColorFromPair(arg0, sp26);
-    func_814083E8(arg0, 2);
-    func_8140BC20(arg0, 0xC8);
-    func_814081BC(arg0);
+    Particle_SetParamC7(arg0, 2);
+    Particle_SetPrimAlpha(arg0, 0xC8);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433E8A8(unk_D_8140E720* arg0) {
+void func_8433E8A8(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433E840(arg0);
             break;
 
         case 2:
-            func_8140B98C(arg0, 6.5789475f, 0.32894737f);
-            func_8140826C(arg0, 0xF);
+            Particle_ApproachScaleFactor1(arg0, 6.5789475f, 0.32894737f);
+            Particle_ProcessTimer80(arg0, 0xF);
             break;
 
         case 3:
-            func_8140BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0x20);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x20);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_8433E950(unk_D_8140E720* arg0) {
-    s16 sp2E = func_8140C058(arg0);
-    s16 sp2C = func_8140C038(arg0);
+void func_8433E950(ParticleEffectInstance* arg0) {
+    s16 sp2E = Particle_GetShortCF(arg0);
+    s16 sp2C = Particle_GetShortAC(arg0);
 
-    func_8140B938(arg0, 0.05f);
+    Particle_SetScaleFactor1(arg0, 0.05f);
     Particle_SetRotation(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
     Particle_SetSpeed(arg0, 1.2f);
     SetPrimEnvColorFromPair(arg0, sp2E);
-    func_8140BCA8(arg0, sp2C * 1);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetTimerA6(arg0, sp2C * 1);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433EA04(unk_D_8140E720* arg0) {
+void func_8433EA04(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433E950(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
             }
             break;
 
         case 3:
-            if (func_8140B98C(arg0, 0.15f, 0.025f) != 0) {
-                func_814081BC(arg0);
+            if (Particle_ApproachScaleFactor1(arg0, 0.15f, 0.025f) != 0) {
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 4:
-            if (func_8140B98C(arg0, 0.0f, 0.04f) != 0) {
-                func_814081BC(arg0);
+            if (Particle_ApproachScaleFactor1(arg0, 0.0f, 0.04f) != 0) {
+                Particle_IncrementState(arg0);
             }
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 
-    func_8140ADBC(arg0, 0.2, 0.2f);
-    func_81409D0C(arg0);
-    func_81408E90(arg0, -1.0f);
+    Particle_ApproachSpeedScaled(arg0, 0.2, 0.2f);
+    Particle_ApplyB2B4AndAddAll(arg0);
+    Particle_AddVelocityYScaled(arg0, -1.0f);
 }
 
-void func_8433EB0C(unk_D_8140E720* arg0) {
+void func_8433EB0C(ParticleEffectInstance* arg0) {
     UNUSED s16 pad;
     s16 sp2C;
 
-    func_8140C038(arg0);
-    sp2C = func_8140C058(arg0);
-    func_8140B938(arg0, 0.175f);
+    Particle_GetShortAC(arg0);
+    sp2C = Particle_GetShortCF(arg0);
+    Particle_SetScaleFactor1(arg0, 0.175f);
     Particle_SetRotation(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
     SetPrimEnvColorFromPair(arg0, sp2C);
-    func_8140BC20(arg0, 0x80);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x80);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433EB9C(unk_D_8140E720* arg0) {
+void func_8433EB9C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433EB0C(arg0);
             break;
 
         case 2:
-            func_8140B98C(arg0, 0.1f, 0.01f);
-            func_8140BC2C(arg0, 0, 8);
-            func_81409D0C(arg0);
-            func_8140BDD0(arg0);
+            Particle_ApproachScaleFactor1(arg0, 0.1f, 0.01f);
+            Particle_ApproachPrimAlpha(arg0, 0, 8);
+            Particle_ApplyB2B4AndAddAll(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }
 
-void func_8433EC40(unk_D_8140E720* arg0) {
+void func_8433EC40(ParticleEffectInstance* arg0) {
     s16 sp2E;
     s16 sp2C;
     s16 temp_v0;
     Vec3s sp24;
 
-    temp_v0 = func_8140C038(arg0);
+    temp_v0 = Particle_GetShortAC(arg0);
     sp2E = temp_v0 / 8;
     sp2C = temp_v0 % 8;
 
-    func_8140B938(arg0, 0.5f);
+    Particle_SetScaleFactor1(arg0, 0.5f);
     sp24.x = 0x6000 - (sp2E * 0xC00);
     sp24.y = (sp2C << 0xC) + 0xB000;
     sp24.z = 0;
-    func_8140A4F0(arg0, sp24);
+    Particle_AddRotationDeltaVec(arg0, sp24);
     Particle_SetPrimColor(arg0, 0xC8, 0xFF, 0xFF);
-    func_8140BC20(arg0, 0x60);
-    func_8140BCA8(arg0, sp2E);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x60);
+    Particle_SetTimerA6(arg0, sp2E);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433ED3C(unk_D_8140E720* arg0) {
+void func_8433ED3C(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433EC40(arg0);
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_8140BCA8(arg0, 0xA);
-                func_81408328(arg0);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 0xA);
+                Particle_EnableFlag4(arg0);
             }
             break;
 
         case 3:
             func_8140A594(arg0, 0x200);
-            func_8140B98C(arg0, 2.0f, 0.01f);
-            func_8140BDD0(arg0);
+            Particle_ApproachScaleFactor1(arg0, 2.0f, 0.01f);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
-            func_8140BC5C(arg0, 0, 0x10);
+            Particle_ApproachPrimAlphaWithCallback(arg0, 0, 0x10);
             break;
 
         case 5:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 }
 
-void func_8433EE10(unk_D_8140E720* arg0) {
+void func_8433EE10(ParticleEffectInstance* arg0) {
     s16 sp36;
     s16 sp34;
-    s16 sp32 = func_8140C038(arg0);
-    s16 sp30 = func_8140C058(arg0);
-    s16 sp2E = func_8140C040(arg0);
+    s16 sp32 = Particle_GetShortAC(arg0);
+    s16 sp30 = Particle_GetShortCF(arg0);
+    s16 sp2E = Particle_GetShortCE(arg0);
 
     Particle_SetRotation(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
-    func_8140B938(arg0, 0.01f);
+    Particle_SetScaleFactor1(arg0, 0.01f);
     SetPrimEnvColorFromPair(arg0, sp30);
 
     switch (sp2E) {
         case 0:
-            func_8140BF4C(arg0, func_81400ADC(0x14, 0x14));
-            func_8140BFEC(arg0, 0);
+            Particle_SetShortAE(arg0, func_81400ADC(0x14, 0x14));
+            Particle_SetShortB0(arg0, 0);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
-            func_8140BE14(arg0, 8);
+            Particle_SetTimerA8(arg0, 8);
             break;
 
         case 1:
-            func_8140BF4C(arg0, func_81400ADC(0x28, 0x14));
-            func_8140BFEC(arg0, 1);
+            Particle_SetShortAE(arg0, func_81400ADC(0x28, 0x14));
+            Particle_SetShortB0(arg0, 1);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
-            func_8140BE14(arg0, 0x10);
+            Particle_SetTimerA8(arg0, 0x10);
             break;
 
         case 2:
-            func_8140BF4C(arg0, func_81400ADC(0x1E, 0x14));
-            func_8140BFEC(arg0, 2);
+            Particle_SetShortAE(arg0, func_81400ADC(0x1E, 0x14));
+            Particle_SetShortB0(arg0, 2);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
-            func_8140BE14(arg0, 0xA);
+            Particle_SetTimerA8(arg0, 0xA);
             break;
 
         case 3:
-            func_8140BF4C(arg0, 0x1E - sp32);
-            func_8140BFEC(arg0, 2);
+            Particle_SetShortAE(arg0, 0x1E - sp32);
+            Particle_SetShortB0(arg0, 2);
             sp36 = func_81400B4C(0x200, 0x200);
             sp34 = func_81400B4C(0x200, 0x200);
-            func_8140BE14(arg0, 0xA);
+            Particle_SetTimerA8(arg0, 0xA);
             break;
     }
 
     Particle_SetRotationDeltaX(arg0, sp36);
     Particle_SetRotationDeltaY(arg0, sp34);
-    func_8140BCA8(arg0, sp32 * 2);
-    func_81408348(arg0);
-    func_814081BC(arg0);
+    Particle_SetTimerA6(arg0, sp32 * 2);
+    Particle_DisableFlag4(arg0);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433F06C(unk_D_8140E720* arg0) {
-    func_8140C040(arg0);
+void func_8433F06C(ParticleEffectInstance* arg0) {
+    Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
@@ -274,87 +274,87 @@ void func_8433F06C(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_8140BDD0(arg0) != 0) {
-                func_81408328(arg0);
-                func_81408A68(arg0);
+            if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
+                Particle_EnableFlag4(arg0);
+                Particle_IncrementFlag2Counter(arg0);
             }
             break;
 
         case 3:
-            if (func_8140B9D0(arg0, 0.3f, 0.05f) != 0) {}
+            if (Particle_ApproachScaleFactor1WithCallback(arg0, 0.3f, 0.05f) != 0) {}
             break;
 
         case 4:
-            if (func_8140826C(arg0, arg0->unk_A8) != 0) {
-                func_81408A68(arg0);
+            if (Particle_ProcessTimer80(arg0, arg0->unk_A8) != 0) {
+                Particle_IncrementFlag2Counter(arg0);
             }
             break;
 
         case 5:
-            func_8140B9D0(arg0, 0.0f, 0.05f);
+            Particle_ApproachScaleFactor1WithCallback(arg0, 0.0f, 0.05f);
             break;
 
         case 6:
-            func_81408150(arg0);
+            Particle_ClearActiveFlag(arg0);
             break;
     }
 
-    if (func_81408368(arg0) != 0) {
+    if (Particle_HasFlag4(arg0) != 0) {
         switch (arg0->unk_B8) {
             case 1:
                 Particle_AddRotationDeltaX(arg0);
-                func_81408CD0(arg0, arg0->unk_AE);
+                Particle_SetVelocityFromComplexDir(arg0, arg0->unk_AE);
                 break;
 
             case 2:
                 Particle_AddRotationDeltaX(arg0);
-                func_8140BF60(arg0, 0, arg0->unk_B0);
-                func_81408CD0(arg0, arg0->unk_AE);
+                Particle_ApproachShortAE(arg0, 0, arg0->unk_B0);
+                Particle_SetVelocityFromComplexDir(arg0, arg0->unk_AE);
                 break;
         }
     }
 
-    func_81408E90(arg0, 10.0f);
+    Particle_AddVelocityYScaled(arg0, 10.0f);
 }
 
-void func_8433F208(unk_D_8140E720* arg0) {
-    s16 sp26 = func_8140C058(arg0);
+void func_8433F208(ParticleEffectInstance* arg0) {
+    s16 sp26 = Particle_GetShortCF(arg0);
 
-    func_8140B938(arg0, 0.2f);
-    func_81408E90(arg0, 5.0f);
+    Particle_SetScaleFactor1(arg0, 0.2f);
+    Particle_AddVelocityYScaled(arg0, 5.0f);
     SetPrimEnvColorFromPair(arg0, sp26);
-    func_8140BC20(arg0, 0x40);
-    func_814081BC(arg0);
+    Particle_SetPrimAlpha(arg0, 0x40);
+    Particle_IncrementState(arg0);
 }
 
-void func_8433F270(unk_D_8140E720* arg0) {
+void func_8433F270(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             func_8433F208(arg0);
             break;
 
         case 2:
-            func_8140B98C(arg0, 4.0f, 0.1f);
-            func_8140BC2C(arg0, 0xC8, 8);
-            func_8140BDD0(arg0);
+            Particle_ApproachScaleFactor1(arg0, 4.0f, 0.1f);
+            Particle_ApproachPrimAlpha(arg0, 0xC8, 8);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
-            func_8140B98C(arg0, 0.25f, 0.5f);
+            Particle_ApproachScaleFactor1(arg0, 0.25f, 0.5f);
             func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 6, 0x18, 7);
-            if (func_8140826C(arg0, 6) != 0) {
-                func_8140BF04(arg0, 9);
+            if (Particle_ProcessTimer80(arg0, 6) != 0) {
+                Particle_SetByteCC(arg0, 9);
             }
             break;
 
         case 4:
-            func_814099E0(arg0, 15.0f);
-            func_8140826C(arg0, 0xA);
+            Particle_AddScaledVelocityY(arg0, 15.0f);
+            Particle_ProcessTimer80(arg0, 0xA);
             func_8432D8E8(arg0, func_8435226C, &gParticleEffectData[0x42], 6, 0x18, 7);
             break;
 
         case 5:
-            func_81408158(arg0);
+            Particle_ResetState(arg0);
             break;
     }
 }

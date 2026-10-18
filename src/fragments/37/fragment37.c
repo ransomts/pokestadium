@@ -818,7 +818,7 @@ s32 func_82202DC4(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_822030F0 = GetMessageBank(0x17);
     GbsEnsureBankLoaded(2);
     GbsGetPlayerName(&D_822031E8);
-    func_80027FA0(&D_822031E0, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&D_822031E0, gBattleContext.unk_11F2);
     func_82202CB8();
     D_822031D8 = 8;
 

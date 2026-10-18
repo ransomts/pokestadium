@@ -376,7 +376,7 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     }
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_82100EA8, 0);
+    GBAudio_ResetState(&D_82100EA8, 0);
     Text_Init(6, 0);
     func_82100B98();
     MessageBank_Init();

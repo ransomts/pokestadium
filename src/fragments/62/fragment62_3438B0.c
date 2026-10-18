@@ -17,7 +17,7 @@ void RenderPrimColorRect(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
 }
 
 void Ui_DrawPanel(CameraStruct* arg0) {
-    func_8432CF74(arg0);
+    RunCameraCallbacks(arg0);
     gMatrixBuffer = GfxAlloc(sizeof(unk_D_8140E620));
     gMatrixBufferIdx = 0;
     gPanelDrawCount += 1;
@@ -29,7 +29,7 @@ void Ui_DrawPanel(CameraStruct* arg0) {
     Gfx_SetEnvColor(gEnvColorR, gEnvColorG, gEnvColorB, gEnvColorA);
     func_81405B00(D_8439039A, D_8439039C, D_8439039E, D_843903A0);
     ColorRectNode_SetColor(D_8439037A, D_8439037C, D_8439037E);
-    func_8140C204(arg0);
+    Particle_UpdateForCamera(arg0);
     guOrtho(&gMatrixBuffer->unk_5B80, 0.0f, 320.0f, 240.0f, 0.0f, -2.0f, 2.0f, 1.0f);
 
     gSPMatrix(gDisplayListHead++, (u32)&gMatrixBuffer->unk_5B80 & 0x1FFFFFFF,
@@ -37,7 +37,7 @@ void Ui_DrawPanel(CameraStruct* arg0) {
     gSPDisplayList(gDisplayListHead++, D_8140DD78);
 
     Gfx_PipeSync();
-    func_8140C2D8(arg0);
+    Particle_ProcessAllForCamera(arg0);
 
     gSPDisplayList(gDisplayListHead++, D_8140DAE0);
 }

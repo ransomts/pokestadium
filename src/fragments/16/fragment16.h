@@ -3,24 +3,24 @@
 
 #include "global.h"
 
-typedef struct unk_D_86A025A0 {
+typedef struct StagePhaseInfo {
     /* 0x00 */ s8 unk_00;
     /* 0x01 */ s8 unk_01;
     /* 0x02 */ u16 unk_02;
-} unk_D_86A025A0; // size = 0x4
+} StagePhaseInfo; // size = 0x4
 
-typedef struct unk_D_86A02750 {
+typedef struct MessageDecompressEntry {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ char* unk_04[2];
-} unk_D_86A02750; // size = 0xC
+} MessageDecompressEntry; // size = 0xC
 
-typedef struct unk_D_86A03014 {
+typedef struct StageCameraConfig {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u8 unk_04;
     /* 0x05 */ u8 unk_05;
-    /* 0x08 */ unk_D_86A02750* unk_08;
-} unk_D_86A03014; // size = 0xC
+    /* 0x08 */ MessageDecompressEntry* unk_08;
+} StageCameraConfig; // size = 0xC
 
 typedef struct unk_D_86A03170 {
     /* 0x00 */ s16 unk_00;
@@ -47,7 +47,7 @@ typedef struct unk_D_86A04328 {
     /* 0x34 */ f32 unk_34;
 } unk_D_86A04328; // size = 0x38
 
-extern unk_D_86A03170 D_86A03170[17][6];
+extern unk_D_86A03170 gStageCameraPositions[17][6];
 
 extern u16 gBorderFadeCycleCount;
 extern char gMessageDecompressBuffer;
@@ -425,23 +425,23 @@ extern char D_86A0612C;
 extern char D_86A06130;
 extern char D_86A06134;
 
-extern u8 D_86A06210;
-extern u8 D_86A06211;
+extern u8 gPhaseDelta;
+extern u8 gUnusedTimer1;
 
 extern Vec3f D_86A06248;
 
 s32 NodeColorSetter(s32 arg0, GraphNode* arg1);
-void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2);
-void func_86A01490(void);
-void func_86A014F0(void);
+void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2);
+void Stage_UpdateLogic(void);
+void Stage_TriggerNextPhase(void);
 
 u16 GetFragment16Constant(void);
 
-void func_86A018D0(CameraStruct*, u16, s8, u8);
-void func_86A01BEC(void);
-void func_86A01CF0(s16*, s16*, s16*, CameraStruct*, u16, s8, u8);
-void func_86A02164(void);
-void func_86A021C0(s8*, u8*);
+void Camera_AdjustForStage(CameraStruct*, u16, s8, u8);
+void Stage_HandleFinalPhase(void);
+void Camera_SetupForPhase(s16*, s16*, s16*, CameraStruct*, u16, s8, u8);
+void Stage_UpdateSubPhase(void);
+void Stage_SelectRandomStage(s8*, u8*);
 
 s32 Math_RandomModulo(s32);
 void Stage_DrawBorderFade(u8);

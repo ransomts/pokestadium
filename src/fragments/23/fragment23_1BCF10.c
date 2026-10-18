@@ -127,7 +127,7 @@ void Panel_ToggleFill(unk_func_882149A0* arg0) {
 
 void ScrollableList_Init(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(), s32 arg5, s32 arg6,
                    MemoryPool* arg7) {
-    ((func88506DCC)Memmap_GetFragmentVaddr(func_88506DCC))(arg0, arg1, arg2, arg4, arg5, arg6, arg3, arg7);
+    ((func88506DCC)Memmap_GetFragmentVaddr(ScrollListFragment_Create))(arg0, arg1, arg2, arg4, arg5, arg6, arg3, arg7);
 
     arg0->unk_70 = 0;
     arg0->unk_74 = arg0->unk_00.unk_00.unk_1C;
@@ -172,7 +172,7 @@ s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
             }
             arg0->unk_5C = arg0->unk_5C - var_a2;
 
-            ((func88506FC0)Memmap_GetFragmentVaddr(func_88506FC0))(arg0);
+            ((func88506FC0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMinOffset))(arg0);
 
             if (sp24 == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x800;
@@ -188,7 +188,7 @@ s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
             }
             arg0->unk_5C = arg0->unk_5C + var_a2;
 
-            ((func88506FE0)Memmap_GetFragmentVaddr(func_88506FE0))(arg0);
+            ((func88506FE0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMaxOffset))(arg0);
 
             if (sp1C == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x400;
@@ -434,7 +434,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
         }
 
         arg0->unk_5C = arg0->unk_5C - var_a1;
-        ((func88506FC0)Memmap_GetFragmentVaddr(func_88506FC0))(arg0);
+        ((func88506FC0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMinOffset))(arg0);
         var_t2 = 0;
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
         if (sp24 != arg0->unk_00.unk_38) {
@@ -461,7 +461,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
         }
         arg0->unk_5C += var_a1;
 
-        ((func88506FE0)Memmap_GetFragmentVaddr(func_88506FE0))(arg0);
+        ((func88506FE0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMaxOffset))(arg0);
 
         var_t2 = 0;
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
@@ -583,7 +583,7 @@ void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
         arg0->unk_00.unk_00.unk_20 = ScrollableList_HandleInput;
         arg0->unk_84->unk_00.unk_18 = StatBar_Draw;
         if (arg0->unk_00.unk_2C->unk_08 > 0) {
-            ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0, arg0->unk_00.unk_38 + 1);
+            ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0, arg0->unk_00.unk_38 + 1);
         }
     } else {
         arg0->unk_70 = 0;
@@ -592,7 +592,7 @@ void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
         arg0->unk_00.unk_00.unk_20 = arg0->unk_7C;
         arg0->unk_84->unk_00.unk_18 = arg0->unk_80;
         if ((arg1 == 1) && (arg0->unk_00.unk_38 > 0) && (arg0->unk_00.unk_2C->unk_08 > 0)) {
-            ((func88507B80)Memmap_GetFragmentVaddr(func_88507B80))(arg0, arg0->unk_00.unk_38 - 1);
+            ((func88507B80)Memmap_GetFragmentVaddr(ScrollListFragment_SetRowsAlt))(arg0, arg0->unk_00.unk_38 - 1);
         }
     }
 }
@@ -600,13 +600,13 @@ void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
 void ScrollableList_SetDataPtr(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
     arg0->unk_88 = &arg1->unk_00;
     arg0->unk_8C = arg2;
-    ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0, &arg1->unk_04);
+    ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0, &arg1->unk_04);
 }
 
-void func_88217060(unk_func_8820BE14_02C_038* arg0, s32* arg1, s32 arg2) {
+void ScrollableList_SetData(unk_func_8820BE14_02C_038* arg0, s32* arg1, s32 arg2) {
     arg0->unk_88 = arg1;
     arg0->unk_8C = arg2;
-    ((func88506F50)Memmap_GetFragmentVaddr(func_88506F50))(arg0, arg1 + 1);
+    ((func88506F50)Memmap_GetFragmentVaddr(ScrollListFragment_Init2))(arg0, arg1 + 1);
 }
 
 void ItemSlot_Init(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_02C_038* arg3, s32 arg4) {
@@ -648,7 +648,7 @@ s32 func_8821738C(unk_func_882170A8* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_882173EC(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
+void Button_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
 
     arg0->unk_00.unk_1C = func_88217460;
@@ -726,7 +726,7 @@ void func_882175F4(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_
     arg0->unk_00.unk_28 |= 0x101;
 }
 
-void func_88217650(unk_func_8821421C_02C_06C_02C_068* arg0, s32 arg1, s32 arg2) {
+void Button_Create(unk_func_8821421C_02C_06C_02C_068* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8821421C_02C_06C_02C_068));
 
     arg0->unk_00.unk_1C = func_882176C4;

@@ -103,7 +103,7 @@ void DrawMenuEntryBox(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
         arg1 += ((0x30 - arg2) / 2);
         DrawFrameRect(arg0, arg1, 0x98, arg2);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         Gfx_FillRect(arg0 + 4, arg1 + 4, 0x90, arg2 - 8, 0x1E, 0x1E, 0x82);
 
@@ -250,7 +250,7 @@ s32 MenuFragment_Init(void) {
     main_pool_push_state('menu');
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&sp1C, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&sp1C, gBattleContext.unk_11F2);
     Text_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);

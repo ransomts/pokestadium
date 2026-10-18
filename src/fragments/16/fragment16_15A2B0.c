@@ -1,7 +1,7 @@
 #include "fragment16.h"
 #include "src/F420.h"
 
-unk_D_86A03170 D_86A03170[17][6] = {
+unk_D_86A03170 gStageCameraPositions[17][6] = {
     {
         {
             0xAB00,
@@ -3211,7 +3211,7 @@ static CameraStruct* D_86A06254;
 static s16 D_86A06258;
 static s16* D_86A0625C;
 
-void func_86A018D0(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
+void Camera_AdjustForStage(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     f32 scale = 1.0f;
     unk_D_86A04328* ptr = &D_86A04328[arg2 - 1][arg3 - 3];
     Vec3f sp3C;
@@ -3241,9 +3241,9 @@ void func_86A018D0(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     D_86A06244 = ((ptr->unk_2C - ptr->unk_28) * scale) / arg1;
 }
 
-void func_86A01BEC(void) {
+void Stage_HandleFinalPhase(void) {
     if (D_86A06220 < D_86A06222) {
-        s8 tmp = D_86A06210;
+        s8 tmp = gPhaseDelta;
 
         D_86A06220 += tmp;
         D_86A06254->unk_60.eye.x += D_86A06228.x * tmp;
@@ -3256,41 +3256,41 @@ void func_86A01BEC(void) {
     }
 }
 
-void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u16 arg4, s8 arg5, u8 arg6) {
+void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u16 arg4, s8 arg5, u8 arg6) {
     D_86A0625C = arg1;
     D_86A06254 = arg3;
     D_86A06220 = 0;
     D_86A06222 = arg4;
 
     if (arg6 < 6) {
-        *D_86A0625C = D_86A03170[arg5][arg6].unk_00;
+        *D_86A0625C = gStageCameraPositions[arg5][arg6].unk_00;
     } else if (arg6 < 9) {
         *D_86A0625C = D_86A03D40[arg5][arg6 - 6].unk_00;
     }
 
     if (arg6 < 6) {
-        if (D_86A03170[arg5][arg6].unk_04 == 1) {
-            if (D_86A03170[arg5][arg6].unk_00 < D_86A03170[arg5][arg6].unk_02) {
-                D_86A06258 = (D_86A03170[arg5][arg6].unk_02 - D_86A03170[arg5][arg6].unk_00) / arg4;
+        if (gStageCameraPositions[arg5][arg6].unk_04 == 1) {
+            if (gStageCameraPositions[arg5][arg6].unk_00 < gStageCameraPositions[arg5][arg6].unk_02) {
+                D_86A06258 = (gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) / arg4;
             } else {
-                D_86A06258 = ((D_86A03170[arg5][arg6].unk_02 - D_86A03170[arg5][arg6].unk_00) + 0x10000) / arg4;
+                D_86A06258 = ((gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) + 0x10000) / arg4;
             }
-        } else if (D_86A03170[arg5][arg6].unk_00 < D_86A03170[arg5][arg6].unk_02) {
-            D_86A06258 = (s32)((D_86A03170[arg5][arg6].unk_02 - D_86A03170[arg5][arg6].unk_00) + 0xFFFF0000) / arg4;
+        } else if (gStageCameraPositions[arg5][arg6].unk_00 < gStageCameraPositions[arg5][arg6].unk_02) {
+            D_86A06258 = (s32)((gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) + 0xFFFF0000) / arg4;
         } else {
-            D_86A06258 = (s32)(D_86A03170[arg5][arg6].unk_02 - D_86A03170[arg5][arg6].unk_00) / arg4;
+            D_86A06258 = (s32)(gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) / arg4;
         }
 
-        *arg0 = D_86A03170[arg5][arg6].unk_06;
-        *arg2 = D_86A03170[arg5][arg6].unk_08;
+        *arg0 = gStageCameraPositions[arg5][arg6].unk_06;
+        *arg2 = gStageCameraPositions[arg5][arg6].unk_08;
 
         D_86A06254->unk_60.at.x = 0.0f;
-        D_86A06254->unk_60.at.y = D_86A03170[arg5][arg6].unk_10;
+        D_86A06254->unk_60.at.y = gStageCameraPositions[arg5][arg6].unk_10;
         D_86A06254->unk_60.at.z = 0.0f;
 
-        D_86A06254->unk_24.fovy = D_86A03170[arg5][arg6].unk_0C;
-        D_86A06254->unk_24.near = D_86A03170[arg5][arg6].unk_14;
-        D_86A06254->unk_24.far = D_86A03170[arg5][arg6].unk_18;
+        D_86A06254->unk_24.fovy = gStageCameraPositions[arg5][arg6].unk_0C;
+        D_86A06254->unk_24.near = gStageCameraPositions[arg5][arg6].unk_14;
+        D_86A06254->unk_24.far = gStageCameraPositions[arg5][arg6].unk_18;
     } else if (arg6 < 9) {
         if (D_86A03D40[arg5][arg6 - 6].unk_04 == 1) {
             if (D_86A03D40[arg5][arg6 - 6].unk_00 < D_86A03D40[arg5][arg6 - 6].unk_02) {
@@ -3319,14 +3319,14 @@ void func_86A01CF0(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u16 arg4
     }
 }
 
-void func_86A02164(void) {
+void Stage_UpdateSubPhase(void) {
     if (D_86A06220 < D_86A06222) {
-        D_86A06220 += D_86A06210;
-        *D_86A0625C += D_86A06258 * D_86A06210;
+        D_86A06220 += gPhaseDelta;
+        *D_86A0625C += D_86A06258 * gPhaseDelta;
     }
 }
 
-void func_86A021C0(s8* arg0, u8* arg1) {
+void Stage_SelectRandomStage(s8* arg0, u8* arg1) {
     u8 var_a3;
     u8 i;
     u8 j;
@@ -3381,7 +3381,7 @@ void func_86A021C0(s8* arg0, u8* arg1) {
         D_86A05B04, D_86A05B0C, D_86A05B14, D_86A05B1C, D_86A05B24,
     };
 
-    if ((D_86A06211 == 0) && (D_86A05AD4 == 2)) {
+    if ((gUnusedTimer1 == 0) && (D_86A05AD4 == 2)) {
         *arg0 = 6;
     } else {
         var_a3 = 0;

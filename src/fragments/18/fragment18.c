@@ -3254,7 +3254,7 @@ void miniEkansDrawHub(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, miniHudTransparency);
 
     if (ekansMinigameCountdownStarted) {
-        func_878021B4(0x1E, 0x17);
+        Stage_SetBorderFadeParams(0x1E, 0x17);
     }
 
     for (i = 0; i < 4; i++, ekans++) {

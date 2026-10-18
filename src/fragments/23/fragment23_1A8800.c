@@ -40,20 +40,20 @@ void CreateInfoPanel(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* ar
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     arg0->unk_2C = mem_pool_alloc(arg3, sizeof(unk_func_88001300_038));
-    ((func88502274)Memmap_GetFragmentVaddr(func_88502274))(arg0->unk_2C, 0, 0, var_s1, 0x68);
+    ((func88502274)Memmap_GetFragmentVaddr(Fragment_SetRect))(arg0->unk_2C, 0, 0, var_s1, 0x68);
     arg0->unk_2C->unk_00.unk_28 |= 0x200;
     arg0->unk_2C->unk_00.unk_28 |= 0x400;
     arg0->unk_2C->unk_00.unk_28 &= ~1;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_2C);
 
     temp_s0 = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0, 0, 0, var_s1, 0x68, gFragment23ButtonColor);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, temp_s0);
+    ((func885012A4)Memmap_GetFragmentVaddr(UIFrame_Create))(temp_s0, 0, 0, var_s1, 0x68, gFragment23ButtonColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_30, 8, 8, 0, 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(arg0->unk_30, 8, 8, 0, 0x10);
     arg0->unk_30->unk_3C = 0x20;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s0, arg0->unk_30);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s0, arg0->unk_30);
 }
 
 void InfoPanelSetText(unk_func_88503298* arg0, s8* arg1) {
@@ -94,22 +94,22 @@ void CommonStringMenuCreate(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk
     arg0->unk_00.unk_10.unk_02 = arg1;
 
     arg0->unk_2C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_038));
-    ((func88502274)Memmap_GetFragmentVaddr(func_88502274))(arg0->unk_2C, 0, 0, var_s2, 0xA4);
+    ((func88502274)Memmap_GetFragmentVaddr(Fragment_SetRect))(arg0->unk_2C, 0, 0, var_s2, 0xA4);
     arg0->unk_2C->unk_00.unk_28 |= 0x200;
     arg0->unk_2C->unk_00.unk_28 |= 0x400;
     arg0->unk_2C->unk_00.unk_28 &= ~1;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_2C);
 
     sp6C = mem_pool_alloc(arg4, sizeof(unk_func_8850B254));
-    ((func8850B254)Memmap_GetFragmentVaddr(func_8850B254))(sp6C, 0, 0, var_s2, 0x18, gFragment23PanelGradientStart, gFragment23PanelGradientEnd);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp6C);
+    ((func8850B254)Memmap_GetFragmentVaddr(UIList_Create))(sp6C, 0, 0, var_s2, 0x18, gFragment23PanelGradientStart, gFragment23PanelGradientEnd);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp6C);
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     temp_s0 = GetMessageString(NULL, 0, gFragment23CommonStringBank, 1);
-    ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s1, (var_s2 - MeasureTextWidth(0x10, 0, temp_s0)) / 2, 0,
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s1, (var_s2 - MeasureTextWidth(0x10, 0, temp_s0)) / 2, 0,
                                                            temp_s0, 0x10);
     temp_s1->unk_3C = 0x1C;
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp6C, temp_s1);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp6C, temp_s1);
 
     PtrList_Init(&arg0->unk_38, 4, arg4);
 
@@ -118,23 +118,23 @@ void CommonStringMenuCreate(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk
     }
 
     temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(temp_s0_2, 0, 0x1C, var_s2, 0x88, gFragment23ButtonHighlightColor);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, temp_s0_2);
+    ((func885012A4)Memmap_GetFragmentVaddr(UIFrame_Create))(temp_s0_2, 0, 0x1C, var_s2, 0x88, gFragment23ButtonHighlightColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 4, DrawMenuItemText, var_s2, 0x20, 4, 1, arg4);
-    ((func88506384)Memmap_GetFragmentVaddr(func_88506384))(arg0->unk_30, &arg0->unk_38, arg4);
-    ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0->unk_30, arg2);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s0_2, arg0->unk_30);
+    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_30, 0, 4, DrawMenuItemText, var_s2, 0x20, 4, 1, arg4);
+    ((func88506384)Memmap_GetFragmentVaddr(List_SetItems))(arg0->unk_30, &arg0->unk_38, arg4);
+    ((func88506BFC)Memmap_GetFragmentVaddr(Fragment_Refresh))(arg0->unk_30, arg2);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s0_2, arg0->unk_30);
 
     arg0->unk_34 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
     CreateInfoPanel(arg0->unk_34, arg0->unk_00.unk_10.unk_00, 0xB4, arg4);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_34);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_34);
     UpdateDescriptionForSelection(arg0, arg2);
 
     temp_s0_3 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
-    ((func88503298)Memmap_GetFragmentVaddr(func_88503298))(temp_s0_3, arg0->unk_2C, arg3);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, temp_s0_3);
+    ((func88503298)Memmap_GetFragmentVaddr(Dialog_SetParent))(temp_s0_3, arg0->unk_2C, arg3);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, temp_s0_3);
 }
 
 void UpdateDescriptionForSelection(unk_func_88200FA0_030* arg0, s32 arg1) {
@@ -199,7 +199,7 @@ s32 MenuRunSelectionLoop(unk_func_88200FA0_030* arg0, Controller* arg1) {
                 var_s1 = arg0->unk_30->unk_38 + 2;
             }
         }
-        ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
+        ((func8850BC94)Memmap_GetFragmentVaddr(Fragment_HandleResult))(var_s0);
     }
     MenuCloseAndWait(arg0);
     return var_s1;
@@ -219,33 +219,33 @@ void ItemInfoScreenCreate(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3,
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     sp4C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-    ((func885031E8)Memmap_GetFragmentVaddr(func_885031E8))(sp4C, 0, 0, 0x280, 0x1E0);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, sp4C);
+    ((func885031E8)Memmap_GetFragmentVaddr(UIElementBase_Create))(sp4C, 0, 0, 0x280, 0x1E0);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, sp4C);
 
     sp48 = mem_pool_alloc(arg4, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(func_88500EE4))(sp48, 0, 0, 0x280, 0x1E0, D_88223E48, gFragment23BackgroundColorTop,
+    ((func88500EE4)Memmap_GetFragmentVaddr(UIColoredTextureRect_Create))(sp48, 0, 0, 0x280, 0x1E0, D_88223E48, gFragment23BackgroundColorTop,
                                                            gFragment23BackgroundColorBottom);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp4C, sp48);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp4C, sp48);
 
     arg0->unk_2C = mem_pool_alloc(arg4, sizeof(unk_func_885088F4));
-    ((func885088F4)Memmap_GetFragmentVaddr(func_885088F4))(arg0->unk_2C, 0x41, 0x15C, 0xDC);
+    ((func885088F4)Memmap_GetFragmentVaddr(ProgressBarFragment_Create))(arg0->unk_2C, 0x41, 0x15C, 0xDC);
     if (Stage_GetFadeState() == 0) {
         arg0->unk_2C->unk_2C = 5;
     }
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp4C, arg0->unk_2C);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp4C, arg0->unk_2C);
 
     sp44 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
-    ((func88509A2C)Memmap_GetFragmentVaddr(func_88509A2C))(sp44, 0x38, 0x22, func_80029080(),
+    ((func88509A2C)Memmap_GetFragmentVaddr(TrainerMoveInfoFragment_Create))(sp44, 0x38, 0x22, func_80029080(),
                                                            GetMessageString(NULL, 0, gFragment23ItemNameBank, 0));
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp44);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp44);
 
     sp40 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(sp40, 0, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, 0));
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp40);
+    ((func88509E34)Memmap_GetFragmentVaddr(LabelFragment_Create))(sp40, 0, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, 0));
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp40);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030));
     CommonStringMenuCreate(arg0->unk_30, 0x78, arg3, sp4C, arg4);
-    ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_30);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_30);
 
     arg0->unk_00.unk_24(&arg0->unk_00, 1);
 }
@@ -255,8 +255,8 @@ s32 ScreenMessageLoopRun(unk_func_88200FA0* arg0) {
 
     while (sp34 == 0) {
         Stage_BeginDisplayList();
-        ((func885008C4)Memmap_GetFragmentVaddr(func_885008C4))(arg0);
-        ((func88500828)Memmap_GetFragmentVaddr(func_88500828))(arg0, 0, 0);
+        ((func885008C4)Memmap_GetFragmentVaddr(TextObject_Render))(arg0);
+        ((func88500828)Memmap_GetFragmentVaddr(TextObject_PostRender))(arg0, 0, 0);
         Stage_Advance();
         ControllerMsgQueue_Recv(&sp34);
     }
@@ -292,7 +292,7 @@ s32 Fragment23_GetNextState(s32 arg0, UNUSED s32 arg1) {
     MemoryPool* sp34;
     void* sp30;
     u8* sp2C;
-    func_88002628_sp38* sp28;
+    TextObjectThreadData* sp28;
     UNUSED s32 pad;
     s32 sp20;
 
@@ -308,7 +308,7 @@ s32 Fragment23_GetNextState(s32 arg0, UNUSED s32 arg1) {
     sp30 = mem_pool_alloc(sp34, sizeof(unk_func_88200FA0));
     ItemInfoScreenCreate(sp30, 0, 0, arg0, sp34);
 
-    sp28 = ALIGN16((u32)mem_pool_alloc(sp34, sizeof(func_88002628_sp38)));
+    sp28 = ALIGN16((u32)mem_pool_alloc(sp34, sizeof(TextObjectThreadData)));
     osCreateThread(&sp28->thread, 0x32, Fragment23ThreadMain, sp30, sp2C + 0x1000, osGetThreadPri(NULL) - 1);
 
     ControllerMsgQueue_Init();

@@ -887,7 +887,7 @@ void GbsSetPlayerName(unk_func_8002A728* arg0) {
     }
 }
 
-void func_80027FA0(unk_func_80027FA0* arg0, s16 arg1) {
+void GBAudio_ResetState(unk_func_80027FA0* arg0, s16 arg1) {
     *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1];
 }
 

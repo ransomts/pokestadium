@@ -870,7 +870,7 @@ s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
     D_84A03130 = GetMessageBank(0x19);
     D_84A03134 = GetMessageBank(0x22);
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_84A03180, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&D_84A03180, gBattleContext.unk_11F2);
     D_84A03168 = Asset_Load2(0x898000, NULL, 1, 1);
     D_84A0316C = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);

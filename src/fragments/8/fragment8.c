@@ -462,7 +462,7 @@ void func_86200940(s32 arg0) {
         func_87801824(0x74, 0xC6, D_86203C9C);
         func_87801F48(2, 0x19, 0xA6);
     } else if (D_86204718 == 1) {
-        func_878021B4(0x1E, 0x17);
+        Stage_SetBorderFadeParams(0x1E, 0x17);
     }
 }
 

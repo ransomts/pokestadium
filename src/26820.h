@@ -189,7 +189,7 @@ s32 GbsReadBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3);
 s32 GbsWriteBlockEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3);
 void GbsGetPlayerName(unk_func_8002A728* arg0);
 void GbsSetPlayerName(unk_func_8002A728* arg0);
-void func_80027FA0(unk_func_80027FA0* arg0, s16 arg1);
+void GBAudio_ResetState(unk_func_80027FA0* arg0, s16 arg1);
 void func_80027FE0(unk_func_80027FA0* arg0, s16 arg1);
 void GbsGetPlayerMoney(u16* arg0);
 void GbsSetPlayerMoney(u16* arg0);

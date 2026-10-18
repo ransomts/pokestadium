@@ -1017,7 +1017,7 @@ s32 Menu_Run(s32 arg0, s32 arg1) {
     main_pool_push_state('PSSL');
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&gMenuConfig, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&gMenuConfig, gBattleContext.unk_11F2);
     Text_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);

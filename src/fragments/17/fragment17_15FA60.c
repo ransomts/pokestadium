@@ -533,7 +533,7 @@ s32 BattleState_Handle18(void) {
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_86B0EBB8, 0);
+    GBAudio_ResetState(&D_86B0EBB8, 0);
     D_86B0E5E4 = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (D_86B0EBB8 == 0x1F8) {

@@ -149,7 +149,7 @@ s32 BattleState_Handle24(void) {
     FRAGMENT_LOAD(fragment31);
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_86B10830, gBattleContext.unk_11F2);
+    GBAudio_ResetState(&D_86B10830, gBattleContext.unk_11F2);
 
     if (gBattleContext.unk_11F2 == 1) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);

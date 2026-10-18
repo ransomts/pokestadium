@@ -1140,7 +1140,7 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_8690B378, 0);
+    GBAudio_ResetState(&D_8690B378, 0);
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();

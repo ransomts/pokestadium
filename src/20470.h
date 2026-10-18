@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern Gfx D_8006F470[];
+extern Gfx gMenuDL_BackgroundFill[];
 extern Gfx gPrefDL_Fill[];
 extern Gfx D_8006F4C0[];
 extern Gfx gTransferPakErrorBorderDL[];

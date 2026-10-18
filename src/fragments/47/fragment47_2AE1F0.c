@@ -315,15 +315,15 @@ void AnimateIconMovement(s32 arg0, f32 arg1) {
 void LoadPlayerData(void) {
     s32 i;
     u8 temp_s3 = Cont_GetControllerBits();
-    unk_D_800AC910_040 sp48;
+    Gen1StringDecodeBuffer sp48;
 
     for (i = 0; i < 4; i++) {
-        func_80025040(i, &sp48);
+        Controller_ReadInput(i, &sp48);
         DecodeGen1String(D_83806778[i].unk_06, &sp48.unk_02);
         D_83806778[i].unk_04 = sp48.unk_00;
-        D_83806778[i].unk_01 = func_80024F68(i);
-        D_83806778[i].unk_00 = func_80024F00(i);
-        D_83806778[i].unk_02 = func_80025370(i);
+        D_83806778[i].unk_01 = MenuItem_GetHeldItemId(i);
+        D_83806778[i].unk_00 = MenuItem_GetPokemonSpecies(i);
+        D_83806778[i].unk_02 = MenuItem_GetPokemonGender(i);
         D_83806778[i].unk_03 = (temp_s3 & (1 << i)) != 0;
     }
 }

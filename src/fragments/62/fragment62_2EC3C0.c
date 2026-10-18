@@ -14,164 +14,164 @@
 #include "src/F420.h"
 #include "src/memory.h"
 
-static unk_D_8438E7B0 D_8438E7B0;
-static unk_D_8438E7B0 D_8438F390;
-static unk_D_8438FF70 D_8438FF70;
-static unk_D_8438FF70 D_8438FF90;
-static unk_D_8438FF70 D_8438FFB0;
-static unk_D_8438FF70 D_8438FFD0;
+static unk_D_8438E7B0 gAnimDataPlayer0;
+static unk_D_8438E7B0 gAnimDataPlayer1;
+static unk_D_8438FF70 gAnimDataSetB0;
+static unk_D_8438FF70 gAnimDataSetB1;
+static unk_D_8438FF70 gAnimDataSetC0;
+static unk_D_8438FF70 gAnimDataSetC1;
 static unk_D_84384588 D_8438FFF0;
-static unk_D_84384588 D_84390000;
+static unk_D_84384588 gAnimExtraDataPlayer1;
 unk_D_84390010* D_84390010[2];
 unk_D_84390010* gPrimaryPokemonEntity;
-unk_D_84390010* D_8439001C;
+unk_D_84390010* gPokemonEntityUnused;
 static unk_D_8438E7B0_A50* gCurrentAnimChannel;
 unk_D_84390028 gPokemonModelDimensions[2];
-static unk_D_84390048 D_84390048;
+static unk_D_84390048 gAnimTempVector;
 static unk_D_84390068 gAnimStateQueue[7];
 static s32 gAnimStateQueueIndex;
-static s32 D_843900A4;
-f32 D_843900A8[2];
+static s32 gAnimStateQueueCount;
+f32 gPlayerScaleFactors[2];
 
-unk_D_8438E7B0* gAnimDataByPlayer[] = { &D_8438E7B0, &D_8438F390 };
+unk_D_8438E7B0* gAnimDataByPlayer[] = { &gAnimDataPlayer0, &gAnimDataPlayer1 };
 unk_D_8438FF70* gAnimDataSetB[] = {
-    &D_8438FF70,
-    &D_8438FF90,
+    &gAnimDataSetB0,
+    &gAnimDataSetB1,
 };
 unk_D_8438FF70* gAnimDataSetC[] = {
-    &D_8438FFB0,
-    &D_8438FFD0,
+    &gAnimDataSetC0,
+    &gAnimDataSetC1,
 };
-unk_D_84384588* gAnimExtraDataByPlayer[] = { &D_8438FFF0, &D_84390000 };
+unk_D_84384588* gAnimExtraDataByPlayer[] = { &D_8438FFF0, &gAnimExtraDataPlayer1 };
 u8 gSpecialMoveIDs[] = { 0x39, 0x67, 0x64, 0x6D, 0x28, 0x6E, 0x2A, 0x47 };
 static u8 gSpecialConditionIDs[] = { 0x64, 0x6E };
 static u8 gStatMaskIndices[] = {
     0x06, 0x0C, 0x30, 0x31, 0x32, 0x33, 0x8D, 0x96, 0x97,
 };
-static u8 D_843845A8[] = {
+static u8 gStatMaskEntry0[] = {
     0x06,
     0x2E,
 };
-static u8 D_843845AC[] = {
+static u8 gStatMaskEntry1[] = {
     0x06,
     0x42,
 };
-static u8 D_843845B0[] = {
+static u8 gStatMaskEntry2[] = {
     0x06,
     0x42,
 };
-static u8 D_843845B4[] = {
+static u8 gStatMaskEntry3[] = {
     0x06,
     0x42,
 };
-static u8 D_843845B8[] = {
+static u8 gStatMaskEntry4[] = {
     0x06,
     0x06,
 };
-static u8 D_843845BC[] = {
+static u8 gStatMaskEntry5[] = {
     0x06,
     0x06,
 };
-static u8 D_843845C0[] = {
+static u8 gStatMaskEntry6[] = {
     0x06,
     0x16,
 };
-static u8 D_843845C4[] = {
+static u8 gStatMaskEntry7[] = {
     0x01,
     0x7F,
 };
-static u8 D_843845C8[] = {
+static u8 gStatMaskEntry8[] = {
     0x06,
     0x7F,
 };
 static u8* gStatMaskTable[] = {
-    D_843845A8, D_843845AC, D_843845B0, D_843845B4, D_843845B8, D_843845BC, D_843845C0, D_843845C4, D_843845C8,
+    gStatMaskEntry0, gStatMaskEntry1, gStatMaskEntry2, gStatMaskEntry3, gStatMaskEntry4, gStatMaskEntry5, gStatMaskEntry6, gStatMaskEntry7, gStatMaskEntry8,
 };
 u8 D_843845F0 = 0x8E;
 u8 D_843845F4 = 0x16;
 u8 D_843845F8 = 0x53;
 u8 D_843845FC[] = { 0x55, 0x54 };
 
-char** D_843900B0;
-char** D_843900B4;
+char** gMessageBank_0x1E;
+char** gMessageBank_0x24;
 char** gPokemonMessageBank;
-char** D_843900BC;
+char** gMessageBank_0x29;
 char** gMarqueeMessageBank;
 
-void func_84301B00(void) {
+void AnimStateQueue_ResetAll(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        gAnimStateQueue[i].unk_04 = D_84385380;
+        gAnimStateQueue[i].unk_04 = gAnimStateIdle;
     }
 }
 
 void func_84301B48(unk_D_84390010* arg0, s32 arg1) {
-    func_8432C68C(arg1, &arg0->unk_000, &arg0->unk_000, 0xFF, 0xFF);
+    InitActionScriptMode3(arg1, &arg0->unk_000, &arg0->unk_000, 0xFF, 0xFF);
 }
 
-void func_84301B84(unk_D_84390010* arg0, s32 arg1) {
+void AnimChannel_StartMoveAction(unk_D_84390010* arg0, s32 arg1) {
     UNUSED s16 pad;
     s16 sp24;
     s32 sp20;
 
     sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307F24(arg0);
-    func_8432C5D4(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
+    InitActionScriptSimple(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
 }
 
-void func_84301BEC(unk_D_84390010* arg0, s32 arg1) {
+void AnimChannel_StartSpecialMoveAction(unk_D_84390010* arg0, s32 arg1) {
     UNUSED s16 pad;
     s16 sp24;
     s32 sp20;
 
     sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307F24(arg0);
-    func_8432C654(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
+    InitActionScriptMode1(arg1, arg0, D_84390010[sp20], sp24, func_84307F68(arg0));
 }
 
-void func_84301C54(unk_D_84390010* arg0, s32 arg1) {
+void AnimChannel_StartAnotherMoveAction(unk_D_84390010* arg0, s32 arg1) {
     UNUSED s16 pad;
     s16 sp24;
     s32 sp20;
 
     sp20 = IsPrimaryEntity(arg0) == 0;
     sp24 = func_84307FAC(arg0);
-    func_8432C604(arg1, D_84390010[sp20], arg0, sp24, func_84307FE0(arg0));
+    InitDualTargetActionScript(arg1, D_84390010[sp20], arg0, sp24, func_84307FE0(arg0));
 }
 
-void func_84301CBC(unk_D_84390010* arg0) {
-    if (func_84302000(arg0) != 0) {
+void AnimChannel_ResetIfNeeded(unk_D_84390010* arg0) {
+    if (AnimChannel_CheckAndReset(arg0) != 0) {
         arg0->unk_4C4 = 0;
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_84301D08(unk_D_84390010* arg0) {
+void AnimChannel_SetupAndTrigger(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     s32 idx = arg0->unk_4C0;
-    s32 sp24 = D_84385384[idx].unk_20;
+    s32 sp24 = gMoveAnimData[idx].unk_20;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24];
-    if (func_84302000(arg0) != 0) {
-        func_84305A74(arg0, sp24, 2);
+    if (AnimChannel_CheckAndReset(arg0) != 0) {
+        PlayAnimSoundSimple(arg0, sp24, 2);
         arg0->unk_4C4 = 0;
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         Anim_SetChannelBase(&arg0->unk_000, 0);
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
     }
 }
 
-void func_84301DDC(unk_D_84390010* arg0) {
+void AnimChannel_CheckModelBaseY(unk_D_84390010* arg0) {
     s32 idx = arg0->unk_4C0;
-    s32 sp28 = D_84385384[idx].unk_20;
+    s32 sp28 = gMoveAnimData[idx].unk_20;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp28];
     if (GetModelBaseY(arg0) != 0.0f) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
-        func_84301B48(arg0, D_84385384[idx].unk_24);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
+        func_84301B48(arg0, gMoveAnimData[idx].unk_24);
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
@@ -197,57 +197,57 @@ void func_84301F80(unk_D_84390010* arg0) {
     D_84390010[1]->unk_000.unk_000.unk_02 &= ~2;
 }
 
-s32 func_84301FB0(unk_D_84390010* arg0) {
+s32 AnimChannel_GetFlagsFB0(unk_D_84390010* arg0) {
     return arg0->unk_720->unk_1D & 0xD0;
 }
 
-s32 func_84301FC0(unk_D_84390010* arg0) {
+s32 AnimChannel_FinishAndGetFlagsFC0(unk_D_84390010* arg0) {
     FinishPokemonAnimation(arg0->unk_720);
     return arg0->unk_720->unk_1D & 0xC0;
 }
 
-s32 func_84301FF0(unk_D_84390010* arg0) {
+s32 AnimChannel_GetFlagsFF0(unk_D_84390010* arg0) {
     return arg0->unk_720->unk_00 & 0xD0;
 }
 
-s32 func_84302000(unk_D_84390010* arg0) {
-    if (func_84301FC0(arg0) == 0) {
-        func_8432CAA8(arg0->unk_720);
+s32 AnimChannel_CheckAndReset(unk_D_84390010* arg0) {
+    if (AnimChannel_FinishAndGetFlagsFC0(arg0) == 0) {
+        ResetWaterEffect(arg0->unk_720);
         return 1;
     }
     return 0;
 }
 
-void func_8430203C(unk_D_84390010* arg0) {
+void AnimChannel_HandleBattleState(unk_D_84390010* arg0) {
     if (gBattleState.unk_00->unk_48 == 0xE) {
-        func_8432C958(arg0->unk_720, func_8430808C(arg0));
+        SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
     } else {
-        func_8432C958(arg0->unk_720, func_8430808C(arg0));
+        SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
     }
 }
 
-void func_843020B0(unk_D_84390010* arg0) {
+void AnimChannel_TriggerMoveEffect(unk_D_84390010* arg0) {
     s32 idx = arg0->unk_4C0;
 
-    func_8432C9C0(arg0->unk_720, D_84385384[idx].unk_24);
+    SetMessageFromAltTable(arg0->unk_720, gMoveAnimData[idx].unk_24);
 }
 
-void func_843020F4(unk_D_84390010* arg0) {
-    func_8432C958(arg0->unk_720, func_8430808C(arg0));
+void AnimChannel_TriggerGenericEffect(unk_D_84390010* arg0) {
+    SetMessageFromId(arg0->unk_720, func_8430808C(arg0));
 }
 
-void func_84302128(unk_D_84390010* arg0) {
+void AnimChannel_SetFlags28(unk_D_84390010* arg0) {
     arg0->unk_720->unk_02 = 0x98;
     arg0->unk_720->unk_00 |= 0x80;
 }
 
-void func_84302148(unk_D_84390010* arg0) {
+void AnimChannel_SetTransformData(unk_D_84390010* arg0) {
     arg0->unk_720->unk_04 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     arg0->unk_720->unk_00 |= 0x80;
     arg0->unk_720->unk_02 = arg0->unk_654.unk_BC;
 }
 
-s32 func_84302194(u16 arg0, u8* arg1, s32 arg2) {
+s32 FindIndexInArray(u16 arg0, u8* arg1, s32 arg2) {
     s32 var_v1 = 0;
 
     while (arg2--) {
@@ -261,7 +261,7 @@ s32 func_84302194(u16 arg0, u8* arg1, s32 arg2) {
     return -1;
 }
 
-void func_843021E8(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk_D_84390010_94C* arg3) {
+void ApplyStatMasksAndConditions(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk_D_84390010_94C* arg3) {
     s32 i;
     s32 j;
     s32 temp_v0_3;
@@ -297,7 +297,7 @@ void func_843021E8(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk
             }
 
             for (j = 0; j < 0x37; j++) {
-                temp_v0_3 = func_84302194(arg1 + 1, gStatMaskIndices, 9);
+                temp_v0_3 = FindIndexInArray(arg1 + 1, gStatMaskIndices, 9);
                 if (temp_v0_3 >= 0) {
                     temp_v1_2 = j / 8;
                     if (temp_v1_2 == gStatMaskTable[temp_v0_3][0]) {
@@ -319,30 +319,30 @@ void func_843021E8(unk_D_84390010* arg0, u16 arg1, unk_D_84390010_94C* arg2, unk
     }
 }
 
-void func_8430245C(unk_D_84390010* arg0) {
+void ResetAllStatFlags(unk_D_84390010* arg0) {
     arg0->unk_654.unk_C1[0] = 1;
     arg0->unk_654.unk_C1[1] = 1;
     arg0->unk_654.unk_C1[2] = 1;
     arg0->unk_654.unk_C1[3] = 1;
 
-    func_843021E8(arg0, arg0->unk_654.unk_38.unk_0B - 1, &arg0->unk_94C, &arg0->unk_9AC);
+    ApplyStatMasksAndConditions(arg0, arg0->unk_654.unk_38.unk_0B - 1, &arg0->unk_94C, &arg0->unk_9AC);
 
     if (gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_00 != 0) {
-        func_843021E8(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
+        ApplyStatMasksAndConditions(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
     }
 
     if (gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_01 != 0) {
-        func_843021E8(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
+        ApplyStatMasksAndConditions(arg0, gAnimExtraDataByPlayer[IsPrimaryEntity(arg0)]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
     }
 }
 
-void func_8430255C(u8 arg0, u32 arg1) {
+void DMATransfer_MoveData(u8 arg0, u32 arg1) {
     u32 temp_a1 = (u32)_70D3A0_ROM_START + ((u32)&D_72780[arg0 - 1] & 0xFFFFFF);
 
     DmaCopyAsyncRange(arg1, temp_a1, temp_a1 + 0x20, 0);
 }
 
-void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2) {
+void DMATransfer_MoveDataPair(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2) {
     UNUSED s32 pad[3];
     u32 temp_a1;
 
@@ -352,7 +352,7 @@ void func_843025BC(s32 arg0, unk_D_84390010_94C* arg1, unk_D_84390010_94C* arg2)
     DmaCopyAsyncRange(arg2, temp_a1, temp_a1 + 0x20, 0);
 }
 
-void func_84302658(unk_D_84390010* arg0, s32 arg1) {
+void LoadPlayerAnimationData(unk_D_84390010* arg0, s32 arg1) {
     s16 sp6E;
     s32 sp68;
     s16 sp66;
@@ -399,15 +399,15 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     }
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70B10 + (sp66 * 0x20)) & 0xFFFFFF);
-    DmaCopyAsyncRange(&D_84390048, var_a1, var_a1 + 0x20, 0);
+    DmaCopyAsyncRange(&gAnimTempVector, var_a1, var_a1 + 0x20, 0);
 
-    Vector_Copy(&arg0->unk_448.unk_24.unk_00, &D_84390048.unk_00);
-    Vector_Copy(&arg0->unk_448.unk_24.unk_0C, &D_84390048.unk_0C);
+    Vector_Copy(&arg0->unk_448.unk_24.unk_00, &gAnimTempVector.unk_00);
+    Vector_Copy(&arg0->unk_448.unk_24.unk_0C, &gAnimTempVector.unk_0C);
 
-    arg0->unk_448.unk_24.unk_18 = D_84390048.unk_18;
-    arg0->unk_448.unk_24.unk_19 = D_84390048.unk_19;
-    arg0->unk_448.unk_24.unk_1A = D_84390048.unk_1A;
-    arg0->unk_448.unk_24.unk_1B = D_84390048.unk_1B;
+    arg0->unk_448.unk_24.unk_18 = gAnimTempVector.unk_18;
+    arg0->unk_448.unk_24.unk_19 = gAnimTempVector.unk_19;
+    arg0->unk_448.unk_24.unk_1A = gAnimTempVector.unk_1A;
+    arg0->unk_448.unk_24.unk_1B = gAnimTempVector.unk_1B;
     arg0->unk_448.unk_24.unk_00.x *= arg0->unk_4B0;
     arg0->unk_448.unk_24.unk_0C.x *= arg0->unk_4B0;
 
@@ -417,22 +417,22 @@ void func_84302658(unk_D_84390010* arg0, s32 arg1) {
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_71E10 + (sp66 * 0x10)) & 0xFFFFFF);
     DmaCopyAsyncRange(gAnimExtraDataByPlayer[sp68], var_a1, var_a1 + 0x10, 0);
 
-    func_843025BC(sp66, &arg0->unk_94C, &arg0->unk_9AC);
+    DMATransfer_MoveDataPair(sp66, &arg0->unk_94C, &arg0->unk_9AC);
 
     if (gAnimExtraDataByPlayer[sp68]->unk_00 != 0) {
-        func_843025BC(gAnimExtraDataByPlayer[sp68]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
+        DMATransfer_MoveDataPair(gAnimExtraDataByPlayer[sp68]->unk_00 - 1, &arg0->unk_96C, &arg0->unk_9CC);
     }
 
     if (gAnimExtraDataByPlayer[sp68]->unk_01 != 0) {
-        func_843025BC(gAnimExtraDataByPlayer[sp68]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
+        DMATransfer_MoveDataPair(gAnimExtraDataByPlayer[sp68]->unk_01 - 1, &arg0->unk_98C, &arg0->unk_9EC);
     }
 
     if (arg1 == 1) {
-        func_8430245C(arg0);
+        ResetAllStatFlags(arg0);
     }
 }
 
-void func_843029D0(unk_D_84390010* arg0) {
+void Pokemon_HandleFaint(unk_D_84390010* arg0) {
     if (arg0->unk_4C4 == 0x14) {
         arg0->unk_720->unk_00 |= 0x80;
     }
@@ -442,12 +442,12 @@ void func_843029D0(unk_D_84390010* arg0) {
         func_8430920C(arg0);
         RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
-        func_84305760(arg0, 0x12);
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
+        ExecuteAnimStateHandlers(arg0, 0x12);
     }
 }
 
-void func_84302A78(unk_D_84390010* arg0) {
+void Pokemon_StartMoveAnimation(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp24;
     unk_D_84390010_654* sp20;
     s32 idx;
@@ -473,15 +473,15 @@ void func_84302A78(unk_D_84390010* arg0) {
         }
 
         if ((sp20->unk_34 & 0x4000) && ((sp2A == 0x32) || (sp2A == 0x31))) {
-            func_84306200(arg0, 8);
+            ClearEntityAnimFlags(arg0, 8);
             arg0->unk_000.unk_000.unk_02 |= 0x20;
-            func_843061EC(arg0, 0x10);
-            func_84306200(arg0, 0x4000);
+            SetEntityAnimFlags(arg0, 0x10);
+            ClearEntityAnimFlags(arg0, 0x4000);
         }
 
         func_84301F2C(arg0);
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
-        func_843058C4(arg0, sp24->unk_5A - 1);
+        PlayAnimSoundIfApplicable(arg0, sp24->unk_5A - 1);
 
         if (gCurrentAnimChannel->unk_0B != 0) {
             Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
@@ -493,7 +493,7 @@ void func_84302A78(unk_D_84390010* arg0) {
     }
 }
 
-void func_84302C34(unk_D_84390010* arg0) {
+void Pokemon_HandleMoveCompletion(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     s16 sp32 = arg0->unk_000.unk_01A - 1;
     unk_D_800FCB18* sp24;
@@ -503,17 +503,17 @@ void func_84302C34(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
     if ((sp24->unk_5A == 0x19) && (sp32 == 0x64)) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         if (gBattleState.unk_00->unk_48 == 0x14) {
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         } else if (sp24->unk_44.unk_00 == 0x5B) {
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         } else {
             if (sp24->unk_44.unk_00 == 0x6E) {
                 if ((sp32 != 7) && (sp32 != 8) && (sp32 != 0x5A) && (sp32 != 6)) {
                     func_84308654(arg0, 0xC, 0);
-                    func_84301B84(arg0, sp24->unk_5A);
+                    AnimChannel_StartMoveAction(arg0, sp24->unk_5A);
                 }
             } else {
                 if (sp24->unk_44.unk_00 == 0x45) {
@@ -530,48 +530,48 @@ void func_84302C34(unk_D_84390010* arg0) {
                     func_84308654(arg0, gCurrentAnimChannel->unk_05, 0);
                 }
 
-                if ((sp24->unk_5A == 0x9A) && (D_84390230 == D_8439022C)) {
-                    func_84301BEC(arg0, sp24->unk_5A);
+                if ((sp24->unk_5A == 0x9A) && (gCurrentMoveIndex == gTotalMoveCount)) {
+                    AnimChannel_StartSpecialMoveAction(arg0, sp24->unk_5A);
                 } else {
-                    func_84301B84(arg0, sp24->unk_5A);
+                    AnimChannel_StartMoveAction(arg0, sp24->unk_5A);
                 }
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84302EF0(unk_D_84390010* arg0) {
+void AnimChannel_CheckAndAdvance(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp24 = &arg0->unk_654.unk_38;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
     if (arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) {
-        if (func_84301FB0(arg0) == 0) {
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
             if (gBattleState.unk_00->unk_48 == 0x18) {
-                D_84390234--;
-                if (D_84390234 < 0) {
-                    if (D_843C4DA4 != 0) {
-                        func_8432B5B8(arg0, sp24, 2);
+                gInitialMoveIndex--;
+                if (gInitialMoveIndex < 0) {
+                    if (gSpecialFlag != 0) {
+                        TriggerMoveEvent(arg0, sp24, 2);
                     }
                 } else {
-                    func_8432B5B8(arg0, sp24, 3);
+                    TriggerMoveEvent(arg0, sp24, 3);
                 }
-            } else if (D_843C4DA4 != 0) {
-                func_8432B5B8(arg0, sp24, 2);
+            } else if (gSpecialFlag != 0) {
+                TriggerMoveEvent(arg0, sp24, 2);
             } else {
                 if ((sp24->unk_5A == 0x2D) || (sp24->unk_5A == 0x2E) || (sp24->unk_5A == 0x59)) {
                     func_8431B290(arg0);
                 }
-                func_8432B5B8(arg0, sp24, 0);
-                func_843031A0(arg0);
+                TriggerMoveEvent(arg0, sp24, 0);
+                AnimChannel_SetSubStateIfNeeded(arg0);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_8430305C(unk_D_84390010* arg0) {
+void AnimChannel_HandleSpecialMoves(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp24 = &arg0->unk_654.unk_38;
     UNUSED s16 pad;
     s16 sp18;
@@ -581,20 +581,20 @@ void func_8430305C(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24->unk_5A - 1];
 
     if (arg0->unk_4C4 == (gCurrentAnimChannel->unk_09 + 1)) {
-        if (func_84301FB0(arg0) == 0) {
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
             if (((sp18 == 0x4A) || (sp18 == 0x60) || (sp18 == 0x61) || (sp18 == 0x6A) || (sp18 == 0x6E) ||
                  (sp18 == 0xE) || (sp18 == 0x68) || (sp18 == 0x6B) || (sp18 == 0x6F) || (sp18 == 0x70) ||
                  (sp18 == 0x85) || (sp18 == 0x97) || (sp18 == 0x9F)) &&
-                (D_843C4E45 == 1)) {
-                func_8432C6C4(3, arg0);
+                (gAnimStateFlag == 1)) {
+                InitSingleEntityActionScript(3, arg0);
                 Audio_PlaySoundEffect(0x23, 0, 0);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_843031A0(unk_D_84390010* arg0) {
+void AnimChannel_SetSubStateIfNeeded(unk_D_84390010* arg0) {
     unk_D_800FCB18* temp_v1 = &arg0->unk_654.unk_38;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[temp_v1->unk_5A - 1];
@@ -604,7 +604,7 @@ void func_843031A0(unk_D_84390010* arg0) {
     }
 }
 
-void func_84303208(unk_D_84390010* arg0) {
+void Pokemon_GenericActionTrigger(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010_654* temp_v1 = &arg0->unk_654;
     s16 sp22;
@@ -615,14 +615,14 @@ void func_84303208(unk_D_84390010* arg0) {
     if (!(temp_v1->unk_34 & 2)) {
         arg0->unk_4C4 = 0;
         if ((temp_v1->unk_34 & 0x4000) && ((sp22 == 0x32) || (sp22 == 0x31))) {
-            func_84306200(arg0, 8);
+            ClearEntityAnimFlags(arg0, 8);
             arg0->unk_000.unk_000.unk_02 |= 0x20;
-            func_843061EC(arg0, 0x10);
-            func_84306200(arg0, 0x4000);
+            SetEntityAnimFlags(arg0, 0x10);
+            ClearEntityAnimFlags(arg0, 0x4000);
         }
         GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
         Anim_SetChannelBase(&arg0->unk_000, 0);
-        func_843058C4(arg0, 4);
+        PlayAnimSoundIfApplicable(arg0, 4);
 
         if (gCurrentAnimChannel->unk_0B != 0) {
             Anim_SetChannelBase(&arg0->unk_000, gCurrentAnimChannel->unk_0B);
@@ -634,15 +634,15 @@ void func_84303208(unk_D_84390010* arg0) {
     }
 }
 
-void func_8430334C(unk_D_84390010* arg0) {
+void Pokemon_PlayMoveEffect(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
-    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
+    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         func_800479C0(1, arg0->unk_000.unk_01A, 0);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_843033E0(unk_D_84390010* arg0) {
+void Pokemon_TriggerAnimIfUnlocked(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp20;
     unk_D_800FCB18* ptr;
 
@@ -667,7 +667,7 @@ void func_843033E0(unk_D_84390010* arg0) {
     }
 }
 
-void func_843034D8(unk_D_84390010* arg0) {
+void Pokemon_HandleMoveEnd(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 var_v0;
 
@@ -679,16 +679,16 @@ void func_843034D8(unk_D_84390010* arg0) {
         var_v0 = gCurrentAnimChannel->unk_04 + 1;
     }
 
-    if ((var_v0 == arg0->unk_4C4) && (func_84301FB0(arg0) == 0)) {
+    if ((var_v0 == arg0->unk_4C4) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         if (gBattleState.unk_00->unk_48 == 0x14) {
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
             return;
         }
 
-        if ((sp20->unk_5A == 0x9A) && (D_84390230 == D_8439022C)) {
-            func_84301BEC(arg0, sp20->unk_5A);
+        if ((sp20->unk_5A == 0x9A) && (gCurrentMoveIndex == gTotalMoveCount)) {
+            AnimChannel_StartSpecialMoveAction(arg0, sp20->unk_5A);
         } else {
-            func_84301B84(arg0, sp20->unk_5A);
+            AnimChannel_StartMoveAction(arg0, sp20->unk_5A);
         }
 
         if (sp20->unk_44.unk_00 == 0x45) {
@@ -698,11 +698,11 @@ void func_843034D8(unk_D_84390010* arg0) {
         } else {
             func_84308654(arg0, gCurrentAnimChannel->unk_05, 0);
         }
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_84303674(unk_D_84390010* arg0) {
+void Pokemon_HandleSpecialMoveEnd(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp18;
     s32 var_v0;
 
@@ -716,29 +716,29 @@ void func_84303674(unk_D_84390010* arg0) {
     }
 
     if (var_v0 == arg0->unk_4C4) {
-        if (func_84301FB0(arg0) == 0) {
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
             if (gBattleState.unk_00->unk_48 == 0x18) {
-                D_84390234--;
-                if (D_84390234 < 0) {
-                    if (D_843C4DA4 != 0) {
-                        func_8432B5B8(arg0, sp18, 2);
+                gInitialMoveIndex--;
+                if (gInitialMoveIndex < 0) {
+                    if (gSpecialFlag != 0) {
+                        TriggerMoveEvent(arg0, sp18, 2);
                     } else {
-                        func_8432B5B8(arg0, sp18, 0);
+                        TriggerMoveEvent(arg0, sp18, 0);
                     }
                 } else {
-                    func_8432B5B8(arg0, sp18, 3);
+                    TriggerMoveEvent(arg0, sp18, 3);
                 }
-            } else if (D_843C4DA4 != 0) {
-                func_8432B5B8(arg0, sp18, 2);
+            } else if (gSpecialFlag != 0) {
+                TriggerMoveEvent(arg0, sp18, 2);
             } else {
-                func_8432B5B8(arg0, sp18, 0);
+                TriggerMoveEvent(arg0, sp18, 0);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_843037CC(unk_D_84390010* arg0) {
+void Pokemon_EnterBattleState(unk_D_84390010* arg0) {
     UNUSED s32 pad[3];
     s32 sp40;
     unk_D_84390010_654* sp3C;
@@ -763,24 +763,24 @@ void func_843037CC(unk_D_84390010* arg0) {
     D_84390010[sp40]->unk_4C4 = 0;
 
     if (!(sp3C->unk_34 & 0x200) && !(sp3C->unk_34 & 0x4000) && !(sp3C->unk_34 & 2)) {
-        if (((D_843C4DEC < 0xA) || (D_843C4DA4 != 0)) && ((sp28->unk_15 & 0x20) == 0)) {
+        if (((gAnimTimer < 0xA) || (gSpecialFlag != 0)) && ((sp28->unk_15 & 0x20) == 0)) {
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A50;
             if (sp3C->unk_34 & 0x200) {
                 gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_B00;
             }
         } else if (!(sp3C->unk_34 & 1)) {
-            func_84305A74(D_84390010[sp40], 0xA8, 1);
+            PlayAnimSoundSimple(D_84390010[sp40], 0xA8, 1);
         }
 
-        if ((D_843C4DEC >= 0xB) && (func_84307B60(D_84390010[sp40]) != 0)) {
+        if ((gAnimTimer >= 0xB) && (func_84307B60(D_84390010[sp40]) != 0)) {
             Audio_PlaySequence(0xC8, 6);
         }
 
-        if ((D_843C4DEC == 0xA) && (func_84307B60(D_84390010[sp40]) != 0)) {
+        if ((gAnimTimer == 0xA) && (func_84307B60(D_84390010[sp40]) != 0)) {
             Audio_PlaySequence(0xC8, 5);
         }
 
-        if ((D_843C4DA4 == 0) && (sp28->unk_5A == 0x49)) {
+        if ((gSpecialFlag == 0) && (sp28->unk_5A == 0x49)) {
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_A80;
         }
 
@@ -793,7 +793,7 @@ void func_843037CC(unk_D_84390010* arg0) {
     }
 }
 
-void func_84303A48(unk_D_84390010* arg0) {
+void Pokemon_HandleSwitchIn(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
@@ -803,25 +803,25 @@ void func_84303A48(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
     if (D_84390010[sp28 == 0]->unk_4C4 == (gCurrentAnimChannel->unk_07 + 1)) {
-        if (func_84301FB0(arg0) == 0) {
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
             func_8432E9D8(1);
             if (sp20->unk_44.unk_00 == 0x51) {
-                if ((D_843C4E45 != 0) && (D_843C4E44 != 0)) {
-                    func_84301C54(D_84390010[sp28 == 0], sp20->unk_5A);
+                if ((gAnimStateFlag != 0) && (gIsBattleMode != 0)) {
+                    AnimChannel_StartAnotherMoveAction(D_84390010[sp28 == 0], sp20->unk_5A);
                     func_84308654(D_84390010[sp28 == 0], 0x10, 0);
                 }
             } else {
-                func_84301C54(D_84390010[sp28 == 0], sp20->unk_5A);
+                AnimChannel_StartAnotherMoveAction(D_84390010[sp28 == 0], sp20->unk_5A);
                 if ((sp20->unk_44.unk_00 == 0x14) || (sp20->unk_44.unk_00 == 0x23) || (sp20->unk_44.unk_00 == 0x84)) {
                     func_84308654(D_84390010[sp28 == 0], 0x10, 0);
                 }
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84303BB8(unk_D_84390010* arg0) {
+void Pokemon_HandleSwitchOut(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
@@ -831,29 +831,29 @@ void func_84303BB8(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
     if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
-        if (func_84301FB0(arg0) == 0) {
-            if (D_843C4E44 == 1) {
-                func_8432B5B8(D_84390010[sp28], sp20, 1);
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
+            if (gIsBattleMode == 1) {
+                TriggerMoveEvent(D_84390010[sp28], sp20, 1);
             } else {
-                func_8432B5B8(D_84390010[sp28], sp20, 5);
+                TriggerMoveEvent(D_84390010[sp28], sp20, 5);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84303CB4(unk_D_84390010* arg0) {
+void Pokemon_StartBattleIntro(unk_D_84390010* arg0) {
     s32 sp1C = IsPrimaryEntity(arg0);
 
     gCurrentAnimChannel = &gAnimDataByPlayer[sp1C]->unk_A80;
     D_84390010[sp1C]->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
-    func_84305A74(D_84390010[sp1C], 0xA8, 1);
+    PlayAnimSoundSimple(D_84390010[sp1C], 0xA8, 1);
     PlayBattleSoundEffect(arg0, 0x1E);
 }
 
-s32 func_84303D50(unk_D_84390010* arg0) {
+s32 Pokemon_CheckAnimStateC(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp1C;
 
     sp1C = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
@@ -867,7 +867,7 @@ s32 func_84303D50(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_84303DEC(unk_D_84390010* arg0) {
+s32 Pokemon_CheckAnimState0(unk_D_84390010* arg0) {
     IsPrimaryEntity(arg0);
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
     if (gCurrentAnimChannel->unk_0C != 0) {
@@ -879,22 +879,22 @@ s32 func_84303DEC(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_84303E58(unk_D_84390010* arg0) {
+void Pokemon_ResetAnimAndTrigger(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
-    func_843058C4(arg0, 0xA8);
+    PlayAnimSoundIfApplicable(arg0, 0xA8);
     arg0->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
 }
 
-void func_84303ECC(unk_D_84390010* arg0) {
+void Pokemon_HandleSpecialMoveAnimation(unk_D_84390010* arg0) {
     s32 idx = arg0->unk_4C0;
     s32 temp_a0;
     s32 sp34;
     PokemonData* sp30;
     unk_D_84390010_654* sp24;
 
-    sp34 = D_84385384[idx].unk_20;
+    sp34 = gMoveAnimData[idx].unk_20;
     sp30 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     sp24 = &arg0->unk_654;
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp34];
@@ -928,33 +928,33 @@ void func_84303ECC(unk_D_84390010* arg0) {
     }
 }
 
-void func_84304114(unk_D_84390010* arg0) {
+void PlayBattleMusicIfReady(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp18 = &arg0->unk_654;
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((sp18->unk_34 & 0x4000) || (sp18->unk_34 & 2) || (ptr->unk_05 & 7)) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     } else if (arg0->unk_4C4 == 1) {
-        if (func_84301FB0(arg0) == 0) {
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
             if (arg0->unk_000.unk_01A >= 0x98) {
                 PlayBattleMusicOrDefault(arg0, sp18->unk_BC);
             } else {
                 PlayBattleMusicOrDefault(arg0, arg0->unk_000.unk_01A);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84304210(unk_D_84390010* arg0) {
+void PlayBattleMusicAndSound(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     unk_D_84390010_654* sp24 = &arg0->unk_654;
 
     if ((arg0->unk_654.unk_34 & 0x4000) || (sp24->unk_34 & 2) || (ptr->unk_05 & 7)) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
+    } else if ((arg0->unk_4C4 == 1) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         if (arg0->unk_000.unk_01A >= 0x98) {
             Audio_PlaySequence(sp24->unk_BC, 3);
         } else if (func_84307B60(arg0) != 0) {
@@ -974,21 +974,21 @@ void func_84304210(unk_D_84390010* arg0) {
         } else {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_843043FC(unk_D_84390010* arg0) {
+void PlayBattleMusicAndSoundAlt(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     unk_D_84390010_654* sp24;
 
     if ((arg0->unk_654.unk_34 & 0x4000) || (ptr->unk_05 & 0x20) || (ptr->unk_05 & 7)) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         return;
     }
 
-    if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
+    if ((arg0->unk_4C4 == 1) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         sp24 = &arg0->unk_654;
         if (arg0->unk_000.unk_01A >= 0x98) {
             Audio_PlaySequence(sp24->unk_BC, 4);
@@ -1010,37 +1010,37 @@ void func_843043FC(unk_D_84390010* arg0) {
             PlayMoveSoundEffect(IsPrimaryEntity(arg0) & 0xFF, 0, arg0->unk_000.unk_01A, 0xB);
         }
 
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_843045DC(unk_D_84390010* arg0) {
+void Pokemon_HandleMoveHit(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     s32 sp24 = arg0->unk_4C0;
     unk_D_84390010_654* temp_v1 = &arg0->unk_654;
 
-    if (func_84302000(arg0) != 0) {
+    if (AnimChannel_CheckAndReset(arg0) != 0) {
         arg0->unk_720->unk_02 = arg0->unk_654.unk_38.unk_0B;
         arg0->unk_4C4 = 0;
-        func_84301B48(arg0, D_84385384[sp24].unk_24);
+        func_84301B48(arg0, gMoveAnimData[sp24].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
         arg0->unk_720->unk_04 = &arg0->unk_720->unk_08[temp_v1->unk_2B]->unk_01C[temp_v1->unk_18];
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_843046BC(unk_D_84390010* arg0) {
+void Pokemon_HandleMoveHitSimple(unk_D_84390010* arg0) {
     IsPrimaryEntity(arg0);
-    if ((arg0->unk_4C4 == 1) && (func_84301FB0(arg0) == 0)) {
+    if ((arg0->unk_4C4 == 1) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         s32 idx = arg0->unk_4C0;
 
-        func_84301B48(arg0, D_84385384[idx].unk_24);
+        func_84301B48(arg0, gMoveAnimData[idx].unk_24);
         Audio_PlaySoundEffect(3, 0, 0);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_84304758(unk_D_84390010* arg0) {
+void Pokemon_HandleFaintEffect(unk_D_84390010* arg0) {
     if (arg0->unk_4C4 == 0x4F) {
         arg0->unk_720->unk_00 |= 0x80;
     }
@@ -1052,45 +1052,45 @@ void func_84304758(unk_D_84390010* arg0) {
         RefreshPokemonTransform(arg0);
         Audio_PlaySoundEffect(2, 0, 0);
 
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
 
-        func_84305760(arg0, 0x12);
+        ExecuteAnimStateHandlers(arg0, 0x12);
     }
 }
 
-void func_84304800(unk_D_84390010* arg0) {
+void Pokemon_ClearTransformFlag(unk_D_84390010* arg0) {
     if (arg0->unk_720->unk_00 & 0x10) {
         arg0->unk_720->unk_00 &= ~0x90;
         func_843092B4(arg0);
     }
 }
 
-void func_84304834(unk_D_84390010* arg0) {
+void Pokemon_TriggerAnimByLookup(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
-    s32 sp24 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
+    s32 sp24 = gAnimLookupTable[arg0->unk_654.unk_38.unk_5A - 1];
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp24];
     arg0->unk_4C4 = 0;
     Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
-    func_843058C4(arg0, sp24);
+    PlayAnimSoundIfApplicable(arg0, sp24);
 }
 
-void func_843048C8(unk_D_84390010* arg0) {
+void Pokemon_HandleSpecialMoveEffect(unk_D_84390010* arg0) {
     unk_D_800FCB18* temp_s1_2;
     s16 sp22;
     s16 temp_s1;
 
     sp22 = arg0->unk_000.unk_01A - 1;
     temp_s1_2 = &arg0->unk_654.unk_38;
-    temp_s1 = D_84384670[temp_s1_2->unk_5A - 1];
+    temp_s1 = gAnimLookupTable[temp_s1_2->unk_5A - 1];
 
     IsPrimaryEntity(arg0);
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[temp_s1];
 
-    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
-        func_84301BEC(arg0, temp_s1_2->unk_5A);
+    if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
+        AnimChannel_StartSpecialMoveAction(arg0, temp_s1_2->unk_5A);
 
         if (temp_s1_2->unk_5A == 0x13) {
             func_84308654(arg0, 3, 0);
@@ -1101,13 +1101,13 @@ void func_843048C8(unk_D_84390010* arg0) {
             func_8432C7A0(4, arg0);
         }
 
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
 
-        func_8432B5B8(arg0, temp_s1_2, 4);
+        TriggerMoveEvent(arg0, temp_s1_2, 4);
     }
 }
 
-void func_843049FC(unk_D_84390010* arg0) {
+void Pokemon_SetSpecialAnimChannel(unk_D_84390010* arg0) {
     UNUSED s32 pad[3];
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     s32 sp1C;
@@ -1124,22 +1124,22 @@ void func_843049FC(unk_D_84390010* arg0) {
             sp1C = 0xA5;
         }
         gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp1C];
-        func_843058C4(arg0, sp1C);
+        PlayAnimSoundIfApplicable(arg0, sp1C);
     }
 }
 
-void func_84304ACC(unk_D_84390010* arg0) {
+void Pokemon_HandleSpecialCondition(unk_D_84390010* arg0) {
     unk_D_800FCB18* ptr = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (ptr->unk_4C & 0x20) {
         if ((ptr->unk_5A == 0x14) || (ptr->unk_5A == 0x23) || (ptr->unk_5A == 0x51)) {
-            func_8432C6C4(2, arg0);
+            InitSingleEntityActionScript(2, arg0);
             func_84308654(arg0, 0x10, 0);
         }
     }
 }
 
-void func_84304B50(unk_D_84390010* arg0) {
+void Pokemon_TriggerAnimIfMatch(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
@@ -1148,14 +1148,14 @@ void func_84304B50(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
     if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
-        if (func_84301FB0(arg0) == 0) {
-            func_8432B5B8(arg0, sp20, 5);
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
+            TriggerMoveEvent(arg0, sp20, 5);
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84304C20(unk_D_84390010* arg0) {
+void Pokemon_PlaySoundBasedOnFlags(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20 = &arg0->unk_654.unk_38;
 
     if (sp20->unk_15 & 8) {
@@ -1166,23 +1166,23 @@ void func_84304C20(unk_D_84390010* arg0) {
         PlayBattleSoundEffect(arg0, 0x21);
     }
 
-    gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+    gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
 }
 
-void func_84304C8C(unk_D_84390010* arg0) {
+void Pokemon_HandleGroundedAnim(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     u16 sp22 = arg0->unk_000.unk_01A;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A70;
     if ((GetModelBaseY(arg0) != 0.0f) && (sp22 != 0x16) && (sp22 != 0x52) && (sp22 != 0x8E)) {
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
-    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
-        func_8432B554(arg0);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
+    } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
+        PlayHeightBasedSoundEffect(arg0);
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_84304D84(unk_D_84390010* arg0) {
+void Pokemon_HandleAirborneAnim(unk_D_84390010* arg0) {
     s32 sp24;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A70;
@@ -1192,30 +1192,30 @@ void func_84304D84(unk_D_84390010* arg0) {
         sp24 = gCurrentAnimChannel->unk_0A - 0x31;
     }
 
-    if (func_84301FB0(arg0) == 0) {
+    if (AnimChannel_GetFlagsFB0(arg0) == 0) {
         if (GetModelBaseY(arg0) != 0.0f) {
             if ((sp24 <= 0) || (sp24 == arg0->unk_4C4)) {
                 if (gCurrentAnimChannel->unk_09 == 1) {
-                    func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
+                    InitActionScriptMode3(2, arg0, arg0, 0xFF, 0xFF);
                 } else {
-                    func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
+                    InitActionScriptMode3(0xC, arg0, arg0, 0xFF, 0xFF);
                 }
                 Audio_PlaySoundEffect(3, 0, 0);
-                gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+                gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
             }
         } else if ((sp24 <= 0) || (sp24 == arg0->unk_4C4)) {
             if (gCurrentAnimChannel->unk_09 == 1) {
-                func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
+                InitActionScriptMode3(2, arg0, arg0, 0xFF, 0xFF);
             } else {
-                func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
+                InitActionScriptMode3(0xC, arg0, arg0, 0xFF, 0xFF);
             }
             Audio_PlaySoundEffect(3, 0, 0);
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_84304F54(unk_D_84390010* arg0) {
+void CheckAnimStateCompletion(unk_D_84390010* arg0) {
     s32 sp24;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B10;
@@ -1225,18 +1225,18 @@ void func_84304F54(unk_D_84390010* arg0) {
         sp24 = gCurrentAnimChannel->unk_0A - 0x31;
     }
 
-    if ((func_84301FB0(arg0) == 0) && ((sp24 <= 0) || (sp24 == arg0->unk_4C4))) {
+    if ((AnimChannel_GetFlagsFB0(arg0) == 0) && ((sp24 <= 0) || (sp24 == arg0->unk_4C4))) {
         if (gCurrentAnimChannel->unk_09 == 1) {
-            func_8432C68C(2, arg0, arg0, 0xFF, 0xFF);
+            InitActionScriptMode3(2, arg0, arg0, 0xFF, 0xFF);
         } else {
-            func_8432C68C(0xC, arg0, arg0, 0xFF, 0xFF);
+            InitActionScriptMode3(0xC, arg0, arg0, 0xFF, 0xFF);
         }
         Audio_PlaySoundEffect(3, 0, 0);
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-void func_8430506C(unk_D_84390010* arg0) {
+void UpdateAnimChannelForEntity(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     s32 sp48;
     UNUSED s32 pad2;
@@ -1267,11 +1267,11 @@ void func_8430506C(unk_D_84390010* arg0) {
     D_84390010[sp40]->unk_4C4 = 0;
 
     if (!(sp3C->unk_34 & 0x4000) && !(sp3C->unk_34 & 2)) {
-        if ((sp28->unk_5A == 0x91) && (D_843C4DEC < 0xA)) {
+        if ((sp28->unk_5A == 0x91) && (gAnimTimer < 0xA)) {
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[sp48];
         }
 
-        if ((D_843C4E44 == 0) || (D_843C4DA4 != 0)) {
+        if ((gIsBattleMode == 0) || (gSpecialFlag != 0)) {
             // FAKE? keeps &gCurrentAnimChannel out of a register while the load stays a CSE temp
             if (gAnimDataByPlayer[sp40]) {}
             gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[sp48];
@@ -1279,7 +1279,7 @@ void func_8430506C(unk_D_84390010* arg0) {
                 gCurrentAnimChannel = &gAnimDataByPlayer[sp40]->unk_000[0xB0];
             }
         } else if (!(sp3C->unk_34 & 1)) {
-            func_843058C4(D_84390010[sp40], 0xA8);
+            PlayAnimSoundIfApplicable(D_84390010[sp40], 0xA8);
         }
 
         Anim_SetChannelBase(&D_84390010[sp40]->unk_000, 0);
@@ -1291,7 +1291,7 @@ void func_8430506C(unk_D_84390010* arg0) {
     }
 }
 
-void func_843052C0(unk_D_84390010* arg0) {
+void ProcessAnimStateMatch(unk_D_84390010* arg0) {
     s32 sp2C;
     UNUSED s32 pad;
     unk_D_800FCB18* sp24;
@@ -1303,30 +1303,30 @@ void func_843052C0(unk_D_84390010* arg0) {
 
     gCurrentAnimChannel = &gAnimDataByPlayer[sp2C == 0]->unk_000[sp1C->unk_5A - 1];
 
-    if ((D_84390010[sp2C == 0]->unk_4C4 == (gCurrentAnimChannel->unk_07 + 1)) && (func_84301FB0(arg0) == 0)) {
+    if ((D_84390010[sp2C == 0]->unk_4C4 == (gCurrentAnimChannel->unk_07 + 1)) && (AnimChannel_GetFlagsFB0(arg0) == 0)) {
         func_8432E9D8(1);
-        if (((sp1C->unk_5A == 0x30) || (sp1C->unk_5A == 0x6D)) && (sp24->unk_4C & 0x80) && (D_843C4DA4 == 0) &&
-            (D_843C4E44 == 1)) {
+        if (((sp1C->unk_5A == 0x30) || (sp1C->unk_5A == 0x6D)) && (sp24->unk_4C & 0x80) && (gSpecialFlag == 0) &&
+            (gIsBattleMode == 1)) {
             PlayBattleSoundEffect(D_84390010[sp2C == 0], 0x12);
         }
 
-        func_84301C54(D_84390010[sp2C == 0], sp1C->unk_5A);
-        if ((D_843C4DA4 == 0) || (D_843C4E44 == 1)) {
-            func_8432B5B8(D_84390010[sp2C == 0], &arg0->unk_654.unk_38, 1);
+        AnimChannel_StartAnotherMoveAction(D_84390010[sp2C == 0], sp1C->unk_5A);
+        if ((gSpecialFlag == 0) || (gIsBattleMode == 1)) {
+            TriggerMoveEvent(D_84390010[sp2C == 0], &arg0->unk_654.unk_38, 1);
         }
 
-        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+        gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
     }
 }
 
-s32 func_84305458(unk_D_84390010* arg0) {
+s32 GetAnimStateResultCode(unk_D_84390010* arg0) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
     s32 temp_v1;
 
     temp_v1 = IsPrimaryEntity(arg0) == 0;
     gCurrentAnimChannel = &gAnimDataByPlayer[temp_v1]->unk_000[ptr->unk_5A - 1];
 
-    if (D_843C4E45 != 1) {
+    if (gAnimStateFlag != 1) {
         return 2;
     }
 
@@ -1337,24 +1337,24 @@ s32 func_84305458(unk_D_84390010* arg0) {
     return 0;
 }
 
-void func_843054F0(unk_D_84390010* arg0) {
+void TriggerAnimStateSound(unk_D_84390010* arg0) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
     s32 sp28;
 
     sp28 = IsPrimaryEntity(arg0) == 0;
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[ptr->unk_5A - 1];
     if (D_84390010[sp28]->unk_4C4 == (gCurrentAnimChannel->unk_08 + 1)) {
-        if (func_84301FB0(arg0) == 0) {
-            if (D_843C4E45 == 1) {
-                func_8432C6C4(1, D_84390010[sp28]);
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
+            if (gAnimStateFlag == 1) {
+                InitSingleEntityActionScript(1, D_84390010[sp28]);
                 PlayBattleSoundEffect(arg0, 0x20);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
 
-void func_843055E0(unk_D_84390010* arg0) {
+void ApplyAnimStateEffect(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20;
     s32 sp28;
 
@@ -1363,13 +1363,13 @@ void func_843055E0(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0) == 0]->unk_000[sp20->unk_5A - 1];
 
     if ((gCurrentAnimChannel->unk_07 + 1) == D_84390010[sp28]->unk_4C4) {
-        if (func_84301FB0(arg0) == 0) {
-            if (D_843C4E44 == 1) {
-                func_8432B5B8(D_84390010[sp28], sp20, 1);
+        if (AnimChannel_GetFlagsFB0(arg0) == 0) {
+            if (gIsBattleMode == 1) {
+                TriggerMoveEvent(D_84390010[sp28], sp20, 1);
             } else {
-                func_8432B5B8(D_84390010[sp28], sp20, 5);
+                TriggerMoveEvent(D_84390010[sp28], sp20, 5);
             }
-            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
+            gAnimStateQueue[gAnimStateQueueIndex].unk_04 = gAnimStateIdle;
         }
     }
 }
@@ -1377,12 +1377,12 @@ void func_843055E0(unk_D_84390010* arg0) {
 void func_843056DC(unk_D_84390010* arg0) {
 }
 
-void func_843056E4(unk_D_84390010* arg0, unk_D_84385384_func arg1) {
+void ReplaceAnimQueueEntry(unk_D_84390010* arg0, unk_D_84385384_func arg1) {
     unk_D_84390068* var_a2;
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        if (D_84385380 == gAnimStateQueue[i].unk_04) {
+        if (gAnimStateIdle == gAnimStateQueue[i].unk_04) {
             gAnimStateQueue[i].unk_04 = arg1;
             gAnimStateQueue[i].unk_00 = arg0;
             break;
@@ -1390,21 +1390,21 @@ void func_843056E4(unk_D_84390010* arg0, unk_D_84385384_func arg1) {
     }
 }
 
-void func_84305728(unk_D_84390010* arg0) {
-    func_843058C4(D_84390010[IsPrimaryEntity(arg0)], 0xA6);
+void ResetAnimChannelToDefault(unk_D_84390010* arg0) {
+    PlayAnimSoundIfApplicable(D_84390010[IsPrimaryEntity(arg0)], 0xA6);
 }
 
-void func_84305760(unk_D_84390010* arg0, s32 arg1) {
+void ExecuteAnimStateHandlers(unk_D_84390010* arg0, s32 arg1) {
     arg0->unk_4C0 = arg1;
 
-    D_84385384[arg1].unk_04[0](arg0);
-    D_84385384[arg1].unk_04[1](arg0);
-    D_84385384[arg1].unk_04[2](arg0);
+    gMoveAnimData[arg1].unk_04[0](arg0);
+    gMoveAnimData[arg1].unk_04[1](arg0);
+    gMoveAnimData[arg1].unk_04[2](arg0);
 
-    func_843056E4(arg0, D_84385384[arg1].unk_04[3]);
-    func_843056E4(arg0, D_84385384[arg1].unk_04[4]);
-    func_843056E4(arg0, D_84385384[arg1].unk_04[5]);
-    func_843056E4(arg0, D_84385384[arg1].unk_04[6]);
+    ReplaceAnimQueueEntry(arg0, gMoveAnimData[arg1].unk_04[3]);
+    ReplaceAnimQueueEntry(arg0, gMoveAnimData[arg1].unk_04[4]);
+    ReplaceAnimQueueEntry(arg0, gMoveAnimData[arg1].unk_04[5]);
+    ReplaceAnimQueueEntry(arg0, gMoveAnimData[arg1].unk_04[6]);
 }
 
 void Anim_ProcessQueue(void) {
@@ -1416,18 +1416,18 @@ void Anim_ProcessQueue(void) {
     }
 }
 
-void func_843058A8(unk_D_84390010* arg0) {
+void ClearAnimFlagIfState6A(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_38.unk_5A == 0x6A) {
         arg0->unk_000.unk_01C = 0;
     }
 }
 
-void func_843058C4(unk_D_84390010* arg0, s32 arg1) {
+void PlayAnimSoundIfApplicable(unk_D_84390010* arg0, s32 arg1) {
     s32 temp_v0;
     s32 sp30;
     unk_D_84390010_654* sp24 = &arg0->unk_654;
 
-    if (func_84301FF0(arg0) == 0) {
+    if (AnimChannel_GetFlagsFF0(arg0) == 0) {
         sp30 = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg1].unk_01;
         if ((sp30 != 0xFF) && (sp24->unk_36 != 2)) {
             if ((arg1 == 165) && (arg0->unk_000.unk_01A == 0x33)) {
@@ -1446,11 +1446,11 @@ void func_843058C4(unk_D_84390010* arg0, s32 arg1) {
     }
 }
 
-s32 func_843059C0(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
+s32 TryPlayAnimSoundAndSetState(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad;
     s32 sp20;
 
-    if (func_84301FF0(arg0) != 0) {
+    if (AnimChannel_GetFlagsFF0(arg0) != 0) {
         return 0;
     }
 
@@ -1467,10 +1467,10 @@ s32 func_843059C0(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_84305A74(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
+void PlayAnimSoundSimple(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
     u8 temp_a1;
 
-    if (func_84301FF0(arg0) == 0) {
+    if (AnimChannel_GetFlagsFF0(arg0) == 0) {
         temp_a1 = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[arg1].unk_01;
         if (temp_a1 != 0xFF) {
             GraphNode_TriggerSound(&arg0->unk_000, temp_a1);
@@ -1480,7 +1480,7 @@ void func_84305A74(unk_D_84390010* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_84305AFC(unk_D_84390010* arg0) {
+s32 IsAnimStateLocked(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp20 = &arg0->unk_654;
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
@@ -1491,9 +1491,9 @@ s32 func_84305AFC(unk_D_84390010* arg0) {
     return 0;
 }
 
-s32 func_84305B6C(unk_D_84390010* arg0, s32 arg1) {
-    if (func_84305AFC(arg0) != 0) {
-        if (func_8431ADAC(arg1) != 0) {
+s32 CanAnimProceed(unk_D_84390010* arg0, s32 arg1) {
+    if (IsAnimStateLocked(arg0) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1505,12 +1505,12 @@ s32 func_84305B6C(unk_D_84390010* arg0, s32 arg1) {
     return func_800174E4(&arg0->unk_000);
 }
 
-s32 func_84305BD8(unk_D_84390010* arg0, s32 arg1) {
+s32 CanAnimProceedWithChannel(unk_D_84390010* arg0, s32 arg1) {
     u8 temp_v0;
 
     gCurrentAnimChannel = gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unkA60;
-    if (func_84305AFC(arg0) != 0) {
-        if (func_8431ADAC(arg1) != 0) {
+    if (IsAnimStateLocked(arg0) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1523,14 +1523,14 @@ s32 func_84305BD8(unk_D_84390010* arg0, s32 arg1) {
         return func_800174E4(&arg0->unk_000);
     }
 
-    if (func_8431ADAC(gCurrentAnimChannel->unk_0A + 1) != 0) {
+    if (Battle_WaitForAnimation(gCurrentAnimChannel->unk_0A + 1) != 0) {
         return 1;
     }
 
     return 0;
 }
 
-s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
+s32 EvaluateAnimStateAgainstBattle(unk_D_84390010* arg0, s32 arg1) {
     unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
     unk_D_8438E7B0_A50* sp20;
     unk_D_8438E7B0_A50* sp1C;
@@ -1540,8 +1540,8 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
     sp20 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[ptr->unk_5A - 1];
     sp1C = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
-    if (func_84305AFC(arg0) != 0) {
-        if (func_8431ADAC(arg1) != 0) {
+    if (IsAnimStateLocked(arg0) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1564,7 +1564,7 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
             return 0;
         }
 
-        if (func_8431ADAC(arg1) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1582,7 +1582,7 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
     return func_800174E4(&arg0->unk_000);
 }
 
-s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
+s32 EvaluateAnimStateWithAlternateChannel(unk_D_84390010* arg0, s32 arg1) {
     unk_D_8438E7B0_A50* temp_a2;
     PokemonData* sp28;
     UNUSED s32 pad;
@@ -1590,13 +1590,13 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
     unk_D_8438E7B0_A50* sp1C;
 
     sp28 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
-    sp20 = D_84384670[arg0->unk_654.unk_38.unk_5A - 1];
+    sp20 = gAnimLookupTable[arg0->unk_654.unk_38.unk_5A - 1];
     sp1C = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp20];
     temp_a2 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     if ((arg0->unk_654.unk_34 & 2) || (sp28->unk_05 & 7) ||
         ((arg0->unk_654.unk_34 & 0x200) && !(arg0->unk_654.unk_34 & 0x400)) || (arg0->unk_654.unk_34 & 0x4000)) {
-        if (func_8431ADAC(arg1) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1614,7 +1614,7 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
             }
             return 0;
         }
-        if (func_8431ADAC(arg1) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1631,11 +1631,11 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
     return func_800174E4(&arg0->unk_000);
 }
 
-s32 func_8430602C(unk_D_84390010* arg0, s32 arg1) {
+s32 CanAnimChannelA80Proceed(unk_D_84390010* arg0, s32 arg1) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A80;
 
     if ((arg0->unk_654.unk_34 & 2) || ((arg0->unk_654.unk_34 & 0x200) && !(arg0->unk_654.unk_34 & 0x400))) {
-        if (func_8431ADAC(arg1) != 0) {
+        if (Battle_WaitForAnimation(arg1) != 0) {
             return 1;
         }
         return 0;
@@ -1652,34 +1652,34 @@ s32 func_8430602C(unk_D_84390010* arg0, s32 arg1) {
     return func_800174E4(&arg0->unk_000);
 }
 
-void func_843060EC(unk_D_84390010* arg0) {
+void MaybeTriggerSpecialAnimEffect(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
-    if (func_84301FF0(arg0) == 0) {
+    if (AnimChannel_GetFlagsFF0(arg0) == 0) {
         if ((arg0->unk_000.unk_040.unk_00 != -1) && (arg0->unk_000.unk_000.unk_01 & 1) &&
             (arg0->unk_000.unk_000.unk_02 & 0x20) && (gBattleState.unk_00->unk_1C == 1) &&
             (gCurrentAnimChannel->unk_00 == arg0->unk_000.unk_040.unk_00) &&
             (gCurrentAnimChannel->unk_04 == (arg0->unk_000.unk_040.unk_08 >> 0x10)) && (gCurrentAnimChannel->unk_05 != 0) &&
             (Math_RandomU16Scaled(2) == 1)) {
-            func_8432C68C(gCurrentAnimChannel->unk_05, &arg0->unk_000, &arg0->unk_000, gCurrentAnimChannel->unk_02, gCurrentAnimChannel->unk_02);
+            InitActionScriptMode3(gCurrentAnimChannel->unk_05, &arg0->unk_000, &arg0->unk_000, gCurrentAnimChannel->unk_02, gCurrentAnimChannel->unk_02);
         }
     }
 }
 
-void func_843061EC(unk_D_84390010* arg0, u16 arg1) {
+void SetEntityAnimFlags(unk_D_84390010* arg0, u16 arg1) {
     arg0->unk_654.unk_34 |= arg1;
 }
 
-s32 func_84306200(unk_D_84390010* arg0, u16 arg1) {
+s32 ClearEntityAnimFlags(unk_D_84390010* arg0, u16 arg1) {
     arg0->unk_654.unk_34 &= ~arg1;
 }
 
-void func_84306218(unk_D_84390010* arg0) {
+void UpdateEntityModelForAnimFlags(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp24 = &arg0->unk_654;
 
     if (arg0->unk_4C8 != 0) {
         if (sp24->unk_34 & 0x200) {
             arg0->unk_000.unk_024.y = gPokemonModelDimensions[IsPrimaryEntity(arg0)].unk_08;
-            func_84306200(arg0, 0x608);
+            ClearEntityAnimFlags(arg0, 0x608);
         }
 
         if (sp24->unk_34 & 0x4008) {
@@ -1689,12 +1689,12 @@ void func_84306218(unk_D_84390010* arg0) {
             arg0->unk_000.unk_000.unk_02 &= ~2;
             arg0->unk_000.unk_000.unk_02 |= 0x20;
             arg0->unk_000.unk_000.unk_01 |= 1;
-            func_84306200(arg0, 0x4608);
+            ClearEntityAnimFlags(arg0, 0x4608);
         }
     }
 }
 
-void func_843062F0(void) {
+void ProcessEntityAnimFlagUpdates(void) {
     unk_D_84390010_654* sp34;
     unk_D_84390010_654* sp30;
     UNUSED s32 pad[2];
@@ -1708,14 +1708,14 @@ void func_843062F0(void) {
 
     if (sp34->unk_34 & 4) {
         D_84390010[0]->unk_000.unk_024.y = 200.0f;
-        func_843061EC(D_84390010[0], 0x200);
-        func_84306200(D_84390010[0], 4);
+        SetEntityAnimFlags(D_84390010[0], 0x200);
+        ClearEntityAnimFlags(D_84390010[0], 4);
     }
 
     if (sp30->unk_34 & 4) {
         D_84390010[1]->unk_000.unk_024.y = 200.0f;
-        func_843061EC(D_84390010[1], 0x200);
-        func_84306200(D_84390010[1], 4);
+        SetEntityAnimFlags(D_84390010[1], 0x200);
+        ClearEntityAnimFlags(D_84390010[1], 4);
     }
 
     if ((sp34->unk_34 & 0x4000) && (sp24->unk_000.unk_01A == 0x33)) {
@@ -1730,38 +1730,38 @@ void func_843062F0(void) {
         GraphNode_TriggerAction(&D_84390010[1]->unk_000, gCurrentAnimChannel->unk_00);
     }
 
-    func_84306218(D_84390010[0]);
-    func_84306218(D_84390010[1]);
+    UpdateEntityModelForAnimFlags(D_84390010[0]);
+    UpdateEntityModelForAnimFlags(D_84390010[1]);
 }
 
-void func_84306470(unk_D_84390010* arg0) {
+void PrepareEntityAnimState(unk_D_84390010* arg0) {
     UNUSED s32 pad;
     unk_D_84390010_654* sp20;
 
     sp20 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
     IsPrimaryEntity(arg0);
     IsPrimaryEntity(arg0);
-    func_843058A8(D_84390010[IsPrimaryEntity(arg0) == 0]);
+    ClearAnimFlagIfState6A(D_84390010[IsPrimaryEntity(arg0) == 0]);
 
     if (sp20->unk_34 & 4) {
         D_84390010[IsPrimaryEntity(arg0) == 0]->unk_000.unk_024.y = 200.0f;
-        func_843061EC(D_84390010[IsPrimaryEntity(arg0) == 0], 0x200);
-        func_84306200(D_84390010[IsPrimaryEntity(arg0) == 0], 4);
+        SetEntityAnimFlags(D_84390010[IsPrimaryEntity(arg0) == 0], 0x200);
+        ClearEntityAnimFlags(D_84390010[IsPrimaryEntity(arg0) == 0], 4);
     }
 
     if (arg0->unk_654.unk_34 & 0x200) {
-        func_843061EC(arg0, 0x400);
+        SetEntityAnimFlags(arg0, 0x400);
     }
 }
 
-void func_84306584(unk_D_84390010* arg0) {
+void AdjustModelBaseYForFlag8(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 8) {
         arg0->unk_000.unk_024.y = GetModelBaseY(arg0);
-        func_84306200(arg0, 0x608);
+        ClearEntityAnimFlags(arg0, 0x608);
     }
 }
 
-void func_843065C4(unk_D_84390010* arg0) {
+void HandleFlag4000AnimEffect(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     unk_D_84390010* sp1C = D_84390010[IsPrimaryEntity(arg0) == 0];
 
@@ -1769,11 +1769,11 @@ void func_843065C4(unk_D_84390010* arg0) {
         sp1C->unk_000.unk_000.unk_02 |= 0x20;
         sp1C->unk_000.unk_000.unk_01 |= 1;
         func_8432C80C(4, sp1C);
-        func_84306200(sp1C, 0x4000);
+        ClearEntityAnimFlags(sp1C, 0x4000);
     }
 }
 
-void func_8430663C(unk_D_84390010* arg0) {
+void ApplyFlag4000EffectToEntity(unk_D_84390010* arg0) {
     unk_D_84390010* temp_s0 = D_84390010[IsPrimaryEntity(arg0) == 0];
     unk_D_84390010_654* ptr = &temp_s0->unk_654;
 
@@ -1781,16 +1781,16 @@ void func_8430663C(unk_D_84390010* arg0) {
         temp_s0->unk_000.unk_000.unk_02 |= 0x20;
         temp_s0->unk_000.unk_000.unk_01 |= 1;
         func_8432C80C(4, temp_s0);
-        func_84306200(temp_s0, 0x4000);
+        ClearEntityAnimFlags(temp_s0, 0x4000);
     }
 
     if (ptr->unk_34 & 8) {
         temp_s0->unk_000.unk_024.y = GetModelBaseY(arg0);
-        func_84306200(temp_s0, 0x608);
+        ClearEntityAnimFlags(temp_s0, 0x608);
     }
 }
 
-void func_843066E0(unk_D_84390010* arg0) {
+void UpdateEntityStateByMode(unk_D_84390010* arg0) {
     switch (arg0->unk_4B4) {
         case 14:
             func_84308654(arg0, 0, 0);
@@ -1849,7 +1849,7 @@ void func_843066E0(unk_D_84390010* arg0) {
     }
 }
 
-void func_84306914(unk_D_84390010* arg0) {
+void ProcessEntityPostMoveEffects(unk_D_84390010* arg0) {
     unk_D_84390010_654* temp_s1 = &arg0->unk_654;
 
     HandleMoveHitAnimation(arg0);
@@ -1860,7 +1860,7 @@ void func_84306914(unk_D_84390010* arg0) {
     }
 
     if ((temp_s1->unk_2D == 0x10) || (temp_s1->unk_2D == 0x13)) {
-        func_84306200(arg0, 0x100);
+        ClearEntityAnimFlags(arg0, 0x100);
     }
 
     temp_s1->unk_2E = Math_ApproachS32(temp_s1->unk_2E, 0, 0x1E, 0x1E);
@@ -1874,7 +1874,7 @@ void func_84306914(unk_D_84390010* arg0) {
 
         case 0:
             if (Math_RandomU16Scaled(0x32) == 2) {
-                func_843058C4(arg0, 0xA5);
+                PlayAnimSoundIfApplicable(arg0, 0xA5);
             }
             break;
 
@@ -1894,17 +1894,17 @@ void func_84306914(unk_D_84390010* arg0) {
     }
 }
 
-void func_84306A68(unk_D_84390010* arg0) {
+void TriggerStatusEffectSound(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((ptr->unk_05 & 7) && !(arg0->unk_654.unk_34 & 1)) {
-        func_84305A74(arg0, 0xAF, 2);
+        PlayAnimSoundSimple(arg0, 0xAF, 2);
         func_8432C7A0(3, arg0);
         PlayBattleSoundEffect(arg0, 0x32);
     }
 }
 
-void func_84306AF0(unk_D_800AE540_1194* arg0, s32 arg1) {
+void AllocateEntityStruct(unk_D_800AE540_1194* arg0, s32 arg1) {
     unk_D_84390010* ptr = main_pool_alloc(sizeof(unk_D_84390010), 0);
 
     D_84390010[arg1] = ptr;
@@ -1920,15 +1920,15 @@ void func_84306AF0(unk_D_800AE540_1194* arg0, s32 arg1) {
     D_84390010[arg1]->unk_720 = arg0;
 }
 
-void func_84306BC4(unk_D_800AE540_1194* arg0) {
-    func_84306AF0(&arg0[0], 0);
-    func_84306AF0(&arg0[1], 1);
+void InitializeBattleEntities(unk_D_800AE540_1194* arg0) {
+    AllocateEntityStruct(&arg0[0], 0);
+    AllocateEntityStruct(&arg0[1], 1);
     func_8431962C();
     gPrimaryPokemonEntity = D_84390010[0];
-    D_8439001C = D_84390010[1];
+    gPokemonEntityUnused = D_84390010[1];
 }
 
-void func_84306C1C(unk_D_84390010* arg0) {
+void SetupEntityController(unk_D_84390010* arg0) {
     Controller* sp24 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
 
     func_843089DC(arg0, 0);
@@ -1937,7 +1937,7 @@ void func_84306C1C(unk_D_84390010* arg0) {
     arg0->unk_728.unk_16C = 0;
 }
 
-void func_84306C8C(unk_D_84390010* arg0) {
+void InitEntityGraphNode(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     unk_D_86002F58_004_000_004* sp24;
     s16 sp22;
@@ -1954,7 +1954,7 @@ void func_84306C8C(unk_D_84390010* arg0) {
     }
 
     GraphNode_InitChild(&arg0->unk_000, 0, sp22, sp24);
-    func_84302658(arg0, 1);
+    LoadPlayerAnimationData(arg0, 1);
     GraphNode_TriggerAction(&arg0->unk_000, 0);
     Anim_SetChannelBase(&arg0->unk_000, 0);
 
@@ -1974,7 +1974,7 @@ void func_84306C8C(unk_D_84390010* arg0) {
     }
 }
 
-void func_84306DA8(unk_D_84390010* arg0) {
+void InitEntitySubObjectGraph(unk_D_84390010* arg0) {
     unk_D_84390010_728* ptr = &arg0->unk_728;
     unk_D_86002F58_004_000_004* sp28;
     s16 sp26;
@@ -1997,7 +1997,7 @@ void func_84306DA8(unk_D_84390010* arg0) {
     Vec3f_Set(&ptr->unk_000.unk_024, 0.0f, 0.0f, 0.0f);
 }
 
-void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
+void InitEntityChildNodes(unk_D_84390010* arg0, s32* arg1) {
     unk_D_86002F58_004_000_004* sp44;
     s16 sp42;
     s32 i;
@@ -2032,7 +2032,7 @@ void func_84306E80(unk_D_84390010* arg0, s32* arg1) {
     }
 }
 
-void func_84306FB8(unk_D_84390010* arg0) {
+void InitEntityFragmentNode(unk_D_84390010* arg0) {
     Fragment2_1GraphNode* ptr = &arg0->unk_4EC;
     unk_D_86002F58_004_000_004* sp20 = arg0->unk_720->unk_18;
 
@@ -2051,20 +2051,20 @@ void func_84306FB8(unk_D_84390010* arg0) {
     }
 }
 
-void func_84307078(unk_D_800AE540_1194* arg0) {
-    D_84390174 = 0;
-    D_84390178.unk_00 = 0;
+void InitializeBattleScene(unk_D_800AE540_1194* arg0) {
+    gBattleInitFlag = 0;
+    gBattleInitStruct.unk_00 = 0;
 
-    func_84306C1C(D_84390010[0]);
-    func_84306C1C(D_84390010[1]);
-    func_84306C8C(D_84390010[0]);
-    func_84306C8C(D_84390010[1]);
-    func_84306DA8(D_84390010[0]);
-    func_84306DA8(D_84390010[1]);
-    func_84306E80(D_84390010[0], &D_84390010[0]->unk_168);
-    func_84306E80(D_84390010[1], &D_84390010[1]->unk_168);
-    func_84306FB8(D_84390010[0]);
-    func_84306FB8(D_84390010[1]);
+    SetupEntityController(D_84390010[0]);
+    SetupEntityController(D_84390010[1]);
+    InitEntityGraphNode(D_84390010[0]);
+    InitEntityGraphNode(D_84390010[1]);
+    InitEntitySubObjectGraph(D_84390010[0]);
+    InitEntitySubObjectGraph(D_84390010[1]);
+    InitEntityChildNodes(D_84390010[0], &D_84390010[0]->unk_168);
+    InitEntityChildNodes(D_84390010[1], &D_84390010[1]->unk_168);
+    InitEntityFragmentNode(D_84390010[0]);
+    InitEntityFragmentNode(D_84390010[1]);
 
     switch (gBattleContext.unk_0000) {
         case 0:
@@ -2100,58 +2100,58 @@ void func_84307078(unk_D_800AE540_1194* arg0) {
     SetPlayerSidesFromActivePokemons();
 }
 
-void func_843071B8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2) {
+void SetEntityOrientation(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     arg1->unk_4B0 = arg2;
 }
 
-void func_84307220(unk_D_800AE540_1194* arg0) {
+void InitMessageBanksAndAnimQueue(unk_D_800AE540_1194* arg0) {
     s32 i;
 
     MessageBank_Init();
 
-    D_843900B0 = GetMessageBank(0x1E);
-    D_843900B4 = GetMessageBank(0x24);
+    gMessageBank_0x1E = GetMessageBank(0x1E);
+    gMessageBank_0x24 = GetMessageBank(0x24);
     gPokemonMessageBank = GetMessageBank(0x25);
-    D_843900BC = GetMessageBank(0x29);
+    gMessageBank_0x29 = GetMessageBank(0x29);
     gMarqueeMessageBank = GetMessageBank(0x14);
 
     for (i = 0; i < 7; i++) {
-        gAnimStateQueue[i].unk_04 = D_84385380;
+        gAnimStateQueue[i].unk_04 = gAnimStateIdle;
     }
 
-    func_843071B8(D_84390010[0], D_84390010[0], 1);
-    func_843071B8(D_84390010[1], D_84390010[1], -1);
-    func_84307078(arg0);
+    SetEntityOrientation(D_84390010[0], D_84390010[0], 1);
+    SetEntityOrientation(D_84390010[1], D_84390010[1], -1);
+    InitializeBattleScene(arg0);
     func_8430D814();
-    func_8430245C(D_84390010[0]);
-    func_8430245C(D_84390010[1]);
+    ResetAllStatFlags(D_84390010[0]);
+    ResetAllStatFlags(D_84390010[1]);
     func_843184FC();
 }
 
-void func_8430732C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
+void ResetEntityAnimStates(unk_D_84390010* arg0, unk_D_84390010* arg1) {
     func_84308660(D_84390010[0], D_84390010[0]);
     func_84308660(D_84390010[1], D_84390010[1]);
     func_8430BC44(0);
     func_8430BC44(1);
-    func_843060EC(D_84390010[0]);
-    func_843060EC(D_84390010[1]);
+    MaybeTriggerSpecialAnimEffect(D_84390010[0]);
+    MaybeTriggerSpecialAnimEffect(D_84390010[1]);
 }
 
-s32 func_84307394(s32 arg0, unk_D_800AE540_1194* arg1) {
+s32 BattleInitDispatch(s32 arg0, unk_D_800AE540_1194* arg1) {
     switch (arg0) {
         case 0:
-            func_84306BC4(arg1);
+            InitializeBattleEntities(arg1);
             break;
 
         case 1:
         case 2:
-            func_8430732C(D_84390010[0], D_84390010[1]);
+            ResetEntityAnimStates(D_84390010[0], D_84390010[1]);
             break;
 
         case 3:
-            func_84307220(arg1);
+            InitMessageBanksAndAnimQueue(arg1);
             break;
 
         case 5:

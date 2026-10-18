@@ -26,7 +26,7 @@ s32 func_8431AD68(s32 arg0) {
     return 0;
 }
 
-s32 func_8431ADAC(s32 arg0) {
+s32 Battle_WaitForAnimation(s32 arg0) {
     gBattleState.unk_00->unk_14++;
     if (gBattleState.unk_00->unk_14 >= arg0) {
         gBattleState.unk_00->unk_14 = 0;
@@ -54,7 +54,7 @@ void func_8431AE4C(s32 arg0) {
     gBattleState.unk_00->unk_2C = arg0;
 }
 
-void func_8431AE5C(void) {
+void Battle_FinishTurn(void) {
     gBattleState.unk_00->unk_14 = 0;
 }
 
@@ -251,7 +251,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     temp_s0 = D_84390010[arg1 == 0];
     arg0->unk_24.fovy = 60.0f;
 
-    func_8431AE5C();
+    Battle_FinishTurn();
     func_843081F0(temp_s0, &sp58);
 
     sp58.y /= 3.0f;
@@ -262,7 +262,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     func_8431BAB4(temp_s0, arg0, sp58, 0, 0, 0.0f, 0.0f);
 
     if ((sp6C->unk_2D != 0x10) && !(sp6C->unk_34 & 0x4000)) {
-        func_84305760(temp_s0, 1);
+        ExecuteAnimStateHandlers(temp_s0, 1);
     }
 
     temp_s0 = D_84390010[arg1];
@@ -580,7 +580,7 @@ void func_8431C594(CameraStruct* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
 }
 
-void func_8431C71C(CameraStruct* arg0, unk_D_84390010* arg1) {
+void Battle_AdvanceCameraTimeline(CameraStruct* arg0, unk_D_84390010* arg1) {
     func_8431BD94(arg0, arg1, 50.0f);
     func_8431C594(arg0, arg1);
 }
@@ -624,7 +624,7 @@ void func_8431C7A4(CameraStruct* arg0, unk_D_84390010* arg1) {
     Camera_SetViewParameters(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
 }
 
-s32 func_8431C8E0(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp84;
     UNUSED s32 pad[3];
     Vec3f sp6C;
@@ -644,7 +644,7 @@ s32 func_8431C8E0(CameraStruct* arg0, unk_D_84390010* arg1) {
     }
 
     if (temp_v1->unk_5A == 0x53) {
-        func_8431F500(arg1, arg0, 4);
+        Battle_QueueOpponentMove(arg1, arg0, 4);
         return 1;
     }
 
@@ -790,7 +790,7 @@ s32 func_8431D048(CameraStruct* arg0, unk_D_84390010* arg1) {
     return 0;
 }
 
-s32 func_8431D118(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
+s32 Battle_CheckPlayerAction(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
     Vec3f sp60;
     Vec3f sp54;
@@ -830,7 +830,7 @@ s32 func_8431D118(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) 
     return 0;
 }
 
-s32 func_8431D318(CameraStruct* arg0, unk_D_84390010* arg1) {
+s32 Battle_ApplySpecialCamera(CameraStruct* arg0, unk_D_84390010* arg1) {
     Vec3f sp6C;
     Vec3f sp60;
     Vec3f sp54;
@@ -890,7 +890,7 @@ void func_8431D5C8(UNUSED CameraStruct* arg0) {
     if (arg0) {}
 }
 
-void func_8431D5D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
+void Battle_ApplyCameraSettings(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     func_8431BB24(arg0, gCameraPreset.unk_00, gCameraPreset.unk_0C, gCameraPreset.unk_0E, gCameraPreset.unk_18, 0.0f);
     if (arg2 == 1) {
         arg0->unk_60.at.y += GetModelDepth(arg1);
@@ -929,7 +929,7 @@ void func_8431D7C4(f32 arg0, f32 arg1) {
     gCameraPreset.unk_38 = arg1;
 }
 
-void func_8431D7D8(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D_84390010* arg2) {
+void Battle_PlayCameraTransition(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D_84390010* arg2) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -963,7 +963,7 @@ void func_8431D7D8(unk_D_86B0C160* arg0, CameraStruct* arg1, unk_D_84390010* arg
     func_8431D7C4(arg0->unk_28, arg0->unk_2C);
 }
 
-void func_8431D968(unk_D_86B0C160* arg0, CameraStruct* arg1) {
+void Battle_ApplyCameraPreset(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     f32 sp2C;
     f32 sp28;
     f32 sp24;
@@ -1141,11 +1141,11 @@ void func_8431E1DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
-        func_8431C71C(arg0, arg1);
-        func_8431C71C(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
     }
 
-    func_8431C71C(arg0, arg1);
+    Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
 void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -1158,10 +1158,10 @@ void func_8431E368(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
-        func_8431C71C(arg0, arg1);
-        func_8431C71C(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
     }
-    func_8431C71C(arg0, arg1);
+    Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
 void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -1173,10 +1173,10 @@ void func_8431E4DC(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
-        func_8431C71C(arg0, arg1);
-        func_8431C71C(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
     }
-    func_8431C71C(arg0, arg1);
+    Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
 void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -1193,10 +1193,10 @@ void func_8431E63C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
-        func_8431C71C(arg0, arg1);
-        func_8431C71C(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
     }
-    func_8431C71C(arg0, arg1);
+    Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
 void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -1207,10 +1207,10 @@ void func_8431E7D0(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
     if (arg2 == 1) {
         ConfigureCameraForModel(arg1, arg0);
     } else {
-        func_8431C71C(arg0, arg1);
-        func_8431C71C(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
+        Battle_AdvanceCameraTimeline(arg0, arg1);
     }
-    func_8431C71C(arg0, arg1);
+    Battle_AdvanceCameraTimeline(arg0, arg1);
 }
 
 void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -1225,8 +1225,8 @@ void func_8431E90C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2) {
 
 void func_8431EA1C(CameraStruct* arg0, unk_D_84390010* arg1, s32 arg2, s32 arg3) {
     func_843081F0(arg1, &gCameraPreset.unk_00);
-    func_8431D7D8(&D_843849C0[arg2], arg0, arg1);
-    func_8431D5D0(arg0, arg1, 1);
+    Battle_PlayCameraTransition(&D_843849C0[arg2], arg0, arg1);
+    Battle_ApplyCameraSettings(arg0, arg1, 1);
     func_8431D5C8(arg0);
     if (arg3 == 1) {
         ConfigureCameraForModel(arg1, arg0);
@@ -1297,7 +1297,7 @@ void func_8431F194(CameraStruct* arg0, unk_D_84390010* arg1) {
     ConfigureCameraForModel(arg1, arg0);
 }
 
-void func_8431F290(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
+void Battle_ExecuteMove(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1354,7 +1354,7 @@ void func_8431F290(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2, s32 arg3)
     }
 }
 
-void func_8431F420(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
+void Battle_PlayMoveEffect(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:
@@ -1378,7 +1378,7 @@ void func_8431F420(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     }
 }
 
-void func_8431F500(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
+void Battle_QueueOpponentMove(unk_D_84390010* arg0, CameraStruct* arg1, s32 arg2) {
     func_8431BA5C();
     switch (arg2) {
         case 0:

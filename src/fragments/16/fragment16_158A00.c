@@ -18,34 +18,34 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_86A02700 {
+typedef struct StageFadePalette {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ Color_RGB8 unk_03[4];
-} unk_D_86A02700; // size = 0x10
+} StageFadePalette; // size = 0x10
 
-static unk_D_8690A610 D_86A06170;
+static unk_D_8690A610 gStageFragmentState;
 static struct GraphNode D_86A06190;
-static struct GraphNode D_86A061A8;
-static struct GraphNode D_86A061C0;
-static s8 D_86A061D8;
-static u8 D_86A061D9;
-static BinArchive* D_86A061DC;
-static Color_RGBA8_u32 D_86A061E0;
+static struct GraphNode gStageOverlayNode;
+static struct GraphNode gStageForegroundNode;
+static s8 gCurrentStageId;
+static u8 gCurrentSubStageId;
+static BinArchive* gStageArchive;
+static Color_RGBA8_u32 gGlobalBackgroundColor;
 static GraphNode* D_86A061E4;
 static CameraStruct* D_86A061E8;
 static s16 D_86A061EC;
 static s16 D_86A061EE;
 static s16 D_86A061F0;
 static s32 pad_D_86A061F8[2];
-static TextObject* D_86A06200;
+static TextObject* gStageTextObject;
 static s32 pad_D_86A06208[2];
-u8 D_86A06210;
-u8 D_86A06211;
-u8 D_86A06212;
-unk_D_86A03014* D_86A06214;
+u8 gPhaseDelta;
+u8 gUnusedTimer1;
+u8 gUnusedTimer2;
+StageCameraConfig* gStageLayoutPtr;
 
-unk_D_86A025A0 D_86A025A0[9] = {
+StagePhaseInfo gStagePhases[9] = {
     {
         0x00,
         0x00,
@@ -92,18 +92,18 @@ unk_D_86A025A0 D_86A025A0[9] = {
         0x0000,
     },
 };
-u8 D_86A025C4 = 0;
-u32 D_86A025C8 = 0;
+u8 gCurrentPhaseIndex = 0;
+u32 gScreenFadeAlpha = 0;
 u16 D_86A025CC = 0;
-u32 D_86A025D0[] = {
+u32 gStageDisplayListCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
-    0x05000000, 0x0D000000, 0x05000000,    0x07000000, &D_86A06170, 0x14000000, 0x002D0019,  0xFFFFFF28,
+    0x05000000, 0x0D000000, 0x05000000,    0x07000000, &gStageFragmentState, 0x14000000, 0x002D0019,  0xFFFFFF28,
     0x16646464, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
     0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A06190, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A061A8, 0x06000000,
+    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &gStageOverlayNode, 0x06000000,
     0x06000000, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A061C0, 0x06000000,
+    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &gStageForegroundNode, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000,  0x06000000,
     0x06000000, 0x01000000,
 };
@@ -112,7 +112,7 @@ s32 NodeColorSetter(s32 arg0, GraphNode* arg1) {
     Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
-        ptr->unk_03C.rgba = D_86A061E0.rgba;
+        ptr->unk_03C.rgba = gGlobalBackgroundColor.rgba;
     }
     return 0;
 }
@@ -120,20 +120,20 @@ s32 NodeColorSetter(s32 arg0, GraphNode* arg1) {
 void SetGlobalBackgroundColor(u8 r, u8 g, u8 b) {
     u8 v = r & g & b;
 
-    D_86A061E0.r = r;
-    D_86A061E0.g = g;
-    D_86A061E0.b = b;
+    gGlobalBackgroundColor.r = r;
+    gGlobalBackgroundColor.g = g;
+    gGlobalBackgroundColor.b = b;
 
     if (v == 0xFF) {
-        if (D_86A06170.unk_00.unk_14 == 1) {
-            D_86A06170.unk_00.unk_01 |= 1;
+        if (gStageFragmentState.unk_00.unk_14 == 1) {
+            gStageFragmentState.unk_00.unk_01 |= 1;
         }
     } else {
-        D_86A06170.unk_00.unk_01 &= ~1;
+        gStageFragmentState.unk_00.unk_01 &= ~1;
     }
 }
 
-void func_86A000B4(s8 arg0, u8 arg1) {
+void Stage_LoadResources(s8 arg0, u8 arg1) {
     MemoryBlock* sp2C;
     FragmentEntry sp28;
     u32* temp_v0;
@@ -142,14 +142,14 @@ void func_86A000B4(s8 arg0, u8 arg1) {
     while (RspTaskYielded() == 0) {}
 
     GraphNode_AllocInit(NULL, &D_86A06190);
-    GraphNode_AllocInit(NULL, &D_86A061A8);
-    GraphNode_AllocInit(NULL, &D_86A061C0);
+    GraphNode_AllocInit(NULL, &gStageOverlayNode);
+    GraphNode_AllocInit(NULL, &gStageForegroundNode);
 
     main_pool_pop_state('BACK');
 
     main_pool_push_state('BACK');
 
-    sp28 = BinArchive_GetFile(D_86A061DC, arg0);
+    sp28 = BinArchive_GetFile(gStageArchive, arg0);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
 
     temp_v0 = sp28(0, 0);
@@ -159,43 +159,43 @@ void func_86A000B4(s8 arg0, u8 arg1) {
 
     temp_v0 = sp28(1, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&D_86A061A8, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AddChild(&gStageOverlayNode, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(3, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&D_86A061C0, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AddChild(&gStageForegroundNode, process_geo_layout(sp2C, temp_v0));
     }
 
-    D_86A025C8 = sp28(2, 0);
+    gScreenFadeAlpha = sp28(2, 0);
     mem_pool_resize_block(sp2C);
 
     temp_v0_4 = sp28(4, 0);
     if (temp_v0_4 == NULL) {
-        D_86A06170.unk_00.unk_14 = 0;
-        D_86A06170.unk_00.unk_01 &= ~1;
+        gStageFragmentState.unk_00.unk_14 = 0;
+        gStageFragmentState.unk_00.unk_01 &= ~1;
     } else {
-        D_86A06170.unk_18.unk_00 = temp_v0_4->unk_00;
-        D_86A06170.unk_18.unk_02 = temp_v0_4->unk_02;
-        D_86A06170.unk_18.unk_04.rgba = temp_v0_4->unk_04.rgba;
-        D_86A06170.unk_00.unk_14 = 1;
+        gStageFragmentState.unk_18.unk_00 = temp_v0_4->unk_00;
+        gStageFragmentState.unk_18.unk_02 = temp_v0_4->unk_02;
+        gStageFragmentState.unk_18.unk_04.rgba = temp_v0_4->unk_04.rgba;
+        gStageFragmentState.unk_00.unk_14 = 1;
     }
 
     SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
-        func_86A01CF0(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, D_86A025A0[D_86A025C4].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
     } else if (arg1 < 9) {
-        func_86A01CF0(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, D_86A025A0[D_86A025C4].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
     } else if (arg1 < 0xF) {
-        if (D_86A025C4 == 7) {
-            func_86A018D0(D_86A061E8, D_86A025A0[D_86A025C4].unk_02 - 0x28, arg0, arg1);
+        if (gCurrentPhaseIndex == 7) {
+            Camera_AdjustForStage(D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
         } else {
-            func_86A018D0(D_86A061E8, D_86A025A0[D_86A025C4].unk_02, arg0, arg1);
+            Camera_AdjustForStage(D_86A061E8, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
         }
     } else {
-        D_86A061E8->unk_60.at.y = D_86A03170[arg0][D_86A061D9].unk_10;
-        D_86A061F0 = D_86A03170[arg0][D_86A061D9].unk_08;
+        D_86A061E8->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
+        D_86A061F0 = gStageCameraPositions[arg0][gCurrentSubStageId].unk_08;
     }
 }
 
@@ -205,10 +205,10 @@ void func_86A00434(void) {
     MenuInput_Init();
 }
 
-void func_86A00464(void) {
-    if (D_86A061D9 < 6) {
+void Camera_UpdateForPhase(void) {
+    if (gCurrentSubStageId < 6) {
         Camera_SetViewParameters(&D_86A061E8->unk_60.at, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
-    } else if (D_86A061D9 < 9) {
+    } else if (gCurrentSubStageId < 9) {
         Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.eye, D_86A061F0, D_86A061EC, D_86A061EE);
         Camera_SetViewParameters(&D_86A06248, &D_86A061E8->unk_60.at, D_86A061F0 + 500.0f, D_86A061EC, D_86A061EE);
     }
@@ -217,15 +217,15 @@ void func_86A00464(void) {
 void func_86A0056C(void) {
     u8 temp_v1_2;
 
-    if (D_86A025A0[D_86A025C4].unk_00 != -1) {
+    if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
         if (D_86A025CC < 8) {
             temp_v1_2 = (s8)ROUND_MAX(((-(f32)D_86A025CC / 8) + 1.0f) * 255.0f);
             if (temp_v1_2 != 0) {
                 Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
             }
         } else {
-            if ((D_86A025A0[D_86A025C4].unk_02 - 0x28) < D_86A025CC) {
-                s32 tmp = D_86A025A0[D_86A025C4].unk_02;
+            if ((gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28) < D_86A025CC) {
+                s32 tmp = gStagePhases[gCurrentPhaseIndex].unk_02;
 
                 temp_v1_2 = (s32)ROUND_MAX((((D_86A025CC - tmp) + 0x28) * 255.0f) / 40.0f);
                 if (temp_v1_2 != 0) {
@@ -236,11 +236,11 @@ void func_86A0056C(void) {
     }
 }
 
-void func_86A00720(u8 arg0) {
+void Stage_HandleFadeAndTransition(u8 arg0) {
     if ((arg0 == 1) || (arg0 == 2)) {
         func_86A0056C();
-        if ((D_86A025C4 != 0) || (D_86A025CC >= 0xF0)) {
-            func_86A014F0();
+        if ((gCurrentPhaseIndex != 0) || (D_86A025CC >= 0xF0)) {
+            Stage_TriggerNextPhase();
         }
     }
 }
@@ -248,10 +248,10 @@ void func_86A00720(u8 arg0) {
 void func_86A00788(u8 arg0) {
     Stage_BeginDisplayList();
 
-    if ((D_86A025C8 == -1) || (D_86A025C8 == 0)) {
+    if ((gScreenFadeAlpha == -1) || (gScreenFadeAlpha == 0)) {
         Gfx_FillScreen(&gDisplayListHead, 1);
-    } else if (D_86A025C8 < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, D_86A025C8);
+    } else if (gScreenFadeAlpha < 0x10000) {
+        Gfx_FillScreen(&gDisplayListHead, gScreenFadeAlpha);
     } else {
         Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     }
@@ -260,13 +260,13 @@ void func_86A00788(u8 arg0) {
         Stage_DrawBorderFade(0);
     } else {
         Graph_SetTextureState(D_86A061E4);
-        func_86A00720(arg0);
+        Stage_HandleFadeAndTransition(arg0);
     }
 
     Stage_Advance();
 }
 
-void func_86A00840(void) {
+void Stage_IntroFadeSequence(void) {
     u8 i;
     u8 j;
     u8 sp35;
@@ -307,7 +307,7 @@ void func_86A00840(void) {
     }
 }
 
-void func_86A0092C(s32 arg0) {
+void Stage_MainLoop(s32 arg0) {
     static u8 D_86A026F8 = 0;
 
     s32 var_s6 = 1;
@@ -321,57 +321,57 @@ void func_86A0092C(s32 arg0) {
         func_8004B1CC(0x43);
     }
 
-    func_86A021C0(&D_86A061D8, &D_86A061D9);
-    func_86A000B4(D_86A061D8, D_86A061D9);
+    Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
+    Stage_LoadResources(gCurrentStageId, gCurrentSubStageId);
 
     while (var_s6 != 0) {
-        func_86A01490();
+        Stage_UpdateLogic();
         Timer_UpdateCounters();
 
-        if (D_86A025A0[D_86A025C4].unk_02 != 0) {
-            if (D_86A025A0[D_86A025C4].unk_00 != -1) {
-                if (D_86A061D9 < 9) {
-                    func_86A02164();
+        if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
+            if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
+                if (gCurrentSubStageId < 9) {
+                    Stage_UpdateSubPhase();
                 } else {
-                    func_86A01BEC();
+                    Stage_HandleFinalPhase();
                 }
             }
 
-            if (D_86A025CC >= D_86A025A0[D_86A025C4].unk_02) {
-                D_86A025C4++;
-                if (D_86A025A0[D_86A025C4].unk_02 != 0) {
-                    D_86A025A0[D_86A025C4].unk_02 =
-                        D_86A025A0[D_86A025C4 - 1].unk_02 + (D_86A025A0[D_86A025C4].unk_02 - D_86A025CC);
+            if (D_86A025CC >= gStagePhases[gCurrentPhaseIndex].unk_02) {
+                gCurrentPhaseIndex++;
+                if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
+                    gStagePhases[gCurrentPhaseIndex].unk_02 =
+                        gStagePhases[gCurrentPhaseIndex - 1].unk_02 + (gStagePhases[gCurrentPhaseIndex].unk_02 - D_86A025CC);
                 }
 
                 D_86A025CC = 0;
 
-                if (D_86A025A0[D_86A025C4].unk_00 != -1) {
-                    func_86A021C0(&D_86A061D8, &D_86A061D9);
-                    func_86A000B4(D_86A061D8, D_86A061D9);
+                if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
+                    Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
+                    Stage_LoadResources(gCurrentStageId, gCurrentSubStageId);
                 } else {
-                    D_86A061D8 = -1;
-                    D_86A025C8 = 0;
+                    gCurrentStageId = -1;
+                    gScreenFadeAlpha = 0;
 
                     GraphNode_AllocInit(NULL, &D_86A06190);
-                    GraphNode_AllocInit(NULL, &D_86A061A8);
-                    GraphNode_AllocInit(NULL, &D_86A061C0);
+                    GraphNode_AllocInit(NULL, &gStageOverlayNode);
+                    GraphNode_AllocInit(NULL, &gStageForegroundNode);
 
-                    D_86A06170.unk_00.unk_01 &= ~1;
-                    if (D_86A025A0[D_86A025C4].unk_02 == 0) {
+                    gStageFragmentState.unk_00.unk_01 &= ~1;
+                    if (gStagePhases[gCurrentPhaseIndex].unk_02 == 0) {
                         main_pool_pop_state('BACK');
                     }
                 }
-            } else if ((D_86A025C4 == 3) && (D_86A026F8 < 2) &&
-                       (D_86A025CC >= (((D_86A025A0[D_86A025C4].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
-                func_86A021C0(&D_86A061D8, &D_86A061D9);
-                func_86A000B4(D_86A061D8, 0xFF);
+            } else if ((gCurrentPhaseIndex == 3) && (D_86A026F8 < 2) &&
+                       (D_86A025CC >= (((gStagePhases[gCurrentPhaseIndex].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
+                Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
+                Stage_LoadResources(gCurrentStageId, 0xFF);
                 D_86A026F8++;
             }
         }
 
         func_86A00434();
-        func_86A00464();
+        Camera_UpdateForPhase();
 
         if (gBorderFadeCycleCount >= 0x2D1) {
             var_s6 = 0;
@@ -382,14 +382,14 @@ void func_86A0092C(s32 arg0) {
 
         func_86A00788(1);
 
-        if (D_86A025A0[D_86A025C4].unk_02 != 0) {
-            D_86A025CC += D_86A06210;
+        if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
+            D_86A025CC += gPhaseDelta;
         }
     }
 }
 
 static s32 pad_D_86A026FC = 0;
-unk_D_86A02700 D_86A02700[] = {
+StageFadePalette gStageFadePalettes[] = {
     {
         0,
         0,
@@ -442,7 +442,7 @@ unk_D_86A02700 D_86A02700[] = {
     },
 };
 
-static unk_D_86A02750 D_86A02750[] = {
+static MessageDecompressEntry gMessageDecompressTable[] = {
     {
         0,
         { &gMessageDecompressBuffer, &D_86A05B64 },
@@ -1193,13 +1193,13 @@ static unk_D_86A02750 D_86A02750[] = {
     },
 };
 
-unk_D_86A03014 D_86A03014[29] = {
+StageCameraConfig gStageCameraConfigs[29] = {
     {
         0,
         360,
         40,
         6,
-        D_86A02750,
+        gMessageDecompressTable,
     },
     {
         0,
@@ -1399,7 +1399,7 @@ unk_D_86A03014 D_86A03014[29] = {
     },
 };
 
-void func_86A00C90(void) {
+void Stage_FadeOutAndAdvance(void) {
     u8 i;
 
     Audio_SetVolumeFadeAndDuration(1, 0x78);
@@ -1429,31 +1429,31 @@ void func_86A00DAC(s32 arg0) {
     MemoryBlock* sp2C;
     MemoryBlock* temp_v0;
 
-    D_86A061DC = ASSET_LOAD2(stadium_models, 1, 1);
-    ColorRectNode_Create(0, &D_86A06170, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    gStageArchive = ASSET_LOAD2(stadium_models, 1, 1);
+    ColorRectNode_Create(0, &gStageFragmentState, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GraphNode_AllocInit(NULL, &D_86A06190);
-    GraphNode_AllocInit(NULL, &D_86A061A8);
-    GraphNode_AllocInit(NULL, &D_86A061C0);
+    GraphNode_AllocInit(NULL, &gStageOverlayNode);
+    GraphNode_AllocInit(NULL, &gStageForegroundNode);
     SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
-    D_86A061E4 = process_geo_layout(sp2C, &D_86A025D0);
+    D_86A061E4 = process_geo_layout(sp2C, &gStageDisplayListCommands);
     mem_pool_resize_block(sp2C);
     Graph_InitRoots();
     func_86A00D00();
-    func_86A013C8(1, arg0, D_86A03014);
-    D_86A061D8 = -1;
+    MessageSequence_Init(1, arg0, gStageCameraConfigs);
+    gCurrentStageId = -1;
 
     main_pool_push_state('BACK');
 }
 
-s32 func_86A00ED8(s32 arg0, s32 arg1) {
+s32 Fragment16_Main(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('ROLE');
 
     Gfx_InitBuffers(0x10000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 1, 1);
-    D_86A06200 = Text_Init(4, 0);
+    gStageTextObject = Text_Init(4, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_game_ui, 0);
@@ -1461,18 +1461,18 @@ s32 func_86A00ED8(s32 arg0, s32 arg1) {
 
     func_86A00DAC(arg1);
     Stage_Set(sp24);
-    func_86A00840();
-    func_86A0092C(arg1);
-    func_86A00C90();
+    Stage_IntroFadeSequence();
+    Stage_MainLoop(arg1);
+    Stage_FadeOutAndAdvance();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('ROLE');
     // The unused labels below generate no code. They stand in for >= 7 file-level symbols the
-    // original had between the bss globals and func_86A013C8's static: IDO emits .lcomm in
+    // original had between the bss globals and MessageSequence_Init's static: IDO emits .lcomm in
     // symbol-table hash order (bucket = symbol number mod ~255), and only with these extra
-    // symbol numbers does the static land at 0x86A06218 (with D_86A0621C declared after it).
+    // symbol numbers does the static land at 0x86A06218 (with gPrevRspCounter declared after it).
     // A user label, a newly referenced extern or a new file-scope definition each count as one.
 lab0:
 lab1:
@@ -1486,7 +1486,7 @@ lab7:
     return 0;
 }
 
-s32 func_86A01020(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
+s32 ComputeGradientColors(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     u8 i;
     u8 j;
     u8 temp_fv1;
@@ -1495,37 +1495,37 @@ s32 func_86A01020(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
         return 0;
     }
 
-    D_86A02700[3].unk_00 = (arg2 - arg3) - 0x15;
-    D_86A02700[4].unk_00 = (arg2 - arg3) - 1;
+    gStageFadePalettes[3].unk_00 = (arg2 - arg3) - 0x15;
+    gStageFadePalettes[4].unk_00 = (arg2 - arg3) - 1;
 
     for (i = 0; i < 5; i++) {
-        if (arg1 == D_86A02700[i].unk_00) {
+        if (arg1 == gStageFadePalettes[i].unk_00) {
             for (j = 0; j < 4; j++) {
-                GfxColor_SetRGBA(&arg0[j], D_86A02700[i].unk_03[j].r, D_86A02700[i].unk_03[j].g, D_86A02700[i].unk_03[j].b,
-                              D_86A02700[i].unk_02);
+                GfxColor_SetRGBA(&arg0[j], gStageFadePalettes[i].unk_03[j].r, gStageFadePalettes[i].unk_03[j].g, gStageFadePalettes[i].unk_03[j].b,
+                              gStageFadePalettes[i].unk_02);
             }
             break;
         }
 
-        if ((D_86A02700[i].unk_00 < arg1) && (arg1 < D_86A02700[i + 1].unk_00)) {
+        if ((gStageFadePalettes[i].unk_00 < arg1) && (arg1 < gStageFadePalettes[i + 1].unk_00)) {
             temp_fv1 =
-                (s32)ROUND_MAX((((D_86A02700[i + 1].unk_02 - D_86A02700[i].unk_02) * (arg1 - D_86A02700[i].unk_00)) /
-                                (f32)(D_86A02700[i + 1].unk_00 - D_86A02700[i].unk_00)) +
-                               D_86A02700[i].unk_02);
+                (s32)ROUND_MAX((((gStageFadePalettes[i + 1].unk_02 - gStageFadePalettes[i].unk_02) * (arg1 - gStageFadePalettes[i].unk_00)) /
+                                (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                               gStageFadePalettes[i].unk_02);
 
             for (j = 0; j < 4; j++) {
                 arg0[j].r = (s32)ROUND_MAX(
-                    (((D_86A02700[i + 1].unk_03[j].r - D_86A02700[i].unk_03[j].r) * (arg1 - D_86A02700[i].unk_00)) /
-                     (f32)(D_86A02700[i + 1].unk_00 - D_86A02700[i].unk_00)) +
-                    D_86A02700[i].unk_03[j].r);
+                    (((gStageFadePalettes[i + 1].unk_03[j].r - gStageFadePalettes[i].unk_03[j].r) * (arg1 - gStageFadePalettes[i].unk_00)) /
+                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    gStageFadePalettes[i].unk_03[j].r);
                 arg0[j].g = (s32)ROUND_MAX(
-                    (((D_86A02700[i + 1].unk_03[j].g - D_86A02700[i].unk_03[j].g) * (arg1 - D_86A02700[i].unk_00)) /
-                     (f32)(D_86A02700[i + 1].unk_00 - D_86A02700[i].unk_00)) +
-                    D_86A02700[i].unk_03[j].g);
+                    (((gStageFadePalettes[i + 1].unk_03[j].g - gStageFadePalettes[i].unk_03[j].g) * (arg1 - gStageFadePalettes[i].unk_00)) /
+                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    gStageFadePalettes[i].unk_03[j].g);
                 arg0[j].b = (s32)ROUND_MAX(
-                    (((D_86A02700[i + 1].unk_03[j].b - D_86A02700[i].unk_03[j].b) * (arg1 - D_86A02700[i].unk_00)) /
-                     (f32)(D_86A02700[i + 1].unk_00 - D_86A02700[i].unk_00)) +
-                    D_86A02700[i].unk_03[j].b);
+                    (((gStageFadePalettes[i + 1].unk_03[j].b - gStageFadePalettes[i].unk_03[j].b) * (arg1 - gStageFadePalettes[i].unk_00)) /
+                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    gStageFadePalettes[i].unk_03[j].b);
                 arg0[j].a = temp_fv1;
             }
 
@@ -1535,45 +1535,45 @@ s32 func_86A01020(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     return 1;
 }
 
-void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2) {
+void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
     static char** D_86A06218;
 
     u16 i;
     u16 sp2C;
-    unk_D_86A02750* ptr;
+    MessageDecompressEntry* ptr;
 
     sp2C = GetFragment16Constant();
     MessageBank_Init();
     D_86A06218 = GetMessageBank(0x2D);
 
-    for (i = 0, ptr = D_86A02750; i < sp2C; i++, ptr++) {
+    for (i = 0, ptr = gMessageDecompressTable; i < sp2C; i++, ptr++) {
         ptr->unk_04[0] = GetMessageString(NULL, 0, D_86A06218, i);
     }
 
-    D_86A06210 = arg0;
-    D_86A06211 = 0;
-    D_86A06212 = 0;
-    D_86A06214 = arg2;
+    gPhaseDelta = arg0;
+    gUnusedTimer1 = 0;
+    gUnusedTimer2 = 0;
+    gStageLayoutPtr = arg2;
 }
 
-u32 D_86A0621C;
+u32 gPrevRspCounter;
 
-void func_86A01490(void) {
+void Stage_UpdateLogic(void) {
     u32 v0 = gRspTaskManager.unk_A34;
 
-    if (D_86A06212 == 0) {
-        D_86A06212 = 1;
-    } else if (D_86A0621C < v0) {
-        D_86A06210 = v0 - D_86A0621C;
+    if (gUnusedTimer2 == 0) {
+        gUnusedTimer2 = 1;
+    } else if (gPrevRspCounter < v0) {
+        gPhaseDelta = v0 - gPrevRspCounter;
     } else {
         // Counter wrapped around
-        D_86A06210 = (v0 + 0xFFFFFFFFLL + 1) - D_86A0621C;
+        gPhaseDelta = (v0 + 0xFFFFFFFFLL + 1) - gPrevRspCounter;
     }
 
-    D_86A0621C = v0;
+    gPrevRspCounter = v0;
 }
 
-void func_86A014F0(void) {
+void Stage_TriggerNextPhase(void) {
     u8 var_a1;
     u8 var_s0;
     u8 var_s1;
@@ -1581,10 +1581,10 @@ void func_86A014F0(void) {
     s32 var_s5;
     Color_RGBA8_u32 sp60[4];
     u16 var_s11;
-    unk_D_86A02750* ptr;
-    unk_D_86A03014 sp4C;
+    MessageDecompressEntry* ptr;
+    StageCameraConfig sp4C;
 
-    if (D_86A06214 == NULL) {
+    if (gStageLayoutPtr == NULL) {
         Stage_DrawBorderFade(1);
         return;
     }
@@ -1592,7 +1592,7 @@ void func_86A014F0(void) {
     var_s0 = 0;
     var_s1 = 0;
 
-    if (func_86A01020(sp60, D_86A06214->unk_00, D_86A06214->unk_02, D_86A06214->unk_04) != 0) {
+    if (ComputeGradientColors(sp60, gStageLayoutPtr->unk_00, gStageLayoutPtr->unk_02, gStageLayoutPtr->unk_04) != 0) {
         Text_ResetState();
         Text_BeginRender();
         Text_SetFont(4, 0);
@@ -1602,8 +1602,8 @@ void func_86A014F0(void) {
         Text_SetEnvColor(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
         Text_SetPrimColor(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
 
-        ptr = D_86A06214->unk_08;
-        for (i = 0; i < D_86A06214->unk_05; i++, ptr++) {
+        ptr = gStageLayoutPtr->unk_08;
+        for (i = 0; i < gStageLayoutPtr->unk_05; i++, ptr++) {
             switch (ptr->unk_00) {
                 case 0:
                     var_s0++;
@@ -1621,9 +1621,9 @@ void func_86A014F0(void) {
             var_a1 = (var_s0 * 4) + (var_s1 * 0xA);
         }
 
-        var_s11 = (((-((D_86A06214->unk_05 - var_s1) * 0x11) - var_a1) + 0xF0) / 2) & 0xFFFF;
+        var_s11 = (((-((gStageLayoutPtr->unk_05 - var_s1) * 0x11) - var_a1) + 0xF0) / 2) & 0xFFFF;
 
-        for (i = 0, ptr = D_86A06214->unk_08; i < D_86A06214->unk_05; i++, ptr++) {
+        for (i = 0, ptr = gStageLayoutPtr->unk_08; i < gStageLayoutPtr->unk_05; i++, ptr++) {
             if (ptr->unk_00 == 2) {
                 var_s11 += 0xA;
                 continue;
@@ -1647,8 +1647,8 @@ void func_86A014F0(void) {
                 }
             }
 
-            Text_Print(0xA0 - (MeasureTextWidth(0, 0, ptr->unk_04[D_86A06211]) / 2), (var_s11 * 4) >> 2,
-                          ptr->unk_04[D_86A06211]);
+            Text_Print(0xA0 - (MeasureTextWidth(0, 0, ptr->unk_04[gUnusedTimer1]) / 2), (var_s11 * 4) >> 2,
+                          ptr->unk_04[gUnusedTimer1]);
             var_s11 += 0x11;
         }
 
@@ -1656,18 +1656,18 @@ void func_86A014F0(void) {
         Text_SetupDL();
     }
 
-    D_86A06214->unk_00 = D_86A06214->unk_00 + D_86A06210;
-    if (D_86A06214->unk_00 >= D_86A06214->unk_02) {
-        sp4C = *D_86A06214;
+    gStageLayoutPtr->unk_00 = gStageLayoutPtr->unk_00 + gPhaseDelta;
+    if (gStageLayoutPtr->unk_00 >= gStageLayoutPtr->unk_02) {
+        sp4C = *gStageLayoutPtr;
 
-        D_86A06214++;
+        gStageLayoutPtr++;
 
-        D_86A06214->unk_08 = &sp4C.unk_08[sp4C.unk_05];
-        if (D_86A06214->unk_02 == 0) {
-            D_86A06214 = NULL;
+        gStageLayoutPtr->unk_08 = &sp4C.unk_08[sp4C.unk_05];
+        if (gStageLayoutPtr->unk_02 == 0) {
+            gStageLayoutPtr = NULL;
         } else {
-            D_86A06214->unk_02 = (D_86A06214->unk_02 - sp4C.unk_00) + sp4C.unk_02;
-            D_86A06214->unk_00 = 0;
+            gStageLayoutPtr->unk_02 = (gStageLayoutPtr->unk_02 - sp4C.unk_00) + sp4C.unk_02;
+            gStageLayoutPtr->unk_00 = 0;
         }
     }
 }

@@ -425,7 +425,7 @@ void func_8437717C(unk_D_800AE540_0004* arg0) {
         }
         temp_a0 = arg0->unk_01C[j].unk_00.unk_00;
         D_843C5550[temp_v0] = temp_a0;
-        func_8430255C(temp_a0, &D_843C5310[temp_v0]);
+        DMATransfer_MoveData(temp_a0, &D_843C5310[temp_v0]);
     }
 }
 
@@ -6136,7 +6136,7 @@ void func_84384124(void) {
         D_843C6138[i] = 0;
         temp_a0 = D_84390010[i]->unk_654.unk_38.unk_0B;
         D_843C5550[i] = temp_a0;
-        func_8430255C(temp_a0, &D_843C5310[i]);
+        DMATransfer_MoveData(temp_a0, &D_843C5310[i]);
     }
 }
 

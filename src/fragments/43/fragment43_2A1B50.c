@@ -55,7 +55,7 @@ void Gallery_Init(void) {
         GbsReadBlockEntry(0x17, 0, i, &D_834063C0[i]);
     }
 
-    func_80027FA0(&D_83407AF0, 1);
+    GBAudio_ResetState(&D_83407AF0, 1);
     if (D_83407AF0.unk_00 == 0x1F8) {
         D_83407AEC = 1;
     } else {

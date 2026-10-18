@@ -106,7 +106,7 @@ void SavePokemonNameData(PokemonData* arg0, s16 arg1, u8 arg2) {
     GbsWriteBlockEntry(0x13, 0, arg0->unk_00.unk_00 - 1, &sp24);
 }
 
-s32 func_80022A04(u16* arg0, unk_D_800AC910_040* arg1) {
+s32 func_80022A04(u16* arg0, Gen1StringDecodeBuffer* arg1) {
     return !bcmp(arg0, arg1, 0xD);
 }
 
@@ -1192,7 +1192,7 @@ s32 func_80024EF4(void) {
     return gActivePlayerMask;
 }
 
-s32 func_80024F00(s32 arg0) {
+s32 MenuItem_GetPokemonSpecies(s32 arg0) {
     return gPlayerSaveData[arg0].unk_03;
 }
 
@@ -1210,11 +1210,11 @@ s32 func_80024F24(s32 arg0) {
     return 0;
 }
 
-s32 func_80024F68(s32 arg0) {
+s32 MenuItem_GetHeldItemId(s32 arg0) {
     return gPlayerSaveData[arg0].unk_02;
 }
 
-s32 func_80024F8C(s32 arg0) {
+s32 MenuItem_GetPokemonLevel(s32 arg0) {
     return gPlayerSaveData[arg0].unk_05;
 }
 
@@ -1229,7 +1229,7 @@ s32 func_80024FB0(s32 arg0) {
     return 1;
 }
 
-void func_80025040(s32 arg0, unk_D_800AC910_040* arg1) {
+void Controller_ReadInput(s32 arg0, Gen1StringDecodeBuffer* arg1) {
     u64* ptr = &gPlayerSaveData[arg0].unk_40;
     u64* ptr2 = arg1;
 
@@ -1300,7 +1300,7 @@ s32 func_80025328(s32 arg0) {
     return gPlayerSaveData[arg0].unk_50->unk_441;
 }
 
-s32 func_80025370(s32 arg0) {
+s32 MenuItem_GetPokemonGender(s32 arg0) {
     return (gPlayerSaveData[arg0].unk_00 & 0x4000) != 0;
 }
 

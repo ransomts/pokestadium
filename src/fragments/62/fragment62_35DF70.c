@@ -65,7 +65,7 @@ void Battle_TurnStart(void) {
 
     if (sp24 == 0) {
         if (D_843C523C->unk_15 & 7) {
-            D_843C4E44 = 0;
+            gIsBattleMode = 0;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
             WriteMessageCharOrString(D_843901A0->unk_088, -0x80);
             return;
@@ -73,14 +73,14 @@ void Battle_TurnStart(void) {
 
         if (D_843C523C->unk_15 == 0) {
             HandleMoveEffectFlags();
-            if ((D_843C4DA4 == 0) &&
+            if ((gSpecialFlag == 0) &&
                 ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
                 goto block_9;
             }
         }
         gCurrentDamage = 0;
-        D_843C4DA4 = 1;
-        D_843C4E44 = 0;
+        gSpecialFlag = 1;
+        gIsBattleMode = 0;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x7F);
         return;
@@ -88,7 +88,7 @@ void Battle_TurnStart(void) {
 
 block_9:
     if ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) && (D_8438AC60[0] != 2)) {
-        D_843C4E44 = 0;
+        gIsBattleMode = 0;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x7F);
         if ((sp24 != 0) && (D_8438AC60[0] == 1)) {
@@ -102,7 +102,7 @@ block_9:
                 var_v1 = GetRandomU8() & 3;
             }
         } while (var_v1 == 0);
-        D_843C4DA4 = 0;
+        gSpecialFlag = 0;
         D_843C523C->unk_15 = var_v1;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(D_843901A0->unk_088, -0x7E);
@@ -138,9 +138,9 @@ void Battle_ProcessCommand(void) {
 
             default:
                 gBattleState.unk_00->unk_48 = 0x16;
-                D_843C4DEC = 0xA;
+                gAnimTimer = 0xA;
                 HandleMoveEffectFlags();
-                if (D_843C4DA4 != 0) {
+                if (gSpecialFlag != 0) {
                     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
                     WriteMessageCharOrString(sp1C, -0x7D);
                     return;
@@ -160,9 +160,9 @@ void Battle_ProcessCommand(void) {
         }
     } else if (gCurrentBattleEntity->unk_44.unk_01 == 0x42) {
         if (gBattleState.unk_00->unk_48 != 0x18) {
-            D_843C4DA4 = 1;
+            gSpecialFlag = 1;
             gBattleState.unk_00->unk_48 = 0x16;
-            D_843C4E44 = 0;
+            gIsBattleMode = 0;
         }
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
         WriteMessageCharOrString(sp1C, -0x7A);
@@ -436,7 +436,7 @@ void Battle_ApplyStatChange(void) {
         }
     } else {
     block_32:
-        D_843C4E45 = 0;
+        gAnimStateFlag = 0;
         WriteMessageCharOrString(D_843901A0->unk_088, -0x67);
     }
 }
@@ -470,7 +470,7 @@ void Battle_HandleStatDecrease(void) {
     } else {
         HandleMoveEffectFlags();
 
-        if (D_843C4DA4 != 0) {
+        if (gSpecialFlag != 0) {
             goto end;
         }
 
@@ -551,21 +551,21 @@ void Battle_HandleStatDecrease(void) {
 
 block_39:
     if (gCurrentBattleEntity->unk_44.unk_01 < 0x44) {
-        D_843C4E44 = 0;
-        D_843C4E45 = 0;
+        gIsBattleMode = 0;
+        gAnimStateFlag = 0;
         WriteMessageCharOrString(D_843901A0->unk_088, -0x5A);
         return;
     }
 
 end:
     if (gCurrentBattleEntity->unk_44.unk_01 < 0x44) {
-        D_843C4E44 = 0;
-        D_843C4E45 = 0;
+        gIsBattleMode = 0;
+        gAnimStateFlag = 0;
         if (D_843C4DA9 == 0) {
             WriteMessageCharOrString(D_843901A0->unk_088, -0x59);
         }
     } else {
-        D_843C4E45 = 0;
+        gAnimStateFlag = 0;
     }
 }
 
@@ -618,7 +618,7 @@ void func_84374E08(void) {
                 break;
         }
 
-        D_8439022C = gCurrentBattleEntity->unk_54 - 1;
+        gTotalMoveCount = gCurrentBattleEntity->unk_54 - 1;
         gBattleState.unk_00->unk_48 = 0x18;
     }
 }
@@ -651,7 +651,7 @@ void func_84374FD4(void) {
     gCurrentDamage = 0;
     D_843C4DA5 = 0xFF;
     if (gCurrentBattleEntity->unk_2E < D_843C523C->unk_2E) {
-        D_843C4DA4 = 1;
+        gSpecialFlag = 1;
         return;
     }
     gCurrentDamage = 0xFFFF;
@@ -770,7 +770,7 @@ void func_84375424(void) {
 void Battle_StartMiniGame(void) {
     if (!(D_843C523C->unk_4D & 0x10) && (GetRandomU8() < 0x1A) && !(D_843C523C->unk_4C & 0x80)) {
         gBattleState.unk_00->unk_1A = 3;
-        D_843C4E45 = 0;
+        gAnimStateFlag = 0;
         D_843C523C->unk_4C |= 0x80;
         D_843C523C->unk_50 = (GetRandomU8() & 3) + 2;
         MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -780,12 +780,12 @@ void Battle_StartMiniGame(void) {
 
 void func_843755E8(void) {
     gBattleState.unk_00->unk_48 = 0x16;
-    D_843C4E44 = 0;
+    gIsBattleMode = 0;
 
     if (!(D_843C523C->unk_4D & 0x10)) {
         HandleMoveEffectFlags();
-        if ((D_843C4DA4 == 0) && !(D_843C523C->unk_4C & 0x80)) {
-            D_843C4E44 = 1;
+        if ((gSpecialFlag == 0) && !(D_843C523C->unk_4C & 0x80)) {
+            gIsBattleMode = 1;
             D_843C523C->unk_4C |= 0x80;
             D_843C523C->unk_50 = (GetRandomU8() & 3) + 2;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -804,7 +804,7 @@ void func_84375700(void) {
     if (D_843C523C->unk_15 == 0) {
         if ((gCurrentBattleEntity->unk_44.unk_03 != 0x17) || ((D_843C523C->unk_16[6] != 4) && (D_843C523C->unk_16[7] != 4))) {
             HandleMoveEffectFlags();
-            if (D_843C4DA4 == 0) {
+            if (gSpecialFlag == 0) {
                 D_843C523C->unk_15 |= 0x40;
                 func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
                 MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -813,14 +813,14 @@ void func_84375700(void) {
             }
         } else {
             gBattleState.unk_00->unk_48 = 8;
-            D_843C4E44 = 0;
+            gIsBattleMode = 0;
             WriteMessageCharOrString(D_843901A0->unk_088, -0x42);
             return;
         }
     }
 
     gBattleState.unk_00->unk_48 = 8;
-    D_843C4E44 = 0;
+    gIsBattleMode = 0;
     MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
     WriteMessageCharOrString(D_843901A0->unk_088, -0x41);
 }
@@ -865,7 +865,7 @@ void func_843759F4(void) {
     gBattleState.unk_00->unk_48 = 7;
     HandleMoveEffectFlags();
 
-    if ((D_843C4DA4 == 0) && !(D_843C523C->unk_4C & 0x40)) {
+    if ((gSpecialFlag == 0) && !(D_843C523C->unk_4C & 0x40)) {
         D_843C4DAA = 1;
         do {
             var_t0 = Math_RandomU16Scaled(4);
@@ -887,7 +887,7 @@ void func_843759F4(void) {
 void func_84375B1C(void) {
     HandleMoveEffectFlags();
 
-    if ((D_843C4DA4 == 0) && (D_843C523C->unk_16[6] != 0x16) && (D_843C523C->unk_16[7] != 0x16)) {
+    if ((gSpecialFlag == 0) && (D_843C523C->unk_16[6] != 0x16) && (D_843C523C->unk_16[7] != 0x16)) {
         if (!(D_843C523C->unk_4D & 0x80)) {
             D_843C523C->unk_4D |= 0x80;
             MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
@@ -912,7 +912,7 @@ void func_84375C60(void) {
 
     HandleMoveEffectFlags();
 
-    if (D_843C4DA4 == 0) {
+    if (gSpecialFlag == 0) {
         gBattleState.unk_00->unk_48 = 0x20;
         if (D_843C523C->unk_52 == 0) {
             do {
@@ -1034,7 +1034,7 @@ void func_8437600C(void) {
     }
 
     gBattleState.unk_00->unk_48 = 0x1C;
-    D_843C4DA4 = 1;
+    gSpecialFlag = 1;
     WriteMessageCharOrString(D_843901A0->unk_088, -0x32);
 }
 

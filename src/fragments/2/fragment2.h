@@ -51,7 +51,7 @@ void func_87801AC0(s16 arg0, s16 arg1, unk_func_87801684* arg2);
 void func_87801C8C(s16 arg0, s16 arg1, unk_func_87801684* arg2);
 void func_87801D5C(s16 arg0, s16 arg1, s16 arg2, unk_func_87801684* arg3);
 void func_87801F48(s16 arg0, s16 arg1, s16 arg2);
-void func_878021B4(s16 arg0, s16 arg1);
+void Stage_SetBorderFadeParams(s16 arg0, s16 arg1);
 
 void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3);
 void Fragment2_1_Init(void);

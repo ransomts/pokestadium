@@ -101,18 +101,18 @@ void PlayerDefeated(u32);
 void ProcessCommandQueue(u32 arg0);
 void ProcessAudioCommandQueue(s32);
 void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_800414B8(s32);
-void func_8004153C(void);
-void func_80041688(void);
+void QueuePlayerDefeatMessage(s32);
+void HandleStadiumModeAudio(void);
+void QueueEndTurnSound(void);
 void Audio_UpdateEffects(void);
 void ResetAudioState(void);
 void AudioQueueRemoveLast(void);
 void AudioQueueAdd(u32 arg0);
-void func_80041D50(u8* arg0, u8* arg1);
-u16 func_80041D70(u16 arg0);
-void func_80041DF4(u16 arg0);
-void func_80041E40(u16 arg0);
-u32 func_80041EF4(u16* arg0);
-void func_800420C0(u16* arg0);
+void SwapU8(u8* arg0, u8* arg1);
+u16 IsMessageInRecentList(u16 arg0);
+void AddMessageToRecent(u16 arg0);
+void ShiftRecentMessages(u16 arg0);
+u32 ShuffleIndices(u16* arg0);
+void AudioPlayCueTable(u16* arg0);
 
 #endif // _3D140_H_

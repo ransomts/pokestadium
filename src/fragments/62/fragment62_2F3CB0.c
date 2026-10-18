@@ -1078,7 +1078,7 @@ void func_8430C010(s32 arg0) {
 
 static s32 pad_D_8438466C = 0;
 
-s16 D_84384670[] = {
+s16 gAnimLookupTable[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    0,    0, 0xA9, 0, 0, 0, 0, 0, 0xAA, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    0,    0, 0,    0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0,    0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0xAB, 0,    0, 0,    0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0xAC, 0, 0, 0, 0, 0, 0,    0, 0,
@@ -1207,19 +1207,19 @@ unk_D_86B0C160 gCameraFovyPresetSpecial[] = {
     },
 };
 
-unk_D_86B0C160 D_843848F0 = {
+unk_D_86B0C160 gCameraPosB = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 0, 5461, 0.0f, 3.5f, 0.20000000298023224f, 0.05999999865889549f, 200.0f,
 };
 
-unk_D_86B0C160 D_84384924 = {
+unk_D_86B0C160 gCameraPosD = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 4550, 31850, 0.0f, 6.0f, 0.20000000298023224f, 0.03999999910593033f, 200.0f,
 };
 
-unk_D_86B0C160 D_84384958 = {
+unk_D_86B0C160 gCameraPosC = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 3640, -32768, 0.0f, 6.0f, 0.20000000298023224f, 0.07999999821186066f, 200.0f,
 };
 
-unk_D_86B0C160 D_8438498C = {
+unk_D_86B0C160 gCameraPosA = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 0, 0, 0.0f, 3.5f, 0.20000000298023224f, 0.05999999865889549f, 200.0f,
 };
 
@@ -1600,18 +1600,18 @@ Vec3f gCameraOffsetTable[] = {
     { 0.4000000059604645f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f },
 };
-unk_D_84385384_func D_84385380 = func_843056DC;
-unk_D_84385384 D_84385384[] = {
+unk_D_84385384_func gAnimStateIdle = func_843056DC;
+unk_D_84385384 gMoveAnimData[] = {
     {
         0,
         {
-            func_843020B0,
+            AnimChannel_TriggerMoveEffect,
             func_843056DC,
             func_843056DC,
-            func_84301D08,
-            func_84301DDC,
-            func_84304C8C,
-            func_84304D84,
+            AnimChannel_SetupAndTrigger,
+            AnimChannel_CheckModelBaseY,
+            Pokemon_HandleGroundedAnim,
+            Pokemon_HandleAirborneAnim,
         },
         167,
         5,
@@ -1620,10 +1620,10 @@ unk_D_84385384 D_84385384[] = {
     {
         1,
         {
-            func_84303ECC,
-            func_84305728,
+            Pokemon_HandleSpecialMoveAnimation,
+            ResetAnimChannelToDefault,
             Anim_ResetPlayer,
-            func_84304114,
+            PlayBattleMusicIfReady,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1636,9 +1636,9 @@ unk_D_84385384 D_84385384[] = {
         2,
         {
             func_843056DC,
-            func_843020B0,
+            AnimChannel_TriggerMoveEffect,
             func_843056DC,
-            func_843045DC,
+            Pokemon_HandleMoveHit,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1650,12 +1650,12 @@ unk_D_84385384 D_84385384[] = {
     {
         3,
         {
-            func_84302A78,
+            Pokemon_StartMoveAnimation,
             func_843056DC,
             func_843056DC,
-            func_84302C34,
-            func_84302EF0,
-            func_8430305C,
+            Pokemon_HandleMoveCompletion,
+            AnimChannel_CheckAndAdvance,
+            AnimChannel_HandleSpecialMoves,
             func_843056DC,
         },
         255,
@@ -1665,11 +1665,11 @@ unk_D_84385384 D_84385384[] = {
     {
         4,
         {
-            func_843037CC,
+            Pokemon_EnterBattleState,
             func_843056DC,
             func_843056DC,
-            func_84303A48,
-            func_84303BB8,
+            Pokemon_HandleSwitchIn,
+            Pokemon_HandleSwitchOut,
             func_843056DC,
             func_843056DC,
         },
@@ -1681,7 +1681,7 @@ unk_D_84385384 D_84385384[] = {
         5,
         {
             func_8430741C,
-            func_8430203C,
+            AnimChannel_HandleBattleState,
             func_843056DC,
             func_84307424,
             func_8430742C,
@@ -1696,7 +1696,7 @@ unk_D_84385384 D_84385384[] = {
         6,
         {
             func_8430741C,
-            func_8430203C,
+            AnimChannel_HandleBattleState,
             func_843056DC,
             func_84307464,
             func_8430745C,
@@ -1710,13 +1710,13 @@ unk_D_84385384 D_84385384[] = {
     {
         7,
         {
-            func_843020B0,
+            AnimChannel_TriggerMoveEffect,
             func_843056DC,
             func_843056DC,
-            func_84301D08,
+            AnimChannel_SetupAndTrigger,
             func_8430748C,
             func_84307444,
-            func_84304D84,
+            Pokemon_HandleAirborneAnim,
         },
         167,
         5,
@@ -1725,10 +1725,10 @@ unk_D_84385384 D_84385384[] = {
     {
         8,
         {
-            func_84304834,
+            Pokemon_TriggerAnimByLookup,
             func_843056DC,
             func_843056DC,
-            func_843048C8,
+            Pokemon_HandleSpecialMoveEffect,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1740,8 +1740,8 @@ unk_D_84385384 D_84385384[] = {
     {
         9,
         {
-            func_843049FC,
-            func_84304ACC,
+            Pokemon_SetSpecialAnimChannel,
+            Pokemon_HandleSpecialCondition,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1756,10 +1756,10 @@ unk_D_84385384 D_84385384[] = {
         10,
         {
             func_843056DC,
-            func_843020B0,
+            AnimChannel_TriggerMoveEffect,
             func_843056DC,
-            func_843045DC,
-            func_843029D0,
+            Pokemon_HandleMoveHit,
+            Pokemon_HandleFaint,
             func_843056DC,
             func_843056DC,
         },
@@ -1770,12 +1770,12 @@ unk_D_84385384 D_84385384[] = {
     {
         11,
         {
-            func_8430506C,
+            UpdateAnimChannelForEntity,
             func_843056DC,
             func_843056DC,
-            func_84303A48,
-            func_843055E0,
-            func_843054F0,
+            Pokemon_HandleSwitchIn,
+            ApplyAnimStateEffect,
+            TriggerAnimStateSound,
             func_843056DC,
         },
         255,
@@ -1786,7 +1786,7 @@ unk_D_84385384 D_84385384[] = {
         12,
         {
             Anim_ResetPlayer,
-            func_84304B50,
+            Pokemon_TriggerAnimIfMatch,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1800,7 +1800,7 @@ unk_D_84385384 D_84385384[] = {
     {
         13,
         {
-            func_84304C20,
+            Pokemon_PlaySoundBasedOnFlags,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1815,10 +1815,10 @@ unk_D_84385384 D_84385384[] = {
     {
         14,
         {
-            func_8430506C,
+            UpdateAnimChannelForEntity,
             func_843056DC,
             func_843056DC,
-            func_843052C0,
+            ProcessAnimStateMatch,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1830,7 +1830,7 @@ unk_D_84385384 D_84385384[] = {
     {
         15,
         {
-            func_84303CB4,
+            Pokemon_StartBattleIntro,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1845,10 +1845,10 @@ unk_D_84385384 D_84385384[] = {
     {
         16,
         {
-            func_84303ECC,
-            func_84305728,
+            Pokemon_HandleSpecialMoveAnimation,
+            ResetAnimChannelToDefault,
             Anim_ResetPlayer,
-            func_84304210,
+            PlayBattleMusicAndSound,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1863,8 +1863,8 @@ unk_D_84385384 D_84385384[] = {
             func_843056DC,
             func_843056DC,
             func_843056DC,
-            func_84301D08,
-            func_84304F54,
+            AnimChannel_SetupAndTrigger,
+            CheckAnimStateCompletion,
             func_843056DC,
             func_843056DC,
         },
@@ -1875,10 +1875,10 @@ unk_D_84385384 D_84385384[] = {
     {
         18,
         {
-            func_84303ECC,
-            func_84305728,
+            Pokemon_HandleSpecialMoveAnimation,
+            ResetAnimChannelToDefault,
             Anim_ResetPlayer,
-            func_843043FC,
+            PlayBattleMusicAndSoundAlt,
             func_843056DC,
             func_843056DC,
             func_843056DC,
@@ -1890,11 +1890,11 @@ unk_D_84385384 D_84385384[] = {
     {
         19,
         {
-            func_843033E0,
+            Pokemon_TriggerAnimIfUnlocked,
             func_843056DC,
             func_843056DC,
-            func_843034D8,
-            func_84303674,
+            Pokemon_HandleMoveEnd,
+            Pokemon_HandleSpecialMoveEnd,
             func_843056DC,
             func_843056DC,
         },
@@ -1906,10 +1906,10 @@ unk_D_84385384 D_84385384[] = {
         20,
         {
             func_843056DC,
-            func_843020B0,
+            AnimChannel_TriggerMoveEffect,
             func_843056DC,
-            func_843045DC,
-            func_84304758,
+            Pokemon_HandleMoveHit,
+            Pokemon_HandleFaintEffect,
             func_843056DC,
             func_843056DC,
         },
@@ -1920,10 +1920,10 @@ unk_D_84385384 D_84385384[] = {
     {
         21,
         {
-            func_84303208,
+            Pokemon_GenericActionTrigger,
             func_843056DC,
             func_843056DC,
-            func_8430334C,
+            Pokemon_PlayMoveEffect,
             func_843056DC,
             func_843056DC,
             func_843056DC,

@@ -394,7 +394,7 @@ void DrawMenuItem(unk_D_82305A50* arg0) {
 
         DrawBorder(temp_s1, temp_s2, 0xF8, 0x38);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         if (arg0->unk_0C != NULL) {
             if (arg0->unk_01 != 0) {
@@ -825,7 +825,7 @@ void DrawResultPanel(unk_D_8230F528* arg0) {
         sp36 = arg0->unk_06 + ((0x30 - sp3A) / 2);
         DrawBorder(sp38, sp36, 0x98, sp3A);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         Gfx_FillRect(sp38 + 4, sp36 + 4, 0x90, sp3A - 8, 0x3C, 0x3C, 0xA0);
 
@@ -1360,11 +1360,11 @@ void func_82304AB0(unk_D_82305A28* arg0) {
 }
 
 void func_82304BEC(PokemonData* arg0, s16 arg1) {
-    unk_D_800AC910_040 sp30;
-    unk_D_800AC910_040 sp20;
+    Gen1StringDecodeBuffer sp30;
+    Gen1StringDecodeBuffer sp20;
 
-    if ((func_80024F68(arg1) == 7) && (arg0->unk_00.unk_00 == 0x19)) {
-        func_80025040(arg1, &sp20);
+    if ((MenuItem_GetHeldItemId(arg1) == 7) && (arg0->unk_00.unk_00 == 0x19)) {
+        Controller_ReadInput(arg1, &sp20);
         _bcopy(arg0->unk_46, sp30.unk_02, 11);
         sp30.unk_00 = arg0->unk_0E;
         if (func_80022A04(&sp30, &sp20)) {

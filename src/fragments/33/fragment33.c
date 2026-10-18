@@ -560,19 +560,19 @@ void func_813024C8(s32 arg0) {
 void func_81302548(void) {
     s32 i;
     u8 temp_s3;
-    unk_D_800AC910_040 sp48;
+    Gen1StringDecodeBuffer sp48;
 
     temp_s3 = Cont_GetControllerBits();
 
     for (i = 0; i < 4; i++) {
-        func_80025040(i, &sp48);
+        Controller_ReadInput(i, &sp48);
         DecodeGen1StringToBuffer(D_81303FA8[i].unk_08, sp48.unk_02);
         D_81303FA8[i].unk_06 = sp48.unk_00;
-        D_81303FA8[i].unk_01 = func_80024F68(i);
-        D_81303FA8[i].unk_00 = func_80024F00(i);
-        D_81303FA8[i].unk_03 = func_80025370(i);
+        D_81303FA8[i].unk_01 = MenuItem_GetHeldItemId(i);
+        D_81303FA8[i].unk_00 = MenuItem_GetPokemonSpecies(i);
+        D_81303FA8[i].unk_03 = MenuItem_GetPokemonGender(i);
         D_81303FA8[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        D_81303FA8[i].unk_02 = func_80024F8C(i);
+        D_81303FA8[i].unk_02 = MenuItem_GetPokemonLevel(i);
     }
 }
 
@@ -752,7 +752,7 @@ void func_81302C20(void) {
         D_81304008[temp_s1].unk_002 = temp_s1;
         D_81304008[temp_s1].unk_000 = 0;
 
-        switch (func_80024F68(temp_s1)) {
+        switch (MenuItem_GetHeldItemId(temp_s1)) {
             case 1:
                 D_81304008[temp_s1].unk_01C = D_201E420;
                 break;

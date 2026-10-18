@@ -276,23 +276,23 @@ void PollControllerInputs(void) {
 void UpdateControllerInfo(void) {
     UNUSED s32 pad;
     unk_D_82F14450* ptr;
-    unk_D_800AC910_040 sp40;
+    Gen1StringDecodeBuffer sp40;
     u8 temp_s2 = Cont_GetControllerBits();
     s32 i;
 
     main_pool_push_state('info');
 
     for (i = 0, ptr = &gPlayerInfo[0]; i < 4; i++, ptr++) {
-        func_80025040(i, &sp40);
+        Controller_ReadInput(i, &sp40);
         SaveSlot_Load(i);
         DecodeGen1StringToBuffer(ptr->unk_08, sp40.unk_02);
         ptr->unk_06 = sp40.unk_00;
-        ptr->unk_01 = func_80024F68(i);
-        ptr->unk_00 = func_80024F00(i);
-        ptr->unk_03 = func_80025370(i);
+        ptr->unk_01 = MenuItem_GetHeldItemId(i);
+        ptr->unk_00 = MenuItem_GetPokemonSpecies(i);
+        ptr->unk_03 = MenuItem_GetPokemonGender(i);
         ptr->unk_04 = func_8002539C(i);
         ptr->unk_05 = (temp_s2 & (1 << i)) != 0;
-        ptr->unk_02 = func_80024F8C(i);
+        ptr->unk_02 = MenuItem_GetPokemonLevel(i);
     }
 
     main_pool_pop_state('info');

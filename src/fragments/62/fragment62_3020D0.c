@@ -100,12 +100,12 @@ void WriteMessageCharOrString(s8* arg0, s8 arg1) {
 
     if (tmp >= 0x80) {
         if ((tmp - 0x80) >= 0xB) {
-            GetMessageString(arg0 + 1, 0x40, D_843900B0, tmp - 0x48);
+            GetMessageString(arg0 + 1, 0x40, gMessageBank_0x1E, tmp - 0x48);
         } else {
-            GetMessageString(arg0 + 1, 0x40, D_843900B0, tmp - 0x49);
+            GetMessageString(arg0 + 1, 0x40, gMessageBank_0x1E, tmp - 0x49);
         }
     } else {
-        GetMessageString(arg0 + 1, 0x40, D_843900B0, gMessageIdLookup[arg1]);
+        GetMessageString(arg0 + 1, 0x40, gMessageBank_0x1E, gMessageIdLookup[arg1]);
     }
 }
 
@@ -500,8 +500,8 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 13:
-            temp_s1 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, D_843900B0, 0xA4)) / 2;
-            func_84315BC0(GetMessageString(NULL, 0, D_843900B0, 0xA4), 0xA1 - temp_s1, 0x71);
+            temp_s1 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA4)) / 2;
+            func_84315BC0(GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA4), 0xA1 - temp_s1, 0x71);
             break;
 
         case 14:
@@ -699,7 +699,7 @@ void func_84319408(unk_D_84390010* arg0, s32 arg1) {
     D_843901A0->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
     arg0->unk_8C4.unk_00 = 1;
     MessageBank_SetPointer_0x14_0x2A(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
-    GetMessageString(arg0->unk_8C4.unk_48, 0x40, D_843900B0, arg1);
+    GetMessageString(arg0->unk_8C4.unk_48, 0x40, gMessageBank_0x1E, arg1);
 }
 
 void func_843194A0(unk_D_84390010* arg0) {

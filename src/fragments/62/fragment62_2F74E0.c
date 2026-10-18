@@ -17,8 +17,8 @@ static u16 D_84390144;
 static Controller* D_84390148;
 static Controller* D_8439014C;
 static Controller D_84390150;
-s32 D_84390174;
-unk_D_84390178 D_84390178;
+s32 gBattleInitFlag;
+unk_D_84390178 gBattleInitStruct;
 
 static u8 D_84385750[] = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
@@ -140,7 +140,7 @@ s32 func_8430D02C(void) {
                 func_843184E4(0xD);
                 gBattleResultPhase = 2;
                 Audio_PlaySoundEffect(0x3F, 0, 0);
-                func_80041688();
+                QueueEndTurnSound();
                 sp1C = 1;
                 break;
 
@@ -244,8 +244,8 @@ void func_8430D364(void) {
     ptr4 = &D_84390010[1]->unk_724->unk_01C[ptr2->unk_08];
 
     if (D_84390288 != 0) {
-        D_843900A8[0] = temp_a2->unk_0C = temp_a2->unk_28;
-        D_843900A8[1] = temp_a3->unk_0C = temp_a3->unk_28;
+        gPlayerScaleFactors[0] = temp_a2->unk_0C = temp_a2->unk_28;
+        gPlayerScaleFactors[1] = temp_a3->unk_0C = temp_a3->unk_28;
 
         ptr3->unk_02 = temp_a2->unk_28;
         ptr4->unk_02 = temp_a3->unk_28;
@@ -377,8 +377,8 @@ void func_8430D814(void) {
     func_84370B7C(D_84390010[0]);
     func_84370B7C(D_84390010[1]);
 
-    D_843900A8[0] = D_84390010[0]->unk_654.unk_38.unk_0C;
-    D_843900A8[1] = D_84390010[1]->unk_654.unk_38.unk_0C;
+    gPlayerScaleFactors[0] = D_84390010[0]->unk_654.unk_38.unk_0C;
+    gPlayerScaleFactors[1] = D_84390010[1]->unk_654.unk_38.unk_0C;
 
     ResetBattleAfterMove(0, 1);
     ResetBattleAfterMove(1, 0);
@@ -1144,17 +1144,17 @@ void func_8430F500(void) {
 
     controller->buttonPressed = 0;
 
-    if (D_84390178.unk_00 == 0) {
-        D_84390178.unk_00 = D_84385758[D_84390174][0];
-        if (D_84390178.unk_00 != 0) {
-            controller->buttonPressed = D_84385758[D_84390174][1];
-            controller->buttonDown = D_84385758[D_84390174][2];
-            D_84390174++;
+    if (gBattleInitStruct.unk_00 == 0) {
+        gBattleInitStruct.unk_00 = D_84385758[gBattleInitFlag][0];
+        if (gBattleInitStruct.unk_00 != 0) {
+            controller->buttonPressed = D_84385758[gBattleInitFlag][1];
+            controller->buttonDown = D_84385758[gBattleInitFlag][2];
+            gBattleInitFlag++;
         }
     }
 
-    if (D_84390178.unk_00 > 0) {
-        D_84390178.unk_00--;
+    if (gBattleInitStruct.unk_00 > 0) {
+        gBattleInitStruct.unk_00--;
     }
 }
 
@@ -1210,15 +1210,15 @@ void func_8430F5F4(void) {
         sp20->unk_10 = 3;
 
         if ((sp24->unk_10 == 3) && (sp20->unk_10 == 3)) {
-            func_84320108();
+            DetermineTurnOrder();
         }
     }
 
     func_8430D364();
 
     if (cont->buttonPressed & 0x2000) {
-        D_84390174 = 0;
-        D_84390178.unk_00 = 0;
+        gBattleInitFlag = 0;
+        gBattleInitStruct.unk_00 = 0;
     }
 
     if (cont->buttonPressed & 0x8000) {
@@ -1301,9 +1301,9 @@ void func_8430F8B8(void) {
         }
 
         if ((sp24->unk_04 == 2) || (sp20->unk_04 == 2)) {
-            func_843202A0();
+            DetermineTurnOrderPriority();
         } else {
-            func_84320108();
+            DetermineTurnOrder();
         }
     } else {
         if (!(D_84390010[0]->unk_724->unk_000 & 2) && !(sp1C->unk_4D & 0x60) && !(sp1C->unk_4C & 0x12)) {
