@@ -37,6 +37,7 @@ LEDGER = os.path.join(HERE, "renames.tsv")
 QUEUE_FILE_RE = re.compile(r"^(\d+)\t(\S+\.c)$")
 ERROR_LINE_RE = re.compile(r"ledger:(\d+) \(([^)]+)\): (.+)")
 VRAM_ANCHOR_RE = re.compile(r"D_[0-9A-F]000[0-9A-F]{3}$")
+SEGMENT_ADDR_RE = re.compile(r"D_[0-9A-F]{7}$")  # 7-hex-digit = segment/VRAM space (D_4007B60 etc.)
 BATCH_OFFSET = 4  # queue wave 1 -> batch w5
 
 
@@ -156,8 +157,8 @@ def fixup(rows, facts, batch, log, vetoes):
         if old in vetoes:
             log(f"  drop {old}: vetoed by {batch}/veto.txt")
             continue
-        if VRAM_ANCHOR_RE.fullmatch(old):
-            log(f"  drop {old}: asset-VRAM anchor")
+        if VRAM_ANCHOR_RE.fullmatch(old) or SEGMENT_ADDR_RE.fullmatch(old):
+            log(f"  drop {old}: asset-VRAM/segment address (out of scope)")
             continue
         if old in facts.undefined_syms:
             log(f"  drop {old}: defined in undefined_syms.ld (never-touch)")
