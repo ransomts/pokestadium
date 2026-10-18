@@ -62,13 +62,18 @@ def call_model(model, system, user, temperature=0.2, max_tokens=4096, retries=2,
     key = open(KEY_PATH).read().strip()
 
     def post(messages):
-        body = json.dumps({
+        body = {
             "model": model,
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
-        }).encode()
-        req = urllib.request.Request(GATEWAY, data=body, method="POST",
+        }
+        # reasoning-model API shape: max_completion_tokens, no temperature
+        if re.match(r"(gpt-5\.[4-9]|o[34]\b|o[34]-)", model):
+            body.pop("temperature", None)
+            body.pop("max_tokens", None)
+            body["max_completion_tokens"] = max(max_tokens, 16384)
+        req = urllib.request.Request(GATEWAY, data=json.dumps(body).encode(), method="POST",
                                      headers={"Authorization": "Bearer " + key,
                                               "Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=300) as r:

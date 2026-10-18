@@ -406,10 +406,18 @@ def preflight(rows, protected, named, allow_applied_skip=True):
 # ---------------------------------------------------------------- rewrite
 
 class Rewriter:
+    """Defers whole-word/member/sa-line rewrites and applies them as ONE pass per file
+    (batched alternation regex) - per-row scanning was O(rows x repo text)."""
+
     def __init__(self):
         self.edits = {}       # path -> new content
         self.mvs = []         # (old_path, new_path)
         self.counts = {}      # symbol -> occurrences rewritten
+        self._word_map = {}
+        self._member_map = {}
+        self._sa_map = {}
+        self._sa_appends = []  # (new, addr, size_or_None)
+        self._batch_files = set()
 
     def _load(self, path):
         if path not in self.edits:
@@ -419,72 +427,89 @@ class Rewriter:
     def _save(self, path, text):
         self.edits[path] = text
 
+    @staticmethod
+    def _alt(names):
+        return "|".join(sorted((re.escape(n) for n in names), key=len, reverse=True))
+
     def rewrite_word(self, old, new, files, count_key=None):
-        pat, repl = word_sub(old, new)
-        n = 0
-        for f in files:
-            t = self._load(f)
-            t2, k = pat.subn(repl, t)
-            if k:
-                self._save(f, t2)
-                n += k
-        self.counts[count_key or old] = self.counts.get(count_key or old, 0) + n
-        return n
+        self._word_map[old] = new
+        self._batch_files.update(files)
+        return 0
 
     def rewrite_member(self, old_field, new_field, files):
         """`.field` / `->field` accesses only, plus `TYPE field;` declarations in headers."""
-        n = 0
-        for f in files:
-            t = self._load(f)
-            t2, k1 = re.subn(r"(\.)" + re.escape(old_field) + r"(?![A-Za-z0-9_])", r"\g<1>" + new_field, t)
-            t2, k2 = re.subn(r"(->)" + re.escape(old_field) + r"(?![A-Za-z0-9_])", r"\g<1>" + new_field, t2)
-            if f.endswith(".h"):
-                t2, k3 = re.subn(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)"
-                                 + re.escape(old_field) + r"((?:\[[^\]]*\])*)\s*;",
-                                 r"\g<1>" + new_field + r"\g<2>;", t2, flags=re.M)
-            else:
-                k3 = 0
-            if k1 + k2 + k3:
-                self._save(f, t2)
-                n += k1 + k2 + k3
-        self.counts[old_field] = self.counts.get(old_field, 0) + n
-        return n
+        self._member_map[old_field] = new_field
+        self._batch_files.update(files)
+        return 0
 
     def rewrite_sa_line(self, old, new):
-        for f in SA_FILES:
-            if not os.path.exists(f):
-                continue
-            t = self._load(f)
-            t2, k = re.subn(r"^" + re.escape(old) + r"(\s*=\s*)", new + r"\g<1>", t, flags=re.M)
-            if k:
-                self._save(f, t2)
-                return k
+        self._sa_map[old] = new
         return 0
 
     def add_sa_entry(self, new, addr, size):
-        """Append `new = 0xADDR; // defined:true size:0xSIZE` to symbol_addrs.txt (dlabel-only syms)."""
-        f = SA_FILES[2]
-        t = self._load(f)
-        entry = f"{new} = 0x{addr:08X}; // defined:true size:0x{size:X}"
-        if entry in t:
-            return 0
-        t = t.rstrip("\n") + "\n" + entry + "\n"
-        self._save(f, t)
+        self._sa_appends.append((new, addr, size))
         return 1
 
     def add_sa_entry_no_size(self, new, addr):
         """Entry without size: splat infers the span from its neighbours/segment end.
         Used for C-defined globals where a map-derived size could cross segment ends."""
-        f = SA_FILES[2]
-        t = self._load(f)
-        entry = f"{new} = 0x{addr:08X}; // defined:true"
-        if entry in t:
-            return 0
-        t = t.rstrip("\n") + "\n" + entry + "\n"
-        self._save(f, t)
+        self._sa_appends.append((new, addr, None))
         return 1
 
+    def _apply_batch(self, path, text):
+        changed = False
+        if self._word_map:
+            pat = re.compile(r"(?<![A-Za-z0-9_])(?:" + self._alt(self._word_map) + r")(?![A-Za-z0-9_])")
+            wmap = self._word_map
+
+            def wsub(m):
+                self.counts[m.group(0)] = self.counts.get(m.group(0), 0) + 1
+                return wmap[m.group(0)]
+
+            text, k = pat.subn(wsub, text)
+            changed |= bool(k)
+        if self._member_map:
+            mmap = self._member_map
+
+            def mrepl(m):
+                return m.group(1) + mmap[m.group(2)]
+
+            for pre in (r"(\.)", r"(->)"):
+                pat = re.compile(pre + "(" + self._alt(self._member_map) + r")(?![A-Za-z0-9_])")
+                text, k = pat.subn(mrepl, text)
+                changed |= bool(k)
+            if path.endswith(".h"):
+                pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
+                                 + self._alt(self._member_map) + r")((?:\[[^\]]*\])*)\s*;", re.M)
+                text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3), text)
+                changed |= bool(k)
+        if changed:
+            self._save(path, text)
+        return changed
+
     def commit(self):
+        # 1. symbol_addrs definition lines (batched, before appends)
+        if self._sa_map:
+            pat = re.compile(r"^(" + self._alt(self._sa_map) + r")(\s*=\s*)", re.M)
+            smap = self._sa_map
+            for f in SA_FILES:
+                if os.path.exists(f):
+                    t = self._load(f)
+                    t2, _k = pat.subn(lambda m: smap[m.group(1)] + m.group(2), t)
+                    if t2 != t:
+                        self._save(f, t2)
+        # 2. appended entries (dlabel-only / C-defined globals)
+        for new, addr, size in self._sa_appends:
+            f = SA_FILES[2]
+            t = self._load(f)
+            entry = (f"{new} = 0x{addr:08X}; // defined:true size:0x{size:X}"
+                     if size is not None else f"{new} = 0x{addr:08X}; // defined:true")
+            if entry not in t:
+                self._save(f, t.rstrip("\n") + "\n" + entry + "\n")
+        # 3. one batched pass per source file
+        for path in sorted(self._batch_files):
+            if os.path.exists(path):
+                self._apply_batch(path, self._load(path))
         for path, text in self.edits.items():
             open(path, "w").write(text)
         _invalidate_text_cache()  # rewritten files: drop cached contents
@@ -588,7 +613,7 @@ def build_gate(new_names, old_names, no_make=False, do_extract=True):
         if r.returncode != 0:
             print(r.stdout[-2000:], r.stderr[-1000:])
             return fail_reason("make extract failed")
-    r = subprocess.run(["make", "-j8", f"PYTHON={REPO}/.venv/bin/python3"],
+    r = subprocess.run(["make", "-j24", f"PYTHON={REPO}/.venv/bin/python3"],
                        cwd=REPO, env=MAKE_ENV, capture_output=True, text=True, timeout=3600)
     out = r.stdout + r.stderr
     if r.returncode != 0 or "build/pokestadium-us.z64: OK" not in out:
@@ -597,12 +622,20 @@ def build_gate(new_names, old_names, no_make=False, do_extract=True):
         return fail_reason("make failed or checksum not OK")
     mp = os.path.join(REPO, "build/pokestadium-us.map")
     mtext = open(mp, errors="replace").read()
-    for n in old_names:
-        if re.search(r"(?<![A-Za-z0-9_])" + re.escape(n) + r"(?![A-Za-z0-9_])", mtext):
-            return fail_reason(f"map still contains old name {n}")
-    for n in new_names:
-        if not re.search(r"(?<![A-Za-z0-9_])" + re.escape(n) + r"(?![A-Za-z0-9_])", mtext):
-            return fail_reason(f"map does not contain new name {n}")
+
+    def names_in(names):
+        alt = "|".join(sorted((re.escape(n) for n in names), key=len, reverse=True))
+        return set(re.findall(r"(?<![A-Za-z0-9_])(?:" + alt + r")(?![A-Za-z0-9_])", mtext))
+
+    if old_names:
+        left = names_in(old_names)
+        if left:
+            return fail_reason(f"map still contains old name(s): {sorted(left)[:3]}")
+    if new_names:
+        got = names_in(new_names)
+        missing = [n for n in new_names if n not in got]
+        if missing:
+            return fail_reason(f"map does not contain new name(s): {missing[:3]}")
     pr = subprocess.run([f"{REPO}/.venv/bin/python3", "progress.py", "-v", "us"],
                        cwd=REPO, capture_output=True, text=True, timeout=1200)
     if EXPECT_PROGRESS not in pr.stdout:
@@ -754,19 +787,36 @@ def cmd_apply(ledger, batch, sample, no_make):
                  and not is_c_static(r.old) and not is_function_local(r.old)]
     rw = do_rewrites(real, files)
     touched = rw.commit()
-    # post-rewrite checks
+    # post-rewrite checks (batched: one blob scan for all olds, one for all news)
+    files = rewrite_files()
+    sym_real = [r for r in real if not r.is_field_row()]
     problems = []
-    for r in real:
-        if r.is_field_row():
-            _ot, of, _nt, nf = parse_field(r)
-            checks = [(of, nf)]
-        else:
-            checks = [(r.old, r.new)]
-        for old, new in checks:
-            if repo_grep_count(old, rewrite_files()) and not r.is_field_row():
-                problems.append(f"old symbol {old} still referenced after rewrite")
-            if not r.is_field_row() and repo_grep_count(new, rewrite_files()) == 0:
-                problems.append(f"new symbol {new} has zero references (orphan)")
+    if sym_real:
+        olds = {r.old for r in sym_real}
+        news = {r.new for r in sym_real}
+        blob_files = files
+
+        def present(names):
+            alt = "|".join(sorted((re.escape(n) for n in names), key=len, reverse=True))
+            pat = re.compile(r"(?<![A-Za-z0-9_])(?:" + alt + r")(?![A-Za-z0-9_])")
+            found = set()
+            for f in blob_files:
+                try:
+                    found.update(pat.findall(file_text(f)))
+                except OSError:
+                    pass
+                if found >= names:
+                    break
+            return found
+
+        left = present(olds)
+        for r in sym_real:
+            if r.old in left:
+                problems.append(f"old symbol {r.old} still referenced after rewrite")
+        got = present(news)
+        for r in sym_real:
+            if r.new not in got:
+                problems.append(f"new symbol {r.new} has zero references (orphan)")
     if problems:
         for p in problems:
             print("  " + p)
