@@ -73,7 +73,7 @@ typedef struct unk_D_86B0C4C8 {
     /* 0x12 */ char unk12[0x2];
 } unk_D_86B0C4C8; // size = 0x14
 
-typedef struct unk_D_86B0DAE0_000 {
+typedef struct SpriteColorParams {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
@@ -86,11 +86,11 @@ typedef struct unk_D_86B0DAE0_000 {
     /* 0x12 */ u16 unk_12;
     /* 0x14 */ u16 unk_14;
     /* 0x16 */ u16 unk_16;
-} unk_D_86B0DAE0_000; // size = 0x18
+} SpriteColorParams; // size = 0x18
 
 typedef struct GfxTileParams {
-    /* 0x00 */ unk_D_86B0DAE0_000 unk_00;
-    /* 0x18 */ unk_D_86B0DAE0_000 unk_18;
+    /* 0x00 */ SpriteColorParams unk_00;
+    /* 0x18 */ SpriteColorParams unk_18;
 } GfxTileParams; // size = 0x30
 
 typedef struct unk_D_86B0FA78 {
@@ -119,7 +119,7 @@ typedef struct unk_D_86B0FA50 {
     /* 0xA4 */ f32 unk_A4;
     /* 0xA8 */ f32 unk_A8;
     /* 0xAC */ f32 unk_AC;
-    /* 0xB0 */ unk_D_86B0DAE0_000 unk_B0;
+    /* 0xB0 */ SpriteColorParams unk_B0;
 } unk_D_86B0FA50; // size = 0xC8
 
 typedef struct unk_D_86B0FA7C {
@@ -158,11 +158,11 @@ typedef struct unk_D_86B0C264 {
     /* 0x1A */ s16 unk_1A;
 } unk_D_86B0C264; // size = 0x1C
 
-extern unk_D_86B0C160 D_86B0E040[];
+extern unk_D_86B0C160 gScrollBarSegmentData[];
 extern s32 D_86B0E5DC;
 extern char** D_86B0E5E0;
-extern unk_D_86B0FA78* D_86B0FA78;
-extern unk_D_86B0FA7C* D_86B0FA7C;
+extern unk_D_86B0FA78* gCameraTarget;
+extern unk_D_86B0FA7C* gCameraState;
 extern unk_70D3A0 D_86B10660;
 
 s32 BattleContext_HandleState(UNUSED s32 arg0, UNUSED s32 arg1);
@@ -258,23 +258,23 @@ s32 BattleState_Handle21Or26(void);
 void Gfx_DrawTexturedRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs, u8 lrt, u8 argB, u8 argC, GfxTileParams* argD, s32 argE);
 void func_86B05944(s32, s32, s32, s32, s32);
 
-s32 func_86B05CB0(s32 arg0, GraphNode* arg1);
-s32 func_86B05D18(s32 arg0, GraphNode* arg1);
-s32 func_86B05D84(s32 arg0, GraphNode* arg1);
-void func_86B05DA0(u8 arg0, u8 arg1, u8 arg2);
-void func_86B05E18(void);
-void func_86B05EE8(void);
+s32 ToggleCameraNodeOffsetFromCurrent(s32 arg0, GraphNode* arg1);
+s32 SetCameraNodeOffsetInverse(s32 arg0, GraphNode* arg1);
+s32 GraphNode_SetColor(s32 arg0, GraphNode* arg1);
+void SetGlobalOverlayColor(u8 arg0, u8 arg1, u8 arg2);
+void LoadStageResources(void);
+void MonsterNode_Init(void);
 void func_86B06008(void);
-void func_86B06050(void);
-void func_86B06100(void);
-void func_86B061E8(void);
+void MiniCamera_Setup(void);
+void MonsterNode_LoadById(void);
+void MiniCamera_UpdateForMonster(void);
 s32 func_86B0630C(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2);
 s32 func_86B06394(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2);
-s32 func_86B06440(void);
+s32 MonsterLandingSequence(void);
 void func_86B065C4(void);
-void func_86B06960(void);
+void UpdateFadeColorFromHealth(void);
 void func_86B069D8(void);
-void func_86B06AB4(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);
+void UIElement_Init(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);
 void func_86B06B38(void);
 void func_86B06E34(void);
 void func_86B06E80(void);
@@ -285,7 +285,7 @@ void func_86B06F74(void);
 void func_86B06FCC(void);
 s32 func_86B06FFC(void);
 s32 func_86B07450(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
-void func_86B075EC(void);
+void BattleUI_Render(void);
 void func_86B07DF4(void);
 void func_86B07EA0(void);
 void func_86B07F14(void);
@@ -294,54 +294,54 @@ void func_86B08034(void);
 void func_86B0819C(void);
 s32 BattleState_Handle17(void);
 
-s16 func_86B08780(void);
-s32 func_86B087A0(u8 arg0, u8* arg1, s32 arg2);
-void func_86B087E8(unk_D_86B0FA78* arg0, Vec3f* arg1);
-void func_86B088E4(void);
-f32 func_86B089B0(f32 arg0, f32 arg1);
-void func_86B089E0(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+s16 GetCameraBaseY(void);
+s32 ByteArrayContains(u8 arg0, u8* arg1, s32 arg2);
+void ComputeCameraTargetPos(unk_D_86B0FA78* arg0, Vec3f* arg1);
+void Camera_UpdateView(void);
+f32 ClampFloatByScale(f32 arg0, f32 arg1);
+void Camera_SetBaseParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_86B08A3C(f32 arg0, f32 arg1);
-void func_86B08A58(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void Camera_SetEyeParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_86B08AB4(f32 arg0, f32 arg1);
-void func_86B08AD0(f32 arg0, f32 arg1);
-void func_86B08AEC(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1);
+void Camera_SetApproachParams(f32 arg0, f32 arg1);
+void Camera_InitFromConfig(unk_D_86B0C160* arg0, unk_D_86002F34_00C* arg1);
 s32 func_86B08C44(unk_D_86002F34_00C* arg0);
 
-void func_86B08E50(s32 arg0, s32 arg1);
-s32 func_86B08EA8(void);
-void func_86B08EB4(void);
-Gfx* func_86B08F48(Gfx* gfx, u32 arg1);
-void func_86B095C4(void);
-void func_86B0961C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7);
-void func_86B097B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5);
-void func_86B09928(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, unk_D_86B0DAE0_000* arg5);
-void func_86B09AD8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+void Scroll_Init(s32 arg0, s32 arg1);
+s32 Scroll_GetMode(void);
+void Scroll_Update(void);
+Gfx* Scroll_Draw(Gfx* gfx, u32 arg1);
+void Scroll_RenderIfActive(void);
+void Gfx_DrawClippedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7);
+void Gfx_LoadTextureAndDrawRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5);
+void Gfx_DrawSpriteWithColors(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, SpriteColorParams* arg5);
+void Gfx_DrawBorderSprite(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 
 void func_86B0A0B0(void);
-void func_86B0A0B8(void);
-void func_86B0A15C(void);
-void func_86B0A18C(u8* arg0);
-void func_86B0A30C(void);
-s32 func_86B0A37C(void);
-void func_86B0A414(void);
-void func_86B0A47C(void);
+void Stage_SetupCamera(void);
+void Input_Update(void);
+void Stage_DrawBackgroundSprites(u8* arg0);
+void Stage_RenderFrame(void);
+s32 Stage_HandleFade(void);
+void BattleState_Run(void);
+void Stage_Initialize(void);
 s32 BattleState_Handle24(void);
 
-void func_86B0A750(void);
-void func_86B0A7F8(void);
+void Camera_SetupView(void);
+void MessageState_Reset(void);
 void func_86B0A81C(void);
 void func_86B0A824(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-void func_86B0B024(void);
-void func_86B0B034(void);
-s32 func_86B0B040(void);
-void func_86B0B0B4(void);
-void func_86B0B12C(void);
-void func_86B0B184(void);
+void MessageState_SetFinished(void);
+void MessageState_Clear(void);
+s32 MessageState_CopyNextChars(void);
+void MessageBox_Draw(void);
+void MessageBox_RenderText(void);
+void MessageBox_Update(void);
 void func_86B0B498(void);
 void func_86B0B4C8(void);
-void func_86B0B4D0(u8* arg0);
+void DrawBackgroundTiles(u8* arg0);
 void func_86B0B650(void);
-s32 func_86B0B6C0(void);
+s32 BattleCutscene_Process(void);
 void func_86B0B810(void);
 void func_86B0B8DC(void);
 s32 BattleState_Handle22Or23(void);

@@ -476,7 +476,7 @@ s32 func_82E00F2C(UNUSED s32 arg0, UNUSED s32 arg1) {
         func_82E00E2C();
         func_80007754();
         sp18 = func_82E00CF0();
-        func_8000771C();
+        Stage_Terminate();
 
         main_pool_pop_state('LVSL');
     }

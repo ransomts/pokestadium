@@ -839,7 +839,7 @@ s32 func_84002A84(s32 arg0, s32 arg1) {
     D_84002D14 = Cont_GetControllerBits();
     func_80007754();
     sp1C = func_84002914();
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('RULE');
     return sp1C;

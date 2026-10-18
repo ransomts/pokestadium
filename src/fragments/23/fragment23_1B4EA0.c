@@ -2999,7 +2999,7 @@ void func_882147BC(unk_func_8821421C* arg0) {
     osStopThread(NULL);
 }
 
-void func_8821483C(UNUSED TextObject* arg0) {
+void TextObject_Confirm(UNUSED TextObject* arg0) {
     MemoryPool* sp34;
     void* sp30;
     u8* sp2C;

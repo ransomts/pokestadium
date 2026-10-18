@@ -33,8 +33,8 @@ typedef struct unk_func_88201488_arg2 {
 
 extern u8 D_4006A08[];
 
-static char** D_88224FA0;
-static char** D_88224FA4;
+static char** gItemMessageBank;
+static char** gBattleMessageBank;
 
 void func_88201210(unk_func_88205880_00D0* arg0) {
     s32 i;
@@ -255,19 +255,19 @@ void func_88201DA0(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_8800130
 }
 
 void func_88202054(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
-    static u16 D_88217C34[] = { 0x32, 0x33 };
-    static Color_RGBA8 D_88217C38[] = {
+    static u16 gMoveSlotMessageIds[] = { 0x32, 0x33 };
+    static Color_RGBA8 gTeamTextColors[] = {
         { 0x96, 0x64, 0x1E, 0xFF },
         { 0x32, 0x64, 0x64, 0xFF },
     };
 
-    HAL_Strcpy(arg0->unk_54, GetMessageString(NULL, 0, D_88224FA4, D_88217C34[arg1 - 1]));
+    HAL_Strcpy(arg0->unk_54, GetMessageString(NULL, 0, gBattleMessageBank, gMoveSlotMessageIds[arg1 - 1]));
     sprintf(&arg0->unk_54[strlen(arg0->unk_54)], " No.%d", arg2 + 1);
 
     arg0->unk_50->unk_00.unk_10.unk_00 =
         (arg0->unk_2C->unk_00.unk_14.unk_00 - MeasureTextWidth(arg0->unk_50->unk_2C, arg0->unk_50->unk_38, arg0->unk_54)) /
         2;
-    arg0->unk_58->unk_2C = D_88217C38[arg1 - 1];
+    arg0->unk_58->unk_2C = gTeamTextColors[arg1 - 1];
 }
 
 void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2) {
@@ -343,7 +343,7 @@ void func_88202394(unk_func_88201DA0* arg0, Controller* arg1) {
 }
 
 void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88217C40 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gItemCountTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char sp28[8];
     s32 sp24 = MeasureTextWidth(4, 0, "00");
@@ -351,7 +351,7 @@ void func_88202450(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
 
     Text_ResetState();
     Text_SetFont(4, 0);
-    Text_SetEnvColor(D_88217C40.r, D_88217C40.g, D_88217C40.b, D_88217C40.a);
+    Text_SetEnvColor(gItemCountTextColor.r, gItemCountTextColor.g, gItemCountTextColor.b, gItemCountTextColor.a);
     sprintf(sp28, "%d", arg0->unk_690);
     Text_Print(((arg1 + sp24) - MeasureTextWidth(0, 0, sp28)) + 0x1C, arg2 + 4, sp28);
     Text_SetupDL();
@@ -382,7 +382,7 @@ s32 func_882025B4(unk_func_8820253C* arg0, s32 arg1, s32 arg2) {
 
 void func_882025E0(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* arg1, unk_func_88200FA0_030_030* arg2,
                    unk_func_88203ED8* arg3, MemoryPool* arg4) {
-    static Color_RGBA8 D_88217C44 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gMenuTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 i;
     char* temp_s2;
@@ -400,11 +400,11 @@ void func_882025E0(unk_func_882025E0_1A9780* arg0, unk_func_88200FA0_030_030* ar
     arg0->unk_2C = 0;
 
     for (i = 0; i < 5; i++) {
-        temp_s2 = GetMessageString(NULL, 0, D_88224FA4, i + 6);
+        temp_s2 = GetMessageString(NULL, 0, gBattleMessageBank, i + 6);
 
         arg0->unk_3C[i].unk_00 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_3C[i].unk_00, 0, 0, temp_s2, 0x10);
-        arg0->unk_3C[i].unk_00->unk_30 = D_88217C44;
+        arg0->unk_3C[i].unk_00->unk_30 = gMenuTextColor;
         arg0->unk_3C[i].unk_00->unk_44 = arg0->unk_3C[i].unk_00->unk_44;
         arg0->unk_3C[i].unk_08 = 0;
         arg0->unk_3C[i].unk_04 = 0;
@@ -741,8 +741,8 @@ s32 func_88202F70(unk_func_882025E0_1A9780* arg0, Controller* arg1) {
 
 static Color_RGBA8 D_88217C48 = { 0xF0, 0xF0, 0xF0, 0xFF };
 static Color_RGBA8 D_88217C4C = { 0x5A, 0x5A, 0xA6, 0xFF };
-static Color_RGBA8 D_88217C50 = { 0x40, 0x40, 0x74, 0xFF };
-static Color_RGBA8 D_88217C54[] = {
+static Color_RGBA8 gPanelBackgroundColor = { 0x40, 0x40, 0x74, 0xFF };
+static Color_RGBA8 gPanelGradientColors[] = {
     { 0x78, 0x78, 0xF1, 0xFF },
     { 0x5E, 0x5E, 0xBE, 0xFF },
 };
@@ -759,9 +759,9 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     s32 pad2[2];
 
     if (arg4 & 2) {
-        sp8C = Color_ScaleRGB(D_88217C50, 1.4f);
+        sp8C = Color_ScaleRGB(gPanelBackgroundColor, 1.4f);
     } else {
-        sp8C = *(Color_RGBA8 *)&D_88217C50;
+        sp8C = *(Color_RGBA8 *)&gPanelBackgroundColor;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -776,13 +776,13 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     }
 
     {
-        u32 color = GPACK_RGBA5551(D_88217C54[1].r, D_88217C54[1].g, D_88217C54[1].b, 1); gDPPipeSync(gDisplayListHead++);
+        u32 color = GPACK_RGBA5551(gPanelGradientColors[1].r, gPanelGradientColors[1].g, gPanelGradientColors[1].b, 1); gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, arg1, ((arg5->unk_3C + arg0) - 1), arg1);
     }
     
     {
-        u32 color = GPACK_RGBA5551(D_88217C54[1].r, D_88217C54[1].g, D_88217C54[1].b, 1); gDPPipeSync(gDisplayListHead++);
+        u32 color = GPACK_RGBA5551(gPanelGradientColors[1].r, gPanelGradientColors[1].g, gPanelGradientColors[1].b, 1); gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, ((arg1 + arg5->unk_3E) - 1), ((arg5->unk_3C + arg0) - 1), ((arg1 + arg5->unk_3E) - 1));
     }
@@ -792,7 +792,7 @@ void func_88203538(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_
     if (arg4 & 4) {
         sp88.a = 0x4C;
     }
-    sp80 = GetMessageString(0, 0, D_88224FA4, 0x31);
+    sp80 = GetMessageString(0, 0, gBattleMessageBank, 0x31);
     sp78 = MeasureTextWidth(8, 0, sp80);
     sp74 = MeasureTextWidth(8, 0, " 00");
     sp70 = MeasureTextWidth(4, 0, "00");
@@ -819,16 +819,16 @@ void func_8820399C(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2) {
 }
 
 s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88217C5C = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gHeaderTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* sp2C;
     s32 temp_v0;
     s32 var_s0;
 
     if (arg0->unk_30 == 0) {
-        sp2C = GetMessageString(NULL, 0, D_88224FA4, 0xB);
+        sp2C = GetMessageString(NULL, 0, gBattleMessageBank, 0xB);
     } else {
-        sp2C = GetMessageString(NULL, 0, D_88224FA4, 0xC);
+        sp2C = GetMessageString(NULL, 0, gBattleMessageBank, 0xC);
     }
     temp_v0 = MeasureTextWidth(8, 0, sp2C);
 
@@ -862,7 +862,7 @@ s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 
     Text_ResetState();
-    Text_SetEnvColor(D_88217C5C.r, D_88217C5C.g, D_88217C5C.b, D_88217C5C.a);
+    Text_SetEnvColor(gHeaderTextColor.r, gHeaderTextColor.g, gHeaderTextColor.b, gHeaderTextColor.a);
     Text_SetFont(8, 0);
     Text_Print(var_s0, arg2 + 5, sp2C);
     Text_SetupDL();
@@ -873,10 +873,10 @@ s32 func_88203A20(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
 void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_88205880_A030* arg3,
                    unk_func_88001300_000* arg4, unk_func_88201DA0* arg5, TextObject* arg6, char** arg7,
                    MemoryPool* arg8) {
-    static Color_RGBA8 D_88217C60 = { 0x6C, 0x6C, 0x7E, 0xFF };
-    static Color_RGBA8 D_88217C64 = { 0x50, 0x50, 0x86, 0xFF };
-    static Color_RGBA8 D_88217C68 = { 0x79, 0x79, 0xCB, 0xFF };
-    static unk_D_88217C6C D_88217C6C[] = {
+    static Color_RGBA8 gMenuBackgroundColor = { 0x6C, 0x6C, 0x7E, 0xFF };
+    static Color_RGBA8 gButtonBaseColor = { 0x50, 0x50, 0x86, 0xFF };
+    static Color_RGBA8 gButtonHighlightColor = { 0x79, 0x79, 0xCB, 0xFF };
+    static unk_D_88217C6C gMenuItemDefs[] = {
         {
             249,
             36,
@@ -931,7 +931,7 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     static Color_RGBA8 D_88217CE4 = { 0xFF, 0xFF, 0x00, 0xFF };
     static Color_RGBA8 D_88217CE8 = { 0x2D, 0x1A, 0x41, 0xFF };
     static Color_RGBA8 D_88217CEC = { 0x6F, 0x5F, 0x7F, 0xFF };
-    static Color_RGBA8* D_88217CF0[5] = { D_882181F0, D_88218208, D_88218200, D_88218210, D_882181F8 };
+    static Color_RGBA8* gMenuItemTextColors[5] = { D_882181F0, D_88218208, D_88218200, D_88218210, D_882181F8 };
 
     UNUSED s32 pad[6];
     s32 i;
@@ -972,23 +972,23 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_2C);
 
     sp98 = mem_pool_alloc(arg8, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(sp98, 0, 0, 0x228, 6, D_88217C60);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(sp98, 0, 0, 0x228, 6, gMenuBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp98);
 
     sp9C = mem_pool_alloc(arg8, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(sp9C, 0, 0x138, 0x228, 6, D_88217C60);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(sp9C, 0, 0x138, 0x228, 6, gMenuBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp9C);
 
     spA0 = mem_pool_alloc(arg8, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA0, 0, 6, 0xA, 0x132, D_88217C60);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA0, 0, 6, 0xA, 0x132, gMenuBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, spA0);
 
     spA4 = mem_pool_alloc(arg8, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA4, 0x21E, 6, 0xA, 0x132, D_88217C60);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA4, 0x21E, 6, 0xA, 0x132, gMenuBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, spA4);
 
     spA8 = mem_pool_alloc(arg8, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA8, 0xF3, 6, 0x42, 0x132, D_88217C60);
+    ((func885012A4)Memmap_GetFragmentVaddr(func_885012A4))(spA8, 0xF3, 6, 0x42, 0x132, gMenuBackgroundColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, spA8);
 
     sp90 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_000));
@@ -1000,11 +1000,11 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp94);
 
     sp88 = mem_pool_alloc(arg8, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(func_8850143C))(sp88, 0xA, 6, 0xE9, 0x1E, D_88217C64, D_88217C68);
+    ((func8850143C)Memmap_GetFragmentVaddr(func_8850143C))(sp88, 0xA, 6, 0xE9, 0x1E, gButtonBaseColor, gButtonHighlightColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp88);
 
     sp8C = mem_pool_alloc(arg8, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(func_8850143C))(sp8C, 0x135, 6, 0xE9, 0x1E, D_88217C64, D_88217C68);
+    ((func8850143C)Memmap_GetFragmentVaddr(func_8850143C))(sp8C, 0x135, 6, 0xE9, 0x1E, gButtonBaseColor, gButtonHighlightColor);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp8C);
 
     arg0->unk_30 = mem_pool_alloc(arg8, sizeof(unk_func_8820399C));
@@ -1022,11 +1022,11 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     for (j = 0; j < 5U; j++) {
         arg0->unk_44[j] = mem_pool_alloc(arg8, sizeof(unk_func_882149A0));
 
-        func_882149A0(arg0->unk_44[j], D_88217C6C[j].unk_00, D_88217C6C[j].unk_02, D_88217C6C[j].unk_04,
-                      D_88217C6C[j].unk_06, D_88217C6C[j].unk_08, D_88217C6C[j].unk_0C, D_88217C6C[j].unk_10[0],
-                      D_88217C6C[j].unk_10[1], D_88217C60);
+        func_882149A0(arg0->unk_44[j], gMenuItemDefs[j].unk_00, gMenuItemDefs[j].unk_02, gMenuItemDefs[j].unk_04,
+                      gMenuItemDefs[j].unk_06, gMenuItemDefs[j].unk_08, gMenuItemDefs[j].unk_0C, gMenuItemDefs[j].unk_10[0],
+                      gMenuItemDefs[j].unk_10[1], gMenuBackgroundColor);
 
-        if (D_88217C6C[j].unk_14 != 0) {
+        if (gMenuItemDefs[j].unk_14 != 0) {
             func_882158BC(arg0->unk_44[j]);
         }
 
@@ -1057,19 +1057,19 @@ void func_88203ED8(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_8820588
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s0_2, arg0->unk_58);
 
     for (x = 0; x < 5; x++) {
-        temp_s1_2 = GetMessageString(NULL, 0, D_88224FA4, x + 1);
+        temp_s1_2 = GetMessageString(NULL, 0, gBattleMessageBank, x + 1);
 
         temp_s0_3 = mem_pool_alloc(arg8, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(temp_s0_3, (0x228 - MeasureTextWidth(0, 0, temp_s1_2)) / 2,
                                                                0xE, temp_s1_2, 0x10);
-        temp_s0_3->unk_30 = D_88217CF0[x][0];
+        temp_s0_3->unk_30 = gMenuItemTextColors[x][0];
         temp_s0_3->unk_44 = temp_s0_3->unk_44;
-        temp_s0_3->unk_34 = D_88217CF0[x][1];
+        temp_s0_3->unk_34 = gMenuItemTextColors[x][1];
         temp_s0_3->unk_44 = 1;
         ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_58, temp_s0_3);
     }
 
-    MeasureTextWidth(8, 0, GetMessageString(NULL, 0, D_88224FA4, 0x31));
+    MeasureTextWidth(8, 0, GetMessageString(NULL, 0, gBattleMessageBank, 0x31));
     MeasureTextWidth(8, 0, " 00");
     spB4 = MeasureTextWidth(4, 0, "00");
 
@@ -1559,11 +1559,11 @@ void func_88205880(unk_func_88205880* arg0, s32 arg1, s32 arg2, TextObject* arg3
 
     sp54 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(func_88509A2C))(sp54, 0x38, 0x22, func_80029080(),
-                                                           GetMessageString(NULL, 0, D_88224FA0, 0));
+                                                           GetMessageString(NULL, 0, gItemMessageBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp58, sp54);
 
     sp50 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(sp50, 0, 0, GetMessageString(NULL, 0, D_88224FA4, 0));
+    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(sp50, 0, 0, GetMessageString(NULL, 0, gBattleMessageBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp58, sp50);
 
     sp78 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
@@ -1633,7 +1633,7 @@ void func_88205E94(unk_func_88205880* arg0) {
     osStopThread(NULL);
 }
 
-void func_88205F1C(TextObject* arg0) {
+void TextObject_Cancel(TextObject* arg0) {
     MemoryPool* sp6C;
     unk_func_88205880* sp68;
     u8* sp64;
@@ -1655,8 +1655,8 @@ void func_88205F1C(TextObject* arg0) {
     sp64 = main_pool_alloc(0x1000, 0);
     sp6C = mem_pool_try_init(0x10000, 0);
     MessageBank_Init();
-    D_88224FA0 = GetMessageBank(0x2A);
-    D_88224FA4 = GetMessageBank(4);
+    gItemMessageBank = GetMessageBank(0x2A);
+    gBattleMessageBank = GetMessageBank(4);
     sp5C = GetMessageBank(7);
     sp58 = GetMessageBank(6);
     sp54 = GetMessageBank(0x24);

@@ -817,7 +817,7 @@ s32 func_83002120(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_830039C4 = GetMessageBank(0x24);
     func_80007754();
     func_830020D0();
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('EXPL');
 

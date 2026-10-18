@@ -4,8 +4,8 @@
 #include "global.h"
 #include "src/fragments/3/fragment3.h"
 
-void func_86F00020(s16 arg0, s16 arg1);
-void func_86F00188(s16 arg0, s16 arg1);
+void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1);
+void MiniGame_PlaySoundIfNotMuted(s16 arg0, s16 arg1);
 void initSandshrew(MiniActor* sandshrew, s32 player);
 void initSandshrews(void);
 void miniSandshewReangle(MiniActor* sandshrew);
@@ -15,7 +15,7 @@ void sandshrewDecreaseVel(MiniActor* arg0, f32 arg1);
 void sandshrewChangeState(MiniActor* sandshrew, s32 arg1);
 void sandshrewHumanControls(MiniActor* sandshrew);
 void sandshrewCompControls(MiniActor* arg0);
-void func_86F00920(MiniActor* sandshrew);
+void MiniSandshrew_StateMachine(MiniActor* sandshrew);
 void func_86F00D04(void);
 void initSandshrewHole(MiniActor* a0, s32 arg1);
 void initSandshrewHoles(void);
@@ -29,7 +29,7 @@ void func_86F0132C(void);
 void func_86F013B8(void);
 void func_86F01488(void);
 void sandshrewMinigameInitObjects(void);
-s32 func_86F014F8(void);
+s32 MiniSandshrewGame_DetermineWinner(void);
 void func_86F0164C(void);
 s32 func_86F016D8(void);
 void func_86F0174C(void);

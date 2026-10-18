@@ -3119,7 +3119,7 @@ s32 func_88002628(s32 arg0, UNUSED s32 arg1) {
     func_80007754();
     Stage_FadeIn(8);
     sp3C = func_880025D8(sp38);
-    func_8000771C();
+    Stage_Terminate();
 
     osDestroyThread(&sp30->thread);
 

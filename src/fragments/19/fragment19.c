@@ -11,14 +11,14 @@
 #include "src/stage_loader.h"
 #include "src/geo_layout.h"
 
-static u32 D_86D00530[] = {
+static u32 gMiniGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,  0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000, 0x05000000,
     0x0D000000, 0x05000000, 0x0F000002,  0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x00640064,
     0x00640000, 0x05000000, 0x06000000,  0x06000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-void func_86D00020(void) {
+void MiniCamera_Init(void) {
     gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0xA00;
@@ -53,7 +53,7 @@ void miniUnkDrawHUB(UNUSED s32 arg0) {
     Stage_Advance();
 }
 
-void func_86D00134(void) {
+void MiniTutorial_FadeIn(void) {
     Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
 }
@@ -95,7 +95,7 @@ void miniUnkControls(void) {
     }
 }
 
-void func_86D0032C(void) {
+void MiniGame_ExitFadeOut(void) {
     s32 i;
 
     Stage_FadeOut(0x1E);
@@ -106,16 +106,16 @@ void func_86D0032C(void) {
     }
 }
 
-void func_86D0037C(void) {
+void MiniGame_Initialize(void) {
     UNUSED s32 pad[2];
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    gMiniCameraStruct = process_geo_layout(sp1C, &D_86D00530);
+    gMiniCameraStruct = process_geo_layout(sp1C, &gMiniGeoLayout);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     AssetManager_LoadArchives();
     MiniActorArray_Create();
-    func_86D00020();
+    MiniCamera_Init();
 }
 
 s32 func_86D003EC(s32 arg0, s32 arg1) {
@@ -131,11 +131,11 @@ s32 func_86D003EC(s32 arg0, s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    func_86D0037C();
+    MiniGame_Initialize();
     Stage_Set(sp24);
-    func_86D00134();
+    MiniTutorial_FadeIn();
     miniUnkControls();
-    func_86D0032C();
+    MiniGame_ExitFadeOut();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

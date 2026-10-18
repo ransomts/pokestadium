@@ -1033,7 +1033,7 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
     func_84102140();
     func_80007754();
     func_84101EC8();
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('PSSL');
 

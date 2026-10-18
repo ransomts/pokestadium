@@ -6339,7 +6339,7 @@ s32 func_888044BC(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_SetFillColor(1);
     Stage_FadeOut(8);
     Stage_AdvanceUntil(0xA, func_88804218);
-    func_8000771C();
+    Stage_Terminate();
     FontManager_Free();
 
     main_pool_pop_state('BOOK');

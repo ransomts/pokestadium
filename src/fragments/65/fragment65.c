@@ -887,7 +887,7 @@ s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
     }
 
     sp1E = func_84A02A34(sp1E);
-    func_8000771C();
+    Stage_Terminate();
     FontManager_Free();
 
     main_pool_pop_state('PNLV');

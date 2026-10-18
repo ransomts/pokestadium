@@ -21,13 +21,13 @@ TextObject* Fragment23_Init(void) {
 }
 
 void Fragment23_Terminate(void) {
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('TERM');
 }
 
 s32 Fragment23_Execute(UNUSED s32 arg0, UNUSED s32 arg1) {
-    func_8820C700(Fragment23_Init(), 1);
+    TextObject_Show(Fragment23_Init(), 1);
     Stage_SetFillColor(1);
     Stage_FadeOut(0xA);
     Fragment23_Terminate();
@@ -45,22 +45,22 @@ s32 Fragment23_HandleState(s32 arg0, s32 arg1) {
     }
     temp_s0 = Fragment23_Init();
 
-    var_s1 = func_8820104C(arg0, arg1);
+    var_s1 = Fragment23_GetNextState(arg0, arg1);
     while (var_s1 != 0) {
         switch (var_s1) {
             case 1:
-                func_8820C700(temp_s0, 0);
+                TextObject_Show(temp_s0, 0);
                 break;
 
             case 2:
-                func_8821483C(temp_s0);
+                TextObject_Confirm(temp_s0);
                 break;
 
             case 3:
-                func_88205F1C(temp_s0);
+                TextObject_Cancel(temp_s0);
                 break;
         }
-        var_s1 = func_8820104C(var_s1, arg1);
+        var_s1 = Fragment23_GetNextState(var_s1, arg1);
     }
 
     Fragment23_Terminate();

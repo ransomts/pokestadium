@@ -1632,7 +1632,7 @@ s16 func_823056C4(void) {
     func_82305370(&D_82305A28, D_823059CC);
     func_8230527C(&D_82305A28);
     D_823059CC = D_82305A28.unk_02;
-    func_8000771C();
+    Stage_Terminate();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('EVSL');

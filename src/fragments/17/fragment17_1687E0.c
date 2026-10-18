@@ -2,7 +2,7 @@
 #include "src/1CF30.h"
 #include "src/6BC0.h"
 
-static Gfx D_86B0DFD0[] = {
+static Gfx gGfxSetup_ScrollBar[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING),
@@ -14,7 +14,7 @@ static Gfx D_86B0DFD0[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_86B0E018[] = {
+static Gfx gGfxRestore_ScrollBar[] = {
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetTexturePersp(G_TP_PERSP),
@@ -22,7 +22,7 @@ static Gfx D_86B0E018[] = {
     gsSPEndDisplayList(),
 };
 
-unk_D_86B0C160 D_86B0E040[] = {
+unk_D_86B0C160 gScrollBarSegmentData[] = {
     {
         0,
         0,
@@ -215,42 +215,42 @@ unk_D_86B0C160 D_86B0E040[] = {
     },
 };
 
-static s16 D_86B106A0;
-static s16 D_86B106A2;
-static s16 D_86B106A4;
+static s16 gScrollMode;
+static s16 gScrollOffset;
+static s16 gScrollStep;
 
-void func_86B08E50(s32 arg0, s32 arg1) {
-    D_86B106A0 = arg0;
-    D_86B106A4 = arg1;
+void Scroll_Init(s32 arg0, s32 arg1) {
+    gScrollMode = arg0;
+    gScrollStep = arg1;
 
-    if ((D_86B106A0 == 0) || ((D_86B106A0 != 1) && (D_86B106A0 != 2) && (D_86B106A0 == 3))) {
-        D_86B106A2 = 0x140;
+    if ((gScrollMode == 0) || ((gScrollMode != 1) && (gScrollMode != 2) && (gScrollMode == 3))) {
+        gScrollOffset = 0x140;
     } else {
-        D_86B106A2 = 0;
+        gScrollOffset = 0;
     }
 }
 
-s32 func_86B08EA8(void) {
-    return D_86B106A0;
+s32 Scroll_GetMode(void) {
+    return gScrollMode;
 }
 
-void func_86B08EB4(void) {
-    s16 tmp = D_86B106A2;
+void Scroll_Update(void) {
+    s16 tmp = gScrollOffset;
 
-    switch (D_86B106A0) {
+    switch (gScrollMode) {
         case 2:
             if (tmp < 0x140) {
-                tmp += D_86B106A4;
+                tmp += gScrollStep;
             } else {
-                D_86B106A0 = 0;
+                gScrollMode = 0;
             }
             break;
 
         case 3:
             if (tmp > 0) {
-                tmp -= D_86B106A4;
+                tmp -= gScrollStep;
             } else {
-                D_86B106A0 = 1;
+                gScrollMode = 1;
             }
 
             if (tmp < 0) {
@@ -259,17 +259,17 @@ void func_86B08EB4(void) {
             break;
     }
 
-    D_86B106A2 = tmp;
+    gScrollOffset = tmp;
 }
 
-Gfx* func_86B08F48(Gfx* gfx, u32 arg1) {
+Gfx* Scroll_Draw(Gfx* gfx, u32 arg1) {
     s32 idx1 = arg1 % 2;
     s32 idx2 = (arg1 + 1) % 2;
     s32 i;
     s16 xl;
     s16 yl;
 
-    gSPDisplayList(gfx++, D_86B0DFD0);
+    gSPDisplayList(gfx++, gGfxSetup_ScrollBar);
 
     gDPLoadTextureBlock_4b(gfx++, D_3000000, G_IM_FMT_I, 12, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -277,7 +277,7 @@ Gfx* func_86B08F48(Gfx* gfx, u32 arg1) {
     gDPPipeSync(gfx++);
 
     for (i = idx1; i < 5; i += 2) {
-        xl = (D_86B106A2 * 2) - 0x140;
+        xl = (gScrollOffset * 2) - 0x140;
         yl = (i * 0x30);
 
         gSPScisTextureRectangle(gfx++, xl << 2, yl << 2, (xl + 0x280) << 2, (yl + 24) << 2, 0, 0, 0, 1 << 6, 1 << 10);
@@ -286,7 +286,7 @@ Gfx* func_86B08F48(Gfx* gfx, u32 arg1) {
     }
 
     for (i = idx2; i < 5; i += 2) {
-        xl = -D_86B106A2 * 2;
+        xl = -gScrollOffset * 2;
         yl = (i * 0x30);
 
         gSPScisTextureRectangle(gfx++, xl << 2, yl << 2, (xl + 0x280) << 2, (yl + 24) << 2, 0, 0x500, 0, -(1 << 6),
@@ -295,25 +295,25 @@ Gfx* func_86B08F48(Gfx* gfx, u32 arg1) {
                                 -(1 << 6), 1 << 10);
     }
 
-    gSPDisplayList(gfx++, D_86B0E018);
+    gSPDisplayList(gfx++, gGfxRestore_ScrollBar);
 
     return gfx;
 }
 
-void func_86B095C4(void) {
+void Scroll_RenderIfActive(void) {
     Gfx* var_a0 = gDisplayListHead;
 
-    if (D_86B106A0 != 0) {
-        if (D_86B106A0 == 2) {
-            var_a0 = func_86B08F48(var_a0, 0);
+    if (gScrollMode != 0) {
+        if (gScrollMode == 2) {
+            var_a0 = Scroll_Draw(var_a0, 0);
         } else {
-            var_a0 = func_86B08F48(var_a0, 1);
+            var_a0 = Scroll_Draw(var_a0, 1);
         }
     }
     gDisplayListHead = var_a0;
 }
 
-void func_86B0961C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
+void Gfx_DrawClippedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
     ClipRect sp30;
 
     Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
@@ -335,15 +335,15 @@ void func_86B0961C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s
     }
 }
 
-void func_86B097B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5) {
+void Gfx_LoadTextureAndDrawRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5) {
     gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, arg3, 0, 0, arg2 - 1, arg3 - 1, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    func_86B0961C(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400);
+    Gfx_DrawClippedRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400);
 }
 
-void func_86B09928(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, unk_D_86B0DAE0_000* arg5) {
+void Gfx_DrawSpriteWithColors(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, SpriteColorParams* arg5) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -355,12 +355,12 @@ void func_86B09928(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, unk_D_86B0D
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (u8)arg5->unk_00, (u8)arg5->unk_02, (u8)arg5->unk_04, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    func_86B097B0(arg1, arg2, arg3, arg4, arg0, arg3);
+    Gfx_LoadTextureAndDrawRect(arg1, arg2, arg3, arg4, arg0, arg3);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86B09AD8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void Gfx_DrawBorderSprite(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg1, arg2, arg3, arg4, arg0, arg3, 0);

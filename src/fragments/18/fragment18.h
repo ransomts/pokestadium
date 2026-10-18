@@ -4,15 +4,15 @@
 #include "global.h"
 #include "src/fragments/3/fragment3.h"
 
-s32 func_86C00020(MiniActor* arg0);
+s32 Ekans_GetLaunchForceLevel(MiniActor* arg0);
 void miniDiglettGoldCheck(s16 arg0, s32* arg1, s32* arg2);
-void func_86C00110(s16 arg0, s16 arg1);
-void func_86C00368(s16 arg0, s16 arg1);
-void func_86C003AC(MiniActor* arg0);
+void MiniGame_PlaySoundEvent(s16 arg0, s16 arg1);
+void MiniGame_QueueSoundEvent(s16 arg0, s16 arg1);
+void Ekans_ResetPosition(MiniActor* arg0);
 void initEkans(MiniActor* ekans, s16 player);
 void initAllEkans(void);
-f32 func_86C0063C(MiniActor* arg0);
-s16 func_86C00668(MiniActor* arg0, s16 arg1);
+f32 Ekans_GetMaxStickMagnitude(MiniActor* arg0);
+s16 Ekans_ClampYRotation(MiniActor* arg0, s16 arg1);
 void miniEkansHumanControls(MiniActor* ekans);
 void func_86C00AA4(void);
 s32 func_86C00B0C(MiniActor* arg0);

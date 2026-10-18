@@ -3265,7 +3265,7 @@ s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     osDestroyThread(&sp44->thread);
 
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('PCHK');
 

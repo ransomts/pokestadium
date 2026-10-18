@@ -13,14 +13,14 @@
 static char** gFragment23ItemNameBank;
 static char** gFragment23CommonStringBank;
 
-static u16 D_88217BF0[4] = { 6, 7, 8, 9 };
+static u16 gFragment23DescriptionStringIds[4] = { 6, 7, 8, 9 };
 static Color_RGBA8 gFragment23ButtonColor = { 0xA0, 0x96, 0x64, 0xFF };
-static u16 D_88217BFC[4] = { 2, 3, 4, 5 };
+static u16 gFragment23OptionStringIds[4] = { 2, 3, 4, 5 };
 static Color_RGBA8 gFragment23PanelGradientStart = { 0x64, 0x96, 0xB4, 0xFF };
 static Color_RGBA8 gFragment23PanelGradientEnd = { 0x3C, 0x64, 0x78, 0xFF };
 static Color_RGBA8 gFragment23ButtonHighlightColor = { 0xA0, 0x96, 0x64, 0xFF };
 
-void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void CreateInfoPanel(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
     s32 temp_v0;
     s32 var_s1;
@@ -28,7 +28,7 @@ void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
 
     var_s1 = 0;
     for (i = 0; i < 4; i++) {
-        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BF0[i]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, gFragment23DescriptionStringIds[i]));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -56,11 +56,11 @@ void func_88200290(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s0, arg0->unk_30);
 }
 
-void func_882004BC(unk_func_88503298* arg0, s8* arg1) {
+void InfoPanelSetText(unk_func_88503298* arg0, s8* arg1) {
     arg0->unk_30->unk_40 = arg1;
 }
 
-void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4) {
+void CommonStringMenuCreate(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4) {
     s32 i;
     s32 j;
     char* temp_s0;
@@ -81,7 +81,7 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     var_s2 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, 1));
 
     for (j = 0; j < 4; j++) {
-        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[j]));
+        temp_v0 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gFragment23CommonStringBank, gFragment23OptionStringIds[j]));
         if (var_s2 < temp_v0) {
             var_s2 = temp_v0;
         }
@@ -89,7 +89,7 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     var_s2 += 0x10;
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88200FA0_030));
-    arg0->unk_00.unk_20 = func_88200A30;
+    arg0->unk_00.unk_20 = MenuProcessInput;
     arg0->unk_00.unk_10.unk_00 = (0x280 - var_s2) / 2;
     arg0->unk_00.unk_10.unk_02 = arg1;
 
@@ -114,7 +114,7 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     PtrList_Init(&arg0->unk_38, 4, arg4);
 
     for (i = 0; i < 4; i++) {
-        PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gFragment23CommonStringBank, D_88217BFC[i]), i);
+        PtrList_Insert(&arg0->unk_38, GetMessageString(NULL, 0, gFragment23CommonStringBank, gFragment23OptionStringIds[i]), i);
     }
 
     temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_885012A4));
@@ -122,26 +122,26 @@ void func_882004C8(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 4, func_882009B4, var_s2, 0x20, 4, 1, arg4);
+    ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 4, DrawMenuItemText, var_s2, 0x20, 4, 1, arg4);
     ((func88506384)Memmap_GetFragmentVaddr(func_88506384))(arg0->unk_30, &arg0->unk_38, arg4);
     ((func88506BFC)Memmap_GetFragmentVaddr(func_88506BFC))(arg0->unk_30, arg2);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s0_2, arg0->unk_30);
 
     arg0->unk_34 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
-    func_88200290(arg0->unk_34, arg0->unk_00.unk_10.unk_00, 0xB4, arg4);
+    CreateInfoPanel(arg0->unk_34, arg0->unk_00.unk_10.unk_00, 0xB4, arg4);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_34);
-    func_88200968(arg0, arg2);
+    UpdateDescriptionForSelection(arg0, arg2);
 
     temp_s0_3 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
     ((func88503298)Memmap_GetFragmentVaddr(func_88503298))(temp_s0_3, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, temp_s0_3);
 }
 
-void func_88200968(unk_func_88200FA0_030* arg0, s32 arg1) {
-    func_882004BC(arg0->unk_34, GetMessageString(NULL, 0, gFragment23CommonStringBank, arg1 + 6));
+void UpdateDescriptionForSelection(unk_func_88200FA0_030* arg0, s32 arg1) {
+    InfoPanelSetText(arg0->unk_34, GetMessageString(NULL, 0, gFragment23CommonStringBank, arg1 + 6));
 }
 
-void func_882009B4(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
+void DrawMenuItemText(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
     static Color_RGBA8 gFragment23TextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Text_ResetState();
@@ -151,13 +151,13 @@ void func_882009B4(s32 arg0, s32 arg1, char* arg2, s32 arg3) {
     Text_SetupDL();
 }
 
-s32 func_88200A30(unk_func_88200FA0_030* arg0, Controller* arg1) {
+s32 MenuProcessInput(unk_func_88200FA0_030* arg0, Controller* arg1) {
     s32 sp1C;
 
     if (arg0->unk_2C->unk_30 & 2) {
         sp1C = arg0->unk_30->unk_00.unk_20(arg0->unk_30, arg1);
         if ((sp1C & 1) && (sp1C & 8)) {
-            func_88200968(arg0, arg0->unk_30->unk_38);
+            UpdateDescriptionForSelection(arg0, arg0->unk_30->unk_38);
         }
     } else if (!(arg0->unk_2C->unk_00.unk_28 & 1)) {
         sp1C = 2;
@@ -167,12 +167,12 @@ s32 func_88200A30(unk_func_88200FA0_030* arg0, Controller* arg1) {
     return sp1C;
 }
 
-void func_88200ACC(unk_func_88200FA0_030* arg0) {
+void MenuActivate(unk_func_88200FA0_030* arg0) {
     arg0->unk_2C->unk_00.unk_28 |= 1;
     arg0->unk_34->unk_2C->unk_00.unk_28 |= 1;
 }
 
-void func_88200AF4(unk_func_88200FA0_030* arg0) {
+void MenuCloseAndWait(unk_func_88200FA0_030* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
     arg0->unk_34->unk_2C->unk_2C = 0xB;
     while (arg0->unk_2C->unk_00.unk_28 & 1) {
@@ -180,15 +180,15 @@ void func_88200AF4(unk_func_88200FA0_030* arg0) {
     }
 }
 
-s32 func_88200B60(unk_func_88200FA0_030* arg0, Controller* arg1) {
+s32 MenuRunSelectionLoop(unk_func_88200FA0_030* arg0, Controller* arg1) {
     s32 var_s0;
     s32 var_s1 = 0;
 
-    func_88200ACC(arg0);
+    MenuActivate(arg0);
 
     while (var_s1 == 0) {
         ControllerMsgQueue_SendAndRead(NULL);
-        var_s0 = func_88200A30(arg0, arg1);
+        var_s0 = MenuProcessInput(arg0, arg1);
         if (!(var_s0 & 1)) {
             if (arg1->buttonPressed & 0x4000) {
                 var_s0 = 0x80000003;
@@ -201,11 +201,11 @@ s32 func_88200B60(unk_func_88200FA0_030* arg0, Controller* arg1) {
         }
         ((func8850BC94)Memmap_GetFragmentVaddr(func_8850BC94))(var_s0);
     }
-    func_88200AF4(arg0);
+    MenuCloseAndWait(arg0);
     return var_s1;
 }
 
-void func_88200C44(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4) {
+void ItemInfoScreenCreate(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4) {
     static Color_RGBA8 gFragment23BackgroundColorTop = { 0x1E, 0x50, 0x50, 0xFF };
     static Color_RGBA8 gFragment23BackgroundColorBottom = { 0x00, 0x0A, 0x0A, 0xFF };
 
@@ -244,13 +244,13 @@ void func_88200C44(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp40);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030));
-    func_882004C8(arg0->unk_30, 0x78, arg3, sp4C, arg4);
+    CommonStringMenuCreate(arg0->unk_30, 0x78, arg3, sp4C, arg4);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_30);
 
     arg0->unk_00.unk_24(&arg0->unk_00, 1);
 }
 
-s32 func_88200F00(unk_func_88200FA0* arg0) {
+s32 ScreenMessageLoopRun(unk_func_88200FA0* arg0) {
     s32 sp34 = 0;
 
     while (sp34 == 0) {
@@ -263,7 +263,7 @@ s32 func_88200F00(unk_func_88200FA0* arg0) {
     return sp34;
 }
 
-void func_88200FA0(unk_func_88200FA0* arg0) {
+void Fragment23ThreadMain(unk_func_88200FA0* arg0) {
     s32 sp24;
     s32 i;
 
@@ -273,7 +273,7 @@ void func_88200FA0(unk_func_88200FA0* arg0) {
 
     MenuInput_SetController(gPlayer1Controller);
 
-    sp24 = func_88200B60(arg0->unk_30, gPlayer1Controller);
+    sp24 = MenuRunSelectionLoop(arg0->unk_30, gPlayer1Controller);
     if (sp24 == 1) {
         arg0->unk_2C->unk_2C = 9;
         Stage_FadeOut(8);
@@ -288,7 +288,7 @@ void func_88200FA0(unk_func_88200FA0* arg0) {
     osStopThread(NULL);
 }
 
-s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
+s32 Fragment23_GetNextState(s32 arg0, UNUSED s32 arg1) {
     MemoryPool* sp34;
     void* sp30;
     u8* sp2C;
@@ -306,10 +306,10 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
     gFragment23CommonStringBank = GetMessageBank(1);
 
     sp30 = mem_pool_alloc(sp34, sizeof(unk_func_88200FA0));
-    func_88200C44(sp30, 0, 0, arg0, sp34);
+    ItemInfoScreenCreate(sp30, 0, 0, arg0, sp34);
 
     sp28 = ALIGN16((u32)mem_pool_alloc(sp34, sizeof(func_88002628_sp38)));
-    osCreateThread(&sp28->thread, 0x32, func_88200FA0, sp30, sp2C + 0x1000, osGetThreadPri(NULL) - 1);
+    osCreateThread(&sp28->thread, 0x32, Fragment23ThreadMain, sp30, sp2C + 0x1000, osGetThreadPri(NULL) - 1);
 
     ControllerMsgQueue_Init();
     MenuInput_SetController(gPlayer1Controller);
@@ -317,7 +317,7 @@ s32 func_8820104C(s32 arg0, UNUSED s32 arg1) {
     osStartThread(&sp28->thread);
 
     Stage_FadeIn(8);
-    sp20 = func_88200F00(sp30);
+    sp20 = ScreenMessageLoopRun(sp30);
 
     osDestroyThread(&sp28->thread);
 

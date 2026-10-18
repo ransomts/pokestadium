@@ -34,8 +34,8 @@ extern u32 D_03047720[];
 static MiniActor miniSandshrews[4];
 static MiniActor miniSandshrewHoles[4];
 static MiniActor miniSandshrewGeisers[4];
-static s16 D_86F0D260;
-static TextObject* D_86F0D264;
+static s16 gMiniGameDemoFlag;
+static TextObject* gMiniHUDTextObject;
 
 static u32 D_86F02690[1024] = {
     0xBC99B499, 0xCD5DDE61, 0xE623C4DB, 0xD59DCD5D, 0xCD5BDDDD, 0xD5DFBCD9, 0xEE69E6A9, 0xDDDDDDDF, 0xDDDFE61F,
@@ -1493,7 +1493,7 @@ static Vec3f sandshrewPositions[4] = {
 };
 
 //  unuced
-static s16 D_86F0B0D0[] = {
+static s16 gSandshrewAngleOffsets[] = {
     0x6000,
     0x2000,
     0xE000,
@@ -1513,7 +1513,7 @@ static unk_func_87801684 D_86F0B128[6] = {
 static s16 playerIconsScreenXPos[] = { 0x1E, 0x32, 0xF0, 0x104 };
 static s16 playerIconsScreenYPos[] = { 0xA8, 0x50, 0x50, 0xA8 };
 
-void func_86F00020(s16 arg0, s16 arg1) {
+void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1) {
     UNUSED s32 pad;
     s32 sp30;
     s32 sp2C;
@@ -1584,9 +1584,9 @@ void func_86F00020(s16 arg0, s16 arg1) {
     }
 }
 
-void func_86F00188(s16 arg0, s16 arg1) {
+void MiniGame_PlaySoundIfNotMuted(s16 arg0, s16 arg1) {
     if (D_8790604A == 0) {
-        func_86F00020(arg0, arg1);
+        MiniGame_PlaySoundEffect(arg0, arg1);
     }
 }
 
@@ -1788,7 +1788,7 @@ void sandshrewCompControls(MiniActor* arg0) {
     }
 }
 
-void func_86F00920(MiniActor* sandshrew) {
+void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
     UNUSED s32 pad;
     Vec3f sp48;
     f32 holeDeepeness;
@@ -1835,7 +1835,7 @@ void func_86F00920(MiniActor* sandshrew) {
                     sandshrew->position_2.y -= holeDeepeness;
                 }
 
-                func_86F00188(3, sandshrew - miniSandshrews);
+                MiniGame_PlaySoundIfNotMuted(3, sandshrew - miniSandshrews);
                 if (func_800174E4(&sandshrew->unk_000) != 0) {
                     Anim_SetChannelBase(&sandshrew->unk_000, 0);
                 }
@@ -1845,7 +1845,7 @@ void func_86F00920(MiniActor* sandshrew) {
                 Anim_SetChannel(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
                 Anim_SetChannelBase(&sandshrew->unk_000, 0);
                 Anim_SetChannelOffset(&sandshrew->unk_000, 0x10000);
-                func_86F00188(4, sandshrew - miniSandshrews);
+                MiniGame_PlaySoundIfNotMuted(4, sandshrew - miniSandshrews);
                 sandshrew->mainState++;
             }
             break;
@@ -1891,7 +1891,7 @@ void func_86F00D04(void) {
             }
         }
 
-        func_86F00920(miniSandshrewPtr);
+        MiniSandshrew_StateMachine(miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewPtr);
         MiniActor_UpdateCollider(miniSandshrewPtr);
 
@@ -2105,7 +2105,7 @@ void sandshrewMinigameInitObjects(void) {
     func_86F0132C(); // fix the camera
 }
 
-s32 func_86F014F8(void) {
+s32 MiniSandshrewGame_DetermineWinner(void) {
     s32 i;
     f32 var_fs0;
     s32 var_s4;
@@ -2132,7 +2132,7 @@ s32 func_86F014F8(void) {
             var_s4 += 1;
             miniSandshrewPtr->mainState = 0x64;
             miniSandshrewGeiserPtr->mainState = 1;
-            func_86F00188(5, i);
+            MiniGame_PlaySoundIfNotMuted(5, i);
             IncrementPlayerScore(i);
         }
         miniSandshrewPtr++;
@@ -2158,14 +2158,14 @@ s32 func_86F016D8(void) {
     s32 sp18 = Fragment2_1_GetResult();
 
     if (sp18 == -2) {
-        func_86F00188(6, 0);
+        MiniGame_PlaySoundIfNotMuted(6, 0);
         sp1C = 1;
     }
 
     if (sp18 > 0) {
-        func_86F00188(1, 0);
+        MiniGame_PlaySoundIfNotMuted(1, 0);
     } else if (sp18 == 0) {
-        func_86F00188(2, 0);
+        MiniGame_PlaySoundIfNotMuted(2, 0);
     }
 
     return sp1C;
@@ -2196,7 +2196,7 @@ void func_86F0174C(void) {
             break;
 
         case 4:
-            if (func_86F014F8() != 0) {
+            if (MiniSandshrewGame_DetermineWinner() != 0) {
                 func_86F0164C();
                 minigameInputLock = false;
                 gMiniCameraNearBackup = 1;
@@ -2210,7 +2210,7 @@ void func_86F0174C(void) {
             if (miniInputLockTimer == 0) {
                 SetResultFlag(1);
                 MiniTutoScreen_Reset();
-                func_86F00188(0xC, 0xB4);
+                MiniGame_PlaySoundIfNotMuted(0xC, 0xB4);
                 minigameState++;
             }
             break;
@@ -2242,7 +2242,7 @@ void func_86F01904(void) {
     Text_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (GetTextWidth(D_86F0D264, GetMessageString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
+    Text_Print(0xA0 - (GetTextWidth(gMiniHUDTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
                   GetMessageString(NULL, 0, gItemNamesBank, 0x4A));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -2395,9 +2395,9 @@ void func_86F0204C(void) {
                 miniTutoScreenState = 1;
                 minigameState = 1;
                 miniShowHUB = true;
-                func_86F00188(7, 0);
+                MiniGame_PlaySoundIfNotMuted(7, 0);
             } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
-                func_86F00188(8, 0);
+                MiniGame_PlaySoundIfNotMuted(8, 0);
                 SetResultFlag(2);
             }
         }
@@ -2425,10 +2425,10 @@ void func_86F02230(void) {
 
     Stage_FadeOut(0x1E);
 
-    if (D_86F0D260 != 0) {
-        func_86F00188(0xA, 0x1E);
+    if (gMiniGameDemoFlag != 0) {
+        MiniGame_PlaySoundIfNotMuted(0xA, 0x1E);
     } else {
-        func_86F00188(9, 0x1E);
+        MiniGame_PlaySoundIfNotMuted(9, 0x1E);
     }
 
     for (i = 0; i < 30; i++) {
@@ -2447,7 +2447,7 @@ void func_86F02230(void) {
 
     while (Audio_CalcLoadScore() != 0) {}
 
-    func_86F00188(0xB, 0);
+    MiniGame_PlaySoundIfNotMuted(0xB, 0);
 }
 
 void func_86F02320(void) {
@@ -2505,16 +2505,16 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
-        D_86F0D260 = 1;
+        gMiniGameDemoFlag = 1;
     } else {
-        D_86F0D260 = 0;
+        gMiniGameDemoFlag = 0;
     }
 
     main_pool_push_state('MINI');
 
     Gfx_InitBuffers(0x20000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86F0D264 = Text_Init(0x16, 0);
+    gMiniHUDTextObject = Text_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);

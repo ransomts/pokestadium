@@ -548,7 +548,7 @@ s32 BattleState_Handle18(void) {
     func_80007754();
     func_86B0107C();
     func_86B010FC();
-    func_8000771C();
+    Stage_Terminate();
     FontManager_Free();
 
     main_pool_pop_state('MINI');

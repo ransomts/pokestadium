@@ -1903,3 +1903,142 @@ func_86B024D0	Camera_UpdatePrimaryAngles	w12		Called as a callback in D_86B0DC5C
 func_86B02538	Camera_UpdateSecondaryAngles	w12		Called as a callback in D_86B0DC5C and computes camera angles with opposite offsets (-0x2000 and +0x6000) into ptr->unk_1C/1E.	applied@83251f0
 func_86B05170	Gfx_DrawTexturedRect	w12		The function allocates vertices, loads a texture tile with gDPLoadTextureTile, sets colors from argD, and renders two triangles, showing it draws a textured rectangle.	applied@83251f0
 unk_D_86B0DAE0	GfxTileParams	w12		The struct's fields are used for primitive and environment colors and for texture coordinates in vertex setup, implying it holds parameters for tile drawing.	applied@83251f0
+func_86B05CB0	ToggleCameraNodeOffsetFromCurrent	w13		Uses Matrix_Decompose on gCurrentCameraNode to set ptr->unk_1C/1E when arg0==2, indicating it updates a camera node's offset based on the current camera.	applied@04295b3
+func_86B05D18	SetCameraNodeOffsetInverse	w13		Uses Matrix_Decompose on gCurrentCameraNode to set ptr->unk_1C/1E with inverted values when arg0==2, indicating it applies an inverse offset to a camera node.	applied@04295b3
+func_86B05D84	GraphNode_SetColor	w13		Assigns D_86B0FA3C.rgba to ptr->unk_03C.rgba when arg0==2, clearly setting a graph node's color.	applied@04295b3
+func_86B05DA0	SetGlobalOverlayColor	w13		Updates global Color_RGBA8_u32 D_86B0FA3C and toggles a flag based on the combined RGB value, acting as a global overlay color setter.	applied@04295b3
+func_86B05E18	LoadStageResources	w13		Performs three DmaCopyAsyncRange calls to copy model and table data from ROM into RAM buffers, indicating it loads stage resources.	applied@04295b3
+func_86B05EE8	MonsterNode_Init	w13		Initializes the monster graph node, loads archives, creates the model via GeoLayout_LoadById, and triggers its initial animation, showing it sets up a monster entity.	applied@04295b3
+func_86B06050	MiniCamera_Setup	w13		Configures mini?camera parameters (fovy, near, far) and calls functions to position it, indicating it sets up the mini?camera for the battle scene.	applied@04295b3
+func_86B06100	MonsterNode_LoadById	w13		Loads a monster model by ID from D_86B0DD58 table, creates graph nodes, and positions the monster, clearly loading a monster based on an identifier.	applied@04295b3
+func_86B061E8	MiniCamera_UpdateForMonster	w13		Positions the mini?camera based on the monster's current position and specific offsets from D_86B0DD58, updating the camera for the monster.	applied@04295b3
+func_86B06440	MonsterLandingSequence	w13		Manages a multi?step landing animation, approaches Y position with Math_ApproachFloat, and returns when the monster reaches the ground.	applied@04295b3
+func_86B06960	UpdateFadeColorFromHealth	w13		Updates D_86B0FA78->unk_180 based on monster health and calls func_86B05DA0 with the same value for RGB, indicating a health?based fade color update.	applied@04295b3
+func_86B06AB4	UIElement_Init	w13		Initializes a UI element struct with texture pointer, position, size, and default color values from D_86B0DCE0, showing it sets up UI elements.	applied@04295b3
+func_86B075EC	BattleUI_Render	w13		Handles rendering of battle UI elements, text, and state transitions based on gBattleContext and internal counters, indicating it draws the battle UI.	applied@04295b3
+D_86B0DD58	gMonsterSpawnInfo	w13		Array of structs containing an ID and two float offsets used to position monsters, clearly defining spawn information for monsters.	applied@04295b3
+D_86B0FA3C	gOverlayColor	w13		Global Color_RGBA8_u32 used by func_86B05DA0 and func_86B05D84 to set overlay colors, indicating it stores the current overlay color.	applied@04295b3
+unk_D_86B0DFC0	CameraModeFlag	w13		Struct holds a single byte flag used for camera mode checks in func_86B087E8.	applied@04295b3
+D_86B0DFC0	gCameraModeFlag	w13		Static variable initialized to 0x8E and compared against camera target mode in func_86B087E8.	applied@04295b3
+D_86B0FA78	gCameraTarget	w13		Pointer whose fields provide position and mode data for camera calculations (e.g., used in func_86B08780 and func_86B087E8).	applied@04295b3
+D_86B0FA7C	gCameraState	w13		Struct storing numerous camera parameters that are read and written throughout the file (e.g., in func_86B088E4, func_86B08AEC).	applied@04295b3
+func_86B08780	GetCameraBaseY	w13		Returns the Y coordinate from gCameraTarget plus a constant 0x8000, indicating a base Y value for the camera.	applied@04295b3
+func_86B087A0	ByteArrayContains	w13		Iterates over a byte array comparing each element to a target value and returns 1 on match.	applied@04295b3
+func_86B087E8	ComputeCameraTargetPos	w13		Calculates a Vec3f position for the camera target, adjusting Y based on mode flag and gCameraConfig values.	applied@04295b3
+func_86B088E4	Camera_UpdateView	w13		Sets view parameters for both at and eye vectors and clamps eye Y, effectively updating the camera each frame.	applied@04295b3
+func_86B089B0	ClampFloatByScale	w13		Returns the smaller of arg1 and (gCameraConfig.unk_00 * arg0), clamping a float by a scaled maximum.	applied@04295b3
+func_86B089E0	Camera_SetBaseParams	w13		Stores four short values into gCameraState that are later used as base parameters for view calculations.	applied@04295b3
+func_86B08A58	Camera_SetEyeParams	w13		Sets eye?related short parameters in gCameraState, later used when configuring the eye view.	applied@04295b3
+func_86B08AD0	Camera_SetApproachParams	w13		Assigns target and step values (unk_38, unk_3C) used by Math_ApproachFloat to smoothly approach a camera value.	applied@04295b3
+func_86B08AEC	Camera_InitFromConfig	w13		Initialises gCameraState from a configuration struct, setting fovy, limits and many internal parameters.	applied@04295b3
+D_86B0DFD0	gGfxSetup_ScrollBar	w13		Used in Scroll_Draw to set up rendering state for scrolling texture rectangles, disabling Z and lighting	applied@04295b3
+D_86B0E018	gGfxRestore_ScrollBar	w13		Used after drawing in Scroll_Draw to restore 2?cycle mode and re?enable geometry, indicating it restores the previous state	applied@04295b3
+D_86B0E040	gScrollBarSegmentData	w13		Array of unk_D_86B0C160 structs containing parameters for each scrolling segment, referenced by scrolling code	applied@04295b3
+D_86B106A0	gScrollMode	w13		Static s16 storing the current scroll mode (0?3) accessed by Scroll_Init, Scroll_GetMode, Scroll_Update and Scroll_Draw	applied@04295b3
+D_86B106A2	gScrollOffset	w13		Static s16 holding the current scroll offset, modified in Scroll_Init and Scroll_Update and read in Scroll_Draw	applied@04295b3
+D_86B106A4	gScrollStep	w13		Static s16 storing the scroll step value set in Scroll_Init and used in Scroll_Update to change the offset	applied@04295b3
+func_86B08E50	Scroll_Init	w13		Initialises scroll mode and step and resets offset, therefore named Scroll_Init	applied@04295b3
+func_86B08EA8	Scroll_GetMode	w13		Returns the current scroll mode, thus named Scroll_GetMode	applied@04295b3
+func_86B08EB4	Scroll_Update	w13		Updates scroll offset based on mode and step, so named Scroll_Update	applied@04295b3
+func_86B08F48	Scroll_Draw	w13		Draws scrolling texture rectangles according to mode and offset, hence Scroll_Draw	applied@04295b3
+func_86B095C4	Scroll_RenderIfActive	w13		Calls Scroll_Draw when scroll mode is active, acting as a conditional render wrapper, named Scroll_RenderIfActive	applied@04295b3
+func_86B0961C	Gfx_DrawClippedRect	w13		Creates a clipping rectangle and draws a textured rectangle, matching Gfx_DrawClippedRect	applied@04295b3
+func_86B097B0	Gfx_LoadTextureAndDrawRect	w13		Loads a texture tile then draws it via Gfx_DrawClippedRect, so Gfx_LoadTextureAndDrawRect	applied@04295b3
+func_86B09928	Gfx_DrawSpriteWithColors	w13		Sets up primitive and environment colors from a struct then draws a sprite, thus Gfx_DrawSpriteWithColors	applied@04295b3
+func_86B09AD8	Gfx_DrawBorderSprite	w13		Draws a border sprite using a predefined display list and Gfx_DrawSpriteRGBA16, named Gfx_DrawBorderSprite	applied@04295b3
+unk_D_86B0DAE0_000	SpriteColorParams	w13		Struct whose fields are used as RGBA primitive and environment colors in Gfx_DrawSpriteWithColors, renamed SpriteColorParams	applied@04295b3
+func_86B09B80	Matrix_ConvertFloatToFixed	w13		converts a floating?point MtxF to a fixed?point Mtx by scaling each element with 65536.0f and packing high/low halves	applied@04295b3
+func_86B09EF0	Matrix_ScaleUniform	w13		multiplies the 3?3 rotation part of a MtxF by a scalar argument, implementing uniform scaling	applied@04295b3
+func_86B09F64	Matrix_SetTransformFromPosRot	w13		creates a MtxF from a position vector and Euler rotation angles using sine/cosine tables for the rotation matrix	applied@04295b3
+D_86B0E250	gStageGeoLayoutCommands	w13		Static array passed to process_geo_layout as layout commands for the stage	applied@04295b3
+D_86B106B0	gStageGeoLayout	w13		Pointer returned by GeoLayout_LoadById for the stage geometry	applied@04295b3
+D_86B106B4	gStageRootGraphNode	w13		GraphNode* returned from process_geo_layout, used as the root of the stage graph	applied@04295b3
+D_86B106B8	gStageRootFragmentNode	w13		Fragment2_1GraphNode added to the root list and initialized as a child of the stage geometry	applied@04295b3
+D_86B10820	gStageCamera	w13		Struct obtained from D_86B106B4->unk_0C and configured with position, eye, near/far/fovy fields	applied@04295b3
+D_86B10828	gBackgroundTextureData	w13		Pointer to a file from the background archive used for sprite drawing	applied@04295b3
+D_86B1082C	gStageFadeAlpha	w13		U8 incremented to change fade color alpha in Stage_HandleFade	applied@04295b3
+func_86B0A0B8	Stage_SetupCamera	w13		Function that configures the stage camera parameters (position, fov, clipping planes)	applied@04295b3
+func_86B0A15C	Input_Update	w13		Calls Cont_StartReadInputs, Cont_ReadInputs and MenuInput_Init to poll controller state	applied@04295b3
+func_86B0A18C	Stage_DrawBackgroundSprites	w13		Loops over a 15?20 grid drawing 16?16 RGBA16 sprites from the background texture	applied@04295b3
+func_86B0A30C	Stage_RenderFrame	w13		Begins display list, draws background, fills depth, finishes frame and advances the stage	applied@04295b3
+func_86B0A37C	Stage_HandleFade	w13		Updates fade alpha based on node state and triggers Stage_FadeOut when a threshold is reached	applied@04295b3
+func_86B0A414	BattleState_Run	w13		Main loop that fades in, changes music, processes input, handles fade, renders frames and advances the stage	applied@04295b3
+func_86B0A47C	Stage_Initialize	w13		Initializes the stage graph, loads assets, creates root nodes and sets initial positions	applied@04295b3
+func_86B0A750	Camera_SetupView	w13		Camera_SetViewParameters is called here to configure view parameters for the scene w13	applied@04295b3
+func_86B0A7F8	MessageState_Reset	w13		Resets fields of D_86B10BD0 and D_86B10BE0, initializing the message state machine w13	applied@04295b3
+func_86B0B024	MessageState_SetFinished	w13		Sets D_86B10BE0.unk_00 to 0xFF, marking the message display as finished w13	applied@04295b3
+func_86B0B034	MessageState_Clear	w13		Sets D_86B10BE0.unk_00 to 0, clearing the message state to start a new message w13	applied@04295b3
+func_86B0B040	MessageState_CopyNextChars	w13		Copies up to two characters from the source buffer D_86B109C8 to the display buffer D_86B10AC8, advancing the index w13	applied@04295b3
+func_86B0B0B4	MessageBox_Draw	w13		Calls func_86B0A824 with dimensions from D_86B10BE0 to render the message box background w13	applied@04295b3
+func_86B0B12C	MessageBox_RenderText	w13		Resets text state, sets font, line height and prints the contents of D_86B10AC8 to the screen w13	applied@04295b3
+func_86B0B184	MessageBox_Update	w13		State machine that drives message box appearance, timing, and text progression based on D_86B10BE0.unk_00 w13	applied@04295b3
+func_86B0B4D0	DrawBackgroundTiles	w13		Draws a 15?20 grid of 16?16 RGBA16 sprites from a texture buffer, used for background rendering w13	applied@04295b3
+func_86B0B6C0	BattleCutscene_Process	w13		Handles a multi?step cutscene/state machine using D_86B10BD0 and graph node flags w13	applied@04295b3
+D_86B10BE0	gMessageBoxState	w13		Struct holding message box state fields (state, index, counters, width, height) accessed throughout the message logic w13	applied@04295b3
+func_86C00020	Ekans_GetLaunchForceLevel	w13		Returns a launch?force level (0?3) based on ekans->launchForce thresholds (58,?45,?30) ? evidence from the conditional checks in the function.	applied@04295b3
+func_86C00110	MiniGame_PlaySoundEvent	w13		Selects a sound ID based on the first argument, sets gold/force flags, and calls PlaySoundByCategory ? used throughout the code for sound effects.	applied@04295b3
+func_86C00368	MiniGame_QueueSoundEvent	w13		Calls MiniGame_PlaySoundEvent only when the global mute flag D_8790604A is clear ? evident from the guard check.	applied@04295b3
+func_86C003AC	Ekans_ResetPosition	w13		Resets an ekans?s position to its start coordinates from skansActorInfo and sets a default offset ? clear from the assignments to position_1/unk_1D8 and position_2.	applied@04295b3
+func_86C0063C	Ekans_GetMaxStickMagnitude	w13		Returns the larger of ekans->stickMagnitude1 and ekans->stickMagnitude2 ? direct from the ternary expression.	applied@04295b3
+func_86C00668	Ekans_ClampYRotation	w13		Clamps the ekans?s y?rotation to player?specific limits (different ranges for each ekans) ? seen in the switch on ekans?miniEkanses index.	applied@04295b3
+D_86D00530	gMiniGeoLayout	w13		Passed to process_geo_layout as a layout table for the mini camera, indicating it stores geo layout data.	applied@04295b3
+func_86D00020	MiniCamera_Init	w13		Sets up gMiniCameraPtr and camera parameters then calls miniUpdateCamera, clearly initializing the mini camera.	applied@04295b3
+func_86D00134	MiniTutorial_FadeIn	w13		Calls Stage_FadeIn and sets miniTutoScreenState, indicating it starts the tutorial screen fade?in.	applied@04295b3
+func_86D0032C	MiniGame_ExitFadeOut	w13		Calls Stage_FadeOut then repeatedly draws the hub while reading inputs, serving as the mini?game exit fade?out sequence.	applied@04295b3
+func_86D0037C	MiniGame_Initialize	w13		Allocates a memory block, processes the geo layout, initializes graphics roots and loads assets before creating actors, acting as the mini?game initialization routine.	applied@04295b3
+func_86E00020	MiniAudioEventHandler	w13		handles various audio actions (sound effects, music fades, volume changes) based on arg0 and arg1 using PlaySoundByCategory, Audio_SetVolumeFadeAndDuration, Music_StartVolumeFade, etc	applied@04295b3
+func_86E001A0	PlayAudioIfEnabled	w13		guards audio playback with the D_8790604A flag before calling func_86E00020	applied@04295b3
+func_86E0034C	MetapodTakeDamage	w13		increments damageTimer and sets damage?related flags for a metapod when it is hit	applied@04295b3
+func_86E00518	SelectCompMetapodStrategy	w13		chooses a strategy (0,1,2) for a computer metapod based on difficulty and random rolls	applied@04295b3
+func_86E0063C	CompMetapodSetHardenParams	w13		configures unk_244, unk_29E and unk_2B2 for a hardened computer metapod according to difficulty	applied@04295b3
+func_86E0073C	CompMetapodSetRandomParams	w13		sets random timing parameters (unk_244, unk_29E, unk_2B2) for a computer metapod when difficulty is higher	applied@04295b3
+func_86E007BC	CompMetapodSetImmediateParams	w13		initialises a computer metapod with immediate action parameters (unk_244, unk_29E, unk_2B2 = 0)	applied@04295b3
+func_86E007CC	CompMetapodCheckRockCollision	w13		scans active rocks to find the closest colliding rock and selects a response strategy for the computer metapod	applied@04295b3
+func_86E00C34	HandleMetapodRockCollision	w13		processes the result of a rock?metapod collision, applying damage or squashing logic based on metapod state	applied@04295b3
+func_86E01188	InitMetapodRockWave	w13		spawns a wave of rocks for each alive metapod, spacing them based on difficulty and random offsets	applied@04295b3
+func_86E01310	StartMetapodRockThrow	w13		activates a rock, sets its trajectory and speed toward the target metapod, and marks it as active	applied@04295b3
+func_86E01414	DeactivateMetapodRock	w13		clears a rock?s active state and disables its collision flag	applied@04295b3
+func_86E0182C	MiniActor_UpdateTransform	w13		updates a MiniActor?s model transform and animation state before rendering	applied@04295b3
+D_86E02FB0	gMetapodTextureData1	w13		array of 32?bit values used as texture data for the first metapod texture set	applied@04295b3
+D_86E033B0	gMetapodTextureData2	w13		array of 32?bit values used as texture data for the second metapod texture set	applied@04295b3
+D_86E035B0	gMetapodTextureData3	w13		array of 32?bit values used as texture data for the third metapod texture set	applied@04295b3
+func_86F00020	MiniGame_PlaySoundEffect	w13		Handles various sound?effect categories (music start/stop, volume fades, sound IDs) based on a switch; calls PlaySoundByCategory, PlaySoundEffect, Audio_SetVolumeFadeAndDuration, Music_StartVolumeFade, etc.	applied@04295b3
+func_86F00188	MiniGame_PlaySoundIfNotMuted	w13		Wrapper around func_86F00020 that checks the global mute flag?D_8790604A before playing a sound, ensuring sounds are suppressed when muted.	applied@04295b3
+func_86F00920	MiniSandshrew_StateMachine	w13		Main state?machine handling sandshrew animation transitions, digging logic, particle effects and win animation.	applied@04295b3
+func_86F014F8	MiniSandshrewGame_DetermineWinner	w13		Scans all sandshrews for the lowest Y position, marks the winner, triggers win animations and awards points.	applied@04295b3
+D_86F0D260	gMiniGameDemoFlag	w13		Used in sandshrewMinigameInitObjects and later to decide which end?sound to play (0xA vs?0x9); indicates demo/preview mode.	applied@04295b3
+D_86F0D264	gMiniHUDTextObject	w13		Created by Text_Init and used throughout HUD drawing functions (func_86F01904, etc.) to render on?screen messages.	applied@04295b3
+D_86F0B0D0	gSandshrewAngleOffsets	w13		Array of four s16 values (0x6000,?0x2000,?0xE000,?0xA000) used as angle offsets for sandshrew rotation calculations.	applied@04295b3
+func_8000771C	Stage_Terminate	w13		Called in Fragment23_Terminate before popping the memory pool, suggesting it cleans up the stage.	applied@04295b3
+func_8820C700	TextObject_Show	w13		Invoked with the TextObject from Fragment23_Init and a flag (1 or 0) to display or hide the text, implying it controls visibility.	applied@04295b3
+func_8820104C	Fragment23_GetNextState	w13		Receives the current state and input, returns a non?zero state code used in a loop to drive a state machine, indicating it computes the next state.	applied@04295b3
+func_8821483C	TextObject_Confirm	w13		Called in state case 2 after the text object is shown, likely handling a confirmation action for the displayed text.	applied@04295b3
+func_88205F1C	TextObject_Cancel	w13		Called in state case 3 after the text object is shown, likely handling a cancellation or exit action for the displayed text.	applied@04295b3
+func_88200290	CreateInfoPanel	w13		Calculates max width of common strings IDs 6?9 and allocates a centered UI panel with background, button and text area, indicating it creates an information panel for descriptions	applied@04295b3
+func_882004BC	InfoPanelSetText	w13		Assigns a string pointer to the panel's text field and is called by UpdateDescriptionForSelection to set the description text	applied@04295b3
+func_882004C8	CommonStringMenuCreate	w13		Builds a menu UI using common string IDs 2?5, creates gradient background, title, item list and a description box, showing it creates the common?string option menu	applied@04295b3
+func_88200968	UpdateDescriptionForSelection	w13		Calls InfoPanelSetText with a string from gFragment23CommonStringBank at index arg1+6, updating the description for the selected menu item	applied@04295b3
+func_882009B4	DrawMenuItemText	w13		Sets text color, font and prints the menu item string at calculated coordinates, serving as the draw callback for menu items	applied@04295b3
+func_88200A30	MenuProcessInput	w13		Handles controller input for the menu, invokes the item draw callback, and returns status flags based on selection or cancellation	applied@04295b3
+func_88200ACC	MenuActivate	w13		Sets the active flag (bit?0) on both the main UI and the description panel, marking the menu as active	applied@04295b3
+func_88200AF4	MenuCloseAndWait	w13		Sets close state (value?0xB) on UI components and loops sending controller messages until the close flag clears, handling menu shutdown	applied@04295b3
+func_88200B60	MenuRunSelectionLoop	w13		Loops reading controller messages, processes input via MenuProcessInput, handles cancel (B) and select (A) buttons, and returns the chosen index	applied@04295b3
+func_88200C44	ItemInfoScreenCreate	w13		Creates the overall screen with background colors, gradient panel, title from gFragment23ItemNameBank, description from common strings, and embeds the common?string menu	applied@04295b3
+func_88200F00	ScreenMessageLoopRun	w13		Repeatedly draws the screen each frame until a controller message is received, then returns that message ID	applied@04295b3
+func_88200FA0	Fragment23ThreadMain	w13		Thread entry that waits for fade?out, runs the menu selection loop, handles cancel/fade?out actions, sends the final message and stops the thread	applied@04295b3
+D_88217BF0	gFragment23DescriptionStringIds	w13		Array of string IDs {6,7,8,9} used to fetch description texts for the info panel	applied@04295b3
+D_88217BFC	gFragment23OptionStringIds	w13		Array of string IDs {2,3,4,5} used to fetch option texts for the common?string menu	applied@04295b3
+D_88224FA0	gItemMessageBank	w13		Assigned GetMessageBank(0x2A) which stores item?related strings in func_88205F1C	applied@04295b3
+D_88224FA4	gBattleMessageBank	w13		Assigned GetMessageBank(4) and used for move?slot and battle UI strings throughout the file	applied@04295b3
+D_88217C34	gMoveSlotMessageIds	w13		Static array {0x32,0x33} indexing messages for move slots in func_88202054 and func_88201488	applied@04295b3
+D_88217C38	gTeamTextColors	w13		Two?element Color array used to colour team?specific text in func_88202054	applied@04295b3
+D_88217C40	gItemCountTextColor	w13		Static Color used for drawing item count numbers in func_88202450	applied@04295b3
+D_88217C44	gMenuTextColor	w13		Static Color applied to menu text in func_882025E0	applied@04295b3
+D_88217C50	gPanelBackgroundColor	w13		Static Color used for the main panel background fill in func_88203538	applied@04295b3
+D_88217C54	gPanelGradientColors	w13		Array of two Colors used for gradient fills of UI panels in func_88203538	applied@04295b3
+D_88217C5C	gHeaderTextColor	w13		Static Color applied to header text in the move?target UI (func_88203A20)	applied@04295b3
+D_88217C60	gMenuBackgroundColor	w13		Static Color used for many UI element backgrounds in func_88203ED8	applied@04295b3
+D_88217C64	gButtonBaseColor	w13		Static Color defining the base colour of buttons in func_88203ED8	applied@04295b3
+D_88217C68	gButtonHighlightColor	w13		Static Color defining the highlight colour of buttons in func_88203ED8	applied@04295b3
+D_88217C6C	gMenuItemDefs	w13		Static struct array configuring menu items (textures, colours, IDs) in func_88203ED8	applied@04295b3
+D_88217CF0	gMenuItemTextColors	w13		Array of colour pointers used for per?item text colouring in func_882025E0	applied@04295b3

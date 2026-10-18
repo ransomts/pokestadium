@@ -35,9 +35,9 @@ extern u8 D_30060E0[];
 extern u8 D_3006B80[];
 extern u8 D_300C6D0[];
 
-s32 func_86B05CB0(s32, GraphNode*);
-s32 func_86B05D18(s32, GraphNode*);
-s32 func_86B05D84(s32, GraphNode*);
+s32 ToggleCameraNodeOffsetFromCurrent(s32, GraphNode*);
+s32 SetCameraNodeOffsetInverse(s32, GraphNode*);
+s32 GraphNode_SetColor(s32, GraphNode*);
 
 typedef struct unk_D_86B0DD58 {
     /* 0x00 */ u8 unk_00;
@@ -45,7 +45,7 @@ typedef struct unk_D_86B0DD58 {
     /* 0x08 */ f32 unk_08;
 } unk_D_86B0DD58; // size = 0xC
 
-static unk_D_86B0DAE0_000 D_86B0DCE0[4] = {
+static SpriteColorParams D_86B0DCE0[4] = {
     {
         0x00FF,
         0x00E1,
@@ -107,7 +107,7 @@ static u8 D_86B0DD40[] = {
     0, 0xFF, 0, 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0, 3, 0, 0x11, 0, 0x11, 0, 0x11, 0, 7,
 };
 
-static unk_D_86B0DD58 D_86B0DD58[20] = {
+static unk_D_86B0DD58 gMonsterSpawnInfo[20] = {
     { 0xA7, 47.5f, 30.0f }, { 0xA8, 47.5f, 30.0f }, { 0xA9, 47.5f, 30.0f }, { 0xAA, 47.5f, 30.0f },
     { 0xA5, 66.5f, 85.0f }, { 0xA5, 66.5f, 85.0f }, { 0xA7, 0.0f, 0.0f },   { 0xA7, 0.0f, 0.0f },
     { 0xA7, 0.0f, 0.0f },   { 0xA7, 0.0f, 0.0f },   { 0xA7, 0.0f, 0.0f },   { 0xA7, 0.0f, 0.0f },
@@ -125,7 +125,7 @@ static GraphRootNode D_86B0F9F0;
 static GraphRootNode D_86B0FA08;
 static GraphRootNode D_86B0FA20;
 static u32 D_86B0FA38;
-static Color_RGBA8_u32 D_86B0FA3C;
+static Color_RGBA8_u32 gOverlayColor;
 static u8 D_86B0FA40;
 static s16 D_86B0FA42;
 static s16 D_86B0FA44;
@@ -143,8 +143,8 @@ static s16 D_86B0FA68;
 static f32 D_86B0FA6C;
 static s32 D_86B0FA70;
 static s32 D_86B0FA74;
-unk_D_86B0FA78* D_86B0FA78;
-unk_D_86B0FA7C* D_86B0FA7C;
+unk_D_86B0FA78* gCameraTarget;
+unk_D_86B0FA7C* gCameraState;
 static u8 D_86B0FA80[0xBE0];
 unk_70D3A0 D_86B10660;
 static unk_D_70B10 D_86B10670;
@@ -154,19 +154,19 @@ static unk_D_800AE540_1194* D_86B10694;
 static u32 D_86B0DE5C[] = {
     0x0C00FFFF, 0x05000000,    0x0B00001E,  0x00000000,    0x014000F0,  0x0000000F,  0x00000000, 0x00000000,
     0x05000000, 0x0D000000,    0x05000000,  0x07000000,    &D_86B0F9D0, 0x14000000,  0x002D0019, 0xFFFFFF28,
-    0x08000000, func_86B05CB0, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, func_86B05D18,
+    0x08000000, ToggleCameraNodeOffsetFromCurrent, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, SetCameraNodeOffsetInverse,
     0x00000000, 0x16646464,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  func_86B05D84, 0x00000000,  0x05000000,  0x07000000, &D_86B0F9F0,
+    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &D_86B0F9F0,
     0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  func_86B05D84, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA08,
+    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA08,
     0x06000000, 0x06000000,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  func_86B05D84, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA20,
+    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &D_86B0FA20,
     0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x0A000000,  &gGraphRoot0, 0x06000000, 0x0F000002,
     0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,    0x09000000,  0x06000000,  0x06000000, 0x06000000,
     0x01000000,
 };
 
-s32 func_86B05CB0(s32 arg0, GraphNode* arg1) {
+s32 ToggleCameraNodeOffsetFromCurrent(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -181,7 +181,7 @@ s32 func_86B05CB0(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86B05D18(s32 arg0, GraphNode* arg1) {
+s32 SetCameraNodeOffsetInverse(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -196,22 +196,22 @@ s32 func_86B05D18(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86B05D84(s32 arg0, GraphNode* arg1) {
+s32 GraphNode_SetColor(s32 arg0, GraphNode* arg1) {
     Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
-        ptr->unk_03C.rgba = D_86B0FA3C.rgba;
+        ptr->unk_03C.rgba = gOverlayColor.rgba;
     }
 
     return 0;
 }
 
-void func_86B05DA0(u8 arg0, u8 arg1, u8 arg2) {
+void SetGlobalOverlayColor(u8 arg0, u8 arg1, u8 arg2) {
     u8 v = arg0 & arg1 & arg2;
 
-    D_86B0FA3C.r = arg0;
-    D_86B0FA3C.g = arg1;
-    D_86B0FA3C.b = arg2;
+    gOverlayColor.r = arg0;
+    gOverlayColor.g = arg1;
+    gOverlayColor.b = arg2;
 
     if (v == 0xFF) {
         if (D_86B0F9D0.unk_00.unk_14 == 1) {
@@ -222,88 +222,88 @@ void func_86B05DA0(u8 arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void func_86B05E18(void) {
+void LoadStageResources(void) {
     UNUSED s32 pad[2];
     u8* sp24;
     u8* temp_a1;
     u8* sp1C;
 
-    temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[D_86B0FA78->unk_174 - 1] & 0xFFFFFF);
+    temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[gCameraTarget->unk_174 - 1] & 0xFFFFFF);
     sp24 = (u32)_70D3A0_ROM_START +
-           ((((D_86B0FA78->unk_174 ^ 0) * sizeof(unk_D_70B10)) - sizeof(unk_D_70B10) + (u32)D_70B10) & 0xFFFFFF);
+           ((((gCameraTarget->unk_174 ^ 0) * sizeof(unk_D_70B10)) - sizeof(unk_D_70B10) + (u32)D_70B10) & 0xFFFFFF);
     sp1C = (u32)_70D3A0_ROM_START +
-           (((D_86B0FA78->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
+           (((gCameraTarget->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
 
     DmaCopyAsyncRange(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
     DmaCopyAsyncRange(&D_86B10660, sp1C, sp1C + sizeof(unk_70D3A0), 0);
     DmaCopyAsyncRange(&D_86B10670, sp24, sp24 + sizeof(unk_D_70B10), 0);
 }
 
-void func_86B05EE8(void) {
-    D_86B0FA78->unk_174 = D_86B10690->unk_01C[D_86B0FA78->unk_17C].unk_00.unk_00;
-    Graph_AddToRootList0(&D_86B0FA78->unk_004);
+void MonsterNode_Init(void) {
+    gCameraTarget->unk_174 = D_86B10690->unk_01C[gCameraTarget->unk_17C].unk_00.unk_00;
+    Graph_AddToRootList0(&gCameraTarget->unk_004);
     AssetManager_LoadArchives();
 
-    D_86B0FA78->unk_000 = func_80019D90(&D_86B10690->unk_01C[D_86B0FA78->unk_17C]);
-    GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_86B0FA78->unk_004, 0);
-    D_86B0FA78->unk_004.unk_0A6 = 0;
-    func_86B05E18();
-    D_86B0FA78->unk_004.unk_024.y += D_86B10660.unk_08;
-    D_86B0FA78->unk_170 = 0;
-    SetAnimStateIndex(&D_86B0FA78->unk_004, 0);
-    GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
+    gCameraTarget->unk_000 = func_80019D90(&D_86B10690->unk_01C[gCameraTarget->unk_17C]);
+    GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
+    gCameraTarget->unk_004.unk_0A6 = 0;
+    LoadStageResources();
+    gCameraTarget->unk_004.unk_024.y += D_86B10660.unk_08;
+    gCameraTarget->unk_170 = 0;
+    SetAnimStateIndex(&gCameraTarget->unk_004, 0);
+    GraphNode_TriggerSound(&gCameraTarget->unk_004, -1);
 }
 
 void func_86B06008(void) {
-    GraphNode_ClearCallback(&D_86B0FA78->unk_004);
+    GraphNode_ClearCallback(&gCameraTarget->unk_004);
 
     main_pool_pop_state('MONS');
 
     main_pool_push_state('MONS');
 
-    func_86B05EE8();
+    MonsterNode_Init();
 }
 
-void func_86B06050(void) {
-    D_86B0FA7C->unk_00->unk_24.fovy = 30.0f;
-    D_86B0FA7C->unk_00->unk_24.near = 30.0f;
-    D_86B0FA7C->unk_00->unk_24.far = 6400.0f;
-    func_86B087E8(D_86B0FA78, &D_86B0FA7C->unk_04);
-    func_86B08AEC(&D_86B0E040[D_86B0FA78->unk_17C], D_86B0FA7C->unk_00);
-    func_86B088E4();
+void MiniCamera_Setup(void) {
+    gCameraState->unk_00->unk_24.fovy = 30.0f;
+    gCameraState->unk_00->unk_24.near = 30.0f;
+    gCameraState->unk_00->unk_24.far = 6400.0f;
+    ComputeCameraTargetPos(gCameraTarget, &gCameraState->unk_04);
+    Camera_InitFromConfig(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->unk_00);
+    Camera_UpdateView();
 }
 
-void func_86B06100(void) {
-    GraphNode_ClearCallback(&D_86B0FA78->unk_004);
+void MonsterNode_LoadById(void) {
+    GraphNode_ClearCallback(&gCameraTarget->unk_004);
 
     main_pool_pop_state('MONS');
 
     main_pool_push_state('MONS');
 
-    D_86B0FA78->unk_174 = D_86B0DD58[D_86B0FA44].unk_00;
-    Graph_AddToRootList0(&D_86B0FA78->unk_004);
+    gCameraTarget->unk_174 = gMonsterSpawnInfo[D_86B0FA44].unk_00;
+    Graph_AddToRootList0(&gCameraTarget->unk_004);
     AssetManager_LoadArchives();
-    D_86B0FA78->unk_000 = GeoLayout_LoadById(D_86B0FA78->unk_174);
-    GraphNode_InitChild(&D_86B0FA78->unk_004, 0, D_86B0FA78->unk_174, D_86B0FA78->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_86B0FA78->unk_004, 0);
-    Vec3f_Set(&D_86B0FA78->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
+    gCameraTarget->unk_000 = GeoLayout_LoadById(gCameraTarget->unk_174);
+    GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
+    Vec3f_Set(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
 
-void func_86B061E8(void) {
+void MiniCamera_UpdateForMonster(void) {
     D_86B0FA46 = 0;
     D_86B0FA48 = 0.0f;
-    D_86B0FA7C->unk_00->unk_24.fovy = 40.0f;
-    D_86B0FA7C->unk_00->unk_24.near = 30.0f;
-    D_86B0FA7C->unk_00->unk_24.far = 6400.0f;
+    gCameraState->unk_00->unk_24.fovy = 40.0f;
+    gCameraState->unk_00->unk_24.near = 30.0f;
+    gCameraState->unk_00->unk_24.far = 6400.0f;
 
-    Vec3f_Set(&D_86B0FA7C->unk_00->unk_60.at, D_86B0FA78->unk_004.unk_024.x,
-                  D_86B0DD58[D_86B0FA44].unk_04 + D_86B0FA78->unk_004.unk_024.y, D_86B0FA78->unk_004.unk_024.z);
+    Vec3f_Set(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+                  gMonsterSpawnInfo[D_86B0FA44].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
     if ((D_86B0FA44 == 4) || (D_86B0FA44 == 5)) {
-        Vec3f_Set(&D_86B0FA7C->unk_00->unk_60.eye, 0, 100.0f, 328.0f);
+        Vec3f_Set(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 328.0f);
     } else {
-        Vec3f_Set(&D_86B0FA7C->unk_00->unk_60.eye, 0, 100.0f, 250.0f);
+        Vec3f_Set(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 250.0f);
     }
 }
 
@@ -340,28 +340,28 @@ s32 func_86B06394(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-s32 func_86B06440(void) {
+s32 MonsterLandingSequence(void) {
     if (D_86B0FA46 < 3) {
-        if ((D_86B0FA46 <= 0) && (func_86B0630C(&D_86B0FA78->unk_004, 0x71C, 0) != 0)) {
+        if ((D_86B0FA46 <= 0) && (func_86B0630C(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
             D_86B0FA46++;
         }
 
-        if ((D_86B0FA46 > 0) && (func_86B06394(&D_86B0FA78->unk_004, 0x71C, 0) != 0)) {
+        if ((D_86B0FA46 > 0) && (func_86B06394(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
             D_86B0FA46++;
         }
     }
 
     Math_ApproachFloat(&D_86B0FA48, 0.1f, 0.02f);
-    Math_ApproachFloat(&D_86B0FA78->unk_004.unk_024.y, 0.0f, D_86B0FA48);
+    Math_ApproachFloat(&gCameraTarget->unk_004.unk_024.y, 0.0f, D_86B0FA48);
 
-    if (D_86B0FA78->unk_004.unk_024.y <= 0.25f) {
-        D_86B0FA78->unk_004.unk_024.y = 0.0f;
+    if (gCameraTarget->unk_004.unk_024.y <= 0.25f) {
+        gCameraTarget->unk_004.unk_024.y = 0.0f;
     }
 
-    Vec3f_Set(&D_86B0FA7C->unk_00->unk_60.at, D_86B0FA78->unk_004.unk_024.x,
-                  D_86B0DD58[D_86B0FA44].unk_04 + D_86B0FA78->unk_004.unk_024.y, D_86B0FA78->unk_004.unk_024.z);
+    Vec3f_Set(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+                  gMonsterSpawnInfo[D_86B0FA44].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
-    if (D_86B0FA78->unk_004.unk_024.y <= 0.5f) {
+    if (gCameraTarget->unk_004.unk_024.y <= 0.5f) {
         return 1;
     }
     return 0;
@@ -375,49 +375,49 @@ void func_86B065C4(void) {
         PlayUISfx(0x0110000F, 0, 0);
     }
 
-    if (D_86B0FA78->unk_178 & 1) {
-        Vec3f_Set(&sp44, D_86B0FA78->unk_004.unk_024.x,
-                      D_86B0DD58[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), D_86B0FA78->unk_004.unk_024.z);
-        func_81407D48(1.0f, sp44, D_86B0FA78->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+    if (gCameraTarget->unk_178 & 1) {
+        Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
+                      gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+        func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
 
-        if ((D_86B0FA78->unk_178 >= 0xA) && (D_86B0FA78->unk_178 & 1)) {
-            Vec3f_Set(&sp44, D_86B0FA78->unk_004.unk_024.x,
-                          D_86B0DD58[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), D_86B0FA78->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, D_86B0FA78->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+        if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
+            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
 
-        if ((D_86B0FA78->unk_178 >= 0x14) && (D_86B0FA78->unk_178 & 1)) {
-            Vec3f_Set(&sp44, D_86B0FA78->unk_004.unk_024.x,
-                          D_86B0DD58[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), D_86B0FA78->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, D_86B0FA78->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+        if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
+            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
 
-        if ((D_86B0FA78->unk_178 >= 0x1E) && (D_86B0FA78->unk_178 & 1)) {
-            Vec3f_Set(&sp44, D_86B0FA78->unk_004.unk_024.x,
-                          D_86B0DD58[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), D_86B0FA78->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, D_86B0FA78->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+        if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
+            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
     }
 }
 
-void func_86B06960(void) {
-    D_86B0FA78->unk_180 = Math_ApproachF32(D_86B0FA78->unk_180, 100.0f, 2.0f, 2.0f);
-    func_86B05DA0(D_86B0FA78->unk_180, D_86B0FA78->unk_180, D_86B0FA78->unk_180);
+void UpdateFadeColorFromHealth(void) {
+    gCameraTarget->unk_180 = Math_ApproachF32(gCameraTarget->unk_180, 100.0f, 2.0f, 2.0f);
+    SetGlobalOverlayColor(gCameraTarget->unk_180, gCameraTarget->unk_180, gCameraTarget->unk_180);
 }
 
 void func_86B069D8(void) {
-    if (((D_86B0FA78->unk_178 % 50) == 0) && (D_86B0FA78->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
-        InitAnimState(&D_86B0FA78->unk_004);
-        GraphNode_TriggerSound(&D_86B0FA78->unk_004, D_86B0FA80[0xA51]);
-        D_86B0FA78->unk_170 = 1;
-    } else if ((D_86B0FA78->unk_170 == 1) && (IsAnimStateSecondLast(&D_86B0FA78->unk_004) == 1)) {
-        D_86B0FA78->unk_170 = 0;
-        SetAnimStateIndex(&D_86B0FA78->unk_004, 0);
-        GraphNode_TriggerSound(&D_86B0FA78->unk_004, -1);
+    if (((gCameraTarget->unk_178 % 50) == 0) && (gCameraTarget->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
+        InitAnimState(&gCameraTarget->unk_004);
+        GraphNode_TriggerSound(&gCameraTarget->unk_004, D_86B0FA80[0xA51]);
+        gCameraTarget->unk_170 = 1;
+    } else if ((gCameraTarget->unk_170 == 1) && (IsAnimStateSecondLast(&gCameraTarget->unk_004) == 1)) {
+        gCameraTarget->unk_170 = 0;
+        SetAnimStateIndex(&gCameraTarget->unk_004, 0);
+        GraphNode_TriggerSound(&gCameraTarget->unk_004, -1);
     }
 }
 
-void func_86B06AB4(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void UIElement_Init(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     arg0->unk_80 = arg1;
     arg0->unk_98 = arg2;
     arg0->unk_9C = arg3;
@@ -440,82 +440,82 @@ void func_86B06AB4(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4,
 
 void func_86B06B38(void) {
     if (gBattleContext.unk_11F2 == 1) {
-        func_86B06AB4(D_86B0FA60, &D_300C6D0, -250.0f, 0xC8, 0x18, 0x18);
+        UIElement_Init(D_86B0FA60, &D_300C6D0, -250.0f, 0xC8, 0x18, 0x18);
     }
 
-    func_86B06AB4(D_86B0FA54, &D_3000180, -250.0f, 0xC8, 0x40, 0x18);
+    UIElement_Init(D_86B0FA54, &D_3000180, -250.0f, 0xC8, 0x40, 0x18);
 
     if (gBattleContext.unk_0002 == 0) {
-        func_86B06AB4(D_86B0FA5C, &D_30060E0, -170.0f, 0x3C, 0x88, 0x14);
+        UIElement_Init(D_86B0FA5C, &D_30060E0, -170.0f, 0x3C, 0x88, 0x14);
     } else if (gBattleContext.unk_0002 == 1) {
-        func_86B06AB4(D_86B0FA5C, &D_3006B80, -170.0f, 0x3C, 0x78, 0x14);
+        UIElement_Init(D_86B0FA5C, &D_3006B80, -170.0f, 0x3C, 0x78, 0x14);
     } else if (gBattleContext.unk_0002 == 2) {
-        func_86B06AB4(D_86B0FA5C, &D_3004E20, -170.0f, 0x3C, 0x78, 0x14);
+        UIElement_Init(D_86B0FA5C, &D_3004E20, -170.0f, 0x3C, 0x78, 0x14);
     } else if (gBattleContext.unk_0002 == 3) {
-        func_86B06AB4(D_86B0FA5C, &D_3005780, -170.0f, 0x3C, 0x78, 0x14);
+        UIElement_Init(D_86B0FA5C, &D_3005780, -170.0f, 0x3C, 0x78, 0x14);
     }
 
     switch (gBattleContext.unk_0001) {
         case 1:
-            func_86B06AB4(D_86B0FA58, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
+            UIElement_Init(D_86B0FA58, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 2:
-            func_86B06AB4(D_86B0FA58, &D_30032A0, -100.0f, 0x1E, 0xB0, 0x14);
+            UIElement_Init(D_86B0FA58, &D_30032A0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 3:
-            func_86B06AB4(D_86B0FA58, &D_3004060, -100.0f, 0x1E, 0xB0, 0x14);
+            UIElement_Init(D_86B0FA58, &D_3004060, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 4:
-            func_86B06AB4(D_86B0FA58, &D_3000780, -100.0f, 0x1E, 0x88, 0x14);
+            UIElement_Init(D_86B0FA58, &D_3000780, -100.0f, 0x1E, 0x88, 0x14);
             break;
 
         case 5:
-            func_86B06AB4(D_86B0FA58, &D_3001220, -100.0f, 0x1E, 0x78, 0x14);
+            UIElement_Init(D_86B0FA58, &D_3001220, -100.0f, 0x1E, 0x78, 0x14);
             break;
 
         case 6:
-            func_86B06AB4(D_86B0FA58, &D_3001B80, -100.0f, 0x1E, 0x78, 0x14);
+            UIElement_Init(D_86B0FA58, &D_3001B80, -100.0f, 0x1E, 0x78, 0x14);
             break;
 
         default:
-            func_86B06AB4(D_86B0FA58, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
+            UIElement_Init(D_86B0FA58, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
     }
 }
 
 void func_86B06E34(void) {
-    D_86B0FA78->unk_16C = 0;
-    D_86B0FA78->unk_17C = 0;
-    D_86B0FA78->unk_174 = 0;
+    gCameraTarget->unk_16C = 0;
+    gCameraTarget->unk_17C = 0;
+    gCameraTarget->unk_174 = 0;
 
     main_pool_push_state('MONS');
 
-    func_86B05EE8();
+    MonsterNode_Init();
 }
 
 void func_86B06E80(void) {
-    D_86B0FA7C->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
-    gMiniCameraPtr = D_86B0FA7C->unk_00;
-    func_86B06050();
+    gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
+    gMiniCameraPtr = gCameraState->unk_00;
+    MiniCamera_Setup();
 }
 
 void func_86B06EC8(void) {
-    D_86B0FA78->unk_16C = 6;
-    D_86B0FA78->unk_17C = 6;
-    D_86B0FA78->unk_174 = 0;
+    gCameraTarget->unk_16C = 6;
+    gCameraTarget->unk_17C = 6;
+    gCameraTarget->unk_174 = 0;
 
     main_pool_push_state('MONS');
 
-    func_86B06100();
+    MonsterNode_LoadById();
 }
 
 void func_86B06F18(void) {
-    D_86B0FA7C->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
-    gMiniCameraPtr = D_86B0FA7C->unk_00;
-    func_86B061E8();
+    gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
+    gMiniCameraPtr = gCameraState->unk_00;
+    MiniCamera_UpdateForMonster();
 }
 
 void func_86B06F60(void) {
@@ -539,81 +539,81 @@ void func_86B06FCC(void) {
 }
 
 s32 func_86B06FFC(void) {
-    switch (D_86B0FA78->unk_16C) {
+    switch (gCameraTarget->unk_16C) {
         case 0:
-            func_86B06050();
-            func_86B08C44(D_86B0FA7C->unk_00);
-            D_86B0FA78->unk_170 = 0;
-            D_86B0FA78->unk_16C += 1;
+            MiniCamera_Setup();
+            func_86B08C44(gCameraState->unk_00);
+            gCameraTarget->unk_170 = 0;
+            gCameraTarget->unk_16C += 1;
             break;
 
         case 1:
             func_86B069D8();
-            if (D_86B0FA78->unk_178++ == 0x19) {
+            if (gCameraTarget->unk_178++ == 0x19) {
                 D_86B0FA50->unk_90 = 0;
             }
 
-            if (func_86B08C44(D_86B0FA7C->unk_00) != 0) {
-                if ((gBattleContext.unk_0001 == 7) && (D_86B0FA78->unk_17C == 5)) {
+            if (func_86B08C44(gCameraState->unk_00) != 0) {
+                if ((gBattleContext.unk_0001 == 7) && (gCameraTarget->unk_17C == 5)) {
                     return 1;
                 }
-                func_86B08E50(3, 0x1E);
-                D_86B0FA78->unk_16C += 1;
+                Scroll_Init(3, 0x1E);
+                gCameraTarget->unk_16C += 1;
             }
             break;
 
         case 2:
-            func_86B08EB4();
-            if (func_86B08EA8() == 1) {
-                D_86B0FA78->unk_17C++;
-                if (D_86B0FA78->unk_17C == 6) {
-                    D_86B0FA78->unk_170 = 0;
-                    func_86B06100();
-                    func_86B061E8();
+            Scroll_Update();
+            if (Scroll_GetMode() == 1) {
+                gCameraTarget->unk_17C++;
+                if (gCameraTarget->unk_17C == 6) {
+                    gCameraTarget->unk_170 = 0;
+                    MonsterNode_LoadById();
+                    MiniCamera_UpdateForMonster();
                     D_86B0FA50->unk_90 = 3;
-                    D_86B0FA78->unk_178 = 0;
-                    func_86B08E50(2, 0x1E);
-                    D_86B0FA78->unk_16C = 6;
+                    gCameraTarget->unk_178 = 0;
+                    Scroll_Init(2, 0x1E);
+                    gCameraTarget->unk_16C = 6;
                 } else {
-                    D_86B0FA78->unk_170 = 0;
+                    gCameraTarget->unk_170 = 0;
                     func_86B06008();
-                    func_86B06050();
+                    MiniCamera_Setup();
                     D_86B0FA50->unk_90 = 3;
-                    D_86B0FA78->unk_178 = 0;
-                    func_86B08E50(2, 0x1E);
-                    D_86B0FA78->unk_16C++;
+                    gCameraTarget->unk_178 = 0;
+                    Scroll_Init(2, 0x1E);
+                    gCameraTarget->unk_16C++;
                 }
             }
             break;
 
         case 3:
-            func_86B08EB4();
-            if (D_86B0FA78->unk_178++ > 0) {
-                func_86B08C44(D_86B0FA7C->unk_00);
+            Scroll_Update();
+            if (gCameraTarget->unk_178++ > 0) {
+                func_86B08C44(gCameraState->unk_00);
             }
 
-            if (func_86B08EA8() == 0) {
-                D_86B0FA78->unk_178 = 0;
-                D_86B0FA78->unk_16C = 1;
+            if (Scroll_GetMode() == 0) {
+                gCameraTarget->unk_178 = 0;
+                gCameraTarget->unk_16C = 1;
             }
             break;
 
         case 6:
-            D_86B0FA78->unk_180 = 0xFF;
-            func_86B08EB4();
-            func_86B06440();
-            if (func_86B08EA8() == 0) {
-                D_86B0FA78->unk_16C++;
+            gCameraTarget->unk_180 = 0xFF;
+            Scroll_Update();
+            MonsterLandingSequence();
+            if (Scroll_GetMode() == 0) {
+                gCameraTarget->unk_16C++;
             }
             break;
 
         case 7:
-            if (func_86B06440() != 0) {
-                D_86B0FA78->unk_178 = 0;
+            if (MonsterLandingSequence() != 0) {
+                gCameraTarget->unk_178 = 0;
                 D_86B0FA50->unk_90 = 0;
                 PlayUISfx(0x01100002, 0, 0);
                 D_86B0FA40 = 0;
-                D_86B0FA78->unk_16C++;
+                gCameraTarget->unk_16C++;
             }
             break;
 
@@ -621,15 +621,15 @@ s32 func_86B06FFC(void) {
             if (D_86B0FA58->unk_84 != 0) {
                 func_86B065C4();
             }
-            if (D_86B0FA78->unk_178++ >= 0x41) {
+            if (gCameraTarget->unk_178++ >= 0x41) {
                 D_86B0FA64 = 0;
                 Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &D_86B0FA6C, &D_86B0FA66, &D_86B0FA68);
-                D_86B0FA78->unk_16C++;
+                gCameraTarget->unk_16C++;
             }
             break;
 
         case 9:
-            func_86B06960();
+            UpdateFadeColorFromHealth();
 
             if (D_86B0FA58->unk_84 != 0) {
                 func_86B065C4();
@@ -639,8 +639,8 @@ s32 func_86B06FFC(void) {
                 return 1;
             }
 
-            if (D_86B0FA78->unk_178++ >= 0x3E9) {
-                D_86B0FA78->unk_178 = 0x64;
+            if (gCameraTarget->unk_178++ >= 0x3E9) {
+                gCameraTarget->unk_178 = 0x64;
             }
 
             D_86B0FA64 = Math_ApproachS32(D_86B0FA64, 0x3C, 1, 1);
@@ -701,8 +701,8 @@ s32 func_86B07450(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
     return 0;
 }
 
-void func_86B075EC(void) {
-    if (D_86B0FA78->unk_17C == 6) {
+void BattleUI_Render(void) {
+    if (gCameraTarget->unk_17C == 6) {
         switch (D_86B0FA50->unk_90) {
             case 3:
                 break;
@@ -714,21 +714,21 @@ void func_86B075EC(void) {
 
             case 1:
                 func_86B07450(D_86B0FA54, 0.25f, 0.0f, 3.0f, 0xA3 - (D_86B0FA54->unk_9E / 2), 1.7f);
-                func_86B09928(D_86B0FA54->unk_80, D_86B0FA54->unk_98, D_86B0FA54->unk_9C, D_86B0FA54->unk_9E,
+                Gfx_DrawSpriteWithColors(D_86B0FA54->unk_80, D_86B0FA54->unk_98, D_86B0FA54->unk_9C, D_86B0FA54->unk_9E,
                               D_86B0FA54->unk_A0, &D_86B0FA54->unk_B0);
                 D_86B0FA58->unk_84 =
                     func_86B07450(D_86B0FA58, 0.25f, 0.0f, 3.0f, 0xA3 - (D_86B0FA58->unk_9E / 2), 1.7f);
-                func_86B09928(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
+                Gfx_DrawSpriteWithColors(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
                               D_86B0FA58->unk_A0, &D_86B0FA54->unk_B0);
 
                 if (gBattleContext.unk_11F2 == 1) {
-                    func_86B09AD8(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
+                    Gfx_DrawBorderSprite(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
                                   D_86B0FA58->unk_9C - 2, D_86B0FA60->unk_9E, D_86B0FA60->unk_A0);
                 }
 
                 if ((D_86B0FA44 != 4) && (D_86B0FA44 != 5)) {
                     func_86B07450(D_86B0FA5C, 0.25f, 0.0f, 3.0f, 0xA3 - (D_86B0FA5C->unk_9E / 2), 1.7f);
-                    func_86B09928(D_86B0FA5C->unk_80, D_86B0FA5C->unk_98, D_86B0FA5C->unk_9C, D_86B0FA5C->unk_9E,
+                    Gfx_DrawSpriteWithColors(D_86B0FA5C->unk_80, D_86B0FA5C->unk_98, D_86B0FA5C->unk_9C, D_86B0FA5C->unk_9E,
                                   D_86B0FA5C->unk_A0, &D_86B0FA54->unk_B0);
                 }
 
@@ -767,18 +767,18 @@ void func_86B075EC(void) {
                 break;
 
             case 2:
-                func_86B09928(D_86B0FA54->unk_80, D_86B0FA54->unk_98, D_86B0FA54->unk_9C, D_86B0FA54->unk_9E,
+                Gfx_DrawSpriteWithColors(D_86B0FA54->unk_80, D_86B0FA54->unk_98, D_86B0FA54->unk_9C, D_86B0FA54->unk_9E,
                               D_86B0FA54->unk_A0, D_86B0DD40);
-                func_86B09928(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
+                Gfx_DrawSpriteWithColors(D_86B0FA58->unk_80, D_86B0FA58->unk_98, D_86B0FA58->unk_9C, D_86B0FA58->unk_9E,
                               D_86B0FA58->unk_A0, D_86B0DD40);
 
                 if (gBattleContext.unk_11F2 == 1) {
-                    func_86B09AD8(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
+                    Gfx_DrawBorderSprite(D_86B0FA60->unk_80, (s16)D_86B0FA58->unk_98 + D_86B0FA58->unk_9E,
                                   D_86B0FA58->unk_9C - 2, D_86B0FA60->unk_9E, D_86B0FA60->unk_A0);
                 }
 
                 if ((D_86B0FA44 != 4) && (D_86B0FA44 != 5)) {
-                    func_86B09928(D_86B0FA5C->unk_80, D_86B0FA5C->unk_98, D_86B0FA5C->unk_9C, D_86B0FA5C->unk_9E,
+                    Gfx_DrawSpriteWithColors(D_86B0FA5C->unk_80, D_86B0FA5C->unk_98, D_86B0FA5C->unk_9C, D_86B0FA5C->unk_9E,
                                   D_86B0FA5C->unk_A0, D_86B0DD40);
                 }
                 break;
@@ -793,7 +793,7 @@ void func_86B075EC(void) {
                 D_86B0FA50->unk_9C = 0xB4;
                 D_86B0FA50->unk_A4 = 0.0f;
                 D_86B0FA50->unk_AC = 0.0f;
-                sprintf(D_86B0FA50->unk00, "%s", D_86B10690->unk_01C[D_86B0FA78->unk_17C].unk_30);
+                sprintf(D_86B0FA50->unk00, "%s", D_86B10690->unk_01C[gCameraTarget->unk_17C].unk_30);
                 D_86B0FA50->unk_90++;
                 break;
 
@@ -812,7 +812,7 @@ void func_86B075EC(void) {
         }
     }
 
-    func_86B095C4();
+    Scroll_RenderIfActive();
 }
 
 void func_86B07DF4(void) {
@@ -828,7 +828,7 @@ void func_86B07DF4(void) {
 
     Gfx_FinishFrame();
     Graph_SetTextureState(&gMiniCameraStruct->unk_00);
-    func_86B075EC();
+    BattleUI_Render();
     ParticleRender_SetupMiniCamera();
     Stage_Advance();
 }
@@ -1016,14 +1016,14 @@ void func_86B0819C(void) {
     }
 
     Graph_InitRoots();
-    func_86B05DA0(0xFF, 0xFF, 0xFF);
+    SetGlobalOverlayColor(0xFF, 0xFF, 0xFF);
     ParticleSystem_Init();
 
-    D_86B0FA78 = main_pool_alloc(sizeof(unk_D_86B0FA78), 0);
-    bzero(D_86B0FA78, sizeof(unk_D_86B0FA78));
+    gCameraTarget = main_pool_alloc(sizeof(unk_D_86B0FA78), 0);
+    bzero(gCameraTarget, sizeof(unk_D_86B0FA78));
 
-    D_86B0FA7C = main_pool_alloc(sizeof(unk_D_86B0FA7C), 0);
-    bzero(D_86B0FA7C, sizeof(unk_D_86B0FA7C));
+    gCameraState = main_pool_alloc(sizeof(unk_D_86B0FA7C), 0);
+    bzero(gCameraState, sizeof(unk_D_86B0FA7C));
 
     D_86B0FA50 = main_pool_alloc(sizeof(unk_D_86B0FA50), 0);
     bzero(D_86B0FA50, sizeof(unk_D_86B0FA50));

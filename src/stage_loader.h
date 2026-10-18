@@ -55,7 +55,7 @@ s32 Stage_GetFadeState(void);
 void Stage_CopyState(Stage* arg0);
 void Stage_Set(Stage* arg0);
 void Stage_Destroy(void);
-void func_8000771C(void);
+void Stage_Terminate(void);
 void func_80007754(void);
 s32 Stage_Advance(void);
 void Stage_AdvanceN(s32 arg0);

@@ -1,6 +1,6 @@
 #include "fragment17.h"
 
-void func_86B09B80(Mtx* arg0, MtxF* arg1) {
+void Matrix_ConvertFloatToFixed(Mtx* arg0, MtxF* arg1) {
     arg0->m[0][0] =
         ((s32)(arg1->mf[0][0] * 65536.0f) & 0xFFFF0000) | (((s32)(arg1->mf[0][1] * 65536.0f) >> 0x10) & 0xFFFF);
     arg0->m[0][1] =
@@ -27,7 +27,7 @@ void func_86B09B80(Mtx* arg0, MtxF* arg1) {
     arg0->m[3][3] = ((s32)(arg1->mf[3][2] * 65536.0f) << 0x10) | ((s32)(arg1->mf[3][3] * 65536.0f) & 0xFFFF);
 }
 
-void func_86B09EF0(MtxF* arg0, f32 arg1) {
+void Matrix_ScaleUniform(MtxF* arg0, f32 arg1) {
     arg0->mf[0][0] *= arg1;
     arg0->mf[1][0] *= arg1;
     arg0->mf[2][0] *= arg1;
@@ -41,7 +41,7 @@ void func_86B09EF0(MtxF* arg0, f32 arg1) {
     arg0->mf[2][2] *= arg1;
 }
 
-void func_86B09F64(MtxF* arg0, Vec3f arg1, Vec3s arg2) {
+void Matrix_SetTransformFromPosRot(MtxF* arg0, Vec3f arg1, Vec3s arg2) {
     UNUSED s32 pad[2];
     f32 sx = SINS(arg2.x);
     f32 cx = COSS(arg2.x);

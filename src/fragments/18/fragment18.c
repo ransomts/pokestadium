@@ -1576,7 +1576,7 @@ static Color_RGB8 playerColors[] = {
     { 0, 0, 0 },          { 0x11, 0, 0 }, { 0, 0, 0 },       { 0, 0, 0 },
 };
 
-s32 func_86C00020(MiniActor* ekans) {
+s32 Ekans_GetLaunchForceLevel(MiniActor* ekans) {
     f32 tmp = ekans->launchForce;
     s32 var_v1 = 0;
 
@@ -1603,7 +1603,7 @@ void miniDiglettGoldCheck(s16 nDiglett, s32* isGold, s32* arg2) {
     *arg2 = D_86C0E0AC[ActiveDiglettId];
 }
 
-void func_86C00110(s16 arg0, s16 arg1) {
+void MiniGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     s32 var_s0;
     s32 isGold;
     s32 sp2C;
@@ -1625,7 +1625,7 @@ void func_86C00110(s16 arg0, s16 arg1) {
         case 3:
             var_s0 = 0xA0003;
             isGold = arg1;
-            sp2C = func_86C00020(&miniEkanses[arg1]);
+            sp2C = Ekans_GetLaunchForceLevel(&miniEkanses[arg1]);
             break;
 
         case 4:
@@ -1711,13 +1711,13 @@ void func_86C00110(s16 arg0, s16 arg1) {
     }
 }
 
-void func_86C00368(s16 arg0, s16 arg1) {
+void MiniGame_QueueSoundEvent(s16 arg0, s16 arg1) {
     if (D_8790604A == 0) {
-        func_86C00110(arg0, arg1);
+        MiniGame_PlaySoundEvent(arg0, arg1);
     }
 }
 
-void func_86C003AC(MiniActor* arg0) {
+void Ekans_ResetPosition(MiniActor* arg0) {
     s16 idx = arg0 - miniEkanses;
 
     arg0->position_1.x = arg0->unk_1D8.x = skansActorInfo[idx].pos.x;
@@ -1783,11 +1783,11 @@ void initAllEkans(void) {
     }
 }
 
-f32 func_86C0063C(MiniActor* ekans) {
+f32 Ekans_GetMaxStickMagnitude(MiniActor* ekans) {
     return (ekans->stickMagnitude2 <= ekans->stickMagnitude1) ? ekans->stickMagnitude1 : ekans->stickMagnitude2;
 }
 
-s16 func_86C00668(MiniActor* arg0, s16 arg1) {
+s16 Ekans_ClampYRotation(MiniActor* arg0, s16 arg1) {
     s32 var_v1 = arg1 ^ 0;
 
     switch (arg0 - miniEkanses) {
@@ -1877,7 +1877,7 @@ void miniEkansHumanControls(MiniActor* ekans) {
         }
 
         ekans->yRot_2 += direction * (var_v1 + 0x180);
-        ekans->yRot_2 = func_86C00668(ekans, ekans->yRot_2);
+        ekans->yRot_2 = Ekans_ClampYRotation(ekans, ekans->yRot_2);
     }
 
     if (stickY >= 0) {
@@ -1899,18 +1899,18 @@ void miniEkansHumanControls(MiniActor* ekans) {
                 if (temp_fv1 >= 10.0f) {
                     direction = 1;
                     var_v0 = 1;
-                    var_ft4 = func_86C0063C(ekans);
+                    var_ft4 = Ekans_GetMaxStickMagnitude(ekans);
                 }
             } else if (ekans->stickMagnitude1 < 50.0f) {
                 if (temp_fv1 >= 15.0f) {
                     direction = 1;
                     var_v0 = 1;
-                    var_ft4 = func_86C0063C(ekans);
+                    var_ft4 = Ekans_GetMaxStickMagnitude(ekans);
                 }
             } else if (temp_fv1 >= 20.0f) {
                 direction = 1;
                 var_v0 = 1;
-                var_ft4 = func_86C0063C(ekans);
+                var_ft4 = Ekans_GetMaxStickMagnitude(ekans);
             }
         } else if (temp_fa0 >= 25.0f) {
             var_v0 = 1;
@@ -2130,7 +2130,7 @@ void func_86C00F70(MiniActor* compEkans) {
     sp3C.x = tempDiglett->totalPos.x - compEkans->totalPos.x;
     sp3C.z = tempDiglett->totalPos.z - compEkans->totalPos.z;
 
-    compEkans->unk_222 = func_86C00668(compEkans, func_81400BBC(sp3C) + RandomRangeSigned(sp36) + 0x8000);
+    compEkans->unk_222 = Ekans_ClampYRotation(compEkans, func_81400BBC(sp3C) + RandomRangeSigned(sp36) + 0x8000);
     compEkans->ySpinSpeed = GetRandomMod(sp32) + sp34;
 }
 
@@ -2320,7 +2320,7 @@ void ekansFixDirToDiglett(MiniActor* ekans, UNUSED s32 nPlayer, s32 nActiveDigle
 
     ekans->position_2.y += ekans->ySpeed;
 
-    func_86C00368(5, nActiveDiglett);
+    MiniGame_QueueSoundEvent(5, nActiveDiglett);
 
     ekans->unk_298 = 0xC;
     ekans->unk_000.unk_000.unk_02 &= ~0x20;
@@ -2483,7 +2483,7 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
     if (ekans->unk_298 != 0) {
         ekans->unk_298--;
     } else if (ekans->unk_296 != 0) {
-        func_86C00368(8, ekans->collidingActorId);
+        MiniGame_QueueSoundEvent(8, ekans->collidingActorId);
         ekans->unk_296 = 0;
     }
 
@@ -2501,7 +2501,7 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
                 ekans->ySpinSpeed = 0x1000;
                 ekans->midAirState = 6;
                 ekans->ySpeed *= -0.5f;
-                func_86C00368(4, nPlayer);
+                MiniGame_QueueSoundEvent(4, nPlayer);
             }
             ekans->unk_000.unk_000.unk_02 &= ~0x20;
             ekans->ekansScore += ekans->ekansDiglettHitScore;
@@ -2577,7 +2577,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             miniChangeActorAnim(ekans, 1, -1, 0);
             ekans->ekansIsMidAir = 1;
             ekans->midAirState = 0;
-            func_86C00368(3, nPlayer);
+            MiniGame_QueueSoundEvent(3, nPlayer);
             ekans->mainState++;
             break;
 
@@ -2588,7 +2588,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
 
         case 0x3: // on ekans return
             miniChangeActorAnim(ekans, 0, -1, 1);
-            func_86C003AC(ekans);
+            Ekans_ResetPosition(ekans);
             ekans->mainState++;
             break;
 
@@ -2872,7 +2872,7 @@ void miniDiglettStateMachine(void) {
                 miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
                 miniChangeActorAnim(miniDiglettPtr, 1, -1, 0);
                 activeDigletts[i].state = 2;
-                func_86C00368(6, i);
+                MiniGame_QueueSoundEvent(6, i);
                 break;
 
             case 2:
@@ -2896,7 +2896,7 @@ void miniDiglettStateMachine(void) {
                     activeDigletts[i].diglettId = miniEkansChooseRandDiglett(i);
                     miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
                     miniDiglettPtr->unk_000.unk_000.unk_01 |= 1;
-                    func_86C00368(7, i);
+                    MiniGame_QueueSoundEvent(7, i);
                     func_86C02A1C(miniDiglettPtr);
                     miniChangeActorAnim_alt2(miniDiglettPtr, 1, -1, 1);
                 }
@@ -2928,7 +2928,7 @@ void miniDiglettStateMachine(void) {
                     GraphNode_SetColorRGBA(&miniDiglettPtr->unk_000, 0xFF, 0xFF, 0xFF, 0);
                     miniChangeActorAnim(miniDiglettPtr, 1, -1, 0);
                     activeDigletts[i].state = 8;
-                    func_86C00368(9, i);
+                    MiniGame_QueueSoundEvent(9, i);
                 }
                 break;
 
@@ -3024,14 +3024,14 @@ s32 func_86C031E4(void) {
     s32 sp18 = Fragment2_1_GetResult();
 
     if (sp18 == -2) {
-        func_86C00368(0xD, 0);
+        MiniGame_QueueSoundEvent(0xD, 0);
         sp1C = 1;
     }
 
     if (sp18 > 0) {
-        func_86C00368(1, 0);
+        MiniGame_QueueSoundEvent(1, 0);
     } else if (sp18 == 0) {
-        func_86C00368(2, 0);
+        MiniGame_QueueSoundEvent(2, 0);
     }
 
     return sp1C;
@@ -3043,19 +3043,19 @@ s32 func_86C03258(void) {
     D_879060C0--;
     if (D_879060C0 == 0) {
         miniEkansCountdown = 0;
-        func_86C00368(0xB, 0);
+        MiniGame_QueueSoundEvent(0xB, 0);
         sp1C = 1;
     } else {
         miniEkansCountdown = (D_879060C0 / 30) + 1;
         if ((D_879060C0 % 30) == 0) {
             if (miniEkansCountdown == 0xB) {
                 sp1C = 0;
-                func_86C00368(0xC, 0);
+                MiniGame_QueueSoundEvent(0xC, 0);
             }
 
             if (miniEkansCountdown < 7) {
                 sp1C = 0;
-                func_86C00368(0xA, 0);
+                MiniGame_QueueSoundEvent(0xA, 0);
             }
         }
     }
@@ -3384,9 +3384,9 @@ void miniEkansTutoScreenControls(void) {
                     miniTutoScreenState = 1;
                     minigameState = 1;
                     miniShowHUB = true;
-                    func_86C00368(0x10, 0);
+                    MiniGame_QueueSoundEvent(0x10, 0);
                 } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
-                    func_86C00368(0x11, 0);
+                    MiniGame_QueueSoundEvent(0x11, 0);
                     SetResultFlag(2); //	D_8780FC92 = 1
                 }
             }
@@ -3414,9 +3414,9 @@ void ekansMinigameUpdate(void) {
     Stage_FadeOut(0x1E);
 
     if (ekansMinigameCountdownStarted) {
-        func_86C00368(0x13, 0x1E);
+        MiniGame_QueueSoundEvent(0x13, 0x1E);
     } else {
-        func_86C00368(0x12, 0x1E);
+        MiniGame_QueueSoundEvent(0x12, 0x1E);
     }
 
     for (i = 0; i < 30; i++) {
@@ -3433,7 +3433,7 @@ void ekansMinigameUpdate(void) {
 
     while (Audio_CalcLoadScore() != 0) {}
 
-    func_86C00368(0x14, 0);
+    MiniGame_QueueSoundEvent(0x14, 0);
 }
 
 void func_86C044B4(void) {
@@ -3489,7 +3489,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
     if (arg0 == 1) {
         ekansMinigameCountdownStarted = true;
         func_878010C8(0xD);
-        func_86C00368(0x10, 0);
+        MiniGame_QueueSoundEvent(0x10, 0);
     } else {
         ekansMinigameCountdownStarted = false;
     }

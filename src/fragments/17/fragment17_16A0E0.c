@@ -58,9 +58,9 @@ static s16 D_86B10BC8;
 static s16 D_86B10BCA;
 static s16 D_86B10BCC;
 static unk_D_86B10BD0 D_86B10BD0;
-static unk_D_86B10BE0 D_86B10BE0;
+static unk_D_86B10BE0 gMessageBoxState;
 
-void func_86B0A750(void) {
+void Camera_SetupView(void) {
     D_86B109B8 = D_86B10848->unk_0C;
 
     D_86B10BC8 = 0;
@@ -73,11 +73,11 @@ void func_86B0A750(void) {
     D_86B109B8->unk_24.far = 6400.0f;
 }
 
-void func_86B0A7F8(void) {
+void MessageState_Reset(void) {
     D_86B10BD0.unk_00 = 0;
     D_86B10BD0.unk_04 = 0;
     D_86B10BD0.unk_08 = 0;
-    D_86B10BE0.unk_10 = 0xA;
+    gMessageBoxState.unk_10 = 0xA;
 }
 
 void func_86B0A81C(void) {
@@ -143,34 +143,34 @@ void func_86B0A824(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86B0B024(void) {
-    D_86B10BE0.unk_00 = 0xFF;
+void MessageState_SetFinished(void) {
+    gMessageBoxState.unk_00 = 0xFF;
 }
 
-void func_86B0B034(void) {
-    D_86B10BE0.unk_00 = 0;
+void MessageState_Clear(void) {
+    gMessageBoxState.unk_00 = 0;
 }
 
-s32 func_86B0B040(void) {
-    if (D_86B109C8[D_86B10BE0.unk_04] == 0) {
+s32 MessageState_CopyNextChars(void) {
+    if (D_86B109C8[gMessageBoxState.unk_04] == 0) {
         return 1;
     }
 
-    D_86B10AC8[D_86B10BE0.unk_04++] = D_86B109C8[D_86B10BE0.unk_04];
+    D_86B10AC8[gMessageBoxState.unk_04++] = D_86B109C8[gMessageBoxState.unk_04];
 
-    if (D_86B109C8[D_86B10BE0.unk_04] == 0) {
+    if (D_86B109C8[gMessageBoxState.unk_04] == 0) {
         return 1;
     }
 
-    D_86B10AC8[D_86B10BE0.unk_04++] = D_86B109C8[D_86B10BE0.unk_04];
+    D_86B10AC8[gMessageBoxState.unk_04++] = D_86B109C8[gMessageBoxState.unk_04];
     return 0;
 }
 
-void func_86B0B0B4(void) {
-    func_86B0A824(0x3C, 0xBE - (D_86B10BE0.unk_10 / 2), D_86B10BE0.unk_0C, D_86B10BE0.unk_10, 0x50, 0x50, 0xF0, 0x80);
+void MessageBox_Draw(void) {
+    func_86B0A824(0x3C, 0xBE - (gMessageBoxState.unk_10 / 2), gMessageBoxState.unk_0C, gMessageBoxState.unk_10, 0x50, 0x50, 0xF0, 0x80);
 }
 
-void func_86B0B12C(void) {
+void MessageBox_RenderText(void) {
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
@@ -178,10 +178,10 @@ void func_86B0B12C(void) {
     Text_SetupDL();
 }
 
-void func_86B0B184(void) {
+void MessageBox_Update(void) {
     s32 i;
 
-    switch (D_86B10BE0.unk_00) {
+    switch (gMessageBoxState.unk_00) {
         case 0x0:
             if (gBattleContext.unk_0000 == 0x16) {
                 sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x91));
@@ -189,78 +189,78 @@ void func_86B0B184(void) {
                 sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x93));
             }
 
-            D_86B10BE0.unk_04 = 0;
-            D_86B10BE0.unk_08 = 0;
-            D_86B10BE0.unk_0C = 0xC8;
-            D_86B10BE0.unk_10 = 0xA;
+            gMessageBoxState.unk_04 = 0;
+            gMessageBoxState.unk_08 = 0;
+            gMessageBoxState.unk_0C = 0xC8;
+            gMessageBoxState.unk_10 = 0xA;
 
             // clang-format off
             for (i = 0; i < 255; i++) { D_86B10AC8[i] = 0; }
             // clang-format on
 
-            func_86B0B0B4();
-            D_86B10BE0.unk_00++;
+            MessageBox_Draw();
+            gMessageBoxState.unk_00++;
             break;
 
         case 0x1:
-            D_86B10BE0.unk_10 = Math_ApproachS32(D_86B10BE0.unk_10, 0x28, 8, 8);
-            if (D_86B10BE0.unk_10 == 0x28) {
-                D_86B10BE0.unk_00++;
+            gMessageBoxState.unk_10 = Math_ApproachS32(gMessageBoxState.unk_10, 0x28, 8, 8);
+            if (gMessageBoxState.unk_10 == 0x28) {
+                gMessageBoxState.unk_00++;
             }
-            func_86B0B0B4();
+            MessageBox_Draw();
             break;
 
         case 0x2:
-            func_86B0B0B4();
-            if (func_86B0B040() != 0) {
-                D_86B10BE0.unk_00++;
+            MessageBox_Draw();
+            if (MessageState_CopyNextChars() != 0) {
+                gMessageBoxState.unk_00++;
             }
-            func_86B0B12C();
+            MessageBox_RenderText();
             break;
 
         case 0x3:
-            func_86B0B0B4();
-            func_86B0B12C();
+            MessageBox_Draw();
+            MessageBox_RenderText();
 
-            if (D_86B10BE0.unk_08++ == 0x3C) {
+            if (gMessageBoxState.unk_08++ == 0x3C) {
                 if (gBattleContext.unk_0000 == 0x16) {
                     sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x92));
                 } else {
                     sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x94));
                 }
 
-                D_86B10BE0.unk_04 = 0;
-                D_86B10BE0.unk_08 = 0;
+                gMessageBoxState.unk_04 = 0;
+                gMessageBoxState.unk_08 = 0;
 
                 // clang-format off
                 for (i = 0; i < 255; i++) { D_86B10AC8[i] = 0; }
                 // clang-format on
 
-                D_86B10BE0.unk_00++;
+                gMessageBoxState.unk_00++;
             }
             break;
 
         case 0x4:
-            func_86B0B0B4();
-            if (func_86B0B040() != 0) {
-                D_86B10BE0.unk_00++;
+            MessageBox_Draw();
+            if (MessageState_CopyNextChars() != 0) {
+                gMessageBoxState.unk_00++;
             }
-            func_86B0B12C();
+            MessageBox_RenderText();
             break;
 
         case 0x5:
-            func_86B0B0B4();
-            func_86B0B12C();
+            MessageBox_Draw();
+            MessageBox_RenderText();
 
-            if (D_86B10BE0.unk_08++ == 0x41) {
-                D_86B10BE0.unk_00 = 0xFF;
+            if (gMessageBoxState.unk_08++ == 0x41) {
+                gMessageBoxState.unk_00 = 0xFF;
             }
             break;
 
         case 0xFF:
-            D_86B10BE0.unk_10 = Math_ApproachS32(D_86B10BE0.unk_10, 0, 8, 8);
-            if (D_86B10BE0.unk_10 >= 0xB) {
-                func_86B0B0B4();
+            gMessageBoxState.unk_10 = Math_ApproachS32(gMessageBoxState.unk_10, 0, 8, 8);
+            if (gMessageBoxState.unk_10 >= 0xB) {
+                MessageBox_Draw();
             }
             break;
     }
@@ -275,7 +275,7 @@ void func_86B0B498(void) {
 void func_86B0B4C8(void) {
 }
 
-void func_86B0B4D0(u8* arg0) {
+void DrawBackgroundTiles(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -301,15 +301,15 @@ void func_86B0B4D0(u8* arg0) {
 
 void func_86B0B650(void) {
     Stage_BeginDisplayList();
-    func_86B0B4D0(D_86B109C0);
+    DrawBackgroundTiles(D_86B109C0);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_FinishFrame();
     Graph_SetTextureState(D_86B10848);
-    func_86B0B184();
+    MessageBox_Update();
     Stage_Advance();
 }
 
-s32 func_86B0B6C0(void) {
+s32 BattleCutscene_Process(void) {
     s32 sp24 = 0;
 
     switch (D_86B10BD0.unk_00) {
@@ -327,17 +327,17 @@ s32 func_86B0B6C0(void) {
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0x72) {
                 D_86B10BD0.unk_08 = 0;
                 D_86B10850.unk_000.unk_02 &= 0xFFDF;
-                func_86B0B034();
+                MessageState_Clear();
                 func_8004B1CC(0x13);
                 D_86B10BD0.unk_00++;
             }
             break;
 
         case 2:
-            if (D_86B10BE0.unk_00 == 0xFF) {
+            if (gMessageBoxState.unk_00 == 0xFF) {
                 D_86B10BD0.unk_08 = 0;
                 D_86B10850.unk_000.unk_02 |= 0x20;
-                func_86B0B024();
+                MessageState_SetFinished();
                 D_86B10BD0.unk_00++;
             }
             break;
@@ -370,7 +370,7 @@ void func_86B0B810(void) {
 
     while (var_s2 != 0) {
         func_86B0B498();
-        if (func_86B0B6C0() != 0) {
+        if (BattleCutscene_Process() != 0) {
             var_s2 = 0;
         }
         func_86B0B650();
@@ -394,9 +394,9 @@ void func_86B0B8DC(void) {
     mem_pool_resize_block(temp_v0);
 
     Graph_InitRoots();
-    func_86B0A750();
-    func_86B0A7F8();
-    func_86B0B024();
+    Camera_SetupView();
+    MessageState_Reset();
+    MessageState_SetFinished();
     Graph_AddToRootList0(&D_86B10850);
     AssetManager_LoadArchives();
 

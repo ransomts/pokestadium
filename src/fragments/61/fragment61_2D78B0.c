@@ -1119,7 +1119,7 @@ s32 func_84203E6C(s32 arg0, UNUSED s32 arg1) {
         var_v1 = func_84203210();
     }
 
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('PICK');
 

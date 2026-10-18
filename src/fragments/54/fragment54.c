@@ -272,7 +272,7 @@ s32 func_82B00E84(void) {
 
     func_80007754();
     sp26 = func_82B00CB4();
-    func_8000771C();
+    Stage_Terminate();
 
     main_pool_pop_state('menu');
 
