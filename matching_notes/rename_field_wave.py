@@ -130,6 +130,14 @@ def run_batch(batch, headers, args):
     log(f"=== field batch {batch}: {len(headers)} headers ===")
     t0 = time.time()
 
+    def agent_outfile(h):
+        return os.path.join(wdir, f"{batch}_{os.path.basename(h)}.tsv")
+
+    todo = [h for h in headers
+            if not (os.path.exists(agent_outfile(h)) and os.path.getsize(agent_outfile(h)) > 0)]
+    if len(todo) < len(headers):
+        log(f"  reusing {len(headers) - len(todo)} agent result(s) from an earlier attempt")
+
     def run_agent(h):
         cmd = [PY, os.path.join(HERE, "rename_field_agent.py"), "--header", h,
                "--batch", batch, "--model", args.model, "--out", wdir]
@@ -141,7 +149,7 @@ def run_batch(batch, headers, args):
 
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency) as ex:
-        futs = [ex.submit(run_agent, h) for h in headers]
+        futs = [ex.submit(run_agent, h) for h in todo]
         for fut in concurrent.futures.as_completed(futs):
             h, rc, tail = fut.result()
             results.append((h, rc))
