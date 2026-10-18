@@ -100,6 +100,8 @@ def parse_field(row):
 
 _TEXT_CACHE = {}
 _GREP_BLOB = None
+_DEF_CLASSES = None
+_HEADER_TAGS = None
 
 
 def file_text(path):
@@ -111,9 +113,11 @@ def file_text(path):
 
 
 def _invalidate_text_cache():
-    global _GREP_BLOB
+    global _GREP_BLOB, _DEF_CLASSES, _HEADER_TAGS
     _TEXT_CACHE.clear()
     _GREP_BLOB = None
+    _DEF_CLASSES = None
+    _HEADER_TAGS = None
 
 
 def sa_definitions(name):
@@ -309,22 +313,11 @@ def preflight(rows, protected, named, allow_applied_skip=True):
             errors.append(f"{tag}: duplicate new {r.new!r} (also line {seen_new[r.new]})")
         seen_new[r.new] = r.lineno
         # typedef / struct-tag collision in include/
-        for f in rewrite_files():
-            if not f.endswith(".h"):
-                continue
-            t = file_text(f)
-            if re.search(r"(typedef[^;{]*|struct\s+|union\s+|\}\s*)" + re.escape(r.new) + r"\s*[;{]", t):
-                errors.append(f"{tag}: {r.new!r} collides with a typedef/tag in {os.path.relpath(f, REPO)}")
-                break
+        if r.new in header_tag_names():
+            errors.append(f"{tag}: {r.new!r} collides with a typedef/tag in a header")
         if r.is_field_row():
             continue
-        is_typedef = False
-        for f in rewrite_files():
-            if not f.endswith((".c", ".h")):
-                continue
-            if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", file_text(f)):
-                is_typedef = True
-                break
+        is_typedef = r.old in _def_classes()[3]
         defs = sa_definitions(r.old)
         if is_typedef:
             pass  # C-level typedef: no symbol_addrs/dlabel expectations
@@ -627,38 +620,86 @@ def cmd_plan(ledger, batch):
 def is_typedef_row(r, files=None):
     if r.is_field_row():
         return False
-    for f in rewrite_files():
-        if not f.endswith((".c", ".h")):
-            continue
-        if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", file_text(f)):
-            return True
-    return False
+    return r.old in _def_classes()[3]
 
 
 def c_definition_count(sym):
     """File-scope or local C definitions/declarations of `sym` (static or global, any array dims)."""
-    pat = re.compile(
-        r"^\s*(static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
-        r"((\[[^\]]*\])*)\s*[;=]", re.M)
-    n = 0
+    statics, globals_, locals_, _closers = _def_classes()
+    return (sym in statics) + (sym in globals_) + (sym in locals_)
+
+
+_HEADER_TAGS = None
+
+
+def header_tag_names():
+    """All typedef/struct/union/} names declared in headers (one pass)."""
+    global _HEADER_TAGS
+    if _HEADER_TAGS is None:
+        names = set()
+        pats = [re.compile(r"typedef[^;{]*?([A-Za-z_][A-Za-z0-9_]*)\s*[;{]"),
+                re.compile(r"(?:struct|union)\s+([A-Za-z_][A-Za-z0-9_]*)\s*[;{]"),
+                re.compile(r"\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")]
+        for f in rewrite_files():
+            if not f.endswith(".h"):
+                continue
+            t = file_text(f)
+            for p in pats:
+                for m in p.finditer(t):
+                    names.add(m.group(1))
+        _HEADER_TAGS = names
+    return _HEADER_TAGS
+
+
+_DEF_CLASSES = None
+
+
+def _def_classes():
+    """One pass over all .c files -> (statics, globals, locals, typedef_closers).
+    globals = column-0 declarations (incl. extern); locals = indented declarations."""
+    global _DEF_CLASSES
+    if _DEF_CLASSES is not None:
+        return _DEF_CLASSES
+    statics, globals_, locals_, closers = set(), set(), set(), set()
+    p_static = re.compile(r"^\s*static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
+                          r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
+    p_global = re.compile(r"^(?:static\s+|extern\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
+                          r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
+    p_local = re.compile(r"^[ \t]+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
+                         r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
+    p_close = re.compile(r"\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")
     for f in rewrite_files():
         if not f.endswith(".c"):
             continue
-        if pat.search(file_text(f)):
-            n += 1
-    return n
+        t = file_text(f)
+        for m in p_static.finditer(t):
+            statics.add(m.group(1))
+        for m in p_global.finditer(t):
+            globals_.add(m.group(1))
+        for m in p_local.finditer(t):
+            locals_.add(m.group(1))
+        for m in p_close.finditer(t):
+            closers.add(m.group(1))
+    closers |= {n for n in header_tag_names()}
+    _DEF_CLASSES = (statics, globals_, locals_, closers)
+    return _DEF_CLASSES
+
+
+def is_typedef_row_fast(sym):
+    return sym in _def_classes()[3]
 
 
 def is_c_static(sym):
-    """True if `sym` has a `static` C definition (file- or function-scope, any array dims).
-    Such symbols never appear in the linker map, so the gate's map check skips them."""
-    pat = re.compile(
-        r"^\s*static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
-        r"((\[[^\]]*\])*)\s*[;=]", re.M)
-    for f in rewrite_files():
-        if f.endswith(".c") and pat.search(file_text(f)):
-            return True
-    return False
+    """True if `sym` has a `static` C definition - absent from the linker map,
+    so the gate's map check skips it."""
+    return sym in _def_classes()[0]
+
+
+def is_function_local(sym):
+    """True if sym is declared ONLY inside function bodies (indented, non-static,
+    no extern/file-scope definition) - also absent from the linker map."""
+    statics, globals_, locals_, _closers = _def_classes()
+    return sym in locals_ and sym not in globals_ and sym not in statics
 
 
 def cmd_apply(ledger, batch, sample, no_make):
@@ -683,7 +724,7 @@ def cmd_apply(ledger, batch, sample, no_make):
     noops = [r for r in todo if r.old == r.new]
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
     sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)  # pre-rewrite check
-                 and not is_c_static(r.old)]
+                 and not is_c_static(r.old) and not is_function_local(r.old)]
     rw = do_rewrites(real, files)
     touched = rw.commit()
     # post-rewrite checks
