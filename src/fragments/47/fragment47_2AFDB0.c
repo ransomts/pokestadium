@@ -11,7 +11,7 @@
 
 static unk_D_838067F0 D_838067F0;
 
-void func_838024C0(unk_D_83407B18_008* arg0) {
+void SnapSelect_CopyStateToInfo(unk_D_83407B18_008* arg0) {
     arg0->unk_02 = D_838067F0.unk_001C;
     arg0->unk_04 = D_838067F0.unk_0020;
     arg0->unk_06 = D_838067F0.unk_0024;
@@ -33,14 +33,14 @@ s32 func_838024EC(void) {
     return ret;
 }
 
-void func_8380252C(s32 arg0, s32 arg1, unk_D_8380565C* arg2) {
+void SnapSelect_InitBackground(s32 arg0, s32 arg1, unk_D_8380565C* arg2) {
     D_838067F0.unk_0000 = 0;
     D_838067F0.unk_0004 = arg0;
     D_838067F0.unk_0008 = arg1;
     D_838067F0.unk_015C = arg2;
 }
 
-s32 func_83802548(unk_D_838067F0* arg0, s32 arg1) {
+s32 SnapSelect_LoadPokemonIndices(unk_D_838067F0* arg0, s32 arg1) {
     char sp48[88];
     unk_func_80022C28_ret* var_v0;
     unk_D_838067F0_003C* ptr = &arg0->unk_003C[arg1];
@@ -66,7 +66,7 @@ s32 func_83802548(unk_D_838067F0* arg0, s32 arg1) {
     return ptr->unk_00;
 }
 
-void func_83802660(unk_D_838067F0* arg0, unk_func_80026268_arg0* arg1) {
+void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, unk_func_80026268_arg0* arg1) {
     typedef struct unk_func_83802660_sp28 {
         /* 0x00 */ unk_D_800AC910_040 unk_00;
         /* 0x00 */ u16 unk_12;
@@ -85,7 +85,7 @@ void func_83802660(unk_D_838067F0* arg0, unk_func_80026268_arg0* arg1) {
     }
 }
 
-s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk_D_8380565C* arg3) {
+s32 SnapSelect_FillPokemonInfo(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk_D_8380565C* arg3) {
     s32 i;
     s32 j;
     unk_D_838067F0_003C* temp_s3;
@@ -148,13 +148,13 @@ s32 func_83802700(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk
         arg1->unk_0000[i].unk_004.unk_53 = arg2 * 3 + i;
         arg1->unk_0000[i].unk_004.unk_52 = (arg0->unk_0018 * 0x10) | arg0->unk_001C;
 
-        func_83802660(arg0, &arg1->unk_0000[i].unk_004);
+        SnapSelect_ApplyInputModifiers(arg0, &arg1->unk_0000[i].unk_004);
     }
 
     return var_s4;
 }
 
-s32 func_838029D4(s32 arg0, unk_D_83407B18_008* arg1) {
+s32 SnapSelect_LoadModeData(s32 arg0, unk_D_83407B18_008* arg1) {
     unk_D_838067F0* ptr = &D_838067F0;
     unk_D_838067F0_0168* ptr2;
     s32 i;
@@ -201,14 +201,14 @@ s32 func_838029D4(s32 arg0, unk_D_83407B18_008* arg1) {
     }
 
     for (i = 12; i >= 0; i--) {
-        if ((func_83802548(&D_838067F0, i) > 0) && (arg1 == NULL)) {
+        if ((SnapSelect_LoadPokemonIndices(&D_838067F0, i) > 0) && (arg1 == NULL)) {
             ptr->unk_001C = i;
         }
     }
 
     ptr2 = ptr->unk_0160;
     for (i = 0; i < 6; i++) {
-        func_83802700(&D_838067F0, ptr2, ptr->unk_0020 + i, ptr->unk_015C);
+        SnapSelect_FillPokemonInfo(&D_838067F0, ptr2, ptr->unk_0020 + i, ptr->unk_015C);
         ptr2 = ptr2->unk_2688;
     }
 
@@ -216,7 +216,7 @@ s32 func_838029D4(s32 arg0, unk_D_83407B18_008* arg1) {
     return 1;
 }
 
-void func_83802C0C(unk_D_838067F0* arg0) {
+void SnapSelect_UpdateTimer(unk_D_838067F0* arg0) {
     arg0->unk_0014++;
     if (arg0->unk_0014 <= 0) {
         arg0->unk_0010 = arg0->unk_0008 + 0x1E0;
@@ -230,15 +230,15 @@ void func_83802C0C(unk_D_838067F0* arg0) {
     arg0->unk_000C = arg0->unk_0004;
 }
 
-unk_D_838067F0_0168* func_83802C74(unk_D_838067F0_0168* arg0, s32 arg1) {
+unk_D_838067F0_0168* SnapSelect_AdvanceNode(unk_D_838067F0_0168* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_2688;
     }
     return arg0;
 }
 
-void func_83802C98(unk_D_838067F0* arg0) {
-    unk_D_838067F0_0168* ptr = func_83802C74(arg0->unk_0160, arg0->unk_0028);
+void SnapSelect_HandleConfirm(unk_D_838067F0* arg0) {
+    unk_D_838067F0_0168* ptr = SnapSelect_AdvanceNode(arg0->unk_0160, arg0->unk_0028);
     unk_func_80026268_arg0* temp_a1 = &ptr->unk_0000[arg0->unk_0024].unk_004;
 
     if (temp_a1->unk_00.unk_00 != 0) {
@@ -253,14 +253,14 @@ void func_83802C98(unk_D_838067F0* arg0) {
     }
 }
 
-void func_83802D64(unk_D_838067F0* arg0) {
+void SnapSelect_HandleCancel(unk_D_838067F0* arg0) {
     arg0->unk_0000 = 8;
     arg0->unk_0014 = 0;
     PlaySoundEffect(3);
     SnapSelect_SetTimer(-1);
 }
 
-void func_83802D98(unk_D_838067F0* arg0) {
+void SnapSelect_NavigateNext(unk_D_838067F0* arg0) {
     s32 i;
     s32 var_s0;
     unk_D_838067F0_0168* var_s1;
@@ -273,12 +273,12 @@ void func_83802D98(unk_D_838067F0* arg0) {
     if (var_s0 != arg0->unk_001C) {
         PlaySoundEffect(0x27);
         arg0->unk_001C = var_s0;
-        arg0->unk_0160 = func_83802C74(arg0->unk_0160, 6);
+        arg0->unk_0160 = SnapSelect_AdvanceNode(arg0->unk_0160, 6);
         arg0->unk_0020 = 0;
 
         var_s1 = arg0->unk_0160;
         for (i = 0; i < 6; i++) {
-            func_83802700(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
+            SnapSelect_FillPokemonInfo(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
             var_s1 = var_s1->unk_2688;
         }
 
@@ -288,7 +288,7 @@ void func_83802D98(unk_D_838067F0* arg0) {
     }
 }
 
-void func_83802EE8(unk_D_838067F0* arg0) {
+void SnapSelect_NavigatePrev(unk_D_838067F0* arg0) {
     s32 i;
     s32 var_s0;
     unk_D_838067F0_0168* var_s1;
@@ -301,12 +301,12 @@ void func_83802EE8(unk_D_838067F0* arg0) {
     if (var_s0 != arg0->unk_001C) {
         PlaySoundEffect(0x27);
         arg0->unk_001C = var_s0;
-        arg0->unk_0160 = func_83802C74(arg0->unk_0160, 6);
+        arg0->unk_0160 = SnapSelect_AdvanceNode(arg0->unk_0160, 6);
         arg0->unk_0020 = 0;
 
         var_s1 = arg0->unk_0160;
         for (i = 0; i < 6; i++) {
-            func_83802700(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
+            SnapSelect_FillPokemonInfo(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
             var_s1 = var_s1->unk_2688;
         }
 
@@ -353,7 +353,7 @@ void func_8380311C(unk_D_838067F0* arg0) {
             arg0->unk_0000 = 6;
             PlaySoundEffect(1);
         } else if ((arg0->unk_0020 > 0) &&
-                   (func_83802700(arg0, arg0->unk_0160->unk_268C, arg0->unk_0020 - 1, arg0->unk_015C) != 0)) {
+                   (SnapSelect_FillPokemonInfo(arg0, arg0->unk_0160->unk_268C, arg0->unk_0020 - 1, arg0->unk_015C) != 0)) {
             arg0->unk_0020 -= 1;
             arg0->unk_0160 = arg0->unk_0160->unk_268C;
             arg0->unk_002C = -1;
@@ -374,7 +374,7 @@ void func_838031F0(unk_D_838067F0* arg0) {
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 6;
             PlaySoundEffect(1);
-        } else if (func_83802700(arg0, func_83802C74(arg0->unk_0160, 6), arg0->unk_0020 + 6, arg0->unk_015C) != 0) {
+        } else if (SnapSelect_FillPokemonInfo(arg0, SnapSelect_AdvanceNode(arg0->unk_0160, 6), arg0->unk_0020 + 6, arg0->unk_015C) != 0) {
             arg0->unk_0020++;
             arg0->unk_0160 = arg0->unk_0160->unk_2688;
             arg0->unk_002C = 1;
@@ -387,15 +387,15 @@ void func_838031F0(unk_D_838067F0* arg0) {
     }
 }
 
-void func_838032C8(unk_D_838067F0* arg0) {
+void SnapSelect_ProcessInput(unk_D_838067F0* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        func_83802C98(arg0);
+        SnapSelect_HandleConfirm(arg0);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        func_83802D64(arg0);
+        SnapSelect_HandleCancel(arg0);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_R)) {
-        func_83802D98(arg0);
+        SnapSelect_NavigateNext(arg0);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_L)) {
-        func_83802EE8(arg0);
+        SnapSelect_NavigatePrev(arg0);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DLEFT)) {
         func_83803038(arg0);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DRIGHT)) {
@@ -450,11 +450,11 @@ void func_83803488(void) {
 
         switch (ptr->unk_0000) {
             case 1:
-                func_83802C0C(ptr);
+                SnapSelect_UpdateTimer(ptr);
                 break;
 
             case 2:
-                func_838032C8(ptr);
+                SnapSelect_ProcessInput(ptr);
                 break;
 
             case 3:
@@ -646,16 +646,16 @@ void func_83803F34(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 
     switch (arg2->unk_2692) {
         case 0:
-            var_v0 = func_83402374(0x42);
+            var_v0 = Text_GetMessageString_Bank2C(0x42);
             break;
 
         case 13:
-            var_v0 = func_834023CC(0x13);
+            var_v0 = Text_GetMessageString_Bank1A(0x13);
             break;
 
         default:
             MessageBank_SetPointer_1_9(2, arg2->unk_2692);
-            var_v0 = func_834023A4(&sp60, 0x100, 0x43);
+            var_v0 = Text_GetMessageString_Bank2C_Buffered(&sp60, 0x100, 0x43);
             break;
     }
 
@@ -713,7 +713,7 @@ void func_8380419C(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
 // s5 for &D_838067F0. Dead ends: ptr-> vs D_838067F0. per line, inline temp_s2_2 / var_s0,
 // nested scope for new_var (still allocated in source order), constant var in block 4,
 // operand-order and s16 casts in block 3, `if (1) {}` after each call.
-void func_838043F8(s32 arg0)
+void SnapSelect_UpdateCameraState(s32 arg0)
 {
   unk_D_838067F0 *ptr = &D_838067F0;
   s32 i;

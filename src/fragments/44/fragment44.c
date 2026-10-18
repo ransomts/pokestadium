@@ -13,17 +13,17 @@
 #include "src/fragments/39/fragment39.h"
 #include "src/fragments/43/fragment43.h"
 
-static s32 D_83503FC0;
-static unk_D_83407B38 D_83503FC8;
-static s32 D_8350407C;
+static s32 gItemSelectState;
+static unk_D_83407B38 gItemSelectContext;
+static s32 gItemSelectMode;
 static s32 D_83504080;
-static BinArchive* D_83504084;
+static BinArchive* gStadiumModelArchive;
 static u16 D_83504088;
 static s32 D_8350408C;
-static u16 D_83504090[0x24];
+static u16 gSlotStatusFlags[0x24];
 static s32 D_835040D8;
 
-s32 func_83500020(unk_D_83407B38* arg0) {
+s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
     s32 sp64;
     s32 sp60;
     s32 sp5C;
@@ -33,12 +33,12 @@ s32 func_83500020(unk_D_83407B38* arg0) {
     s32 sp4C;
     s32 sp48;
     s32 i;
-    unk_func_80031270* sp40;
+    Camera* sp40;
     s32 sp3C;
-    unk_func_80031270* sp38;
+    Camera* sp38;
     s16 tmp;
     s32 idx;
-    unk_func_80031270* ptr;
+    Camera* ptr;
 
     sp64 = 0;
     sp60 = arg0->unk_08;
@@ -138,8 +138,8 @@ s32 func_83500020(unk_D_83407B38* arg0) {
                     arg0->unk_04 = sp3C;
                     arg0->unk_B0->unk_18 = sp38->unk_18;
                     arg0->unk_B0->unk_00 = 0;
-                    if (D_8350407C == 2) {
-                        D_83503FC0 = 3;
+                    if (gItemSelectMode == 2) {
+                        gItemSelectState = 3;
                         PlaySoundEffect(0xD);
                         D_83407B30.unk_04 = arg0->unk_04;
                     } else {
@@ -157,9 +157,9 @@ s32 func_83500020(unk_D_83407B38* arg0) {
                 PlaySoundEffect(0x29);
                 func_83400590(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
 
-                tmp = D_83504090[sp3C];
-                D_83504090[sp3C] = D_83504090[arg0->unk_04];
-                D_83504090[arg0->unk_04] = tmp;
+                tmp = gSlotStatusFlags[sp3C];
+                gSlotStatusFlags[sp3C] = gSlotStatusFlags[arg0->unk_04];
+                gSlotStatusFlags[arg0->unk_04] = tmp;
 
                 arg0->unk_20[arg0->unk_04]->unk_00 = 0;
                 sp38->unk_00 = 0;
@@ -168,15 +168,15 @@ s32 func_83500020(unk_D_83407B38* arg0) {
             }
             arg0->unk_04 = -1;
         } else {
-            D_83503FC0 = 2;
+            gItemSelectState = 2;
             D_835040D8 = 0;
             PlayResultScreenSfx(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         if (arg0->unk_04 == -1) {
             sp64 = 1;
-            if (D_8350407C == 2) {
-                func_834006BC(&D_83407B30);
+            if (gItemSelectMode == 2) {
+                GallerySelection_Init(&D_83407B30);
             }
         } else {
             arg0->unk_04 = -1;
@@ -197,13 +197,13 @@ s32 func_83500020(unk_D_83407B38* arg0) {
     return sp64;
 }
 
-void func_8350057C(s32 arg0, s32 arg1) {
+void ItemSelect_Init(s32 arg0, s32 arg1) {
     s32 i;
     s32 j;
     unk_D_86002F58_004_000_010* tmp;
 
-    D_83503FC0 = 0;
-    D_8350407C = arg0;
+    gItemSelectState = 0;
+    gItemSelectMode = arg0;
 
     if (arg1 != 0) {
         D_8350408C = 1;
@@ -211,7 +211,7 @@ void func_8350057C(s32 arg0, s32 arg1) {
         D_8350408C = 0;
     }
 
-    if (D_8350407C != 2) {
+    if (gItemSelectMode != 2) {
         D_83504080 = 1;
     } else {
         D_83504080 = 0;
@@ -221,24 +221,24 @@ void func_8350057C(s32 arg0, s32 arg1) {
     D_835040D8 = 0;
 
     tmp = AssetManager_Create(5);
-    func_83401D68(&D_83503FC8, 0x88, 0x66, 6, 3, tmp, D_83504084, D_83403C60, 0x24, 1);
-    if (D_8350407C == 2) {
-        func_834021EC(&D_83503FC8, &D_83407B18.unk_00);
+    CamList_Init(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, D_83403C60, 0x24, 1);
+    if (gItemSelectMode == 2) {
+        func_834021EC(&gItemSelectContext, &D_83407B18.unk_00);
     } else if (arg1 == 0) {
-        func_834021EC(&D_83503FC8, &D_83407B10);
+        func_834021EC(&gItemSelectContext, &D_83407B10);
     }
 
     for (i = 0; i < 36; i++) {
         unk_D_83403C60* ptr = &D_83403C60[i];
 
-        D_83504090[i] = 0;
+        gSlotStatusFlags[i] = 0;
         if (IsMonIndexDisplayable(ptr) != 0) {
             for (j = 0; j < 21; j++) {
                 if ((IsMonIndexDisplayable(&D_834063C0[j]) != 0) && (func_83400660(&D_834063C0[j], ptr) != 0)) {
                     if (j < 4) {
-                        D_83504090[i] |= 1;
+                        gSlotStatusFlags[i] |= 1;
                     } else {
-                        D_83504090[i] |= 2;
+                        gSlotStatusFlags[i] |= 2;
                     }
                 }
             }
@@ -316,7 +316,7 @@ void func_83500FE8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     Text_SetEnvColor(0, 0x64, 0xDC, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    temp_v0 = func_83402374(0x3A);
+    temp_v0 = Text_GetMessageString_Bank2C(0x3A);
 
     temp_v1 = (0xDF - (MeasureTextWidth(0, 0, temp_v0) + MeasureTextWidth(0, 0, "99/99"))) / 2;
     temp_s1 = temp_v1 + 0x133;
@@ -480,7 +480,7 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     Gfx_FillRectRGBA(arg1 + tmp2 + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
-    func_83401728(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
+    DrawRectBorder(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -500,11 +500,11 @@ void func_83501718(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) 
     }
 }
 
-void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     UNUSED s32 pad;
     s32 temp_s3;
     s32 var_s4;
-    unk_func_80031270* ptr;
+    Camera* ptr;
     s32 idx;
     s32 i;
 
@@ -523,8 +523,8 @@ void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
 
         func_83501204(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
 
-        if ((var_s4 != 0) && (D_83504090[temp_s3] != 0)) {
-            func_83501340(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, D_83504090[temp_s3]);
+        if ((var_s4 != 0) && (gSlotStatusFlags[temp_s3] != 0)) {
+            func_83501340(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, gSlotStatusFlags[temp_s3]);
         }
     }
 
@@ -551,7 +551,7 @@ void func_83501BE4(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     }
 }
 
-void func_83501FA8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_83503E8C = { 0x9A, 0x37, 0x54, 0xFF };
     static Color_RGBA8 D_83503E90 = { 0xC3, 0x54, 0x84, 0xFF };
     static s16 D_83503E94 = 0;
@@ -565,18 +565,18 @@ void func_83501FA8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
 
     sp54 = SINS(D_83503E94) * 4.0f;
 
-    if (D_8350407C != 2) {
-        sp5C = func_83402374(1);
+    if (gItemSelectMode != 2) {
+        sp5C = Text_GetMessageString_Bank2C(1);
     } else {
-        sp5C = func_83402374(3);
+        sp5C = Text_GetMessageString_Bank2C(3);
     }
     temp_s0 = (0x1B6 - MeasureTextWidth(0x10, 0, sp5C)) / 2;
-    func_83401110(arg1, arg2, 0x1B6, &sp4C, &sp48);
+    DrawPanelWithTextures(arg1, arg2, 0x1B6, &sp4C, &sp48);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    func_8340144C(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
-    func_8340144C(D_3001D20, MeasureTextWidth(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
+    DrawVerticalTextureStrip(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
+    DrawVerticalTextureStrip(D_3001D20, MeasureTextWidth(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
 
     if (arg0->unk_08 > 0) {
         temp_s0 = sp54;
@@ -621,7 +621,7 @@ void func_835022F0(s32 arg0) {
     s32 sp28;
     s32 temp_v1;
 
-    sp2C = func_83402374(0x3C);
+    sp2C = Text_GetMessageString_Bank2C(0x3C);
     temp_v1 = (0xF3 - MeasureTextWidth(8, 0, sp2C)) / 2;
     sp28 = temp_v1 + 0x5E;
 
@@ -647,16 +647,16 @@ void func_835023F0(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     func_83500924(arg0 + 0x40, arg1, 0x1E7, 0x120);
     func_83500AF4(arg0 + 0x20, arg1 + 0x113, 0x207);
     func_83500D9C(arg0 + 0x20, arg1, 0x207);
-    func_83501FA8(&D_83503FC8, 0x65, 0x24);
+    ItemSelect_DrawHeader(&gItemSelectContext, 0x65, 0x24);
 
-    if (D_83503FC8.unk_04 == -1) {
+    if (gItemSelectContext.unk_04 == -1) {
         func_835022F0(arg1 + 0x108);
     }
 
-    func_83500FE8(&D_83503FC8, arg0, arg1);
+    func_83500FE8(&gItemSelectContext, arg0, arg1);
 }
 
-void func_835024FC(void) {
+void DrawHighlightBars(void) {
     static Color_RGBA8 D_83503E98 = { 0xCD, 0xE1, 0x73, 0 };
     static Color_RGBA8 D_83503E9C = { 0xB4, 0, 0x91, 0 };
     static Color_RGBA8 D_83503EA0 = { 0xD7, 0xEB, 0x7D, 0 };
@@ -793,7 +793,7 @@ void func_835028D0(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_s2;
     UNUSED s32 pad;
 
-    func_83402374(0x3B);
+    Text_GetMessageString_Bank2C(0x3B);
 
     if (arg2 != 0) {
         spF0 = D_4015080;
@@ -877,7 +877,7 @@ void func_835028D0(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_83502F78(int arg0, int arg1, s32 arg2, f32 arg3) {
+void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
     s32 i;
     s32 iter = 16;
     f32 tmp = 1024.0f;
@@ -890,7 +890,7 @@ void func_83502F78(int arg0, int arg1, s32 arg2, f32 arg3) {
     u16* spE4[] = { D_03005F80, D_0400DC00 };
     s16 spE0[] = { 0x0037, 0x0038 };
     u16* spDC = spE4[arg2];
-    char* spD8 = func_83402374(spE0[arg2]);
+    char* spD8 = Text_GetMessageString_Bank2C(spE0[arg2]);
     Color_RGB8 spD0[] = {
         { 0xE6, 0x6E, 0x82 },
         { 0x6E, 0xFF, 0x0F },
@@ -935,16 +935,16 @@ char* func_835034A8(unk_D_83407B38* arg0) {
     s32 tmp = arg0->unk_00 / 3;
     char* var_v0;
 
-    if (D_8350407C == 2) {
-        var_v0 = func_83402374(0x29);
+    if (gItemSelectMode == 2) {
+        var_v0 = Text_GetMessageString_Bank2C(0x29);
     } else if (tmp < 2) {
-        var_v0 = func_83402374(0x25);
+        var_v0 = Text_GetMessageString_Bank2C(0x25);
     } else if (arg0->unk_04 != -1) {
-        var_v0 = func_83402374(0x26);
-    } else if (D_8350407C == 1) {
-        var_v0 = func_83402374(0x28);
+        var_v0 = Text_GetMessageString_Bank2C(0x26);
+    } else if (gItemSelectMode == 1) {
+        var_v0 = Text_GetMessageString_Bank2C(0x28);
     } else {
-        var_v0 = func_83402374(0x27);
+        var_v0 = Text_GetMessageString_Bank2C(0x27);
     }
     return var_v0;
 }
@@ -962,7 +962,7 @@ void func_8350355C(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-f32 func_835035E0(s32* arg0, u32* arg1, s32 arg2) {
+f32 UpdateFadeTimer(s32* arg0, u32* arg1, s32 arg2) {
     f32 tmp;
 
     if (*arg0 < arg2) {
@@ -1002,7 +1002,7 @@ void func_8350365C(unk_D_83407B38* arg0) {
     }
 }
 
-void func_83503770(void) {
+void ItemSelect_MainDraw(void) {
     static s32 D_83503F54 = 0;
     static s32 D_83503F58 = 0;
     static s32 D_83503F5C = 0;
@@ -1017,19 +1017,19 @@ void func_83503770(void) {
     f32 sp24;
     f32 var_fv1;
 
-    func_83402210(&D_83503FC8, &sp30, &sp2C, D_83503FC8.unk_00);
+    func_83402210(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
     Stage_BeginDisplayList();
-    func_835024FC();
-    func_835023F0(0x1E, 0x2A, &D_83503FC8);
+    DrawHighlightBars();
+    func_835023F0(0x1E, 0x2A, &gItemSelectContext);
     if (D_83504080 != 0) {
-        if (D_83503FC8.unk_04 == -1) {
+        if (gItemSelectContext.unk_04 == -1) {
             var_a2 = 1;
         } else {
             var_a2 = 0;
         }
         func_835028D0(0x35, 0x15E, var_a2);
 
-        switch (D_8350407C) {
+        switch (gItemSelectMode) {
             case 0:
                 sp38 = 0;
                 break;
@@ -1043,18 +1043,18 @@ void func_83503770(void) {
                 break;
         }
 
-        sp24 = func_835035E0(&D_83503F54, &D_83503F58, 0x1E);
-        temp_fv0 = func_835035E0(&D_83503F5C, &D_83503F60, 0xF);
-        if ((D_83503FC8.unk_04 == -1) && (sp2C >= 2)) {
+        sp24 = UpdateFadeTimer(&D_83503F54, &D_83503F58, 0x1E);
+        temp_fv0 = UpdateFadeTimer(&D_83503F5C, &D_83503F60, 0xF);
+        if ((gItemSelectContext.unk_04 == -1) && (sp2C >= 2)) {
             var_fv1 = temp_fv0;
         } else {
             var_fv1 = sp24;
         }
-        func_83502F78(0x1E1, 0x172, sp38, var_fv1);
+        DrawResultScreen(0x1E1, 0x172, sp38, var_fv1);
     }
-    func_83501BE4(0x6B, 0x4E, &D_83503FC8);
-    func_8350365C(&D_83503FC8);
-    func_8350355C(&D_83503FC8, 0x9E, 0x16B);
+    ItemSelect_DrawGrid(0x6B, 0x4E, &gItemSelectContext);
+    func_8350365C(&gItemSelectContext);
+    func_8350355C(&gItemSelectContext, 0x9E, 0x16B);
     Stage_Advance();
 }
 
@@ -1062,18 +1062,18 @@ void func_835038DC(unk_D_83407B38* arg0) {
     D_835040D8++;
     if (D_835040D8 >= 0x15) {
         func_83400570(arg0->unk_20[arg0->unk_04]->unk_18);
-        D_83504090[arg0->unk_04] = 0;
+        gSlotStatusFlags[arg0->unk_04] = 0;
         arg0->unk_04 = -1;
-        D_83503FC0 = 1;
+        gItemSelectState = 1;
         D_835040D8 = 0;
     }
 }
 
 void func_83503968(unk_D_83407B38* arg0) {
-    unk_func_80031270* sp1C = arg0->unk_B0;
+    Camera* sp1C = arg0->unk_B0;
 
     if ((Cam_IsMonIndexDisplayable(sp1C) != 0) && (sp1C->unk_00 == 2)) {
-        D_83503FC0 = 4;
+        gItemSelectState = 4;
         D_83504088 = 0xFFFF;
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(0xF);
@@ -1087,21 +1087,21 @@ s32 func_835039C8(void) {
     s32 temp_v0_2;
     s32 var_a0;
 
-    switch (D_83503FC0) {
+    switch (gItemSelectState) {
         case 0:
             if (Stage_GetFadeState() == 0) {
                 D_83503F64--;
                 if (D_83503F64 <= 0) {
-                    D_83503FC0 = 1;
+                    gItemSelectState = 1;
                 }
             }
             break;
 
         case 1:
             D_83504088 &= 0xFF60;
-            temp_v0_2 = func_83500020(&D_83503FC8);
+            temp_v0_2 = ItemSelect_HandleInput(&gItemSelectContext);
             if (temp_v0_2 != 0) {
-                D_83503FC0 = 4;
+                gItemSelectState = 4;
                 D_83504088 = 0xFFFF;
                 if (temp_v0_2 != 2) {
                     Stage_SetFillColor(0xFFFF);
@@ -1115,11 +1115,11 @@ s32 func_835039C8(void) {
             break;
 
         case 2:
-            func_835038DC(&D_83503FC8);
+            func_835038DC(&gItemSelectContext);
             break;
 
         case 3:
-            func_83503968(&D_83503FC8);
+            func_83503968(&gItemSelectContext);
             break;
 
         case 4:
@@ -1147,17 +1147,17 @@ void func_83503B2C(void) {
     do {
         func_83503AFC();
 
-        switch (D_83503FC0) {
+        switch (gItemSelectState) {
             case 0:
             case 4:
                 break;
 
             default:
-                func_83401FD0(&D_83503FC8);
+                CamList_Update(&gItemSelectContext);
                 break;
         }
 
-        func_83503770();
+        ItemSelect_MainDraw();
         func_834020D8();
     } while (func_835039C8() != 0);
 }
@@ -1166,7 +1166,7 @@ s32 func_83503BD4(unk_D_83407B38* arg0) {
     UNUSED s32 pad[2];
     s32 sp1C;
 
-    switch (D_8350407C) {
+    switch (gItemSelectMode) {
         case 0:
             sp1C = 0;
             break;
@@ -1184,12 +1184,12 @@ s32 func_83503BD4(unk_D_83407B38* arg0) {
         sp1C = 4;
     }
 
-    if (D_8350407C == 2) {
+    if (gItemSelectMode == 2) {
         func_834021D8(arg0, &D_83407B18.unk_00);
     } else {
         func_834021D8(arg0, &D_83407B10);
         if (sp1C == 0) {
-            func_834021C8(&D_83407B10);
+            Selection_Reset(&D_83407B10);
         }
     }
 
@@ -1213,10 +1213,10 @@ void func_83503C9C(s32 arg0, s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     AssetManager_LoadArchives();
-    D_83504084 = ASSET_LOAD2(stadium_models, 1, 1);
+    gStadiumModelArchive = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
-    func_83402340();
-    func_8350057C(arg0, arg1);
+    Text_LoadMessageBanks();
+    ItemSelect_Init(arg0, arg1);
     Stage_Set(sp24);
     func_83503B2C();
     Stage_Destroy();
@@ -1225,5 +1225,5 @@ void func_83503C9C(s32 arg0, s32 arg1) {
 
     main_pool_pop_state('ALBM');
 
-    func_83503BD4(&D_83503FC8);
+    func_83503BD4(&gItemSelectContext);
 }

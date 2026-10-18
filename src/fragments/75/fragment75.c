@@ -18,7 +18,7 @@ static Stage* D_8FA00A2C;
 static u8 D_8FA009F0[] = {
     0x00, 0x11, 0x01, 0x02, 0x04, 0x06, 0x03, 0x0A, 0x0B, 0x07, 0x08, 0x09, 0x0C, 0x10, 0x0F, 0x14,
 };
-static unk_func_80031270* D_8FA00A00 = NULL;
+static Camera* D_8FA00A00 = NULL;
 
 void func_8FA00020(s32 arg0) {
     Stage_BeginDisplayList();
@@ -79,7 +79,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     u8 sp4E;
 
     if (func_8FA00510() == 0) {
-        if (func_83400704(sp60, (D_83407AE4 != 0) ? 16 : 4, 0) != 0) {
+        if (CountDisplayableMonIndices(sp60, (D_83407AE4 != 0) ? 16 : 4, 0) != 0) {
             StickerStation_SetCommand(0x10);
             return 0;
         }

@@ -335,7 +335,7 @@ void InitFragment41(void) {
     InitTextBox();
     func_82F13278();
     UpdateControllerInfo();
-    func_82F09C6C();
+    InitMenuGraphics();
     func_82F04FD4();
     func_82F0C190();
 }
@@ -376,16 +376,16 @@ void func_82F00AC8(s32 arg0) {
                 main_pool_push_state('pmex');
                 gPoolStatePushed = 1;
             }
-            func_80023D60(func_82F07A54(gActivePlayerIndex));
+            SnapSelect_SetCameraMode(func_82F07A54(gActivePlayerIndex));
             InitPokemonPicker(gActivePlayerIndex, func_82F07A54(gActivePlayerIndex));
             break;
 
         case 5:
-            func_82F0A0A8(0);
+            RentalMenu_Init(0);
             break;
 
         case 6:
-            func_82F0A0A8(1);
+            RentalMenu_Init(1);
             break;
 
         case 7:
@@ -607,7 +607,7 @@ void func_82F01180(void) {
             PollControllerInputs();
         }
         UpdateTextBox();
-        func_82F09D2C();
+        UpdateMenuStateMachine();
         func_82F0504C();
         func_82F0C254();
         func_82F132D0();

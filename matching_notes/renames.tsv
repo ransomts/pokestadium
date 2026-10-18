@@ -2443,3 +2443,190 @@ func_82F043A4	DrawStatusPanel	w16		Renders a status panel with an icon and numer
 func_82F04604	UpdateAndRenderPicker	w16		Main update loop that handles picker timers, scrolling, drawing UI elements and processing selections	applied@ce50e4a
 D_82F144D0	gPickerState	w16		Array of two structures holding per?player picker state and UI parameters	applied@ce50e4a
 D_82F20A00	gPickerSpriteBuffer	w16		Pointer to the large aligned buffer that stores sprite graphics for the picker UI	applied@ce50e4a
+func_82F052F0	BattleResultScreen_Start	w17		Initializes the static screen state, pushes a memory pool, creates assets, sets state field to 1 and plays a sound, indicating the start of the battle result screen	applied@3634e05
+func_82F053F8	BattleResultScreen_UpdateTimer	w17		Decrements the timer, updates position fields, and when the timer reaches zero sets the screen state to 2, handling the countdown animation	applied@3634e05
+func_82F05560	BattleResultScreen_HandleInput	w17		Processes controller button presses to modify selection index D_82F20A38 and on confirm changes state to 3, managing user input for the result screen	applied@3634e05
+func_82F056D0	BattleResultScreen_Close	w17		Runs a reverse timer animation, restores original positions, and when the timer ends pops the memory pool state, closing the result screen	applied@3634e05
+func_82F05828	Gfx_FillRectRGBA5551	w17		Uses gDPSetFillColor and gDPFillRectangle with a packed RGBA5551 color to fill a rectangle, a generic fill routine	applied@3634e05
+func_82F05920	Gfx_DrawBorderedRect	w17		Sets up a border display list, render mode, env color, draws corner sprites and side textures, then calls Gfx_FillRectRGBA5551 to fill the interior, implementing a bordered rectangle	applied@3634e05
+func_82F05C50	Gfx_DrawVerticalFade	w17		When arg2 is non?zero, loops over vertical steps drawing RGBA16 sprites with decreasing height to create a fade overlay effect	applied@3634e05
+func_82F05D74	Gfx_DrawNumberSprite	w17		Uses the static digit sprite table D_82F13C20 to render a two?digit number by drawing each digit sprite, a number?drawing helper	applied@3634e05
+func_82F05F20	IsInvalidMoveId	w17		Returns 1 if the supplied move ID is ?0 or ?0xA6, validating move identifiers	applied@3634e05
+func_82F05F40	BattleResultScreen_Draw	w17		Draws the full battle result UI (health bar, move icons, stats, text) based on the screen state struct, rendering the result screen	applied@3634e05
+D_82F20A10	gBattleResultScreenState	w17		Static struct holding fields like state, timers, positions, asset manager, accessed by all result?screen functions	applied@3634e05
+D_82F20A38	gResultOptionIndex	w17		Static s16 toggled between 0 and 1 by button presses to select between two options on the result screen	applied@3634e05
+D_82F13C20	gDigitSpriteTable	w17		Static array of 10 sprite pointers used in Gfx_DrawNumberSprite to draw numeric digits	applied@3634e05
+D_82F13C4C	gColorRedDarkRGB8	w17		Static Color_RGB8 {0x82,0x1E,0x1E} used as UI color when a specific condition is met in BattleResultScreen_Draw	applied@3634e05
+D_82F13C68	gMoveIconTextureTable	w17		Static array of texture pointers indexed by move string IDs to draw move icons in BattleResultScreen_Draw	applied@3634e05
+D_82F20A88	gPlayerSlotInfo	w17		An array of four entries where each element tracks a player index, slot type and texture pointer, used to render player slots in the menu.	applied@3634e05
+D_82F210C8	gMenuRootNode	w17		Initialized by process_geo_layout with D_82F13E8C and later passed to Graph_SetTextureState, indicating it is the root geometry node for the menu.	applied@3634e05
+D_82F210CC	gMenuOverlayNode	w17		Initialized by process_geo_layout with D_82F13E58 and used as a child node for slot rendering, suggesting it is the overlay geometry node for the menu.	applied@3634e05
+D_82F210D0	gActiveSlotCount	w17		Incremented while populating slots and later used as the loop bound when adding slot nodes, representing the number of active player slots.	applied@3634e05
+D_82F210D2	gSelectedSlotIndex	w17		Compared against the current slot index in func_82F07498 and modified by left/right button presses, indicating it tracks the currently highlighted slot.	applied@3634e05
+D_82F210D4	gSubMenuSelection	w17		Modified by up/down button presses in func_82F0866C and used to highlight submenu options, showing it stores the current submenu selection index.	applied@3634e05
+D_82F210D8	gSelectedPlayerIndices	w17		An array of two entries holding player indices or -1, accessed when drawing player panels and when confirming selections, thus tracking selected players.	applied@3634e05
+func_82F06E50	RenderPlayerSlot	w17		The function is called as a display?list callback, sets texture segments based on D_82F20A88 slot data and draws the slot?s display list, so it renders a player slot.	applied@3634e05
+func_82F06F9C	GetSlotTypeFromPlayerInfo	w17		It examines fields of a playerInfo struct and returns a small integer used to decide slot appearance, therefore mapping player info to a slot type.	applied@3634e05
+func_82F07004	InitPlayerSlots	w17		The routine clears the slot array, determines slot types for each player, creates graph nodes and adds them to the root list, initializing all player slots.	applied@3634e05
+func_82F07214	SetSlotState	w17		It receives a slot pointer and a state value, then configures many slot fields (position, opacity, timers) based on that state, acting as the slot state setter.	applied@3634e05
+func_82F077E0	UpdateAllSlots	w17		The function iterates over all active slots, updates each according to its current state, and writes the resulting position and visual parameters to the corresponding graph node.	applied@3634e05
+func_82F07DEC	HandleMenuInput	w17		It reads controller buttons, updates gSelectedSlotIndex, processes A/B presses to change the menu state and selection, and plays sound effects, handling full menu input.	applied@3634e05
+func_82F09C6C	InitMenuGraphics	w17		The code creates geometry layout nodes from D_82F13E8C/D_82F13E58, resets the global menu state struct and calls InitPlayerSlots, establishing the menu?s graphical resources.	applied@3634e05
+func_82F09D2C	UpdateMenuStateMachine	w17		The switch on D_82F20A40.unk_00 calls the appropriate state?specific update functions each frame, driving the menu?s state machine progression.	applied@3634e05
+func_82F09EB0	LoadRentalItemData	w17		Creates a GBS block for an item and returns success, called from InitRentalItems to load each item	applied@3634e05
+func_82F09F44	InitRentalItems	w17		Initializes both rental items, checking their load status and advancing state, used in RentalMenu_ProcessItemSelection	applied@3634e05
+func_82F0A0A8	RentalMenu_Init	w17		Initializes the rental menu state and UI element positions, setting ptr->unk_00=1 and playing a sound at start	applied@3634e05
+func_82F0A23C	RentalMenu_UpdatePanels	w17		Updates UI panel positions each frame based on a countdown timer, modifying unk_14[i] and unk_24/2C/34 fields	applied@3634e05
+func_82F0A5F8	RentalMenu_HandleSelection	w17		Handles player input for selecting a rental item, updating selection index D_82F21128 and confirming with A/B buttons	applied@3634e05
+func_82F0A804	RentalMenu_ConfirmWait	w17		Waits for player confirmation or timeout before moving to the next state, decrementing unk_02 and checking BTN_A	applied@3634e05
+func_82F0A850	RentalMenu_ShowItemDetailsA	w17		Animates the first item panel and transitions to state 2 when its timer expires, updating unk_24 fields	applied@3634e05
+func_82F0A950	RentalMenu_ShowItemDetailsB	w17		Animates the second item panel and transitions to state 2 when its timer expires, updating unk_24 fields	applied@3634e05
+func_82F0AA50	RentalMenu_ShowOptions	w17		Animates the options panel, resets selection indices and prepares for item selection state 7	applied@3634e05
+func_82F0AB68	RentalMenu_ProcessItemSelection	w17		Processes the selected item, handling success/failure via func_80023E34 and advancing the menu state accordingly	applied@3634e05
+func_82F0ACC4	RentalMenu_Finalize	w17		Final cleanup resetting UI positions, flags and state to idle (state 0) after menu completion	applied@3634e05
+func_82F0B3E0	RentalMenu_RenderItemList	w17		Renders the list of rental items with icons, numbers and names, drawing textures and printing text for each slot	applied@3634e05
+func_82F0B7B4	RentalMenu_DrawPanels	w17		Draws gradient panels and status icons for the rental menu, including selection highlight based on D_82F21128	applied@3634e05
+D_82F210E0	gRentalMenuState	w17		Global struct holding the rental menu state, timers, flags and UI element positions used throughout the menu code	applied@3634e05
+D_82F21120	gRentalItemPtrs	w17		Array of pointers to item data for the two rental slots, populated from sp2C.unk_0C and used when rendering item info	applied@3634e05
+func_82F0C410	Gfx_DrawScisTextureRect	w17		Draws a textured rectangle using gSPScisTextureRectangle, used for all UI texture draws.	applied@3634e05
+func_82F0C658	MenuBar_SetState	w17		Sets the state (unk_00) of the D_82F211A0 bar structs based on arg1 values 1?3.	applied@3634e05
+func_82F0C784	MenuBar_UpdateFade	w17		Decrements unk_06, updates unk_0C fade value and switches to state 2 when timer expires.	applied@3634e05
+func_82F0C7FC	MenuBar_UpdatePulse	w17		Updates pulse animation by incrementing unk_0A, computing env color with cosine, and triggers state 3.	applied@3634e05
+func_82F0C8EC	MenuBar_AddParticle	w17		Finds a free slot in the bar?s unk_10[10] array and inserts a new particle entry.	applied@3634e05
+func_82F0C958	MenuBar_UpdateParticles	w17		Iterates over the bar?s particle array, decrementing timers and clearing completed particles.	applied@3634e05
+func_82F0CB90	MenuBar_ProcessAll	w17		Loops over the two D_82F211A0 bars and calls the appropriate update function based on their state.	applied@3634e05
+func_82F0CC3C	MenuBar_Render	w17		Handles scissor setup, texture loading and drawing of the bars and their particles.	applied@3634e05
+func_82F0D090	ScreenTransition_Init	w17		Creates a transition asset, configures a GraphNode_TriggerAction and sets direction based on arg1.	applied@3634e05
+func_82F0D160	ScreenTransition_Start	w17		Initialises gScreenTransition fields, selects random start side and plays the start sound.	applied@3634e05
+func_82F0DCF4	ScreenTransition_Process	w17		Dispatches transition logic based on gScreenTransition.unk_02 state (0?6).	applied@3634e05
+D_82F2115C	gMenuFramebuffer	w17		FramebufferImage allocated in func_82F13278 and used for menu rendering in func_82F12614.	applied@3634e05
+D_82F21160	gMenuPanels	w17		Array of two panel structs used throughout the file for positioning, animation and drawing.	applied@3634e05
+D_82F21238	gScreenTransition	w17		Struct controlling screen fade/slide transitions, referenced by many transition functions.	applied@3634e05
+func_833005CC	Menu_HandleConfirm	w17		Sets menu state to 6 and starts fade when confirming selection, called from ProcessMenuInput on A press	applied@3634e05
+func_83300D80	Menu_DrawAnimatedSprite	w17		Draws a scaled texture with animation factors, used for selected menu item scaling in DrawMenuScreen	applied@3634e05
+func_83301998	Gfx_DrawFadeOverlay	w17		Renders a fullscreen colored rectangle overlay for background fade, called from DrawBackground	applied@3634e05
+func_8330267C	Menu_DrawHeader	w17		Prints a centered title string with a sprite, used when in mode 2 and no Pokemon selected	applied@3634e05
+func_83302820	Menu_HandleSwapInput	w17		Handles A/B button actions for swapping Pokemon in the grid, invoked in state 4	applied@3634e05
+func_833028FC	Menu_HandleConfirmTimer	w17		Manages confirmation timer and sticker station command, used in state 5 of the menu flow	applied@3634e05
+func_833029F0	Menu_ProcessResult	w17		Processes the result of func_83402DC8, setting fade-out states and stage transitions	applied@3634e05
+func_83302ACC	Menu_FadeOutStep	w17		Decrements fade timer and triggers final fade-out, called after result processing	applied@3634e05
+func_83302B5C	Menu_MainLoopStep	w17		Main state?machine step returning continuation flag, driven by D_833032E4 menu state	applied@3634e05
+func_83302E3C	Menu_PollInputs	w17		Starts controller read and initializes menu input each frame	applied@3634e05
+func_83302E6C	Menu_RunLoop	w17		Runs the menu loop with fade?in/out handling, calling RenderFrame repeatedly	applied@3634e05
+func_83302F48	Menu_GetResult	w17		Returns the selected menu option, adjusting for special conditions and sticker station state	applied@3634e05
+func_83302FD8	Menu_InitializeAndRun	w17		Sets up graphics buffers, loads assets, creates stage, and starts the menu loop	applied@3634e05
+D_833032E4	gMenuStep	w17		Tracks the submenu step within the current menu state, modified by many functions like ProcessMenuInput	applied@3634e05
+D_833032E8	gMenuActiveData	w17		Holds the active menu structure returned by GetActiveMenu, used for rendering and input handling	applied@3634e05
+D_8330339C	gMenuAssetArchive	w17		Pointer to the BinArchive containing UI assets, passed to asset?creation functions during init	applied@3634e05
+D_833033A0	gMenuDirty	w17		Flag indicating the menu needs to refresh its items, set when selection changes or actions occur	applied@3634e05
+D_833033A8	gSwapTempPokemon	w17		Temporary storage for a Pokemon's data during swap operations, assigned before swapping	applied@3634e05
+D_83303438	gBackgroundFadeTimer	w17		Countdown used in DrawBackground to control fade speed, set to 4 on certain actions	applied@3634e05
+D_8330343C	gStickerStationConnected	w17		Reflects the presence of a sticker station, set by IsStickerStationConnected and used for menu enable/disable	applied@3634e05
+D_83303440	gFadeOutTimer	w17		Timer decremented in Menu_FadeOutStep to trigger final fade?out and stage transition	applied@3634e05
+D_83303444	gMenuInputLocked	w17		Prevents menu input processing while non?zero, cleared when selection changes	applied@3634e05
+D_83303288	gBackgroundAnimPhase	w17		Animation phase used for sine?based scaling of menu items, incremented each frame	applied@3634e05
+D_8330328C	gBackgroundAnimOffset	w17		Offset added to the animation phase for a second sine wave, used in DrawMenuScreen	applied@3634e05
+D_833032A0	gBackgroundStartX	w17		X coordinate where the background texture drawing begins	applied@3634e05
+D_833032A4	gBackgroundEndX	w17		X coordinate where the background texture drawing ends	applied@3634e05
+D_833032A8	gConfirmTimer	w17		Countdown for confirming actions in Menu_HandleConfirmTimer, reset to 4 on confirm	applied@3634e05
+D_833032AC	gInitialDelayCounter	w17		Static counter used in Menu_MainLoopStep to delay initial menu actions	applied@3634e05
+func_83400020	Gallery_Init	w17		Initializes gallery by loading GBS bank 2, reading block entries, and setting up camera list, indicating gallery setup.	applied@3634e05
+func_83400410	Gallery_SaveChanges	w17		Calls StickerStation_SetCommand and writes GBS block entries if changes detected, indicating it saves gallery/sticker changes.	applied@3634e05
+func_83400524	Gallery_Reset	w17		Zeroes D_83402EE0 and D_83403C00 and resets selection struct D_83407AF8, typical of a gallery reset routine.	applied@3634e05
+func_834006BC	GallerySelection_Init	w17		Sets unk_00 to 0 and unk_04 to -1, matching initialization of a selection structure used throughout the gallery code.	applied@3634e05
+func_83400704	CountDisplayableMonIndices	w17		Loops over an array of unk_D_83403C60 entries and increments count when IsMonIndexDisplayable matches the arg2 flag, counting displayable Pok?mon.	applied@3634e05
+func_834007B4	FindNthDisplayableMonIndex	w17		Searches forward through a circular buffer until a given number of non?displayable entries have been skipped, returning the resulting index.	applied@3634e05
+func_83400870	FindFirstUndisplayedMonIndex	w17		Scans the array for the first entry where IsMonIndexDisplayable returns 0 and returns its index, locating the first undisplayed Pok?mon.	applied@3634e05
+func_83401110	DrawPanelWithTextures	w17		Loads two IA8 textures, sets environment and primitive colors, and draws them side?by?side, typical of a UI panel drawing function.	applied@3634e05
+func_8340144C	DrawVerticalTextureStrip	w17		Iterates over a texture array, loading tiles with gDPLoadTextureTile and drawing vertical strips, clearly a vertical texture strip renderer.	applied@3634e05
+func_83401728	DrawRectBorder	w17		Draws four filled rectangles around a central area to create a border of thickness arg4, matching a rectangle?border drawing helper.	applied@3634e05
+func_83401D68	CamList_Init	w17		Allocates framebuffer images, creates Cam objects for each entry, and stores them in a struct with fields like unk_14 and unk_18, initializing a camera list.	applied@3634e05
+func_83401FD0	CamList_Update	w17		Finds an active camera index, updates it or falls back to the first displayable camera, handling per?frame camera list updates.	applied@3634e05
+func_834021C8	Selection_Reset	w17		Sets unk_00 and unk_04 of a selection struct to -1, resetting selection state used throughout the gallery code.	applied@3634e05
+func_83402340	Text_LoadMessageBanks	w17		Calls GetMessageBank with IDs 0x2C and 0x1A to load two message banks	applied@3634e05
+func_83402374	Text_GetMessageString_Bank2C	w17		Returns GetMessageString using D_83407BF0 which is set to GetMessageBank(0x2C)	applied@3634e05
+func_834023A4	Text_GetMessageString_Bank2C_Buffered	w17		Calls GetMessageString with a caller?provided buffer using D_83407BF0 (bank 0x2C)	applied@3634e05
+func_834023CC	Text_GetMessageString_Bank1A	w17		Calls GetMessageString using D_83407BF4 which is set to GetMessageBank(0x1A)	applied@3634e05
+func_834023FC	Text_GetMessageString_Bank1A_Buffered	w17		Calls GetMessageString with a buffer using D_83407BF4 (bank 0x1A)	applied@3634e05
+D_83407BF0	gMessageBank_2C	w17		Assigned the result of GetMessageBank(0x2C) in func_83402340	applied@3634e05
+D_83407BF4	gMessageBank_1A	w17		Assigned the result of GetMessageBank(0x1A) in func_83402340	applied@3634e05
+func_83402430	MenuPanel_DrawYesNo	w17		Draws a Yes/No panel with title strings 0x29 or 0x2A based on arg1	applied@3634e05
+unk_D_83402E4C	MenuPanelInfo	w17		Typedef for the struct describing a menu panel (fields x, y, width, height, etc.)	applied@3634e05
+func_83500020	ItemSelect_HandleInput	w17		ItemSelect_HandleInput processes controller input, updates selection indices, and returns a status code, as seen by the button checks and state changes in the function.	applied@3634e05
+func_8350057C	ItemSelect_Init	w17		ItemSelect_Init initializes the item selection UI, sets global state variables and creates UI assets, evident from the calls to AssetManager_Create and func_83401D68.	applied@3634e05
+D_83503FC0	gItemSelectState	w17		gItemSelectState is used as a state machine variable controlling phases (0?4) in func_83503770 and func_835039C8.	applied@3634e05
+D_83503FC8	gItemSelectContext	w17		gItemSelectContext is a struct holding UI state (selection indices, pointers) passed throughout the fragment, as seen in many functions taking &D_83503FC8.	applied@3634e05
+D_8350407C	gItemSelectMode	w17		gItemSelectMode determines behavior (e.g., rental mode when ==2) and selects strings in func_835034A8, showing its role as a mode flag.	applied@3634e05
+D_83504084	gStadiumModelArchive	w17		gStadiumModelArchive is a BinArchive* loaded with stadium models (ASSET_LOAD2) and later used for rendering.	applied@3634e05
+D_83504090	gSlotStatusFlags	w17		gSlotStatusFlags is a u16 array indexed per slot, set in func_8350057C and consulted in func_83501340 to draw status icons.	applied@3634e05
+func_83501BE4	ItemSelect_DrawGrid	w17		ItemSelect_DrawGrid iterates over all item slots, draws each cell border and status icons, as evident from the loops and calls to func_83501204 and func_83501340.	applied@3634e05
+func_83501FA8	ItemSelect_DrawHeader	w17		ItemSelect_DrawHeader renders the title text, navigation arrows, and selection counters, based on the drawing of sprites and text in the function.	applied@3634e05
+func_835024FC	DrawHighlightBars	w17		DrawHighlightBars renders colored bars based on the bitmask D_83504088, as seen in the loop that sets prim and env colors per index.	applied@3634e05
+func_83502F78	DrawResultScreen	w17		DrawResultScreen draws the result screen with animated textures and centered text, using scaling calculations and Text_Print.	applied@3634e05
+func_835035E0	UpdateFadeTimer	w17		UpdateFadeTimer updates two counters and returns a scaling factor for fade animations, as shown by the increment logic and cosine calculations.	applied@3634e05
+func_83503770	ItemSelect_MainDraw	w17		ItemSelect_MainDraw orchestrates the full UI rendering each frame, calling Stage_BeginDisplayList, drawing functions, and handling state transitions.	applied@3634e05
+func_83601314	DrawPulsatingBar	w17		Uses SINS to compute alpha and draws a bordered animated bar, similar to selection highlight, indicating it is a pulsating UI element.	applied@3634e05
+func_8360282C	GetSelectionPromptString	w17		Returns a message string based on the current selection message state and cursor position, used for on?screen prompts.	applied@3634e05
+func_836028E8	DrawSelectionPrompt	w17		Calls GetSelectionPromptString, draws a background box with func_834008DC and prints the text, indicating it renders the selection prompt.	applied@3634e05
+func_8360296C	DrawTeamSizeBar	w17		Displays a bar showing remaining team slots using D_836033B8?D_836033B4 and animates it with func_83601314.	applied@3634e05
+func_83602A8C	DrawCancelLabel	w17		Draws a small sprite (D_30099B8) and prints a string from func_83402374(0x3C), likely the ?Cancel? label.	applied@3634e05
+func_83602B98	UpdateStatBarAnimation	w17		Advances counters and returns a cosine?based scaling factor for stat bar animation, used by DrawStatBar.	applied@3634e05
+func_83602C14	RenderSelectionScreen	w17		Per?frame routine that draws background gradient, item list, bars, cursor, arrows and prompts, then advances the stage.	applied@3634e05
+func_83602D98	HandleSelectionConfirmCancel	w17		Checks A and B button presses to set selection state to confirm (3) or cancel (1) and triggers fade effects.	applied@3634e05
+func_83602E14	UpdateSelectionStateMachine	w17		Implements the main state machine for the selection screen, handling fades, input processing and transitions.	applied@3634e05
+func_83602F1C	PollControllerAndMenuInput	w17		Calls Cont_StartReadInputs, Cont_ReadInputs and MenuInput_Init each frame to update controller state.	applied@3634e05
+func_83602F4C	RunSelectionScreenLoop	w17		Initialises fade, then repeatedly polls input, updates UI via RenderSelectionScreen and loops until the state machine ends.	applied@3634e05
+func_83602FF4	FinalizeSelectionAndCleanup	w17		After the loop, adds selected monsters to the team if needed, updates data structures and returns a status code.	applied@3634e05
+func_836030A8	SelectionScreen_Main	w17		Entry point that loads assets, creates the stage, initialises the selection screen and runs the main loop.	applied@3634e05
+D_836032F4	gSelectionMessageState	w17		Used to select which prompt string to show and set to 0,1,2 based on full team or other errors.	applied@3634e05
+D_836033C4	gCursorCanMoveUp	w17		Set in UpdateCursorEdgeFlags based on func_83402124 result, indicating whether the cursor can move upward.	applied@3634e05
+D_837004C0	gFragment46_State	w17		used as the fragment's internal state machine variable in func_83700174	applied@3634e05
+D_837004C4	gStadiumModelsArchive	w17		holds the BinArchive loaded with stadium_models for rendering	applied@3634e05
+D_837004C8	gFragment46_Stage	w17		receives the Stage created in func_837002EC and is passed to Stage_Set	applied@3634e05
+D_837004B0	gFragment46_Camera	w17		assigned the result of Cam_Create and later updated in Cam_Update	applied@3634e05
+D_837004B4	gFragment46_FrameCounter	w17		incremented each frame in func_83700098 to track elapsed frames	applied@3634e05
+D_837004B8	gFragment46_FadeDelay	w17		counted down in func_83700174 before advancing from state 0	applied@3634e05
+func_83700020	Fragment46_InitCamera	w17		initialises the camera and related assets before the main loop	applied@3634e05
+func_83700098	Fragment46_DrawFrame	w17		begins the display list, draws camera image if ready, advances stage, and updates counter	applied@3634e05
+func_83700114	Fragment46_CheckStartInput	w17		returns 1 when A, B, or C?Down is pressed and no other camera is active	applied@3634e05
+func_83700174	Fragment46_RunStateMachine	w17		implements the fragment's fade?in, wait, input, and fade?out states	applied@3634e05
+func_8370023C	Fragment46_ReadInputs	w17		starts and reads controller inputs and initialises menu input handling	applied@3634e05
+func_8370026C	Fragment46_MainLoop	w17		updates the camera until ready, fades in, then loops reading inputs and drawing frames until state machine ends	applied@3634e05
+func_837002EC	Fragment46_Entry	w17		sets up graphics buffers, loads assets, creates the stage, and runs the fragment's main loop	applied@3634e05
+unk_func_80031270	Camera	w17		type used for camera objects created by Cam_Create	applied@3634e05
+func_83800EFC	SnapSelect_ConfigureGraphics	w17		Invoked early in SnapSelect_Init after UI assets, suggesting it sets up graphics state for snap?select.	applied@3634e05
+func_8380252C	SnapSelect_InitBackground	w17		Passed width/height values and D_8380565C pointer, typical for initializing background data.	applied@3634e05
+func_834028C4	SnapSelect_SetupDisplay	w17		Called after background init in SnapSelect_Init, likely prepares the display list for snap?select.	applied@3634e05
+func_838022C8	SnapSelect_UpdateInputState	w17		Executed each frame before UI updates, implying it processes input state for snap?select.	applied@3634e05
+func_838043F8	SnapSelect_UpdateCameraState	w17		Called each frame after input update, likely updates the camera for snap?select view.	applied@3634e05
+func_834028D0	SnapSelect_UpdateUIState	w17		Invoked each frame prior to Stage_Advance, suggesting it updates snap?select UI elements.	applied@3634e05
+func_80023D60	SnapSelect_SetCameraMode	w17		Used when D_83805664 is 0?3, typical values for selecting a camera mode in snap?select.	applied@3634e05
+func_838029D4	SnapSelect_LoadModeData	w17		Receives a mode index and a pointer to a struct, indicating it loads data for the chosen snap?select mode.	applied@3634e05
+func_83402DC8	SnapSelect_GetResultCode	w17		Returns an int stored in D_83805660 and later examined for result handling, so it obtains the result code.	applied@3634e05
+func_83801190	SnapSelect_ApplySelection	w17		Called with the current mode index to apply the player's selection in several states.	applied@3634e05
+func_8380248C	SnapSelect_GetUserChoice	w17		Returns the selected mode index during state 1, used to drive subsequent snap?select logic.	applied@3634e05
+D_8380565C	gSnapSelectBgData	w17		Pointer to a struct used for background initialization and later copied, representing snap?select background data.	applied@3634e05
+func_83800900	RenderPlayerInfoPanel	w17		Used as a display?list callback that selects texture segments based on the current player index and draws the player info panel.	applied@3634e05
+func_83800AA0	UpdateIconPosition	w17		Updates the X/Y position of a player icon each frame using sine/cosine animation of its angle field.	applied@3634e05
+func_83800BA8	AnimateIconMovement	w17		Animates the depth (Z) and horizontal offset of a player icon each frame based on a sine wave of its rotation angle.	applied@3634e05
+func_83800CB0	LoadPlayerData	w17		Loads and decodes player data from controller memory into the player?info structures for all four players.	applied@3634e05
+func_83800D8C	AssignPlayerIconTexture	w17		Assigns the correct player?icon texture pointer according to each player's type field in the loaded data.	applied@3634e05
+func_8380101C	CreatePlayerIconNodes	w17		Creates child graph nodes for each player icon, positions them and adds them to the root list.	applied@3634e05
+func_83801248	AnimateIconEntry	w17		Animates the entry of all player icons using predefined position tables and advances the entry timer until the state changes.	applied@3634e05
+func_83801398	SelectPreviousPlayer	w17		When the cursor is on the right?most slots, cycles backward to find the previous active player and updates the selection index.	applied@3634e05
+func_8380142C	SelectAlternatePlayer	w17		Toggles the selection between the two paired slots in the left half of the screen based on current index.	applied@3634e05
+func_838014B8	SelectPreviousSlot	w17		Moves the selection cursor left to the nearest previous active player slot when not at the left edge.	applied@3634e05
+func_83801554	SelectNextSlot	w17		Moves the selection cursor right to the next active player slot, or to the special slot 5 when at the far right.	applied@3634e05
+func_838015F4	HandlePlayerSelectInput	w17		Processes A/B/D?pad inputs, updates the selection state machine, plays sound effects and animates all icons each frame.	applied@3634e05
+func_83801D64	PlayerSelectStateUpdate	w17		Dispatches the player?select state machine each frame by calling the appropriate handler based on the current state variable.	applied@3634e05
+func_838024C0	SnapSelect_CopyStateToInfo	w17		Copies fields from the global SnapSelect state (gSnapSelectState) into the provided struct, as seen by the assignments from D_838067F0 to arg0.	applied@3634e05
+func_83802548	SnapSelect_LoadPokemonIndices	w17		Loads Pokemon indices from a GBS block into the 003C array of the SnapSelect state, using CreateGbsBlock and GbsBlock_ReadPokemon.	applied@3634e05
+func_83802660	SnapSelect_ApplyInputModifiers	w17		Applies special handling for input type 0x19 when the current mode is <4 and a certain condition is met, setting a flag in the input struct.	applied@3634e05
+func_83802700	SnapSelect_FillPokemonInfo	w17		Populates a SnapSelect entry list with Pokemon data read from a GBS block or a fallback data structure, then sets various metadata fields.	applied@3634e05
+func_83802C0C	SnapSelect_UpdateTimer	w17		Updates the internal timer (unk_0014) and transitions the SnapSelect state between phases based on timer values.	applied@3634e05
+func_83802C74	SnapSelect_AdvanceNode	w17		Advances a linked?list node in the SnapSelect circular buffer by a given number of steps.	applied@3634e05
+func_83802C98	SnapSelect_HandleConfirm	w17		Handles the A?button press: if the selected entry is valid it sets state to 7, converts camera input and may set a special flag.	applied@3634e05
+func_83802D64	SnapSelect_HandleCancel	w17		Handles the B?button press by setting the SnapSelect state to 8 and playing a cancel sound.	applied@3634e05
+func_83802D98	SnapSelect_NavigateNext	w17		Handles the R?button press: moves the selection forward to the next non?empty slot in the circular buffer.	applied@3634e05
+func_83802EE8	SnapSelect_NavigatePrev	w17		Handles the L?button press: moves the selection backward to the previous non?empty slot in the circular buffer.	applied@3634e05
+func_838032C8	SnapSelect_ProcessInput	w17		Main input dispatcher: checks controller buttons (A, B, R, L, D?pad) and calls the appropriate SnapSelect handler functions.	applied@3634e05

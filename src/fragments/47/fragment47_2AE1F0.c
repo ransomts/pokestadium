@@ -66,7 +66,7 @@ static Gfx D_83804DD0[] = {
 };
 static u32 D_83804EB8[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_83804D10, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_83800900, D_83804DD0, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, RenderPlayerInfoPanel, D_83804DD0, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_83804EF0[] = {
     VTX(-50, 68, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 51, 0, 0, 544, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -99,7 +99,7 @@ static Gfx D_83804FF0[] = {
 };
 static u32 D_83805118[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_83804EF0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_83800900, D_83804FF0, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, RenderPlayerInfoPanel, D_83804FF0, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_83805150[] = {
     VTX(-50, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 48, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -132,7 +132,7 @@ static Gfx D_83805250[] = {
 };
 static u32 D_83805378[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_83805150, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_83800900, D_83805250, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, RenderPlayerInfoPanel, D_83805250, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_838053B0[] = {
     VTX(-36, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -152,7 +152,7 @@ static Gfx D_838053F0[] = {
 };
 static u32 D_83805458[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_838053B0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_83800900, D_838053F0, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, RenderPlayerInfoPanel, D_838053F0, 0x06000000, 0x01000000,
 };
 static unk_D_8380548C D_8380548C[] = {
     {
@@ -221,7 +221,7 @@ static s16 D_838054F8[] = { 0x14, 0x3C, 0x5F, 0x78, 0x82, 0x87, 0x82, 0x78, 0x6E
 static s16 D_83805510[] = { 0x46, 0x32, 0x28, 0x1E, 0x19, 0x14, 0x14, 0x14, 0x19, 0x1E, 0x28, 0x32 };
 static s16 D_83805528[] = { 0x64, 0x6E, 0x82, 0x96, 0xA0, 0xA0, 0x78, 0x50, 0x32, 0x1E, 0xA, 5 };
 
-s32 func_83800900(s32 arg0, GraphNode* arg1) {
+s32 RenderPlayerInfoPanel(s32 arg0, GraphNode* arg1) {
     u8* var_a0;
     u8* var_a3;
 
@@ -272,7 +272,7 @@ s32 func_83800900(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_83800AA0(s32 arg0, f32 arg1) {
+void UpdateIconPosition(s32 arg0, f32 arg1) {
     s16 var_a2;
     f32 var_fa0;
 
@@ -293,7 +293,7 @@ void func_83800AA0(s32 arg0, f32 arg1) {
     D_8380548C[arg0].unk_0A += var_a2 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
 
-void func_83800BA8(s32 arg0, f32 arg1) {
+void AnimateIconMovement(s32 arg0, f32 arg1) {
     f32 var_fv0;
     s16 var_v0;
 
@@ -312,7 +312,7 @@ void func_83800BA8(s32 arg0, f32 arg1) {
     D_8380548C[arg0].unk_08 += var_v0;
 }
 
-void func_83800CB0(void) {
+void LoadPlayerData(void) {
     s32 i;
     u8 temp_s3 = Cont_GetControllerBits();
     unk_D_800AC910_040 sp48;
@@ -328,7 +328,7 @@ void func_83800CB0(void) {
     }
 }
 
-void func_83800D8C(void) {
+void AssignPlayerIconTexture(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -366,7 +366,7 @@ void func_83800D8C(void) {
     }
 }
 
-void func_83800EFC(void) {
+void SnapSelect_ConfigureGraphics(void) {
     MemoryBlock* temp_s1;
     s32 i;
     unk_D_86002F58_004_000_004* temp_v0_2;
@@ -391,11 +391,11 @@ void func_83800EFC(void) {
         D_83805698[0][i].unk_000.unk_14 = i;
     }
 
-    func_83800CB0();
-    func_83800D8C();
+    LoadPlayerData();
+    AssignPlayerIconTexture();
 }
 
-void func_8380101C(void) {
+void CreatePlayerIconNodes(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
@@ -411,9 +411,9 @@ void func_8380101C(void) {
     }
 }
 
-s32 func_83801190(s32 arg0) {
+s32 SnapSelect_ApplySelection(s32 arg0) {
     if (D_838067D8 == 0) {
-        func_8380101C();
+        CreatePlayerIconNodes();
         if (arg0 < 0) {
             for (D_838067E0 = 0; D_838067E0 < 5; D_838067E0++) {
                 if (D_8380548C[D_838067E0].unk_00 != 0) {
@@ -430,7 +430,7 @@ s32 func_83801190(s32 arg0) {
     return 0;
 }
 
-void func_83801248(void) {
+void AnimateIconEntry(void) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
@@ -447,7 +447,7 @@ void func_83801248(void) {
     }
 }
 
-void func_83801398(void) {
+void SelectPreviousPlayer(void) {
     s32 i;
     s32 var_a0;
     s32 var_v1;
@@ -472,7 +472,7 @@ void func_83801398(void) {
     }
 }
 
-void func_8380142C(void) {
+void SelectAlternatePlayer(void) {
     s32 var_v0;
     s32 i;
 
@@ -490,7 +490,7 @@ void func_8380142C(void) {
     }
 }
 
-void func_838014B8(void) {
+void SelectPreviousSlot(void) {
     s32 i;
 
     if ((D_838067E0 > 0) && (D_838067E0 < 4)) {
@@ -507,7 +507,7 @@ void func_838014B8(void) {
     }
 }
 
-void func_83801554(void) {
+void SelectNextSlot(void) {
     s32 i;
 
     if (D_838067E0 < 3) {
@@ -524,7 +524,7 @@ void func_83801554(void) {
     }
 }
 
-void func_838015F4(void) {
+void HandlePlayerSelectInput(void) {
     s32 i;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -539,18 +539,18 @@ void func_838015F4(void) {
         D_838067D8 = 5;
         PlaySoundEffect(3);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        func_83801398();
+        SelectPreviousPlayer();
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        func_8380142C();
+        SelectAlternatePlayer();
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {
-        func_838014B8();
+        SelectPreviousSlot();
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
-        func_83801554();
+        SelectNextSlot();
     }
 
     for (i = 0; i < 6; i++) {
-        func_83800AA0(i, 1.0f);
-        func_83800BA8(i, 1.0f);
+        UpdateIconPosition(i, 1.0f);
+        AnimateIconMovement(i, 1.0f);
     }
 }
 
@@ -571,11 +571,11 @@ void func_83801744(void) {
     } else {
         for (i = 0; i < 6; i++) {
             if (i == D_838067E0) {
-                func_83800AA0(i, 1.0f);
-                func_83800BA8(i, 1.0f);
+                UpdateIconPosition(i, 1.0f);
+                AnimateIconMovement(i, 1.0f);
             } else {
-                func_83800AA0(i, D_838067DC / 12.0f);
-                func_83800BA8(i, D_838067DC / 12.0f);
+                UpdateIconPosition(i, D_838067DC / 12.0f);
+                AnimateIconMovement(i, D_838067DC / 12.0f);
             }
             D_838067E4 = ((((D_838067DC * 0x32) + 0x32) / 12) + 6) & 0xFFFE;
             D_838067E6 = ((((D_838067DC * 0x24) + 0x24) / 12) + 4) & 0xFFFE;
@@ -623,8 +623,8 @@ void func_83801AE0(void) {
         D_838067D8 = 0;
     } else {
         for (i = 0; i < 6; i++) {
-            func_83800AA0(i, D_838067DC / 12.0f);
-            func_83800BA8(i, D_838067DC / 12.0f);
+            UpdateIconPosition(i, D_838067DC / 12.0f);
+            AnimateIconMovement(i, D_838067DC / 12.0f);
         }
 
         D_838067E4 = ((((D_838067DC * 0x32) + 0x32) / 12) + 6) & (u16)~1;
@@ -643,20 +643,20 @@ void func_83801C94(void) {
     }
 
     func_83402CE4(var_v0, gPlayer1Controller);
-    if (func_83402DC8(var_v0) != -1) {
+    if (SnapSelect_GetResultCode(var_v0) != -1) {
         D_838067D8 = 3;
     }
 
     for (i = 0; i < 6; i++) {
-        func_83800AA0(i, 1.0f);
-        func_83800BA8(i, 1.0f);
+        UpdateIconPosition(i, 1.0f);
+        AnimateIconMovement(i, 1.0f);
     }
 }
 
-void func_83801D64(void) {
+void PlayerSelectStateUpdate(void) {
     switch (D_838067D8) {
         case 1:
-            func_83801248();
+            AnimateIconEntry();
             break;
 
         case 2:
@@ -664,7 +664,7 @@ void func_83801D64(void) {
             break;
 
         case 3:
-            func_838015F4();
+            HandlePlayerSelectInput();
             break;
 
         case 4:
@@ -741,18 +741,18 @@ void func_8380217C(void) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetFont(0x10, 0);
     if (D_838067E0 != 5) {
-        temp_v0 = func_83402374(0x35);
+        temp_v0 = Text_GetMessageString_Bank2C(0x35);
         Text_Print(0x140 - (MeasureTextWidth(0, 0, temp_v0) / 2), 0x198, temp_v0);
     }
     Text_SetFont(8, 0);
-    temp_v0 = func_83402374(0x33);
+    temp_v0 = Text_GetMessageString_Bank2C(0x33);
     Text_Print(0xC0 - (MeasureTextWidth(0, 0, temp_v0) / 2), 0x102, temp_v0);
-    temp_v0 = func_83402374(0x34);
+    temp_v0 = Text_GetMessageString_Bank2C(0x34);
     Text_Print(0x1C0 - (MeasureTextWidth(0, 0, temp_v0) / 2), 0x102, temp_v0);
     Text_SetupDL();
 }
 
-void func_838022C8(s32 arg0) {
+void SnapSelect_UpdateInputState(s32 arg0) {
     UNUSED s32 pad;
     s16 sp3A;
     s16 temp_s0;
@@ -782,7 +782,7 @@ void func_838022C8(s32 arg0) {
     }
 }
 
-s32 func_8380248C(void) {
+s32 SnapSelect_GetUserChoice(void) {
     if (D_838067D8 == 0) {
         return D_838067E0;
     }

@@ -12,16 +12,16 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-s32 func_82F06E50(s32 arg0, GraphNode* arg1);
+s32 RenderPlayerSlot(s32 arg0, GraphNode* arg1);
 
 static unk_D_82F20A40 D_82F20A40;
-static unk_D_82F20A88 D_82F20A88[4];
-static GraphNode* D_82F210C8;
-static GraphNode* D_82F210CC;
-static s16 D_82F210D0;
-static s16 D_82F210D2;
-static s16 D_82F210D4;
-static s16 D_82F210D8[2];
+static unk_D_82F20A88 gPlayerSlotInfo[4];
+static GraphNode* gMenuRootNode;
+static GraphNode* gMenuOverlayNode;
+static s16 gActiveSlotCount;
+static s16 gSelectedSlotIndex;
+static s16 gSubMenuSelection;
+static s16 gSelectedPlayerIndices[2];
 
 static Vtx D_82F13CB0[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -51,7 +51,7 @@ static Gfx D_82F13D70[] = {
 
 static u32 D_82F13E58[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82F13CB0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_82F06E50, D_82F13D70, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, RenderPlayerSlot, D_82F13D70, 0x06000000, 0x01000000,
 };
 
 static u32 D_82F13E8C[] = {
@@ -114,16 +114,16 @@ static u8* D_82F13F2C[] = {
     D_30303B0,
 };
 
-s32 func_82F06E50(s32 arg0, GraphNode* arg1) {
+s32 RenderPlayerSlot(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         s32 idx = gDefaultGraphRoot->unk_000.unk_14;
 
         gDPPipeSync(gDisplayListHead++);
         gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
 
-        if (D_82F20A88[idx].unk_024 != NULL) {
-            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_82F20A88[idx].unk_024));
-            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_82F13F2C[D_82F20A88[idx].unk_002]));
+        if (gPlayerSlotInfo[idx].unk_024 != NULL) {
+            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gPlayerSlotInfo[idx].unk_024));
+            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_82F13F2C[gPlayerSlotInfo[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
         func_80015684();
@@ -131,7 +131,7 @@ s32 func_82F06E50(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s16 func_82F06F9C(unk_D_82F14450* arg0) {
+s16 GetSlotTypeFromPlayerInfo(unk_D_82F14450* arg0) {
     s16 ret;
 
     switch (arg0->unk_00) {
@@ -161,12 +161,12 @@ s16 func_82F06F9C(unk_D_82F14450* arg0) {
     return ret;
 }
 
-void func_82F07004(s16 arg0) {
+void InitPlayerSlots(s16 arg0) {
     s16 temp_v0;
     unk_D_82F20A88* var_s0;
     s32 i;
 
-    var_s0 = &D_82F20A88[0];
+    var_s0 = &gPlayerSlotInfo[0];
     for (i = 0; i < 4; i++, var_s0++) {
         var_s0->unk_000 = 0;
         var_s0->unk_002 = -1;
@@ -174,18 +174,18 @@ void func_82F07004(s16 arg0) {
         var_s0->unk_024 = NULL;
     }
 
-    D_82F210D0 = 1;
+    gActiveSlotCount = 1;
 
     for (i = 0; i < 4; i++) {
-        temp_v0 = func_82F06F9C(&gPlayerInfo[i]);
+        temp_v0 = GetSlotTypeFromPlayerInfo(&gPlayerInfo[i]);
         if (temp_v0 == -1) {
             continue;
         }
 
-        if (i != D_82F210D8[0]) {
-            var_s0 = &D_82F20A88[D_82F210D0++];
+        if (i != gSelectedPlayerIndices[0]) {
+            var_s0 = &gPlayerSlotInfo[gActiveSlotCount++];
         } else {
-            var_s0 = &D_82F20A88[0];
+            var_s0 = &gPlayerSlotInfo[0];
         }
 
         var_s0->unk_002 = i;
@@ -221,18 +221,18 @@ void func_82F07004(s16 arg0) {
         }
     }
 
-    var_s0 = &D_82F20A88[0];
-    for (i = 0; i < D_82F210D0; i++, var_s0++) {
+    var_s0 = &gPlayerSlotInfo[0];
+    for (i = 0; i < gActiveSlotCount; i++, var_s0++) {
         Fragment2_1GraphNode* ptr = &var_s0->unk_028;
 
         Graph_AddToRootList0(ptr);
-        GraphNode_InitChild(ptr, 0, 0, D_82F210CC);
+        GraphNode_InitChild(ptr, 0, 0, gMenuOverlayNode);
         ptr->unk_000.unk_14 = i;
         ptr->unk_000.unk_01 &= ~1;
     }
 }
 
-void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
+void SetSlotState(unk_D_82F20A88* arg0, s16 arg1) {
     Fragment2_1GraphNode* temp_v0 = &arg0->unk_028;
 
     arg0->unk_000 = arg1;
@@ -243,7 +243,7 @@ void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
             break;
 
         case 1:
-            if ((((s32)arg0 - (s32)D_82F20A88) / 400) == 0) {
+            if ((((s32)arg0 - (s32)gPlayerSlotInfo) / 400) == 0) {
                 arg0->unk_006 = 0xF8;
                 arg0->unk_008 = 0xB8;
             }
@@ -266,7 +266,7 @@ void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
             break;
 
         case 2:
-            arg0->unk_006 = ((((s32)arg0 - (s32)D_82F20A88) / 400) * 0x88) + 0x30;
+            arg0->unk_006 = ((((s32)arg0 - (s32)gPlayerSlotInfo) / 400) * 0x88) + 0x30;
             arg0->unk_008 = 0x17C;
             arg0->unk_00A = arg0->unk_006;
             arg0->unk_010 = 0xA;
@@ -290,7 +290,7 @@ void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
             arg0->unk_010 = 0;
             arg0->unk_00A = arg0->unk_006;
 
-            if ((((s32)arg0 - (s32)D_82F20A88) / 400) & 1) {
+            if ((((s32)arg0 - (s32)gPlayerSlotInfo) / 400) & 1) {
                 arg0->unk_00C = -0x8000;
             } else {
                 arg0->unk_00C = 0;
@@ -301,7 +301,7 @@ void func_82F07214(unk_D_82F20A88* arg0, s16 arg1) {
             break;
 
         case 3:
-            arg0->unk_006 = ((((s32)arg0 - (s32)D_82F20A88) / 400) * 0x88) + 0x30;
+            arg0->unk_006 = ((((s32)arg0 - (s32)gPlayerSlotInfo) / 400) * 0x88) + 0x30;
             arg0->unk_008 = 0x17C;
             arg0->unk_010 = 0xA;
             arg0->unk_00C = 0;
@@ -325,20 +325,20 @@ void func_82F07440(unk_D_82F20A88* arg0) {
     arg0->unk_010--;
     arg0->unk_018 = (0xA - arg0->unk_010) / 10.0f;
     if (arg0->unk_010 <= 0) {
-        func_82F07214(arg0, 4);
+        SetSlotState(arg0, 4);
     }
 }
 
 void func_82F07498(unk_D_82F20A88* arg0) {
     static s16 D_82F13F38[] = { 0x5C0, 0x680, 0x580 };
 
-    s32 temp_lo = arg0 - &D_82F20A88[0];
+    s32 temp_lo = arg0 - &gPlayerSlotInfo[0];
     s16 var_a2;
     s16 var_a3;
     f32 var_fv0;
     f32 var_fv1;
 
-    if (temp_lo - 1 == D_82F210D2) {
+    if (temp_lo - 1 == gSelectedSlotIndex) {
         var_fv0 = 1.5f;
         var_a2 = D_82F13F38[temp_lo - 1] * 2;
         var_fv1 = 0.06f;
@@ -369,8 +369,8 @@ void func_82F0763C(unk_D_82F20A88* arg0) {
     arg0->unk_006 = 0x208 - (((0x208 - arg0->unk_00A) * arg0->unk_010) / 10);
     arg0->unk_008 = 0xB8 - ((arg0->unk_010 * -0xC4) / 10);
     if (arg0->unk_010 <= 0) {
-        func_82F07214(arg0, 1);
-        D_82F210D8[1] = arg0->unk_002;
+        SetSlotState(arg0, 1);
+        gSelectedPlayerIndices[1] = arg0->unk_002;
     }
 }
 
@@ -378,8 +378,8 @@ void func_82F07728(unk_D_82F20A88* arg0) {
     arg0->unk_010--;
     arg0->unk_014 = (arg0->unk_010 * 0xFF) / 10;
     if (arg0->unk_010 <= 0) {
-        func_82F07214(arg0, 0);
-        D_82F210D8[1] = -1;
+        SetSlotState(arg0, 0);
+        gSelectedPlayerIndices[1] = -1;
     }
 }
 
@@ -388,15 +388,15 @@ void func_82F07784(unk_D_82F20A88* arg0) {
     arg0->unk_010--;
     arg0->unk_018 = arg0->unk_010 / 10.0f;
     if (arg0->unk_010 <= 0) {
-        func_82F07214(arg0, 0);
+        SetSlotState(arg0, 0);
     }
 }
 
-void func_82F077E0(void) {
+void UpdateAllSlots(void) {
     s32 i;
-    unk_D_82F20A88* var_s0 = &D_82F20A88[0];
+    unk_D_82F20A88* var_s0 = &gPlayerSlotInfo[0];
 
-    for (i = 0; i < D_82F210D0; i++, var_s0++) {
+    for (i = 0; i < gActiveSlotCount; i++, var_s0++) {
         switch (var_s0->unk_000) {
             case 0:
             case 1:
@@ -467,16 +467,16 @@ void func_82F07958(void) {
     ptr->unk_36.unk_04 = 0;
     ptr->unk_36.unk_06 = 0;
 
-    D_82F210D8[1] = -1;
-    D_82F210D2 = -1;
+    gSelectedPlayerIndices[1] = -1;
+    gSelectedSlotIndex = -1;
 
-    if (D_82F20A88[0].unk_004 == 0) {
-        D_82F210D2 = 0;
+    if (gPlayerSlotInfo[0].unk_004 == 0) {
+        gSelectedSlotIndex = 0;
     }
 }
 
 s32 func_82F07A54(s16 arg0) {
-    return D_82F210D8[arg0];
+    return gSelectedPlayerIndices[arg0];
 }
 
 s32 func_82F07A74(void) {
@@ -511,47 +511,47 @@ void func_82F07A80(unk_D_82F20A40* arg0, s32 arg1) {
     if (arg0->unk_02 <= 0) {
         arg0->unk_00 = 2;
         arg0->unk_02 = 0;
-        func_82F07214(D_82F20A88, 1);
+        SetSlotState(gPlayerSlotInfo, 1);
 
         for (i = 0; i < 3; i++) {
-            if (D_82F20A88[i + 1].unk_002 != -1) {
-                func_82F07214(&D_82F20A88[i + 1], 2);
+            if (gPlayerSlotInfo[i + 1].unk_002 != -1) {
+                SetSlotState(&gPlayerSlotInfo[i + 1], 2);
             }
         }
     }
 }
 
-void func_82F07DEC(unk_D_82F20A40* arg0) {
+void HandleMenuInput(unk_D_82F20A40* arg0) {
     s32 i;
     s16 tmp;
 
     MathUtil_Random16();
 
-    tmp = D_82F210D2;
+    tmp = gSelectedSlotIndex;
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT) && (D_82F210D2 != -1) && (D_82F210D2 > 0)) {
-        D_82F210D2 -= 1;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT) && (gSelectedSlotIndex != -1) && (gSelectedSlotIndex > 0)) {
+        gSelectedSlotIndex -= 1;
     }
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT) && (D_82F210D2 != -1) && (D_82F210D2 < (D_82F210D0 - 2))) {
-        D_82F210D2 += 1;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT) && (gSelectedSlotIndex != -1) && (gSelectedSlotIndex < (gActiveSlotCount - 2))) {
+        gSelectedSlotIndex += 1;
     }
 
-    if (D_82F210D2 != tmp) {
+    if (gSelectedSlotIndex != tmp) {
         PlaySoundEffect(0x25);
     }
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A) && (D_82F210D2 != -1)) {
-        if (D_82F20A88[D_82F210D2 + 1].unk_004 == 0) {
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A) && (gSelectedSlotIndex != -1)) {
+        if (gPlayerSlotInfo[gSelectedSlotIndex + 1].unk_004 == 0) {
             arg0->unk_00 = 6;
             arg0->unk_02 = 0xA;
 
             for (i = 0; i < 3; i++) {
-                if (D_82F20A88[i + 1].unk_002 != -1) {
-                    if (i != D_82F210D2) {
-                        func_82F07214(&D_82F20A88[i + 1], 6);
+                if (gPlayerSlotInfo[i + 1].unk_002 != -1) {
+                    if (i != gSelectedSlotIndex) {
+                        SetSlotState(&gPlayerSlotInfo[i + 1], 6);
                     } else {
-                        func_82F07214(&D_82F20A88[i + 1], 3);
+                        SetSlotState(&gPlayerSlotInfo[i + 1], 3);
                     }
                 }
             }
@@ -559,7 +559,7 @@ void func_82F07DEC(unk_D_82F20A40* arg0) {
         } else {
             arg0->unk_00 = 3;
             arg0->unk_02 = 0xA;
-            arg0->unk_04 = D_82F20A88[D_82F210D2 + 1].unk_004;
+            arg0->unk_04 = gPlayerSlotInfo[gSelectedSlotIndex + 1].unk_004;
 
             switch (arg0->unk_04) {
                 case 1:
@@ -593,7 +593,7 @@ void func_82F07DEC(unk_D_82F20A40* arg0) {
         arg0->unk_02 = 0xA;
 
         for (i = 0; i < 4; i++) {
-            func_82F07214(&D_82F20A88[i], 0);
+            SetSlotState(&gPlayerSlotInfo[i], 0);
         }
 
         PlaySoundEffect(3);
@@ -682,7 +682,7 @@ void func_82F0856C(unk_D_82F20A40* arg0) {
     if (arg0->unk_02 <= 0) {
         arg0->unk_00 = 8;
         arg0->unk_02 = 0;
-        D_82F210D4 = 0;
+        gSubMenuSelection = 0;
     }
 }
 
@@ -691,17 +691,17 @@ void func_82F0866C(unk_D_82F20A40* arg0) {
     s32 var_a2;
 
     var_a2 = 0;
-    tmp = D_82F210D4;
+    tmp = gSubMenuSelection;
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (D_82F210D4 > 0)) {
-        D_82F210D4 -= 1;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (gSubMenuSelection > 0)) {
+        gSubMenuSelection -= 1;
     }
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (D_82F210D4 <= 0)) {
-        D_82F210D4 += 1;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (gSubMenuSelection <= 0)) {
+        gSubMenuSelection += 1;
     }
 
-    if (D_82F210D4 != tmp) {
+    if (gSubMenuSelection != tmp) {
         PlaySoundEffect(1);
     }
 
@@ -709,20 +709,20 @@ void func_82F0866C(unk_D_82F20A40* arg0) {
         var_a2 = 1;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         var_a2 = 1;
-        D_82F210D4 = 1;
+        gSubMenuSelection = 1;
     }
 
     if (var_a2 != 0) {
-        if (D_82F210D4 == 0) {
+        if (gSubMenuSelection == 0) {
             arg0->unk_00 = 0xB;
             arg0->unk_02 = 0xA;
-            func_82F07214(D_82F20A88, 0);
-            func_82F07214(&D_82F20A88[D_82F210D2 + 1], 0);
+            SetSlotState(gPlayerSlotInfo, 0);
+            SetSlotState(&gPlayerSlotInfo[gSelectedSlotIndex + 1], 0);
             PlaySoundEffect(0x1B);
         } else {
             arg0->unk_00 = 9;
             arg0->unk_02 = 0xA;
-            func_82F07214(&D_82F20A88[D_82F210D2 + 1], 5);
+            SetSlotState(&gPlayerSlotInfo[gSelectedSlotIndex + 1], 5);
             PlaySoundEffect(3);
         }
     }
@@ -746,7 +746,7 @@ void func_82F088F8(unk_D_82F20A40* arg0) {
 
     func_82F087F8(&arg0->unk_2E, arg0->unk_02, 0xA);
 
-    if ((arg0->unk_02 <= 0) && (D_82F210D8[1] == -1)) {
+    if ((arg0->unk_02 <= 0) && (gSelectedPlayerIndices[1] == -1)) {
         arg0->unk_00 = 0xA;
         arg0->unk_02 = 0xA;
     }
@@ -792,7 +792,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
             Color_RGB8 sp5C = { 0x1E, 0x1E, 0x64 };
             Color_RGB8 sp58 = { 0x64, 0x64, 0xC8 };
 
-            if (D_82F210D8[i] == -1) {
+            if (gSelectedPlayerIndices[i] == -1) {
                 var_v0 = &sp58;
             } else {
                 var_v0 = &sp5C;
@@ -809,9 +809,9 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
         Text_Print(temp_s4->unk_00 + 0x5A, temp_s4->unk_02 + 8, GetMessageString(NULL, 0, D_82F13B70, 1));
 
         for (i = 0; i < 2; i++) {
-            if (D_82F210D8[i] != -1) {
+            if (gSelectedPlayerIndices[i] != -1) {
                 if (i == 0) {
-                    if (D_82F20A88[0].unk_004 == 0) {
+                    if (gPlayerSlotInfo[0].unk_004 == 0) {
                         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                     } else {
                         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0x80);
@@ -820,7 +820,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
                     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 }
 
-                ptr = &gPlayerInfo[D_82F210D8[i]];
+                ptr = &gPlayerInfo[gSelectedPlayerIndices[i]];
                 if (ptr) {}
 
                 Text_SetFont(0x10, 0);
@@ -852,13 +852,13 @@ void func_82F08EB4(unk_D_82F20A40* arg0) {
             continue;
         }
 
-        if (D_82F20A88[i + 1].unk_002 == -1) {
+        if (gPlayerSlotInfo[i + 1].unk_002 == -1) {
             var_v1 = 0x80;
         } else {
             var_v1 = 0xFF;
         }
 
-        if (D_82F20A88[i + 1].unk_004 == 0) {
+        if (gPlayerSlotInfo[i + 1].unk_004 == 0) {
             var_v0 = &sp88;
         } else {
             var_v0 = &sp84;
@@ -872,17 +872,17 @@ void func_82F08EB4(unk_D_82F20A40* arg0) {
 
     for (i = 0; i < 3; i++) {
         var_s2 = NULL;
-        if (D_82F20A88[i + 1].unk_002 == -1) {
+        if (gPlayerSlotInfo[i + 1].unk_002 == -1) {
             continue;
         }
 
         ptr = &arg0->unk_0E[i];
 
-        switch (D_82F20A88[i + 1].unk_004) {
+        switch (gPlayerSlotInfo[i + 1].unk_004) {
             case 0:
             case 3:
             case 4:
-                var_s2 = &gPlayerInfo[D_82F20A88[i + 1].unk_002];
+                var_s2 = &gPlayerInfo[gPlayerSlotInfo[i + 1].unk_002];
                 break;
         }
 
@@ -958,7 +958,7 @@ void func_82F09284(unk_D_82F20A40* arg0) {
     for (i = 0; i < 2; i++) {
         sp4C[0] = GetMessageString(NULL, 0, D_82F13B70, 4);
         sp4C[1] = GetMessageString(NULL, 0, D_82F13B70, 5);
-        if (i != D_82F210D4) {
+        if (i != gSubMenuSelection) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -1063,9 +1063,9 @@ void func_82F09B70(s16 arg0) {
 
     switch (arg0) {
         case 2:
-            if (D_82F210D2 != -1) {
+            if (gSelectedSlotIndex != -1) {
                 var_v1 = 1;
-                sp1E = (D_82F210D2 * 0x88) + 0x78;
+                sp1E = (gSelectedSlotIndex * 0x88) + 0x78;
                 sp1A = 0x154;
             }
             break;
@@ -1073,7 +1073,7 @@ void func_82F09B70(s16 arg0) {
         case 8:
             var_v1 = 1;
             sp1E = 0xE4;
-            sp1A = (D_82F210D4 * 0x1C) + 0x12A;
+            sp1A = (gSubMenuSelection * 0x1C) + 0x12A;
             break;
     }
 
@@ -1086,13 +1086,13 @@ void func_82F09B70(s16 arg0) {
     D_82F13F60 += 0x1000;
 }
 
-void func_82F09C6C(void) {
+void InitMenuGraphics(void) {
     UNUSED s32 pad;
     s32 i;
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_82F210C8 = process_geo_layout(sp1C, D_82F13E8C);
-    D_82F210CC = process_geo_layout(sp1C, D_82F13E58);
+    gMenuRootNode = process_geo_layout(sp1C, D_82F13E8C);
+    gMenuOverlayNode = process_geo_layout(sp1C, D_82F13E58);
     mem_pool_resize_block(sp1C);
 
     D_82F20A40.unk_00 = 0;
@@ -1100,15 +1100,15 @@ void func_82F09C6C(void) {
     D_82F20A40.unk_04 = 0;
 
     for (i = 0; i < 2; i++) {
-        D_82F210D8[i] = -1;
+        gSelectedPlayerIndices[i] = -1;
     }
 
-    D_82F210D8[0] = func_80029080();
-    D_82F210D2 = 0;
-    func_82F07004(D_82F210D8[0]);
+    gSelectedPlayerIndices[0] = func_80029080();
+    gSelectedSlotIndex = 0;
+    InitPlayerSlots(gSelectedPlayerIndices[0]);
 }
 
-void func_82F09D2C(void) {
+void UpdateMenuStateMachine(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
 
     if (ptr->unk_00 == 0) {
@@ -1125,7 +1125,7 @@ void func_82F09D2C(void) {
             break;
 
         case 2:
-            func_82F07DEC(ptr);
+            HandleMenuInput(ptr);
             break;
 
         case 3:
@@ -1161,7 +1161,7 @@ void func_82F09D2C(void) {
             break;
     }
 
-    func_82F077E0();
+    UpdateAllSlots();
 }
 
 void func_82F09E30(void) {
@@ -1173,7 +1173,7 @@ void func_82F09E30(void) {
         func_82F08EB4(&D_82F20A40);
         func_82F0917C(&D_82F20A40);
         func_82F09284(&D_82F20A40);
-        Graph_SetTextureState(D_82F210C8);
+        Graph_SetTextureState(gMenuRootNode);
         func_82F09B70(ptr->unk_00);
         func_82F094B4(&D_82F20A40);
     }

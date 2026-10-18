@@ -34,7 +34,7 @@ s32 D_83402E24 = 1;
 s32 D_83402E28 = 0;
 unk_D_83403C60* D_83402E2C = NULL;
 
-void func_83400020(void) {
+void Gallery_Init(void) {
     s32 i;
 
     main_pool_push_state('bkgl');
@@ -90,13 +90,13 @@ void func_83400020(void) {
 
     main_pool_pop_state('bkgl');
 
-    func_834006BC(&D_83407B30);
-    func_834021C8(&D_83407B00);
-    func_834021C8(&D_83407B08);
-    func_834021C8(&D_83407B10);
-    func_834021C8(&D_83407B18.unk_00);
+    GallerySelection_Init(&D_83407B30);
+    Selection_Reset(&D_83407B00);
+    Selection_Reset(&D_83407B08);
+    Selection_Reset(&D_83407B10);
+    Selection_Reset(&D_83407B18.unk_00);
     Cam_ResetUnkF90();
-    func_83401D68(&D_83407B38, 0x3C, 0x2D, 0x10, 4, 0, 0, D_83407AC0, 0x10, 0);
+    CamList_Init(&D_83407B38, 0x3C, 0x2D, 0x10, 4, 0, 0, D_83407AC0, 0x10, 0);
 }
 
 s32 func_834002C4(unk_D_83406EB0* arg0) {
@@ -147,7 +147,7 @@ s32 func_83400334(void) {
     return sp1C;
 }
 
-s32 func_83400410(s32 arg0, s32 arg1) {
+s32 Gallery_SaveChanges(s32 arg0, s32 arg1) {
     s32 i;
     s32 sp28;
 
@@ -189,11 +189,11 @@ s32 func_83400410(s32 arg0, s32 arg1) {
 void Gallery_Terminate(void) {
 }
 
-void func_83400524(void) {
+void Gallery_Reset(void) {
     D_83402E20 = 0;
     bzero(D_83402EE0, 0xD20);
     bzero(D_83403C00, 0x60);
-    func_834021C8(&D_83407AF8);
+    Selection_Reset(&D_83407AF8);
 }
 
 void func_83400570(unk_D_83403C60* arg0) {
@@ -231,7 +231,7 @@ unk_D_83403C60* func_834006A0(s32 arg0) {
     return ret;
 }
 
-void func_834006BC(unk_D_83407B00* arg0) {
+void GallerySelection_Init(unk_D_83407B00* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_04 = -1;
 }
@@ -249,7 +249,7 @@ s32 func_834006CC(s8* arg0) {
     return var_v1;
 }
 
-s32 func_83400704(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
+s32 CountDisplayableMonIndices(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
     s32 var_s0 = 0;
     s32 i;
 
@@ -266,7 +266,7 @@ s32 func_83400704(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
     return var_s0;
 }
 
-s32 func_834007B4(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 FindNthDisplayableMonIndex(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_s0 = arg2;
     s32 var_s1 = -1;
 
@@ -284,7 +284,7 @@ s32 func_834007B4(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3) {
     return var_s0;
 }
 
-s32 func_83400870(unk_D_83403C60* arg0, s32 arg1) {
+s32 FindFirstUndisplayedMonIndex(unk_D_83403C60* arg0, s32 arg1) {
     s32 i;
     s32 sp28 = -1;
 
@@ -365,7 +365,7 @@ void func_83400928(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_83401110(s32 arg0, s32 arg1, s32 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
+void DrawPanelWithTextures(s32 arg0, s32 arg1, s32 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
     gSPDisplayList(gDisplayListHead++, D_8006F558);
     gDPSetEnvColor(gDisplayListHead++, arg4->r, arg4->g, arg4->b, arg4->a);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg3->r, arg3->g, arg3->b, arg3->a);
@@ -381,7 +381,7 @@ void func_83401110(s32 arg0, s32 arg1, s32 arg2, Color_RGBA8* arg3, Color_RGBA8*
     Gfx_DrawTextureRect(arg0 + 0x10, arg1, arg2 - 0x20, 0x20, 0, 0, 0, 0x400, 0);
 }
 
-void func_8340144C(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+void DrawVerticalTextureStrip(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     s32 temp_v0;
     s32 tmp = 8;
     s32 i;
@@ -405,7 +405,7 @@ void func_834016C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
-void func_83401728(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DrawRectBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     UNUSED s32 pad;
 
     gSPDisplayList(gDisplayListHead++, D_8006F4C0);
@@ -429,7 +429,7 @@ void func_834018C0(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     s32 i;
 
     if (arg6 != 0) {
-        func_83401728(arg1, arg2, arg3, arg4, 4);
+        DrawRectBorder(arg1, arg2, arg3, arg4, 4);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -474,7 +474,7 @@ void func_83401D0C(s32 arg0, s32 arg1, s32 arg2) {
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x40, 0x20, var_v0, 0x40, 0);
 }
 
-void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_D_86002F58_004_000_010* arg5,
+void CamList_Init(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_D_86002F58_004_000_010* arg5,
                    BinArchive* arg6, unk_D_83403C60* arg7, s32 arg8, s32 arg9) {
     UNUSED s32 pad;
     FramebufferImage* sp168;
@@ -517,9 +517,9 @@ void func_83401D68(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     arg0->unk_B0 = Cam_Create(arg1, arg2, 0, sp168, arg5, arg6, NULL);
 }
 
-void func_83401FD0(unk_D_83407B38* arg0) {
+void CamList_Update(unk_D_83407B38* arg0) {
     s32 temp_v0 = Cam_FindActiveIndex(arg0->unk_20, 0x25);
-    unk_func_80031270* var_s0;
+    Camera* var_s0;
     s32 i;
 
     if (temp_v0 == -1) {
@@ -544,7 +544,7 @@ void func_83401FD0(unk_D_83407B38* arg0) {
 }
 
 void func_834020D8(void) {
-    unk_func_80031270* temp_v0 = Cam_GetCurrent();
+    Camera* temp_v0 = Cam_GetCurrent();
 
     if ((temp_v0 != NULL) && (temp_v0->unk_00 == 2)) {
         main_pool_pop_state('albu');
@@ -568,7 +568,7 @@ s32 func_83402124(unk_D_83407B38* arg0, s32 arg1) {
     return var_s2;
 }
 
-void func_834021C8(unk_D_83407B00* arg0) {
+void Selection_Reset(unk_D_83407B00* arg0) {
     arg0->unk_00 = -1;
     arg0->unk_04 = -1;
 }

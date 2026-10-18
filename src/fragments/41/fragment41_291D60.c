@@ -5,13 +5,13 @@
 #include "src/2E110.h"
 #include "src/49790.h"
 
-static unk_D_82F210E0 D_82F210E0;
-static unk_func_82F00838_sp30_00C* D_82F21120[2];
+static unk_D_82F210E0 gRentalMenuState;
+static unk_func_82F00838_sp30_00C* gRentalItemPtrs[2];
 static s16 D_82F21128;
 static s32 D_82F2112C;
 static s32 D_82F21130;
 
-s32 func_82F09EB0(unk_func_82F00838_sp30* arg0) {
+s32 LoadRentalItemData(unk_func_82F00838_sp30* arg0) {
     unk_func_80022C28_ret* sp24;
     s32 var_v1;
 
@@ -31,7 +31,7 @@ s32 func_82F09EB0(unk_func_82F00838_sp30* arg0) {
     return var_v1;
 }
 
-s32 func_82F09F44(unk_D_82F210E0* arg0) {
+s32 InitRentalItems(unk_D_82F210E0* arg0) {
     s32 i;
     unk_func_82F00838_sp30* ptr;
     unk_func_82F00838_sp30 sp30[2];
@@ -71,7 +71,7 @@ s32 func_82F09F44(unk_D_82F210E0* arg0) {
             continue;
         }
 
-        if (func_82F09EB0(ptr) != 0) {
+        if (LoadRentalItemData(ptr) != 0) {
             arg0->unk_0A += 1;
             func_800244F4(ptr->unk_02);
         } else {
@@ -85,9 +85,9 @@ s32 func_82F09F44(unk_D_82F210E0* arg0) {
     return sp2C;
 }
 
-void func_82F0A0A8(s32 arg0) {
+void RentalMenu_Init(s32 arg0) {
     UNUSED s32 pad;
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    unk_D_82F210E0* ptr = &gRentalMenuState;
     s32 i;
     unk_func_82F00838_sp30 sp2C;
 
@@ -107,7 +107,7 @@ void func_82F0A0A8(s32 arg0) {
 
     for (i = 0; i < 2; i++) {
         func_82F0525C(i, &sp2C);
-        D_82F21120[i] = &sp2C.unk_0C[sp2C.unk_06];
+        gRentalItemPtrs[i] = &sp2C.unk_0C[sp2C.unk_06];
     }
 
     D_82F21128 = 0;
@@ -140,7 +140,7 @@ void func_82F0A0A8(s32 arg0) {
     }
 }
 
-void func_82F0A23C(unk_D_82F210E0* arg0) {
+void RentalMenu_UpdatePanels(unk_D_82F210E0* arg0) {
     s32 i;
     unk_D_82F20A40_00E* ptr;
 
@@ -182,7 +182,7 @@ void func_82F0A23C(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0A5F8(unk_D_82F210E0* arg0) {
+void RentalMenu_HandleSelection(unk_D_82F210E0* arg0) {
     s32 var_t0 = 0;
     s32 var_a2;
     s16 tmp;
@@ -255,7 +255,7 @@ void func_82F0A5F8(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0A804(unk_D_82F210E0* arg0) {
+void RentalMenu_ConfirmWait(unk_D_82F210E0* arg0) {
     arg0->unk_02--;
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         arg0->unk_02 = 0;
@@ -267,7 +267,7 @@ void func_82F0A804(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0A850(unk_D_82F210E0* arg0) {
+void RentalMenu_ShowItemDetailsA(unk_D_82F210E0* arg0) {
     arg0->unk_02--;
     arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
     arg0->unk_24.unk_02 = 0x116 - ((arg0->unk_02 * -0x2E) / 10);
@@ -279,7 +279,7 @@ void func_82F0A850(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0A950(unk_D_82F210E0* arg0) {
+void RentalMenu_ShowItemDetailsB(unk_D_82F210E0* arg0) {
     arg0->unk_02--;
     arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
     arg0->unk_24.unk_02 = 0x144 - ((arg0->unk_02 * 0x2E) / 10);
@@ -291,7 +291,7 @@ void func_82F0A950(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0AA50(unk_D_82F210E0* arg0) {
+void RentalMenu_ShowOptions(unk_D_82F210E0* arg0) {
     arg0->unk_02--;
     arg0->unk_34.unk_00 = 0xCC - (arg0->unk_02 * 0) / 10;
     arg0->unk_34.unk_02 = 0x134 - ((arg0->unk_02 * -0x1C) / 10);
@@ -309,7 +309,7 @@ void func_82F0AA50(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0AB68(unk_D_82F210E0* arg0) {
+void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0) {
     s32 temp_v0;
     unk_func_82F00838_sp30 sp24;
 
@@ -343,7 +343,7 @@ void func_82F0AB68(unk_D_82F210E0* arg0) {
         }
 
         if (arg0->unk_0C == 0) {
-            if (func_82F09F44(arg0) != 0) {
+            if (InitRentalItems(arg0) != 0) {
                 arg0->unk_00 = 8;
                 arg0->unk_02 = 0xA;
                 arg0->unk_04 &= ~4;
@@ -367,7 +367,7 @@ void func_82F0AB68(unk_D_82F210E0* arg0) {
     }
 }
 
-void func_82F0ACC4(unk_D_82F210E0* arg0) {
+void RentalMenu_Finalize(unk_D_82F210E0* arg0) {
     unk_D_82F20A40_00E* temp_v1;
     s32 i;
 
@@ -428,7 +428,7 @@ void func_82F0B2A4(s16 arg0, s16 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg1, arg2, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
 }
 
-void func_82F0B3E0(unk_D_82F210E0* arg0) {
+void RentalMenu_RenderItemList(unk_D_82F210E0* arg0) {
     unk_D_82F20A40_00E* var_s0;
     s32 sp74[2];
     unk_func_82F00838_sp30_00C* temp_s3;
@@ -478,7 +478,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
 
     for (i = 0; i < 2; i++) {
         if (sp74[i] != 0) {
-            temp_s3 = D_82F21120[i];
+            temp_s3 = gRentalItemPtrs[i];
             var_s0 = &arg0->unk_14[i];
             Text_SetFont(4, 0);
             Text_Print(var_s0->unk_00 + 0xA, var_s0->unk_02 + 0x4A, "No.");
@@ -498,7 +498,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
     Text_SetupDL();
 }
 
-void func_82F0B7B4(unk_D_82F210E0* arg0) {
+void RentalMenu_DrawPanels(unk_D_82F210E0* arg0) {
     s32 i;
     unk_D_82F20A40_00E* var_s4 = &arg0->unk_24;
     Color_RGB8* var_v0;
@@ -691,7 +691,7 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
 }
 
 s32 func_82F0C16C(void) {
-    return D_82F210E0.unk_00;
+    return gRentalMenuState.unk_00;
 }
 
 s32 func_82F0C178(void) {
@@ -703,7 +703,7 @@ s32 func_82F0C184(void) {
 }
 
 void func_82F0C190(void) {
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    unk_D_82F210E0* ptr = &gRentalMenuState;
     s32 i;
 
     ptr->unk_00 = 0;
@@ -711,9 +711,9 @@ void func_82F0C190(void) {
     ptr->unk_04 = 0;
 
     for (i = 0; i < 2; i++) {
-        D_82F210E0.unk_14[i].unk_00 = D_82F210E0.unk_14[i].unk_02 = 0;
-        D_82F210E0.unk_14[i].unk_04 = 0xC8;
-        D_82F210E0.unk_14[i].unk_06 = 0;
+        gRentalMenuState.unk_14[i].unk_00 = gRentalMenuState.unk_14[i].unk_02 = 0;
+        gRentalMenuState.unk_14[i].unk_04 = 0xC8;
+        gRentalMenuState.unk_14[i].unk_06 = 0;
     }
 
     ptr->unk_24.unk_00 = 0;
@@ -730,12 +730,12 @@ void func_82F0C190(void) {
     ptr->unk_2C.unk_02 = ptr->unk_34.unk_02 = 0;
 
     for (i = 0; i < 2; i++) {
-        D_82F21120[i] = NULL;
+        gRentalItemPtrs[i] = NULL;
     }
 }
 
 void func_82F0C254(void) {
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    unk_D_82F210E0* ptr = &gRentalMenuState;
 
     if (ptr->unk_00 == 0) {
         return;
@@ -743,35 +743,35 @@ void func_82F0C254(void) {
 
     switch (ptr->unk_00) {
         case 1:
-            func_82F0A23C(&D_82F210E0);
+            RentalMenu_UpdatePanels(&gRentalMenuState);
             break;
 
         case 2:
-            func_82F0A5F8(&D_82F210E0);
+            RentalMenu_HandleSelection(&gRentalMenuState);
             break;
 
         case 3:
-            func_82F0A804(&D_82F210E0);
+            RentalMenu_ConfirmWait(&gRentalMenuState);
             break;
 
         case 4:
-            func_82F0A850(&D_82F210E0);
+            RentalMenu_ShowItemDetailsA(&gRentalMenuState);
             break;
 
         case 5:
-            func_82F0A950(&D_82F210E0);
+            RentalMenu_ShowItemDetailsB(&gRentalMenuState);
             break;
 
         case 6:
-            func_82F0AA50(&D_82F210E0);
+            RentalMenu_ShowOptions(&gRentalMenuState);
             break;
 
         case 7:
-            func_82F0AB68(&D_82F210E0);
+            RentalMenu_ProcessItemSelection(&gRentalMenuState);
             break;
 
         case 8:
-            func_82F0ACC4(&D_82F210E0);
+            RentalMenu_Finalize(&gRentalMenuState);
             break;
     }
 }
@@ -779,17 +779,17 @@ void func_82F0C254(void) {
 void func_82F0C320(void) {
     static s16 D_82F13F8C[] = { 0x32, 0x14A };
 
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    unk_D_82F210E0* ptr = &gRentalMenuState;
     s32 i;
 
     if (ptr->unk_00 != 0) {
         if (ptr->unk_12 != 0) {
-            func_82F0B3E0(&D_82F210E0);
+            RentalMenu_RenderItemList(&gRentalMenuState);
         }
 
-        func_82F0B7B4(&D_82F210E0);
-        func_82F0BBE8(&D_82F210E0);
-        func_82F0BD38(&D_82F210E0);
+        RentalMenu_DrawPanels(&gRentalMenuState);
+        func_82F0BBE8(&gRentalMenuState);
+        func_82F0BD38(&gRentalMenuState);
 
         if (ptr->unk_04 & 2) {
             func_82F097D8(0x120, 0x8C);
@@ -800,6 +800,6 @@ void func_82F0C320(void) {
                 DrawStatusPanel(i, D_82F13F8C[i], 0x2A);
             }
         }
-        func_82F0BEF8(&D_82F210E0);
+        func_82F0BEF8(&gRentalMenuState);
     }
 }

@@ -14,12 +14,12 @@
 #include "src/stage_loader.h"
 
 static unk_D_82F21140 D_82F21140;
-static FramebufferImage* D_82F2115C;
-static unk_D_82F21160 D_82F21160[2];
+static FramebufferImage* gMenuFramebuffer;
+static unk_D_82F21160 gMenuPanels[2];
 static unk_D_82F211A0 D_82F211A0[2];
-static unk_D_82F21238 D_82F21238;
+static unk_D_82F21238 gScreenTransition;
 
-void func_82F0C410(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
+void Gfx_DrawScisTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
     gSPScisTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + arg2) << 2, (arg1 + arg3) << 2, 0, arg4,
                             arg5, arg6, arg7);
 }
@@ -33,7 +33,7 @@ void func_82F0C630(void) {
     }
 }
 
-void func_82F0C658(s32 arg0, s16 arg1) {
+void MenuBar_SetState(s32 arg0, s16 arg1) {
     s32 i;
     unk_D_82F211A0* temp_v0 = &D_82F211A0[arg0];
 
@@ -68,15 +68,15 @@ void func_82F0C658(s32 arg0, s16 arg1) {
     }
 }
 
-void func_82F0C784(unk_D_82F211A0* arg0) {
+void MenuBar_UpdateFade(unk_D_82F211A0* arg0) {
     arg0->unk_06--;
     arg0->unk_0C = 0xFF - ((arg0->unk_06 * 0xFF) / 40);
     if (arg0->unk_06 <= 0) {
-        func_82F0C658(arg0 - D_82F211A0, 2);
+        MenuBar_SetState(arg0 - D_82F211A0, 2);
     }
 }
 
-void func_82F0C7FC(unk_D_82F211A0* arg0) {
+void MenuBar_UpdatePulse(unk_D_82F211A0* arg0) {
     s32 sp1C;
 
     if (arg0->unk_06 > 0) {
@@ -89,14 +89,14 @@ void func_82F0C7FC(unk_D_82F211A0* arg0) {
 
     if ((arg0->unk_06 <= 0) && (arg0->unk_0C >= 0xFF)) {
         sp1C = arg0 - D_82F211A0;
-        func_82F0C658(sp1C, 3);
+        MenuBar_SetState(sp1C, 3);
         if (sp1C == 0) {
             PlaySoundEffect(0x01200006);
         }
     }
 }
 
-void func_82F0C8EC(unk_D_82F211A0* arg0) {
+void MenuBar_AddParticle(unk_D_82F211A0* arg0) {
     s32 i;
     unk_D_82F211A0_010* var_v0 = NULL;
 
@@ -118,7 +118,7 @@ void func_82F0C8EC(unk_D_82F211A0* arg0) {
     }
 }
 
-void func_82F0C958(unk_D_82F211A0* arg0) {
+void MenuBar_UpdateParticles(unk_D_82F211A0* arg0) {
     s32 i;
     unk_D_82F211A0_010* ptr;
 
@@ -136,7 +136,7 @@ void func_82F0CA7C(unk_D_82F211A0* arg0) {
     s32 idx = arg0 - D_82F211A0;
 
     if (arg0->unk_0E > 0) {
-        func_82F0C958(arg0);
+        MenuBar_UpdateParticles(arg0);
     }
 
     if ((arg0->unk_02 < 0xA0) || (arg0->unk_02 >= 0x1C3)) {
@@ -150,7 +150,7 @@ void func_82F0CA7C(unk_D_82F211A0* arg0) {
         }
 
         if ((arg0->unk_06 == 0) && (arg0->unk_0E < 0xA)) {
-            func_82F0C8EC(arg0);
+            MenuBar_AddParticle(arg0);
             arg0->unk_06 = 2;
         }
 
@@ -164,18 +164,18 @@ void func_82F0CA7C(unk_D_82F211A0* arg0) {
     }
 }
 
-void func_82F0CB90(void) {
+void MenuBar_ProcessAll(void) {
     s32 i;
     unk_D_82F211A0* var_s0 = &D_82F211A0[0];
 
     for (i = 0; i < 2; i++, var_s0++) {
         switch (var_s0->unk_00) {
             case 1:
-                func_82F0C784(var_s0);
+                MenuBar_UpdateFade(var_s0);
                 break;
 
             case 2:
-                func_82F0C7FC(var_s0);
+                MenuBar_UpdatePulse(var_s0);
                 break;
 
             case 3:
@@ -185,7 +185,7 @@ void func_82F0CB90(void) {
     }
 }
 
-void func_82F0CC3C(void) {
+void MenuBar_Render(void) {
     s32 i;
     s32 j;
     s32 sp84 = 0;
@@ -251,10 +251,10 @@ void func_82F0CC3C(void) {
 }
 
 void func_82F0D084(void) {
-    D_82F21238.unk_02 = 0;
+    gScreenTransition.unk_02 = 0;
 }
 
-void func_82F0D090(unk_D_82F21238* arg0, s32 arg1) {
+void ScreenTransition_Init(unk_D_82F21238* arg0, s32 arg1) {
     arg0->unk_28 = AssetManager_Create(1);
     arg0->unk_2C = func_8001B1FC(arg0->unk_28, 0xC0, 0xC0, 0, 0, 0xC0, 0xC0, NULL);
     arg0->unk_2C->unk_00 &= ~2;
@@ -270,17 +270,17 @@ void func_82F0D090(unk_D_82F21238* arg0, s32 arg1) {
     GraphNode_TriggerAction(arg0->unk_2C->unk_24, arg0->unk_06);
 }
 
-void func_82F0D160(s16 arg0) {
+void ScreenTransition_Start(s16 arg0) {
     unk_func_82F00838_sp30 sp20;
-    unk_D_82F21238* ptr = &D_82F21238;
+    unk_D_82F21238* ptr = &gScreenTransition;
 
     main_pool_push_state('intr');
     func_82F0525C(arg0, &sp20);
-    D_82F21238.unk_00 = arg0;
-    D_82F21238.unk_02 = 1;
-    D_82F21238.unk_04 = sp20.unk_02;
-    D_82F21238.unk_06 = 1;
-    D_82F21238.unk_08 = 0;
+    gScreenTransition.unk_00 = arg0;
+    gScreenTransition.unk_02 = 1;
+    gScreenTransition.unk_04 = sp20.unk_02;
+    gScreenTransition.unk_06 = 1;
+    gScreenTransition.unk_08 = 0;
     ptr->unk_0A = MathUtil_Random16() % 2;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0x140;
@@ -290,7 +290,7 @@ void func_82F0D160(s16 arg0) {
     ptr->unk_16 = 0xFF;
     ptr->unk_20 = 0;
     ptr->unk_24 = &sp20.unk_0C[sp20.unk_06];
-    func_82F0D090(&D_82F21238, 0);
+    ScreenTransition_Init(&gScreenTransition, 0);
     ptr->unk_30.unk_00 = ptr->unk_30.unk_02 = 0;
     ptr->unk_30.unk_04 = ptr->unk_30.unk_06 = -1;
 
@@ -455,7 +455,7 @@ void func_82F0D76C(unk_D_82F21238* arg0) {
         arg0->unk_20 = 0;
         func_82F0D6D0(arg0->unk_04, arg0->unk_24);
         func_82F05210(arg0->unk_00, arg0->unk_24);
-        func_82F0D090(arg0, 1);
+        ScreenTransition_Init(arg0, 1);
         arg0->unk_30.unk_00 = 0x38;
         arg0->unk_30.unk_02 = 0x168;
         arg0->unk_30.unk_04 = 0x210;
@@ -544,33 +544,33 @@ void func_82F0DA60(unk_D_82F21238* arg0) {
     }
 }
 
-void func_82F0DCF4(void) {
-    switch (D_82F21238.unk_02) {
+void ScreenTransition_Process(void) {
+    switch (gScreenTransition.unk_02) {
         case 0:
             break;
 
         case 1:
-            func_82F0D2F4(&D_82F21238);
+            func_82F0D2F4(&gScreenTransition);
             break;
 
         case 2:
-            func_82F0D428(&D_82F21238);
+            func_82F0D428(&gScreenTransition);
             break;
 
         case 3:
-            func_82F0D51C(&D_82F21238);
+            func_82F0D51C(&gScreenTransition);
             break;
 
         case 4:
-            func_82F0D76C(&D_82F21238);
+            func_82F0D76C(&gScreenTransition);
             break;
 
         case 5:
-            func_82F0D834(&D_82F21238);
+            func_82F0D834(&gScreenTransition);
             break;
 
         case 6:
-            func_82F0DA60(&D_82F21238);
+            func_82F0DA60(&gScreenTransition);
             break;
     }
 }
@@ -612,7 +612,7 @@ void func_82F0DD90(s16 arg0, s16 arg1, s16 arg2) {
     gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, D_82F13FC8 * 4.0f, D_82F13FCC * 4.0f, temp_fa8 * 4.0f,
                    temp_faC * 4.0f);
 
-    func_82F0C410(arg0, arg1, 0xC0, 0xC0, 0, 0, 0xAB, 0xAB, 0x100000);
+    Gfx_DrawScisTextureRect(arg0, arg1, 0xC0, 0xC0, 0, 0, 0xAB, 0xAB, 0x100000);
 
     D_82F13FC0 -= 0.25f;
     if (D_82F13FC0 < 0.0f) {
@@ -747,7 +747,7 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
 }
 
 void func_82F0EE58(void) {
-    unk_D_82F21238* ptr = &D_82F21238;
+    unk_D_82F21238* ptr = &gScreenTransition;
     UNUSED s32 pad;
     s32 sp24;
 
@@ -758,7 +758,7 @@ void func_82F0EE58(void) {
                 sp24 = 1;
                 Gfx_SetScissorRect(&gDisplayListHead, ptr->unk_0E, ptr->unk_10, ptr->unk_12, ptr->unk_14);
                 if (ptr->unk_20 != 0) {
-                    func_82F0E97C(&D_82F21238);
+                    func_82F0E97C(&gScreenTransition);
                 }
                 func_82F0DD90(0xE0, 0x64, ptr->unk_16);
             }
@@ -780,7 +780,7 @@ void func_82F0EF68(void) {
     s32 i;
     unk_D_82F21160* var_v1;
 
-    for (i = 0, var_v1 = &D_82F21160[0]; i < 2; i++, var_v1++) {
+    for (i = 0, var_v1 = &gMenuPanels[0]; i < 2; i++, var_v1++) {
         var_v1->unk_00 = 0;
         var_v1->unk_02 = 0;
         var_v1->unk_04 = 0;
@@ -801,7 +801,7 @@ void func_82F0EFC4(s32 arg0, s16 arg1) {
     static s16 D_82F13FD0[] = { 0x64, 0x2C8 };
     static s16 D_82F13FD4[] = { 0x50, 0x236, 0, 0, 0x3F80, 0 };
 
-    unk_D_82F21160* temp_v0 = &D_82F21160[arg0];
+    unk_D_82F21160* temp_v0 = &gMenuPanels[arg0];
 
     temp_v0->unk_00 = arg1;
 
@@ -899,7 +899,7 @@ void func_82F0EFC4(s32 arg0, s16 arg1) {
 void func_82F0F260(unk_D_82F21160* arg0) {
     arg0->unk_06 -= 2;
     if (arg0->unk_06 < 0xBF) {
-        func_82F0EFC4(arg0 - D_82F21160, 2);
+        func_82F0EFC4(arg0 - gMenuPanels, 2);
     }
 }
 
@@ -929,7 +929,7 @@ void func_82F0F374(unk_D_82F21160* arg0) {
     }
     temp_a1 = (var_v0 * -0x14);
 
-    temp_a3 = arg0 - D_82F21160;
+    temp_a3 = arg0 - gMenuPanels;
     if (temp_a3 == 0) {
         arg0->unk_02 = ((var_v0 * 0x14) / arg0->unk_10) + 0x50;
     } else {
@@ -977,7 +977,7 @@ void func_82F0F654(unk_D_82F21160* arg0) {
         arg0->unk_06 = 0xD2;
         arg0->unk_18 = MathUtil_Random16() % 16;
         arg0->unk_12 = MathUtil_Random16();
-        idx = arg0 - D_82F21160;
+        idx = arg0 - gMenuPanels;
         if (idx == 0) {
             D_82F21140.unk_0C &= ~0x40;
         }
@@ -1015,7 +1015,7 @@ void func_82F0F89C(void) {
     unk_D_82F21160* var_s0;
     s32 i;
 
-    var_s0 = D_82F21160;
+    var_s0 = gMenuPanels;
 
     for (i = 0; i < 2; i++, var_s0++) {
         var_s1 = 1;
@@ -1104,7 +1104,7 @@ void func_82F0F9E0(s16 arg0, s16 arg1, f32 arg2, s16 arg3) {
                                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                     G_TX_NOLOD, G_TX_NOLOD);
 
-                func_82F0C410(arg0, arg1 + (var_fv0_4 * i), 0x30, 0x18, sp60, 0, sp5E, sp5C, 0);
+                Gfx_DrawScisTextureRect(arg0, arg1 + (var_fv0_4 * i), 0x30, 0x18, sp60, 0, sp5E, sp5C, 0);
                 var_s2 += 0x900;
             }
         }
@@ -1116,7 +1116,7 @@ void func_82F0FCC0(void) {
     s32 var_s3 = 0;
     unk_D_82F21160* var_s0;
 
-    for (i = 0, var_s0 = D_82F21160; i < 2; i++, var_s0++) {
+    for (i = 0, var_s0 = gMenuPanels; i < 2; i++, var_s0++) {
         if (var_s0->unk_00 == 0) {
             continue;
         }
@@ -1200,7 +1200,7 @@ void func_82F0FDEC(s16 arg0) {
         case 9:
             ptr->unk_18 = 0xA;
 
-            ptr2 = &D_82F21160[0];
+            ptr2 = &gMenuPanels[0];
             for (i = 0; i < 2; i++, ptr2++) {
                 if (ptr2->unk_00 != 0) {
                     func_82F0EFC4(i, 3);
@@ -1411,8 +1411,8 @@ void func_82F10674(unk_D_82F21140* arg0) {
     if (func_82F13964(7) != 0) {
         if (!(arg0->unk_0C & 0x40)) {
             arg0->unk_0C |= 0x40;
-            func_82F0C658(0, 1);
-            func_82F0C658(1, 1);
+            MenuBar_SetState(0, 1);
+            MenuBar_SetState(1, 1);
             PlaySoundEffect(0x01200005);
         }
     }
@@ -1436,7 +1436,7 @@ void func_82F10744(unk_D_82F21140* arg0) {
     arg0->unk_04 = ((var_v1 * 0) / 10) + 0x18;
     if (arg0->unk_18 < -5) {
         func_82F0FDEC(0xD);
-        func_82F0D160(0);
+        ScreenTransition_Start(0);
     }
 }
 
@@ -1458,7 +1458,7 @@ void func_82F1084C(unk_D_82F21140* arg0) {
     arg0->unk_04 = ((var_v1 * 0) / 10) + 0x18;
     if (arg0->unk_18 < -5) {
         func_82F0FDEC(0xF);
-        func_82F0D160(1);
+        ScreenTransition_Start(1);
     }
 }
 
@@ -1484,12 +1484,12 @@ void func_82F10A24(unk_D_82F21140* arg0) {
 
     if (arg0->unk_00 == 5) {
         for (i = 0; i < 2; i++) {
-            if (D_82F21160[i].unk_00 == 4) {
+            if (gMenuPanels[i].unk_00 == 4) {
                 func_82F0EFC4(i, 8);
             }
         }
 
-        if ((D_82F21160->unk_00 != 0) || (D_82F21160[1].unk_00 != 0)) {
+        if ((gMenuPanels->unk_00 != 0) || (gMenuPanels[1].unk_00 != 0)) {
             return;
         }
     } else if ((arg0->unk_00 == 0x11) && (func_82F13964(9) == 0)) {
@@ -1527,8 +1527,8 @@ void func_82F10BB4(s16 arg0, s16 arg1, f32 arg2) {
                               G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
 
-        func_82F0C410(arg0, arg1 + i * temp_ft1, temp_ft2, temp_ft1, 0, 0, temp_ft0, temp_ft0, 0);
-        func_82F0C410(arg0 + temp_ft2, arg1 + i * temp_ft1, temp_ft2, temp_ft1, 0x1C60, 0, sp58, temp_ft0, 0);
+        Gfx_DrawScisTextureRect(arg0, arg1 + i * temp_ft1, temp_ft2, temp_ft1, 0, 0, temp_ft0, temp_ft0, 0);
+        Gfx_DrawScisTextureRect(arg0 + temp_ft2, arg1 + i * temp_ft1, temp_ft2, temp_ft1, 0x1C60, 0, sp58, temp_ft0, 0);
     }
 }
 
@@ -1552,8 +1552,8 @@ void func_82F10ED0(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     gDPLoadTextureTile_4b(gDisplayListHead++, D_3005D28, G_IM_FMT_I, 48, 0, 0, 0, 47, 29, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_82F0C410(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
-    func_82F0C410(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x5E0, 0, temp_fv1_4, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x5E0, 0, temp_fv1_4, sp5C, 0);
 }
 
 void func_82F11264(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
@@ -1576,8 +1576,8 @@ void func_82F11264(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     gDPLoadTextureTile_4b(gDisplayListHead++, D_300D108, G_IM_FMT_I, 24, 0, 0, 0, 23, 29, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_82F0C410(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
-    func_82F0C410(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x2E0, 0, temp_fv1_4, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x2E0, 0, temp_fv1_4, sp5C, 0);
 }
 
 void func_82F115F8(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
@@ -1600,8 +1600,8 @@ void func_82F115F8(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     gDPLoadTextureTile_4b(gDisplayListHead++, D_300D278, G_IM_FMT_I, 16, 0, 0, 0, 15, 13, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_82F0C410(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
-    func_82F0C410(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x1E0, 0, temp_fv1_4, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp6A, arg1 + sp66, sp6E, sp6C, 0, 0, sp5C, sp5C, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp68, arg1 + sp66, sp6E, sp6C, 0x1E0, 0, temp_fv1_4, sp5C, 0);
 }
 
 void func_82F1198C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
@@ -1640,8 +1640,8 @@ void func_82F1198C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
 
         i -= var_t3;
         temp_ft0 = var_t3 * arg2;
-        func_82F0C410(arg0 + temp_fa0, arg1 + temp_fa0_2 + var_s4, spB6, temp_ft0, 0, 0, temp_ft1, temp_ft1, 0);
-        func_82F0C410(arg0 + temp_fv1_2, arg1 + temp_fa0_2 + var_s4, spB6, temp_ft0, 0xC60, 0, sp60, temp_ft1, 0);
+        Gfx_DrawScisTextureRect(arg0 + temp_fa0, arg1 + temp_fa0_2 + var_s4, spB6, temp_ft0, 0, 0, temp_ft1, temp_ft1, 0);
+        Gfx_DrawScisTextureRect(arg0 + temp_fv1_2, arg1 + temp_fa0_2 + var_s4, spB6, temp_ft0, 0xC60, 0, sp60, temp_ft1, 0);
         var_s5 += 0xE10;
         var_s4 += temp_ft0;
     }
@@ -1705,8 +1705,8 @@ void func_82F11D68(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s
                             0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        func_82F0C410(arg0 + temp_fv1_2, arg1 + temp_fv1_3 + var_s6, spE6, temp_ft0, 0, 0, sp6C, sp6C, 0x100000);
-        func_82F0C410(arg0 + temp_fa0, arg1 + temp_fv1_3 + var_s6, spE6, temp_ft0, 0xC60, 0, sp60, sp6C, 0x100000);
+        Gfx_DrawScisTextureRect(arg0 + temp_fv1_2, arg1 + temp_fv1_3 + var_s6, spE6, temp_ft0, 0, 0, sp6C, sp6C, 0x100000);
+        Gfx_DrawScisTextureRect(arg0 + temp_fa0, arg1 + temp_fv1_3 + var_s6, spE6, temp_ft0, 0xC60, 0, sp60, sp6C, 0x100000);
         var_s7 += 0x640;
         var_fp += 0x640;
         var_s6 += temp_ft0;
@@ -1734,8 +1734,8 @@ void func_82F1228C(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     gDPLoadTextureTile_4b(gDisplayListHead++, D_30079A0, G_IM_FMT_I, 64, 0, 0, 0, 63, 63, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_82F0C410(arg0 + sp72, arg1 + sp6E, sp76, sp74, 0, 0, sp60, sp60, 0);
-    func_82F0C410(arg0 + sp70, arg1 + sp6E, sp76, sp74, 0x7E0, 0, sp5C, sp60, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp72, arg1 + sp6E, sp76, sp74, 0, 0, sp60, sp60, 0);
+    Gfx_DrawScisTextureRect(arg0 + sp70, arg1 + sp6E, sp76, sp74, 0x7E0, 0, sp5C, sp60, 0);
 }
 
 void func_82F12614(void) {
@@ -1759,7 +1759,7 @@ void func_82F12614(void) {
     f32 temp_fa8;
     f32 temp_faC;
 
-    Gfx_SetupFrameBuffer(&gDisplayListHead, D_82F2115C);
+    Gfx_SetupFrameBuffer(&gDisplayListHead, gMenuFramebuffer);
 
     gSPDisplayList(gDisplayListHead++, D_82F14060);
 
@@ -1831,13 +1831,13 @@ void func_82F12DE4(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     temp_fa0_3 = ROUND_MAX(-1024.0f / arg2);
 
     gSPDisplayList(gDisplayListHead++, D_82F14098);
-    gDPLoadMultiBlock(gDisplayListHead++, D_82F2115C->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
+    gDPLoadMultiBlock(gDisplayListHead++, gMenuFramebuffer->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30081A8, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_82F0C410(arg0 + sp92, arg1 + sp8E, sp96, sp94, 0, 0, sp80, sp80, 0x100000);
-    func_82F0C410(arg0 + sp90, arg1 + sp8E, sp96, sp94, 0x7E0, 0, temp_fa0_3, sp80, 0x100000);
+    Gfx_DrawScisTextureRect(arg0 + sp92, arg1 + sp8E, sp96, sp94, 0, 0, sp80, sp80, 0x100000);
+    Gfx_DrawScisTextureRect(arg0 + sp90, arg1 + sp8E, sp96, sp94, 0x7E0, 0, temp_fa0_3, sp80, 0x100000);
 }
 
 void func_82F13278(void) {
@@ -1845,7 +1845,7 @@ void func_82F13278(void) {
     func_82F0EF68();
     func_82F0C630();
     func_82F0D084();
-    D_82F2115C = FramebufferImage_Allocate(0, 2, 0x20, 0x20, 1);
+    gMenuFramebuffer = FramebufferImage_Allocate(0, 2, 0x20, 0x20, 1);
 }
 
 void func_82F132D0(void) {
@@ -1914,8 +1914,8 @@ void func_82F132D0(void) {
             break;
     }
     func_82F0F89C();
-    func_82F0CB90();
-    func_82F0DCF4();
+    MenuBar_ProcessAll();
+    ScreenTransition_Process();
 }
 
 void func_82F13414(void) {
@@ -1961,7 +1961,7 @@ void func_82F13414(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
     func_82F0FCC0();
-    func_82F0CC3C();
+    MenuBar_Render();
 
     tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = (tmp1 * 0xFF) / 63u;
@@ -2018,7 +2018,7 @@ void func_82F13414(void) {
 }
 
 s32 func_82F13964(s16 arg0) {
-    unk_D_82F21160* ptr = &D_82F21160[0];
+    unk_D_82F21160* ptr = &gMenuPanels[0];
     s32 var_v1 = 0;
 
     switch (arg0) {
@@ -2041,13 +2041,13 @@ s32 func_82F13964(s16 arg0) {
             break;
 
         case 4:
-            if ((D_82F21160[0].unk_00 == 2) && (ptr[0].unk_1C <= 1.0f)) {
+            if ((gMenuPanels[0].unk_00 == 2) && (ptr[0].unk_1C <= 1.0f)) {
                 var_v1 = 1;
             }
             break;
 
         case 5:
-            if ((D_82F21160[1].unk_00 == 2) && (ptr[1].unk_1C <= 1.0f)) {
+            if ((gMenuPanels[1].unk_00 == 2) && (ptr[1].unk_1C <= 1.0f)) {
                 var_v1 = 1;
             }
             break;
@@ -2059,14 +2059,14 @@ s32 func_82F13964(s16 arg0) {
             break;
 
         case 8:
-            if ((D_82F21160[0].unk_00 == 7) && (D_82F21160[1].unk_00 == 7)) {
+            if ((gMenuPanels[0].unk_00 == 7) && (gMenuPanels[1].unk_00 == 7)) {
                 var_v1 = 1;
             }
             break;
 
         case 7:
         case 9:
-            if ((D_82F21160[0].unk_00 == 0) && (D_82F21160[1].unk_00 == 0)) {
+            if ((gMenuPanels[0].unk_00 == 0) && (gMenuPanels[1].unk_00 == 0)) {
                 var_v1 = 1;
             }
             break;
@@ -2078,13 +2078,13 @@ s32 func_82F13964(s16 arg0) {
             break;
 
         case 11:
-            if (D_82F21238.unk_02 == 0) {
+            if (gScreenTransition.unk_02 == 0) {
                 var_v1 = 1;
             }
             break;
 
         case 12:
-            if (D_82F21238.unk_02 == 2) {
+            if (gScreenTransition.unk_02 == 2) {
                 var_v1 = 1;
             }
             break;

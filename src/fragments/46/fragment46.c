@@ -11,40 +11,40 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static s32 D_837004C0;
-static BinArchive* D_837004C4;
-static Stage* D_837004C8;
+static s32 gFragment46_State;
+static BinArchive* gStadiumModelsArchive;
+static Stage* gFragment46_Stage;
 
-static unk_func_80031270* D_837004B0 = NULL;
+static Camera* gFragment46_Camera = NULL;
 
-void func_83700020(void) {
+void Fragment46_InitCamera(void) {
     UNUSED s32 pad;
     unk_D_86002F58_004_000_010* sp28;
 
-    D_837004C0 = 0;
+    gFragment46_State = 0;
     sp28 = AssetManager_Create(1);
     Cam_CallInit318B8();
-    D_837004B0 = Cam_Create(0x280, 0x1E0, NULL, D_837004C8->unk_18[0], sp28, D_837004C4, func_834006A0(1));
+    gFragment46_Camera = Cam_Create(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, func_834006A0(1));
 }
 
 void func_83700090(void) {
 }
 
-void func_83700098(void) {
-    static s16 D_837004B4 = 0;
+void Fragment46_DrawFrame(void) {
+    static s16 gFragment46_FrameCounter = 0;
 
     Stage_BeginDisplayList();
-    if (D_837004B0->unk_00 == 2) {
-        func_834018C0(D_837004B0->unk_08->img_p, 0, 0, D_837004B0->unk_04, D_837004B0->unk_06, 1, 0);
+    if (gFragment46_Camera->unk_00 == 2) {
+        func_834018C0(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->unk_04, gFragment46_Camera->unk_06, 1, 0);
     }
     Stage_Advance();
-    D_837004B4 += 0x1000;
+    gFragment46_FrameCounter += 0x1000;
 }
 
-s32 func_83700114(void) {
+s32 Fragment46_CheckStartInput(void) {
     s32 sp1C = 0;
 
-    if (Cam_FindActiveIndex(&D_837004B0, 1) != -1) {
+    if (Cam_FindActiveIndex(&gFragment46_Camera, 1) != -1) {
         return 0;
     }
 
@@ -55,24 +55,24 @@ s32 func_83700114(void) {
     return sp1C;
 }
 
-s32 func_83700174(void) {
-    static s32 D_837004B8 = 2;
+s32 Fragment46_RunStateMachine(void) {
+    static s32 gFragment46_FadeDelay = 2;
 
     s32 sp1C = 1;
 
-    switch (D_837004C0) {
+    switch (gFragment46_State) {
         case 0:
             if (Stage_GetFadeState() == 0) {
-                D_837004B8--;
-                if (D_837004B8 <= 0) {
-                    D_837004C0 = 1;
+                gFragment46_FadeDelay--;
+                if (gFragment46_FadeDelay <= 0) {
+                    gFragment46_State = 1;
                 }
             }
             break;
 
         case 1:
-            if (func_83700114() != 0) {
-                D_837004C0 = 2;
+            if (Fragment46_CheckStartInput() != 0) {
+                gFragment46_State = 2;
                 PlaySoundEffect(0x1A);
                 Stage_FadeOut(1);
             }
@@ -87,26 +87,26 @@ s32 func_83700174(void) {
     return sp1C;
 }
 
-void func_8370023C(void) {
+void Fragment46_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-void func_8370026C(void) {
+void Fragment46_MainLoop(void) {
     do {
-        Cam_Update(D_837004B0);
-    } while (D_837004B0->unk_00 != 2);
+        Cam_Update(gFragment46_Camera);
+    } while (gFragment46_Camera->unk_00 != 2);
 
     Stage_FadeIn(1);
 
     do {
-        func_8370023C();
-        func_83700098();
-    } while (func_83700174() != 0);
+        Fragment46_ReadInputs();
+        Fragment46_DrawFrame();
+    } while (Fragment46_RunStateMachine() != 0);
 }
 
-s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Fragment46_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('ELRG');
@@ -114,7 +114,7 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
     Gfx_InitBuffers(0x10000, 0);
 
     sp24 = Stage_Create(1, 0, 1, 0, 2, 1);
-    D_837004C8 = sp24;
+    gFragment46_Stage = sp24;
 
     Text_Init(0x18, 0);
 
@@ -127,11 +127,11 @@ s32 func_837002EC(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     AssetManager_LoadArchives();
 
-    D_837004C4 = ASSET_LOAD2(stadium_models, 1, 1);
+    gStadiumModelsArchive = ASSET_LOAD2(stadium_models, 1, 1);
 
-    func_83700020();
+    Fragment46_InitCamera();
     Stage_Set(sp24);
-    func_8370026C();
+    Fragment46_MainLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

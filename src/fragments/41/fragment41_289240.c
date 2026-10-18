@@ -240,7 +240,7 @@ void HandlePickerInput(unk_D_82F144D0* arg0) {
             arg0->unk_0000 = 4;
             arg0->unk_000C = 0;
             arg0->unk_0002 = 0xA;
-            func_82F052F0(arg0, temp_a1, arg0->unk_0004 + (arg0->unk_0018 * 0x58) + 0x2C,
+            BattleResultScreen_Start(arg0, temp_a1, arg0->unk_0004 + (arg0->unk_0018 * 0x58) + 0x2C,
                           arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x3A);
             PlaySoundEffect(2);
         } else {

@@ -534,7 +534,7 @@ void Game_RunPokemonLab(void) {
 
             if (func_80029080() != -1) {
                 GbsEnsureBankLoaded(3);
-                func_80023D60(func_80029080());
+                SnapSelect_SetCameraMode(func_80029080());
             }
 
             Gfx_InitBuffers(0x16000, 0);

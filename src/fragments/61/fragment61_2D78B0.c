@@ -788,7 +788,7 @@ s32 func_84203210(void) {
                 main_pool_push_state('pkgb');
 
                 if (var_s2 < 4) {
-                    func_80023D60(var_s2);
+                    SnapSelect_SetCameraMode(var_s2);
                     func_80024208(var_s2);
                     gBattleContext.unk_11F0 = func_80025328(var_s2);
                 } else {
@@ -874,7 +874,7 @@ s32 func_842034E4(void) {
                 main_pool_push_state('pkgb');
 
                 if (var_s2 < 4) {
-                    func_80023D60(var_s2);
+                    SnapSelect_SetCameraMode(var_s2);
                     func_80024208(var_s2);
                     gBattleContext.unk_11F0 = func_80025328(var_s2);
                 } else {
@@ -920,7 +920,7 @@ void func_842037AC(void) {
         main_pool_push_state('regi');
 
         if (temp_v0 < 4) {
-            func_80023D60(temp_v0);
+            SnapSelect_SetCameraMode(temp_v0);
             func_80024208(temp_v0);
             func_80025040(temp_v0, &sp60);
             DecodeGen1String(sp74, sp60.unk_02);

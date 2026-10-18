@@ -12,7 +12,7 @@ static s16 D_83407C0A;
 static s16 D_83402E40 = 0;
 static s16 D_83402E44[] = { 3, 4, 1 };
 
-static unk_D_83402E4C D_83402E4C[] = {
+static MenuPanelInfo D_83402E4C[] = {
     {
         120,
         160,
@@ -74,31 +74,31 @@ static s16 D_83402EAC[] = {
     0,
 };
 
-void func_83402430(unk_D_83402E4C* arg0, s16 arg1) {
+void MenuPanel_DrawYesNo(MenuPanelInfo* arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     if (arg1 == 0) {
-        Text_Print(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, func_834023CC(0x29));
+        Text_Print(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, Text_GetMessageString_Bank1A(0x29));
     } else {
-        Text_Print(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, func_834023CC(0x2A));
+        Text_Print(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, Text_GetMessageString_Bank1A(0x2A));
     }
     Text_SetupDL();
 }
 
-void func_834024C4(unk_D_83402E4C* arg0) {
+void func_834024C4(MenuPanelInfo* arg0) {
     char* temp_v0;
     s32 i;
     s32 tmp;
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    temp_v0 = func_83402374(0x2A);
+    temp_v0 = Text_GetMessageString_Bank2C(0x2A);
     tmp = (arg0->unk_04 - MeasureTextWidth(0, 0, temp_v0)) / 2;
     Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
         Text_SetFont(0x10, 0);
-        temp_v0 = func_83402374(D_83402E9C[i]);
+        temp_v0 = Text_GetMessageString_Bank2C(D_83402E9C[i]);
         if (i == D_83407C0A) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         } else {
@@ -109,7 +109,7 @@ void func_834024C4(unk_D_83402E4C* arg0) {
 
         if (i == 1) {
             Text_SetFont(8, 0);
-            Text_Print(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x58, func_83402374(0x36));
+            Text_Print(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x58, Text_GetMessageString_Bank2C(0x36));
         }
     }
 
@@ -120,20 +120,20 @@ void func_834024C4(unk_D_83402E4C* arg0) {
     }
 }
 
-void func_834026A4(unk_D_83402E4C* arg0) {
+void func_834026A4(MenuPanelInfo* arg0) {
     s32 i;
     s32 tmp;
     char* temp_v0;
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    temp_v0 = func_83402374(0x2E);
+    temp_v0 = Text_GetMessageString_Bank2C(0x2E);
     tmp = (arg0->unk_04 - MeasureTextWidth(0, 0, temp_v0)) / 2;
     Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
         Text_SetFont(0x10, 0);
-        temp_v0 = func_83402374(D_83402EAC[i]);
+        temp_v0 = Text_GetMessageString_Bank2C(D_83402EAC[i]);
         if (i == D_83407C0A) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         } else {
@@ -149,23 +149,23 @@ void func_834026A4(unk_D_83402E4C* arg0) {
     }
 }
 
-void func_83402834(unk_D_83402E4C* arg0) {
+void func_83402834(MenuPanelInfo* arg0) {
     UNUSED s32 pad;
-    s32 sp18 = (0xC8 - MeasureTextWidth(0x10, 0, func_83402374(0x41))) / 2;
+    s32 sp18 = (0xC8 - MeasureTextWidth(0x10, 0, Text_GetMessageString_Bank2C(0x41))) / 2;
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    Text_Print(arg0->unk_00 + sp18, arg0->unk_02 + 0x14, func_83402374(0x41));
+    Text_Print(arg0->unk_00 + sp18, arg0->unk_02 + 0x14, Text_GetMessageString_Bank2C(0x41));
     Text_SetupDL();
 }
 
-void func_834028C4(void) {
+void SnapSelect_SetupDisplay(void) {
     D_83402E40 = 0;
 }
 
-void func_834028D0(UNUSED s32 arg0) {
+void SnapSelect_UpdateUIState(UNUSED s32 arg0) {
     s16 var_a3;
-    unk_D_83402E4C* temp_s0;
+    MenuPanelInfo* temp_s0;
     s16 tmp;
 
     if ((D_83402E40 != 0) && (D_83407C08 > 0)) {
@@ -183,11 +183,11 @@ void func_834028D0(UNUSED s32 arg0) {
 
             switch (D_83407C00) {
                 case 0:
-                    func_83402430(temp_s0, 0);
+                    MenuPanel_DrawYesNo(temp_s0, 0);
                     break;
 
                 case 1:
-                    func_83402430(temp_s0, 1);
+                    MenuPanel_DrawYesNo(temp_s0, 1);
                     break;
 
                 case 2:
@@ -208,7 +208,7 @@ void func_834028D0(UNUSED s32 arg0) {
 
 void func_83402A38(void) {
     s32 tmpA;
-    unk_D_83402E4C* temp_v0;
+    MenuPanelInfo* temp_v0;
     s16* temp_a3;
     s32 tmp8;
 
@@ -331,7 +331,7 @@ s32 func_83402D74(s16 arg0) {
     return 0;
 }
 
-s16 func_83402DC8(s16 arg0) {
+s16 SnapSelect_GetResultCode(s16 arg0) {
     if ((D_83402E40 == 4) && (arg0 == D_83407C00)) {
         D_83402E40 = 0;
         return D_83407C0A;

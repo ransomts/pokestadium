@@ -687,7 +687,7 @@ s32 func_80023B7C(s32 arg0) {
     return sp2C;
 }
 
-s32 func_80023D60(s32 arg0) {
+s32 SnapSelect_SetCameraMode(s32 arg0) {
     u8 sp2F;
     s32 temp_s1 = 0;
 

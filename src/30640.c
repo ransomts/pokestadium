@@ -43,8 +43,8 @@ typedef struct unk_func_80031660_sp24 {
     /* 0x18 */ s32 unk_18;
 } unk_func_80031660_sp24; // size = 0x1C
 
-extern unk_func_80031270* gCamPrimary;
-extern unk_func_80031270* gCamSecondary;
+extern Camera* gCamPrimary;
+extern Camera* gCamSecondary;
 extern u32 gCamFovTable[2];
 extern FramebufferImage* gCamFramebuffer;
 extern s32 gCamTexWidth;
@@ -64,8 +64,8 @@ s32 Cam_SetupDefaultCamera(s32 arg0, unk_D_86002F34_00C* arg1);
 s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1);
 
 s16 gCamDistances[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80, 120, 60, 70, 100, 70, 130, 170, 80, 110, 65, 160, 120, 180, 85, 105, 100, 130, 80, 100, 160, 100, 120, 160, 100, 140, 80, 130, 90, 120, 110, 160, 90, 100, 160, 80, 125, 130, 150, 60, 120, 70, 105, 105, 170, 90, 120, 100, 190, 100, 140, 170, 90, 150, 150, 80, 120, 160, 80, 165, 170, 140, 160, 120, 140, 160, 110, 170, 140, 160, 80, 110, 100, 140, 150, 110, 90, 140, 220, 85, 170, 150, 180, 150, 250, 120, 160, 102, 160, 100, 130, 110, 160, 60, 100, 150, 140, 150, 110, 140, 130, 200, 150, 120, 220, 80, 140, 80, 140, 90, 110, 140, 160, 140, 130, 130, 150, 160, 90, 270, 250, 100, 65, 120, 120, 110, 120, 70, 120, 90, 140, 200, 180, 170, 180, 180, 100, 200, 180, 180, 85, 100, 40, 0, 0, 0, 0, 0, 0 };
-unk_func_80031270* gCamPrimary = NULL;
-unk_func_80031270* gCamSecondary = NULL;
+Camera* gCamPrimary = NULL;
+Camera* gCamSecondary = NULL;
 u32 gCamFovTable[2] = { 0x42200000, 0x41C80000 };
 FramebufferImage* gCamFramebuffer = NULL;
 s32 gCamTexWidth = 200;
@@ -279,8 +279,8 @@ u32 Cam_GetUnk6CHigh(unk_D_83403C60* arg0) {
 }
 
 s32 Cam_GetActive(s32 arg0) {
-    unk_func_80031270* var_a1;
-    UNUSED unk_func_80031270* sp1C;
+    Camera* var_a1;
+    UNUSED Camera* sp1C;
 
     var_a1 = NULL;
     switch (arg0) {
@@ -529,7 +529,7 @@ void Cam_ConvertStateToInput(unk_func_80026268_arg0* arg0, unk_D_83407AC8* arg1)
     }
 }
 
-void Cam_ProcessGeoLayout(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
+void Cam_ProcessGeoLayout(Camera* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
@@ -540,10 +540,10 @@ void Cam_ProcessGeoLayout(unk_func_80031270* arg0, UNUSED s16 arg1, UNUSED s16 a
     mem_pool_resize_block(sp18);
 }
 
-unk_func_80031270* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
+Camera* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
                                  unk_D_86002F58_004_000_010* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
     UNUSED FramebufferImage* var_v0;
-    unk_func_80031270* temp_v0 = main_pool_alloc(sizeof(unk_func_80031270), 0);
+    Camera* temp_v0 = main_pool_alloc(sizeof(Camera), 0);
 
     if (temp_v0 != NULL) {
         temp_v0->unk_00 = 0;
@@ -629,7 +629,7 @@ typedef struct unk_D_83403C60_raw {
     /* 0x8A */ char unk8A[0x2];
 } unk_D_83403C60_raw; // size = 0x8C
 
-void Cam_Initialize(unk_func_80031270* arg0) {
+void Cam_Initialize(Camera* arg0) {
     s32 sp94;
     arg1_func_80010CA8 sp90;
     UNUSED s32 pad[3]; // unk_func_80026268_arg0 potentially bigger?
@@ -659,7 +659,7 @@ void Cam_Initialize(unk_func_80031270* arg0) {
     SetAnimStateIndex(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
 }
 
-void Cam_LoadGeometry(unk_func_80031270* arg0) {
+void Cam_LoadGeometry(Camera* arg0) {
     MemoryBlock* sp24;
     FragmentEntry sp20;
     u32* temp_v0;
@@ -702,7 +702,7 @@ void Cam_LoadGeometry(unk_func_80031270* arg0) {
     temp_v1->unk_01 = (u8) (temp_v1->unk_01 | 1);
 }
 
-u8* Cam_Update(unk_func_80031270* arg0) {
+u8* Cam_Update(Camera* arg0) {
     unk_func_80031660_sp24* sp24;
     void (*sp20)();
 
@@ -752,7 +752,7 @@ u8* Cam_Update(unk_func_80031270* arg0) {
     return arg0->unk_08->img_p;
 }
 
-s32 Cam_IsMonIndexDisplayable(unk_func_80031270* arg0) {
+s32 Cam_IsMonIndexDisplayable(Camera* arg0) {
     s32 var_v1;
     s32 sp1C;
     unk_D_83403C60* temp_a0;
@@ -771,8 +771,8 @@ s32 Cam_IsMonIndexDisplayable(unk_func_80031270* arg0) {
     return var_v1;
 }
 
-s32 Cam_FindActiveIndex(unk_func_80031270** arg0, s32 arg1) {
-    unk_func_80031270* temp_s1;
+s32 Cam_FindActiveIndex(Camera** arg0, s32 arg1) {
+    Camera* temp_s1;
     s32 sp30;
     s32 i;
 
@@ -788,7 +788,7 @@ s32 Cam_FindActiveIndex(unk_func_80031270** arg0, s32 arg1) {
     return sp30;
 }
 
-unk_func_80031270* Cam_GetCurrent(void) {
+Camera* Cam_GetCurrent(void) {
     return gCamSecondary;
 }
 

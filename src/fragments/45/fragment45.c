@@ -15,14 +15,14 @@
 #include "src/stage_loader.h"
 
 s32 gSelectionState;
-s32 D_836032F4;
+s32 gSelectionMessageState;
 BinArchive* D_836032F8;
 unk_D_83407B38 D_83603300;
 s32 D_836033B4;
 s32 D_836033B8;
 s32 D_836033BC;
 u16 D_836033C0;
-s32 D_836033C4;
+s32 gCursorCanMoveUp;
 s32 D_836033C8;
 
 void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
@@ -47,18 +47,18 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
 
     for (i = 0; i < 24; i++) {
         if (D_83403C00[i] != 0) {
-            idx = func_834007B4(D_83403C60, 0x24, sp40, 0);
+            idx = FindNthDisplayableMonIndex(D_83403C60, 0x24, sp40, 0);
 
             temp_s0 = arg0->unk_20[i]->unk_18;
 
             D_83403C60[idx] = *temp_s0;
 
-            temp_v0 = func_83400870(D_83407ABC, 4);
+            temp_v0 = FindFirstUndisplayedMonIndex(D_83407ABC, 4);
             if (temp_v0 >= 0) {
                 D_83407ABC[temp_v0] = *temp_s0;
             }
 
-            temp_v0 = func_83400870(D_83407AC0, 0x10);
+            temp_v0 = FindFirstUndisplayedMonIndex(D_83407AC0, 0x10);
             if (temp_v0 >= 0) {
                 D_83407AC0[temp_v0] = *temp_s0;
             }
@@ -85,9 +85,9 @@ void UpdateCursorEdgeFlags(unk_D_83407B38* arg0) {
     s32 sp18 = arg0->unk_08 + 1;
 
     if (func_83402124(arg0, arg0->unk_08 - 1) > 0) {
-        D_836033C4 = 1;
+        gCursorCanMoveUp = 1;
     } else {
-        D_836033C4 = 0;
+        gCursorCanMoveUp = 0;
     }
 
     if (func_83402124(arg0, sp18) > 0) {
@@ -108,7 +108,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     s32 sp1C;
     s32 idx;
     s32 i;
-    unk_func_80031270* ptr;
+    Camera* ptr;
 
     sp54 = 0;
     sp50 = arg0->unk_08;
@@ -144,7 +144,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
 
         if (sp44 < 2) {
             if (sp48 < 0) {
-                if (D_836033C4 != 0) {
+                if (gCursorCanMoveUp != 0) {
                     sp48 = 2;
                 } else {
                     sp48 = 0;
@@ -180,13 +180,13 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
 
     arg0->unk_00 = sp1C + sp48;
     if (sp4C != arg0->unk_00) {
-        D_836032F4 = 0;
+        gSelectionMessageState = 0;
         PlaySoundEffect(1);
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp40 != 0)) {
         s32 tmp = arg0->unk_08;
-        if (D_836033C4 != 0) {
+        if (gCursorCanMoveUp != 0) {
             tmp--;
             arg0->unk_08 = tmp;
         }
@@ -206,7 +206,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
                         D_836033B4++;
                         PlaySoundEffect(0xD);
                     } else {
-                        D_836032F4 = 1;
+                        gSelectionMessageState = 1;
                         PlaySoundEffect(8);
                     }
                 } else {
@@ -222,7 +222,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
             PlaySoundEffect(0x1C);
         } else if (HasUnselectedDisplayableMonsters() != 0) {
             gSelectionState = 2;
-            D_836032F4 = 2;
+            gSelectionMessageState = 2;
             PlaySoundEffect(0x31);
         } else {
             sp54 = 1;
@@ -240,7 +240,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     }
 
     if (sp50 != arg0->unk_08) {
-        D_836032F4 = 0;
+        gSelectionMessageState = 0;
         PlaySoundEffect(0x27);
         UpdateCursorEdgeFlags(arg0);
 
@@ -259,7 +259,7 @@ void InitializeSelectionScreen(s32 arg0) {
     s32 i;
 
     gSelectionState = 0;
-    D_836032F4 = 0;
+    gSelectionMessageState = 0;
     D_836033B4 = 0;
 
     for (i = 0; i < 24; i++) {
@@ -268,7 +268,7 @@ void InitializeSelectionScreen(s32 arg0) {
         }
     }
 
-    D_836033B8 = func_83400704(D_83403C60, 0x24, 0);
+    D_836033B8 = CountDisplayableMonIndices(D_83403C60, 0x24, 0);
     D_836033C0 = 0xFFE3;
 
     if (arg0 != 0) {
@@ -277,7 +277,7 @@ void InitializeSelectionScreen(s32 arg0) {
         D_836033BC = 0;
     }
 
-    func_83401D68(&D_83603300, 0x88, 0x66, 6, 3, AssetManager_Create(5), D_836032F8, D_83402EE0, 0x18, 1);
+    CamList_Init(&D_83603300, 0x88, 0x66, 6, 3, AssetManager_Create(5), D_836032F8, D_83402EE0, 0x18, 1);
 
     if (D_83407AF8.unk_00 != -1) {
         func_834021EC(&D_83603300, &D_83407AF8);
@@ -374,7 +374,7 @@ void DrawSelectionHighlightBar(s32 arg0, s32 arg1, s16 arg2) {
     Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_83601314(s32 arg0, s32 arg1, s16 arg2) {
+void DrawPulsatingBar(s32 arg0, s32 arg1, s16 arg2) {
     s32 temp_v0_2;
     s32 end = 0x20;
     s32 i;
@@ -421,7 +421,7 @@ void RenderSelectionScreenItems(unk_D_83407B38* arg0) {
     s32 temp_s4;
     s32 temp_s5;
     s32 i;
-    unk_func_80031270* temp_s0;
+    Camera* temp_s0;
 
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s5 = (arg0->unk_08 * arg0->unk_14) + i;
@@ -487,11 +487,11 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     Color_RGBA8 sp74;
     Color_RGBA8 sp70;
 
-    sp84 = func_83402374(2);
+    sp84 = Text_GetMessageString_Bank2C(2);
     sp74 = D_83603284;
     sp70 = D_83603288;
     sp7C = SINS(D_8360328C) * 4.0f;
-    func_83401110(arg0, arg1, 0x1B6, &sp74, &sp70);
+    DrawPanelWithTextures(arg0, arg1, 0x1B6, &sp74, &sp70);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -502,7 +502,7 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     Gfx_DrawTextureRect(arg0 + 0x36, arg1 - 3, 0x64, 0x24, 0, 0, 0x400, 0x400, 0);
     Gfx_DrawTextureRect(arg0 + 0x11C, arg1 - 3, 0x64, 0x24, 0xC60, 0, -0x400, 0x400, 0);
 
-    if (D_836033C4 != 0) {
+    if (gCursorCanMoveUp != 0) {
         sp78 = sp7C;
         sp80 = 0xFF;
     } else {
@@ -553,7 +553,7 @@ void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
     u16* spE4[] = { D_04000000, D_03005F80 };
     s16 spE0[] = { 0x39, 0x37 };
     u16* spDC = spE4[arg2];
-    char* spD8 = func_83402374(spE0[arg2]);
+    char* spD8 = Text_GetMessageString_Bank2C(spE0[arg2]);
     Color_RGB8 spD0[] = {
         { 0xE6, 0xDC, 0x0F },
         { 0xE6, 0x6E, 0x82 },
@@ -637,29 +637,29 @@ void DrawBackgroundGradient(void) {
     }
 }
 
-char* func_8360282C(unk_D_83407B38* arg0) {
+char* GetSelectionPromptString(unk_D_83407B38* arg0) {
     static s32 D_836032B4[] = { 0x21, 0x24 };
 
     char* var_v0;
     s32 temp_lo = arg0->unk_00 % 3;
     s32 temp_hi = arg0->unk_00 / 3;
 
-    if (D_836032F4 == 0) {
+    if (gSelectionMessageState == 0) {
         if (temp_hi < 2) {
-            var_v0 = func_83402374(0x1E);
+            var_v0 = Text_GetMessageString_Bank2C(0x1E);
         } else if (temp_lo == 0) {
-            var_v0 = func_83402374(0x22);
+            var_v0 = Text_GetMessageString_Bank2C(0x22);
         } else {
-            var_v0 = func_83402374(0x23);
+            var_v0 = Text_GetMessageString_Bank2C(0x23);
         }
     } else {
-        var_v0 = func_83402374(D_836032B4[D_836032F4 - 1]);
+        var_v0 = Text_GetMessageString_Bank2C(D_836032B4[gSelectionMessageState - 1]);
     }
     return var_v0;
 }
 
-void func_836028E8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    char* sp1C = func_8360282C(arg0);
+void DrawSelectionPrompt(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+    char* sp1C = GetSelectionPromptString(arg0);
 
     func_834008DC(arg1, arg2, 0x136, 0x4C);
     if (sp1C != NULL) {
@@ -671,7 +671,7 @@ void func_836028E8(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_8360296C(s32 arg0, s32 arg1) {
+void DrawTeamSizeBar(s32 arg0, s32 arg1) {
     static s16 D_836032BC = 0;
 
     char sp28[255];
@@ -680,12 +680,12 @@ void func_8360296C(s32 arg0, s32 arg1) {
     s32 sp1C;
 
     MessageBank_SetPointer_1_9(2, 0x63);
-    sp24 = func_834023A4(sp28, 0x100, 0x20);
+    sp24 = Text_GetMessageString_Bank2C_Buffered(sp28, 0x100, 0x20);
     sp20 = MeasureTextWidth(8, 0, sp24) / 2;
-    func_83601314((arg0 - sp20) - 0x26, arg1 - 4, D_836032BC);
+    DrawPulsatingBar((arg0 - sp20) - 0x26, arg1 - 4, D_836032BC);
     MessageBank_SetPointer_1_9(2, D_836033B8 - D_836033B4);
 
-    sp24 = func_834023A4(sp28, 0x100, 0x20);
+    sp24 = Text_GetMessageString_Bank2C_Buffered(sp28, 0x100, 0x20);
     sp1C = MeasureTextWidth(8, 0, sp24);
 
     Text_ResetState();
@@ -697,11 +697,11 @@ void func_8360296C(s32 arg0, s32 arg1) {
     D_836032BC += 0x400;
 }
 
-void func_83602A8C(s32 arg0, s32 arg1) {
+void DrawCancelLabel(s32 arg0, s32 arg1) {
     char* sp2C;
     s32 sp28;
 
-    sp2C = func_83402374(0x3C);
+    sp2C = Text_GetMessageString_Bank2C(0x3C);
     sp28 = -MeasureTextWidth(8, 0, sp2C) / 2;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -714,7 +714,7 @@ void func_83602A8C(s32 arg0, s32 arg1) {
     Text_SetupDL();
 }
 
-f32 func_83602B98(s32* arg0, u32* arg1, s32 arg2) {
+f32 UpdateStatBarAnimation(s32* arg0, u32* arg1, s32 arg2) {
     f32 coss;
 
     if (*arg0 < arg2) {
@@ -733,7 +733,7 @@ f32 func_83602B98(s32* arg0, u32* arg1, s32 arg2) {
     return coss;
 }
 
-void func_83602C14(void) {
+void RenderSelectionScreen(void) {
     static s32 D_836032C0 = 0;
     static u32 D_836032C4 = 0;
     static s32 D_836032C8 = 0;
@@ -754,8 +754,8 @@ void func_83602C14(void) {
     DrawFilledRect(0, 0x5F, 0x280, 0xF2);
     RenderSelectionScreenItems(&D_83603300);
 
-    sp1C = func_83602B98(&D_836032C0, &D_836032C4, 0x1E);
-    sp18 = func_83602B98(&D_836032C8, &D_836032CC, 0xF);
+    sp1C = UpdateStatBarAnimation(&D_836032C0, &D_836032C4, 0x1E);
+    sp18 = UpdateStatBarAnimation(&D_836032C8, &D_836032CC, 0xF);
 
     tmp = ((sp24 >= 2) && (sp28 == 0)) ? sp18 : sp1C;
     DrawStatBar(0x30, 0x172, 0, tmp);
@@ -765,26 +765,26 @@ void func_83602C14(void) {
 
     DrawSelectionCursor(&D_83603300);
     DrawSelectionArrows(0x65, 0x2B);
-    func_836028E8(&D_83603300, 0xA5, 0x16B);
-    func_8360296C(0xF0, 0x14E);
-    func_83602A8C(0x1E0, 0x14E);
+    DrawSelectionPrompt(&D_83603300, 0xA5, 0x16B);
+    DrawTeamSizeBar(0xF0, 0x14E);
+    DrawCancelLabel(0x1E0, 0x14E);
     Stage_Advance();
 }
 
-void func_83602D98(void) {
+void HandleSelectionConfirmCancel(void) {
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         gSelectionState = 3;
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(0xF);
         PlaySoundEffect(0x1D);
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
-        D_836032F4 = 0;
+        gSelectionMessageState = 0;
         gSelectionState = 1;
         PlaySoundEffect(3);
     }
 }
 
-s32 func_83602E14(void) {
+s32 UpdateSelectionStateMachine(void) {
     static s32 D_836032D0 = 2;
 
     s32 sp1C = 1;
@@ -815,7 +815,7 @@ s32 func_83602E14(void) {
             break;
 
         case 2:
-            func_83602D98();
+            HandleSelectionConfirmCancel();
             break;
 
         case 3:
@@ -827,13 +827,13 @@ s32 func_83602E14(void) {
     return sp1C;
 }
 
-void func_83602F1C(void) {
+void PollControllerAndMenuInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-void func_83602F4C(void) {
+void RunSelectionScreenLoop(void) {
     if (D_836033BC == 0) {
         Stage_FadeIn(1);
     } else {
@@ -841,7 +841,7 @@ void func_83602F4C(void) {
     }
 
     do {
-        func_83602F1C();
+        PollControllerAndMenuInput();
 
         switch (gSelectionState) {
             case 0:
@@ -849,16 +849,16 @@ void func_83602F4C(void) {
                 break;
 
             default:
-                func_83401FD0(&D_83603300);
+                CamList_Update(&D_83603300);
                 break;
         }
 
-        func_83602C14();
+        RenderSelectionScreen();
         func_834020D8();
-    } while (func_83602E14() != 0);
+    } while (UpdateSelectionStateMachine() != 0);
 }
 
-s32 func_83602FF4(unk_D_83407B38* arg0) {
+s32 FinalizeSelectionAndCleanup(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 sp1C;
@@ -879,7 +879,7 @@ s32 func_83602FF4(unk_D_83407B38* arg0) {
     return sp1C;
 }
 
-void func_836030A8(s32 arg0, UNUSED s32 arg1) {
+void SelectionScreen_Main(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('FILM');
@@ -897,15 +897,15 @@ void func_836030A8(s32 arg0, UNUSED s32 arg1) {
     AssetManager_LoadArchives();
     D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
     MessageBank_Init();
-    func_83402340();
+    Text_LoadMessageBanks();
     InitializeSelectionScreen(arg0);
     Stage_Set(sp24);
-    func_83602F4C();
+    RunSelectionScreenLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('FILM');
 
-    func_83602FF4(&D_83603300);
+    FinalizeSelectionAndCleanup(&D_83603300);
 }

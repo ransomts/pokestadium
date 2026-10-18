@@ -36,16 +36,16 @@ typedef struct unk_D_83303180 {
 } unk_D_83303180; // size = 0xC
 
 static s32 D_833032E0;
-static s32 D_833032E4;
-static unk_D_83407B38 D_833032E8;
-static BinArchive* D_8330339C;
-static s32 D_833033A0;
-static unk_D_83403C60 D_833033A8;
+static s32 gMenuStep;
+static unk_D_83407B38 gMenuActiveData;
+static BinArchive* gMenuAssetArchive;
+static s32 gMenuDirty;
+static unk_D_83403C60 gSwapTempPokemon;
 static s32 D_83303434;
-static s32 D_83303438;
-static s32 D_8330343C;
-static s32 D_83303440;
-static s32 D_83303444;
+static s32 gBackgroundFadeTimer;
+static s32 gStickerStationConnected;
+static s32 gFadeOutTimer;
+static s32 gMenuInputLocked;
 
 static unk_D_83303180 D_83303180[] = {
     { NULL, 0x30, 0x23, 0 },
@@ -167,7 +167,7 @@ unk_D_83407B38* GetActiveMenu(void) {
     unk_D_83407B38* ret;
 
     if (D_83407AE4 == 0) {
-        ret = &D_833032E8;
+        ret = &gMenuActiveData;
     } else {
         ret = &D_83407B38;
     }
@@ -183,17 +183,17 @@ void UpdateMenuItemStates(void) {
     u8* sp18;
     s32 var_v0;
 
-    sp28 = func_83400704(D_83403C60, 0x24, 1);
+    sp28 = CountDisplayableMonIndices(D_83403C60, 0x24, 1);
     if (D_83407AE4 == 0) {
         sp1C[1] = 0xF;
         sp1C[0] = 0x14;
-        var_v0 = func_83400704(D_83407ABC, 4, 1);
+        var_v0 = CountDisplayableMonIndices(D_83407ABC, 4, 1);
         sp20 = 4;
         sp18 = D_3004540;
     } else {
         sp1C[1] = 0x3F;
         sp1C[0] = 0x40;
-        var_v0 = func_83400704(D_83407AC0, 0x10, 1);
+        var_v0 = CountDisplayableMonIndices(D_83407AC0, 0x10, 1);
         sp20 = 0x10;
         sp18 = D_3005260;
     }
@@ -233,7 +233,7 @@ void UpdateMenuItemStates(void) {
 
                 if ((var_v0 < sp20) && (D_83407AE8 == 0)) {
                     ptr->unk_12 = 1;
-                } else if (D_8330343C == 0) {
+                } else if (gStickerStationConnected == 0) {
                     ptr->unk_12 = 2;
                 } else {
                     ptr->unk_12 = 0;
@@ -247,13 +247,13 @@ void UpdateMenuItemStates(void) {
     }
 }
 
-s32 func_833005CC(void) {
+s32 Menu_HandleConfirm(void) {
     s32 sp1C = 0;
 
     if (func_83400334() != 0) {
-        D_833032E4 = 6;
+        gMenuStep = 6;
         func_83402CE4(3, gPlayer1Controller);
-        D_83303438 = 4;
+        gBackgroundFadeTimer = 4;
     } else {
         sp1C = 1;
     }
@@ -298,11 +298,11 @@ s32 ProcessMenuInput(void) {
     sp24 = &D_833031B4[D_83402E28];
 
     if (sp1C != D_83402E28) {
-        D_833033A0 = 0;
-        D_83303444 = 0;
+        gMenuDirty = 0;
+        gMenuInputLocked = 0;
     }
 
-    if ((D_83407AEC != 0) && (D_83303444 == 0)) {
+    if ((D_83407AEC != 0) && (gMenuInputLocked == 0)) {
         if ((gPlayer1Controller->buttonDown & 0x20) && (gPlayer1Controller->buttonDown & 0x10) && (D_83402E28 == 5)) {
             D_83407AE8 = 1;
         } else {
@@ -311,12 +311,12 @@ s32 ProcessMenuInput(void) {
     }
 
     if (sp20 != D_83407AE8) {
-        D_833033A0 = 0;
+        gMenuDirty = 0;
         UpdateMenuItemStates();
     }
 
     if (sp2C != 0) {
-        if (func_833005CC() != 0) {
+        if (Menu_HandleConfirm() != 0) {
             sp28 = 1;
         }
         PlaySoundEffect(sp24->unk_14);
@@ -329,7 +329,7 @@ s32 ProcessMenuInput(void) {
 
                 case 3:
                     D_833032E0 = 2;
-                    D_833032E4 = 3;
+                    gMenuStep = 3;
                     break;
 
                 case 4:
@@ -341,13 +341,13 @@ s32 ProcessMenuInput(void) {
                     if (D_83407AE8 != 0) {
                         sp28 = 2;
                     } else {
-                        D_833032E4 = 5;
+                        gMenuStep = 5;
                         D_83303434 = 0;
                     }
                     break;
 
                 case 6:
-                    if (func_833005CC() != 0) {
+                    if (Menu_HandleConfirm() != 0) {
                         sp28 = 1;
                     }
                     break;
@@ -357,7 +357,7 @@ s32 ProcessMenuInput(void) {
             sp28 = 2;
             PlaySoundEffect(sp24->unk_14);
         } else {
-            D_833033A0 = 1;
+            gMenuDirty = 1;
             PlaySoundEffect(8);
         }
     }
@@ -366,8 +366,8 @@ s32 ProcessMenuInput(void) {
 
 void ResetMenuState(void) {
     D_833032E0 = 0;
-    D_833032E4 = 1;
-    func_834006BC(&D_83407B30);
+    gMenuStep = 1;
+    GallerySelection_Init(&D_83407B30);
 }
 
 s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
@@ -376,10 +376,10 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
     s32 sp44;
     s32 sp40;
     s32 sp3C;
-    unk_func_80031270* sp38;
+    Camera* sp38;
     UNUSED s32 pad[2];
     s32 idx;
-    unk_func_80031270* sp28;
+    Camera* sp28;
 
     sp4C = 0;
     sp48 = arg0->unk_00;
@@ -446,9 +446,9 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
             } else {
                 if (func_83400660(arg0->unk_B0->unk_18, sp38->unk_18) == 0) {
                     PlaySoundEffect(0x31);
-                    D_833032E4 = 4;
+                    gMenuStep = 4;
 
-                    D_833033A8 = *sp38->unk_18;
+                    gSwapTempPokemon = *sp38->unk_18;
                     *sp38->unk_18 = *arg0->unk_B0->unk_18;
 
                     sp38->unk_00 = 0;
@@ -462,12 +462,12 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         if (arg0->unk_04 == -1) {
             D_833032E0 = 0;
-            D_833032E4 = 1;
+            gMenuStep = 1;
         } else {
             if (arg0->unk_04 >= 4) {
-                func_834006BC(&D_83407B30);
+                GallerySelection_Init(&D_83407B30);
                 D_833032E0 = 0;
-                D_833032E4 = 1;
+                gMenuStep = 1;
             }
             arg0->unk_04 = -1;
         }
@@ -492,7 +492,7 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
     return sp4C;
 }
 
-void func_83300D80(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, f32 arg6) {
+void Menu_DrawAnimatedSprite(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, f32 arg6) {
     s32 temp_fa0;
     s32 temp_fa0_2;
     s32 temp_fv1;
@@ -516,8 +516,8 @@ void func_83300D80(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, 
 }
 
 void DrawMenuScreen(void) {
-    static s16 D_83303288 = 0;
-    static s16 D_8330328C = 0x3200;
+    static s16 gBackgroundAnimPhase = 0;
+    static s16 gBackgroundAnimOffset = 0x3200;
 
     f32 temp_fs0;
     f32 temp_fs1;
@@ -529,10 +529,10 @@ void DrawMenuScreen(void) {
     u8 tmp2;
     u8 r;
 
-    temp_fs0 = (SINS(D_83303288) * 0.2f) + 1.0f;
-    temp_fs1 = (SINS(D_83303288 + D_8330328C) * 0.2f) + 1.0f;
+    temp_fs0 = (SINS(gBackgroundAnimPhase) * 0.2f) + 1.0f;
+    temp_fs1 = (SINS(gBackgroundAnimPhase + gBackgroundAnimOffset) * 0.2f) + 1.0f;
 
-    D_83303288 += 0x2000;
+    gBackgroundAnimPhase += 0x2000;
 
     for (i = 0; i < 7; i++) {
         tmp = (D_833031B4[i].unk_12 == 0) ? 0xFF : 0x40;
@@ -563,10 +563,10 @@ void DrawMenuScreen(void) {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, r);
 
             if ((i == D_83402E28) && (D_833031B4[i].unk_12 == 0)) {
-                func_83300D80(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
+                Menu_DrawAnimatedSprite(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
                               D_833031B4[i].unk_06, temp_fs0, temp_fs1);
             } else {
-                func_8340144C(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
+                DrawVerticalTextureStrip(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
                               D_833031B4[i].unk_06, 0);
             }
         }
@@ -576,7 +576,7 @@ void DrawMenuScreen(void) {
     Text_SetFont(8, 0);
 
     for (i = 0; i < 7; i++) {
-        temp_v0_4 = func_83402374(D_833031B4[i].unk_08);
+        temp_v0_4 = Text_GetMessageString_Bank2C(D_833031B4[i].unk_08);
         temp_s2 = ((0x73 - MeasureTextWidth(0, 0, temp_v0_4)) / 2) + 0xC;
         tmp2 = (D_833031B4[i].unk_12 == 0) ? 0xFFu : 0x40u;
 
@@ -595,7 +595,7 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp2C = { 0xC3, 0x54, 0x84, 0xFF };
     unk_D_83303180* sp20;
 
-    func_83401110(arg0, arg1, 0x186, &sp30, &sp2C);
+    DrawPanelWithTextures(arg0, arg1, 0x186, &sp30, &sp2C);
 
     if ((D_833032E0 != 0) && (D_833032E0 != 2)) {
         sp20 = &D_83303180[arg2];
@@ -612,12 +612,12 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     if (sp20->unk_00 != NULL) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        func_8340144C(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
+        DrawVerticalTextureStrip(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
     }
 
     Text_ResetState();
     Text_SetFont(0x10, 0);
-    sp34 = func_83402374(sp20->unk_08);
+    sp34 = Text_GetMessageString_Bank2C(sp20->unk_08);
     sp3C = (0x186 - MeasureTextWidth(0, 0, sp34)) / 2;
     Text_SetEnvColor(0, 0, 0, 0xFF);
     Text_Print(arg0 + sp3C + 2, arg1 + 5, sp34);
@@ -632,40 +632,40 @@ void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
 
     switch (D_833032E0) {
         case 0:
-            if (D_833032E4 == 5) {
+            if (gMenuStep == 5) {
                 switch (D_83303434) {
                     case 0:
                         if (D_83407AE8 == 0) {
-                            sp18 = func_83402374(0x1B);
+                            sp18 = Text_GetMessageString_Bank2C(0x1B);
                         } else {
-                            sp18 = func_83402374(0x45);
+                            sp18 = Text_GetMessageString_Bank2C(0x45);
                         }
                         break;
 
                     case 1:
-                        sp18 = func_83402374(0x1D);
+                        sp18 = Text_GetMessageString_Bank2C(0x1D);
                 }
                 break;
-            } else if ((D_833033A0 != 0) && (temp_v1->unk_0C != NULL)) {
-                sp18 = func_83402374(temp_v1->unk_0C[temp_v1->unk_12 - 1]);
+            } else if ((gMenuDirty != 0) && (temp_v1->unk_0C != NULL)) {
+                sp18 = Text_GetMessageString_Bank2C(temp_v1->unk_0C[temp_v1->unk_12 - 1]);
             } else {
-                sp18 = func_83402374(temp_v1->unk_0A);
+                sp18 = Text_GetMessageString_Bank2C(temp_v1->unk_0A);
             }
             break;
 
         case 1:
-            if (D_833032E4 == 4) {
-                sp18 = func_83402374(0x17);
+            if (gMenuStep == 4) {
+                sp18 = Text_GetMessageString_Bank2C(0x17);
             } else {
-                sp18 = func_83402374(0x16);
+                sp18 = Text_GetMessageString_Bank2C(0x16);
             }
             break;
 
         case 2:
             if (arg0->unk_04 == -1) {
-                sp18 = func_83402374(0x19);
+                sp18 = Text_GetMessageString_Bank2C(0x19);
             } else {
-                sp18 = func_83402374(0x1A);
+                sp18 = Text_GetMessageString_Bank2C(0x1A);
             }
             break;
     }
@@ -702,31 +702,31 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
             break;
     }
 
-    D_833032E4 = 0;
-    D_83303438 = -1;
-    D_833033A0 = 0;
+    gMenuStep = 0;
+    gBackgroundFadeTimer = -1;
+    gMenuDirty = 0;
     D_83303434 = 0;
-    D_83303444 = 0;
+    gMenuInputLocked = 0;
 
     if (arg1 == 0) {
         D_83407AE8 = 0;
     } else {
         D_83407AE8 = 1;
-        D_83303444 = 1;
+        gMenuInputLocked = 1;
     }
 
     if (IsStickerStationConnected() != 0) {
-        D_8330343C = 1;
+        gStickerStationConnected = 1;
     } else {
-        D_8330343C = 0;
+        gStickerStationConnected = 0;
     }
 
-    func_83400524();
+    Gallery_Reset();
     UpdateMenuItemStates();
     Graph_InitRoots();
     sp30 = AssetManager_Create(5);
-    func_83401D68(&D_833032E8, 0x3C, 0x2D, 4, 2, sp30, D_8330339C, D_83407ABC, 4, 1);
-    func_83402298(&D_83407B38, sp30, D_8330339C);
+    CamList_Init(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, D_83407ABC, 4, 1);
+    func_83402298(&D_83407B38, sp30, gMenuAssetArchive);
 
     if (D_833032E0 == 1) {
         temp_v0_2 = GetActiveMenu();
@@ -734,14 +734,14 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
         temp_v0_2->unk_B0->unk_18 = &D_83403C60[D_83407B30.unk_04];
         temp_v0_2->unk_B0->unk_00 = 0;
     } else if (D_833032E0 == 2) {
-        func_834021EC(&D_833032E8, &D_83407B00);
+        func_834021EC(&gMenuActiveData, &D_83407B00);
         func_834021EC(&D_83407B38, &D_83407B08);
     }
 
-    func_834028C4();
+    SnapSelect_SetupDisplay();
 }
 
-void func_83301998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Color_RGBA8* arg5) {
+void Gfx_DrawFadeOverlay(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Color_RGBA8* arg5) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
@@ -774,18 +774,18 @@ void func_83301998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Co
 void DrawBackground(void) {
     static Color_RGBA8 D_83303298 = { 0, 0, 0, 0xFF };
     static Color_RGBA8 D_8330329C = { 0, 0, 0, 0 };
-    static s32 D_833032A0 = 0xBE;
-    static s32 D_833032A4 = 0xFA;
+    static s32 gBackgroundStartX = 0xBE;
+    static s32 gBackgroundEndX = 0xFA;
 
     s32 var_ra;
     Color_RGBA8 sp80 = D_83303298;
     Color_RGBA8 sp7C = D_8330329C;
 
-    if (D_83303438 > 0) {
-        D_83303438--;
+    if (gBackgroundFadeTimer > 0) {
+        gBackgroundFadeTimer--;
     }
 
-    if (D_83303438 == 0) {
+    if (gBackgroundFadeTimer == 0) {
         var_ra = 0x12C;
     } else {
         var_ra = 0x280;
@@ -801,15 +801,15 @@ void DrawBackground(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3000000, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(D_833032A0, 0, var_ra - D_833032A0, 0x1E0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTextureRect(gBackgroundStartX, 0, var_ra - gBackgroundStartX, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPDisplayList(gDisplayListHead++, D_8006F4C0);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
-    gDPFillRectangle(gDisplayListHead++, 0, 0, D_833032A0 - 1, 479);
+    gDPFillRectangle(gDisplayListHead++, 0, 0, gBackgroundStartX - 1, 479);
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    func_83301998(D_833032A0, 0, D_833032A4 - D_833032A0, 0x1E0, &sp80, &sp7C);
+    Gfx_DrawFadeOverlay(gBackgroundStartX, 0, gBackgroundEndX - gBackgroundStartX, 0x1E0, &sp80, &sp7C);
 }
 
 void DrawPokemonGrid(unk_D_83407B38* arg0) {
@@ -819,7 +819,7 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     s32 temp_s0;
     s32 sp8C;
     s32 var_s6;
-    unk_func_80031270* temp_s1;
+    Camera* temp_s1;
     s32 i;
     s32 j;
     s32 sp78;
@@ -874,7 +874,7 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
 }
 
 void DrawSelectionHighlight(unk_D_83407B38* arg0) {
-    unk_func_80031270* temp_s0;
+    Camera* temp_s0;
     s32 sp58;
     s32 sp54;
     s32 sp50;
@@ -934,11 +934,11 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
     }
 }
 
-void func_8330267C(s32 arg0) {
+void Menu_DrawHeader(s32 arg0) {
     s8* sp2C;
     s32 temp_v1;
 
-    sp2C = func_83402374(0x3C);
+    sp2C = Text_GetMessageString_Bank2C(0x3C);
     temp_v1 = ((0x186 - MeasureTextWidth(0, 0, sp2C)) / 2) + 0xD5;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -962,25 +962,25 @@ void RenderFrame(void) {
     DrawMenuScreen();
 
     if ((D_833032E0 == 2) && (sp18->unk_04 == -1)) {
-        func_8330267C(0x158);
+        Menu_DrawHeader(0x158);
     }
 
     DrawMessageBox(sp18, 0xD5, 0x172);
-    func_834028D0(1);
+    SnapSelect_UpdateUIState(1);
     Stage_Advance();
 }
 
-void func_83302820(unk_D_83407B38* arg0) {
+void Menu_HandleSwapInput(unk_D_83407B38* arg0) {
     s32 var_a2 = 0;
     s32 idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
-    unk_func_80031270* temp_v1 = arg0->unk_20[idx];
+    Camera* temp_v1 = arg0->unk_20[idx];
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         PlaySoundEffect(0x29);
         var_a2 = 1;
         UpdateMenuItemStates();
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
-        *temp_v1->unk_18 = D_833033A8;
+        *temp_v1->unk_18 = gSwapTempPokemon;
         temp_v1->unk_00 = 0;
         PlaySoundEffect(3);
         var_a2 = 1;
@@ -991,42 +991,42 @@ void func_83302820(unk_D_83407B38* arg0) {
     }
 }
 
-void func_833028FC(void) {
-    static s32 D_833032A8 = 0;
+void Menu_HandleConfirmTimer(void) {
+    static s32 gConfirmTimer = 0;
 
-    if (D_833033A0 != 0) {
-        if (D_833032A8 > 0) {
-            D_833032A8--;
-            if (D_833032A8 == 0) {
+    if (gMenuDirty != 0) {
+        if (gConfirmTimer > 0) {
+            gConfirmTimer--;
+            if (gConfirmTimer == 0) {
                 D_83303434 = 1;
                 PlaySoundEffect(8);
             }
         }
     }
 
-    if (D_833032A8 <= 0) {
+    if (gConfirmTimer <= 0) {
         if (gPlayer1Controller->buttonPressed & 0x8000) {
             PlaySoundEffect(0x1C);
-            func_83400410(1, D_8330343C);
-            if (D_8330343C != 0) {
+            Gallery_SaveChanges(1, gStickerStationConnected);
+            if (gStickerStationConnected != 0) {
                 StickerStation_SetCommand(0x5A);
             }
-            D_833033A0 = 1;
-            D_833032A8 = 4;
+            gMenuDirty = 1;
+            gConfirmTimer = 4;
         } else if (gPlayer1Controller->buttonPressed & 0x4000) {
             PlaySoundEffect(3);
-            D_833032E4 = 1;
-            D_833033A0 = 0;
+            gMenuStep = 1;
+            gMenuDirty = 0;
             D_83303434 = 0;
         }
     }
 }
 
-void func_833029F0(void) {
+void Menu_ProcessResult(void) {
     s16 temp_v0;
     s32 var_a2;
 
-    temp_v0 = func_83402DC8(3);
+    temp_v0 = SnapSelect_GetResultCode(3);
     if (temp_v0 != -1) {
         var_a2 = 0;
         if (temp_v0 == -2) {
@@ -1035,10 +1035,10 @@ void func_833029F0(void) {
 
         switch (temp_v0) {
             case 0:
-                D_833032E4 = 7;
+                gMenuStep = 7;
                 func_83402CE4(4, gPlayer1Controller);
                 var_a2 = 0;
-                D_83303440 = 6;
+                gFadeOutTimer = 6;
                 break;
 
             case 1:
@@ -1046,12 +1046,12 @@ void func_833029F0(void) {
                 break;
 
             default:
-                D_833032E4 = 1;
+                gMenuStep = 1;
                 break;
         }
 
         if (var_a2 != 0) {
-            D_833032E4 = 8;
+            gMenuStep = 8;
             Stage_SetFillColor(0xFFFF);
             Stage_FadeOut(0xF);
             if (D_8330326C[D_83402E28] == 8) {
@@ -1061,12 +1061,12 @@ void func_833029F0(void) {
     }
 }
 
-void func_83302ACC(void) {
-    D_83303440--;
-    if (D_83303440 <= 0) {
+void Menu_FadeOutStep(void) {
+    gFadeOutTimer--;
+    if (gFadeOutTimer <= 0) {
         func_83402D74(4);
-        func_83400410(0, D_8330343C);
-        D_833032E4 = 8;
+        Gallery_SaveChanges(0, gStickerStationConnected);
+        gMenuStep = 8;
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(0xF);
         if (D_8330326C[D_83402E28] == 8) {
@@ -1075,8 +1075,8 @@ void func_83302ACC(void) {
     }
 }
 
-s32 func_83302B5C(void) {
-    static s32 D_833032AC = 2;
+s32 Menu_MainLoopStep(void) {
+    static s32 gInitialDelayCounter = 2;
 
     s32 temp_v0_2;
     s32 sp28;
@@ -1086,37 +1086,37 @@ s32 func_83302B5C(void) {
     s32 sp18;
 
     sp28 = 1;
-    sp24 = D_833032E4;
+    sp24 = gMenuStep;
     sp20 = D_83407AE4;
     sp1C = &D_833031B4[D_83402E28];
 
-    switch (D_833032E4) {
+    switch (gMenuStep) {
         case 0:
             if (Stage_GetFadeState() == 0) {
-                D_833032AC--;
-                if (D_833032AC <= 0) {
+                gInitialDelayCounter--;
+                if (gInitialDelayCounter <= 0) {
                     switch (D_833032E0) {
                         case 0:
                             if (D_83407AE8 != 0) {
                                 if (sp1C->unk_12 == 0) {
-                                    D_833032E4 = 5;
+                                    gMenuStep = 5;
                                     D_83303434 = 0;
                                 } else {
-                                    D_833032E4 = 1;
-                                    D_833033A0 = 1;
+                                    gMenuStep = 1;
+                                    gMenuDirty = 1;
                                     PlaySoundEffect(8);
                                 }
                             } else {
-                                D_833032E4 = 1;
+                                gMenuStep = 1;
                             }
                             break;
 
                         case 1:
-                            D_833032E4 = 2;
+                            gMenuStep = 2;
                             break;
 
                         case 2:
-                            D_833032E4 = 3;
+                            gMenuStep = 3;
                             break;
                     }
                 }
@@ -1126,7 +1126,7 @@ s32 func_83302B5C(void) {
         case 1:
             temp_v0_2 = ProcessMenuInput();
             if (temp_v0_2 != 0) {
-                D_833032E4 = 8;
+                gMenuStep = 8;
                 if (temp_v0_2 == 2) {
                     Stage_SetFillColor(1);
                     sp18 = 8;
@@ -1141,34 +1141,34 @@ s32 func_83302B5C(void) {
                 }
             }
 
-            if (D_833032E4 != 1) {
-                D_83303438 = -1;
+            if (gMenuStep != 1) {
+                gBackgroundFadeTimer = -1;
             }
             break;
 
         case 2:
         case 3:
             if (HandlePokemonGridInput(GetActiveMenu()) != 0) {
-                D_833032E4 = 8;
+                gMenuStep = 8;
                 Stage_SetFillColor(1);
                 Stage_FadeOut(1);
             }
             break;
 
         case 4:
-            func_83302820(GetActiveMenu());
+            Menu_HandleSwapInput(GetActiveMenu());
             break;
 
         case 5:
-            func_833028FC();
+            Menu_HandleConfirmTimer();
             break;
 
         case 6:
-            func_833029F0();
+            Menu_ProcessResult();
             break;
 
         case 7:
-            func_83302ACC();
+            Menu_FadeOutStep();
             break;
 
         case 8:
@@ -1178,19 +1178,19 @@ s32 func_83302B5C(void) {
             break;
     }
 
-    if (((sp24 != D_833032E4) && (D_833032E4 == 1)) || (sp20 != D_83407AE4)) {
-        D_83303438 = 4;
+    if (((sp24 != gMenuStep) && (gMenuStep == 1)) || (sp20 != D_83407AE4)) {
+        gBackgroundFadeTimer = 4;
     }
     return sp28;
 }
 
-void func_83302E3C(void) {
+void Menu_PollInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-void func_83302E6C(void) {
+void Menu_RunLoop(void) {
     s32 var_a0;
 
     if (D_833032E0 == 2) {
@@ -1201,28 +1201,28 @@ void func_83302E6C(void) {
     Stage_FadeIn(var_a0);
 
     do {
-        func_83302E3C();
+        Menu_PollInputs();
 
-        if ((func_83402C6C() != 0) && (D_83303438 == 0)) {
-            D_83303438 = -1;
+        if ((func_83402C6C() != 0) && (gBackgroundFadeTimer == 0)) {
+            gBackgroundFadeTimer = -1;
         }
 
-        switch (D_833032E4) {
+        switch (gMenuStep) {
             case 0:
             case 8:
                 break;
 
             default:
-                func_83401FD0(GetActiveMenu());
+                CamList_Update(GetActiveMenu());
                 break;
         }
 
         RenderFrame();
         func_834020D8();
-    } while (func_83302B5C() != 0);
+    } while (Menu_MainLoopStep() != 0);
 }
 
-s32 func_83302F48(void) {
+s32 Menu_GetResult(void) {
     s32 sp1C = D_8330326C[D_83402E28];
 
     if (func_834006A0(0) != NULL) {
@@ -1233,13 +1233,13 @@ s32 func_83302F48(void) {
         D_83407B30.unk_00 = 1;
     }
 
-    func_834021D8(&D_833032E8, &D_83407B00);
+    func_834021D8(&gMenuActiveData, &D_83407B00);
     func_834021D8(&D_83407B38, &D_83407B08);
 
     return sp1C;
 }
 
-void func_83302FD8(s32 arg0, s32 arg1) {
+void Menu_InitializeAndRun(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('SNAP');
@@ -1255,17 +1255,17 @@ void func_83302FD8(s32 arg0, s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     AssetManager_LoadArchives();
-    D_8330339C = ASSET_LOAD2(stadium_models, 1, 1);
+    gMenuAssetArchive = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
-    func_83402340();
+    Text_LoadMessageBanks();
     InitializeMenuState(arg0, arg1);
     Stage_Set(sp24);
-    func_83302E6C();
+    Menu_RunLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();
 
     main_pool_pop_state('SNAP');
 
-    func_83302F48();
+    Menu_GetResult();
 }

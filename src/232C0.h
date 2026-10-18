@@ -70,7 +70,7 @@ void func_80023990(s32 arg0);
 s32 func_80023A04(s32 arg0);
 s32 SaveSlot_Load(s32 arg0);
 s32 func_80023B7C(s32 arg0);
-s32 func_80023D60(s32 arg0);
+s32 SnapSelect_SetCameraMode(s32 arg0);
 s32 func_80023E34(s32 arg0);
 void func_80023F78(s32 arg0);
 void func_80024040(s32 arg0);

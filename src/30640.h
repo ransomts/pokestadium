@@ -94,7 +94,7 @@ typedef struct unk_func_80031270_024 {
     /* 0x1C */ s32 unk_1C;
 } unk_func_80031270_024; // size = 0x20
 
-typedef struct unk_func_80031270 {
+typedef struct Camera {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -111,7 +111,7 @@ typedef struct unk_func_80031270 {
     /* 0x2C */ GraphNode* unk_2C;
     /* 0x30 */ GraphNode* unk_30;
     /* 0x34 */ s32 unk_34;
-} unk_func_80031270; // size = 0x38
+} Camera; // size = 0x38
 
 typedef struct unk_D_83407B38_0B0 {
     /* 0x00 */ s32 unk_00;
@@ -127,8 +127,8 @@ typedef struct unk_D_83407B38 {
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ unk_func_80031270* unk_20[36];
-    /* 0xB0 */ unk_func_80031270* unk_B0;
+    /* 0x20 */ Camera* unk_20[36];
+    /* 0xB0 */ Camera* unk_B0;
 } unk_D_83407B38; // size = 0xB4
 
 extern unk_D_83407B00 D_83407B30;
@@ -138,11 +138,11 @@ void Cam_CallInit318B8(void);
 void Cam_ResetUnkF90(void);
 void Cam_ConvertInputToState(unk_D_83402EE0_070*, unk_func_80026268_arg0*);
 void Cam_ConvertStateToInput(unk_func_80026268_arg0*, unk_D_83407AC8*);
-unk_func_80031270* Cam_Create(s16, s16, FramebufferImage*, FramebufferImage*, unk_D_86002F58_004_000_010*, BinArchive*, unk_D_83403C60*);
-u8* Cam_Update(unk_func_80031270*);
-s32 Cam_IsMonIndexDisplayable(unk_func_80031270*);
-s32 Cam_FindActiveIndex(unk_func_80031270**, s32);
-unk_func_80031270* Cam_GetCurrent(void);
+Camera* Cam_Create(s16, s16, FramebufferImage*, FramebufferImage*, unk_D_86002F58_004_000_010*, BinArchive*, unk_D_83403C60*);
+u8* Cam_Update(Camera*);
+s32 Cam_IsMonIndexDisplayable(Camera*);
+s32 Cam_FindActiveIndex(Camera**, s32);
+Camera* Cam_GetCurrent(void);
 void Cam_ClearActive2(void);
 s32 IsMonIndexDisplayable(unk_D_83403C60*);
 f32 Math_AbsF(f32);
