@@ -549,6 +549,7 @@ def build_gate(new_names, old_names, no_make=False, do_extract=True):
                        cwd=REPO, env=MAKE_ENV, capture_output=True, text=True, timeout=3600)
     out = r.stdout + r.stderr
     if r.returncode != 0 or "build/pokestadium-us.z64: OK" not in out:
+        open(os.path.join(REPO, "scratch", "gate_full.log"), "w").write(out)
         print(out[-2000:])
         return fail_reason("make failed or checksum not OK")
     mp = os.path.join(REPO, "build/pokestadium-us.map")
