@@ -66,7 +66,7 @@ s32 SnapSelect_LoadPokemonIndices(unk_D_838067F0* arg0, s32 arg1) {
     return ptr->unk_00;
 }
 
-void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, unk_func_80026268_arg0* arg1) {
+void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, PokemonData* arg1) {
     typedef struct unk_func_83802660_sp28 {
         /* 0x00 */ unk_D_800AC910_040 unk_00;
         /* 0x00 */ u16 unk_12;
@@ -239,7 +239,7 @@ unk_D_838067F0_0168* SnapSelect_AdvanceNode(unk_D_838067F0_0168* arg0, s32 arg1)
 
 void SnapSelect_HandleConfirm(unk_D_838067F0* arg0) {
     unk_D_838067F0_0168* ptr = SnapSelect_AdvanceNode(arg0->unk_0160, arg0->unk_0028);
-    unk_func_80026268_arg0* temp_a1 = &ptr->unk_0000[arg0->unk_0024].unk_004;
+    PokemonData* temp_a1 = &ptr->unk_0000[arg0->unk_0024].unk_004;
 
     if (temp_a1->unk_00.unk_00 != 0) {
         arg0->unk_0000 = 7;

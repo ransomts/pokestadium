@@ -13,12 +13,12 @@ typedef struct unk_D_832027C8 {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
-    /* 0x04 */ unk_func_80026268_arg0 unk_04;
+    /* 0x04 */ PokemonData unk_04;
 } unk_D_832027C8; // size = 0x58
 
 s32 func_83200020(s32 arg0, Fragment2_1GraphNode* arg1);
-s32 func_83200064(unk_func_80026268_arg0* arg0);
-s32 func_832000A0(unk_func_80026268_arg0* arg0, s16 arg1, s16 arg2, s16 arg3);
+s32 func_83200064(PokemonData* arg0);
+s32 func_832000A0(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3);
 s32 func_83200148(s16 arg0, s16 arg1, s16 arg2);
 s32 func_8320029C(void);
 s32 func_8320037C(void);

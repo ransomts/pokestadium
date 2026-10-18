@@ -26,7 +26,7 @@ typedef struct unk_func_80026268_arg0_000 {
     /* 0x01 */ u8 unk_01;
 } unk_func_80026268_arg0_000; // size = 0x2
 
-typedef struct unk_func_80026268_arg0 {
+typedef struct PokemonData {
     /* 0x00 */ unk_func_80026268_arg0_000 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u8 unk_04;
@@ -58,7 +58,7 @@ typedef struct unk_func_80026268_arg0 {
     /* 0x51 */ u8 pad51;
     /* 0x52 */ u8 unk_52;
     /* 0x53 */ u8 unk_53;
-} unk_func_80026268_arg0; // size = 0x54
+} PokemonData; // size = 0x54
 
 typedef struct unk_D_800AE540_0874 {
     /* 0x000 */ u16 unk_000;
@@ -67,7 +67,7 @@ typedef struct unk_D_800AE540_0874 {
     /* 0x004 */ char unk004[0x10];
     /* 0x014 */ char unk_014[4];
     /* 0x018 */ char unk018[0x10];
-    /* 0x028 */ unk_func_80026268_arg0 unk_028[1];
+    /* 0x028 */ PokemonData unk_028[1];
     /* 0x07C */ char unk07C[0x1A4];
     /* 0x220 */ char unk_220[0x4];
     /* 0x224 */ char unk224[0x24];
@@ -81,7 +81,7 @@ typedef struct unk_D_800AE540_0004 {
     /* 0x008 */ char unk_008[4];
     /* 0x00C */ char unk00C[0xC];
     /* 0x018 */ s32 unk_018;
-    /* 0x01C */ unk_func_80026268_arg0 unk_01C[6];
+    /* 0x01C */ PokemonData unk_01C[6];
     /* 0x214 */ unk_D_800AE540_0874* unk_214;
     /* 0x218 */ char unk218[0x4];
 } unk_D_800AE540_0004; // size = 0x21C
@@ -92,7 +92,7 @@ typedef struct unk_D_800AE540_1194 {
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ unk_D_800AE540_0004* unk_04;
     /* 0x08 */ unk_D_800AE540_0004* unk_08[2];
-    /* 0x10 */ unk_D_86002F58_004_000_010* unk_10;
+    /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ unk_D_86002F58_004_000_004* unk_14;
     /* 0x18 */ unk_D_86002F58_004_000_004* unk_18;
     /* 0x1C */ u8 unk_1C;

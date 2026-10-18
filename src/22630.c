@@ -117,7 +117,7 @@ char* GetItemName(s32 arg0, char* arg1) {
     return arg1;
 }
 
-void DeserializePokemonRecord(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
+void DeserializePokemonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
     arg0->unk_00.unk_00 = GetPokemonFormId(arg1->unk_00);
     arg0->unk_00.unk_01 = arg1->unk_00;
     arg0->unk_02 = ReadBE16(arg1->unk_01);
@@ -141,7 +141,7 @@ void DeserializePokemonRecord(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1
     memcpy(arg0->unk_20, arg1->unk_1D, 4);
 }
 
-void DeserializePartyPokemon(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9AC_008* arg1) {
+void DeserializePartyPokemon(PokemonData* arg0, unk_D_800AC910_050_9AC_008* arg1) {
     DeserializePokemonRecord(arg0, &arg1->unk_00);
     arg0->unk_24 = arg1->unk_21;
     arg0->unk_26 = ReadBE16(&arg1->unk_22);
@@ -151,7 +151,7 @@ void DeserializePartyPokemon(unk_func_80026268_arg0* arg0, unk_D_800AC910_050_9A
     arg0->unk_2E = ReadBE16(&arg1->unk_2A);
 }
 
-void SerializePokemonToRawData(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
+void SerializePokemonToRawData(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
     if (GetPokemonBaseStat(arg0->unk_00.unk_00) & 0xFF) {
         arg1->unk_00 = GetPokemonBaseStat(arg0->unk_00.unk_00);
     } else {
@@ -278,7 +278,7 @@ u32 CalculateStatValue(s32 statId, s32 speciesId, u16 statModifier, u16 level, u
     return statValue;
 }
 
-void CalculatePokemonStats(unk_func_80026268_arg0* arg0) {
+void CalculatePokemonStats(PokemonData* arg0) {
     arg0->unk_24 = CalculateLevelFromExperience(arg0->unk_00.unk_00, arg0->unk_10);
     arg0->unk_26 = CalculateStatValue(1, arg0->unk_00.unk_00, arg0->unk_14, arg0->unk_24, arg0->unk_1E);
     arg0->unk_28 = CalculateStatValue(2, arg0->unk_00.unk_00, arg0->unk_16, arg0->unk_24, arg0->unk_1E);

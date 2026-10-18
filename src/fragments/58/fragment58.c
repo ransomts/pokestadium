@@ -36,8 +36,8 @@ typedef struct unk_D_84002BE8 {
     /* 0x0C */ u8* unk_0C;
 } unk_D_84002BE8; // size = 0x10
 
-static char** D_84002D00;
-static char** D_84002D04;
+static char** gRuleMessageBank;
+static char** gOptionMessageBank;
 static BinArchive* D_84002D08;
 static u8* D_84002D0C;
 static s32 pad_D_84002D10;
@@ -50,7 +50,7 @@ static unk_D_84002D28 D_84002D28;
 
 static s16 D_84002BE0 = 2;
 static s16 D_84002BE4 = 0;
-static unk_D_84002BE8 D_84002BE8[11] = {
+static unk_D_84002BE8 gMenuEntries[11] = {
     {
         1,
         0,
@@ -142,7 +142,7 @@ static unk_D_84002BE8 D_84002BE8[11] = {
 };
 static s16 D_84002C98[] = { 0, 3, 4, 5, 6, 0 };
 
-void func_84000020(s16 arg0, s16 arg1) {
+void DrawDialogBorderSmall(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, D_2006C00, 0x30, 0);
@@ -151,7 +151,7 @@ void func_84000020(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_840000F4(s16 arg0, s16 arg1) {
+void DrawDialogBorderLarge(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x64, 0x14, D_200B3E0, 0x64, 0);
@@ -173,24 +173,24 @@ void func_84000200(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8*
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_840003A8(void) {
+void DrawTitlePanel(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_84000200(0x48, 0x28, 0x208, &sp2C, &sp28);
-    func_84000020(0x30, 0x20);
+    DrawDialogBorderSmall(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, D_84002D00, 0));
+    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, gRuleMessageBank, 0));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, D_84002D00, 0));
+    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, gRuleMessageBank, 0));
     Text_SetupDL();
 }
 
-void func_840004A4(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawSelectionBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     static s16 D_84002CA4 = 0;
 
     s16 sp56 = SINS(D_84002CA4) * 2;
@@ -209,7 +209,7 @@ void func_840004A4(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_84002CA4 += 0x2000;
 }
 
-void func_84000698(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawWindow(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 3, arg1 - 3, 8, 8, D_2000340, 8, 0);
@@ -287,8 +287,8 @@ void func_8400094C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-s32 func_8400114C(s16 arg0) {
-    unk_D_84002BE8* ptr = &D_84002BE8[arg0];
+s32 IsMenuEntryEnabled(s16 arg0) {
+    unk_D_84002BE8* ptr = &gMenuEntries[arg0];
     s16 t = ptr->unk_00;
     s32 var_v1 = 0;
 
@@ -302,7 +302,7 @@ s32 func_8400114C(s16 arg0) {
         if (D_84002D16 >= 3) {
             var_v1 = arg0 == (D_84002D18.unk_02 + 4);
         } else {
-            s16 tmp = (~D_84002BE8[D_84002D18.unk_00].unk_00 & D_84002D14);
+            s16 tmp = (~gMenuEntries[D_84002D18.unk_00].unk_00 & D_84002D14);
 
             var_v1 = ptr->unk_00 == (ptr->unk_00 & tmp);
         }
@@ -310,8 +310,8 @@ s32 func_8400114C(s16 arg0) {
     return var_v1;
 }
 
-void func_84001238(s16 arg0, s16 arg1, s16 arg2) {
-    if (func_8400114C(arg2) != 0) {
+void PrintMenuItemChar(s16 arg0, s16 arg1, s16 arg2) {
+    if (IsMenuEntryEnabled(arg2) != 0) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     } else {
         Text_SetEnvColor(0x64, 0x64, 0x64, 0x82);
@@ -319,7 +319,7 @@ void func_84001238(s16 arg0, s16 arg1, s16 arg2) {
     Text_PutChar(arg0, arg1, 0x26);
 }
 
-void func_840012B4(void) {
+void DrawItemSelectionScreen(void) {
     s32 i;
     s16 temp_s2;
     s16 temp_s3;
@@ -329,15 +329,15 @@ void func_840012B4(void) {
     s16 tmp2;
 
     func_8400094C(0x64, 0x72, 0x1B0, 0x80, 0, 0, 0, 0xFF);
-    func_840000F4(0x10A, 0x96);
+    DrawDialogBorderLarge(0x10A, 0x96);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 11; i++) {
-        temp_s2 = D_84002BE8[i].unk_04 + 0x64;
-        temp_s3 = D_84002BE8[i].unk_06 + 0x72;
+        temp_s2 = gMenuEntries[i].unk_04 + 0x64;
+        temp_s3 = gMenuEntries[i].unk_06 + 0x72;
 
-        if (func_8400114C(i) != 0) {
+        if (IsMenuEntryEnabled(i) != 0) {
             var_t1 = 0xFF;
         } else {
             var_t1 = 0x82;
@@ -345,9 +345,9 @@ void func_840012B4(void) {
 
         gDPSetEnvColor(gDisplayListHead++, var_t1, var_t1, var_t1, var_t1);
 
-        Gfx_DrawSpriteRGBA16(temp_s2, temp_s3, 0x24, 0x1A, D_84002BE8[i].unk_08, 0x24, 0);
-        if (D_84002BE8[i].unk_0C != NULL) {
-            Gfx_DrawSpriteRGBA16(temp_s2 + 0x30, temp_s3, 0x24, 0x1A, D_84002BE8[i].unk_0C, 0x24, 0);
+        Gfx_DrawSpriteRGBA16(temp_s2, temp_s3, 0x24, 0x1A, gMenuEntries[i].unk_08, 0x24, 0);
+        if (gMenuEntries[i].unk_0C != NULL) {
+            Gfx_DrawSpriteRGBA16(temp_s2 + 0x30, temp_s3, 0x24, 0x1A, gMenuEntries[i].unk_0C, 0x24, 0);
         }
     }
 
@@ -357,8 +357,8 @@ void func_840012B4(void) {
     Text_SetFont(0x10, 0);
 
     for (i = 0; i < 11; i++) {
-        if (D_84002BE8[i].unk_0C != NULL) {
-            func_84001238(D_84002BE8[i].unk_04 + 0x87, D_84002BE8[i].unk_06 + 0x73, i);
+        if (gMenuEntries[i].unk_0C != NULL) {
+            PrintMenuItemChar(gMenuEntries[i].unk_04 + 0x87, gMenuEntries[i].unk_06 + 0x73, i);
         }
     }
 
@@ -370,29 +370,29 @@ void func_840012B4(void) {
         Text_SetEnvColor(0x78, 0x78, 0xC8, 0xFF);
     }
 
-    Text_Print(0x64, 0x5A, GetMessageString(NULL, 0, D_84002D00, 1));
+    Text_Print(0x64, 0x5A, GetMessageString(NULL, 0, gRuleMessageBank, 1));
     Text_SetupDL();
 
     if (D_84002D16 == 1) {
-        ptr = &D_84002BE8[D_84002D18.unk_00];
+        ptr = &gMenuEntries[D_84002D18.unk_00];
         tmp1 = ptr->unk_04 + 0x64;
         tmp2 = ptr->unk_06 + 0x72;
-        func_840004A4(tmp1 - 4, tmp2 - 2, ((ptr->unk_0C == NULL) ? 0x24 : 0x54) + 8, 0x1E);
+        DrawSelectionBorder(tmp1 - 4, tmp2 - 2, ((ptr->unk_0C == NULL) ? 0x24 : 0x54) + 8, 0x1E);
     } else if (D_84002D16 == 2) {
-        ptr = &D_84002BE8[D_84002D18.unk_02];
+        ptr = &gMenuEntries[D_84002D18.unk_02];
         tmp1 = ptr[4].unk_04 + 0x64;
         tmp2 = ptr[4].unk_06 + 0x72;
-        func_840004A4(tmp1 - 4, tmp2 - 2, ((ptr[4].unk_0C == NULL) ? 0x24 : 0x54) + 8, 0x1E);
+        DrawSelectionBorder(tmp1 - 4, tmp2 - 2, ((ptr[4].unk_0C == NULL) ? 0x24 : 0x54) + 8, 0x1E);
     }
 }
 
-void func_84001654(void) {
+void HandleItemSelectInput(void) {
     s32 sp24 = D_84002D18.unk_00;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         PlaySoundEffect(2);
         D_84002D18.unk_02 = 0;
-        while (func_8400114C(D_84002D18.unk_02 + 4) == 0) {
+        while (IsMenuEntryEnabled(D_84002D18.unk_02 + 4) == 0) {
             D_84002D18.unk_02++;
         }
         D_84002D16 = 2;
@@ -406,7 +406,7 @@ void func_84001654(void) {
             } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
                 D_84002D18.unk_00 = (D_84002D18.unk_00 + 1) % 4;
             }
-        } while (func_8400114C(D_84002D18.unk_00) == 0);
+        } while (IsMenuEntryEnabled(D_84002D18.unk_00) == 0);
 
         if (sp24 != D_84002D18.unk_00) {
             PlaySoundEffect(1);
@@ -414,7 +414,7 @@ void func_84001654(void) {
     }
 }
 
-void func_840017AC(void) {
+void HandleOpponentSelectInput(void) {
     s32 sp34 = D_84002D18.unk_02;
     s32 i;
     s32 var_a0;
@@ -459,7 +459,7 @@ void func_840017AC(void) {
 
     if (var_s4 != 0) {
         for (i = 0; i < 4; i++) {
-            if (func_8400114C(var_a0 * 4 + var_s1 + 4) != 0) {
+            if (IsMenuEntryEnabled(var_a0 * 4 + var_s1 + 4) != 0) {
                 break;
             }
             var_s1 = (var_s1 + var_s4 + 4) % 4;
@@ -483,11 +483,11 @@ void func_840019A4(void) {
 s32 func_840019BC(void) {
     s32 var_v1 = 0;
 
-    if ((D_84002D18.unk_00 != -1) && (D_84002BE8[D_84002D18.unk_00].unk_0C != 0)) {
+    if ((D_84002D18.unk_00 != -1) && (gMenuEntries[D_84002D18.unk_00].unk_0C != 0)) {
         var_v1 = 1;
     }
 
-    if ((D_84002D18.unk_02 != -1) && (D_84002BE8[D_84002D18.unk_02 + 4].unk_0C != 0)) {
+    if ((D_84002D18.unk_02 != -1) && (gMenuEntries[D_84002D18.unk_02 + 4].unk_0C != 0)) {
         var_v1 = 1;
     }
     return var_v1;
@@ -514,22 +514,22 @@ void func_84001AE0(void) {
     func_8400094C(0x64, 0x10C, 0x1B0, 0x84, 0, 0, 0, 0xFF);
     Text_ResetState();
     Text_SetFont(8, 0);
-    func_84001A1C(0x94, 0x114, 0, GetMessageString(NULL, 0, D_84002D00, 2));
-    func_84001A1C(0x94, 0x114, 1, GetMessageString(NULL, 0, D_84002D00, 3));
-    func_84001A1C(0x94, 0x114, 2, GetMessageString(NULL, 0, D_84002D00, 6));
-    func_84001A1C(0x94, 0x114, 3, GetMessageString(NULL, 0, D_84002D00, 7));
-    func_84001A1C(0x94, 0x114, 4, GetMessageString(NULL, 0, D_84002D00, 8));
+    func_84001A1C(0x94, 0x114, 0, GetMessageString(NULL, 0, gRuleMessageBank, 2));
+    func_84001A1C(0x94, 0x114, 1, GetMessageString(NULL, 0, gRuleMessageBank, 3));
+    func_84001A1C(0x94, 0x114, 2, GetMessageString(NULL, 0, gRuleMessageBank, 6));
+    func_84001A1C(0x94, 0x114, 3, GetMessageString(NULL, 0, gRuleMessageBank, 7));
+    func_84001A1C(0x94, 0x114, 4, GetMessageString(NULL, 0, gRuleMessageBank, 8));
     Text_SetFont(4, 0);
 
-    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, gOptionMessageBank, 0x15));
     func_84001A1C(0x1AE, 0x118, 0, sp2C);
-    sprintf(sp2C, "%s50~55", GetMessageString(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s50~55", GetMessageString(NULL, 0, gOptionMessageBank, 0x15));
     func_84001A1C(0x1AE, 0x118, 1, sp2C);
-    sprintf(sp2C, "%s25~30", GetMessageString(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s25~30", GetMessageString(NULL, 0, gOptionMessageBank, 0x15));
     func_84001A1C(0x1AE, 0x118, 2, sp2C);
-    sprintf(sp2C, "%s15~20", GetMessageString(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s15~20", GetMessageString(NULL, 0, gOptionMessageBank, 0x15));
     func_84001A1C(0x1AE, 0x118, 3, sp2C);
-    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, D_84002D04, 0x15));
+    sprintf(sp2C, "%s1~100", GetMessageString(NULL, 0, gOptionMessageBank, 0x15));
     func_84001A1C(0x1AE, 0x118, 4, sp2C);
 
     Text_SetFont(0x10, 0);
@@ -540,7 +540,7 @@ void func_84001AE0(void) {
         Text_SetEnvColor(0x78, 0x78, 0xC8, 0xFF);
     }
 
-    Text_Print(0x64, 0xF4, GetMessageString(NULL, 0, D_84002D00, 9));
+    Text_Print(0x64, 0xF4, GetMessageString(NULL, 0, gRuleMessageBank, 9));
     Text_SetupDL();
 
     if (D_84002D16 == 3) {
@@ -595,10 +595,10 @@ void func_84001FC0(void) {
             AnimateIconOffset(D_84002D28.unk_00 + 0xC, D_84002D28.unk_02 + (D_84002D28.unk_08 * 0x1C) + 0x2B);
             Text_ResetState();
             Text_SetFont(0x10, 0);
-            Text_Print(D_84002D28.unk_00 + 0x30, D_84002D28.unk_02 + 0xB, GetMessageString(NULL, 0, D_84002D00, 0xA));
-            func_84001F2C(0, GetMessageString(NULL, 0, D_84002D00, 0xB));
-            func_84001F2C(1, GetMessageString(NULL, 0, D_84002D00, 0xC));
-            func_84001F2C(2, GetMessageString(NULL, 0, D_84002D00, 0xD));
+            Text_Print(D_84002D28.unk_00 + 0x30, D_84002D28.unk_02 + 0xB, GetMessageString(NULL, 0, gRuleMessageBank, 0xA));
+            func_84001F2C(0, GetMessageString(NULL, 0, gRuleMessageBank, 0xB));
+            func_84001F2C(1, GetMessageString(NULL, 0, gRuleMessageBank, 0xC));
+            func_84001F2C(2, GetMessageString(NULL, 0, gRuleMessageBank, 0xD));
             Text_SetupDL();
         }
     }
@@ -656,10 +656,10 @@ void func_84002388(void) {
 void func_840023B8(void) {
     Stage_BeginDisplayList();
     if (D_84002BE0 > 0) {
-        func_84000698(0x4C, 0x54, 0x1E8, 0x150);
+        DrawWindow(0x4C, 0x54, 0x1E8, 0x150);
         D_84002BE0 -= 1;
     }
-    func_840012B4();
+    DrawItemSelectionScreen();
     func_84001AE0();
     func_84001FC0();
     Stage_Advance();
@@ -705,10 +705,10 @@ void func_8400253C(void) {
         func_84002388();
         Stage_BeginDisplayList();
         Gfx_DrawTextureAtlas(D_84002D0C);
-        func_840003A8();
+        DrawTitlePanel();
         tmp = i;
         tmp = (0x150 - tmp) / 2;
-        func_84000698(0x4C, tmp + 0x54, 0x1E8, i);
+        DrawWindow(0x4C, tmp + 0x54, 0x1E8, i);
         Stage_Advance();
     }
 }
@@ -720,8 +720,8 @@ void func_840025FC(void) {
         func_84002388();
         Stage_BeginDisplayList();
         Gfx_DrawTextureAtlas(D_84002D0C);
-        func_840003A8();
-        func_84000698(0x4C, (s16)((0x16C - (s16)(0xE + i * 0x23)) / 2) + 0x54, 0x1E8, 0xE + i * 0x23);
+        DrawTitlePanel();
+        DrawWindow(0x4C, (s16)((0x16C - (s16)(0xE + i * 0x23)) / 2) + 0x54, 0x1E8, 0xE + i * 0x23);
         Stage_Advance();
     }
 
@@ -740,7 +740,7 @@ void func_840026D8(void) {
     Battle_Init(0, D_84002C98[D_84002D20], 0);
 
     for (i = 0; i < 4; i++) {
-        if (D_84002BE8[D_84002D18.unk_00].unk_00 & (1 << i)) {
+        if (gMenuEntries[D_84002D18.unk_00].unk_00 & (1 << i)) {
             sprintf(sp44, "%dP", i + 1);
             Battle_RegisterPlayerEntry(0, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
         }
@@ -757,7 +757,7 @@ void func_840026D8(void) {
         }
     } else {
         for (i = 0; i < 4; i++) {
-            if (D_84002BE8[D_84002D18.unk_02 + 4].unk_00 & (1 << i)) {
+            if (gMenuEntries[D_84002D18.unk_02 + 4].unk_00 & (1 << i)) {
                 sprintf(sp44, "%dP", i + 1);
                 Battle_RegisterPlayerEntry(1, RegisterPlayer(i, 0, sp44, GetNameSlot(1)));
             }
@@ -790,10 +790,10 @@ s32 func_84002914(void) {
         func_84002388();
         switch (D_84002D16) {
             case 1:
-                func_84001654();
+                HandleItemSelectInput();
                 break;
             case 2:
-                func_840017AC();
+                HandleOpponentSelectInput();
                 break;
             case 3:
                 func_84001E18();
@@ -832,8 +832,8 @@ s32 func_84002A84(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     MessageBank_Init();
-    D_84002D00 = GetMessageBank(0xF);
-    D_84002D04 = GetMessageBank(6);
+    gRuleMessageBank = GetMessageBank(0xF);
+    gOptionMessageBank = GetMessageBank(6);
     D_84002D08 = ASSET_LOAD2(backgrounds, 1, 1);
     D_84002D0C = BinArchive_GetFile(D_84002D08, 6);
     D_84002D14 = Cont_GetControllerBits();

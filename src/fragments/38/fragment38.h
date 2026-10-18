@@ -61,7 +61,7 @@ typedef struct unk_D_82305AF8 {
     /* 0x0012 */ u16 unk_0012;
     /* 0x0014 */ char unk_0014[4];
     /* 0x0018 */ char unk0018[0x8];
-    /* 0x0020 */ unk_func_80026268_arg0 unk_0020[6];
+    /* 0x0020 */ PokemonData unk_0020[6];
     /* 0x0218 */ u8 unk_0218[6][0xC80];
 } unk_D_82305AF8; // size = 0x4D18
 

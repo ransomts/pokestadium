@@ -655,7 +655,7 @@ void func_82302A6C(unk_D_82305AF8* arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-s32 func_82302B78(unk_func_80026268_arg0* arg0) {
+s32 func_82302B78(PokemonData* arg0) {
     s32 i;
     s32 var_v1 = 1;
 
@@ -675,7 +675,7 @@ s32 func_82302B78(unk_func_80026268_arg0* arg0) {
 u8 func_82302BB4(unk_D_82305AF8* arg0, s16 arg1) {
     unk_D_82305978* ptr1;
     s16 sp54[3];
-    unk_func_80026268_arg0* var_s1;
+    PokemonData* var_s1;
     s16 i;
     s16 j;
 
@@ -1359,7 +1359,7 @@ void func_82304AB0(unk_D_82305A28* arg0) {
     arg0->unk_00 = 4;
 }
 
-void func_82304BEC(unk_func_80026268_arg0* arg0, s16 arg1) {
+void func_82304BEC(PokemonData* arg0, s16 arg1) {
     unk_D_800AC910_040 sp30;
     unk_D_800AC910_040 sp20;
 

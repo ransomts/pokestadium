@@ -40,7 +40,7 @@ typedef struct unk_D_82604180 {
 
 static s32 pad_D_82607410[2];
 static GraphNode* D_82607418;
-static unk_D_86002F58_004_000_010* D_8260741C;
+static AssetManager* D_8260741C;
 static unk_D_82607420 D_82607420[5];
 static s16 D_82607B50;
 static s16 D_82607B52;

@@ -593,7 +593,7 @@ void func_84801A88(unk_D_848037A0* arg0) {
     unk_D_848035FC* temp_v1;
     s32 idx;
     s32 sp7C;
-    unk_func_80026268_arg0* sp78;
+    PokemonData* sp78;
 
     temp_fp = arg0->unk_0012;
     temp_s1 = arg0->unk_0016;
@@ -1184,7 +1184,7 @@ void func_84802E18(void) {
 void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4) {
     s32 i;
     unk_D_848037A0* temp_v1;
-    unk_func_80026268_arg0* temp_s0;
+    PokemonData* temp_s0;
 
     temp_v1 = &D_848037A0[D_8480379C];
     temp_v1->unk_0000 = D_8480379C;

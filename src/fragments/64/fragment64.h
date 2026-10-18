@@ -31,7 +31,7 @@ typedef struct unk_D_848037A0 {
     /* 0x0014 */ s16 unk_0014;
     /* 0x0016 */ s8 unk_0016;
     /* 0x0017 */ s8 unk_0017;
-    /* 0x0018 */ unk_func_80026268_arg0* unk_0018;
+    /* 0x0018 */ PokemonData* unk_0018;
     /* 0x001C */ unk_D_800AE540_0004* unk_001C;
     /* 0x0020 */ u16 unk_0020[1][0x640];
     /* 0x0CA0 */ char unk0CA0[0x3E80];

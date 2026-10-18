@@ -25,7 +25,7 @@ s32 SpriteDisplay_SetCameraNode(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
+void SpriteDisplay_InitGeoLayout(SpriteDisplay* arg0, s16 arg1, s16 arg2) {
     static u32 sSpriteGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x00300030, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D0019, 0xFFFFFF32, 0x14000000, 0xFFD300CD, 0x80808032, 0x16646464,
@@ -44,11 +44,11 @@ void SpriteDisplay_InitGeoLayout(unk_func_8001A024* arg0, s16 arg1, s16 arg2) {
     Perspective_SetParams(sp24, 30.0f, 100.0f, 12800.0f);
 }
 
-unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3) {
+SpriteDisplay* SpriteDisplay_Alloc(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 var_s0;
     FramebufferImage* temp_a1;
     s32 i;
-    unk_func_8001A024* temp_v0 = main_pool_alloc(sizeof(unk_func_8001A024), 0);
+    SpriteDisplay* temp_v0 = main_pool_alloc(sizeof(SpriteDisplay), 0);
 
     if (temp_v0 != NULL) {
         temp_v0->unk_00 = 0;
@@ -79,7 +79,7 @@ unk_func_8001A024* SpriteDisplay_Alloc(unk_D_86002F58_004_000_010* arg0, s16 arg
     return temp_v0;
 }
 
-void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_000_010* arg1, FramebufferImage* arg2) {
+void SpriteDisplay_SetDepthBuffer(SpriteDisplay* arg0, AssetManager* arg1, FramebufferImage* arg2) {
     s32 i;
 
     arg0->unk_04 = arg1;
@@ -90,11 +90,11 @@ void SpriteDisplay_SetDepthBuffer(unk_func_8001A024* arg0, unk_D_86002F58_004_00
     }
 }
 
-void SpriteDisplay_SetScaleTable(unk_func_8001A024* arg0, SpeciesDisplayParams* arg1) {
+void SpriteDisplay_SetScaleTable(SpriteDisplay* arg0, SpeciesDisplayParams* arg1) {
     arg0->unk_18 = arg1;
 }
 
-void SpriteDisplay_Clear(unk_func_8001A024* arg0) {
+void SpriteDisplay_Clear(SpriteDisplay* arg0) {
     // s32 var_s0;
     s32 i;
     u16 w;
@@ -122,7 +122,7 @@ void SpriteDisplay_Clear(unk_func_8001A024* arg0) {
     }
 }
 
-void SpriteDisplay_SetupSlot(unk_func_8001A024* arg0, s32 arg1, s32 arg2, u16 arg3) {
+void SpriteDisplay_SetupSlot(SpriteDisplay* arg0, s32 arg1, s32 arg2, u16 arg3) {
     s32 w;
     s32 h;
 
@@ -149,7 +149,7 @@ void SpriteDisplay_SetupSlot(unk_func_8001A024* arg0, s32 arg1, s32 arg2, u16 ar
     }
 }
 
-void SpriteDisplay_ConfigSlotWithAnim(unk_func_8001A024* arg0, s32 arg1, unk_func_80026268_arg0* arg2, u16 arg3) { // or u16 arg3
+void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData* arg2, u16 arg3) { // or u16 arg3
     s32 w;
     s32 h;
 
@@ -204,7 +204,7 @@ void SpriteImage_Transform(FramebufferImage* arg0, arg1_func_80010CA8 arg1) {
     U16Buffer_Transform(arg0->img_p, size, arg1);
 }
 
-void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
+void SpriteDisplay_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     Vec3s sp38;
     unk_D_86002F34_00C* sp34;
     unk_func_8001A024_008* temp_s1;
@@ -246,7 +246,7 @@ void SpriteDisplay_RenderSlot(unk_func_8001A024* arg0, s32 arg1) {
     Graph_SetTextureState(arg0->unk_0C);
 }
 
-s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
+s32 SpriteDisplay_TryAdvance(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
     s32 var_v0;
     s32 sp24;
@@ -295,7 +295,7 @@ s32 SpriteDisplay_TryAdvance(unk_func_8001A024* arg0, s32 arg1) {
     return sp24;
 }
 
-s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
+s32 func_8001ABAC(SpriteDisplay* arg0, s32 arg1) {
     UNUSED s32 pad;
     arg1_func_80010CA8 sp48;
     s32 sp44;
@@ -353,7 +353,7 @@ s32 func_8001ABAC(unk_func_8001A024* arg0, s32 arg1) {
     return sp44;
 }
 
-s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
+s32 func_8001AD90(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
     s32 var_a2;
     s32 var_s0;
@@ -395,7 +395,7 @@ s32 func_8001AD90(unk_func_8001A024* arg0, s32 arg1) {
     return var_a2;
 }
 
-void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) {
+void SpriteDisplay_SetCurrentSlotFramebuffer(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
 
     if (arg1 == arg0->unk_03) {
@@ -415,7 +415,7 @@ void SpriteDisplay_SetCurrentSlotFramebuffer(unk_func_8001A024* arg0, s32 arg1) 
     }
 }
 
-u8* SpriteDisplay_GetImagePtr(unk_func_8001A024* arg0, s32 arg1) {
+u8* SpriteDisplay_GetImagePtr(SpriteDisplay* arg0, s32 arg1) {
     u8* image;
     image = NULL;
     if (arg1 < (s32)arg0->unk_01) {
@@ -424,7 +424,7 @@ u8* SpriteDisplay_GetImagePtr(unk_func_8001A024* arg0, s32 arg1) {
     return image;
 }
 
-s32 func_8001B010(unk_func_8001A024* arg0) {
+s32 func_8001B010(SpriteDisplay* arg0) {
     s32 i;
     
     for (i = 0; i < arg0->unk_01; i++) {
@@ -450,7 +450,7 @@ void func_8001B088(u16* arg0, s32 arg1) {
     }
 }
 
-void func_8001B0DC(u16* arg0, s32 arg1, unk_func_80026268_arg0* arg2) {
+void func_8001B0DC(u16* arg0, s32 arg1, PokemonData* arg2) {
     arg1_func_80010CA8 sp1C;
 
     if (arg2 == NULL) {
@@ -488,7 +488,7 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     Perspective_SetParams(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
 
-unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
+unk_func_8001B1FC* func_8001B1FC(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
                                  s16 arg6, u8* arg7) {
     unk_func_8001B1FC* temp_v0 = main_pool_alloc(sizeof(unk_func_8001B1FC), 0);
 
@@ -509,7 +509,7 @@ unk_func_8001B1FC* func_8001B1FC(unk_D_86002F58_004_000_010* arg0, s16 arg1, s16
     return temp_v0;
 }
 
-void func_8001B2D8(unk_func_8001B1FC* arg0, unk_func_80026268_arg0* arg1, u16 arg2) {
+void func_8001B2D8(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
     arg1_func_80010CA8 sp2C;
     s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 0x10) >> 6;
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 6) >> 4;

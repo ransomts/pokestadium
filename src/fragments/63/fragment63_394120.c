@@ -52,7 +52,7 @@ static u32 gGeoLayoutCommands[] = {
 void func_84B00020(void) {
     s16 temp_s0;
     unk_D_800AE540_0874* temp_v0;
-    unk_func_80026268_arg0* var_s1;
+    PokemonData* var_s1;
 
     temp_v0 = gBattleContext.unk_1194[0].unk_08[0]->unk_214;
     temp_s0 = temp_v0->unk_002;
@@ -478,7 +478,7 @@ void func_84B01994(void) {
         }
 
         for (i = 0; i < var_a1->unk_002; i++) {
-            unk_func_80026268_arg0* ptr = &var_a1->unk_01C[i];
+            PokemonData* ptr = &var_a1->unk_01C[i];
 
             if (ptr->unk_00.unk_00 == 0x19) {
                 for (j = 0; j < 4; j++) {

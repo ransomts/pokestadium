@@ -923,7 +923,7 @@ s32 func_842081A8(unk_D_84211B50* arg0) {
     return arg0->unk_0001 == 0;
 }
 
-void func_842081B4(unk_D_84211B50* arg0, unk_func_80026268_arg0* arg1, s16 arg2) {
+void func_842081B4(unk_D_84211B50* arg0, PokemonData* arg1, s16 arg2) {
     s32 i;
 
     arg0->unk_0006 = arg2;

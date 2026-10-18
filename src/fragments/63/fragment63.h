@@ -80,7 +80,7 @@ typedef struct unk_D_84B25A58 {
     /* 0x10 */ unk_D_86002F34* unk_10;
     /* 0x14 */ unk_D_86002F34* unk_14;
     /* 0x18 */ unk_D_86002F34* unk_18;
-    /* 0x1C */ unk_func_8001A024* unk_1C;
+    /* 0x1C */ SpriteDisplay* unk_1C;
     /* 0x20 */ u16 (*unk_20)[0x640];
     /* 0x24 */ FramebufferImage* unk_24;
     /* 0x28 */ FramebufferImage* unk_28;

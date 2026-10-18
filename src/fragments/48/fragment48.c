@@ -8,28 +8,28 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_839006B0 {
-    /* 0x00 */ unk_func_80026268_arg0 unk_00;
+typedef struct GalleryBlockEntry {
+    /* 0x00 */ PokemonData unk_00;
     /* 0x54 */ char unk54[0x38];
-} unk_D_839006B0; // size = 0x8C
+} GalleryBlockEntry; // size = 0x8C
 
-typedef struct unk_D_83902700 {
+typedef struct GalleryMenuState {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ char unk04[0x70];
-} unk_D_83902700; // size >= 0x74
+} GalleryMenuState; // size >= 0x74
 
-static unk_D_839006B0 gGalleryLoadData[37];
-static unk_D_839006B0 gGallerySaveData[22];
+static GalleryBlockEntry gGalleryLoadData[37];
+static GalleryBlockEntry gGallerySaveData[22];
 static void* gGalleryBackgroundTexture;
 static s32 gGalleryState;
-static unk_D_83902700 D_83902700;
-static s32 D_83902774;
+static GalleryMenuState gGalleryMenuState;
+static s32 gGalleryPfsError;
 
-static Gfx D_83900630[] = {
+static Gfx gGalleryGfxList0[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_83900638[] = {
+static Gfx gGalleryGfxList1[] = {
     gsSPEndDisplayList(),
 };
 
@@ -46,7 +46,7 @@ void Gallery_Debugger_Init(void) {
     s32 i;
 
     gGalleryState = 0;
-    D_83902700.unk_00 = 0;
+    gGalleryMenuState.unk_00 = 0;
     GbsEnsureBankLoaded(2);
 
     for (i = 0; i < 36; i++) {
@@ -60,7 +60,7 @@ void Gallery_Debugger_Init(void) {
     Gallery_Debugger_PostLoad();
 }
 
-void func_839000E4(void) {
+void Gallery_Debugger_WriteBankData(void) {
     s32 i;
 
     for (i = 0; i < 36; i++) {
@@ -90,7 +90,7 @@ void Gallery_Debugger_DrawMenu(void) {
 
     for (i = 0; i < 3; i++) {
         s32 tmp = i * 0x16;
-        if (i != D_83902700.unk_00) {
+        if (i != gGalleryMenuState.unk_00) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -98,7 +98,7 @@ void Gallery_Debugger_DrawMenu(void) {
         Text_Print(0x78, 0x82 + tmp, D_83900640[i]);
     }
 
-    Text_Print(sp30, 0xC8, "PFS ERROR : %d", D_83902774);
+    Text_Print(sp30, 0xC8, "PFS ERROR : %d", gGalleryPfsError);
     Text_SetupDL();
 }
 
@@ -111,28 +111,28 @@ void Gallery_Debugger_Render(void) {
 
 s32 Gallery_Debugger_HandleInput(void) {
     s32 var_a2 = 0;
-    s32 temp_a1 = D_83902700.unk_00;
+    s32 temp_a1 = gGalleryMenuState.unk_00;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        D_83902700.unk_00--;
-        if (D_83902700.unk_00 < 0) {
-            D_83902700.unk_00 = 0;
+        gGalleryMenuState.unk_00--;
+        if (gGalleryMenuState.unk_00 < 0) {
+            gGalleryMenuState.unk_00 = 0;
         }
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        D_83902700.unk_00++;
-        if (D_83902700.unk_00 >= 3) {
-            D_83902700.unk_00 = 2;
+        gGalleryMenuState.unk_00++;
+        if (gGalleryMenuState.unk_00 >= 3) {
+            gGalleryMenuState.unk_00 = 2;
         }
     }
 
-    if (temp_a1 != D_83902700.unk_00) {
-        D_83902774 = 0;
+    if (temp_a1 != gGalleryMenuState.unk_00) {
+        gGalleryPfsError = 0;
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        switch (D_83902700.unk_00) {
+        switch (gGalleryMenuState.unk_00) {
             case 0:
                 func_83900030();
                 var_a2 = 0;
@@ -206,7 +206,7 @@ s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1) {
     Gallery_Debugger_Init();
     Stage_Set(sp24);
     Gallery_Debugger_Run();
-    func_839000E4();
+    Gallery_Debugger_WriteBankData();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

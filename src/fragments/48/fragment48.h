@@ -7,7 +7,7 @@ void Gallery_Debugger_PostLoad(void);
 void func_83900028(void);
 void func_83900030(void);
 void Gallery_Debugger_Init(void);
-void func_839000E4(void);
+void Gallery_Debugger_WriteBankData(void);
 void Gallery_Debugger_DrawMenu(void);
 void Gallery_Debugger_Render(void);
 s32 Gallery_Debugger_HandleInput(void);

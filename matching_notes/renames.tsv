@@ -2630,3 +2630,158 @@ func_83802D64	SnapSelect_HandleCancel	w17		Handles the B?button press by setting
 func_83802D98	SnapSelect_NavigateNext	w17		Handles the R?button press: moves the selection forward to the next non?empty slot in the circular buffer.	applied@3634e05
 func_83802EE8	SnapSelect_NavigatePrev	w17		Handles the L?button press: moves the selection backward to the previous non?empty slot in the circular buffer.	applied@3634e05
 func_838032C8	SnapSelect_ProcessInput	w17		Main input dispatcher: checks controller buttons (A, B, R, L, D?pad) and calls the appropriate SnapSelect handler functions.	applied@3634e05
+func_839000E4	Gallery_Debugger_WriteBankData	w18		Invoked after the debugger run to write block entries for banks 0x16 and 0x17 and sync them, so it writes gallery data back to the GBS	applied@4700320
+D_83902700	gGalleryMenuState	w18		Static struct whose field unk_00 stores the current menu cursor and is modified by input handling, representing the gallery menu state	applied@4700320
+D_83902774	gGalleryPfsError	w18		Displayed as "PFS ERROR : %d" in the menu, thus holds the last PFS error code	applied@4700320
+D_83900630	gGalleryGfxList0	w18		Static Gfx display list containing only gsSPEndDisplayList, used as an empty placeholder list for the gallery UI	applied@4700320
+D_83900638	gGalleryGfxList1	w18		Static Gfx display list containing only gsSPEndDisplayList, used as another empty placeholder list for the gallery UI	applied@4700320
+unk_D_839006B0	GalleryBlockEntry	w18		Struct with a Gbs block entry (unk_00) and a data buffer (unk54), matching the layout of a gallery data block entry	applied@4700320
+unk_D_83902700	GalleryMenuState	w18		Struct containing a menu index (unk_00) and a buffer, matching a menu state structure for the gallery debugger	applied@4700320
+D_83A00B70	gMenuSlideShowState	w18		used as state variable for slide show progression in func_83A00880	applied@4700320
+D_83A00B74	gMenuBackgroundArchive	w18		loaded via ASSET_LOAD2(backgrounds,1,1) for background images	applied@4700320
+D_83A00B78	gCurrentBackgroundData	w18		set to BinArchive_GetFile of selected background and passed to drawing function	applied@4700320
+D_83A00B7C	gCurrentBackgroundIndex	w18		index of current background, incremented each frame and used to select file	applied@4700320
+func_83A00020	Menu_Init	w18		initializes state, allocates framebuffer and resets background index	applied@4700320
+func_83A00068	Menu_DrawFramebuffer	w18		draws the framebuffer image to the screen at given coordinates	applied@4700320
+func_83A0031C	Menu_DrawBackground	w18		tiles a 16x16 texture onto the screen based on background index	applied@4700320
+func_83A00754	Menu_RenderFrame	w18		sets up border, loads background texture and draws it each frame	applied@4700320
+func_83A00858	Menu_IsConfirmPressed	w18		returns non?zero when A or B button is pressed on player 1 controller	applied@4700320
+func_83A00880	Menu_Update	w18		advances slide?show state machine and returns 0 when finished	applied@4700320
+func_83A00990	Menu_ProcessInput	w18		reads controller inputs and initializes menu input handling each frame	applied@4700320
+func_83A00A4C	Menu_Entry	w18		entry point that sets up graphics, loads assets, creates stage and runs the menu loop	applied@4700320
+func_82800020	RunFragment33	w18		calls fragment33 via FRAGMENT_LOAD_AND_CALL macro, indicating this function forwards execution to fragment33	applied@4700320
+func_82900020	Input_PollAndMenuInit	w18		Calls Cont_StartReadInputs, Cont_ReadInputs, and MenuInput_Init each frame, indicating it polls controller and initializes menu input	applied@4700320
+func_82900390	Fragment52_Main	w18		Entry function for fragment52: sets up memory pool, graphics buffers, creates the stage, loads assets, initializes the graph, runs the main loop and cleans up	applied@4700320
+D_82800530	gGeoLayout_StageBackground	w18		Holds the result of GeoLayout_LoadById(0x96), a geo layout used for the stage background	applied@4700320
+D_82800534	gStageTextureNode	w18		Holds the GraphNode returned by process_geo_layout and later passed to Graph_SetTextureState as the texture state node	applied@4700320
+D_82A00374	gSpriteDisplay	w18		Returned by SpriteDisplay_Alloc, indicating it is a SpriteDisplay manager	applied@4700320
+D_82A00378	gLoadedPokemon	w18		Used as destination for GbsBlock_ReadPokemon, storing loaded Pokemon structs	applied@4700320
+D_82A00360	gLoadedPokemonCount	w18		Receives the count returned by GbsBlock_ReadPokemon, the number of Pokemon read	applied@4700320
+func_82A00020	LoadSaveSlotSprites	w18		Loads a save slot, reads Pokemon data and configures sprite slots accordingly	applied@4700320
+func_82A000F0	MenuStage_Frame	w18		Reads controller inputs and fills the screen each frame, acting as the menu stage update	applied@4700320
+func_82A00144	PopulateInputStructFromSprites	w18		Copies sprite images into a buffer struct and stores player name, populating the input struct	applied@4700320
+func_82A00224	Fragment53_Main	w18		Creates the stage, loads assets, runs the menu loop and returns the Pokemon count for fragment 53	applied@4700320
+unk_D_86002F58_004_000_010	AssetManager	w18	unk_D_86002F58_004_000_010:AssetManager	Variable D_82A00370 is assigned from AssetManager_Create, indicating this type is AssetManager	applied@4700320
+unk_func_8001A024	SpriteDisplay	w18	unk_func_8001A024:SpriteDisplay	Variable D_82A00374 is allocated by SpriteDisplay_Alloc, so this type is SpriteDisplay	applied@4700320
+unk_func_80026268_arg0	PokemonData	w18	unk_func_80026268_arg0:PokemonData	Array D_82A00378 holds elements read by GbsBlock_ReadPokemon, representing Pokemon data	applied@4700320
+func_82B00020	DrawPanelBorder	w18		Draws a border display list and two sprites, used to render a panel border.	applied@4700320
+func_82B0029C	DrawMenuHeader	w18		Combines box drawing, border, and text printing to render the menu header.	applied@4700320
+func_82B005AC	DrawFrameRect	w18		Draws corner sprites and fills to create a rectangular frame.	applied@4700320
+func_82B00814	DrawMenuEntryBox	w18		Creates a framed box, fills it, and optionally prints centered text for a menu entry.	applied@4700320
+func_82B00994	DrawMenuEntries	w18		Calls DrawMenuEntryBox three times with different messages to render the menu entries.	applied@4700320
+func_82B00A50	GetMenuInput	w18		Processes controller input, updates the cursor index, and returns a code indicating the action, serving as menu input handling.	applied@4700320
+func_82B00B3C	RenderMenuFrame	w18		Draws background, header, entries, and optional highlight for the menu frame.	applied@4700320
+func_82B00BC8	FadeInAndRunMenu	w18		Fades in the stage and repeatedly calls the menu rendering while waiting for fade completion.	applied@4700320
+func_82B00C24	FadeOutAndCleanup	w18		Fades out, stops music, and prepares for exit after the menu.	applied@4700320
+func_82B00CB4	RunMenuSelectionLoop	w18		Implements the full menu selection loop, handling fade?in, option cycling, input waiting, and returning the chosen option.	applied@4700320
+func_82B00DD0	LoadMenuBackground	w18		Loads a texture atlas based on battle context for the menu background.	applied@4700320
+func_82B00E84	MenuFragment_Init	w18		Initializes assets, message bank, music, and runs the menu selection loop for this fragment.	applied@4700320
+func_82B0104C	Fragment54_Main	w18		Main entry point for fragment 54, managing sub?fragment calls and pool state.	applied@4700320
+D_82B01140	gFragment54MessageBank	w18		Assigned from GetMessageBank(0x18) and used in GetMessageString for UI text, so it is the fragment's message bank.	applied@4700320
+D_82B01144	gBattleHeaderArchive	w18		Result of Asset_Load2 loading backgrounds and battle headers, serving as the battle header archive.	applied@4700320
+D_82B01148	gFragment54TextureAtlas	w18		Set to a file from the archive and used in Gfx_DrawTextureAtlas, representing the menu background texture atlas.	applied@4700320
+D_82B0114C	gMenuCursorIndex	w18		Modified by left/right inputs cycling 0?2 and used to compute the selected option, acting as the menu cursor index.	applied@4700320
+D_82B01120	gBackgroundFileIndexTable	w18		Array indexed by battle context to choose a file ID for the background, mapping contexts to background file indices.	applied@4700320
+D_82B0112C	gMessageIdOffsetTable	w18		Array indexed by battle context and supplied to GetMessageString, mapping contexts to message ID offsets.	applied@4700320
+func_83000130	MenuInput_Update	w18		Updates controller input state for menus each frame, calling Cont_StartReadInputs, Cont_ReadInputs and MenuInput_Init	applied@4700320
+func_83000160	GetMenuOptionList	w18		Returns a pointer to the appropriate option ID list based on the battle context fields unk_0001 and unk_0000, used for menu construction	applied@4700320
+func_830003A4	GetBattleModeTitle	w18		Selects a title string (e.g., D_83003CAC) based on the battle mode index passed in, providing the main menu heading	applied@4700320
+func_83000418	GetBattleModeSubtitle	w18		Selects a subtitle string (e.g., D_83003CBC) based on the battle sub?mode index, used for secondary menu text	applied@4700320
+func_830004BC	MenuOptionStringsMissing	w18		Scans the option ID list and returns 1 if any corresponding entry in D_83003DE0.unk_00 is an empty string, indicating missing menu text	applied@4700320
+func_83000508	FadeIn_Update	w18		Decrements the fade?in timer D_83003C82, computes progress values and transitions state to 1 when the timer expires	applied@4700320
+func_8300059C	MenuInput_HandleSelection	w18		Processes D?pad navigation and A/B button presses to move the selection index D_83003CA6, play sounds and change menu state variables	applied@4700320
+func_83000750	FadeOut_Update	w18		Decrements the fade?out timer D_83003C82, updates progress values and sets state to 4 with a short delay when the timer reaches zero	applied@4700320
+func_830007C4	FadeOut_IsComplete	w18		Decrements D_83003C82 and returns 1 when the timer has elapsed, signalling the end of the fade?out phase	applied@4700320
+func_830007F4	DrawBattleModeBackground	w18		Sets up a 1?cycle render mode, loads texture D_302EBC0 and draws it as the background for the battle?mode selection screen	applied@4700320
+func_83000A30	DrawLoadingBar	w18		Uses D_83003C94 to compute bar dimensions, draws two side textures and a central fill, and prints optional loading text when present	applied@4700320
+func_83001178	DrawColoredPanel	w18		Draws a colored panel border with environment color set from arguments, then fills the interior with a solid rectangle of the same color	applied@4700320
+func_830014B0	DrawMenuIcon	w18		Loads a 20?20 IA texture tile (D_4000C40) and draws it at the given screen position, used for menu entry icons	applied@4700320
+func_830015EC	DrawMenuOptions	w18		Renders the menu title, optional description, and each selectable option, highlighting the current selection and handling special case strings	applied@4700320
+func_83002270	GetStringLineCount	w18		counts newline characters in a string to determine the number of text lines	applied@4700320
+func_830022B0	Dialog_UpdateOpening	w18		updates opening animation by decrementing timer and computing progress fraction	applied@4700320
+func_83002324	Dialog_WaitForInput	w18		sets state to closing when A or B is pressed and plays a sound effect	applied@4700320
+func_83002370	Dialog_UpdateClosing	w18		updates closing animation by decrementing timer and computing progress fraction	applied@4700320
+func_830023B8	Dialog_CloseImmediately	w18		resets dialog state and animation progress to zero	applied@4700320
+func_830023CC	Dialog_UpdateStateMachine	w18		drives the dialog state machine by calling opening, waiting, or closing handlers	applied@4700320
+func_8300243C	Dialog_Render	w18		draws the dialog background rectangle and prints title and body text using the current state	applied@4700320
+func_830025F8	Dialog_Start	w18		initializes dialog state, timer, animation progress, message index and computes dimensions based on line count	applied@4700320
+func_8300269C	Dialog_IsActive	w18		returns non?zero when a dialog is currently active (state != 0)	applied@4700320
+func_830026C0	Dialog_GetAnimProgress	w18		returns the current animation progress value used for drawing the dialog	applied@4700320
+D_83003EE0	gDialogState	w18		holds the current dialog state (0 idle, 1 opening, 2 waiting, 3 closing)	applied@4700320
+D_83003EE2	gDialogTimer	w18		used as a countdown timer for opening and closing animations, decremented each frame	applied@4700320
+D_83003EE4	gDialogMessageId	w18		index into message tables for title and body text when rendering the dialog	applied@4700320
+D_83003EE6	gDialogAnimProgress	w18		animation progress fraction (0?1024) used to scale the dialog rectangle during opening/closing	applied@4700320
+D_83003EE8	gDialogYPos	w18		vertical position of the dialog box calculated from its height and screen dimensions	applied@4700320
+D_83003EEA	gDialogHeight	w18		total height of the dialog box, computed from line count of the body text	applied@4700320
+func_830026D0	PokemonFlagCheck	w18		Checks D_8006FEE8[arg0][8] against a bitmask derived from arg1 to determine if a Pokemon satisfies a filter, thus it is a Pokemon flag check.	applied@4700320
+func_830027C8	GetPokemonCountByFilter	w18		Iterates over all 151 Pokemon calling func_830026D0 and counts matches, returning the number of Pokemon that meet the given filter.	applied@4700320
+func_83002848	FillPokemonSelectionList	w18		Fills a 6?element array with Pokemon indices starting at (arg1*6+1), marks entries with a flag from func_830026D0 and returns the count of valid entries, i.e., it populates a selection list.	applied@4700320
+func_83002950	GetSelectionNodeByOffset	w18		Walks the linked list of selection nodes by following the unk_18 pointer arg1 times and returns the resulting node, acting as a list offset getter.	applied@4700320
+func_83002974	MoveSelectionUp	w18		Handles the 'up' navigation: calls func_83002848 on the previous page, updates state fields and plays a sound, therefore it moves the selection up.	applied@4700320
+func_83002A0C	MoveSelectionDown	w18		Handles the 'down' navigation similarly by advancing to the next page, updating state and playing a sound, thus it moves the selection down.	applied@4700320
+func_83002AB4	UpdateSelectionOpenTimer	w18		Decrements the timer unk_02, updates unk_04 proportionally and when the timer expires sets state to 2, representing the open?animation update.	applied@4700320
+func_83002B1C	HandleSelectionInput	w18		Processes controller input: A/B confirm sets state 4, D?pad up/down invoke move?up/down functions, so it handles selection input.	applied@4700320
+func_83002BA4	UpdateSelectionCloseTimer	w18		Runs the close?animation timer, checks for additional up/down input, and when finished resets state to 2, thus it updates the close timer.	applied@4700320
+func_83002C30	UpdateSelectionConfirmTimer	w18		Runs the confirm?animation timer, scaling unk_04, and when finished sets state to 0, indicating the confirm animation update.	applied@4700320
+func_83003054	DrawPokemonSelectionEntries	w18		Draws each of the six list entries with colored boxes, Pokemon sprites from D_83003EF0 and prints their names, so it renders the Pokemon selection entries.	applied@4700320
+func_83003484	RenderSelectionMenu	w18		When the menu animation progress unk_04 is non?zero it draws the full UI including background, cursor, arrow, message and the list of entries, thus it renders the selection menu.	applied@4700320
+D_83003EF0	gPokemonIconTextures	w18		Used as a 151?entry texture table indexed by Pokemon number to draw sprites in func_83003054, indicating it stores Pokemon icon textures.	applied@4700320
+func_82C00020	Pref_DrawBackground	w18		Draws the preference screen background using gPrefBackgroundTexture and ends with gPrefDL_End	applied@4700320
+func_82C0025C	Pref_DrawBorderedPanel	w18		Draws a rectangular border with fill color based on arguments and uses gPrefDL_Border/gPrefDL_Fill	applied@4700320
+func_82C00574	Pref_DrawToggleBar	w18		Draws two side sprites (D_30242C0/D_30243A0) and a middle texture to create a toggle bar UI element	applied@4700320
+func_82C00658	Pref_DrawMainPanel	w18		Assembles the main preferences UI, calling panel draws and printing option text	applied@4700320
+func_82C00AA4	Pref_DrawAudioSettingsPanel	w18		Draws a subpanel containing audio?related messages (ids 9?C) when arg2 == 8	applied@4700320
+func_82C00CB4	Pref_DrawResetPanel	w18		Draws a subpanel for reset confirmation (message id D) when arg0 == 8	applied@4700320
+func_82C00D98	Pref_RenderScreen	w18		Sets up the display list, draws background, then calls appropriate panel draw functions based on arguments	applied@4700320
+func_82C00E10	Pref_ConfirmReset	w18		Handles the confirmation loop for resetting, processing input and returning success flag	applied@4700320
+func_82C00F88	Pref_RunResetDemo	w18		Runs the post?reset demo sequence, drawing screens and waiting for A button press	applied@4700320
+func_82C01054	Pref_ClearSaveData	w18		Clears all GBS save banks, resets battle context and audio flags, and zeroes gPrefToggleFlags	applied@4700320
+func_82C0115C	Pref_ApplyAudioSettingsFromFlags	w18		Compares new flag value with stored player money bits and toggles music pan mode and audio active flag accordingly	applied@4700320
+func_82C0120C	Pref_HandleOptionSelect	w18		Handles the action for the currently selected preference option, toggling flags or invoking reset/audio apply	applied@4700320
+func_82D00020	ValidatePIStatus	w18		Checks PI DMA/IO busy status and validates address mask before returning error code.	applied@4700320
+func_82D002C4	SetupFramebufferAndFill	w18		Allocates a framebuffer image, clears it, draws UI border and decorative sprites.	applied@4700320
+func_82D00D3C	DrawSmallPanel	w18		Similar to DrawPanel but uses smaller corner textures for compact UI elements.	applied@4700320
+func_82D0153C	DrawAnimatedPanel	w18		Draws a panel whose corner sprites oscillate using a sine wave for a subtle animation.	applied@4700320
+func_82D01758	DrawMenuTextureA	w18		When called with arg0==5, loads texture from D_82D0ABB8 array and displays display list D_82D07348.	applied@4700320
+func_82D0180C	DrawMenuTextureB	w18		When called with arg0==5, loads texture from D_82D0ABC8[0] and displays display list D_82D07E48.	applied@4700320
+func_82D018AC	DrawMenuTextureC	w18		When called with arg0==5, loads texture from D_82D0ABCC and displays display list D_82D08740.	applied@4700320
+D_82D09FF0	gTextureStateNode	w18		Passed to Graph_SetTextureState; represents a graph node holding current texture state.	applied@4700320
+D_82D09FF8	gMenuOptionNodes	w18		Array of Fragment2_1GraphNode used for menu option positioning and animation.	applied@4700320
+D_82D0AB38	gMenuItemData	w18		Stores per?menu?item flags (type, availability, etc.) used throughout the UI logic.	applied@4700320
+D_82D0AB90	gGbAudioState	w18		Structure passed to func_80027FA0; its unk_00 field is checked for special GB APU mode.	applied@4700320
+func_84000020	DrawDialogBorderSmall	w18		Draws two small border sprites (D_2006C00, D_2007500) for dialog boxes.	applied@4700320
+func_840000F4	DrawDialogBorderLarge	w18		Draws three larger border sprites (D_200B3E0, D_200C380, D_200D320) for a wide dialog.	applied@4700320
+func_840003A8	DrawTitlePanel	w18		Configures colors, draws background and prints the title message using GetMessageString.	applied@4700320
+func_840004A4	DrawSelectionBorder	w18		Draws a moving border around a selected rectangle using sine offset animation.	applied@4700320
+func_84000698	DrawWindow	w18		Renders a window with border sprites, fills interior, and draws a background texture.	applied@4700320
+func_8400114C	IsMenuEntryEnabled	w18		Returns true if a menu entry passes flag checks based on current selection state.	applied@4700320
+func_84001238	PrintMenuItemChar	w18		Prints a menu character with white or gray color depending on entry enabled state.	applied@4700320
+func_840012B4	DrawItemSelectionScreen	w18		Draws the list of item icons, highlights selected ones, and prints related text.	applied@4700320
+func_84001654	HandleItemSelectInput	w18		Processes A/B and D?pad inputs to navigate and confirm item selection, updating state variables.	applied@4700320
+func_840017AC	HandleOpponentSelectInput	w18		Handles navigation and confirmation for opponent selection screen, updating selection indices.	applied@4700320
+D_84002D00	gRuleMessageBank	w18		Holds pointer to message bank 0xF used for rule screen strings via GetMessageString.	applied@4700320
+D_84002D04	gOptionMessageBank	w18		Holds pointer to message bank 6 used for option strings (e.g., difficulty ranges).	applied@4700320
+D_84002BE8	gMenuEntries	w18		Array of 11 structs defining menu entry flags, positions, and texture pointers for UI icons.	applied@4700320
+func_84100288	Menu_AnimateRectangles	w18		Called from Menu_UpdateRender to animate rectangles based on D_84102498 entries when arg0 == 0xA	applied@4700320
+func_841003F0	MenuConfig_InitAnimation	w18		Initializes D_84102498 state flags from gMenuConfig and sets D_84102510/1C flags based on config bits	applied@4700320
+func_8410048C	Menu_DrawFrame	w18		Draws a bordered frame around a framebuffer image and is used by Menu_CreateBackgroundImage and Menu_CreateOptionImage	applied@4700320
+func_84100704	Menu_DrawBorderedRect	w18		Renders a rectangle with a textured border and fills the interior, used for UI panels in the menu	applied@4700320
+func_84100F04	Menu_DrawAnimatedBorder	w18		Draws moving corner sprites with a sine offset to create an animated border around a rectangle	applied@4700320
+func_84101120	MenuBackground_Display	w18		Display list callback that selects D_84102930 or D_84103078 based on background index and draws the menu background	applied@4700320
+func_84101210	Menu_DrawInfoBox	w18		Prints the selected menu?s name, description and numeric range using GetMessageString and MeasureTextWidth	applied@4700320
+func_841014E4	Menu_UpdateRender	w18		Updates graph node positions, draws background textures, optional borders and calls animation functions for each frame	applied@4700320
+func_84101894	Menu_CreateBackgroundImage	w18		Allocates a framebuffer image and draws the main menu background with icons using D_84102534 textures	applied@4700320
+func_84101A94	Menu_CreateOptionImage	w18		Allocates a smaller framebuffer image for option icons and draws them, using gMenuConfig flags to highlight selection	applied@4700320
+func_84101BFC	Menu_InitializeResources	w18		Sets up menu background images, graph nodes, positions and loads texture atlases before the menu loop starts	applied@4700320
+func_84101EC8	Menu_MainLoop	w18		Runs the full menu sequence: fade?in, input handling, background transitions and final selection processing	applied@4700320
+func_84102140	Menu_GraphInit	w18		Creates geo layouts for the menu root, bar and option nodes and registers them in the graph system	applied@4700320
+func_84102210	Menu_StartBattleIfSelected	w18		Starts a battle with mode and difficulty from tables when the selected menu index is less than 6	applied@4700320
+func_841022C0	Menu_Run	w18		Entry point that loads assets, initializes text and message banks, builds the menu graph and returns the result of Menu_StartBattleIfSelected	applied@4700320
+D_84102450	gMenuItemInfo	w18		Array of structs containing menu item geometry (x, y, width, height) and navigation indices used in Menu_DrawInfoBox and input handling	applied@4700320
+D_84102498	gMenuRectAnimations	w18		Array of structs storing animation state, position and size for rectangles animated by Menu_AnimateRectangles	applied@4700320
+D_84102528	gMenuOptionRanges	w18		2?element uint8 arrays defining numeric ranges for each menu option, printed in Menu_DrawInfoBox	applied@4700320
+D_84102534	gMenuOptionTexturePointers	w18		Pointer table to texture data used when drawing menu icons in Menu_CreateBackgroundImage and Menu_CreateOptionImage	applied@4700320
+D_84102930	gMenuBarBackgroundDL	w18		Display list that renders the menu bar background using vertices D_841025B0?D_841028F0	applied@4700320
+D_84103078	gMenuOptionBackgroundDL	w18		Display list that renders the menu option background using vertices D_84102D78?D_84103038	applied@4700320
+D_84102D40	gMenuBarGeoLayout	w18		Geo layout data passed to process_geo_layout to create the menu bar graph node	applied@4700320
+D_841033F8	gMenuOptionGeoLayout	w18		Geo layout data passed to process_geo_layout to create the menu option graph node	applied@4700320

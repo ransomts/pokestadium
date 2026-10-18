@@ -32,10 +32,10 @@ typedef struct unk_func_800228F0 {
 } unk_func_800228F0; // size >= 0x28
 
 u16 CalculateLevelFromExperience(s32 arg0, u32 arg1);
-void ApplyPPUps(unk_func_80026268_arg0* arg0);
-void SetMonNickname(unk_func_80026268_arg0* arg0);
+void ApplyPPUps(PokemonData* arg0);
+void SetMonNickname(PokemonData* arg0);
 s32 LoadPokemonNameData(unk_func_800228F0*, u16);
-void SavePokemonNameData(unk_func_80026268_arg0* arg0, s16 arg1, u8 arg2);
+void SavePokemonNameData(PokemonData* arg0, s16 arg1, u8 arg2);
 s32 func_80022A04(u16* arg0, unk_D_800AC910_040* arg1);
 u8 func_80022A28(s32 arg0);
 u8 GetPokemonBaseStat(s32 arg0);
@@ -82,9 +82,9 @@ s32 func_800243D8(s32 arg0);
 void func_8002447C(s32 arg0);
 void func_800244F4(s32 arg0);
 unk_D_800AC910_050_B40_000* func_80024528(s32 arg0, s32 arg1);
-void func_80024624(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2);
+void func_80024624(PokemonData* arg0, s32 arg1, s32 arg2);
 void func_800246F8(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2);
-void func_800247C4(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2, s32 arg3);
+void func_800247C4(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_80024884(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3);
 s32 func_80024948(s32 arg0, s32 arg1);
 void func_80024978(s32 arg0, s32 arg1, s32 arg2);
@@ -93,7 +93,7 @@ s32 func_800249FC(s32 arg0);
 s32 func_80024A48(s32 arg0, s32 arg1, s32 arg2);
 void func_80024AE0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_80024BC4(s32 arg0, s32 arg1, s32 arg2);
-s32 func_80024CB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_80026268_arg0* arg4);
+s32 func_80024CB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4);
 s32 func_80024DAC(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0* arg4);
 s32 func_80024EF4(void);
 s32 func_80024F00(s32 arg0);

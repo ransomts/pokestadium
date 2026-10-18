@@ -5,7 +5,7 @@
 
 void func_8432AF70(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
-    unk_func_80026268_arg0* ptr;
+    PokemonData* ptr;
     unk_D_84390010_654* sp2C;
     unk_D_800FCB18* sp28;
     unk_D_8438E7B0_A50* sp20;
@@ -49,7 +49,7 @@ void func_8432B0E4(unk_D_84390010* arg0) {
 }
 
 void func_8432B13C(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 2) {
         ptr->unk_05 = 0;
@@ -72,7 +72,7 @@ void func_8432B1BC(unk_D_84390010* arg0) {
 void func_8432B228(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp24 = &arg0->unk_654;
     unk_D_800FCB18* sp28 = &sp24->unk_38;
-    unk_func_80026268_arg0* sp2C = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((D_84390240.unk_00->unk_38 != 0xB) || (D_84390240.unk_00->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->unk_654.unk_34 & 1)) {
@@ -96,7 +96,7 @@ void func_8432B228(unk_D_84390010* arg0) {
 }
 
 void func_8432B38C(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 1) {
         ptr->unk_05 = 0;

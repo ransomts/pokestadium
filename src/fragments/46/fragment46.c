@@ -19,7 +19,7 @@ static Camera* gFragment46_Camera = NULL;
 
 void Fragment46_InitCamera(void) {
     UNUSED s32 pad;
-    unk_D_86002F58_004_000_010* sp28;
+    AssetManager* sp28;
 
     gFragment46_State = 0;
     sp28 = AssetManager_Create(1);

@@ -86,10 +86,10 @@ typedef struct unk_D_82F20A10 {
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
-    /* 0x14 */ unk_func_80026268_arg0* unk_14;
+    /* 0x14 */ PokemonData* unk_14;
     /* 0x18 */ unk_D_82F144D0* unk_18;
     /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ unk_D_86002F58_004_000_010* unk_20;
+    /* 0x20 */ AssetManager* unk_20;
     /* 0x24 */ unk_func_8001B1FC* unk_24;
 } unk_D_82F20A10; // size >= 0x28
 
@@ -216,8 +216,8 @@ typedef struct unk_D_82F21238 {
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
     /* 0x20 */ s32 unk_20;
-    /* 0x24 */ unk_func_80026268_arg0* unk_24;
-    /* 0x28 */ unk_D_86002F58_004_000_010* unk_28;
+    /* 0x24 */ PokemonData* unk_24;
+    /* 0x28 */ AssetManager* unk_28;
     /* 0x2C */ unk_func_8001B1FC* unk_2C;
     /* 0x30 */ unk_D_82F20A40_00E unk_30;
 } unk_D_82F21238; // size = 0x38
@@ -289,7 +289,7 @@ u16* func_82F05198(s32);
 void func_82F051B8(void);
 s32 func_82F0525C(s32 arg0, unk_func_82F00838_sp30* arg1);
 
-void func_82F05210(s16, unk_func_80026268_arg0*);
+void func_82F05210(s16, PokemonData*);
 void BattleResultScreen_Start(unk_D_82F144D0* arg0, u8* arg1, s16 arg2, s16 arg3);
 void BattleResultScreen_UpdateTimer(unk_D_82F20A10* arg0);
 void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0);
@@ -386,7 +386,7 @@ s32 func_82F0D3F4(s32 arg0);
 void func_82F0D428(unk_D_82F21238* arg0);
 void func_82F0D51C(unk_D_82F21238* arg0);
 s32 func_82F0D64C(s16 arg0, s8* arg1);
-void func_82F0D6D0(s16 arg0, unk_func_80026268_arg0* arg1);
+void func_82F0D6D0(s16 arg0, PokemonData* arg1);
 void func_82F0D76C(unk_D_82F21238* arg0);
 void func_82F0D834(unk_D_82F21238* arg0);
 void func_82F0DA60(unk_D_82F21238* arg0);
@@ -395,7 +395,7 @@ void func_82F0DD90(s16 arg0, s16 arg1, s16 arg2);
 void func_82F0E5C8(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_82F0E97C(unk_D_82F21238* arg0);
 void func_82F0ECA4(void);
-void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1);
+void func_82F0ECAC(unk_D_82F20A40_00E* arg0, PokemonData* arg1);
 void func_82F0EE58(void);
 void func_82F0EF68(void);
 void func_82F0EFC4(s32 arg0, s16 arg1);

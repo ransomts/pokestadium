@@ -849,7 +849,7 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
     unk_func_8830867C_02C_0CC_000_000* var_s3;
     unk_func_8830867C_02C_0CC_000_000_010_000* var_s0;
     unk_func_8830867C_02C_144_000* var_s5 = arg0->unk_00;
-    unk_func_80026268_arg0 sp4C;
+    PokemonData sp4C;
 
     for (i = 0; i < arg0->unk_08; i++, var_s5++) {
         var_s3 = var_s5->unk_0C;
@@ -869,9 +869,9 @@ s32 func_883168B4(unk_func_8830867C_02C_144* arg0) {
                     var_s0 = var_s3->unk_10.unk_00;
 
                     for (x = 0; x < var_s3->unk_10.unk_08; x++, var_s0++) {
-                        bzero(&sp4C, sizeof(unk_func_80026268_arg0));
+                        bzero(&sp4C, sizeof(PokemonData));
                         GbsBlock_ReadPokemon(&sp4C, 1, temp_v0);
-                        if (bcmp(&sp4C, &var_s0->unk_00->unk_08, sizeof(unk_func_80026268_arg0)) != 0) {
+                        if (bcmp(&sp4C, &var_s0->unk_00->unk_08, sizeof(PokemonData)) != 0) {
                             var_s3->unk_0C = 1;
                             var_s7 |= func_88316874(var_s5->unk_00);
                             break;

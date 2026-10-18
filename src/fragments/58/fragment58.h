@@ -3,18 +3,18 @@
 
 #include "global.h"
 
-void func_84000020(s16 arg0, s16 arg1);
-void func_840000F4(s16 arg0, s16 arg1);
+void DrawDialogBorderSmall(s16 arg0, s16 arg1);
+void DrawDialogBorderLarge(s16 arg0, s16 arg1);
 void func_84000200(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4);
-void func_840003A8(void);
-void func_840004A4(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void func_84000698(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void DrawTitlePanel(void);
+void DrawSelectionBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void DrawWindow(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_8400094C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-s32 func_8400114C(s16 arg0);
-void func_84001238(s16 arg0, s16 arg1, s16 arg2);
-void func_840012B4(void);
-void func_84001654(void);
-void func_840017AC(void);
+s32 IsMenuEntryEnabled(s16 arg0);
+void PrintMenuItemChar(s16 arg0, s16 arg1, s16 arg2);
+void DrawItemSelectionScreen(void);
+void HandleItemSelectInput(void);
+void HandleOpponentSelectInput(void);
 void func_840019A4(void);
 s32 func_840019BC(void);
 void func_84001A1C(s16 arg0, s16 arg1, s16 arg2, char* arg3);

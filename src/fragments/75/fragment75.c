@@ -69,7 +69,7 @@ s32 func_8FA00510(void) {
 
 s32 func_8FA0051C(s32 arg0, s32 arg1) {
     s32 i;
-    unk_D_86002F58_004_000_010* temp_s0;
+    AssetManager* temp_s0;
     Stage* temp_v0;
     unk_D_83403C60* sp60 = (D_83407AE4 != 0) ? D_83407AC0 : D_83407ABC;
     u8 sp50[] = {

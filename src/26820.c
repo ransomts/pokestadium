@@ -181,7 +181,7 @@ void GbsSyncBankBlock(s32 arg0, s32 arg1) {
     }
 }
 
-void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
+void Mon_InitFromSaveEntry(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
     DeserializePokemonRecord(arg0, arg1);
     CalculatePokemonStats(arg0);
 
@@ -194,7 +194,7 @@ void Mon_InitFromSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_00
     DecodeGen1StringFromRawBuffer(arg0->unk_3B, arg1->unk_2C);
 }
 
-void Mon_WriteToSaveEntry(unk_func_80026268_arg0* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
+void Mon_WriteToSaveEntry(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
     arg0->unk_04 = arg0->unk_24;
 
     SerializePokemonToRawData(arg0, &arg1->unk_00);
@@ -952,7 +952,7 @@ void func_8002817C(u8 arg0, u8 arg1) {
     }
 }
 
-void EncodeBattleSaveData(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1, s32 arg2) {
+void EncodeBattleSaveData(unk_func_800281D4* arg0, PokemonData* arg1, s32 arg2) {
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;
 
@@ -971,7 +971,7 @@ void EncodeBattleSaveData(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1,
     }
 }
 
-s32 DecodeBattleSaveData(unk_func_800281D4* arg0, unk_func_80026268_arg0* arg1) {
+s32 DecodeBattleSaveData(unk_func_800281D4* arg0, PokemonData* arg1) {
     s16 var_s5 = -1;
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;

@@ -80,7 +80,7 @@ void func_83401818(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_834018C0(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
 void func_83401B48(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_83401D0C(s32 arg0, s32 arg1, s32 arg2);
-void CamList_Init(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_D_86002F58_004_000_010* arg5,
+void CamList_Init(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
     BinArchive* arg6, unk_D_83403C60* arg7, s32 arg8, s32 arg9);
 void CamList_Update(unk_D_83407B38* arg0);
 void func_834020D8(void);
@@ -90,7 +90,7 @@ void func_834021D8(unk_D_83407B38* arg0, unk_D_83407B00* arg1);
 void func_834021EC(unk_D_83407B38* arg0, unk_D_83407B00* arg1);
 void func_83402210(unk_D_83407B38* arg0, s32* arg1, s32* arg2, s32 arg3);
 s32 func_83402280(unk_D_83407B38* arg0, s32 arg1, s32 arg2);
-void func_83402298(unk_D_83407B38* arg0, unk_D_86002F58_004_000_010* arg1, BinArchive* arg2);
+void func_83402298(unk_D_83407B38* arg0, AssetManager* arg1, BinArchive* arg2);
 
 void Text_LoadMessageBanks(void);
 char* Text_GetMessageString_Bank2C(s32 arg0);

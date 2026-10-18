@@ -496,7 +496,7 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
     return 0;
 }
 
-void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, unk_func_80026268_arg0* arg1) {
+void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, PokemonData* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(unk_D_83402EE0_070));
@@ -512,10 +512,10 @@ void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, unk_func_80026268_arg0* a
     }
 }
 
-void Cam_ConvertStateToInput(unk_func_80026268_arg0* arg0, unk_D_83407AC8* arg1) {
+void Cam_ConvertStateToInput(PokemonData* arg0, unk_D_83407AC8* arg1) {
     s32 i;
 
-    bzero(arg0, sizeof(unk_func_80026268_arg0));
+    bzero(arg0, sizeof(PokemonData));
 
     arg0->unk_0E = arg1->unk_00;
     arg0->unk_00.unk_00 = arg1->unk_02;
@@ -541,7 +541,7 @@ void Cam_ProcessGeoLayout(Camera* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
 }
 
 Camera* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
-                                 unk_D_86002F58_004_000_010* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
+                                 AssetManager* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
     UNUSED FramebufferImage* var_v0;
     Camera* temp_v0 = main_pool_alloc(sizeof(Camera), 0);
 
@@ -632,8 +632,8 @@ typedef struct unk_D_83403C60_raw {
 void Cam_Initialize(Camera* arg0) {
     s32 sp94;
     arg1_func_80010CA8 sp90;
-    UNUSED s32 pad[3]; // unk_func_80026268_arg0 potentially bigger?
-    unk_func_80026268_arg0 sp30;
+    UNUSED s32 pad[3]; // PokemonData potentially bigger?
+    PokemonData sp30;
     unk_D_83403C60_raw* temp_s1;
     void (*sp28)(void*, u32);
 

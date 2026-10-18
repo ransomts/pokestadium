@@ -827,7 +827,7 @@ void func_84B073D8(unk_D_84B25A28* arg0) {
 void func_84B07428(unk_D_84B25A28* arg0) {
     s32 i;
     s32 count;
-    unk_D_86002F58_004_000_010* temp_s0;
+    AssetManager* temp_s0;
 
     temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_20, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));
@@ -844,7 +844,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
 void func_84B07560(unk_D_84B25A28* arg0) {
     s32 i;
     s32 count;
-    unk_D_86002F58_004_000_010* tmp = AssetManager_Create(5);
+    AssetManager* tmp = AssetManager_Create(5);
 
     SpriteDisplay_SetDepthBuffer(arg0->unk_20, tmp, FramebufferImage_Allocate(0, 2, 0x60, 0x40, 1));
 

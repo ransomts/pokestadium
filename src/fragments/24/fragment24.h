@@ -343,7 +343,7 @@ typedef struct unk_func_8830867C_04C {
     /* 0x7C */ unk_func_8830867C_030* unk_7C;
     /* 0x80 */ unk_func_8830867C_04C_080* unk_80;
     /* 0x84 */ s32 unk_84;
-    /* 0x88 */ unk_func_80026268_arg0* unk_88; // maybe unk_func_8830867C_02C_0CC_000_008
+    /* 0x88 */ PokemonData* unk_88; // maybe unk_func_8830867C_02C_0CC_000_008
     /* 0x8C */ s32 unk_8C;
     /* 0x90 */ unk_func_88503298* unk_90;
 } unk_func_8830867C_04C; // size = 0x94
@@ -700,7 +700,7 @@ void func_88308DFC(unk_func_8830867C* arg0);
 s32 func_88308E84(UNUSED s32 arg0, UNUSED s32 arg1);
 
 void MoveList_Create(unk_func_8830867C_04C_078* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-void MoveList_SetData(unk_func_8830867C_04C_078* arg0, unk_func_80026268_arg0* arg1);
+void MoveList_SetData(unk_func_8830867C_04C_078* arg0, PokemonData* arg1);
 void MoveList_MarkInvalid(unk_func_8830867C_04C_078* arg0);
 void MoveList_MarkForbiddenMoves(unk_func_8830867C_04C_078* arg0);
 s32 MoveList_HandleInput(unk_func_8830867C_04C_078* arg0, Controller* arg1);
@@ -788,7 +788,7 @@ s32 func_88311D6C(s32 arg0, unk_func_8830867C_02C_0CC_000_008* arg1);
 s32 func_88311E28(unk_func_8830867C_02C_0CC_000_008* arg0);
 s32 func_88311EB4(s32 arg0, unk_func_8830867C_02C_0CC_000_008* arg1);
 void func_88311F70(unk_func_8830867C_04C* arg0, unk_func_88200FA0_030_038* arg1);
-void func_88312018(unk_func_8830867C_04C* arg0, unk_func_80026268_arg0* arg1);
+void func_88312018(unk_func_8830867C_04C* arg0, PokemonData* arg1);
 void func_88312020(unk_func_8830867C_04C* arg0);
 void func_88312108(unk_func_8830867C_04C* arg0);
 void func_88312188(unk_func_8830867C_04C* arg0, s32 arg1);

@@ -420,7 +420,7 @@ static u8 pad_D_80075944[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-s32 Mon_CountMoves(unk_func_80026268_arg0* arg0) {
+s32 Mon_CountMoves(PokemonData* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -446,7 +446,7 @@ MoveBattleData* GetMoveBattleDataEntry(s32 arg0) {
     return &gMoveBattleData[arg0 - 1];
 }
 
-s32 Mon_GetEvolutionLine(unk_func_80026268_arg0* arg0, s32 arg1) {
+s32 Mon_GetEvolutionLine(PokemonData* arg0, s32 arg1) {
     s32 temp_v0 = arg0->unk_00.unk_00 - 1;
     s32 var_v1;
 

@@ -6,7 +6,7 @@
 #include "src/1AB70.h"
 
 typedef struct unk_func_88205880_00D0 {
-    /* 0x000 */ unk_func_80026268_arg0 unk_000[20];
+    /* 0x000 */ PokemonData unk_000[20];
     /* 0x690 */ s32 unk_690;
     /* 0x694 */ s32 unk_694;
     /* 0x698 */ s32 unk_698;
@@ -64,7 +64,7 @@ typedef struct unk_func_8830867C_02C_0CC_000_000_000 {
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000_000 {
     /* 0x00 */ struct unk_func_8830867C_02C_0CC_000_000* unk_00;
     /* 0x04 */ s32 unk_04;
-    /* 0x08 */ unk_func_80026268_arg0 unk_08;
+    /* 0x08 */ PokemonData unk_08;
 } unk_func_8830867C_02C_0CC_000_000_010_000_000; // size >= 0x5C
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000 {

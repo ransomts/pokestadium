@@ -116,7 +116,7 @@ s32 SnapSelect_Process(void) {
     s32 sp7C = 1;
     s32 sp78 = 0;
     s32 sp74;
-    unk_func_80026268_arg0 sp20;
+    PokemonData sp20;
 
     switch (gSnapSelectState) {
         case 0:
@@ -161,7 +161,7 @@ s32 SnapSelect_Process(void) {
 
                 case 5:
                     sp78 = 1;
-                    _bcopy(&gSnapSelectBgData->unk_7E4, &sp20, sizeof(unk_func_80026268_arg0));
+                    _bcopy(&gSnapSelectBgData->unk_7E4, &sp20, sizeof(PokemonData));
                     Cam_ConvertInputToState(&D_83407AC8, &sp20);
                     break;
             }

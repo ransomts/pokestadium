@@ -247,7 +247,7 @@ void func_8420B8CC(unk_D_8423D3A8* arg0, s32 arg1) {
     s16 temp_s4;
     s16 temp_s5;
     char* temp_v0_8;
-    unk_func_80026268_arg0* temp_s6;
+    PokemonData* temp_s6;
 
     temp_s4 = arg0->unk_06;
     temp_s5 = arg0->unk_08;

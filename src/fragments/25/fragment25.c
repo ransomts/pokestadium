@@ -54,7 +54,7 @@ s32 GetPaletteIndexFromFlags(s32 arg0) {
     return v1;
 }
 
-PaletteColor* GetPaletteColorEntry(unk_func_80026268_arg0* arg0) {
+PaletteColor* GetPaletteColorEntry(PokemonData* arg0) {
     s32 var_v1;
 
     if (arg0->unk_02 == 0) {

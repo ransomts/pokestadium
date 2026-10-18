@@ -39,7 +39,7 @@ static char** gBattleMessageBank;
 void func_88201210(unk_func_88205880_00D0* arg0) {
     s32 i;
     s32 temp_s3;
-    unk_func_80026268_arg0* tmp = arg0->unk_000;
+    PokemonData* tmp = arg0->unk_000;
 
     temp_s3 = func_80029080();
 
@@ -80,7 +80,7 @@ void func_88201360(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_v0;
 
     for (i = 0; i < arg3; i++, arg0++) {
-        bzero(arg0->unk_000, sizeof(unk_func_80026268_arg0) * 20);
+        bzero(arg0->unk_000, sizeof(PokemonData) * 20);
         arg0->unk_690 = func_8820130C(arg1, arg2, i, arg0, 0x14);
         arg0->unk_694 = arg1;
         arg0->unk_698 = i;
@@ -271,7 +271,7 @@ void func_88202054(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
 }
 
 void func_8820213C(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2) {
-    unk_func_80026268_arg0* ptr = arg1->unk_000;
+    PokemonData* ptr = arg1->unk_000;
     s32 i;
 
     arg0->unk_5C = arg1;
@@ -1195,8 +1195,8 @@ u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     u32 sp90 = 0;
     unk_func_80022C28_ret* temp_v0 = CreateGbsBlock(arg1, arg2, arg3, 0);
-    unk_func_80026268_arg0* var_s1;
-    unk_func_80026268_arg0 sp34;
+    PokemonData* var_s1;
+    PokemonData sp34;
 
     if (temp_v0 == NULL) {
         return 0;
@@ -1204,9 +1204,9 @@ u32 func_88204E0C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     var_s1 = arg0->unk_000;
     for (i = 0; i < arg0->unk_690; i++, var_s1++) {
-        bzero(&sp34, sizeof(unk_func_80026268_arg0));
+        bzero(&sp34, sizeof(PokemonData));
         GbsBlock_ReadPokemon(&sp34, 1, temp_v0);
-        if (bcmp(&sp34, var_s1, sizeof(unk_func_80026268_arg0)) != 0) {
+        if (bcmp(&sp34, var_s1, sizeof(PokemonData)) != 0) {
             sp90 = 1;
             break;
         }

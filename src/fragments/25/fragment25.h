@@ -15,10 +15,10 @@ typedef struct MoveCategoryColorGradient {
     /* 0x08 */ Color_RGBA8 unk_08;
 } MoveCategoryColorGradient; // size = 0xC
 
-typedef PaletteColor* (*func8840007C)(unk_func_80026268_arg0*);
+typedef PaletteColor* (*func8840007C)(PokemonData*);
 typedef MoveCategoryColorGradient* (*func884000C4)(s32);
 
-PaletteColor* GetPaletteColorEntry(unk_func_80026268_arg0*);
+PaletteColor* GetPaletteColorEntry(PokemonData*);
 MoveCategoryColorGradient* GetMoveCategoryColorGradient(s32);
 
 #endif // _FRAGMENT25_H_

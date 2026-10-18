@@ -22,7 +22,7 @@ typedef struct unk_D_8423D3A8 {
     /* 0x0E */ ClipRect unk_0E;
     /* 0x16 */ ClipRect unk_16;
     /* 0x20 */ s32 unk_20;
-    /* 0x24 */ unk_D_86002F58_004_000_010* unk_24;
+    /* 0x24 */ AssetManager* unk_24;
     /* 0x28 */ unk_func_8001B1FC* unk_28;
     /* 0x2C */ unk_D_838067F0_0168_0000* unk_2C;
 } unk_D_8423D3A8; // size >= 0x30
@@ -71,7 +71,7 @@ typedef struct unk_D_84211B50 {
 
 typedef struct unk_D_842168A0_0013C {
     /* 0x00 */ u32 unk_00;
-    /* 0x04 */ unk_func_80026268_arg0 unk_04[1];
+    /* 0x04 */ PokemonData unk_04[1];
 } unk_D_842168A0_0013C; // size >= 0x58
 
 typedef struct unk_D_842168A0 {
@@ -263,7 +263,7 @@ s32 func_84207D5C(unk_D_84211B50*);
 s32 func_84207E3C(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
 s32 func_8420804C(unk_D_84211B50*, unk_D_838067F0_0168_0000*);
 s32 func_842081A8(unk_D_84211B50* arg0);
-void func_842081B4(unk_D_84211B50* arg0, unk_func_80026268_arg0* arg1, s16 arg2);
+void func_842081B4(unk_D_84211B50* arg0, PokemonData* arg1, s16 arg2);
 
 void func_84209340(unk_D_842168A0*, s32);
 s32 func_8420AF1C(unk_D_842168A0*, unk_D_84211B50*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);

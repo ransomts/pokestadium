@@ -222,7 +222,7 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
     s16 temp_s0;
     s16 temp_s1_2;
     s32 temp_s1_3;
-    unk_func_80026268_arg0* sp11C;
+    PokemonData* sp11C;
     MoveBattleData* ptr;
     UNUSED s32 pad;
     char sp94[128];

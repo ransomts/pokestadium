@@ -8,9 +8,9 @@
 
 typedef struct unk_D_8380565C {
     /* 0x000 */ u32 unk_000;
-    /* 0x004 */ unk_func_80026268_arg0 unk_004[3];
+    /* 0x004 */ PokemonData unk_004[3];
     /* 0x100 */ char unk100[0x6E4];
-    /* 0x7E4 */ unk_func_80026268_arg0 unk_7E4;
+    /* 0x7E4 */ PokemonData unk_7E4;
 } unk_D_8380565C; // size >= 0x838
 
 typedef struct unk_D_838067F0_0168_0000 {
@@ -23,7 +23,7 @@ typedef struct unk_D_838067F0_0168_0000 {
         };
         s32 raw;
     };
-    /* 0x004 */ unk_func_80026268_arg0 unk_004;
+    /* 0x004 */ PokemonData unk_004;
     /* 0x058 */ u16 unk_058[0x640];
 } unk_D_838067F0_0168_0000; // size = 0xCD8
 
@@ -119,7 +119,7 @@ void SnapSelect_CopyStateToInfo(unk_D_83407B18_008* arg0);
 s32 func_838024EC(void);
 void SnapSelect_InitBackground(s32 arg0, s32 arg1, unk_D_8380565C* arg2);
 s32 SnapSelect_LoadPokemonIndices(unk_D_838067F0* arg0, s32 arg1);
-void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, unk_func_80026268_arg0* arg1);
+void SnapSelect_ApplyInputModifiers(unk_D_838067F0* arg0, PokemonData* arg1);
 s32 SnapSelect_FillPokemonInfo(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk_D_8380565C* arg3);
 s32 SnapSelect_LoadModeData(s32 arg0, unk_D_83407B18_008* arg1);
 void SnapSelect_UpdateTimer(unk_D_838067F0* arg0);

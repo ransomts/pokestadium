@@ -2,14 +2,14 @@
 #include "src/1CF30.h"
 #include "src/49790.h"
 
-static s16 D_83003EE0;
-static s16 D_83003EE2;
-static s16 D_83003EE4;
-static s16 D_83003EE6;
-static s16 D_83003EE8;
-static s16 D_83003EEA;
+static s16 gDialogState;
+static s16 gDialogTimer;
+static s16 gDialogMessageId;
+static s16 gDialogAnimProgress;
+static s16 gDialogYPos;
+static s16 gDialogHeight;
 
-s32 func_83002270(s8* arg0) {
+s32 GetStringLineCount(s8* arg0) {
     s16 var_v1 = 1;
 
     while (*arg0 != 0) {
@@ -22,92 +22,92 @@ s32 func_83002270(s8* arg0) {
     return var_v1;
 }
 
-void func_830022B0(void) {
-    D_83003EE2--;
-    D_83003EE6 = ((5 - D_83003EE2) << 0xA) / 5;
-    if (D_83003EE2 <= 0) {
-        D_83003EE0 = 2;
-        D_83003EE2 = 0;
+void Dialog_UpdateOpening(void) {
+    gDialogTimer--;
+    gDialogAnimProgress = ((5 - gDialogTimer) << 0xA) / 5;
+    if (gDialogTimer <= 0) {
+        gDialogState = 2;
+        gDialogTimer = 0;
     }
 }
 
-void func_83002324(void) {
+void Dialog_WaitForInput(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
-        D_83003EE0 = 3;
-        D_83003EE2 = 5;
+        gDialogState = 3;
+        gDialogTimer = 5;
         PlaySoundEffect(3);
     }
 }
 
-void func_83002370(void) {
-    D_83003EE2--;
-    D_83003EE6 = (D_83003EE2 << 0xA) / 5;
-    if (D_83003EE2 <= 0) {
-        D_83003EE0 = 0;
-        D_83003EE2 = 0;
+void Dialog_UpdateClosing(void) {
+    gDialogTimer--;
+    gDialogAnimProgress = (gDialogTimer << 0xA) / 5;
+    if (gDialogTimer <= 0) {
+        gDialogState = 0;
+        gDialogTimer = 0;
     }
 }
 
-void func_830023B8(void) {
-    D_83003EE0 = 0;
-    D_83003EE6 = 0;
+void Dialog_CloseImmediately(void) {
+    gDialogState = 0;
+    gDialogAnimProgress = 0;
 }
 
-void func_830023CC(void) {
-    if (D_83003EE0 != 0) {
-        switch (D_83003EE0) {
+void Dialog_UpdateStateMachine(void) {
+    if (gDialogState != 0) {
+        switch (gDialogState) {
             case 1:
-                func_830022B0();
+                Dialog_UpdateOpening();
                 break;
 
             case 2:
-                func_83002324();
+                Dialog_WaitForInput();
                 break;
 
             case 3:
-                func_83002370();
+                Dialog_UpdateClosing();
                 break;
         }
     }
 }
 
-void func_8300243C(void) {
+void Dialog_Render(void) {
     s16 temp_s0;
 
-    if (D_83003EE6 != 0) {
-        temp_s0 = D_83003EE8 + (((D_83003EEA / 2) * (0x400 - D_83003EE6)) / 1024);
-        func_83000F10(0x48, temp_s0, 0x1F0, (D_83003EEA * D_83003EE6) / 1024);
-        if (D_83003EE6 >= 0x400) {
-            func_83001178(0x48, temp_s0, 0x1F0, 0x20, 0x1E, 0x64, 0x64);
-            func_83001178(0x48, temp_s0 + 0x20, 0x1F0, D_83003EEA - 0x20, 0x3C, 0x3C, 0xA0);
+    if (gDialogAnimProgress != 0) {
+        temp_s0 = gDialogYPos + (((gDialogHeight / 2) * (0x400 - gDialogAnimProgress)) / 1024);
+        func_83000F10(0x48, temp_s0, 0x1F0, (gDialogHeight * gDialogAnimProgress) / 1024);
+        if (gDialogAnimProgress >= 0x400) {
+            DrawColoredPanel(0x48, temp_s0, 0x1F0, 0x20, 0x1E, 0x64, 0x64);
+            DrawColoredPanel(0x48, temp_s0 + 0x20, 0x1F0, gDialogHeight - 0x20, 0x3C, 0x3C, 0xA0);
             Text_ResetState();
             Text_SetFont(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetLineHeight(0x18);
-            Text_Print(0x50, temp_s0 + 6, D_83003CE0.unk_00[D_83003EE4]);
+            Text_Print(0x50, temp_s0 + 6, D_83003CE0.unk_00[gDialogMessageId]);
             Text_SetFont(8, 0);
-            Text_Print(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[D_83003EE4]);
+            Text_Print(0x50, temp_s0 + 0x28, D_83003DE0.unk_00[gDialogMessageId]);
             Text_SetupDL();
         }
     }
 }
 
-void func_830025F8(s16 arg0) {
+void Dialog_Start(s16 arg0) {
     s32 tmp;
 
-    D_83003EE0 = 1;
-    D_83003EE2 = 5;
-    D_83003EE6 = 0;
-    D_83003EE4 = arg0;
-    tmp = (func_83002270(D_83003DE0.unk_00[D_83003EE4]) * 0x18);
-    D_83003EEA = 0x2C + tmp;
-    D_83003EE8 = ((0x1E0 - D_83003EEA) / 2) + 0x14;
+    gDialogState = 1;
+    gDialogTimer = 5;
+    gDialogAnimProgress = 0;
+    gDialogMessageId = arg0;
+    tmp = (GetStringLineCount(D_83003DE0.unk_00[gDialogMessageId]) * 0x18);
+    gDialogHeight = 0x2C + tmp;
+    gDialogYPos = ((0x1E0 - gDialogHeight) / 2) + 0x14;
 }
 
-s32 func_8300269C(void) {
+s32 Dialog_IsActive(void) {
     s32 ret;
 
-    if (D_83003EE0 != 0) {
+    if (gDialogState != 0) {
         ret = 1;
     } else {
         ret = 0;
@@ -115,6 +115,6 @@ s32 func_8300269C(void) {
     return ret;
 }
 
-s32 func_830026C0(void) {
-    return D_83003EE6;
+s32 Dialog_GetAnimProgress(void) {
+    return gDialogAnimProgress;
 }

@@ -5,11 +5,11 @@
 
 #include "global.h"
 
-void func_82900020(void);
+void Input_PollAndMenuInit(void);
 void func_82800050(u8* arg0);
 void func_828001D0(void);
 void func_82800238(void);
 void func_828002E4(void);
-s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT52_H_

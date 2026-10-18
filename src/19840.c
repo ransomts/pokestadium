@@ -292,9 +292,9 @@ void Sched_InitThreads(void) {
     osStartThread(&gAssetManager.unk_000);
 }
 
-unk_D_86002F58_004_000_010* AssetManager_Create(u32 arg0) {
+AssetManager* AssetManager_Create(u32 arg0) {
     s16 i = 1;
-    unk_D_86002F58_004_000_010* temp_v0 = main_pool_alloc(sizeof(unk_D_86002F58_004_000_010), 1);
+    AssetManager* temp_v0 = main_pool_alloc(sizeof(AssetManager), 1);
 
     temp_v0->unk_00 = arg0;
     temp_v0->unk_01 = 0;
@@ -331,7 +331,7 @@ void AssetManager_LoadArchives(void) {
     gAssetManager.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
 }
 
-s32 AssetManager_RequestLoad(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
+s32 AssetManager_RequestLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
     s32 sp1C;
     sp18_func_800198E4* sp18;
     s32 var_v1;
@@ -368,7 +368,7 @@ s32 AssetManager_RequestLoad(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_fu
     return sp1C;
 }
 
-s32 func_80019A1C(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
+s32 func_80019A1C(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
     if ((arg0->unk_00 & 8) && !(arg0->unk_01 & 1)) {
         arg0->unk_02 = arg3;
         AssetManager_RequestLoad(arg0, arg1, arg2);
@@ -376,7 +376,7 @@ s32 func_80019A1C(unk_D_86002F58_004_000_010* arg0, u16 arg1, arg1_func_80010CA8
     return 0;
 }
 
-s32 func_80019A7C(unk_D_86002F58_004_000_010* arg0, s32 arg1, s32 arg2) {
+s32 func_80019A7C(AssetManager* arg0, s32 arg1, s32 arg2) {
     s32 sp1C = 0;
     sp18_func_800198E4* temp_v0;
 
@@ -401,7 +401,7 @@ s32 func_80019A7C(unk_D_86002F58_004_000_010* arg0, s32 arg1, s32 arg2) {
     return sp1C;
 }
 
-s32 AssetManager_HandleRequest(unk_D_86002F58_004_000_010* arg0, sp18_func_800198E4* arg1) {
+s32 AssetManager_HandleRequest(AssetManager* arg0, sp18_func_800198E4* arg1) {
     s32 sp1C = 0;
 
     switch (arg1->unk_00) {
@@ -430,7 +430,7 @@ s32 AssetManager_HandleRequest(unk_D_86002F58_004_000_010* arg0, sp18_func_80019
     return sp1C;
 }
 
-s32 AssetManager_TryProcessLoadQueue(unk_D_86002F58_004_000_010* arg0) {
+s32 AssetManager_TryProcessLoadQueue(AssetManager* arg0) {
     sp18_func_800198E4* sp1C;
     s32 sp18 = 0;
 
@@ -441,7 +441,7 @@ s32 AssetManager_TryProcessLoadQueue(unk_D_86002F58_004_000_010* arg0) {
     return sp18;
 }
 
-s32 func_80019C58(unk_D_86002F58_004_000_010* arg0) {
+s32 func_80019C58(AssetManager* arg0) {
     OSMesg sp1C;
     s32 sp18 = 0;
 
@@ -452,14 +452,14 @@ s32 func_80019C58(unk_D_86002F58_004_000_010* arg0) {
     return sp18;
 }
 
-s32 AssetManager_WaitLoadQueue(unk_D_86002F58_004_000_010* arg0) {
+s32 AssetManager_WaitLoadQueue(AssetManager* arg0) {
     OSMesg sp1C;
 
     osRecvMesg(&arg0->unk_30, &sp1C, 1);
     return AssetManager_HandleRequest(arg0, sp1C);
 }
 
-s32 func_80019CE0(unk_D_86002F58_004_000_010* arg0) {
+s32 func_80019CE0(AssetManager* arg0) {
     OSMesg sp1C;
 
     osRecvMesg(&arg0->unk_50, &sp1C, 1);
@@ -483,7 +483,7 @@ unk_D_86002F30* GeoLayout_LoadById(s32 arg0) {
     return sp24;
 }
 
-unk_D_86002F30* func_80019D90(unk_func_80026268_arg0* arg0) {
+unk_D_86002F30* func_80019D90(PokemonData* arg0) {
     Fragment* sp2C;
     arg1_func_80010CA8 sp28;
     unk_D_86002F30* sp24 = NULL;

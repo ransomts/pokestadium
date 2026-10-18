@@ -37,7 +37,7 @@ static Fragment2_1GraphNode D_888267B8;
 static unk_func_8001B1FC* D_88826920;
 static Stage* D_88826924;
 static Stage* D_88826928;
-static unk_D_86002F58_004_000_010* D_8882692C;
+static AssetManager* D_8882692C;
 static s32 D_88826930;
 static s32 D_88826934;
 static s32 D_88826938;
@@ -915,7 +915,7 @@ s32 func_888038E0(void) {
 }
 
 void func_88803BCC(u8* arg0, s32 arg1) {
-    unk_func_8001A024* sp1C;
+    SpriteDisplay* sp1C;
     void* sp18;
 
     main_pool_push_state('ICON');

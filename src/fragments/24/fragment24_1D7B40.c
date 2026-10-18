@@ -106,7 +106,7 @@ void MoveList_Create(unk_func_8830867C_04C_078* arg0, s32 arg1, s32 arg2, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp44, arg0->unk_30);
 }
 
-void MoveList_SetData(unk_func_8830867C_04C_078* arg0, unk_func_80026268_arg0* arg1) {
+void MoveList_SetData(unk_func_8830867C_04C_078* arg0, PokemonData* arg1) {
     s32 i;
     s32 temp_v0;
     s32 sp34;
@@ -3215,7 +3215,7 @@ void func_88311F70(unk_func_8830867C_04C* arg0, unk_func_88200FA0_030_038* arg1)
     ((func88507C0C)Memmap_GetFragmentVaddr(func_88507C0C))(arg0->unk_30, sp18, sp1C);
 }
 
-void func_88312018(unk_func_8830867C_04C* arg0, unk_func_80026268_arg0* arg1) {
+void func_88312018(unk_func_8830867C_04C* arg0, PokemonData* arg1) {
     arg0->unk_88 = arg1;
 }
 

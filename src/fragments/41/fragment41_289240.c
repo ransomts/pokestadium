@@ -991,7 +991,7 @@ void func_82F051B8(void) {
     _bcopy(sp18, gPickerState[1].unk_0028, sizeof(gPickerState[0].unk_0028));
 }
 
-void func_82F05210(s16 arg0, unk_func_80026268_arg0* arg1) {
+void func_82F05210(s16 arg0, PokemonData* arg1) {
     func_8001B0DC(gPickerState[arg0].unk_0028, 0, arg1);
 }
 

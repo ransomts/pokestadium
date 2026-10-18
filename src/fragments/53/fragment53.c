@@ -10,37 +10,37 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static unk_D_86002F58_004_000_010* D_82A00370;
-static unk_func_8001A024* D_82A00374;
-static unk_func_80026268_arg0 D_82A00378[6];
+static AssetManager* D_82A00370;
+static SpriteDisplay* gSpriteDisplay;
+static PokemonData gLoadedPokemon[6];
 
-static s32 D_82A00360 = 0;
+static s32 gLoadedPokemonCount = 0;
 
-void func_82A00020(s32 arg0) {
+void LoadSaveSlotSprites(s32 arg0) {
     s32 i;
     unk_func_80022C28_ret* temp_v0;
 
     if (SaveSlot_Load(arg0) != 0) {
         temp_v0 = CreateGbsBlock(0x20, arg0, 0, 0);
-        D_82A00360 = GbsBlock_ReadPokemon(D_82A00378, 6, temp_v0);
+        gLoadedPokemonCount = GbsBlock_ReadPokemon(gLoadedPokemon, 6, temp_v0);
         CommitAndFreeGbsBlock(temp_v0);
     }
 
-    for (i = 0; i < D_82A00360; i++) {
-        SpriteDisplay_ConfigSlotWithAnim(D_82A00374, i, &D_82A00378[i], 1);
+    for (i = 0; i < gLoadedPokemonCount; i++) {
+        SpriteDisplay_ConfigSlotWithAnim(gSpriteDisplay, i, &gLoadedPokemon[i], 1);
     }
 }
 
-s32 func_82A000F0(u8 arg0) {
+s32 MenuStage_Frame(u8 arg0) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001ABAC(D_82A00374, 0);
+    func_8001ABAC(gSpriteDisplay, 0);
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     return 0;
 }
 
-void func_82A00144(UnkInputStruct8000D738* arg0) {
+void PopulateInputStructFromSprites(UnkInputStruct8000D738* arg0) {
     s32 i;
     unk_func_8002A728 sp34;
     u16(*var_s1)[0x640] = arg0->unk_04[0];
@@ -48,18 +48,18 @@ void func_82A00144(UnkInputStruct8000D738* arg0) {
     GbsGetPlayerName(&sp34);
     arg0->unk_02 = sp34.unk_00;
     arg0->unk_00 = sp34.unk_04;
-    arg0->unk_03 = D_82A00360;
+    arg0->unk_03 = gLoadedPokemonCount;
 
-    for (i = 0; i < D_82A00360; i++, var_s1++) {
-        _bcopy(SpriteDisplay_GetImagePtr(D_82A00374, i), var_s1, sizeof(var_s1[0]));
+    for (i = 0; i < gLoadedPokemonCount; i++, var_s1++) {
+        _bcopy(SpriteDisplay_GetImagePtr(gSpriteDisplay, i), var_s1, sizeof(var_s1[0]));
     }
 
-    if (D_82A00360 < 6) {
-        bzero(var_s1, 0x4B00 + (-D_82A00360 * 0xC80));
+    if (gLoadedPokemonCount < 6) {
+        bzero(var_s1, 0x4B00 + (-gLoadedPokemonCount * 0xC80));
     }
 }
 
-s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
+s32 Fragment53_Main(s32 arg0, UnkInputStruct8000D738* arg1) {
     Stage* sp24;
 
     main_pool_push_state('PREP');
@@ -71,17 +71,17 @@ s32 func_82A00224(s32 arg0, UnkInputStruct8000D738* arg1) {
     FRAGMENT_LOAD(fragment31);
 
     D_82A00370 = AssetManager_Create(1);
-    D_82A00374 = SpriteDisplay_Alloc(D_82A00370, 6, 0x28, 0x28);
+    gSpriteDisplay = SpriteDisplay_Alloc(D_82A00370, 6, 0x28, 0x28);
     AssetManager_LoadArchives();
-    func_82A00020(arg0);
+    LoadSaveSlotSprites(arg0);
     GbsEnsureBankLoaded(2);
     Stage_Set(sp24);
-    Stage_AdvanceUntil(8, func_82A000F0);
+    Stage_AdvanceUntil(8, MenuStage_Frame);
     Stage_Destroy();
-    func_82A00144(arg1);
+    PopulateInputStructFromSprites(arg1);
     Gfx_FreeBuffers();
 
     main_pool_pop_state('PREP');
 
-    return D_82A00360;
+    return gLoadedPokemonCount;
 }

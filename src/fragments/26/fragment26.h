@@ -439,29 +439,29 @@ typedef struct unk_func_88205880_0098_008_040 {
 
 typedef struct unk_func_88205880_0098_008_044 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
-    /* 0x2C */ unk_func_80026268_arg0* unk_2C;
+    /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_044; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_048 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
-    /* 0x2C */ unk_func_80026268_arg0* unk_2C;
+    /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_048; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_04C {
     /* 0x00 */ unk_func_88001300_000 unk_00;
-    /* 0x2C */ unk_func_80026268_arg0* unk_2C;
+    /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_04C; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_050 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ unk_func_80026268_arg0* unk_30;
+    /* 0x30 */ PokemonData* unk_30;
     /* 0x34 */ unk_func_8001B1FC* unk_34;
 } unk_func_88205880_0098_008_050; // size = 0x38
 
 typedef struct unk_func_88205880_0098_008_054 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
-    /* 0x2C */ unk_func_80026268_arg0* unk_2C;
+    /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_054; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_058 {
@@ -495,7 +495,7 @@ typedef struct unk_func_88205880_0098_008 {
     /* 0x6C */ unk_func_88001300_03C* unk_6C;
     /* 0x70 */ unk_func_88205880_0098_008_070* unk_70;
     /* 0x74 */ unk_func_8850CD44* unk_74;
-    /* 0x78 */ unk_func_80026268_arg0* unk_78;
+    /* 0x78 */ PokemonData* unk_78;
     /* 0x7C */ s32 unk_7C;
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ s32 unk_84;
@@ -508,7 +508,7 @@ typedef struct unk_func_88205880_0098 {
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ MemoryPool* unk_04;
     /* 0x08 */ unk_func_88205880_0098_008* unk_08;
-    /* 0x0C */ unk_func_80026268_arg0* unk_0C;
+    /* 0x0C */ PokemonData* unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ unk_func_88001300_000* unk_14;
     /* 0x18 */ s32 unk_18;

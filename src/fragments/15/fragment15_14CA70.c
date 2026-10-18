@@ -306,7 +306,7 @@ static s32 pad_D_8690A690;
 static s32 pad_D_8690A694;
 static BinArchive* D_8690A698;
 static unk_D_8690A69C* D_8690A69C;
-static unk_func_80026268_arg0 D_8690A6A0;
+static PokemonData D_8690A6A0;
 static s32 D_8690A6F4;
 static s32 D_8690A6F8;
 static s32 D_8690A6FC;
@@ -408,9 +408,9 @@ void LoadStageDataDMA(void) {
     DmaCopyAsyncRange(&gCameraConfig, sp20, sp1C, 0);
 }
 
-unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(unk_func_80026268_arg0* arg0) {
+unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(PokemonData* arg0) {
     arg1_func_80010CA8 sp1C;
-    unk_D_86002F58_004_000_010* sp18;
+    AssetManager* sp18;
 
     arg0->unk_00.unk_00 = 25;
     sp18 = AssetManager_Create(1);

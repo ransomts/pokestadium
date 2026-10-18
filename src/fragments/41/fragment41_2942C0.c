@@ -423,7 +423,7 @@ s32 func_82F0D64C(s16 arg0, s8* arg1) {
     return sp64;
 }
 
-void func_82F0D6D0(s16 arg0, unk_func_80026268_arg0* arg1) {
+void func_82F0D6D0(s16 arg0, PokemonData* arg1) {
     s16 sp2E = 0;
 
     if (func_82F0D3F4(arg1->unk_00.unk_00) != 0) {
@@ -709,7 +709,7 @@ void func_82F0E97C(unk_D_82F21238* arg0) {
 void func_82F0ECA4(void) {
 }
 
-void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
+void func_82F0ECAC(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
     s16 spC6;
     s8 sp44[0x80];
     char* sp40;

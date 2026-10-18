@@ -16,14 +16,14 @@ s32 func_84307AE0(u8 arg0, u8* arg1, s32 arg2) {
     return 0;
 }
 
-unk_func_80026268_arg0* func_84307B28(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_08];
+PokemonData* func_84307B28(unk_D_84390010* arg0) {
+    PokemonData* ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_08];
 
     return ptr;
 }
 
 s32 func_84307B60(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* temp_v0 = func_84307B28(arg0);
+    PokemonData* temp_v0 = func_84307B28(arg0);
 
     if ((arg0->unk_000.unk_01A == 0x19) && (temp_v0->unk_52 & 0x80)) {
         return 1;
@@ -168,7 +168,7 @@ void func_84308148(unk_D_84390010* arg0, Vec3s* arg1) {
 }
 
 u16 func_84308164(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     return ptr->unk_02;
 }
@@ -389,7 +389,7 @@ void func_84308A04(unk_D_84390010* arg0, s32 arg1) {
 s32 func_84308A4C(unk_D_84390010* arg0) {
     s32 i;
     unk_D_84390010_654* temp_s0;
-    unk_func_80026268_arg0* ptr;
+    PokemonData* ptr;
 
     temp_s0 = &arg0->unk_654;
 
@@ -416,7 +416,7 @@ s32 func_84308A4C(unk_D_84390010* arg0) {
 s32 func_84308BD0(unk_D_84390010* arg0) {
     s32 i;
     unk_D_84390010_654* temp_s0;
-    unk_func_80026268_arg0* ptr;
+    PokemonData* ptr;
 
     temp_s0 = &arg0->unk_654;
 

@@ -20,10 +20,10 @@
 #include "src/stage_loader.h"
 #include "PR/rcp.h"
 
-static GraphNode* D_82D09FF0;
-static Fragment2_1GraphNode D_82D09FF8[8];
-static unk_D_82D0AB38 D_82D0AB38[4];
-static unk_func_80027FA0 D_82D0AB90;
+static GraphNode* gTextureStateNode;
+static Fragment2_1GraphNode gMenuOptionNodes[8];
+static unk_D_82D0AB38 gMenuItemData[4];
+static unk_func_80027FA0 gGbAudioState;
 static u16 D_82D0AB98;
 static char** D_82D0AB9C;
 static s32 D_82D0ABA0;
@@ -186,7 +186,7 @@ static Gfx D_82D07348[] = {
 };
 static u32 D_82D07710[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82D07008, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_82D01758, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, DrawMenuTextureA, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_82D07748[] = {
     VTX(0, 50, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -487,7 +487,7 @@ static Gfx D_82D07E48[] = {
 };
 static u32 D_82D08648[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82D07748, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_82D0180C, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, DrawMenuTextureB, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_82D08680[] = {
     VTX(0, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -527,7 +527,7 @@ static Gfx D_82D08740[] = {
 };
 static u32 D_82D08838[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82D08680, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_82D018AC, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, DrawMenuTextureC, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_82D08870[] = {
     VTX(0, 76, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -982,7 +982,7 @@ static u32 D_82D09EB8[] = {
     0x00000000, 0x08000000, func_82D04D50, 0x00000000, 0x06000000, 0x01000000,
 };
 
-s32 func_82D00020(s32 arg0) {
+s32 ValidatePIStatus(s32 arg0) {
     u32 temp_a0 = osSetIntMask(1);
 
     if (!(IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY)) &&
@@ -1013,7 +1013,7 @@ void func_82D00088(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82D002C4(FramebufferImage* arg0, s16 arg1, s16 arg2) {
+void SetupFramebufferAndFill(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
     Gfx_FillScreen(&gDisplayListHead, 0);
 
@@ -1092,7 +1092,7 @@ void func_82D0053C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawSmallPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -1150,7 +1150,7 @@ void func_82D00D3C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawAnimatedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     static s16 D_82D09EEC = 0;
 
     s16 sp56 = SINS(D_82D09EEC) * 2;
@@ -1169,7 +1169,7 @@ void func_82D0153C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_82D09EEC += 0x2000;
 }
 
-s32 func_82D01758(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawMenuTextureA(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         s32 var_a3 = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -1183,7 +1183,7 @@ s32 func_82D01758(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_82D0180C(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawMenuTextureB(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
@@ -1195,7 +1195,7 @@ s32 func_82D0180C(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_82D018AC(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawMenuTextureC(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
@@ -1239,7 +1239,7 @@ void func_82D01AB4(s16 arg0) {
     Gfx_DrawSpriteRGBA16(0x100, 0x40, 0x80, 0x10, D_300C820, 0x80, 0);
     Gfx_DrawSpriteRGBA16(0x100, 0x50, 0x80, 0x10, D_300D820, 0x80, 0);
 
-    ptr = &D_82D09EF0[D_82D0AB38[0].unk_04];
+    ptr = &D_82D09EF0[gMenuItemData[0].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawSpriteI4(0x120, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1249,7 +1249,7 @@ void func_82D01AB4(s16 arg0) {
     Gfx_DrawTextureRect(0x70, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTextureRect(0x78, 0x6C, 0xA8, 8, 0xE0, 0, 0, 0x400, 0);
 
-    ptr = &D_82D09EF0[D_82D0AB38[1].unk_04];
+    ptr = &D_82D09EF0[gMenuItemData[1].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawSpriteI4(0x12C, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1259,7 +1259,7 @@ void func_82D01AB4(s16 arg0) {
     Gfx_DrawTextureRect(0xF8, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTextureRect(0x100, 0x78, 0x2C, 8, 0xE0, 0, 0, 0x400, 0);
 
-    ptr = &D_82D09EF0[D_82D0AB38[2].unk_04];
+    ptr = &D_82D09EF0[gMenuItemData[2].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawSpriteI4(0x14C, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1269,7 +1269,7 @@ void func_82D01AB4(s16 arg0) {
     Gfx_DrawTextureRect(0x180, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTextureRect(0x154, 0x78, 0x2C, 8, 0, 0, 0, 0x400, 0);
 
-    ptr = &D_82D09EF0[D_82D0AB38[3].unk_04];
+    ptr = &D_82D09EF0[gMenuItemData[3].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawSpriteI4(0x158, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1285,7 +1285,7 @@ void func_82D01AB4(s16 arg0) {
 void func_82D021B4(s32 arg0) {
     u8* var_t0;
 
-    switch (D_82D0AB38[arg0].unk_01) {
+    switch (gMenuItemData[arg0].unk_01) {
         default:
             var_t0 = D_3008420;
             break;
@@ -1332,7 +1332,7 @@ void func_82D02454(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
     s32 sp2C;
     char* sp40;
 
-    func_82D002C4(D_82D0ABB8[arg0], 0x7C, 0xC8);
+    SetupFramebufferAndFill(D_82D0ABB8[arg0], 0x7C, 0xC8);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -1409,19 +1409,19 @@ void func_82D02870(s32 arg0) {
     unk_D_82D0AB38* temp_v1;
 
     D_82D0ABB8[arg0] = FramebufferImage_Allocate(0, 2, 0x80, 0xCC, 1);
-    if (D_82D0AB38[arg0].unk_01 != 0) {
-        if (D_82D0AB38[arg0].unk_00 == 0) {
-            if (D_82D0AB38[arg0].unk_03 != 0) {
-                func_82D02454(arg0, 1, 0, (u16)D_82D0AB38[arg0].unk_06, D_82D0AB38[arg0].unk_08);
+    if (gMenuItemData[arg0].unk_01 != 0) {
+        if (gMenuItemData[arg0].unk_00 == 0) {
+            if (gMenuItemData[arg0].unk_03 != 0) {
+                func_82D02454(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
             } else {
-                func_82D02454(arg0, 1, 0x13, (u16)D_82D0AB38[arg0].unk_06, D_82D0AB38[arg0].unk_08);
+                func_82D02454(arg0, 1, 0x13, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
             }
         } else {
             func_82D02454(arg0, 1, 0x14, -1, "?????");
         }
-    } else if (D_82D0AB38[arg0].unk_00 == 2) {
+    } else if (gMenuItemData[arg0].unk_00 == 2) {
         func_82D02454(arg0, 1, 0x15, -1, "?????");
-    } else if (D_82D0AB38[arg0].unk_04 != 0) {
+    } else if (gMenuItemData[arg0].unk_04 != 0) {
         func_82D02454(arg0, 0, 1, -1, NULL);
     } else {
         func_82D02454(arg0, 0, 2, -1, NULL);
@@ -1430,7 +1430,7 @@ void func_82D02870(s32 arg0) {
 
 void func_82D029E0(void) {
     D_82D0ABC8 = FramebufferImage_Allocate(0, 2, 0x21A, 0x64, 1);
-    func_82D002C4(D_82D0ABC8, 0x216, 0x60);
+    SetupFramebufferAndFill(D_82D0ABC8, 0x216, 0x60);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -1471,7 +1471,7 @@ void func_82D02D94(void) {
     char* sp28;
 
     D_82D0ABCC = FramebufferImage_Allocate(0, 2, 0x80, 0x2C, 1);
-    func_82D002C4(D_82D0ABCC, 0x78, 0x28);
+    SetupFramebufferAndFill(D_82D0ABCC, 0x78, 0x28);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -1500,17 +1500,17 @@ void func_82D02ED0(s32 arg0, s16 arg1) {
 
     temp_lo = (arg0 * 0x5000) / 10;
     for (i = 0; i < 4; i++) {
-        D_82D09FF8[i].unk_01E.y = temp_lo;
+        gMenuOptionNodes[i].unk_01E.y = temp_lo;
     }
 
     for (i = 4; i < 6; i++) {
-        D_82D09FF8[i].unk_01E.x = temp_lo;
+        gMenuOptionNodes[i].unk_01E.x = temp_lo;
     }
 
     Stage_BeginDisplayList();
     func_82D00088();
     func_82D01AB4(arg1);
-    Graph_SetTextureState(D_82D09FF0);
+    Graph_SetTextureState(gTextureStateNode);
     func_82D0194C(sp1C);
     Stage_Advance();
 }
@@ -1522,26 +1522,26 @@ void func_82D02FB8(void) {
 
     for (i = 0; i < 4; i++) {
         func_82D02870(i);
-        GraphNode_InitChild(&D_82D09FF8[i], 0, 0, D_82D0ABAC);
+        GraphNode_InitChild(&gMenuOptionNodes[i], 0, 0, D_82D0ABAC);
     }
 
     func_82D029E0();
-    GraphNode_InitChild(&D_82D09FF8[4], 0, 0, D_82D0ABB0);
+    GraphNode_InitChild(&gMenuOptionNodes[4], 0, 0, D_82D0ABB0);
     func_82D02D94();
-    GraphNode_InitChild(&D_82D09FF8[5], 0, 0, D_82D0ABB4);
-    Vec3f_Set(&D_82D09FF8->unk_024, -204.0f, 104.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[1].unk_024, -68.0f, 104.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[2].unk_024, 68.0f, 104.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[3].unk_024, 204.0f, 104.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[4].unk_024, -268.0f, -158.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[5].unk_024, 144.0f, 162.0f, -579.0f);
+    GraphNode_InitChild(&gMenuOptionNodes[5], 0, 0, D_82D0ABB4);
+    Vec3f_Set(&gMenuOptionNodes->unk_024, -204.0f, 104.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[1].unk_024, -68.0f, 104.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[2].unk_024, 68.0f, 104.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[3].unk_024, 204.0f, 104.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[4].unk_024, -268.0f, -158.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[5].unk_024, 144.0f, 162.0f, -579.0f);
 }
 
 void func_82D03120(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        GraphNode_ClearCallback(&D_82D09FF8[i]);
+        GraphNode_ClearCallback(&gMenuOptionNodes[i]);
     }
 
     main_pool_pop_state('chck');
@@ -2170,7 +2170,7 @@ void func_82D04FA0(s32 arg0, s32 arg1) {
         func_82D0053C(0x38, (s16)((0x3C - tmp) / 2) + 0x24, 0x210, tmp, 0x1E, 0x1E, 0x82, 0x96);
         if (arg0 == 10) {
             sp48 = func_82D04EB8();
-            if (D_82D0AB90.unk_00 == 0x1F8) {
+            if (gGbAudioState.unk_00 == 0x1F8) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp48);
 
@@ -2184,7 +2184,7 @@ void func_82D04FA0(s32 arg0, s32 arg1) {
             tmp = (MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, D_82D0AB9C, 0x3B)));
             Text_Print(0x140 - tmp / 2, 0x36, GetMessageString(NULL, 0, D_82D0AB9C, 0x3B));
 
-            if (D_82D0AB90.unk_00 == 0x1F8) {
+            if (gGbAudioState.unk_00 == 0x1F8) {
                 Text_SetFont(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp48);
                 Text_Print(0x1D6, 0x2D, GetMessageString(NULL, 0, D_82D0AB9C, 0x3C));
@@ -2215,7 +2215,7 @@ void func_82D05258(s32 arg0, s32 arg1) {
     }
     if (arg0 > 0) {
         temp_lo_2 = (arg0 * 0x64) / 10;
-        func_82D00D3C(0x38, (s16)((0x64 - temp_lo_2) / 2) + 0x154, 0x210, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
+        DrawSmallPanel(0x38, (s16)((0x64 - temp_lo_2) / 2) + 0x154, 0x210, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
         if ((arg0 == 10) && (D_82D06FA0 < 7)) {
             Text_ResetState();
             Text_SetFont(0x10, 0);
@@ -2239,49 +2239,49 @@ void func_82D053F4(s32 arg0, s32 arg1) {
     if (arg0 < 0xB) {
         var_a0 = ((10 - arg0) * -0x5000) / 10;
         for (i = 0; i < 5; i++) {
-            D_82D09FF8[i].unk_01E.x = var_a0;
+            gMenuOptionNodes[i].unk_01E.x = var_a0;
         }
-        D_82D09FF8[4].unk_024.y = 18.0f;
+        gMenuOptionNodes[4].unk_024.y = 18.0f;
     } else if (arg0 < 0x11) {
-        D_82D09FF8[4].unk_024.y = (((arg0 * 0x34) - 0x208) / 6) + 0x12;
+        gMenuOptionNodes[4].unk_024.y = (((arg0 * 0x34) - 0x208) / 6) + 0x12;
         for (i = 0; i < 4; i++) {
-            D_82D09FF8[i].unk_01E.x = 0;
+            gMenuOptionNodes[i].unk_01E.x = 0;
         }
 
         for (i = 5; i < 7; i++) {
-            D_82D09FF8[i].unk_01E.x = -0x5000;
+            gMenuOptionNodes[i].unk_01E.x = -0x5000;
         }
     } else if (arg0 < 0x1B) {
         temp_lo_4 = (arg0 * 0x5000) + 0xFFFB0000;
         var_a0 = temp_lo_4 / 10;
-        D_82D09FF8[4].unk_024.y = 70.0f;
+        gMenuOptionNodes[4].unk_024.y = 70.0f;
 
         for (i = 0; i < 4; i++) {
-            D_82D09FF8[i].unk_01E.x = var_a0;
+            gMenuOptionNodes[i].unk_01E.x = var_a0;
         }
 
         for (i = 5; i < 7; i++) {
-            D_82D09FF8[i].unk_01E.x = var_a0 - 0x5000;
+            gMenuOptionNodes[i].unk_01E.x = var_a0 - 0x5000;
         }
     } else {
         temp_lo_4 = (arg0 * 0x5000) + 0xFFF7E000;
         var_a0 = temp_lo_4 / 10;
         for (i = 0; i < 7; i++) {
             if ((D_82D0ABA8 == 0) || (D_82D06FA0 != 0)) {
-                if ((i != D_82D06FA0) && (D_82D09FF8[i].unk_01E.x >= 0)) {
-                    if (D_82D09FF8[i].unk_01E.x < var_a0) {
-                        D_82D09FF8[i].unk_01E.x = var_a0;
+                if ((i != D_82D06FA0) && (gMenuOptionNodes[i].unk_01E.x >= 0)) {
+                    if (gMenuOptionNodes[i].unk_01E.x < var_a0) {
+                        gMenuOptionNodes[i].unk_01E.x = var_a0;
                     }
                 }
-            } else if (D_82D09FF8[i].unk_01E.x >= 0) {
-                if (D_82D09FF8[i].unk_01E.x < var_a0) {
-                    D_82D09FF8[i].unk_01E.x = var_a0;
+            } else if (gMenuOptionNodes[i].unk_01E.x >= 0) {
+                if (gMenuOptionNodes[i].unk_01E.x < var_a0) {
+                    gMenuOptionNodes[i].unk_01E.x = var_a0;
                 }
             }
         }
 
         if (D_82D06FA0 >= 5) {
-            D_82D09FF8[4].unk_01E.x = 0;
+            gMenuOptionNodes[4].unk_01E.x = 0;
         }
     }
 
@@ -2293,13 +2293,13 @@ void func_82D053F4(s32 arg0, s32 arg1) {
 
     Stage_BeginDisplayList();
     func_82D00088();
-    Graph_SetTextureState(D_82D09FF0);
+    Graph_SetTextureState(gTextureStateNode);
     func_82D04FA0(arg0, sp30);
     func_82D05258(arg0, sp30);
 
     if (arg1 != 0) {
         unk_D_82D09F1C* ptr = &D_82D09F1C[D_82D06FA0];
-        func_82D0153C(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
+        DrawAnimatedPanel(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
     func_82D04904(&D_82D0ABD0);
@@ -2320,7 +2320,7 @@ FramebufferImage* func_82D0580C(s32 arg0) {
     }
 
     sp3C = FramebufferImage_Allocate(0, 2, 0xAC, 0x98, 1);
-    func_82D002C4(sp3C, 0xA8, 0x94);
+    SetupFramebufferAndFill(sp3C, 0xA8, 0x94);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -2351,7 +2351,7 @@ FramebufferImage* func_82D05A5C(void) {
     FramebufferImage* sp34;
 
     sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
-    func_82D002C4(sp34, 0xA8, 0x58);
+    SetupFramebufferAndFill(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -2377,7 +2377,7 @@ FramebufferImage* func_82D05BE0(void) {
     FramebufferImage* sp34;
 
     sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
-    func_82D002C4(sp34, 0xA8, 0x58);
+    SetupFramebufferAndFill(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -2403,7 +2403,7 @@ FramebufferImage* func_82D05D64(void) {
     FramebufferImage* sp34;
 
     sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x40, 1);
-    func_82D002C4(sp34, 0xA8, 0x3C);
+    SetupFramebufferAndFill(sp34, 0xA8, 0x3C);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -2431,7 +2431,7 @@ FramebufferImage* func_82D05EE8(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
 
     sp2C = MeasureTextWidth(8, 0, arg0);
     sp28 = FramebufferImage_Allocate(0, 2, 0xAC, 0x30, 1);
-    func_82D002C4(sp28, 0xA8, 0x2C);
+    SetupFramebufferAndFill(sp28, 0xA8, 0x2C);
 
     gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -2462,28 +2462,28 @@ void func_82D06014(void) {
     D_82D0ABE0[5] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x42), 0x1E, 0x64, 0x1E);
     D_82D0ABE0[6] = func_82D05EE8(GetMessageString(NULL, 0, D_82D0AB9C, 0x43), 0x1E, 0x64, 0x1E);
 
-    GraphNode_InitChild(&D_82D09FF8[0], 0, 0, D_82D0AC00);
-    GraphNode_InitChild(&D_82D09FF8[1], 0, 0, D_82D0AC04);
-    GraphNode_InitChild(&D_82D09FF8[2], 0, 0, D_82D0AC08);
-    GraphNode_InitChild(&D_82D09FF8[3], 0, 0, D_82D0AC0C);
-    GraphNode_InitChild(&D_82D09FF8[4], 0, 0, D_82D0AC04);
-    GraphNode_InitChild(&D_82D09FF8[5], 0, 0, D_82D0AC08);
-    GraphNode_InitChild(&D_82D09FF8[6], 0, 0, D_82D0AC08);
-    Vec3f_Set(&D_82D09FF8[0].unk_024, -84.0f, 48.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[1].unk_024, 100.0f, 18.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[3].unk_024, -84.0f, -64.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[2].unk_024, 100.0f, -64.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[4].unk_024, -268.0f, 18.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[5].unk_024, -268.0f, -4.0f, -579.0f);
-    Vec3f_Set(&D_82D09FF8[6].unk_024, -268.0f, -56.0f, -579.0f);
+    GraphNode_InitChild(&gMenuOptionNodes[0], 0, 0, D_82D0AC00);
+    GraphNode_InitChild(&gMenuOptionNodes[1], 0, 0, D_82D0AC04);
+    GraphNode_InitChild(&gMenuOptionNodes[2], 0, 0, D_82D0AC08);
+    GraphNode_InitChild(&gMenuOptionNodes[3], 0, 0, D_82D0AC0C);
+    GraphNode_InitChild(&gMenuOptionNodes[4], 0, 0, D_82D0AC04);
+    GraphNode_InitChild(&gMenuOptionNodes[5], 0, 0, D_82D0AC08);
+    GraphNode_InitChild(&gMenuOptionNodes[6], 0, 0, D_82D0AC08);
+    Vec3f_Set(&gMenuOptionNodes[0].unk_024, -84.0f, 48.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[1].unk_024, 100.0f, 18.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[3].unk_024, -84.0f, -64.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[2].unk_024, 100.0f, -64.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[4].unk_024, -268.0f, 18.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[5].unk_024, -268.0f, -4.0f, -579.0f);
+    Vec3f_Set(&gMenuOptionNodes[6].unk_024, -268.0f, -56.0f, -579.0f);
 
     for (i = 0; i < 6; i++) {
-        D_82D09FF8[i].unk_01E.x = 0;
-        D_82D09FF8[i].unk_01E.y = 0;
+        gMenuOptionNodes[i].unk_01E.x = 0;
+        gMenuOptionNodes[i].unk_01E.y = 0;
     }
 
-    D_82D09FF8[5].unk_01E.x = -0x5000;
-    D_82D09FF8[6].unk_01E.x = -0x5000;
+    gMenuOptionNodes[5].unk_01E.x = -0x5000;
+    gMenuOptionNodes[6].unk_01E.x = -0x5000;
 
     for (i = 0; i < 7; i++) {
         if (D_82D0ABA0 != 0) {
@@ -2491,22 +2491,22 @@ void func_82D06014(void) {
                 case 0:
                 case 1:
                 case 2:
-                    D_82D09FF8[i].unk_01D = 0x80;
+                    gMenuOptionNodes[i].unk_01D = 0x80;
                     break;
 
                 case 6:
                     if (sp1B & 2) {
-                        D_82D09FF8[i].unk_01D = 0xFF;
+                        gMenuOptionNodes[i].unk_01D = 0xFF;
                     } else {
-                        D_82D09FF8[i].unk_01D = 0x80;
+                        gMenuOptionNodes[i].unk_01D = 0x80;
                     }
                     break;
                 default:
-                    D_82D09FF8[i].unk_01D = 0xFF;
+                    gMenuOptionNodes[i].unk_01D = 0xFF;
                     break;
             }
         } else {
-            D_82D09FF8[i].unk_01D = 0xFF;
+            gMenuOptionNodes[i].unk_01D = 0xFF;
         }
     }
 
@@ -2517,7 +2517,7 @@ void func_82D06388(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        GraphNode_ClearCallback(D_82D09FF8);
+        GraphNode_ClearCallback(gMenuOptionNodes);
     }
 
     main_pool_pop_state('msel');
@@ -2534,7 +2534,7 @@ s32 func_82D063E4(void) {
     sp22 = D_82D06FA0;
     var_a3 = -1;
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (D_82D09FF8[D_82D06FA0].unk_01D == 0xFF) {
+        if (gMenuOptionNodes[D_82D06FA0].unk_01D == 0xFF) {
             var_a3 = D_82D06FA0;
         } else {
             D_82D0ABA4 = 1;
@@ -2551,7 +2551,7 @@ s32 func_82D063E4(void) {
         sp24 = D_82D09F1C[D_82D06FA0].unk_0A;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
         sp24 = D_82D09F1C[D_82D06FA0].unk_0B;
-    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (D_82D0AB90.unk_00 == 0x1F8)) {
+    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.unk_00 == 0x1F8)) {
         PlaySoundEffect(2);
         var_a3 = -1;
         gBattleContext.unk_11F2 ^= 1;
@@ -2564,21 +2564,21 @@ s32 func_82D063E4(void) {
     if (var_a3 == 1) {
         var_a1 = 0;
         var_a2 = 0;
-        if (D_82D0AB38->unk_01 == 0) {
+        if (gMenuItemData->unk_01 == 0) {
             var_a1 = 1;
-        } else if (D_82D0AB38->unk_00 != 0) {
+        } else if (gMenuItemData->unk_00 != 0) {
             var_a1 = 2;
-        } else if (D_82D0AB38->unk_02 != 6) {
+        } else if (gMenuItemData->unk_02 != 6) {
             var_a1 = 3;
         }
 
-        if (D_82D0AB38[1].unk_04 == 0) {
+        if (gMenuItemData[1].unk_04 == 0) {
             var_a2 = 4;
-        } else if (D_82D0AB38[1].unk_01 == 0) {
+        } else if (gMenuItemData[1].unk_01 == 0) {
             var_a2 = 1;
-        } else if (D_82D0AB38[1].unk_00 != 0) {
+        } else if (gMenuItemData[1].unk_00 != 0) {
             var_a2 = 2;
-        } else if (D_82D0AB38[1].unk_02 != 6) {
+        } else if (gMenuItemData[1].unk_02 != 6) {
             var_a2 = 3;
         }
 
@@ -2589,7 +2589,7 @@ s32 func_82D063E4(void) {
         }
     }
 
-    if ((var_a3 == 6) && (D_82D0AB38[1].unk_04 == 0)) {
+    if ((var_a3 == 6) && (gMenuItemData[1].unk_04 == 0)) {
         PlaySoundEffect(8);
         func_82D04D24(&D_82D0ABD0, 0, 4);
         var_a3 = -2;
@@ -2745,13 +2745,13 @@ void func_82D06AB0(void) {
 
     for (i = 0; i < 4; i++) {
         func_80025040(i, &sp48);
-        DecodeGen1String(&D_82D0AB38[i].unk_08, &sp48.unk_02);
-        D_82D0AB38[i].unk_06 = sp48.unk_00;
-        D_82D0AB38[i].unk_01 = func_80024F68(i);
-        D_82D0AB38[i].unk_00 = func_80024F00(i);
-        D_82D0AB38[i].unk_03 = func_80025370(i);
-        D_82D0AB38[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        D_82D0AB38[i].unk_02 = func_80024F8C(i);
+        DecodeGen1String(&gMenuItemData[i].unk_08, &sp48.unk_02);
+        gMenuItemData[i].unk_06 = sp48.unk_00;
+        gMenuItemData[i].unk_01 = func_80024F68(i);
+        gMenuItemData[i].unk_00 = func_80024F00(i);
+        gMenuItemData[i].unk_03 = func_80025370(i);
+        gMenuItemData[i].unk_04 = (temp_s3 & (1 << i)) != 0;
+        gMenuItemData[i].unk_02 = func_80024F8C(i);
     }
 }
 
@@ -2760,7 +2760,7 @@ void func_82D06B98(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     Fragment2_1GraphNode* var_s1;
 
-    D_82D09FF0 = process_geo_layout(temp_v0, &D_82D06FA4);
+    gTextureStateNode = process_geo_layout(temp_v0, &D_82D06FA4);
     D_82D0ABAC = process_geo_layout(temp_v0, &D_82D07710);
     D_82D0ABB0 = process_geo_layout(temp_v0, &D_82D08648);
     D_82D0ABB4 = process_geo_layout(temp_v0, &D_82D08838);
@@ -2772,9 +2772,9 @@ void func_82D06B98(void) {
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
 
-    for (i = 0, var_s1 = &D_82D09FF8[0]; i < 8; var_s1++, i++) {
+    for (i = 0, var_s1 = &gMenuOptionNodes[0]; i < 8; var_s1++, i++) {
         Graph_AddToRootList0(var_s1);
-        D_82D09FF8[i].unk_000.unk_14 = i;
+        gMenuOptionNodes[i].unk_000.unk_14 = i;
     }
 
     func_82D06AB0();
@@ -2797,7 +2797,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
     main_pool_push_state('GBCK');
 
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_82D0AB90, 0);
+    func_80027FA0(&gGbAudioState, 0);
     GbsGetPlayerMoney(&D_82D0AB98);
     sp53 = (D_82D0AB98 & 4) != 0;
     gBattleContext.unk_11F2 = sp53;
@@ -2825,7 +2825,7 @@ s32 func_82D06D0C(s32 arg0, s32 arg1) {
         } else {
             D_82D0ABA8 = 1;
         }
-        sp50 = func_82D00020(func_82D067A0());
+        sp50 = ValidatePIStatus(func_82D067A0());
         if ((sp50 == 0x10) && (D_82D0ABA8 != 0)) {
             temp_v0_3 = func_82D04590(&sp28);
             if (temp_v0_3 != 4) {

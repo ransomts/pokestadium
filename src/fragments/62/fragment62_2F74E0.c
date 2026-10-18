@@ -75,7 +75,7 @@ s32 func_8430CDAC(s32 arg0, s32 arg1) {
 }
 
 s32 func_8430CE00(void) {
-    unk_func_80026268_arg0* ptr;
+    PokemonData* ptr;
     s32 i;
     s32 var_s3 = 0;
     s32 var_s4 = 0;
@@ -232,8 +232,8 @@ void func_8430D364(void) {
     unk_D_800FCB18* temp_a3;
     unk_D_84390010_654* ptr1;
     unk_D_84390010_654* ptr2;
-    unk_func_80026268_arg0* ptr3;
-    unk_func_80026268_arg0* ptr4;
+    PokemonData* ptr3;
+    PokemonData* ptr4;
 
     ptr1 = &D_84390010[0]->unk_654;
     ptr2 = &D_84390010[1]->unk_654;

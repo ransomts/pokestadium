@@ -55,7 +55,7 @@ static u8 gBackgroundFileIds[] = {
 };
 static s16 gBattleModeTable[] = { 3, 1, 2, 6, 4, 5 };
 static s16 gBattleDifficultyTable[] = { 3, 1, 2, 6, 4, 5 };
-static unk_D_84102450 D_84102450[] = {
+static unk_D_84102450 gMenuItemInfo[] = {
     {
         244,
         70,
@@ -117,7 +117,7 @@ static unk_D_84102450 D_84102450[] = {
         -1,
     },
 };
-static unk_D_84102498 D_84102498[] = {
+static unk_D_84102498 gMenuRectAnimations[] = {
     {
         0,
         260,
@@ -201,7 +201,7 @@ static unk_D_84102498 D_84102498[] = {
 };
 static s16 D_84102510[] = { 0, 0xBC, 0xD2, 0x20, 0x9000, 0 };
 static s16 D_8410251C[] = { 0, 0x20C, 0xD2, 0x20, 0xD000, 0 };
-static u8 D_84102528[][2] = {
+static u8 gMenuOptionRanges[][2] = {
     {
         0x32,
         0x37,
@@ -224,7 +224,7 @@ static u8 D_84102528[][2] = {
     },
     { 0xF, 0x14 },
 };
-static u8* D_84102534[] = { D_03028EC0, D_03029C40, D_0302A9C0, D_0302B740, D_0302C4C0, D_0302D480 };
+static u8* gMenuOptionTexturePointers[] = { D_03028EC0, D_03029C40, D_0302A9C0, D_0302B740, D_0302C4C0, D_0302D480 };
 static u32 D_8410254C[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x00000000, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002, 0x05000000, 0x0A000000,
@@ -314,7 +314,7 @@ static Vtx D_841028F0[] = {
     VTX(164, -63, 0, 5248, 4032, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(164, -57, 0, 5248, 3840, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84102930[] = {
+static Gfx gMenuBarBackgroundDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -382,9 +382,9 @@ static Gfx D_84102930[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84102D40[] = {
+static u32 gMenuBarGeoLayout[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_841025B0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_84101120, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, MenuBackground_Display, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84102D78[] = {
     VTX(0, 54, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -458,7 +458,7 @@ static Vtx D_84103038[] = {
     VTX(140, -54, 0, 4480, 3456, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(140, -46, 0, 4480, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84103078[] = {
+static Gfx gMenuOptionBackgroundDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -517,9 +517,9 @@ static Gfx D_84103078[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_841033F8[] = {
+static u32 gMenuOptionGeoLayout[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84102D78, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, func_84101120, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, MenuBackground_Display, 0x00000000, 0x06000000, 0x01000000,
 };
 
 void AnimateRectangle(s16 arg0, s16 arg1, s16 arg2) {
@@ -547,9 +547,9 @@ void AnimateRectangle(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84100288(s16 arg0) {
+void Menu_AnimateRectangles(s16 arg0) {
     s32 i;
-    unk_D_84102498* var_s0 = &D_84102498[0];
+    unk_D_84102498* var_s0 = &gMenuRectAnimations[0];
 
     if (arg0 != 0xA) {
         return;
@@ -584,15 +584,15 @@ void func_84100288(s16 arg0) {
     }
 }
 
-void func_841003F0(void) {
+void MenuConfig_InitAnimation(void) {
     s32 i;
 
     for (i = 0; i < gMenuConfig.unk_05; i++) {
-        D_84102498[i].unk_00 = 1;
+        gMenuRectAnimations[i].unk_00 = 1;
     }
 
     for (i = 0; i < gMenuConfig.unk_06; i++) {
-        D_84102498[i + 6].unk_00 = 1;
+        gMenuRectAnimations[i + 6].unk_00 = 1;
     }
 
     if (gMenuConfig.unk_00 & 0x10) {
@@ -604,7 +604,7 @@ void func_841003F0(void) {
     }
 }
 
-void func_8410048C(FramebufferImage* arg0, s16 arg1, s16 arg2) {
+void Menu_DrawFrame(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
     Gfx_FillScreen(&gDisplayListHead, 0);
 
@@ -624,7 +624,7 @@ void func_8410048C(FramebufferImage* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84100704(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Menu_DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -682,7 +682,7 @@ void func_84100704(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84100F04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Menu_DrawAnimatedBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     static s16 D_8410342C = 0;
 
     s16 sp56 = SINS(D_8410342C) * 2;
@@ -701,7 +701,7 @@ void func_84100F04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     D_8410342C += 0x2000;
 }
 
-s32 func_84101120(s32 arg0, SimpleGfxNode* arg1) {
+s32 MenuBackground_Display(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         s32 idx = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -710,16 +710,16 @@ s32 func_84101120(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuBackgroundImages[idx]->img_p & 0x1FFFFFFF);
 
         if ((idx == 0) || (idx == 3)) {
-            gSPDisplayList(gDisplayListHead++, D_84102930);
+            gSPDisplayList(gDisplayListHead++, gMenuBarBackgroundDL);
         } else {
-            gSPDisplayList(gDisplayListHead++, D_84103078);
+            gSPDisplayList(gDisplayListHead++, gMenuOptionBackgroundDL);
         }
         func_80015684();
     }
     return 0;
 }
 
-void func_84101210(s16 arg0) {
+void Menu_DrawInfoBox(s16 arg0) {
     s32 sp28;
     s16 temp_a3;
     s32 temp_v0;
@@ -733,7 +733,7 @@ void func_84101210(s16 arg0) {
     }
 
     if (temp_a3 >= 0xA) {
-        func_84100704(0x38, ((0x5C - temp_a3) / 2) + 0x15C, 0x210, temp_a3, 0x1E, 0x1E, 0x82, 0x96);
+        Menu_DrawBorderedRect(0x38, ((0x5C - temp_a3) / 2) + 0x15C, 0x210, temp_a3, 0x1E, 0x1E, 0x82, 0x96);
     }
 
     if ((sp28 == 0x5A) && (gSelectedMenuIndex < 6)) {
@@ -743,7 +743,7 @@ void func_84101210(s16 arg0) {
         Text_Print(0x48, 0x160, GetMessageString(NULL, 0, gMessageBank, gSelectedMenuIndex));
         Text_Print(0x18C, 0x160, GetMessageString(NULL, 0, gMessageBank, 0xC));
         Text_Print(MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gMessageBank, 0xC)) + 0x190, 0x160, "%d~%d",
-                      D_84102528[gSelectedMenuIndex][0], D_84102528[gSelectedMenuIndex][1]);
+                      gMenuOptionRanges[gSelectedMenuIndex][0], gMenuOptionRanges[gSelectedMenuIndex][1]);
         Text_SetFont(8, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetLineHeight(0x18);
@@ -762,7 +762,7 @@ void func_84101210(s16 arg0) {
     }
 }
 
-void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
+void Menu_UpdateRender(s32 arg0, s32 arg1, f32 arg2) {
     s16 i;
     f32 temp_fv0;
     s16 temp_t1;
@@ -798,7 +798,7 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
     Graph_SetTextureState(gMenuGeoRoot);
 
     if (arg2 != 0.0f) {
-        unk_D_84102450* ptr = &D_84102450[gSelectedMenuIndex];
+        unk_D_84102450* ptr = &gMenuItemInfo[gSelectedMenuIndex];
 
         temp_v1 = (ptr->unk_04 / 2) + ptr->unk_00;
         temp_t1 = (ptr->unk_06 / 2) + ptr->unk_02;
@@ -808,17 +808,17 @@ void func_841014E4(s32 arg0, s32 arg1, f32 arg2) {
     }
 
     if (arg1 != 0) {
-        unk_D_84102450* ptr = &D_84102450[gSelectedMenuIndex];
+        unk_D_84102450* ptr = &gMenuItemInfo[gSelectedMenuIndex];
 
-        func_84100F04(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
+        Menu_DrawAnimatedBorder(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
-    func_84100288(arg0);
-    func_84101210(arg0);
+    Menu_AnimateRectangles(arg0);
+    Menu_DrawInfoBox(arg0);
     Stage_Advance();
 }
 
-FramebufferImage* func_84101894(u8* arg0, s16 arg1) {
+FramebufferImage* Menu_CreateBackgroundImage(u8* arg0, s16 arg1) {
     s16 i;
     FramebufferImage* sp40 = FramebufferImage_Allocate(0, 2, 0xA4, 0x7E, 1);
     s32 var_s3;
@@ -828,7 +828,7 @@ FramebufferImage* func_84101894(u8* arg0, s16 arg1) {
     } else {
         var_s3 = gMenuConfig.unk_06;
     }
-    func_8410048C(sp40, 0xA0, 0x7A);
+    Menu_DrawFrame(sp40, 0xA0, 0x7A);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -839,7 +839,7 @@ FramebufferImage* func_84101894(u8* arg0, s16 arg1) {
     Gfx_DrawSpriteRGBA16(4, (i * 0xC) + 4, 0x98, 6, (i * 0xE40) + arg0, 0x98, 0);
 
     for (i = 0; i < var_s3; i++) {
-        Gfx_DrawSpriteRGBA16((i * 0x26) + 5, 0x46, 0x24, 0x30, D_84102534[i], 0x24, 0);
+        Gfx_DrawSpriteRGBA16((i * 0x26) + 5, 0x46, 0x24, 0x30, gMenuOptionTexturePointers[i], 0x24, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -847,12 +847,12 @@ FramebufferImage* func_84101894(u8* arg0, s16 arg1) {
     return sp40;
 }
 
-FramebufferImage* func_84101A94(u8* arg0, s16 arg1) {
+FramebufferImage* Menu_CreateOptionImage(u8* arg0, s16 arg1) {
     s16 i;
     FramebufferImage* sp30 = FramebufferImage_Allocate(0, 2, 0x8C, 0x6C, 1);
     s32 var_v0;
 
-    func_8410048C(sp30, 0x88, 0x68);
+    Menu_DrawFrame(sp30, 0x88, 0x68);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -866,7 +866,7 @@ FramebufferImage* func_84101A94(u8* arg0, s16 arg1) {
         } else {
             var_v0 = 4;
         }
-        Gfx_DrawSpriteRGBA16(0x54, 0x3A, 0x30, 0x2A, D_84102534[var_v0], 0x30, 0);
+        Gfx_DrawSpriteRGBA16(0x54, 0x3A, 0x30, 0x2A, gMenuOptionTexturePointers[var_v0], 0x30, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -874,14 +874,14 @@ FramebufferImage* func_84101A94(u8* arg0, s16 arg1) {
     return sp30;
 }
 
-void func_84101BFC(void) {
-    func_841003F0();
-    gMenuBackgroundImages[0] = func_84101894(&D_300C000, 3);
-    gMenuBackgroundImages[1] = func_84101A94(D_3000000, 1);
-    gMenuBackgroundImages[2] = func_84101A94(D_3006000, 2);
-    gMenuBackgroundImages[3] = func_84101894(&D_3020760, 6);
-    gMenuBackgroundImages[4] = func_84101A94(&D_3014760, 4);
-    gMenuBackgroundImages[5] = func_84101A94(&D_301A760, 5);
+void Menu_InitializeResources(void) {
+    MenuConfig_InitAnimation();
+    gMenuBackgroundImages[0] = Menu_CreateBackgroundImage(&D_300C000, 3);
+    gMenuBackgroundImages[1] = Menu_CreateOptionImage(D_3000000, 1);
+    gMenuBackgroundImages[2] = Menu_CreateOptionImage(D_3006000, 2);
+    gMenuBackgroundImages[3] = Menu_CreateBackgroundImage(&D_3020760, 6);
+    gMenuBackgroundImages[4] = Menu_CreateOptionImage(&D_3014760, 4);
+    gMenuBackgroundImages[5] = Menu_CreateOptionImage(&D_301A760, 5);
     GraphNode_InitChild(gMenuGraphNodes, 0, 0, gMenuBarGraphNode);
     GraphNode_InitChild(&gMenuGraphNodes[3], 0, 0, gMenuBarGraphNode);
     GraphNode_InitChild(&gMenuGraphNodes[4], 0, 0, gMenuOptionGraphNode);
@@ -905,13 +905,13 @@ s16 func_84101D80(void) {
         var_v1 = -1;
         var_a1 = 6;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        var_v1 = D_84102450[gSelectedMenuIndex].unk_08;
+        var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_08;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        var_v1 = D_84102450[gSelectedMenuIndex].unk_09;
+        var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_09;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {
-        var_v1 = D_84102450[gSelectedMenuIndex].unk_0A;
+        var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_0A;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
-        var_v1 = D_84102450[gSelectedMenuIndex].unk_0B;
+        var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_0B;
     }
 
     if (var_v1 != -1) {
@@ -921,26 +921,26 @@ s16 func_84101D80(void) {
     return var_a1;
 }
 
-void func_84101EC8(void) {
+void Menu_MainLoop(void) {
     s16 i;
     s16 temp_v0;
 
     Music_ChangeTrack(0x15);
-    func_84101BFC();
+    Menu_InitializeResources();
     gSelectedMenuIndex = 0;
     Stage_FadeIn(0xA);
     while (Stage_GetFadeState() != 0) {
         Game_UpdateInputs();
-        func_841014E4(0, 0, 0.0f);
+        Menu_UpdateRender(0, 0, 0.0f);
     }
 
     for (i = 0; i < 10; i++) {
         Game_UpdateInputs();
-        func_841014E4(i, 0, 0.0f);
+        Menu_UpdateRender(i, 0, 0.0f);
     }
     do {
         Game_UpdateInputs();
-        func_841014E4(0xA, 1, 0.0f);
+        Menu_UpdateRender(0xA, 1, 0.0f);
         temp_v0 = func_84101D80();
     } while (temp_v0 == -1);
 
@@ -951,7 +951,7 @@ void func_84101EC8(void) {
 
         for (i = 11; i < 21; i++) {
             Game_UpdateInputs();
-            func_841014E4(i, 0, 0.0f);
+            Menu_UpdateRender(i, 0, 0.0f);
         }
 
         for (i = 0; i < 6; i++) {
@@ -960,32 +960,32 @@ void func_84101EC8(void) {
 
         for (i = 1; i < 10; i++) {
             Game_UpdateInputs();
-            func_841014E4(0, 0, i / 10.0f);
+            Menu_UpdateRender(0, 0, i / 10.0f);
         }
 
-        func_841014E4(0, 0, 1.0f);
-        func_841014E4(0, 0, 1.0f);
+        Menu_UpdateRender(0, 0, 1.0f);
+        Menu_UpdateRender(0, 0, 1.0f);
     } else {
         Stage_SetFillColor(0xFFFF);
         Music_StopTrack(0x14);
         Stage_FadeOut(0xA);
         while (Stage_GetFadeState() != 1) {
             Game_UpdateInputs();
-            func_841014E4(0xA, 0, 0.0f);
+            Menu_UpdateRender(0xA, 0, 0.0f);
         }
         Stage_AdvanceN(2);
     }
 }
 
-void func_84102140(void) {
+void Menu_GraphInit(void) {
     s32 i;
     Fragment2_1GraphNode* ptr;
     Fragment2_1GraphNode* ptr2;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     gMenuGeoRoot = process_geo_layout(temp_v0, D_8410254C);
-    gMenuBarGraphNode = process_geo_layout(temp_v0, D_84102D40);
-    gMenuOptionGraphNode = process_geo_layout(temp_v0, D_841033F8);
+    gMenuBarGraphNode = process_geo_layout(temp_v0, gMenuBarGeoLayout);
+    gMenuOptionGraphNode = process_geo_layout(temp_v0, gMenuOptionGeoLayout);
 
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
@@ -997,7 +997,7 @@ void func_84102140(void) {
     }
 }
 
-s32 func_84102210(void) {
+s32 Menu_StartBattleIfSelected(void) {
     s32 var_v1 = 0;
 
     if (gSelectedMenuIndex < 6) {
@@ -1011,7 +1011,7 @@ s32 func_84102210(void) {
     return var_v1;
 }
 
-s32 func_841022C0(s32 arg0, s32 arg1) {
+s32 Menu_Run(s32 arg0, s32 arg1) {
     BinArchive* temp_v0;
 
     main_pool_push_state('PSSL');
@@ -1030,12 +1030,12 @@ s32 func_841022C0(s32 arg0, s32 arg1) {
 
     gMenuTextureAtlas = BinArchive_GetFile(gBackgroundArchive, 3);
     gSelectedMenuIndex = 0;
-    func_84102140();
+    Menu_GraphInit();
     func_80007754();
-    func_84101EC8();
+    Menu_MainLoop();
     Stage_Terminate();
 
     main_pool_pop_state('PSSL');
 
-    return func_84102210();
+    return Menu_StartBattleIfSelected();
 }

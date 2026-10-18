@@ -117,7 +117,7 @@ void func_8431B004(void) {
 }
 
 void func_8431B078(unk_D_84390010* arg0) {
-    unk_func_80026268_arg0* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     D_84390240.unk_00->unk_68 = ((ptr->unk_02 - arg0->unk_654.unk_38.unk_0C) / 996.0f) * 1400.0f;
 

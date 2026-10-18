@@ -387,7 +387,7 @@ unk_D_838067F0_0168* func_84209CF4(unk_D_838067F0_0168* arg0, s32 arg1) {
     return arg0;
 }
 
-void func_84209D18(unk_D_842168A0* arg0, unk_func_80026268_arg0* arg1) {
+void func_84209D18(unk_D_842168A0* arg0, PokemonData* arg1) {
     unk_D_800AC910_040 sp38;
     unk_D_800AC910_040 sp28;
 
@@ -756,7 +756,7 @@ void func_8420AB50(unk_D_842168A0* arg0) {
     arg0->unk_00009 = 2;
 }
 
-s32 func_8420ABC4(unk_func_80026268_arg0* arg0) {
+s32 func_8420ABC4(PokemonData* arg0) {
     s32 i;
     s32 var_v1 = 1;
 
@@ -773,7 +773,7 @@ s32 func_8420ABC4(unk_func_80026268_arg0* arg0) {
     return var_v1;
 }
 
-s32 func_8420AC00(unk_func_80026268_arg0* arg0, s16 arg1, s16 arg2, s16 arg3) {
+s32 func_8420AC00(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 sp1C = 0;
 
     if ((arg0->unk_00.unk_00 > 0) && (arg0->unk_00.unk_00 < 0x98)) {
@@ -788,7 +788,7 @@ s32 func_8420AC00(unk_func_80026268_arg0* arg0, s16 arg1, s16 arg2, s16 arg3) {
 
 s32 func_8420ACA8(unk_D_842168A0* arg0, s16 arg1, s16 arg2) {
     unk_D_838067F0_003C* ptr = &arg0->unk_0001C[arg1];
-    unk_func_80026268_arg0 sp50;
+    PokemonData sp50;
     s32 var_s0;
     s16 var_s2;
     unk_D_838067F0_003C* temp_v0;

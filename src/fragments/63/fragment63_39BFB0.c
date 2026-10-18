@@ -801,8 +801,8 @@ void func_84B0962C(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
     s32 i;
-    unk_func_80026268_arg0* temp_s5 = gBattleContext.unk_1194[0].unk_08[0]->unk_01C;
-    unk_func_80026268_arg0* temp_s6 = gBattleContext.unk_1194[1].unk_08[0]->unk_01C;
+    PokemonData* temp_s5 = gBattleContext.unk_1194[0].unk_08[0]->unk_01C;
+    PokemonData* temp_s6 = gBattleContext.unk_1194[1].unk_08[0]->unk_01C;
 
     if (arg1 == 0) {
         func_84B08BFC(arg0);
@@ -851,10 +851,10 @@ void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
 
 void func_84B099D8(unk_D_84B25A58* arg0, s16 arg1) {
     s32 i;
-    unk_func_80026268_arg0* temp_s0 = &gBattleContext.unk_1194[0].unk_08[0]->unk_01C[0];
-    unk_func_80026268_arg0* var_a3 = NULL;
-    unk_func_80026268_arg0* temp_t1 = &gBattleContext.unk_1194[1].unk_08[0]->unk_01C[0];
-    unk_func_80026268_arg0* var_t0 = NULL;
+    PokemonData* temp_s0 = &gBattleContext.unk_1194[0].unk_08[0]->unk_01C[0];
+    PokemonData* var_a3 = NULL;
+    PokemonData* temp_t1 = &gBattleContext.unk_1194[1].unk_08[0]->unk_01C[0];
+    PokemonData* var_t0 = NULL;
 
     if (gBattleContext.unk_1194[0].unk_01 == 2) {
         var_a3 = &gBattleContext.unk_1194[0].unk_08[1]->unk_01C[0];
@@ -1040,7 +1040,7 @@ void func_84B0A1F4(unk_D_84B25A58* arg0) {
 void func_84B0A244(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
-    unk_D_86002F58_004_000_010* temp_s0;
+    AssetManager* temp_s0;
 
     temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0xC0, 1));
@@ -1057,7 +1057,7 @@ void func_84B0A244(unk_D_84B25A58* arg0) {
 void func_84B0A36C(unk_D_84B25A58* arg0) {
     s32 i;
     s32 count;
-    unk_D_86002F58_004_000_010* temp_s0;
+    AssetManager* temp_s0;
 
     temp_s0 = AssetManager_Create(5);
     SpriteDisplay_SetDepthBuffer(arg0->unk_1C, temp_s0, FramebufferImage_Allocate(0, 2, 0x80, 0x60, 1));

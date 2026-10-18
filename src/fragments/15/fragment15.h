@@ -117,7 +117,7 @@ s32 CameraNode_SetAnglesNegated(s32 arg0, GraphNode* arg1);
 s32 GraphNode_ApplyGlobalColor(s32 arg0, GraphNode* arg1);
 void SetGlobalRGBA(u8 arg0, u8 arg1, u8 arg2);
 void LoadStageDataDMA(void);
-unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(unk_func_80026268_arg0* arg0);
+unk_D_86002F58_004_000_010_024* CreatePlayerStatNode(PokemonData* arg0);
 void Stage_Init(void);
 void WaitForRSPAndCleanup(void);
 void LoadStageFragmentByIndex(s32 arg0);

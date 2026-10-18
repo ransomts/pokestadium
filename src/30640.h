@@ -41,7 +41,7 @@ typedef struct unk_D_83402EE0 {
 } unk_D_83402EE0; // size = 0x8C
 
 typedef struct unk_D_83403C60 {
-    /* 0x00 */ unk_func_80026268_arg0 unk_00;
+    /* 0x00 */ PokemonData unk_00;
     /* 0x54 */ char unk54[0x18];
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[0x3];
@@ -101,7 +101,7 @@ typedef struct Camera {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ FramebufferImage* unk_08;
     /* 0x0C */ FramebufferImage* unk_0C;
-    /* 0x10 */ unk_D_86002F58_004_000_010* unk_10;
+    /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ BinArchive* unk_14;
     /* 0x18 */ unk_D_83403C60* unk_18;
     /* 0x1C */ GraphNode* unk_1C;
@@ -136,9 +136,9 @@ extern unk_D_83407B00 D_83407B30;
 void Gallery_Run(void);
 void Cam_CallInit318B8(void);
 void Cam_ResetUnkF90(void);
-void Cam_ConvertInputToState(unk_D_83402EE0_070*, unk_func_80026268_arg0*);
-void Cam_ConvertStateToInput(unk_func_80026268_arg0*, unk_D_83407AC8*);
-Camera* Cam_Create(s16, s16, FramebufferImage*, FramebufferImage*, unk_D_86002F58_004_000_010*, BinArchive*, unk_D_83403C60*);
+void Cam_ConvertInputToState(unk_D_83402EE0_070*, PokemonData*);
+void Cam_ConvertStateToInput(PokemonData*, unk_D_83407AC8*);
+Camera* Cam_Create(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, unk_D_83403C60*);
 u8* Cam_Update(Camera*);
 s32 Cam_IsMonIndexDisplayable(Camera*);
 s32 Cam_FindActiveIndex(Camera**, s32);

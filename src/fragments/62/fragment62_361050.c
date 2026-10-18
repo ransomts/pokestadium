@@ -4026,8 +4026,8 @@ void func_8437E974(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_8
     u8 var_v1;
     u8 sp73;
     PokemonStats* sp6C;
-    unk_func_80026268_arg0* sp64[2];
-    unk_func_80026268_arg0* temp_s7;
+    PokemonData* sp64[2];
+    PokemonData* temp_s7;
 
     sp64[0] = arg0->unk_01C;
     if (arg1 != NULL) {

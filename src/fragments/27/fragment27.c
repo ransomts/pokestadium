@@ -71,7 +71,7 @@ s32 func_88600020(s32 arg0, s32 arg1) {
     return sp4;
 }
 
-void func_88600214(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2) {
+void func_88600214(PokemonData* arg0, s32 arg1, s32 arg2) {
     u8 temp_t0;
     u8 temp_v0;
 
@@ -432,7 +432,7 @@ void func_88601AF8(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
     arg0->unk_2C = NULL;
 }
 
-void func_88601B5C(unk_func_88205880_0098_008_044* arg0, unk_func_80026268_arg0* arg1) {
+void func_88601B5C(unk_func_88205880_0098_008_044* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
@@ -480,7 +480,7 @@ void func_88601D6C(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2, unk
     arg0->unk_2C = 0;
 }
 
-void func_88601DE8(unk_func_88205880_0098_008_048* arg0, unk_func_80026268_arg0* arg1) {
+void func_88601DE8(unk_func_88205880_0098_008_048* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
@@ -548,7 +548,7 @@ void func_88602114(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2, unk
     arg0->unk_2C = NULL;
 }
 
-void func_88602190(unk_func_88205880_0098_008_04C* arg0, unk_func_80026268_arg0* arg1) {
+void func_88602190(unk_func_88205880_0098_008_04C* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
@@ -660,7 +660,7 @@ s32 func_88602694(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88602A8C(unk_func_88205880_0098_008_050* arg0, unk_func_80026268_arg0* arg1) {
+void func_88602A8C(unk_func_88205880_0098_008_050* arg0, PokemonData* arg1) {
     arg0->unk_30 = arg1;
     if (arg1 != NULL) {
         func_8001B2D8(arg0->unk_34, arg1, 0x108D);
@@ -740,7 +740,7 @@ void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, Mem
     }
 }
 
-void func_88602D40(unk_func_88205880_0098_008_040* arg0, unk_func_80026268_arg0* arg1) {
+void func_88602D40(unk_func_88205880_0098_008_040* arg0, PokemonData* arg1) {
     s32 temp_s3 = Mon_CountMoves(arg1);
     s32 i;
 
@@ -801,7 +801,7 @@ void func_88603028(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     arg0->unk_2C = NULL;
 }
 
-void func_8860308C(unk_func_88205880_0098_008_054* arg0, unk_func_80026268_arg0* arg1) {
+void func_8860308C(unk_func_88205880_0098_008_054* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
@@ -1218,7 +1218,7 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     arg0->unk_80 = 0;
 }
 
-void func_88604F80(unk_func_88205880_0098_008* arg0, unk_func_80026268_arg0* arg1, s32 arg2) {
+void func_88604F80(unk_func_88205880_0098_008* arg0, PokemonData* arg1, s32 arg2) {
     static Color_RGBA8 D_88605B80[] = { { 0x80, 0x18, 0x18, 0xFF },
                                         { 0x90, 0x60, 0x18, 0xFF },
                                         { 0x30, 0x60, 0x60, 0xFF } };

@@ -107,7 +107,7 @@ static unk_D_88217D10 D_88217D10[2][9] = {
     },
 };
 
-void InitMonData(unk_func_80026268_arg0* arg0) {
+void InitMonData(PokemonData* arg0) {
     s32 i;
     s32 var_a2;
     unk_D_88217D10* var_v0;
@@ -115,7 +115,7 @@ void InitMonData(unk_func_80026268_arg0* arg0) {
     s32 var_a2_copy;
     s32 j;
 
-    bzero(arg0, sizeof(unk_func_80026268_arg0));
+    bzero(arg0, sizeof(PokemonData));
 
     arg0->unk_00.unk_00 = func_8002816C() & 0xFF;
     var_a2 = func_80024F68(func_80029080());
@@ -1875,7 +1875,7 @@ s32 func_8820B178(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3)
     s32 sp90;
     unk_func_80022C28_ret* temp_v0;
     unk_func_88205880_00D0** var_s1;
-    unk_func_80026268_arg0 sp34;
+    PokemonData sp34;
 
     sp90 = 0;
     if (arg0->unk_00 == 0) {
@@ -1896,9 +1896,9 @@ s32 func_8820B178(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3)
         var_s1 = arg0->unk_04.unk_00;
 
         for (i = 0; i < arg0->unk_04.unk_08; i++, var_s1++) {
-            bzero(&sp34, sizeof(unk_func_80026268_arg0));
+            bzero(&sp34, sizeof(PokemonData));
             GbsBlock_ReadPokemon(&sp34, 1, temp_v0);
-            if (bcmp(&sp34, *var_s1, sizeof(unk_func_80026268_arg0)) != 0) {
+            if (bcmp(&sp34, *var_s1, sizeof(PokemonData)) != 0) {
                 arg0->unk_00 = 1;
                 sp90 = 1;
                 break;
@@ -2272,7 +2272,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     unk_func_88509A2C* temp_s1;
     unk_func_88509E34* temp_s1_2;
     unk_func_885088F4* temp_s2;
-    unk_func_80026268_arg0* temp_v0_5;
+    PokemonData* temp_v0_5;
     unk_func_882062E4* var_s1;
     UNUSED s32 pad[5];
 
@@ -2357,7 +2357,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     }
 
     if (arg3 == 1) {
-        temp_v0_5 = mem_pool_alloc(arg4, sizeof(unk_func_80026268_arg0));
+        temp_v0_5 = mem_pool_alloc(arg4, sizeof(PokemonData));
         InitMonData(temp_v0_5);
 
         spA0 = mem_pool_alloc(arg4, sizeof(unk_func_8820BE14_06C_000));

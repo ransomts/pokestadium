@@ -41,7 +41,7 @@ u16 CalculateLevelFromExperience(s32 arg0, u32 arg1) {
     return i;
 }
 
-void ApplyPPUps(unk_func_80026268_arg0* arg0) {
+void ApplyPPUps(PokemonData* arg0) {
     s32 i;
     s32 temp_a3;
     s32 var_v0;
@@ -67,7 +67,7 @@ void ApplyPPUps(unk_func_80026268_arg0* arg0) {
     }
 }
 
-void SetMonNickname(unk_func_80026268_arg0* arg0) {
+void SetMonNickname(PokemonData* arg0) {
     UNUSED s32 pad;
     char sp18[11];
 
@@ -91,7 +91,7 @@ s32 LoadPokemonNameData(unk_func_800228F0* arg0, u16 arg1) {
     return var_v1;
 }
 
-void SavePokemonNameData(unk_func_80026268_arg0* arg0, s16 arg1, u8 arg2) {
+void SavePokemonNameData(PokemonData* arg0, s16 arg1, u8 arg2) {
     unk_D_800AE4E8_004_2_0DC0_002 sp24;
 
     if (arg2) {
@@ -928,7 +928,7 @@ unk_D_800AC910_050_B40_000* func_80024528(s32 arg0, s32 arg1) {
     return sp1C;
 }
 
-void func_80024624(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2) {
+void func_80024624(PokemonData* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* ptr2 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     DeserializePartyPokemon(arg0, &ptr2->unk_008[arg2]);
@@ -952,7 +952,7 @@ void func_800246F8(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     sp24->unk_001[arg2] = sp24->unk_008[arg2].unk_00.unk_00;
 }
 
-void func_800247C4(unk_func_80026268_arg0* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void func_800247C4(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
     unk_D_800AC910_050_B40* sp2C = (unk_D_800AC910_050_B40*)func_80024528(arg1, arg2);
 
     if (sp2C != NULL) {
@@ -1125,7 +1125,7 @@ void func_80024BC4(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_80024CB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_80026268_arg0* arg4) {
+s32 func_80024CB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4) {
     s32 sp1C = 0;
 
     if (arg3 < func_80024A48(arg0, arg1, arg2)) {

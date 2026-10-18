@@ -3,15 +3,15 @@
 
 #include "global.h"
 
-void func_83A00020(void);
-void func_83A00068(s32 arg0, s32 arg1);
-void func_83A0031C(s32 arg0, u8* arg1);
-void func_83A00754(void);
-s32 func_83A00858(void);
-s32 func_83A00880(void);
-void func_83A00990(void);
+void Menu_Init(void);
+void Menu_DrawFramebuffer(s32 arg0, s32 arg1);
+void Menu_DrawBackground(s32 arg0, u8* arg1);
+void Menu_RenderFrame(void);
+s32 Menu_IsConfirmPressed(void);
+s32 Menu_Update(void);
+void Menu_ProcessInput(void);
 void func_83A009C0(void);
 void func_83A009C8(void);
-s32 func_83A00A4C(s32 arg0, s32 arg1);
+s32 Menu_Entry(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT49_H_

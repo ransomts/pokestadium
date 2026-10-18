@@ -44,7 +44,7 @@ typedef struct unk_D_86002F58_004_000_010_024 {
     /* 0x08 */ struct unk_D_86002F58_004_000_004* unk_08;
 } unk_D_86002F58_004_000_010_024; // size >= 0xC
 
-typedef struct unk_D_86002F58_004_000_010 {
+typedef struct AssetManager {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
@@ -62,12 +62,12 @@ typedef struct unk_D_86002F58_004_000_010 {
     /* 0x50 */ OSMesgQueue unk_50;
     /* 0x68 */ OSMesg unk_68;
     /* 0x6C */ char pad6C[0x4];
-} unk_D_86002F58_004_000_010; // size = 0x70
+} AssetManager; // size = 0x70
 
 typedef struct unk_D_86002F58_004_000_004 {
     /* 0x00 */ struct unk_D_86002F58_004_000_004* unk_00[4];
     /* 0x10 */ struct unk_D_86002F58_004_000_00C* unk_10;
-    /* 0x14 */ unk_D_86002F58_004_000_010* unk_14;
+    /* 0x14 */ AssetManager* unk_14;
 } unk_D_86002F58_004_000_004; // size >= 0x18
 
 typedef struct unk_D_86002F58_004_000_00C {
@@ -84,7 +84,7 @@ typedef struct GraphRootNode {
     /* 0x04 */ struct GraphRootNode* unk_04;
     /* 0x08 */ struct GraphRootNode* unk_08;
     /* 0x0C */ unk_D_86002F58_004_000_00C* unk_0C;
-    /* 0x10 */ unk_D_86002F58_004_000_010* unk_10;
+    /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ s32 unk_14;
 } GraphRootNode; // size = 0x18
 

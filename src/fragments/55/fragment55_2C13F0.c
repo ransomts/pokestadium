@@ -7,10 +7,10 @@
 #include "src/49790.h"
 #include "src/6BC0.h"
 
-static u16 D_83003EF0[151][0x640];
+static u16 gPokemonIconTextures[151][0x640];
 static unk_D_83079E70 D_83079E70;
 
-s32 func_830026D0(s16 arg0, s16 arg1) {
+s32 PokemonFlagCheck(s16 arg0, s16 arg1) {
     s32 var_v1;
     s16 sp2;
 
@@ -67,12 +67,12 @@ s32 func_830026D0(s16 arg0, s16 arg1) {
     return var_v1;
 }
 
-s16 func_830027C8(s16 arg0) {
+s16 GetPokemonCountByFilter(s16 arg0) {
     s16 i;
     s16 var_s1 = 0;
 
     for (i = 1; i < 152; i++) {
-        if (func_830026D0(i, arg0) != 0) {
+        if (PokemonFlagCheck(i, arg0) != 0) {
             var_s1++;
         }
     }
@@ -80,7 +80,7 @@ s16 func_830027C8(s16 arg0) {
     return var_s1;
 }
 
-s32 func_83002848(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
+s32 FillPokemonSelectionList(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
     s32 i;
     s16 var_a0;
     s32 var_s1;
@@ -102,7 +102,7 @@ s32 func_83002848(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
         }
         arg0->unk_00[i].unk_00 = var_a0;
 
-        if (func_830026D0(var_a0, arg2) != 0) {
+        if (PokemonFlagCheck(var_a0, arg2) != 0) {
             arg0->unk_00[i].unk_02 = 1;
         } else {
             arg0->unk_00[i].unk_02 = 0;
@@ -112,7 +112,7 @@ s32 func_83002848(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
     return var_s3;
 }
 
-unk_D_83079E70_000* func_83002950(unk_D_83079E70_000* arg0, s32 arg1) {
+unk_D_83079E70_000* GetSelectionNodeByOffset(unk_D_83079E70_000* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_18;
     }
@@ -120,10 +120,10 @@ unk_D_83079E70_000* func_83002950(unk_D_83079E70_000* arg0, s32 arg1) {
     return arg0;
 }
 
-s32 func_83002974(unk_D_83079E70* arg0) {
+s32 MoveSelectionUp(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
-    if (func_83002848(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gBattleContext.unk_0001) > 0) {
+    if (FillPokemonSelectionList(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gBattleContext.unk_0001) > 0) {
         arg0->unk_00 = 3;
         arg0->unk_02 = 4;
         arg0->unk_08--;
@@ -137,10 +137,10 @@ s32 func_83002974(unk_D_83079E70* arg0) {
     return sp1C;
 }
 
-s32 func_83002A0C(unk_D_83079E70* arg0) {
+s32 MoveSelectionDown(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
-    if (func_83002848(func_83002950(arg0->unk_10, 5), arg0->unk_08 + 5, gBattleContext.unk_0001) > 0) {
+    if (FillPokemonSelectionList(GetSelectionNodeByOffset(arg0->unk_10, 5), arg0->unk_08 + 5, gBattleContext.unk_0001) > 0) {
         arg0->unk_00 = 3;
         arg0->unk_02 = 4;
         arg0->unk_08++;
@@ -154,7 +154,7 @@ s32 func_83002A0C(unk_D_83079E70* arg0) {
     return sp1C;
 }
 
-void func_83002AB4(unk_D_83079E70* arg0) {
+void UpdateSelectionOpenTimer(unk_D_83079E70* arg0) {
     arg0->unk_02--;
     arg0->unk_04 = ((5 - arg0->unk_02) << 0xA) / 5;
     if (arg0->unk_02 <= 0) {
@@ -164,29 +164,29 @@ void func_83002AB4(unk_D_83079E70* arg0) {
     }
 }
 
-void func_83002B1C(unk_D_83079E70* arg0) {
+void HandleSelectionInput(unk_D_83079E70* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
         arg0->unk_00 = 4;
         arg0->unk_02 = 5;
         arg0->unk_0C = -1;
         PlaySoundEffect(3);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
-        func_83002974(arg0);
+        MoveSelectionUp(arg0);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DDOWN)) {
-        func_83002A0C(arg0);
+        MoveSelectionDown(arg0);
     }
 }
 
-void func_83002BA4(unk_D_83079E70* arg0) {
+void UpdateSelectionCloseTimer(unk_D_83079E70* arg0) {
     s32 var_v1;
 
     arg0->unk_02--;
     if (arg0->unk_02 <= 0) {
         var_v1 = 0;
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
-            var_v1 = func_83002974(arg0);
+            var_v1 = MoveSelectionUp(arg0);
         } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DDOWN)) {
-            var_v1 = func_83002A0C(arg0);
+            var_v1 = MoveSelectionDown(arg0);
         }
 
         if (var_v1 == 0) {
@@ -197,7 +197,7 @@ void func_83002BA4(unk_D_83079E70* arg0) {
     }
 }
 
-void func_83002C30(unk_D_83079E70* arg0) {
+void UpdateSelectionConfirmTimer(unk_D_83079E70* arg0) {
     arg0->unk_02--;
     arg0->unk_04 = (arg0->unk_02 << 0xA) / 5;
     if (arg0->unk_02 <= 0) {
@@ -251,7 +251,7 @@ void func_83002F9C(s16 arg0, s16 arg1) {
     Gfx_DrawSpriteI4(arg0, arg1, 0x20, 0x14, D_4000DD0, 0x20, 0);
 }
 
-void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
+void DrawPokemonSelectionEntries(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     UNUSED s32 pad;
     s32 i;
     Color_RGB8* var_v0;
@@ -270,7 +270,7 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
         } else {
             var_v0 = &sp70;
         }
-        func_83001178(arg0 + i * 0x54, arg1, 0x54, 0x3C, var_v0->r, var_v0->g, var_v0->b);
+        DrawColoredPanel(arg0 + i * 0x54, arg1, 0x54, 0x3C, var_v0->r, var_v0->g, var_v0->b);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -278,7 +278,7 @@ void func_83003054(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     for (i = 0; i < 6; i++) {
         temp_s0 = arg2->unk_00[i].unk_00;
         if (temp_s0 != NULL) {
-            Gfx_DrawSpriteRGBA16(arg0 + (i * 0x54) + 0x16, arg1 + 3, 0x28, 0x28, D_83003EF0[temp_s0 - 1], 0x28, 0);
+            Gfx_DrawSpriteRGBA16(arg0 + (i * 0x54) + 0x16, arg1 + 3, 0x28, 0x28, gPokemonIconTextures[temp_s0 - 1], 0x28, 0);
         }
     }
 
@@ -312,7 +312,7 @@ void func_830032D8(s32 arg0) {
 
     if (arg0 != 0) {
         for (i = 0; i < 151; i++) {
-            func_8001B0DC(D_83003EF0[i], i + 1, NULL);
+            func_8001B0DC(gPokemonIconTextures[i], i + 1, NULL);
         }
     }
 }
@@ -323,25 +323,25 @@ void func_830033F0(void) {
     if (ptr->unk_00 != 0) {
         switch (ptr->unk_00) {
             case 1:
-                func_83002AB4(&D_83079E70);
+                UpdateSelectionOpenTimer(&D_83079E70);
                 break;
 
             case 2:
-                func_83002B1C(&D_83079E70);
+                HandleSelectionInput(&D_83079E70);
                 break;
 
             case 3:
-                func_83002BA4(&D_83079E70);
+                UpdateSelectionCloseTimer(&D_83079E70);
                 break;
 
             case 4:
-                func_83002C30(&D_83079E70);
+                UpdateSelectionConfirmTimer(&D_83079E70);
                 break;
         }
     }
 }
 
-void func_83003484(void) {
+void RenderSelectionMenu(void) {
     s16 spA6;
     s16 spA4;
     unk_D_83079E70* ptr = &D_83079E70;
@@ -359,8 +359,8 @@ void func_83003484(void) {
         s32 i;
         unk_D_83079E70_000* var_s0;
 
-        func_83001178(spA6, spA4, 0x210, 0x24, 0x1E, 0x64, 0x64);
-        func_83001178(spA6, spA4 + 0x24, 0x18, 0x12C, 0x1E, 0x1E, 0x64);
+        DrawColoredPanel(spA6, spA4, 0x210, 0x24, 0x1E, 0x64, 0x64);
+        DrawColoredPanel(spA6, spA4 + 0x24, 0x18, 0x12C, 0x1E, 0x1E, 0x64);
         func_83002C74(spA6 + 4, spA4 + 0x2C, ptr);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -389,13 +389,13 @@ void func_83003484(void) {
             if (ptr->unk_0A > 0) {
                 var_s0 = ptr->unk_10->unk_1C;
                 for (i = 0; i < 6; i++) {
-                    func_83003054(spA6 + 0x18, sp4A + 0x24 + i * 0x3C, var_s0);
+                    DrawPokemonSelectionEntries(spA6 + 0x18, sp4A + 0x24 + i * 0x3C, var_s0);
                     var_s0 = var_s0->unk_18;
                 }
             } else {
                 var_s0 = ptr->unk_10;
                 for (i = 0; i < 6; i++) {
-                    func_83003054(spA6 + 0x18, sp4A - 0x18 + i * 0x3C, var_s0);
+                    DrawPokemonSelectionEntries(spA6 + 0x18, sp4A - 0x18 + i * 0x3C, var_s0);
                     var_s0 = var_s0->unk_18;
                 }
             }
@@ -403,7 +403,7 @@ void func_83003484(void) {
         } else {
             var_s0 = ptr->unk_10;
             for (i = 0; i < 5; i++) {
-                func_83003054(spA6 + 0x18, spA4 + 0x24 + i * 0x3C, var_s0);
+                DrawPokemonSelectionEntries(spA6 + 0x18, spA4 + 0x24 + i * 0x3C, var_s0);
                 var_s0 = var_s0->unk_18;
             }
         }
@@ -426,11 +426,11 @@ void func_830038DC(void) {
     ptr->unk_08 = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = -1;
-    ptr->unk_06 = func_830027C8(gBattleContext.unk_0001);
+    ptr->unk_06 = GetPokemonCountByFilter(gBattleContext.unk_0001);
     ptr->unk_10 = &ptr->unk_14[0];
 
     for (i = 0; i < 5; i++) {
-        func_83002848(&ptr->unk_14[i], i, gBattleContext.unk_0001);
+        FillPokemonSelectionList(&ptr->unk_14[i], i, gBattleContext.unk_0001);
     }
 }
 

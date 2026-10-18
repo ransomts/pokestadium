@@ -686,7 +686,7 @@ void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
 
 void InitializeMenuState(s32 arg0, s32 arg1) {
     unk_D_83407B38* temp_v0_2;
-    unk_D_86002F58_004_000_010* sp30;
+    AssetManager* sp30;
 
     switch (arg0) {
         case 1:

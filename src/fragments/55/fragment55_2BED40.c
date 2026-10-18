@@ -126,13 +126,13 @@ void func_83000058(void) {
     }
 }
 
-void func_83000130(void) {
+void MenuInput_Update(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-s16* func_83000160(unk_D_800AE540* arg0) {
+s16* GetMenuOptionList(unk_D_800AE540* arg0) {
     s16* var_v1 = NULL;
 
     switch (arg0->unk_0001) {
@@ -248,7 +248,7 @@ s16* func_83000160(unk_D_800AE540* arg0) {
     return var_v1;
 }
 
-char* func_830003A4(s8 arg0) {
+char* GetBattleModeTitle(s8 arg0) {
     char* ret;
 
     switch (arg0) {
@@ -285,7 +285,7 @@ char* func_830003A4(s8 arg0) {
     return ret;
 }
 
-char* func_83000418(s8 arg0) {
+char* GetBattleModeSubtitle(s8 arg0) {
     char* ret;
 
     switch (arg0) {
@@ -333,7 +333,7 @@ char* func_83000418(s8 arg0) {
     return ret;
 }
 
-s32 func_830004BC(s16* arg0) {
+s32 MenuOptionStringsMissing(s16* arg0) {
     s32 ret = 0;
 
     while (*arg0 != -1) {
@@ -347,7 +347,7 @@ s32 func_830004BC(s16* arg0) {
     return ret;
 }
 
-void func_83000508(void) {
+void FadeIn_Update(void) {
     s32 temp_lo;
 
     D_83003C82--;
@@ -364,7 +364,7 @@ void func_83000508(void) {
     }
 }
 
-void func_8300059C(void) {
+void MenuInput_HandleSelection(void) {
     s16 tmp = D_83003CA6;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
@@ -390,7 +390,7 @@ void func_8300059C(void) {
         D_83003C82 = 0;
 
         if (D_83003DE0.unk_00[D_83003CA0[D_83003CA6]] != NULL) {
-            func_830025F8(D_83003CA0[D_83003CA6]);
+            Dialog_Start(D_83003CA0[D_83003CA6]);
         } else {
             func_830038DC();
             PlaySoundEffect(4);
@@ -406,12 +406,12 @@ void func_8300059C(void) {
 }
 
 void func_83000710(void) {
-    if ((func_8300269C() == 0) && (func_83003988() == 0)) {
+    if ((Dialog_IsActive() == 0) && (func_83003988() == 0)) {
         D_83003C80 = 1;
     }
 }
 
-void func_83000750(void) {
+void FadeOut_Update(void) {
     s32 temp_lo;
 
     D_83003C82--;
@@ -429,7 +429,7 @@ void func_83000750(void) {
     }
 }
 
-s32 func_830007C4(void) {
+s32 FadeOut_IsComplete(void) {
     s32 var_v1 = 0;
 
     D_83003C82--;
@@ -439,7 +439,7 @@ s32 func_830007C4(void) {
     return var_v1;
 }
 
-void func_830007F4(void) {
+void DrawBattleModeBackground(void) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -459,7 +459,7 @@ void func_830007F4(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_83000A30(void) {
+void DrawLoadingBar(void) {
     UNUSED s32 pad;
     s16 temp_s1;
     s16 spD8;
@@ -530,7 +530,7 @@ void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_83001178(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void DrawColoredPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
@@ -552,7 +552,7 @@ void func_83001178(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_830014B0(s16 arg0, s16 arg1) {
+void DrawMenuIcon(s16 arg0, s16 arg1) {
     gDPLoadTextureTile(gDisplayListHead++, D_4000C40, G_IM_FMT_IA, G_IM_SIZ_8b, 20, 0, 0, 0, 19, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
@@ -560,7 +560,7 @@ void func_830014B0(s16 arg0, s16 arg1) {
     Gfx_DrawTextureRect(arg0, arg1, 0x14, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void func_830015EC(s16 arg0, s16 arg1) {
+void DrawMenuOptions(s16 arg0, s16 arg1) {
     s16 tmp;
     s32 i;
     char sp48[0x40];
@@ -607,10 +607,10 @@ void func_830017C0(void) {
     func_83000F10(0x38, temp_s3, 0x210, temp_s2);
 
     if (D_83003C92 >= 0x400) {
-        func_83001178(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
-        func_83001178(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
-        func_83001178(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
-        if ((func_830026C0() == 0) && (func_830039AC() == 0)) {
+        DrawColoredPanel(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
+        DrawColoredPanel(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
+        DrawColoredPanel(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
+        if ((Dialog_GetAnimProgress() == 0) && (func_830039AC() == 0)) {
             s16 sins = SINS(D_83003B60) * 3.0f;
 
             DrawStatusIcon(sins + 0x48, temp_s3 + (D_83003CA6 * 0x18) + 0x2A);
@@ -622,13 +622,13 @@ void func_830017C0(void) {
         Gfx_DrawSpriteRGBA16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
 
         for (i = 0; i < D_83003CA4; i++) {
-            func_830014B0(0x74, temp_s3 + 0x28 + i * 0x18);
+            DrawMenuIcon(0x74, temp_s3 + 0x28 + i * 0x18);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
         Text_ResetState();
-        func_830015EC(0x38, temp_s3);
+        DrawMenuOptions(0x38, temp_s3);
         Text_SetupDL();
     }
 }
@@ -637,24 +637,24 @@ void func_83001A9C(void) {
     Stage_BeginDisplayList();
     if (D_83003C90 != 0) {
         if (gBattleContext.unk_0000 == 0xA) {
-            func_830007F4();
+            DrawBattleModeBackground();
         } else {
             Gfx_DrawTextureAtlas(D_83003C8C);
         }
 
-        func_83000A30();
+        DrawLoadingBar();
 
         if (D_83003C90 > 0) {
             D_83003C90--;
         }
     }
 
-    if ((func_830026C0() < 0x400) && (func_830039AC() < 0x400)) {
+    if ((Dialog_GetAnimProgress() < 0x400) && (func_830039AC() < 0x400)) {
         func_830017C0();
     }
 
-    func_8300243C();
-    func_83003484();
+    Dialog_Render();
+    RenderSelectionMenu();
     Stage_Advance();
 }
 
@@ -710,7 +710,7 @@ void func_83001CF8(void) {
     D_83003CA6 = 0;
     D_83003C84 = 0;
 
-    D_83003CA0 = func_83000160(&gBattleContext);
+    D_83003CA0 = GetMenuOptionList(&gBattleContext);
     if (D_83003CA0 == 0) {
         D_83003CA4 = 0;
     } else {
@@ -739,14 +739,14 @@ void func_83001CF8(void) {
     D_83003CD8 = D_83003CB4;
     D_83003CDC = D_83003CB8;
 
-    D_83003C98 = func_830003A4(gBattleContext.unk_0000);
-    D_83003C9C = func_83000418(gBattleContext.unk_0001);
+    D_83003C98 = GetBattleModeTitle(gBattleContext.unk_0000);
+    D_83003C9C = GetBattleModeSubtitle(gBattleContext.unk_0001);
 
     if (gBattleContext.unk_11F2 != 0) {
         D_83003C84 |= 1;
     }
 
-    if (func_830004BC(D_83003CA0) != 0) {
+    if (MenuOptionStringsMissing(D_83003CA0) != 0) {
         D_83003C84 |= 2;
     }
 
@@ -756,7 +756,7 @@ void func_83001CF8(void) {
         D_83003C94 = 0x400;
     }
 
-    func_830023B8();
+    Dialog_CloseImmediately();
 
     func_830032D8((D_83003C84 & 2) ? 1 : 0);
 }
@@ -766,11 +766,11 @@ s32 func_83002030(void) {
 
     switch (D_83003C80) {
         case 0:
-            func_83000508();
+            FadeIn_Update();
             break;
 
         case 1:
-            func_8300059C();
+            MenuInput_HandleSelection();
             break;
 
         case 2:
@@ -778,11 +778,11 @@ s32 func_83002030(void) {
             break;
 
         case 3:
-            func_83000750();
+            FadeOut_Update();
             break;
 
         case 4:
-            if (func_830007C4() != 0) {
+            if (FadeOut_IsComplete() != 0) {
                 sp1C = 0;
             }
             break;
@@ -793,8 +793,8 @@ s32 func_83002030(void) {
 void func_830020D0(void) {
     func_83001CF8();
     do {
-        func_83000130();
-        func_830023CC();
+        MenuInput_Update();
+        Dialog_UpdateStateMachine();
         func_830033F0();
         func_83001A9C();
     } while (func_83002030() != 0);

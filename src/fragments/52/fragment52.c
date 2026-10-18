@@ -13,8 +13,8 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static unk_D_86002F30* D_82800530;
-static GraphNode* D_82800534;
+static unk_D_86002F30* gGeoLayout_StageBackground;
+static GraphNode* gStageTextureNode;
 static Fragment2_1GraphNode D_82800538;
 static BinArchive* D_828006A0;
 static u8* D_828006A4;
@@ -25,7 +25,7 @@ static u32 D_828004D0[] = {
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-void func_82900020(void) {
+void Input_PollAndMenuInit(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -60,7 +60,7 @@ void func_828001D0(void) {
     func_82800050(D_828006A4);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_FinishFrame();
-    Graph_SetTextureState(D_82800534);
+    Graph_SetTextureState(gStageTextureNode);
     Stage_Advance();
 }
 
@@ -70,19 +70,19 @@ void func_82800238(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 16; i++) {
-        func_82900020();
+        Input_PollAndMenuInit();
         func_828001D0();
     }
 
     do {
-        func_82900020();
+        Input_PollAndMenuInit();
         func_828001D0();
     } while (!(BTN_IS_PRESSED(gPlayer1Controller, BTN_A)));
 
     Stage_FadeOut(0x10);
 
     for (i = 0; i < 16; i++) {
-        func_82900020();
+        Input_PollAndMenuInit();
         func_828001D0();
     }
 
@@ -92,17 +92,17 @@ void func_82800238(void) {
 void func_828002E4(void) {
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_82800534 = process_geo_layout(sp1C, D_828004D0);
+    gStageTextureNode = process_geo_layout(sp1C, D_828004D0);
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     Graph_AddToRootList0(&D_82800538);
     AssetManager_LoadArchives();
-    D_82800530 = GeoLayout_LoadById(0x96);
-    GraphNode_InitChild(&D_82800538, 0, 0x96, D_82800530->unk_08->unk_00[0]);
+    gGeoLayout_StageBackground = GeoLayout_LoadById(0x96);
+    GraphNode_InitChild(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&D_82800538, 0);
 }
 
-s32 func_82900390(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MTWO');

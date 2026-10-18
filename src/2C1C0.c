@@ -122,7 +122,7 @@ void Battle_RegisterPlayerEntry(s32 arg0, unk_D_800AE540_0004* arg1) {
     }
 }
 
-void Battle_AddPartyMon(unk_D_800AE540_0004* arg0, unk_func_80026268_arg0* arg1) {
+void Battle_AddPartyMon(unk_D_800AE540_0004* arg0, PokemonData* arg1) {
     unk_D_800AE540_0874* ptr = arg0->unk_214;
     s32 tmp = arg0->unk_002;
 
@@ -135,7 +135,7 @@ void Battle_AddPartyMon(unk_D_800AE540_0004* arg0, unk_func_80026268_arg0* arg1)
     }
 }
 
-unk_func_80026268_arg0* Pokemon_InitFromSpeciesLevel(unk_func_80026268_arg0* arg0, u8 arg1, s16 arg2) {
+PokemonData* Pokemon_InitFromSpeciesLevel(PokemonData* arg0, u8 arg1, s16 arg2) {
     arg0->unk_00.unk_00 = arg1;
     arg0->unk_04 = 0;
     arg0->unk_05 = 0;
@@ -181,8 +181,8 @@ void Battle_CreateTwoPlayerMatch(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 spD6;
     s32 spD0;
     s32 spCC;
-    unk_func_80026268_arg0 sp78;
-    unk_func_80026268_arg0 sp24;
+    PokemonData sp78;
+    PokemonData sp24;
 
     switch (arg0) {
         case 0:
@@ -224,7 +224,7 @@ void Battle_CreateTwoPlayerMatch(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
 void Battle_LoadTeamFromSaveSlot(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
-    unk_func_80026268_arg0 sp48;
+    PokemonData sp48;
     unk_func_80022C28_ret* temp_v0;
     unk_D_800AE540_0004* temp_s4;
     char sp34[11];
@@ -325,7 +325,7 @@ s32 Battle_PickRandomMon(s32 arg0) {
 s16 Battle_GetMaxPartyLevel(void) {
     s16 i;
     s16 var_v1 = 0;
-    unk_func_80026268_arg0* var_v0;
+    PokemonData* var_v0;
 
     var_v0 = &gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_028[0];
 
@@ -340,8 +340,8 @@ s16 Battle_GetMaxPartyLevel(void) {
 
 void Battle_SetPartyLevel(s16 arg0) {
     s16 i;
-    unk_func_80026268_arg0* var_s0;
-    unk_func_80026268_arg0* var_s1;
+    PokemonData* var_s0;
+    PokemonData* var_s1;
 
     if (arg0 < 0x33) {
         return;
@@ -367,7 +367,7 @@ typedef struct unk_func_8002BFC4_004 {
     /* 0x010 */ char unk10[0x24];
     /* 0x034 */ u16 unk_34;
     /* 0x036 */ u16 unk_36;
-    /* 0x038 */ unk_func_80026268_arg0 unk_38[1];
+    /* 0x038 */ PokemonData unk_38[1];
 } unk_func_8002BFC4_004; // size >= 0x8C
 
 typedef struct unk_func_8002BFC4 {
@@ -382,7 +382,7 @@ void Battle_LoadPartyFromArchive(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     unk_D_800AE540_0004* temp_s3;
     s32 var_s0;
     unk_func_8002BFC4_004* temp_s2;
-    unk_func_80026268_arg0* var_s1;
+    PokemonData* var_s1;
     unk_func_8002BFC4* ptr;
     unk_func_8002BFC4* temp_v1;
 
@@ -543,7 +543,7 @@ void Battle_PackStateForSave(void) {
 
 s32 Battle_LoadStateFromSave(void) {
     unk_func_800281D4 sp250;
-    unk_func_80026268_arg0 sp58[6];
+    PokemonData sp58[6];
     s32 i;
     char sp44[0x10];
     s32 temp_v0;

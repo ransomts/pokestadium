@@ -33,7 +33,7 @@ void GraphNode_SetColorRGBA(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg
 void GraphNode_SetState(Fragment2_1GraphNode* arg0, u8 arg1);
 void GraphNode_SetSubState(Fragment2_1GraphNode* arg0, u8 arg1);
 unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(Fragment2_1GraphNode* arg0, s32 arg1);
-arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026268_arg0* arg1);
+arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, PokemonData* arg1);
 void GetPokemonStatFromEntry(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2);
 void ProcessPokemonSelection(unk_D_800AE540_1194* arg0);
 void UpdatePokemonStateOnEnter(unk_func_8001C248* arg0);

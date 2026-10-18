@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-s32 func_82800020(s32 arg0, s32 arg1);
+s32 RunFragment33(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT51_H_

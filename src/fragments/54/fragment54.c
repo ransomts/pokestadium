@@ -10,20 +10,20 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** D_82B01140;
-static BinArchive* D_82B01144;
-static void* D_82B01148;
-static s16 D_82B0114C;
+static char** gFragment54MessageBank;
+static BinArchive* gBattleHeaderArchive;
+static void* gFragment54TextureAtlas;
+static s16 gMenuCursorIndex;
 
-static u8 D_82B01120[] = {
+static u8 gBackgroundFileIndexTable[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F, 0x00, 0x00,
 };
 
-static s8 D_82B0112C[] = {
+static s8 gMessageIdOffsetTable[] = {
     0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x03,
 };
 
-void func_82B00020(s16 arg0, s16 arg1) {
+void DrawPanelBorder(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0, arg1, 0x30, 0x18, D_2006C00, 0x30, 0);
@@ -45,20 +45,20 @@ void func_82B000F4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8*
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82B0029C(void) {
+void DrawMenuHeader(void) {
     Color_RGBA8 sp2C;
     Color_RGBA8 sp28;
 
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
     func_82B000F4(0x48, 0x28, 0x208, &sp2C, &sp28);
-    func_82B00020(0x30, 0x20);
+    DrawPanelBorder(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[gBattleContext.unk_0000]));
+    Text_Print(0x6A, 0x2C, GetMessageString(NULL, 0, gFragment54MessageBank, gMessageIdOffsetTable[gBattleContext.unk_0000]));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, D_82B01140, D_82B0112C[gBattleContext.unk_0000]));
+    Text_Print(0x68, 0x2A, GetMessageString(NULL, 0, gFragment54MessageBank, gMessageIdOffsetTable[gBattleContext.unk_0000]));
     Text_SetupDL();
 }
 
@@ -81,7 +81,7 @@ void func_82B003B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     D_82B01138 += 0x2000;
 }
 
-void func_82B005AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void DrawFrameRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 3, arg1 - 3, 8, 8, D_2000340, 8, 0);
@@ -96,12 +96,12 @@ void func_82B005AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
+void DrawMenuEntryBox(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     UNUSED s32 pad;
 
     if (arg2 >= 0xA) {
         arg1 += ((0x30 - arg2) / 2);
-        func_82B005AC(arg0, arg1, 0x98, arg2);
+        DrawFrameRect(arg0, arg1, 0x98, arg2);
 
         gSPDisplayList(gDisplayListHead++, D_8006F470);
 
@@ -118,15 +118,15 @@ void func_82B00814(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     }
 }
 
-void func_82B00994(s16 arg0) {
+void DrawMenuEntries(s16 arg0) {
     UNUSED s32 pad;
 
-    func_82B00814(0x50, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 4));
-    func_82B00814(0xF4, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 5));
-    func_82B00814(0x198, 0x180, arg0 * 6, GetMessageString(NULL, 0, D_82B01140, 6));
+    DrawMenuEntryBox(0x50, 0x180, arg0 * 6, GetMessageString(NULL, 0, gFragment54MessageBank, 4));
+    DrawMenuEntryBox(0xF4, 0x180, arg0 * 6, GetMessageString(NULL, 0, gFragment54MessageBank, 5));
+    DrawMenuEntryBox(0x198, 0x180, arg0 * 6, GetMessageString(NULL, 0, gFragment54MessageBank, 6));
 }
 
-s32 func_82B00A50(void) {
+s32 GetMenuInput(void) {
     u32 var_v1 = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -138,43 +138,43 @@ s32 func_82B00A50(void) {
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {
         PlaySoundEffect(1);
         var_v1 = 'exec';
-        D_82B0114C -= 1;
-        if (D_82B0114C < 0) {
-            D_82B0114C = 2;
+        gMenuCursorIndex -= 1;
+        if (gMenuCursorIndex < 0) {
+            gMenuCursorIndex = 2;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
         PlaySoundEffect(1);
         var_v1 = 'exec';
-        D_82B0114C++;
-        if (D_82B0114C >= 3) {
-            D_82B0114C = 0;
+        gMenuCursorIndex++;
+        if (gMenuCursorIndex >= 3) {
+            gMenuCursorIndex = 0;
         }
     }
     return var_v1;
 }
 
-void func_82B00B3C(s16 arg0) {
+void RenderMenuFrame(s16 arg0) {
     Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(D_82B01148);
-    func_82B0029C();
-    func_82B00994(arg0);
+    Gfx_DrawTextureAtlas(gFragment54TextureAtlas);
+    DrawMenuHeader();
+    DrawMenuEntries(arg0);
     if (arg0 == 8) {
-        func_82B003B8((D_82B0114C * 0xA4) + 0x50, 0x180, 0x98, 0x30);
+        func_82B003B8((gMenuCursorIndex * 0xA4) + 0x50, 0x180, 0x98, 0x30);
     }
     Stage_Advance();
 }
 
-void func_82B00BC8(void) {
+void FadeInAndRunMenu(void) {
     if (Stage_GetFadeState != NULL) {
         Stage_FadeIn(8);
         while (Stage_GetFadeState() != 0) {
             Game_UpdateInputs();
-            func_82B00B3C(0);
+            RenderMenuFrame(0);
         }
     }
 }
 
-void func_82B00C24(void) {
+void FadeOutAndCleanup(void) {
     if ((gBattleContext.unk_0000 == 7) || (gBattleContext.unk_0000 == 8)) {
         Music_StopTrack(0x10);
     }
@@ -184,65 +184,65 @@ void func_82B00C24(void) {
 
     while (Stage_GetFadeState() != 1) {
         Game_UpdateInputs();
-        func_82B00B3C(0);
+        RenderMenuFrame(0);
     }
 
     Stage_AdvanceN(2);
 }
 
-s16 func_82B00CB4(void) {
+s16 RunMenuSelectionLoop(void) {
     s16 i;
     s16 var_v1;
     u32 temp_s1 = 'exec';
 
-    D_82B0114C = 0;
-    func_82B00BC8();
+    gMenuCursorIndex = 0;
+    FadeInAndRunMenu();
     PlaySoundEffect(4);
 
     for (i = 1; i < 8; i++) {
         Game_UpdateInputs();
-        func_82B00B3C(i);
+        RenderMenuFrame(i);
     }
 
     while (temp_s1 == 'exec') {
         Game_UpdateInputs();
-        temp_s1 = func_82B00A50();
-        func_82B00B3C(i);
+        temp_s1 = GetMenuInput();
+        RenderMenuFrame(i);
     }
 
     for (i = 7; i >= 0; i--) {
         Game_UpdateInputs();
-        func_82B00B3C(i);
+        RenderMenuFrame(i);
     }
 
-    func_82B00B3C(i);
+    RenderMenuFrame(i);
 
     if (temp_s1 == 'btnA') {
-        var_v1 = D_82B0114C + 1;
+        var_v1 = gMenuCursorIndex + 1;
     } else {
         if (gBattleContext.unk_0000 != 0) {
-            func_82B00C24();
+            FadeOutAndCleanup();
         }
         var_v1 = 0;
     }
     return var_v1;
 }
 
-void func_82B00DD0(unk_func_80027FA0* arg0) {
-    D_82B01144 = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
+void LoadMenuBackground(unk_func_80027FA0* arg0) {
+    gBattleHeaderArchive = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
 
     if (gBattleContext.unk_0000 == 7) {
         if (arg0->unk_04 < 8) {
-            D_82B01148 = BinArchive_GetFile(D_82B01144, 0xD);
+            gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0xD);
         } else {
-            D_82B01148 = BinArchive_GetFile(D_82B01144, 0x10);
+            gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0x10);
         }
     } else {
-        D_82B01148 = BinArchive_GetFile(D_82B01144, D_82B01120[gBattleContext.unk_0000]);
+        gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, gBackgroundFileIndexTable[gBattleContext.unk_0000]);
     }
 }
 
-s32 func_82B00E84(void) {
+s32 MenuFragment_Init(void) {
     s16 sp26;
     unk_func_80027FA0 sp1C;
     s16 temp_v0;
@@ -256,11 +256,11 @@ s32 func_82B00E84(void) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    func_82B00DD0(&sp1C);
+    LoadMenuBackground(&sp1C);
     MessageBank_Init();
 
-    D_82B01140 = GetMessageBank(0x18);
-    D_82B0114C = 0;
+    gFragment54MessageBank = GetMessageBank(0x18);
+    gMenuCursorIndex = 0;
 
     if (gBattleContext.unk_0000 == 7) {
         if (sp1C.unk_04 < 8) {
@@ -271,7 +271,7 @@ s32 func_82B00E84(void) {
     }
 
     func_80007754();
-    sp26 = func_82B00CB4();
+    sp26 = RunMenuSelectionLoop();
     Stage_Terminate();
 
     main_pool_pop_state('menu');
@@ -289,7 +289,7 @@ s32 func_82B00FFC(void) {
     return 4;
 }
 
-s32 func_82B0104C(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Fragment54_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     s16 sp2E;
     s32 var_v1;
     s32 var_v1_2;
@@ -308,7 +308,7 @@ s32 func_82B0104C(UNUSED s32 arg0, UNUSED s32 arg1) {
                 break;
 
             case 4:
-                sp2E = func_82B00E84();
+                sp2E = MenuFragment_Init();
                 break;
         }
     }

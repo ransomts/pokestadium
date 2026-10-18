@@ -293,7 +293,7 @@ void func_8431FCC4(void) {
 
 s32 func_8431FCCC(unk_D_84390010* arg0) {
     unk_D_800FCB18* temp_s1 = &arg0->unk_654.unk_38;
-    unk_func_80026268_arg0* temp_s2 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* temp_s2 = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
     f32 temp_fs0;
     UNUSED s16 pad;
     s16 sp30;

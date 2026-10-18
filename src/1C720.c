@@ -124,7 +124,7 @@ unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(Fragment2_1GraphNode* 
     return var_v1;
 }
 
-arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026268_arg0* arg1) {
+arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, PokemonData* arg1) {
     UNUSED s32 pad;
     char sp38[0xB];
     arg1_func_80010CA8 sp34;
@@ -163,7 +163,7 @@ arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, unk_func_80026
 }
 
 void GetPokemonStatFromEntry(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) {
-    unk_func_80026268_arg0 stack;
+    PokemonData stack;
 
     stack.unk_00.unk_00 = arg2;
     stack.unk_0E = arg1->unk_02;
@@ -183,7 +183,7 @@ void ProcessPokemonSelection(unk_D_800AE540_1194* arg0) {
     if (!(arg0->unk_00 & 0x40) && (arg0->unk_00 & 0x80)) {
         temp_a1 = arg0->unk_04;
         if ((temp_a1 != NULL) && (sp2A == arg0->unk_04->unk_000)) {
-            ComputeStatFromName(&sp2C, (unk_func_80026268_arg0*)arg0->unk_04);
+            ComputeStatFromName(&sp2C, (PokemonData*)arg0->unk_04);
             if ((sp2A == 0x19) && (arg0->unk_04->unk_01C[0].unk_30[6] & 0x80)) {
                 sp2A = 0x99;
             }

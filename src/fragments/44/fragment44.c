@@ -200,7 +200,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
 void ItemSelect_Init(s32 arg0, s32 arg1) {
     s32 i;
     s32 j;
-    unk_D_86002F58_004_000_010* tmp;
+    AssetManager* tmp;
 
     gItemSelectState = 0;
     gItemSelectMode = arg0;
