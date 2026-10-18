@@ -91,51 +91,71 @@ def main():
     ap.add_argument("--model", default="gptoss-120b")
     ap.add_argument("--max", type=int, default=15)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--chunk-lines", type=int, default=1200,
+                    help="files longer than this are proposed in multiple gateway calls")
     args = ap.parse_args()
 
     src = open(args.file, errors="replace").read()
     lines = src.splitlines()
+    chunks = [lines]
+    if len(lines) > args.chunk_lines:
+        chunks = [lines[i:i + args.chunk_lines] for i in range(0, len(lines), args.chunk_lines)]
     # skip files with an open NON_MATCHING draft inside: tell the model to leave those functions alone
     protected_hint = ""
     if "NON_MATCHING" in src:
         protected_hint = ("\nNOTE: this file contains #ifdef NON_MATCHING draft(s). Do NOT propose "
                           "renames for any symbol referenced inside those draft blocks.\n")
-    user = (f"Source file: {args.file} ({len(lines)} lines)\n"
-            f"Propose up to {args.max} renames.\n{protected_hint}\n```c\n{src}\n```")
 
-    print(f"[{args.batch}] {args.file}: {len(lines)} lines -> {args.model}", flush=True)
-    out = call_model(args.model, SYSTEM.replace("BATCH", args.batch), user)
+    all_rows = []
+    for k, chunk in enumerate(chunks):
+        part = f" (part {k + 1}/{len(chunks)})" if len(chunks) > 1 else ""
+        user = (f"Source file: {args.file}{part} ({len(chunk)} lines shown of {len(lines)})\n"
+                f"Propose up to {args.max} renames.\n{protected_hint}\n```c\n" +
+                "\n".join(chunk) + "\n```")
+        print(f"[{args.batch}] {args.file}{part}: {len(chunk)} lines -> {args.model}", flush=True)
+        out = call_model(args.model, SYSTEM.replace("BATCH", args.batch), user)
+
+        rows = []
+        for line in out.splitlines():
+            line = line.strip()
+            if not line or line.startswith(("#", "old\t", "```")):
+                continue
+            parts = [p.strip() for p in line.split("\t")]
+            if len(parts) < 3:
+                continue
+            old, new = parts[0], parts[1]
+            if not re.fullmatch(r"(func_|D_|unk_)[A-Za-z0-9_]+", old):
+                continue
+            if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", new):
+                continue
+            batch = parts[2] if len(parts) >= 6 and parts[2] == args.batch else args.batch
+            if len(parts) >= 6:
+                also, just = parts[3], parts[4]
+            elif len(parts) == 5:
+                also, just = parts[2] if parts[2] != args.batch else "", parts[3]
+            else:
+                also, just = "", parts[2]
+            just = just.encode("ascii", "replace").decode().strip()
+            also = also.encode("ascii", "replace").decode().strip()
+            rows.append((old, new, batch, also, just))
+        all_rows.extend(rows)
+
+    # dedupe by old across chunks (keep first)
+    seen, dedup = set(), []
+    for row in all_rows:
+        if row[0] in seen:
+            continue
+        seen.add(row[0])
+        dedup.append(row)
+    all_rows = dedup
+
     os.makedirs(args.out, exist_ok=True)
     base = os.path.join(args.out, f"{args.batch}_{os.path.basename(args.file)}")
-    open(base + ".raw", "w").write(out)
-
-    rows = []
-    for line in out.splitlines():
-        line = line.strip()
-        if not line or line.startswith(("#", "old\t", "```")):
-            continue
-        parts = [p.strip() for p in line.split("\t")]
-        if len(parts) < 3:
-            continue
-        old, new = parts[0], parts[1]
-        if not re.fullmatch(r"(func_|D_|unk_)[A-Za-z0-9_]+", old):
-            continue
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", new):
-            continue
-        batch = parts[2] if len(parts) >= 6 and parts[2] == args.batch else args.batch
-        if len(parts) >= 6:
-            also, just = parts[3], parts[4]
-        elif len(parts) == 5:
-            also, just = parts[2] if parts[2] != args.batch else "", parts[3]
-        else:
-            also, just = "", parts[2]
-        just = just.encode("ascii", "replace").decode().strip()
-        also = also.encode("ascii", "replace").decode().strip()
-        rows.append((old, new, batch, also, just))
+    open(base + ".raw", "a").write("")
     with open(base + ".tsv", "w") as f:
-        for old, new, batch, also, just in rows:
+        for old, new, batch, also, just in all_rows:
             f.write(f"{old}\t{new}\t{batch}\t{also}\t{just}\tpending\n")
-    print(f"[{args.batch}] {len(rows)} proposal rows -> {base}.tsv", flush=True)
+    print(f"[{args.batch}] {len(all_rows)} proposal rows -> {base}.tsv", flush=True)
 
 
 if __name__ == "__main__":
