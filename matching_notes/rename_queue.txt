@@ -299,3 +299,15 @@
 1	src/fragments/76/fragment76.c
 1	src/fragments/77/fragment77.c
 # total: 276 files, 57547 placeholder references
+## wave 21
+1	src/37370.c
+1	src/fragments/16/fragment16_15A2A0.c
+158	src/fragments/1/fragment1_86CB0.c
+1	src/fragments/1/fragment1_89010.c
+212	src/fragments/22/fragment22.c
+423	src/fragments/27/fragment27.c
+339	src/fragments/28/fragment28_214920.c
+0	src/fragments/31/fragment31_257750.c
+0	src/fragments/31/fragment31_2577F0.c
+1	src/fragments/34/fragment34_26F9B0.c
+0	src/util.c
