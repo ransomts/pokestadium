@@ -1,5 +1,25 @@
 # Matching session notes (for the next AI session)
 
+## PICK UP HERE (2026-10-18 morning update, same day as the night handoff below)
+Farm restructure mid-round (see "Round 10 morning addendum" at the bottom for detail):
+- **farm11-a/b/c** replace farm10-a/b/c at their phase boundaries (farm11-c submitted 08:45
+  job 17564010; farm11-a/b at ~11:50 when farm10 phase 2 ends, before their chains fire).
+  FUNCS_OVERRIDE drops **func_80034348** (permuting proven dead: every ordering >= 40) and
+  keeps 88805AEC/8437B0CC/88304850/8004A89C with copies 5/5/5/6, RUN_TAGs ga/gb/gc,
+  FARM_PHASES=2 x 11 h. 34348 is now an agent/hand-only function.
+- **Focus files REMOVED** (88805AEC, 88304850): overnight data showed focused copies (fc,
+  17274-1816) far behind plain diversity copies (fa/fb, 4929/1642) — the stale-focus problem
+  plus window restriction. All farm11 functions now use plain re-seed + diversity (empirically
+  best). A rebuilt 4929-based 88805AEC focus file sits in `scratch/r10-focus/` if wanted.
+- **func_8004A89C new basin injected**: `permuter_best/func_8004A89C/output-350-sf1/`
+  (the r10-4a89c agent's domain rewrite, permuter-validated at an honest 350; 6 copies on
+  farm11 so diversity reaches it). Two agents ran this morning — **neither matched**, but
+  both produced breakthroughs (see the addendum): 34348's register-web ranking is fully
+  mapped (next lever: comma-expression / statement-emitting-macro emission order, material
+  in `scratch/r10-34348/`, worktree `.claude/worktrees/r10-34348`), 4A89C's tail mechanism
+  is structurally solved (`scratch/r10-4a89c/notes.md` has the ranked next steps: make uopt
+  propagate the +0x10 so the sample chain dies before the call args).
+
 ## PICK UP HERE (2026-10-17 night handoff)
 State: **5 open functions** (post-rename-p11/waves; 97.9%+ of the game matched): func_8437B0CC
 (giant, regalloc+stack), func_88805AEC (spill-slot ORDER problem), func_88304850 (pure
@@ -1008,3 +1028,129 @@ renamed SpeciesStats (the true 0x17 row type). Follow-ups + evidence in rename_p
 `.venv/bin/python3 matching_notes/rename_wave.py run <queue-wave> [count]` - queue in
 matching_notes/rename_queue.txt (21 waves + regen via rename_queue_gen.py). Field waves:
 `rename_field_wave.py cN <headers...>`. Veto: scratch/rename_waves/<batch>/veto.txt.
+
+### Round 10 morning addendum (2026-10-18, opencode support session)
+Farm status at pickup: all three farm10 tracks healthy through phase 2 (a/b chained at
+01:31 as jobs 17559397/17559400); overnight permuter bests: 88805AEC 18419 -> 4929
+(real fd 4202 via cand_score), 8437B0CC 4724 -> 3882, 88304850 1936 -> 1642,
+8004A89C 300 -> 270, 34348 flat at 40 all night (as predicted).
+
+Repo incident + fix: an interrupted `make init` had left `linker_scripts/us/auto/` empty
+between 15:00-17:20 on 10-17 — that killed the original farm10-c chain (fresh stagings
+rsync the broken tree; the build gate still passes because the build/ copies are complete).
+`make extract` repairs it; a/b's phase-2 chain (01:31) staged AFTER the repair and is fine.
+Round 11's renames (2686+3713, commits 8490553..de50807) did NOT rename any of the 5 open
+functions. If a chained farm phase ever dies in <1 min with "No rule to make target
+'build/linker_scripts/us/auto/undefined_syms_auto.ld'", run `make extract` and resubmit.
+
+Morning actions taken (this session):
+1. Two one-shot agents (worktrees r10-34348, r10-4a89c; reports in scratch/r10-*/notes.md):
+   - func_80034348 NOT matched (still 40). Root cause fully mapped via ccs.py ugen dumps:
+     ugen ranks the three vertex-pointer webs (single-block > block-spanning, ties by first
+     textual appearance); the draft's structure can never demote vc from v0. The register
+     side IS solved in `scratch/r10-34348/m1_candidate.c` (fd 1326, worse schedule) — the
+     remaining problem is making the ay/by/bz/az loads EMIT early while sitting in block B
+     (comma expressions / statement-emitting macros). Pointer temps: dead end (web order).
+   - func_8004A89C NOT matched (best 350, was 300; permuter bests 270). Tail mechanism
+     (`move t5,a0` + late `sll t8,t5,0x3`) understood and reproduced structurally; the
+     remaining error is ONE regalloc chain: target has no 4th local (sample chain runs on
+     temps + value's home a0); getting uopt to propagate the +0x10 assignment is the key
+     lever (matched sibling evidence: `dir = duty & 8` propagates, `(u8)(x + c)` doesn't).
+     fa4-270 keeps the old tail; 350 keeps the sample local — the naive hybrid is a KNOWN
+     450 dead end (spec7 v0). 350 injected as output-350-sf1 (permuter-validated).
+2. Farm swap to farm11 (timed script, log /tmp/opencode/farm_swap.log): FUNCS trimmed to
+   88805AEC:5:5, 8437B0CC:5:5, 88304850:4:5, 8004A89C:4:6; 34348 dropped. FARM_PHASES=2.
+3. Focus files removed (both were stale-draft-based and underperformed plain diversity
+   copies overnight); rebuilt-but-unvalidated 88805AEC focus kept in scratch/r10-focus/.
+4. Cross-basin recombination: only worth it where basins are KNOWN complementary — for
+   88805AEC/8437B0CC the diversity seeding (k-th best distinct starts) already spans
+   basins, so no manual splicing. 4A89C handled by the injection above.
+5. permuter_best backup refreshed (~/permuter_backup_20261017, 328 MB).
+
+Next session, by value: (1) 34348 comma-expression emission-order experiment from
+m1_candidate.c (the whole function is two ideas away); (2) 4A89C uopt +0x10 propagation
+ideas from the ranked list in scratch/r10-4a89c/notes.md; (3) harvest farm11 phase results
+(morning_check.sh; farm11-c phase 1 ends ~19:20, a/b phase 2 ends ~22:30 tonight); (4) the
+agent worktrees hold commits/notes — cherry-pick nothing (no matches), but read their
+scratch notes first.
+
+### Round 10b follow-up agents (2026-10-18 ~09:30, worktrees r10b-*)
+- **func_8004A89C: 350 -> 330** (new best; committed in worktree r10b-4a89c, c26d7c0..ac23815;
+  scratch/r10b-4a89c/source_330.c, injected as permuter_best output-330-sf1, farm-validated).
+  The 330 win composes fa4's top tricks with the new tail (do{}while(0) between `if (value) {}`
+  and the idx re-read; inline width test `D_800FD008[0x12].value & 8`; exactly three `if (1) {}`
+  after the unk_0C store) — idx/col/value/stage coloring now ALL match; remaining is ONE swap:
+  ours rowptr-temp=v0 + sample-home=a3 vs target a3/v0. Core mechanism learned: ugen assigns
+  local homes first-def-order a0-a3, THEN uopt CSE/copy-propagation frees homes for temps;
+  idx propagates because the double NR43 read CSEs into a named temp making `idx = temp` a
+  copy. Dead stores cannot reserve homes (uopt DCE runs before ugen). TWO TRAPS for future
+  sessions: (a) a disabled NON_MATCHING wrapper makes tools diff the GLOBAL_ASM .o -> 0;
+  (b) draft_score/cand_score can print 0 via an NFS stale-.o race — always `rm -f` the .o
+  first and demand the full make `: OK`. Also noted: the target emits one extra instruction
+  (`move t5,a0`) our C currently lacks — invisible in diff score, would shift the ROM.
+  Ranked next steps in scratch/r10b-4a89c/notes.md.
+- **func_80034348: follow-up agent died mid-exploration without a report.** Its last edit
+  (fd 3416, uncommitted in worktree r10b-34348) is a failed shape — do NOT adopt. The useful
+  output is its draft-comment conclusion: the comma-expression / emission-order lead hits a
+  DIRECT CONFLICT between the colouring and the pointer-priority constraints (interleaved
+  emission order that fixes the schedule breaks the web ranking that fixes registers, and
+  vice versa). Its proposed next lead: a struct/tail change that alters what 'single block'
+  means for the pointer temps (e.g. -Wo,-doassoc-style grouping of the address math) — i.e.
+  change the ADDRESS EXPRESSIONS' association, not the statement order. Best remains fd 40
+  (output-40-1); m1_candidate.c still holds the register-solved half.
+
+### Round 10c: permuter metric is DIRECTIONALLY BROKEN for 88805AEC + 88304850 (2026-10-18 ~11:40)
+Evidence (cand_score fd vs the permuter's own base scores, same files):
+- func_88805AEC: aa3/output-1228-1 (old-metric seed) real fd **1732** (BEST) but permuter 18419
+  (draft-level); fb2/output-4929-1 (farm10 phase-2 "improvement") real fd **4202** but permuter 4929.
+  The farm has been walking AWAY from the best candidate while improving its score.
+- func_88304850: aa1 (fd 1666, best) permuter 1936; fa1 (fd 1822) permuter 1642. Same inversion.
+- func_8437B0CC (3882=3882) and func_8004A89C (270/330/350 all exact) are HONEST - unaffected.
+Actions taken: farm11-c cancelled mid-phase (it was burning 10 of 21 copies counterproductively
+on the two broken functions); farm11-c3 (17572774, RUN_TAG=ge) resubmitted with ONLY the two
+honest functions (8437B0CC:5:8, 4A89C:4:8); the 11:50 a/b swap FUNCS file (/tmp/opencode/
+farm11_funcs.txt) likewise. 88805AEC + 88304850 stay OFF the farm until this is fixed.
+Ruled out: statics inflation (stripped the 11 big static arrays from the aa3 candidate to
+externs - still 18419). Diagnostic harness kept: /tmp/opencode/p888 (import of 88805AEC with
+stripped-aa3 base.c, permuter prints 18419; ground truth via cand_score = 1732).
+Next session should: diff the PERMUTER's own diff (its target.s + scoring) against asm-differ
+for the same candidate on these two functions - suspect the imported target/compile context
+post-rename-extract (symbol-era). Compare the fresh-import DRAFT's permuter score vs the draft's
+fd to see if the import itself is skewed. Until fixed, judge those two functions ONLY by
+cand_score/fd.sh, and do not trust farm_status numbers for them.
+Ops note: farm11-c2 died in 56s to wave churn (w26's distclean left linker_scripts/us/auto empty
+11:24); healed with `make extract`. The 11:50 swap has a tree_ok pre-flight guard (farm_swap2.sh);
+if a wave is mid-apply, it waits up to 1h then aborts (leaving a/b to chain untrimmed phase 3).
+
+### Round 10d: michiiik/pokestadium harvest - 2 of 5 open functions MATCHED (2026-10-18 ~15:00)
+DISCOVERY: github.com/michiiik/pokestadium (Team Hippodrome; fork of pret, same AI-assisted
+last-mile approach, very active) has ALL FIVE of our open functions decompiled. Their US is
+100% (7437/7437, zero GLOBAL_ASM; us_rev1/2 also done); their remaining backlog is the other
+versions (~17k functions: jp 4552, it 2381, es/fr 2359 each, de 2197, eu_rev1 1891, eu 1281).
+They have 5,787 placeholder symbols left in US src. Full clone at /tmp/opencode/hippo (shallow;
+their bodies extracted to /tmp/opencode/hippo_bodies/).
+OUR side of the trade: the matching industrial base (permuter_farm.sh, corpus.py oracles,
+ido_bisect, ccs/regprobe, IDO_TRICKS.md, quarantine protocol, port_agent.py below) + the
+rename automation (6,441 applied; waves at 2,400-row scale).
+NEW TOOL: matching_notes/port_agent.py - an LLM port loop (RCD gateway, gptoss-120b, unlimited
+tokens; usage: --func --src --their <hippo body> --worktree <wt> --rounds N). Round = prompt
+(our draft + their reference + best-candidate fd feedback) -> candidate -> try_candidate ->
+fd.sh feedback; on fd 0 it unwraps + full-makes. Patched mid-session to feed back the BEST
+candidate (models drift away from good attempts otherwise) and to hint that `i` diffs on jal
+lines are symbol-name-era mismatches.
+RESULTS: func_80034348 MATCHED (2 gateway rounds, adopted, ROM OK - worktree r10b-34348).
+func_88805AEC MATCHED (fd 5 = one jal name-era artifact; unwrapped, ROM OK - worktree
+r10c-888; its asm was re-extracted inside the worktree to fix era skew). Remaining runs in
+/tmp/opencode/portlogs/*_r3.log: func_8004A89C (16 rounds), func_88304850 (16), func_8437B0CC
+(16, slow: ~7 min/round for the 1223-line body).
+TOOL BUGS FIXED (real, old): try_candidate.py + splice_draft.py used rfind("#ifdef
+NON_MATCHING") which matches the LITERAL INSIDE COMMENTS - the r10b-4a89c draft comment
+contains it, so every enable inserted #if 1 into the comment, the draft stayed disabled, and
+fd.sh scored the GLOBAL_ASM .o = PHANTOM 0s (this is what the round-10b agent warned about;
+now line-anchored regex in both tools). adopt_candidate.py still needs the same audit if it
+misbehaves; the manual unwrap (splice + keep preamble decls + delete wrapper lines + full
+make) is the proven path - see the 88805AEC close above.
+INTEGRATOR: the two matches sit UNCOMMITTED in their worktrees; cherry-pick both files onto
+match-round-1, run make init to drop the stale nonmatchings .s, re-check progress.py -v us
+(should pass 97.92%), full make OK. Attribution: ported from michiiik/pokestadium (Team
+Hippodrome) - credit them in the commit messages.

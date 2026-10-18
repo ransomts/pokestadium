@@ -36,7 +36,8 @@ c = open(cand).read()
 a, b = func_span(c, func)
 new_fn = c[a:b]
 s, e = func_span(orig, func)
-j = orig.rfind("#ifdef NON_MATCHING", 0, s)
+_m = [m for m in re.finditer(r"^#ifdef NON_MATCHING[ \t]*$", orig[:s], re.M)]
+j = _m[-1].start() if _m else -1
 if j < 0 or "#endif" in orig[j:s]:
     sys.exit(f"{func} has no NON_MATCHING draft")
 t = orig[:j] + "#if 1" + orig[j + len("#ifdef NON_MATCHING"):s] + new_fn + orig[e:]
