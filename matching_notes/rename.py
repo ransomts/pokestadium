@@ -453,7 +453,14 @@ class Rewriter:
     def add_sa_entry_no_size(self, new, addr):
         """Entry without size: splat infers the span from its neighbours/segment end.
         Used for C-defined globals where a map-derived size could cross segment ends."""
-        self._sa_appends.append((new, addr, None))
+        self._sa_appends.append((new, addr, "nosize"))
+        return 1
+
+    def add_sa_entry_undef(self, new, addr):
+        """No-flag entry (NOT defined:true). For extern-only phantoms whose only
+        definition is the auto .ld assignment: defined:true would suppress that
+        assignment and break the link (the gStadiumUILayout/w29 lesson)."""
+        self._sa_appends.append((new, addr, "undef"))
         return 1
 
     def _apply_batch(self, path, text):
@@ -498,12 +505,16 @@ class Rewriter:
                     t2, _k = pat.subn(lambda m: smap[m.group(1)] + m.group(2), t)
                     if t2 != t:
                         self._save(f, t2)
-        # 2. appended entries (dlabel-only / C-defined globals)
-        for new, addr, size in self._sa_appends:
+        # 2. appended entries (dlabel-only / C-defined globals / extern-only phantoms)
+        for new, addr, kind in self._sa_appends:
             f = SA_FILES[2]
             t = self._load(f)
-            entry = (f"{new} = 0x{addr:08X}; // defined:true size:0x{size:X}"
-                     if size is not None else f"{new} = 0x{addr:08X}; // defined:true")
+            if kind == "undef":
+                entry = f"{new} = 0x{addr:08X};"
+            elif kind == "nosize":
+                entry = f"{new} = 0x{addr:08X}; // defined:true"
+            else:
+                entry = f"{new} = 0x{addr:08X}; // defined:true size:0x{kind:X}"
             if entry not in t:
                 self._save(f, t.rstrip("\n") + "\n" + entry + "\n")
         # 3. one batched pass per source file
@@ -579,7 +590,12 @@ def do_rewrites(rows, files):
             elif not is_typedef_row(r):
                 span = map_symbol_span(r.old)
                 if span:
-                    rw.add_sa_entry_no_size(r.new, span[0])
+                    if c_definition_count(r.old) > 0:
+                        rw.add_sa_entry_no_size(r.new, span[0])
+                    else:
+                        # extern-only phantom: its only definition is the auto .ld
+                        # assignment - must NOT be marked defined:true (w29 lesson)
+                        rw.add_sa_entry_undef(r.new, span[0])
         sp = s_path_for(r.old)
         if sp and os.path.exists(sp):
             rw.move_s(sp, os.path.join(os.path.dirname(sp), r.new + ".s"))
@@ -778,8 +794,15 @@ def cmd_apply(ledger, batch, sample, no_make):
         sys.exit(1)
     dirty = git_status_dirty()
     if dirty:
-        die(f"working tree not clean (commit or stash first): {dirty[:3]}")
-    files = rewrite_files()
+        if no_make or os.environ.get("RENAME_ALLOW_DIRTY"):
+            warn(f"working tree dirty (allowed): {dirty[:3]}")
+        else:
+            die(f"working tree not clean (commit or stash first): {dirty[:3]}")
+    excl_env = os.environ.get("RENAME_EXCLUDE_FILES", "")
+    exclude = {p for p in excl_env.splitlines() if p}
+    if exclude:
+        warn(f"excluding {len(exclude)} concurrently-dirty file(s) from the rewrite set")
+    files = [f for f in rewrite_files() if f not in exclude] or rewrite_files()
     real = [r for r in todo if r.old != r.new]
     noops = [r for r in todo if r.old == r.new]
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
@@ -791,14 +814,16 @@ def cmd_apply(ledger, batch, sample, no_make):
         sym_rows = [r for r in sym_rows if map_symbol_span(r.old) is not None]
     rw = do_rewrites(real, files)
     touched = rw.commit()
+    # record the exact set so callers can scope their git add (concurrent sessions!)
+    open(os.path.join(REPO, "scratch", "last_apply_touched.txt"), "w").write(
+        "\n".join(touched) + "\n")
     # post-rewrite checks (batched: one blob scan for all olds, one for all news)
-    files = rewrite_files()
+    blob_files = [f for f in rewrite_files() if f not in exclude] or rewrite_files()
     sym_real = [r for r in real if not r.is_field_row()]
     problems = []
     if sym_real:
         olds = {r.old for r in sym_real}
         news = {r.new for r in sym_real}
-        blob_files = files
 
         def present(names):
             alt = "|".join(sorted((re.escape(n) for n in names), key=len, reverse=True))

@@ -310,6 +310,27 @@ def run_wave(qwave, args, facts):
         for old, new, b, also, just in kept:
             f.write(f"{old}\t{new}\t{b}\t{also}\t{just}\tpending\n")
 
+    # 4b. concurrent-session safety: drop rows whose old name appears in a
+    # pre-dirty file (rewriting there would mix hunks / mixed naming)
+    pre_dirty_paths = []
+    r0 = sh(["git", "status", "--porcelain"], 30)
+    for line in r0.stdout.splitlines():
+        if line and not line.startswith("??") and "matching_notes/" not in line:
+            pre_dirty_paths.append(line[3:].strip())
+    if pre_dirty_paths and kept:
+        dirty_text = "\n".join(
+            open(os.path.join(REPO, p), errors="replace").read()
+            for p in pre_dirty_paths if os.path.exists(os.path.join(REPO, p)))
+        drop_rows = []
+        for _i, p in ledger_rows():
+            if p[2] == batch and not p[5].startswith("applied"):
+                if re.search(r"(?<![A-Za-z0-9_])" + re.escape(p[0]) + r"(?![A-Za-z0-9_])", dirty_text):
+                    drop_rows.append((_i, p[0]))
+        if drop_rows:
+            log(f"  dropping {len(drop_rows)} row(s) that touch a concurrently-dirty file "
+                f"({[d[1] for d in drop_rows[:3]]}...)")
+            write_ledger_drop({d[0] for d in drop_rows})
+
     # 4. plan / fixup until clean
     if not plan_fixup_loop(batch, log):
         log(f"  STOP: batch {batch} not resolvable - rows stay pending in the ledger")
@@ -318,20 +339,39 @@ def run_wave(qwave, args, facts):
         log(f"  --stop-after-plan: {batch} rows pending; not applying")
         return True
 
-    # 5. apply + gate
+    # 5. apply + gate (concurrent-session safe: scoped adds, mixed-hunk guard)
+    pre_dirty = set()
+    r0 = sh(["git", "status", "--porcelain"], 30)
+    for line in r0.stdout.splitlines():
+        if line and not line.startswith("??") and "matching_notes/" not in line:
+            pre_dirty.add(line[3:].strip())
+    env_allow = dict(os.environ, RENAME_ALLOW_DIRTY="1")
+    if pre_dirty:
+        env_allow["RENAME_EXCLUDE_FILES"] = "\n".join(pre_dirty)
     r = subprocess.run([PY, os.path.join(HERE, "rename.py"), "apply", LEDGER,
                         "--batch", batch, "--sample", "5"],
-                       cwd=REPO, timeout=7200)
+                       cwd=REPO, timeout=7200, env=env_allow)
     if r.returncode != 0:
         log(f"  STOP: apply/gate FAILED for {batch} (auto-reverted; rows pending)")
         return False
+    try:
+        touched = [t for t in open(os.path.join(REPO, "scratch", "last_apply_touched.txt")).read().splitlines() if t]
+    except OSError:
+        touched = []
+    mixed = [t for t in touched if t in pre_dirty]
+    if mixed:
+        log(f"  STOP: rewrite touched files that were ALREADY dirty before this wave "
+            f"(another session's WIP would ride into our commit): {mixed[:3]}")
+        log(f"  the batch is applied+gated on disk; commit manually after coordinating")
+        return False
 
-    # 6. commit + mark + amend
-    n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied@"))
+    # 6. commit + mark + amend (scoped: only this wave's files + the ledger)
+    n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     if n == 0:
         n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     short = ", ".join(os.path.basename(f) for f in files[:4]) + (", ..." if len(files) > 4 else "")
-    r = sh(["git", "add", "src", "include", "linker_scripts", "matching_notes/renames.tsv"], 60)
+    add_cmd = ["git", "add"] + touched + [LEDGER]
+    r = sh(add_cmd, 60)
     r = sh(["git", "commit", "-m", f"rename: {batch} ({n} symbols; {short})"], 120)
     if r.returncode != 0:
         log(f"  STOP: git commit failed: {r.stdout}\n{r.stderr}")
@@ -342,7 +382,7 @@ def run_wave(qwave, args, facts):
     if r.returncode != 0:
         log(f"  STOP: mark-committed failed: {r.stdout}\n{r.stderr}")
         return False
-    sh(["git", "add", "src", "include", "linker_scripts", "matching_notes/renames.tsv"], 60)
+    sh(add_cmd, 60)
     r = sh(["git", "commit", "--amend", "--no-edit"], 120)
     if r.returncode != 0:
         log(f"  STOP: amend failed: {r.stdout}\n{r.stderr}")
