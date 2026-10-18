@@ -764,28 +764,30 @@ void func_80034254(StadiumModel* model) {
 // colours that the interleaved order + boundary-after-bx provides. The colouring and the pointer
 // priority seem to be in direct conflict; next lead: a struct/tail-change that alters what
 // 'single block' means for the pointer temps (e.g. -Wo,-doassoc grouping of the address math).
-#ifdef NON_MATCHING
 void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
-    f32 ax;
-    f32 ay;
-    f32 az, bx, by, bz, cx, cy, cz;
+    f32 x0, y0, z0;
+    f32 x1, y1, z1;
+    f32 x2, y2, z2;
     f32 nx, ny, nz;
     f32 len;
-    s16 ia, ib, ic;
-    f32 by2;
-    s32 pad1[9];
-    f32 count;
-    s16* index;
-    s16* remap;
+    s16 i0, i1, i2;
+    f32 scale;
+    s16* indices;
     s16 triangleCount;
     s16 vertexCount;
+    ModelVertex* v0;
+    ModelVertex* v1;
+    ModelVertex* v2;
     ModelVertex* vtx;
     Vec3fCounter* counter;
+    UNUSED s32 pad[4];
+    s16* remap;
+    UNUSED s32 pad2[5];
 
     triangleCount = segment->triangleCount;
     vertexCount = segment->vertexCount;
-    index = Memmap_GetSegmentVaddr(segment->indexSegment);
+    indices = Memmap_GetSegmentVaddr(segment->indexSegment);
     remap = Memmap_GetSegmentVaddr(segment->remapSegment);
     counter = D_800B2F50;
     for (i = 0; i < vertexCount; i++) {
@@ -796,42 +798,43 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
         counter++;
     }
     for (i = 0; i < triangleCount; i++) {
-        ia = remap[*index++];
-        ax = (vertices + ia)->position.base.x;
-        ib = remap[*index++];
-        bx = (vertices + ib)->position.base.x;
-        if (0) {}
-        ay = (vertices + ia)->position.base.y;
-        by = (vertices + ib)->position.base.y;
-        bz = (vertices + ib)->position.base.z;
-        az = (vertices + ia)->position.base.z;
-        ic = remap[*index++];
-        cx = (vertices + ic)->position.base.x;
-        cy = (vertices + ic)->position.base.y;
-        cz = (vertices + ic)->position.base.z;
-        nx = ((by - ay) * (cz - bz)) - ((bz - az) * (cy - by));
-        ny = ((bz - az) * (cx - bx)) - ((bx - ax) * (cz - bz));
-        nz = ((bx - ax) * (cy - by)) - ((by - ay) * (cx - bx));
+        i0 = remap[indices[0]];
+        v0 = &vertices[i0];
+        x0 = v0->position.base.x;
+        y0 = v0->position.base.y;
+        z0 = v0->position.base.z;
+        i1 = remap[indices[1]];
+        v1 = &vertices[i1];
+        x1 = v1->position.base.x;
+        y1 = v1->position.base.y;
+        z1 = v1->position.base.z;
+        i2 = remap[indices[2]];
+        v2 = &vertices[i2];
+        x2 = v2->position.base.x;
+        y2 = v2->position.base.y;
+        z2 = v2->position.base.z;
+        indices += 3;
+        nx = ((y1 - y0) * (z2 - z1)) - ((z1 - z0) * (y2 - y1));
+        ny = ((z1 - z0) * (x2 - x1)) - ((x1 - x0) * (z2 - z1));
+        nz = ((x1 - x0) * (y2 - y1)) - ((y1 - y0) * (x2 - x1));
         len = sqrtf((nx * nx) + (ny * ny) + (nz * nz));
-        if ((s32) len > 0) {
-            len = 120.0f / len;
-            cx = (vertices + ic)->position.base.x;
-            cz = (vertices + ic)->position.base.z;
-            nx *= len;
-            ny *= len;
-            nz *= len;
+        if ((s32)len > 0) {
+            scale = 120.0f / len;
+            nx *= scale;
+            ny *= scale;
+            nz *= scale;
         }
-        counter = &D_800B2F50[ia];
+        counter = &D_800B2F50[i0];
         counter->x += nx;
         counter->y += ny;
         counter->z += nz;
         counter->count++;
-        counter = &D_800B2F50[ib];
+        counter = &D_800B2F50[i1];
         counter->x += nx;
         counter->y += ny;
         counter->z += nz;
         counter->count++;
-        counter = &D_800B2F50[ic];
+        counter = &D_800B2F50[i2];
         counter->x += nx;
         counter->y += ny;
         counter->z += nz;
@@ -841,19 +844,15 @@ void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
     vtx = vertices;
     for (i = 0; i < vertexCount; i++) {
         if (counter->count > 0) {
-            count = (f32) counter->count;
-            vtx->position.color.r = (f32) (counter->x / count);
-            vtx->position.color.g = (f32) (counter->y / count);
-            vtx->position.color.b = (f32) (counter->z / count);
+            len = counter->count;
+            vtx->position.color.r = counter->x / len;
+            vtx->position.color.g = counter->y / len;
+            vtx->position.color.b = counter->z / len;
         }
         counter++;
         vtx++;
     }
 }
-#else
-void func_80034348(ModelSegment*, ModelVertex*);
-#pragma GLOBAL_ASM("asm/us/nonmatchings/33FE0/func_80034348.s")
-#endif
 
 void func_80034824(ModelSegment* segment, StadiumTransform* xf, s32 index, ModelVertex* vertices) {
     f32 x0, y0, z0;

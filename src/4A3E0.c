@@ -648,7 +648,6 @@ typedef struct unk_D_80078A60 {
 } unk_D_80078A60; // size = 0x8
 
 unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.5f }, { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xD, 8.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.25f }, { 4, 1.25f }, { 5, 1.25f }, { 6, 1.25f }, { 7, 1.25f }, { 8, 1.25f }, { 9, 1.25f }, { 0xA, 1.25f }, { 0xB, 1.25f }, { 0xC, 1.25f }, { 0xD, 1.25f }, { 0xD, 2.5f }, { 0xD, 5.0f }, { 0xD, 10.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xD, 12.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.75f }, { 4, 1.75f }, { 5, 1.75f }, { 6, 1.75f }, { 7, 1.75f }, { 8, 1.75f }, { 9, 1.75f }, { 0xA, 1.75f }, { 0xB, 1.75f }, { 0xC, 1.75f }, { 0xD, 1.75f }, { 0xD, 3.5f }, { 0xD, 7.0f }, { 0xD, 14.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } } };
-#ifdef NON_MATCHING
 // Score 955 (diff.py without -s; was 3355, 5415). Wins: no len local, `(nr & 7)` written twice (farm
 // candidate p2, 970 -> 955); ONE local for the dirty flag and the final
 // sample value (`value`, s16: 1000 -> 970; idx and sample then get the target a1/a0) and pos merged into
@@ -709,91 +708,83 @@ extern f32 D_8007D4D0;
 extern f32 D_8007D4D4;
 
 s16 func_8004A89C(void) {
-    s32 changed;
     s32 i;
-    unk_D_800FC6CC* ent2;
-    u8 sample;
-    u32 nr;
-    u8 idx;
-    s32 dir;
-    u32 flags;
-    u32 pos;
-    s16 value;
-    s32 k;
-    f32 fv;
-    u8* p;
+    s32 nr43;
+    s32 row;
+    s32 changed;
+    u32 nr44;
     u16 col;
+    unk_D_80078A60* entry;
+    u8 sampleId;
+    s16 sample;
+    f32 fv;
+    unk_D_800FC6CC* ent;
 
-    p = (u8*)D_800FD008;
-    value = 0;
+    changed = 0;
     for (i = 0x10; i < 0x14; i++) {
-        if (D_800FD008[i].dirty != 0) {
-            value = 1;
-            D_800FD008[i].dirty = 0;
+        if (((u8*)&D_800FD008[i])[1] != 0) {
+            changed = 1;
+            ((u8*)&D_800FD008[i])[1] = 0;
         }
     }
 
-    if (value) {
-        idx = D_800FD008[0x12].value;
-        col = (idx & 0xF0) >> 4;
-        value = idx;
-        if (value) {}
-        idx = D_800FD008[0x12].value;
-        sample = D_80078A60[idx & 7][col].unk_00;
-        if (sample == 0xFF) {
+    if (changed) {
+        nr43 = ((u8*)&D_800FD008[0x12])[0];
+        row = nr43 & 7;
+        col = (((u8*)&D_800FD008[0x12])[0] & 0xF0) >> 4;
+        entry = &D_80078A60[row][col];
+        sampleId = entry->unk_00;
+        if (sampleId == 0xFF) {
             D_800FCFD8.unk_28 = 0;
             return 0;
         }
-        if (idx & 8) {
-            sample += 0x10;
+        if (((u8*)&D_800FD008[0x12])[0] & 8) {
+            sampleId += 0x10;
         }
-        D_800FCFD8.unk_0C = D_80078A60[idx & 7][col].unk_04;
-        if (sample != D_800FCFD8.unk_04) {
-            D_800FCFD8.unk_04 = sample;
-            func_8004ADB0(D_800FC6CC[(D_800FCFD8.unk_04 & 0xFF)].unk_00, (u32)D_800FC6D0,
-                          D_800FC6CC[(D_800FCFD8.unk_04 & 0xFF)].unk_04);
+        D_800FCFD8.unk_0C = D_80078A60[nr43 & 7][col].unk_04;
+        if (sampleId != D_800FCFD8.unk_04) {
+            D_800FCFD8.unk_04 = sampleId;
+            ent = (unk_D_800FC6CC*)((u32*)D_800FC6CC + (D_800FCFD8.unk_04 << 1));
+            func_8004ADB0(ent->unk_00, (u32)D_800FC6D0, ent->unk_04);
         }
 
         D_800FCFD8.unk_08 = 0;
         D_800FCFD8.unk_10 = 0;
-        nr = D_800FD008[0x11].value;
-        dir = nr & 8;
-        if (!dir && !(nr & 0xF0)) {
+        if (!(((u8*)&D_800FD008[0x11])[0] & 8) && !(((u8*)&D_800FD008[0x11])[0] & 0xF0)) {
             D_800FCFD8.unk_28 = 0;
-            D_800FD008[0x16].value &= ~8;
+            ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
             return 0;
         }
-        nr = D_800FD008[0x11].value;
-        if (dir && !(nr & 0xF0) && !(nr & 7)) {
+        if ((((u8*)&D_800FD008[0x11])[0] & 8) && !(((u8*)&D_800FD008[0x11])[0] & 0xF0) && !(((u8*)&D_800FD008[0x11])[0] & 7)) {
             D_800FCFD8.unk_28 = 0;
-            D_800FD008[0x16].value &= ~8;
+            ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
             return 0;
         }
 
-        flags = D_800FD008[0x13].value;
-        if (flags & 0x80) {
+        nr44 = ((u8*)&D_800FD008[0x13])[0];
+        if (nr44 & 0x80) {
             fv = D_8007D4D0;
             D_800FCFD8.unk_00 = 0;
             D_800FCFD8.unk_28 = 1;
-            D_800FCFD8.unk_14 = (u8)(nr & 0xF0) * fv;
-            if ((nr & 7) != 0) {
-                if (dir) {
+            D_800FCFD8.unk_14 = (u8)(((u8*)&D_800FD008[0x11])[0] & 0xF0) * fv;
+            if (((u8*)&D_800FD008[0x11])[0] & 7) {
+                if (((u8*)&D_800FD008[0x11])[0] & 8) {
                     D_800FCFD8.unk_18 = fv;
                 } else {
                     D_800FCFD8.unk_18 = D_8007D4D4;
                 }
-                D_800FCFD8.unk_20 = D_800FCFD8.unk_1C = (nr & 7) * D_800FD004 * 4;
+                D_800FCFD8.unk_20 = D_800FCFD8.unk_1C = (((u8*)&D_800FD008[0x11])[0] & 7) * D_800FD004 * 4;
             } else {
                 D_800FCFD8.unk_1C = -1;
                 D_800FCFD8.unk_20 = -1;
                 D_800FCFD8.unk_18 = 0.0f;
             }
-            if (flags & 0x40) {
-                D_800FCFD8.unk_24 = (0x40 - (D_800FD008[0x10].value & 0x3F)) * D_800FD004;
+            if (nr44 & 0x40) {
+                D_800FCFD8.unk_24 = (0x40 - (((u8*)&D_800FD008[0x10])[0] & 0x3F)) * D_800FD004;
             } else {
                 D_800FCFD8.unk_24 = -1;
             }
-            D_800FD008[0x13].value = flags & ~0x80;
+            ((u8*)&D_800FD008[0x13])[0] = nr44 & 0xFF7F;
         }
         if (D_800FCFD8.unk_28 == 0) {
             return 0;
@@ -802,50 +793,42 @@ s16 func_8004A89C(void) {
         return 0;
     }
 
-    nr = D_800FCFD8.unk_00;
-    k = 0x11;
-    if (D_800FCFD8.unk_24 < nr) {
+    if (D_800FCFD8.unk_24 < D_800FCFD8.unk_00) {
         D_800FCFD8.unk_28 = 0;
-        D_800FD008[0x16].value &= ~8;
+        ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
         return 0;
     }
 
-    sample = D_800FCFD8.unk_04;
-    dir = p[0x22] & 8;
-    if ((D_800FCFD8.unk_20 < D_800FCFD8.unk_00) != 0) {
+    if (D_800FCFD8.unk_20 < D_800FCFD8.unk_00) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
 
-    ent2 = &D_800FC6CC[sample];
-    value = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
+    ent = (unk_D_800FC6CC*)((u32*)D_800FC6CC + (D_800FCFD8.unk_04 << 1));
+    if (1) {}
+    sample = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
     D_800FCFD8.unk_10 += 1.0f;
     if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
         D_800FCFD8.unk_08++;
         D_800FCFD8.unk_10 -= D_800FCFD8.unk_0C;
-        if (D_800FCFD8.unk_08 >= (ent2->unk_04 >> 1)) {
+        if (D_800FCFD8.unk_08 >= (ent->unk_04 >> 1)) {
             D_800FCFD8.unk_08 = 0;
         }
     }
 
-    if (!dir && (D_800FCFD8.unk_14 < 0.0f)) {
+    if (!(((u8*)&D_800FD008[0x11])[0] & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
         D_800FCFD8.unk_28 = 0;
         return 0;
     }
-
     if (D_800FCFD8.unk_14 > 0.75f) {
         D_800FCFD8.unk_14 = 0.75f;
         D_800FCFD8.unk_18 = 0.0f;
         D_800FCFD8.unk_20 = -1;
     }
-
+    sample = sample * D_800FCFD8.unk_14;
     D_800FCFD8.unk_00 += 0x100;
-    value = value * D_800FCFD8.unk_14;
-    return value;
+    return sample;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/4A3E0/func_8004A89C.s")
-#endif
 
 void func_8004AC9C(void) {
     s32 i;

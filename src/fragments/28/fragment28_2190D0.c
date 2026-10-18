@@ -3627,120 +3627,145 @@ Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
 // Target tail model: t4 (arg2) stays live to the end, `(arg2 - 5) << 2` is computed into t0 at the
 // join before `if (arg6 == 1)` and used only by case 0; case 1 uses t4 - 0xC / t4 + 3. Ours still
 // keeps y5 - 5 unshifted in t2 for case 1 / case 0.
-#ifdef NON_MATCHING
-Gfx *func_88805AEC(Gfx *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6)
+Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6)
 {
-  u32 temp_v0;
-  s32 tmp;
-  s32 tmp2;
-  s32 new_var;
-  s32 y5;
-  temp_v0 = strlen(D_88825BFC[D_88826A4E]);
-  gDPLoadTextureBlock(arg0++, D_88823618, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-  tmp = arg1 + arg3;
-  y5 = arg2;
-  gSPTextureRectangle(arg0++, (tmp - 8) << 2, y5 << 2, tmp << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-  tmp2 = arg2 + arg4;
-  switch (arg5)
-  {
-    case 0:
-      gSPTextureRectangle(arg0++, ((tmp - arg3) + 0x3E) << 2, y5 << 2, (tmp - 8) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
-      break;
-
-    case 1:
-      gSPTextureRectangle(arg0++, ((tmp - arg3) + 0x46) << 2, y5 << 2, (tmp - 8) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
-      break;
-
-    case 2:
-      gSPTextureRectangle(arg0++, ((tmp - arg3) + 8) << 2, y5 << 2, (tmp - 8) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
-      break;
-
-  }
-
-  gDPLoadTextureBlock(arg0++, D_888236A0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-  gSPTextureRectangle(arg0++, (tmp - 8) << 2, (tmp2 - 8) << 2, tmp << 2, tmp2 << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-  gSPTextureRectangle(arg0++, ((tmp - arg3) + 8) << 2, (tmp2 - 8) << 2, (tmp - 8) << 2, tmp2 << 2, G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
-  gSPTextureRectangle(arg0++, (tmp - 8) << 2, ((tmp2 - arg4) + 8) << 2, tmp << 2, (tmp2 - 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
-  gDPLoadTextureBlock(arg0++, D_88823728, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-  gSPTextureRectangle(arg0++, arg1 << 2, (tmp2 - 8) << 2, (arg1 + 8) << 2, tmp2 << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-  if (y5)
-  {
-  }
-  if ((arg5 != 0) && (arg5 != 1))
-  {
-    if (arg5 == 2)
-    {
-      gSPTextureRectangle(arg0++, arg1 << 2, ((tmp2 - arg4) + 8) << 2, (arg1 + 8) << 2, (tmp2 - 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
-      y5 = arg2;
-    }
-  }
-  else
-  {
-    gSPTextureRectangle(arg0++, arg1 << 2, (tmp2 - arg4) << 2, (arg1 + 8) << 2, (tmp2 - 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
+    u32 temp_v0 = strlen(D_88825BFC[D_88826A4E]) * 8;
+    s32 tmp;
+    s32 y5;
+    gDPLoadTextureBlock(arg0++, D_88823618, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0,
+                        G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     y5 = arg2;
-  }
-  if (arg5 == 2)
-  {
-    gDPLoadTextureBlock(arg0++, D_888237B0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(arg0++, arg1 << 2, y5 << 2, (arg1 + 8) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-  }
-  y5 = y5 - 5;
-  if (arg6 == 1)
-  {
-    switch (D_88826A56)
-    {
-      case 0:
-        gDPSetPrimColor(arg0++, 0xFF, 0xFF, 106, 40, 20, 200);
-        break;
-
-      case 1:
-        gDPSetPrimColor(arg0++, 0xFF, 0xFF, 0, 44, 0, 200);
-        break;
-
-      case 2:
-        gDPSetPrimColor(arg0++, 0xFF, 0xFF, 0, 0, 139, 200);
-        break;
-
-      case 3:
-        gDPSetPrimColor(arg0++, 0xFF, 0xFF, 160, 160, 0, 200);
-        break;
-
+    tmp = arg1 + arg3;
+    gSPTextureRectangle(arg0++, (tmp - 8) << 2, y5 << 2, tmp << 2, (y5 + 8) << 2,
+                        G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    switch (arg5) {
+        case 0:
+            gSPTextureRectangle(arg0++, ((tmp - arg3) + 0x3E) << 2, y5 << 2,
+                                (tmp - 8) << 2, (y5 + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
+            break;
+        case 1:
+            gSPTextureRectangle(arg0++, ((tmp - arg3) + 0x46) << 2, y5 << 2,
+                                (tmp - 8) << 2, (y5 + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
+            break;
+        case 2:
+            gSPTextureRectangle(arg0++, ((tmp - arg3) + 8) << 2, y5 << 2,
+                                (tmp - 8) << 2, (y5 + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
+            break;
+        default:
+            break;
     }
-
-    gDPLoadTextureBlock(arg0++, D_888251A8, G_IM_FMT_IA, G_IM_SIZ_16b, 4, 4, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(arg0++, (arg1 + 2) << 2, (arg2 + 2) << 2, (tmp - 2) << 2, (tmp2 - 2) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-    if (!arg1)
-    {
+    gDPLoadTextureBlock(arg0++, D_888236A0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0,
+                        G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    y5 = arg2 + arg4;
+    gSPTextureRectangle(arg0++, (tmp - 8) << 2, (y5 - 8) << 2, tmp << 2, y5 << 2,
+                        G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(arg0++, ((tmp - arg3) + 8) << 2, (y5 - 8) << 2,
+                        (tmp - 8) << 2, y5 << 2,
+                        G_TX_RENDERTILE, 0, 0, -0x0400, 0x0400);
+    gSPTextureRectangle(arg0++, (tmp - 8) << 2, ((y5 - arg4) + 8) << 2,
+                        tmp << 2, (y5 - 8) << 2,
+                        G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
+    gDPLoadTextureBlock(arg0++, D_88823728, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0,
+                        G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    tmp = arg1;
+    gSPTextureRectangle(arg0++, tmp << 2, (y5 - 8) << 2, (tmp + 8) << 2, y5 << 2,
+                        G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    switch (arg5) {
+        case 2:
+            gSPTextureRectangle(arg0++, arg1 << 2, ((y5 - arg4) + 8) << 2,
+                                (arg1 + 8) << 2, (y5 - 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
+            break;
+        case 0:
+        case 1:
+            gSPTextureRectangle(arg0++, arg1 << 2, (y5 - arg4) << 2,
+                                (arg1 + 8) << 2, (y5 - 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, -0x0400);
+            break;
+        default:
+            break;
     }
-    gDPSetPrimColor(arg0++, 0xFF, 0xFF, 255, 255, 255, 200);
-  }
-  switch (arg5)
-  {
-    case 2:
-      break;
-
-    case 1:
-      gDPLoadTextureBlock(arg0++, D_88823248, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 15, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-      gSPTextureRectangle(arg0++, arg1 << 2, (y5 - 7) << 2, ((arg1 + (temp_v0 * 8)) - 0x10) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-      gDPLoadTextureBlock(arg0++, D_88823340, G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 15, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-      gSPTextureRectangle(arg0++, ((arg1 + (temp_v0 * 8)) - 0x10) << 2, (y5 - 7) << 2, (((arg1 + (temp_v0 * 8)) - 0x10) + 0x18) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-      break;
-
-    case 0:
-      gDPLoadTextureBlock(arg0++, D_88823838, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-      new_var = arg1;
-      gSPTextureRectangle(arg0++, new_var << 2, y5 << 2, (new_var + 0x2E) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-      gDPLoadTextureBlock(arg0++, D_888238C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 8, 0, G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-      gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, y5 << 2, (arg1 + 0x3E) << 2, (y5 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
-      break;
-
-  }
-
-  return arg0;
+    switch (arg5) {
+        case 2:
+            gDPLoadTextureBlock(arg0++, D_888237B0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0,
+                                G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            y5 = arg2;
+            gSPTextureRectangle(arg0++, arg1 << 2, y5 << 2, (arg1 + 8) << 2, (y5 + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+            break;
+        default:
+            break;
+    }
+    if (arg6 == 1) {
+        switch (D_88826A56) {
+            case 0:
+                gDPSetPrimColor(arg0++, 0xFF, 0xFF, 106, 40, 20, 200);
+                break;
+            case 1:
+                gDPSetPrimColor(arg0++, 0xFF, 0xFF, 0, 44, 0, 200);
+                break;
+            case 2:
+                gDPSetPrimColor(arg0++, 0xFF, 0xFF, 0, 0, 139, 200);
+                break;
+            case 3:
+                gDPSetPrimColor(arg0++, 0xFF, 0xFF, 160, 160, 0, 200);
+                break;
+            default:
+                break;
+        }
+        gDPLoadTextureBlock(arg0++, D_888251A8, G_IM_FMT_IA, G_IM_SIZ_16b, 4, 4, 0,
+                            G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(arg0++, (tmp + 2) << 2, (arg2 + 2) << 2,
+                            ((tmp + arg3) - 2) << 2, ((arg2 + arg4) - 2) << 2,
+                            G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+        gDPSetPrimColor(arg0++, 0xFF, 0xFF, 255, 255, 255, 200);
+    }
+    y5 = arg2;
+    switch (arg5) {
+        case 2:
+        default:
+            break;
+        case 1:
+            gDPLoadTextureBlock(arg0++, D_88823248, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 15, 0,
+                                G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            tmp = arg1;
+            arg3 = (tmp + temp_v0) - 0x10;
+            arg4 = arg2 - 0xC;
+            gSPTextureRectangle(arg0++, tmp << 2, arg4 << 2, arg3 << 2, (arg4 + 15) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+            gDPLoadTextureBlock(arg0++, D_88823340, G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 15, 0,
+                                G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSPTextureRectangle(arg0++, arg3 << 2, (y5 - 0xC) << 2,
+                                (arg3 + 0x18) << 2, (arg2 + 3) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+            break;
+        case 0:
+            gDPLoadTextureBlock(arg0++, D_88823838, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, 0,
+                                G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            arg4 = arg2 - 5;
+            gSPTextureRectangle(arg0++, tmp << 2, arg4 << 2, (arg1 + 0x2E) << 2, (arg4 + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+            gDPLoadTextureBlock(arg0++, D_888238C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 8, 0,
+                                G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSPTextureRectangle(arg0++, (arg1 + 0x2E) << 2, (arg2 - 5) << 2,
+                                (arg1 + 0x3E) << 2, (arg2 + 3) << 2,
+                                G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+            break;
+    }
+    return arg0;
 }
-#else
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/28/fragment28_2190D0/func_88805AEC.s")
-#endif
 
 void func_888069B0(void) {
     s16 sp46;
