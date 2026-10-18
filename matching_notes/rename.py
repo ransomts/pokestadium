@@ -785,6 +785,10 @@ def cmd_apply(ledger, batch, sample, no_make):
     print(f"applying {len(real)} rename(s) ({len(noops)} no-op row(s) skipped)")
     sym_rows = [r for r in real if not r.is_field_row() and not is_typedef_row(r)  # pre-rewrite check
                  and not is_c_static(r.old) and not is_function_local(r.old)]
+    # extern-only phantoms (no linker definition anywhere - references are raw hex):
+    # if the old name was not map-visible before the rewrite, don't map-check the new one
+    if os.path.exists(os.path.join(REPO, "build/pokestadium-us.map")):
+        sym_rows = [r for r in sym_rows if map_symbol_span(r.old) is not None]
     rw = do_rewrites(real, files)
     touched = rw.commit()
     # post-rewrite checks (batched: one blob scan for all olds, one for all news)
