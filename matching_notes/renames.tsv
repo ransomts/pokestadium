@@ -3608,3 +3608,4 @@ Fragment2_1GraphNode.unk_0A6	Fragment2_1GraphNode.modelPhase	c1		initialized to 
 GbEmuState.unk_01D8	GbEmuState.next	c1		traversed as the next pointer and updated during linked-list insertion and removal in src/5580.c	applied@9614c25
 GbEmuState.unk_01DC	GbEmuState.threadState	c1		compared against state values 0 and 2 to decide whether to send messages or stop the associated thread	applied@9614c25
 GbEmuState.unk_2204	GbEmuState.inputConfig	c1		copied from the initialization argument, returned on shutdown, and its members configure input-related setup	applied@9614c25
+func_80036790	Stub_ReturnInvalidIndex	w25		returns arr[16] from a 1-element array, clearly a placeholder stub	applied@a6a513a

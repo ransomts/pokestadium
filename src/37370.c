@@ -20,7 +20,7 @@ void PlaySoundEffectById(s32 arg0) {
     PlaySoundEffect(arg0);
 }
 
-s32 func_80036790(void) {
+s32 Stub_ReturnInvalidIndex(void) {
     s32 arr[1];
 
     return arr[16];

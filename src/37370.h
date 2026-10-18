@@ -4,6 +4,6 @@
 #include "global.h"
 
 void PlaySoundEffectById(s32);
-s32 func_80036790(void);
+s32 Stub_ReturnInvalidIndex(void);
 
 #endif // _37370_H_

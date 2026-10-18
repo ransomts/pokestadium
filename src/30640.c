@@ -806,7 +806,7 @@ s32 IsMonIndexDisplayable(unk_D_83403C60* arg0) {
 }
 
 void func_800318F0(void) {
-    func_80036790();
+    Stub_ReturnInvalidIndex();
 }
 
 void Matrix_BillboardBetween(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
