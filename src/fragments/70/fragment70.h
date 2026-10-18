@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-s32 func_8F300020(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 Fragment70_Execute(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT70_H_

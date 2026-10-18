@@ -11,16 +11,16 @@
 #include "src/stage_loader.h"
 
 static BinArchive* D_8FA00A20;
-static u8* D_8FA00A24;
+static u8* gBackgroundData;
 static BinArchive* D_8FA00A28;
 static Stage* D_8FA00A2C;
 
-static u8 D_8FA009F0[] = {
+static u8 gBackgroundIndices[] = {
     0x00, 0x11, 0x01, 0x02, 0x04, 0x06, 0x03, 0x0A, 0x0B, 0x07, 0x08, 0x09, 0x0C, 0x10, 0x0F, 0x14,
 };
 static Camera* D_8FA00A00 = NULL;
 
-void func_8FA00020(s32 arg0) {
+void DrawStageBottomBar(s32 arg0) {
     Stage_BeginDisplayList();
 
     gDPPipeSync(gDisplayListHead++);
@@ -56,18 +56,18 @@ void func_8FA00020(s32 arg0) {
     }
 }
 
-void func_8FA0047C(s32 arg0) {
+void WaitFrames(s32 arg0) {
     u32 sp24 = osGetCount();
     u32 temp_s0 = __ull_div(__ll_mul(__ll_mul(arg0, 0x3E8), 0xBB8), 0x40) + sp24;
 
     while (osGetCount() < temp_s0) {}
 }
 
-s32 func_8FA00510(void) {
+s32 IsSnapModeEnabled(void) {
     return D_83407AE8;
 }
 
-s32 func_8FA0051C(s32 arg0, s32 arg1) {
+s32 StickerStation_Run(s32 arg0, s32 arg1) {
     s32 i;
     AssetManager* temp_s0;
     Stage* temp_v0;
@@ -78,7 +78,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     u8 var_v0;
     u8 sp4E;
 
-    if (func_8FA00510() == 0) {
+    if (IsSnapModeEnabled() == 0) {
         if (CountDisplayableMonIndices(sp60, (D_83407AE4 != 0) ? 16 : 4, 0) != 0) {
             StickerStation_SetCommand(0x10);
             return 0;
@@ -95,7 +95,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_6000000, copyright, 0);
 
-    if (func_8FA00510() == 0) {
+    if (IsSnapModeEnabled() == 0) {
         ASSET_LOAD(D_5000000, snap_mode_ui, 0);
         FRAGMENT_LOAD(fragment31);
 
@@ -109,7 +109,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
     Stage_Set(temp_v0);
     StickerStation_SetCommand(1);
-    func_8FA0047C(0xC8);
+    WaitFrames(0xC8);
     Stage_FadeIn(1);
 
     while (Stage_GetFadeState() != 0) {
@@ -121,7 +121,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
     sp4E = 0;
     for (i = 0; i < 16; i++) {
-        if (func_8FA00510() == 0) {
+        if (IsSnapModeEnabled() == 0) {
             if (D_83407AE4 != 0) {
                 var_v0 = i;
             } else {
@@ -139,15 +139,15 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
                 Cam_Update(D_8FA00A00);
             } while (D_8FA00A00->unk_00 != 2);
 
-            func_8FA00020(i);
+            DrawStageBottomBar(i);
             main_pool_pop_state('DRAW');
         } else {
             main_pool_push_state('DRAW');
 
             D_8FA00A20 = ASSET_LOAD2(backgrounds, 1, 1);
-            D_8FA00A24 = BinArchive_GetFile(D_8FA00A20, D_8FA009F0[i]);
-            Gfx_DrawTextureAtlas(D_8FA00A24);
-            func_8FA00020(i);
+            gBackgroundData = BinArchive_GetFile(D_8FA00A20, gBackgroundIndices[i]);
+            Gfx_DrawTextureAtlas(gBackgroundData);
+            DrawStageBottomBar(i);
 
             main_pool_pop_state('DRAW');
         }
@@ -158,11 +158,11 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
 
         osViBlack(0);
         func_80001CC8();
-        func_8FA0047C(0xC8);
+        WaitFrames(0xC8);
         StickerStation_SetCommand(2);
 
         while (StickerStation_GetCommand() == 8) {
-            func_8FA0047C(0xC8);
+            WaitFrames(0xC8);
         }
 
         osViBlack(1);
@@ -172,7 +172,7 @@ s32 func_8FA0051C(s32 arg0, s32 arg1) {
     StickerStation_SetCommand(4);
 
     while (StickerStation_GetCommand() == 8) {
-        func_8FA0047C(0x14);
+        WaitFrames(0x14);
     }
 
     func_80001CC8();

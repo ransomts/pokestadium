@@ -3567,3 +3567,18 @@ func_83200CD8	UI_PromptMoveSelection	w23		Presents a 4?option move selection men
 D_83202010	gCameraGraphNode	w23		Initialized via process_geo_layout and later accessed as D_83202010->unk_0C to obtain a CameraStruct, indicating it is the camera graph node.	applied@8eff47f
 D_83202020	gStadiumMessageBank	w23		Assigned GetMessageBank(0x1C) and used throughout for UI strings (e.g., GetMessageString calls), representing the stadium UI message bank.	applied@8eff47f
 func_8F000020	GetPlayerCount	w23		returns constant 2, likely the fixed player count for the stadium mode	applied@8eff47f
+func_8F100020	Fragment67_Load	w24		Calls FRAGMENT_LOAD_AND_CALL2 with fragment67 and returns 0x80, indicating it loads fragment67	applied@eb2f9df
+func_8F200020	Fragment69_Execute	w24		Loads fragment67 via FRAGMENT_LOAD_AND_CALL2 and returns 0x80, indicating a stub that forwards execution to fragment67.	applied@eb2f9df
+func_8F300020	Fragment70_Execute	w24		loads fragment67 via FRAGMENT_LOAD_AND_CALL2 and returns 0x80, typical entry point for fragment70	applied@eb2f9df
+func_8F400020	Fragment71_Entry	w24		Function in fragment71.c loads fragment67 and returns 0x80, indicating it is the entry point for fragment71	applied@eb2f9df
+func_8F500020	Fragment72_LoadFragment67	w24		Loads fragment67 via FRAGMENT_LOAD_AND_CALL2 and returns status 0x80	applied@eb2f9df
+func_8F600020	Fragment67_LoadAndCall	w24		Calls FRAGMENT_LOAD_AND_CALL2 with fragment67 and returns 0x80	applied@eb2f9df
+func_8F700020	Fragment74_Trigger67	w24		Calls FRAGMENT_LOAD_AND_CALL2 with fragment67 and returns 0x80, indicating a stub that loads fragment67	applied@eb2f9df
+func_8FA00020	DrawStageBottomBar	w24		draws a filled rectangle at the screen bottom and, when arg0==3, loads and renders UI textures, indicating it renders the stage overlay bar	applied@eb2f9df
+func_8FA0047C	WaitFrames	w24		spins until a calculated cycle count passes; callers pass values like 0xC8 representing frame counts, so it implements a frame delay	applied@eb2f9df
+func_8FA00510	IsSnapModeEnabled	w24		returns global D_83407AE8 and is used to choose between snap?mode UI and normal background drawing, acting as a snap?mode flag	applied@eb2f9df
+func_8FA0051C	StickerStation_Run	w24		initialises stage, camera and assets then loops over 16 entries while using StickerStation_SetCommand, serving as the main Sticker Station routine	applied@eb2f9df
+D_8FA00A24	gBackgroundData	w24		receives the file pointer from BinArchive_GetFile for the current index and is passed to Gfx_DrawTextureAtlas, holding the current background texture data	applied@eb2f9df
+D_8FA009F0	gBackgroundIndices	w24		static array of 16 bytes used as indices into the background archive, mapping loop counters to background IDs	applied@eb2f9df
+func_8FB00020	Fragment76_CallFragment67	w24		Calls FRAGMENT_LOAD_AND_CALL2 to load and execute fragment67, indicating this function triggers fragment 67 from fragment 76	applied@eb2f9df
+func_8FC00020	Fragment77_Execute	w24		loads fragment67 via FRAGMENT_LOAD_AND_CALL2 and returns constant 0x80, likely a status code	applied@eb2f9df
