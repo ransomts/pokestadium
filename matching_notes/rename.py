@@ -99,6 +99,7 @@ def parse_field(row):
 # ---------------------------------------------------------------- repo facts
 
 _TEXT_CACHE = {}
+_GREP_BLOB = None
 
 
 def file_text(path):
@@ -107,6 +108,12 @@ def file_text(path):
     if path not in _TEXT_CACHE:
         _TEXT_CACHE[path] = open(path, errors="replace").read()
     return _TEXT_CACHE[path]
+
+
+def _invalidate_text_cache():
+    global _GREP_BLOB
+    _TEXT_CACHE.clear()
+    _GREP_BLOB = None
 
 
 def sa_definitions(name):
@@ -176,15 +183,18 @@ def word_sub(name, new):
 
 
 def repo_grep_count(name, files):
-    """Word-boundary count of `name` across files."""
+    """Word-boundary count of `name` across files (single joined-blob search)."""
+    global _GREP_BLOB
     pat = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])")
-    n = 0
-    for f in files:
-        try:
-            n += len(pat.findall(file_text(f)))
-        except OSError:
-            pass
-    return n
+    if _GREP_BLOB is None:
+        chunks = []
+        for f in files:
+            try:
+                chunks.append(file_text(f))
+            except OSError:
+                pass
+        _GREP_BLOB = "\n".join(chunks)
+    return len(pat.findall(_GREP_BLOB))
 
 
 def git(args, **kw):
@@ -457,7 +467,7 @@ class Rewriter:
     def commit(self):
         for path, text in self.edits.items():
             open(path, "w").write(text)
-        _TEXT_CACHE.clear()  # rewritten files: drop cached contents
+        _invalidate_text_cache()  # rewritten files: drop cached contents
         return sorted(self.edits)
 
     def move_s(self, old_path, new_path):
@@ -534,7 +544,7 @@ def do_rewrites(rows, files):
 def undo(rw, touched):
     for p in touched:
         git(["checkout", "--", p])
-    _TEXT_CACHE.clear()  # reverted files: drop cached contents
+    _invalidate_text_cache()  # reverted files: drop cached contents
     for old, new in rw.mvs:
         if os.path.exists(new) and not os.path.exists(old):
             os.rename(new, old)
