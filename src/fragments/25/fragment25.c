@@ -1,7 +1,7 @@
 #include "fragment25.h"
 #include "src/2E460.h"
 
-unk_D_88400100 D_88400100[] = {
+PaletteColor gUiColorPalette[] = {
     { 0x00000000, { 0xFF, 0xFF, 0xFF, 0xFF } },
     { 0x00000001, { 0x4D, 0x4D, 0x4D, 0xFF } },
     { 0x00000002, { 0x9F, 0x91, 0xE8, 0xFF } },
@@ -11,7 +11,7 @@ unk_D_88400100 D_88400100[] = {
     { 0x00000006, { 0xFF, 0xFF, 0x00, 0xFF } },
 };
 
-unk_D_88400138 D_88400138[] = {
+MoveCategoryColorGradient gMoveCategoryGradients[] = {
     { 0, { 0xF0, 0xF0, 0xF0, 0xFF }, { 0xF0, 0xF0, 0xF0, 0xFF } },
     { 1, { 0xF0, 0x96, 0x32, 0xFF }, { 0xF0, 0x78, 0x32, 0xFF } },
     { 2, { 0x50, 0x96, 0xF0, 0xFF }, { 0x3C, 0x64, 0xF0, 0xFF } },
@@ -29,9 +29,9 @@ unk_D_88400138 D_88400138[] = {
     { 15, { 0x64, 0xDC, 0xC8, 0xFF }, { 0x32, 0xC8, 0xB4, 0xFF } },
 };
 
-static u32 D_884001EC[] = { 0, 0, 0, 0, 0 }; // bss pad
+static u32 gFragment25Pad[] = { 0, 0, 0, 0, 0 }; // bss pad
 
-s32 func_88400020(s32 arg0) {
+s32 GetPaletteIndexFromFlags(s32 arg0) {
     s32 v1;
     if (arg0 & 7) {
         v1 = 2;
@@ -54,17 +54,17 @@ s32 func_88400020(s32 arg0) {
     return v1;
 }
 
-unk_D_88400100* func_8840007C(unk_func_80026268_arg0* arg0) {
+PaletteColor* GetPaletteColorEntry(unk_func_80026268_arg0* arg0) {
     s32 var_v1;
 
     if (arg0->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = func_88400020(arg0->unk_05);
+        var_v1 = GetPaletteIndexFromFlags(arg0->unk_05);
     }
-    return &D_88400100[var_v1];
+    return &gUiColorPalette[var_v1];
 }
 
-unk_D_88400138* func_884000C4(s32 arg0) {
-    return &D_88400138[MapMoveCategory(arg0)];
+MoveCategoryColorGradient* GetMoveCategoryColorGradient(s32 arg0) {
+    return &gMoveCategoryGradients[MapMoveCategory(arg0)];
 }

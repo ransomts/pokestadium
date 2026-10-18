@@ -8,20 +8,20 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-s32 func_889007BC(unk_func_889000C4*, Controller*);
-void func_88900A98(unk_func_889000C4_044*, char**, unk_func_889000C4*, MemoryPool*);
-void func_889010D0(unk_func_889000C4_044*, s32);
-void func_889010AC(unk_func_889000C4_044*);
-void func_889010C0(unk_func_889000C4_044*);
+s32 Dialog_HandleInput(unk_func_889000C4*, Controller*);
+void Dialog_CreateOptionPanel(unk_func_889000C4_044*, char**, unk_func_889000C4*, MemoryPool*);
+void DialogOption_SetState(unk_func_889000C4_044*, s32);
+void DialogOption_Enable(unk_func_889000C4_044*);
+void DialogOption_Reset(unk_func_889000C4_044*);
 
 typedef struct unk_D_88901178 {
     /* 0x00 */ u16 unk_00;
     /* 0x00 */ s32 unk_04;
 } unk_D_88901178; // size = 0x8
 
-static Color_RGBA8 D_88901170[] = { { 0xF0, 0xF0, 0xF0, 0xFF }, { 0xF0, 0xF0, 0xF0, 0x4D } };
+static Color_RGBA8 gDialogTextColors[] = { { 0xF0, 0xF0, 0xF0, 0xFF }, { 0xF0, 0xF0, 0xF0, 0x4D } };
 
-static unk_D_88901178 D_88901178[] = {
+static unk_D_88901178 gDialogMessageTable[] = {
     {
         0x0003,
         0x00000008,
@@ -48,8 +48,8 @@ static unk_D_88901178 D_88901178[] = {
     },
 };
 
-static Color_RGBA8 D_889011A8 = { 0x64, 0x96, 0xB4, 0xFF };
-static Color_RGBA8 D_889011AC = { 0x3C, 0x64, 0x78, 0xFF };
+static Color_RGBA8 gDialogBgColorPrimary = { 0x64, 0x96, 0xB4, 0xFF };
+static Color_RGBA8 gDialogBgColorSecondary = { 0x3C, 0x64, 0x78, 0xFF };
 static Color_RGBA8 D_889011B0 = { 0xFF, 0xFF, 0xFF, 0xFF };
 static Color_RGBA8 D_889011B4 = { 0xFF, 0xB2, 0xB2, 0xFF };
 static Color_RGBA8 D_889011B8 = { 0x64, 0x1E, 0x1E, 0xFF };
@@ -61,12 +61,12 @@ static Color_RGBA8 D_889011CC = { 0xFF, 0xF1, 0x78, 0xFF };
 static char D_889011D0[] = "";
 static char D_889011D4[] = "";
 
-void func_88900020(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, UNUSED unk_func_88200FA0_030_030* arg5) {
+void Dialog_DrawTextLine(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, UNUSED unk_func_88200FA0_030_030* arg5) {
     Color_RGBA8 sp24;
     UNUSED s32 pad;
     s32 var_v0 = (arg4 & 4) ? 1 : 0;
 
-    sp24 = D_88901170[var_v0];
+    sp24 = gDialogTextColors[var_v0];
 
     Text_ResetState();
     Text_SetEnvColor(sp24.r, sp24.g, sp24.b, sp24.a);
@@ -75,7 +75,7 @@ void func_88900020(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, UN
     Text_SetupDL();
 }
 
-void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg2, unk_func_88001300_000* arg3,
+void Dialog_Create(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg2, unk_func_88001300_000* arg3,
                    char** arg4, MemoryPool* arg5) {
     UNUSED s32 pad[3];
     s32 i;
@@ -92,7 +92,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
 
     var_s1 = 0;
     for (i = 0; i < 6; i++) {
-        temp_v0 = MeasureTextWidth(D_88901178[i].unk_04, 0, GetMessageString(NULL, 0, arg4, D_88901178[i].unk_00));
+        temp_v0 = MeasureTextWidth(gDialogMessageTable[i].unk_04, 0, GetMessageString(NULL, 0, arg4, gDialogMessageTable[i].unk_00));
         if (var_s1 < temp_v0) {
             var_s1 = temp_v0;
         }
@@ -107,7 +107,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     }
     sp7C = (arg0->unk_34.unk_08 * 0x1C) + 0x38;
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_889000C4));
-    arg0->unk_00.unk_20 = func_889007BC;
+    arg0->unk_00.unk_20 = Dialog_HandleInput;
     if (arg2 != NULL) {
         arg0->unk_00.unk_10.unk_00 = (arg2->unk_00.unk_14.unk_00 - var_s1) / 2;
         arg0->unk_00.unk_10.unk_02 = (arg2->unk_00.unk_14.unk_02 - sp7C) / 2;
@@ -123,7 +123,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_2C->unk_00.unk_00);
 
     temp_s0 = mem_pool_alloc(arg5, sizeof(unk_func_8850B254));
-    ((func8850B254)Memmap_GetFragmentVaddr(func_8850B254))(temp_s0, 0, 0, var_s1, 0x2C, D_889011A8, D_889011AC);
+    ((func8850B254)Memmap_GetFragmentVaddr(func_8850B254))(temp_s0, 0, 0, var_s1, 0x2C, gDialogBgColorPrimary, gDialogBgColorSecondary);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &temp_s0->unk_00.unk_00);
 
     arg0->unk_40 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
@@ -155,7 +155,7 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &temp_s0_5->unk_00.unk_00);
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 4, func_88900020, var_s1, 0x1C,
+    ((func885060BC)Memmap_GetFragmentVaddr(func_885060BC))(arg0->unk_30, 0, 4, Dialog_DrawTextLine, var_s1, 0x1C,
                                                            arg0->unk_34.unk_08, 1, arg5);
     ((func88506384)Memmap_GetFragmentVaddr(func_88506384))(arg0->unk_30, &arg0->unk_34, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&temp_s0_5->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
@@ -167,11 +167,11 @@ void func_889000C4(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     }
 
     arg0->unk_44 = mem_pool_alloc(arg5, sizeof(unk_func_889000C4_044));
-    func_88900A98(arg0->unk_44, arg4, arg0, arg5);
+    Dialog_CreateOptionPanel(arg0->unk_44, arg4, arg0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
 }
 
-void func_889006D4(unk_func_889000C4* arg0, s32 arg1) {
+void Dialog_SetEnabled(unk_func_889000C4* arg0, s32 arg1) {
     if (arg1 != 0) {
         ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_40, 1);
         arg0->unk_30->unk_34[0] |= 4;
@@ -185,11 +185,11 @@ void func_889006D4(unk_func_889000C4* arg0, s32 arg1) {
     ((func88502C98)Memmap_GetFragmentVaddr(func_88502C98))(arg0->unk_2C);
 }
 
-void func_889007AC(unk_func_889000C4* arg0) {
+void Dialog_SetCloseState(unk_func_889000C4* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-s32 func_889007BC(unk_func_889000C4* arg0, Controller* arg1) {
+s32 Dialog_HandleInput(unk_func_889000C4* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -200,7 +200,7 @@ s32 func_889007BC(unk_func_889000C4* arg0, Controller* arg1) {
     return var_v1;
 }
 
-s32 func_88900808(unk_func_889000C4* arg0, Controller* arg1, s32 arg2) {
+s32 Dialog_WaitForSelection(unk_func_889000C4* arg0, Controller* arg1, s32 arg2) {
     s32 temp_v0;
     u32 var_s0 = 0;
 
@@ -237,7 +237,7 @@ s32 func_88900808(unk_func_889000C4* arg0, Controller* arg1, s32 arg2) {
     return var_s0 - 1;
 }
 
-void func_88900970(unk_func_889000C4* arg0, s32 arg1) {
+void Dialog_Run(unk_func_889000C4* arg0, s32 arg1) {
     s32 var_s0;
     s32 temp_v0;
     s32 var_s7 = 0;
@@ -246,10 +246,10 @@ void func_88900970(unk_func_889000C4* arg0, s32 arg1) {
 
     while (func_800243D8(arg1) == 0) {
         if (var_s7 == 0) {
-            func_889010AC(arg0->unk_44);
+            DialogOption_Enable(arg0->unk_44);
             var_s7 = 1;
         }
-        func_889010D0(arg0->unk_44, 2);
+        DialogOption_SetState(arg0->unk_44, 2);
 
         var_s0 = 2;
         temp_v0 = 0;
@@ -269,19 +269,19 @@ void func_88900970(unk_func_889000C4* arg0, s32 arg1) {
                     break;
             }
 
-            func_889010D0(arg0->unk_44, var_s0);
+            DialogOption_SetState(arg0->unk_44, var_s0);
             ControllerMsgQueue_Flush();
             ControllerMsgQueue_Flush();
         }
     }
 
     if (var_s7 != 0) {
-        func_889010C0(arg0->unk_44);
+        DialogOption_Reset(arg0->unk_44);
     }
     func_800244F4(arg1);
 }
 
-void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* arg2, MemoryPool* arg3) {
+void Dialog_CreateOptionPanel(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* arg2, MemoryPool* arg3) {
     UNUSED s32 pad[2];
     s32 sp54;
     unk_func_885012A4* sp50;
@@ -361,15 +361,15 @@ void func_88900A98(unk_func_889000C4_044* arg0, char** arg1, unk_func_889000C4* 
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_38->unk_00.unk_00);
 }
 
-void func_889010AC(unk_func_889000C4_044* arg0) {
+void DialogOption_Enable(unk_func_889000C4_044* arg0) {
     arg0->unk_2C->unk_00.unk_28 |= 1;
 }
 
-void func_889010C0(unk_func_889000C4_044* arg0) {
+void DialogOption_Reset(unk_func_889000C4_044* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void func_889010D0(unk_func_889000C4_044* arg0, s32 arg1) {
+void DialogOption_SetState(unk_func_889000C4_044* arg0, s32 arg1) {
     ((func88500A6C)Memmap_GetFragmentVaddr(func_88500A6C))(arg0->unk_30, arg1);
 
     if (arg1 == 0) {

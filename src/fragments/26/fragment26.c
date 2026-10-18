@@ -12,7 +12,7 @@
 
 static Color_RGBA8 D_8850CF80 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-void func_88500020(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
+void DrawTiledTextureRect(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
     s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
     s32 var_t3 = arg0->unk_04;
     u8* var_s2 = arg0->unk_0C;

@@ -689,7 +689,7 @@ typedef struct unk_func_8830867C_044_040 {
 
 typedef struct unk_func_8830867C_03C_058 {
     /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_88400138* unk_04;
+    /* 0x04 */ MoveCategoryColorGradient* unk_04;
 } unk_func_8830867C_03C_058; // size = 0x8
 
 typedef struct unk_func_8830867C_03C_0D0 {
@@ -796,7 +796,7 @@ typedef void (*func8850CD24)(unk_func_8830867C_02C_048*, s32);
 typedef void (*func8850CD44)(unk_func_8850CD44*, s32, MemoryPool*);
 typedef void (*func8850CF00)(unk_func_8850CD44*, Controller*);
 
-void func_88500020(unk_func_88500020*, s32, s32);
+void DrawTiledTextureRect(unk_func_88500020*, s32, s32);
 void func_88500338(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_88500668(unk_func_88001300_000_000*, s32);
 void func_8850068C(unk_func_88001300_000_000*, unk_func_88001300_000_000*);

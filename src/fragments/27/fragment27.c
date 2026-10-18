@@ -277,7 +277,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
 
     sp6C = GetMoveEntry(arg0->unk_2C);
     if (sp6C != NULL) {
-        unk_D_88400138* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp6C->unk_00[1]);
+        MoveCategoryColorGradient* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(sp6C->unk_00[1]);
         s32 temp_v0_2 = MapMoveCategory(sp6C->unk_00[1]);
 
         gDPPipeSync(gDisplayListHead++);
@@ -302,7 +302,7 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
         Text_Print(arg1 + 0x16, arg2, GetMessageString(NULL, 0, D_8861C518, sp6C->unk_00[0] - 1));
         Text_SetupDL();
     } else {
-        unk_D_88400138* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(0);
+        MoveCategoryColorGradient* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(0);
 
         Text_ResetState();
         Text_SetEnvColor(sp1C->unk_04.r, sp1C->unk_04.g, sp1C->unk_04.b, sp1C->unk_04.a);
@@ -490,7 +490,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
     s32 var_s4;
     Color_RGBA8 sp68;
     char* temp_v0;
-    unk_D_88400138* temp_v0_3;
+    MoveCategoryColorGradient* temp_v0_3;
     s32 tmp;
 
     if (arg0->unk_2C == NULL) {
@@ -511,7 +511,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
 
         Text_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
         Text_Print(arg1 + var_s4, arg2 + 4, tmp);
-        temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(0);
+        temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(0);
         sp68 = temp_v0_3->unk_04;
         Text_SetEnvColor(sp68.r, sp68.g, sp68.b, sp68.a);
         Text_Print(MeasureTextWidth(0, 0, tmp) + arg1 + var_s4, arg2 + 4, "????");
@@ -522,7 +522,7 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
         for (i = 0; i < 2; i++) {
             tmp = Mon_GetEvolutionLine(arg0->unk_2C, i);
             if (tmp != -1) {
-                temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(tmp);
+                temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(tmp);
                 sp68 = temp_v0_3->unk_04;
                 Text_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
                 sprintf(sp50, "%d/", i + 1);
@@ -809,7 +809,7 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605B44 = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605B48 = { 0xD2, 0xBE, 0x32, 0xFF };
 
-    unk_D_88400100* sp74;
+    PaletteColor* sp74;
     char* sp70;
 
     if (arg0->unk_2C == NULL) {
@@ -842,7 +842,7 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
         Text_Print(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", GetMessageString(NULL, 0, D_8861C510, 0x15), sp6C);
         sp70 = GetMessageString(NULL, 0, D_8861C510, 0x11);
         Text_Print(arg1 + 0x18, arg2 + 8, sp70);
-        sp74 = ((func8840007C)Util_ConvertAddrToVirtAddr((uintptr_t)func_8840007C))(arg0->unk_2C);
+        sp74 = ((func8840007C)Util_ConvertAddrToVirtAddr((uintptr_t)GetPaletteColorEntry))(arg0->unk_2C);
         Text_SetEnvColor(sp74->unk_04.r, sp74->unk_04.g, sp74->unk_04.b, sp74->unk_04.a);
         Text_Print(MeasureTextWidth(0, 0, sp70) + arg1 + 0x18, arg2 + 8,
                       GetMessageString(NULL, 0, D_8861C524, sp74->unk_00));
@@ -873,7 +873,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     s32 sp138;
     ret_func_8002ED08* sp134;
     MoveBattleData* sp130;
-    unk_D_88400138* sp12C;
+    MoveCategoryColorGradient* sp12C;
     char* sp128;
     char* sp124;
     char* sp120;
@@ -888,7 +888,7 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
 
     sp130 = GetMoveBattleDataEntry(arg0->unk_2C);
     sp134 = GetMoveEntry(arg0->unk_2C);
-    sp12C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))((sp130 == NULL) ? 0 : sp130->unk_03);
+    sp12C = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))((sp130 == NULL) ? 0 : sp130->unk_03);
 
     gDPPipeSync(gDisplayListHead++);
 

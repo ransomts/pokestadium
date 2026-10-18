@@ -20,7 +20,7 @@ typedef struct unk_arg0_func_81002260 {
     /* 0x1A */ s16 unk_1A;
 } unk_arg0_func_81002260; // size >= 0x1C
 
-extern const Gfx D_810041D0[];
+extern const Gfx gCommonGfxInit[];
 
 void func_810007A8(Fragment2_1GraphNode*);
 void func_810007F8(void);

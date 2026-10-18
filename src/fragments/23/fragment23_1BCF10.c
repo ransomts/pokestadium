@@ -18,11 +18,11 @@ typedef struct unk_func_8820BE14_02C_038_02C {
     /* 0x00 */ s32 unk_58;
 } unk_func_8820BE14_02C_038_02C; // size >= 0x58
 
-void func_882149A0(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6,
+void Panel_Init(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6,
                    Color_RGBA8 arg7, Color_RGBA8 arg8, Color_RGBA8 arg9) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882149A0));
 
-    arg0->unk_00.unk_18 = func_88214A58;
+    arg0->unk_00.unk_18 = Panel_Draw;
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -37,7 +37,7 @@ void func_882149A0(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 ar
     arg0->unk_40 = 0;
 }
 
-s32 func_88214A58(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
+s32 Panel_Draw(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp16C;
 
     gDPPipeSync(gDisplayListHead++);
@@ -121,11 +121,11 @@ s32 func_88214A58(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_882158BC(unk_func_882149A0* arg0) {
+void Panel_ToggleFill(unk_func_882149A0* arg0) {
     arg0->unk_40 = !arg0->unk_40;
 }
 
-void func_882158CC(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(), s32 arg5, s32 arg6,
+void ScrollableList_Init(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(), s32 arg5, s32 arg6,
                    MemoryPool* arg7) {
     ((func88506DCC)Memmap_GetFragmentVaddr(func_88506DCC))(arg0, arg1, arg2, arg4, arg5, arg6, arg3, arg7);
 
@@ -134,12 +134,12 @@ void func_882158CC(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3
     arg0->unk_78 = arg0->unk_00.unk_00.unk_18;
     arg0->unk_7C = arg0->unk_00.unk_00.unk_20;
 
-    func_88215974(&arg0->unk_00, 1);
+    ScrollableList_SetDirection(&arg0->unk_00, 1);
 
     arg0->unk_00.unk_44->unk_00.unk_28 |= 0x100;
 }
 
-void func_88215974(unk_func_88200FA0_030_030* arg0, s32 arg1) {
+void ScrollableList_SetDirection(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     s32 var_v0;
 
     if (arg1 != 0) {
@@ -150,12 +150,12 @@ void func_88215974(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_44->unk_2C = D_88218230[var_v0];
 }
 
-void func_882159AC(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {
+void ScrollableList_SetItemRenderer(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {
     arg0->unk_84 = arg1;
     arg0->unk_80 = arg1->unk_00.unk_18;
 }
 
-s32 func_882159BC(unk_func_8820BE14_02C_038* arg0) {
+s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
     s32 sp24;
     s32 var_a2;
     s32 sp1C;
@@ -258,7 +258,7 @@ s32 func_882159BC(unk_func_8820BE14_02C_038* arg0) {
     return 0;
 }
 
-s32 func_88215D18(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 ScrollableList_DrawItems(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     s32 temp_lo;
     s32 temp_s5;
@@ -327,7 +327,7 @@ s32 func_88215D18(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3)
     return 0;
 }
 
-s32 func_88216000(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
+s32 StatBar_Draw(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
     s32 sp12C;
     s32 temp_s0;
     s32 w = 8;
@@ -392,7 +392,7 @@ s32 func_88216000(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-s32 func_882169D4(unk_func_8820BE14_02C_038* arg0, Controller* arg1) {
+s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1) {
     s32 sp24 = arg0->unk_00.unk_38;
     s32 temp_t3 = arg0->unk_60;
     s32 var_t2 = 0;
@@ -575,13 +575,13 @@ s32 func_882169D4(unk_func_8820BE14_02C_038* arg0, Controller* arg1) {
     return var_t2;
 }
 
-void func_88216F18(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
+void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     if (arg1 == 0) {
         arg0->unk_70 = 1;
-        arg0->unk_00.unk_00.unk_1C = func_882159BC;
-        arg0->unk_00.unk_00.unk_18 = func_88215D18;
-        arg0->unk_00.unk_00.unk_20 = func_882169D4;
-        arg0->unk_84->unk_00.unk_18 = func_88216000;
+        arg0->unk_00.unk_00.unk_1C = ScrollableList_Update;
+        arg0->unk_00.unk_00.unk_18 = ScrollableList_DrawItems;
+        arg0->unk_00.unk_00.unk_20 = ScrollableList_HandleInput;
+        arg0->unk_84->unk_00.unk_18 = StatBar_Draw;
         if (arg0->unk_00.unk_2C->unk_08 > 0) {
             ((func88507AE4)Memmap_GetFragmentVaddr(func_88507AE4))(arg0, arg0->unk_00.unk_38 + 1);
         }
@@ -597,7 +597,7 @@ void func_88216F18(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     }
 }
 
-void func_88217018(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
+void ScrollableList_SetDataPtr(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
     arg0->unk_88 = &arg1->unk_00;
     arg0->unk_8C = arg2;
     ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0, &arg1->unk_04);
@@ -609,7 +609,7 @@ void func_88217060(unk_func_8820BE14_02C_038* arg0, s32* arg1, s32 arg2) {
     ((func88506F50)Memmap_GetFragmentVaddr(func_88506F50))(arg0, arg1 + 1);
 }
 
-void func_882170A8(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_02C_038* arg3, s32 arg4) {
+void ItemSlot_Init(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_02C_038* arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882170A8));
 
     arg0->unk_00.unk_18 = func_8821738C;
@@ -619,7 +619,7 @@ void func_882170A8(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE1
     arg0->unk_30 = arg4;
 }
 
-void func_8821711C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Cursor_Draw(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_8002E8E4(arg0, arg1, arg2, arg4);
     func_8002E8E4(((arg4 * 9) + arg0) + 9, arg1, arg3, arg4);
 
@@ -644,7 +644,7 @@ s32 func_8821738C(unk_func_882170A8* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    func_8821711C(arg1, arg2, temp_v0->unk_08, temp_v0->unk_04, arg0->unk_30);
+    Cursor_Draw(arg1, arg2, temp_v0->unk_08, temp_v0->unk_04, arg0->unk_30);
     return 0;
 }
 

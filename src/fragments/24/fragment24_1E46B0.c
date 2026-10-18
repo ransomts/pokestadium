@@ -28,7 +28,7 @@ u32 D_883176D8[] = {
     0x4F5FFF2F, 0xBF1F0000, 0x00000000, 0x0000082F, 0xAFEFFFFF, 0xFFFFFFFF, 0xFFFF8F08, 0x087FFFFF, 0x4F5FFF2F,
     0xBF1F0000, 0x00000000, 0x00000002, 0x081C4E6F, 0x6F6F6F6F, 0x6F7F3F07, 0x073F7F6F, 0x1F2F6F0F, 0x4F0D0000,
 };
-static Gfx D_88317918[] = {
+static Gfx gEmptyDisplayList2[] = {
     gsSPEndDisplayList(),
 };
 u32 D_88317920[] = {
@@ -127,7 +127,7 @@ u32 D_88317F28[] = {
 static Gfx D_88318528[] = {
     gsSPEndDisplayList(),
 };
-u32 D_88318530[] = {
+u32 gCheckerboardPattern[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x52895289, 0x5289FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
     0xFFFE5289, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFDB, 0xFFDBFFDB, 0x5287FFFE,
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFE5289, 0xFFDBFFDB, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFDB,
@@ -158,7 +158,7 @@ u32 D_883186E8[] = {
     0x5289FFD9, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDB5287, 0xFFFEFFFE,
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x52895289, 0x5289FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
-u32 D_88318898[] = {
+u32 gTitleScreenImage[] = {
     0xAA99A989, 0x9998AAAA, 0xBA9B9899, 0x99A99AA9, 0x88998999, 0x9A98A988, 0x9989989A, 0x98989989, 0x999A98A9,
     0x88000000, 0x00000000, 0x0007AB99, 0x98575000, 0x00000000, 0x00000000, 0x01458999, 0x98899A9A, 0xABA89999,
     0x9888A9AA, 0x999898A9, 0x99AA8888, 0x99788989, 0x99888888, 0x9999AA89, 0x88997889, 0x99233333, 0x33222220,
@@ -277,7 +277,7 @@ u32 D_88318898[] = {
 static Gfx D_88319898[] = {
     gsSPEndDisplayList(),
 };
-u32 D_883198A0[] = {
+u32 gFontBitmapData[] = {
     0x435E435E, 0x435E435F, 0x435F435F, 0x435F435F, 0x431F3B5F, 0x43613B1F, 0x435F435F, 0x435F435F, 0x435F435F,
     0x435F435F, 0x435F435F, 0x435F435F, 0x435F435F, 0x435F435F, 0x435F435F, 0x435F3B1F, 0x435F3B1F, 0x435F435F,
     0x435F435E, 0x435E435E, 0x435E435E, 0x435F435F, 0x435F3B1F, 0x43614361, 0x3B5F431D, 0x3B1F435F, 0x3B5F435F,
@@ -343,7 +343,7 @@ u32 D_883198A0[] = {
     0x435F435E, 0x435E435E,
 };
 
-s32 func_88315CD0(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 ComparePointers(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     return (arg0 == arg1) ? 0 : (arg0 < arg1) ? -1 : 1;
 }
 
@@ -359,14 +359,14 @@ s32 func_88315CFC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* ar
     return var_v1;
 }
 
-s32 func_88315D48(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_2C - arg1->unk_2C;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -378,19 +378,19 @@ s32 func_88315D8C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88315DD0(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField2E(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_2E - arg1->unk_2E;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -402,19 +402,19 @@ s32 func_88315E14(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88315E58(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField30(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_30 - arg1->unk_30;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -426,19 +426,19 @@ s32 func_88315E9C(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88315EE0(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField32(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_32 - arg1->unk_32;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -450,19 +450,19 @@ s32 func_88315F24(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88315F68(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField34(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_34 - arg1->unk_34;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -474,19 +474,19 @@ s32 func_88315FAC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88315FF0(unk_func_88316128* arg0, unk_func_88316128* arg1) {
+s32 CompareByField36(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     s32 var_v0 = arg0->unk_36 - arg1->unk_36;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -498,7 +498,7 @@ s32 func_88316034(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -510,7 +510,7 @@ s32 func_88316078(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -527,7 +527,7 @@ s32 func_883160DC(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
@@ -540,12 +540,12 @@ s32 func_88316128(unk_func_88316128* arg0, unk_func_88316128* arg1) {
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_88316174(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
     static u8 D_8831A160[] = {
         0x09, 0x38, 0x8B, 0x0E, 0x0F, 0x0D, 0x81, 0x90, 0x08, 0x0B, 0x50, 0x0A, 0x91, 0x3F, 0x06, 0x66, 0x65,
         0x64, 0x73, 0x72, 0x80, 0x25, 0x1F, 0x03, 0x67, 0x70, 0x76, 0x77, 0x58, 0x5A, 0x57, 0x59, 0x5B, 0x56,
@@ -563,27 +563,27 @@ s32 func_88316174(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* ar
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
-s32 func_883161D0(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+s32 CompareSpeciesID(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
     s32 var_v0 = *(u8*)&arg0->unk_08 - *(u8*)&arg1->unk_08;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = func_88315CD0(arg0, arg1);
+        ret = ComparePointers(arg0, arg1);
     }
     return ret;
 }
 
 unk_D_8831A1F8 D_8831A1F8[] = {
-    func_88315CD0, func_883160BC, func_88315D48, func_88315D8C, func_88315DD0, func_88315E14, func_88315E58,
-    func_88315E9C, func_88315EE0, func_88315F24, func_88315F68, func_88315FAC, func_88315FF0, func_88316034,
-    func_88316078, func_883160DC, func_88316128, func_88316174, func_883161D0,
+    ComparePointers, func_883160BC, CompareByField2C, func_88315D8C, CompareByField2E, func_88315E14, CompareByField30,
+    func_88315E9C, CompareByField32, func_88315F24, CompareByField34, func_88315FAC, CompareByField36, func_88316034,
+    func_88316078, func_883160DC, func_88316128, CompareSpeciesOrder, CompareSpeciesID,
 };
 
 typedef struct unk_func_88316214 {
@@ -596,7 +596,7 @@ int func_88316214(unk_func_8830867C_02C_0CC* a0, u8* arg1) {
     return (arg0->unk_2C >= arg1[0]) && (arg1[1] >= arg0->unk_2C);
 }
 
-s32 func_88316240(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C* a1) {
+s32 PokemonHasTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C* a1) {
     UNUSED s32 pad;
     s32 i;
     s32 j;
@@ -637,7 +637,7 @@ typedef struct unk_func_88316304 {
     /* 0x11 */ u8 unk_11[1];
 } unk_func_88316304; // size >= 0x12
 
-s32 func_88316304(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024* a1) {
+s32 PokemonHasMoves(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024* a1) {
     unk_func_88316304* arg0 = a0;
     unk_func_8830867C_02C_C54_024* arg1 = a1;
     s32 i;

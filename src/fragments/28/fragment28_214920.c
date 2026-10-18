@@ -686,7 +686,7 @@ s32 func_88802F10(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    ((func88500020)Memmap_GetFragmentVaddr(func_88500020))(&D_88808224, arg1, arg2);
+    ((func88500020)Memmap_GetFragmentVaddr(DrawTiledTextureRect))(&D_88808224, arg1, arg2);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);

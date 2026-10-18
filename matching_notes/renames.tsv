@@ -2042,3 +2042,104 @@ D_88217C64	gButtonBaseColor	w13		Static Color defining the base colour of button
 D_88217C68	gButtonHighlightColor	w13		Static Color defining the highlight colour of buttons in func_88203ED8	applied@04295b3
 D_88217C6C	gMenuItemDefs	w13		Static struct array configuring menu items (textures, colours, IDs) in func_88203ED8	applied@04295b3
 D_88217CF0	gMenuItemTextColors	w13		Array of colour pointers used for per?item text colouring in func_882025E0	applied@04295b3
+func_88206110	InitMonData	w14		Initializes a Pok?mon data structure, setting species stats, nickname and PP ups based on the current species ID (uses gSpeciesBaseStats, ApplyPPUps, SetMonNickname).	applied@f19efe7
+func_882062E4	LoadPokemonFromSave	w14		Loads a Pok?mon entry from a GBS save block by creating a GbsBlock, reading the Pok?mon data and freeing the block (calls CreateGbsBlock, GbsBlock_ReadPokemon, CommitAndFreeGbsBlock).	applied@f19efe7
+func_882069C0	GetMenuEntryWidth	w14		Calculates the total width of a menu entry by measuring the text width of a localized string and the constant " 00" (uses MeasureTextWidth on GetMessageString).	applied@f19efe7
+func_8820723C	DrawLevelLabel	w14		Draws a level label ("L?" or "L<number>") with specific colors and fonts, based on a Pok?mon's level field (uses Text_SetEnvColor, Text_Print, and checks the level range).	applied@f19efe7
+D_88224FB0	gMessageBank_2A	w14		Assigned to the result of GetMessageBank(0x2A), representing a message bank used for UI strings.	applied@f19efe7
+D_88224FB4	gMessageBank_2	w14		Assigned to the result of GetMessageBank(2), representing a core message bank for item/move names.	applied@f19efe7
+D_88224FB8	gMessageBank_24	w14		Assigned to the result of GetMessageBank(0x24), used for Pok?mon species name strings.	applied@f19efe7
+D_88224FBC	gMessageBank_25	w14		Assigned to the result of GetMessageBank(0x25), used for additional UI text strings.	applied@f19efe7
+D_88224E90	gFormat_Decimal	w14		Constant string "%d" used for formatting integer values in UI text.	applied@f19efe7
+D_88217DE8	gTextColor_WhiteOpaque	w14		Defines a fully opaque white color (0xF0,0xF0,0xF0,0xFF) used as the default text environment color.	applied@f19efe7
+D_88217DEC	gTextColor_WhiteSemiTransparent	w14		Defines a semi?transparent white color (0xF0,0xF0,0xF0,0x4D) used for disabled or highlighted text.	applied@f19efe7
+D_88217DF0	gTextColor_YellowOpaque	w14		Defines an opaque yellow color (0xF0,0xF0,0x00,0xFF) used for special UI text (e.g., selected items).	applied@f19efe7
+D_88217DF4	gBoxColor_DarkGrayBlue	w14		Static color {0x6C,0x6C,0x7E,0xFF} used as the fill color for UI boxes drawn in func_8820634C.	applied@f19efe7
+D_88217E40	gMoveIconInfo	w14		Array of structs containing texture IDs and positioning data for move icons displayed in the Pok?mon summary screen.	applied@f19efe7
+D_88217EA4	gUIComponentInfo	w14		Array of structs describing UI component geometry, textures, and colors for the battle menu layout.	applied@f19efe7
+func_882149A0	Panel_Init	w14		Initializes a UI panel struct and sets its draw callback to func_88214A58, using corner textures D_4001638 etc.	applied@f19efe7
+func_88214A58	Panel_Draw	w14		Draws the UI panel borders and optional fill texture based on arg0->unk_40 flag.	applied@f19efe7
+func_882158BC	Panel_ToggleFill	w14		Flips the panel fill flag used by Panel_Draw to switch between textured and solid fill.	applied@f19efe7
+func_882158CC	ScrollableList_Init	w14		Initializes a scrollable list object, sets up callbacks and default scroll direction via func_88215974.	applied@f19efe7
+func_88215974	ScrollableList_SetDirection	w14		Sets the list's scroll direction using the global D_88218230 table based on a boolean argument.	applied@f19efe7
+func_882159AC	ScrollableList_SetItemRenderer	w14		Stores a pointer to an item renderer struct and its associated callback in the list object.	applied@f19efe7
+func_882159BC	ScrollableList_Update	w14		Processes scroll flags (0x800,0x400,0x200,0x100) to adjust list offsets and calls related fragment functions.	applied@f19efe7
+func_88215D18	ScrollableList_DrawItems	w14		Sets a scissor region and iterates over visible rows, invoking the item draw callback for each entry.	applied@f19efe7
+func_88216000	StatBar_Draw	w14		Renders a horizontal stat bar using background texture D_40022E0 and conditionally draws icons based on arg0->unk_30.	applied@f19efe7
+func_882169D4	ScrollableList_HandleInput	w14		Handles controller button presses (0x800,0x400,0x200,0x100) to initiate scrolling actions for the list.	applied@f19efe7
+func_88216F18	ScrollableList_SetActive	w14		Enables or disables the list by swapping its update, draw, and input callbacks with stored originals.	applied@f19efe7
+func_88217018	ScrollableList_SetDataPtr	w14		Assigns a pointer to external list data and passes it to a fragment initialization function.	applied@f19efe7
+func_882170A8	ItemSlot_Init	w14		Creates an item slot UI element, assigning its draw callback to func_8821738C and storing list reference.	applied@f19efe7
+func_8821711C	Cursor_Draw	w14		Loads an 8?10 cursor texture (D_4006A60) and draws it at the specified screen coordinates.	applied@f19efe7
+func_88309160	DrawMoveInfo	w14		Draws a move's name and PP using GetMoveEntry and Text functions.	applied@f19efe7
+func_883092C8	MoveList_Create	w14		Creates a move list UI component, allocating subcomponents and setting callbacks.	applied@f19efe7
+func_883094CC	MoveList_SetData	w14		Populates the move list with a Pok?mon's moves and initializes the sublist.	applied@f19efe7
+func_88309614	MoveList_MarkInvalid	w14		Marks move list entries as invalid when the move is missing or PP >= 0xC0.	applied@f19efe7
+func_883096BC	MoveList_MarkForbiddenMoves	w14		Marks specific moves as invalid based on the D_88317410 ID table.	applied@f19efe7
+func_88309728	MoveList_HandleInput	w14		Handles input for the move list, delegating to the active subcomponent.	applied@f19efe7
+func_883099D8	DrawSelectionBox	w14		Draws a highlighted rectangle around a selected list entry using Gfx primitives.	applied@f19efe7
+func_88309C38	DrawMoveEntry	w14		Renders a move entry with background texture, name, and PP number.	applied@f19efe7
+func_88309DC8	CalculateMoveListWidth	w14		Computes the total width needed for the move list UI based on text measurements.	applied@f19efe7
+func_8830A578	UIComponent_Init	w14		Initializes a generic UI component with a callback and position parameters.	applied@f19efe7
+func_8830A5E4	DrawItemBackground	w14		Draws a textured rectangle for an item slot, selecting texture based on a flag.	applied@f19efe7
+func_8830A840	HasActiveEntries	w14		Returns true if any entries in the list have the active flag set.	applied@f19efe7
+func_8830A928	ResetEntryFlags	w14		Clears selection flags for all entries based on their current state.	applied@f19efe7
+func_8830B450	Sublist_HandleInput	w14		Processes controller input for a sublist, handling navigation and selection.	applied@f19efe7
+func_8830C058	StringList_HandleInput	w14		Manages input for a string list menu, returning the selected index.	applied@f19efe7
+func_88315CD0	ComparePointers	w14		compares two pointers and returns -1, 0, or 1, implementing generic pointer comparison	applied@f19efe7
+func_88315D48	CompareByField2C	w14		compares the unk_2C field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88315DD0	CompareByField2E	w14		compares the unk_2E field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88315E58	CompareByField30	w14		compares the unk_30 field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88315EE0	CompareByField32	w14		compares the unk_32 field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88315F68	CompareByField34	w14		compares the unk_34 field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88315FF0	CompareByField36	w14		compares the unk_36 field of two structures, falling back to pointer comparison when equal	applied@f19efe7
+func_88316174	CompareSpeciesOrder	w14		uses a lookup table to order species IDs, providing a custom species sort order	applied@f19efe7
+func_883161D0	CompareSpeciesID	w14		directly compares species IDs stored in the unk_08 field of the structures	applied@f19efe7
+func_88316240	PokemonHasTypes	w14		checks if a Pokemon's type IDs match any of the types in the provided type set	applied@f19efe7
+func_88316304	PokemonHasMoves	w14		checks if a Pokemon's move IDs contain all moves specified in the provided move set	applied@f19efe7
+D_88318530	gCheckerboardPattern	w14		array of alternating 0xFFFE pattern values forming a checkerboard texture	applied@f19efe7
+D_88318898	gTitleScreenImage	w14		large array of pixel values likely representing the title screen image	applied@f19efe7
+D_883198A0	gFontBitmapData	w14		array of 0x435E... values typical for font bitmap data used in text rendering	applied@f19efe7
+D_88317918	gEmptyDisplayList2	w14		contains only gsSPEndDisplayList, serving as a second empty display list placeholder	applied@f19efe7
+unk_D_88400100	PaletteColor	w14		struct holds an ID and RGBA color used for UI palette entries	applied@f19efe7
+D_88400100	gUiColorPalette	w14		array of PaletteColor entries mapping IDs to RGBA values for UI elements	applied@f19efe7
+unk_D_88400138	MoveCategoryColorGradient	w14		struct stores a move?category index and two RGBA colors for gradient effects	applied@f19efe7
+D_88400138	gMoveCategoryGradients	w14		array of MoveCategoryColorGradient indexed by move category	applied@f19efe7
+D_884001EC	gFragment25Pad	w14		static zero?filled array used as BSS padding in fragment25.c	applied@f19efe7
+func_88400020	GetPaletteIndexFromFlags	w14		returns a palette index 0?6 based on specific flag bits in the argument	applied@f19efe7
+func_8840007C	GetPaletteColorEntry	w14		selects a PaletteColor from gUiColorPalette based on arg0 fields unk_02 and unk_05	applied@f19efe7
+func_884000C4	GetMoveCategoryColorGradient	w14		returns a MoveCategoryColorGradient from gMoveCategoryGradients using MapMoveCategory(arg0)	applied@f19efe7
+func_88500020	DrawTiledTextureRect	w14		Uses gDPLoadTextureBlock and gSPTextureRectangle to tile a texture across a region, indicating a generic tiled texture draw routine.	applied@f19efe7
+func_88900020	Dialog_DrawTextLine	w14		Draws a line of text with environment color based on arg4 flag, using Text_Print and Text_SetupDL.	applied@f19efe7
+func_889000C4	Dialog_Create	w14		Creates a dialog UI fragment, allocating structures, initializing a PtrList of message strings, and setting up layout dimensions.	applied@f19efe7
+func_889006D4	Dialog_SetEnabled	w14		Enables or disables the dialog by toggling UI elements and flags based on the arg1 parameter.	applied@f19efe7
+func_889007AC	Dialog_SetCloseState	w14		Sets the dialog's internal state field unk_2C->unk_2C to 0xB, likely marking it as closed.	applied@f19efe7
+func_889007BC	Dialog_HandleInput	w14		Handles controller input for the dialog, delegating to the dialog's input handler when a specific flag is set.	applied@f19efe7
+func_88900808	Dialog_WaitForSelection	w14		Loops until a selection is made, reading controller buttons, playing navigation sounds, and returning the chosen index.	applied@f19efe7
+func_88900970	Dialog_Run	w14		Runs the dialog loop, initializing UI, processing input via func_80023E34, and updating option states until the dialog ends.	applied@f19efe7
+func_88900A98	Dialog_CreateOptionPanel	w14		Creates the option panel sub?fragment of the dialog, allocating UI elements and positioning text strings from the message bank.	applied@f19efe7
+func_889010AC	DialogOption_Enable	w14		Enables the option highlight by setting bit 1 in the option's internal flag field.	applied@f19efe7
+func_889010C0	DialogOption_Reset	w14		Resets the option state by writing 0xB to its internal state field.	applied@f19efe7
+func_889010D0	DialogOption_SetState	w14		Sets the option's active state, calling a UI function and toggling visibility flags of related UI elements.	applied@f19efe7
+D_88901170	gDialogTextColors	w14		Array of two RGBA colors selected by arg4 flag for normal and highlighted text, used in func_88900020.	applied@f19efe7
+D_88901178	gDialogMessageTable	w14		Table of six entries each containing a message ID and a font ID, used to compute maximum text width for the dialog.	applied@f19efe7
+D_889011A8	gDialogBgColorPrimary	w14		First color argument passed to func_8850B254 when creating the dialog background rectangle.	applied@f19efe7
+D_889011AC	gDialogBgColorSecondary	w14		Second color argument passed to func_8850B254 for the dialog background gradient.	applied@f19efe7
+func_88A00020	Pokelab_LoadFragment	w14		Calls FRAGMENT_LOAD_AND_CALL2 with fragment22 and returns 0x25, matching the comment about loading the pokelab	applied@f19efe7
+D_88A00080	sFragment30Buffer	w14		Static 16?byte array defined in fragment30.c, likely used as a temporary buffer for this fragment	applied@f19efe7
+func_81000200	Stage_LoadTextureSegment	w14		Loads a texture from addresses->textures[index] and appends segment display lists for rendering	applied@f19efe7
+func_810002DC	Stage_BuildAnimationGfx	w14		Allocates a Gfx buffer and calls Stage_LoadTextureSegment with the current animation frame index	applied@f19efe7
+func_81000330	Stage_DrawModelWithTexture	w14		Loads an IA texture block, draws the model if ready, and runs the model render state machine	applied@f19efe7
+func_81000420	Stage_UpdateAndRenderModel	w14		Allocates a larger Gfx buffer, computes a texture index from model update flags and a static counter, then draws the model	applied@f19efe7
+D_810041C0	gDummyNameString	w14		Contains the literal "DUMMY NAME", indicating a placeholder name string	applied@f19efe7
+D_810041CC	gEmptyString	w14		Zero?length string literal used as a generic empty string throughout the codebase	applied@f19efe7
+D_810041D0	gCommonGfxInit	w14		Display list that sets up pipeline state, combine mode and texture parameters, typical for generic Gfx initialization	applied@f19efe7
+D_81004210	gFullwidthAChar	w14		String literal "?" (fullwidth A) likely used for UI text rendering	applied@f19efe7
+D_81004214	gEmptyString1	w14		Empty string literal similar to other placeholders, serving as a generic empty string	applied@f19efe7
+D_81004218	gEmptyString2	w14		Empty string literal similar to other placeholders, serving as a generic empty string	applied@f19efe7
+D_8100421C	gEmptyString3	w14		Empty string literal similar to other placeholders, serving as a generic empty string	applied@f19efe7
+D_81003FD0	gStageModelCounter	w14		Static counter incremented each call to Stage_UpdateAndRenderModel to cycle texture indices	applied@f19efe7
+func_810004E0	Gfx_AppendTwoSegments	w14		adds two segment display lists to the command buffer and terminates it	applied@f19efe7
+func_81000518	Gfx_CreateTwoSegmentDL	w14		allocates a 0x18?byte display list and fills it with two segments via Gfx_AppendTwoSegments when arg0 equals 2	applied@f19efe7
+func_81000560	Gfx_ConditionalAppendSegment	w14		conditionally appends a single display list address if gDefaultGraphRoot->unk_01C is zero, then ends the list	applied@f19efe7
+func_8100059C	Gfx_CreateConditionalDL	w14		allocates a 0x50?byte display list and populates it with a conditional segment via Gfx_ConditionalAppendSegment when arg0 equals 2	applied@f19efe7

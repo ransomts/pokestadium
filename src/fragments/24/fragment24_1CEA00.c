@@ -682,7 +682,7 @@ s32 func_88302968(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_883198A0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gFontBitmapData, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x100) << 2, (arg2 + 2) << 2, (arg1 + 0x127) << 2,
@@ -1163,7 +1163,7 @@ void func_88304350(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
 
     if ((*arg3 <= 0) || (*arg3 >= 0x98)) {
         if (arg4 != 1) {
-            sp2C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(0)->unk_04;
+            sp2C = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(0)->unk_04;
             sp20 = "????";
         } else {
             return;
@@ -1171,7 +1171,7 @@ void func_88304350(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
     } else {
         sp28 = Mon_GetEvolutionLine(arg3, arg4);
         if (sp28 != -1) {
-            sp2C = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp28)->unk_04;
+            sp2C = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(sp28)->unk_04;
             sp20 = GetMessageString(NULL, 0, D_8831A4D4, RemapStadiumModeIndex(sp28));
         } else {
             return;
@@ -1199,7 +1199,7 @@ void func_88304490(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
             sp28 = D_88317278;
             sp2C = " ????? ";
         } else {
-            sp28 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(sp24->unk_00[1])->unk_04;
+            sp28 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(sp24->unk_00[1])->unk_04;
             sp2C = GetMessageString(NULL, 0, D_8831A4CC, sp18[9] - 1);
         }
         Text_ResetState();
@@ -1606,12 +1606,12 @@ void func_88305270(unk_func_8830867C_02C* arg0) {
         }
 
         if (arg0->unk_C54.unk_04 & 2) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316240, &arg0->unk_C54.unk_1C);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonHasTypes, &arg0->unk_C54.unk_1C);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
         if (arg0->unk_C54.unk_04 & 4) {
-            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, func_88316304, &arg0->unk_C54.unk_24);
+            PtrArray_Filter(arg0->unk_034->unk_00.unk_2C, &arg0->unk_0CC, PokemonHasMoves, &arg0->unk_C54.unk_24);
             ((func88506EE4)Memmap_GetFragmentVaddr(func_88506EE4))(arg0->unk_034, &arg0->unk_0CC);
         }
 
@@ -2070,7 +2070,7 @@ s32 func_88306544(unk_func_8830867C_02C* arg0, Controller* arg1) {
     }
 
     arg0->unk_04C->unk_14(arg0->unk_04C, 0x100);
-    sp24 = func_8830C058(arg0->unk_08C, arg1, arg0->unk_CC4);
+    sp24 = StringList_HandleInput(arg0->unk_08C, arg1, arg0->unk_CC4);
     arg0->unk_04C->unk_14(arg0->unk_04C, 1);
 
     arg0->unk_CC4 = arg0->unk_08C->unk_3C->unk_38;
@@ -2169,7 +2169,7 @@ s32 func_8830681C(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
     arg0->unk_034->unk_00.unk_00.unk_24(&arg0->unk_034->unk_00.unk_00, 0x100);
 
-    sp40 = func_8830C058(arg0->unk_08C, arg1, arg0->unk_CC8);
+    sp40 = StringList_HandleInput(arg0->unk_08C, arg1, arg0->unk_CC8);
 
     arg0->unk_034->unk_00.unk_00.unk_24(&arg0->unk_034->unk_00.unk_00, 1);
     arg0->unk_CC8 = arg0->unk_08C->unk_3C->unk_38;
@@ -2326,7 +2326,7 @@ s32 func_88306C70(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 
 
     func_8830BE3C(arg0->unk_08C);
     arg0->unk_04C->unk_14(arg0->unk_04C, 0x100);
-    var_s0 = func_8830C058(arg0->unk_08C, arg3, 0);
+    var_s0 = StringList_HandleInput(arg0->unk_08C, arg3, 0);
     arg0->unk_04C->unk_14(arg0->unk_04C, 1);
 
     switch (var_s0) {
@@ -2474,7 +2474,7 @@ void func_88307038(unk_func_8830867C_02C* arg0, s32 arg1) {
         if (arg1 & 5) {
             func_80025540(sp24);
         }
-        ((func88900970)Memmap_GetFragmentVaddr(func_88900970))(arg0->unk_0B0, sp24);
+        ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_0B0, sp24);
     }
 
     if (arg1 & 0x30) {
@@ -2524,16 +2524,16 @@ s32 func_88307264(unk_func_8830867C_02C* arg0, Controller* arg1, s32 arg2) {
     sp30 = func_88305458(arg0);
     if (sp30 != 0) {
         arg0->unk_048->unk_00.unk_14(arg0->unk_048, 0);
-        ((func889006D4)Memmap_GetFragmentVaddr(func_889006D4))(arg0->unk_0B0, func_88307250(arg0));
+        ((func889006D4)Memmap_GetFragmentVaddr(Dialog_SetEnabled))(arg0->unk_0B0, func_88307250(arg0));
 
-        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(func_88900808))(arg0->unk_0B0, arg1, 1);
+        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(Dialog_WaitForSelection))(arg0->unk_0B0, arg1, 1);
         if (temp_v0_2 == 0) {
             func_88307038(arg0, sp30);
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_0B0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_0B0);
         } else if (temp_v0_2 == 1) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_0B0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_0B0);
         } else if (temp_v0_2 == 2) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_0B0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_0B0);
             sp34 = 0;
         }
 
@@ -3080,7 +3080,7 @@ void func_8830867C(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&arg0->unk_00.unk_00, &sp8C->unk_00);
 
     sp80 = mem_pool_alloc(arg3, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(func_88500EE4))(sp80, 0, 0, 0x280, 0x1E0, D_88318898, D_88317354,
+    ((func88500EE4)Memmap_GetFragmentVaddr(func_88500EE4))(sp80, 0, 0, 0x280, 0x1E0, gTitleScreenImage, D_88317354,
                                                            D_88317358);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(&sp8C->unk_00, &sp80->unk_00.unk_00);
 
@@ -3128,7 +3128,7 @@ void func_8830867C(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3
 
     arg0->unk_50 = mem_pool_alloc(arg3, sizeof(unk_func_889000C4));
 
-    ((func889000C4)Memmap_GetFragmentVaddr(func_889000C4))(arg0->unk_50, 0, 0, 0, arg5, arg3);
+    ((func889000C4)Memmap_GetFragmentVaddr(Dialog_Create))(arg0->unk_50, 0, 0, 0, arg5, arg3);
 
     sp84 = FRAGMENT_LOAD(fragment27);
 

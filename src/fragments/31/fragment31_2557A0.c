@@ -2,13 +2,13 @@
 #include "src/6A40.h"
 #include "src/12D80.h"
 
-void func_810004E0(Gfx* gfx, DisplayListAddresses* addresses) {
+void Gfx_AppendTwoSegments(Gfx* gfx, DisplayListAddresses* addresses) {
     gSPDisplayList(gfx++, addresses->segments[0]);
     gSPDisplayList(gfx++, addresses->segments[1]);
     gSPEndDisplayList(gfx++);
 }
 
-void func_81000518(s32 arg0, DisplayListState* state) {
+void Gfx_CreateTwoSegmentDL(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -16,18 +16,18 @@ void func_81000518(s32 arg0, DisplayListState* state) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x18);
         state->gfx = gfx;
-        func_810004E0(gfx, addresses);
+        Gfx_AppendTwoSegments(gfx, addresses);
     }
 }
 
-void func_81000560(Gfx* gfx, s32* address) {
+void Gfx_ConditionalAppendSegment(Gfx* gfx, s32* address) {
     if (gDefaultGraphRoot->unk_01C == 0) {
         gSPDisplayList(gfx++, *address);
     }
     gSPEndDisplayList(gfx++);
 }
 
-void func_8100059C(s32 arg0, DisplayListState* state) {
+void Gfx_CreateConditionalDL(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -35,6 +35,6 @@ void func_8100059C(s32 arg0, DisplayListState* state) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x50);
         state->gfx = gfx;
-        func_81000560(gfx, addresses);
+        Gfx_ConditionalAppendSegment(gfx, addresses);
     }
 }

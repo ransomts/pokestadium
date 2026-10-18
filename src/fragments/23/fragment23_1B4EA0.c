@@ -1091,7 +1091,7 @@ void func_8820F3B8(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_func_880
 
     for (i = 0; i < 2; i++) {
         temp_v0_6 = mem_pool_alloc(arg5, sizeof(unk_func_882149A0));
-        func_882149A0(temp_v0_6, D_88218070[i].unk_00, D_88218070[i].unk_02, D_88218070[i].unk_04, D_88218070[i].unk_06,
+        Panel_Init(temp_v0_6, D_88218070[i].unk_00, D_88218070[i].unk_02, D_88218070[i].unk_04, D_88218070[i].unk_06,
                       D_88218070[i].unk_08, D_88218070[i].unk_0C, D_88218070[i].unk_10[0], D_88218070[i].unk_10[1],
                       D_88218044);
 
@@ -1108,7 +1108,7 @@ void func_8820F3B8(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_func_880
     arg0->unk_4C->unk_28->unk_1C = temp_s0_6;
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_8820BE14_02C_038));
-    func_882158CC(arg0->unk_30, 0x136, 0x34, 8, func_8820DF38, 0xEC, 0x1C, arg5);
+    ScrollableList_Init(arg0->unk_30, 0x136, 0x34, 8, func_8820DF38, 0xEC, 0x1C, arg5);
     ((func88506238)Memmap_GetFragmentVaddr(func_88506238))(arg0->unk_30, 0x64, arg5);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_88507D4C));
@@ -1119,10 +1119,10 @@ void func_8820F3B8(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_func_880
     ((func88507D4C)Memmap_GetFragmentVaddr(func_88507D4C))(
         sp68, 0x136, arg0->unk_30->unk_00.unk_00.unk_14.unk_02 + 0x34, 0xEC, 1, arg0->unk_30);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_44, sp68);
-    func_882159AC(arg0->unk_30, sp68);
+    ScrollableList_SetItemRenderer(arg0->unk_30, sp68);
 
     temp_v0_9 = mem_pool_alloc(arg5, sizeof(unk_func_882170A8));
-    func_882170A8(temp_v0_9, 0xA8, 2, arg0->unk_30, 3);
+    ItemSlot_Init(temp_v0_9, 0xA8, 2, arg0->unk_30, 3);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp68, temp_v0_9);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_44, arg0->unk_30);
 
@@ -1503,8 +1503,8 @@ void func_88210BFC(unk_func_8821421C_02C_06C_02C* arg0, s32 arg1) {
         case 0:
             ((func8850628C)Memmap_GetFragmentVaddr(func_8850628C))(arg0->unk_2C[0]);
 
-            func_88215974(&arg0->unk_2C[0]->unk_00, 1);
-            func_88215974(&arg0->unk_2C[1]->unk_00, 1);
+            ScrollableList_SetDirection(&arg0->unk_2C[0]->unk_00, 1);
+            ScrollableList_SetDirection(&arg0->unk_2C[1]->unk_00, 1);
             func_88210888(arg0, 0);
             func_88217BB8(arg0->unk_48);
             break;
@@ -1515,20 +1515,20 @@ void func_88210BFC(unk_func_8821421C_02C_06C_02C* arg0, s32 arg1) {
             break;
 
         case 1:
-            func_88216F18(arg0->unk_2C[1], 0);
-            func_88215974(&arg0->unk_2C[1]->unk_00, 0);
+            ScrollableList_SetActive(arg0->unk_2C[1], 0);
+            ScrollableList_SetDirection(&arg0->unk_2C[1]->unk_00, 0);
             func_88210888(arg0, 1);
             func_88217BAC(arg0->unk_48);
             break;
 
         case 2:
-            func_88215974(&arg0->unk_2C[0]->unk_00, 0);
+            ScrollableList_SetDirection(&arg0->unk_2C[0]->unk_00, 0);
             func_88210888(arg0, 0);
             func_88217BAC(arg0->unk_48);
             break;
 
         case 3:
-            func_88215974(&arg0->unk_2C[1]->unk_00, 0);
+            ScrollableList_SetDirection(&arg0->unk_2C[1]->unk_00, 0);
             func_88210888(arg0, 1);
             func_88217BAC(arg0->unk_48);
             break;
@@ -1986,7 +1986,7 @@ s32 func_882118CC(unk_func_8821421C_02C_06C_02C* arg0, Controller* arg1) {
                 } else {
                     func_88210BFC(arg0, 0);
                 }
-                func_88216F18(arg0->unk_2C[1], 1);
+                ScrollableList_SetActive(arg0->unk_2C[1], 1);
                 sp2C |= 1;
             } else if (sp2C & 4) {
                 PlaySoundEffect(0x18);
@@ -1995,7 +1995,7 @@ s32 func_882118CC(unk_func_8821421C_02C_06C_02C* arg0, Controller* arg1) {
                     func_8820EC9C(arg0->unk_34);
                 }
                 func_88211380(arg0, arg1);
-                func_88216F18(arg0->unk_2C[1], 2);
+                ScrollableList_SetActive(arg0->unk_2C[1], 2);
                 sp2C = 0x80000081;
             }
             break;
@@ -2362,12 +2362,12 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     for (x = 0; x < 6; x++) {
         arg0->unk_44[x] = mem_pool_alloc(argB, sizeof(unk_func_882149A0));
 
-        func_882149A0(arg0->unk_44[x], D_88218108[x].unk_00, D_88218108[x].unk_02, D_88218108[x].unk_04,
+        Panel_Init(arg0->unk_44[x], D_88218108[x].unk_00, D_88218108[x].unk_02, D_88218108[x].unk_04,
                       D_88218108[x].unk_06, D_88218108[x].unk_08, D_88218108[x].unk_0C, D_88218108[x].unk_10[0],
                       D_88218108[x].unk_10[1], D_882180AC);
 
         if (D_88218108[x].unk_14 != 0) {
-            func_882158BC(arg0->unk_44[x]);
+            Panel_ToggleFill(arg0->unk_44[x]);
         }
 
         ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_44[x]);
@@ -2383,7 +2383,7 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     arg0->unk_6C->unk_28->unk_1C = temp_s0_5;
 
     arg0->unk_38[0] = mem_pool_alloc(argB, sizeof(unk_func_8820BE14_02C_038));
-    func_882158CC(arg0->unk_38[0], 6, 0x34, 8, func_8820DF38, 0xEC, 0x1C, argB);
+    ScrollableList_Init(arg0->unk_38[0], 6, 0x34, 8, func_8820DF38, 0xEC, 0x1C, argB);
     ((func88506238)Memmap_GetFragmentVaddr(func_88506238))(arg0->unk_38[0], 0x64, argB);
     func_88217060(arg0->unk_38[0], &arg0->unk_78[0], 0);
 
@@ -2395,15 +2395,15 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88507D4C)Memmap_GetFragmentVaddr(func_88507D4C))(sp90, 6, arg0->unk_38[0]->unk_00.unk_00.unk_14.unk_02 + 0x34,
                                                            0xEC, 1, arg0->unk_38[0]);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp90);
-    func_882159AC(arg0->unk_38[0], sp90);
+    ScrollableList_SetItemRenderer(arg0->unk_38[0], sp90);
 
     temp_v0_9 = mem_pool_alloc(argB, sizeof(unk_func_882170A8));
-    func_882170A8(temp_v0_9, 0xA8, 2, arg0->unk_38[0], 3);
+    ItemSlot_Init(temp_v0_9, 0xA8, 2, arg0->unk_38[0], 3);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp90, temp_v0_9);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_38[0]);
 
     arg0->unk_38[1] = mem_pool_alloc(argB, sizeof(unk_func_8820BE14_02C_038));
-    func_882158CC(arg0->unk_38[1], 0x136, 0x34, 8, func_8820DF38, 0xEC, 0x1C, argB);
+    ScrollableList_Init(arg0->unk_38[1], 0x136, 0x34, 8, func_8820DF38, 0xEC, 0x1C, argB);
     ((func88506238)Memmap_GetFragmentVaddr(func_88506238))(arg0->unk_38[1], 0x64, argB);
     func_88217060(arg0->unk_38[1], &arg0->unk_78[1], 0x10000);
 
@@ -2415,10 +2415,10 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88507D4C)Memmap_GetFragmentVaddr(func_88507D4C))(
         sp84, 0x136, arg0->unk_38[1]->unk_00.unk_00.unk_14.unk_02 + 0x34, 0xEC, 1, arg0->unk_38[1]);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp84);
-    func_882159AC(arg0->unk_38[1], sp84);
+    ScrollableList_SetItemRenderer(arg0->unk_38[1], sp84);
 
     temp_v0_11 = mem_pool_alloc(argB, sizeof(unk_func_882170A8));
-    func_882170A8(temp_v0_11, 0xA8, 2, arg0->unk_38[1], 3);
+    ItemSlot_Init(temp_v0_11, 0xA8, 2, arg0->unk_38[1], 3);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp84, temp_v0_11);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_38[1]);
 
@@ -2481,7 +2481,7 @@ void func_882121E0(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     }
 
     arg0->unk_A0 = mem_pool_alloc(argB, sizeof(unk_func_889000C4));
-    ((func889000C4)Memmap_GetFragmentVaddr(func_889000C4))(arg0->unk_A0, 0, arg0->unk_2C, 0, argA, argB);
+    ((func889000C4)Memmap_GetFragmentVaddr(Dialog_Create))(arg0->unk_A0, 0, arg0->unk_2C, 0, argA, argB);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_A0);
 
     if (sp80) {}
@@ -2577,9 +2577,9 @@ void func_882136F8(unk_func_8821421C_02C* arg0, s32 arg1) {
 }
 
 void func_88213738(unk_func_8821421C_02C* arg0) {
-    func_882158BC(arg0->unk_44[2]);
-    func_882158BC(arg0->unk_44[4]);
-    func_882158BC(arg0->unk_44[3]);
+    Panel_ToggleFill(arg0->unk_44[2]);
+    Panel_ToggleFill(arg0->unk_44[4]);
+    Panel_ToggleFill(arg0->unk_44[3]);
 }
 
 void func_88213774(unk_func_8821421C_02C_06C* arg0, unk_func_8821421C_02C* arg1) {
@@ -2691,7 +2691,7 @@ void func_882139C0(unk_func_8821421C_02C* arg0, s32 arg1) {
     }
 
     if (arg1 & 3) {
-        ((func88900970)Memmap_GetFragmentVaddr(func_88900970))(arg0->unk_A0, sp4C);
+        ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_A0, sp4C);
     }
 
     if (arg1 & 4) {
@@ -2708,16 +2708,16 @@ s32 func_88213B90(unk_func_8821421C_02C* arg0, Controller* arg1) {
     if (sp20 != 0) {
         arg0->unk_6C->unk_28->unk_14(arg0->unk_6C->unk_28, 0);
 
-        ((func889006D4)Memmap_GetFragmentVaddr(func_889006D4))(arg0->unk_A0, 0);
-        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(func_88900808))(arg0->unk_A0, arg1, 1);
+        ((func889006D4)Memmap_GetFragmentVaddr(Dialog_SetEnabled))(arg0->unk_A0, 0);
+        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(Dialog_WaitForSelection))(arg0->unk_A0, arg1, 1);
 
         if (temp_v0_2 == 0) {
             func_882139C0(arg0, sp20);
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_A0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_A0);
         } else if (temp_v0_2 == 1) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_A0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_A0);
         } else if (temp_v0_2 == 2) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_A0);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_A0);
             sp24 = 0;
         }
 

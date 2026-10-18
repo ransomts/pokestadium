@@ -2464,7 +2464,7 @@ s32 func_8800008C(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    ((func88500020)Memmap_GetFragmentVaddr(func_88500020))(&D_88002840, arg1, arg2);
+    ((func88500020)Memmap_GetFragmentVaddr(DrawTiledTextureRect))(&D_88002840, arg1, arg2);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -2638,7 +2638,7 @@ s32 func_88000E30(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    ((func88500020)Memmap_GetFragmentVaddr(func_88500020))(ptr->unk_2C, arg1, arg2);
+    ((func88500020)Memmap_GetFragmentVaddr(DrawTiledTextureRect))(ptr->unk_2C, arg1, arg2);
 
     gDPLoadTextureBlock(gDisplayListHead++, ptr->unk_30[((ptr->unk_44 / 3) == ptr->unk_48) ? 1 : 0], G_IM_FMT_RGBA,
                         G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,

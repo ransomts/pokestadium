@@ -200,7 +200,7 @@ void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
 void Fragment31_DrawOverlay(Gfx* gfx) {
     s32 temp_a3;
 
-    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &D_810041D0;    }
+    {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gCommonGfxInit;    }
     temp_a3 = ((s32) ((D_800AF770[5]) * 0x55) / 255) + 0xAA;
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = ((temp_a3 & 0xFF) | 0xFA000000);    _gfx->words.w1 = -0x3701;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFB000000;    _gfx->words.w1 = 0x501E0AFF;    }

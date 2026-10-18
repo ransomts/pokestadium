@@ -77,10 +77,10 @@ s32 func_88208CE4(unk_func_88208C5C*, s32, s32);
 void func_88209A88(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
 s32 func_8820938C(unk_func_8820BE14_02C_070*, s32, s32);
 
-static char** D_88224FB0;
-static char** D_88224FB4;
-static char** D_88224FB8;
-static char** D_88224FBC;
+static char** gMessageBank_2A;
+static char** gMessageBank_2;
+static char** gMessageBank_24;
+static char** gMessageBank_25;
 
 static unk_D_88217D10 D_88217D10[2][9] = {
     {
@@ -107,7 +107,7 @@ static unk_D_88217D10 D_88217D10[2][9] = {
     },
 };
 
-void func_88206110(unk_func_80026268_arg0* arg0) {
+void InitMonData(unk_func_80026268_arg0* arg0) {
     s32 i;
     s32 var_a2;
     unk_D_88217D10* var_v0;
@@ -160,8 +160,8 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
 
     arg0->unk_04 = arg0->unk_24;
 
-    HAL_Strcpy(arg0->unk_30, GetMessageString(NULL, 0, D_88224FB8, arg0->unk_00.unk_00 - 1));
-    HAL_Strcpy(arg0->unk_3B, GetMessageString(NULL, 0, D_88224FB4, 0x17));
+    HAL_Strcpy(arg0->unk_30, GetMessageString(NULL, 0, gMessageBank_24, arg0->unk_00.unk_00 - 1));
+    HAL_Strcpy(arg0->unk_3B, GetMessageString(NULL, 0, gMessageBank_2, 0x17));
 
     SetMonNickname(arg0);
 
@@ -176,7 +176,7 @@ void func_88206110(unk_func_80026268_arg0* arg0) {
     arg0->unk_25 = 0;
 }
 
-s32 func_882062E4(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 LoadPokemonFromSave(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 sp1C = 0;
     unk_func_80022C28_ret* sp18;
 
@@ -188,46 +188,46 @@ s32 func_882062E4(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg
     return sp1C;
 }
 
-static Color_RGBA8 D_88217DE8 = { 0xF0, 0xF0, 0xF0, 0xFF };
-static Color_RGBA8 D_88217DEC = { 0xF0, 0xF0, 0xF0, 0x4D };
-static Color_RGBA8 D_88217DF0 = { 0xF0, 0xF0, 0x00, 0xFF };
+static Color_RGBA8 gTextColor_WhiteOpaque = { 0xF0, 0xF0, 0xF0, 0xFF };
+static Color_RGBA8 gTextColor_WhiteSemiTransparent = { 0xF0, 0xF0, 0xF0, 0x4D };
+static Color_RGBA8 gTextColor_YellowOpaque = { 0xF0, 0xF0, 0x00, 0xFF };
 
-const char D_88224E90[] = "%d";
+const char gFormat_Decimal[] = "%d";
 const char D_88224E94[] = " 00";
 
 void func_8820634C(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
-    static Color_RGBA8 D_88217DF4 = { 0x6C, 0x6C, 0x7E, 0xFF };
+    static Color_RGBA8 gBoxColor_DarkGrayBlue = { 0x6C, 0x6C, 0x7E, 0xFF };
     Color_RGBA8 sp64;
     s32 pad60[1];
     char* sp5C;
     char sp58[4];
     s32 color;
 
-    sp5C = GetMessageString(0, 0, D_88224FB4, 0x41);
+    sp5C = GetMessageString(0, 0, gMessageBank_2, 0x41);
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetRenderMode(gDisplayListHead++, 0, 0);
 
-    color = GPACK_RGBA5551(D_88217DF4.r, D_88217DF4.g, D_88217DF4.b, 1);
+    color = GPACK_RGBA5551(gBoxColor_DarkGrayBlue.r, gBoxColor_DarkGrayBlue.g, gBoxColor_DarkGrayBlue.b, 1);
     gDPPipeSync(gDisplayListHead++);
     gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg5->unk_3C + arg0) - 1, (arg1 + arg5->unk_3E) - 1);
     Text_ResetState();
     if (arg4 & 0x100) {
-        sp64 = *(Color_RGBA8 *)&D_88217DF0;
+        sp64 = *(Color_RGBA8 *)&gTextColor_YellowOpaque;
     } else if (arg4 & 4) {
-        sp64 = *(Color_RGBA8 *)&D_88217DEC;
+        sp64 = *(Color_RGBA8 *)&gTextColor_WhiteSemiTransparent;
     } else {
-        sp64 = *(Color_RGBA8 *)&D_88217DE8;
+        sp64 = *(Color_RGBA8 *)&gTextColor_WhiteOpaque;
     }
     Text_SetEnvColor(sp64.r, sp64.g, sp64.b, sp64.a);
     Text_SetFont(8, 0);
 
     Text_Print(arg0 + 8, arg1 + 2, sp5C);
-    sprintf(sp58, D_88224E90, (int)arg3 + 1);
+    sprintf(sp58, gFormat_Decimal, (int)arg3 + 1);
     Text_Print(((arg0 + MeasureTextWidth(0, 0, sp5C) + MeasureTextWidth(0, 0, D_88224E94)) - MeasureTextWidth(0, 0, sp58)) + 8, arg1 + 2, sp58);
     Text_SetupDL();
-    func_8821711C((arg5->unk_3C + arg0) - 0x35, arg1 + 8, arg2->unk_0C, arg2->unk_08, 2);
+    Cursor_Draw((arg5->unk_3C + arg0) - 0x35, arg1 + 8, arg2->unk_0C, arg2->unk_08, 2);
 }
 
 
@@ -264,11 +264,11 @@ void func_8820660C(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32 arg3, s
     }
     Text_SetEnvColor(sp48.r, sp48.g, sp48.b, sp48.a);
     Text_SetFont(8, 0);
-    Text_Print(arg0 + 8, arg1 + 4, GetMessageString(0, 0, D_88224FB4, D_88217DF8[arg3]));
+    Text_Print(arg0 + 8, arg1 + 4, GetMessageString(0, 0, gMessageBank_2, D_88217DF8[arg3]));
     Text_SetupDL();
     if (arg2->unk_08 == 1) {
         temp_v0_7 = arg2->unk_00;
-        func_8821711C((arg5->unk_3C + arg0) - 0x35, arg1 + 0xA, temp_v0_7->unk_0C, temp_v0_7->unk_08, 2);
+        Cursor_Draw((arg5->unk_3C + arg0) - 0x35, arg1 + 0xA, temp_v0_7->unk_0C, temp_v0_7->unk_08, 2);
     }
 }
 
@@ -313,18 +313,18 @@ s32 func_882068B4(unk_func_88001300_034* arg0, Controller* arg1) {
     return var_s1 - 1;
 }
 
-s32 func_882069C0(void) {
+s32 GetMenuEntryWidth(void) {
     s32 tmp;
     s32 sp18;
 
-    sp18 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, D_88224FB4, 0x41));
+    sp18 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, gMessageBank_2, 0x41));
     tmp = MeasureTextWidth(8, 0, " 00");
 
     return sp18 + tmp + 0x3D;
 }
 
 void func_88206A20(unk_func_8820BE14_02C_078_034* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    s32 sp4C = func_882069C0() + 0x10;
+    s32 sp4C = GetMenuEntryWidth() + 0x10;
     UNUSED s32 pad[2];
 
     ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_8820BE14_02C_078_034));
@@ -356,7 +356,7 @@ s32 func_88206BA0(void) {
     s32 var_s1 = 0;
 
     for (i = 0; i < 3; i++) {
-        var_v1 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, D_88224FB4, D_88217E0C[i]));
+        var_v1 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, gMessageBank_2, D_88217E0C[i]));
 
         if (i == 0) {
             var_v1 += 0x3D;
@@ -520,7 +520,7 @@ s32 func_88207154(unk_func_8820BE14_02C_078* arg0, Controller* arg1) {
     return var_s1 - 1;
 }
 
-void func_8820723C(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawLevelLabel(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     static Color_RGBA8 D_88217E10 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 D_88217E14 = { 0x5A, 0x5A, 0xA6, 0xFF };
 
@@ -583,7 +583,7 @@ void func_88207354(s32 arg0, s32 arg1, unk_func_88205880_00D0* arg2, s32 arg3, s
             gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 0x1B, arg0 + 0xCB, arg1 + 0x1B);
         }
         if (!(arg4 & 0x100)) {
-            func_8820723C(arg2, arg0, arg1, arg5->unk_3C);
+            DrawLevelLabel(arg2, arg0, arg1, arg5->unk_3C);
         }
     } else {
         if (arg4 & 1) {
@@ -643,7 +643,7 @@ void func_88207A54(unk_func_882079D8* arg0, unk_func_88205880_00D0* arg1) {
 
 s32 func_88207A5C(unk_func_882079D8* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_2C != NULL) {
-        func_8820723C(arg0->unk_2C, arg1, arg2, arg0->unk_00.unk_14.unk_00);
+        DrawLevelLabel(arg0->unk_2C, arg1, arg2, arg0->unk_00.unk_14.unk_00);
     }
 }
 
@@ -672,7 +672,7 @@ void func_88207A94(unk_func_8820B12C_02C* arg0, unk_func_8820B12C_02C_020* arg1,
         arg0->unk_5C[i] = mem_pool_alloc(arg6, sizeof(unk_func_8850878C));
 
         ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(arg0->unk_5C[i], 0, 0,
-                                                               GetMessageString(NULL, 0, D_88224FB4, i + 0xB), 0x10);
+                                                               GetMessageString(NULL, 0, gMessageBank_2, i + 0xB), 0x10);
 
         arg0->unk_5C[i]->unk_30 = D_88217E2C;
         arg0->unk_5C[i]->unk_44 = arg0->unk_5C[i]->unk_44;
@@ -795,30 +795,30 @@ void func_88207F84(unk_func_8820B12C_02C* arg0, s32 arg1) {
     switch (arg1) {
         case 0:
             ((func8850628C)Memmap_GetFragmentVaddr(func_8850628C))(arg0->unk_20[0]);
-            func_88215974(&arg0->unk_20[0]->unk_00, 1);
-            func_88215974(&arg0->unk_20[1]->unk_00, 1);
+            ScrollableList_SetDirection(&arg0->unk_20[0]->unk_00, 1);
+            ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 1);
             func_88207CEC(arg0, 0);
             func_88217BB8(arg0->unk_38);
             break;
 
         case 1:
             arg0->unk_20[0]->unk_00.unk_34[arg0->unk_20[0]->unk_00.unk_38] |= 2;
-            func_88216F18(arg0->unk_20[1], 0);
-            func_88215974(&arg0->unk_20[1]->unk_00, 0);
+            ScrollableList_SetActive(arg0->unk_20[1], 0);
+            ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 0);
             func_88207CEC(arg0, 1);
             func_88217BAC(arg0->unk_38);
             break;
 
         case 2:
             arg0->unk_20[arg0->unk_1C]->unk_00.unk_34[arg0->unk_20[arg0->unk_1C]->unk_00.unk_38] |= 2;
-            func_88215974(&arg0->unk_20[arg0->unk_1C]->unk_00, 0);
+            ScrollableList_SetDirection(&arg0->unk_20[arg0->unk_1C]->unk_00, 0);
             arg0->unk_30 = arg0->unk_20[arg0->unk_1C]->unk_00.unk_38;
             func_88217BAC(arg0->unk_38);
             break;
 
         case 3:
             arg0->unk_20[0]->unk_00.unk_34[arg0->unk_20[0]->unk_00.unk_38] |= 2;
-            func_88215974(&arg0->unk_20[1]->unk_00, 0);
+            ScrollableList_SetDirection(&arg0->unk_20[1]->unk_00, 0);
             func_88207CEC(arg0, 1);
             func_88217BAC(arg0->unk_38);
             break;
@@ -1051,13 +1051,13 @@ s32 func_88208600(unk_func_8820B12C_02C* arg0, Controller* arg1) {
         case 1:
             if (var_v1 & 2) {
                 func_88207F84(arg0, 0);
-                func_88216F18(arg0->unk_20[1], 1);
+                ScrollableList_SetActive(arg0->unk_20[1], 1);
                 var_v1 |= 1;
             } else if (var_v1 & 4) {
                 PlaySoundEffect(0x18);
                 arg0->unk_20[0]->unk_00.unk_34[arg0->unk_20[0]->unk_00.unk_38] |= 0x100;
                 func_882082FC(arg0, arg1);
-                func_88216F18(arg0->unk_20[1], 2);
+                ScrollableList_SetActive(arg0->unk_20[1], 2);
                 if (arg0->unk_74 != 0) {
                     var_v1 = 0x02000000;
                 } else {
@@ -1142,7 +1142,7 @@ s32 func_88208CE4(unk_func_88208C5C* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88217E34 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 D_88217E38 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-    char* spBC = GetMessageString(NULL, 0, D_88224FB4, D_88217E30[arg0->unk_34]);
+    char* spBC = GetMessageString(NULL, 0, gMessageBank_2, D_88217E30[arg0->unk_34]);
     s8 sp9C[0x20];
     s32 temp_v0;
     s32 var_s0;
@@ -1223,11 +1223,11 @@ void func_8820927C(s32 arg0, s32 arg1, ret_func_8002ED08* arg2, s32 arg3) {
 
     Text_SetFont(8, 0);
     if (arg2 == NULL) {
-        sp24 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(0)->unk_04;
+        sp24 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(0)->unk_04;
         sp20 = "???????";
     } else {
-        sp24 = ((func884000C4)Memmap_GetFragmentVaddr(func_884000C4))(arg2->unk_00[1])->unk_04;
-        sp20 = GetMessageString(NULL, 0, D_88224FBC, arg2->unk_00[0] - 1);
+        sp24 = ((func884000C4)Memmap_GetFragmentVaddr(GetMoveCategoryColorGradient))(arg2->unk_00[1])->unk_04;
+        sp20 = GetMessageString(NULL, 0, gMessageBank_25, arg2->unk_00[0] - 1);
     }
 
     Text_SetEnvColor(sp24.r, sp24.g, sp24.b, sp24.a);
@@ -1241,7 +1241,7 @@ void func_8820927C(s32 arg0, s32 arg1, ret_func_8002ED08* arg2, s32 arg3) {
 
 s32 func_8820938C(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88217E3C = { 0xF0, 0xF0, 0xF0, 0xFF };
-    static unk_D_88217E40 D_88217E40[] = {
+    static unk_D_88217E40 gMoveIconInfo[] = {
         {
             0x000000DB,
             0x00000004,
@@ -1291,11 +1291,11 @@ s32 func_8820938C(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
                         (arg2 + 0x31) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
     for (i = 0; i < 4; i++) {
-        gDPLoadTextureBlock(gDisplayListHead++, D_88217E40[i].unk_10, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gMoveIconInfo[i].unk_10, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, (arg1 + D_88217E40[i].unk_0C) << 2, (arg2 + D_88217E40[i].unk_04) << 2,
-                            ((arg1 + D_88217E40[i].unk_0C) + 0x13) << 2, (arg2 + D_88217E40[i].unk_04 + 0x13) << 2,
+        gSPTextureRectangle(gDisplayListHead++, (arg1 + gMoveIconInfo[i].unk_0C) << 2, (arg2 + gMoveIconInfo[i].unk_04) << 2,
+                            ((arg1 + gMoveIconInfo[i].unk_0C) + 0x13) << 2, (arg2 + gMoveIconInfo[i].unk_04 + 0x13) << 2,
                             G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
     }
 
@@ -1313,19 +1313,19 @@ s32 func_8820938C(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
         Text_SetEnvColor(D_88217E3C.r, D_88217E3C.g, D_88217E3C.b, D_88217E3C.a);
         Text_SetFont(8, 0);
 
-        Text_Print(arg1 + 8, arg2 + 0x24, GetMessageString(NULL, 0, D_88224FB4, 0x12));
+        Text_Print(arg1 + 8, arg2 + 0x24, GetMessageString(NULL, 0, gMessageBank_2, 0x12));
         Text_SetEnvColor(0xFF, 0xC8, 0xC8, 0xFF);
         Text_SetFont(4, 0);
 
-        Text_Print(arg1 + 6, arg2 + 0x56, GetMessageString(NULL, 0, D_88224FB4, 0x13));
-        Text_Print(arg1 + 0x91, arg2 + 0x56, GetMessageString(NULL, 0, D_88224FB4, 0x14));
-        Text_Print(arg1 + 0x11C, arg2 + 0x56, GetMessageString(NULL, 0, D_88224FB4, 0x15));
-        Text_Print(arg1 + 0x1A7, arg2 + 0x56, GetMessageString(NULL, 0, D_88224FB4, 0x16));
+        Text_Print(arg1 + 6, arg2 + 0x56, GetMessageString(NULL, 0, gMessageBank_2, 0x13));
+        Text_Print(arg1 + 0x91, arg2 + 0x56, GetMessageString(NULL, 0, gMessageBank_2, 0x14));
+        Text_Print(arg1 + 0x11C, arg2 + 0x56, GetMessageString(NULL, 0, gMessageBank_2, 0x15));
+        Text_Print(arg1 + 0x1A7, arg2 + 0x56, GetMessageString(NULL, 0, gMessageBank_2, 0x16));
 
         Text_SetEnvColor(D_88217E3C.r, D_88217E3C.g, D_88217E3C.b, D_88217E3C.a);
         Text_SetFont(8, 0);
         Text_Print(arg1 + 8, arg2 + 8,
-                      GetMessageString(NULL, 0, D_88224FB8, arg0->unk_002C->unk_000[0].unk_00.unk_00 - 1));
+                      GetMessageString(NULL, 0, gMessageBank_24, arg0->unk_002C->unk_000[0].unk_00.unk_00 - 1));
 
         Text_Print(arg1 + 0x44, arg2 + 0x24, "%3d", arg0->unk_002C->unk_000[0].unk_26);
         Text_Print(arg1 + 0x46, arg2 + 0x54, "%3d", arg0->unk_002C->unk_000[0].unk_28);
@@ -1335,8 +1335,8 @@ s32 func_8820938C(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
     }
 
     for (i = 0; i < spB0; i++) {
-        func_8820927C(D_88217E40[i].unk_00 + arg1, D_88217E40[i].unk_04 + arg2,
-                      GetMoveEntry(arg0->unk_002C->unk_000[0].unk_09[i]), D_88217E40[i].unk_08);
+        func_8820927C(gMoveIconInfo[i].unk_00 + arg1, gMoveIconInfo[i].unk_04 + arg2,
+                      GetMoveEntry(arg0->unk_002C->unk_000[0].unk_09[i]), gMoveIconInfo[i].unk_08);
     }
 
     Text_SetupDL();
@@ -1373,7 +1373,7 @@ static Color_RGBA8 D_88217E94 = { 0x50, 0x50, 0x86, 0xFF };
 static Color_RGBA8 D_88217E98 = { 0x79, 0x79, 0xCB, 0xFF };
 static Color_RGBA8 D_88217E9C = { 0x40, 0x40, 0x6C, 0xFF };
 static Color_RGBA8 D_88217EA0 = { 0x6A, 0x6A, 0xB2, 0xFF };
-static unk_D_88217EA4 D_88217EA4[] = {
+static unk_D_88217EA4 gUIComponentInfo[] = {
     {
         219,
         40,
@@ -1591,17 +1591,17 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     var_v0 = (arg3 != NULL) ? 1 : 0;
 
     for (j = 0; j < 8U; j++) {
-        unk_D_88217EA4* ptr = &D_88217EA4[j];
+        unk_D_88217EA4* ptr = &gUIComponentInfo[j];
         if (!(ptr->unk_18 & (1 << var_v0))) {
             continue;
         }
 
         arg0->unk_44[j] = mem_pool_alloc(argA, sizeof(unk_func_882149A0));
-        func_882149A0(arg0->unk_44[j], ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, ptr->unk_08, ptr->unk_0C,
+        Panel_Init(arg0->unk_44[j], ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, ptr->unk_08, ptr->unk_0C,
                       ptr->unk_10[0], ptr->unk_10[1], D_88217E90);
 
         if (ptr->unk_14 != 0) {
-            func_882158BC(arg0->unk_44[j]);
+            Panel_ToggleFill(arg0->unk_44[j]);
         }
 
         ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_44[j]);
@@ -1612,7 +1612,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func8850BF80)Memmap_GetFragmentVaddr(func_8850BF80))(arg0->unk_74, arg0->unk_74->unk_28);
 
     for (j = 0; j != 8; j++) {
-        if (D_88217EA4[j].unk_18 & (1 << var_v0)) {
+        if (gUIComponentInfo[j].unk_18 & (1 << var_v0)) {
             arg0->unk_74->unk_28->unk_18[(j / 2) * arg0->unk_74->unk_28->unk_2C + (j % 2)] = arg0->unk_44[j];
         }
     }
@@ -1637,7 +1637,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, arg0->unk_68);
 
     for (i = 0; i != 8; i++) {
-        temp_s1_2 = GetMessageString(NULL, 0, D_88224FB4, i + 1);
+        temp_s1_2 = GetMessageString(NULL, 0, gMessageBank_2, i + 1);
         spB4[i] = mem_pool_alloc(argA, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(func_8850878C))(spB4[i], (0x228 - MeasureTextWidth(0x10, 0, temp_s1_2)) / 2,
                                                                0x2A, temp_s1_2, 0x10);
@@ -1649,7 +1649,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     }
 
     if (arg3 != NULL) {
-        temp_v0_10 = GetMessageString(NULL, 0, D_88224FB4, 9);
+        temp_v0_10 = GetMessageString(NULL, 0, gMessageBank_2, 9);
         spB4[2]->unk_00.unk_10.unk_00 = (0x228 - MeasureTextWidth(0x10, 0, temp_v0_10)) / 2;
         spB4[2]->unk_00.unk_10.unk_02 = 0x2A;
         spB4[2]->unk_40 = temp_v0_10;
@@ -1661,7 +1661,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
 
     for (j = 0; j != 2; j++) {
         temp_s0_4 = mem_pool_alloc(argA, sizeof(unk_func_8850878C));
-        spA0 = GetMessageString(NULL, 0, D_88224FB4, 0xA);
+        spA0 = GetMessageString(NULL, 0, gMessageBank_2, 0xA);
 
         if (j == 0) {
             sp9C = 0x210 - MeasureTextWidth(0x10, 0, spA0);
@@ -1685,7 +1685,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88500A3C)Memmap_GetFragmentVaddr(func_88500A3C))(arg0->unk_64, arg0->unk_70);
 
     arg0->unk_38[0] = mem_pool_alloc(argA, sizeof(unk_func_8820B12C_02C_020));
-    func_882158CC(arg0->unk_38[0], 8, 0x36, 6, func_88207354, 0xCC, 0x1C, argA);
+    ScrollableList_Init(arg0->unk_38[0], 8, 0x36, 6, func_88207354, 0xCC, 0x1C, argA);
     ((func88506238)Memmap_GetFragmentVaddr(func_88506238))(arg0->unk_38[0], 0x14, argA);
 
     sp94[0] = mem_pool_alloc(argA, sizeof(unk_func_88507D4C));
@@ -1696,15 +1696,15 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88507D4C)Memmap_GetFragmentVaddr(func_88507D4C))(sp94[1], 8, arg0->unk_38[0]->unk_00.unk_00.unk_14.unk_02 + 0x36,
                                                            0xCC, 1, arg0->unk_38[0]);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp94[1]);
-    func_882159AC(arg0->unk_38[0], sp94[1]);
+    ScrollableList_SetItemRenderer(arg0->unk_38[0], sp94[1]);
 
     temp_v0_14 = mem_pool_alloc(argA, sizeof(unk_func_882170A8));
-    func_882170A8(temp_v0_14, 0x98, 2, arg0->unk_38[0], 2);
+    ItemSlot_Init(temp_v0_14, 0x98, 2, arg0->unk_38[0], 2);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp94[1], temp_v0_14);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_38[0]);
 
     arg0->unk_38[1] = mem_pool_alloc(argA, sizeof(unk_func_8820B12C_02C_020));
-    func_882158CC(arg0->unk_38[1], 0x154, 0x36, 6, func_88207354, 0xCC, 0x1C, argA);
+    ScrollableList_Init(arg0->unk_38[1], 0x154, 0x36, 6, func_88207354, 0xCC, 0x1C, argA);
     ((func88506238)Memmap_GetFragmentVaddr(func_88506238))(arg0->unk_38[1], 0x14, argA);
 
     sp88[0] = mem_pool_alloc(argA, sizeof(unk_func_88507D4C));
@@ -1715,10 +1715,10 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func88507D4C)Memmap_GetFragmentVaddr(func_88507D4C))(
         sp88[1], 0x154, arg0->unk_38[1]->unk_00.unk_00.unk_14.unk_02 + 0x36, 0xCC, 1, arg0->unk_38[1]);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, sp88[1]);
-    func_882159AC(arg0->unk_38[1], sp88[1]);
+    ScrollableList_SetItemRenderer(arg0->unk_38[1], sp88[1]);
 
     temp_v0_16 = mem_pool_alloc(argA, sizeof(unk_func_882170A8));
-    func_882170A8(temp_v0_16, 0x98, 2, arg0->unk_38[1], 2);
+    ItemSlot_Init(temp_v0_16, 0x98, 2, arg0->unk_38[1], 2);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(sp88[1], temp_v0_16);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0->unk_2C, arg0->unk_38[1]);
 
@@ -1726,8 +1726,8 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
         temp_s0_5 = func_88209AF0(arg0->unk_8C);
         func_882091F8(arg0->unk_30[0], 0x30000);
         func_882091F8(arg0->unk_30[1], temp_s0_5);
-        func_88217018(arg0->unk_38[0], arg3, 0x30000);
-        func_88217018(arg0->unk_38[1],
+        ScrollableList_SetDataPtr(arg0->unk_38[0], arg3, 0x30000);
+        ScrollableList_SetDataPtr(arg0->unk_38[1],
                       (unk_func_8820BE14_06C_000*)((u8*)arg0->unk_8C[temp_s0_5 >> 0x10].unk_00 +
                                                    (arg0->unk_8C[temp_s0_5 >> 0x10].unk_0C * (temp_s0_5 & 0xFFFF))),
                       temp_s0_5);
@@ -1736,9 +1736,9 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
         func_882091F8(arg0->unk_30[0], 0);
         func_882091F8(arg0->unk_30[1], temp_s1);
         temp_s0_8 = arg0->unk_8C;
-        func_88217018(arg0->unk_38[0], temp_s0_8[0].unk_00, 0);
+        ScrollableList_SetDataPtr(arg0->unk_38[0], temp_s0_8[0].unk_00, 0);
         temp_s0_8 = arg0->unk_8C;
-        func_88217018(arg0->unk_38[1], temp_s0_8[1].unk_00, temp_s1);
+        ScrollableList_SetDataPtr(arg0->unk_38[1], temp_s0_8[1].unk_00, temp_s1);
     }
 
     arg0->unk_74->unk_2C = mem_pool_alloc(argA, sizeof(unk_func_8820B12C_02C));
@@ -1777,7 +1777,7 @@ void func_88209B54(unk_func_8820BE14_02C* arg0, s32 arg1, s32 arg2, unk_func_882
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, temp_s0_6);
 
     arg0->unk_84 = mem_pool_alloc(argA, sizeof(unk_func_889000C4));
-    ((func889000C4)Memmap_GetFragmentVaddr(func_889000C4))(arg0->unk_84, arg3 != NULL, arg0->unk_2C, 0, arg9, argA);
+    ((func889000C4)Memmap_GetFragmentVaddr(Dialog_Create))(arg0->unk_84, arg3 != NULL, arg0->unk_2C, 0, arg9, argA);
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(arg0, arg0->unk_84);
 
     temp_s0_7 = mem_pool_alloc(argA, sizeof(char) * 0x80);
@@ -1856,11 +1856,11 @@ void func_8820B0A0(unk_func_8820BE14_02C* arg0, s32 arg1) {
 }
 
 void func_8820B0E0(unk_func_8820B12C_02C* arg0) {
-    func_882158BC(arg0->unk_4C[0]);
-    func_882158BC(arg0->unk_54[0]);
-    func_882158BC(arg0->unk_54[1]);
-    func_882158BC(arg0->unk_4C[1]);
-    func_882158BC(arg0->unk_5C[1]);
+    Panel_ToggleFill(arg0->unk_4C[0]);
+    Panel_ToggleFill(arg0->unk_54[0]);
+    Panel_ToggleFill(arg0->unk_54[1]);
+    Panel_ToggleFill(arg0->unk_4C[1]);
+    Panel_ToggleFill(arg0->unk_5C[1]);
 }
 
 void func_8820B12C(unk_func_8820B12C* arg0, unk_func_8820BE14_02C* arg1) {
@@ -2025,7 +2025,7 @@ void func_8820B504(unk_func_8820BE14_02C* arg0, s32 arg1) {
 
     if (arg1 & 3) {
         func_80025540(temp_s5);
-        ((func88900970)Memmap_GetFragmentVaddr(func_88900970))(arg0->unk_84, temp_s5);
+        ((func88900970)Memmap_GetFragmentVaddr(Dialog_Run))(arg0->unk_84, temp_s5);
     }
 
     if (arg1 & 4) {
@@ -2047,18 +2047,18 @@ s32 func_8820B714(unk_func_8820BE14_02C* arg0, Controller* arg1) {
     if (sp30 != 0) {
         arg0->unk_74->unk_28->unk_14(arg0->unk_74->unk_28, 0);
 
-        sp24 = ((func889006D4)Memmap_GetFragmentVaddr(func_889006D4));
+        sp24 = ((func889006D4)Memmap_GetFragmentVaddr(Dialog_SetEnabled));
 
         sp24(arg0->unk_84, func_8820B3AC(arg0));
 
-        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(func_88900808))(arg0->unk_84, arg1, 1);
+        temp_v0_2 = ((func88900808)Memmap_GetFragmentVaddr(Dialog_WaitForSelection))(arg0->unk_84, arg1, 1);
         if (temp_v0_2 == 0) {
             func_8820B504(arg0, sp30);
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_84);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_84);
         } else if (temp_v0_2 == 1) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_84);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_84);
         } else if (temp_v0_2 == 2) {
-            ((func889007AC)Memmap_GetFragmentVaddr(func_889007AC))(arg0->unk_84);
+            ((func889007AC)Memmap_GetFragmentVaddr(Dialog_SetCloseState))(arg0->unk_84);
             sp34 = 0;
         }
 
@@ -2145,7 +2145,7 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
                         if (func_88207154(arg0->unk_00.unk_24->unk_78[sp64], arg1) == 1) {
                             sp60 = func_88206E50(arg0->unk_00.unk_24->unk_78[sp64]);
                             func_882091F8(arg0->unk_00.unk_24->unk_30[sp64], sp60);
-                            func_88217018(arg0->unk_00.unk_24->unk_38[sp64],
+                            ScrollableList_SetDataPtr(arg0->unk_00.unk_24->unk_38[sp64],
                                           (u8*)arg0->unk_00.unk_24->unk_8C[sp60 >> 0x10].unk_00 +
                                               (arg0->unk_00.unk_24->unk_8C[sp60 >> 0x10].unk_0C * (sp60 & 0xFFFF)),
                                           sp60);
@@ -2225,14 +2225,14 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
         sp50 = temp_v0_8 & 0xFFFF;
         sp54 = temp_v0_8 >> 0x10;
 
-        HAL_Strcpy(sp30, GetMessageString(NULL, 0, D_88224FB4, D_88217FBC[sp54]));
+        HAL_Strcpy(sp30, GetMessageString(NULL, 0, gMessageBank_2, D_88217FBC[sp54]));
 
         if ((sp54 == 1) || (sp54 == 2)) {
             sprintf(&sp30[strlen(sp30)], " %d", sp50 + 1);
         }
 
         MessageBank_SetPointer_0x14_0x2A(0x25, &sp30);
-        GetMessageString(arg0->unk_00.unk_24->unk_88->unk_40, 0x80, D_88224FB4, 0x11);
+        GetMessageString(arg0->unk_00.unk_24->unk_88->unk_40, 0x80, gMessageBank_2, 0x11);
 
         ((func8850A10C)Memmap_GetFragmentVaddr(func_8850A10C))(arg0->unk_00.unk_24->unk_80, arg0->unk_00.unk_24->unk_88,
                                                                2, 0);
@@ -2249,7 +2249,7 @@ s32 func_8820B838(unk_func_8820B12C* arg0, Controller* arg1) {
     return var_s1;
 }
 
-// Inner loops: dead `j = 0;` before func_882062E4 plus for (j = 0; ...) gives the target's delay-slot
+// Inner loops: dead `j = 0;` before LoadPokemonFromSave plus for (j = 0; ...) gives the target's delay-slot
 // move; indexing ptr[i] with ptr2 = &ptr[i].unk_04 (count stored through ptr2) puts ptr2 in s0.
 void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4, s32 arg5, char** arg6,
                    char** arg7, char** arg8, char** arg9, char** argA, char** argB) {
@@ -2317,7 +2317,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ptr = var_s4 = arg0->unk_6C.unk_00;
     for (i = 0; i < 1; i++, var_s4++) {
         j = 0;
-        count = func_882062E4(var_s1, 6, 0x20, spB4, i);
+        count = LoadPokemonFromSave(var_s1, 6, 0x20, spB4, i);
         ptr2 = &ptr[i].unk_04;
         ptr2->unk_08 = count;
 
@@ -2331,7 +2331,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ptr = var_s4 = arg0->unk_7C.unk_00;
     for (i = 0; i < 12; i++, var_s4++) {
         j = 0;
-        count = func_882062E4(var_s1, 20, 0x21, spB4, i);
+        count = LoadPokemonFromSave(var_s1, 20, 0x21, spB4, i);
         ptr2 = &ptr[i].unk_04;
         ptr2->unk_08 = count;
 
@@ -2345,7 +2345,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ptr = var_s4 = arg0->unk_8C.unk_00;
     for (i = 0; i < 12; i++, var_s4++) {
         j = 0;
-        count = func_882062E4(var_s1, 20, 0x11, 0, i);
+        count = LoadPokemonFromSave(var_s1, 20, 0x11, 0, i);
         ptr2 = &ptr[i].unk_04;
         ptr2->unk_08 = count;
 
@@ -2358,7 +2358,7 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     if (arg3 == 1) {
         temp_v0_5 = mem_pool_alloc(arg4, sizeof(unk_func_80026268_arg0));
-        func_88206110(temp_v0_5);
+        InitMonData(temp_v0_5);
 
         spA0 = mem_pool_alloc(arg4, sizeof(unk_func_8820BE14_06C_000));
         PtrList_Init(&spA0->unk_04, 1, arg4);
@@ -2384,11 +2384,11 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(func_88509A2C))(temp_s1, 0x38, 0x22, func_80029080(),
-                                                           GetMessageString(NULL, 0, D_88224FB0, 0));
+                                                           GetMessageString(NULL, 0, gMessageBank_2A, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s2, temp_s1);
 
     temp_s1_2 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(temp_s1_2, 0, 0, GetMessageString(NULL, 0, D_88224FB4, 0));
+    ((func88509E34)Memmap_GetFragmentVaddr(func_88509E34))(temp_s1_2, 0, 0, GetMessageString(NULL, 0, gMessageBank_2, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(func_8850068C))(temp_s2, temp_s1_2);
 
     temp_s0_4 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
@@ -2403,8 +2403,8 @@ void func_8820BE14(unk_func_8820BE14* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     arg0->unk_30.unk_18 = 0;
 
     arg0->unk_4C = arg7;
-    arg0->unk_50 = D_88224FB8;
-    arg0->unk_54 = D_88224FBC;
+    arg0->unk_50 = gMessageBank_24;
+    arg0->unk_54 = gMessageBank_25;
     arg0->unk_58 = arg8;
     arg0->unk_5C = arg9;
     arg0->unk_60 = argA;
@@ -2507,10 +2507,10 @@ void TextObject_Show(TextObject* arg0, s32 arg1) {
     }
     MessageBank_Init();
 
-    D_88224FB0 = GetMessageBank(0x2A);
-    D_88224FB4 = GetMessageBank(2);
-    D_88224FB8 = GetMessageBank(0x24);
-    D_88224FBC = GetMessageBank(0x25);
+    gMessageBank_2A = GetMessageBank(0x2A);
+    gMessageBank_2 = GetMessageBank(2);
+    gMessageBank_24 = GetMessageBank(0x24);
+    gMessageBank_25 = GetMessageBank(0x25);
 
     sp4C = GetMessageBank(7);
     sp48 = GetMessageBank(6);

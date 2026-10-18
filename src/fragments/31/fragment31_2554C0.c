@@ -4,10 +4,10 @@
 #include "src/32D10.h"
 #include "src/334D0.h"
 
-const char D_810041C0[0xC] = "DUMMY NAME";
-const char D_810041CC[0x4] = "";
+const char gDummyNameString[0xC] = "DUMMY NAME";
+const char gEmptyString[0x4] = "";
 
-const Gfx D_810041D0[] = {
+const Gfx gCommonGfxInit[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -18,12 +18,12 @@ const Gfx D_810041D0[] = {
     gsSPEndDisplayList(),
 };
 
-const char D_81004210[0x4] = "Ａ";
-const char D_81004214[0x4] = "";
-const char D_81004218[0x4] = "";
-const char D_8100421C[0x4] = "";
+const char gFullwidthAChar[0x4] = "Ａ";
+const char gEmptyString1[0x4] = "";
+const char gEmptyString2[0x4] = "";
+const char gEmptyString3[0x4] = "";
 
-Gfx* func_81000200(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
+Gfx* Stage_LoadTextureSegment(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gSPDisplayList(gfx++, addresses->segments[0]);
     // TODO: Convert to gDPLoadTextureBlock
     gDPSetTextureImage(gfx++, G_IM_FMT_I, G_IM_SIZ_16b, 1, addresses->textures[index]);
@@ -38,7 +38,7 @@ Gfx* func_81000200(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     return gfx;
 }
 
-void func_810002DC(s32 arg0, DisplayListState* state) {
+void Stage_BuildAnimationGfx(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -46,11 +46,11 @@ void func_810002DC(s32 arg0, DisplayListState* state) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x50);
         state->gfx = gfx;
-        func_81000200(gfx, addresses, gAnimationFrame & 7);
+        Stage_LoadTextureSegment(gfx, addresses, gAnimationFrame & 7);
     }
 }
 
-Gfx* func_81000330(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
+Gfx* Stage_DrawModelWithTexture(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gDPLoadTextureBlock(gfx++, addresses->textures[index], G_IM_FMT_IA, G_IM_SIZ_8b, 32, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     Model_DrawIfReady();
     {
@@ -61,8 +61,8 @@ Gfx* func_81000330(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     }
 }
 
-void func_81000420(s32 arg0, DisplayListState* state) {
-    static s32 D_81003FD0 = 0;
+void Stage_UpdateAndRenderModel(s32 arg0, DisplayListState* state) {
+    static s32 gStageModelCounter = 0;
     Gfx* gfx;
     DisplayListAddresses* addresses;
     u8 temp_v1;
@@ -72,7 +72,7 @@ void func_81000420(s32 arg0, DisplayListState* state) {
         addresses = state->addresses;
         gfx = GfxAlloc(0x140);
         state->gfx = gfx;
-        func_81000330(gfx, addresses, ((gModelUpdateFlag[temp_v1 & 1] * 3) + D_81003FD0) % 8);
-        D_81003FD0 += 1;
+        Stage_DrawModelWithTexture(gfx, addresses, ((gModelUpdateFlag[temp_v1 & 1] * 3) + gStageModelCounter) % 8);
+        gStageModelCounter += 1;
     }
 }
