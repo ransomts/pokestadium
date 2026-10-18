@@ -47,22 +47,22 @@ typedef struct unk_D_84803548 {
     /* 0x02 */ u16 unk_02;
 } unk_D_84803548; // size = 0x4
 
-void func_84800020(void);
-void func_84800184(void);
-void func_84800458(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2);
-void func_84800530(s32 arg0, s32 arg1, unk_D_84803760* arg2);
-s32 func_8480067C(s32 arg0, s32 arg1, s8 arg2, s8 arg3);
-void func_848007B8(void);
-void func_848009E8(void);
-void func_84800C18(s32 arg0, s32 arg1);
-void func_84800C68(s32 arg0);
+void TransferPakErrorScreen(void);
+void TransferPakMessageScroll(void);
+void SelectionState_Init(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2);
+void SelectionState_DrawSprite(s32 arg0, s32 arg1, unk_D_84803760* arg2);
+s32 SelectionState_UpdateValue(s32 arg0, s32 arg1, s8 arg2, s8 arg3);
+void PlayerPanel_DrawLeft(void);
+void PlayerPanel_DrawRight(void);
+void MoveSelection_Record(s32 arg0, s32 arg1);
+void SelectionState_Reset(s32 arg0);
 void func_84800CA4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 void func_84800D08(unk_D_848037A0* arg0);
-void func_848012A4(s16 arg0, s16 arg1, s16 arg2);
-void func_84801340(unk_D_848037A0* arg0);
-void func_848015F8(unk_D_848037A0* arg0);
-void func_84801800(unk_D_848037A0* arg0);
-void func_84801A88(unk_D_848037A0* arg0);
+void StatusIcon_DrawAnimated(s16 arg0, s16 arg1, s16 arg2);
+void ModeSelectionPanel_Draw(unk_D_848037A0* arg0);
+void ResultMessage_Draw(unk_D_848037A0* arg0);
+void CenteredMessage_Draw(unk_D_848037A0* arg0);
+void PokemonInfo_Draw(unk_D_848037A0* arg0);
 void func_8480218C(unk_D_848037A0* arg0);
 void func_8480225C(unk_D_848037A0* arg0);
 void func_84802350(void);

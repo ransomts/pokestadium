@@ -20,7 +20,7 @@ static BinArchive* D_84803780;
 static void* D_84803784;
 static char** D_84803788;
 static char** D_8480378C;
-static char** D_84803790;
+static char** gMsgBank_Common;
 static char** D_84803794;
 static s16 D_84803798;
 static s16 D_8480379A;
@@ -103,7 +103,7 @@ static u8* D_8480369C[][3] = {
 };
 static u8* D_848036D8 = D_30084C0;
 
-void func_84800020(void) {
+void TransferPakErrorScreen(void) {
     Gfx_DrawTextureAtlas(D_84803784);
 
     gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
@@ -117,12 +117,12 @@ void func_84800020(void) {
     Text_SetFont(8, 0);
     Text_Print(0x5A, 0x1AA, "*");
     Text_Print(0x149, 0x1AA, "*");
-    Text_Print(0x91, 0x1A8, GetMessageString(NULL, 0, D_84803790, 2));
-    Text_Print(0x180, 0x1A8, GetMessageString(NULL, 0, D_84803790, 3));
+    Text_Print(0x91, 0x1A8, GetMessageString(NULL, 0, gMsgBank_Common, 2));
+    Text_Print(0x180, 0x1A8, GetMessageString(NULL, 0, gMsgBank_Common, 3));
     Text_SetupDL();
 }
 
-void func_84800184(void) {
+void TransferPakMessageScroll(void) {
     s32 i;
     s32 var_s2;
     s32 var_s4;
@@ -146,9 +146,9 @@ void func_84800184(void) {
     Text_SetEnvColor(0xA5, 0xDE, 0x8C, 0xFF);
 
     if ((D_84816420->unk_0001 == 0) || (D_84816420->unk_0001 == 8)) {
-        var_v0 = GetMessageString(NULL, 0, D_84803790, 1);
+        var_v0 = GetMessageString(NULL, 0, gMsgBank_Common, 1);
     } else {
-        var_v0 = GetMessageString(NULL, 0, D_84803790, 0);
+        var_v0 = GetMessageString(NULL, 0, gMsgBank_Common, 0);
     }
 
     for (i = 0; i < 16; i++) {
@@ -169,7 +169,7 @@ void func_84800184(void) {
     }
 }
 
-void func_84800458(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2) {
+void SelectionState_Init(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2) {
     s32 i;
 
     arg0->unk_00 = 0;
@@ -201,7 +201,7 @@ void func_84800458(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2) {
     }
 }
 
-void func_84800530(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
+void SelectionState_DrawSprite(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
     u8* sp2C;
 
     if (arg2->unk_0F == -1) {
@@ -228,7 +228,7 @@ void func_84800530(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
     }
 }
 
-s32 func_8480067C(s32 arg0, s32 arg1, s8 arg2, s8 arg3) {
+s32 SelectionState_UpdateValue(s32 arg0, s32 arg1, s8 arg2, s8 arg3) {
     s32 sp34;
     s32 sp30;
 
@@ -258,7 +258,7 @@ s32 func_8480067C(s32 arg0, s32 arg1, s8 arg2, s8 arg3) {
     return arg2;
 }
 
-void func_848007B8(void) {
+void PlayerPanel_DrawLeft(void) {
     unk_D_84803760* temp_v0 = &D_84803760[0];
     s32 i;
     s16 var_s2;
@@ -280,20 +280,20 @@ void func_848007B8(void) {
     Gfx_DrawSpriteRGBA16(0x25, var_s2 + 0x68, 0x28, 0x2E, D_3002E20, 0x28, 0x200000);
 
     if (temp_v0->unk_0F == -1) {
-        func_84800530(0x2D, 0x21, &D_84803760[0]);
+        SelectionState_DrawSprite(0x2D, 0x21, &D_84803760[0]);
     } else {
-        func_84800530(0x2D, 0x1D, &D_84803760[0]);
+        SelectionState_DrawSprite(0x2D, 0x1D, &D_84803760[0]);
     }
 
     var_s1 = var_s2 + 0x76;
     for (i = 0; i < 6; i++) {
-        temp_v0->unk_02[i] = func_8480067C(0x2D, var_s1 - i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
+        temp_v0->unk_02[i] = SelectionState_UpdateValue(0x2D, var_s1 - i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_848009E8(void) {
+void PlayerPanel_DrawRight(void) {
     unk_D_84803760* temp_v0 = &D_84803760[1];
     s32 i;
     s16 var_s2;
@@ -315,20 +315,20 @@ void func_848009E8(void) {
     Gfx_DrawSpriteRGBA16(0x2D, var_s2 + 0x88, 0x20, 0xE, D_3004D40, 0x20, 0x200000);
 
     if (temp_v0->unk_0F == -1) {
-        func_84800530(0x2D, 0x189, &D_84803760[1]);
+        SelectionState_DrawSprite(0x2D, 0x189, &D_84803760[1]);
     } else {
-        func_84800530(0x2D, 0x17C, &D_84803760[1]);
+        SelectionState_DrawSprite(0x2D, 0x17C, &D_84803760[1]);
     }
 
     var_s1 = var_s2 + 0xC;
     for (i = 0; i < 6; i++) {
-        temp_v0->unk_02[i] = func_8480067C(0x2D, var_s1 + i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
+        temp_v0->unk_02[i] = SelectionState_UpdateValue(0x2D, var_s1 + i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84800C18(s32 arg0, s32 arg1) {
+void MoveSelection_Record(s32 arg0, s32 arg1) {
     unk_D_84803760* temp_v0 = &D_84803760[arg0];
 
     temp_v0->unk_02[temp_v0->unk_00] = ((arg1 + 1) << 4) | (temp_v0->unk_02[temp_v0->unk_00] & 0xF);
@@ -336,7 +336,7 @@ void func_84800C18(s32 arg0, s32 arg1) {
     temp_v0->unk_00++;
 }
 
-void func_84800C68(s32 arg0) {
+void SelectionState_Reset(s32 arg0) {
     unk_D_84803760* ptr = &D_84803760[arg0];
     s32 i;
 
@@ -413,7 +413,7 @@ void func_84800D08(unk_D_848037A0* arg0) {
     }
 }
 
-void func_848012A4(s16 arg0, s16 arg1, s16 arg2) {
+void StatusIcon_DrawAnimated(s16 arg0, s16 arg1, s16 arg2) {
     if (D_84816458[arg2] < 6) {
         arg0 += D_84816458[arg2];
     } else {
@@ -423,7 +423,7 @@ void func_848012A4(s16 arg0, s16 arg1, s16 arg2) {
     D_84816458[arg2] = (D_84816458[arg2] + 1) % 12;
 }
 
-void func_84801340(unk_D_848037A0* arg0) {
+void ModeSelectionPanel_Draw(unk_D_848037A0* arg0) {
     s32 sp38;
     s16 var_s1;
     s16 var_s2;
@@ -441,16 +441,16 @@ void func_84801340(unk_D_848037A0* arg0) {
         func_84800CA4(var_s1, var_s2, 0x15F, 0x53, arg0->unk_0001);
 
         if (arg0->unk_000A == 0) {
-            func_848012A4(var_s1 + 0x26, var_s2 + 0x30, arg0->unk_0000);
+            StatusIcon_DrawAnimated(var_s1 + 0x26, var_s2 + 0x30, arg0->unk_0000);
         } else {
-            func_848012A4(var_s1 + 0x86, var_s2 + 0x30, arg0->unk_0000);
+            StatusIcon_DrawAnimated(var_s1 + 0x86, var_s2 + 0x30, arg0->unk_0000);
         }
 
         Text_ResetState();
         Text_SetFont(0x10, 0);
-        Text_Print(var_s1 + 0x1F, var_s2 + 0xB, GetMessageString(NULL, 0, D_84803790, 4));
-        Text_Print(var_s1 + 0x4F, var_s2 + 0x30, GetMessageString(NULL, 0, D_84803790, 5));
-        Text_Print(var_s1 + 0xAF, var_s2 + 0x30, GetMessageString(NULL, 0, D_84803790, 6));
+        Text_Print(var_s1 + 0x1F, var_s2 + 0xB, GetMessageString(NULL, 0, gMsgBank_Common, 4));
+        Text_Print(var_s1 + 0x4F, var_s2 + 0x30, GetMessageString(NULL, 0, gMsgBank_Common, 5));
+        Text_Print(var_s1 + 0xAF, var_s2 + 0x30, GetMessageString(NULL, 0, gMsgBank_Common, 6));
         Text_SetupDL();
         arg0->unk_0007 = 2;
     } else {
@@ -460,21 +460,21 @@ void func_84801340(unk_D_848037A0* arg0) {
         func_84800D08(arg0);
         Text_DrawWindowRect(var_s1 + 5, var_s2 + 5, 0x1CD, 0x54, 0, 0, 0, 0x80);
         if (arg0->unk_000A == 0) {
-            func_848012A4(var_s1 + 0x5C, var_s2 + 0x3C, arg0->unk_0000);
+            StatusIcon_DrawAnimated(var_s1 + 0x5C, var_s2 + 0x3C, arg0->unk_0000);
         } else {
-            func_848012A4(var_s1 + 0xBC, var_s2 + 0x3C, arg0->unk_0000);
+            StatusIcon_DrawAnimated(var_s1 + 0xBC, var_s2 + 0x3C, arg0->unk_0000);
         }
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(var_s1 + 0x50, var_s2 + 0x14, GetMessageString(NULL, 0, D_84803790, 4));
-        Text_Print(var_s1 + 0x80, var_s2 + 0x3C, GetMessageString(NULL, 0, D_84803790, 5));
-        Text_Print(var_s1 + 0xE0, var_s2 + 0x3C, GetMessageString(NULL, 0, D_84803790, 6));
+        Text_Print(var_s1 + 0x50, var_s2 + 0x14, GetMessageString(NULL, 0, gMsgBank_Common, 4));
+        Text_Print(var_s1 + 0x80, var_s2 + 0x3C, GetMessageString(NULL, 0, gMsgBank_Common, 5));
+        Text_Print(var_s1 + 0xE0, var_s2 + 0x3C, GetMessageString(NULL, 0, gMsgBank_Common, 6));
         Text_SetupDL();
     }
 }
 
-void func_848015F8(unk_D_848037A0* arg0) {
+void ResultMessage_Draw(unk_D_848037A0* arg0) {
     char sp38[0x100];
     s32 sp34;
     s32 sp30;
@@ -509,7 +509,7 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
         Text_SetLineHeight(0x25);
         MessageBank_SetPointer_1_9(3, sp2C);
-        Text_Print(sp34 + 0x10, sp30 + 0xB, GetMessageString(sp38, sizeof(sp38), D_84803790, 7));
+        Text_Print(sp34 + 0x10, sp30 + 0xB, GetMessageString(sp38, sizeof(sp38), gMsgBank_Common, 7));
         Text_SetupDL();
         arg0->unk_0007 = 2;
     } else {
@@ -523,12 +523,12 @@ void func_848015F8(unk_D_848037A0* arg0) {
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
         Text_SetLineHeight(0x28);
         MessageBank_SetPointer_1_9(3, sp2C);
-        Text_Print(sp34 + 0x50, sp30 + 0x14, GetMessageString(NULL, 0, D_84803790, 7));
+        Text_Print(sp34 + 0x50, sp30 + 0x14, GetMessageString(NULL, 0, gMsgBank_Common, 7));
         Text_SetupDL();
     }
 }
 
-void func_84801800(unk_D_848037A0* arg0) {
+void CenteredMessage_Draw(unk_D_848037A0* arg0) {
     s32 sp3C;
     s32 sp38;
     s32 sp34;
@@ -549,7 +549,7 @@ void func_84801800(unk_D_848037A0* arg0) {
         Text_SetFont(0x20, 0);
         Text_BeginRender();
         Text_SetPrimColor(0x1C, 0x74, 0xFF, 0xFF);
-        temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
+        temp_v0 = GetMessageString(NULL, 0, gMsgBank_Common, 8);
         Text_Print((sp3C - (MeasureTextWidth(0x20, 0, temp_v0) / 2)) + 0xAF, sp38 + 0x19, temp_v0);
         Text_EndRender();
         Text_SetupDL();
@@ -579,14 +579,14 @@ void func_84801800(unk_D_848037A0* arg0) {
         Text_BeginRender();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp34);
         Text_SetPrimColor(0x1C, 0x74, 0xFF, sp34);
-        temp_v0 = GetMessageString(NULL, 0, D_84803790, 8);
+        temp_v0 = GetMessageString(NULL, 0, gMsgBank_Common, 8);
         Text_Print((sp3C - (MeasureTextWidth(0x20, 0, temp_v0) / 2)) + 0xEB, sp38 + 0x25, temp_v0);
         Text_EndRender();
         Text_SetupDL();
     }
 }
 
-void func_84801A88(unk_D_848037A0* arg0) {
+void PokemonInfo_Draw(unk_D_848037A0* arg0) {
     s32 i;
     s16 temp_fp;
     s8 temp_s1;
@@ -612,14 +612,14 @@ void func_84801A88(unk_D_848037A0* arg0) {
     Text_SetFont(4, 0);
     Text_Print(temp_fp + 0x32, sp7C + 7, arg0->unk_0018[temp_s1].unk_30);
     Text_Print(temp_fp + 0x32, sp7C + 0x1B, "%s", GetMessageString(NULL, 0, D_84803794, 8));
-    Text_Print(temp_fp + 0xBE, sp7C + 7, GetMessageString(NULL, 0, D_84803790, 9));
-    Text_Print(temp_fp + 0xBE, sp7C + 0x1B, GetMessageString(NULL, 0, D_84803790, 0xA));
-    Text_Print(temp_fp + 0xBE, sp7C + 0x2F, GetMessageString(NULL, 0, D_84803790, 0xB));
-    Text_Print(temp_fp + 0xBE, sp7C + 0x43, GetMessageString(NULL, 0, D_84803790, 0xC));
-    Text_Print(temp_fp + 0x32, sp7C + 0x2F, GetMessageString(NULL, 0, D_84803790, 0xD));
+    Text_Print(temp_fp + 0xBE, sp7C + 7, GetMessageString(NULL, 0, gMsgBank_Common, 9));
+    Text_Print(temp_fp + 0xBE, sp7C + 0x1B, GetMessageString(NULL, 0, gMsgBank_Common, 0xA));
+    Text_Print(temp_fp + 0xBE, sp7C + 0x2F, GetMessageString(NULL, 0, gMsgBank_Common, 0xB));
+    Text_Print(temp_fp + 0xBE, sp7C + 0x43, GetMessageString(NULL, 0, gMsgBank_Common, 0xC));
+    Text_Print(temp_fp + 0x32, sp7C + 0x2F, GetMessageString(NULL, 0, gMsgBank_Common, 0xD));
 
     if (sp78->unk_06 != sp78->unk_07) {
-        Text_Print(temp_fp + 0x32, sp7C + 0x43, GetMessageString(NULL, 0, D_84803790, 0xE));
+        Text_Print(temp_fp + 0x32, sp7C + 0x43, GetMessageString(NULL, 0, gMsgBank_Common, 0xE));
     }
 
     idx = RemapStadiumModeIndex(sp78->unk_06);
@@ -712,19 +712,19 @@ void func_8480225C(unk_D_848037A0* arg0) {
                 break;
 
             case 1:
-                func_84801340(arg0);
+                ModeSelectionPanel_Draw(arg0);
                 break;
 
             case 2:
-                func_848015F8(arg0);
+                ResultMessage_Draw(arg0);
                 break;
 
             case 3:
-                func_84801800(arg0);
+                CenteredMessage_Draw(arg0);
                 break;
 
             case 4:
-                func_84801A88(arg0);
+                PokemonInfo_Draw(arg0);
                 break;
         }
 
@@ -732,7 +732,7 @@ void func_8480225C(unk_D_848037A0* arg0) {
             arg0->unk_0006--;
         }
     } else if (arg0->unk_0005 == 3) {
-        func_84801800(arg0);
+        CenteredMessage_Draw(arg0);
     }
 }
 
@@ -861,7 +861,7 @@ void func_84802614(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
 
     arg0->unk_000C[arg0->unk_000B] = arg1;
     arg0->unk_000B++;
-    func_84800C18(arg0->unk_0003, arg0->unk_0001);
+    MoveSelection_Record(arg0->unk_0003, arg0->unk_0001);
 
     if (arg0->unk_0009 != 0) {
         arg0->unk_0006 = 2;
@@ -888,7 +888,7 @@ void func_84802740(unk_D_848037A0* arg0) {
     if (arg0->unk_000B > 0) {
         arg0->unk_000B = 0;
 
-        func_84800C68(arg0->unk_0003);
+        SelectionState_Reset(arg0->unk_0003);
 
         if (arg0->unk_0009 != 0) {
             arg0->unk_0006 = 2;
@@ -964,7 +964,7 @@ void func_8480290C(Controller* arg0, unk_D_848037A0* arg1) {
             arg1->unk_0005 = 0;
             arg1->unk_000B = 0;
             arg1->unk_0009 = 0;
-            func_84800C68(arg1->unk_0003);
+            SelectionState_Reset(arg1->unk_0003);
             PlaySoundEffect(3);
             if (arg1->unk_0002 != -1) {
                 temp_v0_2 = &D_848037A0[arg1->unk_0002];
@@ -984,7 +984,7 @@ void func_84802A44(Controller* arg0, unk_D_848037A0* arg1) {
         arg1->unk_000B = 0;
         arg1->unk_0009 = 0;
         arg1->unk_0006 = 2;
-        func_84800C68(arg1->unk_0003);
+        SelectionState_Reset(arg1->unk_0003);
         PlaySoundEffect(3);
     }
 }
@@ -1092,7 +1092,7 @@ s32 func_84802C40(s32 arg0) {
     Stage_BeginDisplayList();
 
     if (D_84803798 != 0) {
-        func_84800020();
+        TransferPakErrorScreen();
     }
 
     for (i = 0; i < D_8480379C; i++) {
@@ -1100,9 +1100,9 @@ s32 func_84802C40(s32 arg0) {
         func_8480225C(&D_848037A0[i]);
     }
 
-    func_848007B8();
-    func_848009E8();
-    func_84800184();
+    PlayerPanel_DrawLeft();
+    PlayerPanel_DrawRight();
+    TransferPakMessageScroll();
 
     if (arg0 == 0) {
         if (var_s2 == D_8480379C) {
@@ -1225,8 +1225,8 @@ void func_84803110(unk_D_800AE540* arg0) {
     D_84816450 = 0;
     D_84816428.buttonPressed = 0;
 
-    func_84800458(&D_84803760[0], &D_84816420->unk_1194[0], D_84816420->unk_0001);
-    func_84800458(&D_84803760[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
+    SelectionState_Init(&D_84803760[0], &D_84816420->unk_1194[0], D_84816420->unk_0001);
+    SelectionState_Init(&D_84803760[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
 
     if (temp_s0->unk_01 == 1) {
         func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
@@ -1269,7 +1269,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
 
     D_84803788 = GetMessageBank(0x25);
     D_8480378C = GetMessageBank(0x26);
-    D_84803790 = GetMessageBank(0x12);
+    gMsgBank_Common = GetMessageBank(0x12);
     D_84803794 = GetMessageBank(6);
 
     func_84803110(&gBattleContext);

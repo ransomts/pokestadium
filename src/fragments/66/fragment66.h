@@ -16,23 +16,23 @@ typedef struct unk_D_832027C8 {
     /* 0x04 */ PokemonData unk_04;
 } unk_D_832027C8; // size = 0x58
 
-s32 func_83200020(s32 arg0, Fragment2_1GraphNode* arg1);
-s32 func_83200064(PokemonData* arg0);
-s32 func_832000A0(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3);
-s32 func_83200148(s16 arg0, s16 arg1, s16 arg2);
-s32 func_8320029C(void);
-s32 func_8320037C(void);
+s32 GeoCmd_AdjustNodeZOffset(s32 arg0, Fragment2_1GraphNode* arg1);
+s32 Pokemon_IsStandard(PokemonData* arg0);
+s32 Pokemon_MatchesSelectionCriteria(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3);
+s32 CountMatchingPokemonInBlock(s16 arg0, s16 arg1, s16 arg2);
+s32 SnapSelect_FindPokemon(void);
+s32 GetPokemonCount(void);
 void func_832003AC(void);
 void func_83200468(void);
 s32 func_8320058C(u8 arg0);
-void func_832005E4(s16 arg0, s16 arg1);
-void func_83200684(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void Text_PrintFadingChar(s16 arg0, s16 arg1);
+void UI_DrawGradientPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_83200700(s16 arg0, s16 arg1);
-void func_832007A4(char* arg0, s32 arg1);
-void func_8320084C(char* arg0, s32 arg1);
+void UI_DisplayMessageRepeated(char* arg0, s32 arg1);
+void UI_DisplayMessageWaitA(char* arg0, s32 arg1);
 void func_83200934(s8* arg0);
-s32 func_83200ADC(char* arg0);
-s32 func_83200CD8(char* arg0);
+s32 UI_PromptYesNo(char* arg0);
+s32 UI_PromptMoveSelection(char* arg0);
 void func_83200FF8(void);
 void func_832010BC(void);
 void func_8320118C(void);

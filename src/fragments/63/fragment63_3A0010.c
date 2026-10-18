@@ -10,7 +10,7 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static Vtx D_84B16AA0[] = {
+static Vtx gFragment63_BarVtx[] = {
     VTX(-64, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-64, -32, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, -32, 0, 1024, 2048, 0xFF, 0xFF, 0xFF, 0xFF), VTX(-32, 32, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 32, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-32, -32, 0, 1024, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -20,11 +20,11 @@ static Vtx D_84B16AA0[] = {
     VTX(32, 32, 0, 3072, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(32, -32, 0, 3072, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -32, 0, 4096, 2048, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(64, 32, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16BA0[] = {
+static Gfx gFragment63_BarDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16AA0, 16, 0),
+    gsSPVertex(gFragment63_BarVtx, 16, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 31, 63, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -39,55 +39,55 @@ static Gfx D_84B16BA0[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16CC8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16AA0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0BF10, D_84B16BA0, 0x06000000, 0x01000000,
+static u32 gFragment63_GeoLayoutBarA[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_BarVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Fragment63_RenderCallbackBarA, gFragment63_BarDL, 0x06000000, 0x01000000,
 };
-static u32 D_84B16CFC[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16AA0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0BFE4, D_84B16BA0, 0x06000000, 0x01000000,
+static u32 gFragment63_GeoLayoutBarB[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_BarVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Fragment63_RenderCallbackBarB, gFragment63_BarDL, 0x06000000, 0x01000000,
 };
-static Vtx D_84B16D30[] = {
+static Vtx gFragment63_SmallQuadVtx[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -16, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, 16, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16D70[] = {
+static Gfx gFragment63_SmallQuadDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16D30, 4, 0),
+    gsSPVertex(gFragment63_SmallQuadVtx, 4, 0),
     gsDPLoadTextureBlock_4b(0x0F000000, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             5, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16DD8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16D30, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0C094, D_84B16D70, 0x06000000, 0x01000000, 0x00000000,
+static u32 gFragment63_GeoLayoutSmallQuad[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_SmallQuadVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Fragment63_RenderCallbackBarEnv, gFragment63_SmallQuadDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B16E10[] = {
+static Vtx gFragment63_IconVtx[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -16, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, 16, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16E50[] = {
+static Gfx gFragment63_IconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16E10, 4, 0),
+    gsSPVertex(gFragment63_IconVtx, 4, 0),
     gsDPLoadTextureBlock_4b(D_3024800, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 5,
                             5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16EB8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16E10, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0C3A4, D_84B16E50, 0x06000000, 0x01000000,
+static u32 gFragment63_GeoLayoutIcon[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_IconVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Fragment63_RenderCallbackIconEnv, gFragment63_IconDL, 0x06000000, 0x01000000,
 };
-static Color_RGBA8 D_84B16EEC[] = { {
+static Color_RGBA8 gFragment63_FadeColors[] = { {
                                         0xFF,
                                         0x00,
                                         0x00,
@@ -118,7 +118,7 @@ static Color_RGBA8 D_84B16EEC[] = { {
                                         0x80,
                                     } };
 
-s32 func_84B0BF10(s32 arg0, SimpleGfxNode* arg1) {
+s32 Fragment63_RenderCallbackBarA(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0* temp_a0;
     u8* var_a0;
 
@@ -139,7 +139,7 @@ s32 func_84B0BF10(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B0BFE4(s32 arg0, SimpleGfxNode* arg1) {
+s32 Fragment63_RenderCallbackBarB(s32 arg0, SimpleGfxNode* arg1) {
     UNUSED s32 pad;
 
     if (arg0 == 5) {
@@ -152,7 +152,7 @@ s32 func_84B0BFE4(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B0C094(s32 arg0, SimpleGfxNode* arg1) {
+s32 Fragment63_RenderCallbackBarEnv(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0_000* temp_a0;
 
     if (arg0 == 5) {
@@ -198,7 +198,7 @@ void func_84B0C278(unk_D_84B25AC0_000* arg0) {
     }
 }
 
-s32 func_84B0C3A4(s32 arg0, SimpleGfxNode* arg1) {
+s32 Fragment63_RenderCallbackIconEnv(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25AC0_0A0* temp_v1;
 
     if (arg0 == 5) {
@@ -267,8 +267,8 @@ void func_84B0C7D0(unk_D_84B25AC0_0A0* arg0) {
     if (arg0->unk_06 < 0x10) {
         temp_fv0 = ((arg0->unk_06 * 0.5f) / 12.0f) + 0.3f;
 
-        color1 = &D_84B16EEC[arg0->unk_06 / 4];
-        color2 = &D_84B16EEC[arg0->unk_06 / 4 + 1];
+        color1 = &gFragment63_FadeColors[arg0->unk_06 / 4];
+        color2 = &gFragment63_FadeColors[arg0->unk_06 / 4 + 1];
 
         arg0->unk_0A.r = (((color2->r - color1->r) * (arg0->unk_06 % 4)) / 4) + color1->r;
         arg0->unk_0A.g = (((color2->g - color1->g) * (arg0->unk_06 % 4)) / 4) + color1->g;
@@ -629,11 +629,11 @@ void func_84B0D7A8(unk_D_84B25AC0* arg0, s8 arg1, s8 arg2) {
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     if (arg2 == -1) {
-        arg0->unk_5B0 = process_geo_layout(temp_v0, D_84B16CFC);
+        arg0->unk_5B0 = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarB);
     } else {
-        arg0->unk_5B0 = process_geo_layout(temp_v0, D_84B16CC8);
+        arg0->unk_5B0 = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarA);
     }
-    arg0->unk_5B4 = process_geo_layout(temp_v0, D_84B16DD8);
-    arg0->unk_5B8 = process_geo_layout(temp_v0, D_84B16EB8);
+    arg0->unk_5B4 = process_geo_layout(temp_v0, gFragment63_GeoLayoutSmallQuad);
+    arg0->unk_5B8 = process_geo_layout(temp_v0, gFragment63_GeoLayoutIcon);
     mem_pool_resize_block(temp_v0);
 }

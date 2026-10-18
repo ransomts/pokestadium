@@ -9,21 +9,21 @@
 #include "src/memory.h"
 #include "src/util.h"
 
-s32 func_84B03A10(s32, SimpleGfxNode*);
-s32 func_84B03AB4(s32, SimpleGfxNode*);
-s32 func_84B03C20(s32, SimpleGfxNode*);
-s32 func_84B03CC4(s32, unk_D_86002F34_alt5*);
-s32 func_84B03B58(s32, SimpleGfxNode*);
+s32 RenderUI_BackgroundSegment(s32, SimpleGfxNode*);
+s32 RenderUI_FrontLayerSegment(s32, SimpleGfxNode*);
+s32 RenderUI_MiddleLayerSegment(s32, SimpleGfxNode*);
+s32 SetNodeZFromAnim(s32, unk_D_86002F34_alt5*);
+s32 RenderUI_TwoLayerSegment(s32, SimpleGfxNode*);
 
-s32 func_84B05760(s32, SimpleGfxNode*);
-s32 func_84B05844(s32, SimpleGfxNode*);
-s32 func_84B05A2C(s32, SimpleGfxNode*);
-s32 func_84B05B04(s32, SimpleGfxNode*);
+s32 RenderUI_BarSegment(s32, SimpleGfxNode*);
+s32 RenderUI_HighlightedBar(s32, SimpleGfxNode*);
+s32 RenderUI_SegmentImage(s32, SimpleGfxNode*);
+s32 RenderUI_HighlightedSegment(s32, SimpleGfxNode*);
 
-static u8 D_84B0FC40[] = {
+static u8 gBattleModeBackgroundIds[] = {
     0x00, 0x00, 0x00, 0x01, 0x02, 0x03,
 };
-static u8 D_84B0FC48[] = {
+static u8 gBattleSubModeBackgroundIds[] = {
     0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0C,
 };
 static u8* D_84B0FC54[] = {
@@ -134,7 +134,7 @@ static Gfx D_84B10040[] = {
 };
 static u32 D_84B10378[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, 0x84B0FD40, 0x05000000, 0x22010000,
-    0x00000000, 0x08000000, func_84B03A10, D_84B10040, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, RenderUI_BackgroundSegment, D_84B10040, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B103B0[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -194,7 +194,7 @@ static u32 D_84B10568[] = {
 static u32 D_84B105A8[] = {
     0x17000000,    0x0000000C, 0x00000000, 0x00000000, D_84B103B0, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    func_84B03AB4, D_84B10498, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    RenderUI_FrontLayerSegment, D_84B10498, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B105F8[] = {
     VTX(86, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(114, 14, 0, 896, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -260,7 +260,7 @@ static u32 D_84B10838[] = {
 static u32 D_84B10878[] = {
     0x17000000,    0x00000010, 0x00000000, 0x00000000, D_84B105F8, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    func_84B03AB4, D_84B10718, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    RenderUI_FrontLayerSegment, D_84B10718, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B108C8[] = {
     VTX(-76, 10, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 10, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -298,7 +298,7 @@ static Gfx D_84B10948[] = {
 static u32 D_84B109F0[] = {
     0x17000000,    0x00000008, 0x00000000, 0x00000000, D_84B108C8, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00020000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    func_84B03C20, D_84B10948, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    RenderUI_MiddleLayerSegment, D_84B10948, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B10A40[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -347,8 +347,8 @@ static Gfx D_84B10B00[] = {
 };
 static u32 D_84B10BE8[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    D_84B10A40, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, func_84B03CC4, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, func_84B03B58, D_84B10B00, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, RenderUI_TwoLayerSegment, D_84B10B00, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B10C48[] = {
     VTX(-64, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, 16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -385,8 +385,8 @@ static Gfx D_84B10CC8[] = {
 };
 static u32 D_84B10D70[] = {
     0x17000000, 0x00000008,    0x00000000, 0x00000000,    D_84B10C48, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, func_84B03CC4, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, func_84B03B58, D_84B10CC8, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, RenderUI_TwoLayerSegment, D_84B10CC8, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Gfx D_84B10DD0[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
@@ -459,8 +459,8 @@ static Gfx D_84B10F78[] = {
 };
 static u32 D_84B11060[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    D_84B10EB8, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, func_84B03CC4, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, func_84B03B58, D_84B10F78, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, RenderUI_TwoLayerSegment, D_84B10F78, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
 };
 static Vtx D_84B110C0[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -537,10 +537,10 @@ static Gfx D_84B114F8[] = {
 };
 static u32 D_84B11640[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000,    D_84B110C0, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, func_84B05760, 0x00000000,
-    0x22050000, 0x00000000, 0x08000000, func_84B05844, 0x00000000, 0x06000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, func_84B05760, 0x00000001,
-    0x22050000, 0x00000000, 0x08000000, func_84B05844, 0x00000001, 0x06000000, 0x06000000,    0x01000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, RenderUI_BarSegment, 0x00000000,
+    0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedBar, 0x00000000, 0x06000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, RenderUI_BarSegment, 0x00000001,
+    0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedBar, 0x00000001, 0x06000000, 0x06000000,    0x01000000,
 };
 static Vtx D_84B116E0[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -610,10 +610,10 @@ static Gfx D_84B11A88[] = {
 };
 static u32 D_84B11BD0[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B116E0, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    func_84B05A2C, D_84B119A0, 0x22050000, 0x00000000, 0x08000000, func_84B05B04, D_84B11A88, 0x06000000, 0x01000000,
+    RenderUI_SegmentImage, D_84B119A0, 0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedSegment, D_84B11A88, 0x06000000, 0x01000000,
 };
 
-s32 func_84B03A10(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_BackgroundSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -628,7 +628,7 @@ s32 func_84B03A10(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B03AB4(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_FrontLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -643,7 +643,7 @@ s32 func_84B03AB4(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B03B58(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_TwoLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -659,7 +659,7 @@ s32 func_84B03B58(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B03C20(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_MiddleLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -674,7 +674,7 @@ s32 func_84B03C20(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B03CC4(s32 arg0, unk_D_86002F34_alt5* arg1) {
+s32 SetNodeZFromAnim(s32 arg0, unk_D_86002F34_alt5* arg1) {
     unk_D_84B259A8* temp_a0;
 
     if (arg0 == 2) {
@@ -1098,7 +1098,7 @@ void func_84B05184(unk_D_84B259A8* arg0) {
     BinArchive* temp_a0 = ASSET_LOAD2(battle_headers, 1, 1);
 
     if (gBattleContext.unk_0000 == 7) {
-        arg0->unk_0C = BinArchive_GetFile(temp_a0, D_84B0FC48[gBattleContext.unk_0002]);
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleSubModeBackgroundIds[gBattleContext.unk_0002]);
         arg0->unk_10 = Util_ConvertAddrToVirtAddr(D_84B0FC6C[gBattleContext.unk_0002]);
 
         switch (gBattleContext.unk_0002) {
@@ -1119,7 +1119,7 @@ void func_84B05184(unk_D_84B259A8* arg0) {
                 break;
         }
     } else {
-        arg0->unk_0C = BinArchive_GetFile(temp_a0, D_84B0FC40[gBattleContext.unk_0000 - 1]);
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleModeBackgroundIds[gBattleContext.unk_0000 - 1]);
         arg0->unk_10 = Util_ConvertAddrToVirtAddr(D_84B0FC54[gBattleContext.unk_0000 - 1]);
         arg0->unk_14 = Util_ConvertAddrToVirtAddr(D_84B0FCAC[gBattleContext.unk_0002]);
 
@@ -1262,7 +1262,7 @@ void func_84B05728(unk_D_84B259A8* arg0) {
     func_84B05668(arg0);
 }
 
-s32 func_84B05760(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_BarSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
     s32 tmp;
     s32 tmp2;
@@ -1281,7 +1281,7 @@ s32 func_84B05760(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B05844(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
     static s16 D_84B11C18 = 0;
 
     unk_D_84B259E8* temp_v0;
@@ -1314,7 +1314,7 @@ s32 func_84B05844(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B05A2C(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_SegmentImage(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
     s32 tmp;
 
@@ -1332,7 +1332,7 @@ s32 func_84B05A2C(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B05B04(s32 arg0, SimpleGfxNode* arg1) {
+s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
     static s16 D_84B11C1C = 0;
 
     unk_D_84B259E8* temp_v0;
@@ -1364,7 +1364,7 @@ s32 func_84B05B04(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_84B05CE0(s32 arg0) {
+void DrawTransferPakError(s32 arg0) {
     FramebufferImage sp40;
     u32 sp3C = Util_ConvertAddrToVirtAddr(&D_3017F00);
 
@@ -1446,7 +1446,7 @@ void func_84B05FCC(unk_D_84B259E8* arg0) {
         }
 
         PlayUISfx(0x01100014, gBattleContext.unk_0003, var_a2);
-        func_84B05CE0(arg0->unk_10[gBattleContext.unk_0003 - 1]);
+        DrawTransferPakError(arg0->unk_10[gBattleContext.unk_0003 - 1]);
 
         if (gBattleContext.unk_0000 == 7) {
             Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[gBattleContext.unk_0003 - 1]);
@@ -1638,7 +1638,7 @@ void func_84B067B4(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
             tmp = (ptr->unk_038 >> 8) & 0xFF;
             arg0->unk_10[i] = func_84B06720(BinArchive_GetFile(arg2, tmp));
             if (i < (gBattleContext.unk_0003 - 1)) {
-                func_84B05CE0(arg0->unk_10[i]);
+                DrawTransferPakError(arg0->unk_10[i]);
             }
             arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
             func_84B064FC(arg0, i, ptr->unk_010);
@@ -1650,7 +1650,7 @@ void func_84B067B4(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
 
                 arg0->unk_10[i] = func_84B06720(BinArchive_GetFile(arg2, tmp));
                 if (i < (gBattleContext.unk_0003 - 1)) {
-                    func_84B05CE0(arg0->unk_10[i]);
+                    DrawTransferPakError(arg0->unk_10[i]);
                 }
             } else {
                 arg0->unk_10[i] = BinArchive_GetFile(arg2, 0);

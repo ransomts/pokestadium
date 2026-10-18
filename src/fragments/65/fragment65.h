@@ -33,29 +33,29 @@ typedef struct unk_D_84A02F00 {
     /* 0x24 */ u8* unk_24;
 } unk_D_84A02F00; // size = 0x28
 
-void func_84A00020(u8* arg0, u8* arg1, u8 arg2);
+void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2);
 void func_84A003BC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6);
 void func_84A00630(void);
-void func_84A00638(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5);
-void func_84A008A8(void);
-void func_84A00B44(void);
-void func_84A00E98(void);
-void func_84A00FEC(void);
-void func_84A012B8(void);
-void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
-void func_84A01770(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
+void DrawScaledIA8TextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5);
+void DrawInfoPanel(void);
+void DrawPortraitIcons(void);
+void AnimatePortraitScroll(void);
+void DrawAnimatedSprites(void);
+void DrawMessageList(void);
+void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
+void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
 void func_84A01BAC(void);
 void func_84A01DAC(void);
 void func_84A01EE0(void);
 s32 func_84A02074(void);
 s32 func_84A0207C(void);
-void func_84A02304(void);
+void LoadTrainerPortraits(void);
 void func_84A02410(void);
 void func_84A02434(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-s32 func_84A02580(void);
-s32 func_84A02898(void);
+s32 PlayIntroSequence(void);
+s32 ShowBattleStartPrompt(void);
 s16 func_84A02A34(s16 arg0);
 s16 func_84A02B70(s16 arg0);
-s32 func_84A02D14(s32 arg0, UNUSED s32 arg1);
+s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT65_H_

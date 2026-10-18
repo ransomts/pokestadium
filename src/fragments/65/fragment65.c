@@ -80,7 +80,7 @@ static s16 D_84A030E8 = 0xFF;
 static s16 D_84A030EC = 0;
 static s16 D_84A030F0 = 0;
 
-void func_84A00020(u8* arg0, u8* arg1, u8 arg2) {
+void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2) {
     s32 i;
     s32 j;
 
@@ -125,7 +125,7 @@ void func_84A003BC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f
 void func_84A00630(void) {
 }
 
-void func_84A00638(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
+void DrawScaledIA8TextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
     UNUSED s32 pad;
 
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, (s32)(arg2 / arg5), (s32)(arg3 / arg5), 0,
@@ -135,7 +135,7 @@ void func_84A00638(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
     Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg5, 1024.0f / arg5, 0);
 }
 
-void func_84A008A8(void) {
+void DrawInfoPanel(void) {
     char sp40[0x100];
     UNUSED s32 pad2;
     s16 sp3A;
@@ -181,7 +181,7 @@ void func_84A008A8(void) {
     }
 }
 
-void func_84A00B44(void) {
+void DrawPortraitIcons(void) {
     UNUSED s32 pad[3];
     s32 i;
     char* var_s0;
@@ -231,7 +231,7 @@ void func_84A00B44(void) {
     }
 }
 
-void func_84A00E98(void) {
+void AnimatePortraitScroll(void) {
     static s16 D_84A030F4 = 0;
     static s16 D_84A030F8 = 1;
 
@@ -257,7 +257,7 @@ void func_84A00E98(void) {
     }
 }
 
-void func_84A00FEC(void) {
+void DrawAnimatedSprites(void) {
     s32 i;
     s32 var_a0;
     s32 var_s2;
@@ -299,14 +299,14 @@ void func_84A00FEC(void) {
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, 255);
             }
 
-            func_84A00638(var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E * 2, var_s0->unk_10 * 2, var_s0->unk_1C, 2.0f);
+            DrawScaledIA8TextureRect(var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E * 2, var_s0->unk_10 * 2, var_s0->unk_1C, 2.0f);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84A012B8(void) {
+void DrawMessageList(void) {
     s32 var_s2;
     char* var_s0;
     unk_D_84A02F00* var_s1;
@@ -343,7 +343,7 @@ void func_84A012B8(void) {
     Text_SetupDL();
 }
 
-void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
+void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     char* sp54;
 
     if (arg0->unk_24 != NULL) {
@@ -389,7 +389,7 @@ void func_84A01424(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void func_84A01770(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
+void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     char* var_s0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -436,28 +436,28 @@ void func_84A01BAC(void) {
     if (D_84A030E8 > 0) {
         if (D_84A030E8 < 0xFF) {
             if (D_84A030E0 == 0xA) {
-                func_84A01770(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
+                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
             } else {
-                func_84A01424(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
+                DrawDetailPanel(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
             }
         } else if (D_84A030E4 == 0) {
             if (D_84A030E0 == 0xA) {
-                func_84A01770(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
+                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
             } else {
-                func_84A01424(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
+                DrawDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
             }
         } else {
             sp1F = ((D_84A030E4 * 0xFF) / 4) & 0xFF;
             if (D_84A030E0 == 0xA) {
-                func_84A01770(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
+                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
             } else {
-                func_84A01424(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
+                DrawDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
             }
 
             if (D_84A03188 == 0xA) {
-                func_84A01770(&D_84A02F00[D_84A03188], sp1F, sp1F);
+                DrawAlternateDetailPanel(&D_84A02F00[D_84A03188], sp1F, sp1F);
             } else {
-                func_84A01424(&D_84A02F00[D_84A03188], sp1F, sp1F);
+                DrawDetailPanel(&D_84A02F00[D_84A03188], sp1F, sp1F);
             }
         }
     }
@@ -494,7 +494,7 @@ void func_84A01EE0(void) {
         } else if (D_84A030F0 == 0xFF) {
             Gfx_DrawTextureAtlas(D_84A03178);
         } else {
-            func_84A00020(D_84A03174, D_84A03178, D_84A030F0);
+            TileBackgroundTexture(D_84A03174, D_84A03178, D_84A030F0);
             if (D_84A030F0 < 0xFF) {
                 D_84A030F0 += 5;
             }
@@ -512,13 +512,13 @@ void func_84A01EE0(void) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
-    func_84A00FEC();
-    func_84A012B8();
+    DrawAnimatedSprites();
+    DrawMessageList();
     func_84A01BAC();
     func_84A01DAC();
-    func_84A00B44();
-    func_84A00E98();
-    func_84A008A8();
+    DrawPortraitIcons();
+    AnimatePortraitScroll();
+    DrawInfoPanel();
     Stage_Advance();
 }
 
@@ -593,7 +593,7 @@ s32 func_84A0207C(void) {
     return var_s3;
 }
 
-void func_84A02304(void) {
+void LoadTrainerPortraits(void) {
     s32 i;
     s32 var_a1;
     s32 var_s7;
@@ -647,14 +647,14 @@ void func_84A02434(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-s32 func_84A02580(void) {
+s32 PlayIntroSequence(void) {
     s16 i;
     s32 var_s1;
     s32 var_s1_2 = 0;
 
     main_pool_push_state('itro');
 
-    func_84A02304();
+    LoadTrainerPortraits();
     Music_StopTrack(8);
 
     for (i = 3; i >= 0; i--) {
@@ -732,7 +732,7 @@ s32 func_84A02580(void) {
     return var_s1;
 }
 
-s32 func_84A02898(void) {
+s32 ShowBattleStartPrompt(void) {
     s16 i;
 
     if (gBattleContext.unk_0002 == 7) {
@@ -794,11 +794,11 @@ s16 func_84A02A34(s16 arg0) {
                 break;
 
             case 3:
-                arg0 = func_84A02580();
+                arg0 = PlayIntroSequence();
                 break;
 
             case 4:
-                arg0 = func_84A02898();
+                arg0 = ShowBattleStartPrompt();
                 break;
         }
     }
@@ -858,7 +858,7 @@ s16 func_84A02B70(s16 arg0) {
     return sp2C;
 }
 
-s32 func_84A02D14(s32 arg0, UNUSED s32 arg1) {
+s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
     s16 sp1E;
 
     main_pool_push_state('PNLV');

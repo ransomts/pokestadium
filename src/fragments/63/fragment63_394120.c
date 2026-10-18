@@ -29,8 +29,8 @@ unk_D_84B25A58 D_84B25A58;
 unk_D_84B25A90 D_84B25A90;
 unk_D_84B25AC0 D_84B25AC0;
 unk_D_84B25AC0 D_84B26080;
-unk_D_84B26640 D_84B26640;
-unk_func_80027FA0 D_84B26670;
+unk_D_84B26640 gBattleMenuState;
+unk_func_80027FA0 gBattleProgress;
 char** D_84B26678;
 
 static u8* gTrainerIconTextures[] = {
@@ -49,7 +49,7 @@ static u32 gGeoLayoutCommands[] = {
     0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
-void func_84B00020(void) {
+void Battle_SavePokemonNames(void) {
     s16 temp_s0;
     unk_D_800AE540_0874* temp_v0;
     PokemonData* var_s1;
@@ -73,17 +73,17 @@ void func_84B00020(void) {
     GbsCommitBankBlock(0x13, 0);
 }
 
-void func_84B000F0(void) {
+void Battle_IncrementPlayerName(void) {
     unk_func_8002A728 sp20;
     s32 sp1C = 0;
 
     GbsGetPlayerName(&sp20);
 
-    if ((gBattleContext.unk_0000 == 3) && (gBattleContext.unk_0002 == 3) && !(D_84B26670.unk_00 & 8)) {
+    if ((gBattleContext.unk_0000 == 3) && (gBattleContext.unk_0002 == 3) && !(gBattleProgress.unk_00 & 8)) {
         sp1C = 1;
     }
 
-    if ((gBattleContext.unk_0000 == 6) && (gBattleContext.unk_0002 == 3) && !(D_84B26670.unk_00 & 0x40)) {
+    if ((gBattleContext.unk_0000 == 6) && (gBattleContext.unk_0002 == 3) && !(gBattleProgress.unk_00 & 0x40)) {
         sp1C = 1;
     }
 
@@ -98,42 +98,42 @@ void func_84B000F0(void) {
     }
 }
 
-void func_84B001D8(void) {
+void Battle_SetProgressFlags(void) {
     if (((gBattleContext.unk_0000 != 3) || (gBattleContext.unk_0002 >= 3)) &&
         ((gBattleContext.unk_0000 != 6) || (gBattleContext.unk_0002 >= 3)) &&
         ((gBattleContext.unk_0000 != 7) || (gBattleContext.unk_0002 >= 9))) {
-        D_84B26670.unk_00 |= (1 << gBattleContext.unk_0000);
-        if (D_84B26670.unk_00 == 0xF8) {
-            D_84B26670.unk_07 = 1;
+        gBattleProgress.unk_00 |= (1 << gBattleContext.unk_0000);
+        if (gBattleProgress.unk_00 == 0xF8) {
+            gBattleProgress.unk_07 = 1;
             gBattleContext.unk_11F5 |= 4;
         }
-        func_80027FE0(&D_84B26670, gBattleContext.unk_11F2);
+        func_80027FE0(&gBattleProgress, gBattleContext.unk_11F2);
     }
 }
 
-void func_84B00280(void) {
+void Battle_UpdateStageProgress(void) {
     if (gBattleContext.unk_0000 == 7) {
-        if ((gBattleContext.unk_0002 >= D_84B26670.unk_04) && (gBattleContext.unk_0002 < 8)) {
-            D_84B26670.unk_04 = gBattleContext.unk_0002 + 1;
+        if ((gBattleContext.unk_0002 >= gBattleProgress.unk_04) && (gBattleContext.unk_0002 < 8)) {
+            gBattleProgress.unk_04 = gBattleContext.unk_0002 + 1;
             gBattleContext.unk_11F6 |= 0x400;
         }
     } else if (gBattleContext.unk_0000 == 3) {
-        if ((gBattleContext.unk_0002 >= D_84B26670.unk_05) && (gBattleContext.unk_0002 < 4)) {
-            D_84B26670.unk_05 = gBattleContext.unk_0002 + 1;
+        if ((gBattleContext.unk_0002 >= gBattleProgress.unk_05) && (gBattleContext.unk_0002 < 4)) {
+            gBattleProgress.unk_05 = gBattleContext.unk_0002 + 1;
             gBattleContext.unk_11F6 |= 0x400;
         }
-    } else if ((gBattleContext.unk_0000 == 6) && (gBattleContext.unk_0002 >= D_84B26670.unk_06) && (gBattleContext.unk_0002 < 4)) {
-        D_84B26670.unk_06 = gBattleContext.unk_0002 + 1;
+    } else if ((gBattleContext.unk_0000 == 6) && (gBattleContext.unk_0002 >= gBattleProgress.unk_06) && (gBattleContext.unk_0002 < 4)) {
+        gBattleProgress.unk_06 = gBattleContext.unk_0002 + 1;
         gBattleContext.unk_11F6 |= 0x400;
     }
-    func_80027FE0(&D_84B26670, gBattleContext.unk_11F2);
+    func_80027FE0(&gBattleProgress, gBattleContext.unk_11F2);
 }
 
-char* func_84B0037C(s32 arg0) {
+char* Battle_GetMessageString(s32 arg0) {
     return GetMessageString(NULL, 0, D_84B26678, arg0);
 }
 
-char* func_84B003AC(char* arg0, s32 arg1, u32 arg2) {
+char* Battle_GetMessageStringBuffer(char* arg0, s32 arg1, u32 arg2) {
     return GetMessageString(arg0, arg1, D_84B26678, arg2);
 }
 
@@ -151,7 +151,7 @@ void GraphNode_Reset(Fragment2_1GraphNode* arg0) {
     Vec3s_Set(&arg0->unk_01E, 0, 0, 0);
 }
 
-void func_84B00478(void) {
+void Battle_ResetGraphNodes(void) {
     s32 i;
 
     for (i = 0; i < 128; i++) {
@@ -227,7 +227,7 @@ void Gfx_DrawPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84B00D3C(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
+void Battle_DrawTrainerInfo(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
     unk_D_800AE540_1194* temp_v1 = &gBattleContext.unk_1194[arg1];
 
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
@@ -316,20 +316,20 @@ void Battle_SetSpriteAlpha(s16 arg0) {
     }
 }
 
-void func_84B014DC(void) {
+void Battle_BeginFrame(void) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     Graph_SetTextureState(gBattleGraphics.unk_0004);
-    func_84B0F464(&D_84B26640.unk_1C);
-    func_84B0F464(&D_84B26640.unk_28);
+    RenderMenuPanel(&gBattleMenuState.unk_1C);
+    RenderMenuPanel(&gBattleMenuState.unk_28);
     Stage_Advance();
 }
 
-void func_84B01538(void) {
+void Battle_ProcessFrame(void) {
     Game_UpdateInputs();
     func_84B03814(gInputBuffer);
-    func_84B073D8(&D_84B25A28);
-    func_84B014DC();
+    UI_StateMachine(&D_84B25A28);
+    Battle_BeginFrame();
 }
 
 s32 Battle_MainLoop(void) {
@@ -338,27 +338,27 @@ s32 Battle_MainLoop(void) {
 
     Battle_InitializeFromMode();
     func_84B07CF8(&D_84B25A28, gBattleGraphics.unk_0004->unk_0C);
-    func_84B07758(&D_84B25A28, gBattleGraphics.unk_B40C);
+    UI_Init(&D_84B25A28, gBattleGraphics.unk_B40C);
     Music_ChangeTrack(0x31);
 
     for (i = 0; i < 16; i++) {
-        func_84B01538();
+        Battle_ProcessFrame();
     }
 
     Stage_FadeIn(8);
 
     while (func_84B07AB8(&D_84B25A28, gBattleGraphics.unk_0008) == 0) {
-        func_84B01538();
+        Battle_ProcessFrame();
         var_s1++;
     }
 
     while (var_s1 < 0x1E) {
-        func_84B01538();
+        Battle_ProcessFrame();
         var_s1++;
     }
 
     for (i = 0; i < 90; i++) {
-        func_84B01538();
+        Battle_ProcessFrame();
     }
 
     Music_StopTrack(0x20);
@@ -366,7 +366,7 @@ s32 Battle_MainLoop(void) {
     Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
-        func_84B01538();
+        Battle_ProcessFrame();
     }
 
     if (gBattleContext.unk_11F5 & 1) {
@@ -378,16 +378,16 @@ s32 Battle_MainLoop(void) {
     return 4;
 }
 
-void func_84B016F4(void) {
+void Battle_UpdateAndRender(void) {
     Game_UpdateInputs();
     func_84B03814(gInputBuffer);
     func_84B04A7C(&D_84B259A8);
     func_84B062E4(&D_84B259E8);
-    func_84B073D8(&D_84B25A28);
-    func_84B014DC();
+    UI_StateMachine(&D_84B25A28);
+    Battle_BeginFrame();
 }
 
-void func_84B0174C(void) {
+void Battle_InitGraphics(void) {
     func_84B05728(&D_84B259A8);
     func_84B06A54(&D_84B259E8, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
     func_84B07CF8(&D_84B25A28, gBattleGraphics.unk_0004->unk_0C);
@@ -404,17 +404,17 @@ s32 func_84B017AC(void) {
     }
 
     Battle_InitializeFromMode();
-    func_84B0174C();
-    func_84B07758(&D_84B25A28, gBattleGraphics.unk_B40C);
+    Battle_InitGraphics();
+    UI_Init(&D_84B25A28, gBattleGraphics.unk_B40C);
 
     for (i = 0; i < 16; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     Stage_FadeIn(8);
 
     for (i = 0; i < 20; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     func_84B04F78(&D_84B259A8, &gBattleGraphics.unk_0008[0x10]);
@@ -422,22 +422,22 @@ s32 func_84B017AC(void) {
     Music_ChangeTrack(0x33);
 
     for (i = 0; i < var_s1; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     func_84B0509C(&D_84B259A8);
     D_84B259E8.unk_00 = 2;
 
     for (i = 0; i < 16; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     while (func_84B07AB8(&D_84B25A28, gBattleGraphics.unk_0008) == 0) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     for (i = 0; i < var_s1; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     Music_StopTrack(0x20);
@@ -445,7 +445,7 @@ s32 func_84B017AC(void) {
     Stage_FadeOut(0x10);
 
     for (i = 0; i < 18; i++) {
-        func_84B016F4();
+        Battle_UpdateAndRender();
     }
 
     if (gBattleContext.unk_11F5 & 1) {
@@ -503,11 +503,11 @@ void func_84B01AA0(void) {
     func_84B0BBEC(&D_84B25A90);
     func_84B0D4B4(&D_84B25AC0);
     func_84B0D4B4(&D_84B26080);
-    func_84B0D970(&D_84B26640.unk_00);
-    func_84B0D970(&D_84B26640.unk_10);
-    func_84B0F8E8(&D_84B26640.unk_1C);
-    func_84B0F8E8(&D_84B26640.unk_28);
-    func_84B014DC();
+    BarUpdateCallback(&gBattleMenuState.unk_00);
+    BarUpdateCallback(&gBattleMenuState.unk_10);
+    func_84B0F8E8(&gBattleMenuState.unk_1C);
+    func_84B0F8E8(&gBattleMenuState.unk_28);
+    Battle_BeginFrame();
 }
 
 void func_84B01B40(void) {
@@ -526,8 +526,8 @@ void func_84B01B40(void) {
         func_84B0D7A8(&D_84B26080, 0, tmp);
     }
 
-    func_84B0DAA4(&D_84B26640.unk_00, 0);
-    func_84B0DAA4(&D_84B26640.unk_10, 1);
+    BarCreate(&gBattleMenuState.unk_00, 0);
+    BarCreate(&gBattleMenuState.unk_10, 1);
 }
 
 void func_84B01C2C(void) {
@@ -587,14 +587,14 @@ void func_84B01DBC(void) {
         func_84B01AA0();
     }
 
-    func_84B0D9D8(&D_84B26640.unk_00, &gBattleGraphics.unk_0008[0x1A]);
+    BarInit(&gBattleMenuState.unk_00, &gBattleGraphics.unk_0008[0x1A]);
     PlayUISfx(0x01100013, 0, 0);
 
     while (D_84B25A58.unk_00 != 0) {
         func_84B01AA0();
     }
 
-    func_84B0DA90(&D_84B26640.unk_00);
+    BarStartShrink(&gBattleMenuState.unk_00);
     func_84B0D54C(&D_84B25AC0, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
     func_84B0D54C(&D_84B26080, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
 
@@ -602,7 +602,7 @@ void func_84B01DBC(void) {
         for (i = 0; i < 16; i++) {
             func_84B01AA0();
         }
-        func_84B0D9D8(&D_84B26640.unk_10, &gBattleGraphics.unk_0008[0x1B]);
+        BarInit(&gBattleMenuState.unk_10, &gBattleGraphics.unk_0008[0x1B]);
         PlaySoundEffect(0x28);
     }
 
@@ -646,7 +646,7 @@ void func_84B0204C(void) {
         Game_UpdateInputs();
         Battle_AnimateSprites(j);
         func_84B03814(gInputBuffer);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 
     for (i = 0; i < 16; i++) {
@@ -656,7 +656,7 @@ void func_84B0204C(void) {
     for (j = 0; j < 16; j++) {
         Game_UpdateInputs();
         func_84B03814(gInputBuffer);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 }
 
@@ -669,7 +669,7 @@ void func_84B02188(void) {
         Game_UpdateInputs();
         Battle_SetSpriteAlpha(i);
         func_84B03814(gInputBuffer);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 }
 
@@ -683,13 +683,13 @@ void func_84B021FC(void) {
     for (i = 0; i < 18; i++) {
         Game_UpdateInputs();
         func_84B03814(gInputBuffer);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 
     for (i = 0; i < 16; i++) {
         Game_UpdateInputs();
         func_84B03814(gInputBuffer);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 }
 
@@ -698,25 +698,25 @@ s32 func_84B022A0(void) {
     s32 var_v0_2;
 
     if (gBattleContext.unk_0000 == 7) {
-        func_84B0F950(&D_84B26640.unk_1C, 2);
+        func_84B0F950(&gBattleMenuState.unk_1C, 2);
     } else {
-        func_84B0F950(&D_84B26640.unk_1C, 1);
+        func_84B0F950(&gBattleMenuState.unk_1C, 1);
     }
 
-    var_s2 = func_84B0FADC(&D_84B26640.unk_1C);
+    var_s2 = func_84B0FADC(&gBattleMenuState.unk_1C);
     while (var_s2 == -1) {
         func_84B01AA0();
-        var_s2 = func_84B0FADC(&D_84B26640.unk_1C);
+        var_s2 = func_84B0FADC(&gBattleMenuState.unk_1C);
     }
 
     if (var_s2 == 1) {
         if (func_8002847C() != 0) {
-            func_84B0F950(&D_84B26640.unk_1C, 0xA);
+            func_84B0F950(&gBattleMenuState.unk_1C, 0xA);
 
-            var_v0_2 = func_84B0FADC(&D_84B26640.unk_1C);
+            var_v0_2 = func_84B0FADC(&gBattleMenuState.unk_1C);
             while (var_v0_2 == -1) {
                 func_84B01AA0();
-                var_v0_2 = func_84B0FADC(&D_84B26640.unk_1C);
+                var_v0_2 = func_84B0FADC(&gBattleMenuState.unk_1C);
             }
 
             if (var_v0_2 == 1) {
@@ -737,12 +737,12 @@ s32 func_84B023C0(void) {
     s32 var_v0;
 
     if (func_8002847C() != 0) {
-        func_84B0F950(&D_84B26640.unk_1C, 0xA);
+        func_84B0F950(&gBattleMenuState.unk_1C, 0xA);
 
-        var_v0 = func_84B0FADC(&D_84B26640.unk_1C);
+        var_v0 = func_84B0FADC(&gBattleMenuState.unk_1C);
         while (var_v0 == -1) {
             func_84B01AA0();
-            var_v0 = func_84B0FADC(&D_84B26640.unk_1C);
+            var_v0 = func_84B0FADC(&gBattleMenuState.unk_1C);
         }
 
         if (var_v0 == 1) {
@@ -771,13 +771,13 @@ s32 func_84B02474(void) {
 
     func_84B01C2C();
     PlayUISfx(0x0110000F, 0, 0);
-    func_84B0F950(&D_84B26640.unk_1C, 9);
-    func_84B0F950(&D_84B26640.unk_28, 5);
+    func_84B0F950(&gBattleMenuState.unk_1C, 9);
+    func_84B0F950(&gBattleMenuState.unk_28, 5);
 
-    var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+    var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
     while (var_v0 == -1) {
         func_84B01AA0();
-        var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+        var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
     }
 
     switch (var_v0) {
@@ -837,7 +837,7 @@ s32 func_84B02654(void) {
     if (gBattleContext.unk_1194[0].unk_1C == 1) {
         gBattleContext.unk_11F3 += gBattleGraphics.unk_0002;
         if ((gBattleGraphics.unk_0002 != 0) && (gBattleContext.unk_0003 < 8)) {
-            func_84B0DA90(&D_84B26640.unk_10);
+            BarStartShrink(&gBattleMenuState.unk_10);
         }
 
         func_84B0D718(&D_84B25AC0);
@@ -855,10 +855,10 @@ s32 func_84B02654(void) {
                 }
             }
 
-            func_84B00020();
-            func_84B000F0();
-            func_84B001D8();
-            func_84B00280();
+            Battle_SavePokemonNames();
+            Battle_IncrementPlayerName();
+            Battle_SetProgressFlags();
+            Battle_UpdateStageProgress();
             GbsCommitBankBlock(0x14, 0);
             GbsSyncBank(2);
             func_84B0204C();
@@ -878,13 +878,13 @@ s32 func_84B02654(void) {
     } else {
         var_s2 = 1;
         while (var_s2 != 0) {
-            func_84B0F950(&D_84B26640.unk_1C, 7);
-            func_84B0F950(&D_84B26640.unk_28, 3);
+            func_84B0F950(&gBattleMenuState.unk_1C, 7);
+            func_84B0F950(&gBattleMenuState.unk_28, 3);
 
-            var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+            var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
             while (var_v0 == -1) {
                 func_84B01AA0();
-                var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+                var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
             }
 
             switch (var_v0) {
@@ -924,7 +924,7 @@ s32 func_84B02654(void) {
             func_84B021FC();
         } else {
             func_84B02188();
-            func_84B00478();
+            Battle_ResetGraphNodes();
         }
     }
 
@@ -942,9 +942,9 @@ s32 func_84B02984(void) {
 
     if (gBattleContext.unk_1194[0].unk_1C == 1) {
         if ((gBattleContext.unk_0003 == 4) || (gBattleContext.unk_0002 == 9)) {
-            func_84B001D8();
-            func_84B00280();
-            func_84B00020();
+            Battle_SetProgressFlags();
+            Battle_UpdateStageProgress();
+            Battle_SavePokemonNames();
             GbsCommitBankBlock(0x14, 0);
             GbsSyncBank(2);
 
@@ -986,13 +986,13 @@ s32 func_84B02984(void) {
             sp24 = 1;
         }
     } else {
-        func_84B0F950(&D_84B26640.unk_1C, 8);
-        func_84B0F950(&D_84B26640.unk_28, 4);
+        func_84B0F950(&gBattleMenuState.unk_1C, 8);
+        func_84B0F950(&gBattleMenuState.unk_28, 4);
 
-        var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+        var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
         while (var_v0 == -1) {
             func_84B01AA0();
-            var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+            var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
         }
 
         switch (var_v0) {
@@ -1026,7 +1026,7 @@ s32 func_84B02C40(void) {
 
     func_84B01C2C();
     if (gBattleContext.unk_1194[0].unk_1C == 1) {
-        s32 tmp1 = !!(D_84B26670.unk_00 & 0x100);
+        s32 tmp1 = !!(gBattleProgress.unk_00 & 0x100);
 
         if ((gBattleContext.unk_11F2 == 0) & !tmp1) {
             GbsGetPlayerMoney(&sp2A);
@@ -1034,7 +1034,7 @@ s32 func_84B02C40(void) {
             GbsSetPlayerMoney(&sp2A);
         }
 
-        func_84B001D8();
+        Battle_SetProgressFlags();
         GbsCommitBankBlock(0x14, 0);
         GbsSyncBank(2);
         func_84B0D718(&D_84B26080);
@@ -1044,12 +1044,12 @@ s32 func_84B02C40(void) {
         func_84B021FC();
         gBattleContext.unk_11F6 |= 5;
     } else {
-        func_84B0F950(&D_84B26640.unk_28, 6);
+        func_84B0F950(&gBattleMenuState.unk_28, 6);
 
-        var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+        var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
         while (var_v0 == -1) {
             func_84B01AA0();
-            var_v0 = func_84B0FADC(&D_84B26640.unk_28);
+            var_v0 = func_84B0FADC(&gBattleMenuState.unk_28);
         }
 
         switch (var_v0) {
@@ -1161,7 +1161,7 @@ s32 func_84B02F60(void) {
         Game_UpdateInputs();
         func_84B03814(gInputBuffer);
         func_84B04A7C(&D_84B259A8);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 
     Stage_SetFillColor(1);
@@ -1171,7 +1171,7 @@ s32 func_84B02F60(void) {
         Game_UpdateInputs();
         func_84B03814(gInputBuffer);
         func_84B04A7C(&D_84B259A8);
-        func_84B014DC();
+        Battle_BeginFrame();
     }
 
     return 4;
@@ -1207,8 +1207,8 @@ void func_84B03064(void) {
     ptr->unk_24.far = 6000.0f;
 
     func_84B038F8(&gInputBuffer);
-    func_84B0FACC(&D_84B26640.unk_1C);
-    func_84B0FACC(&D_84B26640.unk_28);
+    func_84B0FACC(&gBattleMenuState.unk_1C);
+    func_84B0FACC(&gBattleMenuState.unk_28);
 }
 
 s32 Battle_Run(s32 arg0, UNUSED s32 arg1) {
@@ -1216,7 +1216,7 @@ s32 Battle_Run(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('EYEC');
     GbsEnsureBankLoaded(2);
-    func_80027FA0(&D_84B26670, gBattleContext.unk_11F2);
+    func_80027FA0(&gBattleProgress, gBattleContext.unk_11F2);
     Gfx_InitBuffers(0x18000, 0);
     sp2C = Stage_Create(0, 1, 3, 1, 2, 1);
     Text_Init(0x17, 0);

@@ -10,10 +10,10 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static s16 D_84B16390[] = { -0x60, -0x20, 0x20, 0x60, -0x60, -0x20, 0x20, 0x60 };
-static s16 D_84B163A0[] = { 0x30, 0x30, 0x30, 0x30, -0x30, -0x30, -0x30, -0x30 };
-static f32 D_84B163B0[] = { 0.1f, 0.3f, 0.5f, 0.7f, 0.9f, 1.0f, 1.0f, 0.9f, 0.7f, 0.5f, 0.3f, 0.1f };
-static Vtx D_84B163E0[] = {
+static s16 gBattleSlotXOffsets[] = { -0x60, -0x20, 0x20, 0x60, -0x60, -0x20, 0x20, 0x60 };
+static s16 gBattleSlotYOffsets[] = { 0x30, 0x30, 0x30, 0x30, -0x30, -0x30, -0x30, -0x30 };
+static f32 gPulseScaleTable[] = { 0.1f, 0.3f, 0.5f, 0.7f, 0.9f, 1.0f, 1.0f, 0.9f, 0.7f, 0.5f, 0.3f, 0.1f };
+static Vtx gRectVertices[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -21,11 +21,11 @@ static Vtx D_84B163E0[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B164A0[] = {
+static Gfx gRectDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B163E0, 12, 0),
+    gsSPVertex(gRectVertices, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 6, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -37,21 +37,21 @@ static Gfx D_84B164A0[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16588[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B163E0, 0x05000000, 0x22010000,
-    0x00000000, 0x08000000, func_84B0AC60, D_84B164A0, 0x06000000, 0x01000000, 0x00000000,
+static u32 gGeoLayout_BattleBackground[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gRectVertices, 0x05000000, 0x22010000,
+    0x00000000, 0x08000000, SetBattleBackgroundTexture0, gRectDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B165C0[] = {
+static Vtx gPanelVertices[] = {
     VTX(-24, 25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-24, 0, 0, 0, 800, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, 0, 0, 1536, 800, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(24, 25, 0, 1536, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-24, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-24, -25, 0, 0, 800, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, -25, 0, 1536, 800, 0xFF, 0xFF, 0xFF, 0xFF), VTX(24, 0, 0, 1536, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16640[] = {
+static Gfx gPanelDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B165C0, 8, 0),
+    gsSPVertex(gPanelVertices, 8, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 25, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 6, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -60,44 +60,44 @@ static Gfx D_84B16640[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B166E8[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B165C0, 0x05000000, 0x1B000000,
+static u32 gGeoLayout_Panel[] = {
+    0x17000000,    0x00000000, 0x00000000, 0x00000000, gPanelVertices, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00050000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    func_84B0AD48, D_84B16640, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    func_84B0AD48, gPanelDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B16738[] = {
+static Vtx gIconVertices[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -16, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, 16, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16778[] = {
+static Gfx gIconDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16738, 4, 0),
+    gsSPVertex(gIconVertices, 4, 0),
     gsDPLoadTextureBlock_4b(0x0F000000, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             5, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B167E0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16738, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0AE30, D_84B16778, 0x06000000, 0x01000000, 0x00000000,
+static u32 gGeoLayout_Icon[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gIconVertices, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, func_84B0AE30, gIconDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B16818[] = {
+static Vtx gColoredQuadVertices[] = {
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(32, 32, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-32, -32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -32, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16898[] = {
+static Gfx gColoredQuadDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0,
                        0, COMBINED),
     gsDPSetPrimColor(0, 0, 0, 255, 255, 255),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16818, 8, 0),
+    gsSPVertex(gColoredQuadVertices, 8, 0),
     gsDPLoadTextureBlock_4b(0x02022640, G_IM_FMT_I, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             6, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -107,8 +107,8 @@ static Gfx D_84B16898[] = {
     gsSPEndDisplayList(),
 };
 static u32 D_84B16948[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B16818, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0AF48, D_84B16898, 0x06000000, 0x01000000, 0x00000000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gColoredQuadVertices, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, func_84B0AF48, gColoredQuadDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B16980[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -134,7 +134,7 @@ static u32 D_84B16A38[] = {
     0x22050000, D_84B169C0, 0x25000000, 0x06000000, 0x01000000,
 };
 
-s32 func_84B0AC60(s32 arg0, SimpleGfxNode* arg1) {
+s32 SetBattleBackgroundTexture0(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_v0;
     s32 tmp;
 
@@ -283,10 +283,10 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
         if ((arg0->unk_01 % var_a0) == 0) {
             PlayUISfx(0x0110000E, var_s3 + 1, 0);
             GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
-            Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
+            Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;
             GraphNode_InitChild(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
-            Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
+            Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3] + 5, -289.0f);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_030, 2.5f, 2.5f, 2.5f);
             arg0->unk_04[16 + var_s3].unk_000.unk_14 = arg0;
             arg0->unk_28[var_s3] = 0;
@@ -295,15 +295,15 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
         if (var_a1 == (arg0->unk_01 - (var_s3 * var_a0))) {
             PlayUISfx(0x0110000F, 0, 0);
             GraphNode_InitChild(&arg0->unk_04[8 + var_s3], 1, 0, arg0->unk_0C);
-            Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3], -289.0f);
+            Vec3f_Set(&arg0->unk_04[8 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3], -289.0f);
             arg0->unk_04[8 + var_s3].unk_000.unk_14 = arg0;
             GraphNode_InitChild(&arg0->unk_04[16 + var_s3], 0, 0, arg0->unk_10);
-            Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
+            Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3] + 5, -289.0f);
             Vec3f_Set(&arg0->unk_04[16 + var_s3].unk_030, 6.0f, 6.0f, 6.0f);
             arg0->unk_04[16 + var_s3].unk_000.unk_14 = arg0;
             arg0->unk_28[var_s3] = 0;
             GraphNode_InitChild(&arg0->unk_04[24], 0, 0, arg0->unk_14);
-            Vec3f_Set(&arg0->unk_04[24].unk_024, D_84B16390[var_s3], D_84B163A0[var_s3] + 5, -289.0f);
+            Vec3f_Set(&arg0->unk_04[24].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3] + 5, -289.0f);
             arg0->unk_04[24].unk_000.unk_14 = arg0;
 
             for (i = 0; i < gBattleContext.unk_0003 - 1; i++) {
@@ -337,8 +337,8 @@ void func_84B0B6EC(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
 
         arg1->unk_000.unk_14 = 0;
 
-        arg1->unk_024.x = D_84B16390[arg2] + (COSS(sp26) * temp_fv0);
-        arg1->unk_024.y = (D_84B163A0[arg2] + 5) + (SINS(sp26) * temp_fv0);
+        arg1->unk_024.x = gBattleSlotXOffsets[arg2] + (COSS(sp26) * temp_fv0);
+        arg1->unk_024.y = (gBattleSlotYOffsets[arg2] + 5) + (SINS(sp26) * temp_fv0);
         arg1->unk_024.z = -289.0f;
     }
 }
@@ -354,7 +354,7 @@ void func_84B0B7F4(unk_D_84B25A90* arg0) {
         if ((s32)arg0->unk_18 == (s32)arg0->unk_04[i].unk_000.unk_0C) {
             s32 idx = arg0->unk_04[i].unk_000.unk_14;
 
-            Vec3f_Set(&arg0->unk_04[i].unk_030, D_84B163B0[idx], D_84B163B0[idx], D_84B163B0[idx]);
+            Vec3f_Set(&arg0->unk_04[i].unk_030, gPulseScaleTable[idx], gPulseScaleTable[idx], gPulseScaleTable[idx]);
             arg0->unk_04[i].unk_000.unk_14 = (idx + 1) % 12;
         }
     }
@@ -460,9 +460,9 @@ void func_84B0BE28(unk_D_84B25A90* arg0) {
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
-    arg0->unk_08 = process_geo_layout(temp_v0, D_84B16588);
-    arg0->unk_0C = process_geo_layout(temp_v0, D_84B166E8);
-    arg0->unk_10 = process_geo_layout(temp_v0, D_84B167E0);
+    arg0->unk_08 = process_geo_layout(temp_v0, gGeoLayout_BattleBackground);
+    arg0->unk_0C = process_geo_layout(temp_v0, gGeoLayout_Panel);
+    arg0->unk_10 = process_geo_layout(temp_v0, gGeoLayout_Icon);
     arg0->unk_14 = process_geo_layout(temp_v0, D_84B16948);
     arg0->unk_18 = process_geo_layout(temp_v0, D_84B16A38);
 

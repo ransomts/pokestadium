@@ -1,6 +1,6 @@
 #include "fragment63.h"
 
-SpeciesDisplayParams D_84B17620[] = {
+SpeciesDisplayParams gSpeciesDisplayParamsFront[] = {
     {
         0x01,
         0x00,
@@ -2130,7 +2130,7 @@ SpeciesDisplayParams D_84B17620[] = {
         NULL,
     },
 };
-SpeciesDisplayParams D_84B186C0[] = {
+SpeciesDisplayParams gSpeciesDisplayParamsBack[] = {
     {
         0x01,
         0x00,

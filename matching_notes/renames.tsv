@@ -3410,3 +3410,160 @@ func_84375038	Battle_DisplayStatusMessage	w22		Selects message strings based on 
 func_84375508	Battle_StartMiniGame	w22		Sets flags, chooses a random timer value, and writes a mini?game start message, indicating initiation of a mini?game	applied@e014d06
 func_8437670C	SpAttack_Dispatch	w22		Indexes D_8438AE54 function pointer array using battle parameter and calls the selected function, acting as a SP?attack dispatcher	applied@e014d06
 func_84376768	SpAttack_Main	w22		Simply invokes func_8437670C, serving as the main entry point for SP?attack execution	applied@e014d06
+func_84B00020	Battle_SavePokemonNames	w23		Saves each Pokemon's name data after a battle and commits bank block 0x13, as seen by the loop over PokemonData and GbsCommitBankBlock call.	applied@8eff47f
+func_84B000F0	Battle_IncrementPlayerName	w23		Increments the player name counter when specific battle conditions are met, using GbsGetPlayerName and GbsSetPlayerName.	applied@8eff47f
+func_84B001D8	Battle_SetProgressFlags	w23		Sets bits in the global progress struct based on the current battle mode and calls func_80027FE0, indicating flag handling for battle stages.	applied@8eff47f
+func_84B00280	Battle_UpdateStageProgress	w23		Updates stage?specific progress fields (unk_04/05/06) in the progress struct and marks a flag, as shown by the assignments from gBattleContext.	applied@8eff47f
+func_84B0037C	Battle_GetMessageString	w23		Wraps GetMessageString with the battle message bank (D_84B26678) to retrieve a message by ID.	applied@8eff47f
+func_84B003AC	Battle_GetMessageStringBuffer	w23		Calls GetMessageString with a provided buffer and the battle message bank, acting as a buffered message fetcher.	applied@8eff47f
+func_84B00478	Battle_ResetGraphNodes	w23		Iterates over 128 graph nodes in gBattleGraphics and calls GraphNode_Reset on each, resetting battle graphics state.	applied@8eff47f
+func_84B00D3C	Battle_DrawTrainerInfo	w23		Draws trainer icons and centered text for the battle UI, using gTrainerIconTextures and Text_DrawCentered.	applied@8eff47f
+func_84B014DC	Battle_BeginFrame	w23		Starts a new display list, fills the screen, sets texture state and advances the stage, preparing the frame for rendering.	applied@8eff47f
+func_84B01538	Battle_ProcessFrame	w23		Updates inputs, processes the input buffer, updates battle UI state, and begins the frame rendering.	applied@8eff47f
+func_84B016F4	Battle_UpdateAndRender	w23		Updates inputs, processes the input buffer, updates multiple battle UI structures, and renders the frame.	applied@8eff47f
+func_84B0174C	Battle_InitGraphics	w23		Initializes various battle graphics structures (menu, sprites, geometry) before the main loop starts.	applied@8eff47f
+D_84B26670	gBattleProgress	w23		Stores bitfields and stage progress values accessed by multiple Battle_* functions to track battle state.	applied@8eff47f
+D_84B26640	gBattleMenuState	w23		Contains fields unk_1C, unk_28, etc., manipulated by menu?related functions to control battle UI flow.	applied@8eff47f
+func_84B03A10	RenderUI_BackgroundSegment	w23		Uses gDefaultGraphRoot->unk_0C to set segment 0x0F and then displays arg1, indicating it renders the background UI segment.	applied@8eff47f
+func_84B03AB4	RenderUI_FrontLayerSegment	w23		Selects gDefaultGraphRoot->unk_10[0] for segment 0x0F before displaying arg1, showing it renders the front?layer UI segment.	applied@8eff47f
+func_84B03C20	RenderUI_MiddleLayerSegment	w23		Selects gDefaultGraphRoot->unk_10[1] for segment 0x0F before displaying arg1, indicating it renders the middle?layer UI segment.	applied@8eff47f
+func_84B03B58	RenderUI_TwoLayerSegment	w23		Sets both segment 0x0F and 0x0E from gDefaultGraphRoot->unk_10[2] and [3] then displays arg1, so it renders a two?layer UI segment.	applied@8eff47f
+func_84B03CC4	SetNodeZFromAnim	w23		When arg0==2 it copies a Z value from a table (unk_02) into arg1->unk_24.z, suggesting it sets a node?s Z based on animation data.	applied@8eff47f
+func_84B05760	RenderUI_BarSegment	w23		Computes a texture index from the current frame and displays D_84B113C0, indicating it renders a UI bar segment.	applied@8eff47f
+func_84B05844	RenderUI_HighlightedBar	w23		When a specific segment matches the battle context it sets pulsing prim and env colors before displaying D_84B114F8, showing a highlighted bar rendering.	applied@8eff47f
+func_84B05A2C	RenderUI_SegmentImage	w23		Selects gDefaultGraphRoot->unk_30[tmp]->img_p for segment 0x0F and displays arg1, indicating it renders an image segment in the UI.	applied@8eff47f
+func_84B05B04	RenderUI_HighlightedSegment	w23		Uses a pulsing color effect based on a static timer before displaying arg1, indicating it renders a highlighted UI segment.	applied@8eff47f
+func_84B05CE0	DrawTransferPakError	w23		Initialises a 0x40?0x40 framebuffer, draws a border and a sprite, clearly drawing the Transfer Pak error screen.	applied@8eff47f
+D_84B0FC40	gBattleModeBackgroundIds	w23		Used in func_84B05184 to index BinArchive files based on gBattleContext.unk_0000, mapping battle modes to background IDs.	applied@8eff47f
+D_84B0FC48	gBattleSubModeBackgroundIds	w23		Used similarly for sub?mode backgrounds when gBattleContext.unk_0000==7, providing background IDs per sub?mode.	applied@8eff47f
+func_84B06B50	HealthBar_SetSegment	w23		Called from geo layouts D_84B146C0/D_84B1474C to set segment texture for health bar UI, using arg1->unk_00.unk_14 to compute sprite index and selecting memory segment D_300C000/D_300D800.	applied@8eff47f
+func_84B06C7C	PowerGauge_SetSegment	w23		Used in geo layouts D_84B14A90/D_84B14B50 for a UI gauge, calculates sprite index with a different formula and selects memory segment D_300F000/D_300FC00.	applied@8eff47f
+func_84B06E08	SpriteDisplay_DrawSegment	w23		Geo layout callback (used in D_84B141E8/D_84B14234) that sets segment 0x0F to an image pointer and draws the display list passed in arg1, typical for drawing UI sprites.	applied@8eff47f
+func_84B06ED0	UI_ShimmerEffect	w23		Animates a texture offset (static D_84B12490) and draws display list D_84B12420 which loads texture D_84B11C20, creating a moving shimmer effect on the UI.	applied@8eff47f
+func_84B06F60	UI_SlideElements	w23		Shifts the X position of UI elements left or right based on frame count and plays a UI sound; used by PowerGauge_Update to animate bar movement.	applied@8eff47f
+func_84B07058	Camera_Shake	w23		Applies a sinusoidal Y?offset to the camera view (SINS) and updates view parameters; invoked by PowerGauge animation steps to create a shake effect.	applied@8eff47f
+func_84B070EC	PowerGauge_AnimateStepA	w23		Handles early frames of the power?gauge animation, playing UI sounds and moving the camera via Camera_Shake; called from PowerGauge_Update for PAL/NTSC timing.	applied@8eff47f
+func_84B071C0	PowerGauge_AnimateStepB	w23		Similar to PowerGauge_AnimateStepA but with different frame thresholds and sound timings; used for the alternate TV timing path.	applied@8eff47f
+func_84B07294	PowerGauge_Update	w23		Orchestrates the power?gauge animation, calling UI_SlideElements and the appropriate PowerGauge_AnimateStep based on TV type; advances internal counters.	applied@8eff47f
+func_84B07370	SpriteAnimation_Tick	w23		Advances a sprite animation slot (SpriteDisplay_TryAdvance) each frame and loops after a fixed count; used in UI state machine.	applied@8eff47f
+func_84B073D8	UI_StateMachine	w23		Dispatches UI behavior based on arg0->unk_00 (states 1 and 3), invoking SpriteAnimation_Tick or PowerGauge_Update; central UI state handler.	applied@8eff47f
+func_84B07428	SpriteDisplay_SetupBattle	w23		Configures depth buffer and sprite slots for a standard (single) battle UI, loading assets for both players (6 slots each).	applied@8eff47f
+func_84B07560	SpriteDisplay_SetupDoubleBattle	w23		Similar to SpriteDisplay_SetupBattle but allocates additional slots for double?battle configurations (up to 18 slots).	applied@8eff47f
+func_84B07758	UI_Init	w23		Initialises UI graphics: loads archives, selects battle mode (single/double), creates sprite displays, and loads texture data via func_84B00D3C.	applied@8eff47f
+D_84B11C20	gShimmerTexture	w23		Texture data (32?32 RGBA) used by display list D_84B12420 for the UI shimmer effect.	applied@8eff47f
+func_84B07EB0	DrawPokemonFrontSprite	w23		Called when arg0==5, selects a Pokemon image from the battle struct and draws it via a display list, indicating it renders the front sprite of a Pokemon	applied@8eff47f
+func_84B07F78	DrawPokemonStatusIcon	w23		Chooses a status texture based on battle timer, draws it, and toggles a flag, so it renders the Pokemon's status icon	applied@8eff47f
+func_84B080F4	DrawPokemonItemIcon	w23		Similar to the previous function but uses a different image array, suggesting it draws the Pokemon's held?item icon	applied@8eff47f
+func_84B08230	DrawHPBarSegment	w23		Uses a lookup table to map a health?bar index to a sprite and draws it, therefore rendering a segment of the HP bar	applied@8eff47f
+func_84B083D8	DrawHPBarSegmentAlt	w23		Analogous to DrawHPBarSegment but uses an alternate image source, drawing an alternate HP?bar segment	applied@8eff47f
+func_84B0852C	DrawPlayerHealthBars	w23		Iterates over both players' Pokemon and calls DrawHealthBar for each, drawing all player health bars	applied@8eff47f
+func_84B08694	DrawDoubleBattleHealthBars	w23		Loops over a 2?2 battle layout and draws health bars for each active Pokemon, handling double?battle health bar rendering	applied@8eff47f
+func_84B08858	SetHPBarCriticalFlag	w23		Sets a per?slot critical flag and plays a UI sound when a Pokemon's HP matches a threshold, marking the HP bar as critical	applied@8eff47f
+func_84B08954	SetDoubleBattleHPBarCriticalFlag	w23		Same as SetHPBarCriticalFlag but operates on double?battle slots, flagging critical HP bars in double battles	applied@8eff47f
+func_84B08A90	InitHealthBarGraphNodes	w23		Initializes child graph nodes for health?bar UI elements, setting up the health?bar graph structure	applied@8eff47f
+func_84B08BFC	InitDoubleBattleHealthBarGraphNodes	w23		Initializes graph nodes for double?battle health?bar UI, configuring the double?battle health?bar graph	applied@8eff47f
+func_84B0A18C	AdvanceSpriteAnimation	w23		Advances sprite animation frames and transitions state when the animation completes	applied@8eff47f
+D_84B14C10	gHealthBarSpriteLookup	w23		Lookup table used to map health?bar indices to sprite IDs in HP?bar drawing functions	applied@8eff47f
+D_84B14C20	gHealthBarQuadVtx	w23		Vertex array defining a rectangular quad used in health?bar display lists	applied@8eff47f
+D_84B16390	gBattleSlotXOffsets	w23		Used as X coordinate offsets for up to eight battle slots in func_84B0B228 and related functions	applied@8eff47f
+D_84B163A0	gBattleSlotYOffsets	w23		Used as Y coordinate offsets paired with D_84B16390 for battle slot positioning in func_84B0B228	applied@8eff47f
+D_84B163B0	gPulseScaleTable	w23		Provides a 12?step scale factor table applied to particle nodes in func_84B0B7F4	applied@8eff47f
+D_84B163E0	gRectVertices	w23		Vertex array defining a rectangular quad rendered by D_84B164A0 display list	applied@8eff47f
+D_84B164A0	gRectDisplayList	w23		Display list that draws three textured rectangles using the vertices in D_84B163E0	applied@8eff47f
+D_84B16588	gGeoLayout_BattleBackground	w23		Geo layout command list processed in func_84B0BE28 to create the battle background hierarchy	applied@8eff47f
+D_84B165C0	gPanelVertices	w23		Vertex array for a smaller rectangular panel used by D_84B16640 display list	applied@8eff47f
+D_84B16640	gPanelDisplayList	w23		Display list that renders two textured panels using D_84B165C0 vertices	applied@8eff47f
+D_84B166E8	gGeoLayout_Panel	w23		Geo layout data for the panel, referenced in func_84B0BE28	applied@8eff47f
+D_84B16738	gIconVertices	w23		Vertex array for a 32?32 icon quad used by D_84B16778 display list	applied@8eff47f
+D_84B16778	gIconDisplayList	w23		Display list that draws an icon with a 4?bit intensity texture using D_84B16738 vertices	applied@8eff47f
+D_84B167E0	gGeoLayout_Icon	w23		Geo layout entry for the icon, passed to process_geo_layout in func_84B0BE28	applied@8eff47f
+D_84B16818	gColoredQuadVertices	w23		Vertex array for a colored quad with primitive/ENV combine mode used by D_84B16898	applied@8eff47f
+D_84B16898	gColoredQuadDisplayList	w23		Display list that renders a colored quad with environment color, using D_84B16818 vertices	applied@8eff47f
+func_84B0AC60	SetBattleBackgroundTexture0	w23		Selects texture segment 0x0F from temp_v0->unk_1C array and displays arg1->unk_00.unk_14 in func_84B0AC60	applied@8eff47f
+func_84B0BF10	Fragment63_RenderCallbackBarA	w23		Checks arg0==5, sets segment 0x0F to a texture based on a flag and draws the node?s display list, acting as a render callback for bar layout A	applied@8eff47f
+func_84B0BFE4	Fragment63_RenderCallbackBarB	w23		Checks arg0==5, sets segment 0x0F to a fixed texture (D_3020800) and draws the node?s display list, serving as a render callback for bar layout B	applied@8eff47f
+func_84B0C094	Fragment63_RenderCallbackBarEnv	w23		Checks arg0==5, sets segment 0x0F from the fragment struct, sets the environment color, then draws the node?s display list, providing an env?colored bar render callback	applied@8eff47f
+func_84B0C3A4	Fragment63_RenderCallbackIconEnv	w23		Checks arg0==5, sets the environment color from the fragment struct and draws the node?s display list, acting as an icon render callback that uses env color	applied@8eff47f
+D_84B16AA0	gFragment63_BarVtx	w23		Static Vtx array of 16 vertices used by D_84B16BA0 to draw a multi?segment bar texture	applied@8eff47f
+D_84B16BA0	gFragment63_BarDL	w23		Display list that renders the bar using vertices from D_84B16AA0 and loads four texture tiles, indicating it is the bar draw list	applied@8eff47f
+D_84B16CC8	gFragment63_GeoLayoutBarA	w23		Geo?layout command array passed to process_geo_layout containing func_84B0BF10, defining the bar layout A	applied@8eff47f
+D_84B16CFC	gFragment63_GeoLayoutBarB	w23		Geo?layout command array passed to process_geo_layout containing func_84B0BFE4, defining the bar layout B	applied@8eff47f
+D_84B16D30	gFragment63_SmallQuadVtx	w23		Static Vtx array of 4 vertices used by D_84B16D70 to draw a small textured quad	applied@8eff47f
+D_84B16D70	gFragment63_SmallQuadDL	w23		Display list that draws a 32?32 4?bit texture using vertices from D_84B16D30, thus a small quad DL	applied@8eff47f
+D_84B16DD8	gFragment63_GeoLayoutSmallQuad	w23		Geo?layout array referencing func_84B0C094 and the small?quad DL, defining the small?quad layout	applied@8eff47f
+D_84B16E10	gFragment63_IconVtx	w23		Static Vtx array of 4 vertices used by D_84B16E50 to draw an icon texture	applied@8eff47f
+D_84B16E50	gFragment63_IconDL	w23		Display list that draws an icon texture using vertices from D_84B16E10	applied@8eff47f
+D_84B16EB8	gFragment63_GeoLayoutIcon	w23		Geo?layout array referencing func_84B0C3A4 and the icon DL, defining the icon layout	applied@8eff47f
+D_84B16EEC	gFragment63_FadeColors	w23		Array of five Color_RGBA8 values used in func_84B0C7D0 to interpolate fade colors, storing the fragment?s fade palette	applied@8eff47f
+D_84B16F00	gBarVerticesLarge	w23		Vertex array used by display list D_84B17080 to draw a rectangular UI bar, indicating it stores bar geometry	applied@8eff47f
+D_84B17080	gBarDisplayListLarge	w23		Display list that renders the bar geometry from D_84B16F00 with bar textures, so it is the large UI bar display list	applied@8eff47f
+D_84B17240	gBarGeoLayoutLarge	w23		Geo layout array that references D_84B16F00 and D_84B17080, defining the large UI bar's scene?graph node	applied@8eff47f
+D_84B17268	gBarVerticesSmall	w23		Vertex array used by display list D_84B173A8 for a smaller rectangular UI bar	applied@8eff47f
+D_84B173A8	gBarDisplayListSmall	w23		Display list that renders the small bar geometry from D_84B17268	applied@8eff47f
+D_84B17528	gBarGeoLayoutSmall	w23		Geo layout array referencing D_84B17268 and D_84B173A8, defining the small UI bar node	applied@8eff47f
+func_84B0D870	BarIdleCallback	w23		Empty callback invoked when bar state is 1 (idle) in func_84B0D970, representing the idle step	applied@8eff47f
+func_84B0D878	BarGrowStep	w23		Callback that increments the bar's animation counter and scales the node up, used for the grow animation (state?2)	applied@8eff47f
+func_84B0D8F0	BarShrinkStep	w23		Callback that decrements the bar's animation counter and scales the node down, used for the shrink animation (state?3)	applied@8eff47f
+func_84B0D970	BarUpdateCallback	w23		State dispatcher that selects the appropriate bar callback based on arg0->unk_00, thus the bar update function	applied@8eff47f
+func_84B0D9D8	BarInit	w23		Initializes a bar graph node, sets its position and initial scale, so it is the bar initialization function	applied@8eff47f
+func_84B0DA90	BarStartShrink	w23		Sets the bar's counter to max and switches to shrink state, starting the shrink animation	applied@8eff47f
+func_84B0DAA4	BarCreate	w23		Creates a bar instance, allocates a memory block and selects the large or small geo layout based on arg1, therefore the bar creation function	applied@8eff47f
+unk_D_84B26640_010	BarState	w23		Structure that holds bar animation state (counter, mode, layout pointer, graph node), representing a UI bar state object	applied@8eff47f
+func_84B0DD5C	MenuItem_Print	w23		Sets text env color based on selection state and prints the string at calculated coordinates.	applied@8eff47f
+func_84B0DE04	RenderBattleStatusPanel	w23		Displays a status panel with title (0x29) and two lines (0x2A, 0x2B), and optionally shows HP when unk_06 == 0x48.	applied@8eff47f
+func_84B0DF70	RenderBattleOptionsPanel	w23		Shows an options panel with multiple selectable lines (0x2D?0x31) and prints the current HP value.	applied@8eff47f
+func_84B0E198	RenderBattleSummaryPanel	w23		Displays a concise summary panel with two lines (0x2F, 0x32, 0x31) after a battle.	applied@8eff47f
+func_84B0E2D8	RenderBattleHPPanel	w23		Shows an HP?related panel, conditionally enabling a line when both Pok?mon HP values are below 0x63.	applied@8eff47f
+func_84B0E424	RenderBattleScorePanel	w23		Draws a score panel with two lines (0x35, 0x31) after a battle.	applied@8eff47f
+func_84B0E50C	RenderBattleModeTitle	w23		Centers and prints the battle mode title based on gBattleContext.unk_0000 values.	applied@8eff47f
+func_84B0E718	RenderBattleMatchupPanel	w23		Formats and prints the player vs. opponent names and scores, using sprintf and MeasureTextWidth.	applied@8eff47f
+func_84B0E948	RenderBattleItemIcons	w23		Draws one or two item icons from the texture table D_84B17608 based on the provided battle data struct.	applied@8eff47f
+func_84B0EC18	UpdateFlashingTextColor	w23		Changes text env color to a flashing hue when arg0->unk_1C == 1, using a sine?based calculation and static phase D_84B17618.	applied@8eff47f
+func_84B0F464	RenderMenuPanel	w23		Selects and draws the appropriate UI panel based on arg0->unk_01 and then dispatches to the corresponding render function.	applied@8eff47f
+D_84B17550	gMenuPanelDefs	w23		Array of structs defining panel positions, sizes and flags used throughout the UI rendering code.	applied@8eff47f
+D_84B17608	sItemIconTextures	w23		Static array of texture pointers for item icons referenced by func_84B0E948.	applied@8eff47f
+D_84B17620	gSpeciesDisplayParamsFront	w23		Array of SpeciesDisplayParams indexed by species ID, used for front?view model scaling and positioning (large base offsets such as 63232)	applied@8eff47f
+D_84B186C0	gSpeciesDisplayParamsBack	w23		Array of SpeciesDisplayParams indexed by species ID, used for back?view or opponent model scaling (smaller base offsets like 3328)	applied@8eff47f
+func_84800020	TransferPakErrorScreen	w23		draws error border and prints messages from D_84803790 indices 2 and 3 for transfer?pak errors	applied@8eff47f
+func_84800184	TransferPakMessageScroll	w23		displays a scrolling message using characters from D_84803790 based on player state	applied@8eff47f
+func_84800458	SelectionState_Init	w23		initialises a unk_D_84803760 struct with default values and player?specific data	applied@8eff47f
+func_84800530	SelectionState_DrawSprite	w23		draws a sprite according to the selection state stored in unk_D_84803760	applied@8eff47f
+func_8480067C	SelectionState_UpdateValue	w23		updates the stored selection value based on directional input and returns the new value	applied@8eff47f
+func_848007B8	PlayerPanel_DrawLeft	w23		creates the left?hand UI panel for player?0, including icons and selection updates	applied@8eff47f
+func_848009E8	PlayerPanel_DrawRight	w23		creates the right?hand UI panel for player?1, mirroring the left?hand panel logic	applied@8eff47f
+func_84800C18	MoveSelection_Record	w23		records a chosen move by encoding it into the selection state array and advancing the index	applied@8eff47f
+func_84800C68	SelectionState_Reset	w23		resets the selection state array and counters for a given player	applied@8eff47f
+func_848012A4	StatusIcon_DrawAnimated	w23		draws a status icon with a cycling offset based on D_84816458 animation counters	applied@8eff47f
+func_84801340	ModeSelectionPanel_Draw	w23		constructs the mode?selection UI panel, drawing background, icons and text based on player data	applied@8eff47f
+func_848015F8	ResultMessage_Draw	w23		shows a result message window with colour?coded text depending on the battle mode (3?5)	applied@8eff47f
+func_84801800	CenteredMessage_Draw	w23		renders a large centred message with fade?in/out alpha blending for end?of?battle screens	applied@8eff47f
+func_84801A88	PokemonInfo_Draw	w23		displays detailed Pok?mon information including stats, moves and type colours in a panel	applied@8eff47f
+D_84803790	gMsgBank_Common	w23		holds the common message bank (ID?0x12) used for UI strings throughout the fragment	applied@8eff47f
+func_84A00020	TileBackgroundTexture	w23		Used to draw a tiled RGBA texture across the screen by looping over a 0x1E0?0x280 area, indicating its purpose as a background tiler	applied@8eff47f
+func_84A00638	DrawScaledIA8TextureRect	w23		Loads an IA8 texture block and draws it with Gfx_DrawTextureRect, indicating it draws a scaled IA texture rectangle	applied@8eff47f
+func_84A008A8	DrawInfoPanel	w23		Constructs a simple panel, sets fonts, and prints messages using GetMessageString, clearly rendering an information panel	applied@8eff47f
+func_84A00B44	DrawPortraitIcons	w23		Iterates over portrait entries, draws borders and textures, and prints names, indicating it renders portrait icons with labels	applied@8eff47f
+func_84A00E98	AnimatePortraitScroll	w23		Updates a static offset and draws a series of sprites in a scrolling fashion, showing it animates portrait scrolling	applied@8eff47f
+func_84A00FEC	DrawAnimatedSprites	w23		Sets up rendering state and draws sprites with varying env colors based on struct fields, indicating it draws animated sprites	applied@8eff47f
+func_84A012B8	DrawMessageList	w23		Iterates over visible entries and prints messages with calculated positions, clearly rendering a list of messages	applied@8eff47f
+func_84A01424	DrawDetailPanel	w23		Displays a bordered panel with textures and prints two lines of text, showing it renders a detailed information panel	applied@8eff47f
+func_84A01770	DrawAlternateDetailPanel	w23		Similar to DrawDetailPanel but uses different texture offsets and font sizes, indicating an alternate detail panel layout	applied@8eff47f
+func_84A02304	LoadTrainerPortraits	w23		Loads trainer data from an archive and fills portrait entry structs with texture pointers and names, indicating it loads trainer portraits	applied@8eff47f
+func_84A02580	PlayIntroSequence	w23		Manages the intro animation, music changes, and user input for proceeding, showing it runs the introductory sequence	applied@8eff47f
+func_84A02898	ShowBattleStartPrompt	w23		Displays a prompt, waits for button press, and sets up subsequent state, indicating it shows the battle start UI prompt	applied@8eff47f
+func_84A02D14	InitializePokemonStadiumMenu	w23		Initializes text, loads assets, sets up archives, and starts the menu state machine, indicating it initializes the stadium menu system	applied@8eff47f
+func_83200020	GeoCmd_AdjustNodeZOffset	w23		Called from the geo layout command table D_83201F5C and adjusts a node's Z position when arg0==2, indicating it modifies node offsets.	applied@8eff47f
+func_83200064	Pokemon_IsStandard	w23		Iterates over a PokemonData's unk_09 array and returns 0 if any entry is >=0xA6, otherwise 1, thus checking for standard (non?special) Pok?mon.	applied@8eff47f
+func_832000A0	Pokemon_MatchesSelectionCriteria	w23		Checks species range, a flag in gSpeciesDisplayTable, and level bounds before returning 1, used to filter Pok?mon matching specific criteria.	applied@8eff47f
+func_83200148	CountMatchingPokemonInBlock	w23		Reads Pok?mon from a GBS block, counts those satisfying func_832000A0, and returns the count or -1, indicating a count of matching Pok?mon.	applied@8eff47f
+func_8320029C	SnapSelect_FindPokemon	w23		Scans the battle context for a Pok?mon with species 0x19, sets camera mode, and selects it, returning 1 on success.	applied@8eff47f
+func_8320037C	GetPokemonCount	w23		Counts non?zero entries in D_832027C8.unk_04.unk_09 and returns the number of Pok?mon present.	applied@8eff47f
+func_832005E4	Text_PrintFadingChar	w23		Computes a fading alpha value, sets the text environment color, and prints a single character, used for fading text effects.	applied@8eff47f
+func_83200684	UI_DrawGradientPanel	w23		Initializes two colors and calls DrawGradientPanel to render a gradient UI panel.	applied@8eff47f
+func_832007A4	UI_DisplayMessageRepeated	w23		Loops arg1 times, updating inputs, rendering frames, drawing a panel, printing a message, and stores the last message pointer.	applied@8eff47f
+func_8320084C	UI_DisplayMessageWaitA	w23		Displays a message, optionally fades text, and waits until the A button is pressed before proceeding.	applied@8eff47f
+func_83200ADC	UI_PromptYesNo	w23		Implements a Yes/No prompt handling D?pad up/down and A/B buttons, returning the player's selection.	applied@8eff47f
+func_83200CD8	UI_PromptMoveSelection	w23		Presents a 4?option move selection menu, handling navigation and returning the chosen index or -1 on cancel.	applied@8eff47f
+D_83202010	gCameraGraphNode	w23		Initialized via process_geo_layout and later accessed as D_83202010->unk_0C to obtain a CameraStruct, indicating it is the camera graph node.	applied@8eff47f
+D_83202020	gStadiumMessageBank	w23		Assigned GetMessageBank(0x1C) and used throughout for UI strings (e.g., GetMessageString calls), representing the stadium UI message bank.	applied@8eff47f
+func_8F000020	GetPlayerCount	w23		returns constant 2, likely the fixed player count for the stadium mode	applied@8eff47f

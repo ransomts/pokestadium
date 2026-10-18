@@ -10,10 +10,10 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static s8 D_84B14C10[] = {
+static s8 gHealthBarSpriteLookup[] = {
     0xFF, 0x00, 0x01, 0x02, 0x06, 0x07, 0x08, 0xFF, 0xFF, 0x03, 0x04, 0x05, 0x09, 0x0A, 0x0B, 0xFF,
 };
-static Vtx D_84B14C20[] = {
+static Vtx gHealthBarQuadVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -25,7 +25,7 @@ static Gfx D_84B14CE0[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, SHADE, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14C20, 12, 0),
+    gsSPVertex(gHealthBarQuadVtx, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -38,8 +38,8 @@ static Gfx D_84B14CE0[] = {
     gsSPEndDisplayList(),
 };
 static u32 D_84B14DC8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B14C20, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B07EB0, D_84B14CE0, 0x06000000, 0x01000000, 0x00000000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gHealthBarQuadVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, DrawPokemonFrontSprite, D_84B14CE0, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B14E00[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -163,7 +163,7 @@ static Gfx D_84B15618[] = {
 };
 static u32 D_84B15688[] = {
     0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B14E00, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, func_84B07F78, D_84B15200, 0x22050000, D_84B15618, 0x25000000, 0x06000000, 0x01000000,
+    0x08000000, DrawPokemonStatusIcon, D_84B15200, 0x22050000, D_84B15618, 0x25000000, 0x06000000, 0x01000000,
 };
 static Vtx D_84B156C8[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -219,7 +219,7 @@ static Gfx D_84B159B0[] = {
 };
 static u32 D_84B15A20[] = {
     0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B156C8, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, func_84B080F4, D_84B15848, 0x22050000, D_84B159B0, 0x25000000, 0x06000000, 0x01000000,
+    0x08000000, DrawPokemonItemIcon, D_84B15848, 0x22050000, D_84B159B0, 0x25000000, 0x06000000, 0x01000000,
 };
 static Vtx D_84B15A60[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -299,12 +299,12 @@ static Gfx D_84B15EE0[] = {
 };
 static u32 D_84B15F50[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B08230, D_84B15CA0,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, D_84B15CA0,
     0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 D_84B15FA8[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B08230, D_84B15CA0,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegment, D_84B15CA0,
     0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static Vtx D_84B16000[] = {
@@ -356,16 +356,16 @@ static Gfx D_84B16268[] = {
 };
 static u32 D_84B162D8[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B083D8, D_84B16140,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, D_84B16140,
     0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 D_84B16330[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B083D8, D_84B16140,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, DrawHPBarSegmentAlt, D_84B16140,
     0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
 };
 
-s32 func_84B07EB0(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawPokemonFrontSprite(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A58* temp_v1;
     u8* var_a3;
 
@@ -386,7 +386,7 @@ s32 func_84B07EB0(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B07F78(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawPokemonStatusIcon(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A58* temp_t1;
     s32 temp_t2;
     u8* var_a3;
@@ -416,7 +416,7 @@ s32 func_84B07F78(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B080F4(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawPokemonItemIcon(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A58* temp_a3;
     s32 temp_t0;
     u8* var_a0;
@@ -440,7 +440,7 @@ s32 func_84B080F4(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B08230(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawHPBarSegment(s32 arg0, SimpleGfxNode* arg1) {
     u8* var_a3;
     unk_D_84B25A58* temp_t1;
     s32 temp_a1;
@@ -452,7 +452,7 @@ s32 func_84B08230(s32 arg0, SimpleGfxNode* arg1) {
         if (temp_a1 >= 0x10) {
             temp_a1 = (temp_a1 - 0x10) % 12;
         } else {
-            temp_a1 = D_84B14C10[temp_a1];
+            temp_a1 = gHealthBarSpriteLookup[temp_a1];
         }
 
         if (temp_a1 < 6) {
@@ -477,7 +477,7 @@ s32 func_84B08230(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B083D8(s32 arg0, SimpleGfxNode* arg1) {
+s32 DrawHPBarSegmentAlt(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
     unk_D_84B25A58* temp_t1;
     u8* var_a0;
@@ -489,7 +489,7 @@ s32 func_84B083D8(s32 arg0, SimpleGfxNode* arg1) {
         if (temp_a3 >= 0x10) {
             temp_a3 = (temp_a3 - 0x10) % 12;
         } else {
-            temp_a3 = D_84B14C10[temp_a3];
+            temp_a3 = gHealthBarSpriteLookup[temp_a3];
         }
 
         if (temp_a3 < 6) {
@@ -508,7 +508,7 @@ s32 func_84B083D8(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_84B0852C(unk_D_84B25A58* arg0, s32 arg1) {
+void DrawPlayerHealthBars(unk_D_84B25A58* arg0, s32 arg1) {
     s32 i;
     s32 j;
     UNUSED s32 pad;
@@ -531,7 +531,7 @@ void func_84B0852C(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void func_84B08694(unk_D_84B25A58* arg0, s32 arg1) {
+void DrawDoubleBattleHealthBars(unk_D_84B25A58* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -558,7 +558,7 @@ void func_84B08694(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void func_84B08858(unk_D_84B25A58* arg0, s32 arg1) {
+void SetHPBarCriticalFlag(unk_D_84B25A58* arg0, s32 arg1) {
     UNUSED s32 pad;
     unk_D_800AE540_0004* temp_s5;
     s32 temp_v0;
@@ -578,7 +578,7 @@ void func_84B08858(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void func_84B08954(unk_D_84B25A58* arg0, s32 arg1) {
+void SetDoubleBattleHPBarCriticalFlag(unk_D_84B25A58* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -602,7 +602,7 @@ void func_84B08954(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void func_84B08A90(unk_D_84B25A58* arg0) {
+void InitHealthBarGraphNodes(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
@@ -621,7 +621,7 @@ void func_84B08A90(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B08BFC(unk_D_84B25A58* arg0) {
+void InitDoubleBattleHealthBarGraphNodes(unk_D_84B25A58* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
@@ -716,7 +716,7 @@ void func_84B091A0(unk_D_84B25A58* arg0, s16 arg1) {
             arg0->unk_04[i].unk_01E.y += 0x800;
         }
 
-        func_84B0852C(arg0, 0x64);
+        DrawPlayerHealthBars(arg0, 0x64);
     }
 }
 
@@ -739,7 +739,7 @@ void func_84B09268(unk_D_84B25A58* arg0, s16 arg1) {
             arg0->unk_04[i].unk_01E.y += 0x800;
         }
 
-        func_84B08694(arg0, 0x64);
+        DrawDoubleBattleHealthBars(arg0, 0x64);
     }
 }
 
@@ -749,10 +749,10 @@ void func_84B09354(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x1A) {
-        func_84B0852C(arg0, 0x64 - (arg1 * 4));
+        DrawPlayerHealthBars(arg0, 0x64 - (arg1 * 4));
     } else if (arg1 < 0x3E) {
         if (((arg1 - 0x1A) % 6) == 0) {
-            func_84B08858(arg0, ((arg1 - 0x1A) / 6) + 1);
+            SetHPBarCriticalFlag(arg0, ((arg1 - 0x1A) / 6) + 1);
         }
     }
 }
@@ -763,10 +763,10 @@ void func_84B09444(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x1A) {
-        func_84B08694(arg0, 0x64 - (arg1 * 4));
+        DrawDoubleBattleHealthBars(arg0, 0x64 - (arg1 * 4));
     } else if (arg1 < 0x3E) {
         if (((arg1 - 0x1A) % 3) == 0) {
-            func_84B08954(arg0, ((arg1 - 0x1A) / 3) + 1);
+            SetDoubleBattleHPBarCriticalFlag(arg0, ((arg1 - 0x1A) / 3) + 1);
         }
     }
 }
@@ -777,10 +777,10 @@ void func_84B09534(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x15) {
-        func_84B0852C(arg0, 0x64 - (arg1 * 5));
+        DrawPlayerHealthBars(arg0, 0x64 - (arg1 * 5));
     } else if (arg1 < 0x33) {
         if (((arg1 - 0x15) % 5) == 0) {
-            func_84B08858(arg0, ((arg1 - 0x15) / 5) + 1);
+            SetHPBarCriticalFlag(arg0, ((arg1 - 0x15) / 5) + 1);
         }
     }
 }
@@ -791,10 +791,10 @@ void func_84B0962C(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x15) {
-        func_84B08694(arg0, 0x64 - (arg1 * 5));
+        DrawDoubleBattleHealthBars(arg0, 0x64 - (arg1 * 5));
     } else if (arg1 < 0x39) {
         if (((arg1 - 0x15) % 3) == 0) {
-            func_84B08954(arg0, ((arg1 - 0x15) / 3) + 1);
+            SetDoubleBattleHPBarCriticalFlag(arg0, ((arg1 - 0x15) / 3) + 1);
         }
     }
 }
@@ -805,7 +805,7 @@ void func_84B09720(unk_D_84B25A58* arg0, s16 arg1) {
     PokemonData* temp_s6 = gBattleContext.unk_1194[1].unk_08[0]->unk_01C;
 
     if (arg1 == 0) {
-        func_84B08BFC(arg0);
+        InitDoubleBattleHealthBarGraphNodes(arg0);
     }
 
     if (arg1 < 0x10) {
@@ -1015,7 +1015,7 @@ void func_84B09F60(unk_D_84B25A58* arg0) {
     }
 }
 
-void func_84B0A18C(unk_D_84B25A58* arg0) {
+void AdvanceSpriteAnimation(unk_D_84B25A58* arg0) {
     SpriteDisplay_TryAdvance(arg0->unk_1C, 0);
 
     arg0->unk_01++;
@@ -1028,7 +1028,7 @@ void func_84B0A18C(unk_D_84B25A58* arg0) {
 void func_84B0A1F4(unk_D_84B25A58* arg0) {
     switch (arg0->unk_00) {
         case 1:
-            func_84B0A18C(arg0);
+            AdvanceSpriteAnimation(arg0);
             break;
 
         case 3:
@@ -1097,8 +1097,8 @@ void func_84B0A544(unk_D_84B25A58* arg0, BinArchive* arg1) {
         func_84B0A244(arg0);
     }
 
-    func_84B00D3C(arg0->unk_24, 0, sp24, D_3000000);
-    func_84B00D3C(arg0->unk_28, 1, sp20, D_3003000);
+    Battle_DrawTrainerInfo(arg0->unk_24, 0, sp24, D_3000000);
+    Battle_DrawTrainerInfo(arg0->unk_28, 1, sp20, D_3003000);
     arg0->unk_00 = 1;
 }
 
@@ -1121,7 +1121,7 @@ s32 func_84B0A634(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
         if (arg0->unk_02 == 1) {
             func_84B08D54(arg0);
         } else {
-            func_84B08A90(arg0);
+            InitHealthBarGraphNodes(arg0);
         }
     }
     return arg0->unk_00 == 3;
@@ -1205,7 +1205,7 @@ void func_84B0A9D0(unk_D_84B25A58* arg0) {
         arg0->unk_20 = ALIGN64((u32)main_pool_alloc(0x4B40, 0));
     }
 
-    SpriteDisplay_SetScaleTable(arg0->unk_1C, D_84B186C0);
+    SpriteDisplay_SetScaleTable(arg0->unk_1C, gSpeciesDisplayParamsBack);
 
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {

@@ -8,7 +8,7 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static u32 D_84B11C20[] = {
+static u32 gShimmerTexture[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x39CF39CF, 0x39CF294B,
     0x18C70001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x10856B5B, 0xC631F7BD, 0xFFFFFFFF, 0xFFFFFFFF, 0xF7BDB5AD, 0x6319294B,
@@ -74,12 +74,12 @@ static Gfx D_84B12420[] = {
     gsSPSetGeometryMode(G_LIGHTING | G_TEXTURE_GEN),
     gsSPClearGeometryMode(G_TEXTURE_GEN_LINEAR),
     gsSPTexture(0x1194, 0x1194, 0, G_TX_RENDERTILE, G_ON),
-    gsDPLoadTextureBlock(D_84B11C20, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gsDPLoadTextureBlock(gShimmerTexture, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, 1, 1),
     gsSPEndDisplayList(),
 };
 
-s32 func_84B06B50(s32 arg0, SimpleGfxNode* arg1) {
+s32 HealthBar_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_a3;
     u8* sp30;
     s32 temp_v1;
@@ -105,7 +105,7 @@ s32 func_84B06B50(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B06C7C(s32 arg0, SimpleGfxNode* arg1) {
+s32 PowerGauge_SetSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_a3;
     u8* sp30;
     s32 temp_v1;
@@ -131,7 +131,7 @@ s32 func_84B06C7C(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B06E08(s32 arg0, SimpleGfxNode* arg1) {
+s32 SpriteDisplay_DrawSegment(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A28* temp_v1;
     u8* var_a3;
 
@@ -152,7 +152,7 @@ s32 func_84B06E08(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B06ED0(s32 arg0, SimpleGfxNode* arg1) {
+s32 UI_ShimmerEffect(s32 arg0, SimpleGfxNode* arg1) {
     static s32 D_84B12490 = 0x80;
 
     s32 var_v0;
@@ -528,7 +528,7 @@ static Gfx D_84B13C40[] = {
 };
 static u32 D_84B13FC8[] = {
     0x17000000, 0x0000016A,    0x00000000, 0x00000000, 0x84B12498, 0x05000000, 0x22010000, 0x00000000,
-    0x08000000, func_84B06ED0, 0x00000000, 0x1B000000, 0x00000000, 0x0000001B, 0x00040000, 0x05000000,
+    0x08000000, UI_ShimmerEffect, 0x00000000, 0x1B000000, 0x00000000, 0x0000001B, 0x00040000, 0x05000000,
     0x22010000, D_84B13C40,    0x06000000, 0x1B000000, 0x00000000, 0x0000FFD2, 0x00010000, 0x05000000,
     0x22010000, D_84B13B38,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
@@ -559,12 +559,12 @@ static Gfx D_84B14100[] = {
 static u32 D_84B141E8[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0xFFD00000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
-    func_84B06E08, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
+    SpriteDisplay_DrawSegment, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 D_84B14234[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00300000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
-    func_84B06E08, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
+    SpriteDisplay_DrawSegment, D_84B14100, 0x06000000, 0x06000000, 0x01000000,
 };
 static Vtx D_84B14280[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -626,15 +626,15 @@ static Gfx D_84B14480[] = {
 };
 static u32 D_84B146C0[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
-    0xFFE80000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B06B50, 0x00000000, 0x22050000, D_84B14480,
+    0xFFE80000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, D_84B14480,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0xFFB80000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    func_84B06B50, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
+    HealthBar_SetSegment, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
 static u32 D_84B1474C[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
-    0x00480000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, func_84B06B50, 0x00000000, 0x22050000, D_84B14480,
+    0x00480000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, HealthBar_SetSegment, 0x00000000, 0x22050000, D_84B14480,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0x00180000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    func_84B06B50, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
+    HealthBar_SetSegment, 0x00000001, 0x22050000, D_84B14480, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
 static Vtx D_84B147D8[] = {
     VTX(-24, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -680,22 +680,22 @@ static Gfx D_84B14918[] = {
 };
 static u32 D_84B14A90[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000,    0xFFF00000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, func_84B06C7C, 0x00000000,
+    0x00000000,    0xFFF00000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000000,
     0x22050000,    D_84B14918, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0xFFD00000,    0x05000000,
-    0x22050000,    0x00000000, 0x08000000, func_84B06C7C, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
+    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
     0x1B000000,    0x00000000, 0x00000000, 0xFFB00000,    0x05000000, 0x22050000, 0x00000000,    0x08000000,
-    func_84B06C7C, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
+    PowerGauge_SetSegment, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
 };
 static u32 D_84B14B50[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000,    0x00500000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, func_84B06C7C, 0x00000000,
+    0x00000000,    0x00500000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000000,
     0x22050000,    D_84B14918, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0x00300000,    0x05000000,
-    0x22050000,    0x00000000, 0x08000000, func_84B06C7C, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
+    0x22050000,    0x00000000, 0x08000000, PowerGauge_SetSegment, 0x00000001, 0x22050000, D_84B14918,    0x06000000,
     0x1B000000,    0x00000000, 0x00000000, 0x00100000,    0x05000000, 0x22050000, 0x00000000,    0x08000000,
-    func_84B06C7C, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
+    PowerGauge_SetSegment, 0x00000002, 0x22050000, D_84B14918,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
 };
 
-s32 func_84B06F60(unk_D_84B25A28* arg0, s16 arg1) {
+s32 UI_SlideElements(unk_D_84B25A28* arg0, s16 arg1) {
     s16 i;
     s16 sp24;
     s16 sp22;
@@ -727,12 +727,12 @@ s32 func_84B06F60(unk_D_84B25A28* arg0, s16 arg1) {
     return 1;
 }
 
-void func_84B07058(unk_D_84B25A28* arg0, s16 arg1) {
+void Camera_Shake(unk_D_84B25A28* arg0, s16 arg1) {
     arg0->unk_08->unk_60.at.y = SINS(arg1 << 0xE) * SQ((0x10 - arg1) / 12.0f);
     Camera_SetViewParameters(&arg0->unk_08->unk_60.at, &arg0->unk_08->unk_60.eye, 289.0f, 0, 0);
 }
 
-s32 func_84B070EC(unk_D_84B25A28* arg0, s16 arg1) {
+s32 PowerGauge_AnimateStepA(unk_D_84B25A28* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x01100007, 0, 0);
     }
@@ -747,13 +747,13 @@ s32 func_84B070EC(unk_D_84B25A28* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x24) {
-        func_84B07058(arg0, arg1 - 0x13);
+        Camera_Shake(arg0, arg1 - 0x13);
         return 0;
     }
     return 1;
 }
 
-s32 func_84B071C0(unk_D_84B25A28* arg0, s16 arg1) {
+s32 PowerGauge_AnimateStepB(unk_D_84B25A28* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x01100007, 0, 0);
     }
@@ -768,31 +768,31 @@ s32 func_84B071C0(unk_D_84B25A28* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x20) {
-        func_84B07058(arg0, arg1 - 0xF);
+        Camera_Shake(arg0, arg1 - 0xF);
         return 0;
     }
 
     return 1;
 }
 
-void func_84B07294(unk_D_84B25A28* arg0) {
+void PowerGauge_Update(unk_D_84B25A28* arg0) {
     s32 sp24 = 1;
 
     if (osTvType == OS_TV_PAL) {
         if (arg0->unk_01 >= 0) {
-            sp24 = func_84B06F60(arg0, arg0->unk_01) & 1;
+            sp24 = UI_SlideElements(arg0, arg0->unk_01) & 1;
         }
 
         if (arg0->unk_01 >= 0xD) {
-            sp24 &= func_84B071C0(arg0, arg0->unk_01 - 0xD);
+            sp24 &= PowerGauge_AnimateStepB(arg0, arg0->unk_01 - 0xD);
         }
     } else {
         if (arg0->unk_01 >= 0) {
-            sp24 = func_84B06F60(arg0, arg0->unk_01) & 1;
+            sp24 = UI_SlideElements(arg0, arg0->unk_01) & 1;
         }
 
         if (arg0->unk_01 >= 0x10) {
-            sp24 &= func_84B070EC(arg0, arg0->unk_01 - 0x10);
+            sp24 &= PowerGauge_AnimateStepA(arg0, arg0->unk_01 - 0x10);
         }
     }
 
@@ -802,7 +802,7 @@ void func_84B07294(unk_D_84B25A28* arg0) {
     arg0->unk_01++;
 }
 
-void func_84B07370(unk_D_84B25A28* arg0) {
+void SpriteAnimation_Tick(unk_D_84B25A28* arg0) {
     SpriteDisplay_TryAdvance(arg0->unk_20, 0);
 
     arg0->unk_01++;
@@ -812,19 +812,19 @@ void func_84B07370(unk_D_84B25A28* arg0) {
     }
 }
 
-void func_84B073D8(unk_D_84B25A28* arg0) {
+void UI_StateMachine(unk_D_84B25A28* arg0) {
     switch (arg0->unk_00) {
         case 1:
-            func_84B07370(arg0);
+            SpriteAnimation_Tick(arg0);
             break;
 
         case 3:
-            func_84B07294(arg0);
+            PowerGauge_Update(arg0);
             break;
     }
 }
 
-void func_84B07428(unk_D_84B25A28* arg0) {
+void SpriteDisplay_SetupBattle(unk_D_84B25A28* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -841,7 +841,7 @@ void func_84B07428(unk_D_84B25A28* arg0) {
     }
 }
 
-void func_84B07560(unk_D_84B25A28* arg0) {
+void SpriteDisplay_SetupDoubleBattle(unk_D_84B25A28* arg0) {
     s32 i;
     s32 count;
     AssetManager* tmp = AssetManager_Create(5);
@@ -869,7 +869,7 @@ void func_84B07560(unk_D_84B25A28* arg0) {
     }
 }
 
-void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1) {
+void UI_Init(unk_D_84B25A28* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gBattleContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
@@ -877,13 +877,13 @@ void func_84B07758(unk_D_84B25A28* arg0, BinArchive* arg1) {
     FRAGMENT_LOAD(fragment31);
 
     if (arg0->unk_02 == 1) {
-        func_84B07560(arg0);
+        SpriteDisplay_SetupDoubleBattle(arg0);
     } else {
-        func_84B07428(arg0);
+        SpriteDisplay_SetupBattle(arg0);
     }
 
-    func_84B00D3C(arg0->unk_24, 0, sp24, D_3000000);
-    func_84B00D3C(arg0->unk_28, 1, sp20, D_3003000);
+    Battle_DrawTrainerInfo(arg0->unk_24, 0, sp24, D_3000000);
+    Battle_DrawTrainerInfo(arg0->unk_28, 1, sp20, D_3003000);
     arg0->unk_00 = 1;
 }
 
@@ -981,7 +981,7 @@ void func_84B07CF8(unk_D_84B25A28* arg0, CameraStruct* arg1) {
     } else {
         arg0->unk_20 = SpriteDisplay_Alloc(NULL, 0xC, 0x80, 0x60);
     }
-    SpriteDisplay_SetScaleTable(arg0->unk_20, D_84B17620);
+    SpriteDisplay_SetScaleTable(arg0->unk_20, gSpeciesDisplayParamsFront);
 
     temp_s1 = state_pool_try_init(main_pool_get_available(), 0);
     if (arg0->unk_02 == 1) {

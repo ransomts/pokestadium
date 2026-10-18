@@ -22,11 +22,11 @@
 #include "src/stage_loader.h"
 #include "src/util.h"
 
-static GraphNode* D_83202010;
+static GraphNode* gCameraGraphNode;
 static GraphNode* D_83202014;
 static unk_D_86002F30* D_83202018;
 static char** D_8320201C;
-static char** D_83202020;
+static char** gStadiumMessageBank;
 static Fragment2_1GraphNode D_83202028[4];
 static unk_D_832025C8 D_832025C8;
 static unk_D_832027C8 D_832027C8;
@@ -38,11 +38,11 @@ static u32 D_83201F5C[] = {
     0x0C000000,  0x05000000, 0x0B00001E,    0x00000000, 0x014000F0, 0x00000320, 0x00000000, 0x000005DC, 0x05000000,
     0x0D000000,  0x05000000, 0x0E000002,    0x05000000, 0x22010000, 0x8C200060, 0x06000000, 0x14000000, 0x002B0012,
     0xFFFFFF32,  0x16FFFFFF, 0x0F000003,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0x003CFF06, 0x00640064,
-    0x00640000,  0x08000000, func_83200020, 0x00000000, 0x05000000, 0x00000000, D_8C200920, 0x06000000, 0x0A000000,
+    0x00640000,  0x08000000, GeoCmd_AdjustNodeZOffset, 0x00000000, 0x05000000, 0x00000000, D_8C200920, 0x06000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
-s32 func_83200020(s32 arg0, Fragment2_1GraphNode* arg1) {
+s32 GeoCmd_AdjustNodeZOffset(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 2) {
         arg1->unk_01E.z -= 0x80;
         arg1->unk_024.x = D_83202028->unk_024.x;
@@ -51,7 +51,7 @@ s32 func_83200020(s32 arg0, Fragment2_1GraphNode* arg1) {
     return 0;
 }
 
-s32 func_83200064(PokemonData* arg0) {
+s32 Pokemon_IsStandard(PokemonData* arg0) {
     s32 i;
     s32 var_v1 = 1;
 
@@ -68,11 +68,11 @@ s32 func_83200064(PokemonData* arg0) {
     return var_v1;
 }
 
-s32 func_832000A0(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3) {
+s32 Pokemon_MatchesSelectionCriteria(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 sp1C = 0;
 
     if ((arg0->unk_00.unk_00 > 0) && (arg0->unk_00.unk_00 < 0x98)) {
-        if ((func_83200064(arg0) != 0) && (gSpeciesDisplayTable[arg0->unk_00.unk_00 - 1].unk_0C & arg3)) {
+        if ((Pokemon_IsStandard(arg0) != 0) && (gSpeciesDisplayTable[arg0->unk_00.unk_00 - 1].unk_0C & arg3)) {
             if ((arg0->unk_24 >= arg1) && (arg2 >= arg0->unk_24)) {
                 sp1C = 1;
             }
@@ -81,7 +81,7 @@ s32 func_832000A0(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3) {
     return sp1C;
 }
 
-s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
+s32 CountMatchingPokemonInBlock(s16 arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad[22];
     s32 sp34;
     s16 var_s3;
@@ -99,7 +99,7 @@ s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
 
     if (var_v0 != NULL) {
         while (GbsBlock_ReadPokemon(&ptr->unk_00.unk_00, 1, var_v0) == 1) {
-            if (func_832000A0(ptr, 1, 0x64, 0x20) != 0) {
+            if (Pokemon_MatchesSelectionCriteria(ptr, 1, 0x64, 0x20) != 0) {
                 if (!arg2--) {
                     if (ptr->unk_00.unk_00 == 0x19) {
                         sp34 = 1;
@@ -118,7 +118,7 @@ s32 func_83200148(s16 arg0, s16 arg1, s16 arg2) {
     return -1;
 }
 
-s32 func_8320029C(void) {
+s32 SnapSelect_FindPokemon(void) {
     s32 i;
     unk_D_800AE540_0004* var_v1;
 
@@ -130,7 +130,7 @@ s32 func_8320029C(void) {
             D_832027C8.unk_01 = var_v1->unk_01C[i].unk_52 & 0xF;
             if ((D_832027C8.unk_00 < 4) && (D_832027C8.unk_01 < 0xD)) {
                 if (SnapSelect_SetCameraMode(D_832027C8.unk_00) != 0) {
-                    D_832027C8.unk_02 = func_83200148(D_832027C8.unk_00, D_832027C8.unk_01, var_v1->unk_01C[i].unk_53);
+                    D_832027C8.unk_02 = CountMatchingPokemonInBlock(D_832027C8.unk_00, D_832027C8.unk_01, var_v1->unk_01C[i].unk_53);
                     if (D_832027C8.unk_02 >= 0) {
                         return 1;
                     }
@@ -143,7 +143,7 @@ s32 func_8320029C(void) {
     return 0;
 }
 
-s32 func_8320037C(void) {
+s32 GetPokemonCount(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -220,11 +220,11 @@ s32 func_8320058C(u8 arg0) {
     func_83200468();
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    Graph_SetTextureState(D_83202010);
+    Graph_SetTextureState(gCameraGraphNode);
     return 0;
 }
 
-void func_832005E4(s16 arg0, s16 arg1) {
+void Text_PrintFadingChar(s16 arg0, s16 arg1) {
     s32 var_a3;
 
     if (D_832025C8.unk_00 < 0x10) {
@@ -246,7 +246,7 @@ void func_832005E4(s16 arg0, s16 arg1) {
     Text_PutChar(arg0, arg1, 0x23);
 }
 
-void func_83200684(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void UI_DrawGradientPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Color_RGB8 sp24 = { 0x00, 0x00, 0x32 };
     Color_RGB8 sp20 = { 0x00, 0x00, 0xC8 };
 
@@ -261,11 +261,11 @@ void func_83200700(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_832007A4(char* arg0, s32 arg1) {
+void UI_DisplayMessageRepeated(char* arg0, s32 arg1) {
     while (arg1-- > 0) {
         Game_UpdateInputs();
         func_8320058C(0);
-        func_83200684(0x1E, 0x20, 0x104, 0x30);
+        UI_DrawGradientPanel(0x1E, 0x20, 0x104, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
         Text_SetLineHeight(0x10);
@@ -277,20 +277,20 @@ void func_832007A4(char* arg0, s32 arg1) {
     D_83201F58 = arg0;
 }
 
-void func_8320084C(char* arg0, s32 arg1) {
+void UI_DisplayMessageWaitA(char* arg0, s32 arg1) {
     D_832025C8.unk_00 = 0x10;
 
     do {
         Game_UpdateInputs();
         func_8320058C(0);
-        func_83200684(0x1E, 0x20, 0x104, 0x30);
+        UI_DrawGradientPanel(0x1E, 0x20, 0x104, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
         Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetFont(4, 0);
         if (arg1 != 0) {
-            func_832005E4(0x104, 0x38);
+            Text_PrintFadingChar(0x104, 0x38);
         }
         Text_SetupDL();
         Stage_Advance();
@@ -310,7 +310,7 @@ void func_83200934(s8* arg0) {
     for (i = 1; i < 9; i++) {
         Game_UpdateInputs();
         func_8320058C(0);
-        func_83200684(0x1E, 0x20, 0x104, 0x30);
+        UI_DrawGradientPanel(0x1E, 0x20, 0x104, 0x30);
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, x1, y1, x2, y2);
 
@@ -326,7 +326,7 @@ void func_83200934(s8* arg0) {
     D_83201F58 = arg0;
 }
 
-s32 func_83200ADC(char* arg0) {
+s32 UI_PromptYesNo(char* arg0) {
     s32 temp_s3;
     s32 var_a2;
     s32 var_s1;
@@ -349,8 +349,8 @@ s32 func_83200ADC(char* arg0) {
 
         temp_s3 = var_s1 == 0;
         func_8320058C(0);
-        func_83200684(0x1E, 0x20, 0x104, 0x30);
-        func_83200684(0xD2, 0x54, 0x50, 0x2C);
+        UI_DrawGradientPanel(0x1E, 0x20, 0x104, 0x30);
+        UI_DrawGradientPanel(0xD2, 0x54, 0x50, 0x2C);
         func_83200700(0xDA, (var_s1 * 0x10) + 0x5C);
         Text_ResetState();
         Text_SetFont(2, 0);
@@ -364,7 +364,7 @@ s32 func_83200ADC(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Text_Print(0xF2, 0x5C, GetMessageString(NULL, 0, D_83202020, 0x10));
+        Text_Print(0xF2, 0x5C, GetMessageString(NULL, 0, gStadiumMessageBank, 0x10));
 
         if (var_s1 == 1) {
             var_a2 = 0;
@@ -373,7 +373,7 @@ s32 func_83200ADC(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Text_Print(0xF2, 0x6C, GetMessageString(NULL, 0, D_83202020, 0x11));
+        Text_Print(0xF2, 0x6C, GetMessageString(NULL, 0, gStadiumMessageBank, 0x11));
         Text_SetupDL();
         Stage_Advance();
     }
@@ -386,7 +386,7 @@ s32 func_83200ADC(char* arg0) {
     return temp_s3;
 }
 
-s32 func_83200CD8(char* arg0) {
+s32 UI_PromptMoveSelection(char* arg0) {
     s32 var_a2;
     s32 var_s0;
     s32 var_s4;
@@ -426,13 +426,13 @@ s32 func_83200CD8(char* arg0) {
         }
 
         func_8320058C(0);
-        func_83200684(0x1E, 0x20, 0x82, 0x30);
+        UI_DrawGradientPanel(0x1E, 0x20, 0x82, 0x30);
         Text_ResetState();
         Text_SetFont(2, 0);
         Text_SetLineHeight(0x10);
         Text_Print(0x2E, 0x28, arg0);
         Text_SetupDL();
-        func_83200684(0x96, 0x20, 0x8C, 0x4C);
+        UI_DrawGradientPanel(0x96, 0x20, 0x8C, 0x4C);
         func_83200700(0x9E, (var_s0 * 0x10) + 0x28);
         Text_ResetState();
         Text_SetFont(2, 0);
@@ -482,15 +482,15 @@ s32 func_83200CD8(char* arg0) {
 }
 
 void func_83200FF8(void) {
-    func_83200934(GetMessageString(NULL, 0, D_83202020, 4));
+    func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 4));
     D_83202028->unk_01E.y = -0x800;
     GraphNode_TriggerAction(D_83202028, 5);
     GraphNode_TriggerSound(D_83202028, 0);
     D_83201F50 = 1;
-    func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x46);
+    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 4), 0x46);
     Stage_StartFade(0x1E);
     Music_StopTrack(0x3C);
-    func_832007A4(GetMessageString(NULL, 0, D_83202020, 4), 0x1E);
+    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 4), 0x1E);
 }
 
 void func_832010BC(void) {
@@ -499,15 +499,15 @@ void func_832010BC(void) {
     PlayMoveSoundEffect(0, 0x39, 0x19, 0);
     D_83201F50 = 1;
     Music_ChangeTrack(0x4A);
-    func_83200934(GetMessageString(NULL, 0, D_83202020, 0xF));
-    func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xF), 0x98);
+    func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 0xF));
+    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 0xF), 0x98);
     Stage_StartFade(0x1E);
-    func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xF), 0x1E);
+    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 0xF), 0x1E);
 }
 
 void func_8320118C(void) {
     s32 i;
-    CameraStruct* temp_s1 = D_83202010->unk_0C;
+    CameraStruct* temp_s1 = gCameraGraphNode->unk_0C;
 
     D_83202028->unk_01E.y = 0x1000;
 
@@ -531,24 +531,24 @@ s32 func_8320126C(void) {
     for (i = 0; i < 8; i++) {
         Game_UpdateInputs();
         func_8320058C(0);
-        func_83200684(0xA0 - (var_s0 / 2), 0x38 - (var_s1 / 2), var_s0, var_s1);
+        UI_DrawGradientPanel(0xA0 - (var_s0 / 2), 0x38 - (var_s1 / 2), var_s0, var_s1);
         Stage_Advance();
         var_s0 += 0x1E;
         var_s1 += 4;
     }
 
-    func_8320084C(GetMessageString(NULL, 0, D_83202020, 0), 1);
-    func_83200934(GetMessageString(NULL, 0, D_83202020, 1));
-    func_8320084C(GetMessageString(NULL, 0, D_83202020, 1), 1);
+    UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 0), 1);
+    func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 1));
+    UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 1), 1);
 
     while (true) {
-        func_83200934(GetMessageString(NULL, 0, D_83202020, 2));
-        if (func_83200ADC(GetMessageString(NULL, 0, D_83202020, 2)) != 0) {
+        func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 2));
+        if (UI_PromptYesNo(GetMessageString(NULL, 0, gStadiumMessageBank, 2)) != 0) {
             return 1;
         }
 
-        func_83200934(GetMessageString(NULL, 0, D_83202020, 3));
-        if (func_83200ADC(GetMessageString(NULL, 0, D_83202020, 3)) != 0) {
+        func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 3));
+        if (UI_PromptYesNo(GetMessageString(NULL, 0, gStadiumMessageBank, 3)) != 0) {
             func_83200FF8();
             return 0;
         }
@@ -560,40 +560,40 @@ s32 func_83201450(void) {
     char sp2C[0x80];
     s32 temp_v0;
 
-    temp_v0 = func_8320037C();
+    temp_v0 = GetPokemonCount();
     if (temp_v0 == 4) {
         while (true) {
-            func_83200934(GetMessageString(NULL, 0, D_83202020, 5));
-            func_8320084C(GetMessageString(NULL, 0, D_83202020, 5), 1);
-            func_83200934(GetMessageString(NULL, 0, D_83202020, 6));
-            func_8320084C(GetMessageString(NULL, 0, D_83202020, 6), 1);
-            func_83200934(GetMessageString(NULL, 0, D_83202020, 7));
+            func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 5));
+            UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 5), 1);
+            func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 6));
+            UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 6), 1);
+            func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 7));
 
-            if (func_83200ADC(GetMessageString(NULL, 0, D_83202020, 7)) != 0) {
-                func_83200934(GetMessageString(NULL, 0, D_83202020, 9));
+            if (UI_PromptYesNo(GetMessageString(NULL, 0, gStadiumMessageBank, 7)) != 0) {
+                func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 9));
 
-                spAC = func_83200CD8(GetMessageString(NULL, 0, D_83202020, 9));
+                spAC = UI_PromptMoveSelection(GetMessageString(NULL, 0, gStadiumMessageBank, 9));
                 if (spAC >= 0) {
-                    func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xA), 0x1E);
+                    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 0xA), 0x1E);
                     GraphNode_TriggerAction(D_83202028, 9);
                     D_83201F54 = 0;
                     func_800479C0(0x85, 0x19, 0);
-                    func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xB), 1);
+                    UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 0xB), 1);
                     MessageBank_SetPointer_0x14_0x2A(0x1D, GetMessageString(NULL, 0, D_8320201C, D_832027C8.unk_04.unk_09[spAC] - 1));
-                    GetMessageString(sp2C, sizeof(sp2C), D_83202020, 0xC);
+                    GetMessageString(sp2C, sizeof(sp2C), gStadiumMessageBank, 0xC);
                     Music_StopTrack(0x3C);
                     func_83200934(sp2C);
-                    func_8320084C(sp2C, 1);
-                    func_83200934(GetMessageString(NULL, 0, D_83202020, 0xD));
-                    func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xD), 1);
+                    UI_DisplayMessageWaitA(sp2C, 1);
+                    func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 0xD));
+                    UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 0xD), 1);
                     D_83201F54 = -1;
                     return spAC;
                 }
             }
 
-            func_83200934(GetMessageString(NULL, 0, D_83202020, 8));
+            func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 8));
 
-            if (func_83200ADC(GetMessageString(NULL, 0, D_83202020, 8)) != 0) {
+            if (UI_PromptYesNo(GetMessageString(NULL, 0, gStadiumMessageBank, 8)) != 0) {
                 func_83200FF8();
                 return -1;
             }
@@ -606,35 +606,35 @@ s32 func_83201450(void) {
 
 void func_832016F4(s32 arg0) {
     func_8320058C(0);
-    func_83200684(0x1E, 0x20, 0x104, 0x30);
+    UI_DrawGradientPanel(0x1E, 0x20, 0x104, 0x30);
 
     if (arg0 == 0) {
-        func_83200684(0x4C, 0x64, 0xA8, 0x28);
+        UI_DrawGradientPanel(0x4C, 0x64, 0xA8, 0x28);
     } else {
-        func_83200684(0x30, 0x54, 0xE0, 0x78);
+        UI_DrawGradientPanel(0x30, 0x54, 0xE0, 0x78);
     }
 
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
-    Text_Print(0x2E, 0x28, GetMessageString(NULL, 0, D_83202020, 0xE));
+    Text_Print(0x2E, 0x28, GetMessageString(NULL, 0, gStadiumMessageBank, 0xE));
 
     if (arg0 == 0) {
         Text_ResetState();
         Text_SetFont(4, 0);
-        Text_Print(0x5C, 0x70, GetMessageString(NULL, 0, D_83202020, 0x12));
+        Text_Print(0x5C, 0x70, GetMessageString(NULL, 0, gStadiumMessageBank, 0x12));
         Text_SetupDL();
     } else {
         Text_SetLineHeight(0x10);
-        Text_Print(0x40, 0x84, GetMessageString(NULL, 0, D_83202020, 0x13));
+        Text_Print(0x40, 0x84, GetMessageString(NULL, 0, gStadiumMessageBank, 0x13));
         Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
 
         if (arg0 == 2) {
             Text_SetFont(4, 0);
-            Text_Print(0x4C, 0x64, GetMessageString(NULL, 0, D_83202020, 0x14));
+            Text_Print(0x4C, 0x64, GetMessageString(NULL, 0, gStadiumMessageBank, 0x14));
         } else if (arg0 == 3) {
             Text_SetLineHeight(0x10);
-            Text_Print(0x40, 0x5C, GetMessageString(NULL, 0, D_83202020, 0x15));
+            Text_Print(0x40, 0x5C, GetMessageString(NULL, 0, gStadiumMessageBank, 0x15));
         }
     }
 
@@ -685,10 +685,10 @@ void func_83201A18(s32 arg0) {
     s32 i;
 
     Audio_PlaySequence(0x19, 0);
-    func_83200934(GetMessageString(NULL, 0, D_83202020, 0xE));
-    func_832007A4(GetMessageString(NULL, 0, D_83202020, 0xE), 1);
+    func_83200934(GetMessageString(NULL, 0, gStadiumMessageBank, 0xE));
+    UI_DisplayMessageRepeated(GetMessageString(NULL, 0, gStadiumMessageBank, 0xE), 1);
 
-    for (i = func_8320037C(); i < 4; i++) {
+    for (i = GetPokemonCount(); i < 4; i++) {
         D_832027C8.unk_04.unk_09[i] = 0;
         D_832027C8.unk_04.unk_20[i] = 0;
     }
@@ -697,7 +697,7 @@ void func_83201A18(s32 arg0) {
     D_832027C8.unk_04.unk_20[arg0] = gMoveBattleData[0x38].unk_05;
 
     func_832018DC();
-    func_8320084C(GetMessageString(NULL, 0, D_83202020, 0xE), 1);
+    UI_DisplayMessageWaitA(GetMessageString(NULL, 0, gStadiumMessageBank, 0xE), 1);
     func_832010BC();
 }
 
@@ -733,7 +733,7 @@ void func_83201C8C(void) {
     s32 i;
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    D_83202010 = process_geo_layout(temp_v0, D_83201F5C);
+    gCameraGraphNode = process_geo_layout(temp_v0, D_83201F5C);
     D_83202014 = process_geo_layout(temp_v0, D_8C201070);
 
     mem_pool_resize_block(temp_v0);
@@ -758,7 +758,7 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('PIKA');
 
-    if (func_8320029C() != 0) {
+    if (SnapSelect_FindPokemon() != 0) {
         Gfx_InitBuffers(0x10000, 0);
         sp20 = Stage_Create(0, 1, 3, 1, 2, 1);
         Text_Init(6, 0);
@@ -769,7 +769,7 @@ s32 func_83201DD4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
         MessageBank_Init();
         D_8320201C = GetMessageBank(0x25);
-        D_83202020 = GetMessageBank(0x1C);
+        gStadiumMessageBank = GetMessageBank(0x1C);
         AssetManager_LoadArchives();
         D_83202018 = func_80019D90(&D_832027C8.unk_04);
         func_83201C8C();
