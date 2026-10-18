@@ -430,6 +430,18 @@ class Rewriter:
         self._save(f, t)
         return 1
 
+    def add_sa_entry_no_size(self, new, addr):
+        """Entry without size: splat infers the span from its neighbours/segment end.
+        Used for C-defined globals where a map-derived size could cross segment ends."""
+        f = SA_FILES[2]
+        t = self._load(f)
+        entry = f"{new} = 0x{addr:08X}; // defined:true"
+        if entry in t:
+            return 0
+        t = t.rstrip("\n") + "\n" + entry + "\n"
+        self._save(f, t)
+        return 1
+
     def commit(self):
         for path, text in self.edits.items():
             open(path, "w").write(text)
@@ -499,7 +511,7 @@ def do_rewrites(rows, files):
             elif not is_typedef_row(r):
                 span = map_symbol_span(r.old)
                 if span:
-                    rw.add_sa_entry(r.new, span[0], span[1])
+                    rw.add_sa_entry_no_size(r.new, span[0])
         sp = s_path_for(r.old)
         if sp and os.path.exists(sp):
             rw.move_s(sp, os.path.join(os.path.dirname(sp), r.new + ".s"))
