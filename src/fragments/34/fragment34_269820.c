@@ -1997,7 +1997,7 @@ void func_8140C2D8(unk_D_86002F34_00C* arg0) {
 void func_8140C384(s16 arg0) {
     switch (arg0) {
         case 0:
-            gSPDisplayList(gDisplayListHead++, D_8140DD58);
+            gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
             break;
 
         case 2:
@@ -2005,7 +2005,7 @@ void func_8140C384(s16 arg0) {
             break;
 
         case 1:
-            gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+            gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
             break;
 
         case 3:

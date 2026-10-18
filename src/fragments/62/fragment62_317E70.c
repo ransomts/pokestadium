@@ -14,7 +14,7 @@ void func_8432D5B0(void) {
     D_8140E72C = 0;
 }
 
-unk_D_8140E724* func_8432D61C(void) {
+unk_D_8140E724* ParticleDef_Allocate(void) {
     s32 i;
     s32 var_v0 = D_8140E730;
     unk_D_8140E724* var_v1 = &D_8140E724[var_v0];
@@ -48,14 +48,14 @@ unk_D_8140E724* func_8432D61C(void) {
     return var_v1;
 }
 
-void func_8432D6B0(unk_D_8140E724* arg0) {
+void ParticleDef_Reset(unk_D_8140E724* arg0) {
     arg0->unk_0E = 0;
     arg0->unk_15 = 0;
     arg0->unk_14 = 0;
     arg0->unk_0C = arg0->unk_0E;
 }
 
-void func_8432D6C8(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 arg4) {
+void ParticleNode_Init(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 arg4) {
     while (arg0 != NULL) {
         Vec3f_Copy(&arg0->unk_68, &arg1);
         func_8140094C(&arg0->unk_94, &arg2);
@@ -69,7 +69,7 @@ void func_8432D6C8(unk_D_8140E720* arg0, Vec3f arg1, Vec3s arg2, s32 arg3, s32 a
     }
 }
 
-void func_8432D76C(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_D_8140E724_008 arg2, unk_D_8140E728_01C* arg3,
+void ParticleNode_CopyFrom(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_D_8140E724_008 arg2, unk_D_8140E728_01C* arg3,
                    s32 arg4) {
     arg0->unk_08 = arg2;
     arg0->unk_0C = arg3;
@@ -96,7 +96,7 @@ void func_8432D76C(unk_D_8140E720* arg0, unk_D_8140E720* arg1, func_unk_D_8140E7
     }
 }
 
-void func_8432D844(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3) {
+void ParticleNode_CreateMultiple(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3) {
     s16 i;
     unk_D_8140E720* temp_v0;
 
@@ -105,7 +105,7 @@ void func_8432D844(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_814
         if ((u32)temp_v0 == -1) {
             break;
         }
-        func_8432D76C(temp_v0, arg0, arg1, arg2, i);
+        ParticleNode_CopyFrom(temp_v0, arg0, arg1, arg2, i);
     }
 }
 
@@ -119,13 +119,13 @@ void func_8432D8E8(unk_D_8140E720* arg0, func_unk_D_8140E724_008 arg1, unk_D_814
         if ((u32)temp_v0 == -1) {
             break;
         }
-        func_8432D76C(temp_v0, arg0, arg1, arg2, i);
+        ParticleNode_CopyFrom(temp_v0, arg0, arg1, arg2, i);
         temp_v0->unk_CE = arg5;
         temp_v0->unk_CF = arg4;
     }
 }
 
-unk_D_8140E720* func_8432D9BC(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
+unk_D_8140E720* ParticleNode_CreateAt(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
     unk_D_8140E720* temp_v0 = func_81407B3C();
 
     if ((u32)temp_v0 != -1) {
@@ -138,7 +138,7 @@ unk_D_8140E720* func_8432D9BC(s16 arg0, s16 arg1, s32 arg2, f32 arg3) {
     return temp_v0;
 }
 
-void func_8432DA64(unk_D_8140E720* arg0) {
+void ParticleNode_ProcessChild(unk_D_8140E720* arg0) {
     if (arg0->unk_14 != NULL) {
         if (Particle_HasFlag(arg0, 0x400) != 0) {
             func_8432CD14(arg0->unk_14);
@@ -148,14 +148,14 @@ void func_8432DA64(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8432DAB8(unk_D_8140E720* arg0) {
-    func_8432DA64(arg0);
+void ParticleNode_Destroy(unk_D_8140E720* arg0) {
+    ParticleNode_ProcessChild(arg0);
     arg0->unk_18 = 0;
     func_81408158(arg0);
     Particle_Free(arg0);
 }
 
-void func_8432DAEC(unk_D_8140E720* arg0) {
+void ParticleNode_UpdateBehavior(unk_D_8140E720* arg0) {
     Vec3f sp3C;
     Vec3f sp30;
     Vec3s sp28;
@@ -175,16 +175,16 @@ void func_8432DAEC(unk_D_8140E720* arg0) {
             break;
 
         case 9:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             break;
 
         case 10:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             arg0->unk_68.y = 0.0f;
             break;
 
         case 11:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -192,7 +192,7 @@ void func_8432DAEC(unk_D_8140E720* arg0) {
             break;
 
         case 12:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y + 0x8000);
@@ -200,13 +200,13 @@ void func_8432DAEC(unk_D_8140E720* arg0) {
             break;
 
         case 13:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308094(arg0->unk_10, &sp30);
             arg0->unk_68.y += sp30.y * 25.0f;
             break;
 
         case 14:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308094(arg0->unk_10, &sp30);
             arg0->unk_68.y -= sp30.y * 25.0f;
             if (arg0->unk_68.y <= 0.0f) {
@@ -215,7 +215,7 @@ void func_8432DAEC(unk_D_8140E720* arg0) {
             break;
 
         case 15:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -224,11 +224,11 @@ void func_8432DAEC(unk_D_8140E720* arg0) {
             break;
 
         case 17:
-            func_8432FA54(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
             break;
 
         case 19:
-            func_8432FA54(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -248,16 +248,16 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
 
     switch (arg0->unk_CC) {
         case 2:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             break;
 
         case 3:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             arg0->unk_68.y = 0.0f;
             break;
 
         case 4:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -265,7 +265,7 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
             break;
 
         case 5:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y + 0x8000);
@@ -273,13 +273,13 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
             break;
 
         case 6:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308094(arg0->unk_10, &sp30);
             arg0->unk_68.y += sp30.y * 25.0f;
             break;
 
         case 7:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308094(arg0->unk_10, &sp30);
             arg0->unk_68.y -= sp30.y * 25.0f;
             if (arg0->unk_68.y <= 0.0f) {
@@ -288,7 +288,7 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
             break;
 
         case 8:
-            func_8432FA54(arg0->unk_10, 0x64, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, 0x64, &arg0->unk_68);
             func_84308148(arg0->unk_10, &sp28);
             func_84308094(arg0->unk_10, &sp30);
             func_81400D6C(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -297,11 +297,11 @@ void func_8432DE0C(unk_D_8140E720* arg0) {
             break;
 
         case 16:
-            func_8432FA54(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
             break;
 
         case 18:
-            func_8432FA54(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
             break;
 
         case 29:
@@ -324,13 +324,13 @@ void func_8432E0A4(unk_D_8140E720* arg0) {
 
 void func_8432E144(unk_D_8140E720* arg0) {
     if (func_81408180(arg0) != 0) {
-        func_8432DAB8(arg0);
+        ParticleNode_Destroy(arg0);
     } else {
         func_81408AF0(arg0);
     }
 }
 
-void func_8432E184(void) {
+void ParticleSystem_Update(void) {
     s32 i;
     unk_D_8140E720* var_s0 = gParticleInstances;
 
@@ -344,7 +344,7 @@ void func_8432E184(void) {
     }
 }
 
-void func_8432E200(unk_D_8140E720* arg0, unk_D_84390010* arg1, unk_D_8140E724* arg2, s16 arg3) {
+void ParticleInstance_Configure(unk_D_8140E720* arg0, unk_D_84390010* arg1, unk_D_8140E724* arg2, s16 arg3) {
     if ((u32)arg0 == -1) {
         return;
     }
@@ -371,7 +371,7 @@ void func_8432E200(unk_D_8140E720* arg0, unk_D_84390010* arg1, unk_D_8140E724* a
         arg0->unk_A6 = arg2->unk_10;
 
         if (arg1 != NULL) {
-            func_8432DAEC(arg0);
+            ParticleNode_UpdateBehavior(arg0);
             func_84308148(arg0->unk_10, &arg0->unk_94);
         }
 
@@ -383,7 +383,7 @@ void func_8432E200(unk_D_8140E720* arg0, unk_D_84390010* arg1, unk_D_8140E724* a
     }
 }
 
-void func_8432E30C(unk_D_8140E724* arg0, s32 arg1) {
+void ParticleDef_SpawnInstances(unk_D_8140E724* arg0, s32 arg1) {
     s16 i;
     s16 var_s2;
     unk_D_8140E728_01C* temp_a2 = arg0->unk_04;
@@ -403,28 +403,28 @@ void func_8432E30C(unk_D_8140E724* arg0, s32 arg1) {
     }
 
     if ((temp_a2->unk_00 == 1) && (temp_a3->unk_00 == 1)) {
-        func_8432E200(func_81407B5C(var_s2), tmp08, arg0, 0);
+        ParticleInstance_Configure(func_81407B5C(var_s2), tmp08, arg0, 0);
         return;
     }
 
     for (i = 0; i < var_s2; i++) {
-        func_8432E200(func_81407B3C(), tmp08, arg0, i);
+        ParticleInstance_Configure(func_81407B3C(), tmp08, arg0, i);
     }
 }
 
 void func_8432E434(unk_D_8140E724* arg0) {
-    func_8432E30C(arg0, 0);
+    ParticleDef_SpawnInstances(arg0, 0);
 }
 
 void func_8432E454(unk_D_8140E724* arg0) {
-    func_8432E30C(arg0, 1);
+    ParticleDef_SpawnInstances(arg0, 1);
 }
 
 void func_8432E474(unk_D_8140E724* arg0) {
     UNUSED s32 pad;
     unk_D_84390010* sp18 = arg0->unk_08;
 
-    func_8432E200(func_81407B3C(), sp18, arg0, 0);
+    ParticleInstance_Configure(func_81407B3C(), sp18, arg0, 0);
 }
 
 void func_8432E4B0(unk_D_8140E724* arg0) {
@@ -434,11 +434,11 @@ void func_8432E4B0(unk_D_8140E724* arg0) {
             break;
 
         case 22:
-            func_8432E200(func_8432D9BC(0xA0, 0x78, 0, 1.0f), 0, arg0, 0);
+            ParticleInstance_Configure(ParticleNode_CreateAt(0xA0, 0x78, 0, 1.0f), 0, arg0, 0);
             break;
 
         case 24:
-            func_8432E200(func_8432D9BC(0, 0, 0, 1.0f), 0, arg0, 0);
+            ParticleInstance_Configure(ParticleNode_CreateAt(0, 0, 0, 1.0f), 0, arg0, 0);
             break;
 
         case 23:
@@ -474,7 +474,7 @@ void func_8432E5A4(void) {
                     }
 
                     if (var_s0->unk_14 <= 0) {
-                        func_8432D6B0(var_s0);
+                        ParticleDef_Reset(var_s0);
                     } else {
                         var_s0->unk_0E = var_s0->unk_0C;
                     }
@@ -489,7 +489,7 @@ void func_8432E5A4(void) {
 
 void func_8432E68C(void) {
     func_8432E5A4();
-    func_8432E184();
+    ParticleSystem_Update();
 }
 
 void func_8432E6B4(void) {
@@ -502,7 +502,7 @@ void func_8432E6B4(void) {
     for (i = 0; i < 300; i++, var_s0++) {
         if (var_s0->unk_15 != 0) {
             if ((var_s0->unk_17 != 4) && (var_s0->unk_17 != 7)) {
-                func_8432D6B0(var_s0);
+                ParticleDef_Reset(var_s0);
             }
         }
     }
@@ -510,7 +510,7 @@ void func_8432E6B4(void) {
     for (i = 0; i < 300; i++, var_s2++) {
         if (var_s2->unk_D0 != 0) {
             if ((var_s2->unk_CA != 4) && (var_s2->unk_CA != 7)) {
-                func_8432DAB8(var_s2);
+                ParticleNode_Destroy(var_s2);
             }
         }
     }
@@ -523,13 +523,13 @@ void func_8432E784(void) {
 
     for (i = 0; i < 300; i++, var_s0++) {
         if ((var_s0->unk_15 != 0) && (var_s0->unk_17 != 4)) {
-            func_8432D6B0(var_s0);
+            ParticleDef_Reset(var_s0);
         }
     }
 
     for (i = 0; i < 300; i++, var_s2++) {
         if ((var_s2->unk_D0 != 0) && (var_s2->unk_CA != 4)) {
-            func_8432DAB8(var_s2);
+            ParticleNode_Destroy(var_s2);
         }
     }
 
@@ -636,9 +636,9 @@ void func_8432EB44(void) {
     func_8432EB14();
 }
 
-unk_D_8140E724* func_8432EB64(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, unk_D_8140E728_01C* arg4,
+unk_D_8140E724* ParticleDef_Create(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, unk_D_8140E728_01C* arg4,
                               unk_D_84390010* arg5, s16 arg6, s16 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB) {
-    unk_D_8140E724* sp1C = func_8432D61C();
+    unk_D_8140E724* sp1C = ParticleDef_Allocate();
 
     if ((u32)sp1C != -1) {
         sp1C->unk_0E = arg0 + D_843902A8;
@@ -661,124 +661,124 @@ unk_D_8140E724* func_8432EB64(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 a
 
 unk_D_8140E724* func_8432EC28(s32 arg0, func_unk_D_8140E724 arg1, unk_D_8140E728_01C* arg2, s16 arg3, s16 arg4, u8 arg5,
                               u8 arg6, u8 arg7, u8 arg8) {
-    return func_8432EB64(arg0, 0, 1, arg1, arg2, D_843902E8, arg3, arg4, arg5, arg6, arg7, arg8);
+    return ParticleDef_Create(arg0, 0, 1, arg1, arg2, D_843902E8, arg3, arg4, arg5, arg6, arg7, arg8);
 }
 
 unk_D_8140E724* func_8432ECA0(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
                               s16 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
-    return func_8432EB64(arg0, arg1, arg2, arg3, arg4, D_843902E8, arg5, arg6, arg7, arg8, arg9, argA);
+    return ParticleDef_Create(arg0, arg1, arg2, arg3, arg4, D_843902E8, arg5, arg6, arg7, arg8, arg9, argA);
 }
 
 unk_D_8140E724* func_8432ED0C(s32 arg0, s16 arg1, u8 arg2) {
-    return func_8432EB64(arg0, 0, 1, func_84331DC8, &D_8140E460, NULL, 0, arg1, 0x16, 0, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84331DC8, &D_8140E460, NULL, 0, arg1, 0x16, 0, arg2, 0);
 }
 
 unk_D_8140E724* func_8432ED74(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_84332CD0, &D_843861D0[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20Variant, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 unk_D_8140E724* func_8432EDE8(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return func_8432EB64(arg0, 0, 1, func_84332DB0, &D_843861D0[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
 }
 
 unk_D_8140E724* func_8432EE5C(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_84332DB0, &D_843861D0[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 unk_D_8140E724* func_8432EED0(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
-    return func_8432EB64(arg0, arg1, arg2, func_84332DB0, &D_843861D0[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
+    return ParticleDef_Create(arg0, arg1, arg2, Fragment_ProcessBC20WithCDMode, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
 }
 
 unk_D_8140E724* func_8432EF40(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return func_8432EB64(arg0, 0, 1, func_84332E6C, &D_843861D0[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
 }
 
 unk_D_8140E724* func_8432EFB4(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_84332E6C, &D_843861D0[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 unk_D_8140E724* func_8432F028(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
-    return func_8432EB64(arg0, arg1, arg2, func_84332E6C, &D_843861D0[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
+    return ParticleDef_Create(arg0, arg1, arg2, func_84332E6C, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
 }
 
 unk_D_8140E724* func_8432F098(s32 arg0, s16 arg1, u8 arg2) {
-    return func_8432EB64(arg0, 0, 1, func_84332F30, &D_843861D0[37], NULL, arg1, 0, 0x16, 0xFF, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, 0xFF, arg2, 0);
 }
 
 unk_D_8140E724* func_8432F104(s32 arg0, s16 arg1, u8 arg2, u8 arg3) {
-    return func_8432EB64(arg0, 0, 1, func_84332F30, &D_843861D0[37], NULL, arg1, 0, 0x16, arg3, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, arg3, arg2, 0);
 }
 
 unk_D_8140E724* func_8432F174(s32 arg0, s32 arg1, s8 arg2, s16 arg3, u8 arg4, u8 arg5) {
-    return func_8432EB64(arg0, arg1, arg2, func_84332F30, &D_843861D0[37], NULL, arg3, 0, 0x16, arg5, arg4, 0);
+    return ParticleDef_Create(arg0, arg1, arg2, func_84332F30, &gParticleEffectData[37], NULL, arg3, 0, 0x16, arg5, arg4, 0);
 }
 
 unk_D_8140E724* func_8432F1E0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_84332FD0, &D_843861D0[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84332FD0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 unk_D_8140E724* func_8432F254(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_843330A0, &D_843861D0[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843330A0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 unk_D_8140E724* func_8432F2C8(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_84331EAC, &D_8140E460, D_843902E8, arg2, arg4, 0x1A, arg3, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_84331EAC, &D_8140E460, D_843902E8, arg2, arg4, 0x1A, arg3, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F344(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return func_8432EB64(arg0, 0, 1, func_84331FAC, &D_8140E460, D_843902E8, arg1, arg5, 0x1A, arg4, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, func_84331FAC, &D_8140E460, D_843902E8, arg1, arg5, 0x1A, arg4, arg2, arg3);
 }
 
 unk_D_8140E724* func_8432F3C4(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_843320A4, &D_8140E460, D_843902E8, arg1, arg4, 0x1A, 0, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, func_843320A4, &D_8140E460, D_843902E8, arg1, arg4, 0x1A, 0, arg2, arg3);
 }
 
 unk_D_8140E724* func_8432F440(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F4BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return func_8432EB64(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 unk_D_8140E724* func_8432F538(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return func_8432EB64(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F5B8(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return func_8432EB64(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F638(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return func_8432EB64(arg0, 0, 1, func_84332604, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, func_84332604, &D_8140E460, D_843902E8, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 unk_D_8140E724* func_8432F6B8(s32 arg0, s16 arg1, u8 arg2) {
-    return func_8432EB64(arg0, 0, 1, func_843327B8, &D_8140E460, D_843902E8, 0, arg1, 0x1A, arg2, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, func_843327B8, &D_8140E460, D_843902E8, 0, arg1, 0x1A, arg2, 0, 0);
 }
 
 unk_D_8140E724* func_8432F728(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return func_8432EB64(arg0, 0, 1, func_84332964, &D_8140E460, D_843902E8, arg1, arg2, 0x1A, arg3, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ComplexColorMode, &D_8140E460, D_843902E8, arg1, arg2, 0x1A, arg3, 0, 0);
 }
 
 unk_D_8140E724* func_8432F7A0(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    return func_8432EB64(arg0, 0, 1, func_84332AFC, &D_8140E460, D_843902E8, arg1, arg3, 0x1A, arg2, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, arg1, arg3, 0x1A, arg2, 0, 0);
 }
 
 unk_D_8140E724* func_8432F818(s32 arg0) {
-    return func_8432EB64(arg0, 0, 1, func_84332AFC, &D_8140E460, D_843902E8, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
 }
 
 unk_D_8140E724* func_8432F884(s32 arg0) {
-    return func_8432EB64(arg0, 0, 1, func_84332AFC, &D_8140E460, D_843902E8, 0, 0xFF, 0x1A, 0, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, Fragment_ProcessAlphaMode, &D_8140E460, D_843902E8, 0, 0xFF, 0x1A, 0, 0, 0);
 }
 
 unk_D_8140E724* func_8432F8E8(s32 arg0, u8 arg1) {
-    return func_8432EB64(arg0, 0, 1, NULL, NULL, 0, 0, 0, 0x17, arg1, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, NULL, NULL, 0, 0, 0, 0x17, arg1, 0, 0);
 }
 
 unk_D_8140E724* func_8432F93C(s32 arg0, u8 arg1) {
-    return func_8432EB64(arg0, 0, 1, NULL, NULL, D_843902E8, 0, 0, 0x19, arg1, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, NULL, NULL, D_843902E8, 0, 0, 0x19, arg1, 0, 0);
 }
 
 void func_8432F998(void) {
@@ -816,7 +816,7 @@ s32 func_8432FA30(void) {
     return func_843081BC(D_843902F0);
 }
 
-void func_8432FA54(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
+void Model_GetNodePosition(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
     s32 sp24 = 0;
 
     if (arg0 != NULL) {
@@ -845,27 +845,27 @@ void func_8432FA54(unk_D_84390010* arg0, s16 arg1, Vec3f* arg2) {
 }
 
 void func_8432FB38(Vec3f* arg0) {
-    func_8432FA54(D_843902E8, 0x64, arg0);
+    Model_GetNodePosition(D_843902E8, 0x64, arg0);
 }
 
 void func_8432FB64(Vec3f* arg0) {
-    func_8432FA54(D_843902EC, 0x64, arg0);
+    Model_GetNodePosition(D_843902EC, 0x64, arg0);
 }
 
 void func_8432FB90(Vec3f* arg0) {
-    func_8432FA54(D_843902F0, 0x64, arg0);
+    Model_GetNodePosition(D_843902F0, 0x64, arg0);
 }
 
 void func_8432FBBC(Vec3f* arg0) {
     if (D_843902E4 == 0xFF) {
         func_843081F0(D_843902EC, arg0);
     } else {
-        func_8432FA54(D_843902EC, D_843902E2, arg0);
+        Model_GetNodePosition(D_843902EC, D_843902E2, arg0);
     }
 }
 
 void func_8432FC14(Vec3f* arg0) {
-    func_8432FA54(D_843902F0, 9, arg0);
+    Model_GetNodePosition(D_843902F0, 9, arg0);
 }
 
 void func_8432FC40(unk_D_84390010* arg0, Vec3f* arg1) {
@@ -911,7 +911,7 @@ unk_D_8140E720* func_8432FD70(Vec3f arg0, u8 arg1) {
 
     if ((u32)sp1C != -1) {
         Vec3f_Copy(&sp1C->unk_68, &arg0);
-        func_8433010C(sp1C, arg1);
+        Particle_SetWhiteFlashHandler(sp1C, arg1);
         sp1C->unk_10 = D_843902EC;
         sp1C->unk_14 = NULL;
         sp1C->unk_CD = 0xFF;

@@ -59,38 +59,38 @@ void func_84373754(void) {
     s32 sp24;
     s32 var_v1;
 
-    D_84390240.unk_00->unk_48 = 0x16;
+    gBattleState.unk_00->unk_48 = 0x16;
     sp24 = D_843C523C->unk_4D & 0x20;
     D_843C523C->unk_4D &= ~0x20;
 
     if (sp24 == 0) {
         if (D_843C523C->unk_15 & 7) {
             D_843C4E44 = 0;
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, -0x80);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x80);
             return;
         }
 
         if (D_843C523C->unk_15 == 0) {
             func_843708CC();
             if ((D_843C4DA4 == 0) &&
-                ((func_84308BD0(D_84390010[!D_84390240.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
+                ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) || (D_8438AC60[0] == 2))) {
                 goto block_9;
             }
         }
         D_843C4DC4 = 0;
         D_843C4DA4 = 1;
         D_843C4E44 = 0;
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x7F);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x7F);
         return;
     }
 
 block_9:
-    if ((func_84308BD0(D_84390010[!D_84390240.unk_00->unk_2C]) != 0) && (D_8438AC60[0] != 2)) {
+    if ((func_84308BD0(D_84390010[!gBattleState.unk_00->unk_2C]) != 0) && (D_8438AC60[0] != 2)) {
         D_843C4E44 = 0;
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x7F);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x7F);
         if ((sp24 != 0) && (D_8438AC60[0] == 1)) {
             D_843C523C->unk_4D |= 0x20;
         }
@@ -104,8 +104,8 @@ block_9:
         } while (var_v1 == 0);
         D_843C4DA4 = 0;
         D_843C523C->unk_15 = var_v1;
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x7E);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x7E);
     }
 }
 
@@ -116,8 +116,8 @@ void func_84373A30(void) {
         (D_843C523C->unk_16[7] != 3)) {
         switch (D_843C5238->unk_44.unk_01) {
             case 2:
-                if (D_84390240.unk_00->unk_48 != 0x18) {
-                    D_84390240.unk_00->unk_48 = 0;
+                if (gBattleState.unk_00->unk_48 != 0x18) {
+                    gBattleState.unk_00->unk_48 = 0;
                     sp1C = D_843901A0->unk_208;
                 } else {
                     sp1C = D_843901A0->unk_308;
@@ -129,7 +129,7 @@ void func_84373A30(void) {
                 break;
 
             case 33:
-                D_84390240.unk_00->unk_48 = 0;
+                gBattleState.unk_00->unk_48 = 0;
                 sp1C = D_843901A0->unk_208;
                 if (func_8436F6D8() >= 0x67) {
                     return;
@@ -137,12 +137,12 @@ void func_84373A30(void) {
                 break;
 
             default:
-                D_84390240.unk_00->unk_48 = 0x16;
+                gBattleState.unk_00->unk_48 = 0x16;
                 D_843C4DEC = 0xA;
                 func_843708CC();
                 if (D_843C4DA4 != 0) {
-                    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                    func_843179F4(sp1C, -0x7D);
+                    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                    WriteMessageCharOrString(sp1C, -0x7D);
                     return;
                 }
                 break;
@@ -152,20 +152,20 @@ void func_84373A30(void) {
         if (D_843C5238->unk_44.unk_00 == 0x5C) {
             D_843C523C->unk_4E |= 1;
             D_843C523C->unk_51 = 0;
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(sp1C, -0x7C);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(sp1C, -0x7C);
         } else {
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(sp1C, -0x7B);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(sp1C, -0x7B);
         }
     } else if (D_843C5238->unk_44.unk_01 == 0x42) {
-        if (D_84390240.unk_00->unk_48 != 0x18) {
+        if (gBattleState.unk_00->unk_48 != 0x18) {
             D_843C4DA4 = 1;
-            D_84390240.unk_00->unk_48 = 0x16;
+            gBattleState.unk_00->unk_48 = 0x16;
             D_843C4E44 = 0;
         }
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(sp1C, -0x7A);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(sp1C, -0x7A);
     }
 }
 
@@ -182,24 +182,24 @@ void func_84373D04(void) {
     }
 
     if (D_843C5238->unk_44.unk_01 == 8) {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_208, -0x79);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_208, -0x79);
     } else {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_208, -0x78);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_208, -0x78);
     }
 }
 
 void func_84373E24(void) {
-    D_84390240.unk_00->unk_48 = 0x1E;
+    gBattleState.unk_00->unk_48 = 0x1E;
     D_843C5238->unk_0C = 0;
     D_843C5238->unk_15 = 0;
     D_843C5238->unk_4D &= ~0x80;
 }
 
 void func_84373E60(void) {
-    unk_D_800FCB18* temp_a2 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654.unk_38;
-    unk_D_84390010_654* temp_a0 = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654;
+    unk_D_800FCB18* temp_a2 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    unk_D_84390010_654* temp_a0 = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
     if (D_843C523C->unk_4D & 0x10) {
         return;
@@ -215,8 +215,8 @@ void func_84373E60(void) {
                 temp_a0->unk_0C = 0;
                 temp_a2->unk_5A = 0xA5;
             }
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, -0x77);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x77);
         }
         return;
     }
@@ -235,27 +235,27 @@ void func_84373E60(void) {
             case 4:
             case 34:
                 D_843C523C->unk_15 = 0x10;
-                func_84370B44(D_84390010[!D_84390240.unk_00->unk_2C]);
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_208, -0x76);
+                func_84370B44(D_84390010[!gBattleState.unk_00->unk_2C]);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_208, -0x76);
                 break;
 
             case 5:
             case 35:
-                if (func_84308A4C(D_84390010[!D_84390240.unk_00->unk_2C]) == 0) {
+                if (func_84308A4C(D_84390010[!gBattleState.unk_00->unk_2C]) == 0) {
                     D_843C523C->unk_4D &= ~0x20;
                     D_843C523C->unk_15 = 0x20;
-                    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                    func_843179F4(D_843901A0->unk_208, -0x75);
+                    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                    WriteMessageCharOrString(D_843901A0->unk_208, -0x75);
                 }
                 break;
 
             case 6:
             case 36:
                 D_843C523C->unk_15 = 0x40;
-                func_84370B0C(D_84390010[!D_84390240.unk_00->unk_2C]);
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_208, -0x74);
+                func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_208, -0x74);
                 break;
         }
     }
@@ -269,7 +269,7 @@ void func_843741C4(void) {
     u16* sp1C;
     u16* sp18;
 
-    D_84390240.unk_00->unk_4C = 0xA;
+    gBattleState.unk_00->unk_4C = 0xA;
 
     var_a3 = 1;
     sp24 = D_843C5238->unk_44.unk_01 - 0xA;
@@ -329,23 +329,23 @@ void func_843741C4(void) {
         }
 
         if (var_a3 == 2) {
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_2C8, sp24 + 0x8D);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_2C8, sp24 + 0x8D);
         } else {
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_2C8, sp24 + 0x93);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_2C8, sp24 + 0x93);
         }
 
         if ((sp28 != 0) || (D_8438AC60[0] != 1)) {
-            func_84370B0C(D_84390010[!D_84390240.unk_00->unk_2C]);
+            func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
         }
 
         if ((sp2C != 0) || (D_8438AC60[0] != 1)) {
-            func_84370B44(D_84390010[!D_84390240.unk_00->unk_2C]);
+            func_84370B44(D_84390010[!gBattleState.unk_00->unk_2C]);
         }
     } else {
     block_29:
-        func_843179F4(D_843901A0->unk_2C8, -0x67);
+        WriteMessageCharOrString(D_843901A0->unk_2C8, -0x67);
     }
 }
 
@@ -358,9 +358,9 @@ void func_843744F0(void) {
     u16* sp18;
 
     if (D_843C5238->unk_44.unk_00 == 0x6E) {
-        D_84390240.unk_00->unk_48 = 0x26;
+        gBattleState.unk_00->unk_48 = 0x26;
     } else {
-        D_84390240.unk_00->unk_48 = 7;
+        gBattleState.unk_00->unk_48 = 7;
     }
 
     var_a3 = 1;
@@ -420,24 +420,24 @@ void func_843744F0(void) {
         }
 
         if (var_a3 == 2) {
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, sp24 + 0x8D);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, sp24 + 0x8D);
         } else {
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, sp24 + 0x93);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, sp24 + 0x93);
         }
 
         if ((sp28 != 0) || (D_8438AC60[0] != 1)) {
-            func_84370B0C(D_84390010[D_84390240.unk_00->unk_2C]);
+            func_84370B0C(D_84390010[gBattleState.unk_00->unk_2C]);
         }
 
         if ((sp2C != 0) || (D_8438AC60[0] != 1)) {
-            func_84370B44(D_84390010[D_84390240.unk_00->unk_2C]);
+            func_84370B44(D_84390010[gBattleState.unk_00->unk_2C]);
         }
     } else {
     block_32:
         D_843C4E45 = 0;
-        func_843179F4(D_843901A0->unk_088, -0x67);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x67);
     }
 }
 
@@ -450,9 +450,9 @@ void func_8437483C(void) {
     u16* sp18;
 
     if (D_843C5238->unk_44.unk_01 < 0x44) {
-        D_84390240.unk_00->unk_48 = 0x1A;
+        gBattleState.unk_00->unk_48 = 0x1A;
     } else {
-        D_84390240.unk_00->unk_1A = 3;
+        gBattleState.unk_00->unk_1A = 3;
     }
 
     if (D_843C523C->unk_4D & 0x10) {
@@ -531,19 +531,19 @@ void func_8437483C(void) {
             }
 
             if (sp20 == 2) {
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_208, sp24 + 0x9A);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_208, sp24 + 0x9A);
             } else {
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_208, sp24 + 0xA0);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_208, sp24 + 0xA0);
             }
 
             if ((sp28 != 0) || (D_8438AC60[0] != 1)) {
-                func_84370B0C(D_84390010[!D_84390240.unk_00->unk_2C]);
+                func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
             }
 
             if ((sp2C != 0) || (D_8438AC60[0] != 1)) {
-                func_84370B44(D_84390010[!D_84390240.unk_00->unk_2C]);
+                func_84370B44(D_84390010[!gBattleState.unk_00->unk_2C]);
             }
             return;
         }
@@ -553,7 +553,7 @@ block_39:
     if (D_843C5238->unk_44.unk_01 < 0x44) {
         D_843C4E44 = 0;
         D_843C4E45 = 0;
-        func_843179F4(D_843901A0->unk_088, -0x5A);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x5A);
         return;
     }
 
@@ -562,7 +562,7 @@ end:
         D_843C4E44 = 0;
         D_843C4E45 = 0;
         if (D_843C4DA9 == 0) {
-            func_843179F4(D_843901A0->unk_088, -0x59);
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x59);
         }
     } else {
         D_843C4E45 = 0;
@@ -570,7 +570,7 @@ end:
 }
 
 void func_84374C9C(void) {
-    D_84390240.unk_00->unk_48 = 0x1B;
+    gBattleState.unk_00->unk_48 = 0x1B;
     D_843C5238->unk_44.unk_01 = 0;
     D_843C5238->unk_4C |= 1;
     D_843C5238->unk_54 = 0;
@@ -585,13 +585,13 @@ void func_84374D08(void) {
 
 void func_84374D58(void) {
     if (D_843C5238->unk_44.unk_00 == 0x64) {
-        D_84390240.unk_00->unk_48 = 0x27;
-        func_843179F4(D_843901A0->unk_088, -0x53);
+        gBattleState.unk_00->unk_48 = 0x27;
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x53);
         return;
     }
-    D_84390240.unk_00->unk_48 = 8;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x52);
+    gBattleState.unk_00->unk_48 = 8;
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x52);
 }
 
 void func_84374E08(void) {
@@ -619,7 +619,7 @@ void func_84374E08(void) {
         }
 
         D_8439022C = D_843C5238->unk_54 - 1;
-        D_84390240.unk_00->unk_48 = 0x18;
+        gBattleState.unk_00->unk_48 = 0x18;
     }
 }
 
@@ -659,45 +659,45 @@ void func_84374FD4(void) {
 }
 
 void func_84375038(void) {
-    D_84390240.unk_00->unk_48 = 0xE;
+    gBattleState.unk_00->unk_48 = 0xE;
     D_843C5238->unk_4C |= 0x10;
 
     if ((D_843C5238->unk_44.unk_01 == 0x2B) || (D_843C5238->unk_44.unk_00 == 0x5B)) {
         D_843C5238->unk_4C |= 0x40;
         if (D_843C5238->unk_44.unk_00 == 0x5B) {
-            D_84390240.unk_00->unk_48 = 0xD;
+            gBattleState.unk_00->unk_48 = 0xD;
         }
 
         if (D_843C5238->unk_44.unk_01 == 0x2B) {
-            D_84390240.unk_00->unk_48 = 0xC;
+            gBattleState.unk_00->unk_48 = 0xC;
         }
     }
 
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
 
     switch (D_843C5238->unk_44.unk_00) {
         case 0xD:
-            func_843179F4(D_843901A0->unk_0C8, -0x51);
+            WriteMessageCharOrString(D_843901A0->unk_0C8, -0x51);
             break;
 
         case 0x4C:
-            func_843179F4(D_843901A0->unk_0C8, -0x50);
+            WriteMessageCharOrString(D_843901A0->unk_0C8, -0x50);
             break;
 
         case 0x82:
-            func_843179F4(D_843901A0->unk_0C8, -0x4F);
+            WriteMessageCharOrString(D_843901A0->unk_0C8, -0x4F);
             break;
 
         case 0x8F:
-            func_843179F4(D_843901A0->unk_0C8, -0x4E);
+            WriteMessageCharOrString(D_843901A0->unk_0C8, -0x4E);
             break;
 
         case 0x13:
-            func_843179F4(D_843901A0->unk_148, -0x4D);
+            WriteMessageCharOrString(D_843901A0->unk_148, -0x4D);
             break;
 
         case 0x5B:
-            func_843179F4(D_843901A0->unk_148, -0x4C);
+            WriteMessageCharOrString(D_843901A0->unk_148, -0x4C);
             break;
     }
 }
@@ -719,25 +719,25 @@ void func_843751F8(void) {
 
 void func_843752C0(void) {
     if (D_843C5238->unk_4D & 2) {
-        D_84390240.unk_00->unk_48 = 7;
-        func_843179F4(D_843901A0->unk_088, -0x4B);
+        gBattleState.unk_00->unk_48 = 7;
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x4B);
         return;
     }
-    D_84390240.unk_00->unk_48 = 7;
+    gBattleState.unk_00->unk_48 = 7;
     D_843C5238->unk_4D |= 2;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x4A);
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x4A);
 }
 
 void func_84375384(void) {
-    D_84390240.unk_00->unk_48 = 7;
+    gBattleState.unk_00->unk_48 = 7;
     if (D_843C5238->unk_4D & 4) {
-        func_843179F4(D_843901A0->unk_088, -0x49);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x49);
         return;
     }
     D_843C5238->unk_4D |= 4;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x48);
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x48);
 }
 
 void func_84375424(void) {
@@ -762,24 +762,24 @@ void func_84375424(void) {
     }
 
     D_843C523C->unk_12 = D_843C523C->unk_0C;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_408, -0x47);
-    D_84390240.unk_00->unk_48 = 9;
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_408, -0x47);
+    gBattleState.unk_00->unk_48 = 9;
 }
 
 void func_84375508(void) {
     if (!(D_843C523C->unk_4D & 0x10) && (func_8436F6D8() < 0x1A) && !(D_843C523C->unk_4C & 0x80)) {
-        D_84390240.unk_00->unk_1A = 3;
+        gBattleState.unk_00->unk_1A = 3;
         D_843C4E45 = 0;
         D_843C523C->unk_4C |= 0x80;
         D_843C523C->unk_50 = (func_8436F6D8() & 3) + 2;
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_208, -0x46);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_208, -0x46);
     }
 }
 
 void func_843755E8(void) {
-    D_84390240.unk_00->unk_48 = 0x16;
+    gBattleState.unk_00->unk_48 = 0x16;
     D_843C4E44 = 0;
 
     if (!(D_843C523C->unk_4D & 0x10)) {
@@ -788,65 +788,65 @@ void func_843755E8(void) {
             D_843C4E44 = 1;
             D_843C523C->unk_4C |= 0x80;
             D_843C523C->unk_50 = (func_8436F6D8() & 3) + 2;
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, -0x45);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x45);
             return;
         }
     }
 
     if (D_843C4DA9 == 0) {
-        func_843179F4(D_843901A0->unk_088, -0x44);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x44);
     }
 }
 
 void func_84375700(void) {
-    D_84390240.unk_00->unk_48 = 0x16;
+    gBattleState.unk_00->unk_48 = 0x16;
     if (D_843C523C->unk_15 == 0) {
         if ((D_843C5238->unk_44.unk_03 != 0x17) || ((D_843C523C->unk_16[6] != 4) && (D_843C523C->unk_16[7] != 4))) {
             func_843708CC();
             if (D_843C4DA4 == 0) {
                 D_843C523C->unk_15 |= 0x40;
-                func_84370B0C(D_84390010[!D_84390240.unk_00->unk_2C]);
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_088, -0x43);
+                func_84370B0C(D_84390010[!gBattleState.unk_00->unk_2C]);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_088, -0x43);
                 return;
             }
         } else {
-            D_84390240.unk_00->unk_48 = 8;
+            gBattleState.unk_00->unk_48 = 8;
             D_843C4E44 = 0;
-            func_843179F4(D_843901A0->unk_088, -0x42);
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x42);
             return;
         }
     }
 
-    D_84390240.unk_00->unk_48 = 8;
+    gBattleState.unk_00->unk_48 = 8;
     D_843C4E44 = 0;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x41);
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x41);
 }
 
 void func_84375894(void) {
     s32 temp_v1;
 
-    D_84390240.unk_00->unk_48 = 0x1C;
+    gBattleState.unk_00->unk_48 = 0x1C;
     if (D_843C5238->unk_4D & 0x10) {
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x2A);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x2A);
         return;
     }
 
     temp_v1 = D_843C5238->unk_28 >> 2;
     if (temp_v1 >= D_843C5238->unk_0C) {
-        func_843179F4(D_843901A0->unk_088, -0x29);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x29);
         return;
     }
 
-    D_84390240.unk_00->unk_48 = 0x19;
+    gBattleState.unk_00->unk_48 = 0x19;
     D_843C5238->unk_59 = temp_v1;
     D_843C5238->unk_0C -= temp_v1;
     D_843C5238->unk_4D |= 0x10;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x28);
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x28);
 }
 
 void func_843759C4(void) {
@@ -858,11 +858,11 @@ void func_843759DC(void) {
 }
 
 void func_843759F4(void) {
-    unk_D_84390010_654* sp24 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
+    unk_D_84390010_654* sp24 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
     s32 var_t0;
     u8 temp_v0;
 
-    D_84390240.unk_00->unk_48 = 7;
+    gBattleState.unk_00->unk_48 = 7;
     func_843708CC();
 
     if ((D_843C4DA4 == 0) && !(D_843C523C->unk_4C & 0x40)) {
@@ -877,11 +877,11 @@ void func_843759F4(void) {
 
         D_843C5238->unk_1F[sp24->unk_0C] = temp_v0;
         MessageBank_SetPointer_0x14_0x2A(0x1E, GetMessageString(NULL, 0, gPokemonMessageBank, D_843C523C->unk_1F[var_t0] - 1));
-        func_843179F4(D_843901A0->unk_088, -0x40);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x40);
         return;
     }
 
-    func_843179F4(D_843901A0->unk_088, -0x3F);
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x3F);
 }
 
 void func_84375B1C(void) {
@@ -890,20 +890,20 @@ void func_84375B1C(void) {
     if ((D_843C4DA4 == 0) && (D_843C523C->unk_16[6] != 0x16) && (D_843C523C->unk_16[7] != 0x16)) {
         if (!(D_843C523C->unk_4D & 0x80)) {
             D_843C523C->unk_4D |= 0x80;
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, -0x3E);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x3E);
             return;
         }
     }
 
-    D_84390240.unk_00->unk_48 = 8;
-    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-    func_843179F4(D_843901A0->unk_088, -0x3D);
+    gBattleState.unk_00->unk_48 = 8;
+    MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x3D);
 }
 
 void func_84375C24(void) {
-    D_84390240.unk_00->unk_48 = 7;
-    func_843179F4(D_843901A0->unk_088, -0x3C);
+    gBattleState.unk_00->unk_48 = 7;
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x3C);
 }
 
 void func_84375C60(void) {
@@ -913,7 +913,7 @@ void func_84375C60(void) {
     func_843708CC();
 
     if (D_843C4DA4 == 0) {
-        D_84390240.unk_00->unk_48 = 0x20;
+        gBattleState.unk_00->unk_48 = 0x20;
         if (D_843C523C->unk_52 == 0) {
             do {
                 sp24 = func_8436F6D8() & 3;
@@ -922,28 +922,28 @@ void func_84375C60(void) {
             D_843C523C->unk_52 = (sp24 * 0x10) + temp_v1;
             D_843C523C->unk_57 = D_843C523C->unk_1F[sp24];
             MessageBank_SetPointer_0x14_0x2A(0x1E, GetMessageString(NULL, 0, gPokemonMessageBank, D_843C523C->unk_57 - 1));
-            func_843179F4(D_843901A0->unk_088, -0x3B);
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x3B);
             return;
         }
     }
 
-    D_84390240.unk_00->unk_48 = 8;
-    func_843179F4(D_843901A0->unk_088, -0x3A);
+    gBattleState.unk_00->unk_48 = 8;
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x3A);
 }
 
 void func_84375D78(void) {
-    func_843179F4(D_843901A0->unk_088, -0x39);
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x39);
 }
 
 void func_84375DA4(void) {
-    D_84390240.unk_00->unk_48 = 7;
+    gBattleState.unk_00->unk_48 = 7;
     if (!(D_843C523C->unk_4C & 0x40)) {
         D_843C5238->unk_16[6] = D_843C523C->unk_16[6];
         D_843C5238->unk_16[7] = D_843C523C->unk_16[7];
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x38);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x38);
     } else {
-        func_843179F4(D_843901A0->unk_088, -0x37);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x37);
     }
 }
 
@@ -952,7 +952,7 @@ void func_84375E6C(void) {
     unk_D_800FCB18* temp_t0 = &D_84390010[0]->unk_654.unk_38;
     unk_D_800FCB18* temp_a3 = &D_84390010[1]->unk_654.unk_38;
 
-    D_84390240.unk_00->unk_48 = 0x1D;
+    gBattleState.unk_00->unk_48 = 0x1D;
 
     for (i = 0; i < 8; i++) {
         temp_t0->unk_5C[i] = 7;
@@ -988,7 +988,7 @@ void func_84375E6C(void) {
     D_843C5238->unk_56 = 0;
     D_843C523C->unk_56 = 0;
 
-    func_843179F4(D_843901A0->unk_088, -0x36);
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x36);
 }
 
 void func_8437600C(void) {
@@ -996,10 +996,10 @@ void func_8437600C(void) {
     unk_D_84390010_654* temp_a1;
     unk_D_800FCB18* temp_a2;
 
-    temp_a1 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
-    temp_a2 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654.unk_38;
+    temp_a1 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+    temp_a2 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    D_84390240.unk_00->unk_48 = 0x15;
+    gBattleState.unk_00->unk_48 = 0x15;
     if (D_843C5238->unk_0C != D_843C5238->unk_28) {
         if (D_843C5238->unk_44.unk_00 == 0x9C) {
             temp_v0 = D_843C5238->unk_15;
@@ -1013,11 +1013,11 @@ void func_8437600C(void) {
                     func_843736B0(&D_843C5238->unk_2A, D_843C5238->unk_38, D_843C5238->unk_5C[0]);
                     func_843736B0(&D_843C5238->unk_2E, D_843C5238->unk_3C, D_843C5238->unk_5C[2]);
                 }
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_088, -0x35);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_088, -0x35);
             } else {
-                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-                func_843179F4(D_843901A0->unk_088, -0x34);
+                MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+                WriteMessageCharOrString(D_843901A0->unk_088, -0x34);
             }
             D_843C5238->unk_0C += D_843C5238->unk_28;
         } else {
@@ -1028,14 +1028,14 @@ void func_8437600C(void) {
             D_843C5238->unk_0C = D_843C5238->unk_28;
         }
 
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_148, -0x33);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_148, -0x33);
         return;
     }
 
-    D_84390240.unk_00->unk_48 = 0x1C;
+    gBattleState.unk_00->unk_48 = 0x1C;
     D_843C4DA4 = 1;
-    func_843179F4(D_843901A0->unk_088, -0x32);
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x32);
 }
 
 void func_84376258(void) {
@@ -1044,23 +1044,23 @@ void func_84376258(void) {
     unk_D_84390010_654* sp1C;
     unk_D_800FCB18* ptr;
 
-    sp20 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
-    sp1C = &D_84390010[!D_84390240.unk_00->unk_2C]->unk_654;
+    sp20 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+    sp1C = &D_84390010[!gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((D_8438AC60[0] == 1) && ((((D_843C523C->unk_4E & 8) == 0) && (D_843C523C->unk_0B == 0x84)) ||
                                  (((D_843C523C->unk_4E & 8) != 0) && (sp1C->unk_BE == 0x84)))) {
-        D_84390240.unk_00->unk_48 = 0x1C;
-        MessageBank_SetPointer_0x14_0x2A(0x1B, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x2F);
+        gBattleState.unk_00->unk_48 = 0x1C;
+        MessageBank_SetPointer_0x14_0x2A(0x1B, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x2F);
         return;
     }
 
     ptr = D_843C5238;
     if (!(ptr->unk_4C & 0x40) &&
         ((D_8438AC60[0] != 1) || (D_843C523C->unk_1F[0] != 0x90) || (D_843C523C->unk_1F[1] != 0))) {
-        D_84390240.unk_00->unk_48 = 0xF;
-        MessageBank_SetPointer_0x14_0x2A(0x1B, func_8430862C(D_84390010[!D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_148, -0x31);
+        gBattleState.unk_00->unk_48 = 0xF;
+        MessageBank_SetPointer_0x14_0x2A(0x1B, func_8430862C(D_84390010[!gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_148, -0x31);
         D_843C5238->unk_4E |= 8;
 
         if (D_843C523C->unk_4E & 8) {
@@ -1099,31 +1099,31 @@ void func_84376258(void) {
         return;
     }
 
-    D_84390240.unk_00->unk_48 = 0x1C;
-    func_843179F4(D_843901A0->unk_088, -0x30);
+    gBattleState.unk_00->unk_48 = 0x1C;
+    WriteMessageCharOrString(D_843901A0->unk_088, -0x30);
 }
 
 void func_843765E8(void) {
-    D_84390240.unk_00->unk_48 = 7;
+    gBattleState.unk_00->unk_48 = 7;
     if (D_843C5238->unk_44.unk_01 == 0x40) {
         if (!(D_843C5238->unk_4E & 2)) {
             D_843C5238->unk_4E |= 2;
-            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-            func_843179F4(D_843901A0->unk_088, -0x2E);
+            MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x2E);
         } else {
-            func_843179F4(D_843901A0->unk_088, -0x2D);
+            WriteMessageCharOrString(D_843901A0->unk_088, -0x2D);
         }
     } else if (!(D_843C5238->unk_4E & 4)) {
         D_843C5238->unk_4E |= 4;
-        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[D_84390240.unk_00->unk_2C]));
-        func_843179F4(D_843901A0->unk_088, -0x2C);
+        MessageBank_SetPointer_0x14_0x2A(0x19, func_8430862C(D_84390010[gBattleState.unk_00->unk_2C]));
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x2C);
     } else {
-        func_843179F4(D_843901A0->unk_088, -0x2B);
+        WriteMessageCharOrString(D_843901A0->unk_088, -0x2B);
     }
 }
 
 void func_8437670C(void) {
-    unk_D_800FCB18* ptr = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654.unk_38;
+    unk_D_800FCB18* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     s32 idx = ptr->unk_44.unk_01;
 
     if (D_8438AE54[idx - 1] != NULL) {

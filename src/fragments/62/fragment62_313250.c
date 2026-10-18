@@ -7,7 +7,7 @@
 #include "src/memory.h"
 #include "src/util.h"
 
-void func_84328990(unk_D_86002F34_00C* arg0) {
+void Intro_SetupCamera(unk_D_86002F34_00C* arg0) {
     func_8431AE5C();
     func_8431AFD0(arg0, 20.0f, 12800.0f);
     func_8432C9C0(D_84390010[0]->unk_720, 3);
@@ -16,35 +16,35 @@ void func_84328990(unk_D_86002F34_00C* arg0) {
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     Vec3f_Set(&arg0->unk_60.at, 0.0f, 75.0f, 0.0f);
     Vec3f_Set(&arg0->unk_60.eye, -1.79f, 0.075f, 155.2f);
-    D_84390240.unk_00->unk_54 = 1;
+    gBattleState.unk_00->unk_54 = 1;
     func_8432BBC0();
-    D_84390240.unk_00->unk_20 += 1;
+    gBattleState.unk_00->unk_20 += 1;
 }
 
-void func_84328A70(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_CheckPlayerReady(UNUSED unk_D_86002F34_00C* arg0) {
     if ((func_8431ADF0(0xA) != 0) && (func_84302000(D_84390010[0]) != 0)) {
         D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
         D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
         func_84308654(D_84390010[0], 1, 0);
         Audio_PlaySoundEffect(1, 0xFE, 0);
         func_8432C68C(8, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84328B30(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_PlayerEnter(UNUSED unk_D_86002F34_00C* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     if (D_84390010[0]->unk_4EC.unk_024.y == 0.0f) {
-        func_8432B808();
+        ProcessBattleMenuSelection();
         Audio_PlaySoundEffect(1, 1, 0);
         func_84308654(D_84390010[1], 1, 0);
         func_8432C68C(0xA, D_84390010[1], D_84390010[1], 0xFF, 0xFF);
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84328BF0(unk_D_86002F34_00C* arg0) {
+void Intro_OpponentEnter(unk_D_86002F34_00C* arg0) {
     Vec3f sp3C;
 
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
@@ -56,37 +56,37 @@ void func_84328BF0(unk_D_86002F34_00C* arg0) {
         func_8432C68C(0xB, D_84390010[0], D_84390010[0], 0xFF, 0xFF);
         Vec3f_Set(&sp3C, -150.0f, 5.0f, 0.0f);
         func_8431BAB4(D_84390010[0], arg0, sp3C, 0, 0, 0.0f, 0.0f);
-        func_8431BB80(arg0, sp3C, D_84390240.unk_00->unk_56 = 0x71C, 0x4000, D_84390240.unk_00->unk_84 = 300.0f, 0.0f);
-        D_84390240.unk_00->unk_20 += 1;
+        func_8431BB80(arg0, sp3C, gBattleState.unk_00->unk_56 = 0x71C, 0x4000, gBattleState.unk_00->unk_84 = 300.0f, 0.0f);
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84328D70(unk_D_86002F34_00C* arg0) {
+void Intro_CameraPanAndZoom(unk_D_86002F34_00C* arg0) {
     Vec3f sp2C;
 
     Vec3f_Set(&sp2C, -150.0f, 5.0f, 0.0f);
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
-    func_8430C718(&D_84390240.unk_00->unk_84, 40.0f, 0.1f);
-    Math_StepTowards(&D_84390240.unk_00->unk_56, 0xB6, 0x1E);
-    func_8431BB80(arg0, sp2C, D_84390240.unk_00->unk_56, 0x4000, D_84390240.unk_00->unk_84, 0.0f);
+    func_8430C718(&gBattleState.unk_00->unk_84, 40.0f, 0.1f);
+    Math_StepTowards(&gBattleState.unk_00->unk_56, 0xB6, 0x1E);
+    func_8431BB80(arg0, sp2C, gBattleState.unk_00->unk_56, 0x4000, gBattleState.unk_00->unk_84, 0.0f);
 
-    if ((D_84390240.unk_00->unk_56 >= 0x2E) && (D_84390010[0]->unk_4EC.unk_024.y == 2.5f)) {
+    if ((gBattleState.unk_00->unk_56 >= 0x2E) && (D_84390010[0]->unk_4EC.unk_024.y == 2.5f)) {
         Audio_PlaySoundEffect(2, 0, 0);
         D_84390010[0]->unk_4EC.unk_000.unk_02 |= 0x20;
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84328EC0(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_WaitForAnimCompletion(UNUSED unk_D_86002F34_00C* arg0) {
     D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
     D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
     if (func_800174E4(&D_84390010[0]->unk_4EC) == 1) {
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84328F2C(unk_D_86002F34_00C* arg0) {
+void Intro_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
     unk_D_84390010_654* sp2C = &D_84390010[0]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[0]->unk_720->unk_08[sp2C->unk_2C];
 
@@ -100,17 +100,17 @@ void func_84328F2C(unk_D_86002F34_00C* arg0) {
     D_84390010[0]->unk_4EC.unk_000.unk_01 &= ~1;
     func_8431F420(D_84390010[0], arg0, 3);
     func_84305760(D_84390010[0], 0x10);
-    D_84390240.unk_00->unk_2C = 0;
+    gBattleState.unk_00->unk_2C = 0;
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
-    func_843179F4(D_843901A0->unk_088, 0x21);
+    WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
     func_843184E4(0xC);
     func_8432B588(D_84390010[0]);
-    D_84390240.unk_00->unk_10 = 0;
-    D_84390240.unk_00->unk_20 += 1;
+    gBattleState.unk_00->unk_10 = 0;
+    gBattleState.unk_00->unk_20 += 1;
 }
 
-void func_843290A0(unk_D_86002F34_00C* arg0) {
-    if (D_84390240.unk_00->unk_10++ == 1) {
+void Intro_PostInfoDelay(unk_D_86002F34_00C* arg0) {
+    if (gBattleState.unk_00->unk_10++ == 1) {
         func_8431F420(D_84390010[0], arg0, 3);
     }
 
@@ -120,11 +120,11 @@ void func_843290A0(unk_D_86002F34_00C* arg0) {
     func_8431C750(arg0, D_84390010[0]);
 
     if (func_84305BD8(D_84390010[0], 0x3C) != 0) {
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_84329164(unk_D_86002F34_00C* arg0) {
+void Opponent_DisplayPokemonInfo(unk_D_86002F34_00C* arg0) {
     unk_D_84390010_654* sp2C = &D_84390010[1]->unk_654;
     unk_D_800AE540_0004* sp28 = D_84390010[1]->unk_720->unk_08[sp2C->unk_2C];
 
@@ -137,19 +137,19 @@ void func_84329164(unk_D_86002F34_00C* arg0) {
     D_84390010[1]->unk_000.unk_000.unk_01 |= 1;
     func_8431F420(D_84390010[1], arg0, 3);
     func_84305760(D_84390010[1], 0x10);
-    D_84390240.unk_00->unk_10 = 0;
-    D_84390240.unk_00->unk_2C = 1;
+    gBattleState.unk_00->unk_10 = 0;
+    gBattleState.unk_00->unk_2C = 1;
     MessageBank_SetPointer_0x14_0x2A(0x19, (u32)sp28->unk_01C[sp2C->unk_18].unk_30);
-    func_843179F4(D_843901A0->unk_088, 0x21);
+    WriteMessageCharOrString(D_843901A0->unk_088, 0x21);
     if (gBattleContext.unk_0000 != 8) {
         func_843184E4(0xC);
     }
     func_8432B588(D_84390010[1]);
-    D_84390240.unk_00->unk_20 += 1;
+    gBattleState.unk_00->unk_20 += 1;
 }
 
-void func_843292D8(unk_D_86002F34_00C* arg0) {
-    if (D_84390240.unk_00->unk_10++ == 1) {
+void Opponent_PostInfoDelay(unk_D_86002F34_00C* arg0) {
+    if (gBattleState.unk_00->unk_10++ == 1) {
         func_8431F420(D_84390010[1], arg0, 3);
     }
     D_84390010[1]->unk_728.unk_168->unk_00.unk_01 &= ~1;
@@ -158,59 +158,59 @@ void func_843292D8(unk_D_86002F34_00C* arg0) {
     func_8431C750(arg0, D_84390010[1]);
     if (func_84305BD8(D_84390010[1], 0x3C) != 0) {
         func_8432056C();
-        D_84390240.unk_00->unk_20 += 1;
+        gBattleState.unk_00->unk_20 += 1;
     }
 }
 
-void func_843293A8(UNUSED unk_D_86002F34_00C* arg0) {
+void Intro_End(UNUSED unk_D_86002F34_00C* arg0) {
 }
 
-void func_843293B0(void) {
+void UnusedFunction(void) {
 }
 
-void func_843293B8(unk_D_86002F34_00C* arg0) {
-    switch (D_84390240.unk_00->unk_20) {
+void Intro_StateMachine(unk_D_86002F34_00C* arg0) {
+    switch (gBattleState.unk_00->unk_20) {
         case 0:
-            func_84328990(arg0);
+            Intro_SetupCamera(arg0);
 
         case 1:
-            func_84328A70(arg0);
+            Intro_CheckPlayerReady(arg0);
             break;
 
         case 2:
-            func_84328B30(arg0);
+            Intro_PlayerEnter(arg0);
             break;
 
         case 3:
-            func_84328BF0(arg0);
+            Intro_OpponentEnter(arg0);
             break;
 
         case 4:
-            func_84328D70(arg0);
+            Intro_CameraPanAndZoom(arg0);
             break;
 
         case 5:
-            func_84328EC0(arg0);
+            Intro_WaitForAnimCompletion(arg0);
             break;
 
         case 6:
-            func_84328F2C(arg0);
+            Intro_DisplayPokemonInfo(arg0);
             break;
 
         case 7:
-            func_843290A0(arg0);
+            Intro_PostInfoDelay(arg0);
             break;
 
         case 8:
-            func_84329164(arg0);
+            Opponent_DisplayPokemonInfo(arg0);
             break;
 
         case 9:
-            func_843292D8(arg0);
+            Opponent_PostInfoDelay(arg0);
             break;
 
         case 10:
-            func_843293A8(arg0);
+            Intro_End(arg0);
             break;
     }
 }

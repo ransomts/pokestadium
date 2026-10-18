@@ -257,17 +257,17 @@ typedef struct unk_D_8140E620 {
 
 extern Gfx D_8140DAE0[];
 extern Gfx D_8140DB30[];
-extern Gfx D_8140DBA8[];
+extern Gfx gDL_ItemIcon[];
 extern Gfx D_8140DC00[];
 extern Gfx D_8140DC58[];
 extern Gfx D_8140DC78[];
 extern Gfx D_8140DC98[];
 extern Gfx D_8140DCB8[];
-extern Gfx D_8140DCD8[];
+extern Gfx gDL_BaseUI[];
 extern Gfx D_8140DCF8[];
 extern Gfx D_8140DD18[];
 extern Gfx D_8140DD38[];
-extern Gfx D_8140DD58[];
+extern Gfx gDL_OverlayUI[];
 extern Gfx D_8140DD78[];
 extern Gfx D_8140DDD8[];
 extern Gfx D_8140DDF8[];
@@ -276,7 +276,7 @@ extern Vtx D_8140DEF8[];
 extern Vtx D_8140DF78[];
 extern Vtx D_8140DFA8[];
 extern Vtx D_8140DFD8[];
-extern Vtx D_8140E018[];
+extern Vtx gMatrix_UITransform[];
 extern Vtx D_8140E058[];
 extern Vtx D_8140E098[];
 extern Vtx D_8140E0D8[];
@@ -289,12 +289,12 @@ extern Vtx D_8140E238[];
 extern Vtx D_8140E2B8[];
 extern Vtx D_8140E378[];
 extern Vtx D_8140E3B8[];
-extern Gfx D_8140E418[];
+extern Gfx gDL_PanelBackground[];
 extern Gfx D_8140E430[];
 extern Gfx D_8140E448[];
 extern unk_D_8140E728_01C D_8140E460;
 
-extern u8 D_8140E538[];
+extern u8 gPrimColorPalette[];
 
 extern unk_D_8140E620* gMatrixBuffer;
 extern s32 gMatrixBufferIdx;

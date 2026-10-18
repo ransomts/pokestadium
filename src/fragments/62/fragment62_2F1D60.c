@@ -53,7 +53,7 @@ void LoadPokemonModelParams(unk_D_84390010* arg0) {
 }
 
 void SetupPokemonForBattle(unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    if (D_84390240.unk_00->unk_1C == 1) {
+    if (gBattleState.unk_00->unk_1C == 1) {
         SetAllPokemonActiveFlags();
     } else {
         ClearAllPokemonActiveFlags();
@@ -89,7 +89,7 @@ void UpdatePokemonTransform(unk_D_84390010* arg0) {
     tmp2 = gAnimDataSetB[temp_v0]->unk_00.y;
     arg0->unk_728.unk_194 = tmp2;
 
-    func_8431AE7C(sp30, arg0->unk_728.unk_000.unk_024.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.unk_024.y + tmp2,
+    SetCameraPositionAndView(sp30, arg0->unk_728.unk_000.unk_024.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.unk_024.y + tmp2,
                   arg0->unk_728.unk_000.unk_024.z, arg0->unk_728.unk_188, arg0->unk_728.unk_184, arg0->unk_728.unk_186);
 }
 

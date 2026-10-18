@@ -316,23 +316,23 @@ void func_84340AC4(void) {
 
 void func_84340ACC(void) {
     func_8432F8E8(0x80, 1);
-    func_8432EC28(0, func_8433FF44, &D_843861D0[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(2, func_8433FF44, &D_843861D0[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(4, func_8433FF44, &D_843861D0[0x2B], 0, 0x10, 0xA, 0, 0, 0);
-    func_8432EC28(8, func_8433FF44, &D_843861D0[0x2B], 0, 8, 0xA, 0, 0, 0);
+    func_8432EC28(0, func_8433FF44, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    func_8432EC28(2, func_8433FF44, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    func_8432EC28(4, func_8433FF44, &gParticleEffectData[0x2B], 0, 0x10, 0xA, 0, 0, 0);
+    func_8432EC28(8, func_8433FF44, &gParticleEffectData[0x2B], 0, 8, 0xA, 0, 0, 0);
     func_8432EB2C(0x3A);
-    func_8432EC28(0, func_8434016C, &D_843861D0[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, func_8434016C, &D_843861D0[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, func_8434016C, &D_843861D0[0x2E], 0, 0x10, 2, 0, 0, 0);
-    func_8432EC28(0, func_8434016C, &D_843861D0[0x2E], 0, 0x10, 2, 0, 0, 0);
+    func_8432EC28(0, func_8434016C, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    func_8432EC28(0, func_8434016C, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    func_8432EC28(0, func_8434016C, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
+    func_8432EC28(0, func_8434016C, &gParticleEffectData[0x2E], 0, 0x10, 2, 0, 0, 0);
 }
 
 void func_84340CB0(void) {
-    func_8432ECA0(0, 2, 0x14, func_843403D8, &D_843861D0[0x2C], 0, 4, 0xE, 0, 0, 0);
+    func_8432ECA0(0, 2, 0x14, func_843403D8, &gParticleEffectData[0x2C], 0, 4, 0xE, 0, 0, 0);
     func_84357BA8();
 }
 
 void func_84340D14(void) {
-    func_8432ECA0(0, 2, 5, func_84340940, &D_843861D0[0x2D], 0, 1, 0xE, 0, 0, 1);
-    func_8432ECA0(0, 4, 5, func_84340940, &D_843861D0[0x2D], 0, 1, 0xE, 0, 0, 1);
+    func_8432ECA0(0, 2, 5, func_84340940, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
+    func_8432ECA0(0, 4, 5, func_84340940, &gParticleEffectData[0x2D], 0, 1, 0xE, 0, 0, 1);
 }

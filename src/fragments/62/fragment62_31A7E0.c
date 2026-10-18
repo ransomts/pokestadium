@@ -1,6 +1,6 @@
 #include "fragment62.h"
 
-void func_8432FF20(unk_D_8140E720* arg0) {
+void Particle_WhiteFlashInit(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
@@ -8,10 +8,10 @@ void func_8432FF20(unk_D_8140E720* arg0) {
     func_814081BC(arg0);
 }
 
-void func_8432FF8C(unk_D_8140E720* arg0) {
+void Particle_WhiteFlashUpdate(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8432FF20(arg0);
+            Particle_WhiteFlashInit(arg0);
             break;
 
         case 2:
@@ -29,7 +29,7 @@ void func_8432FF8C(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84330048(unk_D_8140E720* arg0) {
+void Particle_WhiteFlashAltInit(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0x64, 0xC8, 0xFF);
@@ -37,9 +37,9 @@ void func_84330048(unk_D_8140E720* arg0) {
     func_814081BC(arg0);
 }
 
-void func_843300B4(unk_D_8140E720* arg0) {
+void Particle_WhiteFlashAltUpdate(unk_D_8140E720* arg0) {
     if (arg0->unk_B2 == 1) {
-        func_84330048(arg0);
+        Particle_WhiteFlashAltInit(arg0);
     }
 
     if (func_8140819C(arg0) != 0) {
@@ -47,16 +47,16 @@ void func_843300B4(unk_D_8140E720* arg0) {
     }
 }
 
-void func_8433010C(unk_D_8140E720* arg0, u8 arg1) {
+void Particle_SetWhiteFlashHandler(unk_D_8140E720* arg0, u8 arg1) {
     switch (arg1) {
         case 1:
-            arg0->unk_08 = func_8432FF8C;
-            arg0->unk_0C = &D_843861D0[25];
+            arg0->unk_08 = Particle_WhiteFlashUpdate;
+            arg0->unk_0C = &gParticleEffectData[25];
             break;
 
         case 2:
-            arg0->unk_08 = func_843300B4;
-            arg0->unk_0C = &D_843861D0[22];
+            arg0->unk_08 = Particle_WhiteFlashAltUpdate;
+            arg0->unk_0C = &gParticleEffectData[22];
             break;
     }
 }

@@ -2977,3 +2977,170 @@ func_8430C414	Math_RandomU16Scaled	w19		Returns a random u16 scaled to the range
 func_8430C4F8	Math_StepTowards	w19		Adjusts a value towards a target by at most a step size arg2, returning 0 if already equal, otherwise 1.	applied@190f0c9
 func_8430C7E4	Math_CubicBezierCoeffs	w19		Fills an array with cubic B?zier coefficients based on parameter arg1, using (1?t)? and t? terms.	applied@190f0c9
 func_8430CA4C	Math_EaseOutCubicCoeffs	w19		Computes cubic ease?out coefficients using (1?t)?, (1?t)?, (1?t) and t? (CB macro) for animation easing.	applied@190f0c9
+D_84390120	gBattleTimer	w20		D_84390120 is incremented each frame in func_8430D02C and used to trigger actions after reaching 120 and 150, indicating it tracks the overall battle timer.	applied@66726e7
+D_84390124	gHPBarTimer	w20		D_84390124 is set from gBattleContext.unk_11EF, decremented each frame in func_8430D294, and plays sound effects at specific values (329,91,61,31,1), matching a HP bar countdown timer.	applied@66726e7
+D_84390128	gPhaseTimer	w20		D_84390128 is initialized from gBattleContext.unk_11EE, updated in func_8430CC84 to align to 30?frame steps, and counted down in func_8430CCC8, showing it drives the battle phase timing.	applied@66726e7
+D_84390134	gBattleResultPhase	w20		D_84390134 is set to 1 or 2 in func_8430D02C and later reset to 1 when func_8430CD0C signals phase end, acting as a state flag for the battle result phase.	applied@66726e7
+D_84390138	gRandomMoveSlot	w20		D_84390138 receives the result of func_84383B5C(0) (a random generator) and is used to pick move slots (e.g., sp1C->unk_18 = D_84390138 - 4), indicating it stores a random move slot index.	applied@66726e7
+func_8430FC28	DrawWindowBackground	w20		Draws a textured rectangle using orthographic projection and is called after drawing UI windows, indicating it provides the window background.	applied@66726e7
+func_8430FF8C	DrawColoredRect	w20		Uses two Color_RGB8 parameters to set shading colors and draws a rectangle, showing it renders a colored rectangle.	applied@66726e7
+func_84310B9C	DrawFractionNumber	w20		Formats two numbers as ?%3d/%3d? and draws each digit and the slash using sprites, showing it draws a fraction display.	applied@66726e7
+func_84311048	DrawPokemonInfoWindow	w20		Draws a window with Pokemon name, description, and colored borders based on status, used for Pokemon info panels.	applied@66726e7
+D_84385790	gStatusColors	w20		Array of structs containing RGBA values used for status color selection in UI functions.	applied@66726e7
+D_843857C8	gMoveIconSprites	w20		Array of pointers to sprite data indexed by move IDs, used when drawing move icons.	applied@66726e7
+D_84385838	gStatusIconSprites	w20		Array of pointers to status condition icons used in status display functions.	applied@66726e7
+D_84385850	gBarTextures	w20		Array of texture pointers used for drawing UI bars such as timers and progress bars.	applied@66726e7
+D_84385860	gBoxColorPrimary	w20		Primary color array for UI boxes, referenced when setting text box colors.	applied@66726e7
+D_84385870	gBoxColorSecondary	w20		Secondary color array for UI boxes, paired with the primary colors in box rendering.	applied@66726e7
+D_843858E8	gDefaultGfxSetup	w20		Display list that sets up default rendering state (pipeline sync, cycle type, render mode, etc.).	applied@66726e7
+D_843900C0	gMarqueeMessageBank	w20		Message bank used for scrolling marquee text in func_8431712C.	applied@66726e7
+func_84317810	ResetDialogBuffers	w20		Zeroes all dialog buffer fields in the global dialog state struct, indicating a full reset of message buffers	applied@66726e7
+func_8431790C	ResetMessageIndices	w20		Clears the primary message index fields (unk_004, unk_048, unk_008) in the global dialog state, suggesting it resets message pointers	applied@66726e7
+func_84317940	SimpleStringFormat	w20		Implements a minimal sprintf handling ?%s? by copying source strings into a destination buffer, matching typical format utilities	applied@66726e7
+func_843179F4	WriteMessageCharOrString	w20		Writes a leading character then conditionally loads a message string via GetMessageString based on the character value, typical of message code handling	applied@66726e7
+func_84317AA8	InitDialogHeader	w20		Sets up the dialog header by storing a reference ID and formatting a string into the dialog buffer, consistent with initializing a dialog entry	applied@66726e7
+func_84317B40	InitBattleDialogParameters	w20		Configures battle?specific dialog parameters and invokes func_8431595C with IDs, indicating preparation of battle dialogue	applied@66726e7
+func_84317BDC	DetermineMessageCategoryAndDisplay	w20		Selects a message category by comparing an ID against several static tables and then displays the appropriate message via func_843179F4	applied@66726e7
+D_84385BC0	gMessageIdLookup	w20		Lookup table used in func_843179F4 to translate a character code into a message ID, indicating it maps codes to message indices	applied@66726e7
+D_84390240	gBattleState	w20		Global structure accessed for .unk_00, .unk_1C, .unk_2C etc., representing the current battle context and state	applied@66726e7
+D_84390190	gCameraPosition	w20		Struct with .x, .y, .z fields set to specific coordinates, indicating it stores the camera or view position	applied@66726e7
+func_84318514	ProcessMessageCommand	w20		Parses a leading byte in a message buffer and dispatches command IDs (e.g., ?Q? ? 0xBC), matching typical message command processing	applied@66726e7
+func_84318640	RenderDialogBox	w20		Draws various UI elements based on the dialog state?s unk_04 field, calling func_84315BC0 for each component, typical of dialog box rendering	applied@66726e7
+func_843197A0	Camera_IsCloseViewCondition	w20		Camera_IsCloseViewCondition checks model heights and base Y to decide if a close?up camera view is possible (used before selecting close/far camera settings)	applied@66726e7
+func_8431995C	Camera_SetCloseView	w20		Camera_SetCloseView configures the camera with fovy?50 and uses gCameraCloseSettings when the close?view condition is true	applied@66726e7
+func_84319AE8	Camera_SetFarView	w20		Camera_SetFarView configures the camera with fovy?30 and uses gCameraFarSettings when the close?view condition is false	applied@66726e7
+func_8431A1C8	Camera_SetFromBattleContext	w20		Camera_SetFromBattleContext selects a preset from gCameraPresets based on gBattleContext fields and sets view parameters accordingly	applied@66726e7
+func_8431A4C4	Camera_UpdateStateMachine	w20		Camera_UpdateStateMachine drives the per?frame camera state machine, advancing gStadiumState->unk_20 through a predefined sequence of camera actions	applied@66726e7
+func_8431AAFC	Camera_MainUpdate	w20		Camera_MainUpdate is the top?level per?frame camera handler that processes battle?specific conditions and dispatches to the appropriate camera state functions	applied@66726e7
+D_843859E0	gCameraPresets	w20		gCameraPresets is a global array of CameraPreset structs used to initialise camera position, angle and fovy in Camera_SetFromBattleContext	applied@66726e7
+unk_D_843859E0	CameraPreset	w20		CameraPreset stores a single camera preset (distance, pitch, yaw, fovy) referenced by gCameraPresets	applied@66726e7
+D_84385B9C	gCameraCloseSettings	w20		gCameraCloseSettings is a global parameter block passed to Camera_SetCloseView for the close?up camera configuration	applied@66726e7
+D_84385B90	gCameraFarSettings	w20		gCameraFarSettings is a global parameter block passed to Camera_SetFarView for the distant camera configuration	applied@66726e7
+D_84384888	gCameraFovyPresetSpecial	w20		gCameraFovyPresetSpecial is an array of structs whose unk_30 field supplies a fixed fovy for special camera cases in func_84319F10	applied@66726e7
+D_843847EC	gCameraFovyPresetRandom	w20		gCameraFovyPresetRandom is an array of structs used to select a random fovy preset for camera effects in func_84319F10	applied@66726e7
+D_84384C30	gCameraOffsetTable	w20		gCameraOffsetTable provides per?move XYZ offsets applied when positioning the camera in func_8431A2C8	applied@66726e7
+func_8431AD20	ClampScaledDistance	w20		Returns the smaller of arg2 and (entity speed * arg1), used to limit camera distance based on entity speed	applied@66726e7
+func_8431AE7C	SetCameraPositionAndView	w20		Calls Vec3f_Set and Camera_SetViewParameters to position the camera and set its view parameters for a given entity	applied@66726e7
+func_8431AED8	GetEntityGroundPosition	w20		Computes a ground-level position for an entity, falling back to default offsets when a bone lookup fails	applied@66726e7
+func_8431AF58	ResolveEntityPosition	w20		Attempts to get a bone position; if unavailable, uses fallback entity position and applies X offset for camera targeting	applied@66726e7
+func_8431B500	SetupBattleCamera	w20		Configures the battle camera based on entity states, model flags, and preset distances for various battle scenarios	applied@66726e7
+func_8431B858	ConfigureCameraForModel	w20		Adjusts camera height offsets based on specific model flags and sets up view parameters accordingly	applied@66726e7
+func_8431BD18	SmoothFloatPair	w20		Gradually equalizes two float values when their difference is below a small epsilon, used for smoothing camera coordinates	applied@66726e7
+D_843901B0	gCameraPreset	w20		Struct holding preset camera parameters (fovy, angles, distances) referenced throughout camera setup functions	applied@66726e7
+D_843901F0	gCameraDistTarget	w20		Temporary target distance for camera positioning, set by func_8431AD20 and used in many camera update routines	applied@66726e7
+D_843901F4	gCameraDistCurrent	w20		Current interpolated camera distance, updated alongside gCameraDistTarget during camera transitions	applied@66726e7
+D_84385B60	gDefaultModelId	w20		Default model identifier (0x5F) used when selecting camera behavior based on entity model type	applied@66726e7
+D_84385B64	gDefaultModelParam	w20		Default model parameter (0x38F) used alongside gDefaultModelId for camera configuration decisions	applied@66726e7
+func_8431F610	TriggerSpecialActionIfReady	w20		Checks for player state 0x32 and flag 0x4000 then calls GraphNode_TriggerAction, indicating a special action trigger.	applied@66726e7
+func_8431F680	Battle_ResetSubstate	w20		Sets D_84390240.unk_00->unk_24 to 0, resetting the battle substate counter used throughout the state machine.	applied@66726e7
+func_8431FCCC	UpdatePokemonHP	w20		Interpolates PokemonData->unk_02 toward the target HP using Math_ApproachF32, clearly handling health bar updates.	applied@66726e7
+func_8431FF3C	Battle_SetPhase	w20		Assigns D_84390240.unk_00->unk_38 = arg1 and clears unk_20, establishing the current battle phase.	applied@66726e7
+D_84390204	gCurrentPlayer	w20		Initialized in func_8432113C as D_84390204 = D_84390010[D_84390240.unk_00->unk_2C]; used as the active player in all battle logic.	applied@66726e7
+D_84390200	gOpponentPlayer	w20		Initialized in func_8432113C as D_84390200 = D_84390010[idx] where idx is the opposite of the current turn; represents the opposing player.	applied@66726e7
+D_84385B70	gMoveIdSetA	w20		Array of u8 values used in func_843226E0 to randomly select a move ID for the battle (e.g., D_84390240.unk_00->unk_50 = D_84385B70[?]).	applied@66726e7
+D_84385B78	gMoveIdSetB	w20		Similar to gMoveIdSetA, this array provides alternative move IDs selected randomly in the same function.	applied@66726e7
+D_84385B7C	gMoveIdSetC	w20		Third move?ID array used for random selection in func_843226E0, indicating a distinct move group.	applied@66726e7
+D_84385B80	gMoveIdSetD	w20		Fourth move?ID array used for random selection, confirming its role as a set of possible move identifiers.	applied@66726e7
+D_84385B88	gMoveIdSetE	w20		Fifth move?ID array used for random selection, completing the collection of move ID sets.	applied@66726e7
+D_84385B8C	gAnimFlagMask_5F92	w20		Constant 0x5F92 read in func_843261CC and passed to func_84307AE0, serving as an animation flag mask.	applied@66726e7
+D_84390220	gPlayer0ReadyFlag	w20		Set by func_84320CEC as the result of func_8431FCCC(D_84390010[0]), indicating player?0?s readiness status.	applied@66726e7
+func_84328990	Intro_SetupCamera	w20		Sets camera fovy and positions, clears flags and increments state, indicating initial camera setup for the intro.	applied@66726e7
+func_84328A70	Intro_CheckPlayerReady	w20		Checks func_8431ADF0(0xA) and func_84302000 on the first actor, then clears flags, plays a sound and advances state, suggesting a player?ready check.	applied@66726e7
+func_84328B30	Intro_PlayerEnter	w20		Triggers when the first actor's Y position is zero, plays a sound, runs animation and advances state, matching the player entering the arena.	applied@66726e7
+func_84328BF0	Intro_OpponentEnter	w20		Runs when the second actor's Y position is zero, adjusts camera fovy, starts opponent animation and advances state, fitting opponent entry.	applied@66726e7
+func_84328D70	Intro_CameraPanAndZoom	w20		Updates a timer and step?towards values, then moves the camera with func_8431BB80, indicating a camera pan/zoom during the intro.	applied@66726e7
+func_84328EC0	Intro_WaitForAnimCompletion	w20		Calls func_800174E4 on the first actor's animation struct and advances state when it returns 1, implying a wait for animation to finish.	applied@66726e7
+func_84328F2C	Intro_DisplayPokemonInfo	w20		Triggers Pokemon animation, sets a message pointer via MessageBank_SetPointer, and advances state, typical for showing a Pok?mon?s info.	applied@66726e7
+func_843290A0	Intro_PostInfoDelay	w20		Uses a counter (unk_10) to delay before calling func_8431F420 again and then clears flags, acting as a post?message delay.	applied@66726e7
+func_84329164	Opponent_DisplayPokemonInfo	w20		Mirrors Intro_DisplayPokemonInfo for the second actor, playing a sound and setting a message pointer for the opponent?s Pok?mon.	applied@66726e7
+func_843292D8	Opponent_PostInfoDelay	w20		Similar to Intro_PostInfoDelay but operates on the second actor, using the same counter logic before advancing state.	applied@66726e7
+func_843293A8	Intro_End	w20		Empty placeholder reached after state 10, likely marking the end of the intro sequence.	applied@66726e7
+func_843293B0	UnusedFunction	w20		Empty function with no references, serving as a placeholder.	applied@66726e7
+func_843293B8	Intro_StateMachine	w20		Dispatches to the appropriate intro step based on gBattleState->unk_20, acting as the main state machine for the intro.	applied@66726e7
+func_843294A0	InitializeCameraForCurrentEntity	w20		Called with arg0 and uses D_84390284 to index D_84390010, indicating it sets up the camera for the current Pok?mon entity.	applied@66726e7
+func_843295D0	InitializeCameraForPlayerEntity	w20		Similar to func_843294A0 but always uses D_84390010[0], suggesting it initializes the camera for the player?s Pok?mon.	applied@66726e7
+func_84329858	Battle_StartSequence	w20		Contains a state machine on gBattleState->unk_30 that sets backgrounds, textures, and clears Pok?mon active flags, typical of a battle start routine.	applied@66726e7
+func_84329B04	Battle_TransitionSequence	w20		Another state machine on gBattleState->unk_30 that calls func_8436EEF0/func_8436EF54 and handles texture/background changes, indicating a transition phase.	applied@66726e7
+func_84329DB8	Battle_RunSequence	w20		Selects between func_84329858 and func_84329B04 based on gBattleState->unk_2E, acting as the top?level battle sequence dispatcher.	applied@66726e7
+func_84329DFC	IsPointInTriangle	w20		Performs barycentric coordinate checks to determine if a point lies inside a triangle, returning a boolean flag.	applied@66726e7
+func_8432A024	IsPointInTriangleAndWithinRange	w20		Performs the same triangle test as func_84329DFC and additionally checks distance against a threshold, returning a boolean.	applied@66726e7
+func_8432A2D4	UpdateEntityVisibilityFromCamera	w20		Calls IsPointInTriangle for each entity and sets or clears a flag (bit?0x1) in the entity?s status word based on the result.	applied@66726e7
+func_8432A398	UpdateOppositeEntityVisibility	w20		Selects the non?current entity (using gBattleState->unk_2C) and updates its visibility flag using IsPointInTriangleAndWithinRange.	applied@66726e7
+func_8432A41C	SetAllEntitiesActiveFlag	w20		Sets bit?0x1 in the status word of both gPokemonEntities[0] and gPokemonEntities[1].	applied@66726e7
+func_8432A448	DeactivateOppositeEntity	w20		Calls func_843087F8 on the opposite entity and clears its visibility flag (bit?0x1).	applied@66726e7
+func_8432A4B0	DeactivateCurrentEntity	w20		Clears the visibility flag (bit?0x1) of the current entity and then calls func_843087F8 on it.	applied@66726e7
+func_8432A510	ClearEntityFlagIfInState	w20		Checks each entity?s unk_654.unk_2D field for values 0x10 or 0x13 and clears the visibility flag (bit?0x1) when matched.	applied@66726e7
+func_8432A578	ProcessBattleState	w20		Contains a large switch on gBattleState->unk_1C and nested switches on various state fields, invoking many helper functions to drive battle logic.	applied@66726e7
+func_8432ADD8	Battle_Update	w20		Calls the main battle sequence functions, processes animation queues, updates primary Pok?mon entities, and runs per?frame logic.	applied@66726e7
+D_84390284	gCurrentEntityIndex	w20		Indexes into D_84390010 in several functions, indicating it tracks which Pok?mon entity is currently active.	applied@66726e7
+func_8432AF70	HandleMoveHitAnimation	w20		Triggers action, sound and animation state when flag 0x20 is set and animation frame >=3, indicating a move hit event	applied@66726e7
+func_8432B0A4	TriggerCurrentAnimAction	w20		Calls GraphNode_TriggerAction with the current animation's action ID from gAnimDataByPlayer, suggesting it triggers the entity's animation action	applied@66726e7
+func_8432B0E4	StartMoveAnimation	w20		Checks unk_34 & 2, sets flag 0x20, calls func_8432C80C, func_84306200 and TriggerCurrentAnimAction, indicating it starts a move animation sequence	applied@66726e7
+func_8432B13C	ResetMoveStateAndStartAnimation	w20		Clears ptr->unk_05 before performing the same sequence as StartMoveAnimation, implying it resets move state then starts the animation	applied@66726e7
+func_8432B1BC	ResumeMoveAnimationIfNotTriggered	w20		Only triggers the animation sequence when unk_34 & 2 is set and a secondary flag is not, suggesting it resumes a pending move animation	applied@66726e7
+func_8432B228	HandleItemOrStatusEffect	w20		References global D_84390240 battle flags and uses multiple animation IDs (0xAF,0xA5,0xB8), indicating handling of item use or status effect animations	applied@66726e7
+func_8432B38C	ProcessStatusEffectEnd	w20		Checks unk_34 & 1, clears status flags, and triggers appropriate animation IDs, implying it processes the end of a status effect	applied@66726e7
+func_8432B448	FinalizeStatusEffect	w20		When unk_34 & 1 is set, calls func_8432C80C and func_84306200, suggesting it finalizes a status effect animation/pending state	applied@66726e7
+func_8432B490	PlaySoundEffect_Select	w20		Calls PlaySoundEffect with ID?1, likely the UI selection sound	applied@66726e7
+func_8432B4B0	PlaySoundEffect_Cancel	w20		Calls PlaySoundEffect with ID?2, likely the UI cancel sound	applied@66726e7
+func_8432B4D0	PlaySoundEffect_Confirm	w20		Calls PlaySoundEffect with ID?3, likely the UI confirm/OK sound	applied@66726e7
+func_8432B4F0	PlaySoundEffect_Error	w20		Calls PlaySoundEffect with ID?8, likely an error or invalid action sound	applied@66726e7
+func_8432B510	PlayBattleMusicOrDefault	w20		Chooses between Audio_PlaySequence(0xC8) or the passed sequence ID based on func_84307B60 result	applied@66726e7
+func_8432B604	SetPlayerSidesFromActivePokemons	w20		Builds a side?assignment array from the two active Pok?mon structures and calls SetPlayerSidesAndReset	applied@66726e7
+func_8432B704	SetTeamScoresFromActivePokemons	w20		Extracts team scores from active Pok?mon data and calls SetTeamScores	applied@66726e7
+func_8432B808	ProcessBattleMenuSelection	w20		Uses gBattleContext fields to dispatch ProcessMenuSelection calls for various menu states	applied@66726e7
+func_8432BF88	PlayBattleSoundEffect	w20		Maps the second argument to specific sound IDs (0x14,?0x12,?0x32,?0x21,?0x13,?0x1E?0x20) and plays them via Audio_PlaySoundEffect	applied@66726e7
+func_8432C0D0	ExecuteStateFunction	w20		Sets D_843902E2, calls the function at D_84386480[arg0], and optionally repeats with D_843902E6	applied@66726e7
+func_8432C194	RegisterStateCallbacks	w20		Stores a pair of function pointers into D_84390300/D_84390320 arrays, cycling through 8 slots	applied@66726e7
+func_8432C1E0	RunActionScript	w20		Selects a byte?code script based on parameters, iterates over it, and invokes state functions and callbacks accordingly	applied@66726e7
+func_8432C4CC	MainUpdateLoop	w20		Calls Timer_UpdateCounters, processes pending actions, updates entities and rendering each frame	applied@66726e7
+func_8432D61C	ParticleDef_Allocate	w20		searches the particle definition pool for a free entry, marks it active and updates the next?free index	applied@66726e7
+func_8432D6B0	ParticleDef_Reset	w20		clears the active flag and related counters of a particle definition entry	applied@66726e7
+func_8432D6C8	ParticleNode_Init	w20		initialises a particle node with position, rotation, default flags and links it into the list	applied@66726e7
+func_8432D76C	ParticleNode_CopyFrom	w20		copies most fields from a source particle node to a destination and sets up defaults	applied@66726e7
+func_8432D844	ParticleNode_CreateMultiple	w20		creates a number of particle nodes by allocating them and copying a template node	applied@66726e7
+func_8432D9BC	ParticleNode_CreateAt	w20		allocates a particle node, sets its position, default rotation and a specific flag	applied@66726e7
+func_8432DA64	ParticleNode_ProcessChild	w20		handles a particle node's child based on a flag, calling either func_8432CD14 or func_8432CBF8	applied@66726e7
+func_8432DAB8	ParticleNode_Destroy	w20		calls cleanup on a particle node's child, resets fields and frees the node	applied@66726e7
+func_8432DAEC	ParticleNode_UpdateBehavior	w20		updates a particle node's position according to its behaviour type stored in unk_CC	applied@66726e7
+func_8432E184	ParticleSystem_Update	w20		iterates over all active particle instances, updates their behaviour, scaling and lifecycle	applied@66726e7
+func_8432E200	ParticleInstance_Configure	w20		fills a particle instance with data from a particle definition and optional model pointer	applied@66726e7
+func_8432E30C	ParticleDef_SpawnInstances	w20		spawns particle instances based on a mode flag and definition parameters, handling special cases	applied@66726e7
+func_8432EB64	ParticleDef_Create	w20		creates a new particle definition entry, filling all fields from the supplied parameters and a global timer offset	applied@66726e7
+func_8432FA54	Model_GetNodePosition	w20		looks up a node in a model by ID and returns its position, falling back to a default if not found	applied@66726e7
+func_8432FF20	Particle_WhiteFlashInit	w20		Initializes a particle by setting its primary color to white (0xFF,0xFF,0xFF) and configuring size/alpha via func_8140B938 and related calls, indicating a white flash effect	applied@66726e7
+func_8432FF8C	Particle_WhiteFlashUpdate	w20		Updates the white flash particle based on its state field unk_B2, handling three cases and adjusting size/alpha when active via func_8140B98C	applied@66726e7
+func_84330048	Particle_WhiteFlashAltInit	w20		Repeats the white particle initialization (prim color white, size/alpha setup) used by an alternate update path, mirroring func_8432FF20	applied@66726e7
+func_843300B4	Particle_WhiteFlashAltUpdate	w20		Alternate update for the white flash particle; calls the init only when state is 1 and then applies larger size/alpha adjustments when active	applied@66726e7
+func_8433010C	Particle_SetWhiteFlashHandler	w20		Sets the particle's update function pointer (unk_08) and associated data pointer (unk_0C) based on a mode argument, linking to the white flash handlers	applied@66726e7
+D_843861D0	gParticleEffectData	w20		Global array of particle effect parameters referenced at indices 25 and 22 by the white flash handlers, likely containing texture or timing data	applied@66726e7
+func_84330170	RenderPanelBackground	w20		Sets primitive and environment colors then draws display list D_8140E418, indicating it renders a panel background.	applied@66726e7
+func_84330218	RenderIconMasked	w20		Loads an IA8 texture, sets texture parameters and colors, then draws via func_81404DB4, suggesting it renders a masked icon.	applied@66726e7
+func_84330300	RenderPanelWithIcon	w20		Displays base UI list D_8140DCD8 then calls RenderIconMasked, implying a panel with an icon.	applied@66726e7
+func_84330344	RenderOverlayWithIcon	w20		Displays overlay UI list D_8140DD58 then calls RenderIconMasked, indicating an overlay panel with an icon.	applied@66726e7
+func_843304AC	RenderItemIcon	w20		Sets up transformation, draws D_8140DBA8 and loads an RGBA16 texture, typical for rendering an item icon.	applied@66726e7
+func_84330574	RenderStatusBar	w20		Sets up transformation, draws D_8140DCD8 and configures colors and textures for a status bar UI element.	applied@66726e7
+func_8433079C	RenderMultiBlockIcon	w20		Loads two 4b multi?block textures and draws them with positioning, indicating a multi?block icon render.	applied@66726e7
+func_843310A0	RenderTimerDigits	w20		Uses gTimerMask3 to select a timer texture, sets colors and draws D_8140DD58, clearly rendering timer digits.	applied@66726e7
+func_843311D8	RenderTimerDigitsAlt	w20		Similar to RenderTimerDigits but uses a different texture table (D_84385D00), rendering alternate timer digits.	applied@66726e7
+func_84331450	RenderTimerNumber	w20		Calls func_81404F84 with a timer texture and z?position, suggesting it renders a numeric timer value.	applied@66726e7
+D_8140E418	gDL_PanelBackground	w20		Display list used only by RenderPanelBackground, representing the panel background geometry.	applied@66726e7
+D_8140DCD8	gDL_BaseUI	w20		Base UI display list referenced by many render functions as the starting geometry.	applied@66726e7
+D_8140DD58	gDL_OverlayUI	w20		Overlay UI display list used for timer and overlay renders.	applied@66726e7
+D_8140DBA8	gDL_ItemIcon	w20		Display list drawn when rendering an item icon in RenderItemIcon.	applied@66726e7
+D_8140E018	gMatrix_UITransform	w20		Matrix passed to func_81404ABC for positioning UI elements, indicating a UI transform matrix.	applied@66726e7
+func_84331E64	Fragment_SetPrimColorFromPaletteAndRender	w20		Sets primary color from palette, configures texture via func_8140BF4C, then renders with func_814081BC	applied@66726e7
+func_84331F64	Fragment_SetPrimColorFromPaletteAndRender_WithCE	w20		Sets primary color from palette, passes arg0->unk_CE to func_8140BF4C, then renders with func_814081BC	applied@66726e7
+func_843326EC	Fragment_SetRandomPrimColorAndRender	w20		Selects a random entry from D_8140E538, sets primary color, configures additional parameters, and renders with func_814081BC	applied@66726e7
+func_843328A8	Fragment_SetFixedPrimColorsAndRender	w20		Sets primary color from D_8140E538[0] and secondary color from D_8140E538[1], configures texture, then renders with func_814081BC	applied@66726e7
+func_84332964	Fragment_ComplexColorMode	w20		Handles multiple B2 cases including fixed palette, random palette cycling, and conditional rendering based on func_8140BC2C	applied@66726e7
+func_84332AD8	Fragment_SetAlphaFromUnkA6AndRender	w20		Copies unk_A6 to prim_a and triggers rendering via func_814081BC	applied@66726e7
+func_84332AFC	Fragment_ProcessAlphaMode	w20		Switches on unk_B2 to set alpha, conditionally render, or invoke func_81408150, then updates node state with GraphNode_SetState	applied@66726e7
+func_84332BA4	Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20	w20		Sets primary color from palette, calls func_8140BC20 with 0, then renders with func_814081BC	applied@66726e7
+func_84332BE4	Fragment_ProcessBC20Mode	w20		Switches on unk_B2 to set primary color, invoke func_8140BC20 or func_8140BC2C, and finally sets node color RGBA	applied@66726e7
+func_84332C90	Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Alt	w20		Sets primary color from palette, calls func_8140BC20 with 0, then renders with func_814081BC	applied@66726e7
+func_84332CD0	Fragment_ProcessBC20Variant	w20		Switches on unk_B2 to set primary color, call func_8140BC5C, BDD0, or conditional func_8140BC2C, then sets node color RGBA	applied@66726e7
+func_84332D68	Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20	w20		Sets primary color from palette, calls func_8140BC20 with arg0->unk_CD, then renders with func_814081BC	applied@66726e7
+func_84332DB0	Fragment_ProcessBC20WithCDMode	w20		Switches on unk_B2 to render with CD-specific BC20, BDD0, or conditional BC2C, then renders or sets node color RGBA	applied@66726e7
+func_84332E2C	Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third	w20		Sets primary color from palette, calls func_8140BC20 with 0, then renders with func_814081BC	applied@66726e7
+D_8140E538	gPrimColorPalette	w20		Global array of primary colors used for random and fixed palette selections in fragment rendering	applied@66726e7

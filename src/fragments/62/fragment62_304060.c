@@ -2,15 +2,15 @@
 #include "src/17300.h"
 #include "src/F420.h"
 
-typedef struct unk_D_843859E0 {
+typedef struct CameraPreset {
     /* 0x00 */ u8 unk_00;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ f32 unk_0C;
-} unk_D_843859E0; // size = 0x10
+} CameraPreset; // size = 0x10
 
-static unk_D_843859E0 D_843859E0[] = {
+static CameraPreset gCameraPresets[] = {
     {
         0x00,
         2002.1199951171875f,
@@ -153,7 +153,7 @@ static unk_D_843859E0 D_843859E0[] = {
     },
 };
 
-s32 func_843197A0(void) {
+s32 Camera_IsCloseViewCondition(void) {
     if (((GetModelHeight(D_84390010[0]) + GetModelHeight(D_84390010[1])) <= 85.0f) &&
         (GetModelBaseY(D_84390010[0]) == 0.0f) && (GetModelBaseY(D_84390010[1]) == 0.0f) &&
         (D_84390010[0]->unk_000.unk_024.y == 0.0f) && (D_84390010[1]->unk_000.unk_024.y == 0.0f)) {
@@ -163,18 +163,18 @@ s32 func_843197A0(void) {
 }
 
 s32 func_84319878(UNUSED unk_D_84390010* arg0, unk_D_86002F34_00C* arg1) {
-    unk_D_84390010_654* ptr = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
+    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || ((ptr->unk_34 & 0x4000) != 0)) {
-        func_8431A4C4(arg1);
+        Camera_UpdateStateMachine(arg1);
         return 1;
     }
     return 0;
 }
 
 s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    unk_D_84390010_654* ptr = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
-    s32 idx = D_84390240.unk_00->unk_2C == 0;
+    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
+    s32 idx = gBattleState.unk_00->unk_2C == 0;
     unk_D_84390010_654* ptr2 = &D_84390010[idx]->unk_654;
 
     if ((ptr->unk_34 & 0x4000) || (ptr2->unk_34 & 0x4000)) {
@@ -183,31 +183,31 @@ s32 func_843198EC(UNUSED unk_D_84390010* arg0, UNUSED unk_D_86002F34_00C* arg1) 
     return 0;
 }
 
-void func_8431995C(unk_D_86002F34_00C* arg0) {
+void Camera_SetCloseView(unk_D_86002F34_00C* arg0) {
     func_8431AE5C();
     arg0->unk_24.fovy = 50.0f;
-    if (func_843197A0() != 0) {
-        func_8431BB24(arg0, D_84385B9C, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, D_84385B9C, 0x5B0, 0, 550.0f, 0.0f);
+    if (Camera_IsCloseViewCondition() != 0) {
+        func_8431BB24(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
+        func_8431BC38(arg0, gCameraCloseSettings, 0x5B0, 0, 550.0f, 0.0f);
     } else {
-        func_8431BB24(arg0, D_84385B90, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, D_84385B90, 0x5B0, 0, 550.0f, 0.0f);
+        func_8431BB24(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
+        func_8431BC38(arg0, gCameraFarSettings, 0x5B0, 0, 550.0f, 0.0f);
     }
     arg0->unk_60.eye.z *= 0.6;
-    D_84390240.unk_00->unk_20++;
+    gBattleState.unk_00->unk_20++;
 }
 
-void func_84319AE8(unk_D_86002F34_00C* arg0) {
+void Camera_SetFarView(unk_D_86002F34_00C* arg0) {
     func_8431AE5C();
     arg0->unk_24.fovy = 30.0f;
-    if (func_843197A0() != 0) {
-        func_8431BB24(arg0, D_84385B9C, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, D_84385B9C, 0x1A4E, 0, 1000.0f, 0.0f);
+    if (Camera_IsCloseViewCondition() != 0) {
+        func_8431BB24(arg0, gCameraCloseSettings, 0, 0, 0.0f, 0.0f);
+        func_8431BC38(arg0, gCameraCloseSettings, 0x1A4E, 0, 1000.0f, 0.0f);
     } else {
-        func_8431BB24(arg0, D_84385B90, 0, 0, 0.0f, 0.0f);
-        func_8431BC38(arg0, D_84385B90, 0x1A4E, 0, 1000.0f, 0.0f);
+        func_8431BB24(arg0, gCameraFarSettings, 0, 0, 0.0f, 0.0f);
+        func_8431BC38(arg0, gCameraFarSettings, 0x1A4E, 0, 1000.0f, 0.0f);
     }
-    D_84390240.unk_00->unk_20++;
+    gBattleState.unk_00->unk_20++;
 }
 
 void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
@@ -223,10 +223,10 @@ void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
     sp44 = &D_84390010[arg1]->unk_654;
     func_8431BA5C();
     func_8431AE4C(arg1);
-    temp_s0 = D_84390010[D_84390240.unk_00->unk_2C];
+    temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
     if (func_84319878(temp_s0, arg0) == 0) {
-        func_843081F0(temp_s0, &D_84390240.unk_00->unk_D0);
+        func_843081F0(temp_s0, &gBattleState.unk_00->unk_D0);
         if (!(sp44->unk_34 & 2)) {
             func_84305760(temp_s0, 1);
         }
@@ -247,17 +247,17 @@ void func_84319C58(unk_D_86002F34_00C* arg0, s32 arg1) {
             sp4C = 0.0f;
         }
 
-        func_8431BAB4(temp_s0, arg0, D_84390240.unk_00->unk_D0, 0, 0, 0, 0.0f);
-        func_8431BB80(arg0, D_84390240.unk_00->unk_D0, 0, 0x4000 - (sp4A * 0xB6), sp50, sp4C);
+        func_8431BAB4(temp_s0, arg0, gBattleState.unk_00->unk_D0, 0, 0, 0, 0.0f);
+        func_8431BB80(arg0, gBattleState.unk_00->unk_D0, 0, 0x4000 - (sp4A * 0xB6), sp50, sp4C);
         func_8431D5C8(arg0);
-        func_8431B858(temp_s0, arg0);
+        ConfigureCameraForModel(temp_s0, arg0);
 
         if (temp_s0->unk_000.unk_01A == 0x5F) {
             arg0->unk_24.fovy = 50.0f;
         } else {
             arg0->unk_24.fovy = 30.0f;
         }
-        D_84390240.unk_00->unk_20++;
+        gBattleState.unk_00->unk_20++;
     }
 }
 
@@ -269,24 +269,24 @@ void func_84319F10(unk_D_86002F34_00C* arg0, s32 arg1) {
 
     func_8431BA5C();
     func_8431AE4C(arg1);
-    temp_s0 = D_84390010[D_84390240.unk_00->unk_2C];
+    temp_s0 = D_84390010[gBattleState.unk_00->unk_2C];
 
     if (func_84319878(temp_s0, arg0) == 0) {
         if (temp_s0->unk_654.unk_34 & 0x200) {
-            sp24 = &D_84384888[0];
+            sp24 = &gCameraFovyPresetSpecial[0];
         } else {
             var_a0 = Math_RandomU16Scaled(5);
             if (var_a0 >= 5) {
                 var_a0 = 0;
             }
-            sp24 = &D_843847EC[var_a0];
+            sp24 = &gCameraFovyPresetRandom[var_a0];
         }
         arg0->unk_24.fovy = sp24->unk_30;
-        func_843081F0(temp_s0, &D_843901B0.unk_00);
+        func_843081F0(temp_s0, &gCameraPreset.unk_00);
         func_8431D7D8(sp24, arg0, temp_s0);
         func_8431D5D0(arg0, temp_s0, 1);
         func_8431D5C8(arg0);
-        D_84390240.unk_00->unk_20++;
+        gBattleState.unk_00->unk_20++;
     }
 }
 
@@ -294,53 +294,53 @@ void func_8431A024(unk_D_86002F34_00C* arg0, s32 arg1) {
     arg0->unk_24.fovy = 30.0f;
     func_8431AE4C(arg1);
     if (func_84319878(D_84390010[arg1], arg0) == 0) {
-        func_8431B500(arg0, arg1);
-        D_84390240.unk_00->unk_20++;
+        SetupBattleCamera(arg0, arg1);
+        gBattleState.unk_00->unk_20++;
     }
 }
 
 void func_8431A098(unk_D_86002F34_00C* arg0) {
-    func_8431AE4C(D_84390240.unk_00->unk_54 - 1);
-    if (func_843198EC(D_84390010[D_84390240.unk_00->unk_2C], arg0) != 0) {
-        D_84390240.unk_00->unk_54 = 0;
-        func_8431A4C4(arg0);
+    func_8431AE4C(gBattleState.unk_00->unk_54 - 1);
+    if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
+        gBattleState.unk_00->unk_54 = 0;
+        Camera_UpdateStateMachine(arg0);
     } else {
-        func_8431DC78(arg0, D_84390240.unk_00->unk_2C);
-        D_84390240.unk_00->unk_20++;
+        func_8431DC78(arg0, gBattleState.unk_00->unk_2C);
+        gBattleState.unk_00->unk_20++;
     }
 }
 
 void func_8431A130(unk_D_86002F34_00C* arg0) {
-    func_8431AE4C(D_84390240.unk_00->unk_2C);
-    D_84390240.unk_00->unk_54 = 0;
-    if (func_843198EC(D_84390010[D_84390240.unk_00->unk_2C], arg0) != 0) {
-        func_8431A4C4(arg0);
+    func_8431AE4C(gBattleState.unk_00->unk_2C);
+    gBattleState.unk_00->unk_54 = 0;
+    if (func_843198EC(D_84390010[gBattleState.unk_00->unk_2C], arg0) != 0) {
+        Camera_UpdateStateMachine(arg0);
     } else {
-        func_8431DC78(arg0, D_84390240.unk_00->unk_2C);
-        D_84390240.unk_00->unk_20++;
+        func_8431DC78(arg0, gBattleState.unk_00->unk_2C);
+        gBattleState.unk_00->unk_20++;
     }
 }
 
-void func_8431A1C8(unk_D_86002F34_00C* arg0) {
+void Camera_SetFromBattleContext(unk_D_86002F34_00C* arg0) {
     s16 var_v1;
 
     func_8431AE5C();
     if (gBattleContext.unk_0000 == 0x10) {
-        var_v1 = D_843859E0[gBattleContext.unk_0001].unk_00;
+        var_v1 = gCameraPresets[gBattleContext.unk_0001].unk_00;
         if (gBattleContext.unk_0001 == 7) {
             var_v1 += gBattleContext.unk_0002;
         }
     } else {
-        var_v1 = D_843859E0[gBattleContext.unk_0000].unk_00;
+        var_v1 = gCameraPresets[gBattleContext.unk_0000].unk_00;
         if (gBattleContext.unk_0000 == 7) {
             var_v1 += gBattleContext.unk_0002;
         }
     }
-    arg0->unk_24.fovy = D_843859E0[var_v1].unk_0C;
+    arg0->unk_24.fovy = gCameraPresets[var_v1].unk_0C;
     Vec3f_Set(&arg0->unk_60.at, 0.0f, 10.0f, 0.0f);
-    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, D_843859E0[var_v1].unk_04, D_843859E0[var_v1].unk_08,
-                  D_843859E0[var_v1].unk_0A);
-    D_84390240.unk_00->unk_20++;
+    Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, gCameraPresets[var_v1].unk_04, gCameraPresets[var_v1].unk_08,
+                  gCameraPresets[var_v1].unk_0A);
+    gBattleState.unk_00->unk_20++;
 }
 
 void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
@@ -359,7 +359,7 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
 
     if (func_84319878(temp_s0, arg0) == 0) {
         if ((temp_s0->unk_000.unk_01A == 0x98) || (temp_s0->unk_654.unk_34 & 2)) {
-            func_8431A4C4(arg0);
+            Camera_UpdateStateMachine(arg0);
             return;
         }
 
@@ -369,21 +369,21 @@ void func_8431A2C8(unk_D_86002F34_00C* arg0, s32 arg1) {
             var_v1 = (temp_s0->unk_000.unk_01A - 1) & 0xFF;
         }
 
-        tmp2 = (gAnimDataSetC[arg1]->unk_00.y + temp_s0->unk_000.unk_024.y) + D_84384C30[var_v1].z;
-        tmp1 = ((gAnimDataSetC[arg1]->unk_00.z + D_84384C30[var_v1].y) * temp_s0->unk_4B0) + temp_s0->unk_000.unk_024.x;
+        tmp2 = (gAnimDataSetC[arg1]->unk_00.y + temp_s0->unk_000.unk_024.y) + gCameraOffsetTable[var_v1].z;
+        tmp1 = ((gAnimDataSetC[arg1]->unk_00.z + gCameraOffsetTable[var_v1].y) * temp_s0->unk_4B0) + temp_s0->unk_000.unk_024.x;
 
         Vec3f_Set(&arg0->unk_60.at, tmp1, tmp2, temp_s0->unk_000.unk_024.z);
 
-        tmp1 = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_00.x * D_84384C30[var_v1].x;
-        tmp4 = gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0C;
-        tmp3 = (temp_s0->unk_4B0 * gAnimDataSetC[D_84390240.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
+        tmp1 = gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_00.x * gCameraOffsetTable[var_v1].x;
+        tmp4 = gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_0C;
+        tmp3 = (temp_s0->unk_4B0 * gAnimDataSetC[gBattleState.unk_00->unk_2C]->unk_0E) + func_84308190(temp_s0);
 
         Camera_SetViewParameters(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
-        D_84390240.unk_00->unk_20++;
+        gBattleState.unk_00->unk_20++;
     }
 }
 
-void func_8431A4C4(unk_D_86002F34_00C* arg0) {
+void Camera_UpdateStateMachine(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad[2];
     s32 sp20[] = {
         // D_84385B20
@@ -393,28 +393,28 @@ void func_8431A4C4(unk_D_86002F34_00C* arg0) {
 
     func_8431AFD0(arg0, 20.0f, 12800.0f);
     arg0->unk_24.fovy = 30.0f;
-    if ((D_84390240.unk_00->unk_54 != 0) && (func_8431DBEC(arg0) != 0)) {
-        D_84390240.unk_00->unk_20 = 0x10;
+    if ((gBattleState.unk_00->unk_54 != 0) && (func_8431DBEC(arg0) != 0)) {
+        gBattleState.unk_00->unk_20 = 0x10;
     } else {
-        D_84390240.unk_00->unk_54 = 0;
-        if (sp20[D_84390240.unk_00->unk_0C] == 0xFF) {
-            D_84390240.unk_00->unk_0C = 0;
+        gBattleState.unk_00->unk_54 = 0;
+        if (sp20[gBattleState.unk_00->unk_0C] == 0xFF) {
+            gBattleState.unk_00->unk_0C = 0;
         }
-        D_84390240.unk_00->unk_20 = sp20[D_84390240.unk_00->unk_0C];
-        D_84390240.unk_00->unk_0C++;
+        gBattleState.unk_00->unk_20 = sp20[gBattleState.unk_00->unk_0C];
+        gBattleState.unk_00->unk_0C++;
     }
 
     func_843087F8(*D_84390010);
     func_843087F8(D_84390010[1]);
     func_8431AE5C();
 
-    switch (D_84390240.unk_00->unk_20) {
+    switch (gBattleState.unk_00->unk_20) {
         case 0:
-            func_8431995C(arg0);
+            Camera_SetCloseView(arg0);
             break;
 
         case 2:
-            func_84319AE8(arg0);
+            Camera_SetFarView(arg0);
             break;
 
         case 4:
@@ -450,7 +450,7 @@ void func_8431A4C4(unk_D_86002F34_00C* arg0) {
             break;
 
         case 20:
-            func_8431A1C8(arg0);
+            Camera_SetFromBattleContext(arg0);
             break;
 
         case 22:
@@ -466,7 +466,7 @@ void func_8431A4C4(unk_D_86002F34_00C* arg0) {
 void func_8431A718(unk_D_86002F34_00C* arg0) {
     arg0->unk_24.fovy = 50.0f;
     if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     } else {
         arg0->unk_60.eye.z *= 0.6;
     }
@@ -474,74 +474,74 @@ void func_8431A718(unk_D_86002F34_00C* arg0) {
 
 void func_8431A780(unk_D_86002F34_00C* arg0) {
     if (func_8431B34C(arg0, 0xB6, 0x78DC) != 0) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
 void func_8431A7B8(unk_D_86002F34_00C* arg0) {
     UNUSED s32 pad;
-    unk_D_84390010_654* sp18 = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
+    unk_D_84390010_654* sp18 = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((sp18->unk_2D == 0x10) || ((sp18->unk_34 & 0x4000) != 0)) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
         return;
     }
 
     if (!(sp18->unk_34 & 0x200)) {
-        func_8431C784(arg0, D_84390010[D_84390240.unk_00->unk_2C]);
+        func_8431C784(arg0, D_84390010[gBattleState.unk_00->unk_2C]);
     }
 
-    if ((sp18->unk_34 & 1) || (sp18->unk_34 & 2) || (D_84390010[D_84390240.unk_00->unk_2C]->unk_000.unk_01A == 0x98)) {
+    if ((sp18->unk_34 & 1) || (sp18->unk_34 & 2) || (D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_01A == 0x98)) {
         if (func_8431ADAC(0x5A) != 0) {
-            func_8431A4C4(arg0);
+            Camera_UpdateStateMachine(arg0);
         }
-    } else if (func_800174E4(&D_84390010[D_84390240.unk_00->unk_2C]->unk_000) != 0) {
-        func_8431A4C4(arg0);
+    } else if (func_800174E4(&D_84390010[gBattleState.unk_00->unk_2C]->unk_000) != 0) {
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
 void func_8431A8B0(unk_D_86002F34_00C* arg0) {
-    unk_D_84390010* sp1C = D_84390010[D_84390240.unk_00->unk_2C];
+    unk_D_84390010* sp1C = D_84390010[gBattleState.unk_00->unk_2C];
 
     if ((sp1C->unk_654.unk_2D == 0x10) || (sp1C->unk_654.unk_34 & 0x4000)) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     } else if ((func_8431ADAC(0x5A) != 0) || (func_8431D118(arg0, sp1C, 1, 0) != 0)) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
 void func_8431A94C(unk_D_86002F34_00C* arg0) {
-    unk_D_84390010_654* ptr = &D_84390010[D_84390240.unk_00->unk_2C]->unk_654;
+    unk_D_84390010_654* ptr = &D_84390010[gBattleState.unk_00->unk_2C]->unk_654;
 
     if ((ptr->unk_2D == 0x10) || (ptr->unk_34 & 0x4000)) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     } else {
         arg0->unk_24.fovy = 60.0f;
         if (func_8431ADAC(0x3C) != 0) {
-            func_8431A4C4(arg0);
+            Camera_UpdateStateMachine(arg0);
         }
     }
 }
 
 void func_8431A9E0(unk_D_86002F34_00C* arg0) {
-    if (func_8431DE30(arg0, D_84390240.unk_00->unk_2C) != 0) {
-        s32 idx = D_84390240.unk_00->unk_2C == 0;
+    if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
+        s32 idx = gBattleState.unk_00->unk_2C == 0;
 
-        D_84390240.unk_00->unk_2C = idx;
-        D_84390240.unk_00->unk_20 = 0x12;
+        gBattleState.unk_00->unk_2C = idx;
+        gBattleState.unk_00->unk_20 = 0x12;
         func_8431A130(arg0);
     }
 }
 
 void func_8431AA3C(unk_D_86002F34_00C* arg0) {
-    if (func_8431DE30(arg0, D_84390240.unk_00->unk_2C) != 0) {
-        func_8431A4C4(arg0);
+    if (func_8431DE30(arg0, gBattleState.unk_00->unk_2C) != 0) {
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
 void func_8431AA78(unk_D_86002F34_00C* arg0) {
     if (func_8431ADAC(0x78) != 0) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
@@ -549,24 +549,24 @@ void func_8431AAAC(unk_D_86002F34_00C* arg0) {
     func_8431AFD0(arg0, 10.0f, 12800.0f);
     arg0->unk_24.fovy = 60.0f;
     if (func_8431ADAC(0x3C) != 0) {
-        func_8431A4C4(arg0);
+        Camera_UpdateStateMachine(arg0);
     }
 }
 
-void func_8431AAFC(unk_D_86002F34_00C* arg0) {
-    if ((gBattleContext.unk_0000 == 0x10) && (D_84390240.unk_00->unk_1C == 1)) {
+void Camera_MainUpdate(unk_D_86002F34_00C* arg0) {
+    if ((gBattleContext.unk_0000 == 0x10) && (gBattleState.unk_00->unk_1C == 1)) {
         func_8430FB68();
-    } else if (D_84390240.unk_00->unk_1C == 1) {
-        if ((D_84390240.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17) &&
+    } else if (gBattleState.unk_00->unk_1C == 1) {
+        if ((gBattleState.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C == 0x17) &&
             (D_84390010[1]->unk_728.unk_168->unk_1C == 0x103)) {
             func_8430FB68();
-        } else if ((D_84390240.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C < 0xE) &&
+        } else if ((gBattleState.unk_00->unk_30 == 0) && (D_84390010[0]->unk_728.unk_168->unk_1C < 0xE) &&
                    (D_84390010[1]->unk_728.unk_168->unk_1C >= 0x10D)) {
             func_8430D30C();
         }
     }
 
-    switch (D_84390240.unk_00->unk_20) {
+    switch (gBattleState.unk_00->unk_20) {
         case 1:
             func_8431A718(arg0);
             break;
@@ -620,7 +620,7 @@ void func_8431AAFC(unk_D_86002F34_00C* arg0) {
             break;
 
         case 50:
-            func_8431A4C4(arg0);
+            Camera_UpdateStateMachine(arg0);
             break;
     }
 }

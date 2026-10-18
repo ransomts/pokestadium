@@ -87,7 +87,7 @@ f32 D_84392058[26];
 
 static s32 D_84385BB0[] = { 0, 0, 0, 0 };
 
-u32 D_84385BC0[] = {
+u32 gMessageIdLookup[] = {
     0x00000005, 0x00000006, 0x00000007, 0x00000008, 0x00000009, 0x0000000A, 0x0000000B, 0x0000000C,
     0x0000000D, 0x0000000E, 0x0000000F, 0x00000010, 0x00000011, 0x00000012, 0x00000013, 0x00000014,
     0x00000015, 0x00000016, 0x00000017, 0x00000018, 0x00000019, 0x0000001A, 0x0000001B, 0x0000001C,
@@ -448,7 +448,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
         0x01,
         0x0000,
         LoadTexture_IA8_32x32,
-        func_84330170,
+        RenderPanelBackground,
         &D_843920C0[95],
     },
     {
@@ -597,7 +597,7 @@ unk_D_8140E728_01C_004_1 D_84385E40[] = {
     },
 };
 
-unk_D_8140E728_01C D_843861D0[] = {
+unk_D_8140E728_01C gParticleEffectData[] = {
     {
         0x00000001,
         &D_84385E40[0],
@@ -660,11 +660,11 @@ unk_D_8140E728_01C D_843861D0[] = {
     },
     {
         0x00000003,
-        func_843310A0,
+        RenderTimerDigits,
     },
     {
         0x00000003,
-        func_843311D8,
+        RenderTimerDigitsAlt,
     },
     {
         0x00000003,
@@ -672,7 +672,7 @@ unk_D_8140E728_01C D_843861D0[] = {
     },
     {
         0x00000003,
-        func_84331450,
+        RenderTimerNumber,
     },
     {
         0x00000003,
@@ -792,11 +792,11 @@ unk_D_8140E728_01C D_843861D0[] = {
     },
     {
         0x00000003,
-        func_843304AC,
+        RenderItemIcon,
     },
     {
         0x00000003,
-        func_84330574,
+        RenderStatusBar,
     },
     {
         0x00000003,
@@ -804,7 +804,7 @@ unk_D_8140E728_01C D_843861D0[] = {
     },
     {
         0x00000003,
-        func_8433079C,
+        RenderMultiBlockIcon,
     },
     {
         0x00000001,
@@ -912,11 +912,11 @@ unk_D_8140E728_01C D_843861D0[] = {
     },
     {
         0x00000003,
-        func_84330300,
+        RenderPanelWithIcon,
     },
     {
         0x00000003,
-        func_84330344,
+        RenderOverlayWithIcon,
     },
     {
         0x00000001,
@@ -4183,23 +4183,23 @@ static u8* D_84386E08[][5] = {
     },
 };
 
-void func_8432B490(void) {
+void PlaySoundEffect_Select(void) {
     PlaySoundEffect(1);
 }
 
-void func_8432B4B0(void) {
+void PlaySoundEffect_Cancel(void) {
     PlaySoundEffect(2);
 }
 
-void func_8432B4D0(void) {
+void PlaySoundEffect_Confirm(void) {
     PlaySoundEffect(3);
 }
 
-void func_8432B4F0(void) {
+void PlaySoundEffect_Error(void) {
     PlaySoundEffect(8);
 }
 
-void func_8432B510(unk_D_84390010* arg0, s16 arg1) {
+void PlayBattleMusicOrDefault(unk_D_84390010* arg0, s16 arg1) {
     if (func_84307B60(arg0) != 0) {
         Audio_PlaySequence(0xC8, 2);
     } else {
@@ -4223,7 +4223,7 @@ void func_8432B5B8(unk_D_84390010* arg0, unk_D_800FCB18* arg1, s32 arg2) {
     HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
 }
 
-void func_8432B604(void) {
+void SetPlayerSidesFromActivePokemons(void) {
     unk_D_84390010* ptr1 = D_84390010[0];
     unk_D_84390010* ptr2 = D_84390010[1];
     u8 i;
@@ -4252,7 +4252,7 @@ void func_8432B604(void) {
     SetPlayerSidesAndReset(sp20[0], sp20[1], sp20[2], sp20[3]);
 }
 
-void func_8432B704(void) {
+void SetTeamScoresFromActivePokemons(void) {
     unk_D_84390010* ptr1 = D_84390010[0];
     unk_D_84390010* ptr2 = D_84390010[1];
     u8 sp24[4];
@@ -4274,7 +4274,7 @@ void func_8432B704(void) {
     SetTeamScores(sp24[0], sp24[1], sp24[2], sp24[3]);
 }
 
-void func_8432B808(void) {
+void ProcessBattleMenuSelection(void) {
     switch (gBattleContext.unk_0000) {
         case 0:
             switch (gBattleContext.unk_0001) {
@@ -4594,7 +4594,7 @@ void func_8432BBC0(void) {
     }
 }
 
-void func_8432BF88(unk_D_84390010* arg0, s32 arg1) {
+void PlayBattleSoundEffect(unk_D_84390010* arg0, s32 arg1) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
     if ((func_84307B60(arg0) != 0) && (arg1 == 0x32)) {
@@ -4618,7 +4618,7 @@ void func_8432BF88(unk_D_84390010* arg0, s32 arg1) {
     }
 }
 
-void func_8432C0D0(s16 arg0) {
+void ExecuteStateFunction(s16 arg0) {
     D_843902E2 = D_843902E4;
     D_84386480[arg0]();
     if (D_843902E6 != 0xFF) {
@@ -4632,7 +4632,7 @@ void func_8432C14C(s16 arg0) {
     D_843866C4[arg0]();
 }
 
-void func_8432C194(func_D_84390300 arg0, func_D_84390320 arg1) {
+void RegisterStateCallbacks(func_D_84390300 arg0, func_D_84390320 arg1) {
     if (D_843902FC >= 8) {
         D_843902FC = 0;
     }
@@ -4644,7 +4644,7 @@ void func_8432C194(func_D_84390300 arg0, func_D_84390320 arg1) {
     D_843902FC++;
 }
 
-void func_8432C1E0(s32 arg0, s32 arg1, s32 arg2) {
+void RunActionScript(s32 arg0, s32 arg1, s32 arg2) {
     u8* sp2C;
 
     D_843902E0 = arg1;
@@ -4673,9 +4673,9 @@ void func_8432C1E0(s32 arg0, s32 arg1, s32 arg2) {
         }
 
         while (*sp2C != 0) {
-            func_8432C0D0(*sp2C);
+            ExecuteStateFunction(*sp2C);
             D_84388280[*sp2C]();
-            func_8432C194(D_84388668[*sp2C], D_84388A50[*sp2C]);
+            RegisterStateCallbacks(D_84388668[*sp2C], D_84388A50[*sp2C]);
             sp2C++;
         }
     } else {
@@ -4692,7 +4692,7 @@ void func_8432C1E0(s32 arg0, s32 arg1, s32 arg2) {
         while (*sp2C != 0) {
             func_8432C14C(*sp2C);
             D_843884D8[*sp2C]();
-            func_8432C194(D_843888C0[*sp2C], D_84388CA8[*sp2C]);
+            RegisterStateCallbacks(D_843888C0[*sp2C], D_84388CA8[*sp2C]);
             sp2C++;
         }
     }
@@ -4701,27 +4701,27 @@ void func_8432C1E0(s32 arg0, s32 arg1, s32 arg2) {
 void func_8432C3F8(void) {
     if (D_843902B0 != 0) {
         func_8432EB44();
-        func_8432C1E0(D_843902AC, D_843902B8, D_843902B0);
+        RunActionScript(D_843902AC, D_843902B8, D_843902B0);
         D_843902B0 = 0;
     }
 
     if (D_843902C8 != 0) {
-        func_8432C1E0(D_843902CC, D_843902D0, D_843902C8);
+        RunActionScript(D_843902CC, D_843902D0, D_843902C8);
         D_843902C8 = 0;
     }
 
     if (D_843902D4 != 0) {
-        func_8432C1E0(D_843902D8, D_843902DC, D_843902D4);
+        RunActionScript(D_843902D8, D_843902DC, D_843902D4);
         D_843902D4 = 0;
     }
 
     if (D_843902C0 != 0) {
-        func_8432C1E0(D_843902C4, 4, D_843902C0);
+        RunActionScript(D_843902C4, 4, D_843902C0);
         D_843902C0 = 0;
     }
 }
 
-void func_8432C4CC(UNUSED unk_D_86002F34_00C* arg0) {
+void MainUpdateLoop(UNUSED unk_D_86002F34_00C* arg0) {
     Timer_UpdateCounters();
     func_8432C3F8();
     func_8432E68C();
@@ -5081,7 +5081,7 @@ s32 func_8432D0D8(s32 arg0, unk_D_86002F34_00C* arg1) {
 
         case 2:
             func_8432CFCC(arg1);
-            func_8432C4CC(arg1);
+            MainUpdateLoop(arg1);
             func_8432CEF0(arg1);
             break;
 

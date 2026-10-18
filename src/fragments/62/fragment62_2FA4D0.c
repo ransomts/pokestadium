@@ -12,9 +12,9 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-Vec3f D_84390190;
+Vec3f gCameraPosition;
 
-static unk_D_84385790 D_84385790[] = {
+static unk_D_84385790 gStatusColors[] = {
     {
         0x00000000,
         {
@@ -79,25 +79,25 @@ static unk_D_84385790 D_84385790[] = {
         },
     },
 };
-static u8* D_843857C8[] = {
+static u8* gMoveIconSprites[] = {
     D_30098F0, D_300B630, D_300A1F0, D_30096B0, D_300AAF0, D_300A8B0, D_30098F0, D_300B3F0, D_3009FB0, D_30098F0,
     D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0, D_30098F0,
     D_300A430, D_300B1B0, D_300AF70, D_300A670, D_3009D70, D_300AD30, D_3009B30, NULL,
 };
-static u8* D_84385838[] = {
+static u8* gStatusIconSprites[] = {
     D_3007A78, D_3007EB0, D_3007910, D_3008018, D_3007BE0, D_3007D48,
 };
-static u8* D_84385850[] = {
+static u8* gBarTextures[] = {
     D_3006D10,
     D_3007010,
     D_3007310,
     D_3007610,
 };
 
-static Color_RGB8 D_84385860[] = {
+static Color_RGB8 gBoxColorPrimary[] = {
     { 0, 0, 0x8B }, { 0, 0x32, 0 }, { 0x1E, 0, 0 }, { 0x65, 0x49, 0x11 }, { 0, 0, 0 },
 };
-static Color_RGB8 D_84385870[] = {
+static Color_RGB8 gBoxColorSecondary[] = {
     { 0x00, 0x00, 0xEE },
     { 0x00, 0x79, 0x00 },
     { 0x82, 0x00, 0x00 },
@@ -157,7 +157,7 @@ static Color_RGB8 D_843858DC[] = {
     { 0x97, 0x89, 0x13 },
     { 0x97, 0x89, 0x13 },
 };
-static Gfx D_843858E8[] = {
+static Gfx gDefaultGfxSetup[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -176,7 +176,7 @@ void func_8430FC18(void) {
 void func_8430FC20(void) {
 }
 
-void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DrawWindowBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     FramebufferImage* temp_s1;
     Vtx* temp_s2;
     Mtx* sp84;
@@ -209,7 +209,7 @@ void func_8430FC28(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void func_8430FF8C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
+void DrawColoredRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
     Vtx* temp_s2;
     FramebufferImage* temp_s1;
     Mtx* sp7C;
@@ -242,7 +242,7 @@ void func_8430FF8C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Col
 }
 
 void func_84310334(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
-    func_8430FF8C(arg0, arg1, arg2, arg3, arg4, arg5);
+    DrawColoredRect(arg0, arg1, arg2, arg3, arg4, arg5);
 }
 
 void func_84310360(void) {
@@ -326,7 +326,7 @@ void func_843109F4(s32 arg0, s32 arg1, s32 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void DrawFractionNumber(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     UNUSED s32 pad2;
@@ -365,7 +365,7 @@ void func_84310B9C(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void func_84310CE4(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4) {
-    func_84310334(arg0, arg1, 0x46, 0x11, &D_84385860[arg2], &D_84385870[arg2]);
+    func_84310334(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
     Text_ResetState();
     if (arg4 != 0) {
         Text_SetEnvColor(0xFF, 0x64, 0xFF, 0xFF);
@@ -386,7 +386,7 @@ void func_84310DC4(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
         sp20 = sp22 * -1;
     }
 
-    func_84310334(arg0, arg1, 0x46, 0x11, &D_84385860[arg2], &D_84385870[arg2]);
+    func_84310334(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
     Text_ResetState();
     Text_SetFont(2, 0);
 
@@ -424,7 +424,7 @@ void func_84310FA4(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
     }
 }
 
-void func_84311048(unk_D_84390010* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
+void DrawPokemonInfoWindow(unk_D_84390010* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA) {
     s32 sp34;
     s32 temp_a2;
@@ -442,7 +442,7 @@ void func_84311048(unk_D_84390010* arg0, PokemonData* arg1, unk_D_84385790* arg2
 
     func_843109F4(arg3 + 3, arg4 + 0x10, arg1->unk_24);
     func_84310368(arg3 + 2, arg4 + 0x19, D_843900A8[IsPrimaryEntity(arg0)], arg1->unk_26);
-    func_84310B9C(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
+    DrawFractionNumber(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
     Text_ResetState();
     Text_SetFont(2, 0);
 
@@ -534,7 +534,7 @@ void func_843116D8(s16 arg0, s16 arg1) {
     s32 var_v1;
     s32 temp_t0;
 
-    temp_t0 = ((s32)((D_84390124 / 30.0f) / 60.0f) * 0x3C) + ((s32)(D_84390124 / 30.0f) % 60);
+    temp_t0 = ((s32)((gHPBarTimer / 30.0f) / 60.0f) * 0x3C) + ((s32)(gHPBarTimer / 30.0f) % 60);
     if (temp_t0 >= 0xB) {
         var_v1 = 2;
     } else if (temp_t0 >= 4) {
@@ -553,12 +553,12 @@ void func_843116D8(s16 arg0, s16 arg1) {
     Text_SetFont(1, 0);
     Text_Print(arg0 + 3, arg1, sp44);
     Text_SetupDL();
-    func_8430FC28(arg0 - 3, arg1 - 3, 0x19, 0x12, 0);
+    DrawWindowBackground(arg0 - 3, arg1 - 3, 0x19, 0x12, 0);
 }
 
 void func_843118A8(s16 arg0, s16 arg1) {
     char sp40[16];
-    f32 sp3C = D_84390128 / 30.0f;
+    f32 sp3C = gPhaseTimer / 30.0f;
     UNUSED s32 pad[2];
 
     Text_DrawWindowRect(arg0, arg1, 0x27, 0xC, 0, 0, 0, 0x5A);
@@ -574,7 +574,7 @@ void func_843118A8(s16 arg0, s16 arg1) {
     Text_SetFont(1, 0);
     Text_Print(arg0 + 0x17, arg1, sp40);
     Text_SetupDL();
-    func_8430FC28(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
+    DrawWindowBackground(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
 }
 
 void func_84311A38(unk_D_84390010* arg0, s16 arg1, s16 arg2) {
@@ -679,8 +679,8 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
         var_v1 = GetFlagCategory(sp7C->unk_05);
     }
 
-    temp_v0_2 = &D_84385860[sp80->unk_001];
-    func_84311048(arg0, sp7C, &D_84385790[var_v1], arg1 + 1, arg2 + 0x12, 0x46, 0x28, temp_v0_2->r, temp_v0_2->g,
+    temp_v0_2 = &gBoxColorPrimary[sp80->unk_001];
+    DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1 + 1, arg2 + 0x12, 0x46, 0x28, temp_v0_2->r, temp_v0_2->g,
                   temp_v0_2->b, 0xB2);
     func_84310FA4(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
 
@@ -746,8 +746,8 @@ void func_84311F30(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    func_8430FC28(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
-    func_8430FC28(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
+    DrawWindowBackground(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
+    DrawWindowBackground(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
     func_84311A38(arg0, arg1, arg2 + 0x62);
 }
 
@@ -767,8 +767,8 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
         var_v1 = GetFlagCategory(sp7C->unk_05);
     }
 
-    temp_v0 = &D_84385860[sp80->unk_001];
-    func_84311048(arg0, sp7C, &D_84385790[var_v1], arg1, arg2 + 0x28, 0x46, 0x28, temp_v0->r, temp_v0->g, temp_v0->b,
+    temp_v0 = &gBoxColorPrimary[sp80->unk_001];
+    DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1, arg2 + 0x28, 0x46, 0x28, temp_v0->r, temp_v0->g, temp_v0->b,
                   0xB2);
     func_84310FA4(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
 
@@ -833,15 +833,15 @@ void func_843128A0(unk_D_84390010* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4)
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    func_8430FC28(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
-    func_8430FC28(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
+    DrawWindowBackground(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
+    DrawWindowBackground(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
     func_84311A38(arg0, arg1 + 0x41, arg2 - 7);
 }
 
 void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC6, 0x10, &D_84385860[arg3], &D_84385870[arg3]);
+    func_84310334(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0xC6, 0x10);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -858,13 +858,13 @@ void func_84313148(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_Print(arg1 + 0x58, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0x9F));
     Text_Print(arg1 + 0x98, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA0));
     Text_SetupDL();
-    func_8430FC28(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
 
 void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    func_84310334(arg1, arg2, 0x7D, 0x10, &D_84385860[arg3], &D_84385870[arg3]);
+    func_84310334(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x7D, 0x10);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -879,13 +879,13 @@ void func_843133B4(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA9));
     Text_Print(arg1 + 0x51, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA8));
     Text_SetupDL();
-    func_8430FC28(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
 
 void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 pad[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0x47, 0x10, &D_84385860[arg3], &D_84385870[arg3]);
+    func_84310334(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0x47, 0x10);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
@@ -898,7 +898,7 @@ void func_843135B8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     Text_SetFont(1, 0);
     Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, D_843900B0, 0xA8));
     Text_SetupDL();
-    func_8430FC28(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
 }
 
 void func_84313750(s32 arg0, s32 arg1, char* arg2) {
@@ -1004,7 +1004,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     sp58 = &arg0->unk_720->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->unk_654.unk_08];
     temp_s0 = &arg0->unk_654.unk_38;
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC7, 0x38, &D_84385860[arg3], &D_84385870[arg3]);
+    func_84310334(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     func_84311428(arg1, arg2, 0xC7, 0x38);
 
     for (i = 0; i < 4; i++) {
@@ -1069,42 +1069,42 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, D_843857C8[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     }
@@ -1207,7 +1207,7 @@ void func_84313A74(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 
     Text_SetupDL();
-    func_8430FC28(arg1 - 2, arg2 - 2, 0xCD, 0x3E, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCD, 0x3E, 0);
 }
 
 void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1220,7 +1220,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         var_v1 = arg2;
     }
 
-    func_84310334(arg0 + 1, arg1 + 1, 0xC6, 0x28, &D_84385860[var_v1], &D_84385870[var_v1]);
+    func_84310334(arg0 + 1, arg1 + 1, 0xC6, 0x28, &gBoxColorPrimary[var_v1], &gBoxColorSecondary[var_v1]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_Print(arg0 + 0x2E, arg1 + 6, "こうさんしますか?");
@@ -1235,7 +1235,7 @@ void func_8431493C(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg0, arg1, 0xC6, 0x28);
-    func_8430FC28(arg0 - 3, arg1 - 2, 0xCC, 0x2D, 0);
+    DrawWindowBackground(arg0 - 3, arg1 - 2, 0xCC, 0x2D, 0);
 }
 
 void func_84314B20(s16 arg0, s16 arg1, char* arg2) {
@@ -1251,7 +1251,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
 
     func_843109F4(arg3 + 3, arg4 + 4, arg2->unk_24);
     func_84310368(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    func_84310B9C(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
@@ -1295,7 +1295,7 @@ void func_84314B6C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
+        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
@@ -1306,7 +1306,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
 
     func_843109F4(arg3 + 3, arg4 + 4, arg2->unk_24);
     func_84310368(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    func_84310B9C(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, D_8006F5A0);
 
@@ -1338,7 +1338,7 @@ void func_84314F60(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, PokemonData*
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, D_84385838[var_t0 - 1], 0x14, 0);
+        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
@@ -1381,12 +1381,12 @@ void func_8431524C(unk_D_84390010* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s1
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(arg2 + 1, arg3, 0x18, 0x10, D_84385850[arg4], 0x18, 0);
+    Gfx_DrawSpriteRGBA16(arg2 + 1, arg3, 0x18, 0x10, gBarTextures[arg4], 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg2, arg3, 0x63, 0x66);
-    func_8430FC28(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
+    DrawWindowBackground(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
 }
 
 void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1429,7 +1429,7 @@ void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(arg1 + 1, arg2, 0x18, 0x10, *(D_84385850 + arg3), 0x18, 0);
+    Gfx_DrawSpriteRGBA16(arg1 + 1, arg2, 0x18, 0x10, *(gBarTextures + arg3), 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -1458,7 +1458,7 @@ void func_84315550(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 
     func_84311428(arg1, arg2, 0xC8, 0x66);
-    func_8430FC28(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
 }
 
 void func_8431595C(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1484,26 +1484,26 @@ void func_8431595C(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     tmp = temp_v0->unk_30;
     if ((tmp >> 8) & 1) {
-        var_v0 = &D_84385860[arg3];
+        var_v0 = &gBoxColorPrimary[arg3];
     } else {
         var_v0 = &D_8438587C[arg3];
     }
 
-    func_84311048(arg0, sp40, &D_84385790[var_t0], arg1 + 1, arg2 + 1, 0x46, 0x28, var_v0->r, var_v0->g, var_v0->b,
+    DrawPokemonInfoWindow(arg0, sp40, &gStatusColors[var_t0], arg1 + 1, arg2 + 1, 0x46, 0x28, var_v0->r, var_v0->g, var_v0->b,
                   0xB2);
     func_84311428(arg1, arg2, 0x46, 0x28);
-    func_8430FC28(arg1 - 2, arg2 - 2, 0x4C, 0x2D, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4C, 0x2D, 0);
 }
 
 void func_84315ADC(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    func_84310334(arg1 + 1, arg2 + 1, 0xEE, 0x24, &D_84385860[arg0], &D_84385870[arg0]);
+    func_84310334(arg1 + 1, arg2 + 1, 0xEE, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
     Text_Print(arg1 + 0xA, arg2 + 5, arg3);
     Text_SetupDL();
     func_84311428(arg1, arg2, 0xEE, 0x24);
-    func_8430FC28(arg1 - 2, arg2 - 1, 0xF4, 0x29, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xF4, 0x29, 0);
 }
 
 s32 func_84315BC0(char* arg0, s16 arg1, s16 arg2) {
@@ -1526,14 +1526,14 @@ void func_84315C28(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
 
     temp_v1 = D_84390010[arg0->unk_0C];
     tmp = temp_v1->unk_720->unk_08[temp_v1->unk_728.unk_16C];
-    temp_v0 = &D_84385860[tmp->unk_001];
+    temp_v0 = &gBoxColorPrimary[tmp->unk_001];
 
     sp2C = (arg1 - arg3.x) * 2;
     sp28 = (arg2 - arg3.y) * 2;
 
     Text_DrawWindowRect(arg3.x, arg3.y, sp2C, sp28, temp_v0->r, temp_v0->g, temp_v0->b, 0x96);
     func_84311428(arg3.x, arg3.y, sp2C, sp28);
-    func_8430FC28(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
+    DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
 void func_84315D88(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
@@ -1571,7 +1571,7 @@ s32 func_84315EC0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 void func_84315FAC(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
     Text_DrawWindowRect(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2), 0, 0, 0, 0x96);
     func_84311428(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2));
-    func_8430FC28(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
+    DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
 void func_843160C0(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
@@ -1607,14 +1607,14 @@ s32 func_843161F8(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 void func_843162E4(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &D_84385860[arg0], &D_84385870[arg0]);
+    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
     Text_Print(arg1 + 0xA, arg2 + 5, arg3);
     Text_SetupDL();
     func_84311428(arg1, arg2, 0xC8, 0x25);
-    func_8430FC28(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
 void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1622,7 +1622,7 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 sp48;
     UNUSED s32 pad2[2];
 
-    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &D_84385860[arg3], &D_84385870[arg3]);
+    func_84310334(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     Text_ResetState();
     Text_SetFont(2, 0);
     sp48 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, D_843900B0, 0xA1)) / 2;
@@ -1639,7 +1639,7 @@ void func_843163C8(unk_D_84390010* arg0, s16 arg1, s16 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     func_84311428(arg1, arg2, 0xC8, 0x25);
-    func_8430FC28(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
+    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
 void func_84316610(void) {
@@ -1689,7 +1689,7 @@ void func_8431694C(void) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    func_8430FC28(0x1C, 0x16, 0x5E, 0x34, 0);
+    DrawWindowBackground(0x1C, 0x16, 0x5E, 0x34, 0);
 }
 
 void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
@@ -1737,9 +1737,9 @@ void func_84316A1C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
 }
 
 void func_84317004(void) {
-    D_84390190.x = Math_ApproachF32(D_84390190.x, 52.0f, 80.0f, 80.0f);
-    func_84316A1C(D_3000470, D_84390190.x, D_84390190.y, 0x6C, 0x20, 0xD8, 0x20, 0, 0, 0x6C, 0x20, 0x6B, 0);
-    func_84316A1C(D_3000470, (s32)D_84390190.x + 0x6C, D_84390190.y, 0x6C, 0x20, 0xD8, 0x20, 0x6C, 0, 0xD8, 0x20, 0xD7,
+    gCameraPosition.x = Math_ApproachF32(gCameraPosition.x, 52.0f, 80.0f, 80.0f);
+    func_84316A1C(D_3000470, gCameraPosition.x, gCameraPosition.y, 0x6C, 0x20, 0xD8, 0x20, 0, 0, 0x6C, 0x20, 0x6B, 0);
+    func_84316A1C(D_3000470, (s32)gCameraPosition.x + 0x6C, gCameraPosition.y, 0x6C, 0x20, 0xD8, 0x20, 0x6C, 0, 0xD8, 0x20, 0xD7,
                   0x6C);
 }
 
@@ -1750,18 +1750,18 @@ void func_8431712C(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_843900C0, 0));
+        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
         temp_s0 = 0x50 - D_84385988;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
         Text_ResetState();
         Text_SetFont(4, 0);
-        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_843900C0, 0));
+        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_843900C0, 0));
+            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
         }
         Text_SetupDL();
 

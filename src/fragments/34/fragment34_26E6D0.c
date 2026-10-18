@@ -17,7 +17,7 @@ static u8 D_8140E470[][3] = {
     { 0x78, 0x1E, 0x78 },
 };
 
-u8 D_8140E538[] = {
+u8 gPrimColorPalette[] = {
     0x0C, 0x19, 0x23, 0x36, 0x2F, 0x3B,
 };
 
@@ -126,7 +126,7 @@ void func_8140CB64(UNUSED unk_D_8140E720* arg0, u8* texture) {
 
 void func_8140CB90(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     Gfx_SetPrimColorCombinePrimitive(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
-    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018);
+    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
 void func_8140CC04(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
@@ -144,12 +144,12 @@ s32 func_8140CC90(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_8140CD80(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018);
+    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
 void func_8140CDDC(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018);
+    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
 void func_8140CE68(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
@@ -163,12 +163,12 @@ void func_8140CED4(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
 
 void func_8140CF30(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81405D38(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018);
+    func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
 void func_8140CFBC(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404E4C(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018, arg0->unk_94.z);
+    func_81404E4C(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
 void func_8140D050(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
@@ -245,11 +245,11 @@ void SetPrimEnvColorFromPair(unk_D_8140E720* arg0, u16 arg1) {
 }
 
 void func_8140D5F0(unk_D_8140E720* arg0, s16 arg1) {
-    SetPrimColorFromPalette(arg0, D_8140E538[arg1]);
+    SetPrimColorFromPalette(arg0, gPrimColorPalette[arg1]);
 }
 
 void func_8140D624(unk_D_8140E720* arg0, s16 arg1) {
-    SetEnvColorFromPalette(arg0, D_8140E538[arg1]);
+    SetEnvColorFromPalette(arg0, gPrimColorPalette[arg1]);
 }
 
 void func_8140D658(unk_D_8140E720* arg0, s16 arg1) {
@@ -261,7 +261,7 @@ void func_8140D68C(unk_D_8140E720* arg0, s16 arg1) {
 }
 
 void func_8140D6C0(unk_D_8140E720* arg0, s16 arg1) {
-    u8 sp1F = D_8140E538[arg1];
+    u8 sp1F = gPrimColorPalette[arg1];
 
     SetPrimColorFromPalette(arg0, sp1F);
     SetEnvColorFromPalette(arg0, sp1F);

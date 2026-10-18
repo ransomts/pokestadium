@@ -474,9 +474,9 @@ void func_84338D84(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8432D8E8(arg0, func_84338C84, &D_843861D0[8], 1, 0, 0);
-            func_8432D8E8(arg0, func_84338C84, &D_843861D0[8], 1, 0, 1);
-            func_8432D844(arg0, func_84338B44, &D_843861D0[0xA], 4);
+            func_8432D8E8(arg0, func_84338C84, &gParticleEffectData[8], 1, 0, 0);
+            func_8432D8E8(arg0, func_84338C84, &gParticleEffectData[8], 1, 0, 1);
+            ParticleNode_CreateMultiple(arg0, func_84338B44, &gParticleEffectData[0xA], 4);
             func_8140826C(arg0, 0x14);
             break;
 
@@ -574,10 +574,10 @@ void func_8433913C(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8432D8E8(arg0, func_8433903C, &D_843861D0[8], 1, 0, 0);
-            func_8432D8E8(arg0, func_8433903C, &D_843861D0[8], 1, 0, 1);
-            func_8432D8E8(arg0, func_8433903C, &D_843861D0[8], 1, 0, 2);
-            func_8432D844(arg0, func_84338EF0, &D_843861D0[0xA], 4);
+            func_8432D8E8(arg0, func_8433903C, &gParticleEffectData[8], 1, 0, 0);
+            func_8432D8E8(arg0, func_8433903C, &gParticleEffectData[8], 1, 0, 1);
+            func_8432D8E8(arg0, func_8433903C, &gParticleEffectData[8], 1, 0, 2);
+            ParticleNode_CreateMultiple(arg0, func_84338EF0, &gParticleEffectData[0xA], 4);
             func_8140826C(arg0, 0x20);
             break;
 
@@ -1410,7 +1410,7 @@ void func_8433B1B8(unk_D_8140E720* arg0) {
 }
 
 void func_8433B290(void) {
-    func_8432EC28(4, func_8433958C, &D_843861D0[8], 0, 4, 0x11, D_843902E2, 0, 0);
+    func_8432EC28(4, func_8433958C, &gParticleEffectData[8], 0, 4, 0x11, D_843902E2, 0, 0);
 }
 
 void func_8433B2E8(void) {
@@ -1425,140 +1425,140 @@ void func_8433B2E8(void) {
     }
 
     if (sp34 == 0) {
-        func_8432EC28(0, func_8433958C, &D_843861D0[8], 0, 4, 0x11, D_843902E2, 0, 0);
+        func_8432EC28(0, func_8433958C, &gParticleEffectData[8], 0, 4, 0x11, D_843902E2, 0, 0);
     }
 }
 
 void func_8433B374(void) {
-    func_8432ECA0(0, 1, 0x3C, func_84337E64, &D_843861D0[0x45], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 1, 0x3C, func_84337E64, &gParticleEffectData[0x45], 0, 1, 0x11, D_843902E2, 0, 0);
 }
 
 void func_8433B3D8(void) {
-    func_8432EC28(0, func_843529D8, &D_843861D0[0x34], 0, 1, 0x11, 9, 3, 5);
-    func_8432EC28(0, func_8433AC00, &D_843861D0[0x45], 0, 0x10, 0x11, 9, 0, 0);
-    func_8432EC28(8, func_8433AC00, &D_843861D0[0x45], 0, 0x10, 0x11, 9, 0, 0);
+    func_8432EC28(0, func_843529D8, &gParticleEffectData[0x34], 0, 1, 0x11, 9, 3, 5);
+    func_8432EC28(0, func_8433AC00, &gParticleEffectData[0x45], 0, 0x10, 0x11, 9, 0, 0);
+    func_8432EC28(8, func_8433AC00, &gParticleEffectData[0x45], 0, 0x10, 0x11, 9, 0, 0);
 }
 
 void func_8433B4AC(void) {
-    func_8432EC28(3, func_84338A2C, &D_843861D0[0xE], 0, 1, 0x11, D_843902E2, 0, 1);
-    func_8432EC28(3, func_84338A2C, &D_843861D0[0x19], 0, 1, 0x11, D_843902E2, 0, 1);
+    func_8432EC28(3, func_84338A2C, &gParticleEffectData[0xE], 0, 1, 0x11, D_843902E2, 0, 1);
+    func_8432EC28(3, func_84338A2C, &gParticleEffectData[0x19], 0, 1, 0x11, D_843902E2, 0, 1);
     func_8432EC28(4, func_8433913C, &D_8140E460, 0, 1, 0x11, D_843902E2, 0, 0);
 }
 
 void func_8433B58C(void) {
-    func_8432ECA0(0, 1, 0xF, func_8433A024, &D_843861D0[0x19], 0, 1, 0x10, D_843902E2, 0x26, 0);
-    func_8432EC28(0xC, func_8433B014, &D_843861D0[0x4B], 0, 1, 0xA, 0, 0x4C, 0);
-    func_8432EC28(0xC, func_8433B014, &D_843861D0[0x4B], 0, 1, 0xA, 0, 0x4C, 1);
-    func_8432EC28(0xC, func_8433B014, &D_843861D0[0x4B], 0, 1, 0xA, 0, 0x4C, 2);
-    func_8432ECA0(4, 1, 0x10, func_8433B1B8, &D_843861D0[0xA], 0, 2, 0x11, D_843902E2, 0x4C, 0);
+    func_8432ECA0(0, 1, 0xF, func_8433A024, &gParticleEffectData[0x19], 0, 1, 0x10, D_843902E2, 0x26, 0);
+    func_8432EC28(0xC, func_8433B014, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x4C, 0);
+    func_8432EC28(0xC, func_8433B014, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x4C, 1);
+    func_8432EC28(0xC, func_8433B014, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x4C, 2);
+    func_8432ECA0(4, 1, 0x10, func_8433B1B8, &gParticleEffectData[0xA], 0, 2, 0x11, D_843902E2, 0x4C, 0);
 }
 
 void func_8433B6FC(void) {
     func_8432ED0C(0, 0x40, 6);
-    func_8432EC28(3, func_84338A2C, &D_843861D0[0xE], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432EC28(3, func_84338A2C, &D_843861D0[0x19], 0, 1, 0x11, D_843902E2, 0, 0);
-    func_8432EC28(4, func_84338D84, &D_843861D0[8], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432EC28(3, func_84338A2C, &gParticleEffectData[0xE], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432EC28(3, func_84338A2C, &gParticleEffectData[0x19], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432EC28(4, func_84338D84, &gParticleEffectData[8], 0, 1, 0x11, D_843902E2, 0, 0);
 }
 
 void func_8433B7E4(void) {
     func_8432F440(4, 0xA, 0x35, 0x10, 0xFF);
-    func_8432EC28(0, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
-    func_8432ECA0(0, 5, 3, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
-    func_8432ECA0(0xA, 1, 8, func_8433A698, &D_843861D0[0x19], 0, 3, 0x11, D_843902E2, 0x26, 0);
-    func_8432EC28(0xC, func_8433ADE0, &D_843861D0[0x4B], 0, 1, 0xA, 0, 0x4C, 0);
-    func_8432ECA0(2, 1, 0x10, func_8433B1B8, &D_843861D0[0xA], 0, 4, 0x11, D_843902E2, 0x4C, 0);
+    func_8432EC28(0, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
+    func_8432ECA0(0, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
+    func_8432ECA0(0xA, 1, 8, func_8433A698, &gParticleEffectData[0x19], 0, 3, 0x11, D_843902E2, 0x26, 0);
+    func_8432EC28(0xC, func_8433ADE0, &gParticleEffectData[0x4B], 0, 1, 0xA, 0, 0x4C, 0);
+    func_8432ECA0(2, 1, 0x10, func_8433B1B8, &gParticleEffectData[0xA], 0, 4, 0x11, D_843902E2, 0x4C, 0);
 }
 
 void func_8433B988(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432ED0C(0, 8, 0x35);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0x40, 0);
-    func_8432EC28(6, func_843397A0, &D_843861D0[0x53], 0x6E, 1, 0x10, D_843902E2, 0x40, 1);
-    func_8432ECA0(0, 3, 0x1E, func_843393E8, &D_843861D0[0x4A], 0, 1, 0x11, D_843902E2, 0x13, 0);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0x40, 0);
+    func_8432EC28(6, func_843397A0, &gParticleEffectData[0x53], 0x6E, 1, 0x10, D_843902E2, 0x40, 1);
+    func_8432ECA0(0, 3, 0x1E, func_843393E8, &gParticleEffectData[0x4A], 0, 1, 0x11, D_843902E2, 0x13, 0);
 }
 
 void func_8433BAA8(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432ED0C(0, 8, 6);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0xD, 0);
-    func_8432EC28(6, func_843397A0, &D_843861D0[0x53], 0x46, 1, 0x10, D_843902E2, 0xD, 1);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0xD, 0);
+    func_8432EC28(6, func_843397A0, &gParticleEffectData[0x53], 0x46, 1, 0x10, D_843902E2, 0xD, 1);
 }
 
 void func_8433BB78(void) {
     func_8432ED0C(0, 8, 6);
-    func_8432ECA0(0, 1, 0x3C, func_8433837C, &D_843861D0[0x45], 0, 4, 0x11, D_843902E2, 0, 0);
-    func_8432ECA0(0, 1, 0x3C, func_843380F0, &D_843861D0[0x45], 0, 1, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 1, 0x3C, func_8433837C, &gParticleEffectData[0x45], 0, 4, 0x11, D_843902E2, 0, 0);
+    func_8432ECA0(0, 1, 0x3C, func_843380F0, &gParticleEffectData[0x45], 0, 1, 0x11, D_843902E2, 0, 0);
 }
 
 void func_8433BC38(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432ED0C(0, 8, 6);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0x41, 0);
-    func_8432EC28(6, func_843397A0, &D_843861D0[0x53], 0x46, 1, 0x10, D_843902E2, 0x41, 1);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0x41, 0);
+    func_8432EC28(6, func_843397A0, &gParticleEffectData[0x53], 0x46, 1, 0x10, D_843902E2, 0x41, 1);
 }
 
 void func_8433BD08(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432F2C8(0, 0xA, 0xFF, 0, 0x10);
     func_8432ED0C(0, 0x20, 0x10);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0x2C, 0);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0x2C, 0);
     func_8434A844();
-    func_8432EC28(6, func_843397A0, &D_843861D0[0x53], 0x46, 1, 0x10, D_843902E2, 0x2C, 1);
+    func_8432EC28(6, func_843397A0, &gParticleEffectData[0x53], 0x46, 1, 0x10, D_843902E2, 0x2C, 1);
 }
 
 void func_8433BDFC(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432ED0C(0, 8, 0x22);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0x17, 0);
-    func_8432EC28(6, func_843397A0, &D_843861D0[0x53], 0x46, 1, 0x10, D_843902E2, 0x17, 1);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0x17, 0);
+    func_8432EC28(6, func_843397A0, &gParticleEffectData[0x53], 0x46, 1, 0x10, D_843902E2, 0x17, 1);
 }
 
 void func_8433BECC(void) {
     func_8432ED74(0, 0, 0x20, 0xA, 0xA0);
     func_8432ED0C(0, 8, 0x22);
-    func_8432EC28(0, func_84339688, &D_843861D0[0x53], 0, 1, 0x10, D_843902E2, 0x17, 0);
+    func_8432EC28(0, func_84339688, &gParticleEffectData[0x53], 0, 1, 0x10, D_843902E2, 0x17, 0);
 }
 
 void func_8433BF54(void) {
     func_8432F440(4, 0xA, 0x35, 0xC, 0xFF);
-    func_8432EC28(0, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
-    func_8432ECA0(0, 5, 3, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
-    func_8432ECA0(0xA, 1, 3, func_8433A698, &D_843861D0[0x19], 0, 8, 0x11, D_843902E2, 0x26, 0);
+    func_8432EC28(0, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
+    func_8432ECA0(0, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
+    func_8432ECA0(0xA, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, D_843902E2, 0x26, 0);
 }
 
 void func_8433C06C(void) {
     func_8432F538(0, 0xA, 0x35, 0x10, 0xDC, 0x20);
-    func_8432EC28(3, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
-    func_8432ECA0(0, 5, 3, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
-    func_8432ECA0(4, 4, 2, func_843398F8, &D_843861D0[0x54], 0, 1, 0x10, D_843902E2, 0x33, 0);
-    func_8432ECA0(0xC, 1, 3, func_8433A698, &D_843861D0[0x19], 0, 8, 0x11, D_843902E2, 0x26, 0);
-    func_8432ECA0(0xE, 4, 2, func_84350FC0, &D_843861D0[0x3D], 0, 6, 0x10, 0x64, 0, 0);
-    func_8432ECA0(0, 2, 6, func_84352530, &D_843861D0[0x42], 0, 8, 0x11, 9, 0x18, 0xB);
+    func_8432EC28(3, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
+    func_8432ECA0(0, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0x26, 0);
+    func_8432ECA0(4, 4, 2, func_843398F8, &gParticleEffectData[0x54], 0, 1, 0x10, D_843902E2, 0x33, 0);
+    func_8432ECA0(0xC, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, D_843902E2, 0x26, 0);
+    func_8432ECA0(0xE, 4, 2, func_84350FC0, &gParticleEffectData[0x3D], 0, 6, 0x10, 0x64, 0, 0);
+    func_8432ECA0(0, 2, 6, func_84352530, &gParticleEffectData[0x42], 0, 8, 0x11, 9, 0x18, 0xB);
     func_8432ED0C(0x30, 0x20, 0xA);
 }
 
 void func_8433C284(void) {
     func_8432F728(4, 0x32, 0x20, 0xA0);
-    func_8432ECA0(4, 4, 3, func_84339A30, &D_843861D0[0x54], 0, 1, 0x10, D_843902E2, 0, 0);
-    func_8432EC28(3, func_84333EE8, &D_843861D0[0x1B], 0, 1, 0x10, D_843902E2, 0x23, 0);
-    func_8432ECA0(3, 5, 3, func_8433A208, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 1, 0);
+    func_8432ECA0(4, 4, 3, func_84339A30, &gParticleEffectData[0x54], 0, 1, 0x10, D_843902E2, 0, 0);
+    func_8432EC28(3, func_84333EE8, &gParticleEffectData[0x1B], 0, 1, 0x10, D_843902E2, 0x23, 0);
+    func_8432ECA0(3, 5, 3, func_8433A208, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 1, 0);
     func_8432ED0C(0x30, 0x20, 0xA);
 }
 
 void func_8433C3A0(void) {
     func_8432F440(4, 0xA, 0x23, 0x10, 0xFF);
-    func_8432EC28(3, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
-    func_8432ECA0(3, 5, 3, func_8433A208, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0, 0);
-    func_8432EC28(0, func_8433AC00, &D_843861D0[0x45], 0, 0x10, 0x11, 9, 0, 0);
-    func_8432EC28(8, func_8433AC00, &D_843861D0[0x45], 0, 0x10, 0x11, 9, 0, 0);
+    func_8432EC28(3, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x35, 0);
+    func_8432ECA0(3, 5, 3, func_8433A208, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0, 0);
+    func_8432EC28(0, func_8433AC00, &gParticleEffectData[0x45], 0, 0x10, 0x11, 9, 0, 0);
+    func_8432EC28(8, func_8433AC00, &gParticleEffectData[0x45], 0, 0x10, 0x11, 9, 0, 0);
     func_8432ED0C(0x30, 0x20, 0xA);
 }
 
 void func_8433C4EC(void) {
     func_8432F728(4, 0x32, 0x20, 0xA0);
-    func_8432EC28(4, func_84339C0C, &D_843861D0[0x54], 0, 9, 0x10, D_843902E2, 0, 0);
-    func_8432ECA0(3, 5, 3, func_8433A208, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0, 0);
-    func_8432ECA0(0xC, 1, 3, func_8433A698, &D_843861D0[0x19], 0, 8, 0x11, D_843902E2, 0x39, 0);
+    func_8432EC28(4, func_84339C0C, &gParticleEffectData[0x54], 0, 9, 0x10, D_843902E2, 0, 0);
+    func_8432ECA0(3, 5, 3, func_8433A208, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0, 0);
+    func_8432ECA0(0xC, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, D_843902E2, 0x39, 0);
     func_8432ED0C(0x16, 0x20, 0xA);
 }
 
@@ -1567,10 +1567,10 @@ void func_8433C604(void) {
 
     func_8432F2C8(0, 0x19, 0xFF, 0, 8);
     func_8432F440(4, 0x19, 0x19, 0x10, 0xFF);
-    func_8432EC28(3, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x19, 0);
-    func_8432EC28(0, func_843398F8, &D_843861D0[0x34], 0, 1, 0x10, D_843902E2, 0x2C, 0);
-    func_8432ECA0(4, 8, 1, func_843398F8, &D_843861D0[0x54], 0, 1, 0x10, D_843902E2, 0x2C, 0);
-    func_8432ECA0(3, 5, 2, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0xF, 0);
+    func_8432EC28(3, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x19, 0);
+    func_8432EC28(0, func_843398F8, &gParticleEffectData[0x34], 0, 1, 0x10, D_843902E2, 0x2C, 0);
+    func_8432ECA0(4, 8, 1, func_843398F8, &gParticleEffectData[0x54], 0, 1, 0x10, D_843902E2, 0x2C, 0);
+    func_8432ECA0(3, 5, 2, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0xF, 0);
     func_8433E524();
 }
 
@@ -1578,11 +1578,11 @@ void func_8433C784(void) {
     UNUSED s32 pad;
 
     func_8432F440(4, 0xA, 0x19, 0x10, 0xFF);
-    func_8432EC28(0, func_843398F8, &D_843861D0[0x34], 0, 1, 0x10, D_843902E2, 0x17, 0);
-    func_8432ECA0(4, 4, 1, func_843398F8, &D_843861D0[0x54], 0, 1, 0x10, D_843902E2, 0x17, 0);
-    func_8432EC28(3, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x1A, 0);
-    func_8432ECA0(3, 5, 3, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0x17, 0);
-    func_8432ECA0(0xC, 1, 3, func_8433A698, &D_843861D0[0x19], 0, 8, 0x11, D_843902E2, 0x17, 0);
+    func_8432EC28(0, func_843398F8, &gParticleEffectData[0x34], 0, 1, 0x10, D_843902E2, 0x17, 0);
+    func_8432ECA0(4, 4, 1, func_843398F8, &gParticleEffectData[0x54], 0, 1, 0x10, D_843902E2, 0x17, 0);
+    func_8432EC28(3, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x1A, 0);
+    func_8432ECA0(3, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0x17, 0);
+    func_8432ECA0(0xC, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, D_843902E2, 0x17, 0);
     func_8432ED0C(0x16, 0x20, 0xA);
 }
 
@@ -1590,16 +1590,16 @@ void func_8433C940(void) {
     UNUSED s32 pad;
 
     func_8432F440(4, 0xA, 0x19, 0x10, 0xFF);
-    func_8432EC28(0, func_843398F8, &D_843861D0[0x34], 0, 1, 0x10, D_843902E2, 0x29, 0);
-    func_8432ECA0(4, 4, 1, func_843398F8, &D_843861D0[0x54], 0, 1, 0x10, D_843902E2, 0x29, 0);
-    func_8432EC28(3, func_84333E28, &D_843861D0[4], 0, 1, 0x10, D_843902E2, 0x1A, 0);
-    func_8432ECA0(3, 5, 3, func_84339D74, &D_843861D0[0x19], 0, 8, 0x10, D_843902E2, 0x29, 0);
-    func_8432ECA0(0xC, 1, 3, func_8433A698, &D_843861D0[0x19], 0, 8, 0x11, D_843902E2, 0x29, 0);
+    func_8432EC28(0, func_843398F8, &gParticleEffectData[0x34], 0, 1, 0x10, D_843902E2, 0x29, 0);
+    func_8432ECA0(4, 4, 1, func_843398F8, &gParticleEffectData[0x54], 0, 1, 0x10, D_843902E2, 0x29, 0);
+    func_8432EC28(3, func_84333E28, &gParticleEffectData[4], 0, 1, 0x10, D_843902E2, 0x1A, 0);
+    func_8432ECA0(3, 5, 3, func_84339D74, &gParticleEffectData[0x19], 0, 8, 0x10, D_843902E2, 0x29, 0);
+    func_8432ECA0(0xC, 1, 3, func_8433A698, &gParticleEffectData[0x19], 0, 8, 0x11, D_843902E2, 0x29, 0);
     func_8432ED0C(0x16, 0x20, 0xA);
 }
 
 void func_8433CAFC(void) {
-    func_8432ECA0(0, 2, 8, func_8433A4D8, &D_843861D0[0x19], 0, 1, 0x11, D_843902E2, 0x49, 0);
-    func_8432ECA0(0, 2, 8, func_8433A4D8, &D_843861D0[0x19], 0, 1, 0x11, D_843902E2, 0x4A, 1);
-    func_8432ECA0(0, 2, 8, func_8433A4D8, &D_843861D0[0x19], 0, 1, 0x11, D_843902E2, 0x4B, 2);
+    func_8432ECA0(0, 2, 8, func_8433A4D8, &gParticleEffectData[0x19], 0, 1, 0x11, D_843902E2, 0x49, 0);
+    func_8432ECA0(0, 2, 8, func_8433A4D8, &gParticleEffectData[0x19], 0, 1, 0x11, D_843902E2, 0x4A, 1);
+    func_8432ECA0(0, 2, 8, func_8433A4D8, &gParticleEffectData[0x19], 0, 1, 0x11, D_843902E2, 0x4B, 2);
 }

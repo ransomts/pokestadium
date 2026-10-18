@@ -96,7 +96,7 @@ char** D_843900B0;
 char** D_843900B4;
 char** gPokemonMessageBank;
 char** D_843900BC;
-char** D_843900C0;
+char** gMarqueeMessageBank;
 
 void func_84301B00(void) {
     s32 i;
@@ -219,7 +219,7 @@ s32 func_84302000(unk_D_84390010* arg0) {
 }
 
 void func_8430203C(unk_D_84390010* arg0) {
-    if (D_84390240.unk_00->unk_48 == 0xE) {
+    if (gBattleState.unk_00->unk_48 == 0xE) {
         func_8432C958(arg0->unk_720, func_8430808C(arg0));
     } else {
         func_8432C958(arg0->unk_720, func_8430808C(arg0));
@@ -505,7 +505,7 @@ void func_84302C34(unk_D_84390010* arg0) {
     if ((sp24->unk_5A == 0x19) && (sp32 == 0x64)) {
         gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
     } else if ((arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) && (func_84301FB0(arg0) == 0)) {
-        if (D_84390240.unk_00->unk_48 == 0x14) {
+        if (gBattleState.unk_00->unk_48 == 0x14) {
             gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         } else if (sp24->unk_44.unk_00 == 0x5B) {
             gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
@@ -548,7 +548,7 @@ void func_84302EF0(unk_D_84390010* arg0) {
 
     if (arg0->unk_4C4 == (gCurrentAnimChannel->unk_04 + 1)) {
         if (func_84301FB0(arg0) == 0) {
-            if (D_84390240.unk_00->unk_48 == 0x18) {
+            if (gBattleState.unk_00->unk_48 == 0x18) {
                 D_84390234--;
                 if (D_84390234 < 0) {
                     if (D_843C4DA4 != 0) {
@@ -680,7 +680,7 @@ void func_843034D8(unk_D_84390010* arg0) {
     }
 
     if ((var_v0 == arg0->unk_4C4) && (func_84301FB0(arg0) == 0)) {
-        if (D_84390240.unk_00->unk_48 == 0x14) {
+        if (gBattleState.unk_00->unk_48 == 0x14) {
             gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
             return;
         }
@@ -717,7 +717,7 @@ void func_84303674(unk_D_84390010* arg0) {
 
     if (var_v0 == arg0->unk_4C4) {
         if (func_84301FB0(arg0) == 0) {
-            if (D_84390240.unk_00->unk_48 == 0x18) {
+            if (gBattleState.unk_00->unk_48 == 0x18) {
                 D_84390234--;
                 if (D_84390234 < 0) {
                     if (D_843C4DA4 != 0) {
@@ -850,7 +850,7 @@ void func_84303CB4(unk_D_84390010* arg0) {
     Anim_SetChannelBase(&arg0->unk_000, 0);
     GraphNode_TriggerAction(&arg0->unk_000, gCurrentAnimChannel->unk_00);
     func_84305A74(D_84390010[sp1C], 0xA8, 1);
-    func_8432BF88(arg0, 0x1E);
+    PlayBattleSoundEffect(arg0, 0x1E);
 }
 
 s32 func_84303D50(unk_D_84390010* arg0) {
@@ -938,9 +938,9 @@ void func_84304114(unk_D_84390010* arg0) {
     } else if (arg0->unk_4C4 == 1) {
         if (func_84301FB0(arg0) == 0) {
             if (arg0->unk_000.unk_01A >= 0x98) {
-                func_8432B510(arg0, sp18->unk_BC);
+                PlayBattleMusicOrDefault(arg0, sp18->unk_BC);
             } else {
-                func_8432B510(arg0, arg0->unk_000.unk_01A);
+                PlayBattleMusicOrDefault(arg0, arg0->unk_000.unk_01A);
             }
             gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
@@ -1159,11 +1159,11 @@ void func_84304C20(unk_D_84390010* arg0) {
     unk_D_800FCB18* sp20 = &arg0->unk_654.unk_38;
 
     if (sp20->unk_15 & 8) {
-        func_8432BF88(arg0, 0x14);
+        PlayBattleSoundEffect(arg0, 0x14);
     }
 
     if (sp20->unk_15 & 0x10) {
-        func_8432BF88(arg0, 0x21);
+        PlayBattleSoundEffect(arg0, 0x21);
     }
 
     gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
@@ -1307,7 +1307,7 @@ void func_843052C0(unk_D_84390010* arg0) {
         func_8432E9D8(1);
         if (((sp1C->unk_5A == 0x30) || (sp1C->unk_5A == 0x6D)) && (sp24->unk_4C & 0x80) && (D_843C4DA4 == 0) &&
             (D_843C4E44 == 1)) {
-            func_8432BF88(D_84390010[sp2C == 0], 0x12);
+            PlayBattleSoundEffect(D_84390010[sp2C == 0], 0x12);
         }
 
         func_84301C54(D_84390010[sp2C == 0], sp1C->unk_5A);
@@ -1347,7 +1347,7 @@ void func_843054F0(unk_D_84390010* arg0) {
         if (func_84301FB0(arg0) == 0) {
             if (D_843C4E45 == 1) {
                 func_8432C6C4(1, D_84390010[sp28]);
-                func_8432BF88(arg0, 0x20);
+                PlayBattleSoundEffect(arg0, 0x20);
             }
             gAnimStateQueue[gAnimStateQueueIndex].unk_04 = D_84385380;
         }
@@ -1551,13 +1551,13 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
         return 1;
     }
 
-    if (D_84390240.unk_00->unk_48 == 0x14) {
+    if (gBattleState.unk_00->unk_48 == 0x14) {
         sp20 = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[0];
     }
 
     if (sp20->unk_00 == sp1C->unk_00) {
         if (sp20->unk_0A != 0xFF) {
-            D_84390240.unk_00->unk_14++;
+            gBattleState.unk_00->unk_14++;
             if (sp20->unk_0A == arg0->unk_4C4) {
                 return 1;
             }
@@ -1570,7 +1570,7 @@ s32 func_84305CAC(unk_D_84390010* arg0, s32 arg1) {
         return 0;
     }
 
-    D_84390240.unk_00->unk_14++;
+    gBattleState.unk_00->unk_14++;
 
     if (sp20->unk_0A != 0xFF) {
         if (sp20->unk_0A == arg0->unk_4C4) {
@@ -1608,7 +1608,7 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
 
     if (sp1C->unk_00 == temp_a2->unk_00) {
         if (sp1C->unk_0A != 0xFF) {
-            D_84390240.unk_00->unk_14++;
+            gBattleState.unk_00->unk_14++;
             if (sp1C->unk_0A == arg0->unk_4C4) {
                 return 1;
             }
@@ -1620,7 +1620,7 @@ s32 func_84305E54(unk_D_84390010* arg0, s32 arg1) {
         return 0;
     }
 
-    D_84390240.unk_00->unk_14++;
+    gBattleState.unk_00->unk_14++;
 
     if (sp1C->unk_0A != 0xFF) {
         if (sp1C->unk_0A == arg0->unk_4C4) {
@@ -1656,7 +1656,7 @@ void func_843060EC(unk_D_84390010* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
     if (func_84301FF0(arg0) == 0) {
         if ((arg0->unk_000.unk_040.unk_00 != -1) && (arg0->unk_000.unk_000.unk_01 & 1) &&
-            (arg0->unk_000.unk_000.unk_02 & 0x20) && (D_84390240.unk_00->unk_1C == 1) &&
+            (arg0->unk_000.unk_000.unk_02 & 0x20) && (gBattleState.unk_00->unk_1C == 1) &&
             (gCurrentAnimChannel->unk_00 == arg0->unk_000.unk_040.unk_00) &&
             (gCurrentAnimChannel->unk_04 == (arg0->unk_000.unk_040.unk_08 >> 0x10)) && (gCurrentAnimChannel->unk_05 != 0) &&
             (Math_RandomU16Scaled(2) == 1)) {
@@ -1852,8 +1852,8 @@ void func_843066E0(unk_D_84390010* arg0) {
 void func_84306914(unk_D_84390010* arg0) {
     unk_D_84390010_654* temp_s1 = &arg0->unk_654;
 
-    func_8432AF70(arg0);
-    func_8432B228(arg0);
+    HandleMoveHitAnimation(arg0);
+    HandleItemOrStatusEffect(arg0);
 
     if (temp_s1->unk_34 & 0x100) {
         arg0->unk_000.unk_000.unk_02 &= 0xFFDF;
@@ -1900,7 +1900,7 @@ void func_84306A68(unk_D_84390010* arg0) {
     if ((ptr->unk_05 & 7) && !(arg0->unk_654.unk_34 & 1)) {
         func_84305A74(arg0, 0xAF, 2);
         func_8432C7A0(3, arg0);
-        func_8432BF88(arg0, 0x32);
+        PlayBattleSoundEffect(arg0, 0x32);
     }
 }
 
@@ -2096,8 +2096,8 @@ void func_84307078(unk_D_800AE540_1194* arg0) {
     func_84319668();
     func_843193F4(D_84390010[0]);
     func_843193F4(D_84390010[1]);
-    func_8432B704();
-    func_8432B604();
+    SetTeamScoresFromActivePokemons();
+    SetPlayerSidesFromActivePokemons();
 }
 
 void func_843071B8(unk_D_84390010* arg0, unk_D_84390010* arg1, s32 arg2) {
@@ -2115,7 +2115,7 @@ void func_84307220(unk_D_800AE540_1194* arg0) {
     D_843900B4 = GetMessageBank(0x24);
     gPokemonMessageBank = GetMessageBank(0x25);
     D_843900BC = GetMessageBank(0x29);
-    D_843900C0 = GetMessageBank(0x14);
+    gMarqueeMessageBank = GetMessageBank(0x14);
 
     for (i = 0; i < 7; i++) {
         gAnimStateQueue[i].unk_04 = D_84385380;

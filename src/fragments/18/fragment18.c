@@ -3310,7 +3310,7 @@ void func_86C03ED4(void) {
 
     for (i = 0; i < 4; i++, ekans++) {
         if (ekans->mainState == 2) {
-            gSPDisplayList(gDisplayListHead++, D_8140DD58);
+            gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
             Gfx_SetPrimColorCombinePrimitive(playerColors[i].r, playerColors[i].g, playerColors[i].b, (ekans->unk_000.unk_01D / 2) & 0xFF);
             func_80015390(&ekans->unk_000, 0xA, &sp7C);

@@ -55,7 +55,7 @@ static Gfx D_8140DB80[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DBA8[] = {
+Gfx gDL_ItemIcon[] = {
     gsSPDisplayList(D_8140DB80),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_PASS2),
@@ -117,7 +117,7 @@ Gfx D_8140DCB8[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCD8[] = {
+Gfx gDL_BaseUI[] = {
     gsSPDisplayList(D_8140DC20),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_XLU_SURF2),
@@ -145,7 +145,7 @@ Gfx D_8140DD38[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD58[] = {
+Gfx gDL_OverlayUI[] = {
     gsSPDisplayList(D_8140DC20),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_XLU_SURF2),
@@ -235,7 +235,7 @@ Vtx D_8140DFD8[] = {
     VTX(-12, 11, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E018[] = {
+Vtx gMatrix_UITransform[] = {
     VTX(-16, -16, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, -16, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 15, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -336,7 +336,7 @@ static Gfx D_8140E408[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140E418[] = {
+Gfx gDL_PanelBackground[] = {
     gsSPVertex(D_8140E148, 4, 0),
     gsSPDisplayList(D_8140E3F8),
     gsSPEndDisplayList(),
@@ -349,7 +349,7 @@ Gfx D_8140E430[] = {
 };
 
 Gfx D_8140E448[] = {
-    gsSPVertex(D_8140E018, 4, 0),
+    gsSPVertex(gMatrix_UITransform, 4, 0),
     gsSPDisplayList(D_8140E408),
     gsSPEndDisplayList(),
 };

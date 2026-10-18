@@ -1,13 +1,13 @@
 #include "fragment62.h"
 
-s32 func_84330170(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+s32 RenderPanelBackground(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_8140213C(arg1, arg0->unk_2C, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140E418);
+    gSPDisplayList(gDisplayListHead++, gDL_PanelBackground);
 }
 
-void func_84330218(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+void RenderIconMasked(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     Gfx_LoadTextureBlockIA8_Clamp(D_843920C0[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
     func_814044FC(D_843920C0[0x77], 0x40, 0x40, 2, 1);
     func_81406168(0, 0xA, 0x40, 0x40);
@@ -15,22 +15,22 @@ void func_84330218(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81404DB4(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E1F8);
 }
 
-void func_84330300(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+void RenderPanelWithIcon(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
-    func_84330218(arg0, arg1);
+    RenderIconMasked(arg0, arg1);
 }
 
-void func_84330344(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+void RenderOverlayWithIcon(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
-    func_84330218(arg0, arg1);
+    RenderIconMasked(arg0, arg1);
 }
 
 void func_84330388(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_8140213C(arg1, arg0->unk_2C, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     func_8140441C(D_843920C0[0x1F], 0x20, 0x40);
     func_814060D4(0, 8, 0x20, 0x40);
@@ -40,20 +40,20 @@ void func_84330388(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_843920C0[0x20]);
 }
 
-s32 func_843304AC(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+s32 RenderItemIcon(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_81401FC0(arg0->unk_2C, arg0->unk_94, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DBA8);
+    gSPDisplayList(gDisplayListHead++, gDL_ItemIcon);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0xBC], 0x20, 0x20);
 
     gSPDisplayList(gDisplayListHead++, D_843920C0[0xBD]);
 }
 
-void func_84330574(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+void RenderStatusBar(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     func_81405ED8(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
     func_8140441C(D_843920C0[0x27], 0x40, 0x40);
@@ -66,7 +66,7 @@ void func_84330574(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 void func_84330688(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     func_81405ED8(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
     func_8140441C(D_843920C0[0x27], 0x40, 0x40);
@@ -76,10 +76,10 @@ void func_84330688(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_81404A6C(D_84385E00);
 }
 
-void func_8433079C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+void RenderMultiBlockIcon(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     func_81405ED8(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
     Gfx_LoadMultiBlock4b(D_843920C0[0x29], 0, 0, 4, 0x20, 0x20, 1, 1, 5, 5, 2, 0);
@@ -92,7 +92,7 @@ void func_8433079C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 void func_84330934(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     func_814015A0(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_8140441C(D_843920C0[0x87], 0x20, 0x20);
@@ -103,7 +103,7 @@ void func_84330934(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 void func_84330A18(unk_D_8140E720* arg0, u8* arg1) {
     func_814015F8(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
 
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81405660(arg1, D_84385C80, 0x40, 0x40, 0x40, 0x40);
@@ -118,12 +118,12 @@ void func_84330B18(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_84330B40(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x1A] + (arg0->unk_C7 << 9), 0x20, 0x20);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
+    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -133,7 +133,7 @@ void func_84330C70(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0x1C], 0x20, 0x20);
-    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
+    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -143,7 +143,7 @@ void func_84330D64(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0x1E], 0x20, 0x20);
-    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
+    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -153,7 +153,7 @@ void func_84330E58(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     Gfx_LoadTextureBlockRGBA16_Clamp(D_843920C0[0xC3], 0x20, 0x20);
-    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E018);
+    func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -161,7 +161,7 @@ void func_84330E58(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 void func_84330F4C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     Vec3s sp40;
 
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x1D], 0x20, 0x20);
@@ -169,7 +169,7 @@ void func_84330F4C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     sp40.x = arg0->unk_94.x + 0x4000;
     sp40.y = arg0->unk_94.y + 0x4000;
     sp40.z = arg0->unk_94.z;
-    func_81404ABC(arg0->unk_2C, sp40, arg0->unk_1C, D_8140E018);
+    func_81404ABC(arg0->unk_2C, sp40, arg0->unk_1C, gMatrix_UITransform);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
@@ -177,8 +177,8 @@ void func_84330F4C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 void func_84331094(UNUSED unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
-void func_843310A0(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+void RenderTimerDigits(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
@@ -190,8 +190,8 @@ void func_843310A0(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843311D8(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+void RenderTimerDigitsAlt(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -202,7 +202,7 @@ void func_843311D8(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_84331314(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -212,8 +212,8 @@ void func_84331314(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331450(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+void RenderTimerNumber(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -224,7 +224,7 @@ void func_84331450(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
 }
 
 void func_8433157C(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -235,7 +235,7 @@ void func_8433157C(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
 }
 
 void func_843316A8(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
@@ -246,7 +246,7 @@ void func_843316A8(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
 }
 
 void func_843317D4(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x1B], 0x10, 0x100);
@@ -257,7 +257,7 @@ void func_843317D4(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_843318F8(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x1B], 0x10, 0x100);
@@ -268,7 +268,7 @@ void func_843318F8(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_84331A1C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DCD8);
+    gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0x13] + ((D_8140E6F0 & 7) * 0x600), 0x20, 0x60);
@@ -279,15 +279,15 @@ void func_84331A1C(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
 }
 
 void func_84331B58(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     func_8140437C(D_843920C0[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    func_81404E4C(arg1, arg0->unk_2C, arg0->unk_1C, D_8140E018, arg0->unk_94.z);
+    func_81404E4C(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
 void func_84331C34(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
-    gSPDisplayList(gDisplayListHead++, D_8140DD58);
+    gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     func_8140437C(D_843920C0[0xA9], 0x20, 0x20);

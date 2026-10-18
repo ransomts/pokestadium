@@ -3,7 +3,7 @@
 #include "src/18140.h"
 #include "src/1C720.h"
 
-void func_8432AF70(unk_D_84390010* arg0) {
+void HandleMoveHitAnimation(unk_D_84390010* arg0) {
     UNUSED s32 pad[2];
     PokemonData* ptr;
     unk_D_84390010_654* sp2C;
@@ -29,26 +29,26 @@ void func_8432AF70(unk_D_84390010* arg0) {
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
         func_843061EC(arg0, 2);
         func_8432C7A0(1, arg0);
-        func_8432BF88(arg0, 0x13);
+        PlayBattleSoundEffect(arg0, 0x13);
     }
 }
 
-void func_8432B0A4(unk_D_84390010* arg0) {
+void TriggerCurrentAnimAction(unk_D_84390010* arg0) {
     unk_D_8438E7B0_A50* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
 
     GraphNode_TriggerAction(&arg0->unk_000, ptr->unk_00);
 }
 
-void func_8432B0E4(unk_D_84390010* arg0) {
+void StartMoveAnimation(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 2) {
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         func_84306200(arg0, 2);
-        func_8432B0A4(arg0);
+        TriggerCurrentAnimAction(arg0);
     }
 }
 
-void func_8432B13C(unk_D_84390010* arg0) {
+void ResetMoveStateAndStartAnimation(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 2) {
@@ -56,29 +56,29 @@ void func_8432B13C(unk_D_84390010* arg0) {
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         func_84306200(arg0, 2);
-        func_8432B0A4(arg0);
+        TriggerCurrentAnimAction(arg0);
     }
 }
 
-void func_8432B1BC(unk_D_84390010* arg0) {
+void ResumeMoveAnimationIfNotTriggered(unk_D_84390010* arg0) {
     if ((arg0->unk_654.unk_34 & 2) && !(arg0->unk_654.unk_38.unk_15 & 0x20)) {
         func_8432C80C(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
         func_84306200(arg0, 2);
-        func_8432B0A4(arg0);
+        TriggerCurrentAnimAction(arg0);
     }
 }
 
-void func_8432B228(unk_D_84390010* arg0) {
+void HandleItemOrStatusEffect(unk_D_84390010* arg0) {
     unk_D_84390010_654* sp24 = &arg0->unk_654;
     unk_D_800FCB18* sp28 = &sp24->unk_38;
     PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
-    if ((D_84390240.unk_00->unk_38 != 0xB) || (D_84390240.unk_00->unk_20 >= 6)) {
+    if ((gBattleState.unk_00->unk_38 != 0xB) || (gBattleState.unk_00->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->unk_654.unk_34 & 1)) {
             func_84305A74(arg0, 0xAF, 2);
             func_8432C7A0(3, arg0);
-            func_8432BF88(arg0, 0x32);
+            PlayBattleSoundEffect(arg0, 0x32);
             func_843061EC(arg0, 1);
         }
 
@@ -95,7 +95,7 @@ void func_8432B228(unk_D_84390010* arg0) {
     }
 }
 
-void func_8432B38C(unk_D_84390010* arg0) {
+void ProcessStatusEffectEnd(unk_D_84390010* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if (arg0->unk_654.unk_34 & 1) {
@@ -111,7 +111,7 @@ void func_8432B38C(unk_D_84390010* arg0) {
     }
 }
 
-void func_8432B448(unk_D_84390010* arg0) {
+void FinalizeStatusEffect(unk_D_84390010* arg0) {
     if (arg0->unk_654.unk_34 & 1) {
         func_8432C80C(3, arg0);
         func_84306200(arg0, 1);

@@ -26,7 +26,7 @@ void func_84331DC8(unk_D_8140E720* arg0) {
     func_8432FEC4(arg0);
 }
 
-void func_84331E64(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_A6);
     func_814081BC(arg0);
@@ -35,7 +35,7 @@ void func_84331E64(unk_D_8140E720* arg0) {
 void func_84331EAC(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84331E64(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender(arg0);
             break;
 
         case 2:
@@ -54,7 +54,7 @@ void func_84331EAC(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84331F64(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender_WithCE(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_CE);
     func_814081BC(arg0);
@@ -63,7 +63,7 @@ void func_84331F64(unk_D_8140E720* arg0) {
 void func_84331FAC(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84331F64(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_WithCE(arg0);
             break;
 
         case 2:
@@ -98,7 +98,7 @@ void func_8433209C(void) {
 void func_843320A4(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84331F64(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_WithCE(arg0);
             break;
 
         case 2:
@@ -280,9 +280,9 @@ void func_84332604(unk_D_8140E720* arg0) {
     }
 }
 
-void func_843326EC(unk_D_8140E720* arg0) {
-    SetPrimColorFromPalette(arg0, D_8140E538[RandomMod(6)]);
-    func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
+void Fragment_SetRandomPrimColorAndRender(unk_D_8140E720* arg0) {
+    SetPrimColorFromPalette(arg0, gPrimColorPalette[RandomMod(6)]);
+    func_8140BEEC(arg0, gPrimColorPalette[RandomMod(6)]);
     func_8140BC20(arg0, arg0->unk_CD);
 
     if (arg0->unk_AA == 0) {
@@ -296,24 +296,24 @@ void func_843326EC(unk_D_8140E720* arg0) {
 void func_843327B8(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843326EC(arg0);
+            Fragment_SetRandomPrimColorAndRender(arg0);
             break;
 
         case 2:
             IsPrimColorSupported(arg0, arg0->unk_CF, arg0->unk_AA);
             if (func_8140BDAC(arg0) != 0) {
                 func_8140BCA8(arg0, 0xFF / arg0->unk_AA);
-                func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
+                func_8140BEEC(arg0, gPrimColorPalette[RandomMod(6)]);
             }
             GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;
     }
 }
 
-void func_843328A8(unk_D_8140E720* arg0) {
-    SetPrimColorFromPalette(arg0, D_8140E538[0]);
+void Fragment_SetFixedPrimColorsAndRender(unk_D_8140E720* arg0) {
+    SetPrimColorFromPalette(arg0, gPrimColorPalette[0]);
     func_8140BF4C(arg0, 1);
-    func_8140BEEC(arg0, D_8140E538[1]);
+    func_8140BEEC(arg0, gPrimColorPalette[1]);
     func_8140BC20(arg0, arg0->unk_CD);
 
     if (arg0->unk_AA == 0) {
@@ -324,10 +324,10 @@ void func_843328A8(unk_D_8140E720* arg0) {
     func_814081BC(arg0);
 }
 
-void func_84332964(unk_D_8140E720* arg0) {
+void Fragment_ComplexColorMode(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_843328A8(arg0);
+            Fragment_SetFixedPrimColorsAndRender(arg0);
             break;
 
         case 2:
@@ -335,7 +335,7 @@ void func_84332964(unk_D_8140E720* arg0) {
             if (func_8140BE6C(arg0) != 0) {
                 func_8140BE14(arg0, 0xFF / arg0->unk_AA);
                 arg0->unk_AE = (arg0->unk_AE + 1) % 6;
-                func_8140BEEC(arg0, D_8140E538[arg0->unk_AE]);
+                func_8140BEEC(arg0, gPrimColorPalette[arg0->unk_AE]);
             }
             IsPrimColorSupported(arg0, arg0->unk_CF, arg0->unk_AA);
             GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
@@ -354,15 +354,15 @@ void func_84332964(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84332AD8(unk_D_8140E720* arg0) {
+void Fragment_SetAlphaFromUnkA6AndRender(unk_D_8140E720* arg0) {
     arg0->prim_a = arg0->unk_A6;
     func_814081BC(arg0);
 }
 
-void func_84332AFC(unk_D_8140E720* arg0) {
+void Fragment_ProcessAlphaMode(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84332AD8(arg0);
+            Fragment_SetAlphaFromUnkA6AndRender(arg0);
             break;
 
         case 2:
@@ -381,16 +381,16 @@ void func_84332AFC(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84332BA4(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
 
-void func_84332BE4(unk_D_8140E720* arg0) {
+void Fragment_ProcessBC20Mode(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84332BA4(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20(arg0);
             break;
 
         case 2:
@@ -407,16 +407,16 @@ void func_84332BE4(unk_D_8140E720* arg0) {
     GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
 }
 
-void func_84332C90(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Alt(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
 
-void func_84332CD0(unk_D_8140E720* arg0) {
+void Fragment_ProcessBC20Variant(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84332C90(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Alt(arg0);
             break;
 
         case 2:
@@ -435,16 +435,16 @@ void func_84332CD0(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84332D68(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, arg0->unk_CD);
     func_814081BC(arg0);
 }
 
-void func_84332DB0(unk_D_8140E720* arg0) {
+void Fragment_ProcessBC20WithCDMode(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84332D68(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20(arg0);
             break;
 
         case 2:
@@ -459,7 +459,7 @@ void func_84332DB0(unk_D_8140E720* arg0) {
     }
 }
 
-void func_84332E2C(unk_D_8140E720* arg0) {
+void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third(unk_D_8140E720* arg0) {
     SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
@@ -468,7 +468,7 @@ void func_84332E2C(unk_D_8140E720* arg0) {
 void func_84332E6C(unk_D_8140E720* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84332E2C(arg0);
+            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third(arg0);
             break;
 
         case 2:

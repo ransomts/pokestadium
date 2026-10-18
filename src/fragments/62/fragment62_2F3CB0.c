@@ -591,7 +591,7 @@ void func_8430AE3C(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 
 void func_8430AE90(unk_D_84390010* arg0) {
     UNUSED s32 pad;
-    unk_D_86002F34_00C* sp18 = D_84390240.unk_00->unk_DC;
+    unk_D_86002F34_00C* sp18 = gBattleState.unk_00->unk_DC;
 
     UpdateEntityBasePosition(arg0);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
@@ -611,7 +611,7 @@ void func_8430AF08(unk_D_84390010* arg0, unk_D_84390010* arg1) {
 }
 
 void func_8430AF80(UNUSED unk_D_84390010* arg0, unk_D_84390010* arg1) {
-    unk_D_86002F34_00C* temp_s0 = D_84390240.unk_00->unk_DC;
+    unk_D_86002F34_00C* temp_s0 = gBattleState.unk_00->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
     f32 temp_ft4;
@@ -1107,7 +1107,7 @@ unk_D_843847BC D_843847BC[2] = {
     },
 };
 
-unk_D_86B0C160 D_843847EC[] = {
+unk_D_86B0C160 gCameraFovyPresetRandom[] = {
     {
         0,
         0,
@@ -1166,7 +1166,7 @@ unk_D_86B0C160 D_843847EC[] = {
         50.0f,
     },
 };
-unk_D_86B0C160 D_84384888[] = {
+unk_D_86B0C160 gCameraFovyPresetSpecial[] = {
     {
         0,
         0,
@@ -1442,7 +1442,7 @@ unk_D_86B0C160 D_84384B2C[] = {
     },
 };
 
-Vec3f D_84384C30[] = {
+Vec3f gCameraOffsetTable[] = {
     { 0.17000000178813934f, 11.5f, -1.5f },
     { 0.10999999940395355f, 27.0f, -2.5f },
     { 0.12999999523162842f, 55.0f, 15.0f },
