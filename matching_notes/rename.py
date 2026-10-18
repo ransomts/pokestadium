@@ -98,15 +98,26 @@ def parse_field(row):
 
 # ---------------------------------------------------------------- repo facts
 
+_TEXT_CACHE = {}
+
+
+def file_text(path):
+    """Cached file read - preflight re-reads the whole repo per row otherwise.
+    Invalidated by Rewriter.commit() after any write."""
+    if path not in _TEXT_CACHE:
+        _TEXT_CACHE[path] = open(path, errors="replace").read()
+    return _TEXT_CACHE[path]
+
+
 def sa_definitions(name):
     """[(file, line_no, full_line)] for definition lines `name = 0x...`."""
     out = []
     for f in SA_FILES:
         if not os.path.exists(f):
             continue
-        for i, line in enumerate(open(f), 1):
+        for i, line in enumerate(file_text(f).splitlines(), 1):
             if line.startswith(name + " ") and "=" in line:
-                out.append((f, i, line.rstrip("\n")))
+                out.append((f, i, line))
     return out
 
 
@@ -170,7 +181,7 @@ def repo_grep_count(name, files):
     n = 0
     for f in files:
         try:
-            n += len(pat.findall(open(f, errors="replace").read()))
+            n += len(pat.findall(file_text(f)))
         except OSError:
             pass
     return n
@@ -206,7 +217,7 @@ def dlabel_files(sym):
         for fn in files:
             if fn.endswith(".s"):
                 p = os.path.join(dirpath, fn)
-                if pat.search(open(p, errors="replace").read()):
+                if pat.search(file_text(p)):
                     hits.append(p)
     return hits
 
@@ -215,7 +226,7 @@ def dlabel_info(sym):
     """(file, address, size) from the .s after `dlabel sym`: address from the /* ADDR */ comment,
     size from the following `.space 0xN` (or the next dlabel's address). None if unparseable."""
     for f in dlabel_files(sym):
-        text = open(f, errors="replace").read()
+        text = file_text(f)
         lines = text.splitlines()
         for i, line in enumerate(lines):
             if re.match(r"^dlabel\s+" + re.escape(sym) + r"\s*$", line):
@@ -239,7 +250,7 @@ def pragma_count(func):
         for fn in files_:
             if fn.endswith(".c"):
                 p = os.path.join(dirpath, fn)
-                c = len(pat.findall(open(p, errors="replace").read()))
+                c = len(pat.findall(file_text(p)))
                 if c:
                     n += c
                     files.append(p)
@@ -291,7 +302,7 @@ def preflight(rows, protected, named, allow_applied_skip=True):
         for f in rewrite_files():
             if not f.endswith(".h"):
                 continue
-            t = open(f, errors="replace").read()
+            t = file_text(f)
             if re.search(r"(typedef[^;{]*|struct\s+|union\s+|\}\s*)" + re.escape(r.new) + r"\s*[;{]", t):
                 errors.append(f"{tag}: {r.new!r} collides with a typedef/tag in {os.path.relpath(f, REPO)}")
                 break
@@ -301,7 +312,7 @@ def preflight(rows, protected, named, allow_applied_skip=True):
         for f in rewrite_files():
             if not f.endswith((".c", ".h")):
                 continue
-            if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", open(f, errors="replace").read()):
+            if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", file_text(f)):
                 is_typedef = True
                 break
         defs = sa_definitions(r.old)
@@ -446,6 +457,7 @@ class Rewriter:
     def commit(self):
         for path, text in self.edits.items():
             open(path, "w").write(text)
+        _TEXT_CACHE.clear()  # rewritten files: drop cached contents
         return sorted(self.edits)
 
     def move_s(self, old_path, new_path):
@@ -467,7 +479,7 @@ def map_symbol_span(name):
         sa_addrs = set()
         for f in SA_FILES:
             if os.path.exists(f):
-                for m in re.finditer(r"^(\S+)\s*=\s*(0x[0-9a-fA-F]+)\s*;", open(f, errors="replace").read(), re.M):
+                for m in re.finditer(r"^(\S+)\s*=\s*(0x[0-9a-fA-F]+)\s*;", file_text(f), re.M):
                     sa_addrs.add(int(m.group(2), 16))
         mp = os.path.join(REPO, "build/pokestadium-us.map")
         if os.path.exists(mp):
@@ -522,6 +534,7 @@ def do_rewrites(rows, files):
 def undo(rw, touched):
     for p in touched:
         git(["checkout", "--", p])
+    _TEXT_CACHE.clear()  # reverted files: drop cached contents
     for old, new in rw.mvs:
         if os.path.exists(new) and not os.path.exists(old):
             os.rename(new, old)
@@ -607,7 +620,7 @@ def is_typedef_row(r, files=None):
     for f in rewrite_files():
         if not f.endswith((".c", ".h")):
             continue
-        if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", open(f, errors="replace").read()):
+        if re.search(r"\}\s*" + re.escape(r.old) + r"\s*;", file_text(f)):
             return True
     return False
 
@@ -621,7 +634,7 @@ def c_definition_count(sym):
     for f in rewrite_files():
         if not f.endswith(".c"):
             continue
-        if pat.search(open(f, errors="replace").read()):
+        if pat.search(file_text(f)):
             n += 1
     return n
 
@@ -633,7 +646,7 @@ def is_c_static(sym):
         r"^\s*static\s+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b" + re.escape(sym) +
         r"((\[[^\]]*\])*)\s*[;=]", re.M)
     for f in rewrite_files():
-        if f.endswith(".c") and pat.search(open(f, errors="replace").read()):
+        if f.endswith(".c") and pat.search(file_text(f)):
             return True
     return False
 

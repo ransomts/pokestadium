@@ -204,7 +204,7 @@ def fixup(rows, facts, batch, log, vetoes):
 def plan_fixup_loop(batch, log, max_rounds=6):
     """Run rename.py plan; drop rows named in errors; repeat until clean or rounds out."""
     for rnd in range(max_rounds):
-        r = sh([PY, os.path.join(HERE, "rename.py"), "plan", LEDGER, "--batch", batch], 300)
+        r = sh([PY, os.path.join(HERE, "rename.py"), "plan", LEDGER, "--batch", batch], 1800)
         out = r.stdout + r.stderr
         if r.returncode == 0:
             log(f"  plan clean after {rnd} fixup round(s)")
