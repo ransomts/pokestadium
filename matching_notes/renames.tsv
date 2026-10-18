@@ -9021,466 +9021,466 @@ D_84816458	gStatusIconFrames	w28		frame counters for animated status icons	appli
 D_84803540	gPanelColors	w28		table of color values used by DrawPanelAlt	applied@60d28c0
 D_848035E0	gInputTimingTable	w28		table of timing and button-press data for panel interactions	applied@60d28c0
 D_848035FC	gModeColors	w28		table of RGB colors and textures associated with stadium modes	applied@60d28c0
-func_80013B8C	Graph_FillDepthRect	w29		calls Gfx_FillDepthRectangle using current camera viewport	applied
-func_80013C14	Graph_NoOp	w29		empty function in the GraphNode visit table	applied
-func_80013F7C	Graph_NoOp2	w29		empty function in the GraphNode visit table	applied
-func_800148D8	Graph_DrawModelWithTransform	w29		pushes a matrix and calls Graph_BeginLayerRender and func_80016274	applied
-func_80014980	Graph_DrawModelWithCompose	w29		uses Matrix_ComposeTR to set current matrix before rendering model	applied
-func_80014A60	Graph_DrawModelSimple	w29		renders model without modifying the matrix stack	applied
-func_80014AEC	Graph_DrawAnimatedSprite	w29		calculates colors and calls func_80016364 for animation frames	applied
-func_80014D24	Graph_RecordPosAndVisit	w29		calls Graph_RecordNodePosition then visits children	applied
-func_80014D50	Graph_VisitChildrenOnly	w29		wrapper that only calls Graph_VisitVisibleChildren	applied
-func_80015220	Graph_TraverseAndSetGlobals	w29		recursively visits nodes and sets gCurrentCameraNode, gCurrentLightNode, etc	applied
-func_80015360	Graph_IsFrameCurrent	w29		checks if gCurrentLightNode's frame matches gAnimationFrame	applied
-func_80015390	Graph_GetRecordedPosition	w29		searches the recorded positions table in Fragment2_1GraphNode	applied
-func_80015400	Gfx_SetCombineMode	w29		sets DP combine mode using a provided configuration struct	applied
-func_8001550C	Gfx_SyncPipe	w29		calls gDPPipeSync if D_800ABB08 is 0	applied
-func_80015684	Gfx_ResetRenderState	w29		resets prim color, texture LUT, and geometry modes to defaults	applied
-func_8001587C	Gfx_UpdateFogColor	w29		updates fog color and render mode if color differs from current	applied
-func_80015948	Gfx_ApplyRenderMode	w29		calls Graph_SetRenderMode if current fog color is set	applied
-func_80015984	Gfx_UpdatePrimColor	w29		updates primary color and index if they differ from current	applied
-D_8006F094	gActiveCameraNode	w29		used in CameraNode_Render to track the currently rendering camera	applied
-D_8006F098	gActiveNode	w29		assigned in func_80015220 when node type is 6	applied
-D_8006F0A0	gActiveLayerNode	w29		assigned in LayerNode_Process to track the current layer	applied
-D_800AA6C0	gGraphNodeReturnVal	w29		stores the return value of the node's function pointer	applied
-D_800AA6C8	gNodeMatrixCache	w29		array of MtxF pointers used to cache matrices for nodes	applied
-D_800AA8C8	gMatrixStack	w29		struct containing the matrix stack, indices, and allocated MtxF buffers	applied
-D_800AB970	gScaleStack	w29		struct tracking the current scale stack for the graph	applied
-D_800ABB00	gRenderModeIndex	w29		index used to access D_8006F124 render mode table	applied
-D_800ABB04	gRenderFlags	w29		flags used in Graph_SetRenderMode to determine specific render paths	applied
-D_800ABB08	gPipeSynced	w29		flag indicating if the DP pipe has been synchronized	applied
-D_800ABB10	gRenderState	w29		struct used to pass render state to Gfx_Update functions	applied
-D_800ABCB8	gCurrentRenderState	w29		pointer to the currently active render state	applied
-D_800ABCBC	gRenderStateCount	w29		counter for render state entries	applied
-func_80015AC4	Gfx_DisableTexture	w29		clears current texture state in gRenderState (D_800ABCB8) and sets SP texture to off	applied
-func_80015B20	Gfx_EnableTexture	w29		sets up texture LUT and image (gDPSetTextureImage) based on texture properties in arg0	applied
-func_80015DD8	Gfx_SetupTextureBlock	w29		loads a specific texture block (D_1001800) and sets combine mode to G_CC_MODULATEIDECALA	applied
-func_80015F64	Gfx_SetRenderLayer	w29		manages render layer indices and updates the current layer state pointer (D_800ABCB8)	applied
-func_80016010	Gfx_UpdateLayerAlpha	w29		sets alpha/transparency state (unk_03) based on the layer index arg0	applied
-func_80016060	Gfx_GetLayerIndex	w29		maps a layer ID to a specific internal index using a switch case	applied
-func_80016274	Gfx_DrawDisplayList	w29		submits a Gfx display list to the head, handling fragment memory mapping if necessary	applied
-func_80016344	Gfx_SetColor	w29		sets the current rendering color and alpha (D_800ABB10.unk_08.rgba)	applied
-func_80016364	Gfx_SetTextureParams	w29		sets texture pointers and parameters (D_800ABB10.unk_0C/10/14)	applied
-func_8001638C	Gfx_InitRenderState	w29		initializes the render state table (D_800ABB28) and resets layer properties	applied
-func_8001660C	Gfx_FlushLayers	w29		iterates through render layers and submits their branched display lists to the GPU	applied
-D_800ABB28	gLayerStates	w29		array of 10 layer state structures containing DL pointers and texture state	applied
-D_8006F120	gIsRenderInitialized	w29		boolean flag indicating if the rendering system is currently active	applied
-func_86800020	Sushi_FadeAudio	w29		Sets volume fade for audio channels based on demo mode status	applied
-D_86807518	gCombinedController	w29		Accumulates input from all four controllers into a single state	applied
-D_86807540	gSushiFadeTimer	w29		Timer used for screen fades and audio transitions in the sushi sequence	applied
-D_86806D88	gTexPanelBase	w29		Texture region for the base panel element	applied
-D_86806D90	gTexPanelMid	w29		Texture region for the middle panel element	applied
-D_86806D98	gTexPanelTop	w29		Texture region for the top panel element	applied
-D_86806DA0	gTexPanelBottom	w29		Texture region for the bottom panel element	applied
-D_86806DA8	gTexPanelSide	w29		Texture region for the side panel element	applied
-D_86806DB0	gTexPanelCorner1	w29		Texture region for corner element 1	applied
-D_86806DB8	gTexPanelCorner2	w29		Texture region for corner element 2	applied
-D_86806DC0	gPanelSet0	w29		Texture set for panel state 0	applied
-D_86806DCC	gPanelSet1	w29		Texture set for panel state 1	applied
-D_86806DDC	gPanelSet2	w29		Texture set for panel state 2	applied
-D_86806DF0	gPanelSet3	w29		Texture set for panel state 3	applied
-D_86806E08	gPanelSet4	w29		Texture set for panel state 4	applied
-D_86806E38	gSushiUI_TextPosA	w29		Table of text positions and lengths for UI element A	applied
-D_86806E60	gSushiUI_TextPosB	w29		Table of text positions and lengths for UI element B	applied
-D_86806E88	gSushiUI_TextPosC	w29		Table of text positions and lengths for UI element C	applied
-D_86806F50	gSushiColorGradA	w29		RGB color gradient table A	applied
-D_86806F5C	gSushiColorGradB	w29		RGB color gradient table B	applied
-D_86806F68	gSushiColorGradC	w29		RGB color gradient table C	applied
-func_86806BF0	Sushi_UpdateLogic	w29		Called during the main loop to update sushi-specific logic	applied
-func_86806A50	Sushi_InitAssets	w29		Initializes assets and internal state for the sushi go round	applied
-func_878010C8	Sushi_SetDemoParams	w29		Sets parameters when the game is in demo mode	applied
-func_8120241C	DrawStadiumUI	w29		calls DrawHorizontalBorder and BlendRect to draw UI elements based on ScreenMode_Current and GbPakDevice->unk_5DC5 (game version)	applied
-D_8120D7F3	gStadiumUILayout	w29		used in func_8120241C to index TileMap_12x12 for drawing UI text/graphics	applied
-D_8120D820	gStadiumUIMap	w29		used in DrawFullScreenBackground to index TileMap_12x12 for drawing specific UI elements	applied
-D_8122C771	gPlayerInfoBoxType	w29		used in DrawPlayerInfoBox to determine the number of iterations for drawing info boxes	applied
-D_8122C770	gStadiumScreenFlag0	w29		global flag used in stadium rendering logic	applied
-D_8122C760	gStadiumTimer	w29		global timer used for stadium screen animations or timing	applied
-D_8122C76C	gStadiumInterval	w29		global interval value associated with gStadiumTimer	applied
-unk_D_8122B2C0	GbPakDeviceState	w29	unk_D_8122B2C0:GbPakDeviceState	struct containing PFS, status, and transfer buffers for the Game Boy Pak interface	applied
-unk_D_8122B1E8	GbPakThreadContext	w29	unk_D_8122B1E8:GbPakThreadContext	struct containing OSMesgQueue and state for the GB Pak thread	applied
-unk_func_812009D0	GbPakHeader	w29	unk_func_812009D0:GbPakHeader	struct representing the Game Boy ROM header used in GbPak_FindMatchingHeader	applied
-unk_D_8122C748	GbPakAssetData	w29	unk_D_8122C748:GbPakAssetData	struct containing tile graphics and markers used in DrawHorizontalBorder and DrawVerticalMarker	applied
-unk_D_8122B300	GbPakThreadStruct	w29	unk_D_8122B300:GbPakThreadStruct	struct wrapping OSThread and its stack for the GB Pak thread	applied
-unk_D_8122B2F8	TileAssetFragment	w29	unk_D_8122B2F8:TileAssetFragment	large buffer used for tile asset fragments	applied
-func_812070A0	GbPak_InitGfx	w29		called in EmuMainInit before framebuffer setup, likely initializes GB graphics state	applied
-func_81204A84	GbPak_DrawMenu	w29		draws various GB-related menus (Exit, Quit, Config) based on Flag_GbPakInitialized	applied
-D_8122C774	gEmuSavedAudioMode	w29		stores GbPakStatusFlags.unk_00/01 when switching power states in AudioStateMachine	applied
-func_81206D9C	GbEmu_Init	w29		initializes emulator state, screen mode, and audio indices from GbEmuState	applied
-func_81206E64	GbEmu_RunFrame	w29		executes the main emulator loop and handles status byte transitions	applied
-func_81206F38	GbEmu_AudioUpdateThread	w29		periodically updates GB audio when the RSP task manager is idle and status is 2	applied
-D_8122C4F9	gGbScreenRefreshCounter	w29		incremented in case 6 and used to calculate GbPakThreadData.unk_3C	applied
-D_8122C4F6	gGbBankLoadedFlag	w29		set to 1 when LoadCompressedBank is called and bank data is validated	applied
-D_8122C4EC	gAudioBufferPtr	w29		stores the result of AllocateAudioBuffer for the GB emulator	applied
-func_87801684	DrawAnimatedSprite	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied
-func_87801754	DrawAnimatedSprite2	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied
-func_87801824	DrawAnimatedSprite3	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied
-func_878018F4	DrawAnimatedTexture	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 40x20 texture tile	applied
-func_87801AC0	DrawAnimatedTexture2	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 40x20 texture tile	applied
-func_87801C8C	DrawAnimatedSpriteLarge	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 24x19 sprite	applied
-func_87801D5C	DrawAnimatedTextureDual	w29	unk_func_87801684:AnimFrame	Handles animation frame timing for two texture slots and draws 28x28 tiles	applied
-func_87801F48	DrawDualTexturePanel	w29		Loads and draws two 52x25 texture panels vertically stacked	applied
-D_8780A270	gResultCubeTex_8	w29		Extension of the result cube texture bank (follows gResultCubeTex_0-7)	applied
-D_87806334	gScrollingMessageOffset	w29		Static offset used to scroll the move name text in UpdateScrollingMessage	applied
-D_87806360	gAnimSprite1_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801684	applied
-D_8780FA74	gAnimSprite1_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801684	applied
-D_8780FA78	gAnimSprite1_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801684	applied
-D_87806364	gAnimSprite2_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801754	applied
-D_8780FA7C	gAnimSprite2_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801754	applied
-D_8780FA80	gAnimSprite2_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801754	applied
-D_87806368	gAnimSprite3_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801824	applied
-D_8780FA84	gAnimSprite3_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801824	applied
-D_8780FA88	gAnimSprite3_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801824	applied
-D_8780636C	gAnimTex1_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_878018F4	applied
-D_8780FA8C	gAnimTex1_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_878018F4	applied
-D_8780FA90	gAnimTex1_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_878018F4	applied
-D_87806370	gAnimTex2_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801AC0	applied
-D_8780FA94	gAnimTex2_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801AC0	applied
-D_8780FA98	gAnimTex2_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801AC0	applied
-D_87806374	gAnimSpriteLarge_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801C8C	applied
-D_8780FA9C	gAnimSpriteLarge_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801C8C	applied
-D_8780FAA0	gAnimSpriteLarge_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801C8C	applied
-D_87806378	gAnimTexDual_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frames for the two slots in func_87801D5C	applied
-D_8780FAA8	gAnimTexDual_Ptr	w29	unk_func_87801684:AnimFrame	Pointers to current frame data for the two slots in func_87801D5C	applied
-D_8780FAB0	gAnimTexDual_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for the two slots in func_87801D5C	applied
-D_88002890	gHpBarDisplayListEnd	w29		ends the display list for the HP bar	applied
-D_8800CAB0	gFragment22GfxData0	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_8800DAB8	gFragment22GfxData1	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_8800EAC0	gFragment22GfxData2	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_8800FAC8	gFragment22GfxData3	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_88010AD0	gFragment22GfxData4	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_88011AD8	gFragment22GfxData5	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_88011ED0	gFragment22GfxData6	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_880122C8	gFragment22GfxData7	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_880126C0	gFragment22GfxData8	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_88012AB8	gFragment22GfxData9	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_88013060	gFragment22GfxData10	w29		large array of Gfx commands/vertices for fragment 22	applied
-D_8800CA98	gFragment22HpBarConfig	w29		struct containing dimensions and pointer to gHpBarPixelData	applied
-func_88001258	Labo_SetMessageBoxText	w29		calls MessageBox_SetText with a string from gLaboMessageBankSystem based on a state index	applied
-func_88001300	Labo_InitFragment	w29		initializes the Labo fragment, allocates UI elements like status bars, message boxes, and blinking objects	applied
-func_88001CBC	Labo_SetUIState	w29		calls UIElement_SetState and a custom state handler on the GridMenu	applied
-func_88001D0C	Labo_HandleInput	w29		delegates input handling to the GridMenu's input function	applied
-func_88001D34	Labo_GetActivePlayerCount	w29		counts bits in the active player mask to determine how many players are present	applied
-func_88001D94	Labo_ProcessInput	w29		main input loop checking for button presses and validating Pokemon properties (shiny, gender, species) before transitioning fragments	applied
-func_8800233C	Labo_ThreadMain	w29		main thread loop handling fade states, message box sequences, and final fragment transition	applied
-func_88002580	Labo_RenderFrame	w29		calls TextObject_Render and TextObject_PostRender then advances the stage	applied
-func_880025D8	Labo_WaitUntilExit	w29		loops rendering until a message is received in the controller queue	applied
-func_88002628	Labo_FragmentEntry	w29		entry point for the fragment: loads assets, initializes message banks, creates the main object and thread	applied
-func_82200020	GetControllerInputMask	w29		checks PI_STATUS_REG and a memory address for controller input state	applied
-func_82201108	DrawParticleTrail	w29		updates particle positions and calls DrawParticleSprites	applied
-func_822014C0	AreaSelect_Update	w29		empty function in the area selection logic	applied
-func_82201AC8	DrawBeveledPanel	w29		draws a panel with textured borders (D_2028A60 etc) and a filled center	applied
-func_822022C8	DrawAreaLabel	w29		draws a beveled panel and a message string from the bank	applied
-func_82202374	AreaSelect_InitInput	w29		initializes controller reading and menu input	applied
-func_822023A4	AreaSelect_HandleInput	w29		handles button presses to change current area (D_822031D8)	applied
-func_82202520	AreaSelect_AnimateTransition	w29		interpolates particle positions between two areas over 6 frames	applied
-func_8220263C	AreaSelect_AnimateParticleOut	w29		decrements particle size and stops music when finished	applied
-func_822026BC	AreaSelect_FadeInOverlay	w29		increases alpha of the tile overlay until Stage_FadeOut is called	applied
-func_82202758	AreaSelect_FadeOutSequence	w29		increments gFadeStepCounter to trigger Stage_FadeOut	applied
-func_822027E8	AreaSelect_HandleFadeEnd	w29		checks Stage_GetFadeState to transition to the final state	applied
-func_82202850	AreaSelect_SetupProjection	w29		sets up ortho projection and viewport for the area select screen	applied
-func_82202980	AreaSelect_Render	w29		main render loop for area select: backgrounds, particles, and labels	applied
-func_82202A6C	AreaSelect_TransitionToGame	w29		handles the final alpha fade and transition to the selected state	applied
-func_82202AFC	AreaSelect_StartAnimation	w29		initializes particles and fades in the area select screen	applied
-func_82202B60	AreaSelect_MainLoop	w29		state machine managing input, transitions, and rendering	applied
-func_82202CB8	AreaSelect_LoadAssets	w29		loads background textures from BinArchive based on player name/context	applied
-func_82202DC4	AreaSelect_Main	w29		entry point for the area selection screen logic	applied
-D_82203064	gParticleTextures	w29		array of texture pointers used in DrawParticleSprites	applied
-D_822030F0	gAreaMessageBank	w29		pointer to the message bank for area names	applied
-D_822030F4	gAreaAssetArchive	w29		BinArchive containing background textures	applied
-D_822030F8	gAreaViewport	w29		Vp struct for the area select screen	applied
-D_82203108	gAreaProjMatrix	w29		Mtx used for the ortho projection	applied
-D_82203148	gBgTexturePrimary	w29		primary background texture for the area select screen	applied
-D_8220314C	gBgTextureSecondary	w29		secondary background texture for blending	applied
-D_82203150	gTileOverlayState	w29		struct containing position and color for the tile overlay	applied
-D_82203160	gParticleTrailState	w29		array of structs tracking particle trail positions and sizes	applied
-D_822031D8	gCurrentAreaIndex	w29		index into gStateTransitionTable and gTileConfigTable	applied
-D_822031DA	gPreviousAreaIndex	w29		stores the area index before a transition	applied
-D_822031DC	gTransitionFrame	w29		frame counter for the area transition animation	applied
-D_822031E0	gAreaAudioState	w29		struct tracking audio/music state for the area select screen	applied
-D_822031E8	gAreaPlayerName	w29		PlayerName struct used to determine background assets	applied
-unk_D_82202FE4	AreaConfig	w29		struct defining area positions and colors in gTileConfigTable	applied
-unk_D_82203160	ParticleTrail	w29		struct tracking particle trail properties and history	applied
-unk_D_82203150	TileOverlay	w29		struct defining the tile overlay's visual properties	applied
-unk_D_82203160_006	ParticlePos	w29		struct containing x, y, z coordinates for a particle	applied
-func_83100020	UpdateNodePosition	w29		calculates x-position and D_83101EEE based on a pendulum-like oscillation (ptr->unk_180)	applied
-func_83100180	DrawNodeGeometry	w29		handles rendering of specific graph nodes, including the display list D_83101C60	applied
-func_8310024C	UpdateNodeColorAndScale	w29		interpolates color (unk_172-17C) and scale (unk_030) using the table D_83101E6C	applied
-func_83100578	DrawNodeEffect	w29		renders the effect geometry D_83101D80 with colors derived from the node state	applied
-func_831006D4	InitBorderAnimation	w29		initializes the border animation state, setting the initial scale to 7.0f	applied
-func_831006F4	UpdateBorderAnimation	w29		decrements timer and updates the scale factor (unk_08) for the border effect	applied
-func_83100784	DrawBorderEffect	w29		draws a scaled texture border using Gfx_DrawTextureRect and fills the outer screen area	applied
-func_83100C78	StartBorderAnimation	w29		triggers the border animation with a specified duration (arg0)	applied
-func_83100CB8	InitFadeAnimation	w29		initializes the fade-out animation state	applied
-func_83100CD4	UpdateFadeAnimation	w29		updates the alpha/color value (unk_04) for the screen fade effect	applied
-func_83100D4C	DrawTiledTexture	w29		renders a texture (arg0) in 16x16 tiles across the screen with a specific alpha (arg1)	applied
-func_8310102C	DrawScreenOverlay	w29		calls DrawTiledTexture or Gfx_DrawTextureAtlas based on the current fade value	applied
-func_83101074	StartFadeAnimation	w29		triggers the fade animation with a specific state (arg0)	applied
-func_831010B0	InitInput	w29		initializes controller reading and menu input systems	applied
-func_831010E0	SetNodeState	w29		sets the animation state of a node and initializes its color/scale from D_83101E6C	applied
-func_831011D4	DrawScissoredTexture	w29		wrapper for gSPScisTextureRectangle to draw a specific texture region	applied
-func_831013FC	DrawCursorEffect	w29		draws a small 28x28 texture at the position defined by D_83101EEE/D_83101EF0	applied
-func_83101608	InitClearScreenState	w29		resets animation states and positions for the "Clear" screen sequence	applied
-func_83101674	RenderClearScreen	w29		main render loop for the clear screen: overlay, graph nodes, cursor, and border	applied
-func_831016D0	UpdateClearScreenLogic	w29		manages the sequence of animations (node movements, fade-ins, border triggers)	applied
-func_83101818	RunClearScreenSequence	w29		main loop that handles input, animation updates, and rendering until the sequence ends	applied
-func_83101870	InitClearScreenGraph	w29		loads geometry layouts and initializes the two GraphNodes (D_83102210, D_83102214)	applied
-func_83101A98	ClearScreen_Main	w29		entry point for the "Clear" screen: loads assets, runs the sequence, and cleans up	applied
-D_83101E6C	gNodeColorScaleTable	w29		table containing duration, scale, and RGB colors for node animations	applied
-D_83102218	gBorderAnimState	w29		global state for the screen border animation (timer, scale)	applied
-D_83102224	gFadeAnimState	w29		global state for the screen fade animation (timer, alpha)	applied
-D_83101EF4	gClearScreenRoot	w29		GraphNode for the main clear screen geometry	applied
-D_83101EF8	gClearScreenNode1	w29		GraphNode for the first animated element	applied
-D_83101EFC	gClearScreenNode2	w29		GraphNode for the second animated element	applied
-D_83101EEE	gCursorX	w29		current X coordinate for the cursor effect	applied
-D_83101EF0	gCursorY	w29		current Y coordinate for the cursor effect	applied
-D_83101EE8	gClearScreenState	w29		current state machine index for the clear screen sequence	applied
-D_83101EEA	gClearScreenTimer	w29		frame counter for timing events in the clear screen sequence	applied
-D_83101EEC	gShowCursorFlag	w29		flag determining if the cursor effect should be rendered	applied
-D_83102210	gNode1State	w29		pointer to the state structure for the first animated node	applied
-D_83102214	gNode2State	w29		pointer to the state structure for the second animated node	applied
-D_83101C60	gClearScreenDL1	w29		display list for the first node's geometry	applied
-D_83101D80	gClearScreenDL2	w29		display list for the second node's effect geometry	applied
-D_83101D08	gClearScreenGeo1	w29		geometry layout definition for the first node	applied
-D_83101DE8	gClearScreenGeo2	w29		geometry layout definition for the second node	applied
-D_83101E1C	gClearScreenRootGeo	w29		geometry layout for the root clear screen object	applied
-D_83101BE0	gClearScreenVerts1	w29		vertex data for the first node's geometry	applied
-D_83101D40	gClearScreenVerts2	w29		vertex data for the second node's effect	applied
-D_82F144B0	gProgressBarRect	w29		unk_D_82F144B0:ProgressBarRect	applied
-func_82F01FE4	Picker_SlideTransition	w29		updates x-offset based on timer for sliding animation between pokemon lists	applied
-func_82F020B4	Picker_HandleBattleStart	w29		checks for battle start signal and copies selected pokemon sprite to buffer	applied
-func_82F02180	Picker_ExitAnimation	w29		handles the countdown and coordinate shift when exiting the picker	applied
-func_82F022DC	Picker_DrawFrame	w29		draws the 9-slice border/frame for the pokemon selection window	applied
-func_82F02544	Picker_DrawHeader	w29		draws the top panel with a message string based on the player index	applied
-func_82F028AC	Picker_DrawRect	w29		helper to draw filled rectangles with specific colors	applied
-func_82F029FC	Picker_DrawSlot	w29		draws the background box for a single pokemon slot	applied
-func_82F02CE8	Picker_DrawCursor	w29		draws the animated selection cursor with sine-wave offset	applied
-func_82F02EAC	Picker_DrawListBackground	w29		draws the background for the vertical pokemon list	applied
-func_82F02FEC	Picker_DrawPanelBorder	w29		draws a textured border for a panel with fill color	applied
-func_82F037EC	Picker_DrawLargePanelBorder	w29		draws a larger textured border for a panel with fill color	applied
-func_82F04010	Picker_DrawListSlot	w29		draws a single slot in the pokemon list with transparency if empty	applied
-func_82F04FD4	Picker_Reset	w29		zeroes out the gPickerState structures	applied
-func_82F0504C	Picker_Update	w29		main state machine update loop for the picker	applied
-func_82F05110	Picker_Render	w29		main render loop that calls UpdateAndRenderPicker	applied
-func_82F05198	Picker_GetSelectedSprite	w29		returns the pointer to the selected pokemon sprite buffer	applied
-func_82F051B8	Picker_SwapSelectedSprites	w29		swaps the selected pokemon sprite buffers between the two players	applied
-func_82F05210	Picker_SetSelectedSprite	w29		copies pokemon data into the selected sprite buffer	applied
-func_82F0525C	Picker_GetSelectionInfo	w29		fills a struct with the current selection state (index, count, etc)	applied
-D_82F20A04	gPickerActivePlayer	w29		index of the player currently interacting with the picker	applied
-unk_D_82F144D0	PickerState	w29		state structure for the pokemon picker (coords, indices, timers)	applied
-unk_D_82F20A00	PickerSpriteBuffer	w29		buffer containing the decoded sprite data for the pokemon list	applied
-unk_D_82F144D0_0CA8	PickerPokemonGroup	w29		structure representing a group of pokemon (e.g. a team)	applied
-unk_func_82F00838_sp30_00C	PickerPokemonEntry	w29		structure for a single pokemon entry in the picker	applied
-func_83402CE4	Menu_SetStep	w29		sets gMenuStep and handles controller state for menu transitions	applied
-func_83402D74	Menu_ExitToGallery	w29		called during fade out to return to the main gallery state	applied
-func_8004B9C4	Stage_SetFadeColor	w29		sets the fill color for the stage fade effect	applied
-D_83303434	gMenuConfirmState	w29		tracks the state of the confirmation timer/process	applied
-unk_D_833031B4	MenuItem	w29		struct containing texture, dimensions, and string ID for menu items	applied
-unk_D_83303180	MenuSubPanelItem	w29		struct for sub-panel textures and labels	applied
-D_83303180	gSubPanelItems	w29		table of items used in DrawSubPanel	applied
-D_8330325C	gGridOffsetX	w29		X offsets for the Pokemon grid based on gallery mode	applied
-D_83303260	gGridOffsetY	w29		Y offsets for the Pokemon grid based on gallery mode	applied
-D_83303264	gGridStepX	w29		X spacing between Pokemon in the grid	applied
-D_83303268	gGridStepY	w29		Y spacing between Pokemon in the grid	applied
-D_8330326C	gMenuExitFadeColors	w29		table of fade colors associated with each menu item	applied
-func_83402C6C	Menu_IsExitPressed	w29		returns non-zero when a menu exit condition is met, checked alongside gBackgroundFadeTimer	applied
-D_83407B00	gGalleryMainSelectionCam	w29		passed as a target to Gallery_SyncSelectionToCam alongside gMenuActiveData	applied
-D_83603300	gSelectionCamList	w29		passed to CamList_Init and CamList_Update, used for selection screen navigation	applied
-D_836033B4	gSelectedMonCount	w29		incremented/decremented when D_83403C00[idx] is toggled; compared against D_836033B8	applied
-D_836033B8	gMaxSelectableMonCount	w29		initialized via CountDisplayableMonIndices; used as a limit for gSelectedMonCount	applied
-D_836033BC	gSelectionScreenFadeType	w29		set based on arg0 in InitializeSelectionScreen, used to determine Stage_FadeIn type	applied
-D_836033C0	gBackgroundGradientMask	w29		initialized to 0xFFE3 and checked in DrawBackgroundGradient loop	applied
-D_836033C8	gCursorCanMoveDown	w29		set in UpdateCursorEdgeFlags based on Gallery_CountDisplayableInPage	applied
-D_83403C00	gMonSelectionFlags	w29		array of flags checked to see if a monster is selected (D_83403C00[idx] == 1)	applied
-D_83402EE0	gDisplayableMonIndices	w29		passed to CamList_Init as the source list of monsters	applied
-func_83801744	AnimateIconExit	w29		handles the reverse animation of icons exiting the screen, updating positions and sizes based on D_838067DC	applied
-func_83801988	AnimateIconSelection	w29		animates the selected player icon moving to a specific position using tables D_83805510 and D_83805528	applied
-func_83801AE0	AnimateIconReset	w29		resets icon positions and clears callbacks, transitioning the state back to 0	applied
-func_83801C94	HandleRentalSelection	w29		handles the logic for rental Pokemon selection, calling func_83402CE4 and checking result codes	applied
-func_83801E00	UpdateSelectionOffset	w29		calculates and sets the animation offset for the currently selected player icon	applied
-func_83801E84	DrawPlayerSlotBorder	w29		draws the tiled border for a player slot with colors based on whether the player is active or rental	applied
-func_83801F84	DrawPlayerSlotText	w29		prints the player name and ID for a specific slot, or placeholders if the slot is rental	applied
-func_8380217C	DrawPlayerSelectUI	w29		renders the overall text UI for the player selection screen, including bank 2C message strings	applied
-D_83805670	gSnapSelectRoot	w29		root GraphNode for the SnapSelect layout, initialized via process_geo_layout	applied
-D_83805678	gSnapSelectNodes	w29		array of pointers to GraphNodes used for player icons and UI elements	applied
-D_83805690	gSnapSelectRentalNode	w29		GraphNode specifically used for rental player icons	applied
-D_83805698	gPlayerIconNodes	w29		2D array of GraphNodes representing the actual icons on screen	applied
-unk_D_83806778	PlayerSlotData	w29		struct containing species, gender, item, and name for a player slot	applied
-D_83806778	gPlayerSlotData	w29		array of PlayerSlotData for the 4 player slots	applied
-D_838067C8	gPlayerIconTextures	w29		pointers to textures assigned to each player based on their held item or species	applied
-D_838067DC	gSnapSelectAnimFrame	w29		current frame counter for the selection screen animations	applied
-D_838067E0	gSelectedPlayerIndex	w29		index of the currently selected player/slot (0-5)	applied
-D_838067E4	gBorderHeight	w29		calculated height for the tiled borders during animation	applied
-D_838067E6	gSmallBorderHeight	w29		calculated height for the small tiled borders during animation	applied
-D_83804CC0	gSnapSelectLayout	w29		geometry layout data for the main SnapSelect screen	applied
-D_83804D10	gPlayerInfoPanelVerts	w29		vertices for the player information panel	applied
-D_83804DD0	gPlayerInfoPanelDL	w29		display list for rendering the player information panel	applied
-D_83804EB8	gPlayerInfoPanelGeo	w29		geometry definition for the player info panel	applied
-D_83804EF0	gPlayerInfoPanelVerts2	w29		secondary vertices for the player info panel	applied
-D_83804FF0	gPlayerInfoPanelDL2	w29		secondary display list for the player info panel	applied
-D_83805118	gPlayerInfoPanelGeo2	w29		secondary geometry definition for the player info panel	applied
-D_83805150	gPlayerInfoPanelVerts3	w29		third set of vertices for the player info panel	applied
-D_83805250	gPlayerInfoPanelDL3	w29		third display list for the player info panel	applied
-D_83805378	gPlayerInfoPanelGeo3	w29		third geometry definition for the player info panel	applied
-D_838053B0	gPlayerInfoPanelVerts4	w29		fourth set of vertices for the player info panel	applied
-D_838053F0	gPlayerInfoPanelDL4	w29		fourth display list for the player info panel	applied
-D_83805458	gPlayerInfoPanelGeo4	w29		fourth geometry definition for the player info panel	applied
-D_8380548C	gPlayerIconAnimData	w29		animation and positioning data for the player icons	applied
-D_838054E0	gIconEntryX	w29		X-coordinate table for the icon entry animation	applied
-D_838054F8	gIconEntryY	w29		Y-coordinate table for the icon entry animation	applied
-D_83805510	gIconSelectX	w29		X-coordinate table for the icon selection animation	applied
-D_83805528	gIconSelectY	w29		Y-coordinate table for the icon selection animation	applied
-func_8400094C	DrawCustomWindow	w29		draws a window with textured corners (D_20288E0, D_2028960, D_20287E0, D_2028860) and a filled center	applied
-func_840019A4	ResetMenuSelections	w29		zeroes out the current player and opponent selection indices in D_84002D18	applied
-func_840019BC	IsAnyMenuOptionSelected	w29		checks if either player or opponent selection is valid and has an associated texture	applied
-func_84001A1C	PrintMenuText	w29		prints text at a calculated vertical offset based on the index arg2	applied
-func_84001AE0	DrawRuleDetailsScreen	w29		draws the rule description and option ranges (1-100, 50-55, etc) using gRuleMessageBank and gOptionMessageBank	applied
-func_84001E18	HandleRuleOptionInput	w29		handles D-pad input to change the rule option index D_84002D20	applied
-func_84001F1C	ResetRuleOption	w29		resets the rule option index D_84002D20 to -1	applied
-func_84001F2C	PrintRuleOptionText	w29		prints rule option text with a color highlight if the index matches D_84002D28.unk_08	applied
-func_84001FC0	DrawRuleOptionPanel	w29		draws a panel and rule option text when D_84002D28.unk_04 is 8	applied
-func_840021CC	InitRuleOptionState	w29		initializes the rule option window position and state in D_84002D28	applied
-func_840021F4	RuleOption_Next	w29		increments the rule option counter and sets state to 4 when it reaches 8	applied
-func_84002234	RuleOption_Prev	w29		decrements the rule option counter and sets state to D_84002D28.unk_06 when it reaches 0	applied
-func_84002274	HandleRuleOptionSelection	w29		handles A/B/D-pad input to select or cycle through rule options	applied
-func_84002388	Menu_UpdateInput	w29		reads controller inputs and initializes menu input state	applied
-func_84002430	Menu_FadeIn	w29		handles the fade-in transition and draws the background atlas D_84002D0C	applied
-func_840024B0	Menu_FadeOut	w29		stops music and handles the fade-out transition	applied
-func_8400253C	Menu_AnimateWindowIn	w29		animates the window size from 0x10 to 0x170 while drawing the title panel	applied
-func_840025FC	Menu_AnimateWindowOut	w29		animates the window size decreasing while drawing the title panel	applied
-func_840026D8	Menu_SetupBattle	w29		initializes the battle with selected players and rules based on gMenuEntries and D_84002D18	applied
-func_84002A84	RuleMenu_Main	w29		entry point that loads assets (common_menu1_ui, etc), initializes message banks, and runs the main loop	applied
-D_84002D18	gMenuSelection	w29		unk_D_84002D18 struct containing current player (unk_00) and opponent (unk_02) indices	applied
-D_84002D20	gSelectedRuleOption	w29		index of the currently highlighted rule option	applied
-D_84002D28	gRuleOptionWindow	w29		unk_D_84002D28 struct tracking the rule option window's position, size, and selection	applied
-D_84002BE0	gWindowAnimTimer	w29		timer used to trigger the drawing of the window background during animation	applied
-D_84002BE4	gSelectedRuleValue	w29		stores the value of the selected rule option (used in Battle_Init)	applied
-D_84002C98	gRuleBattleIds	w29		table mapping rule options to battle IDs	applied
-D_84002D0C	gMenuBackgroundAtlas	w29		pointer to the background texture atlas loaded from BinArchive	applied
-unk_D_84002D18	MenuSelection	w29		struct containing player and opponent selection indices	applied
-unk_D_84002D28	RuleOptionWindow	w29		struct containing window coordinates and rule option state	applied
-unk_D_84002BE8	MenuEntry	w29		struct defining a menu item's properties, position, and textures	applied
-func_80007754	Menu_SetupDisplayList	w29		called after Menu_GraphInit and before Menu_MainLoop to prepare rendering	applied
-unk_D_84102450	MenuItemInfo	w29		struct containing screen coordinates and navigation indices (unk_08-0B) for menu items	applied
-unk_D_84102498	MenuRectAnim	w29		struct containing animation state and coordinates for the decorative rectangles	applied
-D_84102510	gMenuAnimFlag0	w29		flag array used in MenuConfig_InitAnimation based on gMenuConfig bits	applied
-D_8410251C	gMenuAnimFlag1	w29		flag array used in MenuConfig_InitAnimation based on gMenuConfig bits	applied
-D_8410254C	gMenuGeoLayoutRoot	w29		geo layout table used to initialize gMenuGeoRoot	applied
-D_841025B0	gMenuBarVerts0	w29		vertex data for the first segment of the menu bar background	applied
-D_841025F0	gMenuBarVerts1	w29		vertex data for the second segment of the menu bar background	applied
-D_84102630	gMenuBarVerts2	w29		vertex data for the third segment of the menu bar background	applied
-D_84102670	gMenuBarVerts3	w29		vertex data for the fourth segment of the menu bar background	applied
-D_841026B0	gMenuBarVerts4	w29		vertex data for the fifth segment of the menu bar background	applied
-D_841026F0	gMenuBarVerts5	w29		vertex data for the sixth segment of the menu bar background	applied
-D_84102730	gMenuBarVerts6	w29		vertex data for the seventh segment of the menu bar background	applied
-D_84102770	gMenuBarVertsRight0	w29		vertex data for the right side of the menu bar background	applied
-D_841027B0	gMenuBarVertsRight1	w29		vertex data for the right side of the menu bar background	applied
-D_841027F0	gMenuBarVertsRight2	w29		vertex data for the right side of the menu bar background	applied
-D_84102830	gMenuBarVertsRight3	w29		vertex data for the right side of the menu bar background	applied
-D_84102870	gMenuBarVertsRight4	w29		vertex data for the right side of the menu bar background	applied
-D_841028B0	gMenuBarVertsRight5	w29		vertex data for the right side of the menu bar background	applied
-D_841028F0	gMenuBarVertsRight6	w29		vertex data for the right side of the menu bar background	applied
-D_84102D78	gMenuOptionVerts0	w29		vertex data for the first segment of the option background	applied
-D_84102DB8	gMenuOptionVerts1	w29		vertex data for the second segment of the option background	applied
-D_84102DF8	gMenuOptionVerts2	w29		vertex data for the third segment of the option background	applied
-D_84102E38	gMenuOptionVerts3	w29		vertex data for the fourth segment of the option background	applied
-D_84102E78	gMenuOptionVerts4	w29		vertex data for the fifth segment of the option background	applied
-D_84102EB8	gMenuOptionVerts5	w29		vertex data for the sixth segment of the option background	applied
-D_84102EF8	gMenuOptionVertsRight0	w29		vertex data for the right side of the option background	applied
-D_84102F38	gMenuOptionVertsRight1	w29		vertex data for the right side of the option background	applied
-D_84102F78	gMenuOptionVertsRight2	w29		vertex data for the right side of the option background	applied
-D_84102FB8	gMenuOptionVertsRight3	w29		vertex data for the right side of the option background	applied
-D_84102FF8	gMenuOptionVertsRight4	w29		vertex data for the right side of the option background	applied
-D_84103038	gMenuOptionVertsRight5	w29		vertex data for the right side of the option background	applied
-func_84206EE0	ItemPanel_RemoveSelected	w29		calls MarkSlotForRemoval and resets panel position	applied
-func_84206F1C	ItemPanel_MoveCursorLeft	w29		decrements unk_0010 (column), sets state 0xC, plays sound 1	applied
-func_84206F64	ItemPanel_MoveCursorRight	w29		increments unk_0010 (column), sets state 0xC, plays sound 1	applied
-func_84206FB0	ItemPanel_MoveCursorUp	w29		decrements unk_0012 (row), sets state 0xD, plays sound 1	applied
-func_84206FF8	ItemPanel_MoveCursorDown	w29		increments unk_0012 (row), sets state 0xD, plays sound 1	applied
-func_84207040	ItemPanel_HandleInput	w29		checks BTN_A, BTN_B, and D-pad to change state or move cursor	applied
-func_84207190	ItemPanel_CheckModeTransition	w29		calls CheckStatThresholdForMode to determine next state (0xF, 7, or 0xE)	applied
-func_8420720C	ItemPanel_HandleMenuSelection	w29		handles menu options: reset cursor, trigger anim, sync data, or clear items	applied
-func_842073A4	ItemPanel_HandleAltMenuSelection	w29		similar to func_8420720C but uses different menu index 0xA	applied
-func_84207530	ItemPanel_HandleModeSpecificSelection	w29		handles menu selection based on gBattleContext.unk_0001 (modes 3, 4, 5)	applied
-func_84207634	ItemPanel_HandleActionSelection	w29		calls TriggerSelectionAnim and sets state 5 if menu index 2 is selected	applied
-func_842076A0	ItemPanel_HandleCancelSelection	w29		sets state 7 if menu index 3 is selected	applied
-func_842076F8	ItemPanel_UpdateCursorAnim	w29		updates unk_000C based on unk_000E to animate selection border	applied
-func_842078C0	ItemPanel_Init	w29		initializes the ItemPanel struct (unk_D_84211B50) with positions and IDs	applied
-func_842079B4	ItemPanel_StartSlideDown	w29		sets state 4 and initializes animation timer unk_000A	applied
-func_842079F0	ItemPanel_StartSlideUp	w29		sets state 5 and initializes animation timer unk_000A	applied
-func_84207A1C	ItemPanel_ClearAndReset	w29		clears all 6 item slots and resets cursor to state 2	applied
-func_84207AAC	ItemPanel_ConfirmSelection	w29		handles selecting an item: removes it or triggers action state 8	applied
-func_84207BD4	ItemPanel_AddItem	w29		adds a Pokemon/Item to the grid and updates count unk_0006	applied
-func_84207D5C	ItemPanel_RemoveCurrent	w29		removes the currently selected item and transitions state	applied
-func_84207E3C	ItemPanel_IsItemDuplicate	w29		checks if the item is already present in the 6 slots	applied
-func_8420804C	ItemPanel_HasItem	w29		checks if a specific item (by raw ID) exists in the slots	applied
-func_842081A8	ItemPanel_IsOffscreen	w29		returns true if state is 0 (offscreen)	applied
-func_842081B4	ItemPanel_LoadItems	w29		populates the panel slots from PokemonData array	applied
-unk_D_84211B50	gItemPanel	w29		unk_D_84211B50:ItemPanel struct containing cursor, position, and item slots	applied
-func_84307EE0	GetOpponentPokemonCount	w29		returns the number of pokemon for the opposing side	applied
-func_84308014	GetScaledHeight	w29		calculates height based on model height and current scale factor	applied
-func_84308058	GetModelHeightFactor	w29		returns the base height factor (ModelHeight * 2 / 50)	applied
-func_84308094	GetEntityScaleDimensions	w29		calculates scaled width, height, and depth into a Vec3f	applied
-func_84308148	GetEntityRotation	w29		copies the entity's rotation (unk_01E) into a Vec3s	applied
-func_843081C4	IsEntityGenderMale	w29		checks the lowest bit of unk_000.unk_000.unk_01 to determine gender	applied
-func_843083A0	GetEntityBasePosition	w29		calculates the base position based on species and side, similar to UpdateEntityBasePosition	applied
-func_84308520	GetEntityOffsetPosition	w29		gets position from unk_4EC with a 2.5f Y offset	applied
-func_84308598	GetScaledWidth	w29		calculates width based on model width and current scale factor	applied
-func_8430897C	Battle_TriggerOpponentAnim	w29		triggers the animation action defined in gAnimDataByPlayer's unk_A80	applied
-func_84308A04	Entity_SetupBattleState	w29		initializes controller, physics, and sets initial pokemon index	applied
-func_84308A4C	Battle_HasStatusEffect	w29		checks if any pokemon in the group has a specific status bit (0x20) and is active	applied
-func_84308BD0	Battle_HasAbilityEffect	w29		checks if any pokemon in the group has status bits 0-7 and is active	applied
-func_84308D54	GetTotalPokemonCount	w29		sums the pokemon counts of both sides if in a double battle (unk_01 == 2)	applied
-func_84308D90	GetPokemonType	w29		returns the type (unk_002) from the pokemon data structure	applied
-func_84308DB8	Battle_InitModelAnimation	w29		initializes model phase, child nodes, and triggers initial animation	applied
-func_84308ED4	Battle_InitSubModelAnimation	w29		initializes a secondary model child (index 1 or 2) and triggers animation	applied
-func_84308F94	Battle_InitEffectModels	w29		initializes two effect models with specific offsets and triggers animation	applied
-func_84309110	Battle_PlayAnimSound	w29		plays animation sound 0xAF or resets animation state and triggers sound	applied
-func_84309168	Pokemon_ResetToDefaultState	w29		resets model phase, animations, and scale to default	applied
-func_84309328	Pokemon_ResetAnimations	w29		resets animations and effects to phase 0x98	applied
-func_84309368	Pokemon_RestoreVisuals	w29		restores color alpha and resets animations to current phase	applied
-func_8436F6C0	Battle_DebugLogClear	w29		contains debug strings for battle conditions, status effects, and attack types	applied
-func_8001B010	SpriteDisplay_IsAnimating	w29		checked in SpriteAnimation_Tick to determine if the animation loop should reset	applied
-func_84B07848	UI_SetSingleBattlePositions	w29		sets Vec3f positions for UI elements in a single battle layout	applied
-func_84B07978	UI_SetDoubleBattlePositions	w29		sets Vec3f positions for UI elements in a double battle layout	applied
-D_84B12420	gShimmerDL	w29		display list that loads gShimmerTexture and sets combine mode to modulate	applied
-D_84B12490	gShimmerFrame	w29		static counter used in UI_ShimmerEffect to offset the texture tile	applied
-D_84B13B38	gShimmerMeshDL	w29		display list containing vertex data and triangles for the shimmer effect mesh	applied
-D_84B13C40	gPowerGaugeMeshDL	w29		display list containing vertex data for the power gauge geometry	applied
-D_84B13FC8	gPowerGaugeAnimDL	w29		display list used for power gauge animation, references UI_ShimmerEffect	applied
-D_84B14100	gGaugeSegmentDL	w29		display list that renders gauge segments using texture blocks	applied
-D_84B141E8	gGaugeLeftLayout	w29		geometry layout for the left side of the gauge, used in UI_SetupGraphNodes	applied
-D_84B14234	gGaugeRightLayout	w29		geometry layout for the right side of the gauge, used in UI_SetupGraphNodes	applied
-D_84B14480	gGaugeFillDL	w29		display list that renders the fill portion of the health/power gauge	applied
-D_84B146C0	gHealthBarLeftLayout	w29		geometry layout for the left health bar in single battles	applied
-D_84B1474C	gHealthBarRightLayout	w29		geometry layout for the right health bar in single battles	applied
-D_84B14918	gPowerGaugeFillDL	w29		display list that renders the fill portion of the power gauge	applied
-D_84B14A90	gPowerGaugeLeftLayoutDouble	w29		geometry layout for the power gauge in double battles (left)	applied
-D_84B14B50	gPowerGaugeRightLayoutDouble	w29		geometry layout for the power gauge in double battles (right)	applied
-unk_D_84B25A28	BattleUiState	w29		struct containing state for UI animations, graph nodes, and sprite display	applied
-func_832003AC	UpdatePikachuAnimation	w29		handles timer for sound triggers and checks if Pikachu animation reached end to trigger action 0	applied
-func_83200468	UpdatePikachuVisibility	w29		toggles visibility (bit 1 of unk_000.unk_01) for Pikachu nodes 1-3 based on D_83201F54 state	applied
-func_8320058C	RenderScene	w29		calls Gfx_FinishFrame, updates Pikachu, and begins display list with screen fill and camera texture	applied
-func_83200700	DrawCursorSprite	w29		draws a specific sprite (D_8C200090) at given coordinates using Gfx_DrawSpriteRGBA16	applied
-func_83200934	UI_SlideTextTransition	w29		animates text moving from one position to another over 8 frames using a scissor rectangle	applied
-func_83200FF8	Event_PikachuExit	w29		triggers Pikachu exit animation (action 5), plays sound, and displays a message before fading	applied
-func_832010BC	Event_PikachuEnter	w29		triggers Pikachu enter animation (action 0xA), plays move sound 0x39, and changes music to 0x4A	applied
-func_8320118C	Camera_PanDown	w29		interpolates camera eye and target Y positions over 120 frames while moving Pikachu node Y	applied
-func_8320126C	UI_StartDialogue	w29		draws an expanding gradient box and prompts the user with a series of Yes/No questions	applied
-func_83201450	UI_SelectMoveAndExecute	w29		checks pokemon count and prompts user to select a move from the list, then triggers move visual 0x85	applied
-func_832016F4	UI_DrawSaveStatus	w29		draws gradient panels and messages based on the current save/transfer state (arg0)	applied
-func_832018DC	Save_WritePokemonData	w29		creates a GBS block to write pokemon data to the save and calls PlayerSave_FullSave	applied
-func_83201A18	Event_GrantMove	w29		assigns move 0x39 to a pokemon, saves the data, and triggers the Pikachu enter event	applied
-func_83201B60	Event_PikachuSequence	w29		orchestrates the full sequence: music change, fade, camera pan, dialogue, and move selection	applied
-func_83201BD8	Pikachu_InitNode	w29		initializes a Pikachu graph node with a specific child, animation channel, and position	applied
-func_83201C8C	Pikachu_SetupScene	w29		processes geo layouts for camera and Pikachu, and initializes the 4 Pikachu graph nodes	applied
-func_83201DD4	Fragment66_Main	w29		main entry point: loads assets, initializes message banks, and runs the Pikachu event sequence	applied
-D_83202014	gPikachuGeoNode	w29		GraphNode processed from geo layout D_8C201070	applied
-D_83202018	gPikachuModelData	w29		Pointer to model data returned by func_80019D90	applied
-D_8320201C	gMoveNameBank	w29		Message bank 0x25 containing move names	applied
-D_83202028	gPikachuNodes	w29		Array of 4 GraphNodes representing Pikachu instances	applied
-D_832025C8	gTextFadeState	w29		State tracking for the fading character animation in Text_PrintFadingChar	applied
-D_832027C8	gPikachuSession	w29		Session data containing pokemon data and selection criteria (block, index, count)	applied
-D_83201F50	gPikachuActive	w29		Flag indicating if Pikachu is currently active in the scene	applied
-D_83201F54	gPikachuVisibilityState	w29		State machine value controlling which Pikachu node is visible	applied
-D_83201F58	gCurrentUIMessage	w29		Pointer to the current string being displayed in the UI	applied
-D_83201F5C	gPikachuGeoLayout	w29		Geo layout definition for the Pikachu scene	applied
+func_80013B8C	Graph_FillDepthRect	w29		calls Gfx_FillDepthRectangle using current camera viewport	applied@e7dfcab
+func_80013C14	Graph_NoOp	w29		empty function in the GraphNode visit table	applied@e7dfcab
+func_80013F7C	Graph_NoOp2	w29		empty function in the GraphNode visit table	applied@e7dfcab
+func_800148D8	Graph_DrawModelWithTransform	w29		pushes a matrix and calls Graph_BeginLayerRender and func_80016274	applied@e7dfcab
+func_80014980	Graph_DrawModelWithCompose	w29		uses Matrix_ComposeTR to set current matrix before rendering model	applied@e7dfcab
+func_80014A60	Graph_DrawModelSimple	w29		renders model without modifying the matrix stack	applied@e7dfcab
+func_80014AEC	Graph_DrawAnimatedSprite	w29		calculates colors and calls func_80016364 for animation frames	applied@e7dfcab
+func_80014D24	Graph_RecordPosAndVisit	w29		calls Graph_RecordNodePosition then visits children	applied@e7dfcab
+func_80014D50	Graph_VisitChildrenOnly	w29		wrapper that only calls Graph_VisitVisibleChildren	applied@e7dfcab
+func_80015220	Graph_TraverseAndSetGlobals	w29		recursively visits nodes and sets gCurrentCameraNode, gCurrentLightNode, etc	applied@e7dfcab
+func_80015360	Graph_IsFrameCurrent	w29		checks if gCurrentLightNode's frame matches gAnimationFrame	applied@e7dfcab
+func_80015390	Graph_GetRecordedPosition	w29		searches the recorded positions table in Fragment2_1GraphNode	applied@e7dfcab
+func_80015400	Gfx_SetCombineMode	w29		sets DP combine mode using a provided configuration struct	applied@e7dfcab
+func_8001550C	Gfx_SyncPipe	w29		calls gDPPipeSync if D_800ABB08 is 0	applied@e7dfcab
+func_80015684	Gfx_ResetRenderState	w29		resets prim color, texture LUT, and geometry modes to defaults	applied@e7dfcab
+func_8001587C	Gfx_UpdateFogColor	w29		updates fog color and render mode if color differs from current	applied@e7dfcab
+func_80015948	Gfx_ApplyRenderMode	w29		calls Graph_SetRenderMode if current fog color is set	applied@e7dfcab
+func_80015984	Gfx_UpdatePrimColor	w29		updates primary color and index if they differ from current	applied@e7dfcab
+D_8006F094	gActiveCameraNode	w29		used in CameraNode_Render to track the currently rendering camera	applied@e7dfcab
+D_8006F098	gActiveNode	w29		assigned in func_80015220 when node type is 6	applied@e7dfcab
+D_8006F0A0	gActiveLayerNode	w29		assigned in LayerNode_Process to track the current layer	applied@e7dfcab
+D_800AA6C0	gGraphNodeReturnVal	w29		stores the return value of the node's function pointer	applied@e7dfcab
+D_800AA6C8	gNodeMatrixCache	w29		array of MtxF pointers used to cache matrices for nodes	applied@e7dfcab
+D_800AA8C8	gMatrixStack	w29		struct containing the matrix stack, indices, and allocated MtxF buffers	applied@e7dfcab
+D_800AB970	gScaleStack	w29		struct tracking the current scale stack for the graph	applied@e7dfcab
+D_800ABB00	gRenderModeIndex	w29		index used to access D_8006F124 render mode table	applied@e7dfcab
+D_800ABB04	gRenderFlags	w29		flags used in Graph_SetRenderMode to determine specific render paths	applied@e7dfcab
+D_800ABB08	gPipeSynced	w29		flag indicating if the DP pipe has been synchronized	applied@e7dfcab
+D_800ABB10	gRenderState	w29		struct used to pass render state to Gfx_Update functions	applied@e7dfcab
+D_800ABCB8	gCurrentRenderState	w29		pointer to the currently active render state	applied@e7dfcab
+D_800ABCBC	gRenderStateCount	w29		counter for render state entries	applied@e7dfcab
+func_80015AC4	Gfx_DisableTexture	w29		clears current texture state in gRenderState (D_800ABCB8) and sets SP texture to off	applied@e7dfcab
+func_80015B20	Gfx_EnableTexture	w29		sets up texture LUT and image (gDPSetTextureImage) based on texture properties in arg0	applied@e7dfcab
+func_80015DD8	Gfx_SetupTextureBlock	w29		loads a specific texture block (D_1001800) and sets combine mode to G_CC_MODULATEIDECALA	applied@e7dfcab
+func_80015F64	Gfx_SetRenderLayer	w29		manages render layer indices and updates the current layer state pointer (D_800ABCB8)	applied@e7dfcab
+func_80016010	Gfx_UpdateLayerAlpha	w29		sets alpha/transparency state (unk_03) based on the layer index arg0	applied@e7dfcab
+func_80016060	Gfx_GetLayerIndex	w29		maps a layer ID to a specific internal index using a switch case	applied@e7dfcab
+func_80016274	Gfx_DrawDisplayList	w29		submits a Gfx display list to the head, handling fragment memory mapping if necessary	applied@e7dfcab
+func_80016344	Gfx_SetColor	w29		sets the current rendering color and alpha (D_800ABB10.unk_08.rgba)	applied@e7dfcab
+func_80016364	Gfx_SetTextureParams	w29		sets texture pointers and parameters (D_800ABB10.unk_0C/10/14)	applied@e7dfcab
+func_8001638C	Gfx_InitRenderState	w29		initializes the render state table (D_800ABB28) and resets layer properties	applied@e7dfcab
+func_8001660C	Gfx_FlushLayers	w29		iterates through render layers and submits their branched display lists to the GPU	applied@e7dfcab
+D_800ABB28	gLayerStates	w29		array of 10 layer state structures containing DL pointers and texture state	applied@e7dfcab
+D_8006F120	gIsRenderInitialized	w29		boolean flag indicating if the rendering system is currently active	applied@e7dfcab
+func_86800020	Sushi_FadeAudio	w29		Sets volume fade for audio channels based on demo mode status	applied@e7dfcab
+D_86807518	gCombinedController	w29		Accumulates input from all four controllers into a single state	applied@e7dfcab
+D_86807540	gSushiFadeTimer	w29		Timer used for screen fades and audio transitions in the sushi sequence	applied@e7dfcab
+D_86806D88	gTexPanelBase	w29		Texture region for the base panel element	applied@e7dfcab
+D_86806D90	gTexPanelMid	w29		Texture region for the middle panel element	applied@e7dfcab
+D_86806D98	gTexPanelTop	w29		Texture region for the top panel element	applied@e7dfcab
+D_86806DA0	gTexPanelBottom	w29		Texture region for the bottom panel element	applied@e7dfcab
+D_86806DA8	gTexPanelSide	w29		Texture region for the side panel element	applied@e7dfcab
+D_86806DB0	gTexPanelCorner1	w29		Texture region for corner element 1	applied@e7dfcab
+D_86806DB8	gTexPanelCorner2	w29		Texture region for corner element 2	applied@e7dfcab
+D_86806DC0	gPanelSet0	w29		Texture set for panel state 0	applied@e7dfcab
+D_86806DCC	gPanelSet1	w29		Texture set for panel state 1	applied@e7dfcab
+D_86806DDC	gPanelSet2	w29		Texture set for panel state 2	applied@e7dfcab
+D_86806DF0	gPanelSet3	w29		Texture set for panel state 3	applied@e7dfcab
+D_86806E08	gPanelSet4	w29		Texture set for panel state 4	applied@e7dfcab
+D_86806E38	gSushiUI_TextPosA	w29		Table of text positions and lengths for UI element A	applied@e7dfcab
+D_86806E60	gSushiUI_TextPosB	w29		Table of text positions and lengths for UI element B	applied@e7dfcab
+D_86806E88	gSushiUI_TextPosC	w29		Table of text positions and lengths for UI element C	applied@e7dfcab
+D_86806F50	gSushiColorGradA	w29		RGB color gradient table A	applied@e7dfcab
+D_86806F5C	gSushiColorGradB	w29		RGB color gradient table B	applied@e7dfcab
+D_86806F68	gSushiColorGradC	w29		RGB color gradient table C	applied@e7dfcab
+func_86806BF0	Sushi_UpdateLogic	w29		Called during the main loop to update sushi-specific logic	applied@e7dfcab
+func_86806A50	Sushi_InitAssets	w29		Initializes assets and internal state for the sushi go round	applied@e7dfcab
+func_878010C8	Sushi_SetDemoParams	w29		Sets parameters when the game is in demo mode	applied@e7dfcab
+func_8120241C	DrawStadiumUI	w29		calls DrawHorizontalBorder and BlendRect to draw UI elements based on ScreenMode_Current and GbPakDevice->unk_5DC5 (game version)	applied@e7dfcab
+D_8120D7F3	gStadiumUILayout	w29		used in func_8120241C to index TileMap_12x12 for drawing UI text/graphics	applied@e7dfcab
+D_8120D820	gStadiumUIMap	w29		used in DrawFullScreenBackground to index TileMap_12x12 for drawing specific UI elements	applied@e7dfcab
+D_8122C771	gPlayerInfoBoxType	w29		used in DrawPlayerInfoBox to determine the number of iterations for drawing info boxes	applied@e7dfcab
+D_8122C770	gStadiumScreenFlag0	w29		global flag used in stadium rendering logic	applied@e7dfcab
+D_8122C760	gStadiumTimer	w29		global timer used for stadium screen animations or timing	applied@e7dfcab
+D_8122C76C	gStadiumInterval	w29		global interval value associated with gStadiumTimer	applied@e7dfcab
+unk_D_8122B2C0	GbPakDeviceState	w29	unk_D_8122B2C0:GbPakDeviceState	struct containing PFS, status, and transfer buffers for the Game Boy Pak interface	applied@e7dfcab
+unk_D_8122B1E8	GbPakThreadContext	w29	unk_D_8122B1E8:GbPakThreadContext	struct containing OSMesgQueue and state for the GB Pak thread	applied@e7dfcab
+unk_func_812009D0	GbPakHeader	w29	unk_func_812009D0:GbPakHeader	struct representing the Game Boy ROM header used in GbPak_FindMatchingHeader	applied@e7dfcab
+unk_D_8122C748	GbPakAssetData	w29	unk_D_8122C748:GbPakAssetData	struct containing tile graphics and markers used in DrawHorizontalBorder and DrawVerticalMarker	applied@e7dfcab
+unk_D_8122B300	GbPakThreadStruct	w29	unk_D_8122B300:GbPakThreadStruct	struct wrapping OSThread and its stack for the GB Pak thread	applied@e7dfcab
+unk_D_8122B2F8	TileAssetFragment	w29	unk_D_8122B2F8:TileAssetFragment	large buffer used for tile asset fragments	applied@e7dfcab
+func_812070A0	GbPak_InitGfx	w29		called in EmuMainInit before framebuffer setup, likely initializes GB graphics state	applied@e7dfcab
+func_81204A84	GbPak_DrawMenu	w29		draws various GB-related menus (Exit, Quit, Config) based on Flag_GbPakInitialized	applied@e7dfcab
+D_8122C774	gEmuSavedAudioMode	w29		stores GbPakStatusFlags.unk_00/01 when switching power states in AudioStateMachine	applied@e7dfcab
+func_81206D9C	GbEmu_Init	w29		initializes emulator state, screen mode, and audio indices from GbEmuState	applied@e7dfcab
+func_81206E64	GbEmu_RunFrame	w29		executes the main emulator loop and handles status byte transitions	applied@e7dfcab
+func_81206F38	GbEmu_AudioUpdateThread	w29		periodically updates GB audio when the RSP task manager is idle and status is 2	applied@e7dfcab
+D_8122C4F9	gGbScreenRefreshCounter	w29		incremented in case 6 and used to calculate GbPakThreadData.unk_3C	applied@e7dfcab
+D_8122C4F6	gGbBankLoadedFlag	w29		set to 1 when LoadCompressedBank is called and bank data is validated	applied@e7dfcab
+D_8122C4EC	gAudioBufferPtr	w29		stores the result of AllocateAudioBuffer for the GB emulator	applied@e7dfcab
+func_87801684	DrawAnimatedSprite	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied@e7dfcab
+func_87801754	DrawAnimatedSprite2	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied@e7dfcab
+func_87801824	DrawAnimatedSprite3	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 16x16 sprite	applied@e7dfcab
+func_878018F4	DrawAnimatedTexture	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 40x20 texture tile	applied@e7dfcab
+func_87801AC0	DrawAnimatedTexture2	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 40x20 texture tile	applied@e7dfcab
+func_87801C8C	DrawAnimatedSpriteLarge	w29	unk_func_87801684:AnimFrame	Handles animation frame timing and draws a 24x19 sprite	applied@e7dfcab
+func_87801D5C	DrawAnimatedTextureDual	w29	unk_func_87801684:AnimFrame	Handles animation frame timing for two texture slots and draws 28x28 tiles	applied@e7dfcab
+func_87801F48	DrawDualTexturePanel	w29		Loads and draws two 52x25 texture panels vertically stacked	applied@e7dfcab
+D_8780A270	gResultCubeTex_8	w29		Extension of the result cube texture bank (follows gResultCubeTex_0-7)	applied@e7dfcab
+D_87806334	gScrollingMessageOffset	w29		Static offset used to scroll the move name text in UpdateScrollingMessage	applied@e7dfcab
+D_87806360	gAnimSprite1_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801684	applied@e7dfcab
+D_8780FA74	gAnimSprite1_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801684	applied@e7dfcab
+D_8780FA78	gAnimSprite1_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801684	applied@e7dfcab
+D_87806364	gAnimSprite2_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801754	applied@e7dfcab
+D_8780FA7C	gAnimSprite2_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801754	applied@e7dfcab
+D_8780FA80	gAnimSprite2_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801754	applied@e7dfcab
+D_87806368	gAnimSprite3_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801824	applied@e7dfcab
+D_8780FA84	gAnimSprite3_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801824	applied@e7dfcab
+D_8780FA88	gAnimSprite3_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801824	applied@e7dfcab
+D_8780636C	gAnimTex1_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_878018F4	applied@e7dfcab
+D_8780FA8C	gAnimTex1_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_878018F4	applied@e7dfcab
+D_8780FA90	gAnimTex1_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_878018F4	applied@e7dfcab
+D_87806370	gAnimTex2_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801AC0	applied@e7dfcab
+D_8780FA94	gAnimTex2_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801AC0	applied@e7dfcab
+D_8780FA98	gAnimTex2_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801AC0	applied@e7dfcab
+D_87806374	gAnimSpriteLarge_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frame for func_87801C8C	applied@e7dfcab
+D_8780FA9C	gAnimSpriteLarge_Ptr	w29	unk_func_87801684:AnimFrame	Pointer to current frame data for func_87801C8C	applied@e7dfcab
+D_8780FAA0	gAnimSpriteLarge_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for current animation frame in func_87801C8C	applied@e7dfcab
+D_87806378	gAnimTexDual_Current	w29	unk_func_87801684:AnimFrame	Tracks current animation frames for the two slots in func_87801D5C	applied@e7dfcab
+D_8780FAA8	gAnimTexDual_Ptr	w29	unk_func_87801684:AnimFrame	Pointers to current frame data for the two slots in func_87801D5C	applied@e7dfcab
+D_8780FAB0	gAnimTexDual_Timer	w29	unk_func_87801684:AnimFrame	Remaining frames for the two slots in func_87801D5C	applied@e7dfcab
+D_88002890	gHpBarDisplayListEnd	w29		ends the display list for the HP bar	applied@e7dfcab
+D_8800CAB0	gFragment22GfxData0	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_8800DAB8	gFragment22GfxData1	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_8800EAC0	gFragment22GfxData2	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_8800FAC8	gFragment22GfxData3	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_88010AD0	gFragment22GfxData4	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_88011AD8	gFragment22GfxData5	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_88011ED0	gFragment22GfxData6	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_880122C8	gFragment22GfxData7	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_880126C0	gFragment22GfxData8	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_88012AB8	gFragment22GfxData9	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_88013060	gFragment22GfxData10	w29		large array of Gfx commands/vertices for fragment 22	applied@e7dfcab
+D_8800CA98	gFragment22HpBarConfig	w29		struct containing dimensions and pointer to gHpBarPixelData	applied@e7dfcab
+func_88001258	Labo_SetMessageBoxText	w29		calls MessageBox_SetText with a string from gLaboMessageBankSystem based on a state index	applied@e7dfcab
+func_88001300	Labo_InitFragment	w29		initializes the Labo fragment, allocates UI elements like status bars, message boxes, and blinking objects	applied@e7dfcab
+func_88001CBC	Labo_SetUIState	w29		calls UIElement_SetState and a custom state handler on the GridMenu	applied@e7dfcab
+func_88001D0C	Labo_HandleInput	w29		delegates input handling to the GridMenu's input function	applied@e7dfcab
+func_88001D34	Labo_GetActivePlayerCount	w29		counts bits in the active player mask to determine how many players are present	applied@e7dfcab
+func_88001D94	Labo_ProcessInput	w29		main input loop checking for button presses and validating Pokemon properties (shiny, gender, species) before transitioning fragments	applied@e7dfcab
+func_8800233C	Labo_ThreadMain	w29		main thread loop handling fade states, message box sequences, and final fragment transition	applied@e7dfcab
+func_88002580	Labo_RenderFrame	w29		calls TextObject_Render and TextObject_PostRender then advances the stage	applied@e7dfcab
+func_880025D8	Labo_WaitUntilExit	w29		loops rendering until a message is received in the controller queue	applied@e7dfcab
+func_88002628	Labo_FragmentEntry	w29		entry point for the fragment: loads assets, initializes message banks, creates the main object and thread	applied@e7dfcab
+func_82200020	GetControllerInputMask	w29		checks PI_STATUS_REG and a memory address for controller input state	applied@e7dfcab
+func_82201108	DrawParticleTrail	w29		updates particle positions and calls DrawParticleSprites	applied@e7dfcab
+func_822014C0	AreaSelect_Update	w29		empty function in the area selection logic	applied@e7dfcab
+func_82201AC8	DrawBeveledPanel	w29		draws a panel with textured borders (D_2028A60 etc) and a filled center	applied@e7dfcab
+func_822022C8	DrawAreaLabel	w29		draws a beveled panel and a message string from the bank	applied@e7dfcab
+func_82202374	AreaSelect_InitInput	w29		initializes controller reading and menu input	applied@e7dfcab
+func_822023A4	AreaSelect_HandleInput	w29		handles button presses to change current area (D_822031D8)	applied@e7dfcab
+func_82202520	AreaSelect_AnimateTransition	w29		interpolates particle positions between two areas over 6 frames	applied@e7dfcab
+func_8220263C	AreaSelect_AnimateParticleOut	w29		decrements particle size and stops music when finished	applied@e7dfcab
+func_822026BC	AreaSelect_FadeInOverlay	w29		increases alpha of the tile overlay until Stage_FadeOut is called	applied@e7dfcab
+func_82202758	AreaSelect_FadeOutSequence	w29		increments gFadeStepCounter to trigger Stage_FadeOut	applied@e7dfcab
+func_822027E8	AreaSelect_HandleFadeEnd	w29		checks Stage_GetFadeState to transition to the final state	applied@e7dfcab
+func_82202850	AreaSelect_SetupProjection	w29		sets up ortho projection and viewport for the area select screen	applied@e7dfcab
+func_82202980	AreaSelect_Render	w29		main render loop for area select: backgrounds, particles, and labels	applied@e7dfcab
+func_82202A6C	AreaSelect_TransitionToGame	w29		handles the final alpha fade and transition to the selected state	applied@e7dfcab
+func_82202AFC	AreaSelect_StartAnimation	w29		initializes particles and fades in the area select screen	applied@e7dfcab
+func_82202B60	AreaSelect_MainLoop	w29		state machine managing input, transitions, and rendering	applied@e7dfcab
+func_82202CB8	AreaSelect_LoadAssets	w29		loads background textures from BinArchive based on player name/context	applied@e7dfcab
+func_82202DC4	AreaSelect_Main	w29		entry point for the area selection screen logic	applied@e7dfcab
+D_82203064	gParticleTextures	w29		array of texture pointers used in DrawParticleSprites	applied@e7dfcab
+D_822030F0	gAreaMessageBank	w29		pointer to the message bank for area names	applied@e7dfcab
+D_822030F4	gAreaAssetArchive	w29		BinArchive containing background textures	applied@e7dfcab
+D_822030F8	gAreaViewport	w29		Vp struct for the area select screen	applied@e7dfcab
+D_82203108	gAreaProjMatrix	w29		Mtx used for the ortho projection	applied@e7dfcab
+D_82203148	gBgTexturePrimary	w29		primary background texture for the area select screen	applied@e7dfcab
+D_8220314C	gBgTextureSecondary	w29		secondary background texture for blending	applied@e7dfcab
+D_82203150	gTileOverlayState	w29		struct containing position and color for the tile overlay	applied@e7dfcab
+D_82203160	gParticleTrailState	w29		array of structs tracking particle trail positions and sizes	applied@e7dfcab
+D_822031D8	gCurrentAreaIndex	w29		index into gStateTransitionTable and gTileConfigTable	applied@e7dfcab
+D_822031DA	gPreviousAreaIndex	w29		stores the area index before a transition	applied@e7dfcab
+D_822031DC	gTransitionFrame	w29		frame counter for the area transition animation	applied@e7dfcab
+D_822031E0	gAreaAudioState	w29		struct tracking audio/music state for the area select screen	applied@e7dfcab
+D_822031E8	gAreaPlayerName	w29		PlayerName struct used to determine background assets	applied@e7dfcab
+unk_D_82202FE4	AreaConfig	w29		struct defining area positions and colors in gTileConfigTable	applied@e7dfcab
+unk_D_82203160	ParticleTrail	w29		struct tracking particle trail properties and history	applied@e7dfcab
+unk_D_82203150	TileOverlay	w29		struct defining the tile overlay's visual properties	applied@e7dfcab
+unk_D_82203160_006	ParticlePos	w29		struct containing x, y, z coordinates for a particle	applied@e7dfcab
+func_83100020	UpdateNodePosition	w29		calculates x-position and D_83101EEE based on a pendulum-like oscillation (ptr->unk_180)	applied@e7dfcab
+func_83100180	DrawNodeGeometry	w29		handles rendering of specific graph nodes, including the display list D_83101C60	applied@e7dfcab
+func_8310024C	UpdateNodeColorAndScale	w29		interpolates color (unk_172-17C) and scale (unk_030) using the table D_83101E6C	applied@e7dfcab
+func_83100578	DrawNodeEffect	w29		renders the effect geometry D_83101D80 with colors derived from the node state	applied@e7dfcab
+func_831006D4	InitBorderAnimation	w29		initializes the border animation state, setting the initial scale to 7.0f	applied@e7dfcab
+func_831006F4	UpdateBorderAnimation	w29		decrements timer and updates the scale factor (unk_08) for the border effect	applied@e7dfcab
+func_83100784	DrawBorderEffect	w29		draws a scaled texture border using Gfx_DrawTextureRect and fills the outer screen area	applied@e7dfcab
+func_83100C78	StartBorderAnimation	w29		triggers the border animation with a specified duration (arg0)	applied@e7dfcab
+func_83100CB8	InitFadeAnimation	w29		initializes the fade-out animation state	applied@e7dfcab
+func_83100CD4	UpdateFadeAnimation	w29		updates the alpha/color value (unk_04) for the screen fade effect	applied@e7dfcab
+func_83100D4C	DrawTiledTexture	w29		renders a texture (arg0) in 16x16 tiles across the screen with a specific alpha (arg1)	applied@e7dfcab
+func_8310102C	DrawScreenOverlay	w29		calls DrawTiledTexture or Gfx_DrawTextureAtlas based on the current fade value	applied@e7dfcab
+func_83101074	StartFadeAnimation	w29		triggers the fade animation with a specific state (arg0)	applied@e7dfcab
+func_831010B0	InitInput	w29		initializes controller reading and menu input systems	applied@e7dfcab
+func_831010E0	SetNodeState	w29		sets the animation state of a node and initializes its color/scale from D_83101E6C	applied@e7dfcab
+func_831011D4	DrawScissoredTexture	w29		wrapper for gSPScisTextureRectangle to draw a specific texture region	applied@e7dfcab
+func_831013FC	DrawCursorEffect	w29		draws a small 28x28 texture at the position defined by D_83101EEE/D_83101EF0	applied@e7dfcab
+func_83101608	InitClearScreenState	w29		resets animation states and positions for the "Clear" screen sequence	applied@e7dfcab
+func_83101674	RenderClearScreen	w29		main render loop for the clear screen: overlay, graph nodes, cursor, and border	applied@e7dfcab
+func_831016D0	UpdateClearScreenLogic	w29		manages the sequence of animations (node movements, fade-ins, border triggers)	applied@e7dfcab
+func_83101818	RunClearScreenSequence	w29		main loop that handles input, animation updates, and rendering until the sequence ends	applied@e7dfcab
+func_83101870	InitClearScreenGraph	w29		loads geometry layouts and initializes the two GraphNodes (D_83102210, D_83102214)	applied@e7dfcab
+func_83101A98	ClearScreen_Main	w29		entry point for the "Clear" screen: loads assets, runs the sequence, and cleans up	applied@e7dfcab
+D_83101E6C	gNodeColorScaleTable	w29		table containing duration, scale, and RGB colors for node animations	applied@e7dfcab
+D_83102218	gBorderAnimState	w29		global state for the screen border animation (timer, scale)	applied@e7dfcab
+D_83102224	gFadeAnimState	w29		global state for the screen fade animation (timer, alpha)	applied@e7dfcab
+D_83101EF4	gClearScreenRoot	w29		GraphNode for the main clear screen geometry	applied@e7dfcab
+D_83101EF8	gClearScreenNode1	w29		GraphNode for the first animated element	applied@e7dfcab
+D_83101EFC	gClearScreenNode2	w29		GraphNode for the second animated element	applied@e7dfcab
+D_83101EEE	gCursorX	w29		current X coordinate for the cursor effect	applied@e7dfcab
+D_83101EF0	gCursorY	w29		current Y coordinate for the cursor effect	applied@e7dfcab
+D_83101EE8	gClearScreenState	w29		current state machine index for the clear screen sequence	applied@e7dfcab
+D_83101EEA	gClearScreenTimer	w29		frame counter for timing events in the clear screen sequence	applied@e7dfcab
+D_83101EEC	gShowCursorFlag	w29		flag determining if the cursor effect should be rendered	applied@e7dfcab
+D_83102210	gNode1State	w29		pointer to the state structure for the first animated node	applied@e7dfcab
+D_83102214	gNode2State	w29		pointer to the state structure for the second animated node	applied@e7dfcab
+D_83101C60	gClearScreenDL1	w29		display list for the first node's geometry	applied@e7dfcab
+D_83101D80	gClearScreenDL2	w29		display list for the second node's effect geometry	applied@e7dfcab
+D_83101D08	gClearScreenGeo1	w29		geometry layout definition for the first node	applied@e7dfcab
+D_83101DE8	gClearScreenGeo2	w29		geometry layout definition for the second node	applied@e7dfcab
+D_83101E1C	gClearScreenRootGeo	w29		geometry layout for the root clear screen object	applied@e7dfcab
+D_83101BE0	gClearScreenVerts1	w29		vertex data for the first node's geometry	applied@e7dfcab
+D_83101D40	gClearScreenVerts2	w29		vertex data for the second node's effect	applied@e7dfcab
+D_82F144B0	gProgressBarRect	w29		unk_D_82F144B0:ProgressBarRect	applied@e7dfcab
+func_82F01FE4	Picker_SlideTransition	w29		updates x-offset based on timer for sliding animation between pokemon lists	applied@e7dfcab
+func_82F020B4	Picker_HandleBattleStart	w29		checks for battle start signal and copies selected pokemon sprite to buffer	applied@e7dfcab
+func_82F02180	Picker_ExitAnimation	w29		handles the countdown and coordinate shift when exiting the picker	applied@e7dfcab
+func_82F022DC	Picker_DrawFrame	w29		draws the 9-slice border/frame for the pokemon selection window	applied@e7dfcab
+func_82F02544	Picker_DrawHeader	w29		draws the top panel with a message string based on the player index	applied@e7dfcab
+func_82F028AC	Picker_DrawRect	w29		helper to draw filled rectangles with specific colors	applied@e7dfcab
+func_82F029FC	Picker_DrawSlot	w29		draws the background box for a single pokemon slot	applied@e7dfcab
+func_82F02CE8	Picker_DrawCursor	w29		draws the animated selection cursor with sine-wave offset	applied@e7dfcab
+func_82F02EAC	Picker_DrawListBackground	w29		draws the background for the vertical pokemon list	applied@e7dfcab
+func_82F02FEC	Picker_DrawPanelBorder	w29		draws a textured border for a panel with fill color	applied@e7dfcab
+func_82F037EC	Picker_DrawLargePanelBorder	w29		draws a larger textured border for a panel with fill color	applied@e7dfcab
+func_82F04010	Picker_DrawListSlot	w29		draws a single slot in the pokemon list with transparency if empty	applied@e7dfcab
+func_82F04FD4	Picker_Reset	w29		zeroes out the gPickerState structures	applied@e7dfcab
+func_82F0504C	Picker_Update	w29		main state machine update loop for the picker	applied@e7dfcab
+func_82F05110	Picker_Render	w29		main render loop that calls UpdateAndRenderPicker	applied@e7dfcab
+func_82F05198	Picker_GetSelectedSprite	w29		returns the pointer to the selected pokemon sprite buffer	applied@e7dfcab
+func_82F051B8	Picker_SwapSelectedSprites	w29		swaps the selected pokemon sprite buffers between the two players	applied@e7dfcab
+func_82F05210	Picker_SetSelectedSprite	w29		copies pokemon data into the selected sprite buffer	applied@e7dfcab
+func_82F0525C	Picker_GetSelectionInfo	w29		fills a struct with the current selection state (index, count, etc)	applied@e7dfcab
+D_82F20A04	gPickerActivePlayer	w29		index of the player currently interacting with the picker	applied@e7dfcab
+unk_D_82F144D0	PickerState	w29		state structure for the pokemon picker (coords, indices, timers)	applied@e7dfcab
+unk_D_82F20A00	PickerSpriteBuffer	w29		buffer containing the decoded sprite data for the pokemon list	applied@e7dfcab
+unk_D_82F144D0_0CA8	PickerPokemonGroup	w29		structure representing a group of pokemon (e.g. a team)	applied@e7dfcab
+unk_func_82F00838_sp30_00C	PickerPokemonEntry	w29		structure for a single pokemon entry in the picker	applied@e7dfcab
+func_83402CE4	Menu_SetStep	w29		sets gMenuStep and handles controller state for menu transitions	applied@e7dfcab
+func_83402D74	Menu_ExitToGallery	w29		called during fade out to return to the main gallery state	applied@e7dfcab
+func_8004B9C4	Stage_SetFadeColor	w29		sets the fill color for the stage fade effect	applied@e7dfcab
+D_83303434	gMenuConfirmState	w29		tracks the state of the confirmation timer/process	applied@e7dfcab
+unk_D_833031B4	MenuItem	w29		struct containing texture, dimensions, and string ID for menu items	applied@e7dfcab
+unk_D_83303180	MenuSubPanelItem	w29		struct for sub-panel textures and labels	applied@e7dfcab
+D_83303180	gSubPanelItems	w29		table of items used in DrawSubPanel	applied@e7dfcab
+D_8330325C	gGridOffsetX	w29		X offsets for the Pokemon grid based on gallery mode	applied@e7dfcab
+D_83303260	gGridOffsetY	w29		Y offsets for the Pokemon grid based on gallery mode	applied@e7dfcab
+D_83303264	gGridStepX	w29		X spacing between Pokemon in the grid	applied@e7dfcab
+D_83303268	gGridStepY	w29		Y spacing between Pokemon in the grid	applied@e7dfcab
+D_8330326C	gMenuExitFadeColors	w29		table of fade colors associated with each menu item	applied@e7dfcab
+func_83402C6C	Menu_IsExitPressed	w29		returns non-zero when a menu exit condition is met, checked alongside gBackgroundFadeTimer	applied@e7dfcab
+D_83407B00	gGalleryMainSelectionCam	w29		passed as a target to Gallery_SyncSelectionToCam alongside gMenuActiveData	applied@e7dfcab
+D_83603300	gSelectionCamList	w29		passed to CamList_Init and CamList_Update, used for selection screen navigation	applied@e7dfcab
+D_836033B4	gSelectedMonCount	w29		incremented/decremented when D_83403C00[idx] is toggled; compared against D_836033B8	applied@e7dfcab
+D_836033B8	gMaxSelectableMonCount	w29		initialized via CountDisplayableMonIndices; used as a limit for gSelectedMonCount	applied@e7dfcab
+D_836033BC	gSelectionScreenFadeType	w29		set based on arg0 in InitializeSelectionScreen, used to determine Stage_FadeIn type	applied@e7dfcab
+D_836033C0	gBackgroundGradientMask	w29		initialized to 0xFFE3 and checked in DrawBackgroundGradient loop	applied@e7dfcab
+D_836033C8	gCursorCanMoveDown	w29		set in UpdateCursorEdgeFlags based on Gallery_CountDisplayableInPage	applied@e7dfcab
+D_83403C00	gMonSelectionFlags	w29		array of flags checked to see if a monster is selected (D_83403C00[idx] == 1)	applied@e7dfcab
+D_83402EE0	gDisplayableMonIndices	w29		passed to CamList_Init as the source list of monsters	applied@e7dfcab
+func_83801744	AnimateIconExit	w29		handles the reverse animation of icons exiting the screen, updating positions and sizes based on D_838067DC	applied@e7dfcab
+func_83801988	AnimateIconSelection	w29		animates the selected player icon moving to a specific position using tables D_83805510 and D_83805528	applied@e7dfcab
+func_83801AE0	AnimateIconReset	w29		resets icon positions and clears callbacks, transitioning the state back to 0	applied@e7dfcab
+func_83801C94	HandleRentalSelection	w29		handles the logic for rental Pokemon selection, calling func_83402CE4 and checking result codes	applied@e7dfcab
+func_83801E00	UpdateSelectionOffset	w29		calculates and sets the animation offset for the currently selected player icon	applied@e7dfcab
+func_83801E84	DrawPlayerSlotBorder	w29		draws the tiled border for a player slot with colors based on whether the player is active or rental	applied@e7dfcab
+func_83801F84	DrawPlayerSlotText	w29		prints the player name and ID for a specific slot, or placeholders if the slot is rental	applied@e7dfcab
+func_8380217C	DrawPlayerSelectUI	w29		renders the overall text UI for the player selection screen, including bank 2C message strings	applied@e7dfcab
+D_83805670	gSnapSelectRoot	w29		root GraphNode for the SnapSelect layout, initialized via process_geo_layout	applied@e7dfcab
+D_83805678	gSnapSelectNodes	w29		array of pointers to GraphNodes used for player icons and UI elements	applied@e7dfcab
+D_83805690	gSnapSelectRentalNode	w29		GraphNode specifically used for rental player icons	applied@e7dfcab
+D_83805698	gPlayerIconNodes	w29		2D array of GraphNodes representing the actual icons on screen	applied@e7dfcab
+unk_D_83806778	PlayerSlotData	w29		struct containing species, gender, item, and name for a player slot	applied@e7dfcab
+D_83806778	gPlayerSlotData	w29		array of PlayerSlotData for the 4 player slots	applied@e7dfcab
+D_838067C8	gPlayerIconTextures	w29		pointers to textures assigned to each player based on their held item or species	applied@e7dfcab
+D_838067DC	gSnapSelectAnimFrame	w29		current frame counter for the selection screen animations	applied@e7dfcab
+D_838067E0	gSelectedPlayerIndex	w29		index of the currently selected player/slot (0-5)	applied@e7dfcab
+D_838067E4	gBorderHeight	w29		calculated height for the tiled borders during animation	applied@e7dfcab
+D_838067E6	gSmallBorderHeight	w29		calculated height for the small tiled borders during animation	applied@e7dfcab
+D_83804CC0	gSnapSelectLayout	w29		geometry layout data for the main SnapSelect screen	applied@e7dfcab
+D_83804D10	gPlayerInfoPanelVerts	w29		vertices for the player information panel	applied@e7dfcab
+D_83804DD0	gPlayerInfoPanelDL	w29		display list for rendering the player information panel	applied@e7dfcab
+D_83804EB8	gPlayerInfoPanelGeo	w29		geometry definition for the player info panel	applied@e7dfcab
+D_83804EF0	gPlayerInfoPanelVerts2	w29		secondary vertices for the player info panel	applied@e7dfcab
+D_83804FF0	gPlayerInfoPanelDL2	w29		secondary display list for the player info panel	applied@e7dfcab
+D_83805118	gPlayerInfoPanelGeo2	w29		secondary geometry definition for the player info panel	applied@e7dfcab
+D_83805150	gPlayerInfoPanelVerts3	w29		third set of vertices for the player info panel	applied@e7dfcab
+D_83805250	gPlayerInfoPanelDL3	w29		third display list for the player info panel	applied@e7dfcab
+D_83805378	gPlayerInfoPanelGeo3	w29		third geometry definition for the player info panel	applied@e7dfcab
+D_838053B0	gPlayerInfoPanelVerts4	w29		fourth set of vertices for the player info panel	applied@e7dfcab
+D_838053F0	gPlayerInfoPanelDL4	w29		fourth display list for the player info panel	applied@e7dfcab
+D_83805458	gPlayerInfoPanelGeo4	w29		fourth geometry definition for the player info panel	applied@e7dfcab
+D_8380548C	gPlayerIconAnimData	w29		animation and positioning data for the player icons	applied@e7dfcab
+D_838054E0	gIconEntryX	w29		X-coordinate table for the icon entry animation	applied@e7dfcab
+D_838054F8	gIconEntryY	w29		Y-coordinate table for the icon entry animation	applied@e7dfcab
+D_83805510	gIconSelectX	w29		X-coordinate table for the icon selection animation	applied@e7dfcab
+D_83805528	gIconSelectY	w29		Y-coordinate table for the icon selection animation	applied@e7dfcab
+func_8400094C	DrawCustomWindow	w29		draws a window with textured corners (D_20288E0, D_2028960, D_20287E0, D_2028860) and a filled center	applied@e7dfcab
+func_840019A4	ResetMenuSelections	w29		zeroes out the current player and opponent selection indices in D_84002D18	applied@e7dfcab
+func_840019BC	IsAnyMenuOptionSelected	w29		checks if either player or opponent selection is valid and has an associated texture	applied@e7dfcab
+func_84001A1C	PrintMenuText	w29		prints text at a calculated vertical offset based on the index arg2	applied@e7dfcab
+func_84001AE0	DrawRuleDetailsScreen	w29		draws the rule description and option ranges (1-100, 50-55, etc) using gRuleMessageBank and gOptionMessageBank	applied@e7dfcab
+func_84001E18	HandleRuleOptionInput	w29		handles D-pad input to change the rule option index D_84002D20	applied@e7dfcab
+func_84001F1C	ResetRuleOption	w29		resets the rule option index D_84002D20 to -1	applied@e7dfcab
+func_84001F2C	PrintRuleOptionText	w29		prints rule option text with a color highlight if the index matches D_84002D28.unk_08	applied@e7dfcab
+func_84001FC0	DrawRuleOptionPanel	w29		draws a panel and rule option text when D_84002D28.unk_04 is 8	applied@e7dfcab
+func_840021CC	InitRuleOptionState	w29		initializes the rule option window position and state in D_84002D28	applied@e7dfcab
+func_840021F4	RuleOption_Next	w29		increments the rule option counter and sets state to 4 when it reaches 8	applied@e7dfcab
+func_84002234	RuleOption_Prev	w29		decrements the rule option counter and sets state to D_84002D28.unk_06 when it reaches 0	applied@e7dfcab
+func_84002274	HandleRuleOptionSelection	w29		handles A/B/D-pad input to select or cycle through rule options	applied@e7dfcab
+func_84002388	Menu_UpdateInput	w29		reads controller inputs and initializes menu input state	applied@e7dfcab
+func_84002430	Menu_FadeIn	w29		handles the fade-in transition and draws the background atlas D_84002D0C	applied@e7dfcab
+func_840024B0	Menu_FadeOut	w29		stops music and handles the fade-out transition	applied@e7dfcab
+func_8400253C	Menu_AnimateWindowIn	w29		animates the window size from 0x10 to 0x170 while drawing the title panel	applied@e7dfcab
+func_840025FC	Menu_AnimateWindowOut	w29		animates the window size decreasing while drawing the title panel	applied@e7dfcab
+func_840026D8	Menu_SetupBattle	w29		initializes the battle with selected players and rules based on gMenuEntries and D_84002D18	applied@e7dfcab
+func_84002A84	RuleMenu_Main	w29		entry point that loads assets (common_menu1_ui, etc), initializes message banks, and runs the main loop	applied@e7dfcab
+D_84002D18	gMenuSelection	w29		unk_D_84002D18 struct containing current player (unk_00) and opponent (unk_02) indices	applied@e7dfcab
+D_84002D20	gSelectedRuleOption	w29		index of the currently highlighted rule option	applied@e7dfcab
+D_84002D28	gRuleOptionWindow	w29		unk_D_84002D28 struct tracking the rule option window's position, size, and selection	applied@e7dfcab
+D_84002BE0	gWindowAnimTimer	w29		timer used to trigger the drawing of the window background during animation	applied@e7dfcab
+D_84002BE4	gSelectedRuleValue	w29		stores the value of the selected rule option (used in Battle_Init)	applied@e7dfcab
+D_84002C98	gRuleBattleIds	w29		table mapping rule options to battle IDs	applied@e7dfcab
+D_84002D0C	gMenuBackgroundAtlas	w29		pointer to the background texture atlas loaded from BinArchive	applied@e7dfcab
+unk_D_84002D18	MenuSelection	w29		struct containing player and opponent selection indices	applied@e7dfcab
+unk_D_84002D28	RuleOptionWindow	w29		struct containing window coordinates and rule option state	applied@e7dfcab
+unk_D_84002BE8	MenuEntry	w29		struct defining a menu item's properties, position, and textures	applied@e7dfcab
+func_80007754	Menu_SetupDisplayList	w29		called after Menu_GraphInit and before Menu_MainLoop to prepare rendering	applied@e7dfcab
+unk_D_84102450	MenuItemInfo	w29		struct containing screen coordinates and navigation indices (unk_08-0B) for menu items	applied@e7dfcab
+unk_D_84102498	MenuRectAnim	w29		struct containing animation state and coordinates for the decorative rectangles	applied@e7dfcab
+D_84102510	gMenuAnimFlag0	w29		flag array used in MenuConfig_InitAnimation based on gMenuConfig bits	applied@e7dfcab
+D_8410251C	gMenuAnimFlag1	w29		flag array used in MenuConfig_InitAnimation based on gMenuConfig bits	applied@e7dfcab
+D_8410254C	gMenuGeoLayoutRoot	w29		geo layout table used to initialize gMenuGeoRoot	applied@e7dfcab
+D_841025B0	gMenuBarVerts0	w29		vertex data for the first segment of the menu bar background	applied@e7dfcab
+D_841025F0	gMenuBarVerts1	w29		vertex data for the second segment of the menu bar background	applied@e7dfcab
+D_84102630	gMenuBarVerts2	w29		vertex data for the third segment of the menu bar background	applied@e7dfcab
+D_84102670	gMenuBarVerts3	w29		vertex data for the fourth segment of the menu bar background	applied@e7dfcab
+D_841026B0	gMenuBarVerts4	w29		vertex data for the fifth segment of the menu bar background	applied@e7dfcab
+D_841026F0	gMenuBarVerts5	w29		vertex data for the sixth segment of the menu bar background	applied@e7dfcab
+D_84102730	gMenuBarVerts6	w29		vertex data for the seventh segment of the menu bar background	applied@e7dfcab
+D_84102770	gMenuBarVertsRight0	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_841027B0	gMenuBarVertsRight1	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_841027F0	gMenuBarVertsRight2	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_84102830	gMenuBarVertsRight3	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_84102870	gMenuBarVertsRight4	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_841028B0	gMenuBarVertsRight5	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_841028F0	gMenuBarVertsRight6	w29		vertex data for the right side of the menu bar background	applied@e7dfcab
+D_84102D78	gMenuOptionVerts0	w29		vertex data for the first segment of the option background	applied@e7dfcab
+D_84102DB8	gMenuOptionVerts1	w29		vertex data for the second segment of the option background	applied@e7dfcab
+D_84102DF8	gMenuOptionVerts2	w29		vertex data for the third segment of the option background	applied@e7dfcab
+D_84102E38	gMenuOptionVerts3	w29		vertex data for the fourth segment of the option background	applied@e7dfcab
+D_84102E78	gMenuOptionVerts4	w29		vertex data for the fifth segment of the option background	applied@e7dfcab
+D_84102EB8	gMenuOptionVerts5	w29		vertex data for the sixth segment of the option background	applied@e7dfcab
+D_84102EF8	gMenuOptionVertsRight0	w29		vertex data for the right side of the option background	applied@e7dfcab
+D_84102F38	gMenuOptionVertsRight1	w29		vertex data for the right side of the option background	applied@e7dfcab
+D_84102F78	gMenuOptionVertsRight2	w29		vertex data for the right side of the option background	applied@e7dfcab
+D_84102FB8	gMenuOptionVertsRight3	w29		vertex data for the right side of the option background	applied@e7dfcab
+D_84102FF8	gMenuOptionVertsRight4	w29		vertex data for the right side of the option background	applied@e7dfcab
+D_84103038	gMenuOptionVertsRight5	w29		vertex data for the right side of the option background	applied@e7dfcab
+func_84206EE0	ItemPanel_RemoveSelected	w29		calls MarkSlotForRemoval and resets panel position	applied@e7dfcab
+func_84206F1C	ItemPanel_MoveCursorLeft	w29		decrements unk_0010 (column), sets state 0xC, plays sound 1	applied@e7dfcab
+func_84206F64	ItemPanel_MoveCursorRight	w29		increments unk_0010 (column), sets state 0xC, plays sound 1	applied@e7dfcab
+func_84206FB0	ItemPanel_MoveCursorUp	w29		decrements unk_0012 (row), sets state 0xD, plays sound 1	applied@e7dfcab
+func_84206FF8	ItemPanel_MoveCursorDown	w29		increments unk_0012 (row), sets state 0xD, plays sound 1	applied@e7dfcab
+func_84207040	ItemPanel_HandleInput	w29		checks BTN_A, BTN_B, and D-pad to change state or move cursor	applied@e7dfcab
+func_84207190	ItemPanel_CheckModeTransition	w29		calls CheckStatThresholdForMode to determine next state (0xF, 7, or 0xE)	applied@e7dfcab
+func_8420720C	ItemPanel_HandleMenuSelection	w29		handles menu options: reset cursor, trigger anim, sync data, or clear items	applied@e7dfcab
+func_842073A4	ItemPanel_HandleAltMenuSelection	w29		similar to func_8420720C but uses different menu index 0xA	applied@e7dfcab
+func_84207530	ItemPanel_HandleModeSpecificSelection	w29		handles menu selection based on gBattleContext.unk_0001 (modes 3, 4, 5)	applied@e7dfcab
+func_84207634	ItemPanel_HandleActionSelection	w29		calls TriggerSelectionAnim and sets state 5 if menu index 2 is selected	applied@e7dfcab
+func_842076A0	ItemPanel_HandleCancelSelection	w29		sets state 7 if menu index 3 is selected	applied@e7dfcab
+func_842076F8	ItemPanel_UpdateCursorAnim	w29		updates unk_000C based on unk_000E to animate selection border	applied@e7dfcab
+func_842078C0	ItemPanel_Init	w29		initializes the ItemPanel struct (unk_D_84211B50) with positions and IDs	applied@e7dfcab
+func_842079B4	ItemPanel_StartSlideDown	w29		sets state 4 and initializes animation timer unk_000A	applied@e7dfcab
+func_842079F0	ItemPanel_StartSlideUp	w29		sets state 5 and initializes animation timer unk_000A	applied@e7dfcab
+func_84207A1C	ItemPanel_ClearAndReset	w29		clears all 6 item slots and resets cursor to state 2	applied@e7dfcab
+func_84207AAC	ItemPanel_ConfirmSelection	w29		handles selecting an item: removes it or triggers action state 8	applied@e7dfcab
+func_84207BD4	ItemPanel_AddItem	w29		adds a Pokemon/Item to the grid and updates count unk_0006	applied@e7dfcab
+func_84207D5C	ItemPanel_RemoveCurrent	w29		removes the currently selected item and transitions state	applied@e7dfcab
+func_84207E3C	ItemPanel_IsItemDuplicate	w29		checks if the item is already present in the 6 slots	applied@e7dfcab
+func_8420804C	ItemPanel_HasItem	w29		checks if a specific item (by raw ID) exists in the slots	applied@e7dfcab
+func_842081A8	ItemPanel_IsOffscreen	w29		returns true if state is 0 (offscreen)	applied@e7dfcab
+func_842081B4	ItemPanel_LoadItems	w29		populates the panel slots from PokemonData array	applied@e7dfcab
+unk_D_84211B50	gItemPanel	w29		unk_D_84211B50:ItemPanel struct containing cursor, position, and item slots	applied@e7dfcab
+func_84307EE0	GetOpponentPokemonCount	w29		returns the number of pokemon for the opposing side	applied@e7dfcab
+func_84308014	GetScaledHeight	w29		calculates height based on model height and current scale factor	applied@e7dfcab
+func_84308058	GetModelHeightFactor	w29		returns the base height factor (ModelHeight * 2 / 50)	applied@e7dfcab
+func_84308094	GetEntityScaleDimensions	w29		calculates scaled width, height, and depth into a Vec3f	applied@e7dfcab
+func_84308148	GetEntityRotation	w29		copies the entity's rotation (unk_01E) into a Vec3s	applied@e7dfcab
+func_843081C4	IsEntityGenderMale	w29		checks the lowest bit of unk_000.unk_000.unk_01 to determine gender	applied@e7dfcab
+func_843083A0	GetEntityBasePosition	w29		calculates the base position based on species and side, similar to UpdateEntityBasePosition	applied@e7dfcab
+func_84308520	GetEntityOffsetPosition	w29		gets position from unk_4EC with a 2.5f Y offset	applied@e7dfcab
+func_84308598	GetScaledWidth	w29		calculates width based on model width and current scale factor	applied@e7dfcab
+func_8430897C	Battle_TriggerOpponentAnim	w29		triggers the animation action defined in gAnimDataByPlayer's unk_A80	applied@e7dfcab
+func_84308A04	Entity_SetupBattleState	w29		initializes controller, physics, and sets initial pokemon index	applied@e7dfcab
+func_84308A4C	Battle_HasStatusEffect	w29		checks if any pokemon in the group has a specific status bit (0x20) and is active	applied@e7dfcab
+func_84308BD0	Battle_HasAbilityEffect	w29		checks if any pokemon in the group has status bits 0-7 and is active	applied@e7dfcab
+func_84308D54	GetTotalPokemonCount	w29		sums the pokemon counts of both sides if in a double battle (unk_01 == 2)	applied@e7dfcab
+func_84308D90	GetPokemonType	w29		returns the type (unk_002) from the pokemon data structure	applied@e7dfcab
+func_84308DB8	Battle_InitModelAnimation	w29		initializes model phase, child nodes, and triggers initial animation	applied@e7dfcab
+func_84308ED4	Battle_InitSubModelAnimation	w29		initializes a secondary model child (index 1 or 2) and triggers animation	applied@e7dfcab
+func_84308F94	Battle_InitEffectModels	w29		initializes two effect models with specific offsets and triggers animation	applied@e7dfcab
+func_84309110	Battle_PlayAnimSound	w29		plays animation sound 0xAF or resets animation state and triggers sound	applied@e7dfcab
+func_84309168	Pokemon_ResetToDefaultState	w29		resets model phase, animations, and scale to default	applied@e7dfcab
+func_84309328	Pokemon_ResetAnimations	w29		resets animations and effects to phase 0x98	applied@e7dfcab
+func_84309368	Pokemon_RestoreVisuals	w29		restores color alpha and resets animations to current phase	applied@e7dfcab
+func_8436F6C0	Battle_DebugLogClear	w29		contains debug strings for battle conditions, status effects, and attack types	applied@e7dfcab
+func_8001B010	SpriteDisplay_IsAnimating	w29		checked in SpriteAnimation_Tick to determine if the animation loop should reset	applied@e7dfcab
+func_84B07848	UI_SetSingleBattlePositions	w29		sets Vec3f positions for UI elements in a single battle layout	applied@e7dfcab
+func_84B07978	UI_SetDoubleBattlePositions	w29		sets Vec3f positions for UI elements in a double battle layout	applied@e7dfcab
+D_84B12420	gShimmerDL	w29		display list that loads gShimmerTexture and sets combine mode to modulate	applied@e7dfcab
+D_84B12490	gShimmerFrame	w29		static counter used in UI_ShimmerEffect to offset the texture tile	applied@e7dfcab
+D_84B13B38	gShimmerMeshDL	w29		display list containing vertex data and triangles for the shimmer effect mesh	applied@e7dfcab
+D_84B13C40	gPowerGaugeMeshDL	w29		display list containing vertex data for the power gauge geometry	applied@e7dfcab
+D_84B13FC8	gPowerGaugeAnimDL	w29		display list used for power gauge animation, references UI_ShimmerEffect	applied@e7dfcab
+D_84B14100	gGaugeSegmentDL	w29		display list that renders gauge segments using texture blocks	applied@e7dfcab
+D_84B141E8	gGaugeLeftLayout	w29		geometry layout for the left side of the gauge, used in UI_SetupGraphNodes	applied@e7dfcab
+D_84B14234	gGaugeRightLayout	w29		geometry layout for the right side of the gauge, used in UI_SetupGraphNodes	applied@e7dfcab
+D_84B14480	gGaugeFillDL	w29		display list that renders the fill portion of the health/power gauge	applied@e7dfcab
+D_84B146C0	gHealthBarLeftLayout	w29		geometry layout for the left health bar in single battles	applied@e7dfcab
+D_84B1474C	gHealthBarRightLayout	w29		geometry layout for the right health bar in single battles	applied@e7dfcab
+D_84B14918	gPowerGaugeFillDL	w29		display list that renders the fill portion of the power gauge	applied@e7dfcab
+D_84B14A90	gPowerGaugeLeftLayoutDouble	w29		geometry layout for the power gauge in double battles (left)	applied@e7dfcab
+D_84B14B50	gPowerGaugeRightLayoutDouble	w29		geometry layout for the power gauge in double battles (right)	applied@e7dfcab
+unk_D_84B25A28	BattleUiState	w29		struct containing state for UI animations, graph nodes, and sprite display	applied@e7dfcab
+func_832003AC	UpdatePikachuAnimation	w29		handles timer for sound triggers and checks if Pikachu animation reached end to trigger action 0	applied@e7dfcab
+func_83200468	UpdatePikachuVisibility	w29		toggles visibility (bit 1 of unk_000.unk_01) for Pikachu nodes 1-3 based on D_83201F54 state	applied@e7dfcab
+func_8320058C	RenderScene	w29		calls Gfx_FinishFrame, updates Pikachu, and begins display list with screen fill and camera texture	applied@e7dfcab
+func_83200700	DrawCursorSprite	w29		draws a specific sprite (D_8C200090) at given coordinates using Gfx_DrawSpriteRGBA16	applied@e7dfcab
+func_83200934	UI_SlideTextTransition	w29		animates text moving from one position to another over 8 frames using a scissor rectangle	applied@e7dfcab
+func_83200FF8	Event_PikachuExit	w29		triggers Pikachu exit animation (action 5), plays sound, and displays a message before fading	applied@e7dfcab
+func_832010BC	Event_PikachuEnter	w29		triggers Pikachu enter animation (action 0xA), plays move sound 0x39, and changes music to 0x4A	applied@e7dfcab
+func_8320118C	Camera_PanDown	w29		interpolates camera eye and target Y positions over 120 frames while moving Pikachu node Y	applied@e7dfcab
+func_8320126C	UI_StartDialogue	w29		draws an expanding gradient box and prompts the user with a series of Yes/No questions	applied@e7dfcab
+func_83201450	UI_SelectMoveAndExecute	w29		checks pokemon count and prompts user to select a move from the list, then triggers move visual 0x85	applied@e7dfcab
+func_832016F4	UI_DrawSaveStatus	w29		draws gradient panels and messages based on the current save/transfer state (arg0)	applied@e7dfcab
+func_832018DC	Save_WritePokemonData	w29		creates a GBS block to write pokemon data to the save and calls PlayerSave_FullSave	applied@e7dfcab
+func_83201A18	Event_GrantMove	w29		assigns move 0x39 to a pokemon, saves the data, and triggers the Pikachu enter event	applied@e7dfcab
+func_83201B60	Event_PikachuSequence	w29		orchestrates the full sequence: music change, fade, camera pan, dialogue, and move selection	applied@e7dfcab
+func_83201BD8	Pikachu_InitNode	w29		initializes a Pikachu graph node with a specific child, animation channel, and position	applied@e7dfcab
+func_83201C8C	Pikachu_SetupScene	w29		processes geo layouts for camera and Pikachu, and initializes the 4 Pikachu graph nodes	applied@e7dfcab
+func_83201DD4	Fragment66_Main	w29		main entry point: loads assets, initializes message banks, and runs the Pikachu event sequence	applied@e7dfcab
+D_83202014	gPikachuGeoNode	w29		GraphNode processed from geo layout D_8C201070	applied@e7dfcab
+D_83202018	gPikachuModelData	w29		Pointer to model data returned by func_80019D90	applied@e7dfcab
+D_8320201C	gMoveNameBank	w29		Message bank 0x25 containing move names	applied@e7dfcab
+D_83202028	gPikachuNodes	w29		Array of 4 GraphNodes representing Pikachu instances	applied@e7dfcab
+D_832025C8	gTextFadeState	w29		State tracking for the fading character animation in Text_PrintFadingChar	applied@e7dfcab
+D_832027C8	gPikachuSession	w29		Session data containing pokemon data and selection criteria (block, index, count)	applied@e7dfcab
+D_83201F50	gPikachuActive	w29		Flag indicating if Pikachu is currently active in the scene	applied@e7dfcab
+D_83201F54	gPikachuVisibilityState	w29		State machine value controlling which Pikachu node is visible	applied@e7dfcab
+D_83201F58	gCurrentUIMessage	w29		Pointer to the current string being displayed in the UI	applied@e7dfcab
+D_83201F5C	gPikachuGeoLayout	w29		Geo layout definition for the Pikachu scene	applied@e7dfcab
