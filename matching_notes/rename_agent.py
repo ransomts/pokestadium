@@ -107,6 +107,7 @@ def main():
                           "renames for any symbol referenced inside those draft blocks.\n")
 
     all_rows = []
+    raws = []
     for k, chunk in enumerate(chunks):
         part = f" (part {k + 1}/{len(chunks)})" if len(chunks) > 1 else ""
         user = (f"Source file: {args.file}{part} ({len(chunk)} lines shown of {len(lines)})\n"
@@ -114,6 +115,7 @@ def main():
                 "\n".join(chunk) + "\n```")
         print(f"[{args.batch}] {args.file}{part}: {len(chunk)} lines -> {args.model}", flush=True)
         out = call_model(args.model, SYSTEM.replace("BATCH", args.batch), user)
+        raws.append(out)
 
         rows = []
         for line in out.splitlines():
@@ -151,7 +153,7 @@ def main():
 
     os.makedirs(args.out, exist_ok=True)
     base = os.path.join(args.out, f"{args.batch}_{os.path.basename(args.file)}")
-    open(base + ".raw", "a").write("")
+    open(base + ".raw", "w").write("\n\n".join(raws))
     with open(base + ".tsv", "w") as f:
         for old, new, batch, also, just in all_rows:
             f.write(f"{old}\t{new}\t{batch}\t{also}\t{just}\tpending\n")
