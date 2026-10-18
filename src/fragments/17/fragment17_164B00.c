@@ -3,8 +3,8 @@
 #include "src/6A40.h"
 #include "src/6BC0.h"
 
-void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs,
-                   u8 lrt, u8 argB, u8 argC, unk_D_86B0DAE0* argD, s32 argE) {
+void Gfx_DrawTexturedRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs,
+                   u8 lrt, u8 argB, u8 argC, GfxTileParams* argD, s32 argE) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s6 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* spD4 = GfxAlloc(sizeof(Mtx) * 1);

@@ -148,11 +148,11 @@ static s32 gSushiFirstSpawnFlag;
 static f32 gSushiRotationAngle;
 unk_D_868084D8 gSushiInstances[12];
 static unk_D_86808808 gSushiSpawners[12];
-static s32 D_86809A08;
-static s16 D_86809A0C;
-static s16 D_86809A10[9];
+static s32 gSushiSpawnMode;
+static s16 gSushiTotalWeight;
+static s16 gSushiActiveCounts[9];
 
-void func_86805D50(s16 arg0, Vec3f* arg1) {
+void Sushi_CalcOrbitPos(s16 arg0, Vec3f* arg1) {
     f32 var_fv0 = gSushiRotationAngle + (arg0 * 30.0f);
 
     if (var_fv0 >= 360.0f) {
@@ -165,7 +165,7 @@ void func_86805D50(s16 arg0, Vec3f* arg1) {
     arg1->z = gSushiOrbitCenter.z + (COSS(var_fv0) * gSushiOrbitRadius);
 }
 
-f32 func_86805E94(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
+f32 Sushi_CalcTargetDelta(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
     unk_D_868084D8_038* ptr = arg0->unk_38;
 
@@ -180,7 +180,7 @@ f32 func_86805E94(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     return SQ(arg2->x) + SQ(arg2->z);
 }
 
-void func_86805F94(unk_D_86808808* arg0, s32 arg1) {
+void SushiSpawner_Init(unk_D_86808808* arg0, s32 arg1) {
     unk_D_86808808_018* sp1C = &arg0->unk_018;
 
     arg0->unk_000 = arg1;
@@ -189,13 +189,13 @@ void func_86805F94(unk_D_86808808* arg0, s32 arg1) {
     arg0->unk_006 = 0;
     arg0->unk_008 = 0;
 
-    func_86805D50(arg0->unk_000, &arg0->unk_00C);
+    Sushi_CalcOrbitPos(arg0->unk_000, &arg0->unk_00C);
     Graph_AddToRootList0(&sp1C->unk_000);
 
     sp1C->unk_030.x = sp1C->unk_030.y = sp1C->unk_030.z = 2.0f;
 }
 
-void func_86805FFC(unk_D_868084D8* arg0) {
+void SushiInstance_UpdatePosition(unk_D_868084D8* arg0) {
     unk_D_868084D8_038* ptr;
 
     switch (arg0->unk_10) {
@@ -223,7 +223,7 @@ void func_86805FFC(unk_D_868084D8* arg0) {
     }
 }
 
-s32 func_86806100(void) {
+s32 Sushi_SelectRandomItem(void) {
     UNUSED s32 pad[4];
     s32 i;
     s32 sp20;
@@ -233,12 +233,12 @@ s32 func_86806100(void) {
     s32 var_a1;
     s32 temp_v0;
 
-    if (D_86809A10[1] < 3) {
+    if (gSushiActiveCounts[1] < 3) {
         sp20 = 0;
-        var_v0 = D_86809A0C;
+        var_v0 = gSushiTotalWeight;
     } else {
         sp20 = 1;
-        var_v0 = D_86809A0C - gSushiItemDefs[1].unk_12;
+        var_v0 = gSushiTotalWeight - gSushiItemDefs[1].unk_12;
     }
 
     temp_v0 = GetRandomMod(var_v0);
@@ -261,7 +261,7 @@ s32 func_86806100(void) {
     return sp1C;
 }
 
-void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038* arg3) {
+void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038* arg3) {
     if (arg0 == 0) {
         if (arg2 != -1) {
             arg1->unk_00 = arg2;
@@ -281,9 +281,9 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
         arg1->unk_04 = 0;
         arg1->unk_06 = 0;
         arg1->unk_08.rgba = 0xFFFFFF80;
-        arg1->unk_0C = func_86806100();
+        arg1->unk_0C = Sushi_SelectRandomItem();
 
-        D_86809A10[arg1->unk_0C]++;
+        gSushiActiveCounts[arg1->unk_0C]++;
 
         arg1->unk_10 = 1;
         arg1->unk_2C = 0.0f;
@@ -305,12 +305,12 @@ void func_868061E8(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038*
     arg1->unk_30 = 1.0f;
     arg1->unk_34 = 0.0f;
 
-    func_86805FFC(arg1);
+    SushiInstance_UpdatePosition(arg1);
 
     arg1->unk_3C = &gSushiEmptyDL;
 }
 
-unk_D_868084D8* func_86806388(void) {
+unk_D_868084D8* SushiInstance_Allocate(void) {
     s32 i;
     unk_D_868084D8* var_v1 = gSushiInstances;
 
@@ -326,16 +326,16 @@ unk_D_868084D8* func_86806388(void) {
     return var_v1;
 }
 
-void func_868063C4(unk_D_86808808* arg0) {
+void SushiSpawner_Update(unk_D_86808808* arg0) {
     unk_D_868084D8* sp24;
 
-    func_86805D50(arg0->unk_000, &arg0->unk_00C);
+    Sushi_CalcOrbitPos(arg0->unk_000, &arg0->unk_00C);
 
     if ((D_8780FC94 == 0) && (arg0->unk_008 == 0) && (arg0->unk_004 & 1)) {
         arg0->unk_002 -= 1;
         if (arg0->unk_002 <= 0) {
             arg0->unk_002 = 0;
-            sp24 = func_86806388();
+            sp24 = SushiInstance_Allocate();
             if (sp24 != NULL) {
                 arg0->unk_006++;
                 if (gSushiFirstSpawnFlag == 0) {
@@ -343,7 +343,7 @@ void func_868063C4(unk_D_86808808* arg0) {
                     PlaySoundByCategory(0x50003, 0, 0);
                     func_8004B1CC(0x17);
                 }
-                func_868061E8(1, sp24, -1, arg0);
+                SushiInstance_SetActive(1, sp24, -1, arg0);
             }
         }
     }
@@ -351,7 +351,7 @@ void func_868063C4(unk_D_86808808* arg0) {
     arg0->unk_018.unk_024 = arg0->unk_00C;
 }
 
-void func_868064BC(unk_D_868084D8* arg0) {
+void SushiInstance_Render(unk_D_868084D8* arg0) {
     Gfx* gfx;
     f32 var_fv0;
     s32 var_v0;
@@ -386,7 +386,7 @@ void func_868064BC(unk_D_868084D8* arg0) {
                     arg0->unk_34 *= 0.8f;
                     arg0->unk_2C = (arg0->unk_30 * -1.5f) + 1.5f;
                 } else {
-                    func_86806868(arg0, 2, NULL);
+                    SushiInstance_SetMode(arg0, 2, NULL);
                 }
                 break;
 
@@ -405,7 +405,7 @@ void func_868064BC(unk_D_868084D8* arg0) {
         }
     }
 
-    func_86805FFC(arg0);
+    SushiInstance_UpdatePosition(arg0);
     gfx = GfxAlloc(sizeof(Gfx) * 16);
     arg0->unk_3C = gfx;
 
@@ -438,7 +438,7 @@ void func_868064BC(unk_D_868084D8* arg0) {
 void func_86806860(void) {
 }
 
-void func_86806868(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
+void SushiInstance_SetMode(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
     unk_D_868084D8_038* temp_v0;
 
     arg0->unk_10 = arg1;
@@ -460,8 +460,8 @@ void func_86806868(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
             break;
 
         case 0:
-            D_86809A10[arg0->unk_0C]--;
-            func_868061E8(0, arg0, -1, NULL);
+            gSushiActiveCounts[arg0->unk_0C]--;
+            SushiInstance_SetActive(0, arg0, -1, NULL);
             break;
     }
 }
@@ -470,13 +470,13 @@ s32 func_86806930(unk_D_868084D8* arg0) {
     return gSushiItemDefs[arg0->unk_0C].unk_00;
 }
 
-s16 func_86806950(s32 arg0) {
-    return D_86809A10[arg0];
+s16 Sushi_GetActiveCount(s32 arg0) {
+    return gSushiActiveCounts[arg0];
 }
 
-void func_86806964(s32 arg0) {
+void Sushi_SetSpawnMode(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 3)) {
-        D_86809A08 = arg0;
+        gSushiSpawnMode = arg0;
     }
 }
 
@@ -484,7 +484,7 @@ void func_86806980(void) {
     s32 i;
     unk_D_86808808* var_v1;
 
-    switch (D_86809A08) {
+    switch (gSushiSpawnMode) {
         case 1:
             for (i = 0, var_v1 = gSushiSpawners; i < 12; i++, var_v1++) {
                 var_v1->unk_004 |= 1;
@@ -498,7 +498,7 @@ void func_86806980(void) {
             break;
     }
 
-    D_86809A08 = 0;
+    gSushiSpawnMode = 0;
 }
 
 void func_86806A50(void) {
@@ -510,19 +510,19 @@ void func_86806A50(void) {
     Gfx* gfx = gSushiEmptyDL;
 
     gSushiRotationAngle = 0.0f;
-    D_86809A08 = 0;
-    D_86809A0C = 0;
+    gSushiSpawnMode = 0;
+    gSushiTotalWeight = 0;
 
     for (i = 0; i < 9; i++) {
-        D_86809A0C += gSushiItemDefs[i].unk_12;
-        D_86809A10[i] = 0;
+        gSushiTotalWeight += gSushiItemDefs[i].unk_12;
+        gSushiActiveCounts[i] = 0;
     }
 
     gSushiFirstSpawnFlag = 0;
     temp_s2 = state_pool_try_init(main_pool_get_available(), 0);
 
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
-        func_86805F94(ptr, i);
+        SushiSpawner_Init(ptr, i);
         temp_a1 = SimpleGfxNode_Create(temp_s2, NULL, 4, gSushiPlaneDL);
         ptr->unk_018.unk_000.unk_01 |= 1;
         GraphNode_AddChild(&ptr->unk_018, &temp_a1->unk_00);
@@ -530,7 +530,7 @@ void func_86806A50(void) {
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         var_s0->unk_40 = BillboardNode_Create(temp_s2, NULL, 5, gfx, &gRootNodePosition, var_s0->unk_2C);
-        func_868061E8(0, var_s0, i, NULL);
+        SushiInstance_SetActive(0, var_s0, i, NULL);
         GraphNode_AddChild(&gGraphRoot0, var_s0->unk_40);
     }
 
@@ -542,7 +542,7 @@ void func_86806BF0(void) {
     unk_D_868084D8* var_s0;
     s32 i;
 
-    if (D_86809A08 != 0) {
+    if (gSushiSpawnMode != 0) {
         func_86806980();
     }
 
@@ -554,12 +554,12 @@ void func_86806BF0(void) {
     }
 
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
-        func_868063C4(ptr);
+        SushiSpawner_Update(ptr);
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if (var_s0->unk_0C != 0) {
-            func_868064BC(var_s0);
+            SushiInstance_Render(var_s0);
         }
     }
 }

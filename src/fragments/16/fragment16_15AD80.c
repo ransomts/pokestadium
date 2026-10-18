@@ -1,16 +1,16 @@
 #include "fragment16.h"
 #include "src/fragments/2/fragment2.h"
 
-u16 D_86A05B50 = 0;
+u16 gBorderFadeCycleCount = 0;
 
-s32 func_86A023A0(s32 arg0) {
+s32 Math_RandomModulo(s32 arg0) {
     if (arg0 == 0) {
         return 0;
     }
     return ((guRandom() + osGetCount()) / 10) % arg0;
 }
 
-void func_86A0240C(u8 arg0) {
+void Stage_DrawBorderFade(u8 arg0) {
     static u8 D_86A05B54 = 0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -22,7 +22,7 @@ void func_86A0240C(u8 arg0) {
         D_86A05B54++;
     } else {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-        D_86A05B50++;
+        gBorderFadeCycleCount++;
     }
 
     func_878021B4(0x6E, 0x5C);
@@ -32,7 +32,7 @@ void func_86A0240C(u8 arg0) {
 
 s32 pad_D_86A05B58[2] = { 0, 0 };
 
-char D_86A05B60 = '\x00';
+char gMessageDecompressBuffer = '\x00';
 char D_86A05B64 = '\x00';
 char D_86A05B68 = '\x00';
 char D_86A05B6C = '\x00';

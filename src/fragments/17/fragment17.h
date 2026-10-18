@@ -88,10 +88,10 @@ typedef struct unk_D_86B0DAE0_000 {
     /* 0x16 */ u16 unk_16;
 } unk_D_86B0DAE0_000; // size = 0x18
 
-typedef struct unk_D_86B0DAE0 {
+typedef struct GfxTileParams {
     /* 0x00 */ unk_D_86B0DAE0_000 unk_00;
     /* 0x18 */ unk_D_86B0DAE0_000 unk_18;
-} unk_D_86B0DAE0; // size = 0x30
+} GfxTileParams; // size = 0x30
 
 typedef struct unk_D_86B0FA78 {
     /* 0x000 */ unk_D_86002F30* unk_000;
@@ -167,17 +167,17 @@ extern unk_70D3A0 D_86B10660;
 
 s32 BattleContext_HandleState(UNUSED s32 arg0, UNUSED s32 arg1);
 
-s32 func_86B000D0(s32 arg0, GraphNode* arg1);
-s32 func_86B00158(s32 arg0, GraphNode* arg1);
-s32 func_86B00188(s32 arg0, GraphNode* arg1);
-s32 func_86B001B8(s32 arg0, GraphNode* arg1);
+s32 Callback_UpdateColorAndPos(s32 arg0, GraphNode* arg1);
+s32 Callback_SetScaleLarge(s32 arg0, GraphNode* arg1);
+s32 Callback_SetScaleNormal(s32 arg0, GraphNode* arg1);
+s32 Callback_SetObjectState(s32 arg0, GraphNode* arg1);
 void func_86B001D8(void);
 void func_86B001FC(unk_D_86B0E5F0* arg0);
 void func_86B00258(void);
 void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1);
 void func_86B0032C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1);
 void func_86B00348(s32 arg0);
-void func_86B003CC(s32 arg0);
+void Fragment_LoadObjectsForPreset(s32 arg0);
 void func_86B00470(s32 arg0);
 void func_86B0054C(s32 arg0);
 void func_86B00680(void);
@@ -190,7 +190,7 @@ void func_86B00904(void);
 void func_86B00944(s32 arg0);
 void func_86B00AE4(void);
 void func_86B00B14(void);
-s32 func_86B00C34(void);
+s32 StateMachine_Update(void);
 void func_86B01004(void);
 void func_86B0100C(void);
 void func_86B0107C(void);
@@ -202,22 +202,22 @@ u16 Math_RandomU16Range(s32);
 Vec3f* func_86B01404(Vec3f*, Vec3f*);
 void Math_ApproachFloat(f32*, f32, f32);
 
-u16 func_86B01670(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);
-void func_86B01898(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
-void func_86B018D4(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
-void func_86B018E8(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
-void func_86B01924(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
-void func_86B01938(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
-void func_86B0194C(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1);
-void func_86B01A40(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
-s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
+u16 IsPointInSector(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);
+void SetCameraOrientationParams(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+void SetCameraFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
+void SetCameraEyeAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+void SetCameraTargetFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
+void SetCameraSmoothing(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
+void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1);
+void ApplyCameraViewParameters(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
+s32 UpdateCameraTransition(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
 
 void func_86B01C00(u8*);
 void func_86B01D8C(u8*, s32, s32, s32, s32, u8, u8);
 void func_86B02348(void);
 
-s32 func_86B024D0(s32 arg0, GraphNode* arg1);
-s32 func_86B02538(s32 arg0, GraphNode* arg1);
+s32 Camera_UpdatePrimaryAngles(s32 arg0, GraphNode* arg1);
+s32 Camera_UpdateSecondaryAngles(s32 arg0, GraphNode* arg1);
 void func_86B025A4(void);
 void func_86B026C0(void);
 void func_86B028F8(void);
@@ -255,7 +255,7 @@ void func_86B04DF0(void);
 void func_86B04EBC(void);
 s32 BattleState_Handle21Or26(void);
 
-void func_86B05170(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs, u8 lrt, u8 argB, u8 argC, unk_D_86B0DAE0* argD, s32 argE);
+void Gfx_DrawTexturedRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs, u8 lrt, u8 argB, u8 argC, GfxTileParams* argD, s32 argE);
 void func_86B05944(s32, s32, s32, s32, s32);
 
 s32 func_86B05CB0(s32 arg0, GraphNode* arg1);

@@ -6,18 +6,18 @@
 static s16 gCameraYaw;
 static s16 gCameraPitch;
 static f32 gCameraDistance;
-static s16 D_8690B608;
-static s16 D_8690B60A;
+static s16 gCameraPitchTmp;
+static s16 gCameraYawTmp;
 static f32 gHorizontalDist;
 static f32 D_8690B610;
-static Vec3f D_8690B618;
+static Vec3f gCameraInitialPos;
 
 f32 ComputeDistance3D(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.y - arg0.y) + SQ(arg1.z - arg0.z));
 }
 
 f32 ScaleCameraDistance(f32 arg0) {
-    f32 temp_fv1 = (D_8690B2F8.unk_00 + gCameraZoomOffset) * arg0;
+    f32 temp_fv1 = (gCameraConfig.unk_00 + gCameraZoomOffset) * arg0;
 
     if (temp_fv1 > 400.0f) {
         return 400.0f;
@@ -38,10 +38,10 @@ void Camera_Init(void) {
     gCameraPitch = 0;
     gCameraDistance = ScaleCameraDistance(4.0f);
 
-    if (D_8690B2F8.unk_08 != 0.0f) {
-        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_08;
+    if (gCameraConfig.unk_08 != 0.0f) {
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
     } else {
-        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_04 + gCameraConfig.unk_0C;
     }
 
     Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
@@ -58,7 +58,7 @@ void Camera_Init(void) {
 
     D_8690B610 = 0.0f;
 
-    Vec3f_Set(&D_8690B618, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
+    Vec3f_Set(&gCameraInitialPos, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }
 
 void Camera_UpdateZoomFromInput(void) {
@@ -71,7 +71,7 @@ void Camera_UpdateZoomFromInput(void) {
             gCameraZoomOffset -= gPlayer2Controller->stickMag / 400.0f;
         }
 
-        temp_fv1 = 10.0f - D_8690B2F8.unk_00;
+        temp_fv1 = 10.0f - gCameraConfig.unk_00;
         if (gCameraZoomOffset < temp_fv1) {
             gCameraZoomOffset = temp_fv1;
         }
@@ -91,10 +91,10 @@ void Camera_ResetPosition(void) {
     gMiniCameraPtr->unk_60.at.x = 0.0f;
     gMiniCameraPtr->unk_60.at.z = 0.0f;
 
-    if (D_8690B2F8.unk_08 != 0) {
-        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_08;
+    if (gCameraConfig.unk_08 != 0) {
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
     } else {
-        gMiniCameraPtr->unk_60.at.y = D_8690B2F8.unk_04 + D_8690B2F8.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_04 + gCameraConfig.unk_0C;
     }
 
     Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
@@ -110,7 +110,7 @@ void Camera_ResetPosition(void) {
     gCameraParams->unk_008 = 40.0f;
     D_8690B610 = 0.0f;
 
-    Vec3f_Set(&D_8690B618, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
+    Vec3f_Set(&gCameraInitialPos, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }
 
 s32 Camera_ToggleFOV(void) {
@@ -150,9 +150,9 @@ void Camera_RotateAroundTarget(s16 arg0) {
     UNUSED s32 pad2;
 
     Vec3f_Set(&sp38, 0, 0.0f, 0.0f);
-    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &D_8690B608, &D_8690B60A);
+    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &gCameraPitchTmp, &gCameraYawTmp);
     Vec3f_Set(&sp50, gMiniCameraPtr->unk_60.at.x, 0.0f, gMiniCameraPtr->unk_60.at.z);
-    Vec3s_Set(&sp68, 0, D_8690B60A + arg0, 0);
+    Vec3s_Set(&sp68, 0, gCameraYawTmp + arg0, 0);
     Vec3f_Set(&sp5C, gCameraParams->unk_004 * 4.0f, 0.0f, 0.0f);
     Matrix_RotateTranslateScale(&sp70, &gMiniCameraPtr->unk_60.at, &sp68);
     TransformVec3fByMtxF(&sp5C, &sp70);
@@ -163,10 +163,10 @@ void Camera_RotateAroundTarget(s16 arg0) {
     gMiniCameraPtr->unk_60.at.x = sp50.x;
     gMiniCameraPtr->unk_60.at.z = sp50.z;
 
-    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &D_8690B608, &D_8690B60A);
+    Matrix_Decompose(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &gCameraPitchTmp, &gCameraYawTmp);
     gHorizontalDist = ComputeDistanceXZ(sp38, gMiniCameraPtr->unk_60.at);
     if ((ScaleCameraDistance(1.9f) - 1.0f) <= gHorizontalDist) {
-        Camera_SetViewParameters(&sp38, &sp50, ScaleCameraDistance(1.9f) - 1.0f, 0, D_8690B60A);
+        Camera_SetViewParameters(&sp38, &sp50, ScaleCameraDistance(1.9f) - 1.0f, 0, gCameraYawTmp);
         gMiniCameraPtr->unk_60.at.x = sp50.x;
         gMiniCameraPtr->unk_60.at.z = sp50.z;
     }
@@ -227,7 +227,7 @@ void Camera_ClampSegmentToRadius(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3,
     f32 sp34;
     f32 sp54;
 
-    sp70 = D_86908C20;
+    sp70 = gCameraClampCenter;
 
     if (arg0->x == arg1->x) {
         sp7C.x = arg0->x;
@@ -291,7 +291,7 @@ void Camera_ClampSegmentToRadius(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3,
     Matrix_Decompose(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
 }
 
-void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
+void Camera_ClampSegmentToRadiusMode(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
     Vec3f sp84;
     Vec3f sp78;
     Vec3f tmp;
@@ -304,7 +304,7 @@ void func_8690325C(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
     f32 sp2C;
     f32 sp44;
 
-    sp60 = D_86908C2C;
+    sp60 = gCameraClampCenterMode;
     sp2C = arg1->x;
     tmp.z = arg3;
     if (gMiniCameraPtr->unk_60.at.x == sp2C) {
@@ -369,7 +369,7 @@ void Camera_InterpolatePositionToY(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3,
 
 void Camera_EnforceConstraints(Vec3f* arg0, Vec3f* arg1) {
     UNUSED s32 pad[2];
-    Vec3f sp3C = D_86908C38;
+    Vec3f sp3C = gCameraConstraintCenter;
     f32 sp38;
 
     if (arg1->y < 12.0f) {
@@ -396,7 +396,7 @@ void Camera_EnforceConstraints(Vec3f* arg0, Vec3f* arg1) {
 
 void Camera_EnforceConstraintsMode(Vec3f* arg0, Vec3f* arg1, s32 arg2) {
     UNUSED s32 pad[2];
-    Vec3f sp3C = D_86908C44;
+    Vec3f sp3C = gCameraConstraintCenterMode;
     f32 sp38;
 
     if (arg2 == 0) {
@@ -433,15 +433,15 @@ void Camera_EnforceConstraintsMode(Vec3f* arg0, Vec3f* arg1, s32 arg2) {
     } else {
         sp38 = ScaleCameraDistance(1.9f);
         if (ComputeDistanceXZ(sp3C, *arg1) < sp38) {
-            func_8690325C(arg0, arg1, sp3C, ScaleCameraDistance(1.9f) + 0.05f);
+            Camera_ClampSegmentToRadiusMode(arg0, arg1, sp3C, ScaleCameraDistance(1.9f) + 0.05f);
         }
 
         if (ComputeDistanceXZ(sp3C, *arg1) > 400.0f) {
-            func_8690325C(arg0, arg1, sp3C, 399.0f);
+            Camera_ClampSegmentToRadiusMode(arg0, arg1, sp3C, 399.0f);
         }
 
         if (ComputeDistanceXZ(gMiniCameraPtr->unk_60.at, *arg1) < 30.0f) {
-            func_8690325C(arg0, arg1, gMiniCameraPtr->unk_60.at, 30.1f);
+            Camera_ClampSegmentToRadiusMode(arg0, arg1, gMiniCameraPtr->unk_60.at, 30.1f);
         }
     }
 }

@@ -3393,7 +3393,7 @@ void func_86A021C0(s8* arg0, u8* arg1) {
                 }
             }
         }
-        *arg0 = sp28[func_86A023A0(var_a3)];
+        *arg0 = sp28[Math_RandomModulo(var_a3)];
     }
 
     switch (D_86A05AD4) {

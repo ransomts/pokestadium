@@ -29,64 +29,64 @@ typedef struct unk_D_86B0E5D8 {
 } unk_D_86B0E5D8; // size = 0xC
 
 extern u32 D_86B0BD60[];
-extern unk_D_86B0C4C8* D_86B0C4C8[];
-extern unk_D_86B0C160 D_86B0C160[];
-extern unk_D_86B0C264 D_86B0C264[];
+extern unk_D_86B0C4C8* gFragment17ObjectDefs[];
+extern unk_D_86B0C160 gFragment17AnimData[];
+extern unk_D_86B0C264 gFragment17PresetData[];
 extern u32 D_86B0CF9C[];
 extern u32 D_86B0DA9C[];
 
-s32 func_86B000D0(s32, GraphNode*);
-s32 func_86B00158(s32, GraphNode*);
-s32 func_86B00188(s32, GraphNode*);
-s32 func_86B001B8(s32, GraphNode*);
+s32 Callback_UpdateColorAndPos(s32, GraphNode*);
+s32 Callback_SetScaleLarge(s32, GraphNode*);
+s32 Callback_SetScaleNormal(s32, GraphNode*);
+s32 Callback_SetObjectState(s32, GraphNode*);
 
 static s16 D_86B0BBF0 = -0x3C6E;
 static s16 D_86B0BBF4 = 0x38E;
 
-static u32 D_86B0BBF8[] = {
+static u32 gFragment17GeoLayoutCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0,  0x0000000F,    0x00000000,    0x00000000,
-    0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  func_86B001B8, 0x00000000,    0x05000000,
+    0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  Callback_SetObjectState, 0x00000000,    0x05000000,
     0x0F000002, 0x05000000, 0x06000000, 0x0F000002, 0x05000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    func_86B00158,
+    0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleLarge,
     0x00000000, 0x05000000, 0x00000000, D_86B0CF9C, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    func_86B00188,
+    0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleNormal,
     0x00000000, 0x05000000, 0x00000000, D_86B0DA9C, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    func_86B000D0, 0x00000000,
+    0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    Callback_UpdateColorAndPos, 0x00000000,
     0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,    0x06000000,    0x06000000,
     0x06000000, 0x01000000,
 };
 
-static GraphNode* D_86B0E5D0;
-static unk_D_86B0E5D4* D_86B0E5D4;
-static unk_D_86B0E5D8* D_86B0E5D8;
+static GraphNode* gFragment17RootNode;
+static unk_D_86B0E5D4* gFragment17State;
+static unk_D_86B0E5D8* gFragment17ColorAnim;
 s32 D_86B0E5DC;
 char** D_86B0E5E0;
 static BinArchive* D_86B0E5E4;
 static u8* D_86B0E5E8;
-static unk_D_86B0E5F0 D_86B0E5F0[4];
-static s32 D_86B0EBB0;
-static s32 D_86B0EBB4;
+static unk_D_86B0E5F0 gFragment17Objects[4];
+static s32 gFragment17WindowAlpha;
+static s32 gFragment17Result;
 static u16 D_86B0EBB8;
 
-s32 func_86B000D0(s32 arg0, GraphNode* arg1) {
+s32 Callback_UpdateColorAndPos(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
 
-        D_86B0E5D8->unk_00 += D_86B0E5D8->unk_08;
-        D_86B0E5D8->unk_02 += D_86B0E5D8->unk_0A;
+        gFragment17ColorAnim->unk_00 += gFragment17ColorAnim->unk_08;
+        gFragment17ColorAnim->unk_02 += gFragment17ColorAnim->unk_0A;
 
-        ptr->unk_1C = D_86B0E5D8->unk_00;
-        ptr->unk_1E = D_86B0E5D8->unk_02;
-        ptr->r = D_86B0E5D8->unk_05;
-        ptr->g = D_86B0E5D8->unk_06;
-        ptr->b = D_86B0E5D8->unk_07;
-        ptr->a = D_86B0E5D8->unk_04;
+        ptr->unk_1C = gFragment17ColorAnim->unk_00;
+        ptr->unk_1E = gFragment17ColorAnim->unk_02;
+        ptr->r = gFragment17ColorAnim->unk_05;
+        ptr->g = gFragment17ColorAnim->unk_06;
+        ptr->b = gFragment17ColorAnim->unk_07;
+        ptr->a = gFragment17ColorAnim->unk_04;
     }
 
     return 0;
 }
 
-s32 func_86B00158(s32 arg0, GraphNode* arg1) {
+s32 Callback_SetScaleLarge(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
@@ -99,7 +99,7 @@ s32 func_86B00158(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86B00188(s32 arg0, GraphNode* arg1) {
+s32 Callback_SetScaleNormal(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
@@ -112,11 +112,11 @@ s32 func_86B00188(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86B001B8(s32 arg0, GraphNode* arg1) {
+s32 Callback_SetObjectState(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         unk_D_86002F34_alt21* ptr = (unk_D_86002F34_alt21*)arg1;
 
-        ptr->unk_1A = D_86B0E5D4->unk_04.unk_44;
+        ptr->unk_1A = gFragment17State->unk_04.unk_44;
     }
     return 0;
 }
@@ -125,7 +125,7 @@ void func_86B001D8(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_86B0E5F0[i].unk_16C = 0;
+        gFragment17Objects[i].unk_16C = 0;
     }
 }
 
@@ -166,19 +166,19 @@ void func_86B0032C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
 }
 
 void func_86B00348(s32 arg0) {
-    D_86B0E5D8->unk_00 = D_86B0C264[arg0].unk_0C;
-    D_86B0E5D8->unk_02 = D_86B0C264[arg0].unk_0E;
-    D_86B0E5D8->unk_08 = D_86B0C264[arg0].unk_18;
-    D_86B0E5D8->unk_0A = D_86B0C264[arg0].unk_1A;
-    D_86B0E5D8->unk_05 = D_86B0C264[arg0].unk_10;
-    D_86B0E5D8->unk_06 = D_86B0C264[arg0].unk_12;
-    D_86B0E5D8->unk_07 = D_86B0C264[arg0].unk_14;
-    D_86B0E5D8->unk_04 = D_86B0C264[arg0].unk_16;
+    gFragment17ColorAnim->unk_00 = gFragment17PresetData[arg0].unk_0C;
+    gFragment17ColorAnim->unk_02 = gFragment17PresetData[arg0].unk_0E;
+    gFragment17ColorAnim->unk_08 = gFragment17PresetData[arg0].unk_18;
+    gFragment17ColorAnim->unk_0A = gFragment17PresetData[arg0].unk_1A;
+    gFragment17ColorAnim->unk_05 = gFragment17PresetData[arg0].unk_10;
+    gFragment17ColorAnim->unk_06 = gFragment17PresetData[arg0].unk_12;
+    gFragment17ColorAnim->unk_07 = gFragment17PresetData[arg0].unk_14;
+    gFragment17ColorAnim->unk_04 = gFragment17PresetData[arg0].unk_16;
 }
 
-void func_86B003CC(s32 arg0) {
-    unk_D_86B0C4C8* var_s0 = D_86B0C4C8[arg0];
-    unk_D_86B0E5F0* var_s1 = D_86B0E5F0;
+void Fragment_LoadObjectsForPreset(s32 arg0) {
+    unk_D_86B0C4C8* var_s0 = gFragment17ObjectDefs[arg0];
+    unk_D_86B0E5F0* var_s1 = gFragment17Objects;
 
     func_86B001D8();
     func_86B00258();
@@ -196,10 +196,10 @@ void func_86B003CC(s32 arg0) {
 }
 
 void func_86B00470(s32 arg0) {
-    unk_D_86B0C4C8* sp2C = D_86B0C4C8[arg0];
-    unk_D_86B0E5F0* var_s1 = D_86B0E5F0;
+    unk_D_86B0C4C8* sp2C = gFragment17ObjectDefs[arg0];
+    unk_D_86B0E5F0* var_s1 = gFragment17Objects;
 
-    func_86B001FC(D_86B0E5F0);
+    func_86B001FC(gFragment17Objects);
     func_86B001D8();
     func_86B00258();
 
@@ -215,26 +215,26 @@ void func_86B00470(s32 arg0) {
     func_86B00348(arg0);
 
     if (arg0 == 4) {
-        GraphNode_TriggerSound(&D_86B0E5F0[0].unk_004, 0);
+        GraphNode_TriggerSound(&gFragment17Objects[0].unk_004, 0);
     }
 }
 
 void func_86B0054C(s32 arg0) {
     if (arg0 == 4) {
-        D_86B0E5D4->unk_00->unk_60.at.x = -0.04f;
-        D_86B0E5D4->unk_00->unk_60.at.y = 24.2f;
-        D_86B0E5D4->unk_00->unk_60.at.z = -4.08f;
-        D_86B0E5D4->unk_00->unk_60.eye.x = 0.04f;
-        D_86B0E5D4->unk_00->unk_60.eye.y = 24.2f;
-        D_86B0E5D4->unk_00->unk_60.eye.z = 177.41f;
-        D_86B0E5D4->unk_00->unk_24.fovy = 25.0f;
+        gFragment17State->unk_00->unk_60.at.x = -0.04f;
+        gFragment17State->unk_00->unk_60.at.y = 24.2f;
+        gFragment17State->unk_00->unk_60.at.z = -4.08f;
+        gFragment17State->unk_00->unk_60.eye.x = 0.04f;
+        gFragment17State->unk_00->unk_60.eye.y = 24.2f;
+        gFragment17State->unk_00->unk_60.eye.z = 177.41f;
+        gFragment17State->unk_00->unk_24.fovy = 25.0f;
     } else {
-        D_86B0E5D4->unk_04.unk_00.x = D_86B0C264[arg0].unk_00.x;
-        D_86B0E5D4->unk_04.unk_00.y = D_86B0C264[arg0].unk_00.y;
-        D_86B0E5D4->unk_04.unk_00.z = D_86B0C264[arg0].unk_00.z;
+        gFragment17State->unk_04.unk_00.x = gFragment17PresetData[arg0].unk_00.x;
+        gFragment17State->unk_04.unk_00.y = gFragment17PresetData[arg0].unk_00.y;
+        gFragment17State->unk_04.unk_00.z = gFragment17PresetData[arg0].unk_00.z;
 
-        func_86B0194C(&D_86B0C160[arg0], D_86B0E5D4);
-        func_86B01A40(&D_86B0E5D4->unk_04, D_86B0E5D4);
+        InitCameraFromConfig(&gFragment17AnimData[arg0], gFragment17State);
+        ApplyCameraViewParameters(&gFragment17State->unk_04, gFragment17State);
     }
 }
 
@@ -244,12 +244,12 @@ void func_86B00680(void) {
 void func_86B00688(void) {
     s32 i = 0;
 
-    if ((D_86B0E5D4->unk_04.unk_4C != 5) && (D_86B0E5D4->unk_04.unk_4C != 6) && (D_86B0E5D4->unk_04.unk_4C != 7) &&
-        (D_86B0E5D4->unk_04.unk_4C != 8)) {
-        if (D_86B0E5D4->unk_04.unk_44 != 4) {
-            while (D_86B0C4C8[D_86B0E5D4->unk_04.unk_44][i].unk_0C != 0x98) {
-                if (func_800174E4(&D_86B0E5F0[i].unk_004) != 0) {
-                    Anim_SetChannelBase(&D_86B0E5F0[i].unk_004, 0);
+    if ((gFragment17State->unk_04.unk_4C != 5) && (gFragment17State->unk_04.unk_4C != 6) && (gFragment17State->unk_04.unk_4C != 7) &&
+        (gFragment17State->unk_04.unk_4C != 8)) {
+        if (gFragment17State->unk_04.unk_44 != 4) {
+            while (gFragment17ObjectDefs[gFragment17State->unk_04.unk_44][i].unk_0C != 0x98) {
+                if (func_800174E4(&gFragment17Objects[i].unk_004) != 0) {
+                    Anim_SetChannelBase(&gFragment17Objects[i].unk_004, 0);
                 }
                 i++;
             }
@@ -258,20 +258,20 @@ void func_86B00688(void) {
 }
 
 void func_86B00794(void) {
-    if (D_86B0E5D4->unk_04.unk_48 == 1) {
-        Text_DrawWindowRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, D_86B0EBB0);
+    if (gFragment17State->unk_04.unk_48 == 1) {
+        Text_DrawWindowRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, gFragment17WindowAlpha);
     }
 }
 
 void func_86B007EC(void) {
-    if (D_86B0E5D4->unk_04.unk_44 == 2) {
+    if (gFragment17State->unk_04.unk_44 == 2) {
         func_86B01D8C(&D_86B0BD60, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
     }
 }
 
 s32 func_86B00848(s32 arg0) {
-    unk_D_86B0E5F0* var_v0 = D_86B0E5F0;
-    unk_D_86B0C4C8* var_v1 = D_86B0C4C8[arg0];
+    unk_D_86B0E5F0* var_v0 = gFragment17Objects;
+    unk_D_86B0C4C8* var_v1 = gFragment17ObjectDefs[arg0];
     s32 var_a1 = 1;
 
     while (var_v1->unk_0C != 0x98) {
@@ -288,20 +288,20 @@ s32 func_86B00848(s32 arg0) {
 void func_86B008C4(void) {
     Stage_SetFillColor(1);
     Stage_FadeOut(0xC);
-    D_86B0E5D4->unk_04.unk_4C = 0;
-    D_86B0E5D4->unk_04.unk_50 = 0;
+    gFragment17State->unk_04.unk_4C = 0;
+    gFragment17State->unk_04.unk_50 = 0;
 }
 
 void func_86B00904(void) {
-    D_86B0E5D4->unk_04.unk_4C = 9;
-    D_86B0E5D4->unk_04.unk_50 = 0;
-    D_86B0E5F0->unk_004.unk_000.unk_01 &= ~1;
+    gFragment17State->unk_04.unk_4C = 9;
+    gFragment17State->unk_04.unk_50 = 0;
+    gFragment17Objects->unk_004.unk_000.unk_01 &= ~1;
     D_86B0E5DC = 1;
 }
 
 void func_86B00944(s32 arg0) {
-    unk_D_86B0C4C8* ptr1 = D_86B0C4C8[arg0];
-    unk_D_86B0E5F0* ptr2 = &D_86B0E5F0[0];
+    unk_D_86B0C4C8* ptr1 = gFragment17ObjectDefs[arg0];
+    unk_D_86B0E5F0* ptr2 = &gFragment17Objects[0];
     s16 sp88[] = {
         // D_86B0BD20
         0x1554,
@@ -320,7 +320,7 @@ void func_86B00944(s32 arg0) {
     f32 sp60[] = { 1.0f, 1.0f, 100.0f, 50.0f };          // D_86B0BD40
 
     while (ptr1->unk_0C != 0x98) {
-        if (func_86B01670(D_86B0E5D4->unk_00, &ptr2->unk_004, sp88[arg0], sp80[arg0], sp70[arg0], sp60[arg0]) != 0) {
+        if (IsPointInSector(gFragment17State->unk_00, &ptr2->unk_004, sp88[arg0], sp80[arg0], sp70[arg0], sp60[arg0]) != 0) {
             ptr2->unk_004.unk_000.unk_01 |= 1;
         } else {
             ptr2->unk_004.unk_000.unk_01 &= ~1;
@@ -337,129 +337,129 @@ void func_86B00AE4(void) {
 }
 
 void func_86B00B14(void) {
-    D_86B0E5D4 = main_pool_alloc(sizeof(unk_D_86B0E5D4), 0);
-    bzero(D_86B0E5D4, sizeof(unk_D_86B0E5D4));
+    gFragment17State = main_pool_alloc(sizeof(unk_D_86B0E5D4), 0);
+    bzero(gFragment17State, sizeof(unk_D_86B0E5D4));
 
-    D_86B0E5D8 = main_pool_alloc(sizeof(unk_D_86B0E5D8), 0);
-    bzero(D_86B0E5D8, sizeof(unk_D_86B0E5D8));
+    gFragment17ColorAnim = main_pool_alloc(sizeof(unk_D_86B0E5D8), 0);
+    bzero(gFragment17ColorAnim, sizeof(unk_D_86B0E5D8));
 
-    D_86B0E5D4->unk_00 = D_86B0E5D0->unk_0C;
+    gFragment17State->unk_00 = gFragment17RootNode->unk_0C;
 
-    D_86B0E5D4->unk_00->unk_24.near = 50.0f;
-    D_86B0E5D4->unk_00->unk_24.far = 8400.0f;
-    D_86B0E5D4->unk_00->unk_24.fovy = 30.0f;
-    D_86B0E5D4->unk_00->unk_60.at.x = 50.0f;
-    D_86B0E5D4->unk_00->unk_60.at.y = 50.0f;
-    D_86B0E5D4->unk_00->unk_60.at.z = 50.0f;
-    D_86B0E5D4->unk_00->unk_60.eye.x = 0.0f;
-    D_86B0E5D4->unk_00->unk_60.eye.y = 0.0f;
-    D_86B0E5D4->unk_00->unk_60.eye.z = 0.0f;
-    D_86B0E5D4->unk_04.unk_4C = 8;
-    D_86B0E5D4->unk_04.unk_50 = 0;
-    D_86B0E5D4->unk_04.unk_48 = 0;
+    gFragment17State->unk_00->unk_24.near = 50.0f;
+    gFragment17State->unk_00->unk_24.far = 8400.0f;
+    gFragment17State->unk_00->unk_24.fovy = 30.0f;
+    gFragment17State->unk_00->unk_60.at.x = 50.0f;
+    gFragment17State->unk_00->unk_60.at.y = 50.0f;
+    gFragment17State->unk_00->unk_60.at.z = 50.0f;
+    gFragment17State->unk_00->unk_60.eye.x = 0.0f;
+    gFragment17State->unk_00->unk_60.eye.y = 0.0f;
+    gFragment17State->unk_00->unk_60.eye.z = 0.0f;
+    gFragment17State->unk_04.unk_4C = 8;
+    gFragment17State->unk_04.unk_50 = 0;
+    gFragment17State->unk_04.unk_48 = 0;
 }
 
-s32 func_86B00C34(void) {
+s32 StateMachine_Update(void) {
     if (((gPlayer1Controller->buttonPressed & 0x1000) || (gPlayer1Controller->buttonPressed & 0x8000) ||
          (gPlayer1Controller->buttonPressed & 0x4000)) &&
-        (D_86B0E5D4->unk_04.unk_48 == 0)) {
-        if ((D_86B0E5D4->unk_04.unk_4C != 8) && (D_86B0E5D4->unk_04.unk_4C != 5)) {
-            D_86B0E5D4->unk_04.unk_48 = 1;
+        (gFragment17State->unk_04.unk_48 == 0)) {
+        if ((gFragment17State->unk_04.unk_4C != 8) && (gFragment17State->unk_04.unk_4C != 5)) {
+            gFragment17State->unk_04.unk_48 = 1;
             func_8004B9C4(0xA);
-            D_86B0EBB0 = 0;
-            D_86B0EBB4 = 2;
+            gFragment17WindowAlpha = 0;
+            gFragment17Result = 2;
         }
     }
 
-    if (D_86B0E5D4->unk_04.unk_48 == 1) {
-        D_86B0EBB0 = Math_ApproachS32(D_86B0EBB0, 0xFF, 0x1E, 0x1E);
-        if (D_86B0EBB0 == 0xFF) {
+    if (gFragment17State->unk_04.unk_48 == 1) {
+        gFragment17WindowAlpha = Math_ApproachS32(gFragment17WindowAlpha, 0xFF, 0x1E, 0x1E);
+        if (gFragment17WindowAlpha == 0xFF) {
             return 1;
         }
     }
 
-    switch (D_86B0E5D4->unk_04.unk_4C) {
+    switch (gFragment17State->unk_04.unk_4C) {
         case 5:
-            if (D_86B0E5D4->unk_04.unk_48 == 1) {
+            if (gFragment17State->unk_04.unk_48 == 1) {
                 return 1;
             }
 
-            if (D_86B0E5D4->unk_04.unk_44 == 4) {
-                D_86B0E5D4->unk_04.unk_50 = 0;
-                D_86B0EBB4 = 1;
+            if (gFragment17State->unk_04.unk_44 == 4) {
+                gFragment17State->unk_04.unk_50 = 0;
+                gFragment17Result = 1;
                 return 1;
             }
 
-            D_86B0E5D4->unk_04.unk_44++;
-            func_86B0054C(D_86B0E5D4->unk_04.unk_44);
-            func_86B00470(D_86B0E5D4->unk_04.unk_44);
-            D_86B0E5D4->unk_04.unk_4C = 6;
-            D_86B0E5D4->unk_04.unk_50 = 0;
+            gFragment17State->unk_04.unk_44++;
+            func_86B0054C(gFragment17State->unk_04.unk_44);
+            func_86B00470(gFragment17State->unk_04.unk_44);
+            gFragment17State->unk_04.unk_4C = 6;
+            gFragment17State->unk_04.unk_50 = 0;
             break;
 
         case 6:
-            if (D_86B0E5D4->unk_04.unk_50++ >= 4) {
+            if (gFragment17State->unk_04.unk_50++ >= 4) {
                 Stage_SetFillColor(1);
                 Stage_FadeIn(0x20);
-                D_86B0E5D4->unk_04.unk_4C = 7;
-                if ((D_86B0E5D4->unk_04.unk_44 == 0) || (D_86B0E5D4->unk_04.unk_44 == 1)) {
-                    func_86B01AAC(&D_86B0E5D4->unk_04, D_86B0E5D4);
+                gFragment17State->unk_04.unk_4C = 7;
+                if ((gFragment17State->unk_04.unk_44 == 0) || (gFragment17State->unk_04.unk_44 == 1)) {
+                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
                 }
             }
             break;
 
         case 7:
-            if (D_86B0E5D4->unk_04.unk_44 == 4) {
-                if (func_800174E4(&D_86B0E5F0[0].unk_004) != 0) {
+            if (gFragment17State->unk_04.unk_44 == 4) {
+                if (func_800174E4(&gFragment17Objects[0].unk_004) != 0) {
                     func_86B00904();
                 }
             } else {
-                if (D_86B0E5D4->unk_04.unk_44 >= 2) {
-                    if (func_86B00848(D_86B0E5D4->unk_04.unk_44) != 0) {
+                if (gFragment17State->unk_04.unk_44 >= 2) {
+                    if (func_86B00848(gFragment17State->unk_04.unk_44) != 0) {
                         func_86B008C4();
                     }
-                } else if (D_86B0E5D4->unk_04.unk_6C < D_86B0E5D4->unk_04.unk_30) {
+                } else if (gFragment17State->unk_04.unk_6C < gFragment17State->unk_04.unk_30) {
                     func_86B008C4();
                 }
 
-                if ((D_86B0E5D4->unk_04.unk_44 == 0) || (D_86B0E5D4->unk_04.unk_44 == 1)) {
-                    func_86B01AAC(&D_86B0E5D4->unk_04, D_86B0E5D4);
+                if ((gFragment17State->unk_04.unk_44 == 0) || (gFragment17State->unk_04.unk_44 == 1)) {
+                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
                 }
 
-                func_86B00944(D_86B0E5D4->unk_04.unk_44);
+                func_86B00944(gFragment17State->unk_04.unk_44);
             }
             break;
 
         case 8:
-            if (D_86B0E5D4->unk_04.unk_50++ >= 0xB) {
-                D_86B0E5D4->unk_04.unk_44 = 0;
-                func_86B0054C(D_86B0E5D4->unk_04.unk_44);
-                D_86B0E5D4->unk_04.unk_4C = 6;
-                D_86B0E5D4->unk_04.unk_50 = 0;
-                func_86B003CC(D_86B0E5D4->unk_04.unk_44);
+            if (gFragment17State->unk_04.unk_50++ >= 0xB) {
+                gFragment17State->unk_04.unk_44 = 0;
+                func_86B0054C(gFragment17State->unk_04.unk_44);
+                gFragment17State->unk_04.unk_4C = 6;
+                gFragment17State->unk_04.unk_50 = 0;
+                Fragment_LoadObjectsForPreset(gFragment17State->unk_04.unk_44);
                 func_8004B1CC(0x29);
             }
             break;
 
         case 9:
-            if (D_86B0E5D4->unk_04.unk_50++ >= 3) {
-                D_86B0E5D4->unk_04.unk_4C = 5;
-                D_86B0E5D4->unk_04.unk_50 = 0;
+            if (gFragment17State->unk_04.unk_50++ >= 3) {
+                gFragment17State->unk_04.unk_4C = 5;
+                gFragment17State->unk_04.unk_50 = 0;
             }
             break;
 
         default:
-            if (D_86B0E5D4->unk_04.unk_44 != 4) {
-                if (D_86B0E5D4->unk_04.unk_44 >= 2) {
-                    func_86B00848(D_86B0E5D4->unk_04.unk_44);
+            if (gFragment17State->unk_04.unk_44 != 4) {
+                if (gFragment17State->unk_04.unk_44 >= 2) {
+                    func_86B00848(gFragment17State->unk_04.unk_44);
                 } else {
-                    func_86B01AAC(&D_86B0E5D4->unk_04, D_86B0E5D4);
+                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
                 }
             }
 
-            if (D_86B0E5D4->unk_04.unk_50++ >= 0xE) {
-                D_86B0E5D4->unk_04.unk_4C = 5;
-                D_86B0E5D4->unk_04.unk_50 = 0;
+            if (gFragment17State->unk_04.unk_50++ >= 0xE) {
+                gFragment17State->unk_04.unk_4C = 5;
+                gFragment17State->unk_04.unk_50 = 0;
             }
             break;
     }
@@ -476,7 +476,7 @@ void func_86B0100C(void) {
     Gfx_FinishFrame();
     func_86B007EC();
     func_86B01C00(D_86B0E5E8);
-    Graph_SetTextureState(D_86B0E5D0);
+    Graph_SetTextureState(gFragment17RootNode);
     func_86B00794();
     func_86B02348();
     Stage_Advance();
@@ -490,7 +490,7 @@ void func_86B0107C(void) {
         func_86B00AE4();
         func_8140C5D0();
 
-        if (func_86B00C34() != 0) {
+        if (StateMachine_Update() != 0) {
             var_s1 = 0;
         }
 
@@ -512,14 +512,14 @@ void func_86B0111C(void) {
     MemoryBlock* sp1C;
 
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    D_86B0E5D0 = process_geo_layout(sp1C, &D_86B0BBF8);
+    gFragment17RootNode = process_geo_layout(sp1C, &gFragment17GeoLayoutCommands);
 
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     AssetManager_LoadArchives();
     func_86B00B14();
 
-    D_86B0EBB0 = 0;
+    gFragment17WindowAlpha = 0;
     D_86B0E5DC = 0;
 }
 
@@ -553,5 +553,5 @@ s32 BattleState_Handle18(void) {
 
     main_pool_pop_state('MINI');
 
-    return D_86B0EBB4;
+    return gFragment17Result;
 }

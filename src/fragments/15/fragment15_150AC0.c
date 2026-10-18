@@ -31,7 +31,7 @@ extern u8 D_50011D0[];
 extern u8 D_5001680[];
 extern u8 D_50017E8[];
 
-void func_86904070(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DrawPanelBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
@@ -64,7 +64,7 @@ void func_86904070(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 void func_869043F4(void) {
 }
 
-void func_869043FC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 var_s2;
     s16 var_s3;
     s16 sp4C;
@@ -127,7 +127,7 @@ void func_869043FC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
 void func_86904BFC(void) {
 }
 
-void func_86904C04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
+void DrawClippedTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
     ClipRect sp30;
 
     Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
@@ -149,14 +149,14 @@ void func_86904C04(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s
     }
 }
 
-void func_86904D98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5) {
+void LoadTextureTileAndDrawRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5) {
     gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, 0, 0, 0, arg2 - 1, arg3 - 1, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    func_86904C04(arg0, arg1, arg2, arg3, D_8690B360.unk_02 << 5, 0, 0x400, 0x400);
+    DrawClippedTextureRect(arg0, arg1, arg2, arg3, D_8690B360.unk_02 << 5, 0, 0x400, 0x400);
 }
 
-void func_86904F2C(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void DrawTexture2Cycle(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
@@ -169,12 +169,12 @@ void func_86904F2C(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 95, 55, 0, 255);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
 
-    func_86904D98(arg1, arg2, arg3, arg4, arg0, arg3);
+    LoadTextureTileAndDrawRect(arg1, arg2, arg3, arg4, arg0, arg3);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void DrawSpriteRotated(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Vec3s spD8;
     Vec3f spCC;
     Vec3f spC0;
@@ -238,7 +238,7 @@ void func_869050C8(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
+void DrawRotatedSprite(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     s32 a1;
     s32 a2;
     s16 spF8[4];
@@ -308,7 +308,7 @@ void func_86905734(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
+void DrawRotatedSpriteAlt(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 a1;
     f32 a2;
     s16 spE0[4];
@@ -383,7 +383,7 @@ void func_86905F24(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
+void DrawRotatedSpriteOffset(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6) {
     f32 temp_fv0;
     f32 temp_fv1;
     s16 spE0[4];
@@ -457,7 +457,7 @@ void func_869066C4(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_86906E70(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void DrawTexturedPanel(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
@@ -494,7 +494,7 @@ void func_86906E70(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_869073D8(char* arg0) {
+void RenderMessageBox(char* arg0) {
     Color_RGB8 sp4C;
     Color_RGB8 sp48;
     s32 sp44;
@@ -505,21 +505,21 @@ void func_869073D8(char* arg0) {
         sp44 = MeasureTextWidth(0x10, 0, arg0);
 
         if (gCameraParams->unk_014 == 1) {
-            func_86906E70(&D_5001950, 0x3C, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0, 0, 0x22, 0x2B, 0x21, 0);
-            func_86906E70(&D_5001950, 0x5E, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0x22, 0, 0x44, 0x2B, 0x43, 0x22);
-            func_86906E70(&D_5001950, 0x80, 0xAE, 0x20, 0x2B, 0x64, 0x2B, 0x44, 0, 0x64, 0x2B, 0x63, 0x44);
-            func_86906E70(&D_5001950, 0xE2, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0, 0, 0x22, 0x2B, 0, 0x21);
-            func_86906E70(&D_5001950, 0xC0, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0x22, 0, 0x44, 0x2B, 0x22, 0x43);
-            func_86906E70(&D_5001950, 0xA0, 0xAE, 0x20, 0x2B, 0x64, 0x2B, 0x44, 0, 0x64, 0x2B, 0x44, 0x63);
+            DrawTexturedPanel(&D_5001950, 0x3C, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0, 0, 0x22, 0x2B, 0x21, 0);
+            DrawTexturedPanel(&D_5001950, 0x5E, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0x22, 0, 0x44, 0x2B, 0x43, 0x22);
+            DrawTexturedPanel(&D_5001950, 0x80, 0xAE, 0x20, 0x2B, 0x64, 0x2B, 0x44, 0, 0x64, 0x2B, 0x63, 0x44);
+            DrawTexturedPanel(&D_5001950, 0xE2, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0, 0, 0x22, 0x2B, 0, 0x21);
+            DrawTexturedPanel(&D_5001950, 0xC0, 0xAE, 0x22, 0x2B, 0x64, 0x2B, 0x22, 0, 0x44, 0x2B, 0x22, 0x43);
+            DrawTexturedPanel(&D_5001950, 0xA0, 0xAE, 0x20, 0x2B, 0x64, 0x2B, 0x44, 0, 0x64, 0x2B, 0x44, 0x63);
             // clang-format off
             sp4C.r = 0xF0; sp4C.g = 0x78; sp4C.b = 0x6E;
             sp48.r = 0xF0; sp48.g = 0xF0; sp48.b = 0x78;
             // clang-format on
             sp40 = 5;
         } else {
-            func_86906E70(&D_5003AE8, 0x4C, 0xAE, 0x20, 0x28, 0x20, 0x28, 0, 0, 0x20, 0x28, 0x1F, 0);
-            func_86906E70(&D_5003AE8, 0x6C, 0xAE, 0x68, 0x28, 0x20, 0x28, 0x1C, 0, 0x20, 0x2B, 0x87, 0x20);
-            func_86906E70(&D_5003AE8, 0xD4, 0xAE, 0x20, 0x28, 0x20, 0x28, 0, 0, 0x20, 0x28, 0, 0x20);
+            DrawTexturedPanel(&D_5003AE8, 0x4C, 0xAE, 0x20, 0x28, 0x20, 0x28, 0, 0, 0x20, 0x28, 0x1F, 0);
+            DrawTexturedPanel(&D_5003AE8, 0x6C, 0xAE, 0x68, 0x28, 0x20, 0x28, 0x1C, 0, 0x20, 0x2B, 0x87, 0x20);
+            DrawTexturedPanel(&D_5003AE8, 0xD4, 0xAE, 0x20, 0x28, 0x20, 0x28, 0, 0, 0x20, 0x28, 0, 0x20);
             // clang-format off
             sp4C.r = 0xDC; sp4C.g = 0xFF; sp4C.b = 0xDC;
             sp48.r = 0x78; sp48.g = 0xB4; sp48.b = 0xFF;
@@ -535,16 +535,16 @@ void func_869073D8(char* arg0) {
         Text_Print(0xA0 - (sp44 / 2), sp40 + 0xAE, arg0);
         Text_EndRender();
         Text_SetupDL();
-        func_86904070(0x50, 0xAC, 0xA0, 0x2D, 0);
+        DrawPanelBackground(0x50, 0xAC, 0xA0, 0x2D, 0);
     }
 }
 
-void func_86907858(UNUSED s32 arg0) {
+void RenderMainMenu(UNUSED s32 arg0) {
     s32 i;
     s32 var_v1;
 
     if (D_8690B380 != 0) {
-        func_869043FC(0x55, 0x20, 0x96, 0x8C, 0, 0, 0x8C, 0x64);
+        DrawBorderedRect(0x55, 0x20, 0x96, 0x8C, 0, 0, 0x8C, 0x64);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -589,18 +589,18 @@ void func_86907858(UNUSED s32 arg0) {
         }
 
         Text_SetupDL();
-        func_86904070(0x4D, 0x34, 0xA6, 0x88, 0);
+        DrawPanelBackground(0x4D, 0x34, 0xA6, 0x88, 0);
     }
 }
 
-void func_86907B78(void) {
+void RenderGradientPanel(void) {
     s32 sp3C;
     s32 sp38;
     Color_RGB8 sp34 = D_86908C98;
     Color_RGB8 sp30 = D_86908C9C;
 
     if (D_8690B348 >= 3) {
-        func_86904070(0, 0, 0x140, 0xF0, D_8690B350.unk_04);
+        DrawPanelBackground(0, 0, 0x140, 0xF0, D_8690B350.unk_04);
     }
 
     if (D_8690B348 == 4) {
@@ -623,14 +623,14 @@ void func_86907B78(void) {
     }
 }
 
-s16 func_86907D38(s16 arg0) {
+s16 GetUIElementXPosOrMax(s16 arg0) {
     if ((arg0 - D_8690B360.unk_04) <= (D_8690B360.unk_0C + 15.0f)) {
         return 1000;
     }
     return arg0 - D_8690B360.unk_04;
 }
 
-void func_86907D94(void) {
+void RenderHPBar(void) {
     s16 sp4E = D_8690B360.unk_0C;
     char sp40[12];
     char sp34[12];
@@ -641,8 +641,8 @@ void func_86907D94(void) {
         return;
     }
 
-    func_86904F2C(D_5000BA0, func_86907D38(sp24 + 8), 0x18, 8, 0x1E);
-    func_86904F2C(D_5000BA0, func_86907D38(sp24 + 0x10), 0x18, 8, 0x1E);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 8), 0x18, 8, 0x1E);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x10), 0x18, 8, 0x1E);
 
     if (D_8690B348 == 0) {
         if (D_8690B360.unk_00 == 0) {
@@ -754,11 +754,11 @@ void func_86907D94(void) {
         Text_SetupDL();
     }
 
-    func_869050C8(D_50003F0, sp4E, 0x13, 0x18, 0x29);
-    func_86904F2C(D_5000BA0, func_86907D38(sp24), 0x18, 8, 0x1E);
-    func_86904F2C(D_5000BA0, func_86907D38(sp24 + 0x18), 0x18, 8, 0x1E);
-    func_86904F2C(D_5000BA0, func_86907D38(sp24 + 0x20), 0x18, 8, 0x1E);
-    func_86904F2C(D_5000BA0, func_86907D38(sp24 + 0x28), 0x18, 8, 0x1E);
+    DrawSpriteRotated(D_50003F0, sp4E, 0x13, 0x18, 0x29);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24), 0x18, 8, 0x1E);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x18), 0x18, 8, 0x1E);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x20), 0x18, 8, 0x1E);
+    DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x28), 0x18, 8, 0x1E);
 }
 
 void func_86908418(void) {
@@ -771,53 +771,53 @@ void func_86908418(void) {
 
     sp2E = sp30 + 0x17;
 
-    if (func_86907D38(sp2E + 0) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 0), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 0) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 0), 0x18, 8, 0x1E);
     }
 
-    if (func_86907D38(sp2E + 8) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 8), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 8) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 8), 0x18, 8, 0x1E);
     }
 
-    if (func_86907D38(sp2E + 0x10) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 0x10), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 0x10) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 0x10), 0x18, 8, 0x1E);
     }
 
-    if (func_86907D38(sp2E + 0x18) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 0x18), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 0x18) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 0x18), 0x18, 8, 0x1E);
     }
 
-    if (func_86907D38(sp2E + 0x20) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 0x20), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 0x20) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 0x20), 0x18, 8, 0x1E);
     }
 
-    if (func_86907D38(sp2E + 0x28) != 0x3E8) {
-        func_86904F2C(D_5000BA0, func_86907D38(sp2E + 0x28), 0x18, 8, 0x1E);
+    if (GetUIElementXPosOrMax(sp2E + 0x28) != 0x3E8) {
+        DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp2E + 0x28), 0x18, 8, 0x1E);
     }
 
-    func_869050C8(D_50003F0, sp30, 0x13, 0x18, 0x29);
+    DrawSpriteRotated(D_50003F0, sp30, 0x13, 0x18, 0x29);
 }
 
 void func_86908668(void) {
     if (D_8690B348 == 0) {
-        func_86905734(&D_50011D0, D_8690B308.unk_00[0], D_8690B308.unk_00[4], 0x30, 0x19, 0, 0);
-        func_86905734(&D_50011D0, D_8690B308.unk_00[1], D_8690B308.unk_00[5], 0x30, 0x19, 0x4000, 1);
-        func_86905734(&D_50011D0, D_8690B308.unk_00[2], D_8690B308.unk_00[6], 0x30, 0x19, -0x8000, 1);
-        func_86905734(&D_50011D0, D_8690B308.unk_00[3], D_8690B308.unk_00[7], 0x30, 0x19, -0x4000, 1);
-        func_86905F24(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 0);
-        func_869066C4(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 1);
-        func_86905F24(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
-        func_869066C4(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
-        func_86905F24(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
-        func_869066C4(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
-        func_86905F24(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
-        func_869066C4(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
+        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[0], D_8690B308.unk_00[4], 0x30, 0x19, 0, 0);
+        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[1], D_8690B308.unk_00[5], 0x30, 0x19, 0x4000, 1);
+        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[2], D_8690B308.unk_00[6], 0x30, 0x19, -0x8000, 1);
+        DrawRotatedSprite(&D_50011D0, D_8690B308.unk_00[3], D_8690B308.unk_00[7], 0x30, 0x19, -0x4000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 0);
+        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_10, D_8690B308.unk_20, 0x18, 0x38, 0, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_14, D_8690B308.unk_24, 0x18, 0x38, 0x4000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_18, D_8690B308.unk_28, 0x18, 0x38, -0x8000, 1);
+        DrawRotatedSpriteAlt(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
+        DrawRotatedSpriteOffset(&D_5000C90, D_8690B308.unk_1C, D_8690B308.unk_2C, 0x18, 0x38, -0x4000, 1);
     }
 }
 
 void func_869089AC(void) {
     if (D_8690B3C0.unk_00 != 0xFF) {
-        func_869043FC(0x3C, 0x9B - (D_8690B3C0.unk_0C / 2), D_8690B3C0.unk_08, D_8690B3C0.unk_0C, 0, 0, 0x9B, 0x7D);
+        DrawBorderedRect(0x3C, 0x9B - (D_8690B3C0.unk_0C / 2), D_8690B3C0.unk_08, D_8690B3C0.unk_0C, 0, 0, 0x9B, 0x7D);
         Text_ResetState();
         Text_SetFont(2, 0);
         Text_SetLineHeight(0xC);

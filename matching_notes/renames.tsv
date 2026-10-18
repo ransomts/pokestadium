@@ -1809,3 +1809,97 @@ D_86301650	gGeoLayout_StageCommands	w11		Passed to process_geo_layout in func_86
 D_86301714	gStageRootNode	w11		Assigned the result of process_geo_layout and later used to access the camera node (D_86301718)	applied@fc8a26a
 D_86301718	gCamera	w11		Pointer to a camera struct whose near/far/fovy fields are set in func_86300154	applied@fc8a26a
 D_86301722	gFrameCounter	w11		Incremented each frame in func_863006D8 and checked for the ?PUSH START? prompt	applied@fc8a26a
+func_86805D50	Sushi_CalcOrbitPos	w12		Computes a sushi object's orbit position using gSushiRotationAngle, gSushiOrbitRadius and gSushiOrbitCenter	applied@83251f0
+func_86805E94	Sushi_CalcTargetDelta	w12		Calculates the squared distance from a sushi instance to its target offset using its index and gSushiOrbit parameters	applied@83251f0
+func_86805F94	SushiSpawner_Init	w12		Initializes a sushi spawner struct with its index and adds its root graph node	applied@83251f0
+func_86805FFC	SushiInstance_UpdatePosition	w12		Updates a sushi instance's world and target positions based on its state field unk_10 and the spawner data	applied@83251f0
+func_86806100	Sushi_SelectRandomItem	w12		Selects a sushi item index randomly according to the weighted probabilities stored in gSushiItemDefs	applied@83251f0
+func_868061E8	SushiInstance_SetActive	w12		Activates or deactivates a sushi instance, setting its type, flags and linking it to a spawner	applied@83251f0
+func_86806388	SushiInstance_Allocate	w12		Finds a free SushiInstance slot in gSushiInstances by checking the unk_0C field	applied@83251f0
+func_868063C4	SushiSpawner_Update	w12		Per?frame update of a sushi spawner, handling spawn timers and creating new sushi instances	applied@83251f0
+func_868064BC	SushiInstance_Render	w12		Builds and issues the display list that renders a sushi billboard using its texture and color	applied@83251f0
+func_86806868	SushiInstance_SetMode	w12		Changes a sushi instance's mode (state) and updates related timers and flags	applied@83251f0
+func_86806950	Sushi_GetActiveCount	w12		Returns the current active count for a sushi type from the gSushiActiveCounts array	applied@83251f0
+func_86806964	Sushi_SetSpawnMode	w12		Sets the global spawn mode variable when the argument is 0?2	applied@83251f0
+D_86809A08	gSushiSpawnMode	w12		Global variable storing the current sushi spawn mode (0=none,1=enable,2=disable)	applied@83251f0
+D_86809A0C	gSushiTotalWeight	w12		Accumulated total weight of all sushi items, computed in Sushi_Init	applied@83251f0
+D_86809A10	gSushiActiveCounts	w12		Array tracking how many instances of each sushi type are currently active	applied@83251f0
+func_86900410	WaitForRSPAndCleanup	w12		Calls RspTaskYielded in a loop then allocates root graph nodes and pops the ?BACK? memory pool state, indicating post?RSP cleanup	applied@83251f0
+func_869006DC	ComputeOffsetFromAngle	w12		Uses MathUtil_Atan2s and COSS/SINS to compute a 2?D offset from two points and an angle, used for camera positioning	applied@83251f0
+func_8690079C	StageState_Reset	w12		Initialises many stage?wide timers, camera parameters and UI state variables at the start of a match, acting as a full reset routine	applied@83251f0
+func_869009E8	CopyControllerState	w12		Copies button and stick fields from one Controller struct to another, used to forward simulated input to the global controller	applied@83251f0
+func_86900A14	SimulateControllerInputFromScript	w12		Reads scripted input entries from D_869091B8 and populates a temporary Controller, then copies it to gControllerInput	applied@83251f0
+func_86900B04	ApplyPolarOffset	w12		Adds a vector offset to X/Y based on a magnitude and angle (COSS/SINS), used for incremental camera movement	applied@83251f0
+func_86900B6C	UpdateControllerAndMenuInput	w12		Calls Cont_StartReadInputs, Cont_ReadInputs and MenuInput_Init, handling both player and menu controller updates	applied@83251f0
+func_86900B9C	UpdateStageAnimationTimers	w12		Advances a frame counter, checks animation completion via func_800174E4 and triggers stage actions and sounds accordingly	applied@83251f0
+func_86900CF4	UpdateStageSoundTimer	w12		Increments a 60?frame timer and, when it reaches 60, plays a sound and resets animation state	applied@83251f0
+func_86900D78	ResetAnimStateIfSecondLast	w12		Detects when the current animation is on its second?last frame and forces a state reset and sound stop	applied@83251f0
+func_86900DE0	HandleSnapshotButton	w12		Responds to the Z button (0x8000) by capturing the current mini?camera view into a snapshot buffer and advancing the stage	applied@83251f0
+func_86900FFC	LoadFragmentIfFlag	w12		Checks the high bits of its argument and, if set, calls func_86900410 and LoadStageFragmentByIndex, loading a new fragment	applied@83251f0
+func_86901044	ProcessCameraNavigationInput	w12		Handles D?pad input (0xC00) to navigate camera fragments, updates gCameraParams->unk_00C and plays UI sounds	applied@83251f0
+func_86901384	UpdateTutorialText	w12		Drives a scripted tutorial sequence using D_869091B8 entries, writes text via sprintf into D_8690B4D0 and plays sound effects	applied@83251f0
+func_86901558	StageMainUpdate	w12		Main per?frame update that processes tutorial, input, camera toggles, snapshot, and state transitions for the stage	applied@83251f0
+D_86908A80	gStageFragmentIds	w12		Array of file IDs indexed by stage fragment number, used in LoadStageFragmentByIndex to fetch geometry data	applied@83251f0
+D_86908A90	gTutorialMessageIds	w12		Array of message IDs ending with 0xFF, indexed when displaying tutorial text via GetMessageString	applied@83251f0
+D_86908ABC	gMiniCameraGeoLayout	w12		Static geo?layout data passed to process_geo_layout in Graphics_Init to create the mini?camera structure	applied@83251f0
+D_86908CA0	gStageCameraConfig	w12		Per?stage camera parameters (zoom offset and X/Y offsets) accessed in Stage_Init to set gCameraZoomOffset and related globals	applied@83251f0
+D_8690A68C	gGlobalColorRGBA	w12		Global RGBA color used by GraphNode_ApplyGlobalColor and SetGlobalRGBA to affect stage rendering	applied@83251f0
+func_8690325C	Camera_ClampSegmentToRadiusMode	w12		Camera_ClampSegmentToRadiusMode is called in Camera_EnforceConstraintsMode to clamp a segment when mode flag is non?zero, mirroring Camera_ClampSegmentToRadius's behavior but for an alternate mode	applied@83251f0
+D_8690B608	gCameraPitchTmp	w12		Used as the pitch component returned by Matrix_Decompose in Camera_RotateAroundTarget and not otherwise referenced, indicating a temporary pitch value	applied@83251f0
+D_8690B60A	gCameraYawTmp	w12		Used as the yaw component returned by Matrix_Decompose in Camera_RotateAroundTarget and added to the rotation argument, indicating a temporary yaw value	applied@83251f0
+D_8690B618	gCameraInitialPos	w12		Stored in Camera_Init and Camera_ResetPosition as the initial camera position after setup, serving as the camera's starting coordinates	applied@83251f0
+D_86908C20	gCameraClampCenter	w12		Passed to Camera_ClampSegmentToRadius as the reference point for radius clamping, acting as the central point for generic camera constraints	applied@83251f0
+D_86908C2C	gCameraClampCenterMode	w12		Assigned to sp60 in func_8690325C and used as the reference point for radius clamping in mode?specific constraint handling	applied@83251f0
+D_86908C38	gCameraConstraintCenter	w12		Used in Camera_EnforceConstraints as the reference point for distance checks and clamping, defining the main constraint center	applied@83251f0
+D_86908C44	gCameraConstraintCenterMode	w12		Used in Camera_EnforceConstraintsMode as the reference point for mode?specific distance checks and clamping, defining the alternate constraint center	applied@83251f0
+D_8690B2F8	gCameraConfig	w12		Referenced throughout the file for fields unk_00, unk_04, unk_08, unk_0C that control default camera heights and zoom scaling, indicating a global camera configuration structure	applied@83251f0
+func_86904070	DrawPanelBackground	w12		Draws a full?screen orthographic quad with a border, used after text rendering in func_869073D8 and func_86907B78	applied@83251f0
+func_869043FC	DrawBorderedRect	w12		Draws a bordered rectangle with fill color, called from func_86907858 to render UI panels	applied@83251f0
+func_86904C04	DrawClippedTextureRect	w12		Sets up a ClipRect and draws a textured rectangle, invoked by func_86904D98 and other UI drawing functions	applied@83251f0
+func_86904D98	LoadTextureTileAndDrawRect	w12		Loads a texture tile then calls func_86904C04 to render it, used for UI elements like icons	applied@83251f0
+func_86904F2C	DrawTexture2Cycle	w12		Configures a 2?cycle render mode, loads a texture and draws it via func_86904D98, used for battle UI sprites	applied@83251f0
+func_869050C8	DrawSpriteRotated	w12		Sets up a rotation/translation matrix and draws a textured quad, called for rotating UI sprites in func_86908668	applied@83251f0
+func_86905734	DrawRotatedSprite	w12		Computes rotated vertex positions and renders an IA8 sprite, used for battle UI icons	applied@83251f0
+func_86905F24	DrawRotatedSpriteAlt	w12		Similar to func_86905734 but with different texture format handling, used alongside it for UI icons	applied@83251f0
+func_869066C4	DrawRotatedSpriteOffset	w12		Draws a rotated sprite with an additional angle offset (0xC000), used for alternate UI orientations	applied@83251f0
+func_86906E70	DrawTexturedPanel	w12		Draws a textured panel with many parameters (including palette), used for message box backgrounds in func_869073D8	applied@83251f0
+func_869073D8	RenderMessageBox	w12		Combines background panel drawing (func_86906E70) with text rendering to display a message box	applied@83251f0
+func_86907858	RenderMainMenu	w12		Builds the main menu UI, drawing borders, sprites, and selectable text entries	applied@83251f0
+func_86907B78	RenderGradientPanel	w12		Uses DrawPanelBackground and DrawGradientPanel to render a gradient UI panel with optional title text	applied@83251f0
+func_86907D38	GetUIElementXPosOrMax	w12		Returns a UI X position or 1000 when beyond a threshold, used for positioning HP bar elements	applied@83251f0
+func_86907D94	RenderHPBar	w12		Draws HP bar textures and numeric values based on current battle state, called in various UI update functions	applied@83251f0
+func_86A00020	NodeColorSetter	w12		Used as a callback in the layout table to set a node's RGBA to the global background color when arg0 equals 2	applied@83251f0
+func_86A0003C	SetGlobalBackgroundColor	w12		Sets the global Color_RGBA8_u32 D_86A061E0 and updates a flag in D_86A06170, indicating a background color change	applied@83251f0
+func_86A023A0	Math_RandomModulo	w12		Returns ((guRandom()+osGetCount())/10)%arg0, a helper for random modulo selection	applied@83251f0
+func_86A0240C	Stage_DrawBorderFade	w12		Draws the stage border with a fading env color and increments a fade counter after completion	applied@83251f0
+D_86A05B50	gBorderFadeCycleCount	w12		Incremented after the border fade reaches full opacity, tracking completed fade cycles	applied@83251f0
+D_86A05B60	gMessageDecompressBuffer	w12		First byte of a large contiguous char buffer (?1.5?KB) used for message decompression, indicated by the long series of sequential char symbols	applied@83251f0
+func_86B000D0	Callback_UpdateColorAndPos	w12		Updates node color and position from gFragment17ColorAnim and is referenced in D_86B0BBF8 command table as a callback.	applied@83251f0
+func_86B00158	Callback_SetScaleLarge	w12		Sets object scale to 1.5 and assigns X offset from D_86B0BBF0; used as a callback in the geo layout command list.	applied@83251f0
+func_86B00188	Callback_SetScaleNormal	w12		Sets object scale to 1.0 and assigns X offset from D_86B0BBF4; referenced in D_86B0BBF8 command table.	applied@83251f0
+func_86B001B8	Callback_SetObjectState	w12		Copies state value D_86B0E5D4->unk_04.unk_44 into object field; listed as a callback in D_86B0BBF8.	applied@83251f0
+func_86B003CC	Fragment_LoadObjectsForPreset	w12		Loads objects for a given preset index, creates them, sets positions and then calls func_86B00348; called from the main state machine.	applied@83251f0
+func_86B00C34	StateMachine_Update	w12		Handles input, state transitions, timers and calls various helper functions; central to fragment logic.	applied@83251f0
+D_86B0BBF8	gFragment17GeoLayoutCommands	w12		Passed to process_geo_layout in func_86B0111C to build the fragment?s scene graph.	applied@83251f0
+D_86B0E5D0	gFragment17RootNode	w12		Returned by process_geo_layout and stored as the root graph node for the fragment.	applied@83251f0
+D_86B0E5D4	gFragment17State	w12		Main state structure accessed throughout the file for camera, timers, and mode flags.	applied@83251f0
+D_86B0E5D8	gFragment17ColorAnim	w12		Holds color and position increment values used by Callback_UpdateColorAndPos.	applied@83251f0
+D_86B0E5F0	gFragment17Objects	w12		Array of four object structs manipulated by object?creation and update functions.	applied@83251f0
+D_86B0C4C8	gFragment17ObjectDefs	w12		Array of object definition structs iterated in func_86B003CC and func_86B00470.	applied@83251f0
+D_86B0C264	gFragment17PresetData	w12		Provides position, color, and increment values loaded by func_86B00348 for each preset index.	applied@83251f0
+D_86B0C160	gFragment17AnimData	w12		Used in func_86B0054C to configure animation data for the current preset.	applied@83251f0
+D_86B0EBB0	gFragment17WindowAlpha	w12		Used as the alpha value in Text_DrawWindowRect when D_86B0E5D4->unk_04.unk_48 == 1.	applied@83251f0
+D_86B0EBB4	gFragment17Result	w12		Set before returning from BattleState_Handle18 and used as the function?s return value.	applied@83251f0
+func_86B01670	IsPointInSector	w12		Computes sector vertices with COSS/SINS and returns true if the node position lies inside the sector, indicating a point?in?sector test	applied@83251f0
+func_86B01898	SetCameraOrientationParams	w12		Stores four s16 values that are later passed as pitch and yaw arguments to Camera_SetViewParameters, configuring camera orientation	applied@83251f0
+func_86B018D4	SetCameraFov	w12		Writes two f32 values that are later used as the fov argument of Camera_SetViewParameters, establishing camera field?of?view settings	applied@83251f0
+func_86B018E8	SetCameraEyeAngles	w12		Assigns four s16 values later supplied as pitch and yaw for the eye view in Camera_SetViewParameters, defining the camera eye orientation	applied@83251f0
+func_86B01924	SetCameraTargetFov	w12		Sets two f32 fields that are later used as the fov argument for the eye view in Camera_SetViewParameters, defining the target field?of?view	applied@83251f0
+func_86B01938	SetCameraSmoothing	w12		Writes two f32 values that are later used as step sizes for Math_ApproachF32, controlling camera transition smoothing	applied@83251f0
+func_86B0194C	InitCameraFromConfig	w12		Copies configuration data from a generic camera config struct into the internal camera state and initializes view parameters, acting as a camera initialization routine	applied@83251f0
+func_86B01A40	ApplyCameraViewParameters	w12		Calls Camera_SetViewParameters for both the camera and its target using stored parameters, applying the current camera view settings	applied@83251f0
+func_86B01AAC	UpdateCameraTransition	w12		Updates camera smoothing by approaching the current distance, adjusts view parameters, and returns 1 when the transition is within 5.0 units, serving as a camera transition update	applied@83251f0
+func_86B024D0	Camera_UpdatePrimaryAngles	w12		Called as a callback in D_86B0DC5C and computes camera angles from gCurrentCameraNode, storing them in ptr->unk_1C/1E with +0x2000 offsets.	applied@83251f0
+func_86B02538	Camera_UpdateSecondaryAngles	w12		Called as a callback in D_86B0DC5C and computes camera angles with opposite offsets (-0x2000 and +0x6000) into ptr->unk_1C/1E.	applied@83251f0
+func_86B05170	Gfx_DrawTexturedRect	w12		The function allocates vertices, loads a texture tile with gDPLoadTextureTile, sets colors from argD, and renders two triangles, showing it draws a textured rectangle.	applied@83251f0
+unk_D_86B0DAE0	GfxTileParams	w12		The struct's fields are used for primitive and environment colors and for texture coordinates in vertex setup, implying it holds parameters for tile drawing.	applied@83251f0

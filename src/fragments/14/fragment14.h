@@ -172,11 +172,11 @@ void func_86805974(void);
 void func_86805BD4(void);
 void func_86805CB4(void);
 
-f32 func_86805E94(unk_D_868084D8*, Vec3f*, Vec3f*);
-void func_86806868(unk_D_868084D8*, s32, unk_D_86807558*);
+f32 Sushi_CalcTargetDelta(unk_D_868084D8*, Vec3f*, Vec3f*);
+void SushiInstance_SetMode(unk_D_868084D8*, s32, unk_D_86807558*);
 s32 func_86806930(unk_D_868084D8*);
-s16 func_86806950(s32);
-void func_86806964(s32);
+s16 Sushi_GetActiveCount(s32);
+void Sushi_SetSpawnMode(s32);
 void func_86806A50(void);
 void func_86806BF0(void);
 

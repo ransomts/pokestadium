@@ -32,8 +32,8 @@ extern u8 D_300BAD0[];
 extern u8 D_300BED0[];
 extern u8 D_300C2D0[];
 
-s32 func_86B024D0(s32, GraphNode*);
-s32 func_86B02538(s32, GraphNode*);
+s32 Camera_UpdatePrimaryAngles(s32, GraphNode*);
+s32 Camera_UpdateSecondaryAngles(s32, GraphNode*);
 
 typedef struct unk_D_86B0DBCC {
     /* 0x00 */ f32 unk_00;
@@ -54,7 +54,7 @@ typedef struct unk_D_86B0EBD8 {
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ char unk10[0x8];
     /* 0x18 */ s32 unk_18;
-    /* 0x30 */ unk_D_86B0DAE0 unk_1C;
+    /* 0x30 */ GfxTileParams unk_1C;
 } unk_D_86B0EBD8; // size = 0x4C
 
 typedef struct unk_D_86B0EBDC {
@@ -121,7 +121,7 @@ u32 D_86B0BD60[] = {
     0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF,
     0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF,
 };
-unk_D_86B0C160 D_86B0C160[] = {
+unk_D_86B0C160 gFragment17AnimData[] = {
     {
         0,
         16384,
@@ -218,7 +218,7 @@ unk_D_86B0C160 D_86B0C160[] = {
         255.0f,
     },
 };
-unk_D_86B0C264 D_86B0C264[] = {
+unk_D_86B0C264 gFragment17PresetData[] = {
     {
         { 0.0f, 60.0f, 0.0f },
         -12743,
@@ -321,7 +321,7 @@ static unk_D_86B0C4C8 D_86B0C480[] = {
 
 static s32 pad_D_86B0C4BC[3] = { 0, 0, 0 };
 
-unk_D_86B0C4C8* D_86B0C4C8[] = {
+unk_D_86B0C4C8* gFragment17ObjectDefs[] = {
     D_86B0C2F0, D_86B0C354, D_86B0C3B8, D_86B0C41C, D_86B0C480, NULL,
 };
 
@@ -612,7 +612,7 @@ u32 D_86B0DA9C[] = {
     0x17000001, 0x00000010, &D_86B0D7E0, 0x00000000, D_86B0D828, 0x05000000, 0x1C000000, 0x00008000, 0x00008000,
     0x00008000, 0x05000000, 0x03000000,  D_86B0DA40, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
-static unk_D_86B0DAE0 D_86B0DAE0[] = {
+static GfxTileParams D_86B0DAE0[] = {
     { {
           0x00FF,
           0x00FF,
@@ -732,8 +732,8 @@ static unk_D_86B0DBCC D_86B0DBCC[] = {
 
 static u32 D_86B0DC5C[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x0000000F, 0x00000000,    0x00000000, 0x05000000,
-    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, func_86B024D0, 0x00000000, 0x14000000,
-    0x002D0019,  0x80808028, 0x08000000, func_86B02538, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
+    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, Camera_UpdatePrimaryAngles, 0x00000000, 0x14000000,
+    0x002D0019,  0x80808028, 0x08000000, Camera_UpdateSecondaryAngles, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000,
 };
 
@@ -753,7 +753,7 @@ static s8 D_86B0F7C8[0x100];
 static s8 D_86B0F8C8[0x100];
 static s32 D_86B0F9C8;
 
-s32 func_86B024D0(s32 arg0, GraphNode* arg1) {
+s32 Camera_UpdatePrimaryAngles(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -767,7 +767,7 @@ s32 func_86B024D0(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 func_86B02538(s32 arg0, GraphNode* arg1) {
+s32 Camera_UpdateSecondaryAngles(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
@@ -1225,15 +1225,15 @@ void func_86B034AC(void) {
 }
 
 void func_86B03B9C(void) {
-    func_86B05170(D_30074E0, D_86B0EBD8->unk_00, D_86B0EBD8->unk_04, 0x50, 0x30, 0xA0, 0x30, 0, 0, 0x50, 0x30, 0x4F, 0,
+    Gfx_DrawTexturedRect(D_30074E0, D_86B0EBD8->unk_00, D_86B0EBD8->unk_04, 0x50, 0x30, 0xA0, 0x30, 0, 0, 0x50, 0x30, 0x4F, 0,
                   &D_86B0EBD8->unk_1C, 0);
-    func_86B05170(D_30074E0, D_86B0EBD8->unk_00 + 0x50, D_86B0EBD8->unk_04, 0x50, 0x30, 0xA0, 0x30, 0x50, 0, 0xA0, 0x30,
+    Gfx_DrawTexturedRect(D_30074E0, D_86B0EBD8->unk_00 + 0x50, D_86B0EBD8->unk_04, 0x50, 0x30, 0xA0, 0x30, 0x50, 0, 0xA0, 0x30,
                   0x9F, 0x50, &D_86B0EBD8->unk_1C, 0);
-    func_86B05170(D_30092E0, D_86B0EBD8->unk_08, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
+    Gfx_DrawTexturedRect(D_30092E0, D_86B0EBD8->unk_08, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
                   &D_86B0EBD8->unk_1C, 1);
-    func_86B05170(D_30092E0, D_86B0EBD8->unk_08 + 0x40, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
+    Gfx_DrawTexturedRect(D_30092E0, D_86B0EBD8->unk_08 + 0x40, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
                   0x7F, 0x40, &D_86B0EBD8->unk_1C, 1);
-    func_86B05170(D_30092E0, D_86B0EBD8->unk_08 + 0x80, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
+    Gfx_DrawTexturedRect(D_30092E0, D_86B0EBD8->unk_08 + 0x80, D_86B0EBD8->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
                   0xBF, 0x80, &D_86B0EBD8->unk_1C, 1);
 }
 

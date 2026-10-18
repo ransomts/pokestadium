@@ -99,16 +99,16 @@ u32 D_86A025D0[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000,    0x07000000, &D_86A06170, 0x14000000, 0x002D0019,  0xFFFFFF28,
     0x16646464, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, func_86A00020, 0x00000000, 0x05000000,  0x07000000, &D_86A06190, 0x06000000,
+    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A06190, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, func_86A00020, 0x00000000, 0x05000000,  0x07000000, &D_86A061A8, 0x06000000,
+    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A061A8, 0x06000000,
     0x06000000, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, func_86A00020, 0x00000000, 0x05000000,  0x07000000, &D_86A061C0, 0x06000000,
+    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &D_86A061C0, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000,  0x06000000,
     0x06000000, 0x01000000,
 };
 
-s32 func_86A00020(s32 arg0, GraphNode* arg1) {
+s32 NodeColorSetter(s32 arg0, GraphNode* arg1) {
     Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
@@ -117,7 +117,7 @@ s32 func_86A00020(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_86A0003C(u8 r, u8 g, u8 b) {
+void SetGlobalBackgroundColor(u8 r, u8 g, u8 b) {
     u8 v = r & g & b;
 
     D_86A061E0.r = r;
@@ -181,7 +181,7 @@ void func_86A000B4(s8 arg0, u8 arg1) {
         D_86A06170.unk_00.unk_14 = 1;
     }
 
-    func_86A0003C(0xFF, 0xFF, 0xFF);
+    SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
         func_86A01CF0(&D_86A061EC, &D_86A061EE, &D_86A061F0, D_86A061E8, D_86A025A0[D_86A025C4].unk_02, arg0, arg1);
@@ -257,7 +257,7 @@ void func_86A00788(u8 arg0) {
     }
 
     if (arg0 == 0) {
-        func_86A0240C(0);
+        Stage_DrawBorderFade(0);
     } else {
         Graph_SetTextureState(D_86A061E4);
         func_86A00720(arg0);
@@ -373,9 +373,9 @@ void func_86A0092C(s32 arg0) {
         func_86A00434();
         func_86A00464();
 
-        if (D_86A05B50 >= 0x2D1) {
+        if (gBorderFadeCycleCount >= 0x2D1) {
             var_s6 = 0;
-        } else if ((D_86A05B50 >= 0x169) &&
+        } else if ((gBorderFadeCycleCount >= 0x169) &&
                    ((gPlayer1Controller->buttonPressed & 0x1000) || (gPlayer1Controller->buttonPressed & 0x8000))) {
             var_s6 = 0;
         }
@@ -445,7 +445,7 @@ unk_D_86A02700 D_86A02700[] = {
 static unk_D_86A02750 D_86A02750[] = {
     {
         0,
-        { &D_86A05B60, &D_86A05B64 },
+        { &gMessageDecompressBuffer, &D_86A05B64 },
     },
     {
         1,
@@ -1434,7 +1434,7 @@ void func_86A00DAC(s32 arg0) {
     GraphNode_AllocInit(NULL, &D_86A06190);
     GraphNode_AllocInit(NULL, &D_86A061A8);
     GraphNode_AllocInit(NULL, &D_86A061C0);
-    func_86A0003C(0xFF, 0xFF, 0xFF);
+    SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
     sp2C = state_pool_try_init(main_pool_get_available(), 0);
     D_86A061E4 = process_geo_layout(sp2C, &D_86A025D0);
     mem_pool_resize_block(sp2C);
@@ -1585,7 +1585,7 @@ void func_86A014F0(void) {
     unk_D_86A03014 sp4C;
 
     if (D_86A06214 == NULL) {
-        func_86A0240C(1);
+        Stage_DrawBorderFade(1);
         return;
     }
 

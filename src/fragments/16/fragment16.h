@@ -49,8 +49,8 @@ typedef struct unk_D_86A04328 {
 
 extern unk_D_86A03170 D_86A03170[17][6];
 
-extern u16 D_86A05B50;
-extern char D_86A05B60;
+extern u16 gBorderFadeCycleCount;
+extern char gMessageDecompressBuffer;
 extern char D_86A05B64;
 extern char D_86A05B68;
 extern char D_86A05B6C;
@@ -430,7 +430,7 @@ extern u8 D_86A06211;
 
 extern Vec3f D_86A06248;
 
-s32 func_86A00020(s32 arg0, GraphNode* arg1);
+s32 NodeColorSetter(s32 arg0, GraphNode* arg1);
 void func_86A013C8(u8 arg0, u8 arg1, unk_D_86A03014* arg2);
 void func_86A01490(void);
 void func_86A014F0(void);
@@ -443,7 +443,7 @@ void func_86A01CF0(s16*, s16*, s16*, unk_D_86002F34_00C*, u16, s8, u8);
 void func_86A02164(void);
 void func_86A021C0(s8*, u8*);
 
-s32 func_86A023A0(s32);
-void func_86A0240C(u8);
+s32 Math_RandomModulo(s32);
+void Stage_DrawBorderFade(u8);
 
 #endif // _FRAGMENT16_H_

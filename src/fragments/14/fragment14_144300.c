@@ -575,7 +575,7 @@ s32 UpdateSushiGoRoundState(void) {
             } else if (temp_v0 == -2) {
                 gSushiGoRoundState = 3;
                 func_86805108(0xF, 3);
-                func_86806964(1);
+                Sushi_SetSpawnMode(1);
             }
             break;
 
@@ -594,7 +594,7 @@ s32 UpdateSushiGoRoundState(void) {
                     gSushiGoRoundState = 4;
                     D_86807540 = 0x1E;
                     func_86805108(0xF, 2);
-                    func_86806964(2);
+                    Sushi_SetSpawnMode(2);
                     func_8004B9C4(0xA);
                     PlaySoundByCategory(0x50004, 0, 0);
                 } else {

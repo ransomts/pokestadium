@@ -1,7 +1,7 @@
 #include "fragment17.h"
 #include "src/F420.h"
 
-u16 func_86B01670(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+u16 IsPointInSector(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -47,36 +47,36 @@ u16 func_86B01670(unk_D_86002F34_00C* arg0, Fragment2_1GraphNode* arg1, s16 arg2
     return sp34;
 }
 
-void func_86B01898(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void SetCameraOrientationParams(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_0C = arg1;
     arg0->unk_0E = arg2;
     arg0->unk_20 = arg3;
     arg0->unk_22 = arg4;
 }
 
-void func_86B018D4(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void SetCameraFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_18 = arg1;
     arg0->unk_2C = arg2;
 }
 
-void func_86B018E8(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void SetCameraEyeAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_12 = arg1;
     arg0->unk_14 = arg2;
     arg0->unk_26 = arg3;
     arg0->unk_28 = arg4;
 }
 
-void func_86B01924(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void SetCameraTargetFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_1C = arg1;
     arg0->unk_30 = arg2;
 }
 
-void func_86B01938(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void SetCameraSmoothing(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_34 = arg1;
     arg0->unk_38 = arg2;
 }
 
-void func_86B0194C(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
+void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86B0E5D4_04* ptr = &arg1->unk_04;
     unk_D_86002F34_00C* ptr2 = arg1->unk_00;
     f32 sp34;
@@ -98,21 +98,21 @@ void func_86B0194C(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     sp2C = arg0->unk_10;
     sp28 = arg0->unk_24;
 
-    func_86B01898(ptr, arg0->unk_00, arg0->unk_02, arg0->unk_14, arg0->unk_16);
-    func_86B018D4(ptr, sp34, sp30);
-    func_86B018E8(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
-    func_86B01924(ptr, sp2C, sp28);
-    func_86B01938(ptr, arg0->unk_28, arg0->unk_2C);
+    SetCameraOrientationParams(ptr, arg0->unk_00, arg0->unk_02, arg0->unk_14, arg0->unk_16);
+    SetCameraFov(ptr, sp34, sp30);
+    SetCameraEyeAngles(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
+    SetCameraTargetFov(ptr, sp2C, sp28);
+    SetCameraSmoothing(ptr, arg0->unk_28, arg0->unk_2C);
 }
 
-void func_86B01A40(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+void ApplyCameraViewParameters(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86002F34_00C* sp2C = arg1->unk_00;
 
     Camera_SetViewParameters(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
     Camera_SetViewParameters(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
-s32 func_86B01AAC(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+s32 UpdateCameraTransition(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86002F34_00C* temp_s2 = arg1->unk_00;
     Vec3f sp58;
     Vec3f sp4C;

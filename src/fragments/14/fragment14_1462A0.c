@@ -722,9 +722,9 @@ unk_D_868084D8* func_86803374(unk_D_86807558* arg0) {
         for (i = 0; i < 8; i++) {
             s32 v = gSushiOrderIndices[i];
             if (v != 1) {
-                if (sp4A < func_86806950(v)) {
+                if (sp4A < Sushi_GetActiveCount(v)) {
                     var_s4 = v;
-                    sp4A = func_86806950(v);
+                    sp4A = Sushi_GetActiveCount(v);
                 }
             }
         }
@@ -897,7 +897,7 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
         }
     } else {
         sp54.y = 0.0f;
-        sp60 = func_86805E94(arg0->unk_010, &arg0->unk_068, &sp54);
+        sp60 = Sushi_CalcTargetDelta(arg0->unk_010, &arg0->unk_068, &sp54);
 
         if ((sp60 <= 13225.0f) && (sp60 != 0.0f)) {
             tmp = (((sp54.x * arg0->unk_098.unk_00.x) + (sp54.y * arg0->unk_098.unk_00.y) +
@@ -1223,7 +1223,7 @@ void func_86804884(unk_D_86807558* arg0) {
     arg0->unk_02A++;
     arg0->unk_02C[sp20]++;
 
-    func_86806868(arg0->unk_0DC, 0, NULL);
+    SushiInstance_SetMode(arg0->unk_0DC, 0, NULL);
 
     if (sp20 == 1) {
         Sushi_SetState(arg0, 2);
@@ -1247,7 +1247,7 @@ void func_868049C0(unk_D_86807558* arg0) {
                 arg0->unk_0DC = func_86804634(arg0);
                 if (arg0->unk_0DC != NULL) {
                     arg0->unk_0CC = Anim_FindFirstFrameInRange(&arg0->unk_0E4, 0xD);
-                    func_86806868(arg0->unk_0DC, 3, arg0);
+                    SushiInstance_SetMode(arg0->unk_0DC, 3, arg0);
                 }
             }
 
