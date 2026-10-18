@@ -3,22 +3,22 @@
 #include "src/2E110.h"
 #include "src/fragments/2/fragment2.h"
 
-static unk_D_8250A480 D_8250A480;
-static unk_D_8250A498 D_8250A498;
-static char* D_8250A4B0[9];
+static unk_D_8250A480 gMessageBox;
+static unk_D_8250A498 gOptionMenu;
+static char* gOptionMenuItems[9];
 
-void func_82504820(char** arg0) {
-    D_8250A480.unk_00 = 0;
-    D_8250A480.unk_02 = 0;
-    D_8250A480.unk_14 = arg0;
+void MessageBox_SetBank(char** arg0) {
+    gMessageBox.unk_00 = 0;
+    gMessageBox.unk_02 = 0;
+    gMessageBox.unk_14 = arg0;
 }
 
-s32 func_82504838(void) {
-    return D_8250A480.unk_00;
+s32 MessageBox_GetState(void) {
+    return gMessageBox.unk_00;
 }
 
-void func_82504844(s16 arg0) {
-    unk_D_8250A480* ptr = &D_8250A480;
+void MessageBox_SetState(s16 arg0) {
+    unk_D_8250A480* ptr = &gMessageBox;
 
     ptr->unk_00 = arg0;
 
@@ -57,7 +57,7 @@ void func_82504930(unk_D_8250A480* arg0) {
     arg0->unk_04 = ((arg0->unk_02 * -0x1B4) / 10) + 0xBC;
     arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) + 0x5C;
     if (arg0->unk_02 <= 0) {
-        func_82504844(2);
+        MessageBox_SetState(2);
     }
 }
 
@@ -78,12 +78,12 @@ void func_82504A68(unk_D_8250A480* arg0) {
     arg0->unk_04 = ((arg0->unk_02 * -0x1C4) / 10) + 0x280;
     arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) - 0x1C8;
     if (arg0->unk_02 <= 0) {
-        func_82504844(0);
+        MessageBox_SetState(0);
     }
 }
 
 void func_82504B38(void) {
-    unk_D_8250A480* ptr = &D_8250A480;
+    unk_D_8250A480* ptr = &gMessageBox;
 
     if (ptr->unk_00 != 0) {
         switch (ptr->unk_00) {
@@ -100,7 +100,7 @@ void func_82504B38(void) {
     }
 }
 
-void func_82504BB4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Gfx_DrawBorderedBox(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 sp48;
     s16 temp_s0_32;
     s16 var_s2;
@@ -159,7 +159,7 @@ void func_82504BB4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_825053B4(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
+void Text_PrintWavy(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
     s16 var_s2;
     s8* var_v1;
     s32 i;
@@ -186,15 +186,15 @@ void func_825053B4(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
     }
 }
 
-void func_825054F4(void) {
+void MessageBox_Render(void) {
     UNUSED s32 pad;
-    unk_D_8250A480* ptr = &D_8250A480;
+    unk_D_8250A480* ptr = &gMessageBox;
     char* sp2C = GetMessageString(NULL, 0, ptr->unk_14, 0);
     char* sp28 = GetMessageString(NULL, 0, ptr->unk_14, 1);
 
     if (ptr->unk_00 != 0) {
-        func_82504BB4(ptr->unk_04, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
-        func_82504BB4(ptr->unk_08, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
+        Gfx_DrawBorderedBox(ptr->unk_04, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+        Gfx_DrawBorderedBox(ptr->unk_08, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -202,30 +202,30 @@ void func_825054F4(void) {
             Text_Print((ptr->unk_04 - (MeasureTextWidth(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
             Text_Print((ptr->unk_08 - (MeasureTextWidth(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
         } else {
-            func_825053B4(ptr->unk_04 + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
-            func_825053B4(ptr->unk_08 + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
+            Text_PrintWavy(ptr->unk_04 + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
+            Text_PrintWavy(ptr->unk_08 + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
         }
         Text_SetupDL();
     }
 }
 
-void func_82505720(char** arg0) {
+void OptionMenu_Init(char** arg0) {
     s32 i;
 
-    D_8250A498.unk_00 = 0;
-    D_8250A498.unk_02 = 0;
-    D_8250A498.unk_14 = arg0;
+    gOptionMenu.unk_00 = 0;
+    gOptionMenu.unk_02 = 0;
+    gOptionMenu.unk_14 = arg0;
 
     for (i = 0; i < 9; i++) {
-        D_8250A4B0[i] = GetMessageString(NULL, 0, arg0, i + 7);
+        gOptionMenuItems[i] = GetMessageString(NULL, 0, arg0, i + 7);
     }
 }
 
 void func_825057A0(void) {
 }
 
-void func_825057A8(s16 arg0) {
-    unk_D_8250A498* ptr = &D_8250A498;
+void OptionMenu_SetSelection(s16 arg0) {
+    unk_D_8250A498* ptr = &gOptionMenu;
 
     if (ptr->unk_12 != ptr->unk_10) {
         ptr->unk_10 = ptr->unk_12;
@@ -233,13 +233,13 @@ void func_825057A8(s16 arg0) {
         ptr->unk_04 = ptr->unk_06;
     }
     ptr->unk_12 = arg0;
-    ptr->unk_0E = MeasureTextWidth(0, 0, D_8250A4B0[ptr->unk_12], arg0) + 0x30;
+    ptr->unk_0E = MeasureTextWidth(0, 0, gOptionMenuItems[ptr->unk_12], arg0) + 0x30;
     ptr->unk_06 = (0x280 - ptr->unk_0E) / 2;
     ptr->unk_02 = 5;
 }
 
-void func_82505874(s16 arg0, s16 arg1) {
-    unk_D_8250A498* ptr = &D_8250A498;
+void OptionMenu_SetState(s16 arg0, s16 arg1) {
+    unk_D_8250A498* ptr = &gOptionMenu;
 
     ptr->unk_00 = arg0;
 
@@ -251,7 +251,7 @@ void func_82505874(s16 arg0, s16 arg1) {
         case 1:
             ptr->unk_02 = 0xA;
             ptr->unk_10 = ptr->unk_12 = arg1;
-            ptr->unk_0C = ptr->unk_0E = MeasureTextWidth(0, 0, D_8250A4B0[ptr->unk_12], arg1) + 0x30;
+            ptr->unk_0C = ptr->unk_0E = MeasureTextWidth(0, 0, gOptionMenuItems[ptr->unk_12], arg1) + 0x30;
             ptr->unk_04 = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
             ptr->unk_08 = -0x2C;
             ptr->unk_0A = 0x1E0;
@@ -272,7 +272,7 @@ void func_82505998(unk_D_8250A498* arg0) {
     arg0->unk_08 = ((arg0->unk_02 * -0x68) / 10) + 0x3C;
     arg0->unk_0A = ((arg0->unk_02 * 0x56) / 10) + 0x18A;
     if (arg0->unk_02 <= 0) {
-        func_82505874(2, -1);
+        OptionMenu_SetState(2, -1);
     }
 }
 
@@ -292,12 +292,12 @@ void func_82505AB8(unk_D_8250A498* arg0) {
     arg0->unk_08 = ((arg0->unk_02 * 0x68) / 10) - 0x2C;
     arg0->unk_0A = ((arg0->unk_02 * -0x56) / 10) + 0x1E0;
     if (arg0->unk_02 <= 0) {
-        func_82505874(0, -1);
+        OptionMenu_SetState(0, -1);
     }
 }
 
-void func_82505B94(void) {
-    unk_D_8250A498* ptr = &D_8250A498;
+void OptionMenu_Update(void) {
+    unk_D_8250A498* ptr = &gOptionMenu;
 
     if (ptr->unk_00 != 0) {
         switch (ptr->unk_00) {
@@ -316,30 +316,30 @@ void func_82505B94(void) {
     }
 }
 
-void func_82505C10(void) {
+void OptionMenu_Render(void) {
     UNUSED s32 pad;
-    unk_D_8250A498* ptr = &D_8250A498;
+    unk_D_8250A498* ptr = &gOptionMenu;
     char* sp3C;
     s16 tmp;
     char* sp34 = GetMessageString(NULL, 0, ptr->unk_14, 0x10);
 
     if (ptr->unk_00 != 0) {
         if (ptr->unk_10 == ptr->unk_12) {
-            func_82504BB4(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+            Gfx_DrawBorderedBox(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         } else {
             tmp = (ptr->unk_02 << 7) / 5;
-            func_82504BB4(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            Gfx_DrawBorderedBox(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
             tmp = ((-ptr->unk_02 * 0x80) + 0x280) / 5;
-            func_82504BB4(ptr->unk_06, ptr->unk_08, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            Gfx_DrawBorderedBox(ptr->unk_06, ptr->unk_08, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
         }
 
-        if (D_8780FA48 == -1) {
-            func_82504BB4(0x98, ptr->unk_0A, 0x140, 0x2C, 0x64, 0, 0x50, 0x80);
+        if (gMenuSelectedOption == -1) {
+            Gfx_DrawBorderedBox(0x98, ptr->unk_0A, 0x140, 0x2C, 0x64, 0, 0x50, 0x80);
         }
 
         Text_ResetState();
         Text_SetFont(0x10, 0);
-        sp3C = D_8250A4B0[ptr->unk_10];
+        sp3C = gOptionMenuItems[ptr->unk_10];
         if (ptr->unk_10 == ptr->unk_12) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_Print(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
@@ -347,13 +347,13 @@ void func_82505C10(void) {
             tmp = (ptr->unk_02 * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
             Text_Print(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
-            sp3C = D_8250A4B0[ptr->unk_12];
+            sp3C = gOptionMenuItems[ptr->unk_12];
             tmp = ((5 - ptr->unk_02) * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
             Text_Print(ptr->unk_06 + 0x18, ptr->unk_08 + 0xA, sp3C);
         }
 
-        if (D_8780FA48 == -1) {
+        if (gMenuSelectedOption == -1) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_Print(0x140 - (GetTextWidth(D_8250A304, sp34) / 2), ptr->unk_0A + 0xA, sp34);
         }

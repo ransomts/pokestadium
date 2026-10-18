@@ -923,7 +923,7 @@ void func_81405FAC(u8 l, u8 prim_r, u8 prim_g, u8 prim_b, u8 prim_a, u8 env_r, u
 }
 
 u32 GetTileSizeByIndex(s32 arg0) {
-    u32 ret = D_8140E6B8;
+    u32 ret = gTimerCounter;
 
     switch (arg0) {
         case 2:
@@ -935,7 +935,7 @@ u32 GetTileSizeByIndex(s32 arg0) {
             break;
 
         case 4:
-            ret = D_8140E6E8;
+            ret = gTimerShift2;
             break;
     }
 
@@ -943,33 +943,33 @@ u32 GetTileSizeByIndex(s32 arg0) {
 }
 
 void func_814060D4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, arg0 * D_8140E6B8, -arg1 * D_8140E6B8,
-                   (((arg0 * D_8140E6B8) + arg2) - 1) << 2, (((-arg1 * D_8140E6B8) + arg3) - 1) << 2);
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, arg0 * gTimerCounter, -arg1 * gTimerCounter,
+                   (((arg0 * gTimerCounter) + arg2) - 1) << 2, (((-arg1 * gTimerCounter) + arg3) - 1) << 2);
 }
 
 void func_81406168(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    gDPSetTileSize(gDisplayListHead++, 1, arg0 * D_8140E6B8, -arg1 * D_8140E6B8,
-                   (((arg0 * D_8140E6B8) + arg2) - 1) << 2, (((-arg1 * D_8140E6B8) + arg3) - 1) << 2);
+    gDPSetTileSize(gDisplayListHead++, 1, arg0 * gTimerCounter, -arg1 * gTimerCounter,
+                   (((arg0 * gTimerCounter) + arg2) - 1) << 2, (((-arg1 * gTimerCounter) + arg3) - 1) << 2);
 }
 
 void func_81406204(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    gDPSetTileSize(gfx, G_TX_RENDERTILE, arg1 * D_8140E6B8, -arg2 * D_8140E6B8, (((arg1 * D_8140E6B8) + arg3) - 1) << 2,
-                   (((-arg2 * D_8140E6B8) + arg4) - 1) << 2);
+    gDPSetTileSize(gfx, G_TX_RENDERTILE, arg1 * gTimerCounter, -arg2 * gTimerCounter, (((arg1 * gTimerCounter) + arg3) - 1) << 2,
+                   (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
 
 void func_81406288(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    gDPSetTileSize(gfx, 1, arg1 * D_8140E6B8, -arg2 * D_8140E6B8, (((arg1 * D_8140E6B8) + arg3) - 1) << 2,
-                   (((-arg2 * D_8140E6B8) + arg4) - 1) << 2);
+    gDPSetTileSize(gfx, 1, arg1 * gTimerCounter, -arg2 * gTimerCounter, (((arg1 * gTimerCounter) + arg3) - 1) << 2,
+                   (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
 
 void func_81406314(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    gDPSetTileSize(gfx, G_TX_RENDERTILE, arg1, -arg2 * D_8140E6B8, ((arg3 + arg1) - 1) << 2,
-                   (((-arg2 * D_8140E6B8) + arg4) - 1) << 2);
+    gDPSetTileSize(gfx, G_TX_RENDERTILE, arg1, -arg2 * gTimerCounter, ((arg3 + arg1) - 1) << 2,
+                   (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
 
 void func_81406388(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    gDPSetTileSize(gfx, 1, arg1, -arg2 * D_8140E6B8, ((arg3 + arg1) - 1) << 2,
-                   (((-arg2 * D_8140E6B8) + arg4) - 1) << 2);
+    gDPSetTileSize(gfx, 1, arg1, -arg2 * gTimerCounter, ((arg3 + arg1) - 1) << 2,
+                   (((-arg2 * gTimerCounter) + arg4) - 1) << 2);
 }
 
 void func_81406404(Gfx* gfx, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {

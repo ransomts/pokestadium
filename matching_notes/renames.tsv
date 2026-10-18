@@ -2241,3 +2241,205 @@ func_81404580	Gfx_LoadTextureBlockCI_Clamp	w15		Gfx_LoadTextureBlock called with
 func_81404670	Gfx_SetupMultiTextureCI_RGBA16	w15		Sets combine mode then loads a CI texture via gDPLoadMultiBlock and an RGBA16 texture via gDPLoadTextureBlock, configuring a dual?texture material	applied@2402ae2
 func_81405A90	Gfx_SetFogColor	w15		Calls gDPSetFogColor after a pipe sync, directly setting the fog color	applied@2402ae2
 func_81405B70	Gfx_SetPrimColorCombinePrimitive	w15		Sets primitive color and then configures the combine mode to use PRIMITIVE and TEXEL0, indicating a primitive?only combine setup	applied@2402ae2
+func_81407D48	Particle_CreateMultiple	w16		creates multiple particles by looping i < count and calling Particle_Create	applied@ce50e4a
+func_81407E30	Particle_CreateMultipleWithExtra	w16		creates multiple particles with an extra parameter passed to Particle_Create	applied@ce50e4a
+func_81407F24	Particle_CreateFromEntityMultiple	w16		creates multiple particles from an entity by looping and calling Particle_CreateFromEntity	applied@ce50e4a
+func_81407FC8	Particle_CreateFromEntityMultipleWithExtra	w16		creates multiple particles from an entity with an extra argument passed to Particle_CreateFromEntity	applied@ce50e4a
+func_814080EC	Particle_GetActiveCount	w16		returns the result of Particle_CountActive, i.e. the number of active particles	applied@ce50e4a
+func_81409888	Particle_SetPosition	w16		sets arg0->unk_68.x/y/z to the given coordinates, initializing particle position	applied@ce50e4a
+func_814098A8	Particle_SetVelocityScaled	w16		sets arg0->unk_50 components to the given values multiplied by the global scale D_8140E628	applied@ce50e4a
+func_814098E8	Particle_SetVelocityX	w16		sets arg0->unk_50.x to the given value scaled by D_8140E628	applied@ce50e4a
+func_81409900	Particle_SetVelocityY	w16		sets arg0->unk_50.y to the given value scaled by D_8140E628	applied@ce50e4a
+func_81409918	Particle_SetVelocityZ	w16		sets arg0->unk_50.z to the given value scaled by D_8140E628	applied@ce50e4a
+func_81409968	Particle_AddVelocity	w16		adds scaled values to arg0->unk_50.x/y/z, modifying particle velocity	applied@ce50e4a
+func_8140A270	Particle_SetRotation	w16		sets arg0->unk_94.x/y/z to the provided rotation angles	applied@ce50e4a
+func_8140A2A4	Particle_SetRotationX	w16		sets arg0->unk_94.x to the given angle	applied@ce50e4a
+func_8140A2B8	Particle_SetRotationY	w16		sets arg0->unk_94.y to the given angle	applied@ce50e4a
+func_8140A2CC	Particle_SetRotationZ	w16		sets arg0->unk_94.z to the given angle	applied@ce50e4a
+func_8140A30C	Particle_AddRotationX	w16		increments arg0->unk_94.x by 0x8000 (45 degrees)	applied@ce50e4a
+func_8140A320	Particle_AddRotationY	w16		increments arg0->unk_94.y by 0x8000	applied@ce50e4a
+func_8140A334	Particle_AddRotationZ	w16		increments arg0->unk_94.z by 0x8000	applied@ce50e4a
+func_8140A348	Particle_SetRotationDelta	w16		sets arg0->unk_9A.x/y/z to the given delta rotation values	applied@ce50e4a
+func_8140A3A0	Particle_SetRotationDeltaXY	w16		sets arg0->unk_9A.x/y to the given values	applied@ce50e4a
+func_8140A3C4	Particle_SetRotationDeltaX	w16		sets arg0->unk_9A.x to the given value	applied@ce50e4a
+func_8140A3D8	Particle_SetRotationDeltaY	w16		sets arg0->unk_9A.y to the given value	applied@ce50e4a
+func_8140A3EC	Particle_SetRotationDeltaZ	w16		sets arg0->unk_9A.z to the given value	applied@ce50e4a
+func_8140A400	Particle_SetTargetRotationX	w16		sets arg0->unk_A0.x to the given angle	applied@ce50e4a
+func_8140A414	Particle_SetTargetRotationY	w16		sets arg0->unk_A0.y to the given angle	applied@ce50e4a
+func_8140A428	Particle_SetTargetRotationXY	w16		sets arg0->unk_A0.x/y to the given angles	applied@ce50e4a
+func_8140A464	Particle_CopyRotationToTarget	w16		copies current rotation (unk_94) into target rotation (unk_A0)	applied@ce50e4a
+func_8140A480	Particle_AddRotationDelta	w16		adds rotation delta (unk_9A) to current rotation (unk_94)	applied@ce50e4a
+func_8140A4B4	Particle_AddRotationDeltaX	w16		adds unk_9A.x to unk_94.x	applied@ce50e4a
+func_8140A4C8	Particle_AddRotationDeltaY	w16		adds unk_9A.y to unk_94.y	applied@ce50e4a
+func_8140A4DC	Particle_AddRotationDeltaZ	w16		adds unk_9A.z to unk_94.z	applied@ce50e4a
+func_8140A690	Particle_ApproachRotationXWrap	w16		approaches unk_94.x towards unk_A0.x with wrap using unk_9A.x	applied@ce50e4a
+func_8140A6BC	Particle_ApproachRotationYWrap	w16		approaches unk_94.y towards unk_A0.y with wrap using unk_9A.y	applied@ce50e4a
+func_8140A6E8	Particle_ApproachRotationZWrap	w16		approaches unk_94.z towards unk_A0.z with wrap using unk_9A.z	applied@ce50e4a
+func_8140A714	Particle_ApproachRotationAllWrap	w16		approaches all three rotation axes using respective wrap functions	applied@ce50e4a
+func_8140A73C	Particle_ApproachRotationAllWrapFull	w16		approaches all three rotation axes using wrap functions for x, y, z	applied@ce50e4a
+func_8140A7DC	Particle_DecreaseRotationXTowards	w16		decreases unk_94.x towards target with step arg2, returns 1 when reached	applied@ce50e4a
+func_8140A810	Particle_DecreaseRotationYTowards	w16		decreases unk_94.y towards target with step arg2, returns 1 when reached	applied@ce50e4a
+func_8140A844	Particle_DecreaseRotationZTowards	w16		decreases unk_94.z towards target with step arg2, returns 1 when reached	applied@ce50e4a
+func_8140A878	Particle_RandomizeRotationXY	w16		randomizes rotation X and Y within given ranges	applied@ce50e4a
+func_8140A8C8	Particle_RandomizeRotationXWithMaskY	w16		randomizes rotation X with masked range and Y randomly	applied@ce50e4a
+func_8140A91C	Particle_RandomizeRotationY	w16		randomizes rotation Y within given range	applied@ce50e4a
+func_8140A950	Particle_RandomizeRotationYWithMask	w16		randomizes rotation Y with masked range	applied@ce50e4a
+func_8140A988	Particle_RandomizeRotationXYFixedY	w16		randomizes rotation X fully and sets Y to 0x4000	applied@ce50e4a
+func_8140A9C8	Particle_CalcDirectionVector	w16		calculates a direction vector from rotation Y and length arg1	applied@ce50e4a
+func_8140AA18	Particle_CalcDirectionVectorXYZ	w16		calculates a 3?axis direction vector from rotation X/Y and length arg1	applied@ce50e4a
+func_8140AAB8	Particle_CalcDirectionVectorXZ	w16		calculates direction using rotation X and Z angles	applied@ce50e4a
+func_8140AB58	Particle_CalcComplexDirection	w16		calculates a complex direction vector using all three rotation components	applied@ce50e4a
+func_8140AC70	Particle_CalcAnotherDirection	w16		calculates a different direction vector using rotation Y/Z and X	applied@ce50e4a
+func_8140AD8C	Particle_SetSpeed	w16		sets arg0->unk_74 (speed) scaled by global factor	applied@ce50e4a
+func_8140ADA4	Particle_SetAcceleration	w16		sets arg0->unk_78 (acceleration) scaled by global factor	applied@ce50e4a
+func_8140AE00	Particle_ApproachSpeed	w16		approaches speed towards target using acceleration as step	applied@ce50e4a
+func_8140AE40	Particle_ApproachAcceleration	w16		approaches acceleration towards target value	applied@ce50e4a
+func_8140AE84	Particle_SetAccelerationVector	w16		sets arg0->unk_7C components to given vector scaled by global factor	applied@ce50e4a
+func_8140AECC	Particle_SetAccelerationXYZ	w16		sets arg0->unk_7C.x/y/z to given values scaled by global factor	applied@ce50e4a
+func_8140AF0C	Particle_SetAccelerationX	w16		sets arg0->unk_7C.x scaled by global factor	applied@ce50e4a
+func_8140AF24	Particle_SetAccelerationY	w16		sets arg0->unk_7C.y scaled by global factor	applied@ce50e4a
+func_8140AF3C	Particle_SetAccelerationZ	w16		sets arg0->unk_7C.z scaled by global factor	applied@ce50e4a
+func_8140AF54	Particle_IncrementAccelerationXClamp	w16		increments acceleration X by arg2 and clamps to max arg1	applied@ce50e4a
+func_8140AFA8	Particle_IncrementAccelerationYClamp	w16		increments acceleration Y by arg2 and clamps to max arg1	applied@ce50e4a
+func_8140AFFC	Particle_IncrementAccelerationZClamp	w16		increments acceleration Z by arg2 and clamps to max arg1	applied@ce50e4a
+func_8140B050	Particle_DecrementAccelerationXClamp	w16		decrements acceleration X by arg2 and clamps to min arg1	applied@ce50e4a
+func_8140B0A4	Particle_DecrementAccelerationYClamp	w16		decrements acceleration Y by arg2 and clamps to min arg1	applied@ce50e4a
+func_8140B0F8	Particle_DecrementAccelerationZClamp	w16		decrements acceleration Z by arg2 and clamps to min arg1	applied@ce50e4a
+func_8140C5D0	Timer_UpdateCounters	w16		increments the global tick counter and recomputes derived bit/shift values, indicating a timer update routine	applied@ce50e4a
+func_8140C734	Timer_Tick	w16		simply calls Timer_UpdateCounters, acting as a timer tick wrapper	applied@ce50e4a
+D_8140E6B8	gTimerCounter	w16		global counter incremented each call, serving as the main frame/tick counter	applied@ce50e4a
+D_8140E6BC	gTimerMask6	w16		stores counter & 0x3F, the lower 6 bits of the tick counter	applied@ce50e4a
+D_8140E6C0	gTimerMask5	w16		stores counter & 0x1F, the lower 5 bits of the tick counter	applied@ce50e4a
+D_8140E6C4	gTimerMask4	w16		stores counter & 0xF, the lower 4 bits of the tick counter	applied@ce50e4a
+D_8140E6C8	gTimerMask3	w16		stores counter & 7, the lower 3 bits of the tick counter	applied@ce50e4a
+D_8140E6CC	gTimerMask2	w16		stores counter & 3, the lower 2 bits of the tick counter	applied@ce50e4a
+D_8140E6D0	gTimerMod3	w16		stores counter % 3, the remainder of the tick counter modulo 3	applied@ce50e4a
+D_8140E6D4	gTimerMask1	w16		stores counter & 1, the least?significant bit of the tick counter	applied@ce50e4a
+D_8140E6D8	gTimerShift6	w16		stores counter >> 6, the tick counter shifted right by 6 bits	applied@ce50e4a
+D_8140E6DC	gTimerShift5	w16		stores counter >> 5, the tick counter shifted right by 5 bits	applied@ce50e4a
+D_8140E6E0	gTimerShift4	w16		stores counter >> 4, the tick counter shifted right by 4 bits	applied@ce50e4a
+D_8140E6E4	gTimerShift3	w16		stores counter >> 3, the tick counter shifted right by 3 bits	applied@ce50e4a
+D_8140E6E8	gTimerShift2	w16		stores counter >> 2, the tick counter shifted right by 2 bits	applied@ce50e4a
+func_8140C760	LoadTexture_RGBA16_32x32	w16		Calls Gfx_LoadTextureBlockRGBA16_Clamp with 32x32 size, indicating it loads an RGBA16 texture of that dimension.	applied@ce50e4a
+func_8140C78C	LoadTexture_IA8_32x32_ByIndex	w16		Loads IA8 texture with offset based on arg0->unk_C7, size 32x32, so it loads an indexed texture variant.	applied@ce50e4a
+func_8140C7C0	LoadTexture_IA8_32x32	w16		Loads IA8 texture directly with 32x32 dimensions.	applied@ce50e4a
+func_8140C7EC	LoadTexture_IA8_32x64_ByIndex	w16		Loads IA8 texture with dimensions 32x64 using arg0->unk_C7 offset.	applied@ce50e4a
+func_8140C820	LoadTexture_CI4_32x32	w16		Calls func_8140437C with 32x32, which loads a texture of unknown format but fixed size, likely CI4.	applied@ce50e4a
+func_8140D4A8	GetPaletteColor	w16		Copies three RGB bytes from D_8140E470 palette into output buffer.	applied@ce50e4a
+func_8140D4E0	GetPaletteColorPair	w16		Retrieves two palette indices from D_8140E550 and copies their RGB values via GetPaletteColor.	applied@ce50e4a
+func_8140D530	SetPrimColorFromPalette	w16		Sets prim_r/g/b fields of arg0 from D_8140E470 using supplied palette index.	applied@ce50e4a
+func_8140D568	SetEnvColorFromPalette	w16		Sets env_r/g/b fields of arg0 from D_8140E470 using supplied palette index.	applied@ce50e4a
+func_8140D5A0	SetPrimEnvColorFromPair	w16		Uses D_8140E550 to get a pair of palette indices then sets both prim and env colors via SetPrimColorFromPalette and SetEnvColorFromPalette.	applied@ce50e4a
+func_8140D7C8	IsPrimColorSupported	w16		Calls three functions to apply RGB components and returns true only if all succeed, indicating primitive color can be set.	applied@ce50e4a
+func_8140D868	IsEnvColorSupported	w16		Similar to func_8140D7C8 but uses different helper functions for environment color components.	applied@ce50e4a
+func_8140D908	AreBothColorsSupported	w16		Combines checks of both primary and secondary color component functions, returning true only if all succeed.	applied@ce50e4a
+D_8140E550	gColorPairTable	w16		Array of two-byte entries mapping to primary and secondary palette indices, accessed by GetPaletteColorPair.	applied@ce50e4a
+func_82000020	Stage_DrawN64Logo	w16		Loads texture from D_2000000 which is loaded as n64_logo_texture and draws it with gSPTextureRectangle	applied@ce50e4a
+func_820002B4	Stage_LogoDrawCallback	w16		Passed to Stage_AdvanceUntil and draws the logo each frame after filling the screen	applied@ce50e4a
+func_820002F0	Delay_OneSecond	w16		Loops until elapsed time reaches ~0xF4240 cycles, effectively waiting about one second after the logo	applied@ce50e4a
+func_8200036C	Players_Initialize	w16		Pushes pool state 'GPAK', calls InitializePlayers and restores state, indicating player data initialization	applied@ce50e4a
+func_820003A4	Stage_RunLogoSequence	w16		Implements the full logo startup flow: asset loading, stage creation, fades, callbacks, and cleanup	applied@ce50e4a
+func_82100054	GetMenuOptionCode	w16		returns a code based on gMenuOption when a static flag is set	applied@ce50e4a
+func_821000C4	DrawBorderOverlay	w16		sets env color and draws gPrefDL_Border display list to render a border	applied@ce50e4a
+func_8210046C	DrawBackgroundTextureTiles	w16		iterates over texture data and draws 16x16 RGBA16 sprites	applied@ce50e4a
+func_821005EC	TitleScreen_RenderFrame	w16		begins display list, draws background, optional border, scrolling text and advances stage each frame	applied@ce50e4a
+func_82100660	CountFlagOccurrences	w16		counts entries in gFlagTable where entry & arg0 is non?zero	applied@ce50e4a
+D_82100EA0	gMessageBank14	w16		assigned from GetMessageBank(0x14) and used as argument to GetMessageString	applied@ce50e4a
+D_82100EBC	gAudioBankBuffer	w16		allocated then passed to Audio_LoadBankAndSong for audio data	applied@ce50e4a
+D_82100EC4	gMenuStatePtr	w16		pointer to a u16 storing menu indices, read and updated in func_82100844	applied@ce50e4a
+D_82100EC8	gBorderEnabled	w16		checked before drawing border overlay and set to 0 initially	applied@ce50e4a
+D_82100EC0	gMenuOption	w16		used in func_82100054 to select return value based on its value	applied@ce50e4a
+D_82100DCC	gFlagTable	w16		byte array indexed in func_82100660 and func_8210071C for flag counting	applied@ce50e4a
+D_82100E64	gTwoPlayerBattlePresets	w16		2x4 array of preset player IDs passed to func_82100760 to start battles	applied@ce50e4a
+func_82200A5C	UpdateParticleTrailPositions	w16		Shifts particle trail arrays and computes new positions for each particle based on tile config values	applied@ce50e4a
+func_82300020	DrawAnimatedBorder	w16		Draws four corner sprites with a sine?based offset to animate a border, called in func_82304224 to highlight selected panels.	applied@ce50e4a
+func_82300214	DrawBorder	w16		Draws a static rectangular border using corner sprites and texture rectangles, used for UI panels throughout the fragment.	applied@ce50e4a
+func_8230047C	DrawFilledRectWithBorder	w16		Loads four 4?bit textures, draws a bordered rectangle and fills the interior with a solid color, used for various UI panels.	applied@ce50e4a
+func_82301A10	InitMainMenuUI	w16		Sets up colors, draws header graphics, and prints initial menu text, establishing the main menu UI layout.	applied@ce50e4a
+D_82305A20	gMessageBankMain	w16		Assigned from GetMessageBank(0x10) in func_823057E4, serving as the primary message bank for UI strings.	applied@ce50e4a
+D_82305A24	gMessageBankSecondary	w16		Assigned from GetMessageBank(6) in func_823057E4, used for secondary UI messages.	applied@ce50e4a
+D_82305920	gPanelRects	w16		Array of structs containing x, y, width, height values; accessed in func_82304224 to position selection borders.	applied@ce50e4a
+D_8230597C	gStatThresholds	w16		Struct array with fields used in func_823020B4 and party?selection logic to define stat limits and requirements.	applied@ce50e4a
+D_823059B0	gIconXOffsets	w16		Static s16 array of X offsets applied when drawing icons (e.g., in func_82302268, func_823025B8).	applied@ce50e4a
+D_823059BC	gIconYOffsets	w16		Static s16 array of Y offsets paired with gIconXOffsets for icon placement in UI panels.	applied@ce50e4a
+func_82301CC4	DrawMenuItem	w16		Renders a menu entry with optional sprite, background fill, and text, handling both equipped and empty slots.	applied@ce50e4a
+func_823020B4	InitMenuItem	w16		Initialises a menu?item struct with position, graphics, text, and optional stat thresholds.	applied@ce50e4a
+func_82303284	DrawResultPanel	w16		Displays a result panel with a filled rectangle and centered text, used for end?of?battle summaries.	applied@ce50e4a
+func_823056C4	EventBattleMainLoop	w16		Main loop that loads assets, updates inputs, renders frames, and transitions between event?battle states.	applied@ce50e4a
+func_82500EE8	ToggleInputUpdate	w16		Updates controller input each frame by reading raw stick values and button states (used in main UI loop)	applied@ce50e4a
+func_82500F20	GetSelectedItemId	w16		Returns the selected item ID based on the current selection index mapping (uses D_8250885C)	applied@ce50e4a
+func_82500F94	GetItemIndexById	w16		Finds the index of a given item ID within the D_8250885C table (used by GetSelectedItemId)	applied@ce50e4a
+func_82500FD0	GetCategoryIndex	w16		Maps a category value to an index using the D_825088D0/D_825088D8 tables (used for UI element coloring)	applied@ce50e4a
+func_82501034	InitItemSelectionTimer	w16		Initialises the item?selection timer and random offset (sets D_8250A296 and D_8250A298)	applied@ce50e4a
+func_82501064	ResetUIElement	w16		Resets all fields of a UI element struct (unk_D_82508B30) to default values	applied@ce50e4a
+func_82501AE4	LinkUIElementsForward	w16		Links two UI elements as previous/next (sets unk_30/unk_2C)	applied@ce50e4a
+func_82501B04	SetUIElementNext	w16		Sets the next UI element pointer (unk_34) for navigation	applied@ce50e4a
+func_82501B18	SetUIElementState	w16		Sets the state field of a UI element and propagates to linked elements	applied@ce50e4a
+func_82501C88	SetUIElementSelection	w16		Changes the selected index of a UI element and optionally forces animation	applied@ce50e4a
+func_82501D08	FadeOutUIElement	w16		Animates a UI element fading out over 6 frames (updates unk_00E array)	applied@ce50e4a
+func_82501D70	CountUIElementColors	w16		Counts how many entries in a UI element's color array match a given value	applied@ce50e4a
+func_82501DC8	UpdateUIElementAnimation	w16		Advances UI element animation counters and returns a flag when a condition is met (used in UI_Elements_UpdateAll)	applied@ce50e4a
+func_82501ED0	UpdateAllUIElements	w16		Iterates over all UI elements each frame and processes their state machines (called from the main draw loop)	applied@ce50e4a
+func_82504370	RunSelectionScreen	w16		Main UI loop for the selection screen; handles input, updates, and rendering until a final choice is made	applied@ce50e4a
+D_82508AF0	gSelectionFlags	w16		Bitfield storing mode flags (e.g., bit?0 indicates ?computer?strength? mode) used throughout UI logic	applied@ce50e4a
+D_82508AF4	gSelectionFrameCounter	w16		Global frame counter incremented each UI tick (used for animation timing)	applied@ce50e4a
+D_82508AF8	gControllerInputs	w16		Pointer to the array of per?controller input state structs (unk_D_82508B00)	applied@ce50e4a
+D_82508B00	gControllerStates	w16		Array of controller state structs tracking button presses, stick direction, and repeat timers	applied@ce50e4a
+D_82508B30	gUIElements	w16		Array of UI element structs (unk_D_82508B30) representing animated UI components	applied@ce50e4a
+D_8250A228	gUIElementArray	w16		Array of pointers to UI element structs (unk_D_8250A228) used for menu navigation	applied@ce50e4a
+D_8250A230	gComputerUIElements	w16		Array of UI elements for the computer?selection screen (type?2)	applied@ce50e4a
+D_8250A238	gComputerUIRoot	w16		Root UI element for the computer?selection panel (type?3)	applied@ce50e4a
+D_8250A240	gItemGridElements	w16		Array of UI elements representing the 3?3 item grid (type?4)	applied@ce50e4a
+func_82504820	MessageBox_SetBank	w16		MessageBox_SetBank initializes the message box with a message bank pointer and resets its counters (evidence: sets D_8250A480.unk_14 and zeroes unk_00/unk_02)	applied@ce50e4a
+func_82504838	MessageBox_GetState	w16		MessageBox_GetState returns the current state field (unk_00) of the message box struct (evidence: returns D_8250A480.unk_00)	applied@ce50e4a
+func_82504844	MessageBox_SetState	w16		MessageBox_SetState assigns a new state to the message box and initializes position/animation fields based on the state value (evidence: switch on ptr->unk_00 sets various fields)	applied@ce50e4a
+func_82504BB4	Gfx_DrawBorderedBox	w16		Gfx_DrawBorderedBox draws a bordered rectangle with fill using supplied coordinates, dimensions, and RGBA colors (evidence: loads textures, calls Gfx_DrawTextureRect and Gfx_FillRectRGBA)	applied@ce50e4a
+func_825053B4	Text_PrintWavy	w16		Text_PrintWavy prints each character of a string with a vertical sine offset, creating a wavy text effect (evidence: uses SINS on arg4+var_s2 and calls Text_Print per character)	applied@ce50e4a
+func_825054F4	MessageBox_Render	w16		MessageBox_Render obtains two message strings, draws background boxes via Gfx_DrawBorderedBox, and prints the text either static or wavy based on animation state (evidence: calls GetMessageString, func_82504BB4, Text_Print or func_825053B4)	applied@ce50e4a
+func_82505720	OptionMenu_Init	w16		OptionMenu_Init stores a message bank pointer, resets menu state fields, and loads nine option strings from the bank (evidence: sets D_8250A498 fields and fills D_8250A4B0 with GetMessageString)	applied@ce50e4a
+func_825057A8	OptionMenu_SetSelection	w16		OptionMenu_SetSelection updates the selected option index, measures its width, and recomputes menu positioning (evidence: updates ptr->unk_12, calculates MeasureTextWidth, sets ptr->unk_06)	applied@ce50e4a
+func_82505874	OptionMenu_SetState	w16		OptionMenu_SetState sets the option menu state and initializes parameters for each state, including animation counters and positions (evidence: switch on ptr->unk_00 with case-specific field assignments)	applied@ce50e4a
+func_82505B94	OptionMenu_Update	w16		OptionMenu_Update checks the current menu state and calls the corresponding animation function each frame (evidence: switch on ptr->unk_00 calling func_82505998/func_82505A70/func_82505AB8)	applied@ce50e4a
+func_82505C10	OptionMenu_Render	w16		OptionMenu_Render draws the menu background boxes, prints current and previous option strings with fading colors, and handles extra UI elements (evidence: calls func_82504BB4, Text_Print, and uses alpha blending based on ptr->unk_02)	applied@ce50e4a
+D_8250A480	gMessageBox	w16		D_8250A480 is a static struct holding message box state, coordinates, and animation parameters, accessed by all MessageBox functions (evidence: fields used throughout MessageBox_* functions)	applied@ce50e4a
+D_8250A498	gOptionMenu	w16		D_8250A498 is a static struct managing option menu state, selection indices, and drawing parameters, used by OptionMenu_* functions (evidence: fields referenced in init, update, and render code)	applied@ce50e4a
+D_8250A4B0	gOptionMenuItems	w16		D_8250A4B0 is a static array of nine char* strings populated from a message bank for the option menu (evidence: filled in func_82505720 and accessed in rendering)	applied@ce50e4a
+func_82505FA0	UpdateMenuRandomSeed	w16		Calls func_800280C4() and stores the low byte in D_8780FA28, indicating it generates a per?frame random seed for menu logic.	applied@ce50e4a
+D_8780FA28	gMenuRandomSeed	w16		Stores the low byte of func_800280C4() used as a menu random seed.	applied@ce50e4a
+func_82505FC8	SetCurrentMenuIndex	w16		Sets the global gCurrentMenuIndex, acting as a setter for the current menu selection.	applied@ce50e4a
+D_8780FA68	gMenuOptionFlags	w16		Array of four bytes cleared at the start of menu reset, likely flags for menu options.	applied@ce50e4a
+D_8780FA2A	gMenuCursorX	w16		Zeroed during full menu reset, appears to be the X coordinate of the menu cursor.	applied@ce50e4a
+D_8780FA2C	gMenuCursorY	w16		Zeroed during full menu reset, appears to be the Y coordinate of the menu cursor.	applied@ce50e4a
+D_8780FA38	gMenuState	w16		Set to 1 in full menu reset, seems to represent the primary menu state.	applied@ce50e4a
+D_8780FA3A	gMenuSubState	w16		Set to 3 in full menu reset, likely a sub?state or mode identifier for the menu.	applied@ce50e4a
+D_8780FA40	gMenuOptionTimers	w16		Array of four bytes cleared in menu reset, possibly timers or counters for each menu option.	applied@ce50e4a
+D_8780FA48	gMenuSelectedOption	w16		Cleared in menu reset, may hold the currently highlighted menu option index.	applied@ce50e4a
+D_8780FA50	gMenuOptionUsedFlags	w16		Nine?byte array used as flags for used menu slots; cleared on reset and consulted by func_825060E0.	applied@ce50e4a
+func_825060E0	GetRandomUnusedMenuSlot	w16		Scans D_8780FA50 for a zero flag and returns a random unused index, providing a random available menu slot.	applied@ce50e4a
+D_82F14420	gFragment41TextObject	w16		Assigned Text_Init result in InitFragment41 and only used for this fragment's text rendering.	applied@ce50e4a
+D_82F14424	gFragment41FrameCounter	w16		Incremented each frame in the main loop of func_82F01180, serving as a frame counter.	applied@ce50e4a
+D_82F14428	gFragment41State	w16		Set in func_82F00AC8 and read in func_82F0109C to drive the fragment's state machine.	applied@ce50e4a
+D_82F1442C	gMessageEntryIndex	w16		Used as an index into the current message list in LoadNextMessageEntry and IsMessageEntryEmpty.	applied@ce50e4a
+D_82F14430	gCurrentMessageList	w16		Cleared by ClearMessageList and assigned in LoadNextMessageEntry to track the active message list.	applied@ce50e4a
+D_82F14438	gTextBoxState	w16		Initialized in InitTextBox and stores position, size, and text pointer for the on?screen textbox.	applied@ce50e4a
+D_82F1444C	gCurrentTextBox	w16		Points to gTextBoxState after InitTextBox and is referenced by all textbox handling functions.	applied@ce50e4a
+D_82F14450	gPlayerInfo	w16		Array of four structs filled in UpdateControllerInfo with controller bits, names and status.	applied@ce50e4a
+D_82F144A8	gActivePlayerIndex	w16		Toggled between 0 and 1 to indicate which player is currently active in selection functions.	applied@ce50e4a
+D_82F144AA	gSelectedOptionId	w16		Set by func_82F00C14 and used in a switch in func_82F00D3C to determine option handling.	applied@ce50e4a
+D_82F144BC	gPoolStatePushed	w16		Flag set when a pool state is pushed in func_82F00AC8 case?4 and cleared elsewhere.	applied@ce50e4a
+D_82F144C0	gPollControllerFlag	w16		Controls whether controller inputs are polled; set to 1 in func_82F01180 and cleared in various states.	applied@ce50e4a
+func_82F00020	GetMessageStringBank24	w16		Calls GetMessageString with D_82F144C4, the message bank loaded with ID?0x24.	applied@ce50e4a
+func_82F00058	GetMessageStringBank25	w16		Calls GetMessageString with D_82F144C8, the message bank loaded with ID?0x25.	applied@ce50e4a
+func_82F00090	GetMessageStringBank26Remapped	w16		Calls GetMessageString with D_82F144CC after applying RemapStadiumModeIndex, using bank?0x26.	applied@ce50e4a
+func_82F01390	LoadPokemonFromGbsBlock	w16		Loads Pokemon data from a GBS block into the picker slot and returns the count of entries	applied@ce50e4a
+func_82F014E4	GetSpriteDataPtr	w16		Computes the address of sprite data in the picker buffer using team and slot indices	applied@ce50e4a
+func_82F01530	InitPokemonPicker	w16		Initializes picker state for a player, loads Pokemon data and prepares UI elements	applied@ce50e4a
+func_82F018F8	GetPickerState	w16		Returns the current state flag of the active picker instance	applied@ce50e4a
+func_82F01920	PickerCountdownTick	w16		Decrements the picker timer, updates UI animation parameters, and changes state when timer expires	applied@ce50e4a
+func_82F01A70	HandlePickerInput	w16		Processes controller input for navigation, selection, and page changes in the Pokemon picker UI	applied@ce50e4a
+func_82F02B5C	DrawNumberSprite	w16		Displays a numeric value using digit sprites, handling leading zeros and spacing	applied@ce50e4a
+func_82F040D0	DrawPokemonListUI	w16		Draws the grid of Pokemon icons, selection cursor and surrounding UI for the picker screen	applied@ce50e4a
+func_82F043A4	DrawStatusPanel	w16		Renders a status panel with an icon and numeric text (e.g., money or points) at a given position	applied@ce50e4a
+func_82F04604	UpdateAndRenderPicker	w16		Main update loop that handles picker timers, scrolling, drawing UI elements and processing selections	applied@ce50e4a
+D_82F144D0	gPickerState	w16		Array of two structures holding per?player picker state and UI parameters	applied@ce50e4a
+D_82F20A00	gPickerSpriteBuffer	w16		Pointer to the large aligned buffer that stores sprite graphics for the picker UI	applied@ce50e4a

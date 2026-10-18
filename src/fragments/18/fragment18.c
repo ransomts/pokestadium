@@ -3385,7 +3385,7 @@ void miniEkansTutoScreenControls(void) {
                     minigameState = 1;
                     miniShowHUB = true;
                     MiniGame_QueueSoundEvent(0x10, 0);
-                } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
+                } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
                     MiniGame_QueueSoundEvent(0x11, 0);
                     SetResultFlag(2); //	D_8780FC92 = 1
                 }
@@ -3393,7 +3393,7 @@ void miniEkansTutoScreenControls(void) {
         }
 
         if (D_8780FC94 == 0) {
-            func_8140C5D0();
+            Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();
             func_86C03008();
@@ -3422,7 +3422,7 @@ void ekansMinigameUpdate(void) {
     for (i = 0; i < 30; i++) {
         MiniGame_ReadInputs(); //	input
         if (D_8780FC94 == 0) {
-            func_8140C5D0();
+            Timer_UpdateCounters();
             miniEkansMinigameStateMachine();
             miniEkansPlayersUpdate();
             func_86C03008();
@@ -3494,7 +3494,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
         ekansMinigameCountdownStarted = false;
     }
 
-    miniDifficulty = D_8780FA38; // difficulty ?
+    miniDifficulty = gMenuState; // difficulty ?
 
     main_pool_push_state('MINI');
 

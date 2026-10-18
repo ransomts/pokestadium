@@ -262,7 +262,7 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_006 = 0;
 
     if (arg0->unk_002 & 4) {
-        arg0->unk_008 = D_868070BC[D_8780FA38][(D_8680847C + D_8680847A) % D_8680847E];
+        arg0->unk_008 = D_868070BC[gMenuState][(D_8680847C + D_8680847A) % D_8680847E];
         arg0->unk_00C = D_8680847A;
         if (arg0->unk_00C == 0) {
             D_86808478 = arg0->unk_000;
@@ -285,11 +285,11 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
 
     if (arg0->unk_002 & 4) {
         arg0->unk_016 |= 1;
-        if ((arg0->unk_008 == 4) || (D_8780FA38 == 0)) {
+        if ((arg0->unk_008 == 4) || (gMenuState == 0)) {
             arg0->unk_016 &= ~1;
         }
 
-        if (D_8780FA38 >= 2) {
+        if (gMenuState >= 2) {
             arg0->unk_016 |= 2;
         }
     }
@@ -856,7 +856,7 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
     arg0->unk_014--;
     if (arg0->unk_014 <= 0) {
         sp50 = 1;
-        arg0->unk_014 = sp40[D_8780FA38];
+        arg0->unk_014 = sp40[gMenuState];
         arg0->unk_010 = NULL;
     } else {
         if (Sushi_IsInstanceAvailable(arg0->unk_010, var_a1, var_a2) == 0) {
@@ -906,10 +906,10 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
             if (tmp >= 0.8f) {
                 arg1->buttonPressed |= 0x8000;
             } else {
-                Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
+                Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
             }
         } else {
-            Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[D_8780FA38]);
+            Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
         }
     }
 }
@@ -1010,7 +1010,7 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    func_81407D48(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &gMiniTutoScreenNode0, 4);
+                    Particle_CreateMultiple(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &gMiniTutoScreenNode0, 4);
                 }
             } else {
                 arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
@@ -1654,7 +1654,7 @@ void Sushi_InitSystem(s32 arg0) {
     D_86808474 = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &D_86807078);
     mem_pool_resize_block(temp_v0);
     D_8680847A = 0;
-    D_8680847E = 4 - D_8780FA2C;
+    D_8680847E = 4 - gMenuCursorY;
     D_8680847C = GetRandomMod(D_8680847E);
     D_86808480 = 0;
 

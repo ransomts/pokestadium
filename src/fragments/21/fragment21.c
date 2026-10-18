@@ -1810,20 +1810,20 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
 
         case 0x3: //  diggin
             if (sandshrew->diggingAccel2 != 0) {
-                if (D_8140E6CC == 0) {
-                    func_81407F24(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 1); //	perticles
-                    func_81407F24(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 2); //	particles
+                if (gTimerMask2 == 0) {
+                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 1); //	perticles
+                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 2); //	particles
                 }
 
-                if (D_8140E6CC == 0) {
+                if (gTimerMask2 == 0) {
                     if (sandshrew->totalPos.y > -10.0f) {
-                        func_81407D48(1.0f, sandshrew->totalPos, sandshrew->totalRot, func_87902224, &gMiniTutoScreenNode0,
+                        Particle_CreateMultiple(1.0f, sandshrew->totalPos, sandshrew->totalRot, func_87902224, &gMiniTutoScreenNode0,
                                       1); //	particles
                     } else {
                         sp48.x = sandshrew->totalPos.x;
                         sp48.y = -5.0f;
                         sp48.z = sandshrew->totalPos.z;
-                        func_81407D48(1.0f, sp48, sandshrew->totalRot, func_879023EC, &gMiniTutoScreenNode0,
+                        Particle_CreateMultiple(1.0f, sp48, sandshrew->totalRot, func_879023EC, &gMiniTutoScreenNode0,
                                       1); //	particles
                     }
                 }
@@ -2035,8 +2035,8 @@ void func_86F011E8(MiniActor* geiser) {
             break;
     }
 
-    if ((geiser->mainState >= 2) && (D_8140E6CC == 0)) {
-        func_81407F24(&geiser->unk_000, func_87902C9C, &D_87903E58, 4, 0xA);
+    if ((geiser->mainState >= 2) && (gTimerMask2 == 0)) {
+        Particle_CreateFromEntityMultiple(&geiser->unk_000, func_87902C9C, &D_87903E58, 4, 0xA);
     }
 }
 
@@ -2371,7 +2371,7 @@ void sandshrewMinigameInit(void) {
     Stage_AdvanceN(0xA);
     Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
-    miniDifficulty = D_8780FA38;
+    miniDifficulty = gMenuState;
 }
 
 void func_86F0204C(void) {
@@ -2396,14 +2396,14 @@ void func_86F0204C(void) {
                 minigameState = 1;
                 miniShowHUB = true;
                 MiniGame_PlaySoundIfNotMuted(7, 0);
-            } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
+            } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
                 MiniGame_PlaySoundIfNotMuted(8, 0);
                 SetResultFlag(2);
             }
         }
 
         if (D_8780FC94 == 0) {
-            func_8140C5D0();
+            Timer_UpdateCounters();
             func_86F0174C(); //	next stept
             func_86F00D04();
             func_86F01014();
@@ -2435,7 +2435,7 @@ void func_86F02230(void) {
         MiniGame_ReadInputs();
 
         if (D_8780FC94 == 0) {
-            func_8140C5D0();
+            Timer_UpdateCounters();
             func_86F00D04();
             func_86F01014();
             func_86F012B8();

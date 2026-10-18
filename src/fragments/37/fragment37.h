@@ -7,7 +7,7 @@ s32 func_82200020(s32 arg0);
 void DrawFullScreenTextureBlend(u8* arg0, u8* arg1, u8 arg2);
 Vtx* CreateTileVertices(void);
 void DrawTileOverlay(void);
-void func_82200A5C(void);
+void UpdateParticleTrailPositions(void);
 void InitParticleTrail(s32 arg0);
 Vtx* CreateColoredQuad(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8 arg3);
 void DrawTexturedQuad(s16 arg0, s16 arg1, s16 arg2, u8* arg3, Color_RGBA8 arg4);

@@ -485,7 +485,7 @@ void func_82F0B3E0(unk_D_82F210E0* arg0) {
             Text_SetFont(4, 0);
             Text_Print(var_s0->unk_00 + 0x26, var_s0->unk_02 + 0x4A, "%03d", temp_s3->unk_00);
             Text_SetFont(8, 0);
-            Text_Print(var_s0->unk_00 + 0x62, var_s0->unk_02 + 0x46, func_82F00020(temp_s3->unk_00));
+            Text_Print(var_s0->unk_00 + 0x62, var_s0->unk_02 + 0x46, GetMessageStringBank24(temp_s3->unk_00));
             Text_SetFont(8, 0);
             Text_Print(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x5E, GetMessageString(NULL, 0, D_82F13B70, 0x14));
             Text_Print(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x5E, "/%s", temp_s3->unk_30);
@@ -797,7 +797,7 @@ void func_82F0C320(void) {
 
         if (ptr->unk_04 & 4) {
             for (i = 0; i < 2; i++) {
-                func_82F043A4(i, D_82F13F8C[i], 0x2A);
+                DrawStatusPanel(i, D_82F13F8C[i], 0x2A);
             }
         }
         func_82F0BEF8(&D_82F210E0);

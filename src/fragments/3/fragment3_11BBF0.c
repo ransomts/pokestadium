@@ -4,7 +4,7 @@
 
 void func_8140C84C();
 void func_8140CDDC();
-void func_8140C7C0();
+void LoadTexture_IA8_32x32();
 void func_8140C8B8();
 
 extern u32 gMiniTutoScreenTilemap[];
@@ -26,7 +26,7 @@ unk_D_87903E10 gMiniTutoScreenNode0 = {
 
 unk_D_87903E00 gMiniTutoScreenConfig1 = {
     0x01000001,
-    func_8140C7C0,
+    LoadTexture_IA8_32x32,
     func_8140CDDC,
     gMiniTutoScreenPalette,
 };
@@ -38,7 +38,7 @@ unk_D_87903E10 gMiniTutoScreenNode1 = {
 
 unk_D_87903E00 gMiniTutoScreenConfig2 = {
     0x01000002,
-    func_8140C7C0,
+    LoadTexture_IA8_32x32,
     func_8140CDDC,
     gMiniTutoScreenSettings,
 };

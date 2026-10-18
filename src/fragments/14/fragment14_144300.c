@@ -507,7 +507,7 @@ void HandleSushiGoRoundInput(void) {
             D_86807540 = 0xF;
             func_8004B9C4(0x3C);
             func_86805108(0xF, 1);
-        } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
+        } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
             PlaySoundEffect(3);
             gSushiGoRoundState = 7;
             D_86807540 = 0x1E;

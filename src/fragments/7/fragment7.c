@@ -824,7 +824,7 @@ s32 RunMatchLoop(void) {
             var_s0 = 0;
         }
 
-        if ((D_8780FA2A == 0) && (temp_v1 & 0x4000) && (D_861054BA == 1)) {
+        if ((gMenuCursorX == 0) && (temp_v1 & 0x4000) && (D_861054BA == 1)) {
             PlaySoundEffect(3);
             SetResultFlag(2);
             return -1;
@@ -1718,7 +1718,7 @@ void func_86103DEC(void) {
     D_86105498 = 0x11;
 
     while (D_8780FC96 == 0) {
-        if ((D_8780FA2A == 1) && (D_861054A8 > 0)) {
+        if ((gMenuCursorX == 1) && (D_861054A8 > 0)) {
             D_861054A8 -= 0xA;
             if (D_861054A8 < 0) {
                 D_861054A8 = 0;
@@ -1732,9 +1732,9 @@ void func_86103E9C(void) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
-    D_861054B8 = D_8780FA38;
+    D_861054B8 = gMenuState;
 
-    if (D_8780FA2C == 4) {
+    if (gMenuCursorY == 4) {
         D_861054B8 = 2;
     }
 

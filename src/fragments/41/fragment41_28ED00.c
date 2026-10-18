@@ -177,7 +177,7 @@ void func_82F07004(s16 arg0) {
     D_82F210D0 = 1;
 
     for (i = 0; i < 4; i++) {
-        temp_v0 = func_82F06F9C(&D_82F14450[i]);
+        temp_v0 = func_82F06F9C(&gPlayerInfo[i]);
         if (temp_v0 == -1) {
             continue;
         }
@@ -196,7 +196,7 @@ void func_82F07004(s16 arg0) {
             case 2:
             case 3:
             case 4:
-                switch (D_82F14450[i].unk_01) {
+                switch (gPlayerInfo[i].unk_01) {
                     case 1:
                         var_s0->unk_024 = D_30306B0;
                         break;
@@ -820,7 +820,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
                     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 }
 
-                ptr = &D_82F14450[D_82F210D8[i]];
+                ptr = &gPlayerInfo[D_82F210D8[i]];
                 if (ptr) {}
 
                 Text_SetFont(0x10, 0);
@@ -882,7 +882,7 @@ void func_82F08EB4(unk_D_82F20A40* arg0) {
             case 0:
             case 3:
             case 4:
-                var_s2 = &D_82F14450[D_82F20A88[i + 1].unk_002];
+                var_s2 = &gPlayerInfo[D_82F20A88[i + 1].unk_002];
                 break;
         }
 

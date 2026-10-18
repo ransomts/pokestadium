@@ -1372,7 +1372,7 @@ void SetResultFlag(s16 arg0) {
 
 void IncrementPlayerScore(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 4)) {
-        D_8780FA40[arg0]++;
+        gMenuOptionTimers[arg0]++;
         D_8780FC50[arg0] = 1;
         D_8780FDFC[arg0] = 1;
     }
@@ -1382,7 +1382,7 @@ void CheckScoreThreshold(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_8780FA40[i] >= D_8780FA3A) {
+        if (gMenuOptionTimers[i] >= gMenuSubState) {
             D_8780FC4C = 1;
             break;
         }
@@ -1390,8 +1390,8 @@ void CheckScoreThreshold(void) {
 }
 
 s32 IsSpecialWinCondition(void) {
-    if ((D_8780FA2A == 1) && (D_8780FA3A >= 5) && (D_8780FA38 == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
-        (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*D_8780FC58 == 5) && !(D_8780FA28 & 1)) {
+    if ((gMenuCursorX == 1) && (gMenuSubState >= 5) && (gMenuState == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
+        (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*D_8780FC58 == 5) && !(gMenuRandomSeed & 1)) {
         return 1;
     }
     return 0;
@@ -1402,15 +1402,15 @@ void FindLowestScorers(void) {
     s8 var_v0 = 9;
 
     for (i = 0; i < 4; i++) {
-        if (D_8780FA40[i] < var_v0) {
-            var_v0 = D_8780FA40[i];
+        if (gMenuOptionTimers[i] < var_v0) {
+            var_v0 = gMenuOptionTimers[i];
         }
     }
 
     D_8780FC78 = 0;
 
     for (i = 0; i < 4; i++) {
-        if (var_v0 == D_8780FA40[i]) {
+        if (var_v0 == gMenuOptionTimers[i]) {
             D_8780FC80[i] = 1;
             D_8780FC88[D_8780FC78] = i;
             D_8780FC78++;
@@ -1419,14 +1419,14 @@ void FindLowestScorers(void) {
         }
     }
 
-    D_8780FA48 = D_8780FC88[0];
+    gMenuSelectedOption = D_8780FC88[0];
 }
 
 s32 GetCurrentOptionCount(void) {
     s32 sp1C;
 
     if (D_8780FE01 != 0) {
-        if (D_8780FA2A == 0) {
+        if (gMenuCursorX == 0) {
             sp1C = 1;
         } else {
             sp1C = 4;
@@ -1436,7 +1436,7 @@ s32 GetCurrentOptionCount(void) {
     } else if (D_8780FC92 != 0) {
         sp1C = 1;
     } else if (D_8780FC4C == 0) {
-        if (D_8780FA2A == 0) {
+        if (gMenuCursorX == 0) {
             sp1C = D_8780F990[D_8780FC5C];
         } else {
             sp1C = D_8780F99C[D_8780FC5C];
@@ -1510,15 +1510,15 @@ void RenderScoreCubes(s16 arg0) {
     gSPMatrix(gDisplayListHead++, (u32)temp_s3 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     for (i = 0; i < 4; i++) {
-        for (j = 0; j < D_8780FA40[i]; j++) {
-            if ((D_8780FA40[i] >= D_8780FA3A) && (D_8780FDFC[i] == 2)) {
+        for (j = 0; j < gMenuOptionTimers[i]; j++) {
+            if ((gMenuOptionTimers[i] >= gMenuSubState) && (D_8780FDFC[i] == 2)) {
                 D_8780FCD8[i][j].unk_04 += 7.5f;
                 if (D_8780FCD8[i][j].unk_04 >= 360.0f) {
                     D_8780FCD8[i][j].unk_04 -= 360.0f;
                 }
             }
 
-            if (((j + 1) == D_8780FA40[i]) && (D_8780FC50[i] == 1)) {
+            if (((j + 1) == gMenuOptionTimers[i]) && (D_8780FC50[i] == 1)) {
                 if (arg0 != 0) {
                     break;
                 }
@@ -1546,7 +1546,7 @@ void RenderScoreCubes(s16 arg0) {
                         }
                     }
 
-                    if (D_8780FA40[i] < D_8780FA3A) {
+                    if (gMenuOptionTimers[i] < gMenuSubState) {
                         D_8780FCD8[i][j].unk_04 += 7.5f;
                         if (D_8780FCD8[i][j].unk_04 >= 360.0f) {
                             D_8780FCD8[i][j].unk_04 -= 360.0f;
@@ -1788,7 +1788,7 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
             } else {
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-                if ((D_8780FA48 == i) && ((D_8780FC40 == 4) || (((D_8780FC40 == 5) || (D_8780FC40 == 6)) &&
+                if ((gMenuSelectedOption == i) && ((D_8780FC40 == 4) || (((D_8780FC40 == 5) || (D_8780FC40 == 6)) &&
                                                                 ((D_8780FCA8 >= 0x28) || ((D_8780FCA8 % 10) < 5))))) {
                     var_a0 = 1;
                 }
@@ -1803,7 +1803,7 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
                     D_8780FCAC[i] = 0;
                 }
 
-                if (D_8780FA40[i] >= D_8780FA3A) {
+                if (gMenuOptionTimers[i] >= gMenuSubState) {
                     D_8780FCB0[i]++;
                     if (D_8780FCB0[i] == 0x14) {
                         D_8780FCB0[i] = 0;
@@ -1830,9 +1830,9 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
         }
 
         if (D_8780FDFC[i] == 1) {
-            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i] - 1);
+            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i] - 1);
         } else {
-            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", D_8780FA40[i]);
+            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i]);
         }
     }
 
@@ -1840,7 +1840,7 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
     Text_BeginRender();
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
-    MessageBank_SetPointer_1_9(1, D_8780FA3A);
+    MessageBank_SetPointer_1_9(1, gMenuSubState);
 
     {
         char sp8C[0x60];
@@ -1849,7 +1849,7 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
         var_s0_3 = GetMessageString(sp8C, 0x60, gItemNamesBank, 0x13);
 
         if ((gMiniHudColorDefaults[0] + gMiniHudColorDefaults[1] + gMiniHudColorDefaults[2] + gMiniHudColorDefaults[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, gItemNamesBank, D_8780F9B0[D_8780FA38]));
+            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, gItemNamesBank, D_8780F9B0[gMenuState]));
             var_s0_3 = sp8C;
         }
 
@@ -1901,7 +1901,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 D_8780FC40 = 1;
                 D_8780FC94 = 0;
                 D_8780FE44 = 0xB4;
-                if (D_8780FA2A != 0) {
+                if (gMenuCursorX != 0) {
                     if ((D_8780FC50[0] + D_8780FC50[1] + D_8780FC50[2] + D_8780FC50[3]) != 0) {
                         for (i = 0; i < 4; i++) {
                             if (D_8780FC50[i] != 0) {
@@ -1958,7 +1958,7 @@ s32 ResultScreen_UpdateAndRender(void) {
 
             if ((D_8780FE44 <= 0) && (D_8780FC9C->buttonPressed & 0x8000)) {
                 D_8780FC98 = 1;
-                if (D_8780FA2A == 0) {
+                if (gMenuCursorX == 0) {
                     PlaySoundEffect(4);
                     D_8780FC40 = 3;
                     D_8780FC70 = 1;
@@ -2027,8 +2027,8 @@ s32 ResultScreen_UpdateAndRender(void) {
                                     D_8780FC6C = 0;
                                 }
                             } else if ((D_8780FE44 < 0xAB) && (D_8780FCA7 == 0)) {
-                                D_8780FA28 |= 1;
-                                func_800280D4(D_8780FA28 & 0xFF);
+                                gMenuRandomSeed |= 1;
+                                func_800280D4(gMenuRandomSeed & 0xFF);
                                 GbsCommitBankBlock(0x14, 0);
                                 GbsSyncBank(2);
                                 D_8780FCA7 = 1;
@@ -2054,7 +2054,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 }
             } else if (D_8780FC9C->buttonPressed & 0x8000) {
                 PlaySoundEffect(2);
-                if (D_8780FA2A == 0) {
+                if (gMenuCursorX == 0) {
                     D_8780FC40 = 6;
                 } else if (D_8780FC4C != 0) {
                     D_8780FC40 = 6;
@@ -2089,7 +2089,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 if (D_8780FC90 >= D_8780FC78) {
                     D_8780FC90 = 0;
                 }
-                D_8780FA48 = D_8780FC88[D_8780FC90];
+                gMenuSelectedOption = D_8780FC88[D_8780FC90];
             }
 
             if (D_8780FE3C <= 0) {
@@ -2156,11 +2156,11 @@ s32 ResultScreen_UpdateAndRender(void) {
 
                     for (i = 0; i < 4; i++) {
                         if (D_8780FC50[i] != 0) {
-                            D_8780FCD8[i][D_8780FA40[i] - 1].unk_00 = (i * 0x36) + 0x4F;
-                            D_8780FCD8[i][D_8780FA40[i] - 1].unk_02 = -0x58;
-                            D_8780FCD8[i][D_8780FA40[i] - 1].unk_04 =
+                            D_8780FCD8[i][gMenuOptionTimers[i] - 1].unk_00 = (i * 0x36) + 0x4F;
+                            D_8780FCD8[i][gMenuOptionTimers[i] - 1].unk_02 = -0x58;
+                            D_8780FCD8[i][gMenuOptionTimers[i] - 1].unk_04 =
                                 360.0f -
-                                ((((s32)((0xC8 - D_8780FA40[i] * 0x12) - D_8780FCD8[i][D_8780FA40[i] - 1].unk_02) / 6) %
+                                ((((s32)((0xC8 - gMenuOptionTimers[i] * 0x12) - D_8780FCD8[i][gMenuOptionTimers[i] - 1].unk_02) / 6) %
                                   24) *
                                  15.0f);
                         }
@@ -2233,7 +2233,7 @@ s32 ResultScreen_UpdateAndRender(void) {
 
         if (D_8780FC70 != 0) {
             if (D_8780FC4C == 0) {
-                if (D_8780FA2A == 0) {
+                if (gMenuCursorX == 0) {
                     ResultScreen_DrawGradientPanel(((0x140 - D_8780FE32) / 2) - 0xA, 0x58, D_8780FE32 + 0x14, 0x42, &sp70[0], &sp70[3]);
                 } else {
                     ResultScreen_DrawGradientPanel(((0x140 - D_8780FE34) / 2) - 0xA, 0x58, D_8780FE34 + 0x14, 0x42, &sp70[0], &sp70[3]);
@@ -2252,7 +2252,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 }
 
                 if (D_8780FC4C == 0) {
-                    if (D_8780FA2A == 0) {
+                    if (gMenuCursorX == 0) {
                         Text_Print((0x140 - D_8780FE32) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE08[i]);
                     } else {
                         Text_Print((0x140 - D_8780FE34) / 2, (i * 0x12) + 0x5F, "%s", D_8780FE18[i]);

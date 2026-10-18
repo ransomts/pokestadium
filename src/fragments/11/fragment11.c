@@ -103,7 +103,7 @@ void HealthBar_InitState(void) {
         if (gMiniHudColorDefaults[i] == 0) {
             gHealthBarData[i].unk_000 = 4;
         } else {
-            gHealthBarData[i].unk_000 = D_8780FA38;
+            gHealthBarData[i].unk_000 = gMenuState;
         }
     }
 }
@@ -112,7 +112,7 @@ void HealthBar_SetDirection(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        switch (D_8780FA68[i]) {
+        switch (gMenuOptionFlags[i]) {
             case 1:
                 gHealthBarData[i].unk_004 = 1;
                 break;
@@ -610,7 +610,7 @@ void ResultScreen_MainLoop(void) {
         if (var_s1 >= 0x11) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s2 = 0;
-            } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
+            } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
                 SetResultFlag(2);
                 D_87B000D0 = 1;

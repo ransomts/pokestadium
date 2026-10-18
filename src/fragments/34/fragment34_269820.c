@@ -6,14 +6,14 @@ unk_D_8140E728_01C D_8140E460 = { 3, func_8140C5BC };
 void func_814078B0(unk_D_8140E720* arg0) {
     Particle_Init(arg0);
     func_81408BE0(arg0, 0.0f, 0.0f, 0.0f);
-    func_81409888(arg0, 0.0f, 0.0f, 0.0f);
-    func_814098A8(arg0, 0.0f, 0.0f, 0.0f);
+    Particle_SetPosition(arg0, 0.0f, 0.0f, 0.0f);
+    Particle_SetVelocityScaled(arg0, 0.0f, 0.0f, 0.0f);
     func_8140A03C(arg0, 0.0f, 0.0f, 0.0f);
-    func_8140AECC(arg0, 0.0f, 0.0f, 0.0f);
-    func_8140AD8C(arg0, 0.0f);
-    func_8140ADA4(arg0, 0.0f);
-    func_8140A270(arg0, 0, 0, 0);
-    func_8140A348(arg0, 0, 0, 0);
+    Particle_SetAccelerationXYZ(arg0, 0.0f, 0.0f, 0.0f);
+    Particle_SetSpeed(arg0, 0.0f);
+    Particle_SetAcceleration(arg0, 0.0f);
+    Particle_SetRotation(arg0, 0, 0, 0);
+    Particle_SetRotationDelta(arg0, 0, 0, 0);
     func_814083E8(arg0, 0);
     func_8140BCA8(arg0, 0);
     func_8140BE14(arg0, 0);
@@ -161,7 +161,7 @@ unk_D_8140E720* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, func_unk_D
     return sp1C;
 }
 
-void func_81407D48(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5) {
+void Particle_CreateMultiple(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5) {
     s32 i;
 
     for (i = 0; i < arg5; i++) {
@@ -171,7 +171,7 @@ void func_81407D48(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg
     }
 }
 
-void func_81407E30(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
+void Particle_CreateMultipleWithExtra(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg3, unk_D_8140E728_01C* arg4, s16 arg5,
                    s16 arg6) {
     s32 i;
 
@@ -182,7 +182,7 @@ void func_81407E30(f32 arg0, Vec3f arg1, Vec3s arg2, func_unk_D_8140E724_008 arg
     }
 }
 
-void func_81407F24(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void Particle_CreateFromEntityMultiple(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
                    s16 arg4) {
     s32 i;
 
@@ -193,7 +193,7 @@ void func_81407F24(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk
     }
 }
 
-void func_81407FC8(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
+void Particle_CreateFromEntityMultipleWithExtra(Fragment2_1GraphNode* arg0, func_unk_D_8140E724_008 arg1, unk_D_8140E728_01C* arg2, s16 arg3,
                    s16 arg4, s16 arg5) {
     s32 i;
 
@@ -218,7 +218,7 @@ s32 Particle_CountActive(void) {
     return var_v1;
 }
 
-s32 func_814080EC(void) {
+s32 Particle_GetActiveCount(void) {
     return Particle_CountActive();
 }
 
@@ -623,14 +623,14 @@ void func_81408CB8(unk_D_8140E720* arg0, f32 arg1) {
 void func_81408CD0(unk_D_8140E720* arg0, f32 arg1) {
     Vec3f sp1C;
 
-    func_8140AB58(arg0, arg1, &sp1C);
+    Particle_CalcComplexDirection(arg0, arg1, &sp1C);
     func_81408C20(arg0, sp1C);
 }
 
 void func_81408D24(unk_D_8140E720* arg0, f32 arg1) {
     Vec3f sp1C;
 
-    func_8140AC70(arg0, arg1, &sp1C);
+    Particle_CalcAnotherDirection(arg0, arg1, &sp1C);
     func_81408C20(arg0, sp1C);
 }
 
@@ -687,7 +687,7 @@ void func_8140901C(unk_D_8140E720* arg0, f32 arg1) {
 void func_8140908C(unk_D_8140E720* arg0, f32 arg1) {
     Vec3f sp1C;
 
-    func_8140A9C8(arg0, arg1, &sp1C);
+    Particle_CalcDirectionVector(arg0, arg1, &sp1C);
     arg0->unk_38.x += sp1C.x * D_8140E628.unk_00.y;
     arg0->unk_38.y += sp1C.y * D_8140E628.unk_00.y;
     arg0->unk_38.z += sp1C.z * D_8140E628.unk_00.y;
@@ -696,14 +696,14 @@ void func_8140908C(unk_D_8140E720* arg0, f32 arg1) {
 void func_8140910C(unk_D_8140E720* arg0, f32 arg1) {
     Vec3f sp1C;
 
-    func_8140AB58(arg0, arg1, &sp1C);
+    Particle_CalcComplexDirection(arg0, arg1, &sp1C);
     func_81408D78(arg0, sp1C);
 }
 
 void func_81409160(unk_D_8140E720* arg0, f32 arg1) {
     Vec3f sp1C;
 
-    func_8140AC70(arg0, arg1, &sp1C);
+    Particle_CalcAnotherDirection(arg0, arg1, &sp1C);
     func_81408D78(arg0, sp1C);
 }
 
@@ -819,27 +819,27 @@ void func_814097D8(unk_D_8140E720* arg0, s32 arg1, s32 arg2, s32 arg3) {
     arg0->unk_38.z += sp24.z * D_8140E628.unk_00.y;
 }
 
-void func_81409888(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Particle_SetPosition(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_68.x = arg1;
     arg0->unk_68.y = arg2;
     arg0->unk_68.z = arg3;
 }
 
-void func_814098A8(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Particle_SetVelocityScaled(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_50.x = arg1 * D_8140E628.unk_00.y;
     arg0->unk_50.y = arg2 * D_8140E628.unk_00.y;
     arg0->unk_50.z = arg3 * D_8140E628.unk_00.y;
 }
 
-void func_814098E8(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetVelocityX(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_50.x = arg1 * D_8140E628.unk_00.y;
 }
 
-void func_81409900(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetVelocityY(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_50.y = arg1 * D_8140E628.unk_00.y;
 }
 
-void func_81409918(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetVelocityZ(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_50.z = arg1 * D_8140E628.unk_00.y;
 }
 
@@ -847,7 +847,7 @@ void func_81409930(unk_D_8140E720* arg0, f32 arg1) {
     func_814010D8(&arg0->unk_50, arg1 * D_8140E628.unk_00.y);
 }
 
-void func_81409968(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Particle_AddVelocity(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_50.x += arg1 * D_8140E628.unk_00.y;
     arg0->unk_50.y += arg2 * D_8140E628.unk_00.y;
     arg0->unk_50.z += arg3 * D_8140E628.unk_00.y;
@@ -1101,21 +1101,21 @@ void func_8140A24C(unk_D_8140E720* arg0, Vec3s arg1) {
     arg0->unk_94.z = arg1.z;
 }
 
-void func_8140A270(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Particle_SetRotation(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->unk_94.x = arg1;
     arg0->unk_94.y = arg2;
     arg0->unk_94.z = arg3;
 }
 
-void func_8140A2A4(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationX(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_94.x = arg1;
 }
 
-void func_8140A2B8(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationY(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_94.y = arg1;
 }
 
-void func_8140A2CC(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationZ(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_94.z = arg1;
 }
 
@@ -1125,19 +1125,19 @@ void func_8140A2E0(unk_D_8140E720* arg0) {
     arg0->unk_94.z += 0x8000;
 }
 
-void func_8140A30C(unk_D_8140E720* arg0) {
+void Particle_AddRotationX(unk_D_8140E720* arg0) {
     arg0->unk_94.x += 0x8000;
 }
 
-void func_8140A320(unk_D_8140E720* arg0) {
+void Particle_AddRotationY(unk_D_8140E720* arg0) {
     arg0->unk_94.y += 0x8000;
 }
 
-void func_8140A334(unk_D_8140E720* arg0) {
+void Particle_AddRotationZ(unk_D_8140E720* arg0) {
     arg0->unk_94.z += 0x8000;
 }
 
-void func_8140A348(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Particle_SetRotationDelta(unk_D_8140E720* arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->unk_9A.x = arg1;
     arg0->unk_9A.y = arg2;
     arg0->unk_9A.z = arg3;
@@ -1149,57 +1149,57 @@ void func_8140A37C(unk_D_8140E720* arg0, Vec3s arg1) {
     arg0->unk_9A.z = arg1.z;
 }
 
-void func_8140A3A0(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
+void Particle_SetRotationDeltaXY(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
     arg0->unk_9A.x = arg1;
     arg0->unk_9A.y = arg2;
 }
 
-void func_8140A3C4(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationDeltaX(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_9A.x = arg1;
 }
 
-void func_8140A3D8(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationDeltaY(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_9A.y = arg1;
 }
 
-void func_8140A3EC(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetRotationDeltaZ(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_9A.z = arg1;
 }
 
-void func_8140A400(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetTargetRotationX(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_A0.x = arg1;
 }
 
-void func_8140A414(unk_D_8140E720* arg0, s16 arg1) {
+void Particle_SetTargetRotationY(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_A0.y = arg1;
 }
 
-void func_8140A428(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
-    func_8140A400(arg0, arg1);
-    func_8140A414(arg0, arg2);
+void Particle_SetTargetRotationXY(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
+    Particle_SetTargetRotationX(arg0, arg1);
+    Particle_SetTargetRotationY(arg0, arg2);
 }
 
-void func_8140A464(unk_D_8140E720* arg0) {
+void Particle_CopyRotationToTarget(unk_D_8140E720* arg0) {
     arg0->unk_A0.x = arg0->unk_94.x;
     arg0->unk_A0.y = arg0->unk_94.y;
     arg0->unk_A0.z = arg0->unk_94.z;
 }
 
-void func_8140A480(unk_D_8140E720* arg0) {
+void Particle_AddRotationDelta(unk_D_8140E720* arg0) {
     arg0->unk_94.x += arg0->unk_9A.x;
     arg0->unk_94.y += arg0->unk_9A.y;
     arg0->unk_94.z += arg0->unk_9A.z;
 }
 
-void func_8140A4B4(unk_D_8140E720* arg0) {
+void Particle_AddRotationDeltaX(unk_D_8140E720* arg0) {
     arg0->unk_94.x += arg0->unk_9A.x;
 }
 
-void func_8140A4C8(unk_D_8140E720* arg0) {
+void Particle_AddRotationDeltaY(unk_D_8140E720* arg0) {
     arg0->unk_94.y += arg0->unk_9A.y;
 }
 
-void func_8140A4DC(unk_D_8140E720* arg0) {
+void Particle_AddRotationDeltaZ(unk_D_8140E720* arg0) {
     arg0->unk_94.z += arg0->unk_9A.z;
 }
 
@@ -1250,27 +1250,27 @@ void func_8140A674(unk_D_8140E720* arg0, s16 arg1) {
     arg0->unk_94.z -= arg1;
 }
 
-void func_8140A690(unk_D_8140E720* arg0) {
+void Particle_ApproachRotationXWrap(unk_D_8140E720* arg0) {
     ApproachU16Wrap(&arg0->unk_94.x, arg0->unk_A0.x, arg0->unk_9A.x);
 }
 
-void func_8140A6BC(unk_D_8140E720* arg0) {
+void Particle_ApproachRotationYWrap(unk_D_8140E720* arg0) {
     ApproachU16Wrap(&arg0->unk_94.y, arg0->unk_A0.y, arg0->unk_9A.y);
 }
 
-void func_8140A6E8(unk_D_8140E720* arg0) {
+void Particle_ApproachRotationZWrap(unk_D_8140E720* arg0) {
     ApproachU16Wrap(&arg0->unk_94.z, arg0->unk_A0.z, arg0->unk_9A.z);
 }
 
-void func_8140A714(unk_D_8140E720* arg0) {
-    func_8140A690(arg0);
-    func_8140A6BC(arg0);
+void Particle_ApproachRotationAllWrap(unk_D_8140E720* arg0) {
+    Particle_ApproachRotationXWrap(arg0);
+    Particle_ApproachRotationYWrap(arg0);
 }
 
-void func_8140A73C(unk_D_8140E720* arg0) {
-    func_8140A690(arg0);
-    func_8140A6BC(arg0);
-    func_8140A6E8(arg0);
+void Particle_ApproachRotationAllWrapFull(unk_D_8140E720* arg0) {
+    Particle_ApproachRotationXWrap(arg0);
+    Particle_ApproachRotationYWrap(arg0);
+    Particle_ApproachRotationZWrap(arg0);
 }
 
 void func_8140A76C(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
@@ -1281,7 +1281,7 @@ void func_8140A7A4(unk_D_8140E720* arg0, s16 arg1, s16 arg2) {
     ApproachU16Wrap(&arg0->unk_94.y, arg1, arg2);
 }
 
-s32 func_8140A7DC(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
+s32 Particle_DecreaseRotationXTowards(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
     s32 var_v0 = arg0->unk_94.x;
 
@@ -1297,7 +1297,7 @@ s32 func_8140A7DC(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_8140A810(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
+s32 Particle_DecreaseRotationYTowards(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
     s32 var_v0 = arg0->unk_94.y;
 
@@ -1313,7 +1313,7 @@ s32 func_8140A810(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-s32 func_8140A844(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
+s32 Particle_DecreaseRotationZTowards(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     s32 var_v0 = arg0->unk_94.z;
     s32 var_v1 = 0;
 
@@ -1328,48 +1328,48 @@ s32 func_8140A844(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-void func_8140A878(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
+void Particle_RandomizeRotationXY(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     func_8140A578(arg0, RandomRangeSigned(arg1));
     func_8140A594(arg0, RandomRangeSigned(arg2));
 }
 
-void func_8140A8C8(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
+void Particle_RandomizeRotationXWithMaskY(unk_D_8140E720* arg0, s32 arg1, s32 arg2) {
     func_8140A578(arg0, func_81400B28(arg1, 0x8000));
     func_8140A594(arg0, RandomRangeSigned(arg2));
 }
 
-void func_8140A91C(unk_D_8140E720* arg0, s32 arg1) {
+void Particle_RandomizeRotationY(unk_D_8140E720* arg0, s32 arg1) {
     func_8140A594(arg0, RandomRangeSigned(arg1));
 }
 
-void func_8140A950(unk_D_8140E720* arg0, s32 arg1) {
+void Particle_RandomizeRotationYWithMask(unk_D_8140E720* arg0, s32 arg1) {
     func_8140A594(arg0, func_81400B28(arg1, 0x8000));
 }
 
-void func_8140A988(unk_D_8140E720* arg0) {
+void Particle_RandomizeRotationXYFixedY(unk_D_8140E720* arg0) {
     func_8140A578(arg0, RandomRangeSigned(0x10000));
     func_8140A594(arg0, 0x4000);
 }
 
-void func_8140A9C8(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
+void Particle_CalcDirectionVector(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->x = SINS(arg0->unk_94.y) * arg1;
     arg2->y = 0.0f;
     arg2->z = COSS(arg0->unk_94.y) * arg1;
 }
 
-void func_8140AA18(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
+void Particle_CalcDirectionVectorXYZ(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->x = arg1 * COSS(arg0->unk_94.x) * SINS(arg0->unk_94.y);
     arg2->y = -arg1 * SINS(arg0->unk_94.x);
     arg2->z = arg1 * COSS(arg0->unk_94.x) * COSS(arg0->unk_94.y);
 }
 
-void func_8140AAB8(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
+void Particle_CalcDirectionVectorXZ(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->x = arg1 * SINS(arg0->unk_94.x) * SINS(arg0->unk_94.z);
     arg2->y = -arg1 * SINS(arg0->unk_94.x) * COSS(arg0->unk_94.z);
     arg2->z = arg1 * COSS(arg0->unk_94.x);
 }
 
-void func_8140AB58(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
+void Particle_CalcComplexDirection(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->x = arg1 * (SINS(arg0->unk_94.x) * COSS(arg0->unk_94.y) * SINS(arg0->unk_94.z) +
                       COSS(arg0->unk_94.x) * SINS(arg0->unk_94.y));
     arg2->y = -arg1 * SINS(arg0->unk_94.x) * COSS(arg0->unk_94.z);
@@ -1377,7 +1377,7 @@ void func_8140AB58(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
                       SINS(arg0->unk_94.x) * SINS(arg0->unk_94.y) * SINS(arg0->unk_94.z));
 }
 
-void func_8140AC70(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
+void Particle_CalcAnotherDirection(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->x = arg1 * (SINS(arg0->unk_94.y) * COSS(arg0->unk_94.z) +
                       SINS(arg0->unk_94.x) * COSS(arg0->unk_94.y) * SINS(arg0->unk_94.z));
     arg2->y = arg1 * (SINS(arg0->unk_94.y) * SINS(arg0->unk_94.z) -
@@ -1385,11 +1385,11 @@ void func_8140AC70(unk_D_8140E720* arg0, f32 arg1, Vec3f* arg2) {
     arg2->z = arg1 * (COSS(arg0->unk_94.x) * COSS(arg0->unk_94.y));
 }
 
-void func_8140AD8C(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetSpeed(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_74 = arg1 * D_8140E628.unk_00.y;
 }
 
-void func_8140ADA4(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetAcceleration(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_78 = arg1 * D_8140E628.unk_00.y;
 }
 
@@ -1397,39 +1397,39 @@ s32 func_8140ADBC(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return ApproachF32(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
-s32 func_8140AE00(unk_D_8140E720* arg0, f32 arg1) {
+s32 Particle_ApproachSpeed(unk_D_8140E720* arg0, f32 arg1) {
     return ApproachF32(&arg0->unk_74, arg1 * D_8140E628.unk_00.y, arg0->unk_78);
 }
 
-s32 func_8140AE40(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_ApproachAcceleration(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return ApproachF32(&arg0->unk_78, arg1 * D_8140E628.unk_00.y, arg2 * D_8140E628.unk_00.y);
 }
 
-void func_8140AE84(unk_D_8140E720* arg0, Vec3f arg1) {
+void Particle_SetAccelerationVector(unk_D_8140E720* arg0, Vec3f arg1) {
     arg0->unk_7C.x = arg1.x * D_8140E628.unk_00.y;
     arg0->unk_7C.y = arg1.y * D_8140E628.unk_00.y;
     arg0->unk_7C.z = arg1.z * D_8140E628.unk_00.y;
 }
 
-void func_8140AECC(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void Particle_SetAccelerationXYZ(unk_D_8140E720* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_7C.x = arg1 * D_8140E628.unk_00.y;
     arg0->unk_7C.y = arg2 * D_8140E628.unk_00.y;
     arg0->unk_7C.z = arg3 * D_8140E628.unk_00.y;
 }
 
-void func_8140AF0C(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetAccelerationX(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_7C.x = arg1 * D_8140E628.unk_00.y;
 }
 
-void func_8140AF24(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetAccelerationY(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_7C.y = arg1 * D_8140E628.unk_00.y;
 }
 
-void func_8140AF3C(unk_D_8140E720* arg0, f32 arg1) {
+void Particle_SetAccelerationZ(unk_D_8140E720* arg0, f32 arg1) {
     arg0->unk_7C.z = arg1 * D_8140E628.unk_00.y;
 }
 
-s32 func_8140AF54(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_IncrementAccelerationXClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 
@@ -1443,7 +1443,7 @@ s32 func_8140AF54(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140AFA8(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_IncrementAccelerationYClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 
@@ -1457,7 +1457,7 @@ s32 func_8140AFA8(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140AFFC(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_IncrementAccelerationZClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 
@@ -1471,7 +1471,7 @@ s32 func_8140AFFC(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140B050(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_DecrementAccelerationXClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 
@@ -1485,7 +1485,7 @@ s32 func_8140B050(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140B0A4(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_DecrementAccelerationYClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     s32 var_v1 = 0;
     f32 temp_fv0;
 
@@ -1499,7 +1499,7 @@ s32 func_8140B0A4(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     return var_v1;
 }
 
-s32 func_8140B0F8(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
+s32 Particle_DecrementAccelerationZClamp(unk_D_8140E720* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 

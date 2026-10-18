@@ -35,7 +35,7 @@ void MiniActorArray_Update(void) {
     s32 i;
     MiniActor* ptr = gMiniActorArray;
 
-    func_8140C5D0();
+    Timer_UpdateCounters();
 
     for (i = 0; i < 3; i++, ptr++) {
         MiniActor_StartAnimation(ptr);

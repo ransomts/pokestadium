@@ -29,15 +29,15 @@ typedef struct unk_D_8250A2A0 {
     /* 0x0E */ s16 unk_0E;
 } unk_D_8250A2A0; // size >= 0x10
 
-static u16 D_82508AF0;
-static s32 D_82508AF4;
-static unk_D_82508B00* D_82508AF8;
-static unk_D_82508B00 D_82508B00[4];
-static unk_D_82508B30 D_82508B30[14];
-static unk_D_8250A228* D_8250A228[2];
-static unk_D_8250A228* D_8250A230[2];
-static unk_D_8250A228* D_8250A238;
-static unk_D_8250A228* D_8250A240[9];
+static u16 gSelectionFlags;
+static s32 gSelectionFrameCounter;
+static unk_D_82508B00* gControllerInputs;
+static unk_D_82508B00 gControllerStates[4];
+static unk_D_82508B30 gUIElements[14];
+static unk_D_8250A228* gUIElementArray[2];
+static unk_D_8250A228* gComputerUIElements[2];
+static unk_D_8250A228* gComputerUIRoot;
+static unk_D_8250A228* gItemGridElements[9];
 static BinArchive* D_8250A264;
 static void* D_8250A268;
 static s16 D_8250A26C;
@@ -800,7 +800,7 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
         tmp = gDefaultGraphRoot->unk_000.unk_14;
         var_v0 = 0;
         if ((tmp == D_8250A288.unk_00) && (D_8250A26C != 7)) {
-            var_v0 = (D_82508AF4 % 30u) / 3;
+            var_v0 = (gSelectionFrameCounter % 30u) / 3;
         }
 
         if (tmp == 0) {
@@ -829,14 +829,14 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
         gDPPipeSync(gDisplayListHead++);
 
         if (tmp == 0) {
-            gSPSegment(gDisplayListHead++, 0x0F, (u32)D_8250A230[tmp]->unk_38->img_p & 0x1FFFFFFF);
+            gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIElements[tmp]->unk_38->img_p & 0x1FFFFFFF);
             gSPDisplayList(gDisplayListHead++, D_82507828);
         } else {
             u8* var_a2;
-            s32 temp_lo = (D_82508AF4 % 30u) / 3;
+            s32 temp_lo = (gSelectionFrameCounter % 30u) / 3;
             Gfx* var_a3;
 
-            if (D_8250A230[1]->unk_0A == 0) {
+            if (gComputerUIElements[1]->unk_0A == 0) {
                 var_a2 = D_82508880[temp_lo];
                 var_a3 = D_82506FF0;
             } else {
@@ -858,7 +858,7 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
 s32 func_82500388(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)D_8250A238->unk_38->img_p & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIRoot->unk_38->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, D_82508100);
 
         func_80015684();
@@ -880,8 +880,8 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         idx = gDefaultGraphRoot->unk_000.unk_14;
 
-        idx2 = D_8250A240[idx]->unk_0A;
-        idx3 = D_8250A240[idx]->unk_0C;
+        idx2 = gItemGridElements[idx]->unk_0A;
+        idx3 = gItemGridElements[idx]->unk_0C;
 
         var_a0 = 0;
 
@@ -890,7 +890,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
         }
 
         if (var_a0 != 0) {
-            var_a2 = (D_82508AF4 % 12u) / 3;
+            var_a2 = (gSelectionFrameCounter % 12u) / 3;
         } else {
             var_a2 = 0;
         }
@@ -907,7 +907,7 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
 
             var_a2 = i * 0x800;
 
-            gDPSetPrimColor(gDisplayListHead++, 0, D_8250A240[idx]->unk_0E[i], 0, 0, 0, 255);
+            gDPSetPrimColor(gDisplayListHead++, 0, gItemGridElements[idx]->unk_0E[i], 0, 0, 0, 255);
             gDPLoadTextureBlock(gDisplayListHead++, 0x0F000000 + var_a2, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 16, 0,
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
@@ -947,7 +947,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
 
     switch (D_8250A26C) {
         case 1:
-            if (UI_Element_IsState(D_8250A228[0], 2) != 0) {
+            if (UI_Element_IsState(gUIElementArray[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x8C;
                 arg0->unk_16A = (D_8250A288.unk_00 * 0x58) + 0xBA;
@@ -956,7 +956,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 2:
-            if (UI_Element_IsState(D_8250A230[0], 2) != 0) {
+            if (UI_Element_IsState(gComputerUIElements[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x96;
                 arg0->unk_16A = (D_8250A288.unk_02 * 0x62) + 0xBA;
@@ -964,7 +964,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 3:
-            if (UI_Element_IsState(D_8250A238, 2) != 0) {
+            if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xE4;
                 arg0->unk_16A = 0xDA;
@@ -975,7 +975,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             if (D_8250A2A0.unk_00 == 2) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xF0;
-                if (D_82508AF0 & 1) {
+                if (gSelectionFlags & 1) {
                     var_v0 = 0x36;
                 } else {
                     var_v0 = 0x48;
@@ -985,7 +985,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 5:
-            if ((UI_Element_IsState(D_8250A240[0], 2) != 0) && (D_8780FA48 != -1)) {
+            if ((UI_Element_IsState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
                 arg0->unk_16E = 1;
                 arg0->unk_170 = 1;
                 arg0->unk_168 = ((D_8250A288.unk_06 % 3) * 0x60) + 0xA5;
@@ -1034,7 +1034,7 @@ s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
 
 void ControllerInput_Clear(void) {
     s32 i;
-    unk_D_82508B00* ptr = &D_82508B00[0];
+    unk_D_82508B00* ptr = &gControllerStates[0];
 
     for (i = 0; i < 4; i++, ptr++) {
         ptr->unk_00 = 0;
@@ -1052,7 +1052,7 @@ void ControllerInput_Update(void) {
     s32 i;
     u16 tmp;
 
-    for (i = 0, var_v1 = &D_82508B00[0], var_a0 = &gControllers[0]; i < 4; i++, var_a0++, var_v1++) {
+    for (i = 0, var_v1 = &gControllerStates[0], var_a0 = &gControllers[0]; i < 4; i++, var_a0++, var_v1++) {
         var_v1->unk_00 = var_v1->unk_02;
 
         if (var_a0->rawStickX < -0x32) {
@@ -1110,14 +1110,14 @@ void ControllerInput_Update(void) {
     }
 }
 
-void func_82500EE8(void) {
+void ToggleInputUpdate(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
     ControllerInput_Update();
 }
 
-s32 func_82500F20(void) {
+s32 GetSelectedItemId(void) {
     s32 sp1C;
 
     if ((D_8250A288.unk_06 >= 0) && (D_8250A288.unk_06 < 9)) {
@@ -1127,14 +1127,14 @@ s32 func_82500F20(void) {
     }
 
     if (sp1C != 0) {
-        func_82505FC8(sp1C);
+        SetCurrentMenuIndex(sp1C);
     } else {
-        func_82505FC8(-1);
+        SetCurrentMenuIndex(-1);
     }
     return sp1C;
 }
 
-s32 func_82500F94(s32 arg0) {
+s32 GetItemIndexById(s32 arg0) {
     s32 ret = 0;
     s32 i;
 
@@ -1148,7 +1148,7 @@ s32 func_82500F94(s32 arg0) {
     return ret;
 }
 
-s32 func_82500FD0(s16 arg0, s32 arg1) {
+s32 GetCategoryIndex(s16 arg0, s32 arg1) {
     s16* var_a0;
     s32 var_v0;
     s32 ret = 0;
@@ -1172,12 +1172,12 @@ s32 func_82500FD0(s16 arg0, s32 arg1) {
     return ret;
 }
 
-void func_82501034(void) {
+void InitItemSelectionTimer(void) {
     D_8250A296 = 0x78;
     D_8250A298 = GetRandomMod(3);
 }
 
-void func_82501064(unk_D_82508B30* arg0) {
+void ResetUIElement(unk_D_82508B30* arg0) {
     arg0->unk_00C = 0;
     arg0->unk_000 = 0;
     arg0->unk_002 = 0;
@@ -1303,7 +1303,7 @@ void UI_GradientPanel_Draw(unk_D_82508B30* arg0) {
 
 unk_D_8250A228* UI_Element_Allocate(void) {
     s32 i;
-    unk_D_82508B30* var_v1 = D_82508B30;
+    unk_D_82508B30* var_v1 = gUIElements;
 
     for (i = 0; i < 14; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -1372,7 +1372,7 @@ unk_D_8250A228* UI_Element_Create(s16 arg0, s16 arg1, GraphNode* arg2) {
     return temp_v0;
 }
 
-void func_82501AE4(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void LinkUIElementsForward(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     if (arg0 != NULL) {
         arg0->unk_30 = arg1;
     }
@@ -1382,13 +1382,13 @@ void func_82501AE4(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     }
 }
 
-void func_82501B04(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void SetUIElementNext(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     if (arg0 != NULL) {
         arg0->unk_34 = arg1;
     }
 }
 
-void func_82501B18(unk_D_8250A228* arg0, s16 arg1) {
+void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
     s32 var_v0;
     s32 i;
 
@@ -1414,7 +1414,7 @@ void func_82501B18(unk_D_8250A228* arg0, s16 arg1) {
                 var_v0 = 1;
             }
 
-            if ((arg0->unk_00 == 4) && (D_8780FA48 == -1)) {
+            if ((arg0->unk_00 == 4) && (gMenuSelectedOption == -1)) {
                 arg0->unk_06 |= 2;
             }
             break;
@@ -1456,11 +1456,11 @@ void func_82501B18(unk_D_8250A228* arg0, s16 arg1) {
     }
 
     if (var_v0 != 0) {
-        func_82501B18(arg0->unk_34, arg0->unk_02);
+        SetUIElementState(arg0->unk_34, arg0->unk_02);
     }
 }
 
-void func_82501C88(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
+void SetUIElementSelection(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
     if (arg2 != 0) {
         if (arg0->unk_0A != arg0->unk_0C) {
             arg0->unk_0A = arg0->unk_0C;
@@ -1487,7 +1487,7 @@ s32 UI_Element_IsState(unk_D_8250A228* arg0, s16 arg1) {
     return ret;
 }
 
-void func_82501D08(unk_D_82508B30* arg0) {
+void FadeOutUIElement(unk_D_82508B30* arg0) {
     s32 i;
 
     arg0->unk_008 -= 1;
@@ -1502,7 +1502,7 @@ void func_82501D08(unk_D_82508B30* arg0) {
     }
 }
 
-s32 func_82501D70(unk_D_8250A228* arg0, s16 arg1) {
+s32 CountUIElementColors(unk_D_8250A228* arg0, s16 arg1) {
     s32 var_v1 = 0;
     s32 i;
 
@@ -1515,7 +1515,7 @@ s32 func_82501D70(unk_D_8250A228* arg0, s16 arg1) {
     return var_v1;
 }
 
-s32 func_82501DC8(unk_D_82508B30* arg0) {
+s32 UpdateUIElementAnimation(unk_D_82508B30* arg0) {
     s16 var_v0;
     s32 var_a1;
     s32 var_v1;
@@ -1544,7 +1544,7 @@ s32 func_82501DC8(unk_D_82508B30* arg0) {
         arg0->unk_00E[var_a1] = (var_v0 * 0xFF) / 10;
     }
 
-    if (func_82501D70(arg0, 0) >= 2) {
+    if (CountUIElementColors(arg0, 0) >= 2) {
         var_v1 = 1;
     } else {
         var_v1 = 0;
@@ -1553,11 +1553,11 @@ s32 func_82501DC8(unk_D_82508B30* arg0) {
     return var_v1;
 }
 
-void func_82501ED0(void) {
+void UpdateAllUIElements(void) {
     UNUSED s32 pad;
     s32 i;
     f32 temp_fa1;
-    unk_D_82508B30* var_s0 = &D_82508B30;
+    unk_D_82508B30* var_s0 = &gUIElements;
     unk_D_82508B30_03C* temp_v0;
 
     for (i = 0; i < 14; i++, var_s0++) {
@@ -1583,7 +1583,7 @@ void func_82501ED0(void) {
 
             case 2:
                 if ((var_s0->unk_006 & 2) && (var_s0->unk_00A != var_s0->unk_00C)) {
-                    func_82501D08(var_s0);
+                    FadeOutUIElement(var_s0);
                 }
                 break;
 
@@ -1596,13 +1596,13 @@ void func_82501ED0(void) {
                     temp_v0->unk_1E = 0x4000;
                     temp_v0->unk_01 &= ~1;
                     if (var_s0->unk_030 != NULL) {
-                        func_82501B18(var_s0->unk_030, 1);
+                        SetUIElementState(var_s0->unk_030, 1);
                     }
                 }
                 break;
 
             case 5:
-                if (func_82501DC8(var_s0) != 0) {
+                if (UpdateUIElementAnimation(var_s0) != 0) {
                     Vec3f sp58[] = {
                         { -1.0f, 1.0f, -1.0f }, { 0.0f, 1.0f, -1.0f }, { 1.0f, 1.0f, -1.0f },
                         { -1.0f, 0.0f, 0.0f },  { 0.0f, 0.0f, 1.0f },  { 1.0f, 0.0f, 0.0f },
@@ -1625,7 +1625,7 @@ void func_82501ED0(void) {
                 break;
 
             case 6:
-                func_82501DC8(var_s0);
+                UpdateUIElementAnimation(var_s0);
                 var_s0->unk_018 -= 0.5f;
                 if (var_s0->unk_018 < 0.0f) {
                     var_s0->unk_018 = 0.0f;
@@ -1659,7 +1659,7 @@ void func_82501ED0(void) {
                     var_s0->unk_008 = 0;
                     temp_v0->unk_01 &= ~1;
                     if (var_s0->unk_02C != NULL) {
-                        func_82501B18(var_s0->unk_02C, 7);
+                        SetUIElementState(var_s0->unk_02C, 7);
                     }
                 }
                 break;
@@ -1695,7 +1695,7 @@ void SelectionState_InitDefaults(void) {
     D_8250A288.unk_04 = 3;
     D_8250A288.unk_06 = 0;
 
-    if (D_82508AF0 & 1) {
+    if (gSelectionFlags & 1) {
         D_8250A288.unk_08 = 2;
     } else {
         D_8250A288.unk_08 = 1;
@@ -1703,11 +1703,11 @@ void SelectionState_InitDefaults(void) {
 }
 
 void func_8250244C(s16 arg0, s16 arg1) {
-    D_8250A288.unk_00 = D_8780FA2A;
+    D_8250A288.unk_00 = gMenuCursorX;
     D_8250A288.unk_02 = arg0;
-    D_8250A288.unk_04 = D_8780FA3A;
-    D_8250A288.unk_06 = func_82500F94(arg1);
-    D_8250A288.unk_08 = func_82500FD0(D_8780FA38, D_82508AF0 & 1);
+    D_8250A288.unk_04 = gMenuSubState;
+    D_8250A288.unk_06 = GetItemIndexById(arg1);
+    D_8250A288.unk_08 = GetCategoryIndex(gMenuState, gSelectionFlags & 1);
 }
 
 void SelectionUI_Init(s16 arg0, s16 arg1) {
@@ -1717,13 +1717,13 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
 
     D_8250A26E = arg0;
     if (arg1 == 0) {
-        func_82505FA0();
+        UpdateMenuRandomSeed();
     }
 
     D_8250A26C = 0;
-    D_82508AF0 = 0;
-    if (D_8780FA28 & 1) {
-        D_82508AF0 |= 1;
+    gSelectionFlags = 0;
+    if (gMenuRandomSeed & 1) {
+        gSelectionFlags |= 1;
     }
 
     SelectionState_InitDefaults();
@@ -1736,67 +1736,67 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
 
         case 1:
             func_8250244C(0, arg1);
-            if (gMiniHudColorDefaults[D_8780FA48] == 0) {
+            if (gMiniHudColorDefaults[gMenuSelectedOption] == 0) {
                 D_8250A292 = -1;
             } else {
-                D_8250A292 = func_825060E0();
+                D_8250A292 = GetRandomUnusedMenuSlot();
                 D_8250A294 = 0x1E;
             }
             break;
 
         case 4:
             func_8250244C(1, arg1);
-            if (D_8780FA2A == 0) {
-                D_8780FA48 = 0;
+            if (gMenuCursorX == 0) {
+                gMenuSelectedOption = 0;
             } else {
-                D_8780FA48 = -1;
-                func_82501034();
+                gMenuSelectedOption = -1;
+                InitItemSelectionTimer();
             }
 
             // clang-format off
-            for (i = 0; i < 9; i++) {                D_8780FA50[i] = 0;            }
+            for (i = 0; i < 9; i++) {                gMenuOptionUsedFlags[i] = 0;            }
             // clang-format on
             break;
     }
 
-    ptr = D_82508B30;
+    ptr = gUIElements;
     for (i = 0; i < 14; i++, ptr++) {
-        func_82501064(ptr);
+        ResetUIElement(ptr);
     }
 
     for (i = 0; i < 2; i++) {
-        D_8250A228[i] = UI_Element_Create(1, i, D_8250A274);
+        gUIElementArray[i] = UI_Element_Create(1, i, D_8250A274);
     }
 
     for (i = 0; i < 2; i++) {
-        D_8250A230[i] = UI_Element_Create(2, i, D_8250A278);
+        gComputerUIElements[i] = UI_Element_Create(2, i, D_8250A278);
     }
 
-    D_8250A238 = UI_Element_Create(3, 0, D_8250A27C);
+    gComputerUIRoot = UI_Element_Create(3, 0, D_8250A27C);
 
     for (i = 0; i < 9; i++) {
         if (i != 4) {
-            D_8250A240[i] = UI_Element_Create(4, i, D_8250A280);
+            gItemGridElements[i] = UI_Element_Create(4, i, D_8250A280);
         }
     }
 
-    D_8250A240[4] = UI_Element_Create(4, 4, D_8250A280);
-    func_82501AE4(D_8250A228[0], D_8250A230[0]);
+    gItemGridElements[4] = UI_Element_Create(4, 4, D_8250A280);
+    LinkUIElementsForward(gUIElementArray[0], gComputerUIElements[0]);
 
     for (i = 0; i < 1; i++) {
-        func_82501B04(D_8250A228[i], D_8250A228[i + 1]);
+        SetUIElementNext(gUIElementArray[i], gUIElementArray[i + 1]);
     }
 
     for (i = 0; i < 1; i++) {
-        func_82501B04(D_8250A230[i], D_8250A230[i + 1]);
+        SetUIElementNext(gComputerUIElements[i], gComputerUIElements[i + 1]);
     }
 
     for (i = 0; i < 8; i++) {
-        func_82501B04(D_8250A240[i], D_8250A240[i + 1]);
+        SetUIElementNext(gItemGridElements[i], gItemGridElements[i + 1]);
     }
 
-    func_82504820(D_8250A47C);
-    func_82505720(D_8250A47C);
+    MessageBox_SetBank(D_8250A47C);
+    OptionMenu_Init(D_8250A47C);
     SelectionState_Clear();
     UI_Cursor_Init();
 }
@@ -1816,7 +1816,7 @@ void func_8250281C(void) {
     switch (D_8250A26C) {
         case 1:
             sp30 = 0;
-            if (UI_Element_IsState(D_8250A228[0], 2) != 0) {
+            if (UI_Element_IsState(gUIElementArray[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x8C;
                 sp38 = D_8250A288.unk_00 * 0x58 + 0xBA;
@@ -1826,8 +1826,8 @@ void func_8250281C(void) {
 
         case 2:
             sp30 = 0;
-            D_8780FA48 += 0;
-            if (UI_Element_IsState(D_8250A230[0], 2) != 0) {
+            gMenuSelectedOption += 0;
+            if (UI_Element_IsState(gComputerUIElements[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x96;
                 sp38 = D_8250A288.unk_02 * 0x62 + 0xBA;
@@ -1837,7 +1837,7 @@ void func_8250281C(void) {
 
         case 3:
             sp30 = 0;
-            if (UI_Element_IsState(D_8250A238, 2) != 0) {
+            if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
                 sp30 = 1;
                 sp40 = 0xE4;
                 sp38 = 0xDA;
@@ -1849,14 +1849,14 @@ void func_8250281C(void) {
             if (D_8250A2A0.unk_00 == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
-                sp38 = ((D_82508AF0 & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
+                sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
                 break;
             }
             break;
 
         case 5:
             sp30 = 0;
-            if ((UI_Element_IsState(D_8250A240[0], 2) != 0) && (D_8780FA48 != -1)) {
+            if ((UI_Element_IsState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
                 sp30 = 1;
                 sp2C = 1;
                 sp40 = ((D_8250A288.unk_06 % 3) * 0x60) + 0xA5;
@@ -1868,20 +1868,20 @@ void func_8250281C(void) {
     }
 
     if (sp30 != 0) {
-        tmp = D_82508AF4 & 7;
+        tmp = gSelectionFrameCounter & 7;
 
         var_a2_2 = (tmp * 6) / 7u;
-        if (D_82508AF4 & 8) {
+        if (gSelectionFrameCounter & 8) {
             var_a2_2 = 6 - var_a2_2;
         }
         sp18 = sp40 + var_a2_2;
         DrawStatusIcon(sp18, sp38);
 
-        if ((sp2C != 0) && (D_8780FA48 >= 0)) {
+        if ((sp2C != 0) && (gMenuSelectedOption >= 0)) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-            var_a2_2 = D_8780FA48;
+            var_a2_2 = gMenuSelectedOption;
             if (gMiniHudColorDefaults[var_a2_2] == 0) {
                 DrawUniformScaledTextureRect(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             } else {
@@ -1895,7 +1895,7 @@ void func_8250281C(void) {
 
 void func_82502BB0(void) {
     s32 i;
-    unk_D_82508B30* var_s0 = D_82508B30;
+    unk_D_82508B30* var_s0 = gUIElements;
 
     for (i = 0; i < 14; i++, var_s0++) {
         if (!(var_s0->unk_006 & 1)) {
@@ -1944,7 +1944,7 @@ void func_82502C78(void) {
             Text_Print(0x140 - (GetTextWidth(D_8250A304, GetMessageString(NULL, 0, D_8250A47C, 2)) / 2),
                           D_8250A2A0.unk_0A + 0x18, GetMessageString(NULL, 0, D_8250A47C, 2));
 
-            if (D_82508AF0 & 1) {
+            if (gSelectionFlags & 1) {
                 var_s4 = 4;
                 var_s5 = 0x36;
                 var_v0 = sp5C;
@@ -1974,8 +1974,8 @@ void func_82502F44(void) {
     Stage_BeginDisplayList();
     Gfx_DrawTextureAtlas(D_8250A268);
     Graph_SetTextureState(D_8250A270);
-    func_825054F4();
-    func_82505C10();
+    MessageBox_Render();
+    OptionMenu_Render();
     func_82502C78();
     func_8250281C();
     Stage_Advance();
@@ -2006,21 +2006,21 @@ void func_82503020(void) {
     s32 i;
     s32 tmp;
 
-    if (UI_Element_IsState(D_8250A228[0], 2) == 0) {
+    if (UI_Element_IsState(gUIElementArray[0], 2) == 0) {
         return;
     }
 
     GetRandomMod(0x80);
 
     tmp = D_8250A288.unk_00;
-    if (D_82508AF8->unk_04 & 0x800) {
+    if (gControllerInputs->unk_04 & 0x800) {
         D_8250A288.unk_00--;
         if (D_8250A288.unk_00 < 0) {
             D_8250A288.unk_00 = 1;
         }
     }
 
-    if (D_82508AF8->unk_04 & 0x400) {
+    if (gControllerInputs->unk_04 & 0x400) {
         D_8250A288.unk_00++;
         if (D_8250A288.unk_00 >= 2) {
             D_8250A288.unk_00 = 0;
@@ -2031,27 +2031,27 @@ void func_82503020(void) {
         PlaySoundEffect(1);
     }
 
-    if (D_82508AF8->unk_04 & 0x8000) {
-        D_8780FA2A = D_8250A288.unk_00;
+    if (gControllerInputs->unk_04 & 0x8000) {
+        gMenuCursorX = D_8250A288.unk_00;
         D_8250A26C = 2;
-        func_82504844(1);
+        MessageBox_SetState(1);
         D_8250A288.unk_02 = 0;
 
         for (i = 0; i < 4; i++) {
             gMiniHudColorDefaults[i] = 1;
         }
 
-        D_8250A230[0]->unk_06 |= 1;
-        if (D_8780FA2A == 0) {
-            D_8780FA48 = 0;
+        gComputerUIElements[0]->unk_06 |= 1;
+        if (gMenuCursorX == 0) {
+            gMenuSelectedOption = 0;
             PlaySoundEffect(0xB);
         } else {
-            D_8780FA48 = -1;
-            func_82501034();
+            gMenuSelectedOption = -1;
+            InitItemSelectionTimer();
             PlaySoundEffect(0xC);
         }
-        func_82501B18(D_8250A228[0], 3);
-    } else if (D_82508AF8->unk_04 & 0x4000) {
+        SetUIElementState(gUIElementArray[0], 3);
+    } else if (gControllerInputs->unk_04 & 0x4000) {
         D_8250A26C = 7;
         D_8250A288.unk_06 = -1;
         Stage_SetFillColor(1);
@@ -2062,20 +2062,20 @@ void func_82503020(void) {
 }
 
 void func_825031FC(void) {
-    func_82504844(3);
+    MessageBox_SetState(3);
     if (D_8250A288.unk_00 == 0) {
         D_8250A26C = 5;
-        func_82501AE4(D_8250A230[0], D_8250A240[0]);
-        func_82505874(1, D_8250A288.unk_06);
+        LinkUIElementsForward(gComputerUIElements[0], gItemGridElements[0]);
+        OptionMenu_SetState(1, D_8250A288.unk_06);
     } else {
         D_8250A26C = 3;
         D_8250A2FC = 0;
         D_8250A2FE = 0;
         D_8250A300 = 0;
-        func_82501AE4(D_8250A230[0], D_8250A238);
-        func_82501AE4(D_8250A238, D_8250A240[0]);
+        LinkUIElementsForward(gComputerUIElements[0], gComputerUIRoot);
+        LinkUIElementsForward(gComputerUIRoot, gItemGridElements[0]);
     }
-    func_82501B18(*D_8250A230, 3);
+    SetUIElementState(*gComputerUIElements, 3);
 }
 
 void func_825032BC(void) {
@@ -2084,17 +2084,17 @@ void func_825032BC(void) {
     s32 var_s4;
     s32 i;
 
-    D_8250A230[1]->unk_0A = D_8780FA2A;
-    if ((UI_Element_IsState(D_8250A230[0], 2) != 0) && (func_82504838() == 2)) {
+    gComputerUIElements[1]->unk_0A = gMenuCursorX;
+    if ((UI_Element_IsState(gComputerUIElements[0], 2) != 0) && (MessageBox_GetState() == 2)) {
         var_v1 = D_8250A288.unk_02;
-        if ((D_82508AF8->unk_04 & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
+        if ((gControllerInputs->unk_04 & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.unk_02--;
             if (D_8250A288.unk_02 < 0) {
                 D_8250A288.unk_02 = 1;
             }
         }
 
-        if ((D_82508AF8->unk_04 & 0x400) && (gMiniHudColorDefaults[0] == 0)) {
+        if ((gControllerInputs->unk_04 & 0x400) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.unk_02++;
             if (D_8250A288.unk_02 >= 2) {
                 D_8250A288.unk_02 = 0;
@@ -2109,11 +2109,11 @@ void func_825032BC(void) {
         switch (D_8250A288.unk_02) {
             case 0:
                 for (i = 0; i < 4; i++) {
-                    if ((D_82508B00[i].unk_04 & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
+                    if ((gControllerStates[i].unk_04 & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
                         var_s4 = 1;
                         gMiniHudColorDefaults[i] = 0;
                         PlaySoundEffect(0xD);
-                    } else if (D_82508B00[i].unk_04 & 0x4000) {
+                    } else if (gControllerStates[i].unk_04 & 0x4000) {
                         if (gMiniHudColorDefaults[i] != 1) {
                             var_s4 = 1;
                             gMiniHudColorDefaults[i] = 1;
@@ -2124,17 +2124,17 @@ void func_825032BC(void) {
                 break;
 
             case 1:
-                if (D_82508AF8->unk_04 & 0x8000) {
+                if (gControllerInputs->unk_04 & 0x8000) {
                     var_s4 = 1;
-                    D_8780FA2C = 0;
+                    gMenuCursorY = 0;
 
                     for (i = 0; i < 4; i++) {
                         if (gMiniHudColorDefaults[i] == 0) {
-                            D_8780FA2C++;
+                            gMenuCursorY++;
                         }
                     }
 
-                    if (D_8780FA2C != 4) {
+                    if (gMenuCursorY != 4) {
                         D_8250A26C = 4;
                     } else {
                         func_825031FC();
@@ -2144,15 +2144,15 @@ void func_825032BC(void) {
                 break;
         }
 
-        if ((var_s4 == 0) && (D_82508AF8->unk_04 & 0x4000)) {
+        if ((var_s4 == 0) && (gControllerInputs->unk_04 & 0x4000)) {
             func_82502FAC();
-            func_82504844(3);
-            func_82501B18(D_8250A230[0], 8);
+            MessageBox_SetState(3);
+            SetUIElementState(gComputerUIElements[0], 8);
             PlaySoundEffect(3);
         }
 
         if (D_8250A26C == 2) {
-            D_8250A230[0]->unk_06 |= 1;
+            gComputerUIElements[0]->unk_06 |= 1;
         }
     }
 }
@@ -2186,9 +2186,9 @@ void func_82503574(void) {
 
         case 2:
             var_v0 = 0;
-            if (D_82508AF0 & 1) {
+            if (gSelectionFlags & 1) {
                 var_a2 = 4;
-                if (!(D_82508AF8->unk_02 & 0xCC00)) {
+                if (!(gControllerInputs->unk_02 & 0xCC00)) {
                     var_v0 = 1;
                 }
             } else {
@@ -2202,14 +2202,14 @@ void func_82503574(void) {
             }
 
             tmp = D_8250A288.unk_08;
-            if (D_82508AF8->unk_04 & 0x800) {
+            if (gControllerInputs->unk_04 & 0x800) {
                 D_8250A288.unk_08 -= 1;
                 if (D_8250A288.unk_08 < 0) {
                     D_8250A288.unk_08 = var_a2 - 1;
                 }
             }
 
-            if (D_82508AF8->unk_04 & 0x400) {
+            if (gControllerInputs->unk_04 & 0x400) {
                 D_8250A288.unk_08 += 1;
                 if (D_8250A288.unk_08 >= var_a2) {
                     D_8250A288.unk_08 = 0;
@@ -2220,11 +2220,11 @@ void func_82503574(void) {
                 PlaySoundEffect(1);
             }
 
-            if (D_82508AF8->unk_04 & 0x8000) {
-                if (D_82508AF0 & 1) {
-                    D_8780FA38 = D_825088D8[D_8250A288.unk_08];
+            if (gControllerInputs->unk_04 & 0x8000) {
+                if (gSelectionFlags & 1) {
+                    gMenuState = D_825088D8[D_8250A288.unk_08];
                 } else {
-                    D_8780FA38 = D_825088D0[D_8250A288.unk_08];
+                    gMenuState = D_825088D0[D_8250A288.unk_08];
                 }
                 D_8250A2A0.unk_00 = 3;
                 D_8250A2A0.unk_02 = 1;
@@ -2234,7 +2234,7 @@ void func_82503574(void) {
                 D_8250A2A0.unk_0C = 0x118;
                 D_8250A2A0.unk_0E = 0xA8;
                 PlaySoundEffect(2);
-            } else if (D_82508AF8->unk_04 & 0x4000) {
+            } else if (gControllerInputs->unk_04 & 0x4000) {
                 D_8250A2A0.unk_00 = 3;
                 D_8250A2A0.unk_02 = 0;
                 D_8250A2A0.unk_04 = 8;
@@ -2264,37 +2264,37 @@ void func_82503574(void) {
     }
 
     if (D_8250A2A0.unk_00 != 2) {
-        D_8250A230[0]->unk_06 |= 1;
+        gComputerUIElements[0]->unk_06 |= 1;
     }
 }
 
 void func_825039AC(void) {
     s32 i;
 
-    if (UI_Element_IsState(D_8250A238, 2) != 0) {
+    if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
         switch (D_8250A2FC) {
             case 0:
-                if (D_82508AF8->unk_04 & 0x8000) {
-                    D_8780FA3A = D_8250A288.unk_04;
+                if (gControllerInputs->unk_04 & 0x8000) {
+                    gMenuSubState = D_8250A288.unk_04;
 
                     for (i = 0; i < 4; i++) {
-                        D_8780FA40[i] = 0;
+                        gMenuOptionTimers[i] = 0;
                     }
 
                     ResetSelectionState();
                     D_8250A26C = 5;
-                    func_82501B18(D_8250A238, 3);
+                    SetUIElementState(gComputerUIRoot, 3);
                     PlaySoundEffect(0xE);
-                    func_82505874(1, D_8250A288.unk_06);
-                } else if (D_82508AF8->unk_04 & 0x4000) {
+                    OptionMenu_SetState(1, D_8250A288.unk_06);
+                } else if (gControllerInputs->unk_04 & 0x4000) {
                     D_8250A26C = 2;
-                    func_82504844(1);
-                    func_82501B18(D_8250A238, 8);
+                    MessageBox_SetState(1);
+                    SetUIElementState(gComputerUIRoot, 8);
                     PlaySoundEffect(3);
-                } else if ((D_82508AF8->unk_08 & 0x800) && (D_8250A288.unk_04 < 9)) {
+                } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.unk_04 < 9)) {
                     D_8250A2FC = 2;
                     D_8250A2FE = 5;
-                } else if ((D_82508AF8->unk_08 & 0x400) && (D_8250A288.unk_04 >= 2)) {
+                } else if ((gControllerInputs->unk_08 & 0x400) && (D_8250A288.unk_04 >= 2)) {
                     D_8250A2FC = 1;
                     D_8250A2FE = 5;
                 }
@@ -2324,7 +2324,7 @@ void func_825039AC(void) {
                 }
                 break;
         }
-        D_8250A238->unk_06 |= 1;
+        gComputerUIRoot->unk_06 |= 1;
     }
 }
 
@@ -2343,37 +2343,37 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
     var_t0 = *arg0 / 3;
 
     if (D_8250A292 == -1) {
-        if (D_82508B00[arg1].unk_04 & 0x800) {
+        if (gControllerStates[arg1].unk_04 & 0x800) {
             var_t0 -= 1;
             if (var_t0 < 0) {
                 var_t0 = 2;
             }
         }
 
-        if (D_82508B00[arg1].unk_04 & 0x400) {
+        if (gControllerStates[arg1].unk_04 & 0x400) {
             var_t0 += 1;
             if (var_t0 >= 3) {
                 var_t0 = 0;
             }
         }
 
-        if (D_82508B00[arg1].unk_04 & 0x200) {
+        if (gControllerStates[arg1].unk_04 & 0x200) {
             var_a3 -= 1;
             if (var_a3 < 0) {
                 var_a3 = 2;
             }
         }
 
-        if (D_82508B00[arg1].unk_04 & 0x100) {
+        if (gControllerStates[arg1].unk_04 & 0x100) {
             var_a3 += 1;
             if (var_a3 >= 3) {
                 var_a3 = 0;
             }
         }
 
-        if (D_82508B00[arg1].unk_04 & 0x8000) {
+        if (gControllerStates[arg1].unk_04 & 0x8000) {
             sp1E = 1;
-        } else if (D_82508B00[arg1].unk_04 & 0x4000) {
+        } else if (gControllerStates[arg1].unk_04 & 0x4000) {
             switch (D_8250A26E) {
                 case 0:
                     sp1E = -1;
@@ -2384,7 +2384,7 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
                     if (D_8250A288.unk_00 == 0) {
                         sp1E = -1;
                         D_8250A26E = 0;
-                        func_82501AE4(D_8250A230[0], D_8250A240[0]);
+                        LinkUIElementsForward(gComputerUIElements[0], gItemGridElements[0]);
                     }
                     break;
             }
@@ -2414,7 +2414,7 @@ s32 func_82503C50(s16* arg0, s16 arg1) {
 
     *arg0 = (var_t0 * 3) + var_a3;
     if (sp2C != *arg0) {
-        func_825057A8(*arg0);
+        OptionMenu_SetSelection(*arg0);
         PlaySoundEffect(1);
     }
 
@@ -2433,11 +2433,11 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
         GetRandomMod(2);
         if ((arg1 % 6) == 0) {
             *arg0 = GetRandomMod(9);
-            func_825057A8(*arg0);
+            OptionMenu_SetSelection(*arg0);
 
             if (arg1 != 0) {
                 for (i = 0; i < 9; i++) {
-                    sp50[i] = D_8250A240[i]->unk_0C;
+                    sp50[i] = gItemGridElements[i]->unk_0C;
                 }
             }
 
@@ -2446,23 +2446,23 @@ s32 func_82503F00(s16* arg0, s16 arg1) {
                     switch (D_8250A298) {
                         case 0:
                             tmp = GetRandomMod(9);
-                            temp_s3 = D_8250A240[i]->unk_0C;
-                            func_82501C88(D_8250A240[i], D_8250A240[tmp]->unk_0C, 0);
-                            D_8250A240[tmp]->unk_0C = temp_s3;
+                            temp_s3 = gItemGridElements[i]->unk_0C;
+                            SetUIElementSelection(gItemGridElements[i], gItemGridElements[tmp]->unk_0C, 0);
+                            gItemGridElements[tmp]->unk_0C = temp_s3;
                             break;
 
                         case 1:
                             tmp = D_825088E0[i];
-                            func_82501C88(D_8250A240[i], sp50[tmp], 0);
+                            SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
                             break;
 
                         case 2:
                             tmp = D_825088F4[i];
-                            func_82501C88(D_8250A240[i], sp50[tmp], 0);
+                            SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
                             break;
                     }
                 } else {
-                    func_82501C88(D_8250A240[i], *arg0, 1);
+                    SetUIElementSelection(gItemGridElements[i], *arg0, 1);
                 }
             }
             PlaySoundEffect(1);
@@ -2484,11 +2484,11 @@ void func_8250416C(void) {
     s32 var_v1;
 
     IncrementRandomCounter();
-    if (UI_Element_IsState(D_8250A240[0], 2) != 0) {
+    if (UI_Element_IsState(gItemGridElements[0], 2) != 0) {
         sp1C = 0;
         sp18 = 0;
-        if (D_8780FA48 >= 0) {
-            switch (func_82503C50(&D_8250A288.unk_06, D_8780FA48)) {
+        if (gMenuSelectedOption >= 0) {
+            switch (func_82503C50(&D_8250A288.unk_06, gMenuSelectedOption)) {
                 case 1:
                     sp1C = 1;
 
@@ -2503,14 +2503,14 @@ void func_8250416C(void) {
 
         if (sp1C != 0) {
             D_8250A26C = 6;
-            func_82501B18(D_8250A240[0], 5);
-            D_8780FA50[D_8250A288.unk_06] = 1;
+            SetUIElementState(gItemGridElements[0], 5);
+            gMenuOptionUsedFlags[D_8250A288.unk_06] = 1;
             PlaySoundEffect(0x11);
         } else if (sp18 != 0) {
-            func_82505874(3, -1);
-            func_82501B18(D_8250A240[0], 8);
+            OptionMenu_SetState(3, -1);
+            SetUIElementState(gItemGridElements[0], 8);
             D_8250A26C = 2;
-            func_82504844(1);
+            MessageBox_SetState(1);
             PlaySoundEffect(3);
         }
     }
@@ -2524,34 +2524,34 @@ void func_825042A4(void) {
             continue;
         }
 
-        if (D_82508B00[i].unk_02 & 0x20) {
-            D_8780FA68[i] = 1;
-        } else if (D_82508B00[i].unk_02 & 0x10) {
-            D_8780FA68[i] = 2;
+        if (gControllerStates[i].unk_02 & 0x20) {
+            gMenuOptionFlags[i] = 1;
+        } else if (gControllerStates[i].unk_02 & 0x10) {
+            gMenuOptionFlags[i] = 2;
         }
     }
 
-    if (func_82501D70(D_8250A240[4], 0) >= 3) {
+    if (CountUIElementColors(gItemGridElements[4], 0) >= 3) {
         D_8250A26C = 7;
         Stage_SetFillColor(1);
         Stage_FadeOut(0xA);
     }
 }
 
-void func_82504370(s16 arg0, s16 arg1) {
+void RunSelectionScreen(s16 arg0, s16 arg1) {
     s32 var_s6 = 1;
     s32 i;
 
     SelectionUI_Init(arg0, arg1);
     func_8004B1CC(0x16);
     Stage_FadeIn(0xF);
-    D_82508AF4 = 0;
+    gSelectionFrameCounter = 0;
 
     while (var_s6 != 0) {
-        func_82500EE8();
+        ToggleInputUpdate();
         func_82504B38();
-        func_82505B94();
-        func_82501ED0();
+        OptionMenu_Update();
+        UpdateAllUIElements();
         func_82502F44();
 
         switch (D_8250A26C) {
@@ -2560,23 +2560,23 @@ void func_82504370(s16 arg0, s16 arg1) {
                     switch (D_8250A26E) {
                         case 0:
                             func_82502FAC();
-                            func_82501B18(D_8250A228[0], 1);
+                            SetUIElementState(gUIElementArray[0], 1);
                             break;
 
                         case 1:
                             D_8250A26C = 5;
                             for (i = 0; i < 9; i++) {
-                                func_82501B18(D_8250A240[i], 1);
+                                SetUIElementState(gItemGridElements[i], 1);
                             }
-                            func_82505874(1, D_8250A288.unk_06);
+                            OptionMenu_SetState(1, D_8250A288.unk_06);
                             break;
 
                         case 4:
                             D_8250A26C = 2;
                             for (i = 0; i < 2; i++) {
-                                func_82501B18(D_8250A230[i], 1);
+                                SetUIElementState(gComputerUIElements[i], 1);
                             }
-                            func_82504844(1);
+                            MessageBox_SetState(1);
                             break;
                     }
                 }
@@ -2612,14 +2612,14 @@ void func_82504370(s16 arg0, s16 arg1) {
                 }
                 break;
         }
-        D_82508AF4++;
+        gSelectionFrameCounter++;
     }
 }
 
 void func_825045C0(void) {
     MemoryBlock* temp_v0;
 
-    D_82508AF8 = &D_82508B00;
+    gControllerInputs = &gControllerStates;
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     D_8250A270 = process_geo_layout(temp_v0, D_8250880C);
     D_8250A274 = process_geo_layout(temp_v0, D_825073F0);
@@ -2651,7 +2651,7 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
     GbsEnsureBankLoaded(2);
     func_825045C0();
     Stage_Set(sp24);
-    func_82504370(arg0, arg1);
+    RunSelectionScreen(arg0, arg1);
     Stage_AdvanceN(2);
     Stage_Destroy();
     FontManager_Free();
@@ -2659,5 +2659,5 @@ s32 func_825046AC(s32 arg0, s32 arg1) {
 
     main_pool_pop_state('KIDC');
 
-    return func_82500F20();
+    return GetSelectedItemId();
 }

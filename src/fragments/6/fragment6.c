@@ -202,42 +202,42 @@ void MiniHud_UpdateControllerInput(void) {
                 case 0:
                 case 12:
                 case 13:
-                    if (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_06) {
+                    if (GetRandomMod(0x64) < D_86002920[gMenuState].unk_06) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 5:
                 case 7:
-                    if (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_04) {
+                    if (GetRandomMod(0x64) < D_86002920[gMenuState].unk_04) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
 
                 case 8:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0x90000) &&
-                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xD0000) &&
-                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xB0000) &&
-                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xF0000) &&
-                        (GetRandomMod(0x64) < D_86002920[D_8780FA38].unk_08)) {
+                        (GetRandomMod(0x64) < D_86002920[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -574,7 +574,7 @@ s32 func_86000FD4(void) {
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &D_86002F58[i];
-        D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : D_8780FA38 + 1;
+        D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : gMenuState + 1;
     }
 
     D_86002F48 = 0;
@@ -586,7 +586,7 @@ s32 func_86000FD4(void) {
                 var_s0_2 = false;
             }
 
-            if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
+            if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
                 SetResultFlag(2);
                 return -1;
@@ -1090,7 +1090,7 @@ void func_8600235C(void) {
     D_86002F48 = 5;
 
     while (D_8780FC96 == 0) {
-        if ((D_8780FA2A == 1) && (D_86002F4C > 0)) {
+        if ((gMenuCursorX == 1) && (D_86002F4C > 0)) {
             D_86002F4C -= 10;
             if (D_86002F4C < 0) {
                 D_86002F4C = 0;
@@ -1142,7 +1142,7 @@ void func_86002440(void) {
         if (i == 0) {
             D_86003B5C->unk_000 = 0;
         } else {
-            D_86003B5C->unk_000 = D_8780FA38 + 1;
+            D_86003B5C->unk_000 = gMenuState + 1;
         }
 
         GraphNode_TriggerAction(&D_86003B60->unk_000, 0);

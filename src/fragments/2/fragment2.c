@@ -21,20 +21,20 @@ char** gItemNamesBank = NULL;
 
 static s32 gRandomCounter;
 static char** gMoveNamesBank;
-u16 D_8780FA28;
-s16 D_8780FA2A;
-s16 D_8780FA2C;
+u16 gMenuRandomSeed;
+s16 gMenuCursorX;
+s16 gMenuCursorY;
 
 s16 gMiniHudColorDefaults[4];
-s16 D_8780FA38;
-s16 D_8780FA3A;
-s16 D_8780FA40[4];
-s16 D_8780FA48;
+s16 gMenuState;
+s16 gMenuSubState;
+s16 gMenuOptionTimers[4];
+s16 gMenuSelectedOption;
 
 static s32 pad_D_8780FA4C;
 
-s16 D_8780FA50[9];
-s16 D_8780FA68[4];
+s16 gMenuOptionUsedFlags[9];
+s16 gMenuOptionFlags[4];
 
 void InitMessageBanks(void) {
     MessageBank_Init();
@@ -192,30 +192,30 @@ u32* gNegativeTextureBank[] = { D_8780B110, D_8780BFB0, D_8780CE50, D_8780DCF0, 
 
 void func_878010C8(s16 arg0) {
     s32 i;
-    D_8780FA28 = 0;
+    gMenuRandomSeed = 0;
     gCurrentMenuIndex = arg0;
-    D_8780FA2A = 0;
-    D_8780FA2C = 0;
+    gMenuCursorX = 0;
+    gMenuCursorY = 0;
 
     for (i = 0; i < 4; i++) {
         gMiniHudColorDefaults[i] = 1;
     }
 
     if (arg0 == 3) {
-        D_8780FA38 = 1;
+        gMenuState = 1;
     } else {
-        D_8780FA38 = 3;
+        gMenuState = 3;
     }
 
-    D_8780FA3A = 3;
+    gMenuSubState = 3;
 
     for (i = 0; i < 4; i++) {
-        D_8780FA40[i] = 0;
+        gMenuOptionTimers[i] = 0;
     }
 
     i = 0;
     do {
-        D_8780FA68[i] = 0;
+        gMenuOptionFlags[i] = 0;
         i++;
     } while (i < 4);
     InitMessageBanks();

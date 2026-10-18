@@ -222,15 +222,15 @@ typedef struct unk_D_82F21238 {
     /* 0x30 */ unk_D_82F20A40_00E unk_30;
 } unk_D_82F21238; // size = 0x38
 
-extern s32 D_82F14424;
-extern unk_D_82F14450 D_82F14450[4];
+extern s32 gFragment41FrameCounter;
+extern unk_D_82F14450 gPlayerInfo[4];
 
 extern char** D_82F13B70;
 extern char** D_82F13B74;
 
-char* func_82F00020(s32 arg0);
-char* func_82F00058(s32 arg0);
-char* func_82F00090(s32 arg0);
+char* GetMessageStringBank24(s32 arg0);
+char* GetMessageStringBank25(s32 arg0);
+char* GetMessageStringBank26Remapped(s32 arg0);
 void InitProgressBarRect(s16 arg0);
 void ResetProgressBar(void);
 void UpdateProgressBar(void);
@@ -260,12 +260,12 @@ s32 func_82F0109C(void);
 void func_82F01180(void);
 s32 func_82F01234(s32 arg0, s32 arg1);
 
-s16 func_82F01390(unk_D_82F144D0* arg0, s16 arg1);
-u16* func_82F014E4(u8* arg0, s16 arg1, s16 arg2);
-void func_82F01530(s32 arg0, s16 arg1);
-s32 func_82F018F8(void);
-void func_82F01920(unk_D_82F144D0* arg0);
-void func_82F01A70(unk_D_82F144D0* arg0);
+s16 LoadPokemonFromGbsBlock(unk_D_82F144D0* arg0, s16 arg1);
+u16* GetSpriteDataPtr(u8* arg0, s16 arg1, s16 arg2);
+void InitPokemonPicker(s32 arg0, s16 arg1);
+s32 GetPickerState(void);
+void PickerCountdownTick(unk_D_82F144D0* arg0);
+void HandlePickerInput(unk_D_82F144D0* arg0);
 void func_82F01FE4(unk_D_82F144D0* arg0);
 void func_82F020B4(unk_D_82F144D0* arg0);
 void func_82F02180(unk_D_82F144D0* arg0);
@@ -273,15 +273,15 @@ void func_82F022DC(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_82F02544(s16 arg0, s16 arg1, s16 arg2);
 void func_82F028AC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, Color_RGB8* arg4, s16 arg5);
 void func_82F029FC(s16 arg0, s16 arg1, s16 arg2);
-void func_82F02B5C(s16 arg0, s16 arg1, s16 arg2);
+void DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2);
 void func_82F02CE8(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void func_82F02EAC(s16 arg0, s16 arg1, s16 arg2);
 void func_82F02FEC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 void func_82F037EC(s16, s16, s16, s16, u8, u8, u8, u8);
 void func_82F04010(s16 arg0, s16 arg1, u8* arg2, s16 arg3);
-void func_82F040D0(unk_D_82F144D0* arg0, s16 arg1, s16 arg2, s32 arg3);
-void func_82F043A4(s16 arg0, s16 arg1, s16 arg2);
-void func_82F04604(unk_D_82F144D0* arg0);
+void DrawPokemonListUI(unk_D_82F144D0* arg0, s16 arg1, s16 arg2, s32 arg3);
+void DrawStatusPanel(s16 arg0, s16 arg1, s16 arg2);
+void UpdateAndRenderPicker(unk_D_82F144D0* arg0);
 void func_82F04FD4(void);
 void func_82F0504C(void);
 void func_82F05110(void);

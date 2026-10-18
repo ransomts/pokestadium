@@ -307,7 +307,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         Text_Print(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", GetMessageString(NULL, 0, D_82F13B74, 0x16),
                       sp11C->unk_00.unk_00);
         Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, func_82F00020(sp11C->unk_00.unk_00));
+        Text_Print(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, GetMessageStringBank24(sp11C->unk_00.unk_00));
 
         temp_s0 = RemapStadiumModeIndex(sp11C->unk_06);
         temp_s1_2 = RemapStadiumModeIndex(sp11C->unk_07);
@@ -317,14 +317,14 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_Print(arg0->unk_04 + 0x120, arg0->unk_06 + 0x28, "1/");
         Text_SetEnvColor(D_80071D88[temp_s0].color.r, D_80071D88[temp_s0].color.g, D_80071D88[temp_s0].color.b, 0xFF);
-        Text_Print(arg0->unk_04 + 0x13E, arg0->unk_06 + 0x28, "%s", func_82F00090(sp11C->unk_06));
+        Text_Print(arg0->unk_04 + 0x13E, arg0->unk_06 + 0x28, "%s", GetMessageStringBank26Remapped(sp11C->unk_06));
 
         if (sp11C->unk_06 != sp11C->unk_07) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_Print(arg0->unk_04 + 0x19E, arg0->unk_06 + 0x28, "2/");
             Text_SetEnvColor(D_80071D88[temp_s1_2].color.r, D_80071D88[temp_s1_2].color.g, D_80071D88[temp_s1_2].color.b,
                           0xFF);
-            Text_Print(arg0->unk_04 + 0x1BC, arg0->unk_06 + 0x28, "%s", func_82F00090(sp11C->unk_07));
+            Text_Print(arg0->unk_04 + 0x1BC, arg0->unk_06 + 0x28, "%s", GetMessageStringBank26Remapped(sp11C->unk_07));
         }
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -372,7 +372,7 @@ void func_82F05F40(unk_D_82F20A10* arg0) {
 
                 if (func_82F05F20(sp11C->unk_09[i]) == 0) {
                     sp70 = &D_80071D88[gMoveStrings[sp11C->unk_09[i] - 1].unk_01].color;
-                    sp74 = func_82F00058(sp11C->unk_09[i]);
+                    sp74 = GetMessageStringBank25(sp11C->unk_09[i]);
                 } else {
                     // "？？？？？？？"
                     static const char D_29C080[] = { 0xA1, 0xA9, 0xA1, 0xA9, 0xA1, 0xA9, 0xA1,

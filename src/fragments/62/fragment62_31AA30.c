@@ -180,7 +180,7 @@ void func_84331094(UNUSED unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1)
 void func_843310A0(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
 
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
@@ -194,7 +194,7 @@ void func_843311D8(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81404B78(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_84385D00);
 
@@ -205,7 +205,7 @@ void func_84331314(unk_D_8140E720* arg0, UNUSED unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81404B78(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_84385D40);
 
@@ -216,7 +216,7 @@ void func_84331450(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81404F84(arg1, arg0->unk_2C, arg0->unk_1C, D_84385CC0, arg0->unk_94.z);
 
@@ -227,7 +227,7 @@ void func_8433157C(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81404F84(arg1, arg0->unk_2C, arg0->unk_1C, D_84385D00, arg0->unk_94.z);
 
@@ -238,7 +238,7 @@ void func_843316A8(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     gSPDisplayList(gDisplayListHead++, D_8140DD58);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    func_8140437C(D_843920C0[0x13] + (D_8140E6C8 * 0x600), 0x20, 0x60);
+    func_8140437C(D_843920C0[0x13] + (gTimerMask3 * 0x600), 0x20, 0x60);
     func_81405C70(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     func_81404F84(arg1, arg0->unk_2C, arg0->unk_1C, D_84385D40, arg0->unk_94.z);
 

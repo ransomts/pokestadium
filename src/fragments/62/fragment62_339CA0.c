@@ -42,7 +42,7 @@ void func_8434F3E0(unk_D_8140E720* arg0) {
     func_81408E90(arg0, 10.0f);
     func_8140910C(arg0, (sp26 - 1) * 10.0f);
     func_8140B938(arg0, 1.0f);
-    func_8140D5A0(arg0, sp24);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_814081BC(arg0);
 }
 
@@ -110,7 +110,7 @@ void func_8434F610(unk_D_8140E720* arg0) {
 
     func_81408E90(arg0, 10.0f);
     func_8140B938(arg0, 1.0f);
-    func_8140D5A0(arg0, 0xC);
+    SetPrimEnvColorFromPair(arg0, 0xC);
     func_8140BCA8(arg0, sp26 * 3);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -189,14 +189,14 @@ void func_8434F888(unk_D_8140E720* arg0) {
             func_81409404(arg0, 0xA, 3);
             func_8140935C(arg0, 0xF, 0xA);
             func_81409514(arg0, 0xF, 3);
-            func_8140D5A0(arg0, 0xD);
+            SetPrimEnvColorFromPair(arg0, 0xD);
             break;
 
         case 1:
             func_81409404(arg0, 0xA, 5);
             func_8140935C(arg0, 0x14, 5);
             func_81409514(arg0, 0xA, 5);
-            func_8140D5A0(arg0, 0xE);
+            SetPrimEnvColorFromPair(arg0, 0xE);
             break;
     }
 
@@ -232,7 +232,7 @@ void func_8434FB3C(unk_D_8140E720* arg0) {
     s16 sp26 = func_843081BC(D_843902EC);
 
     func_8140B938(arg0, 1.0f);
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
 
     if (sp26 == 0x42) {
         func_81408BE0(arg0, 320.0f, 0.0f, 0.0f);
@@ -282,7 +282,7 @@ void func_8434FCC4(unk_D_8140E720* arg0) {
         func_8140A5B0(arg0, -0x2800);
     }
 
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
     func_814081BC(arg0);
 }
 
@@ -339,7 +339,7 @@ void func_8434FE58(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140D5A0(arg0, sp24);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_814081BC(arg0);
 }
 
@@ -391,7 +391,7 @@ void func_8435000C(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140D5A0(arg0, sp24);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_8140BC20(arg0, 0x80);
     func_814081BC(arg0);
 }
@@ -424,8 +424,8 @@ void func_843501CC(unk_D_8140E720* arg0) {
     s16 sp24 = func_8140C058(arg0);
 
     func_8140B938(arg0, 1.0f);
-    func_8140AD8C(arg0, 0.4f);
-    func_8140D5A0(arg0, sp24);
+    Particle_SetSpeed(arg0, 0.4f);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_8140BC20(arg0, 0x64);
     func_8140BCA8(arg0, sp26 * 4);
     func_81408348(arg0);
@@ -463,8 +463,8 @@ void func_84350330(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.25f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
     func_8140A594(arg0, 0x1800 - ((0x3000 / func_8140C068(arg0)) * sp26));
-    func_8140AD8C(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 3.0f);
-    func_8140D5A0(arg0, sp24);
+    Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 3.0f);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_8140BC20(arg0, 0xB4);
     func_814081BC(arg0);
 }
@@ -500,8 +500,8 @@ void func_84350520(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.5f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
     func_8140A594(arg0, 0x1800 - ((0x3000 / func_8140C068(arg0)) * sp26));
-    func_8140AD8C(arg0, (MathUtil_Random_ZeroOne() * 2.5f) + 3.0f);
-    func_8140D5A0(arg0, sp24);
+    Particle_SetSpeed(arg0, (MathUtil_Random_ZeroOne() * 2.5f) + 3.0f);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_8140BC20(arg0, 0xB4);
     func_814081BC(arg0);
 }
@@ -539,8 +539,8 @@ void func_84350728(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.25f);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.4f;
     func_8140A594(arg0, 0x800 - ((0x1000 / func_8140C068(arg0)) * sp24));
-    func_8140AD8C(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 5.0f);
-    func_8140D5A0(arg0, 0x32);
+    Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 5.0f);
+    SetPrimEnvColorFromPair(arg0, 0x32);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
 }
@@ -572,8 +572,8 @@ void func_843508F0(unk_D_8140E720* arg0) {
     func_8140959C(arg0, 0, 0, 0xA);
     arg0->unk_5C.y = (MathUtil_Random_ZeroOne() * 0.5f) + 0.25f;
     func_8140A594(arg0, 0x2000 - ((0x4000 / func_8140C068(arg0)) * sp26));
-    func_8140AD8C(arg0, MathUtil_Random_ZeroOne() + 1.0f);
-    func_8140D5A0(arg0, 0xA);
+    Particle_SetSpeed(arg0, MathUtil_Random_ZeroOne() + 1.0f);
+    SetPrimEnvColorFromPair(arg0, 0xA);
     func_8140BC20(arg0, 0x64);
     func_814081BC(arg0);
 }
@@ -610,9 +610,9 @@ void func_84350AFC(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.3f);
     func_8140959C(arg0, 0xA, 5, 0xA);
     func_81408E90(arg0, 15.0f);
-    func_8140AD8C(arg0, (RandomMod(0xA) * 0.1f) + 1.5f);
+    Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.1f) + 1.5f);
     func_8140BCA8(arg0, sp26 * 2);
-    func_8140D5A0(arg0, 0x32);
+    SetPrimEnvColorFromPair(arg0, 0x32);
     func_8140BC20(arg0, 0xFF);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -650,9 +650,9 @@ void func_84350CD8(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.25f);
     func_8140A594(arg0, sp26 << 0xC);
-    func_8140AD8C(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 6.0f);
-    func_8140AF24(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
-    func_8140D5A0(arg0, 0xA);
+    Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 6.0f);
+    Particle_SetAccelerationY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
+    SetPrimEnvColorFromPair(arg0, 0xA);
     func_8140BC20(arg0, 0x64);
     func_8140BCA8(arg0, 7);
     func_814081BC(arg0);
@@ -697,18 +697,18 @@ void func_84350EC8(unk_D_8140E720* arg0) {
             func_8140B938(arg0, 0.75f);
             func_8140959C(arg0, 0xF, 0xF, 0xF);
             func_81408E90(arg0, 15.0f);
-            func_8140AD8C(arg0, 1.0f);
+            Particle_SetSpeed(arg0, 1.0f);
             break;
 
         case 1:
             func_8140B938(arg0, 0.5f);
             func_8140959C(arg0, 3, 3, 3);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             break;
     }
 
     func_8140BCA8(arg0, sp26 * 4);
-    func_8140D5A0(arg0, 0x13);
+    SetPrimEnvColorFromPair(arg0, 0x13);
     func_8140BC20(arg0, 0xC8);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -743,7 +743,7 @@ void func_84351090(unk_D_8140E720* arg0) {
 
     func_81409708(arg0, 0xF, 0xF);
     func_8140B938(arg0, 1.0f);
-    func_8140AD8C(arg0, 0.2f);
+    Particle_SetSpeed(arg0, 0.2f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     func_8140BB74(arg0, 0xFF, 0x64, 0);
     func_8140BC20(arg0, 0xFF);
@@ -784,7 +784,7 @@ void func_84351144(unk_D_8140E720* arg0) {
 
 void func_84351264(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.1f);
-    func_8140D5A0(arg0, 0x14);
+    SetPrimEnvColorFromPair(arg0, 0x14);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
 }
@@ -815,10 +815,10 @@ void func_84351330(unk_D_8140E720* arg0) {
     sp28.y = MathUtil_Random16();
     sp28.z = 0;
     func_8140A24C(arg0, sp28);
-    func_8140D5A0(arg0, 0x15);
+    SetPrimEnvColorFromPair(arg0, 0x15);
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, RandomMod(5) + 8);
-    func_8140AD8C(arg0, 5.0f);
+    Particle_SetSpeed(arg0, 5.0f);
     func_814081BC(arg0);
 }
 
@@ -859,18 +859,18 @@ void func_843514B4(unk_D_8140E720* arg0) {
     switch (sp26) {
         case 0:
             func_8140B938(arg0, 0.2f);
-            func_8140D5A0(arg0, 0x15);
+            SetPrimEnvColorFromPair(arg0, 0x15);
             break;
 
         case 1:
             func_8140B938(arg0, 0.2f);
-            func_8140D5A0(arg0, 0x1B);
+            SetPrimEnvColorFromPair(arg0, 0x1B);
             break;
     }
 
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, RandomMod(5) + 8);
-    func_8140AD8C(arg0, 6.0f);
+    Particle_SetSpeed(arg0, 6.0f);
     func_814081BC(arg0);
 }
 
@@ -907,9 +907,9 @@ void func_843516A0(unk_D_8140E720* arg0) {
 
     switch (sp26) {
         case 0:
-            func_8140D5A0(arg0, 8);
+            SetPrimEnvColorFromPair(arg0, 8);
             func_8140BC20(arg0, 0x64);
-            func_8140AD8C(arg0, 5.0f);
+            Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
             sp28.y = func_81400B28(0x2000, 0x8000);
             sp28.z = 0;
@@ -917,9 +917,9 @@ void func_843516A0(unk_D_8140E720* arg0) {
             break;
 
         case 1:
-            func_8140D5A0(arg0, 8);
+            SetPrimEnvColorFromPair(arg0, 8);
             func_8140BC20(arg0, 0x64);
-            func_8140AD8C(arg0, 5.0f);
+            Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
             sp28.y = func_81400B28(0x2000, 0x8000);
             sp28.z = 0;
@@ -927,10 +927,10 @@ void func_843516A0(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8140D5A0(arg0, 8);
+            SetPrimEnvColorFromPair(arg0, 8);
             func_8140BC20(arg0, 0x64);
             func_81408CA0(arg0, -10.0f);
-            func_8140AD8C(arg0, 5.0f);
+            Particle_SetSpeed(arg0, 5.0f);
             sp28.x = RandomRangeSigned(0x2000);
             sp28.y = func_81400B28(0x2000, 0x8000);
             sp28.z = 0;
@@ -938,9 +938,9 @@ void func_843516A0(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            func_8140D5A0(arg0, 9);
+            SetPrimEnvColorFromPair(arg0, 9);
             func_8140BC20(arg0, 0x96);
-            func_8140AD8C(arg0, 3.0f);
+            Particle_SetSpeed(arg0, 3.0f);
             sp28.x = RandomRangeSigned(0x2000);
             sp28.y = func_81400B28(0x2000, 0x8000);
             sp28.z = 0;
@@ -948,9 +948,9 @@ void func_843516A0(unk_D_8140E720* arg0) {
             break;
 
         case 4:
-            func_8140D5A0(arg0, 5);
+            SetPrimEnvColorFromPair(arg0, 5);
             func_8140BC20(arg0, 0x96);
-            func_8140AD8C(arg0, 4.0f);
+            Particle_SetSpeed(arg0, 4.0f);
             sp28.x = RandomRangeSigned(0x3000);
             sp28.y = func_81400B28(0x3000, 0x8000);
             sp28.z = 0;
@@ -1014,9 +1014,9 @@ void func_84351ADC(unk_D_8140E720* arg0) {
     sp28.y = RandomMod(0x10000);
     sp28.z = 0;
     func_8140A24C(arg0, sp28);
-    func_8140A3EC(arg0, func_81400B4C(0x400, 0x400));
-    func_8140AD8C(arg0, 8.0f);
-    func_8140D5A0(arg0, 0x17);
+    Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x400, 0x400));
+    Particle_SetSpeed(arg0, 8.0f);
+    SetPrimEnvColorFromPair(arg0, 0x17);
     func_8140BCA8(arg0, sp2E * 0);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -1053,7 +1053,7 @@ void func_84351BCC(unk_D_8140E720* arg0) {
     }
 
     if (func_81408368(arg0) != 0) {
-        func_8140A4DC(arg0);
+        Particle_AddRotationDeltaZ(arg0);
         func_8140B2B4(arg0);
         func_81409BDC(arg0);
     }
@@ -1087,9 +1087,9 @@ void func_84351D70(unk_D_8140E720* arg0) {
     sp24.z = 0;
 
     func_8140A24C(arg0, sp24);
-    func_8140AD8C(arg0, 0.0f);
-    func_8140ADA4(arg0, 0.0f);
-    func_8140D5A0(arg0, sp2A);
+    Particle_SetSpeed(arg0, 0.0f);
+    Particle_SetAcceleration(arg0, 0.0f);
+    SetPrimEnvColorFromPair(arg0, sp2A);
     func_8140B938(arg0, 0.0f);
     func_8140B95C(arg0, 0.3f);
     func_8140B974(arg0, 0.05f);
@@ -1118,7 +1118,7 @@ void func_84351D70(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            func_8140AD8C(arg0, 0.2f);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 0.1f);
             func_8140910C(arg0, func_81400ADC(0x14, 0x1E));
             func_8140BCA8(arg0, sp2E * 4);
@@ -1129,19 +1129,19 @@ void func_84351D70(unk_D_8140E720* arg0) {
             func_81408E90(arg0, 15.0f);
             func_8140B95C(arg0, 0.15f);
             func_8140B974(arg0, 0.02f);
-            func_8140AD8C(arg0, 0.1f);
+            Particle_SetSpeed(arg0, 0.1f);
             break;
 
         case 6:
             func_8140910C(arg0, func_81400ADC(0x1E, 0x14));
-            func_8140AD8C(arg0, 0.3f);
+            Particle_SetSpeed(arg0, 0.3f);
             break;
 
         case 8:
             func_8140910C(arg0, func_81400ADC(8, 2));
             func_8140B95C(arg0, 0.1f);
             func_8140B974(arg0, 0.04f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140BCA8(arg0, 0);
             break;
 
@@ -1149,15 +1149,15 @@ void func_84351D70(unk_D_8140E720* arg0) {
             func_8140910C(arg0, func_81400ADC(0xA, 2));
             func_8140B95C(arg0, 0.2f);
             func_8140B974(arg0, 0.025f);
-            func_8140AD8C(arg0, 1.0f);
+            Particle_SetSpeed(arg0, 1.0f);
             break;
 
         case 9:
             func_8140910C(arg0, func_81400ADC(0x1E, 0x14));
             func_8140B95C(arg0, 0.3f);
             func_8140B974(arg0, 0.025f);
-            func_8140AD8C(arg0, 0.0f);
-            func_8140ADA4(arg0, 0.02f);
+            Particle_SetSpeed(arg0, 0.0f);
+            Particle_SetAcceleration(arg0, 0.02f);
             break;
 
         case 10:
@@ -1168,7 +1168,7 @@ void func_84351D70(unk_D_8140E720* arg0) {
 
         case 11:
             func_8140910C(arg0, func_81400ADC(5, 5));
-            func_8140AD8C(arg0, RandomMod(5) + 5.0f);
+            Particle_SetSpeed(arg0, RandomMod(5) + 5.0f);
             break;
     }
     func_81408348(arg0);
@@ -1220,9 +1220,9 @@ void func_8435235C(unk_D_8140E720* arg0) {
     func_8140959C(arg0, 0xA, 0x14, 0x14);
     func_81408ED0(arg0, 15.0f);
     func_81408E90(arg0, 7.0f);
-    func_8140AD8C(arg0, RandomMod(5) + 8.0f);
+    Particle_SetSpeed(arg0, RandomMod(5) + 8.0f);
     func_8140BCA8(arg0, sp26 * 2);
-    func_8140D5A0(arg0, sp24);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_81408348(arg0);
     func_814081BC(arg0);
 }
@@ -1299,7 +1299,7 @@ void func_84352620(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.7f);
     func_81408CA0(arg0, 10.0f);
-    func_8140D5A0(arg0, 0x19);
+    SetPrimEnvColorFromPair(arg0, 0x19);
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, sp26 * 4);
     func_81408348(arg0);
@@ -1332,49 +1332,49 @@ void func_84352754(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
     s16 sp24 = func_8140C040(arg0);
 
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
 
     switch (sp24) {
         case 1:
-            func_8140AD8C(arg0, 0.2f);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             break;
 
         case 5:
-            func_8140AD8C(arg0, 0.2f);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             break;
 
         case 6:
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140B938(arg0, 1.5f);
             break;
 
         case 16:
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140B938(arg0, 2.0f);
             break;
 
         case 7:
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140B938(arg0, 1.5f);
             break;
 
         case 8:
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140B938(arg0, 1.5f);
             func_81408E90(arg0, -10.0f);
             break;
 
         case 12:
             func_8140B938(arg0, 0.75f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140959C(arg0, 8, 0xA, 8);
             break;
 
         case 13:
             func_8140B938(arg0, 1.0f);
-            func_8140AD8C(arg0, 0.0f);
+            Particle_SetSpeed(arg0, 0.0f);
             func_81409248(arg0, 0x1E);
             func_8140935C(arg0, 0x14, 0xA);
             func_814092C8(arg0, 0x1E);
@@ -1382,7 +1382,7 @@ void func_84352754(unk_D_8140E720* arg0) {
 
         case 14:
             func_8140B938(arg0, 1.0f);
-            func_8140AD8C(arg0, 0.0f);
+            Particle_SetSpeed(arg0, 0.0f);
             func_81409248(arg0, 0x14);
             func_8140935C(arg0, 0x14, 0xA);
             func_814092C8(arg0, 0xF);
@@ -1390,7 +1390,7 @@ void func_84352754(unk_D_8140E720* arg0) {
 
         case 15:
             func_8140B938(arg0, 1.5f);
-            func_8140AD8C(arg0, 0.3f);
+            Particle_SetSpeed(arg0, 0.3f);
             func_8140959C(arg0, 0xA, 0xA, 0xA);
             break;
     }
@@ -1429,59 +1429,59 @@ void func_84352A8C(unk_D_8140E720* arg0) {
 
     switch (func_8140C058(arg0)) {
         case 0:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140BCA8(arg0, sp26 * 2);
             func_81408E90(arg0, 15.0f);
             break;
 
         case 1:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 2:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140BCA8(arg0, sp26 * 2);
             func_81408E90(arg0, -10.0f);
             break;
 
         case 3:
-            func_8140D5A0(arg0, 1);
+            SetPrimEnvColorFromPair(arg0, 1);
             func_8140B938(arg0, 0.5f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 4:
-            func_8140D5A0(arg0, 2);
+            SetPrimEnvColorFromPair(arg0, 2);
             func_8140B938(arg0, 0.5f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 5:
-            func_8140D5A0(arg0, 3);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 3);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 6:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.4f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140B938(arg0, 1.5f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 9:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0xF, 0xF, 0xF);
             func_81408E90(arg0, 10.0f);
@@ -1489,8 +1489,8 @@ void func_84352A8C(unk_D_8140E720* arg0) {
             break;
 
         case 10:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0x14, 0, 0x14);
             func_81408CA0(arg0, 0.0f);
@@ -1498,8 +1498,8 @@ void func_84352A8C(unk_D_8140E720* arg0) {
             break;
 
         case 11:
-            func_8140D5A0(arg0, 0);
-            func_8140AD8C(arg0, 0.2f);
+            SetPrimEnvColorFromPair(arg0, 0);
+            Particle_SetSpeed(arg0, 0.2f);
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0xA, 0, 0xA);
             func_81408CA0(arg0, 30.0f - (sp26 * 5.0f));
@@ -1549,17 +1549,17 @@ void func_84352F90(unk_D_8140E720* arg0) {
 
     switch (func_8140C058(arg0)) {
         case 3:
-            func_8140D5A0(arg0, 1);
+            SetPrimEnvColorFromPair(arg0, 1);
             func_8140B938(arg0, 1.5f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140BCA8(arg0, sp26 * 2);
             func_8140BEEC(arg0, 0);
             break;
 
         case 4:
-            func_8140D5A0(arg0, 2);
+            SetPrimEnvColorFromPair(arg0, 2);
             func_8140B938(arg0, 1.5f);
-            func_8140AD8C(arg0, 0.4f);
+            Particle_SetSpeed(arg0, 0.4f);
             func_8140BCA8(arg0, sp26 * 2);
             func_8140BEEC(arg0, 1);
             break;
@@ -1621,7 +1621,7 @@ s32 func_84353098(unk_D_8140E720* arg0) {
 void func_8435324C(unk_D_8140E720* arg0) {
     func_8140C038(arg0);
     func_8140B938(arg0, 0.05f);
-    func_8140D5A0(arg0, 7);
+    SetPrimEnvColorFromPair(arg0, 7);
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, 0x32);
     func_814081BC(arg0);
@@ -1653,7 +1653,7 @@ void func_84353354(unk_D_8140E720* arg0) {
     sp2E = func_8140C038(arg0);
     sp2C = sp2E % 3;
     func_8140B938(arg0, 0.4f);
-    func_8140AD8C(arg0, 1.0f);
+    Particle_SetSpeed(arg0, 1.0f);
 
     sp24.x = MathUtil_Random16();
     sp24.y = MathUtil_Random16();
@@ -1674,7 +1674,7 @@ void func_84353354(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140D5A0(arg0, 0x17);
+    SetPrimEnvColorFromPair(arg0, 0x17);
     func_8140BCA8(arg0, sp2E * 4);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -1717,7 +1717,7 @@ void func_843535F4(unk_D_8140E720* arg0) {
     Vec3s sp24;
 
     func_8140B938(arg0, 0.4f);
-    func_8140AD8C(arg0, 1.0f);
+    Particle_SetSpeed(arg0, 1.0f);
 
     sp24.x = MathUtil_Random16();
     sp24.y = MathUtil_Random16();
@@ -1738,7 +1738,7 @@ void func_843535F4(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140D5A0(arg0, 0x17);
+    SetPrimEnvColorFromPair(arg0, 0x17);
     func_8140BCA8(arg0, sp2E * 4);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -1810,7 +1810,7 @@ void func_84353894(unk_D_8140E720* arg0) {
             sp1E = 0x1E;
             break;
     }
-    func_8140D5A0(arg0, sp1E);
+    SetPrimEnvColorFromPair(arg0, sp1E);
 }
 
 void func_84353998(unk_D_8140E720* arg0) {
@@ -1828,14 +1828,14 @@ void func_84353998(unk_D_8140E720* arg0) {
         case 0:
             func_8140959C(arg0, 0xF, 0xF, 0xF);
             func_81408E90(arg0, 10.0f);
-            func_8140AD8C(arg0, 1.0f);
+            Particle_SetSpeed(arg0, 1.0f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
 
         case 1:
             func_8140959C(arg0, 0xA, 0xA, 0xA);
             func_81408E90(arg0, 10.0f);
-            func_8140AD8C(arg0, 0.0f);
+            Particle_SetSpeed(arg0, 0.0f);
             func_8140BCA8(arg0, sp26 * 2);
             break;
     }
@@ -1873,7 +1873,7 @@ void func_84353AEC(unk_D_8140E720* arg0) {
 
 void func_84353BD0(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.2f);
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0xC8);
     func_8140BCA8(arg0, 0x18);
     arg0->unk_74 = 0.02f;
@@ -1910,8 +1910,8 @@ void func_84353D30(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 1.0f);
     func_8140959C(arg0, 0xF, 0xF, 0xF);
-    func_8140AD8C(arg0, (RandomMod(0x32) * 0.02f) + 0.5f);
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.02f) + 0.5f);
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0x64);
     func_8140BCA8(arg0, sp26 * 4);
     func_81408348(arg0);
@@ -2018,13 +2018,13 @@ void func_843540FC(unk_D_8140E720* arg0) {
 
     func_8140BFEC(arg0, 2);
     func_8140BCA8(arg0, sp2E * 2);
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
 
     switch (sp2C) {
         case 0:
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0xA, 0xA, 0xA);
-            func_8140AD8C(arg0, (RandomMod(0x32) * 0.02f) + 0.5f);
+            Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.02f) + 0.5f);
             func_8140BC20(arg0, 0x64);
             func_8140BF4C(arg0, 4);
             break;
@@ -2032,7 +2032,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 1:
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0xA, 0xF, 0x3C);
-            func_8140AD8C(arg0, (RandomMod(0x32) * 0.04f) + 1.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.04f) + 1.0f);
             func_8140BC20(arg0, 0x64);
             func_8140BF4C(arg0, 4);
             break;
@@ -2040,7 +2040,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 2:
             func_8140B938(arg0, 1.5f);
             func_8140959C(arg0, 0xF, 0x14, 0x19);
-            func_8140AD8C(arg0, (RandomMod(0x32) * 0.07f) + 4.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.07f) + 4.0f);
             func_8140BC20(arg0, 0xA0);
             func_8140BCA8(arg0, sp2E);
             func_8140BF4C(arg0, 0xA);
@@ -2051,7 +2051,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             func_8140959C(arg0, 0xA, 0, 0x19);
             func_81408ED0(arg0, 10.0f);
             func_81408E90(arg0, 5.0f);
-            func_8140AD8C(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
+            Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
             func_8140BC20(arg0, 0xFF);
             func_8140BF4C(arg0, 2);
             func_8140BFEC(arg0, 2);
@@ -2060,7 +2060,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 8:
             func_8140B938(arg0, 1.2f);
             func_84353F08(arg0);
-            func_8140AD8C(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
+            Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
             func_8140BC20(arg0, 0xFF);
             func_8140BF4C(arg0, 2);
             func_8140BFEC(arg0, 2);
@@ -2072,7 +2072,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             func_8140959C(arg0, 0xA, 0, 0x28);
             func_81408ED0(arg0, 10.0f);
             func_81408E90(arg0, 5.0f);
-            func_8140AD8C(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
+            Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.05f) + 0.2f);
             func_8140BC20(arg0, 0xFF);
             func_8140BF4C(arg0, 2);
             func_8140BFEC(arg0, 2);
@@ -2082,7 +2082,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 4:
             func_8140B938(arg0, 0.5f);
             func_8140959C(arg0, 0xA, 0, 0x14);
-            func_8140AD8C(arg0, (RandomMod(0xA) * 0.05f) + 0.5f);
+            Particle_SetSpeed(arg0, (RandomMod(0xA) * 0.05f) + 0.5f);
             func_8140BC20(arg0, 0xFF);
             func_8140BF4C(arg0, 2);
             func_8140BFEC(arg0, 2);
@@ -2091,7 +2091,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 5:
             func_8140B938(arg0, 1.0f);
             func_8140959C(arg0, 0xF, 0xF, 0xF);
-            func_8140AD8C(arg0, (RandomMod(0x32) * 0.02f) + 1.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x32) * 0.02f) + 1.0f);
             func_8140BC20(arg0, 0x80);
             func_8140BF4C(arg0, 4);
             break;
@@ -2099,7 +2099,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
         case 6:
             func_8140B938(arg0, 0.5f);
             func_8140959C(arg0, 5, 5, 5);
-            func_8140AD8C(arg0, 0.5f);
+            Particle_SetSpeed(arg0, 0.5f);
             func_8140BC20(arg0, 0xC8);
             func_8140BF4C(arg0, 4);
             break;
@@ -2108,7 +2108,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             func_8140B938(arg0, 0.5f);
             func_8140959C(arg0, 0xA, 0, 5);
             func_81408E90(arg0, 10.0f);
-            func_8140AD8C(arg0, (RandomMod(0x14) * 0.02f) + 0.5f);
+            Particle_SetSpeed(arg0, (RandomMod(0x14) * 0.02f) + 0.5f);
             func_8140BC20(arg0, 0xC8);
             func_8140BF4C(arg0, 4);
             break;
@@ -2120,7 +2120,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             sp30.y = RandomMod(0x10000);
             sp30.z = 0;
             func_8140A4F0(arg0, sp30);
-            func_8140AD8C(arg0, (RandomMod(0x14) * 0.15f) + 3.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x14) * 0.15f) + 3.0f);
             func_8140B2B4(arg0);
             func_8140BCA8(arg0, sp2E);
             func_8140BF4C(arg0, 0xA);
@@ -2133,7 +2133,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             sp30.y = RandomMod(0x10000);
             sp30.z = 0;
             func_8140A4F0(arg0, sp30);
-            func_8140AD8C(arg0, (RandomMod(0x14) * 0.15f) + 4.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x14) * 0.15f) + 4.0f);
             func_8140B2B4(arg0);
             func_8140BCA8(arg0, 0);
             func_8140BF4C(arg0, 0xA);
@@ -2146,7 +2146,7 @@ void func_843540FC(unk_D_8140E720* arg0) {
             sp30.y = RandomMod(0x10000);
             sp30.z = 0;
             func_8140A4F0(arg0, sp30);
-            func_8140AD8C(arg0, (RandomMod(0x14) * 0.3f) + 6.0f);
+            Particle_SetSpeed(arg0, (RandomMod(0x14) * 0.3f) + 6.0f);
             func_8140B2B4(arg0);
             func_8140BC20(arg0, 0xFF);
             func_8140BCA8(arg0, sp2E);
@@ -2218,7 +2218,7 @@ void func_84354ADC(unk_D_8140E720* arg0) {
 
     func_81408ED0(arg0, sp1C);
     func_81408E90(arg0, sp18);
-    func_8140ADA4(arg0, 0.4f);
+    Particle_SetAcceleration(arg0, 0.4f);
 }
 
 void func_84354BE4(unk_D_8140E720* arg0) {
@@ -2251,15 +2251,15 @@ void func_84354BE4(unk_D_8140E720* arg0) {
 
     switch (arg0->unk_B8) {
         case 1:
-            func_8140AE40(arg0, 1.0f, 0.1f);
+            Particle_ApproachAcceleration(arg0, 1.0f, 0.1f);
             if (func_81408A78(arg0, 4) != 0) {
                 func_81408A68(arg0);
-                func_8140ADA4(arg0, 0.2f);
+                Particle_SetAcceleration(arg0, 0.2f);
             }
             break;
 
         case 2:
-            func_8140AE40(arg0, -0.5f, 0.2f);
+            Particle_ApproachAcceleration(arg0, -0.5f, 0.2f);
             break;
     }
 }
@@ -2287,7 +2287,7 @@ void func_84354D58(unk_D_8140E720* arg0) {
     }
 
     if (func_8140819C(arg0) != 0) {
-        func_8140B0A4(arg0, -2.0f, 0.3f);
+        Particle_DecrementAccelerationYClamp(arg0, -2.0f, 0.3f);
         func_81409BDC(arg0);
     }
 }
@@ -2312,7 +2312,7 @@ void func_84354E44(unk_D_8140E720* arg0) {
     }
 
     if (func_8140819C(arg0) != 0) {
-        func_8140B0A4(arg0, -10.0f, 0.8f);
+        Particle_DecrementAccelerationYClamp(arg0, -10.0f, 0.8f);
         func_81409BDC(arg0);
     }
 }
@@ -2322,10 +2322,10 @@ void func_84354F0C(unk_D_8140E720* arg0) {
 
     func_8140C038(arg0);
     func_8140C048(arg0);
-    func_8140D5A0(arg0, func_8140C058(arg0));
+    SetPrimEnvColorFromPair(arg0, func_8140C058(arg0));
     func_8140B938(arg0, 0.5f);
     func_8140A52C(arg0, RandomMod(0x10000), RandomMod(0x10000), 0);
-    func_8140AD8C(arg0, 0.75f);
+    Particle_SetSpeed(arg0, 0.75f);
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
 }
@@ -2360,9 +2360,9 @@ void func_84355040(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.05f);
     func_8140B95C(arg0, 0.25f);
     func_8140B974(arg0, 0.02f);
-    func_8140D5A0(arg0, sp26);
+    SetPrimEnvColorFromPair(arg0, sp26);
     func_8140BCA8(arg0, 8);
-    func_8140AD8C(arg0, (RandomMod(8) * 0.25f) + 2.0f);
+    Particle_SetSpeed(arg0, (RandomMod(8) * 0.25f) + 2.0f);
     func_8140B2B4(arg0);
     func_814081BC(arg0);
 }
@@ -2387,7 +2387,7 @@ void func_84355164(unk_D_8140E720* arg0) {
 
     if (func_8140819C(arg0) != 0) {
         func_8140BA1C(arg0);
-        func_8140B0A4(arg0, -1.5f, 0.1f);
+        Particle_DecrementAccelerationYClamp(arg0, -1.5f, 0.1f);
         func_81409BDC(arg0);
     }
 }
@@ -2455,7 +2455,7 @@ void func_843553BC(unk_D_8140E720* arg0) {
 
     if (func_8140819C(arg0) != 0) {
         func_8140BA1C(arg0);
-        func_8140B0A4(arg0, -1.5f, 0.2f);
+        Particle_DecrementAccelerationYClamp(arg0, -1.5f, 0.2f);
         func_81409BDC(arg0);
     }
 }
@@ -2465,7 +2465,7 @@ void func_84355498(unk_D_8140E720* arg0) {
 
     func_8140B938(arg0, 0.2f);
     func_81408E90(arg0, 5.0f);
-    func_8140D5A0(arg0, sp26);
+    SetPrimEnvColorFromPair(arg0, sp26);
     func_8140BC20(arg0, 0x40);
     func_814081BC(arg0);
 }
@@ -2491,11 +2491,11 @@ void func_84355584(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
     s16 sp24 = func_8140C058(arg0);
 
-    func_8140AD8C(arg0, 100.0f);
-    func_8140ADA4(arg0, 3.0f);
+    Particle_SetSpeed(arg0, 100.0f);
+    Particle_SetAcceleration(arg0, 3.0f);
     func_8140A094(arg0, 2.0f);
-    func_8140A3D8(arg0, 0x400);
-    func_8140D5A0(arg0, sp24);
+    Particle_SetRotationDeltaY(arg0, 0x400);
+    SetPrimEnvColorFromPair(arg0, sp24);
     func_8140B938(arg0, 0.5f - (sp26 * 0.04f));
     func_8140BC20(arg0, (0xFF - (sp26 * 0x10)) & 0xFF);
     func_8140BCA8(arg0, sp26 + 1);
@@ -2528,8 +2528,8 @@ void func_84355670(unk_D_8140E720* arg0) {
     }
 
     if (func_81408368(arg0) != 0) {
-        func_8140AE00(arg0, 0.0f);
-        func_8140A4C8(arg0);
+        Particle_ApproachSpeed(arg0, 0.0f);
+        Particle_AddRotationDeltaY(arg0);
         func_81409C94(arg0);
         func_81409B18(arg0, 0.0f);
         func_8140BBC0(arg0, 0xFF, 4);
@@ -2539,8 +2539,8 @@ void func_84355670(unk_D_8140E720* arg0) {
 
 void func_84355794(unk_D_8140E720* arg0) {
     func_8140C038(arg0);
-    func_8140A2B8(arg0, RandomMod(0x10000));
-    func_81409900(arg0, func_81400B4C(0x28, 0x28));
+    Particle_SetRotationY(arg0, RandomMod(0x10000));
+    Particle_SetVelocityY(arg0, func_81400B4C(0x28, 0x28));
     func_8432D844(arg0, func_84355670, &D_843861D0[0x44], 5);
     func_814081BC(arg0);
 }
@@ -2561,9 +2561,9 @@ void func_8435586C(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     Particle_SetPrimColor(arg0, 0xDC, 0xFF, 0xFF);
-    func_8140D568(arg0, 0x35);
+    SetEnvColorFromPalette(arg0, 0x35);
     arg0->unk_1C = (sp26 * 0.05f) + 0.5f;
-    func_8140AD8C(arg0, 2.0f);
+    Particle_SetSpeed(arg0, 2.0f);
     func_8140BC20(arg0, (0xFF - (sp26 << 5)) & 0xFF);
     func_8140BCA8(arg0, sp26 + 1);
     func_814083E8(arg0, 0xF);
@@ -2587,7 +2587,7 @@ void func_8435593C(unk_D_8140E720* arg0) {
         case 3:
             func_8140B14C(arg0, 1.5f);
             if (func_8140826C(arg0, 4) != 0) {
-                func_8140AD8C(arg0, 10.0f);
+                Particle_SetSpeed(arg0, 10.0f);
                 func_8140BCA8(arg0, func_81401020(&arg0->unk_7C, arg0->unk_50, D_84390348, arg0->unk_74));
             }
             break;
@@ -2616,8 +2616,8 @@ void func_84355B08(unk_D_8140E720* arg0) {
     func_8140B938(arg0, 0.5f);
     func_81409930(arg0, 100.0f);
     func_8140BCA8(arg0, sp26 + 1);
-    func_8140D530(arg0, 0xA);
-    func_8140D568(arg0, 0x35);
+    SetPrimColorFromPalette(arg0, 0xA);
+    SetEnvColorFromPalette(arg0, 0x35);
     func_81408348(arg0);
     func_814081BC(arg0);
 }
@@ -2660,8 +2660,8 @@ void func_84355C54(unk_D_8140E720* arg0) {
     func_8140B974(arg0, 0.35f * sp24);
     func_81408E90(arg0, 10.0f);
     func_814083E8(arg0, 0xF);
-    func_8140D530(arg0, 0xA);
-    func_8140D568(arg0, 0x35);
+    SetPrimColorFromPalette(arg0, 0xA);
+    SetEnvColorFromPalette(arg0, 0x35);
     func_8140BC20(arg0, 0xFF);
     func_8140BCA8(arg0, sp22 * 8);
     func_81408348(arg0);

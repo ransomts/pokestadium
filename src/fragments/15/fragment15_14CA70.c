@@ -660,7 +660,7 @@ void HandleSnapshotButton(void) {
             }
 
             D_83402EE0[D_8690B344].unk_6C |= gCameraParams->unk_00C * 0x10;
-            D_83402EE0[D_8690B344].unk_68 = D_8140E6B8;
+            D_83402EE0[D_8690B344].unk_68 = gTimerCounter;
 
             D_83402EE0[D_8690B344].unk_00 = D_8690A69C->unk_004.unk_024.y;
             D_83402EE0[D_8690B344].unk_04 = D_8690A69C->unk_16C;
@@ -1074,7 +1074,7 @@ void func_86901B28(void) {
 
 void func_86901ECC(void) {
     s32 var_s0 = 1;
-    void (*temp_s1)(void) = Util_ConvertAddrToVirtAddr(func_8140C734);
+    void (*temp_s1)(void) = Util_ConvertAddrToVirtAddr(Timer_Tick);
 
     while (var_s0 != 0) {
         UpdateControllerAndMenuInput();

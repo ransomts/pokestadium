@@ -29,7 +29,7 @@ static u8 D_8140E548[] = {
     0x0A, 0x19, 0x36, 0x24, 0x16,
 };
 
-static u8 D_8140E550[][2] = {
+static u8 gColorPairTable[][2] = {
     { 0x19, 0xC },  { 0xA, 0x3B },  { 0, 0xC },     { 8, 0x31 },    { 0x2A, 0x23 }, { 0x19, 0x1F }, { 0x36, 0x32 },
     { 0x19, 0xB },  { 0x3B, 0x3C }, { 0xC, 0xC },   { 0xA, 0x1C },  { 0xA, 0x14 },  { 0xA, 0x35 },  { 0xA, 0x24 },
     { 0xA, 0xC },   { 0x19, 0x14 }, { 0x19, 0xC },  { 0x15, 0xA },  { 0xE, 0x11 },  { 8, 0x37 },    { 0x36, 0x30 },
@@ -44,23 +44,23 @@ static u8 D_8140E550[][2] = {
     { 0x38, 0x35 }, { 0x38, 0x39 }, { 0x1C, 0x1A }, { 9, 0x35 },
 };
 
-void func_8140C760(UNUSED unk_D_8140E720* arg0, u8* texture) {
+void LoadTexture_RGBA16_32x32(UNUSED unk_D_8140E720* arg0, u8* texture) {
     Gfx_LoadTextureBlockRGBA16_Clamp(texture, 32, 32);
 }
 
-void func_8140C78C(unk_D_8140E720* arg0, u8* texture) {
+void LoadTexture_IA8_32x32_ByIndex(unk_D_8140E720* arg0, u8* texture) {
     Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 32], 32, 32);
 }
 
-void func_8140C7C0(UNUSED unk_D_8140E720* arg0, u8* texture) {
+void LoadTexture_IA8_32x32(UNUSED unk_D_8140E720* arg0, u8* texture) {
     Gfx_LoadTextureBlockIA8_Clamp(texture, 32, 32);
 }
 
-void func_8140C7EC(unk_D_8140E720* arg0, u8* texture) {
+void LoadTexture_IA8_32x64_ByIndex(unk_D_8140E720* arg0, u8* texture) {
     Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 64], 32, 64);
 }
 
-void func_8140C820(UNUSED unk_D_8140E720* arg0, u8* texture) {
+void LoadTexture_CI4_32x32(UNUSED unk_D_8140E720* arg0, u8* texture) {
     func_8140437C(texture, 32, 32);
 }
 
@@ -69,7 +69,7 @@ void func_8140C84C(unk_D_8140E720* arg0, u8* texture) {
 }
 
 void func_8140C880(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_8140437C(&texture[D_8140E6CC * (32 * 32 / 2)], 32, 32);
+    func_8140437C(&texture[gTimerMask2 * (32 * 32 / 2)], 32, 32);
 }
 
 void func_8140C8B8(UNUSED unk_D_8140E720* arg0, u8* texture) {
@@ -77,7 +77,7 @@ void func_8140C8B8(UNUSED unk_D_8140E720* arg0, u8* texture) {
 }
 
 void func_8140C8F4(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_8140437C(&texture[(D_8140E6E8 & 3) * (32 * 32 / 2)], 32, 32);
+    func_8140437C(&texture[(gTimerShift2 & 3) * (32 * 32 / 2)], 32, 32);
 }
 
 void func_8140C930(UNUSED unk_D_8140E720* arg0, u8* texture) {
@@ -93,7 +93,7 @@ void func_8140C9B0(unk_D_8140E720* arg0, u8* texture) {
 }
 
 void func_8140C9EC(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_8140437C(&texture[(D_8140E6B8 % 10) * (32 * 64 / 2)], 32, 64);
+    func_8140437C(&texture[(gTimerCounter % 10) * (32 * 64 / 2)], 32, 64);
 }
 
 void func_8140CA30(unk_D_8140E720* arg0, u8* texture) {
@@ -105,7 +105,7 @@ void func_8140CA64(UNUSED unk_D_8140E720* arg0, u8* texture) {
 }
 
 void func_8140CA90(UNUSED unk_D_8140E720* arg0, u8* texture) {
-    func_8140437C(&texture[D_8140E6C8 * (64 * 64 / 2)], 64, 64);
+    func_8140437C(&texture[gTimerMask3 * (64 * 64 / 2)], 64, 64);
 }
 
 void func_8140CAC8(UNUSED unk_D_8140E720* arg0, u8* texture) {
@@ -210,86 +210,86 @@ void func_8140D404(unk_D_8140E720* arg0, unk_D_86002F34_00C* arg1) {
     func_81404ABC(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, D_8140E378);
 }
 
-void func_8140D4A8(u8* arg0, u16 arg1) {
+void GetPaletteColor(u8* arg0, u16 arg1) {
     arg0[0] = D_8140E470[arg1][0];
     arg0[1] = D_8140E470[arg1][1];
     arg0[2] = D_8140E470[arg1][2];
 }
 
-void func_8140D4E0(u8* arg0, u8* arg1, u16 arg2) {
-    u8 sp1C = D_8140E550[arg2][0];
-    u8 sp1E = D_8140E550[arg2][1];
+void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2) {
+    u8 sp1C = gColorPairTable[arg2][0];
+    u8 sp1E = gColorPairTable[arg2][1];
 
-    func_8140D4A8(arg0, sp1C);
-    func_8140D4A8(arg1, sp1E);
+    GetPaletteColor(arg0, sp1C);
+    GetPaletteColor(arg1, sp1E);
 }
 
-void func_8140D530(unk_D_8140E720* arg0, u16 arg1) {
+void SetPrimColorFromPalette(unk_D_8140E720* arg0, u16 arg1) {
     arg0->prim_r = D_8140E470[arg1][0];
     arg0->prim_g = D_8140E470[arg1][1];
     arg0->prim_b = D_8140E470[arg1][2];
 }
 
-void func_8140D568(unk_D_8140E720* arg0, u16 arg1) {
+void SetEnvColorFromPalette(unk_D_8140E720* arg0, u16 arg1) {
     arg0->env_r = D_8140E470[arg1][0];
     arg0->env_g = D_8140E470[arg1][1];
     arg0->env_b = D_8140E470[arg1][2];
 }
 
-void func_8140D5A0(unk_D_8140E720* arg0, u16 arg1) {
-    u8 sp1C = D_8140E550[arg1][0];
-    u8 sp1E = D_8140E550[arg1][1];
+void SetPrimEnvColorFromPair(unk_D_8140E720* arg0, u16 arg1) {
+    u8 sp1C = gColorPairTable[arg1][0];
+    u8 sp1E = gColorPairTable[arg1][1];
 
-    func_8140D530(arg0, sp1C);
-    func_8140D568(arg0, sp1E);
+    SetPrimColorFromPalette(arg0, sp1C);
+    SetEnvColorFromPalette(arg0, sp1E);
 }
 
 void func_8140D5F0(unk_D_8140E720* arg0, s16 arg1) {
-    func_8140D530(arg0, D_8140E538[arg1]);
+    SetPrimColorFromPalette(arg0, D_8140E538[arg1]);
 }
 
 void func_8140D624(unk_D_8140E720* arg0, s16 arg1) {
-    func_8140D568(arg0, D_8140E538[arg1]);
+    SetEnvColorFromPalette(arg0, D_8140E538[arg1]);
 }
 
 void func_8140D658(unk_D_8140E720* arg0, s16 arg1) {
-    func_8140D530(arg0, D_8140E540[arg1]);
+    SetPrimColorFromPalette(arg0, D_8140E540[arg1]);
 }
 
 void func_8140D68C(unk_D_8140E720* arg0, s16 arg1) {
-    func_8140D568(arg0, D_8140E540[arg1]);
+    SetEnvColorFromPalette(arg0, D_8140E540[arg1]);
 }
 
 void func_8140D6C0(unk_D_8140E720* arg0, s16 arg1) {
     u8 sp1F = D_8140E538[arg1];
 
-    func_8140D530(arg0, sp1F);
-    func_8140D568(arg0, sp1F);
+    SetPrimColorFromPalette(arg0, sp1F);
+    SetEnvColorFromPalette(arg0, sp1F);
 }
 
 void func_8140D708(unk_D_8140E720* arg0, s16 arg1) {
     u8 sp1F = D_8140E540[arg1];
 
-    func_8140D530(arg0, sp1F);
-    func_8140D568(arg0, sp1F);
+    SetPrimColorFromPalette(arg0, sp1F);
+    SetEnvColorFromPalette(arg0, sp1F);
 }
 
 void func_8140D750(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, D_8140E548[(RandomMod(5) & 0xFF)]);
+    SetPrimColorFromPalette(arg0, D_8140E548[(RandomMod(5) & 0xFF)]);
 }
 
 void func_8140D78C(unk_D_8140E720* arg0) {
-    func_8140D568(arg0, D_8140E548[RandomMod(5) & 0xFF]);
+    SetEnvColorFromPalette(arg0, D_8140E548[RandomMod(5) & 0xFF]);
 }
 
-s32 func_8140D7C8(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
+s32 IsPrimColorSupported(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     s32 sp2C = 0;
     s32 sp28;
     s32 sp24;
     s32 sp20;
     u8 sp1C[3];
 
-    func_8140D4A8(sp1C, arg1);
+    GetPaletteColor(sp1C, arg1);
 
     sp28 = func_8140BAE4(arg0, sp1C[0], arg2);
     sp24 = func_8140BB14(arg0, sp1C[1], arg2);
@@ -301,14 +301,14 @@ s32 func_8140D7C8(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     return sp2C;
 }
 
-s32 func_8140D868(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
+s32 IsEnvColorSupported(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     s32 sp2C = 0;
     s32 sp28;
     s32 sp24;
     s32 sp20;
     u8 sp1C[3];
 
-    func_8140D4A8(&sp1C, arg1);
+    GetPaletteColor(&sp1C, arg1);
 
     sp28 = func_8140BB90(arg0, sp1C[0], arg2);
     sp24 = func_8140BBF0(arg0, sp1C[1], arg2);
@@ -320,7 +320,7 @@ s32 func_8140D868(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     return sp2C;
 }
 
-s32 func_8140D908(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
+s32 AreBothColorsSupported(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     s32 sp44 = 0;
     s32 sp40;
     s32 sp3C;
@@ -331,7 +331,7 @@ s32 func_8140D908(unk_D_8140E720* arg0, u16 arg1, u8 arg2) {
     u8 sp28[3];
     u8 sp24[3];
 
-    func_8140D4E0(sp28, sp24, arg1);
+    GetPaletteColorPair(sp28, sp24, arg1);
 
     sp40 = func_8140BAE4(arg0, sp28[0], arg2);
     sp3C = func_8140BB14(arg0, sp28[1], arg2);

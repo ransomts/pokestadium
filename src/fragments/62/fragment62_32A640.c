@@ -38,11 +38,11 @@ void func_8433FE80(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.2f);
-    func_8140AF24(arg0, 1.0f);
-    func_8140A2A4(arg0, RandomMod(0x10000));
-    func_8140A2CC(arg0, RandomMod(0x10000));
-    func_8140A3D8(arg0, RandomMod(0x10000));
-    func_8140AD8C(arg0, 5.0f);
+    Particle_SetAccelerationY(arg0, 1.0f);
+    Particle_SetRotationX(arg0, RandomMod(0x10000));
+    Particle_SetRotationZ(arg0, RandomMod(0x10000));
+    Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
+    Particle_SetSpeed(arg0, 5.0f);
     func_8140BCA8(arg0, sp26 * 4);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -99,11 +99,11 @@ void func_843400BC(unk_D_8140E720* arg0) {
     s16 sp2E = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.5f);
-    func_8140AD8C(arg0, 10.0f);
+    Particle_SetSpeed(arg0, 10.0f);
     func_8140A52C(arg0, RandomRangeSigned(0x1000), RandomRangeSigned(0x1000), 0);
     func_8140BCA8(arg0, sp2E * 4);
-    func_8140D530(arg0, 0x24);
-    func_8140D568(arg0, 0x24);
+    SetPrimColorFromPalette(arg0, 0x24);
+    SetEnvColorFromPalette(arg0, 0x24);
     func_81408348(arg0);
     func_814081BC(arg0);
 }
@@ -139,15 +139,15 @@ void func_84340230(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
 
     func_8140B938(arg0, 0.12f);
-    func_8140AF24(arg0, (RandomMod(0x14) * 0.02f) + 0.25f);
-    func_8140A2A4(arg0, RandomMod(0x10000));
-    func_8140A2CC(arg0, RandomMod(0x10000));
-    func_8140AD8C(arg0, 5.0f);
+    Particle_SetAccelerationY(arg0, (RandomMod(0x14) * 0.02f) + 0.25f);
+    Particle_SetRotationX(arg0, RandomMod(0x10000));
+    Particle_SetRotationZ(arg0, RandomMod(0x10000));
+    Particle_SetSpeed(arg0, 5.0f);
     func_8140BF4C(arg0, RandomMod(0x800) + 0xC00);
-    func_8140A3C4(arg0, func_81400B4C(0x800, 0x300));
+    Particle_SetRotationDeltaX(arg0, func_81400B4C(0x800, 0x300));
     func_8140BFEC(arg0, func_81400B4C(0x800, 0x300));
-    func_8140A3D8(arg0, RandomMod(0x10000));
-    func_8140A3EC(arg0, func_81400B4C(0x800, 0x300));
+    Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
+    Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x800, 0x300));
     func_81408E90(arg0, RandomMod(0x1E));
     func_8140BCA8(arg0, sp26 * 2);
     func_81408348(arg0);
@@ -177,9 +177,9 @@ void func_843403D8(unk_D_8140E720* arg0) {
 
         case 4:
             if (func_8140BDD0(arg0) != 0) {
-                func_8140A3C4(arg0, func_81400B4C(0x1000, 0x600));
+                Particle_SetRotationDeltaX(arg0, func_81400B4C(0x1000, 0x600));
                 func_8140BFEC(arg0, func_81400B4C(0x400, 0x400));
-                func_8140A3EC(arg0, func_81400B4C(0x1000, 0x600));
+                Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x1000, 0x600));
                 arg0->unk_38.x += arg0->unk_50.x;
                 arg0->unk_50.x = 0;
                 arg0->unk_38.z += arg0->unk_50.z;
@@ -218,9 +218,9 @@ void func_843403D8(unk_D_8140E720* arg0) {
     }
 
     if (func_81408368(arg0) != 0) {
-        func_8140A4B4(arg0);
+        Particle_AddRotationDeltaX(arg0);
         func_8140A594(arg0, arg0->unk_B0);
-        func_8140A4DC(arg0);
+        Particle_AddRotationDeltaZ(arg0);
         if (arg0->unk_2C.y < 0.0f) {
             func_81408150(arg0);
         }
@@ -231,7 +231,7 @@ void func_84340690(unk_D_8140E720* arg0) {
     s16 sp26 = func_8140C038(arg0);
     s16 sp24 = func_8140C040(arg0);
 
-    func_8140AF24(arg0, 0.5f);
+    Particle_SetAccelerationY(arg0, 0.5f);
 
     switch (sp24) {
         case 0:
@@ -251,13 +251,13 @@ void func_84340690(unk_D_8140E720* arg0) {
             break;
     }
 
-    func_8140A2A4(arg0, RandomMod(0x10000));
-    func_8140A2CC(arg0, RandomMod(0x10000));
-    func_8140AD8C(arg0, RandomMod(0x14) + 15.0f);
+    Particle_SetRotationX(arg0, RandomMod(0x10000));
+    Particle_SetRotationZ(arg0, RandomMod(0x10000));
+    Particle_SetSpeed(arg0, RandomMod(0x14) + 15.0f);
     func_8140BF4C(arg0, RandomMod(0x300) + 0x400);
-    func_8140A3D8(arg0, RandomMod(0x10000));
-    func_8140A3C4(arg0, func_81400B4C(0x800, 0x400));
-    func_8140A3EC(arg0, func_81400B4C(0x800, 0x400));
+    Particle_SetRotationDeltaY(arg0, RandomMod(0x10000));
+    Particle_SetRotationDeltaX(arg0, func_81400B4C(0x800, 0x400));
+    Particle_SetRotationDeltaZ(arg0, func_81400B4C(0x800, 0x400));
     func_8140BCA8(arg0, sp26 * 2);
     func_81408348(arg0);
     func_814081BC(arg0);
@@ -302,9 +302,9 @@ void func_84340940(unk_D_8140E720* arg0) {
     }
 
     if (func_81408368(arg0) != 0) {
-        func_8140A4B4(arg0);
-        func_8140A4C8(arg0);
-        func_8140A4DC(arg0);
+        Particle_AddRotationDeltaX(arg0);
+        Particle_AddRotationDeltaY(arg0);
+        Particle_AddRotationDeltaZ(arg0);
         if (arg0->unk_2C.y < 0.0f) {
             func_81408150(arg0);
         }

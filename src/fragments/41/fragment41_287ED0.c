@@ -35,21 +35,21 @@ typedef struct unk_D_82F144B0 {
     /* 0x08 */ s16 unk_08;
 } unk_D_82F144B0; // size = 0xA
 
-static TextObject* D_82F14420;
-s32 D_82F14424;
-static s32 D_82F14428;
-static s16 D_82F1442C;
-static unk_D_82F13B78* D_82F14430;
+static TextObject* gFragment41TextObject;
+s32 gFragment41FrameCounter;
+static s32 gFragment41State;
+static s16 gMessageEntryIndex;
+static unk_D_82F13B78* gCurrentMessageList;
 static s32 pad_D_82F14434;
-static unk_D_82F14438 D_82F14438;
-static unk_D_82F14438* D_82F1444C;
-unk_D_82F14450 D_82F14450[4];
-static s16 D_82F144A8;
-static s16 D_82F144AA;
+static unk_D_82F14438 gTextBoxState;
+static unk_D_82F14438* gCurrentTextBox;
+unk_D_82F14450 gPlayerInfo[4];
+static s16 gActivePlayerIndex;
+static s16 gSelectedOptionId;
 static s32 pad_D_82F144AC;
 static unk_D_82F144B0 D_82F144B0;
-static s32 D_82F144BC;
-static s32 D_82F144C0;
+static s32 gPoolStatePushed;
+static s32 gPollControllerFlag;
 static char** D_82F144C4;
 static char** D_82F144C8;
 static char** D_82F144CC;
@@ -62,15 +62,15 @@ static unk_D_82F13B78 D_82F13B78[2] = {
 };
 static u16 D_82F13B88 = 0;
 
-char* func_82F00020(s32 arg0) {
+char* GetMessageStringBank24(s32 arg0) {
     return GetMessageString(NULL, 0, D_82F144C4, arg0 - 1);
 }
 
-char* func_82F00058(s32 arg0) {
+char* GetMessageStringBank25(s32 arg0) {
     return GetMessageString(NULL, 0, D_82F144C8, arg0 - 1);
 }
 
-char* func_82F00090(s32 arg0) {
+char* GetMessageStringBank26Remapped(s32 arg0) {
     return GetMessageString(NULL, 0, D_82F144CC, RemapStadiumModeIndex(arg0));
 }
 
@@ -115,65 +115,65 @@ void UpdateProgressBar(void) {
 }
 
 void InitTextBox(void) {
-    D_82F1444C = &D_82F14438;
-    D_82F14438.unk_00 = 0;
-    D_82F14438.unk_02 = 0;
-    D_82F14438.unk_08 = 0;
-    D_82F14438.unk_0A = 2;
-    D_82F14438.unk_04 = 0;
-    D_82F14438.unk_06 = 0;
-    D_82F14438.unk_0C = 0;
-    D_82F14438.unk_10 = NULL;
+    gCurrentTextBox = &gTextBoxState;
+    gTextBoxState.unk_00 = 0;
+    gTextBoxState.unk_02 = 0;
+    gTextBoxState.unk_08 = 0;
+    gTextBoxState.unk_0A = 2;
+    gTextBoxState.unk_04 = 0;
+    gTextBoxState.unk_06 = 0;
+    gTextBoxState.unk_0C = 0;
+    gTextBoxState.unk_10 = NULL;
 }
 
 void SetTextBox(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
     s8* ptr;
 
-    D_82F1444C->unk_00 = 0;
-    D_82F1444C->unk_02 = 0;
+    gCurrentTextBox->unk_00 = 0;
+    gCurrentTextBox->unk_02 = 0;
 
     ptr = arg2;
     if (ptr != NULL) {
         while (*ptr != '\x00') {
-            D_82F1444C->unk_02++;
+            gCurrentTextBox->unk_02++;
             ptr++;
         }
     }
 
-    D_82F1444C->unk_08 = 0;
-    D_82F1444C->unk_0A = 2;
-    D_82F1444C->unk_04 = arg0;
-    D_82F1444C->unk_06 = arg1;
-    D_82F1444C->unk_0C = 0;
+    gCurrentTextBox->unk_08 = 0;
+    gCurrentTextBox->unk_0A = 2;
+    gCurrentTextBox->unk_04 = arg0;
+    gCurrentTextBox->unk_06 = arg1;
+    gCurrentTextBox->unk_0C = 0;
 
     if (arg3 != 0) {
-        D_82F1444C->unk_0C |= 1;
+        gCurrentTextBox->unk_0C |= 1;
     }
 
-    D_82F1444C->unk_10 = arg2;
+    gCurrentTextBox->unk_10 = arg2;
 }
 
 void ClearMessageList(void) {
-    D_82F14430 = NULL;
+    gCurrentMessageList = NULL;
 }
 
 void LoadNextMessageEntry(unk_D_82F13B78* arg0, s32 arg1) {
-    if (arg0 != D_82F14430) {
-        D_82F1442C = 0;
+    if (arg0 != gCurrentMessageList) {
+        gMessageEntryIndex = 0;
     }
 
-    D_82F14430 = arg0;
+    gCurrentMessageList = arg0;
 
     if (NULL != arg0) {
-        unk_D_82F13B78* ptr = &arg0[D_82F1442C];
+        unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
 
         SetTextBox(ptr->unk_00, ptr->unk_02, ptr->unk_04, arg1);
-        D_82F1442C++;
+        gMessageEntryIndex++;
     }
 }
 
 s32 IsMessageEntryEmpty(unk_D_82F13B78* arg0) {
-    unk_D_82F13B78* ptr = &arg0[D_82F1442C];
+    unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
     s32 var_v1 = 0;
 
     if (ptr->unk_04 == NULL) {
@@ -185,27 +185,27 @@ s32 IsMessageEntryEmpty(unk_D_82F13B78* arg0) {
 void UpdateTextBox(void) {
     u8 tmp;
 
-    if ((D_82F1444C->unk_10 != 0) && (D_82F1444C->unk_00 >= 0)) {
+    if ((gCurrentTextBox->unk_10 != 0) && (gCurrentTextBox->unk_00 >= 0)) {
         if (gPlayer1Controller->buttonPressed & 0x8000) {
-            D_82F1444C->unk_08 = 0;
-            D_82F1444C->unk_0A = 1;
+            gCurrentTextBox->unk_08 = 0;
+            gCurrentTextBox->unk_0A = 1;
         } else {
-            D_82F1444C->unk_08 -= 1;
+            gCurrentTextBox->unk_08 -= 1;
         }
 
-        if (D_82F1444C->unk_08 <= 0) {
+        if (gCurrentTextBox->unk_08 <= 0) {
             PlaySoundEffect(0x01200001);
-            D_82F1444C->unk_08 = D_82F1444C->unk_0A;
+            gCurrentTextBox->unk_08 = gCurrentTextBox->unk_0A;
 
-            D_82F1444C->unk_00++;
+            gCurrentTextBox->unk_00++;
 
-            tmp = D_82F1444C->unk_10[D_82F1444C->unk_00 - 1];
+            tmp = gCurrentTextBox->unk_10[gCurrentTextBox->unk_00 - 1];
             if (tmp >= 0x80) {
-                D_82F1444C->unk_00++;
+                gCurrentTextBox->unk_00++;
             }
 
-            if (D_82F1444C->unk_00 >= D_82F1444C->unk_02) {
-                D_82F1444C->unk_00 = -1;
+            if (gCurrentTextBox->unk_00 >= gCurrentTextBox->unk_02) {
+                gCurrentTextBox->unk_00 = -1;
             }
         }
     }
@@ -214,10 +214,10 @@ void UpdateTextBox(void) {
 s32 GetTextBoxState(void) {
     s32 var_v1 = 0;
 
-    if (D_82F1444C->unk_10 != NULL) {
-        if (D_82F1444C->unk_00 == -1) {
+    if (gCurrentTextBox->unk_10 != NULL) {
+        if (gCurrentTextBox->unk_00 == -1) {
             var_v1 = 2;
-        } else if (D_82F1444C->unk_00 >= 0) {
+        } else if (gCurrentTextBox->unk_00 >= 0) {
             var_v1 = 1;
         }
     }
@@ -230,11 +230,11 @@ void DrawTextBox(void) {
     s32 temp_t0;
     s8 sp38[0x100];
 
-    if (D_82F1444C->unk_10 != NULL) {
+    if (gCurrentTextBox->unk_10 != NULL) {
         Text_ResetState();
         Text_SetFont(0x10, 0);
 
-        if (D_82F1444C->unk_0C & 1) {
+        if (gCurrentTextBox->unk_0C & 1) {
             s32 a = D_82F13B88;
             u8 arg = a & 0xF;
 
@@ -248,19 +248,19 @@ void DrawTextBox(void) {
         }
 
         Text_SetLineHeight(0x1E);
-        temp_t0 = MeasureTextWidth(0, 0, D_82F1444C->unk_10) / 2;
-        if (D_82F1444C->unk_00 == -1) {
-            Text_Print(D_82F1444C->unk_04 - temp_t0, D_82F1444C->unk_06, D_82F1444C->unk_10);
+        temp_t0 = MeasureTextWidth(0, 0, gCurrentTextBox->unk_10) / 2;
+        if (gCurrentTextBox->unk_00 == -1) {
+            Text_Print(gCurrentTextBox->unk_04 - temp_t0, gCurrentTextBox->unk_06, gCurrentTextBox->unk_10);
         } else {
             s8* p_sp38 = sp38;
-            s8* other = D_82F1444C->unk_10;
+            s8* other = gCurrentTextBox->unk_10;
 
-            for (i = 0; i < D_82F1444C->unk_00; i++) {
+            for (i = 0; i < gCurrentTextBox->unk_00; i++) {
                 *p_sp38++ = *other++;
             }
 
             *p_sp38 = '\x00';
-            Text_Print(D_82F1444C->unk_04 - temp_t0, D_82F1444C->unk_06, &sp38);
+            Text_Print(gCurrentTextBox->unk_04 - temp_t0, gCurrentTextBox->unk_06, &sp38);
         }
         Text_SetupDL();
         D_82F13B88++;
@@ -282,7 +282,7 @@ void UpdateControllerInfo(void) {
 
     main_pool_push_state('info');
 
-    for (i = 0, ptr = &D_82F14450[0]; i < 4; i++, ptr++) {
+    for (i = 0, ptr = &gPlayerInfo[0]; i < 4; i++, ptr++) {
         func_80025040(i, &sp40);
         SaveSlot_Load(i);
         DecodeGen1StringToBuffer(ptr->unk_08, sp40.unk_02);
@@ -326,11 +326,11 @@ void InitFragment41(void) {
     D_82F144C8 = GetMessageBank(0x25);
     D_82F144CC = GetMessageBank(0x26);
     D_82F13B78[0].unk_04 = GetMessageString(NULL, 0, D_82F13B70, 0);
-    D_82F14428 = 0;
+    gFragment41State = 0;
     ClearMessageList();
-    D_82F14424 = 0;
-    D_82F144A8 = 0;
-    D_82F144BC = 0;
+    gFragment41FrameCounter = 0;
+    gActivePlayerIndex = 0;
+    gPoolStatePushed = 0;
     ResetProgressBar();
     InitTextBox();
     func_82F13278();
@@ -355,9 +355,9 @@ void RenderFragment41Frame(void) {
 }
 
 void func_82F00AC8(s32 arg0) {
-    D_82F14428 = arg0;
+    gFragment41State = arg0;
 
-    switch (D_82F14428) {
+    switch (gFragment41State) {
         case 1:
             ClearMessageList();
             LoadNextMessageEntry(D_82F13B78, 0);
@@ -369,15 +369,15 @@ void func_82F00AC8(s32 arg0) {
             break;
 
         case 4:
-            if (D_82F144A8 == 1) {
-                if (D_82F144BC != 0) {
+            if (gActivePlayerIndex == 1) {
+                if (gPoolStatePushed != 0) {
                     main_pool_pop_state('pmex');
                 }
                 main_pool_push_state('pmex');
-                D_82F144BC = 1;
+                gPoolStatePushed = 1;
             }
-            func_80023D60(func_82F07A54(D_82F144A8));
-            func_82F01530(D_82F144A8, func_82F07A54(D_82F144A8));
+            func_80023D60(func_82F07A54(gActivePlayerIndex));
+            InitPokemonPicker(gActivePlayerIndex, func_82F07A54(gActivePlayerIndex));
             break;
 
         case 5:
@@ -397,9 +397,9 @@ void func_82F00AC8(s32 arg0) {
 }
 
 void func_82F00C14(s16 arg0) {
-    D_82F144AA = arg0;
+    gSelectedOptionId = arg0;
     func_82F00AC8(3);
-    func_82F0FDEC(D_82F144AA);
+    func_82F0FDEC(gSelectedOptionId);
 }
 
 void func_82F00C50(void) {
@@ -431,7 +431,7 @@ void func_82F00CE0(void) {
 void func_82F00D3C(void) {
     InitProgressBarRect(0);
 
-    switch (D_82F144AA) {
+    switch (gSelectedOptionId) {
         case 1:
             if (func_82F13964(1) != 0) {
                 func_82F00AC8(4);
@@ -484,24 +484,24 @@ void func_82F00D3C(void) {
 void func_82F00E88(void) {
     unk_func_82F00838_sp30 sp20;
 
-    if (func_82F018F8() == 0) {
-        func_82F0525C(D_82F144A8, &sp20);
+    if (GetPickerState() == 0) {
+        func_82F0525C(gActivePlayerIndex, &sp20);
 
         if (sp20.unk_00 != 0) {
-            if (D_82F144A8 == 0) {
+            if (gActivePlayerIndex == 0) {
                 func_82F00C14(0x13);
             } else {
                 func_82F00C14(0x14);
             }
-            D_82F144A8 ^= 1;
+            gActivePlayerIndex ^= 1;
         } else {
-            if (D_82F144A8 == 0) {
+            if (gActivePlayerIndex == 0) {
                 SetTextBox(0, 0, NULL, 0);
                 func_82F00C14(4);
                 return;
             }
             func_82F00C14(8);
-            D_82F144A8 = 0;
+            gActivePlayerIndex = 0;
         }
     }
 }
@@ -538,9 +538,9 @@ void func_82F00FD8(void) {
     }
 
     if (func_82F0C16C() == 7) {
-        D_82F144C0 = 0;
+        gPollControllerFlag = 0;
     } else {
-        D_82F144C0 = 1;
+        gPollControllerFlag = 1;
     }
 
     if (func_82F0C16C() == 0) {
@@ -555,7 +555,7 @@ void func_82F00FD8(void) {
 s32 func_82F0109C(void) {
     s32 sp1C = 1;
 
-    switch (D_82F14428) {
+    switch (gFragment41State) {
         case 0:
             if (Stage_GetFadeState() == 0) {
                 func_82F00AC8(1);
@@ -600,10 +600,10 @@ void func_82F01180(void) {
     func_8004B1CC(0x10);
     MenuInput_SetController(gPlayer1Controller);
 
-    D_82F144C0 = 1;
+    gPollControllerFlag = 1;
 
     do {
-        if (D_82F144C0 != 0) {
+        if (gPollControllerFlag != 0) {
             PollControllerInputs();
         }
         UpdateTextBox();
@@ -612,7 +612,7 @@ void func_82F01180(void) {
         func_82F0C254();
         func_82F132D0();
         RenderFragment41Frame();
-        D_82F14424++;
+        gFragment41FrameCounter++;
     } while (func_82F0109C() != 0);
 }
 
@@ -623,7 +623,7 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
 
     Gfx_InitBuffers(0x14000, 0);
     sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    D_82F14420 = Text_Init(0x1E, 0);
+    gFragment41TextObject = Text_Init(0x1E, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, trade_select_ui, 0);

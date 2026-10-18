@@ -164,7 +164,7 @@ static s16 D_8620829C;
 u32 D_862082A0[4];
 
 void func_86200020(unk_D_86203E50* arg0) {
-    arg0->unk_002 = D_8780FA38 + 1;
+    arg0->unk_002 = gMenuState + 1;
 }
 
 void RenderPlayerPanels(void) {
@@ -541,7 +541,7 @@ s32 RunRaceStartSequence(void) {
                 var_s1_3 = 0;
             }
 
-            if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
+            if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
                 SetResultFlag(2);
                 return -1;
@@ -1252,7 +1252,7 @@ void func_86203008(void) {
     D_86203E48 = 5;
 
     while (D_8780FC96 == 0) {
-        if ((D_8780FA2A == 1) && (D_8620470E > 0)) {
+        if ((gMenuCursorX == 1) && (D_8620470E > 0)) {
             D_8620470E -= 0xA;
             if (D_8620470E < 0) {
                 D_8620470E = 0;

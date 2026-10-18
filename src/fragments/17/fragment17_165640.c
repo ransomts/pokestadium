@@ -378,24 +378,24 @@ void func_86B065C4(void) {
     if (gCameraTarget->unk_178 & 1) {
         Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                       gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-        func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+        Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
 
         if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[D_86B0FA44].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            func_81407D48(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
         }
     }
 }
@@ -864,7 +864,7 @@ void func_86B07F14(void) {
 
 void func_86B07FA4(void) {
     s32 var_s0 = 1;
-    void (*temp_s2)(void) = (void*)Util_ConvertAddrToVirtAddr(func_8140C734);
+    void (*temp_s2)(void) = (void*)Util_ConvertAddrToVirtAddr(Timer_Tick);
 
     D_86B0FA70 = 0;
     while (var_s0 != 0) {
@@ -885,7 +885,7 @@ void func_86B07FA4(void) {
 void func_86B08034(void) {
     s32 i;
     s32 var_s1;
-    void (*temp_s2)(void) = Util_ConvertAddrToVirtAddr(func_8140C734);
+    void (*temp_s2)(void) = Util_ConvertAddrToVirtAddr(Timer_Tick);
 
     if (gBattleContext.unk_0001 == 7) {
         for (i = 0; i < 100; i++) {

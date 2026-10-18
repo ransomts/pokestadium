@@ -326,7 +326,7 @@ void func_86A0092C(s32 arg0) {
 
     while (var_s6 != 0) {
         func_86A01490();
-        func_8140C5D0();
+        Timer_UpdateCounters();
 
         if (D_86A025A0[D_86A025C4].unk_02 != 0) {
             if (D_86A025A0[D_86A025C4].unk_00 != -1) {

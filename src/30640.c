@@ -707,7 +707,7 @@ u8* Cam_Update(unk_func_80031270* arg0) {
     void (*sp20)();
 
     sp24 = (unk_func_80031660_sp24*)((u8*)arg0->unk_18 + 0x50);
-    sp20 = Util_ConvertAddrToVirtAddr(&func_8140C734);
+    sp20 = Util_ConvertAddrToVirtAddr(&Timer_Tick);
     gCamSecondary = arg0;
     if (arg0->unk_00 == 1) {
         switch (arg0->unk_02) {
@@ -726,7 +726,7 @@ u8* Cam_Update(unk_func_80031270* arg0) {
                     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
                 }
                 Gfx_FinishFrame();
-                *((s32*)Util_ConvertAddrToVirtAddr(&D_8140E6B8)) = sp24->unk_18;
+                *((s32*)Util_ConvertAddrToVirtAddr(&gTimerCounter)) = sp24->unk_18;
                 sp20();
                 Graph_SetTextureState(arg0->unk_1C);
                 break;

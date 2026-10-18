@@ -12,7 +12,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-void func_82000020(void) {
+void Stage_DrawN64Logo(void) {
     s32 var_t4;
     u8* var_t5;
     u32 tmp = 0xF;
@@ -36,15 +36,15 @@ void func_82000020(void) {
     gDPSetTextureConvert(gDisplayListHead++, G_TC_FILT);
 }
 
-s32 func_820002B4(UNUSED u8 arg0) {
+s32 Stage_LogoDrawCallback(UNUSED u8 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
-    func_82000020();
+    Stage_DrawN64Logo();
 
     return 0;
 }
 
-void func_820002F0(u64 arg0) {
+void Delay_OneSecond(u64 arg0) {
     u32 temp_ret = 0xF;
 
     while (temp_ret < 0xF4240) {
@@ -52,7 +52,7 @@ void func_820002F0(u64 arg0) {
     }
 }
 
-void func_8200036C(void) {
+void Players_Initialize(void) {
     main_pool_push_state('GPAK');
 
     InitializePlayers();
@@ -60,7 +60,7 @@ void func_8200036C(void) {
     main_pool_pop_state('GPAK');
 }
 
-s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Stage_RunLogoSequence(UNUSED s32 arg0, UNUSED s32 arg1) {
     u64 sp30;
     Stage* sp2C;
     u16 sp2A;
@@ -76,7 +76,7 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
     GbsEnsureBankLoaded(2);
     Stage_Set(sp2C);
     Stage_StartFade(1);
-    Stage_AdvanceUntil(3, func_820002B4);
+    Stage_AdvanceUntil(3, Stage_LogoDrawCallback);
     MessageBank_Init();
     LoadNameSlots();
     func_80021920();
@@ -96,10 +96,10 @@ s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     PlaySoundEffect(0xA);
     sp30 = osGetTime();
-    func_8200036C();
-    func_820002F0(sp30);
+    Players_Initialize();
+    Delay_OneSecond(sp30);
     Stage_StartFade(0x10);
-    Stage_AdvanceUntil(0x10, func_820002B4);
+    Stage_AdvanceUntil(0x10, Stage_LogoDrawCallback);
     Stage_Destroy();
     Gfx_FreeBuffers();
 

@@ -3,10 +3,10 @@
 
 #include "global.h"
 
-void func_82000020(void);
-s32 func_820002B4(UNUSED u8 arg0);
-void func_820002F0(u64 arg0);
-void func_8200036C(void);
-s32 func_820003A4(UNUSED s32 arg0, UNUSED s32 arg1);
+void Stage_DrawN64Logo(void);
+s32 Stage_LogoDrawCallback(UNUSED u8 arg0);
+void Delay_OneSecond(u64 arg0);
+void Players_Initialize(void);
+s32 Stage_RunLogoSequence(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT35_H_

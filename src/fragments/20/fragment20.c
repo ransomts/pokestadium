@@ -628,7 +628,7 @@ void miniMetapodHumanControls(MiniActor* metapod) {
         case 1: // start harden
             MetapodTakeDamage(metapod);
             miniChangeActorAnim(metapod, 1, -1, 1);
-            func_81407D48(1.0f, metapod->totalPos, metapod->totalRot, func_879029F0, &D_87903E40, 4);
+            Particle_CreateMultiple(1.0f, metapod->totalPos, metapod->totalRot, func_879029F0, &D_87903E40, 4);
             metapod->mainState++;
             break;
 
@@ -857,7 +857,7 @@ void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
                         compMetapod->mainState = 1;
                         compMetapod->unk_272 = 4;
                         compMetapod->compState++;
-                        func_81407D48(1.0f, compMetapod->totalPos, compMetapod->totalRot, func_879029F0, &D_87903E40,
+                        Particle_CreateMultiple(1.0f, compMetapod->totalPos, compMetapod->totalRot, func_879029F0, &D_87903E40,
                                       4);
                     } else {
                         compMetapod->compState = 0x64;
@@ -1194,7 +1194,7 @@ void miniRockStateMachine(MiniActor* rock) {
                     rock->ySpeed = 5.0f;
                     rock->zSpeed = 1.5f;
                     DeactivateMetapodRock(rock);
-                    func_81407D48(1.0f, rock->totalPos, rock->totalRot, func_87901F04, &gMiniTutoScreenNode1, 4);
+                    Particle_CreateMultiple(1.0f, rock->totalPos, rock->totalRot, func_87901F04, &gMiniTutoScreenNode1, 4);
                 } else {
                     rock->mainState++;
                 }
@@ -1209,7 +1209,7 @@ void miniRockStateMachine(MiniActor* rock) {
             sp3C.y = 0.0f;
             sp3C.z = rock->totalPos.z;
 
-            func_81407D48(1.0f, sp3C, rock->totalRot, func_87902068, &gMiniTutoScreenNode0, 4);
+            Particle_CreateMultiple(1.0f, sp3C, rock->totalRot, func_87902068, &gMiniTutoScreenNode0, 4);
             rock->mainState++;
             break;
 
@@ -1715,7 +1715,7 @@ void metapodMinigameInit(void) {
     Stage_AdvanceN(0xA);
     Stage_FadeIn(0x10);
     miniTutoScreenState = 3;
-    miniDifficulty = D_8780FA38;
+    miniDifficulty = gMenuState;
 }
 
 void func_86E0296C(void) {
@@ -1728,7 +1728,7 @@ void miniMetapodTutoScreenControls(void) {
             minigameState = 1;
             miniShowHUB = 1;
             PlayAudioIfEnabled(0xB, 0);
-        } else if ((D_8780FA2A == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
+        } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
             PlayAudioIfEnabled(0xD, 0);
             SetResultFlag(2);
         }
@@ -1764,7 +1764,7 @@ void func_86E02A64(void) {
         miniMetapodTutoScreenControls();
 
         if (D_8780FC94 == 0) {
-            func_8140C5D0();
+            Timer_UpdateCounters();
             miniMetapodMinigameStateMachine();
             miniUpdateMetapods();
             miniUpdateRocks();
@@ -1832,8 +1832,8 @@ void func_86E02C5C(void) {
     AssetManager_LoadArchives();
 
     for (i = 0; i < 4; i++) {
-        randN = D_8780FA68[i] - 1;
-        if (D_8780FA68[i] == 0) {
+        randN = gMenuOptionFlags[i] - 1;
+        if (gMenuOptionFlags[i] == 0) {
             randN = GetRandomMod(2);
         }
 

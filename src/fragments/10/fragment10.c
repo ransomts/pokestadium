@@ -110,7 +110,7 @@ void func_864001A0(void) {
         if (gMiniHudColorDefaults[i] == 0) {
             gPlayerHudStates[i].unk_000 = 4;
         } else {
-            gPlayerHudStates[i].unk_000 = D_8780FA38;
+            gPlayerHudStates[i].unk_000 = gMenuState;
         }
     }
 }
@@ -692,7 +692,7 @@ void func_86401B3C(void) {
         if (var_s1 >= 0x11) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s2 = 0;
-            } else if ((D_8780FA2A == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
+            } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 PlaySoundEffect(3);
                 SetResultFlag(2);
                 D_87B000D0 = 1;

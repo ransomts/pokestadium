@@ -13,7 +13,7 @@ void func_84331DC8(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_8140D7C8(arg0, arg0->unk_CF, func_8140C068(arg0)) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CF, func_8140C068(arg0)) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -27,7 +27,7 @@ void func_84331DC8(unk_D_8140E720* arg0) {
 }
 
 void func_84331E64(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_A6);
     func_814081BC(arg0);
 }
@@ -55,7 +55,7 @@ void func_84331EAC(unk_D_8140E720* arg0) {
 }
 
 void func_84331F64(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_CE);
     func_814081BC(arg0);
 }
@@ -122,7 +122,7 @@ void func_843320A4(unk_D_8140E720* arg0) {
 }
 
 void func_84332174(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_A6);
     func_814081BC(arg0);
 }
@@ -134,7 +134,7 @@ void func_843321BC(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
                 func_8140BF4C(arg0, 0);
                 func_814081BC(arg0);
             }
@@ -151,7 +151,7 @@ void func_843321BC(unk_D_8140E720* arg0) {
 }
 
 void func_8433227C(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_A6);
     func_814081BC(arg0);
 }
@@ -163,7 +163,7 @@ void func_843322C4(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -179,7 +179,7 @@ void func_843322C4(unk_D_8140E720* arg0) {
 }
 
 void func_8433237C(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, 0);
     func_814081BC(arg0);
 }
@@ -195,7 +195,7 @@ void func_843323BC(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            if (func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -215,7 +215,7 @@ void func_843323BC(unk_D_8140E720* arg0) {
 }
 
 void func_843324A4(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, arg0->unk_A6);
     func_814081BC(arg0);
 }
@@ -227,7 +227,7 @@ void func_843324EC(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            if (func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -247,7 +247,7 @@ void func_843324EC(unk_D_8140E720* arg0) {
 }
 
 void func_843325C4(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BF4C(arg0, 0);
     func_814081BC(arg0);
 }
@@ -265,7 +265,7 @@ void func_84332604(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            if (func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
+            if (IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA) != 0) {
                 func_814081BC(arg0);
             }
             break;
@@ -281,7 +281,7 @@ void func_84332604(unk_D_8140E720* arg0) {
 }
 
 void func_843326EC(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, D_8140E538[RandomMod(6)]);
+    SetPrimColorFromPalette(arg0, D_8140E538[RandomMod(6)]);
     func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
     func_8140BC20(arg0, arg0->unk_CD);
 
@@ -300,7 +300,7 @@ void func_843327B8(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8140D7C8(arg0, arg0->unk_CF, arg0->unk_AA);
+            IsPrimColorSupported(arg0, arg0->unk_CF, arg0->unk_AA);
             if (func_8140BDAC(arg0) != 0) {
                 func_8140BCA8(arg0, 0xFF / arg0->unk_AA);
                 func_8140BEEC(arg0, D_8140E538[RandomMod(6)]);
@@ -311,7 +311,7 @@ void func_843327B8(unk_D_8140E720* arg0) {
 }
 
 void func_843328A8(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, D_8140E538[0]);
+    SetPrimColorFromPalette(arg0, D_8140E538[0]);
     func_8140BF4C(arg0, 1);
     func_8140BEEC(arg0, D_8140E538[1]);
     func_8140BC20(arg0, arg0->unk_CD);
@@ -337,7 +337,7 @@ void func_84332964(unk_D_8140E720* arg0) {
                 arg0->unk_AE = (arg0->unk_AE + 1) % 6;
                 func_8140BEEC(arg0, D_8140E538[arg0->unk_AE]);
             }
-            func_8140D7C8(arg0, arg0->unk_CF, arg0->unk_AA);
+            IsPrimColorSupported(arg0, arg0->unk_CF, arg0->unk_AA);
             GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;
 
@@ -382,7 +382,7 @@ void func_84332AFC(unk_D_8140E720* arg0) {
 }
 
 void func_84332BA4(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
@@ -408,7 +408,7 @@ void func_84332BE4(unk_D_8140E720* arg0) {
 }
 
 void func_84332C90(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
@@ -436,7 +436,7 @@ void func_84332CD0(unk_D_8140E720* arg0) {
 }
 
 void func_84332D68(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, arg0->unk_CD);
     func_814081BC(arg0);
 }
@@ -460,7 +460,7 @@ void func_84332DB0(unk_D_8140E720* arg0) {
 }
 
 void func_84332E2C(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
@@ -484,7 +484,7 @@ void func_84332E6C(unk_D_8140E720* arg0) {
 }
 
 void func_84332EE8(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, arg0->unk_CD);
     func_814081BC(arg0);
 }
@@ -504,7 +504,7 @@ void func_84332F30(unk_D_8140E720* arg0) {
 }
 
 void func_84332F90(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0xFF);
     func_814081BC(arg0);
 }
@@ -520,7 +520,7 @@ void func_84332FD0(unk_D_8140E720* arg0) {
             break;
 
         case 3:
-            func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA);
+            IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA);
             if (func_8140BC2C(arg0, 0, arg0->unk_AA) != 0) {
                 func_81408150(arg0);
             }
@@ -529,7 +529,7 @@ void func_84332FD0(unk_D_8140E720* arg0) {
 }
 
 void func_84333060(unk_D_8140E720* arg0) {
-    func_8140D530(arg0, func_8140C058(arg0));
+    SetPrimColorFromPalette(arg0, func_8140C058(arg0));
     func_8140BC20(arg0, 0);
     func_814081BC(arg0);
 }
@@ -541,7 +541,7 @@ void func_843330A0(unk_D_8140E720* arg0) {
             break;
 
         case 2:
-            func_8140D7C8(arg0, arg0->unk_CD, arg0->unk_AA);
+            IsPrimColorSupported(arg0, arg0->unk_CD, arg0->unk_AA);
             func_8140BC5C(arg0, 0xFF, arg0->unk_AA);
             break;
 

@@ -488,7 +488,7 @@ void func_86B0107C(void) {
 
     while (var_s1 != 0) {
         func_86B00AE4();
-        func_8140C5D0();
+        Timer_UpdateCounters();
 
         if (StateMachine_Update() != 0) {
             var_s1 = 0;

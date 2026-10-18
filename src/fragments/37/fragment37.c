@@ -217,7 +217,7 @@ void DrawTileOverlay(void) {
     }
 }
 
-void func_82200A5C(void) {
+void UpdateParticleTrailPositions(void) {
     s32 i;
     s32 j;
     s16 temp_fv0;
@@ -249,7 +249,7 @@ void InitParticleTrail(s32 arg0) {
     D_82203160[0].unk_08 = 0;
 
     for (i = 0; i < 6; i++) {
-        func_82200A5C();
+        UpdateParticleTrailPositions();
         D_82203160[0].unk_08 -= 0x800;
     }
 }
@@ -311,7 +311,7 @@ void DrawParticleSprites(u8* arg0) {
 
 void func_82201108(void) {
     if (D_822031D8 != 8) {
-        func_82200A5C();
+        UpdateParticleTrailPositions();
 
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);

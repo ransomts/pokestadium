@@ -408,7 +408,7 @@ s32 func_82F0D64C(s16 arg0, s8* arg1) {
     char sp20[64];
 
     sp64 = 1;
-    StrCopy(sp20, func_82F00020(arg0));
+    StrCopy(sp20, GetMessageStringBank24(arg0));
 
     var_v1 = sp20;
     while (*var_v1 != '\x00') {
@@ -433,7 +433,7 @@ void func_82F0D6D0(s16 arg0, unk_func_80026268_arg0* arg1) {
 
     if (sp2E != 0) {
         if (func_82F0D64C(sp2E, arg1->unk_30) != 0) {
-            StrCopy(arg1->unk_30, func_82F00020(arg1->unk_00.unk_00));
+            StrCopy(arg1->unk_30, GetMessageStringBank24(arg1->unk_00.unk_00));
         }
         CalculatePokemonStats(arg1);
         func_800256F4(arg0, arg1->unk_00.unk_00, 3);
@@ -722,8 +722,8 @@ void func_82F0ECAC(unk_D_82F20A40_00E* arg0, unk_func_80026268_arg0* arg1) {
     sp40 = NULL;
 
     if (func_82F0D3F4(arg1->unk_00.unk_00 - 1) != 0) {
-        sp40 = func_82F00020(arg1->unk_00.unk_00 - 1);
-        sp3C = func_82F00020(arg1->unk_00.unk_00);
+        sp40 = GetMessageStringBank24(arg1->unk_00.unk_00 - 1);
+        sp3C = GetMessageStringBank24(arg1->unk_00.unk_00);
     }
 
     if (sp40 != NULL) {
@@ -1317,7 +1317,7 @@ void func_82F10348(unk_D_82F21140* arg0) {
         arg0->unk_18--;
     }
 
-    switch (func_82F018F8()) {
+    switch (GetPickerState()) {
         case 3:
             break;
 
@@ -1357,7 +1357,7 @@ void func_82F10454(unk_D_82F21140* arg0) {
         arg0->unk_18--;
     }
 
-    switch (func_82F018F8()) {
+    switch (GetPickerState()) {
         case 3:
             break;
 
@@ -1933,17 +1933,17 @@ void func_82F13414(void) {
     gDPSetEnvColor(gDisplayListHead++, ptr->unk_14, ptr->unk_14, ptr->unk_14, 255);
 
     func_82F10BB4(ptr->unk_02, ptr->unk_04, ptr->unk_10);
-    tmp1 = D_82F14424 & 0x3F;
+    tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = (ptr->unk_16 * tmp1) / 63u;
-    if (D_82F14424 & 0x40) {
+    if (gFragment41FrameCounter & 0x40) {
         sp83 = ptr->unk_16 - sp83;
     }
 
     if (ptr->unk_0C & 1) {
         if (GetTextBoxState() == 1) {
-            tmp1 = D_82F14424 & 3;
+            tmp1 = gFragment41FrameCounter & 3;
             sp83 = (tmp1 * 0xFF) / 3u;
-            if (D_82F14424 & 4) {
+            if (gFragment41FrameCounter & 4) {
                 sp83 = 0xFF - sp83;
             }
         }
@@ -1963,18 +1963,18 @@ void func_82F13414(void) {
     func_82F0FCC0();
     func_82F0CC3C();
 
-    tmp1 = D_82F14424 & 0x3F;
+    tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = (tmp1 * 0xFF) / 63u;
-    if (D_82F14424 & 0x40) {
+    if (gFragment41FrameCounter & 0x40) {
         sp83 = 0xFF - sp83;
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp83);
 
-    tmp1 = D_82F14424 & 0x3F;
+    tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = ((tmp1) << 7) / 63u;
-    if (D_82F14424 & 0x40) {
+    if (gFragment41FrameCounter & 0x40) {
         sp83 = 0x80 - sp83;
     }
 
