@@ -380,7 +380,7 @@ void TeamSelection_RegisteredTeam_Render(unk_D_84229EB0* arg0, s32 arg1) {
     }
 }
 
-unk_D_84229EB0_00024* TeamSelection_RegisteredTeam_GetNext(unk_D_84229EB0_00024* arg0, s32 arg1) {
+unk_D_84229EB0_00024* GetPrevPage(unk_D_84229EB0_00024* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_4D28;
     }
@@ -388,7 +388,7 @@ unk_D_84229EB0_00024* TeamSelection_RegisteredTeam_GetNext(unk_D_84229EB0_00024*
     return arg0;
 }
 
-unk_D_84229EB0_00024* TeamSelection_RegisteredTeam_GetPrevious(unk_D_84229EB0_00024* arg0, s32 arg1) {
+unk_D_84229EB0_00024* GetNextPage(unk_D_84229EB0_00024* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_4D24;
     }
@@ -444,7 +444,7 @@ void TeamSelection_RegisteredTeam_UpdatePreview(unk_D_84229EB0* arg0) {
         temp_s1 = arg0->unk_00008 + (arg0->unk_0000A * 3);
         sp34 = arg0->unk_0000E + (arg0->unk_00008 * 0x84) + 0x94;
         sp32 = arg0->unk_00010 + (arg0->unk_0000A * 0x2C) + 0x1C;
-        temp_v0_2 = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        temp_v0_2 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         if (arg0->unk_00005 == -1) {
             TeamSelection_Preview_StartFull(arg0->unk_134F0, arg0->unk_00003, 0x30, 0xEC, sp34, sp32, &temp_v0_2->unk_0000[temp_s1], 0);
         } else if (temp_s1 != arg0->unk_00005) {
@@ -525,7 +525,7 @@ void TeamSelection_RegisteredTeam_MoveListUp(unk_D_84229EB0* arg0) {
             arg0->unk_00001 = 0xB;
             Audio_PlaySoundEffectById(1);
         } else if (arg0->unk_0000C > 0) {
-            sp24 = TeamSelection_RegisteredTeam_GetNext(arg0->unk_00024, 1);
+            sp24 = GetPrevPage(arg0->unk_00024, 1);
             Audio_PlaySoundEffectById(1);
             TeamSelection_RegisteredTeam_Load(sp24, arg0->unk_0000D - 1);
             arg0->unk_0000C -= 1;
@@ -551,7 +551,7 @@ void TeamSelection_RegisteredTeam_MoveListDown(unk_D_84229EB0* arg0) {
             arg0->unk_00001 = 0xB;
             Audio_PlaySoundEffectById(1);
         } else if ((arg0->unk_0000C < 7) &&
-                   ((TeamSelection_RegisteredTeam_Load(TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, 3), arg0->unk_0000D + 1) != 0) ||
+                   ((TeamSelection_RegisteredTeam_Load(GetNextPage(arg0->unk_00024, 3), arg0->unk_0000D + 1) != 0) ||
                     (arg0->unk_00000 != 0))) {
             Audio_PlaySoundEffectById(1);
             arg0->unk_0000C += 1;
@@ -569,7 +569,7 @@ void TeamSelection_RegisteredTeam_MoveListDown(unk_D_84229EB0* arg0) {
 
 void TeamSelection_RegisteredTeam_HandleListInput(unk_D_84229EB0* arg0) {
     Controller* cont = &gControllers[arg0->unk_00003];
-    unk_D_84229EB0_00024* temp_v0 = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+    unk_D_84229EB0_00024* temp_v0 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
 
     if (BTN_IS_PRESSED(cont, BTN_A)) {
         if (temp_v0->unk_0000[0].unk_004.unk_00.unk_00 != 0) {
@@ -611,7 +611,7 @@ void TeamSelection_RegisteredTeam_HandleListInput(unk_D_84229EB0* arg0) {
 
 void TeamSelection_RegisteredTeam_MovePokemonLeft(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 > 0) {
-        unk_D_84229EB0_00024* ptr = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 1;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -628,7 +628,7 @@ void TeamSelection_RegisteredTeam_MovePokemonLeft(unk_D_84229EB0* arg0) {
 
 void TeamSelection_RegisteredTeam_MovePokemonRight(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 < 2) {
-        unk_D_84229EB0_00024* ptr = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 1;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -645,7 +645,7 @@ void TeamSelection_RegisteredTeam_MovePokemonRight(unk_D_84229EB0* arg0) {
 
 void TeamSelection_RegisteredTeam_MovePokemonUp(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A > 0) {
-        unk_D_84229EB0_00024* ptr = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 3;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -662,7 +662,7 @@ void TeamSelection_RegisteredTeam_MovePokemonUp(unk_D_84229EB0* arg0) {
 
 void TeamSelection_RegisteredTeam_MovePokemonDown(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A <= 0) {
-        unk_D_84229EB0_00024* ptr = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 3;
 
         if (ptr->unk_0000[idx].unk_004.unk_00.unk_00 != 0) {
@@ -843,7 +843,7 @@ void TeamSelection_RegisteredTeam_EditTeam(unk_D_84229EB0* arg0) {
     s16 temp_hi;
     s16 temp_lo;
 
-    temp_v0 = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+    temp_v0 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
     temp_lo = arg0->unk_00006 / 12;
     temp_hi = arg0->unk_00006 % 12;
 
@@ -1164,7 +1164,7 @@ s32 RegisteredTeam_LoadSelected(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg
     *arg1 = NULL;
 
     if (arg0->unk_00020 == 0) {
-        *arg1 = TeamSelection_RegisteredTeam_GetPrevious(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
+        *arg1 = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         var_t0 = (*arg1)->unk_4D20;
 
         for (i = 0; i < 6; i++) {

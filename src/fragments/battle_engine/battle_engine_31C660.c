@@ -73,7 +73,7 @@ void BattleAnim_CallbackOwnerModelTintPulseDetach(ParticleEffectInstance* arg0) 
             break;
 
         case 3:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
@@ -102,7 +102,7 @@ void BattleAnim_CallbackOwnerModelTintHoldFadeDetach(ParticleEffectInstance* arg
             break;
 
         case 2:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
@@ -289,7 +289,7 @@ void BattleAnim_SetupOwnerModelTintRandomPaletteCycle(ParticleEffectInstance* ar
         arg0->alphaStep = 1;
     }
 
-    Particle_FieldA6_SetS16_0BCA8(arg0, 0xFF / arg0->alphaStep);
+    Particle_SetTimerA6(arg0, 0xFF / arg0->alphaStep);
     Particle_AdvanceLifecycle(arg0);
 }
 
@@ -301,8 +301,8 @@ void BattleAnim_CallbackOwnerModelTintRandomPaletteCycle(ParticleEffectInstance*
 
         case 2:
             ParticleGfx_ApproachPrimPalette(arg0, arg0->paletteIndex, arg0->alphaStep);
-            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
-                Particle_FieldA6_SetS16_0BCA8(arg0, 0xFF / arg0->alphaStep);
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
+                Particle_SetTimerA6(arg0, 0xFF / arg0->alphaStep);
                 Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[ParticleMath_RandomRange(6)]);
             }
             Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
@@ -320,7 +320,7 @@ void BattleAnim_SetupOwnerModelTintPaletteRotateFadeDetach(ParticleEffectInstanc
         arg0->alphaStep = 1;
     }
 
-    Particle_FieldA8_SetS16_0BE14(arg0, 0xFF / arg0->alphaStep);
+    Particle_SetTimerA8(arg0, 0xFF / arg0->alphaStep);
     Particle_AdvanceLifecycle(arg0);
 }
 
@@ -331,9 +331,9 @@ void BattleAnim_CallbackOwnerModelTintPaletteRotateFadeDetach(ParticleEffectInst
             break;
 
         case 2:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
-            if (Particle_FieldA8_DecrementToZeroStep1_0BE6C(arg0) != 0) {
-                Particle_FieldA8_SetS16_0BE14(arg0, 0xFF / arg0->alphaStep);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            if (Particle_DecrementTimerA8ToZero(arg0) != 0) {
+                Particle_SetTimerA8(arg0, 0xFF / arg0->alphaStep);
                 arg0->alpha = (arg0->alpha + 1) % 6;
                 Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[arg0->alpha]);
             }
@@ -424,7 +424,7 @@ void BattleAnim_CallbackDescriptor25AlphaFadeInHoldOut(ParticleEffectInstance* a
             break;
 
         case 3:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 4:
@@ -448,7 +448,7 @@ void BattleAnim_CallbackDescriptor25AlphaHoldFadeOut(ParticleEffectInstance* arg
             break;
 
         case 2:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
@@ -476,7 +476,7 @@ void BattleAnim_CallbackDescriptor25AlphaFadeInHold(ParticleEffectInstance* arg0
             break;
 
         case 3:
-            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 Particle_MarkInactive(arg0);
             }
             break;
@@ -496,7 +496,7 @@ void BattleAnim_CallbackDescriptor25AlphaHoldDetach(ParticleEffectInstance* arg0
             break;
 
         case 2:
-            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 Particle_DisableAndDetach(arg0);
             }
             break;
@@ -516,7 +516,7 @@ void BattleAnim_CallbackDescriptor25PaletteFadeOut(ParticleEffectInstance* arg0)
             break;
 
         case 2:
-            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
             break;
 
         case 3:
@@ -546,7 +546,7 @@ void BattleAnim_CallbackDescriptor25PaletteFadeIn(ParticleEffectInstance* arg0) 
             break;
 
         case 3:
-            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 Particle_MarkInactive(arg0);
             }
             break;

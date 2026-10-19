@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 
 void BattleAnim_InitSecondaryOwnerParticleBlueFadeGrow(ParticleEffectInstance* arg0) {
-    Particle_Field1C_SetScaled_0B938(arg0, 0.1f);
+    Particle_SetScaleFactor1(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     Particle_SetEnvColor(arg0, 0x64, 0xC8, 0xFF);
     Particle_SetPrimAlpha(arg0, 0xFF);
@@ -25,12 +25,12 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow(ParticleEffectInstance*
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_Field1C_Approach_0B98C(arg0, 0.5f, 0.05f);
+        Particle_ApproachScaleFactor1(arg0, 0.5f, 0.05f);
     }
 }
 
 void BattleAnim_InitSecondaryOwnerParticleBlueGrow(ParticleEffectInstance* arg0) {
-    Particle_Field1C_SetScaled_0B938(arg0, 0.1f);
+    Particle_SetScaleFactor1(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     Particle_SetEnvColor(arg0, 0x64, 0xC8, 0xFF);
     Particle_SetPrimAlpha(arg0, 0xFF);
@@ -43,7 +43,7 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueGrow(ParticleEffectInstance* arg
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_Field1C_Approach_0B98C(arg0, 0.8f, 0.08f);
+        Particle_ApproachScaleFactor1(arg0, 0.8f, 0.08f);
     }
 }
 

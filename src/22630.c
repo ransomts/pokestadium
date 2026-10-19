@@ -95,7 +95,7 @@ char* Text_CopySpeciesName(char* arg0, s32 arg1) {
     return arg0;
 }
 
-char* Text_GetTmHmName(s32 arg0, char* arg1) {
+char* GetItemName(s32 arg0, char* arg1) {
     extern char* gItemNames[];
     // "ひでんマシン%02d"
     static const char gHiddenMachineFormat[] = { 0xA4, 0xD2, 0xA4, 0xC7, 0xA4, 0xF3, 0xA5, 0xDE, 0xA5, 0xB7,

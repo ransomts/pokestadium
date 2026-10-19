@@ -222,7 +222,7 @@ char* Text_TranscodeNameWrapper(char* arg0, char* arg1);
 char* Text_UntranscodeFixedName(char* arg0, char* arg1);
 char* Text_CopyString(char* arg0, char* arg1);
 char* Text_CopySpeciesName(char* arg0, s32 arg1);
-char* Text_GetTmHmName(s32 arg0, char* arg1);
+char* GetItemName(s32 arg0, char* arg1);
 void Pokemon_FromGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
 void Pokemon_FromGbRecordExt(PokemonData* arg0, unk_D_800AC910_050_9AC_008* arg1);
 void Pokemon_ToGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
