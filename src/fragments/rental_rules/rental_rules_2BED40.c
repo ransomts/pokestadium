@@ -619,7 +619,7 @@ void RentalRules_DrawRuleListPanel(void) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawTextureRgba16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
+        Gfx_DrawTextureRgba16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, gRentalViewerIconTop, 0x1C, 0);
 
         for (i = 0; i < gCurrentMenuOptionCount; i++) {
             RentalRules_DrawBulletIcon(0x74, temp_s3 + 0x28 + i * 0x18);
@@ -808,7 +808,7 @@ s32 RentalRules_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
-    ASSET_LOAD(D_04000000, rental_rules_ui, 0);
+    ASSET_LOAD(gRentalViewerIconTop, rental_rules_ui, 0);
 
     RentalRules_LoadBackgroundArchive();
     PokeIcon_OpenModelArchive();

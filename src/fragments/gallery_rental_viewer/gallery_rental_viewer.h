@@ -115,13 +115,13 @@ void Gallery_RentalViewerDrawLabels(void);
 void Gallery_RentalViewerDrawTeamList(s32 arg0);
 s32 Gallery_RentalViewerGetSelectedSlot(void);
 
-void Gallery_RentalViewerSaveBoxCursor(unk_D_83407B18_008* arg0);
+void Gallery_RentalViewerSaveBoxCursor(GallerySelection* arg0);
 s32 Gallery_RentalViewerGetLoadState(void);
 void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, RentalViewerBgData* arg2);
 s32 Gallery_RentalViewerLoadDeckEntries(unk_D_838067F0* arg0, s32 arg1);
 void Gallery_RentalViewerMarkMatchingPikachu(unk_D_838067F0* arg0, PokemonData* arg1);
 s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, RentalViewerBgData* arg3);
-s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, unk_D_83407B18_008* arg1);
+s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, GallerySelection* arg1);
 void Gallery_RentalViewerAdvanceOpenPanel(unk_D_838067F0* arg0);
 unk_D_838067F0_0168* Gallery_RentalViewerGetPage(unk_D_838067F0_0168* arg0, s32 arg1);
 void Gallery_RentalViewerConfirmMonSelect(unk_D_838067F0* arg0);

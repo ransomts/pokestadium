@@ -36,7 +36,7 @@ void Gallery_RentalViewerSetFadeCounter(s32 arg0) {
 }
 
 void Gallery_RentalViewerDrawIcon(s32 arg0, s32 arg1) {
-    Gfx_DrawTextureRgba16(arg0, arg1, 0x40, 0x18, D_04000000, 0x40, 0);
+    Gfx_DrawTextureRgba16(arg0, arg1, 0x40, 0x18, gRentalViewerIconTop, 0x40, 0);
     Gfx_DrawTextureRgba16(arg0, arg1 + 0x18, 0x40, 0x18, D_4000C00, 0x40, 0);
 }
 
@@ -111,7 +111,7 @@ void Gallery_RentalViewerUpdateLoadConfirm(void) {
 }
 
 s32 Gallery_RentalViewerHandleInput(void) {
-    static s32 D_83804CB8 = 4;
+    static s32 gRentalViewerInputDelay = 4;
 
     s32 sp7C = 1;
     s32 sp78 = 0;
@@ -121,8 +121,8 @@ s32 Gallery_RentalViewerHandleInput(void) {
     switch (gSnapSelectState) {
         case 0:
             if (StageContext_GetFadeMode() == 0) {
-                D_83804CB8--;
-                if (D_83804CB8 <= 0) {
+                gRentalViewerInputDelay--;
+                if (gRentalViewerInputDelay <= 0) {
                     gSnapSelectState = 1;
                     if (gSnapSelectMode == 1) {
                         gRentalViewerSelectedSlot = gGalleryFinalSelection.unk_08.posX;
@@ -220,7 +220,7 @@ void Gallery_RentalViewerLoop(void) {
 
 s32 Gallery_RentalViewerGetResult(void) {
     s32 var_v1;
-    unk_D_83407B18_008* temp_a0 = &gGalleryFinalSelection.unk_08;
+    GallerySelection* temp_a0 = &gGalleryFinalSelection.unk_08;
     temp_a0 += 0;
 
     if (gRentalViewerConfirmResult == 0) {
@@ -260,7 +260,7 @@ s32 Gallery_RentalViewerMain(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
-    ASSET_LOAD(D_04000000, snap_select_ui, 0);
+    ASSET_LOAD(gRentalViewerIconTop, snap_select_ui, 0);
 
     gSnapSelectBackground = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
     gSnapSelectBgData = BinArchive_GetFile(BinArchive_Open(0x898000, NULL, 1, 0), 0x1A);

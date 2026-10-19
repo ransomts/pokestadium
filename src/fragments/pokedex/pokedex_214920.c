@@ -6309,7 +6309,7 @@ s32 Pokedex_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
-    ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
+    ASSET_LOAD(gRentalViewerIconTop, fragment29_misc_1, 0);
 
     FRAGMENT_LOAD(fragment26);
     FRAGMENT_LOAD(fragment25);

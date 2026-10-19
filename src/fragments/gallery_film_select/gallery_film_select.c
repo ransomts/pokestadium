@@ -550,7 +550,7 @@ void Gallery_FilmSelectDrawActionPanel(int arg0, int arg1, s32 arg2, f32 arg3) {
     s32 temp_ft2 = ROUND_MAX((spFC * arg3) + 0.4f);
     s32 temp_fv1 = ROUND_MAX((spF8 * arg3) + 0.4f);
     s32 i;
-    u16* spE4[] = { D_04000000, D_03005F80 };
+    u16* spE4[] = { gRentalViewerIconTop, D_03005F80 };
     s16 spE0[] = { 0x39, 0x37 };
     u16* spDC = spE4[arg2];
     char* spD8 = Gallery_GetUiString(spE0[arg2]);
@@ -595,10 +595,10 @@ void Gallery_FilmSelectDrawActionPanel(int arg0, int arg1, s32 arg2, f32 arg3) {
 }
 
 void Gallery_FilmSelectDrawBackgroundGradient(void) {
-    static Color_RGB8 D_836032A4 = { 0xCD, 0xD7, 0x9B };
-    static Color_RGB8 D_836032A8 = { 0x28, 0x64, 0xAF };
-    static Color_RGB8 D_836032AC = { 0xCD, 0xEB, 0x9B };
-    static Color_RGB8 D_836032B0 = { 0, 0, 0xAF };
+    static Color_RGB8 gGradColorTopLeft = { 0xCD, 0xD7, 0x9B };
+    static Color_RGB8 gGradColorBottomLeft = { 0x28, 0x64, 0xAF };
+    static Color_RGB8 gGradColorTopRight = { 0xCD, 0xEB, 0x9B };
+    static Color_RGB8 gGradColorBottomRight = { 0, 0, 0xAF };
 
     s32 i;
     s32 r;
@@ -618,17 +618,17 @@ void Gallery_FilmSelectDrawBackgroundGradient(void) {
         s32 temp_v0_2 = CLAMP_MIN(end - i, 0x40);
 
         if (gBackgroundGradientMask & (1 << idx)) {
-            r = (((D_836032AC.r - D_836032A4.r) * idx) / 8) + D_836032A4.r;
-            g = (((D_836032AC.g - D_836032A4.g) * idx) / 8) + D_836032A4.g;
-            b = (((D_836032AC.b - D_836032A4.b) * idx) / 8) + D_836032A4.b;
+            r = (((gGradColorTopRight.r - gGradColorTopLeft.r) * idx) / 8) + gGradColorTopLeft.r;
+            g = (((gGradColorTopRight.g - gGradColorTopLeft.g) * idx) / 8) + gGradColorTopLeft.g;
+            b = (((gGradColorTopRight.b - gGradColorTopLeft.b) * idx) / 8) + gGradColorTopLeft.b;
 
             gDPPipeSync(gDisplayListHead++);
 
             gDPSetPrimColor(gDisplayListHead++, 0, 0, r, g, b, 255);
 
-            r = (((D_836032B0.r - D_836032A8.r) * idx) / 8) + D_836032A8.r;
-            g = (((D_836032B0.g - D_836032A8.g) * idx) / 8) + D_836032A8.g;
-            b = (((D_836032B0.b - D_836032A8.b) * idx) / 8) + D_836032A8.b;
+            r = (((gGradColorBottomRight.r - gGradColorBottomLeft.r) * idx) / 8) + gGradColorBottomLeft.r;
+            g = (((gGradColorBottomRight.g - gGradColorBottomLeft.g) * idx) / 8) + gGradColorBottomLeft.g;
+            b = (((gGradColorBottomRight.b - gGradColorBottomLeft.b) * idx) / 8) + gGradColorBottomLeft.b;
 
             gDPSetEnvColor(gDisplayListHead++, r, g, b, 255);
 
@@ -638,7 +638,7 @@ void Gallery_FilmSelectDrawBackgroundGradient(void) {
 }
 
 char* Gallery_FilmSelectGetHelpText(GallerySceneGrid* arg0) {
-    static s32 D_836032B4[] = { 0x21, 0x24 };
+    static s32 gHelpTextMsgIds[] = { 0x21, 0x24 };
 
     char* var_v0;
     s32 temp_lo = arg0->posX % 3;
@@ -653,7 +653,7 @@ char* Gallery_FilmSelectGetHelpText(GallerySceneGrid* arg0) {
             var_v0 = Gallery_GetUiString(0x23);
         }
     } else {
-        var_v0 = Gallery_GetUiString(D_836032B4[gSelectionMessageState - 1]);
+        var_v0 = Gallery_GetUiString(gHelpTextMsgIds[gSelectionMessageState - 1]);
     }
     return var_v0;
 }
@@ -891,7 +891,7 @@ void Gallery_FilmSelectMain(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
-    ASSET_LOAD(D_04000000, _6A9750, 0);
+    ASSET_LOAD(gRentalViewerIconTop, _6A9750, 0);
     FRAGMENT_LOAD(fragment31);
 
     PokeIcon_OpenModelArchives();

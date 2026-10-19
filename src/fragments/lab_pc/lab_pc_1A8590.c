@@ -12,7 +12,7 @@ TextObject* LabPC_Enter(void) {
 
     sp1C = Font_Init(0x1C, 0);
 
-    ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
+    ASSET_LOAD(gRentalViewerIconTop, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);
     FRAGMENT_LOAD(fragment29);
 

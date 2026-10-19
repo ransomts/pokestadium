@@ -1820,7 +1820,7 @@ s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
 void VictoryPalace_EmptyFunc1(void) {
 }
 
-void func_82600C08(void) {
+void VictoryPalace_EmptyFunc2(void) {
 }
 
 void VictoryPalace_InitCamera(void) {
@@ -1847,10 +1847,10 @@ void VictoryPalace_PollInput(void) {
     Input_ResetRepeatState();
 }
 
-void func_82600D34(void) {
+void VictoryPalace_EmptyFunc4(void) {
 }
 
-void func_82600D3C(void) {
+void VictoryPalace_EmptyFunc5(void) {
 }
 
 void VictoryPalace_DrawSpeciesIcon(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
@@ -2133,7 +2133,7 @@ void VictoryPalace_SpawnCarouselEntry(s16 arg0) {
     HallOfFame_SpawnPokeIcon(sp1C, arg0 * 600.0f);
 }
 
-void func_82602570(void) {
+void VictoryPalace_EmptyFunc6(void) {
 }
 
 void VictoryPalace_ClearCarouselSlot(s16 arg0) {

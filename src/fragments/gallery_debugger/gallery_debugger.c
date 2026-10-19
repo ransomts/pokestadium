@@ -76,7 +76,7 @@ void GalleryDebugger_SaveDeckEntries(void) {
 }
 
 void GalleryDebugger_DrawMenu(void) {
-    static char* D_83900640[] = { "Load Controller Pak", "Save Controller Pak", "Quit" };
+    static char* gGalleryMenuOptions[] = { "Load Controller Pak", "Save Controller Pak", "Quit" };
 
     s32 i;
     s32 sp30;
@@ -95,7 +95,7 @@ void GalleryDebugger_DrawMenu(void) {
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
-        Font_Printf(0x78, 0x82 + tmp, D_83900640[i]);
+        Font_Printf(0x78, 0x82 + tmp, gGalleryMenuOptions[i]);
     }
 
     Font_Printf(sp30, 0xC8, "PFS ERROR : %d", gGalleryPfsError);

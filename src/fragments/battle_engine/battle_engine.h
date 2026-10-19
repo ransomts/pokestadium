@@ -1427,7 +1427,7 @@ void BattleHud_InitEmpty(void);
 void BattleHud_DrawTranslucentShadowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void BattleHud_DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
 void Battle_DrawGradientRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
-void func_84310360(void);
+void BattleHud_InitEmpty4(void);
 void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3);
 void BattleHud_InitEmpty5(void);
 void BattleHud_DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2);
@@ -1437,7 +1437,7 @@ void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3,
 void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6);
 void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, StatusColor* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA);
 s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
-void func_84311420(void);
+void BattleHud_InitEmpty6(void);
 void BattleHud_DrawBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void BattleHud_DrawParticipantTimer(s16 arg0, s16 arg1);
 void BattleHud_DrawBattleTimer(s16 arg0, s16 arg1);

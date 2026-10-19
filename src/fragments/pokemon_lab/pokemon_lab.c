@@ -3094,7 +3094,7 @@ s32 Lab_Main(s32 arg0, UNUSED s32 arg1) {
 
     sp2C = Font_Init(0x1C, 0);
 
-    ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
+    ASSET_LOAD(gRentalViewerIconTop, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);
     FRAGMENT_LOAD(fragment25);
     sp40 = ASSET_LOAD(0, fragment29_misc_2, 0);

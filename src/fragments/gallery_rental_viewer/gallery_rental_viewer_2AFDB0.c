@@ -11,7 +11,7 @@
 
 static unk_D_838067F0 D_838067F0;
 
-void Gallery_RentalViewerSaveBoxCursor(unk_D_83407B18_008* arg0) {
+void Gallery_RentalViewerSaveBoxCursor(GallerySelection* arg0) {
     arg0->posY = D_838067F0.unk_001C;
     arg0->rotation = D_838067F0.unk_0020;
     arg0->unk_06 = D_838067F0.cursorColumn;
@@ -154,7 +154,7 @@ s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1
     return var_s4;
 }
 
-s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, unk_D_83407B18_008* arg1) {
+s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, GallerySelection* arg1) {
     unk_D_838067F0* ptr = &D_838067F0;
     unk_D_838067F0_0168* ptr2;
     s32 i;
@@ -615,12 +615,12 @@ s32 Gallery_RentalViewerGetPageFillState(unk_D_838067F0_0168* arg0) {
 }
 
 void Gallery_RentalViewerDrawPageHeader(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg2) {
-    static Color_RGB8 D_83805544[] = {
+    static Color_RGB8 gPageHeaderColors[] = {
         { 0xB4, 0x3C, 0x3C },
         { 0xBE, 0x96, 0x32 },
         { 0xAA, 0x3C, 0x96 },
     };
-    static Color_RGB8 D_83805550[] = {
+    static Color_RGB8 gPageHeaderShadowColors[] = {
         { 0x3C, 0x14, 0x14 },
         { 0x46, 0x32, 0x1E },
         { 0x50, 0x28, 0x3C },
@@ -632,8 +632,8 @@ void Gallery_RentalViewerDrawPageHeader(s32 arg0, s32 arg1, unk_D_838067F0_0168*
     s32 temp_v0 = Gallery_RentalViewerGetPageFillState(arg2);
 
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
-    gDPSetEnvColor(gDisplayListHead++, D_83805544[temp_v0].r, D_83805544[temp_v0].g, D_83805544[temp_v0].b, 255);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, D_83805550[temp_v0].r, D_83805550[temp_v0].g, D_83805550[temp_v0].b, 255);
+    gDPSetEnvColor(gDisplayListHead++, gPageHeaderColors[temp_v0].r, gPageHeaderColors[temp_v0].g, gPageHeaderColors[temp_v0].b, 255);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, gPageHeaderShadowColors[temp_v0].r, gPageHeaderShadowColors[temp_v0].g, gPageHeaderShadowColors[temp_v0].b, 255);
 
     Gfx_DrawTextureIa8(arg0, arg1, 8, 0x1C, &D_2000980, 8, 0);
     Gfx_DrawTextureIa8(arg0 + 0x184, arg1, 8, 0x1C, &D_2000A60, 8, 0);

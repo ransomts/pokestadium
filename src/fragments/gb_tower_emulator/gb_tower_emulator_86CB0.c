@@ -184,14 +184,14 @@ extern s32 D_8122EE98;
 extern unk_D_8122EEA8 gGbApuStatusLatch;
 extern OSMesgQueue gGbAudioMesgQueue;
 extern OSMesg D_8122EEC8;
-extern s16* D_812346E0[3];
+extern s16* gApuSampleBuffers[3];
 extern volatile s32 gAudioTaskPending;
 extern s32 D_812346D0;
 extern s32 gAudioTaskId;
 extern u32 D_812346F4;
-extern volatile u32 D_812346FC;
+extern volatile u32 gAudioInitFlag;
 extern s16 gAudioConfig[];
-extern s16 D_812346EC[];
+extern s16 gApuInitValues[];
 
 void func_81207330(void) {
 }
@@ -1017,7 +1017,7 @@ void GbApu_Reset(s32 arg0) {
 }
 
 void func_81208E4C(void) {
-    void* sp34 = D_812346E0[0];
+    void* sp34 = gApuSampleBuffers[0];
     f32 x = (f32) D_8122C790;
     f32 y = (f32) D_8122C792;
     f32 dx = x / 640.0f;
@@ -1096,10 +1096,10 @@ s32 GbAudio_Update(void) {
     // `if (bufPtr) {}` / `if (!p) {}` shape the -1 branch; all three are load-bearing (farm candidate x16).
     buf = (s16*)&D_812346F4;
 
-    if (D_812346FC < 16) {
-        len = &D_812346EC[idx];
+    if (gAudioInitFlag < 16) {
+        len = &gApuInitValues[idx];
         if (*len != 0) {
-            bufPtr = &D_812346E0[idx];
+            bufPtr = &gApuSampleBuffers[idx];
             if (osGbSetNextBuffer(*bufPtr, *len * 4) == -1) {
                 if (bufPtr) {}
             } else {
@@ -1114,16 +1114,16 @@ s32 GbAudio_Update(void) {
         }
     }
 
-    if (D_812346FC > 16) {
+    if (gAudioInitFlag > 16) {
         return 0;
     }
-    if (D_812346FC != 0) {
-        D_812346FC++;
+    if (gAudioInitFlag != 0) {
+        gAudioInitFlag++;
     }
 
     idx = gAudioTaskId;
-    bufPtr = &D_812346E0[idx];
-    len = &D_812346EC[idx];
+    bufPtr = &gApuSampleBuffers[idx];
+    len = &gApuInitValues[idx];
     buf = *bufPtr;
     *len = ((gAudioConfig[3] - aiLen + 0x80) & 0xFFF0) + 0x10;
     if (*len < gAudioConfig[5]) {

@@ -170,10 +170,10 @@ static Gfx gDefaultGfxSetup[] = {
 void BattleHud_InitEmpty(void) {
 }
 
-void func_8430FC18(void) {
+void BattleHud_InitEmpty2(void) {
 }
 
-void func_8430FC20(void) {
+void BattleHud_InitEmpty3(void) {
 }
 
 void BattleHud_DrawTranslucentShadowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
@@ -245,7 +245,7 @@ void Battle_DrawGradientRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Colo
     BattleHud_DrawGradientRect(arg0, arg1, arg2, arg3, arg4, arg5);
 }
 
-void func_84310360(void) {
+void BattleHud_InitEmpty4(void) {
 }
 
 void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
@@ -484,7 +484,7 @@ s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     Gfx_DrawTextureRect2(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1, sp2C, sp28, 0);
 }
 
-void func_84311420(void) {
+void BattleHud_InitEmpty6(void) {
 }
 
 void BattleHud_DrawBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {

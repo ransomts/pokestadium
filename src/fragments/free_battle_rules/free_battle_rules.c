@@ -38,10 +38,10 @@ typedef struct MenuEntry {
 
 static char** gRuleMessageBank;
 static char** gOptionMessageBank;
-static BinArchive* D_84002D08;
+static BinArchive* gRuleBackgroundArchive;
 static u8* gMenuBackgroundAtlas;
 static s32 pad_D_84002D10;
-static s16 D_84002D14;
+static s16 gControllerInputMask;
 static s16 gRuleMenuState;
 static MenuSelection gMenuSelection;
 static s32 pad_D_84002D1C;
@@ -296,13 +296,13 @@ s32 FreeBattle_IsRuleAvailable(s16 arg0) {
         if (gRuleMenuState >= 2) {
             var_v1 = arg0 == gMenuSelection.posX;
         } else {
-            var_v1 = ptr->posX == (ptr->posX & D_84002D14);
+            var_v1 = ptr->posX == (ptr->posX & gControllerInputMask);
         }
     } else if (arg0 < 11) {
         if (gRuleMenuState >= 3) {
             var_v1 = arg0 == (gMenuSelection.posY + 4);
         } else {
-            s16 tmp = (~gMenuEntries[gMenuSelection.posX].posX & D_84002D14);
+            s16 tmp = (~gMenuEntries[gMenuSelection.posX].posX & gControllerInputMask);
 
             var_v1 = ptr->posX == (ptr->posX & tmp);
         }
@@ -504,7 +504,7 @@ void FreeBattle_DrawLevelOptionLine(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     Font_Printf(arg0, arg1 + (arg2 * 0x18), arg3);
 }
 
-void func_84001AD8(void) {
+void FreeBattle_DummyFunc(void) {
 }
 
 void FreeBattle_DrawLevelSelectPanel(void) {
@@ -834,9 +834,9 @@ s32 FreeBattle_RuleSelectMain(s32 arg0, s32 arg1) {
     Text_InitStringTables();
     gRuleMessageBank = Text_GetStringTable(0xF);
     gOptionMessageBank = Text_GetStringTable(6);
-    D_84002D08 = ASSET_LOAD2(backgrounds, 1, 1);
-    gMenuBackgroundAtlas = BinArchive_GetFile(D_84002D08, 6);
-    D_84002D14 = Cont_GetControllerBits();
+    gRuleBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gMenuBackgroundAtlas = BinArchive_GetFile(gRuleBackgroundArchive, 6);
+    gControllerInputMask = Cont_GetControllerBits();
     StageLoader_UpdateSegments();
     sp1C = FreeBattle_RuleSelectLoop();
     StageLoader_WaitForRetrace();

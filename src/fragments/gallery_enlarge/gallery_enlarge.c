@@ -121,7 +121,7 @@ s32 Gallery_EnlargeMain(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
-    ASSET_LOAD(D_04000000, album_ui, 0);
+    ASSET_LOAD(gRentalViewerIconTop, album_ui, 0);
 
     FRAGMENT_LOAD(fragment31);
 

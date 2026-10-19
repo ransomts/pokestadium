@@ -17507,3 +17507,41 @@ D_8650A3C0	gChainLinkNode12	w9		Fragment2_1GraphNode	applied@847d78b9
 D_86C0E054	gEkansSymmetryTable	w9		array of s16 values used for actor positioning or symmetry	applied@847d78b9
 unk_D_82305A28	EventBattleState	w9		tracks the current state (posX), selected mode (posY), and validation results for the event battle menu system	applied@847d78b9
 D_823059CC	gLastSelectedMode	w9		static variable in EventBattle_ShowSelect that stores the last selected mode index (posY) across calls	applied@847d78b9
+func_8430FC18	BattleHud_InitEmpty2	w10		empty function in HUD domain	applied@fcf22d55
+func_8430FC20	BattleHud_InitEmpty3	w10		empty function in HUD domain	applied@fcf22d55
+func_84310360	BattleHud_InitEmpty4	w10		empty function in HUD domain	applied@fcf22d55
+func_84311420	BattleHud_InitEmpty6	w10		empty function in HUD domain	applied@fcf22d55
+func_82600C08	VictoryPalace_EmptyFunc2	w10		empty function in Victory Palace sequence	applied@fcf22d55
+func_82600D34	VictoryPalace_EmptyFunc4	w10		empty function in Victory Palace sequence	applied@fcf22d55
+func_82600D3C	VictoryPalace_EmptyFunc5	w10		empty function in Victory Palace sequence	applied@fcf22d55
+func_82602570	VictoryPalace_EmptyFunc6	w10		empty function in Victory Palace sequence	applied@fcf22d55
+D_84002D08	gRuleBackgroundArchive	w10		loaded via ASSET_LOAD2(backgrounds, 1, 1) and used with BinArchive_GetFile to get the background atlas	applied@fcf22d55
+D_84002D14	gControllerInputMask	w10		initialized via Cont_GetControllerBits and used as a bitmask in FreeBattle_IsRuleAvailable	applied@fcf22d55
+func_84001AD8	FreeBattle_DummyFunc	w10		empty function in the FreeBattle domain	applied@fcf22d55
+D_83407C00	gConfirmPromptId	w10		index into gConfirmPromptPanels to determine which prompt is active	applied@fcf22d55
+D_83407C04	gConfirmPromptController	w10		pointer to the controller used for prompt input	applied@fcf22d55
+D_83407C08	gConfirmPromptAnimTimer	w10		timer used to animate the opening and closing of the prompt panel	applied@fcf22d55
+D_83407C0A	gConfirmPromptCursorIndex	w10		the currently selected option index in the prompt list	applied@fcf22d55
+D_83402E40	gConfirmPromptState	w10		state machine for the prompt (0:closed, 1:opening, 2:active, 3:closing, 4:finished)	applied@fcf22d55
+D_83402E44	gConfirmPromptSfxTable	w10		table of sound effect IDs mapped to prompt options	applied@fcf22d55
+D_83402E4C	gConfirmPromptPanels	w10		array of MenuPanelInfo defining the layout and properties of different prompt types	applied@fcf22d55
+D_83402E9C	gSaveOptionStringIds	w10		list of string IDs for the save options menu	applied@fcf22d55
+D_83402EA4	gSaveOptionYOffsets	w10		Y-coordinate offsets for the save options menu items	applied@fcf22d55
+D_83402EAC	gDeleteOptionStringIds	w10		list of string IDs for the delete options menu	applied@fcf22d55
+D_83900640	gGalleryMenuOptions	w10		contains "Load Controller Pak", "Save Controller Pak", and "Quit" strings used in GalleryDebugger_DrawMenu	applied@fcf22d55
+D_836032A4	gGradColorTopLeft	w10		Color_RGB8 used in Gallery_FilmSelectDrawBackgroundGradient for interpolation.	applied@fcf22d55
+D_836032A8	gGradColorBottomLeft	w10		Color_RGB8 used in Gallery_FilmSelectDrawBackgroundGradient for interpolation.	applied@fcf22d55
+D_836032AC	gGradColorTopRight	w10		Color_RGB8 used in Gallery_FilmSelectDrawBackgroundGradient for interpolation.	applied@fcf22d55
+D_836032B0	gGradColorBottomRight	w10		Color_RGB8 used in Gallery_FilmSelectDrawBackgroundGradient for interpolation.	applied@fcf22d55
+D_836032B4	gHelpTextMsgIds	w10		Array of string IDs used in Gallery_FilmSelectGetHelpText when gSelectionMessageState is non-zero.	applied@fcf22d55
+D_04000000	gRentalViewerIconTop	w10		texture used in Gallery_RentalViewerDrawIcon for the top half of the icon	applied@fcf22d55
+D_83804CB8	gRentalViewerInputDelay	w10		static counter used in Gallery_RentalViewerHandleInput case 0 to delay state transition	applied@fcf22d55
+unk_D_83407B18_008	GallerySelection	w10		struct containing selection data (posX) used in Gallery_RentalViewerGetResult	applied@fcf22d55
+D_83805544	gPageHeaderColors	w10		Table of RGB colors used for the page header backgrounds.	applied@fcf22d55
+D_83805550	gPageHeaderShadowColors	w10		Table of RGB colors used for the page header shadow/border.	applied@fcf22d55
+unk_D_81234690	GbApuConfig	w10		stores audio frequency, sample rates, and timing buffers	applied@fcf22d55
+D_812346E0	gApuSampleBuffers	w10		array of 3 buffers allocated via GbApu_Alloc and zeroed	applied@fcf22d55
+D_812346EC	gApuInitValues	w10		array initialized to 0xA0 in GbPak_InitGfx	applied@fcf22d55
+D_812346F2	gApuInitValuesEnd	w10		end boundary for the 0xA0 initialization loop	applied@fcf22d55
+D_81234700	gAudioWorkBufferEnd	w10		used to calculate the size of gAudioWorkBuffer for zeroing	applied@fcf22d55
+D_812346FC	gAudioInitFlag	w10		initialized to 0 at the start of GbPak_InitGfx	applied@fcf22d55
